@@ -6,9 +6,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 0.94.14i\n"
-"POT-Creation-Date: 1999-01-04 13:55+0100\n"
+"POT-Creation-Date: 1999-01-04 14:22+0100\n"
 "PO-Revision-Date: 1999-01-05 20:46+0100\n"
-"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <Vincent.Lefevre@ens-lyon.fr>\n"
+"Last-Translator: Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre "
+"<Vincent.Lefevre@ens-lyon.fr>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -952,27 +953,27 @@ msgstr ""
 msgid "Error: multipart/signed has no protocol."
 msgstr "Erreur : multipart/signed n'a pas de protocole."
 
-#: handler.c:1391
+#: handler.c:1392
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Erreur : multipart/encrypted n'a pas de paramètre de protocole !"
 
-#: handler.c:1433
+#: handler.c:1434
 msgid "Unable to open temporary file!"
 msgstr "Impossible d'ouvrir le fichier temporaire !"
 
 # , c-format
-#: handler.c:1492
+#: handler.c:1493
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s n'est pas disponible "
 
 # , c-format
-#: handler.c:1497
+#: handler.c:1498
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(utilisez '%s' pour voir cette partie)"
 
-#: handler.c:1499
+#: handler.c:1500
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(la fonction 'view-attachments' doit être affectée à une touche !)"
 
@@ -2116,7 +2117,9 @@ msgstr ""
 msgid ""
 "\n"
 "Compile options:"
-msgstr "\nOptions de compilation :"
+msgstr ""
+"\n"
+"Options de compilation :"
 
 #: main.c:306
 msgid "Error initializing terminal."
@@ -2576,7 +2579,9 @@ msgstr "[-- FIN DE BLOC DE CLÉ PUBLIQUE PGP --]\n"
 msgid ""
 "\n"
 "[-- END PGP SIGNED MESSAGE --]\n"
-msgstr "\n[-- FIN DE MESSAGE SIGNÉ PGP --]\n"
+msgstr ""
+"\n"
+"[-- FIN DE MESSAGE SIGNÉ PGP --]\n"
 
 #: pgp.c:477
 msgid ""
@@ -2586,7 +2591,7 @@ msgstr ""
 "[-- Erreur : impossible de trouver le début du message PGP ! --]\n"
 "\n"
 
-#: pgp.c:670 pgp.c:895
+#: pgp.c:669 pgp.c:975
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2594,38 +2599,56 @@ msgstr ""
 "[-- Fin de sortie PGP --]\n"
 "\n"
 
-#. Now display the signed body
-#: pgp.c:677
+#: pgp.c:721
 msgid ""
-"[-- The following data is PGP/MIME signed --]\n"
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:729
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "Erreur : multipart/signed n'a pas de protocole."
+
+#: pgp.c:750
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+
+#. Now display the signed body
+#: pgp.c:758
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
 "\n"
 msgstr ""
 "[-- Les données suivantes sont signées avec PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:683
+#: pgp.c:764
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:770
+#, fuzzy
 msgid ""
 "\n"
-"[-- End of PGP/MIME signed data --]\n"
+"[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- Fin des données signées avec PGP/MIME --]\n"
 
-#: pgp.c:688
-msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! "
-"--]\n"
-"\n"
-msgstr ""
-"[-- Erreur : ce message n'est pas conforme à la spécification PGP/MIME ! "
-"--]\n"
-"\n"
-
-#: pgp.c:802
+#: pgp.c:882
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Erreur interne. Veuillez avertir <roessler@guug.de>."
 
-#: pgp.c:866
+#: pgp.c:946
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2633,7 +2656,7 @@ msgstr ""
 "[-- Erreur : impossible de créer un sous-processus PGP ! --]\n"
 "\n"
 
-#: pgp.c:959
+#: pgp.c:1039
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2641,11 +2664,11 @@ msgstr ""
 "[-- Erreur : message PGP/MIME mal formé ! --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1052
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Erreur : impossible de créer le fichier temporaire ! --]\n"
 
-#: pgp.c:981
+#: pgp.c:1061
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2653,7 +2676,7 @@ msgstr ""
 "[-- Les données suivantes sont chiffrées avec PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:989
+#: pgp.c:1069
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2661,18 +2684,18 @@ msgstr ""
 "\n"
 "[-- Fin des données chiffrées avec PGP/MIME --]\n"
 
-#: pgp.c:1071
+#: pgp.c:1151
 msgid "Can't open PGP subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus PGP"
 
 # , c-format
-#: pgp.c:1195
+#: pgp.c:1275
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
-#: pgp.c:1201
+#: pgp.c:1281
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
@@ -3171,3 +3194,12 @@ msgstr "Fonction de tri non trouvée ! [signalez ce bug]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(pas de boîte aux lettres)"
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Erreur : ce message n'est pas conforme à la spécification PGP/MIME ! "
+#~ "--]\n"
+#~ "\n"

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-0.95i\n"
-"POT-Creation-Date: 1998-12-12 09:15+0100\n"
+"POT-Creation-Date: 1999-01-04 14:22+0100\n"
 "PO-Revision-Date: 1998-12-17 13:12+0100\n"
 "Last-Translator: Pawe³ Dziekoñski <pdziekonski@pkmk486.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -24,7 +24,7 @@ msgstr "Wyj¶cie"
 msgid "Select"
 msgstr "Wybierz"
 
-#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1466
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:259 pager.c:1466
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Pomoc"
@@ -258,7 +258,7 @@ msgstr "Wywo³ujê PGP..."
 msgid "Verify PGP signature?"
 msgstr "Weryfikowaæ podpis PGP?"
 
-#: commands.c:177 mbox.c:721
+#: commands.c:177 mbox.c:724
 msgid "Could not create temporary file!"
 msgstr "Nie mogê utorzyæ pliku tymczasowego!"
 
@@ -301,12 +301,17 @@ msgid "Pipe to command: "
 msgstr "Wy¶lij przez rurê do komendy: "
 
 #: commands.c:401
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr "Odwr-Sort (d)data/(o)d/o(t)rzym/t(e)mat/d(o)/(w)±tek/(b)ez/ro(z)miar/(w)aga?: "
+msgid ""
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr ""
+"Odwr-Sort "
+"(d)data/(o)d/o(t)rzym/t(e)mat/d(o)/(w)±tek/(b)ez/ro(z)miar/(w)aga?: "
 
 #: commands.c:402
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
-msgstr "Sortuj (d)data/(o)d/o(t)rzym/t(e)mat/d(o)/(w)±tek/(b)ez/ro(z)miar/(w)aga?: "
+msgid ""
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
+msgstr ""
+"Sortuj (d)data/(o)d/o(t)rzym/t(e)mat/d(o)/(w)±tek/(b)ez/ro(z)miar/(w)aga?: "
 
 #: commands.c:403
 msgid "dfrsotuzc"
@@ -337,7 +342,7 @@ msgstr "Rozszyfruj-zachowaj"
 msgid "Decrypt-copy"
 msgstr "Rozszyfruj-kopiuj"
 
-#: commands.c:575 curs_main.c:237 recvattach.c:49
+#: commands.c:575 curs_main.c:255 recvattach.c:49
 msgid "Save"
 msgstr "Zachowaj"
 
@@ -415,8 +420,11 @@ msgid "MIC algorithm: "
 msgstr "Algorytm MIC: "
 
 #: compose.c:133
-msgid "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget it? "
-msgstr "(z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, algoryt(m) MIC, b(e)z PGP? "
+msgid ""
+"(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
+"it? "
+msgstr ""
+"(z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, algoryt(m) MIC, b(e)z PGP? "
 
 #: compose.c:134
 msgid "esabmf"
@@ -480,84 +488,84 @@ msgstr "Zaznacz listy do za³±czenia!"
 msgid "Unable to attach!"
 msgstr "Nie mogê za³±czyæ!"
 
-#: compose.c:763
+#: compose.c:772
 msgid "Invalid encoding."
 msgstr "B³êdne szyfrowanie."
 
-#: compose.c:778
+#: compose.c:787
 msgid "Save a copy of this message?"
 msgstr "Zachowaæ kopiê tego listu?"
 
-#: compose.c:823
+#: compose.c:832
 msgid "Rename to: "
 msgstr "Zmieñ nazwê na: "
 
-#: compose.c:828
+#: compose.c:837
 #, c-format
 msgid "Can't stat: %s"
 msgstr "Nie mogê ustaliæ statusu: %s"
 
-#: compose.c:855
+#: compose.c:864
 msgid "New file: "
 msgstr "Nowy plik: "
 
-#: compose.c:868
+#: compose.c:877
 msgid "Content-Type is of the form base/sub"
 msgstr "Typ \"Content-Type\" musi byæ w postaci podstawowy/po¶ledni"
 
-#: compose.c:874
+#: compose.c:883
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Nieznany rodzaj \"Content-Type\" %s"
 
-#: compose.c:887
+#: compose.c:896
 #, c-format
 msgid "Can't create file %s"
 msgstr "Nie mogê utworzyæ %s"
 
-#: compose.c:895
+#: compose.c:904
 msgid "What we have here is a failure to make an attachment"
 msgstr "Mamy tu b³±d tworzenia za³±cznika"
 
-#: compose.c:958
+#: compose.c:967
 msgid "Postpone this message?"
 msgstr "Zachowaæ ten list do pó¼niejszej obróbki i ewentualnej wysy³ki?"
 
-#: compose.c:1010
+#: compose.c:1019
 msgid "Write message to mailbox"
 msgstr "Zapisz list do skrzynki"
 
-#: compose.c:1014
+#: compose.c:1023
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Zapisujê list do %s ..."
 
-#: compose.c:1025
+#: compose.c:1034
 msgid "Message written."
 msgstr "List zapisany."
 
-#: curs_lib.c:135
+#: curs_lib.c:136
 msgid "yes"
 msgstr "tak"
 
-#: curs_lib.c:136
+#: curs_lib.c:137
 msgid "no"
 msgstr "nie"
 
 #. restore blocking operation
-#: curs_lib.c:175
+#: curs_lib.c:176
 msgid "Exit Mutt?"
 msgstr "Wyj¶æ z programu pocztowego?"
 
-#: curs_lib.c:262
+#: curs_lib.c:275
 msgid "unknown error"
 msgstr "nieznany b³±d"
 
-#: curs_lib.c:282
+#: curs_lib.c:295
 msgid "Press any key to continue..."
 msgstr "Naci¶nij dowolny klawisz by kontynuowaæ..."
 
-#: curs_lib.c:320
+#: curs_lib.c:333
 msgid " ('?' for list): "
 msgstr " (naci¶nij '?' aby uzyskaæ katalog skrzynek): "
 
@@ -573,105 +581,105 @@ msgstr "Zmiany zostan± naniesione po wyj¶ciu z foldera."
 msgid "Changes to folder will not be written."
 msgstr "Zmiany w folderze nie zostan± naniesione."
 
-#: curs_main.c:234
+#: curs_main.c:252
 msgid "Quit"
 msgstr "Wyjd¼"
 
-#: curs_main.c:235 pager.c:1376 postpone.c:34
+#: curs_main.c:253 pager.c:1376 postpone.c:34
 msgid "Del"
 msgstr "Usuñ"
 
-#: curs_main.c:236 postpone.c:35
+#: curs_main.c:254 postpone.c:35
 msgid "Undel"
 msgstr "Odtwórz"
 
-#: curs_main.c:238 query.c:45
+#: curs_main.c:256 query.c:45
 msgid "Mail"
 msgstr "Wy¶lij"
 
-#: curs_main.c:239 pager.c:1377
+#: curs_main.c:257 pager.c:1377
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: curs_main.c:240
+#: curs_main.c:258
 msgid "Group"
 msgstr "Grupuj"
 
-#: curs_main.c:405
+#: curs_main.c:423
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Skrzynka zosta³a zmodyfikowana z zewn±trz. Flagi mog± byæ nieaktualne."
 
-#: curs_main.c:408
+#: curs_main.c:426
 msgid "New mail in this mailbox."
 msgstr "Nowa poczta w tej skrzynce."
 
-#: curs_main.c:508
+#: curs_main.c:526
 msgid "No mailbox is open."
 msgstr "Nie otwarto ¿adnej skrzynki."
 
-#: curs_main.c:514
+#: curs_main.c:532
 msgid "No tagged messages."
 msgstr "Brak zaznaczonych listów."
 
-#: curs_main.c:594
+#: curs_main.c:612
 msgid "Jump to message: "
 msgstr "Skocz do listu: "
 
-#: curs_main.c:600
+#: curs_main.c:618
 msgid "Argument must be a message number."
 msgstr "Argumentem musi byæ numer listu."
 
-#: curs_main.c:633
+#: curs_main.c:651
 msgid "That message is not visible."
 msgstr "Ten list nie jest widoczny."
 
-#: curs_main.c:636
+#: curs_main.c:654
 msgid "Invalid message number."
 msgstr "Z³y numer listu."
 
-#: curs_main.c:649
+#: curs_main.c:667
 msgid "Delete messages matching: "
 msgstr "Usuñ pasuj±ce listy: "
 
-#: curs_main.c:671
+#: curs_main.c:689
 msgid "No limit pattern is in effect."
 msgstr "Ograniczenie nie jest okre¶lone."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:676
+#: curs_main.c:694
 #, c-format
 msgid "Limit: %s"
 msgstr "Ograniczenie: %s"
 
-#: curs_main.c:685
+#: curs_main.c:703
 msgid "Limit to messages matching: "
 msgstr "Ogranicz do pasuj±cych listów: "
 
-#: curs_main.c:715
+#: curs_main.c:733
 msgid "Quit Mutt?"
 msgstr "Wyj¶æ z programu pocztowego?"
 
-#: curs_main.c:826
+#: curs_main.c:835
 msgid "Tag messages matching: "
 msgstr "Zaznacz pasuj±ce listy: "
 
-#: curs_main.c:834
+#: curs_main.c:843
 msgid "Undelete messages matching: "
 msgstr "Odtwórz pasuj±ce listy: "
 
-#: curs_main.c:841
+#: curs_main.c:850
 msgid "Untag messages matching: "
 msgstr "Odznacz pasuj±ce listy: "
 
-#: curs_main.c:859
+#: curs_main.c:868
 msgid "Open mailbox"
 msgstr "Otwórz skrzynkê"
 
-#: curs_main.c:861
+#: curs_main.c:870
 msgid "Open mailbox in read-only mode"
 msgstr "Otwórz skrzynkê tylko do odczytu"
 
-#: curs_main.c:877 mx.c:423 mx.c:564
+#: curs_main.c:886 mx.c:423 mx.c:564
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s nie jest skrzynk±."
@@ -680,51 +688,51 @@ msgstr "%s nie jest skrzynk±."
 msgid "Exit Mutt without saving?"
 msgstr "Wyj¶æ z programu pocztowego bez zapisywania?"
 
-#: curs_main.c:987 curs_main.c:1011
+#: curs_main.c:990 curs_main.c:1014
 msgid "You are on the last message."
 msgstr "To ostatnia wiadomo¶æ."
 
-#: curs_main.c:994 curs_main.c:1036
+#: curs_main.c:997 curs_main.c:1039
 msgid "No undeleted messages."
 msgstr "Brak odtworzonych listów."
 
-#: curs_main.c:1029 curs_main.c:1052
+#: curs_main.c:1032 curs_main.c:1055
 msgid "You are on the first message."
 msgstr "To pierwsza wiadomo¶æ."
 
-#: curs_main.c:1125 pattern.c:1103
+#: curs_main.c:1127 pattern.c:1114
 msgid "Search wrapped to top."
 msgstr "Poszukiwanie pod±¿y³o na pocz±tek."
 
-#: curs_main.c:1134 pattern.c:1114
+#: curs_main.c:1136 pattern.c:1125
 msgid "Search wrapped to bottom."
 msgstr "Poszukiwanie pod±¿y³o na koniec."
 
-#: curs_main.c:1160
+#: curs_main.c:1162
 msgid "No new messages"
 msgstr "Brak nowych listów"
 
-#: curs_main.c:1160
+#: curs_main.c:1162
 msgid "No unread messages"
 msgstr "Brak nie przeczytanych listów"
 
-#: curs_main.c:1161
+#: curs_main.c:1163
 msgid " in this limited view"
 msgstr " w trybie ograniczonego przegl±du"
 
-#: curs_main.c:1271
+#: curs_main.c:1273
 msgid "No more threads."
 msgstr "Nie ma wiêcej w±tków."
 
-#: curs_main.c:1273
+#: curs_main.c:1275
 msgid "You are on the first thread."
 msgstr "To pierwszy w±tek."
 
-#: curs_main.c:1326
+#: curs_main.c:1328
 msgid "Thread contains unread messages."
 msgstr "Watek zawiera nie przeczytane listy."
 
-#: curs_main.c:1339 flags.c:220 thread.c:629
+#: curs_main.c:1341 flags.c:220 thread.c:635
 msgid "Threading is not enabled."
 msgstr "W±tkowanie nie w³±czone."
 
@@ -737,8 +745,44 @@ msgstr "Zg³o¶, proszê, ten b³±d w funkcji mutt_mktime."
 #. * declared "static" (sigh)
 #.
 #: edit.c:37
-msgid "~~\t\tinsert a line begining with a single ~\n~b users\tadd users to the Bcc: field\n~c users\tadd users to the Cc: field\n~f messages\tinclude messages\n~F messages\tsame as ~f, except also include headers\n~h\t\tedit the message header\n~m messages\tinclude and quote messages\n~M messages\tsame as ~m, except include headers\n~p\t\tprint the message\n~q\t\twrite file and quit editor\n~r file\t\tread a file into the editor\n~t users\tadd users to the To: field\n~u\t\trecall the previous line\n~v\t\tedit message with the $visual editor\n~w file\t\twrite message to file\n~x\t\tabort changes and quit editor\n~?\t\tthis message\n.\t\ton a line by itself ends input\n"
-msgstr "~~\t\twstaw liniê zaczynaj±c± siê pojedyñczym ~\n~b u¿ytkownicy\tdodaj u¿ytkowników do pola BCC:\n~c u¿ytkownicy\tdodaj u¿ytkowników do pola Cc:\n~f listy\tdo³±cz listy\n~F listy\tto samo co ~f ale do³±cz te¿ nag³owki\n~h\t\tedytuj nag³ówki\n~m listy\tdoddaj i komentuj listy\n~M listy\tto samo co ~m ale do³±cz te¿ nag³owki\n~p\t\tdrukuj list\n~q\t\tzapisz plik i wyjd¼ z edytora\n~r plik\t\twczytaj plik do edytora\n~t u¿ytkownicy\tdodaj u¿ytkowników do pola To:\n~u\t\todtwórz poprzedni± liniê\n~v\t\tedytuj list edytorem $visual\n~w plik\t\tzapisz list do pliku\n~x\t\tporzuæ zmiany i wyjd¼ z edytora\n~?\t\tten list\n.\t\tstoj±c sama w linii koñczy wpisywanie\n"
+msgid ""
+"~~\t\tinsert a line begining with a single ~\n"
+"~b users\tadd users to the Bcc: field\n"
+"~c users\tadd users to the Cc: field\n"
+"~f messages\tinclude messages\n"
+"~F messages\tsame as ~f, except also include headers\n"
+"~h\t\tedit the message header\n"
+"~m messages\tinclude and quote messages\n"
+"~M messages\tsame as ~m, except include headers\n"
+"~p\t\tprint the message\n"
+"~q\t\twrite file and quit editor\n"
+"~r file\t\tread a file into the editor\n"
+"~t users\tadd users to the To: field\n"
+"~u\t\trecall the previous line\n"
+"~v\t\tedit message with the $visual editor\n"
+"~w file\t\twrite message to file\n"
+"~x\t\tabort changes and quit editor\n"
+"~?\t\tthis message\n"
+".\t\ton a line by itself ends input\n"
+msgstr ""
+"~~\t\twstaw liniê zaczynaj±c± siê pojedyñczym ~\n"
+"~b u¿ytkownicy\tdodaj u¿ytkowników do pola BCC:\n"
+"~c u¿ytkownicy\tdodaj u¿ytkowników do pola Cc:\n"
+"~f listy\tdo³±cz listy\n"
+"~F listy\tto samo co ~f ale do³±cz te¿ nag³owki\n"
+"~h\t\tedytuj nag³ówki\n"
+"~m listy\tdoddaj i komentuj listy\n"
+"~M listy\tto samo co ~m ale do³±cz te¿ nag³owki\n"
+"~p\t\tdrukuj list\n"
+"~q\t\tzapisz plik i wyjd¼ z edytora\n"
+"~r plik\t\twczytaj plik do edytora\n"
+"~t u¿ytkownicy\tdodaj u¿ytkowników do pola To:\n"
+"~u\t\todtwórz poprzedni± liniê\n"
+"~v\t\tedytuj list edytorem $visual\n"
+"~w plik\t\tzapisz list do pliku\n"
+"~x\t\tporzuæ zmiany i wyjd¼ z edytora\n"
+"~?\t\tten list\n"
+".\t\tstoj±c sama w linii koñczy wpisywanie\n"
 
 #: edit.c:179
 #, c-format
@@ -789,7 +833,8 @@ msgstr "[-- B³±d: nieoczekiwany koniec pliku! --]\n"
 #. didn't find anything that we could display!
 #: handler.c:954
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[--B³±d: Nie mogê wy¶wietliæ ¿adnego fragmentu Multipart/Alternative! --]\n"
+msgstr ""
+"[--B³±d: Nie mogê wy¶wietliæ ¿adnego fragmentu Multipart/Alternative! --]\n"
 
 #: handler.c:1071
 #, c-format
@@ -818,60 +863,71 @@ msgstr "[-- Aotomatyczne przegl±danie zwyk³ych komunikatów b³êdów %s --]\n"
 
 #: handler.c:1229
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- B³±d: message/external-body nie ma ustawionego rodzaju dostêpu --]\n"
+msgstr ""
+"[-- B³±d: message/external-body nie ma ustawionego rodzaju dostêpu --]\n"
 
-#: handler.c:1252
+#: handler.c:1246
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Ten %s/%s za³±cznik "
 
-#: handler.c:1259
+#: handler.c:1253
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(o wielko¶ci %s bajtów) "
 
-#: handler.c:1261
+#: handler.c:1255
 msgid "has been deleted --]\n"
 msgstr "zosta³ usuniêty --]\n"
 
-#: handler.c:1264
+#: handler.c:1258
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- na %s --]\n"
 
-#: handler.c:1274
+#: handler.c:1268
 #, c-format
-msgid "[-- This %s/%s attachment is not included, --]\n[-- and the indicated external source has --]\n[-- expired. --]\n"
-msgstr "[-- Ten %s/%s za³±cznik nie jest podpiêty, --]\n[-- a podane ¼ród³o zewnêtrzne jest --]\n[-- nieaktualne. --]\n"
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
+msgstr ""
+"[-- Ten %s/%s za³±cznik nie jest podpiêty, --]\n"
+"[-- a podane ¼ród³o zewnêtrzne jest --]\n"
+"[-- nieaktualne. --]\n"
 
-#: handler.c:1288
+#: handler.c:1282
 #, c-format
-msgid "[-- This %s/%s attachment is not included, --]\n[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- Ten %s/%s za³±cznik nie jest podpiêty, --]\n[-- a podany typ dostêpu %s nie jest obs³ugiwany --]\n"
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated access-type %s is unsupported --]\n"
+msgstr ""
+"[-- Ten %s/%s za³±cznik nie jest podpiêty, --]\n"
+"[-- a podany typ dostêpu %s nie jest obs³ugiwany --]\n"
 
-#: handler.c:1385
+#: handler.c:1379
 msgid "Error: multipart/signed has no protocol."
 msgstr "B³±d: multipart/signed nie ma protoko³u."
 
-#: handler.c:1397
+#: handler.c:1392
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "B³±d: multipart/encrypted nie ma parametru protoko³u!"
 
-#: handler.c:1439
+#: handler.c:1434
 msgid "Unable to open temporary file!"
 msgstr "Nie mogê otworzyæ pliku tymczasowego!"
 
-#: handler.c:1498
+#: handler.c:1493
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s nie jest obs³ugiwany "
 
-#: handler.c:1503
+#: handler.c:1498
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(u¿yæ '%s' do ogl±dania tego fragmentu)"
 
-#: handler.c:1505
+#: handler.c:1500
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(przypisz 'view-attachments' do klawisza!)"
 
@@ -889,12 +945,24 @@ msgid "<UNKNOWN>"
 msgstr "<NIEZNANY>"
 
 #: help.c:328
-msgid "\nGeneric bindings:\n\n"
-msgstr "\nStandardowe przypisania klawiszy:\n\n"
+msgid ""
+"\n"
+"Generic bindings:\n"
+"\n"
+msgstr ""
+"\n"
+"Standardowe przypisania klawiszy:\n"
+"\n"
 
 #: help.c:332
-msgid "\nUnbound functions:\n\n"
-msgstr "\nNie przypisane klawiszom funkcje:\n\n"
+msgid ""
+"\n"
+"Unbound functions:\n"
+"\n"
+msgstr ""
+"\n"
+"Nie przypisane klawiszom funkcje:\n"
+"\n"
 
 #: help.c:340
 #, c-format
@@ -918,7 +986,7 @@ msgstr "B³ad krytyczny. Niezidentyfikowana ilo¶æ listów!"
 msgid "Fetching message headers... [%d/%d]"
 msgstr "¦ci±gam nag³ówki listów... [%d/%d]"
 
-#: imap.c:623 mbox.c:981
+#: imap.c:623 mbox.c:1007
 msgid "Reopening mailbox..."
 msgstr "Ponownie otwieram skrzynkê..."
 
@@ -950,7 +1018,7 @@ msgstr "Zalogowanie nie powiod³o siê."
 msgid "Selecting %s..."
 msgstr "Wybieram %s..."
 
-#: imap.c:1083 lib.c:1177
+#: imap.c:1083 lib.c:1194
 #, c-format
 msgid "Create %s?"
 msgstr "Utworzyæ %s?"
@@ -1611,7 +1679,7 @@ msgstr "przewiñ w górê o liniê"
 
 #: keymap_defs.h:123
 msgid "move to the previous page"
-msgstr "przesuñ do poprzedniej strony" 
+msgstr "przesuñ do poprzedniej strony"
 
 #: keymap_defs.h:124
 msgid "print the current entry"
@@ -1789,24 +1857,24 @@ msgstr "uczyñ rozkodowan± kopiê"
 msgid "Out of memory!"
 msgstr "Brak pamiêci!"
 
-#: lib.c:764
+#: lib.c:781
 msgid "File is a directory, save under it?"
 msgstr "Wskazany plik jest katalogiem, zachowaæ?"
 
-#: lib.c:769
+#: lib.c:786
 msgid "File under directory: "
 msgstr "Plik w katalogu: "
 
-#: lib.c:780
+#: lib.c:797
 msgid "File exists, overwrite?"
 msgstr "Plik istnieje, zapisaæ zamiast niego?"
 
-#: lib.c:1153
+#: lib.c:1170
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s nie jest folderem poczty"
 
-#: lib.c:1159
+#: lib.c:1176
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Dodaæ wiadomo¶ci do %s?"
@@ -1816,20 +1884,159 @@ msgid "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 msgstr "Aby powiadomiæ twórców, pisz proszê na <mutt-dev@mutt.org>.\n"
 
 #: main.c:43
-msgid "Copyright (C) 1996-8 Michael R. Elkins and others.\nMutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\nMutt is free software, and you are welcome to redistribute it\nunder certain conditions; type `mutt -vv' for details.\n"
-msgstr "Copyright (C) 1996-8 Michael R. Elkins i inni.\nProgram nie jest objêty ¯ADN¡ gwarancj±; szczegó³y poznasz pisz±c 'mutt -vv'.\nMutt jest darmowym oprogramowaniem, jeste¶ jak najbardziej uprawniony do\njego redystrybucji pod pewnymi warunkami, szczegó³y poznasz pisz±c 'mutt -vv'.\nT³umaczenie na jêzyk polski: Pawe³ Dziekoñski i Sergiusz Paw³owicz.\n"
+msgid ""
+"Copyright (C) 1996-8 Michael R. Elkins and others.\n"
+"Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
+"Mutt is free software, and you are welcome to redistribute it\n"
+"under certain conditions; type `mutt -vv' for details.\n"
+msgstr ""
+"Copyright (C) 1996-8 Michael R. Elkins i inni.\n"
+"Program nie jest objêty ¯ADN¡ gwarancj±; szczegó³y poznasz pisz±c 'mutt "
+"-vv'.\n"
+"Mutt jest darmowym oprogramowaniem, jeste¶ jak najbardziej uprawniony do\n"
+"jego redystrybucji pod pewnymi warunkami, szczegó³y poznasz pisz±c 'mutt "
+"-vv'.\n"
+"T³umaczenie na jêzyk polski: Pawe³ Dziekoñski i Sergiusz Paw³owicz.\n"
 
 #: main.c:49
-msgid "Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\nCopyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\nCopyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\nCopyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n\nLots of others not mentioned here contributed lots of code,\nfixes, and suggestions.\n\n    This program is free software; you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation; either version 2 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program; if not, write to the Free Software\n    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
-msgstr "Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\nCopyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\nCopyright (C) 1998  Werner Koch <wk@isil.d.shuttle.de>\nCopyright (C) 1998  Ruslan Ermilov <ru@ucb.crimea.ua>\n\nWielu innych twórców nie jest tutaj wspomnianych.\n\n   Program jest bezp³atny; mo¿esz go redystrybuowaæ i/lub zmieniaæ\n   pod warunkiem zachowania praw wynikaj±cych z Licencji GNU publikowanej przez \n   Free Software Foundation; wed³ug jej drugiej wersji albo wersji nastêpnych.\n\n   Program jest dystrybuowany z nadziej±, ¿e bêdzie u¿yteczny,\n   ale BEZ ¯ADNYCH GWARANCJI; w szczególno¶ci gwarancji przydatno¶ci do konre-\n   tnych zastosowañ lub przydatno¶ci handlowej.\n   Zajrzyj do GNU General Public License aby uzyskaæ szczegó³y.\n   Powiniene¶ dostaæ kopiê tej licencji wraz z programem, je¶li nie, napisz\n   do Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
+msgid ""
+"Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n"
+"\n"
+"Lots of others not mentioned here contributed lots of code,\n"
+"fixes, and suggestions.\n"
+"\n"
+"    This program is free software; you can redistribute it and/or modify\n"
+"    it under the terms of the GNU General Public License as published by\n"
+"    the Free Software Foundation; either version 2 of the License, or\n"
+"    (at your option) any later version.\n"
+"\n"
+"    This program is distributed in the hope that it will be useful,\n"
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
+"    GNU General Public License for more details.\n"
+"\n"
+"    You should have received a copy of the GNU General Public License\n"
+"    along with this program; if not, write to the Free Software\n"
+"    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
+msgstr ""
+"Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1997-8 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998  Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1998  Ruslan Ermilov <ru@ucb.crimea.ua>\n"
+"\n"
+"Wielu innych twórców nie jest tutaj wspomnianych.\n"
+"\n"
+"   Program jest bezp³atny; mo¿esz go redystrybuowaæ i/lub zmieniaæ\n"
+"   pod warunkiem zachowania praw wynikaj±cych z Licencji GNU publikowanej "
+"przez \n"
+"   Free Software Foundation; wed³ug jej drugiej wersji albo wersji "
+"nastêpnych.\n"
+"\n"
+"   Program jest dystrybuowany z nadziej±, ¿e bêdzie u¿yteczny,\n"
+"   ale BEZ ¯ADNYCH GWARANCJI; w szczególno¶ci gwarancji przydatno¶ci do "
+"konre-\n"
+"   tnych zastosowañ lub przydatno¶ci handlowej.\n"
+"   Zajrzyj do GNU General Public License aby uzyskaæ szczegó³y.\n"
+"   Powiniene¶ dostaæ kopiê tej licencji wraz z programem, je¶li nie, napisz\n"
+"   do Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, "
+"USA.\n"
 
 #: main.c:74
-msgid "\nSHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n\n    Redistribution and use in source and binary forms, with or without\n    modification, are permitted under certain conditions.\n\n    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n    WARRANTIES, including, but not limited to, the implied warranties of\n    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n\n    You should have received a copy of the full distribution terms\n    along with this program; if not, write to the program's developers.\n"
-msgstr "\nImplementacja SHA1 - Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.om>\n\n    Redystrybucja i u¿ytkowanie zarówno w postaci ¼ród³owej jak i skompilowanej\n    w formie zmienionej lub nie, s± dozwolone pod warunkiem zachowania\n    nastêpuj±cych regu³.\n\n    Implementacja SHA1 przychodzi do pañstwa w stanie w jakim jest,\n    BEZ ¯ADNEJ GWARANCJI, w tym, ale nie wy³±cznie, gwarancji do jakichb±d¼\n    konkretnych zastosowañ lub sprzeda¿y.\n\n    Powiniene¶ dostaæ kopiê licencji dystrybucyjnej wraz z programem,\n    je¶li nie, napisz do jego twórców.\n"
+msgid ""
+"\n"
+"SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
+"\n"
+"    Redistribution and use in source and binary forms, with or without\n"
+"    modification, are permitted under certain conditions.\n"
+"\n"
+"    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
+"    WARRANTIES, including, but not limited to, the implied warranties of\n"
+"    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
+"\n"
+"    You should have received a copy of the full distribution terms\n"
+"    along with this program; if not, write to the program's developers.\n"
+msgstr ""
+"\n"
+"Implementacja SHA1 - Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.om>\n"
+"\n"
+"    Redystrybucja i u¿ytkowanie zarówno w postaci ¼ród³owej jak i "
+"skompilowanej\n"
+"    w formie zmienionej lub nie, s± dozwolone pod warunkiem zachowania\n"
+"    nastêpuj±cych regu³.\n"
+"\n"
+"    Implementacja SHA1 przychodzi do pañstwa w stanie w jakim jest,\n"
+"    BEZ ¯ADNEJ GWARANCJI, w tym, ale nie wy³±cznie, gwarancji do jakichb±d¼\n"
+"    konkretnych zastosowañ lub sprzeda¿y.\n"
+"\n"
+"    Powiniene¶ dostaæ kopiê licencji dystrybucyjnej wraz z programem,\n"
+"    je¶li nie, napisz do jego twórców.\n"
 
 #: main.c:100
-msgid "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n       mutt -v[v]\n\noptions:\n  -a <file>\tattach a file to the message\n  -b <address>\tspecify a blind carbon-copy (BCC) address\n  -c <address>\tspecify a carbon-copy (CC) address\n  -e <command>\tspecify a command to be executed after initialization\n  -f <file>\tspecify which mailbox to read\n  -F <file>\tspecify an alternate muttrc file\n  -H <file>\tspecify a draft file to read header from\n  -i <file>\tspecify a file which Mutt should include in the reply\n  -m <type>\tspecify a default mailbox type\n  -n\t\tcauses Mutt not to read the system Muttrc\n  -p\t\trecall a postponed message\n  -R\t\topen mailbox in read-only mode\n  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n  -v\t\tshow version and compile-time definitions\n  -x\t\tsimulate the mailx send mode\n  -y\t\tselect a mailbox specified in your `mailboxes' list\n  -z\t\texit immediately if there are no messages in the mailbox\n  -Z\t\topen the first folder with new message, exit immediately if none\n  -h\t\tthis help message"
-msgstr "u¿ycie: mutt [ -nRzZ ] [ -e <polec> ] [ -F <plik> ] [ -m <typ> ] [ -f <plik> ]\n       mutt [ -nx ] [ -e <polec> ] [ -a <plik> ] [ -F <plik> ] [ -H <plik> ] [ -i <plik> ] [ -s <tytu³> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n       mutt [ -n ] [ -e <polec> ] [ -F <plik> ] -p\n       mutt -v[v]\n\nopcje:\n  -a <plik>\tza³±cz plik do listu\n  -b <adres>\tadres blind carbon-copy (BCC)\n  -c <adres>\tadres carbon-copy (CC)\n  -e <polec>\tpolecenie do wykonania po inicjalizacji\n  -f <plik>\tskrzynka\n  -F <plik>\talternatywny plik Muttrc\n  -H <plik>\tczytaj nag³ówki z pliku roboczego\n  -i <plik>\tdo³±cz ten plik w odpowiedzi\n  -m <typ>\tpodaj typ skrzynki\n  -n\t\tnie czytaj systemowego Muttrc\n  -p\t\tponownie edytuj zarzucony list\n  -R\t\totwórz skrzynkê w trybie tylko do odczytu\n  -s <tytu³>\tpodaj tytu³ (musi byæ w apostrofach,je¶li s± spacje)\n  -v\t\tpoka¿ wersjê i wkompilowane parametry\n  -x\t\tsymuluj zachowanie mailx\n  -y\t\twybierz skrzynkê podan± w twojej li¶cie `mailboxes'\n  -z\t\twyjd¼ natychmiast je¶li nie ma nowych listów w skrzynce\n  -Z\t\totwórz pierwszy folder z nowym listem i wyjd¼ je¶li nie ma nowych\n  -h\t\tten tekst"
+msgid ""
+"usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
+"]\n"
+"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ "
+"-i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"       mutt -v[v]\n"
+"\n"
+"options:\n"
+"  -a <file>\tattach a file to the message\n"
+"  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
+"  -c <address>\tspecify a carbon-copy (CC) address\n"
+"  -e <command>\tspecify a command to be executed after initialization\n"
+"  -f <file>\tspecify which mailbox to read\n"
+"  -F <file>\tspecify an alternate muttrc file\n"
+"  -H <file>\tspecify a draft file to read header from\n"
+"  -i <file>\tspecify a file which Mutt should include in the reply\n"
+"  -m <type>\tspecify a default mailbox type\n"
+"  -n\t\tcauses Mutt not to read the system Muttrc\n"
+"  -p\t\trecall a postponed message\n"
+"  -R\t\topen mailbox in read-only mode\n"
+"  -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n"
+"  -v\t\tshow version and compile-time definitions\n"
+"  -x\t\tsimulate the mailx send mode\n"
+"  -y\t\tselect a mailbox specified in your `mailboxes' list\n"
+"  -z\t\texit immediately if there are no messages in the mailbox\n"
+"  -Z\t\topen the first folder with new message, exit immediately if none\n"
+"  -h\t\tthis help message"
+msgstr ""
+"u¿ycie: mutt [ -nRzZ ] [ -e <polec> ] [ -F <plik> ] [ -m <typ> ] [ -f <plik> "
+"]\n"
+"       mutt [ -nx ] [ -e <polec> ] [ -a <plik> ] [ -F <plik> ] [ -H <plik> ] "
+"[ -i <plik> ] [ -s <tytu³> ] [ -b <adres> ] [ -c <adres> ] <adres> [ ... ]\n"
+"       mutt [ -n ] [ -e <polec> ] [ -F <plik> ] -p\n"
+"       mutt -v[v]\n"
+"\n"
+"opcje:\n"
+"  -a <plik>\tza³±cz plik do listu\n"
+"  -b <adres>\tadres blind carbon-copy (BCC)\n"
+"  -c <adres>\tadres carbon-copy (CC)\n"
+"  -e <polec>\tpolecenie do wykonania po inicjalizacji\n"
+"  -f <plik>\tskrzynka\n"
+"  -F <plik>\talternatywny plik Muttrc\n"
+"  -H <plik>\tczytaj nag³ówki z pliku roboczego\n"
+"  -i <plik>\tdo³±cz ten plik w odpowiedzi\n"
+"  -m <typ>\tpodaj typ skrzynki\n"
+"  -n\t\tnie czytaj systemowego Muttrc\n"
+"  -p\t\tponownie edytuj zarzucony list\n"
+"  -R\t\totwórz skrzynkê w trybie tylko do odczytu\n"
+"  -s <tytu³>\tpodaj tytu³ (musi byæ w apostrofach,je¶li s± spacje)\n"
+"  -v\t\tpoka¿ wersjê i wkompilowane parametry\n"
+"  -x\t\tsymuluj zachowanie mailx\n"
+"  -y\t\twybierz skrzynkê podan± w twojej li¶cie `mailboxes'\n"
+"  -z\t\twyjd¼ natychmiast je¶li nie ma nowych listów w skrzynce\n"
+"  -Z\t\totwórz pierwszy folder z nowym listem i wyjd¼ je¶li nie ma nowych\n"
+"  -h\t\tten tekst"
+
+#: main.c:152
+msgid ""
+"\n"
+"Compile options:"
+msgstr ""
 
 #: main.c:306
 msgid "Error initializing terminal."
@@ -1873,7 +2080,7 @@ msgstr "Czytam %s... %d (%d%%)"
 msgid "Mailbox was corrupted!"
 msgstr "Folder poczty zosta³ uszkodzony!"
 
-#: mbox.c:687 mbox.c:904
+#: mbox.c:687 mbox.c:930
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "B³±d! Nie mogê ponownie otworzyæ foldera poczty!"
 
@@ -1885,20 +2092,22 @@ msgstr "Nie jestem w stanie zablokowaæ foldera poczty!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:737
+#: mbox.c:740
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: skrzynka zmodyfikowana, ale ¿aden z listów nie zosta³ zmieniony! (zg³o¶ tê pluskwê)"
+msgstr ""
+"sync: skrzynka zmodyfikowana, ale ¿aden z listów nie zosta³ zmieniony! "
+"(zg³o¶ tê pluskwê)"
 
-#: mbox.c:765
+#: mbox.c:769
 msgid "Writing messages... %d (%d%%)"
 msgstr "Zapisujê wiadomo¶ci... %d (%d%%)"
 
-#: mbox.c:889
+#: mbox.c:915
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Zapis niemo¿liwy! Zapisa³em czê¶æ foldera poczty do %s"
 
-#: mbox.c:941
+#: mbox.c:967
 msgid "Could not reopen mailbox!"
 msgstr "Nie mogê ponownie otworzyæ foldera poczty!"
 
@@ -1947,7 +2156,7 @@ msgstr "Jeste¶ na ostatniej pozycji."
 msgid "You are on the first entry."
 msgstr "Jeste¶ na pierwszej pozycji."
 
-#: menu.c:596 pattern.c:1049
+#: menu.c:596 pattern.c:1060
 msgid "Search for: "
 msgstr "Szukaj frazy: "
 
@@ -1955,11 +2164,11 @@ msgstr "Szukaj frazy: "
 msgid "Reverse search for: "
 msgstr "Szukaj frazy w odwrotn± stronê: "
 
-#: menu.c:608 pattern.c:1082
+#: menu.c:608 pattern.c:1093
 msgid "No search pattern."
 msgstr "Nie ustali³e¶ wzorca poszukiwañ."
 
-#: menu.c:638 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1147
+#: menu.c:638 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1158
 msgid "Not found."
 msgstr "Nic nie znaleziono."
 
@@ -1975,7 +2184,7 @@ msgstr "Poszukiwanie nie jest mo¿liwe w tym menu."
 msgid "Tagging is not supported."
 msgstr "Zaznaczanie nie jest obs³ugiwane."
 
-#: mh.c:182
+#: mh.c:183
 #, c-format
 msgid "Reading %s... %d"
 msgstr "Czytam %s... %d"
@@ -2008,61 +2217,66 @@ msgstr "Oczekujê na blokadê typu 'flock'... %d"
 msgid "Reading %s..."
 msgstr "Czytam %s..."
 
-#: mx.c:676
+#: mx.c:679
 #, c-format
 msgid "Writing %s..."
 msgstr "Zapisujê %s..."
 
-#: mx.c:758
+#: mx.c:704
+#, fuzzy, c-format
+msgid "Could not synchronize mailbox %s!"
+msgstr "Nie mogê ponownie otworzyæ foldera poczty!"
+
+#: mx.c:767
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Przesun±c przeczytane listy do %s?"
 
-#: mx.c:767 mx.c:955
+#: mx.c:776 mx.c:964
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Usun±æ NIEODWO£ALNIE %d zaznaczonych do skasowania listów?"
 
 # a to co????
-#: mx.c:767 mx.c:955
+#: mx.c:776 mx.c:964
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Czy skasowaæ NIEDWO£ALNIE %d usuniêtych listów?"
 
-#: mx.c:787
+#: mx.c:796
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Przesuwam przeczytane listy do %s..."
 
-#: mx.c:803 mx.c:946
+#: mx.c:812 mx.c:955
 msgid "Mailbox is unchanged."
 msgstr "Skrzynka pozosta³a nie zmieniona."
 
-#: mx.c:822
+#: mx.c:831
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d zachowano, %d przesuniêto, %d usuniêto."
 
-#: mx.c:825 mx.c:971
+#: mx.c:834 mx.c:980
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d zachowano, %d usuniêto."
 
-#: mx.c:931
+#: mx.c:940
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Naci¶nij '%s' aby ustawiæ pisanie"
 
-#: mx.c:933
+#: mx.c:942
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "U¿yj 'toggle-write' by ponownie w³±czyæ pisanie!"
 
-#: mx.c:935
+#: mx.c:944
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Skrzynka jest oznaczona jako niezapisywalna. %s"
 
-#: mx.c:940
+#: mx.c:949
 msgid "Mailbox is read-only."
 msgstr "Skrynka jest tylko do odczytu."
 
@@ -2167,27 +2381,27 @@ msgstr "pusty wzorzec"
 msgid "error: unknown op %d (report this error)."
 msgstr "b³±d: nieznany op %d (zg³o¶ ten b³±d)."
 
-#: pattern.c:940 pattern.c:1068
+#: pattern.c:941 pattern.c:1079
 msgid "Compiling search pattern..."
 msgstr "Kompilujê wzorzec poszukiwañ..."
 
-#: pattern.c:954
+#: pattern.c:955
 msgid "Executing command on matching messages..."
 msgstr "Wykonujê polecenie na spe³niaj±cych wzorzec wiadomo¶ciach..."
 
-#: pattern.c:1011
+#: pattern.c:1022
 msgid "No messages matched criteria."
 msgstr "¯adna z wiadomo¶ci nie spe³ni³a kryteriów."
 
-#: pattern.c:1106
+#: pattern.c:1117
 msgid "Search hit bottom without finding match"
 msgstr "Poszukiwanie dosiêgnê³o koñca bez znalezienia frazy"
 
-#: pattern.c:1117
+#: pattern.c:1128
 msgid "Search hit top without finding match"
 msgstr "Poszukiwanie dosiêgnê³o pocz±tku bez znalezienia frazy"
 
-#: pattern.c:1139
+#: pattern.c:1150
 msgid "Search interrupted."
 msgstr "Przeszukiwanie przerwano."
 
@@ -2213,84 +2427,167 @@ msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- B³±d: nie potrafiê utworzyæ podprocesu PGP! --]\n"
 
 #: pgp.c:348
-msgid "\n[-- End of PGP output --]\n\n"
-msgstr "\n[-- Koniec efektów dzia³ania PGP --]\n\n"
+msgid ""
+"\n"
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"\n"
+"[-- Koniec efektów dzia³ania PGP --]\n"
+"\n"
 
 #: pgp.c:354
-msgid "[-- BEGIN PGP MESSAGE --]\n\n"
-msgstr "[-- POCZ¡TEK LISTU PGP --]\n\n"
+msgid ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- POCZ¡TEK LISTU PGP --]\n"
+"\n"
 
 #: pgp.c:356
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- POCZ¡TEK KLUCZA PUBLICZNEGO PGP --]\n"
 
 #: pgp.c:358
-msgid "[-- BEGIN PGP SIGNED MESSAGE --]\n\n"
-msgstr "[-- POCZ¡TEK LISTU SYGNOWANEGO PGP --]\n\n"
+msgid ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
+msgstr ""
+"[-- POCZ¡TEK LISTU SYGNOWANEGO PGP --]\n"
+"\n"
 
 #: pgp.c:460
-msgid "\n[-- END PGP MESSAGE --]\n"
-msgstr "\n[-- KONIEC LISTU PGP --]\n"
+msgid ""
+"\n"
+"[-- END PGP MESSAGE --]\n"
+msgstr ""
+"\n"
+"[-- KONIEC LISTU PGP --]\n"
 
 #: pgp.c:462
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- KONIEC PUBLICZNEGO KLUCZA PGP --]\n"
 
-#: pgp.c:477
-msgid "[-- Error: could not find beginning of PGP message! --]\n\n"
-msgstr "[-- B³±d: nie potafiê odnale¼æ pocz±tku listu PGP! --]\n\n"
+#: pgp.c:464
+#, fuzzy
+msgid ""
+"\n"
+"[-- END PGP SIGNED MESSAGE --]\n"
+msgstr ""
+"[-- POCZ¡TEK LISTU SYGNOWANEGO PGP --]\n"
+"\n"
 
-#: pgp.c:670 pgp.c:895
-msgid "[-- End of PGP output --]\n\n"
-msgstr "[-- Koniec potoku PGP --]\n\n"
+#: pgp.c:477
+msgid ""
+"[-- Error: could not find beginning of PGP message! --]\n"
+"\n"
+msgstr ""
+"[-- B³±d: nie potafiê odnale¼æ pocz±tku listu PGP! --]\n"
+"\n"
+
+#: pgp.c:669 pgp.c:975
+msgid ""
+"[-- End of PGP output --]\n"
+"\n"
+msgstr ""
+"[-- Koniec potoku PGP --]\n"
+"\n"
+
+#: pgp.c:721
+msgid ""
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:729
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "B³±d: multipart/signed nie ma protoko³u."
+
+#: pgp.c:750
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
 
 #. Now display the signed body
-#: pgp.c:677
-msgid "[-- The following data is PGP/MIME signed --]\n\n"
-msgstr "[-- Nastêpuj±ce dane s± sygnowane PGP/MIME --]\n\n"
+#: pgp.c:758
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
+"\n"
+msgstr ""
+"[-- Nastêpuj±ce dane s± sygnowane PGP/MIME --]\n"
+"\n"
 
-#: pgp.c:683
-msgid "\n[-- End of PGP/MIME signed data --]\n"
-msgstr "\n[-- Koniec danych sygnowanych PGP/MIME --]\n"
+#: pgp.c:764
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
 
-#: pgp.c:688
-msgid "[-- Error: this message does not comply with the PGP/MIME specification! --]\n\n"
-msgstr "[-- B³±d: ten list jest niezgodny ze standardem PGP/MIME --]\n\n"
+#: pgp.c:770
+#, fuzzy
+msgid ""
+"\n"
+"[-- End of signed data --]\n"
+msgstr ""
+"\n"
+"[-- Koniec danych sygnowanych PGP/MIME --]\n"
 
-#: pgp.c:802
+#: pgp.c:882
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "B³±d wewnêtrzny. Poinformuj, proszê, <roessler@guug.de>."
 
-#: pgp.c:866
-msgid "[-- Error: could not create a PGP subprocess! --]\n\n"
-msgstr "[-- B³±d: nie potafiê utworzyæ podprocesu PGP! --]\n\n"
+#: pgp.c:946
+msgid ""
+"[-- Error: could not create a PGP subprocess! --]\n"
+"\n"
+msgstr ""
+"[-- B³±d: nie potafiê utworzyæ podprocesu PGP! --]\n"
+"\n"
 
-#: pgp.c:959
-msgid "[-- Error: malformed PGP/MIME message! --]\n\n"
-msgstr "[-- B³±d: uszkodzona wiadomo¶æ PGP/MIME! --]\n\n"
+#: pgp.c:1039
+msgid ""
+"[-- Error: malformed PGP/MIME message! --]\n"
+"\n"
+msgstr ""
+"[-- B³±d: uszkodzona wiadomo¶æ PGP/MIME! --]\n"
+"\n"
 
-#: pgp.c:972
+#: pgp.c:1052
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- B³±d: nie mogê utworzyæ pliku tymczasowego! --]\n"
 
-#: pgp.c:981
-msgid "[-- The following data is PGP/MIME encrypted --]\n\n"
-msgstr "[-- Nastêpuj±ce dane s± zaszyfrowane PGP/MIME --]\n\n"
+#: pgp.c:1061
+msgid ""
+"[-- The following data is PGP/MIME encrypted --]\n"
+"\n"
+msgstr ""
+"[-- Nastêpuj±ce dane s± zaszyfrowane PGP/MIME --]\n"
+"\n"
 
-#: pgp.c:989
-msgid "\n[-- End of PGP/MIME encrypted data --]\n"
-msgstr "\n[-- Koniec danych zaszyfrowanych PGP/MIME --]\n"
+#: pgp.c:1069
+msgid ""
+"\n"
+"[-- End of PGP/MIME encrypted data --]\n"
+msgstr ""
+"\n"
+"[-- Koniec danych zaszyfrowanych PGP/MIME --]\n"
 
-#: pgp.c:1071
+#: pgp.c:1151
 msgid "Can't open PGP subprocess!"
 msgstr "Nie potrafiê otworzyæ podprocesu PGP!"
 
-#: pgp.c:1195
+#: pgp.c:1275
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Czy u¿yæ identyfikatora klucza = \"%s\" dla %s?"
 
-#: pgp.c:1201
+#: pgp.c:1281
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Wprowad¼ identyfikator klucza dla %s: "
@@ -2708,7 +3005,12 @@ msgstr "Wiadomo¶æ by³a zmieniana. Czy na pewno wys³aæ?"
 msgid "Sending message..."
 msgstr "Wysy³anie wiadomo¶ci..."
 
-#: send.c:1322
+#: send.c:1324
+#, fuzzy
+msgid "Could not send the message."
+msgstr "wy¶lij list"
+
+#: send.c:1330
 msgid "Mail sent."
 msgstr "Poczta wys³ana."
 
@@ -2726,17 +3028,17 @@ msgstr "%s ju¿ nie istnieje!"
 msgid "Could not open %s"
 msgstr "Nie mogê otworzyæ %s"
 
-#: sendlib.c:1690
+#: sendlib.c:1695
 #, c-format
 msgid "Error sending message, child exited %d (%s).\n"
 msgstr "B³±d podczas wysy³ania listu, proces potomny opuszczony %d (%s).\n"
 
-#: sendlib.c:1692
+#: sendlib.c:1697
 #, c-format
 msgid "Saved output of child process to %s.\n"
 msgstr "Zapisa³em efekty dzia³ania procesu potomnego do %s.\n"
 
-#: sendlib.c:1696
+#: sendlib.c:1701
 msgid "Error sending message."
 msgstr "B³±d podczas wysy³ania wiadomo¶ci."
 
@@ -2762,3 +3064,10 @@ msgstr "Nie znaleziono funkcji sortowania! (zg³o¶ ten b³±d)"
 msgid "(no mailbox)"
 msgstr "(nie ma foldera poczty)"
 
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- B³±d: ten list jest niezgodny ze standardem PGP/MIME --]\n"
+#~ "\n"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt\n"
-"POT-Creation-Date: 1999-01-04 13:55+0100\n"
+"POT-Creation-Date: 1999-01-04 14:22+0100\n"
 "PO-Revision-Date: 1998-10-29 19:25+0100\n"
 "Last-Translator: Boris Wesslowski <Boris@Wesslowski.com>\n"
 
@@ -894,25 +894,25 @@ msgstr ""
 msgid "Error: multipart/signed has no protocol."
 msgstr "Error: multipart/signed no tiene protocolo."
 
-#: handler.c:1391
+#: handler.c:1392
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Error: multipart/signed no tiene parámetro de protocolo."
 
-#: handler.c:1433
+#: handler.c:1434
 msgid "Unable to open temporary file!"
 msgstr "¡Imposible abrir archivo temporal!"
 
-#: handler.c:1492
+#: handler.c:1493
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s no es soportado "
 
-#: handler.c:1497
+#: handler.c:1498
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(use '%s' para ver esta parte)"
 
-#: handler.c:1499
+#: handler.c:1500
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(necesita 'view-attachments' enlazado a una tecla)"
 
@@ -2402,7 +2402,7 @@ msgstr ""
 "[-- ¡Error: no se encontró el principio del mensaje PGP! --]\n"
 "\n"
 
-#: pgp.c:670 pgp.c:895
+#: pgp.c:669 pgp.c:975
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2410,37 +2410,56 @@ msgstr ""
 "[-- Fin de salida PGP --]\n"
 "\n"
 
-#. Now display the signed body
-#: pgp.c:677
+#: pgp.c:721
 msgid ""
-"[-- The following data is PGP/MIME signed --]\n"
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:729
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "Error: multipart/signed no tiene protocolo."
+
+#: pgp.c:750
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+
+#. Now display the signed body
+#: pgp.c:758
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
 "\n"
 msgstr ""
 "[-- Lo siguiente esta firmado con PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:683
+#: pgp.c:764
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:770
+#, fuzzy
 msgid ""
 "\n"
-"[-- End of PGP/MIME signed data --]\n"
+"[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- Fin de datos firmados con PGP/MIME --]\n"
 
-#: pgp.c:688
-msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! "
-"--]\n"
-"\n"
-msgstr ""
-"[-- ¡Error: este mensaje no cumple la especificación PGP/MIME! --]\n"
-"\n"
-
-#: pgp.c:802
+#: pgp.c:882
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Error interno. Informe a <roessler@guug.de> por favor."
 
-#: pgp.c:866
+#: pgp.c:946
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2448,7 +2467,7 @@ msgstr ""
 "[-- ¡Error: imposible crear subproceso PGP! --]\n"
 "\n"
 
-#: pgp.c:959
+#: pgp.c:1039
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2456,11 +2475,11 @@ msgstr ""
 "[-- ¡Error: mensaje PGP/MIME mal formado! --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1052
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- ¡Error: no se pudo cear archivo temporal! --]\n"
 
-#: pgp.c:981
+#: pgp.c:1061
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2468,7 +2487,7 @@ msgstr ""
 "[-- Lo siguiente esta encriptado con PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:989
+#: pgp.c:1069
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2476,16 +2495,16 @@ msgstr ""
 "\n"
 "[-- Fin de datos encriptados con PGP/MIME --]\n"
 
-#: pgp.c:1071
+#: pgp.c:1151
 msgid "Can't open PGP subprocess!"
 msgstr "¡No se pudo abrir subproceso PGP!"
 
-#: pgp.c:1195
+#: pgp.c:1275
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "¿Usar keyID = \"%s\" para %s?"
 
-#: pgp.c:1201
+#: pgp.c:1281
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entre keyID para %s: "
@@ -2961,6 +2980,14 @@ msgstr "¡No se pudo encontrar la función para ordenar! [reporte este error]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(ningún buzón)"
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- ¡Error: este mensaje no cumple la especificación PGP/MIME! --]\n"
+#~ "\n"
 
 #~ msgid "This encoding is deprecated.  Really use it?"
 #~ msgstr "Este tipo de codificación es viejo. ¿Realmente lo quiere usar?"

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.1i\n"
-"POT-Creation-Date: 1999-01-04 13:55+0100\n"
+"POT-Creation-Date: 1999-01-04 14:22+0100\n"
 "PO-Revision-Date: 1999-01-06 21:43+0100\n"
 "Last-Translator: Jiøí Pavlovský <pavlovsk@ff.cuni.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -85,9 +85,7 @@ msgstr "Soubor nutný pro odstranìní hlavièek se nepodaøilo otevøít."
 #: attach.c:187
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr ""
-"Pro %s neexistuje polo¾ka mailcapu 'compose', vytváøím prázdný "
-"soubor."
+msgstr "Pro %s neexistuje polo¾ka mailcapu 'compose', vytváøím prázdný soubor."
 
 #. For now, editing requires a file, no piping
 #: attach.c:247
@@ -425,8 +423,7 @@ msgid ""
 "(e)ncrypt, (s)ign, sign (a)s, (b)oth, select (m)ic algorithm, or (f)orget "
 "it? "
 msgstr ""
-"(¹)ifrovat, (p)odepsat, podepsat (j)ako, (o)bojí, (m)ic algoritmus, èi "
-"(n)ic?"
+"(¹)ifrovat, (p)odepsat, podepsat (j)ako, (o)bojí, (m)ic algoritmus, èi (n)ic?"
 
 #: compose.c:134
 msgid "esabmf"
@@ -487,6 +484,7 @@ msgstr "V této slo¾ce nejsou ¾ádné zprávy."
 #: compose.c:590
 msgid "Tag the messages you want to attach!"
 msgstr "Oznaète zprávy, které chcete pøipojit!"
+
 #: compose.c:625 compose.c:645
 msgid "Unable to attach!"
 msgstr "Nelze pøipojit!"
@@ -643,7 +641,8 @@ msgid "Invalid message number."
 msgstr "Èíslo zprávy není správné."
 
 #: curs_main.c:667
-msgid "Dølete messages matching: "
+#, fuzzy
+msgid "Delete messages matching: "
 msgstr "Smazat zprávy shodující se s: "
 
 #: curs_main.c:689
@@ -866,7 +865,8 @@ msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Automaticky zobrazuji standardní chybový výstup %s --]\n"
 
 #: handler.c:1229
-msgid "[-- Error: message/external-body has no taccess-type parameter --]\n"
+#, fuzzy
+msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Chyba: typ 'message/external-body' nemá parametr 'access-type' --]\n"
 
@@ -913,25 +913,25 @@ msgstr ""
 msgid "Error: multipart/signed has no protocol."
 msgstr "Chyba: typ 'multipart/signed' bez informace o protokolu"
 
-#: handler.c:1391
+#: handler.c:1392
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Chyba: typ 'multipart/encrypted' bez informace o protokolu"
 
-#: handler.c:1433
+#: handler.c:1434
 msgid "Unable to open temporary file!"
 msgstr "Doèasný soubor nelze otevøít!"
 
-#: handler.c:1492
+#: handler.c:1493
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- typ '%s/%s' není podporován "
 
-#: handler.c:1497
+#: handler.c:1498
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(pro zobrazení této èásti pou¾ijte '%s')"
 
-#: handler.c:1499
+#: handler.c:1500
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(je tøeba svázat funkci 'view-attachments' s nìjakou klávesou!)"
 
@@ -1986,7 +1986,6 @@ msgstr ""
 "    Kopie podmínek ¹íøení mìla být dodána spolu s tímto programem; pokud se\n"
 "    tak nestalo, napi¹te o ni vývojáøùm programu.\n"
 
-
 #: main.c:100
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
@@ -2504,7 +2503,7 @@ msgstr ""
 "[-- Chyba: nelze najít zaèátek PGP zprávy! --]\n"
 "\n"
 
-#: pgp.c:670 pgp.c:895
+#: pgp.c:669 pgp.c:975
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2512,37 +2511,56 @@ msgstr ""
 "[-- Konec výstupu PGP --]\n"
 "\n"
 
-#. Now display the signed body
-#: pgp.c:677
+#: pgp.c:721
 msgid ""
-"[-- The following data is PGP/MIME signed --]\n"
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:729
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "Chyba: typ 'multipart/signed' bez informace o protokolu"
+
+#: pgp.c:750
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+
+#. Now display the signed body
+#: pgp.c:758
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
 "\n"
 msgstr ""
 "[-- Následují podepsaná data ve formátu PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:683
+#: pgp.c:764
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:770
+#, fuzzy
 msgid ""
 "\n"
-"[-- End of PGP/MIME signed data --]\n"
+"[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- Konec podepsaných dat ve formátu PGP/MIME --]\n"
 
-#: pgp.c:688
-msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! "
-"--]\n"
-"\n"
-msgstr ""
-"[-- Chyba: tato zpráva nevyhovuje specifikacím PGP/MIME! --]\n"
-"\n"
-
-#: pgp.c:802
+#: pgp.c:882
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Vnitøní chyba. Informujte <roessler@guug.de>."
 
-#: pgp.c:866
+#: pgp.c:946
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2550,7 +2568,7 @@ msgstr ""
 "[-- Chyba: nelze spustit PGP! --]\n"
 "\n"
 
-#: pgp.c:959
+#: pgp.c:1039
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2558,11 +2576,11 @@ msgstr ""
 "[-- Chyba: zpráva ve formátu PGP/MIME je poru¹ena! --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1052
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Chyba: doèasný soubor nelze vytvoøit! --]\n"
 
-#: pgp.c:981
+#: pgp.c:1061
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2570,7 +2588,7 @@ msgstr ""
 "[-- Následující data jsou za¹ifrována ve formátu PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:989
+#: pgp.c:1069
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2578,16 +2596,16 @@ msgstr ""
 "\n"
 "[-- Konec dat za¹ifrovaných ve formátu PGP/MIME --]\n"
 
-#: pgp.c:1071
+#: pgp.c:1151
 msgid "Can't open PGP subprocess!"
 msgstr "PGP proces nelze spustit!"
 
-#: pgp.c:1195
+#: pgp.c:1275
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Pou¾ít ID klíèe = \"%s\" pro %s?"
 
-#: pgp.c:1201
+#: pgp.c:1281
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Zadejte ID klíèe pro %s: "
@@ -3065,3 +3083,11 @@ msgstr "Øadící funkci nelze nalézt! [ohla¹te tutu chybu]"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(¾ádná schránka)"
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Chyba: tato zpráva nevyhovuje specifikacím PGP/MIME! --]\n"
+#~ "\n"

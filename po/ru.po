@@ -5,8 +5,9 @@
 #
 #, fuzzy
 msgid ""
-msgstr "POT-Creation-Date: 1999-01-04 13:55+0100\n"
+msgstr ""
 "Project-Id-Version: Mutt 0.95.1i\n"
+"POT-Creation-Date: 1999-01-04 14:22+0100\n"
 "PO-Revision-Date: 1999-09-10 10:44 +0300\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
@@ -909,25 +910,25 @@ msgstr ""
 msgid "Error: multipart/signed has no protocol."
 msgstr "Ошибка: тип multipart/signed требует параметра protocol."
 
-#: handler.c:1391
+#: handler.c:1392
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Ошибка: тип multipart/encrypted требует параметра protocol!"
 
-#: handler.c:1433
+#: handler.c:1434
 msgid "Unable to open temporary file!"
 msgstr "Не удалось открыть временный файл!"
 
-#: handler.c:1492
+#: handler.c:1493
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- тип %s/%s не поддерживается "
 
-#: handler.c:1497
+#: handler.c:1498
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(используйте '%s' для просмотра этой части)"
 
-#: handler.c:1499
+#: handler.c:1500
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(функция 'view-attachments' не назначена ни одной клавише!)"
 
@@ -2208,7 +2209,9 @@ msgstr "Читается %s... %d"
 #: mx.c:114
 #, c-format
 msgid "Lock count exceeded, remove lock for %s?"
-msgstr "Количество попыток заблокировать файл исчерпано, удалить файл блокировки для %s?"
+msgstr ""
+"Количество попыток заблокировать файл исчерпано, удалить файл блокировки для "
+"%s?"
 
 #: mx.c:178
 msgid "Timeout exceeded while attempting fcntl lock!"
@@ -2499,7 +2502,7 @@ msgstr ""
 "[-- Ошибка: не удалось найти начало PGP-сообщения! --]\n"
 "\n"
 
-#: pgp.c:670 pgp.c:895
+#: pgp.c:669 pgp.c:975
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -2507,37 +2510,56 @@ msgstr ""
 "[-- Конец вывода программы PGP --]\n"
 "\n"
 
-#. Now display the signed body
-#: pgp.c:677
+#: pgp.c:721
 msgid ""
-"[-- The following data is PGP/MIME signed --]\n"
+"[-- Error: Inconsistant multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:729
+#, fuzzy, c-format
+msgid ""
+"[-- Error: Unknown multipart/signed protocol %s! --]\n"
+"\n"
+msgstr "Ошибка: тип multipart/signed требует параметра protocol."
+
+#: pgp.c:750
+#, c-format
+msgid ""
+"[-- Warning: We can't verify %s/%s signatures. --]\n"
+"\n"
+msgstr ""
+
+#. Now display the signed body
+#: pgp.c:758
+#, fuzzy
+msgid ""
+"[-- The following data is signed --]\n"
 "\n"
 msgstr ""
 "[-- Начало данных, подписанных в формате PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:683
+#: pgp.c:764
+msgid ""
+"[-- Warning: Can't find any signatures. --]\n"
+"\n"
+msgstr ""
+
+#: pgp.c:770
+#, fuzzy
 msgid ""
 "\n"
-"[-- End of PGP/MIME signed data --]\n"
+"[-- End of signed data --]\n"
 msgstr ""
 "\n"
 "[-- Конец данных, подписанных в формате PGP/MIME --]\n"
 
-#: pgp.c:688
-msgid ""
-"[-- Error: this message does not comply with the PGP/MIME specification! "
-"--]\n"
-"\n"
-msgstr ""
-"[-- Ошибка: это сообщение не удовлетворяет спецификации PGP/MIME! --]\n"
-"\n"
-
-#: pgp.c:802
+#: pgp.c:882
 msgid "Internal error. Inform <roessler@guug.de>."
 msgstr "Внутренняя ошибка.  Сообщите о ней по адресу <roessler@guug.de>."
 
-#: pgp.c:866
+#: pgp.c:946
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -2545,7 +2567,7 @@ msgstr ""
 "[-- Ошибка: не удалось создать PGP подпроцесс! --]\n"
 "\n"
 
-#: pgp.c:959
+#: pgp.c:1039
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2553,11 +2575,11 @@ msgstr ""
 "[-- Ошибка: формат сообщения не соответствует стандарту PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:972
+#: pgp.c:1052
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Ошибка: не удалось создать временный файл! --]\n"
 
-#: pgp.c:981
+#: pgp.c:1061
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2565,7 +2587,7 @@ msgstr ""
 "[-- Начало данных, шифрованных в формате PGP/MIME --]\n"
 "\n"
 
-#: pgp.c:989
+#: pgp.c:1069
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2573,16 +2595,16 @@ msgstr ""
 "\n"
 "[-- Конец данных, шифрованных в формате PGP/MIME --]\n"
 
-#: pgp.c:1071
+#: pgp.c:1151
 msgid "Can't open PGP subprocess!"
 msgstr "Не удалось открыть PGP подпроцесс!"
 
-#: pgp.c:1195
+#: pgp.c:1275
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Использовть ключ \"%s\" для %s?"
 
-#: pgp.c:1201
+#: pgp.c:1281
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введите идентификатор ключа для %s: "
@@ -3057,3 +3079,11 @@ msgstr "Не удалось найти функцию сортировки! (сообщите об этой ошибке)"
 #: status.c:102
 msgid "(no mailbox)"
 msgstr "(нет почтового ящика)"
+
+#~ msgid ""
+#~ "[-- Error: this message does not comply with the PGP/MIME specification! "
+#~ "--]\n"
+#~ "\n"
+#~ msgstr ""
+#~ "[-- Ошибка: это сообщение не удовлетворяет спецификации PGP/MIME! --]\n"
+#~ "\n"
