@@ -641,7 +641,7 @@ sub modify_entry ($$$;$ ) {
     my @fields;
 
     $op eq 'L' and ($label = shift or die);
-    $op eq 'V' and ($crl = shift or die);
+    $op eq 'V' and ($crl = shift);
 
 
     if ($use_cert) {
