@@ -423,35 +423,34 @@ fi
 
 AC_SUBST(LIBICONV)
 
-AC_CACHE_CHECK([whether iconv is seriously broken], mutt_cv_iconv_broken,
+dnl (1) Some implementations of iconv won't convert from UTF-8 to UTF-8.
+dnl (2) In glibc-2.1.2 and earlier there is a bug that messes up ob and
+dnl     obl when args 2 and 3 are 0 (fixed in glibc-2.1.3).
+AC_CACHE_CHECK([whether this iconv is good enough], mutt_cv_iconv_good,
 	mutt_save_LIBS="$LIBS"
 	LIBS="$LIBS $LIBICONV"
 	AC_TRY_RUN([
 #include <iconv.h>
-#include <string.h>
 int main()
 {
   iconv_t cd;
-  const char *ib;
-  char *ob;
-  size_t ibl, obl;
-  const char *s = "\304\211";
 changequote(, )dnl
-  char t[3];
+  char buf[4];
 changequote([, ])dnl
-  ib = s, ibl = 2, ob = t, obl = 3; /* glibc-2.1 needs space for '\0'? */
+  char *ob;
+  size_t obl;
+  ob = buf, obl = sizeof(buf);
   return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
-	  iconv(cd, &ib, &ibl, &ob, &obl) == (size_t)(-1) ||
-	  iconv_close(cd) ||
-	  !(ib == s + 2 && ibl == 0 && ob == t + 2 && obl == 1) ||
-	  memcmp(s, t, 2));
+	  iconv(cd, 0, 0, &ob, &obl) ||
+	  !(ob == buf && obl == sizeof(buf)) ||
+	  iconv_close(cd));
 }
 		],
-		mutt_cv_iconv_broken=no,
-		mutt_cv_iconv_broken=yes,
-		mutt_cv_iconv_broken=no)
+		mutt_cv_iconv_good=yes,
+		mutt_cv_iconv_good=no,
+		mutt_cv_iconv_good=yes)
 	LIBS="$mutt_save_LIBS")
-if test "$mutt_cv_iconv_broken" = yes; then
+if test "$mutt_cv_iconv_good" = no; then
   AC_MSG_ERROR(Try using libiconv instead)
 fi
 
