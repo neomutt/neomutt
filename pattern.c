@@ -164,8 +164,11 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
 	if (h->pgp & PGPENCRYPT && !pgp_valid_passphrase())
 	{
 	  mx_close_message (&msg);
-	  fclose (fp);
-	  unlink (tempfile);
+	  if (fp)
+	  {
+	    fclose (fp);
+	    unlink (tempfile);
+	  }
 	  return (0);
 	}
 #endif
