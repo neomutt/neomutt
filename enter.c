@@ -453,6 +453,15 @@ self_insert:
 	buf[lastchar] = 0;
 	if (!pass)
 	  mutt_history_add (hclass, (char *) buf);
+	if (multiple)
+	{
+	  char **tfiles;
+	  *numfiles = 1;
+	  tfiles = safe_malloc (*numfiles * sizeof (char *));
+	  mutt_expand_path ((char *) buf, buflen);
+	  tfiles[0] = safe_strdup ((char *) buf);
+	  *files = tfiles;
+	}
 	return (0);
       }
       else if ((ch < ' ' || IsPrint (ch)) && (lastchar + 1 < buflen))
