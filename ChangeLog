@@ -1,3 +1,8 @@
+2003-01-05 22:02:37  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c: Another mutt_yesorno() change, in order to correctly
+	interpret a C-g.
+
 2003-01-05 22:00:00  Armin Wolfermann  <aw@osn.de>  (roessler)
 
 	* recvcmd.c, send.c, alias.c, attach.c, commands.c, curs_lib.c,
