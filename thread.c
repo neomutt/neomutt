@@ -317,7 +317,9 @@ static HEADER *find_subject (CONTEXT *ctx, HEADER *cur)
 	  !tmp->fake_thread &&		/* don't match pseudo threads */
 	  tmp->subject_changed &&	/* only match interesting replies */
 	  !is_descendant (tmp, cur) &&	/* don't match in the same thread */
-	  cur->date_sent >= tmp->date_sent &&
+	  ( ( (SORT_MASK & SortAux) == SORT_RECEIVED) ?
+		cur->received >= tmp->received :
+		cur->date_sent >= tmp->date_sent) &&
 	  (!last || (last->date_sent <= tmp->date_sent)) &&
 	  tmp->env->real_subj &&
 	  mutt_strcmp (env->real_subj, tmp->env->real_subj) == 0)
