@@ -1339,7 +1339,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (mode == 0 && !privacy && option (OPTXMAILER))
   {
     /* Add a vanity header */
-    fprintf (fp, "X-Mailer: Mutt %s\n", MUTT_VERSION);
+    fprintf (fp, "User-Agent: Mutt/%s\n", MUTT_VERSION);
   }
 
   /* Add any user defined headers */

@@ -283,13 +283,13 @@ struct option_t MuttVars[] = {
   { "use_8bitmime",	DT_BOOL, R_NONE, OPTUSE8BITMIME, 0 },
   { "use_domain",	DT_BOOL, R_NONE, OPTUSEDOMAIN, 1 },
   { "use_from",		DT_BOOL, R_NONE, OPTUSEFROM, 1 },
+  { "user_agent",	DT_BOOL, R_NONE, OPTXMAILER, 1},
   { "visual",		DT_PATH, R_NONE, UL &Visual, 0 },
   { "wait_key",		DT_BOOL, R_NONE, OPTWAITKEY, 1 },
   { "wrap_search",	DT_BOOL, R_NONE, OPTWRAPSEARCH, 1 },
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   { "write_bcc",	DT_BOOL, R_NONE, OPTWRITEBCC, 1},
-  { "x_mailer",		DT_BOOL, R_NONE, OPTXMAILER, 1},
-  { NULL }
+    { NULL }
 };
 
 const struct mapping_t SortMethods[] = {
