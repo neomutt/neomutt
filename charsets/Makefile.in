@@ -57,8 +57,8 @@ charmaps charsets.list: parse_i18n
 
 install: charsets.list
 	$(srcdir)/../mkinstalldirs $(DESTDIR)$(sharedir)/charsets
-	( cd $(srcdir) && $(INSTALL) \
-		-m 644 `cat charsets.list` $(DESTDIR)$(sharedir)/charsets )
+	( cd $(srcdir) && for f in `cat charsets.list` ; do $(INSTALL) \
+		-m 644 $$f $(DESTDIR)$(sharedir)/charsets ; done )
 	( cd $(srcdir) && $(INSTALL) \
 		-m 644 charsets.alias $(DESTDIR)$(sharedir)/charsets/charsets.alias.dist )
 	test -f $(DESTDIR)$(sharedir)/charsets/charsets.alias || 			\
