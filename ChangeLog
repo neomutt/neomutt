@@ -1,3 +1,7 @@
+2003-12-10 00:48:57  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* thread.c: Avoid NULL pointer deference in threading code.
+
 2003-12-03 08:19:11  Alain Bench  <veronatif@free.fr>  (roessler)
 
 	* pager.c: Fix 1716.
