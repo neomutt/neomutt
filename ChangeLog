@@ -1,3 +1,7 @@
+2005-03-13 16:29:09  Morten Bo Johansen  <mojo@mbjnet.dk>  (roessler)
+
+	* po/da.po: update
+
 2005-03-05 18:15:20  Christoph Ludwig  <cludwig@cdc.informatik.tu-darmstadt.de>  (roessler)
 
 	* crypt.c: The attached patch fixes a segfault I observed
