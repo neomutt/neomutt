@@ -645,7 +645,9 @@ static void update_content_info (CONTENT *info, CONTENT_STATE *s, char *d, size_
  *
  * We convert via UTF-8 in order to avoid the condition -1(EINVAL),
  * which would otherwise prevent us from knowing the number of inexact
- * conversions.
+ * conversions. Where the candidate target charset is UTF-8 we avoid
+ * doing the second conversion because iconv_open("UTF-8", "UTF-8")
+ * fails with some libraries.
  *
  * We assume that the output from iconv is never more than 4 times as
  * long as the input for any pair of charsets we might be interested
@@ -670,16 +672,19 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
     return -1;
 
   cd = safe_malloc (ncodes * sizeof (iconv_t));
-  infos = safe_malloc (ncodes * sizeof (CONTENT));
-  states = safe_malloc (ncodes * sizeof (CONTENT_STATE));
-
   score = safe_malloc (ncodes * sizeof (size_t));
-  for (i = 0; i < ncodes; i++)
-    cd[i] = iconv_open (tocodes[i], "UTF-8");
+  states = safe_malloc (ncodes * sizeof (CONTENT_STATE));
+  infos = safe_malloc (ncodes * sizeof (CONTENT));
 
-  memset (infos, 0, ncodes * sizeof (CONTENT));
   memset (score, 0, ncodes * sizeof (size_t));
   memset (states, 0, ncodes * sizeof (CONTENT_STATE));
+  memset (infos, 0, ncodes * sizeof (CONTENT));
+  for (i = 0; i < ncodes; i++)
+    if (strcasecmp (tocodes[i], "UTF-8"))
+      cd[i] = iconv_open (tocodes[i], "UTF-8");
+    else
+      /* Special case for conversion to UTF-8 */
+      cd[i] = (iconv_t)(-1), score[i] = (size_t)(-1);
 
   rewind (file);
   ibl = 0;
@@ -714,8 +719,8 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 	n = iconv (cd[i], (ibl || ubl) ? &ub : 0, &ubl, &ob, &obl);
 	if (n == (size_t)(-1))
 	{
-	  assert (errno = E2BIG || (BUGGY_ICONV && errno== EINVAL));
-	  score[i] = -1;
+	  assert (errno == E2BIG || (BUGGY_ICONV && errno == EILSEQ));
+	  score[i] = (size_t)(-1);
 	}
 	else
 	{
@@ -723,6 +728,9 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
 	  update_content_info (&infos[i], &states[i], bufo, ob - bufo);
 	}
       }
+      else if (cd[i] == (iconv_t)(-1) && score[i] == (size_t)(-1))
+	/* Special case for conversion to UTF-8 */
+	update_content_info (&infos[i], &states[i], bufu, ubl1);
 
     if (ibl)
       /* Save unused input */
@@ -740,9 +748,16 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
     ret = (size_t)(-1);
     for (i = 0; i < ncodes; i++)
     {
-      if (score[i] == (size_t)(-1))
+      if (cd[i] == (iconv_t)(-1) && score[i] == (size_t)(-1))
+      {
+	/* Special case for conversion to UTF-8 */
+	*tocode = i;
+	ret = 0;
+	break;
+      }
+      else if (score[i] == (size_t)(-1))
 	continue;
-      if (ret == (size_t)(-1) || score[i] < ret)
+      else if (ret == (size_t)(-1) || score[i] < ret)
       {
 	*tocode = i;
 	ret = score[i];
