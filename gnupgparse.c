@@ -20,7 +20,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
+#include <fcntl.h>
 #include <time.h>
 
 #include "mutt.h"
@@ -158,11 +162,18 @@ static KEYINFO *read_ring(struct pgp_vinfo *pgp, int secret )
     char buf[LONG_STRING];
     KEYINFO *db = NULL, **kend, *k = NULL, *kk, *mainkey=NULL;
     int is_sub;
-
-    thepid = gpg_invoke_list_keys(pgp, NULL, &fp, NULL, -1, -1, -1,
+    int devnull;
+  
+    if((devnull = open("/dev/null", O_RDWR)) == -1)
+        return NULL;
+  
+    thepid = gpg_invoke_list_keys(pgp, NULL, &fp, NULL, devnull, -1, devnull,
 							NULL, secret);
     if( thepid == -1 )
+    {
+        close(devnull);
 	return NULL;
+    }
 
     kend = &db;
     k = NULL;
@@ -187,6 +198,8 @@ static KEYINFO *read_ring(struct pgp_vinfo *pgp, int secret )
     fclose( fp );
     mutt_wait_filter( thepid );
 
+    close(devnull);
+  
     return db;
 }
 
