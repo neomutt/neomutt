@@ -1314,8 +1314,16 @@ full_fcc:
 
   if (send_message (msg) == -1)
   {
-    msg->content = mutt_remove_multipart (msg->content);
-    goto main_loop;
+    if (!(flags & SENDBATCH))
+    {
+      msg->content = mutt_remove_multipart (msg->content);
+      goto main_loop;
+    }
+    else
+    {
+      puts _("Could not send the message.");
+      goto cleanup;
+    }
   }
 
   if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
