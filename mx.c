@@ -710,6 +710,8 @@ int mx_close_mailbox (CONTEXT *ctx)
   char mbox[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
 
+  ctx->closing = 1;
+
   if (ctx->readonly || ctx->dontwrite)
   {
     /* mailbox is readonly or we don't want to write */

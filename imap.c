@@ -756,7 +756,8 @@ static int imap_exec (char *buf, size_t buflen,
   }
   while (strncmp (buf, seq, SEQLEN) != 0);
 
-  if (CTX_DATA->status == IMAP_NEW_MAIL || CTX_DATA->status == IMAP_EXPUNGE)
+  if (!ctx->closing && 
+      (CTX_DATA->status == IMAP_NEW_MAIL || CTX_DATA->status == IMAP_EXPUNGE))
   {
 
     count = CTX_DATA->newMailCount;

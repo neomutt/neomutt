@@ -632,6 +632,7 @@ typedef struct
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int revsort : 1;	/* mailbox sorted in reverse? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */
+  unsigned int closing : 1;	/* mailbox is being closed */
 } CONTEXT;
 
 typedef struct attachptr
