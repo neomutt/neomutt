@@ -1,3 +1,9 @@
+2004-02-07 21:38:32  Juan Altmayer Pizzorno  <juan@altmayer.com>  (roessler)
+
+	* mbox.c: Hi, off_t is a 64-bit number (like on Mac OS X/darwin),
+	the percentages don't show right while mutt is reading/parsing
+	a mailbox.  Here's a patch (against 1.5.6i) to fix that.
+
 2004-02-07 21:36:41  David Yitzchak Cohen  <lists+mutt_devs@bigfatdave.com>  (roessler)
 
 	* init.c, muttlib.c: Looking at the code, the problem is pretty
