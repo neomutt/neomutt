@@ -54,8 +54,6 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
   char buf1[GSS_BUFSIZE], buf2[GSS_BUFSIZE], server_conf_flags;
   unsigned long buf_size;
 
-  char seq[16];
-
   dprint (2, (debugfile, "Attempting GSS login...\n"));
 
   /* get an IMAP service ticket for the server */
@@ -81,9 +79,8 @@ int imap_auth_gss (IMAP_DATA* idata, const char* user)
 #endif
   /* now begin login */
   mutt_message _("Authenticating (GSSAPI)...");
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf1, sizeof (buf1), "%s AUTHENTICATE GSSAPI\r\n", seq);
-  mutt_socket_write (idata->conn, buf1);
+
+  imap_cmd_start (idata, "AUTHENTICATE GSSAPI");
 
   /* expect a null continuation response ("+") */
   if (mutt_socket_readln (buf1, sizeof (buf1), idata->conn) < 0)

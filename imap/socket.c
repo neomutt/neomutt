@@ -167,7 +167,7 @@ void imap_logout_all (void)
       mutt_message (_("Closing connection to %s..."),
 		    conn->mx.host);
       
-      imap_logout (conn);
+      imap_logout (CONN_DATA);
       
       mutt_clear_error ();
 
@@ -175,11 +175,6 @@ void imap_logout_all (void)
     }
     
     Connections = conn->next;
-
-    if (conn->data) {
-      dprint (2, (debugfile,
-        "imap_logout_all: Connection still has valid CONTEXT?!\n"));
-    }
 
     free (conn);
 

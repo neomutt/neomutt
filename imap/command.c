@@ -29,7 +29,9 @@
 #include <stdlib.h>
 
 /* forward declarations */
+static void cmd_make_sequence (char* buf, size_t buflen);
 static void cmd_parse_capabilities (IMAP_DATA *idata, char *s);
+static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
 
 static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL", 
   "NAMESPACE", "AUTH=CRAM-MD5", "AUTH=KERBEROS_V4", "AUTH=GSSAPI", 
@@ -37,10 +39,29 @@ static char *Capabilities[] = {"IMAP4", "IMAP4rev1", "STATUS", "ACL",
   "LOGIN-REFERRALS", "MAILBOX-REFERRALS", "QUOTA", "SCAN", "SORT", 
   "THREAD=ORDEREDSUBJECT", "UIDPLUS", "AUTH=ANONYMOUS", NULL};
 
+/* imap_cmd_start: Given an IMAP command, send it to the server.
+ *   Currently a minor convenience, but helps to route all IMAP commands
+ *   through a single interface. */
+void imap_cmd_start (IMAP_DATA* idata, const char* cmd)
+{
+  char* out;
+  int outlen;
+
+  cmd_make_sequence (idata->seq, sizeof (idata->seq));
+  /* seq, space, cmd, \r\n\0 */
+  outlen = strlen (idata->seq) + strlen (cmd) + 4;
+  out = (char*) safe_malloc (outlen);
+  snprintf (out, outlen, "%s %s\r\n", idata->seq, cmd);
+
+  mutt_socket_write (idata->conn, out);
+
+  safe_free ((void**) &out);
+}
+
 /* imap_cmd_finish: When the caller has finished reading command responses,
  *   it must call this routine to perform cleanup (eg fetch new mail if
  *   detected, do expunge) */
-void imap_cmd_finish (const char* seq, IMAP_DATA* idata)
+void imap_cmd_finish (IMAP_DATA* idata)
 {
   if (!(idata->state == IMAP_SELECTED) || idata->selected_ctx->closing)
   {
@@ -62,9 +83,6 @@ void imap_cmd_finish (const char* seq, IMAP_DATA* idata)
     {
       /* read new mail messages */
       dprint (1, (debugfile, "imap_cmd_finish: fetching new mail\n"));
-
-      while (count > idata->selected_ctx->hdrmax)
-	mx_alloc_memory (idata->selected_ctx);
 
       count = imap_read_headers (idata->selected_ctx, 
         idata->selected_ctx->msgcount, count - 1) + 1;
@@ -113,14 +131,13 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
 {
   char* out;
   int outlen;
-  char seq[SEQLEN+1];
 
   /* create sequence for command */
-  imap_make_sequence (seq, sizeof (seq));
+  cmd_make_sequence (idata->seq, sizeof (idata->seq));
   /* seq, space, cmd, \r\n\0 */
-  outlen = strlen (seq) + strlen (cmd) + 4;
+  outlen = strlen (idata->seq) + strlen (cmd) + 4;
   out = (char*) safe_malloc (outlen);
-  snprintf (out, outlen, "%s %s\r\n", seq, cmd);
+  snprintf (out, outlen, "%s %s\r\n", idata->seq, cmd);
 
   mutt_socket_write_d (idata->conn, out,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
@@ -135,9 +152,9 @@ int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
     if (buf[0] == '*' && imap_handle_untagged (idata, buf) != 0)
       return -1;
   }
-  while (mutt_strncmp (buf, seq, SEQLEN) != 0);
+  while (mutt_strncmp (buf, idata->seq, SEQLEN) != 0);
 
-  imap_cmd_finish (seq, idata);
+  imap_cmd_finish (idata);
 
   if (!imap_code (buf))
   {
@@ -212,47 +229,9 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
        idata->status = IMAP_EXPUNGE;
   }
   else if (mutt_strncasecmp ("CAPABILITY", s, 10) == 0)
-    /* parse capabilities */
     cmd_parse_capabilities (idata, s);
   else if (mutt_strncasecmp ("MYRIGHTS", s, 8) == 0)
-  {
-    s = imap_next_word (s);
-    s = imap_next_word (s);
-    while (*s && !isspace(*s))
-    {
-      switch (*s) 
-      {
-	case 'l':
-	  mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
-	  break;
-	case 'r':
-	  mutt_bit_set (idata->rights, IMAP_ACL_READ);
-	  break;
-	case 's':
-	  mutt_bit_set (idata->rights, IMAP_ACL_SEEN);
-	  break;
-	case 'w':
-	  mutt_bit_set (idata->rights, IMAP_ACL_WRITE);
-	  break;
-	case 'i':
-	  mutt_bit_set (idata->rights, IMAP_ACL_INSERT);
-	  break;
-	case 'p':
-	  mutt_bit_set (idata->rights, IMAP_ACL_POST);
-	  break;
-	case 'c':
-	  mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
-	  break;
-	case 'd':
-	  mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
-	  break;
-	case 'a':
-	  mutt_bit_set (idata->rights, IMAP_ACL_ADMIN);
-	  break;
-      }
-      s++;
-    }
-  }
+    cmd_parse_myrights (idata, s);
   else if (mutt_strncasecmp ("BYE", s, 3) == 0)
   {
     /* server shut down our connection */
@@ -274,16 +253,14 @@ int imap_handle_untagged (IMAP_DATA *idata, char *s)
     sleep (1);
   }
   else
-  {
     dprint (1, (debugfile, "imap_handle_untagged(): unhandled request: %s\n",
-		s));
-  }
+      s));
 
   return 0;
 }
 
-/* imap_make_sequence: make a tag suitable for starting an IMAP command */
-void imap_make_sequence (char *buf, size_t buflen)
+/* cmd_make_sequence: make a tag suitable for starting an IMAP command */
+static void cmd_make_sequence (char* buf, size_t buflen)
 {
   static int sequence = 0;
   
@@ -309,4 +286,49 @@ static void cmd_parse_capabilities (IMAP_DATA *idata, char *s)
       }
     s = imap_next_word (s);
   }   
+}
+
+/* cmd_parse_myrights: set rights bits according to MYRIGHTS response */
+static void cmd_parse_myrights (IMAP_DATA* idata, char* s)
+{
+  s = imap_next_word (s);
+  s = imap_next_word (s);
+
+  /* zero out current rights set */
+  memset (idata->rights, 0, sizeof (idata->rights));
+
+  while (*s && !isspace(*s))
+  {
+    switch (*s) 
+    {
+      case 'l':
+	mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
+	break;
+      case 'r':
+	mutt_bit_set (idata->rights, IMAP_ACL_READ);
+	break;
+      case 's':
+	mutt_bit_set (idata->rights, IMAP_ACL_SEEN);
+	break;
+      case 'w':
+	mutt_bit_set (idata->rights, IMAP_ACL_WRITE);
+	break;
+      case 'i':
+	mutt_bit_set (idata->rights, IMAP_ACL_INSERT);
+	break;
+      case 'p':
+	mutt_bit_set (idata->rights, IMAP_ACL_POST);
+	break;
+      case 'c':
+	mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
+	break;
+      case 'd':
+	mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
+	break;
+      case 'a':
+	mutt_bit_set (idata->rights, IMAP_ACL_ADMIN);
+	break;
+    }
+    s++;
+  }
 }

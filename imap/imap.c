@@ -172,7 +172,6 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   int old_msgcount;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
-  char seq[8];
   char *pc = NULL;
   int count = 0;
   int msg_mod = 0;
@@ -227,9 +226,9 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   mutt_message (_("Reopening mailbox... %s"), CTX_DATA->selected_mailbox);
   imap_munge_mbox_name (buf, sizeof (buf), CTX_DATA->selected_mailbox);
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (bufout, sizeof (bufout), "%s STATUS %s (MESSAGES)\r\n", seq, buf);
-  mutt_socket_write (CTX_DATA->conn, bufout);
+  snprintf (bufout, sizeof (bufout), "STATUS %s (MESSAGES)", buf);
+
+  imap_cmd_start (CTX_DATA, bufout);
 
   do
   {
@@ -260,7 +259,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	return -1;
     }
   }
-  while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
+  while (mutt_strncmp (CTX_DATA->seq, buf, mutt_strlen (CTX_DATA->seq)) != 0);
 
   if (!imap_code (buf))
   {
@@ -360,17 +359,13 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
 {
   char buf[LONG_STRING];
-  char seq[8];
   char *s;
 
   /* assume that the delim is /.  If this fails, we're in bigger trouble
    * than getting the delim wrong */
   idata->delim = '/';
 
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s LIST \"\" \"\"\r\n", seq);
-
-  mutt_socket_write (conn, buf);
+  imap_cmd_start (idata, "LIST \"\" \"\"");
 
   do 
   {
@@ -399,7 +394,7 @@ static int imap_get_delim (IMAP_DATA *idata, CONNECTION *conn)
       }
     }
   }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+  while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
   return 0;
 }
 
@@ -551,7 +546,6 @@ int imap_open_mailbox (CONTEXT *ctx)
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
-  char seq[SEQLEN+1];
   int count = 0;
   int n;
   IMAP_MBOX mx;
@@ -600,10 +594,10 @@ int imap_open_mailbox (CONTEXT *ctx)
 
   mutt_message (_("Selecting %s..."), idata->selected_mailbox);
   imap_munge_mbox_name (buf, sizeof(buf), idata->selected_mailbox);
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (bufout, sizeof (bufout), "%s %s %s\r\n", seq,
+  snprintf (bufout, sizeof (bufout), "%s %s",
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
-  mutt_socket_write (conn, bufout);
+
+  imap_cmd_start (idata, bufout);
 
   idata->state = IMAP_SELECTED;
 
@@ -658,7 +652,7 @@ int imap_open_mailbox (CONTEXT *ctx)
 	return (-1);
     }
   }
-  while (mutt_strncmp (seq, buf, mutt_strlen (seq)) != 0);
+  while (mutt_strncmp (idata->seq, buf, mutt_strlen (idata->seq)) != 0);
   /* check for READ-ONLY notification */
   if (!strncmp (imap_get_qualifier (buf), "[READ-ONLY]", 11))
   {
@@ -836,20 +830,18 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   return 0;
 }
 
-void imap_logout (CONNECTION *conn)
+void imap_logout (IMAP_DATA* idata)
 {
   char buf[LONG_STRING];
-  char seq[8];
 
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s LOGOUT\r\n", seq);
-  mutt_socket_write (conn, buf);
+  imap_cmd_start (idata, "LOGOUT");
+
   do
   {
-    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
+    if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
       break;
   }
-  while (mutt_strncmp (seq, buf, SEQLEN) != 0);
+  while (mutt_strncmp (idata->seq, buf, SEQLEN) != 0);
 }
 
 int imap_close_connection (CONTEXT *ctx)
@@ -859,7 +851,7 @@ int imap_close_connection (CONTEXT *ctx)
   if (CTX_DATA->status != IMAP_BYE)
   {
     mutt_message _("Closing connection to IMAP server...");
-    imap_logout (CTX_DATA->conn);
+    imap_logout (CTX_DATA);
     mutt_clear_error ();
   }
   mutt_socket_close (CTX_DATA->conn);
@@ -1209,7 +1201,6 @@ int imap_mailbox_check (char *path, int new)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char mbox_unquoted[LONG_STRING];
-  char seq[8];
   char *s;
   int msgcount = 0;
   IMAP_MBOX mx;
@@ -1242,7 +1233,6 @@ int imap_mailbox_check (char *path, int new)
   if (strlen (buf) < strlen (mx.mbox))
       strcpy (mx.mbox, buf);
 
-  imap_make_sequence (seq, sizeof (seq));		
   imap_munge_mbox_name (mbox, sizeof(mbox), buf);
   strfcpy (mbox_unquoted, buf, sizeof (mbox_unquoted));
 
@@ -1254,12 +1244,12 @@ int imap_mailbox_check (char *path, int new)
       || (mutt_strcasecmp (mbox_unquoted, "INBOX") == 0
 	  && mutt_strcasecmp (mbox_unquoted, idata->selected_mailbox) == 0))
   {
-    snprintf (buf, sizeof (buf), "%s NOOP\r\n", seq);
+    strfcpy (buf, "NOOP", sizeof (buf));
   }
   else if (mutt_bit_isset(idata->capabilities,IMAP4REV1) ||
 	   mutt_bit_isset(idata->capabilities,STATUS))
   {				
-    snprintf (buf, sizeof (buf), "%s STATUS %s (%s)\r\n", seq, mbox,
+    snprintf (buf, sizeof (buf), "STATUS %s (%s)", mbox,
       new ? "RECENT" : "MESSAGES");
   }
   else
@@ -1269,7 +1259,7 @@ int imap_mailbox_check (char *path, int new)
       return -1;
   }
 
-  mutt_socket_write (conn, buf);
+  imap_cmd_start (idata, buf);
 
   do 
   {
@@ -1304,9 +1294,9 @@ int imap_mailbox_check (char *path, int new)
       }
     }
   }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+  while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
 
-  imap_cmd_finish (seq, idata);
+  imap_cmd_finish (idata);
 
   return msgcount;
 }
@@ -1436,7 +1426,6 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   IMAP_DATA* idata;
   char list[LONG_STRING];
   char buf[LONG_STRING];
-  char seq[16];
   char* list_word = NULL;
   int noselect, noinferiors;
   char delim;
@@ -1472,10 +1461,10 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     list[0] = '\0';
 
   /* fire off command */
-  imap_make_sequence (seq, sizeof(seq));
-  snprintf (buf, sizeof(buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
+  snprintf (buf, sizeof(buf), "%s \"\" \"%s%%\"",
     option (OPTIMAPLSUB) ? "LSUB" : "LIST", list);
-  mutt_socket_write (conn, buf);
+
+  imap_cmd_start (idata, buf);
 
   /* and see what the results are */
   strfcpy (completion, mx.mbox, sizeof(completion));
@@ -1517,7 +1506,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
       completions++;
     }
   }
-  while (mutt_strncmp(seq, buf, strlen(seq)));
+  while (mutt_strncmp(idata->seq, buf, SEQLEN));
 
   if (completions)
   {

@@ -26,15 +26,15 @@
 #include "imap_private.h"
 
 /* -- forward declarations -- */
-static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
-  struct browser_state *state, short isparent);
+static int browse_add_list_result (CONNECTION* conn, const char* cmd,
+  struct browser_state* state, short isparent);
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent);
 static int compare_names(struct folder_file *a, struct folder_file *b);
-static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen, 
+static int browse_get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen, 
   IMAP_NAMESPACE_INFO *nsi, int nsilen, int *nns);
-static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi, 
-  int nns);
+static int browse_verify_namespace (IMAP_DATA* idata,
+  IMAP_NAMESPACE_INFO* nsi, int nns);
 
 int imap_init_browse (char *path, struct browser_state *state)
 {
@@ -44,7 +44,6 @@ int imap_init_browse (char *path, struct browser_state *state)
   char nsbuf[LONG_STRING];
   char mbox[LONG_STRING];
   char list_cmd[5];
-  char seq[16];
   IMAP_NAMESPACE_INFO nsi[16];
   int home_namespace = 0;
   int n;
@@ -91,10 +90,10 @@ int imap_init_browse (char *path, struct browser_state *state)
     if (mutt_bit_isset(idata->capabilities,NAMESPACE))
     {
       mutt_message _("Getting namespaces...");
-      if (get_namespace (idata, nsbuf, sizeof (nsbuf), 
+      if (browse_get_namespace (idata, nsbuf, sizeof (nsbuf), 
 			 nsi, sizeof (nsi),  &nns) != 0)
 	return -1;
-      if (verify_namespace (conn, nsi, nns) != 0)
+      if (browse_verify_namespace (idata, nsi, nns) != 0)
 	return -1;
     }
     /* What if you have a shared namespace of ""? You'll never be
@@ -135,10 +134,8 @@ int imap_init_browse (char *path, struct browser_state *state)
      * aren't already going to */
     if (mbox[n-1] != idata->delim)
     {
-      imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, list_cmd,
-        mbox);
-      mutt_socket_write (conn, buf);
+      snprintf (buf, sizeof (buf), "%s \"\" \"%s\"", list_cmd, mbox);
+      imap_cmd_start (idata, buf);
       do 
       {
         if (imap_parse_list_response(conn, buf, sizeof(buf), &cur_folder,
@@ -157,7 +154,7 @@ int imap_init_browse (char *path, struct browser_state *state)
           }
         }
       }
-      while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+      while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
     }
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -184,22 +181,13 @@ int imap_init_browse (char *path, struct browser_state *state)
        * had the parent not exist? */
       ctmp = mbox[n];
       mbox[n] = '\0';
-#if 0
-      /* List it to see if it can be selected */
-      dprint (2, (debugfile, "imap_init_browse: listing possible parent %s\n", mbox));
-      imap_make_sequence (seq, sizeof (seq));
-      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s\"\r\n", seq, 
-        list_cmd, mbox);
-      /* add this entry as a superior, if we aren't tab-completing */
-      if (showparents && add_list_result (conn, seq, buf, state, 1))
-          return -1;
-#else
+
       if (showparents)
       {
 	dprint (2, (debugfile, "imap_init_browse: adding parent %s\n", mbox));
 	imap_add_folder (idata->delim, mbox, 1, 0, state, 1);
       }
-#endif
+
       /* if our target isn't a folder, we are in our superior */
       if (!state->folder)
       {
@@ -241,18 +229,14 @@ int imap_init_browse (char *path, struct browser_state *state)
      * namespace is not "", so we have to list it explicitly. We ask the 
      * server to see if it has descendants. */
     dprint (4, (debugfile, "imap_init_browse: adding INBOX\n"));
-    imap_make_sequence (seq, sizeof (seq));
-    snprintf (buf, sizeof (buf), "%s LIST \"\" \"INBOX\"\r\n", seq);
-    if (add_list_result (conn, seq, buf, state, 0))
+    if (browse_add_list_result (conn, "LIST \"\" \"INBOX\"", state, 0))
       return -1;
   }
 
   nsup = state->entrylen;
 
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%%\"\r\n", seq, 
-    list_cmd, mbox);
-  if (add_list_result (conn, seq, buf, state, 0))
+  snprintf (buf, sizeof (buf), "%s \"\" \"%s%%\"", list_cmd, mbox);
+  if (browse_add_list_result (conn, buf, state, 0))
     return -1;
 
   qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
@@ -272,10 +256,10 @@ int imap_init_browse (char *path, struct browser_state *state)
   return 0;
 }
 
-static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
-			    struct browser_state *state, short isparent)
+static int browse_add_list_result (CONNECTION* conn, const char* cmd,
+  struct browser_state* state, short isparent)
 {
-  IMAP_DATA *idata = CONN_DATA;
+  IMAP_DATA* idata = CONN_DATA;
   char buf[LONG_STRING];
   char *name;
   int noselect;
@@ -285,11 +269,11 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
   if (imap_parse_path (state->folder, &mx))
   {
     dprint (2, (debugfile,
-      "add_list_result: current folder %s makes no sense\n", state->folder));
+      "browse_add_list_result: current folder %s makes no sense\n", state->folder));
     return -1;
   }
 
-  mutt_socket_write (conn, cmd);
+  imap_cmd_start (idata, cmd);
 
   do 
   {
@@ -308,8 +292,9 @@ static int add_list_result (CONNECTION *conn, const char *seq, const char *cmd,
           isparent);
     }
   }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
-  return (0);
+  while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+
+  return 0;
 }
 
 /* imap_add_folder: add a folder name to the browser list, formatting it as
@@ -376,11 +361,10 @@ static int compare_names(struct folder_file *a, struct folder_file *b)
   return mutt_strcmp(a->name, b->name);
 }
 
-static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen, 
-			  IMAP_NAMESPACE_INFO *nsi, int nsilen, int *nns)
+static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
+  IMAP_NAMESPACE_INFO* nsi, int nsilen, int* nns)
 {
   char buf[LONG_STRING];
-  char seq[16];
   char *s;
   int n;
   char ns[LONG_STRING];
@@ -391,10 +375,8 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
   *nns = 0;
   nsbuf[nsblen-1] = '\0';
 
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s NAMESPACE\r\n", seq);
-
-  mutt_socket_write (idata->conn, buf);
+  imap_cmd_start (idata, "NAMESPACE");
+  
   do 
   {
     if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
@@ -452,7 +434,7 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
 	      /* skip "" namespaces, they are already listed at the root */
 	      if ((ns[0] != '\0') && (nsbused < nsblen) && (*nns < nsilen))
 	      {
-		dprint (4, (debugfile, "get_namespace: adding %s\n", ns));
+		dprint (3, (debugfile, "browse_get_namespace: adding %s\n", ns));
 		nsi->type = type;
 		/* Cyrus doesn't append the delimiter to the namespace,
 		 * but UW-IMAP does. We'll strip it here and add it back
@@ -479,47 +461,47 @@ static int get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen,
       }
     }
   }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+  while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
+
   return 0;
 }
 
 /* Check which namespaces have contents */
-static int verify_namespace (CONNECTION *conn, IMAP_NAMESPACE_INFO *nsi, 
-  int nns)
+static int browse_verify_namespace (IMAP_DATA* idata,
+  IMAP_NAMESPACE_INFO *nsi, int nns)
 {
   char buf[LONG_STRING];
-  char seq[16];
   int i = 0;
   char *name;
   char delim;
 
   for (i = 0; i < nns; i++, nsi++)
   {
-    imap_make_sequence (seq, sizeof (seq));
     /* Cyrus gives back nothing if the % isn't added. This may return lots
      * of data in some cases, I guess, but I currently feel that's better
      * than invisible namespaces */
     if (nsi->delim)
-      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%c%%\"\r\n", seq,
+      snprintf (buf, sizeof (buf), "%s \"\" \"%s%c%%\"",
 		option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix,
 		nsi->delim);
     else
-      snprintf (buf, sizeof (buf), "%s %s \"\" \"%s%%\"\r\n", seq,
+      snprintf (buf, sizeof (buf), "%s \"\" \"%s%%\"",
 		option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
-    
-    mutt_socket_write (conn, buf);
+
+    imap_cmd_start (idata, buf);
 
     nsi->listable = 0;
     nsi->home_namespace = 0;
     do 
     {
-      if (imap_parse_list_response(conn, buf, sizeof(buf), &name,
+      if (imap_parse_list_response(idata->conn, buf, sizeof(buf), &name,
           &(nsi->noselect), &(nsi->noinferiors), &delim) != 0)
 	return -1;
       nsi->listable |= (name != NULL);
     }
-    while ((mutt_strncmp (buf, seq, SEQLEN) != 0));
+    while ((mutt_strncmp (buf, idata->seq, SEQLEN) != 0));
   }
-  return (0);
+
+  return 0;
 }
 

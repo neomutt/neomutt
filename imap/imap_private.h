@@ -147,11 +147,12 @@ typedef struct
   short status;
   short state;
   short check_status;
-  char delim;
   unsigned char capabilities[(CAPMAX + 7)/8];
+  char seq[SEQLEN+1];
   CONNECTION *conn;
 
   /* The following data is all specific to the currently SELECTED mbox */
+  char delim;
   CONTEXT *selected_ctx;
   char *selected_mailbox;
   unsigned char rights[(RIGHTSMAX + 7)/8];
@@ -177,18 +178,18 @@ int imap_parse_list_response(CONNECTION* conn, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);
 int imap_read_literal (FILE* fp, CONNECTION* conn, long bytes);
 int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
-void imap_logout (CONNECTION* conn);
+void imap_logout (IMAP_DATA* conn);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA *idata, CONNECTION *conn);
 
 /* command.c */
-void imap_cmd_finish (const char* seq, IMAP_DATA* idata);
+void imap_cmd_start (IMAP_DATA* idata, const char* cmd);
+void imap_cmd_finish (IMAP_DATA* idata);
 int imap_code (const char* s);
 int imap_exec (char* buf, size_t buflen, IMAP_DATA* idata, const char* cmd,
   int flags);
 int imap_handle_untagged (IMAP_DATA* idata, char* s);
-void imap_make_sequence (char *buf, size_t buflen);
 
 /* message.c */
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags);

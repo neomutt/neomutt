@@ -50,7 +50,6 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
   char hdrreq[STRING];
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
-  char seq[SEQLEN+1];
   int msgno;
   IMAP_HEADER* h;
   int rc;
@@ -93,7 +92,6 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
     if (msgno + 1 > fetchlast)
     {
-      imap_make_sequence (seq, sizeof (seq));
       /*
        * Make one request for everything. This makes fetching headers an
        * order of magnitude faster if you have a large mailbox.
@@ -101,11 +99,12 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
        * If we get more messages while doing this, we make another
        * request for all the new messages.
        */
-      snprintf (buf, sizeof (buf), 
-	"%s FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)\r\n", 
-	seq, msgno + 1, msgend + 1, hdrreq);
+      snprintf (buf, sizeof (buf),
+        "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)", msgno + 1,
+        msgend + 1, hdrreq);
 
-      mutt_socket_write (CTX_DATA->conn, buf);
+      imap_cmd_start (CTX_DATA, buf);
+
       fetchlast = msgend + 1;
     }
 
@@ -165,7 +164,8 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	safe_free ((void**) &h);
       }
     }
-    while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
+    while ((msgno + 1) >= fetchlast && mutt_strncmp (CTX_DATA->seq, buf,
+      SEQLEN) != 0);
 
     /* in case we get new mail while fetching the headers */
     if (CTX_DATA->status == IMAP_NEW_MAIL)
@@ -184,11 +184,11 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
 int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 {
-  char seq[SEQLEN+1];
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc;
   long bytes;
+  int uid;
   IMAP_CACHE *cache;
 
   /* see if we already have the message in our cache */
@@ -221,19 +221,14 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   cache->path = safe_strdup (path);
   if (!(msg->fp = safe_fopen (path, "w+")))
   {
-    safe_free ((void **) &cache->path);
-    return (-1);
+    safe_free ((void**) &cache->path);
+    return -1;
   }
 
-  imap_make_sequence (seq, sizeof (seq));
-#if 0
-  snprintf (buf, sizeof (buf), "%s FETCH %d RFC822\r\n", seq,
-	    ctx->hdrs[msgno]->index + 1);
-#else
-  snprintf (buf, sizeof (buf), "%s UID FETCH %d RFC822\r\n", seq,
-	    HEADER_DATA(ctx->hdrs[msgno])->uid);
-#endif
-  mutt_socket_write (CTX_DATA->conn, buf);
+  snprintf (buf, sizeof (buf), "UID FETCH %d RFC822",
+    HEADER_DATA(ctx->hdrs[msgno])->uid);
+
+  imap_cmd_start (CTX_DATA, buf);
   do
   {
     if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
@@ -251,8 +246,14 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	  pc = imap_next_word (pc);
 	  if (pc[0] == '(')
 	    pc++;
-	  dprint (2, (debugfile, "Found FETCH word %s\n", pc));
-	  if (strncasecmp ("RFC822", pc, 6) == 0)
+	  if (strncasecmp ("UID", pc, 3) == 0)
+	  {
+	    pc = imap_next_word (pc);
+	    uid = atoi (pc);
+	    if (uid != HEADER_DATA(ctx->hdrs[msgno])->uid)
+	      mutt_error (_("The message index is incorrect. Try reopening the mailbox."));
+	  }
+	  else if (strncasecmp ("RFC822", pc, 6) == 0)
 	  {
 	    pc = imap_next_word (pc);
 	    if (imap_get_literal_count(pc, &bytes) < 0)
@@ -321,12 +322,11 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	goto bail;
     }
   }
-  while (mutt_strncmp (buf, seq, SEQLEN) != 0);
+  while (mutt_strncmp (buf, CTX_DATA->seq, SEQLEN) != 0);
 
   if (!imap_code (buf))
     goto bail;
     
-  
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
@@ -371,7 +371,6 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char mailbox[LONG_STRING]; 
-  char seq[16];
   size_t len;
   int c, last;
   IMAP_MBOX mx;
@@ -396,13 +395,10 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   }
   rewind (fp);
   
-  mutt_message _("Sending APPEND command ...");
-
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (buf, sizeof (buf), "%s APPEND %s {%d}\r\n", seq, mbox, len);
+  snprintf (buf, sizeof (buf), "APPEND %s {%d}", mbox, len);
 
-  mutt_socket_write (CTX_DATA->conn, buf);
+  imap_cmd_start (CTX_DATA, buf);
 
   do 
   {
@@ -418,7 +414,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
       return (-1);
     }
   }
-  while ((mutt_strncmp (buf, seq, SEQLEN) != 0) && (buf[0] != '+'));
+  while ((mutt_strncmp (buf, CTX_DATA->seq, SEQLEN) != 0) && (buf[0] != '+'));
 
   if (buf[0] != '+')
   {
@@ -462,7 +458,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     if (buf[0] == '*' && imap_handle_untagged (CTX_DATA, buf) != 0)
       return (-1);
   }
-  while (mutt_strncmp (buf, seq, SEQLEN) != 0);
+  while (mutt_strncmp (buf, CTX_DATA->seq, SEQLEN) != 0);
 
   if (!imap_code (buf))
   {

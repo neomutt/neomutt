@@ -98,13 +98,11 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
   char ibuf[LONG_STRING], obuf[LONG_STRING];
   unsigned char hmac_response[MD5_DIGEST_LEN];
   int len;
-  char seq[SEQLEN+1];
 
   dprint (2, (debugfile, "Attempting CRAM-MD5 login...\n"));
   mutt_message _("Authenticating (CRAM-MD5)...");
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (obuf, LONG_STRING, "%s AUTHENTICATE CRAM-MD5\r\n", seq);
-  mutt_socket_write (idata->conn, obuf);
+
+  imap_cmd_start (idata, "AUTHENTICATE CRAM-MD5");
 
   /* From RFC 2195:
    * The data encoded in the first ready response contains a presumptively
@@ -112,7 +110,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
    * primary host name of the server. The syntax of the unencoded form must
    * correspond to that of an RFC 822 'msg-id' [RFC822] as described in [POP3].
    */
-  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
+  if (mutt_socket_readln (ibuf, sizeof (ibuf), idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
@@ -184,41 +182,39 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
 
 static int imap_auth_anon (IMAP_DATA* idata)
 {
-  char ibuf[LONG_STRING], obuf[LONG_STRING];
-  char seq[SEQLEN+1];
+  char buf[LONG_STRING];
 
   dprint (2, (debugfile, "Attempting anonymous login...\n"));
   mutt_message _("Authenticating (anonymous)...");
-  imap_make_sequence (seq, sizeof (seq));
-  snprintf (obuf, LONG_STRING, "%s AUTHENTICATE ANONYMOUS\r\n", seq);
-  mutt_socket_write (idata->conn, obuf);
 
-  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
+  imap_cmd_start (idata, "AUTHENTICATE ANONYMOUS");
+
+  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
     return -1;
   }
 
-  if (ibuf[0] != '+')
+  if (buf[0] != '+')
   {
-    dprint (1, (debugfile, "Invalid response from server: %s\n", ibuf));
+    dprint (1, (debugfile, "Invalid response from server.\n"));
 
     return -1;
   }
 
-  strfcpy (ibuf, "ZHVtbXkK\r\n", sizeof (ibuf)); 	/* base64 ("dummy") */
+  strfcpy (buf, "ZHVtbXkK\r\n", sizeof (buf)); 	/* base64 ("dummy") */
 
-  mutt_socket_write (idata->conn, ibuf);
+  mutt_socket_write (idata->conn, buf);
 
-  if (mutt_socket_readln (ibuf, LONG_STRING, idata->conn) < 0)
+  if (mutt_socket_readln (buf, sizeof (buf), idata->conn) < 0)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
 
     return -1;
   }
 
-  if (imap_code (ibuf))
+  if (imap_code (buf))
   {
     dprint (2, (debugfile, "Anonymous login complete.\n"));
 
@@ -226,10 +222,9 @@ static int imap_auth_anon (IMAP_DATA* idata)
   }
 
   dprint (2, (debugfile, "Anonymous login failed.\n"));
+
   return -1;
 }
-
-
 
 /* imap_authenticate: loop until success or user abort. At each loop, all
  *   supported authentication methods are tried, from strongest to weakest.
