@@ -1,15 +1,15 @@
 # Hellenic support for mutt by
 #
-# Φάνης Δοκιανάκης <madf@hellug.gr>, 2000.
-# Νίκος Μαυρογιαννόπουλος <nmav@hellug.gr>
-# Σίμος Ξενιτέλλης <S.Xenitellis@rhbnc.ac.uk>
+# Copyright (C) 1999-2000 Fanis Dokianakis <madf@hellug.gr>
+# Nikos Mayrogiannopoulos <nmav@hellug.gr>
+# Simos Xenitellis <S.Xenitellis@rhbnc.ac.uk>
 #
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.3.10i\n"
+"Project-Id-Version: Mutt-1.3.11i\n"
 "POT-Creation-Date: 2000-11-01 14:13+0100\n"
-"PO-Revision-Date: 2000-10-15 12:00+0200\n"
+"PO-Revision-Date: 2000-11-02 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -2082,17 +2082,16 @@ msgstr "μετατόπιση του χαρακτήρα κάτω από τον δρομέα με τον προηγούμενο"
 
 #: keymap_alldefs.h:80
 msgid "capitalize the word"
-msgstr ""
+msgstr "μετατροπή λέξης σε κεφαλαία"
 
 #
 #: keymap_alldefs.h:81
-#, fuzzy
 msgid "convert the word to lower case"
-msgstr "μετακίνηση στη βάση της σελίδας"
+msgstr "μετατροπή λέξης σε πεζά"
 
 #: keymap_alldefs.h:82
 msgid "convert the word to upper case"
-msgstr ""
+msgstr "μετατροπή λέξης σε κεφαλαία"
 
 #
 #: keymap_alldefs.h:83
