@@ -467,7 +467,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx)
 
       if (mkdir (ctx->path, S_IRWXU))
       {
-	mutt_perror (tmp);
+	mutt_perror (ctx->path);
 	return (-1);
       }
 
