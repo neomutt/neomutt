@@ -912,14 +912,18 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       mutt_message (_("Marking %d messages deleted..."), deleted);
       snprintf (tmp, sizeof (tmp), "UID STORE %s +FLAGS.SILENT (\\Deleted)",
         buf);
+      /* mark these messages as unchanged so second pass ignores them. Done
+       * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
+      for (n = 0; n < ctx->msgcount; n++)
+	if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
+	  ctx->hdrs[n]->active = 0;
       if (imap_exec (idata, tmp, 0) != 0)
-        /* continue, let regular store try before giving up */
-        dprint(2, (debugfile, "imap_sync_mailbox: fast delete failed\n"));
-      else
-        /* mark these messages as unchanged so second pass ignores them */
-        for (n = 0; n < ctx->msgcount; n++)
-          if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
-            ctx->hdrs[n]->changed = 0;
+      {
+	mutt_error (_("Expunge failed"));
+	mutt_sleep (1);
+	rc = -1;
+	goto out;
+      }
     }
   }
 
@@ -928,6 +932,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   {
     if (ctx->hdrs[n]->changed)
     {
+      ctx->hdrs[n]->changed = 0;
+
       mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
         ctx->msgcount);
 
@@ -980,6 +986,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
         snprintf (buf, sizeof (buf), "UID STORE %d FLAGS.SILENT (%s)",
           HEADER_DATA (ctx->hdrs[n])->uid, flags);
 
+      /* dumb hack for bad UW-IMAP 4.7 servers spurious FLAGS updates */
+      ctx->hdrs[n]->active = 0;
+
       /* after all this it's still possible to have no flags, if you
        * have no ACL rights */
       if (*flags && (imap_exec (idata, buf, 0) != 0) &&
@@ -994,7 +1003,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	}
       }
 
-      ctx->hdrs[n]->changed = 0;
+      ctx->hdrs[n]->active = 1;
     }
   }
   ctx->changed = 0;

@@ -48,21 +48,23 @@ int imap_authenticate (IMAP_DATA* idata)
 {
   imap_auth_t* authenticator;
   char* methods;
-  char* comma;	/* should be colon  ;-) */
   char* method;
+  char* delim;
   int r = -1;
 
   if (ImapAuthenticators && *ImapAuthenticators)
   {
     /* Try user-specified list of authentication methods */
     methods = safe_strdup (ImapAuthenticators);
-    method = methods;
 
-    while (method)
+    for (method = methods; method; method = delim)
     {
-      comma = strchr (method, ':');
-      if (comma)
-	*comma++ = '\0';
+      delim = strchr (method, ':');
+      if (delim)
+	*delim++ = '\0';
+      if (! method[0])
+	continue;
+      
       dprint (2, (debugfile, "imap_authenticate: Trying method %s\n", method));
       authenticator = imap_authenticators;
 
@@ -79,8 +81,6 @@ int imap_authenticate (IMAP_DATA* idata)
 	
 	authenticator++;
       }
-
-      method = comma;
     }
 
     FREE (&methods);

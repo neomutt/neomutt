@@ -2150,24 +2150,27 @@ script with the <em/--enable-imap/ flag), it has the ability to work
 with folders located on a remote IMAP server.
 
 You can access the remote inbox by selecting the folder
-<tt/{imapserver}inbox/, where <tt/imapserver/ is the name of the IMAP
-server and <tt/inbox/ is the special name for your spool mailbox on
+<tt>imap://imapserver/INBOX</tt>, where <tt/imapserver/ is the name of the
+IMAP server and <tt/INBOX/ is the special name for your spool mailbox on
 the IMAP server. If you want to access another mail folder at the IMAP
-server, you should use <tt>{imapserver}path/to/folder</tt> where
+server, you should use <tt>imap://imapserver/path/to/folder</tt> where
 <tt>path/to/folder</tt> is the path of the folder you want to access.
 
 You can select an alternative port by specifying it with the server, ie:
-<tt/{imapserver:port}inbox/.
+<tt>imap://imapserver:port/INBOX</tt>.
 
 You can also specify different username for each folder, ie:
-<tt/{username@imapserver[:port]}inbox/.
+<tt>imap://username@imapserver[:port]/INBOX</tt>.
 
 If Mutt was compiled with SSL support (by running the <em/configure/
 script with the <em/--with-ssl/ flag), connections to IMAP servers
 can be encrypted. This naturally requires that the server supports
 SSL encrypted connections. To access a folder with IMAP/SSL, you should
-use <tt>{[username@]imapserver[:port]/ssl}path/to/folder</tt> as your 
+use <tt>imaps://[username@]imapserver[:port]/path/to/folder</tt> as your 
 folder path.
+
+Pine-compatible notation is also supported, ie
+<tt>{[username@]imapserver[:port][/ssl]}path/to/folder</tt>
 
 Note that not all servers use / as the hierarchy separator.  Mutt should
 correctly notice which separator is being used by the server and convert
@@ -2176,7 +2179,8 @@ paths accordingly.
 When browsing folders on an IMAP server, you can toggle whether to look
 at only the folders you are subscribed to, or all folders with the
 <em/toggle-subscribed/ command.  See also the 
-<ref id="imap&lowbar;list&lowbar;subscribed" name="&dollar;imap&lowbar;list&lowbar;subscribed"> variable.
+<ref id="imap&lowbar;list&lowbar;subscribed"
+name="&dollar;imap&lowbar;list&lowbar;subscribed"> variable.
 
 Polling for new mail on an IMAP server can cause noticeable delays. So, you'll
 want to carefully tune the
@@ -2249,6 +2253,11 @@ There are a few variables which control authentication:
 <item><ref id="imap&lowbar;pass" name="&dollar;imap&lowbar;pass"> - a
   password which you may preset, used by all authentication methods where
   a password is needed.
+<item><ref id="imap&lowbar;authenticators"
+  name="&dollar;imap&lowbar;authenticators"> - a colon-delimited list of IMAP
+  authentication methods to try, in the order you wish to try them. If
+  specified, this overrides mutt's default (attempt everything, in the order
+  listed above).
 </itemize>
 
 <sect1>Start a WWW Browser on URLs (EXTERNAL)<label id="urlview">
