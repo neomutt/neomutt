@@ -40,13 +40,13 @@
 static const char *ReachingUs = N_("\
 To contact the developers, please mail to <mutt-dev@mutt.org>.\n");
 
-static const char Notice = N_("\
+static const char *Notice = N_("\
 Copyright (C) 1996-9 Michael R. Elkins and others.\n\
 Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n\
 Mutt is free software, and you are welcome to redistribute it\n\
 under certain conditions; type `mutt -vv' for details.\n");
 
-static const char Copyright = N_("\
+static const char *Copyright = N_("\
 Copyright (C) 1996-9 Michael R. Elkins <me@cs.hmc.edu>\n\
 Copyright (C) 1996-9 Brandon Long <blong@fiction.net>\n\
 Copyright (C) 1997-9 Thomas Roessler <roessler@guug.de>\n\
