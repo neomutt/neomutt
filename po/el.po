@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.1.2i\n"
-"POT-Creation-Date: 1999-02-09 13:20+0200\n"
+"POT-Creation-Date: 1999-09-02 13:20+0200\n"
 "PO-Revision-Date: 2000-01-19 12:00+0200\n"
 "Last-Translator: Φάνης Δοκιανάκης <madf@hellug.gr>\n"
 "Language-Team: Greek <el@li.org>\n"
@@ -1627,7 +1627,8 @@ msgstr "αλλαγή επανακωδικοποίησης αυτής της προσάρτησης"
 
 #: keymap_defs.h:39
 msgid "recode this attachment to/from the local charset"
-msgstr "επανακωδικοποίηση αυτής της προσάρτησης σε/από αυτό το τοπικό σετ χαρακτ."
+msgstr ""
+"επανακωδικοποίηση αυτής της προσάρτησης σε/από αυτό το τοπικό σετ χαρακτ."
 
 #
 #: keymap_defs.h:40
@@ -3279,7 +3280,8 @@ msgstr "ID κλειδιού: 0x%s"
 
 #: pgpkey.c:533
 msgid "This key can't be used: expired/disabled/revoked."
-msgstr "Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
+msgstr ""
+"Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
 
 #
 # pgpkey.c:257
@@ -3944,4 +3946,3 @@ msgstr "Διαγραφή στο %s..."
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Σύνδεση στο %s..."
-
