@@ -463,7 +463,7 @@ FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to)
 {
   struct fgetconv_s *fc;
   iconv_t cd = (iconv_t)-1;
-  const char *repls[] = { "\357\277\275", "?", 0 };
+  static const char *repls[] = { "\357\277\275", "?", 0 };
 
   if (from && to)
     cd = mutt_iconv_open (to, from);
