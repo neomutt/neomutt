@@ -20,7 +20,7 @@ WHERE void (*mutt_error) (const char *, ...);
 
 WHERE CONTEXT *Context;
 
-WHERE char Errorbuf[SHORT_STRING];
+WHERE char Errorbuf[STRING];
 
 #if defined(DL_STANDALONE) && defined(USE_DOTLOCK)
 WHERE char *MuttDotlock;
