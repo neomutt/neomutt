@@ -44,11 +44,11 @@
 #include <errno.h>
 
 static struct mapping_t AttachHelp[] = {
-  { "Exit",  OP_EXIT },
-  { "Save",  OP_SAVE },
-  { "Pipe",  OP_PIPE },
-  { "Print", OP_PRINT },
-  { "Help",  OP_HELP },
+  { N_("Exit"),  OP_EXIT },
+  { N_("Save"),  OP_SAVE },
+  { N_("Pipe"),  OP_PIPE },
+  { N_("Print"), OP_PRINT },
+  { N_("Help"),  OP_HELP },
   { NULL }
 };
 

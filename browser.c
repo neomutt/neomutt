@@ -50,10 +50,10 @@ struct browser_state
 };
 
 static struct mapping_t FolderHelp[] = {
-  { "Exit",  OP_EXIT },
-  { "Chdir", OP_CHANGE_DIRECTORY },
-  { "Mask",  OP_ENTER_MASK },
-  { "Help",  OP_HELP },
+  { N_("Exit"),  OP_EXIT },
+  { N_("Chdir"), OP_CHANGE_DIRECTORY },
+  { N_("Mask"),  OP_ENTER_MASK },
+  { N_("Help"),  OP_HELP },
   { NULL }
 };
 

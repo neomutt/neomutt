@@ -28,9 +28,9 @@
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
 
 static struct mapping_t AliasHelp[] = {
-  { "Exit",   OP_EXIT },
-  { "Select", OP_GENERIC_SELECT_ENTRY },
-  { "Help",   OP_HELP },
+  { N_("Exit"),   OP_EXIT },
+  { N_("Select"), OP_GENERIC_SELECT_ENTRY },
+  { N_("Help"),   OP_HELP },
   { NULL }
 };
 

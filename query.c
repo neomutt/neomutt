@@ -40,12 +40,12 @@ typedef struct entry
 } ENTRY;
 
 static struct mapping_t QueryHelp[] = {
-  { "Exit",   OP_EXIT },
-  { "Mail",   OP_MAIL },
-  { "New Query",  OP_QUERY },
-  { "Make Alias", OP_CREATE_ALIAS },
-  { "Search", OP_SEARCH },
-  { "Help",   OP_HELP },
+  { N_("Exit"),   OP_EXIT },
+  { N_("Mail"),   OP_MAIL },
+  { N_("New Query"),  OP_QUERY },
+  { N_("Make Alias"), OP_CREATE_ALIAS },
+  { N_("Search"), OP_SEARCH },
+  { N_("Help"),   OP_HELP },
   { NULL }
 };
 

@@ -6,13 +6,26 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-01 17:06+0200\n"
+"POT-Creation-Date: 1998-10-01 19:00+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
+
+#: addrbook.c:31 browser.c:53 pager.c:1396 query.c:43 recvattach.c:47
+msgid "Exit"
+msgstr ""
+
+#: addrbook.c:32
+msgid "Select"
+msgstr ""
+
+#: addrbook.c:33 browser.c:56 compose.c:70 curs_main.c:234 pager.c:1451
+#: pgpkey.c:180 query.c:48 recvattach.c:51
+msgid "Help"
+msgstr ""
 
 #: addrbook.c:131
 msgid "You have no aliases!"
@@ -106,6 +119,14 @@ msgstr ""
 
 #: attach.c:897
 msgid "I don't know how to print that!"
+msgstr ""
+
+#: browser.c:54
+msgid "Chdir"
+msgstr ""
+
+#: browser.c:55
+msgid "Mask"
 msgstr ""
 
 #: browser.c:344 browser.c:669
@@ -300,7 +321,7 @@ msgstr ""
 msgid "Decrypt-copy"
 msgstr ""
 
-#: commands.c:578
+#: commands.c:578 curs_main.c:230 recvattach.c:48
 msgid "Save"
 msgstr ""
 
@@ -331,6 +352,22 @@ msgstr ""
 
 #: commands.c:746
 msgid "Messages printed"
+msgstr ""
+
+#: compose.c:63
+msgid "Send"
+msgstr ""
+
+#: compose.c:64
+msgid "Abort"
+msgstr ""
+
+#: compose.c:68 pager.c:1402
+msgid "Attach"
+msgstr ""
+
+#: compose.c:69
+msgid "Descrip"
 msgstr ""
 
 #: compose.c:97
@@ -524,6 +561,30 @@ msgstr ""
 
 #: curs_main.c:220
 msgid "Changes to folder will not be written."
+msgstr ""
+
+#: curs_main.c:227
+msgid "Quit"
+msgstr ""
+
+#: curs_main.c:228 pager.c:1403
+msgid "Del"
+msgstr ""
+
+#: curs_main.c:229
+msgid "Undel"
+msgstr ""
+
+#: curs_main.c:231 query.c:44
+msgid "Mail"
+msgstr ""
+
+#: curs_main.c:232 pager.c:1404
+msgid "Reply"
+msgstr ""
+
+#: curs_main.c:233
+msgid "Group"
 msgstr ""
 
 #: curs_main.c:398
@@ -731,63 +792,63 @@ msgstr ""
 msgid "Clear %s flag"
 msgstr ""
 
-#: handler.c:126
+#: handler.c:127
 msgid "[-- Error: unexpected end of file! --]\n"
 msgstr ""
 
 #. didn't find anything that we could display!
-#: handler.c:878
+#: handler.c:882
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 
-#: handler.c:993
+#: handler.c:997
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr ""
 
-#: handler.c:1006
+#: handler.c:1010
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr ""
 
-#: handler.c:1072
+#: handler.c:1076
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr ""
 
-#: handler.c:1074
+#: handler.c:1078
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr ""
 
-#: handler.c:1111 handler.c:1134
+#: handler.c:1115 handler.c:1138
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr ""
 
-#: handler.c:1235
+#: handler.c:1239
 msgid "Error: multipart/signed has no protocol."
 msgstr ""
 
-#: handler.c:1247
+#: handler.c:1251
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr ""
 
-#: handler.c:1289
+#: handler.c:1293
 msgid "Unable to open temporary file!"
 msgstr ""
 
-#: handler.c:1348
+#: handler.c:1352
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr ""
 
-#: handler.c:1353
+#: handler.c:1357
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr ""
 
-#: handler.c:1355
+#: handler.c:1359
 msgid "(need 'view-attachments' bound to key!)"
 msgstr ""
 
@@ -2030,8 +2091,16 @@ msgstr ""
 msgid "Mailbox is read-only."
 msgstr ""
 
-#: pager.c:1451 pgpkey.c:180
-msgid "Help"
+#: pager.c:1397
+msgid "PrevPg"
+msgstr ""
+
+#: pager.c:1398
+msgid "NextPg"
+msgstr ""
+
+#: pager.c:1405
+msgid "Next"
 msgstr ""
 
 #. emulate "less -q" and don't go on to the next message.
@@ -2431,6 +2500,18 @@ msgstr ""
 msgid "Illegal PGP header"
 msgstr ""
 
+#: query.c:45
+msgid "New Query"
+msgstr ""
+
+#: query.c:46
+msgid "Make Alias"
+msgstr ""
+
+#: query.c:47
+msgid "Search"
+msgstr ""
+
 #: query.c:91
 msgid "Waiting for response..."
 msgstr ""
@@ -2451,6 +2532,14 @@ msgstr ""
 #: query.c:267 query.c:293
 #, c-format
 msgid "Query '%s'"
+msgstr ""
+
+#: recvattach.c:49
+msgid "Pipe"
+msgstr ""
+
+#: recvattach.c:50
+msgid "Print"
 msgstr ""
 
 #: recvattach.c:309

@@ -1393,16 +1393,16 @@ mutt_pager (const char *banner, const char *fname, int do_color, pager_t *extra)
   					 * while inside the pager... */
 
   static struct mapping_t PagerHelp[] = {
-    { "Exit",	OP_PAGER_EXIT },
-    { "PrevPg",	OP_PREV_PAGE },
-    { "NextPg  ", OP_NEXT_PAGE },
+    { N_("Exit"),	OP_PAGER_EXIT },
+    { N_("PrevPg"),	OP_PREV_PAGE },
+    { N_("NextPg"), OP_NEXT_PAGE },
     { NULL,	0 }
   };
   static struct mapping_t PagerHelpExtra[] = {
-    { "Attach",	OP_VIEW_ATTACHMENTS },
-    { "Del",	OP_DELETE },
-    { "Reply",	OP_REPLY },
-    { "Next  ",	OP_MAIN_NEXT_UNDELETED },
+    { N_("Attach"),	OP_VIEW_ATTACHMENTS },
+    { N_("Del"),	OP_DELETE },
+    { N_("Reply"),	OP_REPLY },
+    { N_("Next"),	OP_MAIN_NEXT_UNDELETED },
     { NULL,	0 }
   };
 

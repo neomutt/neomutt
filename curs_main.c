@@ -224,14 +224,14 @@ static int mx_toggle_write (CONTEXT *ctx)
 }
 
 struct mapping_t IndexHelp[] = {
-  { "Quit",  OP_QUIT },
-  { "Del",   OP_DELETE },
-  { "Undel", OP_UNDELETE },
-  { "Save",  OP_SAVE },
-  { "Mail",  OP_MAIL },
-  { "Reply", OP_REPLY },
-  { "Group", OP_GROUP_REPLY },
-  { "Help",  OP_HELP },
+  { N_("Quit"),  OP_QUIT },
+  { N_("Del"),   OP_DELETE },
+  { N_("Undel"), OP_UNDELETE },
+  { N_("Save"),  OP_SAVE },
+  { N_("Mail"),  OP_MAIL },
+  { N_("Reply"), OP_REPLY },
+  { N_("Group"), OP_GROUP_REPLY },
+  { N_("Help"),  OP_HELP },
   { NULL }
 };
 
