@@ -1284,7 +1284,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
       addch (c);
       col++;
     }
-    else if (iscntrl (c) && c < '@')
+    else if (iscntrl (c) && (c < '@' || c == 127))
     {
       if ((c != '\r' && c !='\n') || (buf[ch+1] != '\n' && buf[ch+1] != '\0'))
       {
@@ -1297,7 +1297,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 	}
 
 	addch ('^');
-	addch (c + '@');
+	addch ((c + '@') & 127);
 	col += 2;
       }
     }
@@ -1314,7 +1314,7 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
       if (ISSPACE (c))
 	addch (c);		/* unbreakable space */
       else
-	addch ('.');
+	addch ('?');
       col++;
     }
   }

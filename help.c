@@ -87,14 +87,14 @@ mutt_compile_help (char *buf, size_t buflen, int menu, struct mapping_t *items)
 
 static int print_macro (FILE *f, int maxchar, const char **macro)
 {
-  int c = **macro;
+  int c = (unsigned char) **macro;
   int n = maxchar;
 
   while (c)
   {
     if (!IsPrint(c))
     {
-      if (c >= ' ')
+      if (c >= ' ' && c != 127)
 	c = '?';
       else if (n < 2)
 	c = 0;
@@ -121,7 +121,7 @@ static int print_macro (FILE *f, int maxchar, const char **macro)
 	    break;
 	  default:
 	    fputc ('^', f);
-	    c += '@';
+	    c = (c + '@') & 127;
 	    break;
 	}
       }
