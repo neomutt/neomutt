@@ -906,7 +906,7 @@ static int address_header_decode (char **h)
     default: return 0;    
   }
 
-  if ((a = rfc822_parse_adrlist (a, s + l + 1)) == NULL)
+  if ((a = rfc822_parse_adrlist (a, s + l)) == NULL)
     return 0;
   
   mutt_addrlist_to_local (a);
