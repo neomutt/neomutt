@@ -26,6 +26,7 @@
 #include "sha.h"
 #include "mutt.h"
 #include "pgp.h"
+#include "charset.h"
 
 #define CHUNKSIZE 1024
 
@@ -726,6 +727,7 @@ static KEYINFO *pgp_read_keyring(const char *fname)
   KEYINFO *supkey = NULL;
   PGPUID *uid = NULL;
   LIST **addr = NULL;
+  CHARSET *chs = mutt_get_charset(Charset);
   
   if(!(fp = fopen(fname, "r")))
   {
@@ -796,6 +798,7 @@ static KEYINFO *pgp_read_keyring(const char *fname)
 	chr = safe_malloc(l);
 	memcpy(chr, buff + 1, l - 1);
 	chr[l-1] = '\0';
+	mutt_decode_utf8_string(chr, chs);
 	*addr = mutt_new_list();
 	(*addr)->data = safe_malloc(sizeof(PGPUID));
 	uid = (PGPUID *) (*addr)->data;
