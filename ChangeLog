@@ -1,3 +1,7 @@
+2004-06-26 08:45:29  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c: Fix #1909.
+
 2004-06-23 08:09:43  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Zero out the PGP passphrase before asking for a new one.
