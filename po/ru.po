@@ -72,7 +72,7 @@ msgstr "Такой псевдоним уже присутствует!"
 
 #: alias.c:252
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr ""
+msgstr "Предупреждение: Этот псевдоним может не работать. Исправить?"
 
 #: alias.c:273
 msgid "Address: "
@@ -259,9 +259,8 @@ msgid "Error trying to view file"
 msgstr "Ошибка при попытке просмотра файла"
 
 #: buffy.c:440
-#, fuzzy
 msgid "New mail in "
-msgstr "Новая почта в почтовом ящике %s."
+msgstr "Новая почта в "
 
 #: color.c:322
 #, c-format
@@ -584,16 +583,14 @@ msgstr ""
 "S/MIME (e)шифр, (s)подпись, (w)шифр как, (a)подпись как, (b)оба, (f)отказ? "
 
 #: compose.c:232
-#, fuzzy
 msgid "eswabf"
-msgstr "esabf"
+msgstr "eswabf"
 
 #: compose.c:240
-#, fuzzy
 msgid ""
 "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
 msgstr ""
-"1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, (f)отказаться? "
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, (f)отказаться? "
 
 #: compose.c:242
 msgid "12345f"
@@ -1111,9 +1108,9 @@ msgid "could not write temporary mail folder: %s"
 msgstr "ошибка записи во временный почтовый ящик: %s"
 
 #: editmsg.c:101
-#, fuzzy, c-format
+#, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "ошибка записи во временный почтовый ящик: %s"
+msgstr "не удалось усечь временный почтовый ящик: %s"
 
 #: editmsg.c:116
 msgid "Message file is empty!"
@@ -1735,9 +1732,8 @@ msgstr ""
 "(только IMAP)"
 
 #: keymap_alldefs.h:17
-#, fuzzy
 msgid "list mailboxes with new mail"
-msgstr "Нет почтовых ящиков с новой почтой."
+msgstr "список почтовых ящиков с новой почтой"
 
 #: keymap_alldefs.h:18
 msgid "change directories"
@@ -2117,9 +2113,8 @@ msgid "jump to the next new message"
 msgstr "следующее новое сообщение"
 
 #: keymap_alldefs.h:112
-#, fuzzy
 msgid "jump to the next new or unread message"
-msgstr "следующее непрочитанное сообщение"
+msgstr "следующее новое или непрочитанное сообщение"
 
 #: keymap_alldefs.h:113
 msgid "jump to the next subthread"
@@ -2158,9 +2153,8 @@ msgid "jump to the previous new message"
 msgstr "предыдущее новое сообщение"
 
 #: keymap_alldefs.h:122
-#, fuzzy
 msgid "jump to the previous new or unread message"
-msgstr "предыдущее непрочитанное сообщение"
+msgstr "предыдущее новое или непрочитанное сообщение"
 
 #: keymap_alldefs.h:123
 msgid "jump to the previous unread message"
@@ -2374,7 +2368,7 @@ msgstr "показать вложения"
 
 #: keymap_alldefs.h:175
 msgid "display the keycode for a key press"
-msgstr ""
+msgstr "показать код нажатой клавиши"
 
 #: keymap_alldefs.h:176
 msgid "show currently active limit pattern"
@@ -2473,14 +2467,13 @@ msgstr ""
 "Чтобы сообщить об ошибке, используйте программу flea(1).\n"
 
 #: main.c:44
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins и другие.\n"
+"Copyright (C) 1996-2002 Michael R. Elkins и другие.\n"
 "Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
 "подробной информации введите `mutt -vv'.\n"
 "Mutt является свободным программным обеспечением.  Вы можете\n"
@@ -2488,7 +2481,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:50
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2515,13 +2507,13 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2001 Michael R. Elkins <me@cs.hmc.edu>\n"
-"Copyright (C) 1996-2001 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2001 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2001 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>\n"
-"Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2001 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
+"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
 "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
 "здесь людьми.\n"
@@ -2541,7 +2533,6 @@ msgstr ""
 "   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2581,12 +2572,15 @@ msgstr ""
 "<file> ]\n"
 "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
 "[...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+"[...]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
 "[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "параметры:\n"
+"  -A <alias>\tраскрыть данный псевдоним\n"
 "  -a <file>\tвложить файл в сообщение\n"
 "  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
 "  -c <address>\tуказать carbon-copy (CC) адрес\n"
@@ -2801,7 +2795,7 @@ msgstr "Читается %s... %d"
 
 #: mh.c:1042
 msgid "maildir_commit_message(): unable to set time on file"
-msgstr ""
+msgstr "maildir_commit_message(): не удалось установить время файла"
 
 #: muttlib.c:862
 msgid "File is a directory, save under it?"
@@ -3286,9 +3280,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:703
-#, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Внутренняя ошибка.  Сообщите о ней по адресу <roessler@guug.de>."
+msgstr "Внутренняя ошибка. Сообщите о ней по адресу <roessler@does-not-exist.org>."
 
 #: pgp.c:763
 msgid ""
@@ -3533,9 +3526,8 @@ msgid "Illegal S/MIME header"
 msgstr "Неверный S/MIME-заголовок"
 
 #: postpone.c:565
-#, fuzzy
 msgid "Decryption failed."
-msgstr "Регистрация не удалась."
+msgstr "Расшифровать не удалась."
 
 #: query.c:45
 msgid "New Query"
@@ -3831,9 +3823,8 @@ msgid "Recall postponed message?"
 msgstr "Продолжить отложенное сообщение?"
 
 #: send.c:1338
-#, fuzzy
 msgid "Edit forwarded message?"
-msgstr "Подготовка пересылаемого сообщения..."
+msgstr "Редактировать пересылаемое сообщение?"
 
 #: send.c:1357
 msgid "Abort unmodified message?"
@@ -4077,6 +4068,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1085
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "ewsabf"
-#~ msgstr "ewsabf"
