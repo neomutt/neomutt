@@ -69,11 +69,12 @@ like sh and bash: Prepend the name of the environment by a dollar
 .PP
 .nf
 \fBalias\fP \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP [ ... ]]
-\fBunalias\fP \fIkey\fP
+\fBunalias\fP [\fB * \fP | \fIkey\fP ]
 .fi
 .IP
 \fBalias\fP defines an alias \fIkey\fP for the given addresses.
-\fBunalias\fP removes the alias corresponding to the given \fIkey\fP.
+\fBunalias\fP removes the alias corresponding to the given \fIkey\fP or
+all aliases when \(lq\fB*\fP\(rq is used as an argument.
 .TP
 \fBalternative_order\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
 This command permits you to define an order of preference which is

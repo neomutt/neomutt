@@ -828,9 +828,9 @@ a short string to a full address.
 <bf/Note:/ if you want to create an alias for a group (by specifying more than
 one address), you <bf/must/ separate the addresses with a comma (``,'').
 
-To remove an alias or aliases:
+To remove an alias or aliases (``*'' means all aliases):
 
-<tt/unalias/ <em/key/ &lsqb; <em/key/ <em/.../ &rsqb;
+<tt/unalias/ &lsqb; * | <em/key/ <em/.../ &rsqb;
 
 <tscreen><verb>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
@@ -2864,7 +2864,7 @@ The following are the commands understood by mutt.
 <item>
 <tt><ref id="alias" name="alias"></tt> <em/key/ <em/address/ &lsqb; , <em/address/, ... &rsqb;
 <item>
-<tt><ref id="alias" name="unalias"></tt> <em/key/ &lsqb; <em/key/ ... &rsqb;
+<tt><ref id="alias" name="unalias"></tt> &lsqb; * | <em/key/ ... &rsqb;
 <item>
 <tt><ref id="alternative_order" name="alternative&lowbar;order"></tt> <em/mimetype/ &lsqb; <em/mimetype/ ... &rsqb;
 <item>

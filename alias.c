@@ -418,7 +418,7 @@ int mutt_alias_complete (char *s, size_t buflen)
 
   /* remove any aliases marked for deletion */
   a_list = NULL;
-  for (a_cur = Aliases; a_cur; a_cur = a_cur->next)
+  for (a_cur = Aliases; a_cur;)
   {
     if (a_cur->del)
     {
@@ -436,7 +436,10 @@ int mutt_alias_complete (char *s, size_t buflen)
 	a_cur = Aliases;
     }
     else
+    {
       a_list = a_cur;
+      a_cur  = a_cur->next;
+    }
   }
   
   return 0;
