@@ -1,3 +1,27 @@
+Major changes since 1.2
+-----------------------
+
+- The $send_charset variable now contains a colon-separated list of
+  possible send character sets, by default it's
+  us-ascii:iso-8859-1:utf-8.  Mutt selects the first character set
+  which can be used to encode the message you are going to send
+  without loss.
+
+- Mutt now tries to automagically determine the $charset variable's
+  value from the locale you are using.  It may, however, fail, so
+  please check this value by typing ":set ?charset" into mutt, and
+  possibly adding an appropriate entry to your .muttrc file.
+
+- The $to_chars variable has grown.  In particular, you will notice
+  that mailing list messages are now marked with an "L" character.
+  If you don't like this behaviour, just add this line to your
+  .muttrc:
+  
+  set   to_chars=" +TCF "	# Don't tag list mail in the index
+  
+  This restores the original behaviour.
+
+
 Major changes since 1.1
 -----------------------
 
