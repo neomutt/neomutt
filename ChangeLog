@@ -1,3 +1,11 @@
+2003-03-03 08:26:21  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* contrib/sample.muttrc, doc/manual.sgml.head, recvcmd.c,
+	commands.c, init.h, mutt.h: Introduce a new option named
+	$bounce, and fix some inconsistencies in the messages created
+	when bouncing.	Based on work done by Thomas Glanzmann
+	<sithglan@stud.uni-erlangen.de>.
+
 2003-02-25 22:00:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* commands.c, recvcmd.c: Fix some (too lazy and tired to do all)
