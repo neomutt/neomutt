@@ -71,7 +71,8 @@ install: all
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
 	$(INSTALL) -m 644 $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
-	$(INSTALL) -m 644 $(srcdir)/muttbug.man	$(DESTDIR)$(mandir)/man1/muttbug.1
+	$(INSTALL) -m 644 $(srcdir)/muttbug.man	$(DESTDIR)$(mandir)/man1/flea.1
+	echo ".so $(mandir)/man1/flea.1" > $(DESTDIR)$(mandir)/man1/muttbug.1
 	$(INSTALL) -m 644 $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
@@ -95,7 +96,6 @@ uninstall:
 	-rm -rf $(DESTDIR)$(docdir)
 
 check:
-
 manual.txt: manual.sgml
 	if sgml2txt -c latin manual ; then \
 		uniq < manual.txt | expand > _manual.txt ; \
