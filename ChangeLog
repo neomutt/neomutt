@@ -1,3 +1,8 @@
+2005-01-11 11:09:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* send.c: send2-hook should also be executed after the first
+	time the message is edited by the user.
+
 2005-01-09 15:35:51  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/muttbug.man, muttbug.sh.in: Replace muttbug and its
