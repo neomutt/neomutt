@@ -1,0 +1,163 @@
+#!/bin/sh
+
+#
+#     File a bug against the Mutt mail user agent.
+#
+
+# 
+#     $Id$
+#
+
+#
+#     Copyright (c) 2000 Thomas Roessler <roessler@guug.de>
+#
+#
+#     This program is free software; you can redistribute it and/or modify
+#     it under the terms of the GNU General Public License as published by
+#     the Free Software Foundation; either version 2 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU General Public License for more details.
+# 
+#     You should have received a copy of the GNU General Public License
+#     along with this program; if not, write to the Free Software
+#     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+#
+
+SUBMIT="bugs@guug.de"
+
+
+include_file ()
+{
+	echo
+	echo "-- $1"
+	echo
+	sed -e 's/^-/- -/' $1
+}
+
+
+case `echo -n` in
+"") n=-n; c=   ;;
+ *) n=; c='\c' ;;
+esac
+ 
+
+SCRATCH=${TMPDIR-/tmp}/`basename $0`.`hostname`.$$
+
+mkdir ${SCRATCH} || \
+{ 
+	echo "`basename $0`: Can't create temporary directory." >& 2 ; 
+	exit 1 ; 
+}
+
+trap "rm -r -f ${SCRATCH} ; trap '' 0 ; exit" 0 1 2
+
+TEMPLATE=${SCRATCH}/template.txt
+
+MUTTVERSION="`mutt -v | head -1 | awk '{print $2}' | tr -d i`"
+
+exec > /dev/tty
+exec < /dev/tty
+
+echo "Please enter a one-line description of the problem you experience:"
+echo $n "> $c"
+read SUBJECT
+
+echo $n "Do you want to include your personal mutt configuration files? [Y|n]$c"
+read personal
+case "$personal" in
+[nN]*)  personal=no  ;;
+    *)  personal=yes ;;
+esac
+
+echo $n "Do you want to include your system's global mutt configuration file? [Y|n]$c"
+read global
+case "$global" in
+[nN]*)  global=no  ;;
+    *)	global=yes ;;
+esac
+
+exec > ${TEMPLATE}
+
+echo "Subject: mutt-$MUTTVERSION: $SUBJECT"
+echo "To: $SUBMIT"
+echo "Cc: $LOGNAME"
+echo
+echo "Package: mutt"
+echo "Version: $MUTTVERSION"
+echo 
+echo "-- Please type your report below this line"
+echo
+echo
+echo
+
+echo
+echo "-- Version information"
+echo
+mutt -v
+
+if test "$personal" = "yes" ; then
+	CANDIDATES=".muttrc-${MUTTVERSION} .muttrc .mutt/muttrc-${MUTTVERSION} .mutt/muttrc"
+	MATCHED="none"
+	for f in $CANDIDATES; do
+		if test -f "${HOME}/$f" ; then
+			MATCHED="${HOME}/$f"
+			break
+	        fi
+	done
+	
+	if test "$MATCHED" = "none" ; then
+		echo "Warning: Can't find your personal .muttrc." >&2
+	else
+		include_file $MATCHED
+	fi
+fi
+
+if test "$global" = "yes" ; then
+	CANDIDATES="Muttrc-${MUTTVERSION} Muttrc"
+	DIRECTORIES="@sysconfdir@ @sharedir@"
+	MATCHED="none"
+	for d in $DIRECTORIES ; do
+		for f in $CANDIDATES; do
+			if test -f $d/$f ; then
+				MATCHED="$d/$f"
+				break
+			fi
+		done
+		test "$MATCHED" = "none" || break
+	done
+	
+	if test "$MATCHED" = "none" ; then
+		echo "Warning: Can't find global Muttrc." >&2
+	else
+		include_file $MATCHED
+	fi
+fi
+
+exec > /dev/tty
+
+cp $TEMPLATE $SCRATCH/bug.txt
+
+input="e"
+while : ; do
+	if test "$input" = "e" ; then
+		${VISUAL-vi} $SCRATCH/bug.txt
+		if cmp $SCRATCH/bug.txt ${TEMPLATE} > /dev/null ; then
+			echo "Warning: Bug report was not modified!"
+		fi
+	fi
+	
+	echo $n "Submit, Edit, Print, Quit? [S|e|p|q]$c"
+	read _input
+	input="`echo $_input | tr EPSQ epsq`"
+	case $input in
+	e*)	;;
+	p*)	${PAGER-more} $SCRATCH/bug.txt ;;
+	s*|"")	@SENDMAIL@ -t < $SCRATCH/bug.txt ; exit ;;
+	q*)	exit
+	esac
+done
+

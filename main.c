@@ -38,7 +38,8 @@
 #endif
 
 static const char *ReachingUs = N_("\
-To contact the developers, please mail to <mutt-dev@mutt.org>.\n");
+To contact the developers, please mail to <mutt-dev@mutt.org>.\n\
+To report a bug, please use the muttbug utility.\n");
 
 static const char *Notice = N_("\
 Copyright (C) 1996-2000 Michael R. Elkins and others.\n\

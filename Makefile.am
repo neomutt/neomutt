@@ -23,7 +23,7 @@ endif
 
 BUILT_SOURCES = keymap_defs.h
 
-bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
+bin_PROGRAMS = mutt muttbug @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
@@ -88,6 +88,10 @@ ACLOCAL_AMFLAGS = -I m4
 LDADD = @LIBOBJS@ @INTLLIBS@
 
 OPS=@OPS@
+
+muttbug: muttbug.sh
+	cp muttbug.sh muttbug
+	chmod +x muttbug
 
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
