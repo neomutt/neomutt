@@ -357,7 +357,8 @@ int mutt_buffy_check (int force)
 	break;
 
       case M_MH:
-	tmp->new = mh_buffy (tmp->path);
+	if ((tmp->new = mh_buffy (tmp->path)) > 0)
+	  BuffyCount++;
 	break;
 	
 #ifdef USE_IMAP
