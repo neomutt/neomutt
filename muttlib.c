@@ -917,6 +917,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
   size_t wlen, count, len;
 
+  prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
   wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
     
