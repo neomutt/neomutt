@@ -508,7 +508,7 @@ hdr_format_str (char *dest,
 	else if (is_index && threads)
 	  snprintf (dest, destlen, buf2, " ");
 	else
-	  snprintf (dest, destlen, "");
+	  *dest = '\0';
       }
       else
       {
