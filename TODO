@@ -57,4 +57,19 @@ Problems are listed in approximate order of priority.
 
 - handle message/partial reconstruction
 
+- make patterns generic (I have patches for this -tlr), and
+  introduce generic menu limiting, menu pattern searching, and the
+  like.  
+
+  Note: This still requires some thought, since we'd have to store
+  per-entry data in the menu structure.  As an alternative, we could
+  extend the tag method to do something to more general flags. The
+  latter approach would make the implementation of propper
+  tag-prefix behaviour more simple: Functions should only be applied
+  when a message is tagged and visible.  Additionally, we must not
+  access a menu's max field directly any more: Adding an entry to a
+  menu will require re-allocating and possibly updating the v2r
+  array.  How do we handle "in-the-middle additions" properly?  Do
+  they happen at all?
+
 $Id$
