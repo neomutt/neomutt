@@ -1,9 +1,9 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.3 (CVS 2000-02-11)\n"
-"POT-Creation-Date: 2000-02-15 09:44+0100\n"
-"PO-Revision-Date: 2000-02-12 13:53:00+0100\n"
+"Project-Id-Version: 1.1.4\n"
+"POT-Creation-Date: 2000-02-16 02:36+0100\n"
+"PO-Revision-Date: 2000-02-16 02:38:00+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1104,9 +1104,9 @@ msgid "Help for %s"
 msgstr "Hilfe für %s"
 
 #: hook.c:243
-#, fuzzy, c-format
+#, c-format
 msgid "unhook: unknown hook type: %s"
-msgstr "%s: Unbekannter Typ"
+msgstr "unhook: Unbekannter hook-Typ: %s"
 
 #: imap/auth.c:104
 msgid "Authenticating (CRAM-MD5)..."
@@ -1907,8 +1907,8 @@ msgid "jump to previous subthread"
 msgstr "Springe zum vorigen Diskussionsfadenteil"
 
 #: keymap_alldefs.h:110
-msgid "move to the last undelete message"
-msgstr "Springe zur letzten ungelöschten Nachricht"
+msgid "move to the previous undelete message"
+msgstr "Springe zur vorigen ungelöschten Nachricht"
 
 #: keymap_alldefs.h:111
 msgid "jump to the previous new message"
@@ -1971,238 +1971,234 @@ msgid "jump to the bottom of the message"
 msgstr "Springe zum Ende der Nachricht"
 
 #: keymap_alldefs.h:126
-msgid "return to the main-menu"
-msgstr "Kehre zum Hauptmenü zurück"
-
-#: keymap_alldefs.h:127
 msgid "toggle display of quoted text"
 msgstr "Schalte Anzeige von zitiertem Text ein/aus"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:127
 msgid "skip beyond quoted text"
 msgstr "Übergehe zitierten Text"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:128
 msgid "jump to the top of the message"
 msgstr "Springe zum Nachrichtenanfang"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:129
 msgid "pipe message/attachment to a shell command"
 msgstr "Bearbeite (pipe) Nachricht/Anhang mit Shell-Kommando"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:130
 msgid "move to the previous entry"
 msgstr "Gehe zum vorigen Eintrag"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:131
 msgid "scroll up one line"
 msgstr "Gehe eine Zeile nach oben"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:132
 msgid "move to the previous page"
 msgstr "Gehe zur vorigen Seite"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:133
 msgid "print the current entry"
 msgstr "Drucke aktuellen Eintrag"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:134
 msgid "query external program for addresses"
 msgstr "Externe Adressenabfrage"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:135
 msgid "append new query results to current results"
 msgstr "Hänge neue Abfrageergebnisse an"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:136
 msgid "save changes to mailbox and quit"
 msgstr "Speichere Änderungen in Mailbox und beende das Programm"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:137
 msgid "recall a postponed message"
 msgstr "Bearbeite eine zurückgestellte Nachricht"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:138
 msgid "clear and redraw the screen"
 msgstr "Erzeuge Bildschirmanzeige neu"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:139
 msgid "{internal}"
 msgstr "{intern}"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:140
 msgid "reply to a message"
 msgstr "Beantworte Nachricht"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:141
 msgid "use the current message as a template for a new one"
 msgstr "Verwende aktuelle Nachricht als Vorlage für neue Nachricht"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:142
 msgid "save message/attachment to a file"
 msgstr "Speichere Nachricht/Anhang in Datei"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:143
 msgid "search for a regular expression"
 msgstr "Suche nach regulärem Ausdruck"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:144
 msgid "search backwards for a regular expression"
 msgstr "Suche rückwärts nach regulärem Ausdruck"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:145
 msgid "search for next match"
 msgstr "Suche nächsten Treffer"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:146
 msgid "search for next match in opposite direction"
 msgstr "Suche nächsten Treffer in umgekehrter Richtung"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:147
 msgid "toggle search pattern coloring"
 msgstr "Schalte Suchtreffer-Hervorhebung ein/aus"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:148
 msgid "invoke a command in a subshell"
 msgstr "Rufe Kommando in Shell auf"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:149
 msgid "sort messages"
 msgstr "Sortiere Nachrichten"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:150
 msgid "sort messages in reverse order"
 msgstr "Sortiere Nachrichten in umgekehrter Reihenfolge"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:151
 msgid "tag the current entry"
 msgstr "Markiere aktuellen Eintrag"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
 msgstr "Wende nächste Funktion auf markierte Nachrichten an"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:153
 msgid "tag the current subthread"
 msgstr "Markiere aktuellen Diskussionsfadenteil"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:154
 msgid "tag the current thread"
 msgstr "Markiere aktuellen Diskussionsfaden"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:155
 msgid "toggle a message's 'new' flag"
 msgstr "Setze/entferne den \"neu\"-Indikator einer Nachricht"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:156
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "Schalte Sichern von Änderungen ein/aus"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:157
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "Schalte zwischen Mailboxen und allen Dateien um"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:158
 msgid "move to the top of the page"
 msgstr "Springe zum Anfang der Seite"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:159
 msgid "undelete the current entry"
 msgstr "Entferne Löschmarkierung vom aktuellen Eintrag"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:160
 msgid "undelete all messages in thread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfaden"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:161
 msgid "undelete all messages in subthread"
 msgstr "Entferne Löschmarkierung von allen Nachrichten im Diskussionsfadenteil"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:162
 msgid "show the Mutt version number and date"
 msgstr "Zeige Versionsnummer an"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:163
 msgid "view attachment using mailcap entry if necessary"
 msgstr "Zeige Anhang, wenn nötig via Mailcap"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:164
 msgid "show MIME attachments"
 msgstr "Zeige MIME-Anhänge"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:165
 msgid "show currently active limit pattern"
 msgstr "Zeige derzeit aktives Begrenzungsmuster"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:166
 msgid "collapse/uncollapse current thread"
 msgstr "Kollabiere/expandiere aktuellen Diskussionsfaden"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:167
 msgid "collapse/uncollapse all threads"
 msgstr "Kollabiere/expandiere alle Diskussionsfäden"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:168
 msgid "attach a PGP public key"
 msgstr "Hänge öffentlichen PGP-Schlüssel an"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:169
 msgid "show PGP options"
 msgstr "Zeige PGP-Optionen"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:170
 msgid "extract PGP public keys"
 msgstr "Extrahiere öffentliche PGP-Schlüssel"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:171
 msgid "wipe PGP passphrase from memory"
 msgstr "Entferne PGP-Mantra aus Speicher"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:172
 msgid "mail a PGP public key"
 msgstr "Verschicke öffentlichen PGP-Schlüssel"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:173
 msgid "verify a PGP public key"
 msgstr "Prüfe öffentlichen PGP-Schlüssel"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:174
 msgid "view the key's user id"
 msgstr "Zeige Nutzer-ID zu Schlüssel an"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:175
 msgid "make decrypted copy and delete"
 msgstr "Erzeuge dechiffrierte Kopie und lösche"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:176
 msgid "make decrypted copy"
 msgstr "Erzeuge dechiffrierte Kopie"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:177
 msgid "Accept the chain constructed"
 msgstr "Akzeptiere die erstellte Kette"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:178
 msgid "Append a remailer to the chain"
 msgstr "Hänge einen Remailer an die Kette an"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:179
 msgid "Insert a remailer into the chain"
 msgstr "Füge einen Remailer in die Kette ein"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:180
 msgid "Delete a remailer from the chain"
 msgstr "Lösche einen Remailer aus der Kette"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:181
 msgid "Select the previous element of the chain"
 msgstr "Wähle das vorhergehende Element der Kette aus"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:182
 msgid "Select the next element of the chain"
 msgstr "Wähle das nächste Element der Kette aus"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:183
 msgid "send the message through a mixmaster remailer chain"
 msgstr "Verschicke die Nachricht über eine Mixmaster Remailer Kette"
 
@@ -3536,6 +3532,9 @@ msgstr "Bezugsnachricht ist in der begenzten Sicht nicht verfügbar."
 #: thread.c:727
 msgid "Parent message is not available."
 msgstr "Bezugsnachricht ist nicht verfügbar."
+
+#~ msgid "return to the main-menu"
+#~ msgstr "Kehre zum Hauptmenü zurück"
 
 #~ msgid "Authenticating (GSSAPI)..."
 #~ msgstr "Authentifiziere (GSSAPI)..."
