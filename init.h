@@ -112,6 +112,8 @@ struct option_t MuttVars[] = {
   { "folder_format",	DT_STR,	 R_NONE, UL &FolderFormat, UL "%N %F %2l %-8.8u %-8.8g %8s %d %f" },
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
   { "force_name",	DT_BOOL, R_NONE, OPTFORCENAME, 0 },
+  { "forward_attachment", DT_BOOL, R_NONE, OPTFORWATTACH, 0 },
+  { "forw_attachment",  DT_SYN, R_NONE, UL "forward_attachment", 0 },
   { "forward_decode",	DT_BOOL, R_NONE, OPTFORWDECODE, 1 },
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
   { "forward_weed",	DT_BOOL, R_NONE, OPTFORWWEEDHEADER, 1 },

@@ -468,7 +468,11 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
   }
   else
   {
-    mutt_mktemp (file);
+    BODY *b = hdr->content;
+    file[0] = 0;
+    if (b->filename)
+      strfcpy (file, b->filename, sizeof (file));
+    mutt_adv_mktemp (file, sizeof(file));
     if (mutt_save_attachment (msg->fp, hdr->content, file, 0, NULL) == -1)
     {
       mutt_free_envelope (&newhdr->env);
@@ -479,10 +483,12 @@ int mutt_prepare_edit_message (CONTEXT *ctx, HEADER *newhdr, HEADER *hdr)
     
     FREE (&newhdr->content->subtype);
     FREE (&newhdr->content->xtype);
+    FREE (&newhdr->content->description);
     
     newhdr->content->type = hdr->content->type;
     newhdr->content->xtype = safe_strdup (hdr->content->xtype);
     newhdr->content->subtype = safe_strdup (hdr->content->subtype);
+    newhdr->content->description = safe_strdup (hdr->content->description);
 
     for (par = hdr->content->parameter; par; par = par->next)
       mutt_set_parameter (par->attribute, par->value, &newhdr->content->parameter);

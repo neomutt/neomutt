@@ -816,8 +816,17 @@ static void reply_attachment_list (int op, int tag, HEADER *hdr, BODY *body)
     ctx = mx_open_mailbox (tempfile, M_QUIET, NULL);
     hn = ctx->hdrs[0];
   }
-
-  ci_send_message (op, NULL, NULL, ctx, hn);
+  
+  if (op == SENDFORWARD && option (OPTFORWATTACH))
+  {
+    HEADER *newhdr = mutt_new_header();
+    mutt_prepare_edit_message (ctx, newhdr, hn);
+    mutt_free_envelope (&newhdr->env);
+    newhdr->env = mutt_new_envelope();
+    ci_send_message (0, newhdr, NULL, ctx, NULL);
+  }
+  else
+    ci_send_message (op, NULL, NULL, ctx, hn);
 
   if (hn->replied && !hdr->replied)
     mutt_set_flag (Context, hdr, M_REPLIED, 1);
