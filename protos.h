@@ -122,7 +122,6 @@ char *mutt_get_send_charset (char *, size_t, BODY *, short);
 char *mutt_pgp_hook (ADDRESS *);
 #endif /* _PGPPATH */
 char *mutt_make_date (char *, size_t);
-char *mutt_quote_filename(const char *);
 char *mutt_read_line (char *, size_t *, FILE *, int *);
 char *mutt_strlower (char *);
 char *mutt_skip_whitespace (char *);
@@ -269,6 +268,7 @@ int mutt_pipe_attachment (FILE *, BODY *, const char *, char *);
 int mutt_pipe_message (HEADER *);
 int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
+size_t mutt_quote_filename(char *, size_t, const char *);
 int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
 int mutt_save_message (HEADER *, int, int, int, int *);
 int mutt_search_command (int, int);

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -65,18 +66,18 @@
 
 #ifdef DL_STANDALONE
 
-static int invoke_dotlock(const char *path, int flags, int retry)
+static int invoke_dotlock (const char *path, int flags, int retry)
 {
   char cmd[LONG_STRING + _POSIX_PATH_MAX];
+  char f[SHORT_STRING + _POSIX_PATH_MAX];
   char r[SHORT_STRING];
-  char *f;
   
-  if(flags & DL_FL_RETRY)
-    snprintf(r, sizeof(r), "-r %d ", retry ? MAXLOCKATTEMPT : 0);
+  if (flags & DL_FL_RETRY)
+    snprintf (r, sizeof (r), "-r %d ", retry ? MAXLOCKATTEMPT : 0);
   
-  f = mutt_quote_filename(path);
+  mutt_quote_filename (f, sizeof (f), path);
   
-  snprintf(cmd, sizeof(cmd),
+  snprintf (cmd, sizeof (cmd),
 	   "%s %s%s%s%s%s%s",
 	   DOTLOCK,
 	   flags & DL_FL_TRY ? "-t " : "",
@@ -86,9 +87,7 @@ static int invoke_dotlock(const char *path, int flags, int retry)
 	   flags & DL_FL_RETRY ? r : "",
 	   f);
   
-  FREE(&f);
-
-  return mutt_system(cmd);
+  return mutt_system (cmd);
 }
 
 #else 

@@ -68,29 +68,16 @@ int rfc1524_expand_command (BODY *a, char *filename, char *type,
       {
 	char param[STRING];
 	int z = 0;
-	char *ret = NULL;
 
 	x++;
 	while (command[x] && command[x] != '}' && z<sizeof(param))
 	  param[z++] = command[x++];
 	param[z] = '\0';
-	dprint(2,(debugfile,"Parameter: %s  Returns: %s\n",param,ret));
-	ret = mutt_quote_filename(mutt_get_parameter(param,a->parameter));
-	dprint(2,(debugfile,"Parameter: %s  Returns: %s\n",param,ret));
-	z = 0;
-	while (ret && ret[z] && y<sizeof(buf))
-	  buf[y++] = ret[z++];
-	FREE(&ret);
+	y += mutt_quote_filename (buf + y, sizeof (buf) - y, mutt_get_parameter(param,a->parameter));
       }
       else if (command[x] == 's' && filename != NULL)
       {
-	char *fn = mutt_quote_filename(filename);
-	int i;
-	
-	for(i = 0; fn[i] && y < sizeof(buf); i++)
-	  buf[y++] = fn[i];
-	
-	FREE(&fn);
+	y += mutt_quote_filename (buf + y, sizeof (buf) - y, filename);
 	needspipe = FALSE;
       }
       else if (command[x] == 't')

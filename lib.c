@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1999 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -608,10 +609,10 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
 
 void mutt_expand_file_fmt (char *dest, size_t destlen, const char *fmt, const char *src)
 {
-  char *_src = mutt_quote_filename(src);
+  char tmp[LONG_STRING];
   
-  mutt_expand_fmt(dest, destlen, fmt, _src);
-  safe_free((void **) &_src);
+  mutt_quote_filename (tmp, sizeof (tmp), src);
+  mutt_expand_fmt (dest, destlen, fmt, tmp);
 }
 
 void mutt_expand_fmt (char *dest, size_t destlen, const char *fmt, const char *src)
@@ -1225,41 +1226,38 @@ int mutt_save_confirm (const char *s, struct stat *st)
  * From the Unix programming FAQ by way of Liviu.
  */
 
-char *mutt_quote_filename(const char *f)
+size_t mutt_quote_filename(char *d, size_t l, const char *f)
 {
-  char *d;
-  size_t i,l;
+  size_t i, j = 0;
 
-  if(!f) return NULL;
-  
-  for(i = 0, l = 3; f[i]; i++, l++)
+  if(!f) 
   {
-    if(f[i] == '\'')
-      l += 3;
+    *d = '\0';
+    return 0;
   }
+
+  /* leave some space for the trailing characters. */
+  l -= 6;
   
-  d = safe_malloc(l);
+  d[j++] = '\'';
   
-  l = 0;
-  d[l++] = '\'';
-  
-  for(i = 0; f[i]; i++)
+  for(i = 0; j < l && f[i]; i++)
   {
     if(f[i] == '\'')
     {
-      d[l++] = '\'';
-      d[l++] = '\\';
-      d[l++] = '\'';
-      d[l++] = '\'';
+      d[j++] = '\'';
+      d[j++] = '\\';
+      d[j++] = '\'';
+      d[j++] = '\'';
     }
     else
-      d[l++] = f[i];
+      d[j++] = f[i];
   }
   
-  d[l++] = '\'';
-  d[l]   = '\0';
+  d[j++] = '\'';
+  d[j]   = '\0';
   
-  return d;
+  return j;
 }
 
 void state_prefix_putc(char c, STATE *s)
