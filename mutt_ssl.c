@@ -284,7 +284,7 @@ static int ssl_socket_open (CONNECTION * conn)
 
   if (ssl_negotiate(data))
   {
-    ssl_socket_close (conn);
+    mutt_socket_close (conn);
     return -1;
   }
   
