@@ -2840,16 +2840,18 @@ to send messages from the command line as well.
 
 <tscreen><verb>
 -a      attach a file to a message
+-b      specify a blind carbon-copy (BCC) address
 -c      specify a carbon-copy (Cc) address
 -e      specify a config command to be run after initilization files are read
--F      specify an alternate file to read initialization commands
 -f      specify a mailbox to load
+-F      specify an alternate file to read initialization commands
 -h      print help on command line options
 -H      specify a draft file from which to read a header and body
 -i      specify a file to include in a message composition
--n      do not read the system Muttrc
 -m      specify a default mailbox type
+-n      do not read the system Muttrc
 -p      recall a postponed message
+-Q      query a configuration variable
 -R      open mailbox in read-only mode
 -s      specify a subject (enclose in quotes if it contains spaces)
 -v      show version number and compile-time definitions
