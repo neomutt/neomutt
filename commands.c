@@ -535,7 +535,7 @@ static void set_copy_flags(HEADER *hdr, int decode, int decrypt, int *cmflags, i
 
   if(decode)
   {
-    *chflags = CH_MIME | CH_TXTPLAIN;
+    *chflags = CH_XMIT | CH_MIME | CH_TXTPLAIN;
     *cmflags = M_CM_DECODE;
   }
 
