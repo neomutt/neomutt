@@ -37,6 +37,7 @@ typedef struct
 {
   FILE *fp;	/* pointer to the message data */
 #ifdef USE_IMAP
+  CONTEXT *ctx;	/* context (mailbox) for this message */
   char *path;	/* path to temp file */
 #endif /* USE_IMAP */
   short magic;	/* type of mailbox this message belongs to */

@@ -511,10 +511,13 @@ static int save_confirm_func (const char *s, struct stat *st)
 {
   char tmp[_POSIX_PATH_MAX];
   int ret = 1;
+  int magic = 0;
+
+  magic = mx_get_magic (s);
 
   if (stat (s, st) != -1)
   {
-    if (mx_get_magic (s) == -1)
+    if (magic == -1)
     {
       mutt_error ("%s is not a mailbox!", s);
       return 0;
@@ -529,22 +532,25 @@ static int save_confirm_func (const char *s, struct stat *st)
   }
   else
   {
-    st->st_mtime = 0;
-    st->st_atime = 0;
-    
-    if (errno == ENOENT)
+    if (magic != M_IMAP)
     {
-      if (option (OPTCONFIRMCREATE))
+      st->st_mtime = 0;
+      st->st_atime = 0;
+
+      if (errno == ENOENT)
       {
-	snprintf (tmp, sizeof (tmp), "Create %s?", s);
-	if (mutt_yesorno (tmp, 1) < 1)
-	  ret = 0;
+	if (option (OPTCONFIRMCREATE))
+	{
+	  snprintf (tmp, sizeof (tmp), "Create %s?", s);
+	  if (mutt_yesorno (tmp, 1) < 1)
+	    ret = 0;
+	}
       }
-    }
-    else
-    {
-      mutt_perror (s);
-      return 0;
+      else
+      {
+	mutt_perror (s);
+	return 0;
+      }
     }
   }
 

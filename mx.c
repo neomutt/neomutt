@@ -468,9 +468,18 @@ int mx_set_magic (const char *s)
 static int mx_open_mailbox_append (CONTEXT *ctx)
 {
   ctx->append = 1;
+  ctx->magic = mx_get_magic (ctx->path);
+
+#ifdef USE_IMAP
+  if (ctx->magic == M_IMAP)
+  {
+    return imap_open_mailbox_append (ctx);
+  }
+  else
+#endif
   if (access (ctx->path, W_OK) == 0)
   {
-    switch (ctx->magic = mx_get_magic (ctx->path))
+    switch (ctx->magic)
     {
       case 0:
 	mutt_error ("%s is not a mailbox.", ctx->path);
@@ -1082,6 +1091,20 @@ int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
   return 0;
 }
 
+#ifdef USE_IMAP
+int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+{
+  char tmp[_POSIX_PATH_MAX];
+
+  mutt_mktemp(tmp);
+  if ((msg->fp = safe_fopen (tmp, "w")) == NULL)
+    return (-1);
+  msg->path = safe_strdup(tmp);
+  msg->ctx = dest;
+  return 0;
+}
+#endif
+
 /* args:
  *	dest	destintation mailbox
  *	hdr	message being copied (required for maildir support, because
@@ -1106,6 +1129,11 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     case M_MH:
       func = mh_open_new_message;
       break;
+#ifdef USE_IMAP
+    case M_IMAP:
+      func = imap_open_new_message;
+      break;
+#endif
     default:
       dprint (1, (debugfile, "mx_open_new_message(): function unimplemented for mailbox type %d.\n",
 		  dest->magic));
@@ -1121,7 +1149,8 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     if (dest->magic == M_MMDF)
       fputs (MMDF_SEP, msg->fp);
 
-    if (msg->magic != M_MAILDIR && (flags & M_ADD_FROM))
+    if ((msg->magic != M_MAILDIR) && (msg->magic != M_IMAP) && 
+	(flags & M_ADD_FROM))
     {
       if (hdr)
       {
@@ -1420,8 +1449,26 @@ int mx_close_message (MESSAGE **msg)
     }
   }
 
-  if ((*msg)->magic == M_MH || (*msg)->magic == M_MAILDIR || (*msg)->magic == M_IMAP)
-    r = fclose ((*msg)->fp);
+  switch ((*msg)->magic) 
+  {
+    case M_MH:
+    case M_MAILDIR:
+      r = fclose ((*msg)->fp);
+      break;
+
+#ifdef USE_IMAP
+    case M_IMAP:
+      r = fclose ((*msg)->fp);
+      if ((*msg)->write && (*msg)->ctx->append)
+      {
+	r = imap_append_message ((*msg)->ctx, *msg);
+	unlink ((*msg)->path);
+      }
+#endif
+
+    default:
+      break;
+  }
 
   free (*msg);
   *msg = NULL;
@@ -1456,8 +1503,9 @@ void mx_update_context (CONTEXT *ctx)
 {
   HEADER *h = ctx->hdrs[ctx->msgcount];
 
-
-
+#ifdef USE_IMAP
+#include "imap.h"
+#endif
 
 
 

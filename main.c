@@ -210,9 +210,9 @@ static void show_version (void)
 
 
 #ifdef BUFFY_SIZE
-	"+BUFFY_SIZE"
+	"+BUFFY_SIZE "
 #else
-	"-BUFFY_SIZE"
+	"-BUFFY_SIZE "
 #endif
 	);
   puts (
