@@ -528,7 +528,8 @@ int mh_commit_message (CONTEXT *ctx, MESSAGE *msg, HEADER *hdr)
   DIR *dirp;
   struct dirent *de;
   char *cp, *dep;
-  int n, hi = 0;
+  int ;
+  unsigned int hi = 0;
   char path[_POSIX_PATH_MAX];
   char tmp[16];
 
