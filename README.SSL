@@ -29,16 +29,27 @@ For example:
 If you get errors about lack of entropy, it means that Mutt was unable
 to find a source of random data to initialize SSL library with. Should
 this happen, you need to generate the data yourself and save it in a
-file somewhere Mutt will find it. Mutt tries to use files
-$SslEntropyFile, $RANDFILE (if this environment variable is set) and
-~/.rnd in that order as source for random data.
+file pointed by $SslEntropyFile or $RANDFILE (environment) variables or
+in ~/.rnd.
 
-If your OpenSSL is version 0.9.5 or later, you should try EGD, Entropy
-Gathering Daemon, from http://www.lothar.com/tech/crypto/ . Mutt will
-try to find EGD sockets in the following places, $SslEntropyFile,
-$EGDSOCKET (if this environment variable is set), ~/.entropy and
-/tmp/entropy. If no socket is found, static files will be tried as
-described above.
+One way to generate random data would be to run a command which
+generates unpredictable output, for example 'ps aluxww' in Linux, and
+calculating the MD5-sum from the output and saving it in a file.
+
+** Note: The contents of the file pointed by $RANDFILE environment
+** variable (or ~/.rnd if unset) will be overwritten every time Mutt 
+** is run so don't put anything you can't afford to lose in that file.
+
+The files Mutt will try to use to initialize SSL library with are files
+pointed by $SslEntropyFile and $RANDFILE (or ~/.rnd if unset.) If your
+OpenSSL is version 0.9.5 or later, the previous files can also be EGD
+sockets (see http://www.lothar.com/tech/crypto/ for more information
+about Entropy Gathering Daemon) and in addition sockets in the following
+places are tried: socket pointed by $EGDSOCKET environment variable,
+~/.entropy and /tmp/entropy.
+
+All the files and sockets mentioned above must be owned by the user and
+have permissions of 600.
 
 
 Certificates
