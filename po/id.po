@@ -4,9 +4,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.3.27i\n"
+"Project-Id-Version: 1.5.1i\n"
 "POT-Creation-Date: 2002-05-02 01:23+0200\n"
-"PO-Revision-Date: 2002-01-23 09:38+0700\n"
+"PO-Revision-Date: 2002-05-23 09:30+0700\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <i18n@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -315,12 +315,11 @@ msgstr "Periksa tandatangan PGP?"
 
 #: commands.c:117 crypt.c:192 pgpkey.c:559 postpone.c:558
 msgid "Invoking PGP..."
-msgstr "Menjalankan PGP..."
+msgstr "Memanggil PGP..."
 
 #: commands.c:123
-#, fuzzy
 msgid "Invoking OpenSSL..."
-msgstr "Menjalankan PGP..."
+msgstr "Memanggil OpenSSL..."
 
 #: commands.c:132 mbox.c:740
 msgid "Could not create temporary file!"
@@ -335,18 +334,16 @@ msgid "Could not copy message"
 msgstr "Tidak bisa menyalin surat"
 
 #: commands.c:200
-#, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "Tanda tangan PGP berhasil diverifikasi."
+msgstr "Tanda tangan S/MIME berhasil diverifikasi."
 
 #: commands.c:202
 msgid "S/MIME certificate owner does not match sender."
-msgstr ""
+msgstr "Pemilik sertifikat S/MIME tidak sesuai dg pengirim."
 
 #: commands.c:205
-#, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "Tanda tangan PGP TIDAK berhasil diverifikasi."
+msgstr "Tanda tangan S/MIME TIDAK berhasil diverifikasi."
 
 #: commands.c:212
 msgid "PGP signature successfully verified."
@@ -532,11 +529,11 @@ msgstr "Ket"
 
 #: compose.c:139
 msgid "Sign, Encrypt"
-msgstr "Tandatangan, Acak"
+msgstr "Tandatangan, Enkrip"
 
 #: compose.c:141
 msgid "Encrypt"
-msgstr "Acak"
+msgstr "Enkrip"
 
 #: compose.c:143
 msgid "Sign"
@@ -555,18 +552,16 @@ msgid "<default>"
 msgstr "<default>"
 
 #: compose.c:159
-#, fuzzy
 msgid "Encrypt with: "
-msgstr "Acak"
+msgstr "Enkrip dengan: "
 
 #: compose.c:175
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(a)cak, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (b)atal? "
+msgstr "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (b)atal? "
 
 #: compose.c:176
 msgid "esabf"
-msgstr "atsdb"
+msgstr "etsdb"
 
 #. sign (a)s
 #: compose.c:190 compose.c:273
@@ -574,24 +569,24 @@ msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
 
 #: compose.c:231
-#, fuzzy
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (f)orget it? "
-msgstr "(a)cak, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (b)atal? "
+msgstr ""
+"S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, (b)atal? "
 
 #: compose.c:232
-#, fuzzy
 msgid "ewsabf"
-msgstr "atsdb"
+msgstr "etgsdb"
 
 #: compose.c:240
 msgid ""
 "1: DES, 2: Tripple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
 msgstr ""
+"1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (b)atal? "
 
 #: compose.c:242
 msgid "12345f"
-msgstr ""
+msgstr "12345b"
 
 #: compose.c:350
 #, c-format
@@ -706,48 +701,45 @@ msgstr "Surat telah disimpan."
 
 #: compose.c:1320
 msgid "S/MIME already selected. Clear & continue ? "
-msgstr ""
+msgstr "S/MIME sudah dipilih. Bersihkan & lanjut ? "
 
 #: compose.c:1350
 msgid "PGP already selected. Clear & continue ? "
-msgstr ""
+msgstr "PGP sudah dipilih. Bersihkan & lanjut ? "
 
 #: crypt.c:70
 #, c-format
 msgid " (current time: %c)"
-msgstr ""
+msgstr " (waktu skrg: %c)"
 
 #: crypt.c:76
-#, fuzzy, c-format
+#, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- Keluaran dari PGP (waktu skrg: %c) --]\n"
+msgstr "[-- Keluaran dari %s%s --]\n"
 
 #: crypt.c:93
-#, fuzzy
 msgid "Passphrase(s) forgotten."
-msgstr "Passphrase PGP sudah dilupakan."
+msgstr "Passphrase sudah dilupakan."
 
 #: crypt.c:132
 msgid "Enter PGP passphrase:"
 msgstr "Masukkan passphrase PGP: "
 
 #: crypt.c:150
-#, fuzzy
 msgid "Enter SMIME passphrase:"
-msgstr "Masukkan passphrase PGP: "
+msgstr "Masukkan passphrase S/MIME: "
 
 #: crypt.c:185
-#, fuzzy
 msgid "Create an inline PGP message?"
-msgstr "Buat surat application/pgp?"
+msgstr "Buat surat PGP inline?"
 
 #: crypt.c:512 crypt.c:554
 msgid "Trying to extract PGP keys...\n"
-msgstr ""
+msgstr "Mencoba mengekstrak kunci2 PGP...\n"
 
 #: crypt.c:534 crypt.c:572
 msgid "Trying to extract S/MIME certificates...\n"
-msgstr ""
+msgstr "Mencoba mengekstrak sertifikat2 S/MIME...\n"
 
 #: crypt.c:696
 msgid ""
@@ -778,7 +770,6 @@ msgstr ""
 #. XXX - WHAT!?!?!?
 #. Now display the signed body
 #: crypt.c:770
-#, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -795,11 +786,12 @@ msgstr ""
 "\n"
 
 #: crypt.c:782
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
-msgstr "[-- Akhir data yang ditandatangani --]\n"
+msgstr ""
+"\n"
+"[-- Akhir data yang ditandatangani --]\n"
 
 #: curs_lib.c:153
 msgid "yes"
@@ -1018,7 +1010,7 @@ msgstr "Thread berisi surat yang belum dibaca."
 
 #: curs_main.c:1716
 msgid "Can't edit message on POP server."
-msgstr "Tidak bisa menyunting pesan di server POP"
+msgstr "Tidak bisa menyunting surat di server POP"
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -1119,7 +1111,7 @@ msgstr "Surat tidak diubah!"
 #: editmsg.c:117
 #, c-format
 msgid "Can't open message file: %s"
-msgstr "Tidak bisa membuka file pesan: %s"
+msgstr "Tidak bisa membuka file surat: %s"
 
 #: editmsg.c:124 editmsg.c:152
 #, c-format
@@ -1494,12 +1486,12 @@ msgstr "Index dari surat tidak benar. Cobalah membuka kembali kotak surat tsb."
 
 #: imap/message.c:466
 msgid "Uploading message ..."
-msgstr "Meletakkan pesan ..."
+msgstr "Meletakkan surat ..."
 
 #: imap/message.c:576
 #, c-format
 msgid "Copying %d messages to %s..."
-msgstr "Menyalin %d pesan ke %s..."
+msgstr "Menyalin %d surat ke %s..."
 
 #: imap/message.c:580
 #, c-format
@@ -1934,13 +1926,12 @@ msgid "move the cursor to the end of the word"
 msgstr "pindahkan kursor ke akhir kata"
 
 #: keymap_alldefs.h:73
-#, fuzzy
 msgid "scroll down through the history list"
-msgstr "yang diisi sebelumnya (history-prev)"
+msgstr "scroll daftar history ke bawah"
 
 #: keymap_alldefs.h:74
 msgid "scroll up through the history list"
-msgstr "yang diisi sebelumnya (history-prev)"
+msgstr "scroll daftar history ke atas"
 
 #: keymap_alldefs.h:75
 msgid "delete chars from cursor to end of line"
@@ -2104,7 +2095,7 @@ msgstr "ke surat berikutnya yang belum dibaca"
 
 #: keymap_alldefs.h:115
 msgid "jump to parent message in thread"
-msgstr "loncat ke pesan induk di thread ini"
+msgstr "loncat ke surat induk di thread ini"
 
 #: keymap_alldefs.h:116
 msgid "jump to previous thread"
@@ -2116,7 +2107,7 @@ msgstr "ke subthread sebelumnya"
 
 #: keymap_alldefs.h:118
 msgid "move to the previous undeleted message"
-msgstr "ke pesan sebelumnya yang tidak dihapus"
+msgstr "ke surat sebelumnya yang tidak dihapus"
 
 #: keymap_alldefs.h:119
 msgid "jump to the previous new message"
@@ -2348,7 +2339,7 @@ msgstr "lampirkan PGP public key"
 
 #: keymap_alldefs.h:176
 msgid "show PGP options"
-msgstr "tunjukan options PGP"
+msgstr "tunjukan opsi2 PGP"
 
 #: keymap_alldefs.h:177
 msgid "mail a PGP public key"
@@ -2392,7 +2383,7 @@ msgstr "Pilih elemen berikutnya dalam rangkaian"
 
 #: keymap_alldefs.h:187
 msgid "send the message through a mixmaster remailer chain"
-msgstr "kirim pesan melalui sebuah rangkaian remailer mixmaster"
+msgstr "kirim surat melalui sebuah rangkaian remailer mixmaster"
 
 #: keymap_alldefs.h:188
 msgid "make decrypted copy and delete"
@@ -2403,19 +2394,16 @@ msgid "make decrypted copy"
 msgstr "buat salinan yang sudah di-decrypt"
 
 #: keymap_alldefs.h:190
-#, fuzzy
 msgid "wipe passphrase(s) from memory"
-msgstr "hapus PGP passphrase dari memory"
+msgstr "hapus passphrase dari memory"
 
 #: keymap_alldefs.h:191
-#, fuzzy
 msgid "extract supported public keys"
-msgstr "ambil PGP public keys"
+msgstr "ekstrak kunci2 publik yg didukung"
 
 #: keymap_alldefs.h:192
-#, fuzzy
 msgid "show S/MIME options"
-msgstr "tunjukan options PGP"
+msgstr "tunjukan opsi2 S/MIME"
 
 #: lib.c:59 lib.c:74 lib.c:105
 msgid "Out of memory!"
@@ -2496,7 +2484,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:88
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2531,12 +2518,14 @@ msgid ""
 msgstr ""
 "penggunaan: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+"[...]\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
 "[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
-"pilihan:\n"
+"opsi:\n"
 "  -a <file>\tlampirkan file ke surat\n"
 "  -b <alamat>\talamat blind carbon-copy (BCC)\n"
 "  -c <alamat>\talamat carbon-copy (CC)\n"
@@ -2548,6 +2537,7 @@ msgstr ""
 "  -m <jenis>\tjenis kotak surat yang digunakan\n"
 "  -n\t\tmenyuruh Mutt untuk tidak membaca muttrc dari system\n"
 "  -p\t\tlanjutkan surat yang ditunda\n"
+"  -Q <variabel>\tmelakukan query thd suatu variabel konfigurasi\n"
 "  -R\t\tbuka kotak surat dengan mode read-only\n"
 "  -s <subj>\tsubjek surat (harus dikutip jika mengandung spasi)\n"
 "  -v\t\ttunjukkan versi dan definisi sewaktu compile\n"
@@ -2555,7 +2545,7 @@ msgstr ""
 "  -y\t\tpilih kotak surat yg ada di daftar `mailboxes'\n"
 "  -z\t\tlangsung keluar jika tidak ada surat di kotak surat\n"
 "  -Z\t\tbuka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
-"  -h\t\tpesan ini"
+"  -h\t\tsurat ini"
 
 #: main.c:149
 msgid ""
@@ -2563,7 +2553,7 @@ msgid ""
 "Compile options:"
 msgstr ""
 "\n"
-"Pilihan sewaktu kompilasi:"
+"Opsi2 sewaktu kompilasi:"
 
 #: main.c:430
 msgid "Error initializing terminal."
@@ -2764,7 +2754,7 @@ msgstr "tab"
 
 #: muttlib.c:1159
 msgid "Can't save message to POP mailbox."
-msgstr "Tidak bisa menyimpan pesan ke kotak surat POP"
+msgstr "Tidak bisa menyimpan surat ke kotak surat POP"
 
 #: muttlib.c:1168
 #, c-format
@@ -3035,7 +3025,7 @@ msgstr "Kotak surat telah di-checkpoint."
 
 #: mx.c:1505
 msgid "Can't write message"
-msgstr "Tidak dapat menulis pesan"
+msgstr "Tidak dapat menulis surat"
 
 #: pager.c:68
 msgid "Not available in this menu."
@@ -3389,7 +3379,7 @@ msgstr "Mengambil daftar surat..."
 
 #: pop.c:418
 msgid "Can't write message to temporary file!"
-msgstr "Tidak bisa menulis pesan ke file sementara!"
+msgstr "Tidak bisa menulis surat ke file sementara!"
 
 #: pop.c:521 pop.c:586
 msgid "Checking for new messages..."
@@ -3471,9 +3461,8 @@ msgid "Illegal PGP header"
 msgstr "PGP header tidak betul"
 
 #: postpone.c:485
-#, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "PGP header tidak betul"
+msgstr "S/MIME header tidak betul"
 
 #: query.c:45
 msgid "New Query"
@@ -3552,9 +3541,8 @@ msgid "Print attachment?"
 msgstr "Cetak lampiran?"
 
 #: recvattach.c:906
-#, fuzzy
 msgid "Can't decrypt encrypted message!"
-msgstr "Tidak dapat menemukan surat yang ditandai."
+msgstr "Tidak dapat men-decrypt surat ini!"
 
 #: recvattach.c:920
 msgid "Attachments"
@@ -3569,9 +3557,8 @@ msgid "Can't delete attachment from POP server."
 msgstr "Tidak bisa menghapus lampiran dari server POP."
 
 #: recvattach.c:1031
-#, fuzzy
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Penghapusan lampiran dari surat PGP tidak didukung."
+msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung."
 
 #: recvattach.c:1051 recvattach.c:1068
 msgid "Only deletion of multipart attachments is supported."
@@ -3751,7 +3738,7 @@ msgstr "Sertakan surat asli di surat balasan?"
 
 #: send.c:732
 msgid "Including quoted message..."
-msgstr "Menyertakan pesan terkutip..."
+msgstr "Menyertakan surat terkutip..."
 
 #: send.c:742
 msgid "Could not include all requested messages!"
@@ -3763,7 +3750,7 @@ msgstr "Forward sebagai lampiran?"
 
 #: send.c:760
 msgid "Preparing forwarded message..."
-msgstr "Mempersiapkan pesan yg diforward..."
+msgstr "Mempersiapkan surat yg diforward..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
@@ -3866,11 +3853,11 @@ msgstr "Sinyal %d tertangkap... Keluar.\n"
 
 #: smime.c:136
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr ""
+msgstr "Surat2 S/MIME tanpa hints pada isi tidak didukung."
 
 #: smime.c:365
 msgid "Trusted   "
-msgstr ""
+msgstr "Dipercaya "
 
 #: smime.c:368
 msgid "Verified  "
@@ -3881,134 +3868,120 @@ msgid "Unverified"
 msgstr ""
 
 #: smime.c:374
-#, fuzzy
-msgid "Expired   "
-msgstr "Keluar  "
+msgid"Expired   "
+msgstr "Kadaluarsa"
 
 #: smime.c:377
 msgid "Revoked   "
-msgstr ""
+msgstr "Dicabut   "
 
 #: smime.c:380
-#, fuzzy
 msgid "Invalid   "
-msgstr "Tidak ada bulan: %s"
+msgstr "Tdk valid "
 
 #: smime.c:383
-#, fuzzy
 msgid "Unknown   "
-msgstr "Tidak diketahui"
+msgstr ""
 
 #: smime.c:412
-#, fuzzy
 msgid "Enter keyID: "
-msgstr "Masukkan keyID untuk %s: "
+msgstr "Masukkan keyID: "
 
 #: smime.c:435
-#, fuzzy, c-format
+#, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP keys yg cocok dg \"%s\"."
+msgstr "Sertifikat2 S/MIME yg cocok dg \"%s\"."
 
 #: smime.c:584 smime.c:653 smime.c:674
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
-msgstr ""
+msgstr "ID %s belum diverifikasi. Yakin mau digunakan utk %s ?"
 
 #: smime.c:588 smime.c:657
-#, fuzzy, c-format
+#, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
-msgstr "Gunakan keyID = '%s' untuk %s?"
+msgstr "Gunakan ID (belum dipercaya!) %s utk %s ?"
 
 #: smime.c:591 smime.c:660
-#, fuzzy, c-format
+#, c-format
 msgid "Use ID %s for %s ?"
-msgstr "Gunakan keyID = '%s' untuk %s?"
+msgstr "Gunakan ID %s utk %s ?"
 
 #: smime.c:686
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-msgstr ""
+msgstr "Warning: Anda belum memutuskan utk mempercayai ID %s. (sembarang"
+" utk lanjut)"
 
 #: smime.c:852
 #, c-format
 msgid "No (valid) certificate found for %s."
-msgstr ""
+msgstr "Tidak ditemukan sertifikat (yg valid) utk %s."
 
 #: smime.c:907 smime.c:935 smime.c:1000 smime.c:1044 smime.c:1109 smime.c:1184
-#, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Error: tidak bisa membuat subproses utk PGP! --]\n"
+msgstr "Error: tidak bisa membuat subproses utk OpenSSL!"
 
 #: smime.c:1262
-#, fuzzy
 msgid "no certfile"
-msgstr "Tidak bisa membuat filter"
+msgstr "tdk ada certfile"
 
 #: smime.c:1265
-#, fuzzy
 msgid "no mbox"
-msgstr "(tidak ada kotak surat)"
+msgstr "tdk ada mbox"
 
 #. fatal error while trying to encrypt message
 #: smime.c:1408
 msgid "No output from OpenSSL.."
-msgstr ""
+msgstr "Tdk ada keluaran dr OpenSSL"
 
 #: smime.c:1446
-#, fuzzy
 msgid "Warning: Intermediate certificate not found."
-msgstr "Warning: Tidak dapat menyimpan sertifikat"
+msgstr "Warning: Sertifikat intermediate tdk ditemukan."
 
 #: smime.c:1491
-#, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Tidak bisa membuka subproses PGP!"
+msgstr "Tidak bisa membuka subproses OpenSSL!"
 
 #: smime.c:1529
 msgid "No output from OpenSSL..."
-msgstr ""
+msgstr "Tdk ada keluaran dr OpenSSL..."
 
 #: smime.c:1694 smime.c:1816
-#, fuzzy
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- Akhir keluaran PGP --]\n"
+"[-- Akhir keluaran OpenSSL --]\n"
 "\n"
 
 #: smime.c:1777 smime.c:1787
-#, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Error: tidak bisa membuat subproses utk PGP! --]\n"
+msgstr "[-- Error: tidak bisa membuat subproses utk OpenSSL! --]\n"
 
 #: smime.c:1820
-#, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
-msgstr ""
-"[-- Data berikut dienkripsi dg PGP/MIME --]\n"
-"\n"
+msgstr "[-- Data berikut dienkripsi dg S/MIME --]\n"
 
 #: smime.c:1823
-#, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
-msgstr ""
-"[-- Data berikut ini ditandatangani --]\n"
-"\n"
+msgstr "[-- Data berikut ditandatangani dg S/MIME --]\n"
 
 #: smime.c:1887
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
+msgstr ""
+"\n"
+"[-- Akhir data yang dienkripsi dg S/MIME. --]\n"
 
 #: smime.c:1889
-#, fuzzy
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
-msgstr "[-- Akhir data yang ditandatangani --]\n"
+msgstr ""
+"\n"
+"[-- Akhir data yg ditandatangani dg S/MIME. --]\n"
 
 #: sort.c:201
 msgid "Sorting mailbox..."
