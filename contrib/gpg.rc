@@ -74,5 +74,9 @@ set pgp_list_secring_command="/usr/bin/gpg   --no-verbose --batch --quiet   --wi
 # set pgp_getkeys_command="pkspxycwrap %r"
 
 # pattern for good signature - may need to be adapted to locale!
-set pgp_good_sign="^gpg: Good signature from"
+
+# set pgp_good_sign="^gpg: Good signature from"
+
+# OK, here's a version which uses gnupg's message catalog:
+set pgp_good_sign="`gettext -d gnupg -s 'Good signature from "' | tr -d '\"'`"
 
