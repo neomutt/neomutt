@@ -411,10 +411,10 @@ static void cmd_parse_expunge (IMAP_DATA* idata, char* s)
   {
     h = idata->ctx->hdrs[cur];
 
-    if (HEADER_DATA (h)->sid == expno)
-      HEADER_DATA (h)->sid = 0;
-    else if (HEADER_DATA (h)->sid > expno)
-      HEADER_DATA (h)->sid--;
+    if (h->index+1 == expno)
+      h->index = -1;
+    else if (h->index+1 > expno)
+      h->index--;
   }
 
   idata->reopen |= IMAP_EXPUNGE_PENDING;

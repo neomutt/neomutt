@@ -137,8 +137,11 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
       /* update context with message header */
       ctx->hdrs[msgno] = mutt_new_header ();
-      ctx->hdrs[msgno]->index = ctx->msgcount;
 
+      ctx->hdrs[msgno]->index = ctx->msgcount;
+      ctx->hdrs[msgno]->index = h.sid - 1;
+      if (h.sid != ctx->msgcount + 1)
+	dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
       /* messages which have not been expunged are ACTIVE (borrowed from mh 
        * folders) */
       ctx->hdrs[msgno]->active = 1;
@@ -664,7 +667,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   
   /* skip to message number */
   buf = imap_next_word (buf);
-  h->data->sid = atoi (buf);
+  h->sid = atoi (buf);
 
   /* find FETCH tag */
   buf = imap_next_word (buf);

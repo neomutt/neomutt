@@ -200,7 +200,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   {
     h = idata->ctx->hdrs[i];
 
-    if (!HEADER_DATA(h)->sid)
+    if (h->index == -1)
     {
       dprint (2, (debugfile, "Expunging message UID %d.\n", HEADER_DATA (h)->uid));
 
