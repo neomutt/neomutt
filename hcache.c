@@ -678,7 +678,7 @@ mutt_hcache_fetch(void *db, const char *filename,
   safe_strcat(path, sizeof (path), filename);
 
   key.dptr = path;
-  key.dsize = keylen(path);
+  key.dsize = strlen(h->folder) + keylen(path + strlen(h->folder));
 
   data = gdbm_fetch(h->db, key);
 
@@ -709,7 +709,7 @@ mutt_hcache_store(void *db, const char *filename, HEADER * header,
   safe_strcat(path, sizeof (path), filename);
 
   key.dptr = path;
-  key.dsize = keylen(path);
+  key.dsize = strlen(h->folder) + keylen(path + strlen(h->folder));
 
   data.dptr = mutt_hcache_dump(db, header, &data.dsize, uid_validity);
 
@@ -735,7 +735,7 @@ mutt_hcache_delete(void *db, const char *filename,
   safe_strcat(path, sizeof (path), filename);
 
   key.dptr = path;
-  key.dsize = keylen(path);
+  key.dsize = strlen(h->folder) + keylen(path + strlen(h->folder));
 
   return gdbm_delete(h->db, key);
 }
