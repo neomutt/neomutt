@@ -1,0 +1,80 @@
+#
+# sample mime.types
+#
+application/andrew-inset	ez
+application/excel		xls
+application/octet-stream	bin
+application/oda			oda
+application/pdf			pdf
+application/pgp			pgp
+application/postscript		ps PS eps
+application/rtf			rtf
+application/x-arj-compressed	arj
+application/x-bcpio		bcpio
+application/x-chess-pgn		pgn
+application/x-cpio		cpio
+application/x-csh		csh
+application/x-debian-package	deb
+application/x-msdos-program	com exe bat
+application/x-dvi		dvi
+application/x-gtar		gtar
+application/x-gunzip		gz
+application/x-hdf		hdf
+application/x-latex		latex
+application/x-mif		mif
+application/x-netcdf		cdf nc
+application/x-perl		pl pm
+application/x-rar-compressed	rar
+application/x-sh		sh
+application/x-shar		shar
+application/x-sv4cpio		sv4cpio
+application/x-sv4crc		sv4crc
+application/x-tar		tar
+application/x-tar-gz		tgz tar.gz
+application/x-tcl		tcl
+application/x-tex		tex
+application/x-texinfo		texi texinfo
+application/x-troff		t tr roff
+application/x-troff-man		man
+application/x-troff-me		me
+application/x-troff-ms		ms
+application/x-ustar		ustar
+application/x-wais-source	src
+application/x-zip-compressed	zip
+
+audio/basic			snd
+audio/midi			mid midi
+audio/ulaw			au
+audio/x-aiff			aif aifc aiff
+audio/x-wav			wav
+
+image/gif			gif
+image/ief			ief
+image/jpeg			jpe jpeg jpg
+image/png			png
+image/tiff			tif tiff
+image/x-cmu-raster		ras
+image/x-portable-anymap		pnm
+image/x-portable-bitmap		pbm
+image/x-portable-graymap	pgm
+image/x-portable-pixmap		ppm
+image/x-rgb			rgb
+image/x-xbitmap			xbm
+image/x-xpixmap			xpm
+image/x-xwindowdump		xwd
+
+text/html			html htm
+text/plain			asc txt
+text/richtext			rtx
+text/tab-separated-values	tsv
+text/x-setext			etx
+
+video/dl			dl
+video/fli			fli
+video/gl			gl
+video/mpeg			mp2 mpe mpeg mpg
+video/quicktime			mov qt
+video/x-msvideo			avi
+video/x-sgi-movie		movie
+
+x-world/x-vrml			vrm vrml wrl

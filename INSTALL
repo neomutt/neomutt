@@ -1,0 +1,144 @@
+Supported platforms
+===================
+
+Mutt has been reported to compile and run under the following Unix operating
+systems:
+
+	AIX
+	BSDI
+	Convex
+	Data General Unix (DG/UX)
+	Digital Unix (OSF/1)
+	DYNIX/ptx
+	FreeBSD
+	HP-UX
+	IRIX
+	Linux
+	Atari MiNT
+	MkLinux
+	NetBSD
+	QNX
+	Solaris
+	SunOS
+	Ultrix
+	UnixWare
+
+- An ANSI C compiler (such as gcc) is required.
+
+- You must also have a SysV compatible curses library, or you must
+  install either
+
+	GNU ncurses, ftp://prep.ai.mit.edu/pub/gnu/
+
+  or
+
+	S-Lang, ftp://space.mit.edu/pub/davis/slang/
+
+Installation
+============
+
+Installing Mutt is rather painless through the use of the GNU autoconf
+package.  Simply untar the Mutt distribution, and run the ``configure''
+script.  In most cases, it will automatically determine everything it needs
+to know in order to compile.  However, there are a few options to
+``configure'' to help it out, or change the default behavior:
+
+--prefix=DIR
+	install Mutt in DIR instead of /usr/local
+
+--with-sharedir=DIR
+	specify where to put architecture independent data files
+
+--with-curses=DIR
+	use the curses lib in DIR/lib.  If you have ncurses, ``configure''
+	will automatically look in /usr/include/ncurses for the include
+	files.
+
+--with-slang[=DIR]
+	use the S-Lang library instead of ncurses.  This library seems to
+	work better for some people because it is less picky about proper
+	termcap entries than ncurses.  It is recommended that you use at
+	*least* version 0.99-38 with Mutt.
+
+--with-mailpath=DIR
+	specify where the spool mailboxes are located on your system
+
+--with-homespool[=FILE]
+	treat file in the user's home directory as the spool mailbox.  Note
+	that this is *not* the full pathname, but relative to the user's
+	home directory.  Defaults to "mailbox" if FILE is not specified.
+
+--enable-pop
+	enable POP3 support
+
+--enable-hidden-host
+	local hostname is not part of the FQDN.
+
+--with-rx
+	use GNU rx instead of local regexp routines.  Many systems don't
+	have the POSIX compliant regcomp/regexec/regfree routines, so this
+	provides a way to support them.
+
+--enable-flock
+	use flock() to lock files
+
+--disable-fcntl
+	by default, Mutt uses fcntl() to lock files.  Over NFS this can
+	result in poor performance on read/write.  Note that using this
+	option could be dangerous if dotlocking is also disabled
+
+--enable-nfs-fix
+	some implementations of NFS do not always write the
+	atime/mtime of small files.  This means that Mutt's ``mailboxes''
+	feature does not always work properly, as it uses these
+	attributes to work out whether the file has new mail.  This
+	option enables a workaround to this bug.
+
+--enable-locales-fix
+	on some systems, the result of isprint() can't be used reliably
+	to decide which characters are printable, even if you set the
+	LANG environment variable.  If you set this option, Mutt will
+	assume all characters in the ISO-8859-* range are printable.  If
+	you leave it unset, Mutt will attempt to use isprint() if either
+	of the environment variables LANG, LC_ALL or LC_CTYPE is set,
+	and will revert to the ISO-8859-* range if they aren't.
+
+--with-exec-shell=SHELL
+	on some versions of unix, /bin/sh has a bug that makes using emacs
+	with mutt very difficult.  If you have the problem that whenever
+	you press control-G in emacs, mutt and emacs become very confused,
+	you may want to try using a Bourne-derived shell other than
+	/bin/sh here.  Some shells that may work are bash, zsh, and ksh.
+	C shells such as csh and tcsh will amost certainly not work right.
+	Note that this option is unrelated to what shell mutt gives you
+	when you press '!'.  Only use this option to solve the above problem,
+	and only specify one of the above shells as its argument.
+
+--enable-exact-address
+	By default, Mutt will rewrite all addresses in the form
+		Personal Name <user@host.domain>
+	regardless of the input.  By enabling this option, Mutt will write
+	addresses in the same form they are parsed.  NOTE: this requires
+	significantly more memory
+
+Once ``configure'' has completed, simply type ``make install.''
+
+Mutt should compile cleanly (without errors) and you should end up with a
+binary called ``mutt.''  If you get errors about undefined symbols like
+A_NORMAL or KEY_MIN, then you probably don't have a SysV compliant curses
+library.  You should install either ncurses or S-Lang (see above), and then
+run the ``configure'' script again.
+
+Platform Notes
+==============
+
+Solaris 2.4
+
+	The system regcomp() and regexec() routines are very badly broken.
+	So much so that using them will cause Mutt to be totally unusable.
+	The --with-rx option to `configure' should always be used.  (Note:
+	the problems have apparently been fixed in Solaris 2.5)
+
+	Color does not work right with Solaris curses.  You will have to
+	compile with either ncurses or slang to get working color support.
+

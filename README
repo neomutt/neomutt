@@ -1,0 +1,17 @@
+README for mutt-0.90i
+=======================
+
+Installation instructructions are detailed in ``INSTALL''.
+
+The user manual is in doc/manual.txt.
+
+PGP users please read doc/pgp-Notes.txt before proceeding.
+
+For more information, see the Mutt home page,
+http://www.cs.hmc.edu/~me/mutt/index.html.
+
+The primary distribution point for Mutt is
+ftp://ftp.cs.hmc.edu/pub/me/mutt.  See the home page for mirror sites.
+
+Michael Elkins <me@cs.hmc.edu>, January 22, 1998
+Thomas Roessler <roessler@guug.de>, February 3, 1998

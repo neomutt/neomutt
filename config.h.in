@@ -1,0 +1,176 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Enable debugging info */
+#define DEBUG
+
+/* Does your version of PGP support the PGPPASSFD environment variable? */
+#define HAVE_PGPPASSFD
+
+/* Disable the X-Mailer header? */
+#undef NO_XMAILER
+
+/* What is your domain name? */
+#undef DOMAIN
+
+/* Define to `int' if <sys/types.h> doesn't define.  */
+#undef pid_t
+
+/* Define as the return type of signal handlers (int or void).  */
+#undef RETSIGTYPE
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if `sys_siglist' is declared by <signal.h>.  */
+#undef SYS_SIGLIST_DECLARED
+
+/* Mutt version info */
+#undef VERSION
+
+/* use dotlocking to lock mailboxes? */
+#undef USE_DOTLOCK
+
+/* use flock() to lock mailboxes? */
+#undef USE_FLOCK
+
+/* Use fcntl() to lock folders? */
+#undef USE_FCNTL
+
+/*
+ * Define if you have problems with mutt not detecting new/old mailboxes
+ * over NFS.  Some NFS implementations incorrectly cache the attributes
+ * of small files.
+ */
+#undef NFS_ATTRIBUTE_HACK
+
+/* Do you want support for the POP3 protocol? (--enable-pop) */
+#undef USE_POP
+
+/*
+ * Is mail spooled to the user's home directory?  If defined, MAILPATH should
+ * be set to the filename of the spool mailbox relative the the home
+ * directory.
+ * use: configure --with-homespool=FILE
+ */
+#undef HOMESPOOL
+
+/* Where new mail is spooled */
+#undef MAILPATH
+
+/* Should I just use the domain name? (--enable-hidden-host) */
+#undef HIDDEN_HOST
+
+/* Where to find sendmail on your system */
+#undef SENDMAIL
+
+/* Where is PGP located on your system? */
+#undef _PGPPATH
+
+/* Where is PGP 2.* located on your system? */
+#undef _PGPV2PATH
+
+/* Where is PGP 5 located on your system? */
+#undef _PGPV3PATH
+
+/* Do we have PGP 2.*? */
+#undef HAVE_PGP2
+
+/* Do we have PGP 5.0 or up? */
+#undef HAVE_PGP5
+
+/* Where to find ispell on your system? */
+#undef ISPELL
+
+/* Should Mutt run setgid "mail" ? */
+#undef USE_SETGID
+
+/* Does your curses library support color? */
+#undef HAVE_COLOR
+
+/* Are we using GNU rx? */
+#undef USE_GNU_RX
+
+/* Compiling with SLang instead of curses/ncurses? */
+#undef USE_SLANG_CURSES
+
+/* program to use for shell commands */
+#define EXECSHELL "/bin/sh"
+
+/* The "buffy_size" feature */
+#undef BUFFY_SIZE
+
+/* The result of isprint() is unreliable? */
+#undef LOCALES_HACK
+
+/* Enable exact regeneration of email addresses as parsed?  NOTE: this requires
+   significant more memory when defined. */
+#undef EXACT_ADDRESS
+
+/* Does your system have the snprintf() call? */
+#undef HAVE_SNPRINTF
+
+/* Does your system have the vsnprintf() call? */
+#undef HAVE_VSNPRINTF
+
+/* The number of bytes in a long.  */
+#undef SIZEOF_LONG
+
+/* Define if you have the bkgdset function.  */
+#undef HAVE_BKGDSET
+
+/* Define if you have the curs_set function.  */
+#undef HAVE_CURS_SET
+
+/* Define if you have the ftruncate function.  */
+#undef HAVE_FTRUNCATE
+
+/* Define if you have the meta function.  */
+#undef HAVE_META
+
+/* Define if you have the regcomp function.  */
+#undef HAVE_REGCOMP
+
+/* Define if you have the resizeterm function.  */
+#undef HAVE_RESIZETERM
+
+/* Define if you have the setegid function.  */
+#undef HAVE_SETEGID
+
+/* Define if you have the srand48 function.  */
+#undef HAVE_SRAND48
+
+/* Define if you have the strcasecmp function.  */
+#undef HAVE_STRCASECMP
+
+/* Define if you have the strerror function.  */
+#undef HAVE_STRERROR
+
+/* Define if you have the strftime function.  */
+#undef HAVE_STRFTIME
+
+/* Define if you have the typeahead function.  */
+#undef HAVE_TYPEAHEAD
+
+/* Define if you have the use_default_colors function.  */
+#undef HAVE_USE_DEFAULT_COLORS
+
+/* Define if you have the <ncurses.h> header file.  */
+#undef HAVE_NCURSES_H
+
+/* Define if you have the <stdarg.h> header file.  */
+#undef HAVE_STDARG_H
+
+/* Define if you have the <sys/ioctl.h> header file.  */
+#undef HAVE_SYS_IOCTL_H
+
+/* Define if you have the intl library (-lintl).  */
+#undef HAVE_LIBINTL
+
+/* Define if you have the nsl library (-lnsl).  */
+#undef HAVE_LIBNSL
+
+/* Define if you have the socket library (-lsocket).  */
+#undef HAVE_LIBSOCKET
+
+/* Define if you have the x library (-lx).  */
+#undef HAVE_LIBX

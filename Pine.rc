@@ -1,0 +1,40 @@
+#
+# This file contains commands to change the keybindings in Mutt to be
+# similar to those of PINE 3.95.
+#
+
+bind index v display-message
+bind index p previous-undeleted
+bind index n next-undeleted
+bind index ' ' next-page
+bind index c mail
+bind index g change-folder
+bind index w search
+bind index y print-message
+bind index x sync-mailbox
+bind index $ sort-mailbox
+bind index a tag-prefix
+bind index ; tag-message
+
+# Not possible to simulate zoom-out...
+macro index z ltagged\r
+
+bind pager p previous-undeleted
+bind pager n next-undeleted
+bind pager ' ' next-page
+bind pager g change-folder
+bind pager c mail
+bind pager w search
+bind pager y print-message
+bind pager \n noop	# PINE prints "No default action for this menu."
+bind pager up previous-line
+bind pager down next-line
+
+bind compose \cx send-message
+
+# PINE has different defaults for this variables
+set folder=~/mail
+set record=+sent-mail
+set nosave_name
+set postponed=~/postponed-msgs
+set hdr_format="%Z %3C %{%b %d} %-19.19L (%5c) %s"

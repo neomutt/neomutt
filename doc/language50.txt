@@ -1,0 +1,1339 @@
+#This file contains the strings used by PGP.
+
+[DIFFERENT_EXES]
+us=\
+PGP is now invoked from different executables for different operations:\n\n\
+pgpe    Encrypt (including Encrypt/Sign)\n\
+pgps    Sign\n\
+pgpv    Verify/Decrypt\n\
+pgpk    Key management\n\
+pgpo    PGP 2.6.2 command-line simulator (not yet implemented)\n\n\
+See each application's respective man page or the general PGP documentation\n\
+for more information.\n
+
+[CREATING_OUTPUT_FILE]
+us=Creating output file %s\n
+
+#Untested
+[COPYING_KEYFILE_AND_RUNNING_PGPK]
+us=Copying key file to \"%s\", running pgpk to process it...\n\n
+mutt=
+
+#Untested
+[NEED_PASSPHRASE]
+us=You need a passphrase to encrypt the file\n
+
+[MUST_SPECIFY_A_RECIPIENT]
+us=You must specify at least one recipient for encryption!\n
+
+#Untested
+[NEED_PASSPHRASE_AGAIN]
+us=Enter same passphrase again\n
+
+#Untested
+[PASSPHRASES_DIFFERENT]
+us=Error: Passphrases were different.  Try again.\n
+
+#Untested
+[ZERO_LEN_PASSPHRASE]
+us=Encryption error\n
+
+#Untested
+[TREAT_AS_PGP]
+us=This is a PGP File.  Treat it as such? [y/N]\n
+
+#Untested
+[PRIVATE_KEY_MISSING]
+us=Cannot find a private key for signing: %s\n
+
+#Untested
+[CANNOT_CONVERT_TO_PRIVATE_KEY]
+us=Cannot convert to private key\n
+
+#Untested
+[PRIVATE_KEY_CANNOT_SIGN]
+us=Private Key cannot sign\n
+
+#Untested
+[CANNOT_UNLOCK_PRIVATE_KEY]
+us=Cannot unlock private key\n
+
+#Untested
+[NO_KEYRINGS]
+us=No keyrings to use
+
+#Untested
+[NO_ENCRYPTION_KEYS_FOUND_FOR]
+us=No encryption keys found for: %s\n
+
+#Untested
+[CANNOT_FIND_KEY]
+us=Cannot find key: %s\n
+
+#Untested
+[CANNOT_ADD_MY_KEY]
+us=Cannot add my key to set\n
+
+#Untested
+[NO_VALID_RECIPIENTS]
+us=No valid keys found for any recipients, exiting...\n
+
+#Untested
+[USING_STDIN]
+us=No files specified.  Using stdin.\n\n
+mutt=
+
+#Untested
+[CANNOT_OPEN_INPUT_FILE]
+us=Cannot open input file %s\n
+
+#Untested
+[CANNOT_SETUP_PROCESSING_PIPELINE]
+us=Cannot Setup Processing Pipeline\n
+
+#Untested
+[UNRECOGNIZED_OPTION_STRING]
+us=Unrecognized option %s\n
+
+#Untested
+[UNRECOGNIZED_OPTION_STRING_DASH]
+us=Unrecognized option -%s\n
+
+#Untested
+[UNRECOGNIZED_OPTION_CHAR]
+us=Unrecognized option -%c\n
+
+#Untested
+[ARGS_INCOMPATABLE]
+us="Cannot use -%c and -%c together\n"
+
+#Untested
+[ONLY_ONE_OUTPUT_FILE]
+us="Only one -o option allowed\n"
+
+#Untested
+[ONLY_ONE_USERNAME]
+us="Only one -u option allowed\n"
+
+#Untested
+[NO_OUTPUT_FILENAME]
+us=-o option requires an output file name argument\n
+
+[NO_RECIPIENT_SPECIFIED]
+us=-r option requires a recipient name argument\n
+
+#Untested
+[NO_USERID_SPECIFIED]
+us=-u option requires a userid argument\n
+
+#Untested, and probably going away
+[NO_PASSPHRASE_SPECIFIED_IN_BATCHMODE]
+us=-z option requires a passphrase argument\n
+
+#Untested
+[CANNOT_COMBINE_CONVENTIONAL_AND_PK]
+us=Cannot combine -c and -r arguments\n
+
+#Untested
+[PGPK_IS_SEPERATE]
+us=pgpk is a seperate program, not a symlink to pgp!\n
+
+#Untested
+[UNKNOWN_SYMLINK]
+us=Invoked with unknown symlink\n
+
+#Untested
+[PRIVATE_KEY_NEEDED_FOR_SIGNATURE]
+us=A private key is required to make a signature.\n
+
+[ENTER_Y_OR_N]
+us="Invalid response.  Please enter Y or N [default %c]: \n"
+
+#Untested
+[GENERIC_KEYRING_ERROR]
+us="Error on keyring \"%s\":  "
+
+#Untested
+[UNABLE_TO_OPEN_DEFAULT_KEYRINGS]
+us="Unable to open default keyrings:  "
+
+#Untested
+[UNABLE_TO_OPEN_KEYRING]
+us="Unable to open keyring:  "
+
+#Untested
+[KEY_CORRUPTED]
+us="Key Corrupted (%s):  "
+
+#Untested
+[NEED_SIG_FILE]
+us="File to check signature against [%s]: "
+
+#untested
+[GOOD_SIGNATURE]
+us="Good signature made %s by key:\n"
+
+#untested
+[BAD_SIGNATURE]
+us="BAD signature made %s by key:\n"
+
+#untested
+[ERROR_SIGNATURE]
+us="Error %s checking signature:  %s\n"
+
+#Untested
+[UNKNOWN_SIGNATURE]
+us="Signature by unknown keyid: "
+
+#untested
+[ENTER_PASSPHRASE]
+us="Enter pass phrase: "
+
+#Untested
+[RANDOM_BITS_FROM_DEVICE]
+us="\n\
+We need to generate %u random bits.  This is done by reading\n\
+%s.  Depending on your system, you may be able\n\
+to speed this process by typing on your keyboard and/or moving your mouse.\n"
+
+#Untested
+[RANDOM_BITS_FROM_DEVICE_OLD_KERNEL]
+us="\n\
+/dev/random detected; however, on Linux kernel versions < 1.3.33, it is not\n\
+cryptographically usable.  If you wish to use /dev/random as an entropy\n\
+source, it is recommended that you upgrade your kernel version.  If you feel\n\
+that you received this message in error, add ForceRandomDevice=1 to your\n\
+pgp.cfg file, but be warned that by doing so without know what you are\n\
+doing, you could compromise the security of your key.\n"
+
+#Untested
+[RANDOM_BITS_FROM_KEYBOARD]
+us="\n\
+We need to generate %u random bits.  This is done by measuring the\n\
+time intervals between your keystrokes.  Please enter some random text\n\
+on your keyboard until you hear the beep:\n"
+
+#Untested
+[NO_INPUT_FILE_IN_BATCHMODE]
+us="Cannot request input file in batchmode\n"
+
+#Untested
+[UNABLE_TO_OPEN_FILE]
+us="Unable to open file \"%s\"\n"
+
+#Untested
+[UNABLE_TO_CREATE_READ_MODULE]
+us="Unable to create file read module.\n"
+
+#Untested
+[UNKNOWN_FILE_TYPE]
+us="Unknown file type (clearsigned?).  Assuming text\n"
+
+#Untested
+[OPENING_FILE_WITH_TYPE]
+us="Opening file \"%s\" type %s.\n"
+mutt=
+
+#Untested
+[ERROR_CLOSING_OLD_FILE]
+us="Error closing old file: %d\n"
+
+#Untested
+[NEED_PASSPHRASE_TO_DECRYPT_KEY]
+us="Need a pass phrase to decrypt private key:\n"
+
+#Untested
+[GOOD_PASSPHRASE]
+us="Pass phrase is good.\n"
+
+#Untested
+[BAD_PASSPHRASE]
+us="Error: Bad pass phrase.\n\n"
+
+#Untested
+[PASSPHRASE_INCORRECT]
+us="Password Incorrect."
+
+#Untested
+[TRY_AGAIN]
+us="  Try Again."
+
+#Untested
+[UNKNOWN_ESK]
+us="Unknown ESK type: %d\n"
+
+#Untested
+[CANNOT_DECRYPT]
+us="Cannot decrypt message.  It can only be decrypted by:\n"
+
+#Untested
+[A_PASSPHRASE]
+us="  A Pass Phrase\n"
+
+#Untested
+[KEY_ID]
+us="  Key ID "
+
+#Untested
+[FORCE_OVERWRITE]
+us="File \"%s\" already exists. Overwrite? [y/N] "
+
+#Untested
+[UNABLE_TO_OVERWRITE_FILE]
+us="Unable to overwrite file \"%s\"\n"
+
+#Untested
+[RANDOM_DEVICE_NOT_DEFAULT]
+us="Warning!  Random device is something other than %s!\n\
+This MAY be a security hole.\n"
+
+#Untested
+[RANDOM_DEVICE_WRITABLE]
+us="Warning!  %s is writable by users other than root!\n\
+This is probably OK, but you should have your sysadmin fix it.\n\
+Proceeding.\n"
+
+#Untested
+[RANDOM_DEVICE_UNREADABLE]
+us="\
+Warning!  Random device %s found, but you can't read it!\n"
+
+#Untested
+[BITS_AND_KEYID]
+us="%6u bits, Key ID "
+
+#Untested
+[KEY_NOT_FOUND]
+us=Key not found: \"%s\"\n
+
+#Untested
+[PGPERR_TROUBLE_BADTRUST_LONG]
+us="Trust packet too long: %lu bytes long"
+
+#Untested
+[PGPERR_TROUBLE_UNKPKTBYTE_LONG]
+us="Unknown packet byte: %02X"
+
+#Untested
+[PGPERR_TROUBLE_KEY2BIG_LONG]
+us="Key grossly oversized: %lu bytes long"
+
+#Untested
+[PGPERR_TROUBLE_NAME2BIG_LONG]
+us="User ID too long: %lu bytes long"
+
+#Untested
+[PGPERR_TROUBLE_SIG2BIG_LONG]
+us="Signature grossly oversized: %lu bytes long"
+
+#Untested
+[PGPERR_TROUBLE_DUPKEYID_LONG]
+us="Duplicate keyID found.  Two keys have the same keyID,\n\
+but they are different.  This is highly suspicious.  The first key
+is:"
+
+#Untested
+[PGPERR_TROUBLE_DUPKEY_LONG]:
+us="A key was found twice in one keyring file.  It is a duplicate of:\n"
+
+#Untested
+[PGPERR_TROUBLE_DUPNAME_LONG]
+us="A name was found twice in one keyring file.  It is a duplicate of:\n"
+
+#Untested
+[PGPERR_TROUBLE_BAREKEY_LONG]
+us="A key was found twice in one keyring file.  It is a duplicate of:  "
+
+#Untested
+[PGPERR_TROUBLE_VERSION_BUG_CUR_LONG]
+us="This private key's version number appears to be incorrect.\n\
+PGP version 2.6 had a bug wherein it would improperly change the\n\
+version number of a private key generated by older versions of PGP\n\
+when it was edited.  The private key in this key file has a version\n\
+byte that is different from a copy in another key file, and appears\n\
+to be improper.  PGP will fix this by changing the version byte in\n\
+the private key to the previous value.  The key with the problem
+is:\n"
+
+#Untested
+[PGPERR_TROUBLE_VERSION_BUG_PREV_LONG]
+us="A previously seen private key's version number appears to be\n\
+incorrect.  PGP version 2.6 had a bug wherein it would improperly\n\
+change the version byte of a private key generated by older versions\n\
+of PGP when it was edited.  The public key in this key file has\n\
+a version byte that is different from a private key elsewhere,\n\
+which appears to be improper.  PGP will fix this by changing the\n\
+version byte in the private key to the previous value.  The key\n\
+with the problem is:\n"
+
+#Untested
+[PGPERR_KEYIO_READING_LONG]
+us="I/O error reading file: %s"
+
+#Untested
+[PGPERR_KEYIO_FTELL_LONG]
+us="I/O error during call to ftell(): %s"
+
+#Untested
+[PGPERR_PRECEDING_ASSOCIATED_WITH]
+us="The preceeding error was associated with:  "
+
+#Untested
+[NOT_PGP_KEYFILE]
+us="File is not a PGP key file.  Aborting.\n"
+
+#Untested
+[FOLLOWING_KEYRING_PROBLEMS]
+us="The following problems were encountered while reading the keyring:\n"
+
+#Untested
+[OFFSET_DESCRIPTION]
+us="Offset   Description\n"
+
+#Untested
+[UNKNOWN_SIGNATOR]
+us="   (Unknown signator, can't be checked)\n"
+
+#Untested
+[OPEN_PAREN_KEYID]
+us="         (KeyID:"
+
+#Untested
+[REVOKED]
+us="*REVOKED*"
+
+#Untested
+[ABOVE_KEY_REVOKED]
+us="\
+WARNING: The above key has been revoked by its owner,\n\
+possibly because the private key was compromised.\n\
+You cannot use a revoked key for encryption.\n"
+
+#Untested
+[ABOVE_KEY_DISABLED]
+us="\
+WARNING:  The above key has been disabled on your keyring.  If you\n\
+wish to use it, use \"pgpk -d\" to reenable it.\n"
+
+[ABOVE_KEY_EXPIRED]
+us="\
+WARNING:  The above key is not valid for use after %s.\n"
+
+#Untested
+[STILL_USE_EXPIRED_KEY]
+us="\
+WARNING:  This key is not valid for use after %s.\n\
+Do you still want to use it? [y/N] "
+
+#Untested
+[PGP_NAMETRUST_UNKNOWN]
+us="\
+WARNING: Because the following name has not been certified\n\
+by a trusted signature, it is not known with a high\n\
+degree of confidence that the above key belongs to:\n"
+
+#Untested
+[PGP_NAMETRUST_UNTRUSTED]
+us="WARNING: The above key is not trusted to belong to:\n"
+
+#Untested
+[PGP_NAMETRUST_MARGINAL]
+us="\
+WARNING: Because the following name is not certified with sufficient\n\
+trusted signatures, it is not known with high confidence that the\n\
+above key actually belongs to:\n"
+
+#Untested
+[PGP_NEWTRUST_NOT_TRUSTED]
+us="\n\
+WARNING: The above key is not trusted to belong to:\n"
+
+#Untested
+[PGP_NEWTRUST_PARTIAL_TRUST]
+us="\n\
+WARNING: Because the following name is not certified with sufficient\n\
+trusted signatures, there is an estimated 1/%-ld probability that\n\
+the above key may not belong to:\n"
+
+#Untested
+[PGP_NEWTRUST_NOT_TRUSTED_SIGNING_KET]
+us="\n\
+WARNING: The signing key is not trusted to belong to:\n"
+
+#Untested
+[PREVIOUSLY_APPROVED_KEY]
+us="\nBut you previously approved using the key with this name.\n"
+
+#Untested
+[DO_YOU_WISH_TO_USE_UNTRUSTED_KEY]
+us="\nDo you want to use the key with this name? [y/N] "
+
+#Untested
+[DONT_TRUST_SIGS_FROM_REVOKED_KEYS]
+us="\
+WARNING: The signing key has been revoked by its owner,\n\
+possibly because the private key was compromised.\n\
+A signature made by this key should not be trusted.\n"
+
+#Untested
+[YOU_HAVE_DISABLED_SIGNING_KEY]
+us="WARNING: You have disabled the signing key\n"
+
+#Untested
+[KEY_HAS_EXPIRED]
+us="WARNING: This key is not valid for use after %s.\n"
+
+#Untested
+[PGP_NAMETRUST_UNTRUSTED_SIGNING_KEY]
+us="\nWARNING: The signing key is not trusted to belong to:\n"
+
+[MESSAGE_IS_ENCRYPTED]
+us="Message is encrypted.\n"
+
+[GETTING_KEY_FOR]
+us="Getting key for %s.\n"
+
+[LOOKING_UP_HOST]
+us="Looking up host %s\n"
+
+[ESTABLISHING_CONNECTION]
+us="Establishing connection\n"
+
+[SENDING_REQUEST]
+us="Sending request\n"
+
+[RECEIVING_DATA]
+us="Receiving data\n"
+
+[CLEANING_UP]
+us="Cleaning up\n"
+
+[COMPLETE]
+us="Complete.\n"
+
+[ONE_KEY_RECEIVED]
+us="One key received.  Adding it to your keyring...\n"
+
+[MANY_KEYS_RECEIVED]
+us="%li keys received.  Adding them to your keyring...\n"
+
+[UNKNOWN_PROTOCOL]
+us="Unknown protocol %s.\n"
+
+[SENDING_KEY]
+us="Sending key                               \r"
+
+[RECEIVING_RESPONSE]
+us="Receiving response                       \r"
+
+#Untested
+[NO_KEYFILE_SPECIFIED]
+us="-a argument requires a key file or URL to add to your keyring."
+
+#Untested
+[UNABLE_TO_IMPORT_KEYFILE]
+us="Unable to import keyfile \"%s\".\n"
+
+#Untested
+[ADDING_KEYS]
+us="Adding keys:\n\n"
+
+#Untested
+[UNABLE_TO_CREATE_KEYLIST]
+us="Unable to create keylist\n"
+
+#Untested
+[NO_KEYS_TO_ADD]
+us="No keys to add                           \n"
+
+#Untested
+[KEYS_ADDED_SUCCESSFULLY]
+us="Keys added successfully.\n"
+
+#Untested
+[INVALID_SELECTION]
+us="Invalid Selection.  Please try again.\n"
+
+[TOO_MANY_MATCHES]
+us="Too many matches; aborting!\n"
+
+[CHOOSE_ONE_ABOVE]
+us="Choose one of the above:  "
+
+[PLEASE_SELECT_A_USER_ID]
+us="Please select a user ID %s:\n"
+
+[PLEASE_SELECT_A_USER_ID_WITH_SIG]
+us="Please select a user ID with a signature %s:\n"
+
+[PLEASE_SELECT_A_KEY_WITH_USERID]
+us="Please select a key with a userid %s:"
+
+[PLEASE_SELECT_A_KEY_WITH_SIG]
+us="Please select a key with a signature %s:"
+
+[NO_USER_IDS_SELECTED]
+us="No user IDs selected %s.\n"
+
+[PLEASE_SELECT_A_SIGNATURE]
+us="Please select a signature %s:"
+
+[NO_SIGNATURES_SELECTED]
+us="No signatures selected %s.\n"
+
+[NO_KEYS_SELECTED]
+us="No keys selected %s.\n"
+
+[A_USERID_IS_REQUIRED]
+us="A user ID is required to select the key you want %s.\n\
+Enter the key's user ID: "
+
+[UNABLE_TO_ORDER_KEYSET]
+us="Unable to order keyset\n"
+
+[PLEASE_SELECT_A_KEY]
+us="Please select a key %s:"
+
+[UNABLE_TO_CREATE_ITER]
+us="Unable to create key iterator\n"
+
+[NO_HTTP_SEND]
+us="HTTP cannot be used as a sending protocol at this time.\n"
+
+[UNKNOWN_PROTOCOL]
+us="Unknown protocol %s.\n"
+
+[NO_KEYS_SELECTED_FOR_EXTRACTION]
+us="No keys were selected for extraction.\n"
+
+[ENABLE_THIS_KEY]
+us="\nEnable this key? [y/N] "
+
+[DISABLE_THIS_KEY]
+us="\nDisable this key? [y/N] "
+
+[KEY_ENABLED]
+us="\nKey enabled.\n"
+
+[KEY_DISABLED]
+us="\nKey disabled.\n"
+
+[CANNOT_TRUST_INVALID_KEYS]
+us="This key is not valid, and cannot be assigned trust\n"
+
+[DO_YOU_WISH_TO_CHANGE_INTRODUCER_RELIABITY]
+us="Do you want to change your estimate of this key owner's reliability\n\
+as an introducer of other keys [y/N]? "
+
+[NO_CHANGES_MADE]
+us="No changes made.\n"
+
+[DETERMINE_IN_YOUR_MIND]
+us="\n"\
+"Make a determination in your own mind whether this key actually\n"\
+"belongs to the person whom you think it belongs to, based on available\n"\
+"evidence.  If you think it does, then based on your estimate of\n"\
+"that person's integrity and competence in key management, answer\n"\
+"the following question:\n"
+
+[WOULD_YOU_TRUST_THIS_KEY_AND_OWNER]
+us="\nWould you trust this key owner to act as an introducer and\n\
+certify other people's public keys to you?\n\
+(1=I don't know. 2=No. 3=Usually. 4=Yes, always? "
+
+[UNRECOGNIZED_RESPONSE]
+us="Unrecognized response.\n"
+
+[UNABLE_TO_SET_TRUST]
+us="Unable to set trust\n"
+
+[DESCRIBE_CONFIDENCE_AS_INTRODUCER]
+us="\nDescribe the confidence you have in this person as an introducer.\n\
+What are the odds that this key owner is going to be wrong about\n\
+a key which she has signed as an introducer?\n"
+
+[CURRENTLY_INFINITE_TRUST]
+us="(Currently she is listed as having essentially zero chance\
+ of being wrong.)\n"
+
+[CURRENTLY_ZERO_TRUST]
+us="(Currently he is listed as not having any confidence as an\
+ introducer.)\n"
+
+[CURRENTLY_HAS_PERCENT_TRUST_START]
+us="(Currently she is listed as having a one in "
+
+[CURRENTLY_HAS_PERCENT_TRUST_END]
+us=" chance of being wrong.)\n"
+
+[ENTER_A_TRUST_RANGE]
+us="Enter a number from 1 to 2 million"
+
+[OR_HIT_RETURN_TO_LEAVE_UNCHANGED]
+us=", or hit return to leave unchanged."
+
+[WILL_BE_WRONG_TIME_TIME_IN]
+us="\nShe will be wrong one time in: "
+
+[DO_YOU_WANT_THIS_KEY_AXIOMATIC]
+us="\nDo you want to set this key as axiomatic [y/N]? "
+
+[PUBLIC_KEYRING_UPDATED]
+us="Public keyring updated.\n"
+
+[NEED_OLD_PASSPHRASE]
+us="Need old passphrase. "
+
+[NEED_NEW_PASSPHRASE]
+us="Need new passphrase. "
+
+[ENTER_IT_A_SECOND_TIME]
+us="Enter it a second time. "
+
+[PASSPHRASES_ARE_DIFFERENT]
+us="Passphrases are different\n"
+
+[CHANGING_MASTER_KEY_PASSPHRASE]
+us="Changing master key passphrase...\n"
+
+[PASSPHRASE_CHANGE_FAILED_MASTER]
+us="Passphrase change failed for master key.\n"
+
+[CHANGING_SUBKEY_PASSPHRASE]
+us="Changing subkey passphrase...\n"
+
+[PASSPHRASE_CHANGE_FAILED_SUBKEY]
+us="Passphrase change failed for subkey.\n"
+
+[CONFIRM_NON_AXIOMATIC]
+us="\nDo you want to unset this key as axiomatic [y/N]? "
+
+[CONFIRM_ADD_NEW_USERID]
+us="\nDo you want to add a new user ID [y/N]? "
+
+[ENTER_NEW_USERID]
+us="Enter the new user ID: "
+
+[NO_NAME_ENTERED]
+us="No name entered.\n"
+
+[UNABLE_TO_ADD_NEW_USERID]
+us="Unable to add new User ID (%d)\n"
+
+[CONFIRM_CHANGE_PASSPHRASE]
+us="\nDo you want to change your pass phrase (y/N)? "
+
+[CHANGE_PASSPHRASE_FAILED]
+us="Change passphrase failed (%d)\n"
+
+[CONFIRM_SET_DEFAULT_KEY]
+us="\nDo want to set this as your default key [y/N]? "
+
+[KEYRINGS_UPDATED]
+us="Keyrings updated.\n"
+
+[TO_BE_REMOVED_FRAGMENT]
+us="to be removed"
+
+[SIGNATURE_FRAGMENT]
+us="signature"
+
+[USERID_FRAGMENT]
+us="user ID"
+
+[KEY_FRAGMENT]
+us="key"
+
+[SELECTED_KEY_HAS_ONLY_ONE_USERID"]
+us="Selected key has only one user ID; can't be selected %s\n"
+
+[FOLLOWING_OBJECT_HAS_BEEN_SELECTED]
+us="\nThe following %s has been selected %s:\n"
+
+[UNABLE_TO_REMOVE_OBJECT]
+us="Unable to remove object\n"
+
+[TO_BE_SIGNED_FRAGMENT]
+us="to be signed"
+
+[VALIDITY_CERTIFICATION_WARNING]
+us="\n\n\
+READ CAREFULLY:  Based on your own direct first-hand knowledge, are\n\
+you absolutely certain that you are prepared to solemnly certify that\n\
+the above public key actually belongs to the user specified by the\n\
+above user ID [y/N]? "
+
+[KEY_SIGNING_CANCELED]
+us="Key sign operation cancelled.\n"
+
+[KEY_SELECTED_FOR_SIGNING_IS]
+us="Key selected for signing is:\n"
+
+[KEY_SIGN_OPERATION_FAILED]
+us="Key sign operation failed\n"
+
+[KEY_SIG_CERT_ADDED]
+us="Key signature certificate added.\n"
+
+[TO_BE_REVOKED_FRAGMENT]
+us="to be revoked"
+
+[YOU_DONT_HAVE_THE_PRIVATE_KEY]
+us="You don't have the private key corresponding to that key\n"
+
+[SIG_ALREADY_REVOKED]
+us="That signature has already been revoked.\n\
+Are you sure you want to add another revocation certificate [y/N]? "
+
+[SIG_REVOCATION_CANCELLED]
+us="Signature revocation cancelled.\n"
+
+[CONFIRM_REVOKE_KEY]
+us="Do you want to permanently revoke your public key\n\
+by issuing a secret key compromise certificate on this key [y/N]? "
+
+[CONFIRM_REVOKE_SIG]
+us="Do you want to revoke this signature [y/N]? "
+
+[REVOKE_CANCELLED]
+us="Revoke cancelled.\n"
+
+[UNABLE_TO_GENERATE_REVOCATION_SIGNATURE]
+us="Unable to generate revocation signature\n"
+
+[KEY_REVOCATION_CERT_ADDED]
+us="Key revocation certificate added.\n"
+
+[SELECT_SIGNING_KEY]
+us="Please select a key to sign with:"
+
+[UNABLE_TO_OPEN_KEYRING]
+us="Unable to open keyring\n"
+
+[PGPINITAPP_FAILED]
+us="pgpInitApp failed\n"
+
+[KEY_IS_ALREADY_REVOKED]
+us="That key has already been revoked\n"
+
+[USE_FORCE_TO_ALLOW_OVERWRITING]
+us="In batchmode, use +force to allow overwriting of output files\n"
+
+[INCONSISTENT_RECIPIENT_SET]
+us="No algorithm available that all keys support.\n"
+
+[UNKNOWN_ERROR]
+us="Unknown error code %i!\n"
+
+[VERIFY_REMOVE_KEY_PUBLIC_PRIVATE]
+us="\nDo you wish to remove this key from your public and private \
+keyrings?\n[y/N]? "
+
+[UNABLE_TO_ITERATE_KEY]
+us="Unable to iterate key!\n";
+
+[CANCELED]
+us="Canceled.\n"
+
+[REMOVED]
+us="Removed.\n"
+
+[NEED_FILE_TO_SAVE]
+us="Save file as [%s] "
+
+[PGP_NEWTRUST_NOT_TRUSTED_SIGNING_KEY]
+us="WARNING: The signing key is not trusted to belong to:\n"
+
+[TO_DISABLE_OR_ENABLE]
+us="to disable or enable"
+
+[TO_EDIT]
+us="to edit"
+
+[SELECTED_KEY_HAS_ONLY_ONE_USERID]
+us="Selected key has only one user ID, can't be selected %s\n"
+
+[NO_DEFAULT_PRIVATE_KEY]
+us="No default private key\n"
+
+[MULTIPLE_RECIPIENTS_MATCHED]
+us="WARNING:  %i matches were found for recipient %s.\n\
+This may not be what you intended.\n"
+
+[ENOUGH_THANK_YOU]
+us="\a -Enough, thank you.\n"
+
+[SEEDING_RANDPOOL_FROM_DEVICE]
+us="Seeding entropy pool with up to %u bits from %s...\n"
+
+[COMPLETE_READ_NUM_BITS]
+us="Complete.  Read %u bits.\n"
+
+[RSA_AND_DH_RECIPS]
+us="WARNING:  You are encrypting to both RSA and Diffie-Hellman keys.\n\
+If the RSA user is still using PGP version 2.6.3 or earlier; 4.0; or 4.5,\n\
+she will not be able to decrypt this message.\n"
+
+[ONLY_ONE_USER_ALLOWED]
+us=Specified operation may only be performed on one argument per execution.\n
+
+[CANNOT_DISABLE_AXIOMATIC_KEYS]
+us=You cannot disable an axiomatic key.  Use pgpk -e to change your\n\
+trust of this key, first.\n
+
+[RETRIEVING_URL]
+us="Retreiving %s:/%s:%i%s\n"
+
+[ADD_THESE_KEYS]
+us="\nAdd these keys to your keyring? [Y/n] "
+
+[ABORTED]
+us="\nAborted.\n"
+
+[WARNING_NO_MRK]
+us="A requested Message Recovery Key (MRK) for this key was not\
+found.\n"
+
+[MRK_FOUND]
+us="Message Recovery Key (MRK) found.  Will also encrypt this message\n\
+to Key ID %s.\n"
+
+#Everything from here down is automatically generated.
+
+[PGPERR_OK]
+us="No errors\n"
+
+[PGPERR_GENERIC]
+us="Generic error (should be changed)\n"
+
+[PGPERR_NOMEM]
+us="Out of Memory\n"
+
+[PGPERR_BADPARAM]
+us="Invalid Parameter\n"
+
+[PGPERR_NO_FILE]
+us="Cannot open file\n"
+
+[PGPERR_NO_KEYBITS]
+us="Internal keyring bits exhausted\n"
+
+[PGPERR_BAD_HASHNUM]
+us="Unknown hash number\n"
+
+[PGPERR_BAD_CIPHERNUM]
+us="Unknown cipher number\n"
+
+[PGPERR_BAD_KEYLEN]
+us="Illegal key length for cipher\n"
+
+[PGPERR_SIZEADVISE]
+us="SizeAdvise promise not kept\n"
+
+[PGPERR_CONFIG]
+us="Error parsing configuration\n"
+
+[PGPERR_CONFIG_BADFUNC]
+us="Invalid configuration function\n"
+
+[PGPERR_CONFIG_BADOPT]
+us="Unknown configuration option\n"
+
+[PGPERR_STRING_NOT_FOUND]
+us="Requested string not found\n"
+
+[PGPERR_STRING_NOT_IN_LANGUAGE]
+us="Requested string not in language\n"
+
+[PGPERR_KEY_ISLOCKED]
+us="Key requires passphrase to unlock\n"
+
+[PGPERR_KEY_UNUNLOCKABLE]
+us="Key requires passphrase each time\n"
+
+[PGPERR_SIG_ERROR]
+us="Error while processing signature\n"
+
+[PGPERR_ADDSIG_ERROR]
+us="Cannot add signature\n"
+
+[PGPERR_CANNOT_DECRYPT]
+us="Cannot decrypt message\n"
+
+[PGPERR_ADDESK_ERROR]
+us="Cannot add encrypted session key\n"
+
+[PGPERR_UNK_STRING2KEY]
+us="Don't know how to convert pass\n"
+
+[PGPERR_BAD_STRING2KEY]
+us="Invalid conversion from pass\n"
+
+[PGPERR_ESK_BADTYPE]
+us="Unknown encrypted session key type\n"
+
+[PGPERR_ESK_TOOSHORT]
+us="Encrypted session key too short\n"
+
+[PGPERR_ESK_TOOLONG]
+us="Encrypted session key too long\n"
+
+[PGPERR_ESK_BADVERSION]
+us="Encrypted session key version\n"
+
+[PGPERR_ESK_BADALGORITHM]
+us="Encrypted session key algorithm\n"
+
+[PGPERR_ESK_BITSWRONG]
+us="Wrong number of bits in ESK\n"
+
+[PGPERR_ESK_NOKEY]
+us="Can't find key to decrypt session key\n"
+
+[PGPERR_ESK_NODECRYPT]
+us="Can't decrypt this session key\n"
+
+[PGPERR_ESK_BADPASS]
+us="Passphrase incorrect\n"
+
+[PGPERR_SIG_BADTYPE]
+us="Unknown signature type\n"
+
+[PGPERR_SIG_TOOSHORT]
+us="Signature too short\n"
+
+[PGPERR_SIG_TOOLONG]
+us="Signature too long\n"
+
+[PGPERR_SIG_BADVERSION]
+us="Signature version unknown\n"
+
+[PGPERR_SIG_BADALGORITHM]
+us="Signature algorithm unknown\n"
+
+[PGPERR_SIG_BITSWRONG]
+us="Wrong number of bits in signature\n"
+
+[PGPERR_SIG_NOKEY]
+us="Can't find necessary key to check sig\n"
+
+[PGPERR_SIG_BADEXTRA]
+us="Invalid Extra Data for Signature\n"
+
+[PGPERR_NO_PUBKEY]
+us="No public key found\n"
+
+[PGPERR_NO_SECKEY]
+us="No secret key found\n"
+
+[PGPERR_UNKNOWN_KEYID]
+us="No matching keyid found\n"
+
+[PGPERR_NO_RECOVERYKEY]
+us="Requested message recovery key\n"
+
+[PGPERR_COMMIT_INVALID]
+us="Invalid commit response\n"
+
+[PGPERR_CANNOT_HASH]
+us="Cannot hash message\n"
+
+[PGPERR_UNBALANCED_SCOPE]
+us="Unbalanced scope\n"
+
+[PGPERR_WRONG_SCOPE]
+us="Data sent in wrong scope\n"
+
+[PGPERR_UI_INVALID]
+us="Invalid UI Callback Object\n"
+
+[PGPERR_CB_INVALID]
+us="Invalid Parser Callback\n"
+
+[PGPERR_INTERRUPTED]
+us="Interrupted encrypt/decrypt\n"
+
+[PGPERR_PUBKEY_TOOSMALL]
+us="Public Key too small for data\n"
+
+[PGPERR_PUBKEY_TOOBIG]
+us="Public key is too big for this version\n"
+
+[PGPERR_PUBKEY_UNIMP]
+us="Unimplemented public key operation\n"
+
+[PGPERR_RSA_CORRUPT]
+us="Corrupt data decrypting RSA block\n"
+
+[PGPERR_PK_CORRUPT]
+us="Corrupt data decrypting public\n"
+
+[PGPERR_CMD_TOOBIG]
+us="Command to Buffer too big\n"
+
+[PGPERR_FIFO_READ]
+us="Incomplete read from Fifo\n"
+
+[PGPERR_VRFYSIG_WRITE]
+us="Data illegally written into\n"
+
+[PGPERR_VRFYSIG_BADANN]
+us="Invalid annotation to signature\n"
+
+[PGPERR_ADDHDR_FLUSH]
+us="Cannot flush buffer until size\n"
+
+[PGPERR_JOIN_BADANN]
+us="Invalid annotation to join module\n"
+
+[PGPERR_RANDSEED_TOOSMALL]
+us="Not enough data in randseed file\n"
+
+[PGPERR_ENV_LOWPRI]
+us="Env Var not set: priority too low\n"
+
+[PGPERR_ENV_BADVAR]
+us="Invalid environment variable\n"
+
+[PGPERR_CHARMAP_UNKNOWN]
+us="Unknown Charset\n"
+
+[PGPERR_FILE_PERMISSIONS]
+us="Unsufficient file permissions\n"
+
+[PGPERR_FILE_WRITELOCKED]
+us="File already open for writing\n"
+
+[PGPERR_FILE_BADOP]
+us="Invalid PgpFile Operation\n"
+
+[PGPERR_FILE_OPFAIL]
+us="PgpFile Operation Failed\n"
+
+[PGPERR_IMMUTABLE]
+us="Attempt to change an\n"
+
+[PGPERR_PARSEASC_INCOMPLETE]
+us="Ascii Armor Input Incomplete\n"
+
+[PGPERR_PARSEASC_BADINPUT]
+us="PGP text input is corrupted\n"
+
+[PGPERR_FILEFIFO_SEEK]
+us="Temp-File Seek Error\n"
+
+[PGPERR_FILEFIFO_WRITE]
+us="Temp-File Write Error\n"
+
+[PGPERR_FILEFIFO_READ]
+us="Temp-File Read Error\n"
+
+[PGPERR_FILEIO_BADPKT]
+us="Corrupted or bad packet in\n"
+
+[PGPERR_SYSTEM_PGPK]
+us="Error Executing PGPK Program\n"
+
+[PGPERR_KEYIO_READING]
+us="I/O error reading keyring\n"
+
+[PGPERR_KEYIO_WRITING]
+us="I/O error writing keyring\n"
+
+[PGPERR_KEYIO_FTELL]
+us="I/O error finding keyring position\n"
+
+[PGPERR_KEYIO_SEEKING]
+us="I/O error seeking keyring\n"
+
+[PGPERR_KEYIO_OPENING]
+us="I/O error opening keyring\n"
+
+[PGPERR_KEYIO_CLOSING]
+us="I/O error closing keyring\n"
+
+[PGPERR_KEYIO_FLUSHING]
+us="I/O error flushing keyring\n"
+
+[PGPERR_KEYIO_EOF]
+us="Unexpected EOF fetching key packet\n"
+
+[PGPERR_KEYIO_BADPKT]
+us="Bad data found where key\n"
+
+[PGPERR_KEYIO_BADFILE]
+us="Not a keyring file\n"
+
+[PGPERR_TROUBLE_KEYSUBKEY]
+us="Key matches subkey\n"
+
+[PGPERR_TROUBLE_SIGSUBKEY]
+us="Signature by subkey\n"
+
+[PGPERR_TROUBLE_BADTRUST]
+us="Trust packet malformed\n"
+
+[PGPERR_TROUBLE_UNKPKTBYTE]
+us="Unknown packet byte in keyring\n"
+
+[PGPERR_TROUBLE_UNXSUBKEY]
+us="Unexpected subkey (before key)\n"
+
+[PGPERR_TROUBLE_UNXNAME]
+us="Unexpected name (before key)\n"
+
+[PGPERR_TROUBLE_UNXSIG]
+us="Unexpected sig (before key)\n"
+
+[PGPERR_TROUBLE_UNXUNK]
+us="Packet of unknown type in unexpected\n"
+
+[PGPERR_TROUBLE_UNXTRUST]
+us="Unexpected trust packet\n"
+
+[PGPERR_TROUBLE_KEY2BIG]
+us="Key grossly oversized\n"
+
+[PGPERR_TROUBLE_SEC2BIG]
+us="Secret key grossly oversized\n"
+
+[PGPERR_TROUBLE_NAME2BIG]
+us="Name grossly oversized\n"
+
+[PGPERR_TROUBLE_SIG2BIG]
+us="Sig grossly oversized\n"
+
+[PGPERR_TROUBLE_UNK2BIG]
+us="Packet of unknown type too large\n"
+
+[PGPERR_TROUBLE_DUPKEYID]
+us="Duplicate KeyID, different keys\n"
+
+[PGPERR_TROUBLE_DUPKEY]
+us="Duplicate key (in same keyring)\n"
+
+[PGPERR_TROUBLE_DUPSEC]
+us="Duplicate secret (in same keyring)\n"
+
+[PGPERR_TROUBLE_DUPNAME]
+us="Duplicate name (in same keyring)\n"
+
+[PGPERR_TROUBLE_DUPSIG]
+us="Duplicate signature (in same keyring)\n"
+
+[PGPERR_TROUBLE_DUPUNK]
+us="Duplicate unknown \"thing\" in keyring\n"
+
+[PGPERR_TROUBLE_BAREKEY]
+us="Key found with no names\n"
+
+[PGPERR_TROUBLE_VERSION_BUG_PREV]
+us="Bug introduced by legal_kludge\n"
+
+[PGPERR_TROUBLE_VERSION_BUG_CUR]
+us="Bug introduced by legal_kludge\n"
+
+[PGPERR_TROUBLE_OLDSEC]
+us="Passphrase is out of date\n"
+
+[PGPERR_TROUBLE_NEWSEC]
+us="Passphrase is newer than another\n"
+
+[PGPERR_KEY_NO_RSA_ENCRYPT]
+us="No RSA Encryption/Signature support\n"
+
+[PGPERR_KEY_NO_RSA_DECRYPT]
+us="No RSA Decryption/Verification support\n"
+
+[PGPERR_KEY_NO_RSA]
+us="No RSA key support\n"
+
+[PGPERR_KEY_LONG]
+us="Key packet has trailing junk\n"
+
+[PGPERR_KEY_SHORT]
+us="Key packet truncated\n"
+
+[PGPERR_KEY_VERSION]
+us="Key version unknown\n"
+
+[PGPERR_KEY_PKALG]
+us="Key algorithm unknown\n"
+
+[PGPERR_KEY_MODMPI]
+us="Key modulus mis-formatted\n"
+
+[PGPERR_KEY_EXPMPI]
+us="Key exponent mis-formatted\n"
+
+[PGPERR_KEY_MODEVEN]
+us="RSA public modulus is even\n"
+
+[PGPERR_KEY_EXPEVEN]
+us="RSA public exponent is even\n"
+
+[PGPERR_KEY_MPI]
+us="Key component mis-formatted\n"
+
+[PGPERR_KEY_UNSUPP]
+us="Key is not supported by this version of PGP\n"
+
+[PGPERR_SIG_LONG]
+us="Signature packet has trailing junk\n"
+
+[PGPERR_SIG_SHORT]
+us="Signature truncated\n"
+
+[PGPERR_SIG_MPI]
+us="Signature integer mis-formatted\n"
+
+[PGPERR_SIG_PKALG]
+us="Signature algorithm unknown\n"
+
+[PGPERR_SIG_EXTRALEN]
+us="Bad signature extra material (not 5)\n"
+
+[PGPERR_SIG_VERSION]
+us="Signature version unknown\n"
+
+[PGPERR_KEYDB_BADPASSPHRASE]
+us="Bad passphrase\n"
+
+[PGPERR_KEYDB_KEYDBREADONLY]
+us="Key database is read-only\n"
+
+[PGPERR_KEYDB_NEEDMOREBITS]
+us="Insufficient random bits\n"
+
+[PGPERR_KEYDB_OBJECTREADONLY]
+us="Object is read-only\n"
+
+[PGPERR_KEYDB_INVALIDPROPERTY]
+us="Invalid property name\n"
+
+[PGPERR_KEYDB_BUFFERTOOSHORT]
+us="Buffer too short\n"
+
+[PGPERR_KEYDB_CORRUPT]
+us="Key database is corrupt\n"
+
+[PGPERR_KEYDB_VERSIONTOONEW]
+us="Data is too new to be read\n"
+
+[PGPERR_KEYDB_IOERROR]
+us="Input/output error\n"
+
+[PGPERR_KEYDB_VALUETOOLONG]
+us="Value too long\n"
+
+[PGPERR_KEYDB_DUPLICATE_CERT]
+us="Duplicate certification\n"
+
+[PGPERR_KEYDB_DUPLICATE_USERID]
+us="Duplicate UserID\n"
+
+[PGPERR_KEYDB_CERTIFYINGKEY_DEAD]
+us="Certifying key no longer\n"
+
+[PGPERR_KEYDB_OBJECT_DELETED]
+us="Object has been deleted\n"

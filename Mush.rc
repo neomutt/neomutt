@@ -1,0 +1,18 @@
+#
+# Key bindings similar to those of MUSH
+#
+
+bind index . display-message
+bind index t display-message
+macro index n j\n
+bind index + next-message
+bind index j next-message
+bind index J next-message
+bind index - previous-message
+bind index k previous-message
+bind index K previous-message
+bind index { top-page
+bind index } bottom-page
+bind index f change-folder
+bind index \cu sync-mailbox
+bind index * flag-message

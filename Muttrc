@@ -1,0 +1,24 @@
+#
+# System configuration file for Mutt
+#
+
+# default list of header fields to weed when displaying
+#
+ignore "from " received content- mime-version status x-status message-id
+ignore sender references return-path lines
+
+# imitate the old search-body function
+macro index \eb '/~b '
+
+# simluate the old url menu
+macro index \cb |urlview\n
+macro pager \cb |urlview\n
+
+# If Mutt is unable to determine your sites domain name correctly, you can
+# set the default here.
+#
+# set hostname=cs.hmc.edu
+
+# If your sendmail supports the -B8BITMIME flag, enable the following
+#
+# set use_8bitmime

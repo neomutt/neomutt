@@ -1,0 +1,49 @@
+- Other than multipart/mixed and PGP/MIME, Mutt should allow the user to
+  specify what to do with other types of multipart messages (i.e., so a user
+  can deal with S/MIME messages reasonably)
+
+- option to not include attachments in replies
+
+- handle message/external-body in some fashion
+
+- handle message/partial reconstruction
+
+- not possible to view the header of a single part message which contains
+  something that requires a mailcap entry to view
+
+- need to clean up the error recovery when running out of space when syncing
+  a mbox/mmdf mailbox
+
+- BODY struct should probably have a pointer to its corresponding HEADER
+  struct.  this is needed for mh/maildir mailboxes so the correct pathname
+  can be found.  Or perhaps all we need is a .hdr member of the STATE struct
+  so that all of the MIME handlers can look up the corresponding HEADERs if
+  need be?
+
+- mailbox resync code for mh and maildir mailboxes
+
+- fold long user-defined header fields
+
+- history classes
+
+- document honored environment variables
+
+- add -v flag to pass to sendmail...
+
+- ordered tag
+
+- rfc822 parser needs to do something with the @host1@host2: portion of the
+  route-addr
+
+- command completion for `enter-command'
+
+- new forward command to include first attachment in the editor and attach
+  other attachments to the message
+
+- adjust the names of *adr() and *adrlist() and calling routines for
+  consistency
+
+- mbox-hook entries should override $move?
+
+- add a preserved flag to messages
+

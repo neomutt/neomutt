@@ -1,0 +1,18 @@
+Mutt Programming Style Guide
+============================
+
+This information is meant for those of you who are hacking on Mutt and
+submitting patches to me.  If you follow these guidelines, it will make it
+much easier for me to integrate patches.
+
+- global functions should have the prefix "mutt_".  All other functions
+  should be declared "static".
+
+- avoid global vars where possible.  If one is required, try to contain it
+  to a single source file and declare it "static".  Global vars should have
+  the first letter of each word capitilized, and no underscores should be
+  used (e.g., MailGid, LastFolder, MailDir).
+
+- re-use code as much as possible.  There are a lot of "library" functions.
+  One of the biggest causes of bloat in ELM and PINE is the tremendous
+  duplication of code...  Help keep Mutt small!

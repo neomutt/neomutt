@@ -1,0 +1,276 @@
+/*
+ * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
+ * 
+ *     This program is free software; you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation; either version 2 of the License, or
+ *     (at your option) any later version.
+ * 
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ * 
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program; if not, write to the Free Software
+ *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ */ 
+
+#include "mutt.h"
+#include "mutt_menu.h"
+#include "mutt_curses.h"
+#include "sort.h"
+
+#include <string.h>
+#include <ctype.h>
+#include <unistd.h>
+
+static char *get_sort_str (char *buf, size_t buflen, int method)
+{
+  snprintf (buf, buflen, "%s%s%s",
+	    (method & SORT_REVERSE) ? "reverse-" : "",
+	    (method & SORT_LAST) ? "last-" : "",
+	    mutt_getnamebyvalue (method & SORT_MASK, SortMethods));
+  return buf;
+}
+
+/* %b = number of incoming folders with unread messages [option]
+ * %d = number of deleted messages [option]
+ * %f = full mailbox path
+ * %F = number of flagged messages [option]
+ * %h = hostname
+ * %l = length of mailbox (in bytes) [option]
+ * %m = total number of messages [option]
+ * %M = number of messages shown (virutal message count when limiting) [option]
+ * %n = number of new messages [option]
+ * %p = number of postponed messages [option]
+ * %P = percent of way through index
+ * %r = readonly/wontwrite/changed flag
+ * %s = current sorting method ($sort)
+ * %S = current aux sorting method ($sort_aux)
+ * %t = # of tagged messages [option]
+ * %v = Mutt version 
+ * %V = currently active limit pattern [option] */
+static const char *
+status_format_str (char *buf, size_t buflen, char op, const char *src,
+		   const char *prefix, const char *ifstring,
+		   const char *elsestring,
+		   unsigned long data, format_flag flags)
+{
+  char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp;
+  int count, optional = (flags & M_FORMAT_OPTIONAL);
+  MUTTMENU *menu = (MUTTMENU *) data;
+
+  *buf = 0;
+  switch (op)
+  {
+    case 'b':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, mutt_buffy_check (0));
+      }
+      else if (!mutt_buffy_check (0))
+	optional = 0;
+      break;
+
+    case 'd':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->deleted : 0);
+      }
+      else if (!Context || !Context->deleted)
+	optional = 0;
+      break;
+
+    case 'h':
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (buf, buflen, fmt, Hostname);
+      break;
+
+    case 'f':
+      snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
+      if (Context && Context->path)
+      {
+	strfcpy (tmp, Context->path, sizeof (tmp));
+	mutt_pretty_mailbox (tmp);
+      }
+      else
+	strfcpy (tmp, "(no mailbox)", sizeof (tmp));
+      snprintf (buf, buflen, fmt, tmp);
+      break;
+
+    case 'F':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->flagged : 0);
+      }
+      else if (!Context || !Context->flagged)
+	optional = 0;
+      break;
+
+    case 'l':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	mutt_pretty_size (tmp, sizeof (tmp), Context ? Context->size : 0);
+	snprintf (buf, buflen, fmt, tmp);
+      }
+      else if (!Context || !Context->size)
+	optional = 0;
+      break;
+
+    case 'L':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	mutt_pretty_size (tmp, sizeof (tmp), Context ? Context->vsize: 0);
+	snprintf (buf, buflen, fmt, tmp);
+      }
+      else if (!Context || !Context->pattern)
+	optional = 0;
+      break;
+
+    case 'm':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->msgcount : 0);
+      }
+      else if (!Context || !Context->msgcount)
+	optional = 0;
+      break;
+
+    case 'M':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof(fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->vcount : 0);
+      }
+      else if (!Context || !Context->pattern)
+	optional = 0;
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->new : 0);
+      }
+      else if (!Context || !Context->new)
+	optional = 0;
+      break;
+
+    case 'o':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->unread - Context->new : 0);
+      }
+      else if (!Context || !(Context->unread - Context->new))
+	optional = 0;
+      break;
+
+    case 'p':
+      count = mutt_num_postponed ();
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, count);
+      }
+      else if (!count)
+	optional = 0;
+      break;
+
+    case 'P':
+      if (menu->top + menu->pagelen >= menu->max)
+	cp = menu->top ? "end" : "all";
+      else
+      {
+	count = (100 * (menu->top + menu->pagelen)) / menu->max;
+	snprintf (tmp, sizeof (tmp), "%d%%", count);
+	cp = tmp;
+      }
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (buf, buflen, fmt, cp);
+      break;
+
+    case 'r':
+      if (Context)
+	buf[0] = (Context->readonly || Context->dontwrite) ? StChars[2] :
+	  (Context->changed || Context->deleted) ? StChars[1] : StChars[0];
+      else
+	buf[0] = StChars[0];
+      buf[1] = 0;
+      break;
+
+    case 's':
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (buf, buflen, fmt,
+		get_sort_str (tmp, sizeof (tmp), Sort));
+      break;
+
+    case 'S':
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (buf, buflen, fmt,
+		get_sort_str (tmp, sizeof (tmp), SortAux));
+      break;
+
+    case 't':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->tagged : 0);
+      }
+      else if (!Context || !Context->tagged)
+	optional = 0;
+      break;
+
+    case 'u':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->unread : 0);
+      }
+      else if (!Context || !Context->unread)
+	optional = 0;
+      break;
+
+    case 'v':
+      snprintf (fmt, sizeof (fmt), "Mutt %%s");
+      snprintf (buf, buflen, fmt, VERSION);
+      break;
+
+    case 'V':
+      if (!optional)
+      {
+	snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
+	snprintf (buf, buflen, fmt, Context ? Context->pattern : 0);
+      }
+      else if (!Context || !Context->pattern)
+	optional = 0;
+      break;
+
+    case 0:
+      *buf = 0;
+      return (src);
+
+    default:
+      snprintf (buf, buflen, "%%%s%c", prefix, op);
+      break;
+  }
+
+  if (optional)
+    menu_status_line (buf, buflen, menu, ifstring);
+  else if (flags & M_FORMAT_OPTIONAL)
+    menu_status_line (buf, buflen, menu, elsestring);
+
+  return (src);
+}
+
+void menu_status_line (char *buf, size_t buflen, MUTTMENU *menu, const char *p)
+{
+  mutt_FormatString (buf, buflen, p, status_format_str, (unsigned long) menu, 0);
+}

@@ -1,0 +1,3258 @@
+# Translation file for PGP 2.6.3(i)n.
+
+# ------------------------------------------------------------------
+# Character set:  ISO-Latin/1 (ISO 8859/1)
+# Date revised:   7 October 1997
+# ------------------------------------------------------------------
+# Language:       German/Deutsch (de)
+# Translator:     Frank Pruefer <F.PRUEFER@LINK-L.cl.sub.de>
+#                 (based on the German translation for PGP 2.3a by
+#                 Marc Aurel <4-tea-2@bong.saar.de>)
+# ------------------------------------------------------------------
+# Language:       Spanish/Español (es)
+# Translator:     Armando Ramos <armando@clerval.org>
+# ------------------------------------------------------------------
+# Language:       French/Francais (fr)
+# Translator:     Yanik Crépeau <yanik@mlink.net>
+#                 (based on the French translation for PGP 2.3a by
+#                 Jean-loup Gailly <jloup@chorus.fr>)
+# ------------------------------------------------------------------
+#
+# Additional language files may be obtained from:
+#
+# http://www.ifi.uio.no/pgp/modules.shtml
+# ftp://ftp.ifi.uio.no/pub/pgp/lang/
+#
+# ------------------------------------------------------------------
+
+"\nClear signature file: %s\n"
+de: "\nDateiname der Klartext-Unterschrift: %s\n"
+es: "\nFichero normal con firma: %s\n"
+fr: "\nFichier de signature en clair: %s\n"
+muttde: "\nDateiname der Klartext-Unterschrift: %s\n"
+
+"\nTransport armor file: %s\n"
+de: "\nDateiname der Versandhülle: %s\n"
+es: "\nFichero con armadura: %s\n"
+fr: "\nFichier de transport armure: %s\n"
+muttde: "\nDateiname der Versandhülle: %s\n"
+
+"\nTransport armor files: "
+de: "\nDateinamen der Versandhüllen: "
+es: "\nFicheros con armadura: "
+fr: "\nFichiers de transport armure: "
+muttde: "\nDateinamen der Versandhüllen: "
+
+"Invalid ASCII armor header line: \"%.40s\"\n\
+ASCII armor corrupted.\n"
+de: "\nUnzulässige Kopfzeile \"%.40s\"\n\
+in der ASCII-Versandhülle. Die Versandhülle ist deshalb ungültig.\n"
+es: "Línea incorrecta en la cabecera de la armadura ASCII:\n\
+\"%.40s\"\n\
+Armadura dañada\n"
+fr: "Entête enveloppe ASCII invalide: \"%.40s\"\n\
+l'enveloppe ASCII est corrompue"
+muttde: "\nUnzulässige Kopfzeile \"%.40s\"\n\
+in der ASCII-Versandhülle. Die Versandhülle ist deshalb ungültig.\n"
+
+"Warning: Unrecognized ASCII armor header label \"%.*s:\" ignored.\n"
+de: "\nWARNUNG: Der unbekannte Bezeichner \"%.*s:\"\n\
+in der ASCII-Versandhülle wurde überlesen.\n"
+es: "Advertencia: Se ignora la etiqueta  \"%.*s:\"\n\
+No se reconoce como cabecera de armadura ASCII\n"
+fr: "Avertissement: Type d'entête de l'envloppe ASCII \"%.*s:\" ignoré\n"
+muttde: "\nWARNUNG: Der unbekannte Bezeichner \"%.*s:\"\n\
+in der ASCII-Versandhülle wurde überlesen.\n"
+
+"ERROR: Bad ASCII armor checksum in section %d.\n"
+de: "\nFEHLER: Falsche Prüfsumme im Abschnitt %d der Versandhülle.\n"
+es: "ERROR: Suma incorrecta de comprobación en armadura ASCII,\n\
+sección %d.\n"
+fr: "ERREUR: mauvaise vérification de l'armure ASCII dans la section %d.\n"
+muttde: "\nFEHLER: Falsche Prüfsumme im Abschnitt %d der Versandhülle.\n"
+
+"Can't find section %d.\n"
+de: "\nAbschnitt %d nicht gefunden.\n"
+es: "No se encuentra la sección %d.\n"
+fr: "Section %d introuvable.\n"
+muttde: "\nAbschnitt %d nicht gefunden.\n"
+
+"Badly formed section delimiter, part %d.\n"
+de: "\nFehlerhafter Abschnitts-Begrenzer im Teil %d.\n"
+es: "Delimitador de sección mal formado, parte %d.\n"
+fr: "Séparateurs de section mal formés"
+muttde: "\nFehlerhafter Abschnitts-Begrenzer im Teil %d.\n"
+
+"Sections out of order, expected part %d"
+de: "\nAbschnitte in falscher Reihenfolge.\nErwartet wurde Teil %d"
+es: "Las secciones están desordenadas: se esperaba la parte %d"
+fr: "Sections en désordre, partie %d attendue"
+muttde: "\nAbschnitte in falscher Reihenfolge.\nErwartet wurde Teil %d"
+
+", got part %d\n"
+de: ", angekommen ist Teil %d.\n"
+es: ", se encuentra la parte %d\n"
+fr: ", partie %d obtenue\n"
+muttde: ", angekommen ist Teil %d.\n"
+
+"ERROR: Hit EOF in header of section %d.\n"
+de: "\nFEHLER: EOF (Dateiende) im Header von Abschnitt %d.\n"
+es: "ERROR: Hay un EOF (fin de fichero) en la cabecera de\
+la sección %d.\n"
+fr: "ERREUR: find de fichier dans l'en-tête de la section %d.\n"
+muttde: "\nFEHLER: EOF (Dateiende) im Header von Abschnitt %d.\n"
+
+"ERROR: Badly formed ASCII armor checksum, line %d.\n"
+de: "\nFEHLER: Falsche Prüfsumme in Zeile %d der Versandhülle.\n"
+es: "ERROR: Suma de comprobación mal construida en la armadura ASCII,\n\
+línea %d.\n"
+fr: "ERREUR: Verification de l'armure ASCII mal formée, ligne %d.\n"
+muttde: "\nFEHLER: Falsche Prüfsumme in Zeile %d der Versandhülle.\n"
+
+"WARNING: No ASCII armor `END' line.\n"
+de: "\nWARNUNG: Keine 'END'-Zeile in der Versandhülle.\n"
+es: "ADVERTENCIA: No hay línea `END' en la armadura ASCII.\n"
+fr: "ATTENTION: Pas de ligne `END' dans l'armure ASCII.\n"
+muttde: "\nWARNUNG: Keine 'END'-Zeile in der Versandhülle.\n"
+
+"ERROR: Bad ASCII armor character, line %d.\n"
+de: "\nFEHLER: Unerlaubtes Zeichen in Zeile %d der Versandhülle.\n"
+es: "ERROR: Carácter incorrecto en la armadura ASCII, línea %d.\n"
+fr: "ERREUR: Mauvais charactère dans l'armure ASCII, ligne %d.\n"
+muttde: "\nFEHLER: Unerlaubtes Zeichen in Zeile %d der Versandhülle.\n"
+
+"ERROR: Bad ASCII armor line length %d on line %d.\n"
+de: "\nFEHLER: Falsche Zeilenlänge (%d) in Zeile %d der Versandhülle.\n"
+es: "ERROR: Longitud incorrecta (%d) de línea en la armadura ASCII,\n\
+línea %d.\n"
+fr: "ERREUR: Mauvais longueur de ligne %d dans l'armure ASCII, ligne %d.\n"
+muttde: "\nFEHLER: Falsche Zeilenlänge (%d) in Zeile %d der Versandhülle.\n"
+
+"ERROR: Bad ASCII armor checksum"
+de: "\nFEHLER: Falsche Prüfsumme der Versandhülle"
+es: "ERROR: Suma incorrecta de comprobación en la armadura ASCII"
+fr: "ERREUR de vérification dans l'armure ASCII"
+muttde: "\nFEHLER: Falsche Prüfsumme der Versandhülle"
+
+" in section %d"
+de: " im Abschnitt %d.\n"
+es: " en la sección %d"
+fr: " dans la section %d"
+muttde: " im Abschnitt %d.\n"
+
+"Warning: Transport armor lacks a checksum.\n"
+de: "\nWARNUNG: Die Prüfsumme der Versandhülle fehlt.\n"
+es: "Advertencia: La armadura de transporte no lleva suma de\
+comprobación.\n"
+fr: "Attention: l'armure de transport n'a pas de vérification.\n"
+muttde: "\nWARNUNG: Die Prüfsumme der Versandhülle fehlt.\n"
+
+"ERROR: Can't find file %s\n"
+de: "\nFEHLER: Datei '%s' nicht gefunden.\n"
+es: "ERROR: No se encuentra el fichero %s\n"
+fr: "ERREUR: Fichier %s introuvable\n"
+muttde: "\nFEHLER: Datei '%s' nicht gefunden.\n"
+
+"ERROR: No ASCII armor `BEGIN' line!\n"
+de: "\nFEHLER: Keine 'BEGIN'-Zeile in der Versandhülle!\n"
+es: "ERROR: No hay línea 'BEGIN' en la armadura ASCII\n"
+fr: "ERREUR: Pas de ligne `BEGIN' dans l'armure ASCII!\n"
+muttde: "\nFEHLER: Keine 'BEGIN'-Zeile in der Versandhülle!\n"
+
+"ERROR: ASCII armor decode input ended unexpectedly!\n"
+de: "\nFEHLER: Vorzeitiges Ende der Versandhülle!\n"
+es: "ERROR: La entrada con armadura ASCII termina antes de tiempo\n"
+fr: "ERREUR: fin prématurée du fichier armure ASCII!\n"
+muttde: "\nFEHLER: Vorzeitiges Ende der Versandhülle!\n"
+
+"ERROR: Header line added to ASCII armor: \"%s\"\n\
+ASCII armor corrupted.\n"
+de: "\nFEHLER: Eine Kopfzeile \"%s\" ist\n\
+in der ASCII-Versandhülle enthalten. Die Versandhülle ist deshalb ungültig.\n"
+es: "ERROR: Línea de cabecera añadida a la armadura ASCII:\n\
+\"%s\" Armadura dañada\n"
+fr: "Ligne d'entête ajoutée à l'enveloppe ASCII: \"%s\"\n\
+enveloppe ASCII corrompue"
+muttde: "\nFEHLER: Eine Kopfzeile \"%s\" ist\n\
+in der ASCII-Versandhülle enthalten. Die Versandhülle ist deshalb ungültig.\n"
+
+"\n\007Unable to write ciphertext output file '%s'.\n"
+de: "\n\007FEHLER beim Schreiben der verschlüsselten\nAusgabedatei '%s'.\n"
+es: "\n\007No puede escribirse el fichero de salida cifrado '%s'.\n"
+fr: "\n\007Ecriture impossible dans le fichier de sortie chiffré '%s'.\n"
+mutt: "\nUnable to write ciphertext output file '%s'.\n"
+muttde: "\nFEHLER beim Schreiben der verschlüsselten\nAusgabedatei '%s'.\n"
+
+"ERROR: Hit EOF in header.\n"
+de: "\nFEHLER: EOF (Dateiende) im Header.\n"
+es: "ERROR: Hay un EOF (fin de fichero) en la cabecera.\n"
+fr: "ERREUR: fin de fichier dans l'en-tête.\n"
+muttde: "\nFEHLER: EOF (Dateiende) im Header.\n"
+
+"Unsupported character set: '%s'\n"
+de: "\nKeine Unterstützung für Zeichensatz '%s'.\n"
+es: "Conjunto de caracteres no admitido: '%s'\n"
+fr: "Table de caractères non supportée: '%s'\n"
+muttde: "\nKeine Unterstützung für Zeichensatz '%s'.\n"
+
+"The legal_kludge cannot be disabled in US version.\n"
+de: "LEGAL_KLUDGE kann in der USA-Version nicht abgeschaltet werden!\n"
+es: "'legal_kludge' no puede desactivarse en la versión para los EE.UU.\n"
+fr: "Les embarras légaux ne peuvent pas être désactivés aux Etats-Unis.\n"
+muttde: "LEGAL_KLUDGE kann in der USA-Version nicht abgeschaltet werden!\n"
+
+"The multiple_recipients flag is unnecessary in this \
+version of MacPGP.\
+\nPlease remove this entry from your configuration file.\n"
+de: "Die Kennung \"multiple_recipients\" ist in dieser Version von MacPGP nicht\
+\nnötig. Bitte entferne diesen Eintrag aus Deiner Konfigurationsdatei.\n"
+es: "No se necesita la bandera 'multiple_recipients' en esta versión\n\
+de MacPGP.\
+\nElimina esa entrada del fichero de configuración.\n"
+fr: "L'indicateur de destinataires multiples n'est pas nécessaire dans \
+version de MacPGP. \
+\nS.V.P. supprimez cette entrée de votre fichier de configuration. \n"
+muttde: "Die Kennung \"multiple_recipients\" ist in dieser Version von MacPGP nicht\
+\nnötig. Bitte entferne diesen Eintrag aus Deiner Konfigurationsdatei.\n"
+
+"\007\nWARNING:  This key has been revoked by its owner,\n\
+possibly because the secret key was compromised.\n"
+de: "\007\nWARNUNG: Dieser Schlüssel wurde von seinem Besitzer zurückgezogen,\n\
+möglicherweise, weil sein privater Schlüssel nicht mehr sicher ist.\n"
+es: "\007\nADVERTENCIA: Esta clave ha sido revocada por su propietario;\n\
+es posible que la clave secreta se haya visto comprometida.\n"
+fr: "\007\nATTENTION: cette clé a été révoquée par son propriétaire,\n\
+probablement parce que la clé secrète a été compromise.\n"
+mutt: "\nWARNING:  This key has been revoked by its owner,\n\
+possibly because the secret key was compromised.\n"
+muttde: "\nWARNUNG: Dieser Schlüssel wurde von seinem Besitzer zurückgezogen,\n\
+möglicherweise, weil sein privater Schlüssel nicht mehr sicher ist.\n"
+
+"This could mean that this signature is a forgery.\n"
+de: "Dies könnte bedeuten, daß diese Unterschrift eine Fälschung ist.\n"
+es: "Puede significar que la firma está falsificada.\n"
+fr: "Ceci peut signifier que cette signature est un faux.\n"
+muttde: "Dies könnte bedeuten, daß diese Unterschrift eine Fälschung ist.\n"
+
+"You cannot use this revoked key.\n"
+de: "Du kannst diesen Schlüssel nicht benutzen, weil er zurückgezogen wurde.\n"
+es: "No puedes utilizar esta clave revocada.\n"
+fr: "Vous ne pouvez pas utiliser cette clé révoquée.\n"
+muttde: "Du kannst diesen Schlüssel nicht benutzen, weil er zurückgezogen wurde.\n"
+
+"\007\nWARNING:  Because this public key is not certified with \
+a trusted\nsignature, it is not known with high confidence that this \
+public key\nactually belongs to: \"%s\".\n"
+de: "\007\nWARNUNG: Da dieser öffentliche Schlüssel nicht mit einer vertrauenswürdigen\n\
+Unterschrift beglaubigt ist, ist nicht sicher, daß er wirklich zu\n\"%s\" gehört.\n"
+es: "\nAVISO: Esta clave pública no está certificada con una firma\
+de confianza,\n\
+por lo que no se sabe con seguridad si realmente pertenece a:\n\
+ \"%s\".\n"
+fr: "\007\nATTENTION: Cette clé publique n'est pas certifiée avec une\n\
+signature fiable. Il n'est donc pas reconnu avec un haut degré de confiance\n\
+que cette signature appartient effectivement à: \"%s\".\n"
+mutt: "\nWARNING:  Because this public key is not certified with \
+a trusted\nsignature, it is not known with high confidence that this \
+public key\nactually belongs to: \"%s\".\n"
+muttde: "\nWARNUNG: Da dieser öffentliche Schlüssel nicht mit einer vertrauenswürdigen\n\
+Unterschrift beglaubigt ist, ist nicht sicher, daß er wirklich zu\n\"%s\" gehört.\n"
+
+"\007\nWARNING:  This public key is not trusted to actually belong \
+to:\n\"%s\".\n"
+de: "\007\nWARNUNG: Es ist nicht sicher, daß dieser öffentliche Schlüssel wirklich\n\
+zu \"%s\" gehört.\n"
+es: "\nADVERTENCIA:  No se sabe con seguridad si esta clave pública\n\
+pertenece realmente a: \"%s\".\n"
+fr: "\007\nATTENTION: Cette clé publique n'est pas reconnue comme\n\
+appartenant à: \"%s\".\n"
+mutt: "\nWARNING:  This public key is not trusted to actually belong \
+to:\n\"%s\".\n"
+muttde: "\nWARNUNG: Es ist nicht sicher, daß dieser öffentliche Schlüssel wirklich\n\
+zu \"%s\" gehört.\n"
+
+"\007\nWARNING:  Because this public key is not certified with enough \
+trusted\nsignatures, it is not known with high confidence that this \
+public key\nactually belongs to: \"%s\".\n"
+de: "\007\nWARNUNG: Da dieser öffentliche Schlüssel nicht mit einer ausreichenden\n\
+Anzahl vertrauenswürdiger Unterschriften beglaubigt ist, ist nicht sicher,\n\
+daß er wirklich zu \"%s\" gehört.\n"
+es: "\nADVERTENCIA: Como esta clave no está certificada con suficientes\n\
+firmas fiables, no se sabe con seguridad si realmente pertenece a:\n\
+ \"%s\".\n"
+fr: "\007\nATTENTION: puisque cette clé publique n'est pas certifiée avec\n\
+suffisament de signatures, il n'est pas connu avec un haut niveau de confiance\
+\nque cette clé appartient effectivement à: \"%s\".\n"
+mutt: "\nWARNING:  Because this public key is not certified with enough \
+trusted\nsignatures, it is not known with high confidence that this \
+public key\nactually belongs to: \"%s\".\n"
+muttde: "\nWARNUNG: Da dieser öffentliche Schlüssel nicht mit einer ausreichenden\n\
+Anzahl vertrauenswürdiger Unterschriften beglaubigt ist, ist nicht sicher,\n\
+daß er wirklich zu \"%s\" gehört.\n"
+
+"But you previously approved using this public key anyway.\n"
+de: "Aber Du hast diesen Schlüssel trotzdem bereits benutzt...\n"
+es: "Ya has permitido antes que se utilice esta clave p\372blica.\n"
+fr: "Mais vous avez déjà accepté l'usage de cette clé publique.\n"
+muttde: "Aber Du hast diesen Schlüssel trotzdem bereits benutzt...\n"
+
+"\nAre you sure you want to use this public key (y/N)? "
+de: "\nBist Du sicher, daß Du diesen Schlüssel benutzen willst? (j/N) "
+es: "\n¿Estás seguro de querer utilizar esta clave pública (s/N)? "
+fr: "\nEtes vous sûr(e) de vouloir utiliser cette clé publique (o/N)? "
+muttde: "\nBist Du sicher, daß Du diesen Schlüssel benutzen willst? (j/N) "
+
+"\n\007Unsupported packet format - you need a newer version of PGP \
+for this file.\n"
+de: "\n\007WARNUNG: nicht unterstütztes Datenformat!\n\
+Du brauchst eine neuere PGP-Version für diese Datei.\n"
+es: "\n\007Formato desconocido -\
+se necesita una versión más reciente de PGP"
+fr: "\n\007Format non-supporté - vous devez utiliser un version nouvelle de PGP
+pour ce fichier.\n"
+mutt: "\nUnsupported packet format - you need a newer version of PGP \
+for this file.\n"
+muttde: "\nWARNUNG: nicht unterstütztes Datenformat!\n\
+Du brauchst eine neuere PGP-Version für diese Datei.\n"
+
+"Preparing random session key..."
+de: "\nVorbereitung des zufälligen IDEA-Schlüssels..."
+es: "Preparando la clave aleatoria de la sesión..."
+fr: "Préparation de la clé aléatoire..."
+muttde: "\nVorbereitung des zufälligen IDEA-Schlüssels..."
+
+"\n\007Error: System clock/calendar is set wrong.\n"
+de: "\n\007FEHLER: Die System-Zeit und/oder das System-Datum sind falsch.\n"
+es: "\n\007Error: El reloj/calendario del sistema está equivocado.\n"
+fr: "\n\007Erreur: L'horloge du système est incorrecte.\n"
+mutt: "\nError: System clock/calendar is set wrong.\n"
+muttde: "\nFEHLER: Die System-Zeit und/oder das System-Datum sind falsch.\n"
+
+"Just a moment..."
+de: "\nEinen Augenblick, bitte..."
+es: "Un momento..."
+fr: "Un moment..."
+muttde: "\nEinen Augenblick, bitte..."
+
+"\n\007Can't open input plaintext file '%s'\n"
+de: "\n\007FEHLER beim Öffnen der Eingabedatei '%s'.\n"
+es: "\n\007No puede abrirse el fichero normal de entrada '%s'\n"
+fr: "\n\007Ouverture du fichier en clair '%s' impossible.\n"
+mutt: "\nCan't open input plaintext file '%s'\n"
+muttde: "\nFEHLER beim Öffnen der Eingabedatei '%s'.\n"
+
+"\n\007Can't open plaintext file '%s'\n"
+de: "\n\007FEHLER beim Öffnen der Klartextdatei '%s'.\n"
+es: "\n\007No puede abrirse el fichero normal '%s'\n"
+fr: "\n\007Ouverture du fichier en clair '%s' impossible\n"
+mutt: "\nCan't open plaintext file '%s'\n"
+muttde: "\nFEHLER beim Öffnen der Klartextdatei '%s'.\n"
+
+"\n\007Can't create signature file '%s'\n"
+de: "\n\007FEHLER beim Erzeugen der Unterschriftsdatei '%s'.\n"
+es: "\n\007No puede crearse el fichero de firma '%s'\n"
+fr: "\n\007Création du fichier de signature '%s' impossible\n"
+mutt: "\nCan't create signature file '%s'\n"
+muttde: "\nFEHLER beim Erzeugen der Unterschriftsdatei '%s'.\n"
+
+"\n\007Can't open key ring file '%s'\n"
+de: "\n\007FEHLER beim Öffnen des Schlüsselbunds '%s'.\n"
+es: "\n\007No puede abrirse el anillo de claves '%s'\n"
+fr: "\n\007Ouverture du fichier de clé '%s' impossible\n"
+mutt: "\nCan't open key ring file '%s'\n"
+muttde: "\nFEHLER beim Öffnen des Schlüsselbunds '%s'.\n"
+
+"This key has already been revoked.\n"
+de: "Dieser Schlüssel wurde bereits zurückgezogen.\n"
+es: "Esta clave ya se había revocado.\n"
+fr: "Cette clé a déjà été révoquée.\n"
+muttde: "Dieser Schlüssel wurde bereits zurückgezogen.\n"
+
+"\n\007Can't create output file to update key ring.\n"
+de: "\n\007Dateifehler bei der Aktualisierung des Schlüsselbunds.\n"
+es: "\n\007No puede crearse el fichero de salida para actualizar\
+el anillo.\n"
+fr: "\n\007Impossible de créer le fichier de sortie pour modifier le\
+\nfichier de clés\n"
+mutt: "\nCan't create output file to update key ring.\n"
+muttde: "\nDateifehler bei der Aktualisierung des Schlüsselbunds.\n"
+
+"\nKey compromise certificate created.\n"
+de: "\nDie Urkunde zum Zurückziehen des Schlüssels wurde erzeugt.\n"
+es: "\nCreado el certificado de compromiso de clave.\n"
+fr: "\nCertificat de compromission de clé créé.\n"
+muttde: "\nDie Urkunde zum Zurückziehen des Schlüssels wurde erzeugt.\n"
+
+"\n\007Key is already signed by user '%s'.\n"
+de: "\n\007Der Schlüssel wurde von \"%s\"\nbereits unterschrieben.\n"
+es: "\n\007La clave ya ha sido firmada por '%s'.\n"
+fr: "\n\007La clé est déjà signée par l'utilisateur '%s'.\n"
+mutt: "\nKey is already signed by user '%s'.\n"
+muttde: "\nDer Schlüssel wurde von \"%s\"\nbereits unterschrieben.\n"
+
+"\n\nREAD CAREFULLY:  Based on your own direct first-hand knowledge, \
+are\nyou absolutely certain that you are prepared to solemnly certify \
+that\nthe above public key actually belongs to the user specified by \
+the\nabove user ID (y/N)? "
+de: "\nSORGFÄLTIG LESEN: Bist Du, gestützt auf eigenes, direktes Wissen aus\n\
+erster Hand, absolut sicher, daß Du zuverlässig beglaubigen kannst, daß der\n\
+oben angezeigte öffentliche Schlüssel wirklich zu der oben genannten Person\n\
+gehört? (j/N) "
+es: "\n\nLEE ATENTAMENTE: Según tu conocimiento directo,\n\
+¿estás absolutamente seguro de poder certificar solemnemente que la\n\
+clave pública pertenece realmente al usuario especificado por\n\
+este identificador (s/N)? "
+fr: "\n\nLIRE ATTENTIVEMENT: Selon votre propre connaissance directe,\n\
+êtes vous absoluement certain(e) d'être prêt(e) à certifier\n\
+solennellement que la clé publique ci-dessus appartient effectivement à\n\
+la personne spécifiée par le nom d'utilisateur ci-dessus (o/N)? "
+muttde: "\nSORGFÄLTIG LESEN: Bist Du, gestützt auf eigenes, direktes Wissen aus\n\
+erster Hand, absolut sicher, daß Du zuverlässig beglaubigen kannst, daß der\n\
+oben angezeigte öffentliche Schlüssel wirklich zu der oben genannten Person\n\
+gehört? (j/N) "
+
+"\nKey signature certificate added.\n"
+de: "\n\nDer Schlüssel wurde mit Deiner Unterschrift beglaubigt.\n"
+es: "\nSe ha añadido el certificado de firma.\n"
+fr: "\nCertificat de signature de clé ajouté.\n"
+muttde: "\n\nDer Schlüssel wurde mit Deiner Unterschrift beglaubigt.\n"
+
+"\nError: Key for signing userid '%s'\n\
+does not appear in public keyring '%s'.\n\
+Thus, a signature made with this key cannot be checked on this keyring.\n"
+de: "\nFEHLER: Der Schlüssel für eine Unterschrift unter die Benutzer-ID\n\
+\"%s\" ist nicht im öffentlichen\n\
+Schlüsselbund '%s' enthalten. Deshalb ist eine mit diesem\n\
+Schlüssel erzeugte Unterschrift mit diesem Schlüsselbund nicht überprüfbar.\n"
+es: "\nError: La clave del firmante '%s'\n\
+no se encuentra en el anillo '%s'.\n\
+No puede comprobarse la firma realizada con esa clave.\n"
+fr: "\nErreur: La clef du signataire id '%s'\n\
+est absente du fichier de clefs publiques '%s'\n\
+en consequence, une signature faite avec cette clef ne peut etre verifiee.\n"
+muttde: "\nFEHLER: Der Schlüssel für eine Unterschrift unter die Benutzer-ID\n\
+\"%s\" ist nicht im öffentlichen\n\
+Schlüsselbund '%s' enthalten. Deshalb ist eine mit diesem\n\
+Schlüssel erzeugte Unterschrift mit diesem Schlüsselbund nicht überprüfbar.\n"
+
+"\nLooking for key for user '%s':\n"
+de: "\nSuche den Schlüssel für \"%s\":\n"
+es: "\nBuscando la clave del usuario '%s':\n"
+fr: "\nRecherche de la clé pour l'utilisateur '%s':\n"
+muttde: "\nSuche den Schlüssel für \"%s\":\n"
+
+"\n\007Can't open ciphertext file '%s'\n"
+de: "\n\007FEHLER beim Öffnen der verschlüsselten Datei '%s'.\n"
+es: "\n\007No puede abrirse el fichero cifrado '%s'\n"
+fr: "\n\007Ouverture du fichier chiffré '%s' impossible\n"
+mutt: "\nCan't open ciphertext file '%s'\n"
+muttde: "\nFEHLER beim Öffnen der verschlüsselten Datei '%s'.\n"
+
+"\nFile '%s' has signature, but with no text."
+de: "\nDie Datei '%s' enthält eine Unterschrift, aber keinen Text."
+es: "\nEl fichero '%s' tiene firma, pero no texto."
+fr: "\nLe fichier '%s' à une signature, mais pas de texte."
+mutt: " "
+muttde: " "
+
+"\nText is assumed to be in file '%s'.\n"
+de: "\nDer Text könnte sich in der Datei '%s' befinden.\n"
+es: "\nSe asume que el texto se encuentra en el fichero '%s'.\n"
+fr: "\nLe texte est supposé être dans le fichier '%s'.\n"
+mutt: " "
+muttde: " "
+
+"\nPlease enter filename of material that signature applies to: "
+de: "\nName der Datei, zu der die Unterschrift gehört: "
+es: "\nIntroduzca el nombre del fichero al que se aplica la firma: "
+fr: "SVP indiques le nom du fichier que vous voulez signer: "
+muttde: "\nName der Datei, zu der die Unterschrift gehört: "
+
+"File signature applies to?"
+de: "Die Unterschrift gehört zu welcher Datei?"
+es: "¿Dónde se aplica la firma?"
+fr: "Ce fichier signataire s'applique à quoi? "
+muttde: "Die Unterschrift gehört zu welcher Datei?"
+
+"\n\007Can't open file '%s'\n"
+de: "\n\007FEHLER beim Öffnen der Datei '%s'.\n"
+es: "\n\007No puede abrirse el fichero '%s'\n"
+fr: "\n\007Ouverture du fichier '%s' impossible\n"
+mutt: "\nCan't open file '%s'\n"
+muttde: "\nFEHLER beim Öffnen der Datei '%s'.\n"
+
+"File type: '%c'\n"
+de: "\nDateityp: '%c'\n"
+es: "\nTipo de fichero: '%c'\n"
+fr: "Type de fichier: '%c'\n"
+muttde: "\nDateityp: '%c'\n"
+
+"Original plaintext file name was: '%s'\n"
+de: "Der ursprüngliche Name der Klartextdatei war: '%s'.\n"
+es: "El nombre del fichero original era: '%s'\n"
+fr: "Le nom originel du fichier en clair était: '%s'\n"
+muttde: "Der ursprüngliche Name der Klartextdatei war: '%s'.\n"
+
+"\nWARNING: Can't find the right public key-- can't check signature \
+integrity.\n"
+de: "\nWARNUNG: Der passende öffentliche Schlüssel wurde nicht gefunden.\n\
+Eine Überprüfung der Unterschrift ist nicht möglich.\n"
+es: "\nAVISO: No se encuentra la clave pública necesaria para comprobar\n\
+la integridad de la firma.\n"
+fr: "\nATTENTION: impossible de trouver la clé publique adéquate et de\n\
+vérifier l'integrité de la signature.\n"
+muttde: "\nWARNUNG: Der passende öffentliche Schlüssel wurde nicht gefunden.\n\
+Eine Überprüfung der Unterschrift ist nicht möglich.\n"
+
+"\007\nUnrecognized message digest algorithm.\n\
+This may require a newer version of PGP.\n\
+Can't check signature integrity.\n"
+de: "\007\nDer Algorithmus für die Textprüfsumme ist unbekannt.\n\
+Du brauchst wahrscheinlich eine neuere Version von PGP.\n\
+Eine Überprüfung der Unterschrift ist nicht möglich.\n"
+es: "\007\nAlgoritmo desconocido de resumen de mensaje.\n\
+Puede necesitarse una nueva versión de PGP.\n\
+No puede comprobarse la integridad de la firma.\n"
+fr: "\007Algorithme de digest inconnu.\n\
+Ceci peut vouloir dire que vous avez besoin d'une version plus récente\n\
+de PGP. Incapable de vérifier la signature.\n"
+mutt: "\nUnrecognized message digest algorithm.\n\
+This may require a newer version of PGP.\n\
+Can't check signature integrity.\n"
+muttde: "\nDer Algorithmus für die Textprüfsumme ist unbekannt.\n\
+Du brauchst wahrscheinlich eine neuere Version von PGP.\n\
+Eine Überprüfung der Unterschrift ist nicht möglich.\n"
+
+"\a\nMalformed or obsolete signature.  Can't check signature \
+integrity.\n"
+de: "\a\nFehlerhafte oder veraltete Unterschrift! Überprüfung nicht möglich.\n"
+es: "\a\nFirma incorrecta u obsoleta.\n\
+No puede comprobarse su integridad.\n"
+fr: "\a\nSignature déformée ou obsolète. Vérification impossible. \n"
+muttde: "\a\nFehlerhafte oder veraltete Unterschrift! Überprüfung nicht möglich.\n"
+
+"\a\nSigning key is too large.  Can't check signature integrity.\n"
+de: "\a\nDer unterschreibende Schlüssel ist zu lang! Eine Überprüfung der\n\
+Unterschrift ist deshalb nicht möglich.\n"
+es: "\a\nLa clave para firmar es demasiado grande.\n\
+No puede comprobarse la integridad de la firma."
+fr: "La clef signataire est trop grande. Incapable d'en vérifier l'intégrité. \n"
+muttde: "\a\nDer unterschreibende Schlüssel ist zu lang! Eine Überprüfung der\n\
+Unterschrift ist deshalb nicht möglich.\n"
+
+"\n\007Error: RSA-decrypted block is corrupted.\n\
+This may be caused either by corrupted data or by using the wrong RSA key.\n\
+"
+de: "\n\007FEHLER: Die mit RSA entschlüsselten Daten sind fehlerhaft.\n\
+Ursache: beschädigte Daten oder ein falscher RSA-Schlüssel.\n"
+es: "\n\007Error: El bloque desencriptado RSA está dañado.\n\
+Puede deberse a un problema en los datos o a una clave RSA equivocada.\n"
+fr: "\n\007Erreur: le block dechiffré par RSA est endommagé.\n\
+Ceci est peut être causé par des données endommagées our par\n\
+l'utilisation d'une mauvaise clé RSA.\n"
+mutt: "\nError: RSA-decrypted block is corrupted.\n\
+This may be caused either by corrupted data or by using the wrong RSA key.\n\
+"
+muttde: "\nFEHLER: Die mit RSA entschlüsselten Daten sind fehlerhaft.\n\
+Ursache: beschädigte Daten oder ein falscher RSA-Schlüssel.\n"
+
+"WARNING: Bad signature, doesn't match file contents!"
+de: "WARNUNG: Die Unterschrift stimmt nicht mit dem Datei-Inhalt überein!"
+es: "ADVERTENCIA: Firma incorrecta, no coincide con el contenido\
+del fichero\n"
+fr: "ATTENTION: Mauvaise signature, ne correspond pas au contenu!"
+muttde: "WARNUNG: Die Unterschrift stimmt nicht mit dem Datei-Inhalt überein!"
+
+"\nBad signature from user \"%s\".\n"
+de: "\nFEHLERHAFTE Unterschrift von \"%s\",\n"
+es: "\nFirma incorrecta de \"%s\".\n"
+fr: "\nMauvaise signature de l'utilisateur \"%s\".\n"
+muttde: "\nFEHLERHAFTE Unterschrift von \"%s\",\n"
+
+"Signature made %s using %d-bit key, key ID %s\n"
+de: "Unterschrift erzeugt am %s mit %d-Bit-Schlüssel 0x%s.\n"
+es: "Firma realizada el %s con una clave de %d bits, identificador %s\n"
+fr: "Signature faite %s en utilisant un clef de %d bits. Id de la clef:%s\n"
+muttde: "Unterschrift erzeugt am %s mit %d-Bit-Schlüssel 0x%s.\n"
+
+"\nPress ENTER to continue..."
+de: "\nWeiter mit Return..."
+es: "\nPulse 'Enter' para continuar..."
+fr: "\nAppuyez sur la touche Retour ou Entrée pour continuer..."
+muttde: "\nWeiter mit Return..."
+
+"\nGood signature from user \"%s\".\n"
+de: "\nBESTÄTIGTE Unterschrift von \"%s\",\n"
+es: "\nFirma correcta de \"%s\".\n"
+fr: "\nBonne signature de l'utilisateur \"%s\".\n"
+muttde: "\nBESTÄTIGTE Unterschrift von \"%s\",\n"
+
+"\nSignature and text are separate.  No output file produced. "
+de: "\nUnterschrift und Text sind getrennt. Es wurde keine Ausgabedatei erzeugt."
+es: "\nLa firma y el texto están separados.\n\
+No se produce fichero de salida. "
+fr: "\nLa signature et le texte sont séparés. Fichier de sortie non produit."
+muttde: "\nUnterschrift und Text sind getrennt. Es wurde keine Ausgabedatei erzeugt."
+
+"\n\007Can't create plaintext file '%s'\n"
+de: "\n\007FEHLER beim Erzeugen der Klartextdatei '%s'.\n"
+es: "\n\007No puede crearse el fichero normal '%s'\n"
+fr: "\n\007Creation du fichier en clair '%s' impossible.\n"
+mutt: "\nCan't create plaintext file '%s'\n"
+muttde: "\nFEHLER beim Erzeugen der Klartextdatei '%s'.\n"
+
+"\n\007Signature file '%s' already exists.  Overwrite (y/N)? "
+de: "\n\007Die Unterschriftsdatei '%s'\nexistiert bereits. Überschreiben? (j/N) "
+es: "\n\007El fichero de firma '%s' ya existe.\n\
+¿Se sobreescribe (s/N)? "
+fr: "\n\007Le fichier de signature '%s' existe déjà.  A écraser (o/N)? "
+mutt: "\nSignature file '%s' already exists.  Overwrite (y/N)? "
+muttde: "\nDie Unterschriftsdatei '%s'\nexistiert bereits. Überschreiben? (j/N) "
+
+"\nWriting signature certificate to '%s'\n"
+de: "\nDie Unterschrift wird in die Datei '%s' geschrieben.\n"
+es: "\nEscribiendo el certificado de firma para '%s'\n"
+fr: "\nEcriture du certificat de signature dans '%s'\n"
+muttde: "\nDie Unterschrift wird in die Datei '%s' geschrieben.\n"
+
+"\n\007Error: Badly-formed or corrupted signature certificate.\n"
+de: "\n\007FEHLER: Format- oder Datenfehler in der Unterschrift.\n"
+es: "\n\007Error: Certificado de firma incorrecto o dañado.\n"
+fr: "\n\007Erreur: certificat de signature mal formé ou endommagé\n"
+mutt: "\nError: Badly-formed or corrupted signature certificate.\n"
+muttde: "\nFEHLER: Format- oder Datenfehler in der Unterschrift.\n"
+
+"File \"%s\" does not have a properly-formed signature.\n"
+de: "Die Datei '%s' hat keine formal korrekte Unterschrift.\n"
+es: "El fichero \"%s\" no tiene una firma construida correctamente.\n"
+fr: "Le fichier \"%s\" n'a pas une signature correctement formée.\n"
+muttde: "Die Datei '%s' hat keine formal korrekte Unterschrift.\n"
+
+"compressed.  "
+de: "gepackt.  "
+es: "comprimido.  "
+fr: "comprimé.  "
+muttde: "gepackt.  "
+
+"\n\007Can't create compressed file '%s'\n"
+de: "\n\007FEHLER beim Erzeugen der gepackten Datei '%s'.\n"
+es: "\n\007No puede crearse el fichero comprimido '%s'\n"
+fr: "\n\007Création du fichier compressé '%s' impossible\n"
+mutt: "\nCan't create compressed file '%s'\n"
+muttde: "\nFEHLER beim Erzeugen der gepackten Datei '%s'.\n"
+
+"Compressing file..."
+de: "Packen der Datei..."
+es: "Comprimiendo el fichero..."
+fr: "Compression du fichier..."
+muttde: "Packen der Datei..."
+
+"\n\007Can't create ciphertext file '%s'\n"
+de: "\n\007FEHLER beim Erzeugen der verschlüsselten\nAusgabedatei '%s'.\n"
+es: "\n\007No puede crearse el fichero cifrado '%s'\n"
+fr: "\n\007Création du fichier chiffré '%s' impossible.\n"
+mutt: "\nCan't create ciphertext file '%s'\n"
+muttde: "\nFEHLER beim Erzeugen der verschlüsselten\nAusgabedatei '%s'.\n"
+
+"\nYou need a pass phrase to encrypt the file. "
+de: "\nDu brauchst ein Mantra zum Verschlüsseln der Datei."
+es: "\nSe necesita una contraseña para encriptar el fichero. "
+fr: "\nUn mot de passe est nécessaire pour chiffrer ce fichier. "
+muttde: "\nDu brauchst ein Mantra zum Verschlüsseln der Datei."
+
+"\n\007Cannot find the public key matching userid '%s'\n\
+This user will not be able to decrypt this message.\n"
+de: "\n\007Der öffentliche Schlüssel zu Benutzer-ID \"%s\"\n\
+ist nicht aufzufinden. Dieser Empfänger wird diese Nachricht nicht\n\
+entschlüsseln können.\n"
+es: "\n\007No puede encontrarse la clave pública de '%s'\n\
+Ese usuario no podrá descifrar el mensaje.\n"
+fr: "\n\007Impossible de trouver la clé publique pour l'utilisateur '%s'\n\
+Cet utilisateur ne pourra pas déchiffrer ce message.\n"
+mutt: "\nCannot find the public key matching userid '%s'\n\
+This user will not be able to decrypt this message.\n"
+muttde: "\nDer öffentliche Schlüssel zu Benutzer-ID \"%s\"\n\
+ist nicht aufzufinden. Dieser Empfänger wird diese Nachricht nicht\n\
+entschlüsseln können.\n"
+
+"Skipping userid %s\n"
+de: "Die Benutzer-ID \"%s\" wird übersprungen.\n"
+es: "Saltando el identificador %s\n"
+fr: "je passe l'utiliateur %s\n"
+muttde: "Die Benutzer-ID \"%s\" wird übersprungen.\n"
+
+"\n\007'%s' is not a cipher file.\n"
+de: "\n\007'%s' ist keine verschlüsselte Datei.\n"
+es: "\n\007'%s' no es un fichero cifrado.\n"
+fr: "\n\007'%s' n'est pas un fichier chiffré.\n"
+mutt: "\n'%s' is not a cipher file.\n"
+muttde: "\n'%s' ist keine verschlüsselte Datei.\n"
+
+"\n\007Error: RSA block is possibly malformed.  Old format, maybe?\n"
+de: "\n\007FEHLER: RSA-Block möglicherweise fehlerhaft. Vielleicht altes Format?\n"
+es: "\n\007Error: El bloque RSA está mal formado.\n\
+Quizá se trate de un formato antiguo.\n"
+fr: "\n\007Erreur: Block RSA malformé, vieux format ???"
+mutt: "\nError: RSA block is possibly malformed.  Old format, maybe?\n"
+muttde: "\nFEHLER: RSA-Block möglicherweise fehlerhaft. Vielleicht altes Format?\n"
+
+"\nThis message can only be read by:\n"
+de: "\nDiese Nachricht kann nur gelesen werden von:\n"
+es: "\nEste mensaje sólo puede leerlo:\n"
+fr: "\nCe message ne peut être lu que par:\n"
+muttde: "\nDiese Nachricht kann nur gelesen werden von:\n"
+
+"  keyID: %s\n"
+de: "  Schlüssel-ID: %s\n"
+es: "  identificador: %s\n"
+fr: "   Id de la clef: %s \n"
+muttde: "  Schlüssel-ID: %s\n"
+
+"\n\007You do not have the secret key needed to decrypt this file.\n"
+de: "\n\007Dir fehlt der private Schlüssel zum Entschlüsseln dieser Datei.\n"
+es: "\n\007No tienes la clave secreta necesaria para descifrar\
+este fichero.\n"
+fr: "\n\007Vous n'avez pas la clé secrète requise pour déchiffrer\
+\nce fichier.\n"
+mutt: "\nYou do not have the secret key needed to decrypt this file.\n"
+muttde: "\nDir fehlt der private Schlüssel zum Entschlüsseln dieser Datei.\n"
+
+"\n\007Error: Decrypted plaintext is corrupted.\n"
+de: "\n\007FEHLER: Der entschlüsselte Klartext ist fehlerhaft.\n"
+es: "\n\007Error: El texto en claro desencriptado está dañado.\n"
+fr: "\n\007Erreur: le fichier déchiffré est endommagé.\n"
+mutt: "\nError: Decrypted plaintext is corrupted.\n"
+muttde: "\nFEHLER: Der entschlüsselte Klartext ist fehlerhaft.\n"
+
+"\nYou need a pass phrase to decrypt this file. "
+de: "\nDu brauchst ein Mantra zum Entschlüsseln dieser Datei."
+es: "\nSe necesita la contraseña para desencriptar este fichero. "
+fr: "\nUn mot de passe est nécessaire pour déchiffrer ce fichier. "
+muttde: "\nDu brauchst ein Mantra zum Entschlüsseln dieser Datei."
+
+"\n\007Error:  Bad pass phrase.\n"
+de: "\n\007FEHLER: Falsches Mantra!\n"
+es: "\n\007Error:  Contraseña incorrecta.\n"
+fr: "\n\007Erreur:  Mauvais mot de passe.\n"
+mutt: "\nError:  Bad pass phrase.\n"
+muttde: "\nFEHLER: Falsches Mantra!\n"
+
+"Pass phrase appears good. "
+de: "\nDas Mantra scheint zu stimmen.\n"
+es: "Parece correcta. "
+fr: "Le mot de passe semble correct. "
+muttde: "\nDas Mantra scheint zu stimmen.\n"
+
+"Decompressing plaintext..."
+de: "Entpacken des Klartextes..."
+es: "Descomprimiendo el texto normal..."
+fr: "Decompression du texte en clair..."
+muttde: "Entpacken des Klartextes..."
+
+"\n\007Can't open compressed file '%s'\n"
+de: "\n\007FEHLER beim Öffnen der gepackten Datei '%s'.\n"
+es: "\n\007No puede abrirse el fichero comprimido '%s'\n"
+fr: "\n\007Ouverture du fichier compressé '%s' impossible.\n"
+mutt: "\nCan't open compressed file '%s'\n"
+muttde: "\nFEHLER beim Öffnen der gepackten Datei '%s'.\n"
+
+"\007\nUnrecognized compression algorithm.\n\
+This may require a newer version of PGP.\n"
+de: "\007\nUnbekanntes Pack-Verfahren. Eine neuere Version von PGP könnte notwendig sein.\n"
+es: "\007\nAlgoritmo de compresión no reconocido.\n\
+Puede necesitarse una nueva versión de PGP.\n"
+fr: "\007\nAlgorithme de compression non reconnu.\n\
+Ceci peut nécessiter une nouvelle version de PGP.\n"
+mutt: "\nUnrecognized compression algorithm.\n\
+This may require a newer version of PGP.\n"
+muttde: "\nUnbekanntes Pack-Verfahren. Eine neuere Version von PGP könnte notwendig sein.\n"
+
+"\n\007Can't create decompressed file '%s'\n"
+de: "\n\007FEHLER beim Erzeugen der entpackten Datei '%s'.\n"
+es: "\n\007No puede crearse el fichero descomprimido '%s'\n"
+fr: "\n\007Création du fichier décompressé '%s' impossible.\n"
+mutt: "\nCan't create decompressed file '%s'\n"
+muttde: "\nFEHLER beim Erzeugen der entpackten Datei '%s'.\n"
+
+"\n\007Decompression error.  Probable corrupted input.\n"
+de: "\n\007FEHLER beim Entpacken! Wahrscheinlich beschädigte Eingangsdaten.\n"
+es: "\n007Error en descompresión. Probable entrada dañada.\n"
+fr: "\n\007Erreur de Decompression, entrée probablement corrompue"
+mutt: "\nDecompression error.  Probable corrupted input.\n"
+muttde: "\nFEHLER beim Entpacken! Wahrscheinlich beschädigte Eingangsdaten.\n"
+
+"done.  "
+de: "fertig.  "
+es: "finalizado.  "
+fr: "terminé.  "
+muttde: "fertig.  "
+
+"Truncating filename '%s' "
+de: "Kürzung des Dateinamens '%s' "
+es: "Truncando el nombre de fichero '%s' "
+fr: "troncation du fichier '%s'"
+muttde: "Kürzung des Dateinamens '%s' "
+
+"y"
+de: "j"
+es: "s"
+fr: "o"
+muttde: "j"
+
+"n"
+de: "n"
+es: "n"
+fr: "n"
+muttde: "n"
+
+"\nShould '%s' be renamed to '%s' (Y/n)? "
+de: "\nSoll '%s' in '%s' umbenannt werden? (J/n) "
+es: "\n¿Renombrar '%s' como '%s' (S/n)? "
+fr: "\nEst-ce que '%s' doit être renommé '%s' (O/n)? "
+muttde: "\nSoll '%s' in '%s' umbenannt werden? (J/n) "
+
+"\nDisk full.\n"
+de: "\nDie Platte ist voll!\n"
+es: "\nDisco lleno.\n"
+fr: "\nDisque plein.\n"
+muttde: "\nDie Platte ist voll!\n"
+
+"\nFile write error.\n"
+de: "\nFEHLER beim Schreiben einer Datei.\n"
+es: "\nError de escritura del fichero.\n"
+fr: "\nErreur d'écriture sur fichier.\n"
+muttde: "\nFEHLER beim Schreiben einer Datei.\n"
+
+"\007Write error on stdout.\n"
+de: "\n\007FEHLER beim Schreiben auf stdout (Standard-Ausgabe).\n"
+es: "\007Error de escritura en la salida estándar (\"stdout\").\n"
+fr: "\007Erreur d'écriture sur la sortie standard.\n"
+mutt: "Write error on stdout.\n"
+muttde: "\nFEHLER beim Schreiben auf stdout (Standard-Ausgabe).\n"
+
+"\n\007Cannot create temporary file '%s'\n"
+de: "\n\007FEHLER beim Erzeugen der Temporärdatei '%s'.\n"
+es: "\n\007No puede crearse el fichero temporal '%s'\n"
+fr: "\n\007Création du fichier temporaire '%s' impossible\n"
+mutt: "\nCannot create temporary file '%s'\n"
+muttde: "\nFEHLER beim Erzeugen der Temporärdatei '%s'.\n"
+
+"Can't create output file '%s'\n"
+de: "\nFEHLER beim Erzeugen der Ausgabedatei '%s'.\n"
+es: "No puede crearse el fichero '%s'\n"
+fr: "Création du fichier '%s' impossible.\n"
+muttde: "\nFEHLER beim Erzeugen der Ausgabedatei '%s'.\n"
+
+"\n\007Output file '%s' already exists.\n"
+de: "\n\007Die Ausgabedatei '%s' existiert bereits.\n"
+es: "\n\007El fichero de salida '%s' ya existe.\n"
+fr: "\n\007Le ficher de sortie '%s' existe déjà.\n"
+mutt: "\nOutput file '%s' already exists.\n"
+muttde: "\nDie Ausgabedatei '%s' existiert bereits.\n"
+
+"\n\007Output file '%s' already exists.  Overwrite (y/N)? "
+de: "\n\007Die Ausgabedatei '%s' existiert bereits. Überschreiben? (j/N) "
+es: "\n\007El fichero de salida '%s' ya existe. ¿Sobrescribir (s/N)? "
+fr: "\n\007Le fichier de sortie '%s' existe déjà.  A écraser (o/N)? "
+mutt: "\nOutput file '%s' already exists.  Overwrite (y/N)? "
+muttde: "\nDie Ausgabedatei '%s' existiert bereits. Überschreiben? (j/N) "
+
+"Enter new file name:"
+de: "Gib den neuen Dateinamen ein:"
+es: "Introduzca el nuevo nombre de fichero: "
+fr: "Donnez un nouveau nom de fichier:"
+muttde: "Gib den neuen Dateinamen ein:"
+
+"Replacing signature from keyID %s on userid \"%s\"\n"
+de: "Die Unterschrift von der Schlüssel-ID %s unter der\n\
+Benutzer-ID \"%s\" wird ersetzt.\n"
+es: "Sustituyendo la firma de la clave %s para el usuario\n\
+\"%s\"\n"
+fr: "Remplacement la signature de keyID %s de l'utilisateur '%s'\n"
+muttde: "Die Unterschrift von der Schlüssel-ID %s unter der\n\
+Benutzer-ID \"%s\" wird ersetzt.\n"
+
+"Verifying signature from %s\n"
+de: "Überprüfung der Unterschrift von \"%s\"\n"
+es: "Verificando la firma de %s\n"
+fr: "Vérification de la signature de %s\n"
+muttde: "Überprüfung der Unterschrift von \"%s\"\n"
+
+"on userid \"%s\"\n"
+de: "unter \"%s\".\n"
+es: "en el identificador \"%s\"\n"
+fr: "pour le nom d'utilisateur \"%s\"\n"
+muttde: "unter \"%s\".\n"
+
+"Replacing signature from %s\n"
+de: "Ersetzung der Unterschrift von \"%s\"\n"
+es: "Sustituyendo la firma de %s\n"
+fr: "Remplacement de la signature de %s"
+muttde: "Ersetzung der Unterschrift von \"%s\"\n"
+
+"Verification Failed\n"
+de: "\nDie Überprüfung ist fehlgeschlagen!\n"
+es: "Verificación fallida\n"
+fr: "Echec de la vérification"
+muttde: "\nDie Überprüfung ist fehlgeschlagen!\n"
+
+"New signature from keyID %s on userid \"%s\"\n"
+de: "Neue Unterschrift von %s unter \"%s\".\n"
+es: "Nueva firma de la clave %s para el usuario \"%s\"\n"
+fr: "Nouvelle signature de la clé %s sur l'utilisateur \"%s\"\n"
+muttde: "Neue Unterschrift von %s unter \"%s\".\n"
+
+"New signature from %s\n"
+de: "Neue Unterschrift von \"%s\"\n"
+es: "Nueva firma de %s\n"
+fr: "\nNouvelle signature de %s\n"
+muttde: "Neue Unterschrift von \"%s\"\n"
+
+"Key revocation certificate from \"%s\".\n"
+de: "Urkunde zum Zurückziehen eines Schlüssels\nvon \"%s\".\n"
+es: "Certificado de revocación de clave de \"%s\".\n"
+fr: "Certificat de révocation de clé de \"%s\".\n"
+muttde: "Urkunde zum Zurückziehen eines Schlüssels\nvon \"%s\".\n"
+
+"\n\007WARNING:  File '%s' contains bad revocation certificate.\n"
+de: "\n\007WARNUNG: Die Datei '%s' enthält eine\n\
+fehlerhafte Urkunde zum Zurückziehen eines Schlüssels.\n"
+es: "\n\007AVISO: El fichero '%s' tiene un certificado de revocación\
+incorrecto.\n"
+fr: "\n\007ATTENTION: the fichier '%s' contient de mauvais certificats\n\
+de révocation.\n"
+mutt: "\nWARNING:  File '%s' contains bad revocation certificate.\n"
+muttde: "\nWARNUNG: Die Datei '%s' enthält eine\n\
+fehlerhafte Urkunde zum Zurückziehen eines Schlüssels.\n"
+
+"New userid: \"%s\".\n"
+de: "Neue Benutzer-ID: \"%s\".\n"
+es: "Nuevo identificador: \"%s\".\n"
+fr: "Nouveau nom d'utilisateur: \"%s\".\n"
+muttde: "Neue Benutzer-ID: \"%s\".\n"
+
+"\nWill be added to the following key:\n"
+de: "Sie wird zu dem folgenden Schlüssel hinzugefügt:\n"
+es: "\nSe añadirá a la clave siguiente:\n"
+fr: "\nSera ajouté(e) à la clé suivante:\n"
+muttde: "Sie wird zu dem folgenden Schlüssel hinzugefügt:\n"
+
+"\nAdd this userid (y/N)? "
+de: "\nSoll diese Benutzer-ID hinzugefügt werden? (j/N) "
+es: "\n¿Añadir este identificador (s/N)? "
+fr: "\nAjouter ce nom d'utilisateur (o/N)? "
+muttde: "\nSoll diese Benutzer-ID hinzugefügt werden? (j/N) "
+
+"\n\007Can't open key file '%s'\n"
+de: "\n\007FEHLER beim Öffnen der Schlüsseldatei '%s'.\n"
+es: "\n\007No puede abrirse el fichero de claves '%s'\n"
+fr: "\n\007Ouverture du fichier de clé '%s' impossible\n"
+mutt: "\nCan't open key file '%s'\n"
+muttde: "\nFEHLER beim Öffnen der Schlüsseldatei '%s'.\n"
+
+"\nKey ring file '%s' cannot be created.\n"
+de: "\nFEHLER beim Anlegen des Schlüsselbunds '%s'.\n"
+es: "\nNo se puede crear el anillo de claves '%s'.\n"
+fr: "\nCréation du fichier de clés '%s' impossible.\n"
+muttde: "\nFEHLER beim Anlegen des Schlüsselbunds '%s'.\n"
+
+"\nLooking for new keys...\n"
+de: "\nSuche nach neuen Schlüsseln...\n"
+es: "\nBuscando nuevas claves...\n"
+fr: "\nRecherche des nouvelles clés...\n"
+muttde: "\nSuche nach neuen Schlüsseln...\n"
+
+"\n\007Could not read key from file '%s'.\n"
+de: "\n\007FEHLER beim Lesen des Schlüssels aus Datei '%s'.\n"
+es: "\n\007No ha podido leerse la clave en el fichero '%s'.\n"
+fr: "\n\007Lecture impossible de la clé dans le fichier '%s'.\n"
+mutt: "\nCould not read key from file '%s'.\n"
+muttde: "\nFEHLER beim Lesen des Schlüssels aus Datei '%s'.\n"
+
+"\n\007Warning: Key ID %s matches key ID of key already on \n\
+key ring '%s', but the keys themselves differ.\n\
+This is highly suspicious.  This key will not be added to ring.\n\
+Acknowledge by pressing return: "
+de: "\n\007WARNUNG: Die Schlüssel-ID %s stimmt mit einem schon\n\
+im Schlüsselbund '%s' vorhandenen Schlüssel\n\
+überein, aber die Schlüssel selbst sind nicht identisch.\n\
+Das ist höchst verdächtig! Dieser Schlüssel wird nicht zum\n\
+Schlüsselbund hinzugefügt. Mit Return bestätigen: "
+es: "\n\007Advertencia: El identificador de clave %s coincide con otro\n\
+en el anillo '%s', pero las claves son distintas.\n\
+Es muy sospechoso. Esta clave no se incluirá en el anillo.\n\
+Confirmar pulsando 'retorno': "
+fr: "\n\007Attention: l'identificateur de clé %s correspond à une clé\
+\ndéjà dans le fichier de clés '%s', mais les clés sont différentes.\
+\nCeci est très suspect. Cette clé ne sera pas ajoutée au fichier de clés.\
+\nAppuyez sur la touche Retour ou Entrée: "
+mutt: "\nWarning: Key ID %s matches key ID of key already on \n\
+key ring '%s', but the keys themselves differ.\n\
+This is highly suspicious.  This key will not be added to ring.\n\
+Acknowledge by pressing return: "
+muttde: "\nWARNUNG: Die Schlüssel-ID %s stimmt mit einem schon\n\
+im Schlüsselbund '%s' vorhandenen Schlüssel\n\
+überein, aber die Schlüssel selbst sind nicht identisch.\n\
+Das ist höchst verdächtig! Dieser Schlüssel wird nicht zum\n\
+Schlüsselbund hinzugefügt. Mit Return bestätigen: "
+
+"\nDo you want to add this key to keyring '%s' (y/N)? "
+de: "\nMöchtest Du diesen Schlüssel zum Schlüsselbund\n'%s' hinzufügen? (j/N) "
+es: "\n¿Quieres añadir esta clave al anillo '%s' (s/N)? "
+fr: "\nVoulez vous ajouter cette clé au fichier de clés '%s' (o/N)? "
+muttde: "\nMöchtest Du diesen Schlüssel zum Schlüsselbund\n'%s' hinzufügen? (j/N) "
+
+"Key has been revoked.\n"
+de: "Der Schlüssel wurde zurückgezogen.\n"
+es: "La clave se ha revocado.\n"
+fr: "La clé a été révoquée.\n"
+muttde: "Der Schlüssel wurde zurückgezogen.\n"
+
+"\n\007Key file contains duplicate keys: cannot be added to keyring\n"
+de: "\n\007Die Datei enthält doppelte Schlüssel, die nicht zum Schlüsselbund\n\
+hinzugefügt werden.\n"
+es: "\n\007El fichero contiene claves duplicadas: \
+no puede añadirse al anillo\n"
+fr: "\n\007Le fichier contient des clés dupliquées: impossible\n\
+de l'ajouter au fichier de clés\n"
+mutt: "\nKey file contains duplicate keys: cannot be added to keyring\n"
+muttde: "\nDie Datei enthält doppelte Schlüssel, die nicht zum Schlüsselbund\n\
+hinzugefügt werden.\n"
+
+"No new keys or signatures in keyfile.\n"
+de: "Keine neuen Schlüssel oder Unterschriften in der Datei.\n"
+es: "No hay nuevas claves ni nuevas firmas en el fichero.\n"
+fr: "Pas de nouvelles clés ou signatures dans le fichier de clés.\n"
+muttde: "Keine neuen Schlüssel oder Unterschriften in der Datei.\n"
+
+"\nKeyfile contains:\n"
+de: "\nDie Datei enthält folgende Schlüssel:\n"
+es: "\nEl fichero de claves contiene:\n"
+fr: "\nLe fichier de clés contient:\n"
+muttde: "\nDie Datei enthält folgende Schlüssel:\n"
+
+"%4d new key(s)\n"
+de: "%4d neue(n) Schlüssel\n"
+es: "%4d nueva(s) clave(s)\n"
+fr: "%4d nouvelle(s) clé(s)\n"
+muttde: "%4d neue(n) Schlüssel\n"
+
+"%4d new signatures(s)\n"
+de: "%4d neue Unterschrift(en)\n"
+es: "%4d nueva(s) firma(s)\n"
+fr: "%4d nouvelle(s) signatures(s)\n"
+muttde: "%4d neue Unterschrift(en)\n"
+
+"%4d new user ID(s)\n"
+de: "%4d neue Benutzer-ID(s)\n"
+es: "%4d nuevo(s) identificador(es) de usuario\n"
+fr: "%4d nouveau(x) nom(s) d'utilisateur\n"
+muttde: "%4d neue Benutzer-ID(s)\n"
+
+"%4d new revocation(s)\n"
+de: "%4d neue Urkunde(n) zum Zurückziehen von Schlüsseln\n"
+es: "%4d nueva(s) revocacion(es)\n"
+fr: "%4d nouvelle(s) révocation(s)\n"
+muttde: "%4d neue Urkunde(n) zum Zurückziehen von Schlüsseln\n"
+
+"\nNo keys found in '%s'.\n"
+de: "\nKeine Schlüssel in '%s' gefunden.\n"
+es: "\nNo se encuentran claves en '%s'.\n"
+fr: "\nPas de clés trouvées dans '%s'.\n"
+muttde: "\nKeine Schlüssel in '%s' gefunden.\n"
+
+"\nOne or more of the new keys are not fully certified.\n\
+Do you want to certify any of these keys yourself (y/N)? "
+de: "\nEin oder mehrere neue Schlüssel sind nicht ausreichend beglaubigt.\n\
+Willst Du sie selbst beglaubigen? (j/N) "
+es: "\nUna o más de las nuevas claves no están completamente certificadas.\n\
+¿Quieres certificar alguna de ellas tú mismo (s/N)? "
+fr: "\nUne ou plusieurs des nouvelles clés ne sont pas complètement\
+\ncertifiées. Voulez vous certifier ces clés vous même (o/N)? "
+muttde: "\nEin oder mehrere neue Schlüssel sind nicht ausreichend beglaubigt.\n\
+Willst Du sie selbst beglaubigen? (j/N) "
+
+"\nDo you want to certify this key yourself (y/N)? "
+de: "\nWillst Du diesen Schlüssel selbst beglaubigen? (j/N) "
+es: "\n¿Quieres certificar esta clave tú mismo (s/N)? "
+fr: "\nVoulez vous certifier cette clé vous même (o/N)? "
+muttde: "\nWillst Du diesen Schlüssel selbst beglaubigen? (j/N) "
+
+"undefined"
+de: "undefin."
+es: "sin definir"
+fr: "indéfinie"
+muttde: "undefin."
+
+"unknown"
+de: "unbekannt"
+es: "desconocida"
+fr: "inconnu"
+muttde: "unbekannt"
+
+"untrusted"
+de: "kein"
+es: "no fiable"
+fr: "non sûr"
+muttde: "kein"
+
+"marginal"
+de: "teilweise"
+es: "relativa"
+fr: "marginal"
+muttde: "teilweise"
+
+"complete"
+de: "voll"
+es: "completa"
+fr: "complète"
+muttde: "voll"
+
+"ultimate"
+de: "absolut"
+es: "fundamental"
+fr: "ultime"
+muttde: "absolut"
+
+"\nCan't open backup key ring file '%s'\n"
+de: "\nFEHLER beim Öffnen der Schlüsselbund-Kopie '%s'.\n"
+es: "\nNo se puede abrir la copia de seguridad del anillo '%s'\n"
+fr: "\nImpossible d'ouvrir le fichier de clé de sauvegarde '%s'\n"
+muttde: "\nFEHLER beim Öffnen der Schlüsselbund-Kopie '%s'.\n"
+
+"\n%d \"trust parameter(s)\" need to be changed.\n"
+de: "\n%d 'Vertrauens-Einstellung(en)' muß/müssen geändert werden.\n"
+es: "\n%d \"parámetro(s) de confianza\" debe(n) cambiarse.\n"
+fr: "\n%d \"paramètre(s) de confiance\" doi(ven)t être changé(s).\n"
+muttde: "\n%d 'Vertrauens-Einstellung(en)' muß/müssen geändert werden.\n"
+
+"Continue with '%s' (Y/n)? "
+de: "Weiter mit '%s'? (J/n) "
+es: "¿Seguir con '%s' (S/n)? "
+fr: "Continuer avec '%s' (O/n)? "
+muttde: "Weiter mit '%s'? (J/n) "
+
+"\n%d \"trust parameter(s)\" changed.\n"
+de: "\n%d 'Vertrauens-Einstellung(en)' geändert.\n"
+es: "\nCambiados %d \"parámetro(s) de confianza.\n"
+fr: "\n%d \"paramètre(s) de confiance\" changé(s).\n"
+muttde: "\n%d 'Vertrauens-Einstellung(en)' geändert.\n"
+
+"Update public keyring '%s' (Y/n)? "
+de: "Öffentlichen Schlüsselbund '%s' aktualisieren? (J/n) "
+es: "¿Actualizar el anillo de claves públicas '%s' (S/n)? "
+fr: "Modifier le fichier de clés publiques '%s' (O/n)? "
+muttde: "Öffentlichen Schlüsselbund '%s' aktualisieren? (J/n) "
+
+"\nCan't open secret key ring file '%s'\n"
+de: "\nFEHLER beim Öffnen des privaten Schlüsselbunds '%s'.\n"
+es: "\nNo puede abrirse el anillo de claves secretas '%s'\n"
+fr: "\nOuverture du fichier de clés secrètes '%s' impossible.\n"
+muttde: "\nFEHLER beim Öffnen des privaten Schlüsselbunds '%s'.\n"
+
+"\nPass 1: Looking for the \"ultimately-trusted\" keys...\n"
+de: "\nDurchlauf 1: Suche nach 'absolut vertrauenswürdigen' Schlüsseln...\n"
+es: "\nProceso 1: Búsqueda de las claves \"fundamentalmente fiables\" ...\n"
+fr: "\nPasse 1: Recherche des clés \"de confiance ultime\"...\n"
+muttde: "\nDurchlauf 1: Suche nach 'absolut vertrauenswürdigen' Schlüsseln...\n"
+
+"\nPass 2: Tracing signature chains...\n"
+de: "\nDurchlauf 2: Überprüfung von verketteten Unterschriften...\n"
+es: "\nProceso 2: Seguimiento de las cadenas de firmas...\n"
+fr: "\nPasse 2: Vérification des chaines de signatures...\n"
+muttde: "\nDurchlauf 2: Überprüfung von verketteten Unterschriften...\n"
+
+"Keyring contains duplicate key: %s\n"
+de: "\nDer Schlüsselbund enthält den Schlüssel %s doppelt.\n"
+es: "El anillo contiene una clave duplicada: %s\n"
+fr: "Le fichier de clés contient des clés dupliquées: %s\n"
+muttde: "\nDer Schlüsselbund enthält den Schlüssel %s doppelt.\n"
+
+"No ultimately-trusted keys.\n"
+de: "Keine absolut vertrauenswürdigen Schlüssel gefunden.\n"
+es: "No hay ninguna clave fundamentalmente fiable.\n"
+fr: "Pas de clés de confiance ultime.\n"
+muttde: "Keine absolut vertrauenswürdigen Schlüssel gefunden.\n"
+
+"  KeyID    Trust     Validity  User ID\n"
+de: "\n     ID    Vertrauen Gültigk.  Benutzer\n"
+es: "  Clave    Confianza Validez   Identificador\n"
+fr: "  IDcle    Conf.     Validité  Utilisateur\n"
+muttde: "\n     ID    Vertrauen Gültigk.  Benutzer\n"
+
+"(KeyID: %s)\n"
+de: "(Schlüssel-ID: %s)\n"
+es: "(Identificador: %s)\n"
+fr: "(IDclef: %s)\n"
+muttde: "(Schlüssel-ID: %s)\n"
+
+"\nAn \"axiomatic\" key is one which does not need certifying by\n\
+anyone else.  Usually this special status is reserved only for your\n\
+own keys, which should also appear on your secret keyring.  The owner\n\
+of an axiomatic key (who is typically yourself) is \"ultimately trusted\"\n\
+by you to certify any or all other keys.\n"
+de: "\nEin 'definitionsgemäß vertrauenswürdiger' Schlüssel braucht nicht von einer\n\
+anderen Person beglaubigt zu werden. Normalerweise ist dieser spezielle Status\n\
+nur für Deine eigenen Schlüssel reserviert, die sich auch in Deinem privaten\n\
+Schlüsselbund befinden sollten. Der Besitzer eines 'definitionsgemäß vertrau-\n\
+enswürdigen' Schlüssels (das bist in der Regel Du selbst) wird von Dir als\n\
+'absolut vertrauenswürdig' betrachtet, beliebige oder sogar alle anderen\n\
+Schlüssel Dir gegenüber zu beglaubigen.\n"
+es: "\nUna clave \"axiomatica\" es aquella que no necesita certificación.\n\
+Normalmente este estado se reserva para tus propias claves, que deben\n\
+aparecer también en tu anillo de claves secretas. El propietario de una\n\
+clave axiomática (normalmente tú mismo) es \"fundamentalmente fiable\"\n\
+para certificar cualquier clave.\n"
+fr: "\n Une clef 'axiomatique' est un clef qui n'a pas besoin d'être\n\
+signé par personne. Habituellement ce statut est reservé à vos propres \n\
+clefs, celles qui apparaissent dans votre tousseau de clefs secrètes. \n\
+Le propriétaire de ces clefs (vous-même) possède votre 'confiance ultime'\n\
+pour accorder un certificat à l'une au l'autre des autres clefs.\n"
+muttde: "\nEin 'definitionsgemäß vertrauenswürdiger' Schlüssel braucht nicht von einer\n\
+anderen Person beglaubigt zu werden. Normalerweise ist dieser spezielle Status\n\
+nur für Deine eigenen Schlüssel reserviert, die sich auch in Deinem privaten\n\
+Schlüsselbund befinden sollten. Der Besitzer eines 'definitionsgemäß vertrau-\n\
+enswürdigen' Schlüssels (das bist in der Regel Du selbst) wird von Dir als\n\
+'absolut vertrauenswürdig' betrachtet, beliebige oder sogar alle anderen\n\
+Schlüssel Dir gegenüber zu beglaubigen.\n"
+
+"\nKey for user ID \"%s\"\n\
+is designated as an \"ultimately-trusted\" introducer, but the key\n\
+does not appear in the secret keyring.\n\
+Use this key as an ultimately-trusted introducer (y/N)? "
+de: "\nDer Schlüssel von \"%s\"\n\
+soll ein 'absolut vertrauenswürdiger Einführer' werden, aber er befindet\n\
+sich nicht im privaten Schlüsselbund. Soll ich diesen Schlüssel trotzdem\n\
+als 'absolut vertrauenswürdigen Einführer' behandeln? (j/N) "
+es: "\nLa clave del usuario \"%s\"\n\
+está designada como referencia \"fundamentalmente fiable\", pero 
+la clave no aparece en el anillo de claves secretas.\n\
+¿Se utiliza como referencia fundamentalmente fiable (s/N)? "
+fr: "\nLa clef de l'utilisateur '%s' \n\
+a été désigné comme ayant la 'confiance ulime', mais cette clef \n\
+n'apparraît pas dans le trousseau des clefs secrètes. \n\
+Voulez-vous utiliser cette clef comme ayant la 'confiance ultime'? (o/N) "
+muttde: "\nDer Schlüssel von \"%s\"\n\
+soll ein 'absolut vertrauenswürdiger Einführer' werden, aber er befindet\n\
+sich nicht im privaten Schlüsselbund. Soll ich diesen Schlüssel trotzdem\n\
+als 'absolut vertrauenswürdigen Einführer' behandeln? (j/N) "
+
+"\n\007Cannot read from secret keyring.\n"
+de: "\n\007FEHLER beim Lesen des privaten Schlüsselbunds.\n"
+es: "\n\007No puede leerse el anillo de claves secretas.\n"
+fr: "\n\007Lecture du fichier de clés secrètes impossible.\n"
+mutt: "\nCannot read from secret keyring.\n"
+muttde: "\nFEHLER beim Lesen des privaten Schlüsselbunds.\n"
+
+"\n\007WARNING: Public key for user ID: \"%s\"\n\
+does not match the corresponding key in the secret keyring.\n"
+de: "\n\007WARNUNG: Der öffentliche Schlüssel\nvon \"%s\" stimmt nicht\n\
+mit dem Gegenstück im privaten Schlüsselbund überein.\n"
+es: "\n\007AVISO: La clave pública de \"%s\"\n\
+no coincide con la clave correspondiente en el anillo de claves secretas.\n"
+fr: "\n\007ATTENTION: la clé publique pour l'utilisateur: \"%s\"\n\
+ne correspond pas avec la clé respective dans le fichier de clés\
+secrètes.\n"
+mutt: "\nWARNING: Public key for user ID: \"%s\"\n\
+does not match the corresponding key in the secret keyring.\n"
+muttde: "\nWARNUNG: Der öffentliche Schlüssel\nvon \"%s\" stimmt nicht\n\
+mit dem Gegenstück im privaten Schlüsselbund überein.\n"
+
+"This is a serious condition, indicating possible keyring tampering.\n"
+de: "Dies könnte bedeuten, daß die Schlüsselbunde manipuliert wurden!\n"
+es: "Es una situación grave: posible manipulación de anillos.\n"
+fr: "Ceci est une condition sérieuse,  indiquant une possible manipulation\n\
+du fichier de clés.\n"
+muttde: "Dies könnte bedeuten, daß die Schlüsselbunde manipuliert wurden!\n"
+
+"\nKey for user ID \"%s\"\n\
+also appears in the secret key ring."
+de: "\nDer Schlüssel für die Benutzer-ID \"%s\"\n\
+ist auch im privaten Schlüsselbund vorhanden."
+es: "\nLa clave del identificador \"%s\"\n\
+también aparece en el anillo de claves secretas."
+fr: "\nLa clef pour l'utilisateur avec id: \"%s\"\n\
+apparait egalement dans le repertoire des clefs secretes."
+muttde: "\nDer Schlüssel für die Benutzer-ID \"%s\"\n\
+ist auch im privaten Schlüsselbund vorhanden."
+
+"\nUse this key as an ultimately-trusted introducer (y/N)? "
+de: "\nSoll dieser Schlüssel als 'absolut vertrauenswürdigen Einführer'\n\
+behandelt werden? (j/N) "
+es: "\n¿Se utiliza esta clave como referencia fundamentalmente fiable (s/N)? "
+fr: "\nUtiliser cette clé comme introducteur de confiance ultime (o/N)? "
+muttde: "\nSoll dieser Schlüssel als 'absolut vertrauenswürdigen Einführer'\n\
+behandelt werden? (j/N) "
+
+"Public key for: \"%s\"\n\
+is not present in the backup keyring '%s'.\n"
+de: "Der öffentliche Schlüssel von \"%s\"\n\
+ist nicht in der Schlüsselbund-Kopie '%s' enthalten.\n"
+es: "La clave pública de: \"%s\"\n\
+no se encuentra en la copia de seguridad del anillo '%s'.\n"
+fr: "La clé publique pour: \"%s\"\n\
+n'est pas présente dans le fichier de clés de sauvegarde '%s'.\n"
+muttde: "Der öffentliche Schlüssel von \"%s\"\n\
+ist nicht in der Schlüsselbund-Kopie '%s' enthalten.\n"
+
+"\n\007WARNING: Secret key for: \"%s\"\n\
+does not match the key in the backup keyring '%s'.\n"
+de: "\n\007WARNUNG: Der private Schlüssel von \"%s\"\n\
+entspricht nicht der Kopie im Schlüsselbund '%s'.\n"
+es: "\n\007AVISO: La clave secreta de: \"%s\"\n\
+no coincide con la clave en la copia de seguridad del anillo '%s'.\n"
+fr: "\n\007ATTENTION: la clé secrète pour: \"%s\"\n\
+ne correspond pas avec la clé dans le fichier de clés de sauvegarde.\n"
+mutt: "\nWARNING: Secret key for: \"%s\"\n\
+does not match the key in the backup keyring '%s'.\n"
+muttde: "\nWARNUNG: Der private Schlüssel von \"%s\"\n\
+entspricht nicht der Kopie im Schlüsselbund '%s'.\n"
+
+"\nMake a determination in your own mind whether this key actually\n\
+belongs to the person whom you think it belongs to, based on available\n\
+evidence.  If you think it does, then based on your estimate of\n\
+that person's integrity and competence in key management, answer\n\
+the following question:\n"
+de: "\nEntscheide für Dich, ob dieser Schlüssel tatsächlich zu dieser Person gehört.\n\
+Triff diese Entscheidung unter Berücksichtigung der zur Verfügung stehenden\n\
+Informationen. Wenn Du glaubst, daß der Schlüssel echt ist, dann beantworte\n\
+folgende Frage aufgrund Deiner Einschätzung der Vertrauenswürdigkeit der\n\
+Person und ihrer Kompetenz beim Umgang mit PGP-Schlüsseln:\n"
+es: "\nDecide tú mismo si esta clave realmente pertenece, según la\n\
+evidencia a tu alcance, a la persona que crees.  Si es así,\n\
+contesta a la siguiente pregunta, basándote en tu estimación de la\n\
+integridad de esa persona y de su conocimiento sobre gestión de claves:\n"
+fr: "\nDeterminez vous même si cette clé appartient vraiment à la personne\
+\nà qui vous croyez qu'elle appartient, selon les informations disponibles.\
+\nSi vous le croyez, alors selon votre estimation de l'intégrité de cette\
+\npersonne et de sa compétence dans la gestion de clés, répondez à la\
+\nquestion suivante:\n"
+muttde: "\nEntscheide für Dich, ob dieser Schlüssel tatsächlich zu dieser Person gehört.\n\
+Triff diese Entscheidung unter Berücksichtigung der zur Verfügung stehenden\n\
+Informationen. Wenn Du glaubst, daß der Schlüssel echt ist, dann beantworte\n\
+folgende Frage aufgrund Deiner Einschätzung der Vertrauenswürdigkeit der\n\
+Person und ihrer Kompetenz beim Umgang mit PGP-Schlüsseln:\n"
+
+"\nWould you trust \"%s\"\n\
+to act as an introducer and certify other people's public keys to you?\n\
+(1=I don't know. 2=No. 3=Usually. 4=Yes, always.) ? "
+de: "\nWürdest Du \"%s\" als 'Einführer'\n\
+und 'Beglaubiger' für die öffentlichen Schlüssel Dritter vertrauen?\n\
+(1=Ich weiß nicht; 2=Nein; 3=In der Regel; 4=Ja, immer) : "
+es: "\n¿Confiarías en \"%s\"\n\
+como referencia y para certificar ante ti otras claves públicas?\n\
+(1=No sé. 2=No. 3=Normalmente. 4=Sí, siempre.) ? "
+fr: "\nAuriez vous confiance en \"%s\"\n\
+pour servir d'introducteur et certifier pour vous les clés publiques d'autres\
+\npersonnes? (1=Ne sais pas. 2=Non. 3=Généralement. 4=Oui, toujours.) ? "
+muttde: "\nWürdest Du \"%s\" als 'Einführer'\n\
+und 'Beglaubiger' für die öffentlichen Schlüssel Dritter vertrauen?\n\
+(1=Ich weiß nicht; 2=Nein; 3=In der Regel; 4=Ja, immer) : "
+
+"This user is untrusted to certify other keys.\n"
+de: "Dieser Benutzer ist nicht vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+es: "Este usuario no es fiable para certificar otras claves.\n"
+fr: "Cet utilisateur n'est pas de confiance pour certifier d'autres clés.\n"
+muttde: "Dieser Benutzer ist nicht vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+
+"This user is generally trusted to certify other keys.\n"
+de: "Dieser Benutzer ist in der Regel vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+es: "Este usuario es de relativa confianza para certificar otras claves.\n"
+fr: "Cet utilisateur est généralement de confiance pour certifier d'autres\
+ clés.\n"
+muttde: "Dieser Benutzer ist in der Regel vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+
+"This user is completely trusted to certify other keys.\n"
+de: "Dieser Benutzer ist immer vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+es: "Este usuario es de completa confianza para certificar otras claves.\n"
+fr: "Cet utilisateur est de confiance totale pour certifier d'autres clés.\n"
+muttde: "Dieser Benutzer ist immer vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+
+"This axiomatic key is ultimately trusted to certify other keys.\n"
+de: "Dieser Schlüssel ist definitionsgemäß vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+es: "Esta clave axiomática es absolutamente fiable para certificar otras.\n"
+fr: "Cette clé axiomatique est de confiance ultime pour certifier\n\
+d'autres clés\n"
+muttde: "Dieser Schlüssel ist definitionsgemäß vertrauenswürdig genug,\n\
+um andere Schlüssel zu beglaubigen.\n"
+
+"This key/userID association is not certified.\n"
+de: "Diese Schlüssel-/Benutzer-Zuordnung ist nicht bestätigt.\n"
+es: "Esta asociación clave/usuario no está certificada.\n"
+fr: "Cette association clé/utilisateur n'est pas certifiée.\n"
+muttde: "Diese Schlüssel-/Benutzer-Zuordnung ist nicht bestätigt.\n"
+
+"This key/userID association is marginally certified.\n"
+de: "Diese Schlüssel-/Benutzer-Zuordnung ist teilweise bestätigt.\n"
+es: "Esta asociación clave/usuario está relativamente certificada.\n"
+fr: "Cette association clé/utilisateur est marginalement certifiée.\n"
+muttde: "Diese Schlüssel-/Benutzer-Zuordnung ist teilweise bestätigt.\n"
+
+"This key/userID association is fully certified.\n"
+de: "Diese Schlüssel-/Benutzer-Zuordnung ist voll bestätigt.\n"
+es: "Esta asociación clave/usuario está completamente certificada.\n"
+fr: "Cette association clé/utilisateur est complètement certifiée.\n"
+muttde: "Diese Schlüssel-/Benutzer-Zuordnung ist voll bestätigt.\n"
+
+"  Questionable certification from:\n  "
+de: "  Fragwürdige Beglaubigung von:\n  "
+es: "  Certificación cuestionable de:\n  "
+fr: "  Certificat de confiance douteux de:\n  "
+muttde: "  Fragwürdige Beglaubigung von:\n  "
+
+"  Untrusted certification from:\n  "
+de: "  Unglaubwürdige Beglaubigung von:\n  "
+es: "  Certificación no fiable de:\n  "
+fr: "  Certificat non sûr de:\n  "
+muttde: "  Unglaubwürdige Beglaubigung von:\n  "
+
+"  Generally trusted certification from:\n  "
+de: "  Glaubwürdige Beglaubigung von:\n  "
+es: "  Certificación relativamente fiable de:\n  "
+fr: "  Certificat de confiance relatif de:\n  "
+muttde: "  Glaubwürdige Beglaubigung von:\n  "
+
+"  Completely trusted certification from:\n  "
+de: "  Voll glaubwürdige Beglaubigung von:\n  "
+es: "  Certificación completamente fiable de:\n  "
+fr: "  Certificat de confiance complet de:\n  "
+muttde: "  Voll glaubwürdige Beglaubigung von:\n  "
+
+"  Axiomatically trusted certification from:\n  "
+de: "  Definitionsgemäß glaubwürdige Beglaubigung von:\n  "
+es: "  Certificación axiomáticamente fiable de:\n  "
+fr: "  Certificat de confiance par axiome de:\n  "
+muttde: "  Definitionsgemäß glaubwürdige Beglaubigung von:\n  "
+
+"\nKey for user ID: %s\n"
+de: "\nSchlüssel für Benutzer-ID \"%s\",\n"
+es: "\nClave del usuario: %s\n"
+fr: "\nClé pour le nom d'utilisateur: %s\n"
+muttde: "\nSchlüssel für Benutzer-ID \"%s\",\n"
+
+"%d-bit key, key ID %s, created %s\n"
+de: "%d-Bit-Schlüssel, Schlüssel-ID: %s, erzeugt am: %s.\n"
+es: "Clave de %d bits, con identificador %s, creada el %\n"
+fr: "Clef de %d bits. Id clef %s créé %s\n"
+muttde: "%d-Bit-Schlüssel, Schlüssel-ID: %s, erzeugt am: %s.\n"
+
+"Bad key format.\n"
+de: "Falsches Schlüssel-Format.\n"
+es: "Formato incorrecto de clave.\n"
+fr: "Mauvais format de clé\n"
+muttde: "Falsches Schlüssel-Format.\n"
+
+"Unrecognized version.\n"
+de: "Unbekannte Version.\n"
+es: "Versión no reconocida.\n"
+fr: "Version non reconnue.\n"
+muttde: "Unbekannte Version.\n"
+
+"Key is disabled.\n"
+de: "Der Schlüssel ist gesperrt.\n"
+es: "La clave está desactivada.\n"
+fr: "La clé est inactivée.\n"
+muttde: "Der Schlüssel ist gesperrt.\n"
+
+"Also known as: %s\n"
+de: "Alternative Benutzer-ID: %s\n"
+es: "También conocido como: %s\n"
+fr: "Egalement connu(e) en tant que: %s\n"
+muttde: "Alternative Benutzer-ID: %s\n"
+
+"  Certified by: "
+de: "  Beglaubigt von: "
+es: "  Certificado por: "
+fr: "  Certifiée par: "
+muttde: "  Beglaubigt von: "
+
+"\nWarning: keyid %4d/%s %s  has no user id!\n"
+de: "\nWARNUNG: Der Schlüssel '%4d/%s %s' hat keine Benutzer-ID!\n"
+es: "\nAdvertencia: la clave %4d/%s %s no tiene identificador\n"
+fr: "\nAttention: IDclef %4d/%s %s  n'est pas associé à un utilisateur!\n"
+muttde: "\nWARNUNG: Der Schlüssel '%4d/%s %s' hat keine Benutzer-ID!\n"
+
+"Updated keyID: 0x%s\n"
+de: "Die Schlüssel-ID 0x%s wurde aktualisiert.\n"
+es: "Identificador actualizado: 0x%s\n"
+fr: "Mise à jour de la clef ID: 0x%s\n"
+muttde: "Die Schlüssel-ID 0x%s wurde aktualisiert.\n"
+
+"\n\007Unable to create key file '%s'.\n"
+de: "\n\007FEHLER beim Erzeugen der Schlüsseldatei '%s'.\n"
+es: "\n\007No puede crearse el fichero de claves '%s'.\n"
+fr: "\n\007Impossible de créer le fichier de clés '%s'.\n"
+mutt: "\nUnable to create key file '%s'.\n"
+muttde: "\nFEHLER beim Erzeugen der Schlüsseldatei '%s'.\n"
+
+"\n\007Keyring file '%s' does not exist. "
+de: "\n\007Der Schlüsselbund '%s' existiert nicht.\n"
+es: "\n\007El anillo '%s' no existe. "
+fr: "\n\007Le fichier de clés '%s' n'existe pas. "
+mutt: "\nKeyring file '%s' does not exist. "
+muttde: "\nDer Schlüsselbund '%s' existiert nicht.\n"
+
+"\n\007Sorry, this key has been revoked by its owner.\n"
+de: "\n\007Dieser Schlüssel wurde von seinem Besitzer zurückgezogen.\n"
+es: "\n\007Esa clave ha sido revocada por su propietario.\n"
+fr: "\n\007Désolé, cette clé a été révoquée par son propriétaire.\n"
+mutt: "\nSorry, this key has been revoked by its owner.\n"
+muttde: "\nDieser Schlüssel wurde von seinem Besitzer zurückgezogen.\n"
+
+"\nKey for user ID \"%s\"\n\
+has been revoked.  You cannot use this key.\n"
+de: "\nDer Schlüssel von \"%s\"\n\
+wurde zurückgezogen und kann nicht verwendet werden.\n"
+es: "\nLa clave del usuario \"%s\"\n\
+ha sido revocada.  No puede utilizarse.\n"
+fr: "\nLa clé pour l'utilisateur \"%s\"\n\
+a été révoquée. Vous ne pouvez utiliser cette clé.\n"
+muttde: "\nDer Schlüssel von \"%s\"\n\
+wurde zurückgezogen und kann nicht verwendet werden.\n"
+
+"\n\007Key matching expected Key ID %s not found in file '%s'.\n"
+de: "\n\007Der zur erwarteten Schlüssel-ID %s passende Schlüssel\n\
+ist nicht in der Datei '%s' enthalten.\n"
+es: "\n\007Se esperaba una clave %s que no se encuentra en '%s'.\n"
+fr: "\n\007Clé correspondant à l'identificateur %s non trouvée\
+\ndans le fichier '%s'.\n"
+mutt: "\nKey matching expected Key ID %s not found in file \n\
+'%s'.\n"
+muttde: "\nDer zur erwarteten Schlüssel-ID %s passende Schlüssel\n\
+ist nicht in der Datei '%s' enthalten.\n"
+
+"\n\007Key matching userid '%s' not found in file '%s'.\n"
+de: "\n\007Der zur Benutzer-ID \"%s\" passende Schlüssel\n\
+ist nicht in der Datei '%s' enthalten.\n"
+es: "\n\007La clave del usuario '%s' no se encuentra en el fichero '%s'.\n"
+fr: "\n\007Clé correspondant à l'utilisateur '%s' introuvable\n\
+dans le fichier '%s'.\n"
+mutt: "\nKey matching userid '%s' not found in file '%s'.\n"
+muttde: "\nDer zur Benutzer-ID \"%s\" passende Schlüssel\n\
+ist nicht in der Datei '%s' enthalten.\n"
+
+"Enter secret key filename: "
+de: "Dateiname des privaten Schlüssels: "
+es: "Introduzca el nombre del anillo de claves secretas: "
+fr: "Entrez le nom du fichier de clés secrètes: "
+muttde: "Dateiname des privaten Schlüssels: "
+
+"Enter public key filename: "
+de: "Dateiname des öffentlichen Schlüssels: "
+es: "Introduzca el nombre del anillo de claves públicas: "
+fr: "Entrez le nom du fichier de clés publiques: "
+muttde: "Dateiname des öffentlichen Schlüssels: "
+
+"\nYou need a pass phrase to unlock your RSA secret key. "
+de: "\nDu brauchst ein Mantra, um Deinen privaten RSA-Schlüssel zu benutzen."
+es: "\nSe necesita la contraseña para abrir la clave secreta RSA. "
+fr: "\nVous devez avoir un mot de passe pour utiliser votre clé secrète RSA."
+muttde: "\nDu brauchst ein Mantra, um Deinen privaten RSA-Schlüssel zu benutzen."
+
+"No passphrase; secret key unavailable.\n"
+de: "\nKein Mantra; der private Schlüssel kann nicht benutzt werden.\n"
+es: "\nSin contraseña; la clave secreta no está disponible.\n"
+fr: "\nSans la phrase secrete, pas de clef secrete disponible.\n"
+muttde: "\nKein Mantra; der private Schlüssel kann nicht benutzt werden.\n"
+
+"\nAdvisory warning: This RSA secret key is not protected by a \
+passphrase.\n"
+de: "\nHinweis: Dieser private Schlüssel ist nicht durch ein Mantra geschützt.\n"
+es: "\nAdvertencia: Esta clave secreta RSA no tiene contraseña.\n"
+fr: "\nAttention: cette clé secrète RSA n'est pas protégée par un mot \
+de passe"
+muttde: "\nHinweis: Dieser private Schlüssel ist nicht durch ein Mantra geschützt.\n"
+
+"Pass phrase is good.  "
+de: "\nDas Mantra ist richtig.\n"
+es: "La contraseña es correcta.  "
+fr: "Le mot de passe est correct.  "
+muttde: "\nDas Mantra ist richtig.\n"
+
+"\n\007Key file '%s' is not a secret key file.\n"
+de: "\n\007Die Datei '%s' ist keine private Schlüsseldatei.\n"
+es: "\n\007El fichero '%s' no tiene claves secretas.\n"
+fr: "\n\007Le fichier de clé '%s' n'est pas un fichier de clés secrètes.\n"
+mutt: "\nKey file '%s' is not a secret key file.\n"
+muttde: "\nDie Datei '%s' ist keine private Schlüsseldatei.\n"
+
+"Key fingerprint ="
+de: "Fingerabdruck des Schlüssels:"
+es: "Huella dactilar ="
+fr: "Empreinte de la clé ="
+muttde: "Fingerabdruck des Schlüssels:"
+
+"\nKey ring: '%s'"
+de: "\nSchlüsselbund '%s':\n"
+es: "\nAnillo de claves: '%s',\n"
+fr: "\nFichier de clé: '%s'"
+muttde: "\nSchlüsselbund '%s':\n"
+
+", looking for user ID \"%s\"."
+de: "Suche nach Benutzer-ID \"%s\":\n"
+es: "buscando el usuario \"%s\"\n"
+fr: ", recherche du nom d'utilisateur \"%s\"."
+muttde: "Suche nach Benutzer-ID \"%s\":\n"
+
+"1 matching key found.\n"
+de: "Es wurde ein passender Schlüssel gefunden.\n"
+es: "Se ha encontrado una clave.\n"
+fr: "1 clef trouvée.\n"
+muttde: "Es wurde ein passender Schlüssel gefunden.\n"
+
+"%d matching keys found.\n"
+de: "Es wurden %d passende Schlüssel gefunden.\n"
+es: "Se han encontrado %d claves.\n"
+fr: "%d clefs trouvées. \n"
+muttde: "Es wurden %d passende Schlüssel gefunden.\n"
+
+"\nChecking signatures...\n"
+de: "\nÜberprüfung der Unterschriften...\n"
+es: "\nComprobando las firmas...\n"
+fr: "\nVérification des signatures...\n"
+muttde: "\nÜberprüfung der Unterschriften...\n"
+
+"*** KEY REVOKED ***\n"
+de: "*** ZURÜCKGEZOGEN ***\n"
+es: "*** CLAVE REVOCADA ***\n"
+fr: "*** CLEF REVOQUÉE ***\n"
+muttde: "*** ZURÜCKGEZOGEN ***\n"
+
+"(Unknown signator, can't be checked)"
+de: "(Unterschreibender unbekannt, keine Prüfung)"
+es: "(Firmante desconocido, no puede comprobarse)"
+fr: "(Signataire inconnu, ne peut être vérifié)"
+muttde: "(Unterschreibender unbekannt, keine Prüfung)"
+
+"(Key too long, can't be checked)"
+de: "(Schlüssel zu lang, keine Prüfung)"
+es: "(Clave demasiado larga, no puede comprobarse)"
+fr: "(Clef trop longue, ne peut etre verifiée)"
+muttde: "(Schlüssel zu lang, keine Prüfung)"
+
+"(Malformed or obsolete signature format)"
+de: "(Unterschriftsformat fehlerhaft oder veraltet)"
+es: "(Formato de firma obsoleto o incorrecto)"
+fr: "(Signature malformee ou obsolete)"
+muttde: "(Unterschriftsformat fehlerhaft oder veraltet)"
+
+"(Unknown public-key algorithm)"
+de: "(unbek. Algorithmus des öffentl. Schlüssels)"
+es: "(Algoritmo desconocido de clave pública)"
+fr: "(Algorithme de clef publique inconnu)"
+muttde: "(unbek. Algorithmus des öffentl. Schlüssels)"
+
+"(Unknown hash algorithm)"
+de: "(unbekannter Prüfsummen-Algorithmus)"
+es: "(Algoritmo desconocido de distribución [hash])"
+fr: "(Algorithme de hash inconnu)"
+muttde: "(unbekannter Prüfsummen-Algorithmus)"
+
+"(Unknown signature packet version)"
+de: "(unbekannte Version des Unterschriftsblocks)"
+es: "(Versión desconocida de firma)"
+fr: "Version de paquet de signature inconnue"
+muttde: "(unbekannte Version des Unterschriftsblocks)"
+
+"(Malformed signature)"
+de: "(fehlerhafte Unterschrift)"
+es: "(Firma mal formada)"
+fr: "(Signature deformée)"
+muttde: "(fehlerhafte Unterschrift)"
+
+"(Corrupted signature packet)"
+de: "(beschädigter Unterschriftsblock)"
+es: "(Firma dañada)"
+fr: "(Signature corrompue)"
+muttde: "(beschädigter Unterschriftsblock)"
+
+"\007**** BAD SIGNATURE! ****"
+de: "\007**** FALSCHE UNTERSCHRIFT! ****"
+es: "\007**** FIRMA INCORRECTA ****"
+fr: "\007**** MAUVAISE SIGNATURE! ****"
+mutt: "**** BAD SIGNATURE! ****"
+muttde: "**** FALSCHE UNTERSCHRIFT! ****"
+
+"Remove bad signatures (Y/n)? "
+de: "Falsche Unterschriften löschen? (J/n) "
+es: "¿Suprimir las firmas incorrectas (S/n)? "
+fr: "Supprimer les mauvaises signatures (O/n)? "
+muttde: "Falsche Unterschriften löschen? (J/n) "
+
+"\nRemoving signatures from userid '%s' in key ring '%s'\n"
+de: "\nLöschen der Unterschriften unter ID \"%s\"\naus dem Schlüsselbund '%s'.\n"
+es: "\nSuprimiendo las firmas del usuario '%s' del\n\
+anillo de claves '%s'\n"
+fr: "\nSuppression des signatures de l'utilisateur '%s'\n\
+dans le fichier de clés '%s'\n"
+muttde: "\nLöschen der Unterschriften unter ID \"%s\"\naus dem Schlüsselbund '%s'.\n"
+
+"\n\007Key not found in key ring '%s'.\n"
+de: "\n\007Der Schlüssel ist nicht im Schlüsselbund\n'%s' enthalten.\n"
+es: "\n\007No se ha encontrado la clave en el anillo '%s'.\n"
+fr: "\n\007Clé introuvable dans le fichier de clés '%s'.\n"
+mutt: "\nKey not found in key ring '%s'.\n"
+muttde: "\nDer Schlüssel ist nicht im Schlüsselbund\n'%s' enthalten.\n"
+
+"\nKey has no signatures to remove.\n"
+de: "\nDer Schlüssel trägt keine Unterschriften, die gelöscht werden könnten.\n"
+es: "\nLa clave no tiene ninguna firma por borrar.\n"
+fr: "\nLa clé n'a pas de signatures à supprimer.\n"
+muttde: "\nDer Schlüssel trägt keine Unterschriften, die gelöscht werden könnten.\n"
+
+"\nKey has %d signature(s):\n"
+de: "\nDer Schlüssel trägt %d Unterschrift(en):\n"
+es: "\nLa clave tiene %d firma(s):\n"
+fr: "\nLa clé a %d signature(s):\n"
+muttde: "\nDer Schlüssel trägt %d Unterschrift(en):\n"
+
+"(Unknown signator, can't be checked)\n"
+de: "(Unterschreibender unbekannt, keine Prüfung)\n"
+es: "(Firmante desconocido, no puede comprobarse)\n"
+fr: "(Signataire inconnu, ne peut être vérifié)\n"
+muttde: "(Unterschreibender unbekannt, keine Prüfung)\n"
+
+"Remove this signature (y/N)? "
+de: "Diese Unterschrift löschen? (j/N) "
+es: "\277Suprimir esta firma (s/N)? "
+fr: "Suppression de cette signature (o/N)? "
+muttde: "Diese Unterschrift löschen? (j/N) "
+
+"\nNo key signatures removed.\n"
+de: "\nKeine Unterschriften gelöscht.\n"
+es: "\nNo se ha suprimido ninguna firma.\n"
+fr: "\nPas de supression de signature de clé.\n"
+muttde: "\nKeine Unterschriften gelöscht.\n"
+
+"\n%d key signature(s) removed.\n"
+de: "\n%d Unterschrift(en) gelöscht.\n"
+es: "\nSuprimidas %d firma(s) de clave.\n"
+fr: "\n%d signature(s) de clé supprimée(s).\n"
+muttde: "\n%d Unterschrift(en) gelöscht.\n"
+
+"\nRemoving from key ring: '%s'"
+de: "\nLöschen aus Schlüsselbund '%s'\n"
+es: "\nSuprimiendo del anillo: '%s'"
+fr: "\nSuppression du ficher de clés: '%s'"
+muttde: "\nLöschen aus Schlüsselbund '%s'\n"
+
+", userid \"%s\".\n"
+de: "Benutzer-ID \"%s\".\n"
+es: ", identificador \"%s\".\n"
+fr: ", utilisateur \"%s\".\n"
+muttde: "Benutzer-ID \"%s\".\n"
+
+"\nKey has more than one user ID.\n\
+Do you want to remove the whole key (y/N)? "
+de: "\nDer Schlüssel hat mehr als eine Benutzer-ID.\n\
+Soll der ganze Schlüssel vollständig gelöscht werden? (j/N) "
+es: "\nLa clave tiene más de un identificador de usuario.\n\
+¿Quieres suprimirla por completo (s/N)? "
+fr: "\nLa clé a plus d'un nom d'utilisateur.\n\
+Voulez vous supprimier toute la clé (o/N)? "
+muttde: "\nDer Schlüssel hat mehr als eine Benutzer-ID.\n\
+Soll der ganze Schlüssel vollständig gelöscht werden? (j/N) "
+
+"\nNo more user ID's\n"
+de: "\nKeine weiteren Benutzer-IDs.\n"
+es: "\nNo hay más identificadores de usuario\n"
+fr: "\nPlus de noms d'utilisateur\n"
+muttde: "\nKeine weiteren Benutzer-IDs.\n"
+
+"Remove \"%s\" (y/N)? "
+de: "\"%s\" löschen? (j/N) "
+es: "¿Suprimir \"%s\" (s/N)? "
+fr: "Supprimer \"%s\" (o/N)? "
+muttde: "\"%s\" löschen? (j/N) "
+
+"\nAre you sure you want this key removed (y/N)? "
+de: "\nBist Du sicher, daß Du diesen Schlüssel löschen willst? (j/N) "
+es: "\n¿Estás seguro de querer suprimir esta clave (s/N)? "
+fr: "\nEtes vous sûr(e) de vouloir supprimer cette clé (o/N)? "
+muttde: "\nBist Du sicher, daß Du diesen Schlüssel löschen willst? (j/N) "
+
+"\nUser ID removed from key ring.\n"
+de: "\nDie Benutzer-ID wurde aus dem Schlüsselbund gelöscht.\n"
+es: "\nIdentificador suprimido del anillo.\n"
+fr: "\nNom d'utilisateur supprimé du fichier de clés.\n"
+muttde: "\nDie Benutzer-ID wurde aus dem Schlüsselbund gelöscht.\n"
+
+"\nKey removed from key ring.\n"
+de: "\nDer Schlüssel wurde aus dem Schlüsselbund gelöscht.\n"
+es: "\nClave suprimida del anillo.\n"
+fr: "\nClé supprimée du fichier de clés.\n"
+muttde: "\nDer Schlüssel wurde aus dem Schlüsselbund gelöscht.\n"
+
+"\nKey or user ID is also present in secret keyring.\n\
+Do you also want to remove it from the secret keyring (y/N)? "
+de: "\nDer Schlüssel oder die Benutzer-ID sind auch im privaten Schlüsselbund\n\
+enthalten. Sollen sie dort ebenfalls gelöscht werden? (j/N) "
+es: "\nEl identificador se encuentra además en el anillo de\n\
+claves secretas. ¿Quieres borrarlo también de ahí (s/N)? "
+fr: "\nLa clé ou le nom d'utilisateur est aussi dans le fichier de clés\n\
+secrètes. Voulez vous l'enlever du ficher de clés secrètes (o/N)? "
+muttde: "\nDer Schlüssel oder die Benutzer-ID sind auch im privaten Schlüsselbund\n\
+enthalten. Sollen sie dort ebenfalls gelöscht werden? (j/N) "
+
+"\nExtracting from key ring: '%s'"
+de: "\nExtrahieren aus dem Schlüsselbund: '%s'\n"
+es: "\nExtrayendo del anillo de claves: '%s'"
+fr: "\nExtraction du fichier de clés: '%s'"
+muttde: "\nExtrahieren aus dem Schlüsselbund: '%s'\n"
+
+"Extract the above key into which file?"
+de: "Dateiname dieses extrahierten Schlüssels?"
+es: "¿En qué fichero se extrae la clave anterior?"
+fr: "Extraire la clef suivant de quel fichier?"
+muttde: "Dateiname dieses extrahierten Schlüssels?"
+
+"Key ID %s is already included in key ring '%s'.\n"
+de: "Die Schlüssel-ID %s ist bereits im Schlüsselbund\n'%s' enthalten.\n"
+es: "La clave %s ya está en el anillo '%s'.\n"
+fr: "L'identificateur de clé %s est déjà présent\
+\ndans le fichier de clés '%s'.\n"
+muttde: "Die Schlüssel-ID %s ist bereits im Schlüsselbund\n'%s' enthalten.\n"
+
+"\nKey extracted to file '%s'.\n"
+de: "\nSchlüssel extrahiert in Datei '%s'.\n"
+es: "\nClave extraída en el fichero '%s'.\n"
+fr: "\nClé mise dans le fichier '%s'.\n"
+muttde: "\nSchlüssel extrahiert in Datei '%s'.\n"
+
+"\nThis operation may not be performed on a secret keyring.\n\
+Defaulting to public keyring."
+de: "\nDiese Operation kann mit einem privaten Schlüsselbund nicht ausgeführt\n\
+werden. Der öffentliche Schlüsselbund wird versucht."
+es: "\nEsta operacion no puede realizarse sobre el anillo de \
+claves secretas.\nSe pasa al anillo de claves públicas."
+fr: "\nCette operation ne peut pas être effectuée sur un fichier de clés\n\
+secrètes. Le fichier de clés publiques sera utilisé à la place."
+muttde: "\nDiese Operation kann mit einem privaten Schlüsselbund nicht ausgeführt\n\
+werden. Der öffentliche Schlüsselbund wird versucht."
+
+"\nEditing userid \"%s\" in key ring: '%s'.\n"
+de: "\nBearbeitung der Benutzer-ID \"%s\"\nim Schlüsselbund '%s'.\n"
+es: "\nModificación del identificador \"%s\"\n\
+en el anillo: '%s'.\n"
+fr: "\nModification du nom d'utilsateur \"%s\"\n\
+dans le fichier de clé: '%s'.\n"
+muttde: "\nBearbeitung der Benutzer-ID \"%s\"\nim Schlüsselbund '%s'.\n"
+
+"\nCan't open public key ring file '%s'\n"
+de: "\nFEHLER beim Öffnen des öffentlichen Schlüsselbunds '%s'.\n"
+es: "\nNo puede abrirse el anillo de claves públicas '%s'\n"
+fr: "\nOuverture du fichier de clés publiques '%s' impossible.\n"
+muttde: "\nFEHLER beim Öffnen des öffentlichen Schlüsselbunds '%s'.\n"
+
+"\n\007File '%s' is not a public keyring.\n"
+de: "\n\007Die Datei '%s' ist kein öffentlicher Schlüsselbund.\n"
+es: "\n\007El fichero '%s' no es un anillo de claves públicas.\n"
+fr: "\n\007Le fichier '%s' n'est pas un fichier de clés publiques.\n"
+mutt: "\nFile '%s' is not a public keyring.\n"
+muttde: "\nDie Datei '%s' ist kein öffentlicher Schlüsselbund.\n"
+
+"\n\007This key has been revoked by its owner.\n"
+de: "\n\007Dieser Schlüssel wurde von seinem Besitzer zurückgezogen.\n"
+es: "\n\007Esta clave ha sido revocada por su propietario.\n"
+fr: "\n\007Cette clé a été révoquée par son propriétaire.\n"
+mutt: "\nThis key has been revoked by its owner.\n"
+muttde: "\nDieser Schlüssel wurde von seinem Besitzer zurückgezogen.\n"
+
+"\nNo secret key available.  Editing public key trust parameter.\n"
+de: "\nKein privater Schlüssel vorhanden. Die 'Vertrauens-Einstellungen' des\n\
+öffentlichen Schlüssels werden bearbeitet.\n"
+es: "\nNo hay clave secreta disponible. Modificando el parámetro \
+de confianza\n\
+de la clave pública.\n"
+fr: "\nPas de clé secrète disponible. Modification du paramètre de\n\
+confiance de la clé publique.\n"
+muttde: "\nKein privater Schlüssel vorhanden. Die 'Vertrauens-Einstellungen' des\n\
+öffentlichen Schlüssels werden bearbeitet.\n"
+
+"Current trust for this key's owner is: %s\n"
+de: "\nAktuelles 'Vertrauen' zum Besitzer dieses Schlüssels: %s\n"
+es: "La confianza actual en el propietario de esta clave es: %s\n"
+fr: "Le niveau de confiance courant pour le propriétaire de\n\
+cette clé est: %s\n"
+muttde: "\nAktuelles 'Vertrauen' zum Besitzer dieses Schlüssels: %s\n"
+
+"Public key ring updated.\n"
+de: "\nDer öffentliche Schlüsselbund wurde aktualisiert.\n"
+es: "Actualizado el anillo de claves públicas.\n"
+fr: "Fichier de clés publiques modifié...\n"
+muttde: "\nDer öffentliche Schlüsselbund wurde aktualisiert.\n"
+
+"\nCurrent user ID: %s"
+de: "\nAktuelle Benutzer-ID: %s"
+es: "\nIdentificador actual de usuario: %s"
+fr: "\nNom d'utilisateur courant: %s"
+muttde: "\nAktuelle Benutzer-ID: %s"
+
+"\nDo you want to add a new user ID (y/N)? "
+de: "\nWillst Du eine neue Benutzer-ID hinzufügen? (j/N) "
+es: "\n¿Quieres añadir un nuevo identificador de usuario (s/N)? "
+fr: "\nVoulez-vous ajouter ce nouvel ID (o/N)?"
+muttde: "\nWillst Du eine neue Benutzer-ID hinzufügen? (j/N) "
+
+"\nEnter the new user ID: "
+de: "\nGib die neue Benutzer-ID ein: "
+es: "\nIntroduzca el nuevo identificador: "
+fr: "\nEntrez le nouveau nom d'utilisateur: "
+muttde: "\nGib die neue Benutzer-ID ein: "
+
+"\nMake this user ID the primary user ID for this key (y/N)? "
+de: "\nSoll dies die vorrangige Benutzer-ID für diesen Schlüssel werden? (j/N) "
+es: "\n¿Se establece este identificador como primario para esta clave (s/N)? "
+fr: "\nEtablir ce nom d'utilisateur comme nom principal pour cette clé \
+(o/N)? "
+muttde: "\nSoll dies die vorrangige Benutzer-ID für diesen Schlüssel werden? (j/N) "
+
+"\nDo you want to change your pass phrase (y/N)? "
+de: "\nWillst Du Dein Mantra ändern? (j/N) "
+es: "\n¿Quieres cambiar la contraseña (s/N)? "
+fr: "\nVoulez vous changer votre mot de passe (o/N)? "
+muttde: "\nWillst Du Dein Mantra ändern? (j/N) "
+
+"(No changes will be made.)\n"
+de: "\n(Es werden keine Änderungen vorgenommen.)\n"
+es: "(No se efectuará ningún cambio.)\n"
+fr: "(Aucun changement ne sera effectué.)\n"
+muttde: "\n(Es werden keine Änderungen vorgenommen.)\n"
+
+"\n\007Unable to update secret key ring.\n"
+de: "\n\007FEHLER beim Aktualisieren des privaten Schlüsselbunds.\n"
+es: "\n\007No puede actualizarse el anillo de claves secretas.\n"
+fr: "\n\007Impossible de modifier le fichier de clés secrètes.\n"
+mutt: "\nUnable to update secret key ring.\n"
+muttde: "\nFEHLER beim Aktualisieren des privaten Schlüsselbunds.\n"
+
+"\nSecret key ring updated...\n"
+de: "\n\nDer private Schlüsselbund wurde aktualisiert.\n"
+es: "\nActualizado el anillo de claves secretas ...\n"
+fr: "\nFichier de clés secrètes modifié...\n"
+muttde: "\n\nDer private Schlüsselbund wurde aktualisiert.\n"
+
+"\n\007Unable to update public key ring.\n"
+de: "\n\007FEHLER beim Aktualisieren des öffentlichen Schlüsselbunds.\n"
+es: "\n\007No puede actualizarse el anillo de claves públicas.\n"
+fr: "\n\007Impossible de modifier le fichier de clés publiques.\n"
+mutt: "\nUnable to update public key ring.\n"
+muttde: "\nFEHLER beim Aktualisieren des öffentlichen Schlüsselbunds.\n"
+
+"(No need to update public key ring)\n"
+de: "\n(Keine Änderung am öffentlichen Schlüsselbund notwendig.)\n"
+es: "(No es necesario actualizar el anillo de claves públicas)\n"
+fr: "(Pas besoin de modifier le fichier de clés publiques)\n"
+muttde: "\n(Keine Änderung am öffentlichen Schlüsselbund notwendig.)\n"
+
+"\nDo you want to permanently revoke your public key\n\
+by issuing a secret key compromise certificate\n\
+for \"%s\" (y/N)? "
+de: "\nWillst Du Deinen öffentlichen Schlüssel wirklich durch das Versenden\n\
+einer Widerrufs-Urkunde für \"%s\"\nzurückziehen, d.h. für ungültig erklären? (j/N) "
+es: "\n¿Quieres revocar permanentemente tu clave pública\n\
+emitiendo un certificado de compromiso de clave secreta\n\
+para \"%s\" (s/N)? "
+fr: "\nVoulez vous révoquer de façon permanente votre clé publique\n\
+en émettant un certificat de compromission de clé secrète\n\
+pour \"%s\" (o/N)? "
+muttde: "\nWillst Du Deinen öffentlichen Schlüssel wirklich durch das Versenden\n\
+einer Widerrufs-Urkunde für \"%s\"\nzurückziehen, d.h. für ungültig erklären? (j/N) "
+
+"You can only disable keys on your public keyring.\n"
+de: "Du kannst nur Schlüssel aus Deinem öffentlichen Schlüsselbund sperren.\n"
+es: "Sólo puedes desactivar claves en el anillo de claves públicas.\n"
+fr: "Vous ne pouvez inactiver des clés que sur votre fichier de clés\
+\npubliques.\n"
+muttde: "Du kannst nur Schlüssel aus Deinem öffentlichen Schlüsselbund sperren.\n"
+
+"\nKey is already disabled.\n\
+Do you want to enable this key again (y/N)? "
+de: "\nDieser Schlüssel ist schon gesperrt.\nMöchtest Du ihn wieder freigeben? (j/N) "
+es: "\nLa clave ya está desactivada.\n\
+¿Quieres activarla otra vez (s/N)? "
+fr: "\nLa clé est déjà inactivée.\n\
+Voulez vous réactiver cette clé (o/N)? "
+muttde: "\nDieser Schlüssel ist schon gesperrt.\nMöchtest Du ihn wieder freigeben? (j/N) "
+
+"\nDisable this key (y/N)? "
+de: "\nSoll dieser Schlüssel gesperrt werden? (j/N) "
+es: "\n¿Desactivar esta clave (s/N)? "
+fr: "Désactiver cette clé (o/N)? "
+muttde: "\nSoll dieser Schlüssel gesperrt werden? (j/N) "
+
+"Pick your RSA key size:\n\
+    1)  1024 bits- User grade, fast but less secure\n\
+    2)  1535 bits- Regional CA grade, medium speed, good security\n\
+    3)  2048 bits- Root CA grade, slow, high security\n\
+Choose 1, 2, or 3, or enter desired number of bits (384...8192): "
+de: "Wähle die Länge Deines RSA-Schlüssels aus:\
+\n   1) 1024 Bits: für Nutzer: schnell, aber nicht ganz so sicher\
+\n   2) 1535 Bits: für regionale CAs: mittelmäßig schnell, recht sicher\
+\n   3) 2048 Bits: für Root CAs: langsam, jedoch sehr sicher\
+\nAuswahl (1, 2, 3 oder die Länge des Schlüssels in Bits (384...8192)): "
+es: "Elija un tamaño de clave RSA:\n\
+    1)  1024 bits- Nivel comercial bajo, r\0341pido pero menos seguro\n\
+    2)  1535 bits- Nivel comercial alto, velocidad media con buena seguridad\n\
+    3)  2048 bits- Nivel \"militar\", lento con alta seguridad\n\
+Escoge 1, 2, 3, o el número requerido de bits (384...8192): "
+fr: "Choisissez la taille de votre clef RSA:\n\
+    1)  1024 bits- Niveau de base, rapide mais moins securitaire\n\
+    2)  1535 bits- Niveau de securité eleve - vitesse moyenne \n\
+    3)  2048 bits- Pour les militaires, les diplomates... les paranoiaques \n\
+Choisissez 1, 2, ou 3, ou entrez le nombre de bits desires (384...8192): "
+muttde: "Wähle die Länge Deines RSA-Schlüssels aus:\
+\n   1) 1024 Bits: für Nutzer: schnell, aber nicht ganz so sicher\
+\n   2) 1535 Bits: für regionale CAs: mittelmäßig schnell, recht sicher\
+\n   3) 2048 Bits: für Root CAs: langsam, jedoch sehr sicher\
+\nAuswahl (1, 2, 3 oder die Länge des Schlüssels in Bits (384...8192)): "
+
+"Generating an RSA key with a %d-bit modulus.\n"
+de: "Erzeugung eines RSA-Schlüssels mit einem %d-Bit-Modulus.\n"
+es: "Generando una clave RSA con módulo de %d bits.\n"
+fr: "Generation d'une clé RSA avec un module de %d bits.\n"
+muttde: "Erzeugung eines RSA-Schlüssels mit einem %d-Bit-Modulus.\n"
+
+"\nYou need a user ID for your public key.  The desired form for this\n\
+user ID is your name, followed by your E-mail address enclosed in\n\
+<angle brackets>, if you have an E-mail address.\n\
+Form: Real Name (comment) <email> (options)\n\
+  Optional options: ENCR, SIGN, EXPIRE:yyyy-mm-dd\n\
+Enter a user ID for your public key: \n"
+de: "\nDu brauchst eine Benutzer-ID für Deinen öffentlichen Schlüssel. Das übliche\n\
+Format für diese Benutzer-ID ist Dein Realname, gefolgt von Deinem Usernamen\n\
+in <spitzen Klammern>, falls Du per E-Mail erreichbar bist.\n\
+Format: Bürgerlicher Name (Kommentar) <email> (Optionen)\n\
+  Freiwillige Optionen: ENCR, SIGN, EXPIRE:yyyy-mm-dd\n\
+Gib die Benutzer-ID für Deinen öffentlichen Schlüssel ein:\n"
+es: "\nNecesitas un identificador para tu clave pública. El formato preferido\n\
+consiste en tu nombre, seguido de tu dirección de correo electrónico,\n\
+si tienes, entre <ángulos>.\n\
+Form: Real Name (comment) <email> (options)\n\
+  Optional options: ENCR, SIGN, EXPIRE:yyyy-mm-dd\n\
+Introduce un identificador de usuario para tu clave pública: \n"
+fr: "\nIl vous faut un nom d'utilisateur pour votre clé publique. La forme\n\
+désirée pour ce nom d'utilisateur est votre nom, suivi de votre addresse\n\
+de courrier électronique entre <crochets>, si vous en avez une.\n\
+Form: Real Name (comment) <email> (options)\n\
+  Optional options: ENCR, SIGN, EXPIRE:yyyy-mm-dd\n\
+Entrez un nom d'utilisateur pour votre clé publique\n\
+(votre nom): "
+muttde: "\nDu brauchst eine Benutzer-ID für Deinen öffentlichen Schlüssel. Das übliche\n\
+Format für diese Benutzer-ID ist Dein Realname, gefolgt von Deinem Usernamen\n\
+in <spitzen Klammern>, falls Du per E-Mail erreichbar bist.\n\
+Format: Bürgerlicher Name (Kommentar) <email> (Optionen)\n\
+  Freiwillige Optionen: ENCR, SIGN, EXPIRE:yyyy-mm-dd\n\
+Gib die Benutzer-ID für Deinen öffentlichen Schlüssel ein:\n"
+
+"Generating RSA key-pair with UserID \"%s\".\n"
+de: "Erzeugung eines RSA-Schlüsselpaares mit der\nBenutzer-ID \"%s\".\n"
+es: "Generando el par de claves RSA con identificador \"%s\".\n"
+fr: "Génération d'une paire de clefs RSA de l'utilisateur '%s'.\n"
+muttde: "Erzeugung eines RSA-Schlüsselpaares mit der\nBenutzer-ID \"%s\".\n"
+
+"\nYou need a pass phrase to protect your RSA secret key.\n\
+Your pass phrase can be any sentence or phrase and may have many\n\
+words, spaces, punctuation, or any other printable characters.\n"
+de: "\nDu brauchst ein Mantra, um Deinen privaten RSA-Schlüssel zu schützen.\n\
+Dein Mantra kann jeder beliebige Satz oder Zeichenfolge sein und darf aus\n\
+vielen Worten, Leerzeichen oder anderen druckbaren Zeichen bestehen.\n"
+es: "\nNecesitas una contraseña para proteger tu clave secreta RSA.\n\
+Puede ser cualquier expresión formada por varias palabras, espacios,\n\
+signos de puntuación o cualquier otro carácter imprimible.\n"
+fr: "\nVous devez avoir un mot de passe pour protéger votre clé RSA \n\
+secrète. Votre mot de passe peut être n'importe quelle phrase ou portion\n\
+de phrase et peut avoir plusieurs mots, espaces, caractères de ponctuation\n\
+ou tout autre caractère imprimable.\n"
+muttde: "\nDu brauchst ein Mantra, um Deinen privaten RSA-Schlüssel zu schützen.\n\
+Dein Mantra kann jeder beliebige Satz oder Zeichenfolge sein und darf aus\n\
+vielen Worten, Leerzeichen oder anderen druckbaren Zeichen bestehen.\n"
+
+"\nNote that key generation is a lengthy process.\n"
+de: "\n\nBeachte, daß die Schlüsselerzeugung eine zeitaufwendige Sache ist.\n"
+es: "\nTen en cuenta que la generación de claves es un proceso lento.\n"
+fr: "\nNotez que la génération de clé est une procédure lente.\n"
+muttde: "\n\nBeachte, daß die Schlüsselerzeugung eine zeitaufwendige Sache ist.\n"
+
+"Key generation stopped at user request.\n"
+de: "Die Schlüsselerzeugung wurde durch den Benutzer abgebrochen!\n"
+es: "Generación de claves interrumpida a petición del usuario.\n"
+fr: "Le génération de la clef a été stoppée à la demande de l'utilisateur.\n"
+muttde: "Die Schlüsselerzeugung wurde durch den Benutzer abgebrochen!\n"
+
+"\n\007Keygen failed!\n"
+de: "\n\007FEHLER bei der Schlüssel-Erzeugung!\n"
+es: "\n\007Error en la generación de claves\n"
+fr: "\n\007Generation de clé non réussie!\n"
+mutt: "\nKeygen failed!\n"
+muttde: "\nFEHLER bei der Schlüssel-Erzeugung!\n"
+
+"Key ID %s\n"
+de: "Schlüssel-ID: %s\n"
+es: "Identificador de clave %s\n"
+fr: "Identificateur de clé %s\n"
+muttde: "Schlüssel-ID: %s\n"
+
+"Display secret components (y/N)?"
+de: "Geheime Bestandteile anzeigen? (j/N) "
+es: "¿Mostrar los componentes secretos (s/N)?"
+fr: "Affichier les composantes secretes (o/N)?"
+muttde: "Geheime Bestandteile anzeigen? (j/N) "
+
+"\007Key generation completed.\n"
+de: "\n\007Die Erzeugung des Schlüssels ist beendet.\n"
+es: "\007Finalizada la generación de claves.\n"
+fr: "\007Génération de clé terminée.\n"
+mutt: "Key generation completed.\n"
+muttde: "\nDie Erzeugung des Schlüssels ist beendet.\n"
+
+"Type Bits/KeyID    Date       User ID\n"
+de: "Typ  Bits/KeyID    Datum      NutzerID\n"
+es: "Tipo Bits/Clave    Fecha      Identificador\n"
+fr: "Type Bits/Clef     Date       ID utilisateur\n"
+muttde: "Typ  Bits/KeyID    Datum      NutzerID\n"
+
+"\n\007File '%s' is not a text file; cannot display.\n"
+de: "\n\007Die Datei '%s' ist keine Textdatei\n\
+und kann deshalb nicht angezeigt werden!\n"
+es: "\n\007El fichero '%s' no es de texto; no puede mostrarse.\n"
+fr: "\n\007Le fichier '%s' n'est pas un fichier de texte et ne peut être \
+visualisé\n"
+mutt: "\nFile '%s' is not a text file; cannot display.\n"
+muttde: "\nDie Datei '%s' ist keine Textdatei\n\
+und kann deshalb nicht angezeigt werden!\n"
+
+"\nDone...hit any key\r"
+de: "\nFertig... Bitte drücke eine Taste.\r"
+es: "\nFinalizado...pulse cualquier tecla\r"
+fr: "\nTerminé... appuyez sur n'importe quelle touche \r"
+muttde: "\nFertig... Bitte drücke eine Taste.\r"
+
+"-- More -- Space: next screen, Enter: next line\
+, 'B': back, 'Q': quit --\r"
+de: "-- Weiter -- Vorwärts: Leertaste oder Return; Rückwärts: 'B'; Ende: 'Q' --\r"
+es: "-- más -- espacio: otra pantalla, enter: otra línea,\
+ B: atrás, Q: salir\r"
+fr: "- Plus - Espace: procahin écran , Chariot: prochaine ligne\
+, 'B': retour, 'Q': quitter - \r"
+muttde: "-- Weiter -- Vorwärts: Leertaste oder Return; Rückwärts: 'B'; Ende: 'Q' --\r"
+
+"More -- %d%% -- Space: next screen, Enter: next line\
+, 'B': back, 'Q': quit --\r"
+de: "Weiter -- %d%% -- Vorwärts: Leertaste oder Return; Rückwärts: 'B'; Ende: 'Q' --\r"
+es: "Más -- %d%% -- espacio: otra pantalla, enter: otra línea,\
+ B: atrás, Q: salir\r"
+fr: "- Plus -  %D%% - Espace: procahin écran , Chariot: prochaine ligne\
+, 'B': retour, 'Q': quitter - \r"
+muttde: "Weiter -- %d%% -- Vorwärts: Leertaste oder Return; Rückwärts: 'B'; Ende: 'Q' --\r"
+
+"\nEnter pass phrase: "
+de: "\nGib das Mantra ein: "
+es: "\nIntroduce la contraseña: "
+fr: "\nEntrez votre mot de passe: "
+muttde: "\nGib das Mantra ein: "
+
+"\nEnter same pass phrase again: "
+de: "\nWiederhole das Mantra: "
+es: "\nEscríbela otra vez: "
+fr: "\nEntrez le même mot de passe de nouveau: "
+muttde: "\nWiederhole das Mantra: "
+
+"\n\007Error: Pass phrases were different.  Try again."
+de: "\n\007FEHLER: Die beiden Eingaben waren unterschiedlich! Bitte noch einmal."
+es: "\n\007Error: Las contraseñas son diferentes. Prueba otra vez."
+fr: "\n\007Erreur: Les mots de passe étaient différents. Essayez encore."
+mutt: "\nError: Pass phrases were different.  Try again."
+muttde: "\nFEHLER: Die beiden Eingaben waren unterschiedlich! Bitte noch einmal."
+
+"\nStopped at user request\n"
+de: "\nAbbruch durch Benutzer\n"
+es: "\nInterrupción por petición del usuario\n"
+fr: "\nArrêt par demande de l'utilisateur\n"
+muttde: "\nAbbruch durch Benutzer\n"
+
+"Pretty Good Privacy(tm) %s - Public-key encryption for the masses.\n"
+de: "Pretty Good Privacy(tm) %s - Public-key-Verschlüsselung für die Massen.\n"
+es: "Pretty Good Privacy(tm) %s - Criptografía de clave pública para todos.\n"
+fr: "Pretty Good Privacy(tm) %s - Cryptographie à clé publique pour tous.\n"
+muttde: "Pretty Good Privacy(tm) %s - Public-key-Verschlüsselung für die Massen.\n"
+
+"(c) 1990-96 Philip Zimmermann, Phil's Pretty Good Software."
+de: "(c) 1990-96 Philip Zimmermann, Phil's Pretty Good Software."
+es: "(c) 1990-96 Philip Zimmermann, Phil's Pretty Good Software."
+fr: "( c ) 1990-96 Philip Zimmermann, Phil's Pretty Good Software. "
+muttde: "(c) 1990-96 Philip Zimmermann, Phil's Pretty Good Software."
+
+"Export of this software may be restricted by the U.S. government.\n"
+de: "Der Export dieser Software aus den USA kann Beschränkungen unterliegen.\n"
+es: "La exportación de este programa puede estar restringida por\n\
+el gobierno de los EE.UU."
+fr: "L'exportation de ce logiciel peut être restreint par le \
+gouvernement des États-Unis"
+muttde: "Der Export dieser Software aus den USA kann Beschränkungen unterliegen.\n"
+
+"International version - not for use in the USA. Does not use RSAREF.\n"
+de: "Internationale Version - nicht in den USA verwenden!  Benutzt nicht RSAREF.\n"
+es: "Versión internacional - no apta para los EE.UU. No utiliza RSAREF.\n"
+fr: "Version internationale - ne pas utiliser aux Etats-Unis. N'utilise pas le
+RSAREF.\n"
+muttde: "Internationale Version - nicht in den USA verwenden!  Benutzt nicht RSAREF.\n"
+
+"Current time: %s\n"
+de: "Aktuelles Datum und Uhrzeit: %s\n"
+es: "Hora actual: %s\n"
+fr: "Heure actuelle: %s\n"
+muttde: "Aktuelles Datum und Uhrzeit: %s\n"
+
+"\007No configuration file found.\n"
+de: "\007Keine Konfigurationsdatei gefunden!\n"
+es: "\007No se encuentra el fichero de configuración.\n"
+fr: "\007Fichier de configuration introuvable.\n"
+mutt: "No configuration file found.\n"
+muttde: "Keine Konfigurationsdatei gefunden!\n"
+
+"\007WARNING: Environmental variable TZ is not \
+defined, so GMT timestamps\n\
+may be wrong.  See the PGP User's Guide to properly define TZ\n\
+in AUTOEXEC.BAT file.\n"
+de: "\007WARNUNG: Die Umgebungsvariable TZ ist nicht definiert, daher könnten\n\
+die GMT-Zeitangaben falsch sein. Beachte den Abschnitt in der PGP-Anleitung\n\
+über das richtige Setzen von TZ in AUTOEXEC.BAT.\n\n"
+es: "\007ADVERTENCIA: La variable TZ no está definida, por lo que\n\
+los sellos de fecha GMT pueden estar equivocados. Consulta la Guía del\n\
+usuario de PGP para definir adecuadamente TZ en AUTOEXEC.BAT.\n"
+fr: "\007ATTENTION: La variable d'environnement TZ n'est pas définie, les\n\
+temps GMT peuvent donc êtres faussés. Voir le guide de l'utilisateur PGP pour\n\
+définir correctement TZ dans le fichier AUTOEXEC.BAT.\n"
+mutt: "WARNING: Environmental variable TZ is not \
+defined, so GMT timestamps\n\
+may be wrong.  See the PGP User's Guide to properly define TZ\n\
+in AUTOEXEC.BAT file.\n"
+muttde: "WARNUNG: Die Umgebungsvariable TZ ist nicht definiert, daher könnten\n\
+die GMT-Zeitangaben falsch sein. Beachte den Abschnitt in der PGP-Anleitung\n\
+über das richtige Setzen von TZ in AUTOEXEC.BAT.\n\n"
+
+"\nFile %s wiped and deleted. "
+de: "\nDie Datei '%s' wurde überschrieben und gelöscht."
+es: "\nEl fichero %s ha sido borrado y destruido. "
+fr: "\nFichier %s effacé et détruit. "
+muttde: "\nDie Datei '%s' wurde überschrieben und gelöscht."
+
+"\n\007Error: Can't wipe out file '%s' - read only, maybe?\n"
+de: "\n\007FEHLER: Die Datei '%s' kann nicht überschrieben werden.\n\
+Ist sie vielleicht schreibgeschützt?\n"
+es: "\n\007Error: No puede eliminarse el fichero '%s' - \
+quizá sea sólo de lectura\n"
+fr: "\n\007Erreur: Incapable de détruire le fichier '%s' - lectu4re seulement peut être?\n"
+mutt: "\nError: Can't wipe out file '%s' - read only, maybe?\n"
+muttde: "\nFEHLER: Die Datei '%s' kann nicht überschrieben werden.\n\
+Ist sie vielleicht schreibgeschützt?\n"
+
+"\n\007File '%s' does not exist.\n"
+de: "\n\007Die Datei '%s' existiert nicht!\n"
+es: "\n\007El fichero '%s' no existe.\n"
+fr: "Le fichier '%s' n'existe pas. \n"
+mutt: "\nFile '%s' does not exist.\n"
+muttde: "\nDie Datei '%s' existiert nicht!\n"
+
+"\nFor details on licensing and distribution, see the PGP User's Guide.\
+\nFor other cryptography products and custom development services, contact:\
+\nPhilip Zimmermann, 3021 11th St, Boulder CO 80304 USA, \
+phone +1 303 541-0140\n"
+de: "\nInformationen über Lizenzen und Verteilung finden sich in der PGP-Anleitung.\
+\nInformationen über Verschlüsselungs-Produkte und Auftrags-Entwicklungen:\
+\nPhilip Zimmermann, 3021 11th St, Boulder CO 80304 USA, Tel. +1-(303)-541-0140\n"
+es: "\nInformación sobre licencia y distribución en la Guía del usuario de PGP.\
+\nMás información sobre otros productos y servicios criptográficos a medida:\
+\nPhilip Zimmermann, 3021 11th St, Boulder CO 80304 USA, tel +1 303 541-0140\n"
+fr: "\nConsulter le guide de l'utilisateur de PGP pour les détails de\n\
+license et de distribution. Pour d'autres produits de cryptographie\n\
+et services de développement personalisés, contacter: Philip Zimmermann,\n\
+3021 11th St, Boulder CO 80304 USA, téléphone +1 303 541-0140\n"
+muttde: "\nInformationen über Lizenzen und Verteilung finden sich in der PGP-Anleitung.\
+\nInformationen über Verschlüsselungs-Produkte und Auftrags-Entwicklungen:\
+\nPhilip Zimmermann, 3021 11th St, Boulder CO 80304 USA, Tel. +1-(303)-541-0140\n"
+
+"@translator@"
+de: "\nÜbersetzer:\
+\n   Frank Pruefer <F.PRUEFER@LINK-L.cl.sub.de>; Stand: 07.10.1997\
+\n   (basierend auf der deutschen Übersetzung der LANGUAGE.TXT von\
+\n   Marc Aurel <4-tea-2@bong.saar.de> vom 19.01.1994)\n"
+es: "\nTraducido al castellano por Armando Ramos <armando@clerval.org>.\n"
+fr: "\nTraduction française de Jean-loup Gailly <jloup@chorus.fr> et Yanik \
+Crépeau <yanik@mlink.net>\n"
+muttde: "\nÜbersetzer:\
+\n   Frank Pruefer <F.PRUEFER@LINK-L.cl.sub.de>; Stand: 07.10.1997\
+\n   (basierend auf der deutschen Übersetzung der LANGUAGE.TXT von\
+\n   Marc Aurel <4-tea-2@bong.saar.de> vom 19.01.1994)\n"
+
+"\nFor a usage summary, type:  pgp -h\n"
+de: "\nEine Übersicht der PGP-Befehle erhältst Du mit: pgp -h\n"
+es: "\nPara ver un resumen de las instrucciones, escribe: pgp -h\n"
+fr: "\nPour un sommaire d'utilisation, tapez:  pgp -h\n"
+mutt: " "
+muttde: " "
+
+"File %s created containing %d random bytes.\n"
+de: "\nDie Datei '%s', die %d Bytes Zufallszahlen enthält,\n\
+wurde erzeugt.\n"
+es: "Generado el fichero %s con %d bytes aleatorios.\n"
+fr: "Le fichier %s est créé et contient %d octets aléatoires"
+muttde: "\nDie Datei '%s', die %d Bytes Zufallszahlen enthält,\n\
+wurde erzeugt.\n"
+
+"\007Invalid filename: '%s' too long\n"
+de: "\007Ungültiger Dateiname: '%s' ist zu lang.\n"
+es: "\007Nombre incorrecto: '%s' es demasiado largo\n"
+fr: "\007Nom incalide: '%s' trop long\n"
+mutt: "Invalid filename: '%s' too long\n"
+muttde: "Ungültiger Dateiname: '%s' ist zu lang.\n"
+
+"\n\007Input file '%s' looks like it may have been created by PGP. "
+de: "\n\007Die Eingabedatei '%s' könnte von PGP erzeugt worden sein."
+es: "\n\007El fichero de entrada '%s' parece haber sido creado por PGP. "
+fr: "\n\007Le fichier d'entrée '%s' semble avoir été créé par PGP. "
+mutt: "\nInput file '%s' looks like it may have been created by PGP. "
+muttde: "\nDie Eingabedatei '%s' könnte von PGP erzeugt worden sein."
+
+"\nIs it safe to assume that it was created by PGP (y/N)? "
+de: "\nWurde diese von PGP erzeugt? (j/N) "
+es: "\n¿Puede asumirse con seguridad que ha sido así (s/N)? "
+fr: "\nEtes vous sûr qu'il a été créé par PGP (o/N)? "
+muttde: "\nWurde diese von PGP erzeugt? (j/N) "
+
+"\nNote: '%s' is not a pure text file.\n\
+File will be treated as binary data.\n"
+de: "\nHinweis: '%s' ist keine reine Textdatei.\n\
+Die Datei wird als Binärdatei behandelt.\n"
+es: "\nNota: '%s' no es un fichero de texto puro.\n\
+Se tratará como datos binarios.\n"
+fr: "Note: '%s' n'est pas un fichier texte. \n\
+Il sera traité comme données binaires"
+muttde: "\nHinweis: '%s' ist keine reine Textdatei.\n\
+Die Datei wird als Binärdatei behandelt.\n"
+
+"\n\007Error: Only text files may be sent as display-only.\n"
+de: "\n\007FEHLER: Nur Textdateien können \"nur zur Ansicht\" verschickt werden.\n"
+es: "\n\007Error: Sólo los ficheros de texto pueden enviarse para mostrar.\n"
+fr: "\n\007Erreur: seuls les fichiers de texte peuvent être envoyés\n\
+pour affichage exclusivement.\n"
+mutt: "\nError: Only text files may be sent as display-only.\n"
+muttde: "\nFEHLER: Nur Textdateien können \"nur zur Ansicht\" verschickt werden.\n"
+
+"\n\007Error: MacBinary failed!\n"
+de: "\n\007FEHLER: MacBinary fehlgeschlagen!\n"
+es: "\n\007Error: ha fallado MacBinary\n"
+fr:"\n\007Erreur:MacBinary a échoué\n"
+mutt: "\nError: MacBinary failed!\n"
+muttde: "\nFEHLER: MacBinary fehlgeschlagen!\n"
+
+"\nA secret key is required to make a signature. "
+de: "\nFür eine Unterschrift wird ein privater Schlüssel benötigt."
+es: "\nSe necesita una clave secreta para generar la firma. "
+fr: "\nUne clé secrète est nécessaire pour faire une signature. "
+muttde: "\nFür eine Unterschrift wird ein privater Schlüssel benötigt."
+
+"\nYou specified no user ID to select your secret key,\n\
+so the default user ID and key will be the most recently\n\
+added key on your secret keyring.\n"
+de: "\nDa Du keine Benutzer-ID für Deinen privaten Schlüssel angegeben hast,\n\
+wird der letzte zum privaten Schlüsselbund hinzugefügte Schlüssel benutzt.\n"
+es: "\nNo has indicado ningún identificador para escoger la clave secreta,\n\
+por lo que el identificador y la clave por omisión serán los últimos\n\
+añadidos al anillo.\n"
+fr: "\nVous n'avez pas spécifié de nom d'utilisateur pour sélectionner\n\
+votre clé secrète, donc le nom et la clé par défaut seront ceux les\n\
+plus récemment ajoutés à votre fichier de clés secrètes.\n"
+muttde: "\nDa Du keine Benutzer-ID für Deinen privaten Schlüssel angegeben hast,\n\
+wird der letzte zum privaten Schlüsselbund hinzugefügte Schlüssel benutzt.\n"
+
+"\007Signature error\n"
+de: "\n\007FEHLER beim Unterschreiben!\n"
+es: "\007Error de firma\n"
+fr: "\007Erreur de signature\n"
+mutt: "Signature error\n"
+muttde: "\nFEHLER beim Unterschreiben!\n"
+
+"\n\nRecipients' public key(s) will be used to encrypt. "
+de: "\n\nVerschlüsselung mit Empfänger-Schlüssel(n).\n"
+es: "\n\nSe utilizan las claves públicas de los destinatarios para encriptar. "
+fr: "\n\nLa ou les clé(s) publique(s) du destinataire seront utilisées\
+ pour chiffrer. "
+muttde: "\n\nVerschlüsselung mit Empfänger-Schlüssel(n).\n"
+
+"\nA user ID is required to select the recipient's public key. "
+de: "\nZur Auswahl des Empfänger-Schlüssels wird eine Benutzer-ID benötigt."
+es: "\nSe necesita un identificador para encontrar la clave pública\n\
+del destinatario. "
+fr: "\nUn nom d'utilisateur est nécessaire pour sélectionner la clé\n\
+publique du destinataire. "
+muttde: "\nZur Auswahl des Empfänger-Schlüssels wird eine Benutzer-ID benötigt."
+
+"\nEnter the recipient's user ID: "
+de: "\nBenutzer-ID des Empfängers: "
+es: "\nIntroduzca el identificador del destinatario: "
+fr: "\nEntrez le nom d'utilisateur du destinataire: "
+muttde: "\nBenutzer-ID des Empfängers: "
+
+"\007Encryption error\n"
+de: "\n\007FEHLER beim Verschlüsseln!\n"
+es: "\007Error en la encriptación\n"
+fr: "\007Erreur de chiffrage\n"
+mutt: "Encryption error\n"
+muttde: "\nFEHLER beim Verschlüsseln!\n"
+
+"\nCiphertext file: %s\n"
+de: "\nVerschlüsselte Datei: %s\n"
+es: "\nFichero cifrado: %s\n"
+fr: "\nFichier chiffré: %s\n"
+muttde: "\nVerschlüsselte Datei: %s\n"
+
+"\nSignature file: %s\n"
+de: "\nUnterschriftsdatei: %s\n"
+es: "\nFichero de firma: %s\n"
+fr: "\nFichier de signature: %s\n"
+muttde: "\nUnterschriftsdatei: %s\n"
+
+"\n\007Error: Transport armor stripping failed for file %s\n"
+de: "\n\007FEHLER beim Entfernen der Versandhülle von Datei '%s'.\n"
+es: "\n\007Error: No se ha podido quitar la armadura de %s\n"
+fr: "\n\007Erreur dans la suppression de la protection de transport pour\n\
+le fichier %s\n"
+mutt: "\nError: Transport armor stripping failed for file %s\n"
+muttde: "\nFEHLER beim Entfernen der Versandhülle von Datei '%s'.\n"
+
+"Stripped transport armor from '%s', producing '%s'.\n"
+de: "\nDie Versandhülle von Datei '%s' wurde entfernt.\nAusgabedatei: %s\n"
+es: "Quitada la armadura de '%s', produciendo '%s'.\n"
+fr: "Protection de transport supprimée pour '%s', produisant '%s'.\n"
+muttde: "\nDie Versandhülle von Datei '%s' wurde entfernt.\nAusgabedatei: %s\n"
+
+"\nLooking for next packet in '%s'...\n"
+de: "\nSuche nach dem nächsten Paket in '%s'...\n"
+es: "\nBuscando el siguiente paquete en '%s'...\n"
+fr: "\nRecherche du prochain paquet dans '%s'...\n"
+muttde: "\nSuche nach dem nächsten Paket in '%s'...\n"
+
+"\nFile is encrypted.  Secret key is required to read it. "
+de: "\nDie Datei ist verschlüsselt. Zum Lesen wird der private Schlüssel benötigt.\n"
+es: "\nEl fichero está encriptado. Para leerlo se necesita la clave secreta. "
+fr: "\nLe fichier est chiffré. La clé secrète est nécessaire pour le lire."
+muttde: "\nDie Datei ist verschlüsselt. Zum Lesen wird der private Schlüssel benötigt.\n"
+
+"\nThis file has a signature, which will be left in place.\n"
+de: "\nDiese Datei trägt eine Unterschrift, die nicht entfernt wird.\n"
+es: "\nEste fichero tiene firma, que se deja en su sitio.\n"
+fr: "\nCe fichier a une signature, qui sera gardée.\n"
+muttde: "\nDiese Datei trägt eine Unterschrift, die nicht entfernt wird.\n"
+
+"\nFile has signature.  Public key is required to check signature.\n"
+de: "\nDiese Datei trägt eine Unterschrift.\n\
+Zur Überprüfung wird der öffentliche Schlüssel benötigt.\n"
+es: "\nEl fichero tiene firma. Se necesita la clave pública para comprobarla.\n"
+fr: "Ce fichier est signé. Une clef publique est nécessaire pour sa vérification.\n"
+muttde: "\nDiese Datei trägt eine Unterschrift.\n\
+Zur Überprüfung wird der öffentliche Schlüssel benötigt.\n"
+
+"\nFile is conventionally encrypted.  "
+de: "\nDiese Datei ist konventionell verschlüsselt.\n"
+es: "\nEl fichero ha sido encriptado convencionalmente.  "
+fr: "\nLe fichier est chiffré de manière conventionnelle.  "
+muttde: "\nDiese Datei ist konventionell verschlüsselt.\n"
+
+"\nFile contains key(s).  Contents follow..."
+de: "\nDiese Datei enthält einen oder mehrere Schlüssel. Hier kommt die Liste:\n"
+es: "\nEl fichero contiene claves. Se muestran a continuación ..."
+fr: "\nLe fichier contient une ou plusieurs clés. Le contenu suit..."
+muttde: "\nDiese Datei enthält einen oder mehrere Schlüssel. Hier kommt die Liste:\n"
+
+"\nDo you want to add this keyfile to keyring '%s' (y/N)? "
+de: "\nWillst Du die Schlüssel dieser Datei zum Schlüsselbund\n'%s' hinzufügen? (j/N) "
+es: "\n¿Quieres añadir este fichero de claves al anillo '%s' (s/N)? "
+fr: "\nVoulez vous ajouter ce fichier de clé au fichier '%s' (o/N)? "
+muttde: "\nWillst Du die Schlüssel dieser Datei zum Schlüsselbund\n'%s' hinzufügen? (j/N) "
+
+"\007Keyring add error. "
+de: "\n\007FEHLER beim Hinzufügen zum Schlüsselbund.\n"
+es: "\007Error al añadir en el anillo. "
+fr: "\007Erreur dans l'addition au fichier de clés. "
+mutt: "Keyring add error. "
+muttde: "\nFEHLER beim Hinzufügen zum Schlüsselbund.\n"
+
+"\007\nError: '%s' is not a ciphertext, signature, or key file.\n"
+de: "\007\nFEHLER: Die Datei '%s' ist nicht verschlüsselt\n\
+und enthält weder eine Unterschrift noch einen oder mehrere Schlüssel.\n"
+es: "\007\nError: '%s' no es un texto cifrado, una firma ni una clave.\n"
+fr: "\007\nErreur: '%s' n'est pas un fichier chiffré, de signatures\
+\nou de clés.\n"
+mutt: "\nError: '%s' is not a ciphertext, signature, or key file.\n"
+muttde: "\nFEHLER: Die Datei '%s' ist nicht verschlüsselt\n\
+und enthält weder eine Unterschrift noch einen oder mehrere Schlüssel.\n"
+
+"\n\nThis message is marked \"For your eyes only\".  Display now \
+(Y/n)? "
+de: "\n\nDiese Nachricht ist als VERTRAULICH markiert! Jetzt anzeigen? (J/n) "
+es: "\n\nEste mensaje está marcado como \"Sólo para tus ojos\".\
+¿Mostrar ahora (S/n)? "
+fr: "\n\nCe message est marqué \"Pour vos yeux seulement\".\n\
+Afficher maintenant (O/n)? "
+muttde: "\n\nDiese Nachricht ist als VERTRAULICH markiert! Jetzt anzeigen? (J/n) "
+
+"\n\nPlaintext message follows...\n"
+de: "\n\nHier kommt die Nachricht im Klartext:\n"
+es: "\n\nMensaje en claro a continuación...\n"
+fr: "\n\nLe message en clair suit...\n"
+muttde: "\n\nHier kommt die Nachricht im Klartext:\n"
+
+"Save this file permanently (y/N)? "
+de: "Klartext sichern? (j/N) "
+es: "¿Grabar este fichero de forma permanente (s/N)? "
+fr: "Sauvegarde de ce fichier de manière permanente (o/N)? "
+muttde: "Klartext sichern? (j/N) "
+
+"Enter filename to save file as: "
+de: "Klartext sichern als: "
+es: "Introduzca el nombre para el fichero: "
+fr: "Entrez le nom du fichier de sauvegarde: "
+muttde: "Klartext sichern als: "
+
+"Enter filename to save file as:"
+de: "Gib den Namen ein, unter dem die Datei zu sichern ist:"
+es: "Introduzca el nombre para el fichero:"
+fr: "Donner le nom de fichier pour sauvegarder sous:"
+muttde: "Gib den Namen ein, unter dem die Datei zu sichern ist:"
+
+"\nPlaintext filename: %s"
+de: "\nDateiname des Klartextes: %s"
+es: "\nNombre del fichero normal: %s"
+fr: "\nNom du fichier en clair: %s"
+muttde: "\nDateiname des Klartextes: %s"
+
+"\nPlaintext file '%s' looks like it contains a public key."
+de: "\nDie Klartextdatei '%s' scheint einen\nöffentlichen Schlüssel zu enthalten."
+es: "\nEl fichero normal '%s' parece contener una clave pública."
+fr: "\nLe ficher en clair '%s' semble contenir une clé publique."
+muttde: "\nDie Klartextdatei '%s' scheint einen\nöffentlichen Schlüssel zu enthalten."
+
+"\nPlaintext file '%s' looks like a %s file."
+de: "\nDie Klartextdatei '%s' scheint eine %s-Datei zu sein."
+es: "\nEl fichero normal '%s' parece un fichero %s."
+fr: "\nLe fichier en clair '%s' semble être un fichier %s."
+muttde: "\nDie Klartextdatei '%s' scheint eine %s-Datei zu sein."
+
+"\n\007Output file '%s' may contain more ciphertext or signature."
+de: "\n\007Die Ausgabedatei '%s' könnte weiteren\n\
+verschlüsselten Text oder eine Unterschrift enthalten."
+es: "\n\007El fichero de salida '%s' puede contener más texto \
+cifrado o una firma."
+fr: "\n\007Le fichier de sortie '%s' peut contenir d'autre texte chiffré\n\
+ou signature."
+mutt: "\nOutput file '%s' may contain more ciphertext or signature."
+muttde: "\nDie Ausgabedatei '%s' könnte weiteren\n\
+verschlüsselten Text oder eine Unterschrift enthalten."
+
+"\a\nError: PGP User's Guide not found.\n\
+PGP looked for it in the following directories:\n"
+de: "\a\nFEHLER: PGP-Benutzerhandbuch nicht gefunden!\n\
+PGP hat danach in den folgenden Verzeichnissen gesucht:\n"
+es: "\a\nError: No se encuentra la Guía del usuario.\n\
+Se ha buscado en estos directorios:\n"
+fr: "\n\aErreur: Le manuel d'utilisation de PGP est introuvable.\n\
+PGP a examiné les repertoires suivants:\n"
+muttde: "\a\nFEHLER: PGP-Benutzerhandbuch nicht gefunden!\n\
+PGP hat danach in den folgenden Verzeichnissen gesucht:\n"
+
+"and the doc subdirectory of each of the above.  Please put a copy of\n\
+both volumes of the User's Guide in one of these directories.\n\
+\n\
+Under NO CIRCUMSTANCES should PGP ever be distributed without the PGP\n\
+User's Guide, which is included in the standard distribution package.\n\
+If you got a copy of PGP without the manual, please inform whomever you\n\
+got it from that this is an incomplete package that should not be\n\
+distributed further.\n\
+\n\
+PGP will not generate a key without finding the User's Guide.\n\
+There is a simple way to override this restriction.  See the\n\
+PGP User's Guide for details on how to do it.\n\
+\n"
+de: "sowie jeweils im Unterverzeichnis 'DOC' der oben genannten Verzeichnisse.\n\
+Bitte lege eine Kopie beider Teile des Benutzerhandbuches (Dateien PGPDOC1.TXT\n\
+und PGPDOC2.TXT) in eines der genannten Verzeichnisse.\n\
+Unter GAR KEINEN UMSTÄNDEN sollte PGP jemals ohne das PGP-Benutzerhandbuch\n\
+ausgeliefert werden, das sich im Standard-Auslieferungspaket befindet. Wenn\n\
+Du eine Kopie von PGP ohne das Handbuch erhalten hast, dann informiere bitte\n\
+denjenigen, von dem Du sie bekommen hast, daß es sich um ein unvollständiges\n\
+Paket handelt, das künftig nicht mehr ausgeliefert werden sollte.\n\
+PGP generiert keine Schlüssel, ohne das Handbuch gefunden zu haben!\n\
+Im PGP-Handbuch steht übrigens auch, wie diese Einschränkung zu umgehen ist...\n"
+es: "y el subdirectorio doc de cada uno de ellos. Pon una copia de\n\
+ambos volúmenes en uno de esos directorios.\n\
+\n\
+Bajo *ninguna circunstancia* debe distribuirse PGP sin la Guía del usuario,\n\
+incluida con la distribución habitual.\n\
+Si tienes una copia de PGP sin manual, informa a quien te la suministró de\n\
+que es un paquete incompleto que no debe seguir distribuyéndose.\n\
+\n\
+PGP no genera ninguna clave si no encuentra la Guía del usuario.\n\
+Hay una forma sencilla de saltarse esta restricción. Consulta la\n\
+Guía para ver cómo hacerlo.\n\
+\n"
+fr: "et leur(s) sous-repertoire(s). Veuillez placer une copie des\n\
+deux (2) documents constituant le manuel d'utilisation dans l'un de\n\
+ces repertoires.\n\
+En aucune cinconstances PGP ne devrait etre distribué sans que les\n\
+documents constituant le manuel ne soit inclus avec le reste.\n\
+Si vous avez obtenu PGP sans les documents constituant le manuel\n\
+veuillez SVP en aviser votre fournisseur que PGP est incomplet et\n\
+que cette maniere de distribuer PGP doit cesser.\n\
+\n\
+PGP ne fonctionnera pas sans la presence des deux documents constituant le
+manuel \n\
+La facon de circonvenir a cette restriction est de consulter le manuel\n\
+\n"
+muttde: "sowie jeweils im Unterverzeichnis 'DOC' der oben genannten Verzeichnisse.\n\
+Bitte lege eine Kopie beider Teile des Benutzerhandbuches (Dateien PGPDOC1.TXT\n\
+und PGPDOC2.TXT) in eines der genannten Verzeichnisse.\n\
+Unter GAR KEINEN UMSTÄNDEN sollte PGP jemals ohne das PGP-Benutzerhandbuch\n\
+ausgeliefert werden, das sich im Standard-Auslieferungspaket befindet. Wenn\n\
+Du eine Kopie von PGP ohne das Handbuch erhalten hast, dann informiere bitte\n\
+denjenigen, von dem Du sie bekommen hast, daß es sich um ein unvollständiges\n\
+Paket handelt, das künftig nicht mehr ausgeliefert werden sollte.\n\
+PGP generiert keine Schlüssel, ohne das Handbuch gefunden zu haben!\n\
+Im PGP-Handbuch steht übrigens auch, wie diese Einschränkung zu umgehen ist...\n"
+
+"\007Keygen error. "
+de: "\n\007FEHLER bei der Erzeugung des Schlüssels.\n"
+es: "\007Error en la generación de claves. "
+fr: "\007Erreur dans la génération de clé. "
+mutt: "Keygen error. "
+muttde: "\nFEHLER bei der Erzeugung des Schlüssels.\n"
+
+"\007Keyring check error.\n"
+de: "\n\007FEHLER bei der Überprüfung des Schlüsselbunds.\n"
+es: "\007Error en la comprobación del anillo.\n"
+fr: "Erreur dans la vérification du trousseau de clef."
+mutt: "Keyring check error.\n"
+muttde: "\nFEHLER bei der Überprüfung des Schlüsselbunds.\n"
+
+"\007Maintenance pass error. "
+de: "\n\007FEHLER beim Verwaltungsdurchgang.\n"
+es: "\007Error en el proceso de mantenimiento. "
+fr: "\007Erreur dans la passe de maintenance. "
+mutt: "Maintenance pass error. "
+muttde: "\nFEHLER beim Verwaltungsdurchgang.\n"
+
+"File '%s' is not a public keyring\n"
+de: "Die Datei '%s' ist kein öffentlicher Schlüsselbund.\n"
+es: "El fichero '%s' no es un anillo de claves públicas\n"
+fr: "Le fichier '%s' n'est pas un fichier de clés publiques\n"
+muttde: "Die Datei '%s' ist kein öffentlicher Schlüsselbund.\n"
+
+"\nA user ID is required to select the public key you want to sign. "
+de: "\nZur Auswahl des zu unterschreibenden Schlüssels wird\n\
+eine Benutzer-ID benötigt."
+es: "\nSe necesita un identificador para elegir\n\
+la clave pública por firmar. "
+fr: "\nUn nom d'utilisateur est nécessaire pour sélectionner la clé\n\
+publique que vous voulez signer. "
+muttde: "\nZur Auswahl des zu unterschreibenden Schlüssels wird\n\
+eine Benutzer-ID benötigt."
+
+"\nEnter the public key's user ID: "
+de: "\nBenutzer-ID des öffentlichen Schlüssels: "
+es: "\nIntroduzca el identificador de la clave pública: "
+fr: "\nEntrez le nom d'utilisateur pour la clé publique: "
+muttde: "\nBenutzer-ID des öffentlichen Schlüssels: "
+
+"\007Key signature error. "
+de: "\n\007FEHLER beim Unterschreiben des Schlüssels.\n"
+es: "\007Error en firma de clave. "
+fr: "\007Erreur dans la signature de clé. "
+mutt: "Key signature error. "
+muttde: "\nFEHLER beim Unterschreiben des Schlüssels.\n"
+
+"\nA user ID is required to select the key you want to revoke or \
+disable. "
+de: "\nZur Auswahl des zurückzuziehenden oder zu sperrenden Schlüssels wird\n\
+eine Benutzer-ID benötigt."
+es: "\nSe necesita un identificador de usuario para elegir la clave \
+que quieras\n\revocar o desactivar. "
+fr: "\nUn nom d'utilisateur est requis pour sélectionner la clé que vous\
+voulez révoquer ou inactiver. "
+muttde: "\nZur Auswahl des zurückzuziehenden oder zu sperrenden Schlüssels wird\n\
+eine Benutzer-ID benötigt."
+
+"\nEnter user ID: "
+de: "\nBenutzer-ID: "
+es: "\nIntroduce el identificador: "
+fr: "\nEntrez le nom d'utilisateur: "
+muttde: "\nBenutzer-ID: "
+
+"\nA user ID is required to select the key you want to edit. "
+de: "\nZur Auswahl des zu bearbeitenden Schlüssels wird eine Benutzer-ID benötigt."
+es: "\nSe necesita el identificador de usuario para elegir la clave que \
+quieras\nmodificar. "
+fr: "\nUn nom d'utilisateur est nécessaire pour sélectionner la clé que\n\
+vous voulez modifier. "
+muttde: "\nZur Auswahl des zu bearbeitenden Schlüssels wird eine Benutzer-ID benötigt."
+
+"\nEnter the key's user ID: "
+de: "\nBenutzer-ID des Schlüssels: "
+es: "\nIntroduce el identificador: "
+fr: "\nEntrez le nom d'utilisateur pour la clé: "
+muttde: "\nBenutzer-ID des Schlüssels: "
+
+"\007Keyring edit error. "
+de: "\n\007FEHLER beim Bearbeiten des Schlüsselbunds.\n"
+es: "\007Error en la modificación del anillo. "
+fr: "\007Erreur dans la modification du fichier de clés. "
+mutt: "Keyring edit error. "
+muttde: "\nFEHLER beim Bearbeiten des Schlüsselbunds.\n"
+
+"\n\007Key file '%s' does not exist.\n"
+de: "\n\007Die Datei '%s' existiert nicht.\n"
+es: "\n\007No existe el anillo de claves '%s.\n"
+fr: "\n\007Le fichier de clés '%s' n'existe pas.\n"
+mutt: "\nKey file '%s' does not exist.\n"
+muttde: "\nDie Datei '%s' existiert nicht.\n"
+
+"\nA user ID is required to select the key you want to extract. "
+de: "\nZur Auswahl des zu extrahierenden Schlüssels wird eine Benutzer-ID benötigt."
+es: "\nSe necesita el identificador de usuario para elegir la clave que \
+quieras\n\extraer. "
+fr: "\nUn nom d'utilisateur est nécessaire pour sélectionner la clé que\n\
+vous voulez extraire. "
+muttde: "\nZur Auswahl des zu extrahierenden Schlüssels wird eine Benutzer-ID benötigt."
+
+"\007Keyring extract error. "
+de: "\n\007FEHLER beim Extrahieren aus dem Schlüsselbund.\n"
+es: "\007Error al extraer del anillo. "
+fr: "\007Erreur dans l'extraction du fichier de clés. "
+mutt: "Keyring extract error. "
+muttde: "\nFEHLER beim Extrahieren aus dem Schlüsselbund.\n"
+
+"\nA user ID is required to select the public key you want to\n\
+remove certifying signatures from. "
+de: "\nZur Auswahl des Schlüssels, von dem Beglaubigungen entfernt werden sollen,\n\
+wird eine Benutzer-ID benötigt."
+es: "\nSe necesita el identificador de usuario para elegir la clave pública\n\
+de la que suprimir firmas. "
+fr: "\nUn nom d'utilisateur est nécessaire pour sélectionner la clé\
+ publique\n\
+pour laquelle vous voulez supprimer des signatures de certification. "
+muttde: "\nZur Auswahl des Schlüssels, von dem Beglaubigungen entfernt werden sollen,\n\
+wird eine Benutzer-ID benötigt."
+
+"\nA user ID is required to select the key you want to remove. "
+de: "\nZur Auswahl des zu löschenden Schlüssels wird eine Benutzer-ID benötigt."
+es: "\nSe necesita el identificador de usuario para elegir la clave que \
+quieras\nsuprimir . "
+fr: "\nUn nom d'utilisateur est nécessaire pour sélectionner la clé que\n\
+vous voulez supprimer. "
+muttde: "\nZur Auswahl des zu löschenden Schlüssels wird eine Benutzer-ID benötigt."
+
+"\007Key signature remove error. "
+de: "\n\007FEHLER beim Entfernen der Beglaubigung.\n"
+es: "\007Error en la supresión de la firma de una clave. "
+fr: "\007Erreur dans la suppression de signature d'une clé. "
+mutt: "Key signature remove error. "
+muttde: "\nFEHLER beim Entfernen der Beglaubigung.\n"
+
+"\007Keyring remove error. "
+de: "\n\007FEHLER beim Löschen aus dem Schlüsselbund.\n"
+es: "\007Error al suprimir del anillo. "
+fr: "\007Erreur dans la suppression du fichier de clés. "
+mutt: "Keyring remove error. "
+muttde: "\nFEHLER beim Löschen aus dem Schlüsselbund.\n"
+
+"\007Keyring view error. "
+de: "\n\007FEHLER beim Anzeigen des Schlüsselbunds.\n"
+es: "\007Error al visualizar el anillo. "
+fr: "\007Erreur dans la visualisation du fichier de clés. "
+mutt: "Keyring view error. "
+muttde: "\nFEHLER beim Anzeigen des Schlüsselbunds.\n"
+
+"For more detailed help, consult the PGP User's Guide.\n"
+de: "Ausführlichere Hilfe findet sich in der PGP-Anleitung.\n"
+es: "Para obtener más ayuda, consulta la Guía del usuario de PGP.\n"
+fr: "Pour une aide plus détaillée, consultez le guide de l'utilisateur de
+PGP.\n"
+mutt: "\n"
+muttde: "\n"
+
+"\nInvalid arguments.\n"
+de: "\nUngültige Argumente!\n"
+es: "\nArgumentos incorrectos.\n"
+fr: "\nArguments invalides.\n"
+muttde: "\nUngültige Argumente!\n"
+
+"\nUsage summary:\
+\nTo encrypt a plaintext file with recipent's public key, type:\
+\n   pgp -e textfile her_userid [other userids] (produces textfile.pgp)\
+\nTo sign a plaintext file with your secret key:\
+\n   pgp -s textfile [-u your_userid]           (produces textfile.pgp)\
+\nTo sign a plaintext file with your secret key, and then encrypt it\
+\n   with recipent's public key, producing a .pgp file:\
+\n   pgp -es textfile her_userid [other userids] [-u your_userid]\
+\nTo encrypt with conventional encryption only:\
+\n   pgp -c textfile\
+\nTo decrypt or check a signature for a ciphertext (.pgp) file:\
+\n   pgp ciphertextfile [-o plaintextfile]\
+\nTo produce output in ASCII for email, add the -a option to other options.\
+\nTo generate your own unique public/secret key pair:  pgp -kg\
+\nFor help on other key management functions, type:   pgp -k\n"
+de: "\nÜbersicht der PGP-Befehle:\
+\nVerschlüsseln eines Textes mit dem öffentlichen Schlüssel des Empfängers:\
+\n   pgp -e {Text} {Benutzer-ID des Empfängers}  (Ergebnis: {Text}.pgp)\
+\nUnterschreiben eines Textes mit Deinem privaten Schlüssel:\
+\n   pgp -s {Text} [-u {Deine Benutzer-ID}]      (Ergebnis: {Text}.pgp)\
+\nUnterschreiben eines Textes mit Deinem privaten Schlüssel und anschließend\
+\nVerschlüsseln mit dem öffentlichen Schlüssel des Empfängers:\
+\n   pgp -es {Text} {Benutzer-ID des Empfängers} [weitere Benutzer-IDs]\
+\n       [-u {Deine Benutzer-ID}]                (Ergebnis: {Text}.pgp)\
+\nVerschlüsseln mit konventioneller Verschlüsselung:\
+\n   pgp -c {Text}\
+\nEntschlüsseln oder Überprüfen der Unterschrift:\
+\n   pgp {verschlüsselter Text} [-o {Klartext}]\
+\nVerpacken der Ausgabe in ASCII (für E-Mail): pgp {...} -a {...}\
+\nErzeugen eines eigenen Schlüssel-Paares:     pgp -kg\
+\nHilfe zur Schlüsselverwaltung:               pgp -k\n"
+es: "\nResumen de las instrucciones:\
+\nEncriptar fichero normal con la clave pública del destinatario:\
+\n   pgp -e ftexto su_identificador             (produce ftexto.pgp)\
+\nFirmar un fichero de texto normal con tu clave secreta:\
+\n   pgp -s ftexto [-u tu_identificador]         (produce ftexto.pgp)\
+\nFirmar un fichero normal con tu clave secreta y después encriptarlo\
+\n   con la clave pública del destinatario, produciendo un fichero .pgp:\
+\n   pgp -es ftexto su_identificador [otros] [-u tu_identificador]\
+\nEncriptar sólo con cifrado convencional:\
+\n   pgp -c ftexto\
+\nDesencriptar o comprobar la firma en un fichero cifrado (.pgp):\
+\n   pgp fcifrado [-o fnormal]\
+\nProducir resultado en ASCII para correo electrónico: añadir la opción -a.\
+\nGenerar tu propio par único de claves pública/secreta:      pgp -kg\
+\nAyuda sobre otras funciones de gestión de claves:              pgp -k\n"
+fr: "\nSommaire:\
+\nPour chiffrer un fichier en clair avec la clé publique du destinataire, \
+tapez:\
+\n   pgp -e fichier  son_nom [autres noms]              (produit fichier.pgp)\
+\nPour signer un texte en clair avec votre clé secrète:\
+\n   pgp -s  fichier [-u votre_nom]             (produit fichier.pgp)\
+\nPour signer un texte en clair avec votre clé secrète, puis le chiffrer\
+\n   avec la clé publique du destinataire, produisant un fichier .pgp:\
+\n   pgp -es fichier  son_nom [autres noms] [-u votre_nom]\
+\nPour chiffrer de manière conventionelle seulement:\
+\n   pgp -c fichier\
+\nPour déchiffrer ou vérifier une signature pour un fichier chiffré (.pgp):\
+\n   pgp fichier_chiffré  [-o fichier_en_clair]\
+\nPour produire une sortie en ASCII pour courrier électronique, ajouter\
+\nl'option -a aux autres options.\
+\nPour générer votre propre paire de clés publique/secrète:\
+\n   pgp -kg\
+\nPour de l'aide sur les autres fonctions de gestion de clé, tapez:  pgp -k\n"
+muttde: "\nÜbersicht der PGP-Befehle:\
+\nVerschlüsseln eines Textes mit dem öffentlichen Schlüssel des Empfängers:\
+\n   pgp -e {Text} {Benutzer-ID des Empfängers}  (Ergebnis: {Text}.pgp)\
+\nUnterschreiben eines Textes mit Deinem privaten Schlüssel:\
+\n   pgp -s {Text} [-u {Deine Benutzer-ID}]      (Ergebnis: {Text}.pgp)\
+\nUnterschreiben eines Textes mit Deinem privaten Schlüssel und anschließend\
+\nVerschlüsseln mit dem öffentlichen Schlüssel des Empfängers:\
+\n   pgp -es {Text} {Benutzer-ID des Empfängers} [weitere Benutzer-IDs]\
+\n       [-u {Deine Benutzer-ID}]                (Ergebnis: {Text}.pgp)\
+\nVerschlüsseln mit konventioneller Verschlüsselung:\
+\n   pgp -c {Text}\
+\nEntschlüsseln oder Überprüfen der Unterschrift:\
+\n   pgp {verschlüsselter Text} [-o {Klartext}]\
+\nVerpacken der Ausgabe in ASCII (für E-Mail): pgp {...} -a {...}\
+\nErzeugen eines eigenen Schlüssel-Paares:     pgp -kg\
+\nHilfe zur Schlüsselverwaltung:               pgp -k\n"
+
+"\nKey management functions:\
+\nTo generate your own unique public/secret key pair:\
+\n   pgp -kg\
+\nTo add a key file's contents to your public or secret key ring:\
+\n   pgp -ka keyfile [keyring]\
+\nTo remove a key or a user ID from your public or secret key ring:\
+\n   pgp -kr userid [keyring]\
+\nTo edit your user ID or pass phrase:\
+\n   pgp -ke your_userid [keyring]\
+\nTo extract (copy) a key from your public or secret key ring:\
+\n   pgp -kx userid keyfile [keyring]\
+\nTo view the contents of your public key ring:\
+\n   pgp -kv[v] [userid] [keyring]\
+\nTo check signatures on your public key ring:\
+\n   pgp -kc [userid] [keyring]\
+\nTo sign someone else's public key on your public key ring:\
+\n   pgp -ks her_userid [-u your_userid] [keyring]\
+\nTo remove selected signatures from a userid on a keyring:\
+\n   pgp -krs userid [keyring]\
+\n"
+de: "\nSchlüssel-Verwaltung:\
+\nErzeugen eines eigenen, eindeutigen Schlüssel-Paares (privat/öffentlich):\
+\n   pgp -kg\
+\nHinzufügen von Schlüsseln zum privaten oder öffentlichen Schlüsselbund:\
+\n   pgp -ka {Datei mit Schlüsseln} [{Schlüsselbund}]\
+\nLöschen eines Schlüssels oder einer Benutzer-ID aus einem Schlüsselbund:\
+\n   pgp -kr {Benutzer-ID} [{Schlüsselbund}]\
+\nÄndern Deiner Benutzer-ID oder Deines Mantras:\
+\n   pgp -ke {Deine Benutzer-ID} [{Schlüsselbund}]\
+\nHerauskopieren eines Schlüssels aus einem Schlüsselbund:\
+\n   pgp -kx {Benutzer-ID} {Ausgabe-Datei} [{Schlüsselbund}]\
+\nAnzeigen des Inhaltes des öffentlichen Schlüsselbunds:\
+\n   pgp -kv[v] [{Benutzer-ID}] [{Schlüsselbund}]\
+\nÜberprüfen der Beglaubigungen im öffentlichen Schlüsselbund:\
+\n   pgp -kc [{Benutzer-ID}] [{Schlüsselbund}]\
+\nBeglaubigen eines öffentlichen Schlüssels eines anderen Benutzers:\
+\n   pgp -ks {seine Benutzer-ID} [-u {Deine Benutzer-ID}] [{Schlüsselbund}]\
+\nEntfernen ausgewählter Beglaubigungen von einem Schlüssel:\
+\n   pgp -krs {Benutzer-ID} [{Schlüsselbund}]\n"
+es: "\nFunciones para la gestión de claves:\
+\nGenerar tu propio par único de claves pública/secreta:\
+\n   pgp -kg\
+\nAñadir contenido de fichero de clave al anillo de claves públicas o secretas:\
+\n   pgp -ka fdclaves [anillo]\
+\nSuprimir una clave o identificador de usuario de un anillo de claves:\
+\n   pgp -kr identificador [anillo]\
+\nModificar tu identificador de usuario o tu contraseña:\
+\n   pgp -ke tu_identificador [anillo]\
+\nExtraer (copiar) una clave del anillo de claves públicas o secretas:\
+\n   pgp -kx identificador fdclaves [anillo]\
+\nVisualizar el contenido del anillo de claves públicas:\
+\n   pgp -kv[v] [identificador] [anillo]\
+\nComprobar las firmas del anillo de claves públicas:\
+\n   pgp -kc [identificador] [anillo]\
+\nFirmar la clave pública de alguien en el anillo de claves correspondiente:\
+\n   pgp -ks otro_identificador [-u tu_identificador] [anillo]\
+\nSuprimir ciertas firmas de un idusuario en un anillo:\
+\n   pgp -krs identificador [anillo]\
+\n"
+fr: "Fonctions de gestion des clés:\
+\nPour générer votre propre paire de clés publique/secrète:\
+\n   pgp -kg\
+\nPour ajouter le contenu d'un fichier de clés à votre fichier de clés\
+\n   public ou secret:\
+\n   pgp -ka fichier_de_clés  [votre_fichier_de_clés]\
+\nPour retirer une clé de votre fichier de clés public ou secret:\
+\n   pgp -kr nom_d_utilisateur [fichier_de_clés]\
+\nPour extraire (copier) une clé de votre fichier de clés public ou secret:\
+\n   pgp -kx nom_d_utilisateur fichier_de_la_clé [fichier_de_clés]\
+\nPour visualiser le contenu de votre fichier de clés:\
+\n   pgp -kv[v]  [nom_d_utilisateur]  [ficher_de_clés]\
+\nPour vérifier les signatures sur votre fichier de clés publiques:\
+\n   pgp -kc [nom_d_utilisateur]  [ficher_de_clés]\
+\nPour signer la clé publique de quelqu'un d'autre sur votre fichier de\
+\n   clés publiques:\
+\n   pgp -ks  son_nom  votre_nom  [fichier_de_clés]\
+\nPour enlever certaines signatures d'une personne sur un fichier de clés:\
+\n   pgp -krs  son_nom  [fichier_de_clés]\n"
+muttde: "\nSchlüssel-Verwaltung:\
+\nErzeugen eines eigenen, eindeutigen Schlüssel-Paares (privat/öffentlich):\
+\n   pgp -kg\
+\nHinzufügen von Schlüsseln zum privaten oder öffentlichen Schlüsselbund:\
+\n   pgp -ka {Datei mit Schlüsseln} [{Schlüsselbund}]\
+\nLöschen eines Schlüssels oder einer Benutzer-ID aus einem Schlüsselbund:\
+\n   pgp -kr {Benutzer-ID} [{Schlüsselbund}]\
+\nÄndern Deiner Benutzer-ID oder Deines Mantras:\
+\n   pgp -ke {Deine Benutzer-ID} [{Schlüsselbund}]\
+\nHerauskopieren eines Schlüssels aus einem Schlüsselbund:\
+\n   pgp -kx {Benutzer-ID} {Ausgabe-Datei} [{Schlüsselbund}]\
+\nAnzeigen des Inhaltes des öffentlichen Schlüsselbunds:\
+\n   pgp -kv[v] [{Benutzer-ID}] [{Schlüsselbund}]\
+\nÜberprüfen der Beglaubigungen im öffentlichen Schlüsselbund:\
+\n   pgp -kc [{Benutzer-ID}] [{Schlüsselbund}]\
+\nBeglaubigen eines öffentlichen Schlüssels eines anderen Benutzers:\
+\n   pgp -ks {seine Benutzer-ID} [-u {Deine Benutzer-ID}] [{Schlüsselbund}]\
+\nEntfernen ausgewählter Beglaubigungen von einem Schlüssel:\
+\n   pgp -krs {Benutzer-ID} [{Schlüsselbund}]\n"
+
+"\nIncluding \"%s\"...\n"
+de: "\nEmpfängerliste aus der Datei '%s' wird eingelesen...\n"
+es: "\nIncluyendo \"%s\"...\n"
+fr: "\nIncluant '%s'...\n"
+muttde: "\nEmpfängerliste aus der Datei '%s' wird eingelesen...\n"
+
+"\nWe need to generate %u random bits.  This is done by measuring the\
+\ntime intervals between your keystrokes.  Please enter some random text\
+\non your keyboard until you hear the beep:\n"
+de: "\nWir müssen %u zufällige Bits erzeugen. Dies wird durch Messung\
+\nder Abstände zwischen Deinen Anschlägen bewerkstelligt. Bitte gib\
+\nirgendwelchen beliebigen Text auf der Tastatur ein, bis es piepst:\n"
+es: "\nNecesitamos generar %d bits aleatorios. Se hace midiendo los\
+\nintervalos de tiempo entre pulsaciones de tecla. Escribe\
+\ntexto al azar en el teclado hasta que oigas un pitido:\n"
+fr: "\nNous devons générer %d bits aléatoires. Ceci est fait en mesurant\
+\nl'intervalle de temps entre les frappes de touches. Veuillez tapper du\
+\ntexte aléatoire sur votre clavier jusqu'à ce que vous entendiez le\
+\nsignal sonore:\n"
+muttde: "\nWir müssen %u zufällige Bits erzeugen. Dies wird durch Messung\
+\nder Abstände zwischen Deinen Anschlägen bewerkstelligt. Bitte gib\
+\nirgendwelchen beliebigen Text auf der Tastatur ein, bis es piepst:\n"
+
+"\007 -Enough, thank you.\n"
+de: "\007 -Danke, das genügt!\n"
+es: "\007 -Es suficiente.\n"
+fr: "\007 -Assez, merci.\n"
+mutt: " -Enough, thank you.\n"
+muttde: " -Danke, das genügt!\n"
+
+"\
+Uses the RSAREF(tm) Toolkit, which is copyright RSA Data Security, Inc.\n\
+Distributed by the Massachusetts Institute of Technology.\n"
+de: "Benutzt das RSAREF(tm) Toolkit, (c) RSA Data Security, Inc.\n\
+Ausgeliefert vom Massachusetts Institute of Technology.\n"
+es: "\
+Utiliza RSAREF(tm), copyright de RSA Data Security, Inc.\n\
+Distribuido por el Massachusetts Institute of Technology.\n"
+fr: "Ce logiciel utilise RSAREF(tm) Toolkit, Copyright RSA Data Security, Inc\n\
+Distribué par le Massachusetts Institute of Technology.\n"
+muttde: "Benutzt das RSAREF(tm) Toolkit, (c) RSA Data Security, Inc.\n\
+Ausgeliefert vom Massachusetts Institute of Technology.\n"
+
+"Out of memory"
+de: "Zu wenig Speicher!"
+es: "No queda memoria"
+fr: "Mémoire insufisante"
+muttde: "Zu wenig Speicher!"
+
+"\nOut of memory\n"
+de: "\nZu wenig Speicher!\n"
+es: "\nNo queda memoria\n"
+fr: "\nMémoire insuffisante\n"
+muttde: "\nZu wenig Speicher!\n"
+
+"\n\007Out of memory.\n"
+de: "\n\007Zu wenig Speicher!\n"
+es: "\n\007No queda memoria.\n"
+fr: "\n\007Mémoire insuffisante.\n"
+mutt: "\nOut of memory.\n"
+muttde: "\nZu wenig Speicher!\n"
+
+"\nCompression/decompression error\n"
+de: "\nFEHLER beim Packen/Entpacken!\n"
+es: "\nError en compresión/descompresión\n"
+fr: "\nErreur de compression/decompression\n"
+muttde: "\nFEHLER beim Packen/Entpacken!\n"
+
+"\nERROR: unexpected end of compressed data input.\n"
+de: "\nFEHLER: vorzeitiges Ende der ZIP-gepackten Eingangsdaten.\n"
+es: "\nERROR: los datos comprimidos terminan antes de tiempo.\n"
+fr: "\nERREUR: fin innopinée des données d'entrée compressées.\n"
+muttde: "\nFEHLER: vorzeitiges Ende der ZIP-gepackten Eingangsdaten.\n"
+
+# The following 4 translations MUST be exactly 3 characters long!
+
+"pub"
+de: "öff"
+muttde: "öff"
+
+"sec"
+de: "prv"
+muttde: "prv"
+
+"sig"
+de: "Unt"
+es: "fir"
+muttde: "Unt"
+
+"com"
+de: "Wid"
+muttde: "Wid"
+
+# IN-CH extentions. <lutz@iks-jena.de>
+
+# translation must not change the string length
+"rev"
+de: "zur"
+muttde: "zur"
+
+# translation must not change the string length
+"           Expire: %s%s"
+de: "          Verfall: %s%s"
+muttde: "          Verfall: %s%s"
+
+# translation must not change the string length
+"                    no expire "
+de: "                 kein Verfall "
+muttde: "                 kein Verfall "
+
+"ENCRyption only\n"
+de: "*** nur Verschlüsselung! ***\n"
+muttde: "*** nur Verschlüsselung! ***\n"
+
+"Key ID %s is SIGN only. Decryption avoided.\n"
+de: "Schlüssel ID %s ist nur zum Unterschreiben. Entschlüsselung verhindert.\n"
+muttde: "Schlüssel ID %s ist nur zum Unterschreiben. Entschlüsselung verhindert.\n"
+
+"Key ID %s is not valid.\n"
+de: "Schlüssel ID %s ist ungültig.\n"
+muttde: "Schlüssel ID %s ist ungültig.\n"
+
+"Key is an ENCRyption only key.\n"
+de: "Der Schlüssel ist nur zur Verschlüsselung.\n"
+muttde: "Der Schlüssel ist nur zur Verschlüsselung.\n"
+
+"Key is a SIGNature only key.\n"
+de: "Der Schlüssel ist nur für Unterschriften.\n"
+muttde: "Der Schlüssel ist nur für Unterschriften.\n"
+
+"Key is out of use.\n"
+de: "Der Schlüssel ist nicht mehr in Benutzung.\n"
+muttde: "Der Schlüssel ist nicht mehr in Benutzung.\n"
+
+"SIGNature only\n"
+de: "*** nur Unterschriften! ***\n"
+muttde: "*** nur Unterschriften! ***\n"
+
+"    Revoked by: "
+de: "        Zurückgezogen von: "
+muttde: "        Zurückgezogen von: "
+
+"   Low Cert by: "
+de: "Niedrige Beglaubigung von: "
+muttde: "Niedrige Beglaubigung von: "
+
+"Medium Cert by: "
+de: "Mittlere Beglaubigung von: "
+muttde: "Mittlere Beglaubigung von: "
+
+"  High Cert by: "
+de: "    Hohe Beglaubigung von: "
+muttde: "    Hohe Beglaubigung von: "
+
+"  Unknown type: "
+de: "          Unbekannter Typ: "
+muttde: "          Unbekannter Typ: "
+
+"Try to obtain the corresponding SIGN key.\n"
+de: "Es wird versucht, den zugehörigen Unterschriftsschlüssel zu verwenden.\n"
+muttde: "Es wird versucht, den zugehörigen Unterschriftsschlüssel zu verwenden.\n"
+
+"\n\007Key cert is already revoked by user '%s'.\n"
+de: "\n\007Die Unterschrift unter dem Schlüssel wurde bereits\n\
+von '%s' zurückgezogen.\n"
+mutt: "\nKey cert is already revoked by user '%s'.\n"
+muttde: "\nDie Unterschrift unter dem Schlüssel wurde bereits\n\
+von '%s' zurückgezogen.\n"
+
+"\n\007Key is not signed by user '%s'.\n"
+de: "\n\007Der Schlüssel ist nicht von '%s' unterschrieben.\n"
+mutt: "\nKey is not signed by user '%s'.\n"
+muttde: "\nDer Schlüssel ist nicht von '%s' unterschrieben.\n"
+
+"\nKey signature certificate revoked.\n"
+de: "\nDie Unterschrift unter dem Schlüssel wurde zurückgezogen.\n"
+muttde: "\nDie Unterschrift unter dem Schlüssel wurde zurückgezogen.\n"
+
+"This key is already out of use.\n"
+de: "Dieser Schlüssel ist bereits nicht mehr in Benutzung.\n"
+muttde: "Dieser Schlüssel ist bereits nicht mehr in Benutzung.\n"
+
+"\007 Key ID %s is SIGN only. (protest against decryption)\n"
+de: "\007Die Schlüssel-ID %s ist nur für Unterschriften.\n\
+Keine Entschlüsselung möglich!\n"
+mutt: " Key ID %s is SIGN only. (protest against decryption)\n"
+muttde: "Die Schlüssel-ID %s ist nur für Unterschriften.\n\
+Keine Entschlüsselung möglich!\n"
+
+"Signature was made after the key ID %s was expired.\n"
+de: "Unterschrift wurde mit dem verfallen Schlüssel ID %s erstellt.\n"
+muttde: "Unterschrift wurde mit dem verfallen Schlüssel ID %s erstellt.\n"
+
+"Signature was made before the key ID %s was valid.\n"
+de: "Unterschrift wurde mit dem noch ungültigen Schlüssel ID %s erstellt.\n"
+muttde: "Unterschrift wurde mit dem noch ungültigen Schlüssel ID %s erstellt.\n"
+
+"Signature was made using the ENCR key ID %s.\n"
+de: "Unterschrift wurde mit dem Verschlüsselungsschlüssel ID %s erstellt.\n"
+muttde: "Unterschrift wurde mit dem Verschlüsselungsschlüssel ID %s erstellt.\n"
+
+"Something goes wrong, may be an unlucky User ID?\n"
+de: "Irgendwas ist schiefgegangen. Liegt's an der NutzerID?\n"
+muttde: "Irgendwas ist schiefgegangen. Liegt's an der NutzerID?\n"
+
+"Something goes wrong, may be this userid '%s' is unlucky?\n"
+de: "Irgendwas ist schiefgegangen. Liegt's an der NutzerID '%s'?\n"
+muttde: "Irgendwas ist schiefgegangen. Liegt's an der NutzerID '%s'?\n"
+
+"The compromise certificate might not be accepted on newer versions.\n\
+Revoke anyway? (y/N)"
+de: "Das Widerrufszertifikat kann von neueren Versionen zurückgewiesen\
+werden.\nTrotzdem widerrufen? (j/N)"
+muttde: "Das Widerrufszertifikat kann von neueren Versionen zurückgewiesen\
+werden.\nTrotzdem widerrufen? (j/N)"
+
+"The key for the userid '%s' is SIGN only.\nI'll try the corresponding ENCR key.\n"
+de: "Schlüssel ID '%s' ist nur zum Unterschreiben.\n\
+Der zugehörige Verschlüsselungsschlüssel wird versucht.\n"
+muttde: "Schlüssel ID '%s' ist nur zum Unterschreiben.\n\
+Der zugehörige Verschlüsselungsschlüssel wird versucht.\n"
+
+"The key for the userid '%s' is not valid, skipped.\n"
+de: "Schlüssel ID '%s' ist ungültig.\nÜbersprungen.\n"
+muttde: "Schlüssel ID '%s' ist ungültig.\nÜbersprungen.\n"
+
+"The user ID typed in has garbled options!\n"
+de: "Die NutzerID enthält fehlerhafte Optionseinträge!\n"
+muttde: "Die NutzerID enthält fehlerhafte Optionseinträge!\n"
+
+"This key is an ENCRyption only key.\n"
+de: "Das ist ein Verschlüsselungsschlüssel.\n"
+muttde: "Das ist ein Verschlüsselungsschlüssel.\n"
+
+"This key is too old to be revoked.\n"
+de: "Der Schlüssel ist zu alt, um zurückgezogen zu werden.\n"
+muttde: "Der Schlüssel ist zu alt, um zurückgezogen zu werden.\n"
+
+"This key is too old to be signed.\n"
+de: "Der Schlüssel ist zu alt, um unterschrieben zu werden.\n"
+muttde: "Der Schlüssel ist zu alt, um unterschrieben zu werden.\n"
+
+"This key will be generated in future. *oops*\n"
+de: "Der Schlüssel wird in der Zukunft erstellt. *huch*\n"
+muttde: "Der Schlüssel wird in der Zukunft erstellt. *huch*\n"
+
+"Your key is too old to sign with.\n"
+de: "Der Schlüssel ist zu alt zum unterschreiben.\n"
+muttde: "Der Schlüssel ist zu alt zum unterschreiben.\n"
+
+"Your key will be generated in future. *oops*\n"
+de: "Dein Schlüssel wird in der Zukunft erstellt. *huch*\n"
+muttde: "Dein Schlüssel wird in der Zukunft erstellt. *huch*\n"
+
+"\007**** Signed with an ENCRyption only key ****"
+de: "\007**** Unterschr. mit einem Verschl.-Schlüssel ****"
+mutt: "**** Signed with an ENCRyption only key ****"
+muttde: "**** Unterschr. mit einem Verschl.-Schlüssel ****"
+
+"\007**** Signed with an invalid key ****"
+de: "\007**** Unterschr. mit einem ungültigen Schlüssel ****"
+mutt: "**** Signed with an invalid key ****"
+muttde: "**** Unterschr. mit einem ungültigen Schlüssel ****"
+
+"\007**** Signed with a revoked key ****"
+de: "\007**** Unterschr. mit einem zurückgez. Schlüssel ****"
+mutt: "**** Signed with a revoked key ****"
+muttde: "**** Unterschr. mit einem zurückgez. Schlüssel ****"
+
+"\n\nREAD CAREFULLY:  How did you prove the users real identity ?\n\
+	0) What? I do not understand this question.\n\
+	1) No attempt made at all to identify the user with a real name.\n\
+	2) Some casual attempt made to identify user with his name.\n\
+	3) Heavy-duty identification efforts, photo ID, direct contact...\n"
+de: "\n\nSORGFÄLTIG LESEN:  Wie hast Du die Identität des Nutzers geprüft ?\n\
+	0) Bitte? Ich verstehe die Frage nicht.\n\
+	1) Keine Überprüfung des wirklichen Namens des Nutzers.\n\
+	2) Einige Bemühungen, die Person mit diesem Namen zu identifizieren.\n\
+	3) Große Identifizierungsaufwendungen, Ausweis, direkter Kontakt...\n"
+muttde: "\n\nSORGFÄLTIG LESEN:  Wie hast Du die Identität des Nutzers geprüft ?\n\
+	0) Bitte? Ich verstehe die Frage nicht.\n\
+	1) Keine Überprüfung des wirklichen Namens des Nutzers.\n\
+	2) Einige Bemühungen, die Person mit diesem Namen zu identifizieren.\n\
+	3) Große Identifizierungsaufwendungen, Ausweis, direkter Kontakt...\n"

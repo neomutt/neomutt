@@ -1,0 +1,374 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(mutt.h)
+AC_CONFIG_HEADER(config.h)
+VERSION=0.92.8
+SUBVERSION=''
+
+AC_MSG_CHECKING(for prefix)
+if test x$prefix = xNONE; then
+	mutt_cv_prefix=$ac_default_prefix
+else
+	mutt_cv_prefix=$prefix
+fi
+AC_MSG_RESULT($mutt_cv_prefix)
+
+AC_PROG_CC
+AC_PROG_MAKE_SET
+AC_PROG_INSTALL
+
+AC_PATH_PROG(SENDMAIL, sendmail, no, `echo $PATH | sed "s/:/ /"` /usr/sbin /usr/lib)
+AC_DEFINE_UNQUOTED(SENDMAIL, "$ac_cv_path_SENDMAIL")
+
+OPS='$(srcdir)/OPS'
+if test -f $srcdir/pgp.c; then
+	SUBVERSION=i
+	PGPPATH=no
+	AC_PATH_PROG(PGPK, pgpk, no)
+	if test $PGPK != no ; then
+		PGPK=`echo $PGPK | sed 's,.$,,'`
+		AC_DEFINE_UNQUOTED(_PGPV3PATH, "$PGPK")
+		PGPPATH="$PGPK"
+		AC_DEFINE(HAVE_PGP5)
+	fi
+
+	AC_PATH_PROG(PGP, pgp, no)
+	if test $PGP != no ; then
+		AC_DEFINE_UNQUOTED(_PGPV2PATH, "$PGP")
+		PGPPATH="$PGP"
+		AC_DEFINE(HAVE_PGP2)
+	fi
+
+	if test $PGPPATH != no ; then
+		AC_DEFINE_UNQUOTED(_PGPPATH, "$PGPPATH")
+	fi
+
+	if test $PGP != no || test $PGPK != no ; then
+		LIBOBJS="$LIBOBJS pgp.o pgpinvoke.o pgpkey.o pgppubring.o sha1dgst.o"
+		OPS="$OPS \$(srcdir)/OPS.PGP"
+	fi
+fi
+AC_SUBST(OPS)
+
+AC_DEFINE_UNQUOTED(VERSION, "$VERSION$SUBVERSION")
+AC_SUBST(VERSION)
+
+AC_PATH_PROG(ISPELL, ispell, no)
+if test $ISPELL != no; then
+	AC_DEFINE_UNQUOTED(ISPELL, "$ISPELL")
+fi
+
+AC_ARG_WITH(slang, [  --with-slang[=DIR]         use S-Lang instead of ncurses],
+	[AC_CACHE_CHECK([if -ltermlib is required], mutt_cv_bsdish,
+		AC_TRY_RUN([#include <sys/param.h>
+
+main ()
+{
+#ifdef BSD
+	exit (0);
+#else
+	exit (1);
+#endif
+}],
+			[mutt_cv_bsdish=yes],
+			[mutt_cv_bsdish=no]))
+	
+	AC_MSG_CHECKING(for S-Lang)
+	if test $withval = yes; then
+		if test -d $srcdir/../slang; then
+			mutt_cv_slang=$srcdir/../slang/src
+			CPPFLAGS="$CPPFLAGS -I${mutt_cv_slang}"
+			LDFLAGS="$LDFLAGS -L${mutt_cv_slang}/objs"
+		else
+			if test -d $mutt_cv_prefix/include/slang; then
+				CPPFLAGS="$CPPFLAGS -I$mutt_cv_prefix/include/slang"
+			elif test -d /usr/include/slang; then
+				CPPFLAGS="$CPPFLAGS -I/usr/include/slang"
+			fi
+			mutt_cv_slang=yes
+		fi
+	else
+		dnl ---Check to see if $withval is a source directory
+		if test -f $withval/src/slang.h; then
+			mutt_cv_slang=$withval/src
+			CPPFLAGS="$CPPFLAGS -I${mutt_cv_slang}"
+			LDFLAGS="$LDFLAGS -L${mutt_cv_slang}/objs"
+		else
+			dnl ---Must be installed somewhere
+			mutt_cv_slang=$withval
+			if test -d $withval/include/slang; then
+				CPPFLAGS="$CPPFLAGS -I${withval}/include/slang"
+			elif test -d $withval/include; then
+				CPPFLAGS="$CPPFLAGS -I${withval}/include"
+			fi
+			LDFLAGS="$LDFLAGS -L${withval}/lib"
+		fi
+	fi
+	AC_MSG_RESULT($mutt_cv_slang)
+	LIBS="$LIBS -lslang -lm"
+	if test $mutt_cv_bsdish = yes; then
+		LIBS="$LIBS -ltermlib"
+	fi
+	AC_DEFINE(USE_SLANG_CURSES)
+	AC_DEFINE(HAVE_COLOR)
+	LIBOBJS="$LIBOBJS resize.o"
+	
+	dnl --- try to link a sample program to check if we're ok
+	
+	AC_MSG_CHECKING(if I can compile a test SLang program)
+	AC_TRY_LINK([], [SLtt_get_terminfo ();],
+		[AC_MSG_RESULT(yes)],
+		[AC_MSG_ERROR(unable to compile.  check config.log)])
+
+	],
+
+	[mutt_cv_curses=/usr
+	AC_ARG_WITH(curses, [  --with-curses=DIR          ncurses is installed in ],
+		[if test $withval != yes; then
+			mutt_cv_curses=$withval
+		fi
+		if test x$mutt_cv_curses != x/usr; then
+			LDFLAGS="-L${mutt_cv_curses}/lib $LDFLAGS"
+			CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
+		fi])
+
+	AC_CHECK_LIB(ncurses, initscr,
+
+		[LIBS="$LIBS -lncurses"
+		if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
+			CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses"
+		fi
+		AC_CHECK_HEADERS(ncurses.h)],
+
+		[LIBS="$LIBS -lcurses"
+		if test -f /usr/ccs/lib/libcurses.a; then
+				LDFLAGS="$LDFLAGS -L/usr/ccs/lib"
+		else
+			if test -f /usr/5lib/libcurses.a; then
+				LDFLAGS="$LDFLAGS -L/usr/5lib"
+				CPPFLAGS="$CPPFLAGS -I/usr/5include"
+			fi
+		fi])
+
+	AC_CHECK_FUNC(start_color, [AC_DEFINE(HAVE_COLOR)])
+	AC_CHECK_FUNCS(typeahead bkgdset curs_set meta use_default_colors)
+	AC_CHECK_FUNCS(resizeterm, [LIBOBJS="$LIBOBJS resize.o"])
+	])
+
+AC_HEADER_STDC
+
+AC_CHECK_HEADERS(stdarg.h sys/ioctl.h)
+
+AC_TYPE_SIGNAL
+
+AC_DECL_SYS_SIGLIST
+
+dnl need this for DEC alpha
+AC_CHECK_SIZEOF(long)
+
+AC_TYPE_PID_T
+
+AC_CHECK_FUNCS(setegid srand48 strerror)
+
+AC_REPLACE_FUNCS(strcasecmp)
+
+mutt_cv_snprintf=no
+AC_CHECK_FUNC(snprintf, [AC_DEFINE(HAVE_SNPRINTF)], [mutt_cv_snprintf=yes])
+AC_CHECK_FUNC(vsnprintf, [AC_DEFINE(HAVE_VSNPRINTF)], [mutt_cv_snprintf=yes])
+if test $mutt_cv_snprintf = yes; then
+	LIBOBJS="$LIBOBJS snprintf.o"
+fi
+
+dnl SCO uses chsize() instead of ftruncate()
+AC_CHECK_FUNCS(ftruncate, break, [AC_CHECK_LIB(x, chsize)])
+
+dnl SCO has strftime() in libintl
+AC_CHECK_FUNCS(strftime, break, [AC_CHECK_LIB(intl, strftime)])
+
+mutt_cv_regex=yes
+AC_ARG_WITH(rx, [  --with-rx[=DIR]            Use GNU rx ],
+	[if test $withval != yes; then
+		if test -d $withval/lib; then
+			LIBS="$LIBS -L$withval/lib -lrx"
+			CPPFLAGS="-I$withval/include $CPPFLAGS"
+		else
+			LIBS="$LIBS -L$withval -lrx"
+			CPPFLAGS="-I$withval $CPPFLAGS"
+		fi
+		AC_DEFINE(USE_GNU_RX)
+		mutt_cv_regex=no
+	fi],
+	[AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no)])
+
+if test $mutt_cv_regex = yes; then
+	if test -d ../rx-1.5; then
+		LIBS="$LIBS ../rx-1.5/rx/librx.a"
+		CPPFLAGS="-I../rx-1.5/rx $CPPFLAGS"
+	else
+		LIBOBJS="$LIBOBJS rx/librx.a"
+		CPPFLAGS="-I\$(srcdir)/rx $CPPFLAGS"
+	fi
+	AC_DEFINE(USE_GNU_RX)
+fi
+
+AC_ARG_WITH(homespool, [  --with-homespool[=FILE]    file in user's directory where new mail is spooled], with_homespool=${withval})
+if test x$with_homespool != x; then
+	if test $with_homespool = yes; then
+		with_homespool=mailbox
+	fi
+	AC_DEFINE_UNQUOTED(MAILPATH, "$with_homespool")
+	AC_DEFINE(HOMESPOOL)
+	AC_DEFINE(USE_DOTLOCK)
+	mutt_cv_setgid=no
+else
+	AC_ARG_WITH(mailpath, [  --with-mailpath=DIR        directory where spool mailboxes are located],
+		[mutt_cv_mailpath=$withval],
+		[ AC_CACHE_CHECK(where new mail is stored, mutt_cv_mailpath,
+			[mutt_cv_mailpath=no
+			if test -d /var/mail; then
+				mutt_cv_mailpath=/var/mail
+			elif test -d /var/spool/mail; then
+				mutt_cv_mailpath=/var/spool/mail
+			elif test -d /usr/spool/mail; then
+				mutt_cv_mailpath=/usr/spool/mail
+			elif test -d /usr/mail; then
+				mutt_cv_mailpath=/usr/mail
+			fi])
+		])
+	if test $mutt_cv_mailpath = no; then
+		AC_MSG_ERROR("Could not determine where new mail is stored.")
+	fi
+	AC_DEFINE_UNQUOTED(MAILPATH, "$mutt_cv_mailpath")
+
+	AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, AC_TRY_RUN([#include <sys/types.h>
+#include <sys/stat.h>
+
+int main (int argc, char **argv)
+{
+	struct stat s;
+
+	stat ("$mutt_cv_mailpath", &s);
+	if (s.st_mode & S_IWOTH) exit (0);
+	exit (1);
+}], [mutt_cv_worldwrite=yes], [mutt_cv_worldwrite=no]))
+
+	mutt_cv_setgid=no
+	if test $mutt_cv_worldwrite = yes; then
+		AC_DEFINE(USE_DOTLOCK)
+	else
+
+		AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, AC_TRY_RUN([#include <sys/types.h>
+#include <sys/stat.h>
+
+int main (int argc, char **argv)
+{
+	struct stat s;
+
+	stat ("$mutt_cv_mailpath", &s);
+	if (s.st_mode & S_IWGRP) exit (0);
+	exit (1);
+}], [mutt_cv_groupwrite=yes], [mutt_cv_groupwrite=no]))
+
+		if test $mutt_cv_groupwrite = yes; then
+			AC_DEFINE(USE_DOTLOCK)
+			AC_DEFINE(USE_SETGID)
+			mutt_cv_setgid=yes
+		fi
+	fi
+fi
+
+AC_ARG_WITH(sharedir, [  --with-sharedir=PATH       specify where to put arch independent files],
+	[mutt_cv_sharedir=$withval],
+	[ AC_CACHE_CHECK(where to put architecture-independent data files,
+		       mutt_cv_sharedir,
+		[if test x$prefix = xNONE; then
+			mutt_cv_prefix=$ac_default_prefix
+		else
+			mutt_cv_prefix=$prefix
+		fi
+		if test -d ${mutt_cv_prefix}/share; then
+			if test -d ${mutt_cv_prefix}/share/misc; then
+				mutt_cv_sharedir='${prefix}/share/misc'
+			else
+				mutt_cv_sharedir='${prefix}/share'
+			fi
+		else
+			mutt_cv_sharedir='${libdir}'
+		fi])
+	])
+
+sharedir=$mutt_cv_sharedir
+AC_SUBST(sharedir)
+
+if test x$mutt_cv_setgid = xyes; then
+	MUTT_GROUP='-g mail'
+	MUTT_PERMISSION=2755
+else
+	MUTT_GROUP=''
+	MUTT_PERMISSION=755
+fi
+AC_SUBST(MUTT_GROUP)
+AC_SUBST(MUTT_PERMISSION)
+
+AC_ARG_WITH(domain, [  --with-domain=DOMAIN       Specify your DNS domain name ],
+	[if test $withval != yes; then
+		AC_DEFINE_UNQUOTED(DOMAIN, "$withval")
+	fi])
+
+AC_ARG_ENABLE(hidden-host, [  --enable-hidden-host       Only use the domain name for local addresses], AC_DEFINE(HIDDEN_HOST))
+
+AC_ARG_ENABLE(pop, [  --enable-pop               Enable POP3 support],
+[	AC_DEFINE(USE_POP)
+	AC_CHECK_LIB(socket, socket)
+	AC_CHECK_LIB(nsl, gethostbyname)
+	LIBOBJS="$LIBOBJS pop.o"
+])
+
+AC_ARG_ENABLE(flock, [  --enable-flock             Use flock() to lock files],
+	[if test $enableval = yes; then
+		AC_DEFINE(USE_FLOCK)
+	fi])
+
+mutt_cv_fcntl=yes
+AC_ARG_ENABLE(fcntl, [  --disable-fcntl            Do NOT use fcntl() to lock files ],
+	[if test $enableval = no; then mutt_cv_fcntl=no; fi])
+
+if test $mutt_cv_fcntl = yes; then
+	AC_DEFINE(USE_FCNTL)
+fi
+
+mutt_cv_warnings=yes
+AC_ARG_ENABLE(warnings, [  --disable-warnings         turn off compiler warnings (not recommended)],
+[if test $enableval = no; then
+	mutt_cv_warnings=no
+fi])
+
+if test "$ac_cv_prog_CC" = gcc -a $mutt_cv_warnings = yes; then
+	CFLAGS="-Wall -pedantic $CFLAGS"
+fi
+
+AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix           Work around an NFS with broken attributes caching ],
+	[if test x$enableval = xyes; then
+                AC_DEFINE(NFS_ATTRIBUTE_HACK)
+        fi])
+
+AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute instead of access time ],
+	[if test x$enableval = xyes; then
+                AC_DEFINE(BUFFY_SIZE)
+        fi])
+
+AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix       The result of isprint() is unreliable ],
+	[if test x$enableval = xyes; then
+                AC_DEFINE(LOCALES_HACK)
+        fi])
+
+AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (ONLY if /bin/sh is broken)],
+	[if test $withval != yes; then
+		AC_DEFINE_UNQUOTED(EXECSHELL, "$withval")
+	fi])
+
+AC_ARG_ENABLE(exact-address, [  --enable-exact-address     enable regeneration of email addresses],
+	[if test $enableval = yes; then
+		AC_DEFINE(EXACT_ADDRESS)
+	fi])
+
+AC_OUTPUT(Makefile rx/Makefile)
