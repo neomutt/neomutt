@@ -70,7 +70,7 @@ void mbox_unlock_mailbox (CONTEXT *ctx)
   {
     fflush (ctx->fp);
 
-    mx_unlock_file (ctx->path, fileno (ctx->fp));
+    mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
     ctx->locked = 0;
   }
 }
@@ -981,7 +981,7 @@ bail:  /* Come here in case of disaster */
 /* close a mailbox opened in write-mode */
 int mbox_close_mailbox (CONTEXT *ctx)
 {
-  mx_unlock_file (ctx->path, fileno (ctx->fp));
+  mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
   mutt_unblock_signals ();
   mx_fastclose_mailbox (ctx);
   return 0;

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1998 Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1998-9 Thomas Roessler <roessler@guug.de>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -94,6 +94,7 @@ static short f_try = 0;
 static short f_force = 0;
 static short f_unlock = 0;
 static short f_priv = 0;
+static short f_unlink = 0;
 static int   Retry = MAXLOCKATTEMPT;
 
 #ifdef DL_STANDALONE
@@ -107,6 +108,7 @@ static gid_t MailGid;
 
 static int dotlock_deference_symlink(char *, size_t, const char *);
 static int dotlock_prepare(char *, size_t, const char *);
+static int dotlock_check_stats (struct stat *, struct stat *);
 
 #ifdef DL_STANDALONE
 static int dotlock_init_privs(void);
@@ -122,9 +124,10 @@ static void END_PRIVILEGED(void);
  * return value.
  */
 
-static int dotlock_try(void);
-static int dotlock_unlock(const char *);
-static int dotlock_lock(const char *);
+static int dotlock_try (void);
+static int dotlock_unlock (const char *);
+static int dotlock_unlink (const char *);
+static int dotlock_lock (const char *);
 
 
 #ifdef DL_STANDALONE
@@ -155,7 +158,7 @@ int main(int argc, char **argv)
 
   /* parse the command line options. */
   
-  while((i = getopt(argc, argv, "tfupr:")) != EOF)
+  while((i = getopt(argc, argv, "dtfupr:")) != EOF)
   {
     switch(i)
     {
@@ -164,11 +167,12 @@ int main(int argc, char **argv)
       case 'u': f_unlock = 1; break;
       case 'p': f_priv = 1; break;
       case 'r': Retry = atoi(optarg); break;
+      case 'd': f_unlink = 1; break;
       default: usage(argv[0]);
     }
   }
 
-  if(optind == argc || f_try + f_force + f_unlock > 1 || Retry < 0)
+  if(optind == argc || f_try + f_force + f_unlock + f_unlink > 1 || Retry < 0)
     usage(argv[0]);
   
   f = argv[optind];
@@ -194,6 +198,18 @@ int main(int argc, char **argv)
     return dotlock_try();
   else if(f_unlock)
     return dotlock_unlock(realpath);
+  else if (f_unlink)
+  {
+    if ((i = dotlock_lock (realpath)) != DL_EX_OK)
+      return i;
+    
+    i = dotlock_unlink (realpath);
+    
+    if (dotlock_unlock (realpath) != DL_EX_OK || i != DL_EX_OK)
+      return DL_EX_ERROR;
+    
+    return DL_EX_OK;
+  }
   else /* lock */
     return dotlock_lock(realpath);
 
@@ -251,11 +267,14 @@ int dotlock_invoke(const char *path, int flags, int retry)
   else
     Retry = 0;
   
-  f_priv = f_try = f_unlock = f_force = 0;
+  f_priv = f_try = f_unlock = f_force = f_unlink = 0;
   
   if(flags & DL_FL_FORCE)
     f_force = 1;
 
+  if (flags & DL_FL_UNLINK)
+    f_unlink = 1;
+  
   r = DL_EX_ERROR;
   if(dotlock_prepare(realpath, sizeof(realpath), path) == -1)
     goto bail;
@@ -341,13 +360,14 @@ static void
 usage(const char *av0)
 {
   fprintf(stderr, "dotlock [Mutt %s (%s)]\n", VERSION, ReleaseDate);
-  fprintf(stderr, "usage: %s [-t|-f|-u] [-p] [-r <retries>] file\n",
+  fprintf(stderr, "usage: %s [-t|-f|-u|-d] [-p] [-r <retries>] file\n",
 	  av0);
 
   fputs("\noptions:"
 	"\n  -t\t\ttry"
 	"\n  -f\t\tforce"
 	"\n  -u\t\tunlock"
+	"\n  -d\t\tunlink"
 	"\n  -p\t\tprivileged"
 #ifndef USE_SETGID
 	" (ignored)"
@@ -409,6 +429,33 @@ usage(const char *av0)
  */
 
 static int
+dotlock_check_stats (struct stat *fsb, struct stat *lsb)
+{
+  /* S_ISLNK (fsb->st_mode) should actually be impossible,
+   * but we may have mixed up the parameters somewhere.
+   * play safe.
+   */
+
+  if (S_ISLNK (lsb->st_mode) || S_ISLNK (fsb->st_mode))
+    return -1;
+  
+  if((lsb->st_dev != fsb->st_dev) ||
+     (lsb->st_ino != fsb->st_ino) ||
+     (lsb->st_mode != fsb->st_mode) ||
+     (lsb->st_nlink != fsb->st_nlink) ||
+     (lsb->st_uid != fsb->st_uid) ||
+     (lsb->st_gid != fsb->st_gid) ||
+     (lsb->st_rdev != fsb->st_rdev) ||
+     (lsb->st_size != fsb->st_size))
+  {
+    /* something's fishy */
+    return -1;
+  }
+  
+  return 0;
+}
+
+static int
 dotlock_prepare(char *bn, size_t l, const char *f)
 {
   struct stat fsb, lsb;
@@ -452,23 +499,10 @@ dotlock_prepare(char *bn, size_t l, const char *f)
   
   if(lstat(basename, &lsb) == -1)
     return -1;
-  
-  if(S_ISLNK(lsb.st_mode))
+
+  if (dotlock_check_stats (&fsb, &lsb) == -1)
     return -1;
-  
-  if((lsb.st_dev != fsb.st_dev) ||
-     (lsb.st_ino != fsb.st_ino) ||
-     (lsb.st_mode != fsb.st_mode) ||
-     (lsb.st_nlink != fsb.st_nlink) ||
-     (lsb.st_uid != fsb.st_uid) ||
-     (lsb.st_gid != fsb.st_gid) ||
-     (lsb.st_rdev != fsb.st_rdev) ||
-     (lsb.st_size != fsb.st_size))
-  {
-    /* something's fishy */
-    return -1;
-  }
-  
+
   return 0;
 }
 
@@ -689,6 +723,44 @@ dotlock_unlock(const char *realpath)
     return DL_EX_ERROR;
   
   return DL_EX_OK;
+}
+
+/* remove an empty file */
+
+static int
+dotlock_unlink (const char *realpath)
+{
+  struct stat fsb, lsb;
+  int fd = -1;
+  int i = 0;
+  char dummy;
+
+  if ((fd = open (realpath, O_RDONLY)) == -1)
+    return DL_EX_ERROR;
+  
+  if ((i = fstat (fd, &fsb)) == -1)
+    goto bail;
+  
+  if ((i = lstat (realpath, &lsb)) == -1)
+    goto bail;
+  
+  if ((i = dotlock_check_stats (&fsb, &lsb)) == -1)
+    goto bail;
+  
+  /* 
+   * don't _really_ trust stat here, but actually try to read one
+   * character from the supposedly empty file. 
+   */
+
+  if ((fsb.st_size == 0) && (read (fd, &dummy, 1) != 1))
+    unlink (realpath);
+  
+  bail:
+  
+  if (fd != -1)
+    close (fd);
+
+  return (i == 0) ?  DL_EX_OK : DL_EX_ERROR;
 }
 
 

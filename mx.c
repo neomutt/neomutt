@@ -78,12 +78,13 @@ static int invoke_dotlock (const char *path, int flags, int retry)
   mutt_quote_filename (f, sizeof (f), path);
   
   snprintf (cmd, sizeof (cmd),
-	    "%s %s%s%s%s%s%s",
+	    "%s %s%s%s%s%s%s%s",
 	    NONULL (MuttDotlock),
 	    flags & DL_FL_TRY ? "-t " : "",
 	    flags & DL_FL_UNLOCK ? "-u " : "",
 	    flags & DL_FL_USEPRIV ? "-p " : "",
 	    flags & DL_FL_FORCE ? "-f " : "",
+	    flags & DL_FL_UNLINK ? "-d " : "",
 	    flags & DL_FL_RETRY ? r : "",
 	    f);
   
@@ -250,7 +251,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
   return 0;
 }
 
-int mx_unlock_file (const char *path, int fd)
+int mx_unlock_file (const char *path, int fd, int dot)
 {
 #ifdef USE_FCNTL
   struct flock unlockit = { F_UNLCK, 0, 0, 0 };
@@ -266,7 +267,8 @@ int mx_unlock_file (const char *path, int fd)
 #endif
 
 #ifdef USE_DOTLOCK
-  undotlock_file (path);
+  if (dot)
+    undotlock_file (path);
 #endif
   
   return 0;
@@ -287,6 +289,32 @@ FILE *mx_open_file_lock (const char *path, const char *mode)
   }
 
   return (f);
+}
+
+void mx_unlink_empty (const char *path)
+{
+  int fd;
+#ifndef USE_DOTLOCK
+  char b;
+#endif
+
+  if ((fd = open (path, O_RDWR)) == -1)
+    return;
+  
+  if (mx_lock_file (path, fd, 1, 0, 1) == -1)
+  {
+    close (fd);
+    return;
+  }
+
+#ifdef USE_DOTLOCK
+  invoke_dotlock (path, DL_FL_UNLINK, 1);
+#else
+  if  (read (fd, &b, 1) != 1)
+    unlink (path);
+#endif
+
+  mx_unlock_file (path, fd, 0);
 }
 
 /* try to figure out what type of mailbox ``path'' is
@@ -856,7 +884,7 @@ int mx_close_mailbox (CONTEXT *ctx)
   if (ctx->msgcount == ctx->deleted &&
       (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
       !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
-    unlink (ctx->path);
+    mx_unlink_empty (ctx->path);
 
   mx_fastclose_mailbox (ctx);
 
