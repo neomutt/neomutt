@@ -24,22 +24,22 @@ mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
 .PP
 .B mutt
-[ -nRyzZ ] 
-[ -e \fIcmd\fP ] [ -F \fIfile\fP ] [ -m \fItype\fP ] [ -f \fIfile\fP ]
+[-nRyzZ] 
+[-e \fIcmd\fP] [-F \fIfile\fP] [-m \fItype\fP] [-f \fIfile\fP]
 .PP
 .B mutt 
-[ -nx ] 
-[ -e \fIcmd\fP ] 
-[ -a \fIfile\fP ]
-[ -F \fIfile\fP ]
-[ -H \fIfile\fP ]
-[ -i \fIfile\fP ]
-[ -s \fIsubj\fP ]
-[ -b \fIaddr\fP ]
-[ -c \fIaddr\fP ] \fIaddr\fP [ ... ]
+[-nx] 
+[-e \fIcmd\fP] 
+[-a \fIfile\fP]
+[-F \fIfile\fP]
+[-H \fIfile\fP]
+[-i \fIfile\fP]
+[-s \fIsubj\fP]
+[-b \fIaddr\fP]
+[-c \fIaddr\fP] \fIaddr\fP [...]
 .PP
 .B mutt
-[ -n ] [ -e \fIcmd\fP ] [ -F \fIfile\fP ] -p
+[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -p
 .PP
 .B mutt 
 -v[v]
