@@ -641,7 +641,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, this variable contains a default from address.  It
   ** can be overridden using my_hdr (including from send-hooks) and
-  ** ``$$reverse_name''.
+  ** ``$$reverse_name''.  This variable is ignored if ``$$use_from''
+  ** is unset.
   ** .pp
   ** Defaults to the contents of the environment variable EMAIL.
   */
