@@ -1,3 +1,10 @@
+2004-02-08 09:38:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* muttlib.c: Change the logic in mutt_open_read to only
+	catch directories -- mutt may legitimately read devices (think
+	/dev/null) or named pipes. Also delegate error reporting to the
+	calling function by setting errno.
+
 2004-02-07 21:40:11  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* po/ja.po: update
