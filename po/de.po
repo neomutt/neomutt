@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-11-10 22:03+0100\n"
+"POT-Creation-Date: 1998-11-17 12:54+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: ENCODING\n"
 
-#: addrbook.c:32 browser.c:54 pager.c:1365 postpone.c:33 query.c:44
+#: addrbook.c:32 browser.c:54 pager.c:1369 postpone.c:33 query.c:44
 #: recvattach.c:48
 msgid "Exit"
 msgstr "Verlassen"
@@ -19,7 +19,7 @@ msgstr "Verlassen"
 msgid "Select"
 msgstr "Auswählen"
 
-#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1462
+#: addrbook.c:34 browser.c:57 compose.c:84 curs_main.c:241 pager.c:1466
 #: pgpkey.c:181 postpone.c:36 query.c:49 recvattach.c:52
 msgid "Help"
 msgstr "Hilfe"
@@ -55,7 +55,7 @@ msgstr "Name: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Eintragen?"
 
-#: alias.c:255 recvattach.c:283 recvattach.c:338
+#: alias.c:255 recvattach.c:285 recvattach.c:340
 msgid "Save to file: "
 msgstr "Speichern in Datei: "
 
@@ -63,7 +63,7 @@ msgstr "Speichern in Datei: "
 msgid "Alias added."
 msgstr "Adresse eingetragen."
 
-#: attach.c:112 attach.c:235 attach.c:367 attach.c:809
+#: attach.c:112 attach.c:235 attach.c:367 attach.c:806
 msgid "Can't match nametemplate, continue?"
 msgstr "Namensschema kann nicht erfüllt werden, fortfahren?"
 
@@ -108,7 +108,7 @@ msgstr "Undefinierter MIME-Typ, kann Anhang nicht anzeigen."
 msgid "Cannot create filter"
 msgstr "Kann Filter nicht erzeugen."
 
-#: attach.c:638 recvattach.c:313
+#: attach.c:638 recvattach.c:315
 msgid "Attachment saved."
 msgstr "Anhang gespeichert."
 
@@ -116,7 +116,7 @@ msgstr "Anhang gespeichert."
 msgid "Write fault!"
 msgstr "Schreibfehler!"
 
-#: attach.c:893
+#: attach.c:890
 msgid "I don't know how to print that!"
 msgstr "Ich weiß nicht, wie man dies druckt."
 
@@ -264,13 +264,11 @@ msgstr "Konnte Temporärdatei nicht anzeigen!"
 msgid "Command: "
 msgstr "Kommando: "
 
-#: commands.c:243 recvattach.c:616
-#, fuzzy
+#: commands.c:243 recvattach.c:618
 msgid "Bounce message to: "
 msgstr "Nachricht weiterleiten an: "
 
-#: commands.c:245 recvattach.c:618
-#, fuzzy
+#: commands.c:245 recvattach.c:620
 msgid "Bounce tagged messages to: "
 msgstr "Markierte Nachrichten weiterleiten an: "
 
@@ -591,7 +589,7 @@ msgstr "Änderungen an dieser Mailbox werden nicht geschrieben."
 msgid "Quit"
 msgstr "Ende"
 
-#: curs_main.c:235 pager.c:1372 postpone.c:34
+#: curs_main.c:235 pager.c:1376 postpone.c:34
 msgid "Del"
 msgstr "Lösch."
 
@@ -603,7 +601,7 @@ msgstr "Behalten"
 msgid "Mail"
 msgstr "Senden"
 
-#: curs_main.c:239 pager.c:1373
+#: curs_main.c:239 pager.c:1377
 msgid "Reply"
 msgstr "Antw."
 
@@ -843,75 +841,98 @@ msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[-- Fehler: Konnte keinen der multipart/alternative-Teile anzeigen! --]\n"
 
-#: handler.c:1072
+#: handler.c:1071
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Anhang #%d"
 
-#: handler.c:1085
+#: handler.c:1082
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Codierung: %s, Größe: %s --]\n"
 
-#: handler.c:1152
+#: handler.c:1141
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Automatische Anzeige mittels %s --]\n"
 
-#: handler.c:1154
+#: handler.c:1142
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Rufe Kommando auf: %s"
 
-#: handler.c:1194 handler.c:1217
+#: handler.c:1179 handler.c:1197
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Fehlerausgabe von %s --]\n"
 
-#: handler.c:1250
+#: handler.c:1229
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 
-#: handler.c:1270
+#: handler.c:1252
 #, c-format
-msgid "[-- This %s/%s attachment is deleted --]\n"
+msgid "[-- This %s/%s attachment "
+msgstr "[-- Dieser %s/%s-Anhang "
+
+#: handler.c:1259
+#, c-format
+msgid "(size %s bytes) "
 msgstr ""
 
-#: handler.c:1273
-#, fuzzy, c-format
-msgid "[-- on %s --]\n"
-msgstr "[-- Automatische Anzeige mittels %s --]\n"
+#: handler.c:1261
+msgid "has been deleted --]\n"
+msgstr "wurde gelöscht --]\n"
 
-#: handler.c:1284
+#: handler.c:1264
+#, c-format
+msgid "[-- on %s --]\n"
+msgstr "[-- am %s --]\n"
+
+#: handler.c:1274
 #, c-format
 msgid ""
-"[-- This %s/%s attachment is not included --]\n"
+"[-- This %s/%s attachment is not included, --]\n"
+"[-- and the indicated external source has --]\n"
+"[-- expired. --]\n"
+msgstr ""
+"[-- Dieser %s/%s-Anhang ist nicht in der Nachricht --]\n"
+"[-- enthalten, und die angegebene externe Quelle -- ]\n"
+"[-- existiert nicht mehr. --]\n"
+
+#: handler.c:1288
+#, c-format
+msgid ""
+"[-- This %s/%s attachment is not included, --]\n"
 "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr ""
+"[-- Dieser %s/%s-Anhang ist nicht in der Nachricht --]\n"
+"[-- enthalten, und die angegebene Zugangsmethode --]\n"
+"[-- %s wird nicht unterstützt. --]\n"
 
-#: handler.c:1381
+#: handler.c:1385
 msgid "Error: multipart/signed has no protocol."
 msgstr "Fehler: multipart/signed ohne \"protocol\"-Parameter."
 
-#: handler.c:1393
+#: handler.c:1397
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Fehler: multipart/encrypted ohne \"protocol\"-Parameter!"
 
-#: handler.c:1435
+#: handler.c:1439
 msgid "Unable to open temporary file!"
 msgstr "Konnte Temporärdatei nicht öffnen!"
 
-#: handler.c:1494
+#: handler.c:1498
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s wird nicht unterstützt "
 
-#: handler.c:1499
+#: handler.c:1503
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(benutzen Sie '%s', um diesen Teil anzuzeigen)"
 
-#: handler.c:1501
+#: handler.c:1505
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(benötige Tastaturbindung für 'view-attachments'!)"
 
@@ -990,20 +1011,19 @@ msgstr "Paßwort für %s@%s: "
 
 #: imap.c:915
 msgid "Logging in..."
-msgstr "Logge ein..."
+msgstr "Anmeldung..."
 
 #. Login failed, try again
 #: imap.c:928
-#, fuzzy
 msgid "Login failed."
-msgstr "Logge ein..."
+msgstr "Anmeldung gescheitert..."
 
 #: imap.c:985
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wähle %s aus..."
 
-#: imap.c:1084 lib.c:1168
+#: imap.c:1084 lib.c:1154
 #, c-format
 msgid "Create %s?"
 msgstr "%s erstellen?"
@@ -1147,9 +1167,8 @@ msgid "Macro loop detected."
 msgstr "Makro-Schleife!"
 
 #: keymap.c:620 keymap.c:628
-#, fuzzy
 msgid "Key is not bound."
-msgstr "Taste ist nicht belegt.  Konsultieren Sie das Handbuch."
+msgstr "Taste ist nicht belegt."
 
 #: keymap.c:632
 #, c-format
@@ -1843,24 +1862,24 @@ msgstr "Erzeuge dechiffrierte Kopie"
 msgid "Out of memory!"
 msgstr "Kein Speicher!"
 
-#: lib.c:755
+#: lib.c:741
 msgid "File is a directory, save under it?"
 msgstr "Datei ist ein Verzeichnis, darin abspeichern?"
 
-#: lib.c:760
+#: lib.c:746
 msgid "File under directory: "
 msgstr "Datei in diesem Verzeichnis: "
 
-#: lib.c:771
+#: lib.c:757
 msgid "File exists, overwrite?"
 msgstr "Datei existiert, überschreiben?"
 
-#: lib.c:1144
+#: lib.c:1130
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ist keine Mailbox"
 
-#: lib.c:1150
+#: lib.c:1136
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Nachricht an %s anhängen?"
@@ -1886,6 +1905,9 @@ msgid ""
 "Copyright (C) 1998   Werner Koch <wk@isil.d.shuttle.de>\n"
 "Copyright (C) 1998   Ruslan Ermilov <ru@ucb.crimea.ua>\n"
 "\n"
+"Lots of others not mentioned here contributed lots of code,\n"
+"fixes, and suggestions.\n"
+"\n"
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
 "    the Free Software Foundation; either version 2 of the License, or\n"
@@ -1901,7 +1923,7 @@ msgid ""
 "    Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.\n"
 msgstr ""
 
-#: main.c:71
+#: main.c:74
 msgid ""
 "\n"
 "SHA1 implementation Copyright (C) 1995-7 Eric A. Young <eay@cryptsoft.com>\n"
@@ -1917,7 +1939,7 @@ msgid ""
 "    along with this program; if not, write to the program's developers.\n"
 msgstr ""
 
-#: main.c:97
+#: main.c:100
 msgid ""
 "usage: mutt [ -nRzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> "
 "]\n"
@@ -1948,33 +1970,33 @@ msgid ""
 "  -h\t\tthis help message"
 msgstr ""
 
-#: main.c:303
+#: main.c:306
 msgid "Error initializing terminal."
 msgstr "Kann Termial nicht initialisieren"
 
-#: main.c:399
+#: main.c:402
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr ""
 
-#: main.c:401
+#: main.c:404
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr ""
 
-#: main.c:539
+#: main.c:542
 msgid "No recipients specified.\n"
 msgstr "Keine Empfänger angegeben.\n"
 
-#: main.c:612
+#: main.c:615
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: Kann Datei nicht anhängen.\n"
 
-#: main.c:632
+#: main.c:635
 msgid "No mailbox with new mail."
 msgstr "Keine Mailbox mit neuen Nachrichten."
 
-#: main.c:666
+#: main.c:669
 msgid "Mailbox is empty."
 msgstr "Mailbox ist leer."
 
@@ -2076,7 +2098,7 @@ msgstr "Suche rückwärts nach: "
 msgid "No search pattern."
 msgstr "Kein Suchmuster."
 
-#: menu.c:627 pager.c:1825 pager.c:1841 pager.c:1928 pattern.c:1125
+#: menu.c:627 pager.c:1829 pager.c:1845 pager.c:1932 pattern.c:1125
 msgid "Not found."
 msgstr "Nicht gefunden."
 
@@ -2178,52 +2200,52 @@ msgstr "Mailbox ist als unschreibbar markiert. %s"
 msgid "Mailbox is read-only."
 msgstr "Mailbox kann nicht geschrieben werden."
 
-#: pager.c:1366
+#: pager.c:1370
 msgid "PrevPg"
 msgstr "S.zurück"
 
-#: pager.c:1367
+#: pager.c:1371
 msgid "NextPg"
 msgstr "S.vor"
 
-#: pager.c:1371
+#: pager.c:1375
 msgid "View Attachm."
 msgstr "Anhänge betr."
 
-#: pager.c:1374
+#: pager.c:1378
 msgid "Next"
 msgstr "Nächste Nachr."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1737 pager.c:1768 pager.c:1797 pager.c:2016
+#: pager.c:1741 pager.c:1772 pager.c:1801 pager.c:2020
 msgid "Bottom of message is shown."
 msgstr "Das Ende der Nachricht wird angezeigt."
 
-#: pager.c:1753 pager.c:1775 pager.c:1786
+#: pager.c:1757 pager.c:1779 pager.c:1790
 msgid "Top of message is shown."
 msgstr "Der Beginn der Nachricht wird angezeigt."
 
-#: pager.c:1859
+#: pager.c:1863
 msgid "Reverse search: "
 msgstr "Suche rückwärts: "
 
-#: pager.c:1860
+#: pager.c:1864
 msgid "Search: "
 msgstr "Suche: "
 
-#: pager.c:1954
+#: pager.c:1958
 msgid "Help is currently being shown."
 msgstr "Hilfe wird bereits angezeigt."
 
-#: pager.c:1983
+#: pager.c:1987
 msgid "No more quoted text."
 msgstr "Kein weiterer zitierter Text."
 
-#: pager.c:1996
+#: pager.c:2000
 msgid "No more unquoted text after quoted text."
 msgstr "Kein weiterer eigener Text nach zitiertem Text"
 
-#: parse.c:479
+#: parse.c:500
 msgid "multipart message has no boundary parameter!"
 msgstr "Mehrteilige Nachricht hat keinen \"boundary\"-Parameter!"
 
@@ -2339,30 +2361,32 @@ msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
 msgstr ""
+"[-- BEGIN PGP MESSAGE --]\n"
+"\n"
 
 #: pgp.c:356
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
-msgstr ""
+msgstr "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 
 #: pgp.c:358
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
 msgstr ""
+"[-- BEGIN PGP SIGNED MESSAGE --]\n"
+"\n"
 
 #: pgp.c:460
-#, fuzzy
 msgid ""
 "\n"
 "[-- END PGP MESSAGE --]\n"
 msgstr ""
 "\n"
-"[-- Ende der PGP-Ausgabe --]\n"
-"\n"
+"[-- END PGP MESSAGE --]\n"
 
 #: pgp.c:462
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
-msgstr ""
+msgstr "[-- END PGP PUBLIC KEY BLOCK --]\n"
 
 #: pgp.c:477
 msgid ""
@@ -2417,7 +2441,7 @@ msgstr ""
 "[-- Fehler: Konnte PGP-Subprozeß nicht erzeugen! --]\n"
 "\n"
 
-#: pgp.c:968
+#: pgp.c:959
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -2425,11 +2449,11 @@ msgstr ""
 "[-- Fehler: Fehlerhafte PGP/MIME-Nachricht! --]\n"
 "\n"
 
-#: pgp.c:981
+#: pgp.c:972
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Fehler: Konnte Temporärdatei nicht anlegen! --]\n"
 
-#: pgp.c:990
+#: pgp.c:981
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -2437,7 +2461,7 @@ msgstr ""
 "[-- Die folgenden Daten sind PGP/MIME-verschlüsselt --]\n"
 "\n"
 
-#: pgp.c:998
+#: pgp.c:989
 msgid ""
 "\n"
 "[-- End of PGP/MIME encrypted data --]\n"
@@ -2445,16 +2469,16 @@ msgstr ""
 "\n"
 "[-- Ende der PGP/MIME-verschlüsselten Daten --]\n"
 
-#: pgp.c:1081
+#: pgp.c:1072
 msgid "Can't open PGP subprocess!"
 msgstr "Kann PGP-Subprozeß nicht erzeugen!"
 
-#: pgp.c:1215
+#: pgp.c:1206
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Benutze KeyID = \"%s\" für %s?"
 
-#: pgp.c:1221
+#: pgp.c:1212
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "KeyID für %s: "
@@ -2693,71 +2717,71 @@ msgstr "Filtern"
 msgid "Print"
 msgstr "Drucke"
 
-#: recvattach.c:310
+#: recvattach.c:312
 msgid "Saving..."
 msgstr "Speichere..."
 
-#: recvattach.c:371
+#: recvattach.c:373
 msgid "Attachment saved"
 msgstr "Anhang gespeichert"
 
-#: recvattach.c:383
+#: recvattach.c:385
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "WARNUNG!  Datei %s existiert, überschreiben?"
 
-#: recvattach.c:401
+#: recvattach.c:403
 msgid "Attachment filtered."
 msgstr "Anhang gefiltert."
 
-#: recvattach.c:467
+#: recvattach.c:469
 msgid "Filter through: "
 msgstr "Filtere durch: "
 
-#: recvattach.c:467
+#: recvattach.c:469
 msgid "Pipe to: "
 msgstr "Übergebe an (pipe): "
 
-#: recvattach.c:502
+#: recvattach.c:504
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Kann %s Anhänge nicht drucken."
 
-#: recvattach.c:565
+#: recvattach.c:567
 msgid "Print tagged attachment(s)?"
 msgstr "Drucke markierte Anhänge?"
 
-#: recvattach.c:565
+#: recvattach.c:567
 msgid "Print attachment?"
 msgstr "Drucke Anhang?"
 
-#: recvattach.c:593
+#: recvattach.c:595
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Sie können nur message/rfc822-Anhänge erneut versenden."
 
-#: recvattach.c:629
+#: recvattach.c:631
 #, c-format
 msgid "Bounce messages to %s...?"
 msgstr "Nachrichten an %s... erneut versenden?"
 
-#: recvattach.c:630
+#: recvattach.c:632
 #, c-format
 msgid "Bounce message to %s...?"
 msgstr "Nachricht an %s... erneut versenden?"
 
-#: recvattach.c:855
+#: recvattach.c:857
 msgid "Attachments"
 msgstr "Anhänge"
 
-#: recvattach.c:910
-msgid "Only deletion of multipart attachments is supported."
-msgstr "Kann nur aus mehrteiligen Anhängen löschen."
-
-#: recvattach.c:918
+#: recvattach.c:914
 msgid "Deletion of attachments from PGP messages is unsupported."
 msgstr "Kann keine Anhänge aus PGP-Nachrichten löschen."
 
-#: recvattach.c:994
+#: recvattach.c:934 recvattach.c:951
+msgid "Only deletion of multipart attachments is supported."
+msgstr "Kann nur aus mehrteiligen Anhängen löschen."
+
+#: recvattach.c:1001
 msgid "This operation is not currently supported for PGP messages."
 msgstr "Diese Funktion wird nicht für PGP-Nachrichten unterstützt."
 
