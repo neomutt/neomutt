@@ -408,6 +408,12 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line)
 	return s;
       offset = ch - s - 1;
     }
+    else if (feof (fp))
+    {
+      /* The last line of fp isn't \n terminated */
+      (*line)++;
+      return s;
+    }
     else
     {
       /* There wasn't room for the line -- increase ``s'' */
