@@ -8,9 +8,9 @@ We've repeatedly had bug reports in the recent past where it was
 hard to see whether or not the problematic version of mutt had, say, 
 the compressed folders patch or the NNTP patch applied.
 
-From 1.3.23.2 on, I'll include the following mechanism to add a 
-patch identifier to mutt's version ID: There's a new file called 
-.PATCHES in the source tree, which will be _empty_ in the official 
+From 1.3.23.2 on, I'll include the following mechanism to add a
+patch identifier to mutt's version ID: There's a new file called
+PATCHES in the source tree, which will be _empty_ in the official
 distribution.
 
 This file's format is one patch ID per line.  Patch IDs should be 
