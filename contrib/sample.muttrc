@@ -5,7 +5,9 @@
 # ME's personal .muttrc (Mutt 0.92.5)
 #
 # The format of this file is one command per line.  Everything after a pound
-# sign (#) is a comment, unless a backward slash (\) precedes it
+# sign (#) is a comment, unless a backward slash (\) precedes it.  Note: In
+# folder-hook and send-hook you need to account for two levels of dequoting
+# (see manual).
 #
 
 # Note: $folder should be set _before_ any other path vars where `+' or `='
