@@ -1,3 +1,12 @@
+2005-03-05 07:10:57  brendan  (brendan)
+
+	* mutt_sasl.c, mutt_sasl.h, mutt_socket.c, mutt_socket.h,
+	mutt_ssl.c, mutt_ssl_gnutls.c, mutt_ssl_nss.c, mutt_tunnel.c:
+	Rename open/close/read/write function pointers to avoid problems
+	with systems where standard open/close/read/write functions are
+	implemented with macros. Thanks to Aaron Crane and others for
+	their input about the problem.
+
 2005-03-01 15:53:25  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
 
 	* po/ru.po: update
