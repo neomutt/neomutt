@@ -6,6 +6,9 @@
 # will be the default method unless the following option is set
 set smime_is_default
 
+# Uncoment this if you don't want to set labels for certificates you add.
+# unset smime_ask_cert_label
+
 # Passphrase expiration
 set smime_timeout=300
 
@@ -41,16 +44,11 @@ set smime_get_cert_command="openssl pkcs7 -print_certs -in %f"
 # Extract the signer's certificate only from a S/MIME signature (sender verification)
 set smime_get_signer_cert_command="openssl smime -verify -in %f -noverify -signer %c -out /dev/null"
 
-# This is used to get a filename for certificates that get stored in the
-# above directory
-set smime_hash_cert_command="openssl x509 -in  %f -noout -hash"
-
-# This is used to get a md5-fingerprint of a certificate for purpose
-# of comparism
-set smime_fingerprint_cert_command="openssl x509 -in  %f -noout -fingerprint"
-
 # This is used to get the email address the certificate was issued to.
 set smime_get_cert_email_command="openssl x509 -in  %f -noout -email"
+
+# Add a certificate to the database using smime_keys.
+set smime_import_cert_command="smime_keys add_cert %f"
 
 
 

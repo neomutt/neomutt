@@ -82,7 +82,7 @@ elsif(@ARGV == 2 and $ARGV[0] eq "add_cert") {
     $? and die "'$cmd' returned $?";
     chomp($cert_hash); 
     my $label = query_label;
-    &add_certificate($ARGV[1], \$cert_hash, 1, $label, '-');
+    &add_certificate($ARGV[1], \$cert_hash, 1, $label, '?');
 }
 elsif(@ARGV == 2 and $ARGV[0] eq "add_pem") {
     -e $ARGV[1] and -s $ARGV[1] or die("$ARGV[1] is nonexistent or empty.");
@@ -462,7 +462,10 @@ sub add_certificate ($$$$;$) {
     }
     $$hashvalue .= ".$iter";
     
-    unless (-e "$certificates_path/$$hashvalue") {
+    if (-e "$certificates_path/$$hashvalue") {
+            print "\nCertificate: $certificates_path/$$hashvalue already installed.\n";
+    }
+    else {
         mycopy $filename, "$certificates_path/$$hashvalue";
 
         if ($add_to_index) {
@@ -475,8 +478,9 @@ sub add_certificate ($$$$;$) {
 	      chomp($mailbox);
 	      add_entry($mailbox, $$hashvalue, 1, $label, $issuer_hash);
 
-	      print "added certificate: $certificates_path/$$hashvalue for $mailbox.\n";
+	      print "\ncertificate $$hashvalue ($label) for $mailbox added.\n";
 	    }
+	    verify_cert($$hashvalue, undef);
         }
         else {
             print "added certificate: $certificates_path/$$hashvalue.\n";
@@ -627,7 +631,10 @@ sub handle_pem (@) {
         }
         $iter++;
     }
-    ($iter > $#pem_contents / 4) and die("Couldn't identify root certificate!");
+    if ($iter > $#pem_contents / 4) {
+      print "Couldn't identify root certificate!\n";
+      $root_cert = -1;      
+    }
 
     # what's left are intermediate certificates.
     $iter = 0;
@@ -652,8 +659,10 @@ sub handle_pem (@) {
         $iter++;
     }
 
-    # no intermediate certificates ? use root-cert instead
+    # no intermediate certificates ? use root-cert instead (if that was found...)
     if($intermediate == $root_cert) {
+        $root_cert == -1 and
+	  die("No root and no intermediate certificates. Can't continue.");
         mycopy "cert_tmp.$root_cert", 'tmp_issuer_cert';
     }
 
@@ -878,17 +887,7 @@ sub do_verify($$$) {
   print "\n";
 
   if ($result eq 'v') {
-    print "Certificate was successfully verified.\n";
-    while(1) {
-      print "Do you choose to trust this certificate ? (yes/no) ";
-      chomp($trust_q = <STDIN>);
-      if ($trust_q =~ /^y/i) {
-        return 't';
-      } elsif ($trust_q =~ /^n/i) {
-        return 'v';
-      }
-      print "That made no sense.\n";
-    }   
+    return 't';
   }
 
   return $result;

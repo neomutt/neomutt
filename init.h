@@ -1278,6 +1278,12 @@ struct option_t MuttVars[] = {
   ** select the same application that was used to sign/encrypt the original
   ** message.
   */
+  { "smime_ask_cert_label",	DT_BOOL, R_NONE, OPTASKCERTLABEL, 1 },
+  /*
+  ** .pp
+  ** This flag controls wether you want to be asked to enter a label for a certificate
+  ** about to be added to the database or not. It is set by default.
+  */
 #endif
 #ifdef HAVE_PGP
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
@@ -1606,17 +1612,10 @@ struct option_t MuttVars[] = {
   **  signature, so that the certificate's owner may get compared to the email's 
   ** 'From'-field.
   */
-  { "smime_hash_cert_command", 	DT_STR, R_NONE, UL &SmimeHashCertCommand, 0},
+  { "smime_import_cert_command", 	DT_STR, R_NONE, UL &SmimeImportCertCommand, 0},
   /*
   ** .pp
-  ** This command is used to calculate a hash value used for storing
-  ** X509 certificates. (The value is derived from the cert's subject field)
-  */
-  { "smime_fingerprint_cert_command", 	DT_STR, R_NONE, UL &SmimeFingerprintCertCommand, 0},
-  /*
-  ** .pp
-  ** This command returns a md5-fingerprint of the certificate.
-  ** That way, certificates with an identical subject field can get compared.
+  ** This command is used to import a certificate via smime_keys.
   */
   { "smime_get_cert_email_command", 	DT_STR, R_NONE, UL &SmimeGetCertEmailCommand, 0},
   /*

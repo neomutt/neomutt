@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001 Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -42,8 +42,7 @@ WHERE char *SmimeEncryptCommand;
 WHERE char *SmimeGetSignerCertCommand;
 WHERE char *SmimePk7outCommand;
 WHERE char *SmimeGetCertCommand;
-WHERE char *SmimeHashCertCommand;
-WHERE char *SmimeFingerprintCertCommand;
+WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
 
 
@@ -66,30 +65,28 @@ void smime_void_passphrase (void);
 int mutt_is_application_smime (BODY *);
 
 
+int   smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
+
+void  smime_application_smime_handler (BODY *, STATE *);
 
 
-int smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
+BODY* smime_sign_message (BODY *);
 
-void smime_application_smime_handler (BODY *, STATE *);
+BODY* smime_build_smime_entity (BODY *, char *);
 
-int smime_verify_sender(HEADER *);
-
-
+int   smime_verify_one(BODY *, STATE *, const char *);
 
 
-char *smime_get_field_from_db (char *, char *, short, short);
+int   smime_verify_sender(HEADER *);
+
+
+char* smime_get_field_from_db (char *, char *, short, short);
+
+void  smime_getkeys (ENVELOPE *);
 
 char* smime_ask_for_key (char *, char *, short);
 
-void smime_getkeys (ENVELOPE *);
 
-/* private ? */
+void  smime_invoke_import (char *, char *);
 
-void smime_invoke_import (char *, char *);
-
-int smime_verify_one(BODY *, STATE *, const char *);
-
-BODY *smime_sign_message (BODY *);
-
-BODY *smime_build_smime_entity (BODY *, char *);
 #endif
