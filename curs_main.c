@@ -1251,7 +1251,7 @@ int mutt_index_menu (void)
 	menu->current = -1;
 	for (j = 0; j != Context->vcount; j++)
 	{
-#define CUR Context->hdrs[Context->v2r[i]]
+#define CURHDR Context->hdrs[Context->v2r[i]] 
 	  if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_NEXT_UNREAD)
 	  {
 	    i++;
@@ -1271,31 +1271,31 @@ int mutt_index_menu (void)
 	    }
 	  }
 
-	  if (CUR->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
+	  if (CURHDR->collapsed && (Sort & SORT_MASK) == SORT_THREADS)
 	  {
 	    if ((op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD) &&
-		UNREAD (CUR))
+		UNREAD (CURHDR))
 	    {
 	      menu->current = i;
 	      break;
 	    }
 	    if ((op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) &&
-		UNREAD (CUR) == 1)
+		UNREAD (CURHDR) == 1)
 	    {
 	      menu->current = i;
 	      break;
 	    }
 	  }
-	  else if ((!CUR->deleted && !CUR->read))
+	  else if ((!CURHDR->deleted && !CURHDR->read))
 	  {
-	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD || !CUR->old)
+	    if (op == OP_MAIN_NEXT_UNREAD || op == OP_MAIN_PREV_UNREAD || !CURHDR->old)
 	    {
 	      menu->current = i;
 	      break;
 	    }
 	  }
 	}
-#undef CUR
+#undef CURHDR
 	if (menu->current == -1)
 	{
 	  menu->current = menu->oldcurrent;
