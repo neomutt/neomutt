@@ -360,6 +360,9 @@ int mutt_is_application_smime (BODY *m)
   char *t=NULL;
   int len, complain=0;
 
+  if(!m)
+    return 0;
+
   if ((m->type & TYPEAPPLICATION) && m->subtype)
   {
     /* S/MIME MIME types don't need x- anymore, see RFC2311 */
