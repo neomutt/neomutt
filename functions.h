@@ -365,6 +365,7 @@ struct binding_t OpEditor[] = {
   { "buffy-cycle",	OP_EDITOR_BUFFY_CYCLE,		" " },
   { "history-up",	OP_EDITOR_HISTORY_UP,		NULL },
   { "history-down",	OP_EDITOR_HISTORY_DOWN,		NULL },
+  { "transpose-chars",	OP_EDITOR_TRANSPOSE_CHARS,	NULL },
   { NULL,		0,				NULL }
 };
 

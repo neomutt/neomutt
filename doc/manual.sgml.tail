@@ -311,6 +311,7 @@ kill-eol                  ^K   delete chars from cursor to end of line
 kill-line                 ^U   delete all chars on the line
 kill-word                 ^W   delete the word in front of the cursor
 quote-char                ^V   quote the next typed key
+transpose-chars    not bound   transpose character under cursor with previous
 </verb>
 
 <sect>Miscellany
