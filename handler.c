@@ -337,7 +337,7 @@ void mutt_decode_uuencoded (STATE *s, BODY *b, int istext, iconv_t cd)
   char *pt;
   long len = b->length;
   char bufi[BUFI_SIZE];
-  size_t k;
+  size_t k = 0;
 
   if(istext)
     state_set_prefix(s);
