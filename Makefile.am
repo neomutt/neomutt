@@ -158,7 +158,7 @@ commit-real:
 	cvs commit
 
 commit-changelog:
-	cvs commit -m "# changelog commit"
+	cvs commit -m "# changelog commit" ChangeLog
 
 commit: pclean check-security commit-real changelog commit-changelog
 
