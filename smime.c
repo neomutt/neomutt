@@ -861,7 +861,7 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
   FILE *fpout = NULL, *fperr = NULL;
   char tmpfname[_POSIX_PATH_MAX];
   char email[STRING];
-  int ret = 0;
+  int ret = -1;
   pid_t thepid;
 
   mutt_mktemp (tmpfname);
@@ -900,19 +900,24 @@ static int smime_check_cert_email (char *certificate, char *mailbox)
   fflush (fperr);
 
 
-  if (!(fgets (email, sizeof (email), fpout)))
+  while ((fgets (email, sizeof (email), fpout)))
+  {
+    *(email+mutt_strlen(email)-1) = '\0';
+    if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox))==0)
+    {
+      ret = 0;
+      break;
+    }
+    ret = 1;
+  }
+  if (ret == -1)
   {
     mutt_copy_stream (fperr, stdout);
-    fclose (fpout);
-    fclose (fperr);
     mutt_endwin(NULL);
     mutt_error (_("Alert: No mailbox specified in certificate.\n"));
-    return 1;
+    ret = 1;
   }
-  *(email+mutt_strlen(email)-1) = '\0';
-
-
-  if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)))
+  else if (ret == 1)
   {
     mutt_endwin(NULL);
     mutt_error (_("Alert: Certificate belongs to \"%s\".\n"
@@ -1087,7 +1092,9 @@ static char *smime_extract_signer_certificate (char *infile)
   empty =  (fgetc (fpout) == EOF);
   if (empty)
   {
+    mutt_endwin (NULL);
     mutt_copy_stream (fperr, stdout);
+    mutt_any_key_to_continue (NULL);
     fclose (fpout);
     fclose (fperr);
     mutt_unlink (certfile);
@@ -1131,7 +1138,7 @@ static void smime_add_certificate (char *certificate, char *mailbox, short publi
 
   /* 
      OpenSSl can create a hash value of the certificate's subject.
-     This and a concatenated integer make up the certificat's
+     This and a concatenated integer make up the certificate's
      'unique id' and also its filename.
   */
 
@@ -1875,14 +1882,14 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 
   mutt_unlink (tmpfname);
   
-  if (s->flags & M_DISPLAY)
-    mutt_copy_stream (smimeerr, s->fpout);
-  
-  if (s->flags & M_DISPLAY)
-    state_attach_puts (_("\n[-- End of OpenSSL output --]\n\n"), s);
-  
+
   if (s->flags & M_DISPLAY)
   {
+    rewind (smimeerr);
+    mutt_copy_stream (smimeerr, s->fpout);
+
+    state_attach_puts (_("\n[-- End of OpenSSL output --]\n\n"), s);
+  
     if (type & ENCRYPT)
       state_attach_puts (_("\n[-- The following data is S/MIME"
                            " encrypted --]\n"), s);

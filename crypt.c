@@ -521,7 +521,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
           mbox = tmp ? tmp->mailbox : NULL;
 	  if (mbox)
 	  {
-	    mutt_message (_("Trying to extract S/MIME certificates...\n"));
+	    mutt_endwin (_("Trying to extract S/MIME certificates...\n"));
 	    smime_invoke_import (tempfname, mbox);
 	    tmp = NULL;
 	  }
