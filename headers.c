@@ -40,7 +40,7 @@ void mutt_edit_headers (const char *editor,
   ENVELOPE *n;
   time_t mtime;
   struct stat st;
-  LIST *cur, *last = NULL, *tmp;
+  LIST *cur, **last = NULL, *tmp;
 
   mutt_mktemp (path);
   if ((ofp = safe_fopen (path, "w")) == NULL)
@@ -123,6 +123,7 @@ void mutt_edit_headers (const char *editor,
    */
 
   cur = msg->env->userhdrs;
+  last = &msg->env->userhdrs;
   while (cur)
   {
     keep = 1;
@@ -188,17 +189,14 @@ void mutt_edit_headers (const char *editor,
 
     if (keep)
     {
-      last = cur;
-      cur = cur->next;
+      last = &cur->next;
+      cur  = cur->next;
     }
     else
     {
-      if (last)
-	last->next = cur->next;
-      else
-	msg->env->userhdrs = cur->next;
-      tmp = cur;
-      cur = cur->next;
+      tmp       = cur;
+      *last     = cur->next;
+      cur       = cur->next;
       tmp->next = NULL;
       mutt_free_list (&tmp);
     }
