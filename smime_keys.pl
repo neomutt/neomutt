@@ -50,6 +50,7 @@ sub do_verify($$$ );
 # Get the directories mutt uses for certificate/key storage.
 
 my $mutt = $ENV{MUTT_CMDLINE} || 'mutt';
+my $opensslbin = "/usr/bin/openssl";
 
 my $private_keys_path = mutt_Q 'smime_keys';
 my $certificates_path = mutt_Q 'smime_certificates';
@@ -77,7 +78,7 @@ elsif(@ARGV == 2 and $ARGV[0] eq "label") {
 }
 elsif(@ARGV == 2 and $ARGV[0] eq "add_cert") {
     my $format = -B $ARGV[1] ? 'DER' : 'PEM'; 
-    my $cmd = "openssl x509 -noout -hash -in $ARGV[1] -inform $format";
+    my $cmd = "$opensslbin x509 -noout -hash -in $ARGV[1] -inform $format";
     my $cert_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
     chomp($cert_hash); 
@@ -100,7 +101,7 @@ elsif( @ARGV == 2 and $ARGV[0] eq "add_p12") {
 
     my $pem_file = "$ARGV[1].pem";
     
-    my $cmd = "openssl pkcs12 -in $ARGV[1] -out $pem_file";
+    my $cmd = "$opensslbin pkcs12 -in $ARGV[1] -out $pem_file";
     system $cmd and die "'$cmd' returned $?";
     
     -e $pem_file and -s $pem_file or die("Conversion of $ARGV[1] failed.");
@@ -113,14 +114,14 @@ elsif( @ARGV == 2 and $ARGV[0] eq "add_p12") {
 elsif(@ARGV == 4 and $ARGV[0] eq "add_chain") {
     my $mailbox;
     my $format = -B $ARGV[2] ? 'DER' : 'PEM'; 
-    my $cmd = "openssl x509 -noout -hash -in $ARGV[2] -inform $format";
+    my $cmd = "$opensslbin x509 -noout -hash -in $ARGV[2] -inform $format";
     my $cert_hash = `$cmd`;
 
     $? and die "'$cmd' returned $?";
 
     $format = -B $ARGV[3] ? 'DER' : 'PEM'; 
 
-    $cmd = "openssl x509 -noout -hash -in $ARGV[3] -inform $format";
+    $cmd = "$opensslbin x509 -noout -hash -in $ARGV[3] -inform $format";
     my $issuer_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
     
@@ -307,7 +308,7 @@ sub list_certs () {
         close TMP_FILE;        
 
         my $format = -B $certfile ? 'DER' : 'PEM'; 
-        my $cmd = "openssl x509 -subject -issuer -dates -noout -in cert_tmp.list -inform $format";
+        my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in cert_tmp.list -inform $format";
         ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
         $? and die "'$cmd' returned $?";
 
@@ -354,7 +355,7 @@ sub list_certs () {
       print "$tab - Matching private key installed -\n";
 
     my $format = -B "$certificates_path/$fields[1]" ? 'DER' : 'PEM'; 
-    my $cmd = "openssl x509 -purpose -noout -in cert_tmp.list -inform $format";
+    my $cmd = "$opensslbin x509 -purpose -noout -in cert_tmp.list -inform $format";
     my $purpose_in = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -447,12 +448,12 @@ sub add_certificate ($$$$;$) {
     while(-e "$certificates_path/$$hashvalue.$iter") {
         my ($t1, $t2);
         my $format = -B $filename ? 'DER' : 'PEM'; 
-        my $cmd = "openssl x509 -in $filename -inform $format -fingerprint -noout";
+        my $cmd = "$opensslbin x509 -in $filename -inform $format -fingerprint -noout";
         $t1 = `$cmd`;
         $? and die "'$cmd' returned $?";
 
         $format = -B "$certificates_path/$$hashvalue.$iter" ? 'DER' : 'PEM'; 
-        $cmd = "openssl x509 -in $certificates_path/$$hashvalue.$iter -inform $format -fingerprint -noout";
+        $cmd = "$opensslbin x509 -in $certificates_path/$$hashvalue.$iter -inform $format -fingerprint -noout";
         $t2 = `$cmd`;
         $? and die "'$cmd' returned $?";
         
@@ -470,7 +471,7 @@ sub add_certificate ($$$$;$) {
 
         if ($add_to_index) {
             my $format = -B $filename ? 'DER' : 'PEM'; 
-	    my $cmd = "openssl x509 -in $filename -inform $format -email -noout";
+	    my $cmd = "$opensslbin x509 -in $filename -inform $format -email -noout";
 	    @mailbox = `$cmd`;
 	    $? and die "'$cmd' returned $?";
 
@@ -649,9 +650,11 @@ sub handle_pem (@) {
             next;
         }
 
-# FIXME: This should be done in perl
-        my $cmd = "cat cert_tmp.$iter >> tmp_issuer_cert";
-        system $cmd and die "'$cmd' returned $?";
+	open (IC, ">> tmp_issuer_cert") or die "can't open imp_issuer_cert: $?";
+	open (CERT, "< cert_tmp.$iter") or die "can't open cert_tmp.$iter: $?";
+	print IC while (<CERT>);
+	close IC;
+	close CERT;
 
 	# although there may be many, just need to know if there was any
 	$intermediate = $iter;
@@ -669,12 +672,12 @@ sub handle_pem (@) {
     my $label = query_label;
 
     my $format = -B 'tmp_certificate' ? 'DER' : 'PEM'; 
-    my $cmd = "openssl x509 -noout -hash -in tmp_certificate -inform $format";
+    my $cmd = "$opensslbin x509 -noout -hash -in tmp_certificate -inform $format";
     my $cert_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
 
     $format = -B 'tmp_issuer_cert' ? 'DER' : 'PEM'; 
-    $cmd = "openssl x509 -noout -hash -in tmp_issuer_cert -inform $format";
+    $cmd = "$opensslbin x509 -noout -hash -in tmp_issuer_cert -inform $format";
     my $issuer_hash = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -831,7 +834,7 @@ sub do_verify($$$) {
     $issuer_path = "$certificates_path/$issuerid";
   }
 
-  my $cmd = "openssl verify $root_certs_switch $root_certs_path -purpose smimesign -purpose smimeencrypt -untrusted $issuer_path $cert_path";
+  my $cmd = "$opensslbin verify $root_certs_switch $root_certs_path -purpose smimesign -purpose smimeencrypt -untrusted $issuer_path $cert_path";
   my $output = `$cmd`;
   $? and die "'$cmd' returned $?";
   chop $output;
@@ -842,7 +845,7 @@ sub do_verify($$$) {
   $result eq 'i' and return $result;
 
   my $format = -B $cert_path ? 'DER' : 'PEM'; 
-  $cmd = "openssl x509 -dates -serial -noout -in $cert_path -inform $format";
+  $cmd = "$opensslbin x509 -dates -serial -noout -in $cert_path -inform $format";
   (my $date1_in, my $date2_in, my $serial_in) = `$cmd`;
   $? and die "'$cmd' returned $?";
 
@@ -874,7 +877,7 @@ sub do_verify($$$) {
     
   if ( defined $crl ) {
     my @serial = split (/\=/, $serial_in);
-    my $cmd = "openssl crl -text -noout -in $crl | grep -A1 $serial[1]";
+    my $cmd = "$opensslbin crl -text -noout -in $crl | grep -A1 $serial[1]";
     (my $l1, my $l2) = `$cmd`;
     $? and die "'$cmd' returned $?";
     
@@ -900,7 +903,7 @@ sub add_root_cert ($) {
 
   my $format = -B $root_cert ? 'DER' : 'PEM'; 
 
-  my $cmd = "openssl x509 -noout -hash -in $root_cert -inform $format";
+  my $cmd = "$opensslbin x509 -noout -hash -in $root_cert -inform $format";
   my $root_hash = `$cmd`;
   $? and die "'$cmd' returned $?";
 
@@ -912,11 +915,11 @@ sub add_root_cert ($) {
     open(ROOT_CERTS, ">>$root_certs_path") or 
       die ("Couldn't open $root_certs_path for writing");
 
-    $cmd = "openssl x509 -in $root_cert -inform $format -fingerprint -noout";
+    $cmd = "$opensslbin x509 -in $root_cert -inform $format -fingerprint -noout";
     $? and die "'$cmd' returned $?";
     chomp(my $md5fp = `$cmd`);
 
-    $cmd = "openssl x509 -in $root_cert -inform $format -text -noout";
+    $cmd = "$opensslbin x509 -in $root_cert -inform $format -text -noout";
     $? and die "'$cmd' returned $?";
     my @cert_text = `$cmd`;
 
@@ -926,7 +929,7 @@ sub add_root_cert ($) {
     my $line = "=======================================\n";
     print ROOT_CERTS "\n$input$line$md5fp\nPEM-Data:\n";
 
-    $cmd = "openssl x509 -in $root_cert -inform $format";
+    $cmd = "$opensslbin x509 -in $root_cert -inform $format";
     my $cert = `$cmd`;
     $? and die "'$cmd' returned $?";
     print ROOT_CERTS $cert;
