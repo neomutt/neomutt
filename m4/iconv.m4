@@ -8,7 +8,7 @@ AC_DEFUN([MUTT_AM_ICONV],
   dnl those with the standalone portable GNU libiconv installed).
 
   AC_ARG_WITH([libiconv-prefix],
-[  --with-libiconv-prefix=DIR Search for libiconv in DIR/include and DIR/lib], [
+AC_HELP_STRING([--with-libiconv-prefix=DIR], [Search for libiconv in DIR/include and DIR/lib]), [
     for dir in `echo "$withval" | tr : ' '`; do
       if test -d $dir/include; then CPPFLAGS="$CPPFLAGS -I$dir/include"; fi
       if test -d $dir/lib; then LDFLAGS="$LDFLAGS -L$dir/lib"; fi
