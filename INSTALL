@@ -137,6 +137,10 @@ to ``configure'' to help it out, or change the default behavior:
 	you leave it unset, Mutt will attempt to use isprint() if either
 	of the environment variables LANG, LC_ALL or LC_CTYPE is set,
 	and will revert to the ISO-8859-* range if they aren't.
+	If you need --enable-locales-fix then you will probably need
+	--without-wc-funcs too. However, on a correctly configured
+	modern system you shouldn't need either (try setting LANG,
+	LC_ALL or LC_CTYPE instead).
 
 --without-wc-funcs
 	by default Mutt uses the functions mbrtowc(), wctomb() and
