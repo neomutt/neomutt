@@ -39,7 +39,7 @@ systems:
 - Mutt needs an implementation of the iconv API for character set
   conversions.  A free one can be found under the following URL:
 
-  	http://clisp.cons.org/~haible/packages-libiconv.html
+	http://www.gnu.org/software/libiconv/
 
 
 

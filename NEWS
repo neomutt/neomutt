@@ -54,7 +54,7 @@ Character set support
 - Mutt now uses the iconv interface for character set conversions.
   This means that you need either a very modern libc, or Bruno
   Haible's libiconv, which is available from
-  <http://clisp.cons.org/~haible/packages-libiconv.html>.
+  <http://www.gnu.org/software/libiconv/>.
 
 - With sufficiently recent versions of ncurses and slang, mutt works
   properly in utf-8 locales.
