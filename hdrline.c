@@ -242,18 +242,13 @@ static void hdr_format_s (char *dest,
   if (*prefix == '-')
     ++prefix, right_justify = 0;
   min_width = strtol (prefix, &p, 10);
-  if (p > prefix)
+  if (*p == '.')
   {
-    if (*p == '.')
-    {
-      prefix = p + 1;
-      max_width = strtol (prefix, &p, 10);
-      if (p <= prefix)
-	max_width = INT_MAX;
-    }
+    prefix = p + 1;
+    max_width = strtol (prefix, &p, 10);
+    if (p <= prefix)
+      max_width = INT_MAX;
   }
-  else
-    min_width = 0;
 
   mutt_format_string (dest, destlen, min_width, max_width,
 		      right_justify, ' ', s, -1);
