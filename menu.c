@@ -20,6 +20,10 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 
+#ifdef USE_IMAP
+#include "imap.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 
@@ -751,10 +755,10 @@ int mutt_menuLoop (MUTTMENU *menu)
   {
     mutt_curs_set (0);
 
-    /* IMAP keepalive */
-    if (mutt_buffy_notify () && option (OPTBEEPNEW))
-      beep ();
-    
+#ifdef USE_IMAP
+    imap_keepalive ();
+#endif
+
     /* See if all or part of the screen needs to be updated.  */
     if (menu->redraw & REDRAW_FULL)
     {

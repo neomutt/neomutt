@@ -305,13 +305,26 @@ int imap_wordcasecmp(const char *a, const char *b)
   return mutt_strcasecmp(a, tmp);
 }
 
-/* imap keepalive: use buffy to poll a remote imap folder
- * while waiting for an external process
+/* 
+ * Imap keepalive: poll the current folder to keep the
+ * connection alive.
+ * 
  */
 
 static RETSIGTYPE alrm_handler (int sig)
 {
   /* empty */
+}
+
+void imap_keepalive (void)
+{
+  CONTEXT *ctx = Context;
+  
+  if (ctx == NULL || ctx->magic != M_IMAP ||
+      CTX_DATA->selected_ctx != ctx)
+    return;
+
+  imap_check_mailbox (ctx, NULL);
 }
 
 int imap_wait_keepalive (pid_t pid)
@@ -342,9 +355,7 @@ int imap_wait_keepalive (pid_t pid)
   while (waitpid (pid, &rc, 0) < 0 && errno == EINTR)
   {
     alarm (0); /* cancel a possibly pending alarm */
-    if (!option (OPTMSGERR))
-      mutt_buffy_check (0);
-
+    imap_keepalive ();
     alarm (ImapCheckTimeout > 0 ? ImapCheckTimeout : 60);
   }
 
@@ -364,12 +375,12 @@ int imap_wait_keepalive (pid_t pid)
 
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  if (ctx->magic == M_IMAP)
+  if (ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
     CTX_DATA->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  if (ctx->magic == M_IMAP)
+  if (ctx->magic == M_IMAP && CTX_DATA->selected_ctx == ctx)
     CTX_DATA->reopen &= ~IMAP_REOPEN_ALLOW;
 }

@@ -26,6 +26,9 @@
 #include "pager.h"
 #include "attach.h"
 
+#ifdef USE_IMAP
+#include "imap.h"
+#endif
 
 
 #ifdef HAVE_PGP
@@ -1485,10 +1488,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   {
     mutt_curs_set (0);
 
-    /* IMAP keep-alive */
-    if (mutt_buffy_notify () && option (OPTBEEPNEW))
-      beep ();
-
+#ifdef USE_IMAP
+    imap_keepalive ();
+#endif
+    
     if (redraw & REDRAW_FULL)
     {
       SETCOLOR (MT_COLOR_NORMAL);
