@@ -484,7 +484,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr)
   }
 
   if (!option (OPTATTACHSPLIT) && (rc == 0))
-    mutt_message _("Attachment saved");
+    mutt_message _("Attachment saved.");
 }
 
 static void
