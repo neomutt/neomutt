@@ -227,14 +227,6 @@ static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
 		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
 }
   
-static int pgp_search (MUTTMENU * m, regex_t * re, int n)
-{
-  char buf[LONG_STRING];
-
-  pgp_entry (buf, sizeof (buf), m, n);
-  return (regexec (re, buf, 0, NULL, 0));
-}
-
 static int pgp_compare (const void *a, const void *b)
 {
   int r;
@@ -303,7 +295,6 @@ static pgp_key_t *pgp_select_key (struct pgp_vinfo *pgp,
   menu = mutt_new_menu ();
   menu->max = keymax;
   menu->make_entry = pgp_entry;
-  menu->search = pgp_search;
   menu->menu = MENU_PGP;
   menu->help = helpstr;
   menu->data = KeyTable;

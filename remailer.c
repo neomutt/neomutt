@@ -51,7 +51,6 @@ static REMAILER *mix_new_remailer (void);
 static const char *mix_format_caps (REMAILER *r);
 static int mix_chain_add (MIXCHAIN *chain, const char *s, REMAILER **type2_list);
 static int mix_get_caps (const char *capstr);
-static int mix_search (MUTTMENU *, regex_t *, int);
 static void mix_add_entry (REMAILER ***, REMAILER *, size_t *, size_t *);
 static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num);
 static void mix_free_remailer (REMAILER **r);
@@ -445,14 +444,6 @@ static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 		     (unsigned long) type2_list[num], M_FORMAT_ARROWCURSOR);
 }
 
-static int mix_search (MUTTMENU *m, regex_t *re, int n)
-{
-  char buf[LONG_STRING];
-
-  mix_entry (buf, sizeof (buf), m, n);
-  return (regexec (re, buf, 0, NULL, 0));
-}
-  
 static int mix_chain_add (MIXCHAIN *chain, const char *s, 
 			  REMAILER **type2_list)
 {
@@ -543,7 +534,6 @@ void mix_make_chain (LIST **chainp, int *redraw)
   menu->menu = MENU_MIX;
   menu->max = ttll;
   menu->make_entry = mix_entry;
-  menu->search = mix_search;
   menu->tag = NULL;
   menu->title = _("Select a remailer chain.");
   menu->data = type2_list;
