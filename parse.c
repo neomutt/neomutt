@@ -425,6 +425,8 @@ void mutt_parse_part (FILE *fp, BODY *b)
 	  b->parts = mutt_parse_messageRFC822 (fp, b);
 	else if (mutt_strcasecmp (b->subtype, "external-body") == 0)
 	  b->parts = mutt_read_mime_header (fp, 0);
+	else
+	  return;
       }
       break;
 
@@ -807,6 +809,9 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
 
   if (cur->content->type != TYPEMESSAGE && cur->content->type != TYPEMULTIPART)
     return; /* nothing to do */
+
+  if (cur->content->parts)
+    return; /* The message was parsed earlier. */
 
   if ((msg = mx_open_message (ctx, cur->msgno)))
   {
