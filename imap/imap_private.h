@@ -29,8 +29,7 @@
 
 /* logging levels */
 #define IMAP_LOG_CMD  2
-#define IMAP_LOG_HDR  3
-#define IMAP_LOG_BODY 4
+#define IMAP_LOG_LTRL 4
 #define IMAP_LOG_PASS 5
 
 /* number of entries in the hash table */
@@ -176,7 +175,7 @@ int imap_open_connection (IMAP_DATA* idata, CONNECTION* conn);
 time_t imap_parse_date (char* s);
 int imap_parse_list_response(CONNECTION* conn, char* buf, int buflen,
   char** name, int* noselect, int* noinferiors, char* delim);
-int imap_read_bytes (FILE* fp, CONNECTION* conn, long bytes);
+int imap_read_literal (FILE* fp, CONNECTION* conn, long bytes);
 int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint);
 void imap_logout (CONNECTION* conn);
 

@@ -118,22 +118,42 @@ time_t imap_parse_date (char *s)
   return (mutt_mktime (&t, 0) + tz);
 }
 
-/* imap_read_bytes: read bytes bytes from server into file */
-int imap_read_bytes (FILE *fp, CONNECTION *conn, long bytes)
+/* imap_read_literal: read bytes bytes from server into file. Not explicitly
+ *   buffered, relies on FILE buffering. NOTE: strips \r from \r\n.
+ *   Apparently even literals use \r\n-terminated strings ?! */
+int imap_read_literal (FILE* fp, CONNECTION* conn, long bytes)
 {
   long pos;
-  long len;
-  char buf[LONG_STRING];
+  char c;
 
-  for (pos = 0; pos < bytes; )
+  int r = 0;
+
+  dprint (2, (debugfile, "imap_read_literal: reading %ld bytes\n", bytes));
+ 
+  for (pos = 0; pos < bytes; pos++)
   {
-    len = mutt_socket_readln_d (buf, sizeof (buf), conn, IMAP_LOG_HDR);
-    if (len < 0)
+    if (mutt_socket_readchar (conn, &c) != 1)
+    {
+      dprint (1, (debugfile, "imap_read_literal: error during read, %ld bytes read\n", pos));
       return -1;
+    }
 
-    pos += len;
-    fputs (buf, fp);
-    fputs ("\n", fp);
+    if (r == 1 && c != '\n')
+      fputc ('\r', fp);
+
+    if (c == '\r')
+    {
+      r = 1;
+      continue;
+    }
+    else
+      r = 0;
+    
+    fputc (c, fp);
+#ifdef DEBUG
+    if (debuglevel >= IMAP_LOG_LTRL)
+      fputc (c, debugfile);
+#endif
   }
 
   return 0;

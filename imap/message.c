@@ -82,6 +82,10 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     return -1;
   unlink (tempfile);
 
+  /* make sure context has room to hold the mailbox */
+  while ((msgend) >= ctx->hdrmax)
+    mx_alloc_memory (ctx);
+
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
     mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
@@ -122,6 +126,9 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
       if (buf[0] == '*')
       {
 	rc = msg_fetch_header (ctx, h, buf, fp);
+	/* make sure we don't get remnants from older larger message headers */
+	fputs ("\n\n", fp);
+
 	if ((rc == -1 && imap_handle_untagged (CTX_DATA, buf)) || rc == -2)
 	{
 	  imap_free_header_data ((void**) &(h->data));
@@ -131,6 +138,7 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 	}
 
 	/* update context with message header */
+
 	ctx->hdrs[ctx->msgcount] = mutt_new_header ();
 	ctx->hdrs[ctx->msgcount]->index = ctx->msgcount;
 
@@ -160,12 +168,12 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
     while ((msgno + 1) >= fetchlast && mutt_strncmp (seq, buf, SEQLEN) != 0);
 
     /* in case we get new mail while fetching the headers */
-    if (((IMAP_DATA *) ctx->data)->status == IMAP_NEW_MAIL)
+    if (CTX_DATA->status == IMAP_NEW_MAIL)
     {
-      msgend = ((IMAP_DATA *) ctx->data)->newMailCount - 1;
-      while ((msgend + 1) > ctx->hdrmax)
-        mx_alloc_memory (ctx);
-      ((IMAP_DATA *) ctx->data)->status = 0;
+      msgend = CTX_DATA->newMailCount - 1;
+      while ((msgend) >= ctx->hdrmax)
+	mx_alloc_memory (ctx);
+      CTX_DATA->status = 0;
     }
   }
 
@@ -176,12 +184,11 @@ int imap_read_headers (CONTEXT *ctx, int msgbegin, int msgend)
 
 int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 {
-  char seq[8];
+  char seq[SEQLEN+1];
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc;
   long bytes;
-  int pos, len;
   IMAP_CACHE *cache;
 
   /* see if we already have the message in our cache */
@@ -253,18 +260,10 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	      imap_error ("imap_fetch_message()", buf);
 	      goto bail;
 	    }
-	    for (pos = 0; pos < bytes; )
-	    {
-	      len = mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn,
-                IMAP_LOG_BODY);
-	      if (len < 0)
-		goto bail;
-	      pos += len;
-	      fputs (buf, msg->fp);
-	      fputs ("\n", msg->fp);
-	    }
-	    if (mutt_socket_readln_d (buf, sizeof (buf), CTX_DATA->conn,
-                IMAP_LOG_BODY) < 0)
+	    if (imap_read_literal (msg->fp, CTX_DATA->conn, bytes) < 0)
+	      goto bail;
+	    /* pick up trailing line */
+	    if (mutt_socket_readln (buf, sizeof (buf), CTX_DATA->conn) < 0)
 	      goto bail;
 	    pc = buf;
 	  }
@@ -652,7 +651,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   
   if (imap_get_literal_count (buf, &bytes) < 0)
     return rc;
-  imap_read_bytes (fp, CTX_DATA->conn, bytes);
+  imap_read_literal (fp, CTX_DATA->conn, bytes);
 
   /* we may have other fields of the FETCH _after_ the literal
    * (eg Domino puts FLAGS here). Nothing wrong with that, either.

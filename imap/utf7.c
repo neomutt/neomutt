@@ -48,7 +48,8 @@ static char B64Chars[64] = {
  * form, such as &ACY- (instead of &-) or &AMA-&AMA- (instead
  * of &AMAAwA-).
  */
-char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8, size_t *u8len)
+static char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8,
+  size_t *u8len)
 {
   char *buf, *p;
   int b, ch, k;
@@ -140,7 +141,8 @@ char *utf7_to_utf8 (const char *u7, size_t u7len, char **u8, size_t *u8len)
  * Unicode characters above U+FFFF are replaced by U+FFFE.
  * If input data is invalid, return 0 and don't store anything.
  */
-char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7, size_t *u7len)
+static char *utf8_to_utf7 (const char *u8, size_t u8len, char **u7,
+  size_t *u7len)
 {
   char *buf, *p;
   int ch;

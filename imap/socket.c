@@ -89,22 +89,28 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   char ch;
   int i;
 
-  for (i = 0; i < buflen; i++)
+  for (i = 0; i < buflen-1; i++)
   {
     if (mutt_socket_readchar (conn, &ch) != 1)
-      return (-1);
+    {
+      dprint (1, (debugfile, "mutt_socket_readln_d: read error"));
+      buf[i] = '\0';
+      return -1;
+    }
     if (ch == '\n')
       break;
     buf[i] = ch;
   }
-  if (i)
+
+  /* strip \r from \r\n termination */
+  if (i && buf[i-1] == '\r')
     buf[i-1] = '\0';
   else
     buf[i] = '\0';
 
   dprint (dbg, (debugfile, "< %s\n", buf));
   
-  return (i + 1);
+  return i+1;
 }
 
 CONNECTION* mutt_socket_find (const IMAP_MBOX* mx, int newconn)
