@@ -50,12 +50,12 @@
 #endif
 
 #ifdef DL_STANDALONE
-#include "reldate.h"
+# include "reldate.h"
 #endif
 
-# define MAXLINKS 1024 /* maximum link depth */
+#define MAXLINKS 1024 /* maximum link depth */
 
-# ifdef DL_STANDALONE
+#ifdef DL_STANDALONE
 
 # define LONG_STRING 1024
 # define MAXLOCKATTEMPT 5
@@ -82,7 +82,7 @@ extern int snprintf (char *, size_t, const char *, ...);
 #else  /* DL_STANDALONE */
 
 # ifdef USE_SETGID
-#  error Do not try to compile dotlock as a mutt module when requiring egid switching!
+#   error Do not try to compile dotlock as a mutt module when requiring egid switching!
 # endif
 
 # include "mutt.h"
