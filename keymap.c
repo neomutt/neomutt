@@ -78,7 +78,9 @@ static struct mapping_t KeyNames[] = {
   { "<Esc>",	'\033' },
   { "<Tab>",	'\t' },
   { "<Space>",	' ' },
+#ifdef KEY_BTAB
   { "<BackTab>", KEY_BTAB },
+#endif
   { NULL,	0 }
 };
 
