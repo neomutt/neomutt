@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-05-03 08:43+0200\n"
+"POT-Creation-Date: 2000-05-03 09:48+0200\n"
 "PO-Revision-Date: 2000-03-30 10:30+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"

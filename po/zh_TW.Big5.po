@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-05-03 08:43+0200\n"
+"POT-Creation-Date: 2000-05-03 09:48+0200\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
