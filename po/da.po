@@ -3,12 +3,11 @@
 # maling-list is archived at http://www.sslug.dk/emailarkiv/locale/
 # 
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt-1.1.8 \n"
+"Project-Id-Version: Mutt-1.1.9 \n"
 "POT-Creation-Date: 2000-03-13 19:41+0100\n"
-"PO-Revision-Date: 2000-03-07 20:34+01:00\n"
+"PO-Revision-Date: 2000-03-14 22:39+01:00\n"
 "Last-Translator: Morten Bo Johansen <mojo@image.dk>\n"
 "Language-Team: Danish <da@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -827,7 +826,7 @@ msgstr "Ingen ulæste breve"
 
 #: curs_main.c:1246
 msgid " in this limited view"
-msgstr " i dette afgrænsede billede."
+msgstr " i dette afgrænsede billede"
 
 #: curs_main.c:1370
 msgid "No more threads."
@@ -1630,11 +1629,11 @@ msgstr "lav en ny brevdel efter mailcap-regel"
 
 #: keymap_alldefs.h:38
 msgid "toggle recoding of this attachment"
-msgstr "Slå omkodning af denne brevdel til/fra"
+msgstr "slå omkodning af denne brevdel til/fra"
 
 #: keymap_alldefs.h:39
 msgid "recode this attachment to/from the local charset"
-msgstr "Omkod denne brevdel til/fra det lokale tegnsæt"
+msgstr "omkod denne brevdel til/fra det lokale tegnsæt"
 
 #: keymap_alldefs.h:40
 msgid "save this message to send later"
@@ -1702,7 +1701,7 @@ msgstr "slet den aktuelle brevbakke (kun IMAP)"
 
 #: keymap_alldefs.h:56
 msgid "delete all messages in subthread"
-msgstr "Slet alle breve i deltråd"
+msgstr "slet alle breve i deltråd"
 
 #: keymap_alldefs.h:57
 msgid "delete all messages in thread"
@@ -2078,7 +2077,7 @@ msgstr "sortér breve i omvendt rækkefølge"
 
 #: keymap_alldefs.h:151
 msgid "tag the current entry"
-msgstr "Udvælg den aktuelle listning"
+msgstr "udvælg den aktuelle listning"
 
 #: keymap_alldefs.h:152
 msgid "apply next function to tagged messages"
@@ -2217,7 +2216,7 @@ msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the muttbug utility.\n"
 msgstr ""
-"For at kontakte Mutts udvikler, send venligst et brev til\n"
+"For at kontakte Mutts udviklere, send venligst et brev til\n"
 "<mutt-dev@mutt.org>.\n"
 "Brug venligst muttbug-værktøjet, hvis du vil rapportere en bug.\n"
 
@@ -2598,7 +2597,7 @@ msgstr "Venter på fcntl-lås ... %d"
 
 #: mx.c:218
 msgid "Timeout exceeded while attempting flock lock!"
-msgstr "Timeout overskedet ved forsøg på brug af flock-lås!"
+msgstr "Timeout overskredet ved forsøg på brug af flock-lås!"
 
 #: mx.c:225
 #, c-format
@@ -2633,7 +2632,7 @@ msgstr "Flyt læste breve til %s?"
 #: mx.c:815 mx.c:1051
 #, c-format
 msgid "Purge %d deleted message?"
-msgstr "Fjern %d slettet brevt?"
+msgstr "Fjern %d slettet brev?"
 
 #: mx.c:815 mx.c:1051
 #, c-format
