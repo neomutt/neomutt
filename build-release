@@ -72,10 +72,10 @@ for f in $DISTFILES; do
 	chmod 644 $f.asc
 done
 
-# upload the source
+echo "Release built.  Please connect to the net and press <enter>"
+echo "when on-line."
 
-# pppd call provider
-# sleep 60
+read dummy
 
 for f in $DISTFILES ; do
 	scp $f $f.asc sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
