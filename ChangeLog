@@ -1,3 +1,7 @@
+2005-03-22 19:46:59  Paul Walker  <paul@black-sun.demon.co.uk>  (roessler)
+
+	* init.c, init.h: remove some unused functions.
+
 2005-03-22 19:43:13  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
 
 	* po/ru.po: update
