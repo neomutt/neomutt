@@ -226,7 +226,7 @@ int imap_reopen_mailbox (CONTEXT *ctx, int *index_hint)
       pc = buf + 2;
 
       if (!mutt_strncasecmp ("STATUS", pc, 6) &&
-	  (pc = mutt_stristr (pc, "MESSAGES")))
+	  (pc = (char *) mutt_stristr (pc, "MESSAGES")))
       {
 	char* pn;
 	
