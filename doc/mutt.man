@@ -146,9 +146,9 @@ The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
 .PP
 For a more up-to-date list of bugs, please visit the mutt project's
-bug tracking system under http://bugs.guug.de/.  If you wish to
-report a bug, please use the 
-.B muttbug
+bug tracking system under http://bugs.guug.de/.  To report a bug,
+please use the
+.BR muttbug (1)
 program.
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
@@ -157,6 +157,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 .SH SEE ALSO
 .PP
+.BR muttbug (1),
 .BR muttrc (5),
 .BR curses (3),
 .BR mutt_dotlock (1),

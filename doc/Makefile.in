@@ -36,6 +36,7 @@ INCLUDES=-I. -I.. -I$(includedir) -I$(top_srcdir)
 MAKEDOC_CPP=$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C 
 
 DISTFILES = Makefile.in dotlock.man  	\
+	muttbug.man			\
 	mutt.man			\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
@@ -70,6 +71,7 @@ install: all
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
 	$(INSTALL) -m 644 $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
+	$(INSTALL) -m 644 $(srcdir)/muttbug.man	$(DESTDIR)$(mandir)/man1/muttbug.1
 	$(INSTALL) -m 644 $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	$(INSTALL) -m 644 muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
