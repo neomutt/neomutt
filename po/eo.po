@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1\n"
-"POT-Creation-Date: 2000-07-28 20:58+0200\n"
+"POT-Creation-Date: 2000-08-03 11:07+0200\n"
 "PO-Revision-Date: 2000-06-21 16:55+01:00\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -21,7 +21,7 @@ msgstr "Fino"
 msgid "Select"
 msgstr "Elekto"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:521
+#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:520
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Helpo"
@@ -649,7 +649,7 @@ msgstr "Neniu poþtfako estas malfermita."
 msgid "There are no messages."
 msgstr "Ne estas mesaøoj."
 
-#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
+#: curs_main.c:57 mx.c:1055 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Poþtfako estas nurlega."
 
@@ -1086,57 +1086,14 @@ msgstr "Helpo por %s"
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: nekonata speco de hook: %s"
 
-#: imap/auth.c:103
-msgid "Authenticating (CRAM-MD5)..."
-msgstr "Rajtiøas (CRAM-MD5) ..."
-
-#: imap/auth.c:188
-msgid "Authenticating (anonymous)..."
-msgstr "Rajtiøas (anonime) ..."
-
-#: imap/auth.c:263
-msgid "IMAP Username: "
-msgstr "IMAP-uzantonomo: "
-
-#: imap/auth.c:279
-msgid "Anonymous authentication not supported."
-msgstr "Anonima rajtiøo ne funkcias."
-
-#: imap/auth.c:292
-msgid "GSSAPI authentication failed."
-msgstr "GSSAPI-rajtiøo malsukcesis."
-
-#: imap/auth.c:310
-#, c-format
-msgid "CRAM key for %s@%s: "
-msgstr "CRAM-þlosilo por %s@%s: "
-
-#: imap/auth.c:325
-msgid "CRAM-MD5 authentication failed."
-msgstr "CRAM-MD5-rajtiøo malsukcesis."
-
-#: imap/auth.c:340
-msgid "Skipping CRAM-MD5 authentication."
-msgstr "Preteriras CRAM-MD5-rajtiøon."
-
-#: imap/auth.c:352 pop.c:61
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Pasvorto por %s@%s: "
-
-#: imap/auth.c:367 pop.c:72
-msgid "Logging in..."
-msgstr "Salutas ..."
-
-#. Login failed, try again
-#: imap/auth.c:389
-msgid "Login failed."
-msgstr "Saluto malsukcesis."
-
 #. now begin login
-#: imap/auth_gss.c:81
+#: imap/auth_gss.c:86
 msgid "Authenticating (GSSAPI)..."
 msgstr "Rajtiøas (GSSAPI) ..."
+
+#: imap/auth_gss.c:250
+msgid "GSSAPI authentication failed."
+msgstr "GSSAPI-rajtiøo malsukcesis."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1158,59 +1115,59 @@ msgstr "Fatala eraro. Mesaøonombro ne kongruas!"
 msgid "Closing connection to %s..."
 msgstr "Fermas la konekton al la IMAP-servilo ..."
 
-#: imap/imap.c:294
+#: imap/imap.c:295
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Remalfermas poþtfakon ... %s"
 
-#: imap/imap.c:497
+#: imap/imap.c:500
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Æi tiu IMAP-servilo estas antikva. Mutt ne funkcias kun øi."
 
-#: imap/imap.c:701
+#: imap/imap.c:697
 #, c-format
 msgid "Selecting %s..."
 msgstr "Elektas %s ..."
 
 #. STATUS not supported
-#: imap/imap.c:868
+#: imap/imap.c:864
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Ne povas aldoni al IMAP-poþtfako æe æi tiu servilo"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:877 imap/message.c:547 muttlib.c:1126
+#: imap/imap.c:873 imap/message.c:555 muttlib.c:1126
 #, c-format
 msgid "Create %s?"
 msgstr "Æu krei %s?"
 
-#: imap/imap.c:911
+#: imap/imap.c:907
 msgid "Closing connection to IMAP server..."
 msgstr "Fermas la konekton al la IMAP-servilo ..."
 
-#: imap/imap.c:1074
+#: imap/imap.c:1070
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Markas %d mesaøojn kiel forviþitajn ..."
 
-#: imap/imap.c:1093
+#: imap/imap.c:1089
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Skribas mesaøoflagojn ... [%d/%d]"
 
-#: imap/imap.c:1149
+#: imap/imap.c:1145
 msgid "Expunging messages from server..."
 msgstr "Forviþas mesaøojn de la servilo ..."
 
-#: imap/imap.c:1178
+#: imap/imap.c:1174
 msgid "Closing mailbox..."
 msgstr "Fermas poþtfakon ..."
 
-#: imap/imap.c:1447
+#: imap/imap.c:1443
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonas %s ..."
 
-#: imap/imap.c:1449
+#: imap/imap.c:1445
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Malabonas %s ..."
@@ -1233,122 +1190,122 @@ msgstr ""
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL malþaltita pro manko de entropio"
 
-#: imap/imap_ssl.c:237
+#: imap/imap_ssl.c:236
 msgid "Unable to get certificate from peer"
 msgstr "Ne povas akiri SSL-atestilon"
 
-#: imap/imap_ssl.c:248
+#: imap/imap_ssl.c:247
 #, c-format
 msgid "SSL connection using %s"
 msgstr "SSL-konekto per %s"
 
-#: imap/imap_ssl.c:277
+#: imap/imap_ssl.c:276
 msgid "Unknown"
 msgstr "Nekonata"
 
-#: imap/imap_ssl.c:302
+#: imap/imap_ssl.c:301
 msgid "[unable to calculate]"
 msgstr "[ne povas kalkuli]"
 
-#: imap/imap_ssl.c:320
+#: imap/imap_ssl.c:319
 msgid "[invalid date]"
 msgstr "[nevalida dato]"
 
-#: imap/imap_ssl.c:395
+#: imap/imap_ssl.c:394
 msgid "Server certificate is not yet valid"
 msgstr "Atestilo de servilo ankoraý ne validas"
 
-#: imap/imap_ssl.c:402
+#: imap/imap_ssl.c:401
 msgid "Server certificate has expired"
 msgstr "Atestilo de servilo estas eksvalidiøinta"
 
-#: imap/imap_ssl.c:475
+#: imap/imap_ssl.c:474
 msgid "This certificate belongs to:"
 msgstr "Æi tiu atestilo apartenas al:"
 
-#: imap/imap_ssl.c:485
+#: imap/imap_ssl.c:484
 msgid "This certificate was issued by:"
 msgstr "Æi tiu atestilo estis eldonita de:"
 
-#: imap/imap_ssl.c:495
+#: imap/imap_ssl.c:494
 msgid "This certificate is valid"
 msgstr "Æi tiu atestilo estis valida"
 
-#: imap/imap_ssl.c:496
+#: imap/imap_ssl.c:495
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: imap/imap_ssl.c:498
+#: imap/imap_ssl.c:497
 #, c-format
 msgid "     to %s"
 msgstr "     al %s"
 
-#: imap/imap_ssl.c:504
+#: imap/imap_ssl.c:503
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Fingrospuro: %s"
 
-#: imap/imap_ssl.c:506
+#: imap/imap_ssl.c:505
 msgid "SSL Certificate check"
 msgstr "Kontrolo de SSL-atestilo"
 
-#: imap/imap_ssl.c:509
+#: imap/imap_ssl.c:508
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti æiam"
 
-#: imap/imap_ssl.c:510
+#: imap/imap_ssl.c:509
 msgid "roa"
 msgstr "mua"
 
-#: imap/imap_ssl.c:514
+#: imap/imap_ssl.c:513
 msgid "(r)eject, accept (o)nce"
 msgstr "(m)alakcepti, akcepti (u)nufoje"
 
-#: imap/imap_ssl.c:515
+#: imap/imap_ssl.c:514
 msgid "ro"
 msgstr "mu"
 
-#: imap/imap_ssl.c:519 pgpkey.c:442
+#: imap/imap_ssl.c:518 pgpkey.c:442
 msgid "Exit  "
 msgstr "Eliri  "
 
-#: imap/imap_ssl.c:544
+#: imap/imap_ssl.c:543
 msgid "Warning: Couldn't save certificate"
 msgstr "Averto: Ne povis skribi atestilon"
 
-#: imap/imap_ssl.c:546
+#: imap/imap_ssl.c:545
 msgid "Certificate saved"
 msgstr "Atestilo skribita"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:72
+#: imap/message.c:71
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Ne povas preni æapojn de æi tiu versio de IMAP-servilo."
 
-#: imap/message.c:90
+#: imap/message.c:89
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Prenas mesaøoæapojn ... [%d/%d]"
 
-#: imap/message.c:222
+#: imap/message.c:229
 msgid "Fetching message..."
 msgstr "Prenas mesaøon ..."
 
-#: imap/message.c:259
+#: imap/message.c:266
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:439
+#: imap/message.c:447
 msgid "Uploading message ..."
 msgstr "Alþutas mesaøon ..."
 
-#: imap/message.c:525
+#: imap/message.c:533
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopias %d mesaøojn al %s ..."
 
-#: imap/message.c:529
+#: imap/message.c:537
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopias mesaøon %d al %s ..."
@@ -2407,47 +2364,47 @@ msgstr ""
 "\n"
 "Parametroj de la traduka¼o:"
 
-#: main.c:413
+#: main.c:412
 msgid "Error initializing terminal."
 msgstr "Eraro dum startigo de la terminalo."
 
-#: main.c:512
+#: main.c:511
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Sencimigo æe la nivelo %d.\n"
 
-#: main.c:514
+#: main.c:513
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG ne estis difinita por la tradukado. Ignoras.\n"
 
-#: main.c:633
+#: main.c:632
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s ne ekzistas. Æu krei øin?"
 
-#: main.c:637
+#: main.c:636
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Ne povas krei %s: %s."
 
-#: main.c:676
+#: main.c:675
 msgid "No recipients specified.\n"
 msgstr "Nenia ricevonto specifita.\n"
 
-#: main.c:749
+#: main.c:748
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ne povas aldoni dosieron.\n"
 
-#: main.c:769
+#: main.c:768
 msgid "No mailbox with new mail."
 msgstr "Mankas poþtfako kun nova poþto."
 
-#: main.c:778
+#: main.c:777
 msgid "No incoming mailboxes defined."
 msgstr "Neniu enir-poþtfako estas difinita."
 
-#: main.c:809
+#: main.c:808
 msgid "Mailbox is empty."
 msgstr "Poþtfako estas malplena."
 
@@ -2605,22 +2562,22 @@ msgstr "%s ne estas poþtfako!"
 msgid "Append messages to %s?"
 msgstr "Æu aldoni mesaøojn al %s?"
 
-#: mutt_socket.c:251
+#: mutt_socket.c:247
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "Kopias al %s ..."
 
-#: mutt_socket.c:258
+#: mutt_socket.c:254
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Ne povis trovi adreson por servilo %s."
 
-#: mutt_socket.c:264
+#: mutt_socket.c:260
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Konektiøas al %s ..."
 
-#: mutt_socket.c:284
+#: mutt_socket.c:280
 #, fuzzy
 msgid "Preconnect command failed."
 msgstr "antaýkonekta komando malsukcesis"
@@ -2678,55 +2635,55 @@ msgstr "Ne povis aktualigi la poþtfakon %s!"
 msgid "Move read messages to %s?"
 msgstr "Æu movi legitajn mesaøojn al %s?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Æu forpurigi %d forviþitan mesaøon?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Æu forpurigi %d forviþitajn mesaøojn?"
 
-#: mx.c:836
+#: mx.c:842
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movas legitajn mesaøojn al %s ..."
 
-#: mx.c:887 mx.c:1042
+#: mx.c:900 mx.c:1061
 msgid "Mailbox is unchanged."
 msgstr "Poþtfako estas neþanøita."
 
-#: mx.c:917
+#: mx.c:936
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d retenite, %d movite, %d forviþite."
 
-#: mx.c:920 mx.c:1084
+#: mx.c:939 mx.c:1103
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d retenite, %d forviþite."
 
-#: mx.c:1027
+#: mx.c:1046
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Premu '%s' por (mal)þalti skribon"
 
-#: mx.c:1029
+#: mx.c:1048
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Uzu 'toggle-write' por reebligi skribon!"
 
-#: mx.c:1031
+#: mx.c:1050
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Poþtfako estas markita kiel neskribebla. %s"
 
-#: mx.c:1081
+#: mx.c:1100
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "Poþtfako forviþita."
 
-#: mx.c:1369
+#: mx.c:1388
 msgid "Can't write message"
 msgstr "Ne povas skribi mesaøon"
 
@@ -3135,6 +3092,15 @@ msgstr "Seræas þlosilojn, kiuj kongruas kun \"%s\" ..."
 #, fuzzy
 msgid "POP Username: "
 msgstr "IMAP-uzantonomo: "
+
+#: pop.c:61
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Pasvorto por %s@%s: "
+
+#: pop.c:72
+msgid "Logging in..."
+msgstr "Salutas ..."
 
 #: pop.c:109
 #, fuzzy, c-format
@@ -3579,6 +3545,30 @@ msgstr "Patra mesaøo ne estas videbla en limigita rigardo"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Patra mesaøo ne estas havebla."
+
+#~ msgid "Authenticating (CRAM-MD5)..."
+#~ msgstr "Rajtiøas (CRAM-MD5) ..."
+
+#~ msgid "Authenticating (anonymous)..."
+#~ msgstr "Rajtiøas (anonime) ..."
+
+#~ msgid "IMAP Username: "
+#~ msgstr "IMAP-uzantonomo: "
+
+#~ msgid "Anonymous authentication not supported."
+#~ msgstr "Anonima rajtiøo ne funkcias."
+
+#~ msgid "CRAM key for %s@%s: "
+#~ msgstr "CRAM-þlosilo por %s@%s: "
+
+#~ msgid "CRAM-MD5 authentication failed."
+#~ msgstr "CRAM-MD5-rajtiøo malsukcesis."
+
+#~ msgid "Skipping CRAM-MD5 authentication."
+#~ msgstr "Preteriras CRAM-MD5-rajtiøon."
+
+#~ msgid "Login failed."
+#~ msgstr "Saluto malsukcesis."
 
 #~ msgid "[-- Error: unexpected end of file! --]\n"
 #~ msgstr "[-- Eraro: neatendita fino de dosiero! --]\n"

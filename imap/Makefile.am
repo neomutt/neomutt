@@ -24,6 +24,6 @@ INCLUDES = -I$(top_srcdir) -I../intl
 noinst_LIBRARIES = libimap.a
 noinst_HEADERS = auth.h imap_private.h md5.h message.h $(SSLHEADERS)
 
-libimap_a_SOURCES = auth.c auth_anon.c auth_login.c c browse.c \
+libimap_a_SOURCES = auth.c auth_anon.c auth_login.c browse.c \
 	command.c imap.c imap.h md5c.c message.c utf7.c \
 	util.c $(GSSSOURCES) $(SASLSOURCES) $(CRAMSOURCES) $(SSLSOURCES)

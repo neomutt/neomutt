@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.2i\n"
-"POT-Creation-Date: 2000-07-28 20:58+0200\n"
+"POT-Creation-Date: 2000-08-03 11:07+0200\n"
 "PO-Revision-Date: 2000-05-30\n"
 "Last-Translator: Pawe³ Dziekoñski <p.dziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -24,7 +24,7 @@ msgstr "Wyj¶cie"
 msgid "Select"
 msgstr "Wybierz"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:521
+#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:520
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Pomoc"
@@ -652,7 +652,7 @@ msgstr "Nie otwarto ¿adnej skrzynki."
 msgid "There are no messages."
 msgstr "Brak listów."
 
-#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
+#: curs_main.c:57 mx.c:1055 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Skrzynka jest tylko do odczytu."
 
@@ -1091,57 +1091,14 @@ msgstr "Pomoc dla menu %s"
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: nieznany typ polecenia hook: %s"
 
-#: imap/auth.c:103
-msgid "Authenticating (CRAM-MD5)..."
-msgstr "Uwierzytelnianie (CRAM-MD5)..."
-
-#: imap/auth.c:188
-msgid "Authenticating (anonymous)..."
-msgstr "Uwierzytelnianie (anonymous)..."
-
-#: imap/auth.c:263
-msgid "IMAP Username: "
-msgstr "Nazwa u¿ytkownika na serwerze IMAP: "
-
-#: imap/auth.c:279
-msgid "Anonymous authentication not supported."
-msgstr "Uwierzytelnianie anonymous nie jest obs³ugiwane."
-
-#: imap/auth.c:292
-msgid "GSSAPI authentication failed."
-msgstr "Uwierzytelnianie GSSAPI nie powiod³o siê."
-
-#: imap/auth.c:310
-#, c-format
-msgid "CRAM key for %s@%s: "
-msgstr "Klucz CRAM dla %s@%s: "
-
-#: imap/auth.c:325
-msgid "CRAM-MD5 authentication failed."
-msgstr "Uwierzytelnianie CRAM-MD5 nie powiod³o siê."
-
-#: imap/auth.c:340
-msgid "Skipping CRAM-MD5 authentication."
-msgstr "Pominiêto uwierzytelnianie CRAM-MD5."
-
-#: imap/auth.c:352 pop.c:61
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Has³o dla %s@%s: "
-
-#: imap/auth.c:367 pop.c:72
-msgid "Logging in..."
-msgstr "Logowanie..."
-
-#. Login failed, try again
-#: imap/auth.c:389
-msgid "Login failed."
-msgstr "Zalogowanie nie powiod³o siê."
-
 #. now begin login
-#: imap/auth_gss.c:81
+#: imap/auth_gss.c:86
 msgid "Authenticating (GSSAPI)..."
 msgstr "Uwierzytelnianie (GSSAPI)..."
+
+#: imap/auth_gss.c:250
+msgid "GSSAPI authentication failed."
+msgstr "Uwierzytelnianie GSSAPI nie powiod³o siê."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1163,59 +1120,59 @@ msgstr "B³±d krytyczny. Niezidentyfikowana ilo¶æ listów!"
 msgid "Closing connection to %s..."
 msgstr "Zamykanie po³±czenia z serwerem IMAP..."
 
-#: imap/imap.c:294
+#: imap/imap.c:295
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Ponowne otwieranie skrzynki... %s"
 
-#: imap/imap.c:497
+#: imap/imap.c:500
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Zbyt stara wersja serwera IMAP. Praca z tym serwerem nie jest mo¿liwa."
 
-#: imap/imap.c:701
+#: imap/imap.c:697
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wybieranie %s..."
 
 #. STATUS not supported
-#: imap/imap.c:868
+#: imap/imap.c:864
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Nie mo¿na dopisaæ do skrzynek IMAP na tym serwerze"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:877 imap/message.c:547 muttlib.c:1126
+#: imap/imap.c:873 imap/message.c:555 muttlib.c:1126
 #, c-format
 msgid "Create %s?"
 msgstr "Utworzyæ %s?"
 
-#: imap/imap.c:911
+#: imap/imap.c:907
 msgid "Closing connection to IMAP server..."
 msgstr "Zamykanie po³±czenia z serwerem IMAP..."
 
-#: imap/imap.c:1074
+#: imap/imap.c:1070
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Zaznaczanie %d listów jako skasowanych..."
 
-#: imap/imap.c:1093
+#: imap/imap.c:1089
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Zapisywanie stanu flag listów... [%d/%d]"
 
-#: imap/imap.c:1149
+#: imap/imap.c:1145
 msgid "Expunging messages from server..."
 msgstr "Kasowanie listów na serwerze... "
 
-#: imap/imap.c:1178
+#: imap/imap.c:1174
 msgid "Closing mailbox..."
 msgstr "Zamykanie skrzynki..."
 
-#: imap/imap.c:1447
+#: imap/imap.c:1443
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Subskrybowanie %s..."
 
-#: imap/imap.c:1449
+#: imap/imap.c:1445
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Odsubskrybowanie %s..."
@@ -1238,125 +1195,125 @@ msgstr ""
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: imap/imap_ssl.c:237
+#: imap/imap_ssl.c:236
 msgid "Unable to get certificate from peer"
 msgstr "Nie mo¿na pobraæ certyfikatu z docelowego hosta"
 
-#: imap/imap_ssl.c:248
+#: imap/imap_ssl.c:247
 #, c-format
 msgid "SSL connection using %s"
 msgstr "Po³±czenie SSL przy u¿yciu %s"
 
-#: imap/imap_ssl.c:277
+#: imap/imap_ssl.c:276
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: imap/imap_ssl.c:302
+#: imap/imap_ssl.c:301
 msgid "[unable to calculate]"
 msgstr ""
 
-#: imap/imap_ssl.c:320
+#: imap/imap_ssl.c:319
 #, fuzzy
 msgid "[invalid date]"
 msgstr "%s: nieprawid³owa warto¶æ"
 
-#: imap/imap_ssl.c:395
+#: imap/imap_ssl.c:394
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: imap/imap_ssl.c:402
+#: imap/imap_ssl.c:401
 #, fuzzy
 msgid "Server certificate has expired"
 msgstr "Ten certyfikat zosta³ wydany przez:"
 
-#: imap/imap_ssl.c:475
+#: imap/imap_ssl.c:474
 msgid "This certificate belongs to:"
 msgstr "Ten certyfikat nale¿y do:"
 
-#: imap/imap_ssl.c:485
+#: imap/imap_ssl.c:484
 msgid "This certificate was issued by:"
 msgstr "Ten certyfikat zosta³ wydany przez:"
 
-#: imap/imap_ssl.c:495
+#: imap/imap_ssl.c:494
 #, fuzzy
 msgid "This certificate is valid"
 msgstr "Ten certyfikat zosta³ wydany przez:"
 
-#: imap/imap_ssl.c:496
+#: imap/imap_ssl.c:495
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: imap/imap_ssl.c:498
+#: imap/imap_ssl.c:497
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: imap/imap_ssl.c:504
+#: imap/imap_ssl.c:503
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Odcisk: %s"
 
-#: imap/imap_ssl.c:506
+#: imap/imap_ssl.c:505
 msgid "SSL Certificate check"
 msgstr "sprawdzanie certyfikatu SSL"
 
-#: imap/imap_ssl.c:509
+#: imap/imap_ssl.c:508
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)drzuæ, zaakceptuj (r)az, (a)kceptuj zawsze"
 
-#: imap/imap_ssl.c:510
+#: imap/imap_ssl.c:509
 msgid "roa"
 msgstr "ora"
 
-#: imap/imap_ssl.c:514
+#: imap/imap_ssl.c:513
 msgid "(r)eject, accept (o)nce"
 msgstr "(o)drzuæ, zaakceptuj (r)az"
 
-#: imap/imap_ssl.c:515
+#: imap/imap_ssl.c:514
 msgid "ro"
 msgstr "or"
 
-#: imap/imap_ssl.c:519 pgpkey.c:442
+#: imap/imap_ssl.c:518 pgpkey.c:442
 msgid "Exit  "
 msgstr "Wyj¶cie  "
 
-#: imap/imap_ssl.c:544
+#: imap/imap_ssl.c:543
 msgid "Warning: Couldn't save certificate"
 msgstr "Ostrze¿enie: Nie mo¿na zapisaæ certyfikatu"
 
-#: imap/imap_ssl.c:546
+#: imap/imap_ssl.c:545
 msgid "Certificate saved"
 msgstr "Certyfikat zosta³ zapisany"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:72
+#: imap/message.c:71
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Nie mo¿na pobraæ nag³ówków z serwera IMAP w tej wersji."
 
-#: imap/message.c:90
+#: imap/message.c:89
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Pobieranie nag³ówków listów... [%d/%d]"
 
-#: imap/message.c:222
+#: imap/message.c:229
 msgid "Fetching message..."
 msgstr "Pobieranie listu..."
 
-#: imap/message.c:259
+#: imap/message.c:266
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:439
+#: imap/message.c:447
 msgid "Uploading message ..."
 msgstr "£adowanie listu ..."
 
-#: imap/message.c:525
+#: imap/message.c:533
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopiowanie %d listów do %s..."
 
-#: imap/message.c:529
+#: imap/message.c:537
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopiowanie listu %d do %s..."
@@ -2424,47 +2381,47 @@ msgstr ""
 "\n"
 "Parametry kompilacji:"
 
-#: main.c:413
+#: main.c:412
 msgid "Error initializing terminal."
 msgstr "B³±d inicjalizacji terminala."
 
-#: main.c:512
+#: main.c:511
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Diagnostyka b³êdów na poziomie %d.\n"
 
-#: main.c:514
+#: main.c:513
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Diagnostyka b³êdów nie zosta³a wkompilowane. Zignorowano.\n"
 
-#: main.c:633
+#: main.c:632
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s nie istnieje. Utworzyæ?"
 
-#: main.c:637
+#: main.c:636
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Nie mo¿na utworzyæ %s: %s."
 
-#: main.c:676
+#: main.c:675
 msgid "No recipients specified.\n"
 msgstr "Nie wskazano adresatów listu.\n"
 
-#: main.c:749
+#: main.c:748
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: nie mo¿na do³±czyæ pliku.\n"
 
-#: main.c:769
+#: main.c:768
 msgid "No mailbox with new mail."
 msgstr "Brak foldera z now± poczt±."
 
-#: main.c:778
+#: main.c:777
 msgid "No incoming mailboxes defined."
 msgstr "Nie zdefiniowano po³o¿enia skrzynek z now± poczt±."
 
-#: main.c:809
+#: main.c:808
 msgid "Mailbox is empty."
 msgstr "Folder poczty jest pusty."
 
@@ -2623,22 +2580,22 @@ msgstr "%s nie jest skrzynk±!"
 msgid "Append messages to %s?"
 msgstr "Dopisaæ listy do %s?"
 
-#: mutt_socket.c:251
+#: mutt_socket.c:247
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "Kopiowanie do %s..."
 
-#: mutt_socket.c:258
+#: mutt_socket.c:254
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Nie mo¿na ustaliæ adresu serwera %s."
 
-#: mutt_socket.c:264
+#: mutt_socket.c:260
 #, c-format
 msgid "Connecting to %s..."
 msgstr "£±czenie z %s..."
 
-#: mutt_socket.c:284
+#: mutt_socket.c:280
 msgid "Preconnect command failed."
 msgstr ""
 
@@ -2695,55 +2652,55 @@ msgstr "Synchronizacja skrzynki %s nie powod³a siê!"
 msgid "Move read messages to %s?"
 msgstr "Przenie¶æ przeczytane listy do %s?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Usun±æ NIEODWO£ALNIE %d zaznaczony list?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Usun±æ NIEODWO£ALNIE %d zaznaczone listy?"
 
-#: mx.c:836
+#: mx.c:842
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Przenoszenie przeczytanych listów do %s..."
 
-#: mx.c:887 mx.c:1042
+#: mx.c:900 mx.c:1061
 msgid "Mailbox is unchanged."
 msgstr "Skrzynka pozosta³a nie zmieniona."
 
-#: mx.c:917
+#: mx.c:936
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d zapisano, %d przeniesiono, %d usuniêto."
 
-#: mx.c:920 mx.c:1084
+#: mx.c:939 mx.c:1103
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d zapisano, %d usuniêto."
 
-#: mx.c:1027
+#: mx.c:1046
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Naci¶nij '%s' aby zezwoliæ na zapisanie"
 
-#: mx.c:1029
+#: mx.c:1048
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "U¿yj 'toggle-write' by ponownie w³±czyæ zapisanie!"
 
-#: mx.c:1031
+#: mx.c:1050
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Skrzynka jest oznaczona jako niezapisywalna. %s"
 
-#: mx.c:1081
+#: mx.c:1100
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "Skrzynka zosta³a usuniêta."
 
-#: mx.c:1369
+#: mx.c:1388
 msgid "Can't write message"
 msgstr "Nie mo¿na zapisaæ listu"
 
@@ -3154,6 +3111,15 @@ msgstr "Szukam odpowiednich kluczy dla \"%s\"..."
 #, fuzzy
 msgid "POP Username: "
 msgstr "Nazwa u¿ytkownika na serwerze IMAP: "
+
+#: pop.c:61
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Has³o dla %s@%s: "
+
+#: pop.c:72
+msgid "Logging in..."
+msgstr "Logowanie..."
 
 #: pop.c:109
 #, fuzzy, c-format
@@ -3602,6 +3568,30 @@ msgstr ""
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Pierwszy list tego w±tku nie jest dostêpny."
+
+#~ msgid "Authenticating (CRAM-MD5)..."
+#~ msgstr "Uwierzytelnianie (CRAM-MD5)..."
+
+#~ msgid "Authenticating (anonymous)..."
+#~ msgstr "Uwierzytelnianie (anonymous)..."
+
+#~ msgid "IMAP Username: "
+#~ msgstr "Nazwa u¿ytkownika na serwerze IMAP: "
+
+#~ msgid "Anonymous authentication not supported."
+#~ msgstr "Uwierzytelnianie anonymous nie jest obs³ugiwane."
+
+#~ msgid "CRAM key for %s@%s: "
+#~ msgstr "Klucz CRAM dla %s@%s: "
+
+#~ msgid "CRAM-MD5 authentication failed."
+#~ msgstr "Uwierzytelnianie CRAM-MD5 nie powiod³o siê."
+
+#~ msgid "Skipping CRAM-MD5 authentication."
+#~ msgstr "Pominiêto uwierzytelnianie CRAM-MD5."
+
+#~ msgid "Login failed."
+#~ msgstr "Zalogowanie nie powiod³o siê."
 
 #~ msgid "[-- Error: unexpected end of file! --]\n"
 #~ msgstr "[-- B³±d: nieoczekiwany koniec pliku! --]\n"

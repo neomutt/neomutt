@@ -1,1 +1,1 @@
-const char *ReleaseDate = "2000-07-28";
+const char *ReleaseDate = "2000-08-03";

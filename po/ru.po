@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2000-07-28 20:58+0200\n"
+"POT-Creation-Date: 2000-08-03 11:07+0200\n"
 "PO-Revision-Date: 2000-07-09 18:41+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
@@ -23,7 +23,7 @@ msgstr "Выход"
 msgid "Select"
 msgstr "Выбрать"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:521
+#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:520
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Подск."
@@ -648,7 +648,7 @@ msgstr "Нет открытого почтового ящика."
 msgid "There are no messages."
 msgstr "Сообщений нет."
 
-#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
+#: curs_main.c:57 mx.c:1055 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "Почтовый ящик немодифицируем."
 
@@ -1089,57 +1089,14 @@ msgstr "Справка для %s"
 msgid "unhook: unknown hook type: %s"
 msgstr "unhook: неизвестный тип: %s"
 
-#: imap/auth.c:103
-msgid "Authenticating (CRAM-MD5)..."
-msgstr "Аутентификация (метод CRAM-MD5)..."
-
-#: imap/auth.c:188
-msgid "Authenticating (anonymous)..."
-msgstr "Аутентификация (анонимная)..."
-
-#: imap/auth.c:263
-msgid "IMAP Username: "
-msgstr "Имя пользователя IMAP: "
-
-#: imap/auth.c:279
-msgid "Anonymous authentication not supported."
-msgstr "Анонимное подключение не поддерживается."
-
-#: imap/auth.c:292
-msgid "GSSAPI authentication failed."
-msgstr "Ошибка GSSAPI-аутентификации."
-
-#: imap/auth.c:310
-#, c-format
-msgid "CRAM key for %s@%s: "
-msgstr "CRAM-ключ для %s@%s: "
-
-#: imap/auth.c:325
-msgid "CRAM-MD5 authentication failed."
-msgstr "Аутентификация (метод CRAM-MD5) не удалась."
-
-#: imap/auth.c:340
-msgid "Skipping CRAM-MD5 authentication."
-msgstr "Аутентификация (метод CRAM-MD5) пропущена."
-
-#: imap/auth.c:352 pop.c:61
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Пароль для %s@%s: "
-
-#: imap/auth.c:367 pop.c:72
-msgid "Logging in..."
-msgstr "Регистрация..."
-
-#. Login failed, try again
-#: imap/auth.c:389
-msgid "Login failed."
-msgstr "Регистрация не удалась."
-
 #. now begin login
-#: imap/auth_gss.c:81
+#: imap/auth_gss.c:86
 msgid "Authenticating (GSSAPI)..."
 msgstr "Аутентификация (метод GSSAPI)..."
+
+#: imap/auth_gss.c:250
+msgid "GSSAPI authentication failed."
+msgstr "Ошибка GSSAPI-аутентификации."
 
 #: imap/browse.c:80
 msgid "Getting namespaces..."
@@ -1161,62 +1118,62 @@ msgstr "Критическая ошибка.  Сбой синхронизации счетчика сообщений!"
 msgid "Closing connection to %s..."
 msgstr "Закрытие соединения с сервером %s..."
 
-#: imap/imap.c:294
+#: imap/imap.c:295
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Повторное открытие почтового ящика... %s"
 
 # "mutt не поддерживает версию протокола, используемый на этом сервере"
-#: imap/imap.c:497
+#: imap/imap.c:500
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Этот IMAP-сервер использует устаревший протокол. Mutt не сможет работать с "
 "ним."
 
-#: imap/imap.c:701
+#: imap/imap.c:697
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбирается %s..."
 
 #. STATUS not supported
-#: imap/imap.c:868
+#: imap/imap.c:864
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Не удалось добавить сообщение в IMAP-ящик на этом сервере!"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:877 imap/message.c:547 muttlib.c:1126
+#: imap/imap.c:873 imap/message.c:555 muttlib.c:1126
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap/imap.c:911
+#: imap/imap.c:907
 msgid "Closing connection to IMAP server..."
 msgstr "Закрытие соединения с сервером IMAP..."
 
-#: imap/imap.c:1074
+#: imap/imap.c:1070
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d сообщений помечаются как удаленные..."
 
-#: imap/imap.c:1093
+#: imap/imap.c:1089
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Сохранение флагов состояния сообщений... [%d из %d]"
 
-#: imap/imap.c:1149
+#: imap/imap.c:1145
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1178
+#: imap/imap.c:1174
 msgid "Closing mailbox..."
 msgstr "Закрытие почтового ящика..."
 
-#: imap/imap.c:1447
+#: imap/imap.c:1443
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
-#: imap/imap.c:1449
+#: imap/imap.c:1445
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Отключение от %s..."
@@ -1239,123 +1196,123 @@ msgstr ""
 msgid "SSL disabled due the lack of entropy"
 msgstr "SSL запрещен из-за недостатка энтропии"
 
-#: imap/imap_ssl.c:237
+#: imap/imap_ssl.c:236
 msgid "Unable to get certificate from peer"
 msgstr "Не удалось получить сертификат сервера"
 
-#: imap/imap_ssl.c:248
+#: imap/imap_ssl.c:247
 #, c-format
 msgid "SSL connection using %s"
 msgstr "SSL-соединение установлено; алгоритм шифрования %s"
 
-#: imap/imap_ssl.c:277
+#: imap/imap_ssl.c:276
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: imap/imap_ssl.c:302
+#: imap/imap_ssl.c:301
 msgid "[unable to calculate]"
 msgstr "[ошибка вычислений]"
 
-#: imap/imap_ssl.c:320
+#: imap/imap_ssl.c:319
 msgid "[invalid date]"
 msgstr "[недопустимая дата]"
 
-#: imap/imap_ssl.c:395
+#: imap/imap_ssl.c:394
 msgid "Server certificate is not yet valid"
 msgstr "Сертификат все еще недействителен"
 
-#: imap/imap_ssl.c:402
+#: imap/imap_ssl.c:401
 msgid "Server certificate has expired"
 msgstr "Сертификат устарел"
 
-#: imap/imap_ssl.c:475
+#: imap/imap_ssl.c:474
 msgid "This certificate belongs to:"
 msgstr "Данный сертификат принадлежит:"
 
-#: imap/imap_ssl.c:485
+#: imap/imap_ssl.c:484
 msgid "This certificate was issued by:"
 msgstr "Данный сертификат был выдан:"
 
-#: imap/imap_ssl.c:495
+#: imap/imap_ssl.c:494
 msgid "This certificate is valid"
 msgstr "Данный сертификат действителен"
 
-#: imap/imap_ssl.c:496
+#: imap/imap_ssl.c:495
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: imap/imap_ssl.c:498
+#: imap/imap_ssl.c:497
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: imap/imap_ssl.c:504
+#: imap/imap_ssl.c:503
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Отпечаток пальца: %s"
 
-#: imap/imap_ssl.c:506
+#: imap/imap_ssl.c:505
 msgid "SSL Certificate check"
 msgstr "Проверка SSL-сертификата"
 
-#: imap/imap_ssl.c:509
+#: imap/imap_ssl.c:508
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)отвергнуть, (o)принять, (a)принять и сохранить"
 
-#: imap/imap_ssl.c:510
+#: imap/imap_ssl.c:509
 msgid "roa"
 msgstr ""
 
-#: imap/imap_ssl.c:514
+#: imap/imap_ssl.c:513
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)отвергнуть, (o)принять"
 
-#: imap/imap_ssl.c:515
+#: imap/imap_ssl.c:514
 msgid "ro"
 msgstr ""
 
-#: imap/imap_ssl.c:519 pgpkey.c:442
+#: imap/imap_ssl.c:518 pgpkey.c:442
 msgid "Exit  "
 msgstr "Выход "
 
-#: imap/imap_ssl.c:544
+#: imap/imap_ssl.c:543
 msgid "Warning: Couldn't save certificate"
 msgstr "Предупреждение: не удалось сохранить сертификат"
 
-#: imap/imap_ssl.c:546
+#: imap/imap_ssl.c:545
 msgid "Certificate saved"
 msgstr "Сертификат сохранен"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:72
+#: imap/message.c:71
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Получение списка заголовков не поддерживается этим IMAP-сервером."
 
-#: imap/message.c:90
+#: imap/message.c:89
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Получение заголовков сообщений... [%d/%d]"
 
-#: imap/message.c:222
+#: imap/message.c:229
 msgid "Fetching message..."
 msgstr "Получение сообщения..."
 
-#: imap/message.c:259
+#: imap/message.c:266
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
 # или "на сервер" убрать??
-#: imap/message.c:439
+#: imap/message.c:447
 msgid "Uploading message ..."
 msgstr "Сообщение загружается на сервер..."
 
-#: imap/message.c:525
+#: imap/message.c:533
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d сообщений копируются в %s..."
 
-#: imap/message.c:529
+#: imap/message.c:537
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Сообщение %d копируется в %s..."
@@ -2430,47 +2387,47 @@ msgstr ""
 "\n"
 "Параметры компиляции:"
 
-#: main.c:413
+#: main.c:412
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:512
+#: main.c:511
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка на уровне %d.\n"
 
-#: main.c:514
+#: main.c:513
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Символ DEBUG не был определен при компиляции.  Игнорируется.\n"
 
-#: main.c:633
+#: main.c:632
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Каталог %s не существует.  Создать?"
 
-#: main.c:637
+#: main.c:636
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Не удалось создать %s: %s"
 
-#: main.c:676
+#: main.c:675
 msgid "No recipients specified.\n"
 msgstr "Адресаты не указаны.\n"
 
-#: main.c:749
+#: main.c:748
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: не удалось вложить файл.\n"
 
-#: main.c:769
+#: main.c:768
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:778
+#: main.c:777
 msgid "No incoming mailboxes defined."
 msgstr "Не определено ни одного почтового ящика со входящими письмами."
 
-#: main.c:809
+#: main.c:808
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик пуст."
 
@@ -2627,22 +2584,22 @@ msgstr "%s не является почтовым ящиком!"
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
-#: mutt_socket.c:251
+#: mutt_socket.c:247
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "Копируется в %s..."
 
-#: mutt_socket.c:258
+#: mutt_socket.c:254
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Сервер не найден: %s"
 
-#: mutt_socket.c:264
+#: mutt_socket.c:260
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Устанавливается соединение с %s..."
 
-#: mutt_socket.c:284
+#: mutt_socket.c:280
 #, fuzzy
 msgid "Preconnect command failed."
 msgstr "предварительное соединение для IMAP не установлено"
@@ -2700,55 +2657,55 @@ msgstr "Не удалось синхронизировать почтовый ящик %s!"
 msgid "Move read messages to %s?"
 msgstr "Переместить прочитанные сообщения в %s?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Вычистить %d удаленное сообщение?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Вычистить %d удаленных сообщений?"
 
-#: mx.c:836
+#: mx.c:842
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Прочитанные сообщения перемещаются в %s..."
 
-#: mx.c:887 mx.c:1042
+#: mx.c:900 mx.c:1061
 msgid "Mailbox is unchanged."
 msgstr "Почтовый ящик не изменился."
 
-#: mx.c:917
+#: mx.c:936
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "Оставлено: %d, перемещено: %d, удалено: %d."
 
-#: mx.c:920 mx.c:1084
+#: mx.c:939 mx.c:1103
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "Оставлено: %d, удалено: %d."
 
-#: mx.c:1027
+#: mx.c:1046
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Используйте '%s' для разрешения/запрещения записи"
 
-#: mx.c:1029
+#: mx.c:1048
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Используйте команду 'toggle-write' для разрешения записи!"
 
-#: mx.c:1031
+#: mx.c:1050
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Почтовый ящик стал доступен только для чтения. %s"
 
-#: mx.c:1081
+#: mx.c:1100
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "Почтовый ящик удален."
 
-#: mx.c:1369
+#: mx.c:1388
 msgid "Can't write message"
 msgstr "Ошибка записи сообщения"
 
@@ -3159,6 +3116,15 @@ msgstr "Поиск ключа, соответствующего \"%s\"..."
 #, fuzzy
 msgid "POP Username: "
 msgstr "Имя пользователя IMAP: "
+
+#: pop.c:61
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Пароль для %s@%s: "
+
+#: pop.c:72
+msgid "Logging in..."
+msgstr "Регистрация..."
 
 #: pop.c:109
 #, fuzzy, c-format
@@ -3605,6 +3571,30 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением"
 #: thread.c:717
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
+
+#~ msgid "Authenticating (CRAM-MD5)..."
+#~ msgstr "Аутентификация (метод CRAM-MD5)..."
+
+#~ msgid "Authenticating (anonymous)..."
+#~ msgstr "Аутентификация (анонимная)..."
+
+#~ msgid "IMAP Username: "
+#~ msgstr "Имя пользователя IMAP: "
+
+#~ msgid "Anonymous authentication not supported."
+#~ msgstr "Анонимное подключение не поддерживается."
+
+#~ msgid "CRAM key for %s@%s: "
+#~ msgstr "CRAM-ключ для %s@%s: "
+
+#~ msgid "CRAM-MD5 authentication failed."
+#~ msgstr "Аутентификация (метод CRAM-MD5) не удалась."
+
+#~ msgid "Skipping CRAM-MD5 authentication."
+#~ msgstr "Аутентификация (метод CRAM-MD5) пропущена."
+
+#~ msgid "Login failed."
+#~ msgstr "Регистрация не удалась."
 
 #~ msgid "[-- Error: unexpected end of file! --]\n"
 #~ msgstr "[-- Ошибка: неожиданный конец файла! --]\n"

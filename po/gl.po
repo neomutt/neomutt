@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.0i\n"
-"POT-Creation-Date: 2000-07-28 20:58+0200\n"
+"POT-Creation-Date: 2000-08-03 11:07+0200\n"
 "PO-Revision-Date: 1999-10-27 14:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <gpul-traduccion@ceu.fi.udc.es>\n"
@@ -22,7 +22,7 @@ msgstr "Saír"
 msgid "Select"
 msgstr "Seleccionar"
 
-#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:521
+#: addrbook.c:33 browser.c:42 compose.c:92 curs_main.c:376 imap/imap_ssl.c:520
 #: pager.c:1459 pgpkey.c:449 postpone.c:40 query.c:48 recvattach.c:61
 msgid "Help"
 msgstr "Axuda"
@@ -660,7 +660,7 @@ msgstr "Non hai buzóns abertos."
 msgid "There are no messages."
 msgstr "Non hai mensaxes."
 
-#: curs_main.c:57 mx.c:1036 pager.c:62 recvattach.c:47
+#: curs_main.c:57 mx.c:1055 pager.c:62 recvattach.c:47
 msgid "Mailbox is read-only."
 msgstr "O buzón é de só lectura."
 
@@ -1101,56 +1101,13 @@ msgstr "Axuda sobre %s"
 msgid "unhook: unknown hook type: %s"
 msgstr "%s: tipo descoñecido"
 
-#: imap/auth.c:103
-msgid "Authenticating (CRAM-MD5)..."
-msgstr ""
-
-#: imap/auth.c:188
-msgid "Authenticating (anonymous)..."
-msgstr ""
-
-#: imap/auth.c:263
-msgid "IMAP Username: "
-msgstr "Usuario IMAP: "
-
-#: imap/auth.c:279
-msgid "Anonymous authentication not supported."
-msgstr ""
-
-#: imap/auth.c:292
-msgid "GSSAPI authentication failed."
-msgstr ""
-
-#: imap/auth.c:310
-#, fuzzy, c-format
-msgid "CRAM key for %s@%s: "
-msgstr "Introduza keyID para %s: "
-
-#: imap/auth.c:325
-msgid "CRAM-MD5 authentication failed."
-msgstr ""
-
-#: imap/auth.c:340
-msgid "Skipping CRAM-MD5 authentication."
-msgstr ""
-
-#: imap/auth.c:352 pop.c:61
-#, c-format
-msgid "Password for %s@%s: "
-msgstr "Contrasinal para %s@%s: "
-
-#: imap/auth.c:367 pop.c:72
-msgid "Logging in..."
-msgstr "Comezando secuencia de login ..."
-
-#. Login failed, try again
-#: imap/auth.c:389
-msgid "Login failed."
-msgstr "O login fallou."
-
 #. now begin login
-#: imap/auth_gss.c:81
+#: imap/auth_gss.c:86
 msgid "Authenticating (GSSAPI)..."
+msgstr ""
+
+#: imap/auth_gss.c:250
+msgid "GSSAPI authentication failed."
 msgstr ""
 
 #: imap/browse.c:80
@@ -1174,59 +1131,59 @@ msgstr "Erro fatal. ¡A conta de mensaxes non está sincronizada!"
 msgid "Closing connection to %s..."
 msgstr "Pechando conexión ó servidor IMAP..."
 
-#: imap/imap.c:294
+#: imap/imap.c:295
 #, c-format
 msgid "Reopening mailbox... %s"
 msgstr "Reabrindo buzón... %s"
 
-#: imap/imap.c:497
+#: imap/imap.c:500
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Este servidor IMAP é antigo. Mutt non traballa con el."
 
-#: imap/imap.c:701
+#: imap/imap.c:697
 #, c-format
 msgid "Selecting %s..."
 msgstr "Seleccionando %s..."
 
 #. STATUS not supported
-#: imap/imap.c:868
+#: imap/imap.c:864
 msgid "Unable to append to IMAP mailboxes at this server"
 msgstr "Non é posible engadir ós buzóns IMAP deste servidor"
 
 #. command failed cause folder doesn't exist
-#: imap/imap.c:877 imap/message.c:547 muttlib.c:1126
+#: imap/imap.c:873 imap/message.c:555 muttlib.c:1126
 #, c-format
 msgid "Create %s?"
 msgstr "¿Crear %s?"
 
-#: imap/imap.c:911
+#: imap/imap.c:907
 msgid "Closing connection to IMAP server..."
 msgstr "Pechando conexión ó servidor IMAP..."
 
-#: imap/imap.c:1074
+#: imap/imap.c:1070
 #, fuzzy, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Lendo %d novas mensaxes (%d bytes)..."
 
-#: imap/imap.c:1093
+#: imap/imap.c:1089
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Gardando indicadores de estado da mensaxe... [%d/%d]"
 
-#: imap/imap.c:1149
+#: imap/imap.c:1145
 msgid "Expunging messages from server..."
 msgstr "Borrando mensaxes do servidor..."
 
-#: imap/imap.c:1178
+#: imap/imap.c:1174
 msgid "Closing mailbox..."
 msgstr "Pechando buzón..."
 
-#: imap/imap.c:1447
+#: imap/imap.c:1443
 #, fuzzy, c-format
 msgid "Subscribing to %s..."
 msgstr "Copiando a %s..."
 
-#: imap/imap.c:1449
+#: imap/imap.c:1445
 #, fuzzy, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Conectando con %s..."
@@ -1249,127 +1206,127 @@ msgstr ""
 msgid "SSL disabled due the lack of entropy"
 msgstr ""
 
-#: imap/imap_ssl.c:237
+#: imap/imap_ssl.c:236
 #, fuzzy
 msgid "Unable to get certificate from peer"
 msgstr "non foi posible determina-lo directorio \"home\""
 
-#: imap/imap_ssl.c:248
+#: imap/imap_ssl.c:247
 #, fuzzy, c-format
 msgid "SSL connection using %s"
 msgstr "Conectando con %s"
 
-#: imap/imap_ssl.c:277
+#: imap/imap_ssl.c:276
 #, fuzzy
 msgid "Unknown"
 msgstr "erro descoñecido"
 
-#: imap/imap_ssl.c:302
+#: imap/imap_ssl.c:301
 #, fuzzy
 msgid "[unable to calculate]"
 msgstr "%s: non foi posible adxuntar ficheiro"
 
-#: imap/imap_ssl.c:320
+#: imap/imap_ssl.c:319
 #, fuzzy
 msgid "[invalid date]"
 msgstr "%s: valor inválido"
 
-#: imap/imap_ssl.c:395
+#: imap/imap_ssl.c:394
 msgid "Server certificate is not yet valid"
 msgstr ""
 
-#: imap/imap_ssl.c:402
+#: imap/imap_ssl.c:401
 msgid "Server certificate has expired"
 msgstr ""
 
-#: imap/imap_ssl.c:475
+#: imap/imap_ssl.c:474
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: imap/imap_ssl.c:485
+#: imap/imap_ssl.c:484
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: imap/imap_ssl.c:495
+#: imap/imap_ssl.c:494
 msgid "This certificate is valid"
 msgstr ""
 
-#: imap/imap_ssl.c:496
+#: imap/imap_ssl.c:495
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: imap/imap_ssl.c:498
+#: imap/imap_ssl.c:497
 #, c-format
 msgid "     to %s"
 msgstr ""
 
-#: imap/imap_ssl.c:504
+#: imap/imap_ssl.c:503
 #, c-format
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: imap/imap_ssl.c:506
+#: imap/imap_ssl.c:505
 msgid "SSL Certificate check"
 msgstr ""
 
-#: imap/imap_ssl.c:509
+#: imap/imap_ssl.c:508
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: imap/imap_ssl.c:510
+#: imap/imap_ssl.c:509
 #, fuzzy
 msgid "roa"
 msgstr "sec"
 
-#: imap/imap_ssl.c:514
+#: imap/imap_ssl.c:513
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: imap/imap_ssl.c:515
+#: imap/imap_ssl.c:514
 msgid "ro"
 msgstr ""
 
-#: imap/imap_ssl.c:519 pgpkey.c:442
+#: imap/imap_ssl.c:518 pgpkey.c:442
 msgid "Exit  "
 msgstr "Saír  "
 
-#: imap/imap_ssl.c:544
+#: imap/imap_ssl.c:543
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: imap/imap_ssl.c:546
+#: imap/imap_ssl.c:545
 msgid "Certificate saved"
 msgstr ""
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:72
+#: imap/message.c:71
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Non foi posible recoller cabeceiras da versión de IMAP do servidor"
 
-#: imap/message.c:90
+#: imap/message.c:89
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Recollendo cabeceiras de mensaxes... [%d/%d]"
 
-#: imap/message.c:222
+#: imap/message.c:229
 msgid "Fetching message..."
 msgstr "Recollendo mensaxe..."
 
-#: imap/message.c:259
+#: imap/message.c:266
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:439
+#: imap/message.c:447
 msgid "Uploading message ..."
 msgstr "Enviando mensaxe ..."
 
-#: imap/message.c:525
+#: imap/message.c:533
 #, fuzzy, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Movendo mensaxes lidas a %s..."
 
-#: imap/message.c:529
+#: imap/message.c:537
 #, fuzzy, c-format
 msgid "Copying message %d to %s..."
 msgstr "Escribindo mensaxe a %s..."
@@ -2442,49 +2399,49 @@ msgstr ""
 "\n"
 "Opcións de compilación:"
 
-#: main.c:413
+#: main.c:412
 msgid "Error initializing terminal."
 msgstr "Error iniciando terminal."
 
-#: main.c:512
+#: main.c:511
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Depurando a nivel %d.\n"
 
-#: main.c:514
+#: main.c:513
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr ""
 "A opción \"DEBUG\" non foi especificada durante a compilación. Ignorado.\n"
 
-#: main.c:633
+#: main.c:632
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr ""
 
-#: main.c:637
+#: main.c:636
 #, fuzzy, c-format
 msgid "Can't create %s: %s."
 msgstr "Non fun capaz de crea-lo ficheiro %s"
 
-#: main.c:676
+#: main.c:675
 msgid "No recipients specified.\n"
 msgstr "Non foi especificado ningún destinatario.\n"
 
-#: main.c:749
+#: main.c:748
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: non foi posible adxuntar ficheiro.\n"
 
-#: main.c:769
+#: main.c:768
 msgid "No mailbox with new mail."
 msgstr "Non hai buzóns con novo correo."
 
-#: main.c:778
+#: main.c:777
 #, fuzzy
 msgid "No incoming mailboxes defined."
 msgstr "cambiar entre buzóns de entrada"
 
-#: main.c:809
+#: main.c:808
 msgid "Mailbox is empty."
 msgstr "O buzón está valeiro."
 
@@ -2644,22 +2601,22 @@ msgstr "¡%s non é un buzón!"
 msgid "Append messages to %s?"
 msgstr "¿engadir mensaxes a %s?"
 
-#: mutt_socket.c:251
+#: mutt_socket.c:247
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "Copiando a %s..."
 
-#: mutt_socket.c:258
+#: mutt_socket.c:254
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Non foi posible atopa-lo enderezo do servidor %s."
 
-#: mutt_socket.c:264
+#: mutt_socket.c:260
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Conectando con %s..."
 
-#: mutt_socket.c:284
+#: mutt_socket.c:280
 msgid "Preconnect command failed."
 msgstr ""
 
@@ -2716,55 +2673,55 @@ msgstr "¡Non foi posible sincroniza-lo buzón %s!"
 msgid "Move read messages to %s?"
 msgstr "¿Mover mensaxes lidas a %s?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "¿Purgar %d mensaxe marcada como borrada?"
 
-#: mx.c:815 mx.c:1051
+#: mx.c:818 mx.c:1070
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "¿Purgar %d mensaxes marcadas como borradas?"
 
-#: mx.c:836
+#: mx.c:842
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Movendo mensaxes lidas a %s..."
 
-#: mx.c:887 mx.c:1042
+#: mx.c:900 mx.c:1061
 msgid "Mailbox is unchanged."
 msgstr "O buzón non cambiou."
 
-#: mx.c:917
+#: mx.c:936
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d conservados, %d movidos, %d borrados."
 
-#: mx.c:920 mx.c:1084
+#: mx.c:939 mx.c:1103
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d conservados, %d borrados."
 
-#: mx.c:1027
+#: mx.c:1046
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Pulse '%s' para cambiar a modo escritura"
 
-#: mx.c:1029
+#: mx.c:1048
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "¡Use 'toggle-write' para restablece-lo modo escritura!"
 
-#: mx.c:1031
+#: mx.c:1050
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "O buzón está marcado como non escribible. %s"
 
-#: mx.c:1081
+#: mx.c:1100
 #, fuzzy
 msgid "Mailbox checkpointed."
 msgstr "Bucle de macro detectado."
 
-#: mx.c:1369
+#: mx.c:1388
 #, fuzzy
 msgid "Can't write message"
 msgstr "edita-la mensaxe"
@@ -3173,6 +3130,15 @@ msgstr ""
 #, fuzzy
 msgid "POP Username: "
 msgstr "Usuario IMAP: "
+
+#: pop.c:61
+#, c-format
+msgid "Password for %s@%s: "
+msgstr "Contrasinal para %s@%s: "
+
+#: pop.c:72
+msgid "Logging in..."
+msgstr "Comezando secuencia de login ..."
 
 #: pop.c:109
 #, fuzzy, c-format
@@ -3627,6 +3593,16 @@ msgstr "Esa mensaxe non é visible."
 #, fuzzy
 msgid "Parent message is not available."
 msgstr "Esa mensaxe non é visible."
+
+#~ msgid "IMAP Username: "
+#~ msgstr "Usuario IMAP: "
+
+#, fuzzy
+#~ msgid "CRAM key for %s@%s: "
+#~ msgstr "Introduza keyID para %s: "
+
+#~ msgid "Login failed."
+#~ msgstr "O login fallou."
 
 #~ msgid "[-- Error: unexpected end of file! --]\n"
 #~ msgstr "[-- Erro: ¡fin de ficheiro inesperado! --]\n"
