@@ -4,10 +4,6 @@ In no particular order:
   by Larry P Schrof <schrof@cig.mot.com>
   19991220
 
-* Mutt displays 'mailbox externally modified' messages constantly if the
-  server provides spurious untagged EXISTS responses. Mutt should handle
-  those gracefully, I guess.
-
 * ~h searches download the entire folder, setting everything to \Seen in
   the process.
   --> Use SEARCH? or at least try to use .PEEK when doing scans. I've been
@@ -51,11 +47,7 @@ In no particular order:
 
 * Have a hard time when the home namespace isn't default "".
 
-* Mutt browses Cyrus IMAP servers poorly, because of Cyrus' feature where
-  folders can contain messages *and* subfolders, and because of the 
-  namespace problem, which Cyrus uses.
-
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 20000125
+Updated 20000304
