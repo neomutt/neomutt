@@ -654,7 +654,7 @@ void mutt_free_envelope (ENVELOPE **p)
   FREE (&(*p)->date);
   FREE (&(*p)->x_label);
 
-  mutt_free_buffer (&(*p)->spam);
+  mutt_buffer_free (&(*p)->spam);
 
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
@@ -1344,15 +1344,6 @@ BUFFER * mutt_buffer_from(BUFFER *b, char *seed)
   return b;
 }
 
-void mutt_buffer_free(BUFFER **b)
-{
-  if (!b)
-    return;
-  if ((*b)->data)
-    safe_free(&((*b)->data));
-  safe_free(b);
-}
-
 void mutt_buffer_addstr (BUFFER* buf, const char* s)
 {
   mutt_buffer_add (buf, s, mutt_strlen (s));
@@ -1363,9 +1354,10 @@ void mutt_buffer_addch (BUFFER* buf, char c)
   mutt_buffer_add (buf, &c, 1);
 }
 
-void mutt_free_buffer (BUFFER **p)
+void mutt_buffer_free (BUFFER **p)
 {
-  if (!*p) return;
+  if (!p || !*p) 
+    return;
 
    FREE(&(*p)->data);
    /* dptr is just an offset to data and shouldn't be freed */
