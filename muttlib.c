@@ -50,14 +50,6 @@
 #include <sys/types.h>
 #include <utime.h>
 
-HEADER *mutt_new_header (void)
-{
-  HEADER *hdr = safe_calloc (1, sizeof (HEADER));
-  hdr->lines = -1;
-  return hdr;
-}
-
-
 BODY *mutt_new_body (void)
 {
   BODY *p = (BODY *) safe_calloc (1, sizeof (BODY));
@@ -1328,3 +1320,4 @@ const char *mutt_make_version (void)
 	    MUTT_VERSION, ReleaseDate);
   return vstring;
 }
+
