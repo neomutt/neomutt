@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
-"POT-Creation-Date: 1998-10-27 16:32+0100\n"
+"POT-Creation-Date: 1998-10-28 09:22+0100\n"
 "PO-Revision-Date: 1998-10-15 07:51+0300\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "Language-Team: Mutt-dev <mutt-dev@mutt.org>\n"
@@ -2788,7 +2788,7 @@ msgstr "Нет темы, отменяется."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:425
+#: send.c:431
 #, c-format
 msgid "Reply to %s?"
 msgstr "Ответить %s?"
@@ -2796,75 +2796,75 @@ msgstr "Ответить %s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:508
+#: send.c:514
 msgid "No tagged messages are visible!"
 msgstr "Не видно отмеченных сообщений!"
 
-#: send.c:533
+#: send.c:539
 msgid "No mailing lists found!"
 msgstr "Списков рассылки не найдено!"
 
-#: send.c:620
+#: send.c:626
 msgid "Include message in reply?"
 msgstr "Включить сообщение в ответ?"
 
-#: send.c:634
+#: send.c:640
 msgid "Could not include all requested messages!"
 msgstr "Не удалось включить все требуемые сообщения!"
 
-#: send.c:647
+#: send.c:653
 msgid "Forward MIME encapsulated?"
 msgstr "Переслать инкапсулированным в MIME?"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:858
+#: send.c:864
 msgid "Recall postponed message?"
 msgstr "Вызвать отложенное сообщение?"
 
-#: send.c:1090
+#: send.c:1096
 msgid "Abort unmodified message?"
 msgstr "Отменить не изменённое сообщение?"
 
-#: send.c:1092
+#: send.c:1098
 msgid "Aborted unmodified message."
 msgstr "Сообщение не изменено, отменяется."
 
 #. abort
-#: send.c:1131
+#: send.c:1137
 msgid "Mail not sent."
 msgstr "Письмо не отправлено."
 
-#: send.c:1144
+#: send.c:1150
 msgid "Message postponed."
 msgstr "Сообщение отложено."
 
-#: send.c:1153
+#: send.c:1159
 msgid "No recipients are specified!"
 msgstr "Получатели не указаны!"
 
-#: send.c:1158
+#: send.c:1164
 msgid "No recipients were specified."
 msgstr "Получатели не были указаны."
 
-#: send.c:1164
+#: send.c:1170
 msgid "No subject, abort sending?"
 msgstr "Без темы, отменить отправку?"
 
-#: send.c:1168
+#: send.c:1174
 msgid "No subject specified."
 msgstr "Тема не указана."
 
-#: send.c:1207
+#: send.c:1213
 msgid "Message edited. Really send?"
 msgstr "Сообщение изменено. Действительно отправлять?"
 
-#: send.c:1213
+#: send.c:1219
 msgid "Sending message..."
 msgstr "Отправка сообщения..."
 
-#: send.c:1313
+#: send.c:1319
 msgid "Mail sent."
 msgstr "Письмо отправлено."
 

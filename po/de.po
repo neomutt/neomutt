@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1998-10-27 16:32+0100\n"
+"POT-Creation-Date: 1998-10-28 09:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2771,7 +2771,7 @@ msgstr "Kein Betreff, breche ab."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:425
+#: send.c:431
 #, c-format
 msgid "Reply to %s?"
 msgstr "Antworte an %s?"
@@ -2779,75 +2779,75 @@ msgstr "Antworte an %s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:508
+#: send.c:514
 msgid "No tagged messages are visible!"
 msgstr "Keine markierten Nachrichten sichtbar!"
 
-#: send.c:533
+#: send.c:539
 msgid "No mailing lists found!"
 msgstr "Keine Mailing-Listen gefunden!"
 
-#: send.c:620
+#: send.c:626
 msgid "Include message in reply?"
 msgstr "Nachricht in Antwort zitieren?"
 
-#: send.c:634
+#: send.c:640
 msgid "Could not include all requested messages!"
 msgstr "Konnte nicht alle gewünschten Nachrichten zitieren!"
 
-#: send.c:647
+#: send.c:653
 msgid "Forward MIME encapsulated?"
 msgstr "Mit MIME-Kapseulng wetierleiten?"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:858
+#: send.c:864
 msgid "Recall postponed message?"
 msgstr "Zurückgestellte Nachricht weiterbearbeiten?"
 
-#: send.c:1090
+#: send.c:1096
 msgid "Abort unmodified message?"
 msgstr "Unveränderte Nachricht verwerfen?"
 
-#: send.c:1092
+#: send.c:1098
 msgid "Aborted unmodified message."
 msgstr "Unveränderte Nachricht verworfen."
 
 #. abort
-#: send.c:1131
+#: send.c:1137
 msgid "Mail not sent."
 msgstr "Nachricht nicht verschickt."
 
-#: send.c:1144
+#: send.c:1150
 msgid "Message postponed."
 msgstr "Nachricht zurückgestellt."
 
-#: send.c:1153
+#: send.c:1159
 msgid "No recipients are specified!"
 msgstr "Es wurden keine Empfänger angegeben!"
 
-#: send.c:1158
+#: send.c:1164
 msgid "No recipients were specified."
 msgstr "Es wurden keine Empfänger angegeben!"
 
-#: send.c:1164
+#: send.c:1170
 msgid "No subject, abort sending?"
 msgstr "Kein Betreff, Versand abbrechen?"
 
-#: send.c:1168
+#: send.c:1174
 msgid "No subject specified."
 msgstr "Kein Betreff."
 
-#: send.c:1207
+#: send.c:1213
 msgid "Message edited. Really send?"
 msgstr "Nachricht verändert.  Wirklich abschicken?"
 
-#: send.c:1213
+#: send.c:1219
 msgid "Sending message..."
 msgstr "Verschicke Nachricht..."
 
-#: send.c:1313
+#: send.c:1319
 msgid "Mail sent."
 msgstr "Nachricht verschickt."
 
