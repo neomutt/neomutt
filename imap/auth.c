@@ -400,7 +400,7 @@ static int imap_auth_cram_md5 (IMAP_DATA* idata, const char* user,
   return -1;
 }
 
-/* this is basically a stripped-down version of the anonymous method. */
+/* this is basically a stripped-down version of the cram-md5 method. */
 
 static int imap_auth_anon (IMAP_DATA* idata)
 {
@@ -427,9 +427,8 @@ static int imap_auth_anon (IMAP_DATA* idata)
     return -1;
   }
 
-  strfcpy (ibuf, "ZHVtbXkK", sizeof (ibuf)); 	/* base64 ("dummy") */
+  strfcpy (ibuf, "ZHVtbXkK\r\n", sizeof (ibuf)); 	/* base64 ("dummy") */
 
-  strcpy (ibuf + strlen (ibuf), "\r\n");
   mutt_socket_write (idata->conn, ibuf);
 
   if (mutt_socket_read_line_d (ibuf, LONG_STRING, idata->conn) < 0)
