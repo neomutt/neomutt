@@ -324,6 +324,11 @@ int mutt_index_menu (void)
        * changed about the file (either we got new mail or the file was
        * modified underneath us.)
        */
+
+#ifdef USE_IMAP
+      imap_allow_reopen (Context);
+#endif
+      
       index_hint = (Context->vcount) ? CURHDR->index : 0;
 
       if ((check = mx_check_mailbox (Context, &index_hint, check_lock)) < 0)
@@ -453,6 +458,10 @@ int mutt_index_menu (void)
 
 	set_option (OPTSEARCHINVALID);
       }
+      
+#ifdef USE_IMAP
+      imap_disallow_reopen (Context);
+#endif
     }
 
     check_lock = 0;

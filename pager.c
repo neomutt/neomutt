@@ -1431,7 +1431,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int indicator = indexlen / 3; 	/* the indicator line of the PI */
   int old_PagerIndexLines;		/* some people want to resize it
   					 * while inside the pager... */
-  int oldcount = -1;
 
   if (!(flags & M_SHOWCOLOR))
     flags |= M_SHOWFLAT;
@@ -1482,26 +1481,12 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     strcat (helpstr, buffer);
   }
 
-  if (Context)
-    oldcount = Context->msgcount;
-  
   while (ch != -1)
   {
     mutt_curs_set (0);
 
     if (mutt_buffy_notify () && option (OPTBEEPNEW))
       beep ();
-    else if (Context && Context->msgcount != oldcount)
-    {
-      if (Context && Context->msgcount > oldcount)
-      {
-	mutt_message (_("New mail in this mailbox."));
-	if (option (OPTBEEPNEW))
-	  beep ();
-	redraw |= REDRAW_STATUS;
-      }
-      oldcount = Context->msgcount;
-    }
 
     if (redraw & REDRAW_FULL)
     {
