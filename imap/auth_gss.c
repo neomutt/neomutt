@@ -233,7 +233,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata)
   do
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
-  if (rc != IMAP_CMD_DONE)
+  if (rc != IMAP_CMD_OK)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     mutt_socket_write(idata->conn, "*\r\n");

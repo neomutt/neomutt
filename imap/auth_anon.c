@@ -56,13 +56,13 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata)
     rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
   
-  if (rc != IMAP_CMD_DONE)
+  if (rc != IMAP_CMD_OK)
   {
     dprint (1, (debugfile, "Error receiving server response.\n"));
     goto bail;
   }
 
-  if (imap_code (idata->buf))
+  if (imap_code (idata->cmd.buf))
     return IMAP_AUTH_SUCCESS;
 
  bail:
