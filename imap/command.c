@@ -403,9 +403,12 @@ static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
 
   dprint (2, (debugfile, "Handling CAPABILITY\n"));
 
-  idata->capstr = safe_strdup (imap_next_word (s));
-  
-  while (*s) 
+  s = imap_next_word (s);
+  idata->capstr = safe_strdup (s);
+
+  memset (idata->capabilities, 0, sizeof (idata->capabilities));
+
+  while (*s)
   {
     for (x = 0; x < CAPMAX; x++)
       if (imap_wordcasecmp(Capabilities[x], s) == 0)
