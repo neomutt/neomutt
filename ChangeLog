@@ -1,3 +1,9 @@
+2005-01-27 18:54:24  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* globals.h, imap/imap.c, imap/util.c, init.c, init.h, main.c,
+	mutt.h, mutt_sasl.c, mutt_socket.c, mutt_ssl.h, mutt_ssl_gnutls.c,
+	pop_lib.c: GNUTLS support.  Used in Debian since Nov. 2001.
+
 2005-01-27 18:48:41  Bill Nottingham  <notting@redhat.com>  (roessler)
 
 	* mutt_sasl.c: With SASL, expect the server to prompt for
