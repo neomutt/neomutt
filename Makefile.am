@@ -162,8 +162,11 @@ actual-dist: dist us-dist
 		if ! ssh-add -l | grep -q roessler@guug.de ; then
 			ssh-add
 		fi
-		pppd call riemann
-		scp $(distdir){,i}.tar.gz{,asc}	sigtrap.guug.de:/home/ftp/pub/mutt/devel/
+		@echo "Please connect to the Net and press any key."
+		@read dummy
+		scp $(distdir){,i}.tar.gz{,asc}				\
+			sigtrap.guug.de:/home/ftp/pub/mutt/devel/ 	\
+			|| echo "UPLOAD FAILED.  Please upload manually!"
 		cvs commit -m "automatic post-release commit for $(distdir)"
 		cvs tag $(distdir)-rel
 		cvs update
