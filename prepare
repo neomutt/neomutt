@@ -8,6 +8,8 @@ am()
   return 0
 }
 
+touch '$output.in'
+
 if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) \
   && am && autoconf && ./configure $@
 then

@@ -38,7 +38,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP TODO configure acconfig.h attach.h \
 	mutt_regex.h mutt_socket.h mx.h pager.h parse.h pgp.h protos.h  \
 	reldate.h rfc1524.h rfc2047.h rfc822.h sha.h sha_locl.h	\
 	sort.h mime.types VERSION prepare _regex.h OPS.MIX	\
-	\\$$output.in
+	README.SECURITY
 
 BUILT_SOURCES = mutt_dotlock.c keymap_defs.h
 
@@ -97,9 +97,15 @@ changelog:
 	rcs2log | cat - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog
 	$(VISUAL) ChangeLog
 
+# kluge aroud automake problems. *grrr*
+
 dist-hook:
 	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
 	-rm -f $(distdir)/config.h
+	touch $(distdir)/'$$output.in'
+
+utput.in:
+	touch utput.in
 
 us-distdir: distdir dist-hook
 	mv $(distdir) $(distdir)-us

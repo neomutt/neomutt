@@ -5,11 +5,6 @@ AM_CONFIG_HEADER(config.h)
 
 srcdir=`(cd $srcdir && pwd)`
 mutt_cv_version=`cat $srcdir/VERSION`
-case `basename $srcdir` in
-*-unstable*)
-	mutt_cv_version=${mutt_cv_version}-unstable-`date +%Y-%m-%d`
-	;;
-esac
 
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 
