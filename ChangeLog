@@ -1,4 +1,9 @@
-2005-01-27 18:25:40  Marco d'Itri  <md@Linux.IT>  (roessler)
+2005-01-27 18:27:36  Marco d'Itri  <md@Linux.IT>  (roessler)
+
+	* contrib/gpg.rc, pgpinvoke.c: Make the default Muttrc work
+	out the box for people using gnupg-agent.  Wrote and applied a
+	one-line patch to make the %?p? conditional escape work correctly,
+	patch forwarded upstream. (Closes: #277646)
 
 	* pgpewrap.c: Don't segfault when invoked without any arguments.
 
