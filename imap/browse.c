@@ -453,6 +453,8 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
 		ns[n++] = *s;
 		s++;
 	      }
+	      if (*s)
+		s++;
 	    }
 	    else
 	      while (*s && !ISSPACE (*s)) 
