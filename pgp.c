@@ -1102,7 +1102,9 @@ static void convert_to_7bit (BODY *a)
       a->encoding = ENCQUOTEDPRINTABLE;
     else if (a->encoding == ENCBINARY)
       a->encoding = ENCBASE64;
-    else if (a->content && (a->content->from || (a->content->space && option (OPTPGPSTRICTENC))))
+    else if (a->content && a->encoding != ENCBASE64 &&
+	     (a->content->from || (a->content->space && 
+				   option (OPTPGPSTRICTENC))))
       a->encoding = ENCQUOTEDPRINTABLE;
     a = a->next;
   }
