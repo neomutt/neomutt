@@ -28,12 +28,12 @@
 #define M_CM_REPLYING	(1<<8)	/* replying the message */
 
 
-#define M_CM_DECODE_PGP	  (1<<8) /* used for decoding PGP messages */
-#define M_CM_DECODE_SMIME (1<<9) /* used for decoding S/MIME messages */
+#define M_CM_DECODE_PGP	  (1<<9) /* used for decoding PGP messages */
+#define M_CM_DECODE_SMIME (1<<10) /* used for decoding S/MIME messages */
 #define M_CM_DECODE_CRYPT  (M_CM_DECODE_PGP | M_CM_DECODE_SMIME)
 
 
-#define M_CM_VERIFY	(1<<10)	/* do signature verification */
+#define M_CM_VERIFY	(1<<11)	/* do signature verification */
 
 
 
