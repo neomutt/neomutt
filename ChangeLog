@@ -1,7 +1,3 @@
-2004-01-04 11:04:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
-
-	* init.c: Fix a memory management error.  Ouch.
-
 2004-01-04 10:55:20  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* init.h: Fix hide_missing / hide_limited documentation.
