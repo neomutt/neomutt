@@ -86,7 +86,7 @@ int compare_subject (const void *a, const void *b)
   return (SORTCODE (rc));
 }
 
-char *mutt_get_name (ADDRESS *a)
+const char *mutt_get_name (ADDRESS *a)
 {
   ADDRESS *ali;
 
@@ -107,7 +107,7 @@ int compare_to (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  char *fa, *fb;
+  const char *fa, *fb;
   int result;
 
   fa = mutt_get_name ((*ppa)->env->to);
@@ -121,7 +121,7 @@ int compare_from (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  char *fa, *fb;
+  const char *fa, *fb;
   int result;
 
   fa = mutt_get_name ((*ppa)->env->from);

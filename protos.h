@@ -127,7 +127,7 @@ char *mutt_find_hook (int, const char *);
 char *mutt_gecos_name (char *, size_t, struct passwd *);
 char *mutt_gen_msgid (void);
 char *mutt_get_body_charset (char *, size_t, BODY *);
-char *mutt_get_name (ADDRESS *);
+const char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
 char *mutt_crypt_hook (ADDRESS *);
 char *mutt_make_date (char *, size_t);
