@@ -237,10 +237,9 @@ msgid "Can't open %s: %s."
 msgstr "Tidak bisa membuka: %s"
 
 #: charset.c:1148
-#, fuzzy, c-format
+#, c-format
 msgid "Error while recoding %s. Leave it unchanged."
-msgstr ""
-"Error saat meng-coding ulang %s. Lihat %s untuk menyelamatkan data anda."
+msgstr "Error meng-coding ulang %s. Biarkan saja, jangan diubah."
 
 #: charset.c:1154
 #, c-format
