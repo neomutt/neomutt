@@ -1,3 +1,7 @@
+2004-08-08 16:20:37  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* muttlib.c, protos.h: Fix a memory leak.
+
 2004-08-08 16:19:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c, smime.c: Fix the PGP and S/MIME menus. Complaints

@@ -638,17 +638,24 @@ void mutt_free_envelope (ENVELOPE **p)
 {
   if (!*p) return;
   rfc822_free_address (&(*p)->return_path);
+  rfc822_free_address (&(*p)->from);
   rfc822_free_address (&(*p)->to);
   rfc822_free_address (&(*p)->cc);
   rfc822_free_address (&(*p)->bcc);
   rfc822_free_address (&(*p)->sender);
-  rfc822_free_address (&(*p)->from);
   rfc822_free_address (&(*p)->reply_to);
   rfc822_free_address (&(*p)->mail_followup_to);
+
+  FREE (&(*p)->list_post);
   FREE (&(*p)->subject);
+  /* real_subj is just an offset to subject and shouldn't be freed */
   FREE (&(*p)->message_id);
   FREE (&(*p)->supersedes);
   FREE (&(*p)->date);
+  FREE (&(*p)->x_label);
+
+  mutt_free_buffer (&(*p)->spam);
+
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
@@ -1354,6 +1361,15 @@ void mutt_buffer_addstr (BUFFER* buf, const char* s)
 void mutt_buffer_addch (BUFFER* buf, char c)
 {
   mutt_buffer_add (buf, &c, 1);
+}
+
+void mutt_free_buffer (BUFFER **p)
+{
+  if (!*p) return;
+
+   FREE(&(*p)->data);
+   /* dptr is just an offset to data and shouldn't be freed */
+   FREE(p);
 }
 
 /* dynamically grows a BUFFER to accomodate s, in increments of 128 bytes.
