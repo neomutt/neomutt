@@ -1,4 +1,7 @@
-2002-12-19 11:43:56  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2002-12-19 11:48:58  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/manual.sgml.head, doc/muttrc.man.head: Improve the
+	documentation of pgp-hook/crypt-hook.
 
 	* pgpkey.c: Don't bother the user with weak keys when there's
 	a strong one.  Experimental, based on discussions on mutt-dev.
