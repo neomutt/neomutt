@@ -412,9 +412,14 @@ hdr_format_str (char *dest,
       break;
 
     case 'F':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      make_from (hdr->env, buf2, sizeof (buf2), 0);
-      snprintf (dest, destlen, fmt, buf2);
+      if (!optional)
+      {
+        snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+        make_from (hdr->env, buf2, sizeof (buf2), 0);
+        snprintf (dest, destlen, fmt, buf2);
+      }
+      else if (mutt_addr_is_user (hdr->env->from))
+        optional = 0;
       break;
 
     case 'i':
