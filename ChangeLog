@@ -1,3 +1,20 @@
+Mon Jul 26 13:57:58 1999  Thomas Roessler  <roessler@guug.de>
+
+	* browser.h, imap.c, imap.h, mx.c, postpone.c, browser.c:
+	Assorted IMAP fixes.  From Brendan Cully <brendan@kublai.com>,
+	message <19990725150346.A19750@xanadu.kublai.com>.
+
+	* parse.c, rfc2047.c, rfc2231.c, rfc2231.h, sendlib.c, Makefile.am, TODO, copy.c, init.h, mutt.h:
+	Implement RFC 2231.
+
+	* ChangeLog: *** empty log message ***
+
+	* commands.c:
+	Fix a missing #ifdef. From Matt Armstrong <matt@lickey.com>.
+
+	* doc/devel-notes.txt:
+	Add some notes.  From Matt Armstrong <matt@lickey.com>.
+
 Mon Jul 26 10:13:38 1999  Thomas Roessler  <roessler@guug.de>
 
 	* commands.c:

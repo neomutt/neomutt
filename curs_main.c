@@ -868,17 +868,17 @@ int mutt_index_menu (void)
 
       case OP_MAIN_CHANGE_FOLDER:
       
-	if (attach_msg || option (OPTREADONLY))
+	if (attach_msg)
 	  op = OP_MAIN_CHANGE_FOLDER_READONLY;
 
 	/* fallback to the readonly case */
 
       case OP_MAIN_CHANGE_FOLDER_READONLY:
 
-        if (op == OP_MAIN_CHANGE_FOLDER)
-          cp = _("Open mailbox");
-        else
+        if ((op == OP_MAIN_CHANGE_FOLDER_READONLY) || option (OPTREADONLY))
           cp = _("Open mailbox in read-only mode");
+        else
+          cp = _("Open mailbox");
 
 	buf[0] = '\0';
 	mutt_buffy (buf);
