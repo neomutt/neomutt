@@ -803,7 +803,7 @@ int mutt_save_message (HEADER *h, int delete,
       }
     }
 
-    need_buffy_cleanup = (ctx.magic == M_MBOX || ctx.magic == M_MMDF || ctx.magic == M_KENDRA);
+    need_buffy_cleanup = (ctx.magic == M_MBOX || ctx.magic == M_MMDF);
 
     mx_close_mailbox (&ctx, NULL);
 

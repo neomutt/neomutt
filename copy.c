@@ -698,9 +698,9 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   MESSAGE *msg;
   int r;
 
-  if ((msg = mx_open_new_message (dest, hdr, (src->magic == M_MBOX || src->magic == M_MMDF || src->magic == M_KENDRA) ? 0 : M_ADD_FROM)) == NULL)
+  if ((msg = mx_open_new_message (dest, hdr, (src->magic == M_MBOX || src->magic == M_MMDF) ? 0 : M_ADD_FROM)) == NULL)
     return -1;
-  if (dest->magic == M_MBOX || dest->magic == M_MMDF || dest->magic == M_KENDRA)
+  if (dest->magic == M_MBOX || dest->magic == M_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
   chflags |= (dest->magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);

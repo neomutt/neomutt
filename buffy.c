@@ -120,7 +120,7 @@ int test_new_folder (const char *path)
 
   typ = mx_get_magic (path);
 
-  if (typ != M_MBOX && typ != M_MMDF && typ != M_KENDRA)
+  if (typ != M_MBOX && typ != M_MMDF)
     return 0;
 
   if ((f = fopen (path, "rb")))
@@ -348,7 +348,6 @@ int mutt_buffy_check (int force)
       {
       case M_MBOX:
       case M_MMDF:
-      case M_KENDRA:
 
 	if (STAT_CHECK)
 	{

@@ -143,8 +143,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   
   if (fgets (buff, sizeof (buff), fp) && is_from (buff, NULL, 0, NULL))
   {
-    if (tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF ||
-	tmpctx.magic == M_KENDRA)
+    if (tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF)
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else

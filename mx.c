@@ -466,8 +466,6 @@ int mx_set_magic (const char *s)
     DefaultMagic = M_MH;
   else if (ascii_strcasecmp (s, "maildir") == 0)
     DefaultMagic = M_MAILDIR;
-  else if (ascii_strcasecmp (s, "kendra") == 0)
-    DefaultMagic = M_KENDRA;
   else
     return (-1);
 
@@ -1464,13 +1462,6 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
       break;
     }
 
-    case M_KENDRA:
-    {
-      if (fputs (KENDRA_SEP, msg->fp) == EOF)
-	r = -1;
-      break;
-    }
-
 #ifdef USE_IMAP
     case M_IMAP:
     {
@@ -1493,7 +1484,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     }
   }
   
-  if (r == 0 && (ctx->magic == M_MBOX || ctx->magic == M_MMDF || ctx->magic == M_KENDRA)
+  if (r == 0 && (ctx->magic == M_MBOX || ctx->magic == M_MMDF)
       && (fflush (msg->fp) == EOF || fsync (fileno (msg->fp)) == -1))
   {
     mutt_perror _("Can't write message");
@@ -1644,7 +1635,6 @@ int mx_check_empty (const char *path)
   {
     case M_MBOX:
     case M_MMDF:
-    case M_KENDRA:
       return mbox_check_empty (path);
     case M_MH:
       return mh_check_empty (path);

@@ -32,7 +32,6 @@ enum
 {
   M_MBOX = 1,
   M_MMDF,
-  M_KENDRA,
   M_MH,
   M_MAILDIR
 #ifdef USE_IMAP
@@ -46,7 +45,6 @@ enum
 WHERE short DefaultMagic INITVAL (M_MBOX);
 
 #define MMDF_SEP "\001\001\001\001\n"
-#define KENDRA_SEP "\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5
 
 int mbox_sync_mailbox (CONTEXT *, int *);

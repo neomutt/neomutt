@@ -765,7 +765,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 	mx_close_mailbox(&ctx, NULL);
 	return -1;
       }
-      if (ctx.magic == M_MBOX || ctx.magic == M_MMDF || ctx.magic == M_KENDRA)
+      if (ctx.magic == M_MBOX || ctx.magic == M_MMDF)
 	chflags = CH_FROM;
       chflags |= (ctx.magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if (_mutt_copy_message (msg->fp, fp, hn, hn->content, 0, chflags) == 0 
