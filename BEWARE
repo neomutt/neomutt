@@ -1,0 +1,15 @@
+MUTT HACKERS BEWARE
+
+A word of warning about string comparisons: Since mutt may run in a
+huge variety of locales, case-insensitive string comparisons and
+case conversions may be dangerous.  For instance, in iso-8859-9,
+tolower('I') is DIFFERENT from 'i' - it's indeed the Turkish dotless
+lowercase i.
+
+For this reason, always use the ascii_* functions defined in ascii.h
+and implemented in ascii.c when comparing or handling strings whcih
+are defined as us-ascii.  This concerns lots of text-based
+protocols, message header tags, character set names, domain names,
+e-mail addresses, etc.
+
+Thu Apr 26 15:40:11 CEST 2001, <roessler@does-not-exist.org>
