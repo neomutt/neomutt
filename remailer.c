@@ -118,11 +118,11 @@ static REMAILER *mix_new_remailer (void)
 
 static void mix_free_remailer (REMAILER **r)
 {
-  safe_free ((void **) &(*r)->shortname);
-  safe_free ((void **) &(*r)->addr);
-  safe_free ((void **) &(*r)->ver);
+  FREE (&(*r)->shortname);
+  FREE (&(*r)->addr);
+  FREE (&(*r)->ver);
   
-  safe_free ((void **) r);
+  FREE (r);
 }
 
 /* parse the type2.list as given by mixmaster -T */
@@ -212,7 +212,7 @@ static void mix_free_type2_list (REMAILER ***ttlp)
   for (i = 0; type2_list[i]; i++)
     mix_free_remailer (&type2_list[i]);
   
-  safe_free ((void **) type2_list);
+  FREE (type2_list);
 }
 
 
@@ -693,8 +693,8 @@ void mix_make_chain (LIST **chainp, int *redraw)
   }
   
   mix_free_type2_list (&type2_list);
-  safe_free ((void **) &coords);
-  safe_free ((void **) &chain);
+  FREE (&coords);
+  FREE (&chain);
 }
 
 /* some safety checks before piping the message to mixmaster */

@@ -143,7 +143,7 @@ static LIST *mutt_parse_references (char *s, int in_reply_to)
        */
       if (!(at = strchr (new, '@')) || strchr (at + 1, '@')
 	  || (in_reply_to && at - new <= 8))
-	safe_free ((void **) &new);
+	FREE (&new);
       else
       {
 	t = (LIST *) safe_malloc (sizeof (LIST));
@@ -314,7 +314,7 @@ void mutt_parse_content_type (char *s, BODY *ct)
   char *pc;
   char *subtype;
 
-  safe_free((void **)&ct->subtype);
+  FREE (&ct->subtype);
   mutt_free_parameter(&ct->parameter);
 
   /* First extract any existing parameters */
@@ -1087,7 +1087,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     else if (!ascii_strcasecmp (line + 1, "essage-id"))
     {
       /* We add a new "Message-Id:" when building a message */
-      safe_free ((void **) &e->message_id);
+      FREE (&e->message_id);
       e->message_id = extract_message_id (p);
       matched = 1;
     }

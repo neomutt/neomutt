@@ -165,7 +165,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     {
       regerror (rc, rx, err->data, err->dsize);
       regfree (rx);
-      safe_free ((void **) &rx);
+      FREE (&rx);
       goto error;
     }
   }

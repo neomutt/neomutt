@@ -145,7 +145,7 @@ char *safe_strdup (const char *s)
 
 void mutt_str_replace (char **p, const char *s)
 {
-  safe_free ((void **) p);
+  FREE (p);
   *p = safe_strdup (s);
 }
 
@@ -451,7 +451,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line)
   {
     if (fgets (s + offset, *size - offset, fp) == NULL)
     {
-      safe_free ((void **) &s);
+      FREE (&s);
       return NULL;
     }
     if ((ch = strchr (s + offset, '\n')) != NULL)

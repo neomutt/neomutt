@@ -355,7 +355,7 @@ static int ssl_socket_close (CONNECTION * conn)
     X509_free (data->cert);
     SSL_free (data->ssl);
     SSL_CTX_free (data->ctx);
-    safe_free ((void **) &conn->sockdata);
+    FREE (&conn->sockdata);
   }
 
   return raw_socket_close (conn);

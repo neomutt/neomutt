@@ -991,8 +991,8 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
       ctx->hdrs[i]->index = j++;
     }
   }
-  safe_free ((void **) &newOffset);
-  safe_free ((void **) &oldOffset);
+  FREE (&newOffset);
+  FREE (&oldOffset);
   unlink (tempfile); /* remove partial copy of the mailbox */
   mutt_unblock_signals ();
   Sort = save_sort; /* Restore the default value. */
@@ -1020,8 +1020,8 @@ bail:  /* Come here in case of disaster */
   mbox_unlock_mailbox (ctx);
 
   mutt_unblock_signals ();
-  safe_free ((void **) &newOffset);
-  safe_free ((void **) &oldOffset);
+  FREE (&newOffset);
+  FREE (&oldOffset);
 
   if ((ctx->fp = freopen (ctx->path, "r", ctx->fp)) == NULL)
   {
@@ -1085,12 +1085,12 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
   mutt_clear_threads (ctx);
-  safe_free ((void **) &ctx->v2r);
+  FREE (&ctx->v2r);
   if (ctx->readonly)
   {
     for (i = 0; i < ctx->msgcount; i++)
       mutt_free_header (&(ctx->hdrs[i])); /* nothing to do! */
-    safe_free ((void **) &ctx->hdrs);
+    FREE (&ctx->hdrs);
   }
   else
   {
@@ -1140,7 +1140,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
     /* free the old headers */
     for (j = 0; j < old_msgcount; j++)
       mutt_free_header (&(old_hdrs[j]));
-    safe_free ((void **) &old_hdrs);
+    FREE (&old_hdrs);
 
     ctx->quiet = 0;
     return (-1);
@@ -1219,7 +1219,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	msg_mod = 1;
       }
     }
-    safe_free ((void **) &old_hdrs);
+    FREE (&old_hdrs);
   }
 
   ctx->quiet = 0;

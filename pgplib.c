@@ -126,7 +126,7 @@ void pgp_free_sig (pgp_sig_t **sigp)
   for (sp = *sigp; sp; sp = q)
   {
     q = sp->next;
-    safe_free ((void **) &sp);
+    FREE (&sp);
   }
   
   *sigp = NULL;
@@ -142,8 +142,8 @@ void pgp_free_uid (pgp_uid_t ** upp)
   {
     q = up->next;
     pgp_free_sig (&up->sigs);
-    safe_free ((void **) &up->addr);
-    safe_free ((void **) &up);
+    FREE (&up->addr);
+    FREE (&up);
   }
 
   *upp = NULL;
@@ -177,8 +177,8 @@ static void _pgp_free_key (pgp_key_t ** kpp)
   kp = *kpp;
 
   pgp_free_uid (&kp->address);
-  safe_free ((void **) &kp->keyid);
-  safe_free ((void **) kpp);
+  FREE (&kp->keyid);
+  FREE (kpp);
 }
 
 pgp_key_t *pgp_remove_key (pgp_key_t ** klist, pgp_key_t * key)

@@ -1683,7 +1683,7 @@ cleanup:
     
     if(signas)
     {
-      safe_free((void **) &PgpSignAs);
+      FREE (&PgpSignAs);
       PgpSignAs = signas;
     }
   }

@@ -146,9 +146,9 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
       elem = elem->next;
       if (destroy)
 	destroy (tmp->data);
-      safe_free ((void **) &tmp);
+      FREE (&tmp);
     }
   }
-  safe_free ((void **) &pptr->table);
-  safe_free ((void **) ptr);
+  FREE (&pptr->table);
+  FREE (ptr);
 }

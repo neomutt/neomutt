@@ -247,7 +247,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   {
     PostCount = 0;
     mx_close_mailbox (PostContext, NULL);
-    safe_free ((void **) &PostContext);
+    FREE (&PostContext);
     mutt_error _("No postponed messages.");
     return (-1);
   }
@@ -260,14 +260,14 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   else if ((h = select_msg ()) == NULL)
   {
     mx_close_mailbox (PostContext, NULL);
-    safe_free ((void **) &PostContext);
+    FREE (&PostContext);
     return (-1);
   }
 
   if (mutt_prepare_template (NULL, PostContext, hdr, h, 0) < 0)
   {
     mx_fastclose_mailbox (PostContext);
-    safe_free ((void **) &PostContext);
+    FREE (&PostContext);
     return (-1);
   }
 
@@ -283,7 +283,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   mx_close_mailbox (PostContext, NULL);
   set_quadoption (OPT_DELETE, opt_delete);
 
-  safe_free ((void **) &PostContext);
+  FREE (&PostContext);
 
   for (tmp = hdr->env->userhdrs; tmp; )
   {
@@ -542,8 +542,8 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   newhdr->content->length = hdr->content->length;
   mutt_parse_part (fp, newhdr->content);
 
-  safe_free ((void **) &newhdr->env->message_id);
-  safe_free ((void **) &newhdr->env->mail_followup_to); /* really? */
+  FREE (&newhdr->env->message_id);
+  FREE (&newhdr->env->mail_followup_to); /* really? */
 
 #ifdef HAVE_PGP
   /* decrypt pgp/mime encoded messages */

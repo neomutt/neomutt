@@ -646,7 +646,7 @@ static pgp_key_t *pgp_select_key (pgp_key_t *keys,
   }
 
   mutt_menuDestroy (&menu);
-  safe_free ((void **) &KeyTable);
+  FREE (&KeyTable);
 
   set_option (OPTNEEDREDRAW);
   
@@ -795,7 +795,7 @@ static LIST *pgp_add_string_to_hints (LIST *hints, const char *str)
       hints = mutt_add_list (hints, t);
   }
 
-  safe_free ((void **) &scratch);
+  FREE (&scratch);
   return hints;
 }
 

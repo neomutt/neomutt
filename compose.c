@@ -463,8 +463,8 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   idx[x]->content->next = NULL;
   idx[x]->content->parts = NULL;
   mutt_free_body (&(idx[x]->content));
-  safe_free ((void **) &idx[x]->tree);
-  safe_free ((void **) &idx[x]);
+  FREE (&idx[x]->tree);
+  FREE (&idx[x]);
   for (; x < *idxlen - 1; x++)
     idx[x] = idx[x+1];
   menu->max = --(*idxlen);
@@ -723,7 +723,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (idxlen && idx[idxlen - 1]->content->next)
 	{
 	  for (i = 0; i < idxlen; i++)
-	    safe_free ((void **) &idx[i]);
+	    FREE (&idx[i]);
 	  idxlen = 0;
 	  idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 	  menu->data = idx;
@@ -758,7 +758,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->redraw |= REDRAW_INDEX;
 	}
 	else
-	  safe_free ((void **) &idx[idxlen]);
+	  FREE (&idx[idxlen]);
 
 	menu->redraw |= REDRAW_STATUS;
 
@@ -807,7 +807,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    {
 	      error = 1;
 	      mutt_error (_("Unable to attach %s!"), att);
-	      safe_free ((void **) &idx[idxlen]);
+	      FREE (&idx[idxlen]);
 	    }
 	  }
 	  
@@ -861,7 +861,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  if (!ctx->msgcount)
 	  {
 	    mx_close_mailbox (ctx, NULL);
-	    safe_free ((void **) &ctx);
+	    FREE (&ctx);
 	    mutt_error _("No messages in that folder.");
 	    break;
 	  }
@@ -904,7 +904,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	      else
 	      {
 		mutt_error _("Unable to attach!");
-		safe_free ((void **) &idx[idxlen]);
+		FREE (&idx[idxlen]);
 	      }
 	    }
 	  }
@@ -914,7 +914,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mx_close_mailbox (Context, NULL);
 	  else
 	    mx_fastclose_mailbox (Context);
-	  safe_free ((void **) &Context);
+	  FREE (&Context);
 
 	  /* go back to the folder we started from */
 	  Context = this;
@@ -1166,7 +1166,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  if (!(fp = safe_fopen (fname, "w")))
 	  {
 	    mutt_error (_("Can't create file %s"), fname);
-	    safe_free ((void **) &idx[idxlen]);
+	    FREE (&idx[idxlen]);
 	    continue;
 	  }
 	  fclose (fp);
@@ -1243,10 +1243,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    idx[idxlen]->content->next = NULL;
 	    idx[idxlen]->content->parts = NULL;
 	    mutt_free_body (&idx[idxlen]->content);
-	    safe_free ((void **) &idx[idxlen]->tree);
-	    safe_free ((void **) &idx[idxlen]);
+	    FREE (&idx[idxlen]->tree);
+	    FREE (&idx[idxlen]);
 	  }
-	  safe_free ((void **) &idx);
+	  FREE (&idx);
 	  idxlen = 0;
 	  idxmax = 0;
 	  r = -1;
@@ -1389,12 +1389,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   {
     msg->content = idx[0]->content;
     for (i = 0; i < idxlen; i++)
-      safe_free ((void **) &idx[i]);
+      FREE (&idx[i]);
   }
   else
     msg->content = NULL;
 
-  safe_free ((void **) &idx);
+  FREE (&idx);
 
   return (r);
 }

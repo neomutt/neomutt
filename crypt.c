@@ -770,7 +770,7 @@ void mutt_signed_handler (BODY *a, STATE *s)
       state_attach_puts (_("[-- The following data is signed --]\n\n"), s);
 
 
-      safe_free((void **) &signatures);
+      FREE (&signatures);
     }
     else
       state_attach_puts (_("[-- Warning: Can't find any signatures. --]\n\n"), s);

@@ -514,7 +514,7 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     else fname = NULL;
   
     mutt_menuDestroy (&menu);
-    safe_free ((void**)&Table);
+    FREE (&Table);
     set_option (OPTNEEDREDRAW);
   
     if (fname) return fname;
@@ -596,7 +596,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 	  {
 	    found = 0;
 	    ask = 0;
-	    safe_free((void **) &key);
+	    FREE (&key);
 	    key = NULL;
 	    break;
 	  }
@@ -662,7 +662,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
       choice = mutt_yesorno (prompt, M_NO);
       if (choice == -1 || choice == M_NO)
       {
-	safe_free ((void **) &key);
+	FREE (&key);
 	key = NULL;
       }
     }
@@ -676,7 +676,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 	choice = mutt_yesorno (prompt, M_NO);
 	if (choice != M_YES)
 	{
-	  safe_free ((void **) &key);
+	  FREE (&key);
 	  key = NULL;
 	}
 
@@ -729,7 +729,7 @@ void _smime_getkeys (char *mailbox)
     if (*SmimeKeyToUse && 
         !mutt_strcasecmp (k, SmimeKeyToUse + mutt_strlen (SmimeKeys)+1))
     {
-      safe_free ((void **) &k);
+      FREE (&k);
       return;
     }
     else smime_void_passphrase ();
@@ -743,7 +743,7 @@ void _smime_getkeys (char *mailbox)
     if (mutt_strcasecmp (k, SmimeDefaultKey))
       smime_void_passphrase ();
 
-    safe_free ((void **) &k);
+    FREE (&k);
     return;
   }
 
@@ -850,7 +850,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     if(!keyID)
     {
       mutt_message (_("No (valid) certificate found for %s."), q->mailbox);
-      safe_free ((void **)&keylist);
+      FREE (&keylist);
       rfc822_free_address (&tmp);
       rfc822_free_address (&addr);
       return NULL;
@@ -1191,7 +1191,7 @@ void smime_invoke_import (char *infile, char *mailbox)
     mutt_wait_filter (thepid);
   
     mutt_unlink (certfile);
-    safe_free((void **)&certfile);
+    FREE (&certfile);
   }
 
   fflush (fpout);
@@ -1256,7 +1256,7 @@ int smime_verify_sender(HEADER *h)
       else
 	retval = 0;
       mutt_unlink(certfile);
-      safe_free((void **)&certfile);
+      FREE (&certfile);
     }
   else 
 	mutt_any_key_to_continue(_("no certfile"));
@@ -1682,7 +1682,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
       if (linelen && !mutt_strcasecmp (line, "verification successful"))
 	badsig = 0;
 
-      safe_free ((void **) &line);
+      FREE (&line);
     }
   }
   
@@ -1900,7 +1900,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     line = mutt_read_line (line, &linelen, smimeerr, &lineno);
     if (linelen && !mutt_strcasecmp (line, "verification successful"))
       m->goodsig = 1;
-    safe_free ((void **) &line);
+    FREE (&line);
   }
   else {
     m->goodsig = p->goodsig;

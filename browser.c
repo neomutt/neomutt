@@ -60,14 +60,14 @@ static void destroy_state (struct browser_state *state)
 
   for (c = 0; c < state->entrylen; c++)
   {
-    safe_free ((void **) &((state->entry)[c].name));
-    safe_free ((void **) &((state->entry)[c].desc));
-    safe_free ((void **) &((state->entry)[c].st));
+    FREE (&((state->entry)[c].name));
+    FREE (&((state->entry)[c].desc));
+    FREE (&((state->entry)[c].st));
   }
 #ifdef USE_IMAP
-  safe_free ((void **) &state->folder);
+  FREE (&state->folder);
 #endif
-  safe_free ((void **) &state->entry);
+  FREE (&state->entry);
 }
 
 static int browser_compare_subject (const void *a, const void *b)
@@ -889,8 +889,8 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    if (!imap_delete_mailbox (Context, mx))
             {
 	      /* free the mailbox from the browser */
-	      safe_free ((void **) &((state.entry)[nentry].name));
-	      safe_free ((void **) &((state.entry)[nentry].desc));
+	      FREE (&((state.entry)[nentry].name));
+	      FREE (&((state.entry)[nentry].desc));
 	      /* and move all other entries up */
 	      if (nentry+1 < state.entrylen)
 		memmove (state.entry + nentry, state.entry + nentry + 1,
@@ -995,14 +995,14 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    regerror (err, rx, buf, sizeof (buf));
 	    regfree (rx);
-	    safe_free ((void **) &rx);
+	    FREE (&rx);
 	    mutt_error ("%s", buf);
 	  }
 	  else
 	  {
 	    mutt_str_replace (&Mask.pattern, buf);
 	    regfree (Mask.rx);
-	    safe_free ((void **) &Mask.rx);
+	    FREE (&Mask.rx);
 	    Mask.rx = rx;
 	    Mask.not = not;
 

@@ -869,7 +869,7 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
     }
   }
 
-  safe_free ((void**) &hdrs);
+  FREE (&hdrs);
 
   return count;
 }
@@ -1089,7 +1089,7 @@ void imap_close_mailbox (CONTEXT* ctx)
     if (idata->cache[i].path)
     {
       unlink (idata->cache[i].path);
-      safe_free ((void **) &idata->cache[i].path);
+      FREE (&idata->cache[i].path);
     }
   }
 }

@@ -509,7 +509,7 @@ void rfc822_qualify (ADDRESS *addr, const char *host)
     {
       p = safe_malloc (mutt_strlen (addr->mailbox) + mutt_strlen (host) + 2);
       sprintf (p, "%s@%s", addr->mailbox, host);	/* __SPRINTF_CHECKED__ */
-      safe_free ((void **) &addr->mailbox);
+      FREE (&addr->mailbox);
       addr->mailbox = p;
     }
 }

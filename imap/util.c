@@ -508,7 +508,7 @@ void imap_munge_mbox_name (char *dest, size_t dlen, const char *src)
 
   imap_quote_string (dest, dlen, buf);
 
-  safe_free ((void **) &buf);
+  FREE (&buf);
 }
 
 void imap_unmunge_mbox_name (char *s)
@@ -524,7 +524,7 @@ void imap_unmunge_mbox_name (char *s)
     strncpy (s, buf, strlen (s));
   }
   
-  safe_free ((void **) &buf);
+  FREE (&buf);
 }
 
 /* imap_wordcasecmp: find word a in word list b */

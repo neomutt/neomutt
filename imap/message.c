@@ -254,7 +254,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   cache->path = safe_strdup (path);
   if (!(msg->fp = safe_fopen (path, "w+")))
   {
-    safe_free ((void**) &cache->path);
+    FREE (&cache->path);
     return -1;
   }
 
@@ -676,7 +676,7 @@ void imap_free_header_data (void** data)
   /* this should be safe even if the list wasn't used */
   mutt_free_list (&(((IMAP_HEADER_DATA*) *data)->keywords));
 
-  safe_free (data);
+  FREE (data);
 }
 
 /* imap_set_flags: fill out the message header according to the flags from

@@ -165,7 +165,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
   memcpy (state->wbuf + state->curpos, savebuf, savelen * sizeof (wchar_t));
   state->lastchar = state->curpos + savelen;
 
-  safe_free ((void **) &savebuf);
+  FREE (&savebuf);
 }
 
 /*
@@ -686,7 +686,7 @@ self_insert:
   
   bye:
   
-  safe_free ((void **) &tempbuf);
+  FREE (&tempbuf);
   return rv;
 }
 
@@ -694,8 +694,8 @@ void mutt_free_enter_state (ENTER_STATE **esp)
 {
   if (!esp) return;
   
-  safe_free ((void **) &(*esp)->wbuf);
-  safe_free ((void **) esp);
+  FREE (&(*esp)->wbuf);
+  FREE (esp);
 }
 
 /*

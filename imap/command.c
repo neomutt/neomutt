@@ -192,7 +192,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
 
   rc = mutt_socket_write_d (idata->conn, out,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-  safe_free ((void**) &out);
+  FREE (&out);
 
   if (rc < 0)
   {

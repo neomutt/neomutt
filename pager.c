@@ -384,8 +384,8 @@ cleanup_quote (struct q_class_t **QuoteList)
       cleanup_quote (&((*QuoteList)->down));
     ptr = (*QuoteList)->next;
     if ((*QuoteList)->prefix)
-      safe_free ((void **) &(*QuoteList)->prefix);
-    safe_free ((void **) QuoteList);
+      FREE (&(*QuoteList)->prefix);
+    FREE (QuoteList);
     *QuoteList = ptr;
   }
 
@@ -1613,7 +1613,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	lines = Resize->line;
 	redraw |= REDRAW_SIGWINCH;
 
-	safe_free ((void **) &Resize);
+	FREE (&Resize);
       }
 #endif
 
@@ -1796,7 +1796,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  safe_realloc ((void **)&(lineInfo[i].syntax),
 			sizeof (struct syntax_t));
 	  if (SearchCompiled && lineInfo[i].search)
-	      safe_free ((void **) &(lineInfo[i].search));
+	      FREE (&(lineInfo[i].search));
 	}
 
 	lastLine = 0;
@@ -1993,7 +1993,7 @@ search_next:
 	  for (i = 0; i < lastLine; i++)
 	  {
 	    if (lineInfo[i].search)
-	      safe_free ((void **) &(lineInfo[i].search));
+	      FREE (&(lineInfo[i].search));
 	    lineInfo[i].search_cnt = -1;
 	  }
 	}
@@ -2007,7 +2007,7 @@ search_next:
 	  {
 	    /* cleanup */
 	    if (lineInfo[i].search)
-	      safe_free ((void **) &(lineInfo[i].search));
+	      FREE (&(lineInfo[i].search));
 	    lineInfo[i].search_cnt = -1;
 	  }
 	  SearchFlag = 0;
@@ -2289,7 +2289,7 @@ search_next:
 
 	    safe_realloc ((void **)&(lineInfo[i].syntax), sizeof (struct syntax_t));
 	    if (SearchCompiled && lineInfo[i].search)
-		safe_free ((void **) &(lineInfo[i].search));
+		FREE (&(lineInfo[i].search));
 	  }
 
 	  if (SearchCompiled)
@@ -2596,16 +2596,16 @@ search_next:
   
   for (i = 0; i < maxLine ; i++)
   {
-    safe_free ((void **) &(lineInfo[i].syntax));
+    FREE (&(lineInfo[i].syntax));
     if (SearchCompiled && lineInfo[i].search)
-      safe_free ((void **) &(lineInfo[i].search));
+      FREE (&(lineInfo[i].search));
   }
   if (SearchCompiled)
   {
     regfree (&SearchRE);
     SearchCompiled = 0;
   }
-  safe_free ((void **) &lineInfo);
+  FREE (&lineInfo);
   if (index)
     mutt_menuDestroy(&index);
   return (rc != -1 ? rc : 0);

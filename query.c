@@ -131,7 +131,7 @@ static QUERY *run_query (char *s, int quiet)
       }
     }
   }
-  safe_free ((void **) &buf);
+  FREE (&buf);
   fclose (fp);
   if (mutt_wait_filter (thepid))
   {
@@ -332,14 +332,14 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 		while (queryp)
 		{
 		  rfc822_free_address (&queryp->addr);
-		  safe_free ((void **)&queryp->name);
-		  safe_free ((void **)&queryp->other);
+		  FREE (&queryp->name);
+		  FREE (&queryp->other);
 		  results = queryp->next;
-		  safe_free ((void **)&queryp);
+		  FREE (&queryp);
 		  queryp = results;
 		}
 		results = newresults;
-		safe_free ((void **) &QueryTable);
+		FREE (&QueryTable);
 	      }
 	      else
 	      {
@@ -487,13 +487,13 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
     while (queryp)
     {
       rfc822_free_address (&queryp->addr);
-      safe_free ((void **)&queryp->name);
-      safe_free ((void **)&queryp->other);
+      FREE (&queryp->name);
+      FREE (&queryp->other);
       results = queryp->next;
-      safe_free ((void **)&queryp);
+      FREE (&queryp);
       queryp = results;
     }
-    safe_free ((void **) &QueryTable);
+    FREE (&QueryTable);
     
     /* tell whoever called me to redraw the screen when I return */
     set_option (OPTNEEDREDRAW);

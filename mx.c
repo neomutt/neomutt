@@ -757,10 +757,10 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
-  safe_free ((void **) &ctx->hdrs);
-  safe_free ((void **) &ctx->v2r);
-  safe_free ((void **) &ctx->path);
-  safe_free ((void **) &ctx->pattern);
+  FREE (&ctx->hdrs);
+  FREE (&ctx->v2r);
+  FREE (&ctx->path);
+  FREE (&ctx->pattern);
   if (ctx->limit_pattern) 
     mutt_pattern_free (&ctx->limit_pattern);
   safe_fclose (&ctx->fp);
@@ -1315,7 +1315,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     }
   }
   else
-    safe_free ((void **) &msg);
+    FREE (&msg);
 
   return msg;
 }
@@ -1594,7 +1594,7 @@ void mx_update_context (CONTEXT *ctx, int new_messages)
 
       h2 = hash_find (ctx->id_hash, h->env->supersedes);
 
-      /* safe_free (&h->env->supersedes); should I ? */
+      /* FREE (&h->env->supersedes); should I ? */
       if (h2)
       {
 	h2->superseded = 1;

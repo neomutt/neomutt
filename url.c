@@ -246,7 +246,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     }
   }
   
-  safe_free ((void **) &tmp);
+  FREE (&tmp);
   return 0;
 }
 

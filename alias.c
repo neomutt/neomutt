@@ -469,7 +469,7 @@ int mutt_alias_complete (char *s, size_t buflen)
   {
     a_cur = a_list;
     a_list = a_list->next;
-    safe_free ((void **) &a_cur);
+    FREE (&a_cur);
   }
 
   /* remove any aliases marked for deletion */

@@ -481,7 +481,7 @@ int mutt_index_menu (void)
 	if (!Context->path)
 	{
 	  /* fatal error occurred */
-	  safe_free ((void **) &Context);
+	  FREE (&Context);
 	  menu->redraw = REDRAW_FULL;
 	}
 
@@ -978,7 +978,7 @@ int mutt_index_menu (void)
 
 	/* check for a fatal error, or all messages deleted */
 	if (!Context->path)
-	  safe_free ((void **) &Context);
+	  FREE (&Context);
 
 	/* if we were in the pager, redisplay the message */
 	if (menu->menu == MENU_PAGER)
@@ -1038,7 +1038,7 @@ int mutt_index_menu (void)
 	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	    break;
 	  }
-	  safe_free ((void **) &Context);
+	  FREE (&Context);
 	}
 
         mutt_sleep (0);
@@ -1109,7 +1109,7 @@ int mutt_index_menu (void)
 	  if (Context)
 	  {
 	    mx_fastclose_mailbox (Context);
-	    safe_free ((void **) &Context);
+	    FREE (&Context);
 	  }
 	  done = 1;
 	}

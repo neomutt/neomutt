@@ -154,7 +154,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	last = tmp;
 	tmp = tmp->next;
 	mutt_pattern_free (&last->pat);
-	safe_free ((void **) &last);
+	FREE (&last);
       }
       Score = NULL;
     }
@@ -169,7 +169,7 @@ int mutt_parse_unscore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	  else
 	    Score = tmp->next;
 	  mutt_pattern_free (&tmp->pat);
-	  safe_free ((void **) &tmp);
+	  FREE (&tmp);
 	  /* there should only be one score per pattern, so we can stop here */
 	  break;
 	}

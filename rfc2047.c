@@ -67,7 +67,7 @@ static size_t convert_string (ICONV_CONST char *f, size_t flen,
   if (n == (size_t)(-1) || iconv (cd, 0, 0, &ob, &obl) == (size_t)(-1))
   {
     e = errno;
-    safe_free ((void **) &buf);
+    FREE (&buf);
     iconv_close (cd);
     errno = e;
     return (size_t)(-1);
@@ -117,23 +117,23 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
     if (!tocode || n < bestn)
     {
       bestn = n;
-      safe_free ((void **) &tocode);
+      FREE (&tocode);
       tocode = t;
       if (d)
       {
-	safe_free ((void **) &e);
+	FREE (&e);
 	e = s;
       }
       else
-	safe_free ((void **) &s);
+	FREE (&s);
       elen = slen;
       if (!bestn)
 	break;
     }
     else
     {
-      safe_free ((void **) &t);
-      safe_free ((void **) &s);
+      FREE (&t);
+      FREE (&s);
     }
   }
   if (tocode)
@@ -533,8 +533,8 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   bufpos += wlen;
   memcpy (buf + bufpos, t1, u + ulen - t1);
 
-  safe_free ((void **) &tocode1);
-  safe_free ((void **) &u);
+  FREE (&tocode1);
+  FREE (&u);
 
   buf[buflen] = '\0';
   
@@ -560,7 +560,7 @@ void _rfc2047_encode_string (char **pd, int encode_specials, int col)
 		  Charset, charsets, &e, &elen,
 		  encode_specials ? RFC822Specials : NULL);
 
-  safe_free ((void **) pd);
+  FREE (pd);
   *pd = e;
 }
 
@@ -612,8 +612,8 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	  enc = ENCBASE64;
 	else
 	{
-	  safe_free ((void **) &charset);
-	  safe_free ((void **) &d0);
+	  FREE (&charset);
+	  FREE (&d0);
 	  return (-1);
 	}
 	break;
@@ -681,8 +681,8 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   if (charset)
     mutt_convert_string (&d0, charset, Charset, M_ICONV_HOOK_FROM);
   strfcpy (d, d0, len);
-  safe_free ((void **) &charset);
-  safe_free ((void **) &d0);
+  FREE (&charset);
+  FREE (&d0);
   return (0);
 }
 
@@ -771,7 +771,7 @@ void rfc2047_decode (char **pd)
   }
   *d = 0;
 
-  safe_free ((void **) pd);
+  FREE (pd);
   *pd = d0;
   mutt_str_adjust (pd);
 }

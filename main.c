@@ -797,7 +797,7 @@ int main (int argc, char **argv)
       }
     }
 
-    safe_free ((void **) &bodytext);
+    FREE (&bodytext);
     
     if (attach)
     {
@@ -885,7 +885,7 @@ int main (int argc, char **argv)
     {
       mutt_index_menu ();
       if (Context)
-	safe_free ((void **)&Context);
+	FREE (&Context);
     }
     mutt_endwin (Errorbuf);
   }

@@ -1150,12 +1150,12 @@ void mutt_view_attachments (HEADER *hdr)
 	    continue;
 	  if (idx[idxmax]->content && idx[idxmax]->content->deleted)
 	    hdr->attach_del = 1;
-	  safe_free ((void **) &idx[idxmax]->tree);
-	  safe_free ((void **) &idx[idxmax]);
+	  FREE (&idx[idxmax]->tree);
+	  FREE (&idx[idxmax]);
 	}
 	if (hdr->attach_del)
 	  hdr->changed = 1;
-	safe_free ((void **) &idx);
+	FREE (&idx);
 	idxmax = 0;
 
 

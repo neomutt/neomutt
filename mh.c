@@ -81,7 +81,7 @@ static void mhs_alloc (struct mh_sequences *mhs, int i)
 
 static void mhs_free_sequences (struct mh_sequences *mhs)
 {
-  safe_free ((void **) &mhs->flags);
+  FREE (&mhs->flags);
 }
 
 static short mhs_check (struct mh_sequences *mhs, int i)
@@ -164,7 +164,7 @@ static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
     }
   }
 
-  safe_free ((void **) &buff);
+  FREE (&buff);
   safe_fclose (&fp);
 }
 
@@ -366,7 +366,7 @@ void mh_update_sequences (CONTEXT * ctx)
     unlink (tmpfname);
   }
 
-  safe_free ((void **) &tmpfname);
+  FREE (&tmpfname);
 }
 
 static void mh_sequences_add_one (CONTEXT * ctx, int n, short unseen,
@@ -423,7 +423,7 @@ static void mh_sequences_add_one (CONTEXT * ctx, int n, short unseen,
     }
   }
   safe_fclose (&ofp);
-  safe_free ((void **) &buff);
+  FREE (&buff);
 
   if (!unseen_done && unseen)
     fprintf (nfp, "%s: %d\n", NONULL (MhUnseen), n);
@@ -438,7 +438,7 @@ static void mh_sequences_add_one (CONTEXT * ctx, int n, short unseen,
   if (safe_rename (tmpfname, sequences) != 0)
     unlink (tmpfname);
 
-  safe_free ((void **) &tmpfname);
+  FREE (&tmpfname);
 }
 
 static void mh_update_maildir (struct maildir *md, struct mh_sequences *mhs)
@@ -470,11 +470,11 @@ static void maildir_free_entry (struct maildir **md)
   if (!md || !*md)
     return;
 
-  safe_free ((void **) &(*md)->canon_fname);
+  FREE (&(*md)->canon_fname);
   if ((*md)->h)
     mutt_free_header (&(*md)->h);
 
-  safe_free ((void **) md);
+  FREE (md);
 }
 
 static void maildir_free_maildir (struct maildir **md)
@@ -539,7 +539,7 @@ static void maildir_parse_flags (HEADER * h, const char *path)
   }
   
   if (q == h->maildir_flags)
-    safe_free ((void **) &h->maildir_flags);
+    FREE (&h->maildir_flags);
   else if (q)
     *q = '\0';
 }
@@ -1622,7 +1622,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
       safe_fclose (&fp);
       if (safe_rename (tmp, buf) == -1)
 	unlink (tmp);
-      safe_free ((void **) &tmp);
+      FREE (&tmp);
     }
   }
 

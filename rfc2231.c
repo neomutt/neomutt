@@ -150,7 +150,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
       
       p->attribute = NULL;
       p->value = NULL;
-      safe_free ((void **) &p);
+      FREE (&p);
 
       rfc2231_list_insert (&conthead, conttmp);
     }
@@ -177,9 +177,9 @@ static void rfc2231_free_parameter (struct rfc2231_parameter **p)
 {
   if (*p)
   {
-    safe_free ((void **) &(*p)->attribute);
-    safe_free ((void **) &(*p)->value);
-    safe_free ((void **) p);
+    FREE (&(*p)->attribute);
+    FREE (&(*p)->value);
+    FREE (p);
   }
 }
 
@@ -357,17 +357,17 @@ int rfc2231_encode_string (char **pd)
     *t = '\0';
 
     if (d != *pd)
-      safe_free ((void **) &d);
-    safe_free ((void **) pd);
+      FREE (&d);
+    FREE (pd);
     *pd = e;
   }
   else if (d != *pd)
   {
-    safe_free ((void **) pd);
+    FREE (pd);
     *pd = d;
   }
   
-  safe_free ((void **) &charset);
+  FREE (&charset);
   
   return encode;
 }

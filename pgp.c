@@ -123,7 +123,7 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
       fputs (line, fpout);
       fputc ('\n', fpout);
     }
-    safe_free ((void **) &line);
+    FREE (&line);
   }
   else
   {
@@ -1090,7 +1090,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
       }
       else if (r == -1)
       {
-	safe_free ((void **) &keylist);
+	FREE (&keylist);
 	rfc822_free_address (&tmp);
 	rfc822_free_address (&addr);
 	return NULL;
@@ -1107,7 +1107,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
       if ((key = pgp_ask_for_key (buf, q->mailbox,
 				  KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
       {
-	safe_free ((void **)&keylist);
+	FREE (&keylist);
 	rfc822_free_address (&tmp);
 	rfc822_free_address (&addr);
 	return NULL;

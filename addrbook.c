@@ -231,6 +231,6 @@ new_aliases:
     rfc822_write_address (buf, buflen, AliasTable[t]->addr);
 
   mutt_menuDestroy (&menu);
-  safe_free ((void **) &AliasTable);
+  FREE (&AliasTable);
   
 }

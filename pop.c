@@ -308,7 +308,7 @@ static void pop_clear_cache (POP_DATA *pop_data)
     if (pop_data->cache[i].path)
     {
       unlink (pop_data->cache[i].path);
-      safe_free ((void **) &pop_data->cache[i].path);
+      FREE (&pop_data->cache[i].path);
     }
   }
 }

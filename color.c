@@ -124,8 +124,8 @@ static void mutt_free_color_line(COLOR_LINE **l,
   
   regfree(&tmp->rx);
   mutt_pattern_free(&tmp->color_pattern);
-  safe_free((void **)&tmp->pattern);
-  safe_free((void **)l);
+  FREE (&tmp->pattern);
+  FREE (l);
 }
 
 void ci_start_color (void)
@@ -275,7 +275,7 @@ void mutt_free_color (int fg, int bg)
       if (p == ColorList)
       {
 	ColorList = ColorList->next;
-	safe_free ((void **) &p);
+	FREE (&p);
 	return;
       }
       q = ColorList;
@@ -284,7 +284,7 @@ void mutt_free_color (int fg, int bg)
 	if (q->next == p)
 	{
 	  q->next = p->next;
-	  safe_free ((void **) &p);
+	  FREE (&p);
 	  return;
 	}
 	q = q->next;

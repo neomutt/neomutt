@@ -156,13 +156,13 @@ int mutt_compose_attachment (BODY *a)
 	      b->parameter = NULL;
 	    }
 	    if (b->description) {
-	      safe_free ((void **) &a->description);
+	      FREE (&a->description);
 	      a->description = b->description;
 	      b->description = NULL;
 	    }
 	    if (b->form_name)
 	    {
-	      safe_free ((void **) &a->form_name);
+	      FREE (&a->form_name);
 	      a->form_name = b->form_name;
 	      b->form_name = NULL;
 	    }
@@ -356,9 +356,9 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
         b->filename, type));
     }
     if (tmp.subtype) 
-      safe_free ((void **) &tmp.subtype);
+      FREE (&tmp.subtype);
     if (tmp.xtype) 
-      safe_free ((void **) &tmp.xtype);
+      FREE (&tmp.xtype);
     }
   }
 }

@@ -440,7 +440,7 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 
     *ob = '\0';
 
-    safe_free ((void **) ps);
+    FREE (ps);
     *ps = buf;
     
     mutt_str_adjust (ps);
@@ -579,5 +579,5 @@ void fgetconv_close (FGETCONV **_fc)
 
   if (fc->cd != (iconv_t)-1)
     iconv_close (fc->cd);
-  safe_free ((void **) _fc);
+  FREE (_fc);
 }

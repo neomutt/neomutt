@@ -183,12 +183,12 @@ void mutt_free_body (BODY **p)
       mutt_free_parameter (&b->parameter);
     if (b->unlink && b->filename)
       unlink (b->filename);
-    safe_free ((void **) &b->filename);
-    safe_free ((void **) &b->content);
-    safe_free ((void **) &b->xtype);
-    safe_free ((void **) &b->subtype);
-    safe_free ((void **) &b->description);
-    safe_free ((void **) &b->form_name);
+    FREE (&b->filename);
+    FREE (&b->content);
+    FREE (&b->xtype);
+    FREE (&b->subtype);
+    FREE (&b->description);
+    FREE (&b->form_name);
 
     if (b->hdr)
     {
@@ -200,7 +200,7 @@ void mutt_free_body (BODY **p)
     if (b->parts)
       mutt_free_body (&b->parts);
 
-    safe_free ((void **) &b);
+    FREE (&b);
   }
 
   *p = 0;
@@ -213,11 +213,11 @@ void mutt_free_parameter (PARAMETER **p)
 
   while (t)
   {
-    safe_free ((void **) &t->attribute);
-    safe_free ((void **) &t->value);
+    FREE (&t->attribute);
+    FREE (&t->value);
     o = t;
     t = t->next;
-    safe_free ((void **) &o);
+    FREE (&o);
   }
   *p = 0;
 }
@@ -250,8 +250,8 @@ void mutt_free_list (LIST **list)
   {
     p = *list;
     *list = (*list)->next;
-    safe_free ((void **) &p->data);
-    safe_free ((void **) &p);
+    FREE (&p->data);
+    FREE (&p);
   }
 }
 
@@ -269,16 +269,16 @@ void mutt_free_header (HEADER **h)
   if(!h || !*h) return;
   mutt_free_envelope (&(*h)->env);
   mutt_free_body (&(*h)->content);
-  safe_free ((void **) &(*h)->maildir_flags);
-  safe_free ((void **) &(*h)->tree);
-  safe_free ((void **) &(*h)->path);
+  FREE (&(*h)->maildir_flags);
+  FREE (&(*h)->tree);
+  FREE (&(*h)->path);
 #ifdef MIXMASTER
   mutt_free_list (&(*h)->chain);
 #endif
 #if defined USE_POP || defined USE_IMAP
-  safe_free ((void**) &(*h)->data);
+  FREE (&(*h)->data);
 #endif
-  safe_free ((void **) h);
+  FREE (h);
 }
 
 /* returns true if the header contained in "s" is in list "t" */
@@ -662,14 +662,14 @@ void mutt_free_envelope (ENVELOPE **p)
   rfc822_free_address (&(*p)->from);
   rfc822_free_address (&(*p)->reply_to);
   rfc822_free_address (&(*p)->mail_followup_to);
-  safe_free ((void **) &(*p)->subject);
-  safe_free ((void **) &(*p)->message_id);
-  safe_free ((void **) &(*p)->supersedes);
-  safe_free ((void **) &(*p)->date);
+  FREE (&(*p)->subject);
+  FREE (&(*p)->message_id);
+  FREE (&(*p)->supersedes);
+  FREE (&(*p)->date);
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
-  safe_free ((void **) p);
+  FREE (p);
 }
 
 void mutt_mktemp (char *s)
@@ -686,9 +686,9 @@ void mutt_free_alias (ALIAS **p)
   {
     t = *p;
     *p = (*p)->next;
-    safe_free ((void **) &t->name);
+    FREE (&t->name);
     rfc822_free_address (&t->addr);
-    safe_free ((void **) &t);
+    FREE (&t);
   }
 }
 
@@ -1135,7 +1135,7 @@ FILE *mutt_open_read (const char *path, pid_t *thepid)
     s[len - 1] = 0;
     mutt_endwin (NULL);
     *thepid = mutt_create_filter (s, NULL, &f, NULL);
-    safe_free ((void **) &s);
+    FREE (&s);
   }
   else
   {

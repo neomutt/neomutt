@@ -258,7 +258,7 @@ static pgp_key_t *pgp_parse_pgp2_key (unsigned char *buff, size_t l)
 
 bailout:
 
-  safe_free ((void **) &p);
+  FREE (&p);
   return NULL;
 }
 
@@ -766,7 +766,7 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
     error_buf = safe_malloc (error_buf_len);
     snprintf (error_buf, error_buf_len, "fopen: %s", ringfile);
     perror (error_buf);
-    safe_free ((void **) &error_buf);
+    FREE (&error_buf);
     return;
   }
 
@@ -808,7 +808,7 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
 	pgp_free_key (&p);
       }
 
-      safe_free ((void **) &tmp);
+      FREE (&tmp);
     }
 
     FGETPOS(rfp,pos);

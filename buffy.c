@@ -179,9 +179,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     {
       for (tmp = &Incoming; *tmp;)
       {
-        safe_free((void **)&((*tmp)->path));
+        FREE (&((*tmp)->path));
         tmp1=(*tmp)->next;
-        safe_free((void **)tmp);
+        FREE (tmp);
         *tmp=tmp1;
       }
       return 0;
@@ -203,9 +203,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     {
       if(*tmp)
       {
-        safe_free((void **)&((*tmp)->path));
+        FREE (&((*tmp)->path));
         tmp1=(*tmp)->next;
-        safe_free((void **)tmp);
+        FREE (tmp);
         *tmp=tmp1;
       }
       continue;

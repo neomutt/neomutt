@@ -392,7 +392,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       if (!ascii_strcasecmp (p->attribute, "boundary") && !strcmp (buffer, tmp))
 	snprintf (buffer, sizeof (buffer), "\"%s\"", tmp);
 
-      safe_free ((void **)&tmp);
+      FREE (&tmp);
 
       tmplen = mutt_strlen (buffer) + mutt_strlen (p->attribute) + 1;
 
@@ -438,7 +438,7 @@ int mutt_write_mime_header (BODY *a, FILE *f)
       tmp = safe_strdup (t);
       encode = rfc2231_encode_string (&tmp);
       rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
-      safe_free ((void **)&tmp);
+      FREE (&tmp);
       fprintf (f, "; filename%s=%s", encode ? "*" : "", buffer);
     }
   }
@@ -809,10 +809,10 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
       iconv_close (cd[i]);
 
   iconv_close (cd1);
-  safe_free ((void **) &cd);
-  safe_free ((void **) &infos);
-  safe_free ((void **) &score);
-  safe_free ((void **) &states);
+  FREE (&cd);
+  FREE (&infos);
+  FREE (&score);
+  FREE (&states);
 
   return ret;
 #else
@@ -878,7 +878,7 @@ static size_t convert_file_from_to (FILE *file,
 	tcode[cn] = 0;
 	break;
       }
-      safe_free ((void **) &fcode);
+      FREE (&fcode);
     }
   }
   else
@@ -895,9 +895,9 @@ static size_t convert_file_from_to (FILE *file,
 
   /* Free memory */
   for (i = 0; i < ncodes; i++)
-    safe_free ((void **) &tcode[i]);
+    FREE (&tcode[i]);
 
-  safe_free ((void **) tcode);
+  FREE (tcode);
   
   return ret;
 }
@@ -954,7 +954,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
 	mutt_set_parameter ("charset", chsbuf, &b->parameter);
       }
-      safe_free ((void **) &tocode);
+      FREE (&tocode);
       safe_fclose (&fp);
       return info;
     }
@@ -1132,7 +1132,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   mutt_write_mime_body (a->parts, fpout);
   
  cleanup:
-  safe_free ((void **) &line);
+  FREE (&line);
 
   if (fpin && !fp)
     fclose (fpin);
@@ -1300,7 +1300,7 @@ void mutt_update_encoding (BODY *a)
   mutt_set_encoding (a, info);
   mutt_stamp_attachment(a);
 
-  safe_free ((void **) &a->content);
+  FREE (&a->content);
   a->content = info;
 
 }
@@ -1594,7 +1594,7 @@ static void write_references (LIST *r, FILE *f)
     fputs (ref[refcnt]->data, f);
   }
 
-  safe_free ((void **) &ref);
+  FREE (&ref);
 }
 
 /* Note: all RFC2047 encoding should be done outside of this routine, except
@@ -1757,7 +1757,7 @@ static void encode_headers (LIST *h)
 
     sprintf (h->data + i, ": %s", NONULL (tmp));  /* __SPRINTF_CHECKED__ */
     
-    safe_free ((void **) &tmp);
+    FREE (&tmp);
   }
 }
 
@@ -1898,7 +1898,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     else if (pid == -1)
     {
       unlink (msg);
-      safe_free ((void **) tempfile);
+      FREE (tempfile);
       _exit (S_ERR);
     }
 
@@ -1929,7 +1929,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       if (SendmailWait && st == (0xff & EX_OK))
       {
 	unlink (*tempfile); /* no longer needed */
-	safe_free ((void **) tempfile);
+	FREE (tempfile);
       }
     }
     else
@@ -1939,7 +1939,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       if (SendmailWait > 0)
       {
 	unlink (*tempfile);
-	safe_free ((void **) tempfile);
+	FREE (tempfile);
       }
     }
 
@@ -1951,7 +1951,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     {
       /* the parent is already dead */
       unlink (*tempfile);
-      safe_free ((void **) tempfile);
+      FREE (tempfile);
     }
 
     _exit (st);

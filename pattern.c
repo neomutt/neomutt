@@ -266,7 +266,7 @@ int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     regerror (r, pat->rx, err->data, err->dsize);
     regfree (pat->rx);
-    safe_free ((void **) &pat->rx);
+    FREE (&pat->rx);
     return (-1);
   }
   return 0;
@@ -708,11 +708,11 @@ void mutt_pattern_free (pattern_t **pat)
     if (tmp->rx)
     {
       regfree (tmp->rx);
-      safe_free ((void **) &tmp->rx);
+      FREE (&tmp->rx);
     }
     if (tmp->child)
       mutt_pattern_free (&tmp->child);
-    safe_free ((void **) &tmp);
+    FREE (&tmp);
   }
 }
 
@@ -1205,7 +1205,7 @@ int mutt_pattern_func (int op, char *prompt)
 
   if (op == M_LIMIT)
   {
-    safe_free ((void **) &Context->pattern);
+    FREE (&Context->pattern);
     if (Context->limit_pattern) 
       mutt_pattern_free (&Context->limit_pattern);
     if (!Context->vcount)

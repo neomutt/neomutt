@@ -330,13 +330,13 @@ static int rfc1524_mailcap_parse (BODY *a,
 	/* reset */
 	if (entry)
 	{
-	  safe_free ((void **) &entry->command);
-	  safe_free ((void **) &entry->composecommand);
-	  safe_free ((void **) &entry->composetypecommand);
-	  safe_free ((void **) &entry->editcommand);
-	  safe_free ((void **) &entry->printcommand);
-	  safe_free ((void **) &entry->nametemplate);
-	  safe_free ((void **) &entry->convert);
+	  FREE (&entry->command);
+	  FREE (&entry->composecommand);
+	  FREE (&entry->composetypecommand);
+	  FREE (&entry->editcommand);
+	  FREE (&entry->printcommand);
+	  FREE (&entry->nametemplate);
+	  FREE (&entry->convert);
 	  entry->needsterminal = 0;
 	  entry->copiousoutput = 0;
 	}
@@ -344,7 +344,7 @@ static int rfc1524_mailcap_parse (BODY *a,
     } /* while (!found && (buf = mutt_read_line ())) */
     fclose (fp);
   } /* if ((fp = fopen ())) */
-  safe_free ((void **) &buf);
+  FREE (&buf);
   return found;
 }
 
@@ -357,14 +357,14 @@ void rfc1524_free_entry(rfc1524_entry **entry)
 {
   rfc1524_entry *p = *entry;
 
-  safe_free((void **)&p->command);
-  safe_free((void **)&p->testcommand);
-  safe_free((void **)&p->composecommand);
-  safe_free((void **)&p->composetypecommand);
-  safe_free((void **)&p->editcommand);
-  safe_free((void **)&p->printcommand);
-  safe_free((void **)&p->nametemplate);
-  safe_free((void **)entry);
+  FREE (&p->command);
+  FREE (&p->testcommand);
+  FREE (&p->composecommand);
+  FREE (&p->composetypecommand);
+  FREE (&p->editcommand);
+  FREE (&p->printcommand);
+  FREE (&p->nametemplate);
+  FREE (entry);
 }
 
 /*

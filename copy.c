@@ -261,8 +261,8 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
   /* Free in a separate loop to be sure that all headers are freed
    * in case of error. */
   for (x = 0; x < hdr_count; x++)
-    safe_free ((void **) &headers[x]);
-  safe_free ((void **) &headers);
+    FREE (&headers[x]);
+  FREE (&headers);
 
   if (error)
     return (-1);

@@ -332,7 +332,7 @@ mutt_nss_socket_open (CONNECTION * con)
       PR_Close (sockdata->fd);
     if (sockdata->db)
       CERT_ClosePermCertDB (sockdata->db);
-    safe_free ((void **) &sockdata);
+    FREE (&sockdata);
   }
   return -1;
 }
@@ -348,7 +348,7 @@ mutt_nss_socket_close (CONNECTION * con)
   if (sockdata->db)
     CERT_ClosePermCertDB (sockdata->db);
   /* free up the memory we used for this connection specific to NSS. */
-  safe_free ((void **) &con->sockdata);
+  FREE (&con->sockdata);
   return 0;
 }
 

@@ -40,8 +40,8 @@ static void init_history (struct history *h)
     if (h->hist)
     {
       for (i = 0 ; i < OldSize ; i ++)
-	safe_free ((void **) &h->hist[i]);
-      safe_free ((void **) &h->hist);
+	FREE (&h->hist[i]);
+      FREE (&h->hist);
     }
   }
   

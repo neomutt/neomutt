@@ -342,12 +342,12 @@ static void remove_from_list (LIST **l, const char *str)
     {
       if (ascii_strcasecmp (str, p->data) == 0)
       {
-	safe_free ((void **) &p->data);
+	FREE (&p->data);
 	if (last)
 	  last->next = p->next;
 	else
 	  (*l) = p->next;
-	safe_free ((void **) &p);
+	FREE (&p);
       }
       else
       {
@@ -611,7 +611,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
       if (ascii_strncasecmp (buf->data, tmp->data, keylen) == 0)
       {
 	/* replace the old value */
-	safe_free ((void **) &tmp->data);
+	FREE (&tmp->data);
 	tmp->data = buf->data;
 	memset (buf, 0, sizeof (BUFFER));
 	return 0;
@@ -902,7 +902,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	else
-	  safe_free ((void **) MuttVars[idx].data);
+	  FREE (MuttVars[idx].data);
       }
       else if (query || *s->dptr != '=')
       {
@@ -1273,7 +1273,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
         rc = -1;
   }
   FREE (&token.data);
-  safe_free ((void **) &linebuf);
+  FREE (&linebuf);
   fclose (f);
   if (pid != -1)
     mutt_wait_filter (pid);

@@ -107,7 +107,7 @@ static void fix_uid (char *uid)
       else if (ob-buf == n && (buf[n] = 0, strlen (buf) < n))
 	memcpy (uid, buf, n);
     }
-    safe_free ((void **) &buf);
+    FREE (&buf);
     iconv_close (cd);
   }
 }

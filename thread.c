@@ -135,7 +135,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
     tree->subtree_visible = 0;
     if (tree->message)
     {
-      safe_free ((void **) &tree->message->tree);
+      FREE (&tree->message->tree);
       if (VISIBLE (tree->message, ctx))
       {
 	tree->deep = 1;
@@ -331,8 +331,8 @@ void mutt_draw_tree (CONTEXT *ctx)
     while (!tree->deep);
   }
 
-  safe_free ((void **) &pfx);
-  safe_free ((void **) &arrow);
+  FREE (&pfx);
+  FREE (&arrow);
 }
 
 /* since we may be trying to attach as a pseudo-thread a THREAD that
@@ -439,7 +439,7 @@ static THREAD *find_subject (CONTEXT *ctx, THREAD *cur)
 
     oldlist = subjects;
     subjects = subjects->next;
-    safe_free ((void **) &oldlist);
+    FREE (&oldlist);
   }
   return (last);
 }
@@ -696,7 +696,7 @@ THREAD *mutt_sort_subthreads (THREAD *thread, int init)
       else
       {
 	Sort ^= SORT_REVERSE;
-	safe_free ((void **) &array);
+	FREE (&array);
 	return (top);
       }
     }
