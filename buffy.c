@@ -380,6 +380,10 @@ int mutt_buffy_check (int force)
       BuffyNotify++;
   }
 
+  /* update postponed count as well, on force */
+  if (force && Postponed)
+    mutt_num_postponed ();
+
   BuffyDoneTime = BuffyTime;
   return (BuffyCount);
 }

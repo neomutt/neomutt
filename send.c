@@ -1205,6 +1205,8 @@ main_loop:
 	goto main_loop;
       }
       mutt_message _("Message postponed.");
+      PostCount++;
+      mutt_num_postponed ();
       goto cleanup;
     }
   }

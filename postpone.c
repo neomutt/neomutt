@@ -49,7 +49,6 @@ static struct mapping_t PostponeHelp[] = {
 
 
 
-static short PostCount = 0;
 static time_t LastModify = 0;
 static CONTEXT *PostContext = NULL;
 
