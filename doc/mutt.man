@@ -136,6 +136,8 @@ User's personal mapping between MIME types and file extensions.
 System mapping between MIME types and file extensions.
 .IP "/usr/local/bin/mutt_dotlock"
 The privileged dotlocking program.
+.IP "/usr/local/doc/mutt/manual.txt"
+The Mutt manual.
 .SH BUGS
 .PP
 None.  Mutts have fleas, not bugs.
@@ -157,7 +159,7 @@ For a more up-to-date list of bugs, errm, fleas, please visit the
 mutt project's bug tracking system under http://bugs.guug.de/.  To
 report a bug, please use the
 .BR flea (1)
-program.  (Mutts tend to have fleas rather than bugs.)
+program.
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -177,6 +179,8 @@ GNU General Public License for more details.
 .BR smail (1)
 .PP
 Mutt Home Page: http://www.mutt.org/
+.PP
+The Mutt manual
 .PP
 The GNU General Public License.
 .SH AUTHOR

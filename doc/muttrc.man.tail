@@ -1,16 +1,17 @@
 .\" -*-nroff-*-
 .SH SEE ALSO
 .PP
-.BR mutt (1),
 .BR mailcap (5),
+.BR maildir (5),
+.BR mbox (5),
+.BR mutt (1),
 .BR printf (3),
-.BR strftime (3),
-.BR regex (7)
+.BR regex (7),
+.BR strftime (3)
 .PP
-.nf
 The Mutt Manual
+.PP
 The Mutt home page: http://www.mutt.org/
-.fi
 .SH AUTHOR
 .PP
 Michael Elkins, and others.  Use <mutt-dev@mutt.org> to contact
