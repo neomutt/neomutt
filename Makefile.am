@@ -117,7 +117,7 @@ reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
-	$(srcdir)/patchlist.sh < $< > $@
+	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
 
 install-exec-local:
 	if test -f $(DESTDIR)$(bindir)/mutt.dotlock && test -f $(DESTDIR)$(bindir)/mutt_dotlock ; then	\
