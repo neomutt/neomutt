@@ -53,7 +53,7 @@
 static int needentropy = 1;
 /* OpenSSL fills the entropy pool from /dev/urandom if it exists */
 #define HAVE_ENTROPY()	(!access("/dev/urandom", R_OK) || !needentropy)
-#define GOT_ENTROPY()	do { needentropy = 1; return 0; } while (0)
+#define GOT_ENTROPY()	do { needentropy = 0; return 0; } while (0)
 #endif
 
 char *SslCertFile = NULL;
@@ -306,21 +306,27 @@ static int check_certificate_by_signer (X509 *peercert)
 {
   X509_STORE_CTX xsc;
   X509_STORE *ctx;
-  int pass;
+  int pass = 0;
 
   ctx = X509_STORE_new ();
   if (ctx == NULL) return 0;
 
-  if (option (OPTSSLSYSTEMCERTS) && !X509_STORE_set_default_paths (ctx))
+  if (option (OPTSSLSYSTEMCERTS))
   {
-    dprint (2, (debugfile, "X509_STORE_set_default_paths failed\n"));
-    X509_STORE_free (ctx);
-    return 0;
+    if (X509_STORE_set_default_paths (ctx))
+      pass++;
+    else
+      dprint (2, (debugfile, "X509_STORE_set_default_paths failed\n"));
   }
 
-  if (!X509_STORE_load_locations (ctx, SslCertFile, NULL))
+  if (X509_STORE_load_locations (ctx, SslCertFile, NULL))
+    pass++;
+  else
+    dprint (2, (debugfile, "X509_STORE_load_locations_failed\n"));
+
+  if (pass == 0)
   {
-    dprint (2, (debugfile, "X509_STORE_load_locations failed\n"));
+    /* nothing to do */
     X509_STORE_free (ctx);
     return 0;
   }
