@@ -172,8 +172,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	{
 	  if (!strncasecmp (buf, t->data, strlen (t->data)))
 	  {
-	    dprint(2, (debugfile, "Reorder: %s matches %s\n", t->data, 
-		       headers[x]));
+	    dprint(2, (debugfile, "Reorder: %s matches %s", t->data, buf));
 	    break;
 	  }
 	}
