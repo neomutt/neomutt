@@ -1,3 +1,8 @@
+2005-04-03 00:14:51  Daniel Jacobowitz  <dan@debian.org>  (brendan)
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c: Synchronise
+	message flags before moving messages.
+
 2005-03-31 04:55:09  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (brendan)
 
 	* mh.c: Another hcache cygwin portability fix.
