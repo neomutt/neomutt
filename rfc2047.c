@@ -236,6 +236,14 @@ void rfc2047_encode_adrlist (ADDRESS *addr)
       safe_free ((void **) &ptr->personal);
       ptr->personal = safe_strdup (buffer);
     }
+#ifdef EXACT_ADDRESS
+    if (ptr->val)
+    {
+      rfc2047_encode_string (buffer, sizeof (buffer), (const unsigned char *)ptr->val);
+      safe_free ((void **) &ptr->val);
+      ptr->val = safe_strdup (buffer);
+    }
+#endif
     ptr = ptr->next;
   }
 }
@@ -401,6 +409,10 @@ void rfc2047_decode_adrlist (ADDRESS *a)
   {
     if (a->personal && strstr (a->personal, "=?") != NULL)
       rfc2047_decode (a->personal, a->personal, mutt_strlen (a->personal) + 1);
+#ifdef EXACT_ADDRESS
+    if (a->val && strstr (a->val, "=?") != NULL)
+      rfc2047_decode (a->val, a->val, mutt_strlen (a->val) + 1);
+#endif
     a = a->next;
   }
 }
