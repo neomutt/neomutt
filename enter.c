@@ -41,7 +41,8 @@ enum
   M_REDRAW_INIT = 1,	/* recalculate lengths */
   M_REDRAW_LINE,	/* redraw entire line */
   M_REDRAW_EOL,		/* redraw from current position to eol */
-  M_REDRAW_PREV_EOL	/* redraw from curpos-1 to eol */
+  M_REDRAW_PREV_EOL,	/* redraw from curpos-1 to eol */
+  M_REDRAW_COMPLETION	/* recalculate lengths after autocompletion */
 };
 
 /* Returns:
@@ -66,7 +67,18 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
   char tempbuf[_POSIX_PATH_MAX] = "";
   history_class_t hclass;
   int tabs = 0; /* number of *consecutive* TABs */
-  
+  char savebuf[HUGE_STRING] = ""; /* part after autocompletion point */
+  static int save_len = -1;	/* length of savebuf */
+  static int last_begin = -1;	/* saved value of begin */
+
+  if (last_begin >= 0)
+  {
+    /* Coming back after return (1); */
+    begin = last_begin;
+    redraw = M_REDRAW_COMPLETION;
+    last_begin = -1;
+  }
+
   if (flags & (M_FILE | M_EFILE))
     hclass = HC_FILE;
   else if (flags & M_CMD)
@@ -89,6 +101,14 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	/* full redraw */
 	lastchar = curpos = mutt_strlen ((char *) buf);
 	begin = lastchar - width;
+      } 
+      else if (redraw == M_REDRAW_COMPLETION)
+      {
+        /* full redraw, move to the point of autocompletion */
+	lastchar = mutt_strlen ((char *) buf);
+	curpos = lastchar - save_len;
+	if (curpos >= begin + width - 1 || curpos <= begin)
+	  begin = curpos - width / 2;
       }
       if (begin < 0)
 	begin = 0;
@@ -318,52 +338,79 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  tabs++;
 	  if (flags & M_CMD)
 	  {
+	    buf[lastchar] = 0;
+	    strfcpy (savebuf, (char *) buf + curpos, sizeof(savebuf));
 	    buf[curpos] = 0;
+
 	    for (j = curpos - 1; j >= 0 && buf[j] != ' '; j--);
-	    if (mutt_strcmp (tempbuf, (char *) buf) == 0)
+	    if (mutt_strcmp (tempbuf, (char *) buf + j + 1) == 0)
 	    {
 	      mutt_select_file ((char *) buf + j + 1, buflen - j - 1, 0);
 	      set_option (OPTNEEDREDRAW);
+
+	      if (!buf[j + 1]) /* file selection cancelled */
+		strfcpy ((char *) buf + j + 1, tempbuf, buflen - j - 1);
+
+	      j = mutt_strlen ((char *) buf);
+	      strfcpy ((char *) buf + j, savebuf, buflen - j);
+	      save_len = mutt_strlen (savebuf);
+	      last_begin = begin;
 	      return (1);
 	    }
 	    if (mutt_complete ((char *) buf + j + 1, buflen - (j + 1)) == 0)
 	      strfcpy (tempbuf, (char *) buf + j + 1, sizeof (tempbuf));
 	    else
 	      BEEP ();
-	    redraw = M_REDRAW_INIT;
+
+	    j = mutt_strlen ((char *) buf);
+	    strfcpy ((char *) buf + j, savebuf, buflen - j);
+	    save_len = mutt_strlen (savebuf);
+	    redraw = M_REDRAW_COMPLETION;
 	  }
 	  else if (flags & M_ALIAS)
 	  {
 	    /* invoke the alias-menu to get more addresses */
+	    buf[lastchar] = 0;
+	    strfcpy (savebuf, (char *) buf + curpos, sizeof(savebuf));
 	    buf[curpos] = 0;
 	    for (j = curpos - 1 ; j >= 0 && buf[j] != ',' ; j--);
 	    for (++j; buf[j] == ' '; j++)
 	      ;
 	    if (mutt_alias_complete ((char *) buf + j, buflen - j))
 	    {
-	      redraw = M_REDRAW_INIT;
+	      j = mutt_strlen ((char *) buf);
+	      strfcpy ((char *) buf + j, savebuf, buflen - j);
+	      save_len = mutt_strlen (savebuf);
+	      redraw = M_REDRAW_COMPLETION;
 	      continue;
 	    }
+	    j = mutt_strlen ((char *) buf);
+	    strfcpy ((char *) buf + j, savebuf, buflen - j);
+	    save_len = mutt_strlen (savebuf);
+	    last_begin = begin;
 	    return (1);
 	  }
 	  else if (flags & M_COMMAND)
 	  {
+	    buf[lastchar] = 0;
+	    strfcpy (savebuf, (char *) buf + curpos, sizeof(savebuf));
 	    buf[curpos] = 0;
-	    if (buf[lastchar - 1] == '=' && 
+	    if (buf[curpos - 1] == '=' && 
 		mutt_var_value_complete ((char *) buf, buflen, curpos))
 	    {
-	      tabs=0;
-	      redraw = M_REDRAW_INIT;
-	      continue;
+	      tabs = 0;
 	    }
-	    else if (mutt_command_complete ((char *) buf, buflen, curpos, tabs))
-	    {
-	      redraw = M_REDRAW_INIT;
-	      continue;
-	    }
+	    else if (!mutt_command_complete ((char *) buf, buflen, curpos, tabs))
+	      BEEP ();
+	    j = mutt_strlen ((char *) buf);
+	    strfcpy ((char *) buf + j, savebuf, buflen - j);
+	    save_len = mutt_strlen (savebuf);
+	    redraw = M_REDRAW_COMPLETION;
 	  }
 	  else if (flags & (M_FILE | M_EFILE))
 	  {
+	    buf[lastchar] = 0;
+	    strfcpy (savebuf, (char *) buf + curpos, sizeof(savebuf));
 	    buf[curpos] = 0;
 
 	    /* see if the path has changed from the last time */
@@ -377,14 +424,24 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 		mutt_history_add (hclass, (char *) buf);
 		return (0);
 	      }
-	      return (-1);
+
+	      /* file selection cancelled */
+	      strfcpy ((char *) buf, tempbuf, buflen);
+	      j = mutt_strlen ((char *) buf);
+	      strfcpy ((char *) buf + j, savebuf, buflen - j);
+	      save_len = mutt_strlen (savebuf);
+	      last_begin = begin;
+	      return (1);
 	    }
 
 	    if (mutt_complete ((char *) buf, buflen) == 0)
 	      strfcpy (tempbuf, (char *) buf, sizeof (tempbuf));
 	    else
 	      BEEP (); /* let the user know that nothing matched */
-	    redraw = M_REDRAW_INIT;
+	    j = mutt_strlen ((char *) buf);
+	    strfcpy ((char *) buf + j, savebuf, buflen - j);
+	    save_len = mutt_strlen (savebuf);
+	    redraw = M_REDRAW_COMPLETION;
 	  }
 	  else
 	    goto self_insert;
@@ -394,6 +451,8 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	  if (flags & M_ALIAS)
 	  {
 	    /* invoke the query-menu to get more addresses */
+	    buf[lastchar] = 0;
+	    strfcpy (savebuf, (char *) buf + curpos, sizeof(savebuf));
 	    buf[curpos] = 0;
 	    if (curpos)
 	    {
@@ -403,6 +462,10 @@ int _mutt_enter_string (unsigned char *buf, size_t buflen, int y, int x,
 	    }
 	    else
 	      mutt_query_menu ((char *) buf, buflen);
+	    j = mutt_strlen ((char *) buf);
+	    strfcpy ((char *) buf + j, savebuf, buflen - j);
+	    save_len = mutt_strlen (savebuf);
+	    last_begin = begin;
 	    return (1);
 	  }
 	  else
