@@ -197,6 +197,7 @@ main ()
                         CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
                 fi])
 
+	AC_CHECK_FUNC(initscr,,[
 	cf_ncurses="ncurses"
 	for lib in ncurses ncursesw
 	do
@@ -215,6 +216,7 @@ main ()
 		fi],
 
                 [CF_CURSES_LIBS])
+		])
 
         old_LIBS="$LIBS"
         LIBS="$LIBS $MUTTLIBS"
