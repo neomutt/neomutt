@@ -15,9 +15,9 @@ macro index \cb |urlview\n 'call urlview to extract URLs out of a message'
 macro pager \cb |urlview\n 'call urlview to extract URLs out of a message'
 
 # Show documentation when pressing F1
-macro generic <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documentation"
-macro index   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documentation"
-macro pager   <f1> "!less /usr/local/doc/mutt/manual.txt\n" "Show Mutt documentation"
+macro generic <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
+macro index   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
+macro pager   <f1> "!less @docdir@/manual.txt\n" "Show Mutt documentation"
 
 # If Mutt is unable to determine your site's domain name correctly, you can
 # set the default here.

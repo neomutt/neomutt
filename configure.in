@@ -586,4 +586,5 @@ AC_DEFINE_UNQUOTED(MUTTLOCALEDIR, "$MUTTLOCALEDIR")
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile dnl
 	po/Makefile.in doc/Makefile contrib/Makefile dnl
 	muttbug.sh dnl
-	charmaps/Makefile imap/Makefile)
+	charmaps/Makefile imap/Makefile dnl
+	Muttrc.head)
