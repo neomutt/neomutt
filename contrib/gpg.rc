@@ -36,16 +36,20 @@ set pgp_verify_command="gpg --no-verbose --batch -o - --verify %s %f"
 set pgp_decrypt_command="gpg --passphrase-fd 0 --no-verbose --batch -o - %f"
 
 # create a pgp/mime signed attachment
-set pgp_sign_command="gpg-2comp --no-verbose --batch -o - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+# set pgp_sign_command="gpg-2comp --no-verbose --batch -o - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_sign_command="gpg --no-verbose --batch -o - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
 
 # create a application/pgp signed (old-style) message
-set pgp_clearsign_command="gpg-2comp --no-verbose --batch -o - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+# set pgp_clearsign_command="gpg-2comp --no-verbose --batch -o - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+set pgp_clearsign_command="gpg --no-verbose --batch -o - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
 
 # create a pgp/mime encrypted attachment
-set pgp_encrypt_only_command="pgpewrap gpg-2comp -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+# set pgp_encrypt_only_command="pgpewrap gpg-2comp -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+set pgp_encrypt_only_command="pgpewrap gpg -v --batch -o - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 
 # create a pgp/mime encrypted and signed attachment
-set pgp_encrypt_sign_command="pgpewrap gpg-2comp --passphrase-fd 0 -v --batch -o - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+# set pgp_encrypt_sign_command="pgpewrap gpg-2comp --passphrase-fd 0 -v --batch -o - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+set pgp_encrypt_sign_command="pgpewrap gpg --passphrase-fd 0 -v --batch -o - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
 set pgp_import_command="gpg --no-verbose --import -v %f"
