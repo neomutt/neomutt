@@ -817,6 +817,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	  if ((Sort & SORT_MASK) == SORT_THREADS)
 	    mutt_draw_tree (Context);
+	  menu->redraw = REDRAW_FULL;
 	}
 	break;	  
 

@@ -1193,14 +1193,16 @@ int mutt_pattern_func (int op, char *prompt)
       mutt_pattern_free (&Context->limit_pattern);
     if (!Context->vcount)
     {
-      Context->vcount = Context->msgcount;
       mutt_error _("No messages matched criteria.");
+#if 0
+      Context->vcount = Context->msgcount;
       /* restore full display */
       for (i = 0; i < Context->msgcount; i++)
       {
 	Context->hdrs[i]->virtual = i;
 	Context->v2r[i] = i;
       }
+#endif
     }
     else if (mutt_strncmp (buf, "~A", 2) != 0)
     {
