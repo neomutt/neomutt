@@ -1,4 +1,6 @@
-2003-03-03 14:13:40  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2003-03-03 14:25:14  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c, sort.c: Fixing some nits.
 
 	* mutt_socket.c: IDNA support for the socket back-end.
 
