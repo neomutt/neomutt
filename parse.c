@@ -593,63 +593,61 @@ static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
 
 static struct tz_t
 {
-  char *tzname;
+  char tzname[5];
   unsigned char zhours;
   unsigned char zminutes;
   unsigned char zoccident; /* west of UTC? */
-  unsigned char xxx;       /* unused */
 }
 TimeZones[] =
 {
-  { "sst",  11,  0, 1, 0 }, /* Samoa */
-  { "pst",   8,  0, 1, 0 },
-  { "mst",   7,  0, 1, 0 },
-  { "pdt",   7,  0, 1, 0 },
-  { "cst",   6,  0, 1, 0 },
-  { "mdt",   6,  0, 1, 0 },
-  { "cdt",   5,  0, 1, 0 },
-  { "est",   5,  0, 1, 0 },
-  { "ast",   4,  0, 1, 0 }, /* Atlantic */
-  { "edt",   4,  0, 1, 0 },
-  { "wgt",   3,  0, 1, 0 }, /* Western Greenland */
-  { "wgst",  2,  0, 1, 0 }, /* Western Greenland DST */
-  { "aat",   1,  0, 1, 0 }, /* Atlantic Africa Time */
-  { "egt",   1,  0, 1, 0 }, /* Eastern Greenland */
-  { "egst",  0,  0, 0, 0 }, /* Eastern Greenland DST */
-  { "gmt",   0,  0, 0, 0 },
-  { "utc",   0,  0, 0, 0 },
-  { "wat",   0,  0, 0, 0 }, /* West Africa */
-  { "wet",   0,  0, 0, 0 }, /* Western Europe */
-  { "bst",   1,  0, 0, 0 }, /* British DST */
-  { "cat",   1,  0, 0, 0 }, /* Central Africa */
-  { "cet",   1,  0, 0, 0 }, /* Central Europe */
-  { "met",   1,  0, 0, 0 }, /* this is now officially CET */
-  { "west",  1,  0, 0, 0 }, /* Western Europe DST */
-  { "cest",  2,  0, 0, 0 }, /* Central Europe DST */
-  { "eet",   2,  0, 0, 0 }, /* Eastern Europe */
-  { "ist",   2,  0, 0, 0 }, /* Israel */
-  { "sat",   2,  0, 0, 0 }, /* South Africa */
-  { "ast",   3,  0, 0, 0 }, /* Arabia */
-  { "eat",   3,  0, 0, 0 }, /* East Africa */
-  { "eest",  3,  0, 0, 0 }, /* Eastern Europe DST */
-  { "idt",   3,  0, 0, 0 }, /* Israel DST */
-  { "msk",   3,  0, 0, 0 }, /* Moscow */
-  { "adt",   4,  0, 0, 0 }, /* Arabia DST */
-  { "msd",   4,  0, 0, 0 }, /* Moscow DST */
-  { "gst",   4,  0, 0, 0 }, /* Presian Gulf */
-  { "smt",   4,  0, 0, 0 }, /* Seychelles */
-  { "ist",   5, 30, 0, 0 }, /* India */
-  { "ict",   7,  0, 0, 0 }, /* Indochina */
-/*{ "cst",   8,  0, 0, 0 },*/ /* China */
-  { "hkt",   8,  0, 0, 0 }, /* Hong Kong */
-/*{ "sst",   8,  0, 0, 0 },*/ /* Singapore */
-  { "wst",   8,  0, 0, 0 }, /* Western Australia */
-  { "jst",   9,  0, 0, 0 }, /* Japan */
-/*{ "cst",   9, 30, 0, 0 },*/ /* Australian Central Standard Time */
-  { "kst",   9,  0, 0, 0 }, /* Korea */
-  { "nzst", 12,  0, 0, 0 }, /* New Zealand */
-  { "nzdt", 13,  0, 0, 0 }, /* New Zealand DST */
-  { NULL,    0,  0, 0, 0 }
+  { "aat",   1,  0, 1 }, /* Atlantic Africa Time */
+  { "adt",   4,  0, 0 }, /* Arabia DST */
+  { "ast",   3,  0, 0 }, /* Arabia */
+/*{ "ast",   4,  0, 1 },*/ /* Atlantic */
+  { "bst",   1,  0, 0 }, /* British DST */
+  { "cat",   1,  0, 0 }, /* Central Africa */
+  { "cdt",   5,  0, 1 },
+  { "cest",  2,  0, 0 }, /* Central Europe DST */
+  { "cet",   1,  0, 0 }, /* Central Europe */
+  { "cst",   6,  0, 1 },
+/*{ "cst",   8,  0, 0 },*/ /* China */
+/*{ "cst",   9, 30, 0 },*/ /* Australian Central Standard Time */
+  { "eat",   3,  0, 0 }, /* East Africa */
+  { "edt",   4,  0, 1 },
+  { "eest",  3,  0, 0 }, /* Eastern Europe DST */
+  { "eet",   2,  0, 0 }, /* Eastern Europe */
+  { "egst",  0,  0, 0 }, /* Eastern Greenland DST */
+  { "egt",   1,  0, 1 }, /* Eastern Greenland */
+  { "est",   5,  0, 1 },
+  { "gmt",   0,  0, 0 },
+  { "gst",   4,  0, 0 }, /* Presian Gulf */
+  { "hkt",   8,  0, 0 }, /* Hong Kong */
+  { "ict",   7,  0, 0 }, /* Indochina */
+  { "idt",   3,  0, 0 }, /* Israel DST */
+  { "ist",   2,  0, 0 }, /* Israel */
+/*{ "ist",   5, 30, 0 },*/ /* India */
+  { "jst",   9,  0, 0 }, /* Japan */
+  { "kst",   9,  0, 0 }, /* Korea */
+  { "mdt",   6,  0, 1 },
+  { "met",   1,  0, 0 }, /* this is now officially CET */
+  { "msd",   4,  0, 0 }, /* Moscow DST */
+  { "msk",   3,  0, 0 }, /* Moscow */
+  { "mst",   7,  0, 1 },
+  { "nzdt", 13,  0, 0 }, /* New Zealand DST */
+  { "nzst", 12,  0, 0 }, /* New Zealand */
+  { "pdt",   7,  0, 1 },
+  { "pst",   8,  0, 1 },
+  { "sat",   2,  0, 0 }, /* South Africa */
+  { "smt",   4,  0, 0 }, /* Seychelles */
+  { "sst",  11,  0, 1 }, /* Samoa */
+/*{ "sst",   8,  0, 0 },*/ /* Singapore */
+  { "utc",   0,  0, 0 },
+  { "wat",   0,  0, 0 }, /* West Africa */
+  { "west",  1,  0, 0 }, /* Western Europe DST */
+  { "wet",   0,  0, 0 }, /* Western Europe */
+  { "wgst",  2,  0, 1 }, /* Western Greenland DST */
+  { "wgt",   3,  0, 1 }, /* Western Greenland */
+  { "wst",   8,  0, 0 }, /* Western Australia */
 };
 
 /* parses a date string in RFC822 format:
@@ -749,14 +747,20 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 	}
 	else
 	{
-	  for (i = 0; TimeZones[i].tzname; i++)
-	    if (!mutt_strcasecmp (TimeZones[i].tzname, ptz))
-	    {
-	      zhours = TimeZones[i].zhours;
-	      zminutes = TimeZones[i].zminutes;
-	      zoccident = TimeZones[i].zoccident;
-	      break;
-	    }
+	  struct tz_t *tz;
+
+	  tz = bsearch (ptz, TimeZones, sizeof TimeZones/sizeof (struct tz_t),
+			sizeof (struct tz_t),
+			(int (*)(const void *, const void *)) strcasecmp
+			/* This is safe to do: A pointer to a struct equals
+			 * a pointer to its first element*/);
+
+	  if (tz)
+	  {
+	    zhours = tz->zhours;
+	    zminutes = tz->zminutes;
+	    zoccident = tz->zoccident;
+	  }
 
 	  /* ad hoc support for the European MET (now officially CET) TZ */
 	  if (mutt_strcasecmp (t, "MET") == 0)
