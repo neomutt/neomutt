@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -1072,29 +1072,29 @@ msgstr ""
 "[-- Este adxunto %s/%s non está incluido, --]\n"
 "[-- e o \"access-type\" %s indicado non está soportado --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "Erro: multipart/signed non ten protocolo."
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Erro: ¡multipart/encrypted non ten parámetro de protocolo!"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "¡Non foi posible abri-lo ficheiro temporal!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s non está soportado "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(use '%s' para ver esta parte)"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(cómpre que 'view-attachments' esté vinculado a unha tecla!)"
 
@@ -1184,19 +1184,19 @@ msgstr "Autenticación GSSAPI fallida."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN deshabilitado neste servidor."
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "Comezando secuencia de login ..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "O login fallou."
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Autenticando (SASL)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "Autenticación SASL fallida."
 
@@ -3326,15 +3326,15 @@ msgstr "%s [%d de %d mensaxes lidas]"
 msgid "Server closed connection!"
 msgstr "¡O servidor pechou a conexión!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 msgid "Authenticating (APOP)..."
 msgstr "Autenticando (APOP)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 msgid "APOP authentication failed."
 msgstr "Autenticación APOP fallida."
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 msgid "Command USER is not supported by server."
 msgstr "O comando USER non está soportado polo servidor."
 
@@ -3728,12 +3728,12 @@ msgstr "¡Xa non existe %s!"
 msgid "Could not open %s"
 msgstr "Non foi posible abrir %s"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erro enviando mensaxe, o proceso fillo saíu con %d (%s)."
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "Saída do proceso de distribución"
 

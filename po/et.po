@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.3.21\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 2001-08-22 16:18+02:00\n"
 "Last-Translator: Toomas Soome <tsoome@ut.ee>\n"
 "Language-Team: Estonian <et@li.org>\n"
@@ -1062,29 +1062,29 @@ msgstr ""
 "[-- Lisa %s/%s ei ole kaasatud ja näidatud --]\n"
 "[-- juurdepääsu tüüpi %s ei toetata --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "Viga: multipart/signed teatel puudub protokoll."
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Viga: multipart/encrypted teatel puudub protokolli parameeter!"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "Ajutise faili avamine ebaõnnestus!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s ei toetata "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(selle osa vaatamiseks kasutage '%s')"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' peab olema klahviga seotud!)"
 
@@ -1173,19 +1173,19 @@ msgstr "GSSAPI autentimine ebaõnnestus."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN on sellel serveril blokeeritud."
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "Meldin..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "Meldimine ebaõnnestus."
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Autentimine (SASL)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "SASL autentimine ebaõnnestus."
 
@@ -3305,15 +3305,15 @@ msgstr "%s [%d/%d teadet loetud]"
 msgid "Server closed connection!"
 msgstr "Server sulges ühenduse!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 msgid "Authenticating (APOP)..."
 msgstr "Autentimine (APOP)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 msgid "APOP authentication failed."
 msgstr "APOP autentimine ebaõnnestus."
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 msgid "Command USER is not supported by server."
 msgstr "Server ei toeta käsklust USER."
 
@@ -3703,12 +3703,12 @@ msgstr "%s ei ole enam!"
 msgid "Could not open %s"
 msgstr "%s ei saa avada"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Viga teate saatmisel, alamprotsess lõpetas %d (%s)."
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "Väljund saatmise protsessist"
 

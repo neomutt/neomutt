@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -1088,29 +1088,29 @@ msgstr ""
 "[-- Príloha %s/%s nie je vlo¾ená v správe, --]\n"
 "[-- a oznaèený typ prístupu %s nie je podporovaný --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "Chyba: multipart/signed nemá protokol."
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Chyba: multipart/encrypted nemá vyplnený parameter protokolu!"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "Nemo¾no otvori» doèasný súbor!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s nie je podporovaný "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(pou¾ite '%s' na prezeranie tejto èasti)"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(potrebujem 'view-attachments' priradené na klávesu!)"
 
@@ -1199,19 +1199,19 @@ msgstr ""
 msgid "LOGIN disabled on this server."
 msgstr ""
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "Prihlasujem sa..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "Prihlasovanie zlyhalo."
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr ""
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr ""
 
@@ -3382,15 +3382,15 @@ msgstr "%s [preèítaných správ: %d]"
 msgid "Server closed connection!"
 msgstr "Server uzavrel spojenie!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 msgid "Authenticating (APOP)..."
 msgstr ""
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 msgid "APOP authentication failed."
 msgstr ""
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 #, fuzzy
 msgid "Command USER is not supported by server."
 msgstr "Oznaèovanie nie je podporované."
@@ -3793,12 +3793,12 @@ msgstr "%s u¾ viac neexistuje!"
 msgid "Could not open %s"
 msgstr "Nemo¾no otvori» %s"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, fuzzy, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Chyba pri posielaní správy, dcérsky proces vrátil %d (%s).\n"
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr ""
 

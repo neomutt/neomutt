@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.3.19i\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 2001-06-12\n"
 "Last-Translator: Pawe³ Dziekoñski <p.dziekonski@mml.ch.pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -1068,29 +1068,29 @@ msgstr ""
 "[-- Ten za³±cznik typu %s/%s nie jest zawarty, --]\n"
 "[-- a podany typ dostêpu %s nie jest obs³ugiwany --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "B³±d: multipart/signed nie ma protoko³u."
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "B³±d: multipart/encrypted nie ma parametru protoko³u!"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "Nie mo¿na otworzyæ pliku tymczasowego!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- typ %s/%s nie jest obs³ugiwany "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(u¿yj '%s' do ogl±dania tego fragmentu)"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(przypisz 'view-attachments' do klawisza!)"
 
@@ -1179,19 +1179,19 @@ msgstr "Uwierzytelnianie GSSAPI nie powiod³o siê."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN zosta³ wy³±czony na tym serwerze."
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "Logowanie..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "Zalogowanie nie powiod³o siê."
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "Uwierzytelnianie (SASL)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "Uwierzytelnianie SASL nie powiod³o siê."
 
@@ -3323,15 +3323,15 @@ msgstr "%s [przeczytano %d spo¶ród %d listów]"
 msgid "Server closed connection!"
 msgstr "Serwer zamkn±³ po³±czenie!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 msgid "Authenticating (APOP)..."
 msgstr "Uwierzytelnianie (APOP)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 msgid "APOP authentication failed."
 msgstr "Uwierzytelnianie APOP nie powiod³o siê."
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 msgid "Command USER is not supported by server."
 msgstr "Polecenie USER nie jest obs³ugiwane przez serwer."
 
@@ -3720,12 +3720,12 @@ msgstr "%s ju¿ nie istnieje!"
 msgid "Could not open %s"
 msgstr "Nie mo¿na otworzyæ %s"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "B³±d podczas wysy³ania listu, proces potomny opu¶ci³ %d (%s)."
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "Wynik procesu dostarczania"
 

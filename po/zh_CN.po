@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.1.2\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 1999-12-20 20:41+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -1082,29 +1082,29 @@ msgstr ""
 "[-- %s/%s 附件无法被附上, --]\n"
 "[-- 并且被指示的存取类型 %s 不被支持 --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "错误：multipart/signed 没有通讯协定。"
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "错误：multipart/encrypted 没有任何通讯协定参数！"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "无法打开暂存档！"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s 尚未支持 "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "（使用 '%s' 来显示这部份）"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "（需要定义一个键给 'view-attachments' l浏览附件)！)"
 
@@ -1195,20 +1195,20 @@ msgstr "GSSAPI 验证失败。"
 msgid "LOGIN disabled on this server."
 msgstr ""
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "登入中…"
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "登入失败。"
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 #, fuzzy
 msgid "Authenticating (SASL)..."
 msgstr "验证中 (GSSAPI)…"
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 #, fuzzy
 msgid "SASL authentication failed."
 msgstr "GSSAPI 验证失败。"
@@ -3378,17 +3378,17 @@ msgstr "%s [已阅读 %2d 封信件中的 %1d 封]"
 msgid "Server closed connection!"
 msgstr "与伺服器的联结中断了!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 #, fuzzy
 msgid "Authenticating (APOP)..."
 msgstr "验证中 (GSSAPI)…"
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 #, fuzzy
 msgid "APOP authentication failed."
 msgstr "GSSAPI 验证失败。"
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 #, fuzzy
 msgid "Command USER is not supported by server."
 msgstr "不支持标记功能。"
@@ -3789,12 +3789,12 @@ msgstr "%s 已经不存在！"
 msgid "Could not open %s"
 msgstr "无法打开 %s"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "寄送讯息出现错误，子程序已结束 %d (%s)。"
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "Delivery process 的输出"
 

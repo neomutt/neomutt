@@ -1,3 +1,61 @@
+Thu Aug 30 21:00:51 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* contrib/sample.muttrc-tlr: update
+
+	* build-release: more preparations for stabilizing 1.3.
+
+	* Attic/README.UPGRADE, Makefile.am: README.UPGRADE is quite outdated.
+
+	* doc/muttrc.man.head, NEWS: documentation updates.
+
+	* doc/mutt.man: mention ~/.mutt/muttrc
+
+	* curs_main.c: Fix #750 / deb#108628.
+
+	* pop_auth.c: patch-20010829.vvv.pop_auth
+
+Tue Aug 28 20:39:04 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* handler.c:
+	Don't do character conversion when we call an external handler for a
+	text type.  Assume that the conversion is done there.
+
+	* po/da.po: update
+
+Fri Aug 24 08:07:42 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* sendlib.c:
+	Don't use the 7bit encoding for non-text MIME types.  This may
+	produce slightly longer messages, but it helps to avoid corruption
+	with binary attachments which look like text, but aren't.
+
+	* po/de.po: update
+
+	* sendlib.c:
+	More liberally apply MIME encodings to non-text body parts when
+	there's a ^From_ line.
+
+Thu Aug 23 19:10:04 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/eo.po, po/sv.po: update
+
+Wed Aug 22 14:41:32 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/et.po, po/fr.po: update
+
+	* pop_auth.c:
+	This should fix the warnings which A. Nosenko found.  (And may
+	introduce new ones about unused variables.)
+
+Tue Aug 21 21:54:33 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* po/zh_CN.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/pt_BR.po, po/ru.po, po/pl.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/hu.po, po/id.po, po/it.po, po/fr.po, po/gl.po, po/et.po, po/el.po, po/eo.po, po/es.po, po/da.po, po/de.po, po/cs.po, reldate.h, VERSION, ChangeLog:
+	automatic post-release commit for mutt-1.3.21
+
+Mon Aug 20 12:11:28 2001  Thomas Roessler  <roessler@does-not-exist.org>
+
+	* mx.c: Check for .mew-cache in MH folders.
+
 Mon Aug 20 12:11:28 2001  Thomas Roessler  <roessler@does-not-exist.org>
 
 	* mx.c: Check for .mew-cache in MH folders.

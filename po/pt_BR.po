@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -1075,29 +1075,29 @@ msgstr ""
 "[-- Este anexo %s/%s não está incluído, e o --]\n"
 "[-- tipo de acesso %s não é aceito.         --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "Erro: multipart/signed não tem protocolo."
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Erro: multipart/encrypted não tem nenhum parâmetro de protocolo!"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "Não foi possível abrir o arquivo temporário!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s não é aceito "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(use '%s' para ver esta parte)"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' precisa estar associado a uma tecla!)"
 
@@ -1189,20 +1189,20 @@ msgstr "Autenticação GSSAPI falhou."
 msgid "LOGIN disabled on this server."
 msgstr ""
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "Efetuando login..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "Login falhou."
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 #, fuzzy
 msgid "Authenticating (SASL)..."
 msgstr "Autenticando (CRAM-MD5)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 #, fuzzy
 msgid "SASL authentication failed."
 msgstr "Autenticação GSSAPI falhou."
@@ -3366,17 +3366,17 @@ msgstr "%s [%d de %d mensagens lidas]"
 msgid "Server closed connection!"
 msgstr "O servidor fechou a conexão!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 #, fuzzy
 msgid "Authenticating (APOP)..."
 msgstr "Autenticando (CRAM-MD5)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 #, fuzzy
 msgid "APOP authentication failed."
 msgstr "Autenticação GSSAPI falhou."
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 #, fuzzy
 msgid "Command USER is not supported by server."
 msgstr "Não é possível marcar."
@@ -3778,12 +3778,12 @@ msgstr "%s não mais existe!"
 msgid "Could not open %s"
 msgstr "Não foi possível abrir %s"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erro ao enviar a mensagem, processo filho saiu com código %d"
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "Saída do processo de entrega"
 

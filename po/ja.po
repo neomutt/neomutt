@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.20\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 2001-08-02 22:28+0900\n"
 "Last-Translator: oota toshiya <oota@mspd.mt.nec.co.jp>\n"
 "Language-Team: mutt-j <mutt-j@ns.ribbon.or.jp>\n"
@@ -1064,29 +1064,29 @@ msgstr ""
 "[-- この %s/%s 添付ファイルは含まれない。そして、 --]\n"
 "[-- 指定された access-type %s はサポートされない。--]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "エラー: multipart/signed にプロトコルが無い!"
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "エラー: multipart/encrypted にプロトコルパラメータが無い!"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "一時ファイルがオープンできない!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- %s/%s は未サポート "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(このパートを表示するには '%s' を使用)"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(キーに割り当てられた 'view-attachments' が必要!)"
 
@@ -1175,19 +1175,19 @@ msgstr "GSSAPI認証失敗。"
 msgid "LOGIN disabled on this server."
 msgstr "LOGINはこのサーバでは使用不可"
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "ログイン中..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "ログイン失敗。"
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 msgid "Authenticating (SASL)..."
 msgstr "認証中 (SASL)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 msgid "SASL authentication failed."
 msgstr "SASL認証失敗。"
 
@@ -3287,15 +3287,15 @@ msgstr "%s [%d / %d メッセージ読み出し]"
 msgid "Server closed connection!"
 msgstr "サーバが接続を切った!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 msgid "Authenticating (APOP)..."
 msgstr "認証中(APOP)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 msgid "APOP authentication failed."
 msgstr "APOP認証失敗。"
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 msgid "Command USER is not supported by server."
 msgstr "コマンド USER はサーバでは未サポート。"
 
@@ -3683,12 +3683,12 @@ msgstr "%s はもはや存在しない!"
 msgid "Could not open %s"
 msgstr "%s をオープンできない"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "メッセージ送信中のエラー。子プロセスが %d (%s) で終了。"
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "配信プロセスの出力"
 

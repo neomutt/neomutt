@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.2\n"
-"POT-Creation-Date: 2001-08-21 23:53+0200\n"
+"POT-Creation-Date: 2001-08-30 23:03+0200\n"
 "PO-Revision-Date: 2000-03-09 07:40+0900\n"
 "Last-Translator: Byeong-Chan Kim <redhands@linux.sarag.net>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -1073,29 +1073,29 @@ msgstr ""
 "[-- %s/%s 첨부물이 포함되지 않음, --]\n"
 "[-- 지정된 access-type %s는 지원되지 않음 --]\n"
 
-#: handler.c:1756
+#: handler.c:1761
 msgid "Error: multipart/signed has no protocol."
 msgstr "오류: 프로토콜에 없는 multipart/signed."
 
-#: handler.c:1769
+#: handler.c:1774
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "오류: 프로토콜 매개 변수에 없는 multipart/encrypted"
 
-#: handler.c:1816
+#: handler.c:1821
 msgid "Unable to open temporary file!"
 msgstr "임시 파일을 열 수 없음!"
 
-#: handler.c:1875
+#: handler.c:1880
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- '%s/%s'는 지원되지 않음 "
 
-#: handler.c:1880
+#: handler.c:1885
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "('%s' 키로 현재 부분 보기)"
 
-#: handler.c:1882
+#: handler.c:1887
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "('view-attachments' 글쇠 정의가 필요함!)"
 
@@ -1186,20 +1186,20 @@ msgstr "GSSAPI 인증에 실패함."
 msgid "LOGIN disabled on this server."
 msgstr ""
 
-#: imap/auth_login.c:43 pop_auth.c:223
+#: imap/auth_login.c:43 pop_auth.c:226
 msgid "Logging in..."
 msgstr "접속 중..."
 
-#: imap/auth_login.c:63 pop_auth.c:266
+#: imap/auth_login.c:63 pop_auth.c:269
 msgid "Login failed."
 msgstr "접속 실패."
 
-#: imap/auth_sasl.c:93 pop_auth.c:73
+#: imap/auth_sasl.c:93 pop_auth.c:76
 #, fuzzy
 msgid "Authenticating (SASL)..."
 msgstr "인증 중 (GSSAPI)..."
 
-#: imap/auth_sasl.c:174 pop_auth.c:151
+#: imap/auth_sasl.c:174 pop_auth.c:154
 #, fuzzy
 msgid "SASL authentication failed."
 msgstr "GSSAPI 인증에 실패함."
@@ -3359,17 +3359,17 @@ msgstr "%s [%2$d개 중 %1$d개의 메세지 읽음]"
 msgid "Server closed connection!"
 msgstr "서버와 연결이 끊어짐!"
 
-#: pop_auth.c:184
+#: pop_auth.c:187
 #, fuzzy
 msgid "Authenticating (APOP)..."
 msgstr "인증 중 (GSSAPI)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:211
 #, fuzzy
 msgid "APOP authentication failed."
 msgstr "GSSAPI 인증에 실패함."
 
-#: pop_auth.c:243
+#: pop_auth.c:246
 #, fuzzy
 msgid "Command USER is not supported by server."
 msgstr "태그를 붙이는 것을 지원치 않음."
@@ -3765,12 +3765,12 @@ msgstr "%s가 더 이상 존재치 않음!"
 msgid "Could not open %s"
 msgstr "%s를 열 수 없음"
 
-#: sendlib.c:1998
+#: sendlib.c:2003
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "메세지를 보내는 중 오류, 자식 종료 %d (%s)."
 
-#: sendlib.c:2004
+#: sendlib.c:2009
 msgid "Output of the delivery process"
 msgstr "배달 프로세스의 출력"
 
