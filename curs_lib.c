@@ -530,7 +530,7 @@ int mutt_addwch (wchar_t wc)
 
 void mutt_format_string (char *dest, size_t destlen,
 			 int min_width, int max_width,
-			 int right_justify, char pad_char,
+			 int right_justify, char m_pad_char,
 			 const char *s, size_t n,
 			 int arboreal)
 {
@@ -580,12 +580,12 @@ void mutt_format_string (char *dest, size_t destlen,
     while (--p >= dest)
       p[w] = *p;
     while (--w >= 0)
-      dest[w] = pad_char;
+      dest[w] = m_pad_char;
   }
   else
   {
     while (--w >= 0)
-      *p++ = pad_char;
+      *p++ = m_pad_char;
     *p = '\0';
   }
 }
