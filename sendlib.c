@@ -1834,6 +1834,11 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
 
 void mutt_unprepare_envelope (ENVELOPE *env)
 {
+  LIST *item;
+
+  for (item = env->userhdrs; item; item = item->next)
+    rfc2047_decode (item->data, item->data,  mutt_strlen (item->data) + 1);
+
   rfc822_free_address (&env->mail_followup_to);
 
   /* back conversions */

@@ -1207,6 +1207,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
       }
       else
 	last = e->userhdrs = mutt_new_list ();
+      rfc2047_decode (line, line, linelen);
       last->data = safe_strdup (line);
     }
 
