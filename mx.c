@@ -367,6 +367,16 @@ FILE *mx_open_file_lock (const char *path, const char *mode)
  *	0	not a mailbox
  *	-1	error
  */
+
+#ifdef USE_IMAP
+
+static int mx_is_imap(const char *p)
+{
+  return p && (*p == '{');
+}
+
+#endif
+
 int mx_get_magic (const char *path)
 {
   struct stat st;
@@ -375,7 +385,7 @@ int mx_get_magic (const char *path)
   FILE *f;
 
 #ifdef USE_IMAP
-  if (*path == '{')
+  if(mx_is_imap(path))
     return M_IMAP;
 #endif /* USE_IMAP */
 
@@ -467,18 +477,21 @@ int mx_set_magic (const char *s)
 
 static int mx_open_mailbox_append (CONTEXT *ctx)
 {
+  struct stat sb;
+
   ctx->append = 1;
-  ctx->magic = mx_get_magic (ctx->path);
 
 #ifdef USE_IMAP
-  if (ctx->magic == M_IMAP)
-  {
+  
+  if(mx_is_imap(ctx))  
     return imap_open_mailbox_append (ctx);
-  }
-  else
+
 #endif
-  if (access (ctx->path, W_OK) == 0)
+  
+  if(stat(ctx->path, &sb) == 0)
   {
+    ctx->magic = mx_get_magic (ctx->path);
+    
     switch (ctx->magic)
     {
       case 0:
