@@ -1,3 +1,7 @@
+2005-04-10 09:37:51  Johan Svedberg  <johan@svedberg.pp.se>  (roessler)
+
+	* po/sv.po: update
+
 2005-04-03 00:14:51  Daniel Jacobowitz  <dan@debian.org>  (brendan)
 
 	* imap/imap.c, imap/imap_private.h, imap/message.c: Synchronise
