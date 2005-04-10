@@ -1,13 +1,12 @@
-# Swedish translation for Mutt.
-# Copyright (C) 2004 Free Software Foundation, Inc.
-# Johan Svedberg <johan@svedberg.pp.se>, 2004.
+# Swedish messages for Mutt.
+# Copyright (C) Johan Svedberg 2004-2005 <johan@svedberg.com>
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.6\n"
+"Project-Id-Version: Mutt 1.5.9\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-03-13 17:38+0100\n"
-"PO-Revision-Date: 2004-08-17 14:16%z\n"
-"Last-Translator: Johan Svedberg <johan@svedberg.pp.se>\n"
+"PO-Revision-Date: 2005-04-09 16:01+0200\n"
+"Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
@@ -205,9 +204,8 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "Endast IMAP-brevlådor kan skapas"
 
 #: browser.c:880
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "Endast IMAP-brevlådor kan skapas"
+msgstr "Endast IMAP-brevlådor kan döpas om"
 
 #: browser.c:901
 msgid "Delete is only supported for IMAP mailboxes"
@@ -289,19 +287,19 @@ msgstr "%s: kommandot är endast giltigt för index-objekt"
 #: color.c:393
 #, c-format
 msgid "%s: too few arguments"
-msgstr "%s: för få argument"
+msgstr "%s: för få parametrar"
 
 #: color.c:567
 msgid "Missing arguments."
-msgstr "Saknar argument."
+msgstr "Parametrar saknas."
 
 #: color.c:606 color.c:617
 msgid "color: too few arguments"
-msgstr "color: för få argument"
+msgstr "color: för få parametrar"
 
 #: color.c:640
 msgid "mono: too few arguments"
-msgstr "mono: för få argument"
+msgstr "mono: för få parametrar"
 
 #: color.c:660
 #, c-format
@@ -310,11 +308,11 @@ msgstr "%s: attributet finns inte"
 
 #: color.c:700 hook.c:69 hook.c:77 keymap.c:748
 msgid "too few arguments"
-msgstr "för få argument"
+msgstr "för få parametrar"
 
 #: color.c:709 hook.c:83
 msgid "too many arguments"
-msgstr "för många argument"
+msgstr "för många parametrar"
 
 #: color.c:725
 msgid "default colors not supported"
@@ -746,7 +744,7 @@ msgstr "Brevet skickades inte."
 
 #: crypt.c:398
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME-meddelanden utan ledtrådar på innehåll stöds inte."
+msgstr "S/MIME-meddelanden utan ledtrådar till innehållet stöds ej."
 
 #: crypt.c:617 crypt.c:661
 msgid "Trying to extract PGP keys...\n"
@@ -842,11 +840,11 @@ msgstr "Inga meddelanden."
 
 #: curs_main.c:53 mx.c:1135 pager.c:58 recvattach.c:44
 msgid "Mailbox is read-only."
-msgstr "Brevlåda är skrivskyddad."
+msgstr "Brevlådan är skrivskyddad."
 
 #: curs_main.c:54 pager.c:59 recvattach.c:873
 msgid "Function not permitted in attach-message mode."
-msgstr "Funktion inte tillåten i \"bifoga-meddelnande\"-läge."
+msgstr "Funktionen ej tillåten i \"bifoga-meddelande\"-läge."
 
 #: curs_main.c:55
 msgid "No visible messages."
@@ -858,11 +856,11 @@ msgstr "Kan inte växla till skrivläge på en skrivskyddad brevlåda!"
 
 #: curs_main.c:255
 msgid "Changes to folder will be written on folder exit."
-msgstr "Ändringar i foldern kommer att skrivas när foldern stängs."
+msgstr "Ändringarna i foldern skrivs när foldern lämnas."
 
 #: curs_main.c:260
 msgid "Changes to folder will not be written."
-msgstr "Ändringar i foldern kommer inte att skrivas."
+msgstr "Ändringarna i foldern kommer inte att skrivas."
 
 #: curs_main.c:401
 msgid "Quit"
@@ -886,7 +884,7 @@ msgstr "Grupp"
 
 #: curs_main.c:496
 msgid "Mailbox was externally modified.  Flags may be wrong."
-msgstr "Brevlådan blev externt modifierad. Flaggor kan vara felaktiga."
+msgstr "Brevlådan har ändrats externt. Flaggor kan vara felaktiga."
 
 #: curs_main.c:499
 msgid "New mail in this mailbox."
@@ -894,7 +892,7 @@ msgstr "Nya brev i den här brevlådan."
 
 #: curs_main.c:503
 msgid "Mailbox was externally modified."
-msgstr "Brevlådan blev externt modifierad."
+msgstr "Brevlådan har ändrats externt."
 
 #: curs_main.c:621
 msgid "No tagged messages."
@@ -910,7 +908,7 @@ msgstr "Hoppa till meddelande: "
 
 #: curs_main.c:749
 msgid "Argument must be a message number."
-msgstr "Argumentet måste vara ett meddelandenummer."
+msgstr "Parametern måste vara ett meddelandenummer."
 
 #: curs_main.c:782
 msgid "That message is not visible."
@@ -926,7 +924,7 @@ msgstr "Radera meddelanden som matchar: "
 
 #: curs_main.c:826
 msgid "No limit pattern is in effect."
-msgstr "Inget begränsande mönster är aktivt."
+msgstr "Inget avgränsande mönster är aktivt."
 
 #. i18n: ask for a limit to apply
 #: curs_main.c:831
@@ -936,7 +934,7 @@ msgstr "Gräns: %s"
 
 #: curs_main.c:841
 msgid "Limit to messages matching: "
-msgstr "Begränsa till meddelanden som matchar: "
+msgstr "Visa endast meddelanden som matchar: "
 
 #: curs_main.c:873
 msgid "Quit Mutt?"
@@ -985,11 +983,11 @@ msgstr "Du är på det första meddelandet."
 
 #: curs_main.c:1342 pattern.c:1296
 msgid "Search wrapped to top."
-msgstr "Sökning fortsatte i början."
+msgstr "Sökning fortsatte från början."
 
 #: curs_main.c:1351 pattern.c:1307
 msgid "Search wrapped to bottom."
-msgstr "Sökning fortsatte i slutet."
+msgstr "Sökning fortsatte från slutet."
 
 #: curs_main.c:1392
 msgid "No new messages"
@@ -1018,7 +1016,7 @@ msgstr "Du är på den första tråden."
 #: curs_main.c:1606 curs_main.c:1638 flags.c:293 thread.c:1022 thread.c:1077
 #: thread.c:1132
 msgid "Threading is not enabled."
-msgstr "Trådning är inte aktiverad."
+msgstr "Trådning ej aktiverat."
 
 #: curs_main.c:1624
 msgid "Thread contains unread messages."
@@ -1053,7 +1051,7 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~~\t\tinfoga en rad som börjar med ett ~\n"
+"~~\t\tinfoga en rad som bÃ¶rjar med ett ~\n"
 "~b adresser\tlägg till adresser till Bcc:-fältet\n"
 "~c adresser\tlägg till adresser till Cc:-fältet\n"
 "~f meddelanden\tbifoga meddelanden\n"
@@ -1099,7 +1097,7 @@ msgstr "saknar filnamn.\n"
 
 #: edit.c:427
 msgid "No lines in message.\n"
-msgstr "Inga rader i meddelande.\n"
+msgstr "Inga rader i meddelandet.\n"
 
 #: edit.c:444
 #, c-format
@@ -1109,7 +1107,7 @@ msgstr "Dåligt IDN i %s: \"%s\"\n"
 #: edit.c:462
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
-msgstr "%s: okänt redigerarkommando (~? för hjälp)\n"
+msgstr "%s: okänt redigeringskommando (~? för hjälp)\n"
 
 #: editmsg.c:78
 #, c-format
@@ -1124,7 +1122,7 @@ msgstr "kunde inte skriva tillfällig brevfolder: %s"
 #: editmsg.c:107
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
-msgstr "kunde inte stympa tillfällig brevfolder: %s"
+msgstr "kunde inte avkorta tillfällig brevfolder: %s"
 
 #: editmsg.c:122
 msgid "Message file is empty!"
@@ -1230,13 +1228,13 @@ msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
 msgstr ""
-"[-- och den indikerade externa källan har --]\n"
+"[-- och den angivna externa källan har --]\n"
 "[-- utgått. --]\n"
 
 #: handler.c:1714
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
-msgstr "[-- och den indikerade åtkomsttypen %s stöds inte --]\n"
+msgstr "[-- och den angivna åtkomsttypen %s stöds inte --]\n"
 
 #: handler.c:1822
 msgid "Error: multipart/signed has no protocol."
@@ -1397,19 +1395,18 @@ msgid "Mailbox created."
 msgstr "Brevlåda skapad."
 
 #: imap/browse.c:325
-#, fuzzy, c-format
+#, c-format
 msgid "Rename mailbox %s to: "
-msgstr "Skapa brevlåda: "
+msgstr "Döp om brevlådan %s till: "
 
 #: imap/browse.c:338
-#, fuzzy, c-format
+#, c-format
 msgid "Rename failed: %s"
-msgstr "SSL misslyckades: %s"
+msgstr "Kunde ej döpa om: %s"
 
 #: imap/browse.c:343
-#, fuzzy
 msgid "Mailbox renamed."
-msgstr "Brevlåda skapad."
+msgstr "Brevlåda omdöpt."
 
 #: imap/command.c:294
 msgid "Mailbox closed"
@@ -1515,9 +1512,9 @@ msgid "Could not create temporary file %s"
 msgstr "Kunde inte skapa tillfällig fil %s"
 
 #: imap/message.c:134
-#, fuzzy, c-format
+#, c-format
 msgid "Evaluating cache... [%d/%d]"
-msgstr "Hämtar meddelandehuvuden... [%d/%d]"
+msgstr "Utvärderar cache... [%d/%d]"
 
 #: imap/message.c:202 pop.c:210
 #, c-format
@@ -1680,12 +1677,12 @@ msgstr "Oändlig slinga i macro upptäckt."
 
 #: keymap.c:673 keymap.c:681
 msgid "Key is not bound."
-msgstr "Tangent är inte knuten."
+msgstr "Tangenten är inte knuten."
 
 #: keymap.c:685
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
-msgstr "Tangent är inte knuten. Tryck \"%s\" för hjälp."
+msgstr "Tangenten är inte knuten. Tryck \"%s\" för hjälp."
 
 #: keymap.c:696
 msgid "push: too many arguments"
@@ -1817,7 +1814,7 @@ msgstr "redigera CC-listan"
 
 #: keymap_alldefs.h:25
 msgid "edit attachment description"
-msgstr "redigera bilagabeskrivning"
+msgstr "redigera bilagebeskrivning"
 
 #: keymap_alldefs.h:26
 msgid "edit attachment transfer-encoding"
@@ -1853,7 +1850,7 @@ msgstr "redigera Reply-To-fältet"
 
 #: keymap_alldefs.h:34
 msgid "edit the subject of this message"
-msgstr "redigera ärendet på det här meddelandet"
+msgstr "redigera ämnet på det här meddelandet"
 
 #: keymap_alldefs.h:35
 msgid "edit the TO list"
@@ -1901,7 +1898,7 @@ msgstr "växla dispositionen mellan integrerat/bifogat"
 
 #: keymap_alldefs.h:46
 msgid "toggle whether to delete file after sending it"
-msgstr "växla huruvida fil ska tas bort efter att den har sänts"
+msgstr "växla om fil ska tas bort efter att den har sänts"
 
 #: keymap_alldefs.h:47
 msgid "update an attachment's encoding info"
@@ -1917,7 +1914,7 @@ msgstr "kopiera ett meddelande till en fil/brevlåda"
 
 #: keymap_alldefs.h:50
 msgid "create an alias from a message sender"
-msgstr "skapa ett alias från ett meddelandes avsändare"
+msgstr "skapa ett alias från avsändaren av ett meddelande"
 
 #: keymap_alldefs.h:51
 msgid "move entry to bottom of screen"
@@ -1957,7 +1954,7 @@ msgstr "radera alla meddelanden i tråd"
 
 #: keymap_alldefs.h:60
 msgid "display full address of sender"
-msgstr "visa hela avsändarens adress"
+msgstr "visa avsändarens fullständiga adress"
 
 #: keymap_alldefs.h:61
 msgid "display message and toggle header weeding"
@@ -1969,7 +1966,7 @@ msgstr "visa ett meddelande"
 
 #: keymap_alldefs.h:63
 msgid "edit the raw message"
-msgstr "ändra i meddelandet"
+msgstr "ändra i själva meddelandet"
 
 #: keymap_alldefs.h:64
 msgid "delete the char in front of the cursor"
@@ -2229,7 +2226,7 @@ msgstr "sätt en statusflagga på ett meddelande"
 
 #: keymap_alldefs.h:128
 msgid "save changes to mailbox"
-msgstr "spara ändringar till brevlåda"
+msgstr "spara ändringar av brevlåda"
 
 #: keymap_alldefs.h:129
 msgid "tag messages matching a pattern"
@@ -2320,9 +2317,8 @@ msgid "{internal}"
 msgstr "{internt}"
 
 #: keymap_alldefs.h:151
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "radera den aktuella brevlådan (endast för IMAP)"
+msgstr "döp om den aktuella brevlådan (endast för IMAP)"
 
 #: keymap_alldefs.h:152
 msgid "reply to a message"
@@ -2330,7 +2326,7 @@ msgstr "svara på ett meddelande"
 
 #: keymap_alldefs.h:153
 msgid "use the current message as a template for a new one"
-msgstr "använd det aktuella meddelande som en mall för ett nytt"
+msgstr "använd det aktuella meddelande som mall för ett nytt"
 
 #: keymap_alldefs.h:154
 msgid "save message/attachment to a file"
@@ -2410,11 +2406,11 @@ msgstr "återställ den aktuella posten"
 
 #: keymap_alldefs.h:173
 msgid "undelete all messages in thread"
-msgstr "återställ all meddelanden i tråd"
+msgstr "återställ all meddelanden i tråden"
 
 #: keymap_alldefs.h:174
 msgid "undelete all messages in subthread"
-msgstr "återställ alla meddelanden i undertråd"
+msgstr "återställ alla meddelanden i undertråden"
 
 #: keymap_alldefs.h:175
 msgid "show the Mutt version number and date"
@@ -2601,7 +2597,6 @@ msgstr ""
 "USA.\n"
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -2649,7 +2644,7 @@ msgstr ""
 "       mutt -v[v]\n"
 "\n"
 "options:\n"
-"  -A <alias>\texpandera den givna aliaset\n"
+"  -A <alias>\texpandera det givna aliaset\n"
 "  -a <fil>\tbifoga en fil till meddelandet\n"
 "  -b <adress>\tange en \"blind carbon-copy\" (BCC) adress\n"
 "  -c <adress>\tange en \"carbon-copy\" (CC) adress\n"
@@ -2740,7 +2735,7 @@ msgstr "Brevlådan blev skadad!"
 
 #: mbox.c:699 mbox.c:953
 msgid "Fatal error!  Could not reopen mailbox!"
-msgstr "Fatalt fel! Kunde inte återöppna brevlåda!"
+msgstr "Fatalt fel! Kunde inte öppna brevlådan igen!"
 
 #: mbox.c:708
 msgid "Unable to lock mailbox!"
@@ -2869,7 +2864,7 @@ msgstr "maildir_commit_message(): kunde inte sätta tid på fil"
 
 #: muttlib.c:846
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "Filen är en katalog, spar i den? [(j)a, n(ej), (a)lla]"
+msgstr "Filen är en katalog, spara i den? [(j)a, n(ej), (a)lla]"
 
 #: muttlib.c:846
 msgid "yna"
@@ -2877,7 +2872,7 @@ msgstr "jna"
 
 #: muttlib.c:862
 msgid "File is a directory, save under it?"
-msgstr "Filen är en katalog, spar i den?"
+msgstr "Filen är en katalog, spara i den?"
 
 #: muttlib.c:868
 msgid "File under directory: "
@@ -3646,11 +3641,11 @@ msgstr "Otillåtet S/MIME-huvud"
 
 #: postpone.c:556
 msgid "Decrypting message..."
-msgstr "Dekrypterar meddelande..."
+msgstr "Avkrypterar meddelande..."
 
 #: postpone.c:565
 msgid "Decryption failed."
-msgstr "Dekryptering misslyckades."
+msgstr "Avkryptering misslyckades."
 
 #: query.c:50
 msgid "New Query"
@@ -3751,11 +3746,11 @@ msgstr "Kan inte radera bilaga från POP-server."
 
 #: recvattach.c:1075
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Radering av bilagor från krypterade meddelanden saknar stöd."
+msgstr "Radering av bilagor från krypterade meddelanden stöds ej."
 
 #: recvattach.c:1094 recvattach.c:1111
 msgid "Only deletion of multipart attachments is supported."
-msgstr "Endast radering av \"multipart\"-bilagor har stöd."
+msgstr "Endast radering av \"multipart\"-bilagor stöds."
 
 #: recvcmd.c:47
 msgid "You may only bounce message/rfc822 parts."
@@ -3893,11 +3888,11 @@ msgstr "score: för många parametrar"
 
 #: send.c:252
 msgid "No subject, abort?"
-msgstr "Inget ärende, avbryt?"
+msgstr "Inget ämne, avbryt?"
 
 #: send.c:254
 msgid "No subject, aborting."
-msgstr "Inget ärende, avbryter."
+msgstr "Inget ämne, avbryter."
 
 #. There are quite a few mailing lists which set the Reply-To:
 #. * header field to the list address, which makes it quite impossible
@@ -4225,9 +4220,3 @@ msgstr "Första meddelandet är inte synligt i den här begränsade vyn"
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Första meddelandet är inte tillgängligt."
-
-#~ msgid "unspecified protocol error"
-#~ msgstr "ospecificerat protokollfel"
-
-#~ msgid "Closing connection to IMAP server..."
-#~ msgstr "Stänger anslutning till IMAP-server..."
