@@ -1,3 +1,9 @@
+2005-06-12 18:24:31  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* curs_main.c, init.h, menu.c, mutt.h: Add $braille_friendly.
+	Behavior originally suggested by Sébastien Hinderer
+	<Sebastien.Hinderer@libertysurf.fr>.
+
 2005-04-10 09:37:51  Johan Svedberg  <johan@svedberg.pp.se>  (roessler)
 
 	* po/sv.po: update
