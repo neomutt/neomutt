@@ -228,7 +228,10 @@ void menu_redraw_index (MUTTMENU *menu)
 	  addch (' ');
 	}
 	else
-	  move (i - menu->top + menu->offset, 3);
+	{
+	  attrset (menu->color (i));
+	  addstr ("   ");
+	}
 
         print_enriched_string (menu->color(i), (unsigned char *) buf, 1);
         SETCOLOR (MT_COLOR_NORMAL);          
