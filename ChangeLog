@@ -1,3 +1,7 @@
+2005-06-12 18:28:29  Tamotsu Takahashi  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* menu.c: Fix background colors for $arrow_cursor.
+
 2005-06-12 18:24:31  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* curs_main.c, init.h, menu.c, mutt.h: Add $braille_friendly.
