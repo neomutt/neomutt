@@ -276,6 +276,15 @@ struct option_t MuttVars[] = {
   ** When this variable is set, mutt will include Delivered-To headers when
   ** bouncing messages.  Postfix users may wish to unset this variable.
   */
+  { "braille_friendly", DT_BOOL, R_NONE, OPTBRAILLEFRIENDLY, 0 },
+  /*
+  ** .pp
+  ** When this variable is set, mutt will place the cursor at the beginning
+  ** of the current line in menus, even when the arrow_cursor variable
+  ** is unset, making it easier for blind persons using Braille displays to 
+  ** follow these menus.  The option is disabled by default because many 
+  ** visual terminals don't permit making the cursor invisible.
+  */
   { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp

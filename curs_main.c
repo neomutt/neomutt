@@ -576,6 +576,8 @@ int mutt_index_menu (void)
 
       if (option (OPTARROWCURSOR))
 	move (menu->current - menu->top + menu->offset, 2);
+      else if (option (OPTBRAILLEFRIENDLY))
+	move (menu->current - menu->top + menu->offset, 0);
       else
 	move (menu->current - menu->top + menu->offset, COLS - 1);
       mutt_refresh ();

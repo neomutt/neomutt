@@ -870,8 +870,14 @@ int mutt_menuLoop (MUTTMENU *menu)
 
 
     /* move the cursor out of the way */
-    move (menu->current - menu->top + menu->offset,
-	  (option (OPTARROWCURSOR) ? 2 : COLS-1));
+    
+    
+    if (option (OPTARROWCURSOR))
+      move (menu->current - menu->top + menu->offset, 2);
+    else if (option (OPTBRAILLEFRIENDLY))
+      move (menu->current - menu->top + menu->offset, 0);
+    else
+      move (menu->current - menu->top + menu->offset, COLS - 1);
 
     mutt_refresh ();
     
