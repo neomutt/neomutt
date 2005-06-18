@@ -59,11 +59,11 @@ Mutt is free software, and you are welcome to redistribute it\n\
 under certain conditions; type `mutt -vv' for details.\n");
 
 static const char *Copyright = N_("\
-Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n\
+Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n\
 Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n\
-Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n\
-Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n\
-Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n\
+Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n\
+Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n\
+Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
 Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n\
 \n\
