@@ -1,3 +1,8 @@
+2005-06-18 04:54:39  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* main.c: Update copyright dates according to latest activity in
+	ChangeLog.
+
 2005-06-12 18:28:29  Tamotsu Takahashi  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* menu.c: Fix background colors for $arrow_cursor.
