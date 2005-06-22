@@ -1,3 +1,8 @@
+2005-06-22 01:46:49  Sébastien Hinderer <Sebastien.Hinderer@libertysurf.fr>  (brendan)
+
+	* doc/devel-notes.txt: This patch fixes two small typos in
+	dev notes.
+
 2005-06-18 04:54:39  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* main.c: Update copyright dates according to latest activity in
