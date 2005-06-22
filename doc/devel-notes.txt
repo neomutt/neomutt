@@ -127,9 +127,9 @@ when adding new data types to init.h.
 
 More precisely, variable name, type, and default value are directly
 extracted from the initializer for the MuttVars array. Documentation
-is exepected in special comments which _follow_ the initializer.
+is expected in special comments which _follow_ the initializer.
 For a line to be included with the documentation, it must (after,
-possibly, some white space) begin with with either "/**" or "**".
+possibly, some white space) begin with either "/**" or "**".
 Any following white space is ignored. The rest of the line is
 expected to be plain text, with some formatting instructions roughly
 similar to [ntg]roff:
