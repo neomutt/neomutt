@@ -1,3 +1,9 @@
+2005-06-24 22:32:38  SÃ©bastien Hinderer
+<Sebastien.Hinderer@libertysurf.fr>  (brendan)
+
+	* crypt.c: Remove a warning about unused variable 'now' in
+	crypt_valid_passphrase
+
 2005-06-22 01:46:49  Sébastien Hinderer <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* doc/devel-notes.txt: This patch fixes two small typos in
