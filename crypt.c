@@ -110,7 +110,6 @@ static void disable_coredumps (void)
 
 int crypt_valid_passphrase(int flags)
 {
-  time_t now = time (NULL);
   int ret = 0;
 
 # if defined(HAVE_SETRLIMIT) &&(!defined(DEBUG))
