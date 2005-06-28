@@ -1,3 +1,12 @@
+2005-06-28 19:26:54  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* account.c, account.h, globals.h, init.h, mutt_sasl.c: Add
+	$imap_login variable to specify which user to authenticate as
+	($imap_user controls which user's mail gets accessed). Currently
+	this can't be specified interactively, since I can't think of
+	a way to do it that wouldn't annoy users where login == user
+	(the default value of $imap_login).
+
 2005-06-24 22:32:38  Sébastien Hinderer <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* crypt.c: Remove a warning about unused variable 'now' in
