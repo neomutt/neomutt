@@ -851,6 +851,13 @@ struct option_t MuttVars[] = {
   ** only subscribed folders or all folders.  This can be toggled in the
   ** IMAP browser with the \fItoggle-subscribed\fP function.
   */
+  { "imap_login",	DT_STR,  R_NONE, UL &ImapLogin, UL 0 },
+  /*
+  ** .pp
+  ** Your login name on the IMAP server.
+  ** .pp
+  ** This variable defaults to the value of \fIimap_user\fP.
+  */
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   /*
   ** .pp
@@ -889,7 +896,8 @@ struct option_t MuttVars[] = {
   { "imap_user",	DT_STR,  R_NONE, UL &ImapUser, UL 0 },
   /*
   ** .pp
-  ** Your login name on the IMAP server.
+  ** The name of the user whose mail you intend to access on the IMAP
+  ** server.
   ** .pp
   ** This variable defaults to your user name on the local machine.
   */

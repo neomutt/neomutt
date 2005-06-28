@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-5 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -26,10 +26,11 @@
 #include "account.h"
 #include "url.h"
 
-/* mutt_account_match: compare account info (host/port/user) */
+/* mutt_account_match: compare account info (host/port/user/login) */
 int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 {
   const char* user = NONULL (Username);
+  const char* login = NONULL (Username);
 
   if (a1->type != a2->type)
     return 0;
@@ -39,8 +40,13 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
     return 0;
 
 #ifdef USE_IMAP
-  if (a1->type == M_ACCT_TYPE_IMAP && ImapUser)
-    user = ImapUser;
+  if (a1->type == M_ACCT_TYPE_IMAP)
+  {
+    if (ImapUser)
+      user = ImapUser;
+    if (ImapLogin)
+      login = ImapLogin;
+  }
 #endif
 
 #ifdef USE_POP
@@ -126,7 +132,7 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
     url->pass = account->pass;
 }
 
-/* mutt_account_getuser: retrieve username into ACCOUNT, if neccessary */
+/* mutt_account_getuser: retrieve username into ACCOUNT, if necessary */
 int mutt_account_getuser (ACCOUNT* account)
 {
   char prompt[SHORT_STRING];
@@ -156,7 +162,27 @@ int mutt_account_getuser (ACCOUNT* account)
   return 0;
 }
 
-/* mutt_account_getpass: fetch password into ACCOUNT, if neccessary */
+int mutt_account_getlogin (ACCOUNT* account)
+{
+  /* already set */
+  if (account->flags & M_ACCT_LOGIN)
+    return 0;
+#ifdef USE_IMAP
+  else if (account->type == M_ACCT_TYPE_IMAP)
+  {
+    if (ImapLogin)
+      strfcpy (account->login, ImapLogin, sizeof (account->login));
+    else
+      strfcpy (account->login, ImapUser, sizeof (account->login));
+  }
+#endif
+
+  account->flags |= M_ACCT_LOGIN;
+
+  return 0;
+}
+
+/* mutt_account_getpass: fetch password into ACCOUNT, if necessary */
 int mutt_account_getpass (ACCOUNT* account)
 {
   char prompt[SHORT_STRING];
@@ -174,7 +200,7 @@ int mutt_account_getpass (ACCOUNT* account)
   else
   {
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
-      account->user, account->host);
+      account->login, account->host);
     account->pass[0] = '\0';
     if (mutt_get_password (prompt, account->pass, sizeof (account->pass)))
       return -1;

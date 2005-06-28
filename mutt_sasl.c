@@ -334,12 +334,12 @@ sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
 
   callback = mutt_sasl_callbacks;
 
-  callback->id = SASL_CB_AUTHNAME;
+  callback->id = SASL_CB_USER;
   callback->proc = mutt_sasl_cb_authname;
   callback->context = account;
   callback++;
 
-  callback->id = SASL_CB_USER;
+  callback->id = SASL_CB_AUTHNAME;
   callback->proc = mutt_sasl_cb_authname;
   callback->context = account;
   callback++;
@@ -450,8 +450,7 @@ static int mutt_sasl_cb_log (void* context, int priority, const char* message)
   return SASL_OK;
 }
 
-/* mutt_sasl_cb_authname: callback to retrieve authname or user (mutt
- *   doesn't distinguish, even if some SASL plugins do) from ACCOUNT */
+/* mutt_sasl_cb_authname: callback to retrieve authname or user from ACCOUNT */
 static int mutt_sasl_cb_authname (void* context, int id, const char** result,
   unsigned* len)
 {
@@ -468,11 +467,19 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
 	      id == SASL_CB_AUTHNAME ? "authname" : "user",
 	      account->host, account->port));
 
-  if (mutt_account_getuser (account))
-    return SASL_FAIL;
-
-  *result = account->user;
-
+  if (id == SASL_CB_AUTHNAME)
+  {
+    if (mutt_account_getlogin (account))
+      return SASL_FAIL;
+    *result = account->login;
+  }
+  else
+  {
+    if (mutt_account_getuser (account))
+      return SASL_FAIL;
+    *result = account->user;
+  }
+  
   if (len)
     *len = strlen (*result);
 
@@ -489,7 +496,7 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
     return SASL_BADPARAM;
 
   dprint (2, (debugfile,
-    "mutt_sasl_cb_pass: getting password for %s@%s:%u\n", account->user,
+    "mutt_sasl_cb_pass: getting password for %s@%s:%u\n", account->login,
     account->host, account->port));
 
   if (mutt_account_getpass (account))
