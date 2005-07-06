@@ -7,7 +7,7 @@ tolower('I') is DIFFERENT from 'i' - it's indeed the Turkish dotless
 lowercase i.
 
 For this reason, always use the ascii_* functions defined in ascii.h
-and implemented in ascii.c when comparing or handling strings whcih
+and implemented in ascii.c when comparing or handling strings which
 are defined as us-ascii.  This concerns lots of text-based
 protocols, message header tags, character set names, domain names,
 e-mail addresses, etc.
