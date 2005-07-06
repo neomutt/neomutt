@@ -1,3 +1,8 @@
+2005-07-06 23:49:08  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>
+(brendan)
+
+	* BEWARE: this fixes a little typo.
+
 2005-07-06 21:03:00  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* hcache.c: Apply Aaron Crane's function pointer bandaid to the
