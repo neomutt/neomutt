@@ -805,7 +805,7 @@ mutt_hcache_open(const char *path, const char *folder)
     return NULL;
   }
 
-  ret = h->env->open(h->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE,
+  ret = (*h->env->open)(h->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE,
 	0600);
   if (!ret)
   {
@@ -826,7 +826,7 @@ mutt_hcache_open(const char *path, const char *folder)
     h->db->set_pagesize(h->db, pagesize);
   }
 
-  ret = h->db->open(h->db, NULL, path, folder, DB_BTREE, createflags, 0600);
+  ret = (*h->db->open)(h->db, NULL, path, folder, DB_BTREE, createflags, 0600);
   if (ret)
   {
     h->db->close(h->db, 0);
@@ -844,7 +844,6 @@ void
 mutt_hcache_close(void *db)
 {
   struct header_cache *h = db;
-  int ret;
 
   if (!h)
     return;
