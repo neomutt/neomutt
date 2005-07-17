@@ -1,3 +1,8 @@
+2005-07-17 00:43:05  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* account.c: Don't dereference null ImapUser in new getlogin
+	function.
+
 2005-07-15 07:29:37  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
 	* po/fr.po: PO update 20050613.
