@@ -172,8 +172,10 @@ int mutt_account_getlogin (ACCOUNT* account)
   {
     if (ImapLogin)
       strfcpy (account->login, ImapLogin, sizeof (account->login));
-    else
-      strfcpy (account->login, ImapUser, sizeof (account->login));
+    else {
+      mutt_account_getuser (account);
+      strfcpy (account->login, account->user, sizeof (account->login));
+    }
   }
 #endif
 
