@@ -1,3 +1,9 @@
+2005-07-23 23:35:17  Byrial Jensen  <byrial@image.dk>  (brendan)
+
+	* curs_main.c, doc/manual.sgml.head, globals.h, main.c, muttlib.c:
+	Byrial Jensen and Christoph Berg's current-mailbox shortcut (^). I
+	like it, and so does Debian.
+
 2005-07-17 00:43:05  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* account.c: Don't dereference null ImapUser in new getlogin
