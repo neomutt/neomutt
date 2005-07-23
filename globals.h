@@ -130,6 +130,7 @@ WHERE char *Tochars;
 WHERE char *Username;
 WHERE char *Visual;
 
+WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
 WHERE LIST *AutoViewList INITVAL(0);

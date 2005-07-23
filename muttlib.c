@@ -456,6 +456,13 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
       }
       break;
       
+      case '^':        
+      {
+	strfcpy (p, NONULL(CurrentFolder), sizeof (p));
+	tail = s + 1;
+      }
+      break;
+
       default:
       {
 	*p = '\0';
