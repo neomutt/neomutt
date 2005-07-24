@@ -138,11 +138,11 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     {
       *c = '\0';
       strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
-      c++;
+      strfcpy (tmp, c+1, sizeof (tmp));
       mx->account.flags |= M_ACCT_USER;
     }
   
-    if ((n = sscanf (c, "%127[^:/]%127s", mx->account.host, c)) < 1)
+    if ((n = sscanf (tmp, "%127[^:/]%127s", mx->account.host, tmp)) < 1)
     {
       dprint (1, (debugfile, "imap_parse_path: NULL host in %s\n", path));
       FREE (&mx->mbox);
@@ -150,11 +150,11 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     }
   
     if (n > 1) {
-      if (sscanf (c, ":%hu%127s", &(mx->account.port), c) >= 1)
+      if (sscanf (tmp, ":%hu%127s", &(mx->account.port), tmp) >= 1)
 	mx->account.flags |= M_ACCT_PORT;
-      if (sscanf (c, "/%s", c) == 1)
+      if (sscanf (tmp, "/%s", tmp) == 1)
       {
-	if (!ascii_strncmp (c, "ssl", 3))
+	if (!ascii_strncmp (tmp, "ssl", 3))
 	  mx->account.flags |= M_ACCT_SSL;
 	else
 	{
