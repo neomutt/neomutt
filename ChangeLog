@@ -1,3 +1,8 @@
+2005-07-24 16:53:59  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* thread.c: Try to fix threading bug triggered by duplicate
+	references.
+
 2005-07-24 16:51:38  Cedric Duval  <cedricduval+web@free.fr>  (brendan)
 
 	* OPS, copy.c, curs_main.c, doc/manual.sgml.head, functions.h,
