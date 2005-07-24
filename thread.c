@@ -928,7 +928,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	if (new->duplicate_thread)
 	  new = new->parent;
 	if (is_descendant (new, thread)) /* no loops! */
-	  break;
+	  continue;
       }
 
       if (thread->parent)
