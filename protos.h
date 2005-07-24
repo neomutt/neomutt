@@ -211,6 +211,7 @@ void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
 void mutt_make_help (char *, size_t, char *, int, int);
 void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv);
 void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out);
+void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra);
 void mutt_message_to_7bit (BODY *, FILE *);
 #define mutt_mktemp(a) _mutt_mktemp (a, __FILE__, __LINE__)
 void _mutt_mktemp (char *, const char *, int);

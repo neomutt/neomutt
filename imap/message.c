@@ -326,6 +326,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 {
   IMAP_DATA* idata;
   HEADER* h;
+  ENVELOPE* newenv;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
   char *pc;
@@ -463,23 +464,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
    * picked up in mutt_read_rfc822_header, we mark the message (and context
    * changed). Another possiblity: ignore Status on IMAP?*/
   read = h->read;
-  /* I hate do this here, since it's so low-level, but I'm not sure where
-   * I can abstract it. Problem: the id and subj hashes lose their keys when
-   * mutt_free_envelope gets called, but keep their spots in the hash. This
-   * confuses threading. Alternatively we could try to merge the new
-   * envelope into the old one. Also messy and lowlevel. */
-  if (ctx->id_hash && h->env->message_id)
-    hash_delete (ctx->id_hash, h->env->message_id, h, NULL);
-  if (ctx->subj_hash && h->env->real_subj)
-    hash_delete (ctx->subj_hash, h->env->real_subj, h, NULL);
-  if (ctx->thread_hash && h->env->message_id)
-    hash_delete (ctx->thread_hash, h->env->message_id, NULL, NULL);
-  mutt_free_envelope (&h->env);
-  h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
-  if (ctx->id_hash && h->env->message_id)
-    hash_insert (ctx->id_hash, h->env->message_id, h, 0);
-  if (ctx->subj_hash && h->env->real_subj)
-    hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+  newenv = mutt_read_rfc822_header (msg->fp, h, 0, 0);
+  mutt_merge_envelopes(h->env, &newenv);
 
   /* see above. We want the new status in h->read, so we unset it manually
    * and let mutt_set_flag set it correctly, updating context. */
