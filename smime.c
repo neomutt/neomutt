@@ -1716,7 +1716,8 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   {
     fclose (smimeout); smimeout = NULL;
     mutt_unlink (tmpfname);
-    state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+    if (s->flags & M_DISPLAY)
+      state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
     return NULL;
   }
   else if ((type & SIGNOPAQUE) &&
@@ -1726,7 +1727,8 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   {
     fclose (smimeout); smimeout = NULL;
     mutt_unlink (tmpfname);
-    state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
+    if (s->flags & M_DISPLAY)
+      state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
     return NULL;
   }
 
@@ -1868,6 +1870,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   size_t tmplength = b->length;
   int origType = b->type;
   FILE *tmpfp=NULL;
+  int rv = 0;
 
   if (!mutt_is_application_smime (b))
     return -1;
@@ -1900,21 +1903,29 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   if ((*fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (-1);
+    rv = -1;
+    goto bail;
   }
   mutt_unlink (tempfile);
 
-  *cur = smime_handle_entity (b, &s, *fpout);
+  if (!(*cur = smime_handle_entity (b, &s, *fpout)))
+  {
+    rv = -1;
+    goto bail;
+  }
+    
   (*cur)->goodsig = b->goodsig;
-  (*cur)->badsig = b->badsig;
+  (*cur)->badsig  = b->badsig;
+
+bail:
   b->type = origType;
   b->length = tmplength;
   b->offset = tmpoffset;
-  fclose (tmpfp);
-
-  rewind (*fpout);
-  return (0);
-
+  safe_fclose (&tmpfp);
+  if (*fpout)
+    rewind (*fpout);
+  
+  return rv;
 }
 
 
