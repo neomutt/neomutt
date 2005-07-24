@@ -1,3 +1,8 @@
+2005-07-24 14:23:25  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* recvattach.c, smime.c: Fix S/MIME segmentation fault.  Bug
+	reported by Mads Martin Joergensen; part fixed by Brendan Cully.
+
 2005-07-24 08:59:44  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* copy.c: Don't assume messages in MMDF mailboxes have From
