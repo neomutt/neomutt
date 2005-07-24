@@ -2334,8 +2334,43 @@ used a threaded news client, this is the same concept.  It makes dealing
 with large volume mailing lists easier because you can easily delete
 uninteresting threads and quickly find topics of value.
 
+<sect1>Editing threads
+<p>
+Mutt has the ability to dynamically restructure threads that are broken
+either by misconfigured software or bad behaviour from some
+correspondents. This allows to clean your mailboxes formats) from these
+annoyances which make it hard to follow a discussion.
+
+If you want to use these functions with IMAP, you need to compile Mutt
+with the <em/--enable-imap-edit-threads/ configure flag.
+
+<sect2>Linking threads
+<p>
+
+Some mailers tend to "forget" to correctly set the "In-Reply-To:" and
+"References:" headers when replying to a message. This results in broken
+discussions because Mutt has not enough information to guess the correct
+threading.
+You can fix this by tagging the reply, then moving to the parent message
+and using the ``link-threads'' function (bound to & by default). The
+reply will then be connected to this "parent" message.
+
+You can also connect multiple childs at once, tagging them and using the
+tag-prefix command (';') or the auto_tag option.
+
+<sect2>Breaking threads
+<p>
+
+On mailing lists, some people are in the bad habit of starting a new
+discussion by hitting "reply" to any message from the list and changing
+the subject to a totally unrelated one.
+You can fix such threads by using the ``break-thread'' function (bound
+by default to #), which will turn the subthread starting from the
+current message into a whole different thread.
+
 <sect1>Delivery Status Notification (DSN) Support
 <p>
+
 RFC1894 defines a set of MIME content types for relaying information
 about the status of electronic mail messages.  These can be thought of as
 ``return receipts.'' Berkeley sendmail 8.8.x currently has some command

@@ -1165,6 +1165,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
         ctx->deleted = 0;
       }
     }
+    else if (ctx->last_tag && ctx->last_tag->deleted)
+      ctx->last_tag = NULL; /* reset last tagged msg now useless */
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to

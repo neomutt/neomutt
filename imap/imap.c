@@ -1065,9 +1065,11 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
         ctx->msgcount);
 
-      /* if attachments have been deleted we delete the message and reupload
-       * it. This works better if we're expunging, of course. */
-      if (ctx->hdrs[n]->attach_del)
+      /* if the message has been rethreaded or attachments have been deleted
+       * we delete the message and reupload it.
+       * This works better if we're expunging, of course. */
+      if (ctx->hdrs[n]->refs_changed || ctx->hdrs[n]->irt_changed ||
+	  ctx->hdrs[n]->attach_del)
       {
 	dprint (3, (debugfile, "imap_sync_mailbox: Attachments to be deleted, falling back to _mutt_save_message\n"));
 	if (!appendctx)

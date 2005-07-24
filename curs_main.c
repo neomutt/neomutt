@@ -936,6 +936,11 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	else
 	{
 	  mutt_set_flag (Context, CURHDR, M_TAG, !CURHDR->tagged);
+
+	  Context->last_tag = CURHDR->tagged ? CURHDR :
+	    ((Context->last_tag == CURHDR && !CURHDR->tagged)
+	     ? NULL : Context->last_tag);
+
 	  menu->redraw = REDRAW_STATUS;
 	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
 	  {
@@ -1174,6 +1179,77 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	  }
 	  done = 1;
 	}
+	break;
+
+      case OP_MAIN_BREAK_THREAD:
+
+	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
+	CHECK_READONLY;
+
+        if ((Sort & SORT_MASK) != SORT_THREADS)
+	  mutt_error _("Threading is not enabled.");
+	else
+	{
+	  {
+	    HEADER *oldcur = CURHDR;
+
+	    mutt_break_thread (CURHDR);
+	    mutt_sort_headers (Context, 1);
+	    menu->current = oldcur->virtual;
+	  }
+
+	  Context->changed = 1;
+	  mutt_message _("Thread broken");
+
+	  if (menu->menu == MENU_PAGER)
+	  {
+	    op = OP_DISPLAY_MESSAGE;
+	    continue;
+	  }
+	  else
+	    menu->redraw |= REDRAW_INDEX;
+	}
+
+	  break;
+
+      case OP_MAIN_LINK_THREADS:
+
+	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
+	CHECK_READONLY;
+
+        if ((Sort & SORT_MASK) != SORT_THREADS)
+	  mutt_error _("Threading is not enabled.");
+	else if (!CURHDR->env->message_id)
+	  mutt_error _("No Message-ID: header available to link thread");
+	else if (!tag && (!Context->last_tag || !Context->last_tag->tagged))
+	  mutt_error _("First, please tag a message to be linked here");
+	else 
+	{
+	  HEADER *oldcur = CURHDR;
+
+	  if (mutt_link_threads (CURHDR, tag ? NULL : Context->last_tag,
+				 Context))
+	  {
+	    mutt_sort_headers (Context, 1);
+	    menu->current = oldcur->virtual;
+	    
+	    Context->changed = 1;
+	    mutt_message _("Threads linked");
+	  }
+	  else
+	    mutt_error _("No thread linked");
+	}
+
+	if (menu->menu == MENU_PAGER)
+	{
+	  op = OP_DISPLAY_MESSAGE;
+	  continue;
+	}
+	else
+	  menu->redraw |= REDRAW_STATUS | REDRAW_INDEX;
+
 	break;
 
       case OP_EDIT_TYPE:

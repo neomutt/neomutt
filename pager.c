@@ -2498,6 +2498,11 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
       case OP_TAG:
 	CHECK_MODE(IsHeader (extra));
 	mutt_set_flag (Context, extra->hdr, M_TAG, !extra->hdr->tagged);
+
+	Context->last_tag = extra->hdr->tagged ? extra->hdr :
+	  ((Context->last_tag == extra->hdr && !extra->hdr->tagged)
+	   ? NULL : Context->last_tag);
+
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{

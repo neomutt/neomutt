@@ -99,6 +99,12 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	    (ascii_strncasecmp ("Content-Length:", buf, 15) == 0 ||
 	     ascii_strncasecmp ("Lines:", buf, 6) == 0))
 	  continue;
+	if ((flags & CH_UPDATE_REFS) &&
+	    ascii_strncasecmp ("References:", buf, 11) == 0)
+	  continue;
+	if ((flags & CH_UPDATE_IRT) &&
+	    ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0)
+	  continue;
 	ignore = 0;
       }
 
@@ -196,6 +202,12 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	    (ascii_strncasecmp ("transfer-encoding:", buf + 8, 18) == 0 ||
 	     ascii_strncasecmp ("type:", buf + 8, 5) == 0)) ||
 	   ascii_strncasecmp ("mime-version:", buf, 13) == 0))
+	continue;
+      if ((flags & CH_UPDATE_REFS) &&
+	  ascii_strncasecmp ("References:", buf, 11) == 0)
+	continue;
+      if ((flags & CH_UPDATE_IRT) &&
+	  ascii_strncasecmp ("In-Reply-To:", buf, 12) == 0)
 	continue;
 
       /* Find x -- the array entry where this header is to be saved */
@@ -330,6 +342,8 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
  	CH_XMIT		ignore Lines: and Content-Length:
  	CH_WEED		do header weeding
 	CH_NOQFROM      ignore ">From " line
+	CH_UPDATE_IRT	update the In-Reply-To: header
+	CH_UPDATE_REFS	update the References: header
 
    prefix
    	string to use if CH_PREFIX is set
@@ -339,6 +353,9 @@ int
 mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 {
   char buffer[SHORT_STRING];
+
+  flags |= (h->irt_changed ? CH_UPDATE_IRT : 0)
+         | (h->refs_changed ? CH_UPDATE_REFS : 0);
   
   if (mutt_copy_hdr (in, out, h->offset, h->content->offset, flags, prefix) == -1)
     return (-1);
@@ -362,7 +379,56 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   if (flags & CH_UPDATE)
   {
     if ((flags & CH_NOSTATUS) == 0)
+#ifdef USE_IMAP
+#define NEW_ENV new_env
+#else
+#define NEW_ENV env
+#endif
     {
+      if (h->irt_changed && h->NEW_ENV->in_reply_to)
+      {
+	LIST *listp = h->NEW_ENV->in_reply_to;
+
+	if (fputs ("In-Reply-To: ", out) == EOF)
+	  return (-1);
+
+	for (; listp; listp = listp->next)
+	  if ((fputs (listp->data, out) == EOF) || (fputc (' ', out) == EOF))
+	    return (-1);
+
+	if (fputc ('\n', out) == EOF)
+	  return (-1);
+      }
+
+      if (h->refs_changed && h->NEW_ENV->references)
+      {
+	LIST *listp = h->NEW_ENV->references, *refs = NULL, *t;
+
+	if (fputs ("References: ", out) == EOF)
+	  return (-1);
+
+	/* Mutt stores references in reverse order, thus we create
+	 * a reordered refs list that we can put in the headers */
+	for (; listp; listp = listp->next, refs = t)
+	{
+	  t = (LIST *)safe_malloc (sizeof (LIST));
+	  t->data = listp->data;
+	  t->next = refs;
+	}
+
+	for (; refs; refs = refs->next)
+	  if ((fputs (refs->data, out) == EOF) || (fputc (' ', out) == EOF))
+	    return (-1);
+
+	/* clearing refs from memory */
+	for (t = refs; refs; refs = t->next, t = refs)
+	  safe_free ((void **)&refs);
+
+	if (fputc ('\n', out) == EOF)
+	  return (-1);
+      }
+#undef NEW_ENV
+
       if (h->old || h->read)
       {
 	if (fputs ("Status: ", out) == EOF)

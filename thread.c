@@ -1344,3 +1344,105 @@ HASH *mutt_make_subj_hash (CONTEXT *ctx)
 
   return hash;
 }
+
+static void clean_references (THREAD *brk, THREAD *cur)
+{
+  THREAD *p;
+  LIST *ref = NULL;
+  int done = 0;
+
+  for (; cur; cur = cur->next, done = 0)
+  {
+    /* parse subthread recursively */
+    clean_references (brk, cur->child);
+
+    if (!cur->message)
+      break; /* skip pseudo-message */
+
+    /* Looking for the first bad reference according to the new threading.
+     * Optimal since Mutt stores the references in reverse order, and the
+     * first loop should match immediatly for mails respecting RFC2822. */
+    for (p = brk; !done && p; p = p->parent)
+      for (ref = cur->message->env->references; p->message && ref; ref = ref->next)
+	if (!mutt_strcasecmp (ref->data, p->message->env->message_id))
+	{
+	  done = 1;
+	  break;
+	}
+
+    if (done)
+    {
+      HEADER *h = cur->message;
+
+      /* clearing the References: header from obsolete Message-Id(s) */
+      mutt_free_list (&ref->next);
+
+#ifdef USE_IMAP
+      if (h->new_env)
+	mutt_free_list (&h->new_env->references);
+      else
+	h->new_env = mutt_new_envelope ();
+
+      h->new_env->references = mutt_copy_list (h->env->references);
+#endif
+
+      h->refs_changed = h->changed = 1;
+    }
+  }
+}
+
+void mutt_break_thread (HEADER *hdr)
+{
+  mutt_free_list (&hdr->env->in_reply_to);
+  mutt_free_list (&hdr->env->references);
+  hdr->irt_changed = hdr->refs_changed = hdr->changed = 1;
+
+#ifdef USE_IMAP
+  if (hdr->new_env)
+  {
+    mutt_free_list (&hdr->new_env->in_reply_to);
+    mutt_free_list (&hdr->new_env->references);
+  }
+  else
+    hdr->new_env = mutt_new_envelope ();
+#endif
+
+  clean_references (hdr->thread, hdr->thread->child);
+}
+
+static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
+{
+  if (child == parent)
+    return 0;
+
+  mutt_break_thread (child);
+
+  child->env->in_reply_to = mutt_new_list ();
+  child->env->in_reply_to->data = safe_strdup (parent->env->message_id);
+
+#ifdef USE_IMAP
+  child->new_env->in_reply_to = mutt_new_list ();
+  child->new_env->in_reply_to->data = safe_strdup (parent->env->message_id);
+#endif
+  
+  mutt_set_flag (ctx, child, M_TAG, 0);
+  
+  child->irt_changed = child->changed = 1;
+  return 1;
+}
+
+int mutt_link_threads (HEADER *cur, HEADER *last, CONTEXT *ctx)
+{
+  int i, changed = 0;
+
+  if (!last)
+  {
+    for (i = 0; i < ctx->vcount; i++)
+      if (ctx->hdrs[Context->v2r[i]]->tagged)
+	changed |= link_threads (cur, ctx->hdrs[Context->v2r[i]], ctx);
+  }
+  else
+    changed = link_threads (cur, last, ctx);
+
+  return changed;
+}
