@@ -1,3 +1,9 @@
+2005-07-24 16:51:38  Cedric Duval  <cedricduval+web@free.fr>  (brendan)
+
+	* OPS, copy.c, curs_main.c, doc/manual.sgml.head, functions.h,
+	imap/imap.c, mh.c, mutt.h, mx.c, pager.c, protos.h, thread.c: Add
+	thread editing commands.
+
 2005-07-24 16:12:12  Paul Walker  <paul@black-sun.demon.co.uk>  (roessler)
 
 	* doc/manual.sgml.head, main.c, protos.h, init.c: This patch
