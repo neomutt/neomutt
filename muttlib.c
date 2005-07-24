@@ -689,8 +689,6 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   MOVE_ELEM(reply_to);
   MOVE_ELEM(mail_followup_to);
   MOVE_ELEM(list_post);
-  MOVE_ELEM(subject);
-  MOVE_ELEM(real_subj);
   MOVE_ELEM(message_id);
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);
