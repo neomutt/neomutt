@@ -314,7 +314,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   fclose(fp);
 
   if (ctx->msgcount > oldmsgcount)
+  {
+    mx_alloc_memory(ctx);
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
+  }
 
   return msgend;
 }
@@ -469,6 +472,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
     hash_delete (ctx->id_hash, h->env->message_id, h, NULL);
   if (ctx->subj_hash && h->env->real_subj)
     hash_delete (ctx->subj_hash, h->env->real_subj, h, NULL);
+  if (ctx->thread_hash && h->env->message_id)
+    hash_delete (ctx->thread_hash, h->env->message_id, NULL, NULL);
   mutt_free_envelope (&h->env);
   h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
   if (ctx->id_hash && h->env->message_id)
