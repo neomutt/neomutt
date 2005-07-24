@@ -1,3 +1,9 @@
+2005-07-24 08:59:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* copy.c: Don't assume messages in MMDF mailboxes have From
+	separators when copying them. Spotted by William Lovas. Initial
+	patch by TAKAHASHI Tamotsu.
+
 2005-07-23 23:35:17  Byrial Jensen  <byrial@image.dk>  (brendan)
 
 	* curs_main.c, doc/manual.sgml.head, globals.h, main.c, muttlib.c:
