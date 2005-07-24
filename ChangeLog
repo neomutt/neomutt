@@ -1,3 +1,11 @@
+2005-07-24 16:12:12  Paul Walker  <paul@black-sun.demon.co.uk>  (roessler)
+
+	* doc/manual.sgml.head, main.c, protos.h, init.c: This patch
+	adds an option -D to dump mutt's configuration after all
+	configuration files have been read.  Changes against PW's version:
+	(1) curses isn't initialized; (2) variables are dumped to stdout,
+	not to stderr.
+
 2005-07-24 15:46:26  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* hash.c, imap/message.c, imap/util.c: This patch includes (1)
