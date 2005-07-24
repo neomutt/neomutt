@@ -1,4 +1,10 @@
-2005-07-24 14:23:25  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-07-24 15:46:26  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* hash.c, imap/message.c, imap/util.c: This patch includes (1)
+	a rewrite of hash_delete_hash, and (2) some changes to the IMAP
+	code that Thomas Glanzmann made during an attempt to squash some
+	segmentation fault in May.  There is no guarantee that this patch
+	doesn't break things.  If it does, please complain to mutt-dev.
 
 	* recvattach.c, smime.c: Fix S/MIME segmentation fault.  Bug
 	reported by Mads Martin Joergensen; part fixed by Brendan Cully.
