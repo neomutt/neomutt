@@ -6,8 +6,6 @@
 	(knock on wood) fix the threading segfault. Threading behaviour is
 	observably better.
 
-2005-07-24 18:18:29  brendan  (brendan)
-
 	* imap/util.c: Revert Glanzmann's imap_parse_mailbox patch.
 
 2005-07-24 16:53:59  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
