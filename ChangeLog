@@ -1,3 +1,11 @@
+2005-07-24 18:28:36  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c, muttlib.c, protos.h: Merge full envelope from
+	message fetch into original sparse envelope, instead of replacing
+	it. This should be gentler on the various threading hashes and may
+	(knock on wood) fix the threading segfault. Threading behaviour is
+	observably better.
+
 2005-07-24 18:18:29  brendan  (brendan)
 
 	* imap/util.c: Revert Glanzmann's imap_parse_mailbox patch.
