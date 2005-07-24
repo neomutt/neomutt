@@ -701,10 +701,15 @@ int
 _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 		      BODY *body, int flags, int chflags)
 {
+  char buf[STRING];
   MESSAGE *msg;
   int r;
 
-  if ((msg = mx_open_new_message (dest, hdr, (src->magic == M_MBOX || src->magic == M_MMDF) ? 0 : M_ADD_FROM)) == NULL)
+  fseek(fpin, hdr->offset, 0);
+  if (fgets (buf, sizeof (buf), fpin) == NULL)
+    return -1;
+  
+  if ((msg = mx_open_new_message (dest, hdr, is_from (buf, NULL, 0, NULL) ? 0 : M_ADD_FROM)) == NULL)
     return -1;
   if (dest->magic == M_MBOX || dest->magic == M_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
