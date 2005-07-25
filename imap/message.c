@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *
+ * $Id$
  */ 
 
 /* message parsing/updating functions */
@@ -148,25 +150,25 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
       uid_validity = (unsigned long *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
 
-      if (uid_validity != NULL
-      && *uid_validity == idata->uid_validity) {
-	      ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
-	      ctx->hdrs[msgno]->index = h.sid - 1;
-	      if (h.sid != ctx->msgcount + 1)
-		      dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
-	      /* messages which have not been expunged are ACTIVE (borrowed from mh 
-	       * folders) */
-	      ctx->hdrs[msgno]->active = 1;
-	      ctx->hdrs[msgno]->read = h.read;
-	      ctx->hdrs[msgno]->old = h.old;
-	      ctx->hdrs[msgno]->deleted = h.deleted;
-	      ctx->hdrs[msgno]->flagged = h.flagged;
-	      ctx->hdrs[msgno]->replied = h.replied;
-	      ctx->hdrs[msgno]->changed = h.changed;
-	      /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
-	      ctx->hdrs[msgno]->data = (void *) (h.data);
-
-	      ctx->msgcount++;
+      if (uid_validity != NULL && *uid_validity == idata->uid_validity)
+      {
+	ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
+	ctx->hdrs[msgno]->index = h.sid - 1;
+	if (h.sid != ctx->msgcount + 1)
+	  dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
+	/* messages which have not been expunged are ACTIVE (borrowed from mh 
+	 * folders) */
+	ctx->hdrs[msgno]->active = 1;
+	ctx->hdrs[msgno]->read = h.read;
+        ctx->hdrs[msgno]->old = h.old;
+        ctx->hdrs[msgno]->deleted = h.deleted;
+        ctx->hdrs[msgno]->flagged = h.flagged;
+        ctx->hdrs[msgno]->replied = h.replied;
+        ctx->hdrs[msgno]->changed = h.changed;
+        /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
+        ctx->hdrs[msgno]->data = (void *) (h.data);
+        
+        ctx->msgcount++;
       }
       rewind (fp);
 
