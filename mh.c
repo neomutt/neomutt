@@ -1382,7 +1382,8 @@ static int mh_sync_message (CONTEXT * ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
 
-  if (h->attach_del || h->refs_changed || h->irt_changed)
+  if (h->attach_del || 
+      (h->env && (h->env->refs_changed || h->env->irt_changed)))
     if (mh_rewrite_message (ctx, msgno) != 0)
       return -1;
 
@@ -1393,7 +1394,8 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
 
-  if (h->attach_del || h->refs_changed || h->irt_changed)
+  if (h->attach_del || 
+      (h->env && (h->env->refs_changed || h->env->irt_changed)))
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
     if (mh_rewrite_message (ctx, msgno) != 0)

@@ -593,6 +593,9 @@ typedef struct envelope
   LIST *references;		/* message references (in reverse order) */
   LIST *in_reply_to;		/* in-reply-to header content */
   LIST *userhdrs;		/* user defined headers */
+
+  unsigned int irt_changed : 1; /* In-Reply-To changed to link/break threads */
+  unsigned int refs_changed : 1; /* References changed to break thread */
 } ENVELOPE;
 
 typedef struct parameter
@@ -709,8 +712,6 @@ typedef struct header
   unsigned int subject_changed : 1; 	/* used for threading */
   unsigned int threaded : 1;	    	/* used for threading */
   unsigned int display_subject : 1; 	/* used for threading */
-  unsigned int irt_changed : 1; /* In-Reply-To changed to link/break threads */
-  unsigned int refs_changed : 1; /* References changed to break thread */
   unsigned int recip_valid : 1;  	/* is_recipient is valid */
   unsigned int active : 1;	    	/* message is not to be removed */
   unsigned int trash : 1;		/* message is marked as trashed on disk.
@@ -750,10 +751,6 @@ typedef struct header
   
   char *tree;           	/* character string to print thread tree */
   struct thread *thread;
-
-#ifdef USE_IMAP
-  ENVELOPE *new_env;	/* envelope information for rethreading */
-#endif
 
 #ifdef MIXMASTER
   LIST *chain;

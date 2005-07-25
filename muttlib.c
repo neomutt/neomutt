@@ -693,8 +693,15 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);
   MOVE_ELEM(x_label);
-  MOVE_ELEM(references);
-  MOVE_ELEM(in_reply_to);
+  if (!base->refs_changed)
+  {
+    MOVE_ELEM(references);
+  }
+  if (!base->irt_changed)
+  {
+    MOVE_ELEM(in_reply_to);
+  }
+  
   /* real_subj is subordinate to subject */
   if (!base->subject)
   {

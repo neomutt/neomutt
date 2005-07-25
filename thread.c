@@ -1377,16 +1377,7 @@ static void clean_references (THREAD *brk, THREAD *cur)
       /* clearing the References: header from obsolete Message-Id(s) */
       mutt_free_list (&ref->next);
 
-#ifdef USE_IMAP
-      if (h->new_env)
-	mutt_free_list (&h->new_env->references);
-      else
-	h->new_env = mutt_new_envelope ();
-
-      h->new_env->references = mutt_copy_list (h->env->references);
-#endif
-
-      h->refs_changed = h->changed = 1;
+      h->env->refs_changed = h->changed = 1;
     }
   }
 }
@@ -1395,17 +1386,7 @@ void mutt_break_thread (HEADER *hdr)
 {
   mutt_free_list (&hdr->env->in_reply_to);
   mutt_free_list (&hdr->env->references);
-  hdr->irt_changed = hdr->refs_changed = hdr->changed = 1;
-
-#ifdef USE_IMAP
-  if (hdr->new_env)
-  {
-    mutt_free_list (&hdr->new_env->in_reply_to);
-    mutt_free_list (&hdr->new_env->references);
-  }
-  else
-    hdr->new_env = mutt_new_envelope ();
-#endif
+  hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = 1;
 
   clean_references (hdr->thread, hdr->thread->child);
 }
@@ -1419,15 +1400,10 @@ static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
 
   child->env->in_reply_to = mutt_new_list ();
   child->env->in_reply_to->data = safe_strdup (parent->env->message_id);
-
-#ifdef USE_IMAP
-  child->new_env->in_reply_to = mutt_new_list ();
-  child->new_env->in_reply_to->data = safe_strdup (parent->env->message_id);
-#endif
   
   mutt_set_flag (ctx, child, M_TAG, 0);
   
-  child->irt_changed = child->changed = 1;
+  child->env->irt_changed = child->changed = 1;
   return 1;
 }
 
