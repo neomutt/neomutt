@@ -1,16 +1,17 @@
-2005-07-25 04:37:20  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-07-25 15:48:36  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c, imap/imap.c, mh.c, mutt.h, muttlib.c, thread.c: Get rid
+	of IMAP-related special casing all over the thread editing code.
+
+2005-07-25 04:56:38  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Indentation, mostly
 
 	* imap/message.c: Minor cosmetic cleanup (fewer #ifdef HCACHE blocks)
 
-2005-07-25 04:31:51  Brendan Cully <brendan@kublai.com>  (brendan)
-
 	* muttlib.c: Suppress a printf format warning
 
-2005-07-24 18:33:31  Brendan Cully  <brendan@kublai.com>  (brendan)
-
 	* muttlib.c: Typo in last commit.
-
-2005-07-24 18:28:36  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/message.c, muttlib.c, protos.h: Merge full envelope from
 	message fetch into original sparse envelope, instead of replacing
