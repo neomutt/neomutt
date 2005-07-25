@@ -1,3 +1,11 @@
+2005-07-25 04:37:20  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Minor cosmetic cleanup (fewer #ifdef HCACHE blocks)
+
+2005-07-25 04:31:51  Brendan Cully <brendan@kublai.com>  (brendan)
+
+	* muttlib.c: Suppress a printf format warning
+
 2005-07-24 18:33:31  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* muttlib.c: Typo in last commit.
