@@ -75,10 +75,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   ctx = idata->ctx;
 
-#if USE_HCACHE
-  hc = mutt_hcache_open (HeaderCache, ctx->path);
-#endif /* USE_HCACHE */
-
   if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
     snprintf (hdrreq, sizeof (hdrreq), "BODY.PEEK[HEADER.FIELDS (%s%s%s)]", 
@@ -93,9 +89,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {	/* Unable to fetch headers for lower versions */
     mutt_error _("Unable to fetch headers from this IMAP server version.");
     mutt_sleep (2);	/* pause a moment to let the user see the error */
-#if USE_HCACHE
-    mutt_hcache_close (hc);
-#endif /* USE_HCACHE */
     return -1;
   }
 
@@ -106,9 +99,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     mutt_error (_("Could not create temporary file %s"), tempfile);
     mutt_sleep (2);
-#if USE_HCACHE
-    mutt_hcache_close (hc);
-#endif /* USE_HCACHE */
     return -1;
   }
   unlink (tempfile);
@@ -122,6 +112,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->newMailCount = 0;
 
 #if USE_HCACHE
+  hc = mutt_hcache_open (HeaderCache, ctx->path);
+
   snprintf (buf, sizeof (buf),
     "FETCH %d:%d (UID FLAGS)", msgbegin + 1, msgend + 1);
   fetchlast = msgend + 1;
@@ -188,7 +180,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     {
       imap_free_header_data ((void**) &h.data);
       fclose (fp);
-  mutt_hcache_close (hc);
+      mutt_hcache_close (hc);
       return -1;
     }
   }
@@ -291,7 +283,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       imap_free_header_data ((void**) &h.data);
       fclose (fp);
 #if USE_HCACHE
-  mutt_hcache_close (hc);
+      mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
       return -1;
     }
