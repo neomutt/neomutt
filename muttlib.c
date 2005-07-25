@@ -1563,7 +1563,7 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
     if (regexec (l->rx->rx, s, (size_t) l->nmatch, (regmatch_t *) pmatch, (int) 0) == 0)
     {
       dprint (5, (debugfile, "mutt_match_spam_list: %s matches %s\n", s, l->rx->pattern));
-      dprint (5, (debugfile, "mutt_match_spam_list: %d subs\n", l->rx->rx->re_nsub));
+      dprint (5, (debugfile, "mutt_match_spam_list: %d subs\n", (int)l->rx->rx->re_nsub));
 
       /* Copy template into text, with substitutions. */
       for (p = l->template; *p;)
