@@ -95,8 +95,26 @@ struct option_t
 # ifndef USE_SSL
 #  define USE_SSL
 # endif
+# ifndef USE_GNUTLS
+#  define USE_GNUTLS
+# endif
 # ifndef USE_SOCKET
 #  define USE_SOCKET
+# endif
+# ifndef USE_DOTLOCK
+#  define USE_DOTLOCK
+# endif
+# ifndef DL_STANDALONE
+#  define DL_STANDALONE
+# endif
+# ifndef USE_HCACHE
+#  define USE_HCACHE
+# endif
+# ifndef HAVE_LIBIDN
+#  define HAVE_LIBIDN
+# endif
+# ifndef HAVE_GETADDRINFO
+#  define HAVE_GETADDRINFO
 # endif
 #endif
 
@@ -1893,7 +1911,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set certificate_file=~/.mutt/certificates
   */
-# ifndef USE_GNUTLS
+# if defined _MAKEDOC || !defined(USE_GNUTLS)
   { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
   /*
   ** .pp
