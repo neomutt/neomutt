@@ -1,3 +1,8 @@
+2005-07-26 05:58:29  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* pattern.c: Interpret an empty limit as a request to cancel the
+	current limit. (Closes #1854)
+
 2005-07-26 05:28:02  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_ssl.c: Don't offer to save expired or not-yet-valid
