@@ -1739,10 +1739,10 @@ is a caret ``&circ;'' then it matches any character <bf/not/ in the
 list.  For example, the regular expression <bf/&lsqb;0123456789&rsqb;/
 matches any single digit.  A range of ASCII characters may be specified
 by giving the first and last characters, separated by a hyphen
-``&hyphen;''.  Most metacharacters lose their special meaning inside
+``-''.  Most metacharacters lose their special meaning inside
 lists.  To include a literal ``&rsqb;'' place it first in the list.
 Similarly, to include a literal ``&circ;'' place it anywhere but first.
-Finally, to include a literal hyphen ``&hyphen;'' place it last.
+Finally, to include a literal hyphen ``-'' place it last.
 
 Certain named classes of characters are predefined.  Character classes
 consist of ``&lsqb;:'', a keyword denoting the class, and ``:&rsqb;''.
@@ -1978,7 +1978,7 @@ or ``Ed +SomeoneElse'':
  '~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
 </verb></tscreen>
 
-Note that if a regular expression contains parenthesis, or a veritical bar
+Note that if a regular expression contains parenthesis, or a vertical bar
 ("|"), you <bf/must/ enclose the expression in double or single quotes since
 those characters are also used to separate different parts of Mutt's
 pattern language.  For example,
