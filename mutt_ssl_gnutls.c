@@ -92,7 +92,7 @@ static int tls_socket_read (CONNECTION* conn, char* buf, size_t len)
 
   if (!data)
   {
-    mutt_error ("Error: no TLS socket open");
+    mutt_error (_("Error: no TLS socket open"));
     mutt_sleep (2);
     return -1;
   }
@@ -114,7 +114,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
 
   if (!data)
   {
-    mutt_error ("Error: no TLS socket open");
+    mutt_error (_("Error: no TLS socket open"));
     mutt_sleep (2);
     return -1;
   }
