@@ -1,3 +1,8 @@
+2005-07-26 16:44:20  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Don't check for the existence of a mailbox we're
+	already in when appending. (closes #1842)
+
 2005-07-26 16:40:16  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* init.h: Return $menu_move_off default to status quo ante.
