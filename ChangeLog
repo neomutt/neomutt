@@ -1,3 +1,9 @@
+2005-07-26 05:04:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, imap/imap_private.h: Rework IMAP CLOSE handling to
+	avoid expunging messages when exiting without saving changes.
+	(closes #1899)
+
 2005-07-26 03:09:55  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
 
 	* mbyte.c, mutt_socket.c: There are some functions without ANSI
