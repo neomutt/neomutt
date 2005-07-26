@@ -1064,8 +1064,8 @@ struct option_t MuttVars[] = {
   ** The header_cache variable points to the header cache database.
   ** If header_cache points to a directory it will contain a header cache
   ** database  per folder. If header_cache points to a file that file will
-  ** be a single global header cache. By default it is unset and so no
-  ** header caching will be used.
+  ** be a single global header cache. By default it is unset so no header
+  ** caching will be used.
   */
   { "maildir_header_cache_verify", DT_BOOL, R_NONE, OPTHCACHEVERIFY, 1 },
   /*
@@ -1077,9 +1077,9 @@ struct option_t MuttVars[] = {
   { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
   /*
   ** .pp
-  ** Change the header cache database page size.  Too large or to small values
-  ** can waste space, memory, or CPU time. The default should be more or
-  ** less the best you can get. For details google after mutt header
+  ** Change the header cache database page size.  Too large or too small
+  ** values can waste space, memory, or CPU time. The default should be more
+  ** or less the best you can get. For details, google for mutt header
   ** cache (first hit).
   */
 #endif /* USE_HCACHE */
