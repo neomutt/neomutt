@@ -1,3 +1,9 @@
+2005-07-26 16:37:28  Tamotsu Takahashi  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* enter.c: Introduce fall-back from complete-query to complete
+	for the edit menu, so 'bind editor <tab> complete-query'
+	becomes possible.
+
 2005-07-26 06:14:34  "Brent J. Nordquist"  <brent@nordist.net>  (brendan)
 
 	* doc/manual.sgml.head: Correct a couple of typos (and change
