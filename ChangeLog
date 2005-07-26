@@ -1,3 +1,8 @@
+2005-07-26 18:45:01  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* crypt-gpgme.c, mutt_ssl_gnutls.c, po/POTFILES.in: Partial
+	application of Tamo's translation patch for gpgme and gnutls.
+
 2005-07-26 16:44:20  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c: Don't check for the existence of a mailbox we're
