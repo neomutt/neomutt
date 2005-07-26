@@ -766,8 +766,15 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
 
+  /* We may be appending to the same folder we've selected. */
+  if (!ascii_strcmp(idata->mailbox, mx.mbox))
+  {
+    FREE (&mx.mbox);
+    return 0;
+  }
+
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
-				
+
   if (mutt_bit_isset(idata->capabilities,IMAP4REV1))
     snprintf (buf, sizeof (buf), "STATUS %s (UIDVALIDITY)", mbox);
   else if (mutt_bit_isset(idata->capabilities,STATUS))
@@ -778,10 +785,10 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   {
     /* STATUS not supported */
     mutt_message _("Unable to append to IMAP mailboxes at this server");
-
+    
     goto fail;
   }
-
+  
   r = imap_exec (idata, buf, IMAP_CMD_FAIL_OK);
   if (r == -2)
   {
