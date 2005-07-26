@@ -617,7 +617,8 @@ static int ssl_check_certificate (sslsockdata * data)
   snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
 
   menu->title = _("SSL Certificate check");
-  if (SslCertFile)
+  if (SslCertFile && X509_cmp_current_time (X509_get_notAfter (data->cert)) >= 0
+      && X509_cmp_current_time (X509_get_notBefore (data->cert)) < 0)
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
     menu->keys = _("roa");
