@@ -48,7 +48,7 @@ static CONNECTION *Connections = NULL;
 /* forward declarations */
 static int socket_preconnect (void);
 static int socket_connect (int fd, struct sockaddr* sa);
-static CONNECTION* socket_new_conn ();
+static CONNECTION* socket_new_conn (void);
 
 /* Wrappers */
 int mutt_socket_open (CONNECTION* conn) 
@@ -349,7 +349,7 @@ static int socket_connect (int fd, struct sockaddr* sa)
 }
 
 /* socket_new_conn: allocate and initialise a new connection. */
-static CONNECTION* socket_new_conn ()
+static CONNECTION* socket_new_conn (void)
 {
   CONNECTION* conn;
 

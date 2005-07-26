@@ -465,7 +465,7 @@ size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
 
 #endif /* !HAVE_WC_FUNCS */
 
-wchar_t replacement_char ()
+wchar_t replacement_char (void)
 {
   return Charset_is_utf8 ? 0xfffd : '?';
 }
