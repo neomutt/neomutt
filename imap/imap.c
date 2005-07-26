@@ -52,7 +52,9 @@ static int imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 			   const char* str, char* flags, size_t flsize);
 
-/* imap_access: Check permissions on an IMAP mailbox. */
+/* imap_access: Check permissions on an IMAP mailbox.
+ * TODO: ACL checks. Right now we assume if it exists we can
+ *       mess with it. */
 int imap_access (const char* path, int flags)
 {
   IMAP_DATA* idata;
@@ -72,10 +74,17 @@ int imap_access (const char* path, int flags)
   }
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
+
+  /* we may already be in the folder we're checking */
+  if (!ascii_strcmp(idata->mailbox, mx.mbox))
+  {
+    FREE (&mx.mbox);
+    return 0;
+  }
+
   FREE (&mx.mbox);
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
 
-  /* TODO: ACL checks. Right now we assume if it exists we can mess with it. */
   if (mutt_bit_isset (idata->capabilities, IMAP4REV1))
     snprintf (buf, sizeof (buf), "STATUS %s (UIDVALIDITY)", mbox);
   else if (mutt_bit_isset (idata->capabilities, STATUS))
@@ -744,9 +753,8 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
-  char buf[LONG_STRING], mbox[LONG_STRING];
+  char buf[LONG_STRING];
   char mailbox[LONG_STRING];
-  int r;
   IMAP_MBOX mx;
 
   if (imap_parse_path (ctx->path, &mx))
@@ -756,60 +764,31 @@ int imap_open_mailbox_append (CONTEXT *ctx)
    * ctx is brand new and mostly empty */
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
-    goto fail;
+  {
+    FREE (&mx.mbox);
+    return -1;
+  }
+
   conn = idata->conn;
 
   ctx->magic = M_IMAP;
   ctx->data = idata;
 
-  /* check mailbox existance */
-
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
+  FREE (&mx.mbox);
 
-  /* We may be appending to the same folder we've selected. */
-  if (!ascii_strcmp(idata->mailbox, mx.mbox))
-  {
-    FREE (&mx.mbox);
+  /* really we should also check for W_OK */
+  if (!imap_access (ctx->path, F_OK))
     return 0;
-  }
 
-  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
+  snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
+  if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
+    return -1;
 
-  if (mutt_bit_isset(idata->capabilities,IMAP4REV1))
-    snprintf (buf, sizeof (buf), "STATUS %s (UIDVALIDITY)", mbox);
-  else if (mutt_bit_isset(idata->capabilities,STATUS))
-    /* We have no idea what the other guy wants. UW imapd 8.3 wants this
-     * (but it does not work if another mailbox is selected) */
-    snprintf (buf, sizeof (buf), "STATUS %s (UID-VALIDITY)", mbox);
-  else
-  {
-    /* STATUS not supported */
-    mutt_message _("Unable to append to IMAP mailboxes at this server");
-    
-    goto fail;
-  }
-  
-  r = imap_exec (idata, buf, IMAP_CMD_FAIL_OK);
-  if (r == -2)
-  {
-    /* command failed cause folder doesn't exist */
-    snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
-    if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
-      goto fail;
+  if (imap_create_mailbox (idata, mailbox) < 0)
+    return -1;
 
-    if (imap_create_mailbox (idata, mailbox) < 0)
-      goto fail;
-  }
-  else if (r == -1)
-    /* Hmm, some other failure */
-    goto fail;
-
-  FREE (&mx.mbox);
   return 0;
-
- fail:
-  FREE (&mx.mbox);
-  return -1;
 }
 
 /* imap_logout: Gracefully log out of server. */
@@ -1139,12 +1118,11 @@ void imap_close_mailbox (CONTEXT* ctx)
 
   if (ctx == idata->ctx)
   {
-    if (idata->state == IMAP_SELECTED)
+    if (idata->status != IMAP_FATAL && idata->state == IMAP_SELECTED)
     {
       /* mx_close_mailbox won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
-      if (idata->status != IMAP_FATAL && !ctx->deleted &&
-          imap_exec (idata, "CLOSE", 0))
+      if (!ctx->deleted && imap_exec (idata, "CLOSE", 0))
         mutt_error (_("CLOSE failed"));
       idata->state = IMAP_AUTHENTICATED;
     }
