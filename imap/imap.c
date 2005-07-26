@@ -1015,13 +1015,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     return -1;
   }
 
-  /* CLOSE purges deleted messages. If we don't want to purge them, we must
-   * tell imap_close_mailbox not to issue the CLOSE command */
-  if (expunge)
-    idata->noclose = 0;
-  else
-    idata->noclose = 1;
-
   /* This function is only called when the calling code	expects the context
    * to be changed. */
   imap_allow_reopen (ctx);
@@ -1106,6 +1099,14 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
+  if (ctx->closing)
+  {
+    if (imap_exec (idata, "CLOSE", 0))
+      mutt_error (_("CLOSE failed"));
+  
+    idata->state = IMAP_AUTHENTICATED;
+  }
+
   rc = 0;
  out:
   if (cmd.data)
@@ -1118,7 +1119,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   return rc;
 }
 
-/* imap_close_mailbox: issue close command if neccessary, reset IMAP_DATA */
+/* imap_close_mailbox: clean up IMAP data in CONTEXT */
 void imap_close_mailbox (CONTEXT* ctx)
 {
   IMAP_DATA* idata;
@@ -1129,15 +1130,19 @@ void imap_close_mailbox (CONTEXT* ctx)
   if (!idata)
     return;
 
-  if ((idata->status != IMAP_FATAL) &&
-      (idata->state == IMAP_SELECTED) &&
-      (ctx == idata->ctx))
+  if (ctx == idata->ctx)
   {
-    if (!(idata->noclose) && imap_exec (idata, "CLOSE", 0))
-      mutt_error (_("CLOSE failed"));
+    if (idata->state == IMAP_SELECTED)
+    {
+      /* mx_close_mailbox won't sync if there are no deleted messages
+       * and the mailbox is unchanged, so we may have to close here */
+      if (idata->status != IMAP_FATAL && !ctx->deleted &&
+          imap_exec (idata, "CLOSE", 0))
+        mutt_error (_("CLOSE failed"));
+      idata->state = IMAP_AUTHENTICATED;
+    }
 
     idata->reopen &= IMAP_REOPEN_ALLOW;
-    idata->state = IMAP_AUTHENTICATED;
     FREE (&(idata->mailbox));
     mutt_free_list (&idata->flags);
     idata->ctx = NULL;

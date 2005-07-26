@@ -178,7 +178,6 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  unsigned int noclose : 1;
 #ifdef USE_HCACHE
   unsigned long uid_validity;
 #endif
