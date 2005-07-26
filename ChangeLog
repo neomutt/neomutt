@@ -1,3 +1,8 @@
+2005-07-26 05:28:02  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_ssl.c: Don't offer to save expired or not-yet-valid
+	certificates. Closes #1943 as a side-effect.
+
 2005-07-26 05:04:23  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c, imap/imap_private.h: Rework IMAP CLOSE handling to
