@@ -1,3 +1,9 @@
+2005-07-26 06:14:34  "Brent J. Nordquist"  <brent@nordist.net>  (brendan)
+
+	* doc/manual.sgml.head: Correct a couple of typos (and change
+	&hyphen; to -: although the text version of the manual renders
+	&hyphen;, the web version does not).
+
 2005-07-26 05:58:29  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* pattern.c: Interpret an empty limit as a request to cancel the
