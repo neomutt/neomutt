@@ -1,3 +1,7 @@
+2005-07-26 16:40:16  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* init.h: Return $menu_move_off default to status quo ante.
+
 2005-07-26 16:39:17  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* init.h: hcache spelling fixes
