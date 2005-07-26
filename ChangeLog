@@ -1,3 +1,9 @@
+2005-07-26 23:57:38  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Adjust imap_access so that it doesn't issue STATUS
+	on the selected mailbox, and have imap_open_mailbox_append use
+	imap_access instead of rolling its own.
+
 2005-07-26 18:45:01  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* crypt-gpgme.c, mutt_ssl_gnutls.c, po/POTFILES.in: Partial
