@@ -1,3 +1,8 @@
+2005-07-26 03:09:55  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
+
+	* mbyte.c, mutt_socket.c: There are some functions without ANSI
+	prototypes left in mutt-owned sources.
+
 2005-07-25 20:07:23  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* init.h: Update _MAKEDOC macro so that the documentation includes
