@@ -1256,14 +1256,8 @@ int mutt_save_confirm (const char *s, struct stat *st)
   }
 #endif
 
-  if (stat (s, st) != -1)
+  if (magic > 0 && !mx_access (s, W_OK))
   {
-    if (magic == -1)
-    {
-      mutt_error (_("%s is not a mailbox!"), s);
-      return 1;
-    }
-
     if (option (OPTCONFIRMAPPEND))
     {
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
@@ -1273,31 +1267,38 @@ int mutt_save_confirm (const char *s, struct stat *st)
 	ret = -1;
     }
   }
-  else
-  {
-#ifdef USE_IMAP
-    if (magic != M_IMAP)
-#endif /* execute the block unconditionally if we don't use imap */
-    {
-      st->st_mtime = 0;
-      st->st_atime = 0;
 
-      if (errno == ENOENT)
+  if (stat (s, st) != -1)
+  {
+    if (magic == -1)
+    {
+      mutt_error (_("%s is not a mailbox!"), s);
+      return 1;
+    }
+  }
+  else
+#ifdef USE_IMAP
+  if (magic != M_IMAP)
+#endif /* execute the block unconditionally if we don't use imap */
+  {
+    st->st_mtime = 0;
+    st->st_atime = 0;
+
+    if (errno == ENOENT)
+    {
+      if (option (OPTCONFIRMCREATE))
       {
-	if (option (OPTCONFIRMCREATE))
-	{
-	  snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
-	  if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
-	    ret = 1;
-	  else if (rc == -1)
-	    ret = -1;
-	}
+	snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
+	if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
+	  ret = 1;
+	else if (rc == -1)
+	  ret = -1;
       }
-      else
-      {
-	mutt_perror (s);
-	return 1;
-      }
+    }
+    else
+    {
+      mutt_perror (s);
+      return 1;
     }
   }
 
