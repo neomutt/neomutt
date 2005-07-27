@@ -3396,7 +3396,7 @@ msgstr ""
 #: pgp.c:704
 #, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Iç hata. Thomas R. <roessler@guug.de>'ye haber ver."
+msgstr "Iç hata. Thomas R. <roessler@does-not-exist.org>'ye haber ver."
 
 #: pgp.c:764
 msgid ""

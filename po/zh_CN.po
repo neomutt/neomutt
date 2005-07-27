@@ -3452,7 +3452,7 @@ msgstr ""
 #: pgp.c:704
 #, fuzzy
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "内部错误。联络 <rosessler@guug.de>。"
+msgstr "内部错误。联络 <rosessler@does-not-exist.org>。"
 
 #: pgp.c:764
 msgid ""
