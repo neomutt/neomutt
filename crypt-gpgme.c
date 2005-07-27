@@ -642,7 +642,7 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
       gpgme_key_release (key);
       gpgme_key_release (key2);
       gpgme_release (listctx);
-      mutt_error (_("ambiguous specfication of secret key `%s'\n"),
+      mutt_error (_("ambiguous specification of secret key `%s'\n"),
                   signid);
       return -1;
     }
@@ -1052,7 +1052,7 @@ static int show_sig_summary (unsigned long sum,
       gpgme_signature_t sig;
       unsigned int i;
 
-      state_attach_puts (_("A system error occured"), s );
+      state_attach_puts (_("A system error occurred"), s );
 
       /* Try to figure out some more detailed system error information. */
       result = gpgme_op_verify_result (ctx);
