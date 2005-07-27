@@ -342,8 +342,8 @@ static int tls_compare_certificates (const gnutls_datum *peercert)
       return 0;
     }
 
-    ptr = (unsigned char *)strstr(b64_data.data, CERT_SEP) + 1;
-    ptr = (unsigned char *)strstr(ptr, CERT_SEP);
+    ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP) + 1;
+    ptr = (unsigned char *)strstr((char*)ptr, CERT_SEP);
 
     b64_data.size = b64_data.size - (ptr - b64_data.data);
     b64_data.data = ptr;
@@ -474,10 +474,9 @@ static int tls_check_certificate (CONNECTION* conn)
   MUTTMENU *menu;
   int done, row, i, ret;
   FILE *fp;
-  gnutls_x509_dn dn;
   time_t t;
   const gnutls_datum *cert_list;
-  int cert_list_size = 0;
+  unsigned int cert_list_size = 0;
   gnutls_certificate_status certstat;
   char datestr[30];
   gnutls_x509_crt cert;
