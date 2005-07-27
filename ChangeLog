@@ -1,3 +1,9 @@
+2005-07-27 05:53:27  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, po/es.po,
+	po/et.po, po/gl.po, po/lt.po, po/pt_BR.po, po/sk.po: Update
+	Thomas' address in several out-of-date PO files. (closes #990)
+
 2005-07-27 04:29:36  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_ssl_gnutls.c: Silence some harmless warnings. Also, one day
