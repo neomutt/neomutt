@@ -1,3 +1,10 @@
+2005-07-28 19:47:40  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/auth_cram.c, imap/auth_login.c: Use mutt_account_getlogin
+	instead of getuser for authentication methods that only support an
+	authentication ID. As a side-effect, don't display a dangling
+	authentication name pointer in getpass.
+
 2005-07-27 15:08:43  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
 	* crypt-gpgme.c: Correct two typos in GPGME error messages.
