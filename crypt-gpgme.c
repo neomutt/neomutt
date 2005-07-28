@@ -4121,21 +4121,23 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
 
   if (is_smime)
     choice = mutt_multi_choice (
-    _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (t)oggle or (f)orget it?"),
-             _("esabtf"));
+    _("S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"),
+             _("esabpfc"));
   else 
     choice = mutt_multi_choice (
-    _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (t)oggle or (f)orget it?"),
-                _("esabtf"));
+    _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"),
+                _("esabmfc"));
 
   switch (choice)
   {
   case 1: /* (e)ncrypt */
     msg->security |= (is_smime ? SMIMEENCRYPT : PGPENCRYPT);
+    msg->security &= ~(is_smime ? SMIMESIGN : PGPSIGN);
     break;
 
   case 2: /* (s)ign */
     msg->security |= (is_smime? SMIMESIGN :PGPSIGN);
+    msg->security &= ~(is_smime ? SMIMEENCRYPT : PGPENCRYPT);
     break;
 
   case 3: /* sign (a)s */
@@ -4150,10 +4152,12 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
       
       msg->security |= (is_smime? SMIMESIGN:PGPSIGN);
     }
+#if 0
     else
     {
       msg->security &= (is_smime? ~SMIMESIGN : ~PGPSIGN);
     }
+#endif
     *redraw = REDRAW_FULL;
     break;
 
@@ -4161,16 +4165,17 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     msg->security = (is_smime? (SMIMEENCRYPT|SMIMESIGN):(PGPENCRYPT|PGPSIGN));
     break;
 
-  case 5: /* (t)oggle */
+  case 5: /* (p)gp or s/(m)ime */
     is_smime = !is_smime;
     break;
 
   case 6: /* (f)orget it */
+  case 7: /* (c)lear */
     msg->security = 0;
     break;
   }
 
-  if (choice == 6)
+  if (choice == 6 || choice == 7)
     ;
   else if (is_smime)
     {
