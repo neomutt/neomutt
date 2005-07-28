@@ -1,3 +1,8 @@
+2005-07-28 20:42:45  ttakah@lapis.plala.or.jp  (roessler)
+
+	* crypt-gpgme.c: Fix mutt/2004; S/MIME user interface differences
+	between GPGME and classic.
+
 2005-07-28 19:47:40  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/auth_cram.c, imap/auth_login.c: Use mutt_account_getlogin
