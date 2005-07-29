@@ -1,3 +1,8 @@
+2005-07-29 18:05:50  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp> (brendan)
+
+	* init.c: "nospam foo" causes a segv if you have not set any
+	"spam", because of a null pointer dereference.
+
 2005-07-29 06:45:14  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_ssl_gnutls.c: Tweak a poorly-worded error message in the
