@@ -1,3 +1,9 @@
+2005-07-29 01:51:36  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Fix bug added in revision 3.26, where
+	imap_sync_mailbox failed to check whether it was supposed to
+	expunge before issuing a CLOSE.
+
 2005-07-28 20:42:45  ttakah@lapis.plala.or.jp  (roessler)
 
 	* crypt-gpgme.c: Fix mutt/2004; S/MIME user interface differences
