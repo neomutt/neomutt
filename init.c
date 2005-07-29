@@ -448,6 +448,8 @@ static int remove_from_spam_list (SPAM_LIST **list, const char *pat)
 
   /* Being first is a special case. */
   spam = *list;
+  if (!spam)
+    return 0;
   if (spam->rx && !mutt_strcmp(spam->rx->pattern, pat))
   {
     *list = spam->next;
