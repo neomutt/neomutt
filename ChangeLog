@@ -1,3 +1,8 @@
+2005-07-29 06:45:14  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_ssl_gnutls.c: Tweak a poorly-worded error message in the
+	gnutls glue, pointed out by Vincent Lefevre.
+
 2005-07-29 01:51:36  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c: Fix bug added in revision 3.26, where
