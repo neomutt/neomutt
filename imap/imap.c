@@ -1085,7 +1085,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
-  if (ctx->closing)
+  if (expunge && ctx->closing)
   {
     if (imap_exec (idata, "CLOSE", 0))
       mutt_error (_("CLOSE failed"));
