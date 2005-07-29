@@ -513,7 +513,7 @@ static int tls_check_certificate (CONNECTION* conn)
   /* We only support X.509 certificates (not OpenPGP) at the moment */
   if (gnutls_certificate_type_get(state) != GNUTLS_CRT_X509)
   {
-    mutt_error (_("Error certificate is not X.509"));
+    mutt_error (_("Certificate is not X.509"));
     mutt_sleep (2);
     return 0;
   }
