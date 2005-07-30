@@ -1,3 +1,11 @@
+2005-07-30 04:40:45  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* pager.c: The builtin pager tries to wrap a line for ever if:
+	0) the line contains a space or a tab character followed by a very
+	   long word, and 
+	1) M_PAGER_NSKIP flag is passed to it, and
+	2) $smart_wrap is set. (default)
+
 2005-07-30 04:13:07  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
 	* curs_main.c, pager.c: When using colors, the status line of the
