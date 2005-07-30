@@ -1,3 +1,12 @@
+2005-07-30 04:13:07  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* curs_main.c, pager.c: When using colors, the status line of the
+	index is displayed in a bright color, even when the prefix
+	"bright" is *not* given in the foreground color. The problem
+	occurs when I have the following additional line:
+	  color normal brightwhite black
+	The problem is that BKGDSET's are missing.
+
 2005-07-30 03:59:04  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* recvattach.c: Don't refuse to delete attachments just because a
