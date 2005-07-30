@@ -1069,7 +1069,7 @@ void mutt_view_attachments (HEADER *hdr)
 	}
 #endif
 
-        if (WithCrypto && hdr->security)
+        if (WithCrypto && hdr->security & ~PGP_TRADITIONAL_CHECKED)
         {
 	  mutt_message _(
 	    "Deletion of attachments from encrypted messages is unsupported.");
