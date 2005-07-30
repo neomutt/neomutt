@@ -1346,7 +1346,11 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 	/* skip trailing blanks */
 	while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
 	  ch--;
-	cnt = ch + 1;
+        /* a very long word with leading spaces causes infinite wrapping */
+        if ((!ch) && (flags & M_PAGER_NSKIP))
+          buf_ptr = buf + cnt;
+        else
+          cnt = ch + 1;
       }
       else
 	buf_ptr = buf + cnt; /* a very long word... */
