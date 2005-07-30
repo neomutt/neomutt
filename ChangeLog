@@ -1,3 +1,9 @@
+2005-07-30 03:59:04  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* recvattach.c: Don't refuse to delete attachments just because a
+	message has been checked for "traditional" PGP encoding. (closes
+	#2013)
+
 2005-07-29 18:05:50  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp> (brendan)
 
 	* init.c: "nospam foo" causes a segv if you have not set any
