@@ -1744,8 +1744,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
  
       move (indexoffset + (option (OPTSTATUSONTOP) ? 0 : (indexlen - 1)), 0);
       SETCOLOR (MT_COLOR_STATUS);
+      BKGDSET (MT_COLOR_STATUS);
       mutt_paddstr (COLS, buffer);
       SETCOLOR (MT_COLOR_NORMAL);
+      BKGDSET (MT_COLOR_NORMAL);
     }
 
     redraw = 0;

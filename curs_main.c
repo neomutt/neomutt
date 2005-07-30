@@ -563,8 +563,10 @@ int mutt_index_menu (void)
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
 	CLEARLINE (option (OPTSTATUSONTOP) ? 0 : LINES-2);
 	SETCOLOR (MT_COLOR_STATUS);
+        BKGDSET (MT_COLOR_STATUS);
 	mutt_paddstr (COLS, buf);
 	SETCOLOR (MT_COLOR_NORMAL);
+        BKGDSET (MT_COLOR_NORMAL);
 	menu->redraw &= ~REDRAW_STATUS;
       }
 
