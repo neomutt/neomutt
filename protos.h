@@ -339,7 +339,7 @@ int mutt_print_attachment (FILE *, BODY *);
 int mutt_query_complete (char *, size_t);
 int mutt_query_variables (LIST *queries);
 int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
-void _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
+int _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
 int mutt_save_message (HEADER *, int, int, int, int *);
 int mutt_search_command (int, int);
 int mutt_strwidth (const char *);

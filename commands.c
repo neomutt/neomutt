@@ -670,21 +670,27 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
   }
 }
 
-void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
+int _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
 {
   int cmflags, chflags;
+  int rc;
   
   set_copy_flags (h, decode, decrypt, &cmflags, &chflags);
 
   if (decode || decrypt)
     mutt_parse_mime_message (Context, h);
 
-  if (mutt_append_message (ctx, Context, h, cmflags, chflags) == 0 && delete)
+  if ((rc = mutt_append_message (ctx, Context, h, cmflags, chflags)) != 0)
+    return rc;
+
+  if (delete)
   {
     mutt_set_flag (Context, h, M_DELETE, 1);
     if (option (OPTDELETEUNTAG))
       mutt_set_flag (Context, h, M_TAG, 0);
   }
+  
+  return 0;
 }
 
 /* returns 0 if the copy/save was successful, or -1 on error/abort */
@@ -805,7 +811,13 @@ int mutt_save_message (HEADER *h, int delete,
   if (mx_open_mailbox (buf, M_APPEND, &ctx) != NULL)
   {
     if (h)
-      _mutt_save_message(h, &ctx, delete, decode, decrypt);
+    {
+      if (_mutt_save_message(h, &ctx, delete, decode, decrypt) != 0)
+      {
+        mx_close_mailbox (&ctx, NULL);
+        return -1;
+      }
+    }
     else
     {
       for (i = 0; i < Context->vcount; i++)
@@ -813,8 +825,12 @@ int mutt_save_message (HEADER *h, int delete,
 	if (Context->hdrs[Context->v2r[i]]->tagged)
 	{
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
-	  _mutt_save_message(Context->hdrs[Context->v2r[i]],
-			     &ctx, delete, decode, decrypt);
+	  if (_mutt_save_message(Context->hdrs[Context->v2r[i]],
+			     &ctx, delete, decode, decrypt) != 0)
+          {
+            mx_close_mailbox (&ctx, NULL);
+            return -1;
+          }
 	}
       }
     }
