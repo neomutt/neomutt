@@ -2008,6 +2008,29 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 		  (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "",
 		  p);
       }
+      else if (DTYPE (MuttVars[idx].type) == DT_MAGIC)
+      {
+        char *p;
+
+        switch (DefaultMagic)
+        {
+          case M_MBOX:
+            p = "mbox";
+            break;
+          case M_MMDF:
+            p = "MMDF";
+            break;
+          case M_MH:
+            p = "MH";
+            break;
+          case M_MAILDIR:
+            p = "Maildir";
+            break;
+          default:
+            p = "unknown";
+        }
+        strfcpy (tmp, p, sizeof (tmp));
+      }
       else if (DTYPE (MuttVars[idx].type) == DT_BOOL)
 	strfcpy (tmp, option (MuttVars[idx].data) ? "yes" : "no", sizeof (tmp));
       else
