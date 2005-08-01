@@ -1,3 +1,8 @@
+2005-08-01 18:05:12  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mbox.c: Restore Sort immediately after sorting by mailbox order
+	in mbox_sync_mailbox. (closes #972)
+
 2005-08-01 17:06:48  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in, doc/mutt.man: Insert compile-time paths to
