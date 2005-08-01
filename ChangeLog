@@ -1,3 +1,8 @@
+2005-08-01 18:13:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* Makefile.am: Install system muttrc from the build directory, not
+	the source directory.
+
 2005-08-01 18:05:12  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mbox.c: Restore Sort immediately after sorting by mailbox order
