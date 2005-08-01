@@ -1,3 +1,10 @@
+2005-08-01 07:35:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* globals.h, mutt.h, mutt_ssl.c, muttlib.c: Cache SSL certificates
+	that have been accepted but not saved until mutt exits. (closes
+	#643). Create mutt_add_list_n for adding non-character data to
+	lists, have mutt_add_list call it.
+
 2005-08-01 04:57:04  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mx.c: Report error creating FCC when writing to IMAP
