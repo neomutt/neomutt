@@ -359,7 +359,11 @@ static int ssl_socket_close (CONNECTION * conn)
   {
     SSL_shutdown (data->ssl);
 
+    /* hold onto this for the life of mutt, in case we want to reconnect.
+     * The purist in me wants a mutt_exit hook. */
+#if 0
     X509_free (data->cert);
+#endif
     SSL_free (data->ssl);
     SSL_CTX_free (data->ctx);
     FREE (&conn->sockdata);
@@ -491,6 +495,52 @@ static int check_certificate_by_signer (X509 *peercert)
   return pass;
 }
 
+static int compare_certificates (X509 *cert, X509 *peercert,
+  unsigned char *peermd, unsigned int peermdlen)
+{
+  unsigned char md[EVP_MAX_MD_SIZE];
+  unsigned int mdlen;
+  
+  /* Avoid CPU-intensive digest calculation if the certificates are
+    * not even remotely equal.
+    */
+  if (X509_subject_name_cmp (cert, peercert) != 0 ||
+      X509_issuer_name_cmp (cert, peercert) != 0)
+    return -1;
+  
+  if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
+    return -1;
+  
+  if (memcmp(peermd, md, mdlen) != 0)
+    return -1;
+
+  return 0;
+}
+
+static int check_certificate_cache (X509 *peercert)
+{
+  unsigned char peermd[EVP_MAX_MD_SIZE];
+  unsigned int peermdlen;
+  X509 *cert;
+  LIST *scert;
+
+  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  {
+    return 0;
+  }
+  
+  for (scert = SslSessionCerts; scert; scert = scert->next)
+  {
+    cert = *(X509**)scert->data;
+    if (!compare_certificates (cert, peercert, peermd, peermdlen))
+    {
+      return 1;
+    }
+  }
+  
+  return 0;
+}
+
 static int check_certificate_by_digest (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
@@ -523,29 +573,15 @@ static int check_certificate_by_digest (X509 *peercert)
     fclose (fp);
     return 0;
   }
-  
+
   while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
   {
-    unsigned char md[EVP_MAX_MD_SIZE];
-    unsigned int mdlen;
-
-    /* Avoid CPU-intensive digest calculation if the certificates are
-     * not even remotely equal.
-     */
-    if (X509_subject_name_cmp (cert, peercert) != 0 ||
-	X509_issuer_name_cmp (cert, peercert) != 0)
-      continue;
-
-    if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
-      continue;
+    pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
+    X509_free (cert);
     
-    if (memcmp(peermd, md, mdlen) != 0)
-      continue;
-
-    pass = 1;
-    break;
+    if (pass)
+      break;
   }
-  X509_free (cert);
   fclose (fp);
 
   return pass;
@@ -561,6 +597,13 @@ static int ssl_check_certificate (sslsockdata * data)
   int done, row, i;
   FILE *fp;
   char *name = NULL, *c;
+
+  /* check session cache first */
+  if (check_certificate_cache (data->cert))
+  {
+    dprint (1, (debugfile, "ssl_check_certificate: using cached certificate\n"));
+    return 1;
+  }
 
   if (check_certificate_by_signer (data->cert))
   {
@@ -668,6 +711,10 @@ static int ssl_check_certificate (sslsockdata * data)
         /* fall through */
       case OP_MAX + 2:		/* accept once */
         done = 2;
+        /* keep a handle on accepted certificates in case we want to
+         * open up another connection to the same server in this session */
+        SslSessionCerts = mutt_add_list_n (SslSessionCerts, &data->cert,
+                                           sizeof (X509 **));
         break;
     }
   }

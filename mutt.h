@@ -558,6 +558,7 @@ int mutt_matches_ignore (const char *, LIST *);
 
 /* add an element to a list */
 LIST *mutt_add_list (LIST *, const char *);
+LIST *mutt_add_list_n (LIST*, const void *, size_t);
 
 void mutt_init (int, LIST *);
 

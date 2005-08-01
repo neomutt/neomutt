@@ -115,6 +115,7 @@ WHERE char *SslCertFile INITVAL (NULL);
 #endif
 #ifdef USE_SSL
 WHERE char *SslClientCert INITVAL (NULL);
+WHERE LIST *SslSessionCerts INITVAL (NULL);
 #endif
 #if defined(USE_SSL) || defined(USE_NSS)
 WHERE char *SslEntropyFile INITVAL (NULL);
