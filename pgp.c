@@ -916,7 +916,11 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
     }
 
     mutt_free_body (&tattach);
+    /* clear 'Invoking...' message, since there's no error */
+    mutt_clear_error ();
   }
+  else
+    mutt_error _("Could not decrypt PGP message");
 
   fclose (fpout);
   mutt_unlink(tempfile);

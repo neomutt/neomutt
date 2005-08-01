@@ -200,7 +200,7 @@ int mutt_display_message (HEADER *cur)
 	mutt_message (_("PGP signature successfully verified."));
       else if (cur->security & PARTSIGN)
 	mutt_message (_("Warning: Part of this message has not been signed."));
-      else
+      else if (cur->security & SIGN)
 	mutt_message (_("PGP signature could NOT be verified."));
     }
 
