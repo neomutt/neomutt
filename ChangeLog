@@ -1,3 +1,8 @@
+2005-08-01 16:38:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* commands.c, protos.h: Report errors occuring in
+	_mutt_save_message. (closes #847)
+
 2005-08-01 07:35:04  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* globals.h, mutt.h, mutt_ssl.c, muttlib.c: Cache SSL certificates
