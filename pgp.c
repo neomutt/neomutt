@@ -920,7 +920,11 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
     mutt_message _("PGP message successfully decrypted.");
   }
   else
+  {
     mutt_error _("Could not decrypt PGP message");
+    /* void the passphrase, even if it's not necessarily the problem */
+    pgp_void_passphrase ();
+  }
 
   fclose (fpout);
   mutt_unlink(tempfile);
@@ -1020,6 +1024,8 @@ BODY *pgp_sign_message (BODY *a)
   if (empty)
   {
     unlink (sigfile);
+    /* most likely error is a bad passphrase, so automatically forget it */
+    pgp_void_passphrase ();
     return (NULL); /* fatal error while signing */
   }
 
