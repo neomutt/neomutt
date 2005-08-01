@@ -688,6 +688,8 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     save_sort = Sort;
     Sort = SORT_ORDER;
     mutt_sort_headers (ctx, 0);
+    Sort = save_sort;
+    need_sort = 1;
   }
 
   /* need to open the file for writing in such a way that it does not truncate
@@ -718,11 +720,8 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     goto bail;
   }
   else if (i < 0)
-  {
     /* fatal error */
-    Sort = save_sort;
     return (-1);
-  }
 
   /* Create a temporary file to write the new version of the mailbox in. */
   mutt_mktemp (tempfile);
@@ -951,7 +950,6 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_unblock_signals ();
     mx_fastclose_mailbox (ctx);
     mutt_error _("Fatal error!  Could not reopen mailbox!");
-    Sort = save_sort;
     return (-1);
   }
 
@@ -970,7 +968,6 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   FREE (&oldOffset);
   unlink (tempfile); /* remove partial copy of the mailbox */
   mutt_unblock_signals ();
-  Sort = save_sort; /* Restore the default value. */
 
   return (0); /* signal success */
 
@@ -1005,13 +1002,10 @@ bail:  /* Come here in case of disaster */
     return (-1);
   }
 
-  if (need_sort || save_sort != Sort)
-  {
-    Sort = save_sort;
+  if (need_sort)
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
     mutt_sort_headers (ctx, (need_sort == M_REOPENED));
-  }
 
   return rc;
 }
