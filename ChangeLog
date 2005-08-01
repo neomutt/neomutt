@@ -1,3 +1,9 @@
+2005-08-01 20:06:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* commands.c, pgp.c: Don't report PGP signature could not be
+	verified unless there really is a signature verification problem
+	(not some other PGP error).
+
 2005-08-01 18:13:04  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* Makefile.am: Install system muttrc from the build directory, not
