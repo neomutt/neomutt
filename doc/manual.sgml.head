@@ -933,6 +933,7 @@ In addition, <em/key/ may consist of:
 <tscreen><verb>
 \t              tab
 <tab>           tab
+<backtab>       backtab / shift-tab
 \r              carriage return
 \n              newline
 \e              escape
