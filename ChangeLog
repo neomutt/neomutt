@@ -1,3 +1,9 @@
+2005-08-01 20:43:51  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Automatically forget PGP passphrase on sign or decrypt
+	error. (closes #1025). Display "successfully decrypted" message
+	instead of nothing. Superseded by signature verification.
+                                 
 2005-08-01 20:06:41  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* commands.c, pgp.c: Don't report PGP signature could not be
