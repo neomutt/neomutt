@@ -1,7 +1,7 @@
 .\" -*-nroff-*-
 .\"
 .\"
-.\"     Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+.\"     Copyright (C) 1996-2004 Michael R. Elkins <me@cs.hmc.edu>
 .\" 
 .\"     This program is free software; you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -135,21 +135,21 @@ Specifies the editor to use when composing messages.
 .PP
 .IP "~/.muttrc or ~/.mutt/muttrc"
 User configuration file.
-.IP "/etc/Muttrc"
+.IP "@sysconfdir@/Muttrc"
 System-wide configuration file.
 .IP "/tmp/muttXXXXXX"
 Temporary files created by Mutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
-.IP "/etc/mailcap"
+.IP "@sysconfdir@/mailcap"
 System definition for handling non-text MIME types.
 .IP "~/.mime.types"
 User's personal mapping between MIME types and file extensions.
-.IP "/etc/mime.types"
+.IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
-.IP "/usr/local/bin/mutt_dotlock"
+.IP "@bindir@/mutt_dotlock"
 The privileged dotlocking program.
-.IP "/usr/local/doc/mutt/manual.txt"
+.IP "@docdir@/manual.txt"
 The Mutt manual.
 .SH BUGS
 .PP

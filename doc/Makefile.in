@@ -7,6 +7,7 @@ VERSION = @VERSION@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+sysconfdir = @sysconfdir@
 bindir = @bindir@
 libdir = @libdir@
 mandir = @mandir@
@@ -59,12 +60,11 @@ DISTFILES = Makefile.in dotlock.man  	\
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
 
-
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
-all: muttrc.man try-html try-txt
+all: mutt.1 muttrc.man try-html try-txt
 
 try-html: ../makedoc$(EXEEXT)
 	test -f manual.html || $(MAKE) manual.html || cp $(srcdir)/manual*.html ./
@@ -75,7 +75,7 @@ try-txt: ../makedoc$(EXEEXT)
 install: all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
-	./instdoc $(srcdir)/mutt.man $(DESTDIR)$(mandir)/man1/mutt.1
+	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
 	./instdoc $(srcdir)/dotlock.man \
@@ -153,10 +153,14 @@ dist distdir: Makefile $(DISTFILES)
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
 	(cd .. && $(MAKE) makedoc$(EXEEXT))
 
-# hack around autoconf mixing up patterns.
-at = @
-
 update-doc:  ../makedoc$(EXEEXT) stamp-doc-sgml stamp-doc-man manual.txt manual.html
+
+EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
+	-e 's,@bindir\@,$(bindir),g' \
+	-e 's,@docdir\@,$(docdir),g'
+
+mutt.1: $(srcdir)/mutt.man
+	$(EDIT) $< > $@
 
 muttrc.man stamp-doc-man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
@@ -165,8 +169,7 @@ muttrc.man stamp-doc-man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.he
 	touch stamp-doc-man
 
 manual.sgml stamp-doc-sgml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.sgml.head manual.sgml.tail $(top_srcdir)/VERSION
-	( sed -e "s/$(at)VERSION$(at)/`cat $(top_srcdir)/VERSION`/" $(srcdir)/manual.sgml.head ;\
+	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION`/" $(srcdir)/manual.sgml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
 		cat - $(srcdir)/manual.sgml.tail > manual.sgml
 	touch stamp-doc-sgml
-
