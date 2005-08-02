@@ -686,6 +686,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  {
 	    char *att = files[i];
 	    idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
+            idx[idxlen]->unowned = 1;
 	    idx[idxlen]->content = mutt_make_file_attach (att);
 	    if (idx[idxlen]->content != NULL)
 	      update_idx (menu, idx, idxlen++);
@@ -814,7 +815,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_DELETE:
 	CHECK_COUNT;
-        idx[menu->current]->content->unlink = 0;
+        if (idx[menu->current]->unowned)
+          idx[menu->current]->content->unlink = 0;
 	if (delete_attachment (menu, &idxlen, menu->current) == -1)
 	  break;
 	mutt_update_tree (idx, idxlen);

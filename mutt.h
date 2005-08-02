@@ -855,6 +855,7 @@ typedef struct attachptr
   char *tree;
   int level;
   int num;
+  unsigned int unowned : 1;   /* don't unlink on detach */
 } ATTACHPTR;
 
 typedef struct
