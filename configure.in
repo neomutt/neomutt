@@ -464,7 +464,7 @@ AC_SUBST(DOTLOCK_TARGET)
 AC_MSG_CHECKING(where to put the documentation)
 AC_ARG_WITH(docdir, AC_HELP_STRING([--with-docdir=PATH], [Specify where to put the documentation]),
         [mutt_cv_docdir=$withval],
-        [mutt_cv_docdir="$mutt_cv_prefix/doc/mutt"])
+        [mutt_cv_docdir='${prefix}/doc/mutt'])
 AC_MSG_RESULT($mutt_cv_docdir)
 
 docdir=$mutt_cv_docdir
