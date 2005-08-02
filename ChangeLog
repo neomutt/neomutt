@@ -1,3 +1,9 @@
+2005-08-02 16:10:42  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* globals.h, init.c, init.h, mutt.h, mutt_sasl.c, mutt_socket.c,
+	mutt_ssl.h, mutt_ssl_nss.c, pop_lib.c, configure.in: Put moribund
+	NSS support out to pasture.
+
 2005-08-02 14:39:56  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* compose.c, mutt.h: In compose menu, detach should be able to
@@ -3959,28 +3965,36 @@
 	* pgp.c: Fix "noconv" handling for the message body when we generate inline
 	PGP.
 
-	* charset.c, charset.h, handler.c, muttlib.c, pgp.c: Some hackisch charset handling for text/plain; x-action=pgp-*.  I
-	don't like this stuff, but it's better than nothing.
+	* charset.c, charset.h, handler.c, muttlib.c, pgp.c: Some hackisch
+	charset handling for text/plain; x-action=pgp-*.  I don't like
+	this stuff, but it's better than nothing.
 
 2002/03/26 22:25:48  Thomas Roessler <roessler@does-not-exist.org>
 
 	* pgp.c: Change x-action values to "pgp-encrypted", "pgp-signed".
 
-	* contrib/gpg.rc, commands.c, compose.c, crypt.c, handler.c, muttlib.c, pgp.c, protos.h, recvattach.c, sendlib.c: More inline PGP changes.
+	* contrib/gpg.rc, commands.c, compose.c, crypt.c, handler.c,
+	muttlib.c, pgp.c, protos.h, recvattach.c, sendlib.c: More inline
+	PGP changes.
 
-	* pgp.c: Also permit for "action" and "x-action" on the receiving end, just
-	in case we can settle on a joint standard with other MUA developers.
+	* pgp.c: Also permit for "action" and "x-action" on the receiving
+	end, just in case we can settle on a joint standard with other MUA
+	developers.
 
-	* commands.c, crypt.c, handler.c, pgp.c, pgpinvoke.c, sendlib.c: OK, I'm giving up: pgp_create_traditional now creates text/plain;
+	* commands.c, crypt.c, handler.c, pgp.c, pgpinvoke.c, sendlib.c:
+	OK, I'm giving up: pgp_create_traditional now creates text/plain;
 	x-mutt-action={pgp-encrypt,pgp-sign}.
 
 	* pgpinvoke.c: Fix application/pgp signatures.
 
-	* charset.c, charset.h, gnupgparse.c, handler.c, mbyte.c, rfc2047.c, sendlib.c, charset.c, charset.h, gnupgparse.c, handler.c, mbyte.c, rfc2047.c, sendlib.c: Fix iconv warnings; from Edmund Grimley Evans.
+	* charset.c, charset.h, gnupgparse.c, handler.c, mbyte.c,
+	rfc2047.c, sendlib.c, charset.c, charset.h, gnupgparse.c,
+	handler.c, mbyte.c, rfc2047.c, sendlib.c: Fix iconv warnings; from
+	Edmund Grimley Evans.
 
-	* smime.c: Please use ascii_strcasecmp() if you want to compare ASCII parameter
-	strings.  mutt_strcasecmp() depends on the locale, and detects "i"
-	and "I" as _different_ in Turkish locales.
+	* smime.c: Please use ascii_strcasecmp() if you want to compare
+	ASCII parameter strings.  mutt_strcasecmp() depends on the locale,
+	and detects "i" and "I" as _different_ in Turkish locales.
 
 2002/03/25 11:34:40  Thomas Roessler <roessler@does-not-exist.org>
 
