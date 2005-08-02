@@ -1,3 +1,8 @@
+2005-08-02 00:52:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Bump up size of PgpPass to 1024 from 256. Seems crazy,
+	but it's harmless and it (closes #1207).
+                                 
 2005-08-02 00:37:41  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* account.c: Fix password prompt for POP (more authentication ID
