@@ -375,7 +375,6 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
  */
 	    if (rc == -1 || rv) maybe_goodsig = 0;
 
-	    state_putc ('\n', s);
 	    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
 	  }
 	}
@@ -387,11 +386,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
         mutt_error _("Could not decrypt PGP message");
         pgp_void_passphrase ();
 
-	safe_fclose (&tmpfp);
-	mutt_unlink (tmpfname);
-        safe_fclose (&pgpout);
-	mutt_unlink (outfile);
-        return;
+        goto out;
       }
       /*
        * Now, copy cleartext to the screen.  NOTE - we expect that PGP
@@ -440,17 +435,6 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	else
 	  state_attach_puts (_("[-- END PGP SIGNED MESSAGE --]\n"), s);
       }
-
-      if (tmpfp)
-      {
-	safe_fclose (&tmpfp);
-	mutt_unlink (tmpfname);
-      }
-      if (pgpout)
-      {
-	safe_fclose (&pgpout);
-	mutt_unlink (outfile);
-      }
     }
     else
     {
@@ -461,8 +445,20 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
     }
   }
 
+out:
   m->goodsig = (maybe_goodsig && have_any_sigs);
 
+  if (tmpfp)
+  {
+    safe_fclose (&tmpfp);
+    mutt_unlink (tmpfname);
+  }
+  if (pgpout)
+  {
+    safe_fclose (&pgpout);
+    mutt_unlink (outfile);
+  }
+  
   if (needpass == -1)
   {
     state_attach_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
@@ -744,6 +740,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   char pgperrfile[_POSIX_PATH_MAX];
   char pgptmpfile[_POSIX_PATH_MAX];
   pid_t thepid;
+  int rv;
   
   mutt_mktemp (pgperrfile);
   if ((pgperr = safe_fopen (pgperrfile, "w+")) == NULL)
@@ -799,15 +796,17 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   }
 
   fclose (pgpout);
-  mutt_wait_filter (thepid);
+  rv = mutt_wait_filter (thepid);
   mutt_unlink(pgptmpfile);
   
   if (s->flags & M_DISPLAY)
   {
     fflush (pgperr);
     rewind (pgperr);
-    if (pgp_copy_checksig (pgperr, s->fpout) == 0 && p)
+    if (pgp_copy_checksig (pgperr, s->fpout) == 0 && !rv && p)
       p->goodsig = 1;
+    else
+      p->goodsig = 0;
     state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
   }
   fclose (pgperr);

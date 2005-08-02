@@ -166,6 +166,7 @@ int mutt_display_message (HEADER *cur)
   if (WithCrypto)
   {
     /* update crypto information for this message */
+    cur->security &= ~(GOODSIGN|BADSIGN);
     cur->security |= crypt_query (cur->content);
   
     /* Remove color cache for this message, in case there
