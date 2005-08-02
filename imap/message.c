@@ -343,19 +343,12 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 
   if (cache->path)
   {
-    if (cache->uid == HEADER_DATA(h)->uid)
-    {
-      /* yes, so just return a pointer to the message */
-      if (!(msg->fp = fopen (cache->path, "r")))
-      {
-	mutt_perror (cache->path);
-	return (-1);
-      }
+    /* don't treat cache errors as fatal, just fall back. */
+    if (cache->uid == HEADER_DATA(h)->uid &&
+        (msg->fp = fopen (cache->path, "r")))
       return 0;
-    }
     else
     {
-      /* clear the previous entry */
       unlink (cache->path);
       FREE (&cache->path);
     }
@@ -442,6 +435,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   /* see comment before command start. */
   h->active = 1;
 
+  fflush (msg->fp);
+  if (ferror (msg->fp))
+  {
+    mutt_perror (cache->path);
+    goto bail;
+  }
+  
   if (rc != IMAP_CMD_OK)
     goto bail;
 
