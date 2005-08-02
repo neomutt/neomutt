@@ -1,3 +1,8 @@
+2005-08-02 03:46:06  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* contrib/Makefile.in, doc/Makefile.in: Be more selective about
+	what to remove during uninstall. (closes #1625)
+
 2005-08-02 02:17:09  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* pgp.c: Also forget passphrase when encrypt fails, if
