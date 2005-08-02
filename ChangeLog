@@ -1,3 +1,9 @@
+2005-08-02 02:01:46  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Check that the entire message downloaded
+	successfully on fetch, and don't treat a disappearing cache file
+	as fatal. (closes #1483)
+
 2005-08-02 01:13:25  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* compose.c: Don't unlink attachments that you've decided not to
