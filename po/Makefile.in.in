@@ -77,8 +77,8 @@ all: all-@USE_NLS@
 all-yes: $(CATALOGS)
 all-no:
 
-.PHONY: ../keymap_alldefs.h
-../keymap_alldefs.h:
+.PHONY: $(top_srcdir)/keymap_alldefs.h
+$(top_srcdir)/keymap_alldefs.h:
 	cd .. && $(MAKE) keymap_alldefs.h
 
 # Note: Target 'all' must not depend on target '$(srcdir)/$(PACKAGE).pot',

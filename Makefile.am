@@ -119,7 +119,7 @@ keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.PGP \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
-			> keymap_alldefs.h
+			> $(srcdir)/keymap_alldefs.h
 
 reldate:
 	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
