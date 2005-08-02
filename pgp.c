@@ -62,7 +62,7 @@
 #include "mutt_menu.h"
 
 
-char PgpPass[STRING];
+char PgpPass[LONG_STRING];
 time_t PgpExptime = 0; /* when does the cached passphrase expire? */
 
 void pgp_void_passphrase (void)
