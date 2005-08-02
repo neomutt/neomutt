@@ -814,6 +814,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_DELETE:
 	CHECK_COUNT;
+        idx[menu->current]->content->unlink = 0;
 	if (delete_attachment (menu, &idxlen, menu->current) == -1)
 	  break;
 	mutt_update_tree (idx, idxlen);
