@@ -1,3 +1,8 @@
+2005-08-02 01:13:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* compose.c: Don't unlink attachments that you've decided not to
+	send. (closes #1328)
+
 2005-08-02 00:52:28  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* pgp.c: Bump up size of PgpPass to 1024 from 256. Seems crazy,
