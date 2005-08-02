@@ -1,3 +1,12 @@
+2005-08-02 00:37:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* account.c: Fix password prompt for POP (more authentication ID
+	fallout).
+
+2005-08-01 22:37:22  Brendan Cully  <brendan@kublai.com>  (brendan)
+                                 
+         * doc/manual.sgml.head: Document <backtab> key.
+                                 
 2005-08-01 20:43:51  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* pgp.c: Automatically forget PGP passphrase on sign or decrypt
