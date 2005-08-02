@@ -1,3 +1,8 @@
+2005-08-02 02:17:09  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Also forget passphrase when encrypt fails, if
+	signing. (closes #1025 again)
+
 2005-08-02 02:01:46  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/message.c: Check that the entire message downloaded
