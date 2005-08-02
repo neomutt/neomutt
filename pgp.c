@@ -1274,6 +1274,8 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
+    if (sign)
+      pgp_void_passphrase (); /* just in case */
     unlink (tempfile);
     return (NULL);
   }
@@ -1448,6 +1450,8 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   
   if (empty)
   {
+    if (flags & SIGN)
+      pgp_void_passphrase (); /* just in case */
     unlink (pgpoutfile);
     return NULL;
   }
