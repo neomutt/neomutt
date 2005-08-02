@@ -31,7 +31,4 @@ int mutt_gnutls_starttls (CONNECTION* conn);
 
 extern int mutt_gnutls_socket_setup (CONNECTION *conn);
 #endif
-#ifdef USE_NSS
-int mutt_nss_socket_setup (CONNECTION* conn);
-#endif
 #endif /* _MUTT_SSL_H_ */

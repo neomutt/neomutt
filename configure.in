@@ -586,31 +586,6 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for 
 
         fi
 ])
-AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
-
-dnl SSL support via NSS
-AC_ARG_WITH(nss, AC_HELP_STRING([--with-nss[=PFX]], [Compile in SSL support for POP/IMAP via NSS]),
-[       if test "$with_nss" != no
-        then
-          if test "$need_socket" != "yes"; then
-           AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
-          fi
-
-          if test "$with_nss" != "yes"
-          then
-           LDFLAGS="$LDFLAGS -L$withval/lib"
-           CPPFLAGS="$CPPFLAGS -I$withval/include -I$withval/public/security"
-          fi
-
-          AC_DEFINE(USE_NSS,1,[ Define if you want support for SSL via the NSS library. ])
-          MUTTLIBS="$MUTTLIBS -lssl -lnss -lcertdb -lcerthi -lcryptohi"
-          MUTTLIBS="$MUTTLIBS -lpk11wrap -lsoftoken -lsecutil -ldbm -lplds4 -lplc4 -lfreebl"
-          MUTTLIBS="$MUTTLIBS -lnspr4"
-
-          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_nss.o"
-          need_ssl=yes
-        fi
-])
 
 AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls[=PFX]], [Enable SSL support using gnutls]),
     [gnutls_prefix="$withval"], [gnutls_prefix="no"])
@@ -632,6 +607,7 @@ then
       AC_MSG_ERROR([could not find libgnutls])
     ])
 fi
+AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
 AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL library for POP/IMAP authentication]),
         [

@@ -243,8 +243,7 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
 
   /*** set sasl IP properties, necessary for use with krb4 ***/
   /* Do we need to fail if this fails? I would assume having these unset
-   * would just disable KRB4. Who wrote this code? I'm not sure how this
-   * interacts with the NSS code either, since that mucks with the fd. */
+   * would just disable KRB4. Who wrote this code? */
 #ifndef USE_SASL2 /* with SASLv2 this all happens in sasl_client_new */
   {
     struct sockaddr_in local, remote;
@@ -294,10 +293,6 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
     return -1;
   }
 
-  /* we currently don't have an SSF finder for NSS (I don't know the API).
-   * If someone does it'd probably be trivial to write mutt_nss_get_ssf().
-   * I have a feeling more SSL code could be shared between those two files,
-   * but I haven't looked into it yet, since I still don't know the APIs. */
 #if defined(USE_SSL) || defined(USE_GNUTLS)
   if (conn->ssf)
   {

@@ -376,7 +376,7 @@ enum
   OPTIMAPFORCESSL,
 # endif
 #endif
-#if defined(USE_SSL) || defined(USE_NSS) || defined(USE_GNUTLS)
+#if defined(USE_SSL) || defined(USE_GNUTLS)
 # ifndef USE_GNUTLS
   OPTSSLV2,
 # endif

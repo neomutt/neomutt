@@ -1878,7 +1878,7 @@ struct option_t MuttVars[] = {
   ** (S/MIME only)
   */
   
-#if defined(USE_SSL)||defined(USE_NSS)||defined(USE_GNUTLS)
+#if defined(USE_SSL) || defined(USE_GNUTLS)
 #ifdef USE_SSL
   { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
   /*

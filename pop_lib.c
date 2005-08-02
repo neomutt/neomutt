@@ -274,7 +274,7 @@ int pop_open_connection (POP_DATA *pop_data)
     return -2;
   }
 
-#if (defined(USE_SSL) || defined(USE_GNUTLS)) && !defined(USE_NSS)
+#if defined(USE_SSL) || defined(USE_GNUTLS)
   /* Attempt STLS if available and desired. */
   if (pop_data->cmd_stls && !pop_data->conn->ssf)
   {
