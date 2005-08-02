@@ -84,11 +84,11 @@ install: all instdoc
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
-	for f in $(srcdir_DOCFILES) ; do \
-		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
-	done
 	for f in $(topsrcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
+	done
+	for f in $(srcdir_DOCFILES) ; do \
+		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
 	$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir) || true
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/html
@@ -97,10 +97,20 @@ install: all instdoc
 	done
 
 uninstall:
-	-rm -f $(DESTDIR)$(mandir)/man1/mutt.1
-	-rm -f $(DESTDIR)$(mandir)/man1/mutt_dotlock.1
-	-rm -f $(DESTDIR)$(mandir)/man5/muttrc.5
-	-rm -rf $(DESTDIR)$(docdir)
+	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 ; do \
+		rm -f $(DESTDIR)$(mandir)/man1/$$f ; \
+	done
+	for f in muttrc.5 mbox.5 mmdf.5 ; do \
+		rm -f $(DESTDIR)$(mandir)/man5/$$f ; \
+	done
+	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) ; do \
+		rm -f $(DESTDIR)$(docdir)/$$f ; \
+	done
+	-rm -f $(DESTDIR)$(docdir)/manual.txt
+	for f in manual*.html ; do \
+		rm -f $(DESTDIR)$(docdir)/html/$$f ; \
+	done
+	-rmdir $(DESTDIR)$(docdir)/html
 
 check:
 manual.txt: manual.sgml

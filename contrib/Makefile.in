@@ -47,9 +47,13 @@ install:
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/samples/iconv	  ;	\
 	done
 
-# Nothing needs to be done - uninstall in doc removes samples as well.
-# This is just so make uninstall doesn't fail.
 uninstall:
+	for f in $(SAMPLES) ; do \
+		rm -f $(DESTDIR)$(docdir)/samples/$$f ; \
+	done
+	-rm -rf $(DESTDIR)$(docdir)/samples/iconv
+	-rmdir $(DESTDIR)$(docdir)/samples
+	-rmdir $(DESTDIR)$(docdir)
 
 maintainer-clean: distclean
 
