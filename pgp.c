@@ -381,7 +381,18 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	}
       }
       
+      /* treat empty result as sign of failure */
+      if (! ftell(pgpout))
+      {
+        mutt_error _("Could not decrypt PGP message");
+        pgp_void_passphrase ();
 
+	safe_fclose (&tmpfp);
+	mutt_unlink (tmpfname);
+        safe_fclose (&pgpout);
+	mutt_unlink (outfile);
+        return;
+      }
       /*
        * Now, copy cleartext to the screen.  NOTE - we expect that PGP
        * outputs utf-8 cleartext.  This may not always be true, but it 
@@ -420,7 +431,10 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
       {
 	state_putc ('\n', s);
 	if (needpass)
+        {
 	  state_attach_puts (_("[-- END PGP MESSAGE --]\n"), s);
+          mutt_message _("PGP message successfully decrypted.");
+        }
 	else if (pgp_keyblock)
 	  state_attach_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
 	else
