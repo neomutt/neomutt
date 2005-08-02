@@ -1,3 +1,10 @@
+2005-08-02 05:58:18  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* commands.c, pgp.c: More fiddling with PGP results. When
+	rerunning PGP on a message, clear old security result bits to
+	avoid confusing messages like 'decrypt failed; PGP signature
+	successfully verified'.
+
 2005-08-02 05:03:43  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* pgp.c: Forget passphrase on PGP/inline decryption error, and
