@@ -178,7 +178,7 @@ int mutt_account_getlogin (ACCOUNT* account)
   }
 #endif
 
-  if (! account->flags & M_ACCT_LOGIN)
+  if (!(account->flags & M_ACCT_LOGIN))
   {
     mutt_account_getuser (account);
     strfcpy (account->login, account->user, sizeof (account->login));
