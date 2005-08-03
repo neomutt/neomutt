@@ -577,11 +577,11 @@ static int check_certificate_by_digest (X509 *peercert)
   while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
   {
     pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
-    X509_free (cert);
     
     if (pass)
       break;
   }
+  X509_free (cert);
   fclose (fp);
 
   return pass;
