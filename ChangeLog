@@ -1,3 +1,11 @@
+2005-08-04 01:15:52  Brendan Cully <brendan@kublai.com>  (brendan)
+
+	* compose.c: Don't unlink non-mutt files that would have been
+	unlinked on send if the message is cancelled.
+                                 
+	* account.c: Fix C precedence buglet in getlogin preventing it
+	from actually calling getuser.
+
 2005-08-03 06:51:24  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_ssl.c: Don't double-free X509 certificates. This patch
