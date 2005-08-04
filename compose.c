@@ -1146,6 +1146,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    /* avoid freeing other attachments */
 	    idx[idxlen]->content->next = NULL;
 	    idx[idxlen]->content->parts = NULL;
+            if (idx[idxlen]->unowned)
+              idx[idxlen]->content->unlink = 0;
 	    mutt_free_body (&idx[idxlen]->content);
 	    FREE (&idx[idxlen]->tree);
 	    FREE (&idx[idxlen]);
