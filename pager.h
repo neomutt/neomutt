@@ -16,6 +16,8 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
+#include "attach.h"
+
 /* dynamic internal flags */
 #define M_SHOWFLAT	(1<<0)
 #define M_SHOWCOLOR	(1<<1)

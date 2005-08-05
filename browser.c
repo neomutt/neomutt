@@ -23,6 +23,7 @@
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "attach.h"
 #include "buffy.h"
 #include "mapping.h"
 #include "sort.h"

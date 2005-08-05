@@ -848,16 +848,6 @@ typedef struct
   unsigned int closing : 1;	/* mailbox is being closed */
 } CONTEXT;
 
-typedef struct attachptr
-{
-  BODY *content;
-  int parent_type;
-  char *tree;
-  int level;
-  int num;
-  unsigned int unowned : 1;   /* don't unlink on detach */
-} ATTACHPTR;
-
 typedef struct
 {
   FILE *fpin;

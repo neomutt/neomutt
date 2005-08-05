@@ -116,8 +116,6 @@ int mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const ch
 #endif /* USE_HCACHE */
 
 
-ATTACHPTR **mutt_gen_attach_list (BODY *, int, ATTACHPTR **, short *, short *, int, int);
-
 time_t mutt_decrease_mtime (const char *, struct stat *);
 time_t mutt_local_tz (time_t);
 time_t mutt_mktime (struct tm *, int);
@@ -248,7 +246,6 @@ void mutt_tag_set_flag (int, int);
 void mutt_unblock_signals (void);
 void mutt_unblock_signals_system (int);
 void mutt_update_encoding (BODY *a);
-void mutt_update_tree (ATTACHPTR **, short);
 void mutt_version (void);
 void mutt_view_attachments (HEADER *);
 void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display);
@@ -347,7 +344,6 @@ int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_thread_set_flag (HEADER *, int, int, int);
 int mutt_user_is_recipient (HEADER *);
 void mutt_update_num_postponed (void);
-int mutt_view_attachment (FILE*, BODY *, int, HEADER *, ATTACHPTR **, short);
 int mutt_wait_filter (pid_t);
 int mutt_which_case (const char *);
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *);
