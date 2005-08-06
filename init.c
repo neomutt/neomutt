@@ -272,7 +272,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       }
       else
       {
-	for (pc = tok->dptr; isalpha ((unsigned char) *pc) || *pc == '_'; pc++)
+	for (pc = tok->dptr; isalnum ((unsigned char) *pc) || *pc == '_'; pc++)
 	  ;
 	var = mutt_substrdup (tok->dptr, pc);
 	tok->dptr = pc;
