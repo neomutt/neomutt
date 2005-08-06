@@ -1,3 +1,15 @@
+2005-08-06 21:19:39  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, imap/util.c, init.h, mutt.h, pop_lib.c: Replace
+	pointless imap_force_ssl option with ssl_force_tls, which requires
+	any connection (POP or IMAP) to a remote server to be encrypted,
+	and attempts to negotiate encryption even if the capability isn't
+	advertised (this last bit is of dubious utility, but essentially
+	harmless since the connection would otherwise fail
+	anyway). Closes: #1284.
+
+	* imap/browse.c: Kill a warning.
+
 2005-08-06 19:06:36  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* init.c: Use isalnum instead of isalpha when parsing unbraced
