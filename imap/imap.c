@@ -440,11 +440,14 @@ int imap_open_connection (IMAP_DATA* idata)
       goto bail;
 #if defined(USE_SSL) || defined(USE_GNUTLS)
     /* Attempt STARTTLS if available and desired. */
-    if (mutt_bit_isset (idata->capabilities, STARTTLS) && !idata->conn->ssf)
+    if (!idata->conn->ssf && (option(OPTSSLFORCETLS) ||
+                              mutt_bit_isset (idata->capabilities, STARTTLS)))
     {
       int rc;
-
-      if ((rc = query_quadoption (OPT_SSLSTARTTLS,
+      
+      if (option(OPTSSLFORCETLS))
+        rc = M_YES;
+      else if ((rc = query_quadoption (OPT_SSLSTARTTLS,
         _("Secure connection with TLS?"))) == -1)
 	goto err_close_conn;
       if (rc == M_YES) {
@@ -470,6 +473,13 @@ int imap_open_connection (IMAP_DATA* idata)
 	  }
 	}
       }
+    }
+
+    if (option(OPTSSLFORCETLS) && ! idata->conn->ssf)
+    {
+      mutt_error _("Encrypted connection unavailable");
+      mutt_sleep (1);
+      goto err_close_conn;
     }
 #endif    
   }

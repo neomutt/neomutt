@@ -372,20 +372,16 @@ enum
   OPTIMAPPASSIVE,
   OPTIMAPPEEK,
   OPTIMAPSERVERNOISE,
-# if defined(USE_SSL) || defined(USE_GNUTLS)
-  OPTIMAPFORCESSL,
-# endif
 #endif
 #if defined(USE_SSL) || defined(USE_GNUTLS)
 # ifndef USE_GNUTLS
+  OPTSSLSYSTEMCERTS,
   OPTSSLV2,
-# endif
+# endif /* USE_GNUTLS */
   OPTSSLV3,
   OPTTLSV1,
-# ifndef USE_GNUTLS
-  OPTSSLSYSTEMCERTS,
-# endif
-#endif
+  OPTSSLFORCETLS,
+#endif /* defined(USE_SSL) || defined(USE_GNUTLS) */
   OPTIMPLICITAUTOVIEW,
   OPTINCLUDEONLYFIRST,
   OPTKEEPFLAGGED,

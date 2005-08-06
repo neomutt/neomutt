@@ -166,11 +166,6 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     }
   }
   
-#if defined(USE_SSL) || defined(USE_GNUTLS)
-  if (option (OPTIMAPFORCESSL))
-    mx->account.flags |= M_ACCT_SSL;
-#endif
-
   if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
     mx->account.port = ImapsPort;
 

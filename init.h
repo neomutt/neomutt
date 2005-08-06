@@ -827,14 +827,6 @@ struct option_t MuttVars[] = {
   ** as folder separators for displaying IMAP paths. In particular it
   ** helps in using the '=' shortcut for your \fIfolder\fP variable.
   */
-# if defined(USE_SSL) || defined(USE_GNUTLS)
-  { "imap_force_ssl",		DT_BOOL, R_NONE, OPTIMAPFORCESSL, 0 },
-  /*
-  ** .pp
-  ** If this variable is set, Mutt will always use SSL when
-  ** connecting to IMAP servers.
-  */
-# endif
   { "imap_headers",	DT_STR, R_INDEX, UL &ImapHeaders, UL 0},
   /*
   ** .pp
@@ -1886,8 +1878,16 @@ struct option_t MuttVars[] = {
   ** The file containing a client certificate and its associated private
   ** key.
   */
-#endif
-# if defined(USE_SSL)||defined(USE_GNUTLS)
+#endif /* USE_SSL */
+  { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
+  /*
+   ** .pp
+   ** If this variable is set, Mutt will require that all connections
+   ** to remote servers be encrypted. Furthermore it will attempt to
+   ** negotiate TLS even if the server does not advertise the capability,
+   ** since it would otherwise have to abort the connection anyway. This
+   ** option supersedes ``$$ssl_starttls''.
+   */
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
   /*
   ** .pp
@@ -1895,7 +1895,6 @@ struct option_t MuttVars[] = {
   ** advertising the capability. When unset, mutt will not attempt to
   ** use STARTTLS regardless of the server's capabilities.
   */
-# endif  
   { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
   /*
   ** .pp
@@ -1931,7 +1930,7 @@ struct option_t MuttVars[] = {
   ** This variables specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process.
   */
-# endif
+# endif /* defined _MAKEDOC || !defined(USE_GNUTLS) */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
   /*
   ** .pp
@@ -1944,7 +1943,7 @@ struct option_t MuttVars[] = {
   ** This variables specifies whether to attempt to use TLSv1 in the
   ** SSL authentication process.
   */
-#ifdef USE_GNUTLS
+# ifdef USE_GNUTLS
   { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
   /*
   ** .pp
@@ -1961,8 +1960,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
   */
-#endif
-#endif
+# endif /* USE_GNUTLS */
+#endif /* defined(USE_SSL) || defined(USE_GNUTLS) */
 
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
   /*

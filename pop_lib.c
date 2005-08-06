@@ -276,8 +276,10 @@ int pop_open_connection (POP_DATA *pop_data)
 
 #if defined(USE_SSL) || defined(USE_GNUTLS)
   /* Attempt STLS if available and desired. */
-  if (pop_data->cmd_stls && !pop_data->conn->ssf)
+  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPTSSLFORCETLS)))
   {
+    if (option(OPTSSLFORCETLS))
+      pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
       ret = query_quadoption (OPT_SSLSTARTTLS,
@@ -322,6 +324,13 @@ int pop_open_connection (POP_DATA *pop_data)
 	}
       }
     }
+  }
+
+  if (option(OPTSSLFORCETLS) && !pop_data->conn->ssf)
+  {
+    mutt_error _("Encrypted connection unavailable");
+    mutt_sleep (1);
+    return -2;
   }
 #endif
 
