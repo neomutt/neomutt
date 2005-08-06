@@ -519,10 +519,6 @@ enum
 #define toggle_option(x) mutt_bit_toggle(Options,x)
 #define option(x) mutt_bit_isset(Options,x)
 
-/* Exit values used in send_msg() */
-#define S_ERR 127
-#define S_BKG 126
-
 typedef struct list_t
 {
   char *data;

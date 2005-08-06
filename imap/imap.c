@@ -425,9 +425,6 @@ int imap_open_connection (IMAP_DATA* idata)
   idata->state = IMAP_CONNECTED;
 
   if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE) {
-    mutt_error (_("Unexpected response received from server: %s"), idata->cmd.buf);
-    mutt_sleep (1);
-
     mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
     return -1;
