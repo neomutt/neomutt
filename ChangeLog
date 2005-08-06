@@ -1,3 +1,15 @@
+2005-08-06 19:06:36  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.c: Use isalnum instead of isalpha when parsing unbraced
+	environment variable names, per tamo's suggestion. Closes #2022.
+
+2005-08-05 02:16:46  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* attach.c, attach.h, browser.c, curs_main.c, mutt.h, mutt_menu.h,
+	pager.h, protos.h: Move some attachment-related prototypes and
+	structures into attach.h from the global headers. A small step
+	towards sane dependency tracking and code cleanliness.
+                                 
 2005-08-04 01:15:52  Brendan Cully <brendan@kublai.com>  (brendan)
 
 	* compose.c: Don't unlink non-mutt files that would have been
