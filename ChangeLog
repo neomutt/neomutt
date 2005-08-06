@@ -1,4 +1,7 @@
-2005-08-06 21:19:39  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-06 22:20:55  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, lib.c, lib.h, mutt.h, mutt_tunnel.c, sendlib.c:
+	Report non-zero exit status of tunnel command. Closes: #1749.
 
 	* imap/imap.c, imap/util.c, init.h, mutt.h, pop_lib.c: Replace
 	pointless imap_force_ssl option with ssl_force_tls, which requires
