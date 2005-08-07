@@ -1,4 +1,9 @@
-2005-08-07 22:16:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-07 23:52:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/browse.c, imap/command.c, imap/imap.c, init.h, mutt.h: New
+	option: $imap_check_subscribed. If set, mutt will fetch the set of
+	subscribed mailboxes from the server and add them to the buffy
+	list.
 
 	* browser.c: Avoid a segfault attempting to browse an invalid IMAP
 	URL.
