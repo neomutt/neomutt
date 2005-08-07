@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -41,6 +41,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata);
 static void cmd_make_sequence (IMAP_DATA* idata);
 static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
 static void cmd_parse_expunge (IMAP_DATA* idata, const char* s);
+static void cmd_parse_lsub (IMAP_DATA* idata, char* s);
 static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
 
@@ -362,6 +363,8 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   }
   else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capabilities (idata, s);
+  else if (ascii_strncasecmp ("LSUB", s, 4) == 0)
+    cmd_parse_lsub (idata, s);
   else if (ascii_strncasecmp ("MYRIGHTS", s, 8) == 0)
     cmd_parse_myrights (idata, s);
   else if (ascii_strncasecmp ("BYE", s, 3) == 0)
@@ -514,6 +517,63 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
     imap_set_flags (idata, h, s);
     idata->check_status = IMAP_FLAGS_PENDING;
   }
+}
+
+static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
+{
+  char buf[STRING];
+  char errstr[STRING];
+  BUFFER err, token;
+  ciss_url_t url;
+  char *ep;
+
+  if (!option (OPTIMAPCHECKSUBSCRIBED))
+    return;
+
+  s = imap_next_word (s); /* flags */
+  
+  if (*s != '(')
+  {
+    dprint (1, (debugfile, "Bad LSUB response\n"));
+    return;
+  }
+
+  s++;
+  ep = s;
+  for (ep = s; *ep && *ep != ')'; ep++)
+    ;
+  do
+  {
+    if (!ascii_strncasecmp (s, "\\NoSelect", 9))
+      return;
+    if (*s != ')')
+      s = imap_next_word (s);
+  } while (s != ep);
+
+  s = imap_next_word (s); /* delim */
+  s = imap_next_word (s); /* name */
+  
+  if (s)
+  {
+    imap_unmunge_mbox_name (s);
+    dprint (2, (debugfile, "Subscribing to %s\n", s));
+    
+    strfcpy (buf, "mailboxes \"", sizeof (buf));
+    mutt_account_tourl (&idata->conn->account, &url);
+    url.path = s;
+    if (!mutt_strcmp (url.user, ImapUser))
+      url.user = NULL;
+    url_ciss_tostring (&url, buf + 11, sizeof (buf) - 10, 0);
+    safe_strcat (buf, sizeof (buf), "\"");
+    memset (&token, 0, sizeof (token));
+    err.data = errstr;
+    err.dsize = sizeof (errstr);
+    if (mutt_parse_rc_line (buf, &token, &err))
+      dprint (1, (debugfile, "Error adding subscribed mailbox: %s\n", errstr));
+    FREE (&token.data);
+  }
+  else
+    dprint (1, (debugfile, "Bad LSUB response\n"));
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */

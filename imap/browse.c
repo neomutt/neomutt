@@ -61,6 +61,7 @@ int imap_browse (char* path, struct browser_state* state)
   short showparents = 0;
   int noselect;
   int noinferiors;
+  int save_lsub;
   IMAP_MBOX mx;
 
   if (imap_parse_path (path, &mx))
@@ -69,6 +70,8 @@ int imap_browse (char* path, struct browser_state* state)
     return -1;
   }
 
+  save_lsub = option (OPTIMAPCHECKSUBSCRIBED);
+  unset_option (OPTIMAPCHECKSUBSCRIBED);
   strfcpy (list_cmd, option (OPTIMAPLSUB) ? "LSUB" : "LIST", sizeof (list_cmd));
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
@@ -238,10 +241,15 @@ int imap_browse (char* path, struct browser_state* state)
       }
   }
 
+  if (save_lsub)
+    set_option (OPTIMAPCHECKSUBSCRIBED);
+
   FREE (&mx.mbox);
   return 0;
 
  fail:
+  if (save_lsub)
+    set_option (OPTIMAPCHECKSUBSCRIBED);
   FREE (&mx.mbox);
   return -1;
 }

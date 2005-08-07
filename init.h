@@ -811,7 +811,7 @@ struct option_t MuttVars[] = {
   ** try them.  Authentication methods are either 'login' or the right
   ** side of an IMAP 'AUTH=xxx' capability string, eg 'digest-md5', 'gssapi'
   ** or 'cram-md5'. This parameter is case-insensitive. If this
-  ** parameter is unset (the default) mutt will try all available methods,
+  ** parameter is \fIunset\fP (the default) mutt will try all available methods,
   ** in order from most-secure to least-secure.
   ** .pp
   ** Example: set imap_authenticators="gssapi:cram-md5:login"
@@ -820,6 +820,14 @@ struct option_t MuttVars[] = {
   ** the previous methods are unavailable. If a method is available but
   ** authentication fails, mutt will not connect to the IMAP server.
   */
+  { "imap_check_subscribed",  DT_BOOL, R_NONE, OPTIMAPCHECKSUBSCRIBED, 0 },
+  /*
+   ** .pp
+   ** When \fIset\fP, mutt will fetch the set of subscribed folders from
+   ** your server on connection, and add them to the set of mailboxes
+   ** it polls for new mail. See also the ``$mailboxes'' and
+   ** ``$unmailboxes'' commands.
+   */
   { "imap_delim_chars",		DT_STR, R_NONE, UL &ImapDelimChars, UL "/." },
   /*
   ** .pp
@@ -871,7 +879,7 @@ struct option_t MuttVars[] = {
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   /*
   ** .pp
-  ** Specifies the password for your IMAP account.  If unset, Mutt will
+  ** Specifies the password for your IMAP account.  If \fIunset\fP, Mutt will
   ** prompt you for your password when you invoke the fetch-mail function.
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc even
@@ -880,7 +888,7 @@ struct option_t MuttVars[] = {
   { "imap_passive",		DT_BOOL, R_NONE, OPTIMAPPASSIVE, 1 },
   /*
   ** .pp
-  ** When set, mutt will not open new IMAP connections to check for new
+  ** When \fIset\fP, mutt will not open new IMAP connections to check for new
   ** mail.  Mutt will only check for new mail over existing IMAP
   ** connections.  This is useful if you don't want to be prompted to
   ** user/password pairs on mutt invocation, or if opening the connection
@@ -889,7 +897,7 @@ struct option_t MuttVars[] = {
   { "imap_peek", DT_BOOL, R_NONE, OPTIMAPPEEK, 1 },
   /*
   ** .pp
-  ** If set, mutt will avoid implicitly marking your mail as read whenever
+  ** When \fIset\fP, mutt will avoid implicitly marking your mail as read whenever
   ** you fetch a message from the server. This is generally a good thing,
   ** but can make closing an IMAP folder somewhat slower. This option
   ** exists to appease speed freaks.
@@ -897,7 +905,7 @@ struct option_t MuttVars[] = {
   { "imap_servernoise",		DT_BOOL, R_NONE, OPTIMAPSERVERNOISE, 1 },
   /*
   ** .pp
-  ** When set, mutt will display warning messages from the IMAP
+  ** When \fIset\fP, mutt will display warning messages from the IMAP
   ** server as error messages. Since these messages are often
   ** harmless, or generated due to configuration problems on the
   ** server which are out of the users' hands, you may wish to suppress

@@ -411,8 +411,15 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     FREE (&idata->capstr);
   }
   if (idata->state == IMAP_AUTHENTICATED)
+  {
     imap_get_delim (idata);
-  
+    if (option (OPTIMAPCHECKSUBSCRIBED))
+    {
+      mutt_message _("Checking mailbox subscriptions");
+      imap_exec (idata, "LSUB \"\" \"*\"", 0);
+    }
+  }
+
   return idata;
 }
 
