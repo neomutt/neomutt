@@ -1,3 +1,9 @@
+2005-08-07 04:58:12  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* account.c, curs_lib.c, protos.h: Make username prompts
+	unbuffered like password prompts are (no more folder-hook push
+	garbage)
+
 2005-08-06 22:20:55  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c, lib.c, lib.h, mutt.h, mutt_tunnel.c, sendlib.c:
