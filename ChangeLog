@@ -1,4 +1,10 @@
-2005-08-07 21:29:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-07 22:16:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* browser.c: Avoid a segfault attempting to browse an invalid IMAP
+	URL.
+
+	* imap/imap.c: Extend IMAP host completion to complete over open
+	connections.
 
 	* imap/imap.c: Allow IMAP tab-completion to complete over defined
 	mailboxes, saving a bunch of typing for the hostname part of the
