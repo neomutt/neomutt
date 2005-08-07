@@ -1,3 +1,12 @@
+2005-08-07 06:20:37  Anders Helmersson  <anders.helmersson.utsikt@wasadata.net>  (brendan)
+
+	* pager.c: Certain versions of libc may segfault during regex
+	processing if given incomplete multibyte characters. Work around
+	this by manually trimming the display buffer. I modified it
+	somewhat to only check when the situation is most likely to occur:
+	fgets has read all the way to the capacity of the buffer. Thanks
+	also to Tamo for his comments.
+
 2005-08-07 04:58:12  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* account.c, curs_lib.c, protos.h: Make username prompts
