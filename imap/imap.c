@@ -36,6 +36,7 @@
 #if defined(USE_SSL) || defined(USE_GNUTLS)
 # include "mutt_ssl.h"
 #endif
+#include "buffy.h"
 
 #include <unistd.h>
 #include <ctype.h>
@@ -1405,6 +1406,47 @@ int imap_subscribe (char *path, int subscribe)
   return -1;
 }
 
+/* trim dest to the length of the longest prefix it shares with src,
+ * returning the length of the trimmed string */
+static int
+longest_common_prefix (char *dest, const char* src, int start, size_t dlen)
+{
+  int pos = start;
+  
+  while (pos < dlen && dest[pos] && dest[pos] == src[pos])
+    pos++;
+  dest[pos] = '\0';
+
+  return pos;
+}
+
+/* look for IMAP URLs to complete from defined mailboxes. Could be extended
+ * to complete over open connections and account/folder hooks too. */
+static int
+imap_complete_hosts (char *dest, size_t len)
+{
+  BUFFY* mailbox;
+  int rc = -1;
+  int matchlen;
+  
+  matchlen = mutt_strlen (dest);
+  for (mailbox = Incoming; mailbox->next; mailbox = mailbox->next)
+  {
+    if (!mutt_strncmp (dest, mailbox->path, matchlen))
+    {
+      if (rc)
+      {
+        strfcpy (dest, mailbox->path, len);
+        rc = 0;
+      }
+      else
+        longest_common_prefix (dest, mailbox->path, matchlen, len);
+    }
+  }
+  
+  return rc;
+}
+
 /* imap_complete: given a partial IMAP folder path, return a string which
  *   adds as much to the path as is unique */
 int imap_complete(char* dest, size_t dlen, char* path) {
@@ -1418,19 +1460,22 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   char completion[LONG_STRING];
   int clen, matchlen = 0;
   int completions = 0;
-  int pos = 0;
   IMAP_MBOX mx;
 
-  /* verify passed in path is an IMAP path */
-  if (imap_parse_path (path, &mx))
+  if (imap_parse_path (path, &mx) || !mx.mbox)
   {
-    dprint(2, (debugfile, "imap_complete: bad path %s\n", path));
-    return -1;
+    strfcpy (dest, path, dlen);
+    return imap_complete_hosts (dest, dlen);
   }
 
-  /* don't open a new socket just for completion */
+  /* don't open a new socket just for completion. Instead complete over
+   * known mailboxes/hooks/etc */
   if (!(idata = imap_conn_find (&(mx.account), M_IMAP_CONN_NONEW)))
-    goto fail;
+  {
+    FREE (&mx.mbox);
+    strfcpy (dest, path, dlen);
+    return imap_complete_hosts (dest, dlen);
+  }
   conn = idata->conn;
 
   /* reformat path for IMAP list, and append wildcard */
@@ -1476,13 +1521,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
         continue;
       }
 
-      pos = 0;
-      while (pos < matchlen && list_word[pos] &&
-          completion[pos] == list_word[pos])
-        pos++;
-      completion[pos] = '\0';
-      matchlen = pos;
-
+      matchlen = longest_common_prefix (completion, list_word, 0, matchlen);
       completions++;
     }
   }
@@ -1497,8 +1536,6 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     FREE (&mx.mbox);
     return 0;
   }
-
- fail:
-  FREE (&mx.mbox);
+  
   return -1;
 }
