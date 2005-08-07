@@ -153,7 +153,7 @@ int mutt_account_getuser (ACCOUNT* account)
   {
     snprintf (prompt, sizeof (prompt), _("Username at %s: "), account->host);
     strfcpy (account->user, NONULL (Username), sizeof (account->user));
-    if (mutt_get_string_unbuffered (prompt, account->user, sizeof (account->user), 0))
+    if (mutt_get_field_unbuffered (prompt, account->user, sizeof (account->user), 0))
       return -1;
   }
 

@@ -293,8 +293,8 @@ int _mutt_enter_string (char *, size_t, int, int, int, int, char ***, int *, ENT
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
 int _mutt_get_field (char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_hook_type (const char *);
-int mutt_get_string_unbuffered (char *, char *, size_t, int);
-#define mutt_get_password(A,B,C) mutt_get_string_unbuffered(A,B,C,M_PASS)
+int mutt_get_field_unbuffered (char *, char *, size_t, int);
+#define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,M_PASS)
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);
 int mutt_index_menu (void);
