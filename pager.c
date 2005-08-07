@@ -969,13 +969,34 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
   return pos;
 }
 
+/* trim tail of buf so that it contains complete multibyte characters */
+static int
+trim_incomplete_mbyte(unsigned char *buf, size_t len)
+{
+  mbstate_t mbstate;
+  size_t k;
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  for (; len > 0; buf += k, len -= k)
+  {
+    k = mbrtowc (NULL, (char *) buf, len, &mbstate);
+    if (k == -2) 
+      break; 
+    else if (k == -1 || k == 0) 
+      k = 1;
+  }
+  *buf = '\0';
+
+  return len;
+}
+
 static int
 fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf, 
 	     unsigned char *fmt, size_t blen, int *buf_ready)
 {
   unsigned char *p;
   static int b_read;
-
+  
   if (*buf_ready == 0)
   {
     buf[blen - 1] = 0;
@@ -990,6 +1011,11 @@ fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf,
     b_read = (int) (*last_pos - offset);
     *buf_ready = 1;
 
+    /* incomplete mbyte characters trigger a segfault in regex processing for
+     * certain versions of glibc. Trim them if necessary. */
+    if (b_read == blen - 2)
+      b_read -= trim_incomplete_mbyte(buf, b_read);
+    
     /* copy "buf" to "fmt", but without bold and underline controls */
     p = buf;
     while (*p)
