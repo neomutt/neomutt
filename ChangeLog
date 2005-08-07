@@ -1,3 +1,13 @@
+2005-08-07 21:29:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Allow IMAP tab-completion to complete over defined
+	mailboxes, saving a bunch of typing for the hostname part of the
+	URL. Should probably be extended to complete over open connections
+	and possibly also folder/account hooks.
+
+	* account.c, curs_lib.c, protos.h: Reuse mutt_get_field for
+	mutt_get_field_unbuffered.
+
 2005-08-07 06:20:37  Anders Helmersson  <anders.helmersson.utsikt@wasadata.net>  (brendan)
 
 	* pager.c: Certain versions of libc may segfault during regex
