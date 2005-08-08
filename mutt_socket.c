@@ -440,6 +440,7 @@ int raw_socket_open (CONNECTION* conn)
   if (rc)
   {
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
+    mutt_sleep (2);
     return -1;
   }
 
