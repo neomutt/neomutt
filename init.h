@@ -825,8 +825,7 @@ struct option_t MuttVars[] = {
    ** .pp
    ** When \fIset\fP, mutt will fetch the set of subscribed folders from
    ** your server on connection, and add them to the set of mailboxes
-   ** it polls for new mail. See also the ``$mailboxes'' and
-   ** ``$unmailboxes'' commands.
+   ** it polls for new mail. See also the ``$mailboxes'' command.
    */
   { "imap_delim_chars",		DT_STR, R_NONE, UL &ImapDelimChars, UL "/." },
   /*
