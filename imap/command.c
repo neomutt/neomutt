@@ -546,8 +546,10 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   {
     if (!ascii_strncasecmp (s, "\\NoSelect", 9))
       return;
-    if (*s != ')')
-      s = imap_next_word (s);
+    while (s < ep && *s != ' ' && *s != ')')
+      s++;
+    if (*s == ' ')
+      s++;
   } while (s != ep);
 
   s = imap_next_word (s); /* delim */

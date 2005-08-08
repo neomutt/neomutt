@@ -351,6 +351,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   CONNECTION* conn;
   IMAP_DATA* idata;
   ACCOUNT* creds;
+  int new = 0;
 
   if (!(conn = mutt_conn_find (NULL, account)))
     return NULL;
@@ -392,6 +393,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 
     conn->data = idata;
     idata->conn = conn;
+    new = 1;
   }
 
   if (idata->state == IMAP_DISCONNECTED)
@@ -410,7 +412,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     
     FREE (&idata->capstr);
   }
-  if (idata->state == IMAP_AUTHENTICATED)
+  if (new && idata->state == IMAP_AUTHENTICATED)
   {
     imap_get_delim (idata);
     if (option (OPTIMAPCHECKSUBSCRIBED))

@@ -1057,7 +1057,7 @@ struct option_t MuttVars[] = {
   ** \fBDON'T CHANGE THIS SETTING UNLESS YOU ARE REALLY SURE WHAT YOU ARE
   ** DOING!\fP
   */
-#if USE_HCACHE
+#ifdef USE_HCACHE
   { "header_cache", DT_PATH, R_NONE, UL &HeaderCache, 0 },
   /*
   ** .pp
