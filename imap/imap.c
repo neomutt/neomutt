@@ -1181,7 +1181,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
 
   idata = (IMAP_DATA*) ctx->data;
 
-  if ((force || time(NULL) > idata->lastread + Timeout)
+  if ((force || time(NULL) >= idata->lastread + Timeout)
       && imap_exec (idata, "NOOP", 0) != 0)
     return -1;
 
