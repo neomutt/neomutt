@@ -1,4 +1,7 @@
-2005-08-08 03:30:59  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-08 06:44:01  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Fix edge case where we might have to wait two
+	timeouts to check for IMAP mail.
 
 	* imap/command.c, imap/imap.c, init.h: Fix bug just introduced in
 	lsub parsing that could cause mutt to loop indefinitely. Don't
