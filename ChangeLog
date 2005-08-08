@@ -1,4 +1,8 @@
-2005-08-07 23:52:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-08 00:31:57  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: If imap_check_subscribed is set, mailbox or
+	unmailbox folders in response to subscribe/unsubscribe commands in
+	the browser.
 
 	* imap/browse.c, imap/command.c, imap/imap.c, init.h, mutt.h: New
 	option: $imap_check_subscribed. If set, mutt will fetch the set of
