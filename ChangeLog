@@ -1,4 +1,11 @@
-2005-08-08 15:54:01  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-08 18:59:43  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_socket.c: Pause for a moment when a hostname fails to
+	resolve. Closes #1942.	There are a number of cases where mutt
+	cascades error messages. It might be nice if there were an error
+	stack so that low level functions could push_error instead of
+	displaying it right away, and the higher level ones could eg
+	mutt_message(_("Failed to write FCC: %s"), pop_error ())...
 
 	* main.c: Document -d option in mutt -h output. Closes #2027.
 
