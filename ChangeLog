@@ -1,4 +1,6 @@
-2005-08-08 15:36:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-08 15:54:01  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* main.c: Document -d option in mutt -h output. Closes #2027.
 
 	* init.h: Remove undefined reference to unmailboxes
 	command. Closes #2028.
@@ -136,7 +138,7 @@
 	* account.c: Fix password prompt for POP (more authentication ID
 	fallout).
 
-         * doc/manual.sgml.head: Document <backtab> key.
+	* doc/manual.sgml.head: Document <backtab> key.
                                  
 	* pgp.c: Automatically forget PGP passphrase on sign or decrypt
 	error. (closes #1025). Display "successfully decrypted" message
