@@ -1,3 +1,10 @@
+2005-08-09 16:10:40  Mads Martin Joergensen  <mmj@suse.de>  (brendan)
+
+	* copy.c: Remove an unneeded cast, which introduces
+	type-punning. Modified to use FREE instead of safe_free, since
+	that seems to be the convention. I personally don't see the
+	point.
+
 2005-08-08 18:59:43  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_socket.c: Pause for a moment when a hostname fails to
