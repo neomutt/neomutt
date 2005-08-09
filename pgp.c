@@ -381,7 +381,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
       }
       
       /* treat empty result as sign of failure */
-      if (! ftell(pgpout))
+      if (!(pgpout && ftell(pgpout)))
       {
         mutt_error _("Could not decrypt PGP message");
         pgp_void_passphrase ();
