@@ -1,4 +1,7 @@
-2005-08-09 17:41:31  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-09 19:59:46  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.sgml.head: Replace free ~ with &tilde;. Closes:
+	#2030.
 
 	* pgp.c: Move pgp failure check inside the if (invoke pgp)
 	block. Really Closes: 2032.
