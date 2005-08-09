@@ -1,3 +1,8 @@
+2005-08-09 16:24:15  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* crypt-gpgme.c: Improve translatability of crypt-gpgme. Closes:
+	#2020.
+
 2005-08-09 16:10:40  Mads Martin Joergensen  <mmj@suse.de>  (brendan)
 
 	* copy.c: Remove an unneeded cast, which introduces
