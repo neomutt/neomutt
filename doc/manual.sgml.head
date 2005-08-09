@@ -2323,7 +2323,7 @@ individually).  The <ref id="index_format"
 name="&dollar;index&lowbar;format"> variable's ``&percnt;y'' and
 ``&percnt;Y'' escapes can be used to expand ``X-Label:'' fields in the
 index, and Mutt's pattern-matcher can match regular expressions to
-``X-Label:'' fields with the ``~y'' selector.  ``X-Label:'' is not a
+``X-Label:'' fields with the ``&tilde;y'' selector.  ``X-Label:'' is not a
 standard message header field, but it can easily be inserted by procmail
 and other mail filtering agents.
 
