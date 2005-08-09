@@ -1,4 +1,7 @@
-2005-08-09 16:55:01  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-09 17:41:31  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Move pgp failure check inside the if (invoke pgp)
+	block. Really Closes: 2032.
 
 	* pgp.c: Don't ftell pgp output file if there isn't one. Closes:
 	#2032.
