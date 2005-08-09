@@ -418,7 +418,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 
 	/* clearing refs from memory */
 	for (t = refs; refs; refs = t->next, t = refs)
-	  safe_free ((void **)&refs);
+	  FREE (&refs);
 
 	if (fputc ('\n', out) == EOF)
 	  return (-1);
