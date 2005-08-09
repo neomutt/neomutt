@@ -1,3 +1,11 @@
+2005-08-09 20:13:03  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in, doc/manual.sgml.tail: Replace raw latin1
+	characters with entities, and enable latin output for
+	manual.txt. I'm not sure this is ideal for non-latin (eg
+	utf8) environments, but hopefully docbook will resolve this
+	anyway. Closes: #2029.
+
 2005-08-09 19:59:46  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/manual.sgml.head: Replace free ~ with &tilde;. Closes:
