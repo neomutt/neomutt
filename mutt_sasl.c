@@ -372,7 +372,7 @@ int mutt_sasl_interact (sasl_interact_t* interaction)
 
     interaction->len = mutt_strlen (resp)+1;
     interaction->result = safe_malloc (interaction->len);
-    memcpy (interaction->result, resp, interaction->len);
+    memcpy ((char *)interaction->result, resp, interaction->len);
 
     interaction++;
   }
@@ -501,7 +501,7 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
 
   *psecret = (sasl_secret_t*) safe_malloc (sizeof (sasl_secret_t) + len);
   (*psecret)->len = len;
-  strcpy ((*psecret)->data, account->pass);	/* __STRCPY_CHECKED__ */
+  strcpy ((char*)(*psecret)->data, account->pass);	/* __STRCPY_CHECKED__ */
 
   return SASL_OK;
 }
