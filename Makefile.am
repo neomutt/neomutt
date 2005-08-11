@@ -61,7 +61,7 @@ CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	mutt_tunnel.c pop.c pop_auth.c pop_lib.c smime.c pgp.c pgpinvoke.c pgpkey.c \
 	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
-	browser.h mbyte.h remailer.h url.h mutt_ssl_nss.c \
+	browser.h mbyte.h remailer.h url.h \
 	crypt-mod-pgp-classic.c crypt-mod-smime-classic.c \
 	pgppacket.c mutt_idna.h hcache.c mutt_ssl_gnutls.c \
 	crypt-gpgme.c crypt-mod-pgp-gpgme.c crypt-mod-smime-gpgme.c
