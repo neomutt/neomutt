@@ -147,17 +147,21 @@ int crypt_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 }
 
 /* MIME handler for the application/pgp content-type. */
-void crypt_pgp_application_pgp_handler (BODY *m, STATE *s)
+int crypt_pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK (PGP, application_handler))
-    (CRYPT_MOD_CALL (PGP, application_handler)) (m, s);
+    return (CRYPT_MOD_CALL (PGP, application_handler)) (m, s);
+  
+  return -1;
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */
-void crypt_pgp_encrypted_handler (BODY *a, STATE *s)
+int crypt_pgp_encrypted_handler (BODY *a, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK (PGP, encrypted_handler))
-    (CRYPT_MOD_CALL (PGP, encrypted_handler)) (a, s);
+    return (CRYPT_MOD_CALL (PGP, encrypted_handler)) (a, s);
+  
+  return -1;
 }
 
 /* fixme: needs documentation. */
@@ -290,10 +294,12 @@ int crypt_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 }
 
 /* MIME handler for the application/smime content-type. */
-void crypt_smime_application_smime_handler (BODY *m, STATE *s)
+int crypt_smime_application_smime_handler (BODY *m, STATE *s)
 {
   if (CRYPT_MOD_CALL_CHECK (SMIME, application_handler))
-    (CRYPT_MOD_CALL (SMIME, application_handler)) (m, s);
+    return (CRYPT_MOD_CALL (SMIME, application_handler)) (m, s);
+  
+  return -1;
 }
 
 /* MIME handler for an PGP/MIME encrypted message. */

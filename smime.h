@@ -31,7 +31,7 @@ int smime_valid_passphrase (void);
 
 int   smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
-void  smime_application_smime_handler (BODY *, STATE *);
+int  smime_application_smime_handler (BODY *, STATE *);
 
 
 BODY* smime_sign_message (BODY *);

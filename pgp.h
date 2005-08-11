@@ -52,8 +52,8 @@ pgp_key_t pgp_getkeybystr (char *, short, pgp_ring_t);
 char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
 
 void pgp_forget_passphrase (void);
-void pgp_application_pgp_handler (BODY *, STATE *);
-void pgp_encrypted_handler (BODY *, STATE *);
+int pgp_application_pgp_handler (BODY *, STATE *);
+int pgp_encrypted_handler (BODY *, STATE *);
 void pgp_extract_keys_from_attachment_list (FILE * fp, int tag, BODY * top);
 void pgp_void_passphrase (void);
 int pgp_valid_passphrase (void);

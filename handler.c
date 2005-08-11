@@ -41,8 +41,7 @@
 #define BUFO_SIZE 2000
 
 
-typedef void handler_f (BODY *, STATE *);
-typedef handler_f *handler_t;
+typedef int (*handler_t) (BODY *, STATE *);
 
 int Index_hex[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -767,7 +766,7 @@ static void enriched_set_flags (const char *tag, struct enriched_state *stte)
   }
 }
 
-void text_enriched_handler (BODY *a, STATE *s)
+int text_enriched_handler (BODY *a, STATE *s)
 {
   enum {
     TEXT, LANGLE, TAG, BOGUS_TAG, NEWLINE, ST_EOF, DONE
@@ -889,6 +888,8 @@ void text_enriched_handler (BODY *a, STATE *s)
   FREE (&(stte.buffer));
   FREE (&(stte.line));
   FREE (&(stte.param));
+
+  return 0;
 }                                                                              
 
 /*
@@ -963,7 +964,7 @@ static int flowed_visual_strlen (char *l, int i)
   return j;
 }
 
-static void text_plain_flowed_handler (BODY *a, STATE *s)
+static int text_plain_flowed_handler (BODY *a, STATE *s)
 {
   char line[LONG_STRING];
   char indent[LONG_STRING];
@@ -1185,7 +1186,8 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 
   if (col)
     state_putc ('\n', s);
-  
+
+  return 0;
 }
 
 
@@ -1197,7 +1199,7 @@ static void text_plain_flowed_handler (BODY *a, STATE *s)
 #define TXTPLAIN    2
 #define TXTENRICHED 3
 
-static void alternative_handler (BODY *a, STATE *s)
+static int alternative_handler (BODY *a, STATE *s)
 {
   BODY *choice = NULL;
   BODY *b;
@@ -1205,6 +1207,7 @@ static void alternative_handler (BODY *a, STATE *s)
   char buf[STRING];
   int type = 0;
   int mustfree = 0;
+  int rc = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
@@ -1347,18 +1350,22 @@ static void alternative_handler (BODY *a, STATE *s)
     /* didn't find anything that we could display! */
     state_mark_attach (s);
     state_puts(_("[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"), s);
+    rc = -1;
   }
 
   if (mustfree)
     mutt_free_body(&a);
+
+  return rc;
 }
 
 /* handles message/rfc822 body parts */
-void message_handler (BODY *a, STATE *s)
+int message_handler (BODY *a, STATE *s)
 {
   struct stat st;
   BODY *b;
   long off_start;
+  int rc = 0;
 
   off_start = ftell (s->fpin);
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || 
@@ -1382,12 +1389,14 @@ void message_handler (BODY *a, STATE *s)
       state_puts (s->prefix, s);
     state_putc ('\n', s);
 
-    mutt_body_handler (b->parts, s);
+    rc = mutt_body_handler (b->parts, s);
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
+  
+  return rc;
 }
 
 /* returns 1 if decoding the attachment will produce output */
@@ -1431,12 +1440,13 @@ int mutt_can_decode (BODY *a)
   return (0);
 }
 
-void multipart_handler (BODY *a, STATE *s)
+int multipart_handler (BODY *a, STATE *s)
 {
   BODY *b, *p;
   char length[5];
   struct stat st;
   int count;
+  int rc = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
@@ -1487,19 +1497,21 @@ void multipart_handler (BODY *a, STATE *s)
 	state_printf(s, "%s: \n", p->form_name);
 
     }
-    mutt_body_handler (p, s);
+    rc = mutt_body_handler (p, s);
     state_putc ('\n', s);
-    if ((s->flags & M_REPLYING)
-	&& (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE))
+    if (rc || ((s->flags & M_REPLYING)
+               && (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE)))
       break;
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
+  
+  return rc;
 }
 
-void autoview_handler (BODY *a, STATE *s)
+int autoview_handler (BODY *a, STATE *s)
 {
   rfc1524_entry *entry = rfc1524_new_entry ();
   char buffer[LONG_STRING];
@@ -1512,6 +1524,7 @@ void autoview_handler (BODY *a, STATE *s)
   FILE *fperr = NULL;
   int piped = FALSE;
   pid_t thepid;
+  int rc = 0;
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
   rfc1524_mailcap_lookup (a, type, entry, M_AUTOVIEW);
@@ -1539,7 +1552,7 @@ void autoview_handler (BODY *a, STATE *s)
     {
       mutt_perror ("fopen");
       rfc1524_free_entry (&entry);
-      return;
+      return -1;
     }
     
     mutt_copy_bytes (s->fpin, fpin, a->length);
@@ -1566,6 +1579,7 @@ void autoview_handler (BODY *a, STATE *s)
 	state_mark_attach (s);
 	state_printf (s, _("[-- Can't run %s. --]\n"), command);
       }
+      rc = -1;
       goto bail;
     }
     
@@ -1626,9 +1640,11 @@ void autoview_handler (BODY *a, STATE *s)
       mutt_clear_error ();
   }
   rfc1524_free_entry (&entry);
+
+  return rc;
 }
 
-static void external_body_handler (BODY *b, STATE *s)
+static int external_body_handler (BODY *b, STATE *s)
 {
   const char *access_type;
   const char *expiration;
@@ -1642,7 +1658,7 @@ static void external_body_handler (BODY *b, STATE *s)
       state_mark_attach (s);
       state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
     }
-    return;
+    return -1;
   }
 
   expiration = mutt_get_parameter ("expiration", b->parameter);
@@ -1718,6 +1734,8 @@ static void external_body_handler (BODY *b, STATE *s)
 		     CH_DECODE , NULL);
     }
   }
+  
+  return 0;
 }
 
 void mutt_decode_attachment (BODY *b, STATE *s)
@@ -1753,7 +1771,7 @@ void mutt_decode_attachment (BODY *b, STATE *s)
     iconv_close (cd);
 }
 
-void mutt_body_handler (BODY *b, STATE *s)
+int mutt_body_handler (BODY *b, STATE *s)
 {
   int decode = 0;
   int plaintext = 0;
@@ -1763,6 +1781,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   long tmpoffset = 0;
   size_t tmplength = 0;
   char type[STRING];
+  int rc = 0;
 
   int oflags = s->flags;
   
@@ -1913,7 +1932,7 @@ void mutt_body_handler (BODY *b, STATE *s)
     /* process the (decoded) body part */
     if (handler)
     {
-      handler (b, s);
+      rc = handler (b, s);
 
       if (decode)
       {
@@ -1941,7 +1960,9 @@ void mutt_body_handler (BODY *b, STATE *s)
     }
     fputs (" --]\n", s->fpout);
   }
-  
+
   bail:
   s->flags = oflags | (s->flags & M_FIRSTDONE);
+
+  return rc;
 }

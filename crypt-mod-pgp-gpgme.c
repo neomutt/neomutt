@@ -50,14 +50,14 @@ static int crypt_mod_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
   return pgp_gpgme_decrypt_mime (a, b, c, d);
 }
 
-static void crypt_mod_pgp_application_handler (BODY *m, STATE *s)
+static int crypt_mod_pgp_application_handler (BODY *m, STATE *s)
 {
-  pgp_gpgme_application_handler (m, s);
+  return pgp_gpgme_application_handler (m, s);
 }
 
-static void crypt_mod_pgp_encrypted_handler (BODY *m, STATE *s)
+static int crypt_mod_pgp_encrypted_handler (BODY *m, STATE *s)
 {
-  pgp_gpgme_encrypted_handler (m, s);
+  return pgp_gpgme_encrypted_handler (m, s);
 }
 
 static int crypt_mod_pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)

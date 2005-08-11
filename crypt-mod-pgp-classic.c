@@ -41,9 +41,9 @@ static int crypt_mod_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 {
   return pgp_decrypt_mime (a, b, c, d);
 }
-static void crypt_mod_pgp_application_handler (BODY *m, STATE *s)
+static int crypt_mod_pgp_application_handler (BODY *m, STATE *s)
 {
-  pgp_application_pgp_handler (m, s);
+  return pgp_application_pgp_handler (m, s);
 }
 
 static char *crypt_mod_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
@@ -86,9 +86,9 @@ static BODY *crypt_mod_pgp_traditional_encryptsign (BODY *a, int flags, char *ke
   return pgp_traditional_encryptsign (a, flags, keylist);
 }
 
-static void crypt_mod_pgp_encrypted_handler (BODY *m, STATE *s)
+static int crypt_mod_pgp_encrypted_handler (BODY *m, STATE *s)
 {
-  pgp_encrypted_handler (m, s);
+  return pgp_encrypted_handler (m, s);
 }
 
 static void crypt_mod_pgp_invoke_getkeys (ADDRESS *addr)

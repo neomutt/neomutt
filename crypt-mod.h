@@ -34,8 +34,8 @@ typedef int (*crypt_func_valid_passphrase_t)  (void);
 typedef int (*crypt_func_decrypt_mime_t) (FILE *a, FILE **b,
                                           BODY *c, BODY **d);
 
-typedef void (*crypt_func_application_handler_t) (BODY *m, STATE *s);
-typedef void (*crypt_func_encrypted_handler_t) (BODY *m, STATE *s);
+typedef int (*crypt_func_application_handler_t) (BODY *m, STATE *s);
+typedef int (*crypt_func_encrypted_handler_t) (BODY *m, STATE *s);
 
 typedef void (*crypt_func_pgp_invoke_getkeys_t) (ADDRESS *addr);
 typedef int (*crypt_func_pgp_check_traditional_t) (FILE *fp, BODY *b,

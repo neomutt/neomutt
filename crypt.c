@@ -758,7 +758,7 @@ static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
  * This routine verifies a  "multipart/signed"  body.
  */
 
-void mutt_signed_handler (BODY *a, STATE *s)
+int mutt_signed_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   char *protocol;
@@ -770,9 +770,10 @@ void mutt_signed_handler (BODY *a, STATE *s)
   int sigcnt = 0;
   int i;
   short goodsig = 1;
+  int rc = 0;
 
   if (!WithCrypto)
-    return;
+    return -1;
 
   protocol = mutt_get_parameter ("protocol", a->parameter);
   a = a->parts;
@@ -801,8 +802,7 @@ void mutt_signed_handler (BODY *a, STATE *s)
     state_attach_puts (_("[-- Error: "
                          "Inconsistent multipart/signed structure! --]\n\n"),
                        s);
-    mutt_body_handler (a, s);
-    return;
+    return mutt_body_handler (a, s);
   }
 
   
@@ -823,8 +823,7 @@ void mutt_signed_handler (BODY *a, STATE *s)
     state_printf (s, _("[-- Error: "
                        "Unknown multipart/signed protocol %s! --]\n\n"),
                   protocol);
-    mutt_body_handler (a, s);
-    return;
+    return mutt_body_handler (a, s);
   }
   
   if (s->flags & M_DISPLAY)
@@ -881,10 +880,12 @@ void mutt_signed_handler (BODY *a, STATE *s)
       state_attach_puts (_("[-- Warning: Can't find any signatures. --]\n\n"), s);
   }
   
-  mutt_body_handler (a, s);
+  rc = mutt_body_handler (a, s);
   
   if (s->flags & M_DISPLAY && sigcnt)
     state_attach_puts (_("\n[-- End of signed data --]\n"), s);
+  
+  return rc;
 }
 
 

@@ -233,7 +233,7 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
 
 /* Support for the Application/PGP Content Type. */
 
-void pgp_application_pgp_handler (BODY *m, STATE *s)
+int pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0, rv, rc;
@@ -301,7 +301,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
       if ((tmpfp = safe_fopen (tmpfname, "w+")) == NULL)
       {
 	mutt_perror (tmpfname);
-	return;
+	return -1;
       }
       
       fputs (buf, tmpfp);
@@ -331,7 +331,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	if ((pgpout = safe_fopen (outfile, "w+")) == NULL)
 	{
 	  mutt_perror (tmpfname);
-	  return;
+	  return -1;
 	}
 	
 	if ((thepid = pgp_invoke_decode (&pgpin, NULL, &pgperr, -1,
@@ -386,6 +386,7 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	{
           mutt_error _("Could not decrypt PGP message");
           pgp_void_passphrase ();
+          rc = -1;
           
           goto out;
         }
@@ -449,6 +450,8 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
     }
   }
 
+  rc = 0;
+
 out:
   m->goodsig = (maybe_goodsig && have_any_sigs);
 
@@ -466,8 +469,10 @@ out:
   if (needpass == -1)
   {
     state_attach_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
-    return;
+    return -1;
   }
+  
+  return rc;
 }
 
 static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
@@ -819,7 +824,11 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   rewind (fpout);
   
   if (fgetc (fpout) == EOF)
+  {
+    mutt_error _("Decryption failed");
+    pgp_void_passphrase ();
     return NULL;
+  }
 
   rewind (fpout);
   
@@ -873,12 +882,13 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   return (0);
 }
 
-void pgp_encrypted_handler (BODY *a, STATE *s)
+int pgp_encrypted_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout, *fpin;
   BODY *tattach;
   BODY *p = a;
+  int rc = 0;
   
   a = a->parts;
   if (!a || a->type != TYPEAPPLICATION || !a->subtype || 
@@ -888,7 +898,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY)
       state_attach_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
-    return;
+    return -1;
   }
 
   /*
@@ -901,7 +911,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY)
       state_attach_puts (_("[-- Error: could not create temporary file! --]\n"), s);
-    return;
+    return -1;
   }
 
   if (s->flags & M_DISPLAY) crypt_current_time (s, "PGP");
@@ -913,7 +923,7 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
 
     fpin = s->fpin;
     s->fpin = fpout;
-    mutt_body_handler (tattach, s);
+    rc = mutt_body_handler (tattach, s);
     s->fpin = fpin;
 
     /* 
@@ -941,10 +951,13 @@ void pgp_encrypted_handler (BODY *a, STATE *s)
     mutt_error _("Could not decrypt PGP message");
     /* void the passphrase, even if it's not necessarily the problem */
     pgp_void_passphrase ();
+    rc = -1;
   }
 
   fclose (fpout);
   mutt_unlink(tempfile);
+
+  return rc;
 }
 
 /* ----------------------------------------------------------------------------

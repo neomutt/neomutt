@@ -1929,11 +1929,9 @@ bail:
 }
 
 
-void smime_application_smime_handler (BODY *m, STATE *s)
+int smime_application_smime_handler (BODY *m, STATE *s)
 {
-    
-    smime_handle_entity (m, s, NULL);
-
+  return smime_handle_entity (m, s, NULL) ? 0 : -1;
 }
 
 int smime_send_menu (HEADER *msg, int *redraw)

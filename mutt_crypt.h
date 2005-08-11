@@ -117,7 +117,7 @@ int mutt_is_application_pgp (BODY *);
 
 int mutt_is_application_smime (BODY *);
 
-void mutt_signed_handler (BODY *, STATE *);
+int mutt_signed_handler (BODY *, STATE *);
 
 int mutt_parse_crypt_hdr (char *, int);
 
@@ -171,10 +171,10 @@ int crypt_pgp_valid_passphrase (void);
 int crypt_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
 
 /* MIME handler for the application/pgp content-type. */
-void crypt_pgp_application_pgp_handler (BODY *m, STATE *s);
+int crypt_pgp_application_pgp_handler (BODY *m, STATE *s);
 
 /* MIME handler for an PGP/MIME encrypted message. */
-void crypt_pgp_encrypted_handler (BODY *a, STATE *s);
+int crypt_pgp_encrypted_handler (BODY *a, STATE *s);
 
 /* fixme: needs documentation. */
 void crypt_pgp_invoke_getkeys (ADDRESS *addr);
@@ -233,7 +233,7 @@ int crypt_smime_valid_passphrase (void);
 int crypt_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
 
 /* MIME handler for the application/smime content-type. */
-void crypt_smime_application_smime_handler (BODY *m, STATE *s);
+int crypt_smime_application_smime_handler (BODY *m, STATE *s);
 
 /* fixme: Needs documentation. */
 void crypt_smime_getkeys (ENVELOPE *env);
