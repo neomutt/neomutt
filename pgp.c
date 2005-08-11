@@ -237,13 +237,14 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0, rv, rc;
+  int c;
   long start_pos = 0;
   long bytes, last_pos, offset;
   char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX];
   char tmpfname[_POSIX_PATH_MAX];
   FILE *pgpout = NULL, *pgpin = NULL, *pgperr = NULL;
-  FILE *tmpfp;
+  FILE *tmpfp = NULL;
   pid_t thepid;
 
   short maybe_goodsig = 1;
@@ -367,26 +368,28 @@ void pgp_application_pgp_handler (BODY *m, STATE *s)
 	  if (s->flags & M_DISPLAY)
 	  {
 	    if (rc == 0) have_any_sigs = 1;
-/*
- * Sig is bad if
- * gpg_good_sign-pattern did not match || pgp_decode_command returned not 0
- * Sig _is_ correct if
- *  gpg_good_sign="" && pgp_decode_command returned 0
- */
+	    /*
+	     * Sig is bad if
+	     * gpg_good_sign-pattern did not match || pgp_decode_command returned not 0
+	     * Sig _is_ correct if
+	     *  gpg_good_sign="" && pgp_decode_command returned 0
+	     */
 	    if (rc == -1 || rv) maybe_goodsig = 0;
-
+	    
 	    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
 	  }
 	}
-
+	
         /* treat empty result as sign of failure */
-        if (!(pgpout && ftell(pgpout)))
-        {
+	rewind (pgpout);
+        if ((c = fgetc (pgpout)) == EOF)
+	{
           mutt_error _("Could not decrypt PGP message");
           pgp_void_passphrase ();
           
           goto out;
         }
+	ungetc (c, pgpout);
       }
       
       /*
