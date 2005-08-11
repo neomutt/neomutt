@@ -1,3 +1,8 @@
+2005-08-11 21:08:55  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pgp.c: Fix verification of clearsigned PGP messages.
+	(debugged on IRC, mostly by Brendan)
+
 2005-08-11 02:15:14  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (brendan)
 
 	* configure.in: Don't test against nonexistent cache
