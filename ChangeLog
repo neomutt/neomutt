@@ -1,3 +1,12 @@
+2005-08-11 21:16:38  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* copy.c, crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c,
+	crypt-mod-pgp-gpgme.c, crypt-mod-smime-classic.c,
+	crypt-mod-smime-gpgme.c, crypt-mod.h, crypt.c, cryptglue.c,
+	handler.c, mutt_crypt.h, pgp.c, pgp.h, protos.h, smime.c, smime.h:
+	Add error results to mutt_body_handlers, and check them when
+	doing decode-save. Closes: #1919.
+
 2005-08-11 21:08:55  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Fix verification of clearsigned PGP messages.
