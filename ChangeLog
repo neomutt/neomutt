@@ -1,3 +1,9 @@
+2005-08-11 21:22:41  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* Makefile.am, VERSION, reldate.h: Fix Makefile.am.
+	(VERSION and reldate.h actually are bad commits -- but that
+	doesn't matter.  Release imminent.)
+
 2005-08-11 21:16:38  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* copy.c, crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c,
