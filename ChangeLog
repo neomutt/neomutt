@@ -1,3 +1,12 @@
+2005-08-11 02:15:14  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (brendan)
+
+	* configure.in: Don't test against nonexistent cache
+	variable. Spotted by Torsten Veller.
+
+2005-08-11 01:44:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_sasl.c: Silence some compiler warnings.
+
 2005-08-09 20:13:03  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in, doc/manual.sgml.tail: Replace raw latin1
@@ -5,8 +14,6 @@
 	manual.txt. I'm not sure this is ideal for non-latin (eg
 	utf8) environments, but hopefully docbook will resolve this
 	anyway. Closes: #2029.
-
-2005-08-09 19:59:46  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/manual.sgml.head: Replace free ~ with &tilde;. Closes:
 	#2030.
