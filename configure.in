@@ -828,7 +828,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
                                 break
                             ])
                         done
-                        test x$ac_dbcreate = xyes && break
+                        test x$ac_cv_dbcreate = xyes && break
                     fi
                 fi
             done
