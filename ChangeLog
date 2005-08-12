@@ -1,3 +1,8 @@
+2005-08-12 22:33:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/auth_sasl.c: Override SASL initial response if the server
+	spoke first in its continuation response. Closes: #2034.
+
 2005-08-12 18:24:34  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: Degnuify mutt.1 make rule. Imagining a world
