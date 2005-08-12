@@ -1,17 +1,17 @@
 # Japanese messages for Mutt.
-# Copyright (C) 2002-2004 mutt-j ML members.
+# Copyright (C) 2002, 2003, 2004, 2005 mutt-j ML members.
 # FIRST AUTHOR Kikutani Makoto <kikutani@Galaxy.net>, 1999.
 # 2nd AUTHOR OOTA,Toshiya <oota@mspd.mt.nec.co.jp>, 2002.
-#  (with TAKAHASHI Tamotsu <tamo@momonga-linux.org>, 2003, 2004)
+#  (with TAKAHASHI Tamotsu <tamo@momonga-linux.org>, 2003, 2004, 2005)
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.6\n"
-"Report-Msgid-Bugs-To: \n"
+"Project-Id-Version: 1.5.9\n"
+"Report-Msgid-Bugs-To: mutt-po, mutt-dev, mutt-j-users, or tamo\n"
 "POT-Creation-Date: 2005-08-11 23:50+0200\n"
-"PO-Revision-Date: 2004-08-30 14:00+0900\n"
+"PO-Revision-Date: 2005-08-12 19:00+0900\n"
 "Last-Translator: Tamotsu TAKAHASHI <tamo@momonga-linux.org>\n"
-"Language-Team: mutt-j <mutt-j@ribbon.or.jp>\n"
+"Language-Team: mutt-j <mutt-j-users@lists.sourceforge.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=euc-jp\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -208,9 +208,8 @@ msgid "Create is only supported for IMAP mailboxes"
 msgstr "作成機能は IMAP メールボックスのみのサポート"
 
 #: browser.c:881
-#, fuzzy
 msgid "Rename is only supported for IMAP mailboxes"
-msgstr "作成機能は IMAP メールボックスのみのサポート"
+msgstr "リネーム (移動) 機能は IMAP メールボックスのみのサポート"
 
 #: browser.c:902
 msgid "Delete is only supported for IMAP mailboxes"
@@ -719,128 +718,124 @@ msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP が既に選択されている。解除して継続?"
 
 #: crypt-gpgme.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "gpgme コンテクスト作成エラー: %s\n"
 
 #: crypt-gpgme.c:345
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "CMS プロトコル起動エラー: %s\n"
 
 #: crypt-gpgme.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "gpgme データオブジェクト作成エラー: %s\n"
 
 #: crypt-gpgme.c:431 crypt-gpgme.c:449 crypt-gpgme.c:1327
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "データオブジェクト割り当てエラー: %s\n"
 
 #: crypt-gpgme.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "データオブジェクト巻き戻しエラー: %s\n"
 
 #: crypt-gpgme.c:489 crypt-gpgme.c:536
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "データオブジェクト読み出しエラー: %s\n"
 
 #: crypt-gpgme.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "受信者 %s の追加でエラー: %s\n"
 
 #: crypt-gpgme.c:635
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr ""
+msgstr "秘密鍵 %s が見付からない: %s\n"
 
 #: crypt-gpgme.c:645
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr ""
+msgstr "秘密鍵の指定があいまい: %s\n"
 
 #: crypt-gpgme.c:657
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr ""
+msgstr "秘密鍵 %s 設定中にエラー: %s\n"
 
 #: crypt-gpgme.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "データ暗号化エラー: %s\n"
 
 #: crypt-gpgme.c:798
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "%s パターン中にエラー"
+msgstr "データ署名エラー: %s\n"
 
 #: crypt-gpgme.c:993
-#, fuzzy
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "警告: メッセージの一部は署名されていない。"
+msgstr "警告: 廃棄済みの鍵がある\n"
 
 #: crypt-gpgme.c:1002
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "警告: 署名を作成した鍵は期限切れ: 期限は "
 
 #: crypt-gpgme.c:1008
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "サーバの証明書が期限切れ"
+msgstr "警告: 少なくとも一つの証明書で鍵が期限切れ\n"
 
 #: crypt-gpgme.c:1024
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "警告: 署名が期限切れ: 期限は "
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "鍵や証明書の不足により、検証できない\n"
 
 #: crypt-gpgme.c:1035
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "SSL が利用できない。"
+msgstr "CRL が利用できない\n"
 
 #: crypt-gpgme.c:1041
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "利用できる CRL は古すぎる\n"
 
 #: crypt-gpgme.c:1046
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "ポリシーの条件が満たされなかった\n"
 
 #: crypt-gpgme.c:1055
 msgid "A system error occurred"
-msgstr ""
+msgstr "システムエラーが発生"
 
 #: crypt-gpgme.c:1092 crypt-gpgme.c:3036
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "フィンガープリント: %s"
+msgstr "フィンガープリント: "
 
 #: crypt-gpgme.c:1152
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
-msgstr ""
+msgstr "警告: この鍵が上記の人物のものかどうかを示す証拠は一切ない\n"
 
 #: crypt-gpgme.c:1159
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "警告: この鍵は上記の人物のものではない!\n"
 
 #: crypt-gpgme.c:1163
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
-msgstr ""
+msgstr "警告: この鍵が確実に上記の人物のものだとは言えない\n"
 
 #: crypt-gpgme.c:1238
 msgid "Error getting key information: "
-msgstr ""
+msgstr "鍵の情報取得エラー: "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
@@ -848,70 +843,69 @@ msgstr ""
 #. ultimate).
 #: crypt-gpgme.c:1245 crypt-gpgme.c:1278
 msgid "Good signature from: "
-msgstr ""
+msgstr "正しい署名: "
 
 #: crypt-gpgme.c:1255
 msgid "                aka: "
-msgstr ""
+msgstr "　　　別名: "
 
 #: crypt-gpgme.c:1259 crypt-gpgme.c:1281
 msgid "            created: "
-msgstr ""
+msgstr "　署名日付: "
 
 #: crypt-gpgme.c:1268
 msgid "*BAD* signature claimed to be from: "
-msgstr ""
+msgstr "**不正な署名**　主張: "
 
 #: crypt-gpgme.c:1291
-#, fuzzy
 msgid "Error checking signature"
-msgstr "メッセージ送信エラー。"
+msgstr "署名検証エラー"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
 #: crypt-gpgme.c:1335 crypt-gpgme.c:1539 crypt-gpgme.c:2031
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- 署名情報開始 --]\n"
 
 #: crypt-gpgme.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "コマンドラインでエラー: %s\n"
+msgstr "エラー: 検証に失敗した: %s\n"
 
 #: crypt-gpgme.c:1386
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** 註釈開始 (%s の署名に関して) ***\n"
 
 #: crypt-gpgme.c:1405
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** 註釈終了 ***\n"
 
 #: crypt-gpgme.c:1413 crypt-gpgme.c:1552 crypt-gpgme.c:2046
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
+"[-- 署名情報終了 --]\n"
 "\n"
-"[-- 署名データ終了 --]\n"
 
 #: crypt-gpgme.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- エラー: 一時ファイルを作成できなかった! --]\n"
+msgstr "[-- エラー: 復号化に失敗した: %s --]\n"
+"\n"
 
 #: crypt-gpgme.c:2006
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "エラー: 復号化/検証が失敗した: %s\n"
 
 #: crypt-gpgme.c:2054
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "エラー: データのコピーに失敗した\n"
 
 #: crypt-gpgme.c:2074 pgp.c:405
 msgid ""
@@ -966,12 +960,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- エラー: 一時ファイルを作成できなかった! --]\n"
 
 #: crypt-gpgme.c:2186
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- 以下のデータは PGP/MIME で暗号化されている --]\n"
+"[-- 以下のデータは PGP/MIME で署名および暗号化されている --]\n"
 "\n"
 
 #: crypt-gpgme.c:2187 pgp.c:922
@@ -983,154 +976,142 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2209
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr "[-- PGP/MIME 暗号化データ終了 --]\n"
+msgstr "[-- PGP/MIME 署名および暗号化データ終了 --]\n"
 
 #: crypt-gpgme.c:2210 pgp.c:942
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- PGP/MIME 暗号化データ終了 --]\n"
 
 #: crypt-gpgme.c:2252
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr "[-- 以下のデータは S/MIME で署名されている --]\n"
+"\n"
 
 #: crypt-gpgme.c:2253
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr "[-- 以下のデータは S/MIME で暗号化されている --]\n"
+"\n"
 
 #: crypt-gpgme.c:2283
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME 署名データ終了 --]\n"
+msgstr "[-- S/MIME 署名データ終了 --]\n"
 
 #: crypt-gpgme.c:2284
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- S/MIME 暗号化データ終了 --]\n"
+msgstr "[-- S/MIME 暗号化データ終了 --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[このユーザ ID は表示できない (文字コードが不明)]"
 
 #: crypt-gpgme.c:2878
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[このユーザ ID は表示できない (文字コードが不正)]"
 
 #: crypt-gpgme.c:2883
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[このユーザ ID は表示できない (DN が不正)]"
 
+# "シリアル番号" == 全角 6 文字
+# "フィンガープリント" == 全角 9 文字
 #: crypt-gpgme.c:2962
 msgid " aka ......: "
-msgstr ""
+msgstr " 別名 ............: "
 
 #: crypt-gpgme.c:2962
 msgid "Name ......: "
-msgstr ""
+msgstr "名前 .............: "
 
-# 不正より不信か？
 #: crypt-gpgme.c:2965 crypt-gpgme.c:3104
-#, fuzzy
 msgid "[Invalid]"
-msgstr "不正      "
+msgstr "[不正]"
 
 #: crypt-gpgme.c:2985 crypt-gpgme.c:3128
-#, fuzzy, c-format
+#, c-format
 msgid "Valid From : %s\n"
-msgstr "%s は不正な月"
+msgstr "発効期日 .........: %s\n"
 
 #: crypt-gpgme.c:2998 crypt-gpgme.c:3141
-#, fuzzy, c-format
+#, c-format
 msgid "Valid To ..: %s\n"
-msgstr "%s は不正な月"
+msgstr "有効期限 .........: %s\n"
 
 #: crypt-gpgme.c:3011 crypt-gpgme.c:3154
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr ""
+msgstr "鍵種別 ...........: %s, %lu ビット %s\n"
 
 #: crypt-gpgme.c:3013 crypt-gpgme.c:3156
 #, c-format
 msgid "Key Usage .: "
-msgstr ""
+msgstr "鍵能力 ...........: "
 
 #: crypt-gpgme.c:3018 crypt-gpgme.c:3161
-#, fuzzy
 msgid "encryption"
 msgstr "暗号化"
 
 #: crypt-gpgme.c:3019 crypt-gpgme.c:3024 crypt-gpgme.c:3029 crypt-gpgme.c:3162
 #: crypt-gpgme.c:3167 crypt-gpgme.c:3172
 msgid ", "
-msgstr ""
+msgstr "、"
 
 #: crypt-gpgme.c:3023 crypt-gpgme.c:3166
 msgid "signing"
-msgstr ""
+msgstr "署名"
 
 #: crypt-gpgme.c:3028 crypt-gpgme.c:3171
-#, fuzzy
 msgid "certification"
-msgstr "証明書を保存した"
+msgstr "証明"
 
 #: crypt-gpgme.c:3068
 #, c-format
 msgid "Serial-No .: 0x%s\n"
-msgstr ""
+msgstr "シリアル番号 .....: 0x%s\n"
 
 #: crypt-gpgme.c:3076
 #, c-format
 msgid "Issued By .: "
-msgstr ""
+msgstr "発行者 ...........: "
 
 #. display only the short keyID
 #: crypt-gpgme.c:3095
-#, fuzzy, c-format
+#, c-format
 msgid "Subkey ....: 0x%s"
-msgstr "鍵 ID: 0x%s"
+msgstr "副鍵 .............: 0x%s"
 
 #: crypt-gpgme.c:3099
-#, fuzzy
 msgid "[Revoked]"
-msgstr "廃棄済み  "
+msgstr "[廃棄済み]"
 
 #: crypt-gpgme.c:3109
-#, fuzzy
 msgid "[Expired]"
-msgstr "期限切れ  "
+msgstr "[期限切れ]"
 
 #: crypt-gpgme.c:3114
 msgid "[Disabled]"
-msgstr ""
+msgstr "[使用不可]"
 
 #: crypt-gpgme.c:3198 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "一時ファイルを作成できない"
 
 #: crypt-gpgme.c:3201
-#, fuzzy
 msgid "Collecting data..."
-msgstr "%s に接続中..."
+msgstr "データ収集中..."
 
 #: crypt-gpgme.c:3227
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "サーバ %s への接続エラー。"
+msgstr "発行者鍵の取得エラー: %s\n"
 
 #: crypt-gpgme.c:3237
 msgid "Error: certification chain to long - stopping here\n"
-msgstr ""
+msgstr "エラー: 証明書の連鎖が長すぎる - ここでやめておく\n"
 
 #: crypt-gpgme.c:3248 pgpkey.c:580
 #, c-format
@@ -1138,24 +1119,23 @@ msgid "Key ID: 0x%s"
 msgstr "鍵 ID: 0x%s"
 
 #: crypt-gpgme.c:3331
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "SSL は %s で失敗。"
+msgstr "gpgme_new 失敗: %s"
 
 #: crypt-gpgme.c:3370 crypt-gpgme.c:3433
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start 失敗: %s"
 
 #: crypt-gpgme.c:3420 crypt-gpgme.c:3461
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next 失敗: %s"
 
 #: crypt-gpgme.c:3532
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "一致した鍵はすべて期限切れか廃棄済み、または使用禁止。"
+msgstr "一致した鍵はすべて期限切れか廃棄済み。"
 
 #: crypt-gpgme.c:3561 mutt_ssl.c:676 mutt_ssl_gnutls.c:770 pgpkey.c:514
 #: smime.c:431
@@ -1170,37 +1150,34 @@ msgstr "選択  "
 #. __STRCAT_CHECKED__
 #: crypt-gpgme.c:3566 pgpkey.c:519
 msgid "Check key  "
-msgstr "PGP 鍵検査  "
+msgstr "鍵検査  "
 
 #: crypt-gpgme.c:3583
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP 鍵は \"%s\" に一致。"
+msgstr "一致する PGP および S/MIME 鍵"
 
 #: crypt-gpgme.c:3585
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "PGP 鍵は \"%s\" に一致。"
+msgstr "一致する PGP 鍵"
 
 #: crypt-gpgme.c:3587
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "S/MIME 証明書は \"%s\" に一致。"
+msgstr "一致する S/MIME 鍵"
 
 #: crypt-gpgme.c:3589
-#, fuzzy
 msgid "keys matching"
-msgstr "PGP 鍵は \"%s\" に一致。"
+msgstr "一致する鍵"
 
+# "<hoge@example.org> に一致する S/MIME 鍵。"
 #: crypt-gpgme.c:3592
 #, c-format
 msgid "%s <%s>."
-msgstr ""
+msgstr "<%2$s> に%1$s。"
 
 #: crypt-gpgme.c:3594
 #, c-format
 msgid "%s \"%s\"."
-msgstr ""
+msgstr "「%2$s」に%1$s。"
 
 #: crypt-gpgme.c:3621 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
@@ -1246,30 +1223,24 @@ msgstr "%s の鍵 ID 入力: "
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
-msgstr ""
+msgstr "\ngpg-agent が実行されていないのに GPGME を使用している"
 
 #: crypt-gpgme.c:4131
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s, c:なし "
+msgstr "S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし "
 
 #: crypt-gpgme.c:4132
-#, fuzzy
 msgid "esabpfc"
-msgstr "eswabfc"
+msgstr "esabpfc"
 
 #: crypt-gpgme.c:4135
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s, c:なし "
+msgstr "PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし "
 
 #: crypt-gpgme.c:4136
-#, fuzzy
 msgid "esabmfc"
-msgstr "eswabfc"
+msgstr "esabmfc"
 
-#. sign (a)s
-#. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
 #: crypt-gpgme.c:4152 pgp.c:1558 smime.c:1990
 msgid "Sign as: "
@@ -1277,12 +1248,11 @@ msgstr "署名に使う鍵: "
 
 #: crypt-gpgme.c:4249
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "送信者の検証に失敗した"
 
 #: crypt-gpgme.c:4252
-#, fuzzy
 msgid "Failed to figure out sender"
-msgstr "ヘッダ解析のためのファイルオープンに失敗。"
+msgstr "送信者の識別に失敗した"
 
 #: crypt.c:69
 #, c-format
@@ -1378,12 +1348,11 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
-msgstr ""
+msgstr "crypt_use_gpgme が設定されているが GPGME サポート付きでビルドされていない。"
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking SMIME..."
-msgstr "PGP 起動中..."
+msgstr "S/MIME 起動中..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -1557,24 +1526,23 @@ msgstr "スレッド表示が有効になっていない。"
 
 #: curs_main.c:1206
 msgid "Thread broken"
-msgstr ""
+msgstr "スレッドが外された"
 
 #: curs_main.c:1228
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Message-ID ヘッダが利用できないのでスレッドをつなげられない"
 
 #: curs_main.c:1230
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "このメッセージを「書きかけ」にする"
+msgstr "その前に、ここへつなげたいメッセージにタグを付けておくこと"
 
 #: curs_main.c:1242
 msgid "Threads linked"
-msgstr ""
+msgstr "スレッドがつながった"
 
 #: curs_main.c:1245
 msgid "No thread linked"
-msgstr ""
+msgstr "スレッドはつながらなかった"
 
 #: curs_main.c:1281 curs_main.c:1306
 msgid "You are on the last message."
@@ -2003,20 +1971,20 @@ msgstr "メールボックスには名前が必要。"
 msgid "Mailbox created."
 msgstr "メールボックスが作成された。"
 
+# 長いから「メールボックス」を削ってもいいかも
 #: imap/browse.c:332
-#, fuzzy, c-format
+#, c-format
 msgid "Rename mailbox %s to: "
-msgstr "メールボックスを作成: "
+msgstr "メールボックス %s のリネーム(移動)先: "
 
 #: imap/browse.c:345
-#, fuzzy, c-format
+#, c-format
 msgid "Rename failed: %s"
-msgstr "SSL は %s で失敗。"
+msgstr "リネーム (移動) 失敗: %s"
 
 #: imap/browse.c:350
-#, fuzzy
 msgid "Mailbox renamed."
-msgstr "メールボックスが作成された。"
+msgstr "メールボックスがリネーム (移動) された。"
 
 #: imap/command.c:294
 msgid "Mailbox closed"
@@ -2040,7 +2008,7 @@ msgstr "この IMAP サーバは古い。これでは Mutt はうまく機能しない。"
 
 #: imap/imap.c:420
 msgid "Checking mailbox subscriptions"
-msgstr ""
+msgstr "メールボックスの購読状況を確認中"
 
 #: imap/imap.c:458 pop_lib.c:286
 msgid "Secure connection with TLS?"
@@ -2052,7 +2020,7 @@ msgstr "TLS 接続を確立できなかった"
 
 #: imap/imap.c:487 pop_lib.c:331
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "暗号化された接続が利用できない"
 
 #: imap/imap.c:616
 #, c-format
@@ -2734,7 +2702,7 @@ msgstr "新規メッセージを作成"
 
 #: keymap_alldefs.h:103
 msgid "break the thread in two"
-msgstr ""
+msgstr "スレッドをはずす"
 
 #: keymap_alldefs.h:104
 msgid "open a different folder"
@@ -2773,9 +2741,8 @@ msgid "show only messages matching a pattern"
 msgstr "パターンに一致したメッセージだけ表示"
 
 #: keymap_alldefs.h:113
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "タグ付きメッセージの再送先: "
+msgstr "タグ付きメッセージを現在位置につなぐ"
 
 #: keymap_alldefs.h:114
 msgid "jump to the next new message"
@@ -2934,9 +2901,8 @@ msgid "{internal}"
 msgstr "{内部}"
 
 #: keymap_alldefs.h:153
-#, fuzzy
 msgid "rename the current mailbox (IMAP only)"
-msgstr "現在のメールボックスを削除(IMAPのみ)"
+msgstr "現在のメールボックスをリネーム(IMAPのみ)"
 
 #: keymap_alldefs.h:154
 msgid "reply to a message"
@@ -3147,7 +3113,7 @@ msgid ""
 msgstr ""
 "開発者(本家)に連絡をとるには <mutt-dev@mutt.org> へメールせよ。\n"
 "バグをレポートするには flea (1) ユーティリティを使用せよ。\n"
-"日本語版のバグレポートおよび連絡は mutt-j ML へ。\n"
+"日本語版のバグレポートおよび連絡は mutt-j-users ML へ。\n"
 
 #: main.c:55
 msgid ""
@@ -3186,7 +3152,6 @@ msgid ""
 msgstr ""
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3213,6 +3178,7 @@ msgstr ""
 "             [-Q <問い合わせ> ]\n"
 "        mutt [-nR] [-e <コマンド>] [-F <ファイル>] -A <別名> \n"
 "             [-A <別名> ]\n"
+"        mutt [-nR] [-e <コマンド>] [-F <ファイル>] -D\n"
 "        mutt [-nx] [-e <コマンド>] [-a <ファイル>] [-F <ファイル>] \n"
 "             [-H <ファイル>] [-i <ファイル>] [-s <題名>] [-b <アドレス>] \n"
 "             [-c <アドレス>] <アドレス> [ ... ]\n"
@@ -3224,30 +3190,13 @@ msgstr ""
 "  -a <ファイル>\tメッセージにファイルを添付\n"
 "  -b <アドレス>\tblind carbon-copy (BCC) アドレスの指定\n"
 "  -c <アドレス>\tcarbon-copy (CC) アドレスの指定\n"
-"  -e <コマンド>\t初期化後に実行するコマンドの指定\n"
-"  -f <ファイル>\t読み出しメールボックスの指定\n"
-"  -F <ファイル>\t代替 muttrc ファイルの指定\n"
-"  -H <ファイル>\tへッダを読むために下書ファイルを指定\n"
-"  -i <ファイル>\t返信時に Mutt が挿入するファイルの指定\n"
-"  -m <タイプ>\tメールボックス形式の指定\n"
-"  -n\t\tシステム既定の Muttrc を読まないことの指定\n"
-"  -p\t\t保存されている (書きかけ) メッセージの再読み出しの指定\n"
-"  -Q <variable>\t設定変数の問い合わせ\n"
-"  -R\t\tメールボックスを読み出し専用モードでオープンすることの指定\n"
-"  -s <題名>\t題名の指定 (空白がある場合には引用符でくくること)\n"
-"  -v\t\tバージョンとコンパイル時指定の表示\n"
-"  -x\t\tmailx 送信モードのシミュレート\n"
-"  -y\t\t指定された `mailboxes' リストの中からのメールボックスの選択\n"
-"  -z\t\tメールボックス中にメッセージが無ければすぐに終了\n"
-"  -Z\t\t新着メッセージが無ければすぐに終了\n"
-"  -h\t\tこのヘルプメッセージ"
+"  -D\t\t変数をすべて標準エラー出力へ表示"
 
 #: main.c:114
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr ""
+msgstr "  -d <レベル>\tデバグ出力を ~/.muttdebug0 に記録"
 
 #: main.c:117
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3267,23 +3216,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"使用法: mutt [-nRyzZ] [-e <コマンド>] [-F <ファイル>] [-m <タイプ>] \n"
-"             [-f <ファイル>]\n"
-"        mutt [-nR] [-e <コマンド>] [-F <ファイル>] -Q <問い合わせ> \n"
-"             [-Q <問い合わせ> ]\n"
-"        mutt [-nR] [-e <コマンド>] [-F <ファイル>] -A <別名> \n"
-"             [-A <別名> ]\n"
-"        mutt [-nx] [-e <コマンド>] [-a <ファイル>] [-F <ファイル>] \n"
-"             [-H <ファイル>] [-i <ファイル>] [-s <題名>] [-b <アドレス>] \n"
-"             [-c <アドレス>] <アドレス> [ ... ]\n"
-"        mutt [-n] [-e <コマンド>] [-F <ファイル>] -p\n"
-"        mutt -v[v]\n"
-"\n"
-"オプション:\n"
-"  -A <別名>\t指定した別名の展開\n"
-"  -a <ファイル>\tメッセージにファイルを添付\n"
-"  -b <アドレス>\tblind carbon-copy (BCC) アドレスの指定\n"
-"  -c <アドレス>\tcarbon-copy (CC) アドレスの指定\n"
 "  -e <コマンド>\t初期化後に実行するコマンドの指定\n"
 "  -f <ファイル>\t読み出しメールボックスの指定\n"
 "  -F <ファイル>\t代替 muttrc ファイルの指定\n"
@@ -3335,7 +3267,7 @@ msgstr "%s が %s のために作成できない。"
 
 #: main.c:795
 msgid "No recipients specified.\n"
-msgstr "受取人が指定されていない。\n"
+msgstr "受信者が指定されていない。\n"
 
 #: main.c:881
 #, c-format
@@ -3654,89 +3586,82 @@ msgstr "証明書を保存した"
 
 #: mutt_ssl_gnutls.c:95 mutt_ssl_gnutls.c:117
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "エラー: TLS ソケットが開いていない"
 
 #: mutt_ssl_gnutls.c:204
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "TLS/SSL 接続に利用可能なプロトコルがすべて無効"
 
 #: mutt_ssl_gnutls.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "%s を使った SSL 接続 (%s)"
+msgstr "%s を使った SSL/TLS 接続 (%s/%s/%s)"
 
 #: mutt_ssl_gnutls.c:508
-#, fuzzy, c-format
+#, c-format
 msgid "Certificate verification error (%s)"
-msgstr "証明書 \"%s\" が \"%s\" に対して存在する。"
+msgstr "証明書の検証エラー (%s)"
 
 #: mutt_ssl_gnutls.c:516
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "証明書を保存した"
+msgstr "証明書が X.509 でない"
 
 #: mutt_ssl_gnutls.c:523
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "端末初期化エラー"
+msgstr "gnutls 証明書データ初期化エラー"
 
 #: mutt_ssl_gnutls.c:539
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "証明書データ処理エラー"
 
 #: mutt_ssl_gnutls.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "フィンガープリント: %s"
+msgstr "SHA1 フィンガープリント: %s"
 
 #: mutt_ssl_gnutls.c:727
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "フィンガープリント: %s"
+msgstr "MD5 フィンガープリント: %s"
 
 #: mutt_ssl_gnutls.c:732
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "サーバの証明書はまだ有効でない"
+msgstr "警告: サーバの証明書はまだ有効でない"
 
 #: mutt_ssl_gnutls.c:737
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "サーバの証明書が期限切れ"
+msgstr "警告: サーバの証明書が期限切れ"
 
 #: mutt_ssl_gnutls.c:742
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "サーバの証明書が期限切れ"
+msgstr "警告: サーバの証明書が廃棄済み"
 
 #: mutt_ssl_gnutls.c:747
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "警告: サーバのホスト名が証明書と一致しない"
 
 #: mutt_ssl_gnutls.c:752
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "サーバの証明書はまだ有効でない"
+msgstr "警告: サーバの証明書は署名者が CA でない"
 
 #: mutt_ssl_gnutls.c:755
-#, fuzzy
 msgid "TLS/SSL Certificate check"
-msgstr "SSL 証明書検査"
+msgstr "TLS/SSL 証明書検査"
 
 #: mutt_tunnel.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "%s に接続中..."
+msgstr "\"%s\" で接続中..."
 
 #: mutt_tunnel.c:137
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "%s へのトンネルがエラー %d (%s) を返した"
 
 #: mutt_tunnel.c:155 mutt_tunnel.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "%s への交信エラー (%s)。"
+msgstr "%s へのトンネル交信エラー: %s"
 
 # 参考: "Save to file: " => "保存するファイル: " (alias.c, recvattach.c)
 #: muttlib.c:910
@@ -4043,15 +3968,13 @@ msgstr ""
 "\n"
 
 #: pgp.c:387 pgp.c:951
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "メッセージをコピーできなかった"
+msgstr "PGP メッセージを復号化できなかった"
 
 #. clear 'Invoking...' message, since there's no error
 #: pgp.c:436 pgp.c:947
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "PGP 署名の検証に成功した。"
+msgstr "PGP メッセージの復号化に成功した。"
 
 #: pgp.c:723
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
@@ -4066,9 +3989,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:828
-#, fuzzy
 msgid "Decryption failed"
-msgstr "復号化に失敗した。"
+msgstr "復号化に失敗した"
 
 #: pgp.c:1003
 msgid "Can't open PGP subprocess!"
