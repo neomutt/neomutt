@@ -1,9 +1,10 @@
-2005-08-12 22:33:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-12 23:06:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_ssl_gnutls.c: Turn off input buffering for gnutls SSL
+	certificate menu, as we do in the openssl version.
 
 	* imap/auth_sasl.c: Override SASL initial response if the server
 	spoke first in its continuation response. Closes: #2034.
-
-2005-08-12 18:24:34  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: Degnuify mutt.1 make rule. Imagining a world
 	in which gnu documentation flagged any extensions to standard
