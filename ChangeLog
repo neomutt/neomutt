@@ -1,3 +1,9 @@
+2005-08-12 18:24:34  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in: Degnuify mutt.1 make rule. Imagining a world
+	in which gnu documentation flagged any extensions to standard
+	utilities almost makes me cry.
+
 2005-08-12 12:52:11  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* po/ja.po: update
