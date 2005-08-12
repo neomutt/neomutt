@@ -165,18 +165,18 @@ dist distdir: Makefile $(DISTFILES)
 
 update-doc:  ../makedoc$(EXEEXT) stamp-doc-sgml stamp-doc-man manual.txt manual.html
 
-EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
-	-e 's,@bindir\@,$(bindir),g' \
-	-e 's,@docdir\@,$(docdir),g'
-
-mutt.1: $(srcdir)/mutt.man
-	$(EDIT) $< > $@
-
 muttrc.man stamp-doc-man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
 		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail\
 		> muttrc.man
 	touch stamp-doc-man
+
+EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
+	-e 's,@bindir\@,$(bindir),g' \
+	-e 's,@docdir\@,$(docdir),g'
+
+mutt.1: $(srcdir)/mutt.man
+	$(EDIT) $(srcdir)/mutt.man > $@
 
 manual.sgml stamp-doc-sgml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.sgml.head manual.sgml.tail $(top_srcdir)/VERSION
 	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION`/" $(srcdir)/manual.sgml.head ;\
