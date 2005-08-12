@@ -1,3 +1,7 @@
+2005-08-12 07:49:37  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* po/fr.po: Update.
+
 2005-08-12 03:57:16  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* configure.in: Force configure to depend on VERSION. That's been
