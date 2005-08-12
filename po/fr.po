@@ -2,13 +2,16 @@
 # Copyright (C) 1998-2005 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>
 # Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.org>, 1998-2005
 #
+# Note [VL]. In case you need it, you may find the latest temporary version
+#            at this URL:   http://www.vinc17.org/mutt/fr.po
+#
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.9\n"
+"Project-Id-Version: Mutt 1.5.10\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-11 23:50+0200\n"
-"PO-Revision-Date: 2005-06-13 17:35+0200\n"
+"POT-Creation-Date: 2005-08-12 01:41+0200\n"
+"PO-Revision-Date: 2005-08-12 01:40+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -749,135 +752,135 @@ msgstr "PGP déjà sélectionné. Effacer & continuer ? "
 
 # , c-format
 #: crypt-gpgme.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors de la création du contexte gpgme : %s\n"
 
 #: crypt-gpgme.c:345
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "erreur lors de l'activation du protocole CMS : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors de la création de l'objet gpgme : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:431 crypt-gpgme.c:449 crypt-gpgme.c:1327
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors de l'allocation de l'objet : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors du retour au début de l'objet : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:489 crypt-gpgme.c:536
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors de la lecture de l'objet : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors de l'ajout du destinataire « %s » : %s\n"
 
 #: crypt-gpgme.c:635
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr ""
+msgstr "clé secrète « %s » non trouvée : %s\n"
 
 #: crypt-gpgme.c:645
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr ""
+msgstr "spécification de la clé secrète « %s » ambiguë\n"
 
 #: crypt-gpgme.c:657
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr ""
+msgstr "erreur lors de la mise en place de la clé secrète « %s »: %s\n"
 
 # , c-format
 #: crypt-gpgme.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors du chiffrage des données : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:798
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "erreur dans le motif à : %s"
+msgstr "erreur lors de la signature des données : %s\n"
 
 #: crypt-gpgme.c:993
-#, fuzzy
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Attention ! Une partie de ce message n'a pas été signée."
+msgstr "Attention ! Une des clés a été révoquée\n"
 
 #: crypt-gpgme.c:1002
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "Attention ! La clé utilisée pour créer la signature a expiré à :"
 
 #: crypt-gpgme.c:1008
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Le certificat du serveur a expiré"
+msgstr "Attention ! Au moins une clé de certification a expiré\n"
 
 #: crypt-gpgme.c:1024
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Attention ! La signature a expiré à :"
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "Impossible de vérifier par suite d'une clé ou certificat manquant\n"
 
 #: crypt-gpgme.c:1035
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "SSL n'est pas disponible."
+msgstr "La CRL n'est pas disponible.\n"
 
 #: crypt-gpgme.c:1041
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "La CRL disponible est trop ancienne\n"
 
 #: crypt-gpgme.c:1046
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "Désaccord avec une partie de la politique\n"
 
 #: crypt-gpgme.c:1055
 msgid "A system error occurred"
-msgstr ""
+msgstr "Une erreur système s'est produite"
 
 #: crypt-gpgme.c:1092 crypt-gpgme.c:3036
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "Empreinte: %s"
+msgstr "Empreinte : "
 
 #: crypt-gpgme.c:1152
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
+"ATTENTION ! Nous n'avons AUCUNE indication informant si la clé appartient à "
+"la personne nommée ci-dessus\n"
 
 #: crypt-gpgme.c:1159
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "ATTENTION ! La clé N'APPARTIENT PAS à la personne nommée ci-dessus\n"
 
 #: crypt-gpgme.c:1163
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
+"ATTENTION ! Il n'est PAS certain que la clé appartienne à la personne nommée "
+"ci-dessus\n"
 
 #: crypt-gpgme.c:1238
 msgid "Error getting key information: "
-msgstr ""
+msgstr "Erreur en récupérant les informations sur la clé : "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
@@ -885,71 +888,71 @@ msgstr ""
 #. ultimate).
 #: crypt-gpgme.c:1245 crypt-gpgme.c:1278
 msgid "Good signature from: "
-msgstr ""
+msgstr "Bonne signature de : "
 
 #: crypt-gpgme.c:1255
 msgid "                aka: "
-msgstr ""
+msgstr "             alias : "
 
 #: crypt-gpgme.c:1259 crypt-gpgme.c:1281
 msgid "            created: "
-msgstr ""
+msgstr "             créée : "
 
 #: crypt-gpgme.c:1268
 msgid "*BAD* signature claimed to be from: "
-msgstr ""
+msgstr "*MAUVAISE* signature prétendant venir de : "
 
 #: crypt-gpgme.c:1291
-#, fuzzy
 msgid "Error checking signature"
-msgstr "Erreur en envoyant le message."
+msgstr "Erreur en vérifiant la signature"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
 #: crypt-gpgme.c:1335 crypt-gpgme.c:1539 crypt-gpgme.c:2031
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Début des informations sur la signature --]\n"
 
 # , c-format
 #: crypt-gpgme.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "Erreur dans la ligne de commande : %s\n"
+msgstr "Erreur : la vérification a échoué : %s\n"
 
 #: crypt-gpgme.c:1386
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Début de la note (signature par : %s) ***\n"
 
 #: crypt-gpgme.c:1405
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Fin de la note ***\n"
 
 #: crypt-gpgme.c:1413 crypt-gpgme.c:1552 crypt-gpgme.c:2046
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
+"[-- Fin des informations sur la signature --]\n"
 "\n"
-"[-- Fin des données signées --]\n"
 
 #: crypt-gpgme.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- Erreur : impossible de créer le fichier temporaire ! --]\n"
+msgstr ""
+"[-- Erreur : le déchiffrage a échoué : %s --]\n"
+"\n"
 
 #: crypt-gpgme.c:2006
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Erreur : le déchiffrage/vérification a échoué : %s\n"
 
 #: crypt-gpgme.c:2054
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Erreur : la copie des données a échoué\n"
 
 #: crypt-gpgme.c:2074 pgp.c:405
 msgid ""
@@ -1004,12 +1007,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Erreur : impossible de créer le fichier temporaire ! --]\n"
 
 #: crypt-gpgme.c:2186
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Les données suivantes sont chiffrées avec PGP/MIME --]\n"
+"[-- Les données suivantes sont signées et chiffrées avec PGP/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2187 pgp.c:922
@@ -1021,139 +1023,129 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2209
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr "[-- Fin des données chiffrées avec PGP/MIME --]\n"
+msgstr "[-- Fin des données signées et chiffrées avec PGP/MIME --]\n"
 
 #: crypt-gpgme.c:2210 pgp.c:942
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Fin des données chiffrées avec PGP/MIME --]\n"
 
 #: crypt-gpgme.c:2252
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
-msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
+msgstr ""
+"[-- Les données suivantes sont signées avec S/MIME --]\n"
+"\n"
 
 #: crypt-gpgme.c:2253
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
-msgstr "[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
+msgstr ""
+"[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
+"\n"
 
 #: crypt-gpgme.c:2283
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Fin des données signées avec S/MIME. --]\n"
+msgstr "[-- Fin des données signées avec S/MIME --]\n"
 
 #: crypt-gpgme.c:2284
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Fin des données chiffrées avec S/MIME. --]\n"
+msgstr "[-- Fin des données chiffrées avec S/MIME --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[Impossible d'afficher cet ID d'utilisateur (encodage inconnu)]"
 
 #: crypt-gpgme.c:2878
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[Impossible d'afficher cet ID d'utilisateur (encodage invalide)]"
 
 #: crypt-gpgme.c:2883
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[Impossible d'afficher cet ID d'utilisateur (DN invalide)]"
 
 #: crypt-gpgme.c:2962
 msgid " aka ......: "
-msgstr ""
+msgstr "alias ......: "
 
 #: crypt-gpgme.c:2962
 msgid "Name ......: "
-msgstr ""
+msgstr "Nom ........: "
 
 # , c-format
 #: crypt-gpgme.c:2965 crypt-gpgme.c:3104
-#, fuzzy
 msgid "[Invalid]"
-msgstr "Invalide    "
+msgstr "[Invalide]"
 
 # , c-format
 #: crypt-gpgme.c:2985 crypt-gpgme.c:3128
-#, fuzzy, c-format
+#, c-format
 msgid "Valid From : %s\n"
-msgstr "Mois invalide : %s"
+msgstr "From valide : %s\n"
 
 # , c-format
 #: crypt-gpgme.c:2998 crypt-gpgme.c:3141
-#, fuzzy, c-format
+#, c-format
 msgid "Valid To ..: %s\n"
-msgstr "Mois invalide : %s"
+msgstr "To valide ..: %s\n"
 
 #: crypt-gpgme.c:3011 crypt-gpgme.c:3154
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr ""
+msgstr "Type de clé : %s, %lu bits %s\n"
 
 #: crypt-gpgme.c:3013 crypt-gpgme.c:3156
 #, c-format
 msgid "Key Usage .: "
-msgstr ""
+msgstr "Utilisation : "
 
 #: crypt-gpgme.c:3018 crypt-gpgme.c:3161
-#, fuzzy
 msgid "encryption"
-msgstr "Chiffrer"
+msgstr "chiffrage"
 
 #: crypt-gpgme.c:3019 crypt-gpgme.c:3024 crypt-gpgme.c:3029 crypt-gpgme.c:3162
 #: crypt-gpgme.c:3167 crypt-gpgme.c:3172
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: crypt-gpgme.c:3023 crypt-gpgme.c:3166
 msgid "signing"
-msgstr ""
+msgstr "signature"
 
 #: crypt-gpgme.c:3028 crypt-gpgme.c:3171
-#, fuzzy
 msgid "certification"
-msgstr "Certificat sauvé"
+msgstr "certification"
 
 #: crypt-gpgme.c:3068
 #, c-format
 msgid "Serial-No .: 0x%s\n"
-msgstr ""
+msgstr "N° de série : 0x%s\n"
 
 #: crypt-gpgme.c:3076
 #, c-format
 msgid "Issued By .: "
-msgstr ""
+msgstr "Publiée par : "
 
 # , c-format
 #. display only the short keyID
 #: crypt-gpgme.c:3095
-#, fuzzy, c-format
+#, c-format
 msgid "Subkey ....: 0x%s"
-msgstr "ID clé : 0x%s"
+msgstr "Sous-clé ...: 0x%s"
 
 #: crypt-gpgme.c:3099
-#, fuzzy
 msgid "[Revoked]"
-msgstr "Révoqué     "
+msgstr "[Révoquée]"
 
 #: crypt-gpgme.c:3109
-#, fuzzy
 msgid "[Expired]"
-msgstr "Expiré      "
+msgstr "[Expirée]"
 
 #: crypt-gpgme.c:3114
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Désactivée]"
 
 #: crypt-gpgme.c:3198 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
@@ -1161,46 +1153,43 @@ msgstr "Impossible de créer le fichier temporaire"
 
 # , c-format
 #: crypt-gpgme.c:3201
-#, fuzzy
 msgid "Collecting data..."
-msgstr "Connexion à %s..."
+msgstr "Récupération des données..."
 
 # , c-format
 #: crypt-gpgme.c:3227
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Erreur de connexion au serveur : %s"
+msgstr "Erreur en cherchant la clé de l'émetteur : %s\n"
 
 #: crypt-gpgme.c:3237
 msgid "Error: certification chain to long - stopping here\n"
-msgstr ""
+msgstr "Erreur : chaîne de certification trop longue - on arrête ici\n"
 
 # , c-format
 #: crypt-gpgme.c:3248 pgpkey.c:580
 #, c-format
 msgid "Key ID: 0x%s"
-msgstr "ID clé : 0x%s"
+msgstr "ID de la clé : 0x%s"
 
 #: crypt-gpgme.c:3331
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "Le renommage a échoué : %s"
+msgstr "gpgme_new a échoué : %s"
 
 #: crypt-gpgme.c:3370 crypt-gpgme.c:3433
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start a échoué : %s"
 
 #: crypt-gpgme.c:3420 crypt-gpgme.c:3461
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next a échoué : %s"
 
 #: crypt-gpgme.c:3532
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr ""
-"Toutes les clés correspondantes sont expirées, annulées, ou désactivées."
+msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées."
 
 #: crypt-gpgme.c:3561 mutt_ssl.c:676 mutt_ssl_gnutls.c:770 pgpkey.c:514
 #: smime.c:431
@@ -1218,34 +1207,30 @@ msgid "Check key  "
 msgstr "Vérifier clé  "
 
 #: crypt-gpgme.c:3583
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "Clés PGP correspondant à \"%s\"."
+msgstr "clés PGP et S/MIME correspondant à"
 
 #: crypt-gpgme.c:3585
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "Clés PGP correspondant à \"%s\"."
+msgstr "clés PGP correspondant à"
 
 #: crypt-gpgme.c:3587
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "Certificats S/MIME correspondant à \"%s\"."
+msgstr "clés S/MIME correspondant à"
 
 #: crypt-gpgme.c:3589
-#, fuzzy
 msgid "keys matching"
-msgstr "Clés PGP correspondant à \"%s\"."
+msgstr "clés correspondant à"
 
 #: crypt-gpgme.c:3592
 #, c-format
 msgid "%s <%s>."
-msgstr ""
+msgstr "%s <%s>."
 
 #: crypt-gpgme.c:3594
 #, c-format
 msgid "%s \"%s\"."
-msgstr ""
+msgstr "%s \"%s\"."
 
 #: crypt-gpgme.c:3621 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
@@ -1295,26 +1280,26 @@ msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
 msgstr ""
+"\n"
+"Utilisation du service GPGME, mais pas de gpg-agent qui tourne"
 
 #: crypt-gpgme.c:4131
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, %s, en clai(r) ? "
+msgstr ""
+"(c)hiffrer S/MIME, (s)igner, (e)n tant que, les (d)eux, (p)gp ou en clai(r) ?"
 
 #: crypt-gpgme.c:4132
-#, fuzzy
 msgid "esabpfc"
-msgstr "csaedor"
+msgstr "csedpor"
 
 #: crypt-gpgme.c:4135
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, %s, en clai(r) ? "
+msgstr ""
+"(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, s/(m)ime ou en clai(r) ?"
 
 #: crypt-gpgme.c:4136
-#, fuzzy
 msgid "esabmfc"
-msgstr "csaedor"
+msgstr "csedmor"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
@@ -1325,12 +1310,11 @@ msgstr "Signer en tant que : "
 
 #: crypt-gpgme.c:4249
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "Impossible de vérifier l'expéditeur"
 
 #: crypt-gpgme.c:4252
-#, fuzzy
 msgid "Failed to figure out sender"
-msgstr "Échec d'ouverture du fichier pour décoder les en-têtes."
+msgstr "Impossible de trouver l'expéditeur"
 
 #: crypt.c:69
 #, c-format
@@ -1428,11 +1412,11 @@ msgstr ""
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
 msgstr ""
+"\"crypt_use_gpgme\" positionné mais pas de construction avec support GPGME."
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking SMIME..."
-msgstr "Appel de PGP..."
+msgstr "Appel de SMIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -1611,24 +1595,23 @@ msgstr "L'affichage des discussions n'est pas activé."
 
 #: curs_main.c:1206
 msgid "Thread broken"
-msgstr ""
+msgstr "Discussion cassée"
 
 #: curs_main.c:1228
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Pas d'en-tête Message-ID: disponible pour lier la discussion"
 
 #: curs_main.c:1230
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "sauvegarder ce message pour l'envoyer plus tard"
+msgstr "D'abord, veuillez marquer un message à lier ici"
 
 #: curs_main.c:1242
 msgid "Threads linked"
-msgstr ""
+msgstr "Discussions liées"
 
 #: curs_main.c:1245
 msgid "No thread linked"
-msgstr ""
+msgstr "Pas de discussion liée"
 
 #: curs_main.c:1281 curs_main.c:1306
 msgid "You are on the last message."
@@ -2110,7 +2093,7 @@ msgstr "Ce serveur IMAP est trop ancien. Mutt ne marche pas avec."
 
 #: imap/imap.c:420
 msgid "Checking mailbox subscriptions"
-msgstr ""
+msgstr "Vérification des abonnements aux boîtes aux lettres"
 
 #: imap/imap.c:458 pop_lib.c:286
 msgid "Secure connection with TLS?"
@@ -2122,7 +2105,7 @@ msgstr "Impossible de négocier la connexion TLS"
 
 #: imap/imap.c:487 pop_lib.c:331
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "Connexion chiffrée non disponible"
 
 # , c-format
 #: imap/imap.c:616
@@ -2837,7 +2820,7 @@ msgstr "composer un nouveau message"
 
 #: keymap_alldefs.h:103
 msgid "break the thread in two"
-msgstr ""
+msgstr "casser la discussion en deux"
 
 #: keymap_alldefs.h:104
 msgid "open a different folder"
@@ -2876,9 +2859,8 @@ msgid "show only messages matching a pattern"
 msgstr "afficher seulement les messages correspondant à un motif"
 
 #: keymap_alldefs.h:113
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "Renvoyer les messages marqués à : "
+msgstr "lier le message marqué au message courant"
 
 #: keymap_alldefs.h:114
 msgid "jump to the next new message"
@@ -3264,7 +3246,6 @@ msgstr ""
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
 #: main.c:61
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3291,11 +3272,11 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
-"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3317,7 +3298,6 @@ msgstr ""
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3344,6 +3324,7 @@ msgstr ""
 "[...]\n"
 "        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -A <alias> [ -A <alias> ] "
 "[...]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -D\n"
 "        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] "
 "[ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
 "        mutt [ -n ] [ -e <cmd> ] [ -F <fich> ] -p\n"
@@ -3354,30 +3335,13 @@ msgstr ""
 "  -a <fich>\tattache un fichier à ce message\n"
 "  -b <adresse>\tspécifie une adresse à mettre en copie aveugle (BCC)\n"
 "  -c <adresse>\tspécifie une adresse à mettre en copie (CC)\n"
-"  -e <commande>\tspécifie une commande à exécuter après l'initialisation\n"
-"  -f <fich>\tspécifie quelle boîte aux lettres lire\n"
-"  -F <fich>\tspécifie un fichier muttrc alternatif\n"
-"  -H <fich>\tspécifie un fichier de brouillon d'où lire en-têtes et corps\n"
-"  -i <fich>\tspécifie un fichier que Mutt doit inclure dans le corps\n"
-"  -m <type>\tspécifie un type de boîte aux lettres par défaut\n"
-"  -n\t\tfait que Mutt ne lit pas le fichier Muttrc système\n"
-"  -p\t\trappelle un message ajourné\n"
-"  -Q <variable>\tdemande la valeur d'une variable de configuration\n"
-"  -R\t\touvre la boîte aux lettres en mode lecture seule\n"
-"  -s <obj>\tspécifie un objet (entre guillemets s'il contient des espaces)\n"
-"  -v\t\taffiche la version et les définitions de compilation\n"
-"  -x\t\tsimule le mode d'envoi mailx\n"
-"  -y\t\tsélectionne une BAL spécifiée dans votre liste `mailboxes'\n"
-"  -z\t\tquitte immédiatement si pas de nouveau message dans la BAL\n"
-"  -Z\t\touvre le premier dossier ayant un nouveau message, quitte sinon\n"
-"  -h\t\tce message d'aide"
+"  -D\t\técrit la valeur de toutes les variables sur stderr"
 
 #: main.c:114
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr ""
+msgstr "  -d <niveau>\técrit les infos de débuggage dans ~/.muttdebug0"
 
 #: main.c:117
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3397,22 +3361,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"usage : mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <fich> ] [ -m <type> ] [ -f "
-"<fich> ]\n"
-"        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -Q <requête> [ -Q <req> ] "
-"[...]\n"
-"        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -A <alias> [ -A <alias> ] "
-"[...]\n"
-"        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H <fich> ] "
-"[ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> [ ... ]\n"
-"        mutt [ -n ] [ -e <cmd> ] [ -F <fich> ] -p\n"
-"        mutt -v[v]\n"
-"\n"
-"options :\n"
-"  -A <alias>\tdéveloppe l'alias mentionné\n"
-"  -a <fich>\tattache un fichier à ce message\n"
-"  -b <adresse>\tspécifie une adresse à mettre en copie aveugle (BCC)\n"
-"  -c <adresse>\tspécifie une adresse à mettre en copie (CC)\n"
 "  -e <commande>\tspécifie une commande à exécuter après l'initialisation\n"
 "  -f <fich>\tspécifie quelle boîte aux lettres lire\n"
 "  -F <fich>\tspécifie un fichier muttrc alternatif\n"
@@ -3796,92 +3744,86 @@ msgstr "Certificat sauvé"
 
 #: mutt_ssl_gnutls.c:95 mutt_ssl_gnutls.c:117
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Erreur : pas de socket TLS ouverte"
 
 #: mutt_ssl_gnutls.c:204
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr ""
+"Tous les protocoles disponibles pour une connexion TLS/SSL sont désactivés"
 
 # , c-format
 #: mutt_ssl_gnutls.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "Connexion SSL utilisant %s (%s)"
+msgstr "Connexion SSL/TLS utilisant %s (%s/%s/%s)"
 
 #: mutt_ssl_gnutls.c:508
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Erreur de vérification du certificat (%s)"
 
 #: mutt_ssl_gnutls.c:516
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "Certificat sauvé"
+msgstr "Le certificat n'est pas de type X.509"
 
 #: mutt_ssl_gnutls.c:523
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Erreur d'initialisation du terminal."
+msgstr "Erreur d'initialisation des données du certificat gnutls"
 
 #: mutt_ssl_gnutls.c:539
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Erreur de traitement des données du certificat"
 
 #: mutt_ssl_gnutls.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Empreinte: %s"
+msgstr "Empreinte SHA1 : %s"
 
 #: mutt_ssl_gnutls.c:727
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Empreinte: %s"
+msgstr "Empreinte MD5 : %s"
 
 #: mutt_ssl_gnutls.c:732
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Le certificat du serveur n'est pas encore valide"
+msgstr "ATTENTION ! Le certificat du serveur n'est pas encore valide"
 
 #: mutt_ssl_gnutls.c:737
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Le certificat du serveur a expiré"
+msgstr "ATTENTION ! Le certificat du serveur a expiré"
 
 #: mutt_ssl_gnutls.c:742
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Le certificat du serveur a expiré"
+msgstr "ATTENTION ! Le certificat du serveur a été révoqué"
 
 #: mutt_ssl_gnutls.c:747
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "ATTENTION ! Le nom du serveur ne correspond pas au certificat"
 
 #: mutt_ssl_gnutls.c:752
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Le certificat du serveur n'est pas encore valide"
+msgstr "ATTENTION ! Le signataire du certificat du serveur n'est pas un CA"
 
 #: mutt_ssl_gnutls.c:755
-#, fuzzy
 msgid "TLS/SSL Certificate check"
-msgstr "Vérification du certificat SSL"
+msgstr "Vérification du certificat TLS/SSL"
 
 # , c-format
 #: mutt_tunnel.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Connexion à %s..."
+msgstr "Connexion avec \"%s\"..."
 
 #: mutt_tunnel.c:137
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Le tunnel vers %s a renvoyé l'erreur %d (%s)"
 
 # , c-format
 #: mutt_tunnel.c:155 mutt_tunnel.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Erreur en parlant à %s (%s)"
+msgstr "Erreur de tunnel en parlant à %s : %s"
 
 #: muttlib.c:910
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
@@ -4213,15 +4155,13 @@ msgstr ""
 "\n"
 
 #: pgp.c:387 pgp.c:951
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "Impossible de copier le message"
+msgstr "Impossible de déchiffrer le message PGP"
 
 #. clear 'Invoking...' message, since there's no error
 #: pgp.c:436 pgp.c:947
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "Signature PGP vérifiée avec succès."
+msgstr "Message PGP déchiffré avec succès."
 
 #: pgp.c:723
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
@@ -4236,9 +4176,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:828
-#, fuzzy
 msgid "Decryption failed"
-msgstr "Le déchiffrage a échoué."
+msgstr "Le déchiffrage a échoué"
 
 #: pgp.c:1003
 msgid "Can't open PGP subprocess!"
@@ -4850,19 +4789,19 @@ msgstr "De confiance"
 
 #: smime.c:324
 msgid "Verified  "
-msgstr "Vérifié     "
+msgstr "Vérifiée    "
 
 #: smime.c:327
 msgid "Unverified"
-msgstr "Non vérifié "
+msgstr "Non vérifiée"
 
 #: smime.c:330
 msgid "Expired   "
-msgstr "Expiré      "
+msgstr "Expirée     "
 
 #: smime.c:333
 msgid "Revoked   "
-msgstr "Révoqué     "
+msgstr "Révoquée    "
 
 # , c-format
 #: smime.c:336
@@ -4871,7 +4810,7 @@ msgstr "Invalide    "
 
 #: smime.c:339
 msgid "Unknown   "
-msgstr "Inconnu     "
+msgstr "Inconnue    "
 
 # , c-format
 #: smime.c:368
@@ -5021,8 +4960,37 @@ msgstr "Le message père n'est pas visible dans cette vue limitée."
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
 
+#~ msgid " aka"
+#~ msgstr " alias"
+
+#~ msgid "Name"
+#~ msgstr "Nom"
+
 #~ msgid "Unexpected response received from server: %s"
 #~ msgstr "Réponse inattendue reçue du serveur : %s"
+
+#~ msgid "%s failed (error %d)"
+#~ msgstr "%s a échoué (erreur %d)"
+
+#~ msgid "SSL_AuthCertificate failed (error %d)"
+#~ msgstr "Échec de SSL_AuthCertificate (erreur %d)"
+
+#~ msgid "Unable to find ip for host %s"
+#~ msgstr "Impossible de trouver l'adresse IP de l'hôte %s"
+
+#~ msgid "PR_NewTCPSocket failed."
+#~ msgstr "Échec de PR_NewTCPSocket."
+
+# , c-format
+#~ msgid "Unable to connect to host %s"
+#~ msgstr "Impossible de se connecter à l'hôte %s"
+
+#~ msgid "esabtf"
+#~ msgstr "csedio"
+
+#~ msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (t)oggle or (f)orget it?"
+#~ msgstr ""
+#~ "(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, (i)nv ou (o)ublier ?"
 
 #~ msgid "Unable to append to IMAP mailboxes at this server"
 #~ msgstr "Impossible d'ajouter aux boîtes aux lettres IMAP sur ce serveur"
