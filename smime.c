@@ -108,7 +108,7 @@ int smime_valid_passphrase (void)
 
   smime_void_passphrase();
   
-  if (mutt_get_password (_("Enter SMIME passphrase:"), SmimePass, sizeof (SmimePass)) == 0)
+  if (mutt_get_password (_("Enter S/MIME passphrase:"), SmimePass, sizeof (SmimePass)) == 0)
     {
       SmimeExptime = time (NULL) + SmimeTimeout;
       return (1);

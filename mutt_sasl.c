@@ -136,7 +136,7 @@ static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
 #endif
 
 /* mutt_sasl_start: called before doing a SASL exchange - initialises library
- *   (if neccessary). */
+ *   (if necessary). */
 int mutt_sasl_start (void)
 {
   static unsigned char sasl_init = 0;
@@ -224,7 +224,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     return -1;
   }
 
-dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport));
+  dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport));
   
   rc = sasl_client_new (service, conn->account.host, iplocalport, ipremoteport,
     mutt_sasl_get_callbacks (&conn->account), 0, saslconn);
@@ -293,7 +293,6 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
     return -1;
   }
 
-#if defined(USE_SSL) || defined(USE_GNUTLS)
   if (conn->ssf)
   {
 #ifdef USE_SASL2 /* I'm not sure this actually has an effect, at least with SASLv2 */
@@ -318,7 +317,6 @@ dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport))
     }
 #endif
   }
-#endif
 
   return 0;
 }
