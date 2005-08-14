@@ -1,3 +1,8 @@
+2005-08-14 02:22:47  Bernd Ahlers  <bernd@ba-net.org>  (brendan)
+
+	* cryptglue.c, mutt_sasl.c, smime.c: Fix some S/MIME spelling
+	inconsistencies.
+
 2005-08-12 23:06:25  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_ssl_gnutls.c: Turn off input buffering for gnutls SSL
