@@ -1,3 +1,9 @@
+2005-08-14 21:32:17  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* attach.c, send.c: Don't pass an empty filename to the default
+	text editor when editing non-plain text. Also don't clobber
+	$content_type when parsing it. Closes: #2038.
+
 2005-08-14 12:28:52  Roland Rosenfeld  <roland@spinnaker.de>  (roessler)
 
 	* po/de.po: update
