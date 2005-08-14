@@ -1058,6 +1058,7 @@ ci_send_message (int flags,		/* send mode */
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
   char *tag = NULL, *err = NULL;
+  char *ctype;
 
   int rv = -1;
   
@@ -1122,7 +1123,9 @@ ci_send_message (int flags,		/* send mode */
     pbody->next = msg->content; /* don't kill command-line attachments */
     msg->content = pbody;
     
-    mutt_parse_content_type (ContentType, msg->content);
+    ctype = safe_strdup (ContentType);
+    mutt_parse_content_type (ctype, msg->content);
+    FREE (&ctype);
     msg->content->unlink = 1;
     msg->content->use_disp = 0;
     msg->content->disposition = DISPINLINE;
