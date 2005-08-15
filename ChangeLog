@@ -1,3 +1,7 @@
+2005-08-15 08:10:48  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* po/id.po: Fix \n mismatch.
+
 2005-08-15 08:07:36  Ronny Haryanto  <ronnylist@haryan.to>  (roessler)
 
 	* po/id.po: update
