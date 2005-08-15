@@ -1,3 +1,7 @@
+2005-08-15 08:06:40  Vsevolod Volkov  <vvv@mutt.org.ua>  (roessler)
+
+	* po/ru.po: update
+
 2005-08-14 21:32:17  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* attach.c, send.c: Don't pass an empty filename to the default
