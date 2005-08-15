@@ -1118,7 +1118,7 @@ msgstr "Mengumpulkan data ..."
 #: crypt-gpgme.c:3227
 #, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Error saat mencari kunci yg mengeluarkan: %s"
+msgstr "Error saat mencari kunci yg mengeluarkan: %s\n"
 
 #: crypt-gpgme.c:3237
 msgid "Error: certification chain to long - stopping here\n"
