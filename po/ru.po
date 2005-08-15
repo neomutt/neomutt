@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.9i\n"
+"Project-Id-Version: mutt-1.5.10i\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-11 23:50+0200\n"
-"PO-Revision-Date: 2005-03-13 19:49+0200\n"
+"PO-Revision-Date: 2005-08-13 14:11:38+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -724,128 +724,127 @@ msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP уже используется. Очистить и продолжить? "
 
 #: crypt-gpgme.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка создания gpgme контекста: %s\n"
 
 #: crypt-gpgme.c:345
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "ошибка включения CMS протокола: %s\n"
 
 #: crypt-gpgme.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка создания объекта данных gpgme: %s\n"
 
 #: crypt-gpgme.c:431 crypt-gpgme.c:449 crypt-gpgme.c:1327
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка размещения объекта данных: %s\n"
 
 #: crypt-gpgme.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка позиционирования в начало объекта данных: %s\n"
 
 #: crypt-gpgme.c:489 crypt-gpgme.c:536
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка чтения объекта данных: %s\n"
 
 #: crypt-gpgme.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка добавления получателя `%s': %s\n"
 
 #: crypt-gpgme.c:635
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr ""
+msgstr "секретный ключ `%s' не найден: %s\n"
 
 #: crypt-gpgme.c:645
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr ""
+msgstr "неоднозначное указание секретного ключа `%s'\n"
 
 #: crypt-gpgme.c:657
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr ""
+msgstr "ошибка установки секретного ключа `%s': %s\n"
 
 #: crypt-gpgme.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка шифрования данных: %s\n"
 
 #: crypt-gpgme.c:798
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "ошибка в образце: %s"
+msgstr "ошибка подписывания данных: %s\n"
 
 #: crypt-gpgme.c:993
-#, fuzzy
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Предупреждение: часть этого сообщения не подписана."
+msgstr "Предупреждение: один из ключей был отозван\n"
 
 #: crypt-gpgme.c:1002
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "Предупреждение: ключ, используемый для создания подписи, просрочен: "
 
 #: crypt-gpgme.c:1008
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Срок действия сертификата истек"
+msgstr ""
+"Предупреждение: срок действия одного или нескольких сертификатов истек\n"
 
 #: crypt-gpgme.c:1024
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Предупреждение: срок действия подписи истёк: "
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "Не удалось проверить по причине отсутствия ключа или сертификата\n"
 
 #: crypt-gpgme.c:1035
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "SSL-протокол недоступен."
+msgstr "CRL не доступен\n"
 
 #: crypt-gpgme.c:1041
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "Доступный CRL слишком старый\n"
 
 #: crypt-gpgme.c:1046
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "Требование политики не было обнаружено\n"
 
 #: crypt-gpgme.c:1055
 msgid "A system error occurred"
-msgstr ""
+msgstr "Системная ошибка"
 
 #: crypt-gpgme.c:1092 crypt-gpgme.c:3036
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "Отпечаток пальца: %s"
+msgstr "Отпечаток пальца: "
 
 #: crypt-gpgme.c:1152
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
-msgstr ""
+msgstr "ПРЕДУПРЕЖДЕНИЕ: НЕ известно, принадлежит ли данный ключ указанной "
+"выше персоне\n"
 
 #: crypt-gpgme.c:1159
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "ПРЕДУПРЕЖДЕНИЕ: ключ НЕ ПРИНАДЛЕЖИТ указанной выше персоне\n"
 
 #: crypt-gpgme.c:1163
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
-msgstr ""
+msgstr "ПРЕДУПРЕЖДЕНИЕ: НЕТ уверенности в том, что ключ принадлежит указанной "
+"выше персоне\n"
 
 #: crypt-gpgme.c:1238
 msgid "Error getting key information: "
-msgstr ""
+msgstr "Ошибка получения информации о ключе: "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
@@ -853,70 +852,70 @@ msgstr ""
 #. ultimate).
 #: crypt-gpgme.c:1245 crypt-gpgme.c:1278
 msgid "Good signature from: "
-msgstr ""
+msgstr "Хорошая подпись от: "
 
 #: crypt-gpgme.c:1255
 msgid "                aka: "
-msgstr ""
+msgstr "                aka: "
 
 #: crypt-gpgme.c:1259 crypt-gpgme.c:1281
 msgid "            created: "
-msgstr ""
+msgstr "             создан: "
 
 #: crypt-gpgme.c:1268
 msgid "*BAD* signature claimed to be from: "
-msgstr ""
+msgstr "*ПЛОХАЯ* подпись якобы от: "
 
 #: crypt-gpgme.c:1291
-#, fuzzy
 msgid "Error checking signature"
-msgstr "Ошибка отправки сообщения."
+msgstr "Ошибка проверки подписи"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
 #: crypt-gpgme.c:1335 crypt-gpgme.c:1539 crypt-gpgme.c:2031
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Начало информации о подписи --]\n"
 
 #: crypt-gpgme.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "Ошибка в командной строке: %s\n"
+msgstr "Ошибка: проверка не удалась: %s\n"
 
 #: crypt-gpgme.c:1386
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Начало системы обозначения (подпись от: %s) ***\n"
 
 #: crypt-gpgme.c:1405
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Конец системы обозначения ***\n"
 
 #: crypt-gpgme.c:1413 crypt-gpgme.c:1552 crypt-gpgme.c:2046
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
+"[-- Конец информации о подписи --]\n"
 "\n"
-"[-- Конец подписанных данных --]\n"
 
 #: crypt-gpgme.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- Ошибка: не удалось создать временный файл! --]\n"
+msgstr ""
+"[-- Ошибка: не удалось расшифровать: %s --]\n"
+"\n"
 
 #: crypt-gpgme.c:2006
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Ошибка: не удалось расшифровать или проверить подпись: %s\n"
 
 #: crypt-gpgme.c:2054
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Ошибка: не удалось скопировать данные\n"
 
 #: crypt-gpgme.c:2074 pgp.c:405
 msgid ""
@@ -971,12 +970,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Ошибка: не удалось создать временный файл! --]\n"
 
 #: crypt-gpgme.c:2186
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Начало данных, зашифрованных в формате PGP/MIME --]\n"
+"[-- Начало данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2187 pgp.c:922
@@ -988,153 +986,142 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2209
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr "[-- Конец данных, зашифрованных в формате PGP/MIME --]\n"
+msgstr "[-- Конец данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 
 #: crypt-gpgme.c:2210 pgp.c:942
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате PGP/MIME --]\n"
 
 #: crypt-gpgme.c:2252
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
-msgstr "[-- Начало данных, подписанных в формате S/MIME --]\n"
+msgstr ""
+"[-- Начало данных, подписанных в формате S/MIME --]\n"
+"\n"
 
 #: crypt-gpgme.c:2253
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
-msgstr "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
+msgstr ""
+"[-- Начало данных, зашифрованных в формате S/MIME --]\n"
+"\n"
 
 #: crypt-gpgme.c:2283
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Конец данных, подписанных в формате S/MIME --]\n"
+msgstr "[-- Конец данных, подписанных в формате S/MIME --]\n"
 
 #: crypt-gpgme.c:2284
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Конец данных, зашифрованных в формате S/MIME --]\n"
+msgstr "[-- Конец данных, зашифрованных в формате S/MIME --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[Не возможно отобразить ID этого пользователя (неизвестная кодировка)]"
 
 #: crypt-gpgme.c:2878
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[Не возможно отобразить ID этого пользователя (неправильная кодировка)]"
 
 #: crypt-gpgme.c:2883
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[Не возможно отобразить ID этого пользователя (неправильный DN)"
 
 #: crypt-gpgme.c:2962
 msgid " aka ......: "
-msgstr ""
+msgstr " aka ......: "
 
 #: crypt-gpgme.c:2962
 msgid "Name ......: "
-msgstr ""
+msgstr "Имя .......: "
 
 #: crypt-gpgme.c:2965 crypt-gpgme.c:3104
-#, fuzzy
 msgid "[Invalid]"
-msgstr "Неправильный "
+msgstr "[Неправильное значение]"
 
 #: crypt-gpgme.c:2985 crypt-gpgme.c:3128
-#, fuzzy, c-format
+#, c-format
 msgid "Valid From : %s\n"
-msgstr "Неверное название месяца: %s"
+msgstr "Действ. с .: %s\n"
 
 #: crypt-gpgme.c:2998 crypt-gpgme.c:3141
-#, fuzzy, c-format
+#, c-format
 msgid "Valid To ..: %s\n"
-msgstr "Неверное название месяца: %s"
+msgstr "Действ. до : %s\n"
 
 #: crypt-gpgme.c:3011 crypt-gpgme.c:3154
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr ""
+msgstr "Тип ключа .: %s, %lu бит %s\n"
 
 #: crypt-gpgme.c:3013 crypt-gpgme.c:3156
 #, c-format
 msgid "Key Usage .: "
-msgstr ""
+msgstr "Использован: "
 
 #: crypt-gpgme.c:3018 crypt-gpgme.c:3161
-#, fuzzy
 msgid "encryption"
-msgstr "Зашифровать"
+msgstr "шифрование"
 
 #: crypt-gpgme.c:3019 crypt-gpgme.c:3024 crypt-gpgme.c:3029 crypt-gpgme.c:3162
 #: crypt-gpgme.c:3167 crypt-gpgme.c:3172
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: crypt-gpgme.c:3023 crypt-gpgme.c:3166
 msgid "signing"
-msgstr ""
+msgstr "подпись"
 
 #: crypt-gpgme.c:3028 crypt-gpgme.c:3171
-#, fuzzy
 msgid "certification"
-msgstr "Сертификат сохранен"
+msgstr "сертификация"
 
 #: crypt-gpgme.c:3068
 #, c-format
 msgid "Serial-No .: 0x%s\n"
-msgstr ""
+msgstr "Сер. номер : 0x%s\n"
 
 #: crypt-gpgme.c:3076
 #, c-format
 msgid "Issued By .: "
-msgstr ""
+msgstr "Издан .....: "
 
 #. display only the short keyID
 #: crypt-gpgme.c:3095
-#, fuzzy, c-format
+#, c-format
 msgid "Subkey ....: 0x%s"
-msgstr "Идентификатор ключа: 0x%s"
+msgstr "Подключ ...: 0x%s"
 
 #: crypt-gpgme.c:3099
-#, fuzzy
 msgid "[Revoked]"
-msgstr "Отозванный   "
+msgstr "[Отозван]"
 
 #: crypt-gpgme.c:3109
-#, fuzzy
 msgid "[Expired]"
-msgstr "Просроченный "
+msgstr "[Просрочен]"
 
 #: crypt-gpgme.c:3114
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Запрещён]"
 
 #: crypt-gpgme.c:3198 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "Не удалось создать временный файл"
 
 #: crypt-gpgme.c:3201
-#, fuzzy
 msgid "Collecting data..."
-msgstr "Устанавливается соединение с %s..."
+msgstr "Сбор данных..."
 
 #: crypt-gpgme.c:3227
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Ошибка при установлении соединения: %s"
+msgstr "Ошибка поиска ключа издателя: %s\n"
 
 #: crypt-gpgme.c:3237
 msgid "Error: certification chain to long - stopping here\n"
-msgstr ""
+msgstr "Ошибка: цепь сертификации слишком длинная - поиск прекращён\n"
 
 #: crypt-gpgme.c:3248 pgpkey.c:580
 #, c-format
@@ -1142,25 +1129,23 @@ msgid "Key ID: 0x%s"
 msgstr "Идентификатор ключа: 0x%s"
 
 #: crypt-gpgme.c:3331
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "Не удалось переименовать: %s"
+msgstr "Ошибка gpgme_new: %s"
 
 #: crypt-gpgme.c:3370 crypt-gpgme.c:3433
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "Ошибка gpgme_op_keylist_start: %s"
 
 #: crypt-gpgme.c:3420 crypt-gpgme.c:3461
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "Ошибка gpgme_op_keylist_next: %s"
 
 #: crypt-gpgme.c:3532
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr ""
-"Все подходящие ключи помечены как просроченные, отозванные или запрещённые."
+msgstr "Все подходящие ключи помечены как просроченные или отозванные."
 
 #: crypt-gpgme.c:3561 mutt_ssl.c:676 mutt_ssl_gnutls.c:770 pgpkey.c:514
 #: smime.c:431
@@ -1178,34 +1163,30 @@ msgid "Check key  "
 msgstr "Тест ключа "
 
 #: crypt-gpgme.c:3583
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP-ключи, соответствующие \"%s\"."
+msgstr "PGP и S/MIME-ключи, соответствующие"
 
 #: crypt-gpgme.c:3585
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "PGP-ключи, соответствующие \"%s\"."
+msgstr "PGP-ключи, соответствующие"
 
 #: crypt-gpgme.c:3587
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "S/MIME-сертификаты, соответствующие \"%s\"."
+msgstr "S/MIME-ключи, соответствующие"
 
 #: crypt-gpgme.c:3589
-#, fuzzy
 msgid "keys matching"
-msgstr "PGP-ключи, соответствующие \"%s\"."
+msgstr "ключи, соответствующие"
 
 #: crypt-gpgme.c:3592
 #, c-format
 msgid "%s <%s>."
-msgstr ""
+msgstr "%s <%s>."
 
 #: crypt-gpgme.c:3594
 #, c-format
 msgid "%s \"%s\"."
-msgstr ""
+msgstr "%s \"%s\"."
 
 #: crypt-gpgme.c:3621 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
@@ -1252,26 +1233,26 @@ msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
 msgstr ""
+"\n"
+"Используется GPGME, однако gpg-agent не запущен"
 
 #: crypt-gpgme.c:4131
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказаться? "
+msgstr ""
+"S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться?"
 
 #: crypt-gpgme.c:4132
-#, fuzzy
 msgid "esabpfc"
-msgstr "eswabfc"
+msgstr "esabpfc"
 
 #: crypt-gpgme.c:4135
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
-msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказаться? "
+msgstr ""
+"PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться?"
 
 #: crypt-gpgme.c:4136
-#, fuzzy
 msgid "esabmfc"
-msgstr "eswabfc"
+msgstr "esabmfc"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
@@ -1282,12 +1263,11 @@ msgstr "Подписать как: "
 
 #: crypt-gpgme.c:4249
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "Не удалось проверить отправителя"
 
 #: crypt-gpgme.c:4252
-#, fuzzy
 msgid "Failed to figure out sender"
-msgstr "Не удалось открыть файл для разбора заголовков."
+msgstr "Не удалось вычислить отправителя"
 
 #: crypt.c:69
 #, c-format
@@ -1385,12 +1365,11 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
-msgstr ""
+msgstr "Опция \"crypt_use_gpgme\" включена, но поддержка GPGME не собрана."
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking SMIME..."
-msgstr "Запускается программа PGP..."
+msgstr "Вызывается SMIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -1564,24 +1543,23 @@ msgstr "Группировка по дискуссиям не включена."
 
 #: curs_main.c:1206
 msgid "Thread broken"
-msgstr ""
+msgstr "Дискуссия разделена"
 
 #: curs_main.c:1228
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Отсутствует заголовок Message-ID: для соединения дискуссии"
 
 #: curs_main.c:1230
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "сохранить это сообщение для отправки позднее"
+msgstr "Сначала необходимо пометить сообщение, которое нужно соединить здесь"
 
 #: curs_main.c:1242
 msgid "Threads linked"
-msgstr ""
+msgstr "Дискуссии соединены"
 
 #: curs_main.c:1245
 msgid "No thread linked"
-msgstr ""
+msgstr "Дискуссии не соединены"
 
 #: curs_main.c:1281 curs_main.c:1306
 msgid "You are on the last message."
@@ -2044,7 +2022,7 @@ msgstr ""
 
 #: imap/imap.c:420
 msgid "Checking mailbox subscriptions"
-msgstr ""
+msgstr "Проверка подписки почтовых ящиков"
 
 #: imap/imap.c:458 pop_lib.c:286
 msgid "Secure connection with TLS?"
@@ -2056,7 +2034,7 @@ msgstr "Не удалось установить TLS-соединение"
 
 #: imap/imap.c:487 pop_lib.c:331
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "Зашифрованное соединение не доступно"
 
 #: imap/imap.c:616
 #, c-format
@@ -2742,7 +2720,7 @@ msgstr "создать новое сообщение"
 
 #: keymap_alldefs.h:103
 msgid "break the thread in two"
-msgstr ""
+msgstr "резделить дикуссию на две части"
 
 #: keymap_alldefs.h:104
 msgid "open a different folder"
@@ -2781,9 +2759,8 @@ msgid "show only messages matching a pattern"
 msgstr "показывать только сообщения, соответствующие образцу"
 
 #: keymap_alldefs.h:113
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "Перенаправить сообщения: "
+msgstr "подсоединить помеченное сообщение к текущему"
 
 #: keymap_alldefs.h:114
 msgid "jump to the next new message"
@@ -3170,7 +3147,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:61
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3197,11 +3173,11 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
-"Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3223,7 +3199,6 @@ msgstr ""
 "   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111, USA.\n"
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3250,6 +3225,7 @@ msgstr ""
 "[...]\n"
 "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
 "[...]\n"
+"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
 "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
 "[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
@@ -3260,33 +3236,13 @@ msgstr ""
 "  -a <file>\tвложить файл в сообщение\n"
 "  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
 "  -c <address>\tуказать carbon-copy (CC) адрес\n"
-"  -e <command>\tуказать команду, которая будет выполнена после "
-"инициализации\n"
-"  -f <file>\tуказать почтовый ящик для работы\n"
-"  -F <file>\tуказать альтернативный muttrc\n"
-"  -H <file>\tуказать файл, содержащий шаблон заголовка и тела письма\n"
-"  -i <file>\tуказать файл для вставки в тело письма\n"
-"  -m <тип>\tуказать тип почтового ящика по умолчанию\n"
-"  -n\t\tзапретить чтение системного Muttrc\n"
-"  -p\t\tпродолжить отложенное сообщение\n"
-"  -Q <имя>\tвывести значение переменной конфигурации\n"
-"  -R\t\tоткрыть почтовый ящик в режиме \"только для чтения\"\n"
-"  -s <тема>\tуказать тему сообщения (должна быть в кавычках, если "
-"присутствуют пробелы)\n"
-"  -v\t\tвывести номер версии и параметры компиляции\n"
-"  -x\t\tэмулировать режим посылки команды mailx\n"
-"  -y\t\tвыбрать почтовый ящик из списка `mailboxes'\n"
-"  -z\t\tвыйти немедленно если в почтовом ящике отсутствует новая почта\n"
-"  -Z\t\tоткрыть первый почтовый ящик с новой почтой, выйти немедленно если "
-"таковая отсутствует\n"
-"  -h\t\tтекст этой подсказки"
+"  -D\t\tвывести значения всех переменных на stderr"
 
 #: main.c:114
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr ""
+msgstr "  -d <level>\tзапись отладочной информации в ~/.muttdebug0"
 
 #: main.c:117
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3306,22 +3262,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"запуск: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-"[...]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-"       mutt -v[v]\n"
-"\n"
-"параметры:\n"
-"  -A <alias>\tраскрыть данный псевдоним\n"
-"  -a <file>\tвложить файл в сообщение\n"
-"  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
-"  -c <address>\tуказать carbon-copy (CC) адрес\n"
 "  -e <command>\tуказать команду, которая будет выполнена после "
 "инициализации\n"
 "  -f <file>\tуказать почтовый ящик для работы\n"
@@ -3652,7 +3592,7 @@ msgstr "Данный сертификат действителен"
 #: mutt_ssl.c:652 mutt_ssl_gnutls.c:715
 #, c-format
 msgid "   from %s"
-msgstr "   с %s"
+msgstr "      с %s"
 
 #: mutt_ssl.c:654 mutt_ssl_gnutls.c:719
 #, c-format
@@ -3694,89 +3634,82 @@ msgstr "Сертификат сохранен"
 
 #: mutt_ssl_gnutls.c:95 mutt_ssl_gnutls.c:117
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Ошибка: не удалось открыть TLS-сокет"
 
 #: mutt_ssl_gnutls.c:204
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Запрещены все доступные протоколы для TLS/SSL-соединения"
 
 #: mutt_ssl_gnutls.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "SSL-соединение установлено; алгоритм шифрования %s (%s)"
+msgstr "SSL/TLS-соединение с использованием %s (%s/%s/%s)"
 
 #: mutt_ssl_gnutls.c:508
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Ошибка проверки сертификата (%s)"
 
 #: mutt_ssl_gnutls.c:516
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "Сертификат сохранен"
+msgstr "Сертификат не соответствует стандарту X.509"
 
 #: mutt_ssl_gnutls.c:523
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Ошибка инициализации терминала."
+msgstr "Ошибка инициализации данных сертификата gnutls"
 
 #: mutt_ssl_gnutls.c:539
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Ошибка обработки данных сертификата"
 
 #: mutt_ssl_gnutls.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Отпечаток пальца: %s"
+msgstr "SHA1-отпечаток пальца: %s"
 
 #: mutt_ssl_gnutls.c:727
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Отпечаток пальца: %s"
+msgstr "MD5-отпечаток пальца: %s"
 
 #: mutt_ssl_gnutls.c:732
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Сертификат все еще недействителен"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: сертификат сервера уже недействителен"
 
 #: mutt_ssl_gnutls.c:737
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Срок действия сертификата истек"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: cрок действия сертификата сервера истек"
 
 #: mutt_ssl_gnutls.c:742
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Срок действия сертификата истек"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: сертификат сервера был отозван"
 
 #: mutt_ssl_gnutls.c:747
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "ПРЕДУПРЕЖДЕНИЕ: имя сервера не соответствует сертификату"
 
 #: mutt_ssl_gnutls.c:752
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Сертификат все еще недействителен"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: сертификат сервера не подписан CA"
 
 #: mutt_ssl_gnutls.c:755
-#, fuzzy
 msgid "TLS/SSL Certificate check"
-msgstr "Проверка SSL-сертификата"
+msgstr "Проверка TLS/SSL-сертификата"
 
 #: mutt_tunnel.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Устанавливается соединение с %s..."
+msgstr "Устанавливается соединение с \"%s\"..."
 
 #: mutt_tunnel.c:137
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Туннель к %s вернул ошибку %d (%s)"
 
 #: mutt_tunnel.c:155 mutt_tunnel.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Ошибка при взаимодействии с %s (%s)"
+msgstr "Ошибка туннеля при взаимодействии с %s: %s"
 
 #: muttlib.c:910
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
@@ -4081,15 +4014,13 @@ msgstr ""
 "\n"
 
 #: pgp.c:387 pgp.c:951
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "Не удалось скопировать сообщение"
+msgstr "Не удалось расшифровать PGP-сообщение"
 
 #. clear 'Invoking...' message, since there's no error
 #: pgp.c:436 pgp.c:947
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "PGP-подпись проверена."
+msgstr "PGP-сообщение успешно расшифровано."
 
 #: pgp.c:723
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
@@ -4105,9 +4036,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:828
-#, fuzzy
 msgid "Decryption failed"
-msgstr "Расшифровать не удалась."
+msgstr "Расшифровать не удалась"
 
 #: pgp.c:1003
 msgid "Can't open PGP subprocess!"
@@ -4859,9 +4789,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "Unexpected response received from server: %s"
-#~ msgstr "Получен непредвиденный ответ с сервера: %s"
-
-#~ msgid "Unable to append to IMAP mailboxes at this server"
-#~ msgstr "Не удалось добавить сообщение в IMAP-ящик на этом сервере!"
