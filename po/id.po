@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.9i\n"
+"Project-Id-Version: 1.5.10i\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-08-11 23:50+0200\n"
-"PO-Revision-Date: 2005-03-21 17:31+1100\n"
+"PO-Revision-Date: 2005-08-16 16:05+1000\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -67,7 +67,7 @@ msgstr "Anda telah punya alias dengan nama tersebut!"
 
 #: alias.c:258
 msgid "Warning: This alias name may not work.  Fix it?"
-msgstr "Peringatan: Nama alias ini mungkin tidak akan bekerja. Betulkan?"
+msgstr "Perhatian: Nama alias ini mungkin tidak akan bekerja. Betulkan?"
 
 #: alias.c:283
 msgid "Address: "
@@ -349,7 +349,7 @@ msgstr "Pemilik sertifikat S/MIME tidak sesuai dg pengirim."
 
 #: commands.c:192 commands.c:203
 msgid "Warning: Part of this message has not been signed."
-msgstr "Peringatan: Sebagian dari pesan ini belum ditandatangani."
+msgstr "Perhatian: Sebagian dari pesan ini belum ditandatangani."
 
 #: commands.c:194
 msgid "S/MIME signature could NOT be verified."
@@ -605,7 +605,7 @@ msgstr "-- Lampiran"
 #: compose.c:302
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr "Peringatan: IDN '%s' tidak benar."
+msgstr "Perhatian: IDN '%s' tidak benar."
 
 #: compose.c:325
 msgid "You may not delete the only attachment."
@@ -718,128 +718,134 @@ msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP sudah dipilih. Bersihkan & lanjut ? "
 
 #: crypt-gpgme.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat membuat konteks gpgme: %s\n"
 
 #: crypt-gpgme.c:345
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "error saat mengaktifkan protokol CMS: %s\n"
 
 #: crypt-gpgme.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat membuat objek data gpgme: %s\n"
 
 #: crypt-gpgme.c:431 crypt-gpgme.c:449 crypt-gpgme.c:1327
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat mengalokasikan objek data: %s\n"
 
 #: crypt-gpgme.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat me-rewind objek data: %s\n"
 
 #: crypt-gpgme.c:489 crypt-gpgme.c:536
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat membaca objek data: %s\n"
 
 #: crypt-gpgme.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat menambah penerima `%s': %s\n"
 
 #: crypt-gpgme.c:635
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr ""
+msgstr "kunci rahasia `%s' tidak ditemukan: %s\n"
 
 #: crypt-gpgme.c:645
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr ""
+msgstr "lebih dari satu kunci rahasia yang cocok dengan `%s'\n"
 
 #: crypt-gpgme.c:657
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr ""
+msgstr "error saat memasang `%s' sebagai kunci rahasia: %s\n"
 
 #: crypt-gpgme.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat mengenkripsi data: %s\n"
 
 #: crypt-gpgme.c:798
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "error pada kriteria pada: %s"
+msgstr "error saat menandatangani data: %s\n"
 
 #: crypt-gpgme.c:993
-#, fuzzy
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Peringatan: Sebagian dari pesan ini belum ditandatangani."
+msgstr "Perhatian: Salah satu kunci telah dicabut.\n"
 
 #: crypt-gpgme.c:1002
 msgid "Warning: The key used to create the signature expired at: "
 msgstr ""
+"Perhatian: Kunci yg digunakan utk membuat tandatangan telah "
+"kadaluwarsa pada: "
 
 #: crypt-gpgme.c:1008
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Sertifikat server sudah kadaluwarsa"
+msgstr "Perhatian: Minimal satu sertifikat sudah kadaluwarsa\n"
 
 #: crypt-gpgme.c:1024
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Perhatian: Tandatangan sudah kadaluwarsa pada: "
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr ""
+"Tidak bisa memverifikasi karena kunci atau sertifikat tidak "
+"ditemukan\n"
 
 #: crypt-gpgme.c:1035
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "SSL tidak tersedia."
+msgstr "CRL tidak tersedia.\n"
 
 #: crypt-gpgme.c:1041
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "CRL yang tersedia sudah terlalu tua/lama\n"
 
 #: crypt-gpgme.c:1046
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "Salah satu persyaratan kebijaksanaan tidak terpenuhi\n"
 
 #: crypt-gpgme.c:1055
 msgid "A system error occurred"
-msgstr ""
+msgstr "Telah terjadi suatu kesalahan di sistem"
 
 #: crypt-gpgme.c:1092 crypt-gpgme.c:3036
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "Cap jari: %s"
+msgstr "Cap jari: "
 
 #: crypt-gpgme.c:1152
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
+"PERHATIAN: TIDAK ada indikasi bahwa kunci tersebut dimiliki oleh orang "
+"yang namanya tertera di atas\n"
 
 #: crypt-gpgme.c:1159
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
+"PERHATIAN: Kunci tersebut TIDAK dimiliki oleh oleh orang yang namanya "
+"tertera di atas\n"
 
 #: crypt-gpgme.c:1163
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
+"PERHATIAN: TIDAK bisa dipastikan bahwa kunci tersebut dimiliki oleh orang "
+"yang namanya tertera di atas\n"
 
 #: crypt-gpgme.c:1238
 msgid "Error getting key information: "
-msgstr ""
+msgstr "Error saat mengambil informasi tentang kunci: "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
@@ -847,70 +853,70 @@ msgstr ""
 #. ultimate).
 #: crypt-gpgme.c:1245 crypt-gpgme.c:1278
 msgid "Good signature from: "
-msgstr ""
+msgstr "Tandatangan valid dari: "
 
 #: crypt-gpgme.c:1255
 msgid "                aka: "
-msgstr ""
+msgstr "                alias: "
 
 #: crypt-gpgme.c:1259 crypt-gpgme.c:1281
 msgid "            created: "
-msgstr ""
+msgstr "            dibuat: "
 
 #: crypt-gpgme.c:1268
 msgid "*BAD* signature claimed to be from: "
-msgstr ""
+msgstr "Tandatangan *TIDAK* valid diklaim seakan-akan dari: "
 
 #: crypt-gpgme.c:1291
-#, fuzzy
 msgid "Error checking signature"
-msgstr "Gagal mengirim surat."
+msgstr "Error saat mengecek tandatangan"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
 #: crypt-gpgme.c:1335 crypt-gpgme.c:1539 crypt-gpgme.c:2031
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Awal informasi tandatangan --]\n"
 
 #: crypt-gpgme.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "Error di baris perintah: %s\n"
+msgstr "Error: verifikasi gagal: %s\n"
 
 #: crypt-gpgme.c:1386
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Awal Notasi (tandatangan oleh: %s) ***\n"
 
 #: crypt-gpgme.c:1405
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Akhir Notasi ***\n"
 
 #: crypt-gpgme.c:1413 crypt-gpgme.c:1552 crypt-gpgme.c:2046
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
+"[-- Akhir informasi tandatangan --]\n"
 "\n"
-"[-- Akhir data yang ditandatangani --]\n"
 
 #: crypt-gpgme.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- Error: akhir file tak diduga! --]\n"
+msgstr ""
+"[-- Error: dekripsi gagal: %s --]\n"
+"\n"
 
 #: crypt-gpgme.c:2006
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Error: dekripsi/verifikasi gagal: %s\n"
 
 #: crypt-gpgme.c:2054
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Error: penyalinan data gagal\n"
 
 #: crypt-gpgme.c:2074 pgp.c:405
 msgid ""
@@ -965,12 +971,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: tidak bisa membuat file sementara! --]\n"
 
 #: crypt-gpgme.c:2186
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Data berikut dienkripsi dg PGP/MIME --]\n"
+"[-- Data berikut ditandatangani dan dienkripsi dg PGP/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2187 pgp.c:922
@@ -982,153 +987,142 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2209
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
+msgstr "[-- Akhir data yang ditandatangani dan dienkripsi dg PGP/MIME --]\n"
 
 #: crypt-gpgme.c:2210 pgp.c:942
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
 
 #: crypt-gpgme.c:2252
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
-msgstr "[-- Data berikut ditandatangani dg S/MIME --]\n"
+msgstr ""
+"[-- Data berikut ditandatangani dg S/MIME --]\n"
+"\n"
 
 #: crypt-gpgme.c:2253
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
-msgstr "[-- Data berikut dienkripsi dg S/MIME --]\n"
+msgstr ""
+"[-- Data berikut dienkripsi dg S/MIME --]\n"
+"\n"
 
 #: crypt-gpgme.c:2283
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Akhir data yg ditandatangani dg S/MIME. --]\n"
+msgstr "[-- Akhir data yg ditandatangani dg S/MIME --]\n"
 
 #: crypt-gpgme.c:2284
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Akhir data yang dienkripsi dg S/MIME. --]\n"
+msgstr "[-- Akhir data yang dienkripsi dg S/MIME --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak diketahui)]"
 
 #: crypt-gpgme.c:2878
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak valid)]"
 
 #: crypt-gpgme.c:2883
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[Tidak bisa menampilkan user ID ini (DN tidak valid)]"
 
 #: crypt-gpgme.c:2962
 msgid " aka ......: "
-msgstr ""
+msgstr " alias.....: "
 
 #: crypt-gpgme.c:2962
 msgid "Name ......: "
-msgstr ""
+msgstr "Nama ......: "
 
 #: crypt-gpgme.c:2965 crypt-gpgme.c:3104
-#, fuzzy
 msgid "[Invalid]"
-msgstr "Tdk valid "
+msgstr "[Tidak valid]"
 
 #: crypt-gpgme.c:2985 crypt-gpgme.c:3128
-#, fuzzy, c-format
+#, c-format
 msgid "Valid From : %s\n"
-msgstr "Tidak ada bulan: %s"
+msgstr "Berlaku Dari..: %s\n"
 
 #: crypt-gpgme.c:2998 crypt-gpgme.c:3141
-#, fuzzy, c-format
+#, c-format
 msgid "Valid To ..: %s\n"
-msgstr "Tidak ada bulan: %s"
+msgstr "Berlaku Sampai: %s\n"
 
 #: crypt-gpgme.c:3011 crypt-gpgme.c:3154
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr ""
+msgstr "Jenis Kunci: %s, %lu bit %s\n"
 
 #: crypt-gpgme.c:3013 crypt-gpgme.c:3156
 #, c-format
 msgid "Key Usage .: "
-msgstr ""
+msgstr "Penggunaan Kunci: "
 
 #: crypt-gpgme.c:3018 crypt-gpgme.c:3161
-#, fuzzy
 msgid "encryption"
-msgstr "Enkrip"
+msgstr "enkripsi"
 
 #: crypt-gpgme.c:3019 crypt-gpgme.c:3024 crypt-gpgme.c:3029 crypt-gpgme.c:3162
 #: crypt-gpgme.c:3167 crypt-gpgme.c:3172
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: crypt-gpgme.c:3023 crypt-gpgme.c:3166
 msgid "signing"
-msgstr ""
+msgstr "menandatangani"
 
 #: crypt-gpgme.c:3028 crypt-gpgme.c:3171
-#, fuzzy
 msgid "certification"
-msgstr "Sertifikat telah disimpan"
+msgstr "sertifikasi"
 
 #: crypt-gpgme.c:3068
 #, c-format
 msgid "Serial-No .: 0x%s\n"
-msgstr ""
+msgstr "Nomer Seri .: 0x%s\n"
 
 #: crypt-gpgme.c:3076
 #, c-format
 msgid "Issued By .: "
-msgstr ""
+msgstr "Dikeluarkan oleh: "
 
 #. display only the short keyID
 #: crypt-gpgme.c:3095
-#, fuzzy, c-format
+#, c-format
 msgid "Subkey ....: 0x%s"
-msgstr "Identifikasi kunci: 0x%s"
+msgstr "Sub kunci..: 0x%s"
 
 #: crypt-gpgme.c:3099
-#, fuzzy
 msgid "[Revoked]"
-msgstr "Dicabut   "
+msgstr "[Dicabut]"
 
 #: crypt-gpgme.c:3109
-#, fuzzy
 msgid "[Expired]"
-msgstr "Kadaluarsa"
+msgstr "[Kadaluwarsa]"
 
 #: crypt-gpgme.c:3114
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Tidak aktif]"
 
 #: crypt-gpgme.c:3198 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
 #: crypt-gpgme.c:3201
-#, fuzzy
 msgid "Collecting data..."
-msgstr "Menghubungi %s..."
+msgstr "Mengumpulkan data ..."
 
 #: crypt-gpgme.c:3227
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Kesalahan waktu menghubungi ke server: %s"
+msgstr "Error saat mencari kunci yg mengeluarkan: %s"
 
 #: crypt-gpgme.c:3237
 msgid "Error: certification chain to long - stopping here\n"
-msgstr ""
+msgstr "Error: rantai sertifikasi terlalu panjang - berhenti di sini\n"
 
 #: crypt-gpgme.c:3248 pgpkey.c:580
 #, c-format
@@ -1136,24 +1130,23 @@ msgid "Key ID: 0x%s"
 msgstr "Identifikasi kunci: 0x%s"
 
 #: crypt-gpgme.c:3331
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "Penggantian nama gagal: %s"
+msgstr "gpgme_new gagal: %s"
 
 #: crypt-gpgme.c:3370 crypt-gpgme.c:3433
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start gagal: %s"
 
 #: crypt-gpgme.c:3420 crypt-gpgme.c:3461
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next gagal: %s"
 
 #: crypt-gpgme.c:3532
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
-msgstr "Semua kunci yang cocok telah kadaluwarsa, dicabut, atau disabled."
+msgstr "Semua kunci yang cocok ditandai kadaluwarsa/dicabut."
 
 #: crypt-gpgme.c:3561 mutt_ssl.c:676 mutt_ssl_gnutls.c:770 pgpkey.c:514
 #: smime.c:431
@@ -1171,34 +1164,30 @@ msgid "Check key  "
 msgstr "Cek key  "
 
 #: crypt-gpgme.c:3583
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP keys yg cocok dg \"%s\"."
+msgstr "Kunci-kunci PGP dan S/MIME cocok"
 
 #: crypt-gpgme.c:3585
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "PGP keys yg cocok dg \"%s\"."
+msgstr "Kunci-kunci PGP cocok"
 
 #: crypt-gpgme.c:3587
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "Sertifikat2 S/MIME yg cocok dg \"%s\"."
+msgstr "Kunci-kunci S/MIME cocok"
 
 #: crypt-gpgme.c:3589
-#, fuzzy
 msgid "keys matching"
-msgstr "PGP keys yg cocok dg \"%s\"."
+msgstr "kunci-kunci cocok"
 
 #: crypt-gpgme.c:3592
-#, fuzzy, c-format
+#, c-format
 msgid "%s <%s>."
-msgstr "%s [%s]\n"
+msgstr "%s <%s>."
 
 #: crypt-gpgme.c:3594
-#, fuzzy, c-format
+#, c-format
 msgid "%s \"%s\"."
-msgstr "%s [%s]\n"
+msgstr "%s \"%s\"."
 
 #: crypt-gpgme.c:3621 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
@@ -1245,28 +1234,26 @@ msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
 msgstr ""
+"\n"
+"Menggunakan backend GPGME, walaupun tdk ada gpg-agent yg berjalan"
 
 #: crypt-gpgme.c:4131
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
-"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)ersih? "
 
 #: crypt-gpgme.c:4132
-#, fuzzy
 msgid "esabpfc"
-msgstr "etgsdlb"
+msgstr "etsdplb"
 
 #: crypt-gpgme.c:4135
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
-"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)ersih? "
 
 #: crypt-gpgme.c:4136
-#, fuzzy
 msgid "esabmfc"
-msgstr "etgsdlb"
+msgstr "etsdmlb"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
@@ -1277,12 +1264,11 @@ msgstr "Tandatangani sebagai: "
 
 #: crypt-gpgme.c:4249
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "Gagal memverifikasi pengirim"
 
 #: crypt-gpgme.c:4252
-#, fuzzy
 msgid "Failed to figure out sender"
-msgstr "Gagal membuka file untuk menge-parse headers."
+msgstr "Gagal menentukan pengirim"
 
 #: crypt.c:69
 #, c-format
@@ -1378,12 +1364,11 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
-msgstr ""
+msgstr "\"crypt_use_gpgme\" diset tapi tidak ada dukungan GPGME"
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking SMIME..."
-msgstr "Memanggil PGP..."
+msgstr "Memanggil SMIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -1436,7 +1421,7 @@ msgstr "Kotak surat read-only, tidak bisa toggle write!"
 
 #: curs_main.c:256
 msgid "Changes to folder will be written on folder exit."
-msgstr "Perubahan ke folder akan dilakukan sewaktu keluar dari folder."
+msgstr "Perubahan ke folder akan dilakukan saat keluar dari folder."
 
 #: curs_main.c:261
 msgid "Changes to folder will not be written."
@@ -1558,24 +1543,23 @@ msgstr "Tidak disetting untuk melakukan threading."
 
 #: curs_main.c:1206
 msgid "Thread broken"
-msgstr ""
+msgstr "Thread dipecah"
 
 #: curs_main.c:1228
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Tidak ada header Message-ID: tersedia utk menghubungkan thread"
 
 #: curs_main.c:1230
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "simpan surat ini untuk dikirim nanti"
+msgstr "Pertama, tandai sebuah surat utk dihubungkan ke sini"
 
 #: curs_main.c:1242
 msgid "Threads linked"
-msgstr ""
+msgstr "Thread dihubungkan"
 
 #: curs_main.c:1245
 msgid "No thread linked"
-msgstr ""
+msgstr "Tidak ada thread yg dihubungkan"
 
 #: curs_main.c:1281 curs_main.c:1306
 msgid "You are on the last message."
@@ -2034,7 +2018,7 @@ msgstr "IMAP server ini sudah kuno. Mutt tidak bisa menggunakannya."
 
 #: imap/imap.c:420
 msgid "Checking mailbox subscriptions"
-msgstr ""
+msgstr "Memeriksa langganan kotak surat"
 
 #: imap/imap.c:458 pop_lib.c:286
 msgid "Secure connection with TLS?"
@@ -2046,7 +2030,7 @@ msgstr "Tidak dapat negosiasi hubungan TLS"
 
 #: imap/imap.c:487 pop_lib.c:331
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "Hubungan terenkripsi tidak tersedia"
 
 #: imap/imap.c:616
 #, c-format
@@ -2055,7 +2039,7 @@ msgstr "Memilih %s..."
 
 #: imap/imap.c:752
 msgid "Error opening mailbox"
-msgstr "Error sewaktu membuka kotak surat"
+msgstr "Error saat membuka kotak surat"
 
 #: imap/imap.c:801 imap/message.c:731 muttlib.c:1300
 #, c-format
@@ -2168,7 +2152,7 @@ msgstr "alias: tidak ada alamat email"
 #: init.c:894
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Peringatan: IDN '%s' di alias '%s' tidak benar.\n"
+msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar.\n"
 
 #: init.c:972
 msgid "invalid header field"
@@ -2727,7 +2711,7 @@ msgstr "menulis surat baru"
 
 #: keymap_alldefs.h:103
 msgid "break the thread in two"
-msgstr ""
+msgstr "pecahkan thread jadi dua"
 
 #: keymap_alldefs.h:104
 msgid "open a different folder"
@@ -2766,9 +2750,8 @@ msgid "show only messages matching a pattern"
 msgstr "hanya tunjukkan surat yang cocok dengan suatu kriteria"
 
 #: keymap_alldefs.h:113
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "Bounce surat yang telah ditandai ke: "
+msgstr "hubungkan surat yang telah ditandai ke yang sedang dipilih"
 
 #: keymap_alldefs.h:114
 msgid "jump to the next new message"
@@ -3151,7 +3134,6 @@ msgstr ""
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:61
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3178,11 +3160,11 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Hak Cipta (C) 1996-2002 Michael R. Elkins <me@cs.hmc.edu>\n"
+"Hak Cipta (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Hak Cipta (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Hak Cipta (C) 1997-2002 Thomas Roessler <roessler@guug.de>\n"
-"Hak Cipta (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Hak Cipta (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
+"Hak Cipta (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Hak Cipta (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Hak Cipta (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
 "Hak Cipta (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3206,7 +3188,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:99
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3227,15 +3208,16 @@ msgid ""
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
 "  -D\t\tprint the value of all variables to stderr"
 msgstr ""
-"penggunaan: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+"penggunaan: mutt [ -nRyzZ ] [ -e <perintah> ] [ -F <file> ] [ -m <jenis> ] [ -f "
 "<file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+"       mutt [ -nR ] [ -e <perintah> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
 "[...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+"       mutt [ -nR ] [ -e <perintah> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
 "[...]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"       mutt [ -nR ] [ -e <perintah> ] [ -F <file> ] -D\n"
+"       mutt [ -nx ] [ -e <perintah> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
+"[ -i <file> ] [ -s <subj> ] [ -b <alamat> ] [ -c <alamat> ] <alamat> [ ... ]\n"
+"       mutt [ -n ] [ -e <perintah> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
 "opsi:\n"
@@ -3243,30 +3225,13 @@ msgstr ""
 "  -a <file>\tlampirkan file ke surat\n"
 "  -b <alamat>\talamat blind carbon-copy (BCC)\n"
 "  -c <alamat>\talamat carbon-copy (CC)\n"
-"  -e <perintah>\tperintah yang dijalankan setelah inisialisasi\n"
-"  -f <file>\tkotak surat yang dibaca\n"
-"  -F <file>\tfile muttrc alternatif\n"
-"  -H <file>\tfile draft sebagai sumber header dan badan\n"
-"  -i <file>\tfile yang disertakan dalam badan surat\n"
-"  -m <jenis>\tjenis kotak surat yang digunakan\n"
-"  -n\t\tmenyuruh Mutt untuk tidak membaca muttrc dari system\n"
-"  -p\t\tlanjutkan surat yang ditunda\n"
-"  -Q <variabel>\tmelakukan query thd suatu variabel konfigurasi\n"
-"  -R\t\tbuka kotak surat dengan mode read-only\n"
-"  -s <subj>\tsubjek surat (harus dikutip jika mengandung spasi)\n"
-"  -v\t\ttunjukkan versi dan definisi sewaktu compile\n"
-"  -x\t\tsimulasi mailx untuk mengirim surat\n"
-"  -y\t\tpilih kotak surat yg ada di daftar `mailboxes'\n"
-"  -z\t\tlangsung keluar jika tidak ada surat di kotak surat\n"
-"  -Z\t\tbuka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
-"  -h\t\tpesan bantuan ini"
+"  -D\t\ttampilkan semua nilai variabel ke stderr"
 
 #: main.c:114
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr ""
+msgstr " -d <level>\tcatat keluaran debugging ke ~/.muttdebug0"
 
 #: main.c:117
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3286,34 +3251,18 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"penggunaan: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-"[...]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-"       mutt -v[v]\n"
-"\n"
-"opsi:\n"
-"  -A <alias>\tekspansi alias\n"
-"  -a <file>\tlampirkan file ke surat\n"
-"  -b <alamat>\talamat blind carbon-copy (BCC)\n"
-"  -c <alamat>\talamat carbon-copy (CC)\n"
 "  -e <perintah>\tperintah yang dijalankan setelah inisialisasi\n"
 "  -f <file>\tkotak surat yang dibaca\n"
 "  -F <file>\tfile muttrc alternatif\n"
 "  -H <file>\tfile draft sebagai sumber header dan badan\n"
 "  -i <file>\tfile yang disertakan dalam badan surat\n"
 "  -m <jenis>\tjenis kotak surat yang digunakan\n"
-"  -n\t\tmenyuruh Mutt untuk tidak membaca muttrc dari system\n"
+"  -n\t\tmenyuruh Mutt untuk tidak membaca Muttrc dari sistem\n"
 "  -p\t\tlanjutkan surat yang ditunda\n"
 "  -Q <variabel>\tmelakukan query thd suatu variabel konfigurasi\n"
-"  -R\t\tbuka kotak surat dengan mode read-only\n"
+"  -R\t\tbuka kotak surat dengan modus baca-saja\n"
 "  -s <subj>\tsubjek surat (harus dikutip jika mengandung spasi)\n"
-"  -v\t\ttunjukkan versi dan definisi sewaktu compile\n"
+"  -v\t\ttunjukkan versi dan definisi saat compile\n"
 "  -x\t\tsimulasi mailx untuk mengirim surat\n"
 "  -y\t\tpilih kotak surat yg ada di daftar `mailboxes'\n"
 "  -z\t\tlangsung keluar jika tidak ada surat di kotak surat\n"
@@ -3326,7 +3275,7 @@ msgid ""
 "Compile options:"
 msgstr ""
 "\n"
-"Opsi2 sewaktu kompilasi:"
+"Opsi2 saat kompilasi:"
 
 #: main.c:484
 msgid "Error initializing terminal."
@@ -3339,7 +3288,7 @@ msgstr "Melakukan debug tingkat %d.\n"
 
 #: main.c:596
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr "DEBUG tidak digunakan sewaktu compile. Cuek.\n"
+msgstr "DEBUG tidak digunakan saat compile. Cuek.\n"
 
 #: main.c:746
 #, c-format
@@ -3672,89 +3621,82 @@ msgstr "Sertifikat telah disimpan"
 
 #: mutt_ssl_gnutls.c:95 mutt_ssl_gnutls.c:117
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Error: tidak ada socket TLS terbuka"
 
 #: mutt_ssl_gnutls.c:204
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Semua protokol yg tersedia utk TLS/SSL tidak aktif"
 
 #: mutt_ssl_gnutls.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "Hubungan SSL menggunakan %s (%s)"
+msgstr "Hubungan SSL menggunakan %s (%s/%s/%s)"
 
 #: mutt_ssl_gnutls.c:508
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Error verifikasi sertifikat (%s)"
 
 #: mutt_ssl_gnutls.c:516
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "Sertifikat telah disimpan"
+msgstr "Sertifikat bukan X.509"
 
 #: mutt_ssl_gnutls.c:523
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Gagal menginisialisasi terminal."
+msgstr "Gagal menginisialisasi data sertifikat gnutls"
 
 #: mutt_ssl_gnutls.c:539
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Gagal memproses data sertifikat"
 
 #: mutt_ssl_gnutls.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Cap jari: %s"
+msgstr "Cap jari SHA1: %s"
 
 #: mutt_ssl_gnutls.c:727
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Cap jari: %s"
+msgstr "Cap jari MD5: %s"
 
 #: mutt_ssl_gnutls.c:732
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Sertifikat server belum sah"
+msgstr "PERHATIAN: Sertifikat server masih belum valid"
 
 #: mutt_ssl_gnutls.c:737
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Sertifikat server sudah kadaluwarsa"
+msgstr "PERHATIAN: Sertifikat server sudah kadaluwarsa"
 
 #: mutt_ssl_gnutls.c:742
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Sertifikat server sudah kadaluwarsa"
+msgstr "PERHATIAN: Sertifikat server sudah dicabut"
 
 #: mutt_ssl_gnutls.c:747
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "PERHATIAN: Nama host server tidak cocok dengan sertifikat"
 
 #: mutt_ssl_gnutls.c:752
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Sertifikat server belum sah"
+msgstr "PERHATIAN: Penandatangan sertifikat server bukan CA"
 
 #: mutt_ssl_gnutls.c:755
-#, fuzzy
 msgid "TLS/SSL Certificate check"
-msgstr "Cek sertifikat SSL"
+msgstr "Cek Sertifikat TLS/SSL"
 
 #: mutt_tunnel.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Menghubungi %s..."
+msgstr "Menghubungi \"%s\"..."
 
 #: mutt_tunnel.c:137
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Tunnel ke %s menghasilkan error %d (%s)"
 
 #: mutt_tunnel.c:155 mutt_tunnel.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Kesalahan waktu menghubungi ke server %s (%s)"
+msgstr "Kesalahan tunnel saat berbicara dg %s: %s"
 
 #: muttlib.c:910
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
@@ -4060,15 +4002,13 @@ msgstr ""
 "\n"
 
 #: pgp.c:387 pgp.c:951
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "Tidak bisa menyalin surat"
+msgstr "Tidak bisa mendekripsi surat PGP"
 
 #. clear 'Invoking...' message, since there's no error
 #: pgp.c:436 pgp.c:947
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "Tanda tangan PGP berhasil diverifikasi."
+msgstr "Surat PGP berhasil didekrip."
 
 #: pgp.c:723
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
@@ -4083,9 +4023,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:828
-#, fuzzy
 msgid "Decryption failed"
-msgstr "Dekripsi gagal."
+msgstr "Dekripsi gagal"
 
 #: pgp.c:1003
 msgid "Can't open PGP subprocess!"
@@ -4198,7 +4137,7 @@ msgstr "Membaca surat-surat baru (%d bytes)..."
 
 #: pop.c:661
 msgid "Error while writing mailbox!"
-msgstr "Error sewaktu menulis ke kotak surat!"
+msgstr "Error saat menulis ke kotak surat!"
 
 #: pop.c:665
 #, c-format
@@ -4683,7 +4622,7 @@ msgstr "Blm verif."
 
 #: smime.c:330
 msgid "Expired   "
-msgstr "Kadaluarsa"
+msgstr "Kadaluwarsa"
 
 #: smime.c:333
 msgid "Revoked   "
