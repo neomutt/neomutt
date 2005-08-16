@@ -3098,7 +3098,7 @@ to send messages from the command line as well.
 -a      attach a file to a message
 -b      specify a blind carbon-copy (BCC) address
 -c      specify a carbon-copy (Cc) address
--D      print the value of all mutt variables to stderr
+-D      print the value of all mutt variables to stdout
 -e      specify a config command to be run after initilization files are read
 -f      specify a mailbox to load
 -F      specify an alternate file to read initialization commands

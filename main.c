@@ -109,7 +109,7 @@ options:\n\
   -a <file>\tattach a file to the message\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
-  -D\t\tprint the value of all variables to stderr");
+  -D\t\tprint the value of all variables to stdout");
 #if DEBUG
   puts _("  -d <level>\tlog debugging output to ~/.muttdebug0");
 #endif

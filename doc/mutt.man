@@ -48,6 +48,9 @@ mutt \- The Mutt Mail User Agent
 .PP
 .B mutt 
 -v[v]
+.PP
+.B mutt 
+-D
 .SH DESCRIPTION
 .PP
 Mutt is a small but very powerful text based program for reading electronic
@@ -63,6 +66,8 @@ Attach a file to your message using MIME.
 Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"
 Specify a carbon-copy (CC) recipient
+.IP "-D"
+Print the value of all configuration options to stdout.
 .IP "-e \fIcommand\fP"
 Specify a configuration command to be run after processing of initialization
 files.
