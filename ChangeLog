@@ -1,3 +1,8 @@
+2005-08-16 18:10:11  Paul Walker  <paul@black-sun.demon.co.uk>  (brendan)
+
+	* doc/manual.sgml.head, doc/mutt.man, main.c: -D dumps to stdout,
+	not stderr.
+
 2005-08-15 08:10:48  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* po/id.po: Fix \n mismatch.
