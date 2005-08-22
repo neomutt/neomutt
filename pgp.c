@@ -381,8 +381,13 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	}
 	
         /* treat empty result as sign of failure */
-	rewind (pgpout);
-        if ((c = fgetc (pgpout)) == EOF)
+	if (pgpout)
+	{
+	  rewind (pgpout);
+	  c = fgetc (pgpout);
+	  ungetc (c, pgpout);
+	}
+        if (!pgpout || c == EOF)
 	{
           mutt_error _("Could not decrypt PGP message");
           pgp_void_passphrase ();
@@ -390,7 +395,6 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
           
           goto out;
         }
-	ungetc (c, pgpout);
       }
       
       /*
