@@ -390,6 +390,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
         if (!pgpout || c == EOF)
 	{
           mutt_error _("Could not decrypt PGP message");
+	  mutt_sleep (1);
           pgp_void_passphrase ();
           rc = -1;
           
