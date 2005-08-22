@@ -1,3 +1,7 @@
+2005-08-22 16:10:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Don't attempt to manipulate null pgp output file handles.
+
 2005-08-16 18:10:11  Paul Walker  <paul@black-sun.demon.co.uk>  (brendan)
 
 	* doc/manual.sgml.head, doc/mutt.man, main.c: -D dumps to stdout,
