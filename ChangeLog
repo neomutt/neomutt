@@ -1,4 +1,8 @@
-2005-08-22 16:10:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-08-22 20:30:11  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Pause after error message if PGP decode fails, in case
+	mutt_copy_message overwrites. Real error handling cleanup will have
+	to wait...
 
 	* pgp.c: Don't attempt to manipulate null pgp output file handles.
 
