@@ -387,7 +387,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  c = fgetc (pgpout);
 	  ungetc (c, pgpout);
 	}
-        if (!pgpout || c == EOF)
+        if (!clearsign && (!pgpout || c == EOF))
 	{
           mutt_error _("Could not decrypt PGP message");
 	  mutt_sleep (1);
