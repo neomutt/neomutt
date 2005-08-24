@@ -1,3 +1,8 @@
+2005-08-24 15:17:43  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Don't treat PGP inline signature verification errors as
+	fatal.
+
 2005-08-22 20:30:11  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* pgp.c: Pause after error message if PGP decode fails, in case
