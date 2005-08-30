@@ -483,7 +483,9 @@ AC_SUBST(DOTLOCK_PERMISSION)
 
 AC_ARG_WITH(domain, AC_HELP_STRING([--with-domain=DOMAIN], [Specify your DNS domain name]),
         [if test $withval != yes; then
+            if test $withval != no; then
                 AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[ Define your domain name. ])
+            fi
         fi])
 
 need_socket="no"
