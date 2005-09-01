@@ -1,4 +1,10 @@
-2005-09-01 01:39:06  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-01 17:07:14  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* configure.in, imap/auth_sasl.c, main.c, mutt_sasl.c,
+	mutt_sasl.h, pop_auth.c: Remove obsolete Cyrus SASL 1.5 support.
+
+	* doc/chunk.xsl, doc/html.xsl: Docbook support files, dropped
+	in the initial commit.
 
 	* doc/manual.sgml.tail, configure.in, doc/Makefile.in,
 	doc/manual.sgml.head, makedoc.c: Convert documentation from
