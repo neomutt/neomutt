@@ -612,7 +612,7 @@ then
 fi
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
-AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL library for POP/IMAP authentication]),
+AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL 2 network security library]),
         [
         if test "$need_socket" != "yes"
         then
@@ -629,46 +629,14 @@ AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL library fo
 
           saved_LIBS="$LIBS"
 
-          AC_CHECK_LIB(sasl, sasl_client_init,,
-            AC_MSG_ERROR([could not find libsasl]),)
-
-          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
-          MUTTLIBS="$MUTTLIBS -lsasl"
-          LIBS="$saved_LIBS"
-          AC_DEFINE(USE_SASL,1,
-                  [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
-          need_sasl=yes
-        fi
-        ])
-AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
-
-AC_ARG_WITH(sasl2, AC_HELP_STRING([--with-sasl2[=PFX]], [Use Cyrus SASL library version 2 for POP/IMAP authentication]),
-        [
-        if test "$need_socket" != "yes"
-        then
-          AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
-        fi
-
-        if test "$with_sasl2" != "no"
-        then
-          if test "$with_sasl2" != "yes"
-          then
-            CPPFLAGS="$CPPFLAGS -I$with_sasl2/include"
-            LDFLAGS="$LDFLAGS -L$with_sasl2/lib"
-          fi
-
-          saved_LIBS="$LIBS"
-
           AC_CHECK_LIB(sasl2, sasl_client_init,,
-            AC_MSG_ERROR([could not find libsasl]),)
+            AC_MSG_ERROR([could not find libsasl2]),)
 
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
           MUTTLIBS="$MUTTLIBS -lsasl2"
           LIBS="$saved_LIBS"
           AC_DEFINE(USE_SASL,1,
                   [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
-          AC_DEFINE(USE_SASL2,1,
-                  [ Define if want to use version 2 of the Cyrus SASL library. ])
           need_sasl=yes
         fi
         ])
