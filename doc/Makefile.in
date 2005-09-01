@@ -30,6 +30,8 @@ subdir = doc
 
 CPPFLAGS = @CPPFLAGS@
 
+DSLROOT = @DSLROOT@
+
 DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 INCLUDES = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
@@ -41,21 +43,19 @@ DISTFILES = Makefile.in dotlock.man  	\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
 	devel-notes.txt			\
-	manual.txt			\
 	muttrc.man.head			\
 	muttrc.man.tail			\
-	muttrc.man			\
 	mbox.man			\
 	mmdf.man			\
 	manual.sgml.head		\
 	manual.sgml.tail		\
-	manual.sgml			\
-	manual.html			\
-	stamp-doc-sgml			\
-	stamp-doc-man			\
 	instdoc.sh.in			\
 	patch-notes.txt			\
-	smime-notes.txt
+	smime-notes.txt			\
+	html.xsl chunk.xsl
+
+BUILT_DISTFILES = stamp-doc-xml stamp-doc-man stamp-doc-chunked \
+	manual.txt manual.html
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
@@ -64,13 +64,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
-all: mutt.1 muttrc.man try-html try-txt
-
-try-html: ../makedoc$(EXEEXT)
-	test -f manual.html || $(MAKE) manual.html || cp $(srcdir)/manual*.html ./
-
-try-txt: ../makedoc$(EXEEXT)
-	test -f manual.txt || $(MAKE) manual.txt || cp $(srcdir)/manual.txt ./
+all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
 
 install: all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
@@ -90,9 +84,10 @@ install: all instdoc
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
-	$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir) || true
+	-$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir)
+	-$(INSTALL) -m 644 manual.html $(DESTDIR)$(docdir)
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/html
-	for file in manual*.html ; do	\
+	-cd html; for file in *.html ; do	\
 		$(INSTALL) -m 644 $$file $(DESTDIR)$(docdir)/html/ || true ;\
 	done
 
@@ -107,30 +102,40 @@ uninstall:
 		rm -f $(DESTDIR)$(docdir)/$$f ; \
 	done
 	-rm -f $(DESTDIR)$(docdir)/manual.txt
-	for f in manual*.html ; do \
+	-rm -f $(DESTDIR)$(docdir)/manual.html
+	-cd html; for f in *.html ; do \
 		rm -f $(DESTDIR)$(docdir)/html/$$f ; \
 	done
 	-rmdir $(DESTDIR)$(docdir)/html
 
 check:
-manual.txt: manual.sgml
-	if linuxdoc -B txt -c latin --pass='-P -c' manual ; then \
-		uniq < manual.txt | expand > _manual.txt ; \
-		rm manual.txt ; \
-		mv _manual.txt manual.txt ;\
+manual.txt: manual.html
+	-lynx -dump -nolist -with_backspaces $^ > $@ || w3m -dump $^ > $@
+
+manual.html: $(srcdir)/html.xsl manual.xml
+	-xsltproc --nonet -o $@ $^
+
+manual-chunked stamp-doc-chunked: $(srcdir)/chunk.xsl manual.xml
+	test -d html || mkdir html
+	-xsltproc --nonet -o html/ $^
+	touch stamp-doc-chunked
+
+manual.pdf: stamp-doc-tex
+	-if test -f manual.tex; then pdfjadetex manual.tex; fi
+
+manual.tex stamp-doc-tex: manual.xml
+	-if test -n "$(DSLROOT)"; then \
+	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
 	fi
-
-manual.html: manual.sgml
-	sgml2html manual  || true
-
-manual.ps: manual.sgml
-	sgml2latex --output=ps manual || true
+	touch stamp-doc-tex
 
 clean: 
-	rm -f *~ *.html *.orig *.rej  stamp-doc-sgml stamp-doc-man *.ps
+	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
+	rm -f *.aux *.log *.tex *.out
 
 clean-real:
-	rm -f manual.txt
+	rm -f manual.txt manual.html manual.xml manual.pdf
+	rm -rf html
 
 maintainer-clean: clean clean-real distclean
 
@@ -155,15 +160,20 @@ dist distdir: Makefile $(DISTFILES)
 		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
 			|| cp -p $(srcdir)/$$file $(distdir); 	\
 	done
-	for file in $(srcdir)/manual-*.html ; do		\
-		ln $$file $(distdir) 2> /dev/null 		\
-		|| cp -p $$file $(distdir) ;			\
+	for file in $(BUILT_DISTFILES) ; do       \
+		ln $$file $(distdir) 2> /dev/null \
+		|| cp -p $$file $(distdir) ;      \
+	done
+	mkdir $(distdir)/html
+	cd html; for file in *.html ; do			\
+		ln $$file ../$(distdir)/html 2> /dev/null 	\
+		|| cp -p $$file ../$(distdir)/html ;		\
 	done
 
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
 	(cd .. && $(MAKE) makedoc$(EXEEXT))
 
-update-doc:  ../makedoc$(EXEEXT) stamp-doc-sgml stamp-doc-man manual.txt manual.html
+update-doc:  ../makedoc$(EXEEXT) stamp-doc-xml stamp-doc-man stamp-doc-chunked manual.txt manual.html
 
 muttrc.man stamp-doc-man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
@@ -178,8 +188,8 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-manual.sgml stamp-doc-sgml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.sgml.head manual.sgml.tail $(top_srcdir)/VERSION
+manual.xml stamp-doc-xml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.sgml.head manual.sgml.tail $(top_srcdir)/VERSION
 	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION`/" $(srcdir)/manual.sgml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
-		cat - $(srcdir)/manual.sgml.tail > manual.sgml
-	touch stamp-doc-sgml
+		cat - $(srcdir)/manual.sgml.tail > manual.xml
+	touch stamp-doc-xml

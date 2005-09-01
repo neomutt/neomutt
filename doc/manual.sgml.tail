@@ -1,20 +1,29 @@
-<sect1>Functions<label id="functions">
-<p>
+</sect2>
+
+<sect2 id="functions">
+<title>Functions</title>
+
+<para>
 The following is the list of available functions listed by the mapping
 in which they are available.  The default key setting is given, and an
 explanation of what the function does.  The key bindings of these
-functions can be changed with the <ref name="bind" id="bind">
+functions can be changed with the <link linkend="bind">bind</link>
 command.
+</para>
 
-<sect2>generic
-<p>
+<sect3>
+<title>generic</title>
 
-The <em/generic/ menu is not a real menu, but specifies common functions
-(such as movement) available in all menus except for <em/pager/ and
-<em/editor/.  Changing settings for this menu will affect the default
+<para>
+The <emphasis>generic</emphasis> menu is not a real menu, but specifies common functions
+(such as movement) available in all menus except for <emphasis>pager</emphasis> and
+<emphasis>editor</emphasis>.  Changing settings for this menu will affect the default
 bindings for all menus (except as noted).
+</para>
 
-<verb>
+<para>
+
+<screen>
 bottom-page                L   move to the bottom of the page
 current-bottom     not bound   move current entry to bottom of page
 current-middle     not bound   move current entry to middle of page
@@ -29,10 +38,10 @@ jump                  number   jump to an index number
 last-entry                 *   move to the last entry
 middle-page                M   move to the middle of the page
 next-entry                 j   move to the next entry
-next-line                  >   scroll down one line
+next-line                  &gt;   scroll down one line
 next-page                  z   move to the next page
 previous-entry             k   move to the previous entry
-previous-line              <   scroll up one line
+previous-line              &lt;   scroll up one line
 previous-page              Z   move to the previous page
 refresh                   ^L   clear and redraw the screen
 search                     /   search for a regular expression
@@ -46,10 +55,18 @@ tag-prefix                 ;   apply next command to tagged entries
 tag-prefix-cond    not bound   apply next function ONLY to tagged messages
 top-page                   H   move to the top of the page
 what-key           not bound   display the keycode for a key press
-</verb>
-<sect2>index
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>index</title>
+
+<para>
+
+<screen>
 bounce-message             b   remail a message to another user
 change-folder              c   open a different folder
 change-folder-readonly ESC c   open a different folder in read only mode
@@ -117,10 +134,18 @@ undelete-subthread     ESC u   undelete all messages in subthread
 undelete-thread           ^U   undelete all messages in thread
 untag-pattern             ^T   untag messages matching a pattern
 view-attachments           v   show MIME attachments
-</verb>
-<sect2>pager
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>pager</title>
+
+<para>
+
+<screen>
 bottom             not bound   jump to the bottom of the message
 bounce-message             b   remail a message to another user
 change-folder              c   open a different folder
@@ -193,17 +218,33 @@ undelete-message           u   undelete the current entry
 undelete-subthread     ESC u   undelete all messages in subthread
 undelete-thread           ^U   undelete all messages in thread
 view-attachments           v   show MIME attachments
-</verb>
-<sect2>alias
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>alias</title>
+
+<para>
+
+<screen>
 search                     /   search for a regular expression
 search-next                n   search for next match
 search-reverse         ESC /   search backwards for a regular expression
-</verb>
-<sect2>query
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>query</title>
+
+<para>
+
+<screen>
 create-alias               a   create an alias from a message sender
 mail                       m   compose a new mail message
 query                      Q   query external program for addresses
@@ -212,10 +253,18 @@ search                     /   search for a regular expression
 search-next                n   search for next match
 search-opposite    not bound   search for next match in opposite direction
 search-reverse         ESC /   search backwards for a regular expression
-</verb>
-<sect2>attach
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>attach</title>
+
+<para>
+
+<screen>
 bounce-message             b   remail a message to another user
 collapse-parts             v   toggle display of subparts
 delete-entry               d   delete the current entry
@@ -234,10 +283,18 @@ undelete-entry             u   undelete the current entry
 view-attach              RET   view attachment using mailcap entry if necessary
 view-mailcap               m   force viewing of attachment using mailcap
 view-text                  T   view attachment as text
-</verb>
-<sect2>compose
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>compose</title>
+
+<para>
+
+<screen>
 attach-file                a   attach a file(s) to this message
 attach-message             A   attach message(s) to this message
 attach-key             ESC k   attach a PGP public key
@@ -271,16 +328,32 @@ send-message               y   send the message
 toggle-unlink              u   toggle whether to delete file after sending it
 view-attach              RET   view attachment using mailcap entry if necessary
 write-fcc		   w   write the message to a folder
-</verb>
-<sect2>postpone
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>postpone</title>
+
+<para>
+
+<screen>
 delete-entry               d   delete the current entry
 undelete-entry             u   undelete the current entry
-</verb>
-<sect2>browser
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>browser</title>
+
+<para>
+
+<screen>
 change-dir                 c   change directories
 check-new                TAB   check mailboxes for new mail
 enter-mask                 m   enter a file mask
@@ -295,16 +368,32 @@ view-file              SPACE   view file
 subscribe                  s   subscribe to current mailbox (IMAP Only)
 unsubscribe                u   unsubscribe to current mailbox (IMAP Only)
 toggle-subscribed          T   toggle view all/subscribed mailboxes (IMAP Only)
-</verb>
-<sect2>pgp
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>pgp</title>
+
+<para>
+
+<screen>
 view-name                  %   view the key's user id
 verify-key                 c   verify a PGP public key
-</verb>
-<sect2>editor
-<p>
-<verb>
+</screen>
+
+</para>
+
+</sect3>
+
+<sect3>
+<title>editor</title>
+
+<para>
+
+<screen>
 backspace          BackSpace   delete the char in front of the cursor
 backward-char             ^B   move the cursor one character to the left
 backward-word          ESC b   move the cursor to the previous word
@@ -327,64 +416,127 @@ kill-word                 ^W   delete the word in front of the cursor
 quote-char                ^V   quote the next typed key
 transpose-chars    not bound   transpose character under cursor with previous
 upcase-word            ESC u   uppercase all characters in current word
-</verb>
+</screen>
 
-<sect>Miscellany
-<p>
+</para>
 
-<sect1>Acknowledgements
-<p>
-Kari Hurtta
-<htmlurl url="mailto:kari.hurtta@fmi.fi" name="&lt;kari.hurtta@fmi.fi&gt;">
+</sect3>
+
+</sect2>
+
+</sect1>
+
+<sect1 id="miscellany">
+<title>Miscellany</title>
+
+<sect2>
+<title>Acknowledgements</title>
+
+<para>
+Kari Hurtta <ulink url="mailto:kari.hurtta@fmi.fi">&lt;kari.hurtta@fmi.fi&gt;</ulink>
 co-developed the original MIME parsing code back in the ELM-ME days.
+</para>
 
+<para>
 The following people have been very helpful to the development of Mutt:
 
-Vikas Agnihotri <htmlurl url="mailto:vikasa@writeme.com" name="&lt;vikasa@writeme.com&gt;">,<newline>
-Francois Berjon <htmlurl url="mailto:Francois.Berjon@aar.alcatel-alsthom.fr" name="&lt;Francois.Berjon@aar.alcatel-alsthom.fr&gt;">,<newline>
-Aric Blumer <htmlurl url="mailto:aric@fore.com" name="&lt;aric@fore.com&gt;">,<newline>
-John Capo <htmlurl url="mailto:jc@irbs.com" name="&lt;jc@irbs.com&gt;">,<newline>
-David Champion <htmlurl url="mailto:dgc@uchicago.edu" name="&lt;dgc@uchicago.edu">,<newline>
-Brendan Cully <htmlurl url="mailto:brendan@kublai.com" name="&lt;brendan@kublai.com&gt">,<newline>
-Liviu Daia <htmlurl url="mailto:daia@stoilow.imar.ro" name="&lt;daia@stoilow.imar.ro&gt;">,<newline>
-Thomas E. Dickey <htmlurl url="mailto:dickey@herndon4.his.com" name="&lt;dickey@herndon4.his.com&gt;">,<newline>
-David DeSimone <htmlurl url="mailto:fox@convex.hp.com" name="&lt;fox@convex.hp.com&gt;">,<newline>
-Nickolay N. Dudorov <htmlurl url="mailto:nnd@wint.itfs.nsk.su" name="&lt;nnd@wint.itfs.nsk.su&gt;">,<newline>
-Ruslan Ermilov <htmlurl url="mailto:ru@freebsd.org" name="&lt;ru@freebsd.org&gt;">,<newline>
-Edmund Grimley Evans <htmlurl url="mailto:edmundo@rano.org" name="&lt;edmundo@rano.org">,<newline>
-Michael Finken <htmlurl url="mailto:finken@conware.de" name="&lt;finken@conware.de&gt;">,<newline>
-Sven Guckes <htmlurl url="mailto:guckes@math.fu-berlin.de" name="&lt;guckes@math.fu-berlin.de&gt;">,<newline>
-Lars Hecking <htmlurl url="mailto:lhecking@nmrc.ie" name="&lt;lhecking@nmrc.ie&gt;">,<newline>
-Mark Holloman <htmlurl url="mailto:holloman@nando.net" name="&lt;holloman@nando.net&gt;">,<newline>
-Andreas Holzmann <htmlurl url="mailto:holzmann@fmi.uni-passau.de" name="&lt;holzmann@fmi.uni-passau.de&gt;">,<newline>
-Marco d'Itri <htmlurl url="mailto:md@linux.it" name="&lt;md@linux.it&gt;">,<newline>
-Bj&ouml;rn Jacke <htmlurl url="mailto:bjacke@suse.com" name="&lt;bjacke@suse.com&gt;">,<newline>
-Byrial Jensen <htmlurl url="mailto:byrial@image.dk" name="&lt;byrial@image.dk&gt;">,<newline>
-David Jeske <htmlurl url="mailto:jeske@igcom.net" name="&lt;jeske@igcom.net&gt;">,<newline>
-Christophe Kalt <htmlurl url="mailto:kalt@hugo.int-evry.fr" name="&lt;kalt@hugo.int-evry.fr&gt;">,<newline>
-Tommi Komulainen <htmlurl url="mailto:Tommi.Komulainen@iki.fi" name="&lt;Tommi.Komulainen@iki.fi&gt;">,<newline>
-Felix von Leitner (a.k.a ``Fefe'') <htmlurl url="mailto:leitner@math.fu-berlin.de" name="&lt;leitner@math.fu-berlin.de&gt;">,<newline>
-Brandon Long <htmlurl url="mailto:blong@fiction.net" name="&lt;blong@fiction.net&gt;">,<newline>
-Jimmy M&auml;kel&auml; <htmlurl url="mailto:jmy@flashback.net" name="&lt;jmy@flashback.net&gt;">,<newline>
-Lars Marowsky-Bree <htmlurl url="mailto:lmb@pointer.in-minden.de" name="&lt;lmb@pointer.in-minden.de&gt;">,<newline>
-Thomas ``Mike'' Michlmayr <htmlurl url="mailto:mike@cosy.sbg.ac.at" name="&lt;mike@cosy.sbg.ac.at&gt;">,<newline>
-Andrew W. Nosenko <htmlurl url="mailto:awn@bcs.zp.ua" name="&lt;awn@bcs.zp.ua&gt;">,<newline>
-David O'Brien <htmlurl url="mailto:obrien@Nuxi.cs.ucdavis.edu" name="&lt;obrien@Nuxi.cs.ucdavis.edu&gt;">,<newline>
-Clint Olsen <htmlurl url="mailto:olsenc@ichips.intel.com" name="&lt;olsenc@ichips.intel.com&gt;">,<newline>
-Park Myeong Seok <htmlurl url="mailto:pms@romance.kaist.ac.kr" name="&lt;pms@romance.kaist.ac.kr&gt;">,<newline>
-Thomas Parmelan <htmlurl url="mailto:tom@ankh.fr.eu.org" name="&lt;tom@ankh.fr.eu.org&gt;">,<newline>
-Ollivier Robert <htmlurl url="mailto:roberto@keltia.freenix.fr" name="&lt;roberto@keltia.freenix.fr&gt;">,<newline>
-Thomas Roessler <htmlurl url="mailto:roessler@does-not-exist.org" name="&lt;roessler@does-not-exist.org&gt;">,<newline>
-Roland Rosenfeld <htmlurl url="roland@spinnaker.de" name="&lt;roland@spinnaker.de&gt;">,<newline>
-TAKIZAWA Takashi <htmlurl url="taki@luna.email.ne.jp" name="&lt;taki@luna.email.ne.jp&gt;">,<newline>
-Allain Thivillon <htmlurl url="mailto:Allain.Thivillon@alma.fr" name="&lt;Allain.Thivillon@alma.fr&gt;">,<newline>
-Gero Treuner <htmlurl url="mailto:gero@faveve.uni-stuttgart.de" name="&lt;gero@faveve.uni-stuttgart.de&gt;">,<newline>
-Vsevolod Volkov <htmlurl url="mailto:vvv@lucky.net" name="&lt;vvv@lucky.net&gt;">,<newline>
-Ken Weinert <htmlurl url="mailto:kenw@ihs.com" name="&lt;kenw@ihs.com&gt;">
+<simplelist>
+<member>Vikas Agnihotri <ulink url="mailto:vikasa@writeme.com">&lt;vikasa@writeme.com&gt;</ulink>,</member>
 
-<sect1>About this document
-<p>
-This document was written in SGML, and then rendered using the
-<htmlurl url="http://www.sgmltools.org/" name="sgml-tools"> package.
+<member>Francois Berjon <ulink url="mailto:Francois.Berjon@aar.alcatel-alsthom.fr">&lt;Francois.Berjon@aar.alcatel-alsthom.fr&gt;</ulink>,</member>
+
+<member>Aric Blumer <ulink url="mailto:aric@fore.com">&lt;aric@fore.com&gt;</ulink>,</member>
+
+<member>John Capo <ulink url="mailto:jc@irbs.com">&lt;jc@irbs.com&gt;</ulink>,</member>
+
+<member>David Champion <ulink url="mailto:dgc@uchicago.edu">&lt;dgc@uchicago.edu&gt;</ulink>,</member>
+
+<member>Brendan Cully <ulink url="mailto:brendan@kublai.com">&lt;brendan@kublai.com&gt;</ulink>,</member>
+
+<member>Liviu Daia <ulink url="mailto:daia@stoilow.imar.ro">&lt;daia@stoilow.imar.ro&gt;</ulink>,</member>
+
+<member>Thomas E. Dickey <ulink url="mailto:dickey@herndon4.his.com">&lt;dickey@herndon4.his.com&gt;</ulink>,</member>
+
+<member>David DeSimone <ulink url="mailto:fox@convex.hp.com">&lt;fox@convex.hp.com&gt;</ulink>,</member>
+
+<member>Nickolay N. Dudorov <ulink url="mailto:nnd@wint.itfs.nsk.su">&lt;nnd@wint.itfs.nsk.su&gt;</ulink>,</member>
+
+<member>Ruslan Ermilov <ulink url="mailto:ru@freebsd.org">&lt;ru@freebsd.org&gt;</ulink>,</member>
+
+<member>Edmund Grimley Evans <ulink url="mailto:edmundo@rano.org">&lt;edmundo@rano.org&gt;</ulink>,</member>
+
+<member>Michael Finken <ulink url="mailto:finken@conware.de">&lt;finken@conware.de&gt;</ulink>,</member>
+
+<member>Sven Guckes <ulink url="mailto:guckes@math.fu-berlin.de">&lt;guckes@math.fu-berlin.de&gt;</ulink>,</member>
+
+<member>Lars Hecking <ulink url="mailto:lhecking@nmrc.ie">&lt;lhecking@nmrc.ie&gt;</ulink>,</member>
+
+<member>Mark Holloman <ulink url="mailto:holloman@nando.net">&lt;holloman@nando.net&gt;</ulink>,</member>
+
+<member>Andreas Holzmann <ulink url="mailto:holzmann@fmi.uni-passau.de">&lt;holzmann@fmi.uni-passau.de&gt;</ulink>,</member>
+
+<member>Marco d'Itri <ulink url="mailto:md@linux.it">&lt;md@linux.it&gt;</ulink>,</member>
+
+<member>Bj&ouml;rn Jacke <ulink url="mailto:bjacke@suse.com">&lt;bjacke@suse.com&gt;</ulink>,</member>
+
+<member>Byrial Jensen <ulink url="mailto:byrial@image.dk">&lt;byrial@image.dk&gt;</ulink>,</member>
+
+<member>David Jeske <ulink url="mailto:jeske@igcom.net">&lt;jeske@igcom.net&gt;</ulink>,</member>
+
+<member>Christophe Kalt <ulink url="mailto:kalt@hugo.int-evry.fr">&lt;kalt@hugo.int-evry.fr&gt;</ulink>,</member>
+
+<member>Tommi Komulainen <ulink url="mailto:Tommi.Komulainen@iki.fi">&lt;Tommi.Komulainen@iki.fi&gt;</ulink>,</member>
+
+<member>Felix von Leitner (a.k.a ``Fefe'') <ulink url="mailto:leitner@math.fu-berlin.de">&lt;leitner@math.fu-berlin.de&gt;</ulink>,</member>
+
+<member>Brandon Long <ulink url="mailto:blong@fiction.net">&lt;blong@fiction.net&gt;</ulink>,</member>
+
+<member>Jimmy M&auml;kel&auml; <ulink url="mailto:jmy@flashback.net">&lt;jmy@flashback.net&gt;</ulink>,</member>
+
+<member>Lars Marowsky-Bree <ulink url="mailto:lmb@pointer.in-minden.de">&lt;lmb@pointer.in-minden.de&gt;</ulink>,</member>
+
+<member>Thomas ``Mike'' Michlmayr <ulink url="mailto:mike@cosy.sbg.ac.at">&lt;mike@cosy.sbg.ac.at&gt;</ulink>,</member>
+
+<member>Andrew W. Nosenko <ulink url="mailto:awn@bcs.zp.ua">&lt;awn@bcs.zp.ua&gt;</ulink>,</member>
+
+<member>David O'Brien <ulink url="mailto:obrien@Nuxi.cs.ucdavis.edu">&lt;obrien@Nuxi.cs.ucdavis.edu&gt;</ulink>,</member>
+
+<member>Clint Olsen <ulink url="mailto:olsenc@ichips.intel.com">&lt;olsenc@ichips.intel.com&gt;</ulink>,</member>
+
+<member>Park Myeong Seok <ulink url="mailto:pms@romance.kaist.ac.kr">&lt;pms@romance.kaist.ac.kr&gt;</ulink>,</member>
+
+<member>Thomas Parmelan <ulink url="mailto:tom@ankh.fr.eu.org">&lt;tom@ankh.fr.eu.org&gt;</ulink>,</member>
+
+<member>Ollivier Robert <ulink url="mailto:roberto@keltia.freenix.fr">&lt;roberto@keltia.freenix.fr&gt;</ulink>,</member>
+
+<member>Thomas Roessler <ulink url="mailto:roessler@does-not-exist.org">&lt;roessler@does-not-exist.org&gt;</ulink>,</member>
+
+<member>Roland Rosenfeld <ulink url="mailto:roland@spinnaker.de">&lt;roland@spinnaker.de&gt;</ulink>,</member>
+
+<member>TAKIZAWA Takashi <ulink url="mailto:taki@luna.email.ne.jp">&lt;taki@luna.email.ne.jp&gt;</ulink>,</member>
+
+<member>Allain Thivillon <ulink url="mailto:Allain.Thivillon@alma.fr">&lt;Allain.Thivillon@alma.fr&gt;</ulink>,</member>
+
+<member>Gero Treuner <ulink url="mailto:gero@faveve.uni-stuttgart.de">&lt;gero@faveve.uni-stuttgart.de&gt;</ulink>,</member>
+
+<member>Vsevolod Volkov <ulink url="mailto:vvv@lucky.net">&lt;vvv@lucky.net&gt;</ulink>,</member>
+
+<member>Ken Weinert <ulink url="mailto:kenw@ihs.com">&lt;kenw@ihs.com&gt;</ulink></member>
+</simplelist>
+</para>
+
+</sect2>
+
+<sect2>
+<title>About this document</title>
+
+<para>
+This document was written in <ulink url="http://docbook.sourceforge.net">DocBook</ulink>,
+and then rendered using the <ulink url="http://xmlsoft.org/XSLT/">Gnome XSLT toolkit</ulink>.
+</para>
+
+</sect2>
+
+</sect1>
 
 </article>

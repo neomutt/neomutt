@@ -1069,6 +1069,29 @@ if test $mutt_cv_langinfo_yesexpr = yes; then
   AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
 fi
 
+dnl Documentation tools
+have_openjade="no"
+AC_PATH_PROG([OSPCAT], [ospcat], [none])
+if test "$OSPCAT" != "none"
+then
+  AC_MSG_CHECKING([for openjade docbook stylesheets])
+  dslosfile=`ospcat --public-id="-//Norman Walsh//DOCUMENT DocBook Print Stylesheet//EN"`
+  DSLROOT=`echo $dslosfile | sed -n -e "s/.*SOIBASE='\(@<:@^'@:>@*\)\/catalog'.*/\1/p"`
+  # ospcat may spit out an absolute path without an SOIBASE
+  if test -z "$DSLROOT"
+  then
+    DSLROOT=`echo $dslosfile | sed -e 's|<OSFILE>\(.*\)/print/docbook.dsl|\1|'`
+  fi
+  if test -f $DSLROOT/print/docbook.dsl
+  then
+    AC_MSG_RESULT([in $DSLROOT])
+    have_openjade="yes"
+  else
+    AC_MSG_RESULT([not found: PDF documentation will not be built.])
+  fi
+fi
+AC_SUBST(DSLROOT)
+
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile
         po/Makefile.in doc/Makefile contrib/Makefile
         muttbug.sh
