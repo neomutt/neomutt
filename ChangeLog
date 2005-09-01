@@ -1,3 +1,9 @@
+2005-09-01 01:39:06  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.sgml.tail, configure.in, doc/Makefile.in,
+	doc/manual.sgml.head, makedoc.c: Convert documentation from
+	linuxdoc to docbook format. Let the bug avalanche begin.
+
 2005-08-30 21:34:36  Lars Hecking  <lhecking@users.sourceforge.net> (brendan)
 
 	* configure.in: Don't define domain="no" when configured
