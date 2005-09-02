@@ -1,3 +1,9 @@
+2005-09-02 18:50:34  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.sgml.head, doc/manual.sgml.tail, doc/manual.xml.head,
+	doc/manual.xml.tail, doc/Makefile.in: Rename manual.sgml.* to
+	manual.xml.*.
+
 2005-09-02 18:18:19  Alain Bench  <veronatif@free.fr>  (brendan)
 
 	* keymap.c: Allow non-ascii characters in push arguments. Closes: #2023.
