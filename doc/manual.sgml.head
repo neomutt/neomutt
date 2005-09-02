@@ -3263,18 +3263,18 @@ messages:
 ~B EXPR         messages which contain EXPR in the whole message
 ~c USER         messages carbon-copied to USER
 ~C EXPR         message is either to: or cc: EXPR
-~D              deleted messages
 ~d [MIN]-[MAX]  messages with ``date-sent'' in a Date range
-~E              expired messages
+~D              deleted messages
 ~e EXPR         message which contains EXPR in the ``Sender'' field
+~E              expired messages
 ~F              flagged messages
 ~f USER         messages originating from USER
 ~g              cryptographically signed messages
 ~G              cryptographically encrypted messages
-~H EXPR         messages with a spam attribute matching EXPR
 ~h EXPR         messages which contain EXPR in the message header
-~k		message contains PGP key material
+~H EXPR         messages with a spam attribute matching EXPR
 ~i ID           message which match ID in the ``Message-ID'' field
+~k		message contains PGP key material
 ~L EXPR         message is either originated or received by EXPR
 ~l              message is addressed to a known mailing list
 ~m [MIN]-[MAX]  message in the range MIN to MAX *)
@@ -3284,12 +3284,13 @@ messages:
 ~p              message is addressed to you (consults alternates)
 ~P              message is from you (consults alternates)
 ~Q              messages which have been replied to
-~R              read messages
 ~r [MIN]-[MAX]  messages with ``date-received'' in a Date range
-~S              superseded messages
+~R              read messages
 ~s SUBJECT      messages having SUBJECT in the ``Subject'' field.
-~T              tagged messages
+~S              superseded messages
 ~t USER         messages addressed to USER
+~T              tagged messages
+~u		message is addressed to a subscribed mailing list
 ~U              unread messages
 ~v		message is part of a collapsed thread.
 ~V		cryptographically verified messages

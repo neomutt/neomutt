@@ -59,14 +59,14 @@ Flags[] =
   { 'E', M_EXPIRED,		0,		NULL },
   { 'f', M_FROM,		0,		eat_regexp },
   { 'F', M_FLAG,		0,		NULL },
-  { 'g', M_CRYPT_SIGN, 		0, 		NULL },
-  { 'G', M_CRYPT_ENCRYPT, 	0, 		NULL },
+  { 'g', M_CRYPT_SIGN,		0,		NULL },
+  { 'G', M_CRYPT_ENCRYPT,	0,		NULL },
   { 'h', M_HEADER,		M_FULL_MSG,	eat_regexp },
   { 'H', M_HORMEL,		0,		eat_regexp },
   { 'i', M_ID,			0,		eat_regexp },
-  { 'k', M_PGP_KEY, 		0, 		NULL },
-  { 'L', M_ADDRESS,		0,		eat_regexp },
+  { 'k', M_PGP_KEY,		0,		NULL },
   { 'l', M_LIST,		0,		NULL },
+  { 'L', M_ADDRESS,		0,		eat_regexp },
   { 'm', M_MESSAGE,		0,		eat_range },
   { 'n', M_SCORE,		0,		eat_range },
   { 'N', M_NEW,			0,		NULL },
@@ -74,15 +74,16 @@ Flags[] =
   { 'p', M_PERSONAL_RECIP,	0,		NULL },
   { 'P', M_PERSONAL_FROM,	0,		NULL },
   { 'Q', M_REPLIED,		0,		NULL },
-  { 'R', M_READ,		0,		NULL },
   { 'r', M_DATE_RECEIVED,	0,		eat_date },
+  { 'R', M_READ,		0,		NULL },
   { 's', M_SUBJECT,		0,		eat_regexp },
   { 'S', M_SUPERSEDED,		0,		NULL },
-  { 'T', M_TAG,			0,		NULL },
   { 't', M_TO,			0,		eat_regexp },
+  { 'T', M_TAG,			0,		NULL },
+  { 'u', M_SUBSCRIBED_LIST,	0,		NULL },
   { 'U', M_UNREAD,		0,		NULL },
   { 'v', M_COLLAPSED,		0,		NULL },
-  { 'V', M_CRYPT_VERIFIED,      0,              NULL },
+  { 'V', M_CRYPT_VERIFIED,	0,		NULL },
   { 'x', M_REFERENCE,		0,		eat_regexp },
   { 'y', M_XLABEL,		0,		eat_regexp },
   { 'z', M_SIZE,		0,		eat_range },
@@ -916,6 +917,9 @@ static int match_reference (regex_t *rx, LIST *refs)
   return 0;
 }
 
+/*
+ * Matches subscribed mailing lists
+ */
 int mutt_is_list_recipient (int alladdr, ADDRESS *a1, ADDRESS *a2)
 {
   for (; a1 ; a1 = a1->next)
@@ -927,6 +931,11 @@ int mutt_is_list_recipient (int alladdr, ADDRESS *a1, ADDRESS *a2)
   return alladdr;
 }
 
+/*
+ * Matches known mailing lists
+ * The function name may seem a little bit misleading: It checks all
+ * recipients in To and Cc for known mailing lists, subscribed or not.
+ */
 int mutt_is_list_cc (int alladdr, ADDRESS *a1, ADDRESS *a2)
 {
   for (; a1 ; a1 = a1->next)
@@ -1025,8 +1034,12 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_RECIPIENT:
            return (pat->not ^ (h->env && match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
 					pat->alladdr, 2, h->env->to, h->env->cc)));
-    case M_LIST:
-      return (pat->not ^ (h->env && mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc)));
+    case M_LIST:	/* known list, subscribed or not */
+      return (pat->not ^ (h->env
+	&& mutt_is_list_cc (pat->alladdr, h->env->to, h->env->cc)));
+    case M_SUBSCRIBED_LIST:
+      return (pat->not ^ (h->env
+	&& mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc)));
     case M_PERSONAL_RECIP:
       return (pat->not ^ (h->env && match_user (pat->alladdr, h->env->to, h->env->cc)));
     case M_PERSONAL_FROM:

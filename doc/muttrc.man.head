@@ -405,20 +405,20 @@ l l.
 ~B \fIEXPR\fP	messages which contain \fIEXPR\fP in the whole message
 ~c \fIEXPR\fP	messages carbon-copied to \fIEXPR\fP
 ~C \fIEXPR\fP	message is either to: or cc: \fIEXPR\fP
-~D	deleted messages
 ~d \fIMIN\fP-\fIMAX\fP	messages with \(lqdate-sent\(rq in a Date range
-~E	expired messages
+~D	deleted messages
 ~e \fIEXPR\fP	message which contains \fIEXPR\fP in the \(lqSender\(rq field
-~F	flagged messages
+~E	expired messages
 ~f \fIEXPR\fP	messages originating from \fIEXPR\fP
+~F	flagged messages
 ~g	PGP signed messages
 ~G	PGP encrypted messages
-~H \fIEXPR\fP	messages with spam tags matching \fIEXPR\fP
 ~h \fIEXPR\fP	messages which contain \fIEXPR\fP in the message header
-~k	message contains PGP key material
+~H \fIEXPR\fP	messages with spam tags matching \fIEXPR\fP
 ~i \fIEXPR\fP	message which match \fIEXPR\fP in the \(lqMessage-ID\(rq field
-~L \fIEXPR\fP	message is either originated or received by \fIEXPR\fP
+~k	message contains PGP key material
 ~l	message is addressed to a known mailing list
+~L \fIEXPR\fP	message is either originated or received by \fIEXPR\fP
 ~m \fIMIN\fP-\fIMAX\fP	message in the range \fIMIN\fP to \fIMAX\fP
 ~n \fIMIN\fP-\fIMAX\fP	messages with a score in the range \fIMIN\fP to \fIMAX\fP
 ~N	new messages
@@ -426,15 +426,18 @@ l l.
 ~p	message is addressed to you (consults $alternates)
 ~P	message is from you (consults $alternates)
 ~Q	messages which have been replied to
-~R	read messages
 ~r \fIMIN\fP-\fIMAX\fP	messages with \(lqdate-received\(rq in a Date range
-~S	superseded messages
+~R	read messages
 ~s \fIEXPR\fP	messages having \fIEXPR\fP in the \(lqSubject\(rq field.
-~T	tagged messages
+~S	superseded messages
 ~t \fIEXPR\fP	messages addressed to \fIEXPR\fP
+~T	tagged messages
+~u	message is addressed to a subscribed mailing list
 ~U	unread messages
 ~v	message is part of a collapsed thread.
+~V	cryptographically verified messages
 ~x \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
+~y \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqX-Label\(rq field
 ~z \fIMIN\fP-\fIMAX\fP	messages with a size in the range \fIMIN\fP to \fIMAX\fP
 ~=	duplicated messages (see $duplicate_threads)
 ~$	unreferenced message (requries threaded view)
