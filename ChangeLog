@@ -1,4 +1,6 @@
-2005-09-02 18:02:27  Alain Bench  <veronatif@free.fr>  (brendan)
+2005-09-02 18:18:19  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* keymap.c: Allow non-ascii characters in push arguments. Closes: #2023.
 
 	* doc/manual.sgml.head, doc/muttrc.man.head, mutt.h, pattern.c:
 	Adjust ~l to match all known lists, add ~u to match only
