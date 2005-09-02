@@ -341,7 +341,7 @@ static void push_string (char *s)
 	}
       }
     }
-    mutt_ungetch (*p--, 0);
+    mutt_ungetch ((unsigned char)*p--, 0);	/* independent 8 bits chars */
   }
 }
 
