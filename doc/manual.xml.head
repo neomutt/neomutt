@@ -3261,19 +3261,19 @@ messages:
 ~A              all messages
 ~b EXPR         messages which contain EXPR in the message body
 ~B EXPR         messages which contain EXPR in the whole message
-~c USER         messages carbon-copied to USER
+~c EXPR         messages carbon-copied to EXPR
 ~C EXPR         message is either to: or cc: EXPR
 ~d [MIN]-[MAX]  messages with ``date-sent'' in a Date range
 ~D              deleted messages
 ~e EXPR         message which contains EXPR in the ``Sender'' field
 ~E              expired messages
 ~F              flagged messages
-~f USER         messages originating from USER
+~f EXPR         messages originating from EXPR
 ~g              cryptographically signed messages
 ~G              cryptographically encrypted messages
 ~h EXPR         messages which contain EXPR in the message header
 ~H EXPR         messages with a spam attribute matching EXPR
-~i ID           message which match ID in the ``Message-ID'' field
+~i EXPR         message which match EXPR in the ``Message-ID'' field
 ~k		message contains PGP key material
 ~L EXPR         message is either originated or received by EXPR
 ~l              message is addressed to a known mailing list
@@ -3286,9 +3286,9 @@ messages:
 ~Q              messages which have been replied to
 ~r [MIN]-[MAX]  messages with ``date-received'' in a Date range
 ~R              read messages
-~s SUBJECT      messages having SUBJECT in the ``Subject'' field.
+~s EXPR         messages having EXPR in the ``Subject'' field.
 ~S              superseded messages
-~t USER         messages addressed to USER
+~t EXPR         messages addressed to EXPR
 ~T              tagged messages
 ~u		message is addressed to a subscribed mailing list
 ~U              unread messages
@@ -3304,8 +3304,8 @@ messages:
 </para>
 
 <para>
-Where EXPR, USER, ID, and SUBJECT are 
-<link linkend="regexp">regular expressions</link>.  Special attention has to be
+Where EXPR is a
+<link linkend="regexp">regular expression</link>.  Special attention has to be
 made when using regular expressions inside of patterns.  Specifically,
 Mutt's parser for these patterns will strip one level of backslash (\),
 which is normally used for quoting.  If it is your intention to use a
