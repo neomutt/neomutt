@@ -256,12 +256,16 @@ int mutt_edit_attachment (BODY *a)
       {
 	/* For now, editing requires a file, no piping */
 	mutt_error _("Mailcap Edit entry requires %%s");
+        goto bailout;
       }
       else
       {
 	mutt_endwin (NULL);
 	if (mutt_system (command) == -1)
+        {
 	  mutt_error (_("Error running \"%s\"!"), command);
+          goto bailout;
+        }
       }
     }
   }

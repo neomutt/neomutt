@@ -1353,7 +1353,7 @@ ci_send_message (int flags,		/* send mode */
   {
     struct stat st;
     time_t mtime = mutt_decrease_mtime (msg->content->filename, NULL);
-    
+
     mutt_update_encoding (msg->content);
 
     /*
@@ -1373,7 +1373,10 @@ ci_send_message (int flags,		/* send mode */
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap (msg->content))
-	mutt_edit_attachment (msg->content);
+      {
+	if (!mutt_edit_attachment (msg->content))
+          goto cleanup;
+      }
       else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)
 	mutt_builtin_editor (msg->content->filename, msg, cur);
       else if (option (OPTEDITHDRS))
