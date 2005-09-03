@@ -1,3 +1,9 @@
+2005-09-03 23:22:31  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* send.c, attach.c: Note when mutt_edit_attachment fails and
+	display error instead of prompting to abort an unmodified
+	file. Closes: #2051.
+
 2005-09-03 19:41:53  Alain Bench  <veronatif@free.fr>  (brendan)
 
 	* contrib/gpg.rc: One should let GnuPG charset be automatically
