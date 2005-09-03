@@ -1,4 +1,13 @@
-2005-09-02 18:50:34  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-03 19:41:53  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* contrib/gpg.rc: One should let GnuPG charset be automatically
+	infered from whatever current locale, without hardcoding.
+
+2005-09-03 04:34:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.xml.head: Just use EXPR as a place holder for regular
+	expressions, instead of any of EXPR, USER, ID and SUBJECT. Noted
+	by Vincent Lefevre.
 
 	* doc/manual.sgml.head, doc/manual.sgml.tail, doc/manual.xml.head,
 	doc/manual.xml.tail, doc/Makefile.in: Rename manual.sgml.* to
