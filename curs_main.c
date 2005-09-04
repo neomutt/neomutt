@@ -55,6 +55,13 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
 static const char *No_visible = N_("No visible messages.");
 
+#define CHECK_IN_MAILBOX if (!Context) \
+	{ \
+		mutt_flushinp (); \
+		mutt_error _(No_mailbox_is_open); \
+		break; \
+	}
+
 #define CHECK_MSGCOUNT if (!Context) \
 	{ \
 	  	mutt_flushinp (); \
@@ -286,20 +293,17 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   if (Context->pattern)
   {
 #define THIS_BODY Context->hdrs[j]->content
-    if (oldcount || check == M_REOPENED)
+    for (j = (check == M_REOPENED) ? 0 : oldcount; j < Context->msgcount; j++)
     {
-      for (j = (check == M_REOPENED) ? 0 : oldcount; j < Context->msgcount; j++)
+      if (mutt_pattern_exec (Context->limit_pattern,
+			     M_MATCH_FULL_ADDRESS, 
+			     Context, Context->hdrs[j]))
       {
-	if (mutt_pattern_exec (Context->limit_pattern,
-			       M_MATCH_FULL_ADDRESS, 
-			       Context, Context->hdrs[j]))
-	{
-	  Context->hdrs[j]->virtual = Context->vcount;
-	  Context->v2r[Context->vcount] = j;
-	  Context->hdrs[j]->limited = 1;
-	  Context->vcount++;
-	  Context->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
-	}
+	Context->hdrs[j]->virtual = Context->vcount;
+	Context->v2r[Context->vcount] = j;
+	Context->hdrs[j]->limited = 1;
+	Context->vcount++;
+	Context->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
       }
     }
 #undef THIS_BODY
@@ -826,7 +830,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	break;
 
       case OP_MAIN_SHOW_LIMIT:
-        CHECK_MSGCOUNT;
+	CHECK_IN_MAILBOX;
 	if (!Context->pattern)
 	   mutt_message _("No limit pattern is in effect.");
 	else
@@ -840,7 +844,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
       case OP_MAIN_LIMIT:
 
-	CHECK_MSGCOUNT;
+	CHECK_IN_MAILBOX;
 	menu->oldcurrent = (Context->vcount && menu->current >= 0 && menu->current < Context->vcount) ?
 		CURHDR->index : -1;
 	if (mutt_pattern_func (M_LIMIT, _("Limit to messages matching: ")) == 0)
@@ -860,7 +864,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	  else
 	    menu->current = 0;
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-	  if ((Sort & SORT_MASK) == SORT_THREADS)
+	  if (Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
 	    mutt_draw_tree (Context);
 	  menu->redraw = REDRAW_FULL;
 	}
@@ -1582,7 +1586,7 @@ CHECK_IMAP_ACL(IMAP_ACL_SEEN);
 
       case OP_TOGGLE_WRITE:
 
-	CHECK_MSGCOUNT;
+	CHECK_IN_MAILBOX;
 	if (mx_toggle_write (Context) == 0)
 	  menu->redraw |= REDRAW_STATUS;
 	break;
