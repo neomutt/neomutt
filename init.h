@@ -761,13 +761,13 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, mutt will not show the presence of messages that are hidden
   ** by limiting, at the top of threads in the thread tree.  Note that when
-  ** $$hide_missing is set, this option will have no effect.
+  ** $$hide_limited is set, this option will have no effect.
   */
   { "hide_top_missing",	DT_BOOL, R_TREE|R_INDEX, OPTHIDETOPMISSING, 1 },
   /*
   ** .pp
   ** When set, mutt will not show the presence of missing messages at the
-  ** top of threads in the thread tree.  Note that when $$hide_limited is
+  ** top of threads in the thread tree.  Note that when $$hide_missing is
   ** set, this option will have no effect.
   */
   { "history",		DT_NUM,	 R_NONE, UL &HistSize, 10 },
