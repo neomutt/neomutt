@@ -321,7 +321,7 @@ u               undelete-message
 v               view-attachments
 x               abort changes and exit
 &lt;Return&gt;        display-message
-&lt;Tab&gt;           jump to the next new message
+&lt;Tab&gt;           jump to the next new or unread message
 @               show the author's full e-mail address
 $               save changes to mailbox
 /               search

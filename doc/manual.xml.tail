@@ -96,14 +96,17 @@ limit                      l   show only messages matching a pattern
 list-reply                 L   reply to specified mailing list
 mail                       m   compose a new mail message
 mail-key               ESC k   mail a PGP public key
-next-new                 TAB   jump to the next new message
+next-new           not bound   jump to the next new message
+next-new-then-unread     TAB   jump to the next new or unread message
 next-subthread         ESC n   jump to the next subthread
 next-thread               ^N   jump to the next thread
 next-undeleted             j   move to the next undeleted message
 next-unread        not bound   jump to the next unread message
 parent-message             P   jump to parent message in thread
 pipe-message               |   pipe message/attachment to a shell command
-previous-new         ESC TAB   jump to the previous new message
+previous-new       not bound   jump to the previous new message
+previous-new-then-unread
+                     ESC TAB   jump to the previous new or unread message
 previous-page              Z   move to the previous page
 previous-subthread     ESC p   jump to previous subthread
 previous-thread           ^P   jump to previous thread
@@ -178,7 +181,8 @@ mail-key               ESC k   mail a PGP public key
 mark-as-new                N   toggle a message's 'new' flag
 next-line                RET   scroll down one line
 next-entry                 J   move to the next entry
-next-new                 TAB   jump to the next new message
+next-new           not bound   jump to the next new message
+next-new-then-unread     TAB   jump to the next new or unread message
 next-page                      move to the next page
 next-subthread         ESC n   jump to the next subthread
 next-thread               ^N   jump to the next thread
@@ -189,6 +193,8 @@ pipe-message               |   pipe message/attachment to a shell command
 previous-line      BackSpace   scroll up one line
 previous-entry             K   move to the previous entry
 previous-new       not bound   jump to the previous new message
+previous-new-then-unread
+                   not bound   jump to the previous new message
 previous-page              -   move to the previous page
 previous-subthread     ESC p   jump to previous subthread
 previous-thread           ^P   jump to previous thread
