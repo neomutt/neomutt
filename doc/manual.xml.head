@@ -2547,7 +2547,12 @@ This command adds the named string to the keyboard buffer. The string may
 contain control characters, key names and function names like the sequence
 string in the <link linkend="macro">macro</link> command. You may use it to
 automatically run a sequence of commands at startup, or when entering
-certain folders.
+certain folders. For example, the following command will automatically
+collapse all threads when entering a folder:
+
+<screen>
+folder-hook . 'push &lt;collapse-all&gt;'
+</screen>
 </para>
 
 </sect2>
