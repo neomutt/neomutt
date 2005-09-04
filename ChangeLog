@@ -1,4 +1,9 @@
-2005-09-04 18:01:57  Zardoz@users.sourceforge.net  (brendan)
+2005-09-04 19:28:19  Dale Woolridge  (brendan)
+
+	* pattern.c, protos.h, parse.c: Unfold message headers before
+	performing ~h search. Closes: #1865.
+
+2005-09-04 18:01:57  <Zardoz@users.sourceforge.net>  (brendan)
 
 	* keymap.c: Teach keymap.c about KEY_NEXT. Closes: #1588.
 
