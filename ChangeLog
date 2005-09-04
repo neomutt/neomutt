@@ -1,4 +1,7 @@
-2005-09-04 19:55:15  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-04 20:03:18  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.h: Mention $sort_re in $strict_threads
+	documentation. Closes: #2052.
 
 	* doc/manual.xml.head: Add a push example. Closes: #1591.
 
