@@ -83,6 +83,9 @@ static struct mapping_t KeyNames[] = {
 #ifdef KEY_BTAB
   { "<BackTab>", KEY_BTAB },
 #endif
+#ifdef KEY_NEXT
+  { "<Next>",    KEY_NEXT },
+#endif  
   { NULL,	0 }
 };
 
