@@ -1,3 +1,7 @@
+2005-09-04 18:01:57  Zardoz@users.sourceforge.net  (brendan)
+
+	* keymap.c: Teach keymap.c about KEY_NEXT. Closes: #1588.
+
 2005-09-04 06:57:04  Alain Bench  <veronatif@free.fr>  (brendan)
 
 	* doc/manual.xml.head, doc/manual.xml.tail: Note that <Tab> is
