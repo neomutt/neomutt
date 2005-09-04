@@ -1,3 +1,8 @@
+2005-09-04 05:57:40  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* curs_main.c, pattern.c: Allow empty limits, and limits in empty
+	mailboxes. Closes: #1853, #1906.
+
 2005-09-03 23:22:31  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* send.c, attach.c: Note when mutt_edit_attachment fails and
