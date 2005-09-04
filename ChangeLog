@@ -1,4 +1,8 @@
-2005-09-04 05:57:40  Alain Bench  <veronatif@free.fr>  (brendan)
+2005-09-04 06:57:04  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* doc/manual.xml.head, doc/manual.xml.tail: Note that <Tab> is
+	bound to next-new-then-unread by default, rather than
+	next-new. Closes: #1637.
 
 	* curs_main.c, pattern.c: Allow empty limits, and limits in empty
 	mailboxes. Closes: #1853, #1906.
