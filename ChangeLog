@@ -1,4 +1,7 @@
-2005-09-04 20:03:18  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-04 20:10:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.h: Point $hide_top_limited to $hide_limited instead of
+	$hide_missing. Likewise for $hide_top_missing. Closes: #2039.
 
 	* init.h: Mention $sort_re in $strict_threads
 	documentation. Closes: #2052.
