@@ -103,6 +103,7 @@ HASH *mutt_make_subj_hash (CONTEXT *);
 
 LIST *mutt_make_references(ENVELOPE *e);
 
+char *mutt_read_rfc822_line (FILE *, char *, size_t *);
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
 HEADER *mutt_dup_header (HEADER *);
 

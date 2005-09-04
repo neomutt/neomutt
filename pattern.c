@@ -136,7 +136,7 @@ int mutt_which_case (const char *s)
 }
 
 static int
-msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno)
+msg_search (CONTEXT *ctx, regex_t *rx, int op, int msgno)
 {
   char tempfile[_POSIX_PATH_MAX];
   MESSAGE *msg = NULL;
@@ -146,6 +146,8 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
   long lng = 0;
   int match = 0;
   HEADER *h = ctx->hdrs[msgno];
+  char *buf;
+  size_t blen;
 
   if ((msg = mx_open_message (ctx, msgno)) != NULL)
   {
@@ -208,10 +210,18 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
       }
     }
 
+    blen = STRING;
+    buf = safe_malloc (blen);
+
     /* search the file "fp" */
     while (lng > 0)
     {
-      if (fgets (buf, blen - 1, fp) == NULL)
+      if (op == M_HEADER)
+      {
+	if (*(buf = mutt_read_rfc822_line (fp, buf, &blen)) == '\0')
+	  break;
+      }
+      else if (fgets (buf, blen - 1, fp) == NULL)
 	break; /* don't loop forever */
       if (regexec (rx, buf, 0, NULL, 0) == 0)
       {
@@ -220,6 +230,8 @@ msg_search (CONTEXT *ctx, regex_t *rx, char *buf, size_t blen, int op, int msgno
       }
       lng -= mutt_strlen (buf);
     }
+
+    FREE (&buf);
     
     mx_close_message (&msg);
 
@@ -963,8 +975,6 @@ static int match_user (int alladdr, ADDRESS *a1, ADDRESS *a2)
 int
 mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER *h)
 {
-  char buf[STRING];
-
   switch (pat->op)
   {
     case M_AND:
@@ -1003,7 +1013,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_BODY:
     case M_HEADER:
     case M_WHOLE_MSG:
-      return (pat->not ^ msg_search (ctx, pat->rx, buf, sizeof (buf), pat->op, h->msgno));
+      return (pat->not ^ msg_search (ctx, pat->rx, pat->op, h->msgno));
     case M_SENDER:
       return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
 					pat->alladdr, 1, h->env->sender));

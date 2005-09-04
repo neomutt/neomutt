@@ -38,7 +38,7 @@
  * lines.  ``line'' must point to a dynamically allocated string; it is
  * increased if more space is required to fit the whole line.
  */
-static char *read_rfc822_line (FILE *f, char *line, size_t *linelen)
+char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 {
   char *buf = line;
   char ch;
@@ -433,7 +433,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
   p->type        = digest ? TYPEMESSAGE : TYPETEXT;
   p->disposition = DISPINLINE;
   
-  while (*(line = read_rfc822_line (fp, line, &linelen)) != 0)
+  while (*(line = mutt_read_rfc822_line (fp, line, &linelen)) != 0)
   {
     /* Find the value of the current header */
     if ((c = strchr (line, ':')))
@@ -1317,7 +1317,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   }
 
   while ((loc = ftell (f)),
-	  *(line = read_rfc822_line (f, line, &linelen)) != 0)
+	  *(line = mutt_read_rfc822_line (f, line, &linelen)) != 0)
   {
     matched = 0;
 
