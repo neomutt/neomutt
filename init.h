@@ -2677,9 +2677,11 @@ struct option_t MuttVars[] = {
   ** If set, threading will only make use of the ``In-Reply-To'' and
   ** ``References'' fields when you ``$$sort'' by message threads.  By
   ** default, messages with the same subject are grouped together in
-  ** ``pseudo threads.''  This may not always be desirable, such as in a
+  ** ``pseudo threads.''. This may not always be desirable, such as in a
   ** personal mailbox where you might have several unrelated messages with
-  ** the subject ``hi'' which will get grouped together.
+  ** the subject ``hi'' which will get grouped together. See also
+  ** ``$$sort_re'' for a less drastic way of controlling this
+  ** behaviour.
   */
   { "suspend",		DT_BOOL, R_NONE, OPTSUSPEND, 1 },
   /*
