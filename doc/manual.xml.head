@@ -869,8 +869,14 @@ and Bouncing Mail</link>.''
 Mutt will then enter the <emphasis>compose</emphasis> menu and prompt you for the
 recipients to place on the ``To:'' header field.  Next, it will ask
 you for the ``Subject:'' field for the message, providing a default if
-you are replying to or forwarding a message.  See also <link linkend="askcc">&dollar;askcc</link>, <link linkend="askbcc">&dollar;askbcc</link>, <link linkend="autoedit">&dollar;autoedit</link>, <link linkend="bounce">&dollar;bounce</link>, and <link linkend="fast-reply">&dollar;fast&lowbar;reply</link> for changing how Mutt asks these
-questions.
+you are replying to or forwarding a message.  See also
+<link linkend="askcc">&dollar;askcc</link>,
+<link linkend="askbcc">&dollar;askbcc</link>,
+<link linkend="autoedit">&dollar;autoedit</link>,
+<link linkend="bounce">&dollar;bounce</link>, 
+<link linkend="fast-reply">&dollar;fast&lowbar;reply</link>,
+and <link linkend="include">&dollar;include</link>
+for changing how Mutt asks these questions.
 </para>
 
 <para>
