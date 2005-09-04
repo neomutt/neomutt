@@ -1,3 +1,7 @@
+2005-09-04 19:55:15  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.xml.head: Add a push example. Closes: #1591.
+
 2005-09-04 19:46:26  Rupert Levene  <rupert@levene.dyndns.org>  (brendan)
 
 	* doc/manual.xml.head: Mention $include when describing how mutt
