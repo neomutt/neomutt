@@ -1577,9 +1577,10 @@ sequence.
 <title>Defining aliases for character sets </title>
 
 <para>
+<literallayout>
 Usage: <literal>charset-hook</literal> <emphasis>alias</emphasis> <emphasis>charset</emphasis>
-
 Usage: <literal>iconv-hook</literal> <emphasis>charset</emphasis> <emphasis>local-charset</emphasis>
+</literallayout>
 </para>
 
 <para>
@@ -1706,12 +1707,11 @@ silently truncated at the screen width, and are not wrapped.
 <title>Using color and mono video attributes</title>
 
 <para>
+<literallayout>
 Usage: <literal>color</literal> <emphasis>object</emphasis> <emphasis>foreground</emphasis> <emphasis>background</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
-
 Usage: <literal>color</literal> index <emphasis>foreground</emphasis> <emphasis>background</emphasis> <emphasis>pattern</emphasis>
-
 Usage: <literal>uncolor</literal> index <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ...  &rsqb;
-
+</literallayout>
 </para>
 
 <para>
@@ -1968,12 +1968,11 @@ attributes through the use of the ``mono'' command:
 </para>
 
 <para>
+<literallayout>
 Usage: <literal>mono</literal> <emphasis>&lt;object&gt; &lt;attribute&gt;</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
-
 Usage: <literal>mono</literal> index <emphasis>attribute</emphasis> <emphasis>pattern</emphasis>
-
 Usage: <literal>unmono</literal> index <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ...  &rsqb;
-
+</literallayout>
 </para>
 
 <para>
@@ -2576,9 +2575,10 @@ listed in the <link linkend="functions">function reference</link>.
 <title>Message Scoring</title>
 
 <para>
+<literallayout>
 Usage: <literal>score</literal> <emphasis>pattern</emphasis> <emphasis>value</emphasis>
-
 Usage: <literal>unscore</literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
+</literallayout>
 </para>
 
 <para>
