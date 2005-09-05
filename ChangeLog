@@ -1,4 +1,7 @@
-2005-09-04 20:10:25  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-05 04:22:45  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.xml.head: Documentation cosmetics (add some line
+	breaks).
 
 	* init.h: Point $hide_top_limited to $hide_limited instead of
 	$hide_missing. Likewise for $hide_top_missing. Closes: #2039.
