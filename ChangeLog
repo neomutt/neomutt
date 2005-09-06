@@ -1,4 +1,7 @@
-2005-09-06 03:16:11  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-06 05:35:15  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pager.c: Gross hack to return to the same line in the pager
+	after executing an index function. Closes: #1210.
 
 	* doc/manual.xml.head, imap/command.c, imap/imap.c, imap/imap.h,
 	init.c, mutt.h, pattern.c: Extend pattern language to do simple
