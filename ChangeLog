@@ -1,4 +1,8 @@
-2005-09-06 00:45:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-06 01:46:46  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/utf7.c, init.c, main.c, protos.h: Fix a memory leak in
+	imap_utf7_decode and do a little cleanup on shutdown.  Get a
+	high five from valgrind.
 
 	* curs_main.c, main.c: Move SASL and IMAP shutdown hooks into main
 	where they belong.
