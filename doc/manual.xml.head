@@ -2112,9 +2112,10 @@ is ``*'', <emphasis>all entries</emphasis> on <literal>alternates</literal> will
 <title>Mailing lists</title>
 
 <para>
+<literallayout>
 Usage: <literal>&lsqb;un&rsqb;lists</literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-
 Usage: <literal>&lsqb;un&rsqb;subscribe</literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
+</literallayout>
 </para>
 
 <para>
@@ -2415,11 +2416,11 @@ and a <link linkend="save-hook">save-hook</link> with its arguments.
 <title>Change settings based upon message recipients</title>
 
 <para>
+<literallayout>
 Usage: <literal>reply-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
-
 Usage: <literal>send-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
-
 Usage: <literal>send2-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
+</literallayout>
 </para>
 
 <para>
@@ -2605,9 +2606,10 @@ of all score entries.
 <title>Spam detection</title>
 
 <para>
+<literallayout>
 Usage: <literal>spam</literal> <emphasis>pattern</emphasis> <emphasis>format</emphasis>
-
 Usage: <literal>nospam</literal> <emphasis>pattern</emphasis>
+</literallayout>
 </para>
 
 <para>
@@ -2739,13 +2741,12 @@ spam "^From: .*MAILER-DAEMON"       "999"
 <title>Setting variables</title>
 
 <para>
+<literallayout>
 Usage: <literal>set</literal> &lsqb;no&verbar;inv&rsqb;<emphasis>variable</emphasis>&lsqb;=<emphasis>value</emphasis>&rsqb; &lsqb; <emphasis>variable</emphasis> ... &rsqb;
-
 Usage: <literal>toggle</literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-
 Usage: <literal>unset</literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-
 Usage: <literal>reset</literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
+</literallayout>
 </para>
 
 <para>
