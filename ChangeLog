@@ -1,4 +1,11 @@
-2005-09-06 01:46:46  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-06 03:16:11  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.xml.head, imap/command.c, imap/imap.c, imap/imap.h,
+	init.c, mutt.h, pattern.c: Extend pattern language to do simple
+	string matches as well as regular expressions when the pattern is
+	invoked with = instead of ~. And, when possible, perform full body
+	searches on the IMAP server instead of locally, for an enormous
+	speed boost.
 
 	* imap/utf7.c, init.c, main.c, protos.h: Fix a memory leak in
 	imap_utf7_decode and do a little cleanup on shutdown.  Get a
