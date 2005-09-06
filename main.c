@@ -958,6 +958,7 @@ int main (int argc, char **argv)
 #ifdef USE_SASL
     mutt_sasl_done ();
 #endif
+    mutt_free_opts ();
     mutt_endwin (Errorbuf);
   }
 

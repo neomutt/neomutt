@@ -42,6 +42,7 @@ void mutt_buffer_free(BUFFER **);
 void mutt_buffer_add (BUFFER*, const char*, size_t);
 void mutt_buffer_addstr (BUFFER*, const char*);
 void mutt_buffer_addch (BUFFER*, char);
+void mutt_free_opts (void);
 
 #define mutt_system(x) _mutt_system(x,0)
 int _mutt_system (const char *, int);

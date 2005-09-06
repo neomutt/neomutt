@@ -289,6 +289,48 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
   return 0;
 }
 
+static void mutt_free_opt (struct option_t* p)
+{
+  REGEXP* pp;
+
+  switch (p->type & DT_MASK)
+  {
+  case DT_ADDR:
+    rfc822_free_address ((ADDRESS**)p->data);
+    break;
+  case DT_RX:
+    pp = (REGEXP*)p->data;
+    FREE (&pp->pattern);
+    if (pp->rx)
+    {
+      regfree (pp->rx);
+      FREE (&pp->rx);
+    }
+    break;
+  case DT_PATH:
+  case DT_STR:
+    FREE ((char**)p->data);
+    break;
+  }
+}
+
+/* clean up before quitting */
+void mutt_free_opts (void)
+{
+  int i;
+
+  for (i = 0; MuttVars[i].option; i++)
+    mutt_free_opt (MuttVars + i);
+
+  mutt_free_rx_list (&Alternates);
+  mutt_free_rx_list (&UnAlternates);
+  mutt_free_rx_list (&MailLists);
+  mutt_free_rx_list (&UnMailLists);
+  mutt_free_rx_list (&SubscribedLists);
+  mutt_free_rx_list (&UnSubscribedLists);
+  mutt_free_rx_list (&NoSpamList);
+}
+
 static void add_to_list (LIST **list, const char *str)
 {
   LIST *t, *last = NULL;

@@ -258,7 +258,11 @@ void imap_utf7_encode (char **s)
   {
     char *t = safe_strdup (*s);
     if (!mutt_convert_string (&t, Charset, "UTF-8", 0))
-      utf8_to_utf7 (t, strlen (t), s, 0);
+    {
+      char *u7 = utf8_to_utf7 (t, strlen (t), NULL, 0);
+      FREE (s);
+      *s = u7;
+    }
     FREE (&t);
   }
 }
