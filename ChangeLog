@@ -1,4 +1,6 @@
-2005-09-06 00:24:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-06 00:36:19  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.c: Release pwent after extracting data from it.
 
 	* mutt_sasl.h, curs_main.c, mutt_sasl.c: Release global SASL state
 	when quitting.
