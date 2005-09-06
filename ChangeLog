@@ -1,4 +1,7 @@
-2005-09-06 00:36:19  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-06 00:45:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* curs_main.c, main.c: Move SASL and IMAP shutdown hooks into main
+	where they belong.
 
 	* init.c: Release pwent after extracting data from it.
 
