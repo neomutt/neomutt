@@ -1,4 +1,7 @@
-2005-09-06 05:35:15  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-06 16:46:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.xml.head: More documentation cosmetics (newlines
+	between Usage: lines).
 
 	* pager.c: Gross hack to return to the same line in the pager
 	after executing an index function. Closes: #1210.
