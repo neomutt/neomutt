@@ -2218,6 +2218,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
     Realname = safe_strdup (mutt_gecos_name (rnbuf, sizeof (rnbuf), pw));
     Shell = safe_strdup (pw->pw_shell);
+    endpwent ();
   }
   else 
   {
