@@ -38,10 +38,6 @@
 #include "imap_private.h"
 #endif
 
-#ifdef USE_SASL
-#include "mutt_sasl.h"
-#endif
-
 #include "mutt_crypt.h"
 
 
@@ -2197,17 +2193,6 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
     }
 
     if (done) break;
-  }
-
-  if (!attach_msg)
-  {
-#ifdef USE_IMAP
-  /* Close all open IMAP connections */
-    imap_logout_all ();
-#endif
-#ifdef USE_SASL
-    mutt_sasl_done ();
-#endif
   }
 
   mutt_menuDestroy (&menu);

@@ -32,6 +32,14 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 
+#ifdef USE_SASL
+#include "mutt_sasl.h"
+#endif
+
+#ifdef USE_IMAP
+#include "imap/imap.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -944,6 +952,12 @@ int main (int argc, char **argv)
       if (Context)
 	FREE (&Context);
     }
+#ifdef USE_IMAP
+    imap_logout_all ();
+#endif
+#ifdef USE_SASL
+    mutt_sasl_done ();
+#endif
     mutt_endwin (Errorbuf);
   }
 
