@@ -371,6 +371,11 @@ static int mutt_sasl_cb_log (void* context, int priority, const char* message)
   return SASL_OK;
 }
 
+void mutt_sasl_done (void)
+{
+  sasl_done ();
+}
+
 /* mutt_sasl_cb_authname: callback to retrieve authname or user from ACCOUNT */
 static int mutt_sasl_cb_authname (void* context, int id, const char** result,
   unsigned* len)

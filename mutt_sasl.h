@@ -29,6 +29,7 @@ int mutt_sasl_client_new (CONNECTION*, sasl_conn_t**);
 sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT*);
 int mutt_sasl_interact (sasl_interact_t*);
 void mutt_sasl_setup_conn (CONNECTION*, sasl_conn_t*);
+void mutt_sasl_done (void);
 
 typedef struct 
 {
