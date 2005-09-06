@@ -3321,7 +3321,17 @@ made when using regular expressions inside of patterns.  Specifically,
 Mutt's parser for these patterns will strip one level of backslash (\),
 which is normally used for quoting.  If it is your intention to use a
 backslash in the regular expression, you will need to use two backslashes
-instead (\\).
+instead (\\). You can force mutt to treat EXPR as a simple string
+instead of a regular expression by using = instead of &tilde; in the
+pattern name. For example, =b *.* will find all messages that contain
+the literal string '*.*'. Simple string matches are less powerful than
+regular expressions but can be considerably faster. This is especially
+true for IMAP folders, because string matches can be performed on the
+server instead of by fetching every message. IMAP treats =h specially:
+it must be of the form "header: substring" and will not partially
+match header names. The substring part may be omitted if you simply
+wish to find messages containing a particular header without regard to
+its value.
 </para>
 
 <para>

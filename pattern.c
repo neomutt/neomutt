@@ -35,9 +35,15 @@
 
 #include "mutt_crypt.h"
 
+#ifdef USE_IMAP
+#include "mx.h"
+#include "imap/imap.h"
+#endif
+
 static int eat_regexp (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_range (pattern_t *pat, BUFFER *, BUFFER *);
+static int patmatch (const pattern_t *pat, const char *buf);
 
 struct pattern_flags
 {
@@ -136,7 +142,7 @@ int mutt_which_case (const char *s)
 }
 
 static int
-msg_search (CONTEXT *ctx, regex_t *rx, int op, int msgno)
+msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 {
   char tempfile[_POSIX_PATH_MAX];
   MESSAGE *msg = NULL;
@@ -164,10 +170,10 @@ msg_search (CONTEXT *ctx, regex_t *rx, int op, int msgno)
 	return (0);
       }
 
-      if (op != M_BODY)
+      if (pat->op != M_BODY)
 	mutt_copy_header (msg->fp, h, s.fpout, CH_FROM | CH_DECODE, NULL);
 
-      if (op != M_HEADER)
+      if (pat->op != M_HEADER)
       {
 	mutt_parse_mime_message (ctx, h);
 
@@ -197,14 +203,14 @@ msg_search (CONTEXT *ctx, regex_t *rx, int op, int msgno)
     {
       /* raw header / body */
       fp = msg->fp;
-      if (op != M_BODY)
+      if (pat->op != M_BODY)
       {
 	fseek (fp, h->offset, 0);
 	lng = h->content->offset - h->offset;
       }
-      if (op != M_HEADER)
+      if (pat->op != M_HEADER)
       {
-	if (op == M_BODY)
+	if (pat->op == M_BODY)
 	  fseek (fp, h->content->offset, 0);
 	lng += h->content->length;
       }
@@ -216,14 +222,14 @@ msg_search (CONTEXT *ctx, regex_t *rx, int op, int msgno)
     /* search the file "fp" */
     while (lng > 0)
     {
-      if (op == M_HEADER)
+      if (pat->op == M_HEADER)
       {
 	if (*(buf = mutt_read_rfc822_line (fp, buf, &blen)) == '\0')
 	  break;
       }
       else if (fgets (buf, blen - 1, fp) == NULL)
 	break; /* don't loop forever */
-      if (regexec (rx, buf, 0, NULL, 0) == 0)
+      if (patmatch (pat, buf) == 0)
       {
 	match = 1;
 	break;
@@ -257,16 +263,32 @@ int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
     snprintf (err->data, err->dsize, _("Error in expression: %s"), s->dptr);
     return (-1);
   }
-  pat->rx = safe_malloc (sizeof (regex_t));
-  r = REGCOMP (pat->rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
-  FREE (&buf.data);
-  if (r)
+
+#if 0
+  /* If there are no RE metacharacters, use simple search anyway */
+  if (!pat->stringmatch && !strpbrk (buf.data, "|[{.*+?^$"))
+    pat->stringmatch = 1;
+#endif
+
+  if (pat->stringmatch)
   {
-    regerror (r, pat->rx, err->data, err->dsize);
-    regfree (pat->rx);
-    FREE (&pat->rx);
-    return (-1);
+    pat->str = safe_strdup (buf.data);
+    FREE (&buf.data);
   }
+  else
+  {
+    pat->rx = safe_malloc (sizeof (regex_t));
+    r = REGCOMP (pat->rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
+    FREE (&buf.data);
+    if (r)
+    {
+      regerror (r, pat->rx, err->data, err->dsize);
+      regfree (pat->rx);
+      FREE (&pat->rx);
+      return (-1);
+    }
+  }
+
   return 0;
 }
 
@@ -666,6 +688,14 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   return 0;
 }
 
+static int patmatch (const pattern_t* pat, const char* buf)
+{
+  if (pat->stringmatch)
+    return !strstr (buf, pat->str);
+  else
+    return regexec (pat->rx, buf, 0, NULL, 0);
+}
+
 static struct pattern_flags *lookup_tag (char tag)
 {
   int i;
@@ -708,6 +738,7 @@ void mutt_pattern_free (pattern_t **pat)
       regfree (tmp->rx);
       FREE (&tmp->rx);
     }
+    FREE (&tmp->str);
     if (tmp->child)
       mutt_pattern_free (&tmp->child);
     FREE (&tmp);
@@ -721,6 +752,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   pattern_t *last = NULL;
   int not = 0;
   int alladdr = 0;
+  int stringmatch = 0;
   int or = 0;
   int implicit = 1;	/* used to detect logical AND operator */
   struct pattern_flags *entry;
@@ -770,7 +802,10 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	implicit = 0;
 	not = 0;
 	alladdr = 0;
+        stringmatch = 0;
 	break;
+      case '=':
+        stringmatch = 1;
       case '~':
 	if (implicit && or)
 	{
@@ -786,8 +821,10 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	tmp = new_pattern ();
 	tmp->not = not;
 	tmp->alladdr = alladdr;
+        tmp->stringmatch = stringmatch;
 	not = 0;
-	alladdr=0;
+	alladdr = 0;
+        stringmatch = 0;
 
 	if (last)
 	  last->next = tmp;
@@ -896,8 +933,7 @@ perform_or (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, HEADER
   return 0;
 }
 
-static int match_adrlist (regex_t *rx, int match_personal, int alladdr,
-			  int n, ...)
+static int match_adrlist (pattern_t *pat, int match_personal, int n, ...)
 {
   va_list ap;
   ADDRESS *a;
@@ -907,24 +943,22 @@ static int match_adrlist (regex_t *rx, int match_personal, int alladdr,
   {
     for (a = va_arg (ap, ADDRESS *) ; a ; a = a->next)
     {
-      if (alladdr^
-	  ((a->mailbox && regexec (rx, a->mailbox, 0, NULL, 0) == 0) ||
-	   (match_personal && a->personal &&
-	    regexec (rx, a->personal, 0, NULL, 0) == 0)))
+      if (pat->alladdr ^ ((a->mailbox && patmatch (pat, a->mailbox) == 0) ||
+	   (match_personal && a->personal && patmatch (pat, a->personal) == 0)))
       {
 	va_end (ap);
-	return (! alladdr); /* Found match, or non-match if alladdr */
+	return (! pat->alladdr); /* Found match, or non-match if alladdr */
       }
     }
   }
   va_end (ap);
-  return alladdr; /* No matches, or all matches if alladdr */
+  return pat->alladdr; /* No matches, or all matches if alladdr */
 }
 
-static int match_reference (regex_t *rx, LIST *refs)
+static int match_reference (pattern_t *pat, LIST *refs)
 {
   for (; refs; refs = refs->next)
-    if (regexec (rx, refs->data, 0, NULL, 0) == 0)
+    if (patmatch (pat, refs->data) == 0)
       return 1;
   return 0;
 }
@@ -1013,47 +1047,50 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_BODY:
     case M_HEADER:
     case M_WHOLE_MSG:
-      return (pat->not ^ msg_search (ctx, pat->rx, pat->op, h->msgno));
+#ifdef USE_IMAP
+      /* IMAP search sets h->matched at search compile time */
+      if (Context->magic == M_IMAP && pat->stringmatch)
+	return (h->matched);
+#endif
+      return (pat->not ^ msg_search (ctx, pat, h->msgno));
     case M_SENDER:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 1, h->env->sender));
+      return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS, 1,
+                                        h->env->sender));
     case M_FROM:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 1, h->env->from));
+      return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS, 1,
+                                        h->env->from));
     case M_TO:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 1, h->env->to));
+      return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS, 1,
+                                        h->env->to));
     case M_CC:
-      return (pat->not ^ match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 1, h->env->cc));
+      return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS, 1,
+                                        h->env->cc));
     case M_SUBJECT:
-      return (pat->not ^ (h->env && h->env->subject && regexec (pat->rx, h->env->subject, 0, NULL, 0) == 0));
+      return (pat->not ^ (h->env->subject && patmatch (pat, h->env->subject) == 0));
     case M_ID:
-      return (pat->not ^ (h->env && h->env->message_id && regexec (pat->rx, h->env->message_id, 0, NULL, 0) == 0));
+      return (pat->not ^ (h->env->message_id && patmatch (pat, h->env->message_id) == 0));
     case M_SCORE:
       return (pat->not ^ (h->score >= pat->min && (pat->max == M_MAXRANGE ||
 						   h->score <= pat->max)));
     case M_SIZE:
       return (pat->not ^ (h->content->length >= pat->min && (pat->max == M_MAXRANGE || h->content->length <= pat->max)));
     case M_REFERENCE:
-      return (pat->not ^ match_reference (pat->rx, h->env->references));
+      return (pat->not ^ match_reference (pat, h->env->references));
     case M_ADDRESS:
-      return (pat->not ^ (h->env && match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 4, h->env->from,
-					h->env->sender, h->env->to, h->env->cc)));
+      return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS, 4,
+                                        h->env->from, h->env->sender,
+                                        h->env->to, h->env->cc));
     case M_RECIPIENT:
-           return (pat->not ^ (h->env && match_adrlist (pat->rx, flags & M_MATCH_FULL_ADDRESS,
-					pat->alladdr, 2, h->env->to, h->env->cc)));
+           return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS,
+                                             2, h->env->to, h->env->cc));
     case M_LIST:	/* known list, subscribed or not */
-      return (pat->not ^ (h->env
-	&& mutt_is_list_cc (pat->alladdr, h->env->to, h->env->cc)));
+      return (pat->not ^ mutt_is_list_cc (pat->alladdr, h->env->to, h->env->cc));
     case M_SUBSCRIBED_LIST:
-      return (pat->not ^ (h->env
-	&& mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc)));
+      return (pat->not ^ mutt_is_list_recipient (pat->alladdr, h->env->to, h->env->cc));
     case M_PERSONAL_RECIP:
-      return (pat->not ^ (h->env && match_user (pat->alladdr, h->env->to, h->env->cc)));
+      return (pat->not ^ match_user (pat->alladdr, h->env->to, h->env->cc));
     case M_PERSONAL_FROM:
-      return (pat->not ^ (h->env && match_user (pat->alladdr, h->env->from, NULL)));
+      return (pat->not ^ match_user (pat->alladdr, h->env->from, NULL));
     case M_COLLAPSED:
       return (pat->not ^ (h->collapsed && h->num_hidden > 1));
    case M_CRYPT_SIGN:
@@ -1073,9 +1110,9 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
        break;
      return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
     case M_XLABEL:
-      return (pat->not ^ (h->env->x_label && regexec (pat->rx, h->env->x_label, 0, NULL, 0) == 0));
+      return (pat->not ^ (h->env->x_label && patmatch (pat, h->env->x_label) == 0));
     case M_HORMEL:
-      return (pat->not ^ (h->env->spam && h->env->spam->data && regexec (pat->rx, h->env->spam->data, 0, NULL, 0) == 0));
+      return (pat->not ^ (h->env->spam && h->env->spam->data && patmatch (pat, h->env->spam->data) == 0));
     case M_DUPLICATED:
       return (pat->not ^ (h->thread && h->thread->duplicate_thread));
     case M_UNREFERENCED:
@@ -1109,7 +1146,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
    * equivalences?
    */
   
-  if (!strchr (s, '~')) /* yup, so spoof a real request */
+  if (!strchr (s, '~') && !strchr (s, '=')) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
     if (ascii_strcasecmp ("all", s) == 0 ||
@@ -1171,6 +1208,11 @@ int mutt_pattern_func (int op, char *prompt)
     return (-1);
   }
 
+#ifdef USE_IMAP
+  if (Context->magic == M_IMAP && imap_search (Context, pat) < 0)
+    return -1;
+#endif
+  
   mutt_message _("Executing command on matching messages...");
 
 #define THIS_BODY Context->hdrs[i]->content
@@ -1303,6 +1345,10 @@ int mutt_search_command (int cur, int op)
   {
     for (i = 0; i < Context->msgcount; i++)
       Context->hdrs[i]->searched = 0;
+#ifdef USE_IMAP
+    if (Context->magic == M_IMAP && imap_search (Context, SearchPattern) < 0)
+      return -1;
+#endif
     unset_option (OPTSEARCHINVALID);
   }
 

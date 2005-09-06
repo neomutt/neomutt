@@ -123,7 +123,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	  (ch == '#' && !(flags & M_TOKEN_COMMENT)) ||
 	  (ch == '=' && (flags & M_TOKEN_EQUAL)) ||
 	  (ch == ';' && !(flags & M_TOKEN_SEMICOLON)) ||
-	  ((flags & M_TOKEN_PATTERN) && strchr ("~!|", ch)))
+	  ((flags & M_TOKEN_PATTERN) && strchr ("~=!|", ch)))
 	break;
     }
 

@@ -782,7 +782,7 @@ typedef struct thread
 
 
 /* flag to mutt_pattern_comp() */
-#define M_FULL_MSG	1	/* enable body and header matching */
+#define M_FULL_MSG	(1<<0)	/* enable body and header matching */
 
 typedef enum {
   M_MATCH_FULL_ADDRESS = 1
@@ -791,12 +791,14 @@ typedef enum {
 typedef struct pattern_t
 {
   short op;
-  short not;
-  short alladdr;
+  unsigned int not : 1;
+  unsigned int alladdr : 1;
+  unsigned int stringmatch : 1;
   int min;
   int max;
   struct pattern_t *next;
   struct pattern_t *child;		/* arguments to logical op */
+  char *str;
   regex_t *rx;
 } pattern_t;
 

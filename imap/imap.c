@@ -1298,6 +1298,151 @@ int imap_mailbox_check (char* path, int new)
   return msgcount;
 }
 
+/* returns number of patterns in the search that should be done server-side
+ * (eg are full-text) */
+static int do_search (const pattern_t* search, int allpats)
+{
+  int rc = 0;
+  const pattern_t* pat;
+
+  for (pat = search; pat; pat = pat->next)
+  {
+    switch (pat->op)
+    {
+      case M_BODY:
+      case M_HEADER:
+      case M_WHOLE_MSG:
+        if (pat->stringmatch)
+          rc++;
+        break;
+      default:
+        if (pat->child && do_search (pat->child, 1))
+          rc++;
+    }
+    
+    if (!allpats)
+      break;
+  }
+  
+  return rc;
+}
+
+/* convert mutt pattern_t to IMAP SEARCH command containing only elements
+ * that require full-text search (mutt already has what it needs for most
+ * match types, and does a better job (eg server doesn't support regexps). */
+static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
+{
+  char term[STRING];
+
+  if (! do_search (pat, 0))
+    return 0;
+
+  if (pat->not)
+    mutt_buffer_addstr (buf, "NOT ");
+
+  if (pat->child)
+  {
+    int clauses;
+
+    if ((clauses = do_search (pat->child, 1)) > 0)
+    {
+      const pattern_t* clause = pat->child;
+
+      mutt_buffer_addch (buf, '(');
+
+      while (clauses)
+      {
+        if (do_search (clause, 0))
+        {
+          if (pat->op == M_OR && clauses > 1)
+            mutt_buffer_addstr (buf, "OR ");
+          clauses--;
+          
+          if (imap_compile_search (clause, buf) < 0)
+            return -1;
+
+          if (clauses)
+            mutt_buffer_addch (buf, ' ');
+          
+          clause = clause->next;
+        }
+      }
+
+      mutt_buffer_addch (buf, ')');
+    }
+  }
+  else
+  {
+    char *delim;
+
+    switch (pat->op)
+    {
+      case M_HEADER:
+        mutt_buffer_addstr (buf, "HEADER ");
+
+        /* extract header name */
+        if (! (delim = strchr (pat->str, ':')))
+        {
+          mutt_error (_("Header search without header name: %s"), pat->str);
+          return -1;
+        }
+        *delim = '\0';
+        imap_quote_string (term, sizeof (term), pat->str);
+        mutt_buffer_addstr (buf, term);
+        mutt_buffer_addch (buf, ' ');
+        
+        /* and field */
+        *delim = ':';
+        delim++;
+        SKIPWS(delim);
+        imap_quote_string (term, sizeof (term), delim);
+        mutt_buffer_addstr (buf, term);
+        break;
+      case M_BODY:
+        mutt_buffer_addstr (buf, "BODY ");
+        imap_quote_string (term, sizeof (term), pat->str);
+        mutt_buffer_addstr (buf, term);
+        break;
+      case M_WHOLE_MSG:
+        mutt_buffer_addstr (buf, "TEXT ");
+        imap_quote_string (term, sizeof (term), pat->str);
+        mutt_buffer_addstr (buf, term);
+        break;
+    }
+  }
+
+  return 0;
+}
+
+int imap_search (CONTEXT* ctx, const pattern_t* pat)
+{
+  BUFFER buf;
+  IMAP_DATA* idata = (IMAP_DATA*)ctx->data;
+  int i;
+
+  for (i = 0; i < ctx->msgcount; i++)
+    ctx->hdrs[i]->matched = 0;
+
+  if (!do_search (pat, 1))
+    return 0;
+
+  memset (&buf, 0, sizeof (buf));
+  mutt_buffer_addstr (&buf, "UID SEARCH ");
+  if (imap_compile_search (pat, &buf) < 0)
+  {
+    FREE (&buf.data);
+    return -1;
+  }
+  if (imap_exec (idata, buf.data, 0) < 0)
+  {
+    FREE (&buf.data);
+    return -1;
+  }
+
+  FREE (&buf.data);
+  return 0;
+}
+
 /* all this listing/browsing is a mess. I don't like that name is a pointer
  *   into idata->buf (used to be a pointer into the passed in buffer, just
  *   as bad), nor do I like the fact that the fetch is done here. This

@@ -44,6 +44,7 @@ static void cmd_parse_expunge (IMAP_DATA* idata, const char* s);
 static void cmd_parse_lsub (IMAP_DATA* idata, char* s);
 static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
+static void cmd_parse_search (IMAP_DATA* idata, char* s);
 
 static char *Capabilities[] = {
   "IMAP4",
@@ -116,6 +117,9 @@ int imap_cmd_step (IMAP_DATA* idata)
 		  cmd->blen));
     }
 
+    /* back up over '\0' */
+    if (len)
+      len--;
     c = mutt_socket_readln (cmd->buf + len, cmd->blen - len, idata->conn);
     if (c <= 0)
     {
@@ -367,6 +371,8 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
     cmd_parse_lsub (idata, s);
   else if (ascii_strncasecmp ("MYRIGHTS", s, 8) == 0)
     cmd_parse_myrights (idata, s);
+  else if (ascii_strncasecmp ("SEARCH", s, 6) == 0)
+    cmd_parse_search (idata, s);
   else if (ascii_strncasecmp ("BYE", s, 3) == 0)
   {
     dprint (2, (debugfile, "Handling BYE\n"));
@@ -622,5 +628,38 @@ static void cmd_parse_myrights (IMAP_DATA* idata, char* s)
 	break;
     }
     s++;
+  }
+}
+
+/* This should be optimised (eg with a tree or hash) */
+static int uid2msgno (IMAP_DATA* idata, unsigned int uid)
+{
+  int i;
+  
+  for (i = 0; i < idata->ctx->msgcount; i++)
+  {
+    HEADER* h = idata->ctx->hdrs[i];
+    if (HEADER_DATA(h)->uid == uid)
+      return i;
+  }
+  
+  return -1;
+}
+
+/* cmd_parse_search: store SEARCH response for later use */
+static void cmd_parse_search (IMAP_DATA* idata, char* s)
+{
+  unsigned int uid;
+  int msgno;
+
+  dprint (2, (debugfile, "Handling SEARCH\n"));
+
+  while ((s = imap_next_word (s)) && *s != '\0')
+  {
+    uid = atoi (s);
+    msgno = uid2msgno (idata, uid);
+    
+    if (msgno >= 0)
+      idata->ctx->hdrs[uid2msgno (idata, uid)]->matched = 1;
   }
 }
