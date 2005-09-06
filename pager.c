@@ -58,6 +58,10 @@ static const char *Not_available_in_this_menu = N_("Not available in this menu."
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
 
+/* hack to return to position when returning from index to same message */
+static int TopLine = 0;
+static HEADER *OldHdr = NULL;
+
 #define CHECK_MODE(x)	if (!(x)) \
 			{ \
 			  	mutt_flushinp (); \
@@ -1784,6 +1788,18 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
     move (statusoffset, COLS-1);
     mutt_refresh ();
+
+    if (IsHeader (extra) && OldHdr == extra->hdr && TopLine != topline)
+    {
+      if (TopLine - topline > lines)
+        topline += lines;
+      else
+        topline = TopLine;
+      continue;
+    }
+    else
+      OldHdr = NULL;
+      
     ch = km_dokey (MENU_PAGER);
     if (ch != -1)
       mutt_clear_error ();
@@ -2669,7 +2685,14 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
   fclose (fp);
   if (IsHeader (extra))
+  {
     Context->msgnotreadyet = -1;
+    if (rc != -1)
+    {
+      TopLine = topline;
+      OldHdr = extra->hdr;
+    }
+  }
     
   cleanup_quote (&QuoteList);
   
