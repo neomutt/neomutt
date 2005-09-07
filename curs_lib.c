@@ -359,9 +359,10 @@ void mutt_progress_bar (progress_t* progress, long pos)
 
   if (pos > progress->pos + (NetInc << 10))
   {
+    progress->pos = pos;
+    pos = pos / (NetInc << 10) * (NetInc << 10);
     mutt_pretty_size (posstr, sizeof (posstr), pos);
     mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
-    progress->pos = pos;
   }
 }
 
