@@ -1,3 +1,10 @@
+2005-09-07 00:22:09  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* build-release, configure.in, mutt.h: Remove international
+	vs. U.S. distribution distinction. build-release expects the
+	previous version to be x.y.zi and should be updated again for
+	1.5.12.
+
 2005-09-06 16:46:44  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/manual.xml.head: More documentation cosmetics (newlines
