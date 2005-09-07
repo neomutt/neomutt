@@ -1789,7 +1789,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     move (statusoffset, COLS-1);
     mutt_refresh ();
 
-    if (IsHeader (extra) && OldHdr == extra->hdr && TopLine != topline)
+    if (IsHeader (extra) && OldHdr == extra->hdr && TopLine != topline
+        && lineInfo[curline].offset < sb.st_size-1)
     {
       if (TopLine - topline > lines)
         topline += lines;
