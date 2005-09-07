@@ -1,4 +1,6 @@
-2005-09-07 07:44:05  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-07 08:01:59  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* curs_lib.c: Ensure progress bar rounds to $net_inc.
 
 	* curs_lib.c, globals.h, imap/imap.c, imap/imap_private.h,
 	imap/message.c, init.h, mutt_curses.h: Display progress meter when
