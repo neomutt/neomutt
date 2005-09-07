@@ -1,4 +1,9 @@
-2005-09-07 04:51:11  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-07 05:02:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pager.c: Adjust gross hack to return to the same line in the
+	pager after an index operation so that it doesn't shoot past the
+	end of the file if there are fewer lines on return (eg when weed
+	is set).
 
 	* mx.c, pgp.c: Silence some GCC warnings about uninitialized
 	variables.
