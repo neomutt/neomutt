@@ -1,4 +1,7 @@
-2005-09-07 00:22:09  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-07 04:51:11  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mx.c, pgp.c: Silence some GCC warnings about uninitialized
+	variables.
 
 	* build-release, configure.in, mutt.h: Remove international
 	vs. U.S. distribution distinction. build-release expects the
