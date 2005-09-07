@@ -29,7 +29,6 @@
 #include <ctype.h>
 
 #include "mutt.h"
-#include "mutt_curses.h"
 #include "imap_private.h"
 #include "message.h"
 #include "mx.h"
@@ -325,6 +324,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   char path[_POSIX_PATH_MAX];
   char *pc;
   long bytes;
+  progress_t progressbar;
   int uid;
   int cacheno;
   IMAP_CACHE *cache;
@@ -409,7 +409,10 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    imap_error ("imap_fetch_message()", buf);
 	    goto bail;
 	  }
-	  if (imap_read_literal (msg->fp, idata, bytes) < 0)
+          progressbar.size = bytes;
+          progressbar.msg = _("Fetching message...");
+          mutt_progress_bar (&progressbar, 0);
+	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
 	    goto bail;
 	  /* pick up trailing line */
 	  if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
@@ -508,6 +511,8 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   char mbox[LONG_STRING];
   char mailbox[LONG_STRING]; 
   size_t len;
+  progress_t progressbar;
+  size_t sent;
   int c, last;
   IMAP_MBOX mx;
   int rc;
@@ -539,6 +544,10 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     len++;
   }
   rewind (fp);
+
+  progressbar.msg = _("Uploading message...");
+  progressbar.size = len;
+  mutt_progress_bar (&progressbar, 0);
   
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "APPEND %s (%s%s%s%s%s) {%lu}", mbox,
@@ -571,9 +580,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     goto fail;
   }
 
-  mutt_message _("Uploading message ...");
-
-  for (last = EOF, len = 0; (c = fgetc(fp)) != EOF; last = c)
+  for (last = EOF, sent = len = 0; (c = fgetc(fp)) != EOF; last = c)
   {
     if (c == '\n' && last != '\r')
       buf[len++] = '\r';
@@ -581,7 +588,11 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     buf[len++] = c;
 
     if (len > sizeof(buf) - 3)
+    {
+      sent += len;
       flush_buffer(buf, &len, idata->conn);
+      mutt_progress_bar (&progressbar, sent);
+    }
   }
   
   if (len)
@@ -898,7 +909,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
   
   if (imap_get_literal_count (buf, &bytes) == 0)
   {
-    imap_read_literal (fp, idata, bytes);
+    imap_read_literal (fp, idata, bytes, NULL);
 
     /* we may have other fields of the FETCH _after_ the literal
      * (eg Domino puts FLAGS here). Nothing wrong with that, either.

@@ -78,6 +78,7 @@ WHERE char *MsgFmt;
 #ifdef USE_SOCKET
 WHERE char *Preconnect INITVAL (NULL);
 WHERE char *Tunnel INITVAL (NULL);
+WHERE short NetInc;
 #endif /* USE_SOCKET */
 
 #ifdef MIXMASTER

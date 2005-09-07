@@ -25,7 +25,6 @@
 #endif
 
 #include "mutt.h"
-#include "mutt_curses.h"
 #include "mx.h"
 #include "mailbox.h"
 #include "globals.h"
@@ -189,7 +188,7 @@ void imap_logout_all (void)
 /* imap_read_literal: read bytes bytes from server into file. Not explicitly
  *   buffered, relies on FILE buffering. NOTE: strips \r from \r\n.
  *   Apparently even literals use \r\n-terminated strings ?! */
-int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
+int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
 {
   long pos;
   char c;
@@ -221,6 +220,9 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes)
       r = 0;
 #endif
     fputc (c, fp);
+    
+    if (pbar && pos % 1024)
+      mutt_progress_bar (pbar, pos);
 #ifdef DEBUG
     if (debuglevel >= IMAP_LOG_LTRL)
       fputc (c, debugfile);

@@ -340,6 +340,31 @@ void mutt_curses_message (const char *fmt, ...)
   unset_option (OPTMSGERR);
 }
 
+void mutt_progress_bar (progress_t* progress, long pos)
+{
+  char posstr[SHORT_STRING];
+
+  if (!pos)
+  {
+    if (!NetInc)
+      mutt_message (progress->msg);
+    else {
+      mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
+      progress->pos = 0;
+    }
+  }
+
+  if (!NetInc)
+    return;
+
+  if (pos > progress->pos + (NetInc << 10))
+  {
+    mutt_pretty_size (posstr, sizeof (posstr), pos);
+    mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
+    progress->pos = pos;
+  }
+}
+
 void mutt_show_error (void)
 {
   if (option (OPTKEEPQUIET))

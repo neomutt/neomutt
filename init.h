@@ -1266,6 +1266,17 @@ struct option_t MuttVars[] = {
   ** This variable, when set, makes the thread tree narrower, allowing
   ** deeper threads to fit on the screen.
   */
+#ifdef USE_SOCKET
+  { "net_inc",	DT_NUM,	 R_NONE, UL &NetInc, 10 },
+  /*
+   ** .pp
+   ** Operations that expect to transfer a large amount of data over the
+   ** network will update their progress every \fInet_inc\fP kilobytes.
+   ** If set to 0, no progress messages will be displayed.
+   ** .pp
+   ** See also ``$$read_inc'' and ``$$write_inc''.
+   */
+#endif  
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
   ** .pp

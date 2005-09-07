@@ -21,6 +21,7 @@
 #define _IMAP_PRIVATE_H 1
 
 #include "imap.h"
+#include "mutt_curses.h"
 #include "mutt_socket.h"
 
 /* -- symbols -- */
@@ -199,7 +200,7 @@ int imap_open_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
 int imap_parse_list_response(IMAP_DATA* idata, char** name, int* noselect,
   int* noinferiors, char* delim);
-int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
+int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t*);
 void imap_expunge_mailbox (IMAP_DATA* idata);
 void imap_logout (IMAP_DATA* idata);
 int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,

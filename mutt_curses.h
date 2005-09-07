@@ -17,6 +17,9 @@
  *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
  */ 
 
+#ifndef _MUTT_CURSES_H_
+#define _MUTT_CURSES_H_ 1
+
 #ifdef USE_SLANG_CURSES
 
 #ifndef unix /* this symbol is not defined by the hp-ux compiler (sigh) */
@@ -136,6 +139,16 @@ typedef struct color_line
   struct color_line *next;
 } COLOR_LINE;
 
+typedef struct
+{
+  const char* msg;
+  long pos;
+  long size;
+  char sizestr[SHORT_STRING];
+} progress_t;
+
+void mutt_progress_bar (progress_t* progress, long pos);
+
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];
@@ -174,3 +187,5 @@ extern int wclear();
 extern int waddstr();
 extern int wclrtoeol();
 #endif
+
+#endif /* _MUTT_CURSES_H_ */
