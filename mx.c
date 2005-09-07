@@ -160,13 +160,13 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 #ifdef USE_FCNTL
   struct flock lck;
   
-
   memset (&lck, 0, sizeof (struct flock));
   lck.l_type = excl ? F_WRLCK : F_RDLCK;
   lck.l_whence = SEEK_SET;
 
   count = 0;
   attempt = 0;
+  prev_sb.st_size = 0; /* silence a GCC warning */
   while (fcntl (fd, F_SETLK, &lck) == -1)
   {
     struct stat sb;

@@ -237,7 +237,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0, rv, rc;
-  int c;
+  int c = 1; /* silence GCC warning */
   long start_pos = 0;
   long bytes, last_pos, offset;
   char buf[HUGE_STRING];
