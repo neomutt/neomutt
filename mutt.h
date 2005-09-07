@@ -60,11 +60,7 @@
 # define MB_LEN_MAX 16
 #endif
 
-#ifdef SUBVERSION
-# define MUTT_VERSION (VERSION SUBVERSION)
-#else  
-# define MUTT_VERSION (VERSION)
-#endif
+#define MUTT_VERSION (VERSION)
 
 /* nifty trick I stole from ELM 2.5alpha. */
 #ifdef MAIN_C

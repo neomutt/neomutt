@@ -60,10 +60,7 @@ make changelog
 
 # build them
 
-# make us-dist
 make dist
-mv mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz
-# mv mutt-${VERSION}-us.tar.gz mutt-${VERSION}.tar.gz
 
 # commit and tag the release
 
@@ -75,16 +72,16 @@ cvs tag ${TAG}
 
 if test "$diff" = yes ; then
 	cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
-		> diff-${OVERSION}i-${VERSION}i.gz
+		> diff-${OVERSION}i-${VERSION}.gz
 fi
 
 # sign the various files
 
 # DISTFILES="mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
-DISTFILES="mutt-${VERSION}i.tar.gz"
+DISTFILES="mutt-${VERSION}.tar.gz"
 
 if test "$diff" = yes ; then
-	DISTFILES="$DISTFILES diff-${OVERSION}i-${VERSION}i.gz"
+	DISTFILES="$DISTFILES diff-${OVERSION}i-${VERSION}.gz"
 fi
 
 for f in $DISTFILES; do
