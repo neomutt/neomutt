@@ -752,7 +752,6 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   pattern_t *last = NULL;
   int not = 0;
   int alladdr = 0;
-  int stringmatch = 0;
   int or = 0;
   int implicit = 1;	/* used to detect logical AND operator */
   struct pattern_flags *entry;
@@ -802,10 +801,8 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	implicit = 0;
 	not = 0;
 	alladdr = 0;
-        stringmatch = 0;
 	break;
       case '=':
-        stringmatch = 1;
       case '~':
 	if (implicit && or)
 	{
@@ -821,10 +818,9 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	tmp = new_pattern ();
 	tmp->not = not;
 	tmp->alladdr = alladdr;
-        tmp->stringmatch = stringmatch;
+        tmp->stringmatch = (*ps.dptr == '=') ? 1 : 0;
 	not = 0;
 	alladdr = 0;
-        stringmatch = 0;
 
 	if (last)
 	  last->next = tmp;
