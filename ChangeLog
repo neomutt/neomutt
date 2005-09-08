@@ -1,4 +1,7 @@
-2005-09-08 14:32:18  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-08 14:50:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_socket.c: Set CLOEXEC on sockets in IPv4 code path like we
+	do in IPv6.
 
 	* pattern.c: Make stringmatch pattern detection stateless.
 
