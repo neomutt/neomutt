@@ -1,4 +1,6 @@
-2005-09-08 14:23:03  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-08 14:32:18  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pattern.c: Make stringmatch pattern detection stateless.
 
 	* curs_lib.c: ifdef USE_SOCKET around mutt_progress_bar.
 
