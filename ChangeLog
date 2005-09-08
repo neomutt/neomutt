@@ -1,4 +1,8 @@
- 2005-09-08 07:09:46  Bernd Ahlers  <bernd@ba-net.org>  (brendan)
+2005-09-08 14:23:03  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* curs_lib.c: ifdef USE_SOCKET around mutt_progress_bar.
+
+2005-09-08 07:09:46  Bernd Ahlers  <bernd@ba-net.org>  (brendan)
 
 	* po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
 	po/zh_TW.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po,
