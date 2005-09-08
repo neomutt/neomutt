@@ -1,8 +1,4 @@
-2005-09-08 15:54:07  Brendan Cully  <brendan@kublai.com>  (brendan)
-
-	* pager.c: Forget line number when resolving in pager. This is
-	beginning to get messy - maybe it would be better to only remember
-	on specific operations like sync.
+2005-09-08 16:37:59  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_socket.c: Set CLOEXEC on sockets in IPv4 code path like we
 	do in IPv6.
