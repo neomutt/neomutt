@@ -1,3 +1,11 @@
+ 2005-09-08 07:09:46  Bernd Ahlers  <bernd@ba-net.org>  (brendan)
+
+	* po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po, po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po,
+	po/pl.po, po/pt_BR.po, po/ru.po, po/da.po, po/de.po, po/el.po,
+	po/eo.po, po/es.po, po/et.po, po/fr.po, po/gl.po, po/hu.po,
+	po/id.po, po/ca.po, po/cs.po: Correct some S/MIME po entries.
+
 2005-09-07 08:01:59  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* curs_lib.c: Ensure progress bar rounds to $net_inc.
