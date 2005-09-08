@@ -514,6 +514,7 @@ int raw_socket_open (CONNECTION* conn)
     {
       if ((rc = socket_connect (fd, (struct sockaddr*) &sin)) == 0)
       {
+        fcntl (fd, F_SETFD, FD_CLOEXEC);
 	conn->fd = fd;
 	break;
       }
