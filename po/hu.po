@@ -1254,7 +1254,7 @@ msgstr ""
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
-"PGP (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé"
+"S/MIME (t)itkosít, (a)láír, aláír (m)int, titkosít é(s) aláír, (b)eágyazott, mé"
 "(g)se? "
 
 #: crypt-gpgme.c:4132
@@ -1388,8 +1388,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "PGP betöltés..."
+msgid "Invoking S/MIME..."
+msgstr "S/MIME betöltés..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4692,8 +4692,8 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "%d jelzést kaptam...  Kilépek.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "Kérlek írd be az SMIME jelszavadat: "
+msgid "Enter S/MIME passphrase:"
+msgstr "Kérlek írd be az S/MIME jelszavadat: "
 
 #: smime.c:321
 msgid "Trusted   "

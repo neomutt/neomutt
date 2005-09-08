@@ -1250,7 +1250,7 @@ msgstr ""
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
-"PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
+"S/MIME (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
 
 #: crypt-gpgme.c:4132
 #, fuzzy
@@ -1383,8 +1383,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "PGP wordt aangeroepen..."
+msgid "Invoking S/MIME..."
+msgstr "S/MIME wordt aangeroepen..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4663,7 +4663,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signaal %d...\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Geef S/MIME-wachtwoord in:"
 
 #: smime.c:321

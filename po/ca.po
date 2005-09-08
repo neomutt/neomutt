@@ -1309,7 +1309,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, o en (c)lar? "
+msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, o en (c)lar? "
 
 # ivb (2003/03/26)
 # ivb  (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, o en (c)lar
@@ -1452,8 +1452,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "S'està invocant PGP..."
+msgid "Invoking S/MIME..."
+msgstr "S'està invocant S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4870,7 +4870,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "S'ha rebut el senyal %d... Eixint.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Entreu la frase clau d'S/MIME:"
 
 # Es refereixen a un certificat -> masculí, singular.  ivb

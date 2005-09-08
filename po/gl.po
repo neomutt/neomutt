@@ -347,7 +347,7 @@ msgstr "Non foi posible copia-la mensaxe."
 #: commands.c:187
 #, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "Sinatura PGP verificada con éxito."
+msgstr "Sinatura S/MIME verificada con éxito."
 
 #: commands.c:189
 msgid "S/MIME certificate owner does not match sender."
@@ -360,7 +360,7 @@ msgstr ""
 #: commands.c:194
 #, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "Non foi posible verifica-la sinatura PGP."
+msgstr "Non foi posible verifica-la sinatura S/MIME."
 
 #: commands.c:201
 msgid "PGP signature successfully verified."
@@ -1028,7 +1028,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Os datos a continuación están encriptados con PGP/MIME --]\n"
+"[-- Os datos a continuación están encriptados con S/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1043,7 +1043,7 @@ msgstr ""
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
-"[-- Fin dos datos con encriptación PGP/MIME --]\n"
+"[-- Fin dos datos con encriptación S/MIME --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
@@ -1199,7 +1199,7 @@ msgstr "Comprobar chave  "
 #: crypt-gpgme.c:3583
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "Chaves PGP coincidintes con \"%s\""
+msgstr "Chaves S/MIME coincidintes con \"%s\""
 
 #: crypt-gpgme.c:3585
 #, fuzzy
@@ -1209,7 +1209,7 @@ msgstr "Chaves PGP coincidintes con \"%s\""
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "Chaves PGP coincidintes con \"%s\""
+msgstr "Chaves S/MIME coincidintes con \"%s\""
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1410,8 +1410,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Chamando ó PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Chamando ó S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -3178,7 +3178,7 @@ msgstr "extraer chaves públicas PGP"
 #: keymap_alldefs.h:201
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "amosa-las opcións PGP"
+msgstr "amosa-las opcións S/MIME"
 
 #: lib.c:126
 msgid "Integer overflow -- can't allocate memory!"
@@ -4318,7 +4318,7 @@ msgstr "Cabeceira PGP ilegal"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Cabeceira PGP ilegal"
+msgstr "Cabeceira S/MIME ilegal"
 
 #: postpone.c:556
 #, fuzzy
@@ -4734,8 +4734,8 @@ msgstr "Atrapado sinal %d... Saíndo.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "Introduza o contrasinal PGP:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Introduza o contrasinal S/MIME:"
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4776,7 +4776,7 @@ msgstr "Introduza keyID para %s: "
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "Chaves PGP coincidintes con \"%s\""
+msgstr "Chaves S/MIME coincidintes con \"%s\""
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4806,7 +4806,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Erro: ¡non foi posible crear subproceso PGP! --]\n"
+msgstr "[-- Erro: ¡non foi posible crear subproceso OpenSSL! --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4831,7 +4831,7 @@ msgstr "Atención: non foi posible garda-lo certificado"
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "¡Non foi posible abri-lo subproceso PGP!"
+msgstr "¡Non foi posible abri-lo subproceso OpenSSL!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4842,18 +4842,18 @@ msgstr ""
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
-msgstr "[-- Fin da saída PGP --]\n"
+msgstr "[-- Fin da saída OpenSSL --]\n"
 
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Erro: ¡non foi posible crear subproceso PGP! --]\n"
+msgstr "[-- Erro: ¡non foi posible crear subproceso OpenSSL! --]\n"
 
 #: smime.c:1764
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- Os datos a continuación están encriptados con PGP/MIME --]\n"
+"[-- Os datos a continuación están encriptados con S/MIME --]\n"
 "\n"
 
 #: smime.c:1767
@@ -4870,7 +4870,7 @@ msgid ""
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- Fin dos datos con encriptación PGP/MIME --]\n"
+"[-- Fin dos datos con encriptación S/MIME --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4946,7 +4946,7 @@ msgstr "A mensaxe pai non é accesible."
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "Chamando ó PGP..."
+#~ msgstr "Chamando ó OpenSSL..."
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "¿Rebotar mensaxe a %s...?"

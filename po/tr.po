@@ -343,7 +343,7 @@ msgstr "Iletiyi kopyalamayadým."
 #: commands.c:187
 #, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP imzasý baþarýyla doðrulandý."
+msgstr "S/MIME imzasý baþarýyla doðrulandý."
 
 #: commands.c:189
 msgid "S/MIME certificate owner does not match sender."
@@ -356,7 +356,7 @@ msgstr ""
 #: commands.c:194
 #, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP imzasý doðrulanamadý."
+msgstr "S/MIME imzasý doðrulanamadý."
 
 #: commands.c:201
 msgid "PGP signature successfully verified."
@@ -1025,7 +1025,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Bu bilgi PGP/MIME ile þifrelenmiþtir --]\n"
+"[-- Bu bilgi S/MIME ile þifrelenmiþtir --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1040,7 +1040,7 @@ msgstr ""
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME ile þifrelenmiþ bilgi sonu --]\n"
+"[-- S/MIME ile þifrelenmiþ bilgi sonu --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
@@ -1196,7 +1196,7 @@ msgstr "Anahtarý kontrol et  "
 #: crypt-gpgme.c:3583
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "\"%s\"'e uyan PGP anahtarlarý."
+msgstr "\"%s\"'e uyan S/MIME anahtarlarý."
 
 #: crypt-gpgme.c:3585
 #, fuzzy
@@ -1206,7 +1206,7 @@ msgstr "\"%s\"'e uyan PGP anahtarlarý."
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "\"%s\"'e uyan PGP anahtarlarý."
+msgstr "\"%s\"'e uyan S/MIME anahtarlarý."
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1411,8 +1411,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "PGP'yi çaðýrýlýyor..."
+msgid "Invoking S/MIME..."
+msgstr "S/MIME'yi çaðýrýlýyor..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -3181,7 +3181,7 @@ msgstr "PGP resmi anahtarlarý çýkar"
 #: keymap_alldefs.h:201
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "PGP ayarlarýný göster"
+msgstr "S/MIME ayarlarýný göster"
 
 #: lib.c:126
 msgid "Integer overflow -- can't allocate memory!"
@@ -4293,7 +4293,7 @@ msgstr "Geçersiz PGP baþlýðý"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Geçersiz PGP baþlýðý"
+msgstr "Geçersiz S/MIME baþlýðý"
 
 #: postpone.c:556
 #, fuzzy
@@ -4709,8 +4709,8 @@ msgstr "Sinyal %d alýndý... Çýkýlýyor.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "PGP parolasýný verin:"
+msgid "Enter S/MIME passphrase:"
+msgstr "S/MIME parolasýný verin:"
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4751,7 +4751,7 @@ msgstr "%s için anahtar numarasýný belirleyin: "
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "\"%s\"'e uyan PGP anahtarlarý."
+msgstr "\"%s\"'e uyan S/MIME anahtarlarý."
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4781,7 +4781,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Hata: PGP altiþlemi yaratýlamadý! --]\n"
+msgstr "[-- Hata: OpenSSL altiþlemi yaratýlamadý! --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4806,7 +4806,7 @@ msgstr "Ikaz: Sertifika kaydedilemedi"
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "PGP altiþlemi açýlamýyor!"
+msgstr "OpenSSL altiþlemi açýlamýyor!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4818,19 +4818,19 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- PGP geri verisi sonu --]\n"
+"[-- OpenSSL geri verisi sonu --]\n"
 "\n"
 
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Hata: PGP altiþlemi yaratýlamadý! --]\n"
+msgstr "[-- Hata: OpenSSL altiþlemi yaratýlamadý! --]\n"
 
 #: smime.c:1764
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- Bu bilgi PGP/MIME ile þifrelenmiþtir --]\n"
+"[-- Bu bilgi S/MIME ile þifrelenmiþtir --]\n"
 "\n"
 
 #: smime.c:1767
@@ -4847,7 +4847,7 @@ msgid ""
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME ile þifrelenmiþ bilgi sonu --]\n"
+"[-- S/MIME ile þifrelenmiþ bilgi sonu --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4925,7 +4925,7 @@ msgstr "Kök iletisi yok."
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "Pgp çalýþtýrýlýyor...."
+#~ msgstr "OpenSSL çalýþtýrýlýyor...."
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "Ileti %s'e iletilsin mi...?"

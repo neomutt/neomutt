@@ -1024,7 +1024,7 @@ msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr ""
-"[-- Nasledujúce dáta sú podpísané s PGP/MIME --]\n"
+"[-- Nasledujúce dáta sú podpísané s S/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2253
@@ -1033,7 +1033,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Nasledujúce dáta sú ¹ifrované pomocou PGP/MIME --]\n"
+"[-- Nasledujúce dáta sú ¹ifrované pomocou S/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1041,14 +1041,14 @@ msgstr ""
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
-"[-- Koniec dát s podpisom PGP/MIME --]\n"
+"[-- Koniec dát s podpisom S/MIME --]\n"
 
 #: crypt-gpgme.c:2284
 #, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
-"[-- Koniec dát ¹ifrovaných pomocou PGP/MIME --]\n"
+"[-- Koniec dát ¹ifrovaných pomocou S/MIME --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
@@ -1202,7 +1202,7 @@ msgstr "Skontrolova» kµúè  "
 #: crypt-gpgme.c:3583
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "Kµúèe PGP zhodujúce sa "
+msgstr "Kµúèe S/MIME zhodujúce sa "
 
 #: crypt-gpgme.c:3585
 #, fuzzy
@@ -1212,7 +1212,7 @@ msgstr "Kµúèe PGP zhodujúce sa "
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "Kµúèe PGP zhodujúce sa "
+msgstr "Kµúèe S/MIME zhodujúce sa "
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1409,8 +1409,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Spú¹»am PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Spú¹»am S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -3205,7 +3205,7 @@ msgstr "extrahuj verejné kµúèe PGP"
 #: keymap_alldefs.h:201
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "zobrazi» mo¾nosti PGP"
+msgstr "zobrazi» mo¾nosti S/MIME"
 
 #: lib.c:126
 msgid "Integer overflow -- can't allocate memory!"
@@ -4349,7 +4349,7 @@ msgstr "Neplatná hlavièka PGP"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Neplatná hlavièka PGP"
+msgstr "Neplatná hlavièka S/MIME"
 
 #: postpone.c:556
 #, fuzzy
@@ -4769,8 +4769,8 @@ msgstr "Zachytený signál %d... Konèím.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "Zadajte frázu hesla PGP:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Zadajte frázu hesla S/MIME:"
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4811,7 +4811,7 @@ msgstr "Zadajte ID kµúèa pre %s: "
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "Kµúèe PGP zhodujúce sa "
+msgstr "Kµúèe S/MIME zhodujúce sa "
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4841,7 +4841,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Chyba: nemo¾no vytvori» podproces PGP! --]\n"
+msgstr "[-- Chyba: nemo¾no vytvori» podproces OpenSSL! --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4865,7 +4865,7 @@ msgstr ""
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Nemo¾no otvori» podproces PGP!"
+msgstr "Nemo¾no otvori» podproces OpenSSL!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4877,26 +4877,26 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- Koniec výstupu PGP --]\n"
+"[-- Koniec výstupu OpenSSL --]\n"
 "\n"
 
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Chyba: nemo¾no vytvori» podproces PGP! --]\n"
+msgstr "[-- Chyba: nemo¾no vytvori» podproces OpenSSL! --]\n"
 
 #: smime.c:1764
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- Nasledujúce dáta sú ¹ifrované pomocou PGP/MIME --]\n"
+"[-- Nasledujúce dáta sú ¹ifrované pomocou S/MIME --]\n"
 "\n"
 
 #: smime.c:1767
 #, fuzzy
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr ""
-"[-- Nasledujúce dáta sú podpísané s PGP/MIME --]\n"
+"[-- Nasledujúce dáta sú podpísané s S/MIME --]\n"
 "\n"
 
 #: smime.c:1831
@@ -4906,7 +4906,7 @@ msgid ""
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- Koniec dát ¹ifrovaných pomocou PGP/MIME --]\n"
+"[-- Koniec dát ¹ifrovaných pomocou S/MIME --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4915,7 +4915,7 @@ msgid ""
 "[-- End of S/MIME signed data. --]\n"
 msgstr ""
 "\n"
-"[-- Koniec dát s podpisom PGP/MIME --]\n"
+"[-- Koniec dát s podpisom S/MIME --]\n"
 
 #: smime.c:1944
 #, fuzzy
@@ -4984,7 +4984,7 @@ msgstr "Táto správa nie je viditeµná."
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "Spú¹»am PGP..."
+#~ msgstr "Spú¹»am OpenSSL..."
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "Presmerova» správu do %s...?"

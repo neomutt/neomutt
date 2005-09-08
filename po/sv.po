@@ -1249,7 +1249,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
+msgstr "S/MIME (k)ryptera, (s)ignera, signera s(o)m, (b)åda %s, eller (r)ensa? "
 
 #: crypt-gpgme.c:4132
 #, fuzzy
@@ -1380,8 +1380,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Startar PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Startar S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4664,8 +4664,8 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Fångade signal %d...  Avslutar.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "Mata in SMIME-lösenfras:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Mata in S/MIME-lösenfras:"
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4733,7 +4733,7 @@ msgstr "Inga (giltiga) certifikat hittades för %s."
 
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Fel: kunde inte skapa S/MIME-underprocess!"
+msgstr "Fel: kunde inte skapa OpenSSL-underprocess!"
 
 #: smime.c:1206
 msgid "no certfile"

@@ -4616,7 +4616,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Получен сигнал %d...  Завершение работы.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Введите S/MIME фразу-пароль:"
 
 #: smime.c:321

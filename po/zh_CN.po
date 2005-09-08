@@ -346,7 +346,7 @@ msgstr "无法寄出信件。"
 #: commands.c:187
 #, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP 签名验证成功。"
+msgstr "S/MIME 签名验证成功。"
 
 #: commands.c:189
 msgid "S/MIME certificate owner does not match sender."
@@ -359,7 +359,7 @@ msgstr ""
 #: commands.c:194
 #, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP 签名验证成功。"
+msgstr "S/MIME 签名验证成功。"
 
 #: commands.c:201
 msgid "PGP signature successfully verified."
@@ -1030,7 +1030,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- 下面是 PGP/MIME 加密资料 --]\n"
+"[-- 下面是 S/MIME 加密资料 --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1045,7 +1045,7 @@ msgstr ""
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME 加密资料结束 --]\n"
+"[-- S/MIME 加密资料结束 --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
@@ -1210,7 +1210,7 @@ msgstr "PGP 钥匙符合 <%s>。"
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "PGP 钥匙符合 <%s>。"
+msgstr "S/MIME 钥匙符合 <%s>。"
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1414,8 +1414,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "启动 PGP…"
+msgid "Invoking S/MIME..."
+msgstr "启动 S/MIME…"
 
 # Don't translate this!!
 #: curs_lib.c:188
@@ -3210,7 +3210,7 @@ msgstr "撷取 PGP 公共钥匙"
 #: keymap_alldefs.h:201
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "显示 PGP 选项"
+msgstr "显示 S/MIME 选项"
 
 #: lib.c:126
 msgid "Integer overflow -- can't allocate memory!"
@@ -4350,7 +4350,7 @@ msgstr "不合规定的 PGP 标头"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "不合规定的 PGP 标头"
+msgstr "不合规定的 S/MIME 标头"
 
 #: postpone.c:556
 #, fuzzy
@@ -4768,8 +4768,8 @@ msgstr "捕抓到 signal %d… 正在离开.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "请输入 PGP 通行密码："
+msgid "Enter S/MIME passphrase:"
+msgstr "请输入 S/MIME 通行密码："
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4810,7 +4810,7 @@ msgstr "请输入 %s 的钥匙 ID："
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP 钥匙符合 \"%s\"。"
+msgstr "S/MIME 钥匙符合 \"%s\"。"
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4840,7 +4840,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- 错误：无法建立 PGP 子程序！ --]\n"
+msgstr "[-- 错误：无法建立 OpenSSL 子程序！ --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4864,7 +4864,7 @@ msgstr ""
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "无法打开 PGP 子程序！"
+msgstr "无法打开 OpenSSL 子程序！"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4876,19 +4876,19 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- PGP 输出部份结束 --]\n"
+"[-- OpenSSL 输出部份结束 --]\n"
 "\n"
 
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- 错误：无法建立 PGP 子程序！ --]\n"
+msgstr "[-- 错误：无法建立 OpenSSL 子程序！ --]\n"
 
 #: smime.c:1764
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- 下面是 PGP/MIME 加密资料 --]\n"
+"[-- 下面是 S/MIME 加密资料 --]\n"
 "\n"
 
 #: smime.c:1767
@@ -4905,7 +4905,7 @@ msgid ""
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME 加密资料结束 --]\n"
+"[-- S/MIME 加密资料结束 --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4983,7 +4983,7 @@ msgstr "主信件不存在。"
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "启动 pgp…"
+#~ msgstr "启动 OpenSSL…"
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "把邮件直接传送至 %s…？"

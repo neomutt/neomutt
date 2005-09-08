@@ -1249,7 +1249,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, %s , b(e)z PGP? "
+msgstr "S/MIME: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, %s , b(e)z PGP? "
 
 #: crypt-gpgme.c:4132
 #, fuzzy
@@ -1380,8 +1380,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Wywo³ywanie PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Wywo³ywanie S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4666,8 +4666,8 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Otrzymano sygna³ %d... Koniec pracy.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "Wprowad¼ has³o SMIME:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Wprowad¼ has³o S/MIME:"
 
 #: smime.c:321
 msgid "Trusted   "

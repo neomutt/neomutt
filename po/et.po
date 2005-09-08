@@ -1386,8 +1386,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Käivitan PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Käivitan S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4680,8 +4680,8 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Sain signaali %d...  Väljun.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "Sisestage SMIME parool:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Sisestage S/MIME parool:"
 
 #: smime.c:321
 msgid "Trusted   "

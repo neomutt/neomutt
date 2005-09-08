@@ -1253,7 +1253,7 @@ msgstr ""
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
-"PGP æ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaý, \"i(n)line\", aý (f)"
+"S/MIME æ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaý, \"i(n)line\", aý (f)"
 "orgesi? "
 
 #: crypt-gpgme.c:4132
@@ -1387,8 +1387,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Alvokas PGP ..."
+msgid "Invoking S/MIME..."
+msgstr "Alvokas S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4662,7 +4662,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Ricevis signalon %d ... Eliras.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Donu S/MIME-pasfrazon:"
 
 #: smime.c:321
@@ -4743,7 +4743,7 @@ msgstr "mankas poþtfako"
 #. fatal error while trying to encrypt message
 #: smime.c:1352
 msgid "No output from OpenSSL.."
-msgstr "Nenia eliro de OpenSSL."
+msgstr "Nenia eliro de OpenSSL.."
 
 #: smime.c:1390
 msgid "Warning: Intermediate certificate not found."
@@ -4755,7 +4755,7 @@ msgstr "Ne povas malfermi OpenSSL-subprocezon!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
-msgstr "Nenia eliro de OpenSSL."
+msgstr "Nenia eliro de OpenSSL..."
 
 #: smime.c:1636 smime.c:1760
 msgid ""
@@ -4864,7 +4864,7 @@ msgstr "Patra mesaøo ne estas havebla."
 #~ msgstr "nespecifita protokoleraro"
 
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "Alvokas PGP ..."
+#~ msgstr "Alvokas OpenSSL..."
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "Æu redirekti mesaøon al %s ...?"

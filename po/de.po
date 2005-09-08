@@ -4578,7 +4578,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signal %d... Abbruch.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME-Mantra eingeben:"
 
 #: smime.c:321

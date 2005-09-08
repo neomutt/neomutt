@@ -1351,7 +1351,7 @@ msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
 msgstr "crypt_use_gpgme が設定されているが GPGME サポート付きでビルドされていない。"
 
 #: cryptglue.c:112
-msgid "Invoking SMIME..."
+msgid "Invoking S/MIME..."
 msgstr "S/MIME 起動中..."
 
 #: curs_lib.c:188
@@ -4568,7 +4568,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "シグナル %d を受け取った。終了。\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "S/MIME パスフレーズ入力:"
 
 #: smime.c:321

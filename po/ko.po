@@ -1256,7 +1256,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
+msgstr "S/MIME 암호화(e), 서명(s), 사용 서명(a), 둘 다(b), (i)nline, 취소(f)? "
 
 #: crypt-gpgme.c:4132
 #, fuzzy
@@ -1387,8 +1387,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "PGP를 구동합니다..."
+msgid "Invoking S/MIME..."
+msgstr "S/MIME를 구동합니다..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4664,8 +4664,8 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "%d 신호 발견... 종료함.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "SMIME 암호 문구 입력:"
+msgid "Enter S/MIME passphrase:"
+msgstr "S/MIME 암호 문구 입력:"
 
 #: smime.c:321
 msgid "Trusted   "

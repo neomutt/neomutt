@@ -1415,8 +1415,8 @@ msgstr ""
 "\"crypt_use_gpgme\" positionné mais pas de construction avec support GPGME."
 
 #: cryptglue.c:112
-msgid "Invoking SMIME..."
-msgstr "Appel de SMIME..."
+msgid "Invoking S/MIME..."
+msgstr "Appel de S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4780,8 +4780,8 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signal %d... On quitte.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "Entrez la phrase de passe SMIME :"
+msgid "Enter S/MIME passphrase:"
+msgstr "Entrez la phrase de passe S/MIME :"
 
 #: smime.c:321
 msgid "Trusted   "

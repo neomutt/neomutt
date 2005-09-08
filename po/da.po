@@ -1246,7 +1246,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s, in(g)en "
+msgstr "S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s, in(g)en "
 
 #: crypt-gpgme.c:4132
 #, fuzzy
@@ -1373,8 +1373,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Starter PGP ..."
+msgid "Invoking S/MIME..."
+msgstr "Starter S/MIME ..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4645,7 +4645,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Modtog signal %d ... Afslutter.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Anfør S/MIME-løsen:"
 
 #: smime.c:321

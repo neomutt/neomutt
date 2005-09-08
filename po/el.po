@@ -1390,7 +1390,7 @@ msgstr "Ελέγξτε κλειδί "
 #: crypt-gpgme.c:3583
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "Όμοια PGP κλειδιά \"%s\"."
+msgstr "Όμοια S/MIME κλειδιά \"%s\"."
 
 #
 #: crypt-gpgme.c:3585
@@ -1481,7 +1481,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
+msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
 
 #
 # compose.c:133
@@ -1637,8 +1637,8 @@ msgstr ""
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Κλήση του PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Κλήση του S/MIME..."
 
 #
 #: curs_lib.c:188
@@ -5556,8 +5556,8 @@ msgstr "Εντοπισμός σήματος %d...  Εγκατάλειψη.\n"
 #
 # pgp.c:130
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
-msgstr "Εισάγετε την φράση-κλειδί SMIME:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Εισάγετε την φράση-κλειδί S/MIME:"
 
 #: smime.c:321
 msgid "Trusted   "

@@ -1355,7 +1355,7 @@ msgstr "Kontrolovat klíè  "
 #: crypt-gpgme.c:3583
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "klíèe PGP vyhovující \"%s\"."
+msgstr "klíèe S/MIME vyhovující \"%s\"."
 
 #
 #: crypt-gpgme.c:3585
@@ -1440,7 +1440,7 @@ msgstr ""
 #: crypt-gpgme.c:4131
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
-msgstr "PGP - ¹i(f)rovat, (p)odepsat, podepsat (j)ako, (o)bojí, %s, èi (n)ic?"
+msgstr "S/MIME - ¹i(f)rovat, (p)odepsat, podepsat (j)ako, (o)bojí, %s, èi (n)ic?"
 
 #
 #: crypt-gpgme.c:4132
@@ -1583,8 +1583,8 @@ msgstr ""
 #
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Spou¹tím PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Spou¹tím S/MIME..."
 
 #
 #: curs_lib.c:188
@@ -5463,7 +5463,7 @@ msgstr "Zachycen signál %d... Konèím.\n"
 
 #
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Zadejte S/MIME heslo:"
 
 #: smime.c:321

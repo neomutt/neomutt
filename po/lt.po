@@ -345,7 +345,7 @@ msgstr "Negalëjau kopijuoti laiðko"
 #: commands.c:187
 #, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP paraðas patikrintas sëkmingai."
+msgstr "S/MIME paraðas patikrintas sëkmingai."
 
 #: commands.c:189
 msgid "S/MIME certificate owner does not match sender."
@@ -358,7 +358,7 @@ msgstr ""
 #: commands.c:194
 #, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP paraðas NEGALI bûti patikrintas."
+msgstr "S/MIME paraðas NEGALI bûti patikrintas."
 
 #: commands.c:201
 msgid "PGP signature successfully verified."
@@ -1026,7 +1026,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Toliau einantys duomenys yra uþðifruoti su PGP/MIME --]\n"
+"[-- Toliau einantys duomenys yra uþðifruoti su S/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1041,7 +1041,7 @@ msgstr ""
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME uþðifruotø duomenø pabaiga --]\n"
+"[-- S/MIME uþðifruotø duomenø pabaiga --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
@@ -1207,7 +1207,7 @@ msgstr "PGP raktai, tenkinantys \"%s\"."
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "PGP raktai, tenkinantys \"%s\"."
+msgstr "S/MIME raktai, tenkinantys \"%s\"."
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1412,8 +1412,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Kvieèiu PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Kvieèiu S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -3177,7 +3177,7 @@ msgstr "iðtraukti PGP vieðus raktus"
 #: keymap_alldefs.h:201
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "rodyti PGP parinktis"
+msgstr "rodyti S/MIME parinktis"
 
 #: lib.c:126
 msgid "Integer overflow -- can't allocate memory!"
@@ -4313,7 +4313,7 @@ msgstr "Neleistina PGP antraðtë"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Neleistina PGP antraðtë"
+msgstr "Neleistina S/MIME antraðtë"
 
 #: postpone.c:556
 #, fuzzy
@@ -4727,8 +4727,8 @@ msgstr "Sugavau signalà %d...  Iðeinu.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "Ávesk slaptà PGP frazæ:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Ávesk slaptà S/MIME frazæ:"
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4769,7 +4769,7 @@ msgstr "Ávesk rakto ID, skirtà %s: "
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP raktai, tenkinantys \"%s\"."
+msgstr "S/MIME raktai, tenkinantys \"%s\"."
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4799,7 +4799,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Klaida: negaliu sukurti PGP subproceso! --]\n"
+msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso! --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4824,7 +4824,7 @@ msgstr "Áspëju: Negalëjau iðsaugoti sertifikato"
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Negaliu atidaryti PGP vaikinio proceso!"
+msgstr "Negaliu atidaryti OpenSSL vaikinio proceso!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4842,7 +4842,7 @@ msgstr ""
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Klaida: negaliu sukurti PGP subproceso! --]\n"
+msgstr "[-- Klaida: negaliu sukurti OpenSSL subproceso! --]\n"
 
 #: smime.c:1764
 #, fuzzy
@@ -4865,7 +4865,7 @@ msgid ""
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME uþðifruotø duomenø pabaiga --]\n"
+"[-- S/MIME uþðifruotø duomenø pabaiga --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4943,7 +4943,7 @@ msgstr "Nëra prieinamo tëvinio laiðko."
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "Kvieèiu pgp..."
+#~ msgstr "Kvieèiu OpenSSL..."
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "Nukreipti laiðkà á %s...?"

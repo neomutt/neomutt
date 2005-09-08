@@ -342,7 +342,7 @@ msgstr "Не вийшло скоп╕ювати пов╕домлення"
 #: commands.c:187
 #, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "П╕дпис PGP перев╕рено."
+msgstr "П╕дпис S/MIME перев╕рено."
 
 #: commands.c:189
 msgid "S/MIME certificate owner does not match sender."
@@ -1004,7 +1004,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- Наступн╕ дан╕ зашифровано PGP/MIME --]\n"
+"[-- Наступн╕ дан╕ зашифровано S/MIME --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1181,7 +1181,7 @@ msgstr "PGP ключ╕, що в╕дпов╕дають \"%s\"."
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "PGP ключ╕, що в╕дпов╕дають \"%s\"."
+msgstr "S/MIME ключ╕, що в╕дпов╕дають \"%s\"."
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1379,8 +1379,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "Виклик PGP..."
+msgid "Invoking S/MIME..."
+msgstr "Виклик S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -4225,7 +4225,7 @@ msgstr "Нев╕рний заголовок PGP"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "Нев╕рний заголовок PGP"
+msgstr "Нев╕рний заголовок S/MIME"
 
 #: postpone.c:556
 #, fuzzy
@@ -4635,8 +4635,8 @@ msgstr "Отримано сигнал %d...  Виходжу.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "Введ╕ть кодову фразу PGP:"
+msgid "Enter S/MIME passphrase:"
+msgstr "Введ╕ть кодову фразу S/MIME:"
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4677,7 +4677,7 @@ msgstr "Введ╕ть keyID для %s: "
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP ключ╕, що в╕дпов╕дають \"%s\"."
+msgstr "S/MIME ключ╕, що в╕дпов╕дають \"%s\"."
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4707,7 +4707,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- Помилка: неможливо створити п╕дпроцес PGP! --]\n"
+msgstr "[-- Помилка: неможливо створити п╕дпроцес OpenSSL! --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4732,7 +4732,7 @@ msgstr "Попередження: неможливо зберегти сертиф╕кат"
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Неможливо в╕дкрити п╕дпроцесс PGP!"
+msgstr "Неможливо в╕дкрити п╕дпроцесс OpenSSL!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4744,19 +4744,19 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- К╕нець тексту на виход╕ PGP --]\n"
+"[-- К╕нець тексту на виход╕ OpenSSL --]\n"
 "\n"
 
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Помилка: неможливо створити п╕дпроцес PGP! --]\n"
+msgstr "[-- Помилка: неможливо створити п╕дпроцес OpenSSL! --]\n"
 
 #: smime.c:1764
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- Наступн╕ дан╕ зашифровано PGP/MIME --]\n"
+"[-- Наступн╕ дан╕ зашифровано S/MIME --]\n"
 "\n"
 
 #: smime.c:1767
@@ -4771,7 +4771,7 @@ msgstr ""
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
-msgstr "[-- К╕нець даних, зашифрованих PGP/MIME --]\n"
+msgstr "[-- К╕нець даних, зашифрованих S/MIME --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4847,7 +4847,7 @@ msgstr "\"Батьк╕вський\" лист не можна побачити."
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "Виклик PGP..."
+#~ msgstr "Виклик OpenSSL..."
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "Над╕слати коп╕ю пов╕домлення %s...?"

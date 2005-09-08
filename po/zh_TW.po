@@ -343,7 +343,7 @@ msgstr "無法複制信件"
 #: commands.c:187
 #, fuzzy
 msgid "S/MIME signature successfully verified."
-msgstr "PGP 簽名驗證成功。"
+msgstr "S/MIME 簽名驗證成功。"
 
 #: commands.c:189
 msgid "S/MIME certificate owner does not match sender."
@@ -356,7 +356,7 @@ msgstr ""
 #: commands.c:194
 #, fuzzy
 msgid "S/MIME signature could NOT be verified."
-msgstr "PGP 簽名無法驗證。"
+msgstr "S/MIME 簽名無法驗證。"
 
 #: commands.c:201
 msgid "PGP signature successfully verified."
@@ -1025,7 +1025,7 @@ msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr ""
-"[-- 下面是 PGP/MIME 加密資料 --]\n"
+"[-- 下面是 S/MIME 加密資料 --]\n"
 "\n"
 
 #: crypt-gpgme.c:2283
@@ -1040,7 +1040,7 @@ msgstr ""
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME 加密資料結束 --]\n"
+"[-- S/MIME 加密資料結束 --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
@@ -1206,7 +1206,7 @@ msgstr "PGP 鑰匙符合 <%s>。"
 #: crypt-gpgme.c:3587
 #, fuzzy
 msgid "S/MIME keys matching"
-msgstr "PGP 鑰匙符合 <%s>。"
+msgstr "S/MIME 鑰匙符合 <%s>。"
 
 #: crypt-gpgme.c:3589
 #, fuzzy
@@ -1409,8 +1409,8 @@ msgstr ""
 
 #: cryptglue.c:112
 #, fuzzy
-msgid "Invoking SMIME..."
-msgstr "啟動 PGP…"
+msgid "Invoking S/MIME..."
+msgstr "啟動 S/MIME…"
 
 # Don't translate this!!
 #: curs_lib.c:188
@@ -3168,7 +3168,7 @@ msgstr "擷取 PGP 公共鑰匙"
 #: keymap_alldefs.h:201
 #, fuzzy
 msgid "show S/MIME options"
-msgstr "顯示 PGP 選項"
+msgstr "顯示 S/MIME 選項"
 
 #: lib.c:126
 msgid "Integer overflow -- can't allocate memory!"
@@ -4297,7 +4297,7 @@ msgstr "不合規定的 PGP 標頭"
 #: postpone.c:483
 #, fuzzy
 msgid "Illegal S/MIME header"
-msgstr "不合規定的 PGP 標頭"
+msgstr "不合規定的 S/MIME 標頭"
 
 #: postpone.c:556
 #, fuzzy
@@ -4706,8 +4706,8 @@ msgstr "捕抓到 signal %d… 正在離開.\n"
 
 #: smime.c:111
 #, fuzzy
-msgid "Enter SMIME passphrase:"
-msgstr "請輸入 PGP 通行密碼："
+msgid "Enter S/MIME passphrase:"
+msgstr "請輸入 S/MIME 通行密碼："
 
 #: smime.c:321
 msgid "Trusted   "
@@ -4748,7 +4748,7 @@ msgstr "請輸入 %s 的鑰匙 ID："
 #: smime.c:391
 #, fuzzy, c-format
 msgid "S/MIME certificates matching \"%s\"."
-msgstr "PGP 鑰匙符合 \"%s\"。"
+msgstr "S/MIME 鑰匙符合 \"%s\"。"
 
 #: smime.c:541 smime.c:611 smime.c:629
 #, c-format
@@ -4778,7 +4778,7 @@ msgstr ""
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 #, fuzzy
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "[-- 錯誤：無法建立 PGP 子程序！ --]\n"
+msgstr "[-- 錯誤：無法建立 OpenSSL 子程序！ --]\n"
 
 #: smime.c:1206
 #, fuzzy
@@ -4803,7 +4803,7 @@ msgstr "警告：未能儲存驗証"
 #: smime.c:1433
 #, fuzzy
 msgid "Can't open OpenSSL subprocess!"
-msgstr "無法開啟 PGP 子程序！"
+msgstr "無法開啟 OpenSSL 子程序！"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4815,19 +4815,19 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- PGP 輸出部份結束 --]\n"
+"[-- OpenSSL 輸出部份結束 --]\n"
 "\n"
 
 #: smime.c:1720 smime.c:1731
 #, fuzzy
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- 錯誤：無法建立 PGP 子程序！ --]\n"
+msgstr "[-- 錯誤：無法建立 OpenSSL 子程序！ --]\n"
 
 #: smime.c:1764
 #, fuzzy
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr ""
-"[-- 下面是 PGP/MIME 加密資料 --]\n"
+"[-- 下面是 S/MIME 加密資料 --]\n"
 "\n"
 
 #: smime.c:1767
@@ -4844,7 +4844,7 @@ msgid ""
 "[-- End of S/MIME encrypted data. --]\n"
 msgstr ""
 "\n"
-"[-- PGP/MIME 加密資料結束 --]\n"
+"[-- S/MIME 加密資料結束 --]\n"
 
 #: smime.c:1833
 #, fuzzy
@@ -4920,7 +4920,7 @@ msgstr "主信件不存在。"
 
 #, fuzzy
 #~ msgid "Invoking OpenSSL..."
-#~ msgstr "啟動 pgp…"
+#~ msgstr "啟動 OpenSSL…"
 
 #~ msgid "Bounce message to %s...?"
 #~ msgstr "把郵件直接傳送至 %s…？"

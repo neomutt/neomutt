@@ -4038,7 +4038,7 @@ msgstr "Tidak dapat menjalankan PGP"
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
 msgstr ""
-"PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1541
 msgid "PGP/M(i)ME"
@@ -4605,7 +4605,7 @@ msgid "Caught signal %d...  Exiting.\n"
 msgstr "Sinyal %d tertangkap... Keluar.\n"
 
 #: smime.c:111
-msgid "Enter SMIME passphrase:"
+msgid "Enter S/MIME passphrase:"
 msgstr "Masukkan passphrase S/MIME: "
 
 #: smime.c:321
