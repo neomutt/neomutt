@@ -2688,7 +2688,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
   if (IsHeader (extra))
   {
     Context->msgnotreadyet = -1;
-    if (rc == -1 || rc == OP_MAIN_NEXT_UNDELETED || rc == OP_NEXT_ENTRY)
+    if (rc == -1)
       OldHdr = NULL;
     else
     {
