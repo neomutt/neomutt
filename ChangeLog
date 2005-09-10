@@ -1,3 +1,8 @@
+2005-09-10 18:47:17  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* menu.c: Correct some inconsistencies introduced by
+	$menu_context. Closes: #2019?
+
 2005-09-10 06:02:04  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c, curs_lib.c: A pair of small optimisations to the
