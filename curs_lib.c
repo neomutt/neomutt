@@ -358,7 +358,7 @@ void mutt_progress_bar (progress_t* progress, long pos)
   if (!NetInc)
     return;
 
-  if (pos > progress->pos + (NetInc << 10))
+  if (pos >= progress->pos + (NetInc << 10))
   {
     progress->pos = pos;
     pos = pos / (NetInc << 10) * (NetInc << 10);
