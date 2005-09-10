@@ -468,48 +468,75 @@ void menu_prev_line (MUTTMENU *menu)
     mutt_error _("You cannot scroll up farther.");
 }
 
-void menu_next_page (MUTTMENU *menu)
+/* 
+ * pageup:   jumplen == -pagelen
+ * pagedown: jumplen == pagelen
+ * halfup:   jumplen == -pagelen/2
+ * halfdown: jumplen == pagelen/2
+ */
+#define DIRECTION ((neg * 2) + 1)
+void menu_length_jump (MUTTMENU *menu, int jumplen)
 {
+  int tmp, neg = (jumplen >= 0) ? 0 : -1;
+  int c = MIN (MenuContext, menu->pagelen / 2);
+
   if (menu->max)
   {
-    if (menu->top + menu->pagelen < menu->max)
+    /* possible to scroll? */
+    if (DIRECTION * menu->top <
+	(tmp = (neg ? 0 : (menu->max /*-1*/) - (menu->pagelen /*-1*/))))
     {
-      menu->top += menu->pagelen;
-      if (menu->current < menu->top)
-	menu->current = menu->top;
+      menu->top += jumplen;
+
+      /* jumped too long? */
+      if ((neg || !option (OPTMENUMOVEOFF)) &&
+	  DIRECTION * menu->top > tmp)
+	menu->top = tmp;
+
+      /* need to move the cursor? */
+      if ((DIRECTION *
+	   (tmp = (menu->current -
+		   (menu->top + (neg ? (menu->pagelen - 1) - c : c))
+	  ))) < 0)
+	menu->current -= tmp;
+
       menu->redraw = REDRAW_INDEX;
     }
-    else if (menu->current != menu->max - 1 && !menu->dialog)
+    else if (menu->current != (neg ? 0 : menu->max - 1) && !menu->dialog)
     {
-      menu->current = menu->max - 1;
+      menu->current += jumplen;
       menu->redraw = REDRAW_MOTION;
     }
     else
-      mutt_error _("You are on the last page.");
+      mutt_error (neg ? _("You are on the first page.")
+		      : _("You are on the last page."));
+
+    menu->current = MIN (menu->current, menu->max - 1);
+    menu->current = MAX (menu->current, 0);
   }
   else
     mutt_error _("No entries.");
 }
+#undef DIRECTION
+
+void menu_next_page (MUTTMENU *menu)
+{
+  menu_length_jump (menu, MAX (menu->pagelen /* - MenuOverlap */, 0));
+}
 
 void menu_prev_page (MUTTMENU *menu)
 {
-  int c = MIN (MenuContext, menu->pagelen / 2);
+  menu_length_jump (menu, 0 - MAX (menu->pagelen /* - MenuOverlap */, 0));
+}
 
-  if (menu->top > c)
-  {
-    if ((menu->top -= menu->pagelen) < 0)
-      menu->top = 0;
-    if (menu->current >= menu->top + menu->pagelen)
-      menu->current = menu->top + menu->pagelen - 1;
-    menu->redraw = REDRAW_INDEX;
-  }
-  else if (menu->current && !menu->dialog)
-  {
-    menu->current = 0;
-    menu->redraw = REDRAW_MOTION;
-  }
-  else
-    mutt_error _("You are on the first page.");
+void menu_half_down (MUTTMENU *menu)
+{
+  menu_length_jump (menu, menu->pagelen / 2);
+}
+
+void menu_half_up (MUTTMENU *menu)
+{
+  menu_length_jump (menu, 0 - menu->pagelen / 2);
 }
 
 void menu_top_page (MUTTMENU *menu)
@@ -567,48 +594,6 @@ void menu_last_entry (MUTTMENU *menu)
   {
     menu->current = menu->max - 1;
     menu->redraw = REDRAW_MOTION;
-  }
-  else
-    mutt_error _("No entries.");
-}
-
-void menu_half_up (MUTTMENU *menu)
-{
-  if (menu->top > 0)
-  {
-    if ((menu->top -= menu->pagelen / 2) < 0)
-      menu->top = 0;
-    if (menu->current >= menu->top + menu->pagelen)
-      menu->current = menu->top + menu->pagelen - 1;
-    menu->redraw = REDRAW_INDEX;
-  }
-  else if (menu->current && !menu->dialog)
-  {
-    menu->current = 0;
-    menu->redraw = REDRAW_MOTION;
-  }
-  else
-    mutt_error _("First entry is shown.");
-}
-
-void menu_half_down (MUTTMENU *menu)
-{
-  if (menu->max)
-  {
-    if (menu->top + menu->pagelen < menu->max)
-    {
-      menu->top += menu->pagelen / 2;
-      if (menu->current < menu->top)
-	menu->current = menu->top;
-      menu->redraw = REDRAW_INDEX;
-    }
-    else if (menu->current != menu->max - 1 && !menu->dialog)
-    {
-      menu->current = menu->max - 1;
-      menu->redraw = REDRAW_INDEX;
-    }
-    else
-      mutt_error _("Last entry is shown.");
   }
   else
     mutt_error _("No entries.");
