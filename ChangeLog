@@ -1,3 +1,8 @@
+2005-09-10 06:02:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, curs_lib.c: A pair of small optimisations to the
+	progress bar.
+
 2005-09-08 16:37:59  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_socket.c: Set CLOEXEC on sockets in IPv4 code path like we
