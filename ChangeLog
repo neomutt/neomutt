@@ -1,3 +1,9 @@
+2005-09-12 06:22:21  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* curs_lib.c, pop.c, pop.h, pop_lib.c: Teach pop driver about
+	mutt_progress_bar. Allow progress bar to omit total size if zero
+	(=unknown).
+
 2005-09-10 18:47:17  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* menu.c: Correct some inconsistencies introduced by
