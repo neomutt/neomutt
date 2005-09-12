@@ -455,13 +455,14 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
  * -2 - invalid command or execution error,
  * -3 - error in funct(*line, *data)
  */
-int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
+int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 		    int (*funct) (char *, void *), void *data)
 {
   char buf[LONG_STRING];
   char *inbuf;
   char *p;
-  int ret, chunk, line = 0;
+  int ret, chunk = 0;
+  long pos = 0;
   size_t lenbuf = 0;
 
   strfcpy (buf, query, sizeof (buf));
@@ -490,6 +491,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
     }
 
     strfcpy (inbuf + lenbuf, p, sizeof (buf));
+    pos += chunk;
 
     if (chunk >= sizeof (buf))
     {
@@ -497,9 +499,8 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
     }
     else
     {
-      line++;
-      if (msg && ReadInc && (line % ReadInc == 0))
-	mutt_message ("%s %d", msg, line);
+      if (progressbar)
+	mutt_progress_bar (progressbar, pos);
       if (ret == 0 && funct (inbuf, data) < 0)
 	ret = -3;
       lenbuf = 0;
@@ -537,6 +538,7 @@ int pop_reconnect (CONTEXT *ctx)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+  progress_t progressbar;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;
@@ -550,15 +552,16 @@ int pop_reconnect (CONTEXT *ctx)
     ret = pop_open_connection (pop_data);
     if (ret == 0)
     {
-      char *msg = _("Verifying message indexes...");
       int i;
+
+      progressbar.msg = _("Verifying message indexes...");
+      progressbar.size = 0;
+      mutt_progress_bar (&progressbar, 0);
 
       for (i = 0; i < ctx->msgcount; i++)
 	ctx->hdrs[i]->refno = -1;
 
-      mutt_message (msg);
-
-      ret = pop_fetch_data (pop_data, "UIDL\r\n", msg, check_uidl, ctx);
+      ret = pop_fetch_data (pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);
       if (ret == -2)
       {
         mutt_error ("%s", pop_data->err_msg);

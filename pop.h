@@ -21,6 +21,7 @@
 
 #include "mailbox.h"
 #include "mutt_socket.h"
+#include "mutt_curses.h"
 
 #define POP_PORT 110
 #define POP_SSL_PORT 995
@@ -96,7 +97,7 @@ int pop_parse_path (const char *, ACCOUNT *);
 int pop_connect (POP_DATA *);
 int pop_open_connection (POP_DATA *);
 int pop_query_d (POP_DATA *, char *, size_t, char *);
-int pop_fetch_data (POP_DATA *, char *, char *, int (*funct) (char *, void *), void *);
+int pop_fetch_data (POP_DATA *, char *, progress_t *, int (*funct) (char *, void *), void *);
 int pop_reconnect (CONTEXT *);
 void pop_logout (CONTEXT *);
 void pop_error (POP_DATA *, char *);

@@ -21,6 +21,7 @@
 #endif
 
 #include "mutt.h"
+#include "mutt_curses.h"
 #include "mx.h"
 #include "pop.h"
 #include "mutt_crypt.h"
@@ -341,7 +342,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   void *uidl;
   char buf[LONG_STRING];
   char path[_POSIX_PATH_MAX];
-  char *m = _("Fetching message...");
+  progress_t progressbar;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
   POP_CACHE *cache;
   HEADER *h = ctx->hdrs[msgno];
@@ -383,7 +384,9 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
       return -1;
     }
 
-    mutt_message (m);
+    progressbar.size = h->content->length + h->content->offset - 1;
+    progressbar.msg = _("Fetching message...");
+    mutt_progress_bar (&progressbar, 0);
 
     mutt_mktemp (path);
     msg->fp = safe_fopen (path, "w+");
@@ -396,7 +399,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
 
     snprintf (buf, sizeof (buf), "RETR %d\r\n", h->refno);
 
-    ret = pop_fetch_data (pop_data, buf, m, fetch_message, msg->fp);
+    ret = pop_fetch_data (pop_data, buf, &progressbar, fetch_message, msg->fp);
     if (ret == 0)
       break;
 

@@ -350,7 +350,8 @@ void mutt_progress_bar (progress_t* progress, long pos)
     if (!NetInc)
       mutt_message (progress->msg);
     else {
-      mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
+      if (progress->size)
+	mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
       progress->pos = 0;
     }
   }
@@ -363,7 +364,10 @@ void mutt_progress_bar (progress_t* progress, long pos)
     progress->pos = pos;
     pos = pos / (NetInc << 10) * (NetInc << 10);
     mutt_pretty_size (posstr, sizeof (posstr), pos);
-    mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
+    if (progress->size)
+      mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
+    else
+      mutt_message ("%s %s", progress->msg, posstr);
   }
 }
 #endif
