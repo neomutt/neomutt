@@ -54,8 +54,12 @@ DISTFILES = Makefile.in dotlock.man  	\
 	smime-notes.txt			\
 	html.xsl chunk.xsl
 
+HTML_DOCFILES = manual.html index.html gettingstarted.html \
+	configuration.html mimesupport.html advancedusage.html \
+	reference.html miscellany.html
+
 BUILT_DISTFILES = stamp-doc-xml stamp-doc-man stamp-doc-chunked \
-	manual.txt manual.html
+	manual.txt $(HTML_DOCFILES)
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
@@ -85,10 +89,8 @@ install: all instdoc
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
 	-$(INSTALL) -m 644 manual.txt $(DESTDIR)$(docdir)
-	-$(INSTALL) -m 644 manual.html $(DESTDIR)$(docdir)
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/html
-	-cd html; for file in *.html ; do	\
-		$(INSTALL) -m 644 $$file $(DESTDIR)$(docdir)/html/ || true ;\
+	-for f in $(HTML_DOCFILES) ; do \
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
 	done
 
 uninstall:
@@ -98,15 +100,11 @@ uninstall:
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \
 		rm -f $(DESTDIR)$(mandir)/man5/$$f ; \
 	done
-	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) ; do \
+	for f in $(srcdir_DOCFILES) $(topsrcdir_DOCFILES) $(HTML_DOCFILES) ; \
+	do \
 		rm -f $(DESTDIR)$(docdir)/$$f ; \
 	done
 	-rm -f $(DESTDIR)$(docdir)/manual.txt
-	-rm -f $(DESTDIR)$(docdir)/manual.html
-	-cd html; for f in *.html ; do \
-		rm -f $(DESTDIR)$(docdir)/html/$$f ; \
-	done
-	-rmdir $(DESTDIR)$(docdir)/html
 
 check:
 manual.txt: manual.html
@@ -116,8 +114,7 @@ manual.html: $(srcdir)/html.xsl manual.xml
 	-xsltproc --nonet -o $@ $^
 
 manual-chunked stamp-doc-chunked: $(srcdir)/chunk.xsl manual.xml
-	test -d html || mkdir html
-	-xsltproc --nonet -o html/ $^
+	-xsltproc --nonet $^
 	touch stamp-doc-chunked
 
 manual.pdf: stamp-doc-tex
@@ -163,11 +160,6 @@ dist distdir: Makefile $(DISTFILES)
 	for file in $(BUILT_DISTFILES) ; do       \
 		ln $$file $(distdir) 2> /dev/null \
 		|| cp -p $$file $(distdir) ;      \
-	done
-	mkdir $(distdir)/html
-	cd html; for file in *.html ; do			\
-		ln $$file ../$(distdir)/html 2> /dev/null 	\
-		|| cp -p $$file ../$(distdir)/html ;		\
 	done
 
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
