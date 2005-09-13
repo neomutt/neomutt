@@ -1,3 +1,9 @@
+2005-09-13 20:36:17  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in: Put chunked HTML manual in top doc directory
+	instead of HTML subdirectory.  Solves a weird $distdir
+	absolute/relative path nuisance.
+
 2005-09-12 06:22:21  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* curs_lib.c, pop.c, pop.h, pop_lib.c: Teach pop driver about
