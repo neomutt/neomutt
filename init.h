@@ -542,7 +542,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Manually sets the \fIenvelope\fP sender for outgoing messages.
-  ** This value is ignored if ``$$envelope_from'' is unset.
+  ** This value is ignored if ``$$use_envelope_from'' is unset.
   */
   { "escape",		DT_STR,	 R_NONE, UL &EscChar, UL "~" },
   /*
