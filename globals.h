@@ -28,6 +28,7 @@ WHERE char AttachmentMarker[STRING];
 WHERE char *MuttDotlock;
 #endif
 
+WHERE ADDRESS *EnvFrom;
 WHERE ADDRESS *From;
 
 WHERE char *AliasFile;

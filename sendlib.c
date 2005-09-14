@@ -1952,11 +1952,20 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   if (eightbit && option (OPTUSE8BITMIME))
     args = add_option (args, &argslen, &argsmax, "-B8BITMIME");
 
-  if (option (OPTENVFROM) && from && !from->next)
+  if (option (OPTENVFROM))
   {
-    args = add_option (args, &argslen, &argsmax, "-f");
-    args = add_args   (args, &argslen, &argsmax, from);
+    if (EnvFrom)
+    {
+      args = add_option (args, &argslen, &argsmax, "-f");
+      args = add_args   (args, &argslen, &argsmax, EnvFrom);
+    }
+    else if (from && !from->next)
+    {
+      args = add_option (args, &argslen, &argsmax, "-f");
+      args = add_args   (args, &argslen, &argsmax, from);
+    }
   }
+
   if (DsnNotify)
   {
     args = add_option (args, &argslen, &argsmax, "-N");

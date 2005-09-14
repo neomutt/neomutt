@@ -538,15 +538,11 @@ struct option_t MuttVars[] = {
   ** Useful to avoid the tampering certain mail delivery and transport
   ** agents tend to do with messages.
   */
-  { "envelope_from", 	DT_BOOL, R_NONE, OPTENVFROM, 0 },
+  { "envelope_from_address", DT_ADDR, R_NONE, UL &EnvFrom, 0 },
   /*
   ** .pp
-  ** When \fIset\fP, mutt will try to derive the message's \fIenvelope\fP
-  ** sender from the "From:" header.  Note that this information is passed 
-  ** to sendmail command using the "-f" command line switch, so don't set this
-  ** option if you are using that switch in $$sendmail yourself,
-  ** or if the sendmail on your machine doesn't support that command
-  ** line switch.
+  ** Manually sets the \fIenvelope\fP sender for outgoing messages.
+  ** This value is ignored if ``$$envelope_from'' is unset.
   */
   { "escape",		DT_STR,	 R_NONE, UL &EscChar, UL "~" },
   /*
@@ -2791,6 +2787,20 @@ struct option_t MuttVars[] = {
   ** When set, Mutt will qualify all local addresses (ones without the
   ** @host portion) with the value of ``$$hostname''.  If \fIunset\fP, no
   ** addresses will be qualified.
+  */
+  { "use_envelope_from", 	DT_BOOL, R_NONE, OPTENVFROM, 0 },
+  /*
+   ** .pp
+   ** When \fIset\fP, mutt will use ``$$envelope_from_address'' as the
+   ** \fIenvelope\fP sender if that is set, otherwise it will attempt to
+   ** derive it from the "From:" header.  Note that this information is passed 
+   ** to sendmail command using the "-f" command line switch, so don't set this
+   ** option if you are using that switch in $$sendmail yourself,
+   ** or if the sendmail on your machine doesn't support that command
+   ** line switch.
+   */
+  { "envelope_from",	DT_SYN,  R_NONE, UL "use_envelope_from", 0 },
+  /*
   */
   { "use_from",		DT_BOOL, R_NONE, OPTUSEFROM, 1 },
   /*
