@@ -1,3 +1,10 @@
+2005-09-14 02:45:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* globals.h, init.h, sendlib.c: Add new $envelope_from_address
+	variable for manually specifying the envelope sender. Rename (with
+	compatibility synonym) $envelope_from to $use_envelope_from. Make
+	$envelope_from subordinate to $use_e_f, as $from is to $use_from.
+
 2005-09-13 20:36:17  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: Put chunked HTML manual in top doc directory
