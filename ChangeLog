@@ -1,3 +1,8 @@
+2005-09-14 14:15:06  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* init.h: Refer to $use_envelope_from rather than old
+	$envelope_from in description of $envelope_from_address.
+
 2005-09-14 02:45:44  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* globals.h, init.h, sendlib.c: Add new $envelope_from_address
