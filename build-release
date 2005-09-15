@@ -72,7 +72,7 @@ cvs tag ${TAG}
 
 if test "$diff" = yes ; then
 	cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
-		> diff-${OVERSION}i-${VERSION}.gz
+		> diff-${OVERSION}-${VERSION}.gz
 fi
 
 # sign the various files
@@ -81,7 +81,7 @@ fi
 DISTFILES="mutt-${VERSION}.tar.gz"
 
 if test "$diff" = yes ; then
-	DISTFILES="$DISTFILES diff-${OVERSION}i-${VERSION}.gz"
+	DISTFILES="$DISTFILES diff-${OVERSION}-${VERSION}.gz"
 fi
 
 for f in $DISTFILES; do
