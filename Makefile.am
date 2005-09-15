@@ -167,15 +167,15 @@ commit-real:
 commit-changelog:
 	(cd $(top_srcdir) && cvs commit -m "# changelog commit" ChangeLog)
 
-commit: pclean check-security commit-real changelog commit-changelog
+commit: pclean check-security commit-real update-changelog commit-changelog
 
-changelog:
+update-changelog:
 	(cd $(top_srcdir); \
 	cvs update ChangeLog; \
 	sh ./mkchangelog.sh | fmt -c | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
 	$${VISUAL:-vi} ChangeLog)
 
-ChangeLog: changelog
+#ChangeLog: changelog
 
 # kluge around automake problems.
 

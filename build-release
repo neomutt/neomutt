@@ -46,7 +46,7 @@ TAG="mutt-`echo $VERSION | tr . -`-rel"
 
 echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
 
-make changelog 
+make update-changelog 
 
 # now, prepare the distribution tar balls
 
@@ -56,7 +56,7 @@ touch configure.in
 make config.status
 ./config.status
 make update-doc
-make changelog
+make update-changelog
 
 # build them
 
