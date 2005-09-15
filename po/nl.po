@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.9\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-08-11 23:50+0200\n"
+"POT-Creation-Date: 2005-09-15 16:23+0200\n"
 "PO-Revision-Date: 2005-03-20 15:17+0100\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
@@ -21,16 +21,16 @@ msgstr "Gebruikersnaam voor %s: "
 msgid "Password for %s@%s: "
 msgstr "Wachtwoord voor %s@%s: "
 
-#: addrbook.c:37 browser.c:45 pager.c:1479 postpone.c:43 query.c:48
+#: addrbook.c:37 browser.c:45 pager.c:1483 postpone.c:43 query.c:48
 #: recvattach.c:54
 msgid "Exit"
 msgstr "Afsluiten"
 
-#: addrbook.c:38 curs_main.c:403 pager.c:1486 postpone.c:44
+#: addrbook.c:38 curs_main.c:407 pager.c:1490 postpone.c:44
 msgid "Del"
 msgstr "Wis"
 
-#: addrbook.c:39 curs_main.c:404 postpone.c:45
+#: addrbook.c:39 curs_main.c:408 postpone.c:45
 msgid "Undel"
 msgstr "Herstel"
 
@@ -39,8 +39,8 @@ msgid "Select"
 msgstr "Selecteren"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3569 curs_main.c:409
-#: mutt_ssl.c:678 mutt_ssl_gnutls.c:772 pager.c:1578 pgpkey.c:521
+#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3569 curs_main.c:413
+#: mutt_ssl.c:678 mutt_ssl_gnutls.c:772 pager.c:1582 pgpkey.c:521
 #: postpone.c:46 query.c:53 recvattach.c:58 smime.c:436
 msgid "Help"
 msgstr "Hulp"
@@ -93,7 +93,7 @@ msgstr "Opslaan als: "
 msgid "Alias added."
 msgstr "Adres toegevoegd."
 
-#: attach.c:113 attach.c:245 attach.c:473 attach.c:964
+#: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
 msgstr "Naamsjabloon kan niet worden ingevuld, doorgaan?"
 
@@ -103,8 +103,8 @@ msgstr "Naamsjabloon kan niet worden ingevuld, doorgaan?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "\"compose\"-entry in mailcap vereist %%s."
 
-#: attach.c:134 attach.c:264 commands.c:221 compose.c:1183 curs_lib.c:179
-#: curs_lib.c:426
+#: attach.c:134 attach.c:266 commands.c:221 compose.c:1183 curs_lib.c:179
+#: curs_lib.c:458
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Fout opgetreden bij het uitvoeren van \"%s\"!"
@@ -132,33 +132,33 @@ msgstr "Geen \"compose\"-entry voor %s, een leeg bestand wordt aangemaakt."
 msgid "Mailcap Edit entry requires %%s"
 msgstr "\"edit\"-entry in mailcap vereist %%s."
 
-#: attach.c:276
+#: attach.c:280
 #, c-format
 msgid "No mailcap edit entry for %s"
 msgstr "Geen \"edit\"-entry voor %s in mailcap."
 
-#: attach.c:439
+#: attach.c:443
 msgid "No matching mailcap entry found.  Viewing as text."
 msgstr "Geen geschikte mailcap-entry gevonden.  Weergave als normale tekst."
 
-#: attach.c:452
+#: attach.c:456
 msgid "MIME type not defined.  Cannot view attachment."
 msgstr "MIME type is niet gedefinieerd. Kan bijlage niet weergeven."
 
-#: attach.c:542
+#: attach.c:546
 msgid "Cannot create filter"
 msgstr "Filter kan niet worden aangemaakt."
 
-#: attach.c:672 attach.c:704 attach.c:997 attach.c:1055 handler.c:1576
+#: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1576
 #: pgpkey.c:570 pgpkey.c:759
 msgid "Can't create filter"
 msgstr "Kan filter niet aanmaken"
 
-#: attach.c:836
+#: attach.c:840
 msgid "Write fault!"
 msgstr "Fout bij schrijven!"
 
-#: attach.c:1078
+#: attach.c:1082
 msgid "I don't know how to print that!"
 msgstr "Ik weet niet hoe dit afgedrukt moet worden!"
 
@@ -306,7 +306,7 @@ msgstr "mono: Te weinig argumenten."
 msgid "%s: no such attribute"
 msgstr "%s: Attribuut onbekend"
 
-#: color.c:700 hook.c:69 hook.c:77 keymap.c:748
+#: color.c:700 hook.c:69 hook.c:77 keymap.c:751
 msgid "too few arguments"
 msgstr "Te weinig argumenten"
 
@@ -607,7 +607,7 @@ msgstr "Waarschuwing: '%s' is een ongeldige IDN."
 msgid "You may not delete the only attachment."
 msgstr "Een bericht bestaat uit minimaal één gedeelte."
 
-#: compose.c:601 send.c:1486
+#: compose.c:601 send.c:1492
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Ongeldige IDN in \"%s\": '%s'"
@@ -908,7 +908,7 @@ msgstr ""
 msgid "Error: copy data failed\n"
 msgstr ""
 
-#: crypt-gpgme.c:2074 pgp.c:405
+#: crypt-gpgme.c:2074 pgp.c:410
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -916,11 +916,11 @@ msgstr ""
 "[-- BEGIN PGP BERICHT --]\n"
 "\n"
 
-#: crypt-gpgme.c:2076 pgp.c:407
+#: crypt-gpgme.c:2076 pgp.c:412
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- BEGIN PGP PUBLIC KEY BLOK --]\n"
 
-#: crypt-gpgme.c:2079 pgp.c:409
+#: crypt-gpgme.c:2079 pgp.c:414
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -928,19 +928,19 @@ msgstr ""
 "[-- BEGIN PGP ONDERTEKEND BERICHT --]\n"
 "\n"
 
-#: crypt-gpgme.c:2106 pgp.c:435
+#: crypt-gpgme.c:2106 pgp.c:440
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- EINDE PGP BERICHT --]\n"
 
-#: crypt-gpgme.c:2108 pgp.c:439
+#: crypt-gpgme.c:2108 pgp.c:444
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- EINDE PGP PUBLIC KEY BLOK --]\n"
 
-#: crypt-gpgme.c:2110 pgp.c:441
+#: crypt-gpgme.c:2110 pgp.c:446
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- EINDE PGP ONDERTEKEND BERICHT --]\n"
 
-#: crypt-gpgme.c:2131 pgp.c:471
+#: crypt-gpgme.c:2131 pgp.c:476
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -948,7 +948,7 @@ msgstr ""
 "[-- Fout: Kon begin van PGP-bericht niet vinden! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2162 pgp.c:900
+#: crypt-gpgme.c:2162 pgp.c:905
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -956,7 +956,7 @@ msgstr ""
 "[-- Fout: Foutief PGP/MIME bericht! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2174 crypt-gpgme.c:2240 pgp.c:913
+#: crypt-gpgme.c:2174 crypt-gpgme.c:2240 pgp.c:918
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
 
@@ -969,7 +969,7 @@ msgstr ""
 "[-- De volgende gegevens zijn PGP/MIME versleuteld --]\n"
 "\n"
 
-#: crypt-gpgme.c:2187 pgp.c:922
+#: crypt-gpgme.c:2187 pgp.c:927
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -982,7 +982,7 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Einde van PGP/MIME versleutelde data --]\n"
 
-#: crypt-gpgme.c:2210 pgp.c:942
+#: crypt-gpgme.c:2210 pgp.c:947
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Einde van PGP/MIME versleutelde data --]\n"
 
@@ -1230,12 +1230,12 @@ msgstr "%s Wilt U deze sleutel gebruiken?"
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Zoeken naar sleutels voor \"%s\"..."
 
-#: crypt-gpgme.c:4002 pgp.c:1149
+#: crypt-gpgme.c:4002 pgp.c:1154
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "KeyID = \"%s\" gebruiken voor %s?"
 
-#: crypt-gpgme.c:4038 pgp.c:1183 smime.c:665 smime.c:790
+#: crypt-gpgme.c:4038 pgp.c:1188 smime.c:665 smime.c:790
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "KeyID voor %s: "
@@ -1271,7 +1271,7 @@ msgstr "vomabgg"
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4152 pgp.c:1558 smime.c:1990
+#: crypt-gpgme.c:4152 pgp.c:1563 smime.c:1990
 msgid "Sign as: "
 msgstr "Ondertekenen als: "
 
@@ -1309,7 +1309,7 @@ msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Bericht kan niet traditioneel worden verzonden.  PGP/MIME?"
 
 #. abort
-#: crypt.c:158 send.c:1438
+#: crypt.c:158 send.c:1444
 msgid "Mail not sent."
 msgstr "Bericht niet verstuurd."
 
@@ -1399,19 +1399,19 @@ msgstr "nee"
 msgid "Exit Mutt?"
 msgstr "Mutt afsluiten?"
 
-#: curs_lib.c:378 mutt_socket.c:529 mutt_ssl.c:328
+#: curs_lib.c:410 mutt_socket.c:530 mutt_ssl.c:328
 msgid "unknown error"
 msgstr "onbekende fout"
 
-#: curs_lib.c:398
+#: curs_lib.c:430
 msgid "Press any key to continue..."
 msgstr "Druk een willekeurige toets in..."
 
-#: curs_lib.c:442
+#: curs_lib.c:474
 msgid " ('?' for list): "
 msgstr " ('?' voor een overzicht): "
 
-#: curs_main.c:52 curs_main.c:620 curs_main.c:650
+#: curs_main.c:52 curs_main.c:624 curs_main.c:654
 msgid "No mailbox is open."
 msgstr "Er is geen mailfolder geopend."
 
@@ -1431,201 +1431,201 @@ msgstr "Funktie wordt niet ondersteund in deze modus"
 msgid "No visible messages."
 msgstr "Geen zichtbare berichten"
 
-#: curs_main.c:249
+#: curs_main.c:256
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Kan niet schrijven in een scrijfbeveiligde mailfolder!"
 
-#: curs_main.c:256
+#: curs_main.c:263
 msgid "Changes to folder will be written on folder exit."
 msgstr ""
 "Wijzigingen zullen worden weggeschreven bij het verlaten van de mailfolder."
 
-#: curs_main.c:261
+#: curs_main.c:268
 msgid "Changes to folder will not be written."
 msgstr "Wijzigingen worden niet weggeschreven."
 
-#: curs_main.c:402
+#: curs_main.c:406
 msgid "Quit"
 msgstr "Einde"
 
-#: curs_main.c:405 recvattach.c:55
+#: curs_main.c:409 recvattach.c:55
 msgid "Save"
 msgstr "Opslaan"
 
-#: curs_main.c:406 query.c:49
+#: curs_main.c:410 query.c:49
 msgid "Mail"
 msgstr "Sturen"
 
-#: curs_main.c:407 pager.c:1487
+#: curs_main.c:411 pager.c:1491
 msgid "Reply"
 msgstr "Antw."
 
-#: curs_main.c:408
+#: curs_main.c:412
 msgid "Group"
 msgstr "Groep"
 
-#: curs_main.c:497
+#: curs_main.c:501
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Mailfolder is extern veranderd. Markeringen kunnen onjuist zijn."
 
-#: curs_main.c:500
+#: curs_main.c:504
 msgid "New mail in this mailbox."
 msgstr "Nieuwe berichten in deze mailfolder."
 
-#: curs_main.c:504
+#: curs_main.c:508
 msgid "Mailbox was externally modified."
 msgstr "Mailfolder is extern veranderd."
 
-#: curs_main.c:626
+#: curs_main.c:630
 msgid "No tagged messages."
 msgstr "Geen gemarkeerde berichten."
 
-#: curs_main.c:662 menu.c:915
+#: curs_main.c:666 menu.c:900
 msgid "Nothing to do."
 msgstr "Niets te doen."
 
-#: curs_main.c:748
+#: curs_main.c:752
 msgid "Jump to message: "
 msgstr "Ga naar bericht: "
 
-#: curs_main.c:754
+#: curs_main.c:758
 msgid "Argument must be a message number."
 msgstr "Argument moet een berichtennummer zijn."
 
-#: curs_main.c:787
+#: curs_main.c:791
 msgid "That message is not visible."
 msgstr "Dit bericht is niet zichtbaar."
 
-#: curs_main.c:790
+#: curs_main.c:794
 msgid "Invalid message number."
 msgstr "Ongeldig berichtennummer"
 
-#: curs_main.c:809
+#: curs_main.c:813
 msgid "Delete messages matching: "
 msgstr "Wis berichten volgens patroon: "
 
-#: curs_main.c:831
+#: curs_main.c:835
 msgid "No limit pattern is in effect."
 msgstr "Er is geen beperkend patroon in werking."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:836
+#: curs_main.c:840
 #, c-format
 msgid "Limit: %s"
 msgstr "Limiet: %s"
 
-#: curs_main.c:846
+#: curs_main.c:850
 msgid "Limit to messages matching: "
 msgstr "Limiteer berichten volgens patroon: "
 
-#: curs_main.c:878
+#: curs_main.c:882
 msgid "Quit Mutt?"
 msgstr "Mutt afsluiten?"
 
-#: curs_main.c:962
+#: curs_main.c:966
 msgid "Tag messages matching: "
 msgstr "Berichten markeren volgens patroon: "
 
-#: curs_main.c:976
+#: curs_main.c:980
 msgid "Undelete messages matching: "
 msgstr "Herstel berichten: "
 
-#: curs_main.c:984
+#: curs_main.c:988
 msgid "Untag messages matching: "
 msgstr "Verwijder markering volgens patroon: "
 
-#: curs_main.c:1063
+#: curs_main.c:1067
 msgid "Open mailbox in read-only mode"
 msgstr "Open mailfolder in schrijfbeveiligde modus"
 
-#: curs_main.c:1065
+#: curs_main.c:1069
 msgid "Open mailbox"
 msgstr "Open mailfolder"
 
-#: curs_main.c:1081 mx.c:512 mx.c:658
+#: curs_main.c:1085 mx.c:512 mx.c:658
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s is geen mailfolder."
 
-#: curs_main.c:1176
+#: curs_main.c:1180
 msgid "Exit Mutt without saving?"
 msgstr "Mutt verlaten zonder op te slaan?"
 
-#: curs_main.c:1194 curs_main.c:1226 curs_main.c:1688 curs_main.c:1720
+#: curs_main.c:1198 curs_main.c:1230 curs_main.c:1692 curs_main.c:1724
 #: flags.c:293 thread.c:1022 thread.c:1077 thread.c:1132
 msgid "Threading is not enabled."
 msgstr "Het weergeven van threads is niet ingeschakeld."
 
-#: curs_main.c:1206
+#: curs_main.c:1210
 msgid "Thread broken"
 msgstr ""
 
-#: curs_main.c:1228
+#: curs_main.c:1232
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: curs_main.c:1230
+#: curs_main.c:1234
 #, fuzzy
 msgid "First, please tag a message to be linked here"
 msgstr "sla dit bericht op om later te verzenden"
 
-#: curs_main.c:1242
+#: curs_main.c:1246
 msgid "Threads linked"
 msgstr ""
 
-#: curs_main.c:1245
+#: curs_main.c:1249
 msgid "No thread linked"
 msgstr ""
 
-#: curs_main.c:1281 curs_main.c:1306
+#: curs_main.c:1285 curs_main.c:1310
 msgid "You are on the last message."
 msgstr "U bent bij het laatste bericht."
 
-#: curs_main.c:1288 curs_main.c:1332
+#: curs_main.c:1292 curs_main.c:1336
 msgid "No undeleted messages."
 msgstr "Alle berichten zijn gewist."
 
-#: curs_main.c:1325 curs_main.c:1349
+#: curs_main.c:1329 curs_main.c:1353
 msgid "You are on the first message."
 msgstr "U bent bij het eerste bericht."
 
-#: curs_main.c:1424 pattern.c:1303
+#: curs_main.c:1428 pattern.c:1361
 msgid "Search wrapped to top."
 msgstr "Zoekopdracht bovenaan begonnen."
 
-#: curs_main.c:1433 pattern.c:1314
+#: curs_main.c:1437 pattern.c:1372
 msgid "Search wrapped to bottom."
 msgstr "Zoekopdracht onderaan begonnen."
 
-#: curs_main.c:1474
+#: curs_main.c:1478
 msgid "No new messages"
 msgstr "Geen nieuwe berichten"
 
-#: curs_main.c:1474
+#: curs_main.c:1478
 msgid "No unread messages"
 msgstr "Geen ongelezen berichten"
 
-#: curs_main.c:1475
+#: curs_main.c:1479
 msgid " in this limited view"
 msgstr " in deze beperkte weergave."
 
-#: curs_main.c:1496 pager.c:2386
+#: curs_main.c:1500 pager.c:2403
 msgid "Can't change 'important' flag on POP server."
 msgstr "Kan markering 'belangrijk' op POP server niet veranderen."
 
-#: curs_main.c:1620
+#: curs_main.c:1624
 msgid "No more threads."
 msgstr "Geen verdere threads."
 
-#: curs_main.c:1622
+#: curs_main.c:1626
 msgid "You are on the first thread."
 msgstr "U bent al bij de eerste thread."
 
-#: curs_main.c:1706
+#: curs_main.c:1710
 msgid "Thread contains unread messages."
 msgstr "Thread bevat ongelezen berichten"
 
-#: curs_main.c:1893
+#: curs_main.c:1897
 msgid "Can't edit message on POP server."
 msgstr "Kan bericht op POP server niet aanpassen."
 
@@ -1918,7 +1918,7 @@ msgstr "unhook: onbekend type: %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Kan geen %s wissen binnen een %s."
 
-#: imap/auth.c:108 pop_auth.c:415
+#: imap/auth.c:108 pop_auth.c:390
 msgid "No authenticators available"
 msgstr "Geen authenticeerders beschikbaar"
 
@@ -1951,24 +1951,24 @@ msgstr "GSSAPI authenticatie geweigerd."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN uitgeschakeld op deze server."
 
-#: imap/auth_login.c:47 pop_auth.c:248
+#: imap/auth_login.c:47 pop_auth.c:223
 msgid "Logging in..."
 msgstr "Aanmelden..."
 
-#: imap/auth_login.c:67 pop_auth.c:291
+#: imap/auth_login.c:67 pop_auth.c:266
 msgid "Login failed."
 msgstr "Aanmelden mislukt..."
 
-#: imap/auth_sasl.c:116
+#: imap/auth_sasl.c:97
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authenticeren (%s)..."
 
-#: imap/auth_sasl.c:212 pop_auth.c:176
+#: imap/auth_sasl.c:185 pop_auth.c:151
 msgid "SASL authentication failed."
 msgstr "SASL authenticatie geweigerd."
 
-#: imap/browse.c:69 imap/imap.c:585
+#: imap/browse.c:69 imap/imap.c:587
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s is een ongeldig IMAP pad"
@@ -2011,134 +2011,140 @@ msgstr "Hernoemen mislukt: %s"
 msgid "Mailbox renamed."
 msgstr "Mailfolder is hernoemd."
 
-#: imap/command.c:294
+#: imap/command.c:298
 msgid "Mailbox closed"
 msgstr "Mailfolder is gesloten."
 
 #. something is wrong because the server reported fewer messages
 #. * than we previously saw
 #.
-#: imap/command.c:337
+#: imap/command.c:341
 msgid "Fatal error.  Message count is out of sync!"
 msgstr "Kritieke fout.  Berichtenteller wijkt af!"
 
-#: imap/imap.c:178
+#: imap/imap.c:177
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Verbinding met %s wordt gesloten..."
 
-#: imap/imap.c:338
+#: imap/imap.c:340
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Mutt kan niet overweg met deze antieke IMAP server."
 
-#: imap/imap.c:420
+#: imap/imap.c:422
 msgid "Checking mailbox subscriptions"
 msgstr ""
 
-#: imap/imap.c:458 pop_lib.c:286
+#: imap/imap.c:460 pop_lib.c:286
 msgid "Secure connection with TLS?"
 msgstr "Beveiligde connectie met TLS?"
 
-#: imap/imap.c:471 pop_lib.c:310
+#: imap/imap.c:473 pop_lib.c:310
 msgid "Could not negotiate TLS connection"
 msgstr "Kon TLS connectie niet onderhandelen"
 
-#: imap/imap.c:487 pop_lib.c:331
+#: imap/imap.c:489 pop_lib.c:331
 msgid "Encrypted connection unavailable"
 msgstr ""
 
-#: imap/imap.c:616
+#: imap/imap.c:618
 #, c-format
 msgid "Selecting %s..."
 msgstr "%s wordt uitgekozen..."
 
-#: imap/imap.c:752
+#: imap/imap.c:754
 msgid "Error opening mailbox"
 msgstr "Er is een fout opgetreden tijdens het openen van de mailfolder"
 
-#: imap/imap.c:801 imap/message.c:731 muttlib.c:1300
+#: imap/imap.c:803 imap/message.c:742 muttlib.c:1300
 #, c-format
 msgid "Create %s?"
 msgstr "%s aanmaken?"
 
-#: imap/imap.c:1039 pop.c:465
+#: imap/imap.c:1041 pop.c:468
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d berichten worden gemarkeerd voor verwijdering..."
 
-#: imap/imap.c:1048
+#: imap/imap.c:1050
 msgid "Expunge failed"
 msgstr "Verwijderen mislukt"
 
-#: imap/imap.c:1061
+#: imap/imap.c:1063
 #, c-format
 msgid "Saving message status flags... [%d/%d]"
 msgstr "Berichten-status wordt opgeslagen... [%d/%d]"
 
-#: imap/imap.c:1094
+#: imap/imap.c:1096
 msgid "Expunging messages from server..."
 msgstr "Berichten op de server worden gewist..."
 
-#: imap/imap.c:1099
+#: imap/imap.c:1101
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE mislukt"
 
-#: imap/imap.c:1108 imap/imap.c:1143
+#: imap/imap.c:1110 imap/imap.c:1145
 msgid "CLOSE failed"
 msgstr "CLOSE mislukt"
 
-#: imap/imap.c:1389
+#: imap/imap.c:1388
+#, c-format
+msgid "Header search without header name: %s"
+msgstr ""
+
+#: imap/imap.c:1536
 msgid "Bad mailbox name"
 msgstr "Verkeerde mailfolder naam"
 
-#: imap/imap.c:1412
+#: imap/imap.c:1559
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Aanmelden voor %s..."
 
-#: imap/imap.c:1414
+#: imap/imap.c:1561
 #, c-format
 msgid "Unsubscribing to %s..."
 msgstr "Afmelden voor %s..."
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:92
+#: imap/message.c:91
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Kan berichtenoverzicht niet overhalen van deze IMAP server."
 
-#: imap/message.c:102
+#: imap/message.c:101
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Tijdelijk bestand %s kon niet worden aangemaakt"
 
-#: imap/message.c:128
+#: imap/message.c:127
 #, c-format
 msgid "Evaluating cache... [%d/%d]"
 msgstr "Headercache wordt gelezen... [%d/%d]"
 
-#: imap/message.c:196 pop.c:210
+#: imap/message.c:195 pop.c:211
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Headers worden opgehaald... [%d/%d]"
 
-#: imap/message.c:358 pop.c:344
+#: imap/message.c:358 imap/message.c:413 pop.c:388
 msgid "Fetching message..."
 msgstr "Bericht wordt gelezen..."
 
-#: imap/message.c:401 pop.c:381
+#: imap/message.c:401 pop.c:382
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "De berichtenindex is niet correct. Probeer mailfolder te heropenen."
 
-#: imap/message.c:574
-msgid "Uploading message ..."
+#: imap/message.c:548
+#, fuzzy
+msgid "Uploading message..."
 msgstr "Bericht wordt verstuurd ..."
 
-#: imap/message.c:697
+#: imap/message.c:708
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d berichten worden gekopieerd naar %s..."
 
-#: imap/message.c:701
+#: imap/message.c:712
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Bericht %d wordt gekopieerd naar %s ..."
@@ -2147,187 +2153,187 @@ msgstr "Bericht %d wordt gekopieerd naar %s ..."
 msgid "Continue?"
 msgstr "Doorgaan?"
 
-#: init.c:385
+#: init.c:427
 #, c-format
 msgid "Bad regexp: %s"
 msgstr "Ongeldige reguliere expressie: %s"
 
-#: init.c:644
+#: init.c:686
 msgid "spam: no matching pattern"
 msgstr "spam: geen overeenkomstig patroon"
 
-#: init.c:646
+#: init.c:688
 msgid "nospam: no matching pattern"
 msgstr "nospam: geen overeenkomstig patroon"
 
-#: init.c:849
+#: init.c:891
 msgid "alias: no address"
 msgstr "alias: Geen adres"
 
-#: init.c:894
+#: init.c:936
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'.\n"
 
-#: init.c:972
+#: init.c:1014
 msgid "invalid header field"
 msgstr "my_hdr: Ongeldig veld in berichtenkop"
 
-#: init.c:1025
+#: init.c:1067
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: onbekende sorteermethode"
 
-#: init.c:1135
+#: init.c:1177
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): fout in reguliere expressie: %s\n"
 
-#: init.c:1200
+#: init.c:1242
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: onbekende variable"
 
-#: init.c:1209
+#: init.c:1251
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "Prefix is niet toegestaan"
 
-#: init.c:1215
+#: init.c:1257
 #, c-format
 msgid "value is illegal with reset"
 msgstr "Toekenning van een waarde is niet toegestaan"
 
-#: init.c:1254
+#: init.c:1296
 #, c-format
 msgid "%s is set"
 msgstr "%s is gezet"
 
-#: init.c:1254
+#: init.c:1296
 #, c-format
 msgid "%s is unset"
 msgstr "%s is niet gezet"
 
-#: init.c:1444
+#: init.c:1486
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: Ongeldig mailfolder-type"
 
-#: init.c:1469 init.c:1514
+#: init.c:1511 init.c:1556
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: ongeldige waarde"
 
-#: init.c:1555
+#: init.c:1597
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: Onbekend type."
 
-#: init.c:1581
+#: init.c:1623
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: onbekend type"
 
-#: init.c:1640
+#: init.c:1682
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Fout in %s, regel %d: %s"
 
 #. the muttrc source keyword
-#: init.c:1663
+#: init.c:1705
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: fouten in %s"
 
-#: init.c:1664
+#: init.c:1706
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: inlezen gestaakt vanwege te veel fouten in %s"
 
-#: init.c:1678
+#: init.c:1720
 #, c-format
 msgid "source: error at %s"
 msgstr "source: fout bij %s"
 
-#: init.c:1683
+#: init.c:1725
 msgid "source: too many arguments"
 msgstr "source: Te veel argumenten"
 
-#: init.c:1734
+#: init.c:1776
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: onbekend commando"
 
-#: init.c:2178
+#: init.c:2220
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Fout in opdrachtregel: %s\n"
 
-#: init.c:2227
+#: init.c:2270
 msgid "unable to determine home directory"
 msgstr "Kan Home-directory niet achterhalen"
 
-#: init.c:2235
+#: init.c:2278
 msgid "unable to determine username"
 msgstr "Kan gebruikersnaam niet achterhalen"
 
-#: keymap.c:463
+#: keymap.c:466
 msgid "Macro loop detected."
 msgstr "Macro-lus gedetecteerd."
 
-#: keymap.c:673 keymap.c:681
+#: keymap.c:676 keymap.c:684
 msgid "Key is not bound."
 msgstr "Toets is niet in gebruik."
 
-#: keymap.c:685
+#: keymap.c:688
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Toets is niet in gebruik. Toets '%s' voor hulp."
 
-#: keymap.c:696
+#: keymap.c:699
 msgid "push: too many arguments"
 msgstr "push: Te veel argumenten"
 
-#: keymap.c:726
+#: keymap.c:729
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: Menu onbekend"
 
-#: keymap.c:741
+#: keymap.c:744
 msgid "null key sequence"
 msgstr "lege toetsenvolgorde"
 
-#: keymap.c:828
+#: keymap.c:831
 msgid "bind: too many arguments"
 msgstr "bind: Te veel argumenten"
 
-#: keymap.c:851
+#: keymap.c:854
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: onbekende functie"
 
-#: keymap.c:875
+#: keymap.c:878
 msgid "macro: empty key sequence"
 msgstr "macro: Lege toetsenvolgorde"
 
-#: keymap.c:886
+#: keymap.c:889
 msgid "macro: too many arguments"
 msgstr "macro: Te veel argumenten"
 
-#: keymap.c:922
+#: keymap.c:925
 msgid "exec: no arguments"
 msgstr "exec: geen argumenten"
 
-#: keymap.c:942
+#: keymap.c:945
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: onbekende functie"
 
-#: keymap.c:963
+#: keymap.c:966
 msgid "Enter keys (^G to abort): "
 msgstr "Geef toetsen in (^G om af te breken): "
 
-#: keymap.c:968
+#: keymap.c:971
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Karakter = %s, Octaal = %o, Decimaal = %d"
@@ -3129,7 +3135,7 @@ msgstr "Integer overflow -- kan geen geheugen alloceren!"
 msgid "Out of memory!"
 msgstr "Onvoldoende geheugen!"
 
-#: main.c:51
+#: main.c:59
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please use the flea(1) utility.\n"
@@ -3137,7 +3143,7 @@ msgstr ""
 "Stuur een bericht naar <mutt-dev@mutt.org> om de auteurs te bereiken.\n"
 "Gebruik de flea(1) om een programmafout te melden.\n"
 
-#: main.c:55
+#: main.c:63
 msgid ""
 "Copyright (C) 1996-2002 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -3149,7 +3155,7 @@ msgstr ""
 "Mutt is vrije software, en u bent vrij om het te verspreiden\n"
 "onder bepaalde voorwaarden;  type `mutt -vv' voor meer informatie.\n"
 
-#: main.c:61
+#: main.c:69
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
@@ -3203,7 +3209,7 @@ msgstr ""
 "    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 "
 "USA.\n"
 
-#: main.c:99
+#: main.c:107
 #, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
@@ -3223,7 +3229,7 @@ msgid ""
 "  -a <file>\tattach a file to the message\n"
 "  -b <address>\tspecify a blind carbon-copy (BCC) address\n"
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
-"  -D\t\tprint the value of all variables to stderr"
+"  -D\t\tprint the value of all variables to stdout"
 msgstr ""
 "gebruik: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3261,11 +3267,11 @@ msgstr ""
 "geen\n"
 "  -h\t\tdit hulp bericht"
 
-#: main.c:114
+#: main.c:122
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr ""
 
-#: main.c:117
+#: main.c:125
 #, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
@@ -3322,7 +3328,7 @@ msgstr ""
 "geen\n"
 "  -h\t\tdit hulp bericht"
 
-#: main.c:173
+#: main.c:181
 msgid ""
 "\n"
 "Compile options:"
@@ -3330,47 +3336,47 @@ msgstr ""
 "\n"
 "Opties tijdens compileren:"
 
-#: main.c:484
+#: main.c:487
 msgid "Error initializing terminal."
 msgstr "Kan terminal niet initialiseren."
 
-#: main.c:594
+#: main.c:597
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Debug informatie level %d.\n"
 
-#: main.c:596
+#: main.c:599
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG optie niet beschikbaar: deze wordt genegeerd.\n"
 
-#: main.c:746
+#: main.c:749
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s bestaat niet. Aanmaken?"
 
-#: main.c:750
+#: main.c:753
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan bestand %s niet aanmaken: %s"
 
-#: main.c:795
+#: main.c:798
 msgid "No recipients specified.\n"
 msgstr "Geen ontvangers opgegeven.\n"
 
-#: main.c:881
+#: main.c:884
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kan bestand niet bijvoegen.\n"
 
-#: main.c:901
+#: main.c:904
 msgid "No mailbox with new mail."
 msgstr "Geen mailfolder met nieuwe berichten."
 
-#: main.c:910
+#: main.c:913
 msgid "No incoming mailboxes defined."
 msgstr "Geen mailfolders opgegeven."
 
-#: main.c:938
+#: main.c:941
 msgid "Mailbox is empty."
 msgstr "Mailfolder is leeg."
 
@@ -3436,8 +3442,8 @@ msgstr "Ga naar: "
 msgid "Invalid index number."
 msgstr "Ongeldig Indexnummer."
 
-#: menu.c:432 menu.c:453 menu.c:491 menu.c:534 menu.c:550 menu.c:561
-#: menu.c:572 menu.c:614 menu.c:625 menu.c:638 menu.c:651 menu.c:1052
+#: menu.c:432 menu.c:453 menu.c:518 menu.c:561 menu.c:577 menu.c:588
+#: menu.c:599 menu.c:610 menu.c:623 menu.c:636 menu.c:1037
 msgid "No entries."
 msgstr "Geen items"
 
@@ -3449,59 +3455,51 @@ msgstr "U kunt niet verder naar beneden gaan."
 msgid "You cannot scroll up farther."
 msgstr "U kunt niet verder naar boven gaan."
 
-#: menu.c:488
-msgid "You are on the last page."
-msgstr "U bent op de laatste pagina."
-
-#: menu.c:512
+#: menu.c:511
 msgid "You are on the first page."
 msgstr "U bent op de eerste pagina."
 
-#: menu.c:591
-msgid "First entry is shown."
-msgstr "Het eerste item wordt weergegeven."
+#: menu.c:512
+msgid "You are on the last page."
+msgstr "U bent op de laatste pagina."
 
-#: menu.c:611
-msgid "Last entry is shown."
-msgstr "Het laatste item wordt weergegeven."
-
-#: menu.c:662
+#: menu.c:647
 msgid "You are on the last entry."
 msgstr "U bent op het laatste item."
 
-#: menu.c:673
+#: menu.c:658
 msgid "You are on the first entry."
 msgstr "U bent op het eerste item."
 
-#: menu.c:733 pattern.c:1249
+#: menu.c:718 pattern.c:1303
 msgid "Search for: "
 msgstr "Zoek naar: "
 
-#: menu.c:734 pattern.c:1250
+#: menu.c:719 pattern.c:1304
 msgid "Reverse search for: "
 msgstr "Zoek achteruit naar: "
 
-#: menu.c:744 pattern.c:1282
+#: menu.c:729 pattern.c:1336
 msgid "No search pattern."
 msgstr "Geen zoekpatroon."
 
-#: menu.c:774 pager.c:1963 pager.c:1979 pager.c:2087 pattern.c:1347
+#: menu.c:759 pager.c:1980 pager.c:1996 pager.c:2104 pattern.c:1405
 msgid "Not found."
 msgstr "Niet gevonden."
 
-#: menu.c:904
+#: menu.c:889
 msgid "No tagged entries."
 msgstr "Geen geselecteerde items."
 
-#: menu.c:1009
+#: menu.c:994
 msgid "Search is not implemented for this menu."
 msgstr "In dit menu kan niet worden gezocht."
 
-#: menu.c:1014
+#: menu.c:999
 msgid "Jumping is not implemented for dialogs."
 msgstr "Verspringen is niet mogelijk in menu."
 
-#: menu.c:1055
+#: menu.c:1040
 msgid "Tagging is not supported."
 msgstr "Markeren is niet ondersteund."
 
@@ -3552,7 +3550,7 @@ msgstr "Kan adres van server \"%s\" niet achterhalen"
 msgid "Connecting to %s..."
 msgstr "Bezig met verbinden met %s..."
 
-#: mutt_socket.c:528
+#: mutt_socket.c:529
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Kan niet verbinden met %s (%s)."
@@ -3663,11 +3661,11 @@ msgstr "(w)eigeren, (e)enmalig toelaten"
 msgid "ro"
 msgstr "we"
 
-#: mutt_ssl.c:703 mutt_ssl_gnutls.c:814
+#: mutt_ssl.c:703 mutt_ssl_gnutls.c:815
 msgid "Warning: Couldn't save certificate"
 msgstr "Waarschuwing: certificaat kan niet bewaard worden"
 
-#: mutt_ssl.c:708 mutt_ssl_gnutls.c:819
+#: mutt_ssl.c:708 mutt_ssl_gnutls.c:820
 msgid "Certificate saved"
 msgstr "Certificaat wordt bewaard"
 
@@ -3907,48 +3905,48 @@ msgstr "Integer overflow -- kan geen geheugen alloceren!"
 msgid "Not available in this menu."
 msgstr "Optie niet beschikbaar in dit menu."
 
-#: pager.c:1480
+#: pager.c:1484
 msgid "PrevPg"
 msgstr "Vorig.P"
 
-#: pager.c:1481
+#: pager.c:1485
 msgid "NextPg"
 msgstr "Volg.P"
 
-#: pager.c:1485
+#: pager.c:1489
 msgid "View Attachm."
 msgstr "Bijlagen tonen"
 
-#: pager.c:1488
+#: pager.c:1492
 msgid "Next"
 msgstr "Volgend ber."
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1871 pager.c:1902 pager.c:1934 pager.c:2175
+#: pager.c:1888 pager.c:1919 pager.c:1951 pager.c:2192
 msgid "Bottom of message is shown."
 msgstr "Einde van bericht is weergegeven."
 
-#: pager.c:1887 pager.c:1909 pager.c:1916 pager.c:1923
+#: pager.c:1904 pager.c:1926 pager.c:1933 pager.c:1940
 msgid "Top of message is shown."
 msgstr "Begin van bericht is weergegeven."
 
-#: pager.c:1992
+#: pager.c:2009
 msgid "Reverse search: "
 msgstr "Achteruit zoeken: "
 
-#: pager.c:1993
+#: pager.c:2010
 msgid "Search: "
 msgstr "Zoeken: "
 
-#: pager.c:2113
+#: pager.c:2130
 msgid "Help is currently being shown."
 msgstr "Hulp wordt al weergegeven."
 
-#: pager.c:2142
+#: pager.c:2159
 msgid "No more quoted text."
 msgstr "Geen verdere geciteerde text."
 
-#: pager.c:2155
+#: pager.c:2172
 msgid "No more unquoted text after quoted text."
 msgstr "Geen verdere eigen text na geciteerde text."
 
@@ -3956,86 +3954,86 @@ msgstr "Geen verdere eigen text na geciteerde text."
 msgid "multipart message has no boundary parameter!"
 msgstr "Multi-part bericht heeft geen \"boundary\" parameter."
 
-#: pattern.c:244
+#: pattern.c:263
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fout in expressie: %s"
 
-#: pattern.c:354
+#: pattern.c:389
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ongeldige dag van de maand: %s"
 
-#: pattern.c:368
+#: pattern.c:403
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ongeldige maand: %s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:520
+#: pattern.c:555
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Ongeldige maand: %s"
 
-#: pattern.c:534
+#: pattern.c:569
 msgid "error in expression"
 msgstr "Fout in expressie"
 
-#: pattern.c:740 pattern.c:848
+#: pattern.c:784 pattern.c:894
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Fout in expressie bij: %s"
 
-#: pattern.c:788
+#: pattern.c:834
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ongeldig commando"
 
-#: pattern.c:794
+#: pattern.c:840
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: Niet ondersteund in deze modus"
 
-#: pattern.c:807
+#: pattern.c:853
 #, c-format
 msgid "missing parameter"
 msgstr "Te weinig parameters"
 
-#: pattern.c:823
+#: pattern.c:869
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "Haakjes kloppen niet: %s"
 
-#: pattern.c:855
+#: pattern.c:901
 msgid "empty pattern"
 msgstr "Leeg patroon"
 
-#: pattern.c:1061
+#: pattern.c:1117
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fout: onbekende operatie %d (interne fout)."
 
-#: pattern.c:1137 pattern.c:1268
+#: pattern.c:1193 pattern.c:1322
 msgid "Compiling search pattern..."
 msgstr "Bezig met het compileren van patroon..."
 
-#: pattern.c:1151
+#: pattern.c:1212
 msgid "Executing command on matching messages..."
 msgstr "Commando wordt uitgevoerd..."
 
-#: pattern.c:1213
+#: pattern.c:1275
 msgid "No messages matched criteria."
 msgstr "Geen berichten voldeden aan de criteria."
 
-#: pattern.c:1306
+#: pattern.c:1364
 msgid "Search hit bottom without finding match"
 msgstr "Zoeken heeft einde bereikt zonder iets te vinden"
 
-#: pattern.c:1317
+#: pattern.c:1375
 msgid "Search hit top without finding match"
 msgstr "Zoeken heeft begin bereikt zonder iets te vinden"
 
-#: pattern.c:1339
+#: pattern.c:1397
 msgid "Search interrupted."
 msgstr "Zoeken onderbroken."
 
@@ -4051,7 +4049,7 @@ msgstr "PGP-wachtwoord is vergeten."
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Fout: Kan geen PGP-proces starten! --]\n"
 
-#: pgp.c:379 pgp.c:615 pgp.c:819
+#: pgp.c:379 pgp.c:620 pgp.c:824
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -4059,22 +4057,22 @@ msgstr ""
 "[-- Einde van PGP uitvoer --]\n"
 "\n"
 
-#: pgp.c:387 pgp.c:951
+#: pgp.c:392 pgp.c:956
 #, fuzzy
 msgid "Could not decrypt PGP message"
 msgstr "Bericht kon niet gekopiëerd worden."
 
 #. clear 'Invoking...' message, since there's no error
-#: pgp.c:436 pgp.c:947
+#: pgp.c:441 pgp.c:952
 #, fuzzy
 msgid "PGP message successfully decrypted."
 msgstr "PGP handtekening is correct bevonden."
 
-#: pgp.c:723
+#: pgp.c:728
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
 msgstr "Interne fout.  Informeer <roessler@does-not-exist.org>."
 
-#: pgp.c:784
+#: pgp.c:789
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -4082,34 +4080,34 @@ msgstr ""
 "[-- Fout: Kon PGP-subproces niet starten! --]\n"
 "\n"
 
-#: pgp.c:828
+#: pgp.c:833
 #, fuzzy
 msgid "Decryption failed"
 msgstr "Ontsleuteling mislukt."
 
-#: pgp.c:1003
+#: pgp.c:1008
 msgid "Can't open PGP subprocess!"
 msgstr "Kan PGP-Subproces niet starten!"
 
-#: pgp.c:1439
+#: pgp.c:1444
 msgid "Can't invoke PGP"
 msgstr "Kan PGP niet aanroepen"
 
-#: pgp.c:1540
+#: pgp.c:1545
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
 msgstr ""
 "PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
 
-#: pgp.c:1541
+#: pgp.c:1546
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#: pgp.c:1541
+#: pgp.c:1546
 msgid "(i)nline"
 msgstr "trad(i)tioneel"
 
-#: pgp.c:1543
+#: pgp.c:1548
 msgid "esabifc"
 msgstr "voabigg"
 
@@ -4148,80 +4146,80 @@ msgstr "PGP wordt aangeroepen..."
 msgid "PGP Key %s."
 msgstr "PGP-key %s."
 
-#: pop.c:90 pop_lib.c:201
+#: pop.c:91 pop_lib.c:201
 #, c-format
 msgid "Command TOP is not supported by server."
 msgstr "Het TOP commando wordt niet door de server ondersteund."
 
-#: pop.c:117
+#: pop.c:118
 msgid "Can't write header to temporary file!"
 msgstr "Kan de header niet naar een tijdelijk bestand wegschrijven!"
 
-#: pop.c:198 pop_lib.c:203
+#: pop.c:199 pop_lib.c:203
 #, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "Het UIDL commando wordt niet door de server ondersteund."
 
-#: pop.c:247 pop.c:562
+#: pop.c:248 pop.c:565
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s is een ongeldig POP pad"
 
-#: pop.c:278
+#: pop.c:279
 msgid "Fetching list of messages..."
 msgstr "Berichtenlijst ophalen..."
 
-#: pop.c:415
+#: pop.c:418
 msgid "Can't write message to temporary file!"
 msgstr "Kan het bericht niet naar een tijdelijk bestand wegschrijven"
 
-#: pop.c:517 pop.c:582
+#: pop.c:520 pop.c:585
 msgid "Checking for new messages..."
 msgstr "Controleren op nieuwe berichten..."
 
-#: pop.c:546
+#: pop.c:549
 msgid "POP host is not defined."
 msgstr "Er is geen POP-server gespecificeerd."
 
-#: pop.c:610
+#: pop.c:613
 msgid "No new mail in POP mailbox."
 msgstr "Geen nieuwe berichten op de POP-server."
 
-#: pop.c:617
+#: pop.c:620
 msgid "Delete messages from server?"
 msgstr "Berichten op de server verwijderen?"
 
-#: pop.c:619
+#: pop.c:622
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Bezig met het lezen van nieuwe berichten (%d bytes)..."
 
-#: pop.c:661
+#: pop.c:664
 msgid "Error while writing mailbox!"
 msgstr "Er is een fout opgetreden tijdens het wegschrijven van de mailfolder!"
 
-#: pop.c:665
+#: pop.c:668
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d van de %d berichten gelezen]"
 
-#: pop.c:688 pop_lib.c:373
+#: pop.c:691 pop_lib.c:373
 msgid "Server closed connection!"
 msgstr "Server heeft verbinding gesloten!"
 
-#: pop_auth.c:93
+#: pop_auth.c:79
 msgid "Authenticating (SASL)..."
 msgstr "Authenticatie (SASL)..."
 
-#: pop_auth.c:209
+#: pop_auth.c:184
 msgid "Authenticating (APOP)..."
 msgstr "Authenticatie (APOP)..."
 
-#: pop_auth.c:233
+#: pop_auth.c:208
 msgid "APOP authentication failed."
 msgstr "APOP authenticatie geweigerd."
 
-#: pop_auth.c:268
+#: pop_auth.c:243
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "Het UIDL commando wordt niet door de server ondersteund."
@@ -4239,11 +4237,11 @@ msgstr "Fout tijdens verbinden met server: %s"
 msgid "Closing connection to POP server..."
 msgstr "Verbinding met POP-server wordt gesloten.."
 
-#: pop_lib.c:553
+#: pop_lib.c:557
 msgid "Verifying message indexes..."
 msgstr "Berichten index wordt geverifiëerd..."
 
-#: pop_lib.c:577
+#: pop_lib.c:580
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Verbinging verbroken. Opnieuw verbinden met POP server?"
 
@@ -4562,55 +4560,55 @@ msgstr "Voorbereiden door te sturen bericht..."
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1070
+#: send.c:1071
 msgid "Recall postponed message?"
 msgstr "Uigesteld bericht hervatten?"
 
-#: send.c:1369
+#: send.c:1372
 msgid "Edit forwarded message?"
 msgstr "Doorgestuurd bericht wijzigen?"
 
-#: send.c:1394
+#: send.c:1400
 msgid "Abort unmodified message?"
 msgstr "Uitgesteld bericht afbreken?"
 
-#: send.c:1396
+#: send.c:1402
 msgid "Aborted unmodified message."
 msgstr "Bericht werd niet veranderd. Operatie afgebroken."
 
-#: send.c:1465
+#: send.c:1471
 msgid "Message postponed."
 msgstr "Bericht uitgesteld."
 
-#: send.c:1474
+#: send.c:1480
 msgid "No recipients are specified!"
 msgstr "Er zijn geen geadresseerden opgegeven!"
 
-#: send.c:1479
+#: send.c:1485
 msgid "No recipients were specified."
 msgstr "Er werden geen geadresseerden opgegeven!"
 
-#: send.c:1495
+#: send.c:1501
 msgid "No subject, abort sending?"
 msgstr "Geen onderwerp. Versturen afbreken?"
 
-#: send.c:1499
+#: send.c:1505
 msgid "No subject specified."
 msgstr "Geen onderwerp."
 
-#: send.c:1561
+#: send.c:1567
 msgid "Sending message..."
 msgstr "Verstuur bericht..."
 
-#: send.c:1702
+#: send.c:1708
 msgid "Could not send the message."
 msgstr "Bericht kon niet verstuurd worden."
 
-#: send.c:1707
+#: send.c:1713
 msgid "Mail sent."
 msgstr "Bericht verstuurd."
 
-#: send.c:1707
+#: send.c:1713
 msgid "Sending in background."
 msgstr "Bericht wordt op de achtergrond verstuurd."
 
@@ -4633,16 +4631,16 @@ msgstr "%s is geen normaal bestand."
 msgid "Could not open %s"
 msgstr "Kan %s niet openen."
 
-#: sendlib.c:1987
+#: sendlib.c:1996
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Fout %d opgetreden tijdens versturen van bericht: %s"
 
-#: sendlib.c:1993
+#: sendlib.c:2002
 msgid "Output of the delivery process"
 msgstr "Uitvoer van het afleverings proces"
 
-#: sendlib.c:2199
+#: sendlib.c:2208
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Ongeldige IDN %s tijdens maken resent-from header."
@@ -4840,6 +4838,12 @@ msgstr "Vorig bericht niet zichtbaar in gelimiteerd overzicht."
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Vorig bericht is niet beschikbaar."
+
+#~ msgid "First entry is shown."
+#~ msgstr "Het eerste item wordt weergegeven."
+
+#~ msgid "Last entry is shown."
+#~ msgstr "Het laatste item wordt weergegeven."
 
 #~ msgid "Unexpected response received from server: %s"
 #~ msgstr "Onverwacht antwoord ontvangen van de server: %s"
