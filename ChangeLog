@@ -1,4 +1,8 @@
-2005-09-15 22:13:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-15 23:18:48  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* Makefile.am, build-release: Move changelog target to
+	update-changelog so that dist won't automatically invoke it,
+	and have commit and build-release call it.
 
 	* build-release: Now that 1.5.11 is out, previous versions won't
 	be x.y.zi: adjust diff.
