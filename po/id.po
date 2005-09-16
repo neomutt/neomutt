@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.10i\n"
+"Project-Id-Version: 1.5.11i\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-09-15 16:23+0200\n"
-"PO-Revision-Date: 2005-08-16 16:05+1000\n"
+"PO-Revision-Date: 2005-09-16 23:45+1000\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesia <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
@@ -1368,9 +1368,8 @@ msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
 msgstr "\"crypt_use_gpgme\" diset tapi tidak ada dukungan GPGME"
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking S/MIME..."
-msgstr "Memanggil SMIME..."
+msgstr "Memanggil S/MIME..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -2077,7 +2076,7 @@ msgstr "CLOSE (penutupan) gagal."
 #: imap/imap.c:1388
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "Pencarian header tanpa nama header: %s"
 
 #: imap/imap.c:1536
 msgid "Bad mailbox name"
@@ -2122,7 +2121,6 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index dari surat tidak benar. Cobalah membuka kembali kotak surat tsb."
 
 #: imap/message.c:548
-#, fuzzy
 msgid "Uploading message..."
 msgstr "Meletakkan surat ..."
 
@@ -3196,7 +3194,6 @@ msgstr ""
 "02111, USA.\n"
 
 #: main.c:107
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3235,7 +3232,7 @@ msgstr ""
 "  -a <file>\tlampirkan file ke surat\n"
 "  -b <alamat>\talamat blind carbon-copy (BCC)\n"
 "  -c <alamat>\talamat carbon-copy (CC)\n"
-"  -D\t\ttampilkan semua nilai variabel ke stderr"
+"  -D\t\ttampilkan semua nilai variabel ke stdout"
 
 #: main.c:122
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
