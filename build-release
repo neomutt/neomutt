@@ -57,6 +57,7 @@ make config.status
 ./config.status
 make update-doc
 make update-changelog
+(cd po && make update-po)
 
 # build them
 
