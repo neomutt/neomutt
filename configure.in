@@ -13,7 +13,7 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 
 AC_GNU_SOURCE
 
-ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg"
+ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg ga"
 
 AC_CANONICAL_HOST
 
