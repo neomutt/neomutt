@@ -110,11 +110,11 @@ check:
 manual.txt: manual.html
 	-lynx -dump -nolist -with_backspaces $^ > $@ || w3m -dump $^ > $@
 
-manual.html: $(srcdir)/html.xsl manual.xml
-	-xsltproc --nonet -o $@ $^
+manual.html: $(srcdir)/html.xsl stamp-doc-xml
+	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
-manual-chunked stamp-doc-chunked: $(srcdir)/chunk.xsl manual.xml
-	-xsltproc --nonet $^
+manual-chunked stamp-doc-chunked: $(srcdir)/chunk.xsl stamp-doc-xml
+	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
 	touch stamp-doc-chunked
 
 manual.pdf: stamp-doc-tex
@@ -180,7 +180,8 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-manual.xml stamp-doc-xml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.xml.head manual.xml.tail $(top_srcdir)/VERSION
+manual.xml stamp-doc-xml: $(top_srcdir)/init.h manual.xml.head manual.xml.tail $(top_srcdir)/VERSION
+	$(MAKE) ../makedoc$(EXEEXT)
 	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION`/" $(srcdir)/manual.xml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
 		cat - $(srcdir)/manual.xml.tail > manual.xml
