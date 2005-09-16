@@ -58,8 +58,7 @@ HTML_DOCFILES = manual.html index.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
 	reference.html miscellany.html
 
-BUILT_DISTFILES = stamp-doc-xml stamp-doc-man stamp-doc-chunked \
-	manual.txt $(HTML_DOCFILES)
+BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
 
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
@@ -165,13 +164,12 @@ dist distdir: Makefile $(DISTFILES)
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
 	(cd .. && $(MAKE) makedoc$(EXEEXT))
 
-update-doc:  ../makedoc$(EXEEXT) stamp-doc-xml stamp-doc-man stamp-doc-chunked manual.txt manual.html
+update-doc:  ../makedoc$(EXEEXT) stamp-doc-xml stamp-doc-chunked manual.txt manual.html
 
-muttrc.man stamp-doc-man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
+muttrc.man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
 	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
 		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail\
 		> muttrc.man
-	touch stamp-doc-man
 
 EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 	-e 's,@bindir\@,$(bindir),g' \
