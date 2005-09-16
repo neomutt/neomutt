@@ -1,3 +1,11 @@
+2005-09-16 10:19:46  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* po/nl.po: update
+
+2005-09-16 02:15:45  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in: Add stamp-doc-xml to "all".
+
 2005-09-16 01:50:40  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: stamp-doc-man is pointless as far as I can
