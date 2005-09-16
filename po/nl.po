@@ -1,10 +1,10 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.9\n"
+"Project-Id-Version: Mutt 1.5.11\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-09-15 16:23+0200\n"
-"PO-Revision-Date: 2005-03-20 15:17+0100\n"
+"PO-Revision-Date: 2005-09-15 23:17+0100\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
 "MIME-Version: 1.0\n"
@@ -714,128 +714,128 @@ msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP al geselecteerd. Wissen & doorgaan ? "
 
 #: crypt-gpgme.c:335
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het creëren van gpgme context: %s\n"
 
 #: crypt-gpgme.c:345
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
-msgstr ""
+msgstr "fout bij het inschakelen van CMS protocol: %s\n"
 
 #: crypt-gpgme.c:365
-#, fuzzy, c-format
+#, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het creëren van gpgme gegevensobject: %s\n"
 
 #: crypt-gpgme.c:431 crypt-gpgme.c:449 crypt-gpgme.c:1327
-#, fuzzy, c-format
+#, c-format
 msgid "error allocating data object: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het alloceren van gegevensobject: %s\n"
 
 #: crypt-gpgme.c:467
-#, fuzzy, c-format
+#, c-format
 msgid "error rewinding data object: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het terugwinden van het gegevensobject: %s\n"
 
 #: crypt-gpgme.c:489 crypt-gpgme.c:536
-#, fuzzy, c-format
+#, c-format
 msgid "error reading data object: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het lezen van het gegevensobject: %s\n"
 
 #: crypt-gpgme.c:597
-#, fuzzy, c-format
+#, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het toevoegen van ontvanger `%s': %s\n"
 
 #: crypt-gpgme.c:635
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr ""
+msgstr "geheime sleutel `%s' niet gevonden: %s\n"
 
 #: crypt-gpgme.c:645
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr ""
+msgstr "dubbelzinnige specificatie van geheime sleutel `%s'\n"
 
 #: crypt-gpgme.c:657
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr ""
+msgstr "fout bij het instellen van geheime sleutel `%s': %s\n"
 
 #: crypt-gpgme.c:701
-#, fuzzy, c-format
+#, c-format
 msgid "error encrypting data: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het versleutelen van gegevens: %s\n"
 
 #: crypt-gpgme.c:798
-#, fuzzy, c-format
+#, c-format
 msgid "error signing data: %s\n"
-msgstr "Fout in expressie bij: %s"
+msgstr "fout bij het ondertekenen van gegevens: %s\n"
 
 #: crypt-gpgme.c:993
-#, fuzzy
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Waarschuwing: Een deel van dit bericht is niet ondertekend."
+msgstr "Waarschuwing: Een van de sleutels is herroepen\n"
 
 #: crypt-gpgme.c:1002
 msgid "Warning: The key used to create the signature expired at: "
-msgstr ""
+msgstr "Waarschuwing: De sleutel waarmee is ondertekend is verlopen op: "
 
 #: crypt-gpgme.c:1008
-#, fuzzy
 msgid "Warning: At least one certification key has expired\n"
-msgstr "Certificaat van de server is verlopen"
+msgstr "Waarschuwing: Tenminste een certificeringssleutel is verlopen\n"
 
 #: crypt-gpgme.c:1024
 msgid "Warning: The signature expired at: "
-msgstr ""
+msgstr "Waarschuwing: De ondertekening is verlopen op: "
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
+msgstr "Kan niet verifiëren vanwege ontbrekende sleutel of certificaat\n"
 
 #: crypt-gpgme.c:1035
-#, fuzzy
 msgid "The CRL is not available\n"
-msgstr "SSL is niet beschikbaar."
+msgstr "De CRL is niet beschikbaar\n"
 
 #: crypt-gpgme.c:1041
 msgid "Available CRL is too old\n"
-msgstr ""
+msgstr "De beschikbare CRL is te oud\n"
 
 #: crypt-gpgme.c:1046
 msgid "A policy requirement was not met\n"
-msgstr ""
+msgstr "Aan een beleidsvereiste is niet voldaan\n"
 
 #: crypt-gpgme.c:1055
 msgid "A system error occurred"
-msgstr ""
+msgstr "Er is een systeemfout opgetreden"
 
 #: crypt-gpgme.c:1092 crypt-gpgme.c:3036
-#, fuzzy
 msgid "Fingerprint: "
-msgstr "Handtekening: %s"
+msgstr "Handtekening: "
 
 #: crypt-gpgme.c:1152
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
+"WAARSCHUWING: We hebben GEEN indicatie of de sleutel toebehoort aan de "
+"persoon zoals hierboven aangegeven\n"
 
 #: crypt-gpgme.c:1159
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
-msgstr ""
+msgstr "WAARSCHUWING: De sleutel BEHOORT NIET TOE aan bovengenoemde persoon\n"
 
 #: crypt-gpgme.c:1163
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
+"WAARSCHUWING: Het is NIET zeker dat de sleutel toebehoort aan de persoon "
+"zoals hierboven aangegeven\n"
 
 #: crypt-gpgme.c:1238
 msgid "Error getting key information: "
-msgstr ""
+msgstr "Fout bij het ophalen van sleutelinformatie: "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
@@ -843,70 +843,68 @@ msgstr ""
 #. ultimate).
 #: crypt-gpgme.c:1245 crypt-gpgme.c:1278
 msgid "Good signature from: "
-msgstr ""
+msgstr "Goede handtekening van: "
 
 #: crypt-gpgme.c:1255
 msgid "                aka: "
-msgstr ""
+msgstr "        ook bekend als: "
 
 #: crypt-gpgme.c:1259 crypt-gpgme.c:1281
 msgid "            created: "
-msgstr ""
+msgstr "     aangemaakt op: "
 
 #: crypt-gpgme.c:1268
 msgid "*BAD* signature claimed to be from: "
-msgstr ""
+msgstr "*SLECHTE* handtekening gepretendeerd af te komen van: "
 
 #: crypt-gpgme.c:1291
-#, fuzzy
 msgid "Error checking signature"
-msgstr "Fout opgetreden tijdens het verzenden van het bericht."
+msgstr "Fout bij het controleren van handtekening"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
 #: crypt-gpgme.c:1335 crypt-gpgme.c:1539 crypt-gpgme.c:2031
 msgid "[-- Begin signature information --]\n"
-msgstr ""
+msgstr "[-- Begin handtekeninginformatie --]\n"
 
 #: crypt-gpgme.c:1344
-#, fuzzy, c-format
+#, c-format
 msgid "Error: verification failed: %s\n"
-msgstr "Fout in opdrachtregel: %s\n"
+msgstr "Fout: verificatie gefaald: %s\n"
 
 #: crypt-gpgme.c:1386
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
-msgstr ""
+msgstr "*** Begin Notatie (ondertekening van: %s) ***\n"
 
 #: crypt-gpgme.c:1405
 msgid "*** End Notation ***\n"
-msgstr ""
+msgstr "*** Einde Notatie ***\n"
 
 #: crypt-gpgme.c:1413 crypt-gpgme.c:1552 crypt-gpgme.c:2046
-#, fuzzy
 msgid ""
 "[-- End signature information --]\n"
 "\n"
 msgstr ""
-"\n"
 "[-- Einde van ondertekende gegevens --]\n"
+"\n"
 
 #: crypt-gpgme.c:1507
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
-msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
+msgstr "[-- Fout: ontsleuteling gefaald: %s --]\n"
 
 #: crypt-gpgme.c:2006
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
-msgstr ""
+msgstr "Fout: ontsleuteling/verificatie is gefaald: %s\n"
 
 #: crypt-gpgme.c:2054
 msgid "Error: copy data failed\n"
-msgstr ""
+msgstr "Fout: kopiëren van gegevens is gefaald\n"
 
 #: crypt-gpgme.c:2074 pgp.c:410
 msgid ""
@@ -961,12 +959,11 @@ msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
 
 #: crypt-gpgme.c:2186
-#, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
 msgstr ""
-"[-- De volgende gegevens zijn PGP/MIME versleuteld --]\n"
+"[-- De volgende gegevens zijn PGP/MIME ondertekend en versleuteld --]\n"
 "\n"
 
 #: crypt-gpgme.c:2187 pgp.c:927
@@ -978,16 +975,14 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2209
-#, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
-msgstr "[-- Einde van PGP/MIME versleutelde data --]\n"
+msgstr "[-- Einde van PGP/MIME ondertekende en versleutelde data --]\n"
 
 #: crypt-gpgme.c:2210 pgp.c:947
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Einde van PGP/MIME versleutelde data --]\n"
 
 #: crypt-gpgme.c:2252
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -996,7 +991,6 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2253
-#, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1005,130 +999,118 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2283
-#, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
-msgstr ""
-"\n"
-"[-- Einde van S/MIME ondertekende gegevens --]\n"
+msgstr "[-- Einde van S/MIME ondertekende gegevens --]\n"
 
 #: crypt-gpgme.c:2284
-#, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
-msgstr ""
-"\n"
-"[-- Einde van S/MIME versleutelde data --]\n"
+msgstr "[-- Einde van S/MIME versleutelde data --]\n"
 
 #: crypt-gpgme.c:2876
 msgid "[Can't display this user ID (unknown encoding)]"
-msgstr ""
+msgstr "[Kan dit user ID niet weergeven (onbekende codering)]"
 
 #: crypt-gpgme.c:2878
 msgid "[Can't display this user ID (invalid encoding)]"
-msgstr ""
+msgstr "[Kan dit user ID niet weergeven (onbekende codering)]"
 
 #: crypt-gpgme.c:2883
 msgid "[Can't display this user ID (invalid DN)]"
-msgstr ""
+msgstr "[Kan dit user ID niet weergeven (ongeldige DN)]"
 
 #: crypt-gpgme.c:2962
 msgid " aka ......: "
-msgstr ""
+msgstr " alias ....: "
 
 #: crypt-gpgme.c:2962
 msgid "Name ......: "
-msgstr ""
+msgstr "Naam ......: "
 
 #: crypt-gpgme.c:2965 crypt-gpgme.c:3104
-#, fuzzy
 msgid "[Invalid]"
-msgstr "Ongeldig    "
+msgstr "[Ongeldig]"
 
 #: crypt-gpgme.c:2985 crypt-gpgme.c:3128
-#, fuzzy, c-format
+#, c-format
 msgid "Valid From : %s\n"
-msgstr "Ongeldige maand: %s"
+msgstr "Geldig Van : %s\n"
 
 #: crypt-gpgme.c:2998 crypt-gpgme.c:3141
-#, fuzzy, c-format
+#, c-format
 msgid "Valid To ..: %s\n"
-msgstr "Ongeldige maand: %s"
+msgstr "Geldig Tot : %s\n"
 
 #: crypt-gpgme.c:3011 crypt-gpgme.c:3154
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
-msgstr ""
+msgstr "Slt. Type .: %s, %lu bit %s\n"
 
 #: crypt-gpgme.c:3013 crypt-gpgme.c:3156
 #, c-format
 msgid "Key Usage .: "
-msgstr ""
+msgstr "Sl. Gebr ..: "
 
 #: crypt-gpgme.c:3018 crypt-gpgme.c:3161
-#, fuzzy
 msgid "encryption"
-msgstr "Versleutelen"
+msgstr "versleuteling "
 
 #: crypt-gpgme.c:3019 crypt-gpgme.c:3024 crypt-gpgme.c:3029 crypt-gpgme.c:3162
 #: crypt-gpgme.c:3167 crypt-gpgme.c:3172
 msgid ", "
-msgstr ""
+msgstr ", "
 
 #: crypt-gpgme.c:3023 crypt-gpgme.c:3166
 msgid "signing"
-msgstr ""
+msgstr "ondertekening"
 
 #: crypt-gpgme.c:3028 crypt-gpgme.c:3171
-#, fuzzy
 msgid "certification"
-msgstr "Certificaat wordt bewaard"
+msgstr "certificering"
 
 #: crypt-gpgme.c:3068
 #, c-format
 msgid "Serial-No .: 0x%s\n"
-msgstr ""
+msgstr "Serie-Nr ..: 0x%s\n"
 
 #: crypt-gpgme.c:3076
 #, c-format
 msgid "Issued By .: "
-msgstr ""
+msgstr "Uitg. Door : "
 
 #. display only the short keyID
 #: crypt-gpgme.c:3095
-#, fuzzy, c-format
+#, c-format
 msgid "Subkey ....: 0x%s"
-msgstr "Sleutel ID: 0x%s"
+msgstr "Subsleutel : 0x%s"
 
 #: crypt-gpgme.c:3099
-#, fuzzy
 msgid "[Revoked]"
-msgstr "Herroepen    "
+msgstr "[Herroepen]"
 
 #: crypt-gpgme.c:3109
-#, fuzzy
 msgid "[Expired]"
-msgstr "Verlopen    "
+msgstr "[Verlopen]"
 
 #: crypt-gpgme.c:3114
 msgid "[Disabled]"
-msgstr ""
+msgstr "[Uitgeschakeld]"
 
 #: crypt-gpgme.c:3198 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "Kan tijdelijk bestand niet aanmaken"
 
 #: crypt-gpgme.c:3201
-#, fuzzy
 msgid "Collecting data..."
-msgstr "Bezig met verbinden met %s..."
+msgstr "Data aan het vergaren..."
 
 #: crypt-gpgme.c:3227
-#, fuzzy, c-format
+#, c-format
 msgid "Error finding issuer key: %s\n"
-msgstr "Fout tijdens verbinden met server: %s"
+msgstr "Fout bij het vinden van uitgever van sleutel: %s\n"
 
 #: crypt-gpgme.c:3237
 msgid "Error: certification chain to long - stopping here\n"
-msgstr ""
+msgstr "Fout: certificeringsketen te lang - stop hier\n"
 
 #: crypt-gpgme.c:3248 pgpkey.c:580
 #, c-format
@@ -1136,22 +1118,21 @@ msgid "Key ID: 0x%s"
 msgstr "Sleutel ID: 0x%s"
 
 #: crypt-gpgme.c:3331
-#, fuzzy, c-format
+#, c-format
 msgid "gpgme_new failed: %s"
-msgstr "Hernoemen mislukt: %s"
+msgstr "gpgme_new gefaald: %s"
 
 #: crypt-gpgme.c:3370 crypt-gpgme.c:3433
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_start gefaald: %s"
 
 #: crypt-gpgme.c:3420 crypt-gpgme.c:3461
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
-msgstr ""
+msgstr "gpgme_op_keylist_next gefaald: %s"
 
 #: crypt-gpgme.c:3532
-#, fuzzy
 msgid "All matching keys are marked expired/revoked."
 msgstr "Alle overeenkomende sleutels zijn verlopen/ingetrokken."
 
@@ -1171,34 +1152,30 @@ msgid "Check key  "
 msgstr "Controleer sleutel "
 
 #: crypt-gpgme.c:3583
-#, fuzzy
 msgid "PGP and S/MIME keys matching"
-msgstr "PGP-sleutels voor \"%s\"."
+msgstr "PGP- en S/MIME-sleutels voor"
 
 #: crypt-gpgme.c:3585
-#, fuzzy
 msgid "PGP keys matching"
-msgstr "PGP-sleutels voor \"%s\"."
+msgstr "PGP-sleutels voor"
 
 #: crypt-gpgme.c:3587
-#, fuzzy
 msgid "S/MIME keys matching"
-msgstr "S/MIME certficiaten voor \"%s\"."
+msgstr "S/MIME-certficaten voor"
 
 #: crypt-gpgme.c:3589
-#, fuzzy
 msgid "keys matching"
-msgstr "PGP-sleutels voor \"%s\"."
+msgstr "sleutels voor"
 
 #: crypt-gpgme.c:3592
 #, c-format
 msgid "%s <%s>."
-msgstr ""
+msgstr "%s <%s>."
 
 #: crypt-gpgme.c:3594
 #, c-format
 msgid "%s \"%s\"."
-msgstr ""
+msgstr "%s \"%s\"."
 
 #: crypt-gpgme.c:3621 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
@@ -1245,28 +1222,26 @@ msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
 msgstr ""
+"\n"
+"Gebruik GPGME achterkant, hoewel er geen gpg-agent draait"
 
 #: crypt-gpgme.c:4131
-#, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
-"S/MIME (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
+"S/MIME (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, (p)gp of (g)een?"
 
 #: crypt-gpgme.c:4132
-#, fuzzy
 msgid "esabpfc"
-msgstr "vomabgg"
+msgstr "vomabpg"
 
 #: crypt-gpgme.c:4135
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
-"PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
+"PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (s)/mime of (g)een?"
 
 #: crypt-gpgme.c:4136
-#, fuzzy
 msgid "esabmfc"
-msgstr "vomabgg"
+msgstr "vomabsg"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
@@ -1277,12 +1252,11 @@ msgstr "Ondertekenen als: "
 
 #: crypt-gpgme.c:4249
 msgid "Failed to verify sender"
-msgstr ""
+msgstr "Verifiëren van afzener gefaald"
 
 #: crypt-gpgme.c:4252
-#, fuzzy
 msgid "Failed to figure out sender"
-msgstr "Kan bestand niet openen om header te lezen."
+msgstr "Kan verzender niet bepalen"
 
 #: crypt.c:69
 #, c-format
@@ -1379,10 +1353,9 @@ msgstr ""
 
 #: cryptglue.c:89
 msgid "\"crypt_use_gpgme\" set but not build with GPGME support."
-msgstr ""
+msgstr "\"crypt_use_gpgme\" aan, maar niet gebouwd met GPGME-ondersteuning."
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking S/MIME..."
 msgstr "S/MIME wordt aangeroepen..."
 
@@ -1558,24 +1531,23 @@ msgstr "Het weergeven van threads is niet ingeschakeld."
 
 #: curs_main.c:1210
 msgid "Thread broken"
-msgstr ""
+msgstr "Thread gebroken"
 
 #: curs_main.c:1232
 msgid "No Message-ID: header available to link thread"
-msgstr ""
+msgstr "Geen Message-ID: header beschikbaar om thread te koppelen"
 
 #: curs_main.c:1234
-#, fuzzy
 msgid "First, please tag a message to be linked here"
-msgstr "sla dit bericht op om later te verzenden"
+msgstr "Markeer eerst een bericht om hieraan te koppelen"
 
 #: curs_main.c:1246
 msgid "Threads linked"
-msgstr ""
+msgstr "Threads gekoppeld"
 
 #: curs_main.c:1249
 msgid "No thread linked"
-msgstr ""
+msgstr "Geen thread gekoppeld"
 
 #: curs_main.c:1285 curs_main.c:1310
 msgid "You are on the last message."
@@ -2033,7 +2005,7 @@ msgstr "Mutt kan niet overweg met deze antieke IMAP server."
 
 #: imap/imap.c:422
 msgid "Checking mailbox subscriptions"
-msgstr ""
+msgstr "Mailfolder-abonnementen worden gecontroleerd"
 
 #: imap/imap.c:460 pop_lib.c:286
 msgid "Secure connection with TLS?"
@@ -2045,7 +2017,7 @@ msgstr "Kon TLS connectie niet onderhandelen"
 
 #: imap/imap.c:489 pop_lib.c:331
 msgid "Encrypted connection unavailable"
-msgstr ""
+msgstr "Versleutelde verbinding niet beschikbaar"
 
 #: imap/imap.c:618
 #, c-format
@@ -2090,7 +2062,7 @@ msgstr "CLOSE mislukt"
 #: imap/imap.c:1388
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "Zoeken op header zonder headernaam: %s"
 
 #: imap/imap.c:1536
 msgid "Bad mailbox name"
@@ -2135,9 +2107,8 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "De berichtenindex is niet correct. Probeer mailfolder te heropenen."
 
 #: imap/message.c:548
-#, fuzzy
 msgid "Uploading message..."
-msgstr "Bericht wordt verstuurd ..."
+msgstr "Bericht wordt ge-upload..."
 
 #: imap/message.c:708
 #, c-format
@@ -2732,7 +2703,7 @@ msgstr "maak nieuw bericht aan"
 
 #: keymap_alldefs.h:103
 msgid "break the thread in two"
-msgstr ""
+msgstr "splits de thread in tweeën"
 
 #: keymap_alldefs.h:104
 msgid "open a different folder"
@@ -2771,9 +2742,8 @@ msgid "show only messages matching a pattern"
 msgstr "geef alleen berichten weer volgens patroon"
 
 #: keymap_alldefs.h:113
-#, fuzzy
 msgid "link tagged message to the current one"
-msgstr "Gemarkeerde berichten doorsturen naar: "
+msgstr "koppel gemarkeerd bericht met het huidige"
 
 #: keymap_alldefs.h:114
 msgid "jump to the next new message"
@@ -3156,7 +3126,6 @@ msgstr ""
 "onder bepaalde voorwaarden;  type `mutt -vv' voor meer informatie.\n"
 
 #: main.c:69
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3183,7 +3152,7 @@ msgid ""
 "    along with this program; if not, write to the Free Software\n"
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
@@ -3210,7 +3179,6 @@ msgstr ""
 "USA.\n"
 
 #: main.c:107
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3242,37 +3210,18 @@ msgstr ""
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
+"opties:\n"
 "  -A <alias>\tgebruik een afkorting\n"
 "  -a <file>\tvoeg een bestand bij het bericht\n"
 "  -b <address>\tspecificeer een blind carbon-copy (BCC) adres\n"
 "  -c <address>\tspecificeer een carbon-copy (CC) adres\n"
-"  -e <opdracht>\tspecificeer een uit te voeren opdracht na initialisatie\n"
-"  -f <file>\tspecificeer de te lezen mailfolder\n"
-"  -F <file>\tspecificeer een alternatieve muttrc\n"
-"  -H <file>\tspecificeer een bestand om de headers uit te lezen\n"
-"  -i <file>\tspecificeer een bestand dat Mutt moet bijsluiten in het "
-"bericht\n"
-"  -m <type>\tspecificeer een standaard mailfolder type\n"
-"  -n\t\tzorgt dat Mutt de systeem Muttrc niet inleest\n"
-"  -p\t\troept een uitgesteld bericht op\n"
-"  -Q <variabele>\tvraagt de waarde van een configuratievariabele op\n"
-"  -R\t\topent de mailfolder met alleen-lezen rechten\n"
-"  -s <ond>\tspecificeer een onderwerp (tussen aanhalingstekens i.g.v. "
-"spaties)\n"
-"  -v\t\ttoont het versienummer en opties tijdens het compileren\n"
-"  -x\t\tsimuleert de mailx verzendmodus\n"
-"  -y\t\tselecteert een mailfolder gespecificeerd in de `mailboxes' lijst\n"
-"  -z\t\tbeëindigt meteen als er geen berichten in de mailfolder staan\n"
-"  -Z\t\topent de eerste mailfolder met nieuwe berichten, eindigt indien "
-"geen\n"
-"  -h\t\tdit hulp bericht"
+"  -D\t\tdruk de waardes van alle variabelen af op stdout"
 
 #: main.c:122
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr ""
+msgstr "  -d <niveau>\tlog debug-output naar ~/.muttdebug0"
 
 #: main.c:125
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3292,21 +3241,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"gebruik: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-"[...]\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-"       mutt -v[v]\n"
-"\n"
-"  -A <alias>\tgebruik een afkorting\n"
-"  -a <file>\tvoeg een bestand bij het bericht\n"
-"  -b <address>\tspecificeer een blind carbon-copy (BCC) adres\n"
-"  -c <address>\tspecificeer een carbon-copy (CC) adres\n"
 "  -e <opdracht>\tspecificeer een uit te voeren opdracht na initialisatie\n"
 "  -f <file>\tspecificeer de te lezen mailfolder\n"
 "  -F <file>\tspecificeer een alternatieve muttrc\n"
@@ -3671,89 +3605,82 @@ msgstr "Certificaat wordt bewaard"
 
 #: mutt_ssl_gnutls.c:95 mutt_ssl_gnutls.c:117
 msgid "Error: no TLS socket open"
-msgstr ""
+msgstr "Fout: geen TLS socket open"
 
 #: mutt_ssl_gnutls.c:204
 msgid "All available protocols for TLS/SSL connection disabled"
-msgstr ""
+msgstr "Alle beschikbare protocollen voor TLS/SSL-verbinding uitgeschakeld"
 
 #: mutt_ssl_gnutls.c:265
-#, fuzzy, c-format
+#, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
-msgstr "SSL verbinding via %s (%s)"
+msgstr "SSL/TLS verbinding via %s (%s/%s/%s)"
 
 #: mutt_ssl_gnutls.c:508
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr ""
+msgstr "Fout bij verifiëren van certificaat (%s)"
 
 #: mutt_ssl_gnutls.c:516
-#, fuzzy
 msgid "Certificate is not X.509"
-msgstr "Certificaat wordt bewaard"
+msgstr "Certificaat is niet in X.509-formaat"
 
 #: mutt_ssl_gnutls.c:523
-#, fuzzy
 msgid "Error initialising gnutls certificate data"
-msgstr "Kan terminal niet initialiseren."
+msgstr "Kan gnutls certificaatgegevens niet initializeren"
 
 #: mutt_ssl_gnutls.c:539
 msgid "Error processing certificate data"
-msgstr ""
+msgstr "Fout bij het verwerken van certificaatgegevens"
 
 #: mutt_ssl_gnutls.c:724
-#, fuzzy, c-format
+#, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "Handtekening: %s"
+msgstr "SHA1 Handtekening: %s"
 
 #: mutt_ssl_gnutls.c:727
-#, fuzzy, c-format
+#, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "Handtekening: %s"
+msgstr "MD5 Handtekening: %s"
 
 #: mutt_ssl_gnutls.c:732
-#, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
-msgstr "Certificaat van de server is nog niet geldig"
+msgstr "WAARSCHUWING: Certificaat van de server is nog niet geldig"
 
 #: mutt_ssl_gnutls.c:737
-#, fuzzy
 msgid "WARNING: Server certificate has expired"
-msgstr "Certificaat van de server is verlopen"
+msgstr "WAARSCHUWING: Certificaat van de server is verlopen"
 
 #: mutt_ssl_gnutls.c:742
-#, fuzzy
 msgid "WARNING: Server certificate has been revoked"
-msgstr "Certificaat van de server is verlopen"
+msgstr "WAARSCHUWING: Certificaat van de server is herroepen"
 
 #: mutt_ssl_gnutls.c:747
 msgid "WARNING: Server hostname does not match certificate"
-msgstr ""
+msgstr "WAARSCHUWING: naam van de server komt niet overeen met certificaat"
 
 #: mutt_ssl_gnutls.c:752
-#, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
-msgstr "Certificaat van de server is nog niet geldig"
+msgstr "WAARSCHUWING: Ondertekenaar van servercertificaat is geen CA"
 
 #: mutt_ssl_gnutls.c:755
-#, fuzzy
 msgid "TLS/SSL Certificate check"
-msgstr "SSL certificaat controle"
+msgstr "TLS/SSL certificaat controle"
 
 #: mutt_tunnel.c:70
-#, fuzzy, c-format
+#, c-format
 msgid "Connecting with \"%s\"..."
-msgstr "Bezig met verbinden met %s..."
+msgstr "Bezig met verbinden met \"%s\"..."
 
 #: mutt_tunnel.c:137
 #, c-format
 msgid "Tunnel to %s returned error %d (%s)"
-msgstr ""
+msgstr "Tunnel naar %s leverde fout %d op (%s)"
 
 #: mutt_tunnel.c:155 mutt_tunnel.c:171
-#, fuzzy, c-format
+#, c-format
 msgid "Tunnel error talking to %s: %s"
-msgstr "Verbinding met %s mislukt (%s)"
+msgstr "Fout in tunnel in communicatie met %s: %s"
 
 #: muttlib.c:910
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
@@ -4058,15 +3985,13 @@ msgstr ""
 "\n"
 
 #: pgp.c:392 pgp.c:956
-#, fuzzy
 msgid "Could not decrypt PGP message"
-msgstr "Bericht kon niet gekopiëerd worden."
+msgstr "Kon PGP-gericht niet ontsleutelen"
 
 #. clear 'Invoking...' message, since there's no error
 #: pgp.c:441 pgp.c:952
-#, fuzzy
 msgid "PGP message successfully decrypted."
-msgstr "PGP handtekening is correct bevonden."
+msgstr "PGP-bericht succesvol ontsleuteld."
 
 #: pgp.c:728
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
@@ -4081,9 +4006,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:833
-#, fuzzy
 msgid "Decryption failed"
-msgstr "Ontsleuteling mislukt."
+msgstr "Ontsleuteling mislukt"
 
 #: pgp.c:1008
 msgid "Can't open PGP subprocess!"
