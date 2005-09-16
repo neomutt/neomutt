@@ -2073,7 +2073,7 @@ msgstr "クローズに失敗した"
 #: imap/imap.c:1388
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "検索するヘッダ名の指定がない: %s"
 
 #: imap/imap.c:1536
 msgid "Bad mailbox name"
@@ -2119,7 +2119,6 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "メッセージ索引が不正。メールボックス再オープンを試みる。"
 
 #: imap/message.c:548
-#, fuzzy
 msgid "Uploading message..."
 msgstr "メッセージをアップロード中..."
 
@@ -3166,7 +3165,6 @@ msgid ""
 msgstr ""
 
 #: main.c:107
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3205,7 +3203,7 @@ msgstr ""
 "  -a <ファイル>\tメッセージにファイルを添付\n"
 "  -b <アドレス>\tblind carbon-copy (BCC) アドレスの指定\n"
 "  -c <アドレス>\tcarbon-copy (CC) アドレスの指定\n"
-"  -D\t\t変数をすべて標準エラー出力へ表示"
+"  -D\t\t変数をすべて標準出力へ表示"
 
 #: main.c:122
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
