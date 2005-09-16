@@ -67,7 +67,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
-all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
+all: mutt.1 muttrc.man manual.html stamp-doc-xml stamp-doc-chunked manual.txt
 
 install: all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
