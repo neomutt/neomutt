@@ -1,4 +1,13 @@
-2005-09-15 23:18:48  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-16 01:50:40  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in: stamp-doc-man is pointless as far as I can
+	tell. Removed.
+
+	* doc/Makefile.in: Tweak makefile so that the dist tarball doesn't
+	always try to build docs.
+
+	* configure.in: VERSION should go into CONFIG_STATUS_DEPENDENCIES,
+	not CONFIGURE_DEPENDENCIES. Slap ma fro.
 
 	* Makefile.am, build-release: Move changelog target to
 	update-changelog so that dist won't automatically invoke it,
