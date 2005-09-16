@@ -1,3 +1,10 @@
+2005-09-16 15:20:59  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* build-release, po/Makefile.in.in: Move update-po out of make
+	dist, into build-release. It seems to me that make dist should do
+	as little as possible beyond putting the right files in a
+	tarball.
+
 2005-09-16 13:43:58  Ronny Haryanto  <ronnylist@haryan.to>  (roessler)
 
 	* po/id.po: update
@@ -17,8 +24,6 @@
 2005-09-16 02:15:45  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: Add stamp-doc-xml to "all".
-
-2005-09-16 01:50:40  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: stamp-doc-man is pointless as far as I can
 	tell. Removed.
