@@ -3185,7 +3185,7 @@ msgid ""
 "\n"
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02111, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
 msgstr ""
 "Kopirajto (C) 1996-2002 Michael R. Elkins <me@mutt.org>\n"
 "Kopirajto (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3210,7 +3210,7 @@ msgstr ""
 "\n"
 "    Vi devus esti ricevinta kopion de la Øenerala Publika Rajtigilo de\n"
 "    GNU kun æi tiu programo; se ne, skribu al Free Software Foundation,\n"
-"    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02111, Usono.\n"
+"    Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, Usono.\n"
 
 #: main.c:107
 #, fuzzy
