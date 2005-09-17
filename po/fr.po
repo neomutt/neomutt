@@ -8,10 +8,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.10\n"
+"Project-Id-Version: Mutt 1.5.11\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-09-15 16:23+0200\n"
-"PO-Revision-Date: 2005-08-12 01:40+0200\n"
+"POT-Creation-Date: 2005-09-17 02:35+0200\n"
+"PO-Revision-Date: 2005-09-17 02:37+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -2154,7 +2154,7 @@ msgstr "CLOSE a échoué"
 #: imap/imap.c:1388
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "Recherche d'en-tête sans nom d'en-tête : %s"
 
 #: imap/imap.c:1536
 msgid "Bad mailbox name"
@@ -2206,9 +2206,8 @@ msgstr ""
 "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
 #: imap/message.c:548
-#, fuzzy
 msgid "Uploading message..."
-msgstr "Chargement du message ..."
+msgstr "Chargement du message..."
 
 # , c-format
 #: imap/message.c:708
@@ -3304,7 +3303,6 @@ msgstr ""
 "    Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n"
 
 #: main.c:107
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3342,7 +3340,7 @@ msgstr ""
 "  -a <fich>\tattache un fichier à ce message\n"
 "  -b <adresse>\tspécifie une adresse à mettre en copie aveugle (BCC)\n"
 "  -c <adresse>\tspécifie une adresse à mettre en copie (CC)\n"
-"  -D\t\técrit la valeur de toutes les variables sur stderr"
+"  -D\t\técrit la valeur de toutes les variables sur stdout"
 
 #: main.c:122
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
