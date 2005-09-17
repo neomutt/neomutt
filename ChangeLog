@@ -1,3 +1,11 @@
+2005-09-17 17:27:54  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* main.c: Some minor cleanups: tell users to go to bugs.mutt.org
+	instead of using flea; update copyright year in mutt -v;
+	reorganise USE opts a little; break long strings so that -pedantic
+	stops complaining. Not sure that last one is worth the trouble it
+	causes the po team...
+
 2005-09-17 01:07:54  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
 	* po/fr.po: Update.
