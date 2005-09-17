@@ -58,10 +58,10 @@
 
 static const char *ReachingUs = N_("\
 To contact the developers, please mail to <mutt-dev@mutt.org>.\n\
-To report a bug, please use the flea(1) utility.\n");
+To report a bug, please visit http://bugs.mutt.org/.\n");
 
 static const char *Notice = N_("\
-Copyright (C) 1996-2002 Michael R. Elkins and others.\n\
+Copyright (C) 1996-2005 Michael R. Elkins and others.\n\
 Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n\
 Mutt is free software, and you are welcome to redistribute it\n\
 under certain conditions; type `mutt -vv' for details.\n");
@@ -75,9 +75,10 @@ Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
 Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n\
 \n\
-Lots of others not mentioned here contributed lots of code,\n\
-fixes, and suggestions.\n\
-\n\
+Many others not mentioned here contributed code, fixes,\n\
+and suggestions.\n");
+
+static const char *Licence = N_("\
     This program is free software; you can redistribute it and/or modify\n\
     it under the terms of the GNU General Public License as published by\n\
     the Free Software Foundation; either version 2 of the License, or\n\
@@ -86,8 +87,8 @@ fixes, and suggestions.\n\
     This program is distributed in the hope that it will be useful,\n\
     but WITHOUT ANY WARRANTY; without even the implied warranty of\n\
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n\
-    GNU General Public License for more details.\n\
-\n\
+    GNU General Public License for more details.\n");
+static const char *Obtaining = N_("\
     You should have received a copy of the GNU General Public License\n\
     along with this program; if not, write to the Free Software\n\
     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.\n\
@@ -110,8 +111,9 @@ static void mutt_usage (void)
        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n\
        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n\
        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n\
-       mutt -v[v]\n\
-\n\
+       mutt -v[v]\n");
+
+  puts _("\
 options:\n\
   -A <alias>\texpand the given alias\n\
   -a <file>\tattach a file to the message\n\
@@ -129,7 +131,9 @@ options:\n\
   -i <file>\tspecify a file which Mutt should include in the body\n\
   -m <type>\tspecify a default mailbox type\n\
   -n\t\tcauses Mutt not to read the system Muttrc\n\
-  -p\t\trecall a postponed message\n\
+  -p\t\trecall a postponed message");
+  
+  puts _("\
   -Q <variable>\tquery a configuration variable\n\
   -R\t\topen mailbox in read-only mode\n\
   -s <subj>\tspecify a subject (must be in quotes if it has spaces)\n\
@@ -277,8 +281,15 @@ static void show_version (void)
 #else
 	"-USE_SASL  "
 #endif
-	"\n"
-	
+
+#if HAVE_GETADDRINFO
+	"+HAVE_GETADDRINFO  "
+#else
+	"-HAVE_GETADDRINFO  "
+#endif
+        );
+  	
+  puts (
 #ifdef HAVE_REGCOMP
 	"+HAVE_REGCOMP  "
 #else
@@ -354,7 +365,9 @@ static void show_version (void)
 #else
         "-CRYPT_BACKEND_GPGME  "
 #endif
-
+        );
+  
+  puts (
 #ifdef BUFFY_SIZE
 	"+BUFFY_SIZE "
 #else
@@ -429,12 +442,6 @@ static void show_version (void)
 	"+HAVE_GETSID  "
 #else
 	"-HAVE_GETSID  "
-#endif
-
-#if HAVE_GETADDRINFO
-	"+HAVE_GETADDRINFO  "
-#else
-	"-HAVE_GETADDRINFO  "
 #endif
 
 #if USE_HCACHE
@@ -671,6 +678,8 @@ int main (int argc, char **argv)
     default:
       puts (mutt_make_version ());
       puts (_(Copyright));
+      puts (_(Licence));
+      puts (_(Obtaining));
       puts (_(ReachingUs));
       exit (0);
   }
