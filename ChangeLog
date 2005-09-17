@@ -1,3 +1,8 @@
+2005-09-17 17:39:18  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* Muttrc.head.in: Clean up some Muttrc macros, and add macro 'y'
+	to jump to the mailboxes view. Closes: #2069.
+
 2005-09-17 17:27:54  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* main.c: Some minor cleanups: tell users to go to bugs.mutt.org
