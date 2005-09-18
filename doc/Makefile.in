@@ -67,7 +67,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
-all: mutt.1 muttrc.man manual.html stamp-doc-xml stamp-doc-chunked manual.txt
+all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
 
 install: all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
@@ -116,14 +116,13 @@ manual-chunked stamp-doc-chunked: $(srcdir)/chunk.xsl stamp-doc-xml
 	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
 	touch stamp-doc-chunked
 
-manual.pdf: stamp-doc-tex
+manual.pdf: manual.tex
 	-if test -f manual.tex; then pdfjadetex manual.tex; fi
 
-manual.tex stamp-doc-tex: manual.xml
+manual.tex: stamp-doc-xml
 	-if test -n "$(DSLROOT)"; then \
 	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
 	fi
-	touch stamp-doc-tex
 
 clean: 
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
@@ -178,7 +177,7 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-manual.xml stamp-doc-xml: $(top_srcdir)/init.h manual.xml.head manual.xml.tail $(top_srcdir)/VERSION
+stamp-doc-xml: $(top_srcdir)/init.h manual.xml.head manual.xml.tail $(top_srcdir)/VERSION
 	$(MAKE) ../makedoc$(EXEEXT)
 	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION`/" $(srcdir)/manual.xml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
