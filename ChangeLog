@@ -1,3 +1,14 @@
+2005-09-19 06:14:27  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mkchangelog.sh: I just realised what's been happening to the
+	changelog: I recently got a new version of 'head' that refuses
+	to accept -1 instead of -n 1, but doesn't actually return
+	failure. So mkchangelog was feeding nothing to the cvs date
+	argument, and instead merrily snarfing down the entire changelog
+	every time. I've put in a simple $date != "" check. Thanks,
+	textutils!  Thanks for ushering in the future! I'd like to shake
+	your hand. Hard.
+
 2005-09-19 05:12:29  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/manual.xml.head: Remove mention of obsolete
