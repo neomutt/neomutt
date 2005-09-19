@@ -149,7 +149,7 @@ url="news:comp.mail.mutt"
 <title>Copyright</title>
 
 <para>
-Mutt is Copyright (C) 1996-2000 Michael R. Elkins
+Mutt is Copyright (C) 1996-2005 Michael R. Elkins
 &lt;me@cs.hmc.edu&gt; and others
 </para>
 
@@ -4037,11 +4037,6 @@ Mutt has the ability to dynamically restructure threads that are broken
 either by misconfigured software or bad behaviour from some
 correspondents. This allows to clean your mailboxes formats) from these
 annoyances which make it hard to follow a discussion.
-</para>
-
-<para>
-If you want to use these functions with IMAP, you need to compile Mutt
-with the <emphasis>--enable-imap-edit-threads</emphasis> configure flag.
 </para>
 
 <sect3>
