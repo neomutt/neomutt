@@ -1,3 +1,15 @@
+2005-09-20 06:43:39  David Champion  <dgc@uchicago.edu>  (brendan)
+
+	* init.c: Fix a null-pointer-dereference parsing aliases with
+	-d3+.
+
+	* muttlib.c: Clear a compiler warning.
+
+2005-09-20 03:56:25  Gero Treuner  <gerotick@faveve.uni-stuttgart.de>  (brendan)
+
+	* contrib/gpg.rc, doc/manual.xml.tail: Update locations of
+	gpg-2comp, Gero Treuner.
+
 2005-09-19 06:14:27  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mkchangelog.sh: I just realised what's been happening to the
