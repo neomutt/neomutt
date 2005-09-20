@@ -941,7 +941,8 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (debuglevel >= 2) 
   {
     ADDRESS *a;
-    for (a = tmp->addr; a; a = a->next)
+    /* A group is terminated with an empty address, so check a->mailbox */
+    for (a = tmp->addr; a && a->mailbox; a = a->next)
     {
       if (!a->group)
 	dprint (2, (debugfile, "parse_alias:   %s\n",
