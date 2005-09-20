@@ -1588,7 +1588,7 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
 	if (*p == '%')
 	{
 	  n = atoi(++p);			/* find pmatch index */
-	  while (isdigit(*p))
+	  while (isdigit((int)*p))
 	    ++p;				/* skip subst token */
 	  for (i = pmatch[n].rm_so; (i < pmatch[n].rm_eo) && (tlen < x); i++)
 	    text[tlen++] = s[i];
