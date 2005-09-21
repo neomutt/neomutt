@@ -263,6 +263,11 @@ int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
     snprintf (err->data, err->dsize, _("Error in expression: %s"), s->dptr);
     return (-1);
   }
+  if (!*buf.data)
+  {
+    snprintf (err->data, err->dsize, _("Empty expression"));
+    return (-1);
+  }
 
 #if 0
   /* If there are no RE metacharacters, use simple search anyway */
