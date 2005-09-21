@@ -1050,7 +1050,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_WHOLE_MSG:
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
-      if (Context->magic == M_IMAP && pat->stringmatch)
+      if (ctx->magic == M_IMAP && pat->stringmatch)
 	return (h->matched);
 #endif
       return (pat->not ^ msg_search (ctx, pat, h->msgno));
