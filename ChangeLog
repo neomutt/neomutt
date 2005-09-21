@@ -1,3 +1,9 @@
+2005-09-21 13:23:43  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, pattern.c: Catch empty substring/regexp search
+	arguments (precludes a segfault from dereferencing a null string
+	pointer later).
+
 2005-09-21 06:04:37  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* init.h, mutt.h, configure.in, hcache.c: QDBM support for the
