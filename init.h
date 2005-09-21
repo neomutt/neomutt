@@ -1077,6 +1077,15 @@ struct option_t MuttVars[] = {
   ** or less the best you can get. For details, google for mutt header
   ** cache (first hit).
   */
+#if HAVE_QDBM
+  { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 0 },
+  /*
+  ** .pp
+  ** If enabled the header cache will be compressed. So only one fifth of the usual
+  ** diskspace is used, but the uncompression can result in a slower open of the
+  ** cached folder.
+  */
+#endif /* HAVE_QDBM */
 #endif /* USE_HCACHE */
   { "maildir_trash", DT_BOOL, R_NONE, OPTMAILDIRTRASH, 0 },
   /*

@@ -22,7 +22,11 @@
 #include "config.h"
 #endif				/* HAVE_CONFIG_H */
 
-#if HAVE_GDBM
+#if HAVE_QDBM
+#include <depot.h>
+#include <cabin.h>
+#include <villa.h>
+#elif HAVE_GDBM
 #include <gdbm.h>
 #elif HAVE_DB4
 #include <db.h>
@@ -42,7 +46,14 @@
 #include "lib.h"
 #include "md5.h"
 
-#if HAVE_GDBM
+#if HAVE_QDBM
+static struct header_cache
+{
+  VILLA *db;
+  char *folder;
+  unsigned int crc;
+} HEADER_CACHE;
+#elif HAVE_GDBM
 static struct header_cache
 {
   GDBM_FILE db;
@@ -615,7 +626,133 @@ mutt_hcache_restore(const unsigned char *d, HEADER ** oh)
   return h;
 }
 
-#if HAVE_GDBM
+#if HAVE_QDBM
+void *
+mutt_hcache_open(const char *path, const char *folder)
+{
+  struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
+  int    flags = 0;
+#if 0 /* FIXME */
+  int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
+#endif
+  h->db = NULL;
+  h->folder = safe_strdup(folder);
+  h->crc = generate_crc32();
+
+  if (!path || path[0] == '\0')
+  {
+    FREE(&h->folder);
+    FREE(&h);
+    return NULL;
+  }
+
+  path = mutt_hcache_per_folder(path, folder);
+
+  if (option(OPTHCACHECOMPRESS))
+    flags = VL_OZCOMP;
+
+  h->db = vlopen(path, flags, VL_CMPLEX);
+
+  if (h->db)
+    return h;
+  else
+  {
+    FREE(&h->folder);
+    FREE(&h);
+
+    return NULL;
+  }
+}
+
+void
+mutt_hcache_close(void *db)
+{
+  struct header_cache *h = db;
+
+  if (!h)
+    return;
+
+  vlclose(h->db);
+  FREE(&h->folder);
+  FREE(&h);
+}
+
+void *
+mutt_hcache_fetch(void *db, const char *filename,
+		  size_t(*keylen) (const char *fn))
+{
+  struct header_cache *h = db;
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+  char *data = NULL;
+
+  if (!h)
+    return NULL;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+
+  data = vlget(h->db, path, ksize, NULL);
+
+  if (! crc32_matches(data, h->crc))
+  {
+    FREE(&data);
+    return NULL;
+  }
+
+  return data;
+}
+
+int
+mutt_hcache_store(void *db, const char *filename, HEADER * header,
+		  unsigned long uid_validity,
+		  size_t(*keylen) (const char *fn))
+{
+  struct header_cache *h = db;
+  char path[_POSIX_PATH_MAX];
+  int ret;
+  int ksize, dsize;
+  char *data = NULL;
+
+  if (!h)
+    return -1;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+
+  data  = mutt_hcache_dump(db, header, &dsize, uid_validity);
+
+  ret = vlput(h->db, path, ksize, data, dsize, VL_DOVER);
+
+  FREE(&data);
+
+  return ret;
+}
+
+int
+mutt_hcache_delete(void *db, const char *filename,
+		   size_t(*keylen) (const char *fn))
+{
+  struct header_cache *h = db;
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+
+  if (!h)
+    return -1;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+
+  return vlout(h->db, path, ksize);
+}
+
+#elif HAVE_GDBM
 
 void *
 mutt_hcache_open(const char *path, const char *folder)
