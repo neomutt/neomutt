@@ -1072,7 +1072,15 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	mutt_buffy (buf, sizeof (buf));
 
 	if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
-	  break;
+        {
+          if (menu->menu == MENU_PAGER)
+          {
+            op = OP_DISPLAY_MESSAGE;
+            continue;
+          }
+          else
+            break;
+        }
 	if (!buf[0])
 	{
 	  CLEARLINE (LINES-1);
