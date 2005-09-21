@@ -589,10 +589,6 @@ int mutt_index_menu (void)
 	move (menu->current - menu->top + menu->offset, COLS - 1);
       mutt_refresh ();
 
-      op = km_dokey (MENU_MAIN);
-
-      dprint(4, (debugfile, "mutt_index_menu[%d]: Got op %d\n", __LINE__, op));
-
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
       if (SigWinch)
       {
@@ -610,6 +606,10 @@ int mutt_index_menu (void)
 	continue;
       }
 #endif
+
+      op = km_dokey (MENU_MAIN);
+
+      dprint(4, (debugfile, "mutt_index_menu[%d]: Got op %d\n", __LINE__, op));
 
       if (op == -1)
 	continue; /* either user abort or timeout */
