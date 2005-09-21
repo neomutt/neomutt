@@ -1,3 +1,13 @@
+2005-09-21 02:58:07  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* curs_main.c: Cancelling <change-folder> from within the pager
+	will now keep you in the pager rather than kicking you back to the
+	index. Closes: #2075.
+
+2005-09-20 23:41:21  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* muttlib.c: Slight improvement on dgc's warning fix in edge cases.
+
 2005-09-20 06:43:39  David Champion  <dgc@uchicago.edu>  (brendan)
 
 	* init.c: Fix a null-pointer-dereference parsing aliases with
