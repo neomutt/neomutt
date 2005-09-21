@@ -106,7 +106,15 @@ void pgp_forget_passphrase (void)
 
 int pgp_use_gpg_agent (void)
 {
-  return option (OPTUSEGPGAGENT) && getenv ("GPG_TTY") && getenv ("GPG_AGENT_INFO");
+  char *tty;
+
+  if (!option (OPTUSEGPGAGENT) || !getenv ("GPG_AGENT_INFO"))
+    return 0;
+
+  if ((tty = ttyname(0)))
+    setenv("GPG_TTY", tty, 0);
+
+  return 1;
 }
 
 char *pgp_keyid(pgp_key_t k)
