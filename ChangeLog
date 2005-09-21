@@ -1,3 +1,8 @@
+2005-09-21 06:04:37  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* init.h, mutt.h, configure.in, hcache.c: QDBM support for the
+	header cache.
+
 2005-09-21 04:50:31  Adeodato Simo  <asp16@alu.ua.es>  (brendan)
 
 	* pgp.c: When using GPG agent in classic mode, set GPG_TTY if it
