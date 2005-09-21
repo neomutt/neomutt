@@ -1,3 +1,10 @@
+2005-09-21 14:17:14  Adeodato Simo  <asp16@alu.ua.es>  (brendan)
+
+	* curs_main.c: Check for sigwinch in index before calling
+	km_dokey, since for unknown reasons km_dokey seems to eat the
+	signal in some cases. [Not reproducible in my ncurses environments
+	- Brendan]. Closes: #1907.
+
 2005-09-21 13:23:43  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c, pattern.c: Catch empty substring/regexp search
