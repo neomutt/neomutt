@@ -1,3 +1,8 @@
+2005-09-21 04:50:31  Adeodato Simo  <asp16@alu.ua.es>  (brendan)
+
+	* pgp.c: When using GPG agent in classic mode, set GPG_TTY if it
+	isn't already set instead of bailing out. Closes: #2072.
+
 2005-09-21 03:48:38  Takahashi Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* init.c: Ensure that set doesn't change variables from within the
