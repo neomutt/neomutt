@@ -1,3 +1,11 @@
+2005-09-21 03:48:38  Takahashi Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* init.c: Ensure that set doesn't change variables from within the
+	help screen. I think this is a gross approach, and probably
+	overkill, but it's the fault of the original code design, not
+	Tamo's patch. Until a better way falls from the sky, this Closes:
+	#2011.
+
 2005-09-21 02:58:07  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* curs_main.c: Cancelling <change-folder> from within the pager
