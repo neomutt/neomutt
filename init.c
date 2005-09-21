@@ -49,6 +49,15 @@
 #include <errno.h>
 #include <sys/wait.h>
 
+#define CHECK_PAGER \
+	if ((CurrentMenu == MENU_PAGER) && \
+	    (MuttVars[idx].flags & R_RESORT)) \
+	{ \
+	  snprintf (err->data, err->dsize, \
+	    _("Not available in this menu.")); \
+	  return (-1); \
+	} else
+
 void toggle_quadoption (int opt)
 {
   int n = opt/4;
@@ -1261,12 +1270,26 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
      
       if (!mutt_strcmp ("all", tmp->data))
       {
+	if (CurrentMenu == MENU_PAGER)
+	{
+	  snprintf (err->data, err->dsize, _("Not available in this menu."));
+	  return (-1);
+	}
 	for (idx = 0; MuttVars[idx].option; idx++)
 	  mutt_restore_default (&MuttVars[idx]);
+	set_option (OPTFORCEREDRAWINDEX);
+	set_option (OPTFORCEREDRAWPAGER);
+	set_option (OPTSORTSUBTHREADS);
+	set_option (OPTNEEDRESORT);
+	set_option (OPTRESORTINIT);
+	set_option (OPTREDRAWTREE);
 	return 0;
       }
       else
+      {
+	CHECK_PAGER;
 	mutt_restore_default (&MuttVars[idx]);
+      }
     } 
     else if (DTYPE (MuttVars[idx].type) == DT_BOOL)
     { 
@@ -1298,6 +1321,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	return 0;
       }
 
+      CHECK_PAGER;
       if (unset)
 	unset_option (MuttVars[idx].data);
       else if (inv)
@@ -1311,6 +1335,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (unset)
       {
+	CHECK_PAGER;
 	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	else
@@ -1337,6 +1362,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       }
       else
       {
+	CHECK_PAGER;
         s->dptr++;
 
         /* copy the value of the string */
@@ -1385,6 +1411,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
       
+      CHECK_PAGER;
       s->dptr++;
 
       /* copy the value of the string */
@@ -1478,6 +1505,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
 
+      CHECK_PAGER;
       s->dptr++;
 
       /* copy the value of the string */
@@ -1502,6 +1530,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
 
+      CHECK_PAGER;
       s->dptr++;
 
       mutt_extract_token (tmp, s, 0);
@@ -1540,6 +1569,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	break;
       }
 
+      CHECK_PAGER;
       if (*s->dptr == '=')
       {
 	s->dptr++;
@@ -1610,6 +1640,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 		  p);
 	return 0;
       }
+      CHECK_PAGER;
       s->dptr++;
       mutt_extract_token (tmp, s , 0);
 
