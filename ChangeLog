@@ -1,3 +1,8 @@
+2005-09-22 16:38:08  Takahashi Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* configure.in, globals.h, hcache.c, init.h: Update QDBM patch to
+	the current state of the art. Closes: #2003 (again).
+
 2005-09-22 09:06:13  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* send.c: When composing a reply, there might be degenerate cases
