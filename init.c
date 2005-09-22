@@ -58,6 +58,8 @@
 	  return (-1); \
 	} else
 
+static int var_to_string (int idx, char* val, size_t len);
+
 void toggle_quadoption (int opt)
 {
   int n = opt/4;
@@ -2023,108 +2025,112 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
   if (mutt_strncmp (buffer, "set", 3) == 0)
   {
     int idx;
+    char val[LONG_STRING];
+
     strfcpy (var, pt, sizeof (var));
     /* ignore the trailing '=' when comparing */
     var[mutt_strlen (var) - 1] = 0;
     if ((idx = mutt_option_index (var)) == -1) 
       return 0; /* no such variable. */
-    else
+    else if (var_to_string (idx, val, sizeof (val)))
     {
-      char tmp [LONG_STRING], tmp2[LONG_STRING];
-      char *s, *d;
-      size_t dlen = buffer + len - pt - spaces;
-      char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
-
-      tmp[0] = '\0';
-
-      if ((DTYPE(MuttVars[idx].type) == DT_STR) || 
-	  (DTYPE(MuttVars[idx].type) == DT_PATH) ||
-	  (DTYPE(MuttVars[idx].type) == DT_RX))
-      {
-	strfcpy (tmp, NONULL (*((char **) MuttVars[idx].data)), sizeof (tmp));
-	if (DTYPE (MuttVars[idx].type) == DT_PATH)
-	  mutt_pretty_mailbox (tmp);
-      }
-      else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
-      {
-	rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) MuttVars[idx].data), 0);
-      }
-      else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
-	strfcpy (tmp, vals[quadoption (MuttVars[idx].data)], sizeof (tmp));
-      else if (DTYPE (MuttVars[idx].type) == DT_NUM)
-	snprintf (tmp, sizeof (tmp), "%d", (*((short *) MuttVars[idx].data)));
-      else if (DTYPE (MuttVars[idx].type) == DT_SORT)
-      {
-	const struct mapping_t *map;
-	char *p;
-
-	switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
-	{
-	  case DT_SORT_ALIAS:
-	    map = SortAliasMethods;
-	    break;
-	  case DT_SORT_BROWSER:
-	    map = SortBrowserMethods;
-	    break;
-	  case DT_SORT_KEYS:
-            if ((WithCrypto & APPLICATION_PGP))
-              map = SortKeyMethods;
-            else
-              map = SortMethods;
-	    break;
-	  default:
-	    map = SortMethods;
-	    break;
-	}
-	p = mutt_getnamebyvalue (*((short *) MuttVars[idx].data) & SORT_MASK, map);
-	snprintf (tmp, sizeof (tmp), "%s%s%s",
-		  (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
-		  (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "",
-		  p);
-      }
-      else if (DTYPE (MuttVars[idx].type) == DT_MAGIC)
-      {
-        char *p;
-
-        switch (DefaultMagic)
-        {
-          case M_MBOX:
-            p = "mbox";
-            break;
-          case M_MMDF:
-            p = "MMDF";
-            break;
-          case M_MH:
-            p = "MH";
-            break;
-          case M_MAILDIR:
-            p = "Maildir";
-            break;
-          default:
-            p = "unknown";
-        }
-        strfcpy (tmp, p, sizeof (tmp));
-      }
-      else if (DTYPE (MuttVars[idx].type) == DT_BOOL)
-	strfcpy (tmp, option (MuttVars[idx].data) ? "yes" : "no", sizeof (tmp));
-      else
-	return 0;
-      
-      for (s = tmp, d = tmp2; *s && (d - tmp2) < sizeof (tmp2) - 2;)
-      {
-	if (*s == '\\' || *s == '"')
-	  *d++ = '\\';
-	*d++ = *s++;
-      }
-      *d = '\0';
-      
-      strfcpy (tmp, pt, sizeof (tmp));
-      snprintf (pt, dlen, "%s\"%s\"", tmp, tmp2);
-	  
+      snprintf (pt, len - (pt - buffer), "%s=\"%s\"", var, val);
       return 1;
     }
   }
   return 0;
+}
+
+static int var_to_string (int idx, char* val, size_t len)
+{
+  char tmp[LONG_STRING];
+  char *s, *d;
+  char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
+
+  tmp[0] = '\0';
+
+  if ((DTYPE(MuttVars[idx].type) == DT_STR) ||
+      (DTYPE(MuttVars[idx].type) == DT_PATH) ||
+      (DTYPE(MuttVars[idx].type) == DT_RX))
+  {
+    strfcpy (tmp, NONULL (*((char **) MuttVars[idx].data)), sizeof (tmp));
+    if (DTYPE (MuttVars[idx].type) == DT_PATH)
+      mutt_pretty_mailbox (tmp);
+  }
+  else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+  {
+    rfc822_write_address (tmp, sizeof (tmp), *((ADDRESS **) MuttVars[idx].data), 0);
+  }
+  else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
+    strfcpy (tmp, vals[quadoption (MuttVars[idx].data)], sizeof (tmp));
+  else if (DTYPE (MuttVars[idx].type) == DT_NUM)
+    snprintf (tmp, sizeof (tmp), "%d", (*((short *) MuttVars[idx].data)));
+  else if (DTYPE (MuttVars[idx].type) == DT_SORT)
+  {
+    const struct mapping_t *map;
+    char *p;
+
+    switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
+    {
+      case DT_SORT_ALIAS:
+        map = SortAliasMethods;
+        break;
+      case DT_SORT_BROWSER:
+        map = SortBrowserMethods;
+        break;
+      case DT_SORT_KEYS:
+        if ((WithCrypto & APPLICATION_PGP))
+          map = SortKeyMethods;
+        else
+          map = SortMethods;
+        break;
+      default:
+        map = SortMethods;
+        break;
+    }
+    p = mutt_getnamebyvalue (*((short *) MuttVars[idx].data) & SORT_MASK, map);
+    snprintf (tmp, sizeof (tmp), "%s%s%s",
+              (*((short *) MuttVars[idx].data) & SORT_REVERSE) ? "reverse-" : "",
+              (*((short *) MuttVars[idx].data) & SORT_LAST) ? "last-" : "",
+              p);
+  }
+  else if (DTYPE (MuttVars[idx].type) == DT_MAGIC)
+  {
+    char *p;
+
+    switch (DefaultMagic)
+    {
+      case M_MBOX:
+        p = "mbox";
+        break;
+      case M_MMDF:
+        p = "MMDF";
+        break;
+      case M_MH:
+        p = "MH";
+        break;
+      case M_MAILDIR:
+        p = "Maildir";
+        break;
+      default:
+        p = "unknown";
+    }
+    strfcpy (tmp, p, sizeof (tmp));
+  }
+  else if (DTYPE (MuttVars[idx].type) == DT_BOOL)
+    strfcpy (tmp, option (MuttVars[idx].data) ? "yes" : "no", sizeof (tmp));
+  else
+    return 0;
+
+  for (s = tmp, d = val; *s && len - (d - val) > 2; len--)
+  {
+    if (*s == '\\' || *s == '"')
+      *d++ = '\\';
+    *d++ = *s++;
+  }
+  *d = '\0';
+
+  return 1;
 }
 
 /* Implement the -Q command line flag */
