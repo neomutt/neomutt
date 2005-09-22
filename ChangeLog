@@ -1,4 +1,7 @@
-2005-09-22 03:23:09  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-22 04:05:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.c: Refactor mutt var completion so it can be used for
+	inline expansions (eg $from). Actual expansion not committed yet.
 
 	* send.c: If ContentType is null, assume text/plain. Stopgap; a
 	better mechanism would sanity-check MuttVars assignments before
