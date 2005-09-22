@@ -589,6 +589,12 @@ void mutt_fix_reply_recipients (ENVELOPE *env)
   env->to = mutt_remove_duplicates (env->to);
   env->cc = mutt_remove_duplicates (env->cc);
   env->cc = mutt_remove_xrefs (env->to, env->cc);
+  
+  if (env->cc && !env->to)
+  {
+    env->to = env->cc;
+    env->cc = NULL;
+  }
 }
 
 void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
