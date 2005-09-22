@@ -1122,8 +1122,9 @@ ci_send_message (int flags,		/* send mode */
     pbody = mutt_new_body ();
     pbody->next = msg->content; /* don't kill command-line attachments */
     msg->content = pbody;
-    
-    ctype = safe_strdup (ContentType);
+
+    if (!(ctype = safe_strdup (ContentType)))
+      ctype = safe_strdup ("text/plain");
     mutt_parse_content_type (ctype, msg->content);
     FREE (&ctype);
     msg->content->unlink = 1;
