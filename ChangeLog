@@ -1,3 +1,14 @@
+2005-09-22 03:09:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/util.c, imap/imap.c: Don't allow imap URLs with empty
+	hosts. Also don't attempt to complete on open connections when
+	there aren't any (diagnosed by Nico Golde). Closes: #2079.
+
+	* pattern.c: Use ctx instead of Context when checking whether or
+	not to do IMAP search. Resolves a possible segfault in color index
+	~b operations. I can't remember whether Context vs ctx was
+	intentional - I doubt it.
+
 2005-09-21 14:17:14  Adeodato Simo  <asp16@alu.ua.es>  (brendan)
 
 	* curs_main.c: Check for sigwinch in index before calling
