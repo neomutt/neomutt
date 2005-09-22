@@ -1,4 +1,8 @@
-2005-09-22 03:09:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-22 03:23:09  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* send.c: If ContentType is null, assume text/plain. Stopgap; a
+	better mechanism would sanity-check MuttVars assignments before
+	allowing them. Closes: #2080.
 
 	* imap/util.c, imap/imap.c: Don't allow imap URLs with empty
 	hosts. Also don't attempt to complete on open connections when
