@@ -107,7 +107,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   url_parse_ciss (&url, c);
   if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
-    if (mutt_account_fromurl (&mx->account, &url) < 0)
+    if (mutt_account_fromurl (&mx->account, &url) < 0 || !*mx->account.host)
     {
       FREE (&c);
       return -1;
@@ -165,7 +165,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       }
     }
   }
-  
+
   if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
     mx->account.port = ImapsPort;
 

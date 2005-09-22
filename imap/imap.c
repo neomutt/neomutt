@@ -1612,7 +1612,7 @@ imap_complete_hosts (char *dest, size_t len)
     }
   }
   
-  for (conn = mutt_socket_head (); conn->next; conn = conn->next)
+  for (conn = mutt_socket_head (); conn && conn->next; conn = conn->next)
   {
     ciss_url_t url;
     char urlstr[LONG_STRING];
