@@ -69,8 +69,10 @@ WHERE char *MailcapPath;
 WHERE char *Maildir;
 #if USE_HCACHE
 WHERE char *HeaderCache;
+#if HAVE_GDBM || HAVE_DB4
 WHERE char *HeaderCachePageSize;
-#endif
+#endif /* HAVE_GDBM || HAVE_DB4 */
+#endif /* USE_HCACHE */
 WHERE char *MhFlagged;
 WHERE char *MhReplied;
 WHERE char *MhUnseen;

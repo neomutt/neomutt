@@ -1069,6 +1069,7 @@ struct option_t MuttVars[] = {
   ** files when the header cache is in use.  This incurs one stat(2) per
   ** message every time the folder is opened.
   */
+#if HAVE_GDBM || HAVE_DB4
   { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
   /*
   ** .pp
@@ -1077,6 +1078,7 @@ struct option_t MuttVars[] = {
   ** or less the best you can get. For details, google for mutt header
   ** cache (first hit).
   */
+#endif /* HAVE_GDBM || HAVE_DB4 */
 #if HAVE_QDBM
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 0 },
   /*

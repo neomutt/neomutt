@@ -631,10 +631,7 @@ void *
 mutt_hcache_open(const char *path, const char *folder)
 {
   struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
-  int    flags = 0;
-#if 0 /* FIXME */
-  int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
-#endif
+  int    flags = VL_OWRITER | VL_OCREAT;
   h->db = NULL;
   h->folder = safe_strdup(folder);
   h->crc = generate_crc32();
@@ -649,10 +646,9 @@ mutt_hcache_open(const char *path, const char *folder)
   path = mutt_hcache_per_folder(path, folder);
 
   if (option(OPTHCACHECOMPRESS))
-    flags = VL_OZCOMP;
+    flags |= VL_OZCOMP;
 
   h->db = vlopen(path, flags, VL_CMPLEX);
-
   if (h->db)
     return h;
   else
