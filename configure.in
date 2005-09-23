@@ -825,7 +825,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
         LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
         AC_DEFINE(HAVE_DB4, 1, [Sleepycat DB4 Support])
     else
-        AC_MSG_ERROR(You need QDBM, Sleepycat DB4 or GDBM for --enable-hcache)
+        AC_MSG_ERROR([You need QDBM, GDBM or Sleepycat DB4 for hcache])
     fi
 fi])
 dnl -- end cache --
