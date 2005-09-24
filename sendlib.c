@@ -1057,7 +1057,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   mutt_copy_hdr (fpin, fpout, a->offset, a->offset + a->length, 
 		 CH_MIME | CH_NONEWLINE | CH_XMIT, NULL);
 
-  fputs ("Mime-Version: 1.0\n", fpout);
+  fputs ("MIME-Version: 1.0\n", fpout);
   mutt_write_mime_header (a->parts, fpout);
   fputc ('\n', fpout);
   mutt_write_mime_body (a->parts, fpout);
@@ -1614,7 +1614,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     }
 
     /* Add the MIME headers */
-    fputs ("Mime-Version: 1.0\n", fp);
+    fputs ("MIME-Version: 1.0\n", fp);
     mutt_write_mime_header (attach, fp);
   }
 
