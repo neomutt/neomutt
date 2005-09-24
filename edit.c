@@ -38,7 +38,7 @@
  * SLcurses_waddnstr() can't take a "const char *", so this is only
  * declared "static" (sigh)
  */
-static char* EditorHelp = N_("\
+static char* EditorHelp1 = N_("\
 ~~		insert a line begining with a single ~\n\
 ~b users	add users to the Bcc: field\n\
 ~c users	add users to the Cc: field\n\
@@ -47,7 +47,9 @@ static char* EditorHelp = N_("\
 ~h		edit the message header\n\
 ~m messages	include and quote messages\n\
 ~M messages	same as ~m, except include headers\n\
-~p		print the message\n\
+~p		print the message\n");
+
+static char* EditorHelp2 = N_("\
 ~q		write file and quit editor\n\
 ~r file		read a file into the editor\n\
 ~t users	add users to the To: field\n\
@@ -352,7 +354,8 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
       switch (tmp[1])
       {
 	case '?':
-	  addstr (_(EditorHelp));
+	  addstr (_(EditorHelp1));
+          addstr (_(EditorHelp2));
 	  break;
 	case 'b':
 	  msg->env->bcc = mutt_parse_adrlist (msg->env->bcc, p);
