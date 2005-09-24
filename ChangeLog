@@ -1,3 +1,8 @@
+2005-09-24 19:45:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mbox.c, mutt.h, configure.in: Use fseeko/ftello when available
+	while opening mbox/mmdf. Closes: #2084.
+
 2005-09-24 19:36:35  Alain Bench  <veronatif@free.fr>  (brendan)
 
 	* copy.c, mutt.h, parse.c, sendlib.c, thread.c: Cosmetic fixes to
