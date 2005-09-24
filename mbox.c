@@ -85,7 +85,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   int count = 0, oldmsgcount = ctx->msgcount;
   int lines;
   time_t t, tz;
-  long loc, tmploc;
+  LOFF_T loc, tmploc;
   HEADER *hdr;
   struct stat sb;
 #ifdef NFS_ATTRIBUTE_HACK
@@ -122,7 +122,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
     if (mutt_strcmp (buf, MMDF_SEP) == 0)
     {
-      loc = ftell (ctx->fp);
+      loc = ftello (ctx->fp);
       
       count++;
       if (!ctx->quiet && ReadInc && ((count % ReadInc == 0) || count == 1))
@@ -159,7 +159,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
       hdr->env = mutt_read_rfc822_header (ctx->fp, hdr, 0, 0);
 
-      loc = ftell (ctx->fp);
+      loc = ftello (ctx->fp);
 
       if (hdr->content->length > 0 && hdr->lines > 0)
       {
@@ -186,7 +186,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
       {
 	lines = -1;
 	do {
-	  loc = ftell (ctx->fp);
+	  loc = ftello (ctx->fp);
 	  if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
 	    break;
 	  lines++;
@@ -231,7 +231,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   HEADER *curhdr;
   time_t t, tz;
   int count = 0, lines = 0;
-  long loc;
+  LOFF_T loc;
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
 #endif
@@ -262,7 +262,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
      date received */
   tz = mutt_local_tz (0);
 
-  loc = ftell (ctx->fp);
+  loc = ftello (ctx->fp);
   while (fgets (buf, sizeof (buf), ctx->fp) != NULL)
   {
     if (is_from (buf, return_path, sizeof (return_path), &t))
@@ -304,9 +304,9 @@ int mbox_parse_mailbox (CONTEXT *ctx)
        */
       if (curhdr->content->length > 0)
       {
-	long tmploc;
+	LOFF_T tmploc;
 
-	loc = ftell (ctx->fp);
+	loc = ftello (ctx->fp);
 	tmploc = loc + curhdr->content->length + 1;
 
 	if (0 < tmploc && tmploc < ctx->size)
@@ -315,13 +315,13 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	   * check to see if the content-length looks valid.  we expect to
 	   * to see a valid message separator at this point in the stream
 	   */
-	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0 ||
+	  if (fseeko (ctx->fp, tmploc, SEEK_SET) != 0 ||
 	      fgets (buf, sizeof (buf), ctx->fp) == NULL ||
 	      mutt_strncmp ("From ", buf, 5) != 0)
 	  {
 	    dprint (1, (debugfile, "mbox_parse_mailbox: bad content-length in message %d (cl=%ld)\n", curhdr->index, curhdr->content->length));
 	    dprint (1, (debugfile, "\tLINE: %s", buf));
-	    if (fseek (ctx->fp, loc, SEEK_SET) != 0) /* nope, return the previous position */
+	    if (fseeko (ctx->fp, loc, SEEK_SET) != 0) /* nope, return the previous position */
 	    {
 	      dprint (1, (debugfile, "mbox_parse_mailbox: fseek() failed\n"));
 	    }
@@ -346,7 +346,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	    int cl = curhdr->content->length;
 
 	    /* count the number of lines in this message */
-	    if (fseek (ctx->fp, loc, SEEK_SET) != 0)
+	    if (fseeko (ctx->fp, loc, SEEK_SET) != 0)
 	      dprint (1, (debugfile, "mbox_parse_mailbox: fseek() failed\n"));
 	    while (cl-- > 0)
 	    {
@@ -356,7 +356,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 	  }
 
 	  /* return to the offset of the next message separator */
-	  if (fseek (ctx->fp, tmploc, SEEK_SET) != 0)
+	  if (fseeko (ctx->fp, tmploc, SEEK_SET) != 0)
 	    dprint (1, (debugfile, "mbox_parse_mailbox: fseek() failed\n"));
 	}
       }
@@ -374,7 +374,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
     else
       lines++;
     
-    loc = ftell (ctx->fp);
+    loc = ftello (ctx->fp);
   }
   
   /*
@@ -387,7 +387,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   {
     if (PREV->content->length < 0)
     {
-      PREV->content->length = ftell (ctx->fp) - PREV->content->offset - 1;
+      PREV->content->length = ftello (ctx->fp) - PREV->content->offset - 1;
       if (PREV->content->length < 0)
 	PREV->content->length = 0;
     }

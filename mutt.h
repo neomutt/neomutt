@@ -627,7 +627,7 @@ typedef struct body
 				 * attachment
 				 */
   long offset;                  /* offset where the actual data begins */
-  long length;                  /* length (in bytes) of attachment */
+  LOFF_T length;                  /* length (in bytes) of attachment */
   char *filename;               /* when sending a message, this is the file
 				 * to which this structure refers
 				 */
