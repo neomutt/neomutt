@@ -1,4 +1,7 @@
-2005-09-24 19:45:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-09-24 20:03:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* edit.c: Inflict more needless pain on translators by splitting
+	EditorHelp to satisfy -pedantic.
 
 	* mbox.c, mutt.h, configure.in: Use fseeko/ftello when available
 	while opening mbox/mmdf. Closes: #2084.
