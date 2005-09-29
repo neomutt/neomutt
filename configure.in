@@ -42,6 +42,7 @@ AC_C_CONST
 
 AC_SYS_LARGEFILE
 AC_FUNC_FSEEKO
+AC_CHECK_SIZEOF(off_t)
 
 AC_PATH_PROG(DBX, dbx, no)
 AC_PATH_PROG(GDB, gdb, no)
@@ -86,10 +87,16 @@ AH_TEMPLATE([ICONV_NONTRANS],
 AH_BOTTOM([/* fseeko portability defines */
 #ifdef HAVE_FSEEKO
 # define LOFF_T off_t
+# if SIZEOF_OFF_T == 8
+#  define OFF_T_FMT "%lld"
+# else
+#  define OFF_T_FMT "%ld"
+# endif
 #else
 # define LOFF_T long
 # define fseeko fseek
 # define ftello ftell
+# define OFF_T_FMT "%ld"
 #endif
 ])
 MUTT_C99_INTTYPES

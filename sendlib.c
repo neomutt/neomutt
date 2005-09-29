@@ -2428,7 +2428,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     rewind (tempfp);
     while (fgets (sasha, sizeof (sasha), tempfp) != NULL)
       lines++;
-    fprintf (msg->fp, "Content-Length: %ld\n", (long) ftell (tempfp));
+    fprintf (msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftell (tempfp));
     fprintf (msg->fp, "Lines: %d\n\n", lines);
 
     /* copy the body and clean up */

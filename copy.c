@@ -470,7 +470,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   if (flags & CH_UPDATE_LEN &&
       (flags & CH_NOLEN) == 0)
   {
-    fprintf (out, "Content-Length: %ld\n", h->content->length);
+    fprintf (out, "Content-Length: " OFF_T_FMT "\n", h->content->length);
     if (h->lines != 0 || h->content->length == 0)
       fprintf (out, "Lines: %d\n", h->lines);
   }
@@ -490,7 +490,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 }
 
 /* Count the number of lines and bytes to be deleted in this body*/
-static int count_delete_lines (FILE *fp, BODY *b, long *length, size_t datelen)
+static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen)
 {
   int dellines = 0;
   long l;
@@ -498,7 +498,7 @@ static int count_delete_lines (FILE *fp, BODY *b, long *length, size_t datelen)
 
   if (b->deleted)
   {
-    fseek (fp, b->offset, SEEK_SET);
+    fseeko (fp, b->offset, SEEK_SET);
     for (l = b->length ; l ; l --)
     {
       ch = getc (fp);
@@ -545,7 +545,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 {
   char prefix[SHORT_STRING];
   STATE s;
-  long new_offset = -1;
+  LOFF_T new_offset = -1;
   int rc = 0;
 
   if (flags & M_CM_PREFIX)
@@ -564,7 +564,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     else if (hdr->attach_del && (chflags & CH_UPDATE_LEN))
     {
       int new_lines;
-      long new_length = body->length;
+      LOFF_T new_length = body->length;
       char date[SHORT_STRING];
 
       mutt_make_date (date, sizeof (date));
@@ -579,7 +579,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       if (mutt_copy_header (fpin, hdr, fpout,
 			    chflags | CH_NOLEN | CH_NONEWLINE, NULL))
 	return -1;
-      fprintf (fpout, "Content-Length: %ld\n", new_length);
+      fprintf (fpout, "Content-Length: " OFF_T_FMT "\n", new_length);
       if (new_lines <= 0)
 	new_lines = 0;
       else
@@ -595,7 +595,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 
 #ifdef DEBUG
       {
-	long fail = ((ftell (fpout) - new_offset) - new_length);
+	LOFF_T fail = ((ftello (fpout) - new_offset) - new_length);
 
 	if (fail)
 	{
@@ -633,7 +633,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 			  (chflags & CH_PREFIX) ? prefix : NULL) == -1)
       return -1;
 
-    new_offset = ftell (fpout);
+    new_offset = ftello (fpout);
   }
 
   if (flags & M_CM_DECODE)
@@ -821,7 +821,7 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
       {
 	fprintf (fpout,
 		 "Content-Type: message/external-body; access-type=x-mutt-deleted;\n"
-		 "\texpiration=%s; length=%ld\n"
+		 "\texpiration=%s; length=" OFF_T_FMT "\n"
 		 "\n", date + 5, part->length);
 	if (ferror (fpout))
 	  return -1;
