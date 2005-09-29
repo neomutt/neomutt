@@ -1,3 +1,10 @@
+2005-09-29 23:02:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* configure.in, copy.c, sendlib.c: Ensure that Content-Length
+	printf format specifier matches off_t size, to avoid mail-losing
+	Content-Length: 0 (bug introduced by large file patch a couple
+	of days ago). Closes: #2096.
+
 2005-09-27 03:43:24  Johan Svedberg  <johan@svedberg.com>  (brendan)
 
 	* po/sv.po: Update.
