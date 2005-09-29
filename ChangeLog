@@ -1,3 +1,7 @@
+2005-09-29 23:52:16  pi  <pi@beobide.net>  (brendan)
+
+	* configure.in, po/eu.po: Basque translation.
+
 2005-09-29 23:02:49  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* configure.in, copy.c, sendlib.c: Ensure that Content-Length
