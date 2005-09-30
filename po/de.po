@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.10\n"
+"Project-Id-Version: 1.5.11\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2005-09-15 16:23+0200\n"
-"PO-Revision-Date: 2005-08-14 13:26+0200\n"
+"PO-Revision-Date: 2005-09-27 12:20+0200\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1361,9 +1361,8 @@ msgstr ""
 "\"crypt_use_gpgme\" gesetzt, obwohl nicht mit GPGME Support compiliert."
 
 #: cryptglue.c:112
-#, fuzzy
 msgid "Invoking S/MIME..."
-msgstr "Rufe SMIME auf..."
+msgstr "Rufe S/MIME auf..."
 
 #: curs_lib.c:188
 msgid "yes"
@@ -2069,7 +2068,7 @@ msgstr "CLOSE fehlgeschlagen"
 #: imap/imap.c:1388
 #, c-format
 msgid "Header search without header name: %s"
-msgstr ""
+msgstr "Suche im Nachrichtenkopf ohne Angabe des Feldes: %s"
 
 #: imap/imap.c:1536
 msgid "Bad mailbox name"
@@ -2116,9 +2115,8 @@ msgstr ""
 "Der Nachrichtenindex ist fehlerhaft. Versuche die Mailbox neu zu öffnen."
 
 #: imap/message.c:548
-#, fuzzy
 msgid "Uploading message..."
-msgstr "Lade Nachrichten auf den Server..."
+msgstr "Lade Nachricht auf den Server..."
 
 #: imap/message.c:708
 #, c-format
@@ -3193,7 +3191,6 @@ msgstr ""
 "02110-1301, USA.\n"
 
 #: main.c:107
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3214,19 +3211,15 @@ msgid ""
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
 "  -D\t\tprint the value of all variables to stdout"
 msgstr ""
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-"[...]\n"
-"       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-"       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
-"       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-"       mutt -v[v]\n"
+"Aufruf: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
+"        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
+"        mutt -v[v]\n"
 "\n"
-"options:\n"
+"Optionen:\n"
 "  -A <alias>\tExpandiere den angegebenen Alias\n"
 "  -a <file>\tHängt Datei an die Message an\n"
 "  -b <address>\tEmpfänger einer unsichtbaren Kopie (Bcc:)\n"
