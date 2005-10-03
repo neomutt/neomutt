@@ -1,3 +1,13 @@
+2005-10-03 07:52:00  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* curs_lib.c, send.c: fix a problem that appears with signatures
+	without newline.
+
+2005-09-30 18:24:17  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/devel-notes.txt: Change manual.sgml to manual.xml (noted
+	by Alain Bench).
+
 2005-09-30 01:42:50  Roland Rosenfeld  <roland@spinnaker.de>  (brendan)
 
 	* po/de.po: Update.
