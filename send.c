@@ -1033,6 +1033,19 @@ static void decode_descriptions (BODY *b)
   }
 }
 
+static void fix_end_of_file (const char *data)
+{
+  FILE *fp;
+  int c;
+  
+  if ((fp = safe_fopen (data, "a+")) == NULL)
+    return;
+  fseek (fp,-1,SEEK_END);
+  if ((c = fgetc(fp)) != '\n')
+    fputc ('\n', fp);
+  safe_fclose (&fp);
+}
+
 int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
 {
   HEADER *msg = mutt_new_header ();
@@ -1393,7 +1406,16 @@ ci_send_message (int flags,		/* send mode */
 	mutt_env_to_idna (msg->env, NULL, NULL);
       }
       else
+      {
 	mutt_edit_file (Editor, msg->content->filename);
+	if (stat (msg->content->filename, &st) == 0)
+	{
+	  if (mtime != st.st_mtime)
+	    fix_end_of_file (msg->content->filename);
+	}
+	else
+	  mutt_perror (msg->content->filename);
+      }
       
       mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
