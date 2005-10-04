@@ -1,3 +1,8 @@
+2005-10-04 04:29:09  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* curs_main.c: Piping and printing in IMAP folder index with
+	imap_peek=no marks message read immediately.
+
 2005-10-03 07:52:00  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* curs_lib.c, send.c: fix a problem that appears with signatures
