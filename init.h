@@ -220,10 +220,12 @@ struct option_t MuttVars[] = {
   ** .dt %m  .dd major MIME type
   ** .dt %M  .dd MIME subtype
   ** .dt %n  .dd attachment number
+  ** .dt %Q  .dd "Q", if MIME part qualifies for attachment counting
   ** .dt %s  .dd size
   ** .dt %t  .dd tagged flag
   ** .dt %T  .dd graphic tree characters
   ** .dt %u  .dd unlink (=to delete) flag
+  ** .dt %X  .dd number of qualifying MIME parts in this part and its children
   ** .dt %>X .dd right justify the rest of the string and pad with character "X"
   ** .dt %|X .dd pad to the end of the line with character "X"
   ** .de
@@ -990,6 +992,7 @@ struct option_t MuttVars[] = {
   ** .dt %T .dd the appropriate character from the $$to_chars string
   ** .dt %u .dd user (login) name of the author
   ** .dt %v .dd first name of the author, or the recipient if the message is from you
+  ** .dt %X .dd number of attachments
   ** .dt %y .dd `x-label:' field, if present
   ** .dt %Y .dd `x-label' field, if present, and (1) not at part of a thread tree,
   **            (2) at the top of a thread, or (3) `x-label' is different from
@@ -2982,6 +2985,9 @@ static int parse_my_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unmy_hdr (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_subscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unsubscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_attachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_unattachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+
 
 static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -3001,6 +3007,8 @@ struct command_t Commands[] = {
   { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
 #endif
   { "alias",		parse_alias,		0 },
+  { "attachments",	parse_attachments,	0 },
+  { "unattachments",parse_unattachments,0 },
   { "auto_view",	parse_list,		UL &AutoViewList },
   { "alternative_order",	parse_list,	UL &AlternativeOrderList},
   { "bind",		mutt_parse_bind,	0 },

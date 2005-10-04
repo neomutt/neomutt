@@ -793,6 +793,237 @@ static int parse_lists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   return 0;
 }
 
+/* always wise to do what someone else did before */
+static void _attachments_clean (void)
+{
+  int i;
+  if (Context && Context->msgcount) 
+  {
+    for (i = 0; i < Context->msgcount; i++)
+      Context->hdrs[i]->attach_valid = 0;
+  }
+}
+
+static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
+{
+  ATTACH_MATCH *a;
+  LIST *listp, *lastp;
+  char *p;
+  char *tmpminor;
+  int len;
+
+  /* Find the last item in the list that data points to. */
+  lastp = NULL;
+  dprint(5, (debugfile, "parse_attach_list: ldata = %08x, *ldata = %08x\n",
+	      (unsigned int)ldata, (unsigned int)*ldata));
+  for (listp = *ldata; listp; listp = listp->next)
+  {
+    a = (ATTACH_MATCH *)listp->data;
+    dprint(5, (debugfile, "parse_attach_list: skipping %s/%s\n",
+		a->major, a->minor));
+    lastp = listp;
+  }
+
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+
+    if (!buf->data || *buf->data == '\0')
+      continue;
+   
+    a = safe_malloc(sizeof(ATTACH_MATCH));
+
+    /* some cheap hacks that I expect to remove */
+    if (!mutt_strcasecmp(buf->data, "any"))
+      a->major = safe_strdup("*/.*");
+    else if (!mutt_strcasecmp(buf->data, "none"))
+      a->major = safe_strdup("cheap_hack/this_should_never_match");
+    else
+      a->major = safe_strdup(buf->data);
+
+    if ((p = strchr(a->major, '/')))
+    {
+      *p = '\0';
+      ++p;
+      a->minor = p;
+    }
+    else
+    {
+      a->minor = "unknown";
+    }
+
+    len = strlen(a->minor);
+    tmpminor = safe_malloc(len+3);
+    strcpy(&tmpminor[1], a->minor); /* __STRCPY_CHECKED__ */
+    tmpminor[0] = '^';
+    tmpminor[len+1] = '$';
+    tmpminor[len+2] = '\0';
+
+    a->major_int = mutt_check_mime_type(a->major);
+    regcomp(&a->minor_rx, tmpminor, REG_ICASE|REG_EXTENDED);
+
+    safe_free(&tmpminor);
+
+    dprint(5, (debugfile, "parse_attach_list: added %s/%s [%d]\n",
+		a->major, a->minor, a->major_int));
+
+    listp = safe_malloc(sizeof(LIST));
+    listp->data = (char *)a;
+    listp->next = NULL;
+    if (lastp)
+    {
+      lastp->next = listp;
+    }
+    else
+    {
+      *ldata = listp;
+    }
+    lastp = listp;
+  }
+  while (MoreArgs (s));
+   
+  _attachments_clean();
+  return 0;
+}
+
+static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
+{
+  ATTACH_MATCH *a;
+  LIST *lp, *lastp;
+  char *tmp;
+  int major;
+  char *minor;
+
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+
+    if (!mutt_strcasecmp(buf->data, "any"))
+      tmp = safe_strdup("*/.*");
+    else if (!mutt_strcasecmp(buf->data, "none"))
+      tmp = safe_strdup("cheap_hack/this_should_never_match");
+    else
+      tmp = safe_strdup(buf->data);
+
+    if ((minor = strchr(tmp, '/')))
+    {
+      *minor = '\0';
+      ++minor;
+    }
+    else
+    {
+      minor = "unknown";
+    }
+    major = mutt_check_mime_type(tmp);
+
+    lastp = NULL;
+    for(lp = *ldata; lp; lp = lastp->next)
+    {
+      a = (ATTACH_MATCH *)lp->data;
+      dprint(5, (debugfile, "parse_unattach_list: check %s/%s [%d] : %s/%s [%d]\n",
+		  a->major, a->minor, a->major_int, tmp, minor, major));
+      if (a->major_int == major && !mutt_strcasecmp(minor, a->minor))
+      {
+	dprint(5, (debugfile, "parse_unattach_list: removed %s/%s [%d]\n",
+		    a->major, a->minor, a->major_int));
+	regfree(&a->minor_rx);
+        FREE(&a->major);
+        if (lastp)
+	{
+          lastp->next = lp->next;
+	}
+	lastp = lp;
+        FREE (&lp->data);	/* same as a */
+        FREE (&lp);
+      }
+
+      lastp = lp;
+      lp = lp->next;
+    }
+
+    remove_from_list (ldata, buf->data);
+  }
+  while (MoreArgs (s));
+   
+  _attachments_clean();
+  return 0;
+}
+
+
+static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  char op, *p;
+  LIST **listp;
+
+  mutt_extract_token(buf, s, 0);
+  if (!buf->data || *buf->data == '\0') {
+    strfcpy(err->data, _("attachments: no disposition"), err->dsize);
+    return -1;
+  }
+
+  p = buf->data;
+  op = *p++;
+  if (op != '+' && op != '-') {
+    op = '+';
+    p--;
+  }
+  if (!mutt_strncasecmp(p, "attachment", strlen(p))) {
+    if (op == '+')
+      listp = &AttachAllow;
+    else
+      listp = &AttachExclude;
+  }
+  else if (!mutt_strncasecmp(p, "inline", strlen(p))) {
+    if (op == '+')
+      listp = &InlineAllow;
+    else
+      listp = &InlineExclude;
+  }
+  else {
+    strfcpy(err->data, _("attachments: invalid disposition"), err->dsize);
+    return -1;
+  }
+
+  return parse_attach_list(buf, s, listp, err);
+}
+
+static int parse_unattachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  char op, *p;
+  LIST **listp;
+
+  mutt_extract_token(buf, s, 0);
+  if (!buf->data || *buf->data == '\0') {
+    strfcpy(err->data, _("unattachments: no disposition"), err->dsize);
+    return -1;
+  }
+
+  p = buf->data;
+  op = *p++;
+  if (op != '+' && op != '-') {
+    op = '+';
+    p--;
+  }
+  if (mutt_strncasecmp(p, "attachment", strlen(p))) {
+    if (op == '+')
+      listp = &AttachAllow;
+    else
+      listp = &AttachExclude;
+  }
+  else if (mutt_strncasecmp(p, "inline", strlen(p))) {
+    if (op == '+')
+      listp = &InlineAllow;
+    else
+      listp = &InlineExclude;
+  }
+  else {
+    strfcpy(err->data, _("unattachments: invalid disposition"), err->dsize);
+    return -1;
+  }
+
+  return parse_unattach_list(buf, s, listp, err);
+}
+
 static int parse_unlists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   do

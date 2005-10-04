@@ -297,6 +297,14 @@ const char *mutt_attach_fmt (char *dest,
 	snprintf (dest, destlen, fmt, aptr->num + 1);
       }
       break;
+    case 'Q':
+      if (optional)
+        optional = aptr->content->attach_qualifies;
+      else {
+	    snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+        mutt_format_s (dest, destlen, fmt, "Q");
+      }
+      break;
     case 's':
       if (flags & M_FORMAT_STAT_FILE)
       {
@@ -333,6 +341,15 @@ const char *mutt_attach_fmt (char *dest,
         snprintf (dest, destlen, "%c", aptr->content->unlink ? '-' : ' ');
       else if (!aptr->content->unlink)
         optional = 0;
+      break;
+    case 'X':
+      if (optional)
+        optional = (aptr->content->attach_count + aptr->content->attach_qualifies) != 0;
+      else
+      {
+        snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+        snprintf (dest, destlen, fmt, aptr->content->attach_count + aptr->content->attach_qualifies);
+      }
       break;
     default:
       *dest = 0;

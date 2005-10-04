@@ -238,6 +238,7 @@ enum
   M_CRYPT_ENCRYPT,
   M_PGP_KEY,
   M_XLABEL,
+  M_MIMEATTACH,
   
   /* Options for Mailcap lookup */
   M_EDIT,
@@ -646,7 +647,9 @@ typedef struct body
   struct header *hdr;		/* header information for message/rfc822 */
 
   struct attachptr *aptr;	/* Menu information, used in recvattach.c */
-  
+
+  signed short attach_count;
+
   time_t stamp;			/* time stamp of last
 				 * encoding update.
 				 */
@@ -684,6 +687,7 @@ typedef struct body
   unsigned int badsig : 1;	/* bad cryptographic signature (needed to check encrypted s/mime-signatures) */
 
   unsigned int collapsed : 1;	/* used by recvattach */
+  unsigned int attach_qualifies : 1;
 
 } BODY;
 
@@ -722,6 +726,9 @@ typedef struct header
   unsigned int searched : 1;
   unsigned int matched : 1;
 
+  /* tells whether the attachment count is valid */
+  unsigned int attach_valid : 1;
+
   /* the following are used to support collapsing threads  */
   unsigned int collapsed : 1; 	/* is this message part of a collapsed thread? */
   unsigned int limited : 1;   	/* is this message in a limited view?  */
@@ -745,6 +752,9 @@ typedef struct header
   
   char *tree;           	/* character string to print thread tree */
   struct thread *thread;
+
+  /* Number of qualifying attachments in message, if attach_valid */
+  short attach_total;
 
 #ifdef MIXMASTER
   LIST *chain;
@@ -882,6 +892,19 @@ void state_mark_attach (STATE *);
 void state_attach_puts (const char *, STATE *);
 void state_prefix_putc (char, STATE *);
 int  state_printf(STATE *, const char *, ...);
+
+/* for attachment counter */
+typedef struct
+{
+  char   *major;
+  int     major_int;
+  char   *minor;
+  regex_t minor_rx;
+} ATTACH_MATCH;
+
+/* Flags for mutt_count_body_parts() */
+#define M_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
+#define M_PARTS_RECOUNT		(1<<1)	/* force recount */
 
 #include "ascii.h"
 #include "protos.h"

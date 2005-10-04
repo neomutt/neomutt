@@ -218,6 +218,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %T = $to_chars
  * %u = user (login) name of author
  * %v = first name of author, unless from self
+ * %X = number of MIME attachments
  * %y = `x-label:' field (if present)
  * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
  * %Z = status flags	*/
@@ -652,6 +653,28 @@ hdr_format_str (char *dest,
 		(hdr->flagged ? '!' :
 		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
       mutt_format_s (dest, destlen, prefix, buf2);
+      break;
+
+    case 'X':
+      {
+	int count, flags;
+
+        if (hdr->content->parts)
+          count = mutt_count_body_parts(hdr, flags);
+        else
+        {
+	  mutt_parse_mime_message(ctx, hdr);
+          count = mutt_count_body_parts(hdr, flags);
+	  mutt_free_body(&hdr->content->parts);
+        }
+
+	/* The recursion allows messages without depth to return 0. */
+	if (optional)
+          optional = count != 0;
+
+        snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+        snprintf (dest, destlen, fmt, count);
+      }
       break;
 
      case 'y':

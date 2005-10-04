@@ -3307,6 +3307,7 @@ messages:
 ~v		message is part of a collapsed thread.
 ~V		cryptographically verified messages
 ~x EXPR         messages which contain EXPR in the `References' field
+~X [MIN]-[MAX]  messages with MIN to MAX attachments *)
 ~y EXPR         messages which contain EXPR in the `X-Label' field
 ~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
 ~=		duplicated messages (see $duplicate_threads)
@@ -5143,6 +5144,114 @@ look for any type it knows how to handle.
 To remove a MIME type from the <literal>alternative&lowbar;order</literal> list, use the
 <literal>unalternative&lowbar;order</literal> command.
 </para>
+
+</sect2>
+
+<sect2 id="attachments">
+<title>Attachment Searching and Counting</title>
+
+<para>
+If you ever lose track of attachments in your mailboxes, Mutt's
+attachment-counting and -searching support might be for you.  You can
+make your message index display the number of qualifying attachments in
+each message, or search for messages by attachment count.  You also can
+configure what kinds of attachments qualify for this feature with the
+attachments and unattachments commands.
+</para>
+
+<para>
+The syntax is:
+</para>
+<screen>
+attachments   {+|-}disposition mime-type
+unattachments {+|-}disposition mime-type
+</screen>
+
+<para>
+Disposition is the attachment's Content-disposition type -- either
+"inline" or "attachment".  You can abbreviate this to I or A.
+</para>
+
+<para>
+Disposition is prefixed by either a + symbolor a - symbol.  If it's
+a +, you're saying that you want to allow this disposition and MIME
+type to qualify.  If it's a -, you're saying that this disposition
+and MIME type is an exception to previous + rules.  There are examples
+below of how this is useful.
+</para>
+
+<para>
+Mime-type is, unsurprisingly, the MIME type of the attachment you want
+to affect.  A MIME type is always of the format "major/minor", where
+"major" describes the broad category of document you're looking at, and
+"minor" describes the specific type within that category.  The major
+part of mim-type must be literal text (or the special token "*"), but
+the minor part may be a regular expression.  (Therefore, "*/.*" matches
+any MIME type.)
+</para>
+
+<para>
+The MIME types you give to the attachments directive are a kind of
+pattern.  When you use the attachments directive, the patterns you
+specify are added to a list.  When you use unattachments, the pattern
+is removed from the list.  The patterns are not expanded and matched
+to specific MIME types at this time -- they're just text in a list.
+They're only matched when actually evaluating a message.
+</para>
+
+<para>
+Some examples might help to illustrate.  The examples that are not
+commented out define the default configuration of the lists.
+</para>
+
+<screen>
+## Removing a pattern from a list removes that pattern literally. It
+## does not remove any type matching the pattern.
+##
+##  attachments   +A */.*
+##  attachments   +A image/jpeg
+##  unattachments +A */.*
+##
+## This leaves "attached" image/jpeg files on the allowed attachments
+## list. It does not remove all items, as you might expect, because the
+## second */.* is not a matching expression at this time.
+##
+## Remember: "unattachments" only undoes what "attachments" has done!
+## It does not trigger any matching on actual messages.
+
+
+## Qualify any MIME part with an "attachment" disposition, EXCEPT for
+## text/x-vcard and application/pgp parts. (PGP parts are already known
+## to mutt, and can be searched for with ~g, ~G, and ~k.)
+##
+## I've added x-pkcs7 to this, since it functions (for S/MIME)
+## analogously to PGP signature attachments. S/MIME isn't supported
+## in a stock mutt build, but we can still treat it specially here.
+##
+attachments   +A */.*
+attachments   -A text/x-vcard application/pgp.*
+attachments   -A application/x-pkcs7-.*
+
+## Discount all MIME parts with an "inline" disposition, unless they're
+## text/plain. (Why inline a text/plain part unless it's external to the
+## message flow?)
+##
+attachments   +I text/plain
+
+## These two lines make Mutt qualify MIME containers.  (So, for example,
+## a message/rfc822 forward will count as an attachment.)  The first
+## line is unnecessary if you already have "attach-allow */.*", of
+## course.  These are off by default!  The MIME elements contained
+## within a message/* or multipart/* are still examined, even if the
+## containers themseves don't qualify.
+##
+#attachments  +A message/.* multipart/.*
+#attachments  +I message/.* multipart/.*
+
+## You probably don't really care to know about deleted attachments.
+attachments   -A message/external-body
+attachments   -I message/external-body
+</screen>
 
 </sect2>
 

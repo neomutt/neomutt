@@ -140,6 +140,10 @@ WHERE char *LastFolder;
 
 WHERE LIST *AutoViewList INITVAL(0);
 WHERE LIST *AlternativeOrderList INITVAL(0);
+WHERE LIST *AttachAllow INITVAL(0);
+WHERE LIST *AttachExclude INITVAL(0);
+WHERE LIST *InlineAllow INITVAL(0);
+WHERE LIST *InlineExclude INITVAL(0);
 WHERE LIST *HeaderOrderList INITVAL(0);
 WHERE LIST *Ignore INITVAL(0);
 WHERE LIST *MimeLookupList INITVAL(0);

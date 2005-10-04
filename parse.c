@@ -300,6 +300,10 @@ int mutt_check_mime_type (const char *s)
     return TYPEVIDEO;
   else if (ascii_strcasecmp ("model", s) == 0)
     return TYPEMODEL;
+  else if (ascii_strcasecmp ("*", s) == 0)
+    return TYPEANY;
+  else if (ascii_strcasecmp (".*", s) == 0)
+    return TYPEANY;
   else
     return TYPEOTHER;
 }
@@ -924,22 +928,28 @@ static char *extract_message_id (const char *s)
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
 {
   MESSAGE *msg;
+  int flags = 0;
 
-  if (cur->content->type != TYPEMESSAGE && cur->content->type != TYPEMULTIPART)
-    return; /* nothing to do */
+  do {
+    if (cur->content->type != TYPEMESSAGE &&
+        cur->content->type != TYPEMULTIPART)
+      break; /* nothing to do */
 
-  if (cur->content->parts)
-    return; /* The message was parsed earlier. */
+    if (cur->content->parts)
+      break; /* The message was parsed earlier. */
 
-  if ((msg = mx_open_message (ctx, cur->msgno)))
-  {
-    mutt_parse_part (msg->fp, cur->content);
+    if ((msg = mx_open_message (ctx, cur->msgno)))
+    {
+      mutt_parse_part (msg->fp, cur->content);
 
-    if (WithCrypto)
-      cur->security = crypt_query (cur->content);
+      if (WithCrypto)
+        cur->security = crypt_query (cur->content);
 
-    mx_close_message (&msg);
-  }
+      mx_close_message (&msg);
+    }
+  } while (0);
+
+  mutt_count_body_parts(cur, flags|M_PARTS_RECOUNT);
 }
 
 int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
@@ -1456,4 +1466,149 @@ ADDRESS *mutt_parse_adrlist (ADDRESS *p, const char *s)
     p = rfc822_parse_adrlist (p, s);
   
   return p;
+}
+
+/* Compares mime types to the ok and except lists */
+int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
+{
+  LIST *type;
+  ATTACH_MATCH *a;
+
+  /* If list is null, use default behavior. */
+  if (! *checklist)
+  {
+    /*return dflt;*/
+    return 0;
+  }
+
+  for (type = *checklist; type; type = type->next)
+  {
+    a = (ATTACH_MATCH *)type->data;
+    dprint(5, (debugfile, "cbpc: %s %d/%s ?? %s/%s [%d]... ",
+		dflt ? "[OK]   " : "[EXCL] ",
+		b->type, b->subtype, a->major, a->minor, a->major_int));
+    if ((a->major_int == TYPEANY || a->major_int == b->type) &&
+	!regexec(&a->minor_rx, b->subtype, 0, NULL, 0))
+    {
+      dprint(5, (debugfile, "yes\n"));
+      return 1;
+    }
+    else
+    {
+      dprint(5, (debugfile, "no\n"));
+    }
+  }
+
+  return 0;
+}
+
+#define AT_COUNT(why)   { shallcount = 1; }
+#define AT_NOCOUNT(why) { shallcount = 0; }
+
+int count_body_parts (BODY *body, int flags)
+{
+  int count = 0;
+  int shallcount, shallrecurse;
+  BODY *bp;
+
+  if (body == NULL)
+    return 0;
+
+  for (bp = body; bp != NULL; bp = bp->next)
+  {
+    /* Initial disposition is to count and not to recurse this part. */
+    AT_COUNT("default");
+    shallrecurse = 0;
+
+    dprint(5, (debugfile, "bp: desc=\"%s\"; fn=\"%s\", type=\"%d/%s\"\n",
+	   bp->description ? bp->description : ("none"),
+	   bp->filename ? bp->filename :
+			bp->d_filename ? bp->d_filename : "(none)",
+	   bp->type, bp->subtype ? bp->subtype : "*"));
+
+    if (bp->type == TYPEMESSAGE)
+    {
+      shallrecurse = 1;
+
+      /* If it's an external body pointer, don't recurse it. */
+      if (!ascii_strcasecmp (bp->subtype, "external-body"))
+	shallrecurse = 0;
+
+      /* Don't count containers if they're top-level. */
+      if (flags & M_PARTS_TOPLEVEL)
+	AT_NOCOUNT("top-level message/*");
+    }
+    else if (bp->type == TYPEMULTIPART)
+    {
+      /* Always recurse multiparts, except multipart/alternative. */
+      shallrecurse = 1;
+      if (!mutt_strcasecmp(bp->subtype, "alternative"))
+        shallrecurse = 0;
+
+      /* Don't count containers if they're top-level. */
+      if (flags & M_PARTS_TOPLEVEL)
+	AT_NOCOUNT("top-level multipart");
+    }
+
+    if (bp->disposition == DISPINLINE &&
+        bp->type != TYPEMULTIPART && bp->type != TYPEMESSAGE && bp == body)
+      AT_NOCOUNT("ignore fundamental inlines");
+
+    /* If this body isn't scheduled for enumeration already, don't bother
+     * profiling it further.
+     */
+    if (shallcount)
+    {
+      /* Turn off shallcount if message type is not in ok list,
+       * or if it is in except list. Check is done separately for
+       * inlines vs. attachments.
+       */
+
+      if (bp->disposition == DISPATTACH)
+      {
+        if (!count_body_parts_check(&AttachAllow, bp, 1))
+	  AT_NOCOUNT("attach not allowed");
+        if (count_body_parts_check(&AttachExclude, bp, 0))
+	  AT_NOCOUNT("attach excluded");
+      }
+      else
+      {
+        if (!count_body_parts_check(&InlineAllow, bp, 1))
+	  AT_NOCOUNT("inline not allowed");
+        if (count_body_parts_check(&InlineExclude, bp, 0))
+	  AT_NOCOUNT("excluded");
+      }
+    }
+
+    if (shallcount)
+      count++;
+    bp->attach_qualifies = shallcount ? 1 : 0;
+
+    dprint(5, (debugfile, "cbp: %08x shallcount = %d\n", (unsigned int)bp, shallcount));
+
+    if (shallrecurse)
+    {
+      dprint(5, (debugfile, "cbp: %08x pre count = %d\n", (unsigned int)bp, count));
+      bp->attach_count = count_body_parts(bp->parts, flags & ~M_PARTS_TOPLEVEL);
+      count += bp->attach_count;
+      dprint(5, (debugfile, "cbp: %08x post count = %d\n", (unsigned int)bp, count));
+    }
+  }
+
+  dprint(5, (debugfile, "bp: return %d\n", count < 0 ? 0 : count));
+  return count < 0 ? 0 : count;
+}
+
+int mutt_count_body_parts (HEADER *hdr, int flags)
+{
+  if (hdr->attach_valid && !(flags & M_PARTS_RECOUNT))
+    return hdr->attach_total;
+
+  if (AttachAllow || AttachExclude || InlineAllow || InlineExclude)
+    hdr->attach_total = count_body_parts(hdr->content, flags | M_PARTS_TOPLEVEL);
+  else
+    hdr->attach_total = 0;
+
+  hdr->attach_valid = 1;
+  return hdr->attach_total;
 }
