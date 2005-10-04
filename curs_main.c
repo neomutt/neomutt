@@ -1996,27 +1996,49 @@ CHECK_IMAP_ACL(IMAP_ACL_INSERT);
 	  continue;
 	}
         break;
-      
+
       case OP_PIPE:
 
 	CHECK_MSGCOUNT;
-        CHECK_VISIBLE;
+	CHECK_VISIBLE;
 	mutt_pipe_message (tag ? NULL : CURHDR);
+
+#ifdef USE_IMAP
+	/* in an IMAP folder index with imap_peek=no, piping could change
+	 * new or old messages status to read. Redraw what's needed.
+	 */
+	if (Context->magic == M_IMAP && !option (OPTIMAPPEEK))
+	{
+	  menu->redraw = (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
+	}
+#endif
+
 	MAYBE_REDRAW (menu->redraw);
 	break;
 
       case OP_PRINT:
 
 	CHECK_MSGCOUNT;
-        CHECK_VISIBLE;
+	CHECK_VISIBLE;
 	mutt_print_message (tag ? NULL : CURHDR);
+
+#ifdef USE_IMAP
+	/* in an IMAP folder index with imap_peek=no, printing could change
+	 * new or old messages status to read. Redraw what's needed.
+	 */
+	if (Context->magic == M_IMAP && !option (OPTIMAPPEEK))
+	{
+	  menu->redraw = (tag ? REDRAW_INDEX : REDRAW_CURRENT) | REDRAW_STATUS;
+	}
+#endif
+
 	break;
 
       case OP_MAIN_READ_THREAD:
       case OP_MAIN_READ_SUBTHREAD:
 
 	CHECK_MSGCOUNT;
-        CHECK_VISIBLE;
+	CHECK_VISIBLE;
 	CHECK_READONLY;
 
 #ifdef USE_IMAP
