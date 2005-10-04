@@ -2040,8 +2040,8 @@ struct option_t MuttVars[] = {
   { "pop_checkinterval", DT_NUM, R_NONE, UL &PopCheckTimeout, 60 },
   /*
   ** .pp
-  ** This variable configures how often (in seconds) POP should look for
-  ** new mail.
+  ** This variable configures how often (in seconds) mutt should look for
+  ** new mail in the currently selected mailbox if it is a POP mailbox.
   */
   { "pop_delete",	DT_QUAD, R_NONE, OPT_POPDELETE, M_ASKNO },
   /*
@@ -2068,8 +2068,8 @@ struct option_t MuttVars[] = {
   { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
   /*
   ** .pp
-  ** Controls whether or not Mutt will try to reconnect to POP server when
-  ** connection lost.
+  ** Controls whether or not Mutt will try to reconnect to POP server if
+  ** the connection is lost.
   */
   { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, 0 },
   /*
