@@ -1,3 +1,12 @@
+2005-10-04 06:05:39  David Champion  <dgc@uchicago.edu>  (brendan)
+
+	* Muttrc.head.in, doc/manual.xml.head, doc/muttrc.man.head,
+	globals.h, hdrline.c, init.c, init.h, mime.h, mutt.h, parse.c,
+	pattern.c, protos.h, recvattach.c: Attachment counting for index
+	display (patch-1.5.11.dgc.attach.6). Modifications: attach_recurse
+	and attach_ignore_fundamental stripped, some debugging code
+	removed, some bones thrown to check_sec.sh.
+
 2005-10-04 05:24:00  Sebastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* pager.c: The following patch has an effect only when the
