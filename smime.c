@@ -1989,7 +1989,6 @@ int smime_send_menu (HEADER *msg, int *redraw)
 
     if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) 
     {
-      p[mutt_strlen (p)-1] = '\0';
       mutt_str_replace (&SmimeDefaultKey, p);
 	
       msg->security |= SIGN;
