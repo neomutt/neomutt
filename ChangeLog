@@ -1,3 +1,16 @@
+2005-10-05 19:20:22  Jeff Ito  <jeffi@rcn.com>  (brendan)
+
+	* smime.c: S/MIME key selection truncates the last character of
+	the selected key for no apparent reason. Removed until someone
+	can justify it. Closes: #2081.
+
+2005-10-04 19:00:05  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.h: Tweak description of pop_checkinterval slightly. Closes:
+	#2074.
+
+	* hcache.c: Bump hcache Id for attachment counting patch.
+
 2005-10-04 06:05:39  David Champion  <dgc@uchicago.edu>  (brendan)
 
 	* Muttrc.head.in, doc/manual.xml.head, doc/muttrc.man.head,
