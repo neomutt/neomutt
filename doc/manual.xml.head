@@ -5165,6 +5165,7 @@ The syntax is:
 <screen>
 attachments   {+|-}disposition mime-type
 unattachments {+|-}disposition mime-type
+attachments   ?
 </screen>
 
 <para>
@@ -5252,6 +5253,11 @@ attachments   +I text/plain
 attachments   -A message/external-body
 attachments   -I message/external-body
 </screen>
+
+<para>
+"attachments ?" will list your current settings in Muttrc format, so
+that it can be pasted elsewhere.
+</para>
 
 </sect2>
 
