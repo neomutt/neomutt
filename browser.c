@@ -613,6 +613,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       init_state (&state, NULL);
       state.imap_browse = 1;
       imap_browse (LastDir, &state);
+      browser_sort (&state);
     }
 #endif
   }
@@ -757,6 +758,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      init_state (&state, NULL);
 	      state.imap_browse = 1;
 	      imap_browse (LastDir, &state);
+	      browser_sort (&state);
 	      menu->data = state.entry;
 	    }
 	    else
@@ -868,6 +870,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  init_state (&state, NULL);
 	  state.imap_browse = 1;
 	  imap_browse (LastDir, &state);
+	  browser_sort (&state);
 	  menu->data = state.entry;
 	  menu->current = 0; 
 	  menu->top = 0; 
@@ -888,6 +891,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    init_state (&state, NULL);
 	    state.imap_browse = 1;
 	    imap_browse (LastDir, &state);
+	    browser_sort (&state);
 	    menu->data = state.entry;
 	    menu->current = 0;
 	    menu->top = 0;
@@ -959,6 +963,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    init_state (&state, NULL);
 	    state.imap_browse = 1;
 	    imap_browse (LastDir, &state);
+	    browser_sort (&state);
 	    menu->data = state.entry;
 	    menu->current = 0; 
 	    menu->top = 0; 
@@ -1038,6 +1043,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      init_state (&state, NULL);
 	      state.imap_browse = 1;
 	      imap_browse (LastDir, &state);
+	      browser_sort (&state);
 	      menu->data = state.entry;
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    }
@@ -1123,6 +1129,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  init_state (&state, NULL);
 	  state.imap_browse = 1;
 	  imap_browse (LastDir, &state);
+	  browser_sort (&state);
 	  menu->data = state.entry;
 	}
 #endif
