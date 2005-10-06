@@ -1,3 +1,8 @@
+2005-10-06 05:13:55  Jeff Ito  <jeffi@rcn.com>  (brendan)
+
+	* smime.c: Add AES ciphers to S/MIME encryption options. Closes:
+	#2103.
+
 2005-10-05 19:24:40  David Champion  <dgc@uchicago.edu>  (brendan)
 
 	* doc/manual.xml.head, init.c: Fix 'unattachments'. Closes: #2102.
