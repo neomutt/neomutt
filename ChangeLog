@@ -1,3 +1,9 @@
+2005-10-06 06:15:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* browser.c: Sort browser entries after every IMAP browsing
+	operation instead of just when explicitly requested. Closes:
+	#2089.
+
 2005-10-06 05:13:55  Jeff Ito  <jeffi@rcn.com>  (brendan)
 
 	* smime.c: Add AES ciphers to S/MIME encryption options. Closes:
