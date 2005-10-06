@@ -1952,8 +1952,9 @@ int smime_send_menu (HEADER *msg, int *redraw)
   case 3: /* encrypt (w)ith */
     msg->security |= ENCRYPT;
     switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
-				 " 4: RC2-64, 5: RC2-128, or (f)orget it? "),
-			       _("12345f"))) {
+				 " 4: RC2-64, 5: RC2-128, 6: AES128,"
+				 " 7: AES192, 8: AES256, or (f)orget it? "),
+			       _("12345678f"))) {
     case 1:
 	mutt_str_replace (&SmimeCryptAlg, "des");
 	break;
@@ -1969,8 +1970,17 @@ int smime_send_menu (HEADER *msg, int *redraw)
     case 5:
 	mutt_str_replace (&SmimeCryptAlg, "rc2-128");
 	break;
-    case 6: /* forget it */
-	break;
+    case 6:
+        mutt_str_replace (&SmimeCryptAlg, "aes128");
+        break;
+    case 7:
+        mutt_str_replace (&SmimeCryptAlg, "aes192");
+        break;
+    case 8:
+        mutt_str_replace (&SmimeCryptAlg, "aes256");
+        break;
+    case 9: /* forget it */
+        break;
     }
     break;
 
