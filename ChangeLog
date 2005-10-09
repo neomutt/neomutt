@@ -1,3 +1,15 @@
+2005-10-09 20:21:33  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* configure.in, mutt_curses.h: Tweak ncurses autoconflation to
+	check for ncurses/ncurses.h everywhere, not just in /usr. With
+	--with-curses=/usr/local, should Close: #2095.
+
+	* configure.in, setenv.c: Add Russ Allbery's setenv replacement
+	function.
+
+	* init.h: Correct doc nit for $meta_key, noted by Mark
+	Weyer. Closes: #2105.
+
 2005-10-06 06:15:00  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* browser.c: Sort browser entries after every IMAP browsing
