@@ -262,9 +262,6 @@ main ()
 	done
         AC_CHECK_LIB($cf_ncurses, initscr,
                 [MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
-                if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
-                        CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses"
-                fi
 		
                 if test "$cf_ncurses" = ncursesw; then
 			AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"])
