@@ -38,16 +38,16 @@
 #define M_ENTER_C '\r'
 #define M_ENTER_S "\r"
 
-#else
+#else /* USE_SLANG_CURSES */
 
-#ifdef HAVE_NCURSESW_NCURSES_H
-#include <ncursesw/ncurses.h>
+#if HAVE_NCURSESW_NCURSES_H
+# include <ncursesw/ncurses.h>
+#elif HAVE_NCURSES_NCURSES_H
+# include <ncurses/ncurses.h>
+#elif HAVE_NCURSES_H
+# include <ncurses.h>
 #else
-#ifdef HAVE_NCURSES_H
-#include <ncurses.h>
-#else
-#include <curses.h>
-#endif
+# include <curses.h>
 #endif
 
 #define M_ENTER_C '\n'
