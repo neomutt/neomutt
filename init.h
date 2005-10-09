@@ -1168,9 +1168,9 @@ struct option_t MuttVars[] = {
   ** If set, forces Mutt to interpret keystrokes with the high bit (bit 8)
   ** set as if the user had pressed the ESC key and whatever key remains
   ** after having the high bit removed.  For example, if the key pressed
-  ** has an ASCII value of 0xf4, then this is treated as if the user had
+  ** has an ASCII value of 0xf8, then this is treated as if the user had
   ** pressed ESC then ``x''.  This is because the result of removing the
-  ** high bit from ``0xf4'' is ``0x74'', which is the ASCII character
+  ** high bit from ``0xf8'' is ``0x78'', which is the ASCII character
   ** ``x''.
   */
   { "mh_purge",		DT_BOOL, R_NONE, OPTMHPURGE, 0 },
