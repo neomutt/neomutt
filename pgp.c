@@ -330,8 +330,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 
       /* leave tmpfp open in case we still need it - but flush it! */
       fflush (tmpfp);
-      
-      
+
       /* Invoke PGP if needed */
       if (!clearsign || (s->flags & M_VERIFY))
       {
@@ -389,6 +388,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	}
 	
         /* treat empty result as sign of failure */
+	/* TODO: maybe on failure mutt should include the original undecoded text. */
 	if (pgpout)
 	{
 	  rewind (pgpout);
@@ -400,9 +400,12 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
           mutt_error _("Could not decrypt PGP message");
 	  mutt_sleep (1);
           pgp_void_passphrase ();
-          rc = -1;
-          
-          goto out;
+
+	  if (!(s->flags & M_DISPLAY))
+	  {
+	    rc = -1;
+	    goto out;
+	  }
         }
       }
       
