@@ -27,15 +27,15 @@ setenv(const char *name, const char *value, int overwrite)
        the intention is to provide a replacement for the standard library
        function which sets errno and returns in the event of a memory
        allocation failure. */
-    envstring = malloc(strlen(name) + 1 + strlen(value) + 1);
+    envstring = malloc(strlen(name) + 1 + strlen(value) + 1); /* __MEM_CHECKED__ */
     if (envstring == NULL)
         return -1;
 
     /* Build the environment string and add it to the environment using
        putenv.  Systems without putenv lose, but XPG4 requires it. */
-    strcpy(envstring, name);
-    strcat(envstring, "=");
-    strcat(envstring, value);
+    strcpy(envstring, name);  /* __STRCPY_CHECKED__ */
+    strcat(envstring, "=");   /* __STRCAT_CHECKED__ */
+    strcat(envstring, value); /* __STRCAT_CHECKED__ */
     return putenv(envstring);
 
     /* Note that the memory allocated is not freed.  This is intentional;

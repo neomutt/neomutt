@@ -151,10 +151,8 @@ int imap_cmd_step (IMAP_DATA* idata)
     return IMAP_CMD_BAD;
 
   /* server demands a continuation response from us */
-  if (!ascii_strncmp (cmd->buf, "+ ", 2))
-  {
+  if (cmd->buf[0] == '+')
     return IMAP_CMD_RESPOND;
-  }
 
   /* tagged completion code */
   if (!ascii_strncmp (cmd->buf, cmd->seq, SEQLEN))
