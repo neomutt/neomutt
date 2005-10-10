@@ -1,4 +1,12 @@
-2005-10-09 20:21:33  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-10-10 17:17:24  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c, setenv.c: Accept + as IMAP continuation, not
+	just + . May close #2106. Feed check_sec candy in setenv.c.
+
+2005-10-09 20:53:21  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* configure.in: Now that we always check for ncurses/ncurses.h,
+	remove /usr special case.
 
 	* configure.in, mutt_curses.h: Tweak ncurses autoconflation to
 	check for ncurses/ncurses.h everywhere, not just in /usr. With
