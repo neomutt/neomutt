@@ -1,4 +1,9 @@
-2005-10-10 17:17:24  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-10-10 18:26:31  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* pgp.c: Make PGP decode failure non-fatal when displaying
+	messages (as opposed to decode-saving them). I think it would be
+	nicer to include the original text when decryption fails
+	though...
 
 	* imap/command.c, setenv.c: Accept + as IMAP continuation, not
 	just + . May close #2106. Feed check_sec candy in setenv.c.
