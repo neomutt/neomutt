@@ -1,3 +1,7 @@
+2005-10-14 09:30:11  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* imap/imap.c: Fix imap/2112.
+
 2005-10-10 18:26:31  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* pgp.c: Make PGP decode failure non-fatal when displaying
