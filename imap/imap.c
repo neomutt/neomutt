@@ -1598,7 +1598,7 @@ imap_complete_hosts (char *dest, size_t len)
   int matchlen;
   
   matchlen = mutt_strlen (dest);
-  for (mailbox = Incoming; mailbox->next; mailbox = mailbox->next)
+  for (mailbox = Incoming; mailbox && mailbox->next; mailbox = mailbox->next)
   {
     if (!mutt_strncmp (dest, mailbox->path, matchlen))
     {
