@@ -1950,37 +1950,71 @@ int smime_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 3: /* encrypt (w)ith */
-    msg->security |= ENCRYPT;
-    switch (mutt_multi_choice (_("1: DES, 2: Triple-DES, 3: RC2-40,"
-				 " 4: RC2-64, 5: RC2-128, 6: AES128,"
-				 " 7: AES192, 8: AES256, or (f)orget it? "),
-			       _("12345678f"))) {
-    case 1:
-	mutt_str_replace (&SmimeCryptAlg, "des");
-	break;
-    case 2:
-	mutt_str_replace (&SmimeCryptAlg, "des3");
-	break;
-    case 3:
-	mutt_str_replace (&SmimeCryptAlg, "rc2-40");
-	break;
-    case 4:
-	mutt_str_replace (&SmimeCryptAlg, "rc2-64");
-	break;
-    case 5:
-	mutt_str_replace (&SmimeCryptAlg, "rc2-128");
-	break;
-    case 6:
-        mutt_str_replace (&SmimeCryptAlg, "aes128");
-        break;
-    case 7:
-        mutt_str_replace (&SmimeCryptAlg, "aes192");
-        break;
-    case 8:
-        mutt_str_replace (&SmimeCryptAlg, "aes256");
-        break;
-    case 9: /* forget it */
-        break;
+    {
+      int choice = 0;
+
+      msg->security |= ENCRYPT;
+      do
+      {
+        /* I use "dra" because "123" is recognized anyway */
+        switch (mutt_multi_choice (_("Choose algorithm family:"
+                                     " 1: DES, 2: RC2, 3: AES,"
+                                     " or (c)lear? "),
+                                   _("drac")))
+        {
+        case 1:
+          switch (choice = mutt_multi_choice (_("1: DES, 2: Triple-DES "),
+                                              _("dt")))
+          {
+          case 1:
+            mutt_str_replace (&SmimeCryptAlg, "des");
+            break;
+          case 2:
+            mutt_str_replace (&SmimeCryptAlg, "des3");
+            break;
+          }
+          break;
+
+        case 2:
+          switch (choice = mutt_multi_choice (_("1: RC2-40, 2: RC2-64, 3: RC2-128 "),
+                                              _("468")))
+          {
+          case 1:
+            mutt_str_replace (&SmimeCryptAlg, "rc2-40");
+            break;
+          case 2:
+            mutt_str_replace (&SmimeCryptAlg, "rc2-64");
+            break;
+          case 3:
+            mutt_str_replace (&SmimeCryptAlg, "rc2-128");
+            break;
+          }
+          break;
+
+        case 3:
+          switch (choice = mutt_multi_choice (_("1: AES128, 2: AES192, 3: AES256 "),
+                                              _("895")))
+          {
+          case 1:
+            mutt_str_replace (&SmimeCryptAlg, "aes128");
+            break;
+          case 2:
+            mutt_str_replace (&SmimeCryptAlg, "aes192");
+            break;
+          case 3:
+            mutt_str_replace (&SmimeCryptAlg, "aes256");
+            break;
+          }
+          break;
+
+        case 4: /* (c)lear */
+          FREE (&SmimeCryptAlg);
+          /* fallback */
+        case -1: /* Ctrl-G or Enter */
+          choice = 0;
+          break;
+        }
+      } while (choice == -1);
     }
     break;
 
