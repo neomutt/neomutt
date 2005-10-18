@@ -1,3 +1,7 @@
+2005-10-18 07:04:50  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* po/fr.po: update
+
 2005-10-17 09:14:58  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* smime.c: Fix S/MIME algorithm choice.
