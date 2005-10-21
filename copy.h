@@ -37,7 +37,7 @@
 
 
 
-int mutt_copy_hdr (FILE *, FILE *, long, long, int, const char *);
+int mutt_copy_hdr (FILE *, FILE *, LOFF_T, LOFF_T, int, const char *);
 
 int mutt_copy_header (FILE *, HEADER *, FILE *, int, const char *);
 

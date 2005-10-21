@@ -1340,7 +1340,7 @@ static int alternative_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY && !option (OPTWEED))
     {
-      fseek (s->fpin, choice->hdr_offset, 0);
+      fseeko (s->fpin, choice->hdr_offset, 0);
       mutt_copy_bytes(s->fpin, s->fpout, choice->offset-choice->hdr_offset);
     }
     mutt_body_handler (choice, s);
@@ -1364,16 +1364,16 @@ int message_handler (BODY *a, STATE *s)
 {
   struct stat st;
   BODY *b;
-  long off_start;
+  LOFF_T off_start;
   int rc = 0;
 
-  off_start = ftell (s->fpin);
+  off_start = ftello (s->fpin);
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || 
       a->encoding == ENCUUENCODED)
   {
     fstat (fileno (s->fpin), &st);
     b = mutt_new_body ();
-    b->length = (long) st.st_size;
+    b->length = (LOFF_T) st.st_size;
     b->parts = mutt_parse_messageRFC822 (s->fpin, b);
   }
   else
@@ -1482,7 +1482,7 @@ int multipart_handler (BODY *a, STATE *s)
 		    TYPE (p), p->subtype, ENCODING (p->encoding), length);
       if (!option (OPTWEED))
       {
-	fseek (s->fpin, p->hdr_offset, 0);
+	fseeko (s->fpin, p->hdr_offset, 0);
 	mutt_copy_bytes(s->fpin, s->fpout, p->offset-p->hdr_offset);
       }
       else
@@ -1697,7 +1697,7 @@ static int external_body_handler (BODY *b, STATE *s)
 	state_printf (s, _("[-- name: %s --]\n"), b->parts->filename);
       }
 
-      mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+      mutt_copy_hdr (s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
     }
@@ -1712,7 +1712,7 @@ static int external_body_handler (BODY *b, STATE *s)
       state_attach_puts (_("[-- and the indicated external source has --]\n"
 			   "[-- expired. --]\n"), s);
 
-      mutt_copy_hdr(s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+      mutt_copy_hdr(s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		    (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		    CH_DECODE, NULL);
     }
@@ -1729,7 +1729,7 @@ static int external_body_handler (BODY *b, STATE *s)
       state_printf (s, 
 		    _("[-- and the indicated access-type %s is unsupported --]\n"),
 		    access_type);
-      mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+      mutt_copy_hdr (s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
     }
@@ -1750,7 +1750,7 @@ void mutt_decode_attachment (BODY *b, STATE *s)
       cd = mutt_iconv_open (Charset, charset, M_ICONV_HOOK_FROM);
   }
 
-  fseek (s->fpin, b->offset, 0);
+  fseeko (s->fpin, b->offset, 0);
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
@@ -1867,7 +1867,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 
   if (plaintext || handler)
   {
-    fseek (s->fpin, b->offset, 0);
+    fseeko (s->fpin, b->offset, 0);
 
     /* see if we need to decode this part before processing it */
     if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
@@ -1912,7 +1912,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 
       if (decode)
       {
-	b->length = ftell (s->fpout);
+	b->length = ftello (s->fpout);
 	b->offset = 0;
 	fclose (s->fpout);
 

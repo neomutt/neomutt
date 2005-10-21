@@ -113,7 +113,7 @@ struct syntax_t
 
 struct line_t
 {
-  long offset;
+  LOFF_T offset;
   short type;
   short continuation;
   short chunks;
@@ -999,7 +999,7 @@ trim_incomplete_mbyte(unsigned char *buf, size_t len)
 }
 
 static int
-fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf, 
+fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *buf, 
 	     unsigned char *fmt, size_t blen, int *buf_ready)
 {
   unsigned char *p;
@@ -1009,13 +1009,13 @@ fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf,
   {
     buf[blen - 1] = 0;
     if (offset != *last_pos)
-      fseek (f, offset, 0);
+      fseeko (f, offset, 0);
     if (fgets ((char *) buf, blen - 1, f) == NULL)
     {
       fmt[0] = 0;
       return (-1);
     }
-    *last_pos = ftell (f);
+    *last_pos = ftello (f);
     b_read = (int) (*last_pos - offset);
     *buf_ready = 1;
 
@@ -1232,7 +1232,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
  */
 
 static int
-display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n, 
+display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n, 
 	      int *last, int *max, int flags, struct q_class_t **QuoteList,
 	      int *q_level, int *force_redraw, regex_t *SearchRE)
 {
@@ -1519,7 +1519,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int r = -1;
   int redraw = REDRAW_FULL;
   FILE *fp = NULL;
-  long last_pos = 0, last_offset = 0;
+  LOFF_T last_pos = 0, last_offset = 0;
   int old_smart_wrap, old_markers;
   struct stat sb;
   regex_t SearchRE;

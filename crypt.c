@@ -504,7 +504,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
     return -1;
   }
       
-  fseek (s->fpin, a->hdr_offset, 0);
+  fseeko (s->fpin, a->hdr_offset, 0);
   bytes = a->length + a->offset - a->hdr_offset;
   hadcr = 0;
   while (bytes > 0)

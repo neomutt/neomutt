@@ -190,7 +190,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	  return (0);
 	}
 
-	fseek (msg->fp, h->offset, 0);
+	fseeko (msg->fp, h->offset, 0);
 	mutt_body_handler (h->content, &s);
       }
 
@@ -206,13 +206,13 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       fp = msg->fp;
       if (pat->op != M_BODY)
       {
-	fseek (fp, h->offset, 0);
+	fseeko (fp, h->offset, 0);
 	lng = h->content->offset - h->offset;
       }
       if (pat->op != M_HEADER)
       {
 	if (pat->op == M_BODY)
-	  fseek (fp, h->content->offset, 0);
+	  fseeko (fp, h->content->offset, 0);
 	lng += h->content->length;
       }
     }

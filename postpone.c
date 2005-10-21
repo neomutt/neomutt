@@ -534,7 +534,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   /* parse the message header and MIME structure */
 
-  fseek (fp, hdr->offset, 0);
+  fseeko (fp, hdr->offset, 0);
   newhdr->offset = hdr->offset;
   newhdr->env = mutt_read_rfc822_header (fp, newhdr, 1, weed);
   newhdr->content->length = hdr->content->length;

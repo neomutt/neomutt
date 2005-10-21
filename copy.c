@@ -41,7 +41,7 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date);
  * below is to avoid creating a HEADER structure in message_handler().
  */
 int
-mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
+mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	       const char *prefix)
 {
   int from = 0;
@@ -56,8 +56,8 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
   char *this_one = NULL;
   int error;
 
-  if (ftell (in) != off_start)
-    fseek (in, off_start, 0);
+  if (ftello (in) != off_start)
+    fseeko (in, off_start, 0);
 
   buf[0] = '\n';
   buf[1] = 0;
@@ -67,7 +67,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
     /* Without these flags to complicate things
      * we can do a more efficient line to line copying
      */
-    while (ftell (in) < off_end)
+    while (ftello (in) < off_end)
     {
       nl = strchr (buf, '\n');
 
@@ -136,7 +136,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
   headers = safe_calloc (hdr_count, sizeof (char *));
 
   /* Read all the headers into the array */
-  while (ftell (in) < off_end)
+  while (ftello (in) < off_end)
   {
     nl = strchr (buf, '\n');
 
@@ -165,10 +165,10 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  strcat (headers[x], this_one); /* __STRCAT_CHECKED__ */
 	  FREE (&this_one);
 	}
-	
+
 	this_one = NULL;
       }
-      
+
       ignore = 1;
       this_is_from = 0;
       if (!from && mutt_strncmp ("From ", buf, 5) == 0)
@@ -222,7 +222,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	  }
 	}
       }
-      
+
       ignore = 0;
     } /* If beginning of header */
 
@@ -238,7 +238,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
 	strcat (this_one, buf); /* __STRCAT_CHECKED__ */
       }
     }
-  } /* while (ftell (in) < off_end) */
+  } /* while (ftello (in) < off_end) */
 
   /* Do we have anything pending?  -- XXX, same code as in above in the loop. */
   if (this_one)
@@ -258,7 +258,7 @@ mutt_copy_hdr (FILE *in, FILE *out, long off_start, long off_end, int flags,
       strcat (headers[x], this_one); /* __STRCAT_CHECKED__ */
       FREE (&this_one);
     }
-    
+
     this_one = NULL;
   }
 
@@ -571,7 +571,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       date[5] = date[mutt_strlen (date) - 1] = '\"';
 
       /* Count the number of lines and bytes to be deleted */
-      fseek (fpin, body->offset, SEEK_SET);
+      fseeko (fpin, body->offset, SEEK_SET);
       new_lines = hdr->lines -
 	count_delete_lines (fpin, body, &new_length, mutt_strlen (date));
 
@@ -586,10 +586,10 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 	fprintf (fpout, "Lines: %d\n\n", new_lines);
       if (ferror (fpout) || feof (fpout))
 	return -1;
-      new_offset = ftell (fpout);
+      new_offset = ftello (fpout);
 
       /* Copy the body */
-      fseek (fpin, body->offset, SEEK_SET);
+      fseeko (fpin, body->offset, SEEK_SET);
       if (copy_delete_attach (body, fpin, fpout, date))
 	return -1;
 
@@ -686,7 +686,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     mutt_write_mime_header (cur, fpout);
     fputc ('\n', fpout);
 
-    fseek (fp, cur->offset, 0);
+    fseeko (fp, cur->offset, 0);
     if (mutt_copy_bytes (fp, fpout, cur->length) == -1)
     {
       fclose (fp);
@@ -698,7 +698,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   }
   else
   {
-    fseek (fpin, body->offset, 0);
+    fseeko (fpin, body->offset, 0);
     if (flags & M_CM_PREFIX)
     {
       int c;
@@ -767,7 +767,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   MESSAGE *msg;
   int r;
 
-  fseek(fpin, hdr->offset, 0);
+  fseeko (fpin, hdr->offset, 0);
   if (fgets (buf, sizeof (buf), fpin) == NULL)
     return -1;
   
@@ -814,7 +814,7 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
     if (part->deleted || part->parts)
     {
       /* Copy till start of this part */
-      if (mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftell (fpin)))
+      if (mutt_copy_bytes (fpin, fpout, part->hdr_offset - ftello (fpin)))
 	return -1;
 
       if (part->deleted)
@@ -827,11 +827,11 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
 	  return -1;
 
 	/* Copy the original mime headers */
-	if (mutt_copy_bytes (fpin, fpout, part->offset - ftell (fpin)))
+	if (mutt_copy_bytes (fpin, fpout, part->offset - ftello (fpin)))
 	  return -1;
 
 	/* Skip the deleted body */
-	fseek (fpin, part->offset + part->length, SEEK_SET);
+	fseeko (fpin, part->offset + part->length, SEEK_SET);
       }
       else
       {
@@ -842,7 +842,7 @@ static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date)
   }
 
   /* Copy the last parts */
-  if (mutt_copy_bytes (fpin, fpout, b->offset + b->length - ftell (fpin)))
+  if (mutt_copy_bytes (fpin, fpout, b->offset + b->length - ftello (fpin)))
     return -1;
 
   return 0;

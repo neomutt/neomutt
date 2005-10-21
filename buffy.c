@@ -52,14 +52,14 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
 int fseek_last_message (FILE * f)
 {
-  long int pos;
+  LOFF_T pos;
   char buffer[BUFSIZ + 9];	/* 7 for "\n\nFrom " */
   int bytes_read;
   int i;			/* Index into `buffer' for scanning.  */
 
   memset (buffer, 0, sizeof(buffer));
   fseek (f, 0, SEEK_END);
-  pos = ftell (f);
+  pos = ftello (f);
 
   /* Set `bytes_read' to the size of the last, probably partial, buffer; 0 <
    * `bytes_read' <= `BUFSIZ'.  */
@@ -72,14 +72,14 @@ int fseek_last_message (FILE * f)
   {
     /* we save in the buffer at the end the first 7 chars from the last read */
     strncpy (buffer + BUFSIZ, buffer, 5+2); /* 2 == 2 * mutt_strlen(CRLF) */
-    fseek (f, pos, SEEK_SET);
+    fseeko (f, pos, SEEK_SET);
     bytes_read = fread (buffer, sizeof (char), bytes_read, f);
     if (bytes_read == -1)
       return -1;
     for (i = bytes_read; --i >= 0;)
       if (!mutt_strncmp (buffer + i, "\n\nFrom ", mutt_strlen ("\n\nFrom ")))
       {				/* found it - go to the beginning of the From */
-	fseek (f, pos + i + 2, SEEK_SET);
+	fseeko (f, pos + i + 2, SEEK_SET);
 	return 0;
       }
     bytes_read = BUFSIZ;

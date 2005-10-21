@@ -68,12 +68,12 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 {
   size_t used = 0;
-  long startpos;
+  LOFF_T startpos;
   unsigned char ctb;
   unsigned char b;
   size_t material;
 
-  startpos = ftell (fp);
+  startpos = ftello (fp);
 
   if (!plen)
   {
@@ -216,7 +216,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 
 bail:
 
-  fseek (fp, startpos, SEEK_SET);
+  fseeko (fp, startpos, SEEK_SET);
   return NULL;
 }
 

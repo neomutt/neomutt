@@ -1577,7 +1577,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
 
   mutt_decode_attachment (sigbdy, s);
 
-  sigbdy->length = ftell (s->fpout);
+  sigbdy->length = ftello (s->fpout);
   sigbdy->offset = 0;
   fclose (s->fpout);
 
@@ -1702,7 +1702,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     return NULL;
   }
 
-  fseek (s->fpin, m->offset, 0);
+  fseeko (s->fpin, m->offset, 0);
   last_pos = m->offset;
 
   mutt_copy_bytes (s->fpin, tmpfp,  m->length);
@@ -1880,7 +1880,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
-  fseek (s.fpin, b->offset, 0);
+  fseeko (s.fpin, b->offset, 0);
 
   mutt_mktemp (tempfile);
   if ((tmpfp = safe_fopen (tempfile, "w+")) == NULL)
@@ -1893,7 +1893,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   s.fpout = tmpfp;
   mutt_decode_attachment (b, &s);
   fflush (tmpfp);
-  b->length = ftell (s.fpout);
+  b->length = ftello (s.fpout);
   b->offset = 0;
   rewind (tmpfp);
   s.fpin = tmpfp;

@@ -431,7 +431,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
   char *line = safe_malloc (LONG_STRING);
   size_t linelen = LONG_STRING;
   
-  p->hdr_offset  = ftell(fp);
+  p->hdr_offset  = ftello (fp);
 
   p->encoding    = ENC7BIT; /* default from RFC1521 */
   p->type        = digest ? TYPEMESSAGE : TYPETEXT;
@@ -488,7 +488,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
     }
 #endif
   }
-  p->offset = ftell (fp); /* Mark the start of the real data */
+  p->offset = ftello (fp); /* Mark the start of the real data */
   if (p->type == TYPETEXT && !p->subtype)
     p->subtype = safe_strdup ("plain");
   else if (p->type == TYPEMESSAGE && !p->subtype)
@@ -513,7 +513,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
 #endif
           bound = mutt_get_parameter ("boundary", b->parameter);
 
-      fseek (fp, b->offset, SEEK_SET);
+      fseeko (fp, b->offset, SEEK_SET);
       b->parts =  mutt_parse_multipart (fp, bound, 
 					b->offset + b->length,
 					ascii_strcasecmp ("digest", b->subtype) == 0);
@@ -522,7 +522,7 @@ void mutt_parse_part (FILE *fp, BODY *b)
     case TYPEMESSAGE:
       if (b->subtype)
       {
-	fseek (fp, b->offset, SEEK_SET);
+	fseeko (fp, b->offset, SEEK_SET);
 	if (mutt_is_message_type(b->type, b->subtype))
 	  b->parts = mutt_parse_messageRFC822 (fp, b);
 	else if (ascii_strcasecmp (b->subtype, "external-body") == 0)
@@ -560,7 +560,7 @@ BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
   BODY *msg;
 
   parent->hdr = mutt_new_header ();
-  parent->hdr->offset = ftell (fp);
+  parent->hdr->offset = ftello (fp);
   parent->hdr->env = mutt_read_rfc822_header (fp, parent->hdr, 0, 0);
   msg = parent->hdr->content;
 
@@ -590,7 +590,7 @@ BODY *mutt_parse_messageRFC822 (FILE *fp, BODY *parent)
  *	digest		1 if reading a multipart/digest, 0 otherwise
  */
 
-BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int digest)
+BODY *mutt_parse_multipart (FILE *fp, const char *boundary, LOFF_T end_off, int digest)
 {
 #ifdef SUN_ATTACHMENT
   int lines;
@@ -608,7 +608,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
   }
 
   blen = mutt_strlen (boundary);
-  while (ftell (fp) < end_off && fgets (buffer, LONG_STRING, fp) != NULL)
+  while (ftello (fp) < end_off && fgets (buffer, LONG_STRING, fp) != NULL)
   {
     len = mutt_strlen (buffer);
 
@@ -619,9 +619,9 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
     {
       if (last)
       {
-	last->length = ftell (fp) - last->offset - len - 1 - crlf;
+	last->length = ftello (fp) - last->offset - len - 1 - crlf;
 	if (last->parts && last->parts->length == 0)
-	  last->parts->length = ftell (fp) - last->parts->offset - len - 1 - crlf;
+	  last->parts->length = ftello (fp) - last->parts->offset - len - 1 - crlf;
 	/* if the body is empty, we can end up with a -1 length */
 	if (last->length < 0)
 	  last->length = 0;
@@ -645,7 +645,7 @@ BODY *mutt_parse_multipart (FILE *fp, const char *boundary, long end_off, int di
         if (mutt_get_parameter ("content-lines", new->parameter)) {
 	  for (lines = atoi(mutt_get_parameter ("content-lines", new->parameter));
 	       lines; lines-- )
-	     if (ftell (fp) >= end_off || fgets (buffer, LONG_STRING, fp) == NULL)
+	     if (ftello (fp) >= end_off || fgets (buffer, LONG_STRING, fp) == NULL)
 	       break;
 	}
 #endif
@@ -1304,7 +1304,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   LIST *last = NULL;
   char *line = safe_malloc (LONG_STRING);
   char *p;
-  long loc;
+  LOFF_T loc;
   int matched;
   size_t linelen = LONG_STRING;
   char buf[LONG_STRING+1];
@@ -1326,7 +1326,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     }
   }
 
-  while ((loc = ftell (f)),
+  while ((loc = ftello (f)),
 	  *(line = mutt_read_rfc822_line (f, line, &linelen)) != 0)
   {
     matched = 0;
@@ -1347,7 +1347,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	continue;
       }
 
-      fseek (f, loc, 0);
+      fseeko (f, loc, 0);
       break; /* end of header */
     }
 
@@ -1409,7 +1409,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   if (hdr)
   {
     hdr->content->hdr_offset = hdr->offset;
-    hdr->content->offset = ftell (f);
+    hdr->content->offset = ftello (f);
 
     /* do RFC2047 decoding */
     rfc2047_decode_adrlist (e->from);
