@@ -1,3 +1,11 @@
+2005-10-21 04:35:38  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* smime.c, attach.c, buffy.c, copy.c, copy.h, crypt-gpgme.c,
+	crypt.c, edit.c, handler.c, mbox.c, mutt.h, pager.c, parse.c,
+	pattern.c, pgp.c, pgpmicalg.c, pgppacket.c, pgppubring.c, pop.c,
+	postpone.c, protos.h, sendlib.c: Full large file support. Keep a
+	close watch on your mailboxes everyone!
+
 2005-10-18 07:04:50  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
 
 	* po/fr.po: update
