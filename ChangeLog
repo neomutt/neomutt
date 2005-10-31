@@ -1,4 +1,6 @@
-2005-10-31 10:03:55  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-10-31 10:29:45  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* menu.c: Fixing #2019.
 
 	* flags.c: Fix #2123.
 
