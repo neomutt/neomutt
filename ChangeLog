@@ -1,3 +1,7 @@
+2005-10-31 11:56:58  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
+
+	* imap/message.c: Fix 2119.
+
 2005-10-31 10:51:54  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* mutt_idna.c: Fix the underlying problem behind mutt/2107.
