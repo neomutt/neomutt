@@ -387,7 +387,7 @@ void menu_check_recenter (MUTTMENU *menu)
   else if (menu->current >= menu->top + menu->pagelen - c) /* indicator below bottom threshold */
   {
     if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
-      menu->top = menu->current - menu->pagelen + c + 1;
+      menu->top = menu->current - menu->pagelen + c;
     else
       menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
   }
