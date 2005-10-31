@@ -1,4 +1,6 @@
-2005-10-31 10:29:45  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-10-31 10:51:54  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mutt_idna.c: Fix the underlying problem behind mutt/2107.
 
 	* menu.c: Fixing #2019.
 
