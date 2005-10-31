@@ -1,3 +1,7 @@
+2005-10-31 10:03:55  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* flags.c: Fix #2123.
+
 2005-10-21 04:35:38  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* smime.c, attach.c, buffy.c, copy.c, copy.h, crypt-gpgme.c,
