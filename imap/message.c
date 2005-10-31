@@ -115,78 +115,80 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 #if USE_HCACHE
   hc = mutt_hcache_open (HeaderCache, ctx->path);
 
-  snprintf (buf, sizeof (buf),
-    "FETCH %d:%d (UID FLAGS)", msgbegin + 1, msgend + 1);
-  fetchlast = msgend + 1;
-
-  imap_cmd_start (idata, buf);
-
-  for (msgno = msgbegin; msgno <= msgend ; msgno++)
-  {
-    if (ReadInc && (!msgno || ((msgno+1) % ReadInc == 0)))
-      mutt_message (_("Evaluating cache... [%d/%d]"), msgno + 1,
-        msgend + 1);
-
-    rewind (fp);
-    memset (&h, 0, sizeof (h));
-    h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
-    do
+  if (hc) {
+    snprintf (buf, sizeof (buf),
+      "FETCH %d:%d (UID FLAGS)", msgbegin + 1, msgend + 1);
+    fetchlast = msgend + 1;
+  
+    imap_cmd_start (idata, buf);
+  
+    for (msgno = msgbegin; msgno <= msgend ; msgno++)
     {
-      mfhrc = 0;
-
-      rc = imap_cmd_step (idata);
-      if (rc != IMAP_CMD_CONTINUE)
-	break;
-
-      if ((mfhrc = msg_fetch_header_fetch (idata->ctx, &h, idata->cmd.buf, fp)) == -1)
-	continue;
-      else if (mfhrc < 0)
-	break;
-
-      /* make sure we don't get remnants from older larger message headers */
-      fputs ("\n\n", fp);
-
-      sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
-      uid_validity = (unsigned long *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
-
-      if (uid_validity != NULL && *uid_validity == idata->uid_validity)
-      {
-	ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
-	ctx->hdrs[msgno]->index = h.sid - 1;
-	if (h.sid != ctx->msgcount + 1)
-	  dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
-	/* messages which have not been expunged are ACTIVE (borrowed from mh 
-	 * folders) */
-	ctx->hdrs[msgno]->active = 1;
-	ctx->hdrs[msgno]->read = h.read;
-        ctx->hdrs[msgno]->old = h.old;
-        ctx->hdrs[msgno]->deleted = h.deleted;
-        ctx->hdrs[msgno]->flagged = h.flagged;
-        ctx->hdrs[msgno]->replied = h.replied;
-        ctx->hdrs[msgno]->changed = h.changed;
-        /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
-        ctx->hdrs[msgno]->data = (void *) (h.data);
-        
-        ctx->msgcount++;
-      }
+      if (ReadInc && (!msgno || ((msgno+1) % ReadInc == 0)))
+        mutt_message (_("Evaluating cache... [%d/%d]"), msgno + 1,
+          msgend + 1);
+  
       rewind (fp);
-
-      FREE(&uid_validity);
-
+      memset (&h, 0, sizeof (h));
+      h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
+      do
+      {
+        mfhrc = 0;
+  
+        rc = imap_cmd_step (idata);
+        if (rc != IMAP_CMD_CONTINUE)
+  	break;
+  
+        if ((mfhrc = msg_fetch_header_fetch (idata->ctx, &h, idata->cmd.buf, fp)) == -1)
+  	continue;
+        else if (mfhrc < 0)
+  	break;
+  
+        /* make sure we don't get remnants from older larger message headers */
+        fputs ("\n\n", fp);
+  
+        sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
+        uid_validity = (unsigned long *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
+  
+        if (uid_validity != NULL && *uid_validity == idata->uid_validity)
+        {
+  	ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
+  	ctx->hdrs[msgno]->index = h.sid - 1;
+  	if (h.sid != ctx->msgcount + 1)
+  	  dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
+  	/* messages which have not been expunged are ACTIVE (borrowed from mh 
+  	 * folders) */
+  	ctx->hdrs[msgno]->active = 1;
+  	ctx->hdrs[msgno]->read = h.read;
+          ctx->hdrs[msgno]->old = h.old;
+          ctx->hdrs[msgno]->deleted = h.deleted;
+          ctx->hdrs[msgno]->flagged = h.flagged;
+          ctx->hdrs[msgno]->replied = h.replied;
+          ctx->hdrs[msgno]->changed = h.changed;
+          /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
+          ctx->hdrs[msgno]->data = (void *) (h.data);
+          
+          ctx->msgcount++;
+        }
+        rewind (fp);
+  
+        FREE(&uid_validity);
+  
+      }
+      while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
+        ((msgno + 1) >= fetchlast)));
+  
+      if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
+      {
+        imap_free_header_data ((void**) &h.data);
+        fclose (fp);
+        mutt_hcache_close (hc);
+        return -1;
+      }
     }
-    while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
-      ((msgno + 1) >= fetchlast)));
-
-    if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
-    {
-      imap_free_header_data ((void**) &h.data);
-      fclose (fp);
-      mutt_hcache_close (hc);
-      return -1;
-    }
+  
+    fetchlast = msgbegin;
   }
-
-  fetchlast = msgbegin;
 #endif /* USE_HCACHE */
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
