@@ -34,6 +34,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   int changed = h->changed;
   int deleted = ctx->deleted;
   int tagged = ctx->tagged;
+  int flagged = ctx->flagged;
 
   if (ctx->readonly && flag != M_TAG)
     return; /* don't modify anything if we are read-only */
@@ -272,7 +273,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
    * search results so that any future search will match the current status
    * of this message and not what it was at the time it was last searched.
    */
-  if (h->searched && (changed != h->changed || deleted != ctx->deleted || tagged != ctx->tagged))
+  if (h->searched && (changed != h->changed || deleted != ctx->deleted || tagged != ctx->tagged || flagged != ctx->flagged))
     h->searched = 0;
 }
 
