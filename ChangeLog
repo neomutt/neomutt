@@ -1,3 +1,8 @@
+2005-11-01 08:42:00  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* menu.c: This should be a better patch for the menu break
+	dance. (#2019)
+
 2005-10-31 11:56:58  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* imap/message.c: Fix 2119.
