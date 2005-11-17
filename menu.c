@@ -387,18 +387,18 @@ void menu_check_recenter (MUTTMENU *menu)
   }
   else 
   {
-    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0) || (c && c <= MenuContext))
+    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0) || (c < MenuContext))
     {
       if (menu->current < menu->top + c)
 	menu->top = menu->current - c;
-      if (menu->current >= menu->top + menu->pagelen - c)
+      else if (menu->current >= menu->top + menu->pagelen - c)
 	menu->top = menu->current - menu->pagelen + c + 1;
     }
     else
     {
       if (menu->current < menu->top + c)
 	menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
-      else if (menu->current >= menu->top + menu->pagelen - c)
+      else if ((menu->current >= menu->top + menu->pagelen - c))
 	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;	
     }
   }
