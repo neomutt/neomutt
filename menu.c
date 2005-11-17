@@ -379,36 +379,27 @@ void menu_check_recenter (MUTTMENU *menu)
 
   if (!option (OPTMENUMOVEOFF) && menu->max <= menu->pagelen) /* less entries than lines */
   {
-    if (menu->top != 0) {
+    if (menu->top != 0) 
+    {
       menu->top = 0;
       set_option (OPTNEEDREDRAW);
     }
   }
   else 
   {
-    /* 
-     * If c = menu->pagelen / 2 and menu->pagelen is even, then (obviously):
-     * 
-     *   menu->top + menu->pagelen - c == menu->top + c
-     *
-     * In that case, having an "else if" below leads to what has become known as the
-     * indicator break dance effect.  Instead of special-casing, we just forget the 
-     * "else".
-     */
-    
-    if (menu->current < menu->top + c) /* indicator above top threshold */
+    if (option (OPTMENUSCROLL) || (menu->pagelen <= 0) || (c && c <= MenuContext))
     {
-      if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
+      if (menu->current < menu->top + c)
 	menu->top = menu->current - c;
-      else
-	menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
-    }
-    if (menu->current >= menu->top + menu->pagelen - c) /* indicator below bottom threshold */
-    {
-      if (option (OPTMENUSCROLL) || (menu->pagelen <= 0))
+      if (menu->current >= menu->top + menu->pagelen - c)
 	menu->top = menu->current - menu->pagelen + c + 1;
-      else
-	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
+    }
+    else
+    {
+      if (menu->current < menu->top + c)
+	menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
+      else if (menu->current >= menu->top + menu->pagelen - c)
+	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;	
     }
   }
 
