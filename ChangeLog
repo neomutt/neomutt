@@ -1,4 +1,6 @@
-2005-11-17 17:23:50  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-11-17 18:40:50  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* menu.c: a not entirely sane state of code.
 
 	* menu.c: Another stab at #2019.
 
