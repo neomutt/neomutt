@@ -1740,7 +1740,7 @@ static int external_body_handler (BODY *b, STATE *s)
 
 void mutt_decode_attachment (BODY *b, STATE *s)
 {
-  int istext = mutt_is_text_part (b) || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b));
+  int istext = mutt_is_text_part (b);
   iconv_t cd = (iconv_t)(-1);
 
   if (istext && s->flags & M_CHARCONV)
@@ -1754,16 +1754,16 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b->length, istext, cd);
+      mutt_decode_quoted (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     case ENCBASE64:
-      mutt_decode_base64 (s, b->length, istext, cd);
+      mutt_decode_base64 (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b->length, istext, cd);
+      mutt_decode_uuencoded (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     default:
-      mutt_decode_xbit (s, b->length, istext, cd);
+      mutt_decode_xbit (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
   }
 
