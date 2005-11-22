@@ -1740,7 +1740,7 @@ static int external_body_handler (BODY *b, STATE *s)
 
 void mutt_decode_attachment (BODY *b, STATE *s)
 {
-  int istext = mutt_is_text_part (b);
+  int istext = mutt_is_text_part (b) || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b));
   iconv_t cd = (iconv_t)(-1);
 
   if (istext && s->flags & M_CHARCONV)
