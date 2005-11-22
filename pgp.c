@@ -243,6 +243,7 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
 
 int pgp_application_pgp_handler (BODY *m, STATE *s)
 {
+  int could_not_decrypt = 0;
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0, rv, rc;
   int c = 1; /* silence GCC warning */
@@ -398,15 +399,16 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	}
         if (!clearsign && (!pgpout || c == EOF))
 	{
+	  could_not_decrypt = 1;
+	  pgp_void_passphrase ();
+	}
+	
+	if (could_not_decrypt && !(s->flags & M_DISPLAY))
+	{
           mutt_error _("Could not decrypt PGP message");
 	  mutt_sleep (1);
-          pgp_void_passphrase ();
-
-	  if (!(s->flags & M_DISPLAY))
-	  {
-	    rc = -1;
-	    goto out;
-	  }
+	  rc = -1;
+	  goto out;
         }
       }
       
@@ -450,7 +452,10 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	if (needpass)
         {
 	  state_attach_puts (_("[-- END PGP MESSAGE --]\n"), s);
-          mutt_message _("PGP message successfully decrypted.");
+	  if (could_not_decrypt)
+	    mutt_error _("Could not decrypt PGP message");
+	  else
+	    mutt_message _("PGP message successfully decrypted.");
         }
 	else if (pgp_keyblock)
 	  state_attach_puts (_("[-- END PGP PUBLIC KEY BLOCK --]\n"), s);
