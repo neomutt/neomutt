@@ -1,4 +1,6 @@
-2005-11-22 12:13:12  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2005-11-22 12:21:14  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* handler.c: Actually, the previous fix for 2139 had a flaw.
 
 	* handler.c: Fix mutt/2139; also Debian #340116.
 
