@@ -1,3 +1,9 @@
+2005-11-24 12:50:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* curs_main.c, pattern.c: mutt/2142 suggests that the change
+	from pattern.c,3.14 -> 3.15 causes inconsistency and confusion.
+	Reverting the change; adding a helpful message to the status line.
+
 2005-11-22 12:31:58  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pgp.c: Fix "mixed messages" about the success (or not) of
