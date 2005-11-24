@@ -868,6 +868,8 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	    mutt_draw_tree (Context);
 	  menu->redraw = REDRAW_FULL;
 	}
+        if (Context->pattern)
+	  mutt_message _("To view all messages, limit to \"all\".");
 	break;	  
 
       case OP_QUIT:

@@ -1202,15 +1202,8 @@ int mutt_pattern_func (int op, char *prompt)
   int i;
 
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
-  if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN | M_CLEAR) != 0)
+  if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN | M_CLEAR) != 0 || !buf[0])
     return (-1);
-  if (!buf[0])
-  {
-    if (op == M_LIMIT)
-      strfcpy (buf, "~A", sizeof(buf));
-    else
-      return -1;
-  }
 
   mutt_message _("Compiling search pattern...");
   
