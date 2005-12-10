@@ -44,9 +44,14 @@
 #define IMAP_CMD_CONTINUE (1)
 /* + */
 #define IMAP_CMD_RESPOND  (2)
+/* IMAP_COMMAND.state additions */
+#define IMAP_CMD_NEW    (3)
 
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
+
+/* number of commands that can be batched into a single request */
+#define IMAP_PIPELINE_DEPTH 10
 
 #define SEQLEN 5
 
@@ -165,10 +170,13 @@ typedef struct
   unsigned char capabilities[(CAPMAX + 7)/8];
   unsigned int seqno;
   time_t lastread; /* last time we read a command for the server */
-  /* who knows, one day we may run multiple commands in parallel */
-  IMAP_COMMAND cmd;
   char* buf;
-  size_t blen;
+  unsigned int blen;
+
+  /* command queue */
+  IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
+  int nextcmd;
+  int lastcmd;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;

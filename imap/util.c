@@ -245,12 +245,16 @@ void imap_error (const char *where, const char *msg)
 
 /* imap_new_idata: Allocate and initialise a new IMAP_DATA structure.
  *   Returns NULL on failure (no mem) */
-IMAP_DATA* imap_new_idata (void) {
-  return safe_calloc (1, sizeof (IMAP_DATA));
+IMAP_DATA* imap_new_idata (void)
+{
+  IMAP_DATA* idata = safe_calloc (1, sizeof (IMAP_DATA));
+  
+  return idata;
 }
 
 /* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
-void imap_free_idata (IMAP_DATA** idata) {
+void imap_free_idata (IMAP_DATA** idata)
+{
   if (!idata)
     return;
 
@@ -321,7 +325,7 @@ int imap_get_literal_count(const char *buf, long *bytes)
  *   the qualifier message. Used by imap_copy_message for TRYCREATE */
 char* imap_get_qualifier (char* buf)
 {
-  char *s = buf;
+  const char *s = buf;
 
   /* skip tag */
   s = imap_next_word (s);

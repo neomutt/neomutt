@@ -98,6 +98,7 @@ int imap_browse (char* path, struct browser_state* state)
   /* skip check for parents when at the root */
   if (mx.mbox && mx.mbox[0] != '\0')
   {
+    int rc;
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
     imap_munge_mbox_name (buf, sizeof (buf), mbox);
     imap_unquote_string(buf); /* As kludgy as it gets */
@@ -115,8 +116,8 @@ int imap_browse (char* path, struct browser_state* state)
       imap_cmd_start (idata, buf);
       do 
       {
-        if (imap_parse_list_response (idata, &cur_folder, &noselect,
-            &noinferiors, &idata->delim) != 0)
+        if ((rc = imap_parse_list_response (idata, &cur_folder, &noselect,
+            &noinferiors, &idata->delim)) == IMAP_CMD_BAD)
 	  goto fail;
 
         if (cur_folder)
@@ -131,7 +132,7 @@ int imap_browse (char* path, struct browser_state* state)
           }
         }
       }
-      while (ascii_strncmp (idata->buf, idata->cmd.seq, SEQLEN));
+      while (rc == IMAP_CMD_CONTINUE);
     }
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -365,6 +366,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   int noselect;
   int noinferiors;
   IMAP_MBOX mx;
+  int rc;
 
   if (imap_parse_path (state->folder, &mx))
   {
@@ -377,8 +379,8 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
 
   do 
   {
-    if (imap_parse_list_response(idata, &name, &noselect, &noinferiors,
-        &idata->delim) != 0)
+    if ((rc = imap_parse_list_response(idata, &name, &noselect, &noinferiors,
+        &idata->delim)) == IMAP_CMD_BAD)
     {
       FREE (&mx.mbox);
       return -1;
@@ -395,7 +397,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
           isparent);
     }
   }
-  while ((ascii_strncmp (idata->buf, idata->cmd.seq, SEQLEN) != 0));
+  while (rc == IMAP_CMD_CONTINUE);
 
   FREE (&mx.mbox);
   return 0;
@@ -582,6 +584,7 @@ static int browse_verify_namespace (IMAP_DATA* idata,
   int i = 0;
   char *name;
   char delim;
+  int rc;
 
   for (i = 0; i < nns; i++, nsi++)
   {
@@ -602,12 +605,12 @@ static int browse_verify_namespace (IMAP_DATA* idata,
     nsi->home_namespace = 0;
     do 
     {
-      if (imap_parse_list_response(idata, &name, &nsi->noselect,
-          &nsi->noinferiors, &delim) != 0)
+      if ((rc = imap_parse_list_response(idata, &name, &nsi->noselect,
+          &nsi->noinferiors, &delim)) == IMAP_CMD_BAD)
 	return -1;
       nsi->listable |= (name != NULL);
     }
-    while ((ascii_strncmp (idata->buf, idata->cmd.seq, SEQLEN) != 0));
+    while (rc == IMAP_CMD_CONTINUE);
   }
 
   return 0;

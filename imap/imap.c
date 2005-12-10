@@ -436,7 +436,8 @@ int imap_open_connection (IMAP_DATA* idata)
 
   idata->state = IMAP_CONNECTED;
 
-  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE) {
+  if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
+  {
     mutt_socket_close (idata->conn);
     idata->state = IMAP_DISCONNECTED;
     return -1;
@@ -1460,9 +1461,9 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
 
   rc = imap_cmd_step (idata);
   if (rc == IMAP_CMD_OK)
-    return 0;
+    return rc;
   if (rc != IMAP_CMD_CONTINUE)
-    return -1;
+    return IMAP_CMD_BAD;
 
   s = imap_next_word (idata->buf);
   if ((ascii_strncasecmp ("LIST", s, 4) == 0) ||
@@ -1508,16 +1509,16 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
     if (s && *s == '{')	/* Literal */
     { 
       if (imap_get_literal_count(idata->buf, &bytes) < 0)
-	return -1;
+	return IMAP_CMD_BAD;
       if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
-	return -1;
+	return IMAP_CMD_BAD;
       *name = idata->buf;
     }
     else
       *name = s;
   }
 
-  return 0;
+  return IMAP_CMD_CONTINUE;
 }
 
 int imap_subscribe (char *path, int subscribe)
@@ -1654,6 +1655,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   int clen, matchlen = 0;
   int completions = 0;
   IMAP_MBOX mx;
+  int rc;
 
   if (imap_parse_path (path, &mx) || !mx.mbox)
   {
@@ -1688,8 +1690,8 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   strfcpy (completion, NONULL(mx.mbox), sizeof(completion));
   do
   {
-    if (imap_parse_list_response(idata, &list_word, &noselect, &noinferiors,
-        &delim))
+    if ((rc = imap_parse_list_response(idata, &list_word, &noselect, &noinferiors,
+        &delim)) == IMAP_CMD_BAD)
       break;
 
     if (list_word)
@@ -1718,7 +1720,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
       completions++;
     }
   }
-  while (ascii_strncmp(idata->cmd.seq, idata->buf, SEQLEN));
+  while (rc == IMAP_CMD_CONTINUE);
 
   if (completions)
   {

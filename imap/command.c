@@ -36,15 +36,16 @@
 #define IMAP_CMD_BUFSIZE 512
 
 /* forward declarations */
+static IMAP_COMMAND* cmd_new (IMAP_DATA* idata);
+static int cmd_status (const char *s);
 static void cmd_handle_fatal (IMAP_DATA* idata);
 static int cmd_handle_untagged (IMAP_DATA* idata);
-static void cmd_make_sequence (IMAP_DATA* idata);
 static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
 static void cmd_parse_expunge (IMAP_DATA* idata, const char* s);
 static void cmd_parse_lsub (IMAP_DATA* idata, char* s);
 static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
-static void cmd_parse_myrights (IMAP_DATA* idata, char* s);
-static void cmd_parse_search (IMAP_DATA* idata, char* s);
+static void cmd_parse_myrights (IMAP_DATA* idata, const char* s);
+static void cmd_parse_search (IMAP_DATA* idata, const char* s);
 
 static char *Capabilities[] = {
   "IMAP4",
@@ -64,8 +65,9 @@ static char *Capabilities[] = {
 /* imap_cmd_start: Given an IMAP command, send it to the server.
  *   Currently a minor convenience, but helps to route all IMAP commands
  *   through a single interface. */
-int imap_cmd_start (IMAP_DATA* idata, const char* cmd)
+int imap_cmd_start (IMAP_DATA* idata, const char* cmdstr)
 {
+  IMAP_COMMAND* cmd;
   char* out;
   int outlen;
   int rc;
@@ -76,11 +78,13 @@ int imap_cmd_start (IMAP_DATA* idata, const char* cmd)
     return IMAP_CMD_BAD;
   }
 
-  cmd_make_sequence (idata);
+  if (!(cmd = cmd_new (idata)))
+    return IMAP_CMD_BAD;
+  
   /* seq, space, cmd, \r\n\0 */
-  outlen = strlen (idata->cmd.seq) + strlen (cmd) + 4;
+  outlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
   out = (char*) safe_malloc (outlen);
-  snprintf (out, outlen, "%s %s\r\n", idata->cmd.seq, cmd);
+  snprintf (out, outlen, "%s %s\r\n", cmd->seq, cmdstr);
 
   rc = mutt_socket_write (idata->conn, out);
 
@@ -95,9 +99,9 @@ int imap_cmd_start (IMAP_DATA* idata, const char* cmd)
  *   large!). */
 int imap_cmd_step (IMAP_DATA* idata)
 {
-  IMAP_COMMAND* cmd = &idata->cmd;
   size_t len = 0;
   int c;
+  int rc;
 
   if (idata->status == IMAP_FATAL)
   {
@@ -143,7 +147,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     dprint (3, (debugfile, "imap_cmd_step: shrank buffer to %u bytes\n", idata->blen));
   }
 
-  idata->lastread = time(NULL);
+  idata->lastread = time (NULL);
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
   if (!ascii_strncmp (idata->buf, "* ", 2) &&
@@ -154,22 +158,25 @@ int imap_cmd_step (IMAP_DATA* idata)
   if (idata->buf[0] == '+')
     return IMAP_CMD_RESPOND;
 
-  /* tagged completion code */
-  if (!ascii_strncmp (idata->buf, cmd->seq, SEQLEN))
+  /* tagged completion code. TODO: I believe commands will always be completed
+   * in order, but will have to double-check when I have net again */
+  rc = IMAP_CMD_CONTINUE;
+  if (!ascii_strncmp (idata->buf, idata->cmds[idata->lastcmd].seq, SEQLEN))
   {
+    idata->cmds[idata->lastcmd].state = cmd_status (idata->buf);
+    idata->lastcmd = (idata->lastcmd + 1) % IMAP_PIPELINE_DEPTH;
+    if (idata->lastcmd == idata->nextcmd)
+      rc = cmd_status (idata->buf);
     imap_cmd_finish (idata);
-    return imap_code (idata->buf) ? IMAP_CMD_OK : IMAP_CMD_NO;
   }
 
-  return IMAP_CMD_CONTINUE;
+  return rc;
 }
 
 /* imap_code: returns 1 if the command result was OK, or 0 if NO or BAD */
 int imap_code (const char *s)
 {
-  s += SEQLEN;
-  SKIPWS (s);
-  return (ascii_strncasecmp ("OK", s, 2) == 0);
+  return cmd_status (s) == IMAP_CMD_OK;
 }
 
 /* imap_exec: execute a command, and wait for the response from the server.
@@ -180,8 +187,9 @@ int imap_code (const char *s)
  *   IMAP_CMD_PASS: command contains a password. Suppress logging.
  * Return 0 on success, -1 on Failure, -2 on OK Failure
  */
-int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
+int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
 {
+  IMAP_COMMAND* cmd;
   char* out;
   int outlen;
   int rc;
@@ -192,12 +200,13 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
     return -1;
   }
 
-  /* create sequence for command */
-  cmd_make_sequence (idata);
+  if (!(cmd = cmd_new (idata)))
+    return -1;
+
   /* seq, space, cmd, \r\n\0 */
-  outlen = strlen (idata->cmd.seq) + strlen (cmd) + 4;
+  outlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
   out = (char*) safe_malloc (outlen);
-  snprintf (out, outlen, "%s %s\r\n", idata->cmd.seq, cmd);
+  snprintf (out, outlen, "%s %s\r\n", cmd->seq, cmdstr);
 
   rc = mutt_socket_write_d (idata->conn, out,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
@@ -224,16 +233,6 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
     dprint (1, (debugfile, "imap_exec: command failed: %s\n", idata->buf));
     return -1;
   }
-
-  return 0;
-}
-
-/* imap_cmd_running: Returns whether an IMAP command is in progress. */
-int imap_cmd_running (IMAP_DATA* idata)
-{
-  if (idata->cmd.state == IMAP_CMD_CONTINUE ||
-      idata->cmd.state == IMAP_CMD_RESPOND)
-    return 1;
 
   return 0;
 }
@@ -282,6 +281,43 @@ void imap_cmd_finish (IMAP_DATA* idata)
   }
 
   idata->status = 0;
+}
+
+/* sets up a new command control block and adds it to the queue.
+ * Returns NULL if the pipeline is full. */
+static IMAP_COMMAND* cmd_new (IMAP_DATA* idata)
+{
+  IMAP_COMMAND* cmd;
+
+  if ((idata->nextcmd + 1) % IMAP_PIPELINE_DEPTH == idata->lastcmd)
+  {
+    dprint (2, (debugfile, "cmd_new: IMAP command queue full\n"));
+    return NULL;
+  }
+
+  cmd = idata->cmds + idata->nextcmd;
+  idata->nextcmd = (idata->nextcmd + 1) % IMAP_PIPELINE_DEPTH;
+
+  snprintf (cmd->seq, sizeof (cmd->seq), "a%04u", idata->seqno++);
+  if (idata->seqno > 9999)
+    idata->seqno = 0;
+
+  cmd->state = IMAP_CMD_NEW;
+
+  return cmd;
+}
+
+/* parse response line for tagged OK/NO/BAD */
+static int cmd_status (const char *s)
+{
+  s = imap_next_word((char*)s);
+  
+  if (!ascii_strncasecmp("OK", s, 2))
+    return IMAP_CMD_OK;
+  if (!ascii_strncasecmp("NO", s, 3))
+    return IMAP_CMD_NO;
+
+  return IMAP_CMD_BAD;
 }
 
 /* cmd_handle_fatal: when IMAP_DATA is in fatal state, do what we can */
@@ -398,15 +434,6 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   }
 
   return 0;
-}
-
-/* cmd_make_sequence: make a tag suitable for starting an IMAP command */
-static void cmd_make_sequence (IMAP_DATA* idata)
-{
-  snprintf (idata->cmd.seq, sizeof (idata->cmd.seq), "a%04u", idata->seqno++);
-
-  if (idata->seqno > 9999)
-    idata->seqno = 0;
 }
 
 /* cmd_parse_capabilities: set capability bits according to CAPABILITY
@@ -583,12 +610,12 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */
-static void cmd_parse_myrights (IMAP_DATA* idata, char* s)
+static void cmd_parse_myrights (IMAP_DATA* idata, const char* s)
 {
   dprint (2, (debugfile, "Handling MYRIGHTS\n"));
 
-  s = imap_next_word (s);
-  s = imap_next_word (s);
+  s = imap_next_word ((char*)s);
+  s = imap_next_word ((char*)s);
 
   /* zero out current rights set */
   memset (idata->rights, 0, sizeof (idata->rights));
@@ -645,14 +672,14 @@ static int uid2msgno (IMAP_DATA* idata, unsigned int uid)
 }
 
 /* cmd_parse_search: store SEARCH response for later use */
-static void cmd_parse_search (IMAP_DATA* idata, char* s)
+static void cmd_parse_search (IMAP_DATA* idata, const char* s)
 {
   unsigned int uid;
   int msgno;
 
   dprint (2, (debugfile, "Handling SEARCH\n"));
 
-  while ((s = imap_next_word (s)) && *s != '\0')
+  while ((s = imap_next_word ((char*)s)) && *s != '\0')
   {
     uid = atoi (s);
     msgno = uid2msgno (idata, uid);
