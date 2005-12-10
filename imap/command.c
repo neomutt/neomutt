@@ -96,7 +96,7 @@ int imap_cmd_start (IMAP_DATA* idata, const char* cmd)
 int imap_cmd_step (IMAP_DATA* idata)
 {
   IMAP_COMMAND* cmd = &idata->cmd;
-  unsigned int len = 0;
+  size_t len = 0;
   int c;
 
   if (idata->status == IMAP_FATAL)
@@ -109,18 +109,18 @@ int imap_cmd_step (IMAP_DATA* idata)
    * line */
   do
   {
-    if (len == cmd->blen)
+    if (len == idata->blen)
     {
-      safe_realloc (&cmd->buf, cmd->blen + IMAP_CMD_BUFSIZE);
-      cmd->blen = cmd->blen + IMAP_CMD_BUFSIZE;
+      safe_realloc (&idata->buf, idata->blen + IMAP_CMD_BUFSIZE);
+      idata->blen = idata->blen + IMAP_CMD_BUFSIZE;
       dprint (3, (debugfile, "imap_cmd_step: grew buffer to %u bytes\n",
-		  cmd->blen));
+		  idata->blen));
     }
 
     /* back up over '\0' */
     if (len)
       len--;
-    c = mutt_socket_readln (cmd->buf + len, cmd->blen - len, idata->conn);
+    c = mutt_socket_readln (idata->buf + len, idata->blen - len, idata->conn);
     if (c <= 0)
     {
       dprint (1, (debugfile, "imap_cmd_step: Error reading server response.\n"));
@@ -133,32 +133,32 @@ int imap_cmd_step (IMAP_DATA* idata)
   /* if we've read all the way to the end of the buffer, we haven't read a
    * full line (mutt_socket_readln strips the \r, so we always have at least
    * one character free when we've read a full line) */
-  while (len == cmd->blen);
+  while (len == idata->blen);
 
   /* don't let one large string make cmd->buf hog memory forever */
-  if ((cmd->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
+  if ((idata->blen > IMAP_CMD_BUFSIZE) && (len <= IMAP_CMD_BUFSIZE))
   {
-    safe_realloc (&cmd->buf, IMAP_CMD_BUFSIZE);
-    cmd->blen = IMAP_CMD_BUFSIZE;
-    dprint (3, (debugfile, "imap_cmd_step: shrank buffer to %u bytes\n", cmd->blen));
+    safe_realloc (&idata->buf, IMAP_CMD_BUFSIZE);
+    idata->blen = IMAP_CMD_BUFSIZE;
+    dprint (3, (debugfile, "imap_cmd_step: shrank buffer to %u bytes\n", idata->blen));
   }
 
   idata->lastread = time(NULL);
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if (!ascii_strncmp (cmd->buf, "* ", 2) &&
+  if (!ascii_strncmp (idata->buf, "* ", 2) &&
       cmd_handle_untagged (idata))
     return IMAP_CMD_BAD;
 
   /* server demands a continuation response from us */
-  if (cmd->buf[0] == '+')
+  if (idata->buf[0] == '+')
     return IMAP_CMD_RESPOND;
 
   /* tagged completion code */
-  if (!ascii_strncmp (cmd->buf, cmd->seq, SEQLEN))
+  if (!ascii_strncmp (idata->buf, cmd->seq, SEQLEN))
   {
     imap_cmd_finish (idata);
-    return imap_code (cmd->buf) ? IMAP_CMD_OK : IMAP_CMD_NO;
+    return imap_code (idata->buf) ? IMAP_CMD_OK : IMAP_CMD_NO;
   }
 
   return IMAP_CMD_CONTINUE;
@@ -221,7 +221,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmd, int flags)
     if (flags & IMAP_CMD_FAIL_OK)
       return -2;
 
-    dprint (1, (debugfile, "imap_exec: command failed: %s\n", idata->cmd.buf));
+    dprint (1, (debugfile, "imap_exec: command failed: %s\n", idata->buf));
     return -1;
   }
 
@@ -313,7 +313,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   char* pn;
   int count;
 
-  s = imap_next_word (idata->cmd.buf);
+  s = imap_next_word (idata->buf);
 
   if ((idata->state == IMAP_SELECTED) && isdigit ((unsigned char) *s))
   {

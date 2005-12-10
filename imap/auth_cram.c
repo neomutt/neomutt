@@ -71,7 +71,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
     goto bail;
   }
 
-  if ((len = mutt_from_base64 (obuf, idata->cmd.buf + 2)) == -1)
+  if ((len = mutt_from_base64 (obuf, idata->buf + 2)) == -1)
   {
     dprint (1, (debugfile, "Error decoding base64 response.\n"));
     goto bail;
@@ -121,7 +121,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
     goto bail;
   }
 
-  if (imap_code (idata->cmd.buf))
+  if (imap_code (idata->buf))
     return IMAP_AUTH_SUCCESS;
 
  bail:

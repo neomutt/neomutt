@@ -144,8 +144,6 @@ typedef struct
 typedef struct
 {
   char seq[SEQLEN+1];
-  char* buf;
-  unsigned int blen;
   int state;
 } IMAP_COMMAND;
 
@@ -169,6 +167,8 @@ typedef struct
   time_t lastread; /* last time we read a command for the server */
   /* who knows, one day we may run multiple commands in parallel */
   IMAP_COMMAND cmd;
+  char* buf;
+  size_t blen;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;

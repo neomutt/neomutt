@@ -285,7 +285,7 @@ static int imap_get_delim (IMAP_DATA *idata)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    s = imap_next_word (idata->cmd.buf);
+    s = imap_next_word (idata->buf);
     if (ascii_strncasecmp ("LIST", s, 4) == 0)
     {
       s = imap_next_word (s);
@@ -330,7 +330,7 @@ static int imap_check_capabilities (IMAP_DATA* idata)
 {
   if (imap_exec (idata, "CAPABILITY", 0) != 0)
   {
-    imap_error ("imap_check_capabilities", idata->cmd.buf);
+    imap_error ("imap_check_capabilities", idata->buf);
     return -1;
   }
 
@@ -442,7 +442,7 @@ int imap_open_connection (IMAP_DATA* idata)
     return -1;
   }
 
-  if (ascii_strncasecmp ("* OK", idata->cmd.buf, 4) == 0)
+  if (ascii_strncasecmp ("* OK", idata->buf, 4) == 0)
   {
     /* TODO: Parse new tagged CAPABILITY data (* OK [CAPABILITY...]) */
     if (imap_check_capabilities (idata))
@@ -492,7 +492,7 @@ int imap_open_connection (IMAP_DATA* idata)
     }
 #endif    
   }
-  else if (ascii_strncasecmp ("* PREAUTH", idata->cmd.buf, 9) == 0)
+  else if (ascii_strncasecmp ("* PREAUTH", idata->buf, 9) == 0)
   {
     idata->state = IMAP_AUTHENTICATED;
     if (imap_check_capabilities (idata) != 0)
@@ -631,7 +631,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    pc = idata->cmd.buf + 2;
+    pc = idata->buf + 2;
 
     /* Obtain list of available flags here, may be overridden by a
      * PERMANENTFLAGS tag in the OK response */
@@ -681,7 +681,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   if (rc == IMAP_CMD_NO)
   {
     char *s;
-    s = imap_next_word (idata->cmd.buf); /* skip seq */
+    s = imap_next_word (idata->buf); /* skip seq */
     s = imap_next_word (s); /* Skip response */
     mutt_error ("%s", s);
     mutt_sleep (2);
@@ -692,7 +692,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     goto fail;
 
   /* check for READ-ONLY notification */
-  if (!ascii_strncasecmp (imap_get_qualifier (idata->cmd.buf), "[READ-ONLY]", 11)  \
+  if (!ascii_strncasecmp (imap_get_qualifier (idata->buf), "[READ-ONLY]", 11)  \
   && !mutt_bit_isset (idata->capabilities, ACL))
   {
     dprint (2, (debugfile, "Mailbox is read-only.\n"));
@@ -820,7 +820,7 @@ void imap_logout (IMAP_DATA* idata)
   while (imap_cmd_step (idata) == IMAP_CMD_CONTINUE)
     ;
 
-  FREE(& idata->cmd.buf);
+  FREE(& idata->buf);
   FREE(& idata);
 }
 
@@ -985,7 +985,7 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
       err_continue && (*err_continue != M_YES))
   {
     *err_continue = imap_continue ("imap_sync_message: STORE failed",
-				   idata->cmd.buf);
+				   idata->buf);
     if (*err_continue != M_YES)
       return -1;
   }
@@ -1098,7 +1098,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     idata->reopen |= IMAP_EXPUNGE_EXPECTED;
     if (imap_exec (idata, "EXPUNGE", 0) != 0)
     {
-      imap_error (_("imap_sync_mailbox: EXPUNGE failed"), idata->cmd.buf);
+      imap_error (_("imap_sync_mailbox: EXPUNGE failed"), idata->buf);
       rc = -1;
       goto out;
     }
@@ -1270,7 +1270,7 @@ int imap_mailbox_check (char* path, int new)
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    s = imap_next_word (idata->cmd.buf);
+    s = imap_next_word (idata->buf);
     if (ascii_strncasecmp ("STATUS", s, 6) == 0)
     {
       s = imap_next_word (s);
@@ -1464,7 +1464,7 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
   if (rc != IMAP_CMD_CONTINUE)
     return -1;
 
-  s = imap_next_word (idata->cmd.buf);
+  s = imap_next_word (idata->buf);
   if ((ascii_strncasecmp ("LIST", s, 4) == 0) ||
       (ascii_strncasecmp ("LSUB", s, 4) == 0))
   {
@@ -1507,11 +1507,11 @@ int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
     s = imap_next_word (s); /* name */
     if (s && *s == '{')	/* Literal */
     { 
-      if (imap_get_literal_count(idata->cmd.buf, &bytes) < 0)
+      if (imap_get_literal_count(idata->buf, &bytes) < 0)
 	return -1;
       if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
 	return -1;
-      *name = idata->cmd.buf;
+      *name = idata->buf;
     }
     else
       *name = s;
@@ -1718,7 +1718,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
       completions++;
     }
   }
-  while (ascii_strncmp(idata->cmd.seq, idata->cmd.buf, SEQLEN));
+  while (ascii_strncmp(idata->cmd.seq, idata->buf, SEQLEN));
 
   if (completions)
   {

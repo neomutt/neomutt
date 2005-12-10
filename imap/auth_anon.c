@@ -66,7 +66,7 @@ imap_auth_res_t imap_auth_anon (IMAP_DATA* idata, const char* method)
     goto bail;
   }
 
-  if (imap_code (idata->cmd.buf))
+  if (imap_code (idata->buf))
     return IMAP_AUTH_SUCCESS;
 
  bail:

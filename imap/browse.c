@@ -131,7 +131,7 @@ int imap_browse (char* path, struct browser_state* state)
           }
         }
       }
-      while (ascii_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN));
+      while (ascii_strncmp (idata->buf, idata->cmd.seq, SEQLEN));
     }
 
     /* if we're descending a folder, mark it as current in browser_state */
@@ -342,7 +342,7 @@ int imap_mailbox_rename(const char* mailbox)
   }
 
   if (imap_rename_mailbox (idata, &mx, newname) < 0) {
-    mutt_error (_("Rename failed: %s"), imap_get_qualifier (idata->cmd.buf));
+    mutt_error (_("Rename failed: %s"), imap_get_qualifier (idata->buf));
     mutt_sleep (1);
     goto fail;
   }
@@ -395,7 +395,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
           isparent);
     }
   }
-  while ((ascii_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN) != 0));
+  while ((ascii_strncmp (idata->buf, idata->cmd.seq, SEQLEN) != 0));
 
   FREE (&mx.mbox);
   return 0;
@@ -491,7 +491,7 @@ static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
     if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
       break;
 
-    s = imap_next_word (idata->cmd.buf);
+    s = imap_next_word (idata->buf);
     if (ascii_strncasecmp ("NAMESPACE", s, 9) == 0)
     {
       /* There are three sections to the response, User, Other, Shared,
@@ -607,7 +607,7 @@ static int browse_verify_namespace (IMAP_DATA* idata,
 	return -1;
       nsi->listable |= (name != NULL);
     }
-    while ((ascii_strncmp (idata->cmd.buf, idata->cmd.seq, SEQLEN) != 0));
+    while ((ascii_strncmp (idata->buf, idata->cmd.seq, SEQLEN) != 0));
   }
 
   return 0;

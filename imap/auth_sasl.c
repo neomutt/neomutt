@@ -119,7 +119,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
     if (irc == IMAP_CMD_RESPOND)
     {
-      if (sasl_decode64 (idata->cmd.buf+2, strlen (idata->cmd.buf+2), buf, LONG_STRING-1, &len) != SASL_OK)
+      if (sasl_decode64 (idata->buf+2, strlen (idata->buf+2), buf, LONG_STRING-1, &len) != SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
 	goto bail;
@@ -175,7 +175,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   if (rc != SASL_OK)
     goto bail;
 
-  if (imap_code (idata->cmd.buf))
+  if (imap_code (idata->buf))
   {
     mutt_sasl_setup_conn (idata->conn, saslconn);
     return IMAP_AUTH_SUCCESS;
