@@ -1204,6 +1204,122 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
   return result;
 }
 
+/* split path into (idata,mailbox name) */
+static int imap_buffy_split (const char* path, IMAP_DATA** hidata, char* buf, size_t blen)
+{
+  IMAP_MBOX mx;
+
+  if (imap_parse_path (path, &mx))
+  {
+    dprint (1, (debugfile, "imap_split_path: Error parsing %s\n", path));
+    return -1;
+  }
+  if (!(*hidata = imap_conn_find (&(mx.account), option (OPTIMAPPASSIVE) ? M_IMAP_CONN_NONEW : 0)))
+  {
+    FREE (&mx.mbox);
+    return -1;
+  }
+  
+  imap_fix_path (*hidata, mx.mbox, buf, blen);
+  FREE (&mx.mbox);
+
+  return 0;
+}
+
+/* check for new mail in any subscribed mailboxes. Given a list of mailboxes
+ * rather than called once for each so that it can batch the commands and
+ * save on round trips. Returns number of mailboxes with new mail. */
+int imap_buffy_check (int force)
+{
+  IMAP_DATA* idata;
+  IMAP_DATA* lastdata = NULL;
+  BUFFY* mailbox;
+  char name[LONG_STRING];
+  char command[LONG_STRING];
+  char munged[LONG_STRING];
+  int buffies = 0;
+  int rc;
+
+  for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
+  {
+    /* Init newly-added mailboxes */
+    if (! mailbox->magic)
+    {
+      if (mx_is_imap (mailbox->path))
+        mailbox->magic = M_IMAP;
+    }
+    
+    if (mailbox->magic != M_IMAP)
+      continue;
+
+    mailbox->new = 0;
+
+    if (imap_buffy_split (mailbox->path, &idata, name, sizeof (name)) < 0)
+      continue;
+
+    /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
+     * IDLEd elsewhere */
+    if (mutt_strcmp (name, idata->mailbox) == 0
+        || (ascii_strcasecmp (name, "INBOX") == 0
+            && mutt_strcasecmp (name, idata->mailbox) == 0))
+      continue;
+      
+    if (!lastdata)
+      lastdata = idata;
+
+    if (idata != lastdata)
+    {
+      /* Send commands to previous server. Sorting the buffy list
+       * may prevent some infelicitous interleavings */
+      if (imap_exec (lastdata, NULL, 0) != IMAP_CMD_OK)
+        dprint (1, (debugfile, "Error polling mailboxes\n"));
+
+      lastdata = NULL;
+    }
+
+    if (!mutt_bit_isset (idata->capabilities, IMAP4REV1) &&
+        !mutt_bit_isset (idata->capabilities, STATUS))
+    {
+      dprint (2, (debugfile, "Server doesn't support STATUS\n"));
+      continue;
+    }
+    
+    imap_munge_mbox_name (munged, sizeof (munged), name);
+    /* we need a better way to detect new mail... */
+    snprintf (command, sizeof (command), "STATUS %s (RECENT)", munged);
+
+    if (imap_cmd_queue (idata, command) < 0)
+    {
+      /* pipeline must be full, drain it */
+      dprint (2, (debugfile, "IMAP command pipeline full, draining\n"));
+
+      if (imap_exec (idata, NULL, 0) != IMAP_CMD_OK)
+        dprint (1, (debugfile, "Error polling mailboxes\n"));
+      
+      if (imap_cmd_queue (idata, command) < 0) {
+        /* real trouble */
+        dprint (1, (debugfile, "Error queueing command\n"));
+        return 0;
+      }
+    }
+  }
+
+  if (lastdata && (imap_exec (lastdata, NULL, 0) != IMAP_CMD_OK))
+  {
+    dprint (1, (debugfile, "Error polling mailboxes"));
+    return 0;
+  }
+
+  /* collect results */
+  for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
+  {
+    if (mailbox->magic == M_IMAP && mailbox->new)
+      buffies++;
+  }
+
+  return buffies;
+}
+
 /* returns count of recent messages if new = 1, else count of total messages.
  * (useful for at least postponed function)
  * Question of taste: use RECENT or UNSEEN for new?
@@ -1217,11 +1333,10 @@ int imap_mailbox_check (char* path, int new)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char mbox_unquoted[LONG_STRING];
-  char *s;
-  int msgcount = 0;
   int connflags = 0;
   IMAP_MBOX mx;
   int rc;
+  BUFFY* buffy;
   
   if (imap_parse_path (path, &mx))
     return -1;
@@ -1266,39 +1381,17 @@ int imap_mailbox_check (char* path, int new)
 
   imap_cmd_start (idata, buf);
 
-  do 
-  {
-    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
-      break;
-
-    s = imap_next_word (idata->buf);
-    if (ascii_strncasecmp ("STATUS", s, 6) == 0)
-    {
-      s = imap_next_word (s);
-      /* The mailbox name may or may not be quoted here. We could try to 
-       * munge the server response and compare with quoted (or vise versa)
-       * but it is probably more efficient to just strncmp against both. */
-      if (mutt_strncmp (mbox_unquoted, s, mutt_strlen (mbox_unquoted)) == 0
-	  || mutt_strncmp (mbox, s, mutt_strlen (mbox)) == 0)
-      {
-	s = imap_next_word (s);
-	s = imap_next_word (s);
-	if (isdigit ((unsigned char) *s))
-	{
-	  if (*s != '0')
-	  {
-	    msgcount = atoi(s);
-	    dprint (2, (debugfile, "%d new messages in %s\n", msgcount, path));
-	  }
-	}
-      }
-      else
-	dprint (1, (debugfile, "imap_mailbox_check: STATUS response doesn't match requested mailbox.\n"));
-    }
-  }
+  do
+    rc = imap_cmd_step (idata);
   while (rc == IMAP_CMD_CONTINUE);
 
-  return msgcount;
+  for (buffy = Incoming; buffy; buffy = buffy->next)
+  {
+    if (!strncmp (buffy->path, path, strlen (path)))
+      return buffy->new;
+  }
+
+  return 0;
 }
 
 /* returns number of patterns in the search that should be done server-side

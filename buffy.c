@@ -286,6 +286,8 @@ int mutt_buffy_check (int force)
   BuffyNotify = 0;
 
 #ifdef USE_IMAP
+  BuffyCount += imap_buffy_check (force);
+
   if (!Context || Context->magic != M_IMAP)
 #endif
 #ifdef USE_POP
@@ -300,13 +302,10 @@ int mutt_buffy_check (int force)
   
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
+#ifndef USE_IMAP
     tmp->new = 0;
-
-#ifdef USE_IMAP
-    if (mx_is_imap (tmp->path))
-      tmp->magic = M_IMAP;
-    else
 #endif
+
 #ifdef USE_POP
     if (mx_is_pop (tmp->path))
       tmp->magic = M_POP;
@@ -398,21 +397,6 @@ int mutt_buffy_check (int force)
 	if ((tmp->new = mh_buffy (tmp->path)) > 0)
 	  BuffyCount++;
 	break;
-	
-#ifdef USE_IMAP
-      case M_IMAP:
-	if ((tmp->new = imap_mailbox_check (tmp->path, 1)) > 0)
-	  BuffyCount++;
-	else
-	  tmp->new = 0;
-
-	break;
-#endif
-
-#ifdef USE_POP
-      case M_POP:
-	break;
-#endif
       }
     }
 #ifdef BUFFY_SIZE

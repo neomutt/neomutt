@@ -325,7 +325,7 @@ int imap_get_literal_count(const char *buf, long *bytes)
  *   the qualifier message. Used by imap_copy_message for TRYCREATE */
 char* imap_get_qualifier (char* buf)
 {
-  const char *s = buf;
+  char *s = buf;
 
   /* skip tag */
   s = imap_next_word (s);

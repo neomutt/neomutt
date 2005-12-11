@@ -50,8 +50,9 @@
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
 
-/* number of commands that can be batched into a single request */
-#define IMAP_PIPELINE_DEPTH 10
+/* number of commands that can be batched into a single request
+ * ( - 1, for the easy way to detect ring buffer wrap) */
+#define IMAP_PIPELINE_DEPTH 11
 
 #define SEQLEN 5
 
@@ -177,6 +178,9 @@ typedef struct
   IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
   int nextcmd;
   int lastcmd;
+  char* cmdbuf;
+  char* cmdtail;
+  unsigned int cmdbuflen;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
@@ -218,6 +222,7 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
 int imap_authenticate (IMAP_DATA* idata);
 
 /* command.c */
+int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr);
 int imap_cmd_start (IMAP_DATA* idata, const char* cmd);
 int imap_cmd_step (IMAP_DATA* idata);
 void imap_cmd_finish (IMAP_DATA* idata);

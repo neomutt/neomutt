@@ -29,6 +29,7 @@
 #include "imap_private.h"
 #include "message.h"
 #include "mx.h"
+#include "buffy.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -46,6 +47,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s);
 static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, const char* s);
 static void cmd_parse_search (IMAP_DATA* idata, const char* s);
+static void cmd_parse_status (IMAP_DATA* idata, char* s);
 
 static char *Capabilities[] = {
   "IMAP4",
@@ -62,15 +64,11 @@ static char *Capabilities[] = {
   NULL
 };
 
-/* imap_cmd_start: Given an IMAP command, send it to the server.
- *   Currently a minor convenience, but helps to route all IMAP commands
- *   through a single interface. */
-int imap_cmd_start (IMAP_DATA* idata, const char* cmdstr)
+/* imap_cmd_queue: Add command to command queue. Fails if the queue is full. */
+int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr)
 {
   IMAP_COMMAND* cmd;
-  char* out;
-  int outlen;
-  int rc;
+  unsigned int cmdlen;
 
   if (idata->status == IMAP_FATAL)
   {
@@ -80,15 +78,37 @@ int imap_cmd_start (IMAP_DATA* idata, const char* cmdstr)
 
   if (!(cmd = cmd_new (idata)))
     return IMAP_CMD_BAD;
-  
+
   /* seq, space, cmd, \r\n\0 */
-  outlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
-  out = (char*) safe_malloc (outlen);
-  snprintf (out, outlen, "%s %s\r\n", cmd->seq, cmdstr);
+  cmdlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
+  if (idata->cmdbuflen < cmdlen + (idata->cmdtail - idata->cmdbuf))
+  {
+    unsigned int tailoff = idata->cmdtail - idata->cmdbuf;
+    safe_realloc (&idata->cmdbuf, tailoff + cmdlen);
+    idata->cmdbuflen = tailoff + cmdlen;
+    idata->cmdtail = idata->cmdbuf + tailoff;
+  }
+  snprintf (idata->cmdtail, cmdlen, "%s %s\r\n", cmd->seq, cmdstr);
+  idata->cmdtail += cmdlen - 1;
 
-  rc = mutt_socket_write (idata->conn, out);
+  return 0;
+}
 
-  FREE (&out);
+/* imap_cmd_start: Given an IMAP command, send it to the server.
+ *   If cmdstr is NULL, sends queued commands. */
+int imap_cmd_start (IMAP_DATA* idata, const char* cmdstr)
+{
+  int rc;
+
+  if (cmdstr && (rc = imap_cmd_queue (idata, cmdstr)) < 0)
+    return rc;
+
+  /* don't write old or empty commands */
+  if (idata->cmdtail == idata->cmdbuf)
+    return IMAP_CMD_BAD;
+
+  rc = mutt_socket_write (idata->conn, idata->cmdbuf);
+  idata->cmdtail = idata->cmdbuf;
 
   return (rc < 0) ? IMAP_CMD_BAD : 0;
 }
@@ -189,9 +209,6 @@ int imap_code (const char *s)
  */
 int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
 {
-  IMAP_COMMAND* cmd;
-  char* out;
-  int outlen;
   int rc;
 
   if (idata->status == IMAP_FATAL)
@@ -200,17 +217,16 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
     return -1;
   }
 
-  if (!(cmd = cmd_new (idata)))
-    return -1;
-
-  /* seq, space, cmd, \r\n\0 */
-  outlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
-  out = (char*) safe_malloc (outlen);
-  snprintf (out, outlen, "%s %s\r\n", cmd->seq, cmdstr);
-
-  rc = mutt_socket_write_d (idata->conn, out,
+  if (cmdstr && (rc = imap_cmd_queue (idata, cmdstr)) < 0)
+    return rc;
+  
+  /* don't write old or empty commands */
+  if (idata->cmdtail == idata->cmdbuf)
+    return IMAP_CMD_BAD;
+  
+  rc = mutt_socket_write_d (idata->conn, idata->cmdbuf,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-  FREE (&out);
+  idata->cmdtail = idata->cmdbuf;
 
   if (rc < 0)
   {
@@ -407,6 +423,8 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
     cmd_parse_myrights (idata, s);
   else if (ascii_strncasecmp ("SEARCH", s, 6) == 0)
     cmd_parse_search (idata, s);
+  else if (ascii_strncasecmp ("STATUS", s, 6) == 0)
+    cmd_parse_status (idata, s);
   else if (ascii_strncasecmp ("BYE", s, 3) == 0)
   {
     dprint (2, (debugfile, "Handling BYE\n"));
@@ -686,5 +704,73 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
     
     if (msgno >= 0)
       idata->ctx->hdrs[uid2msgno (idata, uid)]->matched = 1;
+  }
+}
+
+/* first cut: just do buffy update. Later we may wish to cache all
+ * mailbox information, even that not desired by buffy */
+static void cmd_parse_status (IMAP_DATA* idata, char* s)
+{
+  char* mailbox;
+  BUFFY* inc;
+  IMAP_MBOX mx;
+  int count;
+
+  dprint (2, (debugfile, "Handling STATUS\n"));
+  
+  mailbox = imap_next_word (s);
+  s = imap_next_word (mailbox);
+  *(s - 1) = '\0';
+  
+  imap_unmunge_mbox_name (mailbox);
+  
+  for (inc = Incoming; inc; inc = inc->next)
+  {
+    if (inc->magic != M_IMAP)
+      continue;
+    
+    if (imap_parse_path (inc->path, &mx) < 0)
+    {
+      dprint (1, (debugfile, "Error parsing mailbox %s, skipping\n", inc->path));
+      continue;
+    }
+    
+    if (mutt_account_match (&idata->conn->account, &mx.account) && mx.mbox
+        && strncmp (mailbox, mx.mbox, strlen (mailbox)) == 0)
+    {
+      if (*s++ != '(')
+      {
+        dprint (1, (debugfile, "Error parsing STATUS\n"));
+        FREE (&mx.mbox);
+        return;
+      }
+      
+      while (*s && *s != ')')
+      {
+        if (!ascii_strncmp ("RECENT", s, 6))
+        {
+          s = imap_next_word (s);
+          count = strtol (s, &s, 10);
+          dprint (2, (debugfile, "%d recent in %s\n", count, mx.mbox));
+          inc->new = count;
+        }
+        else if (!ascii_strncmp ("UNSEEN", s, 6))
+        {
+          s = imap_next_word (s);
+          count = strtol (s, &s, 10);
+          dprint (2, (debugfile, "%d unseen in %s\n", count, mx.mbox));
+        }
+        else if (!ascii_strncmp ("MESSAGES", s, 8))
+        {
+          s = imap_next_word (s);
+          count = strtol (s, &s, 10);
+          dprint (2, (debugfile, "%d messages in %s\n", count, mx.mbox));
+        }
+      }
+      
+      return;
+    }
+
+    FREE (&mx.mbox);
   }
 }
