@@ -1,3 +1,30 @@
+2005-12-11 22:51:29  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* buffy.c, imap/command.c, imap/imap.c, imap/imap.h,
+	imap/imap_private.h, imap/util.c: IMAP command batching code, used
+	to pipeline mailbox poll requests. Up to 10 poll commands will be
+	sent at a time (tunable in imap_private.h). This is a huge win on
+	my currently awful wireless link. It takes a knife to a lot of
+	fundamental IMAP code (mostly for the better), so it may have
+	destabilised things. Time for some brave (or lazy
+	non-Changelog-reading) testers to report... next up, IDLE
+	support.
+                                 
+2005-12-10 07:06:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/browse.c, imap/command.c, imap/imap.c, imap/imap_private.h,
+	imap/util.c: Set up a command pipeline. Currently everything still
+	runs a single command from start to finish before moving on, but
+	this creates the infrastructure to pipeline mailbox polling
+	calls. Bitter experience at the end of a flaky wireless link
+	teaches me that this can be useful.
+
+	* imap/auth_anon.c, imap/auth_cram.c, imap/auth_gss.c,
+	imap/auth_sasl.c, imap/browse.c, imap/command.c, imap/imap.c,
+	imap/imap_private.h, imap/message.c, imap/util.c: Move IMAP
+	response buffer out of command into IMAP_DATA. Ironically this is
+	to prepare for pipelined commands.
+
 2005-11-24 12:50:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* curs_main.c, pattern.c: mutt/2142 suggests that the change
