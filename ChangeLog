@@ -1,3 +1,12 @@
+2005-12-12 17:24:12  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c, imap/imap.c, init.h, mutt.h: Add $imap_idle
+	boolean to disable the IDLE extension (may be needed with some
+	servers like the particular version of dovecot I tried
+	yesterday). Don't attempt to poll mailboxes with connections that
+	haven't yet authenticated. Recognize NO responses again (silly
+	typo, spotted by Charlie Allom)
+
 2005-12-12 02:24:43  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* configure.in, imap/command.c, imap/imap.c, imap/imap_private.h,
