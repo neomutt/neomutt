@@ -363,7 +363,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 
   /* make sure this connection is not in SELECTED state, if neccessary */
   if (flags & M_IMAP_CONN_NOSELECT)
-    while (conn->data && ((IMAP_DATA*) conn->data)->state == IMAP_SELECTED)
+    while (conn->data && ((IMAP_DATA*) conn->data)->state >= IMAP_SELECTED)
     {
       if (!(conn = mutt_conn_find (conn, account)))
 	return NULL;
@@ -1015,7 +1015,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   idata = (IMAP_DATA*) ctx->data;
 
-  if (idata->state != IMAP_SELECTED)
+  if (idata->state < IMAP_SELECTED)
   {
     dprint (2, (debugfile, "imap_sync_mailbox: no mailbox selected\n"));
     return -1;
@@ -1138,7 +1138,7 @@ void imap_close_mailbox (CONTEXT* ctx)
 
   if (ctx == idata->ctx)
   {
-    if (idata->status != IMAP_FATAL && idata->state == IMAP_SELECTED)
+    if (idata->status != IMAP_FATAL && idata->state >= IMAP_SELECTED)
     {
       /* mx_close_mailbox won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
@@ -1167,7 +1167,7 @@ void imap_close_mailbox (CONTEXT* ctx)
   }
 }
 
-/* use the NOOP command to poll for new mail
+/* use the NOOP or IDLE command to poll for new mail
  *
  * return values:
  *	M_REOPENED	mailbox has been externally modified
@@ -1184,7 +1184,31 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
 
   idata = (IMAP_DATA*) ctx->data;
 
-  if ((force || time(NULL) >= idata->lastread + Timeout)
+  /* try IDLE first */
+  if (mutt_bit_isset (idata->capabilities, IDLE)
+      && (idata->state != IMAP_IDLE
+          || time(NULL) >= idata->lastread + ImapKeepalive))
+  {
+    imap_cmd_start (idata, "IDLE");
+    if (imap_cmd_step (idata) != IMAP_CMD_RESPOND)
+    {
+      dprint (1, (debugfile, "Error starting IDLE\n"));
+      return -1;
+    }
+    idata->state = IMAP_IDLE;
+  }
+  if (idata->state == IMAP_IDLE)
+  {
+    while (mutt_socket_poll (idata->conn) > 0)
+    {
+      if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
+      {
+        dprint (1, (debugfile, "Error reading IDLE response\n"));
+        return -1;
+      }
+    }
+  }
+  else if ((force || time(NULL) >= idata->lastread + Timeout)
       && imap_exec (idata, "NOOP", 0) != 0)
     return -1;
 
@@ -1238,7 +1262,6 @@ int imap_buffy_check (int force)
   char command[LONG_STRING];
   char munged[LONG_STRING];
   int buffies = 0;
-  int rc;
 
   for (mailbox = Incoming; mailbox; mailbox = mailbox->next)
   {

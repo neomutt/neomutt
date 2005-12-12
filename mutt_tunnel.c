@@ -45,6 +45,7 @@ static int tunnel_socket_open (CONNECTION*);
 static int tunnel_socket_close (CONNECTION*);
 static int tunnel_socket_read (CONNECTION* conn, char* buf, size_t len);
 static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len);
+static int tunnel_socket_poll (CONNECTION* conn);
 
 /* -- public functions -- */
 int mutt_tunnel_socket_setup (CONNECTION *conn)
@@ -53,6 +54,7 @@ int mutt_tunnel_socket_setup (CONNECTION *conn)
   conn->conn_close = tunnel_socket_close;
   conn->conn_read = tunnel_socket_read;
   conn->conn_write = tunnel_socket_write;
+  conn->conn_poll = tunnel_socket_poll;
 
   return 0;
 }
@@ -172,6 +174,20 @@ static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len)
 		strerror (errno));
     mutt_sleep (1);
   }
+
+  return rc;
+}
+
+static int tunnel_socket_poll (CONNECTION* conn)
+{
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  int ofd;
+  int rc;
+
+  ofd = conn->fd;
+  conn->fd = tunnel->readfd;
+  rc = raw_socket_poll (conn);
+  conn->fd = ofd;
 
   return rc;
 }

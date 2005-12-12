@@ -79,7 +79,10 @@ enum
   IMAP_DISCONNECTED = 0,
   IMAP_CONNECTED,
   IMAP_AUTHENTICATED,
-  IMAP_SELECTED
+  IMAP_SELECTED,
+  
+  /* and pseudo-states */
+  IMAP_IDLE
 };
 
 enum
@@ -119,6 +122,7 @@ enum
   AUTH_ANON,			/* AUTH=ANONYMOUS */
   STARTTLS,			/* RFC 2595: STARTTLS */
   LOGINDISABLED,		/*           LOGINDISABLED */
+  IDLE,                         /* RFC 2177: IDLE */
 
   CAPMAX
 };

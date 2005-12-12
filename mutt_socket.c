@@ -39,6 +39,9 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#endif
 #include <string.h>
 #include <errno.h>
 
@@ -127,6 +130,21 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
   }
 
   return rc;
+}
+
+/* poll whether reads would block.
+ *   Returns: >0 if there is data to read,
+ *            0 if a read would block,
+ *            -1 if this connection doesn't support polling */
+int mutt_socket_poll (CONNECTION* conn)
+{
+  if (conn->bufpos < conn->available)
+    return conn->available - conn->bufpos;
+
+  if (conn->conn_poll)
+    return conn->conn_poll (conn);
+
+  return -1;
 }
 
 /* simple read buffering to speed things up. */
@@ -279,6 +297,7 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
     conn->conn_write = raw_socket_write;
     conn->conn_open = raw_socket_open;
     conn->conn_close = raw_socket_close;
+    conn->conn_poll = raw_socket_poll;
   }
 
   return conn;
@@ -388,6 +407,20 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
   }
 
   return rc;
+}
+
+int raw_socket_poll (CONNECTION* conn)
+{
+  fd_set rfds;
+  struct timeval tv = { 0, 0 };
+
+  if (conn->fd < 0)
+    return -1;
+
+  FD_ZERO (&rfds);
+  FD_SET (conn->fd, &rfds);
+  
+  return select (conn->fd + 1, &rfds, NULL, NULL, &tv);
 }
 
 int raw_socket_open (CONNECTION* conn)

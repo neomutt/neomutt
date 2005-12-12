@@ -60,6 +60,7 @@ static char *Capabilities[] = {
   "AUTH=ANONYMOUS",
   "STARTTLS",
   "LOGINDISABLED",
+  "IDLE",
 
   NULL
 };
@@ -81,6 +82,8 @@ int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr)
 
   /* seq, space, cmd, \r\n\0 */
   cmdlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
+  if (idata->state == IMAP_IDLE)
+    cmdlen += 6; /* DONE\r\n */
   if (idata->cmdbuflen < cmdlen + (idata->cmdtail - idata->cmdbuf))
   {
     unsigned int tailoff = idata->cmdtail - idata->cmdbuf;
@@ -88,8 +91,12 @@ int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr)
     idata->cmdbuflen = tailoff + cmdlen;
     idata->cmdtail = idata->cmdbuf + tailoff;
   }
-  snprintf (idata->cmdtail, cmdlen, "%s %s\r\n", cmd->seq, cmdstr);
+  snprintf (idata->cmdtail, cmdlen, "%s%s %s\r\n",
+            idata->state == IMAP_IDLE ? "DONE\r\n" : "", cmd->seq, cmdstr);
   idata->cmdtail += cmdlen - 1;
+
+  if (idata->state == IMAP_IDLE)
+    idata->state = IMAP_SELECTED;
 
   return 0;
 }
@@ -265,7 +272,7 @@ void imap_cmd_finish (IMAP_DATA* idata)
     return;
   }
 
-  if (!(idata->state == IMAP_SELECTED) || idata->ctx->closing)
+  if (!(idata->state >= IMAP_SELECTED) || idata->ctx->closing)
     return;
   
   if (idata->reopen & IMAP_REOPEN_ALLOW)
@@ -341,7 +348,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
 {
   idata->status = IMAP_FATAL;
 
-  if ((idata->state == IMAP_SELECTED) &&
+  if ((idata->state >= IMAP_SELECTED) &&
       (idata->reopen & IMAP_REOPEN_ALLOW))
   {
     mx_fastclose_mailbox (idata->ctx);
@@ -350,7 +357,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
     idata->state = IMAP_DISCONNECTED;
   }
 
-  if (idata->state != IMAP_SELECTED)
+  if (idata->state < IMAP_SELECTED)
   {
     idata->state = IMAP_DISCONNECTED;
     mutt_socket_close (idata->conn);
@@ -367,7 +374,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 
   s = imap_next_word (idata->buf);
 
-  if ((idata->state == IMAP_SELECTED) && isdigit ((unsigned char) *s))
+  if ((idata->state >= IMAP_SELECTED) && isdigit ((unsigned char) *s))
   {
     pn = s;
     s = imap_next_word (s);

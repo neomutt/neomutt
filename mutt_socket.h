@@ -48,11 +48,13 @@ typedef struct _connection
   int (*conn_write) (struct _connection *conn, const char *buf, size_t count);
   int (*conn_open) (struct _connection *conn);
   int (*conn_close) (struct _connection *conn);
+  int (*conn_poll) (struct _connection *conn);
 } CONNECTION;
 
 int mutt_socket_open (CONNECTION* conn);
 int mutt_socket_close (CONNECTION* conn);
 int mutt_socket_read (CONNECTION* conn, char* buf, size_t len);
+int mutt_socket_poll (CONNECTION* conn);
 int mutt_socket_readchar (CONNECTION *conn, char *c);
 #define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,M_SOCK_LOG_CMD)
 int mutt_socket_readln_d (char *buf, size_t buflen, CONNECTION *conn, int dbg);
@@ -68,5 +70,6 @@ int raw_socket_read (CONNECTION* conn, char* buf, size_t len);
 int raw_socket_write (CONNECTION* conn, const char* buf, size_t count);
 int raw_socket_open (CONNECTION *conn);
 int raw_socket_close (CONNECTION *conn);
+int raw_socket_poll (CONNECTION* conn);
 
 #endif /* _MUTT_SOCKET_H_ */
