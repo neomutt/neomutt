@@ -1,4 +1,9 @@
-2005-12-11 22:51:29  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-12 02:24:43  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* configure.in, imap/command.c, imap/imap.c, imap/imap_private.h,
+	mutt_socket.c, mutt_socket.h, mutt_tunnel.c: IMAP IDLE support.
+
+	* buffy.c: Whoops, don't break buffy for non-IMAP mailboxes!
 
 	* buffy.c, imap/command.c, imap/imap.c, imap/imap.h,
 	imap/imap_private.h, imap/util.c: IMAP command batching code, used
