@@ -848,6 +848,15 @@ struct option_t MuttVars[] = {
   ** your INBOX in the IMAP browser. If you see something else, you may set
   ** this variable to the IMAP path to your folders.
   */
+  { "imap_idle",                DT_BOOL, R_NONE, OPTIMAPIDLE, 1 },
+  /*
+   ** .pp
+   ** When \fIset\fP, mutt will attempt to use the IMAP IDLE extension
+   ** to check for new mail in the current mailbox. Some servers
+   ** (dovecot was the inspiration for this option) react badly
+   ** to mutt's implementation. If your connection seems to freeze
+   ** up periodically, try unsetting this.
+   */
   { "imap_keepalive",           DT_NUM,  R_NONE, UL &ImapKeepalive, 900 },
   /*
   ** .pp

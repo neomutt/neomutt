@@ -1185,7 +1185,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
   idata = (IMAP_DATA*) ctx->data;
 
   /* try IDLE first */
-  if (mutt_bit_isset (idata->capabilities, IDLE)
+  if (option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
       && (idata->state != IMAP_IDLE
           || time(NULL) >= idata->lastread + ImapKeepalive))
   {
@@ -1238,7 +1238,8 @@ static int imap_buffy_split (const char* path, IMAP_DATA** hidata, char* buf, si
     dprint (1, (debugfile, "imap_split_path: Error parsing %s\n", path));
     return -1;
   }
-  if (!(*hidata = imap_conn_find (&(mx.account), option (OPTIMAPPASSIVE) ? M_IMAP_CONN_NONEW : 0)))
+  if (!(*hidata = imap_conn_find (&(mx.account), option (OPTIMAPPASSIVE) ? M_IMAP_CONN_NONEW : 0))
+      || (*hidata)->state < IMAP_AUTHENTICATED)
   {
     FREE (&mx.mbox);
     return -1;
