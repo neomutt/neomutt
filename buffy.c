@@ -302,9 +302,10 @@ int mutt_buffy_check (int force)
   
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
-#ifndef USE_IMAP
-    tmp->new = 0;
+#ifdef USE_IMAP
+    if (tmp->magic != M_IMAP)
 #endif
+    tmp->new = 0;
 
 #ifdef USE_POP
     if (mx_is_pop (tmp->path))
