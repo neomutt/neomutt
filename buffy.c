@@ -307,6 +307,9 @@ int mutt_buffy_check (int force)
 #endif
     tmp->new = 0;
 
+#ifdef USE_IMAP
+    if (tmp->magic != M_IMAP)
+#endif
 #ifdef USE_POP
     if (mx_is_pop (tmp->path))
       tmp->magic = M_POP;
