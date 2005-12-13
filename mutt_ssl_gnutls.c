@@ -81,6 +81,7 @@ int mutt_gnutls_socket_setup (CONNECTION* conn)
   conn->conn_read	= tls_socket_read;
   conn->conn_write	= tls_socket_write;
   conn->conn_close	= tls_socket_close;
+  conn->conn_poll       = raw_socket_poll;
 
   return 0;
 }

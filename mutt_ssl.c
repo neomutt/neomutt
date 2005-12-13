@@ -241,6 +241,7 @@ int ssl_socket_setup (CONNECTION * conn)
   conn->conn_read	= ssl_socket_read;
   conn->conn_write	= ssl_socket_write;
   conn->conn_close	= ssl_socket_close;
+  conn->conn_poll       = raw_socket_poll;
 
   return 0;
 }
