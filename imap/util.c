@@ -261,6 +261,7 @@ void imap_free_idata (IMAP_DATA** idata)
   FREE (&(*idata)->capstr);
   mutt_free_list (&(*idata)->flags);
   FREE (&((*idata)->buf));
+  FREE (&((*idata)->cmdbuf));
   FREE (idata);
 }
 

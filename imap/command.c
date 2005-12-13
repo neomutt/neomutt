@@ -719,9 +719,11 @@ static void cmd_parse_search (IMAP_DATA* idata, const char* s)
 static void cmd_parse_status (IMAP_DATA* idata, char* s)
 {
   char* mailbox;
+  char* value;
   BUFFY* inc;
   IMAP_MBOX mx;
   int count;
+  IMAP_STATUS status;
 
   dprint (2, (debugfile, "Handling STATUS\n"));
   
@@ -730,7 +732,55 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   *(s - 1) = '\0';
   
   imap_unmunge_mbox_name (mailbox);
-  
+  status.name = mailbox;
+
+  if (*s++ != '(')
+  {
+    dprint (1, (debugfile, "Error parsing STATUS\n"));
+    return;
+  }
+  while (*s && *s != ')')
+  {
+    value = imap_next_word (s);
+    count = strtol (value, &value, 10);
+
+    if (!ascii_strncmp ("MESSAGES", s, 8))
+    {
+      dprint (2, (debugfile, "%d messages in %s\n", count, mailbox));
+      status.messages = count;
+    }
+    else if (!ascii_strncmp ("RECENT", s, 6))
+    {
+      dprint (2, (debugfile, "%d recent in %s\n", count, mailbox));
+      status.recent = count;
+    }
+    else if (!ascii_strncmp ("UIDNEXT", s, 7))
+    {
+      dprint (2, (debugfile, "UIDNEXT for %s is %d\n", mailbox, count));
+      status.uidnext = count;
+    }
+    else if (!ascii_strncmp ("UIDVALIDITY", s, 11))
+    {
+      dprint (2, (debugfile, "UIDVALIDITY for %s is %d\n", mailbox, count));
+      status.uidvalidity = count;
+    }
+    else if (!ascii_strncmp ("UNSEEN", s, 6))
+    {
+      dprint (2, (debugfile, "%d unseen in %s\n", count, mailbox));
+      status.unseen = count;
+    }
+    
+    s = value;
+  }
+
+  /* caller is prepared to handle the result herself */
+  if (idata->cmddata)
+  {
+    memcpy (idata->cmddata, &status, sizeof (status));
+    return;
+  }
+
+  /* should perhaps move this code back to imap_buffy_check */
   for (inc = Incoming; inc; inc = inc->next)
   {
     if (inc->magic != M_IMAP)
@@ -743,38 +793,10 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     }
     
     if (mutt_account_match (&idata->conn->account, &mx.account) && mx.mbox
-        && strncmp (mailbox, mx.mbox, strlen (mailbox)) == 0)
+        && mutt_strncmp (mailbox, mx.mbox, strlen (mailbox)) == 0)
     {
-      if (*s++ != '(')
-      {
-        dprint (1, (debugfile, "Error parsing STATUS\n"));
-        FREE (&mx.mbox);
-        return;
-      }
-      
-      while (*s && *s != ')')
-      {
-        if (!ascii_strncmp ("RECENT", s, 6))
-        {
-          s = imap_next_word (s);
-          count = strtol (s, &s, 10);
-          dprint (2, (debugfile, "%d recent in %s\n", count, mx.mbox));
-          inc->new = count;
-        }
-        else if (!ascii_strncmp ("UNSEEN", s, 6))
-        {
-          s = imap_next_word (s);
-          count = strtol (s, &s, 10);
-          dprint (2, (debugfile, "%d unseen in %s\n", count, mx.mbox));
-        }
-        else if (!ascii_strncmp ("MESSAGES", s, 8))
-        {
-          s = imap_next_word (s);
-          count = strtol (s, &s, 10);
-          dprint (2, (debugfile, "%d messages in %s\n", count, mx.mbox));
-        }
-      }
-      
+      inc->new = status.recent;
+      FREE (&mx.mbox);
       return;
     }
 

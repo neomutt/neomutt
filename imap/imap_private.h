@@ -150,6 +150,17 @@ typedef struct
   int noinferiors;
 } IMAP_NAMESPACE_INFO;
 
+typedef struct
+{
+  char* name;
+
+  unsigned int messages;
+  unsigned int recent;
+  unsigned int uidnext;
+  unsigned int uidvalidity;
+  unsigned int unseen;
+} IMAP_STATUS;
+
 /* IMAP command structure */
 typedef struct
 {
@@ -177,6 +188,8 @@ typedef struct
   time_t lastread; /* last time we read a command for the server */
   char* buf;
   unsigned int blen;
+  void* cmddata; /* if set, the response parser will store results for
+                  * complicated commands here. */
 
   /* command queue */
   IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
