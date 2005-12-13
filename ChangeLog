@@ -1,4 +1,7 @@
-2005-12-13 21:25:10  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-13 23:37:42  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_ssl.c, mutt_ssl_gnutls.c: Add conn_poll (using
+	raw_socket_poll) to SSL socket setup functions.
 
 	* buffy.c: Fix recently-broken buffy notification for IMAP.
 
