@@ -1,3 +1,13 @@
+2005-12-13 06:52:24  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap_private.h, imap/util.c, imap/command.c, imap/imap.c,
+	imap/imap.h, postpone.c: Restore IMAP postponed check in the wake
+	of the buffy pipelining patch. Fall back to NOOP if IDLE poll
+	fails. Allow for untagged messages when starting IDLE. Free
+	idata->cmdbuf in imap_free_idata.
+
+	* imap/TODO, imap/BUGS: Updated todo/bug list for IMAP
+
 2005-12-12 17:24:12  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c, imap/imap.c, init.h, mutt.h: Add $imap_idle
