@@ -1,4 +1,6 @@
-2005-12-13 06:52:24  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-13 21:25:10  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* buffy.c: Fix recently-broken buffy notification for IMAP.
 
 	* imap/imap_private.h, imap/util.c, imap/command.c, imap/imap.c,
 	imap/imap.h, postpone.c: Restore IMAP postponed check in the wake
