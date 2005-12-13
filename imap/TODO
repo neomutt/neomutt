@@ -14,15 +14,23 @@ IMAP enhancements, by priority:
 
   PRIORITY: [***]
 
+* Interruptible socket calls, preferably without having to abort the
+  connection. For example large downloads could be chunked.
+
 [ -- browsing -- ]
 
 * We should maybe add a new imap_format string for IMAP browsing, without all
   the stat variables but with tags like how many messages are in the folders,
   how many subfolders, that weird \Marked tag, etc.
  
-  PRIORITY: [** ]
+* Namespace handling needs to be thrown out and rewritten
 
 [ -- speed -- ]
+
+* Partial index loading, using server-side threading and sorting
+
+* Partial message loading, including parsing BODYSTRUCTURE for the
+  view-attachments menu
 
 * Persistent caching of data. I think the nicest way to do this is to store
   local copies like IMAP does, with an invisible control message at the top,
@@ -38,25 +46,18 @@ IMAP enhancements, by priority:
     the server changes its file format, bad things might happen. Could be
     worked around with a specific Mutt header in all messages, probably.
 
-  PRIORITY: [*  ]
+* More aggressive command pipelining
 
-* Instead of testing for the existence of a mailbox for APPEND, just append
-  and create/retry on failure. This is only a small bandwidth savings, but
-  it should be easy.
+[ -- new mail detection -- ]
 
-  PRIORITY: [*  ]
+* Possibly opening multiple connections for mailbox polling, now that
+  we have IDLE support.
 
-[ -- new features -- ]
-
-* Commands for creating/deleting folders on the server, since users may not
-  otherwise be able to do this on IMAP servers.
-  Delete done, still must implement create.
-
-  PRIORITY: [** ]
-
-* Implement the x (quit without saving changes) command.
-
-  PRIORITY: [** ]
+* using UIDNEXT/UIDVALIDITY to find new messages instead of relying on
+  the ephemeral RECENT tag or the unchanging UNSEEN one. If we could
+  cache it between sessions we might have a nice way to properly
+  handle OLD messages too (UID less than cached UIDNEXT, but still
+  UNSEEN).
 
 Brendan Cully <brendan@kublai.com>
-Updated: 20000704
+Updated: 20051212

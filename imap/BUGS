@@ -1,34 +1,13 @@
 In no particular order:
 
-* ~h searches download the entire folder, setting everything to \Seen in
-  the process.
-  --> Use SEARCH? or at least try to use .PEEK when doing scans. I've been
-      thinking of going to always PEEK anyway, but then you'd have to store
-      updates for every message you touched. Maybe a config option?
-
 * No checks are performed on long commands to make sure that they are
   still correct after they've been made to fit in their buffers.
-  Tagged message sets can exceed the fixed space we've allocated for
-  them in large mailboxes. Time to move to dynamic string allocation,
-  at least for these commands.
 
-* Mutt doesn't handle timeouts or dropped connections gracefully. You
-  may see occasional segfaults. Solving this cleanly requires some major
-  architectural updates. Until that happens, I recommend you keep
-  backup copies of messages you're composing from within your editor.
-  Tommi Komulainen's keepalive patch for edit sessions may work for you,
-  though. Committed to CVS late November 1999, I think.
+* Mutt doesn't handle timeouts or dropped connections gracefully.
 
 * Mutt is uninterruptible during socket calls. We should handle SIGINT.
-
-* Server copy currently doesn't take into account uncommitted changes in
-  messages about to be copied. Sync first.
-  --> walk tagged or individual message looking for changes, sync those?
-      may require further additions to imap_make_msg_set and breaking up
-      imap_sync_mailbox, otherwise shouldn't be too bad. Not currently a
-      major priority, though - noone's gotten bit by this.
 
 * The mutt_pretty routines don't work well when the delimiter isn't '/'.
 
 Brendan Cully <brendan@kublai.com>
-Updated 20000731
+Updated 20051212
