@@ -1,3 +1,9 @@
+2005-12-14 17:29:57  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/auth_sasl.c, imap/command.c, imap/imap_private.h: SASL-IR
+	support for IMAP. The RTT was has begun. I had forgotten how
+	strangely convoluted auth_sasl has become though...
+
 2005-12-13 23:37:42  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_ssl.c, mutt_ssl_gnutls.c: Add conn_poll (using
