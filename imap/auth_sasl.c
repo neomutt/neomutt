@@ -97,6 +97,17 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   mutt_message (_("Authenticating (%s)..."), mech);
 
   snprintf (buf, sizeof (buf), "AUTHENTICATE %s", mech);
+  if (mutt_bit_isset (idata->capabilities, SASL_IR) && client_start)
+  {
+    len = mutt_strlen (buf);
+    buf[len++] = ' ';
+    if (sasl_encode64 (pc, olen, buf + len, sizeof (buf) - len, &olen) != SASL_OK)
+    {
+      dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
+      goto bail;
+    }
+    client_start = olen = 0;
+  }
   imap_cmd_start (idata, buf);
   irc = IMAP_CMD_CONTINUE;
 

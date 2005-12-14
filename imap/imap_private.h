@@ -123,6 +123,7 @@ enum
   STARTTLS,			/* RFC 2595: STARTTLS */
   LOGINDISABLED,		/*           LOGINDISABLED */
   IDLE,                         /* RFC 2177: IDLE */
+  SASL_IR,                      /* SASL initial response draft */
 
   CAPMAX
 };

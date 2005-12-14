@@ -61,6 +61,7 @@ static char *Capabilities[] = {
   "STARTTLS",
   "LOGINDISABLED",
   "IDLE",
+  "SASL-IR",
 
   NULL
 };
