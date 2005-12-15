@@ -134,32 +134,32 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       do
       {
         mfhrc = 0;
-  
+
         rc = imap_cmd_step (idata);
         if (rc != IMAP_CMD_CONTINUE)
-  	break;
-  
+          break;
+
         if ((mfhrc = msg_fetch_header_fetch (idata->ctx, &h, idata->buf, fp)) == -1)
-  	continue;
+          continue;
         else if (mfhrc < 0)
-  	break;
-  
+          break;
+
         /* make sure we don't get remnants from older larger message headers */
         fputs ("\n\n", fp);
-  
+
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
         uid_validity = (unsigned long *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
-  
+
         if (uid_validity != NULL && *uid_validity == idata->uid_validity)
         {
-  	ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
-  	ctx->hdrs[msgno]->index = h.sid - 1;
-  	if (h.sid != ctx->msgcount + 1)
-  	  dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
-  	/* messages which have not been expunged are ACTIVE (borrowed from mh 
-  	 * folders) */
-  	ctx->hdrs[msgno]->active = 1;
-  	ctx->hdrs[msgno]->read = h.read;
+  	  ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
+  	  ctx->hdrs[msgno]->index = h.sid - 1;
+  	  if (h.sid != ctx->msgcount + 1)
+  	    dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
+  	  /* messages which have not been expunged are ACTIVE (borrowed from mh 
+  	   * folders) */
+  	  ctx->hdrs[msgno]->active = 1;
+  	  ctx->hdrs[msgno]->read = h.read;
           ctx->hdrs[msgno]->old = h.old;
           ctx->hdrs[msgno]->deleted = h.deleted;
           ctx->hdrs[msgno]->flagged = h.flagged;
@@ -167,13 +167,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           ctx->hdrs[msgno]->changed = h.changed;
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
           ctx->hdrs[msgno]->data = (void *) (h.data);
-          
+
           ctx->msgcount++;
         }
         rewind (fp);
   
         FREE(&uid_validity);
-  
       }
       while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
         ((msgno + 1) >= fetchlast)));
@@ -290,7 +289,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 #endif /* USE_HCACHE */
       return -1;
     }
-	
+
     /* in case we get new mail while fetching the headers */
     if (idata->reopen & IMAP_NEWMAIL_PENDING)
     {
