@@ -1,4 +1,6 @@
-2005-12-15 18:55:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-15 18:59:59  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Whitespace shuffling.
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/util.c:
 	Use mutt_buffer_printf in several places instead of a homebrew
