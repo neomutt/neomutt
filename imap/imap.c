@@ -1187,7 +1187,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
   /* try IDLE first */
   if (option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
       && (idata->state != IMAP_IDLE
-          || time(NULL) >= idata->lastread + ImapKeepalive))
+          || force || time(NULL) >= idata->lastread + ImapKeepalive))
   {
     imap_cmd_start (idata, "IDLE");
     do
