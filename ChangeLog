@@ -1,3 +1,8 @@
+2005-12-15 18:25:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: IMAP keepalive might have been interacting badly
+	with $timeout when IDLE was enabled. Use force option for IDLE too.
+
 2005-12-14 17:29:57  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/auth_sasl.c, imap/command.c, imap/imap_private.h: SASL-IR
