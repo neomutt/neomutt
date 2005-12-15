@@ -1,4 +1,11 @@
-2005-12-15 18:25:49  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-15 18:55:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/util.c:
+	Use mutt_buffer_printf in several places instead of a homebrew
+	version.
+
+	* configure.in, m4/funcs.m4, muttlib.c, protos.h: Add
+	mutt_buffer_printf function, with autoconf test for va_copy.
 
 	* imap/imap.c: IMAP keepalive might have been interacting badly
 	with $timeout when IDLE was enabled. Use force option for IDLE too.
