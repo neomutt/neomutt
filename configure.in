@@ -345,6 +345,8 @@ if test $mutt_cv_snprintf = yes; then
         AC_LIBOBJ(snprintf)
 fi
 
+XIPH_FUNC_VA_COPY
+
 dnl SCO uses chsize() instead of ftruncate()
 AC_CHECK_FUNCS(ftruncate, , [AC_CHECK_LIB(x, chsize)])
 

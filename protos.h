@@ -39,6 +39,7 @@ int mutt_extract_token (BUFFER *, BUFFER *, int);
 BUFFER * mutt_buffer_init (BUFFER *);
 BUFFER * mutt_buffer_from (BUFFER *, char *);
 void mutt_buffer_free(BUFFER **);
+int mutt_buffer_printf (BUFFER*, const char*, ...);
 void mutt_buffer_add (BUFFER*, const char*, size_t);
 void mutt_buffer_addstr (BUFFER*, const char*);
 void mutt_buffer_addch (BUFFER*, char);

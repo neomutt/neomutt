@@ -1419,6 +1419,34 @@ BUFFER * mutt_buffer_from(BUFFER *b, char *seed)
   return b;
 }
 
+int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
+{
+  va_list ap, ap_retry;
+  int len, blen, doff;
+  
+  va_start (ap, fmt);
+  va_copy (ap_retry, ap);
+
+  doff = buf->dptr - buf->data;
+  blen = buf->dsize - doff;
+  if ((len = vsnprintf (buf->dptr, blen, fmt, ap)) >= blen)
+  {
+    blen = ++len - blen;
+    if (blen < 128)
+      blen = 128;
+    buf->dsize += blen;
+    safe_realloc (&buf->data, buf->dsize);
+    buf->dptr = buf->data + doff;
+    len = vsnprintf (buf->dptr, len, fmt, ap_retry);
+    va_end (ap_retry);
+  }
+  buf->dptr += len;
+
+  va_end (ap);
+  
+  return len;
+}
+
 void mutt_buffer_addstr (BUFFER* buf, const char* s)
 {
   mutt_buffer_add (buf, s, mutt_strlen (s));
