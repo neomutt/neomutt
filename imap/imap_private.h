@@ -196,9 +196,7 @@ typedef struct
   IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
   int nextcmd;
   int lastcmd;
-  char* cmdbuf;
-  char* cmdtail;
-  unsigned int cmdbuflen;
+  BUFFER* cmdbuf;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;

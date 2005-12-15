@@ -851,8 +851,6 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
   unsigned int setstart = 0;	/* start of current message range */
   int n;
   short oldsort;	/* we clobber reverse, must restore it */
-  /* assuming 32-bit UIDs */
-  char uid[12];
   int started = 0;
 
   /* make copy of header pointers to sort in natural order */
@@ -893,31 +891,21 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
         setstart = HEADER_DATA (hdrs[n])->uid;
         if (started == 0)
 	{
-	  snprintf (uid, sizeof (uid), "%u", HEADER_DATA (hdrs[n])->uid);
-	  mutt_buffer_addstr (buf, uid);
+	  mutt_buffer_printf (buf, "%u", HEADER_DATA (hdrs[n])->uid);
 	  started = 1;
 	}
         else
-        {
-	  snprintf (uid, sizeof (uid), ",%u", HEADER_DATA (hdrs[n])->uid);
-	  mutt_buffer_addstr (buf, uid);
-        }
+	  mutt_buffer_printf (buf, ",%u", HEADER_DATA (hdrs[n])->uid);
       }
       /* tie up if the last message also matches */
       else if (n == idata->ctx->msgcount-1)
-      {
-	snprintf (uid, sizeof (uid), ":%u", HEADER_DATA (hdrs[n])->uid);
-	mutt_buffer_addstr (buf, uid);
-      }
+	mutt_buffer_printf (buf, ":%u", HEADER_DATA (hdrs[n])->uid);
     }
     /* this message is not expunged and doesn't match. End current set. */
     else if (setstart && hdrs[n]->active)
     {
       if (HEADER_DATA (hdrs[n-1])->uid > setstart)
-      {
-	snprintf (uid, sizeof (uid), ":%u", HEADER_DATA (hdrs[n-1])->uid);
-	mutt_buffer_addstr (buf, uid);
-      }
+	mutt_buffer_printf (buf, ":%u", HEADER_DATA (hdrs[n-1])->uid);
       setstart = 0;
     }
   }

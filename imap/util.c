@@ -248,7 +248,13 @@ void imap_error (const char *where, const char *msg)
 IMAP_DATA* imap_new_idata (void)
 {
   IMAP_DATA* idata = safe_calloc (1, sizeof (IMAP_DATA));
-  
+
+  if (!idata)
+    return NULL;
+
+  if (!(idata->cmdbuf = mutt_buffer_init (NULL)))
+    FREE (&idata);
+
   return idata;
 }
 
@@ -260,8 +266,8 @@ void imap_free_idata (IMAP_DATA** idata)
 
   FREE (&(*idata)->capstr);
   mutt_free_list (&(*idata)->flags);
-  FREE (&((*idata)->buf));
-  FREE (&((*idata)->cmdbuf));
+  mutt_buffer_free(&(*idata)->cmdbuf);
+  FREE (&(*idata)->buf);
   FREE (idata);
 }
 

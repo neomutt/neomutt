@@ -70,7 +70,6 @@ static char *Capabilities[] = {
 int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr)
 {
   IMAP_COMMAND* cmd;
-  unsigned int cmdlen;
 
   if (idata->status == IMAP_FATAL)
   {
@@ -81,20 +80,8 @@ int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr)
   if (!(cmd = cmd_new (idata)))
     return IMAP_CMD_BAD;
 
-  /* seq, space, cmd, \r\n\0 */
-  cmdlen = strlen (cmd->seq) + strlen (cmdstr) + 4;
-  if (idata->state == IMAP_IDLE)
-    cmdlen += 6; /* DONE\r\n */
-  if (idata->cmdbuflen < cmdlen + (idata->cmdtail - idata->cmdbuf))
-  {
-    unsigned int tailoff = idata->cmdtail - idata->cmdbuf;
-    safe_realloc (&idata->cmdbuf, tailoff + cmdlen);
-    idata->cmdbuflen = tailoff + cmdlen;
-    idata->cmdtail = idata->cmdbuf + tailoff;
-  }
-  snprintf (idata->cmdtail, cmdlen, "%s%s %s\r\n",
-            idata->state == IMAP_IDLE ? "DONE\r\n" : "", cmd->seq, cmdstr);
-  idata->cmdtail += cmdlen - 1;
+  mutt_buffer_printf (idata->cmdbuf, "%s%s %s\r\n",
+    idata->state == IMAP_IDLE ? "DONE\r\n" : "", cmd->seq, cmdstr);
 
   if (idata->state == IMAP_IDLE)
     idata->state = IMAP_SELECTED;
@@ -112,11 +99,11 @@ int imap_cmd_start (IMAP_DATA* idata, const char* cmdstr)
     return rc;
 
   /* don't write old or empty commands */
-  if (idata->cmdtail == idata->cmdbuf)
+  if (idata->cmdbuf->dptr == idata->cmdbuf->data)
     return IMAP_CMD_BAD;
 
-  rc = mutt_socket_write (idata->conn, idata->cmdbuf);
-  idata->cmdtail = idata->cmdbuf;
+  rc = mutt_socket_write (idata->conn, idata->cmdbuf->data);
+  idata->cmdbuf->dptr = idata->cmdbuf->data;
 
   return (rc < 0) ? IMAP_CMD_BAD : 0;
 }
@@ -229,12 +216,12 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
     return rc;
   
   /* don't write old or empty commands */
-  if (idata->cmdtail == idata->cmdbuf)
+  if (idata->cmdbuf->dptr == idata->cmdbuf->data)
     return IMAP_CMD_BAD;
   
-  rc = mutt_socket_write_d (idata->conn, idata->cmdbuf,
+  rc = mutt_socket_write_d (idata->conn, idata->cmdbuf->data,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
-  idata->cmdtail = idata->cmdbuf;
+  idata->cmdbuf->dptr = idata->cmdbuf->data;
 
   if (rc < 0)
   {
