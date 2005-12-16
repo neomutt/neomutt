@@ -198,6 +198,9 @@ typedef struct
   int lastcmd;
   BUFFER* cmdbuf;
 
+  /* cache IMAP_STATUS of visited mailboxes */
+  LIST* mboxcache;
+
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
   CONTEXT *ctx;
@@ -207,9 +210,7 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-#ifdef USE_HCACHE
   unsigned long uid_validity;
-#endif
   
   /* all folder flags - system flags AND keywords */
   LIST *flags;
@@ -223,6 +224,8 @@ typedef struct
 /* imap.c */
 int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
 int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname);
+IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox);
+void imap_mboxcache_free (IMAP_DATA* idata);
 int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed);
 int imap_open_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
@@ -260,6 +263,7 @@ char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path,
   size_t plen);
 int imap_get_literal_count (const char* buf, long* bytes);
 char* imap_get_qualifier (char* buf);
+int imap_mxcmp (const char* mx1, const char* mx2);
 char* imap_next_word (char* s);
 time_t imap_parse_date (char* s);
 void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path);

@@ -16,7 +16,6 @@
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  *
- * $Id$
  */ 
 
 /* message parsing/updating functions */
@@ -64,8 +63,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   char tempfile[_POSIX_PATH_MAX];
   int msgno;
   IMAP_HEADER h;
+  IMAP_STATUS* status;
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
+  int maxuid = 0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
 
 #if USE_HCACHE
@@ -262,6 +263,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       ctx->hdrs[msgno]->received = h.received;
       ctx->hdrs[msgno]->data = (void *) (h.data);
 
+      if (maxuid < h.data->uid)
+        maxuid = h.data->uid;
+
       rewind (fp);
       /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
        *   on h.received being set */
@@ -312,6 +316,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     mx_alloc_memory(ctx);
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
   }
+
+  if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox)))
+    status->uidnext = maxuid + 1;
 
   return msgend;
 }

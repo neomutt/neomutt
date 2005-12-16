@@ -172,6 +172,15 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   return 0;
 }
 
+/* silly helper for mailbox name string comparisons, because of INBOX */
+int imap_mxcmp (const char* mx1, const char* mx2)
+{
+  if (!ascii_strcasecmp (mx1, "INBOX") && !ascii_strcasecmp (mx2, "INBOX"))
+    return 0;
+  
+  return mutt_strcmp (mx1, mx2);
+}
+
 /* imap_pretty_mailbox: called by mutt_pretty_mailbox to make IMAP paths
  *   look nice. */
 void imap_pretty_mailbox (char* path)
@@ -266,6 +275,7 @@ void imap_free_idata (IMAP_DATA** idata)
 
   FREE (&(*idata)->capstr);
   mutt_free_list (&(*idata)->flags);
+  imap_mboxcache_free (*idata);
   mutt_buffer_free(&(*idata)->cmdbuf);
   FREE (&(*idata)->buf);
   FREE (idata);

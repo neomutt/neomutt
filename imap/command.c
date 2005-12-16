@@ -711,16 +711,27 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   BUFFY* inc;
   IMAP_MBOX mx;
   int count;
-  IMAP_STATUS status;
+  IMAP_STATUS *status, sb;
+  int olduv, oldun;
 
   dprint (2, (debugfile, "Handling STATUS\n"));
   
   mailbox = imap_next_word (s);
   s = imap_next_word (mailbox);
   *(s - 1) = '\0';
-  
   imap_unmunge_mbox_name (mailbox);
-  status.name = mailbox;
+
+  if (!(status = imap_mboxcache_get (idata, mailbox)))
+  {
+    /* ugly interface - why should I look up what I just added? */
+    memset (&sb, 0, sizeof (IMAP_STATUS));
+    sb.name = mailbox;
+    idata->mboxcache = mutt_add_list_n (idata->mboxcache, &sb, sizeof (IMAP_STATUS));
+    status = imap_mboxcache_get (idata, mailbox);
+    status->name = safe_strdup (mailbox);
+  }
+  olduv = status->uidvalidity;
+  oldun = status->uidnext;
 
   if (*s++ != '(')
   {
@@ -733,38 +744,28 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     count = strtol (value, &value, 10);
 
     if (!ascii_strncmp ("MESSAGES", s, 8))
-    {
-      dprint (2, (debugfile, "%d messages in %s\n", count, mailbox));
-      status.messages = count;
-    }
+      status->messages = count;
     else if (!ascii_strncmp ("RECENT", s, 6))
-    {
-      dprint (2, (debugfile, "%d recent in %s\n", count, mailbox));
-      status.recent = count;
-    }
+      status->recent = count;
     else if (!ascii_strncmp ("UIDNEXT", s, 7))
-    {
-      dprint (2, (debugfile, "UIDNEXT for %s is %d\n", mailbox, count));
-      status.uidnext = count;
-    }
+      status->uidnext = count;
     else if (!ascii_strncmp ("UIDVALIDITY", s, 11))
-    {
-      dprint (2, (debugfile, "UIDVALIDITY for %s is %d\n", mailbox, count));
-      status.uidvalidity = count;
-    }
+      status->uidvalidity = count;
     else if (!ascii_strncmp ("UNSEEN", s, 6))
-    {
-      dprint (2, (debugfile, "%d unseen in %s\n", count, mailbox));
-      status.unseen = count;
-    }
-    
+      status->unseen = count;
+
     s = value;
+    if (*s && *s != ')')
+      s = imap_next_word (s);
   }
+  dprint (2, (debugfile, "%s (UIDVALIDITY: %d, UIDNEXT: %d) %d messages, %d recent, %d unseen\n",
+              status->name, status->uidvalidity, status->uidnext,
+              status->messages, status->recent, status->unseen));
 
   /* caller is prepared to handle the result herself */
   if (idata->cmddata)
   {
-    memcpy (idata->cmddata, &status, sizeof (status));
+    memcpy (idata->cmddata, status, sizeof (IMAP_STATUS));
     return;
   }
 
@@ -783,7 +784,18 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     if (mutt_account_match (&idata->conn->account, &mx.account) && mx.mbox
         && mutt_strncmp (mailbox, mx.mbox, strlen (mailbox)) == 0)
     {
-      inc->new = status.recent;
+      if (olduv && olduv == status->uidvalidity)
+      {
+        if (oldun < status->uidnext)
+        {
+          inc->new = status->unseen;
+        }
+      }
+      else
+        inc->new = status->unseen;
+      /* forced back to keep detecting new mail until the mailbox is opened */
+      status->uidnext = oldun;
+
       FREE (&mx.mbox);
       return;
     }

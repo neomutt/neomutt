@@ -577,6 +577,7 @@ int imap_open_mailbox (CONTEXT* ctx)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
+  IMAP_STATUS* status, sb;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   int count = 0;
@@ -625,6 +626,14 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   imap_cmd_start (idata, bufout);
 
+  if (!(status = imap_mboxcache_get (idata, idata->mailbox)))
+  {
+    memset (&sb, 0, sizeof (IMAP_STATUS));
+    sb.name = idata->mailbox;
+    idata->mboxcache = mutt_add_list_n (idata->mboxcache, &sb, sizeof (IMAP_STATUS));
+    status = imap_mboxcache_get (idata, idata->mailbox);
+    status->name = safe_strdup (idata->mailbox);
+  }
   do
   {
     char *pc;
@@ -657,16 +666,22 @@ int imap_open_mailbox (CONTEXT* ctx)
       if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
 	goto fail;
     }
-#ifdef USE_HCACHE
     /* save UIDVALIDITY for the header cache */
-    else if (ascii_strncasecmp("OK [UIDVALIDITY", pc, 14) == 0)
+    else if (ascii_strncasecmp ("OK [UIDVALIDITY", pc, 14) == 0)
     {
-      dprint(2, (debugfile, "Getting mailbox UIDVALIDITY\n"));
+      dprint (2, (debugfile, "Getting mailbox UIDVALIDITY\n"));
       pc += 3;
-      pc = imap_next_word(pc);
-      sscanf(pc, "%lu", &(idata->uid_validity));
+      pc = imap_next_word (pc);
+      sscanf (pc, "%lu", &(idata->uid_validity));
+      status->uidvalidity = idata->uid_validity;
     }
-#endif
+    else if (ascii_strncasecmp ("OK [UIDNEXT", pc, 11) == 0)
+    {
+      dprint (2, (debugfile, "Getting mailbox UIDNEXT\n"));
+      pc += 3;
+      pc = imap_next_word (pc);
+      sscanf (pc, "%lu", &status->uidnext);
+    }
     else
     {
       pc = imap_next_word (pc);
@@ -1279,9 +1294,7 @@ int imap_buffy_check (int force)
 
     /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
      * IDLEd elsewhere */
-    if (mutt_strcmp (name, idata->mailbox) == 0
-        || (ascii_strcasecmp (name, "INBOX") == 0
-            && mutt_strcasecmp (name, idata->mailbox) == 0))
+    if (!imap_mxcmp (name, idata->mailbox))
       continue;
       
     if (!lastdata)
@@ -1305,8 +1318,7 @@ int imap_buffy_check (int force)
     }
     
     imap_munge_mbox_name (munged, sizeof (munged), name);
-    /* we need a better way to detect new mail... */
-    snprintf (command, sizeof (command), "STATUS %s (RECENT)", munged);
+    snprintf (command, sizeof (command), "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN)", munged);
 
     if (imap_cmd_queue (idata, command) < 0)
     {
@@ -1353,9 +1365,7 @@ int imap_status (char* path)
   if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
     return -1;
 
-  if (mutt_strcmp (buf, idata->mailbox) == 0
-      || (ascii_strcasecmp (buf, "INBOX") == 0
-	  && mutt_strcasecmp (buf, idata->mailbox) == 0))
+  if (!imap_mxcmp (buf, idata->mailbox))
     /* We are in the folder we're polling - just return the mailbox count */
     return idata->ctx->msgcount;
   else if (mutt_bit_isset(idata->capabilities,IMAP4REV1) ||
@@ -1385,6 +1395,38 @@ int imap_status (char* path)
   idata->cmddata = NULL;
 
   return messages;
+}
+
+/* return cached mailbox stats or NULL */
+IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox)
+{
+  LIST* cur;
+  IMAP_STATUS* status;
+  
+  for (cur = idata->mboxcache; cur; cur = cur->next)
+  {
+    status = (IMAP_STATUS*)cur->data;
+
+    if (!imap_mxcmp (mbox, status->name))
+      return status;
+  }
+  
+  return NULL;
+}
+
+void imap_mboxcache_free (IMAP_DATA* idata)
+{
+  LIST* cur;
+  IMAP_STATUS* status;
+
+  for (cur = idata->mboxcache; cur; cur = cur->next)
+  {
+    status = (IMAP_STATUS*)cur->data;
+
+    FREE (&status->name);
+  }
+
+  mutt_free_list (&idata->mboxcache);
 }
 
 /* returns number of patterns in the search that should be done server-side
