@@ -1,3 +1,9 @@
+ 2005-12-16 18:49:40  Recai Oktas  <roktas@omu.edu.tr>  (brendan)
+
+	* color.c, crypt.c, handler.c, init.c, parse.c, smime.c: Use
+	ascii_str* instead of mutt_str* in several places where it's
+	needed.
+
 2005-12-16 18:18:52  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h,
