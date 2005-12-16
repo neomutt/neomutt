@@ -1542,7 +1542,7 @@ int count_body_parts (BODY *body, int flags)
     {
       /* Always recurse multiparts, except multipart/alternative. */
       shallrecurse = 1;
-      if (!mutt_strcasecmp(bp->subtype, "alternative"))
+      if (!ascii_strcasecmp(bp->subtype, "alternative"))
         shallrecurse = 0;
 
       /* Don't count containers if they're top-level. */

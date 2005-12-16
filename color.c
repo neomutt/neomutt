@@ -309,14 +309,14 @@ parse_color_name (const char *s, int *col, int *attr, int brite, BUFFER *err)
 {
   char *eptr;
 
-  if (mutt_strncasecmp (s, "bright", 6) == 0)
+  if (ascii_strncasecmp (s, "bright", 6) == 0)
   {
     *attr |= brite;
     s += 6;
   }
 
   /* allow aliases for xterm color resources */
-  if (mutt_strncasecmp (s, "color", 5) == 0)
+  if (ascii_strncasecmp (s, "color", 5) == 0)
   {
     s += 5;
     *col = strtol (s, &eptr, 10);

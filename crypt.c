@@ -552,7 +552,7 @@ void convert_to_7bit (BODY *a)
 	convert_to_7bit (a->parts);
     } 
     else if (a->type == TYPEMESSAGE &&
-	     mutt_strcasecmp(a->subtype, "delivery-status"))
+	     ascii_strcasecmp(a->subtype, "delivery-status"))
     {
       if(a->encoding != ENC7BIT)
 	mutt_message_to_7bit (a, NULL);
@@ -808,15 +808,15 @@ int mutt_signed_handler (BODY *a, STATE *s)
   
   if ((WithCrypto & APPLICATION_PGP)
       && protocol_major == TYPEAPPLICATION
-      && !mutt_strcasecmp (protocol_minor, "pgp-signature"))
+      && !ascii_strcasecmp (protocol_minor, "pgp-signature"))
     ;
   else if ((WithCrypto & APPLICATION_SMIME)
            && protocol_major == TYPEAPPLICATION
-	   && !(mutt_strcasecmp (protocol_minor, "x-pkcs7-signature")
-	       && mutt_strcasecmp (protocol_minor, "pkcs7-signature")))
+	   && !(ascii_strcasecmp (protocol_minor, "x-pkcs7-signature")
+	       && ascii_strcasecmp (protocol_minor, "pkcs7-signature")))
     ;
   else if (protocol_major == TYPEMULTIPART
-	   && !mutt_strcasecmp (protocol_minor, "mixed"))
+	   && !ascii_strcasecmp (protocol_minor, "mixed"))
     ;
   else
   {
@@ -840,7 +840,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
 	{
 	  if ((WithCrypto & APPLICATION_PGP)
               && signatures[i]->type == TYPEAPPLICATION 
-	      && !mutt_strcasecmp (signatures[i]->subtype, "pgp-signature"))
+	      && !ascii_strcasecmp (signatures[i]->subtype, "pgp-signature"))
 	  {
 	    if (crypt_pgp_verify_one (signatures[i], s, tempfile) != 0)
 	      goodsig = 0;
@@ -850,8 +850,8 @@ int mutt_signed_handler (BODY *a, STATE *s)
 
 	  if ((WithCrypto & APPLICATION_SMIME)
               && signatures[i]->type == TYPEAPPLICATION 
-	      && (!mutt_strcasecmp(signatures[i]->subtype, "x-pkcs7-signature")
-		  || !mutt_strcasecmp(signatures[i]->subtype, "pkcs7-signature")))
+	      && (!ascii_strcasecmp(signatures[i]->subtype, "x-pkcs7-signature")
+		  || !ascii_strcasecmp(signatures[i]->subtype, "pkcs7-signature")))
 	  {
 	    if (crypt_smime_verify_one (signatures[i], s, tempfile) != 0)
 	      goodsig = 0;

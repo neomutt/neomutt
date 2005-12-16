@@ -1843,7 +1843,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 	handler = mutt_signed_handler;
     }
     else if ((WithCrypto & APPLICATION_PGP)
-             && mutt_strcasecmp ("encrypted", b->subtype) == 0)
+             && ascii_strcasecmp ("encrypted", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 

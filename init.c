@@ -834,9 +834,9 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
     a = safe_malloc(sizeof(ATTACH_MATCH));
 
     /* some cheap hacks that I expect to remove */
-    if (!mutt_strcasecmp(buf->data, "any"))
+    if (!ascii_strcasecmp(buf->data, "any"))
       a->major = safe_strdup("*/.*");
-    else if (!mutt_strcasecmp(buf->data, "none"))
+    else if (!ascii_strcasecmp(buf->data, "none"))
       a->major = safe_strdup("cheap_hack/this_should_never_match");
     else
       a->major = safe_strdup(buf->data);
@@ -898,9 +898,9 @@ static int parse_unattach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *er
   {
     mutt_extract_token (buf, s, 0);
 
-    if (!mutt_strcasecmp(buf->data, "any"))
+    if (!ascii_strcasecmp(buf->data, "any"))
       tmp = safe_strdup("*/.*");
-    else if (!mutt_strcasecmp(buf->data, "none"))
+    else if (!ascii_strcasecmp(buf->data, "none"))
       tmp = safe_strdup("cheap_hack/this_should_never_match");
     else
       tmp = safe_strdup(buf->data);
@@ -1001,13 +1001,13 @@ static int parse_attachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
     op = '+';
     category--;
   }
-  if (!mutt_strncasecmp(category, "attachment", strlen(category))) {
+  if (!ascii_strncasecmp(category, "attachment", strlen(category))) {
     if (op == '+')
       listp = &AttachAllow;
     else
       listp = &AttachExclude;
   }
-  else if (!mutt_strncasecmp(category, "inline", strlen(category))) {
+  else if (!ascii_strncasecmp(category, "inline", strlen(category))) {
     if (op == '+')
       listp = &InlineAllow;
     else
@@ -1038,13 +1038,13 @@ static int parse_unattachments (BUFFER *buf, BUFFER *s, unsigned long data, BUFF
     op = '+';
     p--;
   }
-  if (!mutt_strncasecmp(p, "attachment", strlen(p))) {
+  if (!ascii_strncasecmp(p, "attachment", strlen(p))) {
     if (op == '+')
       listp = &AttachAllow;
     else
       listp = &AttachExclude;
   }
-  else if (!mutt_strncasecmp(p, "inline", strlen(p))) {
+  else if (!ascii_strncasecmp(p, "inline", strlen(p))) {
     if (op == '+')
       listp = &InlineAllow;
     else
