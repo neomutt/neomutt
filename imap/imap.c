@@ -1284,7 +1284,9 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
     do
       result = imap_cmd_step (idata);
     while (result == IMAP_CMD_CONTINUE);
-    if (result != IMAP_CMD_RESPOND)
+    /* it's possible that we were notified and fetched mail before
+     * getting to the +, in which case we've automatically unidled. */
+    if (result != IMAP_CMD_RESPOND && result != IMAP_CMD_OK)
     {
       dprint (1, (debugfile, "Error starting IDLE\n"));
       idata->state = IMAP_SELECTED;
