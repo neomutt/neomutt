@@ -680,7 +680,7 @@ int imap_open_mailbox (CONTEXT* ctx)
       dprint (2, (debugfile, "Getting mailbox UIDNEXT\n"));
       pc += 3;
       pc = imap_next_word (pc);
-      sscanf (pc, "%lu", &status->uidnext);
+      sscanf (pc, "%u", &status->uidnext);
     }
     else
     {
@@ -1610,7 +1610,7 @@ int imap_subscribe (char *path, int subscribe)
   if (subscribe)
     mutt_message (_("Subscribing to %s..."), buf);
   else
-    mutt_message (_("Unsubscribing to %s..."), buf);
+    mutt_message (_("Unsubscribing from %s..."), buf);
   imap_munge_mbox_name (mbox, sizeof(mbox), buf);
 
   snprintf (buf, sizeof (buf), "%sSUBSCRIBE %s", subscribe ? "" : "UN", mbox);
@@ -1618,6 +1618,11 @@ int imap_subscribe (char *path, int subscribe)
   if (imap_exec (idata, buf, 0) < 0)
     goto fail;
 
+  imap_unmunge_mbox_name(mx.mbox);
+  if (subscribe)
+    mutt_message (_("Subscribed to %s"), mx.mbox);
+  else
+    mutt_message (_("Unsubscribed from %s"), mx.mbox);
   FREE (&mx.mbox);
   return 0;
 
