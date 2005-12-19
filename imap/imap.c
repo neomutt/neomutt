@@ -1261,15 +1261,16 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
           || force || time(NULL) >= idata->lastread + ImapKeepalive))
   {
     imap_cmd_start (idata, "IDLE");
+    idata->state = IMAP_IDLE;
     do
       result = imap_cmd_step (idata);
     while (result == IMAP_CMD_CONTINUE);
     if (result != IMAP_CMD_RESPOND)
     {
       dprint (1, (debugfile, "Error starting IDLE\n"));
+      idata->state = IMAP_SELECTED;
       return -1;
     }
-    idata->state = IMAP_IDLE;
   }
   if (idata->state == IMAP_IDLE)
   {
