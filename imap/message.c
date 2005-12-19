@@ -156,12 +156,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   	  /* messages which have not been expunged are ACTIVE (borrowed from mh 
   	   * folders) */
   	  ctx->hdrs[msgno]->active = 1;
-  	  ctx->hdrs[msgno]->read = h.read;
-          ctx->hdrs[msgno]->old = h.old;
-          ctx->hdrs[msgno]->deleted = h.deleted;
-          ctx->hdrs[msgno]->flagged = h.flagged;
-          ctx->hdrs[msgno]->replied = h.replied;
-          ctx->hdrs[msgno]->changed = h.changed;
+          ctx->hdrs[msgno]->read = h.data->read;
+          ctx->hdrs[msgno]->old = h.data->old;
+          ctx->hdrs[msgno]->deleted = h.data->deleted;
+          ctx->hdrs[msgno]->flagged = h.data->flagged;
+          ctx->hdrs[msgno]->replied = h.data->replied;
+          ctx->hdrs[msgno]->changed = h.data->changed;
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
           ctx->hdrs[msgno]->data = (void *) (h.data);
 
@@ -249,12 +249,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       /* messages which have not been expunged are ACTIVE (borrowed from mh 
        * folders) */
       ctx->hdrs[msgno]->active = 1;
-      ctx->hdrs[msgno]->read = h.read;
-      ctx->hdrs[msgno]->old = h.old;
-      ctx->hdrs[msgno]->deleted = h.deleted;
-      ctx->hdrs[msgno]->flagged = h.flagged;
-      ctx->hdrs[msgno]->replied = h.replied;
-      ctx->hdrs[msgno]->changed = h.changed;
+      ctx->hdrs[msgno]->read = h.data->read;
+      ctx->hdrs[msgno]->old = h.data->old;
+      ctx->hdrs[msgno]->deleted = h.data->deleted;
+      ctx->hdrs[msgno]->flagged = h.data->flagged;
+      ctx->hdrs[msgno]->replied = h.data->replied;
+      ctx->hdrs[msgno]->changed = h.data->changed;
       ctx->hdrs[msgno]->received = h.received;
       ctx->hdrs[msgno]->data = (void *) (h.data);
 
@@ -834,17 +834,16 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
 {
   CONTEXT* ctx = idata->ctx;
   IMAP_HEADER newh;
+  IMAP_HEADER_DATA* hd;
   unsigned char readonly;
 
   memset (&newh, 0, sizeof (newh));
-  newh.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
+  hd = h->data;
+  newh.data = hd;
 
   dprint (2, (debugfile, "imap_fetch_message: parsing FLAGS\n"));
   if ((s = msg_parse_flags (&newh, s)) == NULL)
-  {
-    FREE (&newh.data);
     return NULL;
-  }
   
   /* YAUH (yet another ugly hack): temporarily set context to
    * read-write even if it's read-only, so *server* updates of
@@ -853,22 +852,18 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
   readonly = ctx->readonly;
   ctx->readonly = 0;
 	    
-  mutt_set_flag (ctx, h, M_NEW, !(newh.read || newh.old));
-  mutt_set_flag (ctx, h, M_OLD, newh.old);
-  mutt_set_flag (ctx, h, M_READ, newh.read);
-  mutt_set_flag (ctx, h, M_DELETE, newh.deleted);
-  mutt_set_flag (ctx, h, M_FLAG, newh.flagged);
-  mutt_set_flag (ctx, h, M_REPLIED, newh.replied);
+  mutt_set_flag (ctx, h, M_NEW, !(hd->read || hd->old));
+  mutt_set_flag (ctx, h, M_OLD, hd->old);
+  mutt_set_flag (ctx, h, M_READ, hd->read);
+  mutt_set_flag (ctx, h, M_DELETE, hd->deleted);
+  mutt_set_flag (ctx, h, M_FLAG, hd->flagged);
+  mutt_set_flag (ctx, h, M_REPLIED, hd->replied);
 
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */
   h->changed = 0;
   ctx->changed &= ~readonly;
   ctx->readonly = readonly;
-
-  mutt_free_list (&(HEADER_DATA(h)->keywords));
-  HEADER_DATA(h)->keywords = newh.data->keywords;
-  FREE(&newh.data);
 
   return s;
 }
@@ -1018,7 +1013,7 @@ static int msg_parse_fetch (IMAP_HEADER *h, char *s)
 /* msg_parse_flags: read a FLAGS token into an IMAP_HEADER */
 static char* msg_parse_flags (IMAP_HEADER* h, char* s)
 {
-  int recent = 0;
+  IMAP_HEADER_DATA* hd = h->data;
 
   /* sanity-check string */
   if (ascii_strncasecmp ("FLAGS", s, 5) != 0)
@@ -1037,38 +1032,38 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
   }
   s++;
 
+  mutt_free_list (&hd->keywords);
+  hd->deleted = hd->flagged = hd->replied = hd->read = hd->old = 0;
+
   /* start parsing */
   while (*s && *s != ')')
   {
     if (ascii_strncasecmp ("\\deleted", s, 8) == 0)
     {
       s += 8;
-      h->deleted = 1;
+      hd->deleted = 1;
     }
     else if (ascii_strncasecmp ("\\flagged", s, 8) == 0)
     {
       s += 8;
-      h->flagged = 1;
+      hd->flagged = 1;
     }
     else if (ascii_strncasecmp ("\\answered", s, 9) == 0)
     {
       s += 9;
-      h->replied = 1;
+      hd->replied = 1;
     }
     else if (ascii_strncasecmp ("\\seen", s, 5) == 0)
     {
       s += 5;
-      h->read = 1;
+      hd->read = 1;
     }
     else if (ascii_strncasecmp ("\\recent", s, 5) == 0)
-    {
       s += 7;
-      recent = 1;
-    }
     else if (ascii_strncasecmp ("old", s, 3) == 0)
     {
       s += 3;
-      h->old = 1;
+      hd->old = 1;
     }
     else
     {
@@ -1076,14 +1071,14 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
       char ctmp;
       char* flag_word = s;
 
-      if (!h->data->keywords)
-        h->data->keywords = mutt_new_list ();
+      if (!hd->keywords)
+        hd->keywords = mutt_new_list ();
 
       while (*s && !ISSPACE (*s) && *s != ')')
         s++;
       ctmp = *s;
       *s = '\0';
-      mutt_add_list (h->data->keywords, flag_word);
+      mutt_add_list (hd->keywords, flag_word);
       *s = ctmp;
     }
     SKIPWS(s);
@@ -1091,9 +1086,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
 
   /* wrap up, or note bad flags response */
   if (*s == ')')
-  {
     s++;
-  }
   else
   {
     dprint (1, (debugfile,

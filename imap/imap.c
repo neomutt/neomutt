@@ -896,6 +896,25 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
   return count;
 }
 
+/* returns 0 if mutt's flags match cached server flags */
+static int compare_flags (HEADER* h)
+{
+  IMAP_HEADER_DATA* hd = (IMAP_HEADER_DATA*)h->data;
+
+  if (h->read != hd->read)
+    return 1;
+  if (h->old != hd->old)
+    return 1;
+  if (h->flagged != hd->flagged)
+    return 1;
+  if (h->replied != hd->replied)
+    return 1;
+  if (h->deleted != hd->deleted)
+    return 1;
+
+  return 0;
+}
+
 /* Update the IMAP server to reflect the flags a single message.  */
 
 int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
@@ -905,6 +924,12 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   char uid[11];
 
   hdr->changed = 0;
+
+  if (!compare_flags (hdr))
+  {
+    idata->ctx->changed--;
+    return 0;
+  }
 
   snprintf (uid, sizeof (uid), "%u", HEADER_DATA(hdr)->uid);
   cmd->dptr = cmd->data;
@@ -974,7 +999,6 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
  *   ctx: the current context
  *   expunge: 0 or 1 - do expunge? 
  */
-
 int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 {
   IMAP_DATA* idata;
@@ -1033,6 +1057,12 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   {
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
     {
+      if (!compare_flags (ctx->hdrs[n]))
+      {
+        /* current flags are no different from server's idea */
+        ctx->hdrs[n]->changed = 0;
+        continue;
+      }
       mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
         ctx->msgcount);
 

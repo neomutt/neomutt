@@ -26,12 +26,7 @@
 /* IMAP-specific header data, stored as HEADER->data */
 typedef struct imap_header_data
 {
-  unsigned int uid;	/* 32-bit Message UID */
-  LIST *keywords;
-} IMAP_HEADER_DATA;
-
-typedef struct
-{
+  /* server-side flags */
   unsigned int read : 1;
   unsigned int old : 1;
   unsigned int deleted : 1;
@@ -39,6 +34,12 @@ typedef struct
   unsigned int replied : 1;
   unsigned int changed : 1;
 
+  unsigned int uid;	/* 32-bit Message UID */
+  LIST *keywords;
+} IMAP_HEADER_DATA;
+
+typedef struct
+{
   unsigned int sid;
 
   IMAP_HEADER_DATA* data;
