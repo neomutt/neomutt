@@ -1573,82 +1573,6 @@ int imap_search (CONTEXT* ctx, const pattern_t* pat)
   return 0;
 }
 
-/* all this listing/browsing is a mess. I don't like that name is a pointer
- *   into idata->buf (used to be a pointer into the passed in buffer, just
- *   as bad), nor do I like the fact that the fetch is done here. This
- *   code can't possibly handle non-LIST untagged responses properly.
- *   FIXME. ?! */
-int imap_parse_list_response(IMAP_DATA* idata, char **name, int *noselect,
-  int *noinferiors, char *delim)
-{
-  char *s;
-  long bytes;
-  int rc;
-
-  *name = NULL;
-
-  rc = imap_cmd_step (idata);
-  if (rc == IMAP_CMD_OK)
-    return rc;
-  if (rc != IMAP_CMD_CONTINUE)
-    return IMAP_CMD_BAD;
-
-  s = imap_next_word (idata->buf);
-  if ((ascii_strncasecmp ("LIST", s, 4) == 0) ||
-      (ascii_strncasecmp ("LSUB", s, 4) == 0))
-  {
-    *noselect = 0;
-    *noinferiors = 0;
-      
-    s = imap_next_word (s); /* flags */
-    if (*s == '(')
-    {
-      char *ep;
-
-      s++;
-      ep = s;
-      while (*ep && *ep != ')') ep++;
-      do
-      {
-	if (!ascii_strncasecmp (s, "\\NoSelect", 9))
-	  *noselect = 1;
-	if (!ascii_strncasecmp (s, "\\NoInferiors", 12))
-	  *noinferiors = 1;
-	/* See draft-gahrns-imap-child-mailbox-?? */
-	if (!ascii_strncasecmp (s, "\\HasNoChildren", 14))
-	  *noinferiors = 1;
-	if (*s != ')')
-	  s++;
-	while (*s && *s != '\\' && *s != ')') s++;
-      } while (s != ep);
-    }
-    else
-      return 0;
-    s = imap_next_word (s); /* delim */
-    /* Reset the delimiter, this can change */
-    if (ascii_strncasecmp (s, "NIL", 3))
-    {
-      if (s && s[0] == '\"' && s[1] && s[2] == '\"')
-	*delim = s[1];
-      else if (s && s[0] == '\"' && s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
-	*delim = s[2];
-    }
-    s = imap_next_word (s); /* name */
-    if (s && *s == '{')	/* Literal */
-    { 
-      if (imap_get_literal_count(idata->buf, &bytes) < 0)
-	return IMAP_CMD_BAD;
-      if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
-	return IMAP_CMD_BAD;
-      *name = idata->buf;
-    }
-    else
-      *name = s;
-  }
-
-  return IMAP_CMD_CONTINUE;
-}
-
 int imap_subscribe (char *path, int subscribe)
 {
   CONNECTION *conn;
@@ -1776,9 +1700,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   IMAP_DATA* idata;
   char list[LONG_STRING];
   char buf[LONG_STRING];
-  char* list_word = NULL;
-  int noselect, noinferiors;
-  char delim;
+  IMAP_LIST listresp;
   char completion[LONG_STRING];
   int clen, matchlen = 0;
   int completions = 0;
@@ -1816,39 +1738,36 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
   /* and see what the results are */
   strfcpy (completion, NONULL(mx.mbox), sizeof(completion));
+  idata->cmddata = &listresp;
   do
   {
-    if ((rc = imap_parse_list_response(idata, &list_word, &noselect, &noinferiors,
-        &delim)) == IMAP_CMD_BAD)
-      break;
+    rc = imap_cmd_step (idata);
 
-    if (list_word)
+    if (rc == IMAP_CMD_CONTINUE && listresp.name)
     {
-      /* store unquoted */
-      imap_unmunge_mbox_name (list_word);
-
       /* if the folder isn't selectable, append delimiter to force browse
        * to enter it on second tab. */
-      if (noselect)
+      if (listresp.noselect)
       {
-        clen = strlen(list_word);
-        list_word[clen++] = delim;
-        list_word[clen] = '\0';
+        clen = strlen(listresp.name);
+        listresp.name[clen++] = listresp.delim;
+        listresp.name[clen] = '\0';
       }
       /* copy in first word */
       if (!completions)
       {
-        strfcpy (completion, list_word, sizeof(completion));
+        strfcpy (completion, listresp.name, sizeof(completion));
         matchlen = strlen (completion);
         completions++;
         continue;
       }
 
-      matchlen = longest_common_prefix (completion, list_word, 0, matchlen);
+      matchlen = longest_common_prefix (completion, listresp.name, 0, matchlen);
       completions++;
     }
   }
   while (rc == IMAP_CMD_CONTINUE);
+  idata->cmddata = NULL;
 
   if (completions)
   {

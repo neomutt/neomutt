@@ -43,6 +43,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata);
 static int cmd_handle_untagged (IMAP_DATA* idata);
 static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
 static void cmd_parse_expunge (IMAP_DATA* idata, const char* s);
+static void cmd_parse_list (IMAP_DATA* idata, char* s);
 static void cmd_parse_lsub (IMAP_DATA* idata, char* s);
 static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, const char* s);
@@ -412,6 +413,8 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   }
   else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capabilities (idata, s);
+  else if (ascii_strncasecmp ("LIST", s, 4) == 0)
+    cmd_parse_list (idata, s);
   else if (ascii_strncasecmp ("LSUB", s, 4) == 0)
     cmd_parse_lsub (idata, s);
   else if (ascii_strncasecmp ("MYRIGHTS", s, 8) == 0)
@@ -563,63 +566,97 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
   }
 }
 
+static void cmd_parse_list (IMAP_DATA* idata, char* s)
+{
+  IMAP_LIST* list;
+  char delimbuf[5]; /* worst case: "\\"\0 */
+
+  if (!idata->cmddata)
+  {
+    dprint (2, (debugfile, "Ignoring LIST response\n"));
+    return;
+  }
+
+  list = (IMAP_LIST*)idata->cmddata;
+  memset (list, 0, sizeof (IMAP_LIST));
+
+  /* flags */
+  s = imap_next_word (s);
+  if (*s != '(')
+  {
+    dprint (1, (debugfile, "Bad LIST response\n"));
+    return;
+  }
+  s++;
+  while (*s)
+  {
+    if (!ascii_strncasecmp (s, "\\NoSelect", 9))
+      list->noselect = 1;
+    else if (!ascii_strncasecmp (s, "\\NoInferiors", 12))
+      list->noinferiors = 1;
+    /* See draft-gahrns-imap-child-mailbox-?? */
+    else if (!ascii_strncasecmp (s, "\\HasNoChildren", 14))
+      list->noinferiors = 1;
+    
+    s = imap_next_word (s);
+    if (*(s - 2) == ')')
+      break;
+  }
+
+  /* Delimiter */
+  if (ascii_strncasecmp (s, "NIL", 3))
+  {
+    delimbuf[0] = '\0';
+    safe_strcat (delimbuf, 5, s); 
+    imap_unquote_string (delimbuf);
+    list->delim = delimbuf[0];
+  }
+
+  /* Name */
+  s = imap_next_word (s);
+  imap_unmunge_mbox_name (s);
+  list->name = s;
+}
+
 static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
 {
   char buf[STRING];
   char errstr[STRING];
   BUFFER err, token;
   ciss_url_t url;
-  char *ep;
+  IMAP_LIST list;
+
+  if (idata->cmddata)
+  {
+    /* caller will handle response itself */
+    cmd_parse_list (idata, s);
+    return;
+  }
 
   if (!option (OPTIMAPCHECKSUBSCRIBED))
     return;
 
-  s = imap_next_word (s); /* flags */
-  
-  if (*s != '(')
-  {
-    dprint (1, (debugfile, "Bad LSUB response\n"));
+  idata->cmddata = &list;
+  cmd_parse_list (idata, s);
+  idata->cmddata = NULL;
+  if (!list.name)
     return;
-  }
 
-  s++;
-  ep = s;
-  for (ep = s; *ep && *ep != ')'; ep++)
-    ;
-  do
-  {
-    if (!ascii_strncasecmp (s, "\\NoSelect", 9))
-      return;
-    while (s < ep && *s != ' ' && *s != ')')
-      s++;
-    if (*s == ' ')
-      s++;
-  } while (s != ep);
+  dprint (2, (debugfile, "Subscribing to %s\n", list.name));
 
-  s = imap_next_word (s); /* delim */
-  s = imap_next_word (s); /* name */
-  
-  if (s)
-  {
-    imap_unmunge_mbox_name (s);
-    dprint (2, (debugfile, "Subscribing to %s\n", s));
-    
-    strfcpy (buf, "mailboxes \"", sizeof (buf));
-    mutt_account_tourl (&idata->conn->account, &url);
-    url.path = s;
-    if (!mutt_strcmp (url.user, ImapUser))
-      url.user = NULL;
-    url_ciss_tostring (&url, buf + 11, sizeof (buf) - 10, 0);
-    safe_strcat (buf, sizeof (buf), "\"");
-    memset (&token, 0, sizeof (token));
-    err.data = errstr;
-    err.dsize = sizeof (errstr);
-    if (mutt_parse_rc_line (buf, &token, &err))
-      dprint (1, (debugfile, "Error adding subscribed mailbox: %s\n", errstr));
-    FREE (&token.data);
-  }
-  else
-    dprint (1, (debugfile, "Bad LSUB response\n"));
+  strfcpy (buf, "mailboxes \"", sizeof (buf));
+  mutt_account_tourl (&idata->conn->account, &url);
+  url.path = list.name;
+  if (!mutt_strcmp (url.user, ImapUser))
+    url.user = NULL;
+  url_ciss_tostring (&url, buf + 11, sizeof (buf) - 10, 0);
+  safe_strcat (buf, sizeof (buf), "\"");
+  memset (&token, 0, sizeof (token));
+  err.data = errstr;
+  err.dsize = sizeof (errstr);
+  if (mutt_parse_rc_line (buf, &token, &err))
+    dprint (1, (debugfile, "Error adding subscribed mailbox: %s\n", errstr));
+  FREE (&token.data);
 }
 
 /* cmd_parse_myrights: set rights bits according to MYRIGHTS response */
@@ -714,8 +751,6 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   IMAP_STATUS *status, sb;
   int olduv, oldun;
 
-  dprint (2, (debugfile, "Handling STATUS\n"));
-  
   mailbox = imap_next_word (s);
   s = imap_next_word (mailbox);
   *(s - 1) = '\0';

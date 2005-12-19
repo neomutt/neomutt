@@ -45,6 +45,7 @@ static int browse_verify_namespace (IMAP_DATA* idata,
 int imap_browse (char* path, struct browser_state* state)
 {
   IMAP_DATA* idata;
+  IMAP_LIST list;
   char buf[LONG_STRING];
   char buf2[LONG_STRING];
   char nsbuf[LONG_STRING];
@@ -57,10 +58,7 @@ int imap_browse (char* path, struct browser_state* state)
   int nsup;
   char ctmp;
   int nns = 0;
-  char *cur_folder;
   short showparents = 0;
-  int noselect;
-  int noinferiors;
   int save_lsub;
   IMAP_MBOX mx;
 
@@ -114,29 +112,26 @@ int imap_browse (char* path, struct browser_state* state)
     {
       snprintf (buf, sizeof (buf), "%s \"\" \"%s\"", list_cmd, mbox);
       imap_cmd_start (idata, buf);
-      do 
+      idata->cmddata = &list;
+      do
       {
-        if ((rc = imap_parse_list_response (idata, &cur_folder, &noselect,
-            &noinferiors, &idata->delim)) == IMAP_CMD_BAD)
-	  goto fail;
-
-        if (cur_folder)
+        rc = imap_cmd_step (idata);
+        if (rc == IMAP_CMD_CONTINUE && list.name)
         {
-          imap_unmunge_mbox_name (cur_folder);
-
-          if (!noinferiors && cur_folder[0] &&
+          if (!list.noinferiors && list.name[0] &&
             (n = strlen (mbox)) < LONG_STRING-1)
           {
-            mbox[n++] = idata->delim;
+            mbox[n++] = list.delim;
             mbox[n] = '\0';
           }
         }
       }
       while (rc == IMAP_CMD_CONTINUE);
+      idata->cmddata = NULL;
     }
 
     /* if we're descending a folder, mark it as current in browser_state */
-    if (mbox[n-1] == idata->delim)
+    if (mbox[n-1] == list.delim)
     {
       /* don't show parents in the home namespace */
       if (!home_namespace)
@@ -152,7 +147,7 @@ int imap_browse (char* path, struct browser_state* state)
      *  and tack on delimiter ourselves.
      * Further note: UW-IMAP servers return nothing when asked for 
      *  NAMESPACES without delimiters at the end. Argh! */
-    for (n--; n >= 0 && mbox[n] != idata->delim ; n--);
+    for (n--; n >= 0 && mbox[n] != list.delim ; n--);
     if (n > 0)			/* "aaaa/bbbb/" -> "aaaa" */
     {
       /* forget the check, it is too delicate (see above). Have we ever
@@ -163,7 +158,7 @@ int imap_browse (char* path, struct browser_state* state)
       if (showparents)
       {
 	dprint (3, (debugfile, "imap_init_browse: adding parent %s\n", mbox));
-	imap_add_folder (idata->delim, mbox, 1, 0, state, 1);
+	imap_add_folder (list.delim, mbox, 1, 0, state, 1);
       }
 
       /* if our target isn't a folder, we are in our superior */
@@ -362,9 +357,7 @@ int imap_mailbox_rename(const char* mailbox)
 static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   struct browser_state* state, short isparent)
 {
-  char *name;
-  int noselect;
-  int noinferiors;
+  IMAP_LIST list;
   IMAP_MBOX mx;
   int rc;
 
@@ -376,31 +369,27 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   }
 
   imap_cmd_start (idata, cmd);
-
-  do 
+  idata->cmddata = &list;
+  do
   {
-    if ((rc = imap_parse_list_response(idata, &name, &noselect, &noinferiors,
-        &idata->delim)) == IMAP_CMD_BAD)
-    {
-      FREE (&mx.mbox);
-      return -1;
-    }
+    rc = imap_cmd_step (idata);
 
-    if (name)
+    if (rc == IMAP_CMD_CONTINUE && list.name)
     {
       /* Let a parent folder never be selectable for navigation */
       if (isparent)
-        noselect = 1;
+        list.noselect = 1;
       /* prune current folder from output */
-      if (isparent || mutt_strncmp (name, mx.mbox, strlen (name)))
-        imap_add_folder (idata->delim, name, noselect, noinferiors, state,
-          isparent);
+      if (isparent || mutt_strncmp (list.name, mx.mbox, strlen (list.name)))
+        imap_add_folder (list.delim, list.name, list.noselect, list.noinferiors,
+                         state, isparent);
     }
   }
   while (rc == IMAP_CMD_CONTINUE);
+  idata->cmddata = NULL;
 
   FREE (&mx.mbox);
-  return 0;
+  return rc == IMAP_CMD_OK ? 0 : -1;
 }
 
 /* imap_add_folder: add a folder name to the browser list, formatting it as
@@ -581,9 +570,8 @@ static int browse_verify_namespace (IMAP_DATA* idata,
   IMAP_NAMESPACE_INFO *nsi, int nns)
 {
   char buf[LONG_STRING];
+  IMAP_LIST list;
   int i = 0;
-  char *name;
-  char delim;
   int rc;
 
   for (i = 0; i < nns; i++, nsi++)
@@ -600,17 +588,20 @@ static int browse_verify_namespace (IMAP_DATA* idata,
 		option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
 
     imap_cmd_start (idata, buf);
-
+    idata->cmddata = &list;
     nsi->listable = 0;
     nsi->home_namespace = 0;
     do 
     {
-      if ((rc = imap_parse_list_response(idata, &name, &nsi->noselect,
-          &nsi->noinferiors, &delim)) == IMAP_CMD_BAD)
-	return -1;
-      nsi->listable |= (name != NULL);
+      rc = imap_cmd_step (idata);
+      if (rc == IMAP_CMD_CONTINUE && list.name)
+        nsi->listable |= (list.name[0] != '\0');
     }
     while (rc == IMAP_CMD_CONTINUE);
+    idata->cmddata = NULL;
+
+    if (rc != IMAP_CMD_OK)
+      return -1;
   }
 
   return 0;
