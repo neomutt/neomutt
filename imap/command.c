@@ -569,15 +569,14 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
 static void cmd_parse_list (IMAP_DATA* idata, char* s)
 {
   IMAP_LIST* list;
+  IMAP_LIST lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
 
-  if (!idata->cmddata)
-  {
-    dprint (2, (debugfile, "Ignoring LIST response\n"));
-    return;
-  }
+  if (idata->cmddata)
+    list = (IMAP_LIST*)idata->cmddata;
+  else
+    list = &lb;
 
-  list = (IMAP_LIST*)idata->cmddata;
   memset (list, 0, sizeof (IMAP_LIST));
 
   /* flags */
@@ -616,6 +615,12 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   s = imap_next_word (s);
   imap_unmunge_mbox_name (s);
   list->name = s;
+  
+  if (list->name[0] == '\0')
+  {
+    idata->delim = list->delim;
+    dprint (2, (debugfile, "Root delimiter: %c\n", idata->delim));
+  }
 }
 
 static void cmd_parse_lsub (IMAP_DATA* idata, char* s)

@@ -45,9 +45,7 @@
 #include <sys/stat.h>
 
 /* imap forward declarations */
-static int imap_get_delim (IMAP_DATA *idata);
 static char* imap_get_flags (LIST** hflags, char* s);
-static int imap_check_acl (IMAP_DATA *idata);
 static int imap_check_capabilities (IMAP_DATA* idata);
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
 			   const char* str, char* flags, size_t flsize);
@@ -269,62 +267,6 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   mutt_sort_headers (idata->ctx, 1);
 }
 
-static int imap_get_delim (IMAP_DATA *idata)
-{
-  char *s;
-  int rc;
-
-  /* assume that the delim is /.  If this fails, we're in bigger trouble
-   * than getting the delim wrong */
-  idata->delim = '/';
-
-  imap_cmd_start (idata, "LIST \"\" \"\"");
-
-  do 
-  {
-    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
-      break;
-
-    s = imap_next_word (idata->buf);
-    if (ascii_strncasecmp ("LIST", s, 4) == 0)
-    {
-      s = imap_next_word (s);
-      s = imap_next_word (s);
-      if (s && s[0] == '\"' && s[1] && s[2] == '\"')
-	idata->delim = s[1];
-      else if (s && s[0] == '\"' && s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
-	idata->delim = s[2];
-    }
-  }
-  while (rc == IMAP_CMD_CONTINUE);
-
-  if (rc != IMAP_CMD_OK)
-  {
-    dprint (1, (debugfile, "imap_get_delim: failed.\n"));
-    return -1;
-  }
-
-  dprint (2, (debugfile, "Delimiter: %c\n", idata->delim));
-
-  return -1;
-}
-
-/* get rights for folder, let imap_handle_untagged do the rest */
-static int imap_check_acl (IMAP_DATA *idata)
-{
-  char buf[LONG_STRING];
-  char mbox[LONG_STRING];
-
-  imap_munge_mbox_name (mbox, sizeof(mbox), idata->mailbox);
-  snprintf (buf, sizeof (buf), "MYRIGHTS %s", mbox);
-  if (imap_exec (idata, buf, 0) != 0)
-  {
-    imap_error ("imap_check_acl", buf);
-    return -1;
-  }
-  return 0;
-}
-
 /* imap_check_capabilities: make sure we can log in to this server. */
 static int imap_check_capabilities (IMAP_DATA* idata)
 {
@@ -416,12 +358,11 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   }
   if (new && idata->state == IMAP_AUTHENTICATED)
   {
-    imap_get_delim (idata);
+    /* get root delimiter, '/' as default */
+    idata->delim = '/';
+    imap_cmd_queue (idata, "LIST \"\" \"\"");
     if (option (OPTIMAPCHECKSUBSCRIBED))
-    {
-      mutt_message _("Checking mailbox subscriptions");
-      imap_exec (idata, "LSUB \"\" \"*\"", 0);
-    }
+      imap_cmd_queue (idata, "LSUB \"\" \"*\"");
   }
 
   return idata;
@@ -619,6 +560,26 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   mutt_message (_("Selecting %s..."), idata->mailbox);
   imap_munge_mbox_name (buf, sizeof(buf), idata->mailbox);
+  
+  /* pipeline ACL test */
+  if (mutt_bit_isset (idata->capabilities, ACL))
+  {
+    snprintf (bufout, sizeof (bufout), "MYRIGHTS %s", buf);
+    imap_cmd_queue (idata, bufout);
+  }
+  /* assume we have all rights if ACL is unavailable */
+  else
+  {
+    mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
+    mutt_bit_set (idata->rights, IMAP_ACL_READ);
+    mutt_bit_set (idata->rights, IMAP_ACL_SEEN);
+    mutt_bit_set (idata->rights, IMAP_ACL_WRITE);
+    mutt_bit_set (idata->rights, IMAP_ACL_INSERT);
+    mutt_bit_set (idata->rights, IMAP_ACL_POST);
+    mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
+    mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
+  }
+  
   snprintf (bufout, sizeof (bufout), "%s %s",
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
 
@@ -738,28 +699,11 @@ int imap_open_mailbox (CONTEXT* ctx)
   }
 #endif
 
-  if (mutt_bit_isset (idata->capabilities, ACL))
-  {
-    if (imap_check_acl (idata))
-      goto fail;
-    if (!(mutt_bit_isset(idata->rights, IMAP_ACL_DELETE) ||
-          mutt_bit_isset(idata->rights, IMAP_ACL_SEEN) ||
-          mutt_bit_isset(idata->rights, IMAP_ACL_WRITE) ||
-          mutt_bit_isset(idata->rights, IMAP_ACL_INSERT)))
-       ctx->readonly = 1;
-  }
-  /* assume we have all rights if ACL is unavailable */
-  else
-  {
-    mutt_bit_set (idata->rights, IMAP_ACL_LOOKUP);
-    mutt_bit_set (idata->rights, IMAP_ACL_READ);
-    mutt_bit_set (idata->rights, IMAP_ACL_SEEN);
-    mutt_bit_set (idata->rights, IMAP_ACL_WRITE);
-    mutt_bit_set (idata->rights, IMAP_ACL_INSERT);
-    mutt_bit_set (idata->rights, IMAP_ACL_POST);
-    mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
-    mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
-  }
+  if (!(mutt_bit_isset(idata->rights, IMAP_ACL_DELETE) ||
+        mutt_bit_isset(idata->rights, IMAP_ACL_SEEN) ||
+        mutt_bit_isset(idata->rights, IMAP_ACL_WRITE) ||
+        mutt_bit_isset(idata->rights, IMAP_ACL_INSERT)))
+     ctx->readonly = 1;
 
   ctx->hdrmax = count;
   ctx->hdrs = safe_calloc (count, sizeof (HEADER *));
