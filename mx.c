@@ -904,7 +904,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
-      if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->old)
+      if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->old && !ctx->hdrs[i]->read)
 	mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, 1);
     }
   }
