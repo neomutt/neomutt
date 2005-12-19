@@ -1771,6 +1771,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   idata->cmddata = &listresp;
   do
   {
+    listresp.name = NULL;
     rc = imap_cmd_step (idata);
 
     if (rc == IMAP_CMD_CONTINUE && listresp.name)
