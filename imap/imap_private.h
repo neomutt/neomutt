@@ -287,4 +287,11 @@ int imap_wordcasecmp(const char *a, const char *b);
 void imap_utf7_encode (char **s);
 void imap_utf7_decode (char **s);
 
+#if USE_HCACHE
+static size_t imap_hcache_keylen (const char *fn)
+{
+  return mutt_strlen(fn);
+}
+#endif /* USE_HCACHE */
+
 #endif

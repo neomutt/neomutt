@@ -238,6 +238,13 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   HEADER* h;
   int i, cacheno;
 
+#if USE_HCACHE
+  void* hc;
+  char uidbuf[32];
+  
+  hc = mutt_hcache_open (HeaderCache, idata->ctx->path);
+#endif
+
   for (i = 0; i < idata->ctx->msgcount; i++)
   {
     h = idata->ctx->hdrs[i];
@@ -248,7 +255,15 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 
       h->active = 0;
 
-      /* free cached body from disk, if neccessary */
+#if USE_HCACHE
+      if (hc)
+      {
+        sprintf (uidbuf, "/%u", HEADER_DATA(h)->uid);
+        mutt_hcache_delete (hc, uidbuf, imap_hcache_keylen);
+      }
+#endif
+
+      /* free cached body from disk, if necessary */
       cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
       if (idata->cache[cacheno].uid == HEADER_DATA(h)->uid &&
 	  idata->cache[cacheno].path)
@@ -260,6 +275,10 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
       imap_free_header_data (&h->data);
     }
   }
+
+#if USE_HCACHE
+  mutt_hcache_close (hc);
+#endif
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */

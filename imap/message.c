@@ -42,10 +42,6 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
 static int msg_parse_fetch (IMAP_HEADER* h, char* s);
 static char* msg_parse_flags (IMAP_HEADER* h, char* s);
 
-#if USE_HCACHE
-static size_t imap_hcache_keylen (const char *fn);
-#endif /* USE_HCACHE */
-
 /* imap_read_headers:
  * Changed to read many headers instead of just one. It will return the
  * msgno of the last message read. It will return a value other than
@@ -111,7 +107,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->newMailCount = 0;
 
 #if USE_HCACHE
-  hc = mutt_hcache_open (HeaderCache, ctx->path);
+  if (!msgbegin)
+    hc = mutt_hcache_open (HeaderCache, ctx->path);
 
   if (hc) {
     snprintf (buf, sizeof (buf),
@@ -928,13 +925,6 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 
   return rc;
 }
-
-#if USE_HCACHE
-static size_t imap_hcache_keylen (const char *fn)
-{
-  return mutt_strlen(fn);
-}
-#endif /* USE_HCACHE */
 
 /* msg_parse_fetch: handle headers returned from header fetch */
 static int msg_parse_fetch (IMAP_HEADER *h, char *s)
