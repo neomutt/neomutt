@@ -846,8 +846,30 @@ static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
   const char *str, char *flags, size_t flsize)
 {
   if (mutt_bit_isset (idata->rights, aclbit))
-    if (flag)
+    if (flag && imap_has_flag (idata->flags, str))
       safe_strcat (flags, flsize, str);
+}
+
+/* imap_has_flag: do a caseless comparison of the flag against a flag list,
+*   return 1 if found or flag list has '\*', 0 otherwise */
+int imap_has_flag (LIST* flag_list, const char* flag)
+{
+  if (!flag_list)
+    return 0;
+  
+  flag_list = flag_list->next;
+  while (flag_list)
+  {
+    if (!ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
+      return 1;
+    
+    if (!ascii_strncmp (flag_list->data, "\\*", strlen (flag_list->data)))
+      return 1;
+    
+    flag_list = flag_list->next;
+  }
+  
+  return 0;
 }
 
 /* imap_make_msg_set: make an IMAP4rev1 UID message set out of a set of
@@ -949,6 +971,8 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
       
   imap_set_flag (idata, IMAP_ACL_SEEN, hdr->read, "\\Seen ",
 		 flags, sizeof (flags));
+  imap_set_flag (idata, IMAP_ACL_WRITE, hdr->old,
+                 "Old ", flags, sizeof (flags));
   imap_set_flag (idata, IMAP_ACL_WRITE, hdr->flagged,
 		 "\\Flagged ", flags, sizeof (flags));
   imap_set_flag (idata, IMAP_ACL_WRITE, hdr->replied,
@@ -967,6 +991,7 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   if (!*flags)
   {
     imap_set_flag (idata, IMAP_ACL_SEEN, 1, "\\Seen ", flags, sizeof (flags));
+    imap_set_flag (idata, IMAP_ACL_WRITE, 1, "Old ", flags, sizeof (flags));
     imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Flagged ", flags, sizeof (flags));
     imap_set_flag (idata, IMAP_ACL_WRITE, 1, "\\Answered ", flags, sizeof (flags));
     imap_set_flag (idata, IMAP_ACL_DELETE, 1, "\\Deleted ", flags, sizeof (flags));

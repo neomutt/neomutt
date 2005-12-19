@@ -39,7 +39,6 @@
 static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
 static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
   FILE* fp);
-static int msg_has_flag (LIST* flag_list, const char* flag);
 static int msg_parse_fetch (IMAP_HEADER* h, char* s);
 static char* msg_parse_flags (IMAP_HEADER* h, char* s);
 
@@ -815,7 +814,7 @@ void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)
 
   while (keywords)
   {
-    if (msg_has_flag (mailbox_flags, keywords->data))
+    if (imap_has_flag (mailbox_flags, keywords->data))
     {
       safe_strcat (s, slen, keywords->data);
       safe_strcat (s, slen, " ");
@@ -987,26 +986,6 @@ static int msg_fetch_header_fetch (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE
 }
 #endif /* USE_HCACHE */
 
-
-/* msg_has_flag: do a caseless comparison of the flag against a flag list,
- *   return 1 if found or flag list has '\*', 0 otherwise */
-static int msg_has_flag (LIST* flag_list, const char* flag)
-{
-  if (!flag_list)
-    return 0;
-
-  flag_list = flag_list->next;
-  while (flag_list)
-  {
-    if (!ascii_strncasecmp (flag_list->data, flag, strlen (flag_list->data)))
-      return 1;
-
-    flag_list = flag_list->next;
-  }
-
-  return 0;
-}
-
 /* msg_parse_fetch: handle headers returned from header fetch */
 static int msg_parse_fetch (IMAP_HEADER *h, char *s)
 {
@@ -1131,6 +1110,11 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
       s += 7;
       recent = 1;
     }
+    else if (ascii_strncasecmp ("old", s, 3) == 0)
+    {
+      s += 3;
+      h->old = 1;
+    }
     else
     {
       /* store custom flags as well */
@@ -1153,9 +1137,6 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
   /* wrap up, or note bad flags response */
   if (*s == ')')
   {
-    /* if a message is neither seen nor recent, it is OLD. */
-    if (option (OPTMARKOLD) && !recent && !(h->read))
-      h->old = 1;
     s++;
   }
   else

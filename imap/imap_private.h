@@ -244,6 +244,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata);
 void imap_logout (IMAP_DATA* idata);
 int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   int *err_continue);
+int imap_has_flag (LIST* flag_list, const char* flag);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA* idata);
