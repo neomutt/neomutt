@@ -1,4 +1,10 @@
-2005-12-19 18:03:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-19 18:13:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* ChangeLog, ChangeLog.old: ChangeLog.old was just old ChangeLog
+	entries with different formatting - I think it's time to put it
+	out to pasture. I've moved all pre-1.4 entries from ChangeLog into
+	ChangeLog.old now. This should have the nice side-effect of making
+	the git mirror grow a little more slowly.
 
 	* imap/imap.c: Catch another possible race when starting IDLE.
 
