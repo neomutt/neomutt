@@ -1,4 +1,52 @@
- 2005-12-16 18:49:40  Recai Oktas  <roktas@omu.edu.tr>  (brendan)
+2005-12-19 17:40:02  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c: More IMAP
+	header cache cleanup: remove expunged entries from cache, and
+	don't bother checking the cache for mail that's arrived since the
+	mailbox was opened. TODO: cache UIDNEXT, only check the cache for
+	messages up to cached value.
+
+	* imap/imap.c: Avoid a possible race when entering the IDLE
+	command - if new mail notification is received before the +
+	response, mutt may attempt to send a fetch command before it
+	realises it's idling.
+
+	* imap/imap_private.h, imap/message.c, imap/imap.c: Much faster
+	IMAP sync code, pipelined and everything. Now batch updates
+	changed flags, instead of syncing each changed message
+	individually.
+
+	* imap/imap.c: Manually unidle at logout if necessary. Somewhat
+	unclean - might be good to have an imap_unidle function...
+
+	* imap/imap.c, imap/message.c, imap/message.h: Cache server-side
+	flags, don't send flag updates if mutt's are the same. This can
+	happen if a flag is toggled and toggled back, or we receive server
+	updates, and the cache will make much faster sync possible later.
+
+	* imap/command.c, imap/imap.c: Pipeline MYRIGHTS, subscribed
+	mailbox check and root delimiter check.
+
+	* imap/imap.c: Clear name field from status callback before each
+	IMAP completion attempt.
+
+	* imap/message.c: Remove some cut-n-paste garbage from IMAP header
+	cache code.
+
+	* mx.c: Only mark unread messages as old when closing mailbox.
+
+	* imap/auth_sasl.c, imap/browse.c, imap/imap.c,
+	imap/imap_private.h, imap/message.c, imap/util.c, mx.c: Real
+	support for the Old flag on IMAP.
+
+	* imap/imap.c, imap/imap_private.h: Display success message when
+	subscription command succeeds.
+
+	* imap/browse.c, imap/command.c, imap/imap.c, imap/imap_private.h:
+	Replace imap_parse_list_response with a proper untagged response
+	handler.
+
+2005-12-16 18:49:40  Recai Oktas  <roktas@omu.edu.tr>  (brendan)
 
 	* color.c, crypt.c, handler.c, init.c, parse.c, smime.c: Use
 	ascii_str* instead of mutt_str* in several places where it's
