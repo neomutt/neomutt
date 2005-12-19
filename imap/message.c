@@ -43,8 +43,6 @@ static int msg_parse_fetch (IMAP_HEADER* h, char* s);
 static char* msg_parse_flags (IMAP_HEADER* h, char* s);
 
 #if USE_HCACHE
-static int msg_fetch_header_fetch (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
-  FILE* fp);
 static size_t imap_hcache_keylen (const char *fn);
 #endif /* USE_HCACHE */
 
@@ -128,7 +126,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         mutt_message (_("Evaluating cache... [%d/%d]"), msgno + 1,
           msgend + 1);
   
-      rewind (fp);
       memset (&h, 0, sizeof (h));
       h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
       do
@@ -139,7 +136,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         if (rc != IMAP_CMD_CONTINUE)
           break;
 
-        if ((mfhrc = msg_fetch_header_fetch (idata->ctx, &h, idata->buf, fp)) == -1)
+        if ((mfhrc = msg_fetch_header (idata->ctx, &h, idata->buf, NULL)) == -1)
           continue;
         else if (mfhrc < 0)
           break;
@@ -170,7 +167,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
           ctx->msgcount++;
         }
-        rewind (fp);
   
         FREE(&uid_validity);
       }
@@ -911,7 +907,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 
   /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
    *   read header lines and call it again. Silly. */
-  if (msg_parse_fetch (h, buf) != -2)
+  if ((rc = msg_parse_fetch (h, buf) != -2) || !fp)
     return rc;
   
   if (imap_get_literal_count (buf, &bytes) == 0)
@@ -942,47 +938,6 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 static size_t imap_hcache_keylen (const char *fn)
 {
   return mutt_strlen(fn);
-}
-
-/* msg_fetch_header: import IMAP FETCH response into an IMAP_HEADER.
- *   Expects string beginning with * n FETCH.
- *   Returns:
- *      0 on success
- *     -1 if the string is not a fetch response
- *     -2 if the string is a corrupt fetch response */
-static int msg_fetch_header_fetch (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
-{
-  IMAP_DATA* idata;
-  int rc = -1; /* default now is that string isn't FETCH response*/
-
-  idata = (IMAP_DATA*) ctx->data;
-
-  if (buf[0] != '*')
-    return rc;
-
-  /* skip to message number */
-  buf = imap_next_word (buf);
-  h->sid = atoi (buf);
-
-  /* find FETCH tag */
-  buf = imap_next_word (buf);
-  if (ascii_strncasecmp ("FETCH", buf, 5))
-    return rc;
-
-  rc = -2; /* we've got a FETCH response, for better or worse */
-  if (!(buf = strchr (buf, '(')))
-    return rc;
-  buf++;
-
-  if (msg_parse_fetch (h, buf) < 0) {
-         return -2;
-  }
-
-  if (!(buf = strchr (buf, ')')))
-    return rc;
-  buf++;
-
-  return 0;
 }
 #endif /* USE_HCACHE */
 
