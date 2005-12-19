@@ -1,4 +1,6 @@
-2005-12-19 17:40:02  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-19 18:03:41  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Catch another possible race when starting IDLE.
 
 	* imap/imap.c, imap/imap_private.h, imap/message.c: More IMAP
 	header cache cleanup: remove expunged entries from cache, and
