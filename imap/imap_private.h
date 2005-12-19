@@ -52,7 +52,7 @@
 
 /* number of commands that can be batched into a single request
  * ( - 1, for the easy way to detect ring buffer wrap) */
-#define IMAP_PIPELINE_DEPTH 11
+#define IMAP_PIPELINE_DEPTH 15
 
 #define SEQLEN 5
 
@@ -236,7 +236,8 @@ int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
 int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname);
 IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox);
 void imap_mboxcache_free (IMAP_DATA* idata);
-int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed);
+int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
+                       int invert);
 int imap_open_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
 int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t*);

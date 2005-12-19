@@ -823,8 +823,10 @@ int imap_has_flag (LIST* flag_list, const char* flag)
  *         buflen: length of buffer
  *         flag: enum of flag type on which to filter
  *         changed: include only changed messages in message set
+ *         invert: invert sense of flag, eg M_READ matches unread messages
  * Returns: number of messages in message set (0 if no matches) */
-int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
+int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
+                       int invert)
 {
   HEADER** hdrs;	/* sorted local copy */
   int count = 0;	/* number of messages in message set */
@@ -854,10 +856,27 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed)
     if (hdrs[n]->active)
       switch (flag)
       {
-        case M_DELETE:
-	  if (hdrs[n]->deleted)
-	    match = 1;
+        case M_DELETED:
+          if (hdrs[n]->deleted != HEADER_DATA(hdrs[n])->deleted)
+            match = invert ^ hdrs[n]->deleted;
 	  break;
+        case M_FLAG:
+          if (hdrs[n]->flagged != HEADER_DATA(hdrs[n])->flagged)
+            match = invert ^ hdrs[n]->flagged;
+	  break;
+        case M_OLD:
+          if (hdrs[n]->old != HEADER_DATA(hdrs[n])->old)
+            match = invert ^ hdrs[n]->old;
+	  break;
+        case M_READ:
+          if (hdrs[n]->read != HEADER_DATA(hdrs[n])->read)
+            match = invert ^ hdrs[n]->read;
+	  break;
+        case M_REPLIED:
+          if (hdrs[n]->replied != HEADER_DATA(hdrs[n])->replied)
+            match = invert ^ hdrs[n]->replied;
+	  break;
+
         case M_TAG:
 	  if (hdrs[n]->tagged)
 	    match = 1;
@@ -994,6 +1013,37 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   return 0;
 }
 
+static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
+                        const char* name)
+{
+  int rc;
+
+  if (!mutt_bit_isset (idata->rights, right))
+    return 0;
+  
+  if (right == IMAP_ACL_WRITE && !imap_has_flag (idata->flags, name))
+    return 0;
+
+  buf->dptr = buf->data;
+  mutt_buffer_addstr (buf, "UID STORE ");
+  if ((rc = imap_make_msg_set (idata, buf, flag, 1, 0)))
+  {
+    rc++;
+    mutt_buffer_printf (buf, " +FLAGS.SILENT (%s)", name);
+    imap_cmd_queue (idata, buf->data);
+  }
+  buf->dptr = buf->data;
+  mutt_buffer_addstr (buf, "UID STORE ");
+  if ((rc = imap_make_msg_set (idata, buf, flag, 1, 1)))
+  {
+    rc++;
+    mutt_buffer_printf (buf, " -FLAGS.SILENT (%s)", name);
+    imap_cmd_queue (idata, buf->data);
+  }
+  
+  return rc;
+}
+
 /* update the IMAP server to reflect message changes done within mutt.
  * Arguments
  *   ctx: the current context
@@ -1007,7 +1057,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   int deleted;
   int n;
   int rc;
-  int err_continue = M_NO;	/* continue on error? */
 
   idata = (IMAP_DATA*) ctx->data;
 
@@ -1030,7 +1079,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   if (expunge && mutt_bit_isset (idata->rights, IMAP_ACL_DELETE))
   {
     mutt_buffer_addstr (&cmd, "UID STORE ");
-    deleted = imap_make_msg_set (idata, &cmd, M_DELETE, 1);
+    deleted = imap_make_msg_set (idata, &cmd, M_DELETED, 1, 0);
 
     /* if we have a message set, then let's delete */
     if (deleted)
@@ -1052,27 +1101,19 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
-  /* save status changes */
+  /* save messages with real (non-flag) changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
     {
-      if (!compare_flags (ctx->hdrs[n]))
-      {
-        /* current flags are no different from server's idea */
-        ctx->hdrs[n]->changed = 0;
-        continue;
-      }
-      mutt_message (_("Saving message status flags... [%d/%d]"), n+1,
-        ctx->msgcount);
-
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
       if ((ctx->hdrs[n]->env && (ctx->hdrs[n]->env->refs_changed || ctx->hdrs[n]->env->irt_changed)) ||
 	  ctx->hdrs[n]->attach_del)
       {
-	dprint (3, (debugfile, "imap_sync_mailbox: Attachments to be deleted, falling back to _mutt_save_message\n"));
+        mutt_message (_("Saving changed messages... [%d/%d]"), n+1,
+                      ctx->msgcount);
 	if (!appendctx)
 	  appendctx = mx_open_mailbox (ctx->path, M_APPEND | M_QUIET, NULL);
 	if (!appendctx)
@@ -1082,14 +1123,37 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	else
 	  _mutt_save_message (ctx->hdrs[n], appendctx, 1, 0, 0);
       }
-
-      if (imap_sync_message (idata, ctx->hdrs[n], &cmd, &err_continue) < 0)
-      {
-	rc = -1;
-	goto out;
-      }
     }
   }
+  
+  /* sync +/- flags for the five flags mutt cares about */
+  rc = 0;
+  
+  rc += sync_helper (idata, &cmd, IMAP_ACL_DELETE, M_DELETED, "\\Deleted");
+  rc += sync_helper (idata, &cmd, IMAP_ACL_WRITE, M_FLAG, "\\Flagged");
+  rc += sync_helper (idata, &cmd, IMAP_ACL_WRITE, M_OLD, "Old");
+  rc += sync_helper (idata, &cmd, IMAP_ACL_SEEN, M_READ, "\\Seen");
+  rc += sync_helper (idata, &cmd, IMAP_ACL_WRITE, M_REPLIED, "\\Answered");
+  if (rc)
+  {
+    if ((rc = imap_exec (idata, NULL, 0)) != IMAP_CMD_OK)
+    {
+      if (ctx->closing)
+      {
+        if (mutt_yesorno (_("Error saving flags. Close anyway?"), 0) == M_YES)
+        {
+          rc = 0;
+          idata->state = IMAP_AUTHENTICATED;
+          goto out;
+        }
+      }
+      else
+        mutt_error _("Error saving flags");
+      goto out;
+    }
+  }
+  for (n = 0; n < ctx->msgcount; n++)
+    ctx->hdrs[n]->changed = 0;
   ctx->changed = 0;
 
   /* We must send an EXPUNGE command if we're not closing. */

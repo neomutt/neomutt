@@ -702,7 +702,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       }
     }
 
-    rc = imap_make_msg_set (idata, &cmd, M_TAG, 0);
+    rc = imap_make_msg_set (idata, &cmd, M_TAG, 0, 0);
     if (!rc)
     {
       dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
