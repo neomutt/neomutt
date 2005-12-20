@@ -288,10 +288,8 @@ void imap_utf7_encode (char **s);
 void imap_utf7_decode (char **s);
 
 #if USE_HCACHE
-static size_t imap_hcache_keylen (const char *fn)
-{
-  return mutt_strlen(fn);
-}
+/* typedef size_t (*hcache_keylen_t)(const char* fn); */
+#define imap_hcache_keylen mutt_strlen
 #endif /* USE_HCACHE */
 
 #endif

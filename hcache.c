@@ -40,6 +40,7 @@
 #include <sys/time.h>
 #endif
 #include "mutt.h"
+#include "hcache.h"
 #ifdef USE_IMAP
 #include "message.h"
 #endif
@@ -628,6 +629,151 @@ mutt_hcache_restore(const unsigned char *d, HEADER ** oh)
   return h;
 }
 
+void *
+mutt_hcache_fetch(void *db, const char *filename,
+		  size_t(*keylen) (const char *fn))
+{
+  struct header_cache *h = db;
+  void* data;
+  
+  data = mutt_hcache_fetch_raw (db, filename, keylen);
+  
+  if (!crc32_matches(data, h->crc))
+  {
+    FREE(&data);
+    return NULL;
+  }
+  
+  return data;
+}
+
+void *
+mutt_hcache_fetch_raw (void *db, const char *filename,
+                       size_t(*keylen) (const char *fn))
+{
+  struct header_cache *h = db;
+#ifndef HAVE_DB4
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+#endif
+#ifdef HAVE_QDBM
+  char *data = NULL;
+#elif HAVE_GDBM
+  datum key;
+  datum data;
+#elif HAVE_DB4
+  DBT key;
+  DBT data;
+#endif
+  
+  if (!h)
+    return NULL;
+  
+#ifdef HAVE_DB4
+  filename++;			/* skip '/' */
+
+  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
+  mutt_hcache_dbt_empty_init(&data);
+  data.flags = DB_DBT_MALLOC;
+  
+  h->db->get(h->db, NULL, &key, &data, 0);
+  
+  return data.data;
+#else
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen (h->folder) + keylen (path + strlen (h->folder));  
+#endif
+#ifdef HAVE_QDBM
+  data = vlget(h->db, path, ksize, NULL);
+  
+  return data;
+#elif HAVE_GDBM
+  key.dptr = path;
+  key.dsize = ksize;
+  
+  data = gdbm_fetch(h->db, key);
+  
+  return data.dptr;
+#endif
+}
+
+int
+mutt_hcache_store(void *db, const char *filename, HEADER * header,
+		  unsigned long uid_validity,
+		  size_t(*keylen) (const char *fn))
+{
+  struct header_cache *h = db;
+  char* data;
+  int dlen;
+  int ret;
+  
+  if (!h)
+    return -1;
+  
+  data = mutt_hcache_dump(db, header, &dlen, uid_validity);
+  ret = mutt_hcache_store_raw (db, filename, data, dlen, keylen);
+  
+  FREE(&data);
+  
+  return ret;
+}
+
+int
+mutt_hcache_store_raw (void* db, const char* filename, char* data,
+                       size_t dlen, size_t(*keylen) (const char* fn))
+{
+  struct header_cache *h = db;
+#ifndef HAVE_DB4
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+#endif
+#if HAVE_QDBM
+  int dsize;
+  char *data = NULL;
+#elif HAVE_GDBM
+  datum key;
+  datum databuf;
+#elif HAVE_DB4
+  DBT key;
+  DBT databuf;
+#endif
+  
+  if (!h)
+    return -1;
+
+#if HAVE_DB4
+  filename++;			/* skip '/' */
+  
+  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
+  
+  mutt_hcache_dbt_empty_init(&databuf);
+  databuf.flags = DB_DBT_USERMEM;
+  databuf.data = data;
+  databuf.size = dlen;
+  databuf.ulen = dlen;
+  
+  return h->db->put(h->db, NULL, &key, &data, 0);
+#else
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+#endif
+#if HAVE_QDBM
+  return vlput(h->db, path, ksize, data, dlen, VL_DOVER);
+#elif HAVE_GDBM
+  key.dptr = path;
+  key.dsize = ksize;
+  
+  databuf.dsize = dlen;
+  databuf.dptr = data;
+  
+  return gdbm_store(h->db, key, databuf, GDBM_REPLACE);
+#endif
+}
+
 #if HAVE_QDBM
 void *
 mutt_hcache_open(const char *path, const char *folder)
@@ -673,62 +819,6 @@ mutt_hcache_close(void *db)
   vlclose(h->db);
   FREE(&h->folder);
   FREE(&h);
-}
-
-void *
-mutt_hcache_fetch(void *db, const char *filename,
-		  size_t(*keylen) (const char *fn))
-{
-  struct header_cache *h = db;
-  char path[_POSIX_PATH_MAX];
-  int ksize;
-  char *data = NULL;
-
-  if (!h)
-    return NULL;
-
-  strncpy(path, h->folder, sizeof (path));
-  safe_strcat(path, sizeof (path), filename);
-
-  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
-
-  data = vlget(h->db, path, ksize, NULL);
-
-  if (! crc32_matches(data, h->crc))
-  {
-    FREE(&data);
-    return NULL;
-  }
-
-  return data;
-}
-
-int
-mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  unsigned long uid_validity,
-		  size_t(*keylen) (const char *fn))
-{
-  struct header_cache *h = db;
-  char path[_POSIX_PATH_MAX];
-  int ret;
-  int ksize, dsize;
-  char *data = NULL;
-
-  if (!h)
-    return -1;
-
-  strncpy(path, h->folder, sizeof (path));
-  safe_strcat(path, sizeof (path), filename);
-
-  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
-
-  data  = mutt_hcache_dump(db, header, &dsize, uid_validity);
-
-  ret = vlput(h->db, path, ksize, data, dsize, VL_DOVER);
-
-  FREE(&data);
-
-  return ret;
 }
 
 int
@@ -798,64 +888,6 @@ mutt_hcache_close(void *db)
   gdbm_close(h->db);
   FREE(&h->folder);
   FREE(&h);
-}
-
-void *
-mutt_hcache_fetch(void *db, const char *filename,
-		  size_t(*keylen) (const char *fn))
-{
-  struct header_cache *h = db;
-  datum key;
-  datum data;
-  char path[_POSIX_PATH_MAX];
-
-  if (!h)
-    return NULL;
-
-  strncpy(path, h->folder, sizeof (path));
-  safe_strcat(path, sizeof (path), filename);
-
-  key.dptr = path;
-  key.dsize = strlen(h->folder) + keylen(path + strlen(h->folder));
-
-  data = gdbm_fetch(h->db, key);
-
-  if (!crc32_matches(data.dptr, h->crc))
-  {
-    FREE(&data.dptr);
-    return NULL;
-  }
-
-  return data.dptr;
-}
-
-int
-mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  unsigned long uid_validity,
-		  size_t(*keylen) (const char *fn))
-{
-  struct header_cache *h = db;
-  datum key;
-  datum data;
-  char path[_POSIX_PATH_MAX];
-  int ret;
-
-  if (!h)
-    return -1;
-
-  strncpy(path, h->folder, sizeof (path));
-  safe_strcat(path, sizeof (path), filename);
-
-  key.dptr = path;
-  key.dsize = strlen(h->folder) + keylen(path + strlen(h->folder));
-
-  data.dptr = mutt_hcache_dump(db, header, &data.dsize, uid_validity);
-
-  ret = gdbm_store(h->db, key, data, GDBM_REPLACE);
-
-  FREE(&data.dptr);
-
-  return ret;
 }
 
 int
@@ -988,64 +1020,6 @@ mutt_hcache_close(void *db)
   mx_unlock_file(h->lockfile, h->fd, 0);
   close(h->fd);
   FREE(&h);
-}
-
-void *
-mutt_hcache_fetch(void *db, const char *filename,
-		  size_t(*keylen) (const char *fn))
-{
-  DBT key;
-  DBT data;
-  struct header_cache *h = db;
-
-  if (!h)
-    return NULL;
-
-  filename++;			/* skip '/' */
-
-  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-  mutt_hcache_dbt_empty_init(&data);
-  data.flags = DB_DBT_MALLOC;
-
-  h->db->get(h->db, NULL, &key, &data, 0);
-
-  if (!crc32_matches(data.data, h->crc))
-  {
-    FREE(&data.data);
-    return NULL;
-  }
-
-  return data.data;
-}
-
-int
-mutt_hcache_store(void *db, const char *filename, HEADER * header,
-		  unsigned long uid_validity,
-		  size_t(*keylen) (const char *fn))
-{
-  DBT key;
-  DBT data;
-  int ret;
-  struct header_cache *h = db;
-
-  if (!h)
-    return -1;
-
-  filename++;			/* skip '/' */
-
-  mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-
-  mutt_hcache_dbt_empty_init(&data);
-  data.flags = DB_DBT_USERMEM;
-  data.data = mutt_hcache_dump(db, header, (signed int *) &data.size,
-	      uid_validity);
-  data.ulen = data.size;
-
-  ret = h->db->put(h->db, NULL, &key, &data, 0);
-
-  FREE(&data.data);
-
-  return ret;
 }
 
 int

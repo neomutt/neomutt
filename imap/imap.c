@@ -36,6 +36,9 @@
 # include "mutt_ssl.h"
 #endif
 #include "buffy.h"
+#if USE_HCACHE
+#include "hcache.h"
+#endif
 
 #include <unistd.h>
 #include <ctype.h>

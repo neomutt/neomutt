@@ -32,6 +32,9 @@
 #include "copy.h"
 #include "buffy.h"
 #include "sort.h"
+#if USE_HCACHE
+#include "hcache.h"
+#endif
 
 #include <sys/stat.h>
 #include <sys/types.h>

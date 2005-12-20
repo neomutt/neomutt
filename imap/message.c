@@ -36,6 +36,10 @@
 #include "pgp.h"
 #endif
 
+#if USE_HCACHE
+#include "hcache.h"
+#endif
+
 static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
 static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
   FILE* fp);
