@@ -1,3 +1,7 @@
+2005-12-20 17:42:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Remove deleted entries from header cache on CLOSE.
+
 2005-12-19 18:13:28  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* ChangeLog, ChangeLog.old: ChangeLog.old was just old ChangeLog
