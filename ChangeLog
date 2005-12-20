@@ -1,4 +1,10 @@
-2005-12-20 17:42:44  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-20 17:50:47  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* hcache.c, hcache.h, imap/imap.c, imap/imap_private.h,
+	imap/message.c, mh.c, protos.h, Makefile.am: Refactor header cache
+	a bit to provide (fetch|store)_raw functions. These will let me
+	keep folder metadata (UIDVALIDITY, NEXT, msg count etc) in the
+	cache, which will help to sync more quickly.
 
 	* imap/imap.c: Remove deleted entries from header cache on CLOSE.
 
