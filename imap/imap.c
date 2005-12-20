@@ -1076,7 +1076,11 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   int deleted;
   int n;
   int rc;
-
+#if USE_HCACHE
+  void* hc = NULL;
+  char uidbuf[32];
+#endif
+  
   idata = (IMAP_DATA*) ctx->data;
 
   if (idata->state < IMAP_SELECTED)
@@ -1120,9 +1124,22 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
+
+#if USE_HCACHE
+  if (expunge && ctx->closing)
+    hc = mutt_hcache_open (HeaderCache, idata->ctx->path);
+#endif
+
   /* save messages with real (non-flag) changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
+#if USE_HCACHE
+    if (hc && ctx->hdrs[n]->deleted)
+    {
+      sprintf (uidbuf, "/%u", HEADER_DATA(ctx->hdrs[n])->uid);
+      mutt_hcache_delete (hc, uidbuf, imap_hcache_keylen);
+    }
+#endif    
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
     {
       /* if the message has been rethreaded or attachments have been deleted
@@ -1200,6 +1217,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   rc = 0;
  out:
+#if USE_HCACHE
+  mutt_hcache_close (hc);
+#endif
   if (cmd.data)
     FREE (&cmd.data);
   if (appendctx)
