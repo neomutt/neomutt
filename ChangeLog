@@ -1,4 +1,6 @@
-2005-12-21 17:26:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-21 19:53:21  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* hcache.c: Unbreak QDBM too.
 
 	* hcache.c, hcache.h: I broke DB4 while refactoring hcache.c.
 
