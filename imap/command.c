@@ -182,8 +182,10 @@ int imap_cmd_step (IMAP_DATA* idata)
     idata->cmds[idata->lastcmd].state = cmd_status (idata->buf);
     idata->lastcmd = (idata->lastcmd + 1) % IMAP_PIPELINE_DEPTH;
     if (idata->lastcmd == idata->nextcmd)
+    {
       rc = cmd_status (idata->buf);
-    imap_cmd_finish (idata);
+      imap_cmd_finish (idata);
+    }
   }
 
   return rc;
