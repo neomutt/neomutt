@@ -67,8 +67,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
 
 #if USE_HCACHE
-  void *hc   = NULL;
-  unsigned long *uid_validity = NULL;
+  void *hc = NULL;
+  uint32_t *uid_validity = NULL;
+  uint32_t *uidnext = NULL;
+  int evalhc = 0;
   char uid_buf[64];
 #endif /* USE_HCACHE */
 
@@ -114,10 +116,19 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   if (!msgbegin)
     hc = mutt_hcache_open (HeaderCache, ctx->path);
 
-  if (hc) {
+  if (hc)
+  {
+    uid_validity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
+    uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
+    if (uid_validity && uidnext && *uid_validity == idata->uid_validity)
+      evalhc = 1;
+    FREE (&uid_validity);
+  }
+  if (evalhc)
+  {
     snprintf (buf, sizeof (buf),
-      "FETCH %d:%d (UID FLAGS)", msgbegin + 1, msgend + 1);
-    fetchlast = msgend + 1;
+      "UID FETCH %d:%d (UID FLAGS)", 1, *uidnext - 1);
+    FREE (&uidnext);
   
     imap_cmd_start (idata, buf);
   
@@ -137,16 +148,13 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         if (rc != IMAP_CMD_CONTINUE)
           break;
 
-        if ((mfhrc = msg_fetch_header (idata->ctx, &h, idata->buf, NULL)) == -1)
+        if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) == -1)
           continue;
         else if (mfhrc < 0)
           break;
 
-        /* make sure we don't get remnants from older larger message headers */
-        fputs ("\n\n", fp);
-
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
-        uid_validity = (unsigned long *) mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
+        uid_validity = (uint32_t*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
 
         if (uid_validity != NULL && *uid_validity == idata->uid_validity)
         {
@@ -171,9 +179,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   
         FREE(&uid_validity);
       }
-      while ((rc != IMAP_CMD_OK) && ((mfhrc == -1) ||
-        ((msgno + 1) >= fetchlast)));
-  
+      while (rc != IMAP_CMD_OK && mfhrc == -1);
+      if (rc == IMAP_CMD_OK)
+        break;
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
       {
         imap_free_header_data ((void**) &h.data);
@@ -189,12 +197,15 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    if (ReadInc && (!msgno || ((msgno+1) % ReadInc == 0)))
+    if (ctx->hdrs[msgno])
+    {
+      msgbegin++;
+      continue;
+    }
+
+    if (ReadInc && (msgno == msgbegin || ((msgno+1) % ReadInc == 0)))
       mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
         msgend + 1);
-
-    if (ctx->hdrs[msgno])
-      continue;
 
     if (msgno + 1 > fetchlast)
     {
@@ -233,7 +244,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       if (rc != IMAP_CMD_CONTINUE)
 	break;
 
-      if ((mfhrc = msg_fetch_header (idata->ctx, &h, idata->buf, fp)) == -1)
+      if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, fp)) == -1)
 	continue;
       else if (mfhrc < 0)
 	break;
@@ -301,7 +312,14 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     }
   }
 
+  if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox)))
+  status->uidnext = maxuid + 1;
+
 #if USE_HCACHE
+  mutt_hcache_store_raw (hc, "/UIDVALIDITY", &idata->uid_validity,
+                         sizeof (idata->uid_validity), imap_hcache_keylen);
+  mutt_hcache_store_raw (hc, "/UIDNEXT", &idata->uidnext,
+                       sizeof (idata->uidnext), imap_hcache_keylen);
   mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
 
@@ -312,9 +330,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     mx_alloc_memory(ctx);
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
   }
-
-  if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox)))
-    status->uidnext = maxuid + 1;
 
   return msgend;
 }

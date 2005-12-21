@@ -220,7 +220,8 @@ typedef struct
   unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  unsigned long uid_validity;
+  uint32_t uid_validity;
+  uint32_t uidnext;
   
   /* all folder flags - system flags AND keywords */
   LIST *flags;

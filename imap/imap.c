@@ -655,7 +655,7 @@ int imap_open_mailbox (CONTEXT* ctx)
       dprint (2, (debugfile, "Getting mailbox UIDVALIDITY\n"));
       pc += 3;
       pc = imap_next_word (pc);
-      sscanf (pc, "%lu", &(idata->uid_validity));
+      idata->uid_validity = strtol (pc, NULL, 10);
       status->uidvalidity = idata->uid_validity;
     }
     else if (ascii_strncasecmp ("OK [UIDNEXT", pc, 11) == 0)
@@ -663,7 +663,8 @@ int imap_open_mailbox (CONTEXT* ctx)
       dprint (2, (debugfile, "Getting mailbox UIDNEXT\n"));
       pc += 3;
       pc = imap_next_word (pc);
-      sscanf (pc, "%u", &status->uidnext);
+      idata->uidnext = strtol (pc, NULL, 10);
+      status->uidnext = idata->uidnext;
     }
     else
     {
