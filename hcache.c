@@ -72,6 +72,9 @@ static struct header_cache
   int fd;
   char lockfile[_POSIX_PATH_MAX];
 } HEADER_CACHE;
+
+static void mutt_hcache_dbt_init(DBT * dbt, void *data, size_t len);
+static void mutt_hcache_dbt_empty_init(DBT * dbt);
 #endif
 
 typedef union
@@ -721,7 +724,7 @@ mutt_hcache_store(void *db, const char *filename, HEADER * header,
 }
 
 int
-mutt_hcache_store_raw (void* db, const char* filename, char* data,
+mutt_hcache_store_raw (void* db, const char* filename, void* data,
                        size_t dlen, size_t(*keylen) (const char* fn))
 {
   struct header_cache *h = db;
@@ -754,7 +757,7 @@ mutt_hcache_store_raw (void* db, const char* filename, char* data,
   databuf.size = dlen;
   databuf.ulen = dlen;
   
-  return h->db->put(h->db, NULL, &key, &data, 0);
+  return h->db->put(h->db, NULL, &key, &databuf, 0);
 #else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);

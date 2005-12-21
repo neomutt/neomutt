@@ -29,7 +29,7 @@ void *mutt_hcache_fetch_raw (void *db, const char *filename,
                              size_t (*keylen)(const char *fn));
 int mutt_hcache_store(void *db, const char *filename, HEADER *h,
                       unsigned long uid_validity, size_t (*keylen)(const char *fn));
-int mutt_hcache_store_raw (void* db, const char* filename, char* data,
+int mutt_hcache_store_raw (void* db, const char* filename, void* data,
                            size_t dlen, size_t(*keylen) (const char* fn));
 int mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const char *fn));
 
