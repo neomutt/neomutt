@@ -732,10 +732,7 @@ mutt_hcache_store_raw (void* db, const char* filename, void* data,
   char path[_POSIX_PATH_MAX];
   int ksize;
 #endif
-#if HAVE_QDBM
-  int dsize;
-  char *data = NULL;
-#elif HAVE_GDBM
+#if HAVE_GDBM
   datum key;
   datum databuf;
 #elif HAVE_DB4
