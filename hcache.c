@@ -638,10 +638,10 @@ mutt_hcache_fetch(void *db, const char *filename,
 {
   struct header_cache *h = db;
   void* data;
-  
+
   data = mutt_hcache_fetch_raw (db, filename, keylen);
-  
-  if (!crc32_matches(data, h->crc))
+
+  if (!data || !crc32_matches(data, h->crc))
   {
     FREE(&data);
     return NULL;
