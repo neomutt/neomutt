@@ -822,7 +822,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     }
     
     if (mutt_account_match (&idata->conn->account, &mx.account) && mx.mbox
-        && mutt_strncmp (mailbox, mx.mbox, strlen (mailbox)) == 0)
+        && imap_mxcmp (mailbox, mx.mbox) == 0)
     {
       if (olduv && olduv == status->uidvalidity)
       {
