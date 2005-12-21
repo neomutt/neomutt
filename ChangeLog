@@ -1,4 +1,8 @@
-2005-12-21 00:13:22  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-21 17:17:53  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Don't run pending IMAP commands until the
+	current queue has drained. Many thanks to Vincent Lefevre for his
+	patient help debugging.
 
 	* imap/command.c: Compare full mailbox names when doing IMAP buffy
 	check, not up to the length of the STATUS response.
