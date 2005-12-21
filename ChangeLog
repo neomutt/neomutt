@@ -1,4 +1,10 @@
-2005-12-21 17:17:53  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-21 17:23:19  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c: Cache
+	UIDVALIDITY/UIDNEXT as header cache metadata, only attempt to
+	fetch up to UIDNEXT from the header cache. Also a cosmetic
+	correction: Display the actual first message being fetched (after
+	hcache) instead of 1.
 
 	* imap/command.c: Don't run pending IMAP commands until the
 	current queue has drained. Many thanks to Vincent Lefevre for his
