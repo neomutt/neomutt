@@ -1,4 +1,6 @@
-2005-12-21 19:53:21  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-21 21:02:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* hcache.c: Check for NULL data in refactored mutt_hcache_fetch.
 
 	* hcache.c: Unbreak QDBM too.
 
