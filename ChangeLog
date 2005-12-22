@@ -1,3 +1,8 @@
+2005-12-22 16:58:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: More logging in STATUS parser to track down new
+	mail detection problems.
+
 2005-12-21 21:02:50  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* hcache.c: Check for NULL data in refactored mutt_hcache_fetch.
