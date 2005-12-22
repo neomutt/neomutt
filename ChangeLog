@@ -1,4 +1,7 @@
-2005-12-22 18:40:45  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-22 20:14:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Fix at least Kyle Wheeler's new mail detection
+	problems: call imap_fix_path on buffy path.
 
 	* regex.c: Kyle Wheeler noticed a couple of warnings in the
 	moribund regex code. One still remains that I'm too lazy to fix
