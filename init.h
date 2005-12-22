@@ -818,6 +818,13 @@ struct option_t MuttVars[] = {
   ** the previous methods are unavailable. If a method is available but
   ** authentication fails, mutt will not connect to the IMAP server.
   */
+  { "imap_cachedir", DT_PATH, R_NONE, UL &ImapCachedir, 0 },
+  /*
+   ** .pp
+   ** Set this to a directory and mutt will cache copies of messages from
+   ** your IMAP servers here. You are free to remove entries at any time
+   ** if space becomes an issue.
+   */
   { "imap_check_subscribed",  DT_BOOL, R_NONE, OPTIMAPCHECKSUBSCRIBED, 0 },
   /*
    ** .pp

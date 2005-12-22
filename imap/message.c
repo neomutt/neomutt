@@ -40,6 +40,9 @@
 #include "hcache.h"
 #endif
 
+static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h);
+static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h);
+
 static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
 static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
   FILE* fp);
@@ -356,6 +359,15 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   idata = (IMAP_DATA*) ctx->data;
   h = ctx->hdrs[msgno];
 
+  if ((msg->fp = msg_cache_get (idata, h)))
+  {
+    if (HEADER_DATA(h)->parsed)
+      return 0;
+    else
+      goto parsemsg;
+  }
+
+  /* we still do some caching even if imap_cachedir is unset */
   /* see if we already have the message in our cache */
   cacheno = HEADER_DATA(h)->uid % IMAP_CACHE_LEN;
   cache = &idata->cache[cacheno];
@@ -376,13 +388,16 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   if (!isendwin())
     mutt_message _("Fetching message...");
 
-  cache->uid = HEADER_DATA(h)->uid;
-  mutt_mktemp (path);
-  cache->path = safe_strdup (path);
-  if (!(msg->fp = safe_fopen (path, "w+")))
+  if (!(msg->fp = msg_cache_put (idata, h)))
   {
-    FREE (&cache->path);
-    return -1;
+    cache->uid = HEADER_DATA(h)->uid;
+    mutt_mktemp (path);
+    cache->path = safe_strdup (path);
+    if (!(msg->fp = safe_fopen (path, "w+")))
+    {
+      FREE (&cache->path);
+      return -1;
+    }
   }
 
   /* mark this header as currently inactive so the command handler won't
@@ -469,7 +484,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 
   if (!fetched || !imap_code (idata->buf))
     goto bail;
-    
+
+parsemsg:
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
@@ -508,11 +524,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 
   mutt_clear_error();
   rewind (msg->fp);
+  HEADER_DATA(h)->parsed = 1;
 
   return 0;
 
 bail:
   safe_fclose (&msg->fp);
+  imap_cache_del (idata, h);
   if (cache->path)
   {
     unlink (cache->path);
@@ -811,6 +829,102 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     FREE (&sync_cmd.data);
   FREE (&mx.mbox);
   return -1;
+}
+
+/* create file system path for idata/h */
+static int msg_cache_path (IMAP_DATA* idata, HEADER* h, char* buf, size_t len)
+{
+  ACCOUNT* account;
+  char* s, *p;
+  int slen;
+
+  if (!ImapCachedir)
+    return -1;
+
+  account = &idata->conn->account;
+
+  snprintf (buf, len, "%s/", ImapCachedir);
+  slen = mutt_strlen (buf);
+  if (account->flags & M_ACCT_USER)
+    snprintf (buf + slen, len - slen, "%s@", account->user);
+  safe_strcat (buf, len, account->host);
+  if (account->flags & M_ACCT_PORT)
+  {
+    slen = mutt_strlen (buf);
+    snprintf (buf + slen, len - slen, ":%hu", account->port);
+  }
+  safe_strcat (buf, len, "/");
+
+  slen = len - mutt_strlen (buf) - 2;
+  p = idata->mailbox;
+  for (s = buf + mutt_strlen (buf); *p && slen; slen--)
+  {
+    if (*p == idata->delim)
+    {
+      *s = '/';
+      /* simple way to avoid collisions with UIDs */
+      if (*(p + 1) >= '0' && *(p + 1) <= '9')
+      {
+        slen--;
+        if (slen)
+          *++s = '_';
+      }
+    }
+    else
+      *s = *p;
+    *p++;
+    *s++;
+  }
+  *s = '\0';
+
+  slen = mutt_strlen (buf);
+  snprintf (buf + slen, len - slen, "/%u", HEADER_DATA(h)->uid);
+
+  return 0;
+}
+
+static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h)
+{
+  char path[_POSIX_PATH_MAX];
+
+  if (msg_cache_path (idata, h, path, sizeof (path)) < 0)
+    return NULL;
+
+  return fopen (path, "r");
+}
+
+static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h)
+{
+  char path[_POSIX_PATH_MAX];
+  FILE* fp;
+  char* s;
+  struct stat sb;
+
+  if (msg_cache_path (idata, h, path, sizeof (path)) < 0)
+    return NULL;
+
+  s = strchr (path + 1, '/');
+  while (!(fp = safe_fopen (path, "w+")) && errno == ENOENT && s)
+  {
+    /* create missing path components */
+    *s = '\0';
+    if (stat (path, &sb) < 0 && (errno != ENOENT || mkdir (path, 0777) < 0))
+      return NULL;
+    *s = '/';
+    s = strchr (s + 1, '/');
+  }
+
+  return fp;
+}
+
+int imap_cache_del (IMAP_DATA* idata, HEADER* h)
+{
+  char path[_POSIX_PATH_MAX];
+  
+  if (msg_cache_path (idata, h, path, sizeof (path)) < 0)
+    return -1;
+
+  return unlink (path);
 }
 
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they

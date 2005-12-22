@@ -34,6 +34,8 @@ typedef struct imap_header_data
   unsigned int replied : 1;
   unsigned int changed : 1;
 
+  unsigned int parsed : 1;
+
   unsigned int uid;	/* 32-bit Message UID */
   LIST *keywords;
 } IMAP_HEADER_DATA;

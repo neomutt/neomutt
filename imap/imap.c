@@ -258,6 +258,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 
       h->active = 0;
 
+      imap_cache_del (idata, h);
 #if USE_HCACHE
       if (hc)
       {
@@ -1134,13 +1135,14 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   /* save messages with real (non-flag) changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
+    imap_cache_del (idata, ctx->hdrs[n]);
 #if USE_HCACHE
     if (hc && ctx->hdrs[n]->deleted)
     {
       sprintf (uidbuf, "/%u", HEADER_DATA(ctx->hdrs[n])->uid);
       mutt_hcache_delete (hc, uidbuf, imap_hcache_keylen);
     }
-#endif    
+#endif
     if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
     {
       /* if the message has been rethreaded or attachments have been deleted
