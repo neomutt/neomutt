@@ -1,4 +1,8 @@
-2005-12-22 17:02:12  Brendan Cully <brendan@kublai.com  (brendan)
+2005-12-22 17:46:40  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* globals.h, imap/imap.c, imap/imap_private.h, imap/message.c,
+	imap/message.h, init.h: Add $imap_cachedir option. If set, mutt
+	will keep copies of IMAP messages under this directory.
 
 	* imap/imap.c: Check all connections instead of just the first
 	when NONEW is set in imap_conn_find. Wait for root delimiter check
