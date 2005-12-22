@@ -824,27 +824,35 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
       dprint (1, (debugfile, "Error parsing mailbox %s, skipping\n", inc->path));
       continue;
     }
+    /* dprint (2, (debugfile, "Buffy entry: [%s] mbox: [%s]\n", inc->path, NONULL(mx.mbox))); */
     
-    if (mutt_account_match (&idata->conn->account, &mx.account) && mx.mbox
-        && imap_mxcmp (mailbox, mx.mbox) == 0)
+    if (mutt_account_match (&idata->conn->account, &mx.account))
     {
-      dprint (2, (debugfile, "Found %s in buffy list (OV: %d ON: %d U: %d)\n",
-                  mailbox, olduv, oldun, status->unseen));
-
-      if (olduv && olduv == status->uidvalidity)
-      {
-        if (oldun < status->uidnext)
-        {
-          inc->new = status->unseen;
-        }
-      }
-      else
-        inc->new = status->unseen;
-      /* forced back to keep detecting new mail until the mailbox is opened */
-      status->uidnext = oldun;
-
+      value = safe_strdup (mx.mbox);
+      imap_fix_path (idata, mx.mbox, value, mutt_strlen (value) + 1);
       FREE (&mx.mbox);
-      return;
+
+      if (value && !imap_mxcmp (mailbox, value))
+      {
+        dprint (2, (debugfile, "Found %s in buffy list (OV: %d ON: %d U: %d)\n",
+                    mailbox, olduv, oldun, status->unseen));
+        
+        if (olduv && olduv == status->uidvalidity)
+        {
+          if (oldun < status->uidnext)
+          {
+            inc->new = status->unseen;
+          }
+        }
+        else
+          inc->new = status->unseen;
+
+        /* forced back to keep detecting new mail until the mailbox is opened */
+        status->uidnext = oldun;
+
+        FREE (&value);
+        return;
+      }
     }
 
     FREE (&mx.mbox);
