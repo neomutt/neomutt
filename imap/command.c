@@ -811,6 +811,8 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     return;
   }
 
+  dprint (2, (debugfile, "Running default STATUS handler\n"));
+
   /* should perhaps move this code back to imap_buffy_check */
   for (inc = Incoming; inc; inc = inc->next)
   {
@@ -826,6 +828,9 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     if (mutt_account_match (&idata->conn->account, &mx.account) && mx.mbox
         && imap_mxcmp (mailbox, mx.mbox) == 0)
     {
+      dprint (2, (debugfile, "Found %s in buffy list (OV: %d ON: %d U: %d)\n",
+                  mailbox, olduv, oldun, status->unseen));
+
       if (olduv && olduv == status->uidvalidity)
       {
         if (oldun < status->uidnext)
