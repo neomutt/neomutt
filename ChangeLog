@@ -1,4 +1,9 @@
-2005-12-22 16:58:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-22 17:02:12  Brendan Cully <brendan@kublai.com  (brendan)
+
+	* imap/imap.c: Check all connections instead of just the first
+	when NONEW is set in imap_conn_find. Wait for root delimiter check
+	to complete before SELECTing since we may need it to form the
+	mailbox name.
 
 	* imap/command.c: More logging in STATUS parser to track down new
 	mail detection problems.
