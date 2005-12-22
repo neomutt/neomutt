@@ -314,40 +314,35 @@ static int imap_check_capabilities (IMAP_DATA* idata)
  *   a new one if none can be found. */
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
 {
-  CONNECTION* conn;
-  IMAP_DATA* idata;
-  ACCOUNT* creds;
+  CONNECTION* conn = NULL;
+  ACCOUNT* creds = NULL;
+  IMAP_DATA* idata = NULL;
   int new = 0;
 
-  if (!(conn = mutt_conn_find (NULL, account)))
-    return NULL;
-
-  /* if opening a new UNSELECTED connection, preserve existing creds */
-  creds = &(conn->account);
-
-  /* make sure this connection is not in SELECTED state, if neccessary */
-  if (flags & M_IMAP_CONN_NOSELECT)
-    while (conn->data && ((IMAP_DATA*) conn->data)->state >= IMAP_SELECTED)
-    {
-      if (!(conn = mutt_conn_find (conn, account)))
-	return NULL;
-      memcpy (&(conn->account), creds, sizeof (ACCOUNT));
-    }
-  
-  idata = (IMAP_DATA*) conn->data;
-
-  /* don't open a new connection if one isn't wanted */
-  if (flags & M_IMAP_CONN_NONEW)
+  while ((conn = mutt_conn_find (conn, account)))
   {
-    if (!idata)
+    if (!creds)
+      creds = &conn->account;
+    else
+      memcpy (&conn->account, creds, sizeof (ACCOUNT));
+
+    idata = (IMAP_DATA*)conn->data;
+    if (flags & M_IMAP_CONN_NONEW)
     {
-      mutt_socket_free (conn);
-      return NULL;
+      if (!idata)
+      {
+        /* This should only happen if we've come to the end of the list */
+        mutt_socket_free (conn);
+        return NULL;
+      }
+      else if (idata->state < IMAP_AUTHENTICATED)
+        continue;
     }
-    if (idata->state < IMAP_AUTHENTICATED)
-      return NULL;
+    if (flags & M_IMAP_CONN_NOSELECT && idata && idata->state >= IMAP_SELECTED)
+      continue;
+    break;
   }
-  
+
   if (!idata)
   {
     /* The current connection is a new connection */
@@ -385,6 +380,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     imap_cmd_queue (idata, "LIST \"\" \"\"");
     if (option (OPTIMAPCHECKSUBSCRIBED))
       imap_cmd_queue (idata, "LSUB \"\" \"*\"");
+    /* we may need the root delimiter before we open a mailbox */
+    imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
   }
 
   return idata;
