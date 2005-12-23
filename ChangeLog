@@ -1,3 +1,9 @@
+2005-12-23 17:53:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c, imap/message.c: IMAP message cache fixes: embed
+	UIDVALIDITY in the cache file name, only delete deleted messages
+	at sync time. Also use an alias to make the sync code clearer.
+
 2005-12-22 20:14:04  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c: Fix at least Kyle Wheeler's new mail detection
