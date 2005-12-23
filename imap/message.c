@@ -72,8 +72,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
 #if USE_HCACHE
   void *hc = NULL;
-  uint32_t *uid_validity = NULL;
-  uint32_t *uidnext = NULL;
+  unsigned int *uid_validity = NULL;
+  unsigned int *uidnext = NULL;
   int evalhc = 0;
   char uid_buf[64];
 #endif /* USE_HCACHE */
@@ -124,14 +124,15 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     uid_validity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
     uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
-    if (uid_validity && uidnext && *uid_validity == idata->uid_validity)
+    if (uid_validity && uidnext && *uid_validity == idata->uid_validity
+        && *uidnext > 0)
       evalhc = 1;
     FREE (&uid_validity);
   }
   if (evalhc)
   {
     snprintf (buf, sizeof (buf),
-      "UID FETCH %d:%d (UID FLAGS)", 1, *uidnext - 1);
+      "UID FETCH 1:%u (UID FLAGS)", *uidnext - 1);
     FREE (&uidnext);
   
     imap_cmd_start (idata, buf);
@@ -158,7 +159,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           break;
 
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
-        uid_validity = (uint32_t*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
+        uid_validity = (unsigned int*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
 
         if (uid_validity != NULL && *uid_validity == idata->uid_validity)
         {
