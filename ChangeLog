@@ -1,4 +1,9 @@
-2005-12-23 17:55:07  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-23 18:20:02  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap_private.h, imap/message.c: Don't evaluate hcache
+	unless uidnext > 0. This shouldn't happen, but it was reported
+	to. I probably have to be a lot more careful about the uid
+	datatypes but I'm too lazy to clean up right now.
 
 	* imap/imap.c: Always use NOOP when imap_check_mailbox is called
 	with force set. Seems to resolve a Cyrus idiosyncracy noted by
