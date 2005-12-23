@@ -1300,10 +1300,9 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
 
   idata = (IMAP_DATA*) ctx->data;
 
-  /* try IDLE first */
-  if (option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
-      && (idata->state != IMAP_IDLE
-          || force || time(NULL) >= idata->lastread + ImapKeepalive))
+  /* try IDLE first, unless force is set */
+  if (!force && option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
+      && (idata->state != IMAP_IDLE || time(NULL) >= idata->lastread + ImapKeepalive))
   {
     imap_cmd_start (idata, "IDLE");
     idata->state = IMAP_IDLE;
@@ -1335,7 +1334,9 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
       mutt_bit_unset (idata->capabilities, IDLE);
     }
   }
-  else if ((force || time(NULL) >= idata->lastread + Timeout)
+
+  if ((force || 
+       (idata->state != IMAP_IDLE && time(NULL) >= idata->lastread + Timeout))
       && imap_exec (idata, "NOOP", 0) != 0)
     return -1;
 
