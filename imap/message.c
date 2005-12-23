@@ -879,7 +879,8 @@ static int msg_cache_path (IMAP_DATA* idata, HEADER* h, char* buf, size_t len)
   *s = '\0';
 
   slen = mutt_strlen (buf);
-  snprintf (buf + slen, len - slen, "/%u", HEADER_DATA(h)->uid);
+  snprintf (buf + slen, len - slen, "/%u-%u", idata->uid_validity,
+            HEADER_DATA(h)->uid);
 
   return 0;
 }

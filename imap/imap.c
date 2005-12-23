@@ -1075,6 +1075,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   IMAP_DATA* idata;
   CONTEXT* appendctx = NULL;
   BUFFER cmd;
+  HEADER* h;
   int deleted;
   int n;
   int rc;
@@ -1126,7 +1127,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
-
 #if USE_HCACHE
   if (expunge && ctx->closing)
     hc = mutt_hcache_open (HeaderCache, idata->ctx->path);
@@ -1135,21 +1135,24 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   /* save messages with real (non-flag) changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
-    imap_cache_del (idata, ctx->hdrs[n]);
+    h = ctx->hdrs[n];
+
+    if (h->deleted)
+      imap_cache_del (idata, h);
 #if USE_HCACHE
-    if (hc && ctx->hdrs[n]->deleted)
+    if (hc && h->deleted)
     {
-      sprintf (uidbuf, "/%u", HEADER_DATA(ctx->hdrs[n])->uid);
+      sprintf (uidbuf, "/%u", HEADER_DATA(h)->uid);
       mutt_hcache_delete (hc, uidbuf, imap_hcache_keylen);
     }
 #endif
-    if (ctx->hdrs[n]->active && ctx->hdrs[n]->changed)
+    if (h->active && h->changed)
     {
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
-      if ((ctx->hdrs[n]->env && (ctx->hdrs[n]->env->refs_changed || ctx->hdrs[n]->env->irt_changed)) ||
-	  ctx->hdrs[n]->attach_del)
+      if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
+	  h->attach_del)
       {
         mutt_message (_("Saving changed messages... [%d/%d]"), n+1,
                       ctx->msgcount);
@@ -1160,7 +1163,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	  dprint (1, (debugfile, "imap_sync_mailbox: Error opening mailbox in append mode\n"));
 	}
 	else
-	  _mutt_save_message (ctx->hdrs[n], appendctx, 1, 0, 0);
+	  _mutt_save_message (h, appendctx, 1, 0, 0);
       }
     }
   }
