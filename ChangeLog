@@ -1,4 +1,8 @@
-2005-12-23 17:53:23  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-23 17:55:07  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Always use NOOP when imap_check_mailbox is called
+	with force set. Seems to resolve a Cyrus idiosyncracy noted by
+	Phil Pennock.
 
 	* imap/imap.c, imap/message.c: IMAP message cache fixes: embed
 	UIDVALIDITY in the cache file name, only delete deleted messages
