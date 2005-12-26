@@ -1,3 +1,8 @@
+2005-12-26 23:55:19  Nik A. Melchior  <nam1@cec.wustl.edu>  (brendan)
+
+	* doc/muttrc.man.head: Fix whitespace around ~X in
+	muttrc.man.head.
+
 2005-12-23 18:20:02  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap_private.h, imap/message.c: Don't evaluate hcache
