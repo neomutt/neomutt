@@ -437,7 +437,7 @@ l l.
 ~v	message is part of a collapsed thread.
 ~V	cryptographically verified messages
 ~x \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
-~X \fIMIN\fP-\fIMAX\fP  messages with MIN - MAX attachments
+~X \fIMIN\fP-\fIMAX\fP	messages with MIN - MAX attachments
 ~y \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqX-Label\(rq field
 ~z \fIMIN\fP-\fIMAX\fP	messages with a size in the range \fIMIN\fP to \fIMAX\fP
 ~=	duplicated messages (see $duplicate_threads)
