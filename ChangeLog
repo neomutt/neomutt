@@ -1,4 +1,7 @@
-2005-12-30 17:32:26  Brendan Cully  <brendan@kublai.com>  (brendan)
+2005-12-30 17:34:52  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Sort mailbox in SORT_ORDER in imap_sync_mailbox so
+	that sync_helper doesn't end up resorting it 10 times.
 
 	* imap/imap.c: Only resort headers in imap_make_msg_set if order
 	!= SORT_ORDER. Fix sync_helper to return 1 in case of +FLAGS but
