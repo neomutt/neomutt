@@ -857,18 +857,19 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
   short oldsort;	/* we clobber reverse, must restore it */
   int started = 0;
 
-  /* make copy of header pointers to sort in natural order */
-  hdrs = safe_calloc (idata->ctx->msgcount, sizeof (HEADER*));
-  memcpy (hdrs, idata->ctx->hdrs, idata->ctx->msgcount * sizeof (HEADER*));
-
   if (Sort != SORT_ORDER)
   {
+    hdrs = safe_calloc (idata->ctx->msgcount, sizeof (HEADER*));
+    memcpy (hdrs, idata->ctx->hdrs, idata->ctx->msgcount * sizeof (HEADER*));
+    
     oldsort = Sort;
     Sort = SORT_ORDER;
     qsort ((void*) hdrs, idata->ctx->msgcount, sizeof (HEADER*),
       mutt_get_sort_func (SORT_ORDER));
     Sort = oldsort;
   }
+  else
+    hdrs = idata->ctx->hdrs;
   
   for (n = 0; n < idata->ctx->msgcount; n++)
   {
@@ -931,7 +932,8 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
     }
   }
 
-  FREE (&hdrs);
+  if (Sort != SORT_ORDER)
+    FREE (&hdrs);
 
   return count;
 }
@@ -1037,7 +1039,7 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
 static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
                         const char* name)
 {
-  int rc;
+  int rc = 0;
 
   if (!mutt_bit_isset (idata->rights, right))
     return 0;
@@ -1047,7 +1049,7 @@ static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
 
   buf->dptr = buf->data;
   mutt_buffer_addstr (buf, "UID STORE ");
-  if ((rc = imap_make_msg_set (idata, buf, flag, 1, 0)))
+  if (imap_make_msg_set (idata, buf, flag, 1, 0))
   {
     rc++;
     mutt_buffer_printf (buf, " +FLAGS.SILENT (%s)", name);
@@ -1055,7 +1057,7 @@ static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
   }
   buf->dptr = buf->data;
   mutt_buffer_addstr (buf, "UID STORE ");
-  if ((rc = imap_make_msg_set (idata, buf, flag, 1, 1)))
+  if (imap_make_msg_set (idata, buf, flag, 1, 1))
   {
     rc++;
     mutt_buffer_printf (buf, " -FLAGS.SILENT (%s)", name);
