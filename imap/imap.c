@@ -1078,6 +1078,8 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   CONTEXT* appendctx = NULL;
   BUFFER cmd;
   HEADER* h;
+  HEADER** hdrs = NULL;
+  int oldsort;
   int deleted;
   int n;
   int rc;
@@ -1169,15 +1171,37 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       }
     }
   }
-  
+
   /* sync +/- flags for the five flags mutt cares about */
   rc = 0;
-  
+
+  /* presort here to avoid doing 10 resorts in imap_make_msg_set */
+  oldsort = Sort;
+  if (Sort != SORT_ORDER)
+  {
+    hdrs = ctx->hdrs;
+    ctx->hdrs = safe_malloc (ctx->msgcount * sizeof (HEADER*));
+    memcpy (ctx->hdrs, hdrs, ctx->msgcount * sizeof (HEADER*));
+
+    oldsort = Sort;
+    Sort = SORT_ORDER;
+    qsort (ctx->hdrs, ctx->msgcount, sizeof (HEADER*),
+           mutt_get_sort_func (SORT_ORDER));
+  }
+
   rc += sync_helper (idata, &cmd, IMAP_ACL_DELETE, M_DELETED, "\\Deleted");
   rc += sync_helper (idata, &cmd, IMAP_ACL_WRITE, M_FLAG, "\\Flagged");
   rc += sync_helper (idata, &cmd, IMAP_ACL_WRITE, M_OLD, "Old");
   rc += sync_helper (idata, &cmd, IMAP_ACL_SEEN, M_READ, "\\Seen");
   rc += sync_helper (idata, &cmd, IMAP_ACL_WRITE, M_REPLIED, "\\Answered");
+
+  if (oldsort != Sort)
+  {
+    Sort = oldsort;
+    FREE (&ctx->hdrs);
+    ctx->hdrs = hdrs;
+  }
+
   if (rc)
   {
     if ((rc = imap_exec (idata, NULL, 0)) != IMAP_CMD_OK)
