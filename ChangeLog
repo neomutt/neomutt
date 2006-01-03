@@ -1,3 +1,8 @@
+2006-01-03 17:28:52  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.h, imap/imap.c, postpone.c: Pipeline postponed mail
+	check on mailbox open if appropriate.
+
 2005-12-30 17:34:52  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c: Sort mailbox in SORT_ORDER in imap_sync_mailbox so
