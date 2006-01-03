@@ -41,7 +41,7 @@ static IMAP_COMMAND* cmd_new (IMAP_DATA* idata);
 static int cmd_status (const char *s);
 static void cmd_handle_fatal (IMAP_DATA* idata);
 static int cmd_handle_untagged (IMAP_DATA* idata);
-static void cmd_parse_capabilities (IMAP_DATA* idata, char* s);
+static void cmd_parse_capability (IMAP_DATA* idata, char* s);
 static void cmd_parse_expunge (IMAP_DATA* idata, const char* s);
 static void cmd_parse_list (IMAP_DATA* idata, char* s);
 static void cmd_parse_lsub (IMAP_DATA* idata, char* s);
@@ -414,7 +414,9 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
       cmd_parse_fetch (idata, pn);
   }
   else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
-    cmd_parse_capabilities (idata, s);
+    cmd_parse_capability (idata, s);
+  else if (!ascii_strncasecmp ("OK [CAPABILITY", s, 14))
+    cmd_parse_capability (idata, imap_next_word (s));
   else if (ascii_strncasecmp ("LIST", s, 4) == 0)
     cmd_parse_list (idata, s);
   else if (ascii_strncasecmp ("LSUB", s, 4) == 0)
@@ -456,13 +458,16 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
 
 /* cmd_parse_capabilities: set capability bits according to CAPABILITY
  *   response */
-static void cmd_parse_capabilities (IMAP_DATA* idata, char* s)
+static void cmd_parse_capability (IMAP_DATA* idata, char* s)
 {
   int x;
+  char* bracket;
 
   dprint (2, (debugfile, "Handling CAPABILITY\n"));
 
   s = imap_next_word (s);
+  if ((bracket = strchr (s, ']')))
+    *bracket = '\0';
   FREE(&idata->capstr);
   idata->capstr = safe_strdup (s);
 

@@ -406,8 +406,8 @@ int imap_open_connection (IMAP_DATA* idata)
 
   if (ascii_strncasecmp ("* OK", idata->buf, 4) == 0)
   {
-    /* TODO: Parse new tagged CAPABILITY data (* OK [CAPABILITY...]) */
-    if (imap_check_capabilities (idata))
+    if (ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16)
+        && imap_check_capabilities (idata))
       goto bail;
 #if defined(USE_SSL) || defined(USE_GNUTLS)
     /* Attempt STARTTLS if available and desired. */
