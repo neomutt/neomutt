@@ -40,7 +40,7 @@ int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_sync_mailbox (CONTEXT *ctx, int expunge, int *index_hint);
 void imap_close_mailbox (CONTEXT *ctx);
 int imap_buffy_check (int force);
-int imap_status (char *path);
+int imap_status (char *path, int queue);
 int imap_search (CONTEXT* ctx, const pattern_t* pat);
 int imap_subscribe (char *path, int subscribe);
 int imap_complete (char* dest, size_t dlen, char* path);

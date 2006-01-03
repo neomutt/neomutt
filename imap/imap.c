@@ -542,7 +542,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   int count = 0;
-  IMAP_MBOX mx;
+  IMAP_MBOX mx, pmx;
   int rc;
   
   if (imap_parse_path (ctx->path, &mx))
@@ -599,7 +599,11 @@ int imap_open_mailbox (CONTEXT* ctx)
     mutt_bit_set (idata->rights, IMAP_ACL_CREATE);
     mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
   }
-  
+  /* pipeline the postponed count if possible */
+  if (mx_is_imap (Postponed) && !imap_parse_path (Postponed, &pmx)
+      && mutt_account_match (&pmx.account, &mx.account))
+    imap_status (Postponed, 1);
+
   snprintf (bufout, sizeof (bufout), "%s %s",
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
 
@@ -1495,15 +1499,17 @@ int imap_buffy_check (int force)
   return buffies;
 }
 
-/* imap_status: returns count of messages in mailbox, or -1 on error */
-int imap_status (char* path)
+/* imap_status: returns count of messages in mailbox, or -1 on error.
+ * if queue != 0, queue the command and expect it to have been run
+ * on the next call (for pipelining the postponed count) */
+int imap_status (char* path, int queue)
 {
+  static int queued = 0;
+
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
-  IMAP_STATUS status;
-  int rc;
-  int messages = 0;
+  IMAP_STATUS* status;
 
   if (imap_get_mailbox (path, &idata, buf, sizeof (buf)) < 0)
     return -1;
@@ -1523,21 +1529,20 @@ int imap_status (char* path)
      * There is no lightweight way to check recent arrivals */
     return -1;
 
-  idata->cmddata = &status;
-  imap_cmd_start (idata, buf);
-  do
+  if (queue)
   {
-    status.name = NULL;
-    if ((rc = imap_cmd_step (idata)) == IMAP_CMD_CONTINUE)
-    {
-      if (status.name && !mutt_strcmp (mbox, status.name))
-        messages = status.messages;
-    }
+    imap_cmd_queue (idata, buf);
+    queued = 1;
+    return 0;
   }
-  while (rc == IMAP_CMD_CONTINUE);
-  idata->cmddata = NULL;
+  else if (!queued)
+    imap_exec (idata, buf, 0);
 
-  return messages;
+  queued = 0;
+  if ((status = imap_mboxcache_get (idata, mbox)))
+    return status->messages;
+  
+  return 0;
 }
 
 /* return cached mailbox stats or NULL */
