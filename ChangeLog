@@ -1,4 +1,7 @@
-2006-01-03 17:31:53  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-01-03 17:35:18  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Pipeline CLOSE (it's always followed by a SELECT or
+	a LOGOUT).
 
 	* imap/command.c, imap/imap.c: If there is an * OK
 	[CAPABILITY... qualifier on connect, parse it and skip the manual
