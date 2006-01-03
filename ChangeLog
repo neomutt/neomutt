@@ -1,4 +1,8 @@
-2006-01-03 17:28:52  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-01-03 17:31:53  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c, imap/imap.c: If there is an * OK
+	[CAPABILITY... qualifier on connect, parse it and skip the manual
+	capability check.
 
 	* imap/imap.h, imap/imap.c, postpone.c: Pipeline postponed mail
 	check on mailbox open if appropriate.
