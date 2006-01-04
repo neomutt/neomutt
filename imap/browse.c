@@ -115,6 +115,7 @@ int imap_browse (char* path, struct browser_state* state)
       idata->cmddata = &list;
       do
       {
+	list.name = 0;
         rc = imap_cmd_step (idata);
         if (rc == IMAP_CMD_CONTINUE && list.name)
         {
