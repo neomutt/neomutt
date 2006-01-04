@@ -1,3 +1,10 @@
+2006-01-04 17:28:32  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/browse.c: Zero out IMAP_LIST before each imap_cmd_step in
+	browser to avoid bogus matches when the untagged response isn't a
+	LIST response. Phil Pennock diagnosed and proposed a patch for
+	this bug.
+
 2006-01-03 17:35:18  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c: Pipeline CLOSE (it's always followed by a SELECT or
