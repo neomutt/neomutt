@@ -798,18 +798,36 @@ typedef enum {
   M_MATCH_FULL_ADDRESS = 1
 } pattern_exec_flag;
 
+typedef struct group_t
+{
+  ADDRESS *as;
+  RX_LIST *rs;
+  char *name;
+} group_t;
+
+typedef struct group_context_t
+{
+  group_t *g;
+  struct group_context_t *next;
+} group_context_t;
+
 typedef struct pattern_t
 {
   short op;
   unsigned int not : 1;
   unsigned int alladdr : 1;
   unsigned int stringmatch : 1;
+  unsigned int groupmatch : 1;
   int min;
   int max;
   struct pattern_t *next;
   struct pattern_t *child;		/* arguments to logical op */
-  char *str;
-  regex_t *rx;
+  union 
+  {
+    regex_t *rx;
+    group_t *g;
+    char *str;
+  } p;
 } pattern_t;
 
 typedef struct

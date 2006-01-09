@@ -139,6 +139,8 @@ WHERE char *Visual;
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
+WHERE HASH *Groups;
+
 WHERE LIST *AutoViewList INITVAL(0);
 WHERE LIST *AlternativeOrderList INITVAL(0);
 WHERE LIST *AttachAllow INITVAL(0);

@@ -1657,13 +1657,13 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
         mutt_buffer_addstr (buf, "HEADER ");
 
         /* extract header name */
-        if (! (delim = strchr (pat->str, ':')))
+        if (! (delim = strchr (pat->p.str, ':')))
         {
-          mutt_error (_("Header search without header name: %s"), pat->str);
+          mutt_error (_("Header search without header name: %s"), pat->p.str);
           return -1;
         }
         *delim = '\0';
-        imap_quote_string (term, sizeof (term), pat->str);
+        imap_quote_string (term, sizeof (term), pat->p.str);
         mutt_buffer_addstr (buf, term);
         mutt_buffer_addch (buf, ' ');
         
@@ -1676,12 +1676,12 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
         break;
       case M_BODY:
         mutt_buffer_addstr (buf, "BODY ");
-        imap_quote_string (term, sizeof (term), pat->str);
+        imap_quote_string (term, sizeof (term), pat->p.str);
         mutt_buffer_addstr (buf, term);
         break;
       case M_WHOLE_MSG:
         mutt_buffer_addstr (buf, "TEXT ");
-        imap_quote_string (term, sizeof (term), pat->str);
+        imap_quote_string (term, sizeof (term), pat->p.str);
         mutt_buffer_addstr (buf, term);
         break;
     }

@@ -278,19 +278,24 @@ int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
 
   if (pat->stringmatch)
   {
-    pat->str = safe_strdup (buf.data);
+    pat->p.str = safe_strdup (buf.data);
+    FREE (&buf.data);
+  }
+  else if (pat->groupmatch)
+  {
+    pat->p.g = mutt_pattern_group (buf.data);
     FREE (&buf.data);
   }
   else
   {
-    pat->rx = safe_malloc (sizeof (regex_t));
-    r = REGCOMP (pat->rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
+    pat->p.rx = safe_malloc (sizeof (regex_t));
+    r = REGCOMP (pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
     FREE (&buf.data);
     if (r)
     {
-      regerror (r, pat->rx, err->data, err->dsize);
-      regfree (pat->rx);
-      FREE (&pat->rx);
+      regerror (r, pat->p.rx, err->data, err->dsize);
+      regfree (pat->p.rx);
+      FREE (&pat->p.rx);
       return (-1);
     }
   }
@@ -697,9 +702,11 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 static int patmatch (const pattern_t* pat, const char* buf)
 {
   if (pat->stringmatch)
-    return !strstr (buf, pat->str);
+    return !strstr (buf, pat->p.str);
+  else if (pat->groupmatch)
+    return !mutt_group_match (pat->p.g, buf);
   else
-    return regexec (pat->rx, buf, 0, NULL, 0);
+    return regexec (pat->p.rx, buf, 0, NULL, 0);
 }
 
 static struct pattern_flags *lookup_tag (char tag)
@@ -739,12 +746,16 @@ void mutt_pattern_free (pattern_t **pat)
     tmp = *pat;
     *pat = (*pat)->next;
 
-    if (tmp->rx)
+    if (tmp->stringmatch)
+      FREE (&tmp->p.str);
+    else if (tmp->groupmatch)
+      tmp->p.g = NULL;
+    else if (tmp->p.rx)
     {
-      regfree (tmp->rx);
-      FREE (&tmp->rx);
+      regfree (tmp->p.rx);
+      FREE (&tmp->p.rx);
     }
-    FREE (&tmp->str);
+
     if (tmp->child)
       mutt_pattern_free (&tmp->child);
     FREE (&tmp);
@@ -808,6 +819,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	not = 0;
 	alladdr = 0;
 	break;
+      case '%':
       case '=':
       case '~':
 	if (implicit && or)
@@ -825,6 +837,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	tmp->not = not;
 	tmp->alladdr = alladdr;
         tmp->stringmatch = (*ps.dptr == '=') ? 1 : 0;
+        tmp->groupmatch  = (*ps.dptr == '%') ? 1 : 0;
 	not = 0;
 	alladdr = 0;
 
@@ -1164,7 +1177,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
    * equivalences?
    */
   
-  if (!strchr (s, '~') && !strchr (s, '=')) /* yup, so spoof a real request */
+  if (!strchr (s, '~') && !strchr (s, '=') && !strchr (s, '%')) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
     if (ascii_strcasecmp ("all", s) == 0 ||

@@ -72,6 +72,11 @@ typedef const char * format_t (char *, size_t, char, const char *, const char *,
 void mutt_FormatString (char *, size_t, const char *, format_t *, unsigned long, format_flag);
 void mutt_parse_content_type (char *, BODY *);
 void mutt_generate_boundary (PARAMETER **);
+void mutt_group_add_adrlist (group_t *, ADDRESS *);
+void mutt_group_context_add (group_context_t **ctx, group_t *group);
+void mutt_group_context_destroy (group_context_t **ctx);
+void mutt_group_add_adrlist (group_t *g, ADDRESS *a);
+void mutt_group_context_add_adrlist (group_context_t *ctx, ADDRESS *a);
 void mutt_delete_parameter (const char *attribute, PARAMETER **p);
 void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
@@ -86,6 +91,7 @@ ADDRESS *mutt_default_from (void);
 ADDRESS *mutt_get_address (ENVELOPE *, char **);
 ADDRESS *mutt_lookup_alias (const char *s);
 ADDRESS *mutt_remove_duplicates (ADDRESS *);
+ADDRESS *mutt_remove_xrefs (ADDRESS *, ADDRESS *);
 ADDRESS *mutt_expand_aliases (ADDRESS *);
 ADDRESS *mutt_parse_adrlist (ADDRESS *, const char *);
 
@@ -143,6 +149,8 @@ char *mutt_make_date (char *, size_t);
 const char *mutt_make_version (void);
 
 const char *mutt_fqdn(short);
+
+group_t *mutt_pattern_group (const char *);
 
 REGEXP *mutt_compile_regexp (const char *, int);
 
@@ -245,6 +253,7 @@ void mutt_view_attachments (HEADER *);
 void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display);
 void mutt_set_virtual (CONTEXT *);
 
+int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err);
 int mutt_addr_is_user (ADDRESS *);
 int mutt_addwch (wchar_t);
 int mutt_alias_complete (char *, size_t);
@@ -291,6 +300,8 @@ int mutt_get_field_unbuffered (char *, char *, size_t, int);
 #define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,M_PASS)
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);
+int mutt_group_match (group_t *g, const char *s);
+int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, BUFFER *err);
 int mutt_index_menu (void);
 int mutt_invoke_sendmail (ADDRESS *, ADDRESS *, ADDRESS *, ADDRESS *, const char *, int);
 int mutt_is_autoview (BODY *, const char *);

@@ -2989,6 +2989,9 @@ static int parse_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_spam_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
+static int parse_group (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_ungroup (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+
 static int parse_lists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_alias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -3007,6 +3010,10 @@ static int parse_unattachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+
+/* Parse -group arguments */
+static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
+
 
 struct command_t
 {
@@ -3037,6 +3044,8 @@ struct command_t Commands[] = {
   { "fcc-hook",		mutt_parse_hook,	M_FCCHOOK },
   { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
   { "folder-hook",	mutt_parse_hook,	M_FOLDERHOOK },
+  { "group",		parse_group,		0 },
+  { "ungroup",		parse_ungroup,		0 },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
 #ifdef HAVE_ICONV
   { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK }, 

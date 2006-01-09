@@ -134,7 +134,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	  (ch == '#' && !(flags & M_TOKEN_COMMENT)) ||
 	  (ch == '=' && (flags & M_TOKEN_EQUAL)) ||
 	  (ch == ';' && !(flags & M_TOKEN_SEMICOLON)) ||
-	  ((flags & M_TOKEN_PATTERN) && strchr ("~=!|", ch)))
+	  ((flags & M_TOKEN_PATTERN) && strchr ("~%=!|", ch)))
 	break;
     }
 
@@ -377,7 +377,7 @@ static void add_to_list (LIST **list, const char *str)
   }
 }
 
-static int add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
+int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
 {
   RX_LIST *t, *last = NULL;
   REGEXP *rx;
@@ -652,18 +652,33 @@ static void _alternates_clean (void)
 
 static int parse_alternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  group_context_t *gc = NULL;
+  
   _alternates_clean();
+
   do
   {
     mutt_extract_token (buf, s, 0);
+
+    if (parse_group_context (&gc, buf, s, data, err) == -1)
+      goto bail;
+
     remove_from_rx_list (&UnAlternates, buf->data);
 
-    if (add_to_rx_list (&Alternates, buf->data, REG_ICASE, err) != 0)
-      return -1;
+    if (mutt_add_to_rx_list (&Alternates, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+
+    if (mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
+      goto bail;
   }
   while (MoreArgs (s));
-
+  
+  mutt_group_context_destroy (&gc);
   return 0;
+  
+ bail:
+  mutt_group_context_destroy (&gc);
+  return -1;
 }
 
 static int parse_unalternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
@@ -675,7 +690,7 @@ static int parse_unalternates (BUFFER *buf, BUFFER *s, unsigned long data, BUFFE
     remove_from_rx_list (&Alternates, buf->data);
 
     if (mutt_strcmp (buf->data, "*") &&
-	add_to_rx_list (&UnAlternates, buf->data, REG_ICASE, err) != 0)
+	mutt_add_to_rx_list (&UnAlternates, buf->data, REG_ICASE, err) != 0)
       return -1;
 
   }
@@ -746,7 +761,7 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
       return 0;
 
     /* Otherwise, add it to the nospam list. */
-    if (add_to_rx_list (&NoSpamList, buf->data, REG_ICASE, err) != 0)
+    if (mutt_add_to_rx_list (&NoSpamList, buf->data, REG_ICASE, err) != 0)
       return -1;
 
     return 0;
@@ -780,17 +795,95 @@ static int parse_unlist (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
 
 static int parse_lists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  group_context_t *gc = NULL;
+
   do
   {
     mutt_extract_token (buf, s, 0);
+    
+    if (parse_group_context (&gc, buf, s, data, err) == -1)
+      goto bail;
+    
     remove_from_rx_list (&UnMailLists, buf->data);
     
-    if (add_to_rx_list (&MailLists, buf->data, REG_ICASE, err) != 0)
-      return -1;
+    if (mutt_add_to_rx_list (&MailLists, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+    
+    if (mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
+      goto bail;
   }
   while (MoreArgs (s));
 
+  mutt_group_context_destroy (&gc);
   return 0;
+  
+ bail:
+  mutt_group_context_destroy (&gc);
+  return -1;
+}
+
+typedef enum group_state_t {
+  NONE, RX, ADDR
+} group_state_t;
+
+static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  group_context_t *gc = NULL;
+  group_state_t state = NONE;
+  ADDRESS *addr = NULL;
+  char *estr = NULL;
+  
+  do 
+  {
+    mutt_extract_token (buf, s, 0);
+    if (parse_group_context (&gc, buf, s, data, err) == -1)
+      goto bail;
+    
+    if (!mutt_strcasecmp (buf->data, "-rx"))
+      state = RX;
+    else if (!mutt_strcasecmp (buf->data, "-addr"))
+      state = ADDR;
+    else 
+    {
+      switch (state) 
+      {
+	case NONE:
+	  strfcpy (err->data, _("Missing -rx or -addr."), err->dsize);
+	  goto bail;
+	
+	case RX:
+	  if (mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
+	    goto bail;
+	  break;
+	
+	case ADDR:
+	  if ((addr = mutt_parse_adrlist (NULL, buf->data)) == NULL)
+	    goto bail;
+	  if (mutt_addrlist_to_idna (addr, &estr)) 
+	  {
+	    snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s'.\n"),
+		      estr);
+	    goto bail;
+	  }
+	  mutt_group_context_add_adrlist (gc, addr);
+	  rfc822_free_address (&addr);
+	  break;
+      }
+    }
+  } while (MoreArgs (s));
+
+  mutt_group_context_destroy (&gc);
+  return 0;
+
+  bail:
+  mutt_group_context_destroy (&gc);
+  return -1;
+}
+
+static int parse_ungroup (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  strfcpy (err->data, "not implemented", err->dsize);
+  return -1;
 }
 
 /* always wise to do what someone else did before */
@@ -1067,7 +1160,7 @@ static int parse_unlists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
     remove_from_rx_list (&MailLists, buf->data);
     
     if (mutt_strcmp (buf->data, "*") && 
-	add_to_rx_list (&UnMailLists, buf->data, REG_ICASE, err) != 0)
+	mutt_add_to_rx_list (&UnMailLists, buf->data, REG_ICASE, err) != 0)
       return -1;
   }
   while (MoreArgs (s));
@@ -1077,20 +1170,33 @@ static int parse_unlists (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *er
 
 static int parse_subscribe (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
+  group_context_t *gc = NULL;
+  
   do
   {
     mutt_extract_token (buf, s, 0);
+
+    if (parse_group_context (&gc, buf, s, data, err) == -1)
+      goto bail;
+    
     remove_from_rx_list (&UnMailLists, buf->data);
     remove_from_rx_list (&UnSubscribedLists, buf->data);
 
-    if (add_to_rx_list (&MailLists, buf->data, REG_ICASE, err) != 0)
-      return -1;
-    if (add_to_rx_list (&SubscribedLists, buf->data, REG_ICASE, err) != 0)
-      return -1;
+    if (mutt_add_to_rx_list (&MailLists, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+    if (mutt_add_to_rx_list (&SubscribedLists, buf->data, REG_ICASE, err) != 0)
+      goto bail;
+    if (mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
+      goto bail;
   }
   while (MoreArgs (s));
-
+  
+  mutt_group_context_destroy (&gc);
   return 0;
+  
+ bail:
+  mutt_group_context_destroy (&gc);
+  return -1;
 }
 
 static int parse_unsubscribe (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
@@ -1101,7 +1207,7 @@ static int parse_unsubscribe (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER
     remove_from_rx_list (&SubscribedLists, buf->data);
     
     if (mutt_strcmp (buf->data, "*") &&
-	add_to_rx_list (&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
+	mutt_add_to_rx_list (&UnSubscribedLists, buf->data, REG_ICASE, err) != 0)
       return -1;
   }
   while (MoreArgs (s));
@@ -1161,6 +1267,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   ALIAS *tmp = Aliases;
   ALIAS *last = NULL;
   char *estr = NULL;
+  group_context_t *gc = NULL;
   
   if (!MoreArgs (s))
   {
@@ -1170,8 +1277,8 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   mutt_extract_token (buf, s, 0);
 
-  dprint (2, (debugfile, "parse_alias: First token is '%s'.\n",
-	      buf->data));
+  if (parse_group_context (&gc, buf, s, data, err) == -1)
+    return -1;
   
   /* check to see if an alias with this name already exists */
   for (; tmp; tmp = tmp->next)
@@ -1202,7 +1309,9 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE | M_TOKEN_SEMICOLON);
   dprint (2, (debugfile, "parse_alias: Second token is '%s'.\n",
 	      buf->data));
+
   tmp->addr = mutt_parse_adrlist (tmp->addr, buf->data);
+
   if (last)
     last->next = tmp;
   else
@@ -1211,8 +1320,12 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   {
     snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s' in alias '%s'.\n"),
 	      estr, tmp->name);
-    return -1;
+    goto bail;
   }
+
+  mutt_group_context_add_adrlist (gc, tmp->addr);
+
+
 #ifdef DEBUG
   if (debuglevel >= 2) 
   {
@@ -1229,7 +1342,12 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     }
   }
 #endif
+  mutt_group_context_destroy (&gc);
   return 0;
+  
+  bail:
+  mutt_group_context_destroy (&gc);
+  return -1;
 }
 
 static int
@@ -2541,6 +2659,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   err.data = error;
   err.dsize = sizeof (error);
 
+  Groups = hash_create (1031);
+  
   /* 
    * XXX - use something even more difficult to predict?
    */
@@ -2801,4 +2921,34 @@ int mutt_get_hook_type (const char *name)
     if (c->func == mutt_parse_hook && ascii_strcasecmp (c->name, name) == 0)
       return c->data;
   return 0;
+}
+
+static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  while (!mutt_strcasecmp (buf->data, "-group"))
+  {
+    if (!MoreArgs (s)) 
+    {
+      strfcpy (err->data, _("-group: no group name"), err->dsize);
+      goto bail;
+    }
+    
+    mutt_extract_token (buf, s, 0);
+
+    mutt_group_context_add (ctx, mutt_pattern_group (buf->data));
+    
+    if (!MoreArgs (s))
+    {
+      strfcpy (err->data, _("out of arguments"), err->dsize);
+      goto bail;
+    }
+    
+    mutt_extract_token (buf, s, 0);
+  }
+  
+  return 0;
+  
+  bail:
+  mutt_group_context_destroy (ctx);
+  return -1;
 }

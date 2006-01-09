@@ -87,7 +87,7 @@ static int mutt_addrsrc (ADDRESS *a, ADDRESS *lst)
 }
 
 /* removes addresses from "b" which are contained in "a" */
-static ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
+ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
 {
   ADDRESS *top, *p, *prev = NULL;
 
