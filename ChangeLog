@@ -1,3 +1,11 @@
+2006-01-09 19:43:59  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* imap/imap.c, mutt.h, pattern.c, protos.h, send.c, Makefile.am,
+	globals.h, group.c, init.c, init.h: Adding pattern group support;
+	see http://does-not-exist.org/mail-archives/mutt-dev/msg05693.html
+	for instructions.  The ungroup command is not yet implemented,
+	and documentation is lacking.
+
 2006-01-04 17:28:32  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/browse.c: Zero out IMAP_LIST before each imap_cmd_step in
