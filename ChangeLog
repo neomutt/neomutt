@@ -1,4 +1,8 @@
-2006-01-10 19:15:21  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-01-10 21:06:22  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/browse.c: Sanity-check folder inferiors response. Brian
+	Weaver reports that it fixes the extra delimiters bug triggered by
+	dbmail's incorrect LIST response.
 
 	* hdrline.c: Don't use uninitialised flags variable when fetching
 	attachment count.  Closes: #2153.
