@@ -120,7 +120,8 @@ int imap_browse (char* path, struct browser_state* state)
         if (rc == IMAP_CMD_CONTINUE && list.name)
         {
           if (!list.noinferiors && list.name[0] &&
-            (n = strlen (mbox)) < LONG_STRING-1)
+              !imap_mxcmp (list.name, mbox) &&
+            (n = strlen (mbox)) < sizeof (mbox) - 1)
           {
             mbox[n++] = list.delim;
             mbox[n] = '\0';
