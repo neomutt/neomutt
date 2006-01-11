@@ -1,3 +1,7 @@
+2006-01-11 06:45:23  Recai Oktas  <roktas@omu.edu.tr>  (brendan)
+
+	* po/tr.po: A tr.po update.
+
 2006-01-10 21:06:22  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/browse.c: Sanity-check folder inferiors response. Brian
