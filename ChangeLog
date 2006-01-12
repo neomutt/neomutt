@@ -1,3 +1,8 @@
+2006-01-12 19:09:28  Phil Pennock  <mutt-dev@spodhuis.demon.nl>  (brendan)
+
+	* init.c: Update MyVars to the next entry when deleting the head
+	of the list, instead of leaving it pointing to a freed entry.
+
 2006-01-12 09:36:46  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
 
 	* po/fr.po: update
