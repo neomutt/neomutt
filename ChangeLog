@@ -1,3 +1,11 @@
+2006-01-12 06:07:50  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.c: Teach mutt to expand mutt variables as it does
+	environment variables. For example, you might put something like
+	this into a hook: set sendmail="mysmtp -f $from". Allow
+	user-definable variables starting with my_. Environment variables
+	take precedence, and expansion does not occur in shell-escape.
+
 2006-01-11 06:45:23  Recai Oktas  <roktas@omu.edu.tr>  (brendan)
 
 	* po/tr.po: A tr.po update.
