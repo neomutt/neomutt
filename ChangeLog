@@ -1,3 +1,7 @@
+2006-01-12 09:36:46  Vincent Lefevre  <vincent@vinc17.org>  (roessler)
+
+	* po/fr.po: update
+
 2006-01-12 06:07:50  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* init.c: Teach mutt to expand mutt variables as it does
