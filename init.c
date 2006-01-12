@@ -3054,7 +3054,10 @@ static void myvar_del (const char* var)
   {
     if (!mutt_strcmp (cur->name, var))
     {
-      prev->next = cur->next;
+      if (cur == MyVars)
+	MyVars = cur->next;
+      else
+	prev->next = cur->next;
       FREE (&cur->name);
       FREE (&cur->value);
       FREE (&cur);
