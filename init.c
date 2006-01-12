@@ -58,7 +58,20 @@
 	  return (-1); \
 	} else
 
+typedef struct myvar
+{
+  const char* name;
+  const char* value;
+  struct myvar* next;
+} myvar_t;
+
+static myvar_t* MyVars;
+
 static int var_to_string (int idx, char* val, size_t len);
+
+static void myvar_set (const char* var, const char* val);
+static const char* myvar_get (const char* var);
+static void myvar_del (const char* var);
 
 void toggle_quadoption (int opt)
 {
@@ -270,7 +283,9 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
     }
     else if (ch == '$' && (!qc || qc == '"') && (*tok->dptr == '{' || isalpha ((unsigned char) *tok->dptr)))
     {
-      char *env = NULL, *var = NULL;
+      const char *env = NULL;
+      char *var = NULL;
+      int idx;
 
       if (*tok->dptr == '{')
       {
@@ -288,9 +303,20 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	var = mutt_substrdup (tok->dptr, pc);
 	tok->dptr = pc;
       }
-      if (var && (env = getenv (var)))
-	mutt_buffer_addstr (dest, env);
-      FREE (&var);
+      if (var)
+      {
+        if ((env = getenv (var)) || (env = myvar_get (var)))
+          mutt_buffer_addstr (dest, env);
+        else if ((idx = mutt_option_index (var)) != -1)
+        {
+          /* expand settable mutt variables */
+          char val[LONG_STRING];
+
+          if (var_to_string (idx, val, sizeof (val)))
+            mutt_buffer_addstr (dest, val);
+        }
+        FREE (&var);
+      }
     }
     else
       mutt_buffer_addch (dest, ch);
@@ -1596,8 +1622,10 @@ static void mutt_restore_default (struct option_t *p)
 
 static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  int idx, query, unset, inv, reset, r = 0;
+  int query, unset, inv, reset, r = 0;
+  int idx = -1;
   char *p, scratch[_POSIX_PATH_MAX];
+  char* myvar = NULL;
 
   while (MoreArgs (s))
   {
@@ -1631,7 +1659,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     /* get the variable name */
     mutt_extract_token (tmp, s, M_TOKEN_EQUAL);
 
-    if ((idx = mutt_option_index (tmp->data)) == -1 &&
+    if (!mutt_strncmp ("my_", tmp->data, 3))
+      myvar = tmp->data;
+    else if ((idx = mutt_option_index (tmp->data)) == -1 &&
 	!(reset && !mutt_strcmp ("all", tmp->data)))
     {
       snprintf (err->data, err->dsize, _("%s: unknown variable"), tmp->data);
@@ -1673,10 +1703,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       else
       {
 	CHECK_PAGER;
-	mutt_restore_default (&MuttVars[idx]);
+        if (myvar)
+          myvar_del (myvar);
+        else
+          mutt_restore_default (&MuttVars[idx]);
       }
     } 
-    else if (DTYPE (MuttVars[idx].type) == DT_BOOL)
+    else if (!myvar && DTYPE (MuttVars[idx].type) == DT_BOOL)
     { 
       if (s && *s->dptr == '=')
       {
@@ -1714,14 +1747,16 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       else
 	set_option (MuttVars[idx].data);
     }
-    else if (DTYPE (MuttVars[idx].type) == DT_STR ||
+    else if (myvar || DTYPE (MuttVars[idx].type) == DT_STR ||
 	     DTYPE (MuttVars[idx].type) == DT_PATH ||
 	     DTYPE (MuttVars[idx].type) == DT_ADDR)
     {
       if (unset)
       {
 	CHECK_PAGER;
-	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+        if (myvar)
+          myvar_del (myvar);
+        else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	else
 	  FREE ((void *) MuttVars[idx].data);
@@ -1729,9 +1764,22 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       else if (query || *s->dptr != '=')
       {
 	char _tmp[STRING];
-	char *val = NULL;
-	
-	if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+	const char *val = NULL;
+
+        if (myvar)
+        {
+          if ((val = myvar_get (myvar)))
+          {
+            snprintf (err->data, err->dsize, "%s=\"%s\"", myvar, val);
+            break;
+          }
+          else
+          {
+            snprintf (err->data, err->dsize, _("%s: unknown variable"), myvar);
+            return (-1);
+          }
+        }
+	else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	{
 	  _tmp[0] = '\0';
 	  rfc822_write_address (_tmp, sizeof (_tmp), *((ADDRESS **) MuttVars[idx].data), 0);
@@ -1751,13 +1799,23 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         s->dptr++;
 
         /* copy the value of the string */
-        if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+        if (myvar)
+        {
+          myvar = safe_strdup (myvar);
+          myvar_del (myvar);
+        }
+        else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
         else
 	  FREE ((void *) MuttVars[idx].data);
 
         mutt_extract_token (tmp, s, 0);
-        if (DTYPE (MuttVars[idx].type) == DT_PATH)
+        if (myvar)
+        {
+          myvar_set (myvar, tmp->data);
+          FREE (&myvar);
+        }
+        else if (DTYPE (MuttVars[idx].type) == DT_PATH)
         {
 	  strfcpy (scratch, tmp->data, sizeof (scratch));
 	  mutt_expand_path (scratch, sizeof (scratch));
@@ -2042,18 +2100,21 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       break;
     }
 
-    if (MuttVars[idx].flags & R_INDEX)
-      set_option (OPTFORCEREDRAWINDEX);
-    if (MuttVars[idx].flags & R_PAGER)
-      set_option (OPTFORCEREDRAWPAGER);
-    if (MuttVars[idx].flags & R_RESORT_SUB)
-      set_option (OPTSORTSUBTHREADS);
-    if (MuttVars[idx].flags & R_RESORT)
-      set_option (OPTNEEDRESORT);
-    if (MuttVars[idx].flags & R_RESORT_INIT)
-      set_option (OPTRESORTINIT);
-    if (MuttVars[idx].flags & R_TREE)
-      set_option (OPTREDRAWTREE);
+    if (!myvar)
+    {
+      if (MuttVars[idx].flags & R_INDEX)
+        set_option (OPTFORCEREDRAWINDEX);
+      if (MuttVars[idx].flags & R_PAGER)
+        set_option (OPTFORCEREDRAWPAGER);
+      if (MuttVars[idx].flags & R_RESORT_SUB)
+        set_option (OPTSORTSUBTHREADS);
+      if (MuttVars[idx].flags & R_RESORT)
+        set_option (OPTNEEDRESORT);
+      if (MuttVars[idx].flags & R_RESORT_INIT)
+        set_option (OPTRESORTINIT);
+      if (MuttVars[idx].flags & R_TREE)
+        set_option (OPTREDRAWTREE);
+    }
   }
   return (r);
 }
@@ -2951,4 +3012,65 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
   bail:
   mutt_group_context_destroy (ctx);
   return -1;
+}
+
+static void myvar_set (const char* var, const char* val)
+{
+  myvar_t* cur;
+
+  if (!MyVars)
+  {
+    MyVars = safe_calloc (1, sizeof (myvar_t));
+    cur = MyVars;
+  }
+  else
+  {
+    for (cur = MyVars; cur; cur = cur->next)
+    {
+      if (!mutt_strcmp (cur->name, var))
+        break;
+
+      if (!cur->next)
+      {
+        cur->next = safe_calloc (1, sizeof (myvar_t));
+        cur = cur->next;
+        break;
+      }
+    }
+  }
+
+  if (!cur->name)
+    cur->name = safe_strdup (var);
+  FREE (&cur->value);
+  cur->value = safe_strdup (val);
+}
+
+static void myvar_del (const char* var)
+{
+  myvar_t* cur;
+  myvar_t* prev;
+
+  for (prev = cur = MyVars; cur; prev = cur, cur = cur->next)
+  {
+    if (!mutt_strcmp (cur->name, var))
+    {
+      prev->next = cur->next;
+      FREE (&cur->name);
+      FREE (&cur->value);
+      FREE (&cur);
+
+      break;
+    }
+  }
+}
+
+static const char* myvar_get (const char* var)
+{
+  myvar_t* cur;
+
+  for (cur = MyVars; cur; cur = cur->next)
+    if (!mutt_strcmp (cur->name, var))
+      return NONULL(cur->value);
+
+  return NULL;
 }
