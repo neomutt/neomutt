@@ -1,3 +1,7 @@
+2006-01-13 09:08:11  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* init.c: More compact code for managing the "my" variables list.
+
 2006-01-12 19:09:28  Phil Pennock  <mutt-dev@spodhuis.demon.nl>  (brendan)
 
 	* init.c: Update MyVars to the next entry when deleting the head
