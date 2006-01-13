@@ -60,8 +60,8 @@
 
 typedef struct myvar
 {
-  const char* name;
-  const char* value;
+  char *name;
+  char *value;
   struct myvar* next;
 } myvar_t;
 
@@ -3016,54 +3016,38 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
 
 static void myvar_set (const char* var, const char* val)
 {
-  myvar_t* cur;
+  myvar_t** cur;
 
-  if (!MyVars)
-  {
-    MyVars = safe_calloc (1, sizeof (myvar_t));
-    cur = MyVars;
-  }
-  else
-  {
-    for (cur = MyVars; cur; cur = cur->next)
-    {
-      if (!mutt_strcmp (cur->name, var))
-        break;
+  for (cur = &MyVars; *cur; cur = &((*cur)->next))
+    if (!mutt_strcmp ((*cur)->name, var))
+      break;
 
-      if (!cur->next)
-      {
-        cur->next = safe_calloc (1, sizeof (myvar_t));
-        cur = cur->next;
-        break;
-      }
-    }
-  }
-
-  if (!cur->name)
-    cur->name = safe_strdup (var);
-  FREE (&cur->value);
-  cur->value = safe_strdup (val);
+  if (!*cur)
+    *cur = safe_calloc (1, sizeof (myvar_t));
+  
+  if (!(*cur)->name)
+    (*cur)->name = safe_strdup (var);
+  
+  mutt_str_replace (&(*cur)->value, val);
 }
 
 static void myvar_del (const char* var)
 {
-  myvar_t* cur;
-  myvar_t* prev;
+  myvar_t **cur;
+  myvar_t *tmp;
+  
 
-  for (prev = cur = MyVars; cur; prev = cur, cur = cur->next)
-  {
-    if (!mutt_strcmp (cur->name, var))
-    {
-      if (cur == MyVars)
-	MyVars = cur->next;
-      else
-	prev->next = cur->next;
-      FREE (&cur->name);
-      FREE (&cur->value);
-      FREE (&cur);
-
+  for (cur = &MyVars; *cur; cur = &((*cur)->next))
+    if (!mutt_strcmp ((*cur)->name, var))
       break;
-    }
+  
+  if (*cur) 
+  {
+    tmp = (*cur)->next;
+    FREE (&(*cur)->name);
+    FREE (&(*cur)->value);
+    FREE (cur);
+    *cur = tmp;
   }
 }
 
