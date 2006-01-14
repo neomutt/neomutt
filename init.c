@@ -2271,7 +2271,25 @@ char User_typed [LONG_STRING] = {0};
 
 int  Num_matched = 0; /* Number of matches for completion */
 char Completed [STRING] = {0}; /* completed string (command or variable) */
-char *Matches[MAX(NUMVARS,NUMCOMMANDS) + 1]; /* all the matches + User_typed */
+const char **Matches;
+/* this is a lie until mutt_init runs: */
+int  Matches_listsize = MAX(NUMVARS,NUMCOMMANDS) + 10;
+
+static void matches_ensure_morespace(int current)
+{
+  int base_space, extra_space, space;
+
+  if (current > Matches_listsize - 2)
+  {
+    base_space = MAX(NUMVARS,NUMCOMMANDS) + 1; 
+    extra_space = Matches_listsize - base_space;
+    extra_space *= 2;
+    space = base_space + extra_space;
+    safe_realloc (&Matches, space * sizeof (char *));
+    memset (&Matches[current + 1], 0, space - current);
+    Matches_listsize = space;
+  }
+}
 
 /* helper function for completion.  Changes the dest buffer if
    necessary/possible to aid completion.
@@ -2280,12 +2298,13 @@ char *Matches[MAX(NUMVARS,NUMCOMMANDS) + 1]; /* all the matches + User_typed */
 	try == user entered data for completion.
 	len == length of dest buffer.
 */
-static void candidate (char *dest, char *try, char *src, int len)
+static void candidate (char *dest, char *try, const char *src, int len)
 {
   int l;
 
   if (strstr (src, try) == src)
   {
+    matches_ensure_morespace (Num_matched);
     Matches[Num_matched++] = src;
     if (dest[0] == 0)
       strfcpy (dest, src, len);
@@ -2302,6 +2321,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
   char *pt = buffer;
   int num;
   int spaces; /* keep track of the number of leading spaces on the line */
+  myvar_t *myv;
 
   SKIPWS (buffer);
   spaces = buffer - pt;
@@ -2317,10 +2337,11 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
     {
       Num_matched = 0;
       strfcpy (User_typed, pt, sizeof (User_typed));
-      memset (Matches, 0, sizeof (Matches));
+      memset (Matches, 0, Matches_listsize);
       memset (Completed, 0, sizeof (Completed));
       for (num = 0; Commands[num].name; num++)
 	candidate (Completed, User_typed, Commands[num].name, sizeof (Completed));
+      matches_ensure_morespace (Num_matched);
       Matches[Num_matched++] = User_typed;
 
       /* All matches are stored. Longest non-ambiguous string is ""
@@ -2370,10 +2391,13 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
     {
       Num_matched = 0;
       strfcpy (User_typed, pt, sizeof (User_typed));
-      memset (Matches, 0, sizeof (Matches));
+      memset (Matches, 0, Matches_listsize);
       memset (Completed, 0, sizeof (Completed));
       for (num = 0; MuttVars[num].option; num++)
 	candidate (Completed, User_typed, MuttVars[num].option, sizeof (Completed));
+      for (myv = MyVars; myv; myv = myv->next)
+	candidate (Completed, User_typed, myv->name, sizeof (Completed));
+      matches_ensure_morespace (Num_matched);
       Matches[Num_matched++] = User_typed;
 
       /* All matches are stored. Longest non-ambiguous string is ""
@@ -2409,7 +2433,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
     {
       Num_matched = 0;
       strfcpy (User_typed, pt, sizeof (User_typed));
-      memset (Matches, 0, sizeof (Matches));
+      memset (Matches, 0, Matches_listsize);
       memset (Completed, 0, sizeof (Completed));
       for (num = 0; menu[num].name; num++)
 	candidate (Completed, User_typed, menu[num].name, sizeof (Completed));
@@ -2420,6 +2444,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
 	for (num = 0; menu[num].name; num++)
 	  candidate (Completed, User_typed, menu[num].name, sizeof (Completed));
       }
+      matches_ensure_morespace (Num_matched);
       Matches[Num_matched++] = User_typed;
 
       /* All matches are stored. Longest non-ambiguous string is ""
@@ -2470,12 +2495,20 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
   {
     int idx;
     char val[LONG_STRING];
+    const char *myvarval;
 
     strfcpy (var, pt, sizeof (var));
     /* ignore the trailing '=' when comparing */
     var[mutt_strlen (var) - 1] = 0;
-    if ((idx = mutt_option_index (var)) == -1) 
+    if ((idx = mutt_option_index (var)) == -1)
+    {
+      if ((myvarval = myvar_get(var)) != NULL)
+      {
+	snprintf (pt, len - (pt - buffer), "%s=\"%s\"", var, myvarval);
+	return 1;
+      }
       return 0; /* no such variable. */
+    }
     else if (var_to_string (idx, val, sizeof (val)))
     {
       snprintf (pt, len - (pt - buffer), "%s=\"%s\"", var, val);
@@ -2852,6 +2885,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   mutt_set_langinfo_charset ();
   mutt_set_charset (Charset);
   
+  Matches = safe_calloc (Matches_listsize, sizeof (char *));
   
   /* Set standard defaults */
   for (i = 0; MuttVars[i].option; i++)
