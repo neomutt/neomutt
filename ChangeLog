@@ -1,3 +1,7 @@
+2006-01-14 01:16:59  Phil Pennock  <mutt-dev@spodhuis.demon.nl>  (brendan)
+
+	* init.c: Tab-completion for my_ variable names and values.
+
 2006-01-13 09:08:11  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* init.c: More compact code for managing the "my" variables list.
