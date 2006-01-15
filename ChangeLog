@@ -1,3 +1,9 @@
+2006-01-15 21:37:03  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/browse.c, imap/command.c, imap/imap.c, imap/imap.h, main.c,
+	pattern.c: A conservative update of copyright years. Some other
+	files may need updating too.
+
 2006-01-14 01:16:59  Phil Pennock  <mutt-dev@spodhuis.demon.nl>  (brendan)
 
 	* init.c: Tab-completion for my_ variable names and values.
