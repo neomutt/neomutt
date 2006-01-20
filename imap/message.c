@@ -1184,7 +1184,7 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s)
       s += 5;
       hd->read = 1;
     }
-    else if (ascii_strncasecmp ("\\recent", s, 5) == 0)
+    else if (ascii_strncasecmp ("\\recent", s, 7) == 0)
       s += 7;
     else if (ascii_strncasecmp ("old", s, 3) == 0)
     {
