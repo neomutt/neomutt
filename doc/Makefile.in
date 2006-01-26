@@ -7,6 +7,7 @@ VERSION = @VERSION@
 
 prefix = @prefix@
 exec_prefix = @exec_prefix@
+datarootdir = @datarootdir@
 sysconfdir = @sysconfdir@
 bindir = @bindir@
 libdir = @libdir@
