@@ -1,3 +1,7 @@
+2006-02-21 08:10:15  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* attach.c: Fix mutt/2186.
+
 2006-02-21 00:29:10  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c, muttlib.c: Catch mutt_buffer_printf failures.
