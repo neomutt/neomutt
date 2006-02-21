@@ -1440,7 +1440,8 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
     len = vsnprintf (buf->dptr, len, fmt, ap_retry);
     va_end (ap_retry);
   }
-  buf->dptr += len;
+  if (len > 0)
+    buf->dptr += len;
 
   va_end (ap);
   

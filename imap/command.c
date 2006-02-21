@@ -81,8 +81,9 @@ int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr)
   if (!(cmd = cmd_new (idata)))
     return IMAP_CMD_BAD;
 
-  mutt_buffer_printf (idata->cmdbuf, "%s%s %s\r\n",
-    idata->state == IMAP_IDLE ? "DONE\r\n" : "", cmd->seq, cmdstr);
+  if (mutt_buffer_printf (idata->cmdbuf, "%s%s %s\r\n",
+      idata->state == IMAP_IDLE ? "DONE\r\n" : "", cmd->seq, cmdstr) < 0)
+    return IMAP_CMD_BAD;
 
   if (idata->state == IMAP_IDLE)
     idata->state = IMAP_SELECTED;
