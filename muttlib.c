@@ -1429,6 +1429,14 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
 
   doff = buf->dptr - buf->data;
   blen = buf->dsize - doff;
+  /* solaris 9 vsnprintf barfs when blen is 0 */
+  if (!blen)
+  {
+    blen = 128;
+    buf->dsize += blen;
+    safe_realloc (&buf->data, buf->dsize);
+    buf->dptr = buf->data + doff;
+  }
   if ((len = vsnprintf (buf->dptr, blen, fmt, ap)) >= blen)
   {
     blen = ++len - blen;
