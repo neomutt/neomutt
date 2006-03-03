@@ -1,3 +1,9 @@
+2006-03-03 10:12:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* hook.c: reply-hook is used in contexts where we don't have
+	a Context structure available. Hence, it must not require the
+	full message.
+
 2006-03-03 09:55:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* query.c: Fix mutt/2189; lack of error checking in the query
