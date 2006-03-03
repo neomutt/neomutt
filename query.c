@@ -64,7 +64,8 @@ static ADDRESS *result_to_addr (QUERY *r)
 {
   static ADDRESS *tmp;
   
-  tmp = rfc822_cpy_adr (r->addr);
+  if (!(tmp = rfc822_cpy_adr (r->addr)))
+    return NULL;
   
   if(!tmp->next && !tmp->personal)
     tmp->personal = safe_strdup (r->name);
