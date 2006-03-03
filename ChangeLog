@@ -1,3 +1,8 @@
+2006-03-03 09:55:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* query.c: Fix mutt/2189; lack of error checking in the query
+	code.
+
 2006-02-21 21:52:17  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* muttlib.c: Preallocate some buffer space before attempting
