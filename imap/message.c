@@ -323,6 +323,11 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 #if USE_HCACHE
   mutt_hcache_store_raw (hc, "/UIDVALIDITY", &idata->uid_validity,
                          sizeof (idata->uid_validity), imap_hcache_keylen);
+  if (idata->uidnext < maxuid + 1)
+  {
+    dprint (2, (debugfile, "Overriding UIDNEXT: %u -> %u", idata->uidnext, maxuid + 1));
+    idata->uidnext = maxuid + 1;
+  }
   mutt_hcache_store_raw (hc, "/UIDNEXT", &idata->uidnext,
                        sizeof (idata->uidnext), imap_hcache_keylen);
   mutt_hcache_close (hc);
