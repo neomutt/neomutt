@@ -1,4 +1,8 @@
-2006-03-13 20:12:27  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-03-13 23:21:51  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Courier fails to send UIDNEXT on SELECT
+	(a violation of RFC 3501 section 6.3.1) - synthesize it if it
+	is missing.
 
 	* init.h: Make imap_idle default to false for 1.5.12.
 
