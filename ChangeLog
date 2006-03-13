@@ -1,3 +1,7 @@
+2006-03-13 20:12:27  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.h: Make imap_idle default to false for 1.5.12.
+
 2006-03-03 10:12:27  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* hook.c: reply-hook is used in contexts where we don't have
