@@ -855,7 +855,7 @@ struct option_t MuttVars[] = {
   ** your INBOX in the IMAP browser. If you see something else, you may set
   ** this variable to the IMAP path to your folders.
   */
-  { "imap_idle",                DT_BOOL, R_NONE, OPTIMAPIDLE, 1 },
+  { "imap_idle",                DT_BOOL, R_NONE, OPTIMAPIDLE, 0 },
   /*
    ** .pp
    ** When \fIset\fP, mutt will attempt to use the IMAP IDLE extension
