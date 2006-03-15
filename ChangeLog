@@ -1,4 +1,6 @@
-2006-03-15 02:02:22  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-03-15 12:26:00  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Don't store UIDNEXT unless we know it.
 
 	* imap/message.c: Only synthesize UIDNEXT if we've fetched
 	uncached messages. Fixes a FETCH 1:0 bug Bruno Postle reported and
