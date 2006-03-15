@@ -1,3 +1,9 @@
+2006-03-15 02:02:22  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: Only synthesize UIDNEXT if we've fetched
+	uncached messages. Fixes a FETCH 1:0 bug Bruno Postle reported and
+	helped to debug.
+
 2006-03-13 23:21:51  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/message.c: Courier fails to send UIDNEXT on SELECT
