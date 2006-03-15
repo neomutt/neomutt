@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2006 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -328,8 +328,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     dprint (2, (debugfile, "Overriding UIDNEXT: %u -> %u\n", idata->uidnext, maxuid + 1));
     idata->uidnext = maxuid + 1;
   }
-  mutt_hcache_store_raw (hc, "/UIDNEXT", &idata->uidnext,
-                       sizeof (idata->uidnext), imap_hcache_keylen);
+  if (idata->uidnext > 1)
+    mutt_hcache_store_raw (hc, "/UIDNEXT", &idata->uidnext,
+			   sizeof (idata->uidnext), imap_hcache_keylen);
   mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
 
