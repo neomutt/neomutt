@@ -41,7 +41,11 @@ systems:
 
 	http://www.gnu.org/software/libiconv/
 
+- For building the manual, mutt needs the DocBook XSL stylesheets.
+  You may find these packaged by your distribution (for example, docbook-xsl
+  for Debian and Ubuntu); if not, try the homepage at:
 
+    http://sourceforge.net/projects/docbook
 
 Installation
 ============
