@@ -1,3 +1,9 @@
+2006-03-28 18:04:21  Mike Hallock  <mhallock@scs.uiuc.edu>  (brendan)
+
+	* curs_main.c: imap-fetch-mail should check that there is a
+	Context before dereferencing Context->magic to avoid a segfault
+	possibility.
+
 2006-03-28 01:08:28  Paul Walker  <paul@black-sun.demon.co.uk>  (brendan)
 
 	* recvattach.c: Sanitize attachment file names (seatbelt for
