@@ -408,6 +408,9 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
   else
     buf[0] = 0;
 
+  /* Remove any paths or bad characters */
+  mutt_sanitize_filename (buf, 1);
+
   prompt = _("Save to file: ");
   while (prompt)
   {
@@ -485,6 +488,10 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	  int append = 0;
 
 	  strfcpy (buf, NONULL (top->filename), sizeof (buf));
+
+	  /* Remove any paths or bad characters */
+	  mutt_sanitize_filename (buf, 1);
+
 	  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf),
 				    M_FILE | M_CLEAR) != 0 || !buf[0])
 	    return;
