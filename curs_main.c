@@ -997,7 +997,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 #ifdef USE_IMAP
       case OP_MAIN_IMAP_FETCH:
-	if (Context->magic == M_IMAP)
+	if (Context && Context->magic == M_IMAP)
 	  imap_check_mailbox (Context, &index_hint, 1);
         break;
 #endif
