@@ -1,3 +1,8 @@
+2006-03-30 19:50:01  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/manual.xml.head: Tighten up lists/subscribe example,
+	to close #2198.
+
 2006-03-28 18:04:21  Mike Hallock  <mhallock@scs.uiuc.edu>  (brendan)
 
 	* curs_main.c: imap-fetch-mail should check that there is a
