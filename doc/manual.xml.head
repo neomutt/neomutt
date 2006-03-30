@@ -2149,13 +2149,14 @@ give a portion of the list's e-mail address.
 <para>
 Specify as much of the address as you need to to remove ambiguity.  For
 example, if you've subscribed to the Mutt mailing list, you will receive mail
-addresssed to <emphasis>mutt-users@mutt.org</emphasis>.  So, to tell Mutt that this is a
-mailing list, you could add ``lists mutt-users'' to your
+addresssed to <emphasis>mutt-users@mutt.org</emphasis>.  So, to tell Mutt
+that this is a mailing list, you could add ``lists mutt-users@'' to your
 initialization file.  To tell mutt that you are subscribed to it,
 add ``subscribe mutt-users'' to your initialization file instead.
 If you also happen to get mail from someone whose address is
-<emphasis>mutt-users@example.com</emphasis>, you could use ``lists mutt-users@mutt&bsol;&bsol;.org'' 
-or ``subscribe mutt-users@mutt&bsol;&bsol;.org'' to
+<emphasis>mutt-users@example.com</emphasis>, you could use
+``lists ^mutt-users@mutt&bsol;&bsol;.org$'' 
+or ``subscribe ^mutt-users@mutt&bsol;&bsol;.org$'' to
 match only mail from the actual list.
 </para>
 
