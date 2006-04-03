@@ -1,4 +1,9 @@
-2006-04-03 19:29:55  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-04-03 20:26:14  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Don't pass a null destination to imap_fix_path
+	in the default STATUS handler when the mailbox name is implicitly
+	INBOX. Thanks to Kai Hendry for the test mailbox and Sami Liedes
+	for the backtrace. Closes debian #351337.
 
 	* init.h: Set $record default to ~/sent (closes: #2068).
 
