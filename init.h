@@ -2258,7 +2258,7 @@ struct option_t MuttVars[] = {
   ** Setting this variable to ``yes'' is not generally useful, and thus not
   ** recommended.
   */
-  { "record",		DT_PATH, R_NONE, UL &Outbox, UL "" },
+  { "record",		DT_PATH, R_NONE, UL &Outbox, UL "~/sent" },
   /*
   ** .pp
   ** This specifies the file into which your outgoing messages should be
