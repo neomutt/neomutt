@@ -834,9 +834,14 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     
     if (mutt_account_match (&idata->conn->account, &mx.account))
     {
-      value = safe_strdup (mx.mbox);
-      imap_fix_path (idata, mx.mbox, value, mutt_strlen (value) + 1);
-      FREE (&mx.mbox);
+      if (mx.mbox)
+      {
+	value = safe_strdup (mx.mbox);
+	imap_fix_path (idata, mx.mbox, value, mutt_strlen (value) + 1);
+	FREE (&mx.mbox);
+      }
+      else
+	value = safe_strdup ("INBOX");
 
       if (value && !imap_mxcmp (mailbox, value))
       {
