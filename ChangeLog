@@ -1,3 +1,7 @@
+2006-04-03 19:29:55  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.h: Set $record default to ~/sent (closes: #2068).
+
 2006-03-30 19:50:01  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/manual.xml.head: Tighten up lists/subscribe example,
