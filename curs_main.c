@@ -99,6 +99,8 @@ static const char *No_visible = N_("No visible messages.");
 			mutt_error ("Operation not permitted by the IMAP ACL for this mailbox"); \
 			break; \
 		}
+#else
+#define CHECK_IMAP_ACL(aclbit) /**/
 #endif
 
 #define CHECK_ATTACH if(option(OPTATTACHMSG)) \
@@ -804,10 +806,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 	CHECK_ATTACH;
 	mutt_pattern_func (M_DELETE, _("Delete messages matching: "));
@@ -974,10 +973,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 	if (mutt_pattern_func (M_UNDELETE, _("Undelete messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -1235,6 +1231,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
 	  mutt_error _("Threading is not enabled.");
@@ -1502,6 +1499,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+	CHECK_IMAP_ACL(IMAP_ACL_WRITE);
 
 #ifdef USE_POP
 	if (Context->magic == M_POP)
@@ -1510,10 +1508,6 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	  mutt_error _("Can't change 'important' flag on POP server.");
 	  break;
 	}
-#endif
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_WRITE);
 #endif
 
         if (tag)
@@ -1551,10 +1545,7 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_SEEN);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_SEEN);
 
 	if (tag)
 	{
@@ -1668,10 +1659,7 @@ CHECK_IMAP_ACL(IMAP_ACL_SEEN);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	
-/* #ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_WRITE);
-#endif */
+	/* CHECK_IMAP_ACL(IMAP_ACL_WRITE); */
 
 	if (mutt_change_flag (tag ? NULL : CURHDR, (op == OP_MAIN_SET_FLAG)) == 0)
 	{
@@ -1811,10 +1799,7 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 	if (tag)
 	{
@@ -1855,10 +1840,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 1,
 				   op == OP_DELETE_THREAD ? 0 : 1);
@@ -1899,6 +1881,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
         CHECK_VISIBLE;
 	CHECK_READONLY;
 	CHECK_ATTACH;
+	CHECK_IMAP_ACL(IMAP_ACL_INSERT);
 
 #ifdef USE_POP
 	if (Context->magic == M_POP)
@@ -1907,10 +1890,6 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	  mutt_error _("Can't edit message on POP server.");
 	  break;
 	}
-#endif
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_INSERT);
 #endif
 
 	if (option (OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED))) 
@@ -2042,10 +2021,7 @@ CHECK_IMAP_ACL(IMAP_ACL_INSERT);
 	CHECK_MSGCOUNT;
 	CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_SEEN);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_SEEN);
 
 	rc = mutt_thread_set_flag (CURHDR, M_READ, 1,
 				   op == OP_MAIN_READ_THREAD ? 0 : 1);
@@ -2132,10 +2108,7 @@ CHECK_IMAP_ACL(IMAP_ACL_SEEN);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	
 	if (tag)
 	{
@@ -2162,10 +2135,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 0,
 				   op == OP_UNDELETE_THREAD ? 0 : 1);
