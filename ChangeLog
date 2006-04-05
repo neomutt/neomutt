@@ -1,3 +1,11 @@
+2006-04-05 17:28:30  Phil Pennock  <mutt-dev@spodhuis.demon.nl>  (brendan)
+
+	* curs_main.c:	(1) OP_MAIN_LINK_THREADS needs to check for
+	IMAP_ACL_DELETE permission, since the thread linking involves
+	deleting the old email. (2) makes CHECK_IMAP_ACL() a no-op if
+	USE_IMAP is not defined; then cleans up a bunch of the #ifdef
+	litter.
+
 2006-04-03 20:26:14  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c: Don't pass a null destination to imap_fix_path
