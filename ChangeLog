@@ -1,3 +1,7 @@
+2006-04-18 15:28:50  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* recvattach.c: Fix saving of attachments.
+
 2006-04-05 17:28:30  Phil Pennock  <mutt-dev@spodhuis.demon.nl>  (brendan)
 
 	* curs_main.c:	(1) OP_MAIN_LINK_THREADS needs to check for
