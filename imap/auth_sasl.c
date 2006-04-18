@@ -130,7 +130,14 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 
     if (irc == IMAP_CMD_RESPOND)
     {
-      if (sasl_decode64 (idata->buf+2, strlen (idata->buf+2), buf, LONG_STRING-1, &len) != SASL_OK)
+      /* Exchange incorrectly returns +\r\n instead of + \r\n */
+      if (idata->buf[1] == '\0')
+      {
+	buf[0] = '\0';
+	len = 0;
+      }
+      else if (sasl_decode64 (idata->buf+2, strlen (idata->buf+2), buf,
+			      LONG_STRING-1, &len) != SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
 	goto bail;
