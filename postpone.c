@@ -340,7 +340,8 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 						       */
                  || mutt_strncmp ("X-Mutt-PGP:", tmp->data, 11) == 0))
     {
-      hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1);
+      hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
+					    APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
        
       /* remove the pgp field */
@@ -356,7 +357,8 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     else if ((WithCrypto & APPLICATION_SMIME)
              && mutt_strncmp ("X-Mutt-SMIME:", tmp->data, 13) == 0)
     {
-      hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1);
+      hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
+					    APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
        
       /* remove the smime field */
@@ -405,11 +407,11 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 
-int mutt_parse_crypt_hdr (char *p, int set_signas)
+int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
 {
-  int pgp = 0;
-  char pgp_sign_as[LONG_STRING] = "\0", *q;
   char smime_cryptalg[LONG_STRING] = "\0";
+  char sign_as[LONG_STRING] = "\0", *q;
+  int flags = 0;
 
   if (!WithCrypto)
     return 0;
@@ -422,24 +424,24 @@ int mutt_parse_crypt_hdr (char *p, int set_signas)
     {
       case 'e':
       case 'E':
-        pgp |= ENCRYPT;
+        flags |= ENCRYPT;
         break;
 
       case 's':    
       case 'S':
-        pgp |= SIGN;
-        q = pgp_sign_as;
+        flags |= SIGN;
+        q = sign_as;
       
         if (*(p+1) == '<')
         {
           for (p += 2; 
-	       *p && *p != '>' && q < pgp_sign_as + sizeof (pgp_sign_as) - 1;
+	       *p && *p != '>' && q < sign_as + sizeof (sign_as) - 1;
                *q++ = *p++)
 	    ;
 
           if (*p!='>')
           {
-            mutt_error _("Illegal PGP header");
+            mutt_error _("Illegal crypto header");
             return 0;
           }
         }
@@ -460,7 +462,7 @@ int mutt_parse_crypt_hdr (char *p, int set_signas)
 	    ;
 	  if(*p != '>')
 	  {
-	    mutt_error _("Illegal PGP header");
+	    mutt_error _("Illegal crypto header");
 	    return 0;
 	  }
 	}
@@ -490,24 +492,31 @@ int mutt_parse_crypt_hdr (char *p, int set_signas)
 
       case 'i':
       case 'I':
-	pgp |= INLINE;
+	flags |= INLINE;
 	break;
 
       default:
-        mutt_error _("Illegal PGP header");
+        mutt_error _("Illegal crypto header");
         return 0;
     }
      
   }
- 
+
   /* the cryptalg field must not be empty */
   if ((WithCrypto & APPLICATION_SMIME) && *smime_cryptalg)
     mutt_str_replace (&SmimeCryptAlg, smime_cryptalg);
 
-  if ((WithCrypto & APPLICATION_PGP) && (set_signas || *pgp_sign_as))
-    mutt_str_replace (&PgpSignAs, pgp_sign_as);
+  /* Set {Smime,Pgp}SignAs, if desired. */
 
-  return pgp;
+  if ((WithCrypto & APPLICATION_PGP) && (crypt_app == APPLICATION_PGP)
+      && (set_signas || *sign_as))
+    mutt_str_replace (&PgpSignAs, sign_as);
+
+  if ((WithCrypto & APPLICATION_SMIME) && (crypt_app == APPLICATION_SMIME)
+      && (set_signas || *sign_as))
+    mutt_str_replace (&SmimeDefaultKey, sign_as);
+
+  return flags;
 }
 
 
