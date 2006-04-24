@@ -618,14 +618,14 @@ fi
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
 AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL 2 network security library]),
-        [
-        if test "$need_socket" != "yes"
-        then
-          AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
-        fi
-
+        [	
         if test "$with_sasl" != "no"
         then
+          if test "$need_socket" != "yes"
+          then
+            AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
+          fi
+
           if test "$with_sasl" != "yes"
           then
             CPPFLAGS="$CPPFLAGS -I$with_sasl/include"
