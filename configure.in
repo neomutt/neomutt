@@ -686,11 +686,20 @@ if test $mutt_cv_fcntl = yes; then
         AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
 fi
 
+AC_MSG_CHECKING(whether struct dirent defines d_ino)
+ac_cv_dirent_d_ino=no
+AC_TRY_LINK([#include <dirent.h>],[struct dirent dp; (void)dp.d_ino],[ac_cv_dirent_d_ino=yes])
+if test x$ac_cv_dirent_d_ino = xyes ; then
+  AC_DEFINE(HAVE_DIRENT_D_INO,1,
+            [Define to 1 if your system has the dirent::d_ino member])
+fi
+AC_MSG_RESULT($ac_cv_dirent_d_ino)
+
 dnl This may look cumbersome -- please keep it that way, so we can
 dnl quickly change the default to "yes" again.
 mutt_cv_inodesort=no
 AC_ARG_ENABLE(inodesort,  AC_HELP_STRING([--enable-inodesort], [Read files in maildir folders sorted by inode]),
-       [if test x$enableval = xyes ; then mutt_cv_inodesort=yes; fi])
+       [if test x$enableval = xyes -a x$ac_cv_dirent_d_ino = xyes ; then mutt_cv_inodesort=yes; fi])
 
 if test $mutt_cv_inodesort = yes; then
 	AC_DEFINE(USE_INODESORT, 1, [ Define to sort files in a	maildir by inode number. ])
