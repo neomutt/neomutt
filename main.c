@@ -264,16 +264,16 @@ static void show_version (void)
 #endif
 
 	
-#ifdef USE_SSL
-	"+USE_SSL  "
+#ifdef USE_SSL_OPENSSL
+	"+USE_SSL_OPENSSL  "
 #else
-	"-USE_SSL  "
+	"-USE_SSL_OPENSSL  "
 #endif
 
-#ifdef USE_GNUTLS
-	"+USE_GNUTLS  "
+#ifdef USE_SSL_GNUTLS
+	"+USE_SSL_GNUTLS  "
 #else
-	"-USE_GNUTLS  "
+	"-USE_SSL_GNUTLS  "
 #endif
 
 #ifdef USE_SASL

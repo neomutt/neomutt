@@ -31,7 +31,7 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 
-#if defined(USE_SSL) || defined(USE_GNUTLS)
+#if defined(USE_SSL)
 #include "mutt_ssl.h"
 #endif
 

@@ -32,7 +32,7 @@
 #include "browser.h"
 #include "message.h"
 #include "imap_private.h"
-#if defined(USE_SSL) || defined(USE_GNUTLS)
+#if defined(USE_SSL)
 # include "mutt_ssl.h"
 #endif
 #include "buffy.h"
@@ -409,7 +409,7 @@ int imap_open_connection (IMAP_DATA* idata)
     if (ascii_strncasecmp ("* OK [CAPABILITY", idata->buf, 16)
         && imap_check_capabilities (idata))
       goto bail;
-#if defined(USE_SSL) || defined(USE_GNUTLS)
+#if defined(USE_SSL)
     /* Attempt STARTTLS if available and desired. */
     if (!idata->conn->ssf && (option(OPTSSLFORCETLS) ||
                               mutt_bit_isset (idata->capabilities, STARTTLS)))
@@ -426,11 +426,7 @@ int imap_open_connection (IMAP_DATA* idata)
 	  goto bail;
 	if (rc != -2)
 	{
-#ifdef USE_SSL
 	  if (mutt_ssl_starttls (idata->conn))
-#elif USE_GNUTLS
-	  if (mutt_gnutls_starttls (idata->conn))
-#endif
 	  {
 	    mutt_error (_("Could not negotiate TLS connection"));
 	    mutt_sleep (1);
@@ -469,9 +465,11 @@ int imap_open_connection (IMAP_DATA* idata)
 
   return 0;
 
+#if defined(USE_SSL)
  err_close_conn:
   mutt_socket_close (idata->conn);
   idata->state = IMAP_DISCONNECTED;
+#endif
  bail:
   FREE (&idata->capstr);
   return -1;

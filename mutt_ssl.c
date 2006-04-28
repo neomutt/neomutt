@@ -229,7 +229,7 @@ static int ssl_socket_open_err (CONNECTION *conn)
 }
 
 
-int ssl_socket_setup (CONNECTION * conn)
+int mutt_ssl_socket_setup (CONNECTION * conn)
 {
   if (ssl_init() < 0)
   {

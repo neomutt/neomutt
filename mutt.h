@@ -248,7 +248,7 @@ enum
 
   /* options for socket code */
   M_NEW_SOCKET,
-#ifdef USE_SSL
+#ifdef USE_SSL_OPENSSL
   M_NEW_SSL_SOCKET,
 #endif
 
@@ -289,7 +289,7 @@ enum
   OPT_QUIT,
   OPT_REPLYTO,
   OPT_RECALL,
-#if defined(USE_SSL) || defined(USE_GNUTLS)
+#if defined(USE_SSL)
   OPT_SSLSTARTTLS,
 #endif
   OPT_SUBJECT,
@@ -376,15 +376,15 @@ enum
   OPTIMAPPEEK,
   OPTIMAPSERVERNOISE,
 #endif
-#if defined(USE_SSL) || defined(USE_GNUTLS)
-# ifndef USE_GNUTLS
+#if defined(USE_SSL)
+# ifndef USE_SSL_GNUTLS
   OPTSSLSYSTEMCERTS,
   OPTSSLV2,
-# endif /* USE_GNUTLS */
+# endif /* USE_SSL_GNUTLS */
   OPTSSLV3,
   OPTTLSV1,
   OPTSSLFORCETLS,
-#endif /* defined(USE_SSL) || defined(USE_GNUTLS) */
+#endif /* defined(USE_SSL) */
   OPTIMPLICITAUTOVIEW,
   OPTINCLUDEONLYFIRST,
   OPTKEEPFLAGGED,

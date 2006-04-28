@@ -72,7 +72,7 @@ static int tls_init (void)
   return 0;
 }
 
-int mutt_gnutls_socket_setup (CONNECTION* conn)
+int mutt_ssl_socket_setup (CONNECTION* conn)
 {
   if (tls_init() < 0)
     return -1;
@@ -144,7 +144,7 @@ static int tls_socket_open (CONNECTION* conn)
   return 0;
 }
 
-int mutt_gnutls_starttls (CONNECTION* conn)
+int mutt_ssl_starttls (CONNECTION* conn)
 {
   if (tls_init() < 0)
     return -1;
@@ -441,7 +441,7 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
               strcmp(linestr + pmatch[2].rm_so, buf) == 0)
           {
             regfree(&preg);
-            safe_free((void**)&linestr);
+            FREE(&linestr);
             fclose(fp);
             return 1;
           }

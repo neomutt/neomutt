@@ -92,11 +92,14 @@ struct option_t
 # ifndef USE_POP
 #  define USE_POP
 # endif
+# ifndef USE_SSL_OPENSSL
+#  define USE_SSL_OPENSSL
+# endif
+# ifndef USE_SSL_GNUTLS
+#  define USE_SSL_GNUTLS
+# endif
 # ifndef USE_SSL
 #  define USE_SSL
-# endif
-# ifndef USE_GNUTLS
-#  define USE_GNUTLS
 # endif
 # ifndef USE_SOCKET
 #  define USE_SOCKET
@@ -1914,15 +1917,15 @@ struct option_t MuttVars[] = {
   ** (S/MIME only)
   */
   
-#if defined(USE_SSL) || defined(USE_GNUTLS)
-#ifdef USE_SSL
+#if defined(USE_SSL)
+#ifdef USE_SSL_OPENSSL
   { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
   /*
   ** .pp
   ** The file containing a client certificate and its associated private
   ** key.
   */
-#endif /* USE_SSL */
+#endif /* USE_SSL_OPENSSL */
   { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
   /*
    ** .pp
@@ -1954,7 +1957,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set certificate_file=~/.mutt/certificates
   */
-# if defined _MAKEDOC || !defined(USE_GNUTLS)
+# if defined _MAKEDOC || !defined(USE_SSL_GNUTLS)
   { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
   /*
   ** .pp
@@ -1974,7 +1977,7 @@ struct option_t MuttVars[] = {
   ** This variables specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process.
   */
-# endif /* defined _MAKEDOC || !defined(USE_GNUTLS) */
+# endif /* defined _MAKEDOC || !defined(USE_SSL_GNUTLS) */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
   /*
   ** .pp
@@ -1987,7 +1990,7 @@ struct option_t MuttVars[] = {
   ** This variables specifies whether to attempt to use TLSv1 in the
   ** SSL authentication process.
   */
-# ifdef USE_GNUTLS
+# ifdef USE_SSL_GNUTLS
   { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
   /*
   ** .pp
@@ -2004,8 +2007,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
   */
-# endif /* USE_GNUTLS */
-#endif /* defined(USE_SSL) || defined(USE_GNUTLS) */
+# endif /* USE_SSL_GNUTLS */
+#endif /* defined(USE_SSL) */
 
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
   /*

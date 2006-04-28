@@ -115,17 +115,17 @@ WHERE char *Signature;
 WHERE char *SimpleSearch;
 WHERE char *Spoolfile;
 WHERE char *SpamSep;
-#if defined(USE_SSL) || defined(USE_GNUTLS)
+#if defined(USE_SSL)
 WHERE char *SslCertFile INITVAL (NULL);
 #endif
-#ifdef USE_SSL
+#ifdef USE_SSL_OPENSSL
 WHERE char *SslClientCert INITVAL (NULL);
 WHERE LIST *SslSessionCerts INITVAL (NULL);
 #endif
 #if defined(USE_SSL)
 WHERE char *SslEntropyFile INITVAL (NULL);
 #endif
-#ifdef USE_GNUTLS
+#ifdef USE_SSL_GNUTLS
 WHERE short SslDHPrimeBits;
 WHERE char *SslCACertFile INITVAL (NULL);
 #endif

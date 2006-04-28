@@ -21,14 +21,9 @@
 
 #include "mutt_socket.h"
 
-#ifdef USE_SSL
+#if defined(USE_SSL)
 int mutt_ssl_starttls (CONNECTION* conn);
-
-extern int ssl_socket_setup (CONNECTION *conn);
+int mutt_ssl_socket_setup (CONNECTION *conn);
 #endif
-#ifdef USE_GNUTLS
-int mutt_gnutls_starttls (CONNECTION* conn);
 
-extern int mutt_gnutls_socket_setup (CONNECTION *conn);
-#endif
 #endif /* _MUTT_SSL_H_ */

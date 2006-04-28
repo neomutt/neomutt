@@ -309,6 +309,7 @@ int mutt_buffy_check (int force)
 
 #ifdef USE_IMAP
     if (tmp->magic != M_IMAP)
+    {
 #endif
 #ifdef USE_POP
     if (mx_is_pop (tmp->path))
@@ -327,6 +328,9 @@ int mutt_buffy_check (int force)
 #endif
       continue;
     }
+#ifdef USE_IMAP
+    }
+#endif
 
     /* check to see if the folder is the currently selected folder
      * before polling */
