@@ -1,3 +1,9 @@
+2006-04-28 12:19:20  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
+
+	* mutt_socket.h: "could somebody please move this really nasty
+	bug fix taken from Brendan's esmtp patch to the mailine code?" --
+	"done"
+
 2006-04-28 08:35:03  Rocco Rutte  <pdmef@gmx.net>  (roessler)
 
 	* imap/imap.c, init.h, main.c, mutt.h, mutt_socket.c, mutt_ssl.c,
