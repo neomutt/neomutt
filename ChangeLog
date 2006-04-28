@@ -1,3 +1,9 @@
+2006-04-28 19:52:45  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* mutt.h, parse.c, pattern.c, protos.h, hdrline.c: Cleaning
+	up attachment counting.  This takes away some of the worst
+	aberrations, but the feature is still a performance hog.
+
 2006-04-28 12:19:20  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (roessler)
 
 	* mutt_socket.h: "could somebody please move this really nasty
