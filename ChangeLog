@@ -1,3 +1,7 @@
+2006-04-28 08:27:28  Rocco Rutte  <pdmef@gmx.net>  (roessler)
+
+	* configure.in, mh.c: pdmef+fix+dino.diff. This fixes mutt/2174.
+
 2006-04-24 19:59:07  exg@gentoo.org  (brendan)
 
 	* configure.in: Don't abort configure if --without-sasl is
