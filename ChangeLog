@@ -1,4 +1,11 @@
-2006-04-28 08:27:28  Rocco Rutte  <pdmef@gmx.net>  (roessler)
+2006-04-28 08:35:03  Rocco Rutte  <pdmef@gmx.net>  (roessler)
+
+	* imap/imap.c, init.h, main.c, mutt.h, mutt_socket.c, mutt_ssl.c,
+	mutt_ssl.h, mutt_ssl_gnutls.c, pop_lib.c, buffy.c, configure.in,
+	globals.h, init.c: pdmef+fix+sslinterface. Triggered by a warning
+	when compiling with POP and GNUTLS, I noticed the SSL interfaces
+	for OpenSSL and GNUTLS internally are different which doesn't
+	make sense.
 
 	* configure.in, mh.c: pdmef+fix+dino.diff. This fixes mutt/2174.
 
