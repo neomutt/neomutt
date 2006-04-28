@@ -1132,17 +1132,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ (h->thread && h->thread->duplicate_thread));
     case M_MIMEATTACH:
       {
-      int count;
-
-      if (h->content->parts)
-        count = mutt_count_body_parts(h, 0);
-      else
-      {
-        mutt_parse_mime_message(ctx, h);
-        count = mutt_count_body_parts(h, 0);
-        mutt_free_body(&h->content->parts);
-      }
-
+      int count = mutt_count_body_parts (ctx, h);
       return (pat->not ^ (count >= pat->min && (pat->max == M_MAXRANGE ||
                                                 count <= pat->max)));
       }

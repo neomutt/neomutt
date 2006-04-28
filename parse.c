@@ -928,7 +928,6 @@ static char *extract_message_id (const char *s)
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
 {
   MESSAGE *msg;
-  int flags = 0;
 
   do {
     if (cur->content->type != TYPEMESSAGE &&
@@ -949,7 +948,7 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
     }
   } while (0);
 
-  mutt_count_body_parts(cur, flags|M_PARTS_RECOUNT);
+  cur->attach_valid = 0;
 }
 
 int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short user_hdrs, short weed,
@@ -1599,16 +1598,27 @@ int count_body_parts (BODY *body, int flags)
   return count < 0 ? 0 : count;
 }
 
-int mutt_count_body_parts (HEADER *hdr, int flags)
+int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
 {
-  if (hdr->attach_valid && !(flags & M_PARTS_RECOUNT))
-    return hdr->attach_total;
+  short keep_parts = 0;
 
+  if (hdr->attach_valid)
+    return hdr->attach_total;
+  
+  if (hdr->content->parts)
+    keep_parts = 1;
+  else
+    mutt_parse_mime_message (ctx, hdr);
+  
   if (AttachAllow || AttachExclude || InlineAllow || InlineExclude)
-    hdr->attach_total = count_body_parts(hdr->content, flags | M_PARTS_TOPLEVEL);
+    hdr->attach_total = count_body_parts(hdr->content, M_PARTS_TOPLEVEL);
   else
     hdr->attach_total = 0;
 
   hdr->attach_valid = 1;
+  
+  if (!keep_parts)
+    mutt_free_body (&hdr->content->parts);
+  
   return hdr->attach_total;
 }

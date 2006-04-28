@@ -657,16 +657,7 @@ hdr_format_str (char *dest,
 
     case 'X':
       {
-	int count;
-
-        if (hdr->content->parts)
-          count = mutt_count_body_parts(hdr, 0);
-        else
-        {
-	  mutt_parse_mime_message(ctx, hdr);
-          count = mutt_count_body_parts(hdr, 0);
-	  mutt_free_body(&hdr->content->parts);
-        }
+	int count = mutt_count_body_parts (ctx, hdr);
 
 	/* The recursion allows messages without depth to return 0. */
 	if (optional)

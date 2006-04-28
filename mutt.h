@@ -921,9 +921,7 @@ typedef struct
   regex_t minor_rx;
 } ATTACH_MATCH;
 
-/* Flags for mutt_count_body_parts() */
 #define M_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
-#define M_PARTS_RECOUNT		(1<<1)	/* force recount */
 
 #include "ascii.h"
 #include "protos.h"
