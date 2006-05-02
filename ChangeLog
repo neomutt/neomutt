@@ -1,3 +1,7 @@
+2006-05-02 22:23:35  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* muttlib.c: Fix an improper dereference in mutt_buffer_init (I think).
+
 2006-04-28 19:52:45  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* mutt.h, parse.c, pattern.c, protos.h, hdrline.c: Cleaning
