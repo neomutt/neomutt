@@ -1393,7 +1393,7 @@ BUFFER * mutt_buffer_init(BUFFER *b)
   }
   else
   {
-    safe_free(b->data);
+    safe_free(&b->data);
   }
   memset(b, 0, sizeof(BUFFER));
   return b;
