@@ -1,3 +1,7 @@
+2006-05-06 07:42:51  Rocco Rutte  <pdmef@gmx.net>  (roessler)
+
+	* mh.c: Header caching for mh folders.
+
 2006-05-05 17:27:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* doc/manual.xml.head: Set system ID to docbook 4.2, in harmony
