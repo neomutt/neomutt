@@ -641,11 +641,15 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
 
 static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
 				const char *subdir, const char *fname,
-				int *count, int is_old, ino_t inode)
+				int *count, int is_old, ino_t inode,
+				void *hc)
 {
   struct maildir *entry;
   HEADER *h = NULL;
   char buf[_POSIX_PATH_MAX];
+#if USE_HCACHE
+  void *data;
+#endif
 
   if (subdir)
     snprintf (buf, sizeof (buf), "%s/%s/%s", ctx->path, subdir, fname);
@@ -653,7 +657,14 @@ static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
     snprintf (buf, sizeof (buf), "%s/%s", ctx->path, fname);
 
   if (ctx->magic == M_MH)
+  {
+#ifdef USE_HCACHE
+    if (hc && (data = mutt_hcache_fetch (hc, fname, strlen)))
+      h = mutt_hcache_restore ((unsigned char *) data, NULL);
+    else
+#endif
     h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
+  }
   else
   {
     h = mutt_new_header ();
@@ -717,6 +728,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   struct dirent *de;
   char buf[_POSIX_PATH_MAX];
   int is_old = 0;
+  void *hc = NULL;
 
   if (subdir)
   {
@@ -728,6 +740,11 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
 
   if ((dirp = opendir (buf)) == NULL)
     return -1;
+
+#ifdef USE_HCACHE
+  if (ctx && ctx->magic == M_MH)
+    hc = mutt_hcache_open (HeaderCache, ctx->path);
+#endif
 
   while ((de = readdir (dirp)) != NULL)
   {
@@ -747,10 +764,15 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
 #else
 			 0
 #endif
-			);
+			, hc);
   }
 
   closedir (dirp);
+
+#if USE_HCACHE
+  mutt_hcache_close (hc);
+#endif
+
   return 0;
 }
 
@@ -1478,7 +1500,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     return i;
 
 #if USE_HCACHE
-  if (ctx->magic == M_MAILDIR)
+  if (ctx->magic == M_MAILDIR || ctx->magic == M_MH)
     hc = mutt_hcache_open(HeaderCache, ctx->path);
 #endif /* USE_HCACHE */
 
@@ -1494,6 +1516,8 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 #if USE_HCACHE
         if (ctx->magic == M_MAILDIR)
           mutt_hcache_delete (hc, ctx->hdrs[i]->path + 3, &maildir_hcache_keylen);
+	else if (ctx->magic == M_MH)
+	  mutt_hcache_delete (hc, ctx->hdrs[i]->path, strlen);
 #endif /* USE_HCACHE */
 	unlink (path);
       }
@@ -1529,7 +1553,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   }
 
 #if USE_HCACHE
-  if (ctx->magic == M_MAILDIR)
+  if (ctx->magic == M_MAILDIR || ctx->magic == M_MH)
     mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
 
@@ -1556,7 +1580,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
 err:
 #if USE_HCACHE
-  if (ctx->magic == M_MAILDIR)
+  if (ctx->magic == M_MAILDIR || ctx->magic == M_MH)
     mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
   return -1;
