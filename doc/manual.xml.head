@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
   "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
-<article>
+<book>
 
-<articleinfo>
+<bookinfo>
   <title>The Mutt E-Mail Client</title>
   <author>
     <firstname>Michael</firstname><surname>Elkins</surname>
@@ -16,9 +16,9 @@
     ``All mail clients suck.  This one just sucks less.'' -me, circa 1995
     </para>
   </abstract>
-</articleinfo>
+</bookinfo>
 
-<sect1 id="intro">
+<chapter id="intro">
 <title>Introduction</title>
 
 <para>
@@ -29,7 +29,7 @@ expression searches and a powerful pattern matching language for selecting
 groups of messages.
 </para>
 
-<sect2>
+<sect1 id="homepage">
 <title>Mutt Home Page</title>
 
 <para>
@@ -39,9 +39,9 @@ url="http://www.mutt.org/"
 >
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="muttlists">
 <title>Mailing Lists</title>
 
 <para>
@@ -56,28 +56,19 @@ word <emphasis>subscribe</emphasis> in the body to
 <listitem>
 
 <para>
-<ulink
-url="mailto:mutt-announce-request@mutt.org"
->mutt-announce@mutt.org</ulink
-> -- low traffic list for announcements
+<email>mutt-announce-request@mutt.org</email> -- low traffic list for announcements
 </para>
 </listitem>
 <listitem>
 
 <para>
-<ulink
-url="mailto:mutt-users-request@mutt.org"
->mutt-users@mutt.org</ulink
-> -- help, bug reports and feature requests
+<email>mutt-users-request@mutt.org</email> -- help, bug reports and feature requests
 </para>
 </listitem>
 <listitem>
 
 <para>
-<ulink
-url="mailto:mutt-dev-request@mutt.org"
->mutt-dev@mutt.org</ulink
-> -- development mailing list
+<email>mutt-dev-request@mutt.org</email> -- development mailing list
 </para>
 </listitem>
 
@@ -91,9 +82,9 @@ forwarded to <emphasis>mutt-users</emphasis>, so you do not need to be subscribe
 lists.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="distribution">
 <title>Software Distribution Sites</title>
 
 <para>
@@ -120,9 +111,9 @@ url="http://www.mutt.org/download.html"
 >.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="irc">
 <title>IRC</title>
 
 <para>
@@ -131,9 +122,9 @@ Visit channel <emphasis>&num;mutt</emphasis> on
 other people interested in Mutt.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="usenet">
 <title>USENET</title>
 
 <para>
@@ -143,14 +134,14 @@ url="news:comp.mail.mutt"
 >.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="copyright">
 <title>Copyright</title>
 
 <para>
 Mutt is Copyright (C) 1996-2005 Michael R. Elkins
-&lt;me@cs.hmc.edu&gt; and others
+<email>me@cs.hmc.edu</email> and others
 </para>
 
 <para>
@@ -173,11 +164,11 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 </para>
 
-</sect2>
-
 </sect1>
 
-<sect1 id="gettingstarted">
+</chapter>
+
+<chapter id="gettingstarted">
 <title>Getting Started</title>
 
 <para>
@@ -202,7 +193,7 @@ at the command line.  There are various command-line options, see
 either the mutt man page or the <link linkend="commandline">reference</link>.
 </para>
 
-<sect2>
+<sect1 id="menus">
 <title>Moving Around in Menus</title>
 
 <para>
@@ -212,22 +203,30 @@ showing the common keys used to navigate menus in Mutt.
 
 <para>
 
-<screen>
-j or Down       next-entry      move to the next entry
-k or Up         previous-entry  move to the previous entry
-z or PageDn     page-down       go to the next page
-Z or PageUp     page-up         go to the previous page
-= or Home       first-entry     jump to the first entry
-* or End        last-entry      jump to the last entry
-q               quit            exit the current menu
-?               help            list all keybindings for the current menu
-</screen>
+<table>
+<title>Most common navigation keys</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>j or Down</entry><entry>next-entry</entry><entry>move to the next entry</entry></row>
+<row><entry>k or Up</entry><entry>previous-entry</entry><entry>move to the previous entry</entry></row>
+<row><entry>z or PageDn</entry><entry>page-down</entry><entry>go to the next page</entry></row>
+<row><entry>Z or PageUp</entry><entry>page-up</entry><entry>go to the previous page</entry></row>
+<row><entry>= or Home</entry><entry>first-entry</entry><entry>jump to the first entry</entry></row>
+<row><entry>* or End</entry><entry>last-entry</entry><entry>jump to the last entry</entry></row>
+<row><entry>q</entry><entry>quit</entry><entry>exit the current menu</entry></row>
+<row><entry>?</entry><entry>help</entry><entry>list all keybindings for the current menu</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="editing">
+<sect1 id="editing">
 <title>Editing Input Fields</title>
 
 <para>
@@ -238,30 +237,38 @@ around while editing are very similar to those of Emacs.
 
 <para>
 
-<screen>
-^A or &lt;Home&gt;    bol             move to the start of the line
-^B or &lt;Left&gt;    backward-char   move back one char
-Esc B		backward-word	move back one word
-^D or &lt;Delete&gt;  delete-char     delete the char under the cursor
-^E or &lt;End&gt;     eol             move to the end of the line
-^F or &lt;Right&gt;   forward-char    move forward one char
-Esc F		forward-word	move forward one word
-&lt;Tab&gt;           complete        complete filename or alias
-^T              complete-query  complete address with query
-^K              kill-eol        delete to the end of the line
-ESC d		kill-eow	delete to the end ot the word
-^W              kill-word       kill the word in front of the cursor
-^U              kill-line       delete entire line
-^V              quote-char      quote the next typed key
-&lt;Up&gt;            history-up      recall previous string from history
-&lt;Down&gt;          history-down    recall next string from history
-&lt;BackSpace&gt;     backspace       kill the char in front of the cursor
-Esc u		upcase-word	convert word to upper case
-Esc l		downcase-word	convert word to lower case
-Esc c		capitalize-word capitalize the word
-^G              n/a             abort
-&lt;Return&gt;        n/a             finish editing
-</screen>
+<table>
+<title>Most common line editor keys</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>&circ;A or &lt;Home&gt;</entry><entry>bol</entry><entry>move to the start of the line</entry></row>
+<row><entry>&circ;B or &lt;Left&gt;</entry><entry>backward-char</entry><entry>move back one char</entry></row>
+<row><entry>Esc B</entry><entry>backward-word</entry><entry>move back one word</entry></row>
+<row><entry>&circ;D or &lt;Delete&gt;</entry><entry>delete-char</entry><entry>delete the char under the cursor</entry></row>
+<row><entry>&circ;E or &lt;End&gt;</entry><entry>eol</entry><entry>move to the end of the line</entry></row>
+<row><entry>&circ;F or &lt;Right&gt;</entry><entry>forward-char</entry><entry>move forward one char</entry></row>
+<row><entry>Esc F</entry><entry>forward-word</entry><entry>move forward one word</entry></row>
+<row><entry>&lt;Tab&gt;</entry><entry>complete</entry><entry>complete filename or alias</entry></row>
+<row><entry>&circ;T</entry><entry>complete-query</entry><entry>complete address with query</entry></row>
+<row><entry>&circ;K</entry><entry>kill-eol</entry><entry>delete to the end of the line</entry></row>
+<row><entry>ESC d</entry><entry>kill-eow</entry><entry>delete to the end ot the word</entry></row>
+<row><entry>&circ;W</entry><entry>kill-word</entry><entry>kill the word in front of the cursor</entry></row>
+<row><entry>&circ;U</entry><entry>kill-line</entry><entry>delete entire line</entry></row>
+<row><entry>&circ;V</entry><entry>quote-char</entry><entry>quote the next typed key</entry></row>
+<row><entry>&lt;Up&gt;</entry><entry>history-up</entry><entry>recall previous string from history</entry></row>
+<row><entry>&lt;Down&gt;</entry><entry>history-down</entry><entry>recall next string from history</entry></row>
+<row><entry>&lt;BackSpace&gt;</entry><entry>backspace</entry><entry>kill the char in front of the cursor</entry></row>
+<row><entry>Esc u</entry><entry>upcase-word</entry><entry>convert word to upper case</entry></row>
+<row><entry>Esc l</entry><entry>downcase-word</entry><entry>convert word to lower case</entry></row>
+<row><entry>Esc c</entry><entry>capitalize-word</entry><entry>capitalize the word</entry></row>
+<row><entry>&circ;G</entry><entry>n/a</entry><entry>abort</entry></row>
+<row><entry>&lt;Return&gt;</entry><entry>n/a</entry><entry>finish editing</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -276,9 +283,9 @@ front of the cursor rather than under, you could use
 <literal>bind editor &lt;delete&gt; backspace</literal>
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="reading">
 <title>Reading Mail - The Index and Pager</title>
 
 <para>
@@ -293,46 +300,54 @@ The next few sections describe the functions provided in each of these
 modes.
 </para>
 
-<sect3>
+<sect2>
 <title>The Message Index</title>
 
 <para>
 
-<screen>
-c               change to a different mailbox
-ESC c           change to a folder in read-only mode
-C               copy the current message to another mailbox
-ESC C           decode a message and copy it to a folder
-ESC s           decode a message and save it to a folder
-D               delete messages matching a pattern
-d               delete the current message
-F               mark as important
-l               show messages matching a pattern
-N               mark message as new
-o               change the current sort method
-O               reverse sort the mailbox
-q               save changes and exit
-s               save-message
-T               tag messages matching a pattern
-t               toggle the tag on a message
-ESC t           toggle tag on entire message thread
-U               undelete messages matching a pattern
-u               undelete-message
-v               view-attachments
-x               abort changes and exit
-&lt;Return&gt;        display-message
-&lt;Tab&gt;           jump to the next new or unread message
-@               show the author's full e-mail address
-$               save changes to mailbox
-/               search
-ESC /           search-reverse
-^L              clear and redraw the screen
-^T              untag messages matching a pattern
-</screen>
+<table>
+<title>Most common message index keys</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Key</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>c</entry><entry>change to a different mailbox</entry></row>
+<row><entry>ESC c</entry><entry>change to a folder in read-only mode</entry></row>
+<row><entry>C</entry><entry>copy the current message to another mailbox</entry></row>
+<row><entry>ESC C</entry><entry>decode a message and copy it to a folder</entry></row>
+<row><entry>ESC s</entry><entry>decode a message and save it to a folder</entry></row>
+<row><entry>D</entry><entry>delete messages matching a pattern</entry></row>
+<row><entry>d</entry><entry>delete the current message</entry></row>
+<row><entry>F</entry><entry>mark as important</entry></row>
+<row><entry>l</entry><entry>show messages matching a pattern</entry></row>
+<row><entry>N</entry><entry>mark message as new</entry></row>
+<row><entry>o</entry><entry>change the current sort method</entry></row>
+<row><entry>O</entry><entry>reverse sort the mailbox</entry></row>
+<row><entry>q</entry><entry>save changes and exit</entry></row>
+<row><entry>s</entry><entry>save-message</entry></row>
+<row><entry>T</entry><entry>tag messages matching a pattern</entry></row>
+<row><entry>t</entry><entry>toggle the tag on a message</entry></row>
+<row><entry>ESC t</entry><entry>toggle tag on entire message thread</entry></row>
+<row><entry>U</entry><entry>undelete messages matching a pattern</entry></row>
+<row><entry>u</entry><entry>undelete-message</entry></row>
+<row><entry>v</entry><entry>view-attachments</entry></row>
+<row><entry>x</entry><entry>abort changes and exit</entry></row>
+<row><entry>&lt;Return&gt;</entry><entry>display-message</entry></row>
+<row><entry>&lt;Tab&gt;</entry><entry>jump to the next new or unread message</entry></row>
+<row><entry>@</entry><entry>show the author's full e-mail address</entry></row>
+<row><entry>$</entry><entry>save changes to mailbox</entry></row>
+<row><entry>/</entry><entry>search</entry></row>
+<row><entry>ESC /</entry><entry>search-reverse</entry></row>
+<row><entry>&circ;L</entry><entry>clear and redraw the screen</entry></row>
+<row><entry>&circ;T</entry><entry>untag messages matching a pattern</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
-<sect4>
+<sect3>
 <title>Status Flags</title>
 
 <para>
@@ -508,11 +523,11 @@ message is sent to a subscribed mailing list
 </variablelist>
 </para>
 
-</sect4>
-
 </sect3>
 
-<sect3>
+</sect2>
+
+<sect2>
 <title>The Pager</title>
 
 <para>
@@ -523,19 +538,27 @@ featureful.
 
 <para>
 
-<screen>
-&lt;Return&gt;        go down one line
-&lt;Space&gt;         display the next page (or next message if at the end of a message)
--               go back to the previous page
-n               search for next match
-S               skip beyond quoted text
-T               toggle display of quoted text
-?               show keybindings
-/               search for a regular expression (pattern)
-ESC /           search backwards for a regular expression
-\               toggle search pattern coloring
-^               jump to the top of the message
-</screen>
+<table>
+<title>Most common pager keys</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Key</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>&lt;Return&gt;</entry><entry>go down one line</entry></row>
+<row><entry>&lt;Space&gt;</entry><entry>display the next page (or next message if at the end of a message)</entry></row>
+<row><entry>-</entry><entry>go back to the previous page</entry></row>
+<row><entry>n</entry><entry>search for next match</entry></row>
+<row><entry>S</entry><entry>skip beyond quoted text</entry></row>
+<row><entry>T</entry><entry>toggle display of quoted text</entry></row>
+<row><entry>?</entry><entry>show keybindings</entry></row>
+<row><entry>/</entry><entry>search for a regular expression (pattern)</entry></row>
+<row><entry>ESC /</entry><entry>search backwards for a regular expression</entry></row>
+<row><entry>&bsol;</entry><entry>toggle search pattern coloring</entry></row>
+<row><entry>&circ;</entry><entry>jump to the top of the message</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -565,8 +588,7 @@ character settings.  The sequences Mutt supports are:
 <para>
 
 <screen>
-ESC [ Ps;Ps;Ps;...;Ps m
-where Ps =
+ESC [ Ps;Ps;Ps;...;Ps m where Ps =
 0    All Attributes Off
 1    Bold on
 4    Underline on
@@ -596,9 +618,9 @@ display, for example by changing the color associated with color2 for
 your xterm, then that color will be used instead of green.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3 id="threads">
+<sect2 id="threads">
 <title>Threaded Mode</title>
 
 <para>
@@ -608,22 +630,30 @@ a few additional functions available in the <emphasis>index</emphasis> and <emph
 
 <para>
 
-<screen>
-^D      delete-thread           delete all messages in the current thread
-^U      undelete-thread         undelete all messages in the current thread
-^N      next-thread             jump to the start of the next thread
-^P      previous-thread         jump to the start of the previous thread
-^R      read-thread             mark the current thread as read
-ESC d   delete-subthread        delete all messages in the current subthread
-ESC u   undelete-subthread      undelete all messages in the current subthread
-ESC n   next-subthread          jump to the start of the next subthread
-ESC p   previous-subthread      jump to the start of the previous subthread
-ESC r   read-subthread          mark the current subthread as read
-ESC t   tag-thread              toggle the tag on the current thread
-ESC v	collapse-thread		toggle collapse for the current thread
-ESC V	collapse-all		toggle collapse for all threads
-P       parent-message          jump to parent message in thread
-</screen>
+<table>
+<title>Most common thread mode keys</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>&circ;D</entry><entry>delete-thread</entry><entry>delete all messages in the current thread</entry></row>
+<row><entry>&circ;U</entry><entry>undelete-thread</entry><entry>undelete all messages in the current thread</entry></row>
+<row><entry>&circ;N</entry><entry>next-thread</entry><entry>jump to the start of the next thread</entry></row>
+<row><entry>&circ;P</entry><entry>previous-thread</entry><entry>jump to the start of the previous thread</entry></row>
+<row><entry>&circ;R</entry><entry>read-thread</entry><entry>mark the current thread as read</entry></row>
+<row><entry>ESC d</entry><entry>delete-subthread</entry><entry>delete all messages in the current subthread</entry></row>
+<row><entry>ESC u</entry><entry>undelete-subthread</entry><entry>undelete all messages in the current subthread</entry></row>
+<row><entry>ESC n</entry><entry>next-subthread</entry><entry>jump to the start of the next subthread</entry></row>
+<row><entry>ESC p</entry><entry>previous-subthread</entry><entry>jump to the start of the previous subthread</entry></row>
+<row><entry>ESC r</entry><entry>read-subthread</entry><entry>mark the current subthread as read</entry></row>
+<row><entry>ESC t</entry><entry>tag-thread</entry><entry>toggle the tag on the current thread</entry></row>
+<row><entry>ESC v</entry><entry>collapse-thread</entry><entry>toggle collapse for the current thread</entry></row>
+<row><entry>ESC V</entry><entry>collapse-all</entry><entry>toggle collapse for all threads</entry></row>
+<row><entry>P</entry><entry>parent-message</entry><entry>jump to parent message in thread</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -640,9 +670,9 @@ display the number of hidden messages if the thread is collapsed.
 See also: <link linkend="strict-threads">&dollar;strict&lowbar;threads</link>.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Miscellaneous Functions</title>
 
 <para>
@@ -831,11 +861,11 @@ This function will go to the next line of non-quoted text which come
 after a line of quoted text in the internal pager.
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2>
+</sect1>
+
+<sect1 id="sending">
 <title>Sending Mail</title>
 
 <para>
@@ -845,15 +875,23 @@ messages.
 
 <para>
 
-<screen>
-m       compose         compose a new message
-r       reply           reply to sender
-g       group-reply     reply to all recipients
-L       list-reply      reply to mailing list address
-f       forward         forward message
-b       bounce          bounce (remail) message
-ESC k   mail-key        mail a PGP public key to someone
-</screen>
+<table>
+<title>Most commom mail sending keys</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>m</entry><entry>compose</entry><entry>compose a new message</entry></row>
+<row><entry>r</entry><entry>reply</entry><entry>reply to sender</entry></row>
+<row><entry>g</entry><entry>group-reply</entry><entry>reply to all recipients</entry></row>
+<row><entry>L</entry><entry>list-reply</entry><entry>reply to mailing list address</entry></row>
+<row><entry>f</entry><entry>forward</entry><entry>forward message</entry></row>
+<row><entry>b</entry><entry>bounce</entry><entry>bounce (remail) message</entry></row>
+<row><entry>ESC k</entry><entry>mail-key</entry><entry>mail a PGP public key to someone</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -891,33 +929,41 @@ will be appended to the message.
 
 <para>
 Once you have finished editing the body of your mail message, you are
-returned to the <emphasis>compose</emphasis> menu.  The following options are available:
+returned to the <emphasis>compose</emphasis> menu.  The following functions are available:
 </para>
 
 <para>
 
-<screen>
-a       attach-file             attach a file
-A	attach-message		attach message(s) to the message
-ESC k   attach-key              attach a PGP public key
-d       edit-description        edit description on attachment
-D       detach-file             detach a file
-t       edit-to                 edit the To field
-ESC f   edit-from               edit the From field
-r       edit-reply-to           edit the Reply-To field
-c       edit-cc                 edit the Cc field
-b       edit-bcc                edit the Bcc field
-y       send-message            send the message
-s       edit-subject            edit the Subject
-S       smime-menu              select S/MIME options
-f       edit-fcc                specify an ``Fcc'' mailbox
-p       pgp-menu                select PGP options
-P       postpone-message        postpone this message until later
-q       quit                    quit (abort) sending the message
-w	write-fcc		write the message to a folder
-i       ispell                  check spelling (if available on your system)
-^F      forget-passphrase       wipe passphrase(s) from memory
-</screen>
+<table>
+<title>Most common compose menu keys</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>a</entry><entry>attach-file</entry><entry>attach a file</entry></row>
+<row><entry>A</entry><entry>attach-message</entry><entry>attach message(s) to the message</entry></row>
+<row><entry>ESC k</entry><entry>attach-key</entry><entry>attach a PGP public key</entry></row>
+<row><entry>d</entry><entry>edit-description</entry><entry>edit description on attachment</entry></row>
+<row><entry>D</entry><entry>detach-file</entry><entry>detach a file</entry></row>
+<row><entry>t</entry><entry>edit-to</entry><entry>edit the To field</entry></row>
+<row><entry>ESC f</entry><entry>edit-from</entry><entry>edit the From field</entry></row>
+<row><entry>r</entry><entry>edit-reply-to</entry><entry>edit the Reply-To field</entry></row>
+<row><entry>c</entry><entry>edit-cc</entry><entry>edit the Cc field</entry></row>
+<row><entry>b</entry><entry>edit-bcc</entry><entry>edit the Bcc field</entry></row>
+<row><entry>y</entry><entry>send-message</entry><entry>send the message</entry></row>
+<row><entry>s</entry><entry>edit-subject</entry><entry>edit the Subject</entry></row>
+<row><entry>S</entry><entry>smime-menu</entry><entry>select S/MIME options</entry></row>
+<row><entry>f</entry><entry>edit-fcc</entry><entry>specify an ``Fcc'' mailbox</entry></row>
+<row><entry>p</entry><entry>pgp-menu</entry><entry>select PGP options</entry></row>
+<row><entry>P</entry><entry>postpone-message</entry><entry>postpone this message until later</entry></row>
+<row><entry>q</entry><entry>quit</entry><entry>quit (abort) sending the message</entry></row>
+<row><entry>w</entry><entry>write-fcc</entry><entry>write the message to a folder</entry></row>
+<row><entry>i</entry><entry>ispell</entry><entry>check spelling (if available on your system)</entry></row>
+<row><entry>&circ;F</entry><entry>forget-passphrase</entry><entry>wipe passphrase(s) from memory</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -930,7 +976,7 @@ not permitted when you are in that folder. The &percnt;r in <link linkend="statu
 a 'A' to indicate that you are in attach-message mode.
 </para>
 
-<sect3>
+<sect2>
 <title>Editing the message header</title>
 
 <para>
@@ -966,9 +1012,9 @@ allows you to create a new message thread.
 Also see <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Using Mutt with PGP</title>
 
 <para>
@@ -1017,13 +1063,20 @@ and validity fields are in order.
 <para>
 The flags sequence (&percnt;f) will expand to one of the following flags:
 
-<screen>
-R            The key has been revoked and can't be used.
-X            The key is expired and can't be used.
-d            You have marked the key as disabled.
-c            There are unknown critical self-signature 
-             packets.
-</screen>
+<table>
+<title>PGP key menu flags</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Flag</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>R</entry><entry>The key has been revoked and can't be used.</entry></row>
+<row><entry>X</entry><entry>The key is expired and can't be used.</entry></row>
+<row><entry>d</entry><entry>You have marked the key as disabled.</entry></row>
+<row><entry>c</entry><entry>There are unknown critical self-signature packets.</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -1052,9 +1105,9 @@ means a partially trusted association, and a plus character (<emphasis role="bol
 indicates complete validity.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Sending anonymous messages via mixmaster.</title>
 
 <para>
@@ -1102,11 +1155,11 @@ mixmaster remailers.  For details on the other capabilities, please
 have a look at the mixmaster documentation.
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2 id="forwarding-mail">
+</sect1>
+
+<sect1 id="forwarding-mail">
 <title>Forwarding and Bouncing Mail</title>
 
 <para>
@@ -1123,10 +1176,18 @@ The following keys are bound by default:
 
 <para>
 
-<screen>
-f       forward         forward message
-b       bounce          bounce (remail) message
-</screen>
+<table>
+<title>Message forwarding/bouncing keys</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>f</entry><entry>forward</entry><entry>forward message</entry></row>
+<row><entry>b</entry><entry>bounce</entry><entry>bounce (remail) message</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -1150,9 +1211,9 @@ Editing the message to forward follows the same procedure as sending or
 replying to a message does.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="postponing-mail">
+<sect1 id="postponing-mail">
 <title>Postponing Mail</title>
 
 <para>
@@ -1183,11 +1244,11 @@ replied to for the status of the message to be updated.
 See also the <link linkend="postpone">&dollar;postpone</link> quad-option.
 </para>
 
-</sect2>
-
 </sect1>
 
-<sect1 id="configuration">
+</chapter>
+
+<chapter id="configuration">
 <title>Configuration</title>
 
 <para>
@@ -1220,7 +1281,7 @@ same which is visible using the ``-v'' <link linkend="commandline">command line<
 V) from the index menu.
 </para>
 
-<sect2 id="muttrc-syntax" xreflabel="Syntax of Initialization Files">
+<sect1 id="muttrc-syntax" xreflabel="Syntax of Initialization Files">
 <title>Syntax of Initialization Files</title>
 
 <para>
@@ -1310,9 +1371,9 @@ The commands understood by mutt are explained in the next paragraphs.
 For a complete list, see the <link linkend="commands">command reference</link>.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="alias">
+<sect1 id="alias">
 <title>Defining/Using aliases</title>
 
 <para>
@@ -1398,9 +1459,9 @@ In the alias menu, you can select as many aliases as you want with the
 (default: q) to return to the address prompt.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="bind">
+<sect1 id="bind">
 <title>Changing the default key bindings</title>
 
 <para>
@@ -1532,31 +1593,39 @@ In addition, <emphasis>key</emphasis> may consist of:
 
 <para>
 
-<screen>
-\t              tab
-&lt;tab&gt;           tab
-&lt;backtab&gt;       backtab / shift-tab
-\r              carriage return
-\n              newline
-\e              escape
-&lt;esc&gt;           escape
-&lt;up&gt;            up arrow
-&lt;down&gt;          down arrow
-&lt;left&gt;          left arrow
-&lt;right&gt;         right arrow
-&lt;pageup&gt;        Page Up
-&lt;pagedown&gt;      Page Down
-&lt;backspace&gt;     Backspace
-&lt;delete&gt;        Delete
-&lt;insert&gt;        Insert
-&lt;enter&gt;         Enter
-&lt;return&gt;        Return
-&lt;home&gt;          Home
-&lt;end&gt;           End
-&lt;space&gt;         Space bar
-&lt;f1&gt;            function key 1
-&lt;f10&gt;           function key 10
-</screen>
+<table>
+<title>Symbolic key names</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Symbolic name</entry><entry>Meaning</entry></row>
+</thead>
+<tbody>
+<row><entry>&bsol;t</entry><entry>tab</entry></row>
+<row><entry>&lt;tab&gt;</entry><entry>tab</entry></row>
+<row><entry>&lt;backtab&gt;</entry><entry>backtab / shift-tab</entry></row>
+<row><entry>&bsol;r</entry><entry>carriage return</entry></row>
+<row><entry>&bsol;n</entry><entry>newline</entry></row>
+<row><entry>&bsol;e</entry><entry>escape</entry></row>
+<row><entry>&lt;esc&gt;</entry><entry>escape</entry></row>
+<row><entry>&lt;up&gt;</entry><entry>up arrow</entry></row>
+<row><entry>&lt;down&gt;</entry><entry>down arrow</entry></row>
+<row><entry>&lt;left&gt;</entry><entry>left arrow</entry></row>
+<row><entry>&lt;right&gt;</entry><entry>right arrow</entry></row>
+<row><entry>&lt;pageup&gt;</entry><entry>Page Up</entry></row>
+<row><entry>&lt;pagedown&gt;</entry><entry>Page Down</entry></row>
+<row><entry>&lt;backspace&gt;</entry><entry>Backspace</entry></row>
+<row><entry>&lt;delete&gt;</entry><entry>Delete</entry></row>
+<row><entry>&lt;insert&gt;</entry><entry>Insert</entry></row>
+<row><entry>&lt;enter&gt;</entry><entry>Enter</entry></row>
+<row><entry>&lt;return&gt;</entry><entry>Return</entry></row>
+<row><entry>&lt;home&gt;</entry><entry>Home</entry></row>
+<row><entry>&lt;end&gt;</entry><entry>End</entry></row>
+<row><entry>&lt;space&gt;</entry><entry>Space bar</entry></row>
+<row><entry>&lt;f1&gt;</entry><entry>function key 1</entry></row>
+<row><entry>&lt;f10&gt;</entry><entry>function key 10</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -1571,9 +1640,9 @@ For a complete list of functions, see the <link linkend="functions">reference</l
 sequence.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="charset-hook">
+<sect1 id="charset-hook">
 <title>Defining aliases for character sets </title>
 
 <para>
@@ -1596,9 +1665,9 @@ conversion library insists on using strange, system-specific names
 for character sets.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="folder-hook">
+<sect1 id="folder-hook">
 <title>Setting variables based upon mailbox</title>
 
 <para>
@@ -1648,9 +1717,9 @@ folder-hook . set sort=date-sent
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="macro">
+<sect1 id="macro">
 <title>Keyboard macros</title>
 
 <para>
@@ -1701,9 +1770,9 @@ which is shown in the help screens.
 silently truncated at the screen width, and are not wrapped.   
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="color">
+<sect1 id="color">
 <title>Using color and mono video attributes</title>
 
 <para>
@@ -2017,9 +2086,9 @@ standout
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="ignore">
+<sect1 id="ignore">
 <title>Ignoring (weeding) unwanted message headers</title>
 
 <para>
@@ -2061,9 +2130,9 @@ unignore posted-to:
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="alternates">
+<sect1 id="alternates">
 <title>Alternative addresses</title>
 
 <para>
@@ -2106,9 +2175,9 @@ entry will be removed. If the <emphasis>regexp</emphasis> for <literal>unalterna
 is ``*'', <emphasis>all entries</emphasis> on <literal>alternates</literal> will be removed.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="lists">
+<sect1 id="lists">
 <title>Mailing lists</title>
 
 <para>
@@ -2171,9 +2240,9 @@ To remove a mailing list from the list of subscribed mailing lists,
 but keep it on the list of known mailing lists, use ``unsubscribe''.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="mbox-hook">
+<sect1 id="mbox-hook">
 <title>Using Multiple spool mailboxes</title>
 
 <para>
@@ -2194,9 +2263,9 @@ pattern is used (it is not possible to save read mail in more than a single
 mailbox).
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="mailboxes">
+<sect1 id="mailboxes">
 <title>Defining mailboxes which receive mail</title>
 
 <para>
@@ -2243,9 +2312,9 @@ definition that affect these characters (like <link linkend="folder">&dollar;fol
 should be executed before the <literal>mailboxes</literal> command.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="my-hdr">
+<sect1 id="my-hdr">
 <title>User defined headers</title>
 
 <para>
@@ -2302,9 +2371,9 @@ fields, or the fields to remove.  For example, to remove all ``To'' and
 >
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="hdr-order">
+<sect1 id="hdr-order">
 <title>Defining the order of headers when viewing messages</title>
 
 <para>
@@ -2330,9 +2399,9 @@ hdr&lowbar;order From Date: From: To: Cc: Subject:
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="save-hook">
+<sect1 id="save-hook">
 <title>Specify default save filename</title>
 
 <para>
@@ -2367,9 +2436,9 @@ save-hook aol\\.com$ +spam
 Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="fcc-hook">
+<sect1 id="fcc-hook">
 <title>Specify default Fcc: mailbox when composing</title>
 
 <para>
@@ -2397,9 +2466,9 @@ The above will save a copy of all messages going to the aol.com domain to
 the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="fcc-save-hook">
+<sect1 id="fcc-save-hook">
 <title>Specify default save filename and default Fcc: mailbox at once</title>
 
 <para>
@@ -2411,9 +2480,9 @@ This command is a shortcut, equivalent to doing both a <link linkend="fcc-hook">
 and a <link linkend="save-hook">save-hook</link> with its arguments.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="send-hook">
+<sect1 id="send-hook">
 <title>Change settings based upon message recipients</title>
 
 <para>
@@ -2477,9 +2546,9 @@ subject, don't have any effect on the current message when executed
 from a send-hook.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="message-hook">
+<sect1 id="message-hook">
 <title>Change settings before formatting a message</title>
 
 <para>
@@ -2509,9 +2578,9 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="crypt-hook">
+<sect1 id="crypt-hook">
 <title>Choosing the cryptographic key of the recipient</title>
 
 <para>
@@ -2534,9 +2603,9 @@ can either put a numerical key ID here, an e-mail address, or even
 just a real name.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="push">
+<sect1 id="push">
 <title>Adding key sequences to the keyboard buffer</title>
 
 <para>
@@ -2556,9 +2625,9 @@ folder-hook . 'push &lt;collapse-all&gt;'
 </screen>
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="exec">
+<sect1 id="exec">
 <title>Executing functions</title>
 
 <para>
@@ -2571,9 +2640,9 @@ listed in the <link linkend="functions">function reference</link>.
 ``exec function'' is equivalent to ``push &lt;function&gt;''.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="score-command">
+<sect1 id="score-command">
 <title>Message Scoring</title>
 
 <para>
@@ -2601,9 +2670,9 @@ removed.  The pattern ``*'' is a special token which means to clear the list
 of all score entries.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="spam">
+<sect1 id="spam">
 <title>Spam detection</title>
 
 <para>
@@ -2736,9 +2805,9 @@ spam "^From: .*MAILER-DAEMON"       "999"
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="set">
+<sect1 id="set">
 <title>Setting variables</title>
 
 <para>
@@ -2825,9 +2894,9 @@ With the <literal>reset</literal> command there exists the special variable ``al
 which allows you to reset all variables to their system defaults.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="source">
+<sect1 id="source">
 <title>Reading initialization commands from another file</title>
 
 <para>
@@ -2852,9 +2921,9 @@ considered to be an executable program from which to read input (eg.
 <literal>source &tilde;/bin/myscript&verbar;</literal>).
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="unhook">
+<sect1 id="unhook">
 <title>Removing hooks</title>
 
 <para>
@@ -2868,14 +2937,14 @@ argument, or you can remove all hooks of a specific type by saying
 something like <literal>unhook send-hook</literal>.
 </para>
 
-</sect2>
-
 </sect1>
 
-<sect1 id="advancedusage">
+</chapter>
+
+<chapter id="advancedusage">
 <title>Advanced Usage</title>
 
-<sect2 id="regexp">
+<sect1 id="regexp">
 <title>Regular Expressions</title>
 
 <para>
@@ -3257,9 +3326,9 @@ Please note however that these operators are not defined by POSIX, so
 they may or may not be available in stock libraries on various systems.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="patterns">
+<sect1 id="patterns">
 <title>Patterns</title>
 
 <para>
@@ -3270,50 +3339,58 @@ messages:
 
 <para>
 
-<screen>
-~A              all messages
-~b EXPR         messages which contain EXPR in the message body
-~B EXPR         messages which contain EXPR in the whole message
-~c EXPR         messages carbon-copied to EXPR
-~C EXPR         message is either to: or cc: EXPR
-~d [MIN]-[MAX]  messages with ``date-sent'' in a Date range
-~D              deleted messages
-~e EXPR         message which contains EXPR in the ``Sender'' field
-~E              expired messages
-~F              flagged messages
-~f EXPR         messages originating from EXPR
-~g              cryptographically signed messages
-~G              cryptographically encrypted messages
-~h EXPR         messages which contain EXPR in the message header
-~H EXPR         messages with a spam attribute matching EXPR
-~i EXPR         message which match EXPR in the ``Message-ID'' field
-~k		message contains PGP key material
-~L EXPR         message is either originated or received by EXPR
-~l              message is addressed to a known mailing list
-~m [MIN]-[MAX]  message in the range MIN to MAX *)
-~n [MIN]-[MAX]  messages with a score in the range MIN to MAX *)
-~N              new messages
-~O              old messages
-~p              message is addressed to you (consults alternates)
-~P              message is from you (consults alternates)
-~Q              messages which have been replied to
-~r [MIN]-[MAX]  messages with ``date-received'' in a Date range
-~R              read messages
-~s EXPR         messages having EXPR in the ``Subject'' field.
-~S              superseded messages
-~t EXPR         messages addressed to EXPR
-~T              tagged messages
-~u		message is addressed to a subscribed mailing list
-~U              unread messages
-~v		message is part of a collapsed thread.
-~V		cryptographically verified messages
-~x EXPR         messages which contain EXPR in the `References' field
-~X [MIN]-[MAX]  messages with MIN to MAX attachments *)
-~y EXPR         messages which contain EXPR in the `X-Label' field
-~z [MIN]-[MAX]  messages with a size in the range MIN to MAX *)
-~=		duplicated messages (see $duplicate_threads)
-~$		unreferenced messages (requires threaded view)
-</screen>
+<table>
+<title>Pattern modifiers</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Pattern modifier</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>~A</entry><entry>all messages</entry></row>
+<row><entry>~b EXPR</entry><entry>messages which contain EXPR in the message body</entry></row>
+<row><entry>~B EXPR</entry><entry>messages which contain EXPR in the whole message</entry></row>
+<row><entry>~c EXPR</entry><entry>messages carbon-copied to EXPR</entry></row>
+<row><entry>~C EXPR</entry><entry>message is either to: or cc: EXPR</entry></row>
+<row><entry>~d &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with ``date-sent'' in a Date range</entry></row>
+<row><entry>~D</entry><entry>deleted messages</entry></row>
+<row><entry>~e EXPR</entry><entry>message which contains EXPR in the ``Sender'' field</entry></row>
+<row><entry>~E</entry><entry>expired messages</entry></row>
+<row><entry>~F</entry><entry>flagged messages</entry></row>
+<row><entry>~f EXPR</entry><entry>messages originating from EXPR</entry></row>
+<row><entry>~g</entry><entry>cryptographically signed messages</entry></row>
+<row><entry>~G</entry><entry>cryptographically encrypted messages</entry></row>
+<row><entry>~h EXPR</entry><entry>messages which contain EXPR in the message header</entry></row>
+<row><entry>~H EXPR</entry><entry>messages with a spam attribute matching EXPR</entry></row>
+<row><entry>~i EXPR</entry><entry>message which match EXPR in the ``Message-ID'' field</entry></row>
+<row><entry>~k</entry><entry>message contains PGP key material</entry></row>
+<row><entry>~L EXPR</entry><entry>message is either originated or received by EXPR</entry></row>
+<row><entry>~l</entry><entry>message is addressed to a known mailing list</entry></row>
+<row><entry>~m &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>message in the range MIN to MAX *)</entry></row>
+<row><entry>~n &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with a score in the range MIN to MAX *)</entry></row>
+<row><entry>~N</entry><entry>new messages</entry></row>
+<row><entry>~O</entry><entry>old messages</entry></row>
+<row><entry>~p</entry><entry>message is addressed to you (consults alternates)</entry></row>
+<row><entry>~P</entry><entry>message is from you (consults alternates)</entry></row>
+<row><entry>~Q</entry><entry>messages which have been replied to</entry></row>
+<row><entry>~r &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with ``date-received'' in a Date range</entry></row>
+<row><entry>~R</entry><entry>read messages</entry></row>
+<row><entry>~s EXPR</entry><entry>messages having EXPR in the ``Subject'' field.</entry></row>
+<row><entry>~S</entry><entry>superseded messages</entry></row>
+<row><entry>~t EXPR</entry><entry>messages addressed to EXPR</entry></row>
+<row><entry>~T</entry><entry>tagged messages</entry></row>
+<row><entry>~u</entry><entry>message is addressed to a subscribed mailing list</entry></row>
+<row><entry>~U</entry><entry>unread messages</entry></row>
+<row><entry>~v</entry><entry>message is part of a collapsed thread.</entry></row>
+<row><entry>~V</entry><entry>cryptographically verified messages</entry></row>
+<row><entry>~x EXPR</entry><entry>messages which contain EXPR in the `References' field</entry></row>
+<row><entry>~X &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with MIN to MAX attachments *)</entry></row>
+<row><entry>~y EXPR</entry><entry>messages which contain EXPR in the `X-Label' field</entry></row>
+<row><entry>~z &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with a size in the range MIN to MAX *)</entry></row>
+<row><entry>~=</entry><entry>duplicated messages (see $duplicate_threads)</entry></row>
+<row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -3343,7 +3420,7 @@ its value.
 are allowed, too.
 </para>
 
-<sect3>
+<sect2>
 <title>Pattern Modifier</title>
 
 <para>
@@ -3362,9 +3439,9 @@ This example matches all mails which only has recipients from Germany.
 
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Complex Patterns</title>
 
 <para>
@@ -3467,9 +3544,9 @@ This would be seperated to two OR'd patterns: <emphasis>&tilde;f me@(mutt\.org</
 and <emphasis>cs\.hmc\.edu)</emphasis>. They are never what you want.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Searching by Date</title>
 
 <para>
@@ -3504,10 +3581,10 @@ An error margin is a sign (+ or -), followed by a digit, followed by
 one of the following units:
 
 <screen>
-y	years
-m	months
-w	weeks
-d	days
+y        years
+m        months
+w        weeks
+d        days
 </screen>
 
 As a special case, you can replace the sign by a ``*'' character,
@@ -3582,11 +3659,11 @@ Limit to messages matching: ~d &lt;1m
 in the main index.
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2>
+</sect1>
+
+<sect1 id="tags">
 <title>Using Tags</title>
 
 <para>
@@ -3620,9 +3697,9 @@ operator;  after this operator the rest of the macro will be executed as
 normal.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="hooks">
+<sect1 id="hooks">
 <title>Using Hooks</title>
 
 <para>
@@ -3700,7 +3777,7 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 
 </para>
 
-<sect3 id="pattern-hook" xreflabel="Message Matching in Hooks">
+<sect2 id="pattern-hook" xreflabel="Message Matching in Hooks">
 <title>Message Matching in Hooks</title>
 
 <para>
@@ -3744,11 +3821,11 @@ pattern is translated at the time the hook is declared, so the value of
 at that time will be used.
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2 id="query">
+</sect1>
+
+<sect1 id="query">
 <title>External Address Queries</title>
 
 <para>
@@ -3808,9 +3885,9 @@ menu.  At the query menu, you can select one or more addresses to be
 added to the prompt.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="mailbox-formats">
 <title>Mailbox Formats</title>
 
 <para>
@@ -3863,9 +3940,9 @@ programs are writing the mailbox over NFS, which means that no file locking
 is needed.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="shortcuts">
+<sect1 id="shortcuts">
 <title>Mailbox Shortcuts</title>
 
 <para>
@@ -3930,9 +4007,9 @@ path.
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="using-lists">
+<sect1 id="using-lists">
 <title>Handling Mailing Lists</title>
 
 <para>
@@ -4029,9 +4106,9 @@ with large volume mailing lists easier because you can easily delete
 uninteresting threads and quickly find topics of value.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="editing-threads">
 <title>Editing threads</title>
 
 <para>
@@ -4041,7 +4118,7 @@ correspondents. This allows to clean your mailboxes formats) from these
 annoyances which make it hard to follow a discussion.
 </para>
 
-<sect3>
+<sect2>
 <title>Linking threads</title>
 
 <para>
@@ -4059,9 +4136,9 @@ You can also connect multiple childs at once, tagging them and using the
 tag-prefix command (';') or the auto&lowbar;tag option.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Breaking threads</title>
 
 <para>
@@ -4073,11 +4150,11 @@ by default to &num;), which will turn the subthread starting from the
 current message into a whole different thread.
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2>
+</sect1>
+
+<sect1 id="dsn">
 <title>Delivery Status Notification (DSN) Support</title>
 
 <para>
@@ -4096,9 +4173,9 @@ of your message should be returned with the receipt (headers or full
 message).  Refer to the man page on sendmail for more details on DSN.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="pop">
 <title>POP3 Support (OPTIONAL)</title>
 
 <para>
@@ -4155,9 +4232,9 @@ url="http://www.ccil.org/~esr/fetchmail"
 >
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="imap">
 <title>IMAP Support (OPTIONAL)</title>
 
 <para>
@@ -4234,7 +4311,7 @@ v12.250, the server has been reported to disconnect a client if another client
 selects the same folder.
 </para>
 
-<sect3>
+<sect2>
 <title>The Folder Browser</title>
 
 <para>
@@ -4279,9 +4356,9 @@ these are bound to <literal>s</literal> and <literal>u</literal>, respectively).
 
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Authentication</title>
 
 <para>
@@ -4345,11 +4422,11 @@ listed above).
 
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2 id="account-hook">
+</sect1>
+
+<sect1 id="account-hook">
 <title>Managing multiple IMAP/POP accounts (OPTIONAL)</title>
 
 <para>
@@ -4375,9 +4452,9 @@ account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="urlview">
+<sect1 id="urlview">
 <title>Start a WWW Browser on URLs (EXTERNAL)</title>
 
 <para>
@@ -4397,11 +4474,11 @@ macro pager \cb |urlview\n
 
 </para>
 
-</sect2>
-
 </sect1>
 
-<sect1 id="mimesupport">
+</chapter>
+
+<chapter id="mimesupport">
 <title>Mutt's MIME Support</title>
 
 <para>
@@ -4415,7 +4492,7 @@ IANA MIME types.  The other is the <literal>mailcap</literal> file, which specif
 the external commands to use for handling specific MIME types.
 </para>
 
-<sect2>
+<sect1 id="using-mime">
 <title>Using MIME in Mutt</title>
 
 <para>
@@ -4424,7 +4501,7 @@ pager (while viewing a message), the attachment menu and the compose
 menu.
 </para>
 
-<sect3>
+<sect2>
 <title>Viewing MIME messages in the pager</title>
 
 <para>
@@ -4459,9 +4536,9 @@ If Mutt cannot deal with a MIME type, it will display a message like:
 
 </para>
 
-</sect3>
+</sect2>
 
-<sect3 id="attach-menu">
+<sect2 id="attach-menu">
 <title>The Attachment Menu</title>
 
 <para>
@@ -4486,9 +4563,9 @@ and forward functions) to attachments of type <literal>message/rfc822</literal>.
 See the help on the attachment menu for more information.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3 id="compose-menu">
+<sect2 id="compose-menu">
 <title>The Compose Menu</title>
 
 <para>
@@ -4526,11 +4603,11 @@ The final field is the description of the attachment, and can be
 changed with the <literal>edit-description</literal> command (default: d).
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2>
+</sect1>
+
+<sect1 id="mime-types">
 <title>MIME Type configuration with <literal>mime.types</literal></title>
 
 <para>
@@ -4572,9 +4649,9 @@ various molecular viewers. Non-recognised mime types should only be used
 if the recipient of the message is likely to be expecting such attachments.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2>
+<sect1 id="mime-viewers">
 <title>MIME Viewer configuration with <literal>mailcap</literal></title>
 
 <para>
@@ -4605,7 +4682,7 @@ usually as <literal>/usr/local/etc/mailcap</literal>, which contains some baseli
 entries.
 </para>
 
-<sect3>
+<sect2>
 <title>The Basics of the mailcap file</title>
 
 <para>
@@ -4702,9 +4779,9 @@ text/*; more
 This is the simplest form of a mailcap file.
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Secure use of mailcap</title>
 
 <para>
@@ -4747,12 +4824,12 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
 
 </para>
 
-</sect3>
+</sect2>
 
-<sect3>
+<sect2>
 <title>Advanced mailcap Usage</title>
 
-<sect4>
+<sect3>
 <title>Optional Fields</title>
 
 <para>
@@ -4883,9 +4960,9 @@ to the next entry and use lynx to display the text/html object.
 </variablelist>
 </para>
 
-</sect4>
+</sect3>
 
-<sect4>
+<sect3>
 <title>Search Order</title>
 
 <para>
@@ -4925,9 +5002,9 @@ entry.  If the program returns non-zero, Mutt will use the second entry
 for interactive viewing.
 </para>
 
-</sect4>
+</sect3>
 
-<sect4>
+<sect3>
 <title>Command Expansion</title>
 
 <para>
@@ -4994,11 +5071,11 @@ specified in RFC 1524.  The main purpose of these parameters is for
 multipart messages, which is handled internally by Mutt.
 </para>
 
-</sect4>
-
 </sect3>
 
-<sect3>
+</sect2>
+
+<sect2>
 <title>Example mailcap files</title>
 
 <para>
@@ -5061,11 +5138,11 @@ application/ms-excel; open.pl %s
 
 </para>
 
-</sect3>
-
 </sect2>
 
-<sect2 id="auto-view">
+</sect1>
+
+<sect1 id="auto-view">
 <title>MIME Autoview</title>
 
 <para>
@@ -5115,9 +5192,9 @@ This can be used with message-hook to autoview messages based on size, etc.
 ``unauto&lowbar;view *'' will remove all previous entries.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="alternative-order">
+<sect1 id="alternative-order">
 <title>MIME Multipart/Alternative</title>
 
 <para>
@@ -5146,9 +5223,9 @@ To remove a MIME type from the <literal>alternative&lowbar;order</literal> list,
 <literal>unalternative&lowbar;order</literal> command.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="attachments">
+<sect1 id="attachments">
 <title>Attachment Searching and Counting</title>
 
 <para>
@@ -5260,9 +5337,9 @@ attachments   -I message/external-body
 that it can be pasted elsewhere.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="mime-lookup">
+<sect1 id="mime-lookup">
 <title>MIME Lookup</title>
 
 <para>
@@ -5287,14 +5364,14 @@ for any particular mime-type if it had been set, for example, in a global
 muttrc.
 </para>
 
-</sect2>
-
 </sect1>
 
-<sect1 id="reference">
+</chapter>
+
+<chapter id="reference">
 <title>Reference</title>
 
-<sect2 id="commandline">
+<sect1 id="commandline">
 <title>Command line options</title>
 
 <para>
@@ -5305,30 +5382,38 @@ to send messages from the command line as well.
 
 <para>
 
-<screen>
--A	expand an alias
--a      attach a file to a message
--b      specify a blind carbon-copy (BCC) address
--c      specify a carbon-copy (Cc) address
--D      print the value of all mutt variables to stdout
--e      specify a config command to be run after initilization files are read
--f      specify a mailbox to load
--F      specify an alternate file to read initialization commands
--h      print help on command line options
--H      specify a draft file from which to read a header and body
--i      specify a file to include in a message composition
--m      specify a default mailbox type
--n      do not read the system Muttrc
--p      recall a postponed message
--Q      query a configuration variable
--R      open mailbox in read-only mode
--s      specify a subject (enclose in quotes if it contains spaces)
--v      show version number and compile-time definitions
--x      simulate the mailx(1) compose mode
--y      show a menu containing the files specified by the mailboxes command
--z      exit immediately if there are no messages in the mailbox
--Z      open the first folder with new message,exit immediately if none
-</screen>
+<table>
+<title>Command line options</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Option</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>-A</entry><entry>expand an alias</entry></row>
+<row><entry>-a</entry><entry>attach a file to a message</entry></row>
+<row><entry>-b</entry><entry>specify a blind carbon-copy (BCC) address</entry></row>
+<row><entry>-c</entry><entry>specify a carbon-copy (Cc) address</entry></row>
+<row><entry>-D</entry><entry>print the value of all mutt variables to stdout</entry></row>
+<row><entry>-e</entry><entry>specify a config command to be run after initilization files are read</entry></row>
+<row><entry>-f</entry><entry>specify a mailbox to load</entry></row>
+<row><entry>-F</entry><entry>specify an alternate file to read initialization commands</entry></row>
+<row><entry>-h</entry><entry>print help on command line options</entry></row>
+<row><entry>-H</entry><entry>specify a draft file from which to read a header and body</entry></row>
+<row><entry>-i</entry><entry>specify a file to include in a message composition</entry></row>
+<row><entry>-m</entry><entry>specify a default mailbox type</entry></row>
+<row><entry>-n</entry><entry>do not read the system Muttrc</entry></row>
+<row><entry>-p</entry><entry>recall a postponed message</entry></row>
+<row><entry>-Q</entry><entry>query a configuration variable</entry></row>
+<row><entry>-R</entry><entry>open mailbox in read-only mode</entry></row>
+<row><entry>-s</entry><entry>specify a subject (enclose in quotes if it contains spaces)</entry></row>
+<row><entry>-v</entry><entry>show version number and compile-time definitions</entry></row>
+<row><entry>-x</entry><entry>simulate the mailx(1) compose mode</entry></row>
+<row><entry>-y</entry><entry>show a menu containing the files specified by the mailboxes command</entry></row>
+<row><entry>-z</entry><entry>exit immediately if there are no messages in the mailbox</entry></row>
+<row><entry>-Z</entry><entry>open the first folder with new message,exit immediately if none</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </para>
 
@@ -5364,9 +5449,9 @@ of ``data set for run &num;2''.  In the body of the message will be the contents
 of the file ``&tilde;/run2.dat''.
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="commands">
+<sect1 id="commands">
 <title>Configuration Commands</title>
 
 <para>
@@ -5687,7 +5772,7 @@ The following are the commands understood by mutt.
 
 </para>
 
-</sect2>
+</sect1>
 
-<sect2 id="variables">
+<sect1 id="variables">
 <title>Configuration variables</title>

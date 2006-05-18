@@ -692,7 +692,7 @@ static void print_confline (const char *varname, int type, const char *val, FILE
     /* SGML based manual */
     case F_SGML:
     {
-      fputs ("\n<sect3 id=\"", out);
+      fputs ("\n<sect2 id=\"", out);
       sgml_id_fputs(varname, out);
       fputs ("\">\n<title>", out);
       sgml_fputs (varname, out);
@@ -1102,7 +1102,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
         case SP_END_SECT:
         {
-	  fputs ("</sect3>", out);
+	  fputs ("</sect2>", out);
 	  break;
         }
 	case SP_STR:
