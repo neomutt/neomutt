@@ -641,8 +641,11 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
 
 static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
 				const char *subdir, const char *fname,
-				int *count, int is_old, ino_t inode,
-				void *hc)
+				int *count, int is_old, ino_t inode
+#if USE_HCACHE
+				, header_cache_t *hc
+#endif
+			       )
 {
   struct maildir *entry;
   HEADER *h = NULL;
@@ -728,7 +731,9 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   struct dirent *de;
   char buf[_POSIX_PATH_MAX];
   int is_old = 0;
-  void *hc = NULL;
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+#endif
 
   if (subdir)
   {
@@ -764,7 +769,10 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
 #else
 			 0
 #endif
-			, hc);
+#if USE_HCACHE
+			 , hc
+#endif
+			 );
   }
 
   closedir (dirp);
@@ -935,7 +943,7 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md)
   int count;
 
 #if USE_HCACHE
-  void *hc = NULL;
+  header_cache_t *hc = NULL;
   void *data;
   struct timeval *when = NULL;
   struct stat lastchanged;
@@ -1488,7 +1496,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   char path[_POSIX_PATH_MAX], tmp[_POSIX_PATH_MAX];
   int i, j;
 #if USE_HCACHE
-  void *hc = NULL;
+  header_cache_t *hc = NULL;
 #endif /* USE_HCACHE */
 
   if (ctx->magic == M_MH)

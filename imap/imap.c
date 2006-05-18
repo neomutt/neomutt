@@ -242,7 +242,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   int i, cacheno;
 
 #if USE_HCACHE
-  void* hc;
+  header_cache_t *hc;
   char uidbuf[32];
   
   hc = mutt_hcache_open (HeaderCache, idata->ctx->path);

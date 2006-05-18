@@ -21,16 +21,19 @@
 #ifndef _HCACHE_H_
 #define _HCACHE_H_ 1
 
-void *mutt_hcache_open(const char *path, const char *folder);
-void mutt_hcache_close(void *db);
+struct header_cache;
+typedef struct header_cache header_cache_t;
+
+header_cache_t *mutt_hcache_open(const char *path, const char *folder);
+void mutt_hcache_close(header_cache_t *h);
 HEADER *mutt_hcache_restore(const unsigned char *d, HEADER **oh);
-void *mutt_hcache_fetch(void *db, const char *filename, size_t (*keylen)(const char *fn));
-void *mutt_hcache_fetch_raw (void *db, const char *filename,
+void *mutt_hcache_fetch(header_cache_t *h, const char *filename, size_t (*keylen)(const char *fn));
+void *mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
                              size_t (*keylen)(const char *fn));
-int mutt_hcache_store(void *db, const char *filename, HEADER *h,
+int mutt_hcache_store(header_cache_t *h, const char *filename, HEADER *header,
                       unsigned long uid_validity, size_t (*keylen)(const char *fn));
-int mutt_hcache_store_raw (void* db, const char* filename, void* data,
+int mutt_hcache_store_raw (header_cache_t *h, const char* filename, void* data,
                            size_t dlen, size_t(*keylen) (const char* fn));
-int mutt_hcache_delete(void *db, const char *filename, size_t (*keylen)(const char *fn));
+int mutt_hcache_delete(header_cache_t *h, const char *filename, size_t (*keylen)(const char *fn));
 
 #endif /* _HCACHE_H_ */

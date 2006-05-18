@@ -71,7 +71,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
 
 #if USE_HCACHE
-  void *hc = NULL;
+  header_cache_t *hc = NULL;
   unsigned int *uid_validity = NULL;
   unsigned int *uidnext = NULL;
   int evalhc = 0;
