@@ -1,3 +1,18 @@
+2006-05-18 17:35:30  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* imap/message.c, imap/utf7.c, imap/util.c, mutt_ssl_gnutls.c,
+	muttlib.c, mx.c, pager.c, pgplib.c, remailer.c, rfc1524.c,
+	rfc2047.c, rfc2231.c, rfc822.c, sendlib.c, buffy.c, charset.c,
+	check_sec.sh, color.c, enter.c, group.c, hash.c, init.c, lib.c,
+	menu.c, mh.c, mutt_idna.c: Avoid safe_free() usage and add
+	security checks.
+
+	Add checks to check_sec.sh for memory functions. These include a
+	check for use of safe_free() instead of FREE() and a check whether
+	FREE(&...) is used. For the former, __SAFE_FREE_CHECKED__ is to be
+	used, for the latter __FREE_CHECKED__ to avoid messages from
+	check_sec.sh
+
 2006-05-18 08:53:31  Rocco Rutte  <pdmef@gmx.net>  (roessler)
 
 	* Makefile.am, build-release, reldate.h: Autogenerate reldate.h
