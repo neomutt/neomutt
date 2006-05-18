@@ -1,4 +1,12 @@
-2006-05-18 18:11:20  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-05-18 18:35:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* hcache.c, hcache.h, imap/imap.c, imap/message.c, mh.c: Use
+	header_cache_t* instead of void* for header cache.
+
+	In hcache.c, the header_cache structure is defined to match the
+	needs per DB backend used. Thus the interface uses void* abstract
+	from it. This patch adds a 'header_cache' forward declaration to
+	hcache.h so that we at least get a little more type safety.
 
 	* INSTALL: Note that the DocBook 4.2 DTD should be installed
 	locally in order to build the manual.
