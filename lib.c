@@ -185,7 +185,7 @@ void safe_realloc (void *ptr, size_t siz)
   *p = r;
 }
 
-void safe_free (void *ptr)
+void safe_free (void *ptr)	/* __SAFE_FREE_CHECKED__ */
 {
   void **p = (void **)ptr;
   if (*p)
@@ -260,7 +260,7 @@ char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
 
 void mutt_str_replace (char **p, const char *s)
 {
-  FREE (p);
+  FREE (p);		/* __FREE_CHECKED__ */
   *p = safe_strdup (s);
 }
 

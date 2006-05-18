@@ -288,7 +288,7 @@ static int tls_socket_close (CONNECTION* conn)
 
     gnutls_certificate_free_credentials (data->xcred);
     gnutls_deinit (data->state);
-    safe_free ((void **) &conn->sockdata);
+    FREE (&conn->sockdata);
   }
 
   return raw_socket_close (conn);

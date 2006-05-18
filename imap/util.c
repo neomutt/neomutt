@@ -278,7 +278,7 @@ void imap_free_idata (IMAP_DATA** idata)
   imap_mboxcache_free (*idata);
   mutt_buffer_free(&(*idata)->cmdbuf);
   FREE (&(*idata)->buf);
-  FREE (idata);
+  FREE (idata);		/* __FREE_CHECKED__ */
 }
 
 /*

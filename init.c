@@ -346,7 +346,7 @@ static void mutt_free_opt (struct option_t* p)
     break;
   case DT_PATH:
   case DT_STR:
-    FREE ((char**)p->data);
+    FREE ((char**)p->data);		/* __FREE_CHECKED__ */
     break;
   }
 }
@@ -477,7 +477,7 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
        * the template, and leaving t pointed at the current item.
        */
       t = last;
-      safe_free(&t->template);
+      FREE(&t->template);
       break;
     }
     if (!last->next)
@@ -533,8 +533,8 @@ static int remove_from_spam_list (SPAM_LIST **list, const char *pat)
   {
     *list = spam->next;
     mutt_free_regexp(&spam->rx);
-    safe_free(&spam->template);
-    safe_free(&spam);
+    FREE(&spam->template);
+    FREE(&spam);
     return 1;
   }
 
@@ -545,8 +545,8 @@ static int remove_from_spam_list (SPAM_LIST **list, const char *pat)
     {
       prev->next = spam->next;
       mutt_free_regexp(&spam->rx);
-      safe_free(&spam->template);
-      safe_free(&spam);
+      FREE(&spam->template);
+      FREE(&spam);
       spam = prev->next;
       ++nremoved;
     }
@@ -981,7 +981,7 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
     a->major_int = mutt_check_mime_type(a->major);
     regcomp(&a->minor_rx, tmpminor, REG_ICASE|REG_EXTENDED);
 
-    safe_free(&tmpminor);
+    FREE(&tmpminor);
 
     dprint(5, (debugfile, "parse_attach_list: added %s/%s [%d]\n",
 		a->major, a->minor, a->major_int));
@@ -1759,7 +1759,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	else
-	  FREE ((void *) MuttVars[idx].data);
+	  /* MuttVars[idx].data is already 'char**' (or some 'void**') or... 
+	   * so cast to 'void*' is okay */
+	  FREE ((void *) MuttVars[idx].data);		/* __FREE_CHECKED__ */
       }
       else if (query || *s->dptr != '=')
       {
@@ -1807,7 +1809,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
         else
-	  FREE ((void *) MuttVars[idx].data);
+	  /* MuttVars[idx].data is already 'char**' (or some 'void**') or... 
+	   * so cast to 'void*' is okay */
+	  FREE ((void *) MuttVars[idx].data);		/* __FREE_CHECKED__ */
 
         mutt_extract_token (tmp, s, 0);
         if (myvar)
@@ -3080,7 +3084,7 @@ static void myvar_del (const char* var)
     tmp = (*cur)->next;
     FREE (&(*cur)->name);
     FREE (&(*cur)->value);
-    FREE (cur);
+    FREE (cur);		/* __FREE_CHECKED__ */
     *cur = tmp;
   }
 }

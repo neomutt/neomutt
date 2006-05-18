@@ -75,7 +75,7 @@ void mutt_group_context_destroy (group_context_t **ctx)
   for (; *ctx; *ctx = p)
   {
     p = (*ctx)->next;
-    FREE (ctx);
+    FREE (ctx);		/* __FREE_CHECKED__ */
   }
 }
 

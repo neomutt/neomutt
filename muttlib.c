@@ -291,7 +291,7 @@ void mutt_free_header (HEADER **h)
 #if defined USE_POP || defined USE_IMAP
   FREE (&(*h)->data);
 #endif
-  FREE (h);
+  FREE (h);		/* __FREE_CHECKED__ */
 }
 
 /* returns true if the header contained in "s" is in list "t" */
@@ -679,7 +679,7 @@ void mutt_free_envelope (ENVELOPE **p)
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
-  FREE (p);
+  FREE (p);		/* __FREE_CHECKED__ */
 }
 
 /* move all the headers from extra not present in base into base */
@@ -913,13 +913,13 @@ int mutt_check_overwrite (const char *attname, const char *path,
 	  mutt_str_replace (directory, fname);
 	  break;
 	case 1:		/* yes */
-	  FREE (directory);
+	  FREE (directory);		/* __FREE_CHECKED__ */
 	  break;
 	case -1:	/* abort */
-	  FREE (directory); 
+	  FREE (directory); 		/* __FREE_CHECKED__ */
 	  return -1;
 	case  2:	/* no */
-	  FREE (directory);
+	  FREE (directory);		/* __FREE_CHECKED__ */
 	  return 1;
       }
     }
@@ -1393,7 +1393,7 @@ BUFFER * mutt_buffer_init(BUFFER *b)
   }
   else
   {
-    safe_free(&b->data);
+    FREE(&b->data);
   }
   memset(b, 0, sizeof(BUFFER));
   return b;
@@ -1473,7 +1473,7 @@ void mutt_buffer_free (BUFFER **p)
 
    FREE(&(*p)->data);
    /* dptr is just an offset to data and shouldn't be freed */
-   FREE(p);
+   FREE(p);		/* __FREE_CHECKED__ */
 }
 
 /* dynamically grows a BUFFER to accomodate s, in increments of 128 bytes.
@@ -1545,7 +1545,7 @@ void mutt_free_regexp (REGEXP **pp)
   FREE (&(*pp)->pattern);
   regfree ((*pp)->rx);
   FREE (&(*pp)->rx);
-  FREE (pp);
+  FREE (pp);		/* __FREE_CHECKED__ */
 }
 
 void mutt_free_rx_list (RX_LIST **list)
@@ -1572,7 +1572,7 @@ void mutt_free_spam_list (SPAM_LIST **list)
     p = *list;
     *list = (*list)->next;
     mutt_free_regexp (&p->rx);
-    safe_free(&p->template);
+    FREE (&p->template);
     FREE (&p);
   }
 }

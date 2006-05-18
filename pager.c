@@ -389,7 +389,7 @@ cleanup_quote (struct q_class_t **QuoteList)
     ptr = (*QuoteList)->next;
     if ((*QuoteList)->prefix)
       FREE (&(*QuoteList)->prefix);
-    FREE (QuoteList);
+    FREE (QuoteList);		/* __FREE_CHECKED__ */
     *QuoteList = ptr;
   }
 

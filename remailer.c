@@ -126,7 +126,7 @@ static void mix_free_remailer (REMAILER **r)
   FREE (&(*r)->addr);
   FREE (&(*r)->ver);
   
-  FREE (r);
+  FREE (r);		/* __FREE_CHECKED__ */
 }
 
 /* parse the type2.list as given by mixmaster -T */
@@ -216,7 +216,7 @@ static void mix_free_type2_list (REMAILER ***ttlp)
   for (i = 0; type2_list[i]; i++)
     mix_free_remailer (&type2_list[i]);
   
-  FREE (type2_list);
+  FREE (type2_list);		/* __FREE_CHECKED__ */
 }
 
 

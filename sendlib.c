@@ -828,7 +828,7 @@ static size_t convert_file_from_to (FILE *file,
   for (i = 0; i < ncodes; i++)
     FREE (&tcode[i]);
 
-  FREE (tcode);
+  FREE (tcode);		/* __FREE_CHECKED__ */
   
   return ret;
 }
@@ -1819,7 +1819,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     else if (pid == -1)
     {
       unlink (msg);
-      FREE (tempfile);
+      FREE (tempfile);		/* __FREE_CHECKED__ */
       _exit (S_ERR);
     }
 
@@ -1850,7 +1850,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       if (SendmailWait && st == (0xff & EX_OK))
       {
 	unlink (*tempfile); /* no longer needed */
-	FREE (tempfile);
+	FREE (tempfile);		/* __FREE_CHECKED__ */
       }
     }
     else
@@ -1860,7 +1860,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       if (SendmailWait > 0)
       {
 	unlink (*tempfile);
-	FREE (tempfile);
+	FREE (tempfile);		/* __FREE_CHECKED__ */
       }
     }
 
@@ -1872,7 +1872,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     {
       /* the parent is already dead */
       unlink (*tempfile);
-      FREE (tempfile);
+      FREE (tempfile);		/* __FREE_CHECKED__ */
     }
 
     _exit (st);

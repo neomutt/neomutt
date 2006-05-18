@@ -564,7 +564,7 @@ void _rfc2047_encode_string (char **pd, int encode_specials, int col)
 		  Charset, charsets, &e, &elen,
 		  encode_specials ? RFC822Specials : NULL);
 
-  FREE (pd);
+  FREE (pd);		/* __FREE_CHECKED__ */
   *pd = e;
 }
 
@@ -761,7 +761,7 @@ void rfc2047_decode (char **pd)
   }
   *d = 0;
 
-  FREE (pd);
+  FREE (pd);		/* __FREE_CHECKED__ */
   *pd = d0;
   mutt_str_adjust (pd);
 }

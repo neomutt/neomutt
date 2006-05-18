@@ -89,7 +89,7 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
   return 0;
   
  notrans:
-  FREE (out);
+  FREE (out);		/* __FREE_CHECKED__ */
   *out = safe_strdup (in);
   return 1;
 }
@@ -114,7 +114,7 @@ int mutt_local_to_idna (const char *in, char **out)
   FREE (&tmp);
   if (rv < 0)
   {
-    FREE (out);
+    FREE (out);		/* __FREE_CHECKED__ */
     *out = safe_strdup (in);
   }
   return rv;

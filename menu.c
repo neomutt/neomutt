@@ -703,7 +703,7 @@ void mutt_menuDestroy (MUTTMENU **p)
     FREE (& (*p)->dialog);
   }
 
-  FREE (p);
+  FREE (p);		/* __FREE_CHECKED__ */
 }
 
 #define M_SEARCH_UP   1

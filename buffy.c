@@ -188,7 +188,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       {
         FREE (&((*tmp)->path));
         tmp1=(*tmp)->next;
-        FREE (tmp);
+        FREE (tmp);		/* __FREE_CHECKED__ */
         *tmp=tmp1;
       }
       return 0;
@@ -212,7 +212,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       {
         FREE (&((*tmp)->path));
         tmp1=(*tmp)->next;
-        FREE (tmp);
+        FREE (tmp);		/* __FREE_CHECKED__ */
         *tmp=tmp1;
       }
       continue;

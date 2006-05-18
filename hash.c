@@ -158,5 +158,5 @@ void hash_destroy (HASH **ptr, void (*destroy) (void *))
     }
   }
   FREE (&pptr->table);
-  FREE (ptr);
+  FREE (ptr);		/* __FREE_CHECKED__ */
 }

@@ -183,7 +183,7 @@ static void rfc2231_free_parameter (struct rfc2231_parameter **p)
   {
     FREE (&(*p)->attribute);
     FREE (&(*p)->value);
-    FREE (p);
+    FREE (p);		/* __FREE_CHECKED__ */
   }
 }
 
@@ -364,12 +364,12 @@ int rfc2231_encode_string (char **pd)
 
     if (d != *pd)
       FREE (&d);
-    FREE (pd);
+    FREE (pd);		/* __FREE_CHECKED__ */
     *pd = e;
   }
   else if (d != *pd)
   {
-    FREE (pd);
+    FREE (pd);		/* __FREE_CHECKED__ */
     *pd = d;
   }
   

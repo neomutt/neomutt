@@ -222,7 +222,7 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
 
   if ((*fp = fdopen (fd, "w")) == NULL)
   {
-    FREE (tgt);
+    FREE (tgt);		/* __FREE_CHECKED__ */
     close (fd);
     unlink (path);
     return (-1);
@@ -488,7 +488,7 @@ static void maildir_free_entry (struct maildir **md)
   if ((*md)->h)
     mutt_free_header (&(*md)->h);
 
-  FREE (md);
+  FREE (md);		/* __FREE_CHECKED__ */
 }
 
 static void maildir_free_maildir (struct maildir **md)
