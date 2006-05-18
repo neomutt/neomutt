@@ -13,7 +13,7 @@ SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
 
-BUILT_SOURCES = keymap_defs.h patchlist.c
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
@@ -73,13 +73,13 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
 	globals.h hash.h history.h init.h keymap.h mutt_crypt.h \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
 	mutt_regex.h mutt_sasl.h mutt_socket.h mutt_ssl.h mutt_tunnel.h \
-	mx.h pager.h pgp.h pop.h protos.h reldate.h rfc1524.h rfc2047.h \
+	mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h	lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
 	makedoc.c stamp-doc-rc README.SSL smime.h\
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh	\
-	ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
+	ChangeLog ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
 	snprintf.c regex.c crypt-gpgme.h
 
 EXTRA_SCRIPTS = smime_keys
@@ -96,7 +96,8 @@ mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
 CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
-	keymap_alldefs.h keymap_defs.h patchlist.c
+	keymap_alldefs.h keymap_defs.h patchlist.c \
+	reldate.h
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -122,8 +123,8 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OP
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> $(srcdir)/keymap_alldefs.h
 
-reldate:
-	echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > $(srcdir)/reldate.h
+reldate.h: $(srcdir)/ChangeLog
+	echo 'const char *ReleaseDate = "'`head -n 1 $(srcdir)/ChangeLog | cut -d ' ' -f 1`'";' > reldate.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
 	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
@@ -176,8 +177,6 @@ update-changelog:
 	sh ./mkchangelog.sh | fmt -c | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
 	$${VISUAL:-vi} ChangeLog)
 
-#ChangeLog: changelog
-
 # kluge around automake problems.
 
 dist-hook:
@@ -199,4 +198,4 @@ stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 
 
 .PHONY: commit pclean check-security commit-real commit-changelog
-.PHONY: changelog ChangeLog
+# .PHONY: changelog ChangeLog

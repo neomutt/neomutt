@@ -44,7 +44,7 @@ ${VISUAL} VERSION
 VERSION="`cat VERSION`" 
 TAG="mutt-`echo $VERSION | tr . -`-rel" 
 
-echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
+#echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
 
 make update-changelog 
 
