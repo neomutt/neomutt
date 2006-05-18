@@ -1,4 +1,7 @@
-2006-05-18 18:02:34  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-05-18 18:11:20  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* INSTALL: Note that the DocBook 4.2 DTD should be installed
+	locally in order to build the manual.
 
 	* doc/chunk.xsl, doc/manual.xml.head, doc/manual.xml.tail,
 	makedoc.c: Properly use tables in manual where appropriate.
