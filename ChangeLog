@@ -1,4 +1,17 @@
-2006-05-18 17:35:30  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-05-18 18:02:34  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* doc/chunk.xsl, doc/manual.xml.head, doc/manual.xml.tail,
+	makedoc.c: Properly use tables in manual where appropriate.
+
+	Now, lots of information which really deserves a table is just put
+	into <screen/> sections with manual line breaks and things like
+	that. This is ugly for several reasons including that the
+	information stored there should be accessable straight from the
+	table of contents. For the TOC, this patch switches to <book/> for the manual and uses a
+        deeper split level so things actually look nicer. The only problem
+	are tables which may be not so well supported when dumping the
+	HTML to .txt but the DocBook->txt converter with table support is
+	work-in-progress...
 
 	* imap/message.c, imap/utf7.c, imap/util.c, mutt_ssl_gnutls.c,
 	muttlib.c, mx.c, pager.c, pgplib.c, remailer.c, rfc1524.c,
