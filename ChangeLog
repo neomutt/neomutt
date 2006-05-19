@@ -1,4 +1,9 @@
-2006-05-19 18:17:39  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-05-19 18:30:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* Makefile.am, README, UPDATING: The UPDATING document is supposed
+	(when complete) to provide quick pointers by date to changed
+	features (new options/commands, new features, changed defaults,
+	etc.)
 
 	* doc/manual.xml.head, init.h: Document speed impact of attachment
 	counting. This adds a short paragraph to manual.xml and
