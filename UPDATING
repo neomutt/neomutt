@@ -2,71 +2,71 @@ This file lists incompatible changes and additional/new features made to
 mutt. Please read this file carefully when upgrading your installation.
 
 The keys used are:
-  M: modified feature, D: deleted feature, N: new feature
+  !: modified feature, -: deleted feature, +: new feature
 
 CVS HEAD:
 
-  N: Header caching for MH folders (2006-05-06)
-  M: $record now defaults to ~/sent (2006-04-03)
-  M: $imap_idle now defaults to "yes" instead of "no" (2006-03-13)
-  N: Tab-completion for $my_* variable names and values (2006-01-14)
-  N: Expansion of mutt variables (except shell escape) (2006-01-12)
-  N: Self-defined variables with $my_* prefix (2006-01-12)
-  N: Pattern group support (2006-01-09)
-  N: $imap_cachedir (2005-12-22)
-  N: 'old' flag on IMAP folders (2005-12-19)
-  N: SASL-IR support for IMAP (2005-12-14)
-  N: IMAP IDLE support and $imap_idle (2005-12-12)
-  N: Pipeline-based IMAP communicaton (2005-12-11)
-  N: Full large file support (2005-10-21)
-  N: Attachment counting: attachments and unattachments commands,
-     %Q and %X for $attach_format, %X for $index_format (2005-10-04)
-  N: Basque translation (2005-09-29)
-  N: QDBM backend for header caching (2005-09-21)
-  N: Irish translation (2005-09-16)
+  + Header caching for MH folders (2006-05-06)
+  ! $record now defaults to ~/sent (2006-04-03)
+  ! $imap_idle now defaults to "yes" instead of "no" (2006-03-13)
+  + Tab-completion for $my_* variable names and values (2006-01-14)
+  + Expansion of mutt variables (except shell escape) (2006-01-12)
+  + Self-defined variables with $my_* prefix (2006-01-12)
+  + Pattern group support (2006-01-09)
+  + $imap_cachedir (2005-12-22)
+  + 'old' flag on IMAP folders (2005-12-19)
+  + SASL-IR support for IMAP (2005-12-14)
+  + IMAP IDLE support and $imap_idle (2005-12-12)
+  + Pipeline-based IMAP communicaton (2005-12-11)
+  + Full large file support (2005-10-21)
+  + Attachment counting: attachments and unattachments commands,
+    %Q and %X for $attach_format, %X for $index_format (2005-10-04)
+  + Basque translation (2005-09-29)
+  + QDBM backend for header caching (2005-09-21)
+  + Irish translation (2005-09-16)
 
 1.5.5 (2003-11-05):
 
-  N: Bulgarian translation
-  D: Kendra mailbox support
-  N: <tag-prefix-cond> and <cond-end>
-  N: ':' as expando modifier (e.g. '%:A')
-  N: $crypt_autopgp and $crypt_autosmime
-  N: $pgp_check_exit
+  + Bulgarian translation
+  - Kendra mailbox support
+  + <tag-prefix-cond> and <cond-end>
+  + ':' as expando modifier (e.g. '%:A')
+  + $crypt_autopgp and $crypt_autosmime
+  + $pgp_check_exit
 
 1.5.4 (2003-03-19):
 
-  N: IDNA support
-  N: $bounce
-  M: $crypt_replyencrypt and $pgp_replyencrypt now default
-     to "yes" instead of "no"
-  N: $pgp_auto_traditional
-  N: %A for $index_format
+  + IDNA support
+  + $bounce
+  ! $crypt_replyencrypt and $pgp_replyencrypt now default
+    to "yes" instead of "no"
+  + $pgp_auto_traditional
+  + %A for $index_format
 
 1.5.3 (2002-12-17):
 
-  N: <next-new-then-unread> and <previous-new-then-unread>
-  M: $mark_old: it only controls whether new messages
-     are marked as old when leaving the mailbox
-  N: <what-key>
+  + <next-new-then-unread> and <previous-new-then-unread>
+  ! $mark_old: it only controls whether new messages
+    are marked as old when leaving the mailbox
+  + <what-key>
 
 1.5.2 (2002-12-06):
 
-  N: -A command line option
-  N: SASL2 support
-  N: <buffy-list>
-  N: $forward_edit
-  N: $content_type
-  N: unmailboxes command
-  N: unalternative_order command
-  N: reply-hook
+  + -A command line option
+  + SASL2 support
+  + <buffy-list>
+  + $forward_edit
+  + $content_type
+  + unmailboxes command
+  + unalternative_order command
+  + reply-hook
 
 1.5.1 (2002-01-24):
 
-  N: $smime_default_key
-  N: $narrow_tree
-  N: -Q command line option
-  N: $crypt_timestamp
-  N: ~V pattern
-  N: S/MIME support
-  N: mime_lookup command
+  + $smime_default_key
+  + $narrow_tree
+  + -Q command line option
+  + $crypt_timestamp
+  + ~V pattern
+  + S/MIME support
+  + mime_lookup command
