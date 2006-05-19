@@ -1,4 +1,7 @@
-2006-05-19 18:51:58  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-05-19 20:38:05  Brendan Cully  (brendan)
+
+	* doc/Makefile.in: Add intro.html to distributed HTML files
+	(fallout from conversion from article to book).
 
 	* UPDATING: Use +/-/! instead of N/D/M in UPDATING.
                                  
