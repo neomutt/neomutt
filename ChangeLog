@@ -1,3 +1,7 @@
+2006-05-19 18:51:58  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* UPDATING: Use +/-/! instead of N/D/M in UPDATING.
+                                 
 2006-05-19 18:30:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* Makefile.am, README, UPDATING: The UPDATING document is supposed
