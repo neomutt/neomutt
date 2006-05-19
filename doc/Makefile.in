@@ -55,7 +55,7 @@ DISTFILES = Makefile.in dotlock.man  	\
 	smime-notes.txt			\
 	html.xsl chunk.xsl
 
-HTML_DOCFILES = manual.html index.html gettingstarted.html \
+HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
 	reference.html miscellany.html
 
