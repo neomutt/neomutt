@@ -5238,6 +5238,14 @@ attachments and unattachments commands.
 </para>
 
 <para>
+In order to provide this information, mutt needs to fully MIME-parse
+all messages affected first. This can slow down operation especially for
+remote mail folders such as IMAP because all messages have to be
+downloaded first regardless whether the user really wants to view them
+or not.
+</para>
+
+<para>
 The syntax is:
 </para>
 <screen>

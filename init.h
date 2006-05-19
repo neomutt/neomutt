@@ -229,6 +229,7 @@ struct option_t MuttVars[] = {
   ** .dt %T  .dd graphic tree characters
   ** .dt %u  .dd unlink (=to delete) flag
   ** .dt %X  .dd number of qualifying MIME parts in this part and its children
+  **             (please see the ``$attachments'' section for possible speed effects)
   ** .dt %>X .dd right justify the rest of the string and pad with character "X"
   ** .dt %|X .dd pad to the end of the line with character "X"
   ** .de
@@ -1012,6 +1013,7 @@ struct option_t MuttVars[] = {
   ** .dt %u .dd user (login) name of the author
   ** .dt %v .dd first name of the author, or the recipient if the message is from you
   ** .dt %X .dd number of attachments
+  **            (please see the ``$attachments'' section for possible speed effects)
   ** .dt %y .dd `x-label:' field, if present
   ** .dt %Y .dd `x-label' field, if present, and (1) not at part of a thread tree,
   **            (2) at the top of a thread, or (3) `x-label' is different from
