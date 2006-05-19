@@ -67,7 +67,7 @@ EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	pgppacket.c mutt_idna.h hcache.h hcache.c mutt_ssl_gnutls.c \
 	crypt-gpgme.c crypt-mod-pgp-gpgme.c crypt-mod-smime-gpgme.c
 
-EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO \
+EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	configure account.h \
 	attach.h buffy.h charset.h copy.h crypthash.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h mutt_crypt.h \
