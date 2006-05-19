@@ -1,3 +1,9 @@
+2006-05-19 18:17:39  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* doc/manual.xml.head, init.h: Document speed impact of attachment
+	counting. This adds a short paragraph to manual.xml and
+	cross-links %X-expandos to it.
+
 2006-05-18 18:35:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* hcache.c, hcache.h, imap/imap.c, imap/message.c, mh.c: Use
