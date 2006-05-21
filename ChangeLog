@@ -1,4 +1,9 @@
-2006-05-19 20:38:05  Brendan Cully  (brendan)
+2006-05-21 23:25:48  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* .cvsignore, reldate.h: reldate.h is a generated file now: remove
+	reldate.h from version control, and add it to .cvsignore.
+
+2006-05-19 20:38:05  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/Makefile.in: Add intro.html to distributed HTML files
 	(fallout from conversion from article to book).
