@@ -19,6 +19,7 @@ mutt_dotlock
 mutt_dotlock.c
 mutt
 pgpring
+reldate.h
 stamp-doc-rc
 stamp-h
 muttbug.sh
