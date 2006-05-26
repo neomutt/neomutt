@@ -1,3 +1,11 @@
+2006-05-26 16:51:48  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* configure.in: When flags are added to CPPFLAGS and LDFLAGS in
+	configure.in, this should be done with a consistent
+	order. Otherwise, when several versions of a library are
+	installed, this could lead to a mismatch between the header and
+	the library.
+
 2006-05-26 16:38:18  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
 
 	* imap/command.c, imap/message.c, mutt_socket.c, mutt_socket.h,
