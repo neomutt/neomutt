@@ -1,3 +1,9 @@
+2006-05-26 16:38:18  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (brendan)
+
+	* imap/command.c, imap/message.c, mutt_socket.c, mutt_socket.h,
+	pop_lib.c: Add mutt_socket_write_n to write binary data. Use this
+	function in imap_append_message. Closes: #2244.
+
 2006-05-21 23:25:48  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* .cvsignore, reldate.h: reldate.h is a generated file now: remove
