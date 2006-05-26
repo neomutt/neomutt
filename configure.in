@@ -250,7 +250,7 @@ main ()
                         mutt_cv_curses=$withval
                 fi
                 if test x$mutt_cv_curses != x/usr; then
-                        LDFLAGS="-L${mutt_cv_curses}/lib $LDFLAGS"
+                        LDFLAGS="$LDFLAGS -L${mutt_cv_curses}/lib"
                         CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
                 fi])
 
@@ -815,7 +815,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
                     if test -d "$d/lib/$v"; then
                         BDB_LIB_DIR="$d/lib/$v"
                         for l in `echo $BDB_VERSIONS`; do
-                            CPPFLAGS="-I$BDB_INCLUDE_DIR $OLDCPPFLAGS"
+                            CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
                             LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$l"
                             AC_TRY_LINK([
                                 #include <stdlib.h>
@@ -851,7 +851,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
         LIBS="$OLDLIBS -lgdbm";
         AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
     elif test x$ac_cv_dbcreate = xyes; then
-        CPPFLAGS="-I$BDB_INCLUDE_DIR $OLDCPPFLAGS"
+        CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
         LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
         AC_DEFINE(HAVE_DB4, 1, [Sleepycat DB4 Support])
     else
