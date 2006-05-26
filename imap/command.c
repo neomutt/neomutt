@@ -223,7 +223,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
   if (idata->cmdbuf->dptr == idata->cmdbuf->data)
     return IMAP_CMD_BAD;
   
-  rc = mutt_socket_write_d (idata->conn, idata->cmdbuf->data,
+  rc = mutt_socket_write_d (idata->conn, idata->cmdbuf->data, -1,
     flags & IMAP_CMD_PASS ? IMAP_LOG_PASS : IMAP_LOG_CMD);
   idata->cmdbuf->dptr = idata->cmdbuf->data;
 

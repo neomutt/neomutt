@@ -424,7 +424,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     }
 #endif
 
-  mutt_socket_write_d (pop_data->conn, buf, dbg);
+  mutt_socket_write_d (pop_data->conn, buf, -1, dbg);
 
   c = strpbrk (buf, " \r\n");
   *c = '\0';

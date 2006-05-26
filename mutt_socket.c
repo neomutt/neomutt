@@ -100,10 +100,9 @@ int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
   return rc;
 }
 
-int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
+int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
 {
   int rc;
-  int len;
 
   dprint (dbg, (debugfile,"> %s", buf));
 
@@ -113,7 +112,8 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
     return -1;
   }
 
-  len = mutt_strlen (buf);
+  if (len < 0)
+    len = mutt_strlen (buf);
   if ((rc = conn->conn_write (conn, buf, len)) < 0)
   {
     dprint (1, (debugfile,
