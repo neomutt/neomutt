@@ -2664,6 +2664,9 @@ int mutt_dump_variables (void)
   
   for (i = 0; MuttVars[i].option; i++)
   {
+    if (MuttVars[i].type == DT_SYN)
+      continue;
+
     snprintf (command, sizeof (command), "set ?%s\n", MuttVars[i].option);
     if (mutt_parse_rc_line (command, &token, &err) == -1)
     {
