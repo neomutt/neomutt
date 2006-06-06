@@ -1,3 +1,8 @@
+2006-06-06 23:58:10  Paul Walker  <paul@black-sun.demon.co.uk>  (brendan)
+
+	* init.c: Remove variable aliases from the output of mutt -D
+	(modified for dubious cosmetic reasons). Closes: #2265.
+
 2006-05-26 16:51:48  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
 	* configure.in: When flags are added to CPPFLAGS and LDFLAGS in
