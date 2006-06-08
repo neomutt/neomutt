@@ -630,7 +630,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	  fflush(fpout);
 
           if (Context->hdrs[Context->v2r[i]]->env->from)
-	    tmp = mutt_expand_aliases (h->env->from);
+	    tmp = mutt_expand_aliases (Context->hdrs[Context->v2r[i]]->env->from);
 	  else if (Context->hdrs[Context->v2r[i]]->env->sender)
 	    tmp = mutt_expand_aliases (Context->hdrs[Context->v2r[i]]
                                                     ->env->sender);
