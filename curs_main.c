@@ -114,7 +114,6 @@ static const char *No_visible = N_("No visible messages.");
 #define OLDHDR Context->hdrs[Context->v2r[menu->oldcurrent]]
 #define UNREAD(h) mutt_thread_contains_unread (Context, h)
 
-extern const char *ReleaseDate;
 extern size_t UngetCount;
 
 void index_make_entry (char *s, size_t l, MUTTMENU *menu, int num)

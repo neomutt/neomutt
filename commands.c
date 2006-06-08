@@ -53,7 +53,6 @@
 #include <sys/types.h>
 #include <utime.h>
 
-extern char *ReleaseDate;
 
 /* The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[_POSIX_PATH_MAX] = "";

@@ -139,6 +139,9 @@ WHERE char *Visual;
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
 
+
+WHERE const char *ReleaseDate;
+
 WHERE HASH *Groups;
 
 WHERE LIST *AutoViewList INITVAL(0);
@@ -160,6 +163,7 @@ WHERE RX_LIST *SubscribedLists INITVAL(0);
 WHERE RX_LIST *UnSubscribedLists INITVAL(0);
 WHERE SPAM_LIST *SpamList INITVAL(0);
 WHERE RX_LIST *NoSpamList INITVAL(0);
+
 
 /* bit vector for boolean variables */
 #ifdef MAIN_C
@@ -271,4 +275,5 @@ extern const char *Months[];
 #include "buffy.h"
 #include "sort.h"
 #include "mutt_crypt.h"
+#include "reldate.h"
 #endif /* MAIN_C */

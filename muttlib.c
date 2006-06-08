@@ -28,8 +28,6 @@
 #include "mx.h"
 #include "url.h"
 
-#include "reldate.h"
-
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
