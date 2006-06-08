@@ -1,4 +1,7 @@
-2006-06-08 11:38:08  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2006-06-08 11:56:05  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* commands.c, curs_main.c, globals.h, muttlib.c, sendlib.c: Clean
+	up ReleaseDate mess; include ReleaseDate in User-Agent header.
 
 	* crypt.c: Fix #2272.
 
