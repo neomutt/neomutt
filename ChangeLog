@@ -1,3 +1,7 @@
+2006-06-08 11:38:08  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* crypt.c: Fix #2272.
+
 2006-06-06 23:58:10  Paul Walker  <paul@black-sun.demon.co.uk>  (brendan)
 
 	* init.c: Remove variable aliases from the output of mutt -D
