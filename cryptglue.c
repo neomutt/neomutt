@@ -87,7 +87,7 @@ void crypt_init (void)
       crypto_module_register (&crypt_mod_smime_gpgme);
 #else
       mutt_message (_("\"crypt_use_gpgme\" set"
-                      " but not build with GPGME support."));
+                      " but not built with GPGME support."));
       if (mutt_any_key_to_continue (NULL) == -1)
 	mutt_exit(1);
 #endif
