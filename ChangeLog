@@ -1,3 +1,7 @@
+2006-06-13 07:52:52  René Clerc  <rene@clerc.nl>  (roessler)
+
+	* cryptglue.c: typo
+
 2006-06-08 11:56:05  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* commands.c, curs_main.c, globals.h, muttlib.c, sendlib.c: Clean
