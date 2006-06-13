@@ -1,3 +1,8 @@
+2006-06-13 22:26:18  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* Makefile.am: Run cut under the C locale when parsing ChangeLog
+	for reldate.
+
 2006-06-13 07:52:52  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* cryptglue.c: typo
