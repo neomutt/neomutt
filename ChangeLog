@@ -1,3 +1,12 @@
+2006-06-19 18:14:03  TAKAHASHI Tamotsu  <tamo@momonga-linux.org>  (brendan)
+
+	* imap/browse.c: Fix browse_get_namespace() which could overflow
+	ns[LONG_STRING].  (Possible remote vulnerability)
+
+2006-06-19 17:50:10  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* po/fr.po: Update to current CVS.
+
 2006-06-13 22:26:18  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* Makefile.am: Run cut under the C locale when parsing ChangeLog
