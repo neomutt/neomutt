@@ -1,3 +1,8 @@
+2006-06-25 20:10:24  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* doc/Makefile.in: Add release date to manual version
+	information.
+
 2006-06-19 18:14:03  TAKAHASHI Tamotsu  <tamo@momonga-linux.org>  (brendan)
 
 	* imap/browse.c: Fix browse_get_namespace() which could overflow
