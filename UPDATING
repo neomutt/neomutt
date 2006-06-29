@@ -25,6 +25,72 @@ CVS HEAD:
   + QDBM backend for header caching (2005-09-21)
   + Irish translation (2005-09-16)
 
+1.5.11 (2005-09-15):
+
+  ! $envelope_from_address has been added, $envelope_from has been renamed
+    to $use_envelope_from
+  + Progress bar via $net_inc
+  + Simple string matches instead of full regex matches for '=' instead
+    of '~' with pattern modifiers
+  ! ~l matches all known lists, ~u only subscribed
+  - SASL 1.5 support
+  ! The manual is now build from DocBook/XML instead of Linuxdoc/SGML source
+
+1.5.10 (2005-08-11):
+
+  + $imap_check_subscribed
+  + Tab-completion for IMAP hosts
+  ! $imap_force_ssl has been replaced without synonym by $ssl_force_tls
+  - NSS support
+  ! The default for $menu_move_off has been changed from "no" to "yes"
+  ! An empty <limit> now cancels the current limit
+  + Editing threads via <break-thread> and <link-threads>
+  + -D command line option
+  + the folder shortcut '^' refers to the currently opened folder
+  + $imap_login
+  + $braille_friendly
+  + Header caching for Maildir folders
+
+Mutt 1.5.9 (2005-03-13):
+
+  + $menu_move_off
+  + <rename-mailbox> function for IMAP
+
+Mutt 1.5.8 (2005-02-12):
+
+  + $menu_context
+  ! IDNA decoding is now optional via $use_idn defaulting to "yes"
+  + GPGME support via $crypt_use_gpgme
+
+Mutt 1.5.7 (2005-01-28):
+
+  + SSL support via GNUTLS
+  + Header caching for IMAP via $header_cache and $header_cache_pagesize
+  + send2-hook
+  + $ssl_client_cert
+  + $hide_thread_subject
+  + Generic spam detection: new configuration commands: 'spam' and
+    'nospam', new options: $spam_separator, new expando: %H (for
+    $index_format), new pattern: ~H pattern
+  + $include_onlyfirst
+  ! $pgp_mime_ask has been renamed without synonym to $pgp_mime_auto,
+    new default is "ask-yes" rather than "no"
+  + Inline PGP creation support via $pgp_replyinline, $pgp_autoinline
+    and $pgp_mime_ask
+  ! the 'bind' command can now be used on multiple menus at once
+  + $config_charset
+  + ~$ pattern
+
+1.5.6 (2004-02-01):
+
+  ! the 'list' and 'subscribe' commands now take regular expression
+    rather than string lists
+  ! the $alternates option is replaced by the 'alternates' command
+    taking lists of regular expressions
+  ! mailing lists can be recognized via domain matching when
+    starting with '@'
+  + STLS (STARTTLS) support for POP3
+
 1.5.5 (2003-11-05):
 
   + Bulgarian translation
