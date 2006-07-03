@@ -1,3 +1,8 @@
+2006-07-03 16:19:43  Michael Tatge  <Michael.Tatge@web.de>  (brendan)
+
+	* doc/manual.xml.head: Some commands used a dash in the
+	documentation instead of an underscore. Closes: #2270.
+
 2006-06-29 22:14:08  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* UPDATING: Fill in missing entries in UPDATING.
