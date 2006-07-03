@@ -4862,7 +4862,7 @@ and Mutt will use your standard pager to display the results.
 <term>needsterminal</term>
 <listitem>
 <para>
-Mutt uses this flag when viewing attachments with <link linkend="auto-view">auto-view</link>, in order to decide whether it should honor the setting
+Mutt uses this flag when viewing attachments with <link linkend="auto-view">auto&lowbar;view</link>, in order to decide whether it should honor the setting
 of the <link linkend="wait-key">&dollar;wait&lowbar;key</link> variable or
 not.  When an attachment is viewed using an interactive program, and the
 corresponding mailcap entry has a <emphasis>needsterminal</emphasis> flag, Mutt will use
@@ -4983,7 +4983,7 @@ entry with the print command.
 </para>
 
 <para>
-In addition, you can use this with <link linkend="auto-view">auto-view</link> 
+In addition, you can use this with <link linkend="auto-view">auto&lowbar;view</link> 
 to denote two commands for viewing an attachment, one to be viewed
 automatically, the other to be viewed interactively from the attachment
 menu.  In addition, you can then use the test feature to determine which
@@ -4995,7 +4995,7 @@ text/html;      lynx %s; nametemplate=%s.html
 text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
-For <link linkend="auto-view">auto-view</link>, Mutt will choose the third
+For <link linkend="auto-view">auto&lowbar;view</link>, Mutt will choose the third
 entry because of the copiousoutput tag.  For interactive viewing, Mutt
 will run the program RunningX to determine if it should use the first
 entry.  If the program returns non-zero, Mutt will use the second entry
@@ -5213,7 +5213,7 @@ alternative_order text/enriched text/plain text application/postscript image/*
 
 <para>
 Next, mutt will check if any of the types have a defined 
-<link linkend="auto-view">auto-view</link>, and use that.  Failing
+<link linkend="auto-view">auto&lowbar;view</link>, and use that.  Failing
 that, Mutt will look for any text type.  As a last attempt, mutt will
 look for any type it knows how to handle.
 </para>
@@ -5514,13 +5514,13 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="auto-view">auto-view</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
+<literal><link linkend="auto-view">auto&lowbar;view</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="auto-view">unauto-view</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
+<literal><link linkend="auto-view">unauto&lowbar;view</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
@@ -5574,13 +5574,13 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="hdr-order">hdr-order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
+<literal><link linkend="hdr-order">hdr&lowbar;order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="hdr-order">unhdr-order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
+<literal><link linkend="hdr-order">unhdr&lowbar;order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
@@ -5640,13 +5640,13 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="mime-lookup">mime-lookup</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
+<literal><link linkend="mime-lookup">mime&lowbar;lookup</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="mime-lookup">unmime-lookup</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
+<literal><link linkend="mime-lookup">unmime&lowbar;lookup</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
@@ -5664,13 +5664,13 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="my-hdr">my-hdr</link></literal> <emphasis>string</emphasis>
+<literal><link linkend="my-hdr">my&lowbar;hdr</link></literal> <emphasis>string</emphasis>
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="my-hdr">unmy-hdr</link></literal> <emphasis>field</emphasis> &lsqb; <emphasis>field</emphasis> ... &rsqb;
+<literal><link linkend="my-hdr">unmy&lowbar;hdr</link></literal> <emphasis>field</emphasis> &lsqb; <emphasis>field</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
