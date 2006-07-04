@@ -38,11 +38,11 @@ struct body_cache {
   size_t pathlen;
 };
 
-static int mutt_bcache_path(ACCOUNT *account, const char *mailbox,
-			    char *dst, size_t dstlen)
+static int bcache_path(ACCOUNT *account, const char *mailbox,
+		       char *dst, size_t dstlen)
 {
   char host[STRING];
-  char *s;
+  char *s, *p;
   ciss_url_t url;
   size_t len;
 
@@ -57,39 +57,29 @@ static int mutt_bcache_path(ACCOUNT *account, const char *mailbox,
    * if this ever changes, we have a memleak here
    */
   url.path = NULL;
-  url_ciss_tostring (&url, host, sizeof (host), 0);
-
-  dprint (3, (debugfile, "bcache: host: '%s'\n", host));
-
-  /*
-   * replace all '/' in proto://host part to '_' so the hierarchy
-   * doesn't get too deeply nested
-   * XXX imaps:__joe@example.com@imap.example.com doesn't look nice
-   *
-   * ('*(s+1)' since url_ciss_tostring() appends '/' after host part
-   * which we want to keep)
-   */
-  for (s = host; s && *s && *(s+1) ; s++)
-    if (*s == '/')
-      *s = '_';
-
-  /*
-   * not enough space is the only error I can think of
-   * (dstlen-1 for '/'-termination, see below)
-   */
-  if (snprintf (dst, dstlen-1, "%s/%s%s", MessageCachedir,
-		host, NONULL(mailbox)) <= 0)
-    return -1;
-
-  /* make sure to '/'-terminate the path as we assume that elsewhere */
-  len = mutt_strlen (dst);
-  if (len <= dstlen+2 && dst[len-1] != '/')
+  if (url_ciss_tostring (&url, host, sizeof (host), 0) < 0)
   {
-    dst[len++] = '/';
-    dst[len] = '\0';
+    dprint (1, (debugfile, "bcache_path: URL to string failed\n"));
+    return -1;
   }
 
-  dprint (3, (debugfile, "bcache: directory: '%s'\n", dst));
+  dprint (3, (debugfile, "bcache_path: URL: '%s'\n", host));
+
+  /* transform URL scheme:// to scheme: */
+  for (s = p = host; *s; s++)
+    /* keep trailing slash */
+    if (*s != '/' || *(s + 1) == '\0')
+      *p++ = *s;
+  *p = '\0';
+
+  len = snprintf (dst, dstlen-1, "%s/%s%s%s", MessageCachedir,
+		  host, NONULL(mailbox),
+		  (mailbox && *mailbox &&
+		   mailbox[mutt_strlen(mailbox) - 1] == '/') ? "" : "/");
+  if (len < 0 || len >= dstlen-1)
+    return -1;
+
+  dprint (3, (debugfile, "bcache_path: directory: '%s'\n", dst));
 
   return 0;
 }
@@ -102,8 +92,8 @@ body_cache_t *mutt_bcache_open (ACCOUNT *account, const char *mailbox)
     goto bail;
 
   bcache = safe_calloc (1, sizeof (struct body_cache));
-  if (mutt_bcache_path (account, mailbox, bcache->path,
-			sizeof (bcache->path)) < 0)
+  if (bcache_path (account, mailbox, bcache->path,
+		   sizeof (bcache->path)) < 0)
     goto bail;
   bcache->pathlen = mutt_strlen (bcache->path);
 
