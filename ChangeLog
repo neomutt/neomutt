@@ -1,3 +1,12 @@
+2006-07-04 17:11:04  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* configure.in, doc/manual.xml.head, globals.h, imap/imap.c,
+	imap/imap_private.h, imap/message.c, imap/util.c, init.h, mh.c,
+	pop.c, pop.h, Makefile.am: pdmef.cache.24: Generalise IMAP body
+	caching and add POP support.  $imap_cachedir is now a synonym
+	for $message_cachedir, and should be dropped soon since it hasn't
+	been in an official release.
+
 2006-07-03 16:19:43  Michael Tatge  <Michael.Tatge@web.de>  (brendan)
 
 	* doc/manual.xml.head: Some commands used a dash in the
