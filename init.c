@@ -50,7 +50,7 @@
 #include <sys/wait.h>
 
 #define CHECK_PAGER \
-	if ((CurrentMenu == MENU_PAGER) && \
+  if ((CurrentMenu == MENU_PAGER) && (idx >= 0) &&	\
 	    (MuttVars[idx].flags & R_RESORT)) \
 	{ \
 	  snprintf (err->data, err->dsize, \
@@ -1756,7 +1756,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	CHECK_PAGER;
         if (myvar)
           myvar_del (myvar);
-        else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
+	else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	else
 	  /* MuttVars[idx].data is already 'char**' (or some 'void**') or... 
@@ -1800,12 +1800,12 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	CHECK_PAGER;
         s->dptr++;
 
-        /* copy the value of the string */
         if (myvar)
-        {
-          myvar = safe_strdup (myvar);
+	{
+	  /* myvar is a pointer to tmp and will be lost on extract_token */
+	  myvar = safe_strdup (myvar);
           myvar_del (myvar);
-        }
+	}
         else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
 	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
         else
@@ -1818,6 +1818,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         {
           myvar_set (myvar, tmp->data);
           FREE (&myvar);
+	  myvar="don't resort";
         }
         else if (DTYPE (MuttVars[idx].type) == DT_PATH)
         {
