@@ -1,3 +1,8 @@
+2006-07-04 17:23:16  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* history.c: Adopt shell convention of omitting from the history
+	commands prefixed with a space.
+
 2006-07-04 17:11:04  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* configure.in, doc/manual.xml.head, globals.h, imap/imap.c,
