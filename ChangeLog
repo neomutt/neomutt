@@ -1,4 +1,7 @@
-2006-07-04 18:15:52  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-07-04 18:56:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/Makefile.in, init.c: Undo breakage I introduced in VL's
+	doc reldate patch.
 
 	* UPDATING, init.h: Remove $imap_cachedir synonym, and update
 	some docs.
