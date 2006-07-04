@@ -804,6 +804,7 @@ void imap_logout (IMAP_DATA* idata)
     ;
 
   FREE(& idata->buf);
+  mutt_bcache_close (&idata->bcache);
   FREE(& idata);
 }
 
@@ -1307,6 +1308,8 @@ void imap_close_mailbox (CONTEXT* ctx)
       FREE (&idata->cache[i].path);
     }
   }
+
+  mutt_bcache_close (&idata->bcache);
 }
 
 /* use the NOOP or IDLE command to poll for new mail

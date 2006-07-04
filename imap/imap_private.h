@@ -23,6 +23,7 @@
 #include "imap.h"
 #include "mutt_curses.h"
 #include "mutt_socket.h"
+#include "bcache.h"
 
 /* -- symbols -- */
 #define IMAP_PORT 143
@@ -222,7 +223,8 @@ typedef struct
   IMAP_CACHE cache[IMAP_CACHE_LEN];
   unsigned int uid_validity;
   unsigned int uidnext;
-  
+  body_cache_t *bcache;
+
   /* all folder flags - system flags AND keywords */
   LIST *flags;
 } IMAP_DATA;

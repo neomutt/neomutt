@@ -41,6 +41,8 @@
 #include "hcache.h"
 #endif
 
+#include "bcache.h"
+
 static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h);
 static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h);
 
@@ -839,33 +841,19 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   return -1;
 }
 
-/* create file system path for idata/h */
-static int msg_cache_path (IMAP_DATA* idata, HEADER* h, char* buf, size_t len)
+static body_cache_t *msg_cache_open (IMAP_DATA *idata)
 {
-  ACCOUNT* account;
-  char* s, *p;
-  int slen;
+  char *s;
+  char *p = idata->mailbox;
+  char mailbox[_POSIX_PATH_MAX];
+  size_t mlen = sizeof (mailbox);
 
-  if (!ImapCachedir)
-    return -1;
+  if (idata->bcache)
+    return idata->bcache;
 
-  account = &idata->conn->account;
+  mailbox[0] = '\0';
 
-  snprintf (buf, len, "%s/", ImapCachedir);
-  slen = mutt_strlen (buf);
-  if (account->flags & M_ACCT_USER)
-    snprintf (buf + slen, len - slen, "%s@", account->user);
-  safe_strcat (buf, len, account->host);
-  if (account->flags & M_ACCT_PORT)
-  {
-    slen = mutt_strlen (buf);
-    snprintf (buf + slen, len - slen, ":%hu", account->port);
-  }
-  safe_strcat (buf, len, "/");
-
-  slen = len - mutt_strlen (buf) - 2;
-  p = idata->mailbox;
-  for (s = buf + mutt_strlen (buf); *p && slen; slen--)
+  for (s = mailbox; p && *p && mlen; mlen--)
   {
     if (*p == idata->delim)
     {
@@ -873,9 +861,9 @@ static int msg_cache_path (IMAP_DATA* idata, HEADER* h, char* buf, size_t len)
       /* simple way to avoid collisions with UIDs */
       if (*(p + 1) >= '0' && *(p + 1) <= '9')
       {
-        slen--;
-        if (slen)
-          *++s = '_';
+	mlen--;
+	if (mlen)
+	  *++s = '_';
       }
     }
     else
@@ -885,55 +873,43 @@ static int msg_cache_path (IMAP_DATA* idata, HEADER* h, char* buf, size_t len)
   }
   *s = '\0';
 
-  slen = mutt_strlen (buf);
-  snprintf (buf + slen, len - slen, "/%u-%u", idata->uid_validity,
-            HEADER_DATA(h)->uid);
-
-  return 0;
+  return mutt_bcache_open (&idata->conn->account, mailbox);
 }
 
 static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h)
 {
-  char path[_POSIX_PATH_MAX];
+  char id[_POSIX_PATH_MAX];
 
-  if (msg_cache_path (idata, h, path, sizeof (path)) < 0)
+  if (!idata || !h)
     return NULL;
 
-  return fopen (path, "r");
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  return mutt_bcache_get (idata->bcache, id);
 }
 
 static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h)
 {
-  char path[_POSIX_PATH_MAX];
-  FILE* fp;
-  char* s;
-  struct stat sb;
+  char id[_POSIX_PATH_MAX];
 
-  if (msg_cache_path (idata, h, path, sizeof (path)) < 0)
+  if (!idata || !h)
     return NULL;
 
-  s = strchr (path + 1, '/');
-  while (!(fp = safe_fopen (path, "w+")) && errno == ENOENT && s)
-  {
-    /* create missing path components */
-    *s = '\0';
-    if (stat (path, &sb) < 0 && (errno != ENOENT || mkdir (path, 0777) < 0))
-      return NULL;
-    *s = '/';
-    s = strchr (s + 1, '/');
-  }
-
-  return fp;
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  return mutt_bcache_put (idata->bcache, id);
 }
 
 int imap_cache_del (IMAP_DATA* idata, HEADER* h)
 {
-  char path[_POSIX_PATH_MAX];
-  
-  if (msg_cache_path (idata, h, path, sizeof (path)) < 0)
+  char id[_POSIX_PATH_MAX];
+
+  if (!idata || !h)
     return -1;
 
-  return unlink (path);
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  return mutt_bcache_del (idata->bcache, id);
 }
 
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they

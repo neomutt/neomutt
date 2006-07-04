@@ -22,6 +22,7 @@
 #include "mailbox.h"
 #include "mutt_socket.h"
 #include "mutt_curses.h"
+#include "bcache.h"
 
 #define POP_PORT 110
 #define POP_SSL_PORT 995
@@ -74,6 +75,7 @@ typedef struct
   time_t login_delay;		/* minimal login delay  capability */
   char *auth_list;		/* list of auth mechanisms */
   char *timestamp;
+  body_cache_t *bcache;		/* body cache */
   char err_msg[POP_CMD_RESPONSE];
   POP_CACHE cache[POP_CACHE_LEN];
 } POP_DATA;

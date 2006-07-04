@@ -55,7 +55,6 @@ WHERE char *Homedir;
 WHERE char *Hostname;
 #ifdef USE_IMAP
 WHERE char *ImapAuthenticators INITVAL (NULL);
-WHERE char *ImapCachedir;
 WHERE char *ImapDelimChars INITVAL (NULL);
 WHERE char *ImapHeaders;
 WHERE char *ImapHomeNamespace INITVAL (NULL);
@@ -68,6 +67,9 @@ WHERE char *Ispell;
 WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
+#if defined(USE_IMAP) || defined(USE_POP)
+WHERE char *MessageCachedir;
+#endif
 #if USE_HCACHE
 WHERE char *HeaderCache;
 #if HAVE_GDBM || HAVE_DB4

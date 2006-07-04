@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
+ * Copyright (C) 2006 Rocco Rutte <pdmef@gmx.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -25,6 +26,10 @@
 #include "mx.h"
 #include "pop.h"
 #include "mutt_crypt.h"
+#include "bcache.h"
+#if USE_HCACHE
+#include "hcache.h"
+#endif
 
 #include <string.h>
 #include <unistd.h>
@@ -157,6 +162,28 @@ static int fetch_uidl (char *line, void *data)
   return 0;
 }
 
+static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
+{
+  CONTEXT *ctx;
+  POP_DATA *pop_data;
+  int i;
+
+  if (!(ctx = (CONTEXT *)data))
+    return -1;
+  if (!(pop_data = (POP_DATA *)ctx->data))
+    return -1;
+
+  for (i = 0; i < ctx->msgcount; i++)
+    /* if the id we get is known for a header: done (i.e. keep in cache) */
+    if (ctx->hdrs[i]->data && mutt_strcmp (ctx->hdrs[i]->data, id) == 0)
+      return 0;
+
+  /* message not found in context -> remove it from cache
+   * return the result of bcache, so we stop upon its first error
+   */
+  return mutt_bcache_del (bcache, id);
+}
+
 /*
  * Read headers
  * returns:
@@ -168,7 +195,15 @@ static int fetch_uidl (char *line, void *data)
 static int pop_fetch_headers (CONTEXT *ctx)
 {
   int i, ret, old_count, new_count;
+  unsigned short hcached = 0, bcached;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+  void *data;
+
+  hc = mutt_hcache_open (HeaderCache, ctx->path);
+#endif
 
   time (&pop_data->check_time);
   pop_data->clear_cache = 0;
@@ -211,9 +246,70 @@ static int pop_fetch_headers (CONTEXT *ctx)
       mutt_message (_("Fetching message headers... [%d/%d]"),
 		    i + 1 - old_count, new_count - old_count);
 
-      ret = pop_read_header (pop_data, ctx->hdrs[i]);
-      if (ret < 0)
+#if USE_HCACHE
+      if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen)))
+      {
+	char *uidl = safe_strdup (ctx->hdrs[i]->data);
+	int refno = ctx->hdrs[i]->refno;
+	int index = ctx->hdrs[i]->index;
+	/*
+	 * - POP dynamically numbers headers and relies on h->refno
+	 *   to map messages; so restore header and overwrite restored
+	 *   refno with current refno, same for index
+	 * - h->data needs to a separate pointer as it's driver-specific
+	 *   data freed separately elsewhere
+	 *   (the old h->data should point inside a malloc'd block from
+	 *   hcache so there shouldn't be a memleak here)
+	 */
+	HEADER *h = mutt_hcache_restore ((unsigned char *) data, NULL);
+	mutt_free_header (&ctx->hdrs[i]);
+	ctx->hdrs[i] = h;
+	ctx->hdrs[i]->refno = refno;
+	ctx->hdrs[i]->index = index;
+	ctx->hdrs[i]->data = uidl;
+	ret = 0;
+	hcached = 1;
+      }
+      else
+#endif
+      if ((ret = pop_read_header (pop_data, ctx->hdrs[i])) < 0)
 	break;
+#if USE_HCACHE
+      else
+      {
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen);
+      }
+
+      FREE(&data);
+#endif
+
+      /*
+       * faked support for flags works like this:
+       * - if 'hcached' is 1, we have the message in our hcache:
+       *        - if we also have a body: read
+       *        - if we don't have a body: old
+       *          (if $mark_old is set which is maybe wrong as
+       *          $mark_old should be considered for syncing the
+       *          folder and not when opening it XXX)
+       * - if 'hcached' is 0, we don't have the message in our hcache:
+       *        - if we also have a body: read
+       *        - if we don't have a body: new
+       */
+      bcached = mutt_bcache_exists (pop_data->bcache, ctx->hdrs[i]->data) == 0;
+      ctx->hdrs[i]->old = 0;
+      ctx->hdrs[i]->read = 0;
+      if (hcached)
+      {
+        if (bcached)
+          ctx->hdrs[i]->read = 1;
+        else if (option (OPTMARKOLD))
+          ctx->hdrs[i]->old = 1;
+      }
+      else
+      {
+        if (bcached)
+          ctx->hdrs[i]->read = 1;
+      }
 
       ctx->msgcount++;
     }
@@ -222,12 +318,22 @@ static int pop_fetch_headers (CONTEXT *ctx)
       mx_update_context (ctx, i - old_count);
   }
 
+#if USE_HCACHE
+    mutt_hcache_close (hc);
+#endif
+
   if (ret < 0)
   {
     for (i = ctx->msgcount; i < new_count; i++)
       mutt_free_header (&ctx->hdrs[i]);
     return ret;
   }
+
+  /* after putting the result into our structures,
+   * clean up cache, i.e. wipe messages deleted outside
+   * the availability of our cache
+   */
+  mutt_bcache_list (pop_data->bcache, msg_cache_check, (void*)ctx);
 
   mutt_clear_error ();
   return (new_count - old_count);
@@ -268,6 +374,7 @@ int pop_open_mailbox (CONTEXT *ctx)
     return -1;
 
   conn->data = pop_data;
+  pop_data->bcache = mutt_bcache_open (&acct, NULL);
 
   FOREVER
   {
@@ -332,6 +439,8 @@ void pop_close_mailbox (CONTEXT *ctx)
   if (!pop_data->conn->data)
     mutt_socket_free (pop_data->conn);
 
+  mutt_bcache_close (&pop_data->bcache);
+
   return;
 }
 
@@ -346,8 +455,16 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
   POP_CACHE *cache;
   HEADER *h = ctx->hdrs[msgno];
+  unsigned short bcache = 1;
 
-  /* see if we already have the message in our cache */
+  /* see if we already have the message in body cache */
+  if ((msg->fp = mutt_bcache_get (pop_data->bcache, h->data)))
+    return 0;
+
+  /*
+   * see if we already have the message in our cache in
+   * case $message_cachedir is unset
+   */
   cache = &pop_data->cache[h->index % POP_CACHE_LEN];
 
   if (cache->path)
@@ -358,7 +475,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
       msg->fp = fopen (cache->path, "r");
       if (msg->fp)
 	return 0;
-
+      
       mutt_perror (cache->path);
       mutt_sleep (2);
       return -1;
@@ -388,13 +505,18 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     progressbar.msg = _("Fetching message...");
     mutt_progress_bar (&progressbar, 0);
 
-    mutt_mktemp (path);
-    msg->fp = safe_fopen (path, "w+");
-    if (!msg->fp)
+    /* see if we can put in body cache; use our cache as fallback */
+    if (!(msg->fp = mutt_bcache_put (pop_data->bcache, h->data)))
     {
-      mutt_perror (path);
-      mutt_sleep (2);
-      return -1;
+      /* no */
+      bcache = 0;
+      mutt_mktemp (path);
+      if (!(msg->fp = safe_fopen (path, "w+")))
+      {
+	mutt_perror (path);
+	mutt_sleep (2);
+	return -1;
+      }
     }
 
     snprintf (buf, sizeof (buf), "RETR %d\r\n", h->refno);
@@ -404,7 +526,14 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
       break;
 
     safe_fclose (&msg->fp);
-    unlink (path);
+
+    /* if RETR failed (e.g. connection closed), be sure to remove either
+     * the file in bcache or from POP's own cache since the next iteration
+     * of the loop will re-attempt to put() the message */
+    if (bcache)
+      mutt_bcache_del (pop_data->bcache, h->data);
+    else
+      unlink (path);
 
     if (ret == -2)
     {
@@ -424,8 +553,11 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
-  cache->index = h->index;
-  cache->path = safe_strdup (path);
+  if (!bcache)
+  {
+    cache->index = h->index;
+    cache->path = safe_strdup (path);
+  }
   rewind (msg->fp);
   uidl = h->data;
   mutt_free_envelope (&h->env);
@@ -457,6 +589,9 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
   int i, ret;
   char buf[LONG_STRING];
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+#endif
 
   pop_data->check_time = 0;
 
@@ -467,14 +602,28 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
     mutt_message (_("Marking %d messages deleted..."), ctx->deleted);
 
+#if USE_HCACHE
+    hc = mutt_hcache_open (HeaderCache, ctx->path);
+#endif
+
     for (i = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted)
       {
 	snprintf (buf, sizeof (buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
-	ret = pop_query (pop_data, buf, sizeof (buf));
+	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
+	{
+	  mutt_bcache_del (pop_data->bcache, ctx->hdrs[i]->data);
+#if USE_HCACHE
+	  mutt_hcache_delete (hc, ctx->hdrs[i]->data, strlen);
+#endif
+	}
       }
     }
+
+#if USE_HCACHE
+    mutt_hcache_close (hc);
+#endif
 
     if (ret == 0)
     {

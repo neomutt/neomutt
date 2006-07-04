@@ -4476,6 +4476,95 @@ macro pager \cb |urlview\n
 
 </sect1>
 
+<sect1 id="caching">
+<title>Local caching (OPTIONAL)</title>
+
+<para>
+Mutt contains two types of local caching: <emphasis>(1)</emphasis>
+the so-called ``header caching'' and <emphasis>(2)</emphasis> the
+so-called ``body caching'' which are both described in this section.
+</para>
+
+<para>
+These are optional which means they're not enabled by default.
+Details on how to enable either of these techniques are given in the
+following subsections.
+</para>
+
+<sect2>
+<title>Header caching</title>
+
+<para>
+Mutt provides optional support for caching message headers for the
+following types of folders: IMAP, POP, Maildir and MH. Header caching
+greatly improves speed because for remote folders, headers
+usually only need to be downloaded once. For Maildir and MH, reading the
+headers from a single file is much faster than looking at possibly
+thousands of single files (since Maildir uses one file per message.)
+</para>
+
+<para>
+Header caching can be enabled via the configure script and the
+<emphasis>--enable--hcache</emphasis> option. It's not turned on
+by default because external database libraries are required: one
+of qdbm, gdbm or bdb must be present.
+</para>
+
+<para>
+If enabled, <link
+linkend="header-cache">&dollar;header&lowbar;cache</link> can be
+used to either point to a file or a directory. If set to point to
+a file, one database file for all folders will be used (which may
+result in lower performance), but one file per folder if it points
+to a directory.
+</para>
+
+<para>
+For the one-file-per-folder case, database files will be named by
+MD5 sums and can be removed if a system is short on space. However,
+there currently is no easy to find out which database file is used
+for which folder.
+</para>
+
+</sect2>
+
+<sect2>
+<title>Body caching</title>
+
+<para>
+In addition to caching message headers only, mutt can also cache
+whole message bodies. This results in faster display of messages
+for POP and IMAP folders because messages usually have to be
+downloaded only once.
+</para>
+
+<para>
+If the configure script is called with <emphasis>--enable-pop</emphasis>
+and/or <emphasis>--enable-imap</emphasis>, body caching will be
+built in as it does not require additional software packages such
+as database libraries.
+</para>
+
+<para>
+For configuration, the variable <link linkend="message-cachedir"
+>&dollar;message&lowbar;cachedir</link> must point to a
+directory. There, mutt will create a hierarchy of subdirectories
+named like: <literal>proto:user@hostname</literal> where
+<literal>proto</literal> is either ``pop'' or ``imap.'' Within
+there for each folder, mutt stores messages in single files (just
+like Maildir) so that with manual symlink creation these cache
+directories can be examined with mutt as read-only Maildir folders.
+</para>
+
+<para>
+All files can be removed as needed if the consumed disk space
+becomes an issue as mutt will silently fetch missing items again.
+</para>
+
+</sect2>
+
+</sect1>
+
 </chapter>
 
 <chapter id="mimesupport">
