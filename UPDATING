@@ -6,6 +6,8 @@ The keys used are:
 
 CVS HEAD:
 
+  - $imap_cachedir replaced with $message_cachedir (2006-07-04)
+  + Header/body caching for POP ($message_cachedir) (2006-07-04)
   + Header caching for MH folders (2006-05-06)
   ! $record now defaults to ~/sent (2006-04-03)
   ! $imap_idle now defaults to "yes" instead of "no" (2006-03-13)
@@ -30,6 +32,7 @@ CVS HEAD:
   ! $envelope_from_address has been added, $envelope_from has been renamed
     to $use_envelope_from
   + Progress bar via $net_inc
+  + IMAP server-side simple string search
   + Simple string matches instead of full regex matches for '=' instead
     of '~' with pattern modifiers
   ! ~l matches all known lists, ~u only subscribed
