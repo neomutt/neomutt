@@ -1,3 +1,10 @@
+2006-07-04 17:59:54  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* bcache.c: Rename mutt_bcache_path to bcache_path (it's static),
+	simplify it a bit, and just strip '/' in the URL portion up
+	to path instead of replacing them with '_', for prettier cache
+	folder names.
+
 2006-07-04 17:23:16  Alain Bench  <veronatif@free.fr>  (brendan)
 
 	* history.c: Adopt shell convention of omitting from the history
