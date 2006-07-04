@@ -1,4 +1,7 @@
-2006-07-04 17:59:54  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-07-04 18:15:52  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* UPDATING, init.h: Remove $imap_cachedir synonym, and update
+	some docs.
 
 	* bcache.c: Rename mutt_bcache_path to bcache_path (it's static),
 	simplify it a bit, and just strip '/' in the URL portion up
