@@ -1625,7 +1625,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   int query, unset, inv, reset, r = 0;
   int idx = -1;
   char *p, scratch[_POSIX_PATH_MAX];
-  char* myvar = NULL;
+  char* myvar;
 
   while (MoreArgs (s))
   {
@@ -1634,6 +1634,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     unset = data & M_SET_UNSET;
     inv = data & M_SET_INV;
     reset = data & M_SET_RESET;
+    myvar = NULL;
 
     if (*s->dptr == '?')
     {
