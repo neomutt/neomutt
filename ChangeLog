@@ -1,4 +1,8 @@
-2006-07-04 18:56:04  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-07-05 00:31:38  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* init.c: Reset myvar for each token in parse_set, so that
+	things like set my_var=val &my_var ?charset work again. Noted
+	by Alain Bench.
 
 	* doc/Makefile.in, init.c: Undo breakage I introduced in VL's
 	doc reldate patch.
