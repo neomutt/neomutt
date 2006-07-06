@@ -1,4 +1,6 @@
-2006-07-06 17:05:47  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-07-06 18:18:31  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* imap/command.c: Fix a string leak parsing STATUS responses.
 
 	* score.c: Fix a small memory leak when updating a score pattern.
 
