@@ -104,7 +104,12 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       Score = ptr;
     ptr->pat = pat;
     ptr->str = pattern;
-  }
+  } else
+    /* 'buf' arg was cleared and 'pattern' holds the only reference;
+     * as here 'ptr' != NULL -> update the value only in which case
+     * ptr->str already has the string, so pattern should be freed.
+     */
+    FREE (&pattern);
   pc = buf->data;
   if (*pc == '=')
   {
