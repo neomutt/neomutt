@@ -864,6 +864,8 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
         FREE (&value);
         return;
       }
+
+      FREE (&value);
     }
 
     FREE (&mx.mbox);
