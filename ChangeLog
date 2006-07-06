@@ -1,3 +1,7 @@
+2006-07-06 17:05:47  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* score.c: Fix a small memory leak when updating a score pattern.
+
 2006-07-05 00:31:38  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* init.c: Reset myvar for each token in parse_set, so that
