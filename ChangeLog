@@ -1,3 +1,9 @@
+2006-07-07 17:00:05  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>
+(brendan)
+
+	* doc/muttrc.man.head: Fix a small inconsistency documenting
+	'reset all.'
+
 2006-07-07 16:21:57  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (brendan)
 
 	* po/pl.po: Update.
