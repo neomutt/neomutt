@@ -153,12 +153,18 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
         rc = imap_cmd_step (idata);
         if (rc != IMAP_CMD_CONTINUE)
+	{
+	  imap_free_header_data ((void**) &h.data);
           break;
+	}
 
         if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) == -1)
           continue;
         else if (mfhrc < 0)
+	{
+	  imap_free_header_data ((void**) &h.data);
           break;
+	}
 
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
         uid_validity = (unsigned int*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
@@ -183,6 +189,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
           ctx->msgcount++;
         }
+	else
+	  /* bad header in the cache, we'll have to refetch.
+	   * TODO: consider the possibility of a holey cache. */
+	  imap_free_header_data((void**) &h.data);
   
         FREE(&uid_validity);
       }
