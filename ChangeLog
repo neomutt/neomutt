@@ -1,3 +1,9 @@
+2006-07-07 18:44:34  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* imap/message.c: Fix a small memory leak in the gap between
+	the last cached header and the first uncached. (I've plugged a
+	couple of other leaks that happen under error conditions.)
+
 2006-07-07 17:00:05  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>
 (brendan)
 
