@@ -350,8 +350,8 @@ with a default answer of \(lqyes\(rq and \fBask-no\fP will provide a
 default answer of \(lqno.\(rq
 .IP
 The \fBreset\fP command resets all given variables to the compile
-time defaults.  If you reset the special variabe \fBall\fP, all
-variables will reset to their system defaults.
+time defaults.  If you reset the special variable \fBall\fP, all
+variables will reset to their compile time defaults.
 .TP
 \fBsource\fP \fIfilename\fP
 The given file will be evaluated as a configuration file.
