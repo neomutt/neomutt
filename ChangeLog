@@ -1,3 +1,7 @@
+2006-07-07 23:10:51  Johan Svedberg  <johan@svedberg.com>  (brendan)
+
+	* po/sv.po: Update to the Swedish translation.
+
 2006-07-07 18:44:34  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* imap/message.c: Fix a small memory leak in the gap between
