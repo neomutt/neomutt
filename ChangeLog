@@ -1,3 +1,7 @@
+2006-07-07 16:21:57  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (brendan)
+
+	* po/pl.po: Update.
+
 2006-07-06 18:18:31  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* imap/command.c: Fix a string leak parsing STATUS responses.
