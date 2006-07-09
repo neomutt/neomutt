@@ -598,9 +598,11 @@ int imap_open_mailbox (CONTEXT* ctx)
     mutt_bit_set (idata->rights, IMAP_ACL_DELETE);
   }
   /* pipeline the postponed count if possible */
+  pmx.mbox = NULL;
   if (mx_is_imap (Postponed) && !imap_parse_path (Postponed, &pmx)
       && mutt_account_match (&pmx.account, &mx.account))
     imap_status (Postponed, 1);
+  FREE (&pmx.mbox);
 
   snprintf (bufout, sizeof (bufout), "%s %s",
     ctx->readonly ? "EXAMINE" : "SELECT", buf);
