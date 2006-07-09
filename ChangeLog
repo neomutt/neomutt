@@ -1,3 +1,8 @@
+2006-07-09 20:05:02  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>  (brendan)
+
+	* imap/imap.c: Plug an mbox leak parsing the Postponed folder in
+	imap_open_mailbox (slightly modified to prevent bad free calls).
+
 2006-07-07 23:10:51  Johan Svedberg  <johan@svedberg.com>  (brendan)
 
 	* po/sv.po: Update to the Swedish translation.
