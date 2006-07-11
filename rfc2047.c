@@ -670,6 +670,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   
   if (charset)
     mutt_convert_string (&d0, charset, Charset, M_ICONV_HOOK_FROM);
+  mutt_filter_unprintable (&d0);
   strfcpy (d, d0, len);
   FREE (&charset);
   FREE (&d0);

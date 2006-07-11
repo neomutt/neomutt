@@ -129,6 +129,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
       s = rfc2231_get_charset (p->value, charset, sizeof (charset));
       rfc2231_decode_one (p->value, s);
       mutt_convert_string (&p->value, charset, Charset, M_ICONV_HOOK_FROM);
+      mutt_filter_unprintable (&p->value);
 
       *last = p;
       last = &p->next;
