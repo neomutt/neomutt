@@ -1,3 +1,7 @@
+2006-07-11 23:38:30  Rocco Rutte  <pdmef@gmx.net>  (roessler)
+
+	* main.c, mutt_curses.h: Fix 2305.
+
 2006-07-11 23:34:11  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
 
 	* mbyte.c, protos.h, rfc2047.c, rfc2231.c: Fix #2173.
