@@ -1,3 +1,7 @@
+2006-07-11 23:34:11  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (roessler)
+
+	* mbyte.c, protos.h, rfc2047.c, rfc2231.c: Fix #2173.
+
 2006-07-09 20:05:02  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>  (brendan)
 
 	* imap/imap.c: Plug an mbox leak parsing the Postponed folder in
@@ -13,8 +17,7 @@
 	the last cached header and the first uncached. (I've plugged a
 	couple of other leaks that happen under error conditions.)
 
-2006-07-07 17:00:05  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>
-(brendan)
+2006-07-07 17:00:05  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>  (brendan)
 
 	* doc/muttrc.man.head: Fix a small inconsistency documenting
 	'reset all.'
