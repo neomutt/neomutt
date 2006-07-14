@@ -6,26 +6,26 @@ The keys used are:
 
 1.5.12 (2006-07-14):
 
-  - $imap_cachedir replaced with $message_cachedir (2006-07-04)
-  + Header/body caching for POP ($message_cachedir) (2006-07-04)
-  + Header caching for MH folders (2006-05-06)
-  ! $record now defaults to ~/sent (2006-04-03)
-  ! $imap_idle now defaults to "yes" instead of "no" (2006-03-13)
-  + Tab-completion for $my_* variable names and values (2006-01-14)
-  + Expansion of mutt variables (except shell escape) (2006-01-12)
-  + Self-defined variables with $my_* prefix (2006-01-12)
-  + Pattern group support (2006-01-09)
-  + $imap_cachedir (2005-12-22)
-  + 'old' flag on IMAP folders (2005-12-19)
-  + SASL-IR support for IMAP (2005-12-14)
-  + IMAP IDLE support and $imap_idle (2005-12-12)
-  + Pipeline-based IMAP communicaton (2005-12-11)
-  + Full large file support (2005-10-21)
+  - $imap_cachedir replaced with $message_cachedir
+  + Header/body caching for POP ($message_cachedir)
+  + Header caching for MH folders 
+  ! $record now defaults to ~/sent
+  ! $imap_idle now defaults to "yes" instead of "no"
+  + Tab-completion for $my_* variable names and values
+  + Expansion of mutt variables (except shell escape)
+  + Self-defined variables with $my_* prefix 
+  + Pattern group support 
+  + $imap_cachedir
+  + 'old' flag on IMAP folders
+  + SASL-IR support for IMAP
+  + IMAP IDLE support and $imap_idle
+  + Pipeline-based IMAP communicaton
+  + Full large file support
   + Attachment counting: attachments and unattachments commands,
-    %Q and %X for $attach_format, %X for $index_format (2005-10-04)
-  + Basque translation (2005-09-29)
-  + QDBM backend for header caching (2005-09-21)
-  + Irish translation (2005-09-16)
+    %Q and %X for $attach_format, %X for $index_format
+  + Basque translation
+  + QDBM backend for header caching
+  + Irish translation
 
 1.5.11 (2005-09-15):
 
