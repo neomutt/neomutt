@@ -1356,14 +1356,26 @@ the first line of output from the Unix command will be substituted.
 </para>
 
 <para>
-UNIX environments can be accessed like the way it is done in shells like
-sh and bash: Prepend the name of the environment by a ``&dollar;''.  For
-example,
+Both environment variables and mutt variables can be accessed by
+prepending ``&dollar;'' to the name of the variable. For example,
+</para>
 
 <screen>
 set record=+sent_on_$HOSTNAME
 </screen>
 
+<para>
+will cause mutt to save outgoing messages to a folder named
+``sent_on_kremvax'' if the environment variable HOSTNAME is set to
+``kremvax.'' (See <link linkend="record">&dollar;record</link> for
+details.)
+</para>
+
+<para>
+Mutt expands the variable when it is assigned, not when it is used. If
+the value of a variable on the right-hand side of an assignment
+changes after the assignment, the variable on the left-hand side will
+not be affected.
 </para>
 
 <para>
@@ -2808,7 +2820,14 @@ spam "^From: .*MAILER-DAEMON"       "999"
 </sect1>
 
 <sect1 id="set">
-<title>Setting variables</title>
+<title>Setting and Querying Variables</title>
+
+<sect2 id="set-commands">
+<title>Commands</title>
+
+<para>
+The following commands are available to manipulate and query variables:
+</para>
 
 <para>
 <literallayout>
@@ -2893,6 +2912,107 @@ behavior as the reset command.
 With the <literal>reset</literal> command there exists the special variable ``all'',
 which allows you to reset all variables to their system defaults.
 </para>
+
+</sect2>
+
+<sect2 id="set-myvar">
+<title>User-defined variables</title>
+
+<sect3 id="set-myvar-intro">
+<title>Introduction</title>
+
+<para>
+Along with the variables listed in the
+<link linkend="variables">Configuration variables</link> section, mutt
+supports user-defined variables with names starting
+with <literal>my&lowbar;</literal> as in, for
+example, <literal>my&lowbar;cfgdir</literal>.
+</para>
+
+<para>
+The <literal>set</literal> command creates a
+custom <literal>$my&lowbar;</literal> variable and changes its
+value. The <literal>unset</literal> and <literal>reset</literal>
+commands remove the variable entirely.
+</para>
+
+<para>
+Since user-defined variables are expanded in the same way that
+environment variables are (except for
+the <link linkend="shell-escape">shell-escape</link> command), this
+feature can be used to make configuration files more readable.
+</para>
+
+</sect3>
+
+<sect3 id="set-myvar-examples">
+<title>Examples</title>
+
+<para>
+The following example defines and uses the variable <literal>my&lowbar;cfgdir</literal> 
+to abbreviate the calls of the <link linkend="source">source</link> command:
+</para>
+
+<para>
+<screen>
+set my_cfgdir = $HOME/mutt/config
+
+source $my_cfgdir/hooks
+source $my_cfgdir/macros
+# more source commands...
+</screen>
+</para>
+
+<para>
+A custom variable can also be used in macros to backup the current value
+of another variable. In the following example, the value of the 
+<link linkend="delete">&dollar;delete</link> is changed temporarily
+while its original value is saved as <literal>my&lowbar;delete</literal>.
+After the macro has executed all commands, the original value of <link
+linkend="delete">&dollar;delete</link> is restored.
+</para>
+
+<para>
+<screen>
+macro pager , x '&bsol;
+&lt;enter-command&gt;set my_delete=$delete&lt;enter&gt;&bsol;
+&lt;enter-command&gt;set delete=yes&lt;enter&gt;&bsol;
+...&bsol;
+&lt;enter-command&gt;set delete=$my_delete&lt;enter&gt;'
+</screen>
+</para>
+
+<para>
+Since mutt expands such values already when parsing the configuration
+file(s), the value of <literal>&dollar;my&lowbar;delete</literal> in the
+last example would be the value of <literal>&dollar;delete</literal> exactly
+as it was at that point during parsing the configuration file. If
+another statement would change the value for <literal>&dollar;delete</literal>
+later in the same or another file, it would have no effect on
+<literal>&dollar;my&lowbar;delete</literal>. However, the expansion can
+be deferred to runtime, as shown in the next example, when escaping the
+dollar sign.
+</para>
+
+<para>
+<screen>
+macro pager &lt;PageDown&gt; "&bsol;
+&lt;enter-command&gt; set my&lowbar;old&lowbar;pager&lowbar;stop=&bsol;&dollar;pager&lowbar;stop pager&lowbar;stop&lt;Enter&gt;&bsol;
+&lt;next-page&gt;&bsol;
+&lt;enter-command&gt; set pager&lowbar;stop=&bsol;&dollar;my&lowbar;old&lowbar;pager&lowbar;stop ; unset my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;"
+</screen>
+</para>
+
+<para>
+Note that there is a space
+between <literal>&lt;enter-command&gt;</literal> and
+the <literal>set</literal> configuration command, preventing mutt from
+recording the macro's commands into its history.
+</para>
+
+</sect3>
+
+</sect2>
 
 </sect1>
 
@@ -4500,7 +4620,7 @@ following types of folders: IMAP, POP, Maildir and MH. Header caching
 greatly improves speed because for remote folders, headers
 usually only need to be downloaded once. For Maildir and MH, reading the
 headers from a single file is much faster than looking at possibly
-thousands of single files (since Maildir uses one file per message.)
+thousands of single files (since Maildir and MH use one file per message.)
 </para>
 
 <para>
@@ -4520,10 +4640,23 @@ to a directory.
 </para>
 
 <para>
-For the one-file-per-folder case, database files will be named by
-MD5 sums and can be removed if a system is short on space. However,
-there currently is no easy to find out which database file is used
-for which folder.
+For the one-file-per-folder case, database files will be named by MD5
+sums. They may be safely removed if a system is short on space. You
+can compute the name of the header cache file for a particular folder
+through a command like the following:
+</para>
+
+<para>
+<screen>
+$ printf '%s' '/path/to/folder' | md5sum
+$ printf '%s' 'imaps://user@host/path/to/folder' | md5sum
+$ printf '%s' 'pops://user@host' | md5sum
+</screen>
+</para>
+
+<para>
+The <literal>md5sum</literal> command may also be
+named <literal>md5</literal>, depending on your operating system.
 </para>
 
 </sect2>
@@ -4907,7 +5040,7 @@ since it is not itself subject to any further expansion):
 <para>
 
 <screen>
-text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
+text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} &bsol;
         &amp;&amp; test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
 </screen>
 
@@ -5063,7 +5196,7 @@ print command:
 
 <screen>
 image/*;        xv %s
-image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
+image/gif;      ; print= anytopnm %s | pnmtops | lpr; &bsol;
                 nametemplate=%s.gif
 </screen>
 
@@ -5214,7 +5347,7 @@ image/jpeg;xv %s; x-mozilla-flags=internal
 # Use xv to view images if I'm running X
 # In addition, this uses the \ to extend the line and set my editor
 # for images
-image/*;xv %s; test=RunningX; \
+image/*;xv %s; test=RunningX; &bsol;
         edit=xpaint %s
 
 # Convert images to text using the netpbm tools
