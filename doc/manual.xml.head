@@ -229,10 +229,15 @@ showing the common keys used to navigate menus in Mutt.
 <sect1 id="editing">
 <title>Editing Input Fields</title>
 
+<sect2 id="editing-intro">
+<title>Introduction</title>
+
 <para>
-Mutt has a builtin line editor which is used as the primary way to input
-textual data such as email addresses or filenames.  The keys used to move
-around while editing are very similar to those of Emacs.
+Mutt has a built-in line editor for inputting text, e.g. email
+addresses or filenames. The keys used to manipulate text input are
+very similar to those of Emacs. See the following table for a full
+reference of available functions, their default key bindings, and
+short descriptions.
 </para>
 
 <para>
@@ -274,14 +279,56 @@ around while editing are very similar to those of Emacs.
 
 <para>
 You can remap the <emphasis>editor</emphasis> functions using the
-<link linkend="bind">bind</link>
-command.  For example, to make the <emphasis>Delete</emphasis> key delete the character in
-front of the cursor rather than under, you could use
+<link linkend="bind">bind</link> command.  For example, to make
+the <emphasis>Delete</emphasis> key delete the character in front of
+the cursor rather than under, you could use
+</para>
+
+<screen>
+bind editor &lt;delete&gt; backspace
+</screen>
+
+</sect2>
+
+<sect2 id="editing-history">
+<title>History</title>
+
+<para>
+The number of items in the built-in editor's history is controlled by
+the <link linkend="history">&dollar;history</link> variable. You may
+cycle through them at an editor prompt by using the
+<literal>history-up</literal> and/or <literal>history-down</literal>
+commands.
 </para>
 
 <para>
-<literal>bind editor &lt;delete&gt; backspace</literal>
+Mutt maintains several distinct history lists, one for each of the
+following categories:
 </para>
+
+<para>
+<itemizedlist>
+<listitem>muttrc commands</listitem>
+<listitem>addresses and aliases</listitem>
+<listitem>shell commands</listitem>
+<listitem>filenames</listitem>
+<listitem>patterns</listitem>
+<listitem>everything else</listitem>
+</itemizedlist>
+</para>
+
+<para>
+Mutt automatically filters out repeated items from the history.  It
+also mimics the behaviour of some shells by ignoring items starting
+with a space.
+</para>
+
+<para>
+The latter feature can be useful in macros to not clobber the history's
+valuable entries with unwanted entries.
+</para>
+
+</sect2>
 
 </sect1>
 
@@ -1123,7 +1170,7 @@ of which the latest appears to be called 2.9b23.
 To use it, you'll have to obey certain restrictions.  Most
 important, you cannot use the <literal>Cc</literal> and <literal>Bcc</literal> headers.  To tell
 Mutt to use mixmaster, you have to select a remailer chain, using
-the mix function on the compose menu.  
+the mix function on the compose menu.
 </para>
 
 <para>
@@ -1779,7 +1826,7 @@ which is shown in the help screens.
 
 <para>
 <emphasis role="bold">Note:</emphasis> Macro definitions (if any) listed in the help screen(s), are
-silently truncated at the screen width, and are not wrapped.   
+silently truncated at the screen width, and are not wrapped.
 </para>
 
 </sect1>
@@ -4850,7 +4897,7 @@ audio/x-aiff                    aif aifc aiff
 </screen>
 
 A sample <literal>mime.types</literal> file comes with the Mutt distribution, and
-should contain most of the MIME types you are likely to use.  
+should contain most of the MIME types you are likely to use.
 </para>
 
 <para>
@@ -5129,7 +5176,7 @@ Mutt supports this from the attachment and compose menus.
 <term>edit=&lt;command&gt;</term>
 <listitem>
 <para>
-This flag specifies the command to use to edit a specific MIME type.  
+This flag specifies the command to use to edit a specific MIME type.
 Mutt supports this from the compose menu, and also uses it to compose
 new attachments.  Mutt will default to the defined editor for text
 attachments.
