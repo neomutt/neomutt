@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.11\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-07 23:11+0200\n"
+"POT-Creation-Date: 2006-07-14 14:16-0400\n"
 "PO-Revision-Date: 2006-07-08 00:35+0200\n"
 "Last-Translator: Johan Svedberg <johan@svedberg.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -2028,70 +2028,70 @@ msgstr "Krypterad anslutning otillgänglig"
 msgid "Selecting %s..."
 msgstr "Väljer %s..."
 
-#: imap/imap.c:737
+#: imap/imap.c:739
 msgid "Error opening mailbox"
 msgstr "Fel vid öppning av brevlåda"
 
-#: imap/imap.c:786 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Skapa %s?"
 
-#: imap/imap.c:1120 pop.c:603
+#: imap/imap.c:1122 pop.c:603
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Märker %d meddelanden som raderade..."
 
-#: imap/imap.c:1129
+#: imap/imap.c:1131
 msgid "Expunge failed"
 msgstr "Radering misslyckades"
 
-#: imap/imap.c:1164
+#: imap/imap.c:1166
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Sparar ändrade meddelanden... [%d/%d]"
 
-#: imap/imap.c:1214
+#: imap/imap.c:1216
 msgid "Error saving flags. Close anyway?"
 msgstr "Fel vid sparande av flaggor. Stäng ändå?"
 
-#: imap/imap.c:1222
+#: imap/imap.c:1224
 msgid "Error saving flags"
 msgstr "Fel vid sparande av flaggor"
 
-#: imap/imap.c:1234
+#: imap/imap.c:1236
 msgid "Expunging messages from server..."
 msgstr "Raderar meddelanden från server..."
 
-#: imap/imap.c:1239
+#: imap/imap.c:1241
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE misslyckades"
 
-#: imap/imap.c:1663
+#: imap/imap.c:1665
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Huvudsökning utan huvudnamn: %s"
 
-#: imap/imap.c:1735
+#: imap/imap.c:1737
 msgid "Bad mailbox name"
 msgstr "Dåligt namn på brevlåda"
 
-#: imap/imap.c:1758
+#: imap/imap.c:1760
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Prenumererar på %s..."
 
-#: imap/imap.c:1760
+#: imap/imap.c:1762
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Avslutar prenumeration på %s..."
 
-#: imap/imap.c:1770
+#: imap/imap.c:1772
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Prenumererar på %s..."
 
-#: imap/imap.c:1772
+#: imap/imap.c:1774
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Avslutar prenumeration på %s"
@@ -3340,47 +3340,47 @@ msgstr ""
 "\n"
 "Kompileringsval:"
 
-#: main.c:494
+#: main.c:497
 msgid "Error initializing terminal."
 msgstr "Fel vid initiering av terminalen."
 
-#: main.c:604
+#: main.c:607
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Avlusning på nivå %d.\n"
 
-#: main.c:606
+#: main.c:609
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG var inte valt vid kompilering. Ignoreras.\n"
 
-#: main.c:758
+#: main.c:761
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s finns inte. Skapa den?"
 
-#: main.c:762
+#: main.c:765
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Kan inte skapa %s: %s."
 
-#: main.c:807
+#: main.c:810
 msgid "No recipients specified.\n"
 msgstr "Inga mottagare angivna.\n"
 
-#: main.c:893
+#: main.c:896
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: kunde inte bifoga fil.\n"
 
-#: main.c:913
+#: main.c:916
 msgid "No mailbox with new mail."
 msgstr "Ingen brevlåda med nya brev."
 
-#: main.c:922
+#: main.c:925
 msgid "No incoming mailboxes defined."
 msgstr "Inga inkommande brevlådor definierade."
 
-#: main.c:950
+#: main.c:953
 msgid "Mailbox is empty."
 msgstr "Brevlådan är tom."
 
