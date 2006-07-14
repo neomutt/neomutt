@@ -1,4 +1,7 @@
-2006-07-14 18:11:19  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2006-07-14 18:12:49  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* UPDATING: There's no point in giving a date for each
+	incompatible change.
 
 	* UPDATING: Fix UPDATING.
 
