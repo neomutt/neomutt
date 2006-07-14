@@ -4,7 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-CVS HEAD:
+1.5.12 (2006-07-14):
 
   - $imap_cachedir replaced with $message_cachedir (2006-07-04)
   + Header/body caching for POP ($message_cachedir) (2006-07-04)
