@@ -1,4 +1,7 @@
-2006-07-14 00:01:16  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-07-14 00:20:05  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* doc/manual.xml.head: Improved history documentation (modified
+	for clarity).
 
 	* doc/manual.xml.head: Document $my_ variables and add a section
 	about how to calculate the header cache file name for a given
