@@ -1,3 +1,7 @@
+2006-07-17 18:24:52  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
+
+	* doc/.cvsignore: Tell CVS to ignore generated file mutt.1.
+
 2006-07-17 18:01:58  Christian Ebert  <blacktrash@gmx.net>  (brendan)
 
 	* doc/manual.xml.head: Fix a typo in a macro demonstrating $my_
