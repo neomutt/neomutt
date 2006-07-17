@@ -1,3 +1,8 @@
+2006-07-17 18:01:58  Christian Ebert  <blacktrash@gmx.net>  (brendan)
+
+	* doc/manual.xml.head: Fix a typo in a macro demonstrating $my_
+	variables.
+
 2006-07-17 17:56:37  Adeodato Simó  <dato@net.com.org.es>  (brendan)
 
 	* sendlib.c: Change formate of User-Agent header from
