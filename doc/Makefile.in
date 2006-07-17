@@ -167,6 +167,9 @@ dist distdir: Makefile $(DISTFILES)
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
 	(cd .. && $(MAKE) makedoc$(EXEEXT))
 
+../reldate.h:
+	(cd .. && $(MAKE) reldate.h)
+
 update-doc: stamp-doc-xml stamp-doc-chunked manual.txt manual.html
 
 muttrc.man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
@@ -182,9 +185,9 @@ mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
 stamp-doc-xml: $(top_srcdir)/makedoc.c $(top_srcdir)/init.h manual.xml.head manual.xml.tail \
-               $(top_srcdir)/VERSION $(top_srcdir)/reldate.h
+               $(top_srcdir)/VERSION ../reldate.h
 	$(MAKE) ../makedoc$(EXEEXT)
-	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` (`cut -d\\" -f2 $(top_srcdir)/reldate.h`)/" $(srcdir)/manual.xml.head ;\
+	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` (`cut -d\\\" -f2 ../reldate.h`)/" $(srcdir)/manual.xml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
 		cat - $(srcdir)/manual.xml.tail > manual.xml
 	touch stamp-doc-xml
