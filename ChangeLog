@@ -1,3 +1,7 @@
+2006-07-17 18:40:26  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* doc/Makefile.in: Some makefile fixes relating to reldate.h.
+
 2006-07-17 18:24:52  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
 
 	* doc/.cvsignore: Tell CVS to ignore generated file mutt.1.
