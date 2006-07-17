@@ -3021,7 +3021,7 @@ linkend="delete">&dollar;delete</link> is restored.
 
 <para>
 <screen>
-macro pager , x '&bsol;
+macro pager ,x '&bsol;
 &lt;enter-command&gt;set my_delete=$delete&lt;enter&gt;&bsol;
 &lt;enter-command&gt;set delete=yes&lt;enter&gt;&bsol;
 ...&bsol;
