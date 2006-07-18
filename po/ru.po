@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.11\n"
+"Project-Id-Version: mutt-1.5.12\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-07-14 14:16-0400\n"
-"PO-Revision-Date: 2005-09-17 18:56+0300\n"
+"PO-Revision-Date: 2006-07-17 14:02+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -1367,7 +1367,6 @@ msgstr ""
 "[-- Конец подписанных данных --]\n"
 
 #: cryptglue.c:89
-#, fuzzy
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
 msgstr "Опция \"crypt_use_gpgme\" включена, но поддержка GPGME не собрана."
 
@@ -1509,7 +1508,7 @@ msgstr "Ограничиться сообщениями, соответствующими: "
 
 #: curs_main.c:870
 msgid "To view all messages, limit to \"all\"."
-msgstr ""
+msgstr "Используйте \"all\" для просмотра всех сообщений."
 
 #: curs_main.c:882
 msgid "Quit Mutt?"
@@ -1626,7 +1625,6 @@ msgstr "Редактирование сообщений не поддерживается POP-сервером."
 #. * declared "static" (sigh)
 #.
 #: edit.c:41
-#, fuzzy
 msgid ""
 "~~\t\tinsert a line begining with a single ~\n"
 "~b users\tadd users to the Bcc: field\n"
@@ -1647,18 +1645,8 @@ msgstr ""
 "~m сообщения\t\tпроцитировать данные сообщения\n"
 "~M сообщения\t\tпроцитировать данные сообщения и их заголовки\n"
 "~p\t\t\tнапечатать это сообщение\n"
-"~q\t\t\tзаписать файл и выйти из редактора\n"
-"~r файл\t\tвключить данный файл\n"
-"~t пользователи\tдобавить данных пользователей в список адресатов\n"
-"~u\t\t\tиспользовать предыдущую строку\n"
-"~v\t\t\tредактировать сообщение при помощи внешнего редактора\n"
-"~w файл\t\tсохранить сообщение в файле\n"
-"~x\t\t\tотказаться от изменений и выйти из редактора\n"
-"~?\t\t\tвывести это сообщение\n"
-".\t\t\tстрока, содержащая только точку, заканчивает редактирование\n"
 
 #: edit.c:52
-#, fuzzy
 msgid ""
 "~q\t\twrite file and quit editor\n"
 "~r file\t\tread a file into the editor\n"
@@ -1670,15 +1658,6 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~~\t\t\tввести строку, начинающуюся с символа ~\n"
-"~b пользователи\tотправить данным пользователям \"слепую\" копию\n"
-"~c пользователи\tотправить данным пользователям копию\n"
-"~f сообщения\t\tвключить данные сообщения\n"
-"~F сообщения\t\tвключить данные сообщения и их заголовки\n"
-"~h\t\t\tредактировать заголовки сообщения\n"
-"~m сообщения\t\tпроцитировать данные сообщения\n"
-"~M сообщения\t\tпроцитировать данные сообщения и их заголовки\n"
-"~p\t\t\tнапечатать это сообщение\n"
 "~q\t\t\tзаписать файл и выйти из редактора\n"
 "~r файл\t\tвключить данный файл\n"
 "~t пользователи\tдобавить данных пользователей в список адресатов\n"
@@ -2088,18 +2067,17 @@ msgid "Expunge failed"
 msgstr "Не удалось очистить почтовый ящик"
 
 #: imap/imap.c:1166
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed messages... [%d/%d]"
-msgstr "Сохранение флагов состояния сообщений... [%d из %d]"
+msgstr "Сохранение изменённых сообщений... [%d/%d]"
 
 #: imap/imap.c:1216
 msgid "Error saving flags. Close anyway?"
-msgstr ""
+msgstr "Ошибка сохранения флагов. Закрыть почтовый ящик?"
 
 #: imap/imap.c:1224
-#, fuzzy
 msgid "Error saving flags"
-msgstr "Ошибка разбора адреса!"
+msgstr "Ошибка сохранения флагов"
 
 #: imap/imap.c:1236
 msgid "Expunging messages from server..."
@@ -2124,19 +2102,19 @@ msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
 #: imap/imap.c:1762
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Отключение от %s..."
 
 #: imap/imap.c:1772
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed to %s"
-msgstr "Подключение к %s..."
+msgstr "Подключено к %s"
 
 #: imap/imap.c:1774
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribed from %s"
-msgstr "Отключение от %s..."
+msgstr "Отключено от %s"
 
 #. Unable to fetch headers for lower versions
 #: imap/message.c:97
@@ -2206,31 +2184,28 @@ msgstr "не спам: образец не найден"
 
 #: init.c:877
 msgid "Missing -rx or -addr."
-msgstr ""
+msgstr "Отсутствует -rx или -addr."
 
 #: init.c:890
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad IDN '%s'.\n"
-msgstr "Предупреждение: некорректный IDN '%s' в псевдониме '%s'.\n"
+msgstr "Предупреждение: некорректный IDN '%s'.\n"
 
 #: init.c:1098
-#, fuzzy
 msgid "attachments: no disposition"
-msgstr "изменить описание вложения"
+msgstr "attachments: отсутствует параметр disposition"
 
 #: init.c:1136
-#, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "изменить описание вложения"
+msgstr "attachments: неверное значение параметра disposition"
 
 #: init.c:1150
-#, fuzzy
 msgid "unattachments: no disposition"
-msgstr "изменить описание вложения"
+msgstr "unattachments: отсутствует параметр disposition"
 
 #: init.c:1173
 msgid "unattachments: invalid disposition"
-msgstr ""
+msgstr "unattachments: неверное значение параметра disposition"
 
 #: init.c:1300
 msgid "alias: no address"
@@ -2345,10 +2320,9 @@ msgstr "не удалось определить имя пользователя"
 
 #: init.c:3036
 msgid "-group: no group name"
-msgstr ""
+msgstr "-group: имя группы отсутствует"
 
 #: init.c:3046
-#, fuzzy
 msgid "out of arguments"
 msgstr "слишком мало аргументов"
 
@@ -3215,23 +3189,21 @@ msgid "Out of memory!"
 msgstr "Нехватка памяти!"
 
 #: main.c:59
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please visit http://bugs.mutt.org/.\n"
 msgstr ""
 "Чтобы связаться с разработчиками, используйте адрес <mutt-dev@mutt.org>.\n"
-"Чтобы сообщить об ошибке, используйте программу flea(1).\n"
+"Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
 
 #: main.c:63
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2006 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins и другие.\n"
+"Copyright (C) 1996-2006 Michael R. Elkins и другие.\n"
 "Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
 "подробной информации введите `mutt -vv'.\n"
 "Mutt является свободным программным обеспечением.  Вы можете\n"
@@ -3251,6 +3223,16 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
+"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2006 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"\n"
+"Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
+"здесь людьми.\n"
 
 #: main.c:81
 msgid ""
@@ -3264,6 +3246,15 @@ msgid ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 msgstr ""
+"    Эта программа -- свободное программное обеспечение.  Вы можете\n"
+"    распространять и/или изменять ее при соблюдении условий GNU General\n"
+"    Piblic License, опубликованной Free Software Foundation, версии 2 или\n"
+"    (на ваше усмотрение) любой более поздней версии.\n"
+"\n"
+"    Эта программа распространяется с надеждой, что она окажется полезной,\n"
+"    но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ. Особо отметим, что отсутствует ГАРАНТИЯ\n"
+"    ПРИГОДНОСТИ ДЛЯ ВЫПОЛНЕНИЯ ОПРЕДЕЛЕННЫХ ЗАДАЧ. Более подробную\n"
+"    информацию вы можете найти в GNU General Public License.\n"
 
 #: main.c:91
 msgid ""
@@ -3272,9 +3263,12 @@ msgid ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
 "1301, USA.\n"
 msgstr ""
+"    Вы должны были получить копию GNU General Public License вместе с\n"
+"    этой программой. Если вы ее не получили, обратитесь во Free Software\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
+"1301, USA.\n"
 
 #: main.c:108
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3300,12 +3294,6 @@ msgstr ""
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 "\n"
-"параметры:\n"
-"  -A <alias>\tраскрыть данный псевдоним\n"
-"  -a <file>\tвложить файл в сообщение\n"
-"  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
-"  -c <address>\tуказать carbon-copy (CC) адрес\n"
-"  -D\t\tвывести значения всех переменных на stdout"
 
 #: main.c:116
 msgid ""
@@ -3316,13 +3304,18 @@ msgid ""
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
 "  -D\t\tprint the value of all variables to stdout"
 msgstr ""
+"параметры:\n"
+"  -A <alias>\tраскрыть данный псевдоним\n"
+"  -a <file>\tвложить файл в сообщение\n"
+"  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
+"  -c <address>\tуказать carbon-copy (CC) адрес\n"
+"  -D\t\tвывести значения всех переменных на stdout"
 
 #: main.c:124
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <level>\tзапись отладочной информации в ~/.muttdebug0"
 
 #: main.c:127
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3341,21 +3334,9 @@ msgstr ""
 "  -i <file>\tуказать файл для вставки в тело письма\n"
 "  -m <тип>\tуказать тип почтового ящика по умолчанию\n"
 "  -n\t\tзапретить чтение системного Muttrc\n"
-"  -p\t\tпродолжить отложенное сообщение\n"
-"  -Q <имя>\tвывести значение переменной конфигурации\n"
-"  -R\t\tоткрыть почтовый ящик в режиме \"только для чтения\"\n"
-"  -s <тема>\tуказать тему сообщения (должна быть в кавычках, если "
-"присутствуют пробелы)\n"
-"  -v\t\tвывести номер версии и параметры компиляции\n"
-"  -x\t\tэмулировать режим посылки команды mailx\n"
-"  -y\t\tвыбрать почтовый ящик из списка `mailboxes'\n"
-"  -z\t\tвыйти немедленно если в почтовом ящике отсутствует новая почта\n"
-"  -Z\t\tоткрыть первый почтовый ящик с новой почтой, выйти немедленно если "
-"таковая отсутствует\n"
-"  -h\t\tтекст этой подсказки"
+"  -p\t\tпродолжить отложенное сообщение"
 
 #: main.c:136
-#, fuzzy
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -3367,15 +3348,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"  -e <command>\tуказать команду, которая будет выполнена после "
-"инициализации\n"
-"  -f <file>\tуказать почтовый ящик для работы\n"
-"  -F <file>\tуказать альтернативный muttrc\n"
-"  -H <file>\tуказать файл, содержащий шаблон заголовка и тела письма\n"
-"  -i <file>\tуказать файл для вставки в тело письма\n"
-"  -m <тип>\tуказать тип почтового ящика по умолчанию\n"
-"  -n\t\tзапретить чтение системного Muttrc\n"
-"  -p\t\tпродолжить отложенное сообщение\n"
 "  -Q <имя>\tвывести значение переменной конфигурации\n"
 "  -R\t\tоткрыть почтовый ящик в режиме \"только для чтения\"\n"
 "  -s <тема>\tуказать тему сообщения (должна быть в кавычках, если "
@@ -4009,9 +3981,9 @@ msgid "Error in expression: %s"
 msgstr "Ошибка в выражении: %s"
 
 #: pattern.c:269
-#, fuzzy, c-format
+#, c-format
 msgid "Empty expression"
-msgstr "ошибка в выражении"
+msgstr "Пустое выражение"
 
 #: pattern.c:400
 #, c-format
@@ -4306,9 +4278,8 @@ msgid "No postponed messages."
 msgstr "Нет отложенных сообщений."
 
 #: postpone.c:444 postpone.c:465 postpone.c:499
-#, fuzzy
 msgid "Illegal crypto header"
-msgstr "Неверный PGP-заголовок"
+msgstr "Неверный crypto-заголовок"
 
 #: postpone.c:485
 msgid "Illegal S/MIME header"
@@ -4858,35 +4829,35 @@ msgstr "eswabfc"
 #. I use "dra" because "123" is recognized anyway
 #: smime.c:1960
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
+msgstr "Выберите семейство алгоритмов: 1: DES, 2: RC2, 3: AES, (c)отказ? "
 
 #: smime.c:1963
 msgid "drac"
-msgstr ""
+msgstr "drac"
 
 #: smime.c:1966
 msgid "1: DES, 2: Triple-DES "
-msgstr ""
+msgstr "1: DES, 2: Triple-DES "
 
 #: smime.c:1967
 msgid "dt"
-msgstr ""
+msgstr "dt"
 
 #: smime.c:1979
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
-msgstr ""
+msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
 #: smime.c:1980
 msgid "468"
-msgstr ""
+msgstr "468"
 
 #: smime.c:1995
 msgid "1: AES128, 2: AES192, 3: AES256 "
-msgstr ""
+msgstr "1: AES128, 2: AES192, 3: AES256 "
 
 #: smime.c:1996
 msgid "895"
-msgstr ""
+msgstr "895"
 
 #: smime.c:2024
 msgid "Can't sign: No key specified. Use Sign As."
@@ -4911,70 +4882,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "Checking mailbox subscriptions"
-#~ msgstr "Проверка подписки почтовых ящиков"
-
-#~ msgid "CLOSE failed"
-#~ msgstr "Ошибка выполнения команды CLOSE"
-
-#~ msgid ""
-#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
-#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-#~ "Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
-#~ "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-#~ "Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
-#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-#~ "\n"
-#~ "Lots of others not mentioned here contributed lots of code,\n"
-#~ "fixes, and suggestions.\n"
-#~ "\n"
-#~ "    This program is free software; you can redistribute it and/or modify\n"
-#~ "    it under the terms of the GNU General Public License as published by\n"
-#~ "    the Free Software Foundation; either version 2 of the License, or\n"
-#~ "    (at your option) any later version.\n"
-#~ "\n"
-#~ "    This program is distributed in the hope that it will be useful,\n"
-#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "    GNU General Public License for more details.\n"
-#~ "\n"
-#~ "    You should have received a copy of the GNU General Public License\n"
-#~ "    along with this program; if not, write to the Free Software\n"
-#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
-#~ "1301, USA.\n"
-#~ msgstr ""
-#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
-#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-#~ "Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
-#~ "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-#~ "Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
-#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-#~ "\n"
-#~ "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
-#~ "здесь людьми.\n"
-#~ "\n"
-#~ "   Эта программа -- свободное программное обеспечение.  Вы можете\n"
-#~ "   распространять и/или изменять ее при соблюдении условий GNU General\n"
-#~ "   Piblic License, опубликованной Free Software Foundation, версии 2 или\n"
-#~ "   (на ваше усмотрение) любой более поздней версии.\n"
-#~ "\n"
-#~ "   Эта программа распространяется с надеждой, что она окажется полезной,\n"
-#~ "   но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ. Особо отметим, что отсутствует ГАРАНТИЯ\n"
-#~ "   ПРИГОДНОСТИ ДЛЯ ВЫПОЛНЕНИЯ ОПРЕДЕЛЕННЫХ ЗАДАЧ. Более подробную\n"
-#~ "   информацию вы можете найти в GNU General Public License.\n"
-#~ "\n"
-#~ "   Вы должны были получить копию GNU General Public License вместе с\n"
-#~ "   этой программой. Если вы ее не получили, обратитесь во Free Software\n"
-#~ "   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
-#~ "1301, USA.\n"
-
-#~ msgid ""
-#~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-#~ msgstr ""
-#~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, (f)отказаться? "
-
-#~ msgid "12345f"
-#~ msgstr "12345f"
