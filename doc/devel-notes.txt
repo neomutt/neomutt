@@ -14,9 +14,9 @@ patches.
 
 You'll need several GNU development utilities for working on mutt:
 
-- automake
+- automake (versions less than 1.9 are not officially supported)
 
-- autoconf
+- autoconf (likewise, versions less than 2.59 are unsupported)
 
 - autoheader
 
