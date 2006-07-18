@@ -7,7 +7,7 @@ else
   include_deps="-i"
 fi
 
-if aclocal -I m4 && autoheader && (cd m4 && make -f Makefile.am.in ) \
+if aclocal -I m4 && autoheader \
   && automake $include_deps && autoconf && ./configure "$@"
 then
   echo

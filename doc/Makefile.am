@@ -1,44 +1,15 @@
 # $Id$
 
-SHELL = /bin/sh
-
-PACKAGE = @PACKAGE@
-VERSION = @VERSION@
-
-prefix = @prefix@
-exec_prefix = @exec_prefix@
-datarootdir = @datarootdir@
-sysconfdir = @sysconfdir@
-bindir = @bindir@
-libdir = @libdir@
-mandir = @mandir@
-srcdir = @srcdir@
-docdir = @docdir@
-includedir  =  @includedir@
-top_srcdir=@top_srcdir@
-top_builddir = ..
-VPATH = @srcdir@
-@SET_MAKE@
-
-INSTALL = @INSTALL@
-CC = @CC@
-CPP = @CPP@
-EXEEXT = @EXEEXT@
-XCPPFLAGS = -I. @CPPFLAGS@
-CFLAGS = @CFLAGS@ $(XCPPFLAGS)
-LDFLAGS = @LDFLAGS@
 subdir = doc
-
-CPPFLAGS = @CPPFLAGS@
 
 DSLROOT = @DSLROOT@
 
 DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
-INCLUDES = -I. -I.. -I$(includedir) -I$(top_srcdir)
+AM_CPPFLAGS = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
-MAKEDOC_CPP = $(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C 
+MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
 
-DISTFILES = Makefile.in dotlock.man  	\
+EXTRA_DIST = dotlock.man		\
 	muttbug.man			\
 	mutt.man			\
 	PGP-Notes.txt			\
@@ -53,7 +24,7 @@ DISTFILES = Makefile.in dotlock.man  	\
 	instdoc.sh.in			\
 	patch-notes.txt			\
 	smime-notes.txt			\
-	html.xsl chunk.xsl
+	html.xsl chunk.xsl $(BUILT_DISTFILES)
 
 HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
@@ -73,7 +44,7 @@ all: ../makedoc$(EXEEXT)
 
 makedoc-all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
 
-install: makedoc-all instdoc
+install-data-local: makedoc-all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
 	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
@@ -96,7 +67,7 @@ install: makedoc-all instdoc
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
 	done
 
-uninstall:
+uninstall-local:
 	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 ; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f ; \
 	done
@@ -128,41 +99,15 @@ manual.tex: stamp-doc-xml
 	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
 	fi
 
-clean: 
+clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
 	rm -f *.aux *.log *.tex *.out
 
-clean-real:
-	rm -f manual.txt manual.html manual.xml manual.pdf
-	rm -rf html
-
-maintainer-clean: clean clean-real distclean
-
-distclean: clean
-	rm -f Makefile
-
-Makefile: Makefile.in ../config.status
-	cd .. \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
+DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html instdoc
 
 instdoc: instdoc.sh
 	cat instdoc.sh > instdoc
 	chmod a+x instdoc
-
-instdoc.sh: instdoc.sh.in ../config.status
-	cd .. \
-	  && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= $(SHELL) ./config.status
-
-distdir = ../$(PACKAGE)-$(VERSION)/$(subdir)
-dist distdir: Makefile $(DISTFILES)
-	for file in $(DISTFILES) ; do				\
-		ln $(srcdir)/$$file $(distdir) 2> /dev/null 	\
-			|| cp -p $(srcdir)/$$file $(distdir); 	\
-	done
-	for file in $(BUILT_DISTFILES) ; do       \
-		ln $$file $(distdir) 2> /dev/null \
-		|| cp -p $$file $(distdir) ;      \
-	done
 
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
 	(cd .. && $(MAKE) makedoc$(EXEEXT))

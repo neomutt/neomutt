@@ -1,4 +1,5 @@
 Makefile
+Makefile.in
 *.html
 muttrc.man
 mutt.1

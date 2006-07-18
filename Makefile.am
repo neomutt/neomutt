@@ -18,7 +18,7 @@ BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
-        crypt.c cryptglue.c \
+	crypt.c cryptglue.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
 	edit.c enter.c flags.c init.c filter.c from.c \
 	getdomain.c group.c \
@@ -42,7 +42,7 @@ makedoc_LDADD =
 makedoc_DEPENDENCIES = 
 
 # $(makedoc_OBJECTS): $(makedoc_SOURCES)
-# 	$(HOST_CC) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
+# 	$(HOST_CC) $(DEFS) $(AM_CPPFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
 
 # makedoc: $(makedoc_OBJECTS) $(makedoc_DEPENDENCIES)
 # 	@rm -rf makedoc
@@ -54,7 +54,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
 	-DHAVE_CONFIG_H=1
 
-INCLUDES=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(LIBGPGME_CFLAGS) -Iintl
+AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(LIBGPGME_CFLAGS) -Iintl
 
 CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 
@@ -99,6 +99,8 @@ CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
 	keymap_alldefs.h keymap_defs.h patchlist.c \
 	reldate.h
 
+DISTCLEANFILES= flea Muttrc smime_keys
+
 ACLOCAL_AMFLAGS = -I m4
 
 LDADD = @LIBOBJS@ @INTLLIBS@
@@ -113,12 +115,12 @@ smime_keys: $(srcdir)/smime_keys.pl
 	cp $(srcdir)/smime_keys.pl smime_keys
 	chmod +x smime_keys
 
-Makefile: $(BUILT_SOURCES)
-
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
+$(srcdir)/keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
+	chmod u+w $(srcdir)
+	rm -f $@
 	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.PGP \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> $(srcdir)/keymap_alldefs.h
@@ -142,6 +144,8 @@ install-exec-hook:
 
 install-data-local: Muttrc
 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
+	$(INSTALL) -m644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
+	$(INSTALL) -m644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
 	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
 		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
 	elif [ -f $(DESTDIR)$(pkgdatadir)/../Muttrc ] ; then \
@@ -153,6 +157,13 @@ install-data-local: Muttrc
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
 	fi
 
+uninstall-local:
+	for i in Muttrc mime.types ; do \
+		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i ; then \
+			rm $(DESTDIR)$(sysconfdir)/$$i ; \
+		fi ; \
+		rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
+	done
 
 # Don't make this one ChangeLog - it's intended to be
 # used manually.
@@ -192,7 +203,7 @@ Muttrc: stamp-doc-rc
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 	-rm -f Muttrc stamp-doc-rc
-	$(CPP) $(INCLUDES) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
+	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
 		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - > Muttrc
 	touch stamp-doc-rc
 
