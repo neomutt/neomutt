@@ -1,3 +1,7 @@
+2006-07-18 16:08:39  Vsevolod Volkov  <vvv@mutt.org.ua>  (brendan)
+
+	* po/ru.po: Update for 1.5.12.
+
 2006-07-17 18:40:26  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* doc/Makefile.in: Some makefile fixes relating to reldate.h.
