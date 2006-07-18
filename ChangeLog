@@ -1,3 +1,8 @@
+2006-07-18 18:15:30  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* doc/devel-notes.txt: Document which versions of autoconf and
+	automake mutt supports.
+
 2006-07-18 18:04:15  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
 
 	* doc/.cvsignore, doc/Makefile.am, doc/Makefile.in,
