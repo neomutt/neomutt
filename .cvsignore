@@ -22,6 +22,7 @@ pgpring
 reldate.h
 stamp-doc-rc
 stamp-h
+stamp-h1
 muttbug.sh
 muttbug
 patchlist.c
