@@ -1,3 +1,7 @@
+2006-07-19 23:29:54  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* configure.in: Fix linking for body cache without IMAP support.
+
 2006-07-19 23:17:59  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
 
 	* .cvsignore: Ignore stamp-h1
