@@ -1,18 +1,11 @@
-#!/bin/sh --
+#!/bin/sh
 
-if test x"$1" = x"-dev" ; then
-  include_deps=
-  shift
-else
-  include_deps="-i"
-fi
-
-if aclocal -I m4 && autoheader \
-  && automake $include_deps && autoconf && ./configure "$@"
+if autoreconf --install --include=m4 \
+  && ./configure "$@"
 then
   echo
-  echo "The mutt source code was successfully prepared."
-  echo "Type make && make install to build and install mutt."
+  echo "The mutt source code was successfully prepared and configured."
+  echo "Type   make && make install   to build and install mutt."
   echo
 else
   echo
