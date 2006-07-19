@@ -1,3 +1,8 @@
+2006-07-19 23:33:27  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
+
+	* m4/Makefile.am: Clean up some debugging code in the build
+	system update.
+
 2006-07-19 23:29:54  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* configure.in: Fix linking for body cache without IMAP support.
