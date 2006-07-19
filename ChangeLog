@@ -1,4 +1,6 @@
-2006-07-19 23:12:49  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
+2006-07-19 23:17:59  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
+
+	* .cvsignore: Ignore stamp-h1
 
 	* prepare: Update prepare: remove -dev (always enable dependency
 	tracking) and use autoreconf -i instead of running tools by hand.
