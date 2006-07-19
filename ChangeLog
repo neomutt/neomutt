@@ -1,3 +1,8 @@
+2006-07-19 23:12:49  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
+
+	* prepare: Update prepare: remove -dev (always enable dependency
+	tracking) and use autoreconf -i instead of running tools by hand.
+
 2006-07-18 18:15:30  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* doc/devel-notes.txt: Document which versions of autoconf and
