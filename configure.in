@@ -500,6 +500,7 @@ AC_ARG_ENABLE(pop,  AC_HELP_STRING([--enable-pop], [Enable POP3 support]),
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_POP,1,[ Define if you want support for the POP3 protocol. ])
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
+                need_pop="yes"
                 need_socket="yes"
                 need_md5="yes"
         fi
