@@ -1,13 +1,8 @@
-Subject: Developers' notes
-From: Thomas Roessler <roessler@guug.de>
-Date: Tue,  9 May 2000 19:48:08 +0200
-
-
 Required tools
 --------------
 
 If you are planning to hack on mutt, please subscribe to the
-mutt-dev mailinglist (mutt-dev@mutt.org, contact
+mutt-dev mailing list (mutt-dev@mutt.org, contact
 majordomo@mutt.org).  Announcements about recent development
 versions go to that mailing list, as go technical discussions and
 patches.
@@ -56,6 +51,52 @@ You'll need several GNU development utilities for working on mutt:
 
 - GNU make may be needed for the dependency tricks
 
+Generating Mutt Documentation From Source
+-----------------------------------------
+
+To translate Mutt's Docbook XML documentation into HTML (and then text),
+you'll need one tool and two sets of data which you may need to download
+and install.  The tool is xsltproc, and it's a command-line program for
+performing XSL transformations on XML documents.  The data sets are the
+Docbook XML and Docbook XSL libraries.  You can download these from:
+
+  . xsltproc
+    http://xmlsoft.org/
+    ftp://xmlsoft.org/libxslt/libxslt-1.1.17.tar.gz
+
+  . docbook-xml-4.2
+    http://www.docbook.org/
+    http://www.docbook.org/xml/4.2/docbook-xml-4.2.zip
+
+  . docbook-xsl-1.70.1
+    http://docbook.sourceforge.net/
+    http://prdownloads.sourceforge.net/docbook/docbook-xsl-1.70.1.zip
+
+
+First, build and install libxslt to obtain xsltproc, if you don't
+already have it.
+
+Next, obtain and unpack the two docbook archives.  You can unpack these
+anywhere that you want to have them installed -- there's no installation
+procedure other than unarchival.  On my Solaris system, I install
+packages under /opt/pkgs/packagename-version, so I unpacked these ZIP
+archives to /opt/pkgs/docbook-xml-4.2 and /opt/pkgs/docbook-xsl-1.70.1.
+
+Now you need to create (and export) an environment variable to process
+the manuals.  The environment variable will contain a space-separated
+list of "catalog" files for the two docbook archives, so substitute
+the path where you unpacked them below:
+    sh$ XML_CATALOG_FILES="/path/to/docbook-xml-4.2/catalog.xml /path/to/docbook-xsl-1.70.1/catalog.xml"; export XML_CATALOG_FILES
+or
+    csh$ setenv XML_CATALOG_FILES "/path/to/docbook-xml-4.2/catalog.xml /path/to/docbook-xsl-1.70.1/catalog.xml"
+
+Once all these are installed and XML_CATALOG_FILES is set, you should be
+able to generate manual.html with a simple "make" -- all as a part of
+the mutt compilation.
+
+The Makefile depends upon lynx (or any other text-mode web browser)
+to turn the HTML into text, so if that fails you may need to install
+something else.
 
 Getting started from CVS
 ------------------------
