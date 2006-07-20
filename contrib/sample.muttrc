@@ -40,8 +40,8 @@ set edit_headers		# let me edit the message header when composing
 #set forward_decode		# weed and MIME decode forwaded messages
 #set forward_format="[%a: %s]"	# subject to use when forwarding messages
 #set forward_quote		# quote the header and body of forward msgs
-#set hdr_format="%4C %Z %{%m/%d} [%2N] %-15.15F (%4c) %s"
-set hdr_format="%4C %Z %{%m/%d} %-15.15F (%4c) %s" # format of the index
+#set index_format="%4C %Z %{%m/%d} [%2N] %-15.15F (%4c) %s"
+set index_format="%4C %Z %{%m/%d} %-15.15F (%4c) %s" # format of the index
 #set hdrs			# include `my_hdr' lines in outgoing messages
 #set header			# include message header when replying
 set help			# show the help lines
@@ -104,7 +104,7 @@ set tilde			# virtual lines to pad blank lines in the pager
 #set use_8bitmime		# enable the -B8BITMIME sendmail flag
 set nouse_domain		# don't qualify local addresses with $domain
 #set use_from			# always generate the `From:' header field
-set use_mailcap=yes		# always use a mailcap entry when found
+set implicit_autoview=yes	# pager shows parts having a mailcap viewer
 set pgp_verify_sig=no		# don't automatically verify message signatures
 #set visual=vim			# editor invoked by ~v in the builtin editor
 #set nowait_key			# prompt when a pipe returns normal status
@@ -176,18 +176,18 @@ bind generic { top-page
 bind generic } bottom-page
 bind generic \177 last-entry
 
-macro index \cb |urlview\n	# simulate the old browse-url function
+macro index \cb "<pipe-message> urlview<Enter>"	# simulate the old browse-url function
 
-macro index S s+spam\n
-macro pager S s+spam\n
+macro index S "<save-message>+spam<Enter>"
+macro pager S "<save-message>+spam<Enter>"
 
-#macro index \# /bug^M	# search for bugs
-#macro index "\""        ":set realname=\"real hairy macro\"^M:set ?realname^M" # and a comment to boot!
-#macro index f1 :woohoo!
+#macro index \#	"<search>bug<Enter>"	# search for bugs
+#macro index "\""	"<enter-command> set realname=\"real hairy macro\" ?realname<Enter>" # and a comment to boot!
+#macro index f1	"<enter-command>woohoo!"
 
 bind pager G bottom	# just like vi and less
-#macro   pager   \Ck     "|pgp -kaf^M"   # a comment is valid here
-#macro pager X "|morepgp^M"	# pipe PGP message to a script
+#macro   pager   \Ck     "<pipe-message> pgp -kaf<Enter>"   # a comment is valid here
+#macro pager X "<pipe-message> morepgp<Enter>"	# pipe PGP message to a script
 
 #bind editor \cy eol	# make ^Y jump to the end of the line
 
@@ -208,7 +208,7 @@ bind pager G bottom	# just like vi and less
 # <mailbox> is provided as default when saving messages from <pattern>
 
 #save-hook mutt- =mutt-mail
-#save-hook aol\.com +spam
+#save-hook aol\\.com$ +spam
 save-hook ^judge +diplomacy
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -252,15 +252,16 @@ save-hook ^judge +diplomacy
 #
 # <command> is executed when opening a mailbox matching <pattern>
 
-#folder-hook . 'set sort=date-sent'
-#folder-hook mutt 'set hdr_format="%4C %Z %02m/%02N %-20.20F (%4l) %s"'
-#folder-hook =mutt my_hdr Revolution: \#9 # real comment
+#folder-hook .		'set sort=date-sent'
+#folder-hook mutt	'set index_format="%4C %Z %02m/%02N %-20.20F (%4l) %s"'
+#folder-hook =mutt	my_hdr Revolution: \#9 # real comment
 
-#folder-hook . 'set reply_regexp="^re:[ \t]*"'
+#folder-hook .		'set reply_regexp="^re:[ \t]*"'
 
 # this mailing list prepends "[WM]" to all non reply subjects, so set
 # $reply_regexp to ignore it
-#folder-hook +wmaker 'set reply_regexp="^(re:[ \t]*)?\[WM\][ \t]*"'
+# Warning: May break threads for other people.
+#folder-hook +wmaker	'set reply_regexp="^(re:[ \t]*)?\[WM\][ \t]*"'
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #
@@ -302,7 +303,7 @@ hdr_order date from subject to cc
 #
 #	lists <list-name> [ <list-name> ... ]
 
-lists mutt-dev mutt-users
+lists ^mutt-dev@mutt\\.org$ ^mutt-users@mutt\\.org$
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 #

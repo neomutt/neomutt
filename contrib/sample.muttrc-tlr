@@ -104,37 +104,35 @@ bind	query	i		exit
 
 # make it feel like emacs
 
-macro	generic	"\ex"		":exec "
-macro 	pager	"\ex"		":exec "
-macro	generic	"\eX"		"\ex"
-macro 	pager	"\eX"		"\ex"
-macro	index	"~"		";~"
+macro	generic,pager	"\ex"		"<enter-command>exec "
+macro	generic,pager	"\eX"		"\ex"
+macro	index		"~"		"<limit>~"
 
 # move messages to the pilot folder
 
-macro	index	"\ew"		"<decode-copy>+pilot\n"	"Copy a message to the pilot folder."
-macro	pager	"\ew"		"<decode-copy>+pilot\n" "Copy a message to the pilot folder."
+macro	index,pager	"\ew"		"<decode-copy>+pilot<Enter>"	"Copy a message to the pilot folder."
 
 # for majordomo list owner and moderator jobs
 
-macro	index	"\ea"		":set nopipe_decode wait_key\n|approve\n:set nowait_key\n"
-macro 	pager 	"\ea"		":set nopipe_decode wait_key\n|approve\n:set nowait_key\n"
+macro	index,pager	"\ea"		"\
+<enter-command> set nopipe_decode wait_key<Enter>\
+<pipe-message> approve<Enter>\
+<enter-command> set nowait_key<Enter>"
 
 # emulate the old URL-browser key bindings.
 
-macro	pager	"\Cb"	"| urlview -\n"
-macro	index	"\Cb"	"| urlview -\n"
+macro	index,pager	"\Cb"	"<pipe-message> urlview -<Enter>"
 
 # permit limiting from the pager.
 
-macro   pager	";"	"<exit><limit>"
+macro	pager	";"	"<exit><limit>"
+macro	pager	"~"	"<exit><limit>~"
 
 # emulate the old POP-feature bindings
 
-macro 	index	G	"!fetchmail\n"	
-macro 	pager	G	"!fetchmail\n"
+macro 	index,pager	G	"<shell-escape> fetchmail<Enter>"
 
-macro   compose "\ee"   "Fpgp -eatf " 
+macro	compose	"\ee"	"<filter-entry>pgp -eatf "
 
 
 #

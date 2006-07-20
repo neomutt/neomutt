@@ -15,8 +15,8 @@ bind  pager   <right>  view-attachments
 bind  attach  <left>   exit
 bind  attach  <right>  view-attach
 bind  index   <right>  display-message
-macro index   <left>   "c?"
+macro index   <left>   "<change-folder>?"
 bind  browser <right>  select-entry
-macro browser <left>   "qc!\r"
+macro browser <left>   "<exit><change-folder>!<Enter>"
 
 

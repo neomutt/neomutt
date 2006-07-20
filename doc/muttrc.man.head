@@ -321,7 +321,7 @@ or even just an arbitrary search string.
 This command adds the named \fIstring\fP to the keyboard buffer.
 .PP
 .nf
-\fBset\fP [\fBno\fP|\fBinv\fP]\fIvariable\fP[=\fIvalue\fP] [ ... ]
+\fBset\fP [\fBno\fP|\fBinv\fP|\fB&\fP|\fB?\fP]\fIvariable\fP[=\fIvalue\fP] [ ... ]
 \fBtoggle\fP \fIvariable\fP [ ... ]
 \fBunset\fP \fIvariable\fP [ ... ]
 \fBreset\fP \fIvariable\fP [ ... ]

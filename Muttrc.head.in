@@ -11,10 +11,11 @@ ignore sender references return-path lines
 macro index \eb "<search>~b " "search in message bodies"
 
 # simulate the old url menu
-macro index,pager \cb "<pipe-message>urlview<Enter>" "call urlview to extract URLs out of a message"
+macro index,pager \cb "<pipe-message> urlview<Enter>" "call urlview to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlview<Enter>" "call urlview to extract URLs out of a message"
 
 # Show documentation when pressing F1
-macro generic,pager <F1> "<shell-escape>less @docdir@/manual.txt<Enter>" "show Mutt documentation"
+macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show Mutt documentation"
 
 # show the incoming mailboxes list (just like "mutt -y") and back when pressing "y"
 macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
