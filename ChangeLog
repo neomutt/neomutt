@@ -1,3 +1,10 @@
+2006-07-20 00:12:52  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* contrib/Pine.rc, contrib/Tin.rc, contrib/sample.muttrc,
+	contrib/sample.muttrc-tlr, doc/muttrc.man.head, Muttrc.head.in,
+	contrib/Mush.rc: Clean up a number of examples in the
+	documentation.
+
 2006-07-19 23:33:27  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
 
 	* m4/Makefile.am: Clean up some debugging code in the build
