@@ -1,3 +1,8 @@
+2006-07-20 00:57:33  David Champion  <dgc@uchicago.edu>  (brendan)
+
+	* doc/devel-notes.txt: Some notes on setting up a working
+	docbook toolchain.
+
 2006-07-20 00:12:52  Alain Bench  <veronatif@free.fr>  (brendan)
 
 	* contrib/Pine.rc, contrib/Tin.rc, contrib/sample.muttrc,
