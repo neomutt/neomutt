@@ -1,3 +1,7 @@
+2006-08-03 23:46:31  ckillian@cs.ucsd.edu  (brendan)
+
+	* doc/manual.xml.head: Fix --enable--hcache typo in the manual.
+
 2006-08-03 23:42:27  Christian Ebert  <blacktrash@gmx.net>  (brendan)
 
 	* doc/manual.xml.head: Minor formatting tweak in the manual.
