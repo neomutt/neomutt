@@ -1,3 +1,8 @@
+2006-08-03 23:31:11  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* init.h: Add some missing makedoc defines for hcache DB
+	options. Clarify their meanings in the documentation.
+
 2006-07-20 00:57:33  David Champion  <dgc@uchicago.edu>  (brendan)
 
 	* doc/devel-notes.txt: Some notes on setting up a working
