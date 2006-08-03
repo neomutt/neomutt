@@ -1,3 +1,7 @@
+2006-08-03 23:42:27  Christian Ebert  <blacktrash@gmx.net>  (brendan)
+
+	* doc/manual.xml.head: Minor formatting tweak in the manual.
+
 2006-08-03 23:31:11  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* init.h: Add some missing makedoc defines for hcache DB
