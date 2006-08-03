@@ -4673,7 +4673,7 @@ thousands of single files (since Maildir and MH use one file per message.)
 
 <para>
 Header caching can be enabled via the configure script and the
-<emphasis>--enable--hcache</emphasis> option. It's not turned on
+<emphasis>--enable-hcache</emphasis> option. It's not turned on
 by default because external database libraries are required: one
 of qdbm, gdbm or bdb must be present.
 </para>
