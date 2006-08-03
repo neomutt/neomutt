@@ -3046,7 +3046,8 @@ dollar sign.
 macro pager &lt;PageDown&gt; "&bsol;
 &lt;enter-command&gt; set my&lowbar;old&lowbar;pager&lowbar;stop=&bsol;&dollar;pager&lowbar;stop pager&lowbar;stop&lt;Enter&gt;&bsol;
 &lt;next-page&gt;&bsol;
-&lt;enter-command&gt; set pager&lowbar;stop=&bsol;&dollar;my&lowbar;old&lowbar;pager&lowbar;stop ; unset my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;"
+&lt;enter-command&gt; set pager&lowbar;stop=&bsol;&dollar;my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;&bsol;
+&lt;enter-command&gt; unset my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;"
 </screen>
 </para>
 
