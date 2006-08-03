@@ -113,6 +113,15 @@ struct option_t
 # ifndef USE_HCACHE
 #  define USE_HCACHE
 # endif
+# ifndef HAVE_DB4
+#  define HAVE_DB4
+# endif
+# ifndef HAVE_GDBM
+#  define HAVE_GDBM
+# endif
+# ifndef HAVE_QDBM
+#  define HAVE_QDBM
+# endif
 # ifndef HAVE_LIBIDN
 #  define HAVE_LIBIDN
 # endif
@@ -1086,23 +1095,25 @@ struct option_t MuttVars[] = {
   ** files when the header cache is in use.  This incurs one stat(2) per
   ** message every time the folder is opened.
   */
-#if HAVE_GDBM || HAVE_DB4
+#if defined(HAVE_GDBM) || defined(HAVE_DB4)
   { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
   /*
   ** .pp
-  ** Change the header cache database page size.  Too large or too small
+  ** When mutt is compiled with either gdbm or bdb4 as the header cache backend,
+  ** this option changes the database page size.  Too large or too small
   ** values can waste space, memory, or CPU time. The default should be more
-  ** or less the best you can get. For details, google for mutt header
-  ** cache (first hit).
+  ** or less optimal for most use cases.
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #if HAVE_QDBM
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 0 },
   /*
   ** .pp
-  ** If enabled the header cache will be compressed. So only one fifth of the usual
-  ** diskspace is used, but the uncompression can result in a slower open of the
-  ** cached folder.
+  ** When mutt is compiled with qdbm as header cache backend,
+  ** this option determines whether the database will be compressed.
+  ** Compression results in database files roughly being one fifth
+  ** of the usual diskspace, but the uncompression can result in a
+  ** slower opening of cached folder(s).
   */
 #endif /* HAVE_QDBM */
 #endif /* USE_HCACHE */
