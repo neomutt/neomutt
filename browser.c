@@ -909,8 +909,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  char msg[SHORT_STRING];
 	  IMAP_MBOX mx;
 	  int nentry = menu->current;
-	  
+
 	  imap_parse_path (state.entry[nentry].name, &mx);
+	  if (!mx.mbox)
+	  {
+	    mutt_error _("Cannot delete root folder");
+	    break;
+	  }
 	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
             mx.mbox);
 	  if (mutt_yesorno (msg, M_NO) == M_YES)
