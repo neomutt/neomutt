@@ -56,10 +56,17 @@ static CONNECTION* socket_new_conn (void);
 /* Wrappers */
 int mutt_socket_open (CONNECTION* conn) 
 {
+  int rc;
+
   if (socket_preconnect ())
     return -1;
 
-  return conn->conn_open (conn);
+  rc = conn->conn_open (conn);
+
+  dprint (2, (debugfile, "Connected to %s:%d on fd=%d\n",
+	      NONULL (conn->account.host), conn->account.port, conn->fd));
+
+  return rc;
 }
 
 int mutt_socket_close (CONNECTION* conn)
@@ -104,7 +111,7 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
 {
   int rc;
 
-  dprint (dbg, (debugfile,"> %s", buf));
+  dprint (dbg, (debugfile,"%d> %s", conn->fd, buf));
 
   if (conn->fd < 0)
   {
@@ -200,7 +207,7 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   else
     buf[i] = '\0';
 
-  dprint (dbg, (debugfile, "< %s\n", buf));
+  dprint (dbg, (debugfile, "%d< %s\n", conn->fd, buf));
   
   /* number of bytes read, not strlen */
   return i + 1;
