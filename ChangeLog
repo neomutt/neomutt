@@ -1,3 +1,8 @@
+2006-08-05 00:03:22  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* po/Makefile.in.in: Fix po build when builddir != srcdir
+	(modified: made simpler).
+
 2006-08-03 23:46:31  ckillian@cs.ucsd.edu  (brendan)
 
 	* doc/manual.xml.head: Fix --enable--hcache typo in the manual.
