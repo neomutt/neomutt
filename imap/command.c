@@ -167,8 +167,9 @@ int imap_cmd_step (IMAP_DATA* idata)
   idata->lastread = time (NULL);
 
   /* handle untagged messages. The caller still gets its shot afterwards. */
-  if (!ascii_strncmp (idata->buf, "* ", 2) &&
-      cmd_handle_untagged (idata))
+  if ((!ascii_strncmp (idata->buf, "* ", 2)
+       || !ascii_strncmp (imap_next_word (idata->buf), "OK [", 4))
+      && cmd_handle_untagged (idata))
     return IMAP_CMD_BAD;
 
   /* server demands a continuation response from us */
@@ -365,6 +366,7 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   int count;
 
   s = imap_next_word (idata->buf);
+  pn = imap_next_word (s);
 
   if ((idata->state >= IMAP_SELECTED) && isdigit ((unsigned char) *s))
   {
@@ -417,7 +419,9 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
   else if (ascii_strncasecmp ("CAPABILITY", s, 10) == 0)
     cmd_parse_capability (idata, s);
   else if (!ascii_strncasecmp ("OK [CAPABILITY", s, 14))
-    cmd_parse_capability (idata, imap_next_word (s));
+    cmd_parse_capability (idata, pn);
+  else if (!ascii_strncasecmp ("OK [CAPABILITY", pn, 14))
+    cmd_parse_capability (idata, imap_next_word (pn));
   else if (ascii_strncasecmp ("LIST", s, 4) == 0)
     cmd_parse_list (idata, s);
   else if (ascii_strncasecmp ("LSUB", s, 4) == 0)
