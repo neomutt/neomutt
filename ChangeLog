@@ -1,3 +1,8 @@
+2006-08-07 19:55:42  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Check for CAPABILITY in extended tagged
+	responses.
+
 2006-08-05 00:48:16  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* mutt_socket.c: Include FD in socket logging.
