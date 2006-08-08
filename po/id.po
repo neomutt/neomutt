@@ -1,17 +1,18 @@
-# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2005
+# translation of id.po to Indonesian
 #
 # http://www.linux.or.id
 #
+# Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2005, 2006.
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.11i\n"
+"Project-Id-Version: 1.5.12\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-07-14 14:16-0400\n"
-"PO-Revision-Date: 2005-09-16 23:45+1000\n"
+"PO-Revision-Date: 2006-08-08 21:54+1000\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
-"Language-Team: Indonesia <web@linux.or.id>\n"
+"Language-Team: Indonesian <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 7bit\n"
 
 #: account.c:154
@@ -127,8 +128,7 @@ msgstr "Gagal mengganti nama file."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr ""
-"'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
+msgstr "'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
 
 #. For now, editing requires a file, no piping
 #: attach.c:258
@@ -241,8 +241,7 @@ msgstr "File Mask: "
 
 #: browser.c:1079
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr ""
-"Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
+msgstr "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
 #: browser.c:1080
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
@@ -797,8 +796,7 @@ msgstr "Perhatian: Tandatangan sudah kadaluwarsa pada: "
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr ""
-"Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
+msgstr "Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
 
 #: crypt-gpgme.c:1035
 msgid "The CRL is not available\n"
@@ -1364,9 +1362,8 @@ msgstr ""
 "[-- Akhir data yang ditandatangani --]\n"
 
 #: cryptglue.c:89
-#, fuzzy
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr "\"crypt_use_gpgme\" diset tapi tidak ada dukungan GPGME"
+msgstr "\"crypt_use_gpgme\" diset tapi tidak ada dukungan GPGME."
 
 #: cryptglue.c:112
 msgid "Invoking S/MIME..."
@@ -1507,7 +1504,7 @@ msgstr "Hanya surat-surat yang: "
 
 #: curs_main.c:870
 msgid "To view all messages, limit to \"all\"."
-msgstr ""
+msgstr "Utk melihat semua pesan, batasi dengan \"semua\"."
 
 #: curs_main.c:882
 msgid "Quit Mutt?"
@@ -1624,7 +1621,6 @@ msgstr "Tidak bisa menyunting surat di server POP"
 #. * declared "static" (sigh)
 #.
 #: edit.c:41
-#, fuzzy
 msgid ""
 "~~\t\tinsert a line begining with a single ~\n"
 "~b users\tadd users to the Bcc: field\n"
@@ -1645,18 +1641,8 @@ msgstr ""
 "~m surat2\tmenyertakan dan mengutip surat2\n"
 "~M surat2\tsama seperti ~m, tapi menyertakan headers\n"
 "~p\t\tcetak surat\n"
-"~q\t\ttulis surat dan keluar dari editor\n"
-"~r file\t\tselipkan file ke editor\n"
-"~t users\ttambahkan users ke kolom To:\n"
-"~u\t\tpanggil baris sebelumnya\n"
-"~v\t\tedit surat dengan editor $visual\n"
-"~w file\t\tsimpan surat ke file\n"
-"~x\t\tbatalkan perubahan dan keluar dari editor\n"
-"~?\t\tsurat ini\n"
-".\t\tdi satu baris sendiri menyelesaikan input\n"
 
 #: edit.c:52
-#, fuzzy
 msgid ""
 "~q\t\twrite file and quit editor\n"
 "~r file\t\tread a file into the editor\n"
@@ -1668,24 +1654,15 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~~\t\tmasukkan baris yang dimulai dengan ~\n"
-"~b users\ttambahkan users ke kolom Bcc:\n"
-"~c users\ttambahkan users ke kolom Cc:\n"
-"~f surat2\tsertakan surat2\n"
-"~F surat2\tsama seperti ~f, tapi juga menyertakan headers\n"
-"~h\t\tedit header surat\n"
-"~m surat2\tmenyertakan dan mengutip surat2\n"
-"~M surat2\tsama seperti ~m, tapi menyertakan headers\n"
-"~p\t\tcetak surat\n"
-"~q\t\ttulis surat dan keluar dari editor\n"
-"~r file\t\tselipkan file ke editor\n"
+"~q\t\ttulis file dan keluar dari editor\n"
+"~r file\t\tbaca file ke editor\n"
 "~t users\ttambahkan users ke kolom To:\n"
 "~u\t\tpanggil baris sebelumnya\n"
 "~v\t\tedit surat dengan editor $visual\n"
 "~w file\t\tsimpan surat ke file\n"
 "~x\t\tbatalkan perubahan dan keluar dari editor\n"
-"~?\t\tsurat ini\n"
-".\t\tdi satu baris sendiri menyelesaikan input\n"
+"~?\t\tpesan ini\n"
+".\t\tdi satu baris sendiri menyudahi input\n"
 
 #: edit.c:188
 #, c-format
@@ -1774,8 +1751,7 @@ msgstr "Batal ditandai"
 
 #: handler.c:1352
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr ""
-"[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
+msgstr "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
 
 #: handler.c:1469
 #, c-format
@@ -1809,8 +1785,7 @@ msgstr "[-- Stderr dari tampil-otomatis %s --]\n"
 
 #: handler.c:1659
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr ""
-"[-- Error:  message/external-body tidak punya parameter access-type --]\n"
+msgstr "[-- Error:  message/external-body tidak punya parameter access-type --]\n"
 
 #: handler.c:1678
 #, c-format
@@ -2082,18 +2057,17 @@ msgid "Expunge failed"
 msgstr "Penghapusan gagal"
 
 #: imap/imap.c:1166
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed messages... [%d/%d]"
-msgstr "Menyimpan tanda-tanda status surat... [%d/%d]"
+msgstr "Menyimpan surat2 yg berubah... [%d/%d]"
 
 #: imap/imap.c:1216
 msgid "Error saving flags. Close anyway?"
-msgstr ""
+msgstr "Gagal menyimpan flags. Tetap mau ditutup aja?"
 
 #: imap/imap.c:1224
-#, fuzzy
 msgid "Error saving flags"
-msgstr "Gagal menguraikan alamat!"
+msgstr "Gagal menyimpan flags"
 
 #: imap/imap.c:1236
 msgid "Expunging messages from server..."
@@ -2118,19 +2092,19 @@ msgid "Subscribing to %s..."
 msgstr "Berlangganan ke %s..."
 
 #: imap/imap.c:1762
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Berhenti langganan dari %s..."
 
 #: imap/imap.c:1772
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed to %s"
 msgstr "Berlangganan ke %s..."
 
 #: imap/imap.c:1774
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribed from %s"
-msgstr "Berhenti langganan dari %s..."
+msgstr "Berhenti langganan dari %s"
 
 #. Unable to fetch headers for lower versions
 #: imap/message.c:97
@@ -2198,31 +2172,28 @@ msgstr "nospam: tidak ada pola yg cocok"
 
 #: init.c:877
 msgid "Missing -rx or -addr."
-msgstr ""
+msgstr "Tidak ada -rx atau -addr."
 
 #: init.c:890
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad IDN '%s'.\n"
-msgstr "Perhatian: IDN '%s' di alias '%s' tidak benar.\n"
+msgstr "Perhatian: IDN '%s' tidak benar.\n"
 
 #: init.c:1098
-#, fuzzy
 msgid "attachments: no disposition"
-msgstr "edit keterangan lampiran"
+msgstr "lampiran: tidak ada disposisi"
 
 #: init.c:1136
-#, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "edit keterangan lampiran"
+msgstr "lampiran: disposisi tidak benar"
 
 #: init.c:1150
-#, fuzzy
 msgid "unattachments: no disposition"
-msgstr "edit keterangan lampiran"
+msgstr "bukan lampiran: tidak ada disposisi"
 
 #: init.c:1173
 msgid "unattachments: invalid disposition"
-msgstr ""
+msgstr "bukan lampiran: disposisi tidak benar"
 
 #: init.c:1300
 msgid "alias: no address"
@@ -2337,10 +2308,9 @@ msgstr "tidak bisa menentukan username"
 
 #: init.c:3036
 msgid "-group: no group name"
-msgstr ""
+msgstr "-group: tidak ada nama group"
 
 #: init.c:3046
-#, fuzzy
 msgid "out of arguments"
 msgstr "parameternya kurang"
 
@@ -3202,23 +3172,21 @@ msgid "Out of memory!"
 msgstr "Buset, memory abis!"
 
 #: main.c:59
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please visit http://bugs.mutt.org/.\n"
 msgstr ""
-"Untuk menghubungi developersnya, kirim email ke <mutt-dev@mutt.org>.\n"
-"Untuk melaporkan bug, mohon gunakan program flea(1).\n"
+"Untuk menghubungi developers, kirim email ke <mutt-dev@mutt.org>.\n"
+"Untuk melaporkan bug, mohon kunjungi http://bugs.mutt.org/.\n"
 
 #: main.c:63
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2006 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins dan kawan-kawan.\n"
+"Hak Cipta (C) 1996-2002 Michael R. Elkins dan kawan-kawan.\n"
 "Mutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'mutt -vv'.\n"
 "Mutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
@@ -3236,6 +3204,16 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
+"Hak Cipta (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Hak Cipta (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Hak Cipta (C) 1997-2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Hak Cipta (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Hak Cipta (C) 1999-2006 Brendan Cully <brendan@kublai.com>\n"
+"Hak Cipta (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Hak Cipta (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"\n"
+"Banyak lagi yg tidak disebutkan disini telah menyumbangkan kode, perbaikan,\n"
+"dan saran.\n"
 
 #: main.c:81
 msgid ""
@@ -3259,7 +3237,6 @@ msgid ""
 msgstr ""
 
 #: main.c:108
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3285,13 +3262,6 @@ msgstr ""
 "<alamat> [ ... ]\n"
 "       mutt [ -n ] [ -e <perintah> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
-"\n"
-"opsi:\n"
-"  -A <alias>\tekspansi alias\n"
-"  -a <file>\tlampirkan file ke surat\n"
-"  -b <alamat>\talamat blind carbon-copy (BCC)\n"
-"  -c <alamat>\talamat carbon-copy (CC)\n"
-"  -D\t\ttampilkan semua nilai variabel ke stdout"
 
 #: main.c:116
 msgid ""
@@ -3302,13 +3272,18 @@ msgid ""
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
 "  -D\t\tprint the value of all variables to stdout"
 msgstr ""
+"opsi:\n"
+"  -A <alias>\tekspansi alias\n"
+"  -a <file>\tlampirkan file ke surat\n"
+"  -b <alamat>\talamat blind carbon-copy (BCC)\n"
+"  -c <alamat>\talamat carbon-copy (CC)\n"
+"  -D\t\ttampilkan semua nilai variabel ke stdout"
 
 #: main.c:124
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr " -d <level>\tcatat keluaran debugging ke ~/.muttdebug0"
 
 #: main.c:127
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3326,19 +3301,9 @@ msgstr ""
 "  -i <file>\tfile yang disertakan dalam badan surat\n"
 "  -m <jenis>\tjenis kotak surat yang digunakan\n"
 "  -n\t\tmenyuruh Mutt untuk tidak membaca Muttrc dari sistem\n"
-"  -p\t\tlanjutkan surat yang ditunda\n"
-"  -Q <variabel>\tmelakukan query thd suatu variabel konfigurasi\n"
-"  -R\t\tbuka kotak surat dengan modus baca-saja\n"
-"  -s <subj>\tsubjek surat (harus dikutip jika mengandung spasi)\n"
-"  -v\t\ttunjukkan versi dan definisi saat compile\n"
-"  -x\t\tsimulasi mailx untuk mengirim surat\n"
-"  -y\t\tpilih kotak surat yg ada di daftar `mailboxes'\n"
-"  -z\t\tlangsung keluar jika tidak ada surat di kotak surat\n"
-"  -Z\t\tbuka folder pertama dg surat baru, langsung keluar jika tidak ada\n"
-"  -h\t\tpesan bantuan ini"
+"  -p\t\tlanjutkan surat yang ditunda"
 
 #: main.c:136
-#, fuzzy
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -3350,14 +3315,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"  -e <perintah>\tperintah yang dijalankan setelah inisialisasi\n"
-"  -f <file>\tkotak surat yang dibaca\n"
-"  -F <file>\tfile muttrc alternatif\n"
-"  -H <file>\tfile draft sebagai sumber header dan badan\n"
-"  -i <file>\tfile yang disertakan dalam badan surat\n"
-"  -m <jenis>\tjenis kotak surat yang digunakan\n"
-"  -n\t\tmenyuruh Mutt untuk tidak membaca Muttrc dari sistem\n"
-"  -p\t\tlanjutkan surat yang ditunda\n"
 "  -Q <variabel>\tmelakukan query thd suatu variabel konfigurasi\n"
 "  -R\t\tbuka kotak surat dengan modus baca-saja\n"
 "  -s <subj>\tsubjek surat (harus dikutip jika mengandung spasi)\n"
@@ -3447,8 +3404,7 @@ msgstr "Tidak bisa mengunci kotak surat!"
 #.
 #: mbox.c:753
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr ""
-"sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
+msgstr "sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
 #: mbox.c:792
 #, c-format
@@ -3791,8 +3747,7 @@ msgstr "Kesalahan tunnel saat berbicara dg %s: %s"
 
 #: muttlib.c:908
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr ""
-"File adalah sebuah direktori, simpan di dalamnya? [(y)a, (t)idak, (s)emua]"
+msgstr "File adalah sebuah direktori, simpan di dalamnya? [(y)a, (t)idak, (s)emua]"
 
 #: muttlib.c:908
 msgid "yna"
@@ -3991,9 +3946,9 @@ msgid "Error in expression: %s"
 msgstr "Kesalahan pada ekspresi: %s"
 
 #: pattern.c:269
-#, fuzzy, c-format
+#, c-format
 msgid "Empty expression"
-msgstr "kesalahan pada ekspresi"
+msgstr "Ekspresi kosong"
 
 #: pattern.c:400
 #, c-format
@@ -4129,8 +4084,7 @@ msgstr "Tidak dapat menjalankan PGP"
 #: pgp.c:1562
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
-msgstr ""
-"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1563
 msgid "PGP/M(i)ME"
@@ -4287,9 +4241,8 @@ msgid "No postponed messages."
 msgstr "Tidak ada surat yg ditunda."
 
 #: postpone.c:444 postpone.c:465 postpone.c:499
-#, fuzzy
 msgid "Illegal crypto header"
-msgstr "PGP header tidak betul"
+msgstr "Header crypto tidak betul"
 
 #: postpone.c:485
 msgid "Illegal S/MIME header"
@@ -4509,8 +4462,7 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
 
 #: remailer.c:738
-msgid ""
-"Please set the hostname variable to a proper value when using mixmaster!"
+msgid "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster!"
 
 #: remailer.c:772
@@ -4756,8 +4708,7 @@ msgstr "Gunakan ID %s utk %s ?"
 #: smime.c:637
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-msgstr ""
-"Warning: Anda belum memutuskan utk mempercayai ID %s. (sembarang utk lanjut)"
+msgstr "Warning: Anda belum memutuskan utk mempercayai ID %s. (sembarang utk lanjut)"
 
 #: smime.c:796
 #, c-format
@@ -4830,8 +4781,7 @@ msgstr ""
 "[-- Akhir data yg ditandatangani dg S/MIME. --]\n"
 
 #: smime.c:1944
-msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, "
 "atau (b)ersih? "
@@ -4843,11 +4793,11 @@ msgstr "etgsdlb"
 #. I use "dra" because "123" is recognized anyway
 #: smime.c:1960
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
+msgstr "Pilih algoritma: 1: DES, 2: RC2, 3: AES, atau (b)atal? "
 
 #: smime.c:1963
 msgid "drac"
-msgstr ""
+msgstr "drab"
 
 #: smime.c:1966
 msgid "1: DES, 2: Triple-DES "
@@ -4897,253 +4847,3 @@ msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
 
-#~ msgid "Checking mailbox subscriptions"
-#~ msgstr "Memeriksa langganan kotak surat"
-
-#~ msgid "CLOSE failed"
-#~ msgstr "CLOSE (penutupan) gagal."
-
-#~ msgid ""
-#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
-#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-#~ "Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
-#~ "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-#~ "Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
-#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-#~ "\n"
-#~ "Lots of others not mentioned here contributed lots of code,\n"
-#~ "fixes, and suggestions.\n"
-#~ "\n"
-#~ "    This program is free software; you can redistribute it and/or modify\n"
-#~ "    it under the terms of the GNU General Public License as published by\n"
-#~ "    the Free Software Foundation; either version 2 of the License, or\n"
-#~ "    (at your option) any later version.\n"
-#~ "\n"
-#~ "    This program is distributed in the hope that it will be useful,\n"
-#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "    GNU General Public License for more details.\n"
-#~ "\n"
-#~ "    You should have received a copy of the GNU General Public License\n"
-#~ "    along with this program; if not, write to the Free Software\n"
-#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
-#~ "1301, USA.\n"
-#~ msgstr ""
-#~ "Hak Cipta (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
-#~ "Hak Cipta (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-#~ "Hak Cipta (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
-#~ "Hak Cipta (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-#~ "Hak Cipta (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
-#~ "Hak Cipta (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-#~ "\n"
-#~ "Dan banyak lagi yang tidak dapat disebutkan di sini satu per satu telah\n"
-#~ "menyumbangkan banyak kode, perbaikan dan saran.\n"
-#~ "\n"
-#~ "    Program ini adalah program bebas; anda dapat mendistribusikan ulang\n"
-#~ "    dan/atau mengubahnya di bawah persyaratan dan aturan dari GNU "
-#~ "General\n"
-#~ "    Public License seperti yang dipublikasikan oleh Free Software "
-#~ "Foundation;\n"
-#~ "    baik versi 2 dari lisensi tersebut, atau yang lebih baru.\n"
-#~ "\n"
-#~ "    Program ini didistribusikan dengan harapan agar berguna, tetapi\n"
-#~ "    TANPA JAMINAN APAPUN; bahkan tanpa jaminan terimplikasi dari\n"
-#~ "    kelayakan perdagangan atau kecocokan untuk suatu kegunaan. Silakan\n"
-#~ "    mengacu ke GNU General Public License untuk informasi lebih lanjut.\n"
-#~ "\n"
-#~ "    Anda seharusnya sudah menerima salinan dari GNU General Public "
-#~ "License\n"
-#~ "    bersama dengan program ini; jika tidak, silakan bersurat kepada\n"
-#~ "    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, "
-#~ "Boston, MA  02110-1301, USA.\n"
-
-#~ msgid ""
-#~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-#~ msgstr ""
-#~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, atau (b)atal? "
-
-#~ msgid "12345f"
-#~ msgstr "12345b"
-
-#~ msgid "First entry is shown."
-#~ msgstr "Entry pertama sudah ditampilkan."
-
-#~ msgid "Last entry is shown."
-#~ msgstr "Entry terakhir sudah ditampilkan."
-
-#~ msgid "Unexpected response received from server: %s"
-#~ msgstr "Respons yg tdk diharapkan dari server: %s"
-
-#~ msgid "Unable to append to IMAP mailboxes at this server"
-#~ msgstr "Tidak dapat menambah ke kotak surat IMAP di server ini"
-
-#~ msgid "unspecified protocol error"
-#~ msgstr "kesalahan protokol tak terdefinisikan"
-
-#~ msgid "Create a traditional (inline) PGP message?"
-#~ msgstr "Buat surat PGP traditional (inline)?"
-
-#~ msgid "Closing connection to IMAP server..."
-#~ msgstr "Menutup hubungan ke server IMAP..."
-
-#~ msgid "%s: stat: %s"
-#~ msgstr "%s: stat: %s"
-
-#~ msgid "%s: not a regular file"
-#~ msgstr "%s: bukan file biasa"
-
-#~ msgid "Invoking OpenSSL..."
-#~ msgstr "Memanggil OpenSSL..."
-
-#~ msgid "Bounce message to %s...?"
-#~ msgstr "Bounce surat ke %s...?"
-
-#~ msgid "Bounce messages to %s...?"
-#~ msgstr "Bounce surat-surat ke %s...?"
-
-#~ msgid "ewsabf"
-#~ msgstr "etgsdb"
-
-#, fuzzy
-#~ msgid "Certificate *NOT* added."
-#~ msgstr "Sertifikat telah disimpan"
-
-#~ msgid "This ID's validity level is undefined."
-#~ msgstr "Tingkat validitas dari ID ini tidak didefinisikan."
-
-#~ msgid "[-- expired. --]\n"
-#~ msgstr "[-- kadaluwarsa. --]\n"
-
-#~ msgid "Decode-save"
-#~ msgstr "Decode-simpan"
-
-#~ msgid "Decode-copy"
-#~ msgstr "Decode-copy"
-
-#~ msgid "Decrypt-save"
-#~ msgstr "Decrypt-simpan"
-
-#~ msgid "Decrypt-copy"
-#~ msgstr "Decrypt-copy"
-
-#~ msgid "Copy"
-#~ msgstr "Copy"
-
-#~ msgid ""
-#~ "[-- This %s/%s attachment is not included, --]\n"
-#~ "[-- and the indicated external source has --]\n"
-#~ "[-- expired. --]\n"
-#~ msgstr ""
-#~ "[-- Lampiran %s/%s ini tidak disertakan, --]\n"
-#~ "[-- dan sumber luar yang dimaksud sudah --]\n"
-#~ "[-- kadaluwarsa. --]\n"
-
-#~ msgid ""
-#~ "\n"
-#~ "[-- End of PGP output --]\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "[-- Akhir keluaran PGP --]\n"
-#~ "\n"
-
-#, fuzzy
-#~ msgid "Can't stat %s."
-#~ msgstr "Tidak bisa stat: %s"
-
-#~ msgid "%s: no such command"
-#~ msgstr "%s: tidak ada perintah begitu"
-
-#~ msgid "Authentication method is unknown."
-#~ msgstr "Metode otentikasi tidak diketahui."
-
-#~ msgid "MIC algorithm: "
-#~ msgstr "Algoritma MIC: "
-
-#~ msgid "This doesn't make sense if you don't want to sign the message."
-#~ msgstr "Ini tidak masuk akal jika anda tidak mau tandatangani suratnya."
-
-#~ msgid "Unknown MIC algorithm, valid ones are: pgp-md5, pgp-sha1, pgp-rmd160"
-#~ msgstr "Algoritma MIC yang dikenali adalah: pgp-md5, pgp-sha1, pgp-rmd160"
-
-#~ msgid ""
-#~ "\n"
-#~ "SHA1 implementation Copyright (C) 1995-1997 Eric A. Young <eay@cryptsoft."
-#~ "com>\n"
-#~ "\n"
-#~ "    Redistribution and use in source and binary forms, with or without\n"
-#~ "    modification, are permitted under certain conditions.\n"
-#~ "\n"
-#~ "    The SHA1 implementation comes AS IS, and ANY EXPRESS OR IMPLIED\n"
-#~ "    WARRANTIES, including, but not limited to, the implied warranties of\n"
-#~ "    merchantability and fitness for a particular purpose ARE DISCLAIMED.\n"
-#~ "\n"
-#~ "    You should have received a copy of the full distribution terms\n"
-#~ "    along with this program; if not, write to the program's developers.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Implementasi SHA1 Hak Cipta (C) 1995-1997 Eric A. Young <eay@cryptsoft."
-#~ "com>\n"
-#~ "\n"
-#~ "    Pendistribusian ulang dan penggunaan dalam bentuk sumber dan biner\n"
-#~ "    dengan maupun tanpa perubahan, diperbolehkan dengan syarat-syarat\n"
-#~ "    tertentu.\n"
-#~ "\n"
-#~ "    Implementasi SHA1 adalah APA ADANYA, dan TIDAK diberikan jaminan\n"
-#~ "    dalam bentuk apapun, baik eksplisit maupun terimplikasi, termasuk\n"
-#~ "    tapi tidak terbatas kepada jaminan perdagangan dan ketepatgunaan.\n"
-#~ "\n"
-#~ "    Anda semestinya sudah menerima sebuah salinan dari persyaratan "
-#~ "lengkap\n"
-#~ "    pendistribusian ulang bersama program ini; jika tidak, hubungi\n"
-#~ "    para pembuat program ini.\n"
-
-#~ msgid "POP Username: "
-#~ msgstr "Nama user POP: "
-
-#~ msgid "Reading new message (%d bytes)..."
-#~ msgstr "Membaca surat baru (%d bytes)..."
-
-#~ msgid "Error reading message!"
-#~ msgstr "Gagal membaca surat!"
-
-#~ msgid "%s [%d message read]"
-#~ msgstr "%s [%d surat dibaca]"
-
-#~ msgid "Creating mailboxes is not yet supported."
-#~ msgstr "Pembuatan kotak surat belum diimplementasikan."
-
-#~ msgid "Reopening mailbox... %s"
-#~ msgstr "Membuka kembali kotak surat... %s"
-
-#~ msgid "Closing mailbox..."
-#~ msgstr "Menutup kotak surat..."
-
-#~ msgid "IMAP Username: "
-#~ msgstr "IMAP Username: "
-
-#~ msgid "CRAM key for %s@%s: "
-#~ msgstr "CRAM key untuk %s@%s: "
-
-#~ msgid "Skipping CRAM-MD5 authentication."
-#~ msgstr "Melewati authentikasi CRAM-MD5."
-
-#~ msgid "Sending APPEND command ..."
-#~ msgstr "Mengirim perintah APPEND ..."
-
-#~ msgid "%d kept."
-#~ msgstr "%d disimpan."
-
-#~ msgid "POP Password: "
-#~ msgstr "Password POP: "
-
-#~ msgid "No POP username is defined."
-#~ msgstr "Username POP tidak diketahui."
-
-#~ msgid "Could not find address for host %s."
-#~ msgstr "Alamat tidak ditemukan untuk %s."
-
-#~ msgid "Attachment saved"
-#~ msgstr "Lampiran telah disimpan"
