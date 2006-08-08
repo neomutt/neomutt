@@ -1452,7 +1452,7 @@ int imap_buffy_check (int force)
     {
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
-      if (imap_exec (lastdata, NULL, 0) != IMAP_CMD_OK)
+      if (imap_exec (lastdata, NULL, IMAP_CMD_FAIL_OK) == -1)
         dprint (1, (debugfile, "Error polling mailboxes\n"));
 
       lastdata = NULL;
