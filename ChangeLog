@@ -1,3 +1,8 @@
+2006-08-08 22:49:12  Holger Weiss  <holger@zedat.fu-berlin.de>  (brendan)
+
+	* configure.in, snprintf.c: Check whether v?snprintf is
+	C99-compliant, and fix replacement functions to be.
+
 2006-08-08 22:38:29  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c: Finish fixing 2251.
