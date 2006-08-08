@@ -1473,7 +1473,7 @@ int imap_buffy_check (int force)
       /* pipeline must be full, drain it */
       dprint (2, (debugfile, "IMAP command pipeline full, draining\n"));
 
-      if (imap_exec (idata, NULL, 0) != IMAP_CMD_OK)
+      if (imap_exec (idata, NULL, IMAP_CMD_FAIL_OK) == -1)
         dprint (1, (debugfile, "Error polling mailboxes\n"));
       
       if (imap_cmd_queue (idata, command) < 0) {
@@ -1484,9 +1484,9 @@ int imap_buffy_check (int force)
     }
   }
 
-  if (lastdata && (imap_exec (lastdata, NULL, 0) != IMAP_CMD_OK))
+  if (lastdata && (imap_exec (lastdata, NULL, IMAP_CMD_FAIL_OK) == -1))
   {
-    dprint (1, (debugfile, "Error polling mailboxes"));
+    dprint (1, (debugfile, "Error polling mailboxes\n"));
     return 0;
   }
 
