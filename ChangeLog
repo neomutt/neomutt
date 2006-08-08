@@ -1,3 +1,8 @@
+2006-08-08 23:04:01  Matthias Andree  <matthias.andree@gmx.de>  (brendan)
+
+	* INSTALL, doc/devel-notes.txt: Updated and improved build
+	instructions.
+
 2006-08-08 22:49:12  Holger Weiss  <holger@zedat.fu-berlin.de>  (brendan)
 
 	* configure.in, snprintf.c: Check whether v?snprintf is
