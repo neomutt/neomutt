@@ -25,15 +25,16 @@ systems:
 	Ultrix
 	UnixWare
 
-- An ANSI C compiler (such as gcc) is required.
+- If you are building from CVS, or if you are changing parts of mutt,
+  particularly the build system, do read doc/devel-notes.txt.
+
+- An ANSI C compiler (such as GCC) is required.
 
 - You must also have a SysV compatible curses library, or you must
   install either
 
 	GNU ncurses, ftp://prep.ai.mit.edu/pub/gnu/
-
   or
-
 	S-Lang, ftp://space.mit.edu/pub/davis/slang/
 
 - Mutt needs an implementation of the iconv API for character set
@@ -43,12 +44,9 @@ systems:
 
 - For building the manual, mutt needs the DocBook XSL stylesheets
   as well as the DocBook DTD as of version 4.2 installed locally.
+  For details, please see the section "Generating Mutt Documentation
+  From Source" in doc/devel-notes.txt.
 
-  You may find these packaged by your distribution likely named
-  similar to 'docbook-xsl' and 'docbook-xml'. If not, try the
-  homepage at:
-
-    http://sourceforge.net/projects/docbook
 
 Installation
 ============

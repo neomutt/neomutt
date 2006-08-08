@@ -9,17 +9,29 @@ patches.
 
 You'll need several GNU development utilities for working on mutt:
 
+- autoconf (versions less than 2.59 are unsupported)
+  (this package includes autoheader and autoreconf)
+
+  If the build fails during any of the auto* stages, first of all try if
+  re-running the ./prepare script fixes things.  Remember to give the
+  same options you passed to it or to the configure it generated the
+  last time, you can query them with:
+    ./config.status --version
+
 - automake (versions less than 1.9 are not officially supported)
+  (this package includes aclocal)
 
-- autoconf (likewise, versions less than 2.59 are unsupported)
+  Note that you MUST re-run ./prepare (with the original arguments)
+  if you change the automake version between builds for the same source
+  directory.
 
-- autoheader
+- GNU make may be needed for the dependency tricks
 
-- The i18n stuff requires GNU gettext.  See intl/VERSION for the
-  version we are currently relying on.  Please note that using
-  gettext-0.10 will most probably not work - get the latest test
-  release from alpha.gnu.org, it's the recommended version of
-  gettext anyway.
+- The internationalization (i18n) stuff requires GNU gettext.
+  See intl/VERSION for the version we are currently relying on.
+  Please note that using gettext-0.10 will most probably not work -
+  get the latest test release from alpha.gnu.org, it's the recommended
+  version of gettext anyway.
 
   If you are experiencing problems with unknown "dcgettext" symbols,
   the autoconf/automake macros from your gettext package are broken.
@@ -49,16 +61,23 @@ You'll need several GNU development utilities for working on mutt:
  	   if test "$gt_cv_func_gettext_libc" = "yes" \
 
 
-- GNU make may be needed for the dependency tricks
-
 Generating Mutt Documentation From Source
 -----------------------------------------
 
 To translate Mutt's Docbook XML documentation into HTML (and then text),
 you'll need one tool and two sets of data which you may need to download
-and install.  The tool is xsltproc, and it's a command-line program for
-performing XSL transformations on XML documents.  The data sets are the
-Docbook XML and Docbook XSL libraries.  You can download these from:
+and install.  The tool is xsltproc (part of the libxslt package), and
+it's a command-line program for performing XSL transformations on XML
+documents.  The data sets are the Docbook XML and Docbook XSL libraries.
+
+Whenever your operating system provides packages or pkgsrc or ports of
+these, you should install them. Some systems, for instance SUSE Linux
+and FreeBSD's ports system, automatically set up a registry of installed
+XML/XSL and SGML catalogs so that the user does not need to care about
+what to install where, how to set environment variables, and so on.
+
+If your system does not provide these libraries and data sets,
+you can download them from:
 
   . xsltproc
     http://xmlsoft.org/
@@ -72,9 +91,8 @@ Docbook XML and Docbook XSL libraries.  You can download these from:
     http://docbook.sourceforge.net/
     http://prdownloads.sourceforge.net/docbook/docbook-xsl-1.70.1.zip
 
-
-First, build and install libxslt to obtain xsltproc, if you don't
-already have it.
+First, if you don't already have xsltproc, build and install libxslt,
+which will provide xsltproc, too.
 
 Next, obtain and unpack the two docbook archives.  You can unpack these
 anywhere that you want to have them installed -- there's no installation
@@ -86,6 +104,7 @@ Now you need to create (and export) an environment variable to process
 the manuals.  The environment variable will contain a space-separated
 list of "catalog" files for the two docbook archives, so substitute
 the path where you unpacked them below:
+
     sh$ XML_CATALOG_FILES="/path/to/docbook-xml-4.2/catalog.xml /path/to/docbook-xsl-1.70.1/catalog.xml"; export XML_CATALOG_FILES
 or
     csh$ setenv XML_CATALOG_FILES "/path/to/docbook-xml-4.2/catalog.xml /path/to/docbook-xsl-1.70.1/catalog.xml"
@@ -98,13 +117,14 @@ The Makefile depends upon lynx (or any other text-mode web browser)
 to turn the HTML into text, so if that fails you may need to install
 something else.
 
+
 Getting started from CVS
 ------------------------
 
-Once you've checked out a copy of the source from CVS, you'll need to
-run the script called 'prepare' that is in the root directory.  The
-script does all the automake/autoconf magic that needs to be done with
-a fresh checkout.
+Once you've checked out a copy of the source from CVS, or changed your
+automake version, you'll need to run the script called './prepare' that
+is in the root directory.  The script does all the automake/autoconf
+magic that needs to be done with a fresh checkout.
 
 
 A word about warnings
@@ -116,8 +136,8 @@ something which should be eliminated.
 
 Nevertheless, the code in intl/ is said to generate some warnings with
 the compiler settings we usually rely upon.  This code is not
-maintained by the mutt developpers, so please redirect any comments to
-the GNU gettext library's developpers.
+maintained by the mutt developers, so please redirect any comments to
+the GNU gettext library's developers.
 
 
 Style Guide
@@ -126,10 +146,10 @@ Style Guide
 - global functions should have the prefix "mutt_".  All
   other functions should be declared "static".
 
-- avoid global vars where possible.  If one is required,
+- avoid global variables where possible.  If one is required,
   try to contain it to a single source file and declare it
-  "static".  Global vars should have the first letter of
-  each word capitilized, and no underscores should be used
+  "static".  Global variables should have the first letter of
+  each word capitalized, and no underscores should be used
   (e.g., MailGid, LastFolder, MailDir).
 
 - re-use code as much as possible.  There are a lot of
@@ -151,7 +171,7 @@ where you may have to add documentation:
 
 - doc/manual.xml.{head,tail} contain The Manual.
 
-- doc/muttrc.man.{head,tail} contain an abriged version of The
+- doc/muttrc.man.{head,tail} contain an abridged version of The
   Manual in nroff format (see man(7)), which deals with
   configuration file commands.
 
@@ -186,7 +206,7 @@ similar to [ntg]roff:
    comments.
 
  - \(rs can be used to represent a backslash (\).  This is intended
-   to help avoiding poblems when trying to represent any of the \
+   to help avoiding problems when trying to represent any of the \
    sequences used by makedoc.
 
  - .dl on a line starts a "definition list" environment (name taken
@@ -200,7 +220,7 @@ similar to [ntg]roff:
 
  - .ts on a line starts a "verbose tscreen" environment (name taken from
    SGML).  Please try to keep lines inside such an environment
-   short; a length of abut 40 characters should be ok.  This is
+   short; a length of about 40 characters should be OK.  This is
    necessary to avoid a really bad-looking muttrc (5) manual page.
 
  - .te on a line finishes this environment.
