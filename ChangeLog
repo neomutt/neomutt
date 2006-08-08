@@ -1,4 +1,6 @@
-2006-08-08 22:29:35  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-08-08 22:38:29  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Finish fixing 2251.
 
 	* imap/imap.c: Handle unknown mailboxes in IMAP buffy check.
 
