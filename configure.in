@@ -337,11 +337,60 @@ if test $ac_cv_func_getopt = yes; then
         AC_CHECK_HEADERS(getopt.h)
 fi
 
-mutt_cv_snprintf=no
 SNPRINTFOBJS=""
-AC_CHECK_FUNCS(snprintf, , [mutt_cv_snprintf=yes])
-AC_CHECK_FUNCS(vsnprintf, , [mutt_cv_snprintf=yes])
-if test $mutt_cv_snprintf = yes; then
+AC_CHECK_FUNC(snprintf, [mutt_cv_func_snprintf=yes], [mutt_cv_func_snprintf=no])
+AC_CHECK_FUNC(vsnprintf, [mutt_cv_func_vsnprintf=yes], [mutt_cv_func_vsnprintf=no])
+if test $mutt_cv_func_snprintf = yes; then
+AC_CACHE_CHECK([whether your system's snprintf is C99 compliant],
+        [mutt_cv_c99_snprintf],
+        AC_TRY_RUN([
+#include <stdio.h>
+int main()
+{
+changequote(, )dnl
+  char buf[8];
+  int len = snprintf(buf, 4, "1234567");
+  return (len != 7 || buf[3] != '\0');
+changequote([, ])dnl
+}
+        ], mutt_cv_c99_snprintf=yes, mutt_cv_c99_snprintf=no, mutt_cv_c99_snprintf=no))
+else
+        mutt_cv_c99_snprintf=no
+fi
+if test $mutt_cv_func_vsnprintf = yes; then
+AC_CACHE_CHECK([whether your system's vsnprintf is C99 compliant],
+        [mutt_cv_c99_vsnprintf],
+        AC_TRY_RUN([
+#include <stdarg.h>
+#include <stdio.h>
+int foo(const char *fmt, ...)
+{
+changequote(, )dnl
+  char buf[8];
+  int len;
+  va_list ap;
+  va_start(ap, fmt);
+  len = vsnprintf(buf, 4, fmt, ap);
+  va_end(ap);
+  return (len != 7 || buf[3] != '\0');
+changequote([, ])dnl
+}
+
+int main()
+{
+  return foo("%s", "1234567");
+}
+        ], mutt_cv_c99_vsnprintf=yes, mutt_cv_c99_vsnprintf=no, mutt_cv_c99_vsnprintf=no))
+else
+        mutt_cv_c99_vsnprintf=no
+fi
+if test $mutt_cv_c99_snprintf = yes; then
+        AC_DEFINE(HAVE_SNPRINTF, 1, [ Define to 1 if you have a C99 compliant snprintf function. ])
+fi
+if test $mutt_cv_c99_vsnprintf = yes; then
+        AC_DEFINE(HAVE_VSNPRINTF, 1, [ Define to 1 if you have a C99 compliant vsnprintf function. ])
+fi
+if test $mutt_cv_c99_snprintf = no -o $mutt_cv_c99_vsnprintf = no; then
         AC_LIBOBJ(snprintf)
 fi
 
