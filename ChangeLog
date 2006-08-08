@@ -1,3 +1,7 @@
+2006-08-08 22:29:35  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap.c: Handle unknown mailboxes in IMAP buffy check.
+
 2006-08-08 22:05:51  Ronny Haryanto  <ronnylist@haryan.to>  (brendan)
 
 	* po/id.po: Update.
