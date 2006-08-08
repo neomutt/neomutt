@@ -1,3 +1,7 @@
+2006-08-08 21:59:37  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* po/fr.po: Update.
+
 2006-08-07 19:55:42  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c: Check for CAPABILITY in extended tagged
