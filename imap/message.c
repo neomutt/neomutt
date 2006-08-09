@@ -115,7 +115,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     mx_alloc_memory (idata->ctx);
 
   oldmsgcount = ctx->msgcount;
-  idata->reopen &= ~IMAP_NEWMAIL_PENDING;
+  idata->reopen &= ~(IMAP_REOPEN_ALLOW|IMAP_NEWMAIL_PENDING);
   idata->newMailCount = 0;
 
 #if USE_HCACHE
@@ -354,6 +354,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     mx_update_context (ctx, ctx->msgcount - oldmsgcount);
   }
 
+  idata->reopen |= IMAP_REOPEN_ALLOW;
   return msgend;
 }
 
