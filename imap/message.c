@@ -64,7 +64,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   char hdrreq[STRING];
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
-  int msgno;
+  int msgno, idx;
   IMAP_HEADER h;
   IMAP_STATUS* status;
   int rc, mfhrc, oldmsgcount;
@@ -166,26 +166,32 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           break;
 	}
 
+        idx = h.sid - 1;
+        if (idx != msgno)
+        {
+          dprint (1, (debugfile, "Ignoring out-of-order FETCH response\n"));
+          continue;
+        }
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
         uid_validity = (unsigned int*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
 
         if (uid_validity != NULL && *uid_validity == idata->uid_validity)
         {
-  	  ctx->hdrs[msgno] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
-  	  ctx->hdrs[msgno]->index = h.sid - 1;
+  	  ctx->hdrs[idx] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
+  	  ctx->hdrs[idx]->index = idx;
   	  if (h.sid != ctx->msgcount + 1)
-  	    dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
+  	    dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent"));
   	  /* messages which have not been expunged are ACTIVE (borrowed from mh 
   	   * folders) */
-  	  ctx->hdrs[msgno]->active = 1;
-          ctx->hdrs[msgno]->read = h.data->read;
-          ctx->hdrs[msgno]->old = h.data->old;
-          ctx->hdrs[msgno]->deleted = h.data->deleted;
-          ctx->hdrs[msgno]->flagged = h.data->flagged;
-          ctx->hdrs[msgno]->replied = h.data->replied;
-          ctx->hdrs[msgno]->changed = h.data->changed;
+  	  ctx->hdrs[idx]->active = 1;
+          ctx->hdrs[idx]->read = h.data->read;
+          ctx->hdrs[idx]->old = h.data->old;
+          ctx->hdrs[idx]->deleted = h.data->deleted;
+          ctx->hdrs[idx]->flagged = h.data->flagged;
+          ctx->hdrs[idx]->replied = h.data->replied;
+          ctx->hdrs[idx]->changed = h.data->changed;
           /*  ctx->hdrs[msgno]->received is restored from mutt_hcache_restore */
-          ctx->hdrs[msgno]->data = (void *) (h.data);
+          ctx->hdrs[idx]->data = (void *) (h.data);
 
           ctx->msgcount++;
         }
@@ -269,23 +275,29 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       /* make sure we don't get remnants from older larger message headers */
       fputs ("\n\n", fp);
 
+      idx = h.sid - 1;
+      if (idx != msgno)
+      {
+        dprint (1, (debugfile, "Ignoring out-of-order FETCH response\n"));
+        continue;
+      }
       /* update context with message header */
-      ctx->hdrs[msgno] = mutt_new_header ();
+      ctx->hdrs[idx] = mutt_new_header ();
 
-      ctx->hdrs[msgno]->index = h.sid - 1;
+      ctx->hdrs[idx]->index = h.sid - 1;
       if (h.sid != ctx->msgcount + 1)
 	dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
       /* messages which have not been expunged are ACTIVE (borrowed from mh 
        * folders) */
-      ctx->hdrs[msgno]->active = 1;
-      ctx->hdrs[msgno]->read = h.data->read;
-      ctx->hdrs[msgno]->old = h.data->old;
-      ctx->hdrs[msgno]->deleted = h.data->deleted;
-      ctx->hdrs[msgno]->flagged = h.data->flagged;
-      ctx->hdrs[msgno]->replied = h.data->replied;
-      ctx->hdrs[msgno]->changed = h.data->changed;
-      ctx->hdrs[msgno]->received = h.received;
-      ctx->hdrs[msgno]->data = (void *) (h.data);
+      ctx->hdrs[idx]->active = 1;
+      ctx->hdrs[idx]->read = h.data->read;
+      ctx->hdrs[idx]->old = h.data->old;
+      ctx->hdrs[idx]->deleted = h.data->deleted;
+      ctx->hdrs[idx]->flagged = h.data->flagged;
+      ctx->hdrs[idx]->replied = h.data->replied;
+      ctx->hdrs[idx]->changed = h.data->changed;
+      ctx->hdrs[idx]->received = h.received;
+      ctx->hdrs[idx]->data = (void *) (h.data);
 
       if (maxuid < h.data->uid)
         maxuid = h.data->uid;
