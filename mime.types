@@ -11,7 +11,34 @@ application/oda			oda
 application/pdf			pdf
 application/pgp			pgp
 application/postscript		ps PS eps
+application/rdf+xml		rdf
+application/rss+xml		rss
 application/rtf			rtf
+application/vnd.mozilla.xul+xml	xul
+application/vnd.oasis.opendocument.chart	odc
+application/vnd.oasis.opendocument.database	odb
+application/vnd.oasis.opendocument.formula	odf
+application/vnd.oasis.opendocument.graphics	odg
+application/vnd.oasis.opendocument.graphics-template	otg
+application/vnd.oasis.opendocument.image		odi
+application/vnd.oasis.opendocument.presentation		odp
+application/vnd.oasis.opendocument.presentation-template	otp
+application/vnd.oasis.opendocument.spreadsheet			ods
+application/vnd.oasis.opendocument.spreadsheet-template		ots
+application/vnd.oasis.opendocument.text				odt
+application/vnd.oasis.opendocument.text-master			odm
+application/vnd.oasis.opendocument.text-template		ott
+application/vnd.oasis.opendocument.text-web			oth
+application/vnd.sun.xml.calc					sxc
+application/vnd.sun.xml.calc.template				stc
+application/vnd.sun.xml.draw					sxd
+application/vnd.sun.xml.draw.template				std
+application/vnd.sun.xml.impress					sxi
+application/vnd.sun.xml.impress.template			sti
+application/vnd.sun.xml.writer					sxw
+application/vnd.sun.xml.writer.global				sxg
+application/vnd.sun.xml.writer.math				sxm
+application/vnd.sun.xml.writer.template		stw
 application/x-arj-compressed	arj
 application/x-bcpio		bcpio
 application/x-chess-pgn		pgn
@@ -44,6 +71,8 @@ application/x-troff-ms		ms
 application/x-ustar		ustar
 application/x-wais-source	src
 application/x-zip-compressed	zip
+application/xhtml+xml		xhtml xht
+application/xml			xml xsl
 
 audio/basic			snd
 audio/midi			mid midi
@@ -55,6 +84,7 @@ image/gif			gif
 image/ief			ief
 image/jpeg			jpe jpeg jpg
 image/png			png
+image/svg+xml			svg svgz
 image/tiff			tif tiff
 image/x-cmu-raster		ras
 image/x-portable-anymap		pnm
