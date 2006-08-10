@@ -689,6 +689,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   if (!option (OPTIMAPCHECKSUBSCRIBED))
     return;
 
+  idata->cmdtype = IMAP_CT_LIST;
   idata->cmddata = &list;
   cmd_parse_list (idata, s);
   idata->cmddata = NULL;
