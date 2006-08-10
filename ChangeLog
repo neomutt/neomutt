@@ -1,4 +1,8 @@
-2006-08-10 04:57:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-08-10 06:02:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c, imap/util.c: Handle literal mailbox names
+	in LIST responses (for Notes).	We should really have an IMAP
+	stream tokenizer.
 
 	* imap/command.c: Notes sometimes sends EXISTS messages for the
 	wrong mailbox.
