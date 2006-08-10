@@ -1,3 +1,8 @@
+2006-08-10 21:43:47  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* Makefile.am: Only touch reldate.h if it actually changes.
+	It was getting annoying rebuilding the manual after every commit.
+
 2006-08-10 21:25:18  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
 
 	* Makefile.am, configure.in, doc/instdoc.sh.in: No need to set
