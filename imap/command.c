@@ -581,6 +581,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   IMAP_LIST* list;
   IMAP_LIST lb;
   char delimbuf[5]; /* worst case: "\\"\0 */
+  long litlen;
 
   if (idata->cmddata)
     list = (IMAP_LIST*)idata->cmddata;
@@ -623,9 +624,22 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
 
   /* Name */
   s = imap_next_word (s);
-  imap_unmunge_mbox_name (s);
-  list->name = s;
-  
+  /* Notes often responds with literals here. We need a real tokenizer. */
+  if (!imap_get_literal_count (s, &litlen))
+  {
+    if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
+    {
+      idata->status = IMAP_FATAL;
+      return;
+    }
+    list->name = idata->buf;
+  }
+  else
+  {
+    imap_unmunge_mbox_name (s);
+    list->name = s;
+  }
+
   if (list->name[0] == '\0')
   {
     idata->delim = list->delim;
