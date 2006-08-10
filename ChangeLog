@@ -1,3 +1,9 @@
+2006-08-10 21:47:44  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
+
+	* doc/PGP-Notes.txt, doc/devel-notes.txt, doc/manual.xml.head,
+	doc/smime-notes.txt: Fix some typos; regularise spelling from
+	UK to US forms.
+
 2006-08-10 21:43:47  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* Makefile.am: Only touch reldate.h if it actually changes.
