@@ -48,8 +48,6 @@ makedoc_DEPENDENCIES =
 # 	@rm -rf makedoc
 # 	$(HOST_CC) $(AM_CFLAGS) $(LDFLAGS) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) -o makedoc
 
-CPP=@CPP@
-
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
 	-DHAVE_CONFIG_H=1
@@ -104,8 +102,6 @@ DISTCLEANFILES= flea Muttrc smime_keys
 ACLOCAL_AMFLAGS = -I m4
 
 LDADD = @LIBOBJS@ @INTLLIBS@
-
-OPS=@OPS@
 
 flea:	muttbug.sh
 	cp muttbug.sh flea

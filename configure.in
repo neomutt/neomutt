@@ -183,6 +183,7 @@ fi
 AC_ARG_WITH(slang, AC_HELP_STRING([--with-slang[=DIR]], [Use S-Lang instead of ncurses]),
         [AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
                 [AC_TRY_RUN([#include <sys/param.h>
+#include <stdlib.h>
 
 main ()
 {
@@ -465,6 +466,7 @@ else
 
         AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 int main (int argc, char **argv)
 {
@@ -482,6 +484,7 @@ int main (int argc, char **argv)
 
                 AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 int main (int argc, char **argv)
 {
