@@ -1,3 +1,9 @@
+2006-08-10 21:25:18  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
+
+	* Makefile.am, configure.in, doc/instdoc.sh.in: No need to set
+	CPP, OPS manually in Makefile.am.  Include stdlib.h in autoconf
+	tests that use exit.
+
 2006-08-10 20:20:28  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap_private.h, imap/browse.c, imap/command.c,
