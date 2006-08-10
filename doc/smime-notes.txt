@@ -53,7 +53,7 @@ Other notes
 Key management is done in a way similar to OpenSSL's CA directory. Private
 keys and certificates are stored in different directories, as OpenSSL
 expects either to be supplied in a (distinct) file. Each directory contains
-an unsorted file named '.index' wherin each line has several fields:
+an unsorted file named '.index' wherein each line has several fields:
 mailbox, keyid, label, id of the intermediate certificate and keyflags.
 
     * Keyid is a hashvalue derived from the subject field of a certificate
@@ -88,7 +88,7 @@ and asked to select one of those.
 The certificate and key directories specified in muttrc have to exist. Mutt
 will not create them. If you wish to sign messages yourself, note that this
 mutt does not address any PKCS10 or PKCS12 issues (yet?); that is, you have
-to get a valid certficate outside of mutt. (See above)
+to get a valid certificate outside of mutt. (See above)
 
 
 

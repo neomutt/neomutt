@@ -319,7 +319,7 @@ following categories:
 
 <para>
 Mutt automatically filters out repeated items from the history.  It
-also mimics the behaviour of some shells by ignoring items starting
+also mimics the behavior of some shells by ignoring items starting
 with a space.
 </para>
 
@@ -466,7 +466,7 @@ message has been replied to
 <term>S</term>
 <listitem>
 <para>
-message is signed, and the signature is succesfully verified
+message is signed, and the signature is successfully verified
 </para>
 </listitem>
 </varlistentry>
@@ -850,7 +850,7 @@ the message you are replying to.
 <para>
 Asks for an external Unix command and pipes the current or
 tagged message(s) to it.  The variables <link linkend="pipe-decode">&dollar;pipe&lowbar;decode</link>, <link linkend="pipe-split">&dollar;pipe&lowbar;split</link>,
-<link linkend="pipe-sep">&dollar;pipe&lowbar;sep</link> and <link linkend="wait-key">&dollar;wait&lowbar;key</link> control the exact behaviour of this function.
+<link linkend="pipe-sep">&dollar;pipe&lowbar;sep</link> and <link linkend="wait-key">&dollar;wait&lowbar;key</link> control the exact behavior of this function.
 </para>
 
 <para>
@@ -923,7 +923,7 @@ messages.
 <para>
 
 <table>
-<title>Most commom mail sending keys</title>
+<title>Most common mail sending keys</title>
 <tgroup cols="3">
 <thead>
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
@@ -1816,7 +1816,7 @@ The advantage with using function names directly is that the macros will
 work regardless of the current key bindings, so they are not dependent on
 the user having particular key definitions.  This makes them more robust
 and portable, and also facilitates defining of macros in files used by more
-than one user (eg. the system Muttrc).
+than one user (e.g., the system Muttrc).
 </para>
 
 <para>
@@ -2277,7 +2277,7 @@ give a portion of the list's e-mail address.
 <para>
 Specify as much of the address as you need to to remove ambiguity.  For
 example, if you've subscribed to the Mutt mailing list, you will receive mail
-addresssed to <emphasis>mutt-users@mutt.org</emphasis>.  So, to tell Mutt
+addressed to <emphasis>mutt-users@mutt.org</emphasis>.  So, to tell Mutt
 that this is a mailing list, you could add ``lists mutt-users@'' to your
 initialization file.  To tell mutt that you are subscribed to it,
 add ``subscribe mutt-users'' to your initialization file instead.
@@ -2564,7 +2564,7 @@ matches recipients of the message.
 <emphasis role="bold">to</emphasis>, instead of the message you are <emphasis>sending</emphasis>.  <literal>send-hook</literal> is
 matched against all messages, both <emphasis>new</emphasis> and <emphasis>replies</emphasis>.  <emphasis role="bold">Note:</emphasis>
 <literal>reply-hook</literal>s are matched <emphasis role="bold">before</emphasis> the <literal>send-hook</literal>, <emphasis role="bold">regardless</emphasis>
-of the order specified in the users's configuration file.
+of the order specified in the user's configuration file.
 </para>
 
 <para>
@@ -2798,7 +2798,7 @@ DCC report indicate the checksum used -- in this case, ``Fuz2''.)
 
 <para>
 If the &dollar;spam&lowbar;separator variable is unset, then each
-spam pattern match supercedes the previous one. Instead of getting
+spam pattern match supersedes the previous one. Instead of getting
 joined <emphasis>format</emphasis> strings, you'll get only the last one to match.
 </para>
 
@@ -2819,7 +2819,7 @@ to sorting.
 
 <para>
 Generally, when you sort by spam tag, mutt will sort <emphasis>lexically</emphasis> --
-that is, by ordering strings alphnumerically. However, if a spam tag
+that is, by ordering strings alphanumerically. However, if a spam tag
 begins with a number, mutt will sort numerically first, and lexically
 only when two numbers are equal in value. (This is like UNIX's
 <literal>sort -n</literal>.) A message with no spam attributes at all -- that is, one
@@ -2903,7 +2903,7 @@ newline and tab, respectively.
 <emphasis>quadoption</emphasis> variables are used to control whether or not to be prompted
 for certain actions, or to specify a default action.  A value of <emphasis>yes</emphasis>
 will cause the action to be carried out automatically as if you had answered
-yes to the question.  Similarly, a value of <emphasis>no</emphasis> will cause the the
+yes to the question.  Similarly, a value of <emphasis>no</emphasis> will cause the
 action to be carried out as if you had answered ``no.''  A value of
 <emphasis>ask-yes</emphasis> will cause a prompt with a default answer of ``yes'' and
 <emphasis>ask-no</emphasis> will provide a default answer of ``no.''
@@ -3963,7 +3963,7 @@ language for matching messages in hook commands.  This works in
 exactly the same way as it would when <emphasis>limiting</emphasis> or
 <emphasis>searching</emphasis> the mailbox, except that you are restricted to those
 operators which match information mutt extracts from the header of
-the message (i.e.  from, to, cc, date, subject, etc.).
+the message (i.e., from, to, cc, date, subject, etc.).
 </para>
 
 <para>
@@ -4281,7 +4281,7 @@ uninteresting threads and quickly find topics of value.
 
 <para>
 Mutt has the ability to dynamically restructure threads that are broken
-either by misconfigured software or bad behaviour from some
+either by misconfigured software or bad behavior from some
 correspondents. This allows to clean your mailboxes formats) from these
 annoyances which make it hard to follow a discussion.
 </para>
@@ -4300,7 +4300,7 @@ reply will then be connected to this "parent" message.
 </para>
 
 <para>
-You can also connect multiple childs at once, tagging them and using the
+You can also connect multiple children at once, tagging them and using the
 tag-prefix command (';') or the auto&lowbar;tag option.
 </para>
 
@@ -4860,7 +4860,7 @@ Attachments appear as follows:
 
 <para>
 The '-' denotes that Mutt will delete the file after sending (or
-postponing, or cancelling) the message.  It can be toggled with the
+postponing, or canceling) the message.  It can be toggled with the
 <literal>toggle-unlink</literal> command (default: u).  The next field is the MIME
 content-type, and can be changed with the <literal>edit-type</literal> command
 (default: &circ;T).  The next field is the encoding for the attachment,
@@ -4911,11 +4911,11 @@ type that Mutt assigns to an attachment by using the <literal>edit-type</literal
 command from the compose menu (default: &circ;T). The MIME type is actually a
 major mime type followed by the sub-type, separated by a '/'. 6 major
 types: application, text, image, video, audio, and model have been approved
-after various internet discussions. Mutt recognises all of these if the 
-appropriate entry is found in the mime.types file. It also recognises other
+after various internet discussions. Mutt recognizes all of these if the 
+appropriate entry is found in the mime.types file. It also recognizes other
 major mime types, such as the chemical type that is widely used in the 
-molecular modelling community to pass molecular data in various forms to 
-various molecular viewers. Non-recognised mime types should only be used 
+molecular modeling community to pass molecular data in various forms to 
+various molecular viewers. Non-recognized mime types should only be used 
 if the recipient of the message is likely to be expecting such attachments.
 </para>
 
@@ -4989,7 +4989,7 @@ respectively.
 The view command is a Unix command for viewing the type specified. There
 are two different types of commands supported. The default is to send
 the body of the MIME message to the command on stdin. You can change
-this behaviour by using &percnt;s as a parameter to your view command.
+this behavior by using &percnt;s as a parameter to your view command.
 This will cause Mutt to save the body of the MIME message to a temporary
 file, and then call the view command with the &percnt;s replaced by
 the name of the temporary file. In both cases, Mutt will turn over the
@@ -5055,7 +5055,7 @@ This is the simplest form of a mailcap file.
 <title>Secure use of mailcap</title>
 
 <para>
-The interpretion of shell meta-characters embedded in MIME parameters
+The interpretation of shell meta-characters embedded in MIME parameters
 can lead to security problems in general.  Mutt tries to quote parameters
 in expansion of &percnt;s syntaxes properly, and avoids risky characters by
 substituting them, see the <link linkend="mailcap-sanitize">&dollar;mailcap&lowbar;sanitize</link> variable.
@@ -5073,7 +5073,7 @@ Don't quote them with single or double quotes.  Mutt does this for
 you, the right way, as should any other program which interprets
 mailcap.  Don't put them into backtick expansions.  Be highly careful
 with eval statements, and avoid them if possible at all.  Trying to fix
-broken behaviour with quotes introduces new leaks - there is no
+broken behavior with quotes introduces new leaks - there is no
 alternative to correct quoting in the first place.
 </para>
 
@@ -5672,7 +5672,7 @@ to send messages from the command line as well.
 <row><entry>-b</entry><entry>specify a blind carbon-copy (BCC) address</entry></row>
 <row><entry>-c</entry><entry>specify a carbon-copy (Cc) address</entry></row>
 <row><entry>-D</entry><entry>print the value of all mutt variables to stdout</entry></row>
-<row><entry>-e</entry><entry>specify a config command to be run after initilization files are read</entry></row>
+<row><entry>-e</entry><entry>specify a config command to be run after initialization files are read</entry></row>
 <row><entry>-f</entry><entry>specify a mailbox to load</entry></row>
 <row><entry>-F</entry><entry>specify an alternate file to read initialization commands</entry></row>
 <row><entry>-h</entry><entry>print help on command line options</entry></row>

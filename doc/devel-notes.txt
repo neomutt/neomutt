@@ -157,7 +157,7 @@ Style Guide
   in ELM and PINE is the tremendous duplication of code...
   Help keep Mutt small!
 
-- when adding new options, make the old behaviour the
+- when adding new options, make the old behavior the
   default.
 
 - try to keep mutt as portable as possible.
