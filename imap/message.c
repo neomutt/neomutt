@@ -167,11 +167,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	}
 
         idx = h.sid - 1;
-        if (idx != msgno)
-        {
-          dprint (1, (debugfile, "Ignoring out-of-order FETCH response\n"));
-          continue;
-        }
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
         uid_validity = (unsigned int*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
 
@@ -179,8 +174,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         {
   	  ctx->hdrs[idx] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
   	  ctx->hdrs[idx]->index = idx;
-  	  if (h.sid != ctx->msgcount + 1)
-  	    dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent"));
   	  /* messages which have not been expunged are ACTIVE (borrowed from mh 
   	   * folders) */
   	  ctx->hdrs[idx]->active = 1;
@@ -213,19 +206,13 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         return -1;
       }
     }
-  
-    fetchlast = msgbegin;
+    /* could also look for first null header in case hcache is holey */
+    msgbegin = ctx->msgcount;
   }
 #endif /* USE_HCACHE */
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    if (ctx->hdrs[msgno])
-    {
-      msgbegin++;
-      continue;
-    }
-
     if (ReadInc && (msgno == msgbegin || ((msgno+1) % ReadInc == 0)))
       mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
         msgend + 1);
