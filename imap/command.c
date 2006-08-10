@@ -119,6 +119,8 @@ int imap_cmd_step (IMAP_DATA* idata)
   size_t len = 0;
   int c;
   int rc;
+  int stillrunning = 0;
+  IMAP_COMMAND* cmd;
 
   if (idata->status == IMAP_FATAL)
   {
@@ -176,19 +178,41 @@ int imap_cmd_step (IMAP_DATA* idata)
   if (idata->buf[0] == '+')
     return IMAP_CMD_RESPOND;
 
-  /* tagged completion code. TODO: I believe commands will always be completed
-   * in order, but will have to double-check when I have net again */
+  /* look for tagged command completions */
   rc = IMAP_CMD_CONTINUE;
-  if (!ascii_strncmp (idata->buf, idata->cmds[idata->lastcmd].seq, SEQLEN))
+  c = idata->lastcmd;
+  do
   {
-    idata->cmds[idata->lastcmd].state = cmd_status (idata->buf);
-    idata->lastcmd = (idata->lastcmd + 1) % IMAP_PIPELINE_DEPTH;
-    if (idata->lastcmd == idata->nextcmd)
+    cmd = &idata->cmds[c];
+    if (cmd->state == IMAP_CMD_NEW)
     {
-      rc = cmd_status (idata->buf);
-      imap_cmd_finish (idata);
+      if (!ascii_strncmp (idata->buf, cmd->seq, SEQLEN)) {
+	if (!stillrunning)
+	{
+	  /* first command in queue has finished - move queue pointer up */
+	  idata->lastcmd = (idata->lastcmd + 1) % IMAP_PIPELINE_DEPTH;
+	}
+	cmd->state = cmd_status (idata->buf);
+	/* bogus - we don't know which command result to return here. Caller
+	 * should provide a tag. */
+	rc = cmd->state;
+      }
+      else
+	stillrunning++;
     }
+
+    c = (c + 1) % IMAP_PIPELINE_DEPTH;
   }
+  while (c != idata->nextcmd);
+
+  if (stillrunning)
+    rc = IMAP_CMD_CONTINUE;
+  else
+  {
+    dprint (2, (debugfile, "IMAP queue drained\n"));
+    imap_cmd_finish (idata);
+  }
+  
 
   return rc;
 }
