@@ -1,4 +1,8 @@
-2006-08-10 00:06:32  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-08-10 02:59:58  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/message.c: More out-of-order FETCH fixes. This time I wrote
+	a replay tool acting as an IMAP server based on a .muttdebug0
+	file, and mutt handled the out-of-order responses served by it.
 
 	* imap/command.c, imap/message.c: More fixes for out-of-order
 	FETCH responses.
