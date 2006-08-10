@@ -1,4 +1,7 @@
-2006-08-10 02:59:58  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-08-10 04:57:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Notes sometimes sends EXISTS messages for the
+	wrong mailbox.
 
 	* imap/message.c: More out-of-order FETCH fixes. This time I wrote
 	a replay tool acting as an IMAP server based on a .muttdebug0
