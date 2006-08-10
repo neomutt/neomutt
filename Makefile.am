@@ -122,7 +122,9 @@ $(srcdir)/keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(
 			> $(srcdir)/keymap_alldefs.h
 
 reldate.h: $(srcdir)/ChangeLog
-	echo 'const char *ReleaseDate = "'`head -n 1 $(srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1`'";' > reldate.h
+	echo 'const char *ReleaseDate = "'`head -n 1 $(srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1`'";' > reldate.h.tmp; \
+	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
+	rm reldate.h.tmp
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
 	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
