@@ -1,4 +1,8 @@
-2006-08-10 18:42:10  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-08-10 20:20:28  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/imap_private.h, imap/browse.c, imap/command.c,
+	imap/imap.c: Add type field for IMAP command data structure,
+	check it before use.
 
 	* imap/command.c: Handle IMAP out-of-order tagged
 	responses. Closes: #2365.
