@@ -386,12 +386,10 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
       if ( !(idata->reopen & IMAP_EXPUNGE_PENDING) &&
 	   count < idata->ctx->msgcount)
       {
-	/* something is wrong because the server reported fewer messages
-	 * than we previously saw
-	 */
-	mutt_error _("Fatal error.  Message count is out of sync!");
-	idata->status = IMAP_FATAL;
-	return -1;
+        /* Notes 6.0.3 has a tendency to report fewer messages exist than
+         * it should. */
+	dprint (1, (debugfile, "Message count is out of sync"));
+	return 0;
       }
       /* at least the InterChange server sends EXISTS messages freely,
        * even when there is no new mail */
