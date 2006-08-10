@@ -607,7 +607,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   char delimbuf[5]; /* worst case: "\\"\0 */
   long litlen;
 
-  if (idata->cmddata)
+  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
     list = (IMAP_LIST*)idata->cmddata;
   else
     list = &lb;
@@ -679,7 +679,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   ciss_url_t url;
   IMAP_LIST list;
 
-  if (idata->cmddata)
+  if (idata->cmddata && idata->cmdtype == IMAP_CT_LIST)
   {
     /* caller will handle response itself */
     cmd_parse_list (idata, s);
@@ -851,7 +851,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
               status->messages, status->recent, status->unseen));
 
   /* caller is prepared to handle the result herself */
-  if (idata->cmddata)
+  if (idata->cmddata && idata->cmdtype == IMAP_CT_STATUS)
   {
     memcpy (idata->cmddata, status, sizeof (IMAP_STATUS));
     return;

@@ -112,6 +112,7 @@ int imap_browse (char* path, struct browser_state* state)
     {
       snprintf (buf, sizeof (buf), "%s \"\" \"%s\"", list_cmd, mbox);
       imap_cmd_start (idata, buf);
+      idata->cmdtype = IMAP_CT_LIST;
       idata->cmddata = &list;
       do
       {
@@ -371,6 +372,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   }
 
   imap_cmd_start (idata, cmd);
+  idata->cmdtype = IMAP_CT_LIST;
   idata->cmddata = &list;
   do
   {
@@ -592,6 +594,7 @@ static int browse_verify_namespace (IMAP_DATA* idata,
 		option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
 
     imap_cmd_start (idata, buf);
+    idata->cmdtype = IMAP_CT_LIST;
     idata->cmddata = &list;
     nsi->listable = 0;
     nsi->home_namespace = 0;

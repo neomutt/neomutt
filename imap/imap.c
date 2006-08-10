@@ -1892,6 +1892,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
   /* and see what the results are */
   strfcpy (completion, NONULL(mx.mbox), sizeof(completion));
+  idata->cmdtype = IMAP_CT_LIST;
   idata->cmddata = &listresp;
   do
   {

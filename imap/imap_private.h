@@ -180,6 +180,13 @@ typedef struct
   int state;
 } IMAP_COMMAND;
 
+typedef enum
+{
+  IMAP_CT_NONE = 0,
+  IMAP_CT_LIST,
+  IMAP_CT_STATUS
+} IMAP_COMMAND_TYPE;
+
 typedef struct
 {
   /* This data is specific to a CONNECTION to an IMAP server */
@@ -200,8 +207,11 @@ typedef struct
   time_t lastread; /* last time we read a command for the server */
   char* buf;
   unsigned int blen;
-  void* cmddata; /* if set, the response parser will store results for
-                  * complicated commands here. */
+  
+  /* if set, the response parser will store results for complicated commands
+   * here. */
+  IMAP_COMMAND_TYPE cmdtype;
+  void* cmddata;
 
   /* command queue */
   IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
