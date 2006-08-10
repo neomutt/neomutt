@@ -250,7 +250,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       imap_cmd_start (idata, buf);
     }
 
-    /* freshen fp, h */
     rewind (fp);
     memset (&h, 0, sizeof (h));
     h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
@@ -276,17 +275,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       fputs ("\n\n", fp);
 
       idx = h.sid - 1;
-      if (idx != msgno)
-      {
-        dprint (1, (debugfile, "Ignoring out-of-order FETCH response\n"));
-        continue;
-      }
-      /* update context with message header */
       ctx->hdrs[idx] = mutt_new_header ();
 
       ctx->hdrs[idx]->index = h.sid - 1;
-      if (h.sid != ctx->msgcount + 1)
-	dprint (1, (debugfile, "imap_read_headers: msgcount and sequence ID are inconsistent!"));
       /* messages which have not been expunged are ACTIVE (borrowed from mh 
        * folders) */
       ctx->hdrs[idx]->active = 1;
@@ -305,14 +296,14 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       rewind (fp);
       /* NOTE: if Date: header is missing, mutt_read_rfc822_header depends
        *   on h.received being set */
-      ctx->hdrs[msgno]->env = mutt_read_rfc822_header (fp, ctx->hdrs[msgno],
+      ctx->hdrs[idx]->env = mutt_read_rfc822_header (fp, ctx->hdrs[idx],
         0, 0);
       /* content built as a side-effect of mutt_read_rfc822_header */
-      ctx->hdrs[msgno]->content->length = h.content_length;
+      ctx->hdrs[idx]->content->length = h.content_length;
 
 #if USE_HCACHE
       sprintf(uid_buf, "/%u", h.data->uid);
-      mutt_hcache_store(hc, uid_buf, ctx->hdrs[msgno], idata->uid_validity, &imap_hcache_keylen);
+      mutt_hcache_store(hc, uid_buf, ctx->hdrs[idx], idata->uid_validity, &imap_hcache_keylen);
 #endif /* USE_HCACHE */
 
       ctx->msgcount++;

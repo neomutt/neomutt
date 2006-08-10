@@ -537,7 +537,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
     {
       h = idata->ctx->hdrs[cur];
       
-      if (h->active && h->index+1 == msgno)
+      if (h && h->active && h->index+1 == msgno)
       {
 	dprint (2, (debugfile, "Message UID %d updated\n", HEADER_DATA(h)->uid));
 	break;
