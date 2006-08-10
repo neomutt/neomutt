@@ -1,3 +1,8 @@
+2006-08-10 22:16:11  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Unbreak imap_check_subscribed after command
+	data type change.
+
 2006-08-10 21:47:44  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
 
 	* doc/PGP-Notes.txt, doc/devel-notes.txt, doc/manual.xml.head,
