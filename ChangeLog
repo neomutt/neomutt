@@ -1,4 +1,7 @@
-2006-08-10 06:02:08  Brendan Cully  <brendan@kublai.com>  (brendan)
+2006-08-10 18:42:10  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c: Handle IMAP out-of-order tagged
+	responses. Closes: #2365.
 
 	* imap/command.c, imap/util.c: Handle literal mailbox names
 	in LIST responses (for Notes).	We should really have an IMAP
