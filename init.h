@@ -1105,7 +1105,7 @@ struct option_t MuttVars[] = {
   ** or less optimal for most use cases.
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
-#if HAVE_QDBM
+#if defined(HAVE_QDBM)
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 0 },
   /*
   ** .pp
