@@ -1,3 +1,8 @@
+2006-08-11 10:54:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* contrib/sample.muttrc-tlr: Update example -- it's amazing how
+	little I've actually changed over the past couple of years.
+
 2006-08-11 09:32:29  Thomas Glanzmann  <sithglan@stud.uni-erlangen.de>  (roessler)
 
 	* doc/manual.xml.head, mutt.h, pattern.c: Mutt-thread patch. Use
