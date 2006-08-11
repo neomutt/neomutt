@@ -765,7 +765,7 @@ void mutt_pattern_free (pattern_t **pat)
 pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 {
   pattern_t *curlist = NULL;
-  pattern_t *tmp;
+  pattern_t *tmp, *tmp2;
   pattern_t *last = NULL;
   int not = 0;
   int alladdr = 0;
@@ -822,7 +822,41 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
       case '%':
       case '=':
       case '~':
-	if (implicit && or)
+	if (*(ps.dptr + 1) == '(') 
+        {
+	  ps.dptr ++; /* skip ~ */
+	  p = find_matching_paren (ps.dptr + 1);
+	  if (*p != ')')
+	  {
+	    snprintf (err->data, err->dsize, _("mismatched brackets: %s"), ps.dptr);
+	    mutt_pattern_free (&curlist);
+	    return NULL;
+	  }
+	  tmp = new_pattern ();
+	  tmp->op = M_THREAD;
+	  if (last)
+	    last->next = tmp;
+	  else
+	    curlist = tmp;
+	  last = tmp;
+	  tmp->not ^= not;
+	  tmp->alladdr |= alladdr;
+	  not = 0;
+	  alladdr = 0;
+	  /* compile the sub-expression */
+	  buf = mutt_substrdup (ps.dptr + 1, p);
+	  if ((tmp2 = mutt_pattern_comp (buf, flags, err)) == NULL)
+	  {
+	    FREE (&buf);
+	    mutt_pattern_free (&curlist);
+	    return NULL;
+	  }
+	  FREE (&buf);
+	  tmp->child = tmp2;
+	  ps.dptr = p + 1; /* restore location */
+	  break;
+	}
+        if (implicit && or)
 	{
 	  /* A | B & C == (A | B) & C */
 	  tmp = new_pattern ();
@@ -1019,6 +1053,29 @@ static int match_user (int alladdr, ADDRESS *a1, ADDRESS *a2)
   return alladdr;
 }
 
+static int match_threadcomplete(struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx, THREAD *t,int left,int up,int right,int down)
+{
+  int a;
+  HEADER *h;
+
+  if(!t)
+    return 0;
+  h = t->message;
+  if(h)
+    if(mutt_pattern_exec(pat, flags, ctx, h))
+      return 1;
+
+  if(up && (a=match_threadcomplete(pat, flags, ctx, t->parent,1,1,1,0)))
+    return a;
+  if(right && t->parent && (a=match_threadcomplete(pat, flags, ctx, t->next,0,0,1,1)))
+    return a;
+  if(left && t->parent && (a=match_threadcomplete(pat, flags, ctx, t->prev,1,0,0,1)))
+    return a;
+  if(down && (a=match_threadcomplete(pat, flags, ctx, t->child,1,0,1,1)))
+    return a;
+  return 0;
+}
+
 /* flags
    	M_MATCH_FULL_ADDRESS	match both personal and machine address */
 int
@@ -1030,6 +1087,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       return (pat->not ^ (perform_and (pat->child, flags, ctx, h) > 0));
     case M_OR:
       return (pat->not ^ (perform_or (pat->child, flags, ctx, h) > 0));
+    case M_THREAD:
+      return (pat->not ^ match_threadcomplete(pat->child, flags, ctx, h->thread, 1, 1, 1, 1));
     case M_ALL:
       return (!pat->not);
     case M_EXPIRED:

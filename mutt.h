@@ -208,6 +208,7 @@ enum
   /* actions for mutt_pattern_comp/mutt_pattern_exec */
   M_AND,
   M_OR,
+  M_THREAD,
   M_TO,
   M_CC,
   M_COLLAPSED,

@@ -3556,6 +3556,9 @@ messages:
 <row><entry>~z &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with a size in the range MIN to MAX *)</entry></row>
 <row><entry>~=</entry><entry>duplicated messages (see $duplicate_threads)</entry></row>
 <row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
+<row><entry>~(PATTERN)</entry><entry>messages in threads
+containing messages matching a certain	pattern, e.g. all
+threads containing messages from you: ~(~P)</entry></row>
 </tbody>
 </tgroup>
 </table>
