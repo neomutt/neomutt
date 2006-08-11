@@ -1,3 +1,8 @@
+2006-08-11 16:25:59  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* Makefile.am: Include reldate.h in make dist, so docs won't be
+	needlessly rebuilt.
+
 2006-08-11 10:54:24  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* contrib/sample.muttrc-tlr: Update example -- it's amazing how
