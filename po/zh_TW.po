@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.22.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 14:16-0400\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -174,7 +174,7 @@ msgstr "改變目錄"
 msgid "Mask"
 msgstr "遮罩"
 
-#: browser.c:382 browser.c:995
+#: browser.c:382 browser.c:1000
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s 不是一個目錄"
@@ -198,7 +198,7 @@ msgstr "目錄 [%s], 檔案遮罩: %s"
 msgid "Can't attach a directory!"
 msgstr "無法附帶目錄！"
 
-#: browser.c:657 browser.c:1063 browser.c:1161
+#: browser.c:657 browser.c:1068 browser.c:1166
 msgid "No files match the file mask"
 msgstr "沒有檔案與檔案遮罩相符"
 
@@ -215,52 +215,57 @@ msgstr "只有 IMAP 郵箱才支援製造功能"
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "只有 IMAP 郵箱才支援刪除功能"
 
-#: browser.c:914
+#: browser.c:916
+#, fuzzy
+msgid "Cannot delete root folder"
+msgstr "無法建立過濾器"
+
+#: browser.c:919
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "真的要刪除 \"%s\" 郵箱？"
 
-#: browser.c:928
+#: browser.c:933
 msgid "Mailbox deleted."
 msgstr "郵箱已刪除。"
 
-#: browser.c:934
+#: browser.c:939
 msgid "Mailbox not deleted."
 msgstr "郵箱未被刪除。"
 
-#: browser.c:953
+#: browser.c:958
 msgid "Chdir to: "
 msgstr "改變目錄到："
 
-#: browser.c:983 browser.c:1056
+#: browser.c:988 browser.c:1061
 msgid "Error scanning directory."
 msgstr "無法掃描目錄。"
 
-#: browser.c:1006
+#: browser.c:1011
 msgid "File Mask: "
 msgstr "檔案遮罩："
 
-#: browser.c:1079
+#: browser.c:1084
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "反向排序 (1)日期, (2)字元, (3)大小 或 (4)不排序 ? "
 
-#: browser.c:1080
+#: browser.c:1085
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "依照 (1)日期 (2)字元 (3)大小 來排序，或(4)不排序 ? "
 
-#: browser.c:1081
+#: browser.c:1086
 msgid "dazn"
 msgstr "1234"
 
-#: browser.c:1148
+#: browser.c:1153
 msgid "New file name: "
 msgstr "新檔名："
 
-#: browser.c:1179
+#: browser.c:1184
 msgid "Can't view a directory"
 msgstr "無法顯示目錄"
 
-#: browser.c:1196
+#: browser.c:1201
 msgid "Error trying to view file"
 msgstr "無法試著顯示檔案"
 
@@ -1427,7 +1432,7 @@ msgstr ""
 msgid "Exit Mutt?"
 msgstr "離開 Mutt？"
 
-#: curs_lib.c:396 mutt_socket.c:561 mutt_ssl.c:329
+#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "不明的錯誤"
 
@@ -1621,11 +1626,11 @@ msgstr "沒有要反刪除的信件。"
 msgid "You are on the first message."
 msgstr "您已經在第一封信了。"
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "搜尋至開頭。"
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "搜尋至結尾。"
 
@@ -2042,48 +2047,41 @@ msgstr "拿取 namespace 中…"
 msgid "Getting folder list..."
 msgstr "拿取目錄表中…"
 
-#: imap/browse.c:223
+#: imap/browse.c:224
 #, fuzzy
 msgid "No such folder"
 msgstr "%s：沒有這種顏色"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 msgid "Create mailbox: "
 msgstr "製作信箱："
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "信箱一定要有名字。"
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 msgid "Mailbox created."
 msgstr "已完成製造郵箱。"
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "製作信箱："
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "登入失敗： %s"
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 #, fuzzy
 msgid "Mailbox renamed."
 msgstr "已完成製造郵箱。"
 
-#: imap/command.c:347
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "郵箱已經關掉"
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:390
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "嚴重錯誤。信件數量不協調！"
 
 #: imap/imap.c:178
 #, c-format
@@ -2116,7 +2114,7 @@ msgstr "正在選擇 %s …"
 msgid "Error opening mailbox"
 msgstr "開啟信箱時發生錯誤"
 
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "建立 %s？"
@@ -2197,30 +2195,30 @@ msgstr "無法建立暫存檔 %s"
 msgid "Evaluating cache... [%d/%d]"
 msgstr "正在取回信件標頭… [%d/%d]"
 
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "正在取回信件標頭… [%d/%d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "拿取信件中…"
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "信件的索引不正確。請再重新開啟信箱。"
 
-#: imap/message.c:605
+#: imap/message.c:596
 #, fuzzy
 msgid "Uploading message..."
 msgstr "正在上傳信件…"
 
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "正在複制 %d 封信件到 %s …"
 
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "正在複制 信件 %d 到 %s …"
@@ -3603,19 +3601,19 @@ msgstr "您現在在最後一項。"
 msgid "You are on the first entry."
 msgstr "您現在在第一項。"
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "搜尋："
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "返向搜尋："
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "沒有搜尋格式。"
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "沒有找到。"
 
@@ -3644,45 +3642,45 @@ msgstr "讀取 %s… %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: mutt_socket.c:94 mutt_socket.c:165
+#: mutt_socket.c:101 mutt_socket.c:172
 #, c-format
 msgid "Connection to %s closed"
 msgstr "到 %s 的連線中斷了"
 
-#: mutt_socket.c:285
+#: mutt_socket.c:292
 msgid "SSL is unavailable."
 msgstr "沒有 SSL 功能"
 
-#: mutt_socket.c:317
+#: mutt_socket.c:324
 msgid "Preconnect command failed."
 msgstr "預先連接指令失敗。"
 
-#: mutt_socket.c:388 mutt_socket.c:402
+#: mutt_socket.c:395 mutt_socket.c:409
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "連線到 %s (%s) 時失敗"
 
-#: mutt_socket.c:455 mutt_socket.c:513
+#: mutt_socket.c:462 mutt_socket.c:520
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr ""
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:469 mutt_socket.c:527
 #, c-format
 msgid "Looking up %s..."
 msgstr "正在尋找 %s…"
 
-#: mutt_socket.c:473 mutt_socket.c:527
+#: mutt_socket.c:480 mutt_socket.c:534
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "找不到主機 \"%s\""
 
-#: mutt_socket.c:478 mutt_socket.c:536
+#: mutt_socket.c:485 mutt_socket.c:543
 #, c-format
 msgid "Connecting to %s..."
 msgstr "正連接到 %s…"
 
-#: mutt_socket.c:560
+#: mutt_socket.c:567
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "無法連線到 %s (%s)。"
@@ -4115,61 +4113,66 @@ msgstr "無效的相對日期：%s"
 msgid "error in expression"
 msgstr "表達式有錯誤"
 
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "在樣式上有錯誤：%s"
 
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "不對稱的括弧：%s"
+
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c：無效的指令"
 
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c：在這個模式不支援"
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "錯失參數"
 
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "不對稱的括弧：%s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "空的格式"
 
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "錯誤：不明的 op %d (請回報這個錯誤)。"
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "編譯搜尋樣式中…"
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "正在對符合的郵件執行命令…"
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "沒有郵件符合要求。"
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "已搜尋至結尾，並沒有發現任何符合"
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "已搜尋至開頭，並沒有發現任何符合"
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "搜尋已被中斷。"
 
@@ -5025,6 +5028,9 @@ msgstr "在限制閱覽模式下無法顯示主信件。"
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "主信件不存在。"
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "嚴重錯誤。信件數量不協調！"
 
 #~ msgid "CLOSE failed"
 #~ msgstr "CLOSE 失敗"

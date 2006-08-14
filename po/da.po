@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.8i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 14:16-0400\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2005-03-13 17:22+0100\n"
 "Last-Translator: Morten Bo Johansen <mojo@mbjnet.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -172,7 +172,7 @@ msgstr "Skift filkatalog"
 msgid "Mask"
 msgstr "Maske"
 
-#: browser.c:382 browser.c:995
+#: browser.c:382 browser.c:1000
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s er ikke et filkatalog."
@@ -196,7 +196,7 @@ msgstr "Filkatalog [%s], filmaske: %s"
 msgid "Can't attach a directory!"
 msgstr "Kan ikke vedlægge et filkatalog!"
 
-#: browser.c:657 browser.c:1063 browser.c:1161
+#: browser.c:657 browser.c:1068 browser.c:1166
 msgid "No files match the file mask"
 msgstr "Ingen filer passer til filmasken."
 
@@ -212,52 +212,57 @@ msgstr "Omdøbning er kun understøttet for IMAP-brevbakker"
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Sletning er kun understøttet for IMAP-brevbakker"
 
-#: browser.c:914
+#: browser.c:916
+#, fuzzy
+msgid "Cannot delete root folder"
+msgstr "Kan ikke oprette filter."
+
+#: browser.c:919
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Virkelig slette brevbakke \"%s\"?"
 
-#: browser.c:928
+#: browser.c:933
 msgid "Mailbox deleted."
 msgstr "Brevbakke slettet."
 
-#: browser.c:934
+#: browser.c:939
 msgid "Mailbox not deleted."
 msgstr "Brevbakke ikke slettet."
 
-#: browser.c:953
+#: browser.c:958
 msgid "Chdir to: "
 msgstr "Skift til filkatalog: "
 
-#: browser.c:983 browser.c:1056
+#: browser.c:988 browser.c:1061
 msgid "Error scanning directory."
 msgstr "Fejl ved indlæsning af filkatalog."
 
-#: browser.c:1006
+#: browser.c:1011
 msgid "File Mask: "
 msgstr "Filmaske: "
 
-#: browser.c:1079
+#: browser.c:1084
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Omvendt sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen? "
 
-#: browser.c:1080
+#: browser.c:1085
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortering efter (d)ato, (a)lfabetisk, (s)tr. eller (i)ngen? "
 
-#: browser.c:1081
+#: browser.c:1086
 msgid "dazn"
 msgstr "dasi"
 
-#: browser.c:1148
+#: browser.c:1153
 msgid "New file name: "
 msgstr "Nyt filnavn: "
 
-#: browser.c:1179
+#: browser.c:1184
 msgid "Can't view a directory"
 msgstr "Filkataloger kan ikke vises."
 
-#: browser.c:1196
+#: browser.c:1201
 msgid "Error trying to view file"
 msgstr "Fejl ved visning af fil."
 
@@ -1390,7 +1395,7 @@ msgstr "nej"
 msgid "Exit Mutt?"
 msgstr "Afslut Mutt øjeblikkeligt?"
 
-#: curs_lib.c:396 mutt_socket.c:561 mutt_ssl.c:329
+#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "ukendt fejl"
 
@@ -1583,11 +1588,11 @@ msgstr "Alle breve har slette-markering."
 msgid "You are on the first message."
 msgstr "Du er ved første brev."
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "Søgning fortsat fra top."
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "Søgning fortsat fra bund."
 
@@ -1998,46 +2003,39 @@ msgstr "Henter navnerum ..."
 msgid "Getting folder list..."
 msgstr "Henter liste over brevbakker ..."
 
-#: imap/browse.c:223
+#: imap/browse.c:224
 msgid "No such folder"
 msgstr "Brevbakken findes ikke"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 msgid "Create mailbox: "
 msgstr "Opret brevbakke: "
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Brevbakken skal have et navn."
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 msgid "Mailbox created."
 msgstr "Brevbakke oprettet."
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Omdøb brevbakke %s to: "
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Omdøbning slog fejl: %s"
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 msgid "Mailbox renamed."
 msgstr "Brevbakke omdøbt."
 
-#: imap/command.c:347
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "Brevbakke lukket"
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:390
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Kritisk fejl. Antal breve er ikke som forventet!"
 
 #: imap/imap.c:178
 #, c-format
@@ -2069,7 +2067,7 @@ msgstr "Vælger %s ..."
 msgid "Error opening mailbox"
 msgstr "Fejl ved åbning af brevbakke"
 
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Opret %s?"
@@ -2149,30 +2147,30 @@ msgstr "Kunne ikke oprette midlertidig fil %s"
 msgid "Evaluating cache... [%d/%d]"
 msgstr "Evaluerer cache ... [%d/%d]"
 
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Henter brevhoveder ... [%d/%d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "Henter brev ..."
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Brevindekset er forkert. Prøv at genåbne brevbakken."
 
-#: imap/message.c:605
+#: imap/message.c:596
 #, fuzzy
 msgid "Uploading message..."
 msgstr "Uploader brev ..."
 
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopierer %d breve til %s ..."
 
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopierer brev %d til %s ..."
@@ -3561,19 +3559,19 @@ msgstr "Du er på sidste listning."
 msgid "You are on the first entry."
 msgstr "Du er på første listning."
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "Søg efter: "
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "Søg baglæns efter: "
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "Intet søgemønster."
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "Ikke fundet."
 
@@ -3602,45 +3600,45 @@ msgstr "Læser %s ... %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kan ikke sætte tidsstempel på fil"
 
-#: mutt_socket.c:94 mutt_socket.c:165
+#: mutt_socket.c:101 mutt_socket.c:172
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Forbindelse til %s er lukket."
 
-#: mutt_socket.c:285
+#: mutt_socket.c:292
 msgid "SSL is unavailable."
 msgstr "SSL er ikke tilgængelig."
 
-#: mutt_socket.c:317
+#: mutt_socket.c:324
 msgid "Preconnect command failed."
 msgstr "\"preconnect\"-kommando slog fejl"
 
-#: mutt_socket.c:388 mutt_socket.c:402
+#: mutt_socket.c:395 mutt_socket.c:409
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Kommunikationsfejl med server %s (%s)"
 
-#: mutt_socket.c:455 mutt_socket.c:513
+#: mutt_socket.c:462 mutt_socket.c:520
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "Forkert IDN \"%s\"."
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:469 mutt_socket.c:527
 #, c-format
 msgid "Looking up %s..."
 msgstr "Opsøger %s ..."
 
-#: mutt_socket.c:473 mutt_socket.c:527
+#: mutt_socket.c:480 mutt_socket.c:534
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Kunne ikke finde værten \"%s\""
 
-#: mutt_socket.c:478 mutt_socket.c:536
+#: mutt_socket.c:485 mutt_socket.c:543
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Forbinder til %s ..."
 
-#: mutt_socket.c:560
+#: mutt_socket.c:567
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Kunne ikke forbinde til %s (%s)."
@@ -4070,61 +4068,66 @@ msgstr "Ugyldig relativ dato: %s"
 msgid "error in expression"
 msgstr "Fejl i udtryk."
 
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "fejl i mønster ved: %s"
 
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "parenteser matcher ikke: %s"
+
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ugyldig Kommando"
 
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: er ikke understøttet i denne tilstand."
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "manglende parameter"
 
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parenteser matcher ikke: %s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "tomt mønster"
 
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fejl: ukendt op %d (rapportér denne fejl)."
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "Klargør søgemønster ..."
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "Udfører kommando på matchende breve ..."
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "Ingen breve opfylder kriterierne."
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "Søgning er nået til bunden uden resultat."
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "Søgning nåede toppen uden resultat."
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "Søgning afbrudt."
 
@@ -4950,6 +4953,9 @@ msgstr "Forrige brev i tråden er ikke synligt i afgrænset visning"
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Forrige brev i tråden er ikke tilgængeligt."
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "Kritisk fejl. Antal breve er ikke som forventet!"
 
 #~ msgid "CLOSE failed"
 #~ msgstr "CLOSE slog fejl"

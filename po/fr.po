@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.12-20060807\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-08 13:04+0200\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2006-08-08 13:06+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -1632,11 +1632,11 @@ msgstr "Pas de message non effacé."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
@@ -2052,46 +2052,39 @@ msgid "Getting folder list..."
 msgstr "Récupération de la liste des dossiers..."
 
 # , c-format
-#: imap/browse.c:223
+#: imap/browse.c:224
 msgid "No such folder"
 msgstr "Ce dossier n'existe pas"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 msgid "Create mailbox: "
 msgstr "Créer la boîte aux lettres : "
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "La boîte aux lettres doit avoir un nom."
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 msgid "Mailbox created."
 msgstr "Boîte aux lettres créée."
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Renommer la boîte aux lettres %s en : "
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Le renommage a échoué : %s"
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 msgid "Mailbox renamed."
 msgstr "Boîte aux lettres renommée."
 
-#: imap/command.c:348
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "Boîte aux lettres fermée"
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:392
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Erreur fatale. Le nombre de messages ne correspond pas !"
 
 #: imap/imap.c:178
 #, c-format
@@ -2125,7 +2118,7 @@ msgid "Error opening mailbox"
 msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -2214,32 +2207,32 @@ msgid "Evaluating cache... [%d/%d]"
 msgstr "Évaluation du cache... [%d/%d]"
 
 # , c-format
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Récupération des en-têtes des messages... [%d/%d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "Récupération du message..."
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
-#: imap/message.c:605
+#: imap/message.c:596
 msgid "Uploading message..."
 msgstr "Chargement du message..."
 
 # , c-format
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
@@ -3604,19 +3597,19 @@ msgstr "Vous êtes sur la dernière entrée."
 msgid "You are on the first entry."
 msgstr "Vous êtes sur la première entrée."
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "Rechercher : "
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "Pas de motif de recherche."
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "Non trouvé."
 
@@ -4143,65 +4136,71 @@ msgid "error in expression"
 msgstr "erreur dans l'expression"
 
 # , c-format
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "erreur dans le motif à : %s"
 
 # , c-format
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "parenthésage incorrect : %s"
+
+# , c-format
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c : commande invalide"
 
 # , c-format
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c : non supporté dans ce mode"
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "paramètre manquant"
 
 # , c-format
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parenthésage incorrect : %s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "motif vide"
 
 # , c-format
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "erreur : opération inconnue %d (signalez cette erreur)."
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "Compilation du motif de recherche..."
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "Exécution de la commande sur les messages correspondants..."
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "Aucun message ne correspond au critère."
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "Fin atteinte sans rien avoir trouvé"
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "Début atteint sans rien avoir trouvé"
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "Recherche interrompue."
 
@@ -5054,6 +5053,9 @@ msgstr "Le message père n'est pas visible dans cette vue limitée."
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "Erreur fatale. Le nombre de messages ne correspond pas !"
 
 #~ msgid "CLOSE failed"
 #~ msgstr "CLOSE a échoué"

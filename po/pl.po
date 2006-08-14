@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5-cvs\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 14:16-0400\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2006-07-07 16:05+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <dzieko@pwr.wroc.pl>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -176,7 +176,7 @@ msgstr "Zmieñ katalog"
 msgid "Mask"
 msgstr "Wzorzec"
 
-#: browser.c:382 browser.c:995
+#: browser.c:382 browser.c:1000
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s nie jest katalogiem."
@@ -200,7 +200,7 @@ msgstr "Katalog [%s], wzorzec nazw plików: %s"
 msgid "Can't attach a directory!"
 msgstr "Za³±cznikiem nie mo¿e zostaæ katalog!"
 
-#: browser.c:657 browser.c:1063 browser.c:1161
+#: browser.c:657 browser.c:1068 browser.c:1166
 msgid "No files match the file mask"
 msgstr "¯aden plik nie pasuje do wzorca"
 
@@ -216,52 +216,57 @@ msgstr "Zmiania nazwy jest obs³ugiwana tylko dla skrzynek IMAP"
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Usuwanie skrzynek jest obs³ugiwane tylko dla skrzynek IMAP"
 
-#: browser.c:914
+#: browser.c:916
+#, fuzzy
+msgid "Cannot delete root folder"
+msgstr "Nie mo¿na utworzyæ filtru"
+
+#: browser.c:919
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Naprawdê usun±æ skrzynkê \"%s\"?"
 
-#: browser.c:928
+#: browser.c:933
 msgid "Mailbox deleted."
 msgstr "Skrzynka zosta³a usuniêta."
 
-#: browser.c:934
+#: browser.c:939
 msgid "Mailbox not deleted."
 msgstr "Skrzynka nie zosta³a usuniêta."
 
-#: browser.c:953
+#: browser.c:958
 msgid "Chdir to: "
 msgstr "Zmieñ katalog na: "
 
-#: browser.c:983 browser.c:1056
+#: browser.c:988 browser.c:1061
 msgid "Error scanning directory."
 msgstr "B³±d przegl±dania katalogu."
 
-#: browser.c:1006
+#: browser.c:1011
 msgid "File Mask: "
 msgstr "Wzorzec nazw plików: "
 
-#: browser.c:1079
+#: browser.c:1084
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortowanie odwrotne wg (d)aty, (a)lfabetu, (w)ielko¶ci, ¿ad(n)e?"
 
-#: browser.c:1080
+#: browser.c:1085
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortowanie wg (d)aty, (a)lfabetu, (w)ielko¶ci, ¿ad(n)e?"
 
-#: browser.c:1081
+#: browser.c:1086
 msgid "dazn"
 msgstr "dawn"
 
-#: browser.c:1148
+#: browser.c:1153
 msgid "New file name: "
 msgstr "Nazwa nowego pliku: "
 
-#: browser.c:1179
+#: browser.c:1184
 msgid "Can't view a directory"
 msgstr "Nie mo¿na przegl±daæ tego katalogu"
 
-#: browser.c:1196
+#: browser.c:1201
 msgid "Error trying to view file"
 msgstr "B³±d podczas próby przegl±dania pliku"
 
@@ -1378,7 +1383,7 @@ msgstr "nie"
 msgid "Exit Mutt?"
 msgstr "Wyj¶æ z Mutta?"
 
-#: curs_lib.c:396 mutt_socket.c:561 mutt_ssl.c:329
+#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "nieznany b³±d"
 
@@ -1570,11 +1575,11 @@ msgstr "Brak odtworzonych listów."
 msgid "You are on the first message."
 msgstr "To jest pierwszy list."
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "Kontynuacja poszukiwania od pocz±tku."
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "Kontynuacja poszukiwania od koñca."
 
@@ -1968,46 +1973,39 @@ msgstr "Pobieranie przestrzeni nazw..."
 msgid "Getting folder list..."
 msgstr "Pobieranie listy skrzynek..."
 
-#: imap/browse.c:223
+#: imap/browse.c:224
 msgid "No such folder"
 msgstr "Brak skrzynki"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 msgid "Create mailbox: "
 msgstr "Nazwa skrzynki: "
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Skrzynka musi zostaæ nazwana."
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 msgid "Mailbox created."
 msgstr "Skrzynka zosta³a utworzona."
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Zmieñ nazwê skrzynki %s na: "
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Zmiana nazwy nie powiod³a siê: %s"
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 msgid "Mailbox renamed."
 msgstr "Nazwa zosta³a zmieniona."
 
-#: imap/command.c:347
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "Skrzynka zosta³a zamkniêta"
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:390
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "B³±d krytyczny. Niezidentyfikowana ilo¶æ listów!"
 
 #: imap/imap.c:178
 #, c-format
@@ -2039,7 +2037,7 @@ msgstr "Wybieranie %s..."
 msgid "Error opening mailbox"
 msgstr "B³±d otwarcia skrzynki"
 
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Utworzyæ %s?"
@@ -2118,29 +2116,29 @@ msgstr "Nie mo¿na utworzyæ pliku tymczasowego %s"
 msgid "Evaluating cache... [%d/%d]"
 msgstr "Szacowanie bufora... [%d/%d]"
 
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Pobieranie nag³ówków listów... [%d/%d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "Pobieranie listu..."
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "B³êdny indeks listów. Spróbuj ponownie otworzyæ skrzynkê."
 
-#: imap/message.c:605
+#: imap/message.c:596
 msgid "Uploading message..."
 msgstr "£adowanie listu..."
 
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopiowanie %d listów do %s..."
 
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopiowanie listu %d do %s..."
@@ -3483,19 +3481,19 @@ msgstr "To jest ostatnia pozycja."
 msgid "You are on the first entry."
 msgstr "To jest pierwsza pozycja."
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "Szukaj frazy: "
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "Szukaj frazy w przeciwnym kierunku: "
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "Nie ustalono wzorca poszukiwañ."
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "Nic nie znaleziono."
 
@@ -3524,45 +3522,45 @@ msgstr "Czytanie %s... %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): nie mo¿na nadaæ plikowi daty"
 
-#: mutt_socket.c:94 mutt_socket.c:165
+#: mutt_socket.c:101 mutt_socket.c:172
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Po³±czenie z %s zosta³o zakoñczone"
 
-#: mutt_socket.c:285
+#: mutt_socket.c:292
 msgid "SSL is unavailable."
 msgstr "Protokó³ SSL nie jest dostêpny."
 
-#: mutt_socket.c:317
+#: mutt_socket.c:324
 msgid "Preconnect command failed."
 msgstr "Polecenie 'preconnect' nie powiod³o siê."
 
-#: mutt_socket.c:388 mutt_socket.c:402
+#: mutt_socket.c:395 mutt_socket.c:409
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "B³±d komunikacji z %s (%s)"
 
-#: mutt_socket.c:455 mutt_socket.c:513
+#: mutt_socket.c:462 mutt_socket.c:520
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "B³êdny IDN \"%s\"."
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:469 mutt_socket.c:527
 #, c-format
 msgid "Looking up %s..."
 msgstr "Wyszukiwanie %s..."
 
-#: mutt_socket.c:473 mutt_socket.c:527
+#: mutt_socket.c:480 mutt_socket.c:534
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Host \"%s\" nie zosta³ znaleziony"
 
-#: mutt_socket.c:478 mutt_socket.c:536
+#: mutt_socket.c:485 mutt_socket.c:543
 #, c-format
 msgid "Connecting to %s..."
 msgstr "£±czenie z %s..."
 
-#: mutt_socket.c:560
+#: mutt_socket.c:567
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Po³±czenie z %s (%s) nie zosta³o ustanowione."
@@ -3985,61 +3983,66 @@ msgstr "B³êdna data wzglêdna: %s"
 msgid "error in expression"
 msgstr "b³±d w wyra¿eniu"
 
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "b³±d we wzorcu: %s"
 
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "niesparowane nawiasy: %s"
+
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: b³êdne polecenie"
 
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nie obs³ugiwane w tym trybie"
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "brakuj±cy parametr"
 
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "niesparowane nawiasy: %s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "pusty wzorzec"
 
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "b³±d: nieznany op %d (zg³o¶ ten b³±d)."
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "Kompilacja wzorca poszukiwañ..."
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "Wykonywanie polecenia na pasuj±cych do wzorca listach..."
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "¯aden z listów nie spe³nia kryteriów."
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "Poszukiwanie dotar³o do koñca bez znalezienia frazy"
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "Poszukiwanie dotar³o do pocz±tku bez znalezienia frazy"
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "Przeszukiwanie przerwano."
 
@@ -4863,3 +4866,6 @@ msgstr ""
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Pierwszy list tego w±tku nie jest dostêpny."
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "B³±d krytyczny. Niezidentyfikowana ilo¶æ listów!"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 14:16-0400\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2006-08-08 21:54+1000\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -128,7 +128,8 @@ msgstr "Gagal mengganti nama file."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
+msgstr ""
+"'compose' di file mailcap tidak ditemukan untuk %s, membuat file kosong."
 
 #. For now, editing requires a file, no piping
 #: attach.c:258
@@ -174,7 +175,7 @@ msgstr "Pindah dir"
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:382 browser.c:995
+#: browser.c:382 browser.c:1000
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s bukan direktori."
@@ -198,7 +199,7 @@ msgstr "Direktori [%s], File mask: %s"
 msgid "Can't attach a directory!"
 msgstr "Tidak bisa melampirkan sebuah direktori"
 
-#: browser.c:657 browser.c:1063 browser.c:1161
+#: browser.c:657 browser.c:1068 browser.c:1166
 msgid "No files match the file mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
@@ -214,52 +215,58 @@ msgstr "Penggantian nama hanya didukung untuk kotak surat jenis IMAP."
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:914
+#: browser.c:916
+#, fuzzy
+msgid "Cannot delete root folder"
+msgstr "Tidak bisa membuat filter"
+
+#: browser.c:919
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Yakin hapus kotak surat \"%s\"?"
 
-#: browser.c:928
+#: browser.c:933
 msgid "Mailbox deleted."
 msgstr "Kotak surat telah dihapus."
 
-#: browser.c:934
+#: browser.c:939
 msgid "Mailbox not deleted."
 msgstr "Kotak surat tidak dihapus."
 
-#: browser.c:953
+#: browser.c:958
 msgid "Chdir to: "
 msgstr "Pindah dir ke: "
 
-#: browser.c:983 browser.c:1056
+#: browser.c:988 browser.c:1061
 msgid "Error scanning directory."
 msgstr "Gagal membaca direktori."
 
-#: browser.c:1006
+#: browser.c:1011
 msgid "File Mask: "
 msgstr "File Mask: "
 
-#: browser.c:1079
+#: browser.c:1084
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
+msgstr ""
+"Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:1080
+#: browser.c:1085
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:1081
+#: browser.c:1086
 msgid "dazn"
 msgstr "taun"
 
-#: browser.c:1148
+#: browser.c:1153
 msgid "New file name: "
 msgstr "Nama file baru: "
 
-#: browser.c:1179
+#: browser.c:1184
 msgid "Can't view a directory"
 msgstr "Tidak bisa menampilkan sebuah direktori"
 
-#: browser.c:1196
+#: browser.c:1201
 msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
@@ -796,7 +803,8 @@ msgstr "Perhatian: Tandatangan sudah kadaluwarsa pada: "
 
 #: crypt-gpgme.c:1030
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr "Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
+msgstr ""
+"Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
 
 #: crypt-gpgme.c:1035
 msgid "The CRL is not available\n"
@@ -1382,7 +1390,7 @@ msgstr "nggak"
 msgid "Exit Mutt?"
 msgstr "Keluar dari Mutt?"
 
-#: curs_lib.c:396 mutt_socket.c:561 mutt_ssl.c:329
+#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "eh..eh.. napa nih?"
 
@@ -1576,11 +1584,11 @@ msgstr "Tidak ada surat yang tidak jadi dihapus."
 msgid "You are on the first message."
 msgstr "Anda sudah di surat yang pertama."
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "Pencarian kembali ke atas."
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "Pencarian kembali ke bawah."
 
@@ -1751,7 +1759,8 @@ msgstr "Batal ditandai"
 
 #: handler.c:1352
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
+msgstr ""
+"[-- Error: Tidak ada bagian Multipart/Alternative yg bisa ditampilkan! --]\n"
 
 #: handler.c:1469
 #, c-format
@@ -1785,7 +1794,8 @@ msgstr "[-- Stderr dari tampil-otomatis %s --]\n"
 
 #: handler.c:1659
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
-msgstr "[-- Error:  message/external-body tidak punya parameter access-type --]\n"
+msgstr ""
+"[-- Error:  message/external-body tidak punya parameter access-type --]\n"
 
 #: handler.c:1678
 #, c-format
@@ -1971,46 +1981,39 @@ msgstr "Mencari namespaces..."
 msgid "Getting folder list..."
 msgstr "Mengambil daftar kotak surat..."
 
-#: imap/browse.c:223
+#: imap/browse.c:224
 msgid "No such folder"
 msgstr "Tidak ada folder itu"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 msgid "Create mailbox: "
 msgstr "Membuat kotak surat: "
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Kotak surat harus punya nama."
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 msgid "Mailbox created."
 msgstr "Kotak surat telah dibuat."
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Ganti nama kotak surat %s ke: "
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Penggantian nama gagal: %s"
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 msgid "Mailbox renamed."
 msgstr "Kotak surat telah diganti namanya."
 
-#: imap/command.c:347
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "Kotak surat telah ditutup."
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:390
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Fatal error. Jumlah surat tidak konsisten dengan server!"
 
 #: imap/imap.c:178
 #, c-format
@@ -2042,7 +2045,7 @@ msgstr "Memilih %s..."
 msgid "Error opening mailbox"
 msgstr "Error saat membuka kotak surat"
 
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Buat %s?"
@@ -2121,29 +2124,29 @@ msgstr "Tidak bisa membuat file sementara %s"
 msgid "Evaluating cache... [%d/%d]"
 msgstr "Memeriksa cache... [%d/%d]"
 
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Mengambil header surat... [%d/%d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "Mengambil surat..."
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index dari surat tidak benar. Cobalah membuka kembali kotak surat tsb."
 
-#: imap/message.c:605
+#: imap/message.c:596
 msgid "Uploading message..."
 msgstr "Meletakkan surat ..."
 
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Menyalin %d surat ke %s..."
 
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Menyalin surat %d ke %s..."
@@ -3404,7 +3407,8 @@ msgstr "Tidak bisa mengunci kotak surat!"
 #.
 #: mbox.c:753
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
+msgstr ""
+"sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
 #: mbox.c:792
 #, c-format
@@ -3468,19 +3472,19 @@ msgstr "Anda di entry terakhir."
 msgid "You are on the first entry."
 msgstr "Anda di entry pertama."
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "Cari: "
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "Cari mundur: "
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "Tidak ada kriteria pencarian."
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "Tidak ketemu."
 
@@ -3509,45 +3513,45 @@ msgstr "Membaca %s... %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): tidak dapat mengeset waktu pada file"
 
-#: mutt_socket.c:94 mutt_socket.c:165
+#: mutt_socket.c:101 mutt_socket.c:172
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Hubungan ke %s ditutup."
 
-#: mutt_socket.c:285
+#: mutt_socket.c:292
 msgid "SSL is unavailable."
 msgstr "SSL tidak tersedia."
 
-#: mutt_socket.c:317
+#: mutt_socket.c:324
 msgid "Preconnect command failed."
 msgstr "Perintah pra-koneksi gagal."
 
-#: mutt_socket.c:388 mutt_socket.c:402
+#: mutt_socket.c:395 mutt_socket.c:409
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Kesalahan waktu menghubungi ke server %s (%s)"
 
-#: mutt_socket.c:455 mutt_socket.c:513
+#: mutt_socket.c:462 mutt_socket.c:520
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "IDN \"%s\" tidak benar."
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:469 mutt_socket.c:527
 #, c-format
 msgid "Looking up %s..."
 msgstr "Mencari %s..."
 
-#: mutt_socket.c:473 mutt_socket.c:527
+#: mutt_socket.c:480 mutt_socket.c:534
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Tidak dapat menemukan host \"%s\""
 
-#: mutt_socket.c:478 mutt_socket.c:536
+#: mutt_socket.c:485 mutt_socket.c:543
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Menghubungi %s..."
 
-#: mutt_socket.c:560
+#: mutt_socket.c:567
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Tidak bisa berhubungan ke %s (%s)"
@@ -3747,7 +3751,8 @@ msgstr "Kesalahan tunnel saat berbicara dg %s: %s"
 
 #: muttlib.c:908
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
-msgstr "File adalah sebuah direktori, simpan di dalamnya? [(y)a, (t)idak, (s)emua]"
+msgstr ""
+"File adalah sebuah direktori, simpan di dalamnya? [(y)a, (t)idak, (s)emua]"
 
 #: muttlib.c:908
 msgid "yna"
@@ -3970,61 +3975,66 @@ msgstr "Bulan relatif tidak benar: %s"
 msgid "error in expression"
 msgstr "kesalahan pada ekspresi"
 
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "error pada kriteria pada: %s"
 
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "tanda kurung tidak klop: %s"
+
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: tidak ada perintah begitu"
 
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: tidak didukung pada mode ini"
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "parameter tidak ada"
 
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "tanda kurung tidak klop: %s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "kriteria kosong"
 
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "error: %d tidak dikenali (laporkan error ini)."
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "Menyusun kriteria pencarian..."
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "Menjalankan perintah terhadap surat-surat yang cocok..."
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "Tidak ada surat yang memenuhi kriteria."
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "Sudah dicari sampe bawah, tapi tidak ketemu"
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "Sudah dicari sampe atas, tapi tidak ketemu"
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "Pencarian dibatalkan."
 
@@ -4084,7 +4094,8 @@ msgstr "Tidak dapat menjalankan PGP"
 #: pgp.c:1562
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
-msgstr "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
+msgstr ""
+"S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, %s, (b)ersih? "
 
 #: pgp.c:1563
 msgid "PGP/M(i)ME"
@@ -4462,7 +4473,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
 
 #: remailer.c:738
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgid ""
+"Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster!"
 
 #: remailer.c:772
@@ -4708,7 +4720,8 @@ msgstr "Gunakan ID %s utk %s ?"
 #: smime.c:637
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-msgstr "Warning: Anda belum memutuskan utk mempercayai ID %s. (sembarang utk lanjut)"
+msgstr ""
+"Warning: Anda belum memutuskan utk mempercayai ID %s. (sembarang utk lanjut)"
 
 #: smime.c:796
 #, c-format
@@ -4781,7 +4794,8 @@ msgstr ""
 "[-- Akhir data yg ditandatangani dg S/MIME. --]\n"
 
 #: smime.c:1944
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, "
 "atau (b)ersih? "
@@ -4847,3 +4861,5 @@ msgstr "Surat induk tidak bisa dilihat di tampilan terbatas ini."
 msgid "Parent message is not available."
 msgstr "Surat induk tidak ada."
 
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "Fatal error. Jumlah surat tidak konsisten dengan server!"

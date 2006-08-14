@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1.5i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 14:16-0400\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2000-03-05 01:14-0300\n"
 "Last-Translator: Marcus Brito <marcus@visaotec.com.br>\n"
 "Language-Team: LIE-BR (http://lie-br.conectiva.com.br)\n"
@@ -172,7 +172,7 @@ msgstr "Diretório"
 msgid "Mask"
 msgstr "Máscara"
 
-#: browser.c:382 browser.c:995
+#: browser.c:382 browser.c:1000
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s não é um diretório."
@@ -196,7 +196,7 @@ msgstr "Diretório [%s], Máscara de arquivos: %s"
 msgid "Can't attach a directory!"
 msgstr "Não é possível anexar um diretório"
 
-#: browser.c:657 browser.c:1063 browser.c:1161
+#: browser.c:657 browser.c:1068 browser.c:1166
 msgid "No files match the file mask"
 msgstr "Nenhum arquivo casa com a máscara"
 
@@ -214,52 +214,57 @@ msgstr "A remoção só é possível para caixar IMAP"
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "A remoção só é possível para caixar IMAP"
 
-#: browser.c:914
+#: browser.c:916
+#, fuzzy
+msgid "Cannot delete root folder"
+msgstr "Não é possível criar o filtro."
+
+#: browser.c:919
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Deseja mesmo remover a caixa \"%s\"?"
 
-#: browser.c:928
+#: browser.c:933
 msgid "Mailbox deleted."
 msgstr "Caixa de correio removida."
 
-#: browser.c:934
+#: browser.c:939
 msgid "Mailbox not deleted."
 msgstr "Caixa de correio não removida."
 
-#: browser.c:953
+#: browser.c:958
 msgid "Chdir to: "
 msgstr "Mudar para: "
 
-#: browser.c:983 browser.c:1056
+#: browser.c:988 browser.c:1061
 msgid "Error scanning directory."
 msgstr "Erro ao examinar diretório."
 
-#: browser.c:1006
+#: browser.c:1011
 msgid "File Mask: "
 msgstr "Máscara de arquivos: "
 
-#: browser.c:1079
+#: browser.c:1084
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ordem inversa por (d)ata, (a)lfa, (t)amanho ou (n)ão ordenar? "
 
-#: browser.c:1080
+#: browser.c:1085
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ordenar por (d)ata, (a)lfa, (t)amanho ou (n)ão ordenar? "
 
-#: browser.c:1081
+#: browser.c:1086
 msgid "dazn"
 msgstr "datn"
 
-#: browser.c:1148
+#: browser.c:1153
 msgid "New file name: "
 msgstr "Nome do novo arquivo: "
 
-#: browser.c:1179
+#: browser.c:1184
 msgid "Can't view a directory"
 msgstr "Não é possível visualizar um diretório"
 
-#: browser.c:1196
+#: browser.c:1201
 msgid "Error trying to view file"
 msgstr "Erro ao tentar exibir arquivo"
 
@@ -1430,7 +1435,7 @@ msgstr "não"
 msgid "Exit Mutt?"
 msgstr "Sair do Mutt?"
 
-#: curs_lib.c:396 mutt_socket.c:561 mutt_ssl.c:329
+#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "erro desconhecido"
 
@@ -1626,11 +1631,11 @@ msgstr "Nenhuma mensagem não removida."
 msgid "You are on the first message."
 msgstr "Você está na primeira mensagem."
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "A pesquisa voltou ao início."
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "A pesquisa passou para o final."
 
@@ -2051,52 +2056,45 @@ msgstr "Obtendo espaços de nomenclatura..."
 msgid "Getting folder list..."
 msgstr "Obtendo lista de pastas..."
 
-#: imap/browse.c:223
+#: imap/browse.c:224
 #, fuzzy
 msgid "No such folder"
 msgstr "%s: não existe tal cor"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 #, fuzzy
 msgid "Create mailbox: "
 msgstr "Abrir caixa de correio"
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 #, fuzzy
 msgid "Mailbox must have a name."
 msgstr "A caixa de mensagens não sofreu mudanças"
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 #, fuzzy
 msgid "Mailbox created."
 msgstr "Caixa de correio removida."
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Abrir caixa de correio"
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "Login falhou."
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 #, fuzzy
 msgid "Mailbox renamed."
 msgstr "Caixa de correio removida."
 
-#: imap/command.c:347
+#: imap/command.c:372
 #, fuzzy
 msgid "Mailbox closed"
 msgstr "Caixa de correio removida."
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:390
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Erro fatal. O número de mensagens está fora de sincronia!"
 
 #: imap/imap.c:178
 #, fuzzy, c-format
@@ -2130,7 +2128,7 @@ msgstr "Selecionando %s..."
 msgid "Error opening mailbox"
 msgstr "Erro ao gravar a caixa!"
 
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Criar %s?"
@@ -2212,30 +2210,30 @@ msgstr "Não foi possível criar um arquivo temporário!"
 msgid "Evaluating cache... [%d/%d]"
 msgstr "Obtendo cabeçalhos das mensagens... [%d de %d]"
 
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Obtendo cabeçalhos das mensagens... [%d de %d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "Obtendo mensagem..."
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 
-#: imap/message.c:605
+#: imap/message.c:596
 #, fuzzy
 msgid "Uploading message..."
 msgstr "Enviando mensagem ..."
 
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copiando %d mensagens para %s..."
 
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copiando mensagem %d para %s..."
@@ -3632,19 +3630,19 @@ msgstr "Você está na última entrada."
 msgid "You are on the first entry."
 msgstr "Você está na primeira entrada."
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "Procurar por: "
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "Procurar de trás para frente por: "
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "Nenhum padrão de procura."
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "Não encontrado."
 
@@ -3673,46 +3671,46 @@ msgstr "Lendo %s... %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: mutt_socket.c:94 mutt_socket.c:165
+#: mutt_socket.c:101 mutt_socket.c:172
 #, fuzzy, c-format
 msgid "Connection to %s closed"
 msgstr "Conectando a %s..."
 
-#: mutt_socket.c:285
+#: mutt_socket.c:292
 msgid "SSL is unavailable."
 msgstr ""
 
-#: mutt_socket.c:317
+#: mutt_socket.c:324
 #, fuzzy
 msgid "Preconnect command failed."
 msgstr "comando de pré-conexão falhou"
 
-#: mutt_socket.c:388 mutt_socket.c:402
+#: mutt_socket.c:395 mutt_socket.c:409
 #, fuzzy, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Conectando a %s"
 
-#: mutt_socket.c:455 mutt_socket.c:513
+#: mutt_socket.c:462 mutt_socket.c:520
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr ""
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:469 mutt_socket.c:527
 #, fuzzy, c-format
 msgid "Looking up %s..."
 msgstr "Copiando para %s..."
 
-#: mutt_socket.c:473 mutt_socket.c:527
+#: mutt_socket.c:480 mutt_socket.c:534
 #, fuzzy, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Não foi possível encontrar o endereço do servidor %s."
 
-#: mutt_socket.c:478 mutt_socket.c:536
+#: mutt_socket.c:485 mutt_socket.c:543
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Conectando a %s..."
 
-#: mutt_socket.c:560
+#: mutt_socket.c:567
 #, fuzzy, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Não foi possível abrir %s"
@@ -4146,61 +4144,66 @@ msgstr "Mês inválido: %s"
 msgid "error in expression"
 msgstr "erro na expressão"
 
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "erro no padrão em: %s"
 
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "parêntese sem um corresponente: %s"
+
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: comando inválido"
 
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: não é possível neste modo"
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "faltam parâmetros"
 
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parêntese sem um corresponente: %s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "padrão vazio"
 
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "erro: operação %d desconhecida (relate este erro)."
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "Compilando padrão de busca..."
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "Executando comando nas mensagens que casam..."
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "Nenhuma mensagem casa com o critério"
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "A busca chegou ao fim sem encontrar um resultado"
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "A busca chegou ao início sem encontrar um resultado"
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "Busca interrompida."
 
@@ -5081,6 +5084,9 @@ msgstr "A mensagem pai não está visível nesta visão limitada"
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "A mensagem pai não está disponível."
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "Erro fatal. O número de mensagens está fora de sincronia!"
 
 #, fuzzy
 #~ msgid "CLOSE failed"

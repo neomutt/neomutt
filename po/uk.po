@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.3.27/1.4\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-07-14 14:16-0400\n"
+"POT-Creation-Date: 2006-08-14 16:10+0200\n"
 "PO-Revision-Date: 2002-01-23 15:14+0200\n"
 "Last-Translator: Andrej N. Gritsenko <andrej@lucky.net>\n"
 "MIME-Version: 1.0\n"
@@ -173,7 +173,7 @@ msgstr "Каталог"
 msgid "Mask"
 msgstr "Маска"
 
-#: browser.c:382 browser.c:995
+#: browser.c:382 browser.c:1000
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не ╓ каталогом."
@@ -197,7 +197,7 @@ msgstr "Каталог [%s] з маскою: %s"
 msgid "Can't attach a directory!"
 msgstr "Неможливо додати каталог!"
 
-#: browser.c:657 browser.c:1063 browser.c:1161
+#: browser.c:657 browser.c:1068 browser.c:1166
 msgid "No files match the file mask"
 msgstr "Нема╓ файл╕в, що в╕дпов╕дають масц╕"
 
@@ -214,52 +214,57 @@ msgstr "Створення п╕дтриму╓ться лише для скриньок IMAP"
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Видалення п╕дтриму╓ться лише для скриньок IMAP"
 
-#: browser.c:914
+#: browser.c:916
+#, fuzzy
+msgid "Cannot delete root folder"
+msgstr "Неможливо створити ф╕льтр"
+
+#: browser.c:919
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Впевнен╕ у видаленн╕ скриньки \"%s\"?"
 
-#: browser.c:928
+#: browser.c:933
 msgid "Mailbox deleted."
 msgstr "Поштову скриньку видалено."
 
-#: browser.c:934
+#: browser.c:939
 msgid "Mailbox not deleted."
 msgstr "Поштову скриньку не видалено."
 
-#: browser.c:953
+#: browser.c:958
 msgid "Chdir to: "
 msgstr "Перейти до: "
 
-#: browser.c:983 browser.c:1056
+#: browser.c:988 browser.c:1061
 msgid "Error scanning directory."
 msgstr "Каталог не скану╓ться."
 
-#: browser.c:1006
+#: browser.c:1011
 msgid "File Mask: "
 msgstr "Маска: "
 
-#: browser.c:1079
+#: browser.c:1084
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Зворотньо сортувати за датою(d), л╕терою(a), розм╕ром(s), чи н╕(n)?"
 
-#: browser.c:1080
+#: browser.c:1085
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Сортувати за датою(d), л╕терою(a), розм╕ром(s), чи н╕(n)?"
 
-#: browser.c:1081
+#: browser.c:1086
 msgid "dazn"
 msgstr ""
 
-#: browser.c:1148
+#: browser.c:1153
 msgid "New file name: "
 msgstr "╤м'я нового файлу: "
 
-#: browser.c:1179
+#: browser.c:1184
 msgid "Can't view a directory"
 msgstr "Неможливо побачити каталог"
 
-#: browser.c:1196
+#: browser.c:1201
 msgid "Error trying to view file"
 msgstr "Неможливо побачити файл"
 
@@ -1395,7 +1400,7 @@ msgstr ""
 msgid "Exit Mutt?"
 msgstr "Покинути Mutt?"
 
-#: curs_lib.c:396 mutt_socket.c:561 mutt_ssl.c:329
+#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "нев╕дома помилка"
 
@@ -1589,11 +1594,11 @@ msgstr "Вс╕ листи видалено."
 msgid "You are on the first message."
 msgstr "Це перший лист."
 
-#: curs_main.c:1434 pattern.c:1379
+#: curs_main.c:1434 pattern.c:1438
 msgid "Search wrapped to top."
 msgstr "Досягнуто к╕нець. Пошук перенесено на початок."
 
-#: curs_main.c:1443 pattern.c:1390
+#: curs_main.c:1443 pattern.c:1449
 msgid "Search wrapped to bottom."
 msgstr "Досягнуто початок. Пошук перенесено на к╕нець."
 
@@ -2003,47 +2008,40 @@ msgstr "Отримання простору ╕мен..."
 msgid "Getting folder list..."
 msgstr "Отримання перел╕ку скриньок..."
 
-#: imap/browse.c:223
+#: imap/browse.c:224
 msgid "No such folder"
 msgstr "Тако╖ скриньки нема╓"
 
-#: imap/browse.c:286
+#: imap/browse.c:287
 msgid "Create mailbox: "
 msgstr "Створити скриньку: "
 
-#: imap/browse.c:291 imap/browse.c:337
+#: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Поштова скринька мусить мати ╕м'я."
 
-#: imap/browse.c:299
+#: imap/browse.c:300
 msgid "Mailbox created."
 msgstr "Поштову скриньку створено."
 
-#: imap/browse.c:330
+#: imap/browse.c:331
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Створити скриньку: "
 
-#: imap/browse.c:343
+#: imap/browse.c:344
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "Помилка SSL: %s"
 
-#: imap/browse.c:348
+#: imap/browse.c:349
 #, fuzzy
 msgid "Mailbox renamed."
 msgstr "Поштову скриньку створено."
 
-#: imap/command.c:347
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "Поштову скриньку закрито"
-
-#. something is wrong because the server reported fewer messages
-#. * than we previously saw
-#.
-#: imap/command.c:390
-msgid "Fatal error.  Message count is out of sync!"
-msgstr "Фатальна помилка. Л╕чильник лист╕в неможливо с╕нхрон╕зувати!"
 
 #: imap/imap.c:178
 #, c-format
@@ -2075,7 +2073,7 @@ msgstr "Виб╕р %s..."
 msgid "Error opening mailbox"
 msgstr "Помилка в╕дкриття поштово╖ скриньки"
 
-#: imap/imap.c:788 imap/message.c:799 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:790 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "Створити %s?"
@@ -2155,30 +2153,30 @@ msgstr "Не вийшло створити тимчасовий файл %s"
 msgid "Evaluating cache... [%d/%d]"
 msgstr "Отримання заголовк╕в лист╕в... [%d/%d]"
 
-#: imap/message.c:224 pop.c:246
+#: imap/message.c:217 pop.c:246
 #, c-format
 msgid "Fetching message headers... [%d/%d]"
 msgstr "Отримання заголовк╕в лист╕в... [%d/%d]"
 
-#: imap/message.c:409 imap/message.c:467 pop.c:505
+#: imap/message.c:400 imap/message.c:458 pop.c:505
 msgid "Fetching message..."
 msgstr "Отримання листа..."
 
-#: imap/message.c:455 pop.c:499
+#: imap/message.c:446 pop.c:499
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Некоректний номер пов╕домлення. Спробуйте в╕дкрити скриньку ще раз."
 
-#: imap/message.c:605
+#: imap/message.c:596
 #, fuzzy
 msgid "Uploading message..."
 msgstr "В╕дправлення листа..."
 
-#: imap/message.c:765
+#: imap/message.c:756
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Коп╕ювання %d лист╕в до %s..."
 
-#: imap/message.c:769
+#: imap/message.c:760
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Коп╕ювання %d листа до %s..."
@@ -3555,19 +3553,19 @@ msgstr "Це остання позиц╕я."
 msgid "You are on the first entry."
 msgstr "Це перша позиц╕я."
 
-#: menu.c:722 pattern.c:1321
+#: menu.c:722 pattern.c:1380
 msgid "Search for: "
 msgstr "Шукати вираз:"
 
-#: menu.c:723 pattern.c:1322
+#: menu.c:723 pattern.c:1381
 msgid "Reverse search for: "
 msgstr "Зворотн╕й пошук виразу: "
 
-#: menu.c:733 pattern.c:1354
+#: menu.c:733 pattern.c:1413
 msgid "No search pattern."
 msgstr "Нема╓ виразу пошуку."
 
-#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1423
+#: menu.c:763 pager.c:1989 pager.c:2005 pager.c:2113 pattern.c:1482
 msgid "Not found."
 msgstr "Не знайдено."
 
@@ -3596,45 +3594,45 @@ msgstr "Читання %s... %d"
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 
-#: mutt_socket.c:94 mutt_socket.c:165
+#: mutt_socket.c:101 mutt_socket.c:172
 #, c-format
 msgid "Connection to %s closed"
 msgstr "З'╓днання з %s закрито"
 
-#: mutt_socket.c:285
+#: mutt_socket.c:292
 msgid "SSL is unavailable."
 msgstr "SSL недосяжне."
 
-#: mutt_socket.c:317
+#: mutt_socket.c:324
 msgid "Preconnect command failed."
 msgstr "Помилка команди, попередньо╖ з'╓днанню."
 
-#: mutt_socket.c:388 mutt_socket.c:402
+#: mutt_socket.c:395 mutt_socket.c:409
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Помилка у з'╓днанн╕ з сервером %s (%s)"
 
-#: mutt_socket.c:455 mutt_socket.c:513
+#: mutt_socket.c:462 mutt_socket.c:520
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr ""
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:469 mutt_socket.c:527
 #, c-format
 msgid "Looking up %s..."
 msgstr "Пошук %s..."
 
-#: mutt_socket.c:473 mutt_socket.c:527
+#: mutt_socket.c:480 mutt_socket.c:534
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Не вийшло знайти адресу \"%s\"."
 
-#: mutt_socket.c:478 mutt_socket.c:536
+#: mutt_socket.c:485 mutt_socket.c:543
 #, c-format
 msgid "Connecting to %s..."
 msgstr "З'╓днання з %s..."
 
-#: mutt_socket.c:560
+#: mutt_socket.c:567
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Не вийшло з'╓днатися з %s (%s)."
@@ -4065,61 +4063,66 @@ msgstr "Неможлива в╕дносна дата: %s"
 msgid "error in expression"
 msgstr "помилка у виразу"
 
-#: pattern.c:801 pattern.c:913
+#: pattern.c:801 pattern.c:947
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "помилка у виразу: %s"
 
-#: pattern.c:853
+#: pattern.c:831
+#, fuzzy, c-format
+msgid "mismatched brackets: %s"
+msgstr "в╕дсутня дужка: %s"
+
+#: pattern.c:887
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: нев╕рна команда"
 
-#: pattern.c:859
+#: pattern.c:893
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "в цьому режимов╕ '%c' не п╕дтриму╓ться"
 
-#: pattern.c:872
+#: pattern.c:906
 #, c-format
 msgid "missing parameter"
 msgstr "в╕дсутн╕й параметр"
 
-#: pattern.c:888
+#: pattern.c:922
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "в╕дсутня дужка: %s"
 
-#: pattern.c:920
+#: pattern.c:954
 msgid "empty pattern"
 msgstr "порожн╕й вираз"
 
-#: pattern.c:1142
+#: pattern.c:1201
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "помилка: нев╕доме op %d (пов╕домьте цю помилку)."
 
-#: pattern.c:1211 pattern.c:1340
+#: pattern.c:1270 pattern.c:1399
 msgid "Compiling search pattern..."
 msgstr "Комп╕ляц╕я виразу пошуку..."
 
-#: pattern.c:1230
+#: pattern.c:1289
 msgid "Executing command on matching messages..."
 msgstr "Виконання команди до в╕дпов╕дних лист╕в..."
 
-#: pattern.c:1293
+#: pattern.c:1352
 msgid "No messages matched criteria."
 msgstr "Лист╕в, що в╕дпов╕дають критер╕ю, не знайдено."
 
-#: pattern.c:1382
+#: pattern.c:1441
 msgid "Search hit bottom without finding match"
 msgstr "Пошук д╕йшов до к╕нця, але не знайдено н╕чого"
 
-#: pattern.c:1393
+#: pattern.c:1452
 msgid "Search hit top without finding match"
 msgstr "Пошук д╕йшов до початку, але не знайдено н╕чого"
 
-#: pattern.c:1415
+#: pattern.c:1474
 msgid "Search interrupted."
 msgstr "Пошук перервано."
 
@@ -4971,6 +4974,9 @@ msgstr "\"Батьк╕вський\" лист не можна побачити при цьому обмеженн╕."
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "\"Батьк╕вський\" лист не можна побачити."
+
+#~ msgid "Fatal error.  Message count is out of sync!"
+#~ msgstr "Фатальна помилка. Л╕чильник лист╕в неможливо с╕нхрон╕зувати!"
 
 #~ msgid "CLOSE failed"
 #~ msgstr "Помилка CLOSE"
