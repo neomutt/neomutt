@@ -4,6 +4,11 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.5.13 (2006-08-14):
+
+ + thread patterns.  Use ~(...) to match all threads that
+   contain a message that matches ...
+
 1.5.12 (2006-07-14):
 
   - $imap_cachedir replaced with $message_cachedir
