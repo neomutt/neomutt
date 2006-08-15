@@ -1,3 +1,20 @@
+2006-08-15 08:42:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* doc/devel-notes.txt: Document switch to UTF-8.
+
+	* ChangeLog: Changing ChangeLog to utf-8.
+
+2006-08-14 19:43:10  roessler  (roessler)
+
+	* UPDATING: Mention change ssince 1.5.12.  Ooops.
+
+	* po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
+	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po, po/eu.po, po/fr.po, po/ga.po, po/gl.po, po/hu.po,
+	po/id.po, po/it.po, po/ca.po, po/cs.po, po/da.po, po/de.po,
+	po/el.po, po/eo.po, po/es.po, po/et.po, VERSION, po/bg.po:
+	automatic post-release commit for mutt-1.5.13
+
 2006-08-11 16:25:59  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* Makefile.am: Include reldate.h in make dist, so docs won't be
