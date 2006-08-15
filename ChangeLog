@@ -1,3 +1,8 @@
+2006-08-15 17:08:33  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, curs_main.c,
+	flags.c, mutt.h, mx.c, pager.c, pop.c: Generic ACL support.
+
 2006-08-15 08:42:46  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* doc/devel-notes.txt: Document switch to UTF-8.
