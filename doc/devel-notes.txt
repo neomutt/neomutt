@@ -162,6 +162,9 @@ Style Guide
 
 - try to keep mutt as portable as possible.
 
+- special characters should be in utf-8.  If you find remnants
+  from the times when this was an iso-8859-1 source code tree,
+  please feel free to fix them.
 
 Documentation
 -------------
@@ -174,6 +177,9 @@ where you may have to add documentation:
 - doc/muttrc.man.{head,tail} contain an abridged version of The
   Manual in nroff format (see man(7)), which deals with
   configuration file commands.
+
+- UPDATING includes short documentation of user-visible
+  changes, i.e., any incompatibilities should go here.
 
 Configuration _variables_ are documented directly in init.h.   Note
 that this includes documentation for possibly added format flags!
