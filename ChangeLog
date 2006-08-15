@@ -1010,7 +1010,7 @@
 	and attach_ignore_fundamental stripped, some debugging code
 	removed, some bones thrown to check_sec.sh.
 
-2005-10-04 05:24:00  Sebastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
+2005-10-04 05:24:00  Sébastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* pager.c: The following patch has an effect only when the
 	braille_friendly variable is set. When this is the case, the
@@ -2135,14 +2135,12 @@
 	a way to do it that wouldn't annoy users where login == user
 	(the default value of $imap_login).
 
-2005-06-24 22:32:38  SÃ©bastien Hinderer
-<Sebastien.Hinderer@libertysurf.fr>  (brendan)
+2005-06-24 22:32:38  Sébastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* crypt.c: Remove a warning about unused variable 'now' in
 	crypt_valid_passphrase
 
-2005-06-22 01:46:49  Sébastien Hinderer
-<Sebastien.Hinderer@libertysurf.fr>  (brendan)
+2005-06-22 01:46:49  Sébastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* doc/devel-notes.txt: This patch fixes two small typos in
 	dev notes.
@@ -2706,7 +2704,7 @@
 	* cvslog2changelog.pl: cvs log emits a timezone after the hour,
 	at least here. Adjust date regexp to handle that case.
 
-2005-01-15 17:45:01  Adeodato SimÃ³   <asp16@alu.ua.es>  (brendan)
+2005-01-15 17:45:01  Adeodato Simó   <asp16@alu.ua.es>  (brendan)
 
 	* po/cs.po: Major translation updates forgotten in mutt-po.
 	(I missed cs in the last commit).
@@ -2716,7 +2714,7 @@
 	* Makefile.am: Update commit targets to work when builddir !=
 	srcdir.
 
-2005-01-15 07:43:30  Adeodato SimÃ³  <asp16@alu.ua.es>	(brendan)
+2005-01-15 07:43:30  Adeodato Simó  <asp16@alu.ua.es>	(brendan)
 
 	* po/sv.po, po/ca.po, po/de.po, po/it.po: i18n updates.
 
