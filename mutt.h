@@ -831,6 +831,22 @@ typedef struct pattern_t
   } p;
 } pattern_t;
 
+/* ACL Rights */
+enum
+{
+  M_ACL_LOOKUP = 0,
+  M_ACL_READ,
+  M_ACL_SEEN,
+  M_ACL_WRITE,
+  M_ACL_INSERT,
+  M_ACL_POST,
+  M_ACL_CREATE,
+  M_ACL_DELETE,
+  M_ACL_ADMIN,
+
+  RIGHTSMAX
+};
+
 typedef struct
 {
   char *path;
@@ -862,6 +878,8 @@ typedef struct
 #endif /* USE_IMAP */
 
   short magic;			/* mailbox type */
+
+  unsigned char rights[(RIGHTSMAX + 7)/8];	/* ACL bits */
 
   unsigned int locked : 1;	/* is the mailbox locked? */
   unsigned int changed : 1;	/* mailbox has been modified */

@@ -43,12 +43,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   {
     case M_DELETE:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_DELETE))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_DELETE))
+	return;
 
       if (bf)
       {
@@ -94,12 +90,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_NEW:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+	return;
 
       if (bf)
       {
@@ -129,12 +121,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_OLD:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+	return;
 
       if (bf)
       {
@@ -159,12 +147,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_READ:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+	return;
 
       if (bf)
       {
@@ -191,12 +175,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_REPLIED:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_WRITE))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_WRITE))
+	return;
 
       if (bf)
       {
@@ -224,12 +204,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_FLAG:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_WRITE))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_WRITE))
+	return;
 
       if (bf)
       {

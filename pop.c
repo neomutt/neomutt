@@ -376,6 +376,11 @@ int pop_open_mailbox (CONTEXT *ctx)
   conn->data = pop_data;
   pop_data->bcache = mutt_bcache_open (&acct, NULL);
 
+  /* init (hard-coded) ACL rights */
+  memset (ctx->rights, 0, sizeof (ctx->rights));
+  mutt_bit_set (ctx->rights, M_ACL_SEEN);
+  mutt_bit_set (ctx->rights, M_ACL_DELETE);
+
   FOREVER
   {
     if (pop_reconnect (ctx) < 0)

@@ -634,7 +634,10 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = 0;
-  
+
+  for (rc=0; rc < RIGHTSMAX; rc++)
+    mutt_bit_set(ctx->rights,rc);
+
   if (flags & M_QUIET)
     ctx->quiet = 1;
   if (flags & M_READONLY)
