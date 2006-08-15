@@ -1,3 +1,11 @@
+2006-08-15 22:38:19  Vsevolod Volkov  <vvv@mutt.org.ua>  (brendan)
+
+	* po/ru.po: Updated translation.
+
+2006-08-15 22:35:51  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* ChangeLog: Fix a few UTF-8 conversions.
+
 2006-08-15 17:08:33  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, curs_main.c,
