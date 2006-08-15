@@ -4,9 +4,9 @@
 
 	* ChangeLog: Changing ChangeLog to utf-8.
 
-2006-08-14 19:43:10  roessler  (roessler)
+2006-08-14 19:43:10  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
-	* UPDATING: Mention change ssince 1.5.12.  Ooops.
+	* UPDATING: Mention change since 1.5.12.  Ooops.
 
 	* po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
 	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
