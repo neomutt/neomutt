@@ -1,3 +1,8 @@
+2006-08-16 20:32:23  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c, protos.h, sendlib.c: Do intelligent things with long
+	header lines.
+
 2006-08-16 17:38:57  René Clerc  <rene@clerc.nl>  (brendan)
 
 	* po/nl.po: Updated translation.
