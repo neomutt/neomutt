@@ -1517,6 +1517,176 @@ static void write_references (LIST *r, FILE *f)
   FREE (&ref);
 }
 
+
+#define WRAPLEN 76
+
+static void foldingstrfcpy (char *d, const char *s, int n)
+{
+  while (--n >= 0 && *s)
+  {
+    *d = *s++;
+    if (*d == '\t')
+      *d = ' ';
+    if (!(d[0] == '\n' && (*s == '\t' || *s == ' ')))
+	d++;
+  }
+  *d = '\0';
+}
+
+int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx)
+{
+  int col = 0;
+  int i, k, n;
+  const char *cp;
+  char buf [HUGE_STRING];
+  wchar_t w;
+  int l = 0;
+  int first = 1;
+  int wrapped = 0;
+  int in_encoded_word = 0;
+  
+  if (tag)
+  {
+    if (fprintf (fp, "%s%s: ", NONULL (pfx), tag) < 0)
+      return -1;
+    
+    col = mutt_strlen (tag) + 2 + mutt_strlen (pfx);
+  }
+  else
+    col = 0;
+  
+  *buf = '\0';
+  cp = value;
+  
+  while (cp && *cp) 
+  {
+    if (!col) 
+    {
+      if (fputs (NONULL (pfx), fp) == EOF)
+	return -1;
+      col = mutt_strlen (pfx);
+
+      /* Space padding, but only if necessary */      
+      if (!first && *cp != '\t' && *cp != ' ')
+      {
+	if (fputc ('\t', fp) == EOF)
+	  return -1;
+	col += 8 - (col % 8);
+      }
+    }
+
+    if (first)
+      wrapped = 0;
+    
+    first = 0;
+
+    /*
+     * i is our running pointer, and always points to the *beginning* of an mb character.
+     * k is the pointer to the beginning of the last white-space character we have seen.
+     * n is the pointer to the beginning of the first character after white-space.
+     * 
+     * yuck
+     */
+    
+    for (i = 0, k = 0, l = 0, n = 0; i < sizeof (buf) && cp[i] != '\0' &&
+	 ((col < (WRAPLEN + (k ? 0 : WRAPLEN)) || in_encoded_word));
+	 i += l)
+    {
+      
+      /* If there is a line break in the header, honor it. */
+      if (cp[i] == '\n')
+      {
+	in_encoded_word = 0;
+
+	if (cp[i+1] != ' ' && cp[i+1] != '\t')
+	  first = 1;
+	
+	if (first || !wrapped)
+	{
+	  k = i;
+	  n = k + 1;
+	  l = 1;
+	  break;
+	}
+      }
+
+      /* Eat the current character; cannot be '\0' */
+
+      if ((l = mbtowc (&w, &cp[i], MB_CUR_MAX)) <= 0)
+      {
+	dprint (1, (debugfile, "mutt_write_one_header: encoutered bad multi-byte character at %d.\n", i));
+	l = 1; /* if bad, move on by one character */
+      }
+      else 
+      {
+	if (wcwidth (w) >= 0)
+	  col += wcwidth (w);
+
+	if (iswspace (w))
+	{
+	  if (strncmp (&cp[i+l], "=?", 2) == 0)
+	    in_encoded_word = 1;
+	  else
+	    in_encoded_word = 0;
+	}
+
+	if (iswspace (w) && 
+	    (!k || col <= WRAPLEN))
+	{
+	  if (!k || i != n)
+	    k = i;
+	  n = i + l;
+	}
+      }
+
+      /* 
+       * As long as we haven't seen whitespace, we advance at least by one character.
+       */
+      if (!k)
+	n = i + l;
+    }
+
+    /* If no whitespace was found, copy as much as we can */
+    if (!k)
+      k = n;
+    
+    /* If we're done, we're done. */
+    if (!cp[i])
+      k = n = i;
+
+    if (k < i) /* we had to go back to an earlier wrapping point */
+      wrapped = 1;
+    
+    buf[0] = *cp;
+    foldingstrfcpy (buf + 1, cp + 1, k - 1);
+
+    if (fprintf (fp, "%s\n", buf) < 0)
+      return -1;
+    col = 0;
+    
+    cp = &cp[n];
+
+    while (*cp)
+    {
+      if ((l = mbtowc (&w, cp, MB_CUR_MAX)) > 0 && iswspace (w))
+	cp += l;
+      else
+	break;
+    }
+  }
+
+  if (col)
+  {
+    if (fputc ('\n', fp) == EOF)
+      return -1;
+    col = 0;
+  }
+
+  return 0;
+}
+
+#undef WRAPLEN
+
 /* Note: all RFC2047 encoding should be done outside of this routine, except
  * for the "real name."  This will allow this routine to be used more than
  * once, if necessary.
@@ -1533,11 +1703,13 @@ static void write_references (LIST *r, FILE *f)
  *
  */
 
+
+
 int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach, 
 			      int mode, int privacy)
 {
   char buffer[LONG_STRING];
-  char *p;
+  char *p, *q;
   LIST *tmp = env->userhdrs;
   int has_agent = 0; /* user defined user-agent header field exists */
   
@@ -1582,13 +1754,13 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fputs ("Bcc: \n", fp);
 
   if (env->subject)
-    fprintf (fp, "Subject: %s\n", env->subject);
+    mutt_write_one_header (fp, "Subject", env->subject, NULL);
   else if (mode == 1)
     fputs ("Subject: \n", fp);
 
   /* save message id if the user has set it */
   if (env->message_id && !privacy)
-    fprintf (fp, "Message-ID: %s\n", env->message_id);
+    mutt_write_one_header (fp, "Message-ID", env->message_id, NULL);
 
   if (env->reply_to)
   {
@@ -1630,19 +1802,30 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   {
     if ((p = strchr (tmp->data, ':')))
     {
+      q = p;
+      
+      *p = '\0';
+      
       p++; SKIPWS (p);
-      if (!*p) 	continue;  /* don't emit empty fields. */
+      if (!*p)
+      {
+	*q = ':';
+	continue;  /* don't emit empty fields. */
+      }
 
       /* check to see if the user has overridden the user-agent field */
       if (!ascii_strncasecmp ("user-agent", tmp->data, 10))
       {
 	has_agent = 1;
 	if (privacy)
+	{
+	  *q = ':';
 	  continue;
+	}
       }
-
-      fputs (tmp->data, fp);
-      fputc ('\n', fp);
+      
+      mutt_write_one_header (fp, tmp->data, p, NULL);
+      *q = ':';
     }
   }
 
