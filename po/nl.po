@@ -1,10 +1,10 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.11\n"
+"Project-Id-Version: Mutt 1.5.13\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-14 16:10+0200\n"
-"PO-Revision-Date: 2006-05-17 12:00+0200\n"
+"PO-Revision-Date: 2006-08-16 16:33+0200\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
 "MIME-Version: 1.0\n"
@@ -211,9 +211,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Alleen IMAP folders kunnen verwijderd worden"
 
 #: browser.c:916
-#, fuzzy
 msgid "Cannot delete root folder"
-msgstr "Filter kan niet worden aangemaakt."
+msgstr "Kan de root folder niet verwijderen"
 
 #: browser.c:919
 #, c-format
@@ -1357,7 +1356,6 @@ msgstr ""
 "[-- Einde van ondertekende gegevens --]\n"
 
 #: cryptglue.c:89
-#, fuzzy
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
 msgstr "\"crypt_use_gpgme\" aan, maar niet gebouwd met GPGME-ondersteuning."
 
@@ -3980,7 +3978,7 @@ msgid "error in pattern at: %s"
 msgstr "Fout in expressie bij: %s"
 
 #: pattern.c:831
-#, fuzzy, c-format
+#, c-format
 msgid "mismatched brackets: %s"
 msgstr "Haakjes kloppen niet: %s"
 
