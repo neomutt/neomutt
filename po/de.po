@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.11\n"
+"Project-Id-Version: 1.5.13\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2006-08-14 16:10+0200\n"
-"PO-Revision-Date: 2005-09-27 12:20+0200\n"
+"PO-Revision-Date: 2006-08-18 12:19+0200\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr "Username bei %s: "
 #: account.c:209
 #, c-format
 msgid "Password for %s@%s: "
-msgstr "Paßwort für %s@%s: "
+msgstr "Passwort für %s@%s: "
 
 #: addrbook.c:37 browser.c:45 pager.c:1487 postpone.c:43 query.c:48
 #: recvattach.c:54
@@ -46,21 +46,21 @@ msgstr "Hilfe"
 
 #: addrbook.c:145
 msgid "You have no aliases!"
-msgstr "Keine Einträge im Adreßbuch!"
+msgstr "Keine Einträge im Adressbuch!"
 
 #: addrbook.c:156
 msgid "Aliases"
-msgstr "Adreßbuch"
+msgstr "Adressbuch"
 
 #. add a new alias
 #: alias.c:246
 msgid "Alias as: "
-msgstr "Kurzname für Adreßbuch: "
+msgstr "Kurzname für Adressbuch: "
 
 #: alias.c:252
 msgid "You already have an alias defined with that name!"
 msgstr ""
-"Sie haben bereits einen Adreßbucheintrag mit diesem Kurznamen definiert."
+"Sie haben bereits einen Adressbucheintrag mit diesem Kurznamen definiert."
 
 #: alias.c:258
 msgid "Warning: This alias name may not work.  Fix it?"
@@ -212,9 +212,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Es können nur IMAP Mailboxen gelöscht werden"
 
 #: browser.c:916
-#, fuzzy
 msgid "Cannot delete root folder"
-msgstr "Kann Filter nicht erzeugen."
+msgstr "Kann Wurzel-Mailbox nicht löschen"
 
 #: browser.c:919
 #, c-format
@@ -414,7 +413,7 @@ msgstr "Nachrichten weitergeleitet."
 
 #: commands.c:385 commands.c:419 commands.c:436
 msgid "Can't create filter process"
-msgstr "Kann Filterprozeß nicht erzeugen"
+msgstr "Kann Filterprozess nicht erzeugen"
 
 #: commands.c:465
 msgid "Pipe to command: "
@@ -1361,10 +1360,8 @@ msgstr ""
 "[-- Ende der signierten Daten --]\n"
 
 #: cryptglue.c:89
-#, fuzzy
 msgid "\"crypt_use_gpgme\" set but not built with GPGME support."
-msgstr ""
-"\"crypt_use_gpgme\" gesetzt, obwohl nicht mit GPGME Support compiliert."
+msgstr "\"crypt_use_gpgme\" gesetzt, obwohl nicht mit GPGME Support compiliert."
 
 #: cryptglue.c:112
 msgid "Invoking S/MIME..."
@@ -1473,7 +1470,7 @@ msgstr "Springe zu Nachricht: "
 
 #: curs_main.c:759
 msgid "Argument must be a message number."
-msgstr "Argument muß eine Nachrichtennummer sein."
+msgstr "Argument muss eine Nachrichtennummer sein."
 
 #: curs_main.c:792
 msgid "That message is not visible."
@@ -1503,7 +1500,7 @@ msgstr "Begrenze auf Nachrichten nach Muster: "
 
 #: curs_main.c:870
 msgid "To view all messages, limit to \"all\"."
-msgstr ""
+msgstr "Um alle Nachrichten zu sehen, begrenze auf \"all\"."
 
 #: curs_main.c:882
 msgid "Quit Mutt?"
@@ -1620,7 +1617,6 @@ msgstr "Kann Nachricht auf dem POP-Server nicht ändern."
 #. * declared "static" (sigh)
 #.
 #: edit.c:41
-#, fuzzy
 msgid ""
 "~~\t\tinsert a line begining with a single ~\n"
 "~b users\tadd users to the Bcc: field\n"
@@ -1632,27 +1628,17 @@ msgid ""
 "~M messages\tsame as ~m, except include headers\n"
 "~p\t\tprint the message\n"
 msgstr ""
-"~~\t\tFüge Zeile hinzu, die mit einer Tilde beginnt.\n"
-"~b Adressen\tFüge Adressen zum Bcc-Feld hinzu.\n"
-"~c Adressen\tFüge Adressen zum Cc-Feld hinzu.\n"
-"~f Nachricht\tNachricht einfügen.\n"
-"~F Nachrichten\tWie ~f, mit Nachrichtenkopf.\n"
-"~h\t\tEditiere Nachrichtenkopf.\n"
-"~m Nachrichten\tNachrichten zitieren.\n"
-"~M Nachrichten\tWie ~t, mit Nachrichtenkopf.\n"
-"~p\t\tNachricht ausdrucken.\n"
-"~q\t\tDatei speichern und Editor verlassen.\n"
-"~r Datei\tDatei in Editor einlesen.\n"
-"~t Adressen\tFüge Adressen zum To-Feld hinzu.\n"
-"~u\t\tEditiere die letzte Zeile erneut.\n"
-"~v\t\tEditiere Nachricht mit Editor $visual.\n"
-"~w Datei\tSchreibe Nachricht in Datei.\n"
-"~x\t\tVerwerfe Änderungen und verlasse Editor.\n"
-"~?\t\tDiese Nachricht.\n"
-".\t\tin einer Zeile alleine beendet die Eingabe.\n"
+"~~\t\tFüge Zeile hinzu, die mit einer Tilde beginnt\n"
+"~b Adressen\tFüge Adressen zum Bcc-Feld hinzu\n"
+"~c Adressen\tFüge Adressen zum Cc-Feld hinzu\n"
+"~f Nachrichten\tNachrichten einfügen\n"
+"~F Nachrichten\tWie ~f, mit Nachrichtenkopf\n"
+"~h\t\tEditiere Nachrichtenkopf\n"
+"~m Nachrichten\tNachrichten zitieren\n"
+"~M Nachrichten\tWie ~t, mit Nachrichtenkopf\n"
+"~p\t\tNachricht ausdrucken\n"
 
 #: edit.c:52
-#, fuzzy
 msgid ""
 "~q\t\twrite file and quit editor\n"
 "~r file\t\tread a file into the editor\n"
@@ -1664,24 +1650,15 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~~\t\tFüge Zeile hinzu, die mit einer Tilde beginnt.\n"
-"~b Adressen\tFüge Adressen zum Bcc-Feld hinzu.\n"
-"~c Adressen\tFüge Adressen zum Cc-Feld hinzu.\n"
-"~f Nachricht\tNachricht einfügen.\n"
-"~F Nachrichten\tWie ~f, mit Nachrichtenkopf.\n"
-"~h\t\tEditiere Nachrichtenkopf.\n"
-"~m Nachrichten\tNachrichten zitieren.\n"
-"~M Nachrichten\tWie ~t, mit Nachrichtenkopf.\n"
-"~p\t\tNachricht ausdrucken.\n"
-"~q\t\tDatei speichern und Editor verlassen.\n"
-"~r Datei\tDatei in Editor einlesen.\n"
-"~t Adressen\tFüge Adressen zum To-Feld hinzu.\n"
-"~u\t\tEditiere die letzte Zeile erneut.\n"
-"~v\t\tEditiere Nachricht mit Editor $visual.\n"
-"~w Datei\tSchreibe Nachricht in Datei.\n"
-"~x\t\tVerwerfe Änderungen und verlasse Editor.\n"
-"~?\t\tDiese Nachricht.\n"
-".\t\tin einer Zeile alleine beendet die Eingabe.\n"
+"~q\t\tDatei speichern und Editor verlassen\n"
+"~r Datei\tDatei in Editor einlesen\n"
+"~t Adressen\tFüge Adressen zum To-Feld hinzu\n"
+"~u\t\tEditiere die letzte Zeile erneut\n"
+"~v\t\tEditiere Nachricht mit Editor $visual\n"
+"~w Datei\tSchreibe Nachricht in Datei\n"
+"~x\t\tVerwerfe Änderungen und verlasse Editor\n"
+"~?\t\tDiese Nachricht\n"
+".\t\tin einer Zeile alleine beendet die Eingabe\n"
 
 #: edit.c:188
 #, c-format
@@ -2003,7 +1980,7 @@ msgstr "Erzeuge Mailbox: "
 
 #: imap/browse.c:292 imap/browse.c:338
 msgid "Mailbox must have a name."
-msgstr "Mailbox muß einen Namen haben."
+msgstr "Mailbox muss einen Namen haben."
 
 #: imap/browse.c:300
 msgid "Mailbox created."
@@ -2072,18 +2049,17 @@ msgid "Expunge failed"
 msgstr "Löschen fehlgeschlagen"
 
 #: imap/imap.c:1166
-#, fuzzy, c-format
+#, c-format
 msgid "Saving changed messages... [%d/%d]"
-msgstr "Speichere Nachrichten-Status-Indikatoren... [%d/%d]"
+msgstr "Speichere veränderte Nachrichten... [%d/%d]"
 
 #: imap/imap.c:1216
 msgid "Error saving flags. Close anyway?"
-msgstr ""
+msgstr "Fehler beim Speichern der Markierungen. Trotzdem Schließen?"
 
 #: imap/imap.c:1224
-#, fuzzy
 msgid "Error saving flags"
-msgstr "Unverständliche Adresse!"
+msgstr "Fehler beim Speichern der Markierungen"
 
 #: imap/imap.c:1236
 msgid "Expunging messages from server..."
@@ -2108,19 +2084,19 @@ msgid "Subscribing to %s..."
 msgstr "Abonniere %s..."
 
 #: imap/imap.c:1762
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Beende Abonnement von %s..."
 
 #: imap/imap.c:1772
-#, fuzzy, c-format
+#, c-format
 msgid "Subscribed to %s"
-msgstr "Abonniere %s..."
+msgstr "Abonniere %s"
 
 #: imap/imap.c:1774
-#, fuzzy, c-format
+#, c-format
 msgid "Unsubscribed from %s"
-msgstr "Beende Abonnement von %s..."
+msgstr "Abonnement von %s beendet"
 
 #. Unable to fetch headers for lower versions
 #: imap/message.c:97
@@ -2190,31 +2166,28 @@ msgstr "nospam: kein passendes Muster"
 
 #: init.c:877
 msgid "Missing -rx or -addr."
-msgstr ""
+msgstr "-rx oder -addr fehlt."
 
 #: init.c:890
-#, fuzzy, c-format
+#, c-format
 msgid "Warning: Bad IDN '%s'.\n"
-msgstr "Warnung: Ungültige IDN '%s' in Alias '%s'.\n"
+msgstr "Warnung: Ungültige IDN '%s'.\n"
 
 #: init.c:1098
-#, fuzzy
 msgid "attachments: no disposition"
-msgstr "Editiere Beschreibung des Anhangs"
+msgstr "attachments: keine disposition"
 
 #: init.c:1136
-#, fuzzy
 msgid "attachments: invalid disposition"
-msgstr "Editiere Beschreibung des Anhangs"
+msgstr "attachments: ungültige disposition"
 
 #: init.c:1150
-#, fuzzy
 msgid "unattachments: no disposition"
-msgstr "Editiere Beschreibung des Anhangs"
+msgstr "unattachments: keine disposition"
 
 #: init.c:1173
 msgid "unattachments: invalid disposition"
-msgstr ""
+msgstr "unattachments: ungültige disposition"
 
 #: init.c:1300
 msgid "alias: no address"
@@ -2329,12 +2302,11 @@ msgstr "Kann Nutzernamen nicht bestimmen."
 
 #: init.c:3036
 msgid "-group: no group name"
-msgstr ""
+msgstr "-group: Kein Gruppen Name"
 
 #: init.c:3046
-#, fuzzy
 msgid "out of arguments"
-msgstr "Zu wenige Parameter."
+msgstr "Zu wenige Parameter"
 
 #: keymap.c:466
 msgid "Macro loop detected."
@@ -2579,7 +2551,7 @@ msgstr "Kopiere Nachricht in Datei/Mailbox"
 
 #: keymap_alldefs.h:50
 msgid "create an alias from a message sender"
-msgstr "Erzeuge Adreßbucheintrag für Absender"
+msgstr "Erzeuge Adressbucheintrag für Absender"
 
 #: keymap_alldefs.h:51
 msgid "move entry to bottom of screen"
@@ -3194,24 +3166,22 @@ msgid "Out of memory!"
 msgstr "Kein Speicher verfügbar!"
 
 #: main.c:59
-#, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please visit http://bugs.mutt.org/.\n"
 msgstr ""
 "Um die Entwickler zu kontaktieren, schicken Sie bitte\n"
 "eine Nachricht (in englisch) an <mutt-dev@mutt.org>.\n"
-"Um einen Bug zu melden, verwenden Sie bitte das Programm flea(1).\n"
+"Um einen Bug zu melden, besuchen Sie bitte http://bugs.mutt.org/.\n"
 
 #: main.c:63
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2006 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2002 Michael R. Elkins und andere.\n"
+"Copyright (C) 1996-2006 Michael R. Elkins und andere.\n"
 "Mutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `mutt -vv', um\n"
 "weitere Details darüber zu erfahren. Mutt ist freie Software. \n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
@@ -3230,6 +3200,16 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
+"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
+"Copyright (C) 1997-2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
+"Copyright (C) 1999-2006 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
+"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"\n"
+"Unzählige hier nicht einzeln aufgeführte Helfer haben Code,\n"
+"Fehlerkorrekturen und hilfreiche Hinweise beigesteuert.\n"
 
 #: main.c:81
 msgid ""
@@ -3243,6 +3223,17 @@ msgid ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 msgstr ""
+"    Dieses Programm ist freie Software. Sie dürfen es weitergeben\n"
+"    und/oder es verändern, wie es die Bedingungen der GNU General\n"
+"    Public License, wie von der Free Software Foundation\n"
+"    veröffentlicht, verändern; entweder unter Version 2 dieser Lizenz\n"
+"    oder, wenn Sie es wünschen, jeder späteren Version.\n"
+"\n"
+"    Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass\n"
+"    es Ihnen von Nutzen sein wird, aber OHNE JEGLICHE GEWÄHRLEISTUNG,\n"
+"    sogar ohne die Garantie der MARKTREIFE oder EIGNUNG FÜR EINEN\n"
+"    BESTIMMTEN ZWECK. Lesen Sie die GNU General Public License, um\n"
+"    mehr Details zu erfahren.\n"
 
 #: main.c:91
 msgid ""
@@ -3251,9 +3242,12 @@ msgid ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
 "1301, USA.\n"
 msgstr ""
+"    Sie sollten eine Kopie der GNU General Public License zusammen mit\n"
+"    diesem Programm erhalten haben; falls nicht, schreiben sie an die\n"
+"    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
+"    Boston, MA 02110-1301, USA.\n"
 
 #: main.c:108
-#, fuzzy
 msgid ""
 "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
 "<file> ]\n"
@@ -3267,24 +3261,13 @@ msgid ""
 "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "       mutt -v[v]\n"
 msgstr ""
-"Aufruf: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-"<file> ]\n"
-"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-"[...]\n"
-"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-"[...]\n"
+"Aufruf: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
+"        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
 "        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-"        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] "
-"[ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+"        mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
 "        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 "        mutt -v[v]\n"
-"\n"
-"Optionen:\n"
-"  -A <alias>\tExpandiere den angegebenen Alias\n"
-"  -a <file>\tHängt Datei an die Message an\n"
-"  -b <address>\tEmpfänger einer unsichtbaren Kopie (Bcc:)\n"
-"  -c <address>\tEmpfänger einer Kopie (Cc:)\n"
-"  -D\t\tGib die Werte aller Variablen aus"
 
 #: main.c:116
 msgid ""
@@ -3295,13 +3278,18 @@ msgid ""
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
 "  -D\t\tprint the value of all variables to stdout"
 msgstr ""
+"Optionen:\n"
+"  -A <alias>\tExpandiere den angegebenen Alias\n"
+"  -a <file>\tHängt Datei an die Message an\n"
+"  -b <address>\tEmpfänger einer unsichtbaren Kopie (Bcc:)\n"
+"  -c <address>\tEmpfänger einer Kopie (Cc:)\n"
+"  -D\t\tGib die Werte aller Variablen aus"
 
 #: main.c:124
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <level>\tSschreibe Debug-Informationen nach ~/.muttdebug0"
 
 #: main.c:127
-#, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3319,19 +3307,9 @@ msgstr ""
 "  -i <file>\tFile, das in den Body der Message eingebunden werden soll\n"
 "  -m <type>\tDefault-Mailbox Typ\n"
 "  -n\t\tDas Muttrc des Systems ignorieren\n"
-"  -p\t\tEine zurückgestellte Nachricht zurückholen\n"
-"  -Q <variable>\tFrage die Variable aus der Konfiguration ab\n"
-"  -R\t\tMailbox nur zum Lesen öffnen\n"
-"  -s <subj>\tSubject der Mail (Leerzeichen in Anführungsstrichen)\n"
-"  -v\t\tVersion und Einstellungen beim Compilieren anzeigen\n"
-"  -x\t\tSimuliert mailx beim Verschicken von Mails\n"
-"  -y\t\tStarte Mutt mit einer Mailbox aus der `mailboxes' Liste\n"
-"  -z\t\tNur starten, wenn neue Nachrichten in der Mailbox liegen\n"
-"  -Z\t\tÖffne erste Mailbox mit neuen Nachrichten oder beenden\n"
-"  -h\t\tDiese Hilfe"
+"  -p\t\tEine zurückgestellte Nachricht zurückholen"
 
 #: main.c:136
-#, fuzzy
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -3343,14 +3321,6 @@ msgid ""
 "  -Z\t\topen the first folder with new message, exit immediately if none\n"
 "  -h\t\tthis help message"
 msgstr ""
-"  -e <command>\tMutt-Kommando, nach der Initialisierung ausführen\n"
-"  -f <file>\tMailbox, die eingelesen werden soll\n"
-"  -F <file>\tAlternatives muttrc File.\n"
-"  -H <file>\tFile, aus dem Header und Body der Mail gelesen werden sollen\n"
-"  -i <file>\tFile, das in den Body der Message eingebunden werden soll\n"
-"  -m <type>\tDefault-Mailbox Typ\n"
-"  -n\t\tDas Muttrc des Systems ignorieren\n"
-"  -p\t\tEine zurückgestellte Nachricht zurückholen\n"
 "  -Q <variable>\tFrage die Variable aus der Konfiguration ab\n"
 "  -R\t\tMailbox nur zum Lesen öffnen\n"
 "  -s <subj>\tSubject der Mail (Leerzeichen in Anführungsstrichen)\n"
@@ -3983,9 +3953,9 @@ msgid "Error in expression: %s"
 msgstr "Fehler in Ausdruck: %s"
 
 #: pattern.c:269
-#, fuzzy, c-format
+#, c-format
 msgid "Empty expression"
-msgstr "Fehler in Ausdruck."
+msgstr "Leerer Ausdruck"
 
 #: pattern.c:400
 #, c-format
@@ -4013,7 +3983,7 @@ msgid "error in pattern at: %s"
 msgstr "Fehler in Muster bei: %s"
 
 #: pattern.c:831
-#, fuzzy, c-format
+#, c-format
 msgid "mismatched brackets: %s"
 msgstr "Unpassende Klammern: %s"
 
@@ -4080,7 +4050,7 @@ msgstr "PGP-Mantra vergessen."
 
 #: pgp.c:354
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
-msgstr "[-- Fehler: Kann keinen PGP-Prozeß erzeugen! --]\n"
+msgstr "[-- Fehler: Kann keinen PGP-Prozess erzeugen! --]\n"
 
 #: pgp.c:388 pgp.c:637 pgp.c:841
 msgid ""
@@ -4108,7 +4078,7 @@ msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
 msgstr ""
-"[-- Fehler: Konnte PGP-Subprozeß nicht erzeugen! --]\n"
+"[-- Fehler: Konnte PGP-Subprozess nicht erzeugen! --]\n"
 "\n"
 
 #: pgp.c:850
@@ -4117,7 +4087,7 @@ msgstr "Entschlüsselung gescheitert"
 
 #: pgp.c:1025
 msgid "Can't open PGP subprocess!"
-msgstr "Kann PGP-Subprozeß nicht erzeugen!"
+msgstr "Kann PGP-Subprozess nicht erzeugen!"
 
 #: pgp.c:1461
 msgid "Can't invoke PGP"
@@ -4284,9 +4254,8 @@ msgid "No postponed messages."
 msgstr "Keine zurückgestellten Nachrichten."
 
 #: postpone.c:444 postpone.c:465 postpone.c:499
-#, fuzzy
 msgid "Illegal crypto header"
-msgstr "Unzulässiger PGP-Header"
+msgstr "Unzulässiger Crypto Header"
 
 #: postpone.c:485
 msgid "Illegal S/MIME header"
@@ -4762,7 +4731,7 @@ msgstr "Kein (gültiges) Zertifikat für %s gefunden."
 
 #: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
 msgid "Error: unable to create OpenSSL subprocess!"
-msgstr "Fehler: Kann keinen OpenSSL Prozeß erzeugen!"
+msgstr "Fehler: Kann keinen OpenSSL Prozess erzeugen!"
 
 #: smime.c:1206
 msgid "no certfile"
@@ -4783,7 +4752,7 @@ msgstr "Warnung: Zwischenzertifikat nicht gefunden."
 
 #: smime.c:1433
 msgid "Can't open OpenSSL subprocess!"
-msgstr "Kann OpenSSL-Unterprozeß nicht erzeugen!"
+msgstr "Kann OpenSSL-Unterprozess nicht erzeugen!"
 
 #: smime.c:1471
 msgid "No output from OpenSSL..."
@@ -4799,7 +4768,7 @@ msgstr ""
 
 #: smime.c:1720 smime.c:1731
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
-msgstr "[-- Fehler: Kann keinen OpenSSL-Unterprozeß erzeugen! --]\n"
+msgstr "[-- Fehler: Kann keinen OpenSSL-Unterprozess erzeugen! --]\n"
 
 #: smime.c:1764
 msgid "[-- The following data is S/MIME encrypted --]\n"
@@ -4838,35 +4807,35 @@ msgstr "vsmabkc"
 #. I use "dra" because "123" is recognized anyway
 #: smime.c:1960
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr ""
+msgstr "Wähle Algorithmus: 1: DES, 2: RC2, 3: AES, oder (u)nverschlüsselt? "
 
 #: smime.c:1963
 msgid "drac"
-msgstr ""
+msgstr "drau"
 
 #: smime.c:1966
 msgid "1: DES, 2: Triple-DES "
-msgstr ""
+msgstr "1: DES, 2: Triple-DES "
 
 #: smime.c:1967
 msgid "dt"
-msgstr ""
+msgstr "dt"
 
 #: smime.c:1979
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
-msgstr ""
+msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
 #: smime.c:1980
 msgid "468"
-msgstr ""
+msgstr "468"
 
 #: smime.c:1995
 msgid "1: AES128, 2: AES192, 3: AES256 "
-msgstr ""
+msgstr "1: AES128, 2: AES192, 3: AES256 "
 
 #: smime.c:1996
 msgid "895"
-msgstr ""
+msgstr "895"
 
 #: smime.c:2024
 msgid "Can't sign: No key specified. Use Sign As."
@@ -4946,7 +4915,7 @@ msgstr "Bezugsnachricht ist nicht verfügbar."
 #~ "    entweder unter Version 2 dieser Lizenz oder, wenn Sie es wünschen,\n"
 #~ "    jeder späteren Version.\n"
 #~ "\n"
-#~ "    Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, daß\n"
+#~ "    Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass\n"
 #~ "    es Ihnen von Nutzen sein wird, aber OHNE JEGLICHE GEWÄHRLEISTUNG,\n"
 #~ "    sogar ohne die Garantie der MARKTREIFE oder EIGNUNG FÜR EINEN\n"
 #~ "    BESTIMMTEN ZWECK. Lesen Sie die GNU General Public License, um\n"
