@@ -1,3 +1,7 @@
+2006-08-18 10:28:15  Roland Rosenfeld   <roland@spinnaker.de>  (roessler)
+
+	* po/de.po: update
+
 2006-08-16 20:32:23  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* copy.c, protos.h, sendlib.c: Do intelligent things with long
