@@ -28,7 +28,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c editmsg.c utf8.c mbyte.c wcwidth.c \
+	muttlib.c editmsg.c mbyte.c \
 	url.c ascii.c mutt_idna.c crypt-mod.c crypt-mod.h
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
@@ -60,10 +60,11 @@ CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	mutt_tunnel.c pop.c pop_auth.c pop_lib.c smime.c pgp.c pgpinvoke.c pgpkey.c \
 	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
-	browser.h mbyte.h remailer.h url.h \
+	smtp.c browser.h mbyte.h remailer.h url.h \
 	crypt-mod-pgp-classic.c crypt-mod-smime-classic.c \
 	pgppacket.c mutt_idna.h hcache.h hcache.c bcache.c bcache.h mutt_ssl_gnutls.c \
-	crypt-gpgme.c crypt-mod-pgp-gpgme.c crypt-mod-smime-gpgme.c
+	crypt-gpgme.c crypt-mod-pgp-gpgme.c crypt-mod-smime-gpgme.c \
+	utf8.c wcwidth.c 
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	configure account.h \
@@ -142,8 +143,8 @@ install-exec-hook:
 
 install-data-local: Muttrc
 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
-	$(INSTALL) -m644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
+	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
+	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
 	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
 		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
 	elif [ -f $(DESTDIR)$(pkgdatadir)/../Muttrc ] ; then \

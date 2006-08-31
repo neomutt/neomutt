@@ -1108,6 +1108,8 @@ fi
 
 if test $wc_funcs = yes; then
         AC_DEFINE(HAVE_WC_FUNCS,1,[ Define if you are using the system's wchar_t functions. ])
+else
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS utf8.o wcwidth.o"
 fi
 
 AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
