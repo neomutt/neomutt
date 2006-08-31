@@ -1,3 +1,10 @@
+2006-08-31 23:49:40  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
+
+	* Makefile.am, configure.in: Only build wchar replacement funcs
+	when necessary. Add space after mode argument to install-sh.
+
+	* gettext.c: Remove superfluous empty file from CVS.
+
 2006-08-18 10:28:15  Roland Rosenfeld   <roland@spinnaker.de>  (roessler)
 
 	* po/de.po: update
