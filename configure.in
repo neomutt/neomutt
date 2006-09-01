@@ -158,15 +158,18 @@ if test x$have_smime != xno ; then
 fi
 
 AC_ARG_WITH(mixmaster, AC_HELP_STRING([--with-mixmaster[=PATH]], [Include Mixmaster support]),
-        [if test -x "$withval" ; then
-                MIXMASTER="$withval"
-         else
-                MIXMASTER="mixmaster"
-         fi
-         OPS="$OPS \$(srcdir)/OPS.MIX"
-         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
-         AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER", [Where to find mixmaster on your system.])
-        ])
+  [if test "$withval" != no
+   then
+     if test -x "$withval"
+     then
+       MIXMASTER="$withval"
+     else
+       MIXMASTER="mixmaster"
+     fi
+     OPS="$OPS \$(srcdir)/OPS.MIX"
+     MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
+     AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER", [Where to find mixmaster on your system.])
+   fi])
 
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
