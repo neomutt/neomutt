@@ -574,8 +574,6 @@ LIST *mutt_make_references(ENVELOPE *e)
 
 void mutt_fix_reply_recipients (ENVELOPE *env)
 {
-  mutt_expand_aliases_env (env);
-
   if (! option (OPTMETOO))
   {
     /* the order is important here.  do the CC: first so that if the
@@ -1213,7 +1211,10 @@ ci_send_message (int flags,		/* send mode */
       process_user_recips (msg->env);
 
     /* Expand aliases and remove duplicates/crossrefs */
-    mutt_fix_reply_recipients (msg->env);
+    mutt_expand_aliases_env (msg->env);
+    
+    if (flags & SENDREPLY)
+      mutt_fix_reply_recipients (msg->env);
 
     if (! (flags & SENDMAILX) &&
 	! (option (OPTAUTOEDIT) && option (OPTEDITHDRS)) &&
