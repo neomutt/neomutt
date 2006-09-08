@@ -221,15 +221,10 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     return -1;
   }
 
-  /* set security properties. We use NOPLAINTEXT globally, since we can
-   * just fall back to LOGIN in the IMAP case anyway. If that doesn't
-   * work for POP, we can make it a flag or move this code into
-   * imap/auth_sasl.c */
   memset (&secprops, 0, sizeof (secprops));
   /* Work around a casting bug in the SASL krb4 module */
   secprops.max_ssf = 0x7fff;
   secprops.maxbufsize = M_SASL_MAXBUF;
-  secprops.security_flags |= SASL_SEC_NOPLAINTEXT;
   if (sasl_setprop (*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)
   {
     dprint (1, (debugfile,

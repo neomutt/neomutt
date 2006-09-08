@@ -46,8 +46,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   char inbuf[LONG_STRING];
   const char* mech;
   const char *pc = NULL;
-  unsigned int len, olen;
-  unsigned char client_start;
+  unsigned int len, olen, client_start;
 
   if (mutt_sasl_client_new (pop_data->conn, &saslconn) < 0)
   {
@@ -74,7 +73,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     return POP_A_UNAVAIL;
   }
 
-  client_start = (olen > 0);
+  client_start = olen;
 
   mutt_message _("Authenticating (SASL)...");
 
@@ -93,11 +92,11 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       return POP_A_SOCKET;
     }
 
-    if (rc != SASL_CONTINUE)
+    if (!client_start && rc != SASL_CONTINUE)
       break;
 
     if (!mutt_strncmp (inbuf, "+ ", 2)
-        && sasl_decode64 (inbuf, strlen (inbuf), buf, LONG_STRING-1, &len) != SASL_OK)
+        && sasl_decode64 (inbuf+2, strlen (inbuf+2), buf, LONG_STRING-1, &len) != SASL_OK)
     {
       dprint (1, (debugfile, "pop_auth_sasl: error base64-decoding server response.\n"));
       goto bail;
@@ -112,7 +111,10 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
 	mutt_sasl_interact (interaction);
       }
     else
+    {
+      olen = client_start;
       client_start = 0;
+    }
 
     if (rc != SASL_CONTINUE && (olen == 0 || rc != SASL_OK))
       break;
