@@ -1,3 +1,8 @@
+2006-09-08 18:28:10  Malcolm Parsons  <malcolm.parsons@gmail.com>  (brendan)
+
+	* OPS.PGP, doc/manual.xml.tail, pgpkey.c, OPS: Clean up some
+	text. Closes: #2466.
+
 2006-09-08 17:30:33  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_sasl.c, pop_auth.c: Don't send protocol garbage to
@@ -7,8 +12,7 @@
 	* Makefile.am: Remove bogus smtp.c entry from extra sources,
 	added by accident on 20060831.
 
-2006-09-05 08:57:37  Thomas Roessler  <roessler@does-not-exist.org>
-(roessler)
+2006-09-05 08:57:37  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* send.c: Fix #2168.
 
