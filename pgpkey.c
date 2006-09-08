@@ -749,7 +749,7 @@ BODY *pgp_make_key_attachment (char *tempf)
     return NULL;
   }
 
-  mutt_message _("Invoking pgp...");
+  mutt_message _("Invoking PGP...");
 
   
   if ((thepid = 

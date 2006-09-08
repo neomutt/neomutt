@@ -84,7 +84,7 @@ bindings for all menus (except as noted).
 <row><entry>bounce-message</entry><entry>b</entry><entry>remail a message to another user</entry></row>
 <row><entry>change-folder</entry><entry>c</entry><entry>open a different folder</entry></row>
 <row><entry>change-folder-readonly</entry><entry>ESC c</entry><entry>open a different folder in read only mode</entry></row>
-<row><entry>check-traditional-pgp</entry><entry>ESC P</entry><entry>check for classic pgp</entry></row>
+<row><entry>check-traditional-pgp</entry><entry>ESC P</entry><entry>check for classic PGP</entry></row>
 <row><entry>clear-flag</entry><entry>W</entry><entry>clear a status flag from a message</entry></row>
 <row><entry>copy-message</entry><entry>C</entry><entry>copy a message to a file/mailbox</entry></row>
 <row><entry>create-alias</entry><entry>a</entry><entry>create an alias from a message sender</entry></row>
@@ -174,7 +174,7 @@ bindings for all menus (except as noted).
 <row><entry>bounce-message</entry><entry>b</entry><entry>remail a message to another user</entry></row>
 <row><entry>change-folder</entry><entry>c</entry><entry>open a different folder</entry></row>
 <row><entry>change-folder-readonly</entry><entry>ESC c</entry><entry>open a different folder in read only mode</entry></row>
-<row><entry>check-traditional-pgp</entry><entry>ESC P</entry><entry>check for classic pgp</entry></row>
+<row><entry>check-traditional-pgp</entry><entry>ESC P</entry><entry>check for classic PGP</entry></row>
 <row><entry>copy-message</entry><entry>C</entry><entry>copy a message to a file/mailbox</entry></row>
 <row><entry>create-alias</entry><entry>a</entry><entry>create an alias from a message sender</entry></row>
 <row><entry>decode-copy</entry><entry>ESC C</entry><entry>decode a message and copy it to a file/mailbox</entry></row>
@@ -440,7 +440,7 @@ bindings for all menus (except as noted).
 <row><entry>toggle-mailboxes</entry><entry>TAB</entry><entry>toggle whether to browse mailboxes or all files</entry></row>
 <row><entry>view-file</entry><entry>SPACE</entry><entry>view file</entry></row>
 <row><entry>subscribe</entry><entry>s</entry><entry>subscribe to current mailbox (IMAP Only)</entry></row>
-<row><entry>unsubscribe</entry><entry>u</entry><entry>unsubscribe to current mailbox (IMAP Only)</entry></row>
+<row><entry>unsubscribe</entry><entry>u</entry><entry>unsubscribe from current mailbox (IMAP Only)</entry></row>
 <row><entry>toggle-subscribed</entry><entry>T</entry><entry>toggle view all/subscribed mailboxes (IMAP Only)</entry></row>
 </tbody>
 </tgroup>
@@ -451,12 +451,12 @@ bindings for all menus (except as noted).
 </sect2>
 
 <sect2>
-<title>pgp</title>
+<title>PGP</title>
 
 <para>
 
 <table>
-<title>Default pgp menu function bindings</title>
+<title>Default PGP menu function bindings</title>
 <tgroup cols="3">
 <thead>
 <row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>
