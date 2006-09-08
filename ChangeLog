@@ -1,3 +1,17 @@
+2006-09-08 17:30:33  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* mutt_sasl.c, pop_auth.c: Don't send protocol garbage to
+	sasl_decode64 during POP authentication.  Also enable SASL
+	plaintext: $foo_authenticators is a more general solution.
+
+	* Makefile.am: Remove bogus smtp.c entry from extra sources,
+	added by accident on 20060831.
+
+2006-09-05 08:57:37  Thomas Roessler  <roessler@does-not-exist.org>
+(roessler)
+
+	* send.c: Fix #2168.
+
 2006-09-01 19:26:39  Lars Hecking  <lhecking@users.sourceforge.net>  (brendan)
 
 	* configure.in: Handle --without-mixmaster properly. (Slightly
