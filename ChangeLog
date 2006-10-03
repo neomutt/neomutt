@@ -1,3 +1,8 @@
+2006-10-03 16:40:56  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* hcache.c: Ignore trailing slashes in folder names when mapping
+	to header cache.
+
 2006-09-08 18:28:10  Malcolm Parsons  <malcolm.parsons@gmail.com>  (brendan)
 
 	* OPS.PGP, doc/manual.xml.tail, pgpkey.c, OPS: Clean up some
