@@ -355,6 +355,9 @@ void mutt_progress_bar (progress_t* progress, long pos)
     else
       mutt_message ("%s %s", progress->msg, posstr);
   }
+
+  if (pos >= progress->size)
+    mutt_clear_error ();
 }
 #endif
 
