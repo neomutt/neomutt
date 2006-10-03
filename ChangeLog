@@ -1,3 +1,8 @@
+2006-10-03 16:45:45  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* curs_lib.c: Clear the progress bar when the current operation
+	has completed.
+
 2006-10-03 16:40:56  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* hcache.c: Ignore trailing slashes in folder names when mapping
