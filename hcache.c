@@ -769,14 +769,25 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #endif
 }
 
+static char* get_foldername(const char *folder) {
+  size_t flen = mutt_strlen (folder);
+  char* p = safe_strdup(folder);
+
+  if (flen > 0 && folder[flen-1] == '/')
+    p[flen-1] = '\0';
+
+  return p;
+}
+
 #if HAVE_QDBM
 header_cache_t *
 mutt_hcache_open(const char *path, const char *folder)
 {
   struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
   int    flags = VL_OWRITER | VL_OCREAT;
+
   h->db = NULL;
-  h->folder = safe_strdup(folder);
+  h->folder = get_foldername(folder);
   h->crc = generate_crc32();
 
   if (!path || path[0] == '\0')
@@ -786,7 +797,7 @@ mutt_hcache_open(const char *path, const char *folder)
     return NULL;
   }
 
-  path = mutt_hcache_per_folder(path, folder);
+  path = mutt_hcache_per_folder(path, h->folder);
 
   if (option(OPTHCACHECOMPRESS))
     flags |= VL_OZCOMP;
@@ -839,8 +850,9 @@ mutt_hcache_open(const char *path, const char *folder)
 {
   struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
   int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
+
   h->db = NULL;
-  h->folder = safe_strdup(folder);
+  h->folder = get_foldername(folder);
   h->crc = generate_crc32();
 
   if (!path || path[0] == '\0')
@@ -850,7 +862,7 @@ mutt_hcache_open(const char *path, const char *folder)
     return NULL;
   }
 
-  path = mutt_hcache_per_folder(path, folder);
+  path = mutt_hcache_per_folder(path, h->folder);
 
   h->db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
   if (h->db)
@@ -925,6 +937,7 @@ mutt_hcache_open(const char *path, const char *folder)
   int ret;
   struct header_cache *h = calloc(1, sizeof (HEADER_CACHE));
   int pagesize = atoi(HeaderCachePageSize);
+  char* tmp;
 
   h->crc = generate_crc32();
 
@@ -934,9 +947,10 @@ mutt_hcache_open(const char *path, const char *folder)
     return NULL;
   }
 
-  path = mutt_hcache_per_folder(path, folder);
-
+  tmp = get_foldername (folder);
+  path = mutt_hcache_per_folder(path, tmp);
   snprintf(h->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
+  FREE(&tmp);
 
   h->fd = open(h->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (h->fd < 0)
