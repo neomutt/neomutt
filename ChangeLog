@@ -1,3 +1,7 @@
+2006-10-09 13:39:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* lib.c: Even more paranoid temporary file creation.
+
 2006-10-03 16:45:45  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* curs_lib.c: Clear the progress bar when the current operation
