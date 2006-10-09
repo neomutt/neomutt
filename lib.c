@@ -481,14 +481,85 @@ int safe_rename (const char *src, const char *target)
   return 0;
 }
 
+/* Create a temporary directory next to a file name */
+
+int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen, 
+		    char *newdir, size_t ndlen)
+{
+  const char *basename;
+  char parent[_POSIX_PATH_MAX];
+  char *p;
+  int rv;
+
+  strfcpy (parent, NONULL (path), sizeof (parent));
+  
+  if ((p = strrchr (parent, '/')))
+  {
+    *p = '\0';
+    basename = p + 1;
+  }
+  else
+  {
+    strfcpy (parent, ".", sizeof (parent));
+    basename = path;
+  }
+
+  do 
+  {
+    snprintf (newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
+    mktemp (newdir);
+  } 
+  while ((rv = mkdir (newdir, 0700)) == -1 && errno == EEXIST);
+  
+  if (rv == -1)
+    return -1;
+  
+  snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename));
+  return 0;  
+}
+
+int mutt_put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
+{
+  int rv;
+  
+  rv = safe_rename (safe_file, path);
+  unlink (safe_file);
+  rmdir (safe_dir);
+  return rv;
+}
+
 int safe_open (const char *path, int flags)
 {
   struct stat osb, nsb;
   int fd;
 
-  if ((fd = open (path, flags, 0600)) < 0)
-    return fd;
+  if (flags & O_EXCL) 
+  {
+    char safe_file[_POSIX_PATH_MAX];
+    char safe_dir[_POSIX_PATH_MAX];
 
+    if (mutt_mkwrapdir (path, safe_file, sizeof (safe_file),
+			safe_dir, sizeof (safe_dir)) == -1)
+      return -1;
+    
+    if ((fd = open (safe_file, flags, 0600)) < 0)
+    {
+      rmdir (safe_dir);
+      return fd;
+    }
+    
+    if (mutt_put_file_in_place (path, safe_file, safe_dir) == -1)
+    {
+      close (fd);
+      return -1;
+    }
+  }
+  else
+  {
+    if ((fd = open (path, flags, 0600)) < 0)
+      return fd;
+  }
+    
   /* make sure the file is not symlink */
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
       compare_stat(&osb, &nsb) == -1)
