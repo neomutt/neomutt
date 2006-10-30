@@ -52,6 +52,7 @@ HashAlgorithms[] =
   { 8,		"pgp-sha256"		},
   { 9,		"pgp-sha384"		},
   { 10,		"pgp-sha512"		},
+  { 11,		"pgp-sha224"		},
   { -1, 	NULL }
 };
 
