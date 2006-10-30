@@ -1,3 +1,10 @@
+2006-10-30 02:32:30  Alain Bench  <veronatif@free.fr>  (brendan)
+
+	* contrib/gpg.rc: Add the usual %?p? condition around the
+	--passphrase-fd option in 3 commented-out examples of gpg-2comp
+	usage. Also match gpgv in a good_sign pattern commented-out
+	example.
+
 2006-10-09 13:39:38  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* lib.c: Even more paranoid temporary file creation.
