@@ -40,11 +40,11 @@ set pgp_verify_command="/usr/bin/gpg   --status-fd=2 --no-verbose --quiet  --bat
 set pgp_decrypt_command="/usr/bin/gpg   --status-fd=2 %?p?--passphrase-fd 0? --no-verbose --quiet  --batch  --output - %f"
 
 # create a pgp/mime signed attachment
-# set pgp_sign_command="/usr/bin/gpg-2comp --comment '' --no-verbose --batch  --output - --passphrase-fd 0 --armor --detach-sign --textmode %?a?-u %a? %f"
+# set pgp_sign_command="/usr/bin/gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
 set pgp_sign_command="/usr/bin/gpg    --no-verbose --batch --quiet   --output - %?p?--passphrase-fd 0? --armor --detach-sign --textmode %?a?-u %a? %f"
 
 # create a application/pgp signed (old-style) message
-# set pgp_clearsign_command="/usr/bin/gpg-2comp --comment ''  --no-verbose --batch  --output - --passphrase-fd 0 --armor --textmode --clearsign %?a?-u %a? %f"
+# set pgp_clearsign_command="/usr/bin/gpg-2comp --comment '' --no-verbose --batch --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
 set pgp_clearsign_command="/usr/bin/gpg --no-verbose --batch --quiet --output - %?p?--passphrase-fd 0? --armor --textmode --clearsign %?a?-u %a? %f"
 
 # create a pgp/mime encrypted attachment
@@ -52,7 +52,7 @@ set pgp_clearsign_command="/usr/bin/gpg --no-verbose --batch --quiet --output - 
 set pgp_encrypt_only_command="pgpewrap /usr/bin/gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
 
 # create a pgp/mime encrypted and signed attachment
-# set pgp_encrypt_sign_command="pgpewrap gpg-2comp  --passphrase-fd 0 -v --batch  --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+# set pgp_encrypt_sign_command="pgpewrap gpg-2comp %?p?--passphrase-fd 0? -v --batch --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 set pgp_encrypt_sign_command="pgpewrap /usr/bin/gpg %?p?--passphrase-fd 0? --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
 
 # import a key into the public key ring
@@ -75,7 +75,7 @@ set pgp_list_secring_command="/usr/bin/gpg   --no-verbose --batch --quiet   --wi
 
 # pattern for good signature - may need to be adapted to locale!
 
-# set pgp_good_sign="^gpg: Good signature from"
+# set pgp_good_sign="^gpgv?: Good signature from "
 
 # OK, here's a version which uses gnupg's message catalog:
 # set pgp_good_sign="`gettext -d gnupg -s 'Good signature from "' | tr -d '"'`"
