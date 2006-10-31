@@ -1,3 +1,7 @@
+2006-10-31 18:37:14  Kevin Scannell  <kscanne@gmail.com>  (brendan)
+
+	* po/ga.po: Update Irish translation to 1.5.12.
+
 2006-10-30 02:54:12  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* mutt_socket.c: Include <sys/time.h> if available, to ensure
