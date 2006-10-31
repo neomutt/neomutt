@@ -6,14 +6,6 @@ IMAP enhancements, by priority:
   problems gracefully. It should be able to transparently reconnect. This
   is facilitated by the next item.
 
-  PRIORITY: [***]
-
-* General connection code rewrite. All commands should be queued via
-  a single interface for communicating with the server. Nothing should
-  have to read or write directly to the socket.
-
-  PRIORITY: [***]
-
 * Interruptible socket calls, preferably without having to abort the
   connection. For example large downloads could be chunked.
 
@@ -32,32 +24,15 @@ IMAP enhancements, by priority:
 * Partial message loading, including parsing BODYSTRUCTURE for the
   view-attachments menu
 
-* Persistent caching of data. I think the nicest way to do this is to store
-  local copies like IMAP does, with an invisible control message at the top,
-  and extra invisible headers in the message (for UID/dirty bits). This does
-  some nice things:
-  o We can use the existing mbox driver.
-  o Mutt can read mail stored in IMAP spools transparently and
-    nondestructively.
-  o An IMAP server could function off of a local cache - maybe we can begin
-    to develop some sort of IMAP clustering system.
-  Disadvantage:
-  o IMAP can't discriminate between its own store and a fake Mutt cache. If
-    the server changes its file format, bad things might happen. Could be
-    worked around with a specific Mutt header in all messages, probably.
-
-* More aggressive command pipelining
+* Disconnected mode, probably based on an augmented header cache
 
 [ -- new mail detection -- ]
 
 * Possibly opening multiple connections for mailbox polling, now that
   we have IDLE support.
 
-* using UIDNEXT/UIDVALIDITY to find new messages instead of relying on
-  the ephemeral RECENT tag or the unchanging UNSEEN one. If we could
-  cache it between sessions we might have a nice way to properly
-  handle OLD messages too (UID less than cached UIDNEXT, but still
-  UNSEEN).
+* caching UIDVALIDITY/UIDNEXT across sessions for nice new mail
+  handling. Could use the hcache.
 
 Brendan Cully <brendan@kublai.com>
-Updated: 20051212
+Updated: 20061031
