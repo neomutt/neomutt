@@ -8,10 +8,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.13-20060815\n"
+"Project-Id-Version: Mutt 1.5.13-20060908\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-08-15 23:55+0200\n"
-"PO-Revision-Date: 2006-08-16 00:11+0200\n"
+"POT-Creation-Date: 2006-11-01 11:43+0100\n"
+"PO-Revision-Date: 2006-09-10 10:28+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -113,7 +113,7 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
 #: attach.c:134 attach.c:266 commands.c:220 compose.c:1183 curs_lib.c:166
-#: curs_lib.c:444
+#: curs_lib.c:447
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Erreur en exécutant \"%s\" !"
@@ -644,7 +644,7 @@ msgstr "Attention : '%s' est un mauvais IDN."
 msgid "You may not delete the only attachment."
 msgstr "Vous ne pouvez pas effacer l'unique attachement."
 
-#: compose.c:601 send.c:1521
+#: compose.c:601 send.c:1522
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
@@ -1335,7 +1335,7 @@ msgid "Passphrase(s) forgotten."
 msgstr "Phrase(s) de passe oubliée(s)."
 
 #. they really want to send it inline... go for it
-#: crypt.c:147 cryptglue.c:110 pgpkey.c:563
+#: crypt.c:147 cryptglue.c:110 pgpkey.c:563 pgpkey.c:752
 msgid "Invoking PGP..."
 msgstr "Appel de PGP..."
 
@@ -1345,7 +1345,7 @@ msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME ?"
 
 #. abort
-#: crypt.c:158 send.c:1473
+#: crypt.c:158 send.c:1474
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
@@ -1434,15 +1434,15 @@ msgstr "non"
 msgid "Exit Mutt?"
 msgstr "Quitter Mutt ?"
 
-#: curs_lib.c:396 mutt_socket.c:568 mutt_ssl.c:329
+#: curs_lib.c:399 mutt_socket.c:571 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "erreur inconnue"
 
-#: curs_lib.c:416
+#: curs_lib.c:419
 msgid "Press any key to continue..."
 msgstr "Appuyez sur une touche pour continuer..."
 
-#: curs_lib.c:460
+#: curs_lib.c:463
 msgid " ('?' for list): "
 msgstr " ('?' pour avoir la liste) : "
 
@@ -2021,7 +2021,7 @@ msgstr "unhook : type hook inconnu : %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
-#: imap/auth.c:108 pop_auth.c:390
+#: imap/auth.c:108 pop_auth.c:392
 msgid "No authenticators available"
 msgstr "Pas d'authentificateurs disponibles"
 
@@ -2054,11 +2054,11 @@ msgstr "L'authentification GSSAPI a échoué."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN désactivée sur ce serveur."
 
-#: imap/auth_login.c:47 pop_auth.c:223
+#: imap/auth_login.c:47 pop_auth.c:225
 msgid "Logging in..."
 msgstr "Connexion..."
 
-#: imap/auth_login.c:67 pop_auth.c:266
+#: imap/auth_login.c:67 pop_auth.c:268
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
@@ -2067,7 +2067,7 @@ msgstr "La connexion a échoué."
 msgid "Authenticating (%s)..."
 msgstr "Authentification (%s)..."
 
-#: imap/auth_sasl.c:203 pop_auth.c:151
+#: imap/auth_sasl.c:203 pop_auth.c:153
 msgid "SASL authentication failed."
 msgstr "L'authentification SASL a échoué."
 
@@ -2562,7 +2562,7 @@ msgid "subscribe to current mailbox (IMAP only)"
 msgstr "s'abonner à la BAL courante (IMAP seulement)"
 
 #: keymap_alldefs.h:16
-msgid "unsubscribe to current mailbox (IMAP only)"
+msgid "unsubscribe from current mailbox (IMAP only)"
 msgstr "se désabonner de la BAL courante (IMAP seulement)"
 
 #: keymap_alldefs.h:17
@@ -2583,12 +2583,12 @@ msgid "check mailboxes for new mail"
 msgstr "vérifier la présence de nouveaux messages dans les BAL"
 
 #: keymap_alldefs.h:21
-msgid "attach a file(s) to this message"
-msgstr "attacher un fichier à ce message"
+msgid "attach file(s) to this message"
+msgstr "attacher des fichiers à ce message"
 
 #: keymap_alldefs.h:22
 msgid "attach message(s) to this message"
-msgstr "attacher un message à ce message"
+msgstr "attacher des messages à ce message"
 
 #: keymap_alldefs.h:23
 msgid "edit the BCC list"
@@ -3255,8 +3255,8 @@ msgid "view the key's user id"
 msgstr "afficher le numéro d'utilisateur de la clé"
 
 #: keymap_alldefs.h:189
-msgid "check for classic pgp"
-msgstr "reconnaissance pgp classique"
+msgid "check for classic PGP"
+msgstr "reconnaissance PGP classique"
 
 #: keymap_alldefs.h:190
 msgid "Accept the chain constructed"
@@ -3297,7 +3297,7 @@ msgstr "faire une copie déchiffrée"
 
 #: keymap_alldefs.h:199
 msgid "wipe passphrase(s) from memory"
-msgstr "effacer la (les) phrase(s) de passe de la mémoire"
+msgstr "effacer les phrases de passe de la mémoire"
 
 #: keymap_alldefs.h:200
 msgid "extract supported public keys"
@@ -3673,50 +3673,50 @@ msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 
 # , c-format
-#: mutt_socket.c:101 mutt_socket.c:172
+#: mutt_socket.c:104 mutt_socket.c:175
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Connexion à %s fermée"
 
-#: mutt_socket.c:292
+#: mutt_socket.c:295
 msgid "SSL is unavailable."
 msgstr "SSL n'est pas disponible."
 
-#: mutt_socket.c:324
+#: mutt_socket.c:327
 msgid "Preconnect command failed."
 msgstr "La commande Preconnect a échoué."
 
 # , c-format
-#: mutt_socket.c:395 mutt_socket.c:409
+#: mutt_socket.c:398 mutt_socket.c:412
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Erreur en parlant à %s (%s)"
 
-#: mutt_socket.c:462 mutt_socket.c:520
+#: mutt_socket.c:465 mutt_socket.c:523
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "Mauvais IDN « %s »."
 
 # , c-format
-#: mutt_socket.c:469 mutt_socket.c:527
+#: mutt_socket.c:472 mutt_socket.c:530
 #, c-format
 msgid "Looking up %s..."
 msgstr "Recherche de %s..."
 
 # , c-format
-#: mutt_socket.c:480 mutt_socket.c:534
+#: mutt_socket.c:483 mutt_socket.c:537
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Impossible de trouver la machine \"%s\""
 
 # , c-format
-#: mutt_socket.c:485 mutt_socket.c:543
+#: mutt_socket.c:488 mutt_socket.c:546
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Connexion à %s..."
 
 # , c-format
-#: mutt_socket.c:567
+#: mutt_socket.c:570
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Impossible de se connecter à %s (%s)."
@@ -4334,10 +4334,6 @@ msgstr "Impossible d'ouvrir /dev/null"
 msgid "Please enter the key ID: "
 msgstr "Veuillez entrer l'ID de la clé : "
 
-#: pgpkey.c:752
-msgid "Invoking pgp..."
-msgstr "Appel de pgp..."
-
 # , c-format
 #: pgpkey.c:777
 #, c-format
@@ -4407,19 +4403,19 @@ msgstr "%s [%d messages lus sur %d]"
 msgid "Server closed connection!"
 msgstr "Le serveur a fermé la connexion !"
 
-#: pop_auth.c:79
+#: pop_auth.c:78
 msgid "Authenticating (SASL)..."
 msgstr "Authentification (SASL)..."
 
-#: pop_auth.c:184
+#: pop_auth.c:186
 msgid "Authenticating (APOP)..."
 msgstr "Authentification (APOP)..."
 
-#: pop_auth.c:208
+#: pop_auth.c:210
 msgid "APOP authentication failed."
 msgstr "L'authentification APOP a échoué."
 
-#: pop_auth.c:243
+#: pop_auth.c:245
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "La commande USER n'est pas supportée par le serveur."
@@ -4620,7 +4616,7 @@ msgstr "Impossible de créer %s."
 msgid "Can't find any tagged messages."
 msgstr "Aucun message marqué n'a pu être trouvé."
 
-#: recvcmd.c:749 send.c:721
+#: recvcmd.c:749 send.c:719
 msgid "No mailing lists found!"
 msgstr "Pas de liste de diffusion trouvée !"
 
@@ -4748,82 +4744,82 @@ msgstr "Suivi de la discussion à %s%s ?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:696
+#: send.c:694
 msgid "No tagged messages are visible!"
 msgstr "Pas de messages marqués visibles !"
 
-#: send.c:747
+#: send.c:745
 msgid "Include message in reply?"
 msgstr "Inclure le message dans la réponse ?"
 
-#: send.c:752
+#: send.c:750
 msgid "Including quoted message..."
 msgstr "Inclusion du message cité..."
 
-#: send.c:762
+#: send.c:760
 msgid "Could not include all requested messages!"
 msgstr "Tous les messages demandés n'ont pas pu être inclus !"
 
-#: send.c:776
+#: send.c:774
 msgid "Forward as attachment?"
 msgstr "Faire suivre sous forme d'attachement ?"
 
-#: send.c:780
+#: send.c:778
 msgid "Preparing forwarded message..."
 msgstr "Préparation du message à faire suivre..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1090
+#: send.c:1088
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 
-#: send.c:1392
+#: send.c:1393
 msgid "Edit forwarded message?"
 msgstr "Éditer le message à faire suivre ?"
 
-#: send.c:1429
+#: send.c:1430
 msgid "Abort unmodified message?"
 msgstr "Message non modifié. Abandonner ?"
 
-#: send.c:1431
+#: send.c:1432
 msgid "Aborted unmodified message."
 msgstr "Message non modifié. Abandon."
 
-#: send.c:1500
+#: send.c:1501
 msgid "Message postponed."
 msgstr "Message ajourné."
 
-#: send.c:1509
+#: send.c:1510
 msgid "No recipients are specified!"
 msgstr "Aucun destinataire spécifié !"
 
-#: send.c:1514
+#: send.c:1515
 msgid "No recipients were specified."
 msgstr "Aucun destinataire spécifié."
 
-#: send.c:1530
+#: send.c:1531
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet, abandonner l'envoi ?"
 
-#: send.c:1534
+#: send.c:1535
 msgid "No subject specified."
 msgstr "Pas d'objet spécifié."
 
-#: send.c:1596
+#: send.c:1597
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send.c:1737
+#: send.c:1738
 msgid "Could not send the message."
 msgstr "Impossible d'envoyer le message."
 
-#: send.c:1742
+#: send.c:1743
 msgid "Mail sent."
 msgstr "Message envoyé."
 
-#: send.c:1742
+#: send.c:1743
 msgid "Sending in background."
 msgstr "Envoi en tâche de fond."
 
@@ -4850,16 +4846,16 @@ msgid "Could not open %s"
 msgstr "Impossible d'ouvrir %s"
 
 # , c-format
-#: sendlib.c:1996
+#: sendlib.c:2179
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Erreur en envoyant le message, fils terminé avec le code %d (%s)."
 
-#: sendlib.c:2002
+#: sendlib.c:2185
 msgid "Output of the delivery process"
 msgstr "Sortie du processus de livraison"
 
-#: sendlib.c:2208
+#: sendlib.c:2391
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "Mauvais IDN %s lors de la préparation du resent-from."
@@ -5086,6 +5082,9 @@ msgstr "Le message père n'est pas visible dans cette vue limitée."
 #: thread.c:1095
 msgid "Parent message is not available."
 msgstr "Le message père n'est pas disponible."
+
+#~ msgid "Invoking pgp..."
+#~ msgstr "Appel de pgp..."
 
 #~ msgid "Can't change 'important' flag on POP server."
 #~ msgstr "Impossible de changer l'indicateur 'important' sur le serveur POP."
