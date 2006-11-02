@@ -80,7 +80,7 @@
 	* copy.c, protos.h, sendlib.c: Do intelligent things with long
 	header lines.
 
-2006-08-16 17:38:57  RenÃ© Clerc  <rene@clerc.nl>  (brendan)
+2006-08-16 17:38:57  René Clerc  <rene@clerc.nl>  (brendan)
 
 	* po/nl.po: Updated translation.
 
@@ -310,7 +310,7 @@
 	* doc/manual.xml.head: Fix a typo in a macro demonstrating $my_
 	variables.
 
-2006-07-17 17:56:37  Adeodato SimÃ³  <dato@net.com.org.es>  (brendan)
+2006-07-17 17:56:37  Adeodato Simó  <dato@net.com.org.es>  (brendan)
 
 	* sendlib.c: Change formate of User-Agent header from
 	Mutt/Version-Date to Mutt/Version (Date).
@@ -437,7 +437,7 @@
 	* Makefile.am: Run cut under the C locale when parsing ChangeLog
 	for reldate.
 
-2006-06-13 07:52:52  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2006-06-13 07:52:52  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* cryptglue.c: typo
 
@@ -1108,7 +1108,7 @@
 	and attach_ignore_fundamental stripped, some debugging code
 	removed, some bones thrown to check_sec.sh.
 
-2005-10-04 05:24:00  SÃ©bastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
+2005-10-04 05:24:00  Sébastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* pager.c: The following patch has an effect only when the
 	braille_friendly variable is set. When this is the case, the
@@ -1439,7 +1439,7 @@
 
 	* po/ja.po: update
 
-2005-09-16 10:19:46  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2005-09-16 10:19:46  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -2233,12 +2233,12 @@
 	a way to do it that wouldn't annoy users where login == user
 	(the default value of $imap_login).
 
-2005-06-24 22:32:38  SÃ©bastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
+2005-06-24 22:32:38  Sébastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* crypt.c: Remove a warning about unused variable 'now' in
 	crypt_valid_passphrase
 
-2005-06-22 01:46:49  SÃ©bastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
+2005-06-22 01:46:49  Sébastien Hinderer  <Sebastien.Hinderer@libertysurf.fr>  (brendan)
 
 	* doc/devel-notes.txt: This patch fixes two small typos in
 	dev notes.
@@ -2257,7 +2257,7 @@
 (roessler)
 
 	* curs_main.c, init.h, menu.c, mutt.h: Add $braille_friendly.
-	Behavior originally suggested by SÃ©bastien Hinderer
+	Behavior originally suggested by Sébastien Hinderer
 	<Sebastien.Hinderer@libertysurf.fr>.
 
 2005-04-10 09:37:51  Johan Svedberg  <johan@svedberg.pp.se>  (roessler)
@@ -2288,7 +2288,7 @@
 
 	* po/id.po: update
 
-2005-03-22 19:49:31  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2005-03-22 19:49:31  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -2381,7 +2381,7 @@
 	1.5.8. The patch fixes menu_prev_line and menu_next_line which
 	didn't work with menu_context > 0 and also makes <current-middle>
 	work even if there are less messages than screen lines (thanks
-	to RenÃ© Clerc and Vincent Lefevre for spotting these issues).
+	to René Clerc and Vincent Lefevre for spotting these issues).
 
 2005-02-28 14:37:09  Udo Schweigert  <mutt@cert.siemens.de>  (roessler)
 
@@ -2642,7 +2642,7 @@
 	* signal.c: Trigger window resizing code when waking up from
 	suspension.
 
-2005-01-28 14:09:08  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2005-01-28 14:09:08  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -2653,7 +2653,7 @@
 	functions.h: gpgme integration.  See documentation for
 	$crypt_use_gpgme, and http://www.gnupg.org/aegypten2/.
 
-2005-01-28 13:00:36  Adeodato SimÃ³  <asp16@alu.ua.es>  (roessler)
+2005-01-28 13:00:36  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
 
 	* mutt_ssl_gnutls.c: The attached mini-patch from David Mosberger
 	<davidm@napali.hpl.hp.com> seems to fix a segfault in the ia64
@@ -2802,7 +2802,7 @@
 	* cvslog2changelog.pl: cvs log emits a timezone after the hour,
 	at least here. Adjust date regexp to handle that case.
 
-2005-01-15 17:45:01  Adeodato SimÃ³   <asp16@alu.ua.es>  (brendan)
+2005-01-15 17:45:01  Adeodato Simó   <asp16@alu.ua.es>  (brendan)
 
 	* po/cs.po: Major translation updates forgotten in mutt-po.
 	(I missed cs in the last commit).
@@ -2812,7 +2812,7 @@
 	* Makefile.am: Update commit targets to work when builddir !=
 	srcdir.
 
-2005-01-15 07:43:30  Adeodato SimÃ³  <asp16@alu.ua.es>	(brendan)
+2005-01-15 07:43:30  Adeodato Simó  <asp16@alu.ua.es>	(brendan)
 
 	* po/sv.po, po/ca.po, po/de.po, po/it.po: i18n updates.
 
@@ -2846,7 +2846,7 @@
 	* compose.c, hook.c, init.c, init.h, mutt.h, send.c: Add
 	send2-hook and fix alternates handling.
 
-2004-11-19 16:16:51  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2004-11-19 16:16:51  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* doc/manual.sgml.tail, doc/manual.sgml.head: Document
 	tag-prefix-cond.
@@ -2877,7 +2877,7 @@
 	wrong use of strncat in part of the mutt code base.
 
 	* smime.c: Fix bad code in smime_get_field_from_db.  Problem noted
-	by Ulf HÃ¤rnhammar <Ulf.Harnhammar.9485@student.uu.se>.
+	by Ulf Härnhammar <Ulf.Harnhammar.9485@student.uu.se>.
 
 2004-09-29 11:27:33  Thomas Roessler  <roessler@does-not-exist.org>
 (roessler)
@@ -2929,7 +2929,7 @@
 
 	* po/ca.po: update
 
-2004-08-17 16:06:48  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2004-08-17 16:06:48  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -2952,7 +2952,7 @@
 
 	* po/sv.po: update
 
-2004-08-16 21:37:43  Adeodato SimÃ³  <asp16@alu.ua.es>  (roessler)
+2004-08-16 21:37:43  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
 
 	* headers.c: as of current cvs, setting "PGP: E" (or similar)
 	when header-editing a message does not work. the OP is set
@@ -3043,7 +3043,7 @@
 
 	* mbox.c, mh.c, pgp.c, sendlib.c: Fix some compiler warnings.
 
-2004-07-19 21:39:28  Adeodato SimÃ³  <asp16@alu.ua.es>  (roessler)
+2004-07-19 21:39:28  Adeodato Simó  <asp16@alu.ua.es>  (roessler)
 
 	* doc/manual.sgml.head: Fixing a missing newline.
 
@@ -3204,7 +3204,7 @@
 
 	* parse.c: Fix #1759.
 
-2004-04-30 06:49:37  Urs JanÃen  <urs@tin.org>	(roessler)
+2004-04-30 06:49:37  Urs Janßen  <urs@tin.org>	(roessler)
 
 	* doc/Makefile.in, doc/mbox.man, doc/mmdf.man: mmdf(5), new mbox
 	(5).  (These changes have been sitting in my inbox for ages, tlr.)
@@ -3260,7 +3260,7 @@
 
 	* doc/mbox.man, doc/muttbug.man: Fix #1831, Debian#237827.
 
-2004-04-12 19:42:10  JoÃ«l Riou	<joel.riou@normalesup.org>  (roessler)
+2004-04-12 19:42:10  Joël Riou	<joel.riou@normalesup.org>  (roessler)
 
 	* globals.h, init.c, init.h: Introduce config_charset.
 
@@ -3462,7 +3462,7 @@
 
 	* init.c: Fix a memory management error.  Ouch.
 
-2004-01-04 10:55:20  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2004-01-04 10:55:20  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* init.h: Fix hide_missing / hide_limited documentation.
 
@@ -3572,7 +3572,7 @@
 
 	* po/eo.po: update
 
-2003-11-12 14:01:03  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2003-11-12 14:01:03  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -3689,7 +3689,7 @@
 
 	* menu.c: Fix #1656.
 
-2003-09-29 16:34:32  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2003-09-29 16:34:32  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* doc/muttrc.man.head: Fix typo.
 
@@ -3704,7 +3704,7 @@
 
 	* muttbug.sh.in: Adapt to new GNU coreutils by not using head (1).
 
-2003-09-19 13:09:59  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2003-09-19 13:09:59  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -4023,7 +4023,7 @@
 	* mutt.h, muttlib.c: Fix #1558.  (mutt_expand_fmt rewrite;
 	OPT_MAX wasn't maximal.)
 
-2003-04-15 13:17:05  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2003-04-15 13:17:05  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* compose.c: Fix two more cases in which ctrl-G is interpreted
 	as M_YES.
@@ -4061,7 +4061,7 @@
 (roessler)
 
 	* send.c: Try to fix a PGP / S/MIME-related problem.  Found by
-	Matt Larson <mlarson@verisign.com>, tracekd down by RenÃ© Clerc
+	Matt Larson <mlarson@verisign.com>, tracekd down by René Clerc
 	<rene@clerc.nl>.
 
 	* thread.c: Fix a segmentation fault.
@@ -4091,7 +4091,7 @@
 
 	* commands.c: Fix #1528.
 
-2003-04-07 07:57:49  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2003-04-07 07:57:49  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -4661,7 +4661,7 @@
 	* pgp.c: Detect in-line key material when checking for traditional
 	PGP messages.
 
-2002-12-22 20:04:51  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2002-12-22 20:04:51  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update
 
@@ -4807,7 +4807,7 @@
 
 	* lib.c: Fixing Thomas' screw-up in mutt_concat_path.
 
-2002-12-13 11:00:44  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2002-12-13 11:00:44  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* po/nl.po: update.
 
@@ -5169,7 +5169,7 @@
 	* handler.c: patch-1.5-me.long_qp.2 (#1371) - fix truncation
 	with overly long Q-P encoded lines.
 
-2002-10-22 21:24:07  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2002-10-22 21:24:07  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* commands.c: Add some missing #ifdefs.
 
@@ -5177,11 +5177,11 @@
 
 	* init.h, recvattach.c: Documentation fix; #1326
 
-2002-10-22 21:22:45  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2002-10-22 21:22:45  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* send.c: Another crypt_reply fix.
 
-2002-10-10 09:50:03  RenÃ© Clerc  <rene@clerc.nl>  (roessler)
+2002-10-10 09:50:03  René Clerc  <rene@clerc.nl>  (roessler)
 
 	* send.c: Make sure that crypt_reply replies with the same type,
 	despite a possible S/MIME default.
