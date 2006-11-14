@@ -235,6 +235,8 @@ static int pop_fetch_headers (CONTEXT *ctx)
     }
   }
 
+  mutt_message _("Fetching message headers...");
+
   if (ret == 0)
   {
     for (i = 0; i < old_count; i++)
@@ -243,8 +245,9 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
     for (i = old_count; i < new_count; i++)
     {
-      mutt_message (_("Fetching message headers... [%d/%d]"),
-		    i + 1 - old_count, new_count - old_count);
+      if (!ctx->quiet && ReadInc && (((i - old_count) % ReadInc) == 0 || (i - old_count) == 1))
+	mutt_message (_("Fetching message headers... [%d/%d]"),
+		      i + 1 - old_count, new_count - old_count);
 
 #if USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen)))
@@ -591,7 +594,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
 /* update POP mailbox - delete messages from server */
 int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  int i, ret;
+  int i, j, ret = 0;
   char buf[LONG_STRING];
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
 #ifdef USE_HCACHE
@@ -611,10 +614,13 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     hc = mutt_hcache_open (HeaderCache, ctx->path);
 #endif
 
-    for (i = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
+    for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
     {
       if (ctx->hdrs[i]->deleted)
       {
+	j++;
+	if (!ctx->quiet && WriteInc && ((j % WriteInc) == 0 || j == 1))
+	  mutt_message (_("Deleting messages [%d/%d]..."), j, ctx->deleted);
 	snprintf (buf, sizeof (buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
 	{
