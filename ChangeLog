@@ -1,4 +1,6 @@
-2006-11-14 18:39:54  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-11-14 18:52:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* pop.c: Make POP respect $read_inc/$write_inc.
 
 	* doc/Makefile.am, doc/manual.xml.head: Add performance tuning
 	section to manual.
