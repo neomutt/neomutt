@@ -132,7 +132,8 @@ mutt.1: $(srcdir)/mutt.man
 stamp-doc-xml: $(top_srcdir)/makedoc.c $(top_srcdir)/init.h manual.xml.head manual.xml.tail \
                $(top_srcdir)/VERSION ../reldate.h
 	$(MAKE) ../makedoc$(EXEEXT)
-	( sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` (`cut -d\\\" -f2 ../reldate.h`)/" $(srcdir)/manual.xml.head ;\
+	( date=`cut -d\" -f2 ../reldate.h`; \
+	  sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` ($$date)/" $(srcdir)/manual.xml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ) |      \
 		cat - $(srcdir)/manual.xml.tail > manual.xml
 	touch stamp-doc-xml
