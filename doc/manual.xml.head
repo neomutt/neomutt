@@ -4662,7 +4662,7 @@ Details on how to enable either of these techniques are given in the
 following subsections.
 </para>
 
-<sect2>
+<sect2 id="header-caching">
 <title>Header caching</title>
 
 <para>
@@ -4712,7 +4712,7 @@ named <literal>md5</literal>, depending on your operating system.
 
 </sect2>
 
-<sect2>
+<sect2 id="body-caching">
 <title>Body caching</title>
 
 <para>
@@ -5643,6 +5643,75 @@ mime_lookup application/octet-stream application/X-Lotus-Manuscript
 In addition, the unmime&lowbar;lookup command may be used to disable this feature
 for any particular mime-type if it had been set, for example, in a global
 muttrc.
+</para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="tuning">
+<title>Performance tuning</title>
+
+<sect1 id="tuning-mailboxes">
+<title>Reading and writing mailboxes</title>
+
+<para>
+Mutt's performance when reading mailboxes can be improved in two ways:
+</para>
+
+<para>
+<orderedlist>
+<listitem><para>
+For remote folders (IMAP and POP) as well as folders using
+one-file-per message storage (Maildir and MH), mutt's
+performance can be greatly improved using
+<link linkend="header-caching">header caching</link>.
+Using a single database per folder may further increase
+performance.
+</para></listitem>
+<listitem><para>
+Mutt provides the <link linkend="read-inc">&dollar;read&lowbar;inc</link>
+and <link linkend="write-inc">&dollar;write&lowbar;inc</link>
+variables to specify at which rate to update progress
+counters. If these values are too low, mutt may spend more
+time on updating the progress counter than it spends on
+actually reading/writing folders.
+</para>
+<para>
+For example, when opening a maildir folder with a few
+thousand messages, the default value for
+<link linkend="read-inc">&dollar;read&lowbar;inc</link>
+may be too low. It can be tuned on on a folder-basis using
+<link linkend="folder-hook">folder-hooks</link>:
+
+<screen>
+# use very high $read_inc to speed up reading hcache'd maildirs
+folder-hook . 'set read_inc=1000'
+# use lower value for reading slower remote IMAP folders
+folder-hook ^imap 'set read_inc=100'
+# use even lower value for reading even slower remote POP folders
+folder-hook ^pop 'set read_inc=1'</screen>
+</para>
+</listitem>
+</orderedlist>
+</para>
+
+</sect1>
+
+<sect1 id="tuning-messages">
+<title>Reading messages from remote folders</title>
+
+<para>
+Reading messages from remote folders such as IMAP an POP can be
+slow especially for large mailboxes since mutt only caches a very
+limited number of recently viewed messages (usually 10) per
+session (so that it will be gone for the next session.)
+</para>
+
+<para>
+To improve performance and permanently cache whole messages,
+please refer to mutt's so-called
+<link linkend="body-caching">body caching</link> for details.
 </para>
 
 </sect1>
