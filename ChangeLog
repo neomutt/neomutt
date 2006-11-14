@@ -1,3 +1,7 @@
+2006-11-14 18:56:29  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
+
+	* doc/Makefile.am: Work around pdksh bug in xml doc make target.
+
 2006-11-14 18:52:10  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* pop.c: Make POP respect $read_inc/$write_inc.
