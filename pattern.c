@@ -34,6 +34,7 @@
 #include <stdarg.h>
 
 #include "mutt_crypt.h"
+#include "mutt_curses.h"
 
 #ifdef USE_IMAP
 #include "mx.h"
@@ -1262,6 +1263,7 @@ int mutt_pattern_func (int op, char *prompt)
   char buf[LONG_STRING] = "", *simple, error[STRING];
   BUFFER err;
   int i;
+  progress_t progress;
 
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
   if (mutt_get_field (prompt, buf, sizeof (buf), M_PATTERN | M_CLEAR) != 0 || !buf[0])
@@ -1285,8 +1287,10 @@ int mutt_pattern_func (int op, char *prompt)
   if (Context->magic == M_IMAP && imap_search (Context, pat) < 0)
     return -1;
 #endif
-  
-  mutt_message _("Executing command on matching messages...");
+
+  mutt_progress_init (&progress, _("Executing command on matching messages..."),
+		      PROG_MSG, ReadInc,
+		      (op == M_LIMIT) ? Context->msgcount : Context->vcount);
 
 #define THIS_BODY Context->hdrs[i]->content
 
@@ -1298,6 +1302,7 @@ int mutt_pattern_func (int op, char *prompt)
 
     for (i = 0; i < Context->msgcount; i++)
     {
+      mutt_progress_update (&progress, i);
       /* new limit pattern implicitly uncollapses all threads */
       Context->hdrs[i]->virtual = -1;
       Context->hdrs[i]->limited = 0;
@@ -1318,6 +1323,7 @@ int mutt_pattern_func (int op, char *prompt)
   {
     for (i = 0; i < Context->vcount; i++)
     {
+      mutt_progress_update (&progress, i);
       if (mutt_pattern_exec (pat, M_MATCH_FULL_ADDRESS, Context, Context->hdrs[Context->v2r[i]]))
       {
 	switch (op)
@@ -1373,7 +1379,9 @@ int mutt_search_command (int cur, int op)
   BUFFER err;
   int incr;
   HEADER *h;
-  
+  progress_t progress;
+  const char* msg = NULL;
+
   if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
   {
     strfcpy (buf, LastSearch, sizeof (buf));
@@ -1429,13 +1437,17 @@ int mutt_search_command (int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
+  mutt_progress_init (&progress, _("Searching..."), PROG_MSG,
+		      ReadInc, Context->vcount);
+
   for (i = cur + incr, j = 0 ; j != Context->vcount; j++)
   {
+    mutt_progress_update (&progress, j);
     if (i > Context->vcount - 1)
     {
       i = 0;
       if (option (OPTWRAPSEARCH))
-        mutt_message _("Search wrapped to top.");
+        msg = _("Search wrapped to top.");
       else 
       {
         mutt_message _("Search hit bottom without finding match");
@@ -1446,7 +1458,7 @@ int mutt_search_command (int cur, int op)
     {
       i = Context->vcount - 1;
       if (option (OPTWRAPSEARCH))
-        mutt_message _("Search wrapped to bottom.");
+        msg = _("Search wrapped to bottom.");
       else 
       {
         mutt_message _("Search hit top without finding match");
@@ -1459,14 +1471,24 @@ int mutt_search_command (int cur, int op)
     {
       /* if we've already evaulated this message, use the cached value */
       if (h->matched)
+      {
+	mutt_clear_error();
+	if (msg && *msg)
+	  mutt_message (msg);
 	return i;
+      }
     }
     else
     {
       /* remember that we've already searched this message */
       h->searched = 1;
       if ((h->matched = (mutt_pattern_exec (SearchPattern, M_MATCH_FULL_ADDRESS, Context, h) > 0)))
+      {
+	mutt_clear_error();
+	if (msg && *msg)
+	  mutt_message (msg);
 	return i;
+      }
     }
 
     if (SigInt)
