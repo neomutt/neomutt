@@ -1,3 +1,8 @@
+2006-11-15 18:53:15  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* curs_lib.c, imap/imap.c, imap/message.c, mutt_curses.h, pop.c,
+	pop_lib.c: Unify size and count progress display.
+
 2006-11-14 18:56:29  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (brendan)
 
 	* doc/Makefile.am: Work around pdksh bug in xml doc make target.
