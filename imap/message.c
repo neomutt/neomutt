@@ -71,6 +71,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   int fetchlast = 0;
   int maxuid = 0;
   const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
+  progress_t progress;
 
 #if USE_HCACHE
   header_cache_t *hc = NULL;
@@ -133,6 +134,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
   if (evalhc)
   {
+    mutt_progress_init (&progress, _("Evaluating cache..."),
+			PROG_MSG, ReadInc, msgend + 1);
+
     snprintf (buf, sizeof (buf),
       "UID FETCH 1:%u (UID FLAGS)", *uidnext - 1);
     FREE (&uidnext);
@@ -141,9 +145,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   
     for (msgno = msgbegin; msgno <= msgend ; msgno++)
     {
-      if (ReadInc && (!msgno || ((msgno+1) % ReadInc == 0)))
-        mutt_message (_("Evaluating cache... [%d/%d]"), msgno + 1,
-          msgend + 1);
+      mutt_progress_update (&progress, msgno + 1);
   
       memset (&h, 0, sizeof (h));
       h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
@@ -211,11 +213,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
 #endif /* USE_HCACHE */
 
+  mutt_progress_init (&progress, _("Fetching message headers..."),
+		      PROG_MSG, ReadInc, msgend + 1);
+
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    if (ReadInc && (msgno == msgbegin || ((msgno+1) % ReadInc == 0)))
-      mutt_message (_("Fetching message headers... [%d/%d]"), msgno + 1,
-        msgend + 1);
+    mutt_progress_update (&progress, msgno + 1);
 
     if (msgno + 1 > fetchlast)
     {
@@ -454,9 +457,8 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    imap_error ("imap_fetch_message()", buf);
 	    goto bail;
 	  }
-          progressbar.size = bytes;
-          progressbar.msg = _("Fetching message...");
-          mutt_progress_bar (&progressbar, 0);
+	  mutt_progress_init (&progressbar, _("Fetching message..."),
+			      PROG_SIZE, NetInc, bytes);
 	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
 	    goto bail;
 	  /* pick up trailing line */
@@ -593,10 +595,9 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   }
   rewind (fp);
 
-  progressbar.msg = _("Uploading message...");
-  progressbar.size = len;
-  mutt_progress_bar (&progressbar, 0);
-  
+  mutt_progress_init (&progressbar, _("Uploading message..."),
+		      PROG_SIZE, NetInc, len);
+
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "APPEND %s (%s%s%s%s%s) {%lu}", mbox,
 	    msg->flags.read    ? "\\Seen"      : "",
@@ -639,7 +640,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     {
       sent += len;
       flush_buffer(buf, &len, idata->conn);
-      mutt_progress_bar (&progressbar, sent);
+      mutt_progress_update (&progressbar, sent);
     }
   }
   

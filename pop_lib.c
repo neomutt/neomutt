@@ -496,7 +496,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     else
     {
       if (progressbar)
-	mutt_progress_bar (progressbar, pos);
+	mutt_progress_update (progressbar, pos);
       if (ret == 0 && funct (inbuf, data) < 0)
 	ret = -3;
       lenbuf = 0;
@@ -550,9 +550,8 @@ int pop_reconnect (CONTEXT *ctx)
     {
       int i;
 
-      progressbar.msg = _("Verifying message indexes...");
-      progressbar.size = 0;
-      mutt_progress_bar (&progressbar, 0);
+      mutt_progress_init (&progressbar, _("Verifying message indexes..."),
+			  PROG_SIZE, NetInc, 0);
 
       for (i = 0; i < ctx->msgcount; i++)
 	ctx->hdrs[i]->refno = -1;

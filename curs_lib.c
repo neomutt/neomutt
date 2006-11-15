@@ -326,30 +326,63 @@ void mutt_curses_message (const char *fmt, ...)
   unset_option (OPTMSGERR);
 }
 
-#ifdef USE_SOCKET
-void mutt_progress_bar (progress_t* progress, long pos)
+void mutt_progress_init (progress_t* progress, const char *msg,
+			 unsigned short flags, unsigned short inc,
+			 long size)
+{
+  if (!progress)
+    return;
+  memset (progress, 0, sizeof (progress_t));
+  progress->inc = inc;
+  progress->flags = flags;
+  progress->msg = msg;
+  progress->size = size;
+  mutt_progress_update (progress, 0);
+}
+
+void mutt_progress_update (progress_t* progress, long pos)
 {
   char posstr[SHORT_STRING];
+  short update = 0;
 
   if (!pos)
   {
-    if (!NetInc)
+    if (!progress->inc)
       mutt_message (progress->msg);
-    else {
+    else
+    {
       if (progress->size)
-	mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
+      {
+	if (progress->flags & PROG_SIZE)
+	  mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
+	else
+	  snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld", progress->size);
+      }
       progress->pos = 0;
     }
   }
 
-  if (!NetInc)
+  if (!progress->inc)
     return;
 
-  if (pos >= progress->pos + (NetInc << 10))
+  if (progress->flags & PROG_SIZE)
+  {
+    if (pos >= progress->pos + (progress->inc << 10))
+    {
+      pos = pos / (progress->inc << 10) * (progress->inc << 10);
+      mutt_pretty_size (posstr, sizeof (posstr), pos);
+      update = 1;
+    }
+  }
+  else if (pos >= progress->pos + progress->inc)
+  {
+    snprintf (posstr, sizeof (posstr), "%ld", pos);
+    update = 1;
+  }
+
+  if (update)
   {
     progress->pos = pos;
-    pos = pos / (NetInc << 10) * (NetInc << 10);
-    mutt_pretty_size (posstr, sizeof (posstr), pos);
     if (progress->size)
       mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
     else
@@ -359,7 +392,6 @@ void mutt_progress_bar (progress_t* progress, long pos)
   if (pos >= progress->size)
     mutt_clear_error ();
 }
-#endif
 
 void mutt_show_error (void)
 {

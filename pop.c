@@ -197,6 +197,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
   int i, ret, old_count, new_count;
   unsigned short hcached = 0, bcached;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+  progress_t progress;
 
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
@@ -235,7 +236,8 @@ static int pop_fetch_headers (CONTEXT *ctx)
     }
   }
 
-  mutt_message _("Fetching message headers...");
+  mutt_progress_init (&progress, _("Fetching message headers..."),
+		      PROG_MSG, ReadInc, 0);
 
   if (ret == 0)
   {
@@ -245,10 +247,8 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
     for (i = old_count; i < new_count; i++)
     {
-      if (!ctx->quiet && ReadInc && (((i - old_count) % ReadInc) == 0 || (i - old_count) == 1))
-	mutt_message (_("Fetching message headers... [%d/%d]"),
-		      i + 1 - old_count, new_count - old_count);
-
+      if (!ctx->quiet)
+	mutt_progress_update (&progress, i + 1 - old_count);
 #if USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen)))
       {
@@ -509,9 +509,8 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
       return -1;
     }
 
-    progressbar.size = h->content->length + h->content->offset - 1;
-    progressbar.msg = _("Fetching message...");
-    mutt_progress_bar (&progressbar, 0);
+    mutt_progress_init (&progressbar, _("Fetching message..."),
+			PROG_SIZE, NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     if (!(msg->fp = mutt_bcache_put (pop_data->bcache, h->data)))
@@ -597,6 +596,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
   int i, j, ret = 0;
   char buf[LONG_STRING];
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+  progress_t progress;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
 #endif
@@ -608,7 +608,8 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (pop_reconnect (ctx) < 0)
       return -1;
 
-    mutt_message (_("Marking %d messages deleted..."), ctx->deleted);
+    mutt_progress_init (&progress, _("Marking messages deleted..."),
+			PROG_MSG, WriteInc, ctx->deleted);
 
 #if USE_HCACHE
     hc = mutt_hcache_open (HeaderCache, ctx->path);
@@ -619,8 +620,8 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
       if (ctx->hdrs[i]->deleted)
       {
 	j++;
-	if (!ctx->quiet && WriteInc && ((j % WriteInc) == 0 || j == 1))
-	  mutt_message (_("Deleting messages [%d/%d]..."), j, ctx->deleted);
+	if (!ctx->quiet)
+	  mutt_progress_update (&progress, j);
 	snprintf (buf, sizeof (buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
 	{

@@ -141,15 +141,23 @@ typedef struct color_line
   struct color_line *next;
 } COLOR_LINE;
 
+#define PROG_SIZE	(1<<0)	/* traffic-based progress */
+#define PROG_MSG	(1<<1)	/* message-based progress */
+
 typedef struct
 {
+  unsigned short inc;
+  unsigned short flags;
   const char* msg;
   long pos;
   long size;
   char sizestr[SHORT_STRING];
 } progress_t;
 
-void mutt_progress_bar (progress_t* progress, long pos);
+void mutt_progress_init (progress_t* progress, const char *msg,
+			 unsigned short flags, unsigned short inc,
+			 long size);
+void mutt_progress_update (progress_t* progress, long pos);
 
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
