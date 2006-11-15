@@ -1,4 +1,6 @@
-2006-11-15 18:53:15  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-11-15 18:59:27  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* pattern.c: Display progress during searches.
 
 	* curs_lib.c, imap/imap.c, imap/message.c, mutt_curses.h, pop.c,
 	pop_lib.c: Unify size and count progress display.
