@@ -426,7 +426,7 @@ int mutt_buffy_list (void)
 {
   BUFFY *tmp;
   char path[_POSIX_PATH_MAX];
-  char buffylist[160];
+  char buffylist[2*STRING];
   int pos;
   int first;
 
