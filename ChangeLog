@@ -1,3 +1,14 @@
+2006-11-20 17:45:45  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* mh.c: Port MH/Maildir to new progress update methods.
+
+2006-11-19 05:23:44  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* pop.c: Restore mail fetch count to POP progress bar.
+
+	* buffy.c: Grow buffy notification to 512 bytes, for large
+	terminals.
+
 2006-11-15 18:59:27  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* pattern.c: Display progress during searches.
