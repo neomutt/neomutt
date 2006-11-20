@@ -5716,6 +5716,40 @@ please refer to mutt's so-called
 
 </sect1>
 
+<sect1 id="tuning-search">
+<title>Searching and limiting</title>
+
+<para>
+When searching mailboxes either via a search or a limit action, for
+some patterns mutt distinguishes between regular expression and string
+searches. For regular expressions, patterns are prefixed with
+``&tilde;'' and with ``='' for string searches.
+</para>
+
+<para>
+Even though a regular expression search is fast, it's several times
+slower than a pure string search which is noticable especially on large
+folders. As a consequence, a string search should be used instead of a
+regular expression search if the user already knows enough about the
+search pattern.
+</para>
+
+<para>
+For example, when limiting a large folder to all messages sent to or by
+an author, it's much faster to search for the initial part of an e-mail
+address via <literal>=Luser@</literal> instead of
+<literal>&tilde;Luser@</literal>. This is especially true for searching
+message bodies since a larger amount of input has to be searched.
+</para>
+
+<para>
+Please note that string search is an exact case-sensitive search
+while a regular expression search with only lower-case letters performs
+a case-insensitive search.
+</para>
+
+</sect1>
+
 </chapter>
 
 <chapter id="reference">
