@@ -2243,15 +2243,17 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set to a value greater than 0, Mutt will display which message it
-  ** is currently on when reading a mailbox.  The message is printed after
-  ** \fIread_inc\fP messages have been read (e.g., if set to 25, Mutt will
-  ** print a message when it reads message 25, and then again when it gets
+  ** is currently on when reading a mailbox or when performing search actions
+  ** such as search and limit. The message is printed after
+  ** \fIread_inc\fP messages have been read or searched (e.g., if set to 25, Mutt will
+  ** print a message when it is at message 25, and then again when it gets
   ** to message 50).  This variable is meant to indicate progress when
-  ** reading large mailboxes which may take some time.
+  ** reading or searching large mailboxes which may take some time.
   ** When set to 0, only a single message will appear before the reading
   ** the mailbox.
   ** .pp
-  ** Also see the ``$$write_inc'' variable.
+  ** Also see the ``$$write_inc'' variable and the ``Tuning'' section of the
+  ** manual for performance considerations.
   */
   { "read_only",	DT_BOOL, R_NONE, OPTREADONLY, 0 },
   /*
