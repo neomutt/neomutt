@@ -36,6 +36,7 @@
 #if USE_HCACHE
 #include "hcache.h"
 #endif
+#include "mutt_curses.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -642,7 +643,8 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
 
 static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
 				const char *subdir, const char *fname,
-				int *count, int is_old, ino_t inode
+				int *count, int is_old, progress_t *progress,
+				ino_t inode
 #if USE_HCACHE
 				, header_cache_t *hc
 #endif
@@ -681,8 +683,8 @@ static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
     if (count)
     {
       (*count)++;
-      if (!ctx->quiet && ReadInc && ((*count % ReadInc) == 0 || *count == 1))
-	mutt_message (_("Reading %s... %d"), ctx->path, *count);
+      if (!ctx->quiet && progress)
+	mutt_progress_update (progress, *count);
     }
 
     if (subdir)
@@ -726,7 +728,8 @@ int mh_valid_message (const char *s)
 }
 
 static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
-			      const char *subdir, int *count)
+			      const char *subdir, int *count,
+			      progress_t *progress)
 {
   DIR *dirp;
   struct dirent *de;
@@ -764,7 +767,8 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
     dprint (2,
 	    (debugfile, "%s:%d: parsing %s\n", __FILE__, __LINE__,
 	     de->d_name));
-    maildir_parse_entry (ctx, last, subdir, de->d_name, count, is_old, 
+    maildir_parse_entry (ctx, last, subdir, de->d_name, count, is_old,
+			 progress,
 #if HAVE_DIRENT_D_INO
 			 de->d_ino
 #else
@@ -937,7 +941,8 @@ static struct maildir* maildir_sort_inode(struct maildir* list)
  * This function does the second parsing pass for a maildir-style
  * folder.
  */
-void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md)
+void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
+			      progress_t *progress)
 {
   struct maildir *p;
   char fn[_POSIX_PATH_MAX];
@@ -958,8 +963,8 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md)
     if (! (p && p->h && !p->header_parsed))
       continue;
 
-    if (!ctx->quiet && ReadInc && ((count % ReadInc) == 0 || count == 1))
-      mutt_message (_("Reading %s... %d"), ctx->path, count);
+    if (!ctx->quiet && progress)
+      mutt_progress_update (progress, count);
 
 #if USE_HCACHE
     data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
@@ -1012,16 +1017,19 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   struct mh_sequences mhs;
   struct maildir **last;
   int count;
-
+  char msgbuf[STRING];
+  progress_t progress;
 
   memset (&mhs, 0, sizeof (mhs));
+  snprintf (msgbuf, sizeof (msgbuf), "Reading %s...", ctx->path);
+  mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
 
   maildir_update_mtime (ctx);
 
   md = NULL;
   last = &md;
   count = 0;
-  if (maildir_parse_dir (ctx, &last, subdir, &count) == -1)
+  if (maildir_parse_dir (ctx, &last, subdir, &count, &progress) == -1)
     return -1;
 
   if (ctx->magic == M_MH)
@@ -1036,7 +1044,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 #endif /* USE_INODESORT */
 
   if (ctx->magic == M_MAILDIR)
-    maildir_delayed_parsing (ctx, md);
+    maildir_delayed_parsing (ctx, md, &progress);
 
   maildir_move_to_context (ctx, &md);
   return 0;
@@ -1727,9 +1735,9 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   md = NULL;
   last = &md;
   if (changed & 1)
-    maildir_parse_dir (ctx, &last, "new", NULL);
+    maildir_parse_dir (ctx, &last, "new", NULL, NULL);
   if (changed & 2)
-    maildir_parse_dir (ctx, &last, "cur", NULL);
+    maildir_parse_dir (ctx, &last, "cur", NULL, NULL);
 
   /* we create a hash table keyed off the canonical (sans flags) filename
    * of each message we scanned.  This is used in the loop over the
@@ -1805,7 +1813,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
     maildir_update_tables (ctx, index_hint);
   
   /* do any delayed parsing we need to do. */
-  maildir_delayed_parsing (ctx, md);
+  maildir_delayed_parsing (ctx, md, NULL);
 
   /* Incorporate new messages */
   have_new = maildir_move_to_context (ctx, &md);
@@ -1874,7 +1882,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   
   md   = NULL;
   last = &md;
-  maildir_parse_dir (ctx, &last, NULL, NULL);
+  maildir_parse_dir (ctx, &last, NULL, NULL, NULL);
   mh_read_sequences (&mhs, ctx->path);
   mh_update_maildir (md, &mhs);
   mhs_free_sequences (&mhs);
