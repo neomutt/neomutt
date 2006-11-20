@@ -1,4 +1,7 @@
-2006-11-20 17:49:56  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-11-20 17:56:33  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* doc/manual.xml.head: Some notes on the performance of simple
+	strings versus regular expressions in searches.
 
 	* init.h: Note that $read_inc also affects search/limit progress
 	updates now.
