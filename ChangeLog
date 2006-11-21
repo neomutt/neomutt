@@ -1,4 +1,6 @@
-2006-11-21 19:04:57  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+2006-11-21 19:06:23  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* mh.c: Teach maildir and MH to use $write_inc.
 
 	* mbox.c: Teach mbox/mmdf to use the new progress update API.
 
