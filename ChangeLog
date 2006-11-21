@@ -1,3 +1,8 @@
+2006-11-21 03:06:03  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/auth_sasl.c: If a method list has been given, fall back
+	to the next authenticator whenever an attempt returns NO or BAD.
+
 2006-11-20 17:56:33  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* doc/manual.xml.head: Some notes on the performance of simple
