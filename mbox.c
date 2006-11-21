@@ -27,6 +27,7 @@
 #include "mx.h"
 #include "sort.h"
 #include "copy.h"
+#include "mutt_curses.h"
 
 #include <sys/stat.h>
 #include <dirent.h>
@@ -91,6 +92,8 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
 #endif
+  progress_t progress;
+  char msgbuf[STRING];
 
   if (stat (ctx->path, &sb) == -1)
   {
@@ -114,7 +117,10 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   tz = mutt_local_tz (0);
 
   buf[sizeof (buf) - 1] = 0;
-  
+
+  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+  mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
+
   FOREVER
   {
     if (fgets (buf, sizeof (buf) - 1, ctx->fp) == NULL)
@@ -123,12 +129,10 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     if (mutt_strcmp (buf, MMDF_SEP) == 0)
     {
       loc = ftello (ctx->fp);
-      
-      count++;
-      if (!ctx->quiet && ReadInc && ((count % ReadInc == 0) || count == 1))
-	mutt_message (_("Reading %s... %d (%d%%)"), ctx->path, count,
-		      (int)(loc / (ctx->size / 100 + 1)));
 
+      count++;
+      if (!ctx->quiet)
+	mutt_progress_update (&progress, count);
 
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
@@ -235,6 +239,8 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 #ifdef NFS_ATTRIBUTE_HACK
   struct utimbuf newtime;
 #endif
+  progress_t progress;
+  char msgbuf[STRING];
 
   /* Save information about the folder at the time we opened it. */
   if (stat (ctx->path, &sb) == -1)
@@ -262,6 +268,9 @@ int mbox_parse_mailbox (CONTEXT *ctx)
      date received */
   tz = mutt_local_tz (0);
 
+  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+  mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
+
   loc = ftello (ctx->fp);
   while (fgets (buf, sizeof (buf), ctx->fp) != NULL)
   {
@@ -284,9 +293,8 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
       count++;
 
-      if (!ctx->quiet && ReadInc && ((count % ReadInc == 0) || count == 1))
-	mutt_message (_("Reading %s... %d (%d%%)"), ctx->path, count,
-		      (int)(ftell (ctx->fp) / (ctx->size / 100 + 1)));
+      if (!ctx->quiet)
+	mutt_progress_update (&progress, count);
 
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
@@ -681,6 +689,8 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   struct m_update_t *newOffset = NULL;
   struct m_update_t *oldOffset = NULL;
   FILE *fp = NULL;
+  progress_t progress;
+  char msgbuf[STRING];
 
   /* sort message by their position in the mailbox on disk */
   if (Sort != SORT_ORDER)
@@ -772,8 +782,13 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   newOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
   oldOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
 
+  snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+  mutt_progress_init (&progress, msgbuf, PROG_MSG, WriteInc, ctx->msgcount);
+
   for (i = first, j = 0; i < ctx->msgcount; i++)
   {
+    if (!ctx->quiet)
+      mutt_progress_update (&progress, i);
     /*
      * back up some information which is needed to restore offsets when
      * something fails.
@@ -784,13 +799,10 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     oldOffset[i-first].body   = ctx->hdrs[i]->content->offset;
     oldOffset[i-first].lines  = ctx->hdrs[i]->lines;
     oldOffset[i-first].length = ctx->hdrs[i]->content->length;
-    
+
     if (! ctx->hdrs[i]->deleted)
     {
       j++;
-      if (!ctx->quiet && WriteInc && ((i % WriteInc) == 0 || j == 1))
-	mutt_message (_("Writing messages... %d (%d%%)"), i,
-		      (int)(ftell (ctx->fp) / (ctx->size / 100 + 1)));
 
       if (ctx->magic == M_MMDF)
       {
