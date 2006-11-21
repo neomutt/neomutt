@@ -1021,7 +1021,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   progress_t progress;
 
   memset (&mhs, 0, sizeof (mhs));
-  snprintf (msgbuf, sizeof (msgbuf), "Reading %s...", ctx->path);
+  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
   mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
 
   maildir_update_mtime (ctx);
@@ -1507,6 +1507,8 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 #if USE_HCACHE
   header_cache_t *hc = NULL;
 #endif /* USE_HCACHE */
+  char msgbuf[STRING];
+  progress_t progress;
 
   if (ctx->magic == M_MH)
     i = mh_check_mailbox (ctx, index_hint);
@@ -1521,8 +1523,14 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     hc = mutt_hcache_open(HeaderCache, ctx->path);
 #endif /* USE_HCACHE */
 
+  snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+  mutt_progress_init (&progress, msgbuf, PROG_MSG, WriteInc, ctx->msgcount);
+
   for (i = 0; i < ctx->msgcount; i++)
   {
+    if (!ctx->quiet)
+      mutt_progress_update (&progress, i);
+
     if (ctx->hdrs[i]->deleted
 	&& (ctx->magic != M_MAILDIR || !option (OPTMAILDIRTRASH)))
     {
