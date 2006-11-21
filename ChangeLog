@@ -1,3 +1,7 @@
+2006-11-21 19:04:57  Rocco Rutte  <pdmef@gmx.net>  (brendan)
+
+	* mbox.c: Teach mbox/mmdf to use the new progress update API.
+
 2006-11-21 03:06:03  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/auth_sasl.c: If a method list has been given, fall back
