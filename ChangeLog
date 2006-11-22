@@ -1,3 +1,8 @@
+2006-11-22 23:08:01  David Champion  <dgc@uchicago.edu>  (brendan)
+
+	* sort.c: Sort spam scores numerically even when they are in
+	the form of floats or negative numbers.
+
 2006-11-21 19:06:23  Rocco Rutte  <pdmef@gmx.net>  (brendan)
 
 	* mh.c: Teach maildir and MH to use $write_inc.
