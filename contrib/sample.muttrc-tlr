@@ -201,7 +201,7 @@ set   send_charset="us-ascii:iso-8859-1:iso-8859-15:iso-8859-2:utf-8"
 set   confirmcreate			# Ask me about creating new files
 unset confirmappend			# Don't ask me about appending to files
 set   delete=yes			# Don't ask me whether or not I meant to delete messages
-set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
+# set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
 set   edit_hdrs				# I want to edit the headers.
 set   editor="/usr/bin/jed %s -f 'mail_mode();'"	
  					# Invoke jed with mail_mode.  This may
