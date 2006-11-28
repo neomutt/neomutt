@@ -1022,7 +1022,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   memset (&mhs, 0, sizeof (mhs));
   snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
+  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
 
   maildir_update_mtime (ctx);
 
@@ -1524,7 +1524,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 #endif /* USE_HCACHE */
 
   snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, PROG_MSG, WriteInc, ctx->msgcount);
+  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, WriteInc, ctx->msgcount);
 
   for (i = 0; i < ctx->msgcount; i++)
   {

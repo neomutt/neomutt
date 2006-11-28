@@ -135,7 +135,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   if (evalhc)
   {
     mutt_progress_init (&progress, _("Evaluating cache..."),
-			PROG_MSG, ReadInc, msgend + 1);
+			M_PROGRESS_MSG, ReadInc, msgend + 1);
 
     snprintf (buf, sizeof (buf),
       "UID FETCH 1:%u (UID FLAGS)", *uidnext - 1);
@@ -214,7 +214,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 #endif /* USE_HCACHE */
 
   mutt_progress_init (&progress, _("Fetching message headers..."),
-		      PROG_MSG, ReadInc, msgend + 1);
+		      M_PROGRESS_MSG, ReadInc, msgend + 1);
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
@@ -458,7 +458,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    goto bail;
 	  }
 	  mutt_progress_init (&progressbar, _("Fetching message..."),
-			      PROG_SIZE, NetInc, bytes);
+			      M_PROGRESS_SIZE, NetInc, bytes);
 	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
 	    goto bail;
 	  /* pick up trailing line */
@@ -596,7 +596,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   rewind (fp);
 
   mutt_progress_init (&progressbar, _("Uploading message..."),
-		      PROG_SIZE, NetInc, len);
+		      M_PROGRESS_SIZE, NetInc, len);
 
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
   snprintf (buf, sizeof (buf), "APPEND %s (%s%s%s%s%s) {%lu}", mbox,

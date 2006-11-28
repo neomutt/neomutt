@@ -141,8 +141,8 @@ typedef struct color_line
   struct color_line *next;
 } COLOR_LINE;
 
-#define PROG_SIZE	(1<<0)	/* traffic-based progress */
-#define PROG_MSG	(1<<1)	/* message-based progress */
+#define M_PROGRESS_SIZE		(1<<0)	/* traffic-based progress */
+#define M_PROGRESS_MSG		(1<<1)	/* message-based progress */
 
 typedef struct
 {

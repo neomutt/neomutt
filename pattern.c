@@ -1289,7 +1289,7 @@ int mutt_pattern_func (int op, char *prompt)
 #endif
 
   mutt_progress_init (&progress, _("Executing command on matching messages..."),
-		      PROG_MSG, ReadInc,
+		      M_PROGRESS_MSG, ReadInc,
 		      (op == M_LIMIT) ? Context->msgcount : Context->vcount);
 
 #define THIS_BODY Context->hdrs[i]->content
@@ -1437,7 +1437,7 @@ int mutt_search_command (int cur, int op)
   if (op == OP_SEARCH_OPPOSITE)
     incr = -incr;
 
-  mutt_progress_init (&progress, _("Searching..."), PROG_MSG,
+  mutt_progress_init (&progress, _("Searching..."), M_PROGRESS_MSG,
 		      ReadInc, Context->vcount);
 
   for (i = cur + incr, j = 0 ; j != Context->vcount; j++)

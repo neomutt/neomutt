@@ -551,7 +551,7 @@ int pop_reconnect (CONTEXT *ctx)
       int i;
 
       mutt_progress_init (&progressbar, _("Verifying message indexes..."),
-			  PROG_SIZE, NetInc, 0);
+			  M_PROGRESS_SIZE, NetInc, 0);
 
       for (i = 0; i < ctx->msgcount; i++)
 	ctx->hdrs[i]->refno = -1;

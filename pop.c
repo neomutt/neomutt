@@ -237,7 +237,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
   }
 
   mutt_progress_init (&progress, _("Fetching message headers..."),
-		      PROG_MSG, ReadInc, new_count - old_count);
+		      M_PROGRESS_MSG, ReadInc, new_count - old_count);
 
   if (ret == 0)
   {
@@ -510,7 +510,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     }
 
     mutt_progress_init (&progressbar, _("Fetching message..."),
-			PROG_SIZE, NetInc, h->content->length + h->content->offset - 1);
+			M_PROGRESS_SIZE, NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     if (!(msg->fp = mutt_bcache_put (pop_data->bcache, h->data)))
@@ -609,7 +609,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
       return -1;
 
     mutt_progress_init (&progress, _("Marking messages deleted..."),
-			PROG_MSG, WriteInc, ctx->deleted);
+			M_PROGRESS_MSG, WriteInc, ctx->deleted);
 
 #if USE_HCACHE
     hc = mutt_hcache_open (HeaderCache, ctx->path);

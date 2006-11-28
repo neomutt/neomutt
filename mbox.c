@@ -119,7 +119,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   buf[sizeof (buf) - 1] = 0;
 
   snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
+  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
 
   FOREVER
   {
@@ -269,7 +269,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   tz = mutt_local_tz (0);
 
   snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, PROG_MSG, ReadInc, 0);
+  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
 
   loc = ftello (ctx->fp);
   while (fgets (buf, sizeof (buf), ctx->fp) != NULL)
@@ -783,7 +783,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   oldOffset = safe_calloc (ctx->msgcount - first, sizeof (struct m_update_t));
 
   snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, PROG_MSG, WriteInc, ctx->msgcount);
+  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, WriteInc, ctx->msgcount);
 
   for (i = first, j = 0; i < ctx->msgcount; i++)
   {

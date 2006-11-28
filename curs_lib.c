@@ -353,7 +353,7 @@ void mutt_progress_update (progress_t* progress, long pos)
     {
       if (progress->size)
       {
-	if (progress->flags & PROG_SIZE)
+	if (progress->flags & M_PROGRESS_SIZE)
 	  mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
 	else
 	  snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld", progress->size);
@@ -365,7 +365,7 @@ void mutt_progress_update (progress_t* progress, long pos)
   if (!progress->inc)
     return;
 
-  if (progress->flags & PROG_SIZE)
+  if (progress->flags & M_PROGRESS_SIZE)
   {
     if (pos >= progress->pos + (progress->inc << 10))
     {
