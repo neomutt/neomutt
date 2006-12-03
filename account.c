@@ -221,5 +221,5 @@ int mutt_account_getpass (ACCOUNT* account)
 
 void mutt_account_unsetpass (ACCOUNT* account)
 {
-  account->flags &= !M_ACCT_PASS;
+  account->flags &= ~M_ACCT_PASS;
 }
