@@ -281,14 +281,15 @@ void mutt_query_exit (void)
 void mutt_curses_error (const char *fmt, ...)
 {
   va_list ap;
+  char scratch[LONG_STRING];
 
   va_start (ap, fmt);
-  vsnprintf (Errorbuf, sizeof (Errorbuf), fmt, ap);
+  vsnprintf (scratch, sizeof (scratch), fmt, ap);
   va_end (ap);
   
-  dprint (1, (debugfile, "%s\n", Errorbuf));
+  dprint (1, (debugfile, "%s\n", scratch));
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf), 0);
+		      0, COLS-2, 0, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -306,13 +307,14 @@ void mutt_curses_error (const char *fmt, ...)
 void mutt_curses_message (const char *fmt, ...)
 {
   va_list ap;
+  char scratch[LONG_STRING];
 
   va_start (ap, fmt);
-  vsnprintf (Errorbuf, sizeof (Errorbuf), fmt, ap);
+  vsnprintf (scratch, sizeof (scratch), fmt, ap);
   va_end (ap);
 
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf), 0);
+		      0, COLS-2, 0, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -655,6 +657,9 @@ void mutt_format_string (char *dest, size_t destlen,
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1) && errno == EILSEQ)
+	memset (&mbstate1, 0, sizeof (mbstate1));
+
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
@@ -764,6 +769,8 @@ void mutt_paddstr (int n, const char *s)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t) (-1))
+	memset (&mbstate, 0, sizeof (mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
       wc = replacement_char ();
     }

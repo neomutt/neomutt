@@ -237,6 +237,7 @@ int mutt_display_message (HEADER *cur)
 void ci_bounce_message (HEADER *h, int *redraw)
 {
   char prompt[SHORT_STRING];
+  char scratch[SHORT_STRING];
   char buf[HUGE_STRING] = { 0 };
   ADDRESS *adr = NULL;
   char *err = NULL;
@@ -278,18 +279,18 @@ void ci_bounce_message (HEADER *h, int *redraw)
   rfc822_write_address (buf, sizeof (buf), adr, 1);
 
 #define extra_space (15 + 7 + 2)
-  snprintf (prompt, sizeof (prompt),
+  snprintf (scratch, sizeof (scratch),
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
 
   if (mutt_strwidth (prompt) > COLS - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt),
 			0, COLS-extra_space, 0, 0,
-			prompt, sizeof (prompt), 0);
+			scratch, sizeof (scratch), 0);
     safe_strcat (prompt, sizeof (prompt), "...?");
   }
   else
-    safe_strcat (prompt, sizeof (prompt), "?");
+    snprintf (prompt, sizeof (prompt), "%s?", scratch);
 
   if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {

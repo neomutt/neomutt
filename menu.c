@@ -156,11 +156,13 @@ static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i)
 
 void menu_pad_string (char *s, size_t n)
 {
+  char *scratch = safe_strdup (s);
   int shift = option (OPTARROWCURSOR) ? 3 : 0;
   int cols = COLS - shift;
 
-  mutt_format_string (s, n, cols, cols, 0, ' ', s, strlen (s), 1);
+  mutt_format_string (s, n, cols, cols, 0, ' ', scratch, strlen (scratch), 1);
   s[n - 1] = 0;
+  safe_free (&scratch);
 }
 
 void menu_redraw_full (MUTTMENU *menu)
