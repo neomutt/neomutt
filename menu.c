@@ -162,7 +162,7 @@ void menu_pad_string (char *s, size_t n)
 
   mutt_format_string (s, n, cols, cols, 0, ' ', scratch, strlen (scratch), 1);
   s[n - 1] = 0;
-  safe_free (&scratch);
+  FREE (&scratch);
 }
 
 void menu_redraw_full (MUTTMENU *menu)
