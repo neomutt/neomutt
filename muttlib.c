@@ -1641,3 +1641,4 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
 
   return 0;
 }
+

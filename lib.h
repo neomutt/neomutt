@@ -98,10 +98,35 @@
  * A non-mutt "implementation" (ahem) can be found in extlib.c.
  */
 
+
 # ifndef _EXTLIB_C
 extern void (*mutt_error) (const char *, ...);
 # endif
+
+# ifdef _LIB_C
+#  define MUTT_LIB_WHERE 
+#  define MUTT_LIB_INITVAL(x) = x
+# else
+#  define MUTT_LIB_WHERE extern
+#  define MUTT_LIB_INITVAL(x)
+# endif
+
 void mutt_exit (int);
+
+
+# ifdef DEBUG
+
+MUTT_LIB_WHERE FILE *debugfile MUTT_LIB_INITVAL(0);
+MUTT_LIB_WHERE int debuglevel MUTT_LIB_INITVAL(0);
+
+#  define dprint(N,X) do { if(debuglevel>=N && debugfile) fprintf X; } while (0)
+
+# else
+
+#  define dprint(N,X)
+
+# endif
+
 
 /* Exit values used in send_msg() */
 #define S_ERR 127
@@ -124,6 +149,7 @@ char *safe_strdup (const char *);
 const char *mutt_stristr (const char *, const char *);
 const char *mutt_basename (const char *);
 
+int compare_stat (struct stat *, struct stat *);
 int mutt_copy_stream (FILE *, FILE *);
 int mutt_copy_bytes (FILE *, FILE *, size_t);
 int mutt_rx_sanitize_string (char *, size_t, const char *);
@@ -133,8 +159,8 @@ int mutt_strncasecmp (const char *, const char *, size_t);
 int mutt_strncmp (const char *, const char *, size_t);
 int mutt_strcoll (const char *, const char *);
 int safe_open (const char *, int);
-int safe_symlink (const char *, const char *);
 int safe_rename (const char *, const char *);
+int safe_symlink (const char *, const char *);
 int safe_fclose (FILE **);
 
 size_t mutt_quote_filename (char *, size_t, const char *);

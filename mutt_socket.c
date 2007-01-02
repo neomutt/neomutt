@@ -23,7 +23,6 @@
 #endif
 
 #include "mutt.h"
-#include "globals.h"
 #include "mutt_socket.h"
 #include "mutt_tunnel.h"
 #if defined(USE_SSL)

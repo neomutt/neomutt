@@ -71,6 +71,8 @@
 #define INITVAL(x) 
 #endif
 
+#define WHERE_DEFINED 1
+
 #include "mutt_regex.h"
 
 /* flags for mutt_copy_header() */

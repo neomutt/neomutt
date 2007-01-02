@@ -23,12 +23,6 @@
 
 #include "mbyte.h"
 
-#ifdef DEBUG
-#define dprint(N,X) do { if(debuglevel>=N) fprintf X; } while (0)
-#else
-#define dprint(N,X) 
-#endif
-
 #define MoreArgs(p) (*p->dptr && *p->dptr != ';' && *p->dptr != '#')
 
 #define mutt_make_string(A,B,C,D,E) _mutt_make_string(A,B,C,D,E,0)

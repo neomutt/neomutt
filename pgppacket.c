@@ -27,6 +27,11 @@
 #include <unistd.h>
 #include <time.h>
 
+
+
+/* yuck, we were including this one somewhere below. */
+#include "mutt.h"
+
 #include "sha1.h"
 #include "lib.h"
 #include "pgplib.h"

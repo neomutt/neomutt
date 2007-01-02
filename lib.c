@@ -26,6 +26,8 @@
  * some of our "standard" functions in external programs, too.
  */
 
+#define _LIB_C 1
+
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -47,6 +49,7 @@
 #endif
 
 #include "lib.h"
+
 
 static struct sysexits
 {
@@ -361,7 +364,7 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   return 0;
 }
 
-static int 
+int 
 compare_stat (struct stat *osb, struct stat *nsb)
 {
   if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
@@ -412,6 +415,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
   return 0;
 }
 
+
+
 /* 
  * This function is supposed to do nfs-safe renaming of files.
  * 
@@ -439,10 +444,22 @@ int safe_rename (const char *src, const char *target)
      * to try it here.
      *
      */
+    
+    dprint (1, (debugfile, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
 
     if (errno == EXDEV)
-      return rename (src, target);
+    {
+      dprint (1, (debugfile, "safe_rename: errno was EXDEV; trying rename...\n"));
+      if (rename (src, target) == -1) 
+      {
+	dprint (1, (debugfile, "safe_rename: rename (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
+	return -1;
+      }
+      dprint (1, (debugfile, "safe_rename: rename succeeded.\n"));
     
+      return 0;
+    }
+
     return -1;
   }
 
@@ -450,13 +467,17 @@ int safe_rename (const char *src, const char *target)
    * Stat both links and check if they are equal.
    */
   
-  if (stat (src, &ssb) == -1)
+  if (lstat (src, &ssb) == -1)
   {
+    dprint (1, (debugfile, "safe_rename: can't stat %s: %s (%d)\n",
+		src, strerror (errno), errno));
     return -1;
   }
   
-  if (stat (target, &tsb) == -1)
+  if (lstat (target, &tsb) == -1)
   {
+    dprint (1, (debugfile, "safe_rename: can't stat %s: %s (%d)\n",
+		src, strerror (errno), errno));
     return -1;
   }
 
@@ -467,6 +488,7 @@ int safe_rename (const char *src, const char *target)
 
   if (compare_stat (&ssb, &tsb) == -1)
   {
+    dprint (1, (debugfile, "safe_rename: stat blocks for %s and %s diverge; pretending EEXIST.\n", src, target));
     errno = EEXIST;
     return -1;
   }
@@ -476,10 +498,16 @@ int safe_rename (const char *src, const char *target)
    * value here? XXX
    */
 
-  unlink (src);
+  if (unlink (src) == -1) 
+  {
+    dprint (1, (debugfile, "safe_rename: unlink (%s) failed: %s (%d)\n",
+		src, strerror (errno), errno));
+  }
+  
 
   return 0;
 }
+
 
 /* Create a temporary directory next to a file name */
 
