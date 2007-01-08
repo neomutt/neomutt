@@ -160,7 +160,7 @@ void menu_pad_string (char *s, size_t n)
   int shift = option (OPTARROWCURSOR) ? 3 : 0;
   int cols = COLS - shift;
 
-  mutt_format_string (s, n, cols, cols, 0, ' ', scratch, strlen (scratch), 1);
+  mutt_format_string (s, n, cols, cols, 0, ' ', scratch, mutt_strlen (scratch), 1);
   s[n - 1] = 0;
   FREE (&scratch);
 }
