@@ -1,3 +1,7 @@
+2007-01-08 11:01:24  Rocco Rutte  <pdmef@gmx.net>  (roessler)
+
+	* menu.c: Fix NULL pointer issue in mutt_format_string().
+
 2007-01-02 17:10:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* globals.h, lib.c, lib.h, mutt.h, mutt_socket.c, muttlib.c,
