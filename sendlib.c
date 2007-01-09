@@ -1518,8 +1518,6 @@ static void write_references (LIST *r, FILE *f)
 }
 
 
-#define WRAPLEN 76
-
 static void foldingstrfcpy (char *d, const char *s, int n)
 {
   while (--n >= 0 && *s)
@@ -1533,7 +1531,7 @@ static void foldingstrfcpy (char *d, const char *s, int n)
   *d = '\0';
 }
 
-int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx)
+int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen)
 {
   int col = 0;
   int i, k, n;
@@ -1544,6 +1542,9 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
   int first = 1;
   int wrapped = 0;
   int in_encoded_word = 0;
+  
+  if (wraplen <= 0)
+    wraplen = 76;
   
   if (tag)
   {
@@ -1588,8 +1589,8 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
      * yuck
      */
     
-    for (i = 0, k = 0, l = 0, n = 0; i < sizeof (buf) && cp[i] != '\0' &&
-	 ((col < (WRAPLEN + (k ? 0 : WRAPLEN)) || in_encoded_word));
+    for (i = 0, k = 0, l = 0, n = 0; i + MB_CUR_MAX < sizeof (buf) && cp[i] != '\0' &&
+	 ((col < (wraplen + (k ? 0 : wraplen)) || in_encoded_word));
 	 i += l)
     {
       
@@ -1631,7 +1632,7 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
 	}
 
 	if (iswspace (w) && 
-	    (!k || col <= WRAPLEN))
+	    (!k || col <= wraplen))
 	{
 	  if (!k || i != n)
 	    k = i;
@@ -1685,7 +1686,6 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
   return 0;
 }
 
-#undef WRAPLEN
 
 /* Note: all RFC2047 encoding should be done outside of this routine, except
  * for the "real name."  This will allow this routine to be used more than
@@ -1754,13 +1754,13 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fputs ("Bcc: \n", fp);
 
   if (env->subject)
-    mutt_write_one_header (fp, "Subject", env->subject, NULL);
+    mutt_write_one_header (fp, "Subject", env->subject, NULL, 0);
   else if (mode == 1)
     fputs ("Subject: \n", fp);
 
   /* save message id if the user has set it */
   if (env->message_id && !privacy)
-    mutt_write_one_header (fp, "Message-ID", env->message_id, NULL);
+    mutt_write_one_header (fp, "Message-ID", env->message_id, NULL, 0);
 
   if (env->reply_to)
   {
@@ -1824,7 +1824,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 	}
       }
       
-      mutt_write_one_header (fp, tmp->data, p, NULL);
+      mutt_write_one_header (fp, tmp->data, p, NULL, 0);
       *q = ':';
     }
   }

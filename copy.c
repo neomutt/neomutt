@@ -28,6 +28,7 @@
 #include "mime.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "mutt_curses.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -280,7 +281,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       if (flags & (CH_DECODE|CH_PREFIX))
       {
 	if (mutt_write_one_header (out, 0, headers[x], 
-				   flags & CH_PREFIX ? prefix : 0) == -1)
+				   flags & CH_PREFIX ? prefix : 0, COLS - WrapMargin) == -1)
 	{
 	  error = TRUE;
 	  break;
