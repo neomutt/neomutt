@@ -30,7 +30,7 @@ while (<>) {
 	    $change->{date} =~ s!/!-!g;
 	    
 	    # Record the change.
-	    push @Changes, $change unless $change->{logmsg} =~ /^#/;
+	    push @Changes, $change unless $change->{logmsg} =~ /^# /;
 	    $change = {};
 	    $change->{workfile} = $workfile;
 	    $change->{logmsg}   = '';

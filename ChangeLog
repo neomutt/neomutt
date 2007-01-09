@@ -1,4 +1,6 @@
-2007-01-09 10:29:09  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+2007-01-09 10:31:09  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* pattern.c: #2673: Make mutt_which_case() multi-byte aware.
 
 	* copy.c, protos.h, sendlib.c: Smarter header wrapping --
 	different behavior for display purposes and sent messages.
