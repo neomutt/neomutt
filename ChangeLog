@@ -1,3 +1,8 @@
+2007-01-09 10:29:09  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* copy.c, protos.h, sendlib.c: Smarter header wrapping --
+	different behavior for display purposes and sent messages.
+
 2007-01-08 11:01:24  Rocco Rutte  <pdmef@gmx.net>  (roessler)
 
 	* menu.c: Fix NULL pointer issue in mutt_format_string().
