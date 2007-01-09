@@ -1,3 +1,8 @@
+2007-01-09 10:37:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* cvslog2changelog.pl: Change comment convention for
+	ChangeLog slightly, from ^# to ^#\ .
+
 2007-01-09 10:31:09  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* pattern.c: #2673: Make mutt_which_case() multi-byte aware.
