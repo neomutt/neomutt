@@ -134,12 +134,22 @@ int mutt_getvaluebychar (char ch, struct mapping_t *table)
 /* if no uppercase letters are given, do a case-insensitive search */
 int mutt_which_case (const char *s)
 {
-  while (*s)
+  wchar_t w;
+  mbstate_t mb;
+  size_t l;
+  
+  memset (&mb, 0, sizeof (mb));
+  
+  for (; (l = mbrtowc (&w, s, MB_CUR_MAX, &mb)) != 0; s += l)
   {
-    if (isalpha ((unsigned char) *s) && isupper ((unsigned char) *s))
+    if (l == (size_t) -2)
+      continue; /* shift sequences */
+    if (l == (size_t) -1)
+      return 0; /* error; assume case-sensitive */
+    if (iswalpha ((wint_t) w) && iswupper ((wint_t) w))
       return 0; /* case-sensitive */
-    s++;
   }
+
   return REG_ICASE; /* case-insensitive */
 }
 
