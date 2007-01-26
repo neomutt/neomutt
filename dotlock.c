@@ -554,7 +554,7 @@ dotlock_deference_symlink (char *d, size_t l, const char *path)
       char linkpath[_POSIX_PATH_MAX];
       int len;
 
-      if ((len = readlink (pathptr, linkfile, sizeof (linkfile))) == -1)
+      if ((len = readlink (pathptr, linkfile, sizeof (linkfile) - 1)) == -1)
       {
 	/* perror (pathptr); */
 	return -1;
