@@ -1,3 +1,7 @@
+2007-01-26 14:34:11  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
+
+	* dotlock.c: Fix #2710, of-by-one in dotlock.c.
+
 2007-01-09 10:37:34  Thomas Roessler  <roessler@does-not-exist.org>  (roessler)
 
 	* cvslog2changelog.pl: Change comment convention for
