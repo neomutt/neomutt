@@ -1732,7 +1732,7 @@ int imap_subscribe (char *path, int subscribe)
   BUFFER err, token;
   IMAP_MBOX mx;
 
-  if (!mx_is_imap (path) || imap_parse_path (path, &mx))
+  if (!mx_is_imap (path) || imap_parse_path (path, &mx) || !mx.mbox)
   {
     mutt_error (_("Bad mailbox name"));
     return -1;
