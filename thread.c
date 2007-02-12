@@ -555,8 +555,12 @@ void mutt_clear_threads (CONTEXT *ctx)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    ctx->hdrs[i]->thread = NULL;
-    ctx->hdrs[i]->threaded = 0;
+    /* mailbox may have been only partially read */
+    if (ctx->hdrs[i])
+    {
+      ctx->hdrs[i]->thread = NULL;
+      ctx->hdrs[i]->threaded = 0;
+    }
   }
   ctx->tree = NULL;
 

@@ -1301,7 +1301,7 @@ void imap_close_mailbox (CONTEXT* ctx)
   /* free IMAP part of headers */
   for (i = 0; i < ctx->msgcount; i++)
     /* mailbox may not have fully loaded */
-    if (ctx->hdrs[i]->data)
+    if (ctx->hdrs[i] && ctx->hdrs[i]->data)
       imap_free_header_data (&(ctx->hdrs[i]->data));
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
