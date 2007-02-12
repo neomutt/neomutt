@@ -193,7 +193,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	else
 	  /* bad header in the cache, we'll have to refetch.
 	   * TODO: consider the possibility of a holey cache. */
-	  imap_free_header_data((void**) &h.data);
+          imap_free_header_data((void**) &h.data);
   
         FREE(&uid_validity);
       }
@@ -202,7 +202,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         break;
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
       {
-        imap_free_header_data ((void**) &h.data);
+        if (h.data)
+          imap_free_header_data ((void**) &h.data);
         fclose (fp);
         mutt_hcache_close (hc);
         return -1;
@@ -303,7 +304,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
     if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
-      imap_free_header_data ((void**) &h.data);
+      if (h.data)
+        imap_free_header_data ((void**) &h.data);
       fclose (fp);
 #if USE_HCACHE
       mutt_hcache_close (hc);
