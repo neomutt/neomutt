@@ -1,3 +1,8 @@
+2007-02-12 00:56:36  Kees Cook  <kees@outflux.net>  (brendan)
+
+	* imap/imap.c, thread.c: Full fix for null-pointer dereferences
+	on partial opens. Thanks also to Ken Brush.
+
 2007-02-12 00:06:32  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/imap.c, imap/message.c: Do not attempt to free NULL IMAP
