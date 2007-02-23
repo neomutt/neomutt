@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.13\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-13 15:23+0100\n"
+"POT-Creation-Date: 2007-02-23 09:18-0800\n"
 "PO-Revision-Date: 2006-08-16 16:33+0200\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
@@ -1376,7 +1376,7 @@ msgstr "nee"
 msgid "Exit Mutt?"
 msgstr "Mutt afsluiten?"
 
-#: curs_lib.c:433 mutt_socket.c:571 mutt_ssl.c:329
+#: curs_lib.c:433 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "onbekende fout"
 
@@ -1546,7 +1546,7 @@ msgid "Exit Mutt without saving?"
 msgstr "Mutt verlaten zonder op te slaan?"
 
 #: curs_main.c:1197 curs_main.c:1230 curs_main.c:1674 curs_main.c:1706
-#: flags.c:270 thread.c:1022 thread.c:1077 thread.c:1132
+#: flags.c:270 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "Het weergeven van threads is niet ingeschakeld."
 
@@ -1586,11 +1586,11 @@ msgstr "Alle berichten zijn gewist."
 msgid "You are on the first message."
 msgstr "U bent bij het eerste bericht."
 
-#: curs_main.c:1428 pattern.c:1450
+#: curs_main.c:1428 pattern.c:1460
 msgid "Search wrapped to top."
 msgstr "Zoekopdracht bovenaan begonnen."
 
-#: curs_main.c:1437 pattern.c:1461
+#: curs_main.c:1437 pattern.c:1471
 msgid "Search wrapped to bottom."
 msgstr "Zoekopdracht onderaan begonnen."
 
@@ -2062,7 +2062,7 @@ msgstr "%s wordt uitgekozen..."
 msgid "Error opening mailbox"
 msgstr "Er is een fout opgetreden tijdens het openen van de mailfolder"
 
-#: imap/imap.c:788 imap/message.c:791 muttlib.c:1298
+#: imap/imap.c:788 imap/message.c:793 muttlib.c:1298
 #, c-format
 msgid "Create %s?"
 msgstr "%s aanmaken?"
@@ -2097,31 +2097,31 @@ msgstr "Berichten op de server worden gewist..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE mislukt"
 
-#: imap/imap.c:1665
+#: imap/imap.c:1667
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Zoeken op header zonder headernaam: %s"
 
-#: imap/imap.c:1737
+#: imap/imap.c:1739
 msgid "Bad mailbox name"
 msgstr "Verkeerde mailfolder naam"
 
-#: imap/imap.c:1760
+#: imap/imap.c:1762
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Aanmelden voor %s..."
 
-#: imap/imap.c:1762
+#: imap/imap.c:1764
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Abonnement opzeggen op %s..."
 
-#: imap/imap.c:1772
+#: imap/imap.c:1774
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Geabonneerd op %s..."
 
-#: imap/imap.c:1774
+#: imap/imap.c:1776
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Abonnement op %s opgezegd"
@@ -2140,28 +2140,28 @@ msgstr "Tijdelijk bestand %s kon niet worden aangemaakt"
 msgid "Evaluating cache..."
 msgstr "Headercache wordt gelezen..."
 
-#: imap/message.c:216 pop.c:239
+#: imap/message.c:217 pop.c:239
 msgid "Fetching message headers..."
 msgstr "Headers worden opgehaald..."
 
-#: imap/message.c:403 imap/message.c:460 pop.c:512
+#: imap/message.c:405 imap/message.c:462 pop.c:512
 msgid "Fetching message..."
 msgstr "Bericht wordt gelezen..."
 
-#: imap/message.c:449 pop.c:507
+#: imap/message.c:451 pop.c:507
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "De berichtenindex is niet correct. Probeer mailfolder te heropenen."
 
-#: imap/message.c:598
+#: imap/message.c:600
 msgid "Uploading message..."
 msgstr "Bericht wordt ge-upload..."
 
-#: imap/message.c:757
+#: imap/message.c:759
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "%d berichten worden gekopieerd naar %s..."
 
-#: imap/message.c:761
+#: imap/message.c:763
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Bericht %d wordt gekopieerd naar %s ..."
@@ -3181,11 +3181,11 @@ msgstr "extraheer ondersteunde publieke sleutels"
 msgid "show S/MIME options"
 msgstr "geef S/MIME-opties weer"
 
-#: lib.c:126
+#: lib.c:129
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Integer overflow -- kan geen geheugen alloceren!"
 
-#: lib.c:133 lib.c:148 lib.c:180
+#: lib.c:136 lib.c:151 lib.c:183
 msgid "Out of memory!"
 msgstr "Onvoldoende geheugen!"
 
@@ -3501,19 +3501,19 @@ msgstr "U bent op het laatste item."
 msgid "You are on the first entry."
 msgstr "U bent op het eerste item."
 
-#: menu.c:724 pattern.c:1388
+#: menu.c:724 pattern.c:1398
 msgid "Search for: "
 msgstr "Zoek naar: "
 
-#: menu.c:725 pattern.c:1389
+#: menu.c:725 pattern.c:1399
 msgid "Reverse search for: "
 msgstr "Zoek achteruit naar: "
 
-#: menu.c:735 pattern.c:1421
+#: menu.c:735 pattern.c:1431
 msgid "No search pattern."
 msgstr "Geen zoekpatroon."
 
-#: menu.c:765 pager.c:1985 pager.c:2001 pager.c:2109 pattern.c:1504
+#: menu.c:765 pager.c:1985 pager.c:2001 pager.c:2109 pattern.c:1514
 msgid "Not found."
 msgstr "Niet gevonden."
 
@@ -3537,45 +3537,45 @@ msgstr "Markeren is niet ondersteund."
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): kan bestandstijd niet zetten"
 
-#: mutt_socket.c:104 mutt_socket.c:175
+#: mutt_socket.c:103 mutt_socket.c:174
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Verbinding met %s beëindigd"
 
-#: mutt_socket.c:295
+#: mutt_socket.c:294
 msgid "SSL is unavailable."
 msgstr "SSL is niet beschikbaar."
 
-#: mutt_socket.c:327
+#: mutt_socket.c:326
 msgid "Preconnect command failed."
 msgstr "Preconnect commando is mislukt."
 
-#: mutt_socket.c:398 mutt_socket.c:412
+#: mutt_socket.c:397 mutt_socket.c:411
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "Verbinding met %s mislukt (%s)"
 
-#: mutt_socket.c:465 mutt_socket.c:523
+#: mutt_socket.c:464 mutt_socket.c:522
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "Ongeldige IDN \"%s\"."
 
-#: mutt_socket.c:472 mutt_socket.c:530
+#: mutt_socket.c:471 mutt_socket.c:529
 #, c-format
 msgid "Looking up %s..."
 msgstr "%s aan het opzoeken..."
 
-#: mutt_socket.c:483 mutt_socket.c:537
+#: mutt_socket.c:482 mutt_socket.c:536
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Kan adres van server \"%s\" niet achterhalen"
 
-#: mutt_socket.c:488 mutt_socket.c:546
+#: mutt_socket.c:487 mutt_socket.c:545
 #, c-format
 msgid "Connecting to %s..."
 msgstr "Bezig met verbinden met %s..."
 
-#: mutt_socket.c:570
+#: mutt_socket.c:569
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Kan niet verbinden met %s (%s)."
@@ -3958,100 +3958,100 @@ msgstr "Geen verdere eigen text na geciteerde text."
 msgid "multipart message has no boundary parameter!"
 msgstr "Multi-part bericht heeft geen \"boundary\" parameter."
 
-#: pattern.c:265
+#: pattern.c:275
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Fout in expressie: %s"
 
-#: pattern.c:270
+#: pattern.c:280
 #, c-format
 msgid "Empty expression"
 msgstr "Lege expressie"
 
-#: pattern.c:401
+#: pattern.c:411
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Ongeldige dag van de maand: %s"
 
-#: pattern.c:415
+#: pattern.c:425
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Ongeldige maand: %s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:567
+#: pattern.c:577
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Ongeldige maand: %s"
 
-#: pattern.c:581
+#: pattern.c:591
 msgid "error in expression"
 msgstr "Fout in expressie"
 
-#: pattern.c:802 pattern.c:948
+#: pattern.c:812 pattern.c:958
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "Fout in expressie bij: %s"
 
-#: pattern.c:832
+#: pattern.c:842
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "Haakjes kloppen niet: %s"
 
-#: pattern.c:888
+#: pattern.c:898
 #, c-format
 msgid "%c: invalid command"
 msgstr "%c: Ongeldig commando"
 
-#: pattern.c:894
+#: pattern.c:904
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: Niet ondersteund in deze modus"
 
-#: pattern.c:907
+#: pattern.c:917
 #, c-format
 msgid "missing parameter"
 msgstr "Te weinig parameters"
 
-#: pattern.c:923
+#: pattern.c:933
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "Haakjes kloppen niet: %s"
 
-#: pattern.c:955
+#: pattern.c:965
 msgid "empty pattern"
 msgstr "Leeg patroon"
 
-#: pattern.c:1202
+#: pattern.c:1212
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "fout: onbekende operatie %d (interne fout)."
 
-#: pattern.c:1272 pattern.c:1407
+#: pattern.c:1282 pattern.c:1417
 msgid "Compiling search pattern..."
 msgstr "Bezig met het compileren van patroon..."
 
-#: pattern.c:1291
+#: pattern.c:1301
 msgid "Executing command on matching messages..."
 msgstr "Commando wordt uitgevoerd..."
 
-#: pattern.c:1358
+#: pattern.c:1368
 msgid "No messages matched criteria."
 msgstr "Geen berichten voldeden aan de criteria."
 
-#: pattern.c:1440
+#: pattern.c:1450
 msgid "Searching..."
 msgstr "Bezig met zoeken..."
 
-#: pattern.c:1453
+#: pattern.c:1463
 msgid "Search hit bottom without finding match"
 msgstr "Zoeken heeft einde bereikt zonder iets te vinden"
 
-#: pattern.c:1464
+#: pattern.c:1474
 msgid "Search hit top without finding match"
 msgstr "Zoeken heeft begin bereikt zonder iets te vinden"
 
-#: pattern.c:1496
+#: pattern.c:1506
 msgid "Search interrupted."
 msgstr "Zoeken onderbroken."
 
@@ -4870,11 +4870,11 @@ msgstr "Kan 'sorting function' niet vinden! [Meldt deze bug!]"
 msgid "(no mailbox)"
 msgstr "(geen mailfolder)"
 
-#: thread.c:1089
+#: thread.c:1093
 msgid "Parent message is not visible in this limited view."
 msgstr "Vorig bericht niet zichtbaar in gelimiteerd overzicht."
 
-#: thread.c:1095
+#: thread.c:1099
 msgid "Parent message is not available."
 msgstr "Vorig bericht is niet beschikbaar."
 

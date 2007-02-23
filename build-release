@@ -25,7 +25,7 @@ devel="devel/"	# comment out for the stable branch
 
 # update the source
 
-cvs update
+#cvs update
 
 # Do automated security checks
 
@@ -50,8 +50,8 @@ make update-changelog
 
 # now, prepare the distribution tar balls
 
-automake
-touch configure.in
+#automake
+#touch configure.in
 make config.status
 ./config.status
 make update-doc
@@ -64,9 +64,9 @@ make dist
 
 # commit and tag the release
 
-cvs commit -m "automatic post-release commit for mutt-${VERSION}"
-make commit-changelog 
-cvs tag ${TAG}
+#cvs commit -m "automatic post-release commit for mutt-${VERSION}"
+#make commit-changelog 
+#cvs tag ${TAG}
 
 # build the diff between the two releases
 
@@ -88,6 +88,8 @@ for f in $DISTFILES; do
 	gpg -ba $f
 	chmod 644 $f.asc
 done
+
+exit 0
 
 echo "Release built.  Please connect to the net and press <enter>"
 echo "when on-line."
