@@ -1,3 +1,12 @@
+2007-02-23 17:38:25  brendan  (brendan)
+
+	* po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/it.po, po/ja.po,
+	po/ko.po, po/lt.po, po/nl.po, po/et.po, po/eu.po, po/fr.po,
+	po/ga.po, po/gl.po, po/hu.po, po/id.po, po/el.po, po/eo.po,
+	po/es.po, VERSION, build-release, po/bg.po, po/ca.po, po/cs.po,
+	po/da.po, po/de.po: automatic post-release commit for mutt-1.5.14
+
 2007-02-12 00:56:36  Kees Cook  <kees@outflux.net>  (brendan)
 
 	* imap/imap.c, thread.c: Full fix for null-pointer dereferences
