@@ -1,3 +1,16 @@
+2007-02-24 06:12:20  Moritz Schulte  <Moritz.Schulte@ruhr-uni-bochum.de>  (brendan)
+
+	* UPDATING, configure.in, crypt-gpgme.c, crypt-gpgme.h,
+	crypt-mod-pgp-classic.c, crypt-mod-pgp-gpgme.c,
+	crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c,
+	crypt-mod.h, crypt.c, cryptglue.c, init.h, mutt.h, mutt_crypt.h,
+	Makefile.am: PKA signature verification via GPGME, controlled
+	by $crypt_use_pka.
+
+2007-02-24 05:47:35  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
+
+	* po/fr.po: Updated French translation.
+
 2007-02-23 17:38:25  brendan  (brendan)
 
 	* po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, po/pl.po,
