@@ -51,4 +51,7 @@ int pgp_gpgme_send_menu (HEADER *msg, int *redraw);
 int smime_gpgme_send_menu (HEADER *msg, int *redraw);
 
 int smime_gpgme_verify_sender (HEADER *h);
+
+void gpgme_set_sender (const char *sender);
+
 #endif

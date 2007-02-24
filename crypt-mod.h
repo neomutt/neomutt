@@ -67,6 +67,7 @@ typedef void (*crypt_func_smime_invoke_import_t) (char *infile, char *mailbox);
 
 typedef void (*crypt_func_init_t) (void);
 
+typedef void (*crypt_func_set_sender_t) (const char *sender);
 
 /*
    A structure to keep all crypto module fucntions together.
@@ -84,6 +85,7 @@ typedef struct crypt_module_functions
   crypt_func_sign_message_t sign_message;
   crypt_func_verify_one_t verify_one;
   crypt_func_send_menu_t send_menu;
+  crypt_func_set_sender_t set_sender;
 
   /* PGP specific functions.  */
   crypt_func_pgp_encrypt_message_t pgp_encrypt_message;

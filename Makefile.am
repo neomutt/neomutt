@@ -32,7 +32,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	url.c ascii.c mutt_idna.c crypt-mod.c crypt-mod.h
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
-	$(INTLLIBS) $(LIBICONV)  $(LIBGPGME_LIBS)
+	$(INTLLIBS) $(LIBICONV)  $(GPGME_LIBS)
 
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) \
 	$(INTLDEPS)
@@ -52,7 +52,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
 	-DHAVE_CONFIG_H=1
 
-AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(LIBGPGME_CFLAGS) -Iintl
+AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
 
 CPPFLAGS=@CPPFLAGS@ -I$(includedir)
 

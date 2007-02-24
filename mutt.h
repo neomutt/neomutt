@@ -453,6 +453,7 @@ enum
   OPTXMAILER,
 
   OPTCRYPTUSEGPGME,
+  OPTCRYPTUSEPKA,
 
   /* PGP options */
   

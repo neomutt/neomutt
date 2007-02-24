@@ -260,8 +260,15 @@ void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
     (CRYPT_MOD_CALL (PGP, pgp_extract_keys_from_attachment_list)) (fp, tag, top);
 }
 
+void crypt_pgp_set_sender (const char *sender)
+{
+  if (CRYPT_MOD_CALL_CHECK (PGP, set_sender))
+    (CRYPT_MOD_CALL (PGP, set_sender)) (sender);
+}
+
 
 
+
 /* 
 
    S/MIME 
@@ -375,4 +382,10 @@ int crypt_smime_send_menu (HEADER *msg, int *redraw)
     return (CRYPT_MOD_CALL (SMIME, send_menu)) (msg, redraw);
 
   return 0;
+}
+
+void crypt_smime_set_sender (const char *sender)
+{
+  if (CRYPT_MOD_CALL_CHECK (SMIME, set_sender))
+    (CRYPT_MOD_CALL (SMIME, set_sender)) (sender);
 }

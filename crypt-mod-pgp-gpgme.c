@@ -90,6 +90,11 @@ static BODY *crypt_mod_pgp_encrypt_message (BODY *a, char *keylist, int sign)
   return pgp_gpgme_encrypt_message (a, keylist, sign);
 }
 
+static void crypt_mod_pgp_set_sender (const char *sender)
+{
+  gpgme_set_sender (sender);
+}
+
 struct crypt_module_specs crypt_mod_pgp_gpgme =
   { APPLICATION_PGP,
     {
@@ -104,6 +109,7 @@ struct crypt_module_specs crypt_mod_pgp_gpgme =
       crypt_mod_pgp_sign_message,
       crypt_mod_pgp_verify_one,
       crypt_mod_pgp_send_menu,
+      crypt_mod_pgp_set_sender,
 
       /* PGP specific.  */
       crypt_mod_pgp_encrypt_message,

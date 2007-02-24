@@ -100,6 +100,7 @@ struct crypt_module_specs crypt_mod_smime_classic =
       crypt_mod_smime_sign_message,
       crypt_mod_smime_verify_one,
       crypt_mod_smime_send_menu,
+      NULL,
 
       NULL,			/* pgp_encrypt_message */
       NULL,			/* pgp_make_key_attachment */

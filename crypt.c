@@ -169,6 +169,18 @@ int mutt_protect (HEADER *msg, char *keylist)
   if ((WithCrypto & APPLICATION_PGP))
     tmp_pgp_pbody   = msg->content;
 
+  if (option (OPTCRYPTUSEPKA) && (msg->security & SIGN))
+    {
+      /* Set sender (necessary for e.g. PKA).  */
+
+      if ((WithCrypto & APPLICATION_SMIME)
+	  && (msg->security & APPLICATION_SMIME))
+	crypt_smime_set_sender (msg->env->from->mailbox);
+      else if ((WithCrypto & APPLICATION_PGP)
+	  && (msg->security & APPLICATION_PGP))
+	crypt_pgp_set_sender (msg->env->from->mailbox);
+    }
+
   if (msg->security & SIGN)
   {
     if ((WithCrypto & APPLICATION_SMIME)

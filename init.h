@@ -406,13 +406,19 @@ struct option_t MuttVars[] = {
   { "crypt_use_gpgme",  DT_BOOL, R_NONE, OPTCRYPTUSEGPGME, 0 },
   /*
   ** .pp
-  ** This variable controls the use the GPGME enabled crypto backends.
-  ** If it is set and Mutt was build with gpgme support, the gpgme code for
-  ** S/MIME and PGP will be used instead of the classic code.  Note, that
-  ** you need to use this option in .muttrc as it won't have any effect when 
+  ** This variable controls the use of the GPGME-enabled crypto backends.
+  ** If it is set and Mutt was built with gpgme support, the gpgme code for
+  ** S/MIME and PGP will be used instead of the classic code.  Note that
+  ** you need to set this option in .muttrc; it won't have any effect when 
   ** used interactively.
   */
-  
+  { "crypt_use_pka", DT_BOOL, R_NONE, OPTCRYPTUSEPKA, 0 },
+  /*
+  ** .pp Controls whether mutt uses PKA
+  ** (http://www.g10code.de/docs/pka-intro.de.pdf) during signature
+  ** verification (only supported by the GPGME backend).
+  */
+
   { "crypt_autopgp",	DT_BOOL, R_NONE, OPTCRYPTAUTOPGP, 1 },
   /*
   ** .pp

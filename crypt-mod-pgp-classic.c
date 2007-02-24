@@ -119,6 +119,7 @@ struct crypt_module_specs crypt_mod_pgp_classic =
       crypt_mod_pgp_sign_message,
       crypt_mod_pgp_verify_one,
       crypt_mod_pgp_send_menu,
+      NULL,
 
       crypt_mod_pgp_encrypt_message,
       crypt_mod_pgp_make_key_attachment,

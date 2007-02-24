@@ -220,7 +220,7 @@ char *crypt_pgp_keyid (pgp_key_t k);
 /* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag,BODY *top);
 
-
+void crypt_pgp_set_sender (const char *sender);
 
 
 
@@ -258,6 +258,8 @@ BODY *crypt_smime_build_smime_entity (BODY *a, char *certlist);
 void crypt_smime_invoke_import (char *infile, char *mailbox);
 
 int crypt_smime_send_menu (HEADER *msg, int *redraw);
+
+void crypt_smime_set_sender (const char *sender);
 
 /* fixme: needs documentation */
 int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf);

@@ -71,6 +71,10 @@
                      *(p) <= 'F'? (*(p)-'A'+10):(*(p)-'a'+10))
 #define xtoi_2(p)   ((xtoi_1(p) * 16) + xtoi_1((p)+1))
 
+#define PKA_NOTATION_NAME "pka-address@gnupg.org"
+#define is_pka_notation(notation) (! strcmp ((notation)->name, \
+					     PKA_NOTATION_NAME))
+
 /* Values used for comparing addresses. */
 #define CRYPT_KV_VALID    1
 #define CRYPT_KV_ADDR     2
@@ -115,6 +119,8 @@ typedef struct crypt_entry
 
 static struct crypt_cache *id_defaults = NULL;
 static gpgme_key_t signature_key = NULL;
+static char *current_sender = NULL;
+
 
 /*
  * General helper functions.
@@ -661,6 +667,23 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
   return 0;
 }
 
+static gpgme_error_t
+set_pka_sig_notation (gpgme_ctx_t ctx)
+{
+  gpgme_error_t err;
+
+  err = gpgme_sig_notation_add (ctx,
+				PKA_NOTATION_NAME, current_sender, 0);
+
+  if (err)
+    {
+      mutt_error (_("error setting PKA signature notation: %s\n"),
+		  gpgme_strerror (err));
+      mutt_sleep (2);
+    }
+
+  return err;
+}
 
 /* Encrypt the gpgme data object PLAINTEXT to the recipients in RSET
    and return an allocated filename to a temporary file containing the
@@ -670,7 +693,7 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
 static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
                                    int use_smime, int combined_signed)
 {
-  int err;
+  gpgme_error_t err;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext;
   char *outfile;
@@ -689,6 +712,18 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
           gpgme_release (ctx);
           return NULL;
         }
+
+      if (option (OPTCRYPTUSEPKA))
+	{
+	  err = set_pka_sig_notation (ctx);
+	  if (err)
+	    {
+	      gpgme_data_release (ciphertext);
+	      gpgme_release (ctx);
+	      return NULL;
+	    }
+	}
+
       err = gpgme_op_encrypt_sign (ctx, rset, GPGME_ENCRYPT_ALWAYS_TRUST,
                                    plaintext, ciphertext);
     }
@@ -786,6 +821,18 @@ static BODY *sign_message (BODY *a, int use_smime)
       gpgme_data_release (signature);
       gpgme_release (ctx);
       return NULL;
+    }
+
+  if (option (OPTCRYPTUSEPKA))
+    {
+      err = set_pka_sig_notation (ctx);
+      if (err)
+	{
+	  gpgme_data_release (signature);
+	  gpgme_data_release (message);
+	  gpgme_release (ctx);
+	  return NULL;
+	}
     }
 
   err = gpgme_op_sign (ctx, message, signature, GPGME_SIG_MODE_DETACH );
@@ -984,7 +1031,7 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
  */
 static int show_sig_summary (unsigned long sum,
                               gpgme_ctx_t ctx, gpgme_key_t key, int idx,
-                              STATE *s)
+                              STATE *s, gpgme_signature_t sig)
 {
   int severe = 0;
 
@@ -1079,6 +1126,27 @@ static int show_sig_summary (unsigned long sum,
         }
       state_attach_puts ("\n", s);
     }
+
+#ifdef HAVE_GPGME_PKA_TRUST
+
+  if (option (OPTCRYPTUSEPKA))
+    {
+      if (sig->pka_trust == 1 && sig->pka_address)
+	{
+	  state_attach_puts (_("WARNING: PKA entry does not match "
+			       "signer's address: "), s);
+	  state_attach_puts (sig->pka_address, s);
+	  state_attach_puts ("\n", s);
+	}
+      else if (sig->pka_trust == 2 && sig->pka_address)
+	{
+	  state_attach_puts (_("PKA verified signer's address is: "), s);
+	  state_attach_puts (sig->pka_address, s);
+	  state_attach_puts ("\n", s);
+	}
+    }
+
+#endif
 
   return severe;
 }
@@ -1259,7 +1327,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	  state_attach_puts (_("            created: "), s);
 	  print_time (created, s);
 	  state_attach_puts ("\n", s);
-	  if (show_sig_summary (sum, ctx, key, idx, s))
+	  if (show_sig_summary (sum, ctx, key, idx, s, sig))
 	    anywarn = 1;
 	  show_one_sig_validity (ctx, idx, s);
 	}
@@ -1268,7 +1336,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	  state_attach_puts (_("*BAD* signature claimed to be from: "), s);
 	  state_attach_puts (uid, s);
 	  state_attach_puts ("\n", s);
-	  show_sig_summary (sum, ctx, key, idx, s);
+	  show_sig_summary (sum, ctx, key, idx, s, sig);
 	}
       else if (!anybad && key && (key->protocol == GPGME_PROTOCOL_OpenPGP))
 	{ /* We can't decide (yellow) but this is a PGP key with a good
@@ -1283,14 +1351,14 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	  state_attach_puts ("\n", s);
 	  show_one_sig_validity (ctx, idx, s);
 	  show_fingerprint (key,s);
-	  if (show_sig_summary (sum, ctx, key, idx, s))
+	  if (show_sig_summary (sum, ctx, key, idx, s, sig))
 	    anywarn = 1;
 	}
       else /* can't decide (yellow) */
 	{
 	  state_attach_puts (_("Error checking signature"), s);
 	  state_attach_puts ("\n", s);
-	  show_sig_summary (sum, ctx, key, idx, s);
+	  show_sig_summary (sum, ctx, key, idx, s, sig);
 	}
 
       if (key != signature_key)
@@ -1372,6 +1440,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
       gpgme_verify_result_t result;
       gpgme_sig_notation_t notation;
       gpgme_signature_t signature;
+      int non_pka_notations;
 
       result = gpgme_op_verify_result (ctx);
       if (result)
@@ -1379,7 +1448,13 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	for (signature = result->signatures; signature;
              signature = signature->next)
 	{
-	  if (signature->notations)
+	  non_pka_notations = 0;
+	  for (notation = signature->notations; notation;
+	       notation = notation->next)
+	    if (! is_pka_notation (notation))
+	      non_pka_notations++;
+
+	  if (non_pka_notations)
 	  {
 	    char buf[SHORT_STRING];
 	    snprintf (buf, sizeof (buf),
@@ -1389,6 +1464,9 @@ static int verify_one (BODY *sigbdy, STATE *s,
 	    for (notation = signature->notations; notation;
                  notation = notation->next)
 	    {
+	      if (is_pka_notation (notation))
+		continue;
+
 	      if (notation->name)
 	      {
 		state_attach_puts (notation->name, s);
@@ -4265,5 +4343,13 @@ int smime_gpgme_verify_sender (HEADER *h)
 {
   return verify_sender (h, GPGME_PROTOCOL_CMS);
 }
+
+void gpgme_set_sender (const char *sender)
+{
+  mutt_error ("[setting sender] mailbox: %s\n", sender);
+  FREE (&current_sender);
+  current_sender = safe_strdup (sender);
+}
+
 
 #endif
