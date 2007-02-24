@@ -1,3 +1,19 @@
+2007-02-24 06:37:32  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* globals.h, init.h, main.c, mutt_sasl.c, protos.h, send.c,
+	sendlib.c, smtp.c, url.c, url.h, Makefile.am, account.c,
+	account.h, configure.in: This patch adds ESMTP relay support to
+	mutt.  To use, set $smtp_url to the address of your smtp relay,
+	in the form:
+
+	smtp[s]://[user[:password]@]host[:port]/
+
+	where port defaults to 25 for smtp and 465 for smtps.
+
+	You can also set $smtp_authenticators to control which
+	methods mutt will attempt to use during authentication. See
+	$imap_authenticators for details.
+
 2007-02-24 06:12:20  Moritz Schulte  <Moritz.Schulte@ruhr-uni-bochum.de>  (brendan)
 
 	* UPDATING, configure.in, crypt-gpgme.c, crypt-gpgme.h,
