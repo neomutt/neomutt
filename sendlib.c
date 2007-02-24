@@ -442,7 +442,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   }
 
   if (a->type == TYPETEXT && (!a->noconv))
-    fc = fgetconv_open (fpin, Charset, 
+    fc = fgetconv_open (fpin, a->file_charset, 
 			mutt_get_body_charset (send_charset, sizeof (send_charset), a),
 			0);
   else
@@ -842,6 +842,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   CONTENT *info;
   CONTENT_STATE state;
   FILE *fp = NULL;
+  char *fromcode = NULL;
   char *tocode;
   char buffer[100];
   char chsbuf[STRING];
@@ -876,15 +877,18 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   if (b != NULL && b->type == TYPETEXT && (!b->noconv && !b->force_charset))
   {
     char *chs = mutt_get_parameter ("charset", b->parameter);
+    char *fchs = b->use_disp ? ((FileCharset && *FileCharset) ?
+                                FileCharset : Charset) : Charset;
     if (Charset && (chs || SendCharset) &&
-	convert_file_from_to (fp, Charset, chs ? chs : SendCharset,
-			      0, &tocode, info) != (size_t)(-1))
+        convert_file_from_to (fp, fchs, chs ? chs : SendCharset,
+                              &fromcode, &tocode, info) != (size_t)(-1))
     {
       if (!chs)
       {
 	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
 	mutt_set_parameter ("charset", chsbuf, &b->parameter);
       }
+      b->file_charset = fromcode;
       FREE (&tocode);
       safe_fclose (&fp);
       return info;
@@ -1267,6 +1271,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   body->unlink = 1;
   body->use_disp = 0;
   body->disposition = DISPINLINE;
+  body->noconv = 1;
 
   mutt_parse_mime_message (ctx, hdr);
 

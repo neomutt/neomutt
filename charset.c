@@ -591,3 +591,86 @@ void fgetconv_close (FGETCONV **_fc)
     iconv_close (fc->cd);
   FREE (_fc);		/* __FREE_CHECKED__ */
 }
+
+const char *mutt_get_first_charset (const char *charset)
+{
+  static char fcharset[SHORT_STRING];
+  const char *c, *c1;
+
+  c = charset;
+  if (!mutt_strlen(c))
+    return "us-ascii";
+  if (!(c1 = strchr (c, ':')))
+    return charset;
+  strfcpy (fcharset, c, c1 - c + 1);
+  return fcharset;
+}
+
+static size_t convert_string (ICONV_CONST char *f, size_t flen,
+                             const char *from, const char *to,
+                             char **t, size_t *tlen)
+{
+  iconv_t cd;
+  char *buf, *ob;
+  size_t obl, n;
+  int e;
+
+  cd = mutt_iconv_open (to, from, 0);
+  if (cd == (iconv_t)(-1))
+    return (size_t)(-1);
+  obl = 4 * flen + 1;
+  ob = buf = safe_malloc (obl);
+  n = iconv (cd, &f, &flen, &ob, &obl);
+  if (n == (size_t)(-1) || iconv (cd, 0, 0, &ob, &obl) == (size_t)(-1))
+  {
+    e = errno;
+    FREE (&buf);
+    iconv_close (cd);
+    errno = e;
+    return (size_t)(-1);
+  }
+  *ob = '\0';
+
+  *tlen = ob - buf;
+
+  safe_realloc ((void **) &buf, ob - buf + 1);
+  *t = buf;
+  iconv_close (cd);
+
+  return n;
+}
+
+int mutt_convert_nonmime_string (char **ps)
+{
+  const char *c, *c1;
+
+  for (c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
+  {
+    char *u = *ps;
+    char *s;
+    char *fromcode;
+    size_t m, n;
+    size_t ulen = mutt_strlen (*ps);
+    size_t slen;
+
+    if (!u || !*u)
+      return 0;
+
+    c1 = strchr (c, ':');
+    n = c1 ? c1 - c : mutt_strlen (c);
+    if (!n)
+      continue;
+    fromcode = safe_malloc (n + 1);
+    strfcpy (fromcode, c, n + 1);
+    m = convert_string (u, ulen, fromcode, Charset, &s, &slen);
+    FREE (&fromcode);
+    if (m != (size_t)(-1))
+    {
+      FREE (ps); /* __FREE_CHECKED__ */
+      *ps = s;
+      return 0;
+    }
+  }
+  return -1;
+}
+

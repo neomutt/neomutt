@@ -1743,11 +1743,21 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   int istext = mutt_is_text_part (b);
   iconv_t cd = (iconv_t)(-1);
 
-  if (istext && s->flags & M_CHARCONV)
+  if (istext)
   {
-    char *charset = mutt_get_parameter ("charset", b->parameter);
-    if (charset && Charset)
-      cd = mutt_iconv_open (Charset, charset, M_ICONV_HOOK_FROM);
+    if(s->flags & M_CHARCONV)
+    {
+      char *charset = mutt_get_parameter ("charset", b->parameter);
+      if (!option (OPTSTRICTMIME) && !charset)
+        charset = mutt_get_first_charset (AssumedCharset);
+      if (charset && Charset)
+        cd = mutt_iconv_open (Charset, charset, M_ICONV_HOOK_FROM);
+    }
+    else
+    {
+      if (b->file_charset)
+        cd = mutt_iconv_open (Charset, b->file_charset, M_ICONV_HOOK_FROM);
+    }
   }
 
   fseeko (s->fpin, b->offset, 0);
