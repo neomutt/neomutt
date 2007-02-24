@@ -8,10 +8,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.13-20060908\n"
+"Project-Id-Version: Mutt 1.5.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-02-23 09:18-0800\n"
-"PO-Revision-Date: 2006-09-10 10:28+0200\n"
+"POT-Creation-Date: 2007-02-24 03:06+0100\n"
+"PO-Revision-Date: 2007-02-24 03:07+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -2235,15 +2235,13 @@ msgstr "Impossible de créer le fichier temporaire %s"
 
 # , c-format
 #: imap/message.c:137
-#, fuzzy
 msgid "Evaluating cache..."
-msgstr "Évaluation du cache... [%d/%d]"
+msgstr "Évaluation du cache..."
 
 # , c-format
 #: imap/message.c:217 pop.c:239
-#, fuzzy
 msgid "Fetching message headers..."
-msgstr "Récupération des en-têtes des messages... [%d/%d]"
+msgstr "Récupération des en-têtes des messages..."
 
 #: imap/message.c:405 imap/message.c:462 pop.c:512
 msgid "Fetching message..."
@@ -4210,9 +4208,8 @@ msgid "No messages matched criteria."
 msgstr "Aucun message ne correspond au critère."
 
 #: pattern.c:1450
-#, fuzzy
 msgid "Searching..."
-msgstr "On sauve..."
+msgstr "Recherche..."
 
 #: pattern.c:1463
 msgid "Search hit bottom without finding match"
@@ -4358,9 +4355,8 @@ msgstr "Impossible d'écrire le message dans le fichier temporaire !"
 
 # , c-format
 #: pop.c:611
-#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "Marquage de %d messages à effacer..."
+msgstr "Marquage des messages à effacer..."
 
 #: pop.c:681 pop.c:746
 msgid "Checking for new messages..."
