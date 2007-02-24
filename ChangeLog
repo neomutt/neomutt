@@ -1,3 +1,9 @@
+2007-02-24 07:01:24  Takashi TAKIZAWA  <taki@cyber.email.ne.jp>  (brendan)
+
+	* UPDATING, charset.c, charset.h, globals.h, handler.c,
+	init.h, mutt.h, parse.c, rfc2047.c, rfc2231.c, sendlib.c: Add
+	$assumed_charset, $file_charset and $strict_mime.
+
 2007-02-24 06:37:32  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* globals.h, init.h, main.c, mutt_sasl.c, protos.h, send.c,
