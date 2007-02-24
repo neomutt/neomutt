@@ -37,10 +37,12 @@ static struct mapping_t UrlMap[] =
   { "file", 	U_FILE },
   { "imap", 	U_IMAP },
   { "imaps", 	U_IMAPS },
-  { "pop",  	U_POP  },
-  { "pops", 	U_POPS  },
+  { "pop",  	U_POP },
+  { "pops", 	U_POPS },
   { "mailto",	U_MAILTO },
-  { NULL,	U_UNKNOWN}
+  { "smtp",     U_SMTP },
+  { "smtps",    U_SMTPS },
+  { NULL,	U_UNKNOWN }
 };
 
 

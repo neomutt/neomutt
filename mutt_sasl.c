@@ -182,42 +182,44 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     case M_ACCT_TYPE_POP:
       service = "pop";
       break;
+    case M_ACCT_TYPE_SMTP:
+      service = "smtp";
+      break;
     default:
-      dprint (1, (debugfile, "mutt_sasl_client_new: account type unset\n"));
+      mutt_error (_("Unknown SASL profile"));
       return -1;
   }
 
   size = sizeof (local);
-  if (getsockname (conn->fd, (struct sockaddr *)&local, &size)){
-    dprint (1, (debugfile, "mutt_sasl_client_new: getsockname for local failed\n"));
+  if (getsockname (conn->fd, (struct sockaddr *)&local, &size)) {
+    mutt_error (_("SASL failed to get local IP address"));
     return -1;
   }
   else 
-  if (iptostring((struct sockaddr *)&local, size, iplocalport, IP_PORT_BUFLEN) != SASL_OK){
-    dprint (1, (debugfile, "mutt_sasl_client_new: iptostring for local failed\n"));
+  if (iptostring((struct sockaddr *)&local, size, iplocalport, IP_PORT_BUFLEN) != SASL_OK) {
+    mutt_error (_("SASL failed to parse local IP address"));
     return -1;
   }
   
   size = sizeof (remote);
   if (getpeername (conn->fd, (struct sockaddr *)&remote, &size)){
-    dprint (1, (debugfile, "mutt_sasl_client_new: getsockname for remote failed\n"));
+    mutt_error (_("SASL failed to get remote IP address"));
     return -1;
   }
   else 
   if (iptostring((struct sockaddr *)&remote, size, ipremoteport, IP_PORT_BUFLEN) != SASL_OK){
-    dprint (1, (debugfile, "mutt_sasl_client_new: iptostring for remote failed\n"));
+    mutt_error (_("SASL failed to parse remote IP address"));
     return -1;
   }
 
-  dprint(1,(debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport));
+  dprint(2, (debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport));
   
   rc = sasl_client_new (service, conn->account.host, iplocalport, ipremoteport,
     mutt_sasl_get_callbacks (&conn->account), 0, saslconn);
 
   if (rc != SASL_OK)
   {
-    dprint (1, (debugfile,
-      "mutt_sasl_client_new: Error allocating SASL connection\n"));
+    mutt_error (_("Error allocating SASL connection"));
     return -1;
   }
 
@@ -227,8 +229,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   secprops.maxbufsize = M_SASL_MAXBUF;
   if (sasl_setprop (*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)
   {
-    dprint (1, (debugfile,
-      "mutt_sasl_client_new: Error setting security properties\n"));
+    mutt_error (_("Error setting SASL security properties"));
     return -1;
   }
 
@@ -238,13 +239,13 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     dprint (2, (debugfile, "External SSF: %d\n", conn->ssf));
     if (sasl_setprop (*saslconn, SASL_SSF_EXTERNAL, &(conn->ssf)) != SASL_OK)
     {
-      dprint (1, (debugfile, "mutt_sasl_client_new: Error setting external properties\n"));
+      mutt_error (_("Error setting SASL external security strength"));
       return -1;
     }
     dprint (2, (debugfile, "External authentication name: %s\n", conn->account.user));
     if (sasl_setprop (*saslconn, SASL_AUTH_EXTERNAL, conn->account.user) != SASL_OK)
-     {
-      dprint (1, (debugfile, "mutt_sasl_client_new: Error setting external properties\n"));
+    {
+      mutt_error (_("Error setting SASL external user name"));
       return -1;
     }
   }

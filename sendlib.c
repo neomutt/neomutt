@@ -2361,6 +2361,12 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     mutt_copy_bytes (fp, f, h->content->length);
     fclose (f);
 
+#if USE_SMTP
+    if (SmtpUrl)
+      ret = mutt_smtp_send (env_from, to, NULL, NULL, tempfile,
+                            h->content->encoding == ENC8BIT);
+    else
+#endif /* USE_SMTP */
     ret = mutt_invoke_sendmail (env_from, to, NULL, NULL, tempfile,
 			  	h->content->encoding == ENC8BIT);
   }
@@ -2611,7 +2617,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     rewind (tempfp);
     while (fgets (sasha, sizeof (sasha), tempfp) != NULL)
       lines++;
-    fprintf (msg->fp, "Content-Length: " OFF_T_FMT "\n", ftello (tempfp));
+    fprintf (msg->fp, "Content-Length: " OFF_T_FMT "\n", (LOFF_T) ftell (tempfp));
     fprintf (msg->fp, "Lines: %d\n\n", lines);
 
     /* copy the body and clean up */

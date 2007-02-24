@@ -340,6 +340,10 @@ int mutt_save_attachment (FILE *, BODY *, char *, int, HEADER *);
 int _mutt_save_message (HEADER *, CONTEXT *, int, int, int);
 int mutt_save_message (HEADER *, int, int, int, int *);
 int mutt_search_command (int, int);
+#ifdef USE_SMTP
+int mutt_smtp_send (const ADDRESS *, const ADDRESS *, const ADDRESS *,
+                    const ADDRESS *, const char *, int);
+#endif
 int mutt_strwidth (const char *);
 int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_thread_set_flag (HEADER *, int, int, int);

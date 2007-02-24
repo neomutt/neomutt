@@ -257,6 +257,12 @@ static void show_version (void)
         "-USE_IMAP  "
 #endif
 
+#ifdef USE_SMTP
+	"+USE_SMTP  "
+#else
+	"-USE_SMTP  "
+#endif
+
 #ifdef USE_GSS
 	"+USE_GSS  "
 #else

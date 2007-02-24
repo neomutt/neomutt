@@ -573,6 +573,13 @@ AC_ARG_ENABLE(imap, AC_HELP_STRING([--enable-imap], [Enable IMAP support]),
 ])
 AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
+AC_ARG_ENABLE(smtp, AC_HELP_STRING([--enable-smtp], [include internal SMTP relay support]),
+	[if test $enableval = yes; then
+		AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
+            	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
+		need_socket="yes"
+	fi])
+
 if test x"$need_imap" = xyes -o x"$need_pop" = xyes ; then
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS bcache.o"
 fi

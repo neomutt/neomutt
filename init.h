@@ -92,6 +92,9 @@ struct option_t
 # ifndef USE_POP
 #  define USE_POP
 # endif
+# ifndef USE_SMTP
+#  define USE_SMTP
+# endif
 # ifndef USE_SSL_OPENSSL
 #  define USE_SSL_OPENSSL
 # endif
@@ -2550,6 +2553,34 @@ struct option_t MuttVars[] = {
   ** messages from the current folder.  The default is to pause one second, so 
   ** a value of zero for this option suppresses the pause.
   */
+#if USE_SMTP
+  { "smtp_url",		DT_STR, R_NONE, UL &SmtpUrl, UL 0 },
+  /*
+  ** .pp
+  ** Defines the SMTP ``smart'' host where sent messages should relayed for
+  ** delivery. This should take the form of an SMTP URL, eg:
+  ** .pp
+  **   smtp[s]://[user[:pass]@]host[:port]/
+  ** .pp
+  ** Setting this variable overrides the value of the ``$$sendmail''
+  ** variable.
+  */
+# ifdef USE_SASL
+  { "smtp_authenticators", DT_STR, R_NONE, UL &SmtpAuthenticators, UL 0 },
+  /*
+   ** .pp
+   ** This is a colon-delimited list of authentication methods mutt may
+   ** attempt to use to log in to an SMTP server, in the order mutt should
+   ** try them.  Authentication methods are any SASL mechanism, eg
+   ** 'digest-md5', 'gssapi' or 'cram-md5'.
+   ** This parameter is case-insensitive. If this parameter is unset
+   ** (the default) mutt will try all available methods, in order from
+   ** most-secure to least-secure.
+   ** .pp
+   ** Example: set smtp_authenticators="digest-md5:cram-md5"
+   */
+# endif /* USE_SASL */
+#endif /* USE_SMTP */
   { "sort",		DT_SORT, R_INDEX|R_RESORT, UL &Sort, SORT_DATE },
   /*
   ** .pp
@@ -2945,7 +2976,10 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether mutt writes out the Bcc header when preparing
-  ** messages to be sent.  Exim users may wish to unset this.
+  ** messages to be sent.  Exim users may wish to unset this. If mutt
+  ** is set to deliver directly via SMTP (see ``$$smtp_url''), this
+  ** option does nothing: mutt will never write out the BCC header
+  ** in this case.
   */
   /*--*/
   { NULL }

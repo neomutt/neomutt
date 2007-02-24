@@ -123,6 +123,16 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
   }
 #endif
 
+#ifdef USE_SMTP
+  if (account->type == M_ACCT_TYPE_SMTP)
+  {
+    if (account->flags & M_ACCT_SSL)
+      url->scheme = U_SMTPS;
+    else
+      url->scheme = U_SMTP;
+  }
+#endif
+
   url->host = account->host;
   if (account->flags & M_ACCT_PORT)
     url->port = account->port;

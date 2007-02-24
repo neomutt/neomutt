@@ -28,7 +28,8 @@ enum
 {
   M_ACCT_TYPE_NONE = 0,
   M_ACCT_TYPE_IMAP,
-  M_ACCT_TYPE_POP
+  M_ACCT_TYPE_POP,
+  M_ACCT_TYPE_SMTP
 };
 
 /* account flags */

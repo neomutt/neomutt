@@ -8,6 +8,8 @@ typedef enum url_scheme
   U_POPS,
   U_IMAP,
   U_IMAPS,
+  U_SMTP,
+  U_SMTPS,
   U_MAILTO,
   U_UNKNOWN
 }
