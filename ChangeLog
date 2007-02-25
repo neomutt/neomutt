@@ -1,3 +1,8 @@
+2007-02-25 01:32:31  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* account.c, account.h, imap/imap.c, imap/message.c, main.c,
+	mutt_sasl.c: Update copyrights.
+
 2007-02-24 07:01:24  Takashi TAKIZAWA  <taki@cyber.email.ne.jp>  (brendan)
 
 	* UPDATING, charset.c, charset.h, globals.h, handler.c,
