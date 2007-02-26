@@ -1,3 +1,8 @@
+2007-02-26 17:27:29  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* main.c: Add curses_version to mutt -v output (thanks to Vincent
+	Lefevre for the initial patch), and reformat library information.
+
 2007-02-26 17:17:13  Vincent Lefevre  <vincent@vinc17.org>  (brendan)
 
 	* UPDATING, enter.c, globals.h, history.c, history.h, init.c,
