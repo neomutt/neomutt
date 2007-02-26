@@ -562,7 +562,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      {
 		mutt_pretty_mailbox (buf);
 		if (!pass)
-		  mutt_history_add (hclass, buf);
+		  mutt_history_add (hclass, buf, 1);
 		rv = 0;
 		goto bye;
 	      }
@@ -667,7 +667,7 @@ self_insert:
 	/* Convert from wide characters */
 	my_wcstombs (buf, buflen, state->wbuf, state->lastchar);
 	if (!pass)
-	  mutt_history_add (hclass, buf);
+	  mutt_history_add (hclass, buf, 1);
 
 	if (multiple)
 	{

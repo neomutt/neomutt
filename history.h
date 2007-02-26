@@ -35,7 +35,8 @@ enum history_class
 typedef enum history_class history_class_t;
 
 void mutt_init_history(void);
-void mutt_history_add(history_class_t, const char *);
+void mutt_read_histfile(void);
+void mutt_history_add(history_class_t, const char *, int);
 char *mutt_history_next(history_class_t);
 char *mutt_history_prev(history_class_t);
 

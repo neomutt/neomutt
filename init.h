@@ -828,6 +828,11 @@ struct option_t MuttVars[] = {
   ** the string history buffer. The buffer is cleared each time the
   ** variable is set.
   */
+  { "history_file",     DT_PATH, R_NONE, UL &HistFile, UL "~/.mutthistory" },
+  /*
+  ** .pp
+  ** The file in which Mutt will save its history.
+  */
   { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, M_YES },
   /*
   ** .pp
@@ -2437,6 +2442,12 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBNote:\fP This only applies to mbox and MMDF folders, Mutt does not
   ** delete MH and Maildir directories.
+  */
+  { "save_history",     DT_NUM,  R_NONE, UL &SaveHist, 0 },
+  /*
+  ** .pp
+  ** This variable controls the size of the history saved in the
+  ** ``$$history_file'' file.
   */
   { "save_name",	DT_BOOL, R_NONE, OPTSAVENAME, 0 },
   /*

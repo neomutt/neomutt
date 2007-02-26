@@ -4,6 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  + $save_history, $history_file (save history across sessions)
   + $assumed_charset, $file_charset, $strict_mime
   + $smtp_url (ESMTP relay support)
   + $crypt_use_pka (use GPGME PKA signature verification)

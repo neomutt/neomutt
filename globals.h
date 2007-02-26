@@ -53,6 +53,7 @@ WHERE char *FolderFormat;
 WHERE char *ForwFmt;
 WHERE char *Fqdn;
 WHERE char *HdrFmt;
+WHERE char *HistFile;
 WHERE char *Homedir;
 WHERE char *Hostname;
 #ifdef USE_IMAP
@@ -195,6 +196,7 @@ WHERE short MenuContext;
 WHERE short PagerContext;
 WHERE short PagerIndexLines;
 WHERE short ReadInc;
+WHERE short SaveHist;
 WHERE short SendmailWait;
 WHERE short SleepTime INITVAL (1);
 WHERE short Timeout;
