@@ -167,18 +167,18 @@ static void show_version (void)
   printf (" (%s)", uts.machine);
 
 #ifdef NCURSES_VERSION
-  printf (" [using ncurses %s]", NCURSES_VERSION);
+  printf ("\nncurses: %s (compiled with %s)", curses_version(), NCURSES_VERSION);
 #elif defined(USE_SLANG_CURSES)
-  printf (" [using slang %d]", SLANG_VERSION);
+  printf ("\nslang: %d", SLANG_VERSION);
 #endif
 
 #ifdef _LIBICONV_VERSION
-  printf (" [using libiconv %d.%d]", _LIBICONV_VERSION >> 8,
+  printf ("\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8,
 	  _LIBICONV_VERSION & 0xff);
 #endif
 
 #ifdef HAVE_LIBIDN
-  printf (" [using libidn %s (compiled with %s)]", stringprep_check_version (NULL), 
+  printf ("\nlibidn: %s (compiled with %s)", stringprep_check_version (NULL), 
 	  STRINGPREP_VERSION);
 #endif
   
