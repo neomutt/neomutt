@@ -2604,7 +2604,7 @@ struct option_t MuttVars[] = {
   ** messages from the current folder.  The default is to pause one second, so 
   ** a value of zero for this option suppresses the pause.
   */
-#if USE_SMTP
+#ifdef USE_SMTP
   { "smtp_url",		DT_STR, R_NONE, UL &SmtpUrl, UL 0 },
   /*
   ** .pp
