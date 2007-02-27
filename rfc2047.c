@@ -87,6 +87,43 @@ static size_t convert_string (ICONV_CONST char *f, size_t flen,
   return n;
 }
 
+int convert_nonmime_string (char **ps)
+{
+  const char *c, *c1;
+
+  for (c = AssumedCharset; c; c = c1 ? c1 + 1 : 0)
+  {
+    char *u = *ps;
+    char *s;
+    char *fromcode;
+    size_t m, n;
+    size_t ulen = mutt_strlen (*ps);
+    size_t slen;
+
+    if (!u || !*u)
+      return 0;
+
+    c1 = strchr (c, ':');
+    n = c1 ? c1 - c : mutt_strlen (c);
+    if (!n)
+      return 0;
+    fromcode = safe_malloc (n + 1);
+    strfcpy (fromcode, c, n + 1);
+    m = convert_string (u, ulen, fromcode, Charset, &s, &slen);
+    FREE (&fromcode);
+    if (m != (size_t)(-1))
+    {
+      FREE (ps); /* __FREE_CHECKED__ */
+      *ps = s;
+      return 0;
+    }
+  }
+  mutt_convert_string (ps,
+      (const char *)mutt_get_default_charset (AssumedCharset),
+      Charset, M_ICONV_HOOK_FROM);
+  return -1;
+}
+
 char *mutt_choose_charset (const char *fromcode, const char *charsets,
 		      char *u, size_t ulen, char **d, size_t *dlen)
 {
@@ -711,7 +748,7 @@ static const char *find_encoded_word (const char *s, const char **x)
   return 0;
 }
 
-/* return length of linear white space */
+/* return length of linear-white-space */
 static size_t lwslen (const char *s, size_t n)
 {
   const char *p = s;
@@ -731,7 +768,7 @@ static size_t lwslen (const char *s, size_t n)
   return len;
 }
 
-/* return length of linear white space : reverse */
+/* return length of linear-white-space : reverse */
 static size_t lwsrlen (const char *s, size_t n)
 {
   const char *p = s + n - 1;
@@ -775,36 +812,30 @@ void rfc2047_decode (char **pd)
     if (!(p = find_encoded_word (s, &q)))
     {
       /* no encoded words */
-      if (!option (OPTSTRICTMIME))
+      if (option (OPTIGNORELWS))
       {
         n = mutt_strlen (s);
         if (found_encoded && (m = lwslen (s, n)) != 0)
         {
           if (m != n)
             *d = ' ', d++, dlen--;
-          n -= m, s += m;
+          s += m;
         }
-        if (ascii_strcasecmp (AssumedCharset, "us-ascii"))
-        {
-          char *t;
-          size_t tlen;
+      }
+      if (AssumedCharset && *AssumedCharset)
+      {
+	char *t;
+	size_t tlen;
 
-          t = safe_malloc (n + 1);
-          strfcpy (t, s, n + 1);
-          if (mutt_convert_nonmime_string (&t) == 0)
-          {
-            tlen = mutt_strlen (t);
-            strncpy (d, t, tlen);
-            d += tlen;
-          }
-          else
-          {
-            strncpy (d, s, n);
-            d += n;
-          }
-          FREE (&t);
-          break;
-        }
+	n = mutt_strlen (s);
+	t = safe_malloc (n + 1);
+	strfcpy (t, s, n + 1);
+	convert_nonmime_string (&t);
+	tlen = mutt_strlen (t);
+	strncpy (d, t, tlen);
+	d += tlen;
+	FREE (&t);
+	break;
       }
       strncpy (d, s, dlen);
       d += dlen;
@@ -814,9 +845,9 @@ void rfc2047_decode (char **pd)
     if (p != s)
     {
       n = (size_t) (p - s);
-      /* ignore spaces between encoded words
-       * and linear white spaces between encoded word and *text */
-      if (!option (OPTSTRICTMIME))
+      /* ignore spaces between encoded word
+       * and linear-white-space between encoded word and *text */
+      if (option (OPTIGNORELWS))
       {
         if (found_encoded && (m = lwslen (s, n)) != 0)
         {
@@ -838,13 +869,12 @@ void rfc2047_decode (char **pd)
       }
       else if (!found_encoded || strspn (s, " \t\r\n") != n)
       {
-        if (n > dlen)
-          n = dlen;
-        memcpy (d, s, n);
-        d += n;
-        dlen -= n;
+	if (n > dlen)
+	  n = dlen;
+	memcpy (d, s, n);
+	d += n;
+	dlen -= n;
       }
-
     }
 
     rfc2047_decode_word (d, p, dlen);
@@ -865,7 +895,8 @@ void rfc2047_decode_adrlist (ADDRESS *a)
 {
   while (a)
   {
-    if (a->personal)
+    if (a->personal && ((strstr (a->personal, "=?") != NULL) || 
+			(AssumedCharset && *AssumedCharset)))
       rfc2047_decode (&a->personal);
 #ifdef EXACT_ADDRESS
     if (a->val && strstr (a->val, "=?") != NULL)

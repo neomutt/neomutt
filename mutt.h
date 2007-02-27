@@ -370,6 +370,7 @@ enum
   OPTHIDETHREADSUBJECT,
   OPTHIDETOPLIMITED,
   OPTHIDETOPMISSING,
+  OPTIGNORELWS,
   OPTIGNORELISTREPLYTO,
 #ifdef USE_IMAP
   OPTIMAPCHECKSUBSCRIBED,
@@ -428,7 +429,6 @@ enum
   OPTSORTRE,
   OPTSPAMSEP,
   OPTSTATUSONTOP,
-  OPTSTRICTMIME,
   OPTSTRICTTHREADS,
   OPTSUSPEND,
   OPTTEXTFLOWED,
@@ -643,7 +643,7 @@ typedef struct body
 				 * If NULL, filename is used 
 				 * instead.
 				 */
-  char *file_charset;           /* charset of attached file */
+  char *charset;                /* charset of attached file */
   CONTENT *content;             /* structure used to store detailed info about
 				 * the content of the attachment.  this is used
 				 * to determine what content-transfer-encoding

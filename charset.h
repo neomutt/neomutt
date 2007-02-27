@@ -35,8 +35,6 @@ int iconv_close (iconv_t);
 #endif
 
 int mutt_convert_string (char **, const char *, const char *, int);
-const char *mutt_get_first_charset (const char *);
-int mutt_convert_nonmime_string (char **);
 
 iconv_t mutt_iconv_open (const char *, const char *, int);
 size_t mutt_iconv (iconv_t, ICONV_CONST char **, size_t *, char **, size_t *, ICONV_CONST char **, const char *);
@@ -49,6 +47,7 @@ char * fgetconvs (char *, size_t, FGETCONV *);
 void fgetconv_close (FGETCONV **);
 
 void mutt_set_langinfo_charset (void);
+char *mutt_get_default_charset ();
 
 #define M_ICONV_HOOK_FROM 1
 #define M_ICONV_HOOK_TO   2
