@@ -18,7 +18,7 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/* this comment bumps Id because of the attachment counting patch. */
+/* this comment bumps Id after $assumed_charset changed BODY. */
 
 #if HAVE_CONFIG_H
 #include "config.h"
