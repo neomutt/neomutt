@@ -19,6 +19,7 @@ flags.c
 handler.c
 headers.c
 help.c
+history.c
 hook.c
 imap/auth.c
 imap/auth_anon.c
@@ -39,6 +40,7 @@ main.c
 mbox.c
 menu.c
 mh.c
+mutt_sasl.c
 mutt_socket.c
 mutt_ssl.c
 mutt_ssl_gnutls.c
@@ -65,6 +67,7 @@ send.c
 sendlib.c
 signal.c
 smime.c
+smtp.c
 sort.c
 status.c
 thread.c
