@@ -1,3 +1,24 @@
+2007-02-28 17:47:13  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h: Add
+	imap_close_connection to fully reset IMAP state. (closes: #2717)
+	Thanks to Sergey Svishchev for the original patch.
+
+2007-02-28 16:27:47  Vsevolod Volkov  <vvv@mutt.org.ua>  (brendan)
+
+	* po/ru.po: Updated Russian translation.
+
+2007-02-28 07:36:33  TAKAHASHI Tamotsu	<ttakah@lapis.plala.or.jp>  (brendan)
+
+	* po/ja.po: Updated Japanese translation.
+
+2007-02-27 20:53:13  Brendan Cully  <brendan@kublai.com>  (brendan)
+
+	* hcache.c: Bump hcache version after $assumed_charset BODY
+	change.
+
+	* init.h: Fix init.h preprocessing when USE_SMTP is not set.
+
 2007-02-27 17:44:09  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (brendan)
 
 	* mutt.h, parse.c, rfc2047.c, rfc2047.h, rfc2231.c, sendlib.c,
