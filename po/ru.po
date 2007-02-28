@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.13\n"
+"Project-Id-Version: mutt-1.5.14\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-02-23 09:18-0800\n"
-"PO-Revision-Date: 2006-08-15 13:04+0300\n"
+"PO-Revision-Date: 2007-02-28 14:21+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -1426,11 +1426,12 @@ msgstr "Нет видимых сообщений."
 #: curs_main.c:96 pager.c:89
 #, c-format
 msgid "Cannot %s: Operation not permitted by ACL"
-msgstr ""
+msgstr "Не удалось %s: операция запрещена ACL"
 
 #: curs_main.c:251
 msgid "Cannot toggle write on a readonly mailbox!"
-msgstr "Не могу разрешить запись в почтовый ящик, открытый только для чтения!"
+msgstr ""
+"Не удалось разрешить запись в почтовый ящик, открытый только для чтения!"
 
 #: curs_main.c:258
 msgid "Changes to folder will be written on folder exit."
@@ -1498,9 +1499,8 @@ msgid "Invalid message number."
 msgstr "Неверный номер сообщения."
 
 #: curs_main.c:802 curs_main.c:1827 pager.c:2277
-#, fuzzy
 msgid "delete message(s)"
-msgstr "Нет восстановленных сообщений."
+msgstr "удалить сообщения"
 
 #: curs_main.c:805
 msgid "Delete messages matching: "
@@ -1533,9 +1533,8 @@ msgid "Tag messages matching: "
 msgstr "Пометить сообщения по образцу: "
 
 #: curs_main.c:969 curs_main.c:2113 pager.c:2587
-#, fuzzy
 msgid "undelete message(s)"
-msgstr "Нет восстановленных сообщений."
+msgstr "восстановить сообщения"
 
 #: curs_main.c:971
 msgid "Undelete messages matching: "
@@ -1573,7 +1572,7 @@ msgstr "Дискуссия разделена"
 
 #: curs_main.c:1227
 msgid "link threads"
-msgstr ""
+msgstr "соединить дискуссии"
 
 #: curs_main.c:1232
 msgid "No Message-ID: header available to link thread"
@@ -1624,13 +1623,12 @@ msgid " in this limited view"
 msgstr " при просмотре с ограничением"
 
 #: curs_main.c:1495
-#, fuzzy
 msgid "flag message"
-msgstr "показать сообщение"
+msgstr "переключить флаг сообщения"
 
 #: curs_main.c:1532 pager.c:2553
 msgid "toggle new"
-msgstr ""
+msgstr "переключить флаг 'новое'"
 
 #: curs_main.c:1609
 msgid "No more threads."
@@ -1645,24 +1643,20 @@ msgid "Thread contains unread messages."
 msgstr "В дискуссии присутствуют непрочитанные сообщения."
 
 #: curs_main.c:1786 pager.c:2260
-#, fuzzy
 msgid "delete message"
-msgstr "Нет восстановленных сообщений."
+msgstr "удалить сообщение"
 
 #: curs_main.c:1868
-#, fuzzy
 msgid "edit message"
 msgstr "редактировать сообщение"
 
 #: curs_main.c:1999
-#, fuzzy
 msgid "mark message(s) as read"
-msgstr "перейти к родительскому сообщению дискуссии"
+msgstr "пометить сообщения как прочитанные"
 
 #: curs_main.c:2086 pager.c:2572
-#, fuzzy
 msgid "undelete message"
-msgstr "Нет восстановленных сообщений."
+msgstr "восстановить сообщения"
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -2164,14 +2158,12 @@ msgid "Could not create temporary file %s"
 msgstr "Не удалось создать временный файл %s"
 
 #: imap/message.c:137
-#, fuzzy
 msgid "Evaluating cache..."
-msgstr "Загрузка кэша... [%d/%d]"
+msgstr "Загрузка кэша..."
 
 #: imap/message.c:217 pop.c:239
-#, fuzzy
 msgid "Fetching message headers..."
-msgstr "Получение заголовков сообщений... [%d/%d]"
+msgstr "Получение заголовков сообщений..."
 
 #: imap/message.c:405 imap/message.c:462 pop.c:512
 msgid "Fetching message..."
@@ -2469,7 +2461,6 @@ msgid "subscribe to current mailbox (IMAP only)"
 msgstr "подключиться к текущему почтовому ящику (только IMAP)"
 
 #: keymap_alldefs.h:16
-#, fuzzy
 msgid "unsubscribe from current mailbox (IMAP only)"
 msgstr "отключиться от текущего почтового ящика (только IMAP)"
 
@@ -2492,7 +2483,6 @@ msgid "check mailboxes for new mail"
 msgstr "проверить почтовые ящики на наличие новой почты"
 
 #: keymap_alldefs.h:21
-#, fuzzy
 msgid "attach file(s) to this message"
 msgstr "вложить файлы в это сообщение"
 
@@ -3168,7 +3158,6 @@ msgid "view the key's user id"
 msgstr "показать идентификатор владельца ключа"
 
 #: keymap_alldefs.h:189
-#, fuzzy
 msgid "check for classic PGP"
 msgstr "проверить PGP-сообщение в текстовом формате"
 
@@ -4082,9 +4071,8 @@ msgid "No messages matched criteria."
 msgstr "Ни одно сообщение не подходит под критерий."
 
 #: pattern.c:1450
-#, fuzzy
 msgid "Searching..."
-msgstr "Сохраняется..."
+msgstr "Поиск..."
 
 #: pattern.c:1463
 msgid "Search hit bottom without finding match"
@@ -4229,9 +4217,8 @@ msgid "Can't write message to temporary file!"
 msgstr "Ошибка записи сообщения во временный файл!"
 
 #: pop.c:611
-#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "%d сообщений помечаются как удаленные..."
+msgstr "Пометка сообщений как удаленные..."
 
 #: pop.c:681 pop.c:746
 msgid "Checking for new messages..."
@@ -4918,21 +4905,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1099
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "Can't change 'important' flag on POP server."
-#~ msgstr "Изменение флага 'важное' не поддерживается POP-сервером."
-
-#~ msgid "Can't edit message on POP server."
-#~ msgstr "Редактирование сообщений не поддерживается POP-сервером."
-
-#~ msgid "Reading %s... %d (%d%%)"
-#~ msgstr "Читается %s... %d (%d%%)"
-
-#~ msgid "Writing messages... %d (%d%%)"
-#~ msgstr "Запись... %d (%d%%)"
-
-#~ msgid "Reading %s... %d"
-#~ msgstr "Читается %s... %d"
-
-#~ msgid "Invoking pgp..."
-#~ msgstr "Запускается программа PGP..."
