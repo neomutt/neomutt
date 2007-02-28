@@ -375,11 +375,7 @@ static void cmd_handle_fatal (IMAP_DATA* idata)
   }
 
   if (idata->state < IMAP_SELECTED)
-  {
-    idata->state = IMAP_DISCONNECTED;
-    mutt_socket_close (idata->conn);
-    idata->status = 0;
-  }
+    imap_close_connection (idata);
 }
 
 /* cmd_handle_untagged: fallback parser for otherwise unhandled messages. */

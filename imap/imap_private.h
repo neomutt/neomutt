@@ -235,6 +235,7 @@ void imap_mboxcache_free (IMAP_DATA* idata);
 int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
                        int invert);
 int imap_open_connection (IMAP_DATA* idata);
+void imap_close_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
 int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t*);
 void imap_expunge_mailbox (IMAP_DATA* idata);

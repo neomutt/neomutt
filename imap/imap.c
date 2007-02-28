@@ -399,8 +399,7 @@ int imap_open_connection (IMAP_DATA* idata)
 
   if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
   {
-    mutt_socket_close (idata->conn);
-    idata->state = IMAP_DISCONNECTED;
+    imap_close_connection (idata);
     return -1;
   }
 
@@ -467,12 +466,19 @@ int imap_open_connection (IMAP_DATA* idata)
 
 #if defined(USE_SSL)
  err_close_conn:
-  mutt_socket_close (idata->conn);
-  idata->state = IMAP_DISCONNECTED;
+  imap_close_connection (idata);
 #endif
  bail:
   FREE (&idata->capstr);
   return -1;
+}
+
+void imap_close_connection(IMAP_DATA* idata)
+{
+  mutt_socket_close (idata->conn);
+  idata->state = IMAP_DISCONNECTED;
+  idata->seqno = idata->nextcmd = idata->lastcmd = idata->status = 0;
+  memset (idata->cmds, 0, sizeof (IMAP_COMMAND) * IMAP_PIPELINE_DEPTH);
 }
 
 /* imap_get_flags: Make a simple list out of a FLAGS response.
