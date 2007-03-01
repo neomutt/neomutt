@@ -627,9 +627,6 @@ struct option_t MuttVars[] = {
   ** signed.
   ** (PGP only)
   */
-  { "file_charset",	DT_SYN, R_NONE, UL "attach_charset", 0 },
-  /*
-  */
   { "folder",		DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
   /*
   ** .pp
