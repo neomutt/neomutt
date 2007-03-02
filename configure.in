@@ -638,28 +638,27 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for 
 [       if test "$with_ssl" != "no"
         then
           if test "$need_socket" != "yes"; then
-           AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
+           AC_MSG_WARN([SSL support is only useful with POP or IMAP support])
+	  else
+            if test "$with_ssl" != "yes"
+            then
+             LDFLAGS="$LDFLAGS -L$withval/lib"
+             CPPFLAGS="$CPPFLAGS -I$withval/include"
+            fi
+            saved_LIBS="$LIBS"
+
+            AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
+            AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
+
+            AC_CHECK_FUNCS(RAND_status RAND_egd)
+
+            AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
+            AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
+            LIBS="$saved_LIBS"
+            MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
+            MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
+            need_ssl=yes
           fi
-
-          if test "$with_ssl" != "yes"
-          then
-           LDFLAGS="$LDFLAGS -L$withval/lib"
-           CPPFLAGS="$CPPFLAGS -I$withval/include"
-          fi
-          saved_LIBS="$LIBS"
-
-          AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
-          AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
-
-          AC_CHECK_FUNCS(RAND_status RAND_egd)
-
-          AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
-          AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
-          LIBS="$saved_LIBS"
-          MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
-          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
-          need_ssl=yes
-
         fi
 ])
 
