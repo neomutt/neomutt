@@ -1,0 +1,35 @@
+# autoconf products
+^Muttrc\.head$
+^aclocal\.m4$
+^autom4te\.cache
+^(contrib/|doc/|imap/|m4/|po/)?Makefile\.in$
+^config\.h(\.in)?$
+^config\.(log|status)$
+^configure$
+^muttbug\.sh$
+^stamp-h1$
+^doc/instdoc\.sh$
+^po/POTFILES$
+
+# built objects
+^flea$
+^keymap_defs\.h$
+^makedoc$
+^mutt$
+^mutt_dotlock(\.c)?$
+^patchlist\.c$
+^pgpewrap|pgpring$
+^reldate\.h$
+^smime_keys$
+^doc/manual\.(txt|xml)$
+^doc/mutt\.1$
+^doc/muttrc\.man$
+^doc/.*\.html$
+^doc/stamp-
+
+syntax: glob
+.deps
+Makefile
+*.swp
+*.o
+*.gmo
