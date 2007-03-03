@@ -1,0 +1,30 @@
+#!/bin/bash
+
+hg commit "$@"
+
+lrev=$(hg log --limit 1 --template '{rev}' ChangeLog)
+trev=$(hg tip --template '{rev'})
+if [ $lrev = $trev ]; then exit 0; fi
+
+declare -a nopts
+
+while [ $# -gt 0 ]
+do
+  case "$1" in
+    -m|-l) shift ;;
+    -*) nopts[${#nopts[*]}]="$1" ;;
+    # Include ChangeLog if given any explicit file names
+    *) nopts[${#nopts[*]}]="$1"; cl=ChangeLog ;;
+  esac
+  shift
+done
+
+clog=$(hg tip --template '{desc}')
+
+{
+  hg log --style=./hg-changelog-map -r tip:$lrev
+  hg cat ChangeLog
+} > ChangeLog
+
+hg rollback
+hg commit -m "$clog" "${nopts[@]}" $cl

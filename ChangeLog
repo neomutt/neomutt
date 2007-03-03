@@ -1,3 +1,33 @@
+2007-03-03 00:34 -0800  Brendan Cully  <brendan@kublai.com>  (03596c38dd53)
+
+	* hg-commit: Use hg-commit to perform commits that also update the
+	ChangeLog.
+
+2007-03-02 21:17 -0800  Brendan Cully  <brendan@kublai.com>  (472e100053ed)
+
+	* .hgignore: Ignore more built files
+
+2007-03-02 11:09 -0800  Brendan Cully  <brendan@kublai.com>  (256c86830a36)
+
+	* .hgignore: Create .hgignore file
+
+2007-03-02 10:29 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (e040b8aba1c4)
+
+	* configure.in: Make --enable-ssl without pop or imap a mere warning.
+
+2007-03-02 01:25 +0000  Petr Pisar  <petr.pisar@atlas.cz>  (f1c800817281)
+
+	* po/cs.po: Updated Czech translation (now in UTF-8).
+
+2007-03-01 06:05 +0000  Brendan Cully  <brendan@kublai.com>  (d0ff524fa461)
+
+	* init.h: Remove $file_charset SYN - it never appeared in an official
+	release.
+
+2007-02-28 17:48 +0000  Brendan Cully  <brendan@kublai.com>  (083d6afe844c)
+
+	* ChangeLog: # changelog commit
+
 2007-02-28 17:47:13  Brendan Cully  <brendan@kublai.com>  (brendan)
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h: Add
