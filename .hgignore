@@ -1,5 +1,5 @@
 # autoconf products
-^Muttrc\.head$
+^Muttrc(\.head)?$
 ^aclocal\.m4$
 ^autom4te\.cache
 ^(contrib/|doc/|imap/|m4/|po/)?Makefile\.in$
@@ -21,6 +21,8 @@
 ^pgpewrap|pgpring$
 ^reldate\.h$
 ^smime_keys$
+^stamp-doc-rc$
+^doc/instdoc$
 ^doc/manual\.(txt|xml)$
 ^doc/mutt\.1$
 ^doc/muttrc\.man$
@@ -33,3 +35,6 @@ Makefile
 *.swp
 *.o
 *.gmo
+*.orig
+*.rej
+*.a
