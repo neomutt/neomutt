@@ -1980,7 +1980,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  val = *ptr < 0 ? -*ptr : 0;
 
 	/* user requested the value of this variable */
-	snprintf (err->data, err->dsize, "%s=%d", MuttVars[idx].option, val);
+	if (mutt_strcmp (MuttVars[idx].option, "umask") == 0)
+	  snprintf (err->data, err->dsize, "%s=0%o", MuttVars[idx].option, val);
+	else
+	  snprintf (err->data, err->dsize, "%s=%d", MuttVars[idx].option, val);
 	break;
       }
 
@@ -2566,7 +2569,10 @@ static int var_to_string (int idx, char* val, size_t len)
     if (mutt_strcmp (MuttVars[idx].option, "wrapmargin") == 0)
       sval = sval > 0 ? 0 : -sval;
 
-    snprintf (tmp, sizeof (tmp), "%d", sval);
+    if (mutt_strcmp (MuttVars[idx].option, "umask") == 0)
+      snprintf (tmp, sizeof (tmp), "0%o", sval);
+    else
+      snprintf (tmp, sizeof (tmp), "%d", sval);
   }
   else if (DTYPE (MuttVars[idx].type) == DT_SORT)
   {

@@ -492,6 +492,7 @@ int mx_access (const char* path, int flags)
 static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 {
   struct stat sb;
+  mode_t omask;
 
   ctx->append = 1;
 
@@ -502,6 +503,8 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 
 #endif
   
+  omask = umask(Umask);
+
   if(stat(ctx->path, &sb) == 0)
   {
     ctx->magic = mx_get_magic (ctx->path);
@@ -523,33 +526,33 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
     {
       char tmp[_POSIX_PATH_MAX];
 
-      if (mkdir (ctx->path, S_IRWXU))
+      if (mkdir (ctx->path, S_IRWXU|S_IRWXG|S_IRWXO))
       {
 	mutt_perror (ctx->path);
-	return (-1);
+	goto err_umask;
       }
 
       if (ctx->magic == M_MAILDIR)
       {
 	snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
-	if (mkdir (tmp, S_IRWXU))
+	if (mkdir (tmp, S_IRWXU|S_IRWXG|S_IRWXO))
 	{
 	  mutt_perror (tmp);
 	  rmdir (ctx->path);
-	  return (-1);
+	  goto err_umask;
 	}
 
 	snprintf (tmp, sizeof (tmp), "%s/new", ctx->path);
-	if (mkdir (tmp, S_IRWXU))
+	if (mkdir (tmp, S_IRWXU|S_IRWXG|S_IRWXO))
 	{
 	  mutt_perror (tmp);
 	  snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
 	  rmdir (tmp);
 	  rmdir (ctx->path);
-	  return (-1);
+	  goto err_umask;
 	}
 	snprintf (tmp, sizeof (tmp), "%s/tmp", ctx->path);
-	if (mkdir (tmp, S_IRWXU))
+	if (mkdir (tmp, S_IRWXU|S_IRWXG|S_IRWXO))
 	{
 	  mutt_perror (tmp);
 	  snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
@@ -557,7 +560,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 	  snprintf (tmp, sizeof (tmp), "%s/new", ctx->path);
 	  rmdir (tmp);
 	  rmdir (ctx->path);
-	  return (-1);
+	  goto err_umask;
 	}
       }
       else
@@ -565,11 +568,11 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 	int i;
 
 	snprintf (tmp, sizeof (tmp), "%s/.mh_sequences", ctx->path);
-	if ((i = creat (tmp, S_IRWXU)) == -1)
+	if ((i = creat (tmp, S_IRWXU|S_IRWXG|S_IRWXO)) == -1)
 	{
 	  mutt_perror (tmp);
 	  rmdir (ctx->path);
-	  return (-1);
+	  goto err_umask;
 	}
 	close (i);
       }
@@ -578,7 +581,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
   else
   {
     mutt_perror (ctx->path);
-    return (-1);
+    goto err_umask;
   }
 
   switch (ctx->magic)
@@ -595,7 +598,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 	  mutt_error (_("Couldn't lock %s\n"), ctx->path);
 	  safe_fclose (&ctx->fp);
 	}
-	return (-1);
+	goto err_umask;
       }
       fseek (ctx->fp, 0, 2);
       break;
@@ -606,10 +609,15 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
       break;
 
     default:
-      return (-1);
+      goto err_umask;
   }
 
+  umask(omask);
   return 0;
+
+ err_umask:
+  umask(omask);
+  return -1;
 }
 
 /*
@@ -1258,6 +1266,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   MESSAGE *msg;
   int (*func) (MESSAGE *, CONTEXT *, HEADER *);
   ADDRESS *p = NULL;
+  mode_t omask;
 
   switch (dest->magic)
   {
@@ -1296,6 +1305,8 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 
   if(msg->received == 0)
     time(&msg->received);
+
+  omask = umask(Umask);
   
   if (func (msg, dest, hdr) == 0)
   {
@@ -1320,6 +1331,8 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   }
   else
     FREE (&msg);
+
+  umask(omask);
 
   return msg;
 }

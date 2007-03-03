@@ -570,7 +570,7 @@ int safe_open (const char *path, int flags)
 			safe_dir, sizeof (safe_dir)) == -1)
       return -1;
     
-    if ((fd = open (safe_file, flags, 0600)) < 0)
+    if ((fd = open (safe_file, flags, 0666)) < 0)
     {
       rmdir (safe_dir);
       return fd;
@@ -584,7 +584,7 @@ int safe_open (const char *path, int flags)
   }
   else
   {
-    if ((fd = open (path, flags, 0600)) < 0)
+    if ((fd = open (path, flags, 0666)) < 0)
       return fd;
   }
     

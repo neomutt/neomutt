@@ -200,6 +200,7 @@ WHERE short SaveHist;
 WHERE short SendmailWait;
 WHERE short SleepTime INITVAL (1);
 WHERE short Timeout;
+WHERE short Umask;
 WHERE short Wrap;
 WHERE short WriteInc;
 
