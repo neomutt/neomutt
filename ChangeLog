@@ -10,11 +10,6 @@
 	* ChangeLog, hg-changelog-map, hg-commit: Use hg-commit to perform
 	commits that also update the ChangeLog.
 
-2007-03-03 00:34 -0800  Brendan Cully  <brendan@kublai.com>  (03596c38dd53)
-
-	* hg-commit: Use hg-commit to perform commits that also update the
-	ChangeLog.
-
 2007-03-02 21:17 -0800  Brendan Cully  <brendan@kublai.com>  (472e100053ed)
 
 	* .hgignore: Ignore more built files
@@ -35,10 +30,6 @@
 
 	* init.h: Remove $file_charset SYN - it never appeared in an official
 	release.
-
-2007-02-28 17:48 +0000  Brendan Cully  <brendan@kublai.com>  (083d6afe844c)
-
-	* ChangeLog: # changelog commit
 
 2007-02-28 17:47:13  Brendan Cully  <brendan@kublai.com>  (brendan)
 
