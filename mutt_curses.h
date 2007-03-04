@@ -159,6 +159,16 @@ void mutt_progress_init (progress_t* progress, const char *msg,
 			 long size);
 void mutt_progress_update (progress_t* progress, long pos);
 
+static inline int mutt_term_width(short wrap)
+{
+  if (wrap < 0)
+    return COLS > -wrap ? COLS + wrap : COLS;
+  else if (wrap)
+    return wrap < COLS ? wrap : COLS;
+  else
+    return COLS;
+}
+
 extern int *ColorQuote;
 extern int ColorQuoteUsed;
 extern int ColorDefs[];

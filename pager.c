@@ -1066,10 +1066,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
 
-  int wrap_cols = COLS - WrapMargin;
-  
-  if (wrap_cols <= 0)
-    wrap_cols = COLS;
+  int wrap_cols = mutt_term_width (Wrap);
   
   /* FIXME: this should come from lineInfo */
   memset(&mbstate, 0, sizeof(mbstate));

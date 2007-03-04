@@ -1974,8 +1974,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 
       if (query || *s->dptr != '=')
       {
+	val = *ptr;
+	/* compatibility alias */
+	if (mutt_strcmp (MuttVars[idx].option, "wrapmargin") == 0)
+	  val = *ptr < 0 ? -*ptr : 0;
+
 	/* user requested the value of this variable */
-	snprintf (err->data, err->dsize, "%s=%d", MuttVars[idx].option, *ptr);
+	snprintf (err->data, err->dsize, "%s=%d", MuttVars[idx].option, val);
 	break;
       }
 
@@ -2005,6 +2010,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (*ptr < 0)
 	  *ptr = 0;
+      }
+      else if (mutt_strcmp (MuttVars[idx].option, "wrapmargin") == 0)
+      {
+	if (*ptr < 0)
+	  *ptr = 0;
+	else
+	  *ptr = -*ptr;
       }
     }
     else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
@@ -2547,7 +2559,15 @@ static int var_to_string (int idx, char* val, size_t len)
   else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
     strfcpy (tmp, vals[quadoption (MuttVars[idx].data)], sizeof (tmp));
   else if (DTYPE (MuttVars[idx].type) == DT_NUM)
-    snprintf (tmp, sizeof (tmp), "%d", (*((short *) MuttVars[idx].data)));
+  {
+    short sval = *((short *) MuttVars[idx].data);
+
+    /* avert your eyes, gentle reader */
+    if (mutt_strcmp (MuttVars[idx].option, "wrapmargin") == 0)
+      sval = sval > 0 ? 0 : -sval;
+
+    snprintf (tmp, sizeof (tmp), "%d", sval);
+  }
   else if (DTYPE (MuttVars[idx].type) == DT_SORT)
   {
     const struct mapping_t *map;

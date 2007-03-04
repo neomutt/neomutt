@@ -4,6 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  + $wrap (>0 wraps at $wrap, <0 = $wrapmargin)
   + $assumed_charset, $attach_charset, $ignore_linear_white_space
   + $save_history, $history_file (save history across sessions)
   + $smtp_url (ESMTP relay support)

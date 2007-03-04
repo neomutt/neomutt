@@ -2997,6 +2997,13 @@ struct option_t MuttVars[] = {
   ** When set, mutt will weed headers when displaying, forwarding,
   ** printing, or replying to messages.
   */
+  { "wrap",             DT_NUM,  R_PAGER, UL &Wrap, 0 },
+  /*
+  ** .pp
+  ** When set to a positive value, mutt will wrap text at $$wrap characters.
+  ** When set to a negative value, mutt will wrap text so that there are $$wrap
+  ** characters of empty space on the right side of the terminal.
+  */
   { "wrap_search",	DT_BOOL, R_NONE, OPTWRAPSEARCH, 1 },
   /*
   ** .pp
@@ -3005,11 +3012,10 @@ struct option_t MuttVars[] = {
   ** When set, searches will wrap around the first (or last) message. When
   ** unset, searches will not wrap.
   */
-  { "wrapmargin",	DT_NUM,	 R_PAGER, UL &WrapMargin, 0 },
+  { "wrapmargin",	DT_NUM,	 R_PAGER, UL &Wrap, 0 },
   /*
   ** .pp
-  ** Controls the size of the margin remaining at the right side of
-  ** the terminal when mutt's pager does smart wrapping.
+  ** (DEPRECATED) Equivalent to setting $wrap with a negative value.
   */
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   /*

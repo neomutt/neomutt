@@ -200,7 +200,7 @@ WHERE short SaveHist;
 WHERE short SendmailWait;
 WHERE short SleepTime INITVAL (1);
 WHERE short Timeout;
-WHERE short WrapMargin;
+WHERE short Wrap;
 WHERE short WriteInc;
 
 WHERE short ScoreThresholdDelete;

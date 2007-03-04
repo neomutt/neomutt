@@ -994,12 +994,10 @@ static int text_plain_flowed_handler (BODY *a, STATE *s)
   if (s->prefix)
     add = 1;
   
-  if ((flowed_max = FLOWED_MAX) > COLS - 3)
-    flowed_max = COLS - 3;
-  if (flowed_max > COLS - WrapMargin)
-    flowed_max = COLS - WrapMargin;
-  if (flowed_max <= 0)
-    flowed_max = COLS;
+  if ((flowed_max = FLOWED_MAX) > mutt_term_width (0) - 3)
+    flowed_max = mutt_term_width (0) - 3;
+  if (flowed_max > mutt_term_width (Wrap))
+    flowed_max = mutt_term_width (Wrap);
     
 
   while (bytes > 0 && fgets (line, sizeof (line), s->fpin))

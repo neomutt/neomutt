@@ -1,3 +1,15 @@
+2007-03-03 18:47 -0800  Brendan Cully  <brendan@kublai.com>  (f23dba931c3f)
+
+	* UPDATING, copy.c, globals.h, handler.c, init.c, init.h,
+	mutt_curses.h, pager.c: Add $wrap, which supersedes $wrapmargin.
+	When set to a positive number, wrap at that column. When set to a
+	negative number, keep that many characters empty on the right.
+
+2007-03-03 00:35 -0800  Brendan Cully  <brendan@kublai.com>  (3e3d3bf73c9f)
+
+	* ChangeLog, hg-changelog-map, hg-commit: Use hg-commit to perform
+	commits that also update the ChangeLog.
+
 2007-03-03 00:34 -0800  Brendan Cully  <brendan@kublai.com>  (03596c38dd53)
 
 	* hg-commit: Use hg-commit to perform commits that also update the
