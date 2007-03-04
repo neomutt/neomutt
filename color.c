@@ -515,7 +515,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
   else
   {
     int r;
-    char buf[STRING];
+    char buf[LONG_STRING];
 
     tmp = mutt_new_color_line ();
     if (is_index) 
