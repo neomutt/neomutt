@@ -118,10 +118,10 @@ to turn the HTML into text, so if that fails you may need to install
 something else.
 
 
-Getting started from CVS
-------------------------
+Getting started from Mercurial
+------------------------------
 
-Once you've checked out a copy of the source from CVS, or changed your
+Once you've checked out a copy of the source from Mercurial, or changed your
 automake version, you'll need to run the script called './prepare' that
 is in the root directory.  The script does all the automake/autoconf
 magic that needs to be done with a fresh checkout.
@@ -242,4 +242,3 @@ similar to [ntg]roff:
 
 Do _not_ use any other SGML or nroff formatting instructions here!
 
-$Id$
