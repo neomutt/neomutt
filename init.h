@@ -486,8 +486,8 @@ struct option_t MuttVars[] = {
   { "default_hook",	DT_STR,	 R_NONE, UL &DefaultHook, UL "~f %s !~P | (~P ~C %s)" },
   /*
   ** .pp
-  ** This variable controls how send-hooks, message-hooks, save-hooks,
-  ** and fcc-hooks will
+  ** This variable controls how message-hooks, reply-hooks, send-hooks,
+  ** send2-hooks, save-hooks, and fcc-hooks will
   ** be interpreted if they are specified with only a simple regexp,
   ** instead of a matching pattern.  The hooks are expanded when they are
   ** declared, so a hook will be interpreted according to the value of this

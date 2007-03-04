@@ -4026,8 +4026,9 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 <title>Message Matching in Hooks</title>
 
 <para>
-Hooks that act upon messages (<literal>send-hook, save-hook, fcc-hook,
-message-hook</literal>) are evaluated in a slightly different manner.  For the other
+Hooks that act upon messages (<literal>message-hook, reply-hook,
+send-hook, send2-hook, save-hook, fcc-hook</literal>) are evaluated in a
+slightly different manner. For the other
 types of hooks, a <link linkend="regexp">regular expression</link> is
 sufficient.  But in dealing with messages a finer grain of control is
 needed for matching since for different purposes you want to match
@@ -5988,6 +5989,12 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
+<literal><link linkend="charset-hook">iconv-hook</link></literal> <emphasis>charset</emphasis> <emphasis>local-charset</emphasis>
+</para>
+</listitem>
+<listitem>
+
+<para>
 <literal><link linkend="color">color</link></literal> <emphasis>object</emphasis> <emphasis>foreground</emphasis> <emphasis>background</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
 </para>
 </listitem>
@@ -6031,12 +6038,6 @@ The following are the commands understood by mutt.
 
 <para>
 <literal><link linkend="hdr-order">unhdr&lowbar;order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="charset-hook">charset-hook</link></literal> <emphasis>charset</emphasis> <emphasis>local-charset</emphasis>
 </para>
 </listitem>
 <listitem>
@@ -6162,13 +6163,19 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="send-hook">send-hook</link></literal> <emphasis>regexp</emphasis> <emphasis>command</emphasis>
+<literal><link linkend="send-hook">reply-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="send-hook">reply-hook</link></literal> <emphasis>regexp</emphasis> <emphasis>command</emphasis>
+<literal><link linkend="send-hook">send-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
+</para>
+</listitem>
+<listitem>
+
+<para>
+<literal><link linkend="send-hook">send2-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
 </para>
 </listitem>
 <listitem>
