@@ -2779,7 +2779,7 @@ struct option_t MuttVars[] = {
   ** if their value is nonzero.  For example, you may only want to see the
   ** number of flagged messages if such messages exist, since zero is not
   ** particularly meaningful.  To optionally print a string based upon one
-  ** of the above sequences, the following construct is used
+  ** of the above sequences, the following construct is used:
   ** .pp
   **  %?<sequence_char>?<optional_string>?
   ** .pp
@@ -2793,15 +2793,17 @@ struct option_t MuttVars[] = {
   ** new messages in a mailbox:
   ** %?n?%n new messages.?
   ** .pp
-  ** Additionally you can switch between two strings, the first one, if a
-  ** value is zero, the second one, if the value is nonzero, by using the
-  ** following construct:
+  ** You can also switch between two strings using the following construct:
+  ** .pp
   ** %?<sequence_char>?<if_string>&<else_string>?
   ** .pp
-  ** You can additionally force the result of any printf-like sequence to
-  ** be lowercase by prefixing the sequence character with an underscore
-  ** (_) sign.  For example, if you want to display the local hostname in
-  ** lowercase, you would use:
+  ** If the value of \fIsequence_char\fP is non-zero, \fIif_string\fP will
+  ** be expanded, otherwise \fIelse_string\fP will be expanded.
+  ** .pp
+  ** You can force the result of any printf-like sequence to be lowercase
+  ** by prefixing the sequence character with an underscore (_) sign.
+  ** For example, if you want to display the local hostname in lowercase,
+  ** you would use:
   ** %_h
   ** .pp
   ** If you prefix the sequence character with a colon (:) character, mutt
