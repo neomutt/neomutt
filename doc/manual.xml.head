@@ -1204,6 +1204,80 @@ have a look at the mixmaster documentation.
 
 </sect2>
 
+<sect2>
+<title>Sending format=flowed messages</title>
+
+<sect3>
+<title>Concept</title>
+
+<para>
+<literal>format=flowed</literal>-style messages (or <literal>f=f</literal>
+for short) are plain ASCII messages that consist of paragraphs which a receiver's
+mail client may reformat to its own needs which mostly means to
+customize line lengths regardless of what the sender sent. Technically this is
+achieved by letting lines of a ``flowable'' paragraph end in spaces.
+</para>
+
+<para>
+While for text-mode clients like mutt it's the best way to assume only a
+standard 80x25 character cell terminal, it may be desired to let the
+receiver decide completely how to view a message.
+</para>
+
+</sect3>
+
+<sect3>
+<title>Mutt support</title>
+
+<para>
+Mutt only supports setting the required <literal>format=flowed</literal>
+MIME parameter on outgoing messages if the <link linkend="text-flowed"
+>&dollar;text&lowbar;flowed</link> variable is set. It does not add the
+trailing spaces nor does it provide any other feature related to
+composing <literal>f=f</literal> messages (like reformatting
+non-<literal>f=f</literal> parts of a reply to <literal>f=f</literal>
+before calling the editor).
+</para>
+
+<para>
+After editing the initial message text and before entering
+the compose menu, mutt properly space-stuffes the message.
+<emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
+<literal>format=flowed</literal> and means to prepend a space to all
+lines starting with a space and lines starting with the word
+<literal>From</literal> (followed by space). All leading spaces are to
+be removed by receiving clients to restore the original message.
+</para>
+
+</sect3>
+
+<sect3>
+<title>Editor considerations</title>
+
+<para>
+As mutt provides no additional features to compose <literal>f=f</literal>
+messages, it's completely up to the user and his editor to produce
+proper messages. Please consider your editor's documentation if you
+intend to send <literal>f=f</literal> messages.
+</para>
+
+<para>
+Please note that when editing messages from the compose menu several
+times before really sending a mail, it's up to the user to ensure that
+the message is properly space-stuffed.
+</para>
+
+<para>
+For example, <emphasis>vim</emphasis> provides the <literal>w</literal>
+flag for its <literal>formatoptions</literal> setting to assist in
+creating <literal>f=f</literal> messages, see <literal>:help
+fo-table</literal> for details.
+</para>
+
+</sect3>
+
+</sect2>
+
 </sect1>
 
 <sect1 id="forwarding-mail">

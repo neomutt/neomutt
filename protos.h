@@ -109,6 +109,7 @@ char *mutt_read_rfc822_line (FILE *, char *, size_t *);
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);
 HEADER *mutt_dup_header (HEADER *);
 
+void mutt_set_mtime (const char *from, const char *to);
 time_t mutt_decrease_mtime (const char *, struct stat *);
 time_t mutt_local_tz (time_t);
 time_t mutt_mktime (struct tm *, int);
