@@ -1,3 +1,11 @@
+2007-03-06 15:43 -0800  Brendan Cully  <brendan@kublai.com>  (52c24a8a42a8)
+
+	* hg-commit: Make hg commit less clever
+
+2007-03-06 11:58 -0800  Brendan Cully  <brendan@kublai.com>  (13a810347ee1)
+
+	* ChangeLog: # changelog commit
+
 2007-03-06 11:13 -0800  Brendan Cully  <brendan@kublai.com>  (6f2088ff044b)
 
 	* PATCHES: Undo bad PATCHES commit from f=f
