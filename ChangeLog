@@ -1,4 +1,49 @@
-2007-03-03 18:47 -0800  Brendan Cully  <brendan@kublai.com>  (f23dba931c3f)
+2007-03-06 11:13 -0800  Brendan Cully  <brendan@kublai.com>  (6f2088ff044b)
+
+	* PATCHES: Undo bad PATCHES commit from f=f
+
+2007-03-06 09:49 -0800  Rocco Rutte  <pdmef@gmx.net>  (2e4e1cc18c22)
+
+	* Makefile.am, PATCHES, doc/manual.xml.head, handler.c, muttlib.c,
+	protos.h, rfc3676.c, rfc3676.h, send.c: New format=flowed handler.
+
+2007-03-02 21:12 -0800  Brendan Cully  <brendan@kublai.com>  (537672d8fefb)
+
+	* attach.c, globals.h, init.c, init.h, lib.c, mh.c, mx.c: Add $umask
+	for mailboxes and attachments.
+
+	init.c could really use some refactoring.
+
+2007-03-05 14:50 -0800  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (de57c607e9d3)
+
+	* po/pl.po: Updated Polish translation.
+
+2007-03-03 22:09 -0800  Brendan Cully  <brendan@kublai.com>  (08b1fa8cd55e)
+
+	* Makefile.am: Do not append ${prefix}/include to CPPFLAGS. If
+	configure didn't see it, neither should make. (closes: #2603)
+
+2007-03-03 21:49 -0800  Rado S  <regrado@web.de>  (d990dcbbf184)
+
+	* color.c: Increase buffer for color-command regular expressions.
+
+2007-03-03 21:26 -0800  Brendan Cully  <brendan@kublai.com>  (574dbb2c6590)
+
+	* init.h: Revise status_format docs for %??&?. (closes: #2805)
+
+2007-03-03 21:24 -0800  Brendan Cully  <brendan@kublai.com>  (2e296bd4cdfb)
+
+	* doc/devel-notes.txt: s/CVS/Mercurial/
+
+2007-03-03 19:04 -0800  Brendan Cully  <brendan@kublai.com>  (efb53c875ed8)
+
+	* .hgignore: More .hgignore fixes
+
+2007-03-03 18:51 -0800  Brendan Cully  <brendan@kublai.com>  (07f01dd033fe)
+
+	* ChangeLog: Remove a couple of extraneous ChangeLog entries
+
+2007-03-03 18:47 -0800  Brendan Cully  <brendan@kublai.com>  (48b17378c20a)
 
 	* UPDATING, copy.c, globals.h, handler.c, init.c, init.h,
 	mutt_curses.h, pager.c: Add $wrap, which supersedes $wrapmargin.
