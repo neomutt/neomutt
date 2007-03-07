@@ -1,3 +1,22 @@
+2007-03-07 12:11 -0800  Michael Tatge  <Michael.Tatge@web.de>  (162f0c127492)
+
+	* doc/mutt.man: Document -d in the man page
+
+2007-03-06 18:13 -0800  Alain Bench  <veronatif@free.fr>  (5fc8c7cee1dd)
+
+	* ChangeLog, charset.c, charset.h, crypt-gpgme.c, imap/utf7.c,
+	mbyte.c, mutt_idna.c, pgp.c, rfc2047.c, sendlib.c: Remove buggy
+	usage of M_ICONV_HOOK_TO flag in mutt_idna.c:mutt_idna_to_local().
+	Wipe unwanted code depending on M_ICONV_HOOK_TO in
+	charset.c:mutt_iconv_open(). Totally wipe M_ICONV_HOOK_TO symbol.
+	Remove misusages of M_ICONV_HOOK_FROM flag in:
+	 - crypt-gpgme.c:print_utf8().
+	 - mutt_idna.c:mutt_idna_to_local() and mutt_local_to_idna().
+	 - pgp.c:pgp_traditional_encryptsign(). Document usage policy of
+	M_ICONV_HOOK_FROM flag. Cosmetic downcasing of some constant charset
+	names (utf-8, euc-jp) for consistency. Correction of a typo in the
+	"iso8859-5" charset name.
+
 2007-03-06 17:59 -0800  Rocco Rutte  <pdmef@gmx.net>  (5e47385893fe)
 
 	* UPDATING, doc/manual.xml.head: Documentation updates for

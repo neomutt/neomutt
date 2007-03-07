@@ -39,9 +39,9 @@ characters.  The difference between the two types of quotes is
 similar to that of many popular shell programs, namely that a single
 quote is used to specify a literal string (one that is not
 interpreted for shell variables or quoting with a backslash [see
-next paragraph]), while double quotes indicate a string for which
-should be evaluated.  For example, backtics are evaluated inside of
-double quotes, but not for single quotes.
+next paragraph]), while double quotes indicate a string which
+should be evaluated.  For example, backquotes are evaluated inside of
+double quotes, but not single quotes.
 .PP
 \fB\(rs\fP quotes the next character, just as in shells such as bash and zsh.
 For example, if want to put quotes (\(lq\fB"\fP\(rq) inside of a
@@ -60,8 +60,8 @@ It is also possible to substitute the output of a Unix command in an
 initialization file.  This is accomplished by enclosing the command
 in backquotes (\fB`\fP\fIcommand\fP\fB`\fP).
 .PP
-UNIX environments can be accessed like the way it is done in shells
-like sh and bash: Prepend the name of the environment by a dollar
+UNIX environment variables can be accessed like the way it is done in shells
+like sh and bash: Prepend the name of the variable by a dollar
 (\(lq\fB\(Do\fP\(rq) sign.
 .PP
 .SH COMMANDS
@@ -181,7 +181,7 @@ executed in the order given in the configuration file.
 \fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
 This command binds the given \fIsequence\fP of keys to the given
 \fIkey\fP in the given \fImap\fP or maps.  For valid maps, see \fBbind\fP. To
-specify multipe maps, put only a comma between the maps.
+specify multiple maps, put only a comma between the maps.
 .PP
 .nf
 \fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fI regexp\fP ]
