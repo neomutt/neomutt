@@ -1243,10 +1243,27 @@ before calling the editor).
 After editing the initial message text and before entering
 the compose menu, mutt properly space-stuffes the message.
 <emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
-<literal>format=flowed</literal> and means to prepend a space to all
-lines starting with a space and lines starting with the word
-<literal>From</literal> (followed by space). All leading spaces are to
-be removed by receiving clients to restore the original message.
+<literal>format=flowed</literal> and means to prepend a space to:
+</para>
+
+<itemizedlist>
+<listitem><para>all lines starting with a space</para></listitem>
+<listitem><para>lines starting with the word ``<literal>From</literal>''
+followed by space</para></listitem>
+<listitem><para>all lines starting with ``<literal>&gt;</literal>'' which
+is not intended to be a quote character</para></listitem>
+</itemizedlist>
+
+<para>
+All leading spaces are to be removed by receiving clients to restore
+the original message.
+</para>
+
+<para>
+<emphasis role="bold">Note</emphasis> that mutt only support space-stuffing
+for the first two types of lines but not for the third: It is impossible to
+safely detect whether a leading <literal>&gt;</literal> character starts a
+quote or not.
 </para>
 
 </sect3>
