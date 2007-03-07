@@ -375,7 +375,7 @@ static size_t choose_block (char *d, size_t dlen, int col,
 			    encoder_t *encoder, size_t *wlen)
 {
   size_t n, nn;
-  int utf8 = fromcode && !ascii_strcasecmp (fromcode, "UTF-8");
+  int utf8 = fromcode && !ascii_strcasecmp (fromcode, "utf-8");
 
   n = dlen;
   for (;;)
@@ -416,7 +416,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   encoder_t encoder;
   char *tocode1 = 0;
   const char *tocode;
-  char *icode = "UTF-8";
+  char *icode = "utf-8";
 
   /* Try to convert to UTF-8. */
   if (convert_string (d, dlen, fromcode, icode, &u, &ulen))
@@ -595,7 +595,7 @@ void _rfc2047_encode_string (char **pd, int encode_specials, int col)
 
   charsets = SendCharset;
   if (!charsets || !*charsets)
-    charsets = "UTF-8";
+    charsets = "utf-8";
 
   rfc2047_encode (*pd, strlen (*pd), col,
 		  Charset, charsets, &e, &elen,

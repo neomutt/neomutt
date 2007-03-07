@@ -55,7 +55,9 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
   /* Is this the right function?  Interesting effects with some bad identifiers! */
   if (idna_to_unicode_8z8z (in, out, 1) != IDNA_SUCCESS)
     goto notrans;
-  if (mutt_convert_string (out, "utf-8", Charset, M_ICONV_HOOK_TO) == -1)
+
+  /* we don't want charset-hook effects, so we set flags to 0 */
+  if (mutt_convert_string (out, "utf-8", Charset, 0) == -1)
     goto notrans;
 
   /* 
@@ -68,7 +70,9 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
     int irrev = 0;
     char *t2 = NULL;
     char *tmp = safe_strdup (*out);
-    if (mutt_convert_string (&tmp, Charset, "utf-8", M_ICONV_HOOK_FROM) == -1)
+
+    /* we don't want charset-hook effects, so we set flags to 0 */
+    if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
       irrev = 1;
     if (!irrev && idna_to_ascii_8z (tmp, &t2, 1) != IDNA_SUCCESS)
       irrev = 1;
@@ -106,7 +110,8 @@ int mutt_local_to_idna (const char *in, char **out)
     return -1;
   }
   
-  if (mutt_convert_string (&tmp, Charset, "utf-8", M_ICONV_HOOK_FROM) == -1)
+  /* we don't want charset-hook effects, so we set flags to 0 */
+  if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
     rv = -1;
   if (!rv && idna_to_ascii_8z (tmp, out, 1) != IDNA_SUCCESS)
     rv = -2;

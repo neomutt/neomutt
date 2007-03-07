@@ -129,7 +129,7 @@ PreferredMIMENames[] =
   { "iso-ir-144",	"iso-8859-5"	},
   { "ISO_8859-5",	"iso-8859-5"	},
   { "cyrillic",		"iso-8859-5"	},
-  { "csISOLatinCyrillic", "iso8859-5"	},
+  { "csISOLatinCyrillic", "iso-8859-5"	},
 
   { "ISO_8859-9:1989",	"iso-8859-9"	},
   { "iso-ir-148",	"iso-8859-9"	},
@@ -150,9 +150,9 @@ PreferredMIMENames[] =
   { "csShiftJis",	"Shift_JIS"	},
   
   { "Extended_UNIX_Code_Packed_Format_for_Japanese",
-      			"EUC-JP"	},
+      			"euc-jp"	},
   { "csEUCPkdFmtJapanese", 
-      			"EUC-JP"	},
+      			"euc-jp"	},
   
   { "csGB2312",		"gb2312"	},
   { "csbig5",		"big5"		},
@@ -321,7 +321,14 @@ int iconv_close (iconv_t cd)
  * Like iconv_open, but canonicalises the charsets, applies
  * charset-hooks, recanonicalises, and finally applies iconv-hooks.
  * Parameter flags=0 skips charset-hooks, while M_ICONV_HOOK_FROM
- * applies them to fromcode.
+ * applies them to fromcode. Callers should use flags=0 when fromcode
+ * can safely be considered true, either some constant, or some value
+ * provided by the user; M_ICONV_HOOK_FROM should be used only when
+ * fromcode is unsure, taken from a possibly wrong incoming MIME label,
+ * or such. Misusing M_ICONV_HOOK_FROM leads to unwanted interactions
+ * in some setups. Note: By design charset-hooks should never be, and
+ * are never, applied to tocode. Highlight note: The top-well-named
+ * M_ICONV_HOOK_FROM acts on charset-hooks, not at all on iconv-hooks.
  */
 
 iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
@@ -335,13 +342,6 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 
   /* transform to MIME preferred charset names */
   mutt_canonical_charset (tocode1, sizeof (tocode1), tocode);
-
-#ifdef M_ICONV_HOOK_TO
-  /* Not used. */
-  if ((flags & M_ICONV_HOOK_TO) && (tmp = mutt_charset_hook (tocode1)))
-    mutt_canonical_charset (tocode1, sizeof (tocode1), tmp);
-#endif
-
   mutt_canonical_charset (fromcode1, sizeof (fromcode1), fromcode);
 
   /* maybe apply charset-hooks and recanonicalise fromcode,
@@ -438,7 +438,9 @@ size_t mutt_iconv (iconv_t cd, ICONV_CONST char **inbuf, size_t *inbytesleft,
 
 /*
  * Convert a string
- * Used in rfc2047.c and rfc2231.c
+ * Used in rfc2047.c, rfc2231.c, crypt-gpgme.c, mutt_idna.c, and more.
+ * Parameter flags is given as-is to mutt_iconv_open(). See there
+ * for its meaning and usage policy.
  */
 
 int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
@@ -511,6 +513,10 @@ struct fgetconv_not
   iconv_t cd;
 };
 
+/*
+ * Parameter flags is given as-is to mutt_iconv_open(). See there
+ * for its meaning and usage policy.
+ */
 FGETCONV *fgetconv_open (FILE *file, const char *from, const char *to, int flags)
 {
   struct fgetconv_s *fc;

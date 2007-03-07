@@ -73,13 +73,13 @@ void mutt_set_charset (char *charset)
     charset_is_ja = 1;
 
     /* Note flags=0 to skip charset-hooks: User masters the $charset
-     * name, and we are sure of our "UTF-8" constant. So there is no
+     * name, and we are sure of our "utf-8" constant. So there is no
      * possibility of wrong name that we would want to try to correct
      * with a charset-hook. Or rather: If $charset was wrong, we would
      * want to try to correct... $charset directly.
      */
-    charset_to_utf8 = mutt_iconv_open ("UTF-8", charset, 0);
-    charset_from_utf8 = mutt_iconv_open (charset, "UTF-8", 0);
+    charset_to_utf8 = mutt_iconv_open ("utf-8", charset, 0);
+    charset_from_utf8 = mutt_iconv_open (charset, "utf-8", 0);
   }
 #endif
 

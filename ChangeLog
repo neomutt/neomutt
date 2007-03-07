@@ -1,3 +1,13 @@
+2007-03-06 17:59 -0800  Rocco Rutte  <pdmef@gmx.net>  (5e47385893fe)
+
+	* UPDATING, doc/manual.xml.head: Documentation updates for
+	format=flowed
+
+2007-03-06 17:45 -0800  Masayuki  <Masayuki Moriyama>  (78b424bf7c5a)
+
+	* ChangeLog, charset.c, hook.c, mbyte.c: Allow iconv-hook to use
+	virtual charsets as targets. (closes: #1269)
+
 2007-03-04 19:26 +0100  Alain Bench  <veronatif@free.fr>  (4dc1d87f4c25)
 
 	* doc/manual.xml.head, init.h: Doc fixes and updates concerning hooks
