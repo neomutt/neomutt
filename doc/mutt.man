@@ -46,6 +46,9 @@ mutt \- The Mutt Mail User Agent
 .B mutt
 [-n] [-e \fIcmd\fP] [-F \fIfile\fP] -A \fIalias\fP
 .PP
+.B mutt
+-d \fIlevel\fp
+.PP
 .B mutt 
 -v[v]
 .PP
@@ -96,6 +99,10 @@ the command line have been executed.
 Open a mailbox in \fIread-only\fP mode.
 .IP "-s \fIsubject\fP"
 Specify the subject of the message.
+.IP "-d \fIlevel\fp"
+If mutt was complied with +DEBUG log debugging output to ~/.muttdebug0.
+\fILevel\fP can range from 1-5 and effects verbosity. A value of 2 is
+recommended.
 .IP "-v"
 Display the Mutt version number and compile-time definitions.
 .IP "-x"
