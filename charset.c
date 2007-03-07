@@ -318,7 +318,10 @@ int iconv_close (iconv_t cd)
 
 
 /*
- * Like iconv_open, but canonicalises the charsets
+ * Like iconv_open, but canonicalises the charsets, applies
+ * charset-hooks, recanonicalises, and finally applies iconv-hooks.
+ * Parameter flags=0 skips charset-hooks, while M_ICONV_HOOK_FROM
+ * applies them to fromcode.
  */
 
 iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
@@ -329,7 +332,8 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   char *tmp;
 
   iconv_t cd;
-  
+
+  /* transform to MIME preferred charset names */
   mutt_canonical_charset (tocode1, sizeof (tocode1), tocode);
 
 #ifdef M_ICONV_HOOK_TO
@@ -339,13 +343,22 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
 #endif
 
   mutt_canonical_charset (fromcode1, sizeof (fromcode1), fromcode);
+
+  /* maybe apply charset-hooks and recanonicalise fromcode,
+   * but only when caller asked us to sanitize a potentialy wrong
+   * charset name incoming from the wild exterior. */
   if ((flags & M_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))
     mutt_canonical_charset (fromcode1, sizeof (fromcode1), tmp);
 
-  if ((cd = iconv_open (tocode1, fromcode1)) != (iconv_t) -1)
+  /* always apply iconv-hooks to suit system's iconv tastes */
+  tocode2 = mutt_iconv_hook (tocode1);
+  tocode2 = (tocode2) ? tocode2 : tocode1;
+  fromcode2 = mutt_iconv_hook (fromcode1);
+  fromcode2 = (fromcode2) ? fromcode2 : fromcode1;
+
+  /* call system iconv with names it appreciates */
+  if ((cd = iconv_open (tocode2, fromcode2)) != (iconv_t) -1)
     return cd;
-  if ((tocode2 = mutt_iconv_hook (tocode1)) && (fromcode2 = mutt_iconv_hook (fromcode1)))
-    return iconv_open (tocode2, fromcode2);
   
   return (iconv_t) -1;
 }

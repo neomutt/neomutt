@@ -1,3 +1,17 @@
+2007-03-04 19:26 +0100  Alain Bench  <veronatif@free.fr>  (4dc1d87f4c25)
+
+	* doc/manual.xml.head, init.h: Doc fixes and updates concerning hooks
+
+	- Add reply-hooks and send2-hooks in lists they miss.
+	- Fix that they all take full patterns, not only regexps.
+	- Note interaction with $default_hook.
+	- Enumerate them in execution order/increasing priority.
+	- Add iconv-hook, remove a duplicate charset-hook.
+
+2007-03-06 15:45 -0800  Brendan Cully  <brendan@kublai.com>  (607688bd77b1)
+
+	* ChangeLog, hg-commit: Add check_sec.sh call
+
 2007-03-06 15:43 -0800  Brendan Cully  <brendan@kublai.com>  (52c24a8a42a8)
 
 	* hg-commit: Make hg commit less clever
