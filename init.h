@@ -2909,7 +2909,7 @@ struct option_t MuttVars[] = {
   ** machine without having to enter a password.
   */
 #endif
-  { "umask", DT_NUM, R_NONE, &Umask, 0077 },
+  { "umask", DT_NUM, R_NONE, UL &Umask, 0077 },
   /*
   ** .pp
   ** Sets the umask to use when creating mailboxes or saving attachments.
