@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
   "http://www.oasis-open.org/docbook/xml/4.2/docbookx.dtd">
 <book>
 
@@ -308,12 +308,12 @@ following categories:
 
 <para>
 <itemizedlist>
-<listitem>muttrc commands</listitem>
-<listitem>addresses and aliases</listitem>
-<listitem>shell commands</listitem>
-<listitem>filenames</listitem>
-<listitem>patterns</listitem>
-<listitem>everything else</listitem>
+<listitem><para>muttrc commands</para></listitem>
+<listitem><para>addresses and aliases</para></listitem>
+<listitem><para>shell commands</para></listitem>
+<listitem><para>filenames</para></listitem>
+<listitem><para>patterns</para></listitem>
+<listitem><para>everything else</para></listitem>
 </itemizedlist>
 </para>
 

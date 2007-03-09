@@ -99,6 +99,9 @@ manual.tex: stamp-doc-xml
 	  openjade -t tex -D $(DSLROOT) -d print/docbook.dsl dtds/decls/xml.dcl manual.xml; \
 	fi
 
+validate: stamp-doc-xml
+	xmllint --noout --noblanks --postvalid manual.xml
+
 clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
 	rm -f *.aux *.log *.tex *.out
