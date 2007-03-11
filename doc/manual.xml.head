@@ -4121,7 +4121,7 @@ An example multiple response output:
 Searching database ... 20 entries ... 3 matching:
 me@cs.hmc.edu           Michael Elkins  mutt dude
 blong@fiction.net       Brandon Long    mutt and more
-roessler@guug.de        Thomas Roessler mutt pgp
+roessler@does-not-exist.org        Thomas Roessler mutt pgp
 </screen>
 
 </para>
