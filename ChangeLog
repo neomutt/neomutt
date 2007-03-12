@@ -24,13 +24,13 @@
 	* init.h: Add `UL' cast for Umask entry in MuttVars to supress
 	compiler warning.
 
-2007-03-08 12:19 -0800  Petr P�sa?  <petr.pisar@atlas.cz>  (d0924f72d2e8)
+2007-03-08 12:19 -0800  Petr Písař  <petr.pisar@atlas.cz>  (d0924f72d2e8)
 
 	* po/cs.po: Czech spelling fixes and new translations
 
 2007-03-07 12:18 -0800  Christoph Berg  <cb@df7cb.de>  (5de130a3cb96)
 
-	* ChangeLog, doc/muttrc.man.head: Typos in muttrc.man.head
+	* doc/muttrc.man.head: Typos in muttrc.man.head
 
 2007-03-07 12:11 -0800  Michael Tatge  <Michael.Tatge@web.de>  (162f0c127492)
 
@@ -38,9 +38,9 @@
 
 2007-03-06 18:13 -0800  Alain Bench  <veronatif@free.fr>  (5fc8c7cee1dd)
 
-	* ChangeLog, charset.c, charset.h, crypt-gpgme.c, imap/utf7.c,
-	mbyte.c, mutt_idna.c, pgp.c, rfc2047.c, sendlib.c: Remove buggy
-	usage of M_ICONV_HOOK_TO flag in mutt_idna.c:mutt_idna_to_local().
+	* charset.c, charset.h, crypt-gpgme.c, imap/utf7.c, mbyte.c,
+	mutt_idna.c, pgp.c, rfc2047.c, sendlib.c: Remove buggy usage
+	of M_ICONV_HOOK_TO flag in mutt_idna.c:mutt_idna_to_local().
 	Wipe unwanted code depending on M_ICONV_HOOK_TO in
 	charset.c:mutt_iconv_open(). Totally wipe M_ICONV_HOOK_TO symbol.
 	Remove misusages of M_ICONV_HOOK_FROM flag in:
@@ -56,10 +56,10 @@
 	* UPDATING, doc/manual.xml.head: Documentation updates for
 	format=flowed
 
-2007-03-06 17:45 -0800  Masayuki  <Masayuki Moriyama>  (78b424bf7c5a)
+2007-03-06 17:45 -0800  Masayuki Moriyama  (78b424bf7c5a)
 
-	* ChangeLog, charset.c, hook.c, mbyte.c: Allow iconv-hook to use
-	virtual charsets as targets. (closes: #1269)
+	* charset.c, hook.c, mbyte.c: Allow iconv-hook to use virtual
+	charsets as targets. (closes: #1269)
 
 2007-03-04 19:26 +0100  Alain Bench  <veronatif@free.fr>  (4dc1d87f4c25)
 
@@ -73,17 +73,9 @@
 
 2007-03-06 15:45 -0800  Brendan Cully  <brendan@kublai.com>  (607688bd77b1)
 
-	* ChangeLog, hg-commit: Add check_sec.sh call
-
-2007-03-06 15:43 -0800  Brendan Cully  <brendan@kublai.com>  (52c24a8a42a8)
+	* hg-commit: Add check_sec.sh call
 
 	* hg-commit: Make hg commit less clever
-
-2007-03-06 11:58 -0800  Brendan Cully  <brendan@kublai.com>  (13a810347ee1)
-
-	* ChangeLog: # changelog commit
-
-2007-03-06 11:13 -0800  Brendan Cully  <brendan@kublai.com>  (6f2088ff044b)
 
 	* PATCHES: Undo bad PATCHES commit from f=f
 
@@ -137,8 +129,8 @@
 
 2007-03-03 00:35 -0800  Brendan Cully  <brendan@kublai.com>  (3e3d3bf73c9f)
 
-	* ChangeLog, hg-changelog-map, hg-commit: Use hg-commit to perform
-	commits that also update the ChangeLog.
+	* hg-changelog-map, hg-commit: Use hg-commit to perform commits
+	that also update the ChangeLog.
 
 2007-03-02 21:17 -0800  Brendan Cully  <brendan@kublai.com>  (472e100053ed)
 
