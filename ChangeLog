@@ -1,7 +1,16 @@
+2007-03-12 12:19 -0700  René Clerc  <rene@clerc.nl>  (162bb5f71a0f)
+
+	* po/nl.po: Updated Dutch translation.
+
+2007-03-12 10:32 -0700  Brendan Cully  <brendan@kublai.com>  (83ca0fb6e36a)
+
+	* imap/util.c: Substitute INBOX for empty mailbox _after_ cleanup
+	(closes: #2841)
+
 2007-03-12 10:03 -0700  Sami Farin  <safari-mutt@safari.iki.fi>  (42016ef5ee21)
 
-	* ChangeLog, charset.c, copy.c, rfc822.c, rfc822.h: Improve strcat
-	usage (#2802).
+	* charset.c, copy.c, rfc822.c, rfc822.h: Improve strcat usage
+	(#2802).
 
 2007-03-11 11:54 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (8a640badfb60)
 
