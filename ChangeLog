@@ -1,3 +1,8 @@
+2007-03-12 10:03 -0700  Sami Farin  <safari-mutt@safari.iki.fi>  (42016ef5ee21)
+
+	* ChangeLog, charset.c, copy.c, rfc822.c, rfc822.h: Improve strcat
+	usage (#2802).
+
 2007-03-11 11:54 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (8a640badfb60)
 
 	* COPYRIGHT, build-release, crypt-gpgme.c, doc/applying-patches.txt,
