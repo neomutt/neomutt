@@ -1,3 +1,37 @@
+2007-03-11 11:54 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (8a640badfb60)
+
+	* COPYRIGHT, build-release, crypt-gpgme.c, doc/applying-patches.txt,
+	doc/dotlock.man, doc/manual.xml.head, doc/muttrc.man.head,
+	muttbug.sh.in, po/bg.po, po/da.po, po/eo.po, po/es.po, po/et.po,
+	po/gl.po, po/it.po, po/lt.po, po/pt_BR.po, po/sk.po, po/zh_CN.po,
+	po/zh_TW.po: Grabage-collect references to an outdated email
+	address.
+
+2007-03-09 10:58 -0800  Rocco Rutte  <pdmef@gmx.net>  (d1122bbaacd8)
+
+	* doc/Makefile.am, doc/manual.xml.head: Make manual validate against
+	DocBook 4.2 DTD for "book" This adds a 'validate' target to
+	doc/Makefile which uses xmllint(1) to validate manual.xml against
+	the DTD given in the doctype (intended for developers only).
+
+	Running it revealed two validation errors which this patch fixes:
+
+	1) We declare 'article' as the doctype but want to use 'book' 2)
+	Within a lists's items, we didn't include our text in a paragraph
+
+2007-03-08 21:13 -0800  Michael Elkins  <me@mutt.org>  (0ec4394636c4)
+
+	* init.h: Add `UL' cast for Umask entry in MuttVars to supress
+	compiler warning.
+
+2007-03-08 12:19 -0800  Petr P’sa?  <petr.pisar@atlas.cz>  (d0924f72d2e8)
+
+	* po/cs.po: Czech spelling fixes and new translations
+
+2007-03-07 12:18 -0800  Christoph Berg  <cb@df7cb.de>  (5de130a3cb96)
+
+	* ChangeLog, doc/muttrc.man.head: Typos in muttrc.man.head
+
 2007-03-07 12:11 -0800  Michael Tatge  <Michael.Tatge@web.de>  (162f0c127492)
 
 	* doc/mutt.man: Document -d in the man page
