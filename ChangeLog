@@ -1,3 +1,11 @@
+2007-03-13 10:58 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (f4d3704813fd)
+
+	* charset.c: Clean up the strcat cleanup
+
+2007-03-12 16:26 -0700  Ronny Haryanto  <ronnylist@haryan.to>  (8d956e434fab)
+
+	* po/id.po: Updated Indonesian translation
+
 2007-03-12 12:19 -0700  René Clerc  <rene@clerc.nl>  (162bb5f71a0f)
 
 	* po/nl.po: Updated Dutch translation.
