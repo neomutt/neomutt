@@ -245,9 +245,10 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   char *p;
   char scratch[LONG_STRING];
 
-  if (!ascii_strcasecmp (name, "utf-8")) {
-    strfcpy (dest, name, dlen);
-    goto found_utf8;
+  if (!ascii_strcasecmp (name, "utf-8")) 
+  {
+    strfcpy (dest, "utf-8", dlen);
+    return;
   }
 
   /* catch some common iso-8859-something misspellings */
@@ -272,7 +273,6 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 
   strfcpy (dest, scratch, dlen);
 
-found_utf8:
   /* for cosmetics' sake, transform to lowercase. */
   for (p = dest; *p; p++)
     *p = ascii_tolower (*p);
