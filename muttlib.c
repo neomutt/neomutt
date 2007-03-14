@@ -996,12 +996,122 @@ void mutt_FormatString (char *dest,		/* output buffer */
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
   size_t wlen, count, len, col, wid;
+  pid_t pid;
+  FILE *filter;
+  int n;
+  char *recycler;
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
   wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
   col = wlen;
-    
+
+  if ((flags & M_FORMAT_NOFILTER) == 0)
+  {
+    int off = -1;
+
+    /* Do not consider filters if no pipe at end */
+    n = mutt_strlen(src);
+    if (n > 0 && src[n-1] == '|')
+    {
+      /* Scan backwards for backslashes */
+      off = n;
+      while (off > 0 && src[off-2] == '\\')
+        off--;
+    }
+
+    /* If number of backslashes is even, the pipe is real. */
+    /* n-off is the number of backslashes. */
+    if (off > 0 && ((n-off) % 2) == 0)
+    {
+      BUFFER *srcbuf, *word, *command;
+      char    srccopy[LONG_STRING];
+      int     i = 0;
+
+      dprint(2, (debugfile, "fmtpipe = %s\n", src));
+
+      strncpy(srccopy, src, n);
+      srccopy[n-1] = '\0';
+
+      /* prepare BUFFERs */
+      srcbuf = mutt_buffer_from(NULL, srccopy);
+      srcbuf->dptr = srcbuf->data;
+      word = mutt_buffer_init(NULL);
+      command = mutt_buffer_init(NULL);
+
+      /* Iterate expansions across successive arguments */
+      do {
+        char *p;
+
+        /* Extract the command name and copy to command line */
+        dprint(2, (debugfile, "fmtpipe +++: %s\n", srcbuf->dptr));
+        if (word->data)
+          *word->data = '\0';
+        mutt_extract_token(word, srcbuf, 0);
+        dprint(2, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
+        mutt_buffer_addch(command, '\'');
+        mutt_FormatString(buf, sizeof(buf), word->data, callback, data,
+                          flags | M_FORMAT_NOFILTER);
+        for (p = buf; p && *p; p++)
+        {
+          if (*p == '\'')
+            /* shell quoting doesn't permit escaping a single quote within
+             * single-quoted material.  double-quoting instead will lead
+             * shell variable expansions, so break out of the single-quoted
+             * span, insert a double-quoted single quote, and resume. */
+            mutt_buffer_addstr(command, "'\"'\"'");
+          else
+            mutt_buffer_addch(command, *p);
+        }
+        mutt_buffer_addch(command, '\'');
+        mutt_buffer_addch(command, ' ');
+      } while (MoreArgs(srcbuf));
+
+      dprint(2, (debugfile, "fmtpipe > %s\n", command->data));
+
+      wptr = dest;      /* reset write ptr */
+      wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+      if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)))
+      {
+        n = fread(dest, 1, destlen /* already decremented */, filter);
+        fclose(filter);
+        dest[n] = '\0';
+        dprint(2, (debugfile, "fmtpipe < %s\n", dest));
+
+        if (pid != -1)
+          mutt_wait_filter(pid);
+  
+        /* If the result ends with '%', this indicates that the filter
+         * generated %-tokens that mutt can expand.  Eliminate the '%'
+         * marker and recycle the string through mutt_FormatString().
+         * To literally end with "%", use "%%". */
+        if (dest[--n] == '%')
+        {
+          dest[n] = '\0';               /* remove '%' */
+          if (dest[--n] != '%')
+          {
+            recycler = safe_strdup(dest);
+            if (recycler)
+            {
+              mutt_FormatString(dest, destlen++, recycler, callback, data, flags);
+              safe_free(&recycler);
+            }
+          }
+        }
+      }
+      else
+      {
+        /* Filter failed; erase write buffer */
+        *wptr = '\0';
+      }
+
+      mutt_buffer_free(&command);
+      mutt_buffer_free(&srcbuf);
+      mutt_buffer_free(&word);
+      return;
+    }
+  }
+
   while (*src && wlen < destlen)
   {
     if (*src == '%')

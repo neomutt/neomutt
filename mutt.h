@@ -143,7 +143,8 @@ typedef enum
   M_FORMAT_OPTIONAL	= (1<<3),
   M_FORMAT_STAT_FILE	= (1<<4), /* used by mutt_attach_fmt */
   M_FORMAT_ARROWCURSOR	= (1<<5), /* reserve space for arrow_cursor */
-  M_FORMAT_INDEX	= (1<<6)  /* this is a main index entry */
+  M_FORMAT_INDEX	= (1<<6), /* this is a main index entry */
+  M_FORMAT_NOFILTER	= (1<<7)  /* do not allow filtering on this pass */
 } format_flag;
 
 /* types for mutt_add_hook() */
