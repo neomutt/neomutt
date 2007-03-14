@@ -1,3 +1,25 @@
+2007-03-14 11:33 -0700  Rocco Rutte  <pdmef@gmx.net>  (09f73968d97a)
+
+	* rfc822.c: Fix return value for rfc822_write_address() The strcat
+	cleanup changed the return type from void to int but didn't provide
+	a return value for the case of bogus function arguments.
+
+2007-03-13 12:39 -0700  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (dc8f0c4a6287)
+
+	* help.c: Use strwidth instead of strlen when generating help strings.
+	This fixes word-wrap with multibyte strings (closes: #1503)
+
+2007-03-13 22:40 -0700  Brendan Cully  <brendan@kublai.com>  (61b2845af4da)
+
+	* Makefile.am, Muttrc.head, Muttrc.head.in, configure.in: Fully expand
+	$docdir when building Muttrc (closes: #2832)
+
+	* makedoc.c: Make makedoc return 0 on success (be there dragons here?)
+
+2007-03-13 09:22 -0700  Vincent Lefevre  <vincent@vinc17.org>  (7e9c45589254)
+
+	* po/fr.po: Updated French translation.
+
 2007-03-13 10:58 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (f4d3704813fd)
 
 	* charset.c: Clean up the strcat cleanup
