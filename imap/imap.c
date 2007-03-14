@@ -1869,7 +1869,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   IMAP_MBOX mx;
   int rc;
 
-  if (imap_parse_path (path, &mx) || !mx.mbox)
+  if (imap_parse_path (path, &mx))
   {
     strfcpy (dest, path, dlen);
     return imap_complete_hosts (dest, dlen);
