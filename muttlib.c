@@ -1028,7 +1028,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       char    srccopy[LONG_STRING];
       int     i = 0;
 
-      dprint(2, (debugfile, "fmtpipe = %s\n", src));
+      dprint(3, (debugfile, "fmtpipe = %s\n", src));
 
       strncpy(srccopy, src, n);
       srccopy[n-1] = '\0';
@@ -1044,11 +1044,11 @@ void mutt_FormatString (char *dest,		/* output buffer */
         char *p;
 
         /* Extract the command name and copy to command line */
-        dprint(2, (debugfile, "fmtpipe +++: %s\n", srcbuf->dptr));
+        dprint(3, (debugfile, "fmtpipe +++: %s\n", srcbuf->dptr));
         if (word->data)
           *word->data = '\0';
         mutt_extract_token(word, srcbuf, 0);
-        dprint(2, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
+        dprint(3, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
         mutt_buffer_addch(command, '\'');
         mutt_FormatString(buf, sizeof(buf), word->data, callback, data,
                           flags | M_FORMAT_NOFILTER);
@@ -1067,7 +1067,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
         mutt_buffer_addch(command, ' ');
       } while (MoreArgs(srcbuf));
 
-      dprint(2, (debugfile, "fmtpipe > %s\n", command->data));
+      dprint(3, (debugfile, "fmtpipe > %s\n", command->data));
 
       wptr = dest;      /* reset write ptr */
       wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
@@ -1076,7 +1076,9 @@ void mutt_FormatString (char *dest,		/* output buffer */
         n = fread(dest, 1, destlen /* already decremented */, filter);
         fclose(filter);
         dest[n] = '\0';
-        dprint(2, (debugfile, "fmtpipe < %s\n", dest));
+        while (dest[n-1] == '\n' || dest[n-1] == '\r')
+          dest[--n] = '\0';
+        dprint(3, (debugfile, "fmtpipe < %s\n", dest));
 
         if (pid != -1)
           mutt_wait_filter(pid);
