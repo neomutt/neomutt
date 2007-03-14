@@ -109,7 +109,7 @@ static void mutt_usage (void)
        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n\
        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n\
        mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n\
-       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n\
+       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] [ -- ] <addr> [ ... ]\n\
        mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n\
        mutt -v[v]\n");
 
@@ -143,6 +143,7 @@ options:\n\
   -z\t\texit immediately if there are no messages in the mailbox\n\
   -Z\t\topen the first folder with new message, exit immediately if none\n\
   -h\t\tthis help message");
+  puts _("  --\t\ttreat remaining arguments as addr even if starting with a dash");
 
   exit (0);
 }
