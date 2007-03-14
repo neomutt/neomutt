@@ -147,6 +147,38 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
   return (maxwidth - n);
 }
 
+static int get_wrapped_width (const char *t, size_t wid)
+{
+  wchar_t wc;
+  size_t k;
+  size_t m, n;
+  size_t len = mutt_strlen (t);
+  const char *s = t;
+  mbstate_t mbstate;
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  for (m = wid, n = 0;
+       len && (k = mbrtowc (&wc, s, len, &mbstate)) && (n <= wid);
+       s += k, len -= k)
+  {
+    if (*s == ' ')
+      m = n;
+    if (k == (size_t)(-1) || k == (size_t)(-2))
+    {
+      k = (k == (size_t)(-1)) ? 1 : len;
+      wc = replacement_char ();
+    }
+    if (!IsWPrint (wc))
+      wc = '?';
+    n += wcwidth (wc);
+  }
+  if (n > wid)
+    n = m;
+  else
+    n = wid;
+  return n;
+}
+
 static int pad (FILE *f, int col, int i)
 {
   char fmt[8];
@@ -221,15 +253,7 @@ static void format_line (FILE *f, int ismacro,
       if (ismacro >= 0)
       {
 	SKIPWS(t3);
-
-	/* FIXME: this is completely wrong */
-	if ((n = mutt_strwidth (t3)) > COLS - col)
-	{
-	  n = COLS - col;
-	  for (col_a = n; col_a > 0 && t3[col_a] != ' '; col_a--) ;
-	  if (col_a)
-	    n = col_a;
-	}
+	n = get_wrapped_width (t3, n);
       }
 
       print_macro (f, n, &t3);
