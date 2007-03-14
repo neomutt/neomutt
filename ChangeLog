@@ -1,9 +1,28 @@
+2007-03-14 13:57 -0700  Brendan Cully  <brendan@kublai.com>  (67c017c8af80)
+
+	* muttlib.c: Remove trailing newlines from fmtpipe return value.
+	Increase fmtpipe logging level to 3.
+
+2007-03-14 13:49 -0700  David Champion  <dgc@uchicago.edu>  (63ad6be01750)
+
+	* mutt.h, muttlib.c: Allow format strings to be filtered. Any format
+	string ending in | will be expanded and piped through the first word
+	in the string. The string returned will be used for display. If the
+	returned string ends in %, it will be passed through the formatter a
+	second time. This allows the filter to generate a replacement format
+	string including % expandos.
+
+2007-03-14 13:26 -0700  Brendan Cully  <brendan@kublai.com>  (e9203a364537)
+
+	* imap/imap.c: Recheck capabilities after authentication (closes:
+	#2837)
+
 2007-03-14 13:09 -0700  Christoph Berg  <cb@df7cb.de>  (cbacb14a837a)
 
 	* doc/mutt.man, main.c: mutt.man and mutt -h updates
 
-	the following patch documents mutt --, removes the reference to
-	flea, and generally updates the mutt.1 manpage.
+	Document mutt --, remove the reference to
+	flea, and generally update the mutt.1 manpage.
 
 	(I removed -d from the SYNOPSIS part since it wasn't entirely
 	correct syntactically there and putting it elsewhere seems like

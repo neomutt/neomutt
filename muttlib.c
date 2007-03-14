@@ -1096,7 +1096,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
             if (recycler)
             {
               mutt_FormatString(dest, destlen++, recycler, callback, data, flags);
-              safe_free(&recycler);
+              FREE(&recycler);
             }
           }
         }
