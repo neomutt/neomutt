@@ -770,23 +770,18 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 }
 
 static char* get_foldername(const char *folder) {
-  size_t flen = mutt_strlen (folder);
   char *p = NULL;
   struct stat st;
 
-  /* if the folder exists and doesn't start with /,
-   * prepend cwd to always use the same hcache per folder */
-  if (stat (folder, &st) == 0 && flen > 0 && *folder != '/')
+  /* if the folder is local, canonify the path to avoid
+   * to ensure equivalent paths share the hcache */
+  if (stat (folder, &st) == 0)
   {
     p = safe_malloc (_POSIX_PATH_MAX+1);
     if (!realpath (folder, p))
       mutt_str_replace (&p, folder);
   } else
     p = safe_strdup (folder);
-
-  /* make sure we have no trailing / as added by tab completion */
-  if (flen > 0 && p[flen-1] == '/')
-    p[flen-1] = '\0';
 
   return p;
 }
