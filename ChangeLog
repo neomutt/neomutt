@@ -1,3 +1,41 @@
+2007-03-14 13:09 -0700  Christoph Berg  <cb@df7cb.de>  (cbacb14a837a)
+
+	* doc/mutt.man, main.c: mutt.man and mutt -h updates
+
+	the following patch documents mutt --, removes the reference to
+	flea, and generally updates the mutt.1 manpage.
+
+	(I removed -d from the SYNOPSIS part since it wasn't entirely
+	correct syntactically there and putting it elsewhere seems like
+	unnecessary clutter.)
+
+2007-03-14 12:58 -0700  Brendan Cully  <brendan@kublai.com>  (f20641ecca59)
+
+	* hcache.c: Always give realpath a shot at the hcache folder name.
+	Remove other hacks.
+
+2007-03-14 12:53 -0700  Rocco Rutte  <pdmef@gmx.net>  (18cd9834050d)
+
+	* hcache.c: hcache: prepend current dir to path for local folders If a
+	folder is local (i.e. stat() succeeds), prepend the current working
+	directory if necessary to always fully qualify the path. Otherwise
+	we may end up using different cache files for the same folder when
+	given relative paths. This closes #2845.
+
+2007-03-14 12:50 -0700  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (600b3466489c)
+
+	* help.c: Complete fix for #1503
+
+2007-03-14 12:39 -0700  Rado S  <regrado@web.de>  (ad2172897839)
+
+	* imap/imap.c: Let imap_conn_find have first crack at completion of
+	root
+
+2007-03-14 12:23 -0700  Brendan Cully  <brendan@kublai.com>  (bb43900e853f)
+
+	* imap/imap.c: Don't skip the last connection in
+	imap_complete_hosts
+
 2007-03-14 11:33 -0700  Rocco Rutte  <pdmef@gmx.net>  (09f73968d97a)
 
 	* rfc822.c: Fix return value for rfc822_write_address() The strcat

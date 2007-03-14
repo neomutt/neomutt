@@ -376,6 +376,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   }
   if (new && idata->state == IMAP_AUTHENTICATED)
   {
+    /* capabilities may have changed */
+    imap_cmd_queue (idata, "CAPABILITY");
     /* get root delimiter, '/' as default */
     idata->delim = '/';
     imap_cmd_queue (idata, "LIST \"\" \"\"");
