@@ -183,7 +183,7 @@ static void format_line (FILE *f, int ismacro,
   {
     col_a = COLS > 83 ? (COLS - 32) >> 2 : 12;
     col_b = COLS > 49 ? (COLS - 10) >> 1 : 19;
-    col = pad (f, mutt_strlen(t1), col_a);
+    col = pad (f, mutt_strwidth(t1), col_a);
   }
 
   if (ismacro > 0)
@@ -196,7 +196,7 @@ static void format_line (FILE *f, int ismacro,
     if (!split)
     {
       col += print_macro (f, col_b - col - 4, &t2);
-      if (mutt_strlen (t2) > col_b - col)
+      if (mutt_strwidth (t2) > col_b - col)
 	t2 = "...";
     }
   }
@@ -223,7 +223,7 @@ static void format_line (FILE *f, int ismacro,
 	SKIPWS(t3);
 
 	/* FIXME: this is completely wrong */
-	if ((n = mutt_strlen (t3)) > COLS - col)
+	if ((n = mutt_strwidth (t3)) > COLS - col)
 	{
 	  n = COLS - col;
 	  for (col_a = n; col_a > 0 && t3[col_a] != ' '; col_a--) ;
