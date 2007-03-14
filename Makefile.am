@@ -201,8 +201,9 @@ Muttrc: stamp-doc-rc
 
 stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
 	-rm -f Muttrc stamp-doc-rc
+	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
 	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
-		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - > Muttrc
+		$(srcdir)/init.h | ./makedoc -c >> Muttrc
 	touch stamp-doc-rc
 
 

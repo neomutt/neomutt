@@ -1166,5 +1166,4 @@ AC_OUTPUT(Makefile intl/Makefile m4/Makefile
         po/Makefile.in doc/Makefile contrib/Makefile
         muttbug.sh
         imap/Makefile
-        Muttrc.head
         doc/instdoc.sh)
