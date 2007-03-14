@@ -697,7 +697,7 @@ int rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
   if (len > 0)
   {
     if (len > buflen)
-      return; /* safety check for bogus arguments */
+      return pbuf - buf; /* safety check for bogus arguments */
 
     pbuf += len;
     buflen -= len;
