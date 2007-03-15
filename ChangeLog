@@ -1,3 +1,9 @@
+2007-03-14 22:29 -0700  Brendan Cully  <brendan@kublai.com>  (af1fc17674bc)
+
+	* mbyte.h: Undefine mbyte macros before overriding them (#2820)
+
+	* hg-commit: Let user review ChangeLog after hg-commit writes it
+
 2007-03-15 02:12 +0100  Christoph Berg  <cb@df7cb.de>  (460713774c5b)
 
 	* doc/Makefile.am: Add gen-map-doc to EXTRADIST, call using perl in
