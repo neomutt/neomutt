@@ -1,4 +1,18 @@
-2007-03-14 13:57 -0700  Brendan Cully  <brendan@kublai.com>  (67c017c8af80)
+2007-03-15 02:12 +0100  Christoph Berg  <cb@df7cb.de>  (460713774c5b)
+
+	* doc/Makefile.am: Add gen-map-doc to EXTRADIST, call using perl in
+	srcdir, fix makedoc rules.
+
+	* doc/Makefile.am, doc/gen-map-doc, doc/manual.xml.tail, functions.h:
+	Generate menu binding documentation from functions.h and OPS*.
+
+2007-03-14 14:45 -0700  Brendan Cully  <brendan@kublai.com>  (35b8facdbdda)
+
+	* imap/command.c, mutt.h: Update IMAP ACL parser to recognize RFC
+	rights
+
+	* contrib/Makefile.am, contrib/mutt_xtitle, muttlib.c: Add demo
+	mutt_xtitle script
 
 	* muttlib.c: Remove trailing newlines from fmtpipe return value.
 	Increase fmtpipe logging level to 3.

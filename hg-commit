@@ -31,5 +31,6 @@ done
   hg log --style=./hg-changelog-map -r tip:$lrev
   hg cat ChangeLog
 } > ChangeLog
+${VISUAL:-${EDITOR-:vi}} ChangeLog
 
 hg commit "$@" $cl
