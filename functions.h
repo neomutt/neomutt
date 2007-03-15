@@ -30,7 +30,7 @@
  *
  */
 
-struct binding_t OpGeneric[] = {
+struct binding_t OpGeneric[] = { /* map: generic */
   { "top-page",		OP_TOP_PAGE,		"H" },
   { "next-entry",	OP_NEXT_ENTRY,		"j" },
   { "previous-entry",	OP_PREV_ENTRY,		"k" },
@@ -66,7 +66,7 @@ struct binding_t OpGeneric[] = {
   { NULL,		0,			NULL }
 };
 
-struct binding_t OpMain[] = {
+struct binding_t OpMain[] = { /* map: index */
   { "create-alias",		OP_CREATE_ALIAS,		"a" },
   { "bounce-message",		OP_BOUNCE_MESSAGE,		"b" },
   { "break-thread",		OP_MAIN_BREAK_THREAD,		"#" },
@@ -154,7 +154,7 @@ struct binding_t OpMain[] = {
   { NULL,			0,				NULL }
 };
 
-struct binding_t OpPager[] = {
+struct binding_t OpPager[] = { /* map: pager */
   { "break-thread",	OP_MAIN_BREAK_THREAD,		"#" },
   { "create-alias",	OP_CREATE_ALIAS,		"a" },
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
@@ -250,7 +250,7 @@ struct binding_t OpPager[] = {
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpAttach[] = {
+struct binding_t OpAttach[] = { /* map: attach */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
@@ -276,7 +276,7 @@ struct binding_t OpAttach[] = {
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpCompose[] = {
+struct binding_t OpCompose[] = { /* map: compose */
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
@@ -326,13 +326,13 @@ struct binding_t OpCompose[] = {
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpPost[] = {
+struct binding_t OpPost[] = { /* map: postpone */
   { "delete-entry",	OP_DELETE,	"d" },
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
 };
 
-struct binding_t OpAlias[] = {
+struct binding_t OpAlias[] = { /* map: alias */
   { "delete-entry",	OP_DELETE,	"d" },
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
@@ -340,7 +340,7 @@ struct binding_t OpAlias[] = {
   
 
 /* The file browser */
-struct binding_t OpBrowser[] = {
+struct binding_t OpBrowser[] = { /* map: browser */
   { "change-dir",	OP_CHANGE_DIRECTORY,	"c" },
   { "display-filename",	OP_BROWSER_TELL,	"@" },
   { "enter-mask",	OP_ENTER_MASK,		"m" },
@@ -363,7 +363,7 @@ struct binding_t OpBrowser[] = {
 };
 
 /* External Query Menu */
-struct binding_t OpQuery[] = {
+struct binding_t OpQuery[] = { /* map: query */
   { "create-alias",	OP_CREATE_ALIAS,	"a" },
   { "mail",		OP_MAIL,		"m" },
   { "query",		OP_QUERY,		"Q" },
@@ -371,7 +371,7 @@ struct binding_t OpQuery[] = {
   { NULL,		0,			NULL }
 };
 
-struct binding_t OpEditor[] = {
+struct binding_t OpEditor[] = { /* map: editor */
   { "bol",		OP_EDITOR_BOL,			"\001" },
   { "backward-char",	OP_EDITOR_BACKWARD_CHAR,	"\002" },
   { "backward-word",	OP_EDITOR_BACKWARD_WORD,	"\033b"},
@@ -399,7 +399,7 @@ struct binding_t OpEditor[] = {
 
 
 
-struct binding_t OpPgp[] = {
+struct binding_t OpPgp[] = { /* map: pgp */
   { "verify-key",	OP_VERIFY_KEY,		"c" },
   { "view-name",	OP_VIEW_ID,		"%" },
   { NULL,		0,				NULL }
@@ -409,7 +409,7 @@ struct binding_t OpPgp[] = {
 
 /* When using the GPGME based backend we have some useful functions
    for the SMIME menu.  */
-struct binding_t OpSmime[] = {
+struct binding_t OpSmime[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",    OP_VERIFY_KEY,             "c" },
   { "view-name",     OP_VIEW_ID,	        "%" },
@@ -420,7 +420,7 @@ struct binding_t OpSmime[] = {
 
 
 #ifdef MIXMASTER
-struct binding_t OpMix[] = {
+struct binding_t OpMix[] = { /* map: mix */
   { "accept",		OP_MIX_USE,	M_ENTER_S },
   { "append",		OP_MIX_APPEND,	"a"       },
   { "insert",		OP_MIX_INSERT,	"i"       },
