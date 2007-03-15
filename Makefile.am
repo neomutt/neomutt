@@ -74,11 +74,11 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
-	mbyte.h	lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
+	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
 	makedoc.c stamp-doc-rc README.SSL smime.h\
-	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh	\
+	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
-	snprintf.c regex.c crypt-gpgme.h reldate.h
+	snprintf.c regex.c crypt-gpgme.h
 
 EXTRA_SCRIPTS = smime_keys
 
