@@ -15,6 +15,7 @@ EXTRA_DIST = dotlock.man		\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
 	devel-notes.txt			\
+	gen-map-doc			\
 	muttrc.man.head			\
 	muttrc.man.tail			\
 	mbox.man			\
@@ -39,7 +40,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
-all: ../makedoc$(EXEEXT)
+all:
 	$(MAKE) makedoc-all
 
 makedoc-all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
@@ -132,13 +133,12 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-stamp-doc-xml: $(top_srcdir)/makedoc.c $(top_srcdir)/init.h manual.xml.head \
-               $(top_srcdir)/functions.h $(wildcard $(top_srcdir)/OPS*) manual.xml.tail \
+stamp-doc-xml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.xml.head \
+               $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(top_srcdir)/VERSION ../reldate.h
-	$(MAKE) ../makedoc$(EXEEXT)
 	( date=`cut -d\" -f2 ../reldate.h`; \
 	  sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` ($$date)/" $(srcdir)/manual.xml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ;\
-	  ./gen-map-doc $(top_srcdir)/functions.h $(wildcard $(top_srcdir)/OPS*) < $(srcdir)/manual.xml.tail \
+	  perl $(srcdir)/gen-map-doc $(top_srcdir)/functions.h $(top_srcdir)/OPS* < $(srcdir)/manual.xml.tail \
 	) > manual.xml
 	touch stamp-doc-xml
