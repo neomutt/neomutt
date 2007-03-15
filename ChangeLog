@@ -1,3 +1,15 @@
+2007-03-15 08:48 -0700  Rocco Rutte  <pdmef@gmx.net>  (836822cc1260)
+
+	* doc/manual.xml.head, doc/muttrc.man.head, init.h: Document
+	pattern groups in the manual Sync with muttrc. Add some rationale
+	for groups. Fix some style issues. Fix quoting issue with
+	$smtp_authenticators.
+
+2007-03-14 23:03 -0700  Kyle Wheeler  <kyle@memoryhole.net>  (fa6128cf9cba)
+
+	* doc/muttrc.man.head: Improved pattern documentation
+	(group/ungroup)
+
 2007-03-14 22:29 -0700  Brendan Cully  <brendan@kublai.com>  (af1fc17674bc)
 
 	* mbyte.h: Undefine mbyte macros before overriding them (#2820)
