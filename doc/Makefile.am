@@ -116,9 +116,6 @@ instdoc: instdoc.sh
 ../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
 	(cd .. && $(MAKE) makedoc$(EXEEXT))
 
-../reldate.h:
-	(cd .. && $(MAKE) reldate.h)
-
 update-doc: stamp-doc-xml stamp-doc-chunked manual.txt manual.html
 
 muttrc.man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
@@ -133,10 +130,11 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-stamp-doc-xml: ../makedoc$(EXEEXT) $(top_srcdir)/init.h manual.xml.head \
+stamp-doc-xml: $(top_srcdir)/makedoc.c $(top_srcdir)/init.h manual.xml.head \
                $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
-               $(top_srcdir)/VERSION ../reldate.h
-	( date=`cut -d\" -f2 ../reldate.h`; \
+               $(top_srcdir)/VERSION $(top_srcdir)/ChangeLog
+	$(MAKE) ../makedoc$(EXEEXT) # we do not want to rebuild the documentation in tarball builds
+	( date=`head -n 1 $(top_srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1`; \
 	  sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` ($$date)/" $(srcdir)/manual.xml.head ;\
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s ;\
 	  perl $(srcdir)/gen-map-doc $(top_srcdir)/functions.h $(top_srcdir)/OPS* < $(srcdir)/manual.xml.tail \
