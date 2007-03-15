@@ -1523,11 +1523,56 @@ For a complete list, see the <link linkend="commands">command reference</link>.
 
 </sect1>
 
+<sect1 id="addrgroup">
+<title>Address groups</title>
+
+<para>
+Usage: <literal>group</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; <literal>-rx</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; <literal>-addr</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb;
+</para>
+
+<para>
+<literal>group</literal> is used to directly add either addresses or
+regular expressions to the specified group or groups. The different
+categories of arguments to the <literal>group</literal> command can be
+in any order. The flags <literal>-rx</literal> and
+<literal>-addr</literal> specify what the following strings (that cannot
+begin with a hyphen) should be interpreted as: either a regular
+expression or an email address, respectively.
+</para>
+
+<para>
+These address groups can also be created implicitely by the
+<link linkend="alias">alias</link>, <link linkend="lists">lists</link>,
+<link linkend="lists">subscribe</link> and
+<link linkend="alternates">alternates</link> commands by specifying the
+optional <literal>-group</literal> option.
+</para>
+
+<para>
+Once defined, these address groups can be used in
+<link linkend="patterns">patterns</link> to search for and limit the
+display to messages matching a group.
+</para>
+
+<para>
+Usage: <literal>ungroup</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; * | &lsqb; &lsqb; <literal>-rx</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; <literal>-addr</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb; &rsqb;
+</para>
+
+<para>
+<literal>ungroup</literal> is used to remove addresses or regular
+expressions from the specified group or groups. The syntax is similar to
+the <literal>group</literal> command, however the special character
+<literal>*</literal> can be used to empty a group of all of its
+contents.
+</para>
+
+</sect1>
+
 <sect1 id="alias">
 <title>Defining/Using aliases</title>
 
 <para>
-Usage: <literal>alias</literal> <emphasis>key</emphasis> <emphasis>address</emphasis> &lsqb; , <emphasis>address</emphasis>, ... &rsqb;
+Usage: <literal>alias</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>key</emphasis> <emphasis>address</emphasis> &lsqb; , <emphasis>address</emphasis>, ... &rsqb;
 </para>
 
 <para>
@@ -1537,8 +1582,14 @@ a short string to a full address.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis> if you want to create an alias for a group (by specifying more than
-one address), you <emphasis role="bold">must</emphasis> separate the addresses with a comma (``,'').
+<emphasis role="bold">Note:</emphasis> if you want to create an alias for more than
+one address, you <emphasis role="bold">must</emphasis> separate the addresses with a comma (``,'').
+</para>
+
+<para>
+The optional <literal>-group</literal> argument to
+<literal>alias</literal> causes the aliased address(es) to be added to
+the named <emphasis>group</emphasis>.
 </para>
 
 <para>
@@ -2286,7 +2337,7 @@ unignore posted-to:
 <title>Alternative addresses</title>
 
 <para>
-Usage: <literal>&lsqb;un&rsqb;alternates</literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
+Usage: <literal>&lsqb;un&rsqb;alternates</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 
 </para>
 
@@ -2306,6 +2357,11 @@ recognize what e-mail addresses you receive mail under. That's the
 purpose of the <literal>alternates</literal> command: It takes a list of regular
 expressions, each of which can identify an address under which you
 receive e-mail.
+</para>
+
+<para>
+The <literal>-group</literal> flag causes all of the subsequent regular expressions
+to be added to the named group.
 </para>
 
 <para>
@@ -2332,8 +2388,8 @@ is ``*'', <emphasis>all entries</emphasis> on <literal>alternates</literal> will
 
 <para>
 <literallayout>
-Usage: <literal>&lsqb;un&rsqb;lists</literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-Usage: <literal>&lsqb;un&rsqb;subscribe</literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
+Usage: <literal>&lsqb;un&rsqb;lists</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
+Usage: <literal>&lsqb;un&rsqb;subscribe</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 </literallayout>
 </para>
 
@@ -2361,7 +2417,7 @@ command.  To mark it as subscribed, use ``subscribe''.
 You can use regular expressions with both commands.  To mark all
 messages sent to a specific bug report's address on mutt's bug
 tracking system as list mail, for instance, you could say
-``subscribe &lsqb;0-9]*@bugs.guug.de''.  Often, it's sufficient to just
+``subscribe &lsqb;0-9&rsqb;*@bugs.guug.de''.  Often, it's sufficient to just
 give a portion of the list's e-mail address.
 </para>
 
@@ -2377,6 +2433,11 @@ If you also happen to get mail from someone whose address is
 ``lists ^mutt-users@mutt&bsol;&bsol;.org$'' 
 or ``subscribe ^mutt-users@mutt&bsol;&bsol;.org$'' to
 match only mail from the actual list.
+</para>
+
+<para>
+The <literal>-group</literal> flag adds all of the subsequent regular expressions
+to the named group.
 </para>
 
 <para>
@@ -3607,15 +3668,20 @@ messages:
 <tbody>
 <row><entry>~A</entry><entry>all messages</entry></row>
 <row><entry>~b EXPR</entry><entry>messages which contain EXPR in the message body</entry></row>
+<row><entry>=b STRING</entry><entry>messages which contain STRING in the message body. If IMAP is enabled, searches for STRING on the server, rather than downloading each message and searching it locally.</entry></row>
 <row><entry>~B EXPR</entry><entry>messages which contain EXPR in the whole message</entry></row>
 <row><entry>~c EXPR</entry><entry>messages carbon-copied to EXPR</entry></row>
+<row><entry>%c GROUP</entry><entry>messages carbon-copied to any member of GROUP</entry></row>
 <row><entry>~C EXPR</entry><entry>message is either to: or cc: EXPR</entry></row>
+<row><entry>%C GROUP</entry><entry>message is either to: or cc: to any member of GROUP</entry></row>
 <row><entry>~d &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with ``date-sent'' in a Date range</entry></row>
 <row><entry>~D</entry><entry>deleted messages</entry></row>
 <row><entry>~e EXPR</entry><entry>message which contains EXPR in the ``Sender'' field</entry></row>
+<row><entry>%e GROUP</entry><entry>message which contain a member of GROUP in the ``Sender'' field</entry></row>
 <row><entry>~E</entry><entry>expired messages</entry></row>
 <row><entry>~F</entry><entry>flagged messages</entry></row>
 <row><entry>~f EXPR</entry><entry>messages originating from EXPR</entry></row>
+<row><entry>%f GROUP</entry><entry>messages originating from any member of GROUP</entry></row>
 <row><entry>~g</entry><entry>cryptographically signed messages</entry></row>
 <row><entry>~G</entry><entry>cryptographically encrypted messages</entry></row>
 <row><entry>~h EXPR</entry><entry>messages which contain EXPR in the message header</entry></row>
@@ -3623,6 +3689,7 @@ messages:
 <row><entry>~i EXPR</entry><entry>message which match EXPR in the ``Message-ID'' field</entry></row>
 <row><entry>~k</entry><entry>message contains PGP key material</entry></row>
 <row><entry>~L EXPR</entry><entry>message is either originated or received by EXPR</entry></row>
+<row><entry>%L GROUP</entry><entry>message is either originated or received by any member of GROUP</entry></row>
 <row><entry>~l</entry><entry>message is addressed to a known mailing list</entry></row>
 <row><entry>~m &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>message in the range MIN to MAX *)</entry></row>
 <row><entry>~n &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with a score in the range MIN to MAX *)</entry></row>
@@ -5946,7 +6013,7 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="alias">alias</link></literal> <emphasis>key</emphasis> <emphasis>address</emphasis> &lsqb; , <emphasis>address</emphasis>, ... &rsqb;
+<literal><link linkend="alias">alias</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>key</emphasis> <emphasis>address</emphasis> &lsqb; , <emphasis>address</emphasis>, ... &rsqb;
 </para>
 </listitem>
 <listitem>
@@ -5958,7 +6025,7 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="alternates">alternates</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
+<literal><link linkend="alternates">alternates</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
@@ -6072,7 +6139,7 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="lists">lists</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
+<literal><link linkend="lists">lists</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
 </para>
 </listitem>
 <listitem>
@@ -6228,7 +6295,7 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="lists">subscribe</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
+<literal><link linkend="lists">subscribe</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
 </para>
 </listitem>
 <listitem>

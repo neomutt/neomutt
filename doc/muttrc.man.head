@@ -87,13 +87,20 @@ added to the named \fIgroup\fP.
 .IP
 \fBgroup\fP is used to directly add either addresses or regular expressions to
 the specified group or groups. The different categories of arguments to the
-\fBgroup\fP command can be in any order. The flags \fB-rx\fP and \fB-addr\fP
+\fBgroup\fP command can be in any order. The flags \fI-rx\fP and \fI-addr\fP
 specify what the following strings (that cannot begin with a hyphen) should be
 interpreted as: either a regular expression or an email address, respectively.
 \fBungroup\fP is used to remove addresses or regular expressions from the
 specified group or groups. The syntax is similar to the \fBgroup\fP command,
 however the special character \fB*\fP can be used to empty a group of all of
 its contents.
+.IP
+These address groups can also be created implicitely by the \fBalias\fP, \fBlists\fP,
+\fBsubscribe\fP and \fBalternates\fP commands by specifying the optional \fI-group\fP
+option.
+.IP
+Once defined, these address groups can be used in patterns to search for and limit the
+display to messages matching a group.
 .PP
 .nf
 \fBalternates\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]]
@@ -439,14 +446,14 @@ messages which contain \fIEXPR\fP in the whole message.
 ~c \fIEXPR\fP
 messages carbon-copied to \fIEXPR\fP
 .TP
-%c \fIgroup\fP
-messages carbon-copied to any member of \fIgroup\fP
+%c \fIGROUP\fP
+messages carbon-copied to any member of \fIGROUP\fP
 .TP
 ~C \fIEXPR\fP
 messages either to: or cc: \fIEXPR\fP
 .TP
-%C \fIgroup\fP
-messages either to: or cc: to any member of \fIgroup\fP
+%C \fIGROUP\fP
+messages either to: or cc: to any member of \fIGROUP\fP
 .TP
 ~d \fIMIN\fP-\fIMAX\fP
 messages with \(lqdate-sent\(rq in a Date range
@@ -457,8 +464,8 @@ deleted messages
 ~e \fIEXPR\fP
 messages which contain \fIEXPR\fP in the \(lqSender\(rq field
 .TP
-%e \fIgroup\fP
-messages which contain a member of \fIgroup\fP in the \(lqSender\(rq field
+%e \fIGROUP\fP
+messages which contain a member of \fIGROUP\fP in the \(lqSender\(rq field
 .TP
 ~E
 expired messages
@@ -466,8 +473,8 @@ expired messages
 ~f \fIEXPR\fP
 messages originating from \fIEXPR\fP
 .TP
-%f \fIgroup\fP
-messages originating form any member of \fIgroup\fP
+%f \fIGROUP\fP
+messages originating form any member of \fIGROUP\fP
 .TP
 ~F
 flagged messages
@@ -496,8 +503,8 @@ messages addressed to a known mailing list (defined by either \fBsubscribe\fP or
 ~L \fIEXPR\fP
 messages either originated or received by \fIEXPR\fP
 .TP
-%L \fIgroup\fP
-messages either originated or received by any member of \fIgroup\fP
+%L \fIGROUP\fP
+messages either originated or received by any member of \fIGROUP\fP
 .TP
 ~m \fIMIN\fP-\fIMAX\fP
 message in the range \fIMIN\fP to \fIMAX\fP
@@ -567,6 +574,9 @@ duplicated messages (see $duplicate_threads)
 .TP
 ~$
 unreferenced message (requries threaded view)
+.TP
+~(PATTERN)
+messages in threads containing messages matching a certain pattern, e.g. all threads containing messages from you: ~(~P)
 .PD 1
 .DT
 .PP

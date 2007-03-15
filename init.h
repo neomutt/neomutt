@@ -2620,7 +2620,7 @@ struct option_t MuttVars[] = {
    ** This is a colon-delimited list of authentication methods mutt may
    ** attempt to use to log in to an SMTP server, in the order mutt should
    ** try them.  Authentication methods are any SASL mechanism, eg
-   ** 'digest-md5', 'gssapi' or 'cram-md5'.
+   ** ``digest-md5'', ``gssapi'' or ``cram-md5''.
    ** This parameter is case-insensitive. If this parameter is unset
    ** (the default) mutt will try all available methods, in order from
    ** most-secure to least-secure.
