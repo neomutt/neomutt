@@ -2001,7 +2001,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 	  _exit (S_ERR);
       }
 
-      execv (path, args);
+      execvp (path, args);
       _exit (S_ERR);
     }
     else if (pid == -1)
