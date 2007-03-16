@@ -343,6 +343,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       continue;
     break;
   }
+  if (!conn)
+	  return NULL; /* this happens when the initial connection fails */
 
   if (!idata)
   {
