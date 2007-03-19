@@ -1212,7 +1212,7 @@ have a look at the mixmaster documentation.
 
 <para>
 <literal>format=flowed</literal>-style messages (or <literal>f=f</literal>
-for short) are plain ASCII messages that consist of paragraphs which a receiver's
+for short) are <literal>text/plain</literal> messages that consist of paragraphs which a receiver's
 mail client may reformat to its own needs which mostly means to
 customize line lengths regardless of what the sender sent. Technically this is
 achieved by letting lines of a ``flowable'' paragraph end in spaces.
