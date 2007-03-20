@@ -1,3 +1,29 @@
+2007-03-20 08:20 -0700  Rocco Rutte  <pdmef@gmx.net>  (3122a4a338b1)
+
+	* rfc3676.c: Make f=f handler behave like old f=f handler for quoted
+	lines Now lines containing quote characters but no further content
+	appear as quoted lines again for making replies. Also, the spaces
+	between quotes and text are removed to make output look as it did
+	for the old handler.
+
+2007-03-19 08:12 -0700  Rocco Rutte  <pdmef@gmx.net>  (5681216fa395)
+
+	* doc/manual.xml.head: Manual: f=f messages are text/plain, not "plain
+	ASCII"
+
+2007-03-16 11:21 -0700  Michael Elkins  <me@mutt.org>  (aa96e6137c69)
+
+	* imap/imap.c: Fixed segfault when attempting to open an imaps mailbox
+	when mutt is not configured with SSL support.
+
+2007-03-16 09:39 -0700  Brendan Cully  <brendan@kublai.com>  (08f9bb4b7810)
+
+	* configure.ac, configure.in: Move configure.in to configure.ac
+
+2007-03-15 16:29 -0700  Brendan Cully  <brendan@kublai.com>  (4ade0c9660d5)
+
+	* ChangeLog, Makefile.am: Add reldate.h to BUILT_SOURCES
+
 2007-03-15 16:10 +0100  Christoph Berg  <cb@df7cb.de>  (ed804d94676a)
 
 	* Makefile.am: Remove reldate.h from EXTRADIST to fix out-of-tree

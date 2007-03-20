@@ -397,6 +397,9 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	  strfcpy (p, NONULL (Maildir), sizeof (p));
 	else
 #endif
+	if (Maildir[strlen (Maildir) - 1] == '/')
+	  strfcpy (p, NONULL (Maildir), sizeof (p));
+	else
 	  snprintf (p, sizeof (p), "%s/", NONULL (Maildir));
 	
 	tail = s + 1;
