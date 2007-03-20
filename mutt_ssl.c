@@ -592,7 +592,7 @@ static int ssl_check_certificate (sslsockdata * data)
 {
   char *part[] =
   {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char buf[SHORT_STRING];
   MUTTMENU *menu;
   int done, row, i;

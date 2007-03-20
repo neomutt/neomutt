@@ -157,7 +157,7 @@ static HEADER *select_msg (void)
 {
   MUTTMENU *menu;
   int i, done=0, r=-1;
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   short orig_sort;
 
   menu = mutt_new_menu ();

@@ -3586,7 +3586,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   crypt_key_t **key_table;
   MUTTMENU *menu;
   int i, done = 0;
-  char helpstr[SHORT_STRING], buf[LONG_STRING];
+  char helpstr[LONG_STRING], buf[LONG_STRING];
   crypt_key_t *k;
   int (*f) (const void *, const void *);
   int menu_to_use = 0;

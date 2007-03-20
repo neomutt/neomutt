@@ -461,7 +461,7 @@ static int tls_check_certificate (CONNECTION* conn)
 {
   tlssockdata *data = conn->sockdata;
   gnutls_session state = data->state;
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char buf[SHORT_STRING];
   char fpbuf[SHORT_STRING];
   size_t buflen;

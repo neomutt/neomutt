@@ -491,7 +491,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 		    size_t fcclen,
 		    HEADER *cur)   /* current message */
 {
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char buf[LONG_STRING];
   char fname[_POSIX_PATH_MAX];
   MUTTMENU *menu;
