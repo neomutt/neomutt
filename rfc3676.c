@@ -53,20 +53,14 @@ static int get_quote_level (const char *line)
   return quoted;
 }
 
-static void print_empty_line (int ql, STATE *s)
+static void print_indent (int ql, STATE *s)
 {
   int i;
 
-  if (!(s->flags & M_REPLYING))
-  {
-    if (s->prefix)
-      state_puts (s->prefix, s);
-    for (i = 0; i < ql; i++)
-      state_putc ('>', s);
-    if (!(s->flags & M_REPLYING))
-      state_putc (' ', s);
-  }
-  state_putc ('\n', s);
+  if (s->prefix)
+    state_puts (s->prefix, s);
+  for (i = 0; i < ql; i++)
+    state_putc ('>', s);
 }
 
 static void print_flowed_line (const char *line, STATE *s, int ql)
@@ -74,7 +68,6 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
   int width;
   char *pos, *oldpos;
   int len = mutt_strlen (line);
-  int i;
 
   width = (Wrap ? mutt_term_width (Wrap) : FLOWED_MAX) - ql - 1;
 
@@ -85,7 +78,8 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
 
   if (len == 0)
   {
-    print_empty_line (ql, s);
+    print_indent (ql, s);
+    state_putc ('\n', s);
     return;
   }
 
@@ -134,13 +128,7 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
       dprint (4, (debugfile, "f=f: line completely fits on screen\n"));
     }
 
-    if (s->prefix)
-      state_puts (s->prefix, s);
-
-    for (i = 0; i < ql; ++i)
-      state_putc ('>', s);
-    if (!(s->flags & M_REPLYING) && (ql > 0 || s->prefix))
-      state_putc (' ', s);
+    print_indent (ql, s);
     state_puts (oldpos, s);
 
     if (pos < line + len)
