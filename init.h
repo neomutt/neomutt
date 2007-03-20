@@ -351,6 +351,12 @@ struct option_t MuttVars[] = {
   ** follow these menus.  The option is disabled by default because many 
   ** visual terminals don't permit making the cursor invisible.
   */
+  { "check_mbox_size",	DT_BOOL, R_NONE, OPTCHECKMBOXSIZE, 0 },
+  /*
+  ** .pp
+  ** When this variable is set, mutt will use file size attribute instead of
+  ** access time when checking for new mail.
+  */
   { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp

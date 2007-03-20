@@ -1,3 +1,17 @@
+2007-03-20 13:17 -0700  Rocco Rutte  <pdmef@gmx.net>  (2fbc65f3feb6)
+
+	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,
+	mutt_ssl.c, mutt_ssl_gnutls.c, pgpkey.c, postpone.c, query.c,
+	recvattach.c, remailer.c: Enlarge help string buffers Even on 80x25
+	terminals, SHORT_STRING (128 byte) may not be enough so use
+	LONG_STRING (1k) as STRING (256 byte) may well be too short for
+	wider terminals. Closes debian #4152777.
+
+2007-03-20 09:45 -0700  Antoine Reilles  <tonio@NetBSD.org>  (f0461517fc93)
+
+	* muttlib.c: Remove trailing slash from $folder in
+	mutt_expand_path.
+
 2007-03-20 08:20 -0700  Rocco Rutte  <pdmef@gmx.net>  (3122a4a338b1)
 
 	* rfc3676.c: Make f=f handler behave like old f=f handler for quoted
@@ -22,7 +36,7 @@
 
 2007-03-15 16:29 -0700  Brendan Cully  <brendan@kublai.com>  (4ade0c9660d5)
 
-	* ChangeLog, Makefile.am: Add reldate.h to BUILT_SOURCES
+	* Makefile.am: Add reldate.h to BUILT_SOURCES
 
 2007-03-15 16:10 +0100  Christoph Berg  <cb@df7cb.de>  (ed804d94676a)
 

@@ -375,11 +375,6 @@ static void show_version (void)
         );
   
   puts (
-#ifdef BUFFY_SIZE
-	"+BUFFY_SIZE "
-#else
-	"-BUFFY_SIZE "
-#endif
 #ifdef EXACT_ADDRESS
 	"+EXACT_ADDRESS  "
 #else

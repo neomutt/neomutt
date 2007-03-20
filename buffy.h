@@ -23,9 +23,7 @@
 typedef struct buffy_t
 {
   char *path;
-#ifdef BUFFY_SIZE
   long size;
-#endif				/* BUFFY_SIZE */
   struct buffy_t *next;
   short new;			/* mailbox has new mail */
   short notified;		/* user has been notified */
@@ -39,7 +37,5 @@ WHERE short BuffyTimeout INITVAL (3);
 
 extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
 
-#ifdef BUFFY_SIZE
 BUFFY *mutt_find_mailbox (const char *path);
 void mutt_update_mailbox (BUFFY * b);
-#endif

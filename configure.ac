@@ -792,11 +792,6 @@ AC_ARG_ENABLE(nfs-fix, AC_HELP_STRING([--enable-nfs-fix], [Work around an NFS wi
                    incorrectly cache the attributes of small files.])
         fi])
 
-AC_ARG_ENABLE(buffy-size, AC_HELP_STRING([--enable-buffy-size], [Use file size attribute instead of access time]),
-        [if test x$enableval = xyes; then
-                AC_DEFINE(BUFFY_SIZE,1,[ Define to enable the "buffy_size" feature. ])
-        fi])
-
 AC_ARG_ENABLE(mailtool, AC_HELP_STRING([--enable-mailtool], [Enable Sun mailtool attachments support]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. ])
