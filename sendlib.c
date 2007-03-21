@@ -632,7 +632,7 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   CONTENT_STATE *states;
   size_t *score;
 
-  cd1 = mutt_iconv_open ("UTF-8", fromcode, 0);
+  cd1 = mutt_iconv_open ("utf-8", fromcode, 0);
   if (cd1 == (iconv_t)(-1))
     return -1;
 
@@ -642,8 +642,8 @@ static size_t convert_file_to (FILE *file, const char *fromcode,
   infos  = safe_calloc (ncodes, sizeof (CONTENT));
 
   for (i = 0; i < ncodes; i++)
-    if (ascii_strcasecmp (tocodes[i], "UTF-8"))
-      cd[i] = mutt_iconv_open (tocodes[i], "UTF-8", 0);
+    if (ascii_strcasecmp (tocodes[i], "utf-8"))
+      cd[i] = mutt_iconv_open (tocodes[i], "utf-8", 0);
     else
       /* Special case for conversion to UTF-8 */
       cd[i] = (iconv_t)(-1), score[i] = (size_t)(-1);
@@ -2001,7 +2001,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 	  _exit (S_ERR);
       }
 
-      execv (path, args);
+      execvp (path, args);
       _exit (S_ERR);
     }
     else if (pid == -1)

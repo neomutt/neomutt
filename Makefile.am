@@ -13,7 +13,7 @@ SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
 
-BUILT_SOURCES = keymap_defs.h patchlist.c
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
@@ -25,7 +25,7 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	handler.c hash.c hdrline.c headers.c help.c hook.c keymap.c \
 	main.c mbox.c menu.c mh.c mx.c pager.c parse.c pattern.c \
 	postpone.c query.c recvattach.c recvcmd.c \
-	rfc822.c rfc1524.c rfc2047.c rfc2231.c \
+	rfc822.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c mbyte.c \
@@ -72,13 +72,13 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
 	mutt_regex.h mutt_sasl.h mutt_socket.h mutt_ssl.h mutt_tunnel.h \
 	mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
-	rfc2231.h rfc822.h sha1.h sort.h mime.types VERSION prepare \
+	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
-	mbyte.h	lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL smime.h\
-	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh	\
+	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
+	makedoc.c makedoc-defs.h stamp-doc-rc README.SSL smime.h \
+	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
-	snprintf.c regex.c crypt-gpgme.h reldate.h
+	snprintf.c regex.c crypt-gpgme.h
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -199,10 +199,11 @@ update-doc: stamp-doc-rc
 
 Muttrc: stamp-doc-rc
 
-stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
+stamp-doc-rc: $(srcdir)/init.h $(srcdir)/makedoc-defs.h makedoc Muttrc.head
 	-rm -f Muttrc stamp-doc-rc
+	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
 	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
-		$(srcdir)/init.h | ./makedoc -c | cat Muttrc.head - > Muttrc
+		$(srcdir)/init.h | ./makedoc -c >> Muttrc
 	touch stamp-doc-rc
 
 

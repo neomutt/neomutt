@@ -687,7 +687,7 @@ done:
 }
 
 /* note: it is assumed that `buf' is nul terminated! */
-void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
+int rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
 {
   char *pbuf = buf;
   size_t len = mutt_strlen (buf);
@@ -697,7 +697,7 @@ void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
   if (len > 0)
   {
     if (len > buflen)
-      return; /* safety check for bogus arguments */
+      return pbuf - buf; /* safety check for bogus arguments */
 
     pbuf += len;
     buflen -= len;
@@ -739,6 +739,7 @@ void rfc822_write_address (char *buf, size_t buflen, ADDRESS *addr, int display)
   }
 done:
   *pbuf = 0;
+  return pbuf - buf;
 }
 
 /* this should be rfc822_cpy_adr */

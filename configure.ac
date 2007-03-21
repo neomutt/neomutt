@@ -634,11 +634,11 @@ AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
 dnl -- end imap dependencies --
 
-AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for POP/IMAP]),
+AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using OpenSSL]),
 [       if test "$with_ssl" != "no"
         then
           if test "$need_socket" != "yes"; then
-           AC_MSG_WARN([SSL support is only useful with POP or IMAP support])
+           AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
 	  else
             if test "$with_ssl" != "yes"
             then
@@ -662,27 +662,28 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for 
         fi
 ])
 
-AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls[=PFX]], [Enable SSL support using gnutls]),
+AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using gnutls]),
     [gnutls_prefix="$withval"], [gnutls_prefix="no"])
 if test "$gnutls_prefix" != "no" -a x"$need_ssl" != xyes
 then
   if test "$need_socket" != "yes"
   then
-    AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
+    AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
+  else
+    MUTT_AM_PATH_GNUTLS([$gnutls_prefix],
+      [dnl GNUTLS found
+      CPPFLAGS="$CPPFLAGS $LIBGNUTLS_CFLAGS"
+      MUTTLIBS="$MUTTLIBS $LIBGNUTLS_LIBS"
+
+      AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
+      AC_DEFINE(USE_SSL_GNUTLS,1,[ Define if you want support for SSL via GNUTLS. ])
+
+      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
+      need_ssl=yes],
+      [dnl GNUTLS not found
+        AC_MSG_ERROR([could not find libgnutls])
+      ])
   fi
-  MUTT_AM_PATH_GNUTLS([$gnutls_prefix],
-    [dnl GNUTLS found
-    CPPFLAGS="$CPPFLAGS $LIBGNUTLS_CFLAGS"
-    MUTTLIBS="$MUTTLIBS $LIBGNUTLS_LIBS"
-
-    AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
-    AC_DEFINE(USE_SSL_GNUTLS,1,[ Define if you want support for SSL via GNUTLS. ])
-
-    MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
-    need_ssl=yes],
-    [dnl GNUTLS not found
-      AC_MSG_ERROR([could not find libgnutls])
-    ])
 fi
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
@@ -790,11 +791,6 @@ AC_ARG_ENABLE(nfs-fix, AC_HELP_STRING([--enable-nfs-fix], [Work around an NFS wi
                   [Define if you have problems with mutt not detecting
                    new/old mailboxes over NFS.  Some NFS implementations
                    incorrectly cache the attributes of small files.])
-        fi])
-
-AC_ARG_ENABLE(buffy-size, AC_HELP_STRING([--enable-buffy-size], [Use file size attribute instead of access time]),
-        [if test x$enableval = xyes; then
-                AC_DEFINE(BUFFY_SIZE,1,[ Define to enable the "buffy_size" feature. ])
         fi])
 
 AC_ARG_ENABLE(mailtool, AC_HELP_STRING([--enable-mailtool], [Enable Sun mailtool attachments support]),
@@ -1166,5 +1162,4 @@ AC_OUTPUT(Makefile intl/Makefile m4/Makefile
         po/Makefile.in doc/Makefile contrib/Makefile
         muttbug.sh
         imap/Makefile
-        Muttrc.head
         doc/instdoc.sh)

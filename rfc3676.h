@@ -1,5 +1,7 @@
-/* 
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+/*
+ * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
+ * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
+ * Copyright (C) 2005 Rocco Rutte <pdmef@gmx.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,28 +16,20 @@
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
+ *
+ */ 
 
-/*parameter to mutt_parse_mailboxes*/
-#define M_MAILBOXES   1
-#define M_UNMAILBOXES 2 
+/* This file was originally part of mutt-ng */
 
-typedef struct buffy_t
-{
-  char *path;
-  long size;
-  struct buffy_t *next;
-  short new;			/* mailbox has new mail */
-  short notified;		/* user has been notified */
-  short magic;			/* mailbox type */
-  short newly_created;		/* mbox or mmdf just popped into existence */
-}
-BUFFY;
+#ifndef _MUTT_RFC3676_H
+#define _MUTT_RFC3676_H
 
-WHERE BUFFY *Incoming INITVAL (0);
-WHERE short BuffyTimeout INITVAL (3);
+#include "mutt.h"
 
-extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
+/* body handler implementing RfC 3676 for format=flowed */
+int rfc3676_handler (BODY *a, STATE *s);
 
-BUFFY *mutt_find_mailbox (const char *path);
-void mutt_update_mailbox (BUFFY * b);
+/* this does the space-stuffing for RfC3676 style messages */
+void rfc3676_space_stuff (HEADER *hdr);
+
+#endif /* !_MUTT_RFC3676_H */

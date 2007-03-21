@@ -1,5 +1,5 @@
 Subject: Applying patches
-From: Thomas Roessler <roessler@guug.de>
+From: Thomas Roessler <roessler@does-not-exist.org>
 Date: Thu,  8 Oct 1998 14:32:53 +0200
 
 When applying patches to mutt, you may encounter strange error

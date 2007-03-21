@@ -9,7 +9,7 @@
 # Note that this script won't work for you.  I'm including it with 
 # the distribution for the sake of completeness.
 #
-# Thomas Roessler <roessler@guug.de> Mon,  8 Nov 1999 22:32:41 +0100
+# Thomas Roessler <roessler@does-not-exist.org> Mon,  8 Nov 1999 22:32:41 +0100
 #
 
 set -e

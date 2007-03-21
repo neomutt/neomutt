@@ -2,7 +2,7 @@
 .\"
 .\"
 .\"     Copyright (C) 1996-8 Michael R. Elkins <me@cs.hmc.edu>
-.\"	Copyright (C) 1998-9 Thomas Roessler <roessler@guug.de>
+.\"	Copyright (C) 1998-9 Thomas Roessler <roessler@does-not-exist.org>
 .\" 
 .\"     This program is free software; you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -147,4 +147,4 @@ comments in dotlock.c.
 is part of the Mutt mail user agent package.  It has been
 created to avoid running mutt with group mail privileges.
 .SH AUTHOR
-Thomas Roessler <roessler@guug.de>
+Thomas Roessler <roessler@does-not-exist.org>

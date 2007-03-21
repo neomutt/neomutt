@@ -285,7 +285,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   QUERY *queryp = NULL;
   int i, done = 0;
   int op;
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char title[STRING];
 
   snprintf (title, sizeof (title), _("Query")); /* FIXME */

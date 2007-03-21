@@ -1,4 +1,313 @@
-2007-03-03 18:47 -0800  Brendan Cully  <brendan@kublai.com>  (f23dba931c3f)
+2007-03-20 13:17 -0700  Rocco Rutte  <pdmef@gmx.net>  (2fbc65f3feb6)
+
+	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,
+	mutt_ssl.c, mutt_ssl_gnutls.c, pgpkey.c, postpone.c, query.c,
+	recvattach.c, remailer.c: Enlarge help string buffers Even on 80x25
+	terminals, SHORT_STRING (128 byte) may not be enough so use
+	LONG_STRING (1k) as STRING (256 byte) may well be too short for
+	wider terminals. Closes debian #4152777.
+
+2007-03-20 09:45 -0700  Antoine Reilles  <tonio@NetBSD.org>  (f0461517fc93)
+
+	* muttlib.c: Remove trailing slash from $folder in
+	mutt_expand_path.
+
+2007-03-20 08:20 -0700  Rocco Rutte  <pdmef@gmx.net>  (3122a4a338b1)
+
+	* rfc3676.c: Make f=f handler behave like old f=f handler for quoted
+	lines Now lines containing quote characters but no further content
+	appear as quoted lines again for making replies. Also, the spaces
+	between quotes and text are removed to make output look as it did
+	for the old handler.
+
+2007-03-19 08:12 -0700  Rocco Rutte  <pdmef@gmx.net>  (5681216fa395)
+
+	* doc/manual.xml.head: Manual: f=f messages are text/plain, not "plain
+	ASCII"
+
+2007-03-16 11:21 -0700  Michael Elkins  <me@mutt.org>  (aa96e6137c69)
+
+	* imap/imap.c: Fixed segfault when attempting to open an imaps mailbox
+	when mutt is not configured with SSL support.
+
+2007-03-16 09:39 -0700  Brendan Cully  <brendan@kublai.com>  (08f9bb4b7810)
+
+	* configure.ac, configure.in: Move configure.in to configure.ac
+
+2007-03-15 16:29 -0700  Brendan Cully  <brendan@kublai.com>  (4ade0c9660d5)
+
+	* Makefile.am: Add reldate.h to BUILT_SOURCES
+
+2007-03-15 16:10 +0100  Christoph Berg  <cb@df7cb.de>  (ed804d94676a)
+
+	* Makefile.am: Remove reldate.h from EXTRADIST to fix out-of-tree
+	builds from tarballs (and remove some stray tabs).
+
+	* contrib/gpg.rc: Remove absolute paths.
+
+	* doc/Makefile.am: Pull release date directly from Changelog.
+
+2007-03-15 09:23 -0700  Brendan Cully  <brendan@kublai.com>  (e648206c02e2)
+
+	* .cvsignore, contrib/.cvsignore, doc/.cvsignore, imap/.cvsignore,
+	intl/.cvsignore, m4/.cvsignore, po/.cvsignore: Remove .cvsignores
+
+2007-03-15 08:48 -0700  Rocco Rutte  <pdmef@gmx.net>  (836822cc1260)
+
+	* doc/manual.xml.head, doc/muttrc.man.head, init.h: Document
+	pattern groups in the manual Sync with muttrc. Add some rationale
+	for groups. Fix some style issues. Fix quoting issue with
+	$smtp_authenticators.
+
+2007-03-14 23:03 -0700  Kyle Wheeler  <kyle@memoryhole.net>  (fa6128cf9cba)
+
+	* doc/muttrc.man.head: Improved pattern documentation
+	(group/ungroup)
+
+2007-03-14 22:29 -0700  Brendan Cully  <brendan@kublai.com>  (af1fc17674bc)
+
+	* mbyte.h: Undefine mbyte macros before overriding them (#2820)
+
+	* hg-commit: Let user review ChangeLog after hg-commit writes it
+
+2007-03-15 02:12 +0100  Christoph Berg  <cb@df7cb.de>  (460713774c5b)
+
+	* doc/Makefile.am: Add gen-map-doc to EXTRADIST, call using perl in
+	srcdir, fix makedoc rules.
+
+	* doc/Makefile.am, doc/gen-map-doc, doc/manual.xml.tail, functions.h:
+	Generate menu binding documentation from functions.h and OPS*.
+
+2007-03-14 14:45 -0700  Brendan Cully  <brendan@kublai.com>  (35b8facdbdda)
+
+	* imap/command.c, mutt.h: Update IMAP ACL parser to recognize RFC
+	rights
+
+	* contrib/Makefile.am, contrib/mutt_xtitle, muttlib.c: Add demo
+	mutt_xtitle script
+
+	* muttlib.c: Remove trailing newlines from fmtpipe return value.
+	Increase fmtpipe logging level to 3.
+
+2007-03-14 13:49 -0700  David Champion  <dgc@uchicago.edu>  (63ad6be01750)
+
+	* mutt.h, muttlib.c: Allow format strings to be filtered. Any format
+	string ending in | will be expanded and piped through the first word
+	in the string. The string returned will be used for display. If the
+	returned string ends in %, it will be passed through the formatter a
+	second time. This allows the filter to generate a replacement format
+	string including % expandos.
+
+2007-03-14 13:26 -0700  Brendan Cully  <brendan@kublai.com>  (e9203a364537)
+
+	* imap/imap.c: Recheck capabilities after authentication (closes:
+	#2837)
+
+2007-03-14 13:09 -0700  Christoph Berg  <cb@df7cb.de>  (cbacb14a837a)
+
+	* doc/mutt.man, main.c: mutt.man and mutt -h updates
+
+	Document mutt --, remove the reference to
+	flea, and generally update the mutt.1 manpage.
+
+	(I removed -d from the SYNOPSIS part since it wasn't entirely
+	correct syntactically there and putting it elsewhere seems like
+	unnecessary clutter.)
+
+2007-03-14 12:58 -0700  Brendan Cully  <brendan@kublai.com>  (f20641ecca59)
+
+	* hcache.c: Always give realpath a shot at the hcache folder name.
+	Remove other hacks.
+
+2007-03-14 12:53 -0700  Rocco Rutte  <pdmef@gmx.net>  (18cd9834050d)
+
+	* hcache.c: hcache: prepend current dir to path for local folders If a
+	folder is local (i.e. stat() succeeds), prepend the current working
+	directory if necessary to always fully qualify the path. Otherwise
+	we may end up using different cache files for the same folder when
+	given relative paths. This closes #2845.
+
+2007-03-14 12:50 -0700  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (600b3466489c)
+
+	* help.c: Complete fix for #1503
+
+2007-03-14 12:39 -0700  Rado S  <regrado@web.de>  (ad2172897839)
+
+	* imap/imap.c: Let imap_conn_find have first crack at completion of
+	root
+
+2007-03-14 12:23 -0700  Brendan Cully  <brendan@kublai.com>  (bb43900e853f)
+
+	* imap/imap.c: Don't skip the last connection in
+	imap_complete_hosts
+
+2007-03-14 11:33 -0700  Rocco Rutte  <pdmef@gmx.net>  (09f73968d97a)
+
+	* rfc822.c: Fix return value for rfc822_write_address() The strcat
+	cleanup changed the return type from void to int but didn't provide
+	a return value for the case of bogus function arguments.
+
+2007-03-13 12:39 -0700  TAKIZAWA Takashi  <taki@luna.email.ne.jp>  (dc8f0c4a6287)
+
+	* help.c: Use strwidth instead of strlen when generating help strings.
+	This fixes word-wrap with multibyte strings (closes: #1503)
+
+2007-03-13 22:40 -0700  Brendan Cully  <brendan@kublai.com>  (61b2845af4da)
+
+	* Makefile.am, Muttrc.head, Muttrc.head.in, configure.in: Fully expand
+	$docdir when building Muttrc (closes: #2832)
+
+	* makedoc.c: Make makedoc return 0 on success (be there dragons here?)
+
+2007-03-13 09:22 -0700  Vincent Lefevre  <vincent@vinc17.org>  (7e9c45589254)
+
+	* po/fr.po: Updated French translation.
+
+2007-03-13 10:58 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (f4d3704813fd)
+
+	* charset.c: Clean up the strcat cleanup
+
+2007-03-12 16:26 -0700  Ronny Haryanto  <ronnylist@haryan.to>  (8d956e434fab)
+
+	* po/id.po: Updated Indonesian translation
+
+2007-03-12 12:19 -0700  René Clerc  <rene@clerc.nl>  (162bb5f71a0f)
+
+	* po/nl.po: Updated Dutch translation.
+
+2007-03-12 10:32 -0700  Brendan Cully  <brendan@kublai.com>  (83ca0fb6e36a)
+
+	* imap/util.c: Substitute INBOX for empty mailbox _after_ cleanup
+	(closes: #2841)
+
+2007-03-12 10:03 -0700  Sami Farin  <safari-mutt@safari.iki.fi>  (42016ef5ee21)
+
+	* charset.c, copy.c, rfc822.c, rfc822.h: Improve strcat usage
+	(#2802).
+
+2007-03-11 11:54 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (8a640badfb60)
+
+	* COPYRIGHT, build-release, crypt-gpgme.c, doc/applying-patches.txt,
+	doc/dotlock.man, doc/manual.xml.head, doc/muttrc.man.head,
+	muttbug.sh.in, po/bg.po, po/da.po, po/eo.po, po/es.po, po/et.po,
+	po/gl.po, po/it.po, po/lt.po, po/pt_BR.po, po/sk.po, po/zh_CN.po,
+	po/zh_TW.po: Grabage-collect references to an outdated email
+	address.
+
+2007-03-09 10:58 -0800  Rocco Rutte  <pdmef@gmx.net>  (d1122bbaacd8)
+
+	* doc/Makefile.am, doc/manual.xml.head: Make manual validate against
+	DocBook 4.2 DTD for "book" This adds a 'validate' target to
+	doc/Makefile which uses xmllint(1) to validate manual.xml against
+	the DTD given in the doctype (intended for developers only).
+
+	Running it revealed two validation errors which this patch fixes:
+
+	1) We declare 'article' as the doctype but want to use 'book' 2)
+	Within a lists's items, we didn't include our text in a paragraph
+
+2007-03-08 21:13 -0800  Michael Elkins  <me@mutt.org>  (0ec4394636c4)
+
+	* init.h: Add `UL' cast for Umask entry in MuttVars to supress
+	compiler warning.
+
+2007-03-08 12:19 -0800  Petr Písař  <petr.pisar@atlas.cz>  (d0924f72d2e8)
+
+	* po/cs.po: Czech spelling fixes and new translations
+
+2007-03-07 12:18 -0800  Christoph Berg  <cb@df7cb.de>  (5de130a3cb96)
+
+	* doc/muttrc.man.head: Typos in muttrc.man.head
+
+2007-03-07 12:11 -0800  Michael Tatge  <Michael.Tatge@web.de>  (162f0c127492)
+
+	* doc/mutt.man: Document -d in the man page
+
+2007-03-06 18:13 -0800  Alain Bench  <veronatif@free.fr>  (5fc8c7cee1dd)
+
+	* charset.c, charset.h, crypt-gpgme.c, imap/utf7.c, mbyte.c,
+	mutt_idna.c, pgp.c, rfc2047.c, sendlib.c: Remove buggy usage
+	of M_ICONV_HOOK_TO flag in mutt_idna.c:mutt_idna_to_local().
+	Wipe unwanted code depending on M_ICONV_HOOK_TO in
+	charset.c:mutt_iconv_open(). Totally wipe M_ICONV_HOOK_TO symbol.
+	Remove misusages of M_ICONV_HOOK_FROM flag in:
+	 - crypt-gpgme.c:print_utf8().
+	 - mutt_idna.c:mutt_idna_to_local() and mutt_local_to_idna().
+	 - pgp.c:pgp_traditional_encryptsign(). Document usage policy of
+	M_ICONV_HOOK_FROM flag. Cosmetic downcasing of some constant charset
+	names (utf-8, euc-jp) for consistency. Correction of a typo in the
+	"iso8859-5" charset name.
+
+2007-03-06 17:59 -0800  Rocco Rutte  <pdmef@gmx.net>  (5e47385893fe)
+
+	* UPDATING, doc/manual.xml.head: Documentation updates for
+	format=flowed
+
+2007-03-06 17:45 -0800  Masayuki Moriyama  (78b424bf7c5a)
+
+	* charset.c, hook.c, mbyte.c: Allow iconv-hook to use virtual
+	charsets as targets. (closes: #1269)
+
+2007-03-04 19:26 +0100  Alain Bench  <veronatif@free.fr>  (4dc1d87f4c25)
+
+	* doc/manual.xml.head, init.h: Doc fixes and updates concerning hooks
+
+	- Add reply-hooks and send2-hooks in lists they miss.
+	- Fix that they all take full patterns, not only regexps.
+	- Note interaction with $default_hook.
+	- Enumerate them in execution order/increasing priority.
+	- Add iconv-hook, remove a duplicate charset-hook.
+
+2007-03-06 15:45 -0800  Brendan Cully  <brendan@kublai.com>  (607688bd77b1)
+
+	* hg-commit: Add check_sec.sh call
+
+	* hg-commit: Make hg commit less clever
+
+	* PATCHES: Undo bad PATCHES commit from f=f
+
+2007-03-06 09:49 -0800  Rocco Rutte  <pdmef@gmx.net>  (2e4e1cc18c22)
+
+	* Makefile.am, PATCHES, doc/manual.xml.head, handler.c, muttlib.c,
+	protos.h, rfc3676.c, rfc3676.h, send.c: New format=flowed handler.
+
+2007-03-02 21:12 -0800  Brendan Cully  <brendan@kublai.com>  (537672d8fefb)
+
+	* attach.c, globals.h, init.c, init.h, lib.c, mh.c, mx.c: Add $umask
+	for mailboxes and attachments.
+
+	init.c could really use some refactoring.
+
+2007-03-05 14:50 -0800  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (de57c607e9d3)
+
+	* po/pl.po: Updated Polish translation.
+
+2007-03-03 22:09 -0800  Brendan Cully  <brendan@kublai.com>  (08b1fa8cd55e)
+
+	* Makefile.am: Do not append ${prefix}/include to CPPFLAGS. If
+	configure didn't see it, neither should make. (closes: #2603)
+
+2007-03-03 21:49 -0800  Rado S  <regrado@web.de>  (d990dcbbf184)
+
+	* color.c: Increase buffer for color-command regular expressions.
+
+2007-03-03 21:26 -0800  Brendan Cully  <brendan@kublai.com>  (574dbb2c6590)
+
+	* init.h: Revise status_format docs for %??&?. (closes: #2805)
+
+2007-03-03 21:24 -0800  Brendan Cully  <brendan@kublai.com>  (2e296bd4cdfb)
+
+	* doc/devel-notes.txt: s/CVS/Mercurial/
+
+2007-03-03 19:04 -0800  Brendan Cully  <brendan@kublai.com>  (efb53c875ed8)
+
+	* .hgignore: More .hgignore fixes
+
+2007-03-03 18:51 -0800  Brendan Cully  <brendan@kublai.com>  (07f01dd033fe)
+
+	* ChangeLog: Remove a couple of extraneous ChangeLog entries
+
+2007-03-03 18:47 -0800  Brendan Cully  <brendan@kublai.com>  (48b17378c20a)
 
 	* UPDATING, copy.c, globals.h, handler.c, init.c, init.h,
 	mutt_curses.h, pager.c: Add $wrap, which supersedes $wrapmargin.
@@ -7,8 +316,8 @@
 
 2007-03-03 00:35 -0800  Brendan Cully  <brendan@kublai.com>  (3e3d3bf73c9f)
 
-	* ChangeLog, hg-changelog-map, hg-commit: Use hg-commit to perform
-	commits that also update the ChangeLog.
+	* hg-changelog-map, hg-commit: Use hg-commit to perform commits
+	that also update the ChangeLog.
 
 2007-03-02 21:17 -0800  Brendan Cully  <brendan@kublai.com>  (472e100053ed)
 

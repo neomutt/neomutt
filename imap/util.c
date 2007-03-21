@@ -295,12 +295,6 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
 {
   int x = 0;
 
-  if (!mailbox || !*mailbox)
-  {
-    strfcpy (path, "INBOX", plen);
-    return path;
-  }
-
   while (mailbox && *mailbox && (x < (plen - 1)))
   {
     if ((*mailbox == '/') || (*mailbox == idata->delim))
@@ -318,6 +312,10 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
   if (x && path[--x] != idata->delim)
     x++;
   path[x] = '\0';
+
+  if (!path[0])
+    strfcpy (path, "INBOX", plen);
+
   return path;
 }
 

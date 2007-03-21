@@ -414,7 +414,7 @@ struct mapping_t IndexHelp[] = {
  */
 int mutt_index_menu (void)
 {
-  char buf[LONG_STRING], helpstr[SHORT_STRING];
+  char buf[LONG_STRING], helpstr[LONG_STRING];
   int op = OP_NULL;
   int done = 0;                /* controls when to exit the "event" loop */
   int i = 0, j;

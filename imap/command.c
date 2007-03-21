@@ -742,15 +742,33 @@ static void cmd_parse_myrights (IMAP_DATA* idata, const char* s)
       case 'p':
 	mutt_bit_set (idata->ctx->rights, M_ACL_POST);
 	break;
-      case 'c':
-	mutt_bit_set (idata->ctx->rights, M_ACL_CREATE);
-	break;
-      case 'd':
-	mutt_bit_set (idata->ctx->rights, M_ACL_DELETE);
-	break;
       case 'a':
 	mutt_bit_set (idata->ctx->rights, M_ACL_ADMIN);
 	break;
+      case 'k':
+	mutt_bit_set (idata->ctx->rights, M_ACL_CREATE);
+        break;
+      case 'x':
+        mutt_bit_set (idata->ctx->rights, M_ACL_DELMX);
+        break;
+      case 't':
+	mutt_bit_set (idata->ctx->rights, M_ACL_DELETE);
+        break;
+      case 'e':
+        mutt_bit_set (idata->ctx->rights, M_ACL_EXPUNGE);
+        break;
+
+        /* obsolete rights */
+      case 'c':
+	mutt_bit_set (idata->ctx->rights, M_ACL_CREATE);
+        mutt_bit_set (idata->ctx->rights, M_ACL_DELMX);
+	break;
+      case 'd':
+	mutt_bit_set (idata->ctx->rights, M_ACL_DELETE);
+        mutt_bit_set (idata->ctx->rights, M_ACL_EXPUNGE);
+	break;
+      default:
+        dprint(1, (debugfile, "Unknown right: %c\n", *s));
     }
     s++;
   }

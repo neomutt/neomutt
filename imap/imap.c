@@ -343,6 +343,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
       continue;
     break;
   }
+  if (!conn)
+	  return NULL; /* this happens when the initial connection fails */
 
   if (!idata)
   {
@@ -376,6 +378,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   }
   if (new && idata->state == IMAP_AUTHENTICATED)
   {
+    /* capabilities may have changed */
+    imap_cmd_queue (idata, "CAPABILITY");
     /* get root delimiter, '/' as default */
     idata->delim = '/';
     imap_cmd_queue (idata, "LIST \"\" \"\"");
@@ -1827,7 +1831,7 @@ imap_complete_hosts (char *dest, size_t len)
     }
   }
   
-  for (conn = mutt_socket_head (); conn && conn->next; conn = conn->next)
+  for (conn = mutt_socket_head (); conn; conn = conn->next)
   {
     ciss_url_t url;
     char urlstr[LONG_STRING];
@@ -1869,7 +1873,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   IMAP_MBOX mx;
   int rc;
 
-  if (imap_parse_path (path, &mx) || !mx.mbox)
+  if (imap_parse_path (path, &mx))
   {
     strfcpy (dest, path, dlen);
     return imap_complete_hosts (dest, dlen);

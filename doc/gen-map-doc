@@ -1,0 +1,85 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+my (%OPS, %MAP, %DOC, $map);
+
+my $xml = shift @ARGV;
+
+open F, "cat @ARGV |" or die "OPS*: $!";
+while (<F>) {
+  /(\w+) "(.+)"/ or die "$.: parse error";
+  $OPS{$1} = $2;
+}
+close F;
+
+while (<STDIN>) {
+  if (/^struct binding_t Op.*{ \/\* map: (.*) \*\//) {
+    $map = $1;
+    $DOC{$map} = "";
+  }
+  if ($map and /^\s*\*\*\s*(.*)/) {
+    $DOC{$map} .= "$1\n";
+  }
+  if ($map and /{\s*"(.+)"\s*,\s*(\w+)\s*,\s*(?:"([^"]+)"|(\w+))\s*}/) {
+    my ($function, $op, $binding) = ($1, $2, $3 || $4);
+    $binding =~ s/ /Space/;
+    $binding =~ s/^\\033/ESC /;
+    $binding =~ s/^\\010/Backspace/;
+    $binding =~ s/^\\(0\d+)$/'^'.chr(64+oct($1))/e;
+    $binding =~ s/^\\(0\d+)(.)/'^'.chr(64+oct($1)) ." $2"/e;
+    $binding =~ s/<(.+)>/$1/;
+    $binding =~ s/&/&amp;/;
+    $binding =~ s/</&lt;/;
+    $binding =~ s/>/&gt;/;
+    $binding =~ s/\\t/TAB/;
+    $binding =~ s/M_ENTER_S/RET/;
+    $binding =~ s/NULL/not bound/;
+    die "unknown key $binding" if $binding =~ /\\[^\\]|<|>/;
+    die "unknown OP $op" unless $OPS{$op};
+    $MAP{$map} .= "<row><entry>$function</entry><entry>$binding</entry><entry>$OPS{$op}</entry></row>\n";
+  }
+  if ($map and /^}/) {
+    undef $map;
+  }
+}
+
+open XML, $xml or die "$xml: $!";
+while (<XML>) {
+  if (/__print_map\((.*)\)/) {
+    my $map = $1;
+    unless ($MAP{$map}) {
+      warn "map $map undefined";
+      next;
+    }
+    print <<EOT;
+<sect2 id="${map}_map">
+<title>$map</title>
+$DOC{$map}
+<para>
+
+<table id="${map}_table">
+<title>Default $map function bindings</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+$MAP{$map}
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</sect2>
+
+EOT
+    delete $MAP{$1};
+  } else {
+    print;
+  }
+}
+close XML;
+
+warn "unprinted maps: ". join(" ", keys %MAP) if %MAP;

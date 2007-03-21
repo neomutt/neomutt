@@ -201,7 +201,11 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
   FGETCONV *fc;
   
   rewind (fpin);
-  
+
+  /* fromcode comes from the MIME Content-Type charset label. It might
+   * be a wrong label, so we want the ability to do corrections via
+   * charset-hooks. Therefore we set flags to M_ICONV_HOOK_FROM.
+   */
   fc = fgetconv_open (fpin, charset, Charset, M_ICONV_HOOK_FROM);
   
   for (complete = 1, armor_header = 1;
@@ -1422,8 +1426,9 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
       send_charset = "us-ascii";
     else
       send_charset = "utf-8";
-    
-    fc = fgetconv_open (fp, from_charset, "utf-8", M_ICONV_HOOK_FROM);
+
+    /* fromcode is assumed to be correct: we set flags to 0 */
+    fc = fgetconv_open (fp, from_charset, "utf-8", 0);
     while ((c = fgetconv (fc)) != EOF)
       fputc (c, pgpin);
     

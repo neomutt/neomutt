@@ -446,7 +446,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   pgp_uid_t **KeyTable;
   MUTTMENU *menu;
   int i, done = 0;
-  char helpstr[SHORT_STRING], buf[LONG_STRING], tmpbuf[STRING];
+  char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
   FILE *fp, *devnull;
   pid_t thepid;

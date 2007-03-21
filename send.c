@@ -31,6 +31,7 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 #include "url.h"
+#include "rfc3676.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -1438,6 +1439,9 @@ ci_send_message (int flags,		/* send mode */
 	  mutt_perror (msg->content->filename);
       }
       
+      if (option (OPTTEXTFLOWED))
+	rfc3676_space_stuff (msg);
+
       mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
 

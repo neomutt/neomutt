@@ -92,12 +92,16 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
-  else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ACCOUNTHOOK))
+  else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ICONVHOOK | M_ACCOUNTHOOK))
            && (!WithCrypto || !(data & M_CRYPTHOOK))
       )
   {
     char tmp[HUGE_STRING];
 
+    /* At this stage remain only message-hooks, reply-hooks, send-hooks,
+     * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
+     * patterns. If given a simple regexp, we expand $default_hook.
+     */
     strfcpy (tmp, pattern.data, sizeof (tmp));
     mutt_check_simple (tmp, sizeof (tmp), DefaultHook);
     FREE (&pattern.data);
@@ -159,9 +163,10 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
   else
   {
+    /* Hooks not allowing full patterns: Check syntax of regexp */
     rx = safe_malloc (sizeof (regex_t));
 #ifdef M_CRYPTHOOK
-    if ((rc = REGCOMP (rx, NONULL(pattern.data), ((data & (M_CRYPTHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
+    if ((rc = REGCOMP (rx, NONULL(pattern.data), ((data & (M_CRYPTHOOK|M_CHARSETHOOK|M_ICONVHOOK)) ? REG_ICASE : 0))) != 0)
 #else
     if ((rc = REGCOMP (rx, NONULL(pattern.data), (data & (M_CHARSETHOOK|M_ICONVHOOK)) ? REG_ICASE : 0)) != 0)
 #endif /* M_CRYPTHOOK */

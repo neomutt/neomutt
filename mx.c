@@ -38,9 +38,7 @@
 #include "pop.h"
 #endif
 
-#ifdef BUFFY_SIZE
 #include "buffy.h"
-#endif
 
 #ifdef USE_DOTLOCK
 #include "dotlock.h"
@@ -57,9 +55,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#ifndef BUFFY_SIZE
 #include <utime.h>
-#endif
 
 
 #define mutt_is_spool(s)  (mutt_strcmp (Spoolfile, s) == 0)
@@ -426,9 +422,7 @@ int mx_get_magic (const char *path)
   }
   else if ((f = fopen (path, "r")) != NULL)
   {
-#ifndef BUFFY_SIZE
     struct utimbuf times;
-#endif
 
     fgets (tmp, sizeof (tmp), f);
     if (mutt_strncmp ("From ", tmp, 5) == 0)
@@ -436,15 +430,17 @@ int mx_get_magic (const char *path)
     else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
       magic = M_MMDF;
     safe_fclose (&f);
-#ifndef BUFFY_SIZE
-    /* need to restore the times here, the file was not really accessed,
-     * only the type was accessed.  This is important, because detection
-     * of "new mail" depends on those times set correctly.
-     */
-    times.actime = st.st_atime;
-    times.modtime = st.st_mtime;
-    utime (path, &times);
-#endif
+
+    if (!option(OPTCHECKMBOXSIZE))
+    {
+      /* need to restore the times here, the file was not really accessed,
+       * only the type was accessed.  This is important, because detection
+       * of "new mail" depends on those times set correctly.
+       */
+      times.actime = st.st_atime;
+      times.modtime = st.st_mtime;
+      utime (path, &times);
+    }
   }
   else
   {
@@ -773,9 +769,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 /* save changes to disk */
 static int sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
-#ifdef BUFFY_SIZE
   BUFFY *tmp = NULL;
-#endif
   int rc = -1;
 
   if (!ctx->quiet)
@@ -786,9 +780,8 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
     case M_MBOX:
     case M_MMDF:
       rc = mbox_sync_mailbox (ctx, index_hint);
-#ifdef BUFFY_SIZE
-      tmp = mutt_find_mailbox (ctx->path);
-#endif
+      if (option(OPTCHECKMBOXSIZE))
+	tmp = mutt_find_mailbox (ctx->path);
       break;
       
     case M_MH:
@@ -815,10 +808,8 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_error ( _("Could not synchronize mailbox %s!"), ctx->path);
 #endif
   
-#ifdef BUFFY_SIZE
   if (tmp && tmp->new == 0)
     mutt_update_mailbox (tmp);
-#endif
   return rc;
 }
 

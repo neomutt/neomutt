@@ -536,7 +536,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 {
   char buf[_POSIX_PATH_MAX];
   char prefix[_POSIX_PATH_MAX] = "";
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char title[STRING];
   struct browser_state state;
   MUTTMENU *menu;

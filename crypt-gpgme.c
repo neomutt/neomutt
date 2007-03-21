@@ -1,7 +1,7 @@
 /* crypt-gpgme.c - GPGME based crypto operations
  * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1998,1999,2000 Thomas Roessler <roessler@guug.de>
- * Copyright (C) 2001  Thomas Roessler <roessler@guug.de>
+ * Copyright (C) 1998,1999,2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002, 2003, 2004 g10 Code GmbH
  *
@@ -146,7 +146,11 @@ print_utf8 (FILE *fp, const char *buf, size_t len)
   tstr = safe_malloc (len+1);
   memcpy (tstr, buf, len);
   tstr[len] = 0;
-  mutt_convert_string (&tstr, "utf-8", Charset, M_ICONV_HOOK_FROM);
+
+  /* fromcode "utf-8" is sure, so we don't want
+   * charset-hook corrections: flags must be 0.
+   */
+  mutt_convert_string (&tstr, "utf-8", Charset, 0);
   fputs (tstr, fp);
   FREE (&tstr);
 }
@@ -1921,7 +1925,11 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
     return;
   unlink (fname);
   FREE (&fname);
-  
+
+  /* fromcode comes from the MIME Content-Type charset label. It might
+   * be a wrong label, so we want the ability to do corrections via
+   * charset-hooks. Therefore we set flags to M_ICONV_HOOK_FROM.
+   */
   fc = fgetconv_open (fp, charset, Charset, M_ICONV_HOOK_FROM);
   
   for (complete = 1, armor_header = 1;
@@ -3578,7 +3586,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   crypt_key_t **key_table;
   MUTTMENU *menu;
   int i, done = 0;
-  char helpstr[SHORT_STRING], buf[LONG_STRING];
+  char helpstr[LONG_STRING], buf[LONG_STRING];
   crypt_key_t *k;
   int (*f) (const void *, const void *);
   int menu_to_use = 0;

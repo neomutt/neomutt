@@ -136,7 +136,7 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   int t = -1;
   int i, done = 0;
   int op;
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
 
   int omax;
   

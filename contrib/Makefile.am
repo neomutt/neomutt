@@ -5,7 +5,7 @@ subdir = contrib
 SAMPLES = Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \
 	sample.muttrc  sample.mailcap sample.muttrc-tlr \
 	colors.default colors.linux smime.rc \
-	ca-bundle.crt smime_keys_test.pl
+	ca-bundle.crt smime_keys_test.pl mutt_xtitle
 
 EXTRA_DIST = language.txt language50.txt  \
 	patch.slang-1.2.2.keypad.1	\

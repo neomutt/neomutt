@@ -1,0 +1,9 @@
+#!/bin/sh
+# Demonstration of format string pipes. Sets the xterm title and returns the
+# string unchanged.
+#
+# Example usage:
+# set status_format="mutt_xtitle '%r %f (%L) [Msgs:%?M?%M/?%m%?n? New:%n?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?]'|"
+
+printf "\033]0;$1\007" > /dev/tty
+echo "$1"

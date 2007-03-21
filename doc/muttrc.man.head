@@ -2,7 +2,7 @@
 .\" -*-nroff-*-
 .\"
 .\"     Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
-.\"	Copyright (C) 1999-2000 Thomas Roessler <roessler@guug.de>
+.\"	Copyright (C) 1999-2000 Thomas Roessler <roessler@does-not-exist.org>
 .\" 
 .\"     This program is free software; you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -39,9 +39,9 @@ characters.  The difference between the two types of quotes is
 similar to that of many popular shell programs, namely that a single
 quote is used to specify a literal string (one that is not
 interpreted for shell variables or quoting with a backslash [see
-next paragraph]), while double quotes indicate a string for which
-should be evaluated.  For example, backtics are evaluated inside of
-double quotes, but not for single quotes.
+next paragraph]), while double quotes indicate a string which
+should be evaluated.  For example, backquotes are evaluated inside of
+double quotes, but not single quotes.
 .PP
 \fB\(rs\fP quotes the next character, just as in shells such as bash and zsh.
 For example, if want to put quotes (\(lq\fB"\fP\(rq) inside of a
@@ -60,23 +60,50 @@ It is also possible to substitute the output of a Unix command in an
 initialization file.  This is accomplished by enclosing the command
 in backquotes (\fB`\fP\fIcommand\fP\fB`\fP).
 .PP
-UNIX environments can be accessed like the way it is done in shells
-like sh and bash: Prepend the name of the environment by a dollar
+UNIX environment variables can be accessed like the way it is done in shells
+like sh and bash: Prepend the name of the variable by a dollar
 (\(lq\fB\(Do\fP\(rq) sign.
 .PP
 .SH COMMANDS
 .PP
 .nf
-\fBalias\fP \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP [ ... ]]
+\fBalias\fP [\fB-group\fP \fIname\fP [...]] \fIkey\fP \fIaddress\fP [\fB,\fP \fIaddress\fP [ ... ]]
 \fBunalias\fP [\fB * \fP | \fIkey\fP ]
 .fi
 .IP
-\fBalias\fP defines an alias \fIkey\fP for the given addresses.
+\fBalias\fP defines an alias \fIkey\fP for the given addresses. Each
+\fIaddress\fP will be resolved into either an email address (user@example.com)
+or a named email address (User Name <user@example.com>). The address may be specified in either format, or in the format \(lquser@example.com (User
+Name)\(rq.
 \fBunalias\fP removes the alias corresponding to the given \fIkey\fP or
-all aliases when \(lq\fB*\fP\(rq is used as an argument.
+all aliases when \(lq\fB*\fP\(rq is used as an argument. The optional
+\fB-group\fP argument to \fBalias\fP causes the aliased address(es) to be
+added to the named \fIgroup\fP.
 .PP
 .nf
-\fBalternates\fP \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]]
+\fBgroup\fP [\fB-group\fP \fIname\fP] [\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]
+\fBungroup\fP [\fB-group\fP \fIname\fP ] [ \fB*\fP | [[\fB-rx\fP \fIEXPR\fP [ \fI...\fP ]] [\fB-addr\fP \fIaddress\fP [ \fI...\fP ]]]
+.fi
+.IP
+\fBgroup\fP is used to directly add either addresses or regular expressions to
+the specified group or groups. The different categories of arguments to the
+\fBgroup\fP command can be in any order. The flags \fI-rx\fP and \fI-addr\fP
+specify what the following strings (that cannot begin with a hyphen) should be
+interpreted as: either a regular expression or an email address, respectively.
+\fBungroup\fP is used to remove addresses or regular expressions from the
+specified group or groups. The syntax is similar to the \fBgroup\fP command,
+however the special character \fB*\fP can be used to empty a group of all of
+its contents.
+.IP
+These address groups can also be created implicitely by the \fBalias\fP, \fBlists\fP,
+\fBsubscribe\fP and \fBalternates\fP commands by specifying the optional \fI-group\fP
+option.
+.IP
+Once defined, these address groups can be used in patterns to search for and limit the
+display to messages matching a group.
+.PP
+.nf
+\fBalternates\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]]
 \fBunalternates\fP [\fB * \fP | \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]] ]
 .fi
 .IP
@@ -84,7 +111,8 @@ all aliases when \(lq\fB*\fP\(rq is used as an argument.
 where you receive mail; you can use regular expressions to specify
 alternate addresses.  This affects mutt's idea about messages
 from you, and messages addressed to you.  \fBunalternates\fP removes
-a regular expression from the list of known alternates.
+a regular expression from the list of known alternates. The \fB-group\fP flag
+causes all of the subsequent regular expressions to be added to the named group.
 .PP
 .nf
 \fBalternative_order\fP \fItype\fP[\fB/\fP\fIsubtype\fP] [ ... ]
@@ -181,7 +209,7 @@ executed in the order given in the configuration file.
 \fBmacro\fP \fImap\fP \fIkey\fP \fIsequence\fP [ \fIdescription\fP ]
 This command binds the given \fIsequence\fP of keys to the given
 \fIkey\fP in the given \fImap\fP or maps.  For valid maps, see \fBbind\fP. To
-specify multipe maps, put only a comma between the maps.
+specify multiple maps, put only a comma between the maps.
 .PP
 .nf
 \fBcolor\fP \fIobject\fP \fIforeground\fP \fIbackground\fP [ \fI regexp\fP ]
@@ -226,9 +254,9 @@ The \fBunignore\fP command permits you to define exceptions from
 the above mentioned list of ignored headers.
 .PP
 .nf
-\fBlists\fP \fIregexp\fP [ \fIregexp\fP ... ]
+\fBlists\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fIregexp\fP ... ]
 \fBunlists\fP \fIregexp\fP [ \fIregexp\fP ... ]
-\fBsubscribe\fP \fIregexp\fP [ \fIregexp\fP ... ]
+\fBsubscribe\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fIregexp\fP ... ]
 \fBunsubscribe\fP \fIregexp\fP [ \fIregexp\fP ... ]
 .fi
 .IP
@@ -241,7 +269,8 @@ known mailing lists.  The \fBunlists\fP command removes a mailing
 list from the lists of known and subscribed mailing lists.  The
 \fBsubscribe\fP command adds a mailing list to the lists of known
 and subscribed mailing lists.  The \fBunsubscribe\fP command removes
-it from the list of subscribed mailing lists.
+it from the list of subscribed mailing lists. The \fb-group\fP flag
+adds all of the subsequent regular expressions to the named group.
 .TP
 \fBmbox-hook\fP [\fB!\fP]\fIpattern\fP \fImailbox\fP
 When mutt changes to a mail folder which matches \fIpattern\fP,
@@ -378,7 +407,9 @@ In various places with mutt, including some of the abovementioned
 A simple pattern consists of an operator of the form
 \(lq\fB~\fP\fIcharacter\fP\(rq, possibly followed by a parameter
 against which mutt is supposed to match the object specified by
-this operator.  (For a list of operators, see below.)
+this operator.  For some \fIcharacter\fPs, the \fB~\fP may be
+replaced by another character to alter the behavior of the match.
+These are described in the list of operators, below.
 .PP
 With some of these operators, the object to be matched consists of
 several e-mail addresses.  In these cases, the object is matched if
@@ -397,52 +428,157 @@ Additionally, you can negate a pattern by prepending a bang
 .SS Simple Patterns
 .PP
 Mutt understands the following simple patterns:
-.PP
-.TS
-l l.
-~A	all messages
-~b \fIEXPR\fP	messages which contain \fIEXPR\fP in the message body
-~B \fIEXPR\fP	messages which contain \fIEXPR\fP in the whole message
-~c \fIEXPR\fP	messages carbon-copied to \fIEXPR\fP
-~C \fIEXPR\fP	message is either to: or cc: \fIEXPR\fP
-~d \fIMIN\fP-\fIMAX\fP	messages with \(lqdate-sent\(rq in a Date range
-~D	deleted messages
-~e \fIEXPR\fP	message which contains \fIEXPR\fP in the \(lqSender\(rq field
-~E	expired messages
-~f \fIEXPR\fP	messages originating from \fIEXPR\fP
-~F	flagged messages
-~g	PGP signed messages
-~G	PGP encrypted messages
-~h \fIEXPR\fP	messages which contain \fIEXPR\fP in the message header
-~H \fIEXPR\fP	messages with spam tags matching \fIEXPR\fP
-~i \fIEXPR\fP	message which match \fIEXPR\fP in the \(lqMessage-ID\(rq field
-~k	message contains PGP key material
-~l	message is addressed to a known mailing list
-~L \fIEXPR\fP	message is either originated or received by \fIEXPR\fP
-~m \fIMIN\fP-\fIMAX\fP	message in the range \fIMIN\fP to \fIMAX\fP
-~n \fIMIN\fP-\fIMAX\fP	messages with a score in the range \fIMIN\fP to \fIMAX\fP
-~N	new messages
-~O	old messages
-~p	message is addressed to you (consults $alternates)
-~P	message is from you (consults $alternates)
-~Q	messages which have been replied to
-~r \fIMIN\fP-\fIMAX\fP	messages with \(lqdate-received\(rq in a Date range
-~R	read messages
-~s \fIEXPR\fP	messages having \fIEXPR\fP in the \(lqSubject\(rq field.
-~S	superseded messages
-~t \fIEXPR\fP	messages addressed to \fIEXPR\fP
-~T	tagged messages
-~u	message is addressed to a subscribed mailing list
-~U	unread messages
-~v	message is part of a collapsed thread.
-~V	cryptographically verified messages
-~x \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
-~X \fIMIN\fP-\fIMAX\fP	messages with MIN - MAX attachments
-~y \fIEXPR\fP	messages which contain \fIEXPR\fP in the \(lqX-Label\(rq field
-~z \fIMIN\fP-\fIMAX\fP	messages with a size in the range \fIMIN\fP to \fIMAX\fP
-~=	duplicated messages (see $duplicate_threads)
-~$	unreferenced message (requries threaded view)
-.TE
+.P
+.PD 0
+.TP 12
+~A
+all messages
+.TP
+~b \fIEXPR\fP
+messages which contain \fIEXPR\fP in the message body.
+.TP
+=b \fISTRING\fP
+messages which contain \fISTRING\fP in the message body. If IMAP is enabled, searches for \fISTRING\fP on the server, rather than downloading each message and searching it locally.
+.TP
+~B \fIEXPR\fP
+messages which contain \fIEXPR\fP in the whole message.
+.TP
+~c \fIEXPR\fP
+messages carbon-copied to \fIEXPR\fP
+.TP
+%c \fIGROUP\fP
+messages carbon-copied to any member of \fIGROUP\fP
+.TP
+~C \fIEXPR\fP
+messages either to: or cc: \fIEXPR\fP
+.TP
+%C \fIGROUP\fP
+messages either to: or cc: to any member of \fIGROUP\fP
+.TP
+~d \fIMIN\fP-\fIMAX\fP
+messages with \(lqdate-sent\(rq in a Date range
+.TP
+~D
+deleted messages
+.TP
+~e \fIEXPR\fP
+messages which contain \fIEXPR\fP in the \(lqSender\(rq field
+.TP
+%e \fIGROUP\fP
+messages which contain a member of \fIGROUP\fP in the \(lqSender\(rq field
+.TP
+~E
+expired messages
+.TP
+~f \fIEXPR\fP
+messages originating from \fIEXPR\fP
+.TP
+%f \fIGROUP\fP
+messages originating form any member of \fIGROUP\fP
+.TP
+~F
+flagged messages
+.TP
+~g
+PGP signed messages
+.TP
+~G
+PGP encrypted messages
+.TP
+~h \fIEXPR\fP
+messages which contain \fIEXPR\fP in the message header
+.TP
+~H \fIEXPR\fP
+messages with spam tags matching \fIEXPR\fP
+.TP
+~i \fIEXPR\fP
+messages which match \fIEXPR\fP in the \(lqMessage-ID\(rq field
+.TP
+~k
+messages containing PGP key material
+.TP
+~l
+messages addressed to a known mailing list (defined by either \fBsubscribe\fP or \fBlist\fP)
+.TP
+~L \fIEXPR\fP
+messages either originated or received by \fIEXPR\fP
+.TP
+%L \fIGROUP\fP
+messages either originated or received by any member of \fIGROUP\fP
+.TP
+~m \fIMIN\fP-\fIMAX\fP
+message in the range \fIMIN\fP to \fIMAX\fP
+.TP
+~n \fIMIN\fP-\fIMAX\fP
+messages with a score in the range \fIMIN\fP to \fIMAX\fP
+.TP
+~N
+new messages
+.TP
+~O
+old messages
+.TP
+~p
+messages addressed to you (as defined by \fBalternates\fP)
+.TP
+~P
+messages from you (as defined by \fBalternates\fP)
+.TP
+~Q
+messages which have been replied to
+.TP
+~r \fIMIN\fP-\fIMAX\fP
+messages with \(lqdate-received\(rq in a Date range
+.TP
+~R
+read messages
+.TP
+~s \fIEXPR\fP
+messages having \fIEXPR\fP in the \(lqSubject\(rq field.
+.TP
+~S
+superseded messages
+.TP
+~t \fIEXPR\fP
+messages addressed to \fIEXPR\fP
+.TP
+~T
+tagged messages
+.TP
+~u
+messages addressed to a subscribed mailing list (defined by \fBsubscribe\fP commands)
+.TP
+~U
+unread messages
+.TP
+~v
+message is part of a collapsed thread.
+.TP
+~V
+cryptographically verified messages
+.TP
+~x \fIEXPR\fP
+messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
+.TP
+~X \fIMIN\fP-\fIMAX\fP
+messages with MIN - MAX attachments
+.TP
+~y \fIEXPR\fP
+messages which contain \fIEXPR\fP in the \(lqX-Label\(rq field
+.TP
+~z \fIMIN\fP-\fIMAX\fP
+messages with a size in the range \fIMIN\fP to \fIMAX\fP
+.TP
+~=
+duplicated messages (see $duplicate_threads)
+.TP
+~$
+unreferenced message (requries threaded view)
+.TP
+~(PATTERN)
+messages in threads containing messages matching a certain pattern, e.g. all threads containing messages from you: ~(~P)
+.PD 1
+.DT
 .PP
 In the above, \fIEXPR\fP is a regular expression.
 .PP
