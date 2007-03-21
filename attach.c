@@ -736,21 +736,12 @@ bail:
 static FILE *
 mutt_save_attachment_open (char *path, int flags)
 {
-  mode_t omask;
-  FILE *fp = NULL;
-
-  omask = umask(Umask);
-
   if (flags == M_SAVE_APPEND)
-    fp = fopen (path, "a");
-  else if (flags == M_SAVE_OVERWRITE)
-    fp = fopen (path, "w");		/* __FOPEN_CHECKED__ */
-  else
-    fp = safe_fopen (path, "w");
-
-  umask(omask);
-
-  return fp;
+    return fopen (path, "a");
+  if (flags == M_SAVE_OVERWRITE)
+    return fopen (path, "w");		/* __FOPEN_CHECKED__ */
+  
+  return safe_fopen (path, "w");
 }
 
 /* returns 0 on success, -1 on error */
