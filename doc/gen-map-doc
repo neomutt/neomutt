@@ -2,9 +2,9 @@
 
 use strict;
 
-my (%OPS, %MAP, $map);
+my (%OPS, %MAP, %DOC, $map);
 
-my $functions_h = shift @ARGV;
+my $xml = shift @ARGV;
 
 open F, "cat @ARGV |" or die "OPS*: $!";
 while (<F>) {
@@ -13,10 +13,13 @@ while (<F>) {
 }
 close F;
 
-open F, $functions_h or die "$functions_h: $!";
-while (<F>) {
+while (<STDIN>) {
   if (/^struct binding_t Op.*{ \/\* map: (.*) \*\//) {
     $map = $1;
+    $DOC{$map} = "";
+  }
+  if ($map and /^\s*\*\*\s*(.*)/) {
+    $DOC{$map} .= "$1\n";
   }
   if ($map and /{\s*"(.+)"\s*,\s*(\w+)\s*,\s*(?:"([^"]+)"|(\w+))\s*}/) {
     my ($function, $op, $binding) = ($1, $2, $3 || $4);
@@ -40,16 +43,43 @@ while (<F>) {
     undef $map;
   }
 }
-close F;
 
-while (<STDIN>) {
+open XML, $xml or die "$xml: $!";
+while (<XML>) {
   if (/__print_map\((.*)\)/) {
-    die "map $1 undefined" unless $MAP{$1};
-    print $MAP{$1};
+    my $map = $1;
+    unless ($MAP{$map}) {
+      warn "map $map undefined";
+      next;
+    }
+    print <<EOT;
+<sect2 id="${map}_map">
+<title>$map</title>
+$DOC{$map}
+<para>
+
+<table id="${map}_table">
+<title>Default $map function bindings</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+$MAP{$map}
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</sect2>
+
+EOT
     delete $MAP{$1};
   } else {
     print;
   }
 }
+close XML;
 
-die "unprinted maps: ". join(" ", keys %MAP) if %MAP;
+warn "unprinted maps: ". join(" ", keys %MAP) if %MAP;

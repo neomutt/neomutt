@@ -19,6 +19,7 @@
 
 #ifdef _MAKEDOC
 # include "config.h"
+# include "makedoc-defs.h"
 #else
 # include "sort.h"
 #endif
@@ -78,59 +79,6 @@ struct option_t
 
 #ifndef ISPELL
 #define ISPELL "ispell"
-#endif
-
-/* build complete documentation */
-
-#ifdef _MAKEDOC
-# ifndef USE_IMAP
-#  define USE_IMAP
-# endif
-# ifndef MIXMASTER
-#  define MIXMASTER "mixmaster"
-# endif
-# ifndef USE_POP
-#  define USE_POP
-# endif
-# ifndef USE_SMTP
-#  define USE_SMTP
-# endif
-# ifndef USE_SSL_OPENSSL
-#  define USE_SSL_OPENSSL
-# endif
-# ifndef USE_SSL_GNUTLS
-#  define USE_SSL_GNUTLS
-# endif
-# ifndef USE_SSL
-#  define USE_SSL
-# endif
-# ifndef USE_SOCKET
-#  define USE_SOCKET
-# endif
-# ifndef USE_DOTLOCK
-#  define USE_DOTLOCK
-# endif
-# ifndef DL_STANDALONE
-#  define DL_STANDALONE
-# endif
-# ifndef USE_HCACHE
-#  define USE_HCACHE
-# endif
-# ifndef HAVE_DB4
-#  define HAVE_DB4
-# endif
-# ifndef HAVE_GDBM
-#  define HAVE_GDBM
-# endif
-# ifndef HAVE_QDBM
-#  define HAVE_QDBM
-# endif
-# ifndef HAVE_LIBIDN
-#  define HAVE_LIBIDN
-# endif
-# ifndef HAVE_GETADDRINFO
-#  define HAVE_GETADDRINFO
-# endif
 #endif
 
 struct option_t MuttVars[] = {
@@ -2030,7 +1978,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Example: set certificate_file=~/.mutt/certificates
   */
-# if defined _MAKEDOC || !defined(USE_SSL_GNUTLS)
+# ifdef USE_SSL_OPENSSL
   { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
   /*
   ** .pp
@@ -2050,7 +1998,7 @@ struct option_t MuttVars[] = {
   ** This variables specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process.
   */
-# endif /* defined _MAKEDOC || !defined(USE_SSL_GNUTLS) */
+# endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
   /*
   ** .pp

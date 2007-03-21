@@ -28,9 +28,25 @@
  * - If you need to bind a control char, use the octal value because the \cX
  * construct does not work at this level.
  *
+ * - The magic "map:" comments define how the map will be called in the
+ * manual. Lines starting with "**" will be included in the manual.
+ *
  */
 
+#ifdef _MAKEDOC
+# include "config.h"
+# include "makedoc-defs.h"
+#endif
+
 struct binding_t OpGeneric[] = { /* map: generic */
+  /*
+  ** <para>
+  ** The <emphasis>generic</emphasis> menu is not a real menu, but specifies common functions
+  ** (such as movement) available in all menus except for <emphasis>pager</emphasis> and
+  ** <emphasis>editor</emphasis>.  Changing settings for this menu will affect the default
+  ** bindings for all menus (except as noted).
+  ** </para>
+  */
   { "top-page",		OP_TOP_PAGE,		"H" },
   { "next-entry",	OP_NEXT_ENTRY,		"j" },
   { "previous-entry",	OP_PREV_ENTRY,		"k" },

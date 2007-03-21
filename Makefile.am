@@ -75,7 +75,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
-	makedoc.c stamp-doc-rc README.SSL smime.h\
+	makedoc.c makedoc-defs.h stamp-doc-rc README.SSL smime.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
 	snprintf.c regex.c crypt-gpgme.h
@@ -199,7 +199,7 @@ update-doc: stamp-doc-rc
 
 Muttrc: stamp-doc-rc
 
-stamp-doc-rc: $(srcdir)/init.h makedoc Muttrc.head
+stamp-doc-rc: $(srcdir)/init.h $(srcdir)/makedoc-defs.h makedoc Muttrc.head
 	-rm -f Muttrc stamp-doc-rc
 	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
 	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
