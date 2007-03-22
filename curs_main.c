@@ -49,6 +49,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+#include <assert.h>
+
 static const char *No_mailbox_is_open = N_("No mailbox is open.");
 static const char *There_are_no_messages = N_("There are no messages.");
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
@@ -276,7 +278,7 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   /* take note of the current message */
   if (oldcount)
   {
-    if (menu->current < Context->vcount)
+    if (menu->current < ctx->vcount)
       menu->oldcurrent = index_hint;
     else
       oldcount = 0; /* invalid message number! */
@@ -285,20 +287,24 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   /* We are in a limited view. Check if the new message(s) satisfy
    * the limit criteria. If they do, set their virtual msgno so that
    * they will be visible in the limited view */
-  if (Context->pattern)
+  if (ctx->pattern)
   {
-#define THIS_BODY Context->hdrs[j]->content
-    for (j = (check == M_REOPENED) ? 0 : oldcount; j < Context->msgcount; j++)
+#define THIS_BODY ctx->hdrs[j]->content
+    for (j = (check == M_REOPENED) ? 0 : oldcount; j < ctx->msgcount; j++)
     {
-      if (mutt_pattern_exec (Context->limit_pattern,
+      if (!j)
+	ctx->vcount = 0;
+
+      if (mutt_pattern_exec (ctx->limit_pattern,
 			     M_MATCH_FULL_ADDRESS, 
-			     Context, Context->hdrs[j]))
+			     ctx, ctx->hdrs[j]))
       {
-	Context->hdrs[j]->virtual = Context->vcount;
-	Context->v2r[Context->vcount] = j;
-	Context->hdrs[j]->limited = 1;
-	Context->vcount++;
-	Context->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
+	assert (ctx->vcount < ctx->msgcount);
+	ctx->hdrs[j]->virtual = ctx->vcount;
+	ctx->v2r[ctx->vcount] = j;
+	ctx->hdrs[j]->limited = 1;
+	ctx->vcount++;
+	ctx->vsize += THIS_BODY->length + THIS_BODY->offset - THIS_BODY->hdr_offset;
       }
     }
 #undef THIS_BODY
@@ -308,13 +314,13 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   if (oldcount && check != M_REOPENED
       && ((Sort & SORT_MASK) == SORT_THREADS))
   {
-    save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (Context->msgcount - oldcount));
-    for (j = oldcount; j < Context->msgcount; j++)
-      save_new[j-oldcount] = Context->hdrs[j];
+    save_new = (HEADER **) safe_malloc (sizeof (HEADER *) * (ctx->msgcount - oldcount));
+    for (j = oldcount; j < ctx->msgcount; j++)
+      save_new[j-oldcount] = ctx->hdrs[j];
   }
   
   /* if the mailbox was reopened, need to rethread from scratch */
-  mutt_sort_headers (Context, (check == M_REOPENED));
+  mutt_sort_headers (ctx, (check == M_REOPENED));
 
   /* uncollapse threads with new mail */
   if ((Sort & SORT_MASK) == SORT_THREADS)
@@ -323,31 +329,31 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
     {
       THREAD *h, *j;
       
-      Context->collapsed = 0;
+      ctx->collapsed = 0;
       
-      for (h = Context->tree; h; h = h->next)
+      for (h = ctx->tree; h; h = h->next)
       {
 	for (j = h; !j->message; j = j->child)
 	  ;
-	mutt_uncollapse_thread (Context, j->message);
+	mutt_uncollapse_thread (ctx, j->message);
       }
-      mutt_set_virtual (Context);
+      mutt_set_virtual (ctx);
     }
     else if (oldcount)
     {
-      for (j = 0; j < Context->msgcount - oldcount; j++)
+      for (j = 0; j < ctx->msgcount - oldcount; j++)
       {
 	int k;
 	
-	for (k = 0; k < Context->msgcount; k++)
+	for (k = 0; k < ctx->msgcount; k++)
 	{
-	  HEADER *h = Context->hdrs[k];
-	  if (h == save_new[j] && (!Context->pattern || h->limited))
-	    mutt_uncollapse_thread (Context, h);
+	  HEADER *h = ctx->hdrs[k];
+	  if (h == save_new[j] && (!ctx->pattern || h->limited))
+	    mutt_uncollapse_thread (ctx, h);
 	}
       }
       FREE (&save_new);
-      mutt_set_virtual (Context);
+      mutt_set_virtual (ctx);
     }
   }
   
@@ -355,9 +361,9 @@ static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
   if (oldcount)
   {
     /* restore the current message to the message it was pointing to */
-    for (j = 0; j < Context->vcount; j++)
+    for (j = 0; j < ctx->vcount; j++)
     {
-      if (Context->hdrs[Context->v2r[j]]->index == menu->oldcurrent)
+      if (ctx->hdrs[ctx->v2r[j]]->index == menu->oldcurrent)
       {
 	menu->current = j;
 	break;
