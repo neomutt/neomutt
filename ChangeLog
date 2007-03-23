@@ -1,3 +1,43 @@
+2007-03-22 14:36 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (68cfab02b411)
+
+	* curs_main.c: Fix update_index().
+
+2007-03-21 11:29 -0700  Brendan Cully  <brendan@kublai.com>  (a6da24788400)
+
+	* .cvsignore, Muttrc.head.in, configure.in, contrib/.cvsignore,
+	doc/.cvsignore, imap/.cvsignore, init.h, intl/.cvsignore,
+	m4/.cvsignore, mx.c, po/.cvsignore: Merge $umask backout
+
+2007-03-21 11:26 -0700  Brendan Cully  <brendan@kublai.com>  (b9c0a75de5c0)
+
+	* attach.c, globals.h, init.c, init.h, lib.c, mh.c, mx.c: Back out
+	$umask.
+
+2007-03-16 15:37 +0100  Christoph Berg  <cb@df7cb.de>  (f806a3eb59a8)
+
+	* sendlib.c: Use execvp to call sendmail, useful for people trying
+	sendmail="ssh host sendmail".
+
+2007-03-21 10:08 -0700  Christoph Berg  <cb@df7cb.de>  (92a0a184005d)
+
+	* Makefile.am, doc/Makefile.am, doc/gen-map-doc, doc/manual.xml.tail,
+	functions.h, init.h, makedoc-defs.h: Pipe functions.h through cpp -C
+	for the manual generation; factor out makedoc-defs.h from init.h for
+	use in functions.h.
+
+2007-03-21 09:29 -0700  Rocco Rutte  <pdmef@gmx.net>  (6216dd07b6be)
+
+	* configure.ac: configure.ac: Make SSL tests for OpenSSL and gnutls
+	behave the same For both this now mentions SMTP as a possible SSL
+	user and also turns the error for configuring with gnutls without
+	POP/IMAP/SMTP into a warning as the OpenSSL part does.
+
+2007-03-20 13:39 -0700  Miroslav Lichvar  <mlichvar@redhat.com>  (b0172175cc89)
+
+	* UPDATING, buffy.c, buffy.h, commands.c, configure.ac, init.h,
+	main.c, mutt.h, mx.c: Make BUFFY_SIZE a runtime switch
+	($check_mbox_size)
+
 2007-03-20 13:17 -0700  Rocco Rutte  <pdmef@gmx.net>  (2fbc65f3feb6)
 
 	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,

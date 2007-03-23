@@ -376,6 +376,7 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   idata->cmddata = &list;
   do
   {
+    list.name = NULL;
     rc = imap_cmd_step (idata);
 
     if (rc == IMAP_CMD_CONTINUE && list.name)
