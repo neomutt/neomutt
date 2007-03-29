@@ -1,3 +1,17 @@
+2007-03-29 15:23 -0700  Christoph Berg  <cb@df7cb.de>  (0514e6b5a67a)
+
+	* init.c, init.h: Use ~/.muttrc as the default alias_file if no user
+	muttrc exists. Makes the code agree with the documentation. Document
+	that default is actually the used muttrc. (Closes Debian #226500.)
+
+2007-03-29 10:30 -0700  Brendan Cully  <brendan@kublai.com>  (034ad0e55397)
+
+	* bcache.c, bcache.h, imap/message.c: Make message cache write to
+	temporary location until file is complete. Previously mutt trusted
+	the cache file even when it was incomplete, causing permanently
+	incorrect message display if the fetch was interrupted for some
+	reason.
+
 2007-03-28 09:43 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (25cbd5588d35)
 
 	* alias.c: Fix debug message for mutt_adr_is_user
