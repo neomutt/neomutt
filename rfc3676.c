@@ -129,6 +129,8 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
     }
 
     print_indent (ql, s);
+    if (ql > 0 || s->prefix)
+      state_putc (' ', s);
     state_puts (oldpos, s);
 
     if (pos < line + len)
