@@ -1,3 +1,12 @@
+2007-03-28 09:43 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (25cbd5588d35)
+
+	* alias.c: Fix debug message for mutt_adr_is_user
+
+2007-03-23 10:32 -0700  Brendan Cully  <brendan@kublai.com>  (888a57a2b5f2)
+
+	* imap/browse.c: Reset list.name before each list response in
+	folder browser
+
 2007-03-22 14:36 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (68cfab02b411)
 
 	* curs_main.c: Fix update_index().

@@ -45,6 +45,7 @@
 
 static FILE* msg_cache_get (IMAP_DATA* idata, HEADER* h);
 static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h);
+static int msg_cache_commit (IMAP_DATA* idata, HEADER* h);
 
 static void flush_buffer(char* buf, size_t* len, CONNECTION* conn);
 static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf,
@@ -500,7 +501,9 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   if (!fetched || !imap_code (idata->buf))
     goto bail;
 
-parsemsg:
+  msg_cache_commit (idata, h);
+
+  parsemsg:
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
@@ -900,8 +903,23 @@ static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h)
     return NULL;
 
   idata->bcache = msg_cache_open (idata);
-  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf (id, sizeof (id), "%u-%u.tmp", idata->uid_validity, HEADER_DATA(h)->uid);
   return mutt_bcache_put (idata->bcache, id);
+}
+
+static int msg_cache_commit (IMAP_DATA* idata, HEADER* h)
+{
+  char id[_POSIX_PATH_MAX];
+  char newid[_POSIX_PATH_MAX];
+
+  if (!idata || !h)
+    return -1;
+
+  idata->bcache = msg_cache_open (idata);
+  snprintf (id, sizeof (id), "%u-%u.tmp", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf (newid, sizeof (newid), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+
+  return mutt_bcache_move (idata->bcache, id, newid);
 }
 
 int imap_cache_del (IMAP_DATA* idata, HEADER* h)
