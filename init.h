@@ -107,6 +107,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBNote:\fP Mutt will not automatically source this file; you must
   ** explicitly use the ``$source'' command for it to be executed.
+  ** .pp
+  ** The default for this option is the currently used muttrc file, or
+  ** ``~/.muttrc'' if no user muttrc was found.
   */
   { "alias_format",	DT_STR,  R_NONE, UL &AliasFmt, UL "%4n %2f %t %-10a   %r" },
   /*

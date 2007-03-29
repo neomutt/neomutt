@@ -2967,7 +2967,9 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
     if (access(buffer, F_OK) == -1)
       snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc", NONULL(Homedir));
-    
+    if (access(buffer, F_OK) == -1) /* default to .muttrc for alias_file */
+      snprintf (buffer, sizeof(buffer), "%s/.muttrc", NONULL(Homedir));
+
     default_rc = 1;
     Muttrc = safe_strdup (buffer);
   }
