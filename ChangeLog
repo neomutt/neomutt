@@ -1,3 +1,15 @@
+2007-03-30 00:21 -0700  Brendan Cully  <brendan@kublai.com>  (0cb476dc70a7)
+
+	* imap/command.c: Consult header cache if available for last known new
+	mail count. This prevents mutt from announcing new mail in mailboxes
+	that have unseen, but not new, messages, if those mailboxes are in
+	the header cache.
+
+2007-03-29 21:08 -0700  Brendan Cully  <brendan@kublai.com>  (359d9fbb5fda)
+
+	* sendlib.c: Do not page sendmail error in batch mode.
+	(closes: #2800)
+
 2007-03-29 15:53 -0700  Rocco Rutte  <pdmef@gmx.net>  (798a40b0a9da)
 
 	* rfc3676.c: f=f handler: Re-add space between quotes and text

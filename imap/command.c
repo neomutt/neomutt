@@ -938,7 +938,10 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 	    status->uidnext = oldun;
           }
         }
-        else
+        else if (!olduv && !oldun)
+	  /* first check per session, use recent. might need a flag for this. */
+	  inc->new = status->recent;
+	else
           inc->new = status->unseen;
 
         FREE (&value);
