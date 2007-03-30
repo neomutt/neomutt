@@ -30,6 +30,9 @@
 #include "message.h"
 #include "mx.h"
 #include "buffy.h"
+#if USE_HCACHE
+#include "hcache.h"
+#endif
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -818,6 +821,11 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   int count;
   IMAP_STATUS *status, sb;
   int olduv, oldun;
+#if USE_HCACHE
+  header_cache_t *hc = NULL;
+  unsigned int *uidvalidity = NULL;
+  unsigned int *uidnext = NULL;
+#endif
 
   mailbox = imap_next_word (s);
   s = imap_next_word (mailbox);
@@ -861,7 +869,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     if (*s && *s != ')')
       s = imap_next_word (s);
   }
-  dprint (2, (debugfile, "%s (UIDVALIDITY: %d, UIDNEXT: %d) %d messages, %d recent, %d unseen\n",
+  dprint (3, (debugfile, "%s (UIDVALIDITY: %d, UIDNEXT: %d) %d messages, %d recent, %d unseen\n",
               status->name, status->uidvalidity, status->uidnext,
               status->messages, status->recent, status->unseen));
 
@@ -872,7 +880,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     return;
   }
 
-  dprint (2, (debugfile, "Running default STATUS handler\n"));
+  dprint (3, (debugfile, "Running default STATUS handler\n"));
 
   /* should perhaps move this code back to imap_buffy_check */
   for (inc = Incoming; inc; inc = inc->next)
@@ -900,21 +908,38 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 
       if (value && !imap_mxcmp (mailbox, value))
       {
-        dprint (2, (debugfile, "Found %s in buffy list (OV: %d ON: %d U: %d)\n",
+        dprint (3, (debugfile, "Found %s in buffy list (OV: %d ON: %d U: %d)\n",
                     mailbox, olduv, oldun, status->unseen));
         
+#if USE_HCACHE
+	/* fetch seen info from hcache if we haven't seen it yet this session */
+	if (!olduv && !oldun)
+	{
+	  hc = mutt_hcache_open (HeaderCache, inc->path);
+	  if (hc)
+	  {
+	    uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
+	    uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
+	    olduv = uidvalidity ? *uidvalidity : 0;
+	    oldun = uidnext ? *uidnext : 0;
+	    FREE (&uidvalidity);
+	    FREE (&uidnext);
+	    mutt_hcache_close (hc);
+	    dprint (3, (debugfile, "hcache olduv %d, oldun %d\n", olduv, oldun));
+	  }
+	}
+#endif
         if (olduv && olduv == status->uidvalidity)
         {
           if (oldun < status->uidnext)
           {
             inc->new = status->unseen;
+	    /* forced back to keep detecting new mail until the mailbox is opened */
+	    status->uidnext = oldun;
           }
         }
         else
           inc->new = status->unseen;
-
-        /* forced back to keep detecting new mail until the mailbox is opened */
-        status->uidnext = oldun;
 
         FREE (&value);
         return;
