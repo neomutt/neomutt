@@ -1,3 +1,11 @@
+2007-03-29 15:53 -0700  Rocco Rutte  <pdmef@gmx.net>  (798a40b0a9da)
+
+	* rfc3676.c: f=f handler: Re-add space between quotes and text
+
+2007-03-29 15:47 -0700  Brendan Cully  <brendan@kublai.com>  (51d13afbf24b)
+
+	* doc/Makefile.am: Make -j2 in doc work (closes: #2538)
+
 2007-03-29 15:23 -0700  Christoph Berg  <cb@df7cb.de>  (0514e6b5a67a)
 
 	* init.c, init.h: Use ~/.muttrc as the default alias_file if no user

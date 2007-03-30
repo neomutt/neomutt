@@ -1925,7 +1925,8 @@ static RETSIGTYPE alarm_handler (int sig)
    msg (in)		temp file containing message to send
    tempfile (out)	if sendmail is put in the background, this points
    			to the temporary file containing the stdout of the
-			child process */
+			child process. If it is NULL, stderr and stdout
+                        are not redirected. */
 static int
 send_msg (const char *path, char **args, const char *msg, char **tempfile)
 {
@@ -1940,7 +1941,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
   sigaddset (&set, SIGTSTP);
   sigprocmask (SIG_BLOCK, &set, NULL);
 
-  if (SendmailWait >= 0)
+  if (SendmailWait >= 0 && tempfile)
   {
     char tmp[_POSIX_PATH_MAX];
 
@@ -1961,16 +1962,19 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     setsid ();
   
     /* next we close all open files */
+    close (0);
 #if defined(OPEN_MAX)
-    for (fd = 0; fd < OPEN_MAX; fd++)
+    for (fd = tempfile ? 1 : 3; fd < OPEN_MAX; fd++)
       close (fd);
 #elif defined(_POSIX_OPEN_MAX)
-    for (fd = 0; fd < _POSIX_OPEN_MAX; fd++)
+    for (fd = tempfile ? 1 : 3; fd < _POSIX_OPEN_MAX; fd++)
       close (fd);
 #else
-    close (0);
-    close (1);
-    close (2);
+    if (tempfile)
+    {
+      close (1);
+      close (2);
+    }
 #endif
 
     /* now the second fork() */
@@ -1984,7 +1988,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       }
       unlink (msg);
 
-      if (SendmailWait >= 0)
+      if (SendmailWait >= 0 && tempfile)
       {
 	/* *tempfile will be opened as stdout */
 	if (open (*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
@@ -1993,7 +1997,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
 	if (dup (1) < 0)
 	  _exit (S_ERR);
       }
-      else 
+      else if (tempfile)
       {
 	if (open ("/dev/null", O_WRONLY | O_APPEND) < 0)	/* stdout */
 	  _exit (S_ERR);
@@ -2007,7 +2011,8 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     else if (pid == -1)
     {
       unlink (msg);
-      FREE (tempfile);		/* __FREE_CHECKED__ */
+      if (tempfile)
+	FREE (tempfile);		/* __FREE_CHECKED__ */
       _exit (S_ERR);
     }
 
@@ -2035,7 +2040,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     if (waitpid (pid, &st, 0) > 0)
     {
       st = WIFEXITED (st) ? WEXITSTATUS (st) : S_ERR;
-      if (SendmailWait && st == (0xff & EX_OK))
+      if (SendmailWait && st == (0xff & EX_OK) && tempfile)
       {
 	unlink (*tempfile); /* no longer needed */
 	FREE (tempfile);		/* __FREE_CHECKED__ */
@@ -2045,7 +2050,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     {
       st = (SendmailWait > 0 && errno == EINTR && SigAlrm) ?
 	      S_BKG : S_ERR;
-      if (SendmailWait > 0)
+      if (SendmailWait > 0 && tempfile)
       {
 	unlink (*tempfile);
 	FREE (tempfile);		/* __FREE_CHECKED__ */
@@ -2056,7 +2061,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     alarm (0);
     sigaction (SIGALRM, &oldalrm, NULL);
 
-    if (kill (ppid, 0) == -1 && errno == ESRCH)
+    if (kill (ppid, 0) == -1 && errno == ESRCH && tempfile)
     {
       /* the parent is already dead */
       unlink (*tempfile);
@@ -2174,7 +2179,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   
   args[argslen++] = NULL;
 
-  if ((i = send_msg (path, args, msg, &childout)) != (EX_OK & 0xff))
+  if ((i = send_msg (path, args, msg, option(OPTNOCURSES) ? NULL : &childout)) != (EX_OK & 0xff))
   {
     if (i != S_BKG)
     {
