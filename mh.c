@@ -209,7 +209,7 @@ static inline mode_t mh_umask (CONTEXT* ctx)
     return 077;
   }
 
-  return 0777 & ~(st.st_mode);
+  return 0777 & ~st.st_mode;
 }
 
 int mh_buffy (const char *path)
@@ -1069,9 +1069,9 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (!ctx->data)
   {
     ctx->data = safe_calloc(sizeof (struct mh_data), 1);
-    data = mh_data (ctx);
     ctx->mx_close = mh_close_mailbox;
   }
+  data = mh_data (ctx);
 
   maildir_update_mtime (ctx);
 

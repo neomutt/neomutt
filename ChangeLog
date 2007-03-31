@@ -1,4 +1,11 @@
-2007-03-30 19:51 -0700  Brendan Cully  <brendan@kublai.com>  (4828ffd619f6)
+2007-03-30 21:26 -0700  Daniel Burrows  <dburrows@debian.org>  (d5ab883ef90a)
+
+	* hcache.c: Fix handling of DB4 hcache open failure. (closes: #2714)
+
+2007-03-30 20:18 -0700  Brendan Cully  <brendan@kublai.com>  (dc54ae48d8c1)
+
+	* mh.c: Set mode of new mh/maildir messages to match parent
+	directory.
 
 	* mh.c, mutt.h: Move mtime_cur from CONTEXT to mh_data
 
