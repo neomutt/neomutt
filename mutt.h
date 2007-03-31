@@ -861,7 +861,6 @@ typedef struct _context
   char *path;
   FILE *fp;
   time_t mtime;
-  time_t mtime_cur;		/* used with maildir folders */
   off_t size;
   off_t vsize;
   char *pattern;                /* limit pattern string */

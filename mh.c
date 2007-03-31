@@ -75,6 +75,7 @@ struct mh_sequences
 
 struct mh_data
 {
+  time_t mtime_cur;
   mode_t mode; /* mode of mail folder. New messages should match. */
 };
 
@@ -83,6 +84,11 @@ struct mh_data
 #define MH_SEQ_UNSEEN  (1 << 0)
 #define MH_SEQ_REPLIED (1 << 1)
 #define MH_SEQ_FLAGGED (1 << 2)
+
+static inline struct mh_data *mh_data (CONTEXT *ctx)
+{
+  return (struct mh_data*)ctx->data;
+}
 
 static void mhs_alloc (struct mh_sequences *mhs, int i)
 {
@@ -569,19 +575,20 @@ static void maildir_update_mtime (CONTEXT * ctx)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st;
+  struct mh_data *data = mh_data (ctx);
 
   if (ctx->magic == M_MAILDIR)
   {
     snprintf (buf, sizeof (buf), "%s/%s", ctx->path, "cur");
     if (stat (buf, &st) == 0)
-      ctx->mtime_cur = st.st_mtime;
+      data->mtime_cur = st.st_mtime;
     snprintf (buf, sizeof (buf), "%s/%s", ctx->path, "new");
   }
   else
   {
     snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
     if (stat (buf, &st) == 0)
-      ctx->mtime_cur = st.st_mtime;
+      data->mtime_cur = st.st_mtime;
 
     strfcpy (buf, ctx->path, sizeof (buf));
   }
@@ -1038,6 +1045,13 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
   mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
 
+  if (!ctx->data)
+  {
+    ctx->data = safe_calloc(sizeof (struct mh_data), 1);
+    data = mh_data (ctx);
+    ctx->mx_close = mh_close_mailbox;
+  }
+
   maildir_update_mtime (ctx);
 
   md = NULL;
@@ -1062,10 +1076,8 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   maildir_move_to_context (ctx, &md);
 
-  if (!ctx->data)
+  if (!data->mode)
   {
-    ctx->data = safe_calloc(sizeof (struct mh_data), 1);
-    data = (struct mh_data *)ctx->data;
     if (stat (ctx->path, &st))
     {
       /* shouldn't happen this late */
@@ -1074,8 +1086,6 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
     }
     else
       data->mode = st.st_mode;
-
-    ctx->mx_close = mh_close_mailbox;
   }
   
   return 0;
@@ -1740,6 +1750,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   int i;
   HASH *fnames;			/* hash table for quickly looking up the base filename
 				   for a maildir message */
+  struct mh_data *data = mh_data (ctx);
 
   /* XXX seems like this check belongs in mx_check_mailbox()
    * rather than here.
@@ -1758,14 +1769,14 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
   /* determine which subdirectories need to be scanned */
   if (st_new.st_mtime > ctx->mtime)
     changed = 1;
-  if (st_cur.st_mtime > ctx->mtime_cur)
+  if (st_cur.st_mtime > data->mtime_cur)
     changed |= 2;
 
   if (!changed)
     return 0;			/* nothing to do */
 
   /* update the modification times on the mailbox */
-  ctx->mtime_cur = st_cur.st_mtime;
+  data->mtime_cur = st_cur.st_mtime;
   ctx->mtime = st_new.st_mtime;
 
   /* do a fast scan of just the filenames in
@@ -1881,6 +1892,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   struct mh_sequences mhs;
   HASH *fnames;
   int i;
+  struct mh_data *data = mh_data (ctx);
 
   if (!option (OPTCHECKNEW))
     return 0;
@@ -1908,13 +1920,13 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   if (i == -1 && stat (buf, &st_cur) == -1)
     modified = 1;
 
-  if (st.st_mtime > ctx->mtime || st_cur.st_mtime > ctx->mtime_cur)
+  if (st.st_mtime > ctx->mtime || st_cur.st_mtime > data->mtime_cur)
     modified = 1;
 
   if (!modified)
     return 0;
 
-  ctx->mtime_cur = st_cur.st_mtime;
+  data->mtime_cur = st_cur.st_mtime;
   ctx->mtime = st.st_mtime;
 
   memset (&mhs, 0, sizeof (mhs));
