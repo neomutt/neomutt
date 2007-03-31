@@ -270,7 +270,7 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
 
   if (rc != IMAP_CMD_OK)
   {
-    if (flags & IMAP_CMD_FAIL_OK)
+    if (flags & IMAP_CMD_FAIL_OK && idata->status != IMAP_FATAL)
       return -2;
 
     dprint (1, (debugfile, "imap_exec: command failed: %s\n", idata->buf));

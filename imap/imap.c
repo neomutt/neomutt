@@ -63,6 +63,7 @@ int imap_access (const char* path, int flags)
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
   char mbox[LONG_STRING];
+  int rc;
 
   if (imap_parse_path (path, &mx))
     return -1;
@@ -96,10 +97,10 @@ int imap_access (const char* path, int flags)
     return -1;
   }
 
-  if (imap_exec (idata, buf, IMAP_CMD_FAIL_OK) < 0)
+  if ((rc = imap_exec (idata, buf, IMAP_CMD_FAIL_OK)) < 0)
   {
     dprint (1, (debugfile, "imap_access: Can't check STATUS of %s\n", mbox));
-    return -1;
+    return rc;
   }
 
   return 0;
@@ -340,6 +341,8 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
         continue;
     }
     if (flags & M_IMAP_CONN_NOSELECT && idata && idata->state >= IMAP_SELECTED)
+      continue;
+    if (idata && idata->status == IMAP_FATAL)
       continue;
     break;
   }
@@ -771,6 +774,7 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
   IMAP_MBOX mx;
+  int rc;
 
   if (imap_parse_path (ctx->path, &mx))
     return -1;
@@ -793,8 +797,11 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   FREE (&mx.mbox);
 
   /* really we should also check for W_OK */
-  if (!imap_access (ctx->path, F_OK))
+  if ((rc = imap_access (ctx->path, F_OK)) == 0)
     return 0;
+
+  if (rc == -1)
+    return -1;
 
   snprintf (buf, sizeof (buf), _("Create %s?"), mailbox);
   if (option (OPTCONFIRMCREATE) && mutt_yesorno (buf, 1) < 1)
