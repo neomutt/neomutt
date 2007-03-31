@@ -1,4 +1,10 @@
-2007-03-30 19:22 -0700  Brendan Cully  <brendan@kublai.com>  (e9451c4c0092)
+2007-03-30 19:51 -0700  Brendan Cully  <brendan@kublai.com>  (4828ffd619f6)
+
+	* mh.c, mutt.h: Move mtime_cur from CONTEXT to mh_data
+
+	* imap/imap.c, imap/imap.h, mh.c: Add close hook for
+	mh/maildir. stat the directory on open. Make IMAP close function
+	match prototype.
 
 	* imap/imap.c, mutt.h, mx.c, pop.c: Add function pointer for close
 	hook in Context. Slowly inch towards function pointers instead of

@@ -76,7 +76,7 @@ struct mh_sequences
 struct mh_data
 {
   time_t mtime_cur;
-  mode_t mode; /* mode of mail folder. New messages should match. */
+  mode_t mh_umask;
 };
 
 /* mh_sequences support */
@@ -195,6 +195,23 @@ static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
   safe_fclose (&fp);
 }
 
+static inline mode_t mh_umask (CONTEXT* ctx)
+{
+  struct stat st;
+  struct mh_data* data = mh_data (ctx);
+
+  if (data && data->mh_umask)
+    return data->mh_umask;
+
+  if (stat (ctx->path, &st))
+  {
+    dprint (1, (debugfile, "stat failed on %s\n", ctx->path));
+    return 077;
+  }
+
+  return 0777 & ~(st.st_mode);
+}
+
 int mh_buffy (const char *path)
 {
   int i, r = 0;
@@ -213,16 +230,20 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
 {
   int fd;
   char path[_POSIX_PATH_MAX];
+  mode_t omask;
+  struct mh_data* data = mh_data (dest);
 
+  omask = umask (mh_umask (dest));
   FOREVER
   {
     snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%d",
 	      dest->path, NONULL (Hostname), (int) getpid (), Counter++);
-    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
+    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
     {
       if (errno != EEXIST)
       {
 	mutt_perror (path);
+	umask (omask);
 	return -1;
       }
     }
@@ -232,6 +253,7 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
       break;
     }
   }
+  umask (omask);
 
   if ((*fp = fdopen (fd, "w")) == NULL)
   {
@@ -1036,7 +1058,6 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   struct mh_sequences mhs;
   struct maildir **last;
   struct mh_data *data;
-  struct stat st;
   int count;
   char msgbuf[STRING];
   progress_t progress;
@@ -1076,17 +1097,8 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   maildir_move_to_context (ctx, &md);
 
-  if (!data->mode)
-  {
-    if (stat (ctx->path, &st))
-    {
-      /* shouldn't happen this late */
-      dprint (1, (debugfile, "stat failed opening maildir\n"));
-      data->mode = 0700;
-    }
-    else
-      data->mode = st.st_mode;
-  }
+  if (!data->mh_umask)
+    data->mh_umask = mh_umask (ctx);
   
   return 0;
 }
@@ -1159,6 +1171,7 @@ int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
   char path[_POSIX_PATH_MAX];
   char suffix[16];
   char subdir[16];
+  mode_t omask;
 
   if (hdr)
   {
@@ -1177,6 +1190,7 @@ int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
   else
     strfcpy (subdir, "new", sizeof (subdir));
 
+  omask = umask (mh_umask (dest));
   FOREVER
   {
     snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%ld.%u_%d.%s%s",
@@ -1186,10 +1200,11 @@ int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
     dprint (2, (debugfile, "maildir_open_new_message (): Trying %s.\n",
 		path));
 
-    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0600)) == -1)
+    if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
     {
       if (errno != EEXIST)
       {
+	umask (omask);
 	mutt_perror (path);
 	return -1;
       }
@@ -1201,6 +1216,7 @@ int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
       break;
     }
   }
+  umask (omask);
 
   if ((msg->fp = fdopen (fd, "w")) == NULL)
   {
