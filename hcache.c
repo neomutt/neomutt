@@ -984,17 +984,13 @@ mutt_hcache_open(const char *path, const char *folder)
 
   ret = (*h->env->open)(h->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE,
 	0600);
-  if (!ret)
+  if (ret)
   {
-    ret = db_create(&h->db, h->env, 0);
-    if (ret)
-    {
-      h->env->close(h->env, 0);
-      mx_unlock_file(h->lockfile, h->fd, 0);
-      close(h->fd);
-      FREE(&h);
-      return NULL;
-    }
+    h->env->close(h->env, 0);
+    mx_unlock_file(h->lockfile, h->fd, 0);
+    close(h->fd);
+    FREE(&h);
+    return NULL;
   }
 
   if (stat(path, &sb) != 0 && errno == ENOENT)
