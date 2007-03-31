@@ -740,15 +740,10 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 
   if(!ctx) 
     return;
-  
-#ifdef USE_IMAP
-  if (ctx->magic == M_IMAP)
-    imap_close_mailbox (ctx);
-#endif /* USE_IMAP */
-#ifdef USE_POP
-  if (ctx->magic == M_POP)
-    pop_close_mailbox (ctx);
-#endif /* USE_POP */
+
+  if (ctx->mx_close)
+    ctx->mx_close (ctx);
+
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)

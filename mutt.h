@@ -856,7 +856,7 @@ enum
   RIGHTSMAX
 };
 
-typedef struct
+typedef struct _context
 {
   char *path;
   FILE *fp;
@@ -882,9 +882,6 @@ typedef struct
   int deleted;			/* how many deleted messages */
   int flagged;			/* how many flagged messages */
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
-#if defined USE_POP || defined USE_IMAP
-  void *data;			/* driver specific data */
-#endif /* USE_IMAP */
 
   short magic;			/* mailbox type */
 
@@ -898,6 +895,10 @@ typedef struct
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */
   unsigned int closing : 1;	/* mailbox is being closed */
+
+  /* driver hooks */
+  void *data;			/* driver specific data */
+  int (*mx_close)(struct _context *);
 } CONTEXT;
 
 typedef struct

@@ -372,6 +372,7 @@ int pop_open_mailbox (CONTEXT *ctx)
   pop_data = safe_calloc (1, sizeof (POP_DATA));
   pop_data->conn = conn;
   ctx->data = pop_data;
+  ctx->mx_close = pop_close_mailbox;
 
   if (pop_open_connection (pop_data) < 0)
     return -1;

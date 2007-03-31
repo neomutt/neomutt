@@ -569,6 +569,7 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   /* once again the context is new */
   ctx->data = idata;
+  ctx->mx_close = imap_close_mailbox;
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
