@@ -1,4 +1,11 @@
-2007-03-30 00:21 -0700  Brendan Cully  <brendan@kublai.com>  (0cb476dc70a7)
+2007-03-30 19:22 -0700  Brendan Cully  <brendan@kublai.com>  (e9451c4c0092)
+
+	* imap/imap.c, mutt.h, mx.c, pop.c: Add function pointer for close
+	hook in Context. Slowly inch towards function pointers instead of
+	switch statements.
+
+	* imap/command.c, imap/imap.c: Use RECENT for first mailbox
+	check if header cache check fails
 
 	* imap/command.c: Consult header cache if available for last known new
 	mail count. This prevents mutt from announcing new mail in mailboxes

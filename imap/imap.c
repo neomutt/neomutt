@@ -1277,7 +1277,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 }
 
 /* imap_close_mailbox: clean up IMAP data in CONTEXT */
-void imap_close_mailbox (CONTEXT* ctx)
+int imap_close_mailbox (CONTEXT* ctx)
 {
   IMAP_DATA* idata;
   int i;
@@ -1285,7 +1285,7 @@ void imap_close_mailbox (CONTEXT* ctx)
   idata = (IMAP_DATA*) ctx->data;
   /* Check to see if the mailbox is actually open */
   if (!idata)
-    return;
+    return 0;
 
   if (ctx == idata->ctx)
   {
@@ -1325,6 +1325,8 @@ void imap_close_mailbox (CONTEXT* ctx)
   }
 
   mutt_bcache_close (&idata->bcache);
+
+  return 0;
 }
 
 /* use the NOOP or IDLE command to poll for new mail

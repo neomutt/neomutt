@@ -73,6 +73,11 @@ struct mh_sequences
   short *flags;
 };
 
+struct mh_data
+{
+  mode_t mode; /* mode of mail folder. New messages should match. */
+};
+
 /* mh_sequences support */
 
 #define MH_SEQ_UNSEEN  (1 << 0)
@@ -1004,6 +1009,13 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
 #endif
 }
 
+static int mh_close_mailbox (CONTEXT *ctx)
+{
+  FREE (&ctx->data);
+
+  return 0;
+}
+
 /* Read a MH/maildir style mailbox.
  *
  * args:
@@ -1016,6 +1028,8 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   struct maildir *md;
   struct mh_sequences mhs;
   struct maildir **last;
+  struct mh_data *data;
+  struct stat st;
   int count;
   char msgbuf[STRING];
   progress_t progress;
@@ -1047,6 +1061,23 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
     maildir_delayed_parsing (ctx, md, &progress);
 
   maildir_move_to_context (ctx, &md);
+
+  if (!ctx->data)
+  {
+    ctx->data = safe_calloc(sizeof (struct mh_data), 1);
+    data = (struct mh_data *)ctx->data;
+    if (stat (ctx->path, &st))
+    {
+      /* shouldn't happen this late */
+      dprint (1, (debugfile, "stat failed opening maildir\n"));
+      data->mode = 0700;
+    }
+    else
+      data->mode = st.st_mode;
+
+    ctx->mx_close = mh_close_mailbox;
+  }
+  
   return 0;
 }
 
