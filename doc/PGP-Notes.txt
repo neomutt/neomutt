@@ -116,7 +116,7 @@ The old answer to this question used to be this:
 There's a new answer, though: Set the $pgp_create_traditional
 configuration variable (it's a quad-option) to something different
 from "no" (that's the default).  Mutt will then try to use
-application/pgp whereever it makes sense.  In particular, it does
+application/pgp wherever it makes sense.  In particular, it does
 not make any sense with multiparts, or non-ASCII or non-text bodies.
 In all other cases, PGP/MIME is used unconditionally.
 
@@ -144,7 +144,7 @@ Q: "My PGP signatures are being invalidated.  BTW, I'm using Courier
     MTA."
 
 The author of the Courier MTA believes that the standard specifying
-multipart/signed is broken.  For that reason, he has choosen to
+multipart/signed is broken.  For that reason, he has chosen to
 implement his MTA in a way which does not assure that
 multipart/signed body parts are left untouched.
 

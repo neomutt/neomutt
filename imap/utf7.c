@@ -13,11 +13,16 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "charset.h"
+#include "imap_private.h"
 
 static int Index_64[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -252,8 +257,12 @@ void imap_utf7_encode (char **s)
   if (Charset)
   {
     char *t = safe_strdup (*s);
-    if (!mutt_convert_string (&t, Charset, "UTF-8", 0))
-      utf8_to_utf7 (t, strlen (t), s, 0);
+    if (!mutt_convert_string (&t, Charset, "utf-8", 0))
+    {
+      char *u7 = utf8_to_utf7 (t, strlen (t), NULL, 0);
+      FREE (s);		/* __FREE_CHECKED__ */
+      *s = u7;
+    }
     FREE (&t);
   }
 }
@@ -263,9 +272,9 @@ void imap_utf7_decode (char **s)
   if (Charset)
   {
     char *t = utf7_to_utf8 (*s, strlen (*s), 0, 0);
-    if (t && !mutt_convert_string (&t, "UTF-8", Charset, 0))
+    if (t && !mutt_convert_string (&t, "utf-8", Charset, 0))
     {
-      FREE (s);
+      FREE (s);		/* __FREE_CHECKED__ */
       *s = t;
     }
   }

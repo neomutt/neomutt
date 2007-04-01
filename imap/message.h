@@ -14,7 +14,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* message.c data structures */
@@ -26,12 +26,7 @@
 /* IMAP-specific header data, stored as HEADER->data */
 typedef struct imap_header_data
 {
-  unsigned int uid;	/* 32-bit Message UID */
-  LIST *keywords;
-} IMAP_HEADER_DATA;
-
-typedef struct
-{
+  /* server-side flags */
   unsigned int read : 1;
   unsigned int old : 1;
   unsigned int deleted : 1;
@@ -39,6 +34,14 @@ typedef struct
   unsigned int replied : 1;
   unsigned int changed : 1;
 
+  unsigned int parsed : 1;
+
+  unsigned int uid;	/* 32-bit Message UID */
+  LIST *keywords;
+} IMAP_HEADER_DATA;
+
+typedef struct
+{
   unsigned int sid;
 
   IMAP_HEADER_DATA* data;

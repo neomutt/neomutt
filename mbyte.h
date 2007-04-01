@@ -1,8 +1,6 @@
 #ifndef _MBYTE_H
 # define _MBYTE_H
 
-# include "config.h"
-
 # ifdef HAVE_WC_FUNCS
 #  ifdef HAVE_WCHAR_H
 #   include <wchar.h>
@@ -13,6 +11,15 @@
 # endif
 
 # ifndef HAVE_WC_FUNCS
+#ifdef iswprint
+# undef iswprint
+#endif
+#ifdef iswspace
+# undef iswspace
+#endif
+#ifdef iswalnum
+# undef iswalnum
+#endif
 size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps);
 size_t mbrtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *ps);
 int iswprint (wint_t wc);

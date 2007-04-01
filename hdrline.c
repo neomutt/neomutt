@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -30,12 +34,17 @@
 
 int mutt_is_mail_list (ADDRESS *addr)
 {
-  return mutt_match_rx_list (addr->mailbox, MailLists);
+  if (!mutt_match_rx_list (addr->mailbox, UnMailLists))
+    return mutt_match_rx_list (addr->mailbox, MailLists);
+  return 0;
 }
 
 int mutt_is_subscribed_list (ADDRESS *addr)
 {
-  return mutt_match_rx_list (addr->mailbox, SubscribedLists);
+  if (!mutt_match_rx_list (addr->mailbox, UnMailLists)
+      && !mutt_match_rx_list (addr->mailbox, UnSubscribedLists))
+    return mutt_match_rx_list (addr->mailbox, SubscribedLists);
+  return 0;
 }
 
 /* Search for a mailing list in the list of addresses pointed to by adr.
@@ -209,6 +218,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %T = $to_chars
  * %u = user (login) name of author
  * %v = first name of author, unless from self
+ * %X = number of MIME attachments
  * %y = `x-label:' field (if present)
  * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
  * %Z = status flags	*/
@@ -643,6 +653,19 @@ hdr_format_str (char *dest,
 		(hdr->flagged ? '!' :
 		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
       mutt_format_s (dest, destlen, prefix, buf2);
+      break;
+
+    case 'X':
+      {
+	int count = mutt_count_body_parts (ctx, hdr);
+
+	/* The recursion allows messages without depth to return 0. */
+	if (optional)
+          optional = count != 0;
+
+        snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+        snprintf (dest, destlen, fmt, count);
+      }
       break;
 
      case 'y':

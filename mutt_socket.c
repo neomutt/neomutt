@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1998 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 1999-2000 Tommi Komulainen <Tommi.Komulainen@iki.fi>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -15,14 +15,17 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
-#include "globals.h"
 #include "mutt_socket.h"
 #include "mutt_tunnel.h"
-#ifdef USE_SSL
+#if defined(USE_SSL)
 # include "mutt_ssl.h"
 #endif
 
@@ -34,7 +37,13 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <sys/types.h>
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h>
+#endif
 #include <sys/socket.h>
+#ifdef HAVE_SYS_SELECT_H
+#include <sys/select.h>
+#endif
 #include <string.h>
 #include <errno.h>
 
@@ -44,15 +53,22 @@ static CONNECTION *Connections = NULL;
 /* forward declarations */
 static int socket_preconnect (void);
 static int socket_connect (int fd, struct sockaddr* sa);
-static CONNECTION* socket_new_conn ();
+static CONNECTION* socket_new_conn (void);
 
 /* Wrappers */
 int mutt_socket_open (CONNECTION* conn) 
 {
+  int rc;
+
   if (socket_preconnect ())
     return -1;
 
-  return conn->open (conn);
+  rc = conn->conn_open (conn);
+
+  dprint (2, (debugfile, "Connected to %s:%d on fd=%d\n",
+	      NONULL (conn->account.host), conn->account.port, conn->fd));
+
+  return rc;
 }
 
 int mutt_socket_close (CONNECTION* conn)
@@ -62,7 +78,7 @@ int mutt_socket_close (CONNECTION* conn)
   if (conn->fd < 0)
     dprint (1, (debugfile, "mutt_socket_close: Attempt to close closed connection.\n"));
   else
-    rc = conn->close (conn);
+    rc = conn->conn_close (conn);
 
   conn->fd = -1;
   conn->ssf = 0;
@@ -80,7 +96,7 @@ int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
     return -1;
   }
 
-  rc = conn->read (conn, buf, len);
+  rc = conn->conn_read (conn, buf, len);
   /* EOF */
   if (rc == 0)
   {
@@ -93,12 +109,11 @@ int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
   return rc;
 }
 
-int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
+int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
 {
   int rc;
-  int len;
 
-  dprint (dbg, (debugfile,"> %s", buf));
+  dprint (dbg, (debugfile,"%d> %s", conn->fd, buf));
 
   if (conn->fd < 0)
   {
@@ -106,8 +121,9 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
     return -1;
   }
 
-  len = mutt_strlen (buf);
-  if ((rc = conn->write (conn, buf, len)) < 0)
+  if (len < 0)
+    len = mutt_strlen (buf);
+  if ((rc = conn->conn_write (conn, buf, len)) < 0)
   {
     dprint (1, (debugfile,
       "mutt_socket_write: error writing, closing socket\n"));
@@ -125,13 +141,28 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int dbg)
   return rc;
 }
 
+/* poll whether reads would block.
+ *   Returns: >0 if there is data to read,
+ *            0 if a read would block,
+ *            -1 if this connection doesn't support polling */
+int mutt_socket_poll (CONNECTION* conn)
+{
+  if (conn->bufpos < conn->available)
+    return conn->available - conn->bufpos;
+
+  if (conn->conn_poll)
+    return conn->conn_poll (conn);
+
+  return -1;
+}
+
 /* simple read buffering to speed things up. */
 int mutt_socket_readchar (CONNECTION *conn, char *c)
 {
   if (conn->bufpos >= conn->available)
   {
     if (conn->fd >= 0)
-      conn->available = conn->read (conn, conn->inbuf, sizeof (conn->inbuf));
+      conn->available = conn->conn_read (conn, conn->inbuf, sizeof (conn->inbuf));
     else
     {
       dprint (1, (debugfile, "mutt_socket_readchar: attempt to read from closed connection.\n"));
@@ -178,7 +209,7 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
   else
     buf[i] = '\0';
 
-  dprint (dbg, (debugfile, "< %s\n", buf));
+  dprint (dbg, (debugfile, "%d< %s\n", conn->fd, buf));
   
   /* number of bytes read, not strlen */
   return i + 1;
@@ -253,10 +284,12 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
     mutt_tunnel_socket_setup (conn);
   else if (account->flags & M_ACCT_SSL) 
   {
-#ifdef USE_SSL
-    ssl_socket_setup (conn);
-#elif USE_NSS
-    mutt_nss_socket_setup (conn);
+#if defined(USE_SSL)
+    if (mutt_ssl_socket_setup (conn) < 0)
+    {
+      mutt_socket_free (conn);
+      return NULL;
+    }
 #else
     mutt_error _("SSL is unavailable.");
     mutt_sleep (2);
@@ -267,10 +300,11 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
   }
   else
   {
-    conn->read = raw_socket_read;
-    conn->write = raw_socket_write;
-    conn->open = raw_socket_open;
-    conn->close = raw_socket_close;
+    conn->conn_read = raw_socket_read;
+    conn->conn_write = raw_socket_write;
+    conn->conn_open = raw_socket_open;
+    conn->conn_close = raw_socket_close;
+    conn->conn_poll = raw_socket_poll;
   }
 
   return conn;
@@ -339,7 +373,7 @@ static int socket_connect (int fd, struct sockaddr* sa)
 }
 
 /* socket_new_conn: allocate and initialise a new connection. */
-static CONNECTION* socket_new_conn ()
+static CONNECTION* socket_new_conn (void)
 {
   CONNECTION* conn;
 
@@ -380,6 +414,20 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
   }
 
   return rc;
+}
+
+int raw_socket_poll (CONNECTION* conn)
+{
+  fd_set rfds;
+  struct timeval tv = { 0, 0 };
+
+  if (conn->fd < 0)
+    return -1;
+
+  FD_ZERO (&rfds);
+  FD_SET (conn->fd, &rfds);
+  
+  return select (conn->fd + 1, &rfds, NULL, NULL, &tv);
 }
 
 int raw_socket_open (CONNECTION* conn)
@@ -432,6 +480,7 @@ int raw_socket_open (CONNECTION* conn)
   if (rc)
   {
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
+    mutt_sleep (2);
     return -1;
   }
 
@@ -505,6 +554,7 @@ int raw_socket_open (CONNECTION* conn)
     {
       if ((rc = socket_connect (fd, (struct sockaddr*) &sin)) == 0)
       {
+        fcntl (fd, F_SETFD, FD_CLOEXEC);
 	conn->fd = fd;
 	break;
       }

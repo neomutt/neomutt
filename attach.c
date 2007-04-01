@@ -14,11 +14,16 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_menu.h"
+#include "attach.h"
 #include "mutt_curses.h"
 #include "keymap.h"
 #include "rfc1524.h"
@@ -163,7 +168,7 @@ int mutt_compose_attachment (BODY *a)
 
 	    /* Remove headers by copying out data to another file, then 
 	     * copying the file back */
-	    fseek (fp, b->offset, 0);
+	    fseeko (fp, b->offset, 0);
 	    mutt_mktemp (tempfile);
 	    if ((tfp = safe_fopen (tempfile, "w")) == NULL)
 	    {
@@ -251,19 +256,23 @@ int mutt_edit_attachment (BODY *a)
       {
 	/* For now, editing requires a file, no piping */
 	mutt_error _("Mailcap Edit entry requires %%s");
+        goto bailout;
       }
       else
       {
 	mutt_endwin (NULL);
 	if (mutt_system (command) == -1)
+        {
 	  mutt_error (_("Error running \"%s\"!"), command);
+          goto bailout;
+        }
       }
     }
   }
   else if (a->type == TYPETEXT)
   {
     /* On text, default to editor */
-    mutt_edit_file (NONULL (Editor), newfile);
+    mutt_edit_file (NONULL (Editor), a->filename);
   }
   else
   {
@@ -762,7 +771,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       hn->msgno = hdr->msgno; /* required for MH/maildir */
       hn->read = 1;
 
-      fseek (fp, m->offset, 0);
+      fseeko (fp, m->offset, 0);
       if (fgets (buf, sizeof (buf), fp) == NULL)
 	return -1;
       if (mx_open_mailbox(path, M_APPEND | M_QUIET, &ctx) == NULL)
@@ -773,7 +782,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 	return -1;
       }
       if (ctx.magic == M_MBOX || ctx.magic == M_MMDF)
-	chflags = CH_FROM;
+	chflags = CH_FROM | CH_UPDATE_LEN;
       chflags |= (ctx.magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
       if (_mutt_copy_message (msg->fp, fp, hn, hn->content, 0, chflags) == 0 
 	  && mx_commit_message (msg, &ctx) == 0)
@@ -797,7 +806,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
 	mutt_perror ("fopen");
 	return (-1);
       }
-      fseek ((s.fpin = fp), m->offset, 0);
+      fseeko ((s.fpin = fp), m->offset, 0);
       mutt_decode_attachment (m, &s);
       
       if (fclose (s.fpout) != 0)

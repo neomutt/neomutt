@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000 Manoj Kasichainula <manoj@io.com>
- * Copyright (C) 2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2001,2005 Brendan Cully <brendan@kublai.com>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,8 +14,12 @@
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_socket.h"
@@ -41,14 +45,16 @@ static int tunnel_socket_open (CONNECTION*);
 static int tunnel_socket_close (CONNECTION*);
 static int tunnel_socket_read (CONNECTION* conn, char* buf, size_t len);
 static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len);
+static int tunnel_socket_poll (CONNECTION* conn);
 
 /* -- public functions -- */
 int mutt_tunnel_socket_setup (CONNECTION *conn)
 {
-  conn->open = tunnel_socket_open;
-  conn->close = tunnel_socket_close;
-  conn->read = tunnel_socket_read;
-  conn->write = tunnel_socket_write;
+  conn->conn_open = tunnel_socket_open;
+  conn->conn_close = tunnel_socket_close;
+  conn->conn_read = tunnel_socket_read;
+  conn->conn_write = tunnel_socket_write;
+  conn->conn_poll = tunnel_socket_poll;
 
   return 0;
 }
@@ -123,10 +129,18 @@ static int tunnel_socket_open (CONNECTION *conn)
 static int tunnel_socket_close (CONNECTION* conn)
 {
   TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  int status;
 
   close (tunnel->readfd);
   close (tunnel->writefd);
-  waitpid (tunnel->pid, NULL, 0);
+  waitpid (tunnel->pid, &status, 0);
+  if (!WIFEXITED(status) || WEXITSTATUS(status))
+  {
+    mutt_error(_("Tunnel to %s returned error %d (%s)"), conn->account.host,
+               WEXITSTATUS(status),
+               NONULL(mutt_strsysexit(WEXITSTATUS(status))));
+    mutt_sleep (2);
+  }
   FREE (&conn->sockdata);
 
   return 0;
@@ -160,6 +174,20 @@ static int tunnel_socket_write (CONNECTION* conn, const char* buf, size_t len)
 		strerror (errno));
     mutt_sleep (1);
   }
+
+  return rc;
+}
+
+static int tunnel_socket_poll (CONNECTION* conn)
+{
+  TUNNEL_DATA* tunnel = (TUNNEL_DATA*) conn->sockdata;
+  int ofd;
+  int rc;
+
+  ofd = conn->fd;
+  conn->fd = tunnel->readfd;
+  rc = raw_socket_poll (conn);
+  conn->fd = ofd;
 
   return rc;
 }

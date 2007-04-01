@@ -16,16 +16,14 @@
  * 
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 59 Temple Place - Suite 330,
- *     Boston, MA  02111, USA.
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *     Boston, MA  02110-1301, USA.
  */ 
 
 /* mutt functions which are generally useful. */
 
 #ifndef _LIB_H
 # define _LIB_H
-
-# include "config.h"
 
 # include <stdio.h>
 # include <string.h>
@@ -100,10 +98,39 @@
  * A non-mutt "implementation" (ahem) can be found in extlib.c.
  */
 
+
 # ifndef _EXTLIB_C
 extern void (*mutt_error) (const char *, ...);
 # endif
+
+# ifdef _LIB_C
+#  define MUTT_LIB_WHERE 
+#  define MUTT_LIB_INITVAL(x) = x
+# else
+#  define MUTT_LIB_WHERE extern
+#  define MUTT_LIB_INITVAL(x)
+# endif
+
 void mutt_exit (int);
+
+
+# ifdef DEBUG
+
+MUTT_LIB_WHERE FILE *debugfile MUTT_LIB_INITVAL(0);
+MUTT_LIB_WHERE int debuglevel MUTT_LIB_INITVAL(0);
+
+#  define dprint(N,X) do { if(debuglevel>=N && debugfile) fprintf X; } while (0)
+
+# else
+
+#  define dprint(N,X)
+
+# endif
+
+
+/* Exit values used in send_msg() */
+#define S_ERR 127
+#define S_BKG 126
 
 /* The actual library functions. */
 
@@ -122,6 +149,7 @@ char *safe_strdup (const char *);
 const char *mutt_stristr (const char *, const char *);
 const char *mutt_basename (const char *);
 
+int compare_stat (struct stat *, struct stat *);
 int mutt_copy_stream (FILE *, FILE *);
 int mutt_copy_bytes (FILE *, FILE *, size_t);
 int mutt_rx_sanitize_string (char *, size_t, const char *);
@@ -131,8 +159,8 @@ int mutt_strncasecmp (const char *, const char *, size_t);
 int mutt_strncmp (const char *, const char *, size_t);
 int mutt_strcoll (const char *, const char *);
 int safe_open (const char *, int);
-int safe_symlink (const char *, const char *);
 int safe_rename (const char *, const char *);
+int safe_symlink (const char *, const char *);
 int safe_fclose (FILE **);
 
 size_t mutt_quote_filename (char *, size_t, const char *);
@@ -149,4 +177,5 @@ void mutt_unlink (const char *);
 void safe_free (void *);
 void safe_realloc (void *, size_t);
 
+const char *mutt_strsysexit(int e);
 #endif

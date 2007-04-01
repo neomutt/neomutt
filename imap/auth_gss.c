@@ -13,13 +13,14 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* GSS login/authentication code */
 
-/* for HAVE_HEIMDAL */
-#include "config.h"
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "imap_private.h"
@@ -139,7 +140,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
       goto bail;
     }
 
-    request_buf.length = mutt_from_base64 (buf2, idata->cmd.buf + 2);
+    request_buf.length = mutt_from_base64 (buf2, idata->buf + 2);
     request_buf.value = buf2;
     sec_token = &request_buf;
 
@@ -174,7 +175,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     dprint (1, (debugfile, "Error receiving server response.\n"));
     goto bail;
   }
-  request_buf.length = mutt_from_base64 (buf2, idata->cmd.buf + 2);
+  request_buf.length = mutt_from_base64 (buf2, idata->buf + 2);
   request_buf.value = buf2;
 
   maj_stat = gss_unwrap (&min_stat, context, &request_buf, &send_token,
@@ -238,7 +239,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     dprint (1, (debugfile, "Unexpected server continuation request.\n"));
     goto err_abort_cmd;
   }
-  if (imap_code (idata->cmd.buf))
+  if (imap_code (idata->buf))
   {
     /* flush the security context */
     dprint (2, (debugfile, "Releasing GSS credentials\n"));

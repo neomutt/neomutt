@@ -15,8 +15,8 @@
  * 
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 59 Temple Place - Suite 330,
- *     Boston, MA  02111, USA.
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *     Boston, MA  02110-1301, USA.
  */
 
 /*
@@ -34,8 +34,9 @@
  *
  */
 
-
-#include "config.h"
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,8 +63,8 @@ extern int optind;
 #define FGETPOS(fp,pos) fgetpos((fp),&(pos))
 #define FSETPOS(fp,pos) fsetpos((fp),&(pos))
 #else
-#define FGETPOS(fp,pos) pos=ftell((fp));
-#define FSETPOS(fp,pos) fseek((fp),(pos),SEEK_SET)
+#define FGETPOS(fp,pos) pos=ftello((fp));
+#define FSETPOS(fp,pos) fseeko((fp),(pos),SEEK_SET)
 #endif
 
 
@@ -594,7 +595,7 @@ static pgp_key_t pgp_parse_keyblock (FILE * fp)
 #ifdef HAVE_FGETPOS
   fpos_t pos;
 #else
-  long pos;
+  LOFF_T pos;
 #endif
 
   pgp_key_t root = NULL;
@@ -751,7 +752,7 @@ static void pgpring_find_candidates (char *ringfile, const char *hints[], int nh
 #ifdef HAVE_FGETPOS
   fpos_t pos, keypos;
 #else
-  long pos, keypos;
+  LOFF_T pos, keypos;
 #endif
 
   unsigned char *buff = NULL;

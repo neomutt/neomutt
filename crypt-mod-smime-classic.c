@@ -13,12 +13,16 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /* 
     This is a crytpo module wrapping the classic smime code.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "crypt-mod.h"
 #include "smime.h"
@@ -37,9 +41,9 @@ static int crypt_mod_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 {
   return smime_decrypt_mime (a, b, c, d);
 }
-static void crypt_mod_smime_application_handler (BODY *m, STATE *s)
+static int crypt_mod_smime_application_handler (BODY *m, STATE *s)
 {
-  smime_application_smime_handler (m, s);
+  return smime_application_smime_handler (m, s);
 }
 
 static char *crypt_mod_smime_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
@@ -96,6 +100,7 @@ struct crypt_module_specs crypt_mod_smime_classic =
       crypt_mod_smime_sign_message,
       crypt_mod_smime_verify_one,
       crypt_mod_smime_send_menu,
+      NULL,
 
       NULL,			/* pgp_encrypt_message */
       NULL,			/* pgp_make_key_attachment */

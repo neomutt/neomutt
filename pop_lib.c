@@ -13,14 +13,18 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mx.h"
 #include "url.h"
 #include "pop.h"
-#ifdef USE_SSL
+#if defined(USE_SSL)
 # include "mutt_ssl.h"
 #endif
 
@@ -270,10 +274,12 @@ int pop_open_connection (POP_DATA *pop_data)
     return -2;
   }
 
-#if defined(USE_SSL) && !defined(USE_NSS)
+#if defined(USE_SSL)
   /* Attempt STLS if available and desired. */
-  if (pop_data->cmd_stls && !pop_data->conn->ssf)
+  if (!pop_data->conn->ssf && (pop_data->cmd_stls || option(OPTSSLFORCETLS)))
   {
+    if (option(OPTSSLFORCETLS))
+      pop_data->use_stls = 2;
     if (pop_data->use_stls == 0)
     {
       ret = query_quadoption (OPT_SSLSTARTTLS,
@@ -314,6 +320,13 @@ int pop_open_connection (POP_DATA *pop_data)
 	}
       }
     }
+  }
+
+  if (option(OPTSSLFORCETLS) && !pop_data->conn->ssf)
+  {
+    mutt_error _("Encrypted connection unavailable");
+    mutt_sleep (1);
+    return -2;
   }
 #endif
 
@@ -411,7 +424,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     }
 #endif
 
-  mutt_socket_write_d (pop_data->conn, buf, dbg);
+  mutt_socket_write_d (pop_data->conn, buf, -1, dbg);
 
   c = strpbrk (buf, " \r\n");
   *c = '\0';
@@ -438,13 +451,14 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
  * -2 - invalid command or execution error,
  * -3 - error in funct(*line, *data)
  */
-int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
+int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 		    int (*funct) (char *, void *), void *data)
 {
   char buf[LONG_STRING];
   char *inbuf;
   char *p;
-  int ret, chunk, line = 0;
+  int ret, chunk = 0;
+  long pos = 0;
   size_t lenbuf = 0;
 
   strfcpy (buf, query, sizeof (buf));
@@ -473,6 +487,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
     }
 
     strfcpy (inbuf + lenbuf, p, sizeof (buf));
+    pos += chunk;
 
     if (chunk >= sizeof (buf))
     {
@@ -480,9 +495,8 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, char *msg,
     }
     else
     {
-      line++;
-      if (msg && ReadInc && (line % ReadInc == 0))
-	mutt_message ("%s %d", msg, line);
+      if (progressbar)
+	mutt_progress_update (progressbar, pos);
       if (ret == 0 && funct (inbuf, data) < 0)
 	ret = -3;
       lenbuf = 0;
@@ -520,6 +534,7 @@ int pop_reconnect (CONTEXT *ctx)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+  progress_t progressbar;
 
   if (pop_data->status == POP_CONNECTED)
     return 0;
@@ -533,15 +548,15 @@ int pop_reconnect (CONTEXT *ctx)
     ret = pop_open_connection (pop_data);
     if (ret == 0)
     {
-      char *msg = _("Verifying message indexes...");
       int i;
+
+      mutt_progress_init (&progressbar, _("Verifying message indexes..."),
+			  M_PROGRESS_SIZE, NetInc, 0);
 
       for (i = 0; i < ctx->msgcount; i++)
 	ctx->hdrs[i]->refno = -1;
 
-      mutt_message (msg);
-
-      ret = pop_fetch_data (pop_data, "UIDL\r\n", msg, check_uidl, ctx);
+      ret = pop_fetch_data (pop_data, "UIDL\r\n", &progressbar, check_uidl, ctx);
       if (ret == -2)
       {
         mutt_error ("%s", pop_data->err_msg);

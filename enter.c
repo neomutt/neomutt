@@ -14,8 +14,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_menu.h"
@@ -125,16 +129,30 @@ size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
   size_t wbuflen;
 
   wbuf = *pwbuf, wbuflen = *pwbuflen;
-  memset (&st, 0, sizeof (st));
-  for (; (k = mbrtowc (&wc, buf, MB_LEN_MAX, &st)) &&
-	 k != (size_t)(-1) && k != (size_t)(-2); buf += k)
+  
+  while (*buf)
   {
-    if (i >= wbuflen)
+    memset (&st, 0, sizeof (st));
+    for (; (k = mbrtowc (&wc, buf, MB_LEN_MAX, &st)) &&
+	 k != (size_t)(-1) && k != (size_t)(-2); buf += k)
     {
-      wbuflen = i + 20;
-      safe_realloc (&wbuf, wbuflen * sizeof (*wbuf));
+      if (i >= wbuflen)
+      {
+	wbuflen = i + 20;
+	safe_realloc (&wbuf, wbuflen * sizeof (*wbuf));
+      }
+      wbuf[i++] = wc;
     }
-    wbuf[i++] = wc;
+    if (*buf && (k == (size_t) -1 || k == (size_t) -2))
+    {
+      if (i >= wbuflen) 
+      {
+	wbuflen = i + 20;
+	safe_realloc (&wbuf, wbuflen * sizeof (*wbuf));
+      }
+      wbuf[i++] = replacement_char();
+      buf++;
+    }
   }
   *pwbuf = wbuf, *pwbuflen = wbuflen;
   return i;
@@ -265,7 +283,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
     if (ch != OP_NULL)
     {
       first = 0;
-      if (ch != OP_EDITOR_COMPLETE)
+      if (ch != OP_EDITOR_COMPLETE && ch != OP_EDITOR_COMPLETE_QUERY)
 	state->tabs = 0;
       redraw = M_REDRAW_LINE;
       switch (ch)
@@ -454,6 +472,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  /* fall through to completion routine (M_FILE) */
 
 	case OP_EDITOR_COMPLETE:
+	case OP_EDITOR_COMPLETE_QUERY:
 	  state->tabs++;
 	  if (flags & M_CMD)
 	  {
@@ -480,7 +499,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 
 	    replace_part (state, i, buf);
 	  }
-	  else if (flags & M_ALIAS)
+	  else if (flags & M_ALIAS && ch == OP_EDITOR_COMPLETE)
 	  {
 	    /* invoke the alias-menu to get more addresses */
 	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
@@ -497,6 +516,24 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      goto bye;
 	    }
 	    break;
+	  }
+	  else if (flags & M_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
+	  {
+	    /* invoke the query-menu to get more addresses */
+	    if ((i = state->curpos))
+	    {
+	      for (; i && state->wbuf[i - 1] != ','; i--)
+		;
+	      for (; i < state->curpos && state->wbuf[i] == ' '; i++)
+		;
+	    }
+
+	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
+	    mutt_query_complete (buf, buflen);
+	    replace_part (state, i, buf);
+
+	    rv = 1; 
+	    goto bye;
 	  }
 	  else if (flags & M_COMMAND)
 	  {
@@ -525,7 +562,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      {
 		mutt_pretty_mailbox (buf);
 		if (!pass)
-		  mutt_history_add (hclass, buf);
+		  mutt_history_add (hclass, buf, 1);
 		rv = 0;
 		goto bye;
 	      }
@@ -548,28 +585,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  else
 	    goto self_insert;
 	  break;
-
-	case OP_EDITOR_COMPLETE_QUERY:
-	  if (flags & M_ALIAS)
-	  {
-	    /* invoke the query-menu to get more addresses */
-	    if ((i = state->curpos))
-	    {
-	      for (; i && state->wbuf[i - 1] != ','; i--)
-		;
-	      for (; i < state->curpos && state->wbuf[i] == ' '; i++)
-		;
-	    }
-
-	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
-	    mutt_query_complete (buf, buflen);
-	    replace_part (state, i, buf);
-
-	    rv = 1; 
-	    goto bye;
-	  }
-	  else
-	    goto self_insert;
 
 	case OP_EDITOR_QUOTE_CHAR:
 	  {
@@ -652,7 +667,7 @@ self_insert:
 	/* Convert from wide characters */
 	my_wcstombs (buf, buflen, state->wbuf, state->lastchar);
 	if (!pass)
-	  mutt_history_add (hclass, buf);
+	  mutt_history_add (hclass, buf, 1);
 
 	if (multiple)
 	{
@@ -696,7 +711,7 @@ void mutt_free_enter_state (ENTER_STATE **esp)
   if (!esp) return;
   
   FREE (&(*esp)->wbuf);
-  FREE (esp);
+  FREE (esp);		/* __FREE_CHECKED__ */
 }
 
 /*

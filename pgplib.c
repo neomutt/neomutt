@@ -15,11 +15,15 @@
  * 
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 59 Temple Place - Suite 330,
- *     Boston, MA  02111, USA.
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *     Boston, MA  02110-1301, USA.
  */
 
 /* Generally useful, pgp-related functions. */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -179,7 +183,8 @@ static void _pgp_free_key (pgp_key_t *kpp)
 
   pgp_free_uid (&kp->address);
   FREE (&kp->keyid);
-  FREE (kpp);
+  /* mutt_crypt.h: 'typedef struct pgp_keyinfo *pgp_key_t;' */
+  FREE (kpp);		/* __FREE_CHECKED__ */
 }
 
 pgp_key_t pgp_remove_key (pgp_key_t *klist, pgp_key_t key)

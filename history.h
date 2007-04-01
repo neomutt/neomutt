@@ -13,7 +13,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 #ifndef _HISTORY_H
@@ -35,7 +35,8 @@ enum history_class
 typedef enum history_class history_class_t;
 
 void mutt_init_history(void);
-void mutt_history_add(history_class_t, const char *);
+void mutt_read_histfile(void);
+void mutt_history_add(history_class_t, const char *, int);
 char *mutt_history_next(history_class_t);
 char *mutt_history_prev(history_class_t);
 

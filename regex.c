@@ -20,8 +20,8 @@
  * 
  * You should have received a copy of the GNU Library General Public
  * License along with the GNU C Library; see the file COPYING.LIB.  If not,
- * write to the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA 02111-1307, USA.  
+ * write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ * Boston, MA  02110-1301, USA.  
  */
 
 /*
@@ -50,7 +50,7 @@
 #undef	_GNU_SOURCE
 #define _GNU_SOURCE
 
-#ifdef HAVE_CONFIG_H
+#if HAVE_CONFIG_H
 # include <config.h>
 #endif
 
@@ -2409,10 +2409,12 @@ regex_compile (pattern, size, syntax, bufp)
               if (syntax & RE_NO_BK_PARENS) goto normal_backslash;
 
               if (COMPILE_STACK_EMPTY)
+	      {
                 if (syntax & RE_UNMATCHED_RIGHT_PAREN_ORD)
                   goto normal_backslash;
                 else
                   FREE_STACK_RETURN (REG_ERPAREN);
+	      }
 
             handle_close:
               if (fixup_alt_jump)
@@ -2429,10 +2431,12 @@ regex_compile (pattern, size, syntax, bufp)
 
               /* See similar code for backslashed left paren above.  */
               if (COMPILE_STACK_EMPTY)
+	      {
                 if (syntax & RE_UNMATCHED_RIGHT_PAREN_ORD)
                   goto normal_char;
                 else
                   FREE_STACK_RETURN (REG_ERPAREN);
+	      }
 
               /* Since we just checked for an empty stack above, this
                  ``can't happen''.  */

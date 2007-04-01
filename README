@@ -1,6 +1,9 @@
 README for mutt-1.5
 ===================
 
+When updating mutt from an earlier release or from CVS, please make sure
+to read the compatbility notes in ``UPDATING''.
+
 If you got the mutt source code from the public CVS repository (CVS
 root: :pserver:anonymous@cvs.mutt.org:/home/roessler/cvs, password
 anonymous), please read doc/devel-notes.txt to make sure that you

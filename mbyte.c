@@ -13,12 +13,16 @@
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /*
  * Japanese support by TAKIZAWA Takashi <taki@luna.email.ne.jp>.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mbyte.h"
@@ -63,12 +67,19 @@ void mutt_set_charset (char *charset)
   if (!strcmp(buffer, "utf-8"))
     Charset_is_utf8 = 1;
 #ifndef HAVE_WC_FUNCS
-  else if (!strcmp(buffer, "euc-jp") || !strcmp(buffer, "shift_jis")
-  	|| !strcmp(buffer, "cp932"))
+  else if (!ascii_strcasecmp(buffer, "euc-jp") || !ascii_strcasecmp(buffer, "shift_jis")
+  	|| !ascii_strcasecmp(buffer, "cp932") || !ascii_strcasecmp(buffer, "eucJP-ms"))
   {
     charset_is_ja = 1;
-    charset_to_utf8 = iconv_open ("UTF-8", charset);
-    charset_from_utf8 = iconv_open (charset, "UTF-8");
+
+    /* Note flags=0 to skip charset-hooks: User masters the $charset
+     * name, and we are sure of our "utf-8" constant. So there is no
+     * possibility of wrong name that we would want to try to correct
+     * with a charset-hook. Or rather: If $charset was wrong, we would
+     * want to try to correct... $charset directly.
+     */
+    charset_to_utf8 = mutt_iconv_open ("utf-8", charset, 0);
+    charset_from_utf8 = mutt_iconv_open (charset, "utf-8", 0);
   }
 #endif
 
@@ -461,7 +472,40 @@ size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps)
 
 #endif /* !HAVE_WC_FUNCS */
 
-wchar_t replacement_char ()
+wchar_t replacement_char (void)
 {
   return Charset_is_utf8 ? 0xfffd : '?';
 }
+
+int mutt_filter_unprintable (char **s)
+{
+  BUFFER *b = NULL;
+  wchar_t wc;
+  size_t k, k2;
+  char scratch[MB_LEN_MAX + 1];
+  char *p = *s;
+  mbstate_t mbstate1, mbstate2;
+
+  if (!(b = mutt_buffer_init (b)))
+    return -1;
+  memset (&mbstate1, 0, sizeof (mbstate1));
+  memset (&mbstate2, 0, sizeof (mbstate2));
+  for (; (k = mbrtowc (&wc, p, MB_LEN_MAX, &mbstate1)); p += k)
+  {
+    if (k == (size_t)(-1) || k == (size_t)(-2))
+    {
+      k = 1;
+      wc = replacement_char();
+    }
+    if (!IsWPrint (wc))
+      wc = '?';
+    k2 = wcrtomb (scratch, wc, &mbstate2);
+    scratch[k2] = '\0';
+    mutt_buffer_addstr (b, scratch);
+  }
+  FREE (s);  /* __FREE_CHECKED__ */
+  *s = b->data ? b->data : safe_calloc (1, 1);
+  FREE (&b);
+  return 0;
+}
+

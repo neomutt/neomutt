@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -54,6 +58,10 @@ static const char *Not_available_in_this_menu = N_("Not available in this menu."
 static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
 static const char *Function_not_permitted_in_attach_message_mode = N_("Function not permitted in attach-message mode.");
 
+/* hack to return to position when returning from index to same message */
+static int TopLine = 0;
+static HEADER *OldHdr = NULL;
+
 #define CHECK_MODE(x)	if (!(x)) \
 			{ \
 			  	mutt_flushinp (); \
@@ -75,16 +83,12 @@ static const char *Function_not_permitted_in_attach_message_mode = N_("Function 
 			break; \
 		     }
 
-#ifdef USE_IMAP 
-/* the error message returned here could be better. */
-#define CHECK_IMAP_ACL(aclbit) if (Context->magic == M_IMAP) \
-		if (mutt_bit_isset (((IMAP_DATA *)Context->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)Context->data)->rights,aclbit)){ \
+#define CHECK_ACL(aclbit,action) \
+		if (!mutt_bit_isset(Context->rights,aclbit)) { \
 			mutt_flushinp(); \
-			mutt_error ("Operation not permitted by the IMAP ACL for this mailbox"); \
+			mutt_error (_("Cannot %s: Operation not permitted by ACL"), action); \
 			break; \
 		}
-#endif
 
 struct q_class_t
 {
@@ -105,7 +109,7 @@ struct syntax_t
 
 struct line_t
 {
-  long offset;
+  LOFF_T offset;
   short type;
   short continuation;
   short chunks;
@@ -381,7 +385,7 @@ cleanup_quote (struct q_class_t **QuoteList)
     ptr = (*QuoteList)->next;
     if ((*QuoteList)->prefix)
       FREE (&(*QuoteList)->prefix);
-    FREE (QuoteList);
+    FREE (QuoteList);		/* __FREE_CHECKED__ */
     *QuoteList = ptr;
   }
 
@@ -699,6 +703,9 @@ classify_quote (struct q_class_t **QuoteList, const char *qptr,
   return class;
 }
 
+static int brailleLine = -1;
+static int brailleCol = -1;
+
 static int check_attachment_marker (char *);
 
 static void
@@ -712,9 +719,10 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
 
   if (n == 0 || ISHEADER (lineInfo[n-1].type))
   {
-    if (buf[0] == '\n')
+    if (buf[0] == '\n') {
       lineInfo[n].type = MT_COLOR_NORMAL;
-    else if (n > 0 && (buf[0] == ' ' || buf[0] == '\t'))
+      getyx(stdscr, brailleLine, brailleCol);
+    } else if (n > 0 && (buf[0] == ' ' || buf[0] == '\t'))
     {
       lineInfo[n].type = lineInfo[n-1].type; /* wrapped line */
       (lineInfo[n].syntax)[0].color = (lineInfo[n-1].syntax)[0].color;
@@ -965,27 +973,53 @@ static int grok_ansi(unsigned char *buf, int pos, ansi_attr *a)
   return pos;
 }
 
+/* trim tail of buf so that it contains complete multibyte characters */
 static int
-fill_buffer (FILE *f, long *last_pos, long offset, unsigned char *buf, 
+trim_incomplete_mbyte(unsigned char *buf, size_t len)
+{
+  mbstate_t mbstate;
+  size_t k;
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  for (; len > 0; buf += k, len -= k)
+  {
+    k = mbrtowc (NULL, (char *) buf, len, &mbstate);
+    if (k == -2) 
+      break; 
+    else if (k == -1 || k == 0) 
+      k = 1;
+  }
+  *buf = '\0';
+
+  return len;
+}
+
+static int
+fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *buf, 
 	     unsigned char *fmt, size_t blen, int *buf_ready)
 {
   unsigned char *p;
   static int b_read;
-
+  
   if (*buf_ready == 0)
   {
     buf[blen - 1] = 0;
     if (offset != *last_pos)
-      fseek (f, offset, 0);
+      fseeko (f, offset, 0);
     if (fgets ((char *) buf, blen - 1, f) == NULL)
     {
       fmt[0] = 0;
       return (-1);
     }
-    *last_pos = ftell (f);
+    *last_pos = ftello (f);
     b_read = (int) (*last_pos - offset);
     *buf_ready = 1;
 
+    /* incomplete mbyte characters trigger a segfault in regex processing for
+     * certain versions of glibc. Trim them if necessary. */
+    if (b_read == blen - 2)
+      b_read -= trim_incomplete_mbyte(buf, b_read);
+    
     /* copy "buf" to "fmt", but without bold and underline controls */
     p = buf;
     while (*p)
@@ -1032,10 +1066,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
 
-  int wrap_cols = COLS - WrapMargin;
-  
-  if (wrap_cols <= 0)
-    wrap_cols = COLS;
+  int wrap_cols = mutt_term_width (Wrap);
   
   /* FIXME: this should come from lineInfo */
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1194,7 +1225,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
  */
 
 static int
-display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n, 
+display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n, 
 	      int *last, int *max, int flags, struct q_class_t **QuoteList,
 	      int *q_level, int *force_redraw, regex_t *SearchRE)
 {
@@ -1342,7 +1373,11 @@ display_line (FILE *f, long *last_pos, struct line_t **lineInfo, int n,
 	/* skip trailing blanks */
 	while (ch && (buf[ch] == ' ' || buf[ch] == '\t' || buf[ch] == '\r'))
 	  ch--;
-	cnt = ch + 1;
+        /* a very long word with leading spaces causes infinite wrapping */
+        if ((!ch) && (flags & M_PAGER_NSKIP))
+          buf_ptr = buf + cnt;
+        else
+          cnt = ch + 1;
       }
       else
 	buf_ptr = buf + cnt; /* a very long word... */
@@ -1477,7 +1512,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int r = -1;
   int redraw = REDRAW_FULL;
   FILE *fp = NULL;
-  long last_pos = 0, last_offset = 0;
+  LOFF_T last_pos = 0, last_offset = 0;
   int old_smart_wrap, old_markers;
   struct stat sb;
   regex_t SearchRE;
@@ -1706,15 +1741,17 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       CLEARLINE (statusoffset);
       if (IsHeader (extra))
       {
-	_mutt_make_string (buffer,
-			   COLS-9 < sizeof (buffer) ? COLS-9 : sizeof (buffer),
-			   NONULL (PagerFmt), Context, extra->hdr, M_FORMAT_MAKEPRINT);
+	size_t l1 = (COLS - 9) * MB_LEN_MAX;
+	size_t l2 = sizeof (buffer);
+	_mutt_make_string (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt),
+			   Context, extra->hdr, M_FORMAT_MAKEPRINT);
       }
       else if (IsMsgAttach (extra))
       {
-	_mutt_make_string (buffer,
-			   COLS - 9 < sizeof (buffer) ? COLS - 9: sizeof (buffer),
-			   NONULL (PagerFmt), Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
+	size_t l1 = (COLS - 9) * MB_LEN_MAX;
+	size_t l2 = sizeof (buffer);
+	_mutt_make_string (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt),
+			   Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
       }
       mutt_paddstr (COLS-10, IsHeader (extra) || IsMsgAttach (extra) ?
 		    buffer : banner);
@@ -1738,14 +1775,34 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
  
       move (indexoffset + (option (OPTSTATUSONTOP) ? 0 : (indexlen - 1)), 0);
       SETCOLOR (MT_COLOR_STATUS);
+      BKGDSET (MT_COLOR_STATUS);
       mutt_paddstr (COLS, buffer);
       SETCOLOR (MT_COLOR_NORMAL);
+      BKGDSET (MT_COLOR_NORMAL);
     }
 
     redraw = 0;
 
-    move (statusoffset, COLS-1);
+    if (option(OPTBRAILLEFRIENDLY)) {
+      if (brailleLine!=-1) {
+        move(brailleLine+1, 0);
+        brailleLine = -1;
+      }
+    } else move (statusoffset, COLS-1);
     mutt_refresh ();
+
+    if (IsHeader (extra) && OldHdr == extra->hdr && TopLine != topline
+        && lineInfo[curline].offset < sb.st_size-1)
+    {
+      if (TopLine - topline > lines)
+        topline += lines;
+      else
+        topline = TopLine;
+      continue;
+    }
+    else
+      OldHdr = NULL;
+      
     ch = km_dokey (MENU_PAGER);
     if (ch != -1)
       mutt_clear_error ();
@@ -2197,10 +2254,7 @@ search_next:
       case OP_DELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_ACL(M_ACL_DELETE, _("delete message"));
 
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 1);
         if (option (OPTDELETEUNTAG))
@@ -2217,10 +2271,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
       case OP_DELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_ACL(M_ACL_DELETE, _("delete message(s)"));
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 1,
 				  ch == OP_DELETE_THREAD ? 0 : 1);
@@ -2340,19 +2391,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
       case OP_FLAG_MESSAGE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-
-#ifdef USE_POP
-	if (Context->magic == M_POP)
-	{
-	  mutt_flushinp ();
-	  mutt_error _("Can't change 'important' flag on POP server.");
-	  break;
-	}
-#endif
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_WRITE);
-#endif
+	CHECK_ACL(M_ACL_WRITE, "flag message");
 
 	mutt_set_flag (Context, extra->hdr, M_FLAG, !extra->hdr->flagged);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
@@ -2492,6 +2531,11 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
       case OP_TAG:
 	CHECK_MODE(IsHeader (extra));
 	mutt_set_flag (Context, extra->hdr, M_TAG, !extra->hdr->tagged);
+
+	Context->last_tag = extra->hdr->tagged ? extra->hdr :
+	  ((Context->last_tag == extra->hdr && !extra->hdr->tagged)
+	   ? NULL : Context->last_tag);
+
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
@@ -2503,10 +2547,7 @@ CHECK_IMAP_ACL(IMAP_ACL_WRITE);
       case OP_TOGGLE_NEW:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_SEEN);
-#endif
+	CHECK_ACL(M_ACL_SEEN, _("toggle new"));
 
 	if (extra->hdr->read || extra->hdr->old)
 	  mutt_set_flag (Context, extra->hdr, M_NEW, 1);
@@ -2525,10 +2566,7 @@ CHECK_IMAP_ACL(IMAP_ACL_SEEN);
       case OP_UNDELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_ACL(M_ACL_DELETE, _("undelete message"));
 
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
@@ -2543,10 +2581,7 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
       case OP_UNDELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-
-#ifdef USE_IMAP
-CHECK_IMAP_ACL(IMAP_ACL_DELETE);
-#endif
+	CHECK_ACL(M_ACL_DELETE, _("undelete message(s)"));
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 0,
 				  ch == OP_UNDELETE_THREAD ? 0 : 1);
@@ -2626,7 +2661,16 @@ CHECK_IMAP_ACL(IMAP_ACL_DELETE);
 
   fclose (fp);
   if (IsHeader (extra))
+  {
     Context->msgnotreadyet = -1;
+    if (rc == -1)
+      OldHdr = NULL;
+    else
+    {
+      TopLine = topline;
+      OldHdr = extra->hdr;
+    }
+  }
     
   cleanup_quote (&QuoteList);
   

@@ -14,8 +14,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -293,6 +297,14 @@ const char *mutt_attach_fmt (char *dest,
 	snprintf (dest, destlen, fmt, aptr->num + 1);
       }
       break;
+    case 'Q':
+      if (optional)
+        optional = aptr->content->attach_qualifies;
+      else {
+	    snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+        mutt_format_s (dest, destlen, fmt, "Q");
+      }
+      break;
     case 's':
       if (flags & M_FORMAT_STAT_FILE)
       {
@@ -329,6 +341,15 @@ const char *mutt_attach_fmt (char *dest,
         snprintf (dest, destlen, "%c", aptr->content->unlink ? '-' : ' ');
       else if (!aptr->content->unlink)
         optional = 0;
+      break;
+    case 'X':
+      if (optional)
+        optional = (aptr->content->attach_count + aptr->content->attach_qualifies) != 0;
+      else
+      {
+        snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+        snprintf (dest, destlen, fmt, aptr->content->attach_count + aptr->content->attach_qualifies);
+      }
       break;
     default:
       *dest = 0;
@@ -463,7 +484,8 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	{
 	  int append = 0;
 
-	  strfcpy (buf, NONULL (top->filename), sizeof (buf));
+	  strfcpy (buf, mutt_basename (NONULL (top->filename)), sizeof (buf));
+
 	  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf),
 				    M_FILE | M_CLEAR) != 0 || !buf[0])
 	    return;
@@ -883,9 +905,9 @@ void mutt_view_attachments (HEADER *hdr)
   int secured = 0;
   int need_secured = 0;
 
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   MUTTMENU *menu;
-  BODY *cur;
+  BODY *cur = NULL;
   MESSAGE *msg;
   FILE *fp;
   ATTACHPTR **idx = NULL;
@@ -1065,7 +1087,7 @@ void mutt_view_attachments (HEADER *hdr)
 	}
 #endif
 
-        if (WithCrypto && hdr->security)
+        if (WithCrypto && hdr->security & ~PGP_TRADITIONAL_CHECKED)
         {
 	  mutt_message _(
 	    "Deletion of attachments from encrypted messages is unsupported.");

@@ -21,7 +21,7 @@ bind index a tag-prefix
 bind index \; tag-entry
 
 # Not possible to simulate zoom-out...
-macro index z l~T\r
+macro index z "<limit>~T<Enter>"
 
 bind pager p previous-undeleted
 bind pager n next-undeleted

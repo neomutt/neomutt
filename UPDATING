@@ -1,0 +1,154 @@
+This file lists incompatible changes and additional/new features made to
+mutt. Please read this file carefully when upgrading your installation.
+
+The keys used are:
+  !: modified feature, -: deleted feature, +: new feature
+
+  + $check_mbox_size (use size change instead of atime for new mail)
+  ! improved f=f support wraps lines at $wrap if $wrap is not 0
+  + $wrap (>0 wraps at $wrap, <0 = $wrapmargin)
+  + $assumed_charset, $attach_charset, $ignore_linear_white_space
+  + $save_history, $history_file (save history across sessions)
+  + $smtp_url (ESMTP relay support)
+  + $crypt_use_pka (use GPGME PKA signature verification)
+
+1.5.13 (2006-08-14):
+
+  + thread patterns.  Use ~(...) to match all threads that
+    contain a message that matches ...
+
+1.5.12 (2006-07-14):
+
+  - $imap_cachedir replaced with $message_cachedir
+  + Header/body caching for POP ($message_cachedir)
+  + Header caching for MH folders 
+  ! $record now defaults to ~/sent
+  ! $imap_idle now defaults to "yes" instead of "no"
+  + Tab-completion for $my_* variable names and values
+  + Expansion of mutt variables (except shell escape)
+  + Self-defined variables with $my_* prefix 
+  + Pattern group support 
+  + $imap_cachedir
+  + 'old' flag on IMAP folders
+  + SASL-IR support for IMAP
+  + IMAP IDLE support and $imap_idle
+  + Pipeline-based IMAP communicaton
+  + Full large file support
+  + Attachment counting: attachments and unattachments commands,
+    %Q and %X for $attach_format, %X for $index_format
+  + Basque translation
+  + QDBM backend for header caching
+  + Irish translation
+
+1.5.11 (2005-09-15):
+
+  ! $envelope_from_address has been added, $envelope_from has been renamed
+    to $use_envelope_from
+  + Progress bar via $net_inc
+  + IMAP server-side simple string search
+  + Simple string matches instead of full regex matches for '=' instead
+    of '~' with pattern modifiers
+  ! ~l matches all known lists, ~u only subscribed
+  - SASL 1.5 support
+  ! The manual is now build from DocBook/XML instead of Linuxdoc/SGML source
+
+1.5.10 (2005-08-11):
+
+  + $imap_check_subscribed
+  + Tab-completion for IMAP hosts
+  ! $imap_force_ssl has been replaced without synonym by $ssl_force_tls
+  - NSS support
+  ! The default for $menu_move_off has been changed from "no" to "yes"
+  ! An empty <limit> now cancels the current limit
+  + Editing threads via <break-thread> and <link-threads>
+  + -D command line option
+  + the folder shortcut '^' refers to the currently opened folder
+  + $imap_login
+  + $braille_friendly
+  + Header caching for Maildir folders
+
+Mutt 1.5.9 (2005-03-13):
+
+  + $menu_move_off
+  + <rename-mailbox> function for IMAP
+
+Mutt 1.5.8 (2005-02-12):
+
+  + $menu_context
+  ! IDNA decoding is now optional via $use_idn defaulting to "yes"
+  + GPGME support via $crypt_use_gpgme
+
+Mutt 1.5.7 (2005-01-28):
+
+  + SSL support via GNUTLS
+  + Header caching for IMAP via $header_cache and $header_cache_pagesize
+  + send2-hook
+  + $ssl_client_cert
+  + $hide_thread_subject
+  + Generic spam detection: new configuration commands: 'spam' and
+    'nospam', new options: $spam_separator, new expando: %H (for
+    $index_format), new pattern: ~H pattern
+  + $include_onlyfirst
+  ! $pgp_mime_ask has been renamed without synonym to $pgp_mime_auto,
+    new default is "ask-yes" rather than "no"
+  + Inline PGP creation support via $pgp_replyinline, $pgp_autoinline
+    and $pgp_mime_ask
+  ! the 'bind' command can now be used on multiple menus at once
+  + $config_charset
+  + ~$ pattern
+
+1.5.6 (2004-02-01):
+
+  ! the 'list' and 'subscribe' commands now take regular expression
+    rather than string lists
+  ! the $alternates option is replaced by the 'alternates' command
+    taking lists of regular expressions
+  ! mailing lists can be recognized via domain matching when
+    starting with '@'
+  + STLS (STARTTLS) support for POP3
+
+1.5.5 (2003-11-05):
+
+  + Bulgarian translation
+  - Kendra mailbox support
+  + <tag-prefix-cond> and <cond-end>
+  + ':' as expando modifier (e.g. '%:A')
+  + $crypt_autopgp and $crypt_autosmime
+  + $pgp_check_exit
+
+1.5.4 (2003-03-19):
+
+  + IDNA support
+  + $bounce
+  ! $crypt_replyencrypt and $pgp_replyencrypt now default
+    to "yes" instead of "no"
+  + $pgp_auto_traditional
+  + %A for $index_format
+
+1.5.3 (2002-12-17):
+
+  + <next-new-then-unread> and <previous-new-then-unread>
+  ! $mark_old: it only controls whether new messages
+    are marked as old when leaving the mailbox
+  + <what-key>
+
+1.5.2 (2002-12-06):
+
+  + -A command line option
+  + SASL2 support
+  + <buffy-list>
+  + $forward_edit
+  + $content_type
+  + unmailboxes command
+  + unalternative_order command
+  + reply-hook
+
+1.5.1 (2002-01-24):
+
+  + $smime_default_key
+  + $narrow_tree
+  + -Q command line option
+  + $crypt_timestamp
+  + ~V pattern
+  + S/MIME support
+  + mime_lookup command

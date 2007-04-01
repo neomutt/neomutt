@@ -6,6 +6,7 @@ bindir=@bindir@
 libdir=@libdir@
 mandir=@mandir@
 srcdir=@srcdir@
+datarootdir=@datarootdir@
 docdir=@docdir@
 includedir=@includedir@
 top_srcdir=@top_srcdir@

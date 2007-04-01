@@ -1,0 +1,90 @@
+#
+# System configuration file for Mutt
+#
+
+# default list of header fields to weed when displaying
+#
+ignore "from " received content- mime-version status x-status message-id
+ignore sender references return-path lines
+
+# imitate the old search-body function
+macro index \eb "<search>~b " "search in message bodies"
+
+# simulate the old url menu
+macro index,pager \cb "<pipe-message> urlview<Enter>" "call urlview to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlview<Enter>" "call urlview to extract URLs out of a message"
+
+# Show documentation when pressing F1
+macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show Mutt documentation"
+
+# show the incoming mailboxes list (just like "mutt -y") and back when pressing "y"
+macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
+bind browser y exit
+
+# If Mutt is unable to determine your site's domain name correctly, you can
+# set the default here.
+#
+# set hostname=cs.hmc.edu
+
+# If your sendmail supports the -B8BITMIME flag, enable the following
+#
+# set use_8bitmime
+
+##
+## *** DEFAULT SETTINGS FOR THE ATTACHMENTS PATCH ***
+##
+
+##
+## Please see the manual (section "attachments")  for detailed
+## documentation of the "attachments" command.
+##
+## Removing a pattern from a list removes that pattern literally. It
+## does not remove any type matching the pattern.
+##
+##  attachments   +A */.*
+##  attachments   +A image/jpeg
+##  unattachments +A */.*
+##
+## This leaves "attached" image/jpeg files on the allowed attachments
+## list. It does not remove all items, as you might expect, because the
+## second */.* is not a matching expression at this time.
+##
+## Remember: "unattachments" only undoes what "attachments" has done!
+## It does not trigger any matching on actual messages.
+
+## Qualify any MIME part with an "attachment" disposition, EXCEPT for
+## text/x-vcard and application/pgp parts. (PGP parts are already known
+## to mutt, and can be searched for with ~g, ~G, and ~k.)
+##
+## I've added x-pkcs7 to this, since it functions (for S/MIME)
+## analogously to PGP signature attachments. S/MIME isn't supported
+## in a stock mutt build, but we can still treat it specially here.
+##
+attachments   +A */.*
+attachments   -A text/x-vcard application/pgp.*
+attachments   -A application/x-pkcs7-.*
+
+## Discount all MIME parts with an "inline" disposition, unless they're
+## text/plain. (Why inline a text/plain part unless it's external to the
+## message flow?)
+##
+attachments   +I text/plain
+  
+## These two lines make Mutt qualify MIME containers.  (So, for example,
+## a message/rfc822 forward will count as an attachment.)  The first
+## line is unnecessary if you already have "attach-allow */.*", of
+## course.  These are off by default!  The MIME elements contained
+## within a message/* or multipart/* are still examined, even if the
+## containers themseves don't qualify.
+##
+#attachments  +A message/.* multipart/.*
+#attachments  +I message/.* multipart/.*
+
+## You probably don't really care to know about deleted attachments.
+attachments   -A message/external-body
+attachments   -I message/external-body
+
+##
+## More settings
+##
+

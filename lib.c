@@ -16,8 +16,8 @@
  * 
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 59 Temple Place - Suite 330,
- *     Boston, MA  02111, USA.
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *     Boston, MA  02110-1301, USA.
  */ 
 
 /*
@@ -25,6 +25,12 @@
  * which are now in muttlib.c.  They have been removed, so we have
  * some of our "standard" functions in external programs, too.
  */
+
+#define _LIB_C 1
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <string.h>
 #include <ctype.h>
@@ -36,7 +42,70 @@
 #include <fcntl.h>
 #include <pwd.h>
 
+#ifdef HAVE_SYSEXITS_H
+#include <sysexits.h>
+#else /* Make sure EX_OK is defined <philiph@pobox.com> */
+#define EX_OK 0
+#endif
+
 #include "lib.h"
+
+
+static struct sysexits
+{
+  int v;
+  const char *str;
+} 
+sysexits_h[] = 
+{
+#ifdef EX_USAGE
+  { 0xff & EX_USAGE, "Bad usage." },
+#endif
+#ifdef EX_DATAERR
+  { 0xff & EX_DATAERR, "Data format error." },
+#endif
+#ifdef EX_NOINPUT
+  { 0xff & EX_NOINPUT, "Cannot open input." },
+#endif
+#ifdef EX_NOUSER
+  { 0xff & EX_NOUSER, "User unknown." },
+#endif
+#ifdef EX_NOHOST
+  { 0xff & EX_NOHOST, "Host unknown." },
+#endif
+#ifdef EX_UNAVAILABLE
+  { 0xff & EX_UNAVAILABLE, "Service unavailable." },
+#endif
+#ifdef EX_SOFTWARE
+  { 0xff & EX_SOFTWARE, "Internal error." },
+#endif
+#ifdef EX_OSERR
+  { 0xff & EX_OSERR, "Operating system error." },
+#endif
+#ifdef EX_OSFILE
+  { 0xff & EX_OSFILE, "System file missing." },
+#endif
+#ifdef EX_CANTCREAT
+  { 0xff & EX_CANTCREAT, "Can't create output." },
+#endif
+#ifdef EX_IOERR
+  { 0xff & EX_IOERR, "I/O error." },
+#endif
+#ifdef EX_TEMPFAIL
+  { 0xff & EX_TEMPFAIL, "Deferred." },
+#endif
+#ifdef EX_PROTOCOL
+  { 0xff & EX_PROTOCOL, "Remote protocol error." },
+#endif
+#ifdef EX_NOPERM
+  { 0xff & EX_NOPERM, "Insufficient permission." },
+#endif
+#ifdef EX_CONFIG
+  { 0xff & EX_NOPERM, "Local configuration error." },
+#endif
+  { S_ERR, "Exec error." },
+  { -1, NULL}
+};
 
 void mutt_nocurses_error (const char *fmt, ...)
 {
@@ -119,7 +188,7 @@ void safe_realloc (void *ptr, size_t siz)
   *p = r;
 }
 
-void safe_free (void *ptr)
+void safe_free (void *ptr)	/* __SAFE_FREE_CHECKED__ */
 {
   void **p = (void **)ptr;
   if (*p)
@@ -194,7 +263,7 @@ char *safe_strncat (char *d, size_t l, const char *s, size_t sl)
 
 void mutt_str_replace (char **p, const char *s)
 {
-  FREE (p);
+  FREE (p);		/* __FREE_CHECKED__ */
   *p = safe_strdup (s);
 }
 
@@ -295,7 +364,7 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
   return 0;
 }
 
-static int 
+int 
 compare_stat (struct stat *osb, struct stat *nsb)
 {
   if (osb->st_dev != nsb->st_dev || osb->st_ino != nsb->st_ino ||
@@ -346,6 +415,8 @@ int safe_symlink(const char *oldpath, const char *newpath)
   return 0;
 }
 
+
+
 /* 
  * This function is supposed to do nfs-safe renaming of files.
  * 
@@ -373,10 +444,22 @@ int safe_rename (const char *src, const char *target)
      * to try it here.
      *
      */
+    
+    dprint (1, (debugfile, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
 
     if (errno == EXDEV)
-      return rename (src, target);
+    {
+      dprint (1, (debugfile, "safe_rename: errno was EXDEV; trying rename...\n"));
+      if (rename (src, target) == -1) 
+      {
+	dprint (1, (debugfile, "safe_rename: rename (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
+	return -1;
+      }
+      dprint (1, (debugfile, "safe_rename: rename succeeded.\n"));
     
+      return 0;
+    }
+
     return -1;
   }
 
@@ -384,13 +467,17 @@ int safe_rename (const char *src, const char *target)
    * Stat both links and check if they are equal.
    */
   
-  if (stat (src, &ssb) == -1)
+  if (lstat (src, &ssb) == -1)
   {
+    dprint (1, (debugfile, "safe_rename: can't stat %s: %s (%d)\n",
+		src, strerror (errno), errno));
     return -1;
   }
   
-  if (stat (target, &tsb) == -1)
+  if (lstat (target, &tsb) == -1)
   {
+    dprint (1, (debugfile, "safe_rename: can't stat %s: %s (%d)\n",
+		src, strerror (errno), errno));
     return -1;
   }
 
@@ -401,6 +488,7 @@ int safe_rename (const char *src, const char *target)
 
   if (compare_stat (&ssb, &tsb) == -1)
   {
+    dprint (1, (debugfile, "safe_rename: stat blocks for %s and %s diverge; pretending EEXIST.\n", src, target));
     errno = EEXIST;
     return -1;
   }
@@ -410,9 +498,62 @@ int safe_rename (const char *src, const char *target)
    * value here? XXX
    */
 
-  unlink (src);
+  if (unlink (src) == -1) 
+  {
+    dprint (1, (debugfile, "safe_rename: unlink (%s) failed: %s (%d)\n",
+		src, strerror (errno), errno));
+  }
+  
 
   return 0;
+}
+
+
+/* Create a temporary directory next to a file name */
+
+int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen, 
+		    char *newdir, size_t ndlen)
+{
+  const char *basename;
+  char parent[_POSIX_PATH_MAX];
+  char *p;
+  int rv;
+
+  strfcpy (parent, NONULL (path), sizeof (parent));
+  
+  if ((p = strrchr (parent, '/')))
+  {
+    *p = '\0';
+    basename = p + 1;
+  }
+  else
+  {
+    strfcpy (parent, ".", sizeof (parent));
+    basename = path;
+  }
+
+  do 
+  {
+    snprintf (newdir, ndlen, "%s/%s", parent, ".muttXXXXXX");
+    mktemp (newdir);
+  } 
+  while ((rv = mkdir (newdir, 0700)) == -1 && errno == EEXIST);
+  
+  if (rv == -1)
+    return -1;
+  
+  snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename));
+  return 0;  
+}
+
+int mutt_put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
+{
+  int rv;
+  
+  rv = safe_rename (safe_file, path);
+  unlink (safe_file);
+  rmdir (safe_dir);
+  return rv;
 }
 
 int safe_open (const char *path, int flags)
@@ -420,9 +561,33 @@ int safe_open (const char *path, int flags)
   struct stat osb, nsb;
   int fd;
 
-  if ((fd = open (path, flags, 0600)) < 0)
-    return fd;
+  if (flags & O_EXCL) 
+  {
+    char safe_file[_POSIX_PATH_MAX];
+    char safe_dir[_POSIX_PATH_MAX];
 
+    if (mutt_mkwrapdir (path, safe_file, sizeof (safe_file),
+			safe_dir, sizeof (safe_dir)) == -1)
+      return -1;
+    
+    if ((fd = open (safe_file, flags, 0600)) < 0)
+    {
+      rmdir (safe_dir);
+      return fd;
+    }
+    
+    if (mutt_put_file_in_place (path, safe_file, safe_dir) == -1)
+    {
+      close (fd);
+      return -1;
+    }
+  }
+  else
+  {
+    if ((fd = open (path, flags, 0600)) < 0)
+      return fd;
+  }
+    
   /* make sure the file is not symlink */
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
       compare_stat(&osb, &nsb) == -1)
@@ -713,4 +878,18 @@ const char *mutt_basename (const char *f)
     return p + 1;
   else
     return f;
+}
+
+const char *
+mutt_strsysexit(int e)
+{
+  int i;
+  
+  for(i = 0; sysexits_h[i].str; i++)
+  {
+    if(e == sysexits_h[i].v)
+      break;
+  }
+  
+  return sysexits_h[i].str;
 }

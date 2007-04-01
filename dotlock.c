@@ -14,7 +14,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /*
@@ -23,6 +23,10 @@
  * separately, define the DL_STANDALONE preprocessor
  * macro.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -550,7 +554,7 @@ dotlock_deference_symlink (char *d, size_t l, const char *path)
       char linkpath[_POSIX_PATH_MAX];
       int len;
 
-      if ((len = readlink (pathptr, linkfile, sizeof (linkfile))) == -1)
+      if ((len = readlink (pathptr, linkfile, sizeof (linkfile) - 1)) == -1)
       {
 	/* perror (pathptr); */
 	return -1;

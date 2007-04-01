@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2001 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,14 +14,16 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 #ifndef _IMAP_PRIVATE_H
 #define _IMAP_PRIVATE_H 1
 
 #include "imap.h"
+#include "mutt_curses.h"
 #include "mutt_socket.h"
+#include "bcache.h"
 
 /* -- symbols -- */
 #define IMAP_PORT 143
@@ -43,9 +45,15 @@
 #define IMAP_CMD_CONTINUE (1)
 /* + */
 #define IMAP_CMD_RESPOND  (2)
+/* IMAP_COMMAND.state additions */
+#define IMAP_CMD_NEW    (3)
 
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
+
+/* number of commands that can be batched into a single request
+ * ( - 1, for the easy way to detect ring buffer wrap) */
+#define IMAP_PIPELINE_DEPTH 15
 
 #define SEQLEN 5
 
@@ -72,7 +80,10 @@ enum
   IMAP_DISCONNECTED = 0,
   IMAP_CONNECTED,
   IMAP_AUTHENTICATED,
-  IMAP_SELECTED
+  IMAP_SELECTED,
+  
+  /* and pseudo-states */
+  IMAP_IDLE
 };
 
 enum
@@ -81,22 +92,6 @@ enum
   IMAP_NS_PERSONAL = 0,
   IMAP_NS_OTHER,
   IMAP_NS_SHARED
-};
-
-/* ACL Rights */
-enum
-{
-  IMAP_ACL_LOOKUP = 0,
-  IMAP_ACL_READ,
-  IMAP_ACL_SEEN,
-  IMAP_ACL_WRITE,
-  IMAP_ACL_INSERT,
-  IMAP_ACL_POST,
-  IMAP_ACL_CREATE,
-  IMAP_ACL_DELETE,
-  IMAP_ACL_ADMIN,
-
-  RIGHTSMAX
 };
 
 /* Capabilities we are interested in */
@@ -112,6 +107,8 @@ enum
   AUTH_ANON,			/* AUTH=ANONYMOUS */
   STARTTLS,			/* RFC 2595: STARTTLS */
   LOGINDISABLED,		/*           LOGINDISABLED */
+  IDLE,                         /* RFC 2177: IDLE */
+  SASL_IR,                      /* SASL initial response draft */
 
   CAPMAX
 };
@@ -139,14 +136,40 @@ typedef struct
   int noinferiors;
 } IMAP_NAMESPACE_INFO;
 
+typedef struct
+{
+  char* name;
+
+  unsigned int messages;
+  unsigned int recent;
+  unsigned int uidnext;
+  unsigned int uidvalidity;
+  unsigned int unseen;
+} IMAP_STATUS;
+
+typedef struct
+{
+  char* name;
+  
+  char delim;
+  /* if we end up storing a lot of these we could turn this into a bitfield */
+  unsigned char noselect;
+  unsigned char noinferiors;
+} IMAP_LIST;
+
 /* IMAP command structure */
 typedef struct
 {
   char seq[SEQLEN+1];
-  char* buf;
-  unsigned int blen;
   int state;
 } IMAP_COMMAND;
+
+typedef enum
+{
+  IMAP_CT_NONE = 0,
+  IMAP_CT_LIST,
+  IMAP_CT_STATUS
+} IMAP_COMMAND_TYPE;
 
 typedef struct
 {
@@ -166,8 +189,22 @@ typedef struct
   unsigned char capabilities[(CAPMAX + 7)/8];
   unsigned int seqno;
   time_t lastread; /* last time we read a command for the server */
-  /* who knows, one day we may run multiple commands in parallel */
-  IMAP_COMMAND cmd;
+  char* buf;
+  unsigned int blen;
+  
+  /* if set, the response parser will store results for complicated commands
+   * here. */
+  IMAP_COMMAND_TYPE cmdtype;
+  void* cmddata;
+
+  /* command queue */
+  IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
+  int nextcmd;
+  int lastcmd;
+  BUFFER* cmdbuf;
+
+  /* cache IMAP_STATUS of visited mailboxes */
+  LIST* mboxcache;
 
   /* The following data is all specific to the currently SELECTED mbox */
   char delim;
@@ -175,11 +212,12 @@ typedef struct
   char *mailbox;
   unsigned short check_status;
   unsigned char reopen;
-  unsigned char rights[(RIGHTSMAX + 7)/8];
   unsigned int newMailCount;
   IMAP_CACHE cache[IMAP_CACHE_LEN];
-  unsigned int noclose : 1;
-  
+  unsigned int uid_validity;
+  unsigned int uidnext;
+  body_cache_t *bcache;
+
   /* all folder flags - system flags AND keywords */
   LIST *flags;
 } IMAP_DATA;
@@ -191,19 +229,26 @@ typedef struct
 /* -- private IMAP functions -- */
 /* imap.c */
 int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
-int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed);
+int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname);
+IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox);
+void imap_mboxcache_free (IMAP_DATA* idata);
+int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
+                       int invert);
 int imap_open_connection (IMAP_DATA* idata);
+void imap_close_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
-int imap_parse_list_response(IMAP_DATA* idata, char** name, int* noselect,
-  int* noinferiors, char* delim);
-int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes);
+int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t*);
 void imap_expunge_mailbox (IMAP_DATA* idata);
 void imap_logout (IMAP_DATA* idata);
+int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
+  int *err_continue);
+int imap_has_flag (LIST* flag_list, const char* flag);
 
 /* auth.c */
 int imap_authenticate (IMAP_DATA* idata);
 
 /* command.c */
+int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr);
 int imap_cmd_start (IMAP_DATA* idata, const char* cmd);
 int imap_cmd_step (IMAP_DATA* idata);
 void imap_cmd_finish (IMAP_DATA* idata);
@@ -215,6 +260,7 @@ void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags, size_t s
 void imap_free_header_data (void** data);
 int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend);
 char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s);
+int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 
 /* util.c */
 int imap_continue (const char* msg, const char* resp);
@@ -225,6 +271,7 @@ char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path,
   size_t plen);
 int imap_get_literal_count (const char* buf, long* bytes);
 char* imap_get_qualifier (char* buf);
+int imap_mxcmp (const char* mx1, const char* mx2);
 char* imap_next_word (char* s);
 time_t imap_parse_date (char* s);
 void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path);
@@ -237,5 +284,10 @@ int imap_wordcasecmp(const char *a, const char *b);
 /* utf7.c */
 void imap_utf7_encode (char **s);
 void imap_utf7_decode (char **s);
+
+#if USE_HCACHE
+/* typedef size_t (*hcache_keylen_t)(const char* fn); */
+#define imap_hcache_keylen mutt_strlen
+#endif /* USE_HCACHE */
 
 #endif

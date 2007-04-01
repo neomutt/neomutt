@@ -13,8 +13,12 @@
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mailbox.h"
@@ -88,12 +92,16 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
-  else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ACCOUNTHOOK))
+  else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ICONVHOOK | M_ACCOUNTHOOK))
            && (!WithCrypto || !(data & M_CRYPTHOOK))
       )
   {
     char tmp[HUGE_STRING];
 
+    /* At this stage remain only message-hooks, reply-hooks, send-hooks,
+     * send2-hooks, save-hooks, and fcc-hooks: All those allowing full
+     * patterns. If given a simple regexp, we expand $default_hook.
+     */
     strfcpy (tmp, pattern.data, sizeof (tmp));
     mutt_check_simple (tmp, sizeof (tmp), DefaultHook);
     FREE (&pattern.data);
@@ -149,15 +157,16 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if (data & (M_SENDHOOK | M_SEND2HOOK | M_SAVEHOOK | M_FCCHOOK | M_MESSAGEHOOK | M_REPLYHOOK))
   {
     if ((pat = mutt_pattern_comp (pattern.data,
-	   (data & (M_SENDHOOK | M_SEND2HOOK | M_FCCHOOK)) ? 0 : M_FULL_MSG,
+	   (data & (M_SENDHOOK | M_SEND2HOOK | M_FCCHOOK | M_REPLYHOOK)) ? 0 : M_FULL_MSG,
 				  err)) == NULL)
       goto error;
   }
   else
   {
+    /* Hooks not allowing full patterns: Check syntax of regexp */
     rx = safe_malloc (sizeof (regex_t));
 #ifdef M_CRYPTHOOK
-    if ((rc = REGCOMP (rx, NONULL(pattern.data), ((data & (M_CRYPTHOOK|M_CHARSETHOOK)) ? REG_ICASE : 0))) != 0)
+    if ((rc = REGCOMP (rx, NONULL(pattern.data), ((data & (M_CRYPTHOOK|M_CHARSETHOOK|M_ICONVHOOK)) ? REG_ICASE : 0))) != 0)
 #else
     if ((rc = REGCOMP (rx, NONULL(pattern.data), (data & (M_CHARSETHOOK|M_ICONVHOOK)) ? REG_ICASE : 0)) != 0)
 #endif /* M_CRYPTHOOK */

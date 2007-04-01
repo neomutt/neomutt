@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "sort.h"
@@ -551,8 +555,12 @@ void mutt_clear_threads (CONTEXT *ctx)
 
   for (i = 0; i < ctx->msgcount; i++)
   {
-    ctx->hdrs[i]->thread = NULL;
-    ctx->hdrs[i]->threaded = 0;
+    /* mailbox may have been only partially read */
+    if (ctx->hdrs[i])
+    {
+      ctx->hdrs[i]->thread = NULL;
+      ctx->hdrs[i]->threaded = 0;
+    }
   }
   ctx->tree = NULL;
 
@@ -924,7 +932,7 @@ void mutt_sort_threads (CONTEXT *ctx, int init)
 	if (new->duplicate_thread)
 	  new = new->parent;
 	if (is_descendant (new, thread)) /* no loops! */
-	  break;
+	  continue;
       }
 
       if (thread->parent)
@@ -1339,4 +1347,82 @@ HASH *mutt_make_subj_hash (CONTEXT *ctx)
   }
 
   return hash;
+}
+
+static void clean_references (THREAD *brk, THREAD *cur)
+{
+  THREAD *p;
+  LIST *ref = NULL;
+  int done = 0;
+
+  for (; cur; cur = cur->next, done = 0)
+  {
+    /* parse subthread recursively */
+    clean_references (brk, cur->child);
+
+    if (!cur->message)
+      break; /* skip pseudo-message */
+
+    /* Looking for the first bad reference according to the new threading.
+     * Optimal since Mutt stores the references in reverse order, and the
+     * first loop should match immediatly for mails respecting RFC2822. */
+    for (p = brk; !done && p; p = p->parent)
+      for (ref = cur->message->env->references; p->message && ref; ref = ref->next)
+	if (!mutt_strcasecmp (ref->data, p->message->env->message_id))
+	{
+	  done = 1;
+	  break;
+	}
+
+    if (done)
+    {
+      HEADER *h = cur->message;
+
+      /* clearing the References: header from obsolete Message-ID(s) */
+      mutt_free_list (&ref->next);
+
+      h->env->refs_changed = h->changed = 1;
+    }
+  }
+}
+
+void mutt_break_thread (HEADER *hdr)
+{
+  mutt_free_list (&hdr->env->in_reply_to);
+  mutt_free_list (&hdr->env->references);
+  hdr->env->irt_changed = hdr->env->refs_changed = hdr->changed = 1;
+
+  clean_references (hdr->thread, hdr->thread->child);
+}
+
+static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
+{
+  if (child == parent)
+    return 0;
+
+  mutt_break_thread (child);
+
+  child->env->in_reply_to = mutt_new_list ();
+  child->env->in_reply_to->data = safe_strdup (parent->env->message_id);
+  
+  mutt_set_flag (ctx, child, M_TAG, 0);
+  
+  child->env->irt_changed = child->changed = 1;
+  return 1;
+}
+
+int mutt_link_threads (HEADER *cur, HEADER *last, CONTEXT *ctx)
+{
+  int i, changed = 0;
+
+  if (!last)
+  {
+    for (i = 0; i < ctx->vcount; i++)
+      if (ctx->hdrs[Context->v2r[i]]->tagged)
+	changed |= link_threads (cur, ctx->hdrs[Context->v2r[i]], ctx);
+  }
+  else
+    changed = link_threads (cur, last, ctx);
+
+  return changed;
 }

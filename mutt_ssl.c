@@ -13,11 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/* for SSL NO_* defines */
-#include "config.h"
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
@@ -115,9 +116,9 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->sockdata = ssldata;
-  conn->read = ssl_socket_read;
-  conn->write = ssl_socket_write;
-  conn->close = tls_close;
+  conn->conn_read = ssl_socket_read;
+  conn->conn_write = ssl_socket_write;
+  conn->conn_close = tls_close;
 
   conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (ssldata->ssl),
     &maxbits);
@@ -228,18 +229,19 @@ static int ssl_socket_open_err (CONNECTION *conn)
 }
 
 
-int ssl_socket_setup (CONNECTION * conn)
+int mutt_ssl_socket_setup (CONNECTION * conn)
 {
   if (ssl_init() < 0)
   {
-    conn->open = ssl_socket_open_err;
+    conn->conn_open = ssl_socket_open_err;
     return -1;
   }
 
-  conn->open	= ssl_socket_open;
-  conn->read	= ssl_socket_read;
-  conn->write	= ssl_socket_write;
-  conn->close	= ssl_socket_close;
+  conn->conn_open	= ssl_socket_open;
+  conn->conn_read	= ssl_socket_read;
+  conn->conn_write	= ssl_socket_write;
+  conn->conn_close	= ssl_socket_close;
+  conn->conn_poll       = raw_socket_poll;
 
   return 0;
 }
@@ -358,7 +360,11 @@ static int ssl_socket_close (CONNECTION * conn)
   {
     SSL_shutdown (data->ssl);
 
+    /* hold onto this for the life of mutt, in case we want to reconnect.
+     * The purist in me wants a mutt_exit hook. */
+#if 0
     X509_free (data->cert);
+#endif
     SSL_free (data->ssl);
     SSL_CTX_free (data->ctx);
     FREE (&conn->sockdata);
@@ -372,9 +378,9 @@ static int tls_close (CONNECTION* conn)
   int rc;
 
   rc = ssl_socket_close (conn);
-  conn->read = raw_socket_read;
-  conn->write = raw_socket_write;
-  conn->close = raw_socket_close;
+  conn->conn_read = raw_socket_read;
+  conn->conn_write = raw_socket_write;
+  conn->conn_close = raw_socket_close;
 
   return rc;
 }
@@ -490,6 +496,52 @@ static int check_certificate_by_signer (X509 *peercert)
   return pass;
 }
 
+static int compare_certificates (X509 *cert, X509 *peercert,
+  unsigned char *peermd, unsigned int peermdlen)
+{
+  unsigned char md[EVP_MAX_MD_SIZE];
+  unsigned int mdlen;
+  
+  /* Avoid CPU-intensive digest calculation if the certificates are
+    * not even remotely equal.
+    */
+  if (X509_subject_name_cmp (cert, peercert) != 0 ||
+      X509_issuer_name_cmp (cert, peercert) != 0)
+    return -1;
+  
+  if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
+    return -1;
+  
+  if (memcmp(peermd, md, mdlen) != 0)
+    return -1;
+
+  return 0;
+}
+
+static int check_certificate_cache (X509 *peercert)
+{
+  unsigned char peermd[EVP_MAX_MD_SIZE];
+  unsigned int peermdlen;
+  X509 *cert;
+  LIST *scert;
+
+  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  {
+    return 0;
+  }
+  
+  for (scert = SslSessionCerts; scert; scert = scert->next)
+  {
+    cert = *(X509**)scert->data;
+    if (!compare_certificates (cert, peercert, peermd, peermdlen))
+    {
+      return 1;
+    }
+  }
+  
+  return 0;
+}
+
 static int check_certificate_by_digest (X509 *peercert)
 {
   unsigned char peermd[EVP_MAX_MD_SIZE];
@@ -522,27 +574,13 @@ static int check_certificate_by_digest (X509 *peercert)
     fclose (fp);
     return 0;
   }
-  
+
   while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
   {
-    unsigned char md[EVP_MAX_MD_SIZE];
-    unsigned int mdlen;
-
-    /* Avoid CPU-intensive digest calculation if the certificates are
-     * not even remotely equal.
-     */
-    if (X509_subject_name_cmp (cert, peercert) != 0 ||
-	X509_issuer_name_cmp (cert, peercert) != 0)
-      continue;
-
-    if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
-      continue;
+    pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
     
-    if (memcmp(peermd, md, mdlen) != 0)
-      continue;
-
-    pass = 1;
-    break;
+    if (pass)
+      break;
   }
   X509_free (cert);
   fclose (fp);
@@ -554,12 +592,19 @@ static int ssl_check_certificate (sslsockdata * data)
 {
   char *part[] =
   {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char buf[SHORT_STRING];
   MUTTMENU *menu;
   int done, row, i;
   FILE *fp;
   char *name = NULL, *c;
+
+  /* check session cache first */
+  if (check_certificate_cache (data->cert))
+  {
+    dprint (1, (debugfile, "ssl_check_certificate: using cached certificate\n"));
+    return 1;
+  }
 
   if (check_certificate_by_signer (data->cert))
   {
@@ -616,7 +661,8 @@ static int ssl_check_certificate (sslsockdata * data)
   snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
 
   menu->title = _("SSL Certificate check");
-  if (SslCertFile)
+  if (SslCertFile && X509_cmp_current_time (X509_get_notAfter (data->cert)) >= 0
+      && X509_cmp_current_time (X509_get_notBefore (data->cert)) < 0)
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
     menu->keys = _("roa");
@@ -666,6 +712,10 @@ static int ssl_check_certificate (sslsockdata * data)
         /* fall through */
       case OP_MAX + 2:		/* accept once */
         done = 2;
+        /* keep a handle on accepted certificates in case we want to
+         * open up another connection to the same server in this session */
+        SslSessionCerts = mutt_add_list_n (SslSessionCerts, &data->cert,
+                                           sizeof (X509 **));
         break;
     }
   }

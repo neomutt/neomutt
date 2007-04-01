@@ -6,13 +6,8 @@ IMAP enhancements, by priority:
   problems gracefully. It should be able to transparently reconnect. This
   is facilitated by the next item.
 
-  PRIORITY: [***]
-
-* General connection code rewrite. All commands should be queued via
-  a single interface for communicating with the server. Nothing should
-  have to read or write directly to the socket.
-
-  PRIORITY: [***]
+* Interruptible socket calls, preferably without having to abort the
+  connection. For example large downloads could be chunked.
 
 [ -- browsing -- ]
 
@@ -20,43 +15,24 @@ IMAP enhancements, by priority:
   the stat variables but with tags like how many messages are in the folders,
   how many subfolders, that weird \Marked tag, etc.
  
-  PRIORITY: [** ]
+* Namespace handling needs to be thrown out and rewritten
 
 [ -- speed -- ]
 
-* Persistent caching of data. I think the nicest way to do this is to store
-  local copies like IMAP does, with an invisible control message at the top,
-  and extra invisible headers in the message (for UID/dirty bits). This does
-  some nice things:
-  o We can use the existing mbox driver.
-  o Mutt can read mail stored in IMAP spools transparently and
-    nondestructively.
-  o An IMAP server could function off of a local cache - maybe we can begin
-    to develop some sort of IMAP clustering system.
-  Disadvantage:
-  o IMAP can't discriminate between its own store and a fake Mutt cache. If
-    the server changes its file format, bad things might happen. Could be
-    worked around with a specific Mutt header in all messages, probably.
+* Partial index loading, using server-side threading and sorting
 
-  PRIORITY: [*  ]
+* Partial message loading, including parsing BODYSTRUCTURE for the
+  view-attachments menu
 
-* Instead of testing for the existence of a mailbox for APPEND, just append
-  and create/retry on failure. This is only a small bandwidth savings, but
-  it should be easy.
+* Disconnected mode, probably based on an augmented header cache
 
-  PRIORITY: [*  ]
+[ -- new mail detection -- ]
 
-[ -- new features -- ]
+* Possibly opening multiple connections for mailbox polling, now that
+  we have IDLE support.
 
-* Commands for creating/deleting folders on the server, since users may not
-  otherwise be able to do this on IMAP servers.
-  Delete done, still must implement create.
-
-  PRIORITY: [** ]
-
-* Implement the x (quit without saving changes) command.
-
-  PRIORITY: [** ]
+* caching UIDVALIDITY/UIDNEXT across sessions for nice new mail
+  handling. Could use the hcache.
 
 Brendan Cully <brendan@kublai.com>
-Updated: 20000704
+Updated: 20061031

@@ -16,7 +16,7 @@
 # 
 #     You should have received a copy of the GNU General Public License
 #     along with this program; if not, write to the Free Software
-#     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+#     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 use strict;
 use File::Copy;
@@ -58,8 +58,16 @@ my @cert_tmp_file = ();
 
 my $tmpdir;
 my $private_keys_path = mutt_Q 'smime_keys';
+die "smime_keys is not set in mutt's configuration file"
+	if length $private_keys_path == 0;
+
 my $certificates_path = mutt_Q 'smime_certificates';
+die "smime_certificates is not set in mutt's configuration file"
+	if length $certificates_path == 0;
 my $root_certs_path   = mutt_Q 'smime_ca_location';
+die "smime_ca_location is not set in mutt's configuration file"
+	if length $root_certs_path == 0;
+
 my $root_certs_switch;
 if ( -d $root_certs_path) {
 	$root_certs_switch = -CApath;

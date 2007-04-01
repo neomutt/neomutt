@@ -13,12 +13,15 @@
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /*
  * This file is named mutt_menu.h so it doesn't collide with ncurses menu.h
  */
+
+#ifndef _MUTT_MENU_H_
+#define _MUTT_MENU_H_ 1
 
 #include "keymap.h"
 #include "mutt_regex.h"
@@ -108,3 +111,5 @@ int mutt_menuLoop (MUTTMENU *);
 /* used in both the index and pager index to make an entry. */
 void index_make_entry (char *, size_t, struct menu_t *, int);
 int index_color (int);
+
+#endif /* _MUTT_MENU_H_ */

@@ -1,7 +1,7 @@
 # -*-muttrc-*-
 
 #
-# Mutt configuration file of Thomas Roessler <roessler@guug.de>.
+# Mutt configuration file of Thomas Roessler <roessler@does-not-exist.org>
 #
 # Use and distribute freely.
 #
@@ -17,13 +17,18 @@
 # MIME settings
 #
 
-auto_view application/ms-tnef text/x-vcard
-auto_view application/x-chess application/x-lotus-notes
-auto_view text/html application/x-gzip application/x-gunzip 
-auto_view application/rtf application/x-rath
-auto_view application/msword
+# auto_view application/ms-tnef text/x-vcard
+# auto_view application/x-chess application/x-lotus-notes
+# auto_view text/html application/x-gzip application/x-gunzip 
+# auto_view application/rtf application/x-rath
+# auto_view application/msword
 
-alternative_order application/pgp text/plain text/html text/enriched
+auto_view text/html
+mime_lookup application/octet-stream
+
+# alternative_order application/pgp text/html text/enriched text/plain
+alternative_order text/plain text/html
+
 
 #
 # Key bindings
@@ -48,7 +53,8 @@ bind	browser	<home>		first-entry
 
 bind	editor	"\e<backspace>" kill-word
 bind	editor	"\e<delete>"	kill-word
-bind	editor	"\e\t"		complete-query
+bind	editor	"<backtab>"	complete-query
+bind	editor 	"\eq"		complete-query
 bind	editor	"\Ct"		transpose-chars
 
 bind	generic	"\CV"		next-page
@@ -89,6 +95,7 @@ bind	index   "\ev"		previous-page
 bind	pager	"\Cn"		next-line
 bind	pager	"\Cp"		previous-line
 bind	pager	+		tag-message
+bind	pager	*		flag-message
 bind	pager	<delete>	delete-message
 bind	pager	<down>		next-line
 bind	pager	<end>		bottom
@@ -108,12 +115,14 @@ macro	generic	"\ex"		":exec "
 macro 	pager	"\ex"		":exec "
 macro	generic	"\eX"		"\ex"
 macro 	pager	"\eX"		"\ex"
+
 macro	index	"~"		";~"
+# macro	index	"%"		";%"
 
-# move messages to the pilot folder
+# Thread tagging
 
-macro	index	"\ew"		"<decode-copy>+pilot\n"	"Copy a message to the pilot folder."
-macro	pager	"\ew"		"<decode-copy>+pilot\n" "Copy a message to the pilot folder."
+bind   index 	"\et"		tag-subthread
+bind   index   "\eT"		tag-thread
 
 # for majordomo list owner and moderator jobs
 
@@ -127,6 +136,7 @@ macro	index	"\Cb"	"| urlview -\n"
 
 # permit limiting from the pager.
 
+macro	pager	"~"	"<exit><limit>~"
 macro   pager	";"	"<exit><limit>"
 
 # emulate the old POP-feature bindings
@@ -134,8 +144,12 @@ macro   pager	";"	"<exit><limit>"
 macro 	index	G	"!fetchmail\n"	
 macro 	pager	G	"!fetchmail\n"
 
-macro   compose "\ee"   "Fpgp -eatf " 
+# razor-report: Report spam.
 
+# macro	index	S	":set nopipe_decode nowait_key\n|razor-report > /dev/null 2> /dev/null\ns+junk\n"
+# macro   pager	S	":set nopipe_decode nowait_key\n|razor-report > /dev/null 2> /dev/null\ns+junk\n"
+macro	index	S	"s+junk\n"
+macro 	pager	S	"s+junk\n"
 
 #
 # Colors
@@ -162,12 +176,14 @@ ignore priority >received >>received
 ignore resent- return-path xref path
 ignore x400 importance sensitivity autoforward original-encoded-information
 ignore x- thread-
+ignore DomainKey-Signature mail-followup-to
 
 ignore list- comments posted-to approved-by
 
-unignore x-spam x-url x-mailer
+unignore x-spam-level x-url x-mailer list-id x-no-spam x-archived-at
+unignore x-diagnostic
 
-hdr_order from to cc date subject reply-to mail-followup-to
+hdr_order from to cc date subject reply-to mail-followup-to list-id
 
 #
 # Various settings
@@ -180,16 +196,17 @@ unset allow_8bit			# Produce correct MIME
 unset arrow_cursor			# Use the bar cursor
 set   askcc				# Ask me about CCs
 unset bounce_delivered			# Don't include Delivered-to with bounces
-set   charset=iso-8859-1		# The local character set
+# set   charset=iso-8859-1		# The local character set
+set   send_charset="us-ascii:iso-8859-1:iso-8859-15:iso-8859-2:utf-8"
 set   confirmcreate			# Ask me about creating new files
 unset confirmappend			# Don't ask me about appending to files
 set   delete=yes			# Don't ask me whether or not I meant to delete messages
-set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
+# set   display_filter="tr '\240\204\223\226' ' \"\"-'" # fix some funny characters
 set   edit_hdrs				# I want to edit the headers.
-set   editor="/usr/bin/jed %s -f 'flower_mode();'"	
+set   editor="/usr/bin/jed %s -f 'mail_mode();'"	
  					# Invoke jed with mail_mode.  This may
 	                                # or may not work for you.
-set   envelope_from			# set messages' envelope-from header.
+set   noenvelope_from			# set messages' envelope-from header.
 set   fcc_clear				# Store local copies of messages in the clear.
 set   folder=~/Mail			# Where my mail folders go
 set   followup_to			# Create Mail-Followup-To headers.
@@ -198,7 +215,7 @@ set   forward_decode			# Decode messages when forwarding.
 set   forward_decrypt			# Decrypt messages when forwarding.
 set   nohelp				# No help line.
 set   include=yes			# Always include a copy when replying.
-set   mark_old				# Distinguish between seen (but unread) and new messages
+set   mark_old			# Distinguish between seen (but unread) and new messages
 set   mbox=+mbox			# The (unused) mbox file.
 unset metoo	 			# Remove me from CC headers.
 set   mime_fwd=ask-no			# Ask me whether or not to create a MIME-encapsulated forward
@@ -214,7 +231,7 @@ set   pgp_timeout=3600			# Forget the PGP passphrase after an hour.
 set   pipe_decode			# Decode messages I pipe to commands, typically to patch(1).
 set   postponed=~/.mutt/postponed	# Where to put postponed messages
 set   print=ask-no			# Don't waste paper
-set   print_cmd="enscript -Email -2 -r -G"	# Two columns, landscape, fancy header.
+set   print_cmd="enscript -2Gr -Email"	# Two columns, landscape, fancy header.
 set   print_split=yes			# Invoke enscript once per message
 set   quit=yes				# Don't ask me whether or not I want to quit.
 set   quote_regexp="^ *[a-zA-Z]*[>|][>:|]*"	# Recognize quotes in the pager.
@@ -242,9 +259,9 @@ set   to_chars=" +TCF "			# Don't tag list mail in the index
 unset use_domain			# Don't append a domain to addresses.
 
 set   write_inc=50			# Progress indicator when writing folders.
-set   query_command="lbdbq %s"		# Use the Little Brother's Database with the external
+set   query_command="lbdb2q.pl %s"		# Use the Little Brother's Database with the external
 					# query feature.
-set   sendmail_wait=-1			# Put sendmail (i.e., postfix) to the background.
+set   sendmail_wait=-1			# Don't put sendmail into the background.
 set   encode_from			# "From " in the beginning of a line triggers quoted-printable
 set   nowait_key			# Return immediately from external programs
 set   forw_format="[fwd] %s (from: %a)"	# A different subject for forwarded messages
@@ -252,28 +269,36 @@ set   nobeep				# Shut up. ;-)
 set   reply_regexp="^((re([\\[0-9\\]+])*|aw):[ \t]*)+[ \t]*"	# A regular expression to detect replies
 set   header				# Include the message header when replying.
 set   ignore_list_reply_to		# Ignore Reply-To headers pointing to mailing lists.
-set   index_format="%4C %Z %{%b %d} %-15.15L (%4c) %s"	# Somewhat different index format, which works
-					# nicely with maildir folders.
-set   rfc2047_parameters		# Sometimes, I get mails which use a bogus encoding for
+set   norfc2047_parameters		# Sometimes, I get mails which use a bogus encoding for
 					# MIME parameters.  Setting this shouldn't harm.
-set   text_flowed			# Generate text/plain; format=flowed
-unset use_ipv6				# Don't try to use IPv6 - it doesn't work here.
+					# (OK, she doesn't use Notes any more, so I can unset this. ;-)
+# set   text_flowed			# Generate text/plain; format=flowed
+# unset use_ipv6				# Don't try to use IPv6 - it doesn't work here.
 set   keep_flagged			# don't move flagged messages to mbox
+set   hide_missing=yes			# Don't show how many messages are missing in a thread structure
 
 set status_format="-%r-+(%v) %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]----%>-(%P)---"
 set compose_format="--+(%v) Compose  [Approx. msg size: %l   Atts: %a]%>-"
 set pager_format="-%Z- %C/%m: %.20n %> %s"
 
 set smileys="^$"
+set ispell=iaspell
+
+set markers=no				# Don't mark wrapped lines
+set wrapmargin=4			# Leave a margin in the pager
 
 # PGP command configuration
 # source ~/.mutt/pgp2.rc
 source ~/.mutt/gpg.rc
+set pgp_getkeys_command=""
+
+# source ~/.mutt/smime.rc
 
 
 # source non-public stuff, (hooks, alternates, ...)
 source ~/.mutt/priv.rc
 
 # source aliases
+# source ~/.mutt/aliases-coruscant
 source ~/.mutt/aliases
 

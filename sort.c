@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "sort.h"
@@ -156,6 +160,7 @@ int compare_spam (const void *a, const void *b)
   char   *aptr, *bptr;
   int     ahas, bhas;
   int     result = 0;
+  double  difference;
 
   /* Firstly, require spam attributes for both msgs */
   /* to compare. Determine which msgs have one.     */
@@ -179,8 +184,11 @@ int compare_spam (const void *a, const void *b)
   /* Both have spam attrs. */
 
   /* preliminary numeric examination */
-  result = (strtoul((*ppa)->env->spam->data, &aptr, 10) -
-            strtoul((*ppb)->env->spam->data, &bptr, 10));
+  difference = (strtod((*ppa)->env->spam->data, &aptr) -
+                strtod((*ppb)->env->spam->data, &bptr));
+
+  /* map double into comparison (-1, 0, or 1) */
+  result = (difference < 0.0 ? -1 : difference > 0.0 ? 1 : 0);
 
   /* If either aptr or bptr is equal to data, there is no numeric    */
   /* value for that spam attribute. In this case, compare lexically. */

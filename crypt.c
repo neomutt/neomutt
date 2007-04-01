@@ -18,9 +18,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -107,7 +110,6 @@ static void disable_coredumps (void)
 
 int crypt_valid_passphrase(int flags)
 {
-  time_t now = time (NULL);
   int ret = 0;
 
 # if defined(HAVE_SETRLIMIT) &&(!defined(DEBUG))
@@ -166,6 +168,18 @@ int mutt_protect (HEADER *msg, char *keylist)
     tmp_smime_pbody = msg->content;
   if ((WithCrypto & APPLICATION_PGP))
     tmp_pgp_pbody   = msg->content;
+
+  if (option (OPTCRYPTUSEPKA) && (msg->security & SIGN))
+    {
+      /* Set sender (necessary for e.g. PKA).  */
+
+      if ((WithCrypto & APPLICATION_SMIME)
+	  && (msg->security & APPLICATION_SMIME))
+	crypt_smime_set_sender (msg->env->from->mailbox);
+      else if ((WithCrypto & APPLICATION_PGP)
+	  && (msg->security & APPLICATION_PGP))
+	crypt_pgp_set_sender (msg->env->from->mailbox);
+    }
 
   if (msg->security & SIGN)
   {
@@ -357,6 +371,9 @@ int mutt_is_application_smime (BODY *m)
   char *t=NULL;
   int len, complain=0;
 
+  if(!m)
+    return 0;
+
   if ((m->type & TYPEAPPLICATION) && m->subtype)
   {
     /* S/MIME MIME types don't need x- anymore, see RFC2311 */
@@ -499,7 +516,7 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempfile)
     return -1;
   }
       
-  fseek (s->fpin, a->hdr_offset, 0);
+  fseeko (s->fpin, a->hdr_offset, 0);
   bytes = a->length + a->offset - a->hdr_offset;
   hadcr = 0;
   while (bytes > 0)
@@ -547,7 +564,7 @@ void convert_to_7bit (BODY *a)
 	convert_to_7bit (a->parts);
     } 
     else if (a->type == TYPEMESSAGE &&
-	     mutt_strcasecmp(a->subtype, "delivery-status"))
+	     ascii_strcasecmp(a->subtype, "delivery-status"))
     {
       if(a->encoding != ENC7BIT)
 	mutt_message_to_7bit (a, NULL);
@@ -625,7 +642,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	  fflush(fpout);
 
           if (Context->hdrs[Context->v2r[i]]->env->from)
-	    tmp = mutt_expand_aliases (h->env->from);
+	    tmp = mutt_expand_aliases (Context->hdrs[Context->v2r[i]]->env->from);
 	  else if (Context->hdrs[Context->v2r[i]]->env->sender)
 	    tmp = mutt_expand_aliases (Context->hdrs[Context->v2r[i]]
                                                     ->env->sender);
@@ -753,7 +770,7 @@ static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
  * This routine verifies a  "multipart/signed"  body.
  */
 
-void mutt_signed_handler (BODY *a, STATE *s)
+int mutt_signed_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   char *protocol;
@@ -765,9 +782,10 @@ void mutt_signed_handler (BODY *a, STATE *s)
   int sigcnt = 0;
   int i;
   short goodsig = 1;
+  int rc = 0;
 
   if (!WithCrypto)
-    return;
+    return -1;
 
   protocol = mutt_get_parameter ("protocol", a->parameter);
   a = a->parts;
@@ -796,30 +814,28 @@ void mutt_signed_handler (BODY *a, STATE *s)
     state_attach_puts (_("[-- Error: "
                          "Inconsistent multipart/signed structure! --]\n\n"),
                        s);
-    mutt_body_handler (a, s);
-    return;
+    return mutt_body_handler (a, s);
   }
 
   
   if ((WithCrypto & APPLICATION_PGP)
       && protocol_major == TYPEAPPLICATION
-      && !mutt_strcasecmp (protocol_minor, "pgp-signature"))
+      && !ascii_strcasecmp (protocol_minor, "pgp-signature"))
     ;
   else if ((WithCrypto & APPLICATION_SMIME)
            && protocol_major == TYPEAPPLICATION
-	   && !(mutt_strcasecmp (protocol_minor, "x-pkcs7-signature")
-	       && mutt_strcasecmp (protocol_minor, "pkcs7-signature")))
+	   && !(ascii_strcasecmp (protocol_minor, "x-pkcs7-signature")
+	       && ascii_strcasecmp (protocol_minor, "pkcs7-signature")))
     ;
   else if (protocol_major == TYPEMULTIPART
-	   && !mutt_strcasecmp (protocol_minor, "mixed"))
+	   && !ascii_strcasecmp (protocol_minor, "mixed"))
     ;
   else
   {
     state_printf (s, _("[-- Error: "
                        "Unknown multipart/signed protocol %s! --]\n\n"),
                   protocol);
-    mutt_body_handler (a, s);
-    return;
+    return mutt_body_handler (a, s);
   }
   
   if (s->flags & M_DISPLAY)
@@ -836,7 +852,7 @@ void mutt_signed_handler (BODY *a, STATE *s)
 	{
 	  if ((WithCrypto & APPLICATION_PGP)
               && signatures[i]->type == TYPEAPPLICATION 
-	      && !mutt_strcasecmp (signatures[i]->subtype, "pgp-signature"))
+	      && !ascii_strcasecmp (signatures[i]->subtype, "pgp-signature"))
 	  {
 	    if (crypt_pgp_verify_one (signatures[i], s, tempfile) != 0)
 	      goodsig = 0;
@@ -846,8 +862,8 @@ void mutt_signed_handler (BODY *a, STATE *s)
 
 	  if ((WithCrypto & APPLICATION_SMIME)
               && signatures[i]->type == TYPEAPPLICATION 
-	      && (!mutt_strcasecmp(signatures[i]->subtype, "x-pkcs7-signature")
-		  || !mutt_strcasecmp(signatures[i]->subtype, "pkcs7-signature")))
+	      && (!ascii_strcasecmp(signatures[i]->subtype, "x-pkcs7-signature")
+		  || !ascii_strcasecmp(signatures[i]->subtype, "pkcs7-signature")))
 	  {
 	    if (crypt_smime_verify_one (signatures[i], s, tempfile) != 0)
 	      goodsig = 0;
@@ -876,10 +892,12 @@ void mutt_signed_handler (BODY *a, STATE *s)
       state_attach_puts (_("[-- Warning: Can't find any signatures. --]\n\n"), s);
   }
   
-  mutt_body_handler (a, s);
+  rc = mutt_body_handler (a, s);
   
   if (s->flags & M_DISPLAY && sigcnt)
     state_attach_puts (_("\n[-- End of signed data --]\n"), s);
+  
+  return rc;
 }
 
 

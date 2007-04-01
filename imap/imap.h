@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-6 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -14,7 +14,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 #ifndef _IMAP_H
@@ -38,9 +38,10 @@ int imap_delete_mailbox (CONTEXT* idata, IMAP_MBOX mx);
 int imap_open_mailbox (CONTEXT *ctx);
 int imap_open_mailbox_append (CONTEXT *ctx);
 int imap_sync_mailbox (CONTEXT *ctx, int expunge, int *index_hint);
-void imap_close_mailbox (CONTEXT *ctx);
-int imap_buffy_check (char *path);
-int imap_mailbox_check (char *path, int new);
+int imap_close_mailbox (CONTEXT *ctx);
+int imap_buffy_check (int force);
+int imap_status (char *path, int queue);
+int imap_search (CONTEXT* ctx, const pattern_t* pat);
 int imap_subscribe (char *path, int subscribe);
 int imap_complete (char* dest, size_t dlen, char* path);
 
@@ -50,6 +51,7 @@ void imap_disallow_reopen (CONTEXT *ctx);
 /* browse.c */
 int imap_browse (char* path, struct browser_state* state);
 int imap_mailbox_create (const char* folder);
+int imap_mailbox_rename (const char* mailbox);
 
 /* message.c */
 int imap_append_message (CONTEXT* ctx, MESSAGE* msg);

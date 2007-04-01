@@ -16,9 +16,13 @@
  * 
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 59 Temple Place - Suite 330,
- *     Boston, MA  02111, USA.
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *     Boston, MA  02110-1301, USA.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -442,7 +446,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   pgp_uid_t **KeyTable;
   MUTTMENU *menu;
   int i, done = 0;
-  char helpstr[SHORT_STRING], buf[LONG_STRING], tmpbuf[STRING];
+  char helpstr[LONG_STRING], buf[LONG_STRING], tmpbuf[STRING];
   char cmd[LONG_STRING], tempfile[_POSIX_PATH_MAX];
   FILE *fp, *devnull;
   pid_t thepid;
@@ -745,7 +749,7 @@ BODY *pgp_make_key_attachment (char *tempf)
     return NULL;
   }
 
-  mutt_message _("Invoking pgp...");
+  mutt_message _("Invoking PGP...");
 
   
   if ((thepid = 

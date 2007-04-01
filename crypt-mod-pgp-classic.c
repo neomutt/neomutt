@@ -13,12 +13,16 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 /* 
     This is a crytpo module wrapping the classic pgp code.
  */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "crypt-mod.h"
 #include "pgp.h"
@@ -37,9 +41,9 @@ static int crypt_mod_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d)
 {
   return pgp_decrypt_mime (a, b, c, d);
 }
-static void crypt_mod_pgp_application_handler (BODY *m, STATE *s)
+static int crypt_mod_pgp_application_handler (BODY *m, STATE *s)
 {
-  pgp_application_pgp_handler (m, s);
+  return pgp_application_pgp_handler (m, s);
 }
 
 static char *crypt_mod_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
@@ -82,9 +86,9 @@ static BODY *crypt_mod_pgp_traditional_encryptsign (BODY *a, int flags, char *ke
   return pgp_traditional_encryptsign (a, flags, keylist);
 }
 
-static void crypt_mod_pgp_encrypted_handler (BODY *m, STATE *s)
+static int crypt_mod_pgp_encrypted_handler (BODY *m, STATE *s)
 {
-  pgp_encrypted_handler (m, s);
+  return pgp_encrypted_handler (m, s);
 }
 
 static void crypt_mod_pgp_invoke_getkeys (ADDRESS *addr)
@@ -115,6 +119,7 @@ struct crypt_module_specs crypt_mod_pgp_classic =
       crypt_mod_pgp_sign_message,
       crypt_mod_pgp_verify_one,
       crypt_mod_pgp_send_menu,
+      NULL,
 
       crypt_mod_pgp_encrypt_message,
       crypt_mod_pgp_make_key_attachment,

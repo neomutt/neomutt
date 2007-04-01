@@ -10,9 +10,18 @@
 #include <unistd.h>
 #include <string.h>
 
+void print_usage(const char *progname) {
+	fprintf(stderr, "Command line usage: %s [flags] -- prefix [recipients]\n", progname);
+	exit(1);
+}
+
 int main(int argc, char **argv) {
 	char **opts, **opt, *pfx;
 	int i;
+
+	if (argc <= 1) {
+		print_usage(argv[0]);
+        }
 
 	opts = malloc((2 * argc + 1) * sizeof (* opts));	/* __MEM_CHECKED__ */
 	if(!opts) {
@@ -36,8 +45,7 @@ int main(int argc, char **argv) {
 		if(!strcmp(argv[i], "--")) {
 			i += 2;
 			if(i > argc) {
-				fprintf(stderr, "Command line usage: %s [flags] -- prefix [recipients]\n", argv[0]);
-				return 1;
+				print_usage(argv[0]);
 			}
 			pfx = argv[i-1];
 		}

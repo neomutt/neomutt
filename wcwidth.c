@@ -9,6 +9,10 @@
 /* Adapted for Mutt by Edmund Grimley Evans.
  */
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #ifndef HAVE_WC_FUNCS
 
 #include "mutt.h"

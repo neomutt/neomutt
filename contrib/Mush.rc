@@ -6,7 +6,7 @@
 
 bind index . display-message
 bind index t display-message
-macro index n j\n
+macro index n "<next-entry><display-message>"
 bind index + next-entry
 bind index j next-entry
 bind index J next-entry

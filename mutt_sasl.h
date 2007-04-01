@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-1 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-5 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -13,7 +13,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* common SASL helper routines */
@@ -21,11 +21,7 @@
 #ifndef _MUTT_SASL_H_
 #define _MUTT_SASL_H_ 1
 
-#ifdef USE_SASL2
 #include <sasl/sasl.h>
-#else
-#include <sasl.h>
-#endif
 
 #include "mutt_socket.h"
 
@@ -33,6 +29,7 @@ int mutt_sasl_client_new (CONNECTION*, sasl_conn_t**);
 sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT*);
 int mutt_sasl_interact (sasl_interact_t*);
 void mutt_sasl_setup_conn (CONNECTION*, sasl_conn_t*);
+void mutt_sasl_done (void);
 
 typedef struct 
 {
@@ -41,20 +38,16 @@ typedef struct
   const unsigned int* pbufsize;
 
   /* read buffer */
-#ifdef USE_SASL2
   const char *buf;
-#else
-  char* buf;
-#endif
   unsigned int blen;
   unsigned int bpos;
 
   /* underlying socket data */
   void* sockdata;
-  int (*open) (CONNECTION* conn);
-  int (*close) (CONNECTION* conn);
-  int (*read) (CONNECTION* conn, char* buf, size_t len);
-  int (*write) (CONNECTION* conn, const char* buf, size_t count);
+  int (*msasl_open) (CONNECTION* conn);
+  int (*msasl_close) (CONNECTION* conn);
+  int (*msasl_read) (CONNECTION* conn, char* buf, size_t len);
+  int (*msasl_write) (CONNECTION* conn, const char* buf, size_t count);
 }
 SASL_DATA;
 

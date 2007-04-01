@@ -68,7 +68,7 @@ CATALOGS = @CATALOGS@
 	$(MSGFMT) -o $@ $<
 
 .po.gmo:
-	file=$(srcdir)/`echo $* | sed 's,.*/,,'`.gmo \
+	file=`echo $* | sed 's,.*/,,'`.gmo \
 	  && rm -f $$file && $(GMSGFMT) --statistics -o $$file $<
 
 
@@ -77,8 +77,8 @@ all: all-@USE_NLS@
 all-yes: $(CATALOGS)
 all-no:
 
-.PHONY: ../keymap_alldefs.h
-../keymap_alldefs.h:
+.PHONY: $(top_srcdir)/keymap_alldefs.h
+$(top_srcdir)/keymap_alldefs.h:
 	cd .. && $(MAKE) keymap_alldefs.h
 
 # Note: Target 'all' must not depend on target '$(srcdir)/$(PACKAGE).pot',
@@ -86,6 +86,7 @@ all-no:
 # have been downloaded.
 
 $(srcdir)/$(PACKAGE).pot: $(POTFILES) $(srcdir)/POTFILES.in
+	rm -f $@
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
 	  --add-comments --keyword=_ --keyword=N_ \
 	  --files-from=$(srcdir)/POTFILES.in \
@@ -158,11 +159,7 @@ maintainer-clean: distclean
 	rm -f $(GMOFILES)
 
 distdir = $(top_builddir)/$(PACKAGE)-$(VERSION)/$(subdir)
-dist distdir:
-	$(MAKE) update-po
-	@$(MAKE) dist2
-# This is a separate target because 'update-po' must be executed before.
-dist2: $(DISTFILES)
+dist distdir: $(DISTFILES)
 	dists="$(DISTFILES)"; \
 	for file in $$dists; do \
 	  if test -f $$file; then dir=.; else dir=$(srcdir); fi; \

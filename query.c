@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_menu.h"
@@ -60,7 +64,8 @@ static ADDRESS *result_to_addr (QUERY *r)
 {
   static ADDRESS *tmp;
   
-  tmp = rfc822_cpy_adr (r->addr);
+  if (!(tmp = rfc822_cpy_adr (r->addr)))
+    return NULL;
   
   if(!tmp->next && !tmp->personal)
     tmp->personal = safe_strdup (r->name);
@@ -280,7 +285,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
   QUERY *queryp = NULL;
   int i, done = 0;
   int op;
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char title[STRING];
 
   snprintf (title, sizeof (title), _("Query")); /* FIXME */

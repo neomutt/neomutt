@@ -1,0 +1,5 @@
+header = '{date|isodate}  {author|person}  <{author|email}>  ({node|short})\n\n'
+changeset = '\t* {files|stringify|fill68|tabindent|strip}\n\n'
+file = '{file}, '
+last_file = '{file}: {desc}\n\t'
+no_files = '{desc}'

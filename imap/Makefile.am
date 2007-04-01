@@ -2,7 +2,7 @@
 
 AR=@AR@
 
-AUTOMAKE_OPTIONS = foreign
+AUTOMAKE_OPTIONS = 1.6 foreign
 
 if USE_GSS
 GSSSOURCES = auth_gss.c
@@ -16,7 +16,7 @@ endif
 
 EXTRA_DIST = BUGS README TODO auth_anon.c auth_cram.c auth_gss.c auth_sasl.c
 
-INCLUDES = -I$(top_srcdir) -I../intl
+AM_CPPFLAGS = -I$(top_srcdir) -I../intl
 
 noinst_LIBRARIES = libimap.a
 noinst_HEADERS = auth.h imap_private.h message.h

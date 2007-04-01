@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_regex.h"
@@ -530,48 +534,51 @@ int mutt_addr_is_user (ADDRESS *addr)
   /* NULL address is assumed to be the user. */
   if (!addr)
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, NULL address\n"));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, NULL address\n"));
     return 1;
   }
   if (!addr->mailbox)
   {
-    dprint (5, (debugfile, "mail_addr_is_user: no, no mailbox\n"));
+    dprint (5, (debugfile, "mutt_addr_is_user: no, no mailbox\n"));
     return 0;
   }
 
   if (ascii_strcasecmp (addr->mailbox, Username) == 0)
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s\n", addr->mailbox, Username));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, Username));
     return 1;
   }
   if (string_is_address(addr->mailbox, Username, Hostname))
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, Hostname));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, Hostname));
     return 1;
   }
   if (string_is_address(addr->mailbox, Username, mutt_fqdn(0)))
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (0)));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (0)));
     return 1;
   }
   if (string_is_address(addr->mailbox, Username, mutt_fqdn(1)))
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (1)));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (1)));
     return 1;
   }
 
   if (From && !ascii_strcasecmp (From->mailbox, addr->mailbox))
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s\n", addr->mailbox, From->mailbox));
     return 1;
   }
 
   if (mutt_match_rx_list (addr->mailbox, Alternates))
   {
-    dprint (5, (debugfile, "mail_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox));
-    return 1;
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s matched by alternates.\n", addr->mailbox));
+    if (mutt_match_rx_list (addr->mailbox, UnAlternates))
+      dprint (5, (debugfile, "mutt_addr_is_user: but, %s matched by unalternates.\n", addr->mailbox));
+    else
+      return 1;
   }
   
-  dprint (5, (debugfile, "mail_addr_is_user: no, all failed.\n"));
+  dprint (5, (debugfile, "mutt_addr_is_user: no, all failed.\n"));
   return 0;
 }

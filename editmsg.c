@@ -15,11 +15,15 @@
  * 
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
- *     Software Foundation, Inc., 59 Temple Place - Suite 330,
- *     Boston, MA  02111, USA.
+ *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+ *     Boston, MA  02110-1301, USA.
  */ 
 
 /* simple, editor-based message editing */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "copy.h"
@@ -75,7 +79,9 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
     return -1;
   }
 
-  rc = mutt_append_message (&tmpctx, ctx, cur, 0, CH_NOLEN | CH_NOSTATUS); oerrno = errno;
+  rc = mutt_append_message (&tmpctx, ctx, cur, 0, CH_NOLEN |
+	((ctx->magic == M_MBOX || ctx->magic == M_MMDF) ? 0 : CH_NOSTATUS));
+  oerrno = errno;
 
   mx_close_mailbox (&tmpctx, NULL);
 
@@ -139,7 +145,8 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
     goto bail;
   }
 
-  of = cf = 0;
+  of = 0;
+  cf = ((tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF) ? 0 : CH_NOSTATUS);
   
   if (fgets (buff, sizeof (buff), fp) && is_from (buff, NULL, 0, NULL))
   {
@@ -167,7 +174,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
     goto bail;
   }
 
-  if ((rc = mutt_copy_hdr (fp, msg->fp, 0, sb.st_size, CH_NOSTATUS | CH_NOLEN | cf, NULL)) == 0)
+  if ((rc = mutt_copy_hdr (fp, msg->fp, 0, sb.st_size, CH_NOLEN | cf, NULL)) == 0)
   {
     fputc ('\n', msg->fp);
     rc = mutt_copy_stream (fp, msg->fp);

@@ -13,16 +13,24 @@
  * 
  * You should have received a copy of the GNU General Public
  * License along with this program; if not, write to the Free
- * Software Foundation, Inc., 59 Temple Place - Suite 330, Boston,
- * MA 02111, USA.
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA  02110-1301, USA.
  */
 
-#include "config.h"
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
+
+
+
+/* yuck, we were including this one somewhere below. */
+#include "mutt.h"
 
 #include "sha1.h"
 #include "lib.h"
@@ -65,12 +73,12 @@ static int read_material (size_t material, size_t * used, FILE * fp)
 unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 {
   size_t used = 0;
-  long startpos;
+  LOFF_T startpos;
   unsigned char ctb;
   unsigned char b;
   size_t material;
 
-  startpos = ftell (fp);
+  startpos = ftello (fp);
 
   if (!plen)
   {
@@ -213,7 +221,7 @@ unsigned char *pgp_read_packet (FILE * fp, size_t * len)
 
 bail:
 
-  fseek (fp, startpos, SEEK_SET);
+  fseeko (fp, startpos, SEEK_SET);
   return NULL;
 }
 

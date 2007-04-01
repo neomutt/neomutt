@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -15,10 +15,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* general IMAP utility functions */
+
+#include "config.h"
 
 #include "mutt.h"
 #include "mx.h"	/* for M_IMAP */
@@ -105,7 +107,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   url_parse_ciss (&url, c);
   if (url.scheme == U_IMAP || url.scheme == U_IMAPS)
   {
-    if (mutt_account_fromurl (&mx->account, &url) < 0)
+    if (mutt_account_fromurl (&mx->account, &url) < 0 || !*mx->account.host)
     {
       FREE (&c);
       return -1;
@@ -163,16 +165,20 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       }
     }
   }
-  
-#ifdef USE_SSL
-  if (option (OPTIMAPFORCESSL))
-    mx->account.flags |= M_ACCT_SSL;
-#endif
 
   if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
     mx->account.port = ImapsPort;
 
   return 0;
+}
+
+/* silly helper for mailbox name string comparisons, because of INBOX */
+int imap_mxcmp (const char* mx1, const char* mx2)
+{
+  if (!ascii_strcasecmp (mx1, "INBOX") && !ascii_strcasecmp (mx2, "INBOX"))
+    return 0;
+  
+  return mutt_strcmp (mx1, mx2);
 }
 
 /* imap_pretty_mailbox: called by mutt_pretty_mailbox to make IMAP paths
@@ -248,19 +254,32 @@ void imap_error (const char *where, const char *msg)
 
 /* imap_new_idata: Allocate and initialise a new IMAP_DATA structure.
  *   Returns NULL on failure (no mem) */
-IMAP_DATA* imap_new_idata (void) {
-  return safe_calloc (1, sizeof (IMAP_DATA));
+IMAP_DATA* imap_new_idata (void)
+{
+  IMAP_DATA* idata = safe_calloc (1, sizeof (IMAP_DATA));
+
+  if (!idata)
+    return NULL;
+
+  if (!(idata->cmdbuf = mutt_buffer_init (NULL)))
+    FREE (&idata);
+
+  return idata;
 }
 
 /* imap_free_idata: Release and clear storage in an IMAP_DATA structure. */
-void imap_free_idata (IMAP_DATA** idata) {
+void imap_free_idata (IMAP_DATA** idata)
+{
   if (!idata)
     return;
 
   FREE (&(*idata)->capstr);
   mutt_free_list (&(*idata)->flags);
-  FREE (&((*idata)->cmd.buf));
-  FREE (idata);
+  imap_mboxcache_free (*idata);
+  mutt_buffer_free(&(*idata)->cmdbuf);
+  FREE (&(*idata)->buf);
+  mutt_bcache_close (&(*idata)->bcache);
+  FREE (idata);		/* __FREE_CHECKED__ */
 }
 
 /*
@@ -269,17 +288,12 @@ void imap_free_idata (IMAP_DATA** idata) {
  * in IMAP.  Additionally, the filesystem converts multiple hierarchy
  * delimiters into a single one, ie "///" is equal to "/".  IMAP servers
  * are not required to do this.
+ * Moreover, IMAP servers may dislike the path ending with the delimiter.
  */
 char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
     size_t plen)
 {
   int x = 0;
-
-  if (!mailbox || !*mailbox)
-  {
-    strfcpy (path, "INBOX", plen);
-    return path;
-  }
 
   while (mailbox && *mailbox && (x < (plen - 1)))
   {
@@ -295,7 +309,13 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
     }
     x++;
   }
+  if (x && path[--x] != idata->delim)
+    x++;
   path[x] = '\0';
+
+  if (!path[0])
+    strfcpy (path, "INBOX", plen);
+
   return path;
 }
 
@@ -306,15 +326,17 @@ int imap_get_literal_count(const char *buf, long *bytes)
   char *pc;
   char *pn;
 
-  if (!(pc = strchr (buf, '{')))
-    return (-1);
+  if (!buf || !(pc = strchr (buf, '{')))
+    return -1;
+
   pc++;
   pn = pc;
   while (isdigit ((unsigned char) *pc))
     pc++;
   *pc = 0;
   *bytes = atoi(pn);
-  return (0);
+
+  return 0;
 }
 
 /* imap_get_qualifier: in a tagged response, skip tag and status for

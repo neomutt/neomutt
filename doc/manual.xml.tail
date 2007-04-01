@@ -1,0 +1,149 @@
+</sect1>
+
+<sect1 id="functions">
+<title>Functions</title>
+
+<para>
+The following is the list of available functions listed by the mapping
+in which they are available.  The default key setting is given, and an
+explanation of what the function does.  The key bindings of these
+functions can be changed with the <link linkend="bind">bind</link>
+command.
+</para>
+
+__print_map(generic)
+__print_map(index)
+__print_map(pager)
+__print_map(alias)
+__print_map(query)
+__print_map(attach)
+__print_map(compose)
+__print_map(postpone)
+__print_map(browser)
+__print_map(pgp)
+__print_map(smime)
+__print_map(mix)
+__print_map(editor)
+
+</sect1>
+
+</chapter>
+
+<chapter id="miscellany">
+<title>Miscellany</title>
+
+<sect1 id="acknowledgements">
+<title>Acknowledgements</title>
+
+<para>
+Kari Hurtta <email>kari.hurtta@fmi.fi</email>
+co-developed the original MIME parsing code back in the ELM-ME days.
+</para>
+
+<para>
+The following people have been very helpful to the development of Mutt:
+
+<simplelist>
+<member>Vikas Agnihotri <email>vikasa@writeme.com</email>,</member>
+
+<member>Francois Berjon <email>Francois.Berjon@aar.alcatel-alsthom.fr</email>,</member>
+
+<member>Aric Blumer <email>aric@fore.com</email>,</member>
+
+<member>John Capo <email>jc@irbs.com</email>,</member>
+
+<member>David Champion <email>dgc@uchicago.edu</email>,</member>
+
+<member>Brendan Cully <email>brendan@kublai.com</email>,</member>
+
+<member>Liviu Daia <email>daia@stoilow.imar.ro</email>,</member>
+
+<member>Thomas E. Dickey <email>dickey@herndon4.his.com</email>,</member>
+
+<member>David DeSimone <email>fox@convex.hp.com</email>,</member>
+
+<member>Nickolay N. Dudorov <email>nnd@wint.itfs.nsk.su</email>,</member>
+
+<member>Ruslan Ermilov <email>ru@freebsd.org</email>,</member>
+
+<member>Edmund Grimley Evans <email>edmundo@rano.org</email>,</member>
+
+<member>Michael Finken <email>finken@conware.de</email>,</member>
+
+<member>Sven Guckes <email>guckes@math.fu-berlin.de</email>,</member>
+
+<member>Lars Hecking <email>lhecking@nmrc.ie</email>,</member>
+
+<member>Mark Holloman <email>holloman@nando.net</email>,</member>
+
+<member>Andreas Holzmann <email>holzmann@fmi.uni-passau.de</email>,</member>
+
+<member>Marco d'Itri <email>md@linux.it</email>,</member>
+
+<member>Bj&ouml;rn Jacke <email>bjacke@suse.com</email>,</member>
+
+<member>Byrial Jensen <email>byrial@image.dk</email>,</member>
+
+<member>David Jeske <email>jeske@igcom.net</email>,</member>
+
+<member>Christophe Kalt <email>kalt@hugo.int-evry.fr</email>,</member>
+
+<member>Tommi Komulainen <email>Tommi.Komulainen@iki.fi</email>,</member>
+
+<member>Felix von Leitner (a.k.a ``Fefe'') <email>leitner@math.fu-berlin.de</email>,</member>
+
+<member>Brandon Long <email>blong@fiction.net</email>,</member>
+
+<member>Jimmy M&auml;kel&auml; <email>jmy@flashback.net</email>,</member>
+
+<member>Lars Marowsky-Bree <email>lmb@pointer.in-minden.de</email>,</member>
+
+<member>Thomas ``Mike'' Michlmayr <email>mike@cosy.sbg.ac.at</email>,</member>
+
+<member>Andrew W. Nosenko <email>awn@bcs.zp.ua</email>,</member>
+
+<member>David O'Brien <email>obrien@Nuxi.cs.ucdavis.edu</email>,</member>
+
+<member>Clint Olsen <email>olsenc@ichips.intel.com</email>,</member>
+
+<member>Park Myeong Seok <email>pms@romance.kaist.ac.kr</email>,</member>
+
+<member>Thomas Parmelan <email>tom@ankh.fr.eu.org</email>,</member>
+
+<member>Ollivier Robert <email>roberto@keltia.freenix.fr</email>,</member>
+
+<member>Thomas Roessler <email>roessler@does-not-exist.org</email>,</member>
+
+<member>Roland Rosenfeld <email>roland@spinnaker.de</email>,</member>
+
+<member>TAKIZAWA Takashi <email>taki@luna.email.ne.jp</email>,</member>
+
+<member>Allain Thivillon <email>Allain.Thivillon@alma.fr</email>,</member>
+
+<member>Gero Treuner <email>gero@70t.de</email>,</member>
+
+<member>Vsevolod Volkov <email>vvv@lucky.net</email>,</member>
+
+<member>Ken Weinert <email>kenw@ihs.com</email></member>
+</simplelist>
+</para>
+
+</sect1>
+
+<sect1 id="about">
+<title>About this document</title>
+
+<para>
+This document was written in <ulink url="http://docbook.sourceforge.net">DocBook</ulink>,
+and then rendered using the <ulink url="http://xmlsoft.org/XSLT/">Gnome XSLT toolkit</ulink>.
+</para>
+
+</sect1>
+
+</chapter>
+
+</book>
+
+<!--
+vim:ft=xml
+-->

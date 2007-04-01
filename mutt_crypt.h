@@ -14,7 +14,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /*
@@ -117,9 +117,9 @@ int mutt_is_application_pgp (BODY *);
 
 int mutt_is_application_smime (BODY *);
 
-void mutt_signed_handler (BODY *, STATE *);
+int mutt_signed_handler (BODY *, STATE *);
 
-int mutt_parse_crypt_hdr (char *, int);
+int mutt_parse_crypt_hdr (char *, int, int);
 
 
 void convert_to_7bit (BODY *);
@@ -171,10 +171,10 @@ int crypt_pgp_valid_passphrase (void);
 int crypt_pgp_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
 
 /* MIME handler for the application/pgp content-type. */
-void crypt_pgp_application_pgp_handler (BODY *m, STATE *s);
+int crypt_pgp_application_pgp_handler (BODY *m, STATE *s);
 
 /* MIME handler for an PGP/MIME encrypted message. */
-void crypt_pgp_encrypted_handler (BODY *a, STATE *s);
+int crypt_pgp_encrypted_handler (BODY *a, STATE *s);
 
 /* fixme: needs documentation. */
 void crypt_pgp_invoke_getkeys (ADDRESS *addr);
@@ -220,7 +220,7 @@ char *crypt_pgp_keyid (pgp_key_t k);
 /* fixme: needs documentation */
 void crypt_pgp_extract_keys_from_attachment_list (FILE *fp, int tag,BODY *top);
 
-
+void crypt_pgp_set_sender (const char *sender);
 
 
 
@@ -233,7 +233,7 @@ int crypt_smime_valid_passphrase (void);
 int crypt_smime_decrypt_mime (FILE *a, FILE **b, BODY *c, BODY **d);
 
 /* MIME handler for the application/smime content-type. */
-void crypt_smime_application_smime_handler (BODY *m, STATE *s);
+int crypt_smime_application_smime_handler (BODY *m, STATE *s);
 
 /* fixme: Needs documentation. */
 void crypt_smime_getkeys (ENVELOPE *env);
@@ -258,6 +258,8 @@ BODY *crypt_smime_build_smime_entity (BODY *a, char *certlist);
 void crypt_smime_invoke_import (char *infile, char *mailbox);
 
 int crypt_smime_send_menu (HEADER *msg, int *redraw);
+
+void crypt_smime_set_sender (const char *sender);
 
 /* fixme: needs documentation */
 int crypt_smime_verify_one (BODY *sigbdy, STATE *s, const char *tempf);

@@ -13,10 +13,14 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 #define HELP_C
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -143,6 +147,38 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
   return (maxwidth - n);
 }
 
+static int get_wrapped_width (const char *t, size_t wid)
+{
+  wchar_t wc;
+  size_t k;
+  size_t m, n;
+  size_t len = mutt_strlen (t);
+  const char *s = t;
+  mbstate_t mbstate;
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  for (m = wid, n = 0;
+       len && (k = mbrtowc (&wc, s, len, &mbstate)) && (n <= wid);
+       s += k, len -= k)
+  {
+    if (*s == ' ')
+      m = n;
+    if (k == (size_t)(-1) || k == (size_t)(-2))
+    {
+      k = (k == (size_t)(-1)) ? 1 : len;
+      wc = replacement_char ();
+    }
+    if (!IsWPrint (wc))
+      wc = '?';
+    n += wcwidth (wc);
+  }
+  if (n > wid)
+    n = m;
+  else
+    n = wid;
+  return n;
+}
+
 static int pad (FILE *f, int col, int i)
 {
   char fmt[8];
@@ -179,7 +215,7 @@ static void format_line (FILE *f, int ismacro,
   {
     col_a = COLS > 83 ? (COLS - 32) >> 2 : 12;
     col_b = COLS > 49 ? (COLS - 10) >> 1 : 19;
-    col = pad (f, mutt_strlen(t1), col_a);
+    col = pad (f, mutt_strwidth(t1), col_a);
   }
 
   if (ismacro > 0)
@@ -192,7 +228,7 @@ static void format_line (FILE *f, int ismacro,
     if (!split)
     {
       col += print_macro (f, col_b - col - 4, &t2);
-      if (mutt_strlen (t2) > col_b - col)
+      if (mutt_strwidth (t2) > col_b - col)
 	t2 = "...";
     }
   }
@@ -217,15 +253,7 @@ static void format_line (FILE *f, int ismacro,
       if (ismacro >= 0)
       {
 	SKIPWS(t3);
-
-	/* FIXME: this is completely wrong */
-	if ((n = mutt_strlen (t3)) > COLS - col)
-	{
-	  n = COLS - col;
-	  for (col_a = n; col_a > 0 && t3[col_a] != ' '; col_a--) ;
-	  if (col_a)
-	    n = col_a;
-	}
+	n = get_wrapped_width (t3, n);
       }
 
       print_macro (f, n, &t3);

@@ -14,8 +14,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_menu.h"
@@ -134,16 +138,14 @@ int _mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int comp
   return (ret);
 }
 
-int mutt_get_password (char *msg, char *buf, size_t buflen)
+int mutt_get_field_unbuffered (char *msg, char *buf, size_t buflen, int flags)
 {
   int rc;
-  
-  CLEARLINE (LINES-1);
-  addstr (msg);
+
   set_option (OPTUNBUFFEREDINPUT);
-  rc = mutt_enter_string (buf, buflen, LINES - 1, mutt_strlen (msg), M_PASS);
+  rc = mutt_get_field (msg, buf, buflen, flags);
   unset_option (OPTUNBUFFEREDINPUT);
-  CLEARLINE (LINES-1);
+
   return (rc);
 }
 
@@ -279,14 +281,15 @@ void mutt_query_exit (void)
 void mutt_curses_error (const char *fmt, ...)
 {
   va_list ap;
+  char scratch[LONG_STRING];
 
   va_start (ap, fmt);
-  vsnprintf (Errorbuf, sizeof (Errorbuf), fmt, ap);
+  vsnprintf (scratch, sizeof (scratch), fmt, ap);
   va_end (ap);
   
-  dprint (1, (debugfile, "%s\n", Errorbuf));
+  dprint (1, (debugfile, "%s\n", scratch));
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf), 0);
+		      0, COLS-2, 0, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -304,13 +307,14 @@ void mutt_curses_error (const char *fmt, ...)
 void mutt_curses_message (const char *fmt, ...)
 {
   va_list ap;
+  char scratch[LONG_STRING];
 
   va_start (ap, fmt);
-  vsnprintf (Errorbuf, sizeof (Errorbuf), fmt, ap);
+  vsnprintf (scratch, sizeof (scratch), fmt, ap);
   va_end (ap);
 
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, Errorbuf, sizeof (Errorbuf), 0);
+		      0, COLS-2, 0, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -322,6 +326,73 @@ void mutt_curses_message (const char *fmt, ...)
   }
 
   unset_option (OPTMSGERR);
+}
+
+void mutt_progress_init (progress_t* progress, const char *msg,
+			 unsigned short flags, unsigned short inc,
+			 long size)
+{
+  if (!progress)
+    return;
+  memset (progress, 0, sizeof (progress_t));
+  progress->inc = inc;
+  progress->flags = flags;
+  progress->msg = msg;
+  progress->size = size;
+  mutt_progress_update (progress, 0);
+}
+
+void mutt_progress_update (progress_t* progress, long pos)
+{
+  char posstr[SHORT_STRING];
+  short update = 0;
+
+  if (!pos)
+  {
+    if (!progress->inc)
+      mutt_message (progress->msg);
+    else
+    {
+      if (progress->size)
+      {
+	if (progress->flags & M_PROGRESS_SIZE)
+	  mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
+	else
+	  snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld", progress->size);
+      }
+      progress->pos = 0;
+    }
+  }
+
+  if (!progress->inc)
+    return;
+
+  if (progress->flags & M_PROGRESS_SIZE)
+  {
+    if (pos >= progress->pos + (progress->inc << 10))
+    {
+      pos = pos / (progress->inc << 10) * (progress->inc << 10);
+      mutt_pretty_size (posstr, sizeof (posstr), pos);
+      update = 1;
+    }
+  }
+  else if (pos >= progress->pos + progress->inc)
+  {
+    snprintf (posstr, sizeof (posstr), "%ld", pos);
+    update = 1;
+  }
+
+  if (update)
+  {
+    progress->pos = pos;
+    if (progress->size)
+      mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
+    else
+      mutt_message ("%s %s", progress->msg, posstr);
+  }
+
+  if (pos >= progress->size)
+    mutt_clear_error ();
 }
 
 void mutt_show_error (void)
@@ -586,6 +657,9 @@ void mutt_format_string (char *dest, size_t destlen,
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1) && errno == EILSEQ)
+	memset (&mbstate1, 0, sizeof (mbstate1));
+
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
@@ -695,6 +769,8 @@ void mutt_paddstr (int n, const char *s)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t) (-1))
+	memset (&mbstate, 0, sizeof (mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
       wc = replacement_char ();
     }

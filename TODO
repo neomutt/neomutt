@@ -44,8 +44,6 @@ Problems are listed in approximate order of priority.
   STATE struct so that all of the MIME handlers can look
   up the corresponding HEADERs if need be?
 
-- option to not include attachments in replies
-
 - handle message/external-body in some fashion
 
 - handle message/partial reconstruction

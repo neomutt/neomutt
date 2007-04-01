@@ -14,8 +14,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -23,8 +27,6 @@
 #include "mailbox.h"
 #include "mx.h"
 #include "url.h"
-
-#include "reldate.h"
 
 #ifdef USE_IMAP
 #include "imap.h"
@@ -224,8 +226,15 @@ void mutt_free_parameter (PARAMETER **p)
 
 LIST *mutt_add_list (LIST *head, const char *data)
 {
-  LIST *tmp;
+  size_t len = mutt_strlen (data);
 
+  return mutt_add_list_n (head, data, len ? len + 1 : 0);
+}
+
+LIST *mutt_add_list_n (LIST *head, const void *data, size_t len)
+{
+  LIST *tmp;
+  
   for (tmp = head; tmp && tmp->next; tmp = tmp->next)
     ;
   if (tmp)
@@ -235,8 +244,10 @@ LIST *mutt_add_list (LIST *head, const char *data)
   }
   else
     head = tmp = safe_malloc (sizeof (LIST));
-
-  tmp->data = safe_strdup (data);
+  
+  tmp->data = safe_malloc (len);
+  if (len)
+    memcpy (tmp->data, data, len);
   tmp->next = NULL;
   return head;
 }
@@ -278,7 +289,7 @@ void mutt_free_header (HEADER **h)
 #if defined USE_POP || defined USE_IMAP
   FREE (&(*h)->data);
 #endif
-  FREE (h);
+  FREE (h);		/* __FREE_CHECKED__ */
 }
 
 /* returns true if the header contained in "s" is in list "t" */
@@ -386,6 +397,9 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	  strfcpy (p, NONULL (Maildir), sizeof (p));
 	else
 #endif
+	if (Maildir[strlen (Maildir) - 1] == '/')
+	  strfcpy (p, NONULL (Maildir), sizeof (p));
+	else
 	  snprintf (p, sizeof (p), "%s/", NONULL (Maildir));
 	
 	tail = s + 1;
@@ -452,6 +466,13 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
       }
       break;
       
+      case '^':        
+      {
+	strfcpy (p, NONULL(CurrentFolder), sizeof (p));
+	tail = s + 1;
+      }
+      break;
+
       default:
       {
 	*p = '\0';
@@ -659,7 +680,55 @@ void mutt_free_envelope (ENVELOPE **p)
   mutt_free_list (&(*p)->references);
   mutt_free_list (&(*p)->in_reply_to);
   mutt_free_list (&(*p)->userhdrs);
-  FREE (p);
+  FREE (p);		/* __FREE_CHECKED__ */
+}
+
+/* move all the headers from extra not present in base into base */
+void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
+{
+  /* copies each existing element if necessary, and sets the element
+  * to NULL in the source so that mutt_free_envelope doesn't leave us
+  * with dangling pointers. */
+#define MOVE_ELEM(h) if (!base->h) { base->h = (*extra)->h; (*extra)->h = NULL; }
+  MOVE_ELEM(return_path);
+  MOVE_ELEM(from);
+  MOVE_ELEM(to);
+  MOVE_ELEM(cc);
+  MOVE_ELEM(bcc);
+  MOVE_ELEM(sender);
+  MOVE_ELEM(reply_to);
+  MOVE_ELEM(mail_followup_to);
+  MOVE_ELEM(list_post);
+  MOVE_ELEM(message_id);
+  MOVE_ELEM(supersedes);
+  MOVE_ELEM(date);
+  MOVE_ELEM(x_label);
+  if (!base->refs_changed)
+  {
+    MOVE_ELEM(references);
+  }
+  if (!base->irt_changed)
+  {
+    MOVE_ELEM(in_reply_to);
+  }
+  
+  /* real_subj is subordinate to subject */
+  if (!base->subject)
+  {
+    base->subject = (*extra)->subject;
+    base->real_subj = (*extra)->real_subj;
+    (*extra)->subject = NULL;
+    (*extra)->real_subj = NULL;
+  }
+  /* spam and user headers should never be hashed, and the new envelope may
+    * have better values. Use new versions regardless. */
+  mutt_buffer_free (&base->spam);
+  mutt_free_list (&base->userhdrs);
+  MOVE_ELEM(spam);
+  MOVE_ELEM(userhdrs);
+#undef MOVE_ELEM
+  
+  mutt_free_envelope(extra);
 }
 
 void _mutt_mktemp (char *s, const char *src, int line)
@@ -845,13 +914,13 @@ int mutt_check_overwrite (const char *attname, const char *path,
 	  mutt_str_replace (directory, fname);
 	  break;
 	case 1:		/* yes */
-	  FREE (directory);
+	  FREE (directory);		/* __FREE_CHECKED__ */
 	  break;
 	case -1:	/* abort */
-	  FREE (directory); 
+	  FREE (directory); 		/* __FREE_CHECKED__ */
 	  return -1;
 	case  2:	/* no */
-	  FREE (directory);
+	  FREE (directory);		/* __FREE_CHECKED__ */
 	  return 1;
       }
     }
@@ -929,12 +998,125 @@ void mutt_FormatString (char *dest,		/* output buffer */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
-  size_t wlen, count, len;
+  size_t wlen, count, len, col, wid;
+  pid_t pid;
+  FILE *filter;
+  int n;
+  char *recycler;
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
   wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
-    
+  col = wlen;
+
+  if ((flags & M_FORMAT_NOFILTER) == 0)
+  {
+    int off = -1;
+
+    /* Do not consider filters if no pipe at end */
+    n = mutt_strlen(src);
+    if (n > 0 && src[n-1] == '|')
+    {
+      /* Scan backwards for backslashes */
+      off = n;
+      while (off > 0 && src[off-2] == '\\')
+        off--;
+    }
+
+    /* If number of backslashes is even, the pipe is real. */
+    /* n-off is the number of backslashes. */
+    if (off > 0 && ((n-off) % 2) == 0)
+    {
+      BUFFER *srcbuf, *word, *command;
+      char    srccopy[LONG_STRING];
+      int     i = 0;
+
+      dprint(3, (debugfile, "fmtpipe = %s\n", src));
+
+      strncpy(srccopy, src, n);
+      srccopy[n-1] = '\0';
+
+      /* prepare BUFFERs */
+      srcbuf = mutt_buffer_from(NULL, srccopy);
+      srcbuf->dptr = srcbuf->data;
+      word = mutt_buffer_init(NULL);
+      command = mutt_buffer_init(NULL);
+
+      /* Iterate expansions across successive arguments */
+      do {
+        char *p;
+
+        /* Extract the command name and copy to command line */
+        dprint(3, (debugfile, "fmtpipe +++: %s\n", srcbuf->dptr));
+        if (word->data)
+          *word->data = '\0';
+        mutt_extract_token(word, srcbuf, 0);
+        dprint(3, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
+        mutt_buffer_addch(command, '\'');
+        mutt_FormatString(buf, sizeof(buf), word->data, callback, data,
+                          flags | M_FORMAT_NOFILTER);
+        for (p = buf; p && *p; p++)
+        {
+          if (*p == '\'')
+            /* shell quoting doesn't permit escaping a single quote within
+             * single-quoted material.  double-quoting instead will lead
+             * shell variable expansions, so break out of the single-quoted
+             * span, insert a double-quoted single quote, and resume. */
+            mutt_buffer_addstr(command, "'\"'\"'");
+          else
+            mutt_buffer_addch(command, *p);
+        }
+        mutt_buffer_addch(command, '\'');
+        mutt_buffer_addch(command, ' ');
+      } while (MoreArgs(srcbuf));
+
+      dprint(3, (debugfile, "fmtpipe > %s\n", command->data));
+
+      wptr = dest;      /* reset write ptr */
+      wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+      if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)))
+      {
+        n = fread(dest, 1, destlen /* already decremented */, filter);
+        fclose(filter);
+        dest[n] = '\0';
+        while (dest[n-1] == '\n' || dest[n-1] == '\r')
+          dest[--n] = '\0';
+        dprint(3, (debugfile, "fmtpipe < %s\n", dest));
+
+        if (pid != -1)
+          mutt_wait_filter(pid);
+  
+        /* If the result ends with '%', this indicates that the filter
+         * generated %-tokens that mutt can expand.  Eliminate the '%'
+         * marker and recycle the string through mutt_FormatString().
+         * To literally end with "%", use "%%". */
+        if (dest[--n] == '%')
+        {
+          dest[n] = '\0';               /* remove '%' */
+          if (dest[--n] != '%')
+          {
+            recycler = safe_strdup(dest);
+            if (recycler)
+            {
+              mutt_FormatString(dest, destlen++, recycler, callback, data, flags);
+              FREE(&recycler);
+            }
+          }
+        }
+      }
+      else
+      {
+        /* Filter failed; erase write buffer */
+        *wptr = '\0';
+      }
+
+      mutt_buffer_free(&command);
+      mutt_buffer_free(&srcbuf);
+      mutt_buffer_free(&word);
+      return;
+    }
+  }
+
   while (*src && wlen < destlen)
   {
     if (*src == '%')
@@ -943,6 +1125,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       {
 	*wptr++ = '%';
 	wlen++;
+	col++;
 	src++;
 	continue;
       }
@@ -1015,23 +1198,26 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	/* calculate space left on line.  if we've already written more data
 	   than will fit on the line, ignore the rest of the line */
 	count = (COLS < destlen ? COLS : destlen);
-	if (count > wlen)
+	if (count > col)
 	{
-	  count -= wlen; /* how many chars left on this line */
+	  count -= col; /* how many columns left on this line */
 	  mutt_FormatString (buf, sizeof (buf), src, callback, data, flags);
 	  len = mutt_strlen (buf);
-	  if (count > len)
+	  wid = mutt_strwidth (buf);
+	  if (count > wid)
 	  {
-	    count -= len; /* how many chars to pad */
+	    count -= wid; /* how many chars to pad */
 	    memset (wptr, ch, count);
 	    wptr += count;
 	    wlen += count;
+	    col += count;
 	  }
 	  if (len + wlen > destlen)
 	    len = destlen - wlen;
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;
+	  col += mutt_strwidth (buf);
 	}
 	break; /* skip rest of input */
       }
@@ -1083,6 +1269,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	memcpy (wptr, buf, len);
 	wptr += len;
 	wlen += len;
+	col += mutt_strwidth (buf);
       }
     }
     else if (*src == '\\')
@@ -1113,11 +1300,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
       src++;
       wptr++;
       wlen++;
+      col++;
     }
     else
     {
       *wptr++ = *src++;
       wlen++;
+      col++;
     }
   }
   *wptr = 0;
@@ -1189,14 +1378,8 @@ int mutt_save_confirm (const char *s, struct stat *st)
   }
 #endif
 
-  if (stat (s, st) != -1)
+  if (magic > 0 && !mx_access (s, W_OK))
   {
-    if (magic == -1)
-    {
-      mutt_error (_("%s is not a mailbox!"), s);
-      return 1;
-    }
-
     if (option (OPTCONFIRMAPPEND))
     {
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
@@ -1206,31 +1389,38 @@ int mutt_save_confirm (const char *s, struct stat *st)
 	ret = -1;
     }
   }
-  else
-  {
-#ifdef USE_IMAP
-    if (magic != M_IMAP)
-#endif /* execute the block unconditionally if we don't use imap */
-    {
-      st->st_mtime = 0;
-      st->st_atime = 0;
 
-      if (errno == ENOENT)
+  if (stat (s, st) != -1)
+  {
+    if (magic == -1)
+    {
+      mutt_error (_("%s is not a mailbox!"), s);
+      return 1;
+    }
+  }
+  else
+#ifdef USE_IMAP
+  if (magic != M_IMAP)
+#endif /* execute the block unconditionally if we don't use imap */
+  {
+    st->st_mtime = 0;
+    st->st_atime = 0;
+
+    if (errno == ENOENT)
+    {
+      if (option (OPTCONFIRMCREATE))
       {
-	if (option (OPTCONFIRMCREATE))
-	{
-	  snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
-	  if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
-	    ret = 1;
-	  else if (rc == -1)
-	    ret = -1;
-	}
+	snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
+	if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
+	  ret = 1;
+	else if (rc == -1)
+	  ret = -1;
       }
-      else
-      {
-	mutt_perror (s);
-	return 1;
-      }
+    }
+    else
+    {
+      mutt_perror (s);
+      return 1;
     }
   }
 
@@ -1316,7 +1506,7 @@ BUFFER * mutt_buffer_init(BUFFER *b)
   }
   else
   {
-    safe_free(b->data);
+    FREE(&b->data);
   }
   memset(b, 0, sizeof(BUFFER));
   return b;
@@ -1342,6 +1532,43 @@ BUFFER * mutt_buffer_from(BUFFER *b, char *seed)
   return b;
 }
 
+int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
+{
+  va_list ap, ap_retry;
+  int len, blen, doff;
+  
+  va_start (ap, fmt);
+  va_copy (ap_retry, ap);
+
+  doff = buf->dptr - buf->data;
+  blen = buf->dsize - doff;
+  /* solaris 9 vsnprintf barfs when blen is 0 */
+  if (!blen)
+  {
+    blen = 128;
+    buf->dsize += blen;
+    safe_realloc (&buf->data, buf->dsize);
+    buf->dptr = buf->data + doff;
+  }
+  if ((len = vsnprintf (buf->dptr, blen, fmt, ap)) >= blen)
+  {
+    blen = ++len - blen;
+    if (blen < 128)
+      blen = 128;
+    buf->dsize += blen;
+    safe_realloc (&buf->data, buf->dsize);
+    buf->dptr = buf->data + doff;
+    len = vsnprintf (buf->dptr, len, fmt, ap_retry);
+    va_end (ap_retry);
+  }
+  if (len > 0)
+    buf->dptr += len;
+
+  va_end (ap);
+  
+  return len;
+}
+
 void mutt_buffer_addstr (BUFFER* buf, const char* s)
 {
   mutt_buffer_add (buf, s, mutt_strlen (s));
@@ -1359,7 +1586,7 @@ void mutt_buffer_free (BUFFER **p)
 
    FREE(&(*p)->data);
    /* dptr is just an offset to data and shouldn't be freed */
-   FREE(p);
+   FREE(p);		/* __FREE_CHECKED__ */
 }
 
 /* dynamically grows a BUFFER to accomodate s, in increments of 128 bytes.
@@ -1407,6 +1634,20 @@ time_t mutt_decrease_mtime (const char *f, struct stat *st)
   return mtime;
 }
 
+/* sets mtime of 'to' to mtime of 'from' */
+void mutt_set_mtime (const char* from, const char* to)
+{
+  struct utimbuf utim;
+  struct stat st;
+
+  if (stat (from, &st) != -1)
+  {
+    utim.actime = st.st_mtime;
+    utim.modtime = st.st_mtime;
+    utime (to, &utim);
+  }
+}
+
 const char *mutt_make_version (void)
 {
   static char vstring[STRING];
@@ -1431,7 +1672,7 @@ void mutt_free_regexp (REGEXP **pp)
   FREE (&(*pp)->pattern);
   regfree ((*pp)->rx);
   FREE (&(*pp)->rx);
-  FREE (pp);
+  FREE (pp);		/* __FREE_CHECKED__ */
 }
 
 void mutt_free_rx_list (RX_LIST **list)
@@ -1458,7 +1699,7 @@ void mutt_free_spam_list (SPAM_LIST **list)
     p = *list;
     *list = (*list)->next;
     mutt_free_regexp (&p->rx);
-    safe_free(&p->template);
+    FREE (&p->template);
     FREE (&p);
   }
 }
@@ -1503,7 +1744,7 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
     if (regexec (l->rx->rx, s, (size_t) l->nmatch, (regmatch_t *) pmatch, (int) 0) == 0)
     {
       dprint (5, (debugfile, "mutt_match_spam_list: %s matches %s\n", s, l->rx->pattern));
-      dprint (5, (debugfile, "mutt_match_spam_list: %d subs\n", l->rx->rx->re_nsub));
+      dprint (5, (debugfile, "mutt_match_spam_list: %d subs\n", (int)l->rx->rx->re_nsub));
 
       /* Copy template into text, with substitutions. */
       for (p = l->template; *p;)
@@ -1511,7 +1752,7 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
 	if (*p == '%')
 	{
 	  n = atoi(++p);			/* find pmatch index */
-	  while (isdigit(*p))
+	  while (isdigit((unsigned char)*p))
 	    ++p;				/* skip subst token */
 	  for (i = pmatch[n].rm_so; (i < pmatch[n].rm_eo) && (tlen < x); i++)
 	    text[tlen++] = s[i];
@@ -1529,3 +1770,4 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
 
   return 0;
 }
+

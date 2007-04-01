@@ -9,7 +9,7 @@
 # Note that this script won't work for you.  I'm including it with 
 # the distribution for the sake of completeness.
 #
-# Thomas Roessler <roessler@guug.de> Mon,  8 Nov 1999 22:32:41 +0100
+# Thomas Roessler <roessler@does-not-exist.org> Mon,  8 Nov 1999 22:32:41 +0100
 #
 
 set -e
@@ -25,7 +25,7 @@ devel="devel/"	# comment out for the stable branch
 
 # update the source
 
-cvs update
+#cvs update
 
 # Do automated security checks
 
@@ -44,53 +44,52 @@ ${VISUAL} VERSION
 VERSION="`cat VERSION`" 
 TAG="mutt-`echo $VERSION | tr . -`-rel" 
 
-echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
+#echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
 
-make changelog 
+make update-changelog 
 
 # now, prepare the distribution tar balls
 
-(cd m4 && rm -f Makefile Makefile.in Makefile.am && make -f Makefile.am.in)
-automake
-touch configure.in
+#automake
+#touch configure.in
 make config.status
 ./config.status
 make update-doc
-make changelog
+make update-changelog
+(cd po && make update-po)
 
 # build them
 
-# make us-dist
 make dist
-mv mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz
-# mv mutt-${VERSION}-us.tar.gz mutt-${VERSION}.tar.gz
 
 # commit and tag the release
 
-cvs commit -m "automatic post-release commit for mutt-${VERSION}"
-make commit-changelog 
-cvs tag ${TAG}
+#cvs commit -m "automatic post-release commit for mutt-${VERSION}"
+#make commit-changelog 
+#cvs tag ${TAG}
 
 # build the diff between the two releases
 
 if test "$diff" = yes ; then
 	cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
-		> diff-${OVERSION}i-${VERSION}i.gz
+		> diff-${OVERSION}-${VERSION}.gz
 fi
 
 # sign the various files
 
 # DISTFILES="mutt-${VERSION}.tar.gz mutt-${VERSION}i.tar.gz diff-${OVERSION}i-${VERSION}i.gz"
-DISTFILES="mutt-${VERSION}i.tar.gz"
+DISTFILES="mutt-${VERSION}.tar.gz"
 
 if test "$diff" = yes ; then
-	DISTFILES="$DISTFILES diff-${OVERSION}i-${VERSION}i.gz"
+	DISTFILES="$DISTFILES diff-${OVERSION}-${VERSION}.gz"
 fi
 
 for f in $DISTFILES; do
 	gpg -ba $f
 	chmod 644 $f.asc
 done
+
+exit 0
 
 echo "Release built.  Please connect to the net and press <enter>"
 echo "when on-line."

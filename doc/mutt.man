@@ -1,7 +1,7 @@
 .\" -*-nroff-*-
 .\"
 .\"
-.\"     Copyright (C) 1996-2000 Michael R. Elkins <me@cs.hmc.edu>
+.\"     Copyright (C) 1996-2004 Michael R. Elkins <me@cs.hmc.edu>
 .\" 
 .\"     This program is free software; you can redistribute it and/or modify
 .\"     it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@
 .\" 
 .\"     You should have received a copy of the GNU General Public License
 .\"     along with this program; if not, write to the Free Software
-.\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+.\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .\"
-.TH mutt 1 "January 2002" Unix "User Manuals"
+.TH mutt 1 "March 2007" Unix "User Manuals"
 .SH NAME
 mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
@@ -35,24 +35,29 @@ mutt \- The Mutt Mail User Agent
 [-i \fIfile\fP]
 [-s \fIsubj\fP]
 [-b \fIaddr\fP]
-[-c \fIaddr\fP] \fIaddr\fP [...]
+[-c \fIaddr\fP]
+[--]
+\fIaddr\fP [...]
 .PP
 .B mutt
 [-n] [-e \fIcmd\fP] [-F \fIfile\fP] -p
 .PP
 .B mutt
-[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -Q \fIquery\fP
+[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -A \fIalias\fP
 .PP
 .B mutt
-[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -A \fIalias\fP
+[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -Q \fIquery\fP
 .PP
 .B mutt 
 -v[v]
+.PP
+.B mutt 
+-D
 .SH DESCRIPTION
 .PP
-Mutt is a small but very powerful text based program for reading electronic
-mail under unix operating systems, including support color terminals, MIME,
-and a threaded sorting mode.
+Mutt is a small but very powerful text based program for reading and sending electronic
+mail under unix operating systems, including support for color terminals, MIME,
+OpenPGP, and a threaded sorting mode.
 .SH OPTIONS
 .PP
 .IP "-A \fIalias\fP"
@@ -63,6 +68,12 @@ Attach a file to your message using MIME.
 Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"
 Specify a carbon-copy (CC) recipient
+.IP "-d \fIlevel\fp"
+If mutt was complied with +DEBUG log debugging output to ~/.muttdebug0.
+\fILevel\fP can range from 1-5 and effects verbosity. A value of 2 is
+recommended.
+.IP "-D"
+Print the value of all configuration options to stdout.
 .IP "-e \fIcommand\fP"
 Specify a configuration command to be run after processing of initialization
 files.
@@ -84,7 +95,7 @@ Causes Mutt to bypass the system configuration file.
 .IP "-p"
 Resume a postponed message.
 .IP "-Q \fIquery\fP"
-Qeury a configuration variables value.  The query is executed after
+Query a configuration variables value.  The query is executed after
 all configuration files have been parsed, and any commands given on
 the command line have been executed.
 .IP "-R"
@@ -93,6 +104,8 @@ Open a mailbox in \fIread-only\fP mode.
 Specify the subject of the message.
 .IP "-v"
 Display the Mutt version number and compile-time definitions.
+.IP "-vv"
+Display license and copyright information.
 .IP "-x"
 Emulate the mailx compose mode.
 .IP "-y"
@@ -104,6 +117,8 @@ mailbox.
 .IP "-Z"
 Causes Mutt to open the first mailbox specified by the \fImailboxes\fP
 command which contains new mail.
+.IP "--"
+Treat remaining arguments as \fIaddr\fP even if they start with a dash.
 .SH ENVIRONMENT
 .PP
 .IP "EDITOR"
@@ -135,21 +150,21 @@ Specifies the editor to use when composing messages.
 .PP
 .IP "~/.muttrc or ~/.mutt/muttrc"
 User configuration file.
-.IP "/etc/Muttrc"
+.IP "@sysconfdir@/Muttrc"
 System-wide configuration file.
 .IP "/tmp/muttXXXXXX"
 Temporary files created by Mutt.
 .IP "~/.mailcap"
 User definition for handling non-text MIME types.
-.IP "/etc/mailcap"
+.IP "@sysconfdir@/mailcap"
 System definition for handling non-text MIME types.
 .IP "~/.mime.types"
 User's personal mapping between MIME types and file extensions.
-.IP "/etc/mime.types"
+.IP "@sysconfdir@/mime.types"
 System mapping between MIME types and file extensions.
-.IP "/usr/local/bin/mutt_dotlock"
+.IP "@bindir@/mutt_dotlock"
 The privileged dotlocking program.
-.IP "/usr/local/doc/mutt/manual.txt"
+.IP "@docdir@/manual.txt"
 The Mutt manual.
 .SH BUGS
 .PP
@@ -163,16 +178,13 @@ with the S-Lang library, however.
 Resizing the screen while using an external pager causes Mutt to go haywire
 on some systems.
 .PP
-suspend/resume does not work under Ultrix.
+Suspend/resume does not work under Ultrix.
 .PP
 The help line for the index menu is not updated if you change the bindings
 for one of the functions listed while Mutt is running.
 .PP
 For a more up-to-date list of bugs, errm, fleas, please visit the
-mutt project's bug tracking system under http://bugs.guug.de/.  To
-report a bug, please use the
-.BR flea (1)
-program.
+mutt project's bug tracking system under http://bugs.mutt.org/.
 .SH NO WARRANTIES
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -181,7 +193,6 @@ GNU General Public License for more details.
 .SH SEE ALSO
 .PP
 .BR curses (3),
-.BR flea (1),
 .BR mailcap (5),
 .BR maildir (5),
 .BR mbox (5),
@@ -189,13 +200,11 @@ GNU General Public License for more details.
 .BR muttrc (5),
 .BR ncurses (3),
 .BR sendmail (1),
-.BR smail (1)
+.BR smail (1).
 .PP
 Mutt Home Page: http://www.mutt.org/
 .PP
 The Mutt manual
-.PP
-The GNU General Public License.
 .SH AUTHOR
 .PP
 Michael Elkins, and others.  Use <mutt-dev@mutt.org> to contact

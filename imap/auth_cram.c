@@ -13,10 +13,14 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* IMAP login/authentication code */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "imap_private.h"
@@ -44,7 +48,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
   mutt_message _("Authenticating (CRAM-MD5)...");
 
   /* get auth info */
-  if (mutt_account_getuser (&idata->conn->account))
+  if (mutt_account_getlogin (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
   if (mutt_account_getpass (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
@@ -67,7 +71,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
     goto bail;
   }
 
-  if ((len = mutt_from_base64 (obuf, idata->cmd.buf + 2)) == -1)
+  if ((len = mutt_from_base64 (obuf, idata->buf + 2)) == -1)
   {
     dprint (1, (debugfile, "Error decoding base64 response.\n"));
     goto bail;
@@ -117,7 +121,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
     goto bail;
   }
 
-  if (imap_code (idata->cmd.buf))
+  if (imap_code (idata->buf))
     return IMAP_AUTH_SUCCESS;
 
  bail:

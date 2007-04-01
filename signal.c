@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -75,6 +79,11 @@ RETSIGTYPE sighandler (int sig)
       if (!IsEndwin)
 	refresh ();
       mutt_curs_set (-1);
+#if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
+      /* We don't receive SIGWINCH when suspended; however, no harm is done by
+       * just assuming we received one, and triggering the 'resize' anyway. */
+      SigWinch = 1;
+#endif
       break;
 
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)

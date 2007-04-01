@@ -13,7 +13,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* flags to _mutt_copy_message */
@@ -37,7 +37,7 @@
 
 
 
-int mutt_copy_hdr (FILE *, FILE *, long, long, int, const char *);
+int mutt_copy_hdr (FILE *, FILE *, LOFF_T, LOFF_T, int, const char *);
 
 int mutt_copy_header (FILE *, HEADER *, FILE *, int, const char *);
 

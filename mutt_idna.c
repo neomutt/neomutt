@@ -13,10 +13,13 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
-#include "config.h"
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "mutt.h"
 #include "charset.h"
 #include "mutt_idna.h"
@@ -43,25 +46,33 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
 {
   *out = NULL;
 
+  if (!option (OPTUSEIDN))
+    goto notrans;
+
   if (!in)
     goto notrans;
   
   /* Is this the right function?  Interesting effects with some bad identifiers! */
   if (idna_to_unicode_8z8z (in, out, 1) != IDNA_SUCCESS)
     goto notrans;
-  if (mutt_convert_string (out, "utf-8", Charset, M_ICONV_HOOK_TO) == -1)
+
+  /* we don't want charset-hook effects, so we set flags to 0 */
+  if (mutt_convert_string (out, "utf-8", Charset, 0) == -1)
     goto notrans;
 
   /* 
    * make sure that we can convert back and come out with the same
-   * domain name. */
+   * domain name. 
+   */
   
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
     int irrev = 0;
     char *t2 = NULL;
     char *tmp = safe_strdup (*out);
-    if (mutt_convert_string (&tmp, Charset, "utf-8", M_ICONV_HOOK_FROM) == -1)
+
+    /* we don't want charset-hook effects, so we set flags to 0 */
+    if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
       irrev = 1;
     if (!irrev && idna_to_ascii_8z (tmp, &t2, 1) != IDNA_SUCCESS)
       irrev = 1;
@@ -82,7 +93,7 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
   return 0;
   
  notrans:
-  FREE (out);
+  FREE (out);		/* __FREE_CHECKED__ */
   *out = safe_strdup (in);
   return 1;
 }
@@ -99,7 +110,8 @@ int mutt_local_to_idna (const char *in, char **out)
     return -1;
   }
   
-  if (mutt_convert_string (&tmp, Charset, "utf-8", M_ICONV_HOOK_FROM) == -1)
+  /* we don't want charset-hook effects, so we set flags to 0 */
+  if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
     rv = -1;
   if (!rv && idna_to_ascii_8z (tmp, out, 1) != IDNA_SUCCESS)
     rv = -2;
@@ -107,7 +119,7 @@ int mutt_local_to_idna (const char *in, char **out)
   FREE (&tmp);
   if (rv < 0)
   {
-    FREE (out);
+    FREE (out);		/* __FREE_CHECKED__ */
     *out = safe_strdup (in);
   }
   return rv;
@@ -125,7 +137,7 @@ static int mbox_to_udomain (const char *mbx, char **user, char **domain)
   *domain = NULL;
   
   p = strchr (mbx, '@');
-  if (!p)
+  if (!p || !p[1])
     return -1;
   *user = safe_calloc((p - mbx + 1), sizeof(mbx[0]));
   strfcpy (*user, mbx, (p - mbx + 1));

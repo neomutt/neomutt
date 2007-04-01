@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -31,14 +35,13 @@
 #include "copy.h"
 #include "charset.h"
 #include "mutt_crypt.h"
-
+#include "rfc3676.h"
 
 #define BUFI_SIZE 1000
 #define BUFO_SIZE 2000
 
 
-typedef void handler_f (BODY *, STATE *);
-typedef handler_f *handler_t;
+typedef int (*handler_t) (BODY *, STATE *);
 
 int Index_hex[128] = {
     -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1, -1,-1,-1,-1,
@@ -763,7 +766,7 @@ static void enriched_set_flags (const char *tag, struct enriched_state *stte)
   }
 }
 
-void text_enriched_handler (BODY *a, STATE *s)
+int text_enriched_handler (BODY *a, STATE *s)
 {
   enum {
     TEXT, LANGLE, TAG, BOGUS_TAG, NEWLINE, ST_EOF, DONE
@@ -885,315 +888,15 @@ void text_enriched_handler (BODY *a, STATE *s)
   FREE (&(stte.buffer));
   FREE (&(stte.line));
   FREE (&(stte.param));
+
+  return 0;
 }                                                                              
-
-/*
- * An implementation of RFC 2646.
- *
- * NOTE: This still has to be made UTF-8 aware.
- *
- */
-
-#define FLOWED_MAX 77
-
-static void flowed_quote (STATE *s, int level)
-{
-  int i;
-  
-  if (s->prefix)
-  {
-    if (option (OPTTEXTFLOWED))
-      level++;
-    else
-      state_puts (s->prefix, s);
-  }
-  
-  for (i = 0; i < level; i++)
-    state_putc ('>', s);
-}
-
-static int flowed_maybe_quoted (char *cont)
-{
-  return regexec ((regex_t *) QuoteRegexp.rx, cont, 0, NULL, 0) == 0;
-}
-
-static void flowed_stuff (STATE *s, char *cont, int level)
-{
-  if (!option (OPTTEXTFLOWED) && !(s->flags & M_DISPLAY))
-    return;
-
-  if (s->flags & M_DISPLAY)
-  {
-    /* 
-     * Hack: If we are in the beginning of the line and there is 
-     * some text on the line which looks like it's quoted, turn off 
-     * ANSI colors, so quote coloring doesn't affect this line. 
-     */
-    if (*cont && !level && !mutt_strcmp (Pager, "builtin") && flowed_maybe_quoted (cont))
-      state_puts ("\033[0m",s);
-  }
-  else if ((!(s->flags & M_PRINTING)) && 
-	   ((*cont == ' ') || (*cont == '>') || (!level && !mutt_strncmp (cont, "From ", 5))))
-    state_putc (' ', s);
-}
-
-static char *flowed_skip_indent (char *prefix, char *cont)
-{
-  for (; *cont == ' ' || *cont == '\t'; cont++)
-    *prefix++ = *cont;
-  *prefix = '\0';
-  return cont;
-}
-
-static int flowed_visual_strlen (char *l, int i)
-{
-  int j;
-  for (j = 0; *l; l++)
-  {
-    if (*l == '\t')
-      j += 8 - ((i + j) % 8);
-    else
-      j++;
-  }
-  
-  return j;
-}
-
-static void text_plain_flowed_handler (BODY *a, STATE *s)
-{
-  char line[LONG_STRING];
-  char indent[LONG_STRING];
-
-  int  quoted = -1;
-  int  last_quoted;
-  int  full = 1;
-  int  last_full;
-  int  col = 0, tmpcol;
-
-  int  i_add = 0;
-  int  add = 0;
-  int  soft = 0;
-  int  l, rl;
-  
-  int  flowed_max;
-  int  bytes = a->length;
-  int  actually_wrap = 0;
-  
-  char *cont = NULL;
-  char *tail = NULL;
-  char *lc = NULL;
-  char *t;
-  
-  *indent = '\0';
-  
-  if (s->prefix)
-    add = 1;
-  
-  if ((flowed_max = FLOWED_MAX) > COLS - 3)
-    flowed_max = COLS - 3;
-  if (flowed_max > COLS - WrapMargin)
-    flowed_max = COLS - WrapMargin;
-  if (flowed_max <= 0)
-    flowed_max = COLS;
-    
-
-  while (bytes > 0 && fgets (line, sizeof (line), s->fpin))
-  {
-    bytes        -= strlen (line);
-    tail          = NULL;
-
-    last_full     = full;
-    
-    /* 
-     * If the last line wasn't fully read, this is the
-     * tail of some line. 
-     */
-    actually_wrap = !last_full; 
-    
-    if ((t = strrchr (line, '\r')) || (t = strrchr (line, '\n')))
-    {
-      *t   = '\0';
-      full = 1;
-    }
-    else if ((t = strrchr (line, ' ')) || (t = strrchr (line, '\t')))
-    {
-      /* 
-       * Bad: We have a line of more than LONG_STRING characters.
-       * (Which SHOULD NOT happen, since lines SHOULD be <= 79
-       * characters long.)
-       * 
-       * Try to simulate a soft line break at a word boundary.
-       * Handle the rest of the line next time.
-       * 
-       * Give up when we have a single word which is longer than
-       * LONG_STRING characters.  It will just be split into parts,
-       * with a hard line break in between. 
-       */
-
-      full = 0;
-      l    = strlen (t + 1);
-      t[0] = ' ';
-      t[1] = '\0';
-
-      if (l)
-      {
-	fseek (s->fpin, -l, SEEK_CUR);
-	bytes += l;
-      }
-    }
-    else
-      full = 0;
-
-    last_quoted = quoted;
-
-    if (last_full)
-    {
-      /* 
-       * We are in the beginning of a new line. Determine quote level
-       * and indentation prefix 
-       */
-      for (quoted = 0; line[quoted] == '>'; quoted++)
-	;
-      
-      cont = line + quoted;
-      
-      /* undo space stuffing */
-      if (*cont == ' ')
-	cont++;
-
-      /* If there is an indentation, record it. */
-      cont  = flowed_skip_indent (indent, cont);
-      i_add = flowed_visual_strlen (indent, quoted + add);
-    }
-    else
-    {
-      /* 
-       * This is just the tail of some over-long line. Keep
-       * indentation and quote levels.  Don't unstuff.
-       */
-      cont = line;
-    }
-
-    /* If we have a change in quoting depth, wrap. */
-
-    if (col && last_quoted != quoted && last_quoted >= 0)
-    {
-      state_putc ('\n', s);
-      col = 0;
-    }
-    
-    do 
-    {
-      if (tail)
-	cont = tail;
-
-      SKIPWS (cont);
-      
-      tail = NULL;
-      soft = 0;
-      
-      /* try to find a point for word wrapping */
-
-    retry_wrap:
-      l  = flowed_visual_strlen (cont, quoted + i_add + add + col);
-      rl = mutt_strlen (cont);
-      if (quoted + i_add + add + col + l > flowed_max)
-      {
-	actually_wrap = 1;
-
-	for (tmpcol = quoted + i_add + add + col, t = cont;
-	     *t && tmpcol < flowed_max; t++)
-	{
-	  if (*t == ' ' || *t == '\t')
-	    tail = t;
-	  if (*t == '\t')
-	    tmpcol = (tmpcol & ~7) + 8;
-	  else
-	    tmpcol++;
-	}
-	
-	if (tail)
-	{
-	  *tail++ = '\0';
-	  soft = 2;
-	}
-      }
-
-      /* We seem to be desperate.  Get me a new line, and retry. */
-      if (!tail && (quoted + add + col + i_add + l > flowed_max) && col)
-      {
-	state_putc ('\n', s);
-	col = 0;
-	goto retry_wrap;
-      }
-
-      /* Detect soft line breaks. */
-      if (!soft && ascii_strcmp (cont, "-- "))
-      {
-	lc = strrchr (cont, ' ');
-	if (lc && lc[1] == '\0')
-	  soft = 1;
-      }
-
-      /* 
-       * If we are in the beginning of an output line, do quoting
-       * and stuffing. 
-       * 
-       * We have to temporarily assemble the line since display
-       * stuffing (i.e., turning off quote coloring) may depend on
-       * the line's actual content.  You never know what people put
-       * into their regular expressions. 
-       */
-      if (!col)
-      {
-	char tmp[LONG_STRING];
-	snprintf (tmp, sizeof (tmp), "%s%s", indent, cont);
-
-	flowed_quote (s, quoted);
-	flowed_stuff (s, tmp, quoted + add);
-
-	state_puts (indent, s);
-      }
-
-      /* output the text */
-      state_puts (cont, s);
-      col += flowed_visual_strlen (cont, quoted + i_add + add + col);
-      
-      /* possibly indicate a soft line break */
-      if (soft == 2)
-      {
-	state_putc (' ', s);
-	col++;
-      }
-      
-      /* 
-       * Wrap if this display line corresponds to a 
-       * text line. Don't wrap if we changed the line.
-       */
-      if (!soft || (!actually_wrap && full))
-      {
-	state_putc ('\n', s);
-	col = 0;
-      }
-    }
-    while (tail);
-  }
-
-  if (col)
-    state_putc ('\n', s);
-  
-}
-
-
-
-
-
 
 #define TXTHTML     1
 #define TXTPLAIN    2
 #define TXTENRICHED 3
 
-static void alternative_handler (BODY *a, STATE *s)
+static int alternative_handler (BODY *a, STATE *s)
 {
   BODY *choice = NULL;
   BODY *b;
@@ -1201,6 +904,7 @@ static void alternative_handler (BODY *a, STATE *s)
   char buf[STRING];
   int type = 0;
   int mustfree = 0;
+  int rc = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
@@ -1333,7 +1037,7 @@ static void alternative_handler (BODY *a, STATE *s)
   {
     if (s->flags & M_DISPLAY && !option (OPTWEED))
     {
-      fseek (s->fpin, choice->hdr_offset, 0);
+      fseeko (s->fpin, choice->hdr_offset, 0);
       mutt_copy_bytes(s->fpin, s->fpout, choice->offset-choice->hdr_offset);
     }
     mutt_body_handler (choice, s);
@@ -1343,26 +1047,30 @@ static void alternative_handler (BODY *a, STATE *s)
     /* didn't find anything that we could display! */
     state_mark_attach (s);
     state_puts(_("[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"), s);
+    rc = -1;
   }
 
   if (mustfree)
     mutt_free_body(&a);
+
+  return rc;
 }
 
 /* handles message/rfc822 body parts */
-void message_handler (BODY *a, STATE *s)
+int message_handler (BODY *a, STATE *s)
 {
   struct stat st;
   BODY *b;
-  long off_start;
+  LOFF_T off_start;
+  int rc = 0;
 
-  off_start = ftell (s->fpin);
+  off_start = ftello (s->fpin);
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE || 
       a->encoding == ENCUUENCODED)
   {
     fstat (fileno (s->fpin), &st);
     b = mutt_new_body ();
-    b->length = (long) st.st_size;
+    b->length = (LOFF_T) st.st_size;
     b->parts = mutt_parse_messageRFC822 (s->fpin, b);
   }
   else
@@ -1378,12 +1086,14 @@ void message_handler (BODY *a, STATE *s)
       state_puts (s->prefix, s);
     state_putc ('\n', s);
 
-    mutt_body_handler (b->parts, s);
+    rc = mutt_body_handler (b->parts, s);
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
+  
+  return rc;
 }
 
 /* returns 1 if decoding the attachment will produce output */
@@ -1427,12 +1137,13 @@ int mutt_can_decode (BODY *a)
   return (0);
 }
 
-void multipart_handler (BODY *a, STATE *s)
+int multipart_handler (BODY *a, STATE *s)
 {
   BODY *b, *p;
   char length[5];
   struct stat st;
   int count;
+  int rc = 0;
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
@@ -1468,7 +1179,7 @@ void multipart_handler (BODY *a, STATE *s)
 		    TYPE (p), p->subtype, ENCODING (p->encoding), length);
       if (!option (OPTWEED))
       {
-	fseek (s->fpin, p->hdr_offset, 0);
+	fseeko (s->fpin, p->hdr_offset, 0);
 	mutt_copy_bytes(s->fpin, s->fpout, p->offset-p->hdr_offset);
       }
       else
@@ -1483,19 +1194,21 @@ void multipart_handler (BODY *a, STATE *s)
 	state_printf(s, "%s: \n", p->form_name);
 
     }
-    mutt_body_handler (p, s);
+    rc = mutt_body_handler (p, s);
     state_putc ('\n', s);
-    if ((s->flags & M_REPLYING)
-	&& (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE))
+    if (rc || ((s->flags & M_REPLYING)
+               && (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE)))
       break;
   }
 
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
+  
+  return rc;
 }
 
-void autoview_handler (BODY *a, STATE *s)
+int autoview_handler (BODY *a, STATE *s)
 {
   rfc1524_entry *entry = rfc1524_new_entry ();
   char buffer[LONG_STRING];
@@ -1508,6 +1221,7 @@ void autoview_handler (BODY *a, STATE *s)
   FILE *fperr = NULL;
   int piped = FALSE;
   pid_t thepid;
+  int rc = 0;
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
   rfc1524_mailcap_lookup (a, type, entry, M_AUTOVIEW);
@@ -1535,7 +1249,7 @@ void autoview_handler (BODY *a, STATE *s)
     {
       mutt_perror ("fopen");
       rfc1524_free_entry (&entry);
-      return;
+      return -1;
     }
     
     mutt_copy_bytes (s->fpin, fpin, a->length);
@@ -1562,6 +1276,7 @@ void autoview_handler (BODY *a, STATE *s)
 	state_mark_attach (s);
 	state_printf (s, _("[-- Can't run %s. --]\n"), command);
       }
+      rc = -1;
       goto bail;
     }
     
@@ -1622,9 +1337,11 @@ void autoview_handler (BODY *a, STATE *s)
       mutt_clear_error ();
   }
   rfc1524_free_entry (&entry);
+
+  return rc;
 }
 
-static void external_body_handler (BODY *b, STATE *s)
+static int external_body_handler (BODY *b, STATE *s)
 {
   const char *access_type;
   const char *expiration;
@@ -1638,7 +1355,7 @@ static void external_body_handler (BODY *b, STATE *s)
       state_mark_attach (s);
       state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
     }
-    return;
+    return -1;
   }
 
   expiration = mutt_get_parameter ("expiration", b->parameter);
@@ -1677,7 +1394,7 @@ static void external_body_handler (BODY *b, STATE *s)
 	state_printf (s, _("[-- name: %s --]\n"), b->parts->filename);
       }
 
-      mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+      mutt_copy_hdr (s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
     }
@@ -1692,7 +1409,7 @@ static void external_body_handler (BODY *b, STATE *s)
       state_attach_puts (_("[-- and the indicated external source has --]\n"
 			   "[-- expired. --]\n"), s);
 
-      mutt_copy_hdr(s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+      mutt_copy_hdr(s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		    (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		    CH_DECODE, NULL);
     }
@@ -1709,11 +1426,13 @@ static void external_body_handler (BODY *b, STATE *s)
       state_printf (s, 
 		    _("[-- and the indicated access-type %s is unsupported --]\n"),
 		    access_type);
-      mutt_copy_hdr (s->fpin, s->fpout, ftell (s->fpin), b->parts->offset,
+      mutt_copy_hdr (s->fpin, s->fpout, ftello (s->fpin), b->parts->offset,
 		     (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) |
 		     CH_DECODE , NULL);
     }
   }
+  
+  return 0;
 }
 
 void mutt_decode_attachment (BODY *b, STATE *s)
@@ -1724,24 +1443,28 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   if (istext && s->flags & M_CHARCONV)
   {
     char *charset = mutt_get_parameter ("charset", b->parameter);
+    if (!charset && AssumedCharset && *AssumedCharset)
+      charset = mutt_get_default_charset ();
     if (charset && Charset)
       cd = mutt_iconv_open (Charset, charset, M_ICONV_HOOK_FROM);
   }
+  else if (istext && b->charset)
+    cd = mutt_iconv_open (Charset, b->charset, M_ICONV_HOOK_FROM);
 
-  fseek (s->fpin, b->offset, 0);
+  fseeko (s->fpin, b->offset, 0);
   switch (b->encoding)
   {
     case ENCQUOTEDPRINTABLE:
-      mutt_decode_quoted (s, b->length, istext, cd);
+      mutt_decode_quoted (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     case ENCBASE64:
-      mutt_decode_base64 (s, b->length, istext, cd);
+      mutt_decode_base64 (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     case ENCUUENCODED:
-      mutt_decode_uuencoded (s, b->length, istext, cd);
+      mutt_decode_uuencoded (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
     default:
-      mutt_decode_xbit (s, b->length, istext, cd);
+      mutt_decode_xbit (s, b->length, istext || ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b)), cd);
       break;
   }
 
@@ -1749,7 +1472,7 @@ void mutt_decode_attachment (BODY *b, STATE *s)
     iconv_close (cd);
 }
 
-void mutt_body_handler (BODY *b, STATE *s)
+int mutt_body_handler (BODY *b, STATE *s)
 {
   int decode = 0;
   int plaintext = 0;
@@ -1759,6 +1482,7 @@ void mutt_body_handler (BODY *b, STATE *s)
   long tmpoffset = 0;
   size_t tmplength = 0;
   char type[STRING];
+  int rc = 0;
 
   int oflags = s->flags;
   
@@ -1786,7 +1510,7 @@ void mutt_body_handler (BODY *b, STATE *s)
       if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
 	handler = crypt_pgp_application_pgp_handler;
       else if (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
-	handler = text_plain_flowed_handler;
+	handler = rfc3676_handler;
       else
 	plaintext = 1;
     }
@@ -1820,7 +1544,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 	handler = mutt_signed_handler;
     }
     else if ((WithCrypto & APPLICATION_PGP)
-             && mutt_strcasecmp ("encrypted", b->subtype) == 0)
+             && ascii_strcasecmp ("encrypted", b->subtype) == 0)
     {
       p = mutt_get_parameter ("protocol", b->parameter);
 
@@ -1844,7 +1568,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 
   if (plaintext || handler)
   {
-    fseek (s->fpin, b->offset, 0);
+    fseeko (s->fpin, b->offset, 0);
 
     /* see if we need to decode this part before processing it */
     if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
@@ -1889,7 +1613,7 @@ void mutt_body_handler (BODY *b, STATE *s)
 
       if (decode)
       {
-	b->length = ftell (s->fpout);
+	b->length = ftello (s->fpout);
 	b->offset = 0;
 	fclose (s->fpout);
 
@@ -1909,7 +1633,7 @@ void mutt_body_handler (BODY *b, STATE *s)
     /* process the (decoded) body part */
     if (handler)
     {
-      handler (b, s);
+      rc = handler (b, s);
 
       if (decode)
       {
@@ -1937,7 +1661,9 @@ void mutt_body_handler (BODY *b, STATE *s)
     }
     fputs (" --]\n", s->fpout);
   }
-  
+
   bail:
   s->flags = oflags | (s->flags & M_FIRSTDONE);
+
+  return rc;
 }

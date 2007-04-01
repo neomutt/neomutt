@@ -14,8 +14,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mx.h"
@@ -34,9 +38,7 @@
 #include "pop.h"
 #endif
 
-#ifdef BUFFY_SIZE
 #include "buffy.h"
-#endif
 
 #ifdef USE_DOTLOCK
 #include "dotlock.h"
@@ -53,9 +55,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#ifndef BUFFY_SIZE
 #include <utime.h>
-#endif
 
 
 #define mutt_is_spool(s)  (mutt_strcmp (Spoolfile, s) == 0)
@@ -156,13 +156,13 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 #ifdef USE_FCNTL
   struct flock lck;
   
-
   memset (&lck, 0, sizeof (struct flock));
   lck.l_type = excl ? F_WRLCK : F_RDLCK;
   lck.l_whence = SEEK_SET;
 
   count = 0;
   attempt = 0;
+  prev_sb.st_size = 0; /* silence a GCC warning */
   while (fcntl (fd, F_SETLK, &lck) == -1)
   {
     struct stat sb;
@@ -422,9 +422,7 @@ int mx_get_magic (const char *path)
   }
   else if ((f = fopen (path, "r")) != NULL)
   {
-#ifndef BUFFY_SIZE
     struct utimbuf times;
-#endif
 
     fgets (tmp, sizeof (tmp), f);
     if (mutt_strncmp ("From ", tmp, 5) == 0)
@@ -432,15 +430,17 @@ int mx_get_magic (const char *path)
     else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
       magic = M_MMDF;
     safe_fclose (&f);
-#ifndef BUFFY_SIZE
-    /* need to restore the times here, the file was not really accessed,
-     * only the type was accessed.  This is important, because detection
-     * of "new mail" depends on those times set correctly.
-     */
-    times.actime = st.st_atime;
-    times.modtime = st.st_mtime;
-    utime (path, &times);
-#endif
+
+    if (!option(OPTCHECKMBOXSIZE))
+    {
+      /* need to restore the times here, the file was not really accessed,
+       * only the type was accessed.  This is important, because detection
+       * of "new mail" depends on those times set correctly.
+       */
+      times.actime = st.st_atime;
+      times.modtime = st.st_mtime;
+      utime (path, &times);
+    }
   }
   else
   {
@@ -630,7 +630,10 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = 0;
-  
+
+  for (rc=0; rc < RIGHTSMAX; rc++)
+    mutt_bit_set(ctx->rights,rc);
+
   if (flags & M_QUIET)
     ctx->quiet = 1;
   if (flags & M_READONLY)
@@ -737,15 +740,10 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 
   if(!ctx) 
     return;
-  
-#ifdef USE_IMAP
-  if (ctx->magic == M_IMAP)
-    imap_close_mailbox (ctx);
-#endif /* USE_IMAP */
-#ifdef USE_POP
-  if (ctx->magic == M_POP)
-    pop_close_mailbox (ctx);
-#endif /* USE_POP */
+
+  if (ctx->mx_close)
+    ctx->mx_close (ctx);
+
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
   if (ctx->id_hash)
@@ -766,9 +764,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 /* save changes to disk */
 static int sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
-#ifdef BUFFY_SIZE
   BUFFY *tmp = NULL;
-#endif
   int rc = -1;
 
   if (!ctx->quiet)
@@ -779,9 +775,8 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
     case M_MBOX:
     case M_MMDF:
       rc = mbox_sync_mailbox (ctx, index_hint);
-#ifdef BUFFY_SIZE
-      tmp = mutt_find_mailbox (ctx->path);
-#endif
+      if (option(OPTCHECKMBOXSIZE))
+	tmp = mutt_find_mailbox (ctx->path);
       break;
       
     case M_MH:
@@ -808,10 +803,8 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_error ( _("Could not synchronize mailbox %s!"), ctx->path);
 #endif
   
-#ifdef BUFFY_SIZE
   if (tmp && tmp->new == 0)
     mutt_update_mailbox (tmp);
-#endif
   return rc;
 }
 
@@ -896,15 +889,11 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-#ifdef USE_IMAP
-  /* IMAP servers manage the OLD flag themselves */
-  if (ctx->magic != M_IMAP)
-#endif
   if (option (OPTMARKOLD))
   {
     for (i = 0; i < ctx->msgcount; i++)
     {
-      if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->old)
+      if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->old && !ctx->hdrs[i]->read)
 	mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, 1);
     }
   }
@@ -1161,6 +1150,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
         ctx->deleted = 0;
       }
     }
+    else if (ctx->last_tag && ctx->last_tag->deleted)
+      ctx->last_tag = NULL; /* reset last tagged msg now useless */
   }
 
   /* really only for IMAP - imap_sync_mailbox results in a call to
@@ -1234,7 +1225,10 @@ int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 
   mutt_mktemp(tmp);
   if ((msg->fp = safe_fopen (tmp, "w")) == NULL)
+  {
+    mutt_perror (tmp);
     return (-1);
+  }
   msg->path = safe_strdup(tmp);
   return 0;
 }
@@ -1521,7 +1515,7 @@ int mx_close_message (MESSAGE **msg)
     FREE (&(*msg)->path);
   }
 
-  FREE (msg);
+  FREE (msg);		/* __FREE_CHECKED__ */
   return (r);
 }
 

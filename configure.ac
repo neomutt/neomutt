@@ -3,27 +3,25 @@ dnl Process this file with autoconf to produce a configure script.
 dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
 dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 
-AC_PREREQ(2.12)
-AC_INIT(mutt.h)
-AM_CONFIG_HEADER(config.h)
+AC_PREREQ([2.54])
+AC_INIT([mutt.h])
+AM_CONFIG_HEADER([config.h])
 
 mutt_cv_version=`cat $srcdir/VERSION`
-
-
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
+
 AC_GNU_SOURCE
 
-ifdef([AC_LIBOBJ], , [define([AC_LIBOBJ], [LIB[]OBJS="$LIBOBJS $1.o"])])
-
-ALL_LINGUAS="de ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg"
+ALL_LINGUAS="de eu ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg ga"
 
 AC_CANONICAL_HOST
 
-AC_MSG_CHECKING(for prefix)
+AC_MSG_CHECKING([for prefix])
 if test x$prefix = xNONE; then
-        mutt_cv_prefix=$ac_default_prefix
+  mutt_cv_prefix=$ac_default_prefix
 else
-        mutt_cv_prefix=$prefix
+  mutt_cv_prefix=$prefix
 fi
 AC_MSG_RESULT($mutt_cv_prefix)
 
@@ -42,6 +40,10 @@ AC_CHECK_TOOL(AR, ar, ar)
 AC_C_INLINE
 AC_C_CONST
 
+AC_SYS_LARGEFILE
+AC_FUNC_FSEEKO
+AC_CHECK_SIZEOF(off_t)
+
 AC_PATH_PROG(DBX, dbx, no)
 AC_PATH_PROG(GDB, gdb, no)
 AC_PATH_PROG(SDB, sdb, no)
@@ -56,104 +58,135 @@ else
         DEBUGGER=no
 fi
 
-AC_SUBST(DEBUGGER)
+AC_SUBST([DEBUGGER])
 
-# The following templates should be used with newer automakes
-# instead of acconfig.h
-#
-#AH_TEMPLATE([sig_atomic_t],
-#            [/* Define to `int' if <signal.h> doesn't define.])
-#AH_TEMPLATE([HAVE_START_COLOR],
-#            [Define if you have start_color, as a function or macro.])
-#AH_TEMPLATE([HAVE_TYPEAHEAD],
-#            [Define if you have typeahead, as a function or macro.])
-#AH_TEMPLATE([HAVE_BKGDSET],
-#            [Define if you have bkgdset, as a function or macro.])
-#AH_TEMPLATE([HAVE_CURS_SET],
-#            [Define if you have curs_set, as a function or macro.])
-#AH_TEMPLATE([HAVE_META],
-#            [Define if you have meta, as a function or macro.])
-#AH_TEMPLATE([HAVE_USE_DEFAULT_COLORS],
-#            [Define if you have use_default_colors, as a function or macro.])
-#AH_TEMPLATE([HAVE_RESIZETERM],
-#            [Define if you have resizeterm, as a function or macro.])
-#AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
-#            [Some systems declare sig_atomic_t as volatile, some others -- no.
-#             This define will have value `sig_atomic_t' or
-#             `volatile sig_atomic_t' accordingly.])
-#AH_TEMPLATE([ICONV_NONTRANS],
-#            [Define as 1 if iconv() only converts exactly and we should treat
-#             all return values other than (size_t)(-1) as equivalent.])
+AH_TEMPLATE([sig_atomic_t],
+            [/* Define to `int' if <signal.h> doesn't define.])
+AH_TEMPLATE([HAVE_START_COLOR],
+            [Define if you have start_color, as a function or macro.])
+AH_TEMPLATE([HAVE_TYPEAHEAD],
+            [Define if you have typeahead, as a function or macro.])
+AH_TEMPLATE([HAVE_BKGDSET],
+            [Define if you have bkgdset, as a function or macro.])
+AH_TEMPLATE([HAVE_CURS_SET],
+            [Define if you have curs_set, as a function or macro.])
+AH_TEMPLATE([HAVE_META],
+            [Define if you have meta, as a function or macro.])
+AH_TEMPLATE([HAVE_USE_DEFAULT_COLORS],
+            [Define if you have use_default_colors, as a function or macro.])
+AH_TEMPLATE([HAVE_RESIZETERM],
+            [Define if you have resizeterm, as a function or macro.])
+AH_TEMPLATE([SIG_ATOMIC_VOLATILE_T],
+            [Some systems declare sig_atomic_t as volatile, some others -- no.
+             This define will have value `sig_atomic_t' or
+             `volatile sig_atomic_t' accordingly.])
+AH_TEMPLATE([ICONV_NONTRANS],
+            [Define as 1 if iconv() only converts exactly and we should treat
+             all return values other than (size_t)(-1) as equivalent.])
 
+AH_BOTTOM([/* fseeko portability defines */
+#ifdef HAVE_FSEEKO
+# define LOFF_T off_t
+# if SIZEOF_OFF_T == 8
+#  define OFF_T_FMT "%lld"
+# else
+#  define OFF_T_FMT "%ld"
+# endif
+#else
+# define LOFF_T long
+# define fseeko fseek
+# define ftello ftell
+# define OFF_T_FMT "%ld"
+#endif
+])
+MUTT_C99_INTTYPES
 
 ac_aux_path_sendmail=/usr/sbin:/usr/lib
 AC_PATH_PROG(SENDMAIL, sendmail, /usr/sbin/sendmail, $PATH:$ac_aux_path_sendmail)
-AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL",[ Where to find sendmail on your system. ])
+AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on your system.])
 
 OPS='$(srcdir)/OPS'
-if test -f $srcdir/EXPORTABLE ; then
-        SUBVERSION="us"
+
+AC_MSG_CHECKING([whether to build with GPGME support])
+AC_ARG_ENABLE(gpgme, AC_HELP_STRING([--enable-gpgme], [Enable GPGME support]),
+[       if test x$enableval = xyes; then
+		enable_gpgme=yes
+	fi
+])
+
+if test x"$enable_gpgme" = xyes; then
+   AC_MSG_RESULT(yes)
+   AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
+		 [Defined, if GPGME support is enabled]),
+		 [gpgme_found=no])
+   if test x"$gpgme_found" = xno; then
+      AC_MSG_ERROR([*** GPGME not found ***])
+   else
+      AM_PATH_GPGME(1.1.1, AC_DEFINE(HAVE_GPGME_PKA_TRUST, 1,
+				  [Define if GPGME supports PKA]))
+      #needed to get GPGME_LIBS and al correctly
+      AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
+                    [Define if you use GPGME to support OpenPGP]))
+      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
+   fi
 else
-        SUBVERSION="i"
-
-        AC_ARG_ENABLE(pgp, [  --disable-pgp              Disable PGP support],
-        [       if test x$enableval = xno ; then
-                        have_pgp=no
-                fi
-        ])
-
-        if test x$have_pgp != xno ; then
-                AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP,1,
-                    [ Define if you want classic PGP support. ])
-                PGPAUX_TARGET="pgpring pgpewrap"
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
-        fi
-
- 	AC_ARG_ENABLE(smime, [  --disable-smime            Disable SMIME support],
- 	[	if test x$enableval = xno ; then
- 			have_smime=no
- 		fi
- 	])
- 
- 	if test x$have_smime != xno ; then
- 		AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME,1,
-                  [ Define if you want clasic S/MIME support. ])
- 		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
-		SMIMEAUX_TARGET="smime_keys"
- 	fi
-  
-        AC_ARG_WITH(mixmaster, [  --with-mixmaster[=PATH]    Include Mixmaster support],
-                [if test -x "$withval" ; then
-                        MIXMASTER="$withval"
-                 else
-                        MIXMASTER="mixmaster"
-                 fi
-                 OPS="$OPS \$(srcdir)/OPS.MIX"
-                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
-                 AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER",
-                         [ Where to find mixmaster on your system. ])
-                ])
-
+   AC_MSG_RESULT([no])
 fi
+
+AC_ARG_ENABLE(pgp, AC_HELP_STRING([--disable-pgp], [Disable PGP support]),
+[       if test x$enableval = xno ; then
+                have_pgp=no
+        fi
+])
+
+if test x$have_pgp != xno ; then
+        AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP,1, [Define if you want classic PGP support.])
+        PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
+        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
+fi
+
+AC_ARG_ENABLE(smime, AC_HELP_STRING([--disable-smime], [Disable SMIME support]),
+[	if test x$enableval = xno ; then
+		have_smime=no
+	fi
+])
+ 
+if test x$have_smime != xno ; then
+	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want clasic S/MIME support.])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
+	SMIMEAUX_TARGET="smime_keys"
+fi
+
+AC_ARG_WITH(mixmaster, AC_HELP_STRING([--with-mixmaster[=PATH]], [Include Mixmaster support]),
+  [if test "$withval" != no
+   then
+     if test -x "$withval"
+     then
+       MIXMASTER="$withval"
+     else
+       MIXMASTER="mixmaster"
+     fi
+     OPS="$OPS \$(srcdir)/OPS.MIX"
+     MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS remailer.o"
+     AC_DEFINE_UNQUOTED(MIXMASTER,"$MIXMASTER", [Where to find mixmaster on your system.])
+   fi])
+
 # We now require all OPS
 OPS="$OPS \$(srcdir)/OPS.PGP \$(srcdir)/OPS.SMIME \$(srcdir)/OPS.CRYPT "
-AC_SUBST(OPS)
-
+AC_SUBST([OPS])
 
 AC_SUBST(PGPAUX_TARGET)
 AC_SUBST(SMIMEAUX_TARGET)
-
-AC_DEFINE_UNQUOTED(SUBVERSION,"$SUBVERSION",[ Is this the international version? ])
-AC_SUBST(SUBVERSION)
 
 AC_PATH_PROG(ISPELL, ispell, no)
 if test $ISPELL != no; then
         AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
 fi
 
-AC_ARG_WITH(slang, [  --with-slang[=DIR]         Use S-Lang instead of ncurses],
+AC_ARG_WITH(slang, AC_HELP_STRING([--with-slang[=DIR]], [Use S-Lang instead of ncurses]),
         [AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
                 [AC_TRY_RUN([#include <sys/param.h>
+#include <stdlib.h>
 
 main ()
 {
@@ -216,12 +249,12 @@ main ()
         ],
 
         [mutt_cv_curses=/usr
-        AC_ARG_WITH(curses, [  --with-curses=DIR          Where ncurses is installed ],
+        AC_ARG_WITH(curses, AC_HELP_STRING([--with-curses=DIR], [Where ncurses is installed]),
                 [if test $withval != yes; then
                         mutt_cv_curses=$withval
                 fi
                 if test x$mutt_cv_curses != x/usr; then
-                        LDFLAGS="-L${mutt_cv_curses}/lib $LDFLAGS"
+                        LDFLAGS="$LDFLAGS -L${mutt_cv_curses}/lib"
                         CPPFLAGS="$CPPFLAGS -I${mutt_cv_curses}/include"
                 fi])
 
@@ -233,14 +266,12 @@ main ()
 	done
         AC_CHECK_LIB($cf_ncurses, initscr,
                 [MUTTLIBS="$MUTTLIBS -l$cf_ncurses"
-                if test x$mutt_cv_curses = x/usr -a -d /usr/include/ncurses; then
-                        CPPFLAGS="$CPPFLAGS -I/usr/include/ncurses"
-                fi
 		
                 if test "$cf_ncurses" = ncursesw; then
 			AC_CHECK_HEADERS(ncursesw/ncurses.h,[cf_cv_ncurses_header="ncursesw/ncurses.h"])
 		else
-			AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])
+                  AC_CHECK_HEADERS(ncurses/ncurses.h,[cf_cv_ncurses_header="ncurses/ncurses.h"],
+                    [AC_CHECK_HEADERS(ncurses.h,[cf_cv_ncurses_header="ncurses.h"])])
 		fi],
 
                 [CF_CURSES_LIBS])
@@ -298,52 +329,76 @@ fi
 
 AC_DECL_SYS_SIGLIST
 
-dnl For MD5 and SHA1 on 64-bit systems
-AC_C_BIGENDIAN
-AC_CHECK_HEADERS(inttypes.h stdint.h)
-dnl This is the method autoconf-2.50's new AC_CHECK_TYPE macro uses.
-dnl We need to be backwards compatible to autoconf 2.13, though. -lh
-AC_MSG_CHECKING(for uint32_t)
-AC_TRY_COMPILE([
-#include <sys/types.h>
-#if HAVE_INTTYPES_H
-#include <inttypes.h>
-#else
-#if HAVE_STDINT_H
-#include <stdint.h>
-#endif
-#endif],
-[if ((uint32_t *) 0)
-  return 0;
-if (sizeof (uint32_t))
-  return 0;
-],[
-    AC_DEFINE(HAVE_UINT32_T,1,[ Define if you have the uint32_t type. ])
-    AC_MSG_RESULT(yes)
-  ], AC_MSG_RESULT(no)
-)
-AC_CHECK_SIZEOF(int)
-AC_CHECK_SIZEOF(long)
-
 AC_TYPE_PID_T
 AC_CHECK_TYPE(ssize_t, int)
 
 AC_CHECK_FUNCS(fgetpos memmove setegid srand48 strerror)
 
-AC_REPLACE_FUNCS(strcasecmp strdup)
+AC_REPLACE_FUNCS([setenv strcasecmp strdup])
 
 AC_CHECK_FUNC(getopt)
 if test $ac_cv_func_getopt = yes; then
         AC_CHECK_HEADERS(getopt.h)
 fi
 
-mutt_cv_snprintf=no
 SNPRINTFOBJS=""
-AC_CHECK_FUNCS(snprintf, , [mutt_cv_snprintf=yes])
-AC_CHECK_FUNCS(vsnprintf, , [mutt_cv_snprintf=yes])
-if test $mutt_cv_snprintf = yes; then
+AC_CHECK_FUNC(snprintf, [mutt_cv_func_snprintf=yes], [mutt_cv_func_snprintf=no])
+AC_CHECK_FUNC(vsnprintf, [mutt_cv_func_vsnprintf=yes], [mutt_cv_func_vsnprintf=no])
+if test $mutt_cv_func_snprintf = yes; then
+AC_CACHE_CHECK([whether your system's snprintf is C99 compliant],
+        [mutt_cv_c99_snprintf],
+        AC_TRY_RUN([
+#include <stdio.h>
+int main()
+{
+changequote(, )dnl
+  char buf[8];
+  int len = snprintf(buf, 4, "1234567");
+  return (len != 7 || buf[3] != '\0');
+changequote([, ])dnl
+}
+        ], mutt_cv_c99_snprintf=yes, mutt_cv_c99_snprintf=no, mutt_cv_c99_snprintf=no))
+else
+        mutt_cv_c99_snprintf=no
+fi
+if test $mutt_cv_func_vsnprintf = yes; then
+AC_CACHE_CHECK([whether your system's vsnprintf is C99 compliant],
+        [mutt_cv_c99_vsnprintf],
+        AC_TRY_RUN([
+#include <stdarg.h>
+#include <stdio.h>
+int foo(const char *fmt, ...)
+{
+changequote(, )dnl
+  char buf[8];
+  int len;
+  va_list ap;
+  va_start(ap, fmt);
+  len = vsnprintf(buf, 4, fmt, ap);
+  va_end(ap);
+  return (len != 7 || buf[3] != '\0');
+changequote([, ])dnl
+}
+
+int main()
+{
+  return foo("%s", "1234567");
+}
+        ], mutt_cv_c99_vsnprintf=yes, mutt_cv_c99_vsnprintf=no, mutt_cv_c99_vsnprintf=no))
+else
+        mutt_cv_c99_vsnprintf=no
+fi
+if test $mutt_cv_c99_snprintf = yes; then
+        AC_DEFINE(HAVE_SNPRINTF, 1, [ Define to 1 if you have a C99 compliant snprintf function. ])
+fi
+if test $mutt_cv_c99_vsnprintf = yes; then
+        AC_DEFINE(HAVE_VSNPRINTF, 1, [ Define to 1 if you have a C99 compliant vsnprintf function. ])
+fi
+if test $mutt_cv_c99_snprintf = no -o $mutt_cv_c99_vsnprintf = no; then
         AC_LIBOBJ(snprintf)
 fi
+
+XIPH_FUNC_VA_COPY
 
 dnl SCO uses chsize() instead of ftruncate()
 AC_CHECK_FUNCS(ftruncate, , [AC_CHECK_LIB(x, chsize)])
@@ -354,7 +409,7 @@ AC_CHECK_FUNCS(strftime, , [AC_CHECK_LIB(intl, strftime)])
 dnl AIX may not have fchdir()
 AC_CHECK_FUNCS(fchdir, , [mutt_cv_fchdir=no])
 
-AC_ARG_WITH(regex, [  --with-regex               Use the GNU regex library ],
+AC_ARG_WITH(regex, AC_HELP_STRING([--with-regex], [Use the GNU regex library]),
         [mutt_cv_regex=yes],
         [AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no, mutt_cv_regex=yes)])
 
@@ -378,7 +433,8 @@ if test $mutt_cv_regex = yes; then
 fi
 
 
-AC_ARG_WITH(homespool, [  --with-homespool[=FILE]    File in user's directory where new mail is spooled], with_homespool=${withval})
+AC_ARG_WITH(homespool,
+  AC_HELP_STRING([--with-homespool[=FILE]], [File in user's directory where new mail is spooled]), with_homespool=${withval})
 if test x$with_homespool != x; then
         if test $with_homespool = yes; then
                 with_homespool=mailbox
@@ -392,7 +448,7 @@ if test x$with_homespool != x; then
         AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
         mutt_cv_setgid=no
 else
-        AC_ARG_WITH(mailpath, [  --with-mailpath=DIR        Directory where spool mailboxes are located],
+        AC_ARG_WITH(mailpath, AC_HELP_STRING([--with-mailpath=DIR], [Directory where spool mailboxes are located]),
                 [mutt_cv_mailpath=$withval],
                 [ AC_CACHE_CHECK(where new mail is stored, mutt_cv_mailpath,
                         [mutt_cv_mailpath=no
@@ -413,6 +469,7 @@ else
 
         AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 int main (int argc, char **argv)
 {
@@ -430,6 +487,7 @@ int main (int argc, char **argv)
 
                 AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, [AC_TRY_RUN([#include <sys/types.h>
 #include <sys/stat.h>
+#include <stdlib.h>
 
 int main (int argc, char **argv)
 {
@@ -448,7 +506,7 @@ int main (int argc, char **argv)
         fi
 fi
 
-AC_ARG_ENABLE(external_dotlock, [  --enable-external-dotlock  Force use of an external dotlock program],
+AC_ARG_ENABLE(external_dotlock, AC_HELP_STRING([--enable-external-dotlock], [Force use of an external dotlock program]),
         [mutt_cv_external_dotlock="$enableval"])
 
 if test "x$mutt_cv_setgid" = "xyes" || test "x$mutt_cv_fchdir" = "xno" \
@@ -464,9 +522,9 @@ AC_SUBST(DOTLOCK_TARGET)
 
 
 AC_MSG_CHECKING(where to put the documentation)
-AC_ARG_WITH(docdir, [  --with-docdir=PATH         Specify where to put the documentation],
+AC_ARG_WITH(docdir, AC_HELP_STRING([--with-docdir=PATH], [Specify where to put the documentation]),
         [mutt_cv_docdir=$withval],
-        [mutt_cv_docdir="$mutt_cv_prefix/doc/mutt"])
+        [mutt_cv_docdir='${prefix}/doc/mutt'])
 AC_MSG_RESULT($mutt_cv_docdir)
 
 docdir=$mutt_cv_docdir
@@ -482,25 +540,28 @@ fi
 AC_SUBST(DOTLOCK_GROUP)
 AC_SUBST(DOTLOCK_PERMISSION)
 
-AC_ARG_WITH(domain, [  --with-domain=DOMAIN       Specify your DNS domain name],
+AC_ARG_WITH(domain, AC_HELP_STRING([--with-domain=DOMAIN], [Specify your DNS domain name]),
         [if test $withval != yes; then
+            if test $withval != no; then
                 AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[ Define your domain name. ])
+            fi
         fi])
 
 need_socket="no"
 
 dnl -- socket dependencies --
 
-AC_ARG_ENABLE(pop,  [  --enable-pop               Enable POP3 support],
+AC_ARG_ENABLE(pop,  AC_HELP_STRING([--enable-pop], [Enable POP3 support]),
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_POP,1,[ Define if you want support for the POP3 protocol. ])
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
+                need_pop="yes"
                 need_socket="yes"
                 need_md5="yes"
         fi
 ])
 
-AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
+AC_ARG_ENABLE(imap, AC_HELP_STRING([--enable-imap], [Enable IMAP support]),
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_IMAP,1,[ Define if you want support for the IMAP protocol. ])
                 LIBIMAP="-Limap -limap"
@@ -512,10 +573,22 @@ AC_ARG_ENABLE(imap, [  --enable-imap              Enable IMAP support],
 ])
 AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
+AC_ARG_ENABLE(smtp, AC_HELP_STRING([--enable-smtp], [include internal SMTP relay support]),
+	[if test $enableval = yes; then
+		AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
+            	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
+		need_socket="yes"
+	fi])
+
+if test x"$need_imap" = xyes -o x"$need_pop" = xyes ; then
+  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS bcache.o"
+fi
+
 dnl -- end socket dependencies --
 
 if test "$need_socket" = "yes"
 then
+        AC_CHECK_HEADERS([sys/select.h])
         AC_MSG_CHECKING([for socklen_t])
         AC_EGREP_HEADER(socklen_t, sys/socket.h, AC_MSG_RESULT([yes]),
                 AC_MSG_RESULT([no])
@@ -531,7 +604,7 @@ fi
 
 dnl -- imap dependencies --
 
-AC_ARG_WITH(gss, [    --with-gss[=PFX]         Compile in GSSAPI authentication for IMAP], 
+AC_ARG_WITH(gss, AC_HELP_STRING([--with-gss[=PFX]], [Compile in GSSAPI authentication for IMAP]), 
     gss_prefix="$withval", gss_prefix="no")
 if test "$gss_prefix" != "no"
 then
@@ -561,68 +634,68 @@ AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
 dnl -- end imap dependencies --
 
-AC_ARG_WITH(ssl, [  --with-ssl[=PFX]           Compile in SSL support for POP/IMAP],
+AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using OpenSSL]),
 [       if test "$with_ssl" != "no"
         then
           if test "$need_socket" != "yes"; then
-           AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
+           AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
+	  else
+            if test "$with_ssl" != "yes"
+            then
+             LDFLAGS="$LDFLAGS -L$withval/lib"
+             CPPFLAGS="$CPPFLAGS -I$withval/include"
+            fi
+            saved_LIBS="$LIBS"
+
+            AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
+            AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
+
+            AC_CHECK_FUNCS(RAND_status RAND_egd)
+
+            AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
+            AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
+            LIBS="$saved_LIBS"
+            MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
+            MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
+            need_ssl=yes
           fi
-
-          if test "$with_ssl" != "yes"
-          then
-           LDFLAGS="$LDFLAGS -L$withval/lib"
-           CPPFLAGS="$CPPFLAGS -I$withval/include"
-          fi
-          saved_LIBS="$LIBS"
-
-          AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
-          AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
-
-          AC_CHECK_FUNCS(RAND_status RAND_egd)
-
-          AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
-          LIBS="$saved_LIBS"
-          MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
-          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
-          need_ssl=yes
-
         fi
 ])
+
+AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using gnutls]),
+    [gnutls_prefix="$withval"], [gnutls_prefix="no"])
+if test "$gnutls_prefix" != "no" -a x"$need_ssl" != xyes
+then
+  if test "$need_socket" != "yes"
+  then
+    AC_MSG_WARN([SSL support is only useful with POP, IMAP or SMTP support])
+  else
+    MUTT_AM_PATH_GNUTLS([$gnutls_prefix],
+      [dnl GNUTLS found
+      CPPFLAGS="$CPPFLAGS $LIBGNUTLS_CFLAGS"
+      MUTTLIBS="$MUTTLIBS $LIBGNUTLS_LIBS"
+
+      AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
+      AC_DEFINE(USE_SSL_GNUTLS,1,[ Define if you want support for SSL via GNUTLS. ])
+
+      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_gnutls.o"
+      need_ssl=yes],
+      [dnl GNUTLS not found
+        AC_MSG_ERROR([could not find libgnutls])
+      ])
+  fi
+fi
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
-dnl SSL support via NSS
-AC_ARG_WITH(nss, [  --with-nss[=PFX]           Compile in SSL support for POP/IMAP via NSS],
-[       if test "$with_nss" != no
-        then
-          if test "$need_socket" != "yes"; then
-           AC_MSG_ERROR([SSL support is only useful with POP or IMAP support])
-          fi
-
-          if test "$with_nss" != "yes"
-          then
-           LDFLAGS="$LDFLAGS -L$withval/lib"
-           CPPFLAGS="$CPPFLAGS -I$withval/include -I$withval/public/security"
-          fi
-
-          AC_DEFINE(USE_NSS,1,[ Define if you want support for SSL via the NSS library. ])
-          MUTTLIBS="$MUTTLIBS -lssl -lnss -lcertdb -lcerthi -lcryptohi"
-          MUTTLIBS="$MUTTLIBS -lpk11wrap -lsoftoken -lsecutil -ldbm -lplds4 -lplc4 -lfreebl"
-          MUTTLIBS="$MUTTLIBS -lnspr4"
-
-          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl_nss.o"
-          need_ssl=yes
-        fi
-])
-
-AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/IMAP authentication],
-        [
-        if test "$need_socket" != "yes"
-        then
-          AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
-        fi
-
+AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL 2 network security library]),
+        [	
         if test "$with_sasl" != "no"
         then
+          if test "$need_socket" != "yes"
+          then
+            AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
+          fi
+
           if test "$with_sasl" != "yes"
           then
             CPPFLAGS="$CPPFLAGS -I$with_sasl/include"
@@ -631,52 +704,20 @@ AC_ARG_WITH(sasl, [  --with-sasl[=PFX]          Use Cyrus SASL library for POP/I
 
           saved_LIBS="$LIBS"
 
-          AC_CHECK_LIB(sasl, sasl_client_init,,
-            AC_MSG_ERROR([could not find libsasl]),)
-
-          MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
-          MUTTLIBS="$MUTTLIBS -lsasl"
-          LIBS="$saved_LIBS"
-          AC_DEFINE(USE_SASL,1,
-                  [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
-          need_sasl=yes
-        fi
-        ])
-AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
-
-AC_ARG_WITH(sasl2, [  --with-sasl2[=PFX]         Use Cyrus SASL library version 2 for POP/IMAP authentication],
-        [
-        if test "$need_socket" != "yes"
-        then
-          AC_MSG_ERROR([SASL support is only useful with POP or IMAP support])
-        fi
-
-        if test "$with_sasl2" != "no"
-        then
-          if test "$with_sasl2" != "yes"
-          then
-            CPPFLAGS="$CPPFLAGS -I$with_sasl2/include"
-            LDFLAGS="$LDFLAGS -L$with_sasl2/lib"
-          fi
-
-          saved_LIBS="$LIBS"
-
           AC_CHECK_LIB(sasl2, sasl_client_init,,
-            AC_MSG_ERROR([could not find libsasl]),)
+            AC_MSG_ERROR([could not find libsasl2]),)
 
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
           MUTTLIBS="$MUTTLIBS -lsasl2"
           LIBS="$saved_LIBS"
           AC_DEFINE(USE_SASL,1,
                   [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
-          AC_DEFINE(USE_SASL2,1,
-                  [ Define if want to use version 2 of the Cyrus SASL library. ])
           need_sasl=yes
         fi
         ])
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
 
-AC_ARG_WITH(idn, [  --with-idn=[PFX]		Use GNU libidn for domain names],
+AC_ARG_WITH(idn, AC_HELP_STRING([--with-idn=[PFX]], [Use GNU libidn for domain names]),
 		 [
 		  if test "$with_idn" != "no" ; then
 		  	if test "$with_idn" != "yes" ; then
@@ -694,34 +735,48 @@ if test "x$with_idn" != "xno"; then
    AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
 fi
 
-if test "$need_md5" = "yes"
-then
-        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"
-fi
-
 dnl -- end socket --
 
-AC_ARG_ENABLE(debug, [  --enable-debug             Enable debugging support],
+AC_ARG_ENABLE(debug, AC_HELP_STRING([--enable-debug], [Enable debugging support]),
         [ if test x$enableval = xyes ; then
                 AC_DEFINE(DEBUG,1,[ Define to enable debugging info. ])
           fi
          ])
 
-AC_ARG_ENABLE(flock, [  --enable-flock             Use flock() to lock files],
+AC_ARG_ENABLE(flock, AC_HELP_STRING([--enable-flock], [Use flock() to lock files]),
         [if test $enableval = yes; then
                 AC_DEFINE(USE_FLOCK,1, [ Define to use flock() to lock mailboxes. ])
         fi])
 
 mutt_cv_fcntl=yes
-AC_ARG_ENABLE(fcntl, [  --disable-fcntl            Do NOT use fcntl() to lock files ],
+AC_ARG_ENABLE(fcntl, AC_HELP_STRING([--disable-fcntl], [Do NOT use fcntl() to lock files]),
         [if test $enableval = no; then mutt_cv_fcntl=no; fi])
 
 if test $mutt_cv_fcntl = yes; then
         AC_DEFINE(USE_FCNTL,1, [ Define to use fcntl() to lock folders. ])
 fi
 
+AC_MSG_CHECKING(whether struct dirent defines d_ino)
+ac_cv_dirent_d_ino=no
+AC_TRY_LINK([#include <dirent.h>],[struct dirent dp; (void)dp.d_ino],[ac_cv_dirent_d_ino=yes])
+if test x$ac_cv_dirent_d_ino = xyes ; then
+  AC_DEFINE(HAVE_DIRENT_D_INO,1,
+            [Define to 1 if your system has the dirent::d_ino member])
+fi
+AC_MSG_RESULT($ac_cv_dirent_d_ino)
+
+dnl This may look cumbersome -- please keep it that way, so we can
+dnl quickly change the default to "yes" again.
+mutt_cv_inodesort=no
+AC_ARG_ENABLE(inodesort,  AC_HELP_STRING([--enable-inodesort], [Read files in maildir folders sorted by inode]),
+       [if test x$enableval = xyes -a x$ac_cv_dirent_d_ino = xyes ; then mutt_cv_inodesort=yes; fi])
+
+if test $mutt_cv_inodesort = yes; then
+	AC_DEFINE(USE_INODESORT, 1, [ Define to sort files in a	maildir by inode number. ])
+fi
+
 mutt_cv_warnings=yes
-AC_ARG_ENABLE(warnings, [  --disable-warnings         Turn off compiler warnings (not recommended)],
+AC_ARG_ENABLE(warnings, AC_HELP_STRING([--disable-warnings], [Turn off compiler warnings (not recommended)]),
 [if test $enableval = no; then
         mutt_cv_warnings=no
 fi])
@@ -730,7 +785,7 @@ if test x$GCC = xyes -a $mutt_cv_warnings = yes; then
         CFLAGS="-Wall -pedantic $CFLAGS"
 fi
 
-AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix           Work around an NFS with broken attributes caching ],
+AC_ARG_ENABLE(nfs-fix, AC_HELP_STRING([--enable-nfs-fix], [Work around an NFS with broken attributes caching]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(NFS_ATTRIBUTE_HACK,1,
                   [Define if you have problems with mutt not detecting
@@ -738,22 +793,17 @@ AC_ARG_ENABLE(nfs-fix, [  --enable-nfs-fix           Work around an NFS with bro
                    incorrectly cache the attributes of small files.])
         fi])
 
-AC_ARG_ENABLE(buffy-size, [  --enable-buffy-size        Use file size attribute instead of access time ],
-        [if test x$enableval = xyes; then
-                AC_DEFINE(BUFFY_SIZE,1,[ Define to enable the "buffy_size" feature. ])
-        fi])
-
-AC_ARG_ENABLE(mailtool, [  --enable-mailtool          Enable Sun mailtool attachments support ],
+AC_ARG_ENABLE(mailtool, AC_HELP_STRING([--enable-mailtool], [Enable Sun mailtool attachments support]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. ])
         fi])
 
-AC_ARG_ENABLE(locales-fix, [  --enable-locales-fix       The result of isprint() is unreliable ],
+AC_ARG_ENABLE(locales-fix, AC_HELP_STRING([--enable-locales-fix], [The result of isprint() is unreliable]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])
         fi])
 
-AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (ONLY if /bin/sh is broken)],
+AC_ARG_WITH(exec-shell, AC_HELP_STRING([--with-exec-shell=SHELL], [Specify alternate shell (ONLY if /bin/sh is broken)]),
         [if test $withval != yes; then
                 AC_DEFINE_UNQUOTED(EXECSHELL, "$withval",
                  [program to use for shell commands])
@@ -762,13 +812,120 @@ AC_ARG_WITH(exec-shell, [  --with-exec-shell=SHELL    Specify alternate shell (O
         fi],
         [AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")])
 
-AC_ARG_ENABLE(exact-address, [  --enable-exact-address     Enable regeneration of email addresses],
+AC_ARG_ENABLE(exact-address, AC_HELP_STRING([--enable-exact-address], [Enable regeneration of email addresses]),
         [if test $enableval = yes; then
                 AC_DEFINE(EXACT_ADDRESS,1,
                   [Enable exact regeneration of email addresses as parsed?
                    NOTE: this requires significant more memory when defined.])
 
         fi])
+
+dnl -- start cache --
+AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching]),
+[if test x$enableval = xyes; then
+    AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
+    MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS hcache.o"
+
+    OLDCPPFLAGS="$CPPFLAGS"
+    OLDLIBS="$LIBS"
+
+    need_md5="yes"
+
+    ac_prefer_qdbm=yes
+    AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm], [Don't use qdbm even if it is available]),
+        ac_prefer_qdbm=$withval)
+    if test x$ac_prefer_qdbm != xno; then
+        CPPFLAGS="$OLDCPPFLAGS"
+        LIBS="$OLDLIBS -lqdbm";
+        AC_CACHE_CHECK(for vlopen, ac_cv_vlopen,[
+            ac_cv_vlopen=no
+            AC_TRY_LINK([#include <villa.h>],[vlopen(0,0,0);],[ac_cv_vlopen=yes])
+        ])
+    fi
+
+    ac_prefer_gdbm=yes
+    AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm], [Don't use gdbm even if it is available]),
+        ac_prefer_gdbm=$withval)
+    if test x$ac_prefer_gdbm != xno -a x$ac_cv_vlopen != xyes; then
+        CPPFLAGS="$OLDCPPFLAGS"
+        LIBS="$OLDLIBS -lgdbm";
+        AC_CACHE_CHECK(for gdbm_open, ac_cv_gdbmopen,[
+            ac_cv_gdbmopen=no
+            AC_TRY_LINK([#include <gdbm.h>],[gdbm_open(0,0,0,0,0);],[ac_cv_gdbmopen=yes])
+        ])
+    fi
+
+    ac_bdb_prefix=yes
+    AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb[=DIR]], [Use BerkeleyDB4 if gdbm is not available]),
+        ac_bdb_prefix=$withval)
+    if test x$ac_bdb_prefix != xno -a x$ac_cv_gdbmopen != xyes -a x$ac_cv_vlopen != xyes; then
+        test x$ac_bdb_prefix = xyes && ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
+        for d in $ac_bdb_prefix; do
+            bdbpfx="$bdbpfx $d"
+            for v in BerkeleyDB.4.3 BerkeleyDB.4.2 BerkeleyDB.4.1; do
+                bdbpfx="$bdbpfx $d/$v"
+            done
+        done
+        BDB_VERSIONS="db-4 db4 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db ''"
+        AC_MSG_CHECKING([for BerkeleyDB > 4.0])
+        for d in $bdbpfx; do
+            BDB_INCLUDE_DIR=""
+            BDB_LIB_DIR=""
+            for v in / $BDB_VERSIONS; do
+                if test -r "$d/include/$v/db.h"; then
+                    BDB_INCLUDE_DIR="$d/include/$v"
+                    if test -d "$d/lib/$v"; then
+                        BDB_LIB_DIR="$d/lib/$v"
+                        for l in `echo $BDB_VERSIONS`; do
+                            CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
+                            LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$l"
+                            AC_TRY_LINK([
+                                #include <stdlib.h>
+                                #include <db.h>
+                            ],[
+                                DB *db = NULL;
+                                db->open(db,NULL,NULL,NULL,0,0,0);
+                            ],[
+                                ac_cv_dbcreate=yes
+                                BDB_LIB="$l"
+                                break
+                            ])
+                        done
+                        test x$ac_cv_dbcreate = xyes && break
+                    fi
+                fi
+            done
+            test x$BDB_LIB != x && break
+        done
+        if test x$ac_cv_dbcreate = xyes; then
+            AC_MSG_RESULT(yes)
+        else
+            AC_MSG_RESULT(no)
+        fi
+    fi
+
+    if test x$ac_cv_vlopen = xyes; then
+        CPPFLAGS="$OLDCPPFLAGS"
+        LIBS="$OLDLIBS -lqdbm";
+        AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
+    elif test x$ac_cv_gdbmopen = xyes; then
+        CPPFLAGS="$OLDCPPFLAGS"
+        LIBS="$OLDLIBS -lgdbm";
+        AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
+    elif test x$ac_cv_dbcreate = xyes; then
+        CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
+        LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
+        AC_DEFINE(HAVE_DB4, 1, [Sleepycat DB4 Support])
+    else
+        AC_MSG_ERROR([You need QDBM, GDBM or Sleepycat DB4 for hcache])
+    fi
+fi])
+dnl -- end cache --
+
+if test "$need_md5" = "yes"
+then
+        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"
+fi
 
 AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
@@ -777,7 +934,7 @@ AC_SUBST(LIBIMAPDEPS)
 
 dnl -- iconv/gettext --
 
-AC_ARG_ENABLE(iconv, [  --disable-iconv            Disable iconv support],
+AC_ARG_ENABLE(iconv, AC_HELP_STRING([--disable-iconv], [Disable iconv support]),
         [if test x$enableval = xno ; then
                 am_cv_func_iconv=no
         fi
@@ -932,7 +1089,7 @@ if test "$mutt_cv_mbstate_t" = no; then
 fi
 
 wc_funcs=maybe
-AC_ARG_WITH(wc-funcs, [  --without-wc-funcs         Do not use the system's wchar_t functions],
+AC_ARG_WITH(wc-funcs, AC_HELP_STRING([--without-wc-funcs], [Do not use the system's wchar_t functions]),
         wc_funcs=$withval)
 
 if test "$wc_funcs" != yes -a "$wc_funcs" != no; then
@@ -956,6 +1113,8 @@ fi
 
 if test $wc_funcs = yes; then
         AC_DEFINE(HAVE_WC_FUNCS,1,[ Define if you are using the system's wchar_t functions. ])
+else
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS utf8.o wcwidth.o"
 fi
 
 AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
@@ -976,9 +1135,31 @@ if test $mutt_cv_langinfo_yesexpr = yes; then
   AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
 fi
 
+dnl Documentation tools
+have_openjade="no"
+AC_PATH_PROG([OSPCAT], [ospcat], [none])
+if test "$OSPCAT" != "none"
+then
+  AC_MSG_CHECKING([for openjade docbook stylesheets])
+  dslosfile=`ospcat --public-id="-//Norman Walsh//DOCUMENT DocBook Print Stylesheet//EN"`
+  DSLROOT=`echo $dslosfile | sed -n -e "s/.*SOIBASE='\(@<:@^'@:>@*\)\/catalog'.*/\1/p"`
+  # ospcat may spit out an absolute path without an SOIBASE
+  if test -z "$DSLROOT"
+  then
+    DSLROOT=`echo $dslosfile | sed -e 's|<OSFILE>\(.*\)/print/docbook.dsl|\1|'`
+  fi
+  if test -f $DSLROOT/print/docbook.dsl
+  then
+    AC_MSG_RESULT([in $DSLROOT])
+    have_openjade="yes"
+  else
+    AC_MSG_RESULT([not found: PDF documentation will not be built.])
+  fi
+fi
+AC_SUBST(DSLROOT)
+
 AC_OUTPUT(Makefile intl/Makefile m4/Makefile
         po/Makefile.in doc/Makefile contrib/Makefile
         muttbug.sh
         imap/Makefile
-        Muttrc.head
         doc/instdoc.sh)

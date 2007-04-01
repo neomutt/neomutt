@@ -8,7 +8,9 @@ charset.c
 color.c
 commands.c
 compose.c
+crypt-gpgme.c
 crypt.c
+cryptglue.c
 curs_lib.c
 curs_main.c
 edit.c
@@ -17,6 +19,7 @@ flags.c
 handler.c
 headers.c
 help.c
+history.c
 hook.c
 imap/auth.c
 imap/auth_anon.c
@@ -37,9 +40,12 @@ main.c
 mbox.c
 menu.c
 mh.c
-muttlib.c
+mutt_sasl.c
 mutt_socket.c
 mutt_ssl.c
+mutt_ssl_gnutls.c
+mutt_tunnel.c
+muttlib.c
 mx.c
 pager.c
 parse.c
@@ -61,6 +67,7 @@ send.c
 sendlib.c
 signal.c
 smime.c
+smtp.c
 sort.c
 status.c
 thread.c

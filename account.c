@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-7 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -13,19 +13,24 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* remote host account manipulation (POP/IMAP) */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "account.h"
 #include "url.h"
 
-/* mutt_account_match: compare account info (host/port/user) */
+/* mutt_account_match: compare account info (host/port/user/login) */
 int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 {
   const char* user = NONULL (Username);
+  const char* login = NONULL (Username);
 
   if (a1->type != a2->type)
     return 0;
@@ -35,8 +40,13 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
     return 0;
 
 #ifdef USE_IMAP
-  if (a1->type == M_ACCT_TYPE_IMAP && ImapUser)
-    user = ImapUser;
+  if (a1->type == M_ACCT_TYPE_IMAP)
+  {
+    if (ImapUser)
+      user = ImapUser;
+    if (ImapLogin)
+      login = ImapLogin;
+  }
 #endif
 
 #ifdef USE_POP
@@ -113,6 +123,16 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
   }
 #endif
 
+#ifdef USE_SMTP
+  if (account->type == M_ACCT_TYPE_SMTP)
+  {
+    if (account->flags & M_ACCT_SSL)
+      url->scheme = U_SMTPS;
+    else
+      url->scheme = U_SMTP;
+  }
+#endif
+
   url->host = account->host;
   if (account->flags & M_ACCT_PORT)
     url->port = account->port;
@@ -122,7 +142,7 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
     url->pass = account->pass;
 }
 
-/* mutt_account_getuser: retrieve username into ACCOUNT, if neccessary */
+/* mutt_account_getuser: retrieve username into ACCOUNT, if necessary */
 int mutt_account_getuser (ACCOUNT* account)
 {
   char prompt[SHORT_STRING];
@@ -143,7 +163,7 @@ int mutt_account_getuser (ACCOUNT* account)
   {
     snprintf (prompt, sizeof (prompt), _("Username at %s: "), account->host);
     strfcpy (account->user, NONULL (Username), sizeof (account->user));
-    if (mutt_get_field (prompt, account->user, sizeof (account->user), 0))
+    if (mutt_get_field_unbuffered (prompt, account->user, sizeof (account->user), 0))
       return -1;
   }
 
@@ -152,7 +172,34 @@ int mutt_account_getuser (ACCOUNT* account)
   return 0;
 }
 
-/* mutt_account_getpass: fetch password into ACCOUNT, if neccessary */
+int mutt_account_getlogin (ACCOUNT* account)
+{
+  /* already set */
+  if (account->flags & M_ACCT_LOGIN)
+    return 0;
+#ifdef USE_IMAP
+  else if (account->type == M_ACCT_TYPE_IMAP)
+  {
+    if (ImapLogin)
+    {
+      strfcpy (account->login, ImapLogin, sizeof (account->login));
+      account->flags |= M_ACCT_LOGIN;
+    }
+  }
+#endif
+
+  if (!(account->flags & M_ACCT_LOGIN))
+  {
+    mutt_account_getuser (account);
+    strfcpy (account->login, account->user, sizeof (account->login));
+  }
+
+  account->flags |= M_ACCT_LOGIN;
+
+  return 0;
+}
+
+/* mutt_account_getpass: fetch password into ACCOUNT, if necessary */
 int mutt_account_getpass (ACCOUNT* account)
 {
   char prompt[SHORT_STRING];
@@ -170,7 +217,8 @@ int mutt_account_getpass (ACCOUNT* account)
   else
   {
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
-      account->user, account->host);
+              account->flags & M_ACCT_LOGIN ? account->login : account->user,
+              account->host);
     account->pass[0] = '\0';
     if (mutt_get_password (prompt, account->pass, sizeof (account->pass)))
       return -1;
@@ -183,5 +231,5 @@ int mutt_account_getpass (ACCOUNT* account)
 
 void mutt_account_unsetpass (ACCOUNT* account)
 {
-  account->flags &= !M_ACCT_PASS;
+  account->flags &= ~M_ACCT_PASS;
 }

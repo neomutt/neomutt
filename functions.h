@@ -13,7 +13,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /*
@@ -28,9 +28,25 @@
  * - If you need to bind a control char, use the octal value because the \cX
  * construct does not work at this level.
  *
+ * - The magic "map:" comments define how the map will be called in the
+ * manual. Lines starting with "**" will be included in the manual.
+ *
  */
 
-struct binding_t OpGeneric[] = {
+#ifdef _MAKEDOC
+# include "config.h"
+# include "makedoc-defs.h"
+#endif
+
+struct binding_t OpGeneric[] = { /* map: generic */
+  /*
+  ** <para>
+  ** The <emphasis>generic</emphasis> menu is not a real menu, but specifies common functions
+  ** (such as movement) available in all menus except for <emphasis>pager</emphasis> and
+  ** <emphasis>editor</emphasis>.  Changing settings for this menu will affect the default
+  ** bindings for all menus (except as noted).
+  ** </para>
+  */
   { "top-page",		OP_TOP_PAGE,		"H" },
   { "next-entry",	OP_NEXT_ENTRY,		"j" },
   { "previous-entry",	OP_PREV_ENTRY,		"k" },
@@ -66,9 +82,10 @@ struct binding_t OpGeneric[] = {
   { NULL,		0,			NULL }
 };
 
-struct binding_t OpMain[] = {
+struct binding_t OpMain[] = { /* map: index */
   { "create-alias",		OP_CREATE_ALIAS,		"a" },
   { "bounce-message",		OP_BOUNCE_MESSAGE,		"b" },
+  { "break-thread",		OP_MAIN_BREAK_THREAD,		"#" },
   { "change-folder",		OP_MAIN_CHANGE_FOLDER,		"c" },
   { "change-folder-readonly",	OP_MAIN_CHANGE_FOLDER_READONLY,	"\033c" },
   { "collapse-thread",		OP_MAIN_COLLAPSE_THREAD,	"\033v" },
@@ -95,6 +112,7 @@ struct binding_t OpMain[] = {
   { "next-undeleted",		OP_MAIN_NEXT_UNDELETED,		"j" },
   { "previous-undeleted",	OP_MAIN_PREV_UNDELETED,		"k" },
   { "limit",			OP_MAIN_LIMIT,			"l" },
+  { "link-threads",		OP_MAIN_LINK_THREADS,		"&" },
   { "list-reply",		OP_LIST_REPLY,			"L" },
   { "mail",			OP_MAIL,			"m" },
   { "toggle-new",		OP_TOGGLE_NEW,			"N" },
@@ -152,7 +170,8 @@ struct binding_t OpMain[] = {
   { NULL,			0,				NULL }
 };
 
-struct binding_t OpPager[] = {
+struct binding_t OpPager[] = { /* map: pager */
+  { "break-thread",	OP_MAIN_BREAK_THREAD,		"#" },
   { "create-alias",	OP_CREATE_ALIAS,		"a" },
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "change-folder",	OP_MAIN_CHANGE_FOLDER,		"c" },
@@ -175,6 +194,7 @@ struct binding_t OpPager[] = {
   { "next-entry",	OP_NEXT_ENTRY,			"J" },
   { "previous-undeleted",OP_MAIN_PREV_UNDELETED,	"k" },
   { "previous-entry",	OP_PREV_ENTRY,			"K" },
+  { "link-threads",	OP_MAIN_LINK_THREADS,		"&" },
   { "list-reply",	OP_LIST_REPLY,			"L" },
   { "redraw-screen",	OP_REDRAW,			"\014" },
   { "mail",		OP_MAIL,			"m" },
@@ -246,7 +266,7 @@ struct binding_t OpPager[] = {
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpAttach[] = {
+struct binding_t OpAttach[] = { /* map: attach */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
@@ -272,7 +292,7 @@ struct binding_t OpAttach[] = {
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpCompose[] = {
+struct binding_t OpCompose[] = { /* map: compose */
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
@@ -322,13 +342,13 @@ struct binding_t OpCompose[] = {
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpPost[] = {
+struct binding_t OpPost[] = { /* map: postpone */
   { "delete-entry",	OP_DELETE,	"d" },
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
 };
 
-struct binding_t OpAlias[] = {
+struct binding_t OpAlias[] = { /* map: alias */
   { "delete-entry",	OP_DELETE,	"d" },
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
@@ -336,7 +356,7 @@ struct binding_t OpAlias[] = {
   
 
 /* The file browser */
-struct binding_t OpBrowser[] = {
+struct binding_t OpBrowser[] = { /* map: browser */
   { "change-dir",	OP_CHANGE_DIRECTORY,	"c" },
   { "display-filename",	OP_BROWSER_TELL,	"@" },
   { "enter-mask",	OP_ENTER_MASK,		"m" },
@@ -350,6 +370,7 @@ struct binding_t OpBrowser[] = {
 #ifdef USE_IMAP
   { "create-mailbox",   OP_CREATE_MAILBOX,      "C" },
   { "delete-mailbox",   OP_DELETE_MAILBOX,      "d" },
+  { "rename-mailbox",   OP_RENAME_MAILBOX,      "r" },
   { "subscribe",	OP_BROWSER_SUBSCRIBE,	"s" },
   { "unsubscribe",	OP_BROWSER_UNSUBSCRIBE,	"u" },
   { "toggle-subscribed", OP_BROWSER_TOGGLE_LSUB, "T" },
@@ -358,7 +379,7 @@ struct binding_t OpBrowser[] = {
 };
 
 /* External Query Menu */
-struct binding_t OpQuery[] = {
+struct binding_t OpQuery[] = { /* map: query */
   { "create-alias",	OP_CREATE_ALIAS,	"a" },
   { "mail",		OP_MAIL,		"m" },
   { "query",		OP_QUERY,		"Q" },
@@ -366,7 +387,7 @@ struct binding_t OpQuery[] = {
   { NULL,		0,			NULL }
 };
 
-struct binding_t OpEditor[] = {
+struct binding_t OpEditor[] = { /* map: editor */
   { "bol",		OP_EDITOR_BOL,			"\001" },
   { "backward-char",	OP_EDITOR_BACKWARD_CHAR,	"\002" },
   { "backward-word",	OP_EDITOR_BACKWARD_WORD,	"\033b"},
@@ -394,19 +415,28 @@ struct binding_t OpEditor[] = {
 
 
 
-struct binding_t OpPgp[] = {
+struct binding_t OpPgp[] = { /* map: pgp */
   { "verify-key",	OP_VERIFY_KEY,		"c" },
   { "view-name",	OP_VIEW_ID,		"%" },
   { NULL,		0,				NULL }
 };
 
-/* Don't know an useful key binding yet. But. just in case, adding this already */
-struct binding_t OpSmime[] = {
+
+
+/* When using the GPGME based backend we have some useful functions
+   for the SMIME menu.  */
+struct binding_t OpSmime[] = { /* map: smime */
+#ifdef CRYPT_BACKEND_GPGME
+  { "verify-key",    OP_VERIFY_KEY,             "c" },
+  { "view-name",     OP_VIEW_ID,	        "%" },
+#endif
   { NULL,	0,	NULL }
 };
 
+
+
 #ifdef MIXMASTER
-struct binding_t OpMix[] = {
+struct binding_t OpMix[] = { /* map: mix */
   { "accept",		OP_MIX_USE,	M_ENTER_S },
   { "append",		OP_MIX_APPEND,	"a"       },
   { "insert",		OP_MIX_INSERT,	"i"       },

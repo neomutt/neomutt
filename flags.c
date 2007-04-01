@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -30,6 +34,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   int changed = h->changed;
   int deleted = ctx->deleted;
   int tagged = ctx->tagged;
+  int flagged = ctx->flagged;
 
   if (ctx->readonly && flag != M_TAG)
     return; /* don't modify anything if we are read-only */
@@ -38,12 +43,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   {
     case M_DELETE:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_DELETE))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_DELETE))
+	return;
 
       if (bf)
       {
@@ -89,12 +90,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_NEW:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+	return;
 
       if (bf)
       {
@@ -124,12 +121,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_OLD:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+	return;
 
       if (bf)
       {
@@ -154,12 +147,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_READ:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_SEEN))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+	return;
 
       if (bf)
       {
@@ -186,12 +175,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_REPLIED:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_WRITE))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_WRITE))
+	return;
 
       if (bf)
       {
@@ -219,12 +204,8 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 
     case M_FLAG:
 
-#ifdef USE_IMAP
-	if (ctx && ctx->magic == M_IMAP)
-		if (mutt_bit_isset (((IMAP_DATA *)ctx->data)->capabilities, ACL) \
-		&& !mutt_bit_isset(((IMAP_DATA *)ctx->data)->rights,IMAP_ACL_WRITE))
-			return;
-#endif
+      if (!mutt_bit_isset(ctx->rights,M_ACL_WRITE))
+	return;
 
       if (bf)
       {
@@ -268,7 +249,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
    * search results so that any future search will match the current status
    * of this message and not what it was at the time it was last searched.
    */
-  if (h->searched && (changed != h->changed || deleted != ctx->deleted || tagged != ctx->tagged))
+  if (h->searched && (changed != h->changed || deleted != ctx->deleted || tagged != ctx->tagged || flagged != ctx->flagged))
     h->searched = 0;
 }
 

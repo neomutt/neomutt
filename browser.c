@@ -13,12 +13,17 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "attach.h"
 #include "buffy.h"
 #include "mapping.h"
 #include "sort.h"
@@ -461,12 +466,12 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   return 0;
 }
 
-int select_file_search (MUTTMENU *menu, regex_t *re, int n)
+static int select_file_search (MUTTMENU *menu, regex_t *re, int n)
 {
   return (regexec (re, ((struct folder_file *) menu->data)[n].name, 0, NULL, 0));
 }
 
-void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
+static void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
 {
   FOLDER folder;
 
@@ -511,7 +516,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   menu->redraw = REDRAW_FULL;
 }
 
-int file_tag (MUTTMENU *menu, int n, int m)
+static int file_tag (MUTTMENU *menu, int n, int m)
 {
   struct folder_file *ff = &(((struct folder_file *)menu->data)[n]);
   int ot;
@@ -531,7 +536,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 {
   char buf[_POSIX_PATH_MAX];
   char prefix[_POSIX_PATH_MAX] = "";
-  char helpstr[SHORT_STRING];
+  char helpstr[LONG_STRING];
   char title[STRING];
   struct browser_state state;
   MUTTMENU *menu;
@@ -556,8 +561,8 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     {
       init_state (&state, NULL);
       state.imap_browse = 1;
-      imap_browse (f, &state);
-      strfcpy (LastDir, state.folder, sizeof (LastDir));
+      if (!imap_browse (f, &state))
+        strfcpy (LastDir, state.folder, sizeof (LastDir));
     }
     else
     {
@@ -608,6 +613,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       init_state (&state, NULL);
       state.imap_browse = 1;
       imap_browse (LastDir, &state);
+      browser_sort (&state);
     }
 #endif
   }
@@ -752,6 +758,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      init_state (&state, NULL);
 	      state.imap_browse = 1;
 	      imap_browse (LastDir, &state);
+	      browser_sort (&state);
 	      menu->data = state.entry;
 	    }
 	    else
@@ -863,6 +870,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  init_state (&state, NULL);
 	  state.imap_browse = 1;
 	  imap_browse (LastDir, &state);
+	  browser_sort (&state);
 	  menu->data = state.entry;
 	  menu->current = 0; 
 	  menu->top = 0; 
@@ -871,7 +879,29 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	}
 	break;
 
-      case OP_DELETE_MAILBOX:
+      case OP_RENAME_MAILBOX:
+	if (!state.entry[menu->current].imap)
+	  mutt_error (_("Rename is only supported for IMAP mailboxes"));
+	else
+	{
+	  int nentry = menu->current;
+
+	  if (imap_mailbox_rename (state.entry[nentry].name) >= 0) {
+	    destroy_state (&state);
+	    init_state (&state, NULL);
+	    state.imap_browse = 1;
+	    imap_browse (LastDir, &state);
+	    browser_sort (&state);
+	    menu->data = state.entry;
+	    menu->current = 0;
+	    menu->top = 0;
+	    init_menu (&state, menu, title, sizeof (title), buffy);
+	    MAYBE_REDRAW (menu->redraw);
+	  }
+	}
+	break;
+
+    case OP_DELETE_MAILBOX:
 	if (!state.entry[menu->current].imap)
 	  mutt_error (_("Delete is only supported for IMAP mailboxes"));
 	else
@@ -879,8 +909,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  char msg[SHORT_STRING];
 	  IMAP_MBOX mx;
 	  int nentry = menu->current;
-	  
+
 	  imap_parse_path (state.entry[nentry].name, &mx);
+	  if (!mx.mbox)
+	  {
+	    mutt_error _("Cannot delete root folder");
+	    break;
+	  }
 	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
             mx.mbox);
 	  if (mutt_yesorno (msg, M_NO) == M_YES)
@@ -933,6 +968,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    init_state (&state, NULL);
 	    state.imap_browse = 1;
 	    imap_browse (LastDir, &state);
+	    browser_sort (&state);
 	    menu->data = state.entry;
 	    menu->current = 0; 
 	    menu->top = 0; 
@@ -1012,6 +1048,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	      init_state (&state, NULL);
 	      state.imap_browse = 1;
 	      imap_browse (LastDir, &state);
+	      browser_sort (&state);
 	      menu->data = state.entry;
 	      init_menu (&state, menu, title, sizeof (title), buffy);
 	    }
@@ -1097,6 +1134,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  init_state (&state, NULL);
 	  state.imap_browse = 1;
 	  imap_browse (LastDir, &state);
+	  browser_sort (&state);
 	  menu->data = state.entry;
 	}
 #endif

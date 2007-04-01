@@ -14,7 +14,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 
@@ -31,7 +31,7 @@ int smime_valid_passphrase (void);
 
 int   smime_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 
-void  smime_application_smime_handler (BODY *, STATE *);
+int  smime_application_smime_handler (BODY *, STATE *);
 
 
 BODY* smime_sign_message (BODY *);

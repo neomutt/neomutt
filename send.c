@@ -13,8 +13,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -27,6 +31,7 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 #include "url.h"
+#include "rfc3676.h"
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -83,7 +88,7 @@ static int mutt_addrsrc (ADDRESS *a, ADDRESS *lst)
 }
 
 /* removes addresses from "b" which are contained in "a" */
-static ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
+ADDRESS *mutt_remove_xrefs (ADDRESS *a, ADDRESS *b)
 {
   ADDRESS *top, *p, *prev = NULL;
 
@@ -570,8 +575,6 @@ LIST *mutt_make_references(ENVELOPE *e)
 
 void mutt_fix_reply_recipients (ENVELOPE *env)
 {
-  mutt_expand_aliases_env (env);
-
   if (! option (OPTMETOO))
   {
     /* the order is important here.  do the CC: first so that if the
@@ -585,6 +588,12 @@ void mutt_fix_reply_recipients (ENVELOPE *env)
   env->to = mutt_remove_duplicates (env->to);
   env->cc = mutt_remove_duplicates (env->cc);
   env->cc = mutt_remove_xrefs (env->to, env->cc);
+  
+  if (env->cc && !env->to)
+  {
+    env->to = env->cc;
+    env->cc = NULL;
+  }
 }
 
 void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur)
@@ -952,17 +961,29 @@ static int send_message (HEADER *msg)
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp;
   int i;
+#ifdef USE_SMTP
+  short old_write_bcc;
+#endif
   
   /* Write out the message in MIME form. */
   mutt_mktemp (tempfile);
   if ((tempfp = safe_fopen (tempfile, "w")) == NULL)
     return (-1);
 
+#ifdef USE_SMTP
+  old_write_bcc = option (OPTWRITEBCC);
+  if (SmtpUrl)
+    unset_option (OPTWRITEBCC);
+#endif
 #ifdef MIXMASTER
   mutt_write_rfc822_header (tempfp, msg->env, msg->content, 0, msg->chain ? 1 : 0);
 #endif
 #ifndef MIXMASTER
   mutt_write_rfc822_header (tempfp, msg->env, msg->content, 0, 0);
+#endif
+#ifdef USE_SMTP
+  if (old_write_bcc)
+    set_option (OPTWRITEBCC);
 #endif
   
   fputc ('\n', tempfp); /* tie off the header. */
@@ -986,8 +1007,16 @@ static int send_message (HEADER *msg)
     return mix_send_message (msg->chain, tempfile);
 #endif
 
+#if USE_SMTP
+  if (SmtpUrl)
+      return mutt_smtp_send (msg->env->from, msg->env->to, msg->env->cc,
+                             msg->env->bcc, tempfile,
+                             (msg->content->encoding == ENC8BIT));
+#endif /* USE_SMTP */
+
   i = mutt_invoke_sendmail (msg->env->from, msg->env->to, msg->env->cc, 
-			    msg->env->bcc, tempfile, (msg->content->encoding == ENC8BIT));
+			    msg->env->bcc, tempfile,
+                            (msg->content->encoding == ENC8BIT));
   return (i);
 }
 
@@ -1023,6 +1052,19 @@ static void decode_descriptions (BODY *b)
   }
 }
 
+static void fix_end_of_file (const char *data)
+{
+  FILE *fp;
+  int c;
+  
+  if ((fp = safe_fopen (data, "a+")) == NULL)
+    return;
+  fseek (fp,-1,SEEK_END);
+  if ((c = fgetc(fp)) != '\n')
+    fputc ('\n', fp);
+  safe_fclose (&fp);
+}
+
 int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
 {
   HEADER *msg = mutt_new_header ();
@@ -1054,6 +1096,7 @@ ci_send_message (int flags,		/* send mode */
   /* save current value of "pgp_sign_as" */
   char *signas = NULL;
   char *tag = NULL, *err = NULL;
+  char *ctype;
 
   int rv = -1;
   
@@ -1117,8 +1160,11 @@ ci_send_message (int flags,		/* send mode */
     pbody = mutt_new_body ();
     pbody->next = msg->content; /* don't kill command-line attachments */
     msg->content = pbody;
-    
-    mutt_parse_content_type (ContentType, msg->content);
+
+    if (!(ctype = safe_strdup (ContentType)))
+      ctype = safe_strdup ("text/plain");
+    mutt_parse_content_type (ctype, msg->content);
+    FREE (&ctype);
     msg->content->unlink = 1;
     msg->content->use_disp = 0;
     msg->content->disposition = DISPINLINE;
@@ -1186,7 +1232,10 @@ ci_send_message (int flags,		/* send mode */
       process_user_recips (msg->env);
 
     /* Expand aliases and remove duplicates/crossrefs */
-    mutt_fix_reply_recipients (msg->env);
+    mutt_expand_aliases_env (msg->env);
+    
+    if (flags & SENDREPLY)
+      mutt_fix_reply_recipients (msg->env);
 
     if (! (flags & SENDMAILX) &&
 	! (option (OPTAUTOEDIT) && option (OPTEDITHDRS)) &&
@@ -1346,7 +1395,7 @@ ci_send_message (int flags,		/* send mode */
   {
     struct stat st;
     time_t mtime = mutt_decrease_mtime (msg->content->filename, NULL);
-    
+
     mutt_update_encoding (msg->content);
 
     /*
@@ -1366,7 +1415,10 @@ ci_send_message (int flags,		/* send mode */
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap (msg->content))
-	mutt_edit_attachment (msg->content);
+      {
+	if (!mutt_edit_attachment (msg->content))
+          goto cleanup;
+      }
       else if (!Editor || mutt_strcmp ("builtin", Editor) == 0)
 	mutt_builtin_editor (msg->content->filename, msg, cur);
       else if (option (OPTEDITHDRS))
@@ -1376,7 +1428,21 @@ ci_send_message (int flags,		/* send mode */
 	mutt_env_to_idna (msg->env, NULL, NULL);
       }
       else
+      {
 	mutt_edit_file (Editor, msg->content->filename);
+	if (stat (msg->content->filename, &st) == 0)
+	{
+	  if (mtime != st.st_mtime)
+	    fix_end_of_file (msg->content->filename);
+	}
+	else
+	  mutt_perror (msg->content->filename);
+      }
+      
+      if (option (OPTTEXTFLOWED))
+	rfc3676_space_stuff (msg);
+
+      mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
 
     if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND)))

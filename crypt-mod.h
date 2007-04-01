@@ -13,7 +13,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #ifndef CRYPTOGRAPHY_H
@@ -34,8 +34,8 @@ typedef int (*crypt_func_valid_passphrase_t)  (void);
 typedef int (*crypt_func_decrypt_mime_t) (FILE *a, FILE **b,
                                           BODY *c, BODY **d);
 
-typedef void (*crypt_func_application_handler_t) (BODY *m, STATE *s);
-typedef void (*crypt_func_encrypted_handler_t) (BODY *m, STATE *s);
+typedef int (*crypt_func_application_handler_t) (BODY *m, STATE *s);
+typedef int (*crypt_func_encrypted_handler_t) (BODY *m, STATE *s);
 
 typedef void (*crypt_func_pgp_invoke_getkeys_t) (ADDRESS *addr);
 typedef int (*crypt_func_pgp_check_traditional_t) (FILE *fp, BODY *b,
@@ -67,6 +67,7 @@ typedef void (*crypt_func_smime_invoke_import_t) (char *infile, char *mailbox);
 
 typedef void (*crypt_func_init_t) (void);
 
+typedef void (*crypt_func_set_sender_t) (const char *sender);
 
 /*
    A structure to keep all crypto module fucntions together.
@@ -84,6 +85,7 @@ typedef struct crypt_module_functions
   crypt_func_sign_message_t sign_message;
   crypt_func_verify_one_t verify_one;
   crypt_func_send_menu_t send_menu;
+  crypt_func_set_sender_t set_sender;
 
   /* PGP specific functions.  */
   crypt_func_pgp_encrypt_message_t pgp_encrypt_message;

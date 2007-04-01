@@ -14,8 +14,12 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_curses.h"
@@ -36,9 +40,7 @@
 #include "imap.h"
 #endif
 
-#ifdef BUFFY_SIZE
 #include "buffy.h"
-#endif
 
 #include <errno.h>
 #include <unistd.h>
@@ -49,7 +51,6 @@
 #include <sys/types.h>
 #include <utime.h>
 
-extern char *ReleaseDate;
 
 /* The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[_POSIX_PATH_MAX] = "";
@@ -162,6 +163,7 @@ int mutt_display_message (HEADER *cur)
   if (WithCrypto)
   {
     /* update crypto information for this message */
+    cur->security &= ~(GOODSIGN|BADSIGN);
     cur->security |= crypt_query (cur->content);
   
     /* Remove color cache for this message, in case there
@@ -196,7 +198,7 @@ int mutt_display_message (HEADER *cur)
 	mutt_message (_("PGP signature successfully verified."));
       else if (cur->security & PARTSIGN)
 	mutt_message (_("Warning: Part of this message has not been signed."));
-      else
+      else if (cur->security & SIGN)
 	mutt_message (_("PGP signature could NOT be verified."));
     }
 
@@ -233,6 +235,7 @@ int mutt_display_message (HEADER *cur)
 void ci_bounce_message (HEADER *h, int *redraw)
 {
   char prompt[SHORT_STRING];
+  char scratch[SHORT_STRING];
   char buf[HUGE_STRING] = { 0 };
   ADDRESS *adr = NULL;
   char *err = NULL;
@@ -274,18 +277,18 @@ void ci_bounce_message (HEADER *h, int *redraw)
   rfc822_write_address (buf, sizeof (buf), adr, 1);
 
 #define extra_space (15 + 7 + 2)
-  snprintf (prompt, sizeof (prompt),
+  snprintf (scratch, sizeof (scratch),
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
 
   if (mutt_strwidth (prompt) > COLS - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt),
 			0, COLS-extra_space, 0, 0,
-			prompt, sizeof (prompt), 0);
+			scratch, sizeof (scratch), 0);
     safe_strcat (prompt, sizeof (prompt), "...?");
   }
   else
-    safe_strcat (prompt, sizeof (prompt), "?");
+    snprintf (prompt, sizeof (prompt), "%s?", scratch);
 
   if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {
@@ -323,7 +326,7 @@ static void pipe_set_flags (int decode, int print, int *cmflags, int *chflags)
   
 }
 
-void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
+static void pipe_msg (HEADER *h, FILE *fp, int decode, int print)
 {
   int cmflags = 0;
   int chflags = CH_FROM;
@@ -666,21 +669,27 @@ static void set_copy_flags (HEADER *hdr, int decode, int decrypt, int *cmflags, 
   }
 }
 
-void _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
+int _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int decrypt)
 {
   int cmflags, chflags;
+  int rc;
   
   set_copy_flags (h, decode, decrypt, &cmflags, &chflags);
 
   if (decode || decrypt)
     mutt_parse_mime_message (Context, h);
 
-  if (mutt_append_message (ctx, Context, h, cmflags, chflags) == 0 && delete)
+  if ((rc = mutt_append_message (ctx, Context, h, cmflags, chflags)) != 0)
+    return rc;
+
+  if (delete)
   {
     mutt_set_flag (Context, h, M_DELETE, 1);
     if (option (OPTDELETEUNTAG))
       mutt_set_flag (Context, h, M_TAG, 0);
   }
+  
+  return 0;
 }
 
 /* returns 0 if the copy/save was successful, or -1 on error/abort */
@@ -692,11 +701,8 @@ int mutt_save_message (HEADER *h, int delete,
   char prompt[SHORT_STRING], buf[_POSIX_PATH_MAX];
   CONTEXT ctx;
   struct stat st;
-#ifdef BUFFY_SIZE
   BUFFY *tmp = NULL;
-#else
   struct utimbuf ut;
-#endif
 
   *redraw = 0;
 
@@ -801,7 +807,13 @@ int mutt_save_message (HEADER *h, int delete,
   if (mx_open_mailbox (buf, M_APPEND, &ctx) != NULL)
   {
     if (h)
-      _mutt_save_message(h, &ctx, delete, decode, decrypt);
+    {
+      if (_mutt_save_message(h, &ctx, delete, decode, decrypt) != 0)
+      {
+        mx_close_mailbox (&ctx, NULL);
+        return -1;
+      }
+    }
     else
     {
       for (i = 0; i < Context->vcount; i++)
@@ -809,8 +821,12 @@ int mutt_save_message (HEADER *h, int delete,
 	if (Context->hdrs[Context->v2r[i]]->tagged)
 	{
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], M_MESSAGEHOOK);
-	  _mutt_save_message(Context->hdrs[Context->v2r[i]],
-			     &ctx, delete, decode, decrypt);
+	  if (_mutt_save_message(Context->hdrs[Context->v2r[i]],
+			     &ctx, delete, decode, decrypt) != 0)
+          {
+            mx_close_mailbox (&ctx, NULL);
+            return -1;
+          }
 	}
       }
     }
@@ -821,21 +837,24 @@ int mutt_save_message (HEADER *h, int delete,
 
     if (need_buffy_cleanup)
     {
-#ifdef BUFFY_SIZE
-      tmp = mutt_find_mailbox (buf);
-      if (tmp && !tmp->new)
-	mutt_update_mailbox (tmp);
-#else
-      /* fix up the times so buffy won't get confused */
-      if (st.st_mtime > st.st_atime)
+      if (option(OPTCHECKMBOXSIZE))
       {
-	ut.actime = st.st_atime;
-	ut.modtime = time (NULL);
-	utime (buf, &ut); 
+	tmp = mutt_find_mailbox (buf);
+	if (tmp && !tmp->new)
+	  mutt_update_mailbox (tmp);
       }
       else
-	utime (buf, NULL);
-#endif
+      {
+	/* fix up the times so buffy won't get confused */
+	if (st.st_mtime > st.st_atime)
+	{
+	  ut.actime = st.st_atime;
+	  ut.modtime = time (NULL);
+	  utime (buf, &ut); 
+	}
+	else
+	  utime (buf, NULL);
+      }
     }
 
     mutt_clear_error ();
@@ -910,12 +929,17 @@ void mutt_edit_content_type (HEADER *h, BODY *b, FILE *fp)
 
   /* inform the user */
   
+  snprintf (tmp, sizeof (tmp), "%s/%s", TYPE (b), NONULL (b->subtype));
   if (type_changed)
     mutt_message (_("Content-Type changed to %s."), tmp);
-  else if (b->type == TYPETEXT && charset_changed)
+  if (b->type == TYPETEXT && charset_changed)
+  {
+    if (type_changed)
+      mutt_sleep (1);
     mutt_message (_("Character set changed to %s; %s."),
 		  mutt_get_parameter ("charset", b->parameter),
 		  b->noconv ? _("not converting") : _("converting"));
+  }
 
   b->force_charset |= charset_changed ? 1 : 0;
 
@@ -957,6 +981,7 @@ static int _mutt_check_traditional_pgp (HEADER *h, int *redraw)
     rv = 1;
   }
   
+  h->security |= PGP_TRADITIONAL_CHECKED;
   mx_close_message (&msg);
   return rv;
 }

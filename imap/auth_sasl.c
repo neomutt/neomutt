@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-3 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-5 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -13,23 +13,22 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */ 
 
 /* SASL login/authentication code */
+
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "mutt.h"
 #include "mutt_sasl.h"
 #include "imap_private.h"
 #include "auth.h"
 
-#ifdef USE_SASL2
 #include <sasl/sasl.h>
 #include <sasl/saslutil.h>
-#else
-#include <sasl.h>
-#include <saslutil.h>
-#endif
 
 /* imap_auth_sasl: Default authenticator if available. */
 imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
@@ -39,11 +38,7 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   int rc, irc;
   char buf[HUGE_STRING];
   const char* mech;
-#ifdef USE_SASL2
   const char *pc = NULL;
-#else
-  char* pc = NULL;
-#endif
   unsigned int len, olen;
   unsigned char client_start;
 
@@ -72,25 +67,15 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
     if (mutt_bit_isset (idata->capabilities, AUTH_ANON) &&
 	(!idata->conn->account.user[0] ||
 	 !ascii_strncmp (idata->conn->account.user, "anonymous", 9)))
-#ifdef USE_SASL2
       rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, 
                               &mech);
-#else
-      rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, NULL, &pc, &olen,
-			      &mech);
-#endif
   }
   
   if (rc != SASL_OK && rc != SASL_CONTINUE)
     do
     {
-#ifdef USE_SASL2
       rc = sasl_client_start (saslconn, method, &interaction,
         &pc, &olen, &mech);
-#else
-      rc = sasl_client_start (saslconn, method, NULL, &interaction,
-        &pc, &olen, &mech);
-#endif
       if (rc == SASL_INTERACT)
 	mutt_sasl_interact (interaction);
     }
@@ -112,6 +97,17 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   mutt_message (_("Authenticating (%s)..."), mech);
 
   snprintf (buf, sizeof (buf), "AUTHENTICATE %s", mech);
+  if (mutt_bit_isset (idata->capabilities, SASL_IR) && client_start)
+  {
+    len = mutt_strlen (buf);
+    buf[len++] = ' ';
+    if (sasl_encode64 (pc, olen, buf + len, sizeof (buf) - len, &olen) != SASL_OK)
+    {
+      dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
+      goto bail;
+    }
+    client_start = olen = 0;
+  }
   imap_cmd_start (idata, buf);
   irc = IMAP_CMD_CONTINUE;
 
@@ -122,31 +118,29 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
       irc = imap_cmd_step (idata);
     while (irc == IMAP_CMD_CONTINUE);
 
-    if (method && irc == IMAP_CMD_NO)
-    {
-      dprint (2, (debugfile, "imap_auth_sasl: %s failed\n", method));
-      sasl_dispose (&saslconn);
-      return IMAP_AUTH_UNAVAIL;
-    }
-
     if (irc == IMAP_CMD_BAD || irc == IMAP_CMD_NO)
       goto bail;
 
     if (irc == IMAP_CMD_RESPOND)
     {
-#ifdef USE_SASL2
-      if (sasl_decode64 (idata->cmd.buf+2, strlen (idata->cmd.buf+2), buf, LONG_STRING-1,
-#else
-      if (sasl_decode64 (idata->cmd.buf+2, strlen (idata->cmd.buf+2), buf,
-#endif
-			 &len) != SASL_OK)
+      /* Exchange incorrectly returns +\r\n instead of + \r\n */
+      if (idata->buf[1] == '\0')
+      {
+	buf[0] = '\0';
+	len = 0;
+      }
+      else if (sasl_decode64 (idata->buf+2, strlen (idata->buf+2), buf,
+			      LONG_STRING-1, &len) != SASL_OK)
       {
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-decoding server response.\n"));
 	goto bail;
       }
     }
 
-    if (!client_start)
+    /* client-start is only available with the SASL-IR extension, but
+     * SASL 2.1 seems to want to use it regardless, at least for DIGEST
+     * fast reauth. Override if the server sent an initial continuation */
+    if (!client_start || buf[0])
     {
       do
       {
@@ -167,12 +161,6 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 	dprint (1, (debugfile, "imap_auth_sasl: error base64-encoding client response.\n"));
 	goto bail;
       }
-
-      /* sasl_client_st(art|ep) allocate pc with malloc, expect me to 
-       * free it */
-#ifndef USE_SASL2
-      FREE (&pc);
-#endif
     }
     
     if (irc == IMAP_CMD_RESPOND)
@@ -198,16 +186,23 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
   if (rc != SASL_OK)
     goto bail;
 
-  if (imap_code (idata->cmd.buf))
+  if (imap_code (idata->buf))
   {
     mutt_sasl_setup_conn (idata->conn, saslconn);
     return IMAP_AUTH_SUCCESS;
   }
 
  bail:
+  sasl_dispose (&saslconn);
+
+  if (method)
+  {
+    dprint (2, (debugfile, "imap_auth_sasl: %s failed\n", method));
+    return IMAP_AUTH_UNAVAIL;
+  }
+
   mutt_error _("SASL authentication failed.");
   mutt_sleep(2);
-  sasl_dispose (&saslconn);
 
   return IMAP_AUTH_FAILURE;
 }

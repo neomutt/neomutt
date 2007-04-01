@@ -15,7 +15,7 @@
  * 
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #ifdef CRYPT_BACKEND_CLASSIC_PGP
@@ -52,8 +52,8 @@ pgp_key_t pgp_getkeybystr (char *, short, pgp_ring_t);
 char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
 
 void pgp_forget_passphrase (void);
-void pgp_application_pgp_handler (BODY *, STATE *);
-void pgp_encrypted_handler (BODY *, STATE *);
+int pgp_application_pgp_handler (BODY *, STATE *);
+int pgp_encrypted_handler (BODY *, STATE *);
 void pgp_extract_keys_from_attachment_list (FILE * fp, int tag, BODY * top);
 void pgp_void_passphrase (void);
 int pgp_valid_passphrase (void);
