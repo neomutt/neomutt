@@ -17,25 +17,180 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111, USA.
 .\"
-.TH flea 1 "January 2005" Unix "User Manuals"
+.TH flea 1 "July 2000" Unix "User Manuals"
 .SH NAME
-flea \- Report a bug (or rather a flea) in mutt. (OBSOLETE)
+flea \- Report a bug (or rather a flea) in mutt.
+.SH SYNOPSIS
+.PP
+.B flea
 .SH DESCRIPTION
 .PP
 .B flea
-used to be a shell script which helped you to submit a bug report against the 
+is a shell script which helps you to submit a bug report against the 
 .BR mutt (1)
 mail user agent.
 .PP
-The mutt bug tracking system broke down under the spam thrown at it and
-was shut down in January 2005.  To report a bug in mutt, please use
-your system's bug reporting system if mutt came as part of your
-system, or refer to the mutt web site at
-.I http://www.mutt.org
-for more information.
+If you invoke 
+.BR flea , 
+you'll first be prompted for a short
+description of the problem you experience.  This will be used as the
+bug report's subject line, so it should be concise, but informative.
+.PP
+You are then asked to assign an initial severity level to the
+problem you observe; 
+.B flea
+will give you a description which severity level is appropriate or
+not.
+.PP
+Then, you are asked for the location of a core dump (normally named
+.BR core )
+which may have been left over by a crash of your 
+.BR mutt (1).
+You can just type \(lqno\(rq here, or you can enter the path leading 
+to a core dump.
+.B flea
+will try to use either
+.BR sdb (1),
+.BR dbx (1),
+or
+.BR gdb (1)
+to extract some information from this core dump which may be helpful
+to developers in order to determine the reason for the crash.
+.PP
+Finally, you are asked whether or not you want to include personal
+and system 
+.BR mutt (1)
+configuration files with the bug report.  If at all possible, we
+urge you to answer these questions with \(lqyes\(rq, since a
+reference configuration makes it incredibly easier to track down a
+problem.
+.PP
+If you are using Debian GNU/Linux,
+.B flea
+will now check whether or not 
+.B mutt
+has been installed as a Debian
+package on your system, and suggest to file the bug against the
+.BR mutt (1)
+and Debian bug tracking systems.  This option was added since the 
+.BR mutt (1)
+project uses another instantiation of the Debian bug tracking
+system, so submitting bugs against both systems in one pass is
+simple.
+.PP
+You are then dropped into your favorite editor as determined by the 
+.B EDITOR
+and
+.B VISUAL
+environment variables.  
+.PP
+Please give us details about the problem in the empty space below
+the line reading \(lqPlease type your report below this line\(rq.
+We are most interested in precise information on what symptoms you
+observe and what steps may be used to reproduce the bug.  Chances
+are that problems which can easily be reproduced will be fixed
+quickly.  So please take some time when filling out this part of the
+template.
+.PP
+The remainder of the template contains various kinds of information
+gathered from your system, including output of the
+.BR uname (1)
+command, output from
+.BR mutt (1)
+itself, and your system's 
+.BR mutt (1)
+configuration files.  You may wish to browse through this part of
+the bug report form in order to avoid leaking confidential
+information to the public.
+.PP
+If you leave the editor, 
+.B flea
+will give you the option to review, re-edit, submit, or abandon your
+bug report.  If you decide to submit it, a mail message containing
+your report will be sent to <submit@bugs.guug.de>.  You'll receive a
+copy of this message.
+.PP
+While your bug report is being processed by the bug tracking system,
+you will receive various e-mail messages from the bug tracking
+system informing you about what's going on: Once your bug report has
+been entered into the bug tracking system, it will be assigned a
+unique serial number about which you are informed via e-mail.  If
+you wish to submit additional information about the bug, you can
+just send it to the address
+.BR \fIserial\fP@bugs.guug.de .
+.PP
+Later, you will most likely receive questions from the developers
+about the problem you observed, and you will eventually be informed
+that your bug report has been closed.  This means that the bug has
+been fixed at least in the
+.BR cvs (1)
+repository.  If the answers you receive don't satisfy you, don't
+hesitate to contact the developers directly under
+.BR mutt-dev@mutt.org.
+.PP
+You can also browse your bug report and all additional information
+and replies connected to it using the bug tracking system's Web
+interface under the following URL:
+http://bugs.guug.de/
+.SH
+ENVIRONMENT
 .PP
 .B flea
-is now a shell script that prints a short error message and exits.
+will use the following environment variables:
+.IP "EMAIL"
+Your electronic mail address.  Will be used to set the bug report's
+From header, and to send you a copy of the report.
+.IP "LOGNAME"
+Your login name.  If the
+.B EMAIL
+environment variable isn't set, this will be used instead to send
+you a copy of the report.  Setting the sender will be left to 
+.BR sendmail (1)
+on your system.
+.IP "REPLYTO"
+If set, the bug report will contain a Reply-To header with the
+e-mail address contained in this environment variable.
+.IP "ORGANIZATION"
+If set, the bug report will contain an Organization header with the
+contents of this environment variable.
+.IP "PAGER"
+If set, this environment variable will be expected to contain the
+path to your favorite pager for viewing the bug report.  If unset, 
+.BR more (1)
+will be used.
+.IP "VISUAL"
+If set, this environment variable will be expected to contain the
+path to your favorite visual editor.
+.IP "EDITOR"
+If set, this environment variable will be expected to contain the
+path to your favorite editor.  This variable is examined if and only
+if the 
+.B VISUAL
+environment variable is unset.  If
+.B EDITOR
+is unset, 
+.BR vi (1)
+will be used to edit the bug report.
+.SH
+FILES
+.PP
+.IP "core"
+If present, this file may contain a post-mortem memory dump of mutt.
+It will be inspected using the debugger installed on your system.
+.SH 
+SEE ALSO
+.PP
+.BR dbx (1),
+.BR gdb (1),
+.BR lynx (1),
+.BR mutt (1),
+.BR muttrc (5),
+.BR sdb (1),
+.BR sendmail (1),
+.BR uname (1),
+.BR vi (1)
+.PP
+The mutt bug tracking system: http://bugs.guug.de/
 .SH
 AUTHOR
 .PP
