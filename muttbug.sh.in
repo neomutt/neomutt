@@ -27,7 +27,7 @@
 #     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-SUBMIT="submit@bugs.guug.de"
+SUBMIT="fleas@mutt.org"
 DEBIAN_SUBMIT="submit@bugs.debian.org"
 
 prefix=@prefix@
@@ -101,13 +101,24 @@ if test -z "$EMAIL" ; then
 	EMAIL="`mutt -Q from 2> /dev/null | sed -e 's/^from=.\(.*\).$/\1/'`"
 fi
 
-echo "Please enter your e-mail address [$EMAIL]:"
-echo $n "> $c"
-read EMAILTMP
+EMAILTMP=''
+while test -z "$EMAILTMP"
+do
+  echo "Please enter your e-mail address [$EMAIL]:"
+  echo $n "> $c"
+  read EMAILTMP
 
-if test -n "$EMAILTMP" ; then
-	EMAIL="$EMAILTMP"
-fi
+  if test -z "$EMAILTMP"; then EMAILTMP="$EMAIL"; fi
+
+  if ! echo "$EMAILTMP" | grep -q @
+  then
+    echo "$EMAILTMP does not appear to be a valid email address"
+    EMAILTMP=''
+    continue
+  fi
+
+  EMAIL="$EMAILTMP"
+done
 
 echo "Please enter a one-line description of the problem you experience:"
 echo $n "> $c"

@@ -1,4 +1,11 @@
-2007-03-31 16:07 -0700  Brendan Cully  <brendan@kublai.com>  (bf208df92829)
+2007-04-01 14:59 -0700  Brendan Cully  <brendan@kublai.com>  (c01a36ebe339)
+
+	* doc/muttbug.man, muttbug.sh.in: Restore muttbug
+
+2007-03-31 18:50 -0700  Brendan Cully  <brendan@kublai.com>  (f467353f5657)
+
+	* bcache.c, bcache.h, imap/message.c, pop.c, pop.h: Add tmp flag
+	to bcache_put, create bcache_commit.
 
 	* imap/command.c, imap/imap.c: Allow IMAP FCC to reconnect if
 	append fails (closes: #890)
