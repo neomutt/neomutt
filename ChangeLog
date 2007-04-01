@@ -1,4 +1,9 @@
-2007-04-01 14:59 -0700  Brendan Cully  <brendan@kublai.com>  (c01a36ebe339)
+2007-04-01 15:33 -0700  Brendan Cully  <brendan@kublai.com>  (3a81b3793f77)
+
+	* doc/muttbug.man: Update flea man page to current addresses
+
+	* muttbug.sh.in: Adjust flea to use new submission address; check
+	email for @
 
 	* doc/muttbug.man, muttbug.sh.in: Restore muttbug
 

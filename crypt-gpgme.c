@@ -766,7 +766,7 @@ static int get_micalg (gpgme_ctx_t ctx, char *buf, size_t buflen)
 
   *buf = 0;
   result = gpgme_op_sign_result (ctx);
-  if (result)
+  if (result && result->signatures)
     {
       algorithm_name = gpgme_hash_algo_name (result->signatures->hash_algo);
       if (algorithm_name)
