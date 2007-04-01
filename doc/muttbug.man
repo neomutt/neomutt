@@ -107,7 +107,7 @@ If you leave the editor,
 .B flea
 will give you the option to review, re-edit, submit, or abandon your
 bug report.  If you decide to submit it, a mail message containing
-your report will be sent to <submit@bugs.guug.de>.  You'll receive a
+your report will be sent to <fleas@mutt.org>.  You'll receive a
 copy of this message.
 .PP
 While your bug report is being processed by the bug tracking system,
@@ -117,7 +117,8 @@ been entered into the bug tracking system, it will be assigned a
 unique serial number about which you are informed via e-mail.  If
 you wish to submit additional information about the bug, you can
 just send it to the address
-.BR \fIserial\fP@bugs.guug.de .
+.BR fleas@mutt.org
+with #\fIserial\fP in the subject.
 .PP
 Later, you will most likely receive questions from the developers
 about the problem you observed, and you will eventually be informed
@@ -131,7 +132,7 @@ hesitate to contact the developers directly under
 You can also browse your bug report and all additional information
 and replies connected to it using the bug tracking system's Web
 interface under the following URL:
-http://bugs.guug.de/
+http://bugs.mutt.org/
 .SH
 ENVIRONMENT
 .PP
@@ -190,7 +191,7 @@ SEE ALSO
 .BR uname (1),
 .BR vi (1)
 .PP
-The mutt bug tracking system: http://bugs.guug.de/
+The mutt bug tracking system: http://bugs.mutt.org/
 .SH
 AUTHOR
 .PP
