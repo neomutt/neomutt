@@ -428,12 +428,12 @@ static void pop_clear_cache (POP_DATA *pop_data)
 }
 
 /* close POP mailbox */
-void pop_close_mailbox (CONTEXT *ctx)
+int pop_close_mailbox (CONTEXT *ctx)
 {
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
 
   if (!pop_data)
-    return;
+    return 0;
 
   pop_logout (ctx);
 
@@ -450,7 +450,7 @@ void pop_close_mailbox (CONTEXT *ctx)
 
   mutt_bcache_close (&pop_data->bcache);
 
-  return;
+  return 0;
 }
 
 /* fetch message from POP server */
@@ -514,7 +514,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
 			M_PROGRESS_SIZE, NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
-    if (!(msg->fp = mutt_bcache_put (pop_data->bcache, h->data)))
+    if (!(msg->fp = mutt_bcache_put (pop_data->bcache, h->data, 1)))
     {
       /* no */
       bcache = 0;
@@ -538,9 +538,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     /* if RETR failed (e.g. connection closed), be sure to remove either
      * the file in bcache or from POP's own cache since the next iteration
      * of the loop will re-attempt to put() the message */
-    if (bcache)
-      mutt_bcache_del (pop_data->bcache, h->data);
-    else
+    if (!bcache)
       unlink (path);
 
     if (ret == -2)
@@ -561,7 +559,9 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   /* Update the header information.  Previously, we only downloaded a
    * portion of the headers, those required for the main display.
    */
-  if (!bcache)
+  if (bcache)
+    mutt_bcache_commit (pop_data->bcache, h->data);
+  else
   {
     cache->index = h->index;
     cache->path = safe_strdup (path);

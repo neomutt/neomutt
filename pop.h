@@ -109,7 +109,7 @@ int pop_check_mailbox (CONTEXT *, int *);
 int pop_open_mailbox (CONTEXT *);
 int pop_sync_mailbox (CONTEXT *, int *);
 int pop_fetch_message (MESSAGE *, CONTEXT *, int);
-void pop_close_mailbox (CONTEXT *);
+int pop_close_mailbox (CONTEXT *);
 void pop_fetch_mail (void);
 
 #endif

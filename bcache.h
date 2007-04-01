@@ -48,7 +48,10 @@ void mutt_bcache_close (body_cache_t **bcache);
  */
 
 FILE* mutt_bcache_get(body_cache_t *bcache, const char *id);
-FILE* mutt_bcache_put(body_cache_t *bcache, const char *id);
+/* tmp: the returned FILE* is in a temporary location.
+ *      if set, use mutt_bcache_commit to put it into place */
+FILE* mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp);
+int mutt_bcache_commit(body_cache_t *bcache, const char *id);
 int mutt_bcache_move(body_cache_t *bcache, const char *id, const char *newid);
 int mutt_bcache_del(body_cache_t *bcache, const char *id);
 int mutt_bcache_exists(body_cache_t *bcache, const char *id);

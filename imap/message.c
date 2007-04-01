@@ -903,23 +903,21 @@ static FILE* msg_cache_put (IMAP_DATA* idata, HEADER* h)
     return NULL;
 
   idata->bcache = msg_cache_open (idata);
-  snprintf (id, sizeof (id), "%u-%u.tmp", idata->uid_validity, HEADER_DATA(h)->uid);
-  return mutt_bcache_put (idata->bcache, id);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  return mutt_bcache_put (idata->bcache, id, 1);
 }
 
 static int msg_cache_commit (IMAP_DATA* idata, HEADER* h)
 {
   char id[_POSIX_PATH_MAX];
-  char newid[_POSIX_PATH_MAX];
 
   if (!idata || !h)
     return -1;
 
   idata->bcache = msg_cache_open (idata);
-  snprintf (id, sizeof (id), "%u-%u.tmp", idata->uid_validity, HEADER_DATA(h)->uid);
-  snprintf (newid, sizeof (newid), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
+  snprintf (id, sizeof (id), "%u-%u", idata->uid_validity, HEADER_DATA(h)->uid);
 
-  return mutt_bcache_move (idata->bcache, id, newid);
+  return mutt_bcache_commit (idata->bcache, id);
 }
 
 int imap_cache_del (IMAP_DATA* idata, HEADER* h)

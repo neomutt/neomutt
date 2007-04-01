@@ -131,7 +131,7 @@ FILE* mutt_bcache_get(body_cache_t *bcache, const char *id)
   return fp;
 }
 
-FILE* mutt_bcache_put(body_cache_t *bcache, const char *id)
+FILE* mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp)
 {
   char path[_POSIX_PATH_MAX];
   FILE* fp;
@@ -141,9 +141,8 @@ FILE* mutt_bcache_put(body_cache_t *bcache, const char *id)
   if (!id || !*id || !bcache)
     return NULL;
 
-  path[0] = '\0';
-  safe_strncat (path, sizeof (path), bcache->path, bcache->pathlen);
-  safe_strncat (path, sizeof (path), id, mutt_strlen (id));
+  snprintf (path, sizeof (path), "%s%s%s", bcache->path, id,
+            tmp ? ".tmp" : "");
 
   s = strchr (path + 1, '/');
   while (!(fp = safe_fopen (path, "w+")) && errno == ENOENT && s)
@@ -159,6 +158,15 @@ FILE* mutt_bcache_put(body_cache_t *bcache, const char *id)
   dprint (3, (debugfile, "bcache: put: '%s'\n", path));
 
   return fp;
+}
+
+int mutt_bcache_commit(body_cache_t* bcache, const char* id)
+{
+  char tmpid[_POSIX_PATH_MAX];
+
+  snprintf (tmpid, sizeof (tmpid), "%s.tmp", id);
+
+  return mutt_bcache_move (bcache, tmpid, id);
 }
 
 int mutt_bcache_move(body_cache_t* bcache, const char* id, const char* newid)

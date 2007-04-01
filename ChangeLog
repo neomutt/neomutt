@@ -1,3 +1,11 @@
+2007-03-31 16:07 -0700  Brendan Cully  <brendan@kublai.com>  (bf208df92829)
+
+	* imap/command.c, imap/imap.c: Allow IMAP FCC to reconnect if
+	append fails (closes: #890)
+
+	* mh.c: Always set up data pointer in mh_read_dir, not just when
+	allocating context
+
 2007-03-30 21:26 -0700  Daniel Burrows  <dburrows@debian.org>  (d5ab883ef90a)
 
 	* hcache.c: Fix handling of DB4 hcache open failure. (closes: #2714)
