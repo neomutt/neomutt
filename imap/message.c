@@ -122,7 +122,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
 #if USE_HCACHE
   if (!msgbegin)
-    hc = mutt_hcache_open (HeaderCache, ctx->path);
+    hc = imap_hcache_open (idata, ctx->path);
 
   if (hc)
   {

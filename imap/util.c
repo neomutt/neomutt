@@ -66,6 +66,25 @@ int imap_expand_path (char* path, size_t len)
   return rc;
 }
 
+#ifdef USE_HCACHE
+void* imap_hcache_open (IMAP_DATA* idata, const char* path)
+{
+  IMAP_MBOX mx;
+  ciss_url_t url;
+  char cachepath[LONG_STRING];
+
+  if (imap_parse_path (path, &mx) < 0)
+    return NULL;
+
+  mutt_account_tourl (&idata->conn->account, &url);
+  url.path = mx.mbox;
+  url_ciss_tostring (&url, cachepath, sizeof (cachepath), 0);
+  FREE (&mx.mbox);
+
+  return mutt_hcache_open (HeaderCache, cachepath);
+}
+#endif
+
 /* imap_parse_path: given an IMAP mailbox name, return host, port
  *   and a path IMAP servers will recognise.
  * mx.mbox is malloc'd, caller must free it */

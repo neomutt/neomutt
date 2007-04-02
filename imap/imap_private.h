@@ -264,6 +264,10 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s);
 int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 
 /* util.c */
+#ifdef USE_HCACHE
+void* imap_hcache_open (IMAP_DATA* idata, const char* path);
+#endif
+
 int imap_continue (const char* msg, const char* resp);
 void imap_error (const char* where, const char* msg);
 IMAP_DATA* imap_new_idata (void);

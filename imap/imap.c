@@ -251,8 +251,8 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 #if USE_HCACHE
   header_cache_t *hc;
   char uidbuf[32];
-  
-  hc = mutt_hcache_open (HeaderCache, idata->ctx->path);
+
+  hc = imap_hcache_open (idata, idata->ctx->path);
 #endif
 
   for (i = 0; i < idata->ctx->msgcount; i++)
@@ -1157,7 +1157,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
 #if USE_HCACHE
   if (expunge && ctx->closing)
-    hc = mutt_hcache_open (HeaderCache, idata->ctx->path);
+    hc = imap_hcache_open (idata, idata->ctx->path);
 #endif
 
   /* save messages with real (non-flag) changes */
@@ -1582,7 +1582,6 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   char urlstr[LONG_STRING];
   unsigned int *uidvalidity = NULL;
   unsigned int *uidnext = NULL;
-  char* path;
 #endif
   
   for (cur = idata->mboxcache; cur; cur = cur->next)
@@ -1606,11 +1605,9 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   }
 
 #ifdef USE_HCACHE
-  path = safe_strdup (idata->ctx->path);
-  url_parse_ciss (&url, path);
+  mutt_account_tourl (&idata->conn->account, &url);
   url.path = (char*)mbox;
   url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
-  FREE (&path);
   hc = mutt_hcache_open (HeaderCache, urlstr);
   if (hc)
   {
