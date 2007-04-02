@@ -1616,8 +1616,15 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   {
     uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
     uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
+    mutt_hcache_close (hc);
     if (uidvalidity)
     {
+      if (!status)
+      {
+        FREE (&uidvalidity);
+        FREE (&uidnext);
+        return imap_mboxcache_get (idata, mbox, 1);
+      }
       status->uidvalidity = *uidvalidity;
       status->uidnext = uidnext ? *uidnext: 0;
       dprint (3, (debugfile, "mboxcache: hcache uidvalidity %d, uidnext %d\n",
@@ -1625,7 +1632,6 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
     }
     FREE (&uidvalidity);
     FREE (&uidnext);
-    mutt_hcache_close (hc);
   }
 #endif
 

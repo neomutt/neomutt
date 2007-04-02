@@ -1,4 +1,10 @@
-2007-04-02 10:02 -0700  Brendan Cully  <brendan@kublai.com>  (becbad651ecc)
+2007-04-02 10:48 -0700  Brendan Cully  <brendan@kublai.com>  (aa6f191cfa10)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	Add create flag to imap_mboxcache_get
+
+	* imap/command.c, imap/imap.c: Push mbox cache header cache check
+	into imap_mboxcache_get
 
 	* imap/imap.c: Cache IMAP access checks
 
