@@ -1,4 +1,13 @@
-2007-04-02 10:48 -0700  Brendan Cully  <brendan@kublai.com>  (aa6f191cfa10)
+2007-04-02 14:33 -0700  Brendan Cully  <brendan@kublai.com>  (eabef30c9344)
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c, imap/util.c: Fix a
+	segfault in the new mboxcache hcache lookup. idata may not have an
+	associated context, so the cache path must use the account info
+	instead. For harmony with the other hcache callers, make them all
+	canonify the path the same way with imap_hcache_open.
+
+	* imap/imap.c: Fix segfault in new mboxcache hcache check when
+	create is 0
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
 	Add create flag to imap_mboxcache_get

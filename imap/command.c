@@ -901,17 +901,16 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
         if (olduv && olduv == status->uidvalidity)
         {
           if (oldun < status->uidnext)
-          {
             inc->new = status->unseen;
-	    /* forced back to keep detecting new mail until the mailbox is opened */
-	    status->uidnext = oldun;
-          }
         }
         else if (!olduv && !oldun)
 	  /* first check per session, use recent. might need a flag for this. */
 	  inc->new = status->recent;
 	else
           inc->new = status->unseen;
+
+        /* forced back to keep detecting new mail until the mailbox is opened */
+        status->uidnext = oldun;
 
         FREE (&value);
         return;
