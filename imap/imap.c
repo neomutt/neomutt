@@ -1581,6 +1581,15 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox)
 {
   LIST* cur;
   IMAP_STATUS* status;
+  IMAP_STATUS scache;
+#ifdef USE_HCACHE
+  header_cache_t *hc = NULL;
+  ciss_url_t url;
+  char urlstr[LONG_STRING];
+  unsigned int *uidvalidity = NULL;
+  unsigned int *uidnext = NULL;
+  char* path;
+#endif
   
   for (cur = idata->mboxcache; cur; cur = cur->next)
   {
@@ -1589,8 +1598,40 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox)
     if (!imap_mxcmp (mbox, status->name))
       return status;
   }
-  
-  return NULL;
+  status = NULL;
+
+#ifdef USE_HCACHE
+  path = safe_strdup (idata->ctx->path);
+  url_parse_ciss (&url, path);
+  url.path = (char*)mbox;
+  url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
+  FREE (&path);
+  hc = mutt_hcache_open (HeaderCache, urlstr);
+  if (hc)
+  {
+    uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
+    uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
+    if (uidvalidity)
+    {
+      /* lame */
+      memset (&scache, 0, sizeof (scache));
+      scache.name = (char*)mbox;
+      idata->mboxcache = mutt_add_list_n (idata->mboxcache, &scache,
+                                          sizeof (scache));
+      status = imap_mboxcache_get (idata, mbox);
+      status->name = safe_strdup (mbox);
+      status->uidvalidity = *uidvalidity;
+      status->uidnext = uidnext ? *uidnext: 0;
+      dprint (3, (debugfile, "mboxcache: hcache uidvalidity %d, uidnext %d\n",
+                  status->uidvalidity, status->uidnext));
+    }
+    FREE (&uidvalidity);
+    FREE (&uidnext);
+    mutt_hcache_close (hc);
+  }
+#endif
+
+  return status;
 }
 
 void imap_mboxcache_free (IMAP_DATA* idata)

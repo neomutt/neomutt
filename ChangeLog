@@ -1,3 +1,12 @@
+2007-04-02 10:02 -0700  Brendan Cully  <brendan@kublai.com>  (becbad651ecc)
+
+	* imap/imap.c: Cache IMAP access checks
+
+2007-04-01 23:12 -0700  Brendan Cully  <brendan@kublai.com>  (4f598543d7a5)
+
+	* imap/imap.c, imap/message.c: Adjust context->size on IMAP load
+	and expunge (closes #2749)
+
 2007-04-01 20:00 -0700  Ambrose Li  <a.c.li@ieee.org>  (38e896c4c192)
 
 	* po/zh_TW.po: Updated Taiwanese translation
