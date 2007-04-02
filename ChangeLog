@@ -1,3 +1,12 @@
+2007-04-01 20:00 -0700  Ambrose Li  <a.c.li@ieee.org>  (38e896c4c192)
+
+	* po/zh_TW.po: Updated Taiwanese translation
+
+2007-04-01 15:40 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (6dcb53bc679c)
+
+	* crypt-gpgme.c: gpgme: check result for signatures pointer
+	(closes: #2199)
+
 2007-04-01 15:33 -0700  Brendan Cully  <brendan@kublai.com>  (3a81b3793f77)
 
 	* doc/muttbug.man: Update flea man page to current addresses

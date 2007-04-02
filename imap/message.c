@@ -190,6 +190,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           ctx->hdrs[idx]->data = (void *) (h.data);
 
           ctx->msgcount++;
+          ctx->size += ctx->hdrs[idx]->content->length;
         }
 	else
 	  /* bad header in the cache, we'll have to refetch.
@@ -292,6 +293,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         0, 0);
       /* content built as a side-effect of mutt_read_rfc822_header */
       ctx->hdrs[idx]->content->length = h.content_length;
+      ctx->size += h.content_length;
 
 #if USE_HCACHE
       sprintf(uid_buf, "/%u", h.data->uid);

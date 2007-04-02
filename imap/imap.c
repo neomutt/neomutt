@@ -258,6 +258,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
       dprint (2, (debugfile, "Expunging message UID %d.\n", HEADER_DATA (h)->uid));
 
       h->active = 0;
+      idata->ctx->size -= h->content->length;
 
       imap_cache_del (idata, h);
 #if USE_HCACHE
