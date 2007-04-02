@@ -83,8 +83,14 @@ int imap_access (const char* path, int flags)
     FREE (&mx.mbox);
     return 0;
   }
-
   FREE (&mx.mbox);
+
+  if (imap_mboxcache_get (idata, mailbox))
+  {
+    dprint (3, (debugfile, "imap_access: found %s in cache\n", mailbox));
+    return 0;
+  }
+
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
 
   if (mutt_bit_isset (idata->capabilities, IMAP4REV1))
