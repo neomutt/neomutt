@@ -819,23 +819,15 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   BUFFY* inc;
   IMAP_MBOX mx;
   int count;
-  IMAP_STATUS *status, sb;
-  int olduv, oldun;
+  IMAP_STATUS *status;
+  unsigned int olduv, oldun;
 
   mailbox = imap_next_word (s);
   s = imap_next_word (mailbox);
   *(s - 1) = '\0';
   imap_unmunge_mbox_name (mailbox);
 
-  if (!(status = imap_mboxcache_get (idata, mailbox)))
-  {
-    /* ugly interface - why should I look up what I just added? */
-    memset (&sb, 0, sizeof (IMAP_STATUS));
-    sb.name = mailbox;
-    idata->mboxcache = mutt_add_list_n (idata->mboxcache, &sb, sizeof (IMAP_STATUS));
-    status = imap_mboxcache_get (idata, mailbox);
-    status->name = safe_strdup (mailbox);
-  }
+  status = imap_mboxcache_get (idata, mailbox, 1);
   olduv = status->uidvalidity;
   oldun = status->uidnext;
 

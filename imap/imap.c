@@ -85,7 +85,7 @@ int imap_access (const char* path, int flags)
   }
   FREE (&mx.mbox);
 
-  if (imap_mboxcache_get (idata, mailbox))
+  if (imap_mboxcache_get (idata, mailbox, 0))
   {
     dprint (3, (debugfile, "imap_access: found %s in cache\n", mailbox));
     return 0;
@@ -556,7 +556,7 @@ int imap_open_mailbox (CONTEXT* ctx)
 {
   CONNECTION *conn;
   IMAP_DATA *idata;
-  IMAP_STATUS* status, sb;
+  IMAP_STATUS* status;
   char buf[LONG_STRING];
   char bufout[LONG_STRING];
   int count = 0;
@@ -632,14 +632,8 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   imap_cmd_start (idata, bufout);
 
-  if (!(status = imap_mboxcache_get (idata, idata->mailbox)))
-  {
-    memset (&sb, 0, sizeof (IMAP_STATUS));
-    sb.name = idata->mailbox;
-    idata->mboxcache = mutt_add_list_n (idata->mboxcache, &sb, sizeof (IMAP_STATUS));
-    status = imap_mboxcache_get (idata, idata->mailbox);
-    status->name = safe_strdup (idata->mailbox);
-  }
+  status = imap_mboxcache_get (idata, idata->mailbox, 1);
+
   do
   {
     char *pc;
@@ -1570,14 +1564,14 @@ int imap_status (char* path, int queue)
     imap_exec (idata, buf, 0);
 
   queued = 0;
-  if ((status = imap_mboxcache_get (idata, mbox)))
+  if ((status = imap_mboxcache_get (idata, mbox, 0)))
     return status->messages;
   
   return 0;
 }
 
-/* return cached mailbox stats or NULL */
-IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox)
+/* return cached mailbox stats or NULL if create is 0 */
+IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
 {
   LIST* cur;
   IMAP_STATUS* status;
@@ -1600,6 +1594,17 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox)
   }
   status = NULL;
 
+  /* lame */
+  if (create)
+  {
+    memset (&scache, 0, sizeof (scache));
+    scache.name = (char*)mbox;
+    idata->mboxcache = mutt_add_list_n (idata->mboxcache, &scache,
+                                        sizeof (scache));
+    status = imap_mboxcache_get (idata, mbox, 0);
+    status->name = safe_strdup (mbox);
+  }
+
 #ifdef USE_HCACHE
   path = safe_strdup (idata->ctx->path);
   url_parse_ciss (&url, path);
@@ -1613,13 +1618,6 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox)
     uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
     if (uidvalidity)
     {
-      /* lame */
-      memset (&scache, 0, sizeof (scache));
-      scache.name = (char*)mbox;
-      idata->mboxcache = mutt_add_list_n (idata->mboxcache, &scache,
-                                          sizeof (scache));
-      status = imap_mboxcache_get (idata, mbox);
-      status->name = safe_strdup (mbox);
       status->uidvalidity = *uidvalidity;
       status->uidnext = uidnext ? *uidnext: 0;
       dprint (3, (debugfile, "mboxcache: hcache uidvalidity %d, uidnext %d\n",

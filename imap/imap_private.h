@@ -230,7 +230,8 @@ typedef struct
 /* imap.c */
 int imap_create_mailbox (IMAP_DATA* idata, char* mailbox);
 int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname);
-IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox);
+IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox,
+                                 int create);
 void imap_mboxcache_free (IMAP_DATA* idata);
 int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
                        int invert);

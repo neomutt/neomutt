@@ -327,7 +327,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     }
   }
 
-  if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox)))
+  if (maxuid && (status = imap_mboxcache_get (idata, idata->mailbox, 0)))
   status->uidnext = maxuid + 1;
 
 #if USE_HCACHE
