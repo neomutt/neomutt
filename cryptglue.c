@@ -93,7 +93,7 @@ void crypt_init (void)
 #endif
     }
 
-#if defined CRYPT_BACKEND_CLASSIG_PGP || defined CRYPT_BACKEND_CLASSIG_SMIME || defined CRYPT_BACKEND_GPGME
+#if defined CRYPT_BACKEND_CLASSIC_PGP || defined CRYPT_BACKEND_CLASSIC_SMIME || defined CRYPT_BACKEND_GPGME
   if (CRYPT_MOD_CALL_CHECK (PGP, init))
     (CRYPT_MOD_CALL (PGP, init)) ();
 
