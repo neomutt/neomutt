@@ -1,4 +1,10 @@
-2007-04-02 14:33 -0700  Brendan Cully  <brendan@kublai.com>  (eabef30c9344)
+2007-04-02 17:15 -0700  Brendan Cully  <brendan@kublai.com>  (527589b0b7dd)
+
+	* curs_lib.c: Make mutt_edit_file display error if editor return is
+	non-zero. (closes #1638)
+
+	* imap/command.c: Reset uidnext unconditionally in IMAP new mail
+	check. Reverts a logic error introduced in [0cb476dc70a7]
 
 	* imap/imap.c, imap/imap_private.h, imap/message.c, imap/util.c: Fix a
 	segfault in the new mboxcache hcache lookup. idata may not have an
