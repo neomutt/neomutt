@@ -27,6 +27,9 @@
 #include "url.h"
 #include "imap_private.h"
 #include "mutt_ssl.h"
+#ifdef USE_HCACHE
+#include "hcache.h"
+#endif
 
 #include <stdlib.h>
 #include <ctype.h>

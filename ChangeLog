@@ -1,4 +1,9 @@
-2007-04-02 19:19 -0700  Brendan Cully  <brendan@kublai.com>  (b0014913dd74)
+2007-04-02 20:44 -0700  Brendan Cully  <brendan@kublai.com>  (59fcc37f8c75)
+
+	* sendlib.c: Check message for boundary collisions (closes #902)
+
+	* enter.c: Do not clobber string field on keypress when returning
+	from file browser (closes #755)
 
 	* browser.c, browser.h, imap/browse.c, imap/imap.h: Add hook for
 	proper IMAP unseen count in mailbox browser
