@@ -1,3 +1,17 @@
+2007-04-03 10:54 -0700  Fabian Groffen  <grobian@orakel.ods.org>  (89abe8bd0713)
+
+	* hdrline.c, imap/message.c, mh.c, muttlib.c, regex.c, sendlib.c: Fix
+	some warnings.
+
+2007-04-03 08:59 -0700  Brendan Cully  <brendan@kublai.com>  (e363d7a69046)
+
+	* pop_auth.c, rfc822.c, rfc822.h: Validate msgid in APOP
+	authentication. Closes #2846
+
+	* hcache.c: Fix DB4 crash introduced in d5ab883ef90a
+
+	* imap/util.c: Add missing hcache.h include
+
 2007-04-02 20:44 -0700  Brendan Cully  <brendan@kublai.com>  (59fcc37f8c75)
 
 	* sendlib.c: Check message for boundary collisions (closes #902)

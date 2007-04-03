@@ -29,14 +29,14 @@ mutt \- The Mutt Mail User Agent
 .B mutt 
 [-nx] 
 [-e \fIcmd\fP] 
-[-a \fIfile\fP]
 [-F \fIfile\fP]
 [-H \fIfile\fP]
 [-i \fIfile\fP]
 [-s \fIsubj\fP]
 [-b \fIaddr\fP]
 [-c \fIaddr\fP]
-[--]
+[\-a \fIfile\fP [...]]
+[\-\-]
 \fIaddr\fP [...]
 .PP
 .B mutt
@@ -62,8 +62,10 @@ OpenPGP, and a threaded sorting mode.
 .PP
 .IP "-A \fIalias\fP"
 An expanded version of the given alias is passed to stdout.
-.IP "-a \fIfile\fP"
+.IP "-a \fIfile\fP [...]"
 Attach a file to your message using MIME.
+To attach multiple files, separating filenames and recipient addresses with
+"\-\-" is mandatory, e.g. \fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
 .IP "-b \fIaddress\fP"
 Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"
@@ -117,8 +119,9 @@ mailbox.
 .IP "-Z"
 Causes Mutt to open the first mailbox specified by the \fImailboxes\fP
 command which contains new mail.
-.IP "--"
+.IP "\-\-"
 Treat remaining arguments as \fIaddr\fP even if they start with a dash.
+See also "\-a" above.
 .SH ENVIRONMENT
 .PP
 .IP "EDITOR"

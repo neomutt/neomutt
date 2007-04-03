@@ -5973,7 +5973,8 @@ To compose a new message
 </para>
 
 <para>
-<literal>mutt</literal> &lsqb; -n &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -a <emphasis>file</emphasis> &rsqb; &lsqb; -c <emphasis>address</emphasis> &rsqb; &lsqb; -i <emphasis>filename</emphasis> &rsqb; &lsqb; -s <emphasis>subject</emphasis> &rsqb; <emphasis>address</emphasis> &lsqb; <emphasis>address</emphasis> ... &rsqb; 
+<literal>mutt</literal> &lsqb; -n &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -a <emphasis>file</emphasis> &rsqb; &lsqb; -c <emphasis>address</emphasis> &rsqb; &lsqb; -i <emphasis>filename</emphasis> &rsqb; &lsqb; -s <emphasis>subject</emphasis> &rsqb;
+&lsqb; &lsqb; <emphasis>file</emphasis> ... &rsqb; -- &rsqb; <emphasis>address</emphasis> &lsqb; <emphasis>address</emphasis> ... &rsqb; 
 </para>
 
 <para>
@@ -5990,6 +5991,12 @@ input from the file you wish to send.  For example,
 This command will send a message to ``professor@bigschool.edu'' with a subject
 of ``data set for run &num;2''.  In the body of the message will be the contents
 of the file ``&tilde;/run2.dat''.
+</para>
+
+<para>
+All files passed with -a <emphasis>file</emphasis> will be attached as a MIME
+part to the message. To attach several files, use ``--'' to separate files and
+recipient addresses: <literal>mutt -a *.png -- some@one.org</literal>
 </para>
 
 </sect1>

@@ -105,12 +105,12 @@ static void mutt_usage (void)
   puts (mutt_make_version ());
 
   puts _(
-"usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n\
-       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n\
-       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n\
-       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n\
-       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] [ -- ] <addr> [ ... ]\n\
-       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n\
+"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n\
+       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] <addr> [...]\n\
+       mutt [<options>] -p\n\
+       mutt [<options>] -A <alias> [...]\n\
+       mutt [<options>] -Q <query> [...]\n\
+       mutt [<options>] -D\n\
        mutt -v[v]\n");
 
   puts _("\
@@ -143,7 +143,8 @@ options:\n\
   -z\t\texit immediately if there are no messages in the mailbox\n\
   -Z\t\topen the first folder with new message, exit immediately if none\n\
   -h\t\tthis help message");
-  puts _("  --\t\ttreat remaining arguments as addr even if starting with a dash");
+  puts _("  --\t\ttreat remaining arguments as addr even if starting with a dash\n\
+\t\twhen using -a with multiple filenames using -- is mandatory");
 
   exit (0);
 }
@@ -541,6 +542,7 @@ int main (int argc, char **argv)
   int dump_variables = 0;
   extern char *optarg;
   extern int optind;
+  int attach_sep = 0;
 
   /* sanity check against stupid administrators */
   
@@ -567,7 +569,14 @@ int main (int argc, char **argv)
 
   memset (Options, 0, sizeof (Options));
   memset (QuadOptions, 0, sizeof (QuadOptions));
-  
+
+  for (i = 1; i < argc; i++)
+    if (!strcmp(argv[i], "--"))
+    {
+      attach_sep = i;
+      break;
+    }
+
   while ((i = getopt (argc, argv, "A:a:b:F:f:c:Dd:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
     switch (i)
     {
@@ -709,7 +718,11 @@ int main (int argc, char **argv)
   crypt_init ();
 
   if (queries)
+  {
+    for (; optind < argc; optind++)
+      queries = mutt_add_list (queries, argv[optind]);
     return mutt_query_variables (queries);
+  }
   if (dump_variables)
     return mutt_dump_variables();
 
@@ -717,6 +730,8 @@ int main (int argc, char **argv)
   {
     int rv = 0;
     ADDRESS *a;
+    for (; optind < argc; optind++)
+      alias_queries = mutt_add_list (alias_queries, argv[optind]);
     for (; alias_queries; alias_queries = alias_queries->next)
     {
       if ((a = mutt_lookup_alias (alias_queries->data)))
@@ -733,7 +748,12 @@ int main (int argc, char **argv)
     }
     return rv;
   }
-  
+
+  /* if an -a option is present, all non-option arguments before -- are considered attachments */
+  if (attach)
+    for (; optind <= attach_sep; optind++)
+      attach = mutt_add_list (attach, argv[optind]);
+
   if (newMagic)
     mx_set_magic (newMagic);
 
