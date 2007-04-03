@@ -162,8 +162,11 @@ void mutt_edit_file (const char *editor, const char *data)
   
   mutt_endwin (NULL);
   mutt_expand_file_fmt (cmd, sizeof (cmd), editor, data);
-  if (mutt_system (cmd) == -1)
+  if (mutt_system (cmd))
+  {
     mutt_error (_("Error running \"%s\"!"), cmd);
+    mutt_sleep (2);
+  }
   keypad (stdscr, TRUE);
   clearok (stdscr, TRUE);
 }
