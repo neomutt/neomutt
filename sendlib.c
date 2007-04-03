@@ -1404,6 +1404,23 @@ static int get_toplevel_encoding (BODY *a)
   return (e);
 }
 
+/* check for duplicate boundary. return 1 if duplicate */
+static int mutt_check_boundary (const char* boundary, BODY *b)
+{
+  char* p;
+
+  if (b->parts && mutt_check_boundary (boundary, b->parts))
+    return 1;
+
+  if (b->next && mutt_check_boundary (boundary, b->next))
+    return 1;
+
+  if ((p = mutt_get_parameter ("boundary", b->parameter))
+      && !ascii_strcmp (p, boundary))
+    return 1;
+  return 0;
+}
+
 BODY *mutt_make_multipart (BODY *b)
 {
   BODY *new;
@@ -1412,7 +1429,14 @@ BODY *mutt_make_multipart (BODY *b)
   new->type = TYPEMULTIPART;
   new->subtype = safe_strdup ("mixed");
   new->encoding = get_toplevel_encoding (b);
-  mutt_generate_boundary (&new->parameter);
+  do
+  {
+    mutt_generate_boundary (&new->parameter);
+    if (mutt_check_boundary (mutt_get_parameter ("boundary", new->parameter),
+			     b))
+      mutt_delete_parameter ("boundary", &new->parameter);
+  }
+  while (!mutt_get_parameter ("boundary", new->parameter));
   new->use_disp = 0;  
   new->disposition = DISPINLINE;
   new->parts = b;
