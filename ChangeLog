@@ -1,4 +1,10 @@
-2007-04-02 17:15 -0700  Brendan Cully  <brendan@kublai.com>  (527589b0b7dd)
+2007-04-02 18:17 -0700  John Hawkinson  <jhawk@mit.edu>  (a283e5ab5de7)
+
+	* sendlib.c: Write Sender header if specified (closes #2682)
+
+2007-04-02 17:56 -0700  Brendan Cully  <brendan@kublai.com>  (15f8a55220a7)
+
+	* mh.c: Fix off-by-one allocating mh sequences
 
 	* curs_lib.c: Make mutt_edit_file display error if editor return is
 	non-zero. (closes #1638)

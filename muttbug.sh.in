@@ -266,7 +266,7 @@ echo @CFLAGS@
 echo
 echo "-- Mutt Version Information"
 echo
-mutt -v
+LC_ALL=C mutt -v
 
 if test "$CORE" && test -f "$CORE" ; then
 	echo 
