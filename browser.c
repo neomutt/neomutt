@@ -426,6 +426,9 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
   struct stat s;
   char buffer[LONG_STRING];
   BUFFY *tmp = Incoming;
+#ifdef USE_IMAP
+  struct mailbox_state mbox;
+#endif
 
   if (!Incoming)
     return (-1);
@@ -438,7 +441,8 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
 #ifdef USE_IMAP
     if (mx_is_imap (tmp->path))
     {
-      add_folder (menu, state, tmp->path, NULL, tmp->new);
+      imap_mailbox_state (tmp->path, &mbox);
+      add_folder (menu, state, tmp->path, NULL, mbox.new);
       continue;
     }
 #endif

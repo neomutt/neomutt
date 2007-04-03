@@ -55,4 +55,10 @@ struct browser_state
 #endif
 };
 
+struct mailbox_state
+{
+  unsigned int new;
+  unsigned int old;
+  unsigned int messages;
+};
 #endif /* _BROWSER_H */

@@ -253,6 +253,35 @@ int imap_browse (char* path, struct browser_state* state)
   return -1;
 }
 
+int imap_mailbox_state (const char* path, struct mailbox_state* state)
+{
+  IMAP_DATA* idata;
+  IMAP_MBOX mx;
+  IMAP_STATUS* status;
+
+  memset (state, 0, sizeof (*state));
+  if (imap_parse_path (path, &mx) < 0)
+  {
+    dprint (1, (debugfile, "imap_mailbox_state: bad path %s\n", path));
+    return -1;
+  }
+  if (!(idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW)))
+  {
+    dprint (2, (debugfile, "imap_mailbox_state: no open connection for %s\n",
+		path));
+    FREE (&mx.mbox);
+    return -1;
+  }
+
+  if ((status = imap_mboxcache_get (idata, mx.mbox, 0)))
+  {
+    state->new = status->unseen;
+    state->messages = status->messages;
+  }
+
+  return 0;
+}
+
 /* imap_mailbox_create: Prompt for a new mailbox name, and try to create it */
 int imap_mailbox_create (const char* folder)
 {
