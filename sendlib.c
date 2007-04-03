@@ -1731,6 +1731,13 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fprintf (fp, "From: %s\n", buffer);
   }
 
+  if (env->sender && !privacy)
+  {
+    buffer[0] = 0;
+    rfc822_write_address (buffer, sizeof (buffer), env->sender, 0);
+    fprintf (fp, "Sender: %s\n", buffer);
+  }
+
   if (env->to)
   {
     fputs ("To: ", fp);
