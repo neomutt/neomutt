@@ -1,3 +1,13 @@
+2007-04-02 19:19 -0700  Brendan Cully  <brendan@kublai.com>  (b0014913dd74)
+
+	* browser.c, browser.h, imap/browse.c, imap/imap.h: Add hook for
+	proper IMAP unseen count in mailbox browser
+
+2007-04-02 18:41 -0700  David Yitzchak Cohen  <lists+mutt_bugs@bigfatdave.com>  (503c2882d0be)
+
+	* muttbug.sh.in: flea: produce mutt version info in C
+	locale (closes #1881)
+
 2007-04-02 18:17 -0700  John Hawkinson  <jhawk@mit.edu>  (a283e5ab5de7)
 
 	* sendlib.c: Write Sender header if specified (closes #2682)

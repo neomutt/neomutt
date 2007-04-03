@@ -225,6 +225,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
   {
     /* Coming back after return 1 */
     redraw = M_REDRAW_LINE;
+    first = 0;
   }
   else
   {
