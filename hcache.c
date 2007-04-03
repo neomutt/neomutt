@@ -992,6 +992,15 @@ mutt_hcache_open(const char *path, const char *folder)
     FREE(&h);
     return NULL;
   }
+  ret = db_create (&h->db, h->env, 0);
+  if (ret)
+  {
+    h->env->close (h->env, 0);
+    mx_unlock_file (h->lockfile, h->fd, 0);
+    close (h->fd);
+    FREE (&h);
+    return NULL;
+  }
 
   if (stat(path, &sb) != 0 && errno == ENOENT)
   {
