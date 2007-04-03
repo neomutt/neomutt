@@ -2197,7 +2197,7 @@ regex_compile (pattern, size, syntax, bufp)
                       {
                         PATFETCH (c);
                         if (c == ':' || c == ']' || p == pend
-                            || c1 == CHAR_CLASS_MAX_LENGTH)
+                            || c1 == (unsigned char)CHAR_CLASS_MAX_LENGTH)
                           break;
                         str[c1++] = c;
                       }

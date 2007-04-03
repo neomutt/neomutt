@@ -32,6 +32,10 @@
 #include <string.h>
 #include <locale.h>
 
+#ifdef HAVE_ALLOCA_H
+#include <alloca.h>
+#endif
+
 int mutt_is_mail_list (ADDRESS *addr)
 {
   if (!mutt_match_rx_list (addr->mailbox, UnMailLists))

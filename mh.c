@@ -232,7 +232,6 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
   int fd;
   char path[_POSIX_PATH_MAX];
   mode_t omask;
-  struct mh_data* data = mh_data (dest);
 
   omask = umask (mh_umask (dest));
   FOREVER

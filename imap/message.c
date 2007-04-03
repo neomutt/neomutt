@@ -877,8 +877,8 @@ static body_cache_t *msg_cache_open (IMAP_DATA *idata)
     }
     else
       *s = *p;
-    *p++;
-    *s++;
+    p++;
+    s++;
   }
   *s = '\0';
 

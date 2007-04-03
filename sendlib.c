@@ -842,7 +842,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
   CONTENT *info;
   CONTENT_STATE state;
   FILE *fp = NULL;
-  char *fromcode;
+  char *fromcode = NULL;
   char *tocode;
   char buffer[100];
   char chsbuf[STRING];
