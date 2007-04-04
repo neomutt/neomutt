@@ -909,8 +909,10 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 	else
           inc->new = status->unseen;
 
-        /* forced back to keep detecting new mail until the mailbox is opened */
-        status->uidnext = oldun;
+	if (inc->new)
+	  /* force back to keep detecting new mail until the mailbox is
+	     opened */
+	  status->uidnext = oldun;
 
         FREE (&value);
         return;
