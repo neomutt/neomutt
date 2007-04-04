@@ -33,6 +33,7 @@
 syntax: glob
 .deps
 Makefile
+cscope.*
 *.swp
 *.o
 *.gmo

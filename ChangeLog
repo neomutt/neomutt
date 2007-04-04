@@ -1,3 +1,13 @@
+2007-04-04 11:47 -0700  Brendan Cully  <brendan@kublai.com>  (5e0ea671962d)
+
+	* imap/command.c: Only reset UIDNEXT if new mail has been detected.
+	This prevents mutt from suddenly finding new mail when switching
+	from unknown UIDVALIDITY to known.
+
+2007-04-04 09:37 -0700  Fabian Groffen  <grobian@orakel.ods.org>  (330cb15403f0)
+
+	* configure.ac: Check for Berkeley DB versions 4.4 and 4.5
+
 2007-04-04 01:35 +0200  Christoph Berg  <cb@df7cb.de>  (b841df908929)
 
 	* cryptglue.c: Fix typos in CRYPT_BACKEND #ifs.
