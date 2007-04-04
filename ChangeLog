@@ -1,3 +1,13 @@
+2007-04-04 01:35 +0200  Christoph Berg  <cb@df7cb.de>  (b841df908929)
+
+	* cryptglue.c: Fix typos in CRYPT_BACKEND #ifs.
+
+2007-04-03 14:08 -0700  Christoph Berg  <cb@df7cb.de>  (339fd21bf139)
+
+	* doc/manual.xml.head, doc/mutt.man, main.c: When -- is present in
+	the argument list, allow attachment globs. The -- separates file
+	names from recipients. Also works for -A and -Q.
+
 2007-04-03 10:54 -0700  Fabian Groffen  <grobian@orakel.ods.org>  (89abe8bd0713)
 
 	* hdrline.c, imap/message.c, mh.c, muttlib.c, regex.c, sendlib.c: Fix
