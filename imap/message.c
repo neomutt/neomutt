@@ -131,6 +131,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     if (uid_validity && uidnext && *uid_validity == idata->uid_validity
         && *uidnext > 0)
       evalhc = 1;
+    else
+      FREE (&uidnext);
     FREE (&uid_validity);
   }
   if (evalhc)

@@ -700,11 +700,15 @@ static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
   {
 #ifdef USE_HCACHE
     if (hc && (data = mutt_hcache_fetch (hc, fname, strlen)))
+    {
       h = mutt_hcache_restore ((unsigned char *) data, NULL);
+      FREE (&data);
+    }
     else
     {
       h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
-      mutt_hcache_store (hc, fname, h, 0, strlen);
+      if (h)
+        mutt_hcache_store (hc, fname, h, 0, strlen);
     }
 #else
     h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
@@ -1035,7 +1039,7 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
     } else
       mutt_free_header (&p->h);
 #if USE_HCACHE
-    FREE(&data);
+    FREE (&data);
 #endif
   }
 #if USE_HCACHE
