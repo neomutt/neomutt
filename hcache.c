@@ -18,8 +18,6 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-/* this comment bumps Id after $assumed_charset changed BODY. */
-
 #if HAVE_CONFIG_H
 #include "config.h"
 #endif				/* HAVE_CONFIG_H */
@@ -41,6 +39,7 @@
 #endif
 #include "mutt.h"
 #include "hcache.h"
+#include "hcversion.h"
 #ifdef USE_IMAP
 #include "message.h"
 #endif
@@ -447,75 +446,8 @@ restore_envelope(ENVELOPE * e, const unsigned char *d, int *off)
   restore_list(&e->userhdrs, d, off);
 }
 
-static unsigned int
-crc32(unsigned int crc, unsigned char const *p, size_t len)
-{
-  int i;
-  while (len--)
-  {
-    crc ^= *p++;
-    for (i = 0; i < 8; i++)
-      crc = (crc >> 1) ^ ((crc & 1) ? 0xedb88320 : 0);
-  }
-  return crc;
-}
-
 static int
-generate_crc32()
-{
-  int crc = 0;
-  SPAM_LIST *sp = SpamList;
-  RX_LIST *rx = NoSpamList;
-
-  crc = crc32(crc, (unsigned char const *) "$Id$", mutt_strlen("$Id$"));
-
-#if HAVE_LANGINFO_CODESET
-  crc = crc32(crc, (unsigned char const *) Charset, mutt_strlen(Charset));
-  crc = crc32(crc, (unsigned char const *) "HAVE_LANGINFO_CODESET",
-	mutt_strlen("HAVE_LANGINFO_CODESET"));
-#endif
-
-#if EXACT_ADDRESS
-  crc = crc32(crc, (unsigned char const *) "EXACT_ADDRESS",
-	mutt_strlen("EXACT_ADDRESS"));
-#endif
-
-#ifdef USE_POP
-  crc = crc32(crc, (unsigned char const *) "USE_POP", mutt_strlen("USE_POP"));
-#endif
-
-#ifdef MIXMASTER
-  crc = crc32(crc, (unsigned char const *) "MIXMASTER",
-        mutt_strlen("MIXMASTER"));
-#endif
-
-#ifdef USE_IMAP
-  crc = crc32(crc, (unsigned char const *) "USE_IMAP", mutt_strlen("USE_IMAP"));
-  crc = crc32(crc, (unsigned char const *) ImapHeaders,
-        mutt_strlen(ImapHeaders));
-#endif
-  while (sp)
-  {
-    crc = crc32(crc, (unsigned char const *) sp->rx->pattern,
-	  mutt_strlen(sp->rx->pattern));
-    sp = sp->next;
-  }
-
-  crc = crc32(crc, (unsigned char const *) "SPAM_SEPERATOR",
-	mutt_strlen("SPAM_SEPERATOR"));
-
-  while (rx)
-  {
-    crc = crc32(crc, (unsigned char const *) rx->rx->pattern,
-	  mutt_strlen(rx->rx->pattern));
-    rx = rx->next;
-  }
-
-  return crc;
-}
-
-static int
-crc32_matches(const char *d, unsigned int crc)
+crc_matches(const char *d, unsigned int crc)
 {
   int off = sizeof (validate);
   unsigned int mycrc = 0;
@@ -639,7 +571,7 @@ mutt_hcache_fetch(header_cache_t *h, const char *filename,
 
   data = mutt_hcache_fetch_raw (h, filename, keylen);
 
-  if (!data || !crc32_matches(data, h->crc))
+  if (!data || !crc_matches(data, h->crc))
   {
     FREE(&data);
     return NULL;
@@ -795,7 +727,7 @@ mutt_hcache_open(const char *path, const char *folder)
 
   h->db = NULL;
   h->folder = get_foldername(folder);
-  h->crc = generate_crc32();
+  h->crc = HCACHEVER;
 
   if (!path || path[0] == '\0')
   {
@@ -860,7 +792,7 @@ mutt_hcache_open(const char *path, const char *folder)
 
   h->db = NULL;
   h->folder = get_foldername(folder);
-  h->crc = generate_crc32();
+  h->crc = HCACHEVER;
 
   if (!path || path[0] == '\0')
   {
@@ -946,7 +878,7 @@ mutt_hcache_open(const char *path, const char *folder)
   int pagesize = atoi(HeaderCachePageSize);
   char* tmp;
 
-  h->crc = generate_crc32();
+  h->crc = HCACHEVER;
 
   if (!path || path[0] == '\0')
   {

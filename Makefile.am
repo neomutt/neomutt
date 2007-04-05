@@ -13,7 +13,7 @@ SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
 
-BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h hcversion.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = $(BUILT_SOURCES) \
@@ -78,7 +78,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	makedoc.c makedoc-defs.h stamp-doc-rc README.SSL smime.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
-	snprintf.c regex.c crypt-gpgme.h
+	snprintf.c regex.c crypt-gpgme.h hcachever.sh
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -125,6 +125,10 @@ reldate.h: $(srcdir)/ChangeLog
 	echo 'const char *ReleaseDate = "'`head -n 1 $(srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1`'";' > reldate.h.tmp; \
 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
 	rm reldate.h.tmp
+
+hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h
+	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
+	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | $(srcdir)/hcachever.sh hcversion.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
 	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
