@@ -13,6 +13,7 @@
 
 # built objects
 ^flea$
+^hcversion\.h$
 ^keymap_(all)?defs\.h$
 ^makedoc$
 ^mutt$
@@ -40,3 +41,4 @@ cscope.*
 *.orig
 *.rej
 *.a
+.gdb_history
