@@ -843,10 +843,13 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
         ])
     fi
 
-    ac_prefer_gdbm=yes
-    AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm], [Don't use gdbm even if it is available]),
-        ac_prefer_gdbm=$withval)
-    if test x$ac_prefer_gdbm != xno -a x$ac_cv_vlopen != xyes; then
+    AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm], [Don't use gdbm even if it is available]))
+    if test x$with_gdbm != xno -a x$ac_cv_vlopen != xyes; then
+        if test "$with_gdbm" != "yes"
+        then
+          CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
+          LDFLAGS="$LDFLAGS -L$with_gdbm/lib"
+        fi
         CPPFLAGS="$OLDCPPFLAGS"
         LIBS="$OLDLIBS -lgdbm";
         AC_CACHE_CHECK(for gdbm_open, ac_cv_gdbmopen,[
