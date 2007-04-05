@@ -2,13 +2,13 @@
 
 BASEVERSION=1
 
-if which md5 > /dev/null
+if test -x "`which md5`"
 then
   MD5=md5
-elif which md5sum > /dev/null
+elif test -x "`which md5sum`"
 then
   MD5=md5sum
-elif which openssl > /dev/null
+elif test -x "`which openssl`"
 then
   MD5="openssl md5 -hex"
 else
@@ -17,11 +17,7 @@ else
 fi
 
 cleanstruct () {
-  STRUCT="$1"
-  STRUCT=${STRUCT#\} }
-  STRUCT=${STRUCT%\;}
-
-  echo $STRUCT
+  echo "$1" | sed -e 's/} *//' -e 's/;$//'
 }
 
 cleanbody () {
@@ -89,8 +85,8 @@ do
        STRUCT=`getstruct "$line"`
        if test -n "$STRUCT"
        then
-         NAME=${STRUCT%%:*}
-         BODY=${STRUCT#*:}
+	 NAME=`echo $STRUCT | cut -d: -f1`
+	 BODY=`echo $STRUCT | cut -d' ' -f2-`
          echo " * $NAME:" $BODY >> $TMPD
          TEXT="$TEXT $NAME {$BODY}"
        fi
@@ -99,8 +95,8 @@ do
 done
 echo " */" >> $TMPD
 
-MD5TEXT=`echo $TEXT | $MD5`
-echo "#define HCACHEVER 0x"${MD5TEXT:0:8} >> $TMPD
+MD5TEXT=`echo "$TEXT" | $MD5`
+echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
 
 # TODO: validate we have all structs
 
