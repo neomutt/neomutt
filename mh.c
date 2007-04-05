@@ -702,8 +702,13 @@ static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
     if (hc && (data = mutt_hcache_fetch (hc, fname, strlen)))
       h = mutt_hcache_restore ((unsigned char *) data, NULL);
     else
-#endif
+    {
+      h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
+      mutt_hcache_store (hc, fname, h, 0, strlen);
+    }
+#else
     h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
+#endif
   }
   else
   {

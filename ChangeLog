@@ -1,3 +1,9 @@
+2007-04-05 15:21 -0700  Brendan Cully  <brendan@kublai.com>  (7cf4415ec23d)
+
+	* configure.ac: Teach --with-gdbm to accept a prefix (closes #2413)
+
+	* hcachever.sh: POSIX fixes for hcachever.sh
+
 2007-04-05 13:06 -0700  Jukka Salmi  <j+mutt@2007.salmi.ch>  (3638701db407)
 
 	* ChangeLog, configure.ac: Check for BDB4 libs in $lib as well as

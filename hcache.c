@@ -602,7 +602,8 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
     return NULL;
   
 #ifdef HAVE_DB4
-  filename++;			/* skip '/' */
+  if (filename[0] == '/')
+    filename++;
 
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   mutt_hcache_dbt_empty_init(&data);
@@ -671,7 +672,8 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
     return -1;
 
 #if HAVE_DB4
-  filename++;			/* skip '/' */
+  if (filename[0] == '/')
+    filename++;
   
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   
@@ -976,7 +978,8 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   if (!h)
     return -1;
 
-  filename++;			/* skip '/' */
+  if (filename[0] == '/')
+    filename++;
 
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   return h->db->del(h->db, NULL, &key, 0);
