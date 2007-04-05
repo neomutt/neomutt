@@ -874,8 +874,9 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
             for v in / $BDB_VERSIONS; do
                 if test -r "$d/include/$v/db.h"; then
                     BDB_INCLUDE_DIR="$d/include/$v"
-                    if test -d "$d/lib/$v"; then
-                        BDB_LIB_DIR="$d/lib/$v"
+                    for bdblibdir in "$d/lib/$v" "$d/lib"; do
+                    if test -d "$bdblibdir"; then
+                        BDB_LIB_DIR="$bdblibdir"
                         for l in `echo $BDB_VERSIONS`; do
                             CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
                             LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$l"
@@ -893,6 +894,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
                         done
                         test x$ac_cv_dbcreate = xyes && break
                     fi
+                    done
                 fi
             done
             test x$BDB_LIB != x && break

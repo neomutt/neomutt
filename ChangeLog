@@ -1,4 +1,12 @@
-2007-04-04 11:47 -0700  Brendan Cully  <brendan@kublai.com>  (5e0ea671962d)
+2007-04-05 12:55 -0700  Brendan Cully  <brendan@kublai.com>  (4f435337507e)
+
+	* Makefile.am, hcache.c, hcachever.sh: Version header cache against
+	MD5 of structures on which it depends
+
+	* UPDATING, globals.h, imap/browse.c, imap/imap_private.h, init.h:
+	Remove broken namespace support
+
+2007-04-04 16:31 -0700  Brendan Cully  <brendan@kublai.com>  (e96bd1f85634)
 
 	* imap/command.c: Only reset UIDNEXT if new mail has been detected.
 	This prevents mutt from suddenly finding new mail when switching
