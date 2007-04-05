@@ -4,6 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  - $imap_home_namespace (useless clutter)
   + $check_mbox_size (use size change instead of atime for new mail)
   ! improved f=f support wraps lines at $wrap if $wrap is not 0
   + $wrap (>0 wraps at $wrap, <0 = $wrapmargin)

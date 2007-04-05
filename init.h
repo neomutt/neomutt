@@ -862,13 +862,6 @@ struct option_t MuttVars[] = {
   ** servers before displaying the index menu. You may want to add more
   ** headers for spam detection. \fBNote:\fP This is a space separated list.
   */
-  { "imap_home_namespace",	DT_STR, R_NONE, UL &ImapHomeNamespace, UL 0},
-  /*
-  ** .pp
-  ** You normally want to see your personal folders alongside
-  ** your INBOX in the IMAP browser. If you see something else, you may set
-  ** this variable to the IMAP path to your folders.
-  */
   { "imap_idle",                DT_BOOL, R_NONE, OPTIMAPIDLE, 0 },
   /*
    ** .pp

@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2006 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -35,10 +35,6 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent);
 static int compare_names(struct folder_file *a, struct folder_file *b);
-static int browse_get_namespace (IMAP_DATA *idata, char *nsbuf, int nsblen, 
-  IMAP_NAMESPACE_INFO *nsi, int nsilen, int *nns);
-static int browse_verify_namespace (IMAP_DATA* idata,
-  IMAP_NAMESPACE_INFO* nsi, int nns);
 
 /* imap_browse: IMAP hook into the folder browser, fills out browser_state,
  *   given a current folder to browse */
@@ -48,16 +44,11 @@ int imap_browse (char* path, struct browser_state* state)
   IMAP_LIST list;
   char buf[LONG_STRING];
   char buf2[LONG_STRING];
-  char nsbuf[LONG_STRING];
   char mbox[LONG_STRING];
   char list_cmd[5];
-  IMAP_NAMESPACE_INFO nsi[16];
-  int home_namespace = 0;
   int n;
-  int i;
   int nsup;
   char ctmp;
-  int nns = 0;
   short showparents = 0;
   int save_lsub;
   IMAP_MBOX mx;
@@ -74,22 +65,6 @@ int imap_browse (char* path, struct browser_state* state)
 
   if (!(idata = imap_conn_find (&(mx.account), 0)))
     goto fail;
-
-  if (!mx.mbox)
-  {
-    home_namespace = 1;
-    mbox[0] = '\0';		/* Do not replace "" with "INBOX" here */
-    mx.mbox = safe_strdup(ImapHomeNamespace);
-    if (mutt_bit_isset(idata->capabilities,NAMESPACE))
-    {
-      mutt_message _("Getting namespaces...");
-      if (browse_get_namespace (idata, nsbuf, sizeof (nsbuf), 
-			 nsi, sizeof (nsi),  &nns) != 0)
-	goto fail;
-      if (browse_verify_namespace (idata, nsi, nns) != 0)
-	goto fail;
-    }
-  }
 
   mutt_message _("Getting folder list...");
 
@@ -136,9 +111,7 @@ int imap_browse (char* path, struct browser_state* state)
     /* if we're descending a folder, mark it as current in browser_state */
     if (mbox[n-1] == list.delim)
     {
-      /* don't show parents in the home namespace */
-      if (!home_namespace)
-	showparents = 1;
+      showparents = 1;
       imap_qualify_path (buf, sizeof (buf), &mx, mbox);
       state->folder = safe_strdup (buf);
       n--;
@@ -191,22 +164,14 @@ int imap_browse (char* path, struct browser_state* state)
       }
     }
   }
+  else
+    mbox[0] = '\0';
 
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
   {
     imap_qualify_path (buf, sizeof (buf), &mx, NULL);
     state->folder = safe_strdup (buf);
-  }
-
-  if (home_namespace && mbox[0] != '\0')
-  {
-    /* Listing the home namespace, so INBOX should be included. Home 
-     * namespace is not "", so we have to list it explicitly. We ask the 
-     * server to see if it has descendants. */
-    dprint (3, (debugfile, "imap_browse: adding INBOX\n"));
-    if (browse_add_list_result (idata, "LIST \"\" \"INBOX\"", state, 0))
-      goto fail;
   }
 
   nsup = state->entrylen;
@@ -229,16 +194,6 @@ int imap_browse (char* path, struct browser_state* state)
 
   qsort(&(state->entry[nsup]),state->entrylen-nsup,sizeof(state->entry[0]),
 	(int (*)(const void*,const void*)) compare_names);
-  if (home_namespace)
-  {				/* List additional namespaces */
-    for (i = 0; i < nns; i++)
-      if (nsi[i].listable && !nsi[i].home_namespace) {
-	imap_add_folder(nsi[i].delim, nsi[i].prefix, nsi[i].noselect,
-			nsi[i].noinferiors, state, 0);
-	dprint (3, (debugfile, "imap_browse: adding namespace: %s\n",
-		    nsi[i].prefix));
-      }
-  }
 
   if (save_lsub)
     set_option (OPTIMAPCHECKSUBSCRIBED);
@@ -494,153 +449,3 @@ static int compare_names(struct folder_file *a, struct folder_file *b)
 {
   return mutt_strcmp(a->name, b->name);
 }
-
-static int browse_get_namespace (IMAP_DATA* idata, char* nsbuf, int nsblen,
-  IMAP_NAMESPACE_INFO* nsi, int nsilen, int* nns)
-{
-  char *s;
-  int n;
-  char ns[LONG_STRING];
-  char delim = '/';
-  int type;
-  int nsbused = 0;
-  int rc;
-
-  *nns = 0;
-  nsbuf[nsblen-1] = '\0';
-
-  imap_cmd_start (idata, "NAMESPACE");
-  
-  do 
-  {
-    if ((rc = imap_cmd_step (idata)) != IMAP_CMD_CONTINUE)
-      break;
-
-    s = imap_next_word (idata->buf);
-    if (ascii_strncasecmp ("NAMESPACE", s, 9) == 0)
-    {
-      /* There are three sections to the response, User, Other, Shared,
-       * and maybe more by extension */
-      for (type = IMAP_NS_PERSONAL; *s; type++)
-      {
-	s = imap_next_word (s);
-	if (*s && ascii_strncasecmp (s, "NIL", 3))
-	{
-	  s++;
-	  while (*s && *s != ')')
-	  {
-	    s++; /* skip ( */
-	    /* copy namespace */
-	    n = 0;
-	    delim = '\0';
-
-	    if (*s == '\"')
-	    {
-	      s++;
-	      while (*s && *s != '\"' && n < sizeof (ns) - 1) 
-	      {
-		if (*s == '\\')
-		  s++;
-		ns[n++] = *s;
-		s++;
-	      }
-	      if (*s)
-		s++;
-	    }
-	    else
-	      while (*s && !ISSPACE (*s) && n < sizeof (ns) - 1)
-	      {
-		ns[n++] = *s;
-		s++;
-	      }
-	    ns[n] = '\0';
-	    if (n == sizeof (ns) - 1)
-	      dprint (1, (debugfile, "browse_get_namespace: too long: [%s]\n", ns));
-	    /* delim? */
-	    s = imap_next_word (s);
-	    /* delimiter is meaningless if namespace is "". Why does
-	     * Cyrus provide one?! */
-	    if (n && *s && *s == '\"')
-	    {
-	      if (s[1] && s[2] == '\"')
-		delim = s[1];
-	      else if (s[1] && s[1] == '\\' && s[2] && s[3] == '\"')
-		delim = s[2];
-	    }
-	    /* skip "" namespaces, they are already listed at the root */
-	    if ((ns[0] != '\0') && (nsbused < nsblen) && (*nns < nsilen))
-	    {
-	      dprint (3, (debugfile, "browse_get_namespace: adding %s\n", ns));
-	      nsi->type = type;
-	      /* Cyrus doesn't append the delimiter to the namespace,
-	       * but UW-IMAP does. We'll strip it here and add it back
-	       * as if it were a normal directory, from the browser */
-	      if (n && (ns[n-1] == delim))
-		ns[--n] = '\0';
-	      strncpy (nsbuf+nsbused,ns,nsblen-nsbused-1);
-	      nsi->prefix = nsbuf+nsbused;
-	      nsbused += n+1;
-	      nsi->delim = delim;
-	      nsi++;
-	      (*nns)++;
-	    }
-	    while (*s && *s != ')') 
-	      s++;
-	    if (*s)
-	      s++;
-	  }
-	}
-      }
-    }
-  }
-  while (rc == IMAP_CMD_CONTINUE);
-
-  if (rc != IMAP_CMD_OK)
-    return -1;
-
-  return 0;
-}
-
-/* Check which namespaces have contents */
-static int browse_verify_namespace (IMAP_DATA* idata,
-  IMAP_NAMESPACE_INFO *nsi, int nns)
-{
-  char buf[LONG_STRING];
-  IMAP_LIST list;
-  int i = 0;
-  int rc;
-
-  for (i = 0; i < nns; i++, nsi++)
-  {
-    /* Cyrus gives back nothing if the % isn't added. This may return lots
-     * of data in some cases, I guess, but I currently feel that's better
-     * than invisible namespaces */
-    if (nsi->delim)
-      snprintf (buf, sizeof (buf), "%s \"\" \"%s%c%%\"",
-		option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix,
-		nsi->delim);
-    else
-      snprintf (buf, sizeof (buf), "%s \"\" \"%s%%\"",
-		option (OPTIMAPLSUB) ? "LSUB" : "LIST", nsi->prefix);
-
-    imap_cmd_start (idata, buf);
-    idata->cmdtype = IMAP_CT_LIST;
-    idata->cmddata = &list;
-    nsi->listable = 0;
-    nsi->home_namespace = 0;
-    do 
-    {
-      rc = imap_cmd_step (idata);
-      if (rc == IMAP_CMD_CONTINUE && list.name)
-        nsi->listable |= (list.name[0] != '\0');
-    }
-    while (rc == IMAP_CMD_CONTINUE);
-    idata->cmddata = NULL;
-
-    if (rc != IMAP_CMD_OK)
-      return -1;
-  }
-
-  return 0;
-}
-

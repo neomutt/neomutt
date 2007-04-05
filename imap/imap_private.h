@@ -124,18 +124,6 @@ typedef struct
   char* path;
 } IMAP_CACHE;
 
-typedef struct 
-{
-  int type;
-  int listable;
-  char *prefix;
-  char delim;
-  int home_namespace;
-  /* We get these when we check if namespace exists - cache them */
-  int noselect;			
-  int noinferiors;
-} IMAP_NAMESPACE_INFO;
-
 typedef struct
 {
   char* name;
