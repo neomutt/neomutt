@@ -28,6 +28,7 @@
 #include "imap_private.h"
 #include "mutt_ssl.h"
 #ifdef USE_HCACHE
+#include "message.h"
 #include "hcache.h"
 #endif
 
@@ -85,6 +86,34 @@ header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
   FREE (&mx.mbox);
 
   return mutt_hcache_open (HeaderCache, cachepath);
+}
+
+HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
+{
+  char key[16];
+  unsigned int* uv;
+  HEADER* h = NULL;
+
+  sprintf(key, "/%u", uid);
+  uv = (unsigned int*)mutt_hcache_fetch (idata->hcache, key,
+                                         imap_hcache_keylen);
+  if (uv)
+  {
+    if (*uv == idata->uid_validity)
+      h = mutt_hcache_restore ((unsigned char*)uv, NULL);
+    FREE (&uv);
+  }
+
+  return h;
+}
+
+int imap_hcache_put (IMAP_DATA* idata, HEADER* h)
+{
+  char key[16];
+
+  sprintf(key, "/%u", HEADER_DATA (h)->uid);
+  return mutt_hcache_store (idata->hcache, key, h, idata->uid_validity,
+                            imap_hcache_keylen);
 }
 #endif
 

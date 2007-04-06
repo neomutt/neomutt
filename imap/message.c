@@ -78,7 +78,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   unsigned int *uid_validity = NULL;
   unsigned int *uidnext = NULL;
   int evalhc = 0;
-  char uid_buf[64];
 #endif /* USE_HCACHE */
 
   ctx = idata->ctx;
@@ -168,12 +167,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	}
 
         idx = h.sid - 1;
-        sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
-        uid_validity = (unsigned int*)mutt_hcache_fetch (idata->hcache, uid_buf, &imap_hcache_keylen);
-
-        if (uid_validity != NULL && *uid_validity == idata->uid_validity)
+        ctx->hdrs[idx] = imap_hcache_get (idata, h.data->uid);
+        if (ctx->hdrs[idx])
         {
-  	  ctx->hdrs[idx] = mutt_hcache_restore((unsigned char *) uid_validity, 0);
   	  ctx->hdrs[idx]->index = idx;
   	  /* messages which have not been expunged are ACTIVE (borrowed from mh 
   	   * folders) */
@@ -194,8 +190,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	  /* bad header in the cache, we'll have to refetch.
 	   * TODO: consider the possibility of a holey cache. */
           imap_free_header_data((void**) &h.data);
-  
-        FREE(&uid_validity);
       }
       while (rc != IMAP_CMD_OK && mfhrc == -1);
       if (rc == IMAP_CMD_OK)
@@ -293,8 +287,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       ctx->size += h.content_length;
 
 #if USE_HCACHE
-      sprintf(uid_buf, "/%u", h.data->uid);
-      mutt_hcache_store(idata->hcache, uid_buf, ctx->hdrs[idx], idata->uid_validity, &imap_hcache_keylen);
+      imap_hcache_put (idata, ctx->hdrs[idx]);
 #endif /* USE_HCACHE */
 
       ctx->msgcount++;
