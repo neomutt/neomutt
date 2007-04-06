@@ -544,7 +544,7 @@ mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
   nh.data = NULL;
 #endif
 
-  memcpy(d + *off, header, sizeof (HEADER));
+  memcpy(d + *off, &nh, sizeof (HEADER));
   *off += sizeof (HEADER);
 
   d = dump_envelope(header->env, d, off);
