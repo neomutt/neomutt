@@ -1,4 +1,9 @@
-2007-04-06 12:54 -0700  Brendan Cully  <brendan@kublai.com>  (bd9401de2690)
+2007-04-06 13:30 -0700  Brendan Cully  <brendan@kublai.com>  (855cad417af6)
+
+	* build-release: More minor build tweaks
+
+	* Makefile.am, build-release, mkchangelog.sh: Fix up release
+	scripts for Hg
 
 	* lib.c: safe_rename: fall back to rename on ENOSYS and EPERM as well
 	as EXDEV. sshfs returns ENOSYS when attempting cross-directory
