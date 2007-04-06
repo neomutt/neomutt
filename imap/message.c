@@ -119,7 +119,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->newMailCount = 0;
 
 #if USE_HCACHE
-  if (idata->hcache)
+  if (idata->hcache && !msgbegin)
   {
     uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", imap_hcache_keylen);
     uidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", imap_hcache_keylen);
