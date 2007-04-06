@@ -23,9 +23,16 @@ fi
 
 devel="devel/"	# comment out for the stable branch
 
+# test for uncommitted changes
+if hg id | grep -q '+'
+then
+  echo "Uncommitted changes"
+  exit 1
+fi
+
 # update the source
 
-#cvs update
+hg update
 
 # Do automated security checks
 
@@ -66,12 +73,13 @@ make dist
 
 #cvs commit -m "automatic post-release commit for mutt-${VERSION}"
 #make commit-changelog 
-#cvs tag ${TAG}
+hg tag ${TAG}
 
 # build the diff between the two releases
 
-if test "$diff" = yes ; then
-	cvs rdiff -u -r ${OTAG} -r ${TAG} mutt | gzip -9 \
+if test "$diff" = yes
+then
+  hg diff -r ${OTAG} -r ${TAG} | gzip -9 \
 		> diff-${OVERSION}-${VERSION}.gz
 fi
 
@@ -101,7 +109,8 @@ for f in $DISTFILES ; do
 	scp $f $f.asc trithemius.gnupg.org:/home/ftp/mutt/${devel}
 done
 
-cvs update
+hg update
+gpg sign
 
 # Finally, announce the new mutt to the public
 

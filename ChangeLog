@@ -1,4 +1,27 @@
-2007-04-05 18:52 -0700  Brendan Cully  <brendan@kublai.com>  (94d3441e86d0)
+2007-04-06 12:54 -0700  Brendan Cully  <brendan@kublai.com>  (bd9401de2690)
+
+	* lib.c: safe_rename: fall back to rename on ENOSYS and EPERM as well
+	as EXDEV. sshfs returns ENOSYS when attempting cross-directory
+	links. vfat returns EPERM.
+
+	* lib.c: Make safe_open with O_EXCL friendlier for NFS. Per #2707,
+	when an open file is moved into a different directory over NFS, it
+	may leave a .nfsXXX hardlink behind. This causes the rmdir in
+	safe_open to fail, leaving tempdir droppings around. This patch
+	works around the problem by closing the file after creating it and
+	reopening it after rename.
+
+2007-04-05 21:38 -0700  Michael Elkins  <me@mutt.org>  (177c060504bb)
+
+	* configure.ac, hcache.c: Fixup to detect qdbm includes in
+	/usr/include/qdbm.
+
+	Remove HAVE_QDBM_VILLA_H because it is redundant.
+
+2007-04-05 19:22 -0700  Brendan Cully  <brendan@kublai.com>  (ee0fabbde466)
+
+	* configure.ac, hcache.c: Fix up QDBM autoconf test for arguments
+	and includes in subdirectories
 
 	* imap/message.c: Fix logic error introduced in [efbcef81ac49]
 

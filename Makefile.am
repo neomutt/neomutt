@@ -186,8 +186,7 @@ commit: pclean check-security commit-real update-changelog commit-changelog
 
 update-changelog:
 	(cd $(top_srcdir); \
-	cvs update ChangeLog; \
-	sh ./mkchangelog.sh | fmt -c | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
+	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
 	$${VISUAL:-vi} ChangeLog)
 
 # kluge around automake problems.
