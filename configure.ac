@@ -837,12 +837,20 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
     then
       if test -n "$with_qdbm" -a "$with_qdbm" != "yes"
       then
-        CPPFLAGS="$CPPFLAGS -I$with_qdbm/include"
+        if test -d $with_qdbm/include/qdbm; then
+          CPPFLAGS="$CPPFLAGS -I$with_qdbm/include/qdbm"
+	else
+          CPPFLAGS="$CPPFLAGS -I$with_qdbm/include"
+	fi
         LDFLAGS="$LDFLAGS -L$with_qdbm/lib"
+      else
+         if test -d /usr/include/qdbm; then
+           CPPFLAGS="$CPPFLAGS -I/usr/include/qdbm"
+	 fi
       fi
 
       saved_LIBS="$LIBS"
-      AC_CHECK_HEADERS(villa.h qdbm/villa.h)
+      AC_CHECK_HEADERS(villa.h)
       AC_CHECK_LIB(qdbm, vlopen, [MUTTLIBS="$MUTTLIBS -lqdbm"; use_qdbm=yes])
       LIBS="$saved_LIBS"
       if test -n "$with_qdbm" -a "$use_qdbm" != yes
