@@ -95,20 +95,11 @@ for f in $DISTFILES; do
 	chmod 644 $f.asc
 done
 
-exit 0
-
-echo "Release built.  Please connect to the net and press <enter>"
-echo "when on-line."
-
-read dummy
-
 for f in $DISTFILES ; do
-#	scp1 $f $f.asc sigtrap.guug.de:/home/ftp/pub/mutt/${devel}
 	scp $f $f.asc trithemius.gnupg.org:/home/ftp/mutt/${devel}
 done
 
-hg update
-gpg sign
+hg sign -m'mutt-${VERSION} signed'
 
 # Finally, announce the new mutt to the public
 
