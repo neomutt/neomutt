@@ -831,20 +831,28 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
 
     need_md5="yes"
 
-    ac_prefer_qdbm=yes
-    AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm], [Don't use qdbm even if it is available]),
-        ac_prefer_qdbm=$withval)
-    if test x$ac_prefer_qdbm != xno; then
-        CPPFLAGS="$OLDCPPFLAGS"
-        LIBS="$OLDLIBS -lqdbm";
-        AC_CACHE_CHECK(for vlopen, ac_cv_vlopen,[
-            ac_cv_vlopen=no
-            AC_TRY_LINK([#include <villa.h>],[vlopen(0,0,0);],[ac_cv_vlopen=yes])
-        ])
+    use_qdbm=no
+    AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm], [Don't use qdbm even if it is available]))
+    if test "$with_qdbm" != "no"
+    then
+      if test -n "$with_qdbm" -a "$with_qdbm" != "yes"
+      then
+        CPPFLAGS="$CPPFLAGS -I$with_qdbm/include"
+        LDFLAGS="$LDFLAGS -L$with_qdbm/lib"
+      fi
+
+      saved_LIBS="$LIBS"
+      AC_CHECK_HEADERS(villa.h qdbm/villa.h)
+      AC_CHECK_LIB(qdbm, vlopen, [MUTTLIBS="$MUTTLIBS -lqdbm"; use_qdbm=yes])
+      LIBS="$saved_LIBS"
+      if test -n "$with_qdbm" -a "$use_qdbm" != yes
+      then
+        AC_MSG_ERROR([QDBM could not be used. Check config.log for details.])
+      fi
     fi
 
     AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm], [Don't use gdbm even if it is available]))
-    if test x$with_gdbm != xno -a x$ac_cv_vlopen != xyes; then
+    if test x$with_gdbm != xno -a $use_qdbm != yes; then
         if test "$with_gdbm" != "yes"
         then
           CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
@@ -861,7 +869,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
     ac_bdb_prefix=yes
     AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb[=DIR]], [Use BerkeleyDB4 if gdbm is not available]),
         ac_bdb_prefix=$withval)
-    if test x$ac_bdb_prefix != xno -a x$ac_cv_gdbmopen != xyes -a x$ac_cv_vlopen != xyes; then
+    if test x$ac_bdb_prefix != xno -a x$ac_cv_gdbmopen != xyes -a $use_qdbm != yes; then
         test x$ac_bdb_prefix = xyes && ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
         for d in $ac_bdb_prefix; do
             bdbpfx="$bdbpfx $d"
@@ -909,9 +917,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
         fi
     fi
 
-    if test x$ac_cv_vlopen = xyes; then
-        CPPFLAGS="$OLDCPPFLAGS"
-        LIBS="$OLDLIBS -lqdbm";
+    if test "$use_qdbm" = yes; then
         AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
     elif test x$ac_cv_gdbmopen = xyes; then
         CPPFLAGS="$OLDCPPFLAGS"
@@ -920,9 +926,9 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
     elif test x$ac_cv_dbcreate = xyes; then
         CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
         LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
-        AC_DEFINE(HAVE_DB4, 1, [Sleepycat DB4 Support])
+        AC_DEFINE(HAVE_DB4, 1, [Berkeley DB4 Support])
     else
-        AC_MSG_ERROR([You need QDBM, GDBM or Sleepycat DB4 for hcache])
+        AC_MSG_ERROR([You need QDBM, GDBM or Berkeley DB4 for hcache])
     fi
 fi])
 dnl -- end cache --

@@ -1,4 +1,14 @@
-2007-04-05 17:07 -0700  Brendan Cully  <brendan@kublai.com>  (26b19fc9b78c)
+2007-04-05 18:52 -0700  Brendan Cully  <brendan@kublai.com>  (94d3441e86d0)
+
+	* imap/message.c: Fix logic error introduced in [efbcef81ac49]
+
+	* hcache.c: Fix typo in 26b19fc9b78c
+
+	* imap/imap_private.h, imap/message.c, imap/util.c: IMAP header cache
+	API improvements.
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c, imap/util.c:
+	Keep hcache pointer in idata, open and close with mailbox
 
 	* hcache.c: Do not cache some unsafe header fields.
 

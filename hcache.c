@@ -22,10 +22,15 @@
 #include "config.h"
 #endif				/* HAVE_CONFIG_H */
 
-#if HAVE_QDBM
+#if HAVE_VILLA_H
 #include <depot.h>
 #include <cabin.h>
 #include <villa.h>
+#elif HAVE_QDBM_VILLA_H
+#include <qdbm/depot.h>
+#include <qdbm/cabin.h>
+#include <qdbm/villa.h>
+#endif
 #elif HAVE_GDBM
 #include <gdbm.h>
 #elif HAVE_DB4
