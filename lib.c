@@ -447,9 +447,10 @@ int safe_rename (const char *src, const char *target)
     
     dprint (1, (debugfile, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
 
-    if (errno == EXDEV)
+    /* FUSE may return ENOSYS. VFAT may return EPERM */
+    if (errno == EXDEV || errno == ENOSYS || errno == EPERM)
     {
-      dprint (1, (debugfile, "safe_rename: errno was EXDEV; trying rename...\n"));
+      dprint (1, (debugfile, "safe_rename: trying rename...\n"));
       if (rename (src, target) == -1) 
       {
 	dprint (1, (debugfile, "safe_rename: rename (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
