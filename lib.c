@@ -575,18 +575,15 @@ int safe_open (const char *path, int flags)
       rmdir (safe_dir);
       return fd;
     }
-    
+
+    /* NFS and I believe cygwin do not handle movement of open files well */
+    close (fd);
     if (mutt_put_file_in_place (path, safe_file, safe_dir) == -1)
-    {
-      close (fd);
       return -1;
-    }
   }
-  else
-  {
-    if ((fd = open (path, flags, 0600)) < 0)
-      return fd;
-  }
+
+  if ((fd = open (path, flags & ~O_EXCL, 0600)) < 0)
+    return fd;
     
   /* make sure the file is not symlink */
   if (lstat (path, &osb) < 0 || fstat (fd, &nsb) < 0 ||
