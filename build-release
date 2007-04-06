@@ -40,8 +40,6 @@ hg update
 
 # bump the version number, and calculate the tags
 
-rm -f VERSION 
-cvs update VERSION 
 OVERSION="`cat VERSION`" 
 OTAG="mutt-`echo $OVERSION | tr . -`-rel" 
 
@@ -71,7 +69,7 @@ make dist
 
 # commit and tag the release
 
-#cvs commit -m "automatic post-release commit for mutt-${VERSION}"
+hg commit -m "automatic post-release commit for mutt-${VERSION}"
 #make commit-changelog 
 hg tag ${TAG}
 
