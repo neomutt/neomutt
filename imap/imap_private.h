@@ -24,6 +24,9 @@
 #include "mutt_curses.h"
 #include "mutt_socket.h"
 #include "bcache.h"
+#ifdef USE_HCACHE
+#include "hcache.h"
+#endif
 
 /* -- symbols -- */
 #define IMAP_PORT 143
@@ -208,6 +211,9 @@ typedef struct
 
   /* all folder flags - system flags AND keywords */
   LIST *flags;
+#ifdef USE_HCACHE
+  header_cache_t *hcache;
+#endif
 } IMAP_DATA;
 /* I wish that were called IMAP_CONTEXT :( */
 
@@ -253,7 +259,7 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 
 /* util.c */
 #ifdef USE_HCACHE
-void* imap_hcache_open (IMAP_DATA* idata, const char* path);
+header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path);
 #endif
 
 int imap_continue (const char* msg, const char* resp);

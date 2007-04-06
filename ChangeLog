@@ -1,4 +1,10 @@
-2007-04-05 15:21 -0700  Brendan Cully  <brendan@kublai.com>  (7cf4415ec23d)
+2007-04-05 17:07 -0700  Brendan Cully  <brendan@kublai.com>  (26b19fc9b78c)
+
+	* hcache.c: Do not cache some unsafe header fields.
+
+	* imap/message.c, mh.c: Small hcache-related memory leaks
+
+	* hcache.c, mh.c: Fix mh header caching (closes #2472)
 
 	* configure.ac: Teach --with-gdbm to accept a prefix (closes #2413)
 

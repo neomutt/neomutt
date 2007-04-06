@@ -249,10 +249,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   int i, cacheno;
 
 #if USE_HCACHE
-  header_cache_t *hc;
   char uidbuf[32];
-
-  hc = imap_hcache_open (idata, idata->ctx->path);
 #endif
 
   for (i = 0; i < idata->ctx->msgcount; i++)
@@ -268,10 +265,10 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 
       imap_cache_del (idata, h);
 #if USE_HCACHE
-      if (hc)
+      if (idata->hcache)
       {
         sprintf (uidbuf, "/%u", HEADER_DATA(h)->uid);
-        mutt_hcache_delete (hc, uidbuf, imap_hcache_keylen);
+        mutt_hcache_delete (idata->hcache, uidbuf, imap_hcache_keylen);
       }
 #endif
 
@@ -287,10 +284,6 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
       imap_free_header_data (&h->data);
     }
   }
-
-#if USE_HCACHE
-  mutt_hcache_close (hc);
-#endif
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
@@ -749,6 +742,9 @@ int imap_open_mailbox (CONTEXT* ctx)
   ctx->hdrs = safe_calloc (count, sizeof (HEADER *));
   ctx->v2r = safe_calloc (count, sizeof (int));
   ctx->msgcount = 0;
+#ifdef USE_HCACHE
+  idata->hcache = imap_hcache_open (idata, idata->ctx->path);
+#endif
   if (count && (imap_read_headers (idata, 0, count-1) < 0))
   {
     mutt_error _("Error opening mailbox");
@@ -761,6 +757,9 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 
  fail:
+#ifdef USE_HCACHE
+  mutt_hcache_close (idata->hcache);
+#endif
   if (idata->state == IMAP_SELECTED)
     idata->state = IMAP_AUTHENTICATED;
  fail_noidata:
@@ -1108,7 +1107,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   int n;
   int rc;
 #if USE_HCACHE
-  void* hc = NULL;
   char uidbuf[32];
 #endif
   
@@ -1155,11 +1153,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
-#if USE_HCACHE
-  if (expunge && ctx->closing)
-    hc = imap_hcache_open (idata, idata->ctx->path);
-#endif
-
   /* save messages with real (non-flag) changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
@@ -1168,10 +1161,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     if (h->deleted)
       imap_cache_del (idata, h);
 #if USE_HCACHE
-    if (hc && h->deleted)
+    if (idata->hcache && h->deleted)
     {
       sprintf (uidbuf, "/%u", HEADER_DATA(h)->uid);
-      mutt_hcache_delete (hc, uidbuf, imap_hcache_keylen);
+      mutt_hcache_delete (idata->hcache, uidbuf, imap_hcache_keylen);
     }
 #endif
     if (h->active && h->changed)
@@ -1271,9 +1264,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   rc = 0;
  out:
-#if USE_HCACHE
-  mutt_hcache_close (hc);
-#endif
   if (cmd.data)
     FREE (&cmd.data);
   if (appendctx)
@@ -1332,6 +1322,9 @@ int imap_close_mailbox (CONTEXT* ctx)
     }
   }
 
+#ifdef USE_HCACHE
+  mutt_hcache_close (idata->hcache);
+#endif
   mutt_bcache_close (&idata->bcache);
 
   return 0;

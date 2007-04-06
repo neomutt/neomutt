@@ -75,7 +75,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   progress_t progress;
 
 #if USE_HCACHE
-  header_cache_t *hc = NULL;
   unsigned int *uid_validity = NULL;
   unsigned int *uidnext = NULL;
   int evalhc = 0;
@@ -121,13 +120,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->newMailCount = 0;
 
 #if USE_HCACHE
-  if (!msgbegin)
-    hc = imap_hcache_open (idata, ctx->path);
-
-  if (hc)
+  if (idata->hcache)
   {
-    uid_validity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
-    uidnext = mutt_hcache_fetch_raw (hc, "/UIDNEXT", imap_hcache_keylen);
+    uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", imap_hcache_keylen);
+    uidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", imap_hcache_keylen);
     if (uid_validity && uidnext && *uid_validity == idata->uid_validity
         && *uidnext > 0)
       evalhc = 1;
@@ -173,7 +169,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
         idx = h.sid - 1;
         sprintf(uid_buf, "/%u", h.data->uid); /* XXX --tg 21:41 04-07-11 */
-        uid_validity = (unsigned int*)mutt_hcache_fetch (hc, uid_buf, &imap_hcache_keylen);
+        uid_validity = (unsigned int*)mutt_hcache_fetch (idata->hcache, uid_buf, &imap_hcache_keylen);
 
         if (uid_validity != NULL && *uid_validity == idata->uid_validity)
         {
@@ -209,7 +205,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         if (h.data)
           imap_free_header_data ((void**) &h.data);
         fclose (fp);
-        mutt_hcache_close (hc);
         return -1;
       }
     }
@@ -299,7 +294,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
 #if USE_HCACHE
       sprintf(uid_buf, "/%u", h.data->uid);
-      mutt_hcache_store(hc, uid_buf, ctx->hdrs[idx], idata->uid_validity, &imap_hcache_keylen);
+      mutt_hcache_store(idata->hcache, uid_buf, ctx->hdrs[idx], idata->uid_validity, &imap_hcache_keylen);
 #endif /* USE_HCACHE */
 
       ctx->msgcount++;
@@ -312,9 +307,6 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       if (h.data)
         imap_free_header_data ((void**) &h.data);
       fclose (fp);
-#if USE_HCACHE
-      mutt_hcache_close (hc);
-#endif /* USE_HCACHE */
       return -1;
     }
 
@@ -333,7 +325,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   status->uidnext = maxuid + 1;
 
 #if USE_HCACHE
-  mutt_hcache_store_raw (hc, "/UIDVALIDITY", &idata->uid_validity,
+  mutt_hcache_store_raw (idata->hcache, "/UIDVALIDITY", &idata->uid_validity,
                          sizeof (idata->uid_validity), imap_hcache_keylen);
   if (maxuid && idata->uidnext < maxuid + 1)
   {
@@ -341,9 +333,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     idata->uidnext = maxuid + 1;
   }
   if (idata->uidnext > 1)
-    mutt_hcache_store_raw (hc, "/UIDNEXT", &idata->uidnext,
+    mutt_hcache_store_raw (idata->hcache, "/UIDNEXT", &idata->uidnext,
 			   sizeof (idata->uidnext), imap_hcache_keylen);
-  mutt_hcache_close (hc);
 #endif /* USE_HCACHE */
 
   fclose(fp);

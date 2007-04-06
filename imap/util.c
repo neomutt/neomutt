@@ -70,7 +70,7 @@ int imap_expand_path (char* path, size_t len)
 }
 
 #ifdef USE_HCACHE
-void* imap_hcache_open (IMAP_DATA* idata, const char* path)
+header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
 {
   IMAP_MBOX mx;
   ciss_url_t url;
