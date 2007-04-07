@@ -5,13 +5,21 @@
 # Note [VL]. In case you need it, you may find the latest temporary version
 #            at this URL:   http://www.vinc17.org/mutt/fr.po
 #
+# Traductions possibles de "timestamp":
+# _ horodatage
+#   * http://drupalfr.org/forum/traduction/16-coherence_de_traduction
+#   * page man en français de touch(1)
+#   * page man en français de fetchmail
+# _ timbre à date
+#   * http://abcdrfc.free.fr/rfc-vf/rfc1939.html
+#
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.14-20070313\n"
+"Project-Id-Version: Mutt 1.5.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-06 13:35-0700\n"
-"PO-Revision-Date: 2007-03-13 14:05+0100\n"
+"POT-Creation-Date: 2007-04-07 01:54+0200\n"
+"PO-Revision-Date: 2007-04-07 01:54+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -3419,6 +3427,14 @@ msgid ""
 "       mutt [<options>] -D\n"
 "       mutt -v[v]\n"
 msgstr ""
+"usage : mutt [<options>] [-z] [-f <fichier> | -yZ]\n"
+"        mutt [<options>] [-x] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] [-"
+"a <fichier> [...]] [--] <adresse> [...]\n"
+"        mutt [<options>] -p\n"
+"        mutt [<options>] -A <alias> [...]\n"
+"        mutt [<options>] -Q <requête> [...]\n"
+"        mutt [<options>] -D\n"
+"        mutt -v[v]\n"
 
 #: main.c:116
 msgid ""
@@ -3487,6 +3503,8 @@ msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
+"  --\t\ttraite les arguments restants comme des adresses (même -arg...)\n"
+"\t\tquand -a est utilisé avec plusieurs arg, -- est obligatoire"
 
 #: main.c:187
 msgid ""
@@ -4444,7 +4462,7 @@ msgstr "Authentification (SASL)..."
 
 #: pop_auth.c:188
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "L'horodatage POP est invalide !"
 
 #: pop_auth.c:193
 msgid "Authenticating (APOP)..."
@@ -5165,8 +5183,8 @@ msgstr "Le message père n'est pas disponible."
 #~ "[...]\n"
 #~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
 #~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
-#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
-#~ "[ ... ]\n"
+#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] [ -- ] "
+#~ "<addr> [ ... ]\n"
 #~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 #~ "       mutt -v[v]\n"
 #~ msgstr ""
@@ -5178,8 +5196,8 @@ msgstr "Le message père n'est pas disponible."
 #~ "[...]\n"
 #~ "        mutt [ -nR ] [ -e <cmd> ] [ -F <fich> ] -D\n"
 #~ "        mutt [ -nx ] [ -e <cmd> ] [ -a <fich> ] [ -F <fich> ] [ -H "
-#~ "<fich> ] [ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] <adr> "
-#~ "[ ... ]\n"
+#~ "<fich> ] [ -i <fich> ] [ -s <obj> ] [ -b <adr> ] [ -c <adr> ] [ -- ] "
+#~ "<adr> [ ... ]\n"
 #~ "        mutt [ -n ] [ -e <cmd> ] [ -F <fich> ] -p\n"
 #~ "        mutt -v[v]\n"
 
