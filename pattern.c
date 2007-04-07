@@ -1132,6 +1132,12 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_BODY:
     case M_HEADER:
     case M_WHOLE_MSG:
+      /*
+       * ctx can be NULL in certain cases, such as when replying to a message from the attachment menu and
+       * the user has a reply-hook using "~h" (bug #2190).
+       */
+      if (!ctx)
+	      return 0;
 #ifdef USE_IMAP
       /* IMAP search sets h->matched at search compile time */
       if (ctx->magic == M_IMAP && pat->stringmatch)
