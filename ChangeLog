@@ -1,10 +1,16 @@
+2007-04-07 13:10 -0700  Brendan Cully  <brendan@kublai.com>  (ab937d1f12b8)
+
+	* smtp.c: Mark error message for translation
+
+2007-04-06 18:03 -0700  Vincent Lefevre  <vincent@vinc17.org>  (1ab836e94c70)
+
+	* po/fr.po: Updated French translation
+
 2007-04-06 14:00 -0700  Brendan Cully  <brendan@kublai.com>  (cde224ad2662)
 
 	* UPDATING: Update UPDATING
 
 	* build-release: More build-release fixes
-
-2007-04-06 13:55 -0700  Brendan Cully  <brendan@kublai.com>  (ddc5eabe4cb8)
 
 	* .hgsigs: mutt-1.5.15 signed
 
