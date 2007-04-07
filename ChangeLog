@@ -1,3 +1,12 @@
+2007-04-07 16:13 -0700  Fabian Groffen  <grobian@gentoo.org>  (779befaca281)
+
+	* hcache.c: Fix compiler warnings
+
+2007-04-07 16:05 -0700  Jukka Salmi  <jukka@salmi.ch>  (ef35baf2a2d0)
+
+	* configure.ac: Fix BDB autoconf buglet introduced in
+	[3638701db407]
+
 2007-04-07 15:21 -0700  Michael Elkins  <me@mutt.org>  (70e637e40943)
 
 	* enter.c: add "|" to the list of shell chars

@@ -154,7 +154,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         rc = imap_cmd_step (idata);
         if (rc != IMAP_CMD_CONTINUE)
 	{
-	  imap_free_header_data ((void**) &h.data);
+          /* suppress GCC aliasing warning */
+	  imap_free_header_data ((void**) (void*) &h.data);
           break;
 	}
 
@@ -162,7 +163,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           continue;
         else if (mfhrc < 0)
 	{
-	  imap_free_header_data ((void**) &h.data);
+	  imap_free_header_data ((void**) (void*) &h.data);
           break;
 	}
 
@@ -189,7 +190,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 	else
 	  /* bad header in the cache, we'll have to refetch.
 	   * TODO: consider the possibility of a holey cache. */
-          imap_free_header_data((void**) &h.data);
+          imap_free_header_data((void**) (void*) &h.data);
       }
       while (rc != IMAP_CMD_OK && mfhrc == -1);
       if (rc == IMAP_CMD_OK)
@@ -197,7 +198,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
       {
         if (h.data)
-          imap_free_header_data ((void**) &h.data);
+          imap_free_header_data ((void**) (void*) &h.data);
         fclose (fp);
         return -1;
       }
@@ -298,7 +299,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
       if (h.data)
-        imap_free_header_data ((void**) &h.data);
+        imap_free_header_data ((void**) (void*) &h.data);
       fclose (fp);
       return -1;
     }
