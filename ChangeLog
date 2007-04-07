@@ -1,4 +1,23 @@
-2007-04-07 13:10 -0700  Brendan Cully  <brendan@kublai.com>  (ab937d1f12b8)
+2007-04-07 15:21 -0700  Michael Elkins  <me@mutt.org>  (70e637e40943)
+
+	* enter.c: add "|" to the list of shell chars
+
+	* enter.c: "complete" function should consider shell chars to be word
+	boundaries when doing filename completion (bug #2871)
+
+	* complete.c, lib.c, lib.h: bug #2871
+
+	Avoid altering the argument to mutt_complete() when completion
+	fails. Previously, the trailing component of filename was removed
+	each time the user pressed TAB.
+
+2007-04-07 14:32 -0700  Fabian Groffen  <grobian@orakel.ods.org>  (eed43900f612)
+
+	* copy.c: Fix some compiler warnings
+
+2007-04-07 13:40 -0700  Brendan Cully  <brendan@kublai.com>  (980949218b09)
+
+	* regex.c: Fix compiler warnings
 
 	* smtp.c: Mark error message for translation
 
