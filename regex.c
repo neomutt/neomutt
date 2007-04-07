@@ -2197,7 +2197,7 @@ regex_compile (pattern, size, syntax, bufp)
                       {
                         PATFETCH (c);
                         if (c == ':' || c == ']' || p == pend
-                            || c1 == (unsigned char)CHAR_CLASS_MAX_LENGTH)
+                            || (unsigned int)c1 == CHAR_CLASS_MAX_LENGTH)
                           break;
                         str[c1++] = c;
                       }
@@ -3117,9 +3117,6 @@ re_compile_fastmap (bufp)
 #ifndef REGEX_MALLOC
   char *destination;
 #endif
-  /* We don't push any register information onto the failure stack.  */
-  unsigned num_regs = 0;
-
   register char *fastmap = bufp->fastmap;
   unsigned char *pattern = bufp->buffer;
   unsigned char *p = pattern;
