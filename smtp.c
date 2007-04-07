@@ -150,7 +150,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   fp = fopen (msgfile, "r");
   if (!fp)
   {
-    mutt_error ("SMTP session failed: unable to open %s", msgfile);
+    mutt_error (_("SMTP session failed: unable to open %s"), msgfile);
     return -1;
   }
   stat (msgfile, &st);
