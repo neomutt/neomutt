@@ -79,12 +79,12 @@ int mutt_complete (char *s, size_t slen)
     if ((p = strrchr (s, '/')))
     {
       char buf[_POSIX_PATH_MAX];
-      *p++ = 0;
-      mutt_concat_path (buf, exp_dirpart, s + 1, sizeof (buf));
+      if (mutt_concatn_path (buf, sizeof(buf), exp_dirpart, strlen(exp_dirpart), s + 1, (size_t)(p - s - 1)) == NULL) {
+	      return -1;
+      }
       strfcpy (exp_dirpart, buf, sizeof (exp_dirpart));
-      snprintf (buf, sizeof (buf), "%s%s/", dirpart, s+1);
-      strfcpy (dirpart, buf, sizeof (dirpart));
-      strfcpy (filepart, p, sizeof (filepart));
+      mutt_substrcpy(dirpart, s, p+1, sizeof(dirpart));
+      strfcpy (filepart, p + 1, sizeof (filepart));
     }
     else
       strfcpy (filepart, s + 1, sizeof (filepart));
@@ -104,12 +104,8 @@ int mutt_complete (char *s, size_t slen)
       }
       else
       {
-	*p = 0;
-	len = (size_t)(p - s);
-	strncpy (dirpart, s, len);
-	dirpart[len]=0;
-	p++;
-	strfcpy (filepart, p, sizeof (filepart));
+	mutt_substrcpy(dirpart, s, p, sizeof(dirpart));
+	strfcpy (filepart, p + 1, sizeof (filepart));
 	strfcpy (exp_dirpart, dirpart, sizeof (exp_dirpart));
 	mutt_expand_path (exp_dirpart, sizeof (exp_dirpart));
 	dirp = opendir (exp_dirpart);
