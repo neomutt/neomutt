@@ -187,6 +187,15 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
 }
 
 /*
+ * Return 1 if the character is not typically part of a pathname
+ */
+inline int is_shell_char(wchar_t ch)
+{
+  static wchar_t shell_chars[] = L"<>&()$?*;{} "; /* ! not included because it can be part of a pathname in Mutt */
+  return wcschr(shell_chars, ch) != NULL;
+}
+
+/*
  * Returns:
  *	1 need to redraw the screen and call me again
  *	0 if input was given
@@ -477,7 +486,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  state->tabs++;
 	  if (flags & M_CMD)
 	  {
-	    for (i = state->curpos; i && state->wbuf[i-1] != ' '; i--)
+	    for (i = state->curpos; i && !is_shell_char(state->wbuf[i-1]); i--)
 	      ;
 	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
 	    if (tempbuf && templen == state->lastchar - i &&
