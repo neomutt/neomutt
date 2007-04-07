@@ -296,8 +296,10 @@ restore_buffer(BUFFER ** b, const unsigned char *d, int *off)
   restore_char(&(*b)->data, d, off);
   restore_int(&offset, d, off);
   (*b)->dptr = (*b)->data + offset;
-  restore_int((unsigned int *) &(*b)->dsize, d, off);
-  restore_int((unsigned int *) &(*b)->destroy, d, off);
+  restore_int (&used, d, off);
+  (*b)->dsize = used;
+  restore_int (&used, d, off);
+  (*b)->destroy = used;
 }
 
 static unsigned char *
