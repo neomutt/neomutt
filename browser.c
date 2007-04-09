@@ -265,18 +265,19 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
     case 's':
       if (folder->ff->st != NULL)
       {
-	snprintf (tmp, sizeof (tmp), "%%%sld", fmt);
-	snprintf (dest, destlen, tmp, (long) folder->ff->st->st_size);
+	mutt_pretty_size(fn, sizeof(fn), folder->ff->st->st_size);
+	snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+	snprintf (dest, destlen, tmp, fn);
       }
       else
 	mutt_format_s (dest, destlen, fmt, "");
       break;
-      
+
     case 't':
       snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
       snprintf (dest, destlen, tmp, folder->ff->tagged ? '*' : ' ');
       break;
-      
+
     case 'u':
       if (folder->ff->st != NULL)
       {
@@ -291,7 +292,7 @@ folder_format_str (char *dest, size_t destlen, char op, const char *src,
       else
 	mutt_format_s (dest, destlen, fmt, "");
       break;
-      
+
     default:
       snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
       snprintf (dest, destlen, tmp, op);
