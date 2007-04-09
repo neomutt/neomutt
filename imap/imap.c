@@ -757,9 +757,6 @@ int imap_open_mailbox (CONTEXT* ctx)
   return 0;
 
  fail:
-#ifdef USE_HCACHE
-  mutt_hcache_close (idata->hcache);
-#endif
   if (idata->state == IMAP_SELECTED)
     idata->state = IMAP_AUTHENTICATED;
  fail_noidata:
@@ -1324,6 +1321,7 @@ int imap_close_mailbox (CONTEXT* ctx)
 
 #ifdef USE_HCACHE
   mutt_hcache_close (idata->hcache);
+  idata->hcache = NULL;
 #endif
   mutt_bcache_close (&idata->bcache);
 
