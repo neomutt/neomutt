@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.14\n"
+"Project-Id-Version: mutt-1.5.15\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-04-06 13:35-0700\n"
-"PO-Revision-Date: 2007-02-28 14:21+0200\n"
+"PO-Revision-Date: 2007-04-08 18:45+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -778,9 +778,9 @@ msgid "error setting secret key `%s': %s\n"
 msgstr "ошибка установки секретного ключа `%s': %s\n"
 
 #: crypt-gpgme.c:684
-#, fuzzy, c-format
+#, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "Ошибка получения информации о ключе: "
+msgstr "ошибка установки примечания к подписи: %s\n"
 
 #: crypt-gpgme.c:740
 #, c-format
@@ -830,13 +830,12 @@ msgid "A system error occurred"
 msgstr "Системная ошибка"
 
 #: crypt-gpgme.c:1140
-#, fuzzy
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "ПРЕДУПРЕЖДЕНИЕ: имя сервера не соответствует сертификату"
+msgstr "ПРЕДУПРЕЖДЕНИЕ: PKA запись не соответствует адресу владельца:"
 
 #: crypt-gpgme.c:1147
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "Адрес, проверенный при помощи PKA: "
 
 #: crypt-gpgme.c:1164 crypt-gpgme.c:3123
 msgid "Fingerprint: "
@@ -1955,7 +1954,7 @@ msgstr "Справка для %s"
 #: history.c:75 history.c:109 history.c:132
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "Некорректный формат файла истории (строка %d)"
 
 #: hook.c:251
 #, c-format
@@ -3241,14 +3240,13 @@ msgstr ""
 "Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
 
 #: main.c:63
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2006 Michael R. Elkins и другие.\n"
+"Copyright (C) 1996-2007 Michael R. Elkins и другие.\n"
 "Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
 "подробной информации введите `mutt -vv'.\n"
 "Mutt является свободным программным обеспечением.  Вы можете\n"
@@ -3256,7 +3254,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:69
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3271,9 +3268,9 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2006 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3325,6 +3322,14 @@ msgid ""
 "       mutt [<options>] -D\n"
 "       mutt -v[v]\n"
 msgstr ""
+"запуск: mutt [<options>] [-z] [-f <file> | -yZ]\n"
+"        mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"<file> [...]] [--] <addr> [...]\n"
+"        mutt [<options>] -p\n"
+"        mutt [<options>] -A <alias> [...]\n"
+"        mutt [<options>] -Q <query> [...]\n"
+"        mutt [<options>] -D\n"
+"        mutt -v[v]\n"
 
 #: main.c:116
 msgid ""
@@ -3396,6 +3401,8 @@ msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
+"  --\t\tсчитать аргументы адресами, даже если они начинаются со знака '-'\n"
+"\t\tнеобходимо применение при использовании -a с несколькими файлами"
 
 #: main.c:187
 msgid ""
@@ -3578,40 +3585,39 @@ msgstr "maildir_commit_message(): не удалось установить время файла"
 
 #: mutt_sasl.c:189
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "SASL: неизвестный протокол"
 
 #: mutt_sasl.c:195
 msgid "SASL failed to get local IP address"
-msgstr ""
+msgstr "SASL: не удалось получить локальный IP адрес"
 
 #: mutt_sasl.c:200
 msgid "SASL failed to parse local IP address"
-msgstr ""
+msgstr "SASL: не удалось распознать локальный IP адрес"
 
 #: mutt_sasl.c:206
 msgid "SASL failed to get remote IP address"
-msgstr ""
+msgstr "SASL: не удалось получить удалённый IP адрес"
 
 #: mutt_sasl.c:211
 msgid "SASL failed to parse remote IP address"
-msgstr ""
+msgstr "SASL: не удалось распознать удалённый IP адрес"
 
 #: mutt_sasl.c:222
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "ошибка размещения объекта данных: %s\n"
+msgstr "SASL: ошибка создания соединения"
 
 #: mutt_sasl.c:232
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "SASL: ошибка установки свойств безопасности"
 
 #: mutt_sasl.c:242
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "SASL: ошибка установки уровня внешней безопасности"
 
 #: mutt_sasl.c:248
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "SASL: ошибка установки внешнего имени пользователя"
 
 #: mutt_socket.c:103 mutt_socket.c:174
 #, c-format
@@ -4305,7 +4311,7 @@ msgstr "Аутентификация (метод SASL)..."
 
 #: pop_auth.c:188
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "APOP: неверное значение времени"
 
 #: pop_auth.c:193
 msgid "Authenticating (APOP)..."
@@ -4936,36 +4942,34 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Не удалось подписать: не указан ключ. Используйте \"подписать как\"."
 
 #: smtp.c:113
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: %s"
-msgstr "Не удалось переименовать: %s"
+msgstr "Ошибка SMTP сессии: %s"
 
 #: smtp.c:269
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "Ошибка SMTP сессии: ошибка чтения"
 
 #: smtp.c:271
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "Ошибка SMTP сессии: ошибка записи"
 
 #: smtp.c:294
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "Неправильный "
+msgstr "Неверный SMTP URL: %s"
 
 #: smtp.c:400
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "SMTP сервер не поддерживает аутентификацию"
 
 #: smtp.c:408
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "Ошибка GSSAPI-аутентификации."
+msgstr "SMTP аутентификация требует SASL"
 
 #: smtp.c:548
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Ошибка SASL-аутентификации."
+msgstr "Ошибка SASL-аутентификации"
 
 #: sort.c:263
 msgid "Sorting mailbox..."
@@ -4986,34 +4990,3 @@ msgstr "Родительское сообщение не видимо при просмотре с ограничением."
 #: thread.c:1099
 msgid "Parent message is not available."
 msgstr "Родительское сообщение недоступно."
-
-#~ msgid "Getting namespaces..."
-#~ msgstr "Получение списка пространств имен..."
-
-#~ msgid ""
-#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-#~ "<file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
-#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
-#~ "[ ... ]\n"
-#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-#~ "       mutt -v[v]\n"
-#~ msgstr ""
-#~ "запуск: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-#~ "<file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
-#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
-#~ "[ ... ]\n"
-#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-#~ "       mutt -v[v]\n"
-#~ "\n"

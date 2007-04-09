@@ -1,4 +1,13 @@
-2007-04-07 16:13 -0700  Fabian Groffen  <grobian@gentoo.org>  (779befaca281)
+2007-04-07 16:22 -0700  Michael Elkins  <me@mutt.org>  (c310dd3d6d73)
+
+	* hook.c, pattern.c: Allow reply-hook to use ~h when replying from the
+	index. Fixes regression introduced by fix for bug #2190.
+	mutt_pattern_exec() now checks for ctx!=NULL so that Mutt will no
+	longer segfault when replying to a message from the attachment menu.
+
+2007-04-07 16:20 -0700  Fabian Groffen  <grobian@gentoo.org>  (1c9db84ed54f)
+
+	* imap/message.c, muttlib.c: Fix compiler aliasing warnings
 
 	* hcache.c: Fix compiler warnings
 
