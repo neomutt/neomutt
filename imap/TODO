@@ -15,8 +15,6 @@ IMAP enhancements, by priority:
   the stat variables but with tags like how many messages are in the folders,
   how many subfolders, that weird \Marked tag, etc.
  
-* Namespace handling needs to be thrown out and rewritten
-
 [ -- speed -- ]
 
 * Partial index loading, using server-side threading and sorting
@@ -31,8 +29,5 @@ IMAP enhancements, by priority:
 * Possibly opening multiple connections for mailbox polling, now that
   we have IDLE support.
 
-* caching UIDVALIDITY/UIDNEXT across sessions for nice new mail
-  handling. Could use the hcache.
-
 Brendan Cully <brendan@kublai.com>
-Updated: 20061031
+Updated: 20070409
