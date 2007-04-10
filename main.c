@@ -803,6 +803,7 @@ int main (int argc, char **argv)
     char buf[LONG_STRING];
     char *tempfile = NULL, *infile = NULL;
     char *bodytext = NULL;
+    int rv = 0;
     
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
@@ -924,7 +925,7 @@ int main (int argc, char **argv)
       mutt_free_list (&attach);
     }
 
-    int rv = ci_send_message (sendflags, msg, tempfile, NULL, NULL);
+    rv = ci_send_message (sendflags, msg, tempfile, NULL, NULL);
 
     if (!option (OPTNOCURSES))
       mutt_endwin (NULL);
