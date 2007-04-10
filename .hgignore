@@ -34,6 +34,7 @@
 syntax: glob
 .deps
 Makefile
+TAGS
 cscope.*
 *.swp
 *.o

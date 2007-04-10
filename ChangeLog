@@ -1,3 +1,12 @@
+2007-04-10 10:16 -0700  Petr Písař  <petr.pisar@atlas.cz>  (af01580c9a08)
+
+	* po/cs.po: Updated Czech translation
+
+2007-04-10 10:13 -0700  Brendan Cully  <brendan@kublai.com>  (9bbf304e09bc)
+
+	* rfc3676.c: Wrap flowed lines at no more than FLOWED_MAX in
+	replies
+
 2007-04-09 20:36 -0700  Michael Elkins  <me@mutt.org>  (fbe67329e688)
 
 	* main.c: Exit with a nonzero value if sending a message in batch mode
