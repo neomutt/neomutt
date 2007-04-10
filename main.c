@@ -924,10 +924,13 @@ int main (int argc, char **argv)
       mutt_free_list (&attach);
     }
 
-    ci_send_message (sendflags, msg, tempfile, NULL, NULL);
+    int rv = ci_send_message (sendflags, msg, tempfile, NULL, NULL);
 
     if (!option (OPTNOCURSES))
       mutt_endwin (NULL);
+
+    if (rv)
+      exit(1);
   }
   else
   {
