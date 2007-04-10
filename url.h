@@ -16,6 +16,7 @@ typedef enum url_scheme
 url_scheme_t;
 
 #define U_DECODE_PASSWD (1)
+#define U_PATH          (1 << 1)
 
 typedef struct ciss_url
 {

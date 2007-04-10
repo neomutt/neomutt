@@ -184,7 +184,8 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
   if (ciss->host)
   {
-    safe_strcat (dest, len, "//");
+    if (!(flags & U_PATH))
+      safe_strcat (dest, len, "//");
     len -= (l = strlen (dest)); dest += l;
     
     if (ciss->user) {

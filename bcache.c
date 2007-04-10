@@ -57,20 +57,13 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
    * if this ever changes, we have a memleak here
    */
   url.path = NULL;
-  if (url_ciss_tostring (&url, host, sizeof (host), 0) < 0)
+  if (url_ciss_tostring (&url, host, sizeof (host), U_PATH) < 0)
   {
     dprint (1, (debugfile, "bcache_path: URL to string failed\n"));
     return -1;
   }
 
   dprint (3, (debugfile, "bcache_path: URL: '%s'\n", host));
-
-  /* transform URL scheme:// to scheme: */
-  for (s = p = host; *s; s++)
-    /* keep trailing slash */
-    if (*s != '/' || *(s + 1) == '\0')
-      *p++ = *s;
-  *p = '\0';
 
   len = snprintf (dst, dstlen-1, "%s/%s%s%s", MessageCachedir,
 		  host, NONULL(mailbox),
