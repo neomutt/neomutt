@@ -69,13 +69,13 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
   char *pos, *oldpos;
   int len = mutt_strlen (line);
 
-  width = (Wrap ? mutt_term_width (Wrap) : FLOWED_MAX) - ql - 1;
-
-  if (!(s->flags & M_REPLYING))
-    --width;
-  if (width < 0)
-    width = COLS;
-
+  width = (Wrap ? mutt_term_width (Wrap) : FLOWED_MAX) - 1;
+  if (s->flags & M_REPLYING && width > FLOWED_MAX)
+    width = FLOWED_MAX;
+  /* probably want a quote_width function */
+  if (ql + 1 < width)
+    width -= ql + 1;
+    
   if (len == 0)
   {
     print_indent (ql, s);

@@ -1,4 +1,14 @@
-2007-04-09 09:09 -0700  Brendan Cully  <brendan@kublai.com>  (9f6afccedd2f)
+2007-04-09 20:36 -0700  Michael Elkins  <me@mutt.org>  (fbe67329e688)
+
+	* main.c: Exit with a nonzero value if sending a message in batch mode
+	fails (bug #2709).
+
+	* browser.c: Use mutt_pretty_size() to format '%s' in $folder_format
+	so it is similar to '%c' in $hdr_format
+
+2007-04-09 11:32 -0700  Brendan Cully  <brendan@kublai.com>  (df7a0ee95618)
+
+	* imap/TODO: Kill off some IMAP TODO items
 
 	* imap/imap.c: Null out idata->hcache when closing, and remove close
 	from open failure (mx_close will handle it).
