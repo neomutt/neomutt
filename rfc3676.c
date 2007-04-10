@@ -58,7 +58,7 @@ static void print_indent (int ql, STATE *s)
   int i;
 
   if (s->prefix)
-    state_puts (s->prefix, s);
+    ql++;
   for (i = 0; i < ql; i++)
     state_putc ('>', s);
 }
