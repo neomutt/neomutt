@@ -795,7 +795,7 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
 
 #ifdef USE_HCACHE
   if (ctx && ctx->magic == M_MH)
-    hc = mutt_hcache_open (HeaderCache, ctx->path);
+    hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
   while ((de = readdir (dirp)) != NULL)
@@ -998,7 +998,7 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
   struct stat lastchanged;
   int ret;
 
-  hc = mutt_hcache_open (HeaderCache, ctx->path);
+  hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
   for (p = md, count = 0; p; p = p->next, count++)
@@ -1586,7 +1586,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 
 #if USE_HCACHE
   if (ctx->magic == M_MAILDIR || ctx->magic == M_MH)
-    hc = mutt_hcache_open(HeaderCache, ctx->path);
+    hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif /* USE_HCACHE */
 
   snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);

@@ -1597,7 +1597,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   mutt_account_tourl (&idata->conn->account, &url);
   url.path = (char*)mbox;
   url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
-  hc = mutt_hcache_open (HeaderCache, urlstr);
+  hc = mutt_hcache_open (HeaderCache, urlstr, NULL);
   if (hc)
   {
     uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);

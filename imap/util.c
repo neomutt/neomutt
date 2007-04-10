@@ -85,7 +85,7 @@ int imap_hcache_open (IMAP_DATA* idata)
   url_ciss_tostring (&url, cachepath, sizeof (cachepath), 0);
   FREE (&mx.mbox);
 
-  idata->hcache = mutt_hcache_open (HeaderCache, cachepath);
+  idata->hcache = mutt_hcache_open (HeaderCache, cachepath, NULL);
 
   return idata->hcache != NULL ? 0 : -1;
 }

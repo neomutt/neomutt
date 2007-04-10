@@ -203,7 +203,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
   header_cache_t *hc = NULL;
   void *data;
 
-  hc = mutt_hcache_open (HeaderCache, ctx->path);
+  hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
   time (&pop_data->check_time);
@@ -613,7 +613,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 			M_PROGRESS_MSG, WriteInc, ctx->deleted);
 
 #if USE_HCACHE
-    hc = mutt_hcache_open (HeaderCache, ctx->path);
+    hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
     for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
