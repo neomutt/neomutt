@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.14\n"
+"Project-Id-Version: mutt 1.5.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-06 13:35-0700\n"
-"PO-Revision-Date: 2007-03-08 20:58+0100\n"
+"POT-Creation-Date: 2007-04-06 13:36-0700\n"
+"PO-Revision-Date: 2007-04-10 11:56+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2172,7 +2172,7 @@ msgstr "Index zpráv je chybný. Zkuste schránku znovu otevřít."
 
 #: imap/message.c:591
 msgid "Uploading message..."
-msgstr "Nahrávám zprávu na sever…"
+msgstr "Nahrávám zprávu na server…"
 
 #: imap/message.c:750
 #, c-format
@@ -3298,6 +3298,14 @@ msgid ""
 "       mutt [<options>] -D\n"
 "       mutt -v[v]\n"
 msgstr ""
+"Použití: mutt [<přepínače>] [-z] [-f <soubor> | -yZ]\n"
+"         mutt [<přepínače>] [-x] [-Hi <soubor>] [-s <věc>] [-bc <adr>]\n"
+"              [-a <soubor> […]] [--] <adr> […]\n"
+"         mutt [<přepínače>] -p\n"
+"         mutt [<přepínače>] -A <alias> […]\n"
+"         mutt [<přepínače>] -Q <dotaz> […]\n"
+"         mutt [<přepínače>] -D\n"
+"         mutt -v[v]\n"
 
 #: main.c:116
 msgid ""
@@ -3368,6 +3376,8 @@ msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
+"  --\t\tzbývající argumenty považuje za adresy, ikdyž začínají pomlčkou\n"
+"\t\tJe-li použit přepínač -a s více jmény souborů, jsou -- povinné"
 
 #: main.c:187
 msgid ""
@@ -3584,7 +3594,7 @@ msgstr "Chyba při nastavování úrovně zabezpečení vnějšího SASL mechani
 
 #: mutt_sasl.c:248
 msgid "Error setting SASL external user name"
-msgstr "Chyba při nastavování jména uživatele vnějšího SASL mechanusmu"
+msgstr "Chyba při nastavování jména uživatele vnějšího SASL mechanismu"
 
 #: mutt_socket.c:103 mutt_socket.c:174
 #, c-format
@@ -4279,7 +4289,7 @@ msgstr "Ověřuji (SASL)…"
 
 #: pop_auth.c:188
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "Časové razítko POP protokolu není platné!"
 
 #: pop_auth.c:193
 msgid "Authenticating (APOP)..."
