@@ -262,6 +262,7 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path);
 HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid);
 int imap_hcache_put (IMAP_DATA* idata, HEADER* h);
+int imap_hcache_del (IMAP_DATA* idata, unsigned int uid);
 #endif
 
 int imap_continue (const char* msg, const char* resp);

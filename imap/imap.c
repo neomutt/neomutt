@@ -248,10 +248,6 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   HEADER* h;
   int i, cacheno;
 
-#if USE_HCACHE
-  char uidbuf[32];
-#endif
-
   for (i = 0; i < idata->ctx->msgcount; i++)
   {
     h = idata->ctx->hdrs[i];
@@ -265,11 +261,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 
       imap_cache_del (idata, h);
 #if USE_HCACHE
-      if (idata->hcache)
-      {
-        sprintf (uidbuf, "/%u", HEADER_DATA(h)->uid);
-        mutt_hcache_delete (idata->hcache, uidbuf, imap_hcache_keylen);
-      }
+      imap_hcache_del (idata, HEADER_DATA(h)->uid);
 #endif
 
       /* free cached body from disk, if necessary */
@@ -1103,9 +1095,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   int deleted;
   int n;
   int rc;
-#if USE_HCACHE
-  char uidbuf[32];
-#endif
   
   idata = (IMAP_DATA*) ctx->data;
 
@@ -1156,14 +1145,13 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     h = ctx->hdrs[n];
 
     if (h->deleted)
+    {
       imap_cache_del (idata, h);
 #if USE_HCACHE
-    if (idata->hcache && h->deleted)
-    {
-      sprintf (uidbuf, "/%u", HEADER_DATA(h)->uid);
-      mutt_hcache_delete (idata->hcache, uidbuf, imap_hcache_keylen);
-    }
+      imap_hcache_del (idata, HEADER_DATA(h)->uid);
 #endif
+    }
+    
     if (h->active && h->changed)
     {
       /* if the message has been rethreaded or attachments have been deleted

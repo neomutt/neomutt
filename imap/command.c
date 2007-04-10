@@ -30,9 +30,6 @@
 #include "message.h"
 #include "mx.h"
 #include "buffy.h"
-#if USE_HCACHE
-#include "hcache.h"
-#endif
 
 #include <ctype.h>
 #include <stdlib.h>

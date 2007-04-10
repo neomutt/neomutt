@@ -94,7 +94,10 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
   unsigned int* uv;
   HEADER* h = NULL;
 
-  sprintf(key, "/%u", uid);
+  if (!idata->hcache)
+    return NULL;
+
+  sprintf (key, "/%u", uid);
   uv = (unsigned int*)mutt_hcache_fetch (idata->hcache, key,
                                          imap_hcache_keylen);
   if (uv)
@@ -111,9 +114,23 @@ int imap_hcache_put (IMAP_DATA* idata, HEADER* h)
 {
   char key[16];
 
-  sprintf(key, "/%u", HEADER_DATA (h)->uid);
+  if (!idata->hcache)
+    return -1;
+
+  sprintf (key, "/%u", HEADER_DATA (h)->uid);
   return mutt_hcache_store (idata->hcache, key, h, idata->uid_validity,
                             imap_hcache_keylen);
+}
+
+int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
+{
+  char key[16];
+
+  if (!idata->hcache)
+    return -1;
+
+  sprintf (key, "/%u", uid);
+  return mutt_hcache_delete (idata->hcache, key, imap_hcache_keylen);
 }
 #endif
 
