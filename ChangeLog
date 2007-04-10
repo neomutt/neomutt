@@ -1,4 +1,9 @@
-2007-04-10 13:46 -0700  Brendan Cully  <brendan@kublai.com>  (d3e0d6c60d87)
+2007-04-10 15:32 -0700  Brendan Cully  <brendan@kublai.com>  (c38765da3fe8)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/util.c: Add
+	imap_hcache_del; minor cleanups
+
+	* main.c: Fix a compiler warning
 
 	* rfc3676.c: Don't use $indent_string to quote replies to flowed
 	messages (closes #2874).

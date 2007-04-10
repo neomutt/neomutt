@@ -248,6 +248,10 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   HEADER* h;
   int i, cacheno;
 
+#ifdef USE_HCACHE
+  imap_hcache_open (idata);
+#endif
+
   for (i = 0; i < idata->ctx->msgcount; i++)
   {
     h = idata->ctx->hdrs[i];
@@ -276,6 +280,10 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
       imap_free_header_data (&h->data);
     }
   }
+
+#if USE_HCACHE
+  imap_hcache_close (idata);
+#endif
 
   /* We may be called on to expunge at any time. We can't rely on the caller
    * to always know to rethread */
@@ -734,9 +742,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   ctx->hdrs = safe_calloc (count, sizeof (HEADER *));
   ctx->v2r = safe_calloc (count, sizeof (int));
   ctx->msgcount = 0;
-#ifdef USE_HCACHE
-  idata->hcache = imap_hcache_open (idata, idata->ctx->path);
-#endif
+
   if (count && (imap_read_headers (idata, 0, count-1) < 0))
   {
     mutt_error _("Error opening mailbox");
@@ -1139,6 +1145,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
   }
 
+#if USE_HCACHE
+  imap_hcache_open (idata);
+#endif
+
   /* save messages with real (non-flag) changes */
   for (n = 0; n < ctx->msgcount; n++)
   {
@@ -1173,6 +1183,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
       }
     }
   }
+
+#if USE_HCACHE
+  imap_hcache_close (idata);
+#endif
 
   /* sync +/- flags for the five flags mutt cares about */
   rc = 0;
@@ -1307,10 +1321,6 @@ int imap_close_mailbox (CONTEXT* ctx)
     }
   }
 
-#ifdef USE_HCACHE
-  mutt_hcache_close (idata->hcache);
-  idata->hcache = NULL;
-#endif
   mutt_bcache_close (&idata->bcache);
 
   return 0;

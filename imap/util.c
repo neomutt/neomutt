@@ -71,21 +71,32 @@ int imap_expand_path (char* path, size_t len)
 }
 
 #ifdef USE_HCACHE
-header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
+int imap_hcache_open (IMAP_DATA* idata)
 {
   IMAP_MBOX mx;
   ciss_url_t url;
   char cachepath[LONG_STRING];
 
-  if (imap_parse_path (path, &mx) < 0)
-    return NULL;
+  if (imap_parse_path (idata->ctx->path, &mx) < 0)
+    return -1;
 
   mutt_account_tourl (&idata->conn->account, &url);
   url.path = mx.mbox;
   url_ciss_tostring (&url, cachepath, sizeof (cachepath), 0);
   FREE (&mx.mbox);
 
-  return mutt_hcache_open (HeaderCache, cachepath);
+  idata->hcache = mutt_hcache_open (HeaderCache, cachepath);
+
+  return idata->hcache != NULL ? 0 : -1;
+}
+
+void imap_hcache_close (IMAP_DATA* idata)
+{
+  if (!idata->hcache)
+    return;
+
+  mutt_hcache_close (idata->hcache);
+  idata->hcache = NULL;
 }
 
 HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)

@@ -119,6 +119,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->newMailCount = 0;
 
 #if USE_HCACHE
+  imap_hcache_open (idata);
+
   if (idata->hcache && !msgbegin)
   {
     uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", imap_hcache_keylen);
@@ -199,6 +201,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       {
         if (h.data)
           imap_free_header_data ((void**) (void*) &h.data);
+        imap_hcache_close (idata);
         fclose (fp);
         return -1;
       }
@@ -300,6 +303,9 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     {
       if (h.data)
         imap_free_header_data ((void**) (void*) &h.data);
+#if USE_HCACHE
+      imap_hcache_close (idata);
+#endif
       fclose (fp);
       return -1;
     }
@@ -329,6 +335,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   if (idata->uidnext > 1)
     mutt_hcache_store_raw (idata->hcache, "/UIDNEXT", &idata->uidnext,
 			   sizeof (idata->uidnext), imap_hcache_keylen);
+
+  imap_hcache_close (idata);
 #endif /* USE_HCACHE */
 
   fclose(fp);
