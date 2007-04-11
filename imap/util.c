@@ -84,7 +84,7 @@ header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
   char mbox[LONG_STRING];
 
   if (imap_parse_path (idata->ctx->path, &mx) < 0)
-    return -1;
+    return NULL;
 
   if (path)
     imap_cachepath (idata, path, mbox, sizeof (mbox));

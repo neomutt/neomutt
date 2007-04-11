@@ -866,11 +866,14 @@ void mutt_remove_trailing_ws (char *s)
 char *mutt_concatn_path (char *dst, size_t dstlen,
     const char *dir, size_t dirlen, const char *fname, size_t fnamelen)
 {
+  size_t req;
+  size_t offset = 0;
+
   if (dstlen == 0)
     return NULL; /* probably should not mask errors like this */
 
   /* size check */
-  size_t req = dirlen + fnamelen + 1; /* +1 for the trailing nul */
+  req = dirlen + fnamelen + 1; /* +1 for the trailing nul */
   if (dirlen && fnamelen)
     req++; /* when both components are non-nul, we add a "/" in between */
   if (req > dstlen) { /* check for condition where the dst length is too short */
@@ -884,7 +887,6 @@ char *mutt_concatn_path (char *dst, size_t dstlen,
     return NULL;
   }
 
-  size_t offset = 0;
   if (dirlen) { /* when dir is not empty */
     memcpy(dst, dir, dirlen);
     offset = dirlen;

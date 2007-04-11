@@ -1567,9 +1567,6 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   IMAP_STATUS scache;
 #ifdef USE_HCACHE
   header_cache_t *hc = NULL;
-  ciss_url_t url;
-  char urlstr[LONG_STRING];
-  char cpath[LONG_STRING];
   unsigned int *uidvalidity = NULL;
   unsigned int *uidnext = NULL;
 #endif

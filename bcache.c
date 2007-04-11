@@ -42,7 +42,6 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
 		       char *dst, size_t dstlen)
 {
   char host[STRING];
-  char *s, *p;
   ciss_url_t url;
   size_t len;
 
