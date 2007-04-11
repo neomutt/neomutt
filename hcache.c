@@ -67,6 +67,7 @@ static struct header_cache
 {
   DB_ENV *env;
   DB *db;
+  char *folder;
   unsigned int crc;
   int fd;
   char lockfile[_POSIX_PATH_MAX];
@@ -778,38 +779,19 @@ static char* get_foldername(const char *folder) {
 }
 
 #if HAVE_QDBM
-header_cache_t *
-mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
+static int
+hcache_open_qdbm (struct header_cache* h, const char* path)
 {
-  struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
   int    flags = VL_OWRITER | VL_OCREAT;
-
-  h->db = NULL;
-  h->folder = get_foldername(folder);
-  h->crc = HCACHEVER;
-
-  if (!path || path[0] == '\0')
-  {
-    FREE(&h->folder);
-    FREE(&h);
-    return NULL;
-  }
-
-  path = mutt_hcache_per_folder(path, h->folder, namer);
 
   if (option(OPTHCACHECOMPRESS))
     flags |= VL_OZCOMP;
 
-  h->db = vlopen(path, flags, VL_CMPLEX);
+  h->db = vlopen (path, flags, VL_CMPLEX);
   if (h->db)
-    return h;
+    return 0;
   else
-  {
-    FREE(&h->folder);
-    FREE(&h);
-
-    return NULL;
-  }
+    return -1;
 }
 
 void
@@ -842,41 +824,21 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
 }
 
 #elif HAVE_GDBM
-
-header_cache_t *
-mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
+static int
+hcache_open_gdbm (struct header_cache* h, const char* path)
 {
-  struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
   int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
-
-  h->db = NULL;
-  h->folder = get_foldername(folder);
-  h->crc = HCACHEVER;
-
-  if (!path || path[0] == '\0')
-  {
-    FREE(&h->folder);
-    FREE(&h);
-    return NULL;
-  }
-
-  path = mutt_hcache_per_folder(path, h->folder, namer);
 
   h->db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
   if (h->db)
-    return h;
+    return 0;
 
   /* if rw failed try ro */
   h->db = gdbm_open((char *) path, pagesize, GDBM_READER, 00600, NULL);
   if (h->db)
-    return h;
-  else
-  {
-    FREE(&h->folder);
-    FREE(&h);
+    return 0;
 
-    return NULL;
-  }
+  return -1;
 }
 
 void
@@ -927,71 +889,35 @@ mutt_hcache_dbt_empty_init(DBT * dbt)
   dbt->flags = 0;
 }
 
-header_cache_t *
-mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
+static int
+hcache_open_db4 (struct header_cache* h, const char* path)
 {
   struct stat sb;
-  u_int32_t createflags = DB_CREATE;
   int ret;
-  struct header_cache *h = calloc(1, sizeof (HEADER_CACHE));
-  int pagesize = atoi(HeaderCachePageSize);
-  char* tmp;
+  u_int32_t createflags = DB_CREATE;
+  int pagesize = atoi (HeaderCachePageSize);
 
-  h->crc = HCACHEVER;
+  snprintf (h->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
 
-  if (!path || path[0] == '\0')
-  {
-    FREE(&h);
-    return NULL;
-  }
-
-  tmp = get_foldername (folder);
-  path = mutt_hcache_per_folder(path, tmp, namer);
-  snprintf(h->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
-  FREE(&tmp);
-
-  h->fd = open(h->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+  h->fd = open (h->lockfile, O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
   if (h->fd < 0)
-  {
-    FREE(&h);
-    return NULL;
-  }
+    return -1;
 
-  if (mx_lock_file(h->lockfile, h->fd, 1, 0, 5))
-  {
-    close(h->fd);
-    FREE(&h);
-    return NULL;
-  }
+  if (mx_lock_file (h->lockfile, h->fd, 1, 0, 5))
+    goto fail_close;
 
-  ret = db_env_create(&h->env, 0);
+  ret = db_env_create (&h->env, 0);
   if (ret)
-  {
-    mx_unlock_file(h->lockfile, h->fd, 0);
-    close(h->fd);
-    FREE(&h);
-    return NULL;
-  }
+    goto fail_unlock;
 
   ret = (*h->env->open)(h->env, NULL, DB_INIT_MPOOL | DB_CREATE | DB_PRIVATE,
 	0600);
   if (ret)
-  {
-    h->env->close(h->env, 0);
-    mx_unlock_file(h->lockfile, h->fd, 0);
-    close(h->fd);
-    FREE(&h);
-    return NULL;
-  }
+    goto fail_env;
+
   ret = db_create (&h->db, h->env, 0);
   if (ret)
-  {
-    h->env->close (h->env, 0);
-    mx_unlock_file (h->lockfile, h->fd, 0);
-    close (h->fd);
-    FREE (&h);
-    return NULL;
-  }
+    goto fail_env;
 
   if (stat(path, &sb) != 0 && errno == ENOENT)
   {
@@ -999,18 +925,24 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     h->db->set_pagesize(h->db, pagesize);
   }
 
-  ret = (*h->db->open)(h->db, NULL, path, folder, DB_BTREE, createflags, 0600);
+  ret = (*h->db->open)(h->db, NULL, path, h->folder, DB_BTREE, createflags,
+                       0600);
   if (ret)
-  {
-    h->db->close(h->db, 0);
-    h->env->close(h->env, 0);
-    mx_unlock_file(h->lockfile, h->fd, 0);
-    close(h->fd);
-    FREE(&h);
-    return NULL;
-  }
+    goto fail_db;
 
-  return h;
+  return 0;
+
+  fail_db:
+  h->db->close (h->db, 0);
+  fail_env:
+  h->env->close (h->env, 0);
+  fail_unlock:
+  mx_unlock_file (h->lockfile, h->fd, 0);
+  fail_close:
+  close (h->fd);
+  unlink (h->lockfile);
+
+  return -1;
 }
 
 void
@@ -1019,11 +951,13 @@ mutt_hcache_close(header_cache_t *h)
   if (!h)
     return;
 
-  h->db->close(h->db, 0);
-  h->env->close(h->env, 0);
-  mx_unlock_file(h->lockfile, h->fd, 0);
-  close(h->fd);
-  FREE(&h);
+  h->db->close (h->db, 0);
+  h->env->close (h->env, 0);
+  mx_unlock_file (h->lockfile, h->fd, 0);
+  close (h->fd);
+  unlink (h->lockfile);
+  FREE (&h->folder);
+  FREE (&h);
 }
 
 int
@@ -1042,3 +976,41 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   return h->db->del(h->db, NULL, &key, 0);
 }
 #endif
+
+header_cache_t *
+mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
+{
+  struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
+  int (*hcache_open) (struct header_cache* h, const char* path);
+
+#if HAVE_QDBM
+  hcache_open = hcache_open_qdbm;
+#elif HAVE_GDBM
+  hcache_open = hcache_open_gdbm;
+#elif HAVE_DB4
+  hcache_open = hcache_open_db4;
+#endif
+
+  h->db = NULL;
+  h->folder = get_foldername(folder);
+  h->crc = HCACHEVER;
+
+  if (!path || path[0] == '\0')
+  {
+    FREE(&h->folder);
+    FREE(&h);
+    return NULL;
+  }
+
+  path = mutt_hcache_per_folder(path, h->folder, namer);
+
+  if (!hcache_open (h, path))
+    return h;
+  else
+  {
+    FREE(&h->folder);
+    FREE(&h);
+
+    return NULL;
+  }
+}
