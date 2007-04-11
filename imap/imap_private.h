@@ -259,7 +259,7 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 
 /* util.c */
 #ifdef USE_HCACHE
-int imap_hcache_open (IMAP_DATA* idata);
+header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path);
 void imap_hcache_close (IMAP_DATA* idata);
 HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid);
 int imap_hcache_put (IMAP_DATA* idata, HEADER* h);
@@ -272,6 +272,8 @@ IMAP_DATA* imap_new_idata (void);
 void imap_free_idata (IMAP_DATA** idata);
 char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 
   size_t plen);
+void imap_cachepath(IMAP_DATA* idata, const char* mailbox, char* dest,
+                    size_t dlen);
 int imap_get_literal_count (const char* buf, long* bytes);
 char* imap_get_qualifier (char* buf);
 int imap_mxcmp (const char* mx1, const char* mx2);

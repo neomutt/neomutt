@@ -119,7 +119,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   idata->newMailCount = 0;
 
 #if USE_HCACHE
-  imap_hcache_open (idata);
+  idata->hcache = imap_hcache_open (idata, NULL);
 
   if (idata->hcache && !msgbegin)
   {
@@ -847,35 +847,12 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
 
 static body_cache_t *msg_cache_open (IMAP_DATA *idata)
 {
-  char *s;
-  char *p = idata->mailbox;
   char mailbox[_POSIX_PATH_MAX];
-  size_t mlen = sizeof (mailbox);
 
   if (idata->bcache)
     return idata->bcache;
 
-  mailbox[0] = '\0';
-
-  for (s = mailbox; p && *p && mlen; mlen--)
-  {
-    if (*p == idata->delim)
-    {
-      *s = '/';
-      /* simple way to avoid collisions with UIDs */
-      if (*(p + 1) >= '0' && *(p + 1) <= '9')
-      {
-	mlen--;
-	if (mlen)
-	  *++s = '_';
-      }
-    }
-    else
-      *s = *p;
-    p++;
-    s++;
-  }
-  *s = '\0';
+  imap_cachepath (idata, idata->mailbox, mailbox, sizeof (mailbox));
 
   return mutt_bcache_open (&idata->conn->account, mailbox);
 }

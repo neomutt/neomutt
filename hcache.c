@@ -467,35 +467,61 @@ static const char *
 mutt_hcache_per_folder(const char *path, const char *folder,
                        hcache_namer_t namer)
 {
-  static char mutt_hcache_per_folder_path[_POSIX_PATH_MAX];
-  struct stat path_stat;
+  static char hcpath[_POSIX_PATH_MAX];
+  struct stat sb;
   MD5_CTX md5;
   unsigned char md5sum[16];
-  int ret;
+  char* s;
+  int ret, plen;
 
-  ret = stat(path, &path_stat);
-  if (ret < 0)
+  plen = mutt_strlen (path);
+
+  ret = stat(path, &sb);
+  if (ret < 0 && path[plen-1] != '/')
     return path;
 
-  if (!S_ISDIR(path_stat.st_mode))
+  if (ret >= 0 && !S_ISDIR(sb.st_mode))
     return path;
 
-  MD5Init(&md5);
-  MD5Update(&md5, (unsigned char *) folder, strlen(folder));
-  MD5Final(md5sum, &md5);
+  if (namer)
+  {
+    snprintf (hcpath, sizeof (hcpath), "%s%s", path,
+              path[plen-1] == '/' ? "" : "/");
+    if (path[plen-1] != '/')
+      plen++;
 
-  ret = snprintf(mutt_hcache_per_folder_path, _POSIX_PATH_MAX,
-		 "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
-		 "%02x%02x%02x%02x%02x%02x%02x%02x",
-		 path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
-		 md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
-		 md5sum[9], md5sum[10], md5sum[11], md5sum[12],
-		 md5sum[13], md5sum[14], md5sum[15]);
+    ret = namer (folder, hcpath + plen, sizeof (hcpath) - plen);
+  }
+  else
+  {
+    MD5Init(&md5);
+    MD5Update(&md5, (unsigned char *) folder, strlen(folder));
+    MD5Final(md5sum, &md5);
 
+    ret = snprintf(hcpath, _POSIX_PATH_MAX,
+                   "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
+                   "%02x%02x%02x%02x%02x%02x%02x%02x",
+                   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
+                   md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
+                   md5sum[9], md5sum[10], md5sum[11], md5sum[12],
+                   md5sum[13], md5sum[14], md5sum[15]);
+  }
+  
   if (ret <= 0)
     return path;
 
-  return mutt_hcache_per_folder_path;
+  s = strchr (hcpath + 1, '/');
+  while (s)
+  {
+    /* create missing path components */
+    *s = '\0';
+    if (stat (hcpath, &sb) < 0 && (errno != ENOENT || mkdir (hcpath, 0777) < 0))
+      return path;
+    *s = '/';
+    s = strchr (s + 1, '/');
+  }
+
+  return hcpath;
 }
 
 /* This function transforms a header into a char so that it is useable by

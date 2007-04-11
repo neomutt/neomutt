@@ -71,23 +71,34 @@ int imap_expand_path (char* path, size_t len)
 }
 
 #ifdef USE_HCACHE
-int imap_hcache_open (IMAP_DATA* idata)
+static int imap_hcache_namer (const char* path, char* dest, size_t dlen)
+{
+  return snprintf (dest, dlen, "%s.hcache", path);
+}
+
+header_cache_t* imap_hcache_open (IMAP_DATA* idata, const char* path)
 {
   IMAP_MBOX mx;
   ciss_url_t url;
   char cachepath[LONG_STRING];
+  char mbox[LONG_STRING];
 
   if (imap_parse_path (idata->ctx->path, &mx) < 0)
     return -1;
 
+  if (path)
+    imap_cachepath (idata, path, mbox, sizeof (mbox));
+  else
+  {
+    imap_cachepath (idata, mx.mbox, mbox, sizeof (mbox));
+    FREE (&mx.mbox);
+  }
+
   mutt_account_tourl (&idata->conn->account, &url);
-  url.path = mx.mbox;
-  url_ciss_tostring (&url, cachepath, sizeof (cachepath), 0);
-  FREE (&mx.mbox);
+  url.path = mbox;
+  url_ciss_tostring (&url, cachepath, sizeof (cachepath), U_PATH);
 
-  idata->hcache = mutt_hcache_open (HeaderCache, cachepath, NULL);
-
-  return idata->hcache != NULL ? 0 : -1;
+  return mutt_hcache_open (HeaderCache, cachepath, imap_hcache_namer);
 }
 
 void imap_hcache_close (IMAP_DATA* idata)
@@ -396,6 +407,32 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
     strfcpy (path, "INBOX", plen);
 
   return path;
+}
+
+void imap_cachepath(IMAP_DATA* idata, const char* mailbox, char* dest,
+                    size_t dlen)
+{
+  char* s;
+  const char* p = mailbox;
+
+  for (s = dest; p && *p && dlen; dlen--)
+  {
+    if (*p == idata->delim)
+    {
+      *s = '/';
+      /* simple way to avoid collisions with UIDs */
+      if (*(p + 1) >= '0' && *(p + 1) <= '9')
+      {
+	if (--dlen)
+	  *++s = '_';
+      }
+    }
+    else
+      *s = *p;
+    p++;
+    s++;
+  }
+  *s = '\0';
 }
 
 /* imap_get_literal_count: write number of bytes in an IMAP literal into

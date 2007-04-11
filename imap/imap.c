@@ -249,7 +249,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
   int i, cacheno;
 
 #ifdef USE_HCACHE
-  imap_hcache_open (idata);
+  idata->hcache = imap_hcache_open (idata, NULL);
 #endif
 
   for (i = 0; i < idata->ctx->msgcount; i++)
@@ -1146,7 +1146,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   }
 
 #if USE_HCACHE
-  imap_hcache_open (idata);
+  idata->hcache = imap_hcache_open (idata, NULL);
 #endif
 
   /* save messages with real (non-flag) changes */
@@ -1569,6 +1569,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   header_cache_t *hc = NULL;
   ciss_url_t url;
   char urlstr[LONG_STRING];
+  char cpath[LONG_STRING];
   unsigned int *uidvalidity = NULL;
   unsigned int *uidnext = NULL;
 #endif
@@ -1594,10 +1595,7 @@ IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox, int create)
   }
 
 #ifdef USE_HCACHE
-  mutt_account_tourl (&idata->conn->account, &url);
-  url.path = (char*)mbox;
-  url_ciss_tostring (&url, urlstr, sizeof (urlstr), 0);
-  hc = mutt_hcache_open (HeaderCache, urlstr, NULL);
+  hc = imap_hcache_open (idata, mbox);
   if (hc)
   {
     uidvalidity = mutt_hcache_fetch_raw (hc, "/UIDVALIDITY", imap_hcache_keylen);
