@@ -664,7 +664,7 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for 
 
 AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using gnutls]),
     [gnutls_prefix="$withval"], [gnutls_prefix="no"])
-if test "$gnutls_prefix" != "no" -a x"$need_ssl" != xyes
+if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes
 then
   if test "$need_socket" != "yes"
   then
@@ -769,7 +769,7 @@ dnl This may look cumbersome -- please keep it that way, so we can
 dnl quickly change the default to "yes" again.
 mutt_cv_inodesort=no
 AC_ARG_ENABLE(inodesort,  AC_HELP_STRING([--enable-inodesort], [Read files in maildir folders sorted by inode]),
-       [if test x$enableval = xyes -a x$ac_cv_dirent_d_ino = xyes ; then mutt_cv_inodesort=yes; fi])
+       [if test x$enableval = xyes && test x$ac_cv_dirent_d_ino = xyes ; then mutt_cv_inodesort=yes; fi])
 
 if test $mutt_cv_inodesort = yes; then
 	AC_DEFINE(USE_INODESORT, 1, [ Define to sort files in a	maildir by inode number. ])
@@ -781,7 +781,7 @@ AC_ARG_ENABLE(warnings, AC_HELP_STRING([--disable-warnings], [Turn off compiler 
         mutt_cv_warnings=no
 fi])
 
-if test x$GCC = xyes -a $mutt_cv_warnings = yes; then
+if test x$GCC = xyes && test $mutt_cv_warnings = yes; then
         CFLAGS="-Wall -pedantic $CFLAGS"
 fi
 
@@ -835,7 +835,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
     AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm], [Don't use qdbm even if it is available]))
     if test "$with_qdbm" != "no"
     then
-      if test -n "$with_qdbm" -a "$with_qdbm" != "yes"
+      if test -n "$with_qdbm" && test "$with_qdbm" != "yes"
       then
         if test -d $with_qdbm/include/qdbm; then
           CPPFLAGS="$CPPFLAGS -I$with_qdbm/include/qdbm"
@@ -853,14 +853,14 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
       AC_CHECK_HEADERS(villa.h)
       AC_CHECK_LIB(qdbm, vlopen, [MUTTLIBS="$MUTTLIBS -lqdbm"; use_qdbm=yes])
       LIBS="$saved_LIBS"
-      if test -n "$with_qdbm" -a "$use_qdbm" != yes
+      if test -n "$with_qdbm" && test "$use_qdbm" != yes
       then
         AC_MSG_ERROR([QDBM could not be used. Check config.log for details.])
       fi
     fi
 
     AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm], [Don't use gdbm even if it is available]))
-    if test x$with_gdbm != xno -a $use_qdbm != yes; then
+    if test x$with_gdbm != xno && test $use_qdbm != yes; then
         if test "$with_gdbm" != "yes"
         then
           CPPFLAGS="$CPPFLAGS -I$with_gdbm/include"
@@ -877,7 +877,7 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
     ac_bdb_prefix=yes
     AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb[=DIR]], [Use BerkeleyDB4 if gdbm is not available]),
         ac_bdb_prefix=$withval)
-    if test x$ac_bdb_prefix != xno -a x$ac_cv_gdbmopen != xyes -a $use_qdbm != yes; then
+    if test x$ac_bdb_prefix != xno && test x$ac_cv_gdbmopen != xyes && test $use_qdbm != yes; then
         test x$ac_bdb_prefix = xyes && ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
         for d in $ac_bdb_prefix; do
             bdbpfx="$bdbpfx $d"
@@ -1110,7 +1110,7 @@ wc_funcs=maybe
 AC_ARG_WITH(wc-funcs, AC_HELP_STRING([--without-wc-funcs], [Do not use the system's wchar_t functions]),
         wc_funcs=$withval)
 
-if test "$wc_funcs" != yes -a "$wc_funcs" != no; then
+if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
         AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
                 mutt_cv_wc_funcs=no
                 AC_TRY_LINK([

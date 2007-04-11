@@ -41,7 +41,7 @@ include_file ()
 {
 	echo
 	echo "--- Begin $1"
-	sed -e 's/^-/- -/' $1 | egrep -v '^[ 	]*(#|$)'
+	sed -e '/^[	 ]*#/d; /^[	 ]*$/d; s/^-/- -/' $1
 	echo "--- End $1"
 	echo
 }

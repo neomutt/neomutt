@@ -1,4 +1,9 @@
-2007-04-11 12:53 -0700  Brendan Cully  <brendan@kublai.com>  (cdac16f99c5f)
+2007-04-11 14:06 -0700  Brendan Cully  <brendan@kublai.com>  (5393c104e08a)
+
+	* mkchangelog.sh: Remove un-POSIX TZ NOOP in mkchangelog.sh (see
+	#1615)
+
+	* account.c, globals.h, init.h: Add $smtp_pass (closes #2116)
 
 	* doc/Makefile.am: Explicit -j1 breaks some versions of make (see
 	#2538)
