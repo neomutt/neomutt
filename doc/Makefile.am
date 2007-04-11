@@ -133,7 +133,7 @@ mutt.1: $(srcdir)/mutt.man
 stamp-doc-xml: $(top_srcdir)/makedoc.c $(top_srcdir)/makedoc-defs.h $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(srcdir)/gen-map-doc $(top_srcdir)/VERSION $(top_srcdir)/ChangeLog
-	$(MAKE) -j1 ../makedoc$(EXEEXT) # we do not want to rebuild the documentation in tarball builds
+	$(MAKE) ../makedoc$(EXEEXT) # we do not want to rebuild the documentation in tarball builds
 	( date=`head -n 1 $(top_srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1` && \
 	  sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` ($$date)/" $(srcdir)/manual.xml.head && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s && \
