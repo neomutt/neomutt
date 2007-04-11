@@ -982,6 +982,7 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
   struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
   int (*hcache_open) (struct header_cache* h, const char* path);
+  struct stat sb;
 
 #if HAVE_QDBM
   hcache_open = hcache_open_qdbm;
@@ -1008,6 +1009,12 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     return h;
   else
   {
+    /* remove a possibly incompatible version */
+    if (!stat (path, &sb) && !unlink (path))
+    {
+      if (!hcache_open (h, path))
+        return h;
+    }
     FREE(&h->folder);
     FREE(&h);
 
