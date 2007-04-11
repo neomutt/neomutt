@@ -1,4 +1,10 @@
-2007-04-11 07:37 -0700  Brendan Cully  <brendan@kublai.com>  (29faa739ed01)
+2007-04-11 12:53 -0700  Brendan Cully  <brendan@kublai.com>  (cdac16f99c5f)
+
+	* doc/Makefile.am: Explicit -j1 breaks some versions of make (see
+	#2538)
+
+	* imap/util.c: Make imap_hcache_open robust against missing
+	idata->ctx
 
 	* imap/util.c: Do not attempt to parse idata->ctx->path if an explicit
 	path is given

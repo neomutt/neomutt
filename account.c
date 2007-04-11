@@ -214,6 +214,10 @@ int mutt_account_getpass (ACCOUNT* account)
   else if ((account->type == M_ACCT_TYPE_POP) && PopPass)
     strfcpy (account->pass, PopPass, sizeof (account->pass));
 #endif
+#ifdef USE_SMTP
+  else if ((account->type == M_ACCT_TYPE_SMTP) && SmtpPass)
+    strfcpy (account->pass, SmtpPass, sizeof (account->pass));
+#endif
   else
   {
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),

@@ -118,8 +118,9 @@ WHERE char *Shell;
 WHERE char *Signature;
 WHERE char *SimpleSearch;
 #if USE_SMTP
-WHERE char *SmtpUrl INITVAL (NULL);
 WHERE char *SmtpAuthenticators INITVAL (NULL);
+WHERE char *SmtpPass INITVAL (NULL);
+WHERE char *SmtpUrl INITVAL (NULL);
 #endif /* USE_SMTP */
 WHERE char *Spoolfile;
 WHERE char *SpamSep;

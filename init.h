@@ -2559,17 +2559,6 @@ struct option_t MuttVars[] = {
   ** a value of zero for this option suppresses the pause.
   */
 #ifdef USE_SMTP
-  { "smtp_url",		DT_STR, R_NONE, UL &SmtpUrl, UL 0 },
-  /*
-  ** .pp
-  ** Defines the SMTP ``smart'' host where sent messages should relayed for
-  ** delivery. This should take the form of an SMTP URL, eg:
-  ** .pp
-  **   smtp[s]://[user[:pass]@]host[:port]/
-  ** .pp
-  ** Setting this variable overrides the value of the ``$$sendmail''
-  ** variable.
-  */
 # ifdef USE_SASL
   { "smtp_authenticators", DT_STR, R_NONE, UL &SmtpAuthenticators, UL 0 },
   /*
@@ -2585,6 +2574,27 @@ struct option_t MuttVars[] = {
    ** Example: set smtp_authenticators="digest-md5:cram-md5"
    */
 # endif /* USE_SASL */
+  { "smtp_pass", 	DT_STR,  R_NONE, UL &SmtpPass, UL 0 },
+  /*
+  ** .pp
+  ** Specifies the password for your SMTP account.  If \fIunset\fP, Mutt will
+  ** prompt you for your password when you first send mail via SMTP.
+  ** See ``$smtp_url'' to configure mutt to send mail via SMTP.
+  ** \fBWarning\fP: you should only use this option when you are on a
+  ** fairly secure machine, because the superuser can read your muttrc even
+  ** if you are the only one who can read the file.
+  */
+  { "smtp_url",		DT_STR, R_NONE, UL &SmtpUrl, UL 0 },
+  /*
+  ** .pp
+  ** Defines the SMTP ``smart'' host where sent messages should relayed for
+  ** delivery. This should take the form of an SMTP URL, eg:
+  ** .pp
+  **   smtp[s]://[user[:pass]@]host[:port]/
+  ** .pp
+  ** Setting this variable overrides the value of the ``$$sendmail''
+  ** variable.
+  */
 #endif /* USE_SMTP */
   { "sort",		DT_SORT, R_INDEX|R_RESORT, UL &Sort, SORT_DATE },
   /*
