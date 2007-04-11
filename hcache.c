@@ -510,6 +510,9 @@ mutt_hcache_per_folder(const char *path, const char *folder,
   if (ret <= 0)
     return path;
 
+  if (stat (hcpath, &sb) >= 0)
+    return hcpath;
+
   s = strchr (hcpath + 1, '/');
   while (s)
   {

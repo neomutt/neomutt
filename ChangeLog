@@ -1,4 +1,18 @@
-2007-04-10 15:32 -0700  Brendan Cully  <brendan@kublai.com>  (c38765da3fe8)
+2007-04-10 17:40 -0700  Brendan Cully  <brendan@kublai.com>  (8082e4c9f524)
+
+	* hcache.c, imap/imap.c, imap/imap_private.h, imap/message.c,
+	imap/util.c: Make IMAP header cache layout match body cache. You can
+	now make them point to the same directory. Each folder will have a
+	folder.hcache file for the header cache.
+
+	* hcache.c, hcache.h, imap/imap.c, imap/util.c, mh.c, pop.c: Add
+	hcache path name hook
+
+	* bcache.c, url.c, url.h: Simplify body cache path creation
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c, imap/util.c:
+	Do not hold hcache open while mailbox is open - it can lead to
+	lockups
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/util.c: Add
 	imap_hcache_del; minor cleanups
