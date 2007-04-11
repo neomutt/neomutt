@@ -1,4 +1,13 @@
-2007-04-10 19:28 -0700  Brendan Cully  <brendan@kublai.com>  (d12143e1a610)
+2007-04-11 07:37 -0700  Brendan Cully  <brendan@kublai.com>  (29faa739ed01)
+
+	* imap/util.c: Do not attempt to parse idata->ctx->path if an explicit
+	path is given
+
+2007-04-10 20:22 -0700  Brendan Cully  <brendan@kublai.com>  (429fb67340cd)
+
+	* UPDATING, imap/imap.c, imap/imap_private.h, imap/message.c,
+	init.h, mutt.h: Add $message_cache_clean option to prune message
+	cache on sync
 
 	* hcache.c: Try to unlink old header cache if open fails
 
