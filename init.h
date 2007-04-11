@@ -1295,6 +1295,13 @@ struct option_t MuttVars[] = {
   ** time, for instance if stale entries accumulate because you have
   ** deleted messages with another mail client.
   */
+  { "message_cache_clean", DT_BOOL, R_NONE, OPTMESSAGECACHECLEAN, 0 },
+  /*
+  ** .pp
+  ** If set, mutt will clean out obsolete entries from the cache when
+  ** the mailbox is synchronized. You probably only want to set it
+  ** every once in a while, since it can be a little slow.
+  */
 #endif
   { "message_format",	DT_STR,	 R_NONE, UL &MsgFmt, UL "%s" },
   /*

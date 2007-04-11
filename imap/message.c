@@ -906,6 +906,37 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h)
   return mutt_bcache_del (idata->bcache, id);
 }
 
+static int msg_cache_clean_cb (const char* id, body_cache_t* bcache, void* data)
+{
+  unsigned int uv, uid, n;
+  IMAP_DATA* idata = (IMAP_DATA*)data;
+
+  if (sscanf (id, "%u-%u", &uv, &uid) != 2)
+    return 0;
+
+  /* bad UID */
+  if (uv != idata->uid_validity)
+    mutt_bcache_del (bcache, id);
+
+  /* TODO: presort UIDs, walk in order */
+  for (n = 0; n < idata->ctx->msgcount; n++)
+  {
+    if (uid == HEADER_DATA(idata->ctx->hdrs[n])->uid)
+      return 0;
+  }
+  mutt_bcache_del (bcache, id);
+
+  return 0;
+}
+
+int imap_cache_clean (IMAP_DATA* idata)
+{
+  idata->bcache = msg_cache_open (idata);
+  mutt_bcache_list (idata->bcache, msg_cache_clean_cb, idata);
+
+  return 0;
+}
+
 /* imap_add_keywords: concatenate custom IMAP tags to list, if they
  *   appear in the folder flags list. Why wouldn't they? */
 void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)

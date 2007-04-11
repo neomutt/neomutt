@@ -1261,7 +1261,11 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     idata->state = IMAP_AUTHENTICATED;
   }
 
+  if (option (OPTMESSAGECACHECLEAN))
+    imap_cache_clean (idata);
+
   rc = 0;
+
  out:
   if (cmd.data)
     FREE (&cmd.data);

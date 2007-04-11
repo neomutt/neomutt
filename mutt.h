@@ -400,6 +400,9 @@ enum
   OPTMARKOLD,
   OPTMENUSCROLL,	/* scroll menu instead of implicit next-page */
   OPTMENUMOVEOFF,	/* allow menu to scroll past last entry */
+#if defined(USE_IMAP) || defined(USE_POP)
+  OPTMESSAGECACHECLEAN,
+#endif
   OPTMETAKEY,		/* interpret ALT-x as ESC-x */
   OPTMETOO,
   OPTMHPURGE,
