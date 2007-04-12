@@ -225,19 +225,11 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     mutt_progress_update (&progress, msgno + 1);
 
+    /* we may get notification of new mail while fetching headers */
     if (msgno + 1 > fetchlast)
     {
-      fetchlast = msgno + 1;
-      while((fetchlast <= msgend) && (! ctx->hdrs[fetchlast]))
-        fetchlast++;
+      fetchlast = msgend + 1;
 
-      /*
-       * Make one request for everything. This makes fetching headers an
-       * order of magnitude faster if you have a large mailbox.
-       *
-       * If we get more messages while doing this, we make another
-       * request for all the new messages.
-       */
       snprintf (buf, sizeof (buf),
         "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)", msgno + 1,
         fetchlast, hdrreq);

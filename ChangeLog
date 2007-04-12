@@ -1,3 +1,14 @@
+2007-04-12 09:16 -0700  Brendan Cully  <brendan@kublai.com>  (eb5db1cd5251)
+
+	* imap/message.c: Handle a missing or corrupted header cache entry
+	(closes #2676) If imap_hcache_get fails, stop parsing the header
+	cache and simply refetch from that point on.
+
+2007-04-11 14:19 -0700  Paul Eggert  <eggert@CS.UCLA.EDU>  (ac7355452a60)
+
+	* configure.ac, muttbug.sh.in: Make mutt more posixly-
+	correct (closes #1615).
+
 2007-04-11 14:06 -0700  Brendan Cully  <brendan@kublai.com>  (5393c104e08a)
 
 	* mkchangelog.sh: Remove un-POSIX TZ NOOP in mkchangelog.sh (see
