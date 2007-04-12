@@ -99,7 +99,7 @@ static struct mapping_t ComposeHelp[] = {
 
 static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
-    mutt_FormatString (b, blen, NONULL (AttachFormat), mutt_attach_fmt,
+    mutt_FormatString (b, blen, 0, NONULL (AttachFormat), mutt_attach_fmt,
 	    (unsigned long)(((ATTACHPTR **) menu->data)[num]),
 	    M_FORMAT_STAT_FILE | M_FORMAT_ARROWCURSOR);
 }
@@ -406,7 +406,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
 }
 
 /* prototype for use below */
-static void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, 
       const char *p);
 
 /*
@@ -422,7 +422,7 @@ static void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu,
  */
 
 static const char *
-compose_format_str (char *buf, size_t buflen, char op, const char *src,
+compose_format_str (char *buf, size_t buflen, size_t col, char op, const char *src,
 		   const char *prefix, const char *ifstring,
 		   const char *elsestring,
 		   unsigned long data, format_flag flags)
@@ -465,17 +465,17 @@ compose_format_str (char *buf, size_t buflen, char op, const char *src,
   }
 
   if (optional)
-    compose_status_line (buf, buflen, menu, ifstring);
+    compose_status_line (buf, buflen, col, menu, ifstring);
   else if (flags & M_FORMAT_OPTIONAL)
-    compose_status_line (buf, buflen, menu, elsestring);
+    compose_status_line (buf, buflen, col, menu, elsestring);
 
   return (src);
 }
 
-static void compose_status_line (char *buf, size_t buflen, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, 
       const char *p)
 {
-  mutt_FormatString (buf, buflen, p, compose_format_str, 
+  mutt_FormatString (buf, buflen, col, p, compose_format_str, 
         (unsigned long) menu, 0);
 }
 
@@ -1275,7 +1275,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     /* Draw formated compose status line */
     if (menu->redraw & REDRAW_STATUS) 
     {
-       	compose_status_line (buf, sizeof (buf), menu, NONULL(ComposeFormat));
+       	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));
 	CLEARLINE (option (OPTSTATUSONTOP) ? 0 : LINES-2);
 	SETCOLOR (MT_COLOR_STATUS);
 	printw ("%-*.*s", COLS, COLS, buf);

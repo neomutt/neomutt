@@ -121,6 +121,7 @@ typedef struct pgp_entry
 
 static const char *pgp_entry_fmt (char *dest,
 				  size_t destlen,
+				  size_t col,
 				  char op,
 				  const char *src,
 				  const char *prefix,
@@ -277,9 +278,9 @@ static const char *pgp_entry_fmt (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+    mutt_FormatString (dest, destlen, col, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
+    mutt_FormatString (dest, destlen, col, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
       
@@ -291,7 +292,7 @@ static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
   entry.uid = KeyTable[num];
   entry.num = num + 1;
 
-  mutt_FormatString (s, l, NONULL (PgpEntryFormat), pgp_entry_fmt, 
+  mutt_FormatString (s, l, 0, NONULL (PgpEntryFormat), pgp_entry_fmt, 
 		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
 }
 

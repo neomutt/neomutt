@@ -58,6 +58,7 @@ struct pgp_command_context {
 
 const char *_mutt_fmt_pgp_command (char *dest,
 				   size_t destlen,
+				   size_t col,
 				   char op,
 				   const char *src,
 				   const char *prefix,
@@ -139,16 +140,16 @@ const char *_mutt_fmt_pgp_command (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, ifstring, _mutt_fmt_pgp_command, data, 0);
+    mutt_FormatString (dest, destlen, col, ifstring, _mutt_fmt_pgp_command, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, elsestring, _mutt_fmt_pgp_command, data, 0);
+    mutt_FormatString (dest, destlen, col, elsestring, _mutt_fmt_pgp_command, data, 0);
 
   return (src);
 }
 
 void mutt_pgp_command (char *d, size_t dlen, struct pgp_command_context *cctx, const char *fmt)
 {
-  mutt_FormatString (d, dlen, NONULL (fmt), _mutt_fmt_pgp_command, (unsigned long) cctx, 0);
+  mutt_FormatString (d, dlen, 0, NONULL (fmt), _mutt_fmt_pgp_command, (unsigned long) cctx, 0);
   dprint (2, (debugfile, "mutt_pgp_command: %s\n", d));
 }
 

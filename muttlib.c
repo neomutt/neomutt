@@ -991,6 +991,7 @@ void mutt_safe_path (char *s, size_t l, ADDRESS *a)
 
 void mutt_FormatString (char *dest,		/* output buffer */
 			size_t destlen,		/* output buffer len */
+			size_t col,		/* starting column (nonzero when called recursively) */
 			const char *src,	/* template string */
 			format_t *callback,	/* callback for processing */
 			unsigned long data,	/* callback data */
@@ -998,7 +999,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
-  size_t wlen, count, len, col, wid;
+  size_t wlen, count, len, wid;
   pid_t pid;
   FILE *filter;
   int n;
@@ -1007,7 +1008,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
   wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
-  col = wlen;
+  col += wlen;
 
   if ((flags & M_FORMAT_NOFILTER) == 0)
   {
@@ -1055,7 +1056,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
         mutt_extract_token(word, srcbuf, 0);
         dprint(3, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
         mutt_buffer_addch(command, '\'');
-        mutt_FormatString(buf, sizeof(buf), word->data, callback, data,
+        mutt_FormatString(buf, sizeof(buf), 0, word->data, callback, data,
                           flags | M_FORMAT_NOFILTER);
         for (p = buf; p && *p; p++)
         {
@@ -1074,6 +1075,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       dprint(3, (debugfile, "fmtpipe > %s\n", command->data));
 
+      col -= wlen;	/* reset to passed in value */
       wptr = dest;      /* reset write ptr */
       wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
       if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)))
@@ -1100,7 +1102,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
             recycler = safe_strdup(dest);
             if (recycler)
             {
-              mutt_FormatString(dest, destlen++, recycler, callback, data, flags);
+              mutt_FormatString(dest, destlen++, col, recycler, callback, data, flags);
               FREE(&recycler);
             }
           }
@@ -1203,7 +1205,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	if (count > col)
 	{
 	  count -= col; /* how many columns left on this line */
-	  mutt_FormatString (buf, sizeof (buf), src, callback, data, flags);
+	  mutt_FormatString (buf, sizeof (buf), 0, src, callback, data, flags);
 	  len = mutt_strlen (buf);
 	  wid = mutt_strwidth (buf);
 	  if (count > wid)
@@ -1253,7 +1255,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	}
 	
 	/* use callback function to handle this case */
-	src = callback (buf, sizeof (buf), ch, src, prefix, ifstring, elsestring, data, flags);
+	src = callback (buf, sizeof (buf), col, ch, src, prefix, ifstring, elsestring, data, flags);
 
 	if (tolower)
 	  mutt_strlower (buf);

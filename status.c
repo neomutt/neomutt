@@ -40,6 +40,8 @@ static char *get_sort_str (char *buf, size_t buflen, int method)
   return buf;
 }
 
+static void _menu_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, const char *p);
+
 /* %b = number of incoming folders with unread messages [option]
  * %d = number of deleted messages [option]
  * %f = full mailbox path
@@ -58,7 +60,7 @@ static char *get_sort_str (char *buf, size_t buflen, int method)
  * %v = Mutt version 
  * %V = currently active limit pattern [option] */
 static const char *
-status_format_str (char *buf, size_t buflen, char op, const char *src,
+status_format_str (char *buf, size_t buflen, size_t col, char op, const char *src,
 		   const char *prefix, const char *ifstring,
 		   const char *elsestring,
 		   unsigned long data, format_flag flags)
@@ -286,14 +288,19 @@ status_format_str (char *buf, size_t buflen, char op, const char *src,
   }
 
   if (optional)
-    menu_status_line (buf, buflen, menu, ifstring);
+    _menu_status_line (buf, buflen, col, menu, ifstring);
   else if (flags & M_FORMAT_OPTIONAL)
-    menu_status_line (buf, buflen, menu, elsestring);
+    _menu_status_line (buf, buflen, col, menu, elsestring);
 
   return (src);
 }
 
+static void _menu_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, const char *p)
+{
+  mutt_FormatString (buf, buflen, col, p, status_format_str, (unsigned long) menu, 0);
+}
+
 void menu_status_line (char *buf, size_t buflen, MUTTMENU *menu, const char *p)
 {
-  mutt_FormatString (buf, buflen, p, status_format_str, (unsigned long) menu, 0);
+  mutt_FormatString (buf, buflen, 0, p, status_format_str, (unsigned long) menu, 0);
 }

@@ -61,9 +61,9 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 #define mutt_new_envelope() safe_calloc (1, sizeof (ENVELOPE))
 #define mutt_new_enter_state() safe_calloc (1, sizeof (ENTER_STATE))
 
-typedef const char * format_t (char *, size_t, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
+typedef const char * format_t (char *, size_t, size_t, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
 
-void mutt_FormatString (char *, size_t, const char *, format_t *, unsigned long, format_flag);
+void mutt_FormatString (char *, size_t, size_t, const char *, format_t *, unsigned long, format_flag);
 void mutt_parse_content_type (char *, BODY *);
 void mutt_generate_boundary (PARAMETER **);
 void mutt_group_add_adrlist (group_t *, ADDRESS *);
@@ -119,6 +119,7 @@ int is_from (const char *, char *, size_t, time_t *);
 const char *mutt_attach_fmt (
 	char *dest,
 	size_t destlen,
+	size_t col,
 	char op,
 	const char *src,
 	const char *prefix,

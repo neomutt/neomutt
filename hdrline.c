@@ -236,6 +236,7 @@ struct hdr_format_info
 static const char *
 hdr_format_str (char *dest,
 		size_t destlen,
+		size_t col,
 		char op,
 		const char *src,
 		const char *prefix,
@@ -715,9 +716,9 @@ hdr_format_str (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, ifstring, hdr_format_str, (unsigned long) hfi, flags);
+    mutt_FormatString (dest, destlen, col, ifstring, hdr_format_str, (unsigned long) hfi, flags);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, elsestring, hdr_format_str, (unsigned long) hfi, flags);
+    mutt_FormatString (dest, destlen, col, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
   return (src);
 #undef THREAD_NEW
@@ -732,5 +733,5 @@ _mutt_make_string (char *dest, size_t destlen, const char *s, CONTEXT *ctx, HEAD
   hfi.hdr = hdr;
   hfi.ctx = ctx;
 
-  mutt_FormatString (dest, destlen, s, hdr_format_str, (unsigned long) &hfi, flags);
+  mutt_FormatString (dest, destlen, 0, s, hdr_format_str, (unsigned long) &hfi, flags);
 }
