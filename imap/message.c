@@ -161,6 +161,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           break;
 	}
 
+        /* hole in the header cache */
+        if (!evalhc)
+          continue;
+
         if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) == -1)
           continue;
         else if (mfhrc < 0)
@@ -190,9 +194,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           ctx->size += ctx->hdrs[idx]->content->length;
         }
 	else
-	  /* bad header in the cache, we'll have to refetch.
-	   * TODO: consider the possibility of a holey cache. */
+        {
+	  /* bad header in the cache, we'll have to refetch. */
+          dprint (3, (debugfile, "bad cache entry at %d, giving up\n", h.sid - 1));
           imap_free_header_data((void**) (void*) &h.data);
+          evalhc = 0;
+        }
       }
       while (rc != IMAP_CMD_OK && mfhrc == -1);
       if (rc == IMAP_CMD_OK)
