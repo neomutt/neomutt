@@ -1107,7 +1107,7 @@ struct option_t MuttVars[] = {
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #if defined(HAVE_QDBM)
-  { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 0 },
+  { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
   /*
   ** .pp
   ** When mutt is compiled with qdbm as header cache backend,
