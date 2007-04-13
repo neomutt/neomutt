@@ -1726,16 +1726,19 @@ static void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
    */
   int context_changed = ctx->changed;
   
-  /* user didn't modify this message.  alter the flags to
-   * match the current state on disk.  This may not actually
-   * do anything, but we can't tell right now.  mutt_set_flag()
-   * will just ignore the call if the status bits are
-   * already properly set.
-   */
-  mutt_set_flag (ctx, o, M_FLAG, n->flagged);
-  mutt_set_flag (ctx, o, M_REPLIED, n->replied);
-  mutt_set_flag (ctx, o, M_READ, n->read);
-  mutt_set_flag (ctx, o, M_OLD, n->old);
+  /* user didn't modify this message.  alter the flags to match the
+   * current state on disk.  This may not actually do
+   * anything. mutt_set_flag() will just ignore the call if the status
+   * bits are already properly set, but it is still faster not to pass
+   * through it */
+  if (o->flagged != n->flagged)
+    mutt_set_flag (ctx, o, M_FLAG, n->flagged);
+  if (o->replied != n->replied)
+    mutt_set_flag (ctx, o, M_REPLIED, n->replied);
+  if (o->read != n->read)
+    mutt_set_flag (ctx, o, M_READ, n->read);
+  if (o->old != n->old)
+    mutt_set_flag (ctx, o, M_OLD, n->old);
 
   /* mutt_set_flag() will set this, but we don't need to
    * sync the changes we made because we just updated the
