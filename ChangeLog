@@ -1,4 +1,10 @@
-2007-04-12 11:54 -0700  Brendan Cully  <brendan@kublai.com>  (3ee4effbb8e8)
+2007-04-12 17:55 -0700  Brendan Cully  <brendan@kublai.com>  (73894f3f1943)
+
+	* mh.c: Only call mutt_set_flag when necessary when checking for
+	maildir changes (fixes #1216)
+
+	* flags.c: Only update header color in mutt_set_flag if flag has
+	changed (see #1216, #1931)
 
 	* init.h: Make $header_cache_compress default to set
 

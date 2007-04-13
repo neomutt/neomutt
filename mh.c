@@ -1072,7 +1072,10 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   progress_t progress;
 
   memset (&mhs, 0, sizeof (mhs));
-  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+  if (ctx->magic == M_MAILDIR)
+    snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
+  else
+    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
   mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
 
   if (!ctx->data)
@@ -1102,7 +1105,11 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 #endif /* USE_INODESORT */
 
   if (ctx->magic == M_MAILDIR)
+  {
+    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
     maildir_delayed_parsing (ctx, md, &progress);
+  }
 
   maildir_move_to_context (ctx, &md);
 
