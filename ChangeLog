@@ -1,4 +1,8 @@
-2007-04-12 09:16 -0700  Brendan Cully  <brendan@kublai.com>  (eb5db1cd5251)
+2007-04-12 11:54 -0700  Brendan Cully  <brendan@kublai.com>  (3ee4effbb8e8)
+
+	* init.h: Make $header_cache_compress default to set
+
+	* imap/message.c: Simplify IMAP message fetch loop slightly
 
 	* imap/message.c: Handle a missing or corrupted header cache entry
 	(closes #2676) If imap_hcache_get fails, stop parsing the header
