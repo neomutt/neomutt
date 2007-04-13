@@ -620,7 +620,15 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       imap_browse (LastDir, &state);
       browser_sort (&state);
     }
+    else
 #endif
+    {
+      i = mutt_strlen (LastDir);
+      while (i && LastDir[--i] == '/')
+        LastDir[i] = '\0';
+      if (!LastDir[0])
+        getcwd (LastDir, sizeof (LastDir));
+    }
   }
 
   *f = 0;

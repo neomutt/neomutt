@@ -1,4 +1,8 @@
-2007-04-13 09:21 -0700  Brendan Cully  <brendan@kublai.com>  (2c91477cac28)
+2007-04-13 09:46 -0700  Brendan Cully  <brendan@kublai.com>  (fad24cd7ba8f)
+
+	* doc/Makefile.am: Allow elinks for building manual.txt (closes #2876)
+
+	* sendlib.c: Even simpler header wrapping fix
 
 	* sendlib.c: Fix header wrapping
 
