@@ -1619,7 +1619,7 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
      */
     
     for (i = 0, k = 0, l = 0, n = 0; i + MB_CUR_MAX < sizeof (buf) && cp[i] != '\0' &&
-	 ((col < (wraplen + (k ? 0 : wraplen)) || in_encoded_word));
+	 ((col < (wraplen + (k ? 0 : k)) || in_encoded_word));
 	 i += l)
     {
       
