@@ -1,4 +1,11 @@
-2007-04-12 17:55 -0700  Brendan Cully  <brendan@kublai.com>  (73894f3f1943)
+2007-04-13 09:21 -0700  Brendan Cully  <brendan@kublai.com>  (2c91477cac28)
+
+	* sendlib.c: Fix header wrapping
+
+2007-04-12 20:11 -0700  Brendan Cully  <brendan@kublai.com>  (c9e92a1d71cf)
+
+	* mh.c: Differentiate between first and second maildir passes in
+	progress indicator
 
 	* mh.c: Only call mutt_set_flag when necessary when checking for
 	maildir changes (fixes #1216)
