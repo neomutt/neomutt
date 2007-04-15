@@ -1735,31 +1735,36 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
     if (redraw & REDRAW_STATUS)
     {
+      struct hdr_format_info hfi;
+      char pager_progress_str[4];
+
+      hfi.ctx = Context;
+      hfi.pager_progress = pager_progress_str;
+
+      if (last_pos < sb.st_size - 1)
+	snprintf(pager_progress_str, sizeof(pager_progress_str), "%lld%%", (100 * last_offset / sb.st_size));
+      else
+	strfcpy(pager_progress_str, (topline == 0) ? "all" : "end", sizeof(pager_progress_str));
+
       /* print out the pager status bar */
       SETCOLOR (MT_COLOR_STATUS);
       BKGDSET (MT_COLOR_STATUS);
       CLEARLINE (statusoffset);
       if (IsHeader (extra))
       {
-	size_t l1 = (COLS - 9) * MB_LEN_MAX;
+	size_t l1 = COLS * MB_LEN_MAX;
 	size_t l2 = sizeof (buffer);
-	_mutt_make_string (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt),
-			   Context, extra->hdr, M_FORMAT_MAKEPRINT);
+	hfi.hdr = extra->hdr;
+	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt), &hfi, M_FORMAT_MAKEPRINT);
       }
       else if (IsMsgAttach (extra))
       {
-	size_t l1 = (COLS - 9) * MB_LEN_MAX;
+	size_t l1 = COLS * MB_LEN_MAX;
 	size_t l2 = sizeof (buffer);
-	_mutt_make_string (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt),
-			   Context, extra->bdy->hdr, M_FORMAT_MAKEPRINT);
+	hfi.hdr = extra->bdy->hdr;
+	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt), &hfi, M_FORMAT_MAKEPRINT);
       }
-      mutt_paddstr (COLS-10, IsHeader (extra) || IsMsgAttach (extra) ?
-		    buffer : banner);
-      addstr (" -- (");
-      if (last_pos < sb.st_size - 1)
-	printw ("%d%%)", (int) (100 * last_offset / sb.st_size));
-      else
-	addstr (topline == 0 ? "all)" : "end)");
+      mutt_paddstr (COLS, IsHeader (extra) || IsMsgAttach (extra) ?  buffer : banner);
       BKGDSET (MT_COLOR_NORMAL);
       SETCOLOR (MT_COLOR_NORMAL);
     }

@@ -216,6 +216,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %n = name of author
  * %N = score
  * %O = like %L, except using address instead of name
+ * %P = progress indicator for builtin pager
  * %s = subject
  * %S = short message status (e.g., N/O/D/!/r/-)
  * %t = `to:' field (recipients)
@@ -226,12 +227,6 @@ int mutt_user_is_recipient (HEADER *h)
  * %y = `x-label:' field (if present)
  * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
  * %Z = status flags	*/
-
-struct hdr_format_info
-{
-  CONTEXT *ctx;
-  HEADER *hdr;
-};
 
 static const char *
 hdr_format_str (char *dest,
@@ -547,6 +542,10 @@ hdr_format_str (char *dest,
       }
       break;
 
+    case 'P':
+      strfcpy(dest, NONULL(hfi->pager_progress), destlen);
+      break;
+
     case 's':
       
       if (flags & M_FORMAT_TREE && !hdr->collapsed)
@@ -732,6 +731,13 @@ _mutt_make_string (char *dest, size_t destlen, const char *s, CONTEXT *ctx, HEAD
 
   hfi.hdr = hdr;
   hfi.ctx = ctx;
+  hfi.pager_progress = 0;
 
   mutt_FormatString (dest, destlen, 0, s, hdr_format_str, (unsigned long) &hfi, flags);
+}
+
+void
+mutt_make_string_info (char *dst, size_t dstlen, const char *s, struct hdr_format_info *hfi, format_flag flags)
+{
+  mutt_FormatString (dst, dstlen, 0, s, hdr_format_str, (unsigned long) hfi, flags);
 }

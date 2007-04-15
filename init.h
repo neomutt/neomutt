@@ -1009,6 +1009,7 @@ struct option_t MuttVars[] = {
   ** .dt %n .dd author's real name (or address if missing)
   ** .dt %O .dd (_O_riginal save folder)  Where mutt would formerly have
   **            stashed the message: list name or recipient name if no list
+  ** .dt %P .dd progress indicator for the builtin pager (how much of the file has been displayed)
   ** .dt %s .dd subject of the message
   ** .dt %S .dd status of the message (N/D/d/!/r/\(as)
   ** .dt %t .dd `to:' field (recipients)
@@ -1351,7 +1352,7 @@ struct option_t MuttVars[] = {
   ** default, Mutt will display the line after the last one on the screen
   ** at the top of the next page (0 lines of context).
   */
-  { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s" },
+  { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s%> -- (%P)" },
   /*
   ** .pp
   ** This variable controls the format of the one-line message ``status''

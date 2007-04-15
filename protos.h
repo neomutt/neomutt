@@ -29,6 +29,15 @@
 void _mutt_make_string (char *, size_t, const char *, CONTEXT *,
 	HEADER *, format_flag);
 
+struct hdr_format_info
+{
+  CONTEXT *ctx;
+  HEADER *hdr;
+  const char *pager_progress;
+};
+
+void mutt_make_string_info (char *, size_t, const char *, struct hdr_format_info *, format_flag);
+
 int mutt_extract_token (BUFFER *, BUFFER *, int);
 BUFFER * mutt_buffer_init (BUFFER *);
 BUFFER * mutt_buffer_from (BUFFER *, char *);
