@@ -1,3 +1,35 @@
+2007-04-13 09:46 -0700  Brendan Cully  <brendan@kublai.com>  (fad24cd7ba8f)
+
+	* doc/Makefile.am: Allow elinks for building manual.txt (closes #2876)
+
+	* sendlib.c: Even simpler header wrapping fix
+
+	* sendlib.c: Fix header wrapping
+
+2007-04-12 20:11 -0700  Brendan Cully  <brendan@kublai.com>  (c9e92a1d71cf)
+
+	* mh.c: Differentiate between first and second maildir passes in
+	progress indicator
+
+	* mh.c: Only call mutt_set_flag when necessary when checking for
+	maildir changes (fixes #1216)
+
+	* flags.c: Only update header color in mutt_set_flag if flag has
+	changed (see #1216, #1931)
+
+	* init.h: Make $header_cache_compress default to set
+
+	* imap/message.c: Simplify IMAP message fetch loop slightly
+
+	* imap/message.c: Handle a missing or corrupted header cache entry
+	(closes #2676) If imap_hcache_get fails, stop parsing the header
+	cache and simply refetch from that point on.
+
+2007-04-11 14:19 -0700  Paul Eggert  <eggert@CS.UCLA.EDU>  (ac7355452a60)
+
+	* configure.ac, muttbug.sh.in: Make mutt more posixly-
+	correct (closes #1615).
+
 2007-04-11 14:06 -0700  Brendan Cully  <brendan@kublai.com>  (5393c104e08a)
 
 	* mkchangelog.sh: Remove un-POSIX TZ NOOP in mkchangelog.sh (see

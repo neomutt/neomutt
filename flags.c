@@ -35,6 +35,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   int deleted = ctx->deleted;
   int tagged = ctx->tagged;
   int flagged = ctx->flagged;
+  int update = 0;
 
   if (ctx->readonly && flag != M_TAG)
     return; /* don't modify anything if we are read-only */
@@ -51,6 +52,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	if (!h->deleted && !ctx->readonly)
 	{
 	  h->deleted = 1;
+          update = 1;
 	  if (upd_ctx) ctx->deleted++;
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
@@ -66,6 +68,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       else if (h->deleted)
       {
 	h->deleted = 0;
+        update = 1;
 	if (upd_ctx) ctx->deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
@@ -97,6 +100,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	if (h->read || h->old)
 	{
+          update = 1;
 	  h->old = 0;
 	  if (upd_ctx) ctx->new++;
 	  if (h->read)
@@ -110,6 +114,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       else if (!h->read)
       {
+        update = 1;
 	if (!h->old)
 	  if (upd_ctx) ctx->new--;
 	h->read = 1;
@@ -128,6 +133,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	if (!h->old)
 	{
+          update = 1;
 	  h->old = 1;
 	  if (!h->read)
 	    if (upd_ctx) ctx->new--;
@@ -137,6 +143,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       else if (h->old)
       {
+        update = 1;
 	h->old = 0;
 	if (!h->read)
 	  if (upd_ctx) ctx->new++;
@@ -154,6 +161,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	if (!h->read)
 	{
+          update = 1;
 	  h->read = 1;
 	  if (upd_ctx) ctx->unread--;
 	  if (!h->old)
@@ -164,6 +172,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       else if (h->read)
       {
+        update = 1;
 	h->read = 0;
 	if (upd_ctx) ctx->unread++;
 	if (!h->old)
@@ -182,6 +191,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	if (!h->replied)
 	{
+          update = 1;
 	  h->replied = 1;
 	  if (!h->read)
 	  {
@@ -196,6 +206,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       else if (h->replied)
       {
+        update = 1;
 	h->replied = 0;
 	h->changed = 1;
 	if (upd_ctx) ctx->changed = 1;
@@ -211,6 +222,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	if (!h->flagged)
 	{
+          update = 1;
 	  h->flagged = bf;
 	  if (upd_ctx) ctx->flagged++;
 	  h->changed = 1;
@@ -219,6 +231,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       else if (h->flagged)
       {
+        update = 1;
 	h->flagged = 0;
 	if (upd_ctx) ctx->flagged--;
 	h->changed = 1;
@@ -231,19 +244,22 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	if (!h->tagged)
 	{
+          update = 1;
 	  h->tagged = 1;
 	  if (upd_ctx) ctx->tagged++;
 	}
       }
       else if (h->tagged)
       {
+        update = 1;
 	h->tagged = 0;
 	if (upd_ctx) ctx->tagged--;
       }
       break;
   }
 
-  mutt_set_header_color(ctx, h);
+  if (update)
+    mutt_set_header_color(ctx, h);
 
   /* if the message status has changed, we need to invalidate the cached
    * search results so that any future search will match the current status

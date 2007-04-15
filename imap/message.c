@@ -161,6 +161,10 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           break;
 	}
 
+        /* hole in the header cache */
+        if (!evalhc)
+          continue;
+
         if ((mfhrc = msg_fetch_header (ctx, &h, idata->buf, NULL)) == -1)
           continue;
         else if (mfhrc < 0)
@@ -190,9 +194,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           ctx->size += ctx->hdrs[idx]->content->length;
         }
 	else
-	  /* bad header in the cache, we'll have to refetch.
-	   * TODO: consider the possibility of a holey cache. */
+        {
+	  /* bad header in the cache, we'll have to refetch. */
+          dprint (3, (debugfile, "bad cache entry at %d, giving up\n", h.sid - 1));
           imap_free_header_data((void**) (void*) &h.data);
+          evalhc = 0;
+        }
       }
       while (rc != IMAP_CMD_OK && mfhrc == -1);
       if (rc == IMAP_CMD_OK)
@@ -218,19 +225,11 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   {
     mutt_progress_update (&progress, msgno + 1);
 
+    /* we may get notification of new mail while fetching headers */
     if (msgno + 1 > fetchlast)
     {
-      fetchlast = msgno + 1;
-      while((fetchlast <= msgend) && (! ctx->hdrs[fetchlast]))
-        fetchlast++;
+      fetchlast = msgend + 1;
 
-      /*
-       * Make one request for everything. This makes fetching headers an
-       * order of magnitude faster if you have a large mailbox.
-       *
-       * If we get more messages while doing this, we make another
-       * request for all the new messages.
-       */
       snprintf (buf, sizeof (buf),
         "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)", msgno + 1,
         fetchlast, hdrreq);
