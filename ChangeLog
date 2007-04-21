@@ -1,4 +1,25 @@
-2007-04-13 09:46 -0700  Brendan Cully  <brendan@kublai.com>  (fad24cd7ba8f)
+2007-04-15 15:43 -0700  Michael Elkins  <me@mutt.org>  (cb9bef17b3a8)
+
+	* hdrline.c, init.h, pager.c, protos.h: Removed hardcoded pager
+	progress indicator and add %P format code to $pager_status which
+	contains the same information.
+
+	Append "%> -- (%P)" to $pager_status to emulate old behavior.
+
+	Closes #2087.
+
+	* browser.c: merge with tip
+
+2007-04-11 22:36 -0700  Michael Elkins  <me@mutt.org>  (0c47f7b06158)
+
+	* addrbook.c, browser.c, compose.c, hdrline.c, muttlib.c, pgpinvoke.c,
+	pgpkey.c, protos.h, recvattach.c, smime.c, status.c: Pass column
+	value recursively when expanding format strings (bug #2840).
+
+2007-04-13 14:14 -0700  Brendan Cully  <brendan@kublai.com>  (021f494d5154)
+
+	* browser.c: Strip / from tail of LastDir when copying from
+	Maildir (closes #1885)
 
 	* doc/Makefile.am: Allow elinks for building manual.txt (closes #2876)
 
