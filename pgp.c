@@ -1582,7 +1582,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   case 3: /* sign (a)s */
     unset_option(OPTPGPCHECKTRUST);
 
-    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, KEYFLAG_CANSIGN, PGP_PUBRING)))
+    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, 0, PGP_SECRING)))
     {
       snprintf (input_signas, sizeof (input_signas), "0x%s",
                 pgp_keyid (p));
