@@ -381,6 +381,7 @@ static const char *mix_format_caps (REMAILER *r)
 
 static const char *mix_entry_fmt (char *dest,
 				  size_t destlen,
+				  size_t col,
 				  char op,
 				  const char *src,
 				  const char *prefix,
@@ -433,9 +434,9 @@ static const char *mix_entry_fmt (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, ifstring, mutt_attach_fmt, data, 0);
+    mutt_FormatString (dest, destlen, col, ifstring, mutt_attach_fmt, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, elsestring, mutt_attach_fmt, data, 0);
+    mutt_FormatString (dest, destlen, col, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
 
@@ -444,7 +445,7 @@ static const char *mix_entry_fmt (char *dest,
 static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
   REMAILER **type2_list = (REMAILER **) menu->data;
-  mutt_FormatString (b, blen, NONULL (MixEntryFormat), mix_entry_fmt,
+  mutt_FormatString (b, blen, 0, NONULL (MixEntryFormat), mix_entry_fmt,
 		     (unsigned long) type2_list[num], M_FORMAT_ARROWCURSOR);
 }
 
