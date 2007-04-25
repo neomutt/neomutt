@@ -1,3 +1,20 @@
+2007-04-24 14:08 -0700  Michael Elkins  <me@mutt.org>  (21c7e172030f)
+
+	* remailer.c: fixup for mutt_FormatString() changes
+
+2007-04-23 12:12 -0700  Michael Elkins  <me@mutt.org>  (1bae5dcd7292)
+
+	* crypt-gpgme.c: Fix compilation error related to change in
+	mutt_FormatString()
+
+2007-04-21 13:05 -0700  Brendan Cully  <brendan@kublai.com>  (4c70812b3104)
+
+	* pgp.c: Use PGP_SECRING to find PGP signing keys. Closes #2878.
+
+2007-04-21 13:00 -0700  Piarres Beobide Egaña  <pi@beobide.net>  (2b97fdbd6ce1)
+
+	* po/eu.po: Updated Basque translation.
+
 2007-04-15 15:43 -0700  Michael Elkins  <me@mutt.org>  (cb9bef17b3a8)
 
 	* hdrline.c, init.h, pager.c, protos.h: Removed hardcoded pager
