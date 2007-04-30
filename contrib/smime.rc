@@ -79,7 +79,9 @@ set smime_decrypt_command="openssl smime -decrypt  -passin stdin -inform DER -in
 set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
 
 # Verify a signature of type application/x-pkcs7-mime
-set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s %C"
+set smime_verify_opaque_command="\
+openssl smime -verify -inform DER -in %s %C || \
+openssl smime -verify -inform DER -in %s -noverify 2>/dev/null"
 
 
 

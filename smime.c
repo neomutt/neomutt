@@ -859,8 +859,8 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
 
   fflush (fpout);
   rewind (fpout);
-  rewind (fperr);
   fflush (fperr);
+  rewind (fperr);
 
 
   while ((fgets (email, sizeof (email), fpout)))
@@ -954,8 +954,8 @@ static char *smime_extract_certificate (char *infile)
 
   fflush (fpout);
   rewind (fpout);
-  rewind (fperr);
   fflush (fperr);
+  rewind (fperr);
   empty = (fgetc (fpout) == EOF);
   if (empty)
   {
@@ -1000,8 +1000,8 @@ static char *smime_extract_certificate (char *infile)
 
   fflush (fpout);
   rewind (fpout);
-  rewind (fperr);
   fflush (fperr);
+  rewind (fperr);
   empty =  (fgetc (fpout) == EOF);
   if (empty)
   {
@@ -1063,8 +1063,8 @@ static char *smime_extract_signer_certificate (char *infile)
 
   fflush (fpout);
   rewind (fpout);
-  rewind (fperr);
   fflush (fperr);
+  rewind (fperr);
   empty =  (fgetc (fpout) == EOF);
   if (empty)
   {
@@ -1750,6 +1750,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 
   if (s->flags & M_DISPLAY)
   {
+    fflush (smimeerr);
     rewind (smimeerr);
     
     if ((c = fgetc (smimeerr)) != EOF)
