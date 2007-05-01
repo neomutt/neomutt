@@ -717,24 +717,6 @@ AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL 2 network 
         ])
 AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
 
-AC_ARG_WITH(idn, AC_HELP_STRING([--with-idn=[PFX]], [Use GNU libidn for domain names]),
-		 [
-		  if test "$with_idn" != "no" ; then
-		  	if test "$with_idn" != "yes" ; then
-			   CPPFLAGS="$CPPFLAGS -I$with_idn/include"
-			   LDFLAGS="$LDFLAGS -L$with_idn/lib"
-			fi
-		  fi
-		 ]
-)
-
-if test "x$with_idn" != "xno"; then
-   AC_CHECK_LIB(idn, stringprep_check_version)
-   AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-   AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-   AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
-fi
-
 dnl -- end socket --
 
 AC_ARG_ENABLE(debug, AC_HELP_STRING([--enable-debug], [Enable debugging support]),
@@ -1048,6 +1030,34 @@ else
 fi
 
 fi # libiconv
+
+dnl -- IDN depends on iconv
+
+AC_ARG_WITH(idn, AC_HELP_STRING([--with-idn=[PFX]], [Use GNU libidn for domain names]),
+		 [
+		  if test "$with_idn" != "no" ; then
+		  	if test "$with_idn" != "yes" ; then
+			   CPPFLAGS="$CPPFLAGS -I$with_idn/include"
+			   LDFLAGS="$LDFLAGS -L$with_idn/lib"
+			fi
+		  fi
+		 ]
+)
+
+if test "x$with_idn" != "xno"; then
+  if test "$am_cv_func_iconv" != "yes"
+  then
+    if test "x$with_idn" != "x"
+    then
+      AC_MSG_ERROR([IDN requested but iconv is disabled or unavailable])
+    fi
+  else
+    AC_CHECK_LIB(idn, stringprep_check_version)
+    AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+    AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+    AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+  fi
+fi
 
 dnl -- locales --
 

@@ -1,3 +1,15 @@
+2007-04-29 19:10 -0700  Alain Bench  <veronatif@free.fr>  (0e32bd00f341)
+
+	* contrib/smime.rc, smime.c: contrib/smime.rc:
+	$smime_verify_opaque_command fallback to -noverify to get signed
+	text despite a failed -verify (but send only this first failure
+	notice to stderr). smime.c: fflush() before rewind(). Closes #2428.
+	Helps Debian Bug 420014
+
+2007-04-24 17:51 -0700  Vincent Lefevre  <vincent@vinc17.org>  (a58527ead950)
+
+	* po/fr.po: Updated French translation.
+
 2007-04-24 14:08 -0700  Michael Elkins  <me@mutt.org>  (21c7e172030f)
 
 	* remailer.c: fixup for mutt_FormatString() changes
