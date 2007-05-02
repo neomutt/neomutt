@@ -1052,6 +1052,7 @@ int mutt_index_menu (void)
 	break;
 
       case OP_MAIN_CHANGE_FOLDER:
+      case OP_MAIN_NEXT_FOLDER:
       
 	if (attach_msg)
 	  op = OP_MAIN_CHANGE_FOLDER_READONLY;
@@ -1066,22 +1067,36 @@ int mutt_index_menu (void)
           cp = _("Open mailbox");
 
 	buf[0] = '\0';
-	mutt_buffy (buf, sizeof (buf));
-
-	if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
-        {
-          if (menu->menu == MENU_PAGER)
-          {
-            op = OP_DISPLAY_MESSAGE;
-            continue;
-          }
-          else
-            break;
-        }
-	if (!buf[0])
+	if ((op == OP_MAIN_NEXT_FOLDER) && Context && Context->path)
 	{
-	  CLEARLINE (LINES-1);
-	  break;
+	  strfcpy (buf, Context->path, sizeof (buf));
+	  mutt_pretty_mailbox (buf);
+	  mutt_buffy (buf, sizeof (buf));
+	  if (!buf[0])
+	  {
+	    mutt_error _("No new messages");
+	    break;
+	  }
+	}
+	else
+	{
+	  mutt_buffy (buf, sizeof (buf));
+
+	  if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+	  {
+	    if (menu->menu == MENU_PAGER)
+	    {
+	      op = OP_DISPLAY_MESSAGE;
+	      continue;
+	    }
+	    else
+	      break;
+	  }
+	  if (!buf[0])
+	  {
+	    CLEARLINE (LINES-1);
+	    break;
+	  }
 	}
 
 	mutt_expand_path (buf, sizeof (buf));
