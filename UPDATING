@@ -4,6 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  + next-unread-mailbox
   + $message_cache_clean (clean cache on sync)
 
 1.5.15 (2007-04-06)

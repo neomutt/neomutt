@@ -1052,7 +1052,7 @@ int mutt_index_menu (void)
 	break;
 
       case OP_MAIN_CHANGE_FOLDER:
-      case OP_MAIN_NEXT_FOLDER:
+      case OP_MAIN_NEXT_UNREAD_MAILBOX:
       
 	if (attach_msg)
 	  op = OP_MAIN_CHANGE_FOLDER_READONLY;
@@ -1067,14 +1067,14 @@ int mutt_index_menu (void)
           cp = _("Open mailbox");
 
 	buf[0] = '\0';
-	if ((op == OP_MAIN_NEXT_FOLDER) && Context && Context->path)
+	if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context && Context->path)
 	{
 	  strfcpy (buf, Context->path, sizeof (buf));
 	  mutt_pretty_mailbox (buf);
 	  mutt_buffy (buf, sizeof (buf));
 	  if (!buf[0])
 	  {
-	    mutt_error _("No new messages");
+	    mutt_error _("No mailboxes have new mail");
 	    break;
 	  }
 	}
