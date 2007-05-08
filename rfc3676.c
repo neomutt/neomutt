@@ -242,6 +242,13 @@ int rfc3676_handler (BODY * a, STATE * s)
     }
 
   }
+
+  if (*curline)
+  {
+    dprint (2, (debugfile, "f=f: still content buffered af EOF, flushing at ql=%d\n", quotelevel));
+    print_flowed_line (curline, s, quotelevel);
+  }
+
   FREE(&curline);
   return (0);
 }
