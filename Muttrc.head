@@ -11,8 +11,11 @@ ignore sender references return-path lines
 macro index \eb "<search>~b " "search in message bodies"
 
 # simulate the old url menu
-macro index,pager \cb "<pipe-message> urlview<Enter>" "call urlview to extract URLs out of a message"
-macro attach,compose \cb "<pipe-entry> urlview<Enter>" "call urlview to extract URLs out of a message"
+macro index,pager,attach,compose \cb "\
+<enter-command> set my_pipe_decode=\$pipe_decode pipe_decode<Enter>\
+<pipe-message> urlview<Enter>\
+<enter-command> set pipe_decode=\$my_pipe_decode; unset my_pipe_decode<Enter>" \
+"call urlview to extract URLs out of a message"
 
 # Show documentation when pressing F1
 macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show Mutt documentation"
