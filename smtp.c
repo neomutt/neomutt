@@ -444,6 +444,9 @@ static int smtp_auth (CONNECTION* conn)
   else
     r = smtp_auth_sasl (conn, AuthMechs);
 
+  if (r != SMTP_AUTH_SUCCESS)
+    mutt_account_unsetpass (&conn->account);
+
   if (r == SMTP_AUTH_UNAVAIL)
   {
     mutt_error (_("No authenticators available"));

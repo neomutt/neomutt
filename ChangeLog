@@ -1,3 +1,17 @@
+2007-05-08 12:54 -0700  Rocco Rutte  <pdmef@gmx.net>  (763bd781d108)
+
+	* rfc3676.c: f=f: flush buffer contents (if any) after reading input
+	Otherwise mutt maybe won't show the last line if it's supposed to
+	continue.
+
+2007-05-07 11:50 -0700  Brendan Cully  <brendan@kublai.com>  (89a3e1c5c28b)
+
+	* OPS, UPDATING, curs_main.c, functions.h: Rename next-folder to next-
+	unread-mailbox. Remove default binding.
+
+	* muttlib.c: Use signed arithmetic in mutt_gecos_name to avoid an
+	overflow. Closes #2885.
+
 2007-05-02 10:50 -0700  N.J. Mann  <njm@njm.f2s.com>  (f6861b85f22b)
 
 	* OPS, curs_main.c, functions.h: Add next-folder command
