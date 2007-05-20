@@ -2090,7 +2090,10 @@ int mutt_index_menu (void)
 	{
 	  if (option (OPTRESOLVE))
 	  {
-	    menu->current = mutt_next_thread (CURHDR);
+	    if (op == OP_TAG_THREAD)
+	      menu->current = mutt_next_thread (CURHDR);
+	    else
+	      menu->current = mutt_next_subthread (CURHDR);
 
 	    if (menu->current == -1)
 	      menu->current = menu->oldcurrent;

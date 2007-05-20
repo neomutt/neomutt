@@ -1,3 +1,15 @@
+2007-05-20 00:29 -0700  Brendan Cully  <brendan@kublai.com>  (a0e038310f42)
+
+	* smtp.c: Forget SMTP password if authentication fails.  Thanks to
+	Gregory Shapiro for the initial patch (I've moved the reset from
+	smtp_auth_sasl up to smtp_auth, and used the account API instead
+	of twiddling account bits by hand). Closes #2872.
+
+2007-05-15 21:05 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (33af2883d52b)
+
+	* curs_main.c: Jump to the next *sub*-thread when tag-subthread is
+	invoked, not to the next thread.
+
 2007-05-08 12:54 -0700  Rocco Rutte  <pdmef@gmx.net>  (763bd781d108)
 
 	* rfc3676.c: f=f: flush buffer contents (if any) after reading input
