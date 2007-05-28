@@ -2,16 +2,12 @@
 
 BASEVERSION=1
 
-if test -x "`which md5`"
-then
-  MD5=md5
-elif test -x "`which md5sum`"
-then
-  MD5=md5sum
-elif test -x "`which openssl`"
+MD5=@MD5@
+if test "$MD5" = "openssl"
 then
   MD5="openssl md5 -hex"
-else
+elif test "$MD5" = "none"
+then
   echo "ERROR: no MD5 tool found"
   exit 1
 fi

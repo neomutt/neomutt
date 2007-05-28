@@ -306,7 +306,7 @@
 
 2007-04-05 13:06 -0700  Jukka Salmi  <j+mutt@2007.salmi.ch>  (3638701db407)
 
-	* ChangeLog, configure.ac: Check for BDB4 libs in $lib as well as
+	* configure.ac: Check for BDB4 libs in $lib as well as
 	$lib/$ver (fixes pkgsrc BDB4 detection)
 
 2007-04-05 12:55 -0700  Brendan Cully  <brendan@kublai.com>  (4f435337507e)

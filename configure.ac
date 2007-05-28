@@ -813,6 +813,9 @@ AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache], [Enable header caching])
 
     need_md5="yes"
 
+    dnl hcachever.sh tool for calculating struct digest
+    AC_CHECK_PROGS([MD5], [md5 md5sum openssl], [none])
+
     use_qdbm=no
     AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm], [Don't use qdbm even if it is available]))
     if test "$with_qdbm" != "no"
@@ -1186,8 +1189,6 @@ then
 fi
 AC_SUBST(DSLROOT)
 
-AC_OUTPUT(Makefile intl/Makefile m4/Makefile
-        po/Makefile.in doc/Makefile contrib/Makefile
-        muttbug.sh
-        imap/Makefile
-        doc/instdoc.sh)
+AC_OUTPUT(Makefile contrib/Makefile doc/Makefile imap/Makefile
+        intl/Makefile m4/Makefile po/Makefile.in
+        hcachever.sh muttbug.sh doc/instdoc.sh)

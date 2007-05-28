@@ -78,7 +78,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	makedoc.c makedoc-defs.h stamp-doc-rc README.SSL smime.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog ChangeLog.old mkchangelog.sh cvslog2changelog.pl mutt_idna.h \
-	snprintf.c regex.c crypt-gpgme.h hcachever.sh
+	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -128,7 +128,7 @@ reldate.h: $(srcdir)/ChangeLog
 
 hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
-	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | $(srcdir)/hcachever.sh hcversion.h
+	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
 	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
