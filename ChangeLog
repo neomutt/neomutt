@@ -1,3 +1,13 @@
+2007-05-17 14:40 +0200  Christoph Berg  <cb@df7cb.de>  (edefe5e1f2b4)
+
+	* Muttrc.head: Temporarily set pipe_decode in the \cb urlview macro.
+	(Debian #423640.)
+
+2007-05-28 16:44 -0700  Brendan Cully  <brendan@kublai.com>  (794b039bacaa)
+
+	* Makefile.am, configure.ac, hcachever.sh, hcachever.sh.in:
+	Use autoconf instead of "which" to discover MD5 tool
+
 2007-05-20 00:29 -0700  Brendan Cully  <brendan@kublai.com>  (a0e038310f42)
 
 	* smtp.c: Forget SMTP password if authentication fails.  Thanks to

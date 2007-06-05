@@ -114,9 +114,10 @@ int compare_to (const void *a, const void *b)
   const char *fa, *fb;
   int result;
 
-  fa = mutt_get_name ((*ppa)->env->to);
+  fa = safe_strdup (mutt_get_name ((*ppa)->env->to));
   fb = mutt_get_name ((*ppb)->env->to);
   result = mutt_strcasecmp (fa, fb);
+  FREE(&fa);
   AUXSORT(result,a,b);
   return (SORTCODE (result));
 }
@@ -128,9 +129,10 @@ int compare_from (const void *a, const void *b)
   const char *fa, *fb;
   int result;
 
-  fa = mutt_get_name ((*ppa)->env->from);
+  fa = safe_strdup (mutt_get_name ((*ppa)->env->from));
   fb = mutt_get_name ((*ppb)->env->from);
   result = mutt_strcasecmp (fa, fb);
+  FREE(&fa);
   AUXSORT(result,a,b);
   return (SORTCODE (result));
 }
