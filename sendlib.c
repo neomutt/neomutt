@@ -1626,13 +1626,6 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
 	 i += l, last = w)
     {
 
-      if (i == 0) 
-      {
-	dprint (1, (debugfile, "WRITEONE cp: %s\n", cp));
-	dprint (1, (debugfile, "WRITEONE w:  %x\n", (unsigned int) w));
-	dprint (1, (debugfile, "WRITEONE iswspace (w) = %d\n", iswspace (w)));
-      }
-      
       /* Brief look at the last character we had... */
       if (iswspace (last))
       {
