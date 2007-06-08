@@ -1566,7 +1566,8 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
   int i, k, n;
   const char *cp;
   char buf [HUGE_STRING];
-  wchar_t w;
+  wchar_t w = (wchar_t) -1;
+  wchar_t last = (wchar_t) '\n';
   int l = 0;
   int first = 1;
   int wrapped = 0;
@@ -1606,9 +1607,11 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
     }
 
     if (first)
+    {
+      last = '\n';
       wrapped = 0;
-    
-    first = 0;
+      first = 0;
+    }
 
     /*
      * i is our running pointer, and always points to the *beginning* of an mb character.
@@ -1619,9 +1622,26 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
      */
     
     for (i = 0, k = 0, l = 0, n = 0; i + MB_CUR_MAX < sizeof (buf)
-           && cp[i] != '\0' && ((col < wraplen || in_encoded_word));
-	 i += l)
+           && cp[i] != '\0' && (col < wraplen || in_encoded_word);
+	 i += l, last = w)
     {
+
+      if (i == 0) 
+      {
+	dprint (1, (debugfile, "WRITEONE cp: %s\n", cp));
+	dprint (1, (debugfile, "WRITEONE w:  %x\n", (unsigned int) w));
+	dprint (1, (debugfile, "WRITEONE iswspace (w) = %d\n", iswspace (w)));
+      }
+      
+      /* Brief look at the last character we had... */
+      if (iswspace (last))
+      {
+	/* ... and if the next thing is an encoded word ... */
+	if (strncmp (&cp[i], "=?", 2) == 0)
+	  in_encoded_word = 1;
+	else
+	  in_encoded_word = 0;
+      }
       
       /* If there is a line break in the header, honor it. */
       if (cp[i] == '\n')
@@ -1636,6 +1656,7 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
 	  k = i;
 	  n = k + 1;
 	  l = 1;
+	  w = (wchar_t) '\n';
 	  break;
 	}
       }
@@ -1646,19 +1667,12 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
       {
 	dprint (1, (debugfile, "mutt_write_one_header: encoutered bad multi-byte character at %d.\n", i));
 	l = 1; /* if bad, move on by one character */
+	w = (wchar_t) -1;
       }
       else 
       {
 	if (wcwidth (w) >= 0)
 	  col += wcwidth (w);
-
-	if (iswspace (w))
-	{
-	  if (strncmp (&cp[i+l], "=?", 2) == 0)
-	    in_encoded_word = 1;
-	  else
-	    in_encoded_word = 0;
-	}
 
 	if (iswspace (w) && 
 	    (!k || col <= wraplen))
@@ -1698,6 +1712,7 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const c
 
     while (*cp)
     {
+      last = w;
       if ((l = mbtowc (&w, cp, MB_CUR_MAX)) > 0 && iswspace (w))
 	cp += l;
       else
