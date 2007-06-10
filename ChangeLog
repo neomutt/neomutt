@@ -1,3 +1,17 @@
+2007-06-09 01:03 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (53e5e1105fd2)
+
+	* sendlib.c: remove unnecessary dprints
+
+	* sendlib.c: Fix header encoding corner case.
+
+2007-06-05 13:12 -0700  pywatson  <pywatson@gmail.com>  (9e90789518ad)
+
+	* ChangeLog, sort.c: Make sort by "To" stable (closes #2515).
+	compare_to() calls mutt_get_name(), which may return a static
+	pointer if it in turn calls mutt_addr_for_display(). If this static
+	pointer is used for a and b, the result is bad. The fix is to make a
+	copy of the first object.
+
 2007-05-17 14:40 +0200  Christoph Berg  <cb@df7cb.de>  (edefe5e1f2b4)
 
 	* Muttrc.head: Temporarily set pipe_decode in the \cb urlview macro.

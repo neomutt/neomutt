@@ -39,4 +39,17 @@ int ascii_strncasecmp (const char *a, const char *b, int n);
 #define ascii_strcmp(a,b) mutt_strcmp(a,b)
 #define ascii_strncmp(a,b,c) mutt_strncmp(a,b,c)
 
+static inline char* ascii_strlower (char *s)
+{
+  char *p = s;
+
+  while (*p)
+  {
+    *p = ascii_tolower ((unsigned int) *p);
+    p++;
+  }
+
+  return s;
+}
+
 #endif

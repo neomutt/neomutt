@@ -760,21 +760,23 @@ static int get_micalg (gpgme_ctx_t ctx, char *buf, size_t buflen)
 {
   gpgme_sign_result_t result = NULL;
   const char *algorithm_name = NULL;
+  char *bp;
 
-  if (!buflen)
+  if (buflen < 5)
     return -1;
 
   *buf = 0;
   result = gpgme_op_sign_result (ctx);
   if (result && result->signatures)
+  {
+    algorithm_name = gpgme_hash_algo_name (result->signatures->hash_algo);
+    if (algorithm_name)
     {
-      algorithm_name = gpgme_hash_algo_name (result->signatures->hash_algo);
-      if (algorithm_name)
-	{
-	  strncpy (buf, algorithm_name, buflen - 1);
-	  buf[buflen - 1] = 0;
-	}
+      /* convert GPGME raw hash name to RFC 3156 format */
+      snprintf (buf, buflen, "pgp-%s", algorithm_name);
+      ascii_strlower (buf + 4);
     }
+  }
 
   return *buf? 0:-1;
 }
@@ -875,7 +877,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   if (!get_micalg (ctx, buf, sizeof buf))
     mutt_set_parameter ("micalg", buf, &t->parameter);
   else if (use_smime)
-    mutt_set_parameter ("micalg", "sha1", &t->parameter);
+    mutt_set_parameter ("micalg", "pgp-sha1", &t->parameter);
   gpgme_release (ctx);
 
   t->parts = a;
