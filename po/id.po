@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.14\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-04-06 13:35-0700\n"
+"POT-Creation-Date: 2007-06-09 20:30-0700\n"
 "PO-Revision-Date: 2007-03-13 10:15+1100\n"
 "Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Username at %s: "
 msgstr "Nama user di %s: "
 
-#: account.c:219
+#: account.c:223
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Password utk %s@%s: "
@@ -43,9 +43,9 @@ msgid "Select"
 msgstr "Pilih"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3656 curs_main.c:414
-#: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:521
-#: postpone.c:46 query.c:53 recvattach.c:58 smime.c:436
+#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3659 curs_main.c:414
+#: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
+#: postpone.c:46 query.c:53 recvattach.c:58 smime.c:437
 msgid "Help"
 msgstr "Bantuan"
 
@@ -88,8 +88,8 @@ msgstr "Nama lengkap: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Sudah betul?"
 
-#: alias.c:331 recvattach.c:411 recvattach.c:434 recvattach.c:447
-#: recvattach.c:460 recvattach.c:489
+#: alias.c:331 recvattach.c:412 recvattach.c:435 recvattach.c:448
+#: recvattach.c:461 recvattach.c:490
 msgid "Save to file: "
 msgstr "Simpan ke file: "
 
@@ -155,7 +155,7 @@ msgid "Cannot create filter"
 msgstr "Tidak bisa membuat filter"
 
 #: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1273
-#: pgpkey.c:570 pgpkey.c:759
+#: pgpkey.c:571 pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Tidak bisa membuat filter"
 
@@ -175,97 +175,97 @@ msgstr "Pindah dir"
 msgid "Mask"
 msgstr "Mask"
 
-#: browser.c:382 browser.c:1004
+#: browser.c:383 browser.c:1013
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s bukan direktori."
 
-#: browser.c:506
+#: browser.c:507
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Kotak surat [%d]"
 
-#: browser.c:513
+#: browser.c:514
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Berlangganan [%s], File mask: %s"
 
-#: browser.c:517
+#: browser.c:518
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Direktori [%s], File mask: %s"
 
-#: browser.c:529
+#: browser.c:530
 msgid "Can't attach a directory!"
 msgstr "Tidak bisa melampirkan sebuah direktori"
 
-#: browser.c:661 browser.c:1072 browser.c:1170
+#: browser.c:670 browser.c:1081 browser.c:1179
 msgid "No files match the file mask"
 msgstr "Tidak ada file yang sesuai dengan mask"
 
-#: browser.c:867
+#: browser.c:876
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Pembuatan hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:888
+#: browser.c:897
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Penggantian nama hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:910
+#: browser.c:919
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Penghapusan hanya didukung untuk kotak surat jenis IMAP."
 
-#: browser.c:920
+#: browser.c:929
 msgid "Cannot delete root folder"
 msgstr "Tidak bisa menghapus kotak surat utama"
 
-#: browser.c:923
+#: browser.c:932
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Yakin hapus kotak surat \"%s\"?"
 
-#: browser.c:937
+#: browser.c:946
 msgid "Mailbox deleted."
 msgstr "Kotak surat telah dihapus."
 
-#: browser.c:943
+#: browser.c:952
 msgid "Mailbox not deleted."
 msgstr "Kotak surat tidak dihapus."
 
-#: browser.c:962
+#: browser.c:971
 msgid "Chdir to: "
 msgstr "Pindah dir ke: "
 
-#: browser.c:992 browser.c:1065
+#: browser.c:1001 browser.c:1074
 msgid "Error scanning directory."
 msgstr "Gagal membaca direktori."
 
-#: browser.c:1015
+#: browser.c:1024
 msgid "File Mask: "
 msgstr "File Mask: "
 
-#: browser.c:1088
+#: browser.c:1097
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Urut terbalik berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:1089
+#: browser.c:1098
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Urut berdasarkan (t)anggal, (a)bjad, (u)kuran atau (n)ggak diurut? "
 
-#: browser.c:1090
+#: browser.c:1099
 msgid "dazn"
 msgstr "taun"
 
-#: browser.c:1157
+#: browser.c:1166
 msgid "New file name: "
 msgstr "Nama file baru: "
 
-#: browser.c:1188
+#: browser.c:1197
 msgid "Can't view a directory"
 msgstr "Tidak bisa menampilkan sebuah direktori"
 
-#: browser.c:1205
+#: browser.c:1214
 msgid "Error trying to view file"
 msgstr "Gagal menampilkan file"
 
@@ -545,7 +545,7 @@ msgstr "Tidak ada lampiran."
 msgid "Send"
 msgstr "Kirim"
 
-#: compose.c:90 remailer.c:487
+#: compose.c:90 remailer.c:488
 msgid "Abort"
 msgstr "Batal"
 
@@ -737,7 +737,7 @@ msgstr "error saat mengaktifkan protokol CMS: %s\n"
 msgid "error creating gpgme data object: %s\n"
 msgstr "error saat membuat objek data gpgme: %s\n"
 
-#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1399
+#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1401
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "error saat mengalokasikan objek data: %s\n"
@@ -782,64 +782,64 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 msgid "error encrypting data: %s\n"
 msgstr "error saat mengenkripsi data: %s\n"
 
-#: crypt-gpgme.c:849
+#: crypt-gpgme.c:851
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "error saat menandatangani data: %s\n"
 
-#: crypt-gpgme.c:1044
+#: crypt-gpgme.c:1046
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Perhatian: Salah satu kunci telah dicabut.\n"
 
-#: crypt-gpgme.c:1053
+#: crypt-gpgme.c:1055
 msgid "Warning: The key used to create the signature expired at: "
 msgstr ""
 "Perhatian: Kunci yg digunakan utk membuat tandatangan telah kadaluwarsa "
 "pada: "
 
-#: crypt-gpgme.c:1059
+#: crypt-gpgme.c:1061
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Perhatian: Minimal satu sertifikat sudah kadaluwarsa\n"
 
-#: crypt-gpgme.c:1075
+#: crypt-gpgme.c:1077
 msgid "Warning: The signature expired at: "
 msgstr "Perhatian: Tandatangan sudah kadaluwarsa pada: "
 
-#: crypt-gpgme.c:1081
+#: crypt-gpgme.c:1083
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr ""
 "Tidak bisa memverifikasi karena kunci atau sertifikat tidak ditemukan\n"
 
-#: crypt-gpgme.c:1086
+#: crypt-gpgme.c:1088
 msgid "The CRL is not available\n"
 msgstr "CRL tidak tersedia.\n"
 
-#: crypt-gpgme.c:1092
+#: crypt-gpgme.c:1094
 msgid "Available CRL is too old\n"
 msgstr "CRL yang tersedia sudah terlalu tua/lama\n"
 
-#: crypt-gpgme.c:1097
+#: crypt-gpgme.c:1099
 msgid "A policy requirement was not met\n"
 msgstr "Salah satu persyaratan kebijaksanaan tidak terpenuhi\n"
 
-#: crypt-gpgme.c:1106
+#: crypt-gpgme.c:1108
 msgid "A system error occurred"
 msgstr "Telah terjadi suatu kesalahan di sistem"
 
-#: crypt-gpgme.c:1140
+#: crypt-gpgme.c:1142
 #, fuzzy
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "PERHATIAN: Nama host server tidak cocok dengan sertifikat"
 
-#: crypt-gpgme.c:1147
+#: crypt-gpgme.c:1149
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#: crypt-gpgme.c:1164 crypt-gpgme.c:3123
+#: crypt-gpgme.c:1166 crypt-gpgme.c:3126
 msgid "Fingerprint: "
 msgstr "Cap jari: "
 
-#: crypt-gpgme.c:1224
+#: crypt-gpgme.c:1226
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -847,13 +847,13 @@ msgstr ""
 "PERHATIAN: TIDAK ada indikasi bahwa kunci tersebut dimiliki oleh orang yang "
 "namanya tertera di atas\n"
 
-#: crypt-gpgme.c:1231
+#: crypt-gpgme.c:1233
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 "PERHATIAN: Kunci tersebut TIDAK dimiliki oleh oleh orang yang namanya "
 "tertera di atas\n"
 
-#: crypt-gpgme.c:1235
+#: crypt-gpgme.c:1237
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
@@ -861,7 +861,7 @@ msgstr ""
 "PERHATIAN: TIDAK bisa dipastikan bahwa kunci tersebut dimiliki oleh orang "
 "yang namanya tertera di atas\n"
 
-#: crypt-gpgme.c:1310
+#: crypt-gpgme.c:1312
 msgid "Error getting key information: "
 msgstr "Error saat mengambil informasi tentang kunci: "
 
@@ -869,48 +869,48 @@ msgstr "Error saat mengambil informasi tentang kunci: "
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1317 crypt-gpgme.c:1350
+#: crypt-gpgme.c:1319 crypt-gpgme.c:1352
 msgid "Good signature from: "
 msgstr "Tandatangan valid dari: "
 
-#: crypt-gpgme.c:1327
+#: crypt-gpgme.c:1329
 msgid "                aka: "
 msgstr "                alias: "
 
-#: crypt-gpgme.c:1331 crypt-gpgme.c:1353
+#: crypt-gpgme.c:1333 crypt-gpgme.c:1355
 msgid "            created: "
 msgstr "            dibuat: "
 
-#: crypt-gpgme.c:1340
+#: crypt-gpgme.c:1342
 msgid "*BAD* signature claimed to be from: "
 msgstr "Tandatangan *TIDAK* valid diklaim seakan-akan dari: "
 
-#: crypt-gpgme.c:1363
+#: crypt-gpgme.c:1365
 msgid "Error checking signature"
 msgstr "Error saat mengecek tandatangan"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1407 crypt-gpgme.c:1621 crypt-gpgme.c:2118
+#: crypt-gpgme.c:1409 crypt-gpgme.c:1623 crypt-gpgme.c:2120
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Awal informasi tandatangan --]\n"
 
-#: crypt-gpgme.c:1416
+#: crypt-gpgme.c:1418
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Error: verifikasi gagal: %s\n"
 
-#: crypt-gpgme.c:1465
+#: crypt-gpgme.c:1467
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Awal Notasi (tandatangan oleh: %s) ***\n"
 
-#: crypt-gpgme.c:1487
+#: crypt-gpgme.c:1489
 msgid "*** End Notation ***\n"
 msgstr "*** Akhir Notasi ***\n"
 
-#: crypt-gpgme.c:1495 crypt-gpgme.c:1634 crypt-gpgme.c:2133
+#: crypt-gpgme.c:1497 crypt-gpgme.c:1636 crypt-gpgme.c:2135
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -918,7 +918,7 @@ msgstr ""
 "[-- Akhir informasi tandatangan --]\n"
 "\n"
 
-#: crypt-gpgme.c:1589
+#: crypt-gpgme.c:1591
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -927,16 +927,16 @@ msgstr ""
 "[-- Error: dekripsi gagal: %s --]\n"
 "\n"
 
-#: crypt-gpgme.c:2093
+#: crypt-gpgme.c:2095
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Error: dekripsi/verifikasi gagal: %s\n"
 
-#: crypt-gpgme.c:2141
+#: crypt-gpgme.c:2143
 msgid "Error: copy data failed\n"
 msgstr "Error: penyalinan data gagal\n"
 
-#: crypt-gpgme.c:2161 pgp.c:428
+#: crypt-gpgme.c:2163 pgp.c:428
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -944,11 +944,11 @@ msgstr ""
 "[-- AWAL SURAT PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2163 pgp.c:430
+#: crypt-gpgme.c:2165 pgp.c:430
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AWAL PGP PUBLIC KEY BLOCK --]\n"
 
-#: crypt-gpgme.c:2166 pgp.c:432
+#: crypt-gpgme.c:2168 pgp.c:432
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -956,19 +956,19 @@ msgstr ""
 "[-- AWAL SURAT DG TANDATANGAN PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2193 pgp.c:458
+#: crypt-gpgme.c:2195 pgp.c:458
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- AKHIR PESAN PGP --]\n"
 
-#: crypt-gpgme.c:2195 pgp.c:465
+#: crypt-gpgme.c:2197 pgp.c:465
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- AKHIR PGP PUBLIC KEY BLOCK --]\n"
 
-#: crypt-gpgme.c:2197 pgp.c:467
+#: crypt-gpgme.c:2199 pgp.c:467
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- AKHIR PESAN DG TANDATANGAN PGP --]\n"
 
-#: crypt-gpgme.c:2218 pgp.c:497
+#: crypt-gpgme.c:2220 pgp.c:497
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -976,7 +976,7 @@ msgstr ""
 "[-- Error: tidak tahu dimana surat PGP dimulai! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2249 pgp.c:926
+#: crypt-gpgme.c:2251 pgp.c:926
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -984,11 +984,11 @@ msgstr ""
 "[-- Error: surat PGP/MIME tidak dalam format yg betul! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2261 crypt-gpgme.c:2327 pgp.c:939
+#: crypt-gpgme.c:2263 crypt-gpgme.c:2329 pgp.c:939
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Error: tidak bisa membuat file sementara! --]\n"
 
-#: crypt-gpgme.c:2273
+#: crypt-gpgme.c:2275
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -996,7 +996,7 @@ msgstr ""
 "[-- Data berikut ditandatangani dan dienkripsi dg PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2274 pgp.c:948
+#: crypt-gpgme.c:2276 pgp.c:948
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1004,15 +1004,15 @@ msgstr ""
 "[-- Data berikut dienkripsi dg PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2296
+#: crypt-gpgme.c:2298
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Akhir data yang ditandatangani dan dienkripsi dg PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2297 pgp.c:968
+#: crypt-gpgme.c:2299 pgp.c:968
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2339
+#: crypt-gpgme.c:2341
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1020,7 +1020,7 @@ msgstr ""
 "[-- Data berikut ditandatangani dg S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2340
+#: crypt-gpgme.c:2342
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1028,226 +1028,226 @@ msgstr ""
 "[-- Data berikut dienkripsi dg S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2370
+#: crypt-gpgme.c:2372
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Akhir data yg ditandatangani dg S/MIME --]\n"
 
-#: crypt-gpgme.c:2371
+#: crypt-gpgme.c:2373
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Akhir data yang dienkripsi dg S/MIME --]\n"
 
-#: crypt-gpgme.c:2963
+#: crypt-gpgme.c:2966
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak diketahui)]"
 
-#: crypt-gpgme.c:2965
+#: crypt-gpgme.c:2968
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Tidak bisa menampilkan user ID ini (encoding tidak valid)]"
 
-#: crypt-gpgme.c:2970
+#: crypt-gpgme.c:2973
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Tidak bisa menampilkan user ID ini (DN tidak valid)]"
 
-#: crypt-gpgme.c:3049
+#: crypt-gpgme.c:3052
 msgid " aka ......: "
 msgstr " alias.....: "
 
-#: crypt-gpgme.c:3049
+#: crypt-gpgme.c:3052
 msgid "Name ......: "
 msgstr "Nama ......: "
 
-#: crypt-gpgme.c:3052 crypt-gpgme.c:3191
+#: crypt-gpgme.c:3055 crypt-gpgme.c:3194
 msgid "[Invalid]"
 msgstr "[Tidak valid]"
 
-#: crypt-gpgme.c:3072 crypt-gpgme.c:3215
+#: crypt-gpgme.c:3075 crypt-gpgme.c:3218
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Berlaku Dari..: %s\n"
 
-#: crypt-gpgme.c:3085 crypt-gpgme.c:3228
+#: crypt-gpgme.c:3088 crypt-gpgme.c:3231
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Berlaku Sampai: %s\n"
 
-#: crypt-gpgme.c:3098 crypt-gpgme.c:3241
+#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Jenis Kunci: %s, %lu bit %s\n"
 
-#: crypt-gpgme.c:3100 crypt-gpgme.c:3243
+#: crypt-gpgme.c:3103 crypt-gpgme.c:3246
 #, c-format
 msgid "Key Usage .: "
 msgstr "Penggunaan Kunci: "
 
-#: crypt-gpgme.c:3105 crypt-gpgme.c:3248
+#: crypt-gpgme.c:3108 crypt-gpgme.c:3251
 msgid "encryption"
 msgstr "enkripsi"
 
-#: crypt-gpgme.c:3106 crypt-gpgme.c:3111 crypt-gpgme.c:3116 crypt-gpgme.c:3249
-#: crypt-gpgme.c:3254 crypt-gpgme.c:3259
+#: crypt-gpgme.c:3109 crypt-gpgme.c:3114 crypt-gpgme.c:3119 crypt-gpgme.c:3252
+#: crypt-gpgme.c:3257 crypt-gpgme.c:3262
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3110 crypt-gpgme.c:3253
+#: crypt-gpgme.c:3113 crypt-gpgme.c:3256
 msgid "signing"
 msgstr "menandatangani"
 
-#: crypt-gpgme.c:3115 crypt-gpgme.c:3258
+#: crypt-gpgme.c:3118 crypt-gpgme.c:3261
 msgid "certification"
 msgstr "sertifikasi"
 
-#: crypt-gpgme.c:3155
+#: crypt-gpgme.c:3158
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Nomer Seri .: 0x%s\n"
 
-#: crypt-gpgme.c:3163
+#: crypt-gpgme.c:3166
 #, c-format
 msgid "Issued By .: "
 msgstr "Dikeluarkan oleh: "
 
 #. display only the short keyID
-#: crypt-gpgme.c:3182
+#: crypt-gpgme.c:3185
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Sub kunci..: 0x%s"
 
-#: crypt-gpgme.c:3186
+#: crypt-gpgme.c:3189
 msgid "[Revoked]"
 msgstr "[Dicabut]"
 
-#: crypt-gpgme.c:3196
+#: crypt-gpgme.c:3199
 msgid "[Expired]"
 msgstr "[Kadaluwarsa]"
 
-#: crypt-gpgme.c:3201
+#: crypt-gpgme.c:3204
 msgid "[Disabled]"
 msgstr "[Tidak aktif]"
 
-#: crypt-gpgme.c:3285 pgpkey.c:559 pgpkey.c:739
+#: crypt-gpgme.c:3288 pgpkey.c:560 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "Tidak bisa membuat file sementara"
 
-#: crypt-gpgme.c:3288
+#: crypt-gpgme.c:3291
 msgid "Collecting data..."
 msgstr "Mengumpulkan data ..."
 
-#: crypt-gpgme.c:3314
+#: crypt-gpgme.c:3317
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Error saat mencari kunci yg mengeluarkan: %s\n"
 
-#: crypt-gpgme.c:3324
+#: crypt-gpgme.c:3327
 msgid "Error: certification chain to long - stopping here\n"
 msgstr "Error: rantai sertifikasi terlalu panjang - berhenti di sini\n"
 
-#: crypt-gpgme.c:3335 pgpkey.c:580
+#: crypt-gpgme.c:3338 pgpkey.c:581
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Identifikasi kunci: 0x%s"
 
-#: crypt-gpgme.c:3418
+#: crypt-gpgme.c:3421
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new gagal: %s"
 
-#: crypt-gpgme.c:3457 crypt-gpgme.c:3520
+#: crypt-gpgme.c:3460 crypt-gpgme.c:3523
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start gagal: %s"
 
-#: crypt-gpgme.c:3507 crypt-gpgme.c:3548
+#: crypt-gpgme.c:3510 crypt-gpgme.c:3551
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next gagal: %s"
 
-#: crypt-gpgme.c:3619
+#: crypt-gpgme.c:3622
 msgid "All matching keys are marked expired/revoked."
 msgstr "Semua kunci yang cocok ditandai kadaluwarsa/dicabut."
 
-#: crypt-gpgme.c:3648 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:514
-#: smime.c:431
+#: crypt-gpgme.c:3651 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: smime.c:432
 msgid "Exit  "
 msgstr "Keluar  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3650 pgpkey.c:516 smime.c:433
+#: crypt-gpgme.c:3653 pgpkey.c:517 smime.c:434
 msgid "Select  "
 msgstr "Pilih  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3653 pgpkey.c:519
+#: crypt-gpgme.c:3656 pgpkey.c:520
 msgid "Check key  "
 msgstr "Cek key  "
 
-#: crypt-gpgme.c:3670
+#: crypt-gpgme.c:3673
 msgid "PGP and S/MIME keys matching"
 msgstr "Kunci-kunci PGP dan S/MIME cocok"
 
-#: crypt-gpgme.c:3672
+#: crypt-gpgme.c:3675
 msgid "PGP keys matching"
 msgstr "Kunci-kunci PGP cocok"
 
-#: crypt-gpgme.c:3674
+#: crypt-gpgme.c:3677
 msgid "S/MIME keys matching"
 msgstr "Kunci-kunci S/MIME cocok"
 
-#: crypt-gpgme.c:3676
+#: crypt-gpgme.c:3679
 msgid "keys matching"
 msgstr "kunci-kunci cocok"
 
-#: crypt-gpgme.c:3679
+#: crypt-gpgme.c:3682
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
-#: crypt-gpgme.c:3681
+#: crypt-gpgme.c:3684
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:3708 pgpkey.c:600
+#: crypt-gpgme.c:3711 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Kunci ini tidak dapat digunakan: kadaluwarsa/disabled/dicabut."
 
-#: crypt-gpgme.c:3722 pgpkey.c:612
+#: crypt-gpgme.c:3725 pgpkey.c:613
 msgid "ID is expired/disabled/revoked."
 msgstr "ID telah kadaluwarsa/disabled/dicabut."
 
-#: crypt-gpgme.c:3742 pgpkey.c:616
+#: crypt-gpgme.c:3745 pgpkey.c:617
 msgid "ID has undefined validity."
 msgstr "Validitas ID tidak terdifinisikan."
 
-#: crypt-gpgme.c:3745 pgpkey.c:619
+#: crypt-gpgme.c:3748 pgpkey.c:620
 msgid "ID is not valid."
 msgstr "ID tidak valid."
 
-#: crypt-gpgme.c:3748 pgpkey.c:622
+#: crypt-gpgme.c:3751 pgpkey.c:623
 msgid "ID is only marginally valid."
 msgstr "ID hanya valid secara marginal."
 
-#: crypt-gpgme.c:3756 pgpkey.c:626
+#: crypt-gpgme.c:3759 pgpkey.c:627
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Anda yakin mau menggunakan kunci tsb?"
 
-#: crypt-gpgme.c:3813 crypt-gpgme.c:3926 pgpkey.c:839 pgpkey.c:955
+#: crypt-gpgme.c:3816 crypt-gpgme.c:3929 pgpkey.c:840 pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Mencari kunci yg cocok dengan \"%s\"..."
 
-#: crypt-gpgme.c:4089 pgp.c:1175
+#: crypt-gpgme.c:4092 pgp.c:1175
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Gunakan keyID = '%s' untuk %s?"
 
-#: crypt-gpgme.c:4125 pgp.c:1209 smime.c:665 smime.c:790
+#: crypt-gpgme.c:4128 pgp.c:1209 smime.c:666 smime.c:791
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Masukkan keyID untuk %s: "
 
-#: crypt-gpgme.c:4190
+#: crypt-gpgme.c:4193
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
@@ -1255,38 +1255,38 @@ msgstr ""
 "\n"
 "Menggunakan backend GPGME, walaupun tdk ada gpg-agent yg berjalan"
 
-#: crypt-gpgme.c:4218
+#: crypt-gpgme.c:4221
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "S/MIME (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, (p)gp atau (b)"
 "ersih? "
 
-#: crypt-gpgme.c:4219
+#: crypt-gpgme.c:4222
 msgid "esabpfc"
 msgstr "etsdplb"
 
-#: crypt-gpgme.c:4222
+#: crypt-gpgme.c:4225
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
 "PGP (e)nkrip, (t)andatangan, tandatangan (s)bg, ke(d)uanya, s/(m)ime atau (b)"
 "ersih? "
 
-#: crypt-gpgme.c:4223
+#: crypt-gpgme.c:4226
 msgid "esabmfc"
 msgstr "etsdmlb"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4239 pgp.c:1585 smime.c:2034
+#: crypt-gpgme.c:4242 pgp.c:1585 smime.c:2036
 msgid "Sign as: "
 msgstr "Tandatangani sebagai: "
 
-#: crypt-gpgme.c:4336
+#: crypt-gpgme.c:4339
 msgid "Failed to verify sender"
 msgstr "Gagal memverifikasi pengirim"
 
-#: crypt-gpgme.c:4339
+#: crypt-gpgme.c:4342
 msgid "Failed to figure out sender"
 msgstr "Gagal menentukan pengirim"
 
@@ -1305,7 +1305,7 @@ msgid "Passphrase(s) forgotten."
 msgstr "Passphrase sudah dilupakan."
 
 #. they really want to send it inline... go for it
-#: crypt.c:147 cryptglue.c:110 pgpkey.c:563 pgpkey.c:752
+#: crypt.c:147 cryptglue.c:110 pgpkey.c:564 pgpkey.c:753
 msgid "Invoking PGP..."
 msgstr "Memanggil PGP..."
 
@@ -1427,7 +1427,7 @@ msgstr "Tidak ada surat."
 msgid "Mailbox is read-only."
 msgstr "Kotak surat hanya bisa dibaca."
 
-#: curs_main.c:57 pager.c:59 recvattach.c:891
+#: curs_main.c:57 pager.c:59 recvattach.c:892
 msgid "Function not permitted in attach-message mode."
 msgstr "Fungsi ini tidak diperbolehkan pada mode pelampiran-surat"
 
@@ -1510,7 +1510,7 @@ msgstr "Surat itu tidak bisa dilihat."
 msgid "Invalid message number."
 msgstr "Tidak ada nomer begitu."
 
-#: curs_main.c:808 curs_main.c:1833 pager.c:2274
+#: curs_main.c:808 curs_main.c:1848 pager.c:2279
 msgid "delete message(s)"
 msgstr "hapus surat(-surat)"
 
@@ -1544,7 +1544,7 @@ msgstr "Keluar dari Mutt?"
 msgid "Tag messages matching: "
 msgstr "Tandai surat-surat yang: "
 
-#: curs_main.c:975 curs_main.c:2119 pager.c:2584
+#: curs_main.c:975 curs_main.c:2137 pager.c:2589
 msgid "undelete message(s)"
 msgstr "tidak jadi hapus surat(-surat)"
 
@@ -1556,117 +1556,122 @@ msgstr "Tidak jadi hapus surat-surat yang: "
 msgid "Untag messages matching: "
 msgstr "Tidak jadi tandai surat-surat yang: "
 
-#: curs_main.c:1064
+#: curs_main.c:1065
 msgid "Open mailbox in read-only mode"
 msgstr "Buka kotak surat dengan mode read-only"
 
-#: curs_main.c:1066
+#: curs_main.c:1067
 msgid "Open mailbox"
 msgstr "Buka kotak surat"
 
-#: curs_main.c:1090 mx.c:508 mx.c:657
+#: curs_main.c:1077
+#, fuzzy
+msgid "No mailboxes have new mail"
+msgstr "Tidak ada kotak surat dengan surat baru."
+
+#: curs_main.c:1105 mx.c:508 mx.c:657
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s bukan kotak surat."
 
-#: curs_main.c:1185
+#: curs_main.c:1200
 msgid "Exit Mutt without saving?"
 msgstr "Keluar dari Mutt tanpa menyimpan?"
 
-#: curs_main.c:1203 curs_main.c:1236 curs_main.c:1680 curs_main.c:1712
-#: flags.c:270 thread.c:1026 thread.c:1081 thread.c:1136
+#: curs_main.c:1218 curs_main.c:1251 curs_main.c:1695 curs_main.c:1727
+#: flags.c:286 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "Tidak disetting untuk melakukan threading."
 
-#: curs_main.c:1215
+#: curs_main.c:1230
 msgid "Thread broken"
 msgstr "Thread dipecah"
 
-#: curs_main.c:1233
+#: curs_main.c:1248
 msgid "link threads"
 msgstr "hubungkan thread"
 
-#: curs_main.c:1238
+#: curs_main.c:1253
 msgid "No Message-ID: header available to link thread"
 msgstr "Tidak ada header Message-ID: tersedia utk menghubungkan thread"
 
-#: curs_main.c:1240
+#: curs_main.c:1255
 msgid "First, please tag a message to be linked here"
 msgstr "Pertama, tandai sebuah surat utk dihubungkan ke sini"
 
-#: curs_main.c:1252
+#: curs_main.c:1267
 msgid "Threads linked"
 msgstr "Thread dihubungkan"
 
-#: curs_main.c:1255
+#: curs_main.c:1270
 msgid "No thread linked"
 msgstr "Tidak ada thread yg dihubungkan"
 
-#: curs_main.c:1291 curs_main.c:1316
+#: curs_main.c:1306 curs_main.c:1331
 msgid "You are on the last message."
 msgstr "Anda sudah di surat yang terakhir."
 
-#: curs_main.c:1298 curs_main.c:1342
+#: curs_main.c:1313 curs_main.c:1357
 msgid "No undeleted messages."
 msgstr "Tidak ada surat yang tidak jadi dihapus."
 
-#: curs_main.c:1335 curs_main.c:1359
+#: curs_main.c:1350 curs_main.c:1374
 msgid "You are on the first message."
 msgstr "Anda sudah di surat yang pertama."
 
-#: curs_main.c:1434 pattern.c:1460
+#: curs_main.c:1449 pattern.c:1466
 msgid "Search wrapped to top."
 msgstr "Pencarian kembali ke atas."
 
-#: curs_main.c:1443 pattern.c:1471
+#: curs_main.c:1458 pattern.c:1477
 msgid "Search wrapped to bottom."
 msgstr "Pencarian kembali ke bawah."
 
-#: curs_main.c:1484
+#: curs_main.c:1499
 msgid "No new messages"
 msgstr "Tidak ada surat baru"
 
-#: curs_main.c:1484
+#: curs_main.c:1499
 msgid "No unread messages"
 msgstr "Tidak ada surat yang belum dibaca"
 
-#: curs_main.c:1485
+#: curs_main.c:1500
 msgid " in this limited view"
 msgstr " di tampilan terbatas ini"
 
-#: curs_main.c:1501
+#: curs_main.c:1516
 msgid "flag message"
 msgstr "tandai surat"
 
-#: curs_main.c:1538 pager.c:2550
+#: curs_main.c:1553 pager.c:2555
 msgid "toggle new"
 msgstr "tandai/tidak baru"
 
-#: curs_main.c:1615
+#: curs_main.c:1630
 msgid "No more threads."
 msgstr "Tidak ada thread lagi."
 
-#: curs_main.c:1617
+#: curs_main.c:1632
 msgid "You are on the first thread."
 msgstr "Anda di thread yang pertama."
 
-#: curs_main.c:1698
+#: curs_main.c:1713
 msgid "Thread contains unread messages."
 msgstr "Thread berisi surat yang belum dibaca."
 
-#: curs_main.c:1792 pager.c:2257
+#: curs_main.c:1807 pager.c:2262
 msgid "delete message"
 msgstr "hapus surat"
 
-#: curs_main.c:1874
+#: curs_main.c:1889
 msgid "edit message"
 msgstr "edit surat"
 
-#: curs_main.c:2005
+#: curs_main.c:2020
 msgid "mark message(s) as read"
 msgstr "loncat ke surat induk di thread ini"
 
-#: curs_main.c:2092 pager.c:2569
+#: curs_main.c:2110 pager.c:2574
 msgid "undelete message"
 msgstr "tidak jadi hapus surat"
 
@@ -1795,11 +1800,11 @@ msgstr "Tidak bisa menambah ke kotak surat: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "Error. Menyimpan file sementara: %s"
 
-#: flags.c:313
+#: flags.c:329
 msgid "Set flag"
 msgstr "Tandai"
 
-#: flags.c:313
+#: flags.c:329
 msgid "Clear flag"
 msgstr "Batal ditandai"
 
@@ -1969,7 +1974,7 @@ msgstr "unhook: jenis tidak dikenali: %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Tidak dapat menghapus %s dari %s."
 
-#: imap/auth.c:108 pop_auth.c:399 smtp.c:449
+#: imap/auth.c:108 pop_auth.c:399 smtp.c:452
 msgid "No authenticators available"
 msgstr "Tidak ada pengauthentikasi yg bisa digunakan"
 
@@ -2010,7 +2015,7 @@ msgstr "Sedang login..."
 msgid "Login failed."
 msgstr "Login gagal."
 
-#: imap/auth_sasl.c:97 smtp.c:484
+#: imap/auth_sasl.c:97 smtp.c:487
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Mengauthentikasi (%s)..."
@@ -2058,7 +2063,7 @@ msgstr "Penggantian nama gagal: %s"
 msgid "Mailbox renamed."
 msgstr "Kotak surat telah diganti namanya."
 
-#: imap/command.c:375
+#: imap/command.c:372
 msgid "Mailbox closed"
 msgstr "Kotak surat telah ditutup."
 
@@ -2088,70 +2093,70 @@ msgstr "Hubungan terenkripsi tidak tersedia"
 msgid "Selecting %s..."
 msgstr "Memilih %s..."
 
-#: imap/imap.c:750
+#: imap/imap.c:748
 msgid "Error opening mailbox"
 msgstr "Error saat membuka kotak surat"
 
-#: imap/imap.c:806 imap/message.c:784 muttlib.c:1415
+#: imap/imap.c:801 imap/message.c:792 muttlib.c:1417
 #, c-format
 msgid "Create %s?"
 msgstr "Buat %s?"
 
-#: imap/imap.c:1139
+#: imap/imap.c:1131
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Menandai %d surat-surat \"dihapus\"..."
 
-#: imap/imap.c:1148
+#: imap/imap.c:1140
 msgid "Expunge failed"
 msgstr "Penghapusan gagal"
 
-#: imap/imap.c:1178
+#: imap/imap.c:1173
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Menyimpan surat2 yg berubah... [%d/%d]"
 
-#: imap/imap.c:1228
+#: imap/imap.c:1227
 msgid "Error saving flags. Close anyway?"
 msgstr "Gagal menyimpan flags. Tetap mau ditutup aja?"
 
-#: imap/imap.c:1236
+#: imap/imap.c:1235
 msgid "Error saving flags"
 msgstr "Gagal menyimpan flags"
 
-#: imap/imap.c:1248
+#: imap/imap.c:1247
 msgid "Expunging messages from server..."
 msgstr "Menghapus surat-surat di server..."
 
-#: imap/imap.c:1253
+#: imap/imap.c:1252
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE (hapus) gagal"
 
-#: imap/imap.c:1730
+#: imap/imap.c:1725
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Pencarian header tanpa nama header: %s"
 
-#: imap/imap.c:1802
+#: imap/imap.c:1797
 msgid "Bad mailbox name"
 msgstr "Nama kotak surat yg buruk"
 
-#: imap/imap.c:1825
+#: imap/imap.c:1820
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Berlangganan ke %s..."
 
-#: imap/imap.c:1827
+#: imap/imap.c:1822
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Berhenti langganan dari %s..."
 
-#: imap/imap.c:1837
+#: imap/imap.c:1832
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Berlangganan ke %s..."
 
-#: imap/imap.c:1839
+#: imap/imap.c:1834
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Berhenti langganan dari %s"
@@ -2166,37 +2171,37 @@ msgstr "Tidak dapat mengambil header dari IMAP server versi ini."
 msgid "Could not create temporary file %s"
 msgstr "Tidak bisa membuat file sementara %s"
 
-#: imap/message.c:135
+#: imap/message.c:137
 msgid "Evaluating cache..."
 msgstr "Memeriksa cache..."
 
-#: imap/message.c:210 pop.c:239
+#: imap/message.c:221 pop.c:239
 msgid "Fetching message headers..."
 msgstr "Mengambil header surat..."
 
-#: imap/message.c:394 imap/message.c:451 pop.c:513
+#: imap/message.c:402 imap/message.c:459 pop.c:513
 msgid "Fetching message..."
 msgstr "Mengambil surat..."
 
-#: imap/message.c:440 pop.c:508
+#: imap/message.c:448 pop.c:508
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index dari surat tidak benar. Cobalah membuka kembali kotak surat tsb."
 
-#: imap/message.c:591
+#: imap/message.c:599
 msgid "Uploading message..."
 msgstr "Meletakkan surat ..."
 
-#: imap/message.c:750
+#: imap/message.c:758
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Menyalin %d surat ke %s..."
 
-#: imap/message.c:754
+#: imap/message.c:762
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Menyalin surat %d ke %s..."
 
-#: imap/util.c:296
+#: imap/util.c:335
 msgid "Continue?"
 msgstr "Lanjutkan?"
 
@@ -2860,354 +2865,359 @@ msgid "link tagged message to the current one"
 msgstr "hubungkan surat yang telah ditandai ke yang sedang dipilih"
 
 #: keymap_alldefs.h:114
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "Tidak ada kotak surat dengan surat baru."
+
+#: keymap_alldefs.h:115
 msgid "jump to the next new message"
 msgstr "ke surat berikutnya yang baru"
 
-#: keymap_alldefs.h:115
+#: keymap_alldefs.h:116
 msgid "jump to the next new or unread message"
 msgstr "ke surat berikutnya yang baru atau belum dibaca"
 
-#: keymap_alldefs.h:116
+#: keymap_alldefs.h:117
 msgid "jump to the next subthread"
 msgstr "ke subthread berikutnya"
 
-#: keymap_alldefs.h:117
+#: keymap_alldefs.h:118
 msgid "jump to the next thread"
 msgstr "ke thread berikutnya"
 
-#: keymap_alldefs.h:118
+#: keymap_alldefs.h:119
 msgid "move to the next undeleted message"
 msgstr "ke surat berikutnya yang tidak dihapus"
 
-#: keymap_alldefs.h:119
+#: keymap_alldefs.h:120
 msgid "jump to the next unread message"
 msgstr "ke surat berikutnya yang belum dibaca"
 
-#: keymap_alldefs.h:120
+#: keymap_alldefs.h:121
 msgid "jump to parent message in thread"
 msgstr "loncat ke surat induk di thread ini"
 
-#: keymap_alldefs.h:121
+#: keymap_alldefs.h:122
 msgid "jump to previous thread"
 msgstr "ke thread sebelumnya"
 
-#: keymap_alldefs.h:122
+#: keymap_alldefs.h:123
 msgid "jump to previous subthread"
 msgstr "ke subthread sebelumnya"
 
-#: keymap_alldefs.h:123
+#: keymap_alldefs.h:124
 msgid "move to the previous undeleted message"
 msgstr "ke surat sebelumnya yang tidak dihapus"
 
-#: keymap_alldefs.h:124
+#: keymap_alldefs.h:125
 msgid "jump to the previous new message"
 msgstr "ke surat sebelumnya yang baru"
 
-#: keymap_alldefs.h:125
+#: keymap_alldefs.h:126
 msgid "jump to the previous new or unread message"
 msgstr "ke surat sebelumnya yang baru atau belum dibaca"
 
-#: keymap_alldefs.h:126
+#: keymap_alldefs.h:127
 msgid "jump to the previous unread message"
 msgstr "ke surat sebelumnya yang belum dibaca"
 
-#: keymap_alldefs.h:127
+#: keymap_alldefs.h:128
 msgid "mark the current thread as read"
 msgstr "tandai thread ini 'sudah dibaca'"
 
-#: keymap_alldefs.h:128
+#: keymap_alldefs.h:129
 msgid "mark the current subthread as read"
 msgstr "tandai subthread ini 'sudah dibaca'"
 
-#: keymap_alldefs.h:129
+#: keymap_alldefs.h:130
 msgid "set a status flag on a message"
 msgstr "tandai status dari surat"
 
-#: keymap_alldefs.h:130
+#: keymap_alldefs.h:131
 msgid "save changes to mailbox"
 msgstr "simpan perubahan ke kotak surat"
 
-#: keymap_alldefs.h:131
+#: keymap_alldefs.h:132
 msgid "tag messages matching a pattern"
 msgstr "tandai surat-surat yang cocok dengan kriteria"
 
-#: keymap_alldefs.h:132
+#: keymap_alldefs.h:133
 msgid "undelete messages matching a pattern"
 msgstr "tidak jadi menghapus surat-surat yang cocok dengan kriteria"
 
-#: keymap_alldefs.h:133
+#: keymap_alldefs.h:134
 msgid "untag messages matching a pattern"
 msgstr "tidak jadi menandai surat-surat yang cocok dengan kriteria"
 
-#: keymap_alldefs.h:134
+#: keymap_alldefs.h:135
 msgid "move to the middle of the page"
 msgstr "ke tengah halaman"
 
-#: keymap_alldefs.h:135
+#: keymap_alldefs.h:136
 msgid "move to the next entry"
 msgstr "ke entry berikutnya"
 
-#: keymap_alldefs.h:136
+#: keymap_alldefs.h:137
 msgid "scroll down one line"
 msgstr "geser ke bawah satu baris"
 
-#: keymap_alldefs.h:137
+#: keymap_alldefs.h:138
 msgid "move to the next page"
 msgstr "ke halaman berikutnya"
 
-#: keymap_alldefs.h:138
+#: keymap_alldefs.h:139
 msgid "jump to the bottom of the message"
 msgstr "ke akhir surat"
 
-#: keymap_alldefs.h:139
+#: keymap_alldefs.h:140
 msgid "toggle display of quoted text"
 msgstr "tampilkan atau tidak teks yang dikutip"
 
-#: keymap_alldefs.h:140
+#: keymap_alldefs.h:141
 msgid "skip beyond quoted text"
 msgstr "lompati setelah teks yang dikutip"
 
-#: keymap_alldefs.h:141
+#: keymap_alldefs.h:142
 msgid "jump to the top of the message"
 msgstr "ke awal surat"
 
-#: keymap_alldefs.h:142
+#: keymap_alldefs.h:143
 msgid "pipe message/attachment to a shell command"
 msgstr "pipe surat/lampiran ke perintah shell"
 
-#: keymap_alldefs.h:143
+#: keymap_alldefs.h:144
 msgid "move to the previous entry"
 msgstr "ke entry sebelumnya"
 
-#: keymap_alldefs.h:144
+#: keymap_alldefs.h:145
 msgid "scroll up one line"
 msgstr "geser ke atas satu baris"
 
-#: keymap_alldefs.h:145
+#: keymap_alldefs.h:146
 msgid "move to the previous page"
 msgstr "ke halaman sebelumnya"
 
-#: keymap_alldefs.h:146
+#: keymap_alldefs.h:147
 msgid "print the current entry"
 msgstr "cetak entry ini"
 
-#: keymap_alldefs.h:147
+#: keymap_alldefs.h:148
 msgid "query external program for addresses"
 msgstr "gunakan program lain untuk mencari alamat"
 
-#: keymap_alldefs.h:148
+#: keymap_alldefs.h:149
 msgid "append new query results to current results"
 msgstr "tambahkan hasil pencarian baru ke hasil yang sudah ada"
 
-#: keymap_alldefs.h:149
+#: keymap_alldefs.h:150
 msgid "save changes to mailbox and quit"
 msgstr "simpan perubahan ke kotak surat dan keluar"
 
-#: keymap_alldefs.h:150
+#: keymap_alldefs.h:151
 msgid "recall a postponed message"
 msgstr "lanjutkan surat yang ditunda"
 
-#: keymap_alldefs.h:151
+#: keymap_alldefs.h:152
 msgid "clear and redraw the screen"
 msgstr "bersihkan layar dan redraw"
 
-#: keymap_alldefs.h:152
+#: keymap_alldefs.h:153
 msgid "{internal}"
 msgstr "{jerohan}"
 
-#: keymap_alldefs.h:153
+#: keymap_alldefs.h:154
 msgid "rename the current mailbox (IMAP only)"
 msgstr "ganti nama kotak surat ini (untuk IMAP)"
 
-#: keymap_alldefs.h:154
+#: keymap_alldefs.h:155
 msgid "reply to a message"
 msgstr "balas surat"
 
-#: keymap_alldefs.h:155
+#: keymap_alldefs.h:156
 msgid "use the current message as a template for a new one"
 msgstr "gunakan surat ini sebagai template"
 
-#: keymap_alldefs.h:156
+#: keymap_alldefs.h:157
 msgid "save message/attachment to a file"
 msgstr "simpan surat/lampiran ke suatu file"
 
-#: keymap_alldefs.h:157
+#: keymap_alldefs.h:158
 msgid "search for a regular expression"
 msgstr "cari dengan regular expression"
 
-#: keymap_alldefs.h:158
+#: keymap_alldefs.h:159
 msgid "search backwards for a regular expression"
 msgstr "cari mundur dengan regular expression"
 
-#: keymap_alldefs.h:159
+#: keymap_alldefs.h:160
 msgid "search for next match"
 msgstr "cari yang cocok berikutnya"
 
-#: keymap_alldefs.h:160
+#: keymap_alldefs.h:161
 msgid "search for next match in opposite direction"
 msgstr "cari mundur yang cocok berikutnya"
 
-#: keymap_alldefs.h:161
+#: keymap_alldefs.h:162
 msgid "toggle search pattern coloring"
 msgstr "diwarnai atau tidak jika ketemu"
 
-#: keymap_alldefs.h:162
+#: keymap_alldefs.h:163
 msgid "invoke a command in a subshell"
 msgstr "jalankan perintah di subshell"
 
-#: keymap_alldefs.h:163
+#: keymap_alldefs.h:164
 msgid "sort messages"
 msgstr "urutkan surat-surat"
 
-#: keymap_alldefs.h:164
+#: keymap_alldefs.h:165
 msgid "sort messages in reverse order"
 msgstr "urutkan terbalik surat-surat"
 
-#: keymap_alldefs.h:165
+#: keymap_alldefs.h:166
 msgid "tag the current entry"
 msgstr "tandai entry ini"
 
-#: keymap_alldefs.h:166
+#: keymap_alldefs.h:167
 msgid "apply next function to tagged messages"
 msgstr "lakukan fungsi berikutnya ke surat-surat yang ditandai"
 
-#: keymap_alldefs.h:167
+#: keymap_alldefs.h:168
 msgid "apply next function ONLY to tagged messages"
 msgstr "lakukan fungsi berikutnya HANYA ke surat-surat yang ditandai"
 
-#: keymap_alldefs.h:168
+#: keymap_alldefs.h:169
 msgid "tag the current subthread"
 msgstr "tandai subthread ini"
 
-#: keymap_alldefs.h:169
+#: keymap_alldefs.h:170
 msgid "tag the current thread"
 msgstr "tandai thread ini"
 
-#: keymap_alldefs.h:170
+#: keymap_alldefs.h:171
 msgid "toggle a message's 'new' flag"
 msgstr "tandai atau tidak sebuah surat 'baru'"
 
-#: keymap_alldefs.h:171
+#: keymap_alldefs.h:172
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "apakah kotak surat akan ditulis ulang"
 
-#: keymap_alldefs.h:172
+#: keymap_alldefs.h:173
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "apakah menjelajahi kotak-kotak surat saja atau semua file"
 
-#: keymap_alldefs.h:173
+#: keymap_alldefs.h:174
 msgid "move to the top of the page"
 msgstr "ke awal halaman"
 
-#: keymap_alldefs.h:174
+#: keymap_alldefs.h:175
 msgid "undelete the current entry"
 msgstr "tidak jadi hapus entry ini"
 
-#: keymap_alldefs.h:175
+#: keymap_alldefs.h:176
 msgid "undelete all messages in thread"
 msgstr "tidak jadi hapus semua surat di thread"
 
-#: keymap_alldefs.h:176
+#: keymap_alldefs.h:177
 msgid "undelete all messages in subthread"
 msgstr "tidak jadi hapus semua surat di subthread"
 
-#: keymap_alldefs.h:177
+#: keymap_alldefs.h:178
 msgid "show the Mutt version number and date"
 msgstr "tunjukkan versi dan tanggal dari Mutt"
 
-#: keymap_alldefs.h:178
+#: keymap_alldefs.h:179
 msgid "view attachment using mailcap entry if necessary"
 msgstr "tampilkan lampiran berdasarkan mailcap jika perlu"
 
-#: keymap_alldefs.h:179
+#: keymap_alldefs.h:180
 msgid "show MIME attachments"
 msgstr "tampilkan lampiran MIME"
 
-#: keymap_alldefs.h:180
+#: keymap_alldefs.h:181
 msgid "display the keycode for a key press"
 msgstr "tampilkan keycode untuk penekanan tombol"
 
-#: keymap_alldefs.h:181
+#: keymap_alldefs.h:182
 msgid "show currently active limit pattern"
 msgstr "tampilkan kriteria batas yang sedang aktif"
 
-#: keymap_alldefs.h:182
+#: keymap_alldefs.h:183
 msgid "collapse/uncollapse current thread"
 msgstr "collapse/uncollapse thread ini"
 
-#: keymap_alldefs.h:183
+#: keymap_alldefs.h:184
 msgid "collapse/uncollapse all threads"
 msgstr "collapse/uncollapse semua thread"
 
-#: keymap_alldefs.h:184
+#: keymap_alldefs.h:185
 msgid "attach a PGP public key"
 msgstr "lampirkan PGP public key"
 
-#: keymap_alldefs.h:185
+#: keymap_alldefs.h:186
 msgid "show PGP options"
 msgstr "tunjukan opsi2 PGP"
 
-#: keymap_alldefs.h:186
+#: keymap_alldefs.h:187
 msgid "mail a PGP public key"
 msgstr "kirim PGP public key lewat surat"
 
-#: keymap_alldefs.h:187
+#: keymap_alldefs.h:188
 msgid "verify a PGP public key"
 msgstr "periksa PGP public key"
 
-#: keymap_alldefs.h:188
+#: keymap_alldefs.h:189
 msgid "view the key's user id"
 msgstr "tampilkan user ID dari key"
 
-#: keymap_alldefs.h:189
+#: keymap_alldefs.h:190
 msgid "check for classic PGP"
 msgstr "periksa PGP klasik"
 
-#: keymap_alldefs.h:190
+#: keymap_alldefs.h:191
 msgid "Accept the chain constructed"
 msgstr "Terima rangkaian yang dibentuk"
 
-#: keymap_alldefs.h:191
+#: keymap_alldefs.h:192
 msgid "Append a remailer to the chain"
 msgstr "Tambahkan remailer ke rangkaian"
 
-#: keymap_alldefs.h:192
+#: keymap_alldefs.h:193
 msgid "Insert a remailer into the chain"
 msgstr "Sisipkan remailer ke rangkaian"
 
-#: keymap_alldefs.h:193
+#: keymap_alldefs.h:194
 msgid "Delete a remailer from the chain"
 msgstr "Hapus remailer dari rangkaian"
 
-#: keymap_alldefs.h:194
+#: keymap_alldefs.h:195
 msgid "Select the previous element of the chain"
 msgstr "Pilih elemen sebelumnya dalam rangkaian"
 
-#: keymap_alldefs.h:195
+#: keymap_alldefs.h:196
 msgid "Select the next element of the chain"
 msgstr "Pilih elemen berikutnya dalam rangkaian"
 
-#: keymap_alldefs.h:196
+#: keymap_alldefs.h:197
 msgid "send the message through a mixmaster remailer chain"
 msgstr "kirim surat melalui sebuah rangkaian remailer mixmaster"
 
-#: keymap_alldefs.h:197
+#: keymap_alldefs.h:198
 msgid "make decrypted copy and delete"
 msgstr "buat salinan yang sudah di-decrypt dan hapus"
 
-#: keymap_alldefs.h:198
+#: keymap_alldefs.h:199
 msgid "make decrypted copy"
 msgstr "buat salinan yang sudah di-decrypt"
 
-#: keymap_alldefs.h:199
+#: keymap_alldefs.h:200
 msgid "wipe passphrase(s) from memory"
 msgstr "hapus passphrase dari memory"
 
-#: keymap_alldefs.h:200
+#: keymap_alldefs.h:201
 msgid "extract supported public keys"
 msgstr "ekstrak kunci2 publik yg didukung"
 
-#: keymap_alldefs.h:201
+#: keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "tunjukan opsi2 S/MIME"
 
@@ -3397,28 +3407,28 @@ msgstr "%s tidak ada. Buat?"
 msgid "Can't create %s: %s."
 msgstr "Tidak bisa membuat %s: %s."
 
-#: main.c:832
+#: main.c:833
 msgid "No recipients specified.\n"
 msgstr "Tidak ada penerima yang disebutkan.\n"
 
-#: main.c:918
+#: main.c:919
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: tidak bisa melampirkan file.\n"
 
-#: main.c:938
+#: main.c:942
 msgid "No mailbox with new mail."
 msgstr "Tidak ada kotak surat dengan surat baru."
 
-#: main.c:947
+#: main.c:951
 msgid "No incoming mailboxes defined."
 msgstr "Tidak ada kotak surat incoming yang didefinisikan."
 
-#: main.c:975
+#: main.c:979
 msgid "Mailbox is empty."
 msgstr "Kotak surat kosong."
 
-#: mbox.c:121 mbox.c:271 mh.c:1075 mx.c:678
+#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:678
 #, c-format
 msgid "Reading %s..."
 msgstr "Membaca %s..."
@@ -3448,7 +3458,7 @@ msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: mbox diubah, tapi tidak ada surat yang berubah! (laporkan bug ini)"
 
-#: mbox.c:785 mh.c:1592 mx.c:771
+#: mbox.c:785 mh.c:1599 mx.c:771
 #, c-format
 msgid "Writing %s..."
 msgstr "Menulis %s..."
@@ -3510,19 +3520,19 @@ msgstr "Anda di entry terakhir."
 msgid "You are on the first entry."
 msgstr "Anda di entry pertama."
 
-#: menu.c:724 pattern.c:1398
+#: menu.c:724 pattern.c:1404
 msgid "Search for: "
 msgstr "Cari: "
 
-#: menu.c:725 pattern.c:1399
+#: menu.c:725 pattern.c:1405
 msgid "Reverse search for: "
 msgstr "Cari mundur: "
 
-#: menu.c:735 pattern.c:1431
+#: menu.c:735 pattern.c:1437
 msgid "No search pattern."
 msgstr "Tidak ada kriteria pencarian."
 
-#: menu.c:765 pager.c:1982 pager.c:1998 pager.c:2106 pattern.c:1514
+#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1520
 msgid "Not found."
 msgstr "Tidak ketemu."
 
@@ -3542,7 +3552,12 @@ msgstr "Pelompatan tidak diimplementasikan untuk dialogs."
 msgid "Tagging is not supported."
 msgstr "Penandaan tidak didukung."
 
-#: mh.c:1316
+#: mh.c:1076
+#, fuzzy, c-format
+msgid "Scanning %s..."
+msgstr "Memilih %s..."
+
+#: mh.c:1323
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): tidak dapat mengeset waktu pada file"
 
@@ -3844,16 +3859,16 @@ msgstr "File sudah ada, (t)impa, t(a)mbahkan, atau (b)atal?"
 msgid "oac"
 msgstr "tab"
 
-#: muttlib.c:1378
+#: muttlib.c:1380
 msgid "Can't save message to POP mailbox."
 msgstr "Tidak bisa menyimpan surat ke kotak surat POP"
 
-#: muttlib.c:1387
+#: muttlib.c:1389
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Tambahkan surat-surat ke %s?"
 
-#: muttlib.c:1399
+#: muttlib.c:1401
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s bukan kotak surat!"
@@ -3973,31 +3988,31 @@ msgid "Next"
 msgstr "Brkt"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1890 pager.c:1921 pager.c:1953 pager.c:2194
+#: pager.c:1895 pager.c:1926 pager.c:1958 pager.c:2199
 msgid "Bottom of message is shown."
 msgstr "Sudah paling bawah."
 
-#: pager.c:1906 pager.c:1928 pager.c:1935 pager.c:1942
+#: pager.c:1911 pager.c:1933 pager.c:1940 pager.c:1947
 msgid "Top of message is shown."
 msgstr "Sudah paling atas."
 
-#: pager.c:2011
+#: pager.c:2016
 msgid "Reverse search: "
 msgstr "Cari mundur: "
 
-#: pager.c:2012
+#: pager.c:2017
 msgid "Search: "
 msgstr "Cari: "
 
-#: pager.c:2132
+#: pager.c:2137
 msgid "Help is currently being shown."
 msgstr "Bantuan sedang ditampilkan."
 
-#: pager.c:2161
+#: pager.c:2166
 msgid "No more quoted text."
 msgstr "Tidak ada lagi teks kutipan."
 
-#: pager.c:2174
+#: pager.c:2179
 msgid "No more unquoted text after quoted text."
 msgstr "Tidak ada lagi teks yang tidak dikutp setelah teks kutipan."
 
@@ -4069,36 +4084,36 @@ msgstr "tanda kurung tidak klop: %s"
 msgid "empty pattern"
 msgstr "kriteria kosong"
 
-#: pattern.c:1212
+#: pattern.c:1218
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "error: %d tidak dikenali (laporkan error ini)."
 
-#: pattern.c:1282 pattern.c:1417
+#: pattern.c:1288 pattern.c:1423
 msgid "Compiling search pattern..."
 msgstr "Menyusun kriteria pencarian..."
 
-#: pattern.c:1301
+#: pattern.c:1307
 msgid "Executing command on matching messages..."
 msgstr "Menjalankan perintah terhadap surat-surat yang cocok..."
 
-#: pattern.c:1368
+#: pattern.c:1374
 msgid "No messages matched criteria."
 msgstr "Tidak ada surat yang memenuhi kriteria."
 
-#: pattern.c:1450
+#: pattern.c:1456
 msgid "Searching..."
 msgstr "Mencari..."
 
-#: pattern.c:1463
+#: pattern.c:1469
 msgid "Search hit bottom without finding match"
 msgstr "Sudah dicari sampe bawah, tapi tidak ketemu"
 
-#: pattern.c:1474
+#: pattern.c:1480
 msgid "Search hit top without finding match"
 msgstr "Sudah dicari sampe atas, tapi tidak ketemu"
 
-#: pattern.c:1506
+#: pattern.c:1512
 msgid "Search interrupted."
 msgstr "Pencarian dibatalkan."
 
@@ -4173,33 +4188,33 @@ msgstr "(i)nline"
 msgid "esabifc"
 msgstr "etsdilb"
 
-#: pgpinvoke.c:307
+#: pgpinvoke.c:308
 msgid "Fetching PGP key..."
 msgstr "Mengambil PGP key..."
 
-#: pgpkey.c:490
+#: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
 msgstr "Semua kunci yang cocok telah kadaluwarsa, dicabut, atau disabled."
 
-#: pgpkey.c:532
+#: pgpkey.c:533
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "PGP keys yg cocok dg <%s>."
 
-#: pgpkey.c:534
+#: pgpkey.c:535
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "PGP keys yg cocok dg \"%s\"."
 
-#: pgpkey.c:553 pgpkey.c:745
+#: pgpkey.c:554 pgpkey.c:746
 msgid "Can't open /dev/null"
 msgstr "Tidak bisa membuka /dev/null"
 
-#: pgpkey.c:724
+#: pgpkey.c:725
 msgid "Please enter the key ID: "
 msgstr "Masukkan key ID: "
 
-#: pgpkey.c:777
+#: pgpkey.c:778
 #, c-format
 msgid "PGP Key %s."
 msgstr "Kunci PGP %s."
@@ -4378,65 +4393,65 @@ msgstr "Pipa"
 msgid "Print"
 msgstr "Cetak"
 
-#: recvattach.c:452
+#: recvattach.c:453
 msgid "Saving..."
 msgstr "Menyimpan..."
 
-#: recvattach.c:455 recvattach.c:545
+#: recvattach.c:456 recvattach.c:546
 msgid "Attachment saved."
 msgstr "Lampiran telah disimpan."
 
-#: recvattach.c:557
+#: recvattach.c:558
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "PERHATIAN! Anda akan menimpa %s, lanjut?"
 
-#: recvattach.c:575
+#: recvattach.c:576
 msgid "Attachment filtered."
 msgstr "Lampiran telah difilter."
 
-#: recvattach.c:642
+#: recvattach.c:643
 msgid "Filter through: "
 msgstr "Filter melalui: "
 
-#: recvattach.c:642
+#: recvattach.c:643
 msgid "Pipe to: "
 msgstr "Pipe ke: "
 
-#: recvattach.c:677
+#: recvattach.c:678
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Saya tidak tahu bagaimana mencetak lampiran %s!"
 
-#: recvattach.c:742
+#: recvattach.c:743
 msgid "Print tagged attachment(s)?"
 msgstr "Cetak lampiran yang ditandai?"
 
-#: recvattach.c:742
+#: recvattach.c:743
 msgid "Print attachment?"
 msgstr "Cetak lampiran?"
 
-#: recvattach.c:975
+#: recvattach.c:976
 msgid "Can't decrypt encrypted message!"
 msgstr "Tidak dapat men-decrypt surat ini!"
 
-#: recvattach.c:988
+#: recvattach.c:989
 msgid "Attachments"
 msgstr "Lampiran"
 
-#: recvattach.c:1024
+#: recvattach.c:1025
 msgid "There are no subparts to show!"
 msgstr "Tidak ada sub-bagian yg bisa ditampilkan!"
 
-#: recvattach.c:1085
+#: recvattach.c:1086
 msgid "Can't delete attachment from POP server."
 msgstr "Tidak bisa menghapus lampiran dari server POP."
 
-#: recvattach.c:1093
+#: recvattach.c:1094
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Penghapusan lampiran dari surat yg dienkripsi tidak didukung."
 
-#: recvattach.c:1112 recvattach.c:1129
+#: recvattach.c:1113 recvattach.c:1130
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Hanya penghapusan lampiran dari surat multi bagian yang didukung."
 
@@ -4490,67 +4505,67 @@ msgstr ""
 "Tidak dapat menguraikan semua lampiran yang ditandai. Ubah yg lainnya ke "
 "MIME?"
 
-#: remailer.c:484
+#: remailer.c:485
 msgid "Append"
 msgstr "Tambahkan"
 
-#: remailer.c:485
+#: remailer.c:486
 msgid "Insert"
 msgstr "Masukkan"
 
-#: remailer.c:486
+#: remailer.c:487
 msgid "Delete"
 msgstr "Hapus"
 
-#: remailer.c:488
+#: remailer.c:489
 msgid "OK"
 msgstr "OK"
 
-#: remailer.c:516
+#: remailer.c:517
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Tidak dapat mengambil type2.list milik mixmaster!"
 
-#: remailer.c:542
+#: remailer.c:543
 msgid "Select a remailer chain."
 msgstr "Pilih rangkaian remailer."
 
-#: remailer.c:602
+#: remailer.c:603
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "Error: %s tidak dapat digunakan sebagai akhir rangkaian remailer."
 
-#: remailer.c:632
+#: remailer.c:633
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "Rangkaian mixmaster dibatasi hingga %d elemen."
 
-#: remailer.c:655
+#: remailer.c:656
 msgid "The remailer chain is already empty."
 msgstr "Rangkaian remailer sudah kosong."
 
-#: remailer.c:665
+#: remailer.c:666
 msgid "You already have the first chain element selected."
 msgstr "Anda sudah memilih awal rangkaian."
 
-#: remailer.c:675
+#: remailer.c:676
 msgid "You already have the last chain element selected."
 msgstr "Anda sudah memilih akhir rangkaian."
 
-#: remailer.c:714
+#: remailer.c:715
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster tidak menerima header Cc maupun Bcc."
 
-#: remailer.c:738
+#: remailer.c:739
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Mohon variabel hostname diisi dengan benar jika menggunakan mixmaster!"
 
-#: remailer.c:772
+#: remailer.c:773
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d.\n"
 
-#: remailer.c:776
+#: remailer.c:777
 msgid "Error sending message."
 msgstr "Gagal mengirim surat."
 
@@ -4700,16 +4715,16 @@ msgstr "%s bukan file biasa."
 msgid "Could not open %s"
 msgstr "Tidak bisa membuka %s"
 
-#: sendlib.c:2220
+#: sendlib.c:2228
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "Error mengirimkan surat, proses keluar dengan kode %d (%s)."
 
-#: sendlib.c:2226
+#: sendlib.c:2234
 msgid "Output of the delivery process"
 msgstr "Keluaran dari proses pengiriman"
 
-#: sendlib.c:2438
+#: sendlib.c:2446
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "IDN %s pada saat mempersiapkan resent-from tidak benar."
@@ -4733,99 +4748,99 @@ msgstr "Sinyal %d tertangkap... Keluar.\n"
 msgid "Enter S/MIME passphrase:"
 msgstr "Masukkan passphrase S/MIME: "
 
-#: smime.c:321
+#: smime.c:322
 msgid "Trusted   "
 msgstr "Dipercaya "
 
-#: smime.c:324
+#: smime.c:325
 msgid "Verified  "
 msgstr "Sudah verif."
 
-#: smime.c:327
+#: smime.c:328
 msgid "Unverified"
 msgstr "Blm verif."
 
-#: smime.c:330
+#: smime.c:331
 msgid "Expired   "
 msgstr "Kadaluwarsa"
 
-#: smime.c:333
+#: smime.c:334
 msgid "Revoked   "
 msgstr "Dicabut   "
 
-#: smime.c:336
+#: smime.c:337
 msgid "Invalid   "
 msgstr "Tdk valid "
 
-#: smime.c:339
+#: smime.c:340
 msgid "Unknown   "
 msgstr "Tdk diketahui"
 
-#: smime.c:368
+#: smime.c:369
 msgid "Enter keyID: "
 msgstr "Masukkan keyID: "
 
-#: smime.c:391
+#: smime.c:392
 #, c-format
 msgid "S/MIME certificates matching \"%s\"."
 msgstr "Sertifikat2 S/MIME yg cocok dg \"%s\"."
 
-#: smime.c:541 smime.c:611 smime.c:629
+#: smime.c:542 smime.c:612 smime.c:630
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
 msgstr "ID %s belum diverifikasi. Yakin mau digunakan utk %s ?"
 
-#: smime.c:545 smime.c:615
+#: smime.c:546 smime.c:616
 #, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
 msgstr "Gunakan ID (belum dipercaya!) %s utk %s ?"
 
-#: smime.c:548 smime.c:618
+#: smime.c:549 smime.c:619
 #, c-format
 msgid "Use ID %s for %s ?"
 msgstr "Gunakan ID %s utk %s ?"
 
-#: smime.c:637
+#: smime.c:638
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
 msgstr ""
 "Warning: Anda belum memutuskan utk mempercayai ID %s. (sembarang utk lanjut)"
 
-#: smime.c:796
+#: smime.c:797
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Tidak ditemukan sertifikat (yg valid) utk %s."
 
-#: smime.c:851 smime.c:879 smime.c:944 smime.c:988 smime.c:1053 smime.c:1128
+#: smime.c:852 smime.c:880 smime.c:945 smime.c:989 smime.c:1054 smime.c:1129
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Error: tidak bisa membuat subproses utk OpenSSL!"
 
-#: smime.c:1206
+#: smime.c:1207
 msgid "no certfile"
 msgstr "tdk ada certfile"
 
-#: smime.c:1209
+#: smime.c:1210
 msgid "no mbox"
 msgstr "tdk ada mbox"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1352
+#: smime.c:1353
 msgid "No output from OpenSSL.."
 msgstr "Tdk ada keluaran dr OpenSSL"
 
-#: smime.c:1390
+#: smime.c:1391
 msgid "Warning: Intermediate certificate not found."
 msgstr "Warning: Sertifikat intermediate tdk ditemukan."
 
-#: smime.c:1433
+#: smime.c:1434
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Tidak bisa membuka subproses OpenSSL!"
 
-#: smime.c:1471
+#: smime.c:1472
 msgid "No output from OpenSSL..."
 msgstr "Tdk ada keluaran dr OpenSSL..."
 
-#: smime.c:1636 smime.c:1760
+#: smime.c:1637 smime.c:1762
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4833,19 +4848,19 @@ msgstr ""
 "[-- Akhir keluaran OpenSSL --]\n"
 "\n"
 
-#: smime.c:1720 smime.c:1731
+#: smime.c:1721 smime.c:1732
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Error: tidak bisa membuat subproses utk OpenSSL! --]\n"
 
-#: smime.c:1764
+#: smime.c:1766
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Data berikut dienkripsi dg S/MIME --]\n"
 
-#: smime.c:1767
+#: smime.c:1769
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Data berikut ditandatangani dg S/MIME --]\n"
 
-#: smime.c:1831
+#: smime.c:1833
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4853,7 +4868,7 @@ msgstr ""
 "\n"
 "[-- Akhir data yang dienkripsi dg S/MIME. --]\n"
 
-#: smime.c:1833
+#: smime.c:1835
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4861,57 +4876,62 @@ msgstr ""
 "\n"
 "[-- Akhir data yg ditandatangani dg S/MIME. --]\n"
 
-#: smime.c:1944
+#: smime.c:1946
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 "S/MIME (e)nkrip, (t)andatangan, enkrip d(g), tandatangan (s)bg, ke(d)uanya, "
 "atau (b)ersih? "
 
-#: smime.c:1945
+#: smime.c:1947
 msgid "eswabfc"
 msgstr "etgsdlb"
 
 #. I use "dra" because "123" is recognized anyway
-#: smime.c:1960
+#: smime.c:1962
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Pilih algoritma: 1: DES, 2: RC2, 3: AES, atau (b)atal? "
 
-#: smime.c:1963
+#: smime.c:1965
 msgid "drac"
 msgstr "drab"
 
-#: smime.c:1966
+#: smime.c:1968
 msgid "1: DES, 2: Triple-DES "
 msgstr ""
 
-#: smime.c:1967
+#: smime.c:1969
 msgid "dt"
 msgstr ""
 
-#: smime.c:1979
+#: smime.c:1981
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr ""
 
-#: smime.c:1980
+#: smime.c:1982
 msgid "468"
 msgstr ""
 
-#: smime.c:1995
+#: smime.c:1997
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr ""
 
-#: smime.c:1996
+#: smime.c:1998
 msgid "895"
 msgstr ""
 
-#: smime.c:2024
+#: smime.c:2026
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Tdk bisa tandatangan: Kunci tdk diberikan. Gunakan Tandatangan Sbg."
 
 #: smtp.c:113
 #, fuzzy, c-format
 msgid "SMTP session failed: %s"
+msgstr "Penggantian nama gagal: %s"
+
+#: smtp.c:153
+#, fuzzy, c-format
+msgid "SMTP session failed: unable to open %s"
 msgstr "Penggantian nama gagal: %s"
 
 #: smtp.c:269
@@ -4936,20 +4956,20 @@ msgstr ""
 msgid "SMTP authentication requires SASL"
 msgstr "Authentikasi GSSAPI gagal."
 
-#: smtp.c:548
+#: smtp.c:551
 #, fuzzy
 msgid "SASL authentication failed"
 msgstr "Authentikasi SASL gagal."
 
-#: sort.c:263
+#: sort.c:265
 msgid "Sorting mailbox..."
 msgstr "Mengurutkan surat-surat..."
 
-#: sort.c:300
+#: sort.c:302
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Tidak bisa menemukan fungsi pengurutan! [laporkan bug ini]"
 
-#: status.c:106
+#: status.c:108
 msgid "(no mailbox)"
 msgstr "(tidak ada kotak surat)"
 

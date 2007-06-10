@@ -1,3 +1,13 @@
+2007-06-09 20:26 -0700  Brendan Cully  <brendan@kublai.com>  (4b5b42ddfe42)
+
+	* .hgignore: Ignore hcachever.sh now that autoconf is creating it
+
+2007-06-09 19:58 -0700  Brendan Cully  <brendan@kublai.com>  (e6f958b093b6)
+
+	* ascii.h, crypt-gpgme.c: Make GPGME backend generate a
+	RFC3156-compliant micalg parameter (blush). Based on a patch by
+	Stefan Haun. Closes #2901.
+
 2007-06-09 01:03 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (53e5e1105fd2)
 
 	* sendlib.c: remove unnecessary dprints
@@ -6,11 +16,11 @@
 
 2007-06-05 13:12 -0700  pywatson  <pywatson@gmail.com>  (9e90789518ad)
 
-	* ChangeLog, sort.c: Make sort by "To" stable (closes #2515).
-	compare_to() calls mutt_get_name(), which may return a static
-	pointer if it in turn calls mutt_addr_for_display(). If this static
-	pointer is used for a and b, the result is bad. The fix is to make a
-	copy of the first object.
+	* sort.c: Make sort by "To" stable (closes #2515).  compare_to()
+	calls mutt_get_name(), which may return a static pointer if it in
+	turn calls mutt_addr_for_display(). If this static pointer is used
+	for a and b, the result is bad. The fix is to make a copy of the
+	first object.
 
 2007-05-17 14:40 +0200  Christoph Berg  <cb@df7cb.de>  (edefe5e1f2b4)
 
