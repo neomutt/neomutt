@@ -6,6 +6,7 @@
 ^config\.h(\.in)?$
 ^config\.(log|status)$
 ^configure$
+^hcachever.sh$
 ^muttbug\.sh$
 ^stamp-h1$
 ^doc/instdoc\.sh$
