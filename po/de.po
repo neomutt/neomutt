@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.14\n"
+"Project-Id-Version: 1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-09 20:30-0700\n"
-"PO-Revision-Date: 2007-02-25 12:33+0100\n"
+"PO-Revision-Date: 2007-06-10 17:18+0200\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -769,9 +769,9 @@ msgid "error setting secret key `%s': %s\n"
 msgstr "Fehler beim Setzen des geheimen Schlüssels `%s': %s\n"
 
 #: crypt-gpgme.c:684
-#, fuzzy, c-format
+#, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "Fehler beim Auslesen der Schlüsselinformation: "
+msgstr "Fehler beim Setzen der Darstellung der PKA Unterschrift: %s\n"
 
 #: crypt-gpgme.c:740
 #, c-format
@@ -820,13 +820,12 @@ msgid "A system error occurred"
 msgstr "Ein Systemfehler ist aufgetreten"
 
 #: crypt-gpgme.c:1142
-#, fuzzy
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "WARNUNG: Hostname des Servers entspricht nicht dem Zertifikat"
+msgstr "WARNUNG: PKA Eintrag entspricht nicht Adresse des Unterzeichners: "
 
 #: crypt-gpgme.c:1149
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "Die PKA geprüfte Adresse des Unterzeichners lautet: "
 
 #: crypt-gpgme.c:1166 crypt-gpgme.c:3126
 msgid "Fingerprint: "
@@ -1555,9 +1554,8 @@ msgid "Open mailbox"
 msgstr "Öffne Mailbox"
 
 #: curs_main.c:1077
-#, fuzzy
 msgid "No mailboxes have new mail"
-msgstr "Keine Mailbox mit neuen Nachrichten."
+msgstr "Keine Mailbox mit neuen Nachrichten"
 
 #: curs_main.c:1105 mx.c:508 mx.c:657
 #, c-format
@@ -1948,7 +1946,7 @@ msgstr "Hilfe für %s"
 #: history.c:75 history.c:109 history.c:132
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "Falsches Format der Datei früherer Eingaben (Zeile %d)"
 
 #: hook.c:251
 #, c-format
@@ -2858,9 +2856,8 @@ msgid "link tagged message to the current one"
 msgstr "Markierte Nachrichten mit der aktuellen verbinden"
 
 #: keymap_alldefs.h:114
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "Keine Mailbox mit neuen Nachrichten."
+msgstr "Öffne nächste Mailbox mit neuen Nachrichten"
 
 #: keymap_alldefs.h:115
 msgid "jump to the next new message"
@@ -3232,21 +3229,19 @@ msgstr ""
 "Um einen Bug zu melden, besuchen Sie bitte http://bugs.mutt.org/.\n"
 
 #: main.c:63
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2006 Michael R. Elkins und andere.\n"
+"Copyright (C) 1996-2007 Michael R. Elkins und andere.\n"
 "Mutt übernimmt KEINERLEI GEWÄHRLEISTUNG. Starten Sie `mutt -vv', um\n"
 "weitere Details darüber zu erfahren. Mutt ist freie Software. \n"
 "Sie können es unter bestimmten Bedingungen weitergeben; starten Sie\n"
 "`mutt -vv' für weitere Details.\n"
 
 #: main.c:69
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3261,9 +3256,9 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2006 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3317,6 +3312,13 @@ msgid ""
 "       mutt [<options>] -D\n"
 "       mutt -v[v]\n"
 msgstr ""
+"usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
+"       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] <addr> [...]\n"
+"       mutt [<options>] -p\n"
+"       mutt [<options>] -A <alias> [...]\n"
+"       mutt [<options>] -Q <query> [...]\n"
+"       mutt [<options>] -D\n"
+"       mutt -v[v]\n"
 
 #: main.c:116
 msgid ""
@@ -3385,6 +3387,9 @@ msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
+"  --\t\tbehandle folgende Parameter als Adressen, auch wenn sie mit\n"
+"\t\teinem Bindestrich beginnen. Bei Verwendung von -a mit mehreren\n"
+"\t\tDateinamen ist -- zwingend notwendig"
 
 #: main.c:187
 msgid ""
@@ -3563,9 +3568,9 @@ msgid "Tagging is not supported."
 msgstr "Markieren wird nicht unterstützt."
 
 #: mh.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "Wähle %s aus..."
+msgstr "Durchsuche %s..."
 
 #: mh.c:1323
 msgid "maildir_commit_message(): unable to set time on file"
@@ -3573,40 +3578,39 @@ msgstr "maildir_commit_message(): kann Zeitstempel der Datei nicht setzen"
 
 #: mutt_sasl.c:189
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Unbekanntes SASL Profil"
 
 #: mutt_sasl.c:195
 msgid "SASL failed to get local IP address"
-msgstr ""
+msgstr "SASL konnte lokale IP nicht ermitteln"
 
 #: mutt_sasl.c:200
 msgid "SASL failed to parse local IP address"
-msgstr ""
+msgstr "SASL konnte lokale IP nicht parsen"
 
 #: mutt_sasl.c:206
 msgid "SASL failed to get remote IP address"
-msgstr ""
+msgstr "SASL konnte IP der Gegenseite nicht ermitteln"
 
 #: mutt_sasl.c:211
 msgid "SASL failed to parse remote IP address"
-msgstr ""
+msgstr "SASL konnte IP der Gegenseite nicht parsen"
 
 #: mutt_sasl.c:222
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "Fehler beim Anlegen des Datenobjekts: %s\n"
+msgstr "Fehler beim Aufbau der SASL Verbindung"
 
 #: mutt_sasl.c:232
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Fehler beim Setzen der SASL Sicherheitsparameter"
 
 #: mutt_sasl.c:242
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "Fehler beim Setzen der externen SASL Sicherheitstärke"
 
 #: mutt_sasl.c:248
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Fehler beim Setzen des externen SASL Benutzernamens"
 
 #: mutt_socket.c:103 mutt_socket.c:174
 #, c-format
@@ -4299,7 +4303,7 @@ msgstr "Authentifiziere (SASL)..."
 
 #: pop_auth.c:188
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "POP Zeitstempel ist ungültig!"
 
 #: pop_auth.c:193
 msgid "Authenticating (APOP)..."
@@ -4933,41 +4937,39 @@ msgstr ""
 "Kann nicht signieren: Kein Schlüssel angegeben. Verwenden Sie \"sign. als\"."
 
 #: smtp.c:113
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: %s"
-msgstr "Umbenennung fehlgeschlagen: %s"
+msgstr "SMTP Verbindung fehlgeschlagen: %s"
 
 #: smtp.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "Umbenennung fehlgeschlagen: %s"
+msgstr "SMTP Verbindung fehlgeschlagen: Kann %s nicht öffnen"
 
 #: smtp.c:269
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "SMTP Verbindung fehlgeschlagen: Lesefehler"
 
 #: smtp.c:271
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "SMTP Verbindung fehlgeschlagen: Schreibfehler"
 
 #: smtp.c:294
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "Ungültig  "
+msgstr "Ungültige SMTP URL: %s"
 
 #: smtp.c:400
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "SMTP Server unterstützt keine Authentifizierung"
 
 #: smtp.c:408
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "GSSAPI Authentifizierung fehlgeschlagen."
+msgstr "SMTP Authentifizierung benötigt SASL"
 
 #: smtp.c:551
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "SASL Authentifizierung fehlgeschlagen."
+msgstr "SASL Authentifizierung fehlgeschlagen"
 
 #: sort.c:265
 msgid "Sorting mailbox..."
