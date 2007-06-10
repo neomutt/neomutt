@@ -99,7 +99,7 @@ for f in $DISTFILES ; do
 	scp $f $f.asc trithemius.gnupg.org:/home/ftp/mutt/${devel}
 done
 
-hg sign -m'mutt-${VERSION} signed'
+hg sign -m"mutt-${VERSION} signed"
 
 # Finally, announce the new mutt to the public
 

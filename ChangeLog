@@ -1,8 +1,13 @@
+2007-06-09 20:32 -0700  Brendan Cully  <brendan@kublai.com>  (aaf805734d24)
+
+	* VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po, po/de.po,
+	po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po, po/fr.po,
+	po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/ja.po,
+	po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po,
+	po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po:
+	automatic post-release commit for mutt-1.5.16
+
 2007-06-09 20:26 -0700  Brendan Cully  <brendan@kublai.com>  (4b5b42ddfe42)
-
-	* .hgignore: Ignore hcachever.sh now that autoconf is creating it
-
-2007-06-09 19:58 -0700  Brendan Cully  <brendan@kublai.com>  (e6f958b093b6)
 
 	* ascii.h, crypt-gpgme.c: Make GPGME backend generate a
 	RFC3156-compliant micalg parameter (blush). Based on a patch by
