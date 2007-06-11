@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.15\n"
+"Project-Id-Version: mutt 1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 20:30-0700\n"
-"PO-Revision-Date: 2007-04-10 11:56+0200\n"
+"POT-Creation-Date: 2007-06-09 20:31-0700\n"
+"PO-Revision-Date: 2007-06-11 10:25+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -1553,9 +1553,8 @@ msgid "Open mailbox"
 msgstr "Otevřít schránku"
 
 #: curs_main.c:1077
-#, fuzzy
 msgid "No mailboxes have new mail"
-msgstr "V žádné schránce není nová pošta."
+msgstr "V žádné schránce není nová pošta"
 
 #: curs_main.c:1105 mx.c:508 mx.c:657
 #, c-format
@@ -2853,9 +2852,8 @@ msgid "link tagged message to the current one"
 msgstr "k aktuální zprávě připojit označené zprávy"
 
 #: keymap_alldefs.h:114
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "V žádné schránce není nová pošta."
+msgstr "otevřít další schránku s novou poštou"
 
 #: keymap_alldefs.h:115
 msgid "jump to the next new message"
@@ -3566,9 +3564,9 @@ msgid "Tagging is not supported."
 msgstr "Označování není podporováno."
 
 #: mh.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "Volím %s…"
+msgstr "Prohledávám %s…"
 
 #: mh.c:1323
 msgid "maildir_commit_message(): unable to set time on file"
@@ -4945,9 +4943,9 @@ msgid "SMTP session failed: %s"
 msgstr "SMTP relace selhala: %s"
 
 #: smtp.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "SMTP relace selhala: %s"
+msgstr "SMTP relace selhala: nelze otevřít %s"
 
 #: smtp.c:269
 msgid "SMTP session failed: read error"
