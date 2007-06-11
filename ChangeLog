@@ -1,3 +1,11 @@
+2007-06-10 09:55 -0700  Roland Rosenfeld  <roland@spinnaker.de>  (5a61c162b9c0)
+
+	* po/de.po: Updated German translation
+
+2007-06-09 21:08 -0700  Brendan Cully  <brendan@kublai.com>  (50b11beb4265)
+
+	* build-release: Fix quoting for hg sign in build-release
+
 2007-06-09 20:32 -0700  Brendan Cully  <brendan@kublai.com>  (aaf805734d24)
 
 	* VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po, po/de.po,

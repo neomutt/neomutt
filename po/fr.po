@@ -16,10 +16,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.15-20070415\n"
+"Project-Id-Version: Mutt 1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 20:30-0700\n"
-"PO-Revision-Date: 2007-04-24 21:19+0200\n"
+"POT-Creation-Date: 2007-06-10 10:55+0200\n"
+"PO-Revision-Date: 2007-06-10 10:57+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1621,9 +1621,8 @@ msgid "Open mailbox"
 msgstr "Ouvre la boîte aux lettres"
 
 #: curs_main.c:1077
-#, fuzzy
 msgid "No mailboxes have new mail"
-msgstr "Pas de boîte aux lettres avec des nouveaux messages."
+msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
 # , c-format
 #: curs_main.c:1105 mx.c:508 mx.c:657
@@ -2981,9 +2980,8 @@ msgid "link tagged message to the current one"
 msgstr "lier le message marqué au message courant"
 
 #: keymap_alldefs.h:114
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "Pas de boîte aux lettres avec des nouveaux messages."
+msgstr "ouvrir la boîte aux lettres avec de nouveaux messages suivante"
 
 #: keymap_alldefs.h:115
 msgid "jump to the next new message"
