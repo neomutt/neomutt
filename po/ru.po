@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.15\n"
+"Project-Id-Version: mutt-1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-06-09 20:30-0700\n"
-"PO-Revision-Date: 2007-04-08 18:45+0300\n"
+"PO-Revision-Date: 2007-06-12 14:26+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -1566,9 +1566,8 @@ msgid "Open mailbox"
 msgstr "Открыть почтовый ящик"
 
 #: curs_main.c:1077
-#, fuzzy
 msgid "No mailboxes have new mail"
-msgstr "Нет почтовых ящиков с новой почтой."
+msgstr "Нет почтовых ящиков с новой почтой"
 
 #: curs_main.c:1105 mx.c:508 mx.c:657
 #, c-format
@@ -2875,9 +2874,8 @@ msgid "link tagged message to the current one"
 msgstr "подсоединить помеченное сообщение к текущему"
 
 #: keymap_alldefs.h:114
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "Нет почтовых ящиков с новой почтой."
+msgstr "открыть следующий почтовый ящик с новой почтой"
 
 #: keymap_alldefs.h:115
 msgid "jump to the next new message"
@@ -3590,9 +3588,9 @@ msgid "Tagging is not supported."
 msgstr "Возможность пометки не поддерживается."
 
 #: mh.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "Выбирается %s..."
+msgstr "Просматривается %s..."
 
 #: mh.c:1323
 msgid "maildir_commit_message(): unable to set time on file"
@@ -4962,9 +4960,9 @@ msgid "SMTP session failed: %s"
 msgstr "Ошибка SMTP сессии: %s"
 
 #: smtp.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "Ошибка SMTP сессии: %s"
+msgstr "Ошибка SMTP сессии: не удалось открыть %s"
 
 #: smtp.c:269
 msgid "SMTP session failed: read error"
