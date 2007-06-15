@@ -211,7 +211,7 @@ int rfc3676_handler (BODY * a, STATE * s)
 
     /* we're here when last space removed because of DelSp was
      * the last space and there isn't more -> done */
-    if ((buf_len - buf_off) < 0)
+    if ((buf_len - buf_off) <= 0)
     {
       print_flowed_line (curline, s, quotelevel);
       *curline = '\0';
