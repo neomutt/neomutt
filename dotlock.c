@@ -47,7 +47,6 @@
 #endif
 
 #include "dotlock.h"
-#include "config.h"
 
 #ifdef HAVE_GETOPT_H
 #include <getopt.h>

@@ -1,3 +1,12 @@
+2007-06-14 18:17 -0700  Sertaç  <Sertaç Ö. Yıldız>  (55cd4cb611d9)
+
+	* rfc3676.c: flowed: consider a single space as a hard line break.
+	Closes #2906
+
+2007-06-13 10:43 -0700  Vsevolod Volkov  <vvv@mutt.org.ua>  (8d02c65ed0b5)
+
+	* ChangeLog, po/ru.po: Updated Russian translation
+
 2007-06-11 09:27 -0700  René Clerc  <rene@clerc.nl>  (5eaa1cfe80ad)
 
 	* po/nl.po: Updated Dutch translation
