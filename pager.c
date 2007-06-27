@@ -1742,7 +1742,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       hfi.pager_progress = pager_progress_str;
 
       if (last_pos < sb.st_size - 1)
-	snprintf(pager_progress_str, sizeof(pager_progress_str), "%lld%%", (100 * last_offset / sb.st_size));
+	snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%", (100 * last_offset / sb.st_size));
       else
 	strfcpy(pager_progress_str, (topline == 0) ? "all" : "end", sizeof(pager_progress_str));
 
