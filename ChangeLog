@@ -1,3 +1,11 @@
+2007-06-27 10:38 -0700  Dan Fandrich  <dan@coneharvesters.com>  (3354ac2e79c7)
+
+	* pager.c: Fix %P in pager status for off_t variability.
+
+2007-06-27 10:35 -0700  Dan Fandrich  <dan@coneharvesters.com>  (095360e1b819)
+
+	* dotlock.c: remove a double inclusion of config.h
+
 2007-06-14 18:17 -0700  Sertaç  <Sertaç Ö. Yıldız>  (55cd4cb611d9)
 
 	* rfc3676.c: flowed: consider a single space as a hard line break.
@@ -5,7 +13,7 @@
 
 2007-06-13 10:43 -0700  Vsevolod Volkov  <vvv@mutt.org.ua>  (8d02c65ed0b5)
 
-	* ChangeLog, po/ru.po: Updated Russian translation
+	* po/ru.po: Updated Russian translation
 
 2007-06-11 09:27 -0700  René Clerc  <rene@clerc.nl>  (5eaa1cfe80ad)
 

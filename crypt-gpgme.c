@@ -1858,9 +1858,15 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
     if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
     {
       if (!mutt_strcmp ("MESSAGE-----\n", buf + 15))
+      {
 	enc = 1;
+	break;
+      }
       else if (!mutt_strcmp ("SIGNED MESSAGE-----\n", buf + 15))
+      {
 	sgn = 1;
+	break;
+      }
     }
   }
   safe_fclose (&tfp);
@@ -2039,25 +2045,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                            || (clearsign && (s->flags & M_VERIFY)));
           
           /* Copy PGP material to an data container */
-          armored_data = create_gpgme_data ();
-          gpgme_data_write (armored_data, buf, strlen (buf));
-          while (bytes > 0 && fgets (buf, sizeof (buf) - 1, s->fpin) != NULL)
-            {
-              offset = ftello (s->fpin);
-              bytes -= (offset - last_pos); /* don't rely on mutt_strlen(buf)*/
-              last_pos = offset;
-              
-              gpgme_data_write (armored_data, buf, strlen (buf));
-              
-              if ((needpass
-                   && !mutt_strcmp ("-----END PGP MESSAGE-----\n", buf)) 
-                  || (!needpass 
-                      && (!mutt_strcmp ("-----END PGP SIGNATURE-----\n", buf)
-                          || !mutt_strcmp (
-                                "-----END PGP PUBLIC KEY BLOCK-----\n",buf))))
-                break;
-            }
-          
+	  armored_data = file_to_data_object (s->fpin, m->offset, m->length);
           /* Invoke PGP if needed */
           if (!clearsign || (s->flags & M_VERIFY))
             {
