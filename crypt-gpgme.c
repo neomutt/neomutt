@@ -760,7 +760,6 @@ static int get_micalg (gpgme_ctx_t ctx, char *buf, size_t buflen)
 {
   gpgme_sign_result_t result = NULL;
   const char *algorithm_name = NULL;
-  char *bp;
 
   if (buflen < 5)
     return -1;
@@ -1525,7 +1524,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
 {
   struct stat info;
   BODY *tattach;
-  int err;
+  int err = 0;
   gpgme_ctx_t ctx;
   gpgme_data_t ciphertext, plaintext;
   int maybe_signed = 0;
