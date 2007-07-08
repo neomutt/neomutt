@@ -1,12 +1,22 @@
+2007-07-04 17:36 -0700  Brendan Cully  <brendan@kublai.com>  (f24fa301493f)
+
+	* crypt-gpgme.c: Fix some compiler warnings in GPGME. Closes #2919.
+
+	* crypt-gpgme.c: GPGME: Stop parsing message as soon as PGP header
+	is found. Use file_to_data_object to build data for inline
+	signature verification instead of doing it by hand. This fixes
+	inline verification for me.
+
+	TODO: crypt-gpgme helper functions seem to return lots of pointers
+	off the stack in very dubious ways.
+
 2007-06-27 10:38 -0700  Dan Fandrich  <dan@coneharvesters.com>  (3354ac2e79c7)
 
 	* pager.c: Fix %P in pager status for off_t variability.
 
-2007-06-27 10:35 -0700  Dan Fandrich  <dan@coneharvesters.com>  (095360e1b819)
-
 	* dotlock.c: remove a double inclusion of config.h
 
-2007-06-14 18:17 -0700  Sertaç  <Sertaç Ö. Yıldız>  (55cd4cb611d9)
+2007-06-14 18:17 -0700  Sertaç Ö. Yıldız  (55cd4cb611d9)
 
 	* rfc3676.c: flowed: consider a single space as a hard line break.
 	Closes #2906
