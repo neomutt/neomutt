@@ -1210,7 +1210,10 @@ ci_send_message (int flags,		/* send mode */
   }
 
   if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDPOSTPONED|SENDRESEND)))
+  {
     msg->env->from = mutt_default_from ();
+    killfrom = 1;	/* $use_from will be re-checked after send-hooks */
+  }
 
   if (flags & SENDBATCH) 
   {
@@ -1281,9 +1284,12 @@ ci_send_message (int flags,		/* send mode */
      */
     msg->replied = 0;
 
+    /* $use_from and/or $from might have changed in a send-hook */
     if (killfrom)
     {
       rfc822_free_address (&msg->env->from);
+      if (option (OPTUSEFROM) && !(flags & (SENDPOSTPONED|SENDRESEND)))
+	msg->env->from = mutt_default_from ();
       killfrom = 0;
     }
 
