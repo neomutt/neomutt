@@ -292,7 +292,7 @@ void mutt_curses_error (const char *fmt, ...)
   
   dprint (1, (debugfile, "%s\n", scratch));
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, scratch, sizeof (scratch), 0);
+		      0, COLS-2, FMT_LEFT, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -317,7 +317,7 @@ void mutt_curses_message (const char *fmt, ...)
   va_end (ap);
 
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, 0, 0, scratch, sizeof (scratch), 0);
+		      0, COLS-2, FMT_LEFT, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
@@ -641,7 +641,7 @@ int mutt_addwch (wchar_t wc)
 
 void mutt_format_string (char *dest, size_t destlen,
 			 int min_width, int max_width,
-			 int right_justify, char m_pad_char,
+			 int justify, char m_pad_char,
 			 const char *s, size_t n,
 			 int arboreal)
 {
@@ -688,7 +688,7 @@ void mutt_format_string (char *dest, size_t destlen,
   w = (int)destlen < min_width ? destlen : min_width;
   if (w <= 0)
     *p = '\0';
-  else if (right_justify)
+  else if (justify == FMT_RIGHT)	/* right justify */
   {
     p[w] = '\0';
     while (--p >= dest)
@@ -696,7 +696,27 @@ void mutt_format_string (char *dest, size_t destlen,
     while (--w >= 0)
       dest[w] = m_pad_char;
   }
-  else
+  else if (justify == FMT_CENTER)	/* center */
+  {
+    char *savedp = p;
+    int half = (w+1) / 2; /* half of cushion space */
+
+    p[w] = '\0';
+
+    /* move str to center of buffer */
+    while (--p >= dest)
+      p[half] = *p;
+
+    /* fill rhs */
+    p = savedp + half;
+    while (--w >= half)
+      *p++ = m_pad_char;
+
+    /* fill lhs */
+    while (half--)
+      dest[half] = m_pad_char;
+  }
+  else					/* left justify */
   {
     while (--w >= 0)
       *p++ = m_pad_char;
@@ -718,13 +738,15 @@ static void mutt_format_s_x (char *dest,
 			     const char *s,
 			     int arboreal)
 {
-  int right_justify = 1;
+  int justify = FMT_RIGHT;
   char *p;
   int min_width;
   int max_width = INT_MAX;
 
   if (*prefix == '-')
-    ++prefix, right_justify = 0;
+    ++prefix, justify = FMT_LEFT;
+  else if (*prefix == '=')
+    ++prefix, justify = FMT_CENTER;
   min_width = strtol (prefix, &p, 10);
   if (*p == '.')
   {
@@ -735,7 +757,7 @@ static void mutt_format_s_x (char *dest,
   }
 
   mutt_format_string (dest, destlen, min_width, max_width,
-		      right_justify, ' ', s, mutt_strlen (s), arboreal);
+		      justify, ' ', s, mutt_strlen (s), arboreal);
 }
 
 void mutt_format_s (char *dest,
@@ -756,7 +778,7 @@ void mutt_format_s_tree (char *dest,
 
 /*
  * mutt_paddstr (n, s) is almost equivalent to
- * mutt_format_string (bigbuf, big, n, n, 0, ' ', s, big, 0), addstr (bigbuf)
+ * mutt_format_string (bigbuf, big, n, n, FMT_LEFT, ' ', s, big, 0), addstr (bigbuf)
  */
 
 void mutt_paddstr (int n, const char *s)

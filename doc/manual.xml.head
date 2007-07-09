@@ -3259,6 +3259,72 @@ something like <literal>unhook send-hook</literal>.
 
 </sect1>
 
+<sect1 id="formatstrings">
+<title>Format Strings</title>
+
+<para>
+Format strings are a general concept you'll find in several locations
+through the mutt configuration, especially in the
+<link linkend="index-format">&dollar;index&lowbar;format"</link>,
+<link linkend="pager-format">&dollar;pager&lowbar;format"</link>,
+<link linkend="status-format">&dollar;status&lowbar;format"</link>,
+and other ``*_format'' variables. These can be very straightforward,
+and it's quite possible you already know how to use them.
+</para>
+
+<para>
+The most basic format string element is a percent symbol followed
+by another character. For example, <literal>%s</literal>
+represents a message's Subject: header in the <link
+linkend="index-format">&dollar;index&lowbar;format"</link> variable. The
+``expandos'' available are documented with each format variable, but
+there are general modifiers available with all formatting expandos,
+too. Those are our concern here.
+</para>
+
+<para>
+Some of the modifers are borrowed right out of C (though you might
+know them from Perl, Python, shell, or another langugage). These are
+the [-]m.n modifiers, as in <literal>%-12.12s</literal>. As with
+such programming languages, these modifiers allow you to specify the
+minumum and maximum size of the resulting string, as well as its
+justification. If the ``-'' sign follows the percent, the string will
+be left-justified instead of right-justified. If there's a number
+immediately following that, it's the minimum amount of space the
+formatted string will occupy -- if it's naturally smaller than that, it
+will be padded out with spaces.  If a decimal point and another number
+follow, that's the maximum space allowable -- the string will not be
+permitted to exceed that width, no matter its natural size. Each of
+these three elements is optional, so that all these are legal format
+strings:
+<literal>%-12s</literal>
+<literal>%4c</literal>
+<literal>%.15F</literal>
+<literal>%-12.15L</literal>
+</para>
+
+<para>
+Mutt adds some other modifiers to format strings. If you use an equals
+symbol (<literal>=</literal>) as a numeric prefix (like the minus
+above), it will force the string to be centered within its minimum
+space range. For example, <literal>%=14y</literal> will reserve 14
+characters for the %y expansion -- that's the X-Label: header, in
+<literal>&dollar;index&lowbar;format</literal>. If the expansion
+results in a string less than 14 characters, it will be centered in a
+14-character space.  If the X-Label for a message were "test", that
+expansion would look like ``     test     ''.
+</para>
+
+<para>
+There are two very little-known modifiers that affect the way that an
+expando is replaced. If there is an underline (``&lowbar;'') character
+between any format modifiers (as above) and the expando letter, it will
+expands in all lower case. And if you use a colon (``:''), it will
+replace all decimal points with underlines.
+</para>
+
+</sect1>
+
 </chapter>
 
 <chapter id="advancedusage">

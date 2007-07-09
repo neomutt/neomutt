@@ -283,7 +283,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   if (mutt_strwidth (prompt) > COLS - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt),
-			0, COLS-extra_space, 0, 0,
+			0, COLS-extra_space, FMT_LEFT, 0,
 			scratch, sizeof (scratch), 0);
     safe_strcat (prompt, sizeof (prompt), "...?");
   }

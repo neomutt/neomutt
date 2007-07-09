@@ -999,6 +999,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
+  char remainder[LONG_STRING];
   size_t wlen, count, len, wid;
   pid_t pid;
   FILE *filter;
@@ -1147,7 +1148,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	cp = prefix;
 	count = 0;
 	while (count < sizeof (prefix) &&
-	       (isdigit ((unsigned char) *src) || *src == '.' || *src == '-'))
+	       (isdigit ((unsigned char) *src) || *src == '.' || *src == '-' || *src == '='))
 	{
 	  *cp++ = *src++;
 	  count++;
@@ -1239,6 +1240,46 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	}
 	break; /* skip rest of input */
       }
+      /* soft fill */
+      else if (ch == '*')
+      {
+	int space;
+
+	/* truncate to fit remainder, pad with chr. */
+	ch = *src++;	/* pad chr */
+	mutt_FormatString (remainder, sizeof(remainder), 0, src, callback,
+	  data, flags);
+
+	len = mutt_strlen(remainder);
+	space = COLS - wlen - len;	/* bytes remaining unformatted */
+
+	/* if space > 0, this is space that needs to be filled */
+	if (space > 0)
+	{
+	  memset(wptr, ch, space);
+	  wptr += space;
+	  wlen += space;
+	}
+
+	/* if space < 0, there's not enough room for remainder -- backtrack */
+	else if (space < 0) {
+	  wptr += space;
+	  wlen += space;
+	  if (wlen < 0) {
+	    wptr = dest;
+	    wlen = 0;
+	  }
+	}
+
+	/* Since remainder is already formatted, copy it *
+	 * in.  This prevents having to format it twice. */
+	if (len > COLS)
+	  len = COLS;
+	memcpy(wptr, remainder, len);
+	wptr += len;
+	wlen += len;
+      }
+
       else
       {
 	short tolower =  0;

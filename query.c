@@ -204,7 +204,7 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 
   mutt_format_string (buf2, sizeof (buf2),
 		      FirstColumn + 2, FirstColumn + 2,
-		      0, ' ', table[num].data->name,
+		      FMT_LEFT, ' ', table[num].data->name,
 		      mutt_strlen (table[num].data->name), 0);
 
   snprintf (s, slen, " %c %3d %s %-*.*s %s", 

@@ -84,6 +84,13 @@
 # define MAX(a,b) ((a) < (b) ? (b) : (a))
 # define MIN(a,b) ((a) < (b) ? (a) : (b))
 
+/* For mutt_format_string() justifications */
+/* Making left 0 and center -1 is of course completely nonsensical, but
+ * it retains compatibility for any patches that call mutt_format_string.
+ * Once patches are updated to use FMT_*, these can be made sane. */
+#define FMT_LEFT	0
+#define FMT_RIGHT	1
+#define FMT_CENTER	-1
 
 #define FOREVER while (1)
 

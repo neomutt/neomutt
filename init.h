@@ -225,7 +225,9 @@ struct option_t MuttVars[] = {
   **             (please see the ``$attachments'' section for possible speed effects)
   ** .dt %>X .dd right justify the rest of the string and pad with character "X"
   ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
+  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
   */
   { "attach_sep",	DT_STR,	 R_NONE, UL &AttachSep, UL "\n" },
   /*
@@ -614,7 +616,9 @@ struct option_t MuttVars[] = {
   ** .dt %u  .dd owner name (or numeric uid, if missing)
   ** .dt %>X .dd right justify the rest of the string and pad with character "X"
   ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
+  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
   */
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
   /*
@@ -1036,7 +1040,15 @@ struct option_t MuttVars[] = {
   **                function ``strftime''; a leading bang disables locales.
   ** .dt %>X    .dd right justify the rest of the string and pad with character "X"
   ** .dt %|X    .dd pad to the end of the line with character "X"
+  ** .dt %*X    .dd soft-fill with character "X" as pad
   ** .de
+  ** `Soft-fill' deserves some explanation. Normal right-justification
+  ** will print everything to the left of the %>, displaying padding and
+  ** the whatever lies to the right only if there's room. By contrast,
+  ** soft-fill gives priority to the right-hand side, guaranteeing space
+  ** to display it and showing padding only if there's still room. If
+  ** necessary, soft-fill will eat text leftwards to make room for
+  ** rightward text.
   ** .pp
   ** See also: ``$$to_chars''.
   */
@@ -1352,7 +1364,7 @@ struct option_t MuttVars[] = {
   ** default, Mutt will display the line after the last one on the screen
   ** at the top of the next page (0 lines of context).
   */
-  { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s%> -- (%P)" },
+  { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   /*
   ** .pp
   ** This variable controls the format of the one-line message ``status''
@@ -2739,7 +2751,9 @@ struct option_t MuttVars[] = {
   ** .dt %V  .dd currently active limit pattern, if any *
   ** .dt %>X .dd right justify the rest of the string and pad with "X"
   ** .dt %|X .dd pad to the end of the line with "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
+  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
   ** .pp
   ** * = can be optionally printed if nonzero
   ** .pp

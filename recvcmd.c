@@ -182,7 +182,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   if (mutt_strwidth (prompt) > COLS - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt) - 4,
-			0, COLS-extra_space, 0, 0,
+			0, COLS-extra_space, FMT_LEFT, 0,
 			prompt, sizeof (prompt), 0);
     safe_strcat (prompt, sizeof (prompt), "...?");
   }
