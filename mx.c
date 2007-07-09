@@ -149,7 +149,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 #if defined (USE_FCNTL) || defined (USE_FLOCK)
   int count;
   int attempt;
-  struct stat prev_sb;
+  struct stat sb = { 0 }, prev_sb = { 0 }; /* silence gcc warnings */
 #endif
   int r = 0;
 
@@ -162,19 +162,17 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 
   count = 0;
   attempt = 0;
-  prev_sb.st_size = 0; /* silence a GCC warning */
   while (fcntl (fd, F_SETLK, &lck) == -1)
   {
-    struct stat sb;
     dprint(1,(debugfile, "mx_lock_file(): fcntl errno %d.\n", errno));
     if (errno != EAGAIN && errno != EACCES)
     {
       mutt_perror ("fcntl");
-      return (-1);
+      return -1;
     }
 
     if (fstat (fd, &sb) != 0)
-     sb.st_size = 0;
+      sb.st_size = 0;
     
     if (count == 0)
       prev_sb = sb;
@@ -184,7 +182,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     {
       if (timeout)
 	mutt_error _("Timeout exceeded while attempting fcntl lock!");
-      return (-1);
+      return -1;
     }
 
     prev_sb = sb;
@@ -199,7 +197,6 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
   attempt = 0;
   while (flock (fd, (excl ? LOCK_EX : LOCK_SH) | LOCK_NB) == -1)
   {
-    struct stat sb;
     if (errno != EWOULDBLOCK)
     {
       mutt_perror ("flock");
@@ -207,11 +204,11 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
       break;
     }
 
-    if (fstat(fd,&sb) != 0 )
-     sb.st_size=0;
+    if (fstat(fd, &sb) != 0)
+      sb.st_size = 0;
     
     if (count == 0)
-      prev_sb=sb;
+      prev_sb = sb;
 
     /* only unlock file if it is unchanged */
     if (prev_sb.st_size == sb.st_size && ++count >= (timeout?MAXLOCKATTEMPT:0))
@@ -234,7 +231,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
     r = dotlock_file (path, fd, timeout);
 #endif /* USE_DOTLOCK */
 
-  if (r == -1)
+  if (r != 0)
   {
     /* release any other locks obtained in this routine */
 
@@ -246,11 +243,9 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 #ifdef USE_FLOCK
     flock (fd, LOCK_UN);
 #endif /* USE_FLOCK */
-
-    return (-1);
   }
 
-  return 0;
+  return r;
 }
 
 int mx_unlock_file (const char *path, int fd, int dot)
@@ -1640,3 +1635,5 @@ int mx_check_empty (const char *path)
   }
   /* not reached */
 }
+
+/* vim: set sw=2: */
