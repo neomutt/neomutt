@@ -1360,6 +1360,7 @@ static int external_body_handler (BODY *b, STATE *s)
     {
       state_mark_attach (s);
       state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
+      return 0;
     }
     else
       return -1;
