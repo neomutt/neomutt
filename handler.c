@@ -1196,6 +1196,12 @@ int multipart_handler (BODY *a, STATE *s)
     }
     rc = mutt_body_handler (p, s);
     state_putc ('\n', s);
+    
+    if (rc)
+    {
+      dprint (1, (debugfile, "Failed on attachment #%d, type %s/%s.\n", count, TYPE(p), NONULL (p->subtype)));
+    }
+    
     if (rc || ((s->flags & M_REPLYING)
                && (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE)))
       break;
@@ -1355,7 +1361,8 @@ static int external_body_handler (BODY *b, STATE *s)
       state_mark_attach (s);
       state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
     }
-    return -1;
+    else
+      return -1;
   }
 
   expiration = mutt_get_parameter ("expiration", b->parameter);
@@ -1590,6 +1597,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 	if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
 	{
 	  mutt_error _("Unable to open temporary file!");
+	  dprint (1, (debugfile, "Can't open %s.\n", tempfile));
 	  goto bail;
 	}
 	/* decoding the attachment changes the size and offset, so save a copy
@@ -1635,6 +1643,11 @@ int mutt_body_handler (BODY *b, STATE *s)
     {
       rc = handler (b, s);
 
+      if (rc)
+      {
+	dprint (1, (debugfile, "Failed on attachment of type %s/%s.\n", TYPE(b), NONULL (b->subtype)));
+      }
+      
       if (decode)
       {
 	b->length = tmplength;
@@ -1664,6 +1677,10 @@ int mutt_body_handler (BODY *b, STATE *s)
 
   bail:
   s->flags = oflags | (s->flags & M_FIRSTDONE);
+  if (rc)
+  {
+    dprint (1, (debugfile, "Bailing on attachment of type %s/%s.\n", TYPE(b), NONULL (b->subtype)));
+  }
 
   return rc;
 }
