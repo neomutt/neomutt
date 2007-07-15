@@ -1,3 +1,41 @@
+2007-07-09 11:32 -0400  Aron Griffis  <agriffis@n01se.net>  (4e8e3db418ea)
+
+	* send.c: Allow send-hooks to effectively change $from and $use_from
+
+2007-07-09 09:45 -0400  Aron Griffis  <agriffis@n01se.net>  (82354e0d2399)
+
+	* mx.c: Clean up mx.c: init stat structs to zero
+
+	prev_sb.st_size was initialized to zero if USE_FCNTL but not if
+	USE_FLOCK. Silence the gcc warning for both cases by zeroing the
+	stat structures on the stack.
+
+	Other minor cleanups:
+	- clean up some whitespace
+	- convert return (foo) to return foo
+	- return r at the bottom of the function instead of testing values and
+	returning them explicitly
+	- add vim modeline
+
+2007-07-10 14:47 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (c06e39893cce)
+
+	* handler.c: Actually bail out, but wiht an ok return value.
+
+	* handler.c: Don't bail out on a bad message/external-body!
+
+2007-07-08 18:27 -0700  David Champion  <dgc@uchicago.edu>  (6241f5669264)
+
+	* commands.c, curs_lib.c, doc/manual.xml.head, init.h, lib.h, menu.c,
+	muttlib.c, query.c, recvcmd.c: This patch implements the "%* "
+	notation, which is analogous to "%> " but gives precedence to the
+	right side instead of to the left when the fill length is zero. The
+	default $pager_format is updated to use it so that %P is always
+	available at the edge of the screen.
+
+2007-07-08 15:34 -0700  Edmund GRIMLEY EVANS  <edmund820@rano.org>  (5d74a79deeb3)
+
+	* po/eo.po: Updated Esperanto translation.
+
 2007-07-04 17:36 -0700  Brendan Cully  <brendan@kublai.com>  (f24fa301493f)
 
 	* crypt-gpgme.c: Fix some compiler warnings in GPGME. Closes #2919.

@@ -1551,8 +1551,9 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
       else if (maybe_signed)
 	err = gpgme_op_verify (ctx, ciphertext, NULL, plaintext);
 
+      if (err == GPG_ERR_NO_ERROR)
       {
-	/* Check wether signatures have been verified.  */
+	/* Check whether signatures have been verified.  */
 	gpgme_verify_result_t verify_result = gpgme_op_verify_result (ctx);
 	if (verify_result->signatures)
 	  sig_stat = 1;
