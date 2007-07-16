@@ -448,6 +448,7 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err)
   return 0;
 }
 
+static int remove_from_spam_list (SPAM_LIST **list, const char *pat);
 
 static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *templ, BUFFER *err)
 {
@@ -515,7 +516,16 @@ static int add_to_spam_list (SPAM_LIST **list, const char *pat, const char *temp
     else
         ++p;
   }
-  t->nmatch++;		/* match 0 is always the whole expr */
+
+  if (t->nmatch > t->rx->rx->re_nsub)
+  {
+    snprintf (err->data, err->dsize, _("Not enough subexpressions for spam "
+                                       "template"));
+    remove_from_spam_list(list, pat);
+    return -1;
+  }
+
+  t->nmatch++;         /* match 0 is always the whole expr */
 
   return 0;
 }
