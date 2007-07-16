@@ -1,8 +1,16 @@
+2007-07-16 09:44 -0700  Brendan Cully  <brendan@kublai.com>  (1d6b9fb4a927)
+
+	* init.c: Check that spam expression has enough matches for its
+	template. Closes #2927.
+
+2007-07-14 17:26 -0700  Brendan Cully  <brendan@kublai.com>  (f4b2c6eba5fd)
+
+	* crypt-gpgme.c: GPGME: do not attempt to extract signatures
+	unless gpgme_op_verify returned success.
+
 2007-07-09 11:32 -0400  Aron Griffis  <agriffis@n01se.net>  (4e8e3db418ea)
 
 	* send.c: Allow send-hooks to effectively change $from and $use_from
-
-2007-07-09 09:45 -0400  Aron Griffis  <agriffis@n01se.net>  (82354e0d2399)
 
 	* mx.c: Clean up mx.c: init stat structs to zero
 

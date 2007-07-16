@@ -189,7 +189,7 @@ static void replace_part (ENTER_STATE *state, size_t from, char *buf)
 /*
  * Return 1 if the character is not typically part of a pathname
  */
-inline int is_shell_char(wchar_t ch)
+static inline int is_shell_char(wchar_t ch)
 {
   static wchar_t shell_chars[] = L"<>&()$?*;{}| "; /* ! not included because it can be part of a pathname in Mutt */
   return wcschr(shell_chars, ch) != NULL;
