@@ -2911,13 +2911,15 @@ struct option_t MuttVars[] = {
   { "use_envelope_from", 	DT_BOOL, R_NONE, OPTENVFROM, 0 },
   /*
    ** .pp
-   ** When \fIset\fP, mutt will use ``$$envelope_from_address'' as the
-   ** \fIenvelope\fP sender if that is set, otherwise it will attempt to
-   ** derive it from the "From:" header.  Note that this information is passed 
-   ** to sendmail command using the "-f" command line switch, so don't set this
-   ** option if you are using that switch in $$sendmail yourself,
-   ** or if the sendmail on your machine doesn't support that command
-   ** line switch.
+   ** When \fIset\fP, mutt will set the \fIenvelope\fP sender of the message.
+   ** If ``$$envelope_from_address'' is set, it will be used as the sender
+   ** address. If not, mutt will attempt to derive the sender from the
+   ** "From:" header.
+   ** .pp
+   ** Note that this information is passed to sendmail command using the
+   ** "-f" command line switch. Therefore setting this option is not useful
+   ** if the ``$$sendmail'' variable already contains "-f" or if the
+   ** executable pointed to by $$sendmail doesn't support the "-f" switch.
    */
   { "envelope_from",	DT_SYN,  R_NONE, UL "use_envelope_from", 0 },
   /*

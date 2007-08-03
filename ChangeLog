@@ -1,4 +1,10 @@
-2007-07-16 09:44 -0700  Brendan Cully  <brendan@kublai.com>  (1d6b9fb4a927)
+2007-07-25 11:16 -0700  Vincent Lefevre  <vincent@vinc17.org>  (6bc60516fffa)
+
+	* po/fr.po: Updated French translation.
+
+2007-07-16 10:46 -0700  Brendan Cully  <brendan@kublai.com>  (bd75134a6b65)
+
+	* enter.c: Make is_shell_char static. Closes #2907.
 
 	* init.c: Check that spam expression has enough matches for its
 	template. Closes #2927.
