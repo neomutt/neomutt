@@ -946,13 +946,13 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_START_DL:
 	{
-	  fputs ("\n.RS", out);
+	  fputs (".RS\n.PD 0\n", out);
 	  docstat |= D_DL;
 	  break;
 	}
 	case SP_DT:
 	{
-	  fputs ("\n.IP ", out);
+	  fputs (".TP\n", out);
 	  break;
 	}
 	case SP_DD:
@@ -962,7 +962,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_END_DL:
 	{
-	  fputs ("\n.RE", out);
+	  fputs (".RE\n.PD 1", out);
 	  docstat &= ~D_DL;
 	  break;
 	}
