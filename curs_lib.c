@@ -99,8 +99,16 @@ event_t mutt_getch (void)
     mutt_query_exit ();
 
   if(ch == ERR)
+  {
+    /* either timeout or the terminal has been lost */
+    if (!isatty (0))
+    {
+      endwin ();
+      exit (1);
+    }
     return err;
-  
+  }
+
   if ((ch & 0x80) && option (OPTMETAKEY))
   {
     /* send ALT-x as ESC-x */
