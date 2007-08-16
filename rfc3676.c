@@ -172,7 +172,7 @@ int rfc3676_handler (BODY * a, STATE * s)
     /* a change of quoting level in a paragraph - shouldn't happen, 
      * but has to be handled - see RFC 3676, sec. 4.5.
      */
-    if (newql != quotelevel && curline && *curline)
+    if (newql != quotelevel && *curline)
     {
       print_flowed_line (curline, s, quotelevel);
       *curline = '\0';
@@ -202,25 +202,14 @@ int rfc3676_handler (BODY * a, STATE * s)
 
     /* a fixed line either has no trailing space or is the
      * signature separator */
-    fixed = buf_len == 0 || buf[buf_len - 1] != ' ' || sigsep;
+    fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
 
-    /* for DelSp=yes, we need to strip one SP prior to CRLF;
-     * in case of the signature separator, leave the space */
-    if (delsp && !sigsep && buf_len >= 1 && buf[buf_len-1] == ' ')
+    /* for DelSp=yes, we need to strip one SP prior to CRLF on flowed lines */
+    if (delsp && !fixed)
       buf[--buf_len] = '\0';
 
-    /* we're here when last space removed because of DelSp was
-     * the last space and there isn't more -> done */
-    if ((buf_len - buf_off) <= 0)
-    {
-      print_flowed_line (curline, s, quotelevel);
-      *curline = '\0';
-      curline_len = 1;
-      continue;
-    }
-
     /* signature separator also flushes the previous paragraph */
-    if (sigsep && curline && *curline)
+    if (sigsep && *curline)
     {
       print_flowed_line (curline, s, quotelevel);
       *curline = '\0';
