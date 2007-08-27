@@ -134,7 +134,7 @@ imap_auth_res_t imap_auth_cram_md5 (IMAP_DATA* idata, const char* method)
 static void hmac_md5 (const char* password, char* challenge,
   unsigned char* response)
 {
-  MD5_CTX ctx;
+  struct md5_ctx ctx;
   unsigned char ipad[MD5_BLOCK_LEN], opad[MD5_BLOCK_LEN];
   unsigned char secret[MD5_BLOCK_LEN+1];
   unsigned char hash_passwd[MD5_DIGEST_LEN];
@@ -148,9 +148,7 @@ static void hmac_md5 (const char* password, char* challenge,
    * digests */
   if (secret_len > MD5_BLOCK_LEN)
   {
-    MD5Init (&ctx);
-    MD5Update (&ctx, (unsigned char*) password, secret_len);
-    MD5Final (hash_passwd, &ctx);
+    md5_buffer (password, secret_len, hash_passwd);
     strfcpy ((char*) secret, (char*) hash_passwd, MD5_DIGEST_LEN);
     secret_len = MD5_DIGEST_LEN;
   }
@@ -169,14 +167,14 @@ static void hmac_md5 (const char* password, char* challenge,
   }
 
   /* inner hash: challenge and ipadded secret */
-  MD5Init (&ctx);
-  MD5Update (&ctx, ipad, MD5_BLOCK_LEN);
-  MD5Update (&ctx, (unsigned char*) challenge, chal_len);
-  MD5Final (response, &ctx);
+  md5_init_ctx (&ctx);
+  md5_process_bytes (ipad, MD5_BLOCK_LEN, &ctx);
+  md5_process_bytes (challenge, chal_len, &ctx);
+  md5_finish_ctx (&ctx, response);
 
   /* outer hash: inner hash and opadded secret */
-  MD5Init (&ctx);
-  MD5Update (&ctx, opad, MD5_BLOCK_LEN);
-  MD5Update (&ctx, response, MD5_DIGEST_LEN);
-  MD5Final (response, &ctx);
+  md5_init_ctx (&ctx);
+  md5_process_bytes (opad, MD5_BLOCK_LEN, &ctx);
+  md5_process_bytes (response, MD5_DIGEST_LEN, &ctx);
+  md5_finish_ctx (&ctx, response);
 }

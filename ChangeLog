@@ -1,3 +1,42 @@
+2007-08-27 10:13 -0700  Brendan Cully  <brendan@kublai.com>  (4ade2517703a)
+
+	* Makefile.am, configure.ac, hcache.c, md5.c, md5.h, md5c.c,
+	pgppubring.c, pop_auth.c: Replace RFC md5 implementation with GPL
+	version from coreutils
+
+2007-08-16 09:32 -0700  Brendan Cully  <brendan@kublai.com>  (d096219907e7)
+
+	* curs_lib.c: Check for lost tty if getch returns error (closes #1220)
+	Great thanks to Vincent Lefevre for tracking this one down.
+
+2007-08-15 20:09 -0700  Michael Vrable  <mvrable@cs.ucsd.edu>  (acd71f2f2555)
+
+	* rfc3676.c: Fix RFC 3676 (format=flowed text) handling.
+
+	The old code would consider a line containing "> " to be flowed, but
+	since this is a quoted and space-stuffed line containing no
+	additional text, by my reading of RFC 3676 it should be fixed.
+
+	Clean up the handling of format=flowed text. Fix the test to
+	determine whether a line is fixed--if a line ends in a space only
+	because the last character is a space from space-stuffing, consider
+	the line to be a fixed line. This makes the test for ((buf_len -
+	buf_off) <= 0) later no longer necessary.
+
+	Also simplify the code by removing checks for curline being non-
+	null; it is allocated at the start of the function and never
+	reallocated to size zero, so it should never be a null pointer.
+
+2007-08-08 10:49 -0700  Kyle Wheeler  (6d3e90261321)
+
+	* makedoc.c: Trim whitespace in definition lists for man pages (closes
+	#2941).
+
+2007-08-02 22:30 -0700  Brendan Cully  <brendan@kublai.com>  (aefdab8fad80)
+
+	* init.h: Clarify the documentation for $use_envelope_from
+	(closes #2936). Thanks to Vincent Lefevre for the suggestions.
+
 2007-07-25 11:16 -0700  Vincent Lefevre  <vincent@vinc17.org>  (6bc60516fffa)
 
 	* po/fr.po: Updated French translation.
