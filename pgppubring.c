@@ -158,32 +158,29 @@ int main (int argc, char * const argv[])
 
 
 /* The actual key ring parser */
-
 static void pgp_make_pgp2_fingerprint (unsigned char *buff,
                                        unsigned char *digest)
 {
-
-  MD5_CTX context;
+  struct md5_ctx ctx;
   unsigned int size = 0;
 
-
-  MD5Init (&context);
+  md5_init_ctx (&ctx);
 
   size = (buff[0] << 8) + buff[1];
   size = ((size + 7) / 8);
   buff = &buff[2];
 
-  MD5Update (&context, buff, size);
+  md5_process_bytes (buff, size, &ctx);
+
   buff = &buff[size];
 
   size = (buff[0] << 8) + buff[1];
   size = ((size + 7) / 8);
   buff = &buff[2];
 
-  MD5Update (&context, buff, size);
+  md5_process_bytes (buff, size, &ctx);
 
-  MD5Final (digest, &context);
-
+  md5_finish_ctx (&ctx, digest);
 } /* pgp_make_pgp2_fingerprint() */
 
 static pgp_key_t pgp_parse_pgp2_key (unsigned char *buff, size_t l)

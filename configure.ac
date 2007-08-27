@@ -927,7 +927,7 @@ dnl -- end cache --
 
 if test "$need_md5" = "yes"
 then
-        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5c.o"
+  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5.o"
 fi
 
 AC_SUBST(MUTTLIBS)

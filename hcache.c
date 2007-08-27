@@ -470,7 +470,6 @@ mutt_hcache_per_folder(const char *path, const char *folder,
 {
   static char hcpath[_POSIX_PATH_MAX];
   struct stat sb;
-  MD5_CTX md5;
   unsigned char md5sum[16];
   char* s;
   int ret, plen;
@@ -495,9 +494,7 @@ mutt_hcache_per_folder(const char *path, const char *folder,
   }
   else
   {
-    MD5Init(&md5);
-    MD5Update(&md5, (unsigned char *) folder, strlen(folder));
-    MD5Final(md5sum, &md5);
+    md5_buffer (folder, strlen (folder), &md5sum);
 
     ret = snprintf(hcpath, _POSIX_PATH_MAX,
                    "%s/%02x%02x%02x%02x%02x%02x%02x%02x"

@@ -56,7 +56,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
 
 CPPFLAGS=@CPPFLAGS@
 
-EXTRA_mutt_SOURCES = account.c md5c.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
+EXTRA_mutt_SOURCES = account.c md5.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
 	mutt_tunnel.c pop.c pop_auth.c pop_lib.c smime.c pgp.c pgpinvoke.c pgpkey.c \
 	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
 	smtp.c browser.h mbyte.h remailer.h url.h \
@@ -86,7 +86,7 @@ mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = @LIBOBJS@
 mutt_dotlock_DEPENDENCIES = @LIBOBJS@
 
-pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5c.c pgppacket.c ascii.c
+pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5.c pgppacket.c ascii.c
 pgpring_LDADD = @LIBOBJS@ $(INTLLIBS) 
 pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 
