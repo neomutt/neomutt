@@ -227,6 +227,7 @@ struct option_t MuttVars[] = {
   ** .dt %|X .dd pad to the end of the line with character "X"
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
+  ** .pp
   ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
   */
   { "attach_sep",	DT_STR,	 R_NONE, UL &AttachSep, UL "\n" },
@@ -618,6 +619,7 @@ struct option_t MuttVars[] = {
   ** .dt %|X .dd pad to the end of the line with character "X"
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
+  ** .pp
   ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
   */
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
@@ -1042,6 +1044,7 @@ struct option_t MuttVars[] = {
   ** .dt %|X    .dd pad to the end of the line with character "X"
   ** .dt %*X    .dd soft-fill with character "X" as pad
   ** .de
+  ** .pp
   ** `Soft-fill' deserves some explanation. Normal right-justification
   ** will print everything to the left of the %>, displaying padding and
   ** the whatever lies to the right only if there's room. By contrast,
@@ -2753,6 +2756,7 @@ struct option_t MuttVars[] = {
   ** .dt %|X .dd pad to the end of the line with "X"
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
+  ** .pp
   ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
   ** .pp
   ** * = can be optionally printed if nonzero
