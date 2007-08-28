@@ -370,6 +370,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     if (!imap_authenticate (idata))
     {
       idata->state = IMAP_AUTHENTICATED;
+      new = 1;
       if (idata->conn->ssf)
 	dprint (2, (debugfile, "Communication encrypted at %d bits\n",
 		    idata->conn->ssf));

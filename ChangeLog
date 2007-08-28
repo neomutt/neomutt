@@ -1,4 +1,12 @@
-2007-08-27 10:13 -0700  Brendan Cully  <brendan@kublai.com>  (4ade2517703a)
+2007-08-28 10:43 -0700  Brendan Cully  <brendan@kublai.com>  (3cc89213ebb7)
+
+	* dotlock.c, lib.h, mutt.h: Use limits.h for PATH_MAX instead of
+	posix1_lim.h (closes #2525)
+
+2007-08-27 11:07 -0700  Brendan Cully  <brendan@kublai.com>  (9cfb5ac98e26)
+
+	* imap/auth_cram.c: Update auth_cram for new MD5 code
+	(untested).
 
 	* Makefile.am, configure.ac, hcache.c, md5.c, md5.h, md5c.c,
 	pgppubring.c, pop_auth.c: Replace RFC md5 implementation with GPL
