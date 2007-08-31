@@ -1,4 +1,10 @@
-2007-08-28 10:43 -0700  Brendan Cully  <brendan@kublai.com>  (3cc89213ebb7)
+2007-08-28 11:33 -0700  Brendan Cully  <brendan@kublai.com>  (3f8829e739e9)
+
+	* init.h: Insert .pp after .de to fix man page generation (closes
+	#2940)
+
+	* imap/imap.c: Check subscriptions after any authentication,
+	rather than after fist connection (closes #2908)
 
 	* dotlock.c, lib.h, mutt.h: Use limits.h for PATH_MAX instead of
 	posix1_lim.h (closes #2525)

@@ -91,8 +91,11 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
     goto bail;
   }
 
-  if (stat (tmp, &sb) == 0)
-    mtime = sb.st_mtime;
+  if ((rc = stat (tmp, &sb)) == -1)
+  {
+    mutt_error (_("Can't stat %s: %s"), tmp, strerror (errno));
+    goto bail;
+  }
 
   /*
    * 2002-09-05 me@sigpipe.org
@@ -108,6 +111,8 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 		strerror (errno));
     goto bail;
   }
+
+  mtime = mutt_decrease_mtime (tmp, &sb);
 
   mutt_edit_file (NONULL(Editor), tmp);
 
