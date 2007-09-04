@@ -1,5 +1,5 @@
 # Catalan messages for mutt.
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001, 2002, 2003, 2004, 2006.
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2007.
 #
 # Sóc Ivan, aquestes són les convencions que adopte per a la 1.5.12:
 #
@@ -47,10 +47,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.12\n"
+"Project-Id-Version: mutt 1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 20:30-0700\n"
-"PO-Revision-Date: 2006-12-06 19:59+0100\n"
+"POT-Creation-Date: 2007-06-09 20:31-0700\n"
+"PO-Revision-Date: 2007-09-01 18:26+0200\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "MIME-Version: 1.0\n"
@@ -264,9 +264,8 @@ msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Només es poden esborrar bústies sota IMAP."
 
 #: browser.c:929
-#, fuzzy
 msgid "Cannot delete root folder"
-msgstr "No s’ha pogut crear el filtre."
+msgstr "No es pot esborrar la carpeta arrel."
 
 #: browser.c:932
 #, c-format
@@ -852,10 +851,11 @@ msgstr "L’especificació de la clau secreta «%s» és ambígua.\n"
 msgid "error setting secret key `%s': %s\n"
 msgstr "Error en establir la clau secreta «%s»: %s\n"
 
+# PKA és la notació, no la signatura.  ivb
 #: crypt-gpgme.c:684
-#, fuzzy, c-format
+#, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "Error en obtenir la informació de la clau: "
+msgstr "Error en establir la notació PKA de la signatura: %s\n"
 
 #: crypt-gpgme.c:740
 #, c-format
@@ -906,13 +906,12 @@ msgid "A system error occurred"
 msgstr "S’ha produït un error de sistema."
 
 #: crypt-gpgme.c:1142
-#, fuzzy
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "Avís: El nom d’estació del servidor no concorda amb el del certificat."
+msgstr "Avís: L’entrada PKA no concorda amb l’adreça del signatari: "
 
 #: crypt-gpgme.c:1149
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "L’adreça del signatari verificada amb PKA és: "
 
 # XXX No puc unificar les traduccions pq una porta replé i l’altra no!  ivb
 #: crypt-gpgme.c:1166 crypt-gpgme.c:3126
@@ -1572,10 +1571,11 @@ msgstr "No es permet aquesta funció al mode d’adjuntar missatges."
 msgid "No visible messages."
 msgstr "No hi ha cap missatge visible."
 
+# FIXME: This is *very* language-dependent!!
 #: curs_main.c:98 pager.c:89
 #, c-format
 msgid "Cannot %s: Operation not permitted by ACL"
-msgstr ""
+msgstr "No es pot %s: l’ACL no permet l’operació."
 
 #: curs_main.c:253
 msgid "Cannot toggle write on a readonly mailbox!"
@@ -1648,10 +1648,10 @@ msgstr "El missatge no és visible."
 msgid "Invalid message number."
 msgstr "El número de missatge no és vàlid."
 
+# Cannot…  ivb
 #: curs_main.c:808 curs_main.c:1848 pager.c:2279
-#, fuzzy
 msgid "delete message(s)"
-msgstr "No hi ha cap missatge no esborrat."
+msgstr "esborrar els missatges"
 
 #: curs_main.c:811
 msgid "Delete messages matching: "
@@ -1685,10 +1685,10 @@ msgstr "Voleu abandonar Mutt?"
 msgid "Tag messages matching: "
 msgstr "Marca els missatges que concorden amb: "
 
+# Cannot…  ivb
 #: curs_main.c:975 curs_main.c:2137 pager.c:2589
-#, fuzzy
 msgid "undelete message(s)"
-msgstr "No hi ha cap missatge no esborrat."
+msgstr "restaurar els missatges"
 
 #: curs_main.c:977
 msgid "Undelete messages matching: "
@@ -1709,7 +1709,6 @@ msgid "Open mailbox"
 msgstr "Obri la bústia"
 
 #: curs_main.c:1077
-#, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "No hi ha cap bústia amb correu nou."
 
@@ -1731,9 +1730,10 @@ msgstr "No s’ha habilitat l’ús de fils."
 msgid "Thread broken"
 msgstr "S’ha trencat el fil."
 
+# Cannot…  ivb
 #: curs_main.c:1248
 msgid "link threads"
-msgstr ""
+msgstr "enllaçar els fils"
 
 #: curs_main.c:1253
 msgid "No Message-ID: header available to link thread"
@@ -1787,14 +1787,15 @@ msgstr "No hi ha cap missatge no llegit"
 msgid " in this limited view"
 msgstr " en aquesta vista limitada."
 
+# Cannot…  ivb
 #: curs_main.c:1516
-#, fuzzy
 msgid "flag message"
-msgstr "Mostra un missatge."
+msgstr "senyalar el missatge"
 
+# Cannot…  ivb
 #: curs_main.c:1553 pager.c:2555
 msgid "toggle new"
-msgstr ""
+msgstr "canviar el senyalador «nou»"
 
 #: curs_main.c:1630
 msgid "No more threads."
@@ -1808,25 +1809,25 @@ msgstr "Vos trobeu al primer fil."
 msgid "Thread contains unread messages."
 msgstr "El fil conté missatges no llegits."
 
+# Cannot…  ivb
 #: curs_main.c:1807 pager.c:2262
-#, fuzzy
 msgid "delete message"
-msgstr "No hi ha cap missatge no esborrat."
+msgstr "esborrar el missatge"
 
+# Cannot…  ivb
 #: curs_main.c:1889
-#, fuzzy
 msgid "edit message"
-msgstr "Edita el missatge."
+msgstr "esborrar el missatge"
 
+# Cannot…  ivb
 #: curs_main.c:2020
-#, fuzzy
 msgid "mark message(s) as read"
-msgstr "Salta al missatge pare del fil."
+msgstr "marcar els missatges com a llegits"
 
+# Cannot…  ivb
 #: curs_main.c:2110 pager.c:2574
-#, fuzzy
 msgid "undelete message"
-msgstr "No hi ha cap missatge no esborrat."
+msgstr "restaurar el missatge"
 
 #.
 #. * SLcurses_waddnstr() can't take a "const char *", so this is only
@@ -2130,7 +2131,7 @@ msgstr "Ajuda de «%s»"
 #: history.c:75 history.c:109 history.c:132
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "El format del fitxer d’historial no és vàlid (línia %d)."
 
 #: hook.c:251
 #, c-format
@@ -2347,14 +2348,12 @@ msgid "Could not create temporary file %s"
 msgstr "No s’ha pogut crear el fitxer temporal «%s»."
 
 #: imap/message.c:137
-#, fuzzy
 msgid "Evaluating cache..."
-msgstr "S’està avaluant la memòria cau… [%d/%d]"
+msgstr "S’està avaluant la memòria cau…"
 
 #: imap/message.c:221 pop.c:239
-#, fuzzy
 msgid "Fetching message headers..."
-msgstr "S’estan recollint les capçaleres dels missatges… [%d/%d]"
+msgstr "S’estan recollint les capçaleres dels missatges…"
 
 #: imap/message.c:402 imap/message.c:459 pop.c:513
 msgid "Fetching message..."
@@ -2662,7 +2661,6 @@ msgid "subscribe to current mailbox (IMAP only)"
 msgstr "Es subscriu a la bústia actual (només a IMAP)."
 
 #: keymap_alldefs.h:16
-#, fuzzy
 msgid "unsubscribe from current mailbox (IMAP only)"
 msgstr "Es dessubscriu de la bústia actual (només a IMAP)."
 
@@ -2685,7 +2683,6 @@ msgid "check mailboxes for new mail"
 msgstr "Comprova si hi ha correu nou a les bústies."
 
 #: keymap_alldefs.h:21
-#, fuzzy
 msgid "attach file(s) to this message"
 msgstr "Adjunta fitxers a aquest missatge."
 
@@ -3061,9 +3058,8 @@ msgid "link tagged message to the current one"
 msgstr "Enllaça el missatge marcat a l’actual."
 
 #: keymap_alldefs.h:114
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "No hi ha cap bústia amb correu nou."
+msgstr "Obri la següent bústia amb correu nou."
 
 #: keymap_alldefs.h:115
 msgid "jump to the next new message"
@@ -3374,7 +3370,6 @@ msgstr "Mostra l’identificador d’usuari d’una clau."
 # ivb (2001/12/02)
 # ivb  Es refereix al format del missatge.
 #: keymap_alldefs.h:190
-#, fuzzy
 msgid "check for classic PGP"
 msgstr "Comprova si s’ha emprat el PGP clàssic."
 
@@ -3445,21 +3440,19 @@ msgstr ""
 "amb Ivan Vilata i Balaguer <ivan@selidor.net>.\n"
 
 #: main.c:63
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright © 1996‐2006 Michael R. Elkins i d’altres.\n"
+"Copyright © 1996‐2007 Michael R. Elkins i d’altres.\n"
 "Mutt s’ofereix SENSE CAP GARANTIA; useu «mutt -vv» per a obtenir‐ne més\n"
 "detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo "
 "sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: main.c:69
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3474,9 +3467,9 @@ msgid ""
 msgstr ""
 "Copyright © 1996‐2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright © 1996‐2002 Brandon Long <blong@fiction.net>\n"
-"Copyright © 1997‐2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright © 1997‐2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright © 1998‐2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright © 1999‐2006 Brendan Cully <brendan@kublai.com>\n"
+"Copyright © 1999‐2007 Brendan Cully <brendan@kublai.com>\n"
 "Copyright © 1999‐2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright © 2000‐2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3530,6 +3523,14 @@ msgid ""
 "       mutt [<options>] -D\n"
 "       mutt -v[v]\n"
 msgstr ""
+"Forma d’ús: mutt [OPCIÓ]… [-z] [-f FITXER | -yZ]\n"
+"            mutt [OPCIÓ]… [-x] [-Hi FITXER] [-s ASSUMPTE] [-bc ADREÇA]\n"
+"                 [-a FITXER…] [--] ADREÇA…\n"
+"            mutt [OPCIÓ]… -p\n"
+"            mutt [OPCIÓ]… -A ÀLIES [-A ÀLIES]…\n"
+"            mutt [OPCIÓ]… -Q VAR [-Q VAR]…\n"
+"            mutt [OPCIÓ]… -D\n"
+"            mutt -v[v]\n"
 
 #: main.c:116
 msgid ""
@@ -3605,6 +3606,9 @@ msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
+"  --                   Tracta la resta d’arguments com a adreces encara que\n"
+"                       comencen per «-».  És obligatori usar açò quan s’use\n"
+"                       «-a» amb múltiples noms de fitxer."
 
 #: main.c:187
 msgid ""
@@ -3790,10 +3794,11 @@ msgstr "No es pot saltar en un diàleg."
 msgid "Tagging is not supported."
 msgstr "No es pot marcar."
 
+# Mutt usa «scan» quan es refereix a llegir una bústia Maildir.  ivb
 #: mh.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "S’està seleccionant la bústia «%s»…"
+msgstr "S’està llegint «%s»…"
 
 #: mh.c:1323
 msgid "maildir_commit_message(): unable to set time on file"
@@ -3801,40 +3806,39 @@ msgstr "maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 
 #: mutt_sasl.c:189
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "El perfil SASL no és conegut."
 
 #: mutt_sasl.c:195
 msgid "SASL failed to get local IP address"
-msgstr ""
+msgstr "SASL no ha pogut obtenir l’adreça IP local."
 
 #: mutt_sasl.c:200
 msgid "SASL failed to parse local IP address"
-msgstr ""
+msgstr "SASL no ha pogut interpretar l’adreça IP local."
 
 #: mutt_sasl.c:206
 msgid "SASL failed to get remote IP address"
-msgstr ""
+msgstr "SASL no ha pogut obtenir l’adreça IP remota."
 
 #: mutt_sasl.c:211
 msgid "SASL failed to parse remote IP address"
-msgstr ""
+msgstr "SASL no ha pogut interpretar l’adreça IP remota."
 
 #: mutt_sasl.c:222
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "Error en reservar l’objecte de dades: %s\n"
+msgstr "Error en reservar una connexió SASL."
 
 #: mutt_sasl.c:232
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Error en establir les propietats de seguretat de SASL."
 
 #: mutt_sasl.c:242
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "Error en establir el nivell de seguretat extern de SASL."
 
 #: mutt_sasl.c:248
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Error en establir el nom d’usuari extern de SASL."
 
 #: mutt_socket.c:103 mutt_socket.c:174
 #, c-format
@@ -4325,8 +4329,9 @@ msgstr "Error a l’expressió."
 msgid "error in pattern at: %s"
 msgstr "Error al patró a: %s"
 
+# Realment són parèntesis!  ivb
 #: pattern.c:842
-#, fuzzy, c-format
+#, c-format
 msgid "mismatched brackets: %s"
 msgstr "Els parèntesis no estan aparellats: %s"
 
@@ -4372,9 +4377,8 @@ msgid "No messages matched criteria."
 msgstr "No hi ha cap missatge que concorde amb el criteri."
 
 #: pattern.c:1456
-#, fuzzy
 msgid "Searching..."
-msgstr "S’està desant…"
+msgstr "S’està cercant…"
 
 #: pattern.c:1469
 msgid "Search hit bottom without finding match"
@@ -4524,10 +4528,10 @@ msgstr "S’està recollint la llista de missatges…"
 msgid "Can't write message to temporary file!"
 msgstr "No s’ha pogut escriure el missatge en un fitxer temporal."
 
+# No els seleccionats, sinò els marcats per a esborrar.  ivb
 #: pop.c:612
-#, fuzzy
 msgid "Marking messages deleted..."
-msgstr "S’estan marcant %d missatges com a esborrats…"
+msgstr "S’estan marcant els missatges per a esborrar…"
 
 #: pop.c:682 pop.c:747
 msgid "Checking for new messages..."
@@ -4572,7 +4576,7 @@ msgstr "S’està autenticant (SASL)…"
 
 #: pop_auth.c:188
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "La marca horària de POP no és vàlida."
 
 #: pop_auth.c:193
 msgid "Authenticating (APOP)..."
@@ -5239,39 +5243,37 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "No es pot signar: no s’ha indicat cap clau.  Useu «signa com a»."
 
 #: smtp.c:113
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: %s"
-msgstr "El reanomenament ha fallat: %s"
+msgstr "La sessió SMTP fallat: %s"
 
 #: smtp.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "El reanomenament ha fallat: %s"
+msgstr "La sessió SMTP fallat: no s’ha pogut obrir «%s»"
 
 #: smtp.c:269
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "La sessió SMTP fallat: error de lectura"
 
 #: smtp.c:271
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "La sessió SMTP fallat: error d’escriptura"
 
 #: smtp.c:294
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "No vàlid    "
+msgstr "L’URL d’SMTP no és vàlid: %s"
 
 #: smtp.c:400
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "El servidor SMTP no admet autenticació."
 
 #: smtp.c:408
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "L’autenticació GSSAPI ha fallat."
+msgstr "L’autenticació SMTP necessita SASL."
 
 #: smtp.c:551
-#, fuzzy
 msgid "SASL authentication failed"
 msgstr "L’autenticació SASL ha fallat."
 
@@ -5294,51 +5296,3 @@ msgstr "El missatge pare no és visible en aquesta vista limitada."
 #: thread.c:1099
 msgid "Parent message is not available."
 msgstr "El missatge pare no es troba disponible."
-
-#~ msgid "Getting namespaces..."
-#~ msgstr "S’estan obtenint els espais de noms…"
-
-#~ msgid ""
-#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-#~ "<file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
-#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
-#~ "[ ... ]\n"
-#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-#~ "       mutt -v[v]\n"
-#~ msgstr ""
-#~ "Forma d’ús: mutt [-nRyzZ] [-e ORDRE] [-F FITXER] [-m TIPUS] [-f FITXER]\n"
-#~ "            mutt [-nR] [-e ORDRE] [-F FITXER] -Q VAR [-Q VAR]…\n"
-#~ "            mutt [-nR] [-e ORDRE] [-F FITXER] -A ÀLIES [-A ÀLIES]…\n"
-#~ "            mutt [-nR] [-e ORDRE] [-F FITXER] -D\n"
-#~ "            mutt [-nx] [-e ORDRE] [-a FITXER] [-F FITXER] [-H FITXER]\n"
-#~ "                 [-i FITXER] [-s ASSUMPTE] [-b ADREÇA] [-c ADREÇA] "
-#~ "ADREÇA…\n"
-#~ "            mutt [-n] [-e ORDRE] [-F FITXER] -p\n"
-#~ "            mutt -v[v]\n"
-
-#~ msgid "Can't change 'important' flag on POP server."
-#~ msgstr "No es pot canviar el senyalador «important» en un servidor POP."
-
-#~ msgid "Can't edit message on POP server."
-#~ msgstr "No es pot editar un missatge en un servidor POP."
-
-#~ msgid "Fatal error.  Message count is out of sync!"
-#~ msgstr "Error fatal.  El recompte de missatges no es troba sincronitzat."
-
-#~ msgid "Reading %s... %d (%d%%)"
-#~ msgstr "S’està llegint «%s»… %d (%d%%)"
-
-#~ msgid "Writing messages... %d (%d%%)"
-#~ msgstr "S’estan escrivint els missatges… %d (%d%%)"
-
-#~ msgid "Reading %s... %d"
-#~ msgstr "S’està llegint «%s»… %d"
-
-#~ msgid "Invoking pgp..."
-#~ msgstr "S’està invocant «pgp»…"
