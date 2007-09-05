@@ -895,7 +895,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
 	ps.dptr++; /* move past the ~ */
 	if ((entry = lookup_tag (*ps.dptr)) == NULL)
 	{
-	  snprintf (err->data, err->dsize, _("%c: invalid command"), *ps.dptr);
+	  snprintf (err->data, err->dsize, _("%c: invalid pattern modifier"), *ps.dptr);
 	  mutt_pattern_free (&curlist);
 	  return NULL;
 	}

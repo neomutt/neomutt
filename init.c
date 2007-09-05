@@ -1726,7 +1726,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	if (unset || inv || query)
 	{
-	  snprintf (err->data, err->dsize, "Usage: set variable=yes|no");
+	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
 	  return (-1);
 	}
 
@@ -1738,7 +1738,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  unset = 1;
 	else
 	{
-	  snprintf (err->data, err->dsize, "Usage: set variable=yes|no");
+	  snprintf (err->data, err->dsize, _("Usage: set variable=yes|no"));
 	  return (-1);
 	}
       }
