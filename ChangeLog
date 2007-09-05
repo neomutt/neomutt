@@ -1,3 +1,13 @@
+2007-09-04 12:06 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (d9a6b3f8a492)
+
+	* po/ca.po: Updated Catalan translation
+
+2007-08-31 10:12 -0700  Gary  <Gary Johnson>  (791bfed8ba62)
+
+	* editmsg.c: Decrement the mtime of the tempfile during
+	edit-message to make mutt notice changes taking less than one
+	second.
+
 2007-08-28 11:33 -0700  Brendan Cully  <brendan@kublai.com>  (3f8829e739e9)
 
 	* init.h: Insert .pp after .de to fix man page generation (closes

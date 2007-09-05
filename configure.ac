@@ -647,15 +647,20 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for 
             fi
             saved_LIBS="$LIBS"
 
-            AC_CHECK_LIB(crypto, X509_new,, AC_MSG_ERROR([Unable to find SSL library]))
-            AC_CHECK_LIB(ssl, SSL_new,, AC_MSG_ERROR([Unable to find SSL library]), -lcrypto)
+            crypto_libs=""
+            AC_CHECK_LIB(z, deflate, [crypto_libs=-lz])
+            AC_CHECK_LIB(crypto, X509_new,
+              [crypto_libs="-lcrypto $crypto_libs"],, [$crypto_libs])
+            AC_CHECK_LIB(ssl, SSL_new,,
+              AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
 
+            LIBS="$LIBS $crypto_libs"
             AC_CHECK_FUNCS(RAND_status RAND_egd)
 
             AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
             AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
             LIBS="$saved_LIBS"
-            MUTTLIBS="$MUTTLIBS -lssl -lcrypto"
+            MUTTLIBS="$MUTTLIBS -lssl $crypto_libs"
             MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_ssl.o"
             need_ssl=yes
           fi
