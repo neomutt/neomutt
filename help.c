@@ -373,7 +373,7 @@ void mutt_help (int menu)
   }
   while
     (mutt_do_pager (buf, t,
-		    M_PAGER_RETWINCH | M_PAGER_MARKER | M_PAGER_NSKIP,
+		    M_PAGER_RETWINCH | M_PAGER_MARKER | M_PAGER_NSKIP | M_PAGER_NOWRAP,
 		    NULL)
      == OP_REFORMAT_WINCH);
 }

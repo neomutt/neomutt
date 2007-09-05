@@ -32,6 +32,7 @@
 #define M_PAGER_RETWINCH	(1<<7)	/* need reformatting on SIGWINCH */
 #define M_PAGER_MESSAGE		(M_SHOWCOLOR | M_PAGER_MARKER)
 #define M_PAGER_ATTACHMENT	(1<<8)
+#define M_PAGER_NOWRAP		(1<<9)	/* format for term width, ignore $wrap */
 
 #define M_DISPLAYFLAGS	(M_SHOW | M_PAGER_NSKIP | M_PAGER_MARKER)
 

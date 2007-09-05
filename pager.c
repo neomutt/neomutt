@@ -1066,7 +1066,7 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
 
-  int wrap_cols = mutt_term_width (Wrap);
+  int wrap_cols = mutt_term_width ((flags & M_PAGER_NOWRAP) ? 0 : Wrap);
   
   /* FIXME: this should come from lineInfo */
   memset(&mbstate, 0, sizeof(mbstate));
@@ -1687,7 +1687,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       i = -1;
       j = -1;
       while (display_line (fp, &last_pos, &lineInfo, ++i, &lastLine, &maxLine,
-	     has_types | SearchFlag, &QuoteList, &q_level, &force_redraw,
+	     has_types | SearchFlag | (flags & M_PAGER_NOWRAP), &QuoteList, &q_level, &force_redraw,
 	     &SearchRE) == 0)
 	if (!lineInfo[i].continuation && ++j == lines)
 	{
@@ -1709,7 +1709,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	{
 	  if (display_line (fp, &last_pos, &lineInfo, curline, &lastLine, 
 			    &maxLine,
-			    (flags & M_DISPLAYFLAGS) | hideQuoted | SearchFlag, 
+			    (flags & M_DISPLAYFLAGS) | hideQuoted | SearchFlag | (flags & M_PAGER_NOWRAP),
 			    &QuoteList, &q_level, &force_redraw, &SearchRE) > 0)
 	    lines++;
 	  curline++;
@@ -2075,7 +2075,7 @@ search_next:
 	  /* update the search pointers */
 	  i = 0;
 	  while (display_line (fp, &last_pos, &lineInfo, i, &lastLine, 
-				&maxLine, M_SEARCH | (flags & M_PAGER_NSKIP),
+				&maxLine, M_SEARCH | (flags & M_PAGER_NSKIP) | (flags & M_PAGER_NOWRAP),
 				&QuoteList, &q_level,
 				&force_redraw, &SearchRE) == 0)
 	    i++;
@@ -2156,7 +2156,7 @@ search_next:
 
 	  while ((new_topline < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
-			 new_topline, &lastLine, &maxLine, M_TYPES,
+			 new_topline, &lastLine, &maxLine, M_TYPES | (flags & M_PAGER_NOWRAP),
 			 &QuoteList, &q_level, &force_redraw, &SearchRE))))
 		 && lineInfo[new_topline].type != MT_COLOR_QUOTED)
 	    new_topline++;
@@ -2169,7 +2169,7 @@ search_next:
 
 	  while ((new_topline < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
-			 new_topline, &lastLine, &maxLine, M_TYPES,
+			 new_topline, &lastLine, &maxLine, M_TYPES | (flags & M_PAGER_NOWRAP),
 			 &QuoteList, &q_level, &force_redraw, &SearchRE))))
 		 && lineInfo[new_topline].type == MT_COLOR_QUOTED)
 	    new_topline++;
@@ -2189,7 +2189,7 @@ search_next:
 	  i = curline;
 	  /* make sure the types are defined to the end of file */
 	  while (display_line (fp, &last_pos, &lineInfo, i, &lastLine, 
-				&maxLine, has_types, 
+				&maxLine, has_types | (flags & M_PAGER_NOWRAP),
 				&QuoteList, &q_level, &force_redraw,
 				&SearchRE) == 0)
 	    i++;
@@ -2374,7 +2374,7 @@ search_next:
 	  lastLine = 0;
 	  while (j > 0 && display_line (fp, &last_pos, &lineInfo, topline, 
 					&lastLine, &maxLine,
-					(has_types ? M_TYPES : 0),
+					(has_types ? M_TYPES : 0) | (flags & M_PAGER_NOWRAP),
 					&QuoteList, &q_level, &force_redraw,
 					&SearchRE) == 0)
 	  {
