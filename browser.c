@@ -989,31 +989,41 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  }
 	  else
 #endif
-	  if (stat (buf, &st) == 0)
 	  {
-	    if (S_ISDIR (st.st_mode))
+	    if (*buf != '/')
 	    {
-	      destroy_state (&state);
-	      if (examine_directory (menu, &state, buf, prefix) == 0)
-		strfcpy (LastDir, buf, sizeof (LastDir));
-	      else
+	      /* in case dir is relative, make it relative to LastDir,
+	       * not current working dir */
+	      char tmp[_POSIX_PATH_MAX];
+	      mutt_concat_path (tmp, LastDir, buf, sizeof (tmp));
+	      strfcpy (buf, tmp, sizeof (buf));
+	    }
+	    if (stat (buf, &st) == 0)
+	    {
+	      if (S_ISDIR (st.st_mode))
 	      {
-		mutt_error _("Error scanning directory.");
-		if (examine_directory (menu, &state, LastDir, prefix) == -1)
+		destroy_state (&state);
+		if (examine_directory (menu, &state, buf, prefix) == 0)
+		  strfcpy (LastDir, buf, sizeof (LastDir));
+		else
 		{
-		  mutt_menuDestroy (&menu);
-		  goto bail;
+		  mutt_error _("Error scanning directory.");
+		  if (examine_directory (menu, &state, LastDir, prefix) == -1)
+		  {
+		    mutt_menuDestroy (&menu);
+		    goto bail;
+		  }
 		}
+		menu->current = 0;
+		menu->top = 0;
+		init_menu (&state, menu, title, sizeof (title), buffy);
 	      }
-	      menu->current = 0; 
-	      menu->top = 0; 
-	      init_menu (&state, menu, title, sizeof (title), buffy);
+	      else
+		mutt_error (_("%s is not a directory."), buf);
 	    }
 	    else
-	      mutt_error (_("%s is not a directory."), buf);
+	      mutt_perror (buf);
 	  }
-	  else
-	    mutt_perror (buf);
 	}
 	MAYBE_REDRAW (menu->redraw);
 	break;
