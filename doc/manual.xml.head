@@ -629,33 +629,48 @@ objects to specify a color or mono attribute for them.
 <para>
 Additionally, the internal pager supports the ANSI escape sequences for
 character attributes.  Mutt translates them into the correct color and
-character settings.  The sequences Mutt supports are:
+character settings.  The sequences Mutt supports are
+'&bsol;e&lsqb;<emphasis>Ps</emphasis>;<emphasis>Ps</emphasis>;..<emphasis>Ps</emphasis>;m'
+where <emphasis>Ps</emphasis> can be one of the codes shown in
+<xref linkend="tab-ansi-esc"/>.
 </para>
 
-<para>
+<table id="tab-ansi-esc">
+<title>ANSI escape sequences</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Escape code</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>0</entry><entry>All Attributes Off</entry></row>
+<row><entry>1</entry><entry>Bold on</entry></row>
+<row><entry>4</entry><entry>Underline on</entry></row>
+<row><entry>5</entry><entry>Blink on</entry></row>
+<row><entry>7</entry><entry>Reverse video on</entry></row>
+<row><entry>3<emphasis>&lt;color&gt;</emphasis></entry><entry>Foreground color is <emphasis>&lt;color&gt;</emphasis> (see <xref linkend="tab-color"/>)</entry></row>
+<row><entry>4<emphasis>&lt;color&gt;</emphasis></entry><entry>Background color is <emphasis>&lt;color&gt;</emphasis> (see <xref linkend="tab-color"/>)</entry></row>
+</tbody>
+</tgroup>
+</table>
 
-<screen>
-ESC [ Ps;Ps;Ps;...;Ps m where Ps =
-0    All Attributes Off
-1    Bold on
-4    Underline on
-5    Blink on
-7    Reverse video on
-3x   Foreground color is x
-4x   Background color is x
-
-Colors are
-0    black
-1    red
-2    green
-3    yellow
-4    blue
-5    magenta
-6    cyan
-7    white
-</screen>
-
-</para>
+<table id="tab-color">
+<title>Color sequences</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Color code</entry><entry>Color</entry></row>
+</thead>
+<tbody>
+<row><entry>0</entry><entry>Black</entry></row>
+<row><entry>1</entry><entry>Red</entry></row>
+<row><entry>2</entry><entry>Green</entry></row>
+<row><entry>3</entry><entry>Yellow</entry></row>
+<row><entry>4</entry><entry>Blue</entry></row>
+<row><entry>5</entry><entry>Magenta</entry></row>
+<row><entry>6</entry><entry>Cyan</entry></row>
+<row><entry>7</entry><entry>White</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 <para>
 Mutt uses these attributes for handling text/enriched messages, and they
@@ -3973,18 +3988,24 @@ only messages sent on the given date will be selected.
 <para>
 <emphasis role="bold">Error Margins</emphasis>.  You can add error margins to absolute dates.
 An error margin is a sign (+ or -), followed by a digit, followed by
-one of the following units:
-
-<screen>
-y        years
-m        months
-w        weeks
-d        days
-</screen>
-
-As a special case, you can replace the sign by a ``*'' character,
-which is equivalent to giving identical plus and minus error margins.
+one of the units in <xref linkend="tab-date-units"/>. As a special case, you can replace the
+sign by a ``*'' character, which is equivalent to giving identical plus and minus error margins.
 </para>
+
+<table id="tab-date-units">
+<title>Date units</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Unit</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>y</entry><entry>Years</entry></row>
+<row><entry>m</entry><entry>Months</entry></row>
+<row><entry>w</entry><entry>Weeks</entry></row>
+<row><entry>d</entry><entry>Days</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 <para>
 Example: To select any messages two weeks around January 15, 2001,
@@ -4026,16 +4047,7 @@ be specified as:
 </para>
 
 <para>
-<emphasis>offset</emphasis> is specified as a positive number with one of the following
-units:
-
-<screen>
-y       years
-m       months
-w       weeks
-d       days
-</screen>
-
+<emphasis>offset</emphasis> is specified as a positive number with one of the units from <xref linkend="tab-date-units"/>.
 </para>
 
 <para>
