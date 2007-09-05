@@ -5092,8 +5092,8 @@ information, notably the type, encoding and description.
 Attachments appear as follows:
 
 <screen>
--   1 [text/plain, 7bit, 1K]             /tmp/mutt-euler-8082-0 &lt;no description&gt;
-    2 [applica/x-gunzip, base64, 422K]   ~/src/mutt-0.85.tar.gz &lt;no description&gt;
+- 1 [text/plain, 7bit, 1K]           /tmp/mutt-euler-8082-0 &lt;no description&gt;
+  2 [applica/x-gunzip, base64, 422K] ~/src/mutt-0.85.tar.gz &lt;no description&gt;
 </screen>
 
 </para>
@@ -5176,15 +5176,33 @@ use this format include Netscape, XMosaic, lynx and metamail.
 <para>
 In order to handle various MIME types that Mutt can not handle
 internally, Mutt parses a series of external configuration files to
-find an external handler.  The default search string for these files
-is a colon delimited list set to
+find an external handler. The default search string for these files
+is a colon delimited list containing the following files:
+
+<orderedlist>
+<listitem><para><literal>&dollar;HOME/.mailcap</literal></para></listitem>
+<listitem><para><literal>&dollar;PKGDATADIR/mailcap</literal></para></listitem>
+<listitem><para><literal>&dollar;SYSCONFDIR/mailcap</literal></para></listitem>
+<listitem><para><literal>/etc/mailcap</literal></para></listitem>
+<listitem><para><literal>/usr/etc/mailcap</literal></para></listitem>
+<listitem><para><literal>/usr/local/etc/mailcap</literal></para></listitem>
+</orderedlist>
+
+where <literal>&dollar;HOME</literal> is your home directory. The
+<literal>&dollar;PKGDATADIR</literal> and the
+<literal>&dollar;SYSCONFDIR</literal> directories depend on where mutt
+is installed: the former is the default for shared data, the
+latter for system configuration files.
+</para>
+
+<para>
+The default search path can be obtained by running the following
+command:
+</para>
 
 <screen>
-${HOME}/.mailcap:/usr/local/share/mutt/mailcap:/etc/mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap
+mutt -nF /dev/null -Q mailcap_path
 </screen>
-
-where <literal>&dollar;HOME</literal> is your home directory.
-</para>
 
 <para>
 In particular, the metamail distribution will install a mailcap file,
@@ -5677,7 +5695,8 @@ content-types that you wish to view automatically.
 For instance, if you set auto&lowbar;view to:
 
 <screen>
-auto_view text/html application/x-gunzip application/postscript image/gif application/x-tar-gz
+auto_view text/html application/x-gunzip &bsol;
+  application/postscript image/gif application/x-tar-gz
 </screen>
 
 </para>
@@ -5688,7 +5707,8 @@ attachments of these types.
 
 <screen>
 text/html;      lynx -dump %s; copiousoutput; nametemplate=%s.html
-image/*;        anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | pgmtopbm | pbmtoascii ; copiousoutput
+image/*;        anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | &bsol;
+                pgmtopbm | pbmtoascii ; copiousoutput
 application/x-gunzip;   gzcat; copiousoutput
 application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
 application/postscript; ps2ascii %s; copiousoutput
