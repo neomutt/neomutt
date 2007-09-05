@@ -1205,7 +1205,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	count = (COLS < destlen ? COLS : destlen);
 	if (count > col)
 	{
-	  count -= col; /* how many columns left on this line */
+	  count -= wlen; /* how many byte left for this line's buffer */
 	  mutt_FormatString (buf, sizeof (buf), 0, src, callback, data, flags);
 	  len = mutt_strlen (buf);
 	  wid = mutt_strwidth (buf);
@@ -1222,7 +1222,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;
-	  col += mutt_strwidth (buf);
+	  col += wid;
 	}
 	break; /* skip rest of input */
       }
