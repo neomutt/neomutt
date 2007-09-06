@@ -1200,22 +1200,27 @@ void mutt_FormatString (char *dest,		/* output buffer */
       {
 	/* right justify to EOL */
 	ch = *src++; /* pad char */
-	/* calculate space left on line.  if we've already written more data
-	   than will fit on the line, ignore the rest of the line */
-	count = (COLS < destlen ? COLS : destlen);
-	if (count > col)
+	/* see if there's room to add content, else ignore */
+	if (col < COLS && wlen < destlen)
 	{
-	  count -= wlen; /* how many byte left for this line's buffer */
+	  int pad;
+
+	  /* get contents after padding */
 	  mutt_FormatString (buf, sizeof (buf), 0, src, callback, data, flags);
 	  len = mutt_strlen (buf);
 	  wid = mutt_strwidth (buf);
-	  if (count > wid)
+
+	  /* try to consume as many columns as we can, if we don't have
+	   * memory for that, use as much memory as possible */
+	  pad = COLS - col - wid;
+	  if (wlen + pad + len > destlen)
+	    pad = destlen - wlen - len;
+	  if (pad > 0)
 	  {
-	    count -= wid; /* how many chars to pad */
-	    memset (wptr, ch, count);
-	    wptr += count;
-	    wlen += count;
-	    col += count;
+	    memset (wptr, ch, pad);
+	    wptr += pad;
+	    wlen += pad;
+	    col += pad;
 	  }
 	  if (len + wlen > destlen)
 	    len = destlen - wlen;
