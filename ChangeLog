@@ -1,14 +1,21 @@
-2007-09-05 07:16 +0000  Rocco Rutte  <pdmef@gmx.net>  (964658b145df)
+2007-09-06 20:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (648ad3832e82)
+
+	* muttlib.c: Rewrite padding logic for mutt_FormatString()
+
+	Do so by checking columns and bytes individually to make sure we
+	really don't write past the end of allocated buffers. This patch
+	fixes all my crashes I saw with files attached to/with the settings
+	for #2882 and #2900.
+
+2007-09-05 10:52 +0000  Rocco Rutte  <pdmef@gmx.net>  (078744e84667)
+
+	* init.c, pattern.c: Fix/improve intl error messages
 
 	* browser.c: Interpret relative paths in browser relative to shown
 	dir, not working dir (closes #2471).
 
-2007-09-05 07:12 +0000  Rocco Rutte  <pdmef@gmx.net>  (e0c7b3a70c3e)
-
 	* help.c, pager.c, pager.h: Teach pager how to ignore $wrap and use it
 	for help (closes #2896).
-
-2007-09-05 07:07 +0000  Rocco Rutte  <pdmef@gmx.net>  (dc54d31493a2)
 
 	* doc/manual.xml.head: Manual: make sure <screen/> contents in shorter
 	than 80 chars
@@ -16,12 +23,8 @@
 	Otherwise conversion to plain text may cause line breaks rendering
 	examples syntacially invalid (closes #2185).
 
-2007-09-05 07:03 +0000  Rocco Rutte  <pdmef@gmx.net>  (3f59f7dd2965)
-
 	* doc/manual.xml.head: Manual: don't use <screen/> to present
 	structured data
-
-2007-09-05 06:56 +0000  Rocco Rutte  <pdmef@gmx.net>  (bb4f47b4578d)
 
 	* muttlib.c: Fix buffer overflow in mutt_FormatString()
 
@@ -30,7 +33,7 @@
 
 2007-09-04 17:22 -0700  Brendan Cully  <brendan@kublai.com>  (7df563e4b7fd)
 
-	* ChangeLog, configure.ac: Add libz to crypto libs if available
+	* configure.ac: Add libz to crypto libs if available
 	(closes #2303).
 
 2007-09-04 12:06 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (d9a6b3f8a492)
