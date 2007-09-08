@@ -1,7 +1,6 @@
 #!/bin/sh
 
-if autoreconf --install --include=m4 \
-  && ./configure "$@"
+if autoreconf --install && ./configure "$@"
 then
   echo
   echo "The mutt source code was successfully prepared and configured."
