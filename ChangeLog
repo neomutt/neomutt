@@ -1,3 +1,10 @@
+2007-09-08 15:30 -0700  Brendan Cully  <brendan@kublai.com>  (1e4a6efddc81)
+
+	* prepare: autoreconf --include doesn't pass its argument to aclocal.
+	Let ACLOCAL_AMFLAGS in Makefile.am handle that.
+
+	* configure.ac: Attempt to clean up DB back-end selection
+
 2007-09-06 20:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (648ad3832e82)
 
 	* muttlib.c: Rewrite padding logic for mutt_FormatString()
