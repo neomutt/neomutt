@@ -1630,6 +1630,60 @@ static void mutt_restore_default (struct option_t *p)
     set_option (OPTREDRAWTREE);
 }
 
+static size_t escape_string (char *dst, size_t len, const char* src)
+{
+  char* p = dst;
+
+  if (!len)
+    return 0;
+  len--; /* save room for \0 */
+#define ESC_CHAR(C)	do { *p++ = '\\'; if (p - dst < len) *p++ = C; } while(0)
+  while (p - dst < len && src && *src)
+  {
+    switch (*src)
+    {
+    case '\n':
+      ESC_CHAR('n');
+      break;
+    case '\r':
+      ESC_CHAR('r');
+      break;
+    case '\t':
+      ESC_CHAR('t');
+      break;
+    default:
+      if ((*src == '\\' || *src == '"') && p - dst < len - 1)
+	*p++ = '\\';
+      *p++ = *src;
+    }
+    src++;
+  }
+#undef ESC_CHAR
+  *p = '\0';
+  return p - dst;
+}
+
+static void pretty_var (char *dst, size_t len, const char *option, const char *val)
+{
+  char *p;
+
+  if (!len)
+    return;
+
+  strfcpy (dst, option, len);
+  len--; /* save room for \0 */
+  p = dst + mutt_strlen (dst);
+
+  if (p - dst < len)
+    *p++ = '=';
+  if (p - dst < len)
+    *p++ = '"';
+  p += escape_string (p, len - (p - dst) + 1, val);	/* \0 terminate it */
+  if (p - dst < len)
+    *p++ = '"';
+  *p = 0;
+}
+
 static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, inv, reset, r = 0;
@@ -1783,7 +1837,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         {
           if ((val = myvar_get (myvar)))
           {
-            snprintf (err->data, err->dsize, "%s=\"%s\"", myvar, val);
+	    pretty_var (err->data, err->dsize, myvar, val);
             break;
           }
           else
@@ -1798,12 +1852,18 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  rfc822_write_address (_tmp, sizeof (_tmp), *((ADDRESS **) MuttVars[idx].data), 0);
 	  val = _tmp;
 	}
+	else if (DTYPE (MuttVars[idx].type) == DT_PATH)
+	{
+	  _tmp[0] = '\0';
+	  strfcpy (_tmp, *((char **) MuttVars[idx].data), sizeof (_tmp));
+	  mutt_pretty_mailbox (_tmp);
+	  val = _tmp;
+	}
 	else
 	  val = *((char **) MuttVars[idx].data);
 	
 	/* user requested the value of this variable */
-	snprintf (err->data, err->dsize, "%s=\"%s\"", MuttVars[idx].option,
-		  NONULL (val));
+	pretty_var (err->data, err->dsize, MuttVars[idx].option, NONULL(val));
 	break;
       }
       else
@@ -1858,8 +1918,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       if (query || *s->dptr != '=')
       {
 	/* user requested the value of this variable */
-	snprintf (err->data, err->dsize, "%s=\"%s\"", MuttVars[idx].option,
-		  NONULL (ptr->pattern));
+	pretty_var (err->data, err->dsize, MuttVars[idx].option, NONULL(ptr->pattern));
 	break;
       }
 
@@ -2532,7 +2591,7 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
     {
       if ((myvarval = myvar_get(var)) != NULL)
       {
-	snprintf (pt, len - (pt - buffer), "%s=\"%s\"", var, myvarval);
+	pretty_var (pt, len - (pt - buffer), var, myvarval);
 	return 1;
       }
       return 0; /* no such variable. */
@@ -2549,7 +2608,6 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 static int var_to_string (int idx, char* val, size_t len)
 {
   char tmp[LONG_STRING];
-  char *s, *d;
   char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
   tmp[0] = '\0';
@@ -2635,13 +2693,7 @@ static int var_to_string (int idx, char* val, size_t len)
   else
     return 0;
 
-  for (s = tmp, d = val; *s && len - (d - val) > 2; len--)
-  {
-    if (*s == '\\' || *s == '"')
-      *d++ = '\\';
-    *d++ = *s++;
-  }
-  *d = '\0';
+  escape_string (val, len - 1, tmp);
 
   return 1;
 }

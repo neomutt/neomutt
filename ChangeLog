@@ -1,3 +1,14 @@
+2007-09-09 15:48 -0700  Andreas  <Andreas Jaggi>  (4e9445a06369)
+
+	* imap/imap.c: Let imap_complete_hosts work with the last mailbox
+	(closes #2949). This was an off-by-one error in the mailbox loop.
+
+2007-09-09 15:20 -0700  Julien  <Julien Cristau>  (7e60c2515318)
+
+	* ChangeLog, mutt_ssl_gnutls.c: Only check whether GNUTLS error is
+	fatal when an error occurs (closes #2954). The API for GNUTLS
+	changed to require this in 1.7.18.
+
 2007-09-08 15:30 -0700  Brendan Cully  <brendan@kublai.com>  (1e4a6efddc81)
 
 	* prepare: autoreconf --include doesn't pass its argument to aclocal.
