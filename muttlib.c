@@ -1354,9 +1354,23 @@ void mutt_FormatString (char *dest,		/* output buffer */
     }
     else
     {
-      *wptr++ = *src++;
-      wlen++;
-      col++;
+      int tmp, w;
+      /* in case of error, simply copy byte */
+      if ((tmp = mutt_charlen (src, &w)) < 0)
+	tmp = 1;
+      if (tmp > 0 && wlen + tmp < destlen)
+      {
+        memcpy (wptr, src, tmp);
+        wptr += tmp;
+        src += tmp;
+        wlen += tmp;
+        col += w;
+      }
+      else
+      {
+	src += destlen - wlen;
+	wlen = destlen;
+      }
     }
   }
   *wptr = 0;

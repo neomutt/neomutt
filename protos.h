@@ -355,6 +355,7 @@ int mutt_search_command (int, int);
 int mutt_smtp_send (const ADDRESS *, const ADDRESS *, const ADDRESS *,
                     const ADDRESS *, const char *, int);
 #endif
+int mutt_charlen (const char *s, int *);
 int mutt_strwidth (const char *);
 int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
 int mutt_thread_set_flag (HEADER *, int, int, int);
