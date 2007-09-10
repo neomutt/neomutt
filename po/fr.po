@@ -16,10 +16,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.16-20070719\n"
+"Project-Id-Version: Mutt 1.5.16-20070910\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-20 03:09+0200\n"
-"PO-Revision-Date: 2007-07-20 03:09+0200\n"
+"POT-Creation-Date: 2007-09-10 12:19+0200\n"
+"PO-Revision-Date: 2007-09-10 12:20+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -120,8 +120,8 @@ msgstr "Ne correspond pas au nametemplate, continuer ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:167
-#: curs_lib.c:484
+#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:175
+#: curs_lib.c:492
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Erreur en exécutant \"%s\" !"
@@ -190,7 +190,7 @@ msgid "Mask"
 msgstr "Masque"
 
 # , c-format
-#: browser.c:383 browser.c:1013
+#: browser.c:383 browser.c:1022
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s n'est pas un répertoire."
@@ -217,7 +217,7 @@ msgstr "Répertoire [%s], masque de fichier : %s"
 msgid "Can't attach a directory!"
 msgstr "Impossible d'attacher un répertoire !"
 
-#: browser.c:670 browser.c:1081 browser.c:1179
+#: browser.c:670 browser.c:1091 browser.c:1189
 msgid "No files match the file mask"
 msgstr "Aucun fichier ne correspond au masque"
 
@@ -254,35 +254,35 @@ msgstr "Boîte aux lettres non supprimée."
 msgid "Chdir to: "
 msgstr "Changement de répertoire vers : "
 
-#: browser.c:1001 browser.c:1074
+#: browser.c:1010 browser.c:1084
 msgid "Error scanning directory."
 msgstr "Erreur de lecture du répertoire."
 
-#: browser.c:1024
+#: browser.c:1034
 msgid "File Mask: "
 msgstr "Masque de fichier : "
 
-#: browser.c:1097
+#: browser.c:1107
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:1098
+#: browser.c:1108
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:1099
+#: browser.c:1109
 msgid "dazn"
 msgstr "datn"
 
-#: browser.c:1166
+#: browser.c:1176
 msgid "New file name: "
 msgstr "Nouveau nom de fichier : "
 
-#: browser.c:1197
+#: browser.c:1207
 msgid "Can't view a directory"
 msgstr "Impossible de visualiser un répertoire"
 
-#: browser.c:1214
+#: browser.c:1224
 msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
@@ -707,7 +707,7 @@ msgid "Rename to: "
 msgstr "Renommer en : "
 
 # , c-format
-#: compose.c:1014 editmsg.c:116 sendlib.c:857
+#: compose.c:1014 editmsg.c:96 editmsg.c:121 sendlib.c:857
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Impossible d'obtenir le statut de %s : %s"
@@ -1443,28 +1443,28 @@ msgstr "\"crypt_use_gpgme\" positionné mais non construit avec support GPGME."
 msgid "Invoking S/MIME..."
 msgstr "Appel de S/MIME..."
 
-#: curs_lib.c:177
+#: curs_lib.c:185
 msgid "yes"
 msgstr "oui"
 
-#: curs_lib.c:178
+#: curs_lib.c:186
 msgid "no"
 msgstr "non"
 
 #. restore blocking operation
-#: curs_lib.c:274
+#: curs_lib.c:282
 msgid "Exit Mutt?"
 msgstr "Quitter Mutt ?"
 
-#: curs_lib.c:436 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:444 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "erreur inconnue"
 
-#: curs_lib.c:456
+#: curs_lib.c:464
 msgid "Press any key to continue..."
 msgstr "Appuyez sur une touche pour continuer..."
 
-#: curs_lib.c:500
+#: curs_lib.c:508
 msgid " ('?' for list): "
 msgstr " ('?' pour avoir la liste) : "
 
@@ -1830,32 +1830,32 @@ msgstr "impossible de créer le dossier temporaire : %s"
 msgid "could not write temporary mail folder: %s"
 msgstr "impossible d'écrire dans le dossier temporaire : %s"
 
-#: editmsg.c:107
+#: editmsg.c:110
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
 msgstr "impossible de tronquer le dossier temporaire : %s"
 
-#: editmsg.c:122
+#: editmsg.c:127
 msgid "Message file is empty!"
 msgstr "Le fichier contenant le message est vide !"
 
-#: editmsg.c:129
+#: editmsg.c:134
 msgid "Message not modified!"
 msgstr "Message non modifié !"
 
 # , c-format
-#: editmsg.c:137
+#: editmsg.c:142
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Impossible d'ouvrir le fichier : %s"
 
 # , c-format
-#: editmsg.c:144 editmsg.c:172
+#: editmsg.c:149 editmsg.c:177
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Impossible d'ajouter au dossier : %s"
 
-#: editmsg.c:203
+#: editmsg.c:208
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Erreur. On préserve le fichier temporaire : %s"
@@ -2052,7 +2052,7 @@ msgstr "unhook : type hook inconnu : %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
-#: imap/auth.c:108 pop_auth.c:399 smtp.c:452
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:452
 msgid "No authenticators available"
 msgstr "Pas d'authentificateurs disponibles"
 
@@ -2085,11 +2085,11 @@ msgstr "L'authentification GSSAPI a échoué."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN désactivée sur ce serveur."
 
-#: imap/auth_login.c:47 pop_auth.c:232
+#: imap/auth_login.c:47 pop_auth.c:231
 msgid "Logging in..."
 msgstr "Connexion..."
 
-#: imap/auth_login.c:67 pop_auth.c:275
+#: imap/auth_login.c:67 pop_auth.c:274
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
@@ -2102,7 +2102,7 @@ msgstr "Authentification (%s)..."
 msgid "SASL authentication failed."
 msgstr "L'authentification SASL a échoué."
 
-#: imap/browse.c:58 imap/imap.c:561
+#: imap/browse.c:58 imap/imap.c:562
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s n'est pas un chemin IMAP valide"
@@ -2155,95 +2155,95 @@ msgstr "Fermeture de la connexion à %s..."
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Ce serveur IMAP est trop ancien. Mutt ne marche pas avec."
 
-#: imap/imap.c:428 pop_lib.c:286 smtp.c:373
+#: imap/imap.c:429 pop_lib.c:286 smtp.c:373
 msgid "Secure connection with TLS?"
 msgstr "Connexion sécurisée avec TLS ?"
 
-#: imap/imap.c:437 pop_lib.c:306 smtp.c:385
+#: imap/imap.c:438 pop_lib.c:306 smtp.c:385
 msgid "Could not negotiate TLS connection"
 msgstr "Impossible de négocier la connexion TLS"
 
-#: imap/imap.c:453 pop_lib.c:327
+#: imap/imap.c:454 pop_lib.c:327
 msgid "Encrypted connection unavailable"
 msgstr "Connexion chiffrée non disponible"
 
 # , c-format
-#: imap/imap.c:593
+#: imap/imap.c:594
 #, c-format
 msgid "Selecting %s..."
 msgstr "Sélection de %s..."
 
-#: imap/imap.c:748
+#: imap/imap.c:749
 msgid "Error opening mailbox"
 msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:801 imap/message.c:792 muttlib.c:1458
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1477
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
 
 # , c-format
-#: imap/imap.c:1131
+#: imap/imap.c:1132
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Marquage de %d messages à effacer..."
 
-#: imap/imap.c:1140
+#: imap/imap.c:1141
 msgid "Expunge failed"
 msgstr "Expunge a échoué"
 
 # , c-format
-#: imap/imap.c:1173
+#: imap/imap.c:1174
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "La sauvegarde a changé des messages... [%d/%d]"
 
-#: imap/imap.c:1227
+#: imap/imap.c:1228
 msgid "Error saving flags. Close anyway?"
 msgstr "Erreur en sauvant les indicateurs. Fermer tout de même ?"
 
-#: imap/imap.c:1235
+#: imap/imap.c:1236
 msgid "Error saving flags"
 msgstr "Erreur en sauvant les indicateurs"
 
-#: imap/imap.c:1247
+#: imap/imap.c:1248
 msgid "Expunging messages from server..."
 msgstr "Effacement des messages sur le serveur..."
 
-#: imap/imap.c:1252
+#: imap/imap.c:1253
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox : EXPUNGE a échoué"
 
-#: imap/imap.c:1725
+#: imap/imap.c:1726
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Recherche d'en-tête sans nom d'en-tête : %s"
 
-#: imap/imap.c:1797
+#: imap/imap.c:1798
 msgid "Bad mailbox name"
 msgstr "Mauvaise boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:1820
+#: imap/imap.c:1821
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonnement à %s..."
 
 # , c-format
-#: imap/imap.c:1822
+#: imap/imap.c:1823
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Désabonnement de %s..."
 
 # , c-format
-#: imap/imap.c:1832
+#: imap/imap.c:1833
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonné à %s"
 
 # , c-format
-#: imap/imap.c:1834
+#: imap/imap.c:1835
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Désabonné de %s"
@@ -2299,7 +2299,7 @@ msgstr "Copie du message %d dans %s..."
 msgid "Continue?"
 msgstr "Continuer ?"
 
-#: init.c:57 init.c:1701 pager.c:57
+#: init.c:57 init.c:1755 pager.c:57
 #, c-format
 msgid "Not available in this menu."
 msgstr "Non disponible dans ce menu."
@@ -2373,110 +2373,115 @@ msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s) : erreur dans l'expression rationnelle : %s\n"
 
 # , c-format
-#: init.c:1678 init.c:1791
+#: init.c:1732 init.c:1845
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s : variable inconnue"
 
-#: init.c:1687
+#: init.c:1741
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "ce préfixe est illégal avec reset"
 
-#: init.c:1693
+#: init.c:1747
 #, c-format
 msgid "value is illegal with reset"
 msgstr "cette valeur est illégale avec reset"
 
+#: init.c:1783 init.c:1795
+#, c-format
+msgid "Usage: set variable=yes|no"
+msgstr "Usage : set variable=yes|no"
+
 # , c-format
-#: init.c:1749
+#: init.c:1803
 #, c-format
 msgid "%s is set"
 msgstr "%s est positionné"
 
 # , c-format
-#: init.c:1749
+#: init.c:1803
 #, c-format
 msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
-#: init.c:1974
+#: init.c:2033
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s : type de boîte aux lettres invalide"
 
 # , c-format
-#: init.c:2005 init.c:2058
+#: init.c:2064 init.c:2117
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s : valeur invalide"
 
 # , c-format
-#: init.c:2099
+#: init.c:2158
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s : type inconnu."
 
 # , c-format
-#: init.c:2126
+#: init.c:2185
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s : type inconnu"
 
 # , c-format
-#: init.c:2188
+#: init.c:2247
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erreur dans %s, ligne %d : %s"
 
 # , c-format
 #. the muttrc source keyword
-#: init.c:2211
+#: init.c:2270
 #, c-format
 msgid "source: errors in %s"
 msgstr "source : erreurs dans %s"
 
-#: init.c:2212
+#: init.c:2271
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 
 # , c-format
-#: init.c:2226
+#: init.c:2285
 #, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
 
-#: init.c:2231
+#: init.c:2290
 msgid "source: too many arguments"
 msgstr "source : trop d'arguments"
 
 # , c-format
-#: init.c:2282
+#: init.c:2341
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s : commande inconnue"
 
 # , c-format
-#: init.c:2774
+#: init.c:2826
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erreur dans la ligne de commande : %s\n"
 
-#: init.c:2826
+#: init.c:2878
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: init.c:2834
+#: init.c:2886
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
-#: init.c:3070
+#: init.c:3122
 msgid "-group: no group name"
 msgstr "-group: pas de nom de groupe"
 
-#: init.c:3080
+#: init.c:3132
 msgid "out of arguments"
 msgstr "à court d'arguments"
 
@@ -4021,18 +4026,18 @@ msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 msgid "oac"
 msgstr "eca"
 
-#: muttlib.c:1421
+#: muttlib.c:1440
 msgid "Can't save message to POP mailbox."
 msgstr "Impossible de sauver le message dans la boîte aux lettres POP."
 
 # , c-format
-#: muttlib.c:1430
+#: muttlib.c:1449
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
 
 # , c-format
-#: muttlib.c:1442
+#: muttlib.c:1461
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s n'est pas une boîte aux lettres !"
@@ -4246,8 +4251,8 @@ msgstr "parenthésage incorrect : %s"
 # , c-format
 #: pattern.c:898
 #, c-format
-msgid "%c: invalid command"
-msgstr "%c : commande invalide"
+msgid "%c: invalid pattern modifier"
+msgstr "%c : modificateur de motif invalide"
 
 # , c-format
 #: pattern.c:904
@@ -4487,11 +4492,11 @@ msgstr "L'horodatage POP est invalide !"
 msgid "Authenticating (APOP)..."
 msgstr "Authentification (APOP)..."
 
-#: pop_auth.c:217
+#: pop_auth.c:216
 msgid "APOP authentication failed."
 msgstr "L'authentification APOP a échoué."
 
-#: pop_auth.c:252
+#: pop_auth.c:251
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "La commande USER n'est pas supportée par le serveur."

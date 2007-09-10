@@ -1,9 +1,19 @@
-2007-09-09 15:48 -0700  Andreas  <Andreas Jaggi>  (4e9445a06369)
+2007-09-10 08:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (49d69399cf21)
+
+	* curs_lib.c, muttlib.c, protos.h: Make mutt_FormatString() more
+	multibyte-aware As default cause, don't copy raw bytes but copy
+	multibyte chars instead to ensure column computation is correct
+	(needed for padding).
+
+	* init.c: Escape option values for variable queries and completion
+	to ensure they're parsable
+
+2007-09-09 15:48 -0700  Andreas Jaggi  (4e9445a06369)
 
 	* imap/imap.c: Let imap_complete_hosts work with the last mailbox
 	(closes #2949). This was an off-by-one error in the mailbox loop.
 
-2007-09-09 15:20 -0700  Julien  <Julien Cristau>  (7e60c2515318)
+2007-09-09 15:20 -0700  Julien Cristau  (7e60c2515318)
 
 	* ChangeLog, mutt_ssl_gnutls.c: Only check whether GNUTLS error is
 	fatal when an error occurs (closes #2954). The API for GNUTLS
