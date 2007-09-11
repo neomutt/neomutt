@@ -582,7 +582,7 @@ void mutt_shell_escape (void)
 void mutt_enter_command (void)
 {
   BUFFER err, token;
-  char buffer[LONG_STRING], errbuf[SHORT_STRING];
+  char buffer[LONG_STRING], errbuf[LONG_STRING];
   int r;
 
   buffer[0] = 0;

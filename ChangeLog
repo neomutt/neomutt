@@ -1,3 +1,15 @@
+2007-09-11 18:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (72fdaa70500e)
+
+	* muttlib.c: Let %*X padding share the same code of %>X padding The
+	current implementation of %*X was completely multibyte-unaware and
+	had buffer overflow issues with large terminals. Now we use the same
+	code as %>X has and optionally only truncate left content to make
+	sure the right content can be printed entirely.
+
+2007-09-10 11:14 -0700  Vincent Lefevre  <vincent@vinc17.org>  (664c5ec1a727)
+
+	* ChangeLog, po/fr.po: Updated French translation.
+
 2007-09-10 08:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (49d69399cf21)
 
 	* curs_lib.c, muttlib.c, protos.h: Make mutt_FormatString() more
