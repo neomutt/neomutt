@@ -999,7 +999,6 @@ void mutt_FormatString (char *dest,		/* output buffer */
 {
   char prefix[SHORT_STRING], buf[LONG_STRING], *cp, *wptr = dest, ch;
   char ifstring[SHORT_STRING], elsestring[SHORT_STRING];
-  char remainder[LONG_STRING];
   size_t wlen, count, len, wid;
   pid_t pid;
   FILE *filter;
@@ -1196,12 +1195,14 @@ void mutt_FormatString (char *dest,		/* output buffer */
       }
 
       /* handle generic cases first */
-      if (ch == '>')
+      if (ch == '>' || ch == '*')
       {
-	/* right justify to EOL */
-	ch = *src++; /* pad char */
+	/* %>X: right justify to EOL, left takes precedence
+	 * %*X: right justify to EOL, right takes precedence */
+	int soft = ch == '*';
+	ch = *src++; /* pad char (if there's room) */
 	/* see if there's room to add content, else ignore */
-	if (col < COLS && wlen < destlen)
+	if ((col < COLS && wlen < destlen) || soft)
 	{
 	  int pad;
 
@@ -1222,8 +1223,19 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	    wlen += pad;
 	    col += pad;
 	  }
+	  else if (soft && pad < 0)
+	  {
+	    /* set wptr and wlen back just enough bytes to make sure buf
+	     * fits on screen, col needs no adjustments as we skip more input
+	     * currently multibyte unaware */
+	    if (pad < -wlen)
+	      pad = -wlen;
+	    wlen += pad;
+	    wptr += pad;
+	  }
 	  if (len + wlen > destlen)
 	    len = destlen - wlen;
+	  /* copy as much of buf as possible: multibyte unaware */
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;
@@ -1245,46 +1257,6 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	}
 	break; /* skip rest of input */
       }
-      /* soft fill */
-      else if (ch == '*')
-      {
-	int space;
-
-	/* truncate to fit remainder, pad with chr. */
-	ch = *src++;	/* pad chr */
-	mutt_FormatString (remainder, sizeof(remainder), 0, src, callback,
-	  data, flags);
-
-	len = mutt_strlen(remainder);
-	space = COLS - wlen - len;	/* bytes remaining unformatted */
-
-	/* if space > 0, this is space that needs to be filled */
-	if (space > 0)
-	{
-	  memset(wptr, ch, space);
-	  wptr += space;
-	  wlen += space;
-	}
-
-	/* if space < 0, there's not enough room for remainder -- backtrack */
-	else if (space < 0) {
-	  wptr += space;
-	  wlen += space;
-	  if (wlen < 0) {
-	    wptr = dest;
-	    wlen = 0;
-	  }
-	}
-
-	/* Since remainder is already formatted, copy it *
-	 * in.  This prevents having to format it twice. */
-	if (len > COLS)
-	  len = COLS;
-	memcpy(wptr, remainder, len);
-	wptr += len;
-	wlen += len;
-      }
-
       else
       {
 	short tolower =  0;
@@ -1357,7 +1329,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       int tmp, w;
       /* in case of error, simply copy byte */
       if ((tmp = mutt_charlen (src, &w)) < 0)
-	tmp = 1;
+	tmp = w = 1;
       if (tmp > 0 && wlen + tmp < destlen)
       {
         memcpy (wptr, src, tmp);
