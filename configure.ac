@@ -816,7 +816,7 @@ AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm],
 AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm],
   [Don't use gdbm even if it is available]))
 AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb[=DIR]],
-  [Use BerkeleyDB4 if gdbm is not available]), ac_bdb_prefix=$withval)
+  [Use BerkeleyDB4 if gdbm is not available]))
 
 if test x$enable_hcache = xyes
 then
@@ -890,7 +890,7 @@ then
     fi
 
     dnl -- BDB --
-    ac_bdb_prefix=yes
+    ac_bdb_prefix="$with_bdb"
     if test x$ac_bdb_prefix != xno && test x$ac_cv_gdbmopen != xyes && test $use_qdbm != yes; then
         test x$ac_bdb_prefix = xyes && ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
         for d in $ac_bdb_prefix; do
