@@ -1,4 +1,13 @@
-2007-09-11 18:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (72fdaa70500e)
+2007-09-13 09:39 -0700  Brendan Cully  <brendan@kublai.com>  (154417d57b9d)
+
+	* configure.ac: Do not clobber --with-bdb argument (closes #2955)
+
+2007-09-11 18:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (785c95c8ff9a)
+
+	* commands.c: Enlarge error buffer in mutt_enter_command() to not
+	truncate option queries. The error buffer gets passed down into
+	parse_set() using it to report option values. SHORT_STRING is too
+	short to even print some defaults (e.g. $status_format).
 
 	* muttlib.c: Let %*X padding share the same code of %>X padding The
 	current implementation of %*X was completely multibyte-unaware and
@@ -8,7 +17,7 @@
 
 2007-09-10 11:14 -0700  Vincent Lefevre  <vincent@vinc17.org>  (664c5ec1a727)
 
-	* ChangeLog, po/fr.po: Updated French translation.
+	* po/fr.po: Updated French translation.
 
 2007-09-10 08:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (49d69399cf21)
 
