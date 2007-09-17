@@ -39,4 +39,6 @@ int mutt_hcache_store_raw (header_cache_t *h, const char* filename, void* data,
                            size_t dlen, size_t(*keylen) (const char* fn));
 int mutt_hcache_delete(header_cache_t *h, const char *filename, size_t (*keylen)(const char *fn));
 
+const char *mutt_hcache_backend (void);
+
 #endif /* _HCACHE_H_ */

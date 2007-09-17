@@ -40,6 +40,10 @@
 #include "imap/imap.h"
 #endif
 
+#ifdef USE_HCACHE
+#include "hcache.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <locale.h>
@@ -183,7 +187,11 @@ static void show_version (void)
   printf ("\nlibidn: %s (compiled with %s)", stringprep_check_version (NULL), 
 	  STRINGPREP_VERSION);
 #endif
-  
+
+#ifdef USE_HCACHE
+  printf ("\nhcache backend: %s", mutt_hcache_backend ());
+#endif
+
   puts (_("\nCompile options:"));
 
 #ifdef DOMAIN

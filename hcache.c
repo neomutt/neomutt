@@ -1018,3 +1018,20 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     return NULL;
   }
 }
+
+#if HAVE_DB4
+const char *mutt_hcache_backend (void)
+{
+  return DB_VERSION_STRING;
+}
+#elif HAVE_GDBM
+const char *mutt_hcache_backend (void)
+{
+  return gdbm_version;
+}
+#elif HAVE_QDBM
+const char *mutt_hcache_backend (void)
+{
+  return "qdbm " _QDBM_VERSION;
+}
+#endif
