@@ -163,33 +163,33 @@ static void show_version (void)
   uname (&uts);
 
 #ifdef _AIX
-  printf ("System: %s %s.%s", uts.sysname, uts.version, uts.release);
+  printf (_("System: %s %s.%s"), uts.sysname, uts.version, uts.release);
 #elif defined (SCO)
-  printf ("System: SCO %s", uts.release);
+  printf (_("System: SCO %s"), uts.release);
 #else
-  printf ("System: %s %s", uts.sysname, uts.release);
+  printf (_("System: %s %s"), uts.sysname, uts.release);
 #endif
 
   printf (" (%s)", uts.machine);
 
 #ifdef NCURSES_VERSION
-  printf ("\nncurses: %s (compiled with %s)", curses_version(), NCURSES_VERSION);
+  printf (_("\nncurses: %s (compiled with %s)"), curses_version(), NCURSES_VERSION);
 #elif defined(USE_SLANG_CURSES)
-  printf ("\nslang: %d", SLANG_VERSION);
+  printf (_("\nslang: %d"), SLANG_VERSION);
 #endif
 
 #ifdef _LIBICONV_VERSION
-  printf ("\nlibiconv: %d.%d", _LIBICONV_VERSION >> 8,
+  printf (_("\nlibiconv: %d.%d"), _LIBICONV_VERSION >> 8,
 	  _LIBICONV_VERSION & 0xff);
 #endif
 
 #ifdef HAVE_LIBIDN
-  printf ("\nlibidn: %s (compiled with %s)", stringprep_check_version (NULL), 
+  printf (_("\nlibidn: %s (compiled with %s)"), stringprep_check_version (NULL),
 	  STRINGPREP_VERSION);
 #endif
 
 #ifdef USE_HCACHE
-  printf ("\nhcache backend: %s", mutt_hcache_backend ());
+  printf (_("\nhcache backend: %s"), mutt_hcache_backend ());
 #endif
 
   puts (_("\nCompile options:"));
