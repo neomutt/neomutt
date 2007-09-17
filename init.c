@@ -1855,7 +1855,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	else if (DTYPE (MuttVars[idx].type) == DT_PATH)
 	{
 	  _tmp[0] = '\0';
-	  strfcpy (_tmp, *((char **) MuttVars[idx].data), sizeof (_tmp));
+	  strfcpy (_tmp, NONULL(*((char **) MuttVars[idx].data)), sizeof (_tmp));
 	  mutt_pretty_mailbox (_tmp);
 	  val = _tmp;
 	}
