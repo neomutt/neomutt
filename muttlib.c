@@ -1200,28 +1200,34 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	/* %>X: right justify to EOL, left takes precedence
 	 * %*X: right justify to EOL, right takes precedence */
 	int soft = ch == '*';
-	ch = *src++; /* pad char (if there's room) */
+	int pl, pw;
+	if ((pl = mutt_charlen (src, &pw)) <= 0)
+	  pl = pw = 1;
+
 	/* see if there's room to add content, else ignore */
 	if ((col < COLS && wlen < destlen) || soft)
 	{
 	  int pad;
 
 	  /* get contents after padding */
-	  mutt_FormatString (buf, sizeof (buf), 0, src, callback, data, flags);
+	  mutt_FormatString (buf, sizeof (buf), 0, src + pl, callback, data, flags);
 	  len = mutt_strlen (buf);
 	  wid = mutt_strwidth (buf);
 
 	  /* try to consume as many columns as we can, if we don't have
 	   * memory for that, use as much memory as possible */
-	  pad = COLS - col - wid;
-	  if (wlen + pad + len > destlen)
-	    pad = destlen - wlen - len;
+	  pad = (COLS - col - wid) / pw;
+	  if (pad > 0 && wlen + (pad * pl) + len > destlen)
+	    pad = ((signed)(destlen - wlen - len)) / pl;
 	  if (pad > 0)
 	  {
-	    memset (wptr, ch, pad);
-	    wptr += pad;
-	    wlen += pad;
-	    col += pad;
+	    while (pad--)
+	    {
+	      memcpy (wptr, src, pl);
+	      wptr += pl;
+	      wlen += pl;
+	      col += pw;
+	    }
 	  }
 	  else if (soft && pad < 0)
 	  {
@@ -1240,20 +1246,32 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  wptr += len;
 	  wlen += len;
 	  col += wid;
+	  src += pl;
 	}
 	break; /* skip rest of input */
       }
       else if (ch == '|')
       {
 	/* pad to EOL */
-	ch = *src++;
-	if (destlen > COLS)
-	  destlen = COLS;
-	if (destlen > wlen)
+	int pl, pw, c;
+	if ((pl = mutt_charlen (src, &pw)) <= 0)
+	  pl = pw = 1;
+
+	/* see if there's room to add content, else ignore */
+	if (col < COLS && wlen < destlen)
 	{
-	  count = destlen - wlen;
-	  memset (wptr, ch, count);
-	  wptr += count;
+	  c = (COLS - col) / pw;
+	  if (c > 0 && wlen + (c * pl) > destlen)
+	    c = ((signed)(destlen - wlen)) / pl;
+	  while (c > 0)
+	  {
+	    memcpy (wptr, src, pl);
+	    wptr += pl;
+	    wlen += pl;
+	    col += pw;
+	    c--;
+	  }
+	  src += pl;
 	}
 	break; /* skip rest of input */
       }

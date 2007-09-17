@@ -1,3 +1,12 @@
+2007-09-17 13:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (6f06b7f1f76f)
+
+	* main.c: Mark interesting items in mutt -v output for translation
+
+2007-09-17 11:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (010084b62288)
+
+	* ChangeLog, hcache.c, hcache.h, main.c: Include hcache backend
+	version info in mutt -v output
+
 2007-09-17 09:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (e146db07dd54)
 
 	* init.c: Use NONULL to ensure we can pretty-print empty paths for
