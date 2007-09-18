@@ -1,3 +1,12 @@
+2007-09-17 17:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (ae47263fc1b0)
+
+	* main.c: Backoug changeset 6f06b7f1f76f
+
+2007-09-17 15:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (73c4e07cd976)
+
+	* ChangeLog, muttlib.c: Enable padding with multibyte chars for %>X,
+	%*X and %|X
+
 2007-09-17 13:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (6f06b7f1f76f)
 
 	* main.c: Mark interesting items in mutt -v output for translation

@@ -315,6 +315,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Character set your terminal uses to display and enter textual data.
+  ** It is also the fallback for $$send_charset.
   */
   { "check_new",	DT_BOOL, R_NONE, OPTCHECKNEW, 1 },
   /*
@@ -2474,13 +2475,16 @@ struct option_t MuttVars[] = {
   { "send_charset",	DT_STR,  R_NONE, UL &SendCharset, UL "us-ascii:iso-8859-1:utf-8" },
   /*
   ** .pp
-  ** A list of character sets for outgoing messages. Mutt will use the
+  ** A colon-delimited list of character sets for outgoing messages. Mutt will use the
   ** first character set into which the text can be converted exactly.
   ** If your ``$$charset'' is not iso-8859-1 and recipients may not
   ** understand UTF-8, it is advisable to include in the list an
   ** appropriate widely used standard character set (such as
   ** iso-8859-2, koi8-r or iso-2022-jp) either instead of or after
   ** "iso-8859-1".
+  ** .pp
+  ** In case the text cannot be converted into one of these exactly,
+  ** mutt uses ``$$charset'' as a fallback.
   */
   { "sendmail",		DT_PATH, R_NONE, UL &Sendmail, UL SENDMAIL " -oem -oi" },
   /*
