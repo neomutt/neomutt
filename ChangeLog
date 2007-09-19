@@ -1,3 +1,14 @@
+2007-09-19 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (5bc3cb8c8b68)
+
+	* compose.c: Use mutt_paddstr() to print compose menu's status line
+	rather than printw(). All other menus use mutt_paddstr(): printw()
+	prints only N bytes, not N columns.
+
+2007-09-18 11:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (5827331565a2)
+
+	* ChangeLog, init.h: Document that $charset is a fallback for
+	$send_charset
+
 2007-09-17 17:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (ae47263fc1b0)
 
 	* main.c: Backoug changeset 6f06b7f1f76f

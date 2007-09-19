@@ -206,7 +206,7 @@ void menu_redraw_status (MUTTMENU *menu)
 
 void menu_redraw_index (MUTTMENU *menu)
 {
-  char buf[STRING];
+  char buf[LONG_STRING];
   int i;
 
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
@@ -262,7 +262,7 @@ void menu_redraw_index (MUTTMENU *menu)
 
 void menu_redraw_motion (MUTTMENU *menu)
 {
-  char buf[STRING];
+  char buf[LONG_STRING];
 
   if (menu->dialog) 
   {
@@ -322,7 +322,7 @@ void menu_redraw_motion (MUTTMENU *menu)
 
 void menu_redraw_current (MUTTMENU *menu)
 {
-  char buf[STRING];
+  char buf[LONG_STRING];
   
   move (menu->current + menu->offset - menu->top, 0);
   menu_make_entry (buf, sizeof (buf), menu, menu->current);
