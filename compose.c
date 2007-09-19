@@ -1275,11 +1275,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     /* Draw formated compose status line */
     if (menu->redraw & REDRAW_STATUS) 
     {
-       	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));
+	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));
 	CLEARLINE (option (OPTSTATUSONTOP) ? 0 : LINES-2);
 	SETCOLOR (MT_COLOR_STATUS);
-	printw ("%-*.*s", COLS, COLS, buf);
+	BKGDSET (MT_COLOR_STATUS);
+	mutt_paddstr (COLS, buf);
 	SETCOLOR (MT_COLOR_NORMAL);
+	BKGDSET (MT_COLOR_NORMAL);
 	menu->redraw &= ~REDRAW_STATUS;
     }
   }
