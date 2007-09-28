@@ -822,6 +822,38 @@ void mutt_paddstr (int n, const char *s)
     addch (' ');
 }
 
+/* See how many bytes to copy from string so its at most maxlen bytes
+ * long and maxwid columns wide */
+int mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *width)
+{
+  wchar_t wc;
+  int w = 0, l = 0, cl;
+  size_t cw, n;
+  mbstate_t mbstate;
+
+  if (!src)
+    goto out;
+
+  n = mutt_strlen (src);
+
+  memset (&mbstate, 0, sizeof (mbstate));
+  for (w = 0; n && (cl = mbrtowc (&wc, src, n, &mbstate)); src += cl, n -= cl)
+  {
+    if (cl == (size_t)(-1) || cl == (size_t)(-2))
+      cw = cl = 1;
+    else
+      cw = wcwidth (wc);
+    if (cl + l > maxlen || cw + w > maxwid)
+      break;
+    l += cl;
+    w += cw;
+  }
+out:
+  if (width)
+    *width = w;
+  return l;
+}
+
 /*
  * returns the number of bytes the first (multibyte) character
  * of input consumes:

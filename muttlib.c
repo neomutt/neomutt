@@ -1232,16 +1232,16 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  else if (soft && pad < 0)
 	  {
 	    /* set wptr and wlen back just enough bytes to make sure buf
-	     * fits on screen, col needs no adjustments as we skip more input
-	     * currently multibyte unaware */
+	     * fits on screen, \0-terminate dest so mutt_wstr_trunc()
+	     * can correctly compute string's length */
 	    if (pad < -wlen)
 	      pad = -wlen;
-	    wlen += pad;
-	    wptr += pad;
+	    *wptr = 0;
+	    wlen = mutt_wstr_trunc (dest, wlen + pad, col + pad, &col);
+	    wptr = dest + wlen;
 	  }
 	  if (len + wlen > destlen)
-	    len = destlen - wlen;
-	  /* copy as much of buf as possible: multibyte unaware */
+	    len = mutt_wstr_trunc (buf, destlen - wlen, COLS - col, NULL);
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;
@@ -1304,7 +1304,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	}
 	
 	if ((len = mutt_strlen (buf)) + wlen > destlen)
-	  len = (destlen - wlen > 0) ? (destlen - wlen) : 0;
+	  len = mutt_wstr_trunc (buf, destlen - wlen, COLS - col, NULL);
 
 	memcpy (wptr, buf, len);
 	wptr += len;
