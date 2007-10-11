@@ -1016,7 +1016,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
     /* Do not consider filters if no pipe at end */
     n = mutt_strlen(src);
-    if (n > 0 && src[n-1] == '|')
+    if (n > 1 && src[n-1] == '|')
     {
       /* Scan backwards for backslashes */
       off = n;

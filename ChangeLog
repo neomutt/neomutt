@@ -1,3 +1,15 @@
+2007-09-28 11:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (709db707bcdf)
+
+	* curs_lib.c, muttlib.c, protos.h: Make mutt_FormatString()'s string
+	truncation multibyte aware
+
+2007-09-19 12:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (c768a1ebf78a)
+
+	* ChangeLog, menu.c: Enlarge buffers for printing menu entries from
+	STRING to LONG_STRING. Now that multibyte padding works, we may too
+	soon run into too short buffers for common terminal widths in
+	graphical terminals.
+
 2007-09-19 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (5bc3cb8c8b68)
 
 	* compose.c: Use mutt_paddstr() to print compose menu's status line
