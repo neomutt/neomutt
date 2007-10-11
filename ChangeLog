@@ -1,3 +1,13 @@
+2007-10-11 11:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (efcd349fc9e0)
+
+	* init.h: Document that $indent_string actually is a format string.
+
+2007-10-11 11:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (40f2c0f4c597)
+
+	* ChangeLog, muttlib.c: Do not consider empty pipes for filtering in
+	format strings. This fixes a crash with $indent_string="|" and
+	$text_flowed unset.
+
 2007-09-28 11:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (709db707bcdf)
 
 	* curs_lib.c, muttlib.c, protos.h: Make mutt_FormatString()'s string

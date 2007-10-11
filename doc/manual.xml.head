@@ -3277,6 +3277,9 @@ something like <literal>unhook send-hook</literal>.
 <sect1 id="formatstrings">
 <title>Format Strings</title>
 
+<sect2>
+<title>Basic usage</title>
+
 <para>
 Format strings are a general concept you'll find in several locations
 through the mutt configuration, especially in the
@@ -3337,6 +3340,47 @@ between any format modifiers (as above) and the expando letter, it will
 expands in all lower case. And if you use a colon (``:''), it will
 replace all decimal points with underlines.
 </para>
+
+</sect2>
+
+<sect2>
+<title>Filters</title>
+
+<para>
+Any format string ending in a vertical bar (``&verbar;'') will be
+expanded and piped through the first word in the string, using spaces
+as separator. The string returned will be used for display.
+If the returned string ends in &percnt;, it will be passed through
+the formatter a second time. This allows the filter to generate a
+replacement format string including &percnt; expandos.
+</para>
+
+<para>
+All &percnt; expandos in a format string are expanded before the script
+is called so that:
+</para>
+
+<screen>
+set status_format="script.sh '%r %f (%L)'|"
+</screen>
+
+<para>
+will make mutt expand <literal>&percnt;r</literal>,
+<literal>&percnt;f</literal> and <literal>&percnt;L</literal>
+before calling the script. The example also shows that arguments can be
+quoted: the script will receive the expanded string between the single quotes
+as the only argument.
+</para>
+
+<para>
+A practical example is the <literal>mutt&lowbar;xtitle</literal>
+script installed in the <literal>samples</literal>
+subdirectory of the mutt documentation: it can be used as filter for
+<literal>&dollar;status&lowbar;format</literal> to set the current
+terminal's title, if supported.
+</para>
+
+</sect2>
 
 </sect1>
 
