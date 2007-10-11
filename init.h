@@ -974,6 +974,9 @@ struct option_t MuttVars[] = {
   ** Specifies the string to prepend to each line of text quoted in a
   ** message to which you are replying.  You are strongly encouraged not to
   ** change this value, as it tends to agitate the more fanatical netizens.
+  ** .pp
+  ** This option is a format string, please see the description of
+  ** ``$$index_format'' for supported printf()-style sequences.
   */
   { "indent_str",	DT_SYN,  R_NONE, UL "indent_string", 0 },
   /*
