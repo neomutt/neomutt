@@ -53,7 +53,7 @@ static int get_quote_level (const char *line)
   return quoted;
 }
 
-static void print_indent (int ql, STATE *s)
+static void print_indent (int ql, STATE *s, int sp)
 {
   int i;
 
@@ -61,6 +61,8 @@ static void print_indent (int ql, STATE *s)
     ql++;
   for (i = 0; i < ql; i++)
     state_putc ('>', s);
+  if (sp)
+    state_putc (' ', s);
 }
 
 static void print_flowed_line (const char *line, STATE *s, int ql)
@@ -78,7 +80,7 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
     
   if (len == 0)
   {
-    print_indent (ql, s);
+    print_indent (ql, s, 0);
     state_putc ('\n', s);
     return;
   }
@@ -128,9 +130,7 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
       dprint (4, (debugfile, "f=f: line completely fits on screen\n"));
     }
 
-    print_indent (ql, s);
-    if (ql > 0 || s->prefix)
-      state_putc (' ', s);
+    print_indent (ql, s, ql > 0 || s->prefix);
     state_puts (oldpos, s);
 
     if (pos < line + len)
@@ -138,6 +138,22 @@ static void print_flowed_line (const char *line, STATE *s, int ql)
     state_putc ('\n', s);
     oldpos = pos;
   }
+}
+
+static void print_fixed_line (const char *line, STATE *s, int ql)
+{
+  int len = mutt_strlen (line);
+
+  if (len == 0)
+  {
+    print_indent (ql, s, 0);
+    state_putc ('\n', s);
+    return;
+  }
+
+  print_indent (ql, s, ql > 0 || s->prefix);
+  state_puts (line, s);
+  state_putc ('\n', s);
 }
 
 int rfc3676_handler (BODY * a, STATE * s)
@@ -216,10 +232,17 @@ int rfc3676_handler (BODY * a, STATE * s)
       curline_len = 1;
     }
 
+    /* if this is a standalone fixed line, print it as-is */
+    if (fixed && curline_len == 1)
+    {
+      print_fixed_line (buf + buf_off, s, quotelevel);
+      continue;
+    }
+
     /* append remaining contents without quotes, space-stuffed
      * spaces and with 1 trailing space (0 or 1 for DelSp=yes) */
     safe_realloc (&curline, curline_len + buf_len - buf_off);
-    strcpy (curline + curline_len - 1, buf + buf_off);		/* __STRCPY_CHECKED__ */
+    strcpy (curline + curline_len - 1, buf + buf_off);	/* __STRCPY_CHECKED__ */
     curline_len += buf_len - buf_off;
 
     /* if this was a fixed line, the paragraph is finished */
@@ -234,7 +257,8 @@ int rfc3676_handler (BODY * a, STATE * s)
 
   if (*curline)
   {
-    dprint (2, (debugfile, "f=f: still content buffered af EOF, flushing at ql=%d\n", quotelevel));
+    dprint (2, (debugfile,
+		"f=f: still content buffered af EOF, flushing at ql=%d\n", quotelevel));
     print_flowed_line (curline, s, quotelevel);
   }
 
