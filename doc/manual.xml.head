@@ -2390,7 +2390,7 @@ command.
 <para>
 To remove a regular expression from the <literal>alternates</literal> list, use the
 <literal>unalternates</literal> command with exactly the same <emphasis>regexp</emphasis>.
-Likewise, if the <emphasis>regexp</emphasis> for a <literal>alternates</literal> command matches
+Likewise, if the <emphasis>regexp</emphasis> for an <literal>alternates</literal> command matches
 an entry on the <literal>unalternates</literal> list, that <literal>unalternates</literal>
 entry will be removed. If the <emphasis>regexp</emphasis> for <literal>unalternates</literal>
 is ``*'', <emphasis>all entries</emphasis> on <literal>alternates</literal> will be removed.

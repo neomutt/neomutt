@@ -1,3 +1,14 @@
+2007-10-15 11:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (35e5c34b7e91)
+
+	* rfc3676.c: f=f: Print standalone fixed lines as-is (closes #2917).
+
+2007-10-11 12:10 +0200  Rocco Rutte  <pdmef@gmx.net>  (c15eeb44f139)
+
+	* ChangeLog, UPDATING, doc/manual.xml.head: Document format string
+	pipes. This is roughly the commit message only. Add a line to
+	UPDATING (mark it as a change rather than a new feature as it may
+	break setups).
+
 2007-10-11 11:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (efcd349fc9e0)
 
 	* init.h: Document that $indent_string actually is a format string.
