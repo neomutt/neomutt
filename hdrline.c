@@ -243,7 +243,7 @@ hdr_format_str (char *dest,
   struct hdr_format_info *hfi = (struct hdr_format_info *) data;
   HEADER *hdr, *htmp;
   CONTEXT *ctx;
-  char fmt[SHORT_STRING], buf2[SHORT_STRING], ch, *p;
+  char fmt[SHORT_STRING], buf2[LONG_STRING], ch, *p;
   int do_locales, i;
   int optional = (flags & M_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
