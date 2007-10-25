@@ -1,3 +1,14 @@
+2007-10-18 10:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (4e738d998bb3)
+
+	* hdrline.c: Enlarge temporary buffer in hdr_format_str to prevent
+	subject truncation. The subject along with the thread tree are
+	composed using a SHORT_STRING-sized buffer which may lead to
+	truncation even though the destination buffer is large enough.
+
+2007-10-16 11:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (c33f288c3aab)
+
+	* ChangeLog, doc/manual.xml.head: Manual: fix typo (closes #2971).
+
 2007-10-15 11:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (35e5c34b7e91)
 
 	* rfc3676.c: f=f: Print standalone fixed lines as-is (closes #2917).

@@ -6,6 +6,7 @@ The keys used are:
 
   + next-unread-mailbox
   + $message_cache_clean (clean cache on sync)
+  + %P expando for $pager_format
 
 1.5.15 (2007-04-06)
 
