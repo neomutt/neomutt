@@ -229,7 +229,7 @@ void mutt_perror (const char *);
 void mutt_prepare_envelope (ENVELOPE *, int);
 void mutt_unprepare_envelope (ENVELOPE *);
 void mutt_pretty_mailbox (char *);
-void mutt_pretty_size (char *, size_t, long);
+void mutt_pretty_size (char *, size_t, LOFF_T);
 void mutt_pipe_message (HEADER *);
 void mutt_print_message (HEADER *);
 void mutt_print_patchlist (void);
