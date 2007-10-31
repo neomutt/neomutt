@@ -1,3 +1,18 @@
+2007-10-31 14:04 -0700  Brendan Cully  <brendan@kublai.com>  (51595292e112)
+
+	* imap/imap.c: Fix the test for flushing queued STATUS requests in
+	imap_buffy_check. This should fix the bug that caused every other
+	IMAP connection to fail to get the new message counts. Thanks to exg
+	for his generous help debugging this one.
+
+2007-10-25 17:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (5d96f24efa85)
+
+	* muttlib.c, protos.h: Large file support for mutt_pretty_size().
+	Based on a patch by Corinna Vinschen, adjusted for LOFF_T/OFF_T_FMT
+	(closes #2191).
+
+	* UPDATING: Add UPDATING entry for %P for $pager_format
+
 2007-10-18 10:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (4e738d998bb3)
 
 	* hdrline.c: Enlarge temporary buffer in hdr_format_str to prevent
@@ -7,7 +22,7 @@
 
 2007-10-16 11:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (c33f288c3aab)
 
-	* ChangeLog, doc/manual.xml.head: Manual: fix typo (closes #2971).
+	* doc/manual.xml.head: Manual: fix typo (closes #2971).
 
 2007-10-15 11:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (35e5c34b7e91)
 
@@ -15,19 +30,15 @@
 
 2007-10-11 12:10 +0200  Rocco Rutte  <pdmef@gmx.net>  (c15eeb44f139)
 
-	* ChangeLog, UPDATING, doc/manual.xml.head: Document format string
+	* UPDATING, doc/manual.xml.head: Document format string
 	pipes. This is roughly the commit message only. Add a line to
 	UPDATING (mark it as a change rather than a new feature as it may
 	break setups).
 
-2007-10-11 11:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (efcd349fc9e0)
-
 	* init.h: Document that $indent_string actually is a format string.
 
-2007-10-11 11:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (40f2c0f4c597)
-
-	* ChangeLog, muttlib.c: Do not consider empty pipes for filtering in
-	format strings. This fixes a crash with $indent_string="|" and
+	* muttlib.c: Do not consider empty pipes for filtering in format
+	strings. This fixes a crash with $indent_string="|" and
 	$text_flowed unset.
 
 2007-09-28 11:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (709db707bcdf)
@@ -37,12 +48,10 @@
 
 2007-09-19 12:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (c768a1ebf78a)
 
-	* ChangeLog, menu.c: Enlarge buffers for printing menu entries from
-	STRING to LONG_STRING. Now that multibyte padding works, we may too
-	soon run into too short buffers for common terminal widths in
-	graphical terminals.
-
-2007-09-19 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (5bc3cb8c8b68)
+	* menu.c: Enlarge buffers for printing menu entries from STRING to
+	LONG_STRING. Now that multibyte padding works, we may too soon run
+	into too short buffers for common terminal widths in graphical
+	terminals.
 
 	* compose.c: Use mutt_paddstr() to print compose menu's status line
 	rather than printw(). All other menus use mutt_paddstr(): printw()
@@ -50,28 +59,15 @@
 
 2007-09-18 11:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (5827331565a2)
 
-	* ChangeLog, init.h: Document that $charset is a fallback for
-	$send_charset
+	* init.h: Document that $charset is a fallback for $send_charset
 
 2007-09-17 17:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (ae47263fc1b0)
 
-	* main.c: Backoug changeset 6f06b7f1f76f
+	* muttlib.c: Enable padding with multibyte chars for %>X, %*X and
+	%|X
 
-2007-09-17 15:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (73c4e07cd976)
-
-	* ChangeLog, muttlib.c: Enable padding with multibyte chars for %>X,
-	%*X and %|X
-
-2007-09-17 13:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (6f06b7f1f76f)
-
-	* main.c: Mark interesting items in mutt -v output for translation
-
-2007-09-17 11:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (010084b62288)
-
-	* ChangeLog, hcache.c, hcache.h, main.c: Include hcache backend
-	version info in mutt -v output
-
-2007-09-17 09:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (e146db07dd54)
+	* hcache.c, hcache.h, main.c: Include hcache backend version info
+	in mutt -v output
 
 	* init.c: Use NONULL to ensure we can pretty-print empty paths for
 	option queries

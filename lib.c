@@ -447,8 +447,12 @@ int safe_rename (const char *src, const char *target)
     
     dprint (1, (debugfile, "safe_rename: link (%s, %s) failed: %s (%d)\n", src, target, strerror (errno), errno));
 
-    /* FUSE may return ENOSYS. VFAT may return EPERM */
-    if (errno == EXDEV || errno == ENOSYS || errno == EPERM)
+    /*
+     * FUSE may return ENOSYS. VFAT may return EPERM. FreeBSD's
+     * msdosfs may return EOPNOTSUPP.  ENOTSUP can also appear.
+     */
+    if (errno == EXDEV || errno == ENOSYS || errno == EPERM ||
+	errno == ENOTSUP || errno == EOPNOTSUPP)
     {
       dprint (1, (debugfile, "safe_rename: trying rename...\n"));
       if (rename (src, target) == -1) 
