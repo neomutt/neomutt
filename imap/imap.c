@@ -1461,11 +1461,15 @@ int imap_buffy_check (int force)
      * IDLEd elsewhere */
     if (!imap_mxcmp (name, idata->mailbox))
       continue;
-      
-    if (!lastdata)
-      lastdata = idata;
 
-    if (idata != lastdata)
+    if (!mutt_bit_isset (idata->capabilities, IMAP4REV1) &&
+        !mutt_bit_isset (idata->capabilities, STATUS))
+    {
+      dprint (2, (debugfile, "Server doesn't support STATUS\n"));
+      continue;
+    }
+
+    if (lastdata && idata != lastdata)
     {
       /* Send commands to previous server. Sorting the buffy list
        * may prevent some infelicitous interleavings */
@@ -1475,13 +1479,9 @@ int imap_buffy_check (int force)
       lastdata = NULL;
     }
 
-    if (!mutt_bit_isset (idata->capabilities, IMAP4REV1) &&
-        !mutt_bit_isset (idata->capabilities, STATUS))
-    {
-      dprint (2, (debugfile, "Server doesn't support STATUS\n"));
-      continue;
-    }
-    
+    if (!lastdata)
+      lastdata = idata;
+
     imap_munge_mbox_name (munged, sizeof (munged), name);
     snprintf (command, sizeof (command),
 	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
