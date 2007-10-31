@@ -124,7 +124,7 @@ Later, you will most likely receive questions from the developers
 about the problem you observed, and you will eventually be informed
 that your bug report has been closed.  This means that the bug has
 been fixed at least in the
-.BR cvs (1)
+.BR Mercurial (1)
 repository.  If the answers you receive don't satisfy you, don't
 hesitate to contact the developers directly under
 .BR mutt-dev@mutt.org.
