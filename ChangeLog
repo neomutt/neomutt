@@ -1,3 +1,12 @@
+2007-10-31 16:20 -0700  Brendan Cully  <brendan@kublai.com>  (4ad7d64fdac2)
+
+	* doc/muttbug.man: s/cvs/Mercurial/
+
+2007-10-31 14:09 -0700  rea-mutt  <rea-mutt@codelabs.ru>  (c6ce36a67121)
+
+	* lib.c: Fall back to rename for ENOTSUP and EOPNOTSUPP
+	too. Closes #2975
+
 2007-10-31 14:04 -0700  Brendan Cully  <brendan@kublai.com>  (51595292e112)
 
 	* imap/imap.c: Fix the test for flushing queued STATUS requests in
