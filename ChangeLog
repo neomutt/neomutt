@@ -1,4 +1,8 @@
-2007-10-31 16:20 -0700  Brendan Cully  <brendan@kublai.com>  (4ad7d64fdac2)
+2007-10-31 16:24 -0700  Brendan Cully  <brendan@kublai.com>  (e20b768d37f0)
+
+	* Makefile.am, cvslog2changelog.pl: cvslog2changelog.pl is obsolete
+
+	* doc/muttbug.man: s/Mercurial/hg/
 
 	* doc/muttbug.man: s/cvs/Mercurial/
 
