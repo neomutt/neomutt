@@ -5872,7 +5872,7 @@ listed above).
 </sect1>
 
 <sect1 id="smtp">
-<title>SMTP support</title>
+<title>SMTP Support</title>
 
 <para>
 Besides supporting traditional mail delivery through a
