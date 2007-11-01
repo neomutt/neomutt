@@ -5854,13 +5854,39 @@ listed above).
 
 </sect1>
 
-<sect1 id="account-hook">
-<title>Managing multiple IMAP/POP accounts</title>
+<sect1 id="smtp">
+<title>SMTP support</title>
 
 <para>
-If you happen to have accounts on multiple IMAP and/or POP servers,
+Besides supporting traditional mail delivery through a
+sendmail-compatible program, mutt supports delivery through SMTP if it
+was configured and built with <literal>--enable-smtp</literal>.
+</para>
+
+<para>
+If the configuration variable 
+<link linkend="smtp-url">&dollar;smtp&lowbar;url</link> is set, mutt
+will contact the given SMTP server to deliver messages; if it is unset, 
+mutt will use the program specified by <link linkend="sendmail">&dollar;sendmail</link>.
+</para>
+
+<para>
+The built-in SMTP support supports encryption (the <literal>smtps</literal> protocol
+using SSL or TLS) as well as SMTP authentication using SASL. The authentication mechanisms
+for SASL are specified in <link linkend="smtp-authenticators">&dollar;smtp&lowbar;authenticators</link>
+defaulting to an empty list which makes mutt try all available methods
+from most-secure to least-secure.
+</para>
+
+</sect1>
+
+<sect1 id="account-hook">
+<title>Managing multiple accounts</title>
+
+<para>
+If you happen to have accounts on multiple IMAP, POP and/or SMTP servers,
 you may find managing all the authentication settings inconvenient and
-error-prone.  The account-hook command may help. This hook works like
+error-prone. The account-hook command may help. This hook works like
 folder-hook but is invoked whenever you access a remote mailbox
 (including inside the folder browser), not just when you open the
 mailbox.
@@ -5876,6 +5902,7 @@ Some examples:
 account-hook . 'unset imap_user; unset imap_pass; unset tunnel'
 account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
 account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
+account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
 </screen>
 
 </para>
