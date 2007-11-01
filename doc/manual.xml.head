@@ -5575,6 +5575,34 @@ muttrc.
 <chapter id="optionalfeatures">
 <title>Optional features</title>
 
+<sect1>
+<title>General notes</title>
+
+<sect2>
+<title>Enabling/disabling features</title>
+
+<para>
+Mutt supports several of optional features which can be enabled or
+disabled at compile-time by giving the <literal>configure</literal> script
+certain arguments. These are listed in the ``Optional features'' section of
+the <literal>configure --help</literal> output.
+</para>
+
+<para>
+Which features are enabled or disabled can later be determined from the
+output of <literal>mutt -v</literal>. If a compile option starts with
+``+'' it is enabled and disabled if prefixed with ``-''. For example, if
+mutt was compiled using GnuTLS for encrypted communication instead of
+OpenSSL, <literal>mutt -v</literal> would contain:
+</para>
+
+<screen>
+-USE_SSL_OPENSSL +USE_SSL_GNUTLS</screen>
+
+</sect2>
+
+</sect1>
+
 <sect1 id="pop">
 <title>POP3 Support</title>
 
