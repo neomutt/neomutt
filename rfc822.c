@@ -337,7 +337,7 @@ add_addrspec (ADDRESS **top, ADDRESS **last, const char *phrase,
 
 ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 {
-  int ws_pending;
+  int ws_pending, nl;
   const char *begin, *ps;
   char comment[STRING], phrase[STRING];
   size_t phraselen = 0, commentlen = 0;
@@ -350,6 +350,8 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
     last = last->next;
 
   ws_pending = isspace ((unsigned char) *s);
+  if ((nl = mutt_strlen (s)))
+    nl = s[nl - 1] == '\n';
   
   SKIPWS (s);
   begin = s;
@@ -500,7 +502,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   }
 #ifdef EXACT_ADDRESS
   if (last)
-    last->val = mutt_substrdup (begin, s);
+    last->val = mutt_substrdup (begin, s - nl < begin ? begin : s - nl);
 #endif
 
   return top;
