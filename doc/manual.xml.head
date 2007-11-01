@@ -4630,285 +4630,6 @@ message).  Refer to the man page on sendmail for more details on DSN.
 
 </sect1>
 
-<sect1 id="pop">
-<title>POP3 Support (OPTIONAL)</title>
-
-<para>
-If Mutt was compiled with POP3 support (by running the <emphasis>configure</emphasis>
-script with the <emphasis>--enable-pop</emphasis> flag), it has the ability to work
-with mailboxes located on a remote POP3 server and fetch mail for local
-browsing.
-</para>
-
-<para>
-You can access the remote POP3 mailbox by selecting the folder
-<literal>pop://popserver/</literal>.
-</para>
-
-<para>
-You can select an alternative port by specifying it with the server, ie:
-<literal>pop://popserver:port/</literal>.
-</para>
-
-<para>
-You can also specify different username for each folder, ie:
-<literal>pop://username@popserver[:port]/</literal>.
-</para>
-
-<para>
-Polling for new mail is more expensive over POP3 than locally. For this
-reason the frequency at which Mutt will check for mail remotely can be
-controlled by the
-<link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
-variable, which defaults to every 60 seconds.
-</para>
-
-<para>
-If Mutt was compiled with SSL support (by running the <emphasis>configure</emphasis>
-script with the <emphasis>--with-ssl</emphasis> flag), connections to POP3 servers
-can be encrypted. This naturally requires that the server supports
-SSL encrypted connections. To access a folder with POP3/SSL, you should
-use pops: prefix, ie:
-<literal>pops://[username@]popserver[:port]/</literal>.
-</para>
-
-<para>
-Another way to access your POP3 mail is the <emphasis>fetch-mail</emphasis> function
-(default: G).  It allows to connect to <link linkend="pop-host">&dollar;pop&lowbar;host</link>, fetch all your new mail and place it in the
-local <link linkend="spoolfile">&dollar;spoolfile</link>.  After this
-point, Mutt runs exactly as if the mail had always been local.
-</para>
-
-<para>
-<emphasis role="bold">Note:</emphasis> If you only need to fetch all messages to local mailbox
-you should consider using a specialized program, such as <ulink
-url="http://www.ccil.org/~esr/fetchmail"
->fetchmail</ulink
->
-</para>
-
-</sect1>
-
-<sect1 id="imap">
-<title>IMAP Support (OPTIONAL)</title>
-
-<para>
-If Mutt was compiled with IMAP support (by running the <emphasis>configure</emphasis>
-script with the <emphasis>--enable-imap</emphasis> flag), it has the ability to work
-with folders located on a remote IMAP server.
-</para>
-
-<para>
-You can access the remote inbox by selecting the folder
-<literal>imap://imapserver/INBOX</literal>, where <literal>imapserver</literal> is the name of the
-IMAP server and <literal>INBOX</literal> is the special name for your spool mailbox on
-the IMAP server. If you want to access another mail folder at the IMAP
-server, you should use <literal>imap://imapserver/path/to/folder</literal> where
-<literal>path/to/folder</literal> is the path of the folder you want to access.
-</para>
-
-<para>
-You can select an alternative port by specifying it with the server, ie:
-<literal>imap://imapserver:port/INBOX</literal>.
-</para>
-
-<para>
-You can also specify different username for each folder, ie:
-<literal>imap://username@imapserver[:port]/INBOX</literal>.
-</para>
-
-<para>
-If Mutt was compiled with SSL support (by running the <emphasis>configure</emphasis>
-script with the <emphasis>--with-ssl</emphasis> flag), connections to IMAP servers
-can be encrypted. This naturally requires that the server supports
-SSL encrypted connections. To access a folder with IMAP/SSL, you should
-use <literal>imaps://[username@]imapserver[:port]/path/to/folder</literal> as your 
-folder path.
-</para>
-
-<para>
-Pine-compatible notation is also supported, ie
-<literal>&lcub;[username@]imapserver[:port][/ssl]&rcub;path/to/folder</literal>
-</para>
-
-<para>
-Note that not all servers use / as the hierarchy separator.  Mutt should
-correctly notice which separator is being used by the server and convert
-paths accordingly.
-</para>
-
-<para>
-When browsing folders on an IMAP server, you can toggle whether to look
-at only the folders you are subscribed to, or all folders with the
-<emphasis>toggle-subscribed</emphasis> command.  See also the 
-<link linkend="imap-list-subscribed">&dollar;imap&lowbar;list&lowbar;subscribed</link> variable.
-</para>
-
-<para>
-Polling for new mail on an IMAP server can cause noticeable delays. So, you'll
-want to carefully tune the
-<link linkend="mail-check">&dollar;mail&lowbar;check</link>
-and
-<link linkend="timeout">&dollar;timeout</link>
-variables. Personally I use
-
-<screen>
-set mail_check=90
-set timeout=15
-</screen>
-
-with relatively good results over my slow modem line.
-</para>
-
-<para>
-Note that if you are using mbox as the mail store on UW servers prior to
-v12.250, the server has been reported to disconnect a client if another client
-selects the same folder.
-</para>
-
-<sect2>
-<title>The Folder Browser</title>
-
-<para>
-As of version 1.2, mutt supports browsing mailboxes on an IMAP
-server. This is mostly the same as the local file browser, with the
-following differences:
-
-<itemizedlist>
-<listitem>
-
-<para>
-In lieu of file permissions, mutt displays the string "IMAP",
-possibly followed by the symbol "+", indicating
-that the entry contains both messages and subfolders. On
-Cyrus-like servers folders will often contain both messages and
-subfolders. 
-</para>
-</listitem>
-<listitem>
-
-<para>
-For the case where an entry can contain both messages and
-subfolders, the selection key (bound to <literal>enter</literal> by default)
-will choose to descend into the subfolder view. If you wish to view
-the messages in that folder, you must use <literal>view-file</literal> instead
-(bound to <literal>space</literal> by default).
-</para>
-</listitem>
-<listitem>
-
-<para>
-You can create, delete and rename mailboxes with the
-<literal>create-mailbox</literal>, <literal>delete-mailbox</literal>, and
-<literal>rename-mailbox</literal> commands (default bindings: <literal>C</literal>,
-<literal>d</literal> and <literal>r</literal>, respectively). You may also
-<literal>subscribe</literal> and <literal>unsubscribe</literal> to mailboxes (normally
-these are bound to <literal>s</literal> and <literal>u</literal>, respectively).
-</para>
-</listitem>
-
-</itemizedlist>
-
-</para>
-
-</sect2>
-
-<sect2>
-<title>Authentication</title>
-
-<para>
-Mutt supports four authentication methods with IMAP servers: SASL,
-GSSAPI, CRAM-MD5, and LOGIN (there is a patch by Grant Edwards to add
-NTLM authentication for you poor exchange users out there, but it has
-yet to be integrated into the main tree). There is also support for
-the pseudo-protocol ANONYMOUS, which allows you to log in to a public
-IMAP server without having an account. To use ANONYMOUS, simply make
-your username blank or "anonymous".
-</para>
-
-<para>
-SASL is a special super-authenticator, which selects among several protocols
-(including GSSAPI, CRAM-MD5, ANONYMOUS, and DIGEST-MD5) the most secure
-method available on your host and the server. Using some of these methods
-(including DIGEST-MD5 and possibly GSSAPI), your entire session will be
-encrypted and invisible to those teeming network snoops. It is the best
-option if you have it. To use it, you must have the Cyrus SASL library
-installed on your system and compile mutt with the <emphasis>--with-sasl</emphasis> flag.
-</para>
-
-<para>
-Mutt will try whichever methods are compiled in and available on the server,
-in the following order: SASL, ANONYMOUS, GSSAPI, CRAM-MD5, LOGIN.
-</para>
-
-<para>
-There are a few variables which control authentication: 
-
-<itemizedlist>
-<listitem>
-
-<para>
-<link linkend="imap-user">&dollar;imap&lowbar;user</link> - controls
-the username under which you request authentication on the IMAP server,
-for all authenticators. This is overridden by an explicit username in
-the mailbox path (ie by using a mailbox name of the form
-<literal>&lcub;user@host&rcub;</literal>).
-</para>
-</listitem>
-<listitem>
-
-<para>
-<link linkend="imap-pass">&dollar;imap&lowbar;pass</link> - a
-password which you may preset, used by all authentication methods where
-a password is needed.
-</para>
-</listitem>
-<listitem>
-
-<para>
-<link linkend="imap-authenticators">&dollar;imap&lowbar;authenticators</link> - a colon-delimited list of IMAP
-authentication methods to try, in the order you wish to try them. If
-specified, this overrides mutt's default (attempt everything, in the order
-listed above).
-</para>
-</listitem>
-
-</itemizedlist>
-
-</para>
-
-</sect2>
-
-</sect1>
-
-<sect1 id="account-hook">
-<title>Managing multiple IMAP/POP accounts (OPTIONAL)</title>
-
-<para>
-If you happen to have accounts on multiple IMAP and/or POP servers,
-you may find managing all the authentication settings inconvenient and
-error-prone.  The account-hook command may help. This hook works like
-folder-hook but is invoked whenever you access a remote mailbox
-(including inside the folder browser), not just when you open the
-mailbox.
-</para>
-
-<para>
-Some examples:
-</para>
-
-<para>
-
-<screen>
-account-hook . 'unset imap_user; unset imap_pass; unset tunnel'
-account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
-account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
-</screen>
-
-</para>
-
-</sect1>
-
 <sect1 id="urlview">
 <title>Start a WWW Browser on URLs (EXTERNAL)</title>
 
@@ -4928,108 +4649,6 @@ macro pager \cb |urlview\n
 </screen>
 
 </para>
-
-</sect1>
-
-<sect1 id="caching">
-<title>Local caching (OPTIONAL)</title>
-
-<para>
-Mutt contains two types of local caching: <emphasis>(1)</emphasis>
-the so-called ``header caching'' and <emphasis>(2)</emphasis> the
-so-called ``body caching'' which are both described in this section.
-</para>
-
-<para>
-These are optional which means they're not enabled by default.
-Details on how to enable either of these techniques are given in the
-following subsections.
-</para>
-
-<sect2 id="header-caching">
-<title>Header caching</title>
-
-<para>
-Mutt provides optional support for caching message headers for the
-following types of folders: IMAP, POP, Maildir and MH. Header caching
-greatly improves speed because for remote folders, headers
-usually only need to be downloaded once. For Maildir and MH, reading the
-headers from a single file is much faster than looking at possibly
-thousands of single files (since Maildir and MH use one file per message.)
-</para>
-
-<para>
-Header caching can be enabled via the configure script and the
-<emphasis>--enable-hcache</emphasis> option. It's not turned on
-by default because external database libraries are required: one
-of qdbm, gdbm or bdb must be present.
-</para>
-
-<para>
-If enabled, <link
-linkend="header-cache">&dollar;header&lowbar;cache</link> can be
-used to either point to a file or a directory. If set to point to
-a file, one database file for all folders will be used (which may
-result in lower performance), but one file per folder if it points
-to a directory.
-</para>
-
-<para>
-For the one-file-per-folder case, database files will be named by MD5
-sums. They may be safely removed if a system is short on space. You
-can compute the name of the header cache file for a particular folder
-through a command like the following:
-</para>
-
-<para>
-<screen>
-$ printf '%s' '/path/to/folder' | md5sum
-$ printf '%s' 'imaps://user@host/path/to/folder' | md5sum
-$ printf '%s' 'pops://user@host' | md5sum
-</screen>
-</para>
-
-<para>
-The <literal>md5sum</literal> command may also be
-named <literal>md5</literal>, depending on your operating system.
-</para>
-
-</sect2>
-
-<sect2 id="body-caching">
-<title>Body caching</title>
-
-<para>
-In addition to caching message headers only, mutt can also cache
-whole message bodies. This results in faster display of messages
-for POP and IMAP folders because messages usually have to be
-downloaded only once.
-</para>
-
-<para>
-If the configure script is called with <emphasis>--enable-pop</emphasis>
-and/or <emphasis>--enable-imap</emphasis>, body caching will be
-built in as it does not require additional software packages such
-as database libraries.
-</para>
-
-<para>
-For configuration, the variable <link linkend="message-cachedir"
->&dollar;message&lowbar;cachedir</link> must point to a
-directory. There, mutt will create a hierarchy of subdirectories
-named like: <literal>proto:user@hostname</literal> where
-<literal>proto</literal> is either ``pop'' or ``imap.'' Within
-there for each folder, mutt stores messages in single files (just
-like Maildir) so that with manual symlink creation these cache
-directories can be examined with mutt as read-only Maildir folders.
-</para>
-
-<para>
-All files can be removed as needed if the consumed disk space
-becomes an issue as mutt will silently fetch missing items again.
-</para>
-
-</sect2>
 
 </sect1>
 
@@ -5948,6 +5567,392 @@ In addition, the unmime&lowbar;lookup command may be used to disable this featur
 for any particular mime-type if it had been set, for example, in a global
 muttrc.
 </para>
+
+</sect1>
+
+</chapter>
+
+<chapter id="optionalfeatures">
+<title>Optional features</title>
+
+<sect1 id="pop">
+<title>POP3 Support</title>
+
+<para>
+If Mutt was compiled with POP3 support (by running the <emphasis>configure</emphasis>
+script with the <emphasis>--enable-pop</emphasis> flag), it has the ability to work
+with mailboxes located on a remote POP3 server and fetch mail for local
+browsing.
+</para>
+
+<para>
+You can access the remote POP3 mailbox by selecting the folder
+<literal>pop://popserver/</literal>.
+</para>
+
+<para>
+You can select an alternative port by specifying it with the server, ie:
+<literal>pop://popserver:port/</literal>.
+</para>
+
+<para>
+You can also specify different username for each folder, ie:
+<literal>pop://username@popserver[:port]/</literal>.
+</para>
+
+<para>
+Polling for new mail is more expensive over POP3 than locally. For this
+reason the frequency at which Mutt will check for mail remotely can be
+controlled by the
+<link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
+variable, which defaults to every 60 seconds.
+</para>
+
+<para>
+If Mutt was compiled with SSL support (by running the <emphasis>configure</emphasis>
+script with the <emphasis>--with-ssl</emphasis> flag), connections to POP3 servers
+can be encrypted. This naturally requires that the server supports
+SSL encrypted connections. To access a folder with POP3/SSL, you should
+use pops: prefix, ie:
+<literal>pops://[username@]popserver[:port]/</literal>.
+</para>
+
+<para>
+Another way to access your POP3 mail is the <emphasis>fetch-mail</emphasis> function
+(default: G).  It allows to connect to <link linkend="pop-host">&dollar;pop&lowbar;host</link>, fetch all your new mail and place it in the
+local <link linkend="spoolfile">&dollar;spoolfile</link>.  After this
+point, Mutt runs exactly as if the mail had always been local.
+</para>
+
+<para>
+<emphasis role="bold">Note:</emphasis> If you only need to fetch all messages to local mailbox
+you should consider using a specialized program, such as <ulink
+url="http://www.ccil.org/~esr/fetchmail"
+>fetchmail</ulink
+>
+</para>
+
+</sect1>
+
+<sect1 id="imap">
+<title>IMAP Support</title>
+
+<para>
+If Mutt was compiled with IMAP support (by running the <emphasis>configure</emphasis>
+script with the <emphasis>--enable-imap</emphasis> flag), it has the ability to work
+with folders located on a remote IMAP server.
+</para>
+
+<para>
+You can access the remote inbox by selecting the folder
+<literal>imap://imapserver/INBOX</literal>, where <literal>imapserver</literal> is the name of the
+IMAP server and <literal>INBOX</literal> is the special name for your spool mailbox on
+the IMAP server. If you want to access another mail folder at the IMAP
+server, you should use <literal>imap://imapserver/path/to/folder</literal> where
+<literal>path/to/folder</literal> is the path of the folder you want to access.
+</para>
+
+<para>
+You can select an alternative port by specifying it with the server, ie:
+<literal>imap://imapserver:port/INBOX</literal>.
+</para>
+
+<para>
+You can also specify different username for each folder, ie:
+<literal>imap://username@imapserver[:port]/INBOX</literal>.
+</para>
+
+<para>
+If Mutt was compiled with SSL support (by running the <emphasis>configure</emphasis>
+script with the <emphasis>--with-ssl</emphasis> flag), connections to IMAP servers
+can be encrypted. This naturally requires that the server supports
+SSL encrypted connections. To access a folder with IMAP/SSL, you should
+use <literal>imaps://[username@]imapserver[:port]/path/to/folder</literal> as your 
+folder path.
+</para>
+
+<para>
+Pine-compatible notation is also supported, ie
+<literal>&lcub;[username@]imapserver[:port][/ssl]&rcub;path/to/folder</literal>
+</para>
+
+<para>
+Note that not all servers use / as the hierarchy separator.  Mutt should
+correctly notice which separator is being used by the server and convert
+paths accordingly.
+</para>
+
+<para>
+When browsing folders on an IMAP server, you can toggle whether to look
+at only the folders you are subscribed to, or all folders with the
+<emphasis>toggle-subscribed</emphasis> command.  See also the 
+<link linkend="imap-list-subscribed">&dollar;imap&lowbar;list&lowbar;subscribed</link> variable.
+</para>
+
+<para>
+Polling for new mail on an IMAP server can cause noticeable delays. So, you'll
+want to carefully tune the
+<link linkend="mail-check">&dollar;mail&lowbar;check</link>
+and
+<link linkend="timeout">&dollar;timeout</link>
+variables. Personally I use
+
+<screen>
+set mail_check=90
+set timeout=15
+</screen>
+
+with relatively good results over my slow modem line.
+</para>
+
+<para>
+Note that if you are using mbox as the mail store on UW servers prior to
+v12.250, the server has been reported to disconnect a client if another client
+selects the same folder.
+</para>
+
+<sect2>
+<title>The Folder Browser</title>
+
+<para>
+As of version 1.2, mutt supports browsing mailboxes on an IMAP
+server. This is mostly the same as the local file browser, with the
+following differences:
+
+<itemizedlist>
+<listitem>
+
+<para>
+In lieu of file permissions, mutt displays the string "IMAP",
+possibly followed by the symbol "+", indicating
+that the entry contains both messages and subfolders. On
+Cyrus-like servers folders will often contain both messages and
+subfolders. 
+</para>
+</listitem>
+<listitem>
+
+<para>
+For the case where an entry can contain both messages and
+subfolders, the selection key (bound to <literal>enter</literal> by default)
+will choose to descend into the subfolder view. If you wish to view
+the messages in that folder, you must use <literal>view-file</literal> instead
+(bound to <literal>space</literal> by default).
+</para>
+</listitem>
+<listitem>
+
+<para>
+You can create, delete and rename mailboxes with the
+<literal>create-mailbox</literal>, <literal>delete-mailbox</literal>, and
+<literal>rename-mailbox</literal> commands (default bindings: <literal>C</literal>,
+<literal>d</literal> and <literal>r</literal>, respectively). You may also
+<literal>subscribe</literal> and <literal>unsubscribe</literal> to mailboxes (normally
+these are bound to <literal>s</literal> and <literal>u</literal>, respectively).
+</para>
+</listitem>
+
+</itemizedlist>
+
+</para>
+
+</sect2>
+
+<sect2>
+<title>Authentication</title>
+
+<para>
+Mutt supports four authentication methods with IMAP servers: SASL,
+GSSAPI, CRAM-MD5, and LOGIN (there is a patch by Grant Edwards to add
+NTLM authentication for you poor exchange users out there, but it has
+yet to be integrated into the main tree). There is also support for
+the pseudo-protocol ANONYMOUS, which allows you to log in to a public
+IMAP server without having an account. To use ANONYMOUS, simply make
+your username blank or "anonymous".
+</para>
+
+<para>
+SASL is a special super-authenticator, which selects among several protocols
+(including GSSAPI, CRAM-MD5, ANONYMOUS, and DIGEST-MD5) the most secure
+method available on your host and the server. Using some of these methods
+(including DIGEST-MD5 and possibly GSSAPI), your entire session will be
+encrypted and invisible to those teeming network snoops. It is the best
+option if you have it. To use it, you must have the Cyrus SASL library
+installed on your system and compile mutt with the <emphasis>--with-sasl</emphasis> flag.
+</para>
+
+<para>
+Mutt will try whichever methods are compiled in and available on the server,
+in the following order: SASL, ANONYMOUS, GSSAPI, CRAM-MD5, LOGIN.
+</para>
+
+<para>
+There are a few variables which control authentication: 
+
+<itemizedlist>
+<listitem>
+
+<para>
+<link linkend="imap-user">&dollar;imap&lowbar;user</link> - controls
+the username under which you request authentication on the IMAP server,
+for all authenticators. This is overridden by an explicit username in
+the mailbox path (ie by using a mailbox name of the form
+<literal>&lcub;user@host&rcub;</literal>).
+</para>
+</listitem>
+<listitem>
+
+<para>
+<link linkend="imap-pass">&dollar;imap&lowbar;pass</link> - a
+password which you may preset, used by all authentication methods where
+a password is needed.
+</para>
+</listitem>
+<listitem>
+
+<para>
+<link linkend="imap-authenticators">&dollar;imap&lowbar;authenticators</link> - a colon-delimited list of IMAP
+authentication methods to try, in the order you wish to try them. If
+specified, this overrides mutt's default (attempt everything, in the order
+listed above).
+</para>
+</listitem>
+
+</itemizedlist>
+
+</para>
+
+</sect2>
+
+</sect1>
+
+<sect1 id="account-hook">
+<title>Managing multiple IMAP/POP accounts</title>
+
+<para>
+If you happen to have accounts on multiple IMAP and/or POP servers,
+you may find managing all the authentication settings inconvenient and
+error-prone.  The account-hook command may help. This hook works like
+folder-hook but is invoked whenever you access a remote mailbox
+(including inside the folder browser), not just when you open the
+mailbox.
+</para>
+
+<para>
+Some examples:
+</para>
+
+<para>
+
+<screen>
+account-hook . 'unset imap_user; unset imap_pass; unset tunnel'
+account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
+account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
+</screen>
+
+</para>
+
+</sect1>
+
+<sect1 id="caching">
+<title>Local caching</title>
+
+<para>
+Mutt contains two types of local caching: <emphasis>(1)</emphasis>
+the so-called ``header caching'' and <emphasis>(2)</emphasis> the
+so-called ``body caching'' which are both described in this section.
+</para>
+
+<para>
+These are optional which means they're not enabled by default.
+Details on how to enable either of these techniques are given in the
+following subsections.
+</para>
+
+<sect2 id="header-caching">
+<title>Header caching</title>
+
+<para>
+Mutt provides optional support for caching message headers for the
+following types of folders: IMAP, POP, Maildir and MH. Header caching
+greatly improves speed because for remote folders, headers
+usually only need to be downloaded once. For Maildir and MH, reading the
+headers from a single file is much faster than looking at possibly
+thousands of single files (since Maildir and MH use one file per message.)
+</para>
+
+<para>
+Header caching can be enabled via the configure script and the
+<emphasis>--enable-hcache</emphasis> option. It's not turned on
+by default because external database libraries are required: one
+of qdbm, gdbm or bdb must be present.
+</para>
+
+<para>
+If enabled, <link
+linkend="header-cache">&dollar;header&lowbar;cache</link> can be
+used to either point to a file or a directory. If set to point to
+a file, one database file for all folders will be used (which may
+result in lower performance), but one file per folder if it points
+to a directory.
+</para>
+
+<para>
+For the one-file-per-folder case, database files will be named by MD5
+sums. They may be safely removed if a system is short on space. You
+can compute the name of the header cache file for a particular folder
+through a command like the following:
+</para>
+
+<para>
+<screen>
+$ printf '%s' '/path/to/folder' | md5sum
+$ printf '%s' 'imaps://user@host/path/to/folder' | md5sum
+$ printf '%s' 'pops://user@host' | md5sum
+</screen>
+</para>
+
+<para>
+The <literal>md5sum</literal> command may also be
+named <literal>md5</literal>, depending on your operating system.
+</para>
+
+</sect2>
+
+<sect2 id="body-caching">
+<title>Body caching</title>
+
+<para>
+In addition to caching message headers only, mutt can also cache
+whole message bodies. This results in faster display of messages
+for POP and IMAP folders because messages usually have to be
+downloaded only once.
+</para>
+
+<para>
+If the configure script is called with <emphasis>--enable-pop</emphasis>
+and/or <emphasis>--enable-imap</emphasis>, body caching will be
+built in as it does not require additional software packages such
+as database libraries.
+</para>
+
+<para>
+For configuration, the variable <link linkend="message-cachedir"
+>&dollar;message&lowbar;cachedir</link> must point to a
+directory. There, mutt will create a hierarchy of subdirectories
+named like: <literal>proto:user@hostname</literal> where
+<literal>proto</literal> is either ``pop'' or ``imap.'' Within
+there for each folder, mutt stores messages in single files (just
+like Maildir) so that with manual symlink creation these cache
+directories can be examined with mutt as read-only Maildir folders.
+</para>
+
+<para>
+All files can be removed as needed if the consumed disk space
+becomes an issue as mutt will silently fetch missing items again.
+</para>
+
+</sect2>
 
 </sect1>
 
