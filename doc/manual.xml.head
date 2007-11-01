@@ -5601,6 +5601,53 @@ OpenSSL, <literal>mutt -v</literal> would contain:
 
 </sect2>
 
+<sect2 id="url-syntax">
+<title>URL syntax</title>
+
+<para>
+Mutt optionally supports the IMAP, POP3 and SMTP protocols which require
+to access servers using URLs. The canonical syntax for specifying URLs
+in mutt is (an item enclosed in <literal>[]</literal> means it is optional and
+may be omitted):
+</para>
+
+<screen>
+proto[s]://[username[:password]@]server[:port]/[path]
+</screen>
+
+<para>
+<literal>proto</literal> is the communication protocol:
+<literal>imap</literal> for IMAP, <literal>pop</literal> for POP3 and
+<literal>smtp</literal> for SMTP. If ``s'' for ``secure communication''
+is appended, mutt will attempt to establish an encrypted communication
+using SSL or TLS. If no explicit port is given, mutt will use the
+system's default for the given protocol.
+</para>
+
+<para>
+Since all protocols by mutt support authentication, the username may be
+given directly in the URL instead of using the <literal>pop_user</literal> or
+<literal>imap_user</literal> variables. A password can be given, too but
+is not recommended if the URL is specified in a configuration file on
+disk.
+</para>
+
+<para>
+The optional path is only relevant for IMAP.
+</para>
+
+<para>
+For IMAP for example, you can select an alternative port by specifying it with the
+server: <literal>imap://imapserver:port/INBOX</literal>. You can also specify different
+username for each folder: <literal>imap://username@imapserver[:port]/INBOX</literal>
+or <literal>imap://username2@imapserver[:port]/path/to/folder</literal>.
+Replacing <literal>imap://</literal> by <literal>imaps://</literal>
+would make mutt attempt to conect using SSL or TLS on a different port
+to encrypt the communication.
+</para>
+
+</sect2>
+
 </sect1>
 
 <sect1 id="pop">
@@ -5614,18 +5661,9 @@ browsing.
 </para>
 
 <para>
-You can access the remote POP3 mailbox by selecting the folder
-<literal>pop://popserver/</literal>.
-</para>
-
-<para>
-You can select an alternative port by specifying it with the server, ie:
-<literal>pop://popserver:port/</literal>.
-</para>
-
-<para>
-You can also specify different username for each folder, ie:
-<literal>pop://username@popserver[:port]/</literal>.
+Remote POP3 servers can be accessed using URLs with the <literal>pop</literal> protocol
+for unencrypted and <literal>pops</literal> for encrypted
+communication, see <xref linkend="url-syntax"/> for details.
 </para>
 
 <para>
@@ -5634,15 +5672,6 @@ reason the frequency at which Mutt will check for mail remotely can be
 controlled by the
 <link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
 variable, which defaults to every 60 seconds.
-</para>
-
-<para>
-If Mutt was compiled with SSL support (by running the <emphasis>configure</emphasis>
-script with the <emphasis>--with-ssl</emphasis> flag), connections to POP3 servers
-can be encrypted. This naturally requires that the server supports
-SSL encrypted connections. To access a folder with POP3/SSL, you should
-use pops: prefix, ie:
-<literal>pops://[username@]popserver[:port]/</literal>.
 </para>
 
 <para>
@@ -5672,40 +5701,15 @@ with folders located on a remote IMAP server.
 </para>
 
 <para>
-You can access the remote inbox by selecting the folder
-<literal>imap://imapserver/INBOX</literal>, where <literal>imapserver</literal> is the name of the
-IMAP server and <literal>INBOX</literal> is the special name for your spool mailbox on
-the IMAP server. If you want to access another mail folder at the IMAP
-server, you should use <literal>imap://imapserver/path/to/folder</literal> where
-<literal>path/to/folder</literal> is the path of the folder you want to access.
-</para>
-
-<para>
-You can select an alternative port by specifying it with the server, ie:
-<literal>imap://imapserver:port/INBOX</literal>.
-</para>
-
-<para>
-You can also specify different username for each folder, ie:
-<literal>imap://username@imapserver[:port]/INBOX</literal>.
-</para>
-
-<para>
-If Mutt was compiled with SSL support (by running the <emphasis>configure</emphasis>
-script with the <emphasis>--with-ssl</emphasis> flag), connections to IMAP servers
-can be encrypted. This naturally requires that the server supports
-SSL encrypted connections. To access a folder with IMAP/SSL, you should
-use <literal>imaps://[username@]imapserver[:port]/path/to/folder</literal> as your 
-folder path.
-</para>
-
-<para>
-Pine-compatible notation is also supported, ie
+You can access the remote inbox by selecting the folder by its URL
+(see <xref linkend="url-syntax"/> for details) using the
+<literal>imap</literal> or <literal>imaps</literal> protocol.
+Alternatively, a pine-compatible notation is also supported, ie
 <literal>&lcub;[username@]imapserver[:port][/ssl]&rcub;path/to/folder</literal>
 </para>
 
 <para>
-Note that not all servers use / as the hierarchy separator.  Mutt should
+Note that not all servers use ``/'' as the hierarchy separator.  Mutt should
 correctly notice which separator is being used by the server and convert
 paths accordingly.
 </para>
@@ -5868,6 +5872,10 @@ If the configuration variable
 <link linkend="smtp-url">&dollar;smtp&lowbar;url</link> is set, mutt
 will contact the given SMTP server to deliver messages; if it is unset, 
 mutt will use the program specified by <link linkend="sendmail">&dollar;sendmail</link>.
+</para>
+
+<para>
+For details on the URL syntax, please see <xref linkend="url-syntax"/>.
 </para>
 
 <para>
