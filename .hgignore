@@ -11,6 +11,11 @@
 ^stamp-h1$
 ^doc/instdoc\.sh$
 ^po/POTFILES$
+^config.guess$
+^config.sub$
+^depcomp$
+^install-sh$
+^missing$
 
 # built objects
 ^flea$
