@@ -892,8 +892,12 @@ then
 
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
-    if test x$ac_bdb_prefix != xno && test x$ac_cv_gdbmopen != xyes && test $use_qdbm != yes; then
-        test x$ac_bdb_prefix = xyes && ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
+    if test x$ac_bdb_prefix != xno && test x$ac_cv_gdbmopen != xyes && test $use_qdbm != yes
+    then
+        if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
+        then
+          ac_bdb_prefix="$mutt_cv_prefix /opt/csw/bdb4 /opt /usr/local /usr"
+        fi
         for d in $ac_bdb_prefix; do
             bdbpfx="$bdbpfx $d"
             for v in BerkeleyDB.4.3 BerkeleyDB.4.2 BerkeleyDB.4.1; do

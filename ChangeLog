@@ -1,52 +1,37 @@
-2007-11-01 13:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (a9e37e90ad40)
+2007-11-01 14:33 +0100  Rocco Rutte  <pdmef@gmx.net>  (80f1331abec2)
+
+	* doc/devel-notes.txt: devel-notes.txt: Mention where hg repo is, how
+	to clone and update
+
+	* doc/TODO: Documentation: Add doc/TODO with some items still open
 
 	* doc/manual.xml.head: Manual: s/SMTP support/SMTP Support/ (for
 	consitency)
 
-2007-11-01 13:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (13f21ce1d474)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Remove 404 link for
-	fetchmail, mention getmail, too
-
-2007-11-01 12:56 +0100  Rocco Rutte  <pdmef@gmx.net>  (69ba99747f3e)
+	* doc/manual.xml.head: Manual: Remove 404 link for fetchmail,
+	mention getmail, too
 
 	* doc/manual.xml.head: Manual: Add short section on SSL/TLS support
 	(needs more details)
 
-2007-11-01 12:44 +0100  Rocco Rutte  <pdmef@gmx.net>  (06f5fc3c3492)
-
 	* doc/manual.xml.head: Manual: Document URL syntax in just one place,
 	let others refer to it.
 
-2007-11-01 12:15 +0100  Rocco Rutte  <pdmef@gmx.net>  (abd26d96d280)
-
 	* doc/manual.xml.head: Manual: Document optional SMTP support
-
-2007-11-01 11:56 +0100  Rocco Rutte  <pdmef@gmx.net>  (89a91b102590)
 
 	* doc/manual.xml.head: Manual: Add some general notes about optional
 	features. Mention 'configure --help' and 'mutt -v' output.
 
-2007-11-01 11:45 +0100  Rocco Rutte  <pdmef@gmx.net>  (926ce441df68)
-
 	* doc/Makefile.am, doc/manual.xml.head: Manual: Move POP3, IMAP and
 	cache-related sections to their own chapter.
-
-2007-11-01 11:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (ec6f7d81af91)
 
 	* doc/manual.xml.head: Manual: Add ids to all tables and use <xref/>
 	for reference.
 
-2007-11-01 09:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (b72e56281016)
-
-	* .hgignore: Add more autoconf support files to .hgignore
-
 2007-10-31 16:34 -0700  Brendan Cully  <brendan@kublai.com>  (7cebeacc3b83)
 
-	* ChangeLog, config.guess, config.sub, depcomp, install-sh, missing:
-	Remove autotools support files which autoreconf -i can generate
-
-2007-10-31 16:24 -0700  Brendan Cully  <brendan@kublai.com>  (e20b768d37f0)
+	* config.guess, config.sub, depcomp, install-sh, missing: Remove
+	autotools support files which autoreconf -i can generate
 
 	* Makefile.am, cvslog2changelog.pl: cvslog2changelog.pl is obsolete
 
