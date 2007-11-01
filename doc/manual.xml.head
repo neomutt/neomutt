@@ -197,13 +197,13 @@ either the mutt man page or the <link linkend="commandline">reference</link>.
 <title>Moving Around in Menus</title>
 
 <para>
-Information is presented in menus, very similar to ELM.  Here is a table
-showing the common keys used to navigate menus in Mutt.
+Information is presented in menus, very similar to ELM, see <xref linkend="tab-keys-nav"/>
+for common keys used to navigate menus in Mutt.
 </para>
 
 <para>
 
-<table>
+<table id="tab-keys-nav">
 <title>Most common navigation keys</title>
 <tgroup cols="3">
 <thead>
@@ -235,14 +235,14 @@ showing the common keys used to navigate menus in Mutt.
 <para>
 Mutt has a built-in line editor for inputting text, e.g. email
 addresses or filenames. The keys used to manipulate text input are
-very similar to those of Emacs. See the following table for a full
+very similar to those of Emacs. See <xref linkend="tab-keys-editor"/> for a full
 reference of available functions, their default key bindings, and
 short descriptions.
 </para>
 
 <para>
 
-<table>
+<table id="tab-keys-editor">
 <title>Most common line editor keys</title>
 <tgroup cols="3">
 <thead>
@@ -351,8 +351,13 @@ modes.
 <title>The Message Index</title>
 
 <para>
+Common keys used to navigate through and manage messages in the index
+are shown in <xref linkend="tab-key-index"/>.
+</para>
 
-<table>
+<para>
+
+<table id="tab-key-index">
 <title>Most common message index keys</title>
 <tgroup cols="2">
 <thead>
@@ -585,7 +590,7 @@ featureful.
 
 <para>
 
-<table>
+<table id="tab-key-pager">
 <title>Most common pager keys</title>
 <tgroup cols="2">
 <thead>
@@ -610,7 +615,8 @@ featureful.
 </para>
 
 <para>
-In addition, many of the functions from the <emphasis>index</emphasis> are available in
+In addition to key bindings in <xref linkend="tab-key-pager"/>,
+many of the functions from the <emphasis>index</emphasis> are available in
 the pager, such as <emphasis>delete-message</emphasis> or <emphasis>copy-message</emphasis> (this is one
 advantage over using an external pager to view messages).
 </para>
@@ -687,12 +693,13 @@ your xterm, then that color will be used instead of green.
 
 <para>
 When the mailbox is <link linkend="sort">sorted</link> by <emphasis>threads</emphasis>, there are
-a few additional functions available in the <emphasis>index</emphasis> and <emphasis>pager</emphasis> modes.
+a few additional functions available in the <emphasis>index</emphasis> and <emphasis>pager</emphasis> modes
+as shown in <xref linkend="tab-key-threads"/>.
 </para>
 
 <para>
 
-<table>
+<table id="tab-key-threads">
 <title>Most common thread mode keys</title>
 <tgroup cols="3">
 <thead>
@@ -931,13 +938,13 @@ after a line of quoted text in the internal pager.
 <title>Sending Mail</title>
 
 <para>
-The following bindings are available in the <emphasis>index</emphasis> for sending
-messages.
+The bindings shown in <xref linkend="tab-key-send"/> are available in the
+<emphasis>index</emphasis> for sending messages.
 </para>
 
 <para>
 
-<table>
+<table id="tab-key-send">
 <title>Most common mail sending keys</title>
 <tgroup cols="3">
 <thead>
@@ -991,12 +998,13 @@ will be appended to the message.
 
 <para>
 Once you have finished editing the body of your mail message, you are
-returned to the <emphasis>compose</emphasis> menu.  The following functions are available:
+returned to the <emphasis>compose</emphasis> menu providing the functions
+show in <xref linkend="tab-func-compose"/>.
 </para>
 
 <para>
 
-<table>
+<table id="tab-func-compose">
 <title>Most common compose menu keys</title>
 <tgroup cols="3">
 <thead>
@@ -1123,9 +1131,10 @@ and validity fields are in order.
 </para>
 
 <para>
-The flags sequence (&percnt;f) will expand to one of the following flags:
+The flags sequence (&percnt;f) will expand to one of the flags in
+<xref linkend="tab-pgp-menuflags"/>.
 
-<table>
+<table id="tab-pgp-menuflags">
 <title>PGP key menu flags</title>
 <tgroup cols="2">
 <thead>
@@ -1320,16 +1329,13 @@ Bouncing and forwarding let you send an existing message to recipients
 that you specify.  Bouncing a message uses the <link linkend="sendmail">&dollar;sendmail</link> command to send a copy to alternative addresses as if
 they were the message's original recipients.  Forwarding a message, on
 the other hand, allows you to modify the message before it is resent
-(for example, by adding your own comments).
+(for example, by adding your own comments). The default key bindings
+are shown in <xref linkend="tab-key-fwd"/>.
 </para>
 
 <para>
-The following keys are bound by default:
-</para>
 
-<para>
-
-<table>
+<table id="tab-key-fwd">
 <title>Message forwarding/bouncing keys</title>
 <tgroup cols="3">
 <thead>
@@ -1800,16 +1806,13 @@ letter of the control character (for example, to specify control-A use
 ignored, so that <emphasis>&bsol;CA</emphasis>, <emphasis>&bsol;Ca</emphasis>, <emphasis>&bsol;cA</emphasis> and <emphasis>&bsol;ca</emphasis> are all
 equivalent.  An alternative form is to specify the key as a three digit
 octal number prefixed with a ``&bsol;'' (for example <emphasis>&bsol;177</emphasis> is
-equivalent to <emphasis>&bsol;c?</emphasis>).
+equivalent to <emphasis>&bsol;c?</emphasis>). In addition, <emphasis>key</emphasis> may
+be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 </para>
 
 <para>
-In addition, <emphasis>key</emphasis> may consist of:
-</para>
 
-<para>
-
-<table>
+<table id="tab-key-names">
 <title>Symbolic key names</title>
 <tgroup cols="2">
 <thead>
@@ -3778,13 +3781,13 @@ they may or may not be available in stock libraries on various systems.
 
 <para>
 Many of Mutt's commands allow you to specify a pattern to match
-(limit, tag-pattern, delete-pattern, etc.).  There are several ways to select
-messages:
+(limit, tag-pattern, delete-pattern, etc.). <xref linkend="tab-patterns"/>
+shows several ways select messages.
 </para>
 
 <para>
 
-<table>
+<table id="tab-patterns">
 <title>Pattern modifiers</title>
 <tgroup cols="2">
 <thead>
