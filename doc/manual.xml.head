@@ -5697,11 +5697,9 @@ point, Mutt runs exactly as if the mail had always been local.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis> If you only need to fetch all messages to local mailbox
-you should consider using a specialized program, such as <ulink
-url="http://www.ccil.org/~esr/fetchmail"
->fetchmail</ulink
->
+<emphasis role="bold">Note:</emphasis> If you only need to fetch all messages to a
+local mailbox you should consider using a specialized program, such as
+<literal>fetchmail</literal>, <literal>getmail</literal> or similar.
 </para>
 
 </sect1>
