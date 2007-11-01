@@ -7,6 +7,9 @@ majordomo@mutt.org).  Announcements about recent development
 versions go to that mailing list, as go technical discussions and
 patches.
 
+Patches should, if possible, be made using Mercurial against
+the latest revision.
+
 You'll need several GNU development utilities for working on mutt:
 
 - autoconf (versions less than 2.59 are unsupported)
@@ -121,7 +124,18 @@ something else.
 Getting started from Mercurial
 ------------------------------
 
-Once you've checked out a copy of the source from Mercurial, or changed your
+The official Mercurial repository is located at:
+http://dev.mutt.org/hg/mutt/. You can get a fresh clone via:
+
+  $ hg clone http://dev.mutt.org/hg/mutt/ mutt
+
+As a result of CVS-to-Mercurial conversion, you need to do:
+
+  $ hg update -C HEAD
+
+in the cloned directory.
+
+Once you've checked out a copy of the source, or changed your
 automake version, you'll need to run the script called './prepare' that
 is in the root directory.  The script does all the automake/autoconf
 magic that needs to be done with a fresh checkout.
