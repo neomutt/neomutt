@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.5.7i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 20:30-0700\n"
+"POT-Creation-Date: 2007-11-01 14:06-0700\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -55,7 +55,7 @@ msgstr "Επιλέξτε"
 
 #
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3659 curs_main.c:414
+#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
 #: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
 #: postpone.c:46 query.c:53 recvattach.c:58 smime.c:437
 msgid "Help"
@@ -131,8 +131,8 @@ msgid "Mailcap compose entry requires %%s"
 msgstr "Η καταχώρηση στοιχείων του mailcap χρειάζεται το %%s"
 
 #
-#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:167
-#: curs_lib.c:484
+#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:175
+#: curs_lib.c:492
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Σφάλμα κατά την εκτέλεση του \"%s\"!"
@@ -187,7 +187,7 @@ msgid "Cannot create filter"
 msgstr "Αδυναμία δημιουργίας φίλτρου"
 
 #
-#: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1273
+#: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1279
 #: pgpkey.c:571 pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Αδυναμία δημιουργίας φίλτρου"
@@ -213,7 +213,7 @@ msgid "Mask"
 msgstr "Μάσκα"
 
 #
-#: browser.c:383 browser.c:1013
+#: browser.c:383 browser.c:1022
 #, c-format
 msgid "%s is not a directory."
 msgstr "Το %s δεν είναι κατάλογος."
@@ -242,7 +242,7 @@ msgid "Can't attach a directory!"
 msgstr "Αδυναμία προσάρτησης ενός κατάλογου"
 
 #
-#: browser.c:670 browser.c:1081 browser.c:1179
+#: browser.c:670 browser.c:1091 browser.c:1189
 msgid "No files match the file mask"
 msgstr "Κανένα αρχείο δεν ταιριάζει με τη μάσκα αρχείου"
 
@@ -292,44 +292,44 @@ msgid "Chdir to: "
 msgstr "Αλλαγή καταλόγου σε:"
 
 #
-#: browser.c:1001 browser.c:1074
+#: browser.c:1010 browser.c:1084
 msgid "Error scanning directory."
 msgstr "Σφάλμα κατά τη διερεύνηση του καταλόγου."
 
 #
-#: browser.c:1024
+#: browser.c:1034
 msgid "File Mask: "
 msgstr "Μάσκα αρχείου: "
 
 #
-#: browser.c:1097
+#: browser.c:1107
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr ""
 "Ανάστροφη ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)"
 "άκυρο;"
 
 #
-#: browser.c:1098
+#: browser.c:1108
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Ταξινόμηση κατά (d)ημερομηνία, (a)αλφαβητικά, (z)μέγεθος ή (n)άκυρο;"
 
 #
-#: browser.c:1099
+#: browser.c:1109
 msgid "dazn"
 msgstr "dazn"
 
 #
-#: browser.c:1166
+#: browser.c:1176
 msgid "New file name: "
 msgstr "Νέο όνομα αρχείου: "
 
 #
-#: browser.c:1197
+#: browser.c:1207
 msgid "Can't view a directory"
 msgstr "Αδυναμία ανάγνωσης ενός κατάλογου"
 
 #
-#: browser.c:1214
+#: browser.c:1224
 msgid "Error trying to view file"
 msgstr "Σφάλμα κατά την εμφάνιση αρχείου"
 
@@ -752,7 +752,7 @@ msgstr "Προειδοποίηση: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN."
 msgid "You may not delete the only attachment."
 msgstr "Δεν μπορείτε να διαγράψετε τη μοναδική προσάρτηση."
 
-#: compose.c:601 send.c:1546
+#: compose.c:601 send.c:1552
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο \"%s\": '%s'"
@@ -815,7 +815,7 @@ msgid "Rename to: "
 msgstr "Μετονομασία σε: "
 
 #
-#: compose.c:1014 editmsg.c:116 sendlib.c:857
+#: compose.c:1014 editmsg.c:96 editmsg.c:121 sendlib.c:857
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Αδυναμία λήψης της κατάστασης του %s: %s"
@@ -894,7 +894,7 @@ msgid "error creating gpgme data object: %s\n"
 msgstr "σφάλμα στο μοντέλο στο: %s"
 
 #
-#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1401
+#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1400
 #, fuzzy, c-format
 msgid "error allocating data object: %s\n"
 msgstr "σφάλμα στο μοντέλο στο: %s"
@@ -945,80 +945,80 @@ msgid "error encrypting data: %s\n"
 msgstr "σφάλμα στο μοντέλο στο: %s"
 
 #
-#: crypt-gpgme.c:851
+#: crypt-gpgme.c:850
 #, fuzzy, c-format
 msgid "error signing data: %s\n"
 msgstr "σφάλμα στο μοντέλο στο: %s"
 
-#: crypt-gpgme.c:1046
+#: crypt-gpgme.c:1045
 #, fuzzy
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Προειδοποίηση: Τμήμα αυτού του μηνύματος δεν είναι υπογεγραμμένο."
 
-#: crypt-gpgme.c:1055
+#: crypt-gpgme.c:1054
 msgid "Warning: The key used to create the signature expired at: "
 msgstr ""
 
-#: crypt-gpgme.c:1061
+#: crypt-gpgme.c:1060
 #, fuzzy
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Το πιστοποιητικό του διακομιστή έληξε"
 
-#: crypt-gpgme.c:1077
+#: crypt-gpgme.c:1076
 msgid "Warning: The signature expired at: "
 msgstr ""
 
-#: crypt-gpgme.c:1083
+#: crypt-gpgme.c:1082
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr ""
 
-#: crypt-gpgme.c:1088
+#: crypt-gpgme.c:1087
 #, fuzzy
 msgid "The CRL is not available\n"
 msgstr "Το SSL δεν είναι διαθέσιμο."
 
-#: crypt-gpgme.c:1094
+#: crypt-gpgme.c:1093
 msgid "Available CRL is too old\n"
 msgstr ""
 
-#: crypt-gpgme.c:1099
+#: crypt-gpgme.c:1098
 msgid "A policy requirement was not met\n"
 msgstr ""
 
-#: crypt-gpgme.c:1108
+#: crypt-gpgme.c:1107
 msgid "A system error occurred"
 msgstr ""
 
-#: crypt-gpgme.c:1142
+#: crypt-gpgme.c:1141
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr ""
 
-#: crypt-gpgme.c:1149
+#: crypt-gpgme.c:1148
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#: crypt-gpgme.c:1166 crypt-gpgme.c:3126
+#: crypt-gpgme.c:1165 crypt-gpgme.c:3114
 #, fuzzy
 msgid "Fingerprint: "
 msgstr "Αποτύπωμα: %s"
 
-#: crypt-gpgme.c:1226
+#: crypt-gpgme.c:1225
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
 
-#: crypt-gpgme.c:1233
+#: crypt-gpgme.c:1232
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
-#: crypt-gpgme.c:1237
+#: crypt-gpgme.c:1236
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
 
-#: crypt-gpgme.c:1312
+#: crypt-gpgme.c:1311
 msgid "Error getting key information: "
 msgstr ""
 
@@ -1026,24 +1026,24 @@ msgstr ""
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1319 crypt-gpgme.c:1352
+#: crypt-gpgme.c:1318 crypt-gpgme.c:1351
 msgid "Good signature from: "
 msgstr ""
 
-#: crypt-gpgme.c:1329
+#: crypt-gpgme.c:1328
 msgid "                aka: "
 msgstr ""
 
-#: crypt-gpgme.c:1333 crypt-gpgme.c:1355
+#: crypt-gpgme.c:1332 crypt-gpgme.c:1354
 msgid "            created: "
 msgstr ""
 
-#: crypt-gpgme.c:1342
+#: crypt-gpgme.c:1341
 msgid "*BAD* signature claimed to be from: "
 msgstr ""
 
 #
-#: crypt-gpgme.c:1365
+#: crypt-gpgme.c:1364
 #, fuzzy
 msgid "Error checking signature"
 msgstr "Σφάλμα κατά την αποστολή του μηνύματος."
@@ -1051,28 +1051,28 @@ msgstr "Σφάλμα κατά την αποστολή του μηνύματος."
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1409 crypt-gpgme.c:1623 crypt-gpgme.c:2120
+#: crypt-gpgme.c:1408 crypt-gpgme.c:1623 crypt-gpgme.c:2108
 msgid "[-- Begin signature information --]\n"
 msgstr ""
 
 #
-#: crypt-gpgme.c:1418
+#: crypt-gpgme.c:1417
 #, fuzzy, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Λάθος στη γραμμή εντολών: %s\n"
 
-#: crypt-gpgme.c:1467
+#: crypt-gpgme.c:1466
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr ""
 
-#: crypt-gpgme.c:1489
+#: crypt-gpgme.c:1488
 msgid "*** End Notation ***\n"
 msgstr ""
 
 #
 # pgp.c:682
-#: crypt-gpgme.c:1497 crypt-gpgme.c:1636 crypt-gpgme.c:2135
+#: crypt-gpgme.c:1496 crypt-gpgme.c:1636 crypt-gpgme.c:2123
 #, fuzzy
 msgid ""
 "[-- End signature information --]\n"
@@ -1089,18 +1089,18 @@ msgid ""
 "\n"
 msgstr "[-- Σφάλμα: αδυναμία δημιουργίας προσωρινού αρχείου! --]\n"
 
-#: crypt-gpgme.c:2095
+#: crypt-gpgme.c:2083
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:2143
+#: crypt-gpgme.c:2131
 msgid "Error: copy data failed\n"
 msgstr ""
 
 #
 # pgp.c:353
-#: crypt-gpgme.c:2163 pgp.c:428
+#: crypt-gpgme.c:2151 pgp.c:428
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1110,13 +1110,13 @@ msgstr ""
 
 #
 # pgp.c:355
-#: crypt-gpgme.c:2165 pgp.c:430
+#: crypt-gpgme.c:2153 pgp.c:430
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ΕΝΑΡΞΗ ΟΜΑΔΑΣ ΔΗΜΟΣΙΩΝ ΚΛΕΙΔΙΩΝ PGP --]\n"
 
 #
 # pgp.c:357
-#: crypt-gpgme.c:2168 pgp.c:432
+#: crypt-gpgme.c:2156 pgp.c:432
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1126,24 +1126,24 @@ msgstr ""
 
 #
 # pgp.c:459
-#: crypt-gpgme.c:2195 pgp.c:458
+#: crypt-gpgme.c:2183 pgp.c:458
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- ΤΕΛΟΣ ΜΗΝΥΜΑΤΟΣ PGP --]\n"
 
 #
 # pgp.c:461
-#: crypt-gpgme.c:2197 pgp.c:465
+#: crypt-gpgme.c:2185 pgp.c:465
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ΤΕΛΟΣ ΟΜΑΔΑΣ ΔΗΜΟΣΙΩΝ ΚΛΕΙΔΙΩΝ PGP --]\n"
 
 #
 # pgp.c:463
-#: crypt-gpgme.c:2199 pgp.c:467
+#: crypt-gpgme.c:2187 pgp.c:467
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- ΤΕΛΟΣ ΥΠΟΓΕΓΡΑΜΜΕΝΟΥ PGP ΜΗΝΥΜΑΤΟΣ --]\n"
 
 #
-#: crypt-gpgme.c:2220 pgp.c:497
+#: crypt-gpgme.c:2208 pgp.c:497
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1153,7 +1153,7 @@ msgstr ""
 
 #
 # pgp.c:958
-#: crypt-gpgme.c:2251 pgp.c:926
+#: crypt-gpgme.c:2239 pgp.c:926
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -1162,13 +1162,13 @@ msgstr ""
 "\n"
 
 #
-#: crypt-gpgme.c:2263 crypt-gpgme.c:2329 pgp.c:939
+#: crypt-gpgme.c:2251 crypt-gpgme.c:2317 pgp.c:939
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Σφάλμα: αδυναμία δημιουργίας προσωρινού αρχείου! --]\n"
 
 #
 # pgp.c:980
-#: crypt-gpgme.c:2275
+#: crypt-gpgme.c:2263
 #, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
@@ -1179,7 +1179,7 @@ msgstr ""
 
 #
 # pgp.c:980
-#: crypt-gpgme.c:2276 pgp.c:948
+#: crypt-gpgme.c:2264 pgp.c:948
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1189,20 +1189,20 @@ msgstr ""
 
 #
 # pgp.c:988
-#: crypt-gpgme.c:2298
+#: crypt-gpgme.c:2286
 #, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω PGP/MIME --]\n"
 
 #
 # pgp.c:988
-#: crypt-gpgme.c:2299 pgp.c:968
+#: crypt-gpgme.c:2287 pgp.c:968
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω PGP/MIME --]\n"
 
 #
 # pgp.c:676
-#: crypt-gpgme.c:2341
+#: crypt-gpgme.c:2329
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
@@ -1211,7 +1211,7 @@ msgstr "[-- Τα επόμενα δεδομένα είναι υπογεγραμμένα με S/MIME --]\n"
 
 #
 # pgp.c:980
-#: crypt-gpgme.c:2342
+#: crypt-gpgme.c:2330
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
@@ -1220,7 +1220,7 @@ msgstr "[-- Τα επόμενα δεδομένα είναι κρυπτογραφημένα μέσω S/MIME --]\n"
 
 #
 # pgp.c:682
-#: crypt-gpgme.c:2372
+#: crypt-gpgme.c:2360
 #, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr ""
@@ -1229,88 +1229,88 @@ msgstr ""
 
 #
 # pgp.c:988
-#: crypt-gpgme.c:2373
+#: crypt-gpgme.c:2361
 #, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Τέλος δεδομένων κρυπτογραφημένων μέσω S/MIME --]\n"
 
-#: crypt-gpgme.c:2966
+#: crypt-gpgme.c:2954
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr ""
 
-#: crypt-gpgme.c:2968
+#: crypt-gpgme.c:2956
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr ""
 
-#: crypt-gpgme.c:2973
+#: crypt-gpgme.c:2961
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr ""
 
-#: crypt-gpgme.c:3052
+#: crypt-gpgme.c:3040
 msgid " aka ......: "
 msgstr ""
 
-#: crypt-gpgme.c:3052
+#: crypt-gpgme.c:3040
 msgid "Name ......: "
 msgstr ""
 
 #
-#: crypt-gpgme.c:3055 crypt-gpgme.c:3194
+#: crypt-gpgme.c:3043 crypt-gpgme.c:3182
 #, fuzzy
 msgid "[Invalid]"
 msgstr "Μη έγκυρο   "
 
 #
-#: crypt-gpgme.c:3075 crypt-gpgme.c:3218
+#: crypt-gpgme.c:3063 crypt-gpgme.c:3206
 #, fuzzy, c-format
 msgid "Valid From : %s\n"
 msgstr "Μη έγκυρος μήνας: %s"
 
 #
-#: crypt-gpgme.c:3088 crypt-gpgme.c:3231
+#: crypt-gpgme.c:3076 crypt-gpgme.c:3219
 #, fuzzy, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Μη έγκυρος μήνας: %s"
 
-#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
+#: crypt-gpgme.c:3089 crypt-gpgme.c:3232
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:3103 crypt-gpgme.c:3246
+#: crypt-gpgme.c:3091 crypt-gpgme.c:3234
 #, c-format
 msgid "Key Usage .: "
 msgstr ""
 
 #
 # compose.c:105
-#: crypt-gpgme.c:3108 crypt-gpgme.c:3251
+#: crypt-gpgme.c:3096 crypt-gpgme.c:3239
 #, fuzzy
 msgid "encryption"
 msgstr "Κρυπτογράφηση"
 
-#: crypt-gpgme.c:3109 crypt-gpgme.c:3114 crypt-gpgme.c:3119 crypt-gpgme.c:3252
-#: crypt-gpgme.c:3257 crypt-gpgme.c:3262
+#: crypt-gpgme.c:3097 crypt-gpgme.c:3102 crypt-gpgme.c:3107 crypt-gpgme.c:3240
+#: crypt-gpgme.c:3245 crypt-gpgme.c:3250
 msgid ", "
 msgstr ""
 
-#: crypt-gpgme.c:3113 crypt-gpgme.c:3256
+#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
 msgid "signing"
 msgstr ""
 
-#: crypt-gpgme.c:3118 crypt-gpgme.c:3261
+#: crypt-gpgme.c:3106 crypt-gpgme.c:3249
 #, fuzzy
 msgid "certification"
 msgstr "Το πιστοποιητικό αποθηκεύτηκε"
 
-#: crypt-gpgme.c:3158
+#: crypt-gpgme.c:3146
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr ""
 
-#: crypt-gpgme.c:3166
+#: crypt-gpgme.c:3154
 #, c-format
 msgid "Issued By .: "
 msgstr ""
@@ -1318,179 +1318,179 @@ msgstr ""
 #
 # pgpkey.c:236
 #. display only the short keyID
-#: crypt-gpgme.c:3185
+#: crypt-gpgme.c:3173
 #, fuzzy, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "ID κλειδιού: 0x%s"
 
-#: crypt-gpgme.c:3189
+#: crypt-gpgme.c:3177
 #, fuzzy
 msgid "[Revoked]"
 msgstr "Ανακλήθηκε   "
 
 #
-#: crypt-gpgme.c:3199
+#: crypt-gpgme.c:3187
 #, fuzzy
 msgid "[Expired]"
 msgstr "Έληξε   "
 
-#: crypt-gpgme.c:3204
+#: crypt-gpgme.c:3192
 msgid "[Disabled]"
 msgstr ""
 
 #
-#: crypt-gpgme.c:3288 pgpkey.c:560 pgpkey.c:740
+#: crypt-gpgme.c:3276 pgpkey.c:560 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "Αδυναμία δημιουργίας προσωρινού αρχείου"
 
 #
-#: crypt-gpgme.c:3291
+#: crypt-gpgme.c:3279
 #, fuzzy
 msgid "Collecting data..."
 msgstr "Σύνδεση στο %s..."
 
 #
-#: crypt-gpgme.c:3317
+#: crypt-gpgme.c:3305
 #, fuzzy, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Σφάλμα κατα τη σύνδεση στο διακομιστή: %s"
 
-#: crypt-gpgme.c:3327
+#: crypt-gpgme.c:3315
 msgid "Error: certification chain to long - stopping here\n"
 msgstr ""
 
 #
 # pgpkey.c:236
-#: crypt-gpgme.c:3338 pgpkey.c:581
+#: crypt-gpgme.c:3326 pgpkey.c:581
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID κλειδιού: 0x%s"
 
 #
-#: crypt-gpgme.c:3421
+#: crypt-gpgme.c:3409
 #, fuzzy, c-format
 msgid "gpgme_new failed: %s"
 msgstr "SSL απέτυχε: %s"
 
-#: crypt-gpgme.c:3460 crypt-gpgme.c:3523
+#: crypt-gpgme.c:3448 crypt-gpgme.c:3511
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr ""
 
-#: crypt-gpgme.c:3510 crypt-gpgme.c:3551
+#: crypt-gpgme.c:3498 crypt-gpgme.c:3539
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr ""
 
-#: crypt-gpgme.c:3622
+#: crypt-gpgme.c:3610
 #, fuzzy
 msgid "All matching keys are marked expired/revoked."
 msgstr "Όλα τα κλειδιά που ταιριάζουν είναι ληγμένα, ακυρωμένα ή ανενεργά."
 
 #
-#: crypt-gpgme.c:3651 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Έξοδος "
 
 #
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3653 pgpkey.c:517 smime.c:434
+#: crypt-gpgme.c:3641 pgpkey.c:517 smime.c:434
 msgid "Select  "
 msgstr "Διαλέξτε "
 
 #
 # pgpkey.c:178
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3656 pgpkey.c:520
+#: crypt-gpgme.c:3644 pgpkey.c:520
 msgid "Check key  "
 msgstr "Ελέγξτε κλειδί "
 
 #
-#: crypt-gpgme.c:3673
+#: crypt-gpgme.c:3661
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "Όμοια S/MIME κλειδιά \"%s\"."
 
 #
-#: crypt-gpgme.c:3675
+#: crypt-gpgme.c:3663
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "Όμοια PGP κλειδιά \"%s\"."
 
 #
-#: crypt-gpgme.c:3677
+#: crypt-gpgme.c:3665
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "Όμοια πιστοποιητικά S/MIME \"%s\"."
 
 #
-#: crypt-gpgme.c:3679
+#: crypt-gpgme.c:3667
 #, fuzzy
 msgid "keys matching"
 msgstr "Όμοια PGP κλειδιά \"%s\"."
 
-#: crypt-gpgme.c:3682
+#: crypt-gpgme.c:3670
 #, c-format
 msgid "%s <%s>."
 msgstr ""
 
-#: crypt-gpgme.c:3684
+#: crypt-gpgme.c:3672
 #, c-format
 msgid "%s \"%s\"."
 msgstr ""
 
-#: crypt-gpgme.c:3711 pgpkey.c:601
+#: crypt-gpgme.c:3699 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
 "Αυτό το κλειδί δεν μπορεί να χρησιμοποιηθεί ληγμένο/αχρηστευμένο/άκυρο."
 
-#: crypt-gpgme.c:3725 pgpkey.c:613
+#: crypt-gpgme.c:3713 pgpkey.c:613
 msgid "ID is expired/disabled/revoked."
 msgstr "Το ID είναι ληγμένο/αχρηστευμένο/άκυρο."
 
-#: crypt-gpgme.c:3745 pgpkey.c:617
+#: crypt-gpgme.c:3733 pgpkey.c:617
 msgid "ID has undefined validity."
 msgstr "Το ID έχει μη ορισμένη εγκυρότητα."
 
 #
-#: crypt-gpgme.c:3748 pgpkey.c:620
+#: crypt-gpgme.c:3736 pgpkey.c:620
 msgid "ID is not valid."
 msgstr "Το ID δεν είναι έγκυρο."
 
 #
 # pgpkey.c:259
-#: crypt-gpgme.c:3751 pgpkey.c:623
+#: crypt-gpgme.c:3739 pgpkey.c:623
 msgid "ID is only marginally valid."
 msgstr "Το ID είναι μόνο μερικώς έγκυρο."
 
 #
 # pgpkey.c:262
-#: crypt-gpgme.c:3759 pgpkey.c:627
+#: crypt-gpgme.c:3747 pgpkey.c:627
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Θέλετε σίγουρα να χρησιμοποιήσετε το κλειδί;"
 
-#: crypt-gpgme.c:3816 crypt-gpgme.c:3929 pgpkey.c:840 pgpkey.c:956
+#: crypt-gpgme.c:3804 crypt-gpgme.c:3917 pgpkey.c:840 pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Εύρεση όμοιων κλειδιών με \"%s\"..."
 
 #
 # pgp.c:1194
-#: crypt-gpgme.c:4092 pgp.c:1175
+#: crypt-gpgme.c:4080 pgp.c:1175
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Να χρησιμοποιηθεί keyID = \"%s\" για το %s;"
 
 #
 # pgp.c:1200
-#: crypt-gpgme.c:4128 pgp.c:1209 smime.c:666 smime.c:791
+#: crypt-gpgme.c:4116 pgp.c:1209 smime.c:666 smime.c:791
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Εισάγετε keyID για το %s: "
 
-#: crypt-gpgme.c:4193
+#: crypt-gpgme.c:4181
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
@@ -1498,28 +1498,28 @@ msgstr ""
 
 #
 # compose.c:132
-#: crypt-gpgme.c:4221
+#: crypt-gpgme.c:4209
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr "S/MIME (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
 
 #
 # compose.c:133
-#: crypt-gpgme.c:4222
+#: crypt-gpgme.c:4210
 #, fuzzy
 msgid "esabpfc"
 msgstr "eswabfc"
 
 #
 # compose.c:132
-#: crypt-gpgme.c:4225
+#: crypt-gpgme.c:4213
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP (e)κλείδ, (s)υπογρ, υπογρ.σ(a)ν, (b)κλ+υπ, %s, ή (c)τίποτα; "
 
 #
 # compose.c:133
-#: crypt-gpgme.c:4226
+#: crypt-gpgme.c:4214
 #, fuzzy
 msgid "esabmfc"
 msgstr "eswabfc"
@@ -1528,16 +1528,16 @@ msgstr "eswabfc"
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4242 pgp.c:1585 smime.c:2036
+#: crypt-gpgme.c:4230 pgp.c:1585 smime.c:2036
 msgid "Sign as: "
 msgstr "Υπογραφή ως: "
 
-#: crypt-gpgme.c:4339
+#: crypt-gpgme.c:4327
 msgid "Failed to verify sender"
 msgstr ""
 
 #
-#: crypt-gpgme.c:4342
+#: crypt-gpgme.c:4330
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Αποτυχία κατά το άνοιγμα αρχείου για την ανάλυση των επικεφαλίδων."
@@ -1576,7 +1576,7 @@ msgstr ""
 
 #
 #. abort
-#: crypt.c:158 send.c:1498
+#: crypt.c:158 send.c:1504
 msgid "Mail not sent."
 msgstr "Το γράμμα δεν εστάλη."
 
@@ -1661,33 +1661,33 @@ msgid "Invoking S/MIME..."
 msgstr "Κλήση του S/MIME..."
 
 #
-#: curs_lib.c:177
+#: curs_lib.c:185
 msgid "yes"
 msgstr "y(ναι)"
 
 #
-#: curs_lib.c:178
+#: curs_lib.c:186
 msgid "no"
 msgstr "n(όχι)"
 
 #
 #. restore blocking operation
-#: curs_lib.c:274
+#: curs_lib.c:282
 msgid "Exit Mutt?"
 msgstr "Έξοδος από το Mutt;"
 
 #
-#: curs_lib.c:436 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:444 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "άγνωστο σφάλμα"
 
 #
-#: curs_lib.c:456
+#: curs_lib.c:464
 msgid "Press any key to continue..."
 msgstr "Πατήστε ένα πλήκτρο για να συνεχίσετε..."
 
 #
-#: curs_lib.c:500
+#: curs_lib.c:508
 msgid " ('?' for list): "
 msgstr "('?' για λίστα): "
 
@@ -1702,7 +1702,7 @@ msgid "There are no messages."
 msgstr "Δεν υπάρχουν μηνύματα."
 
 #
-#: curs_main.c:56 mx.c:1120 pager.c:58 recvattach.c:44
+#: curs_main.c:56 mx.c:1115 pager.c:58 recvattach.c:44
 msgid "Mailbox is read-only."
 msgstr "Το γραμματοκιβώτιο είναι μόνο για ανάγνωση."
 
@@ -1883,7 +1883,7 @@ msgid "No mailboxes have new mail"
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #
-#: curs_main.c:1105 mx.c:508 mx.c:657
+#: curs_main.c:1105 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "Το %s δεν είναι γραμματοκιβώτιο."
@@ -2144,35 +2144,35 @@ msgid "could not write temporary mail folder: %s"
 msgstr "αδυναμία εγγραφής προσωρινού φακέλου αλληλογραφίας: %s"
 
 #
-#: editmsg.c:107
+#: editmsg.c:110
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
 msgstr "αδυναμία περικοπή προσωρινού φακέλου αλληλογραφίας: %s"
 
 #
-#: editmsg.c:122
+#: editmsg.c:127
 msgid "Message file is empty!"
 msgstr "Το αρχείο μηνυμάτων είναι άδειο!"
 
 #
-#: editmsg.c:129
+#: editmsg.c:134
 msgid "Message not modified!"
 msgstr "Το μήνυμα δεν τροποποιήθηκε!"
 
 #
-#: editmsg.c:137
+#: editmsg.c:142
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Αδυναμία πρόσβασης στο αρχείο μηνυμάτων: %s"
 
 #
-#: editmsg.c:144 editmsg.c:172
+#: editmsg.c:149 editmsg.c:177
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Αδυναμία πρόσθεσης στο φάκελο: %s"
 
 #
-#: editmsg.c:203
+#: editmsg.c:208
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Σφάλμα. Διατήρηση προσωρινού αρχείου: %s"
@@ -2207,72 +2207,72 @@ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Τύπος: %s/%s, Κωδικοποίηση: %s, Μέγεθος: %s --]\n"
 
 #
-#: handler.c:1244
+#: handler.c:1250
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Autoview χρησιμοποιώντας το %s --]\n"
 
 #
-#: handler.c:1245
+#: handler.c:1251
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Κλήση της εντολής autoview: %s"
 
 #
-#: handler.c:1277
+#: handler.c:1283
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Αδυναμία εκτέλεσης στις %s --]\n"
 
 #
-#: handler.c:1296 handler.c:1317
+#: handler.c:1302 handler.c:1323
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Autoview κανονική έξοδος του %s --]\n"
 
 #
-#: handler.c:1356
+#: handler.c:1362
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Σφάλμα: το μήνυμα/εξωτερικό-σώμα δεν έχει παράμετρο access-type --]\n"
 
 #
-#: handler.c:1375
+#: handler.c:1383
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Αυτή η %s/%s προσάρτηση "
 
 #
-#: handler.c:1382
+#: handler.c:1390
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(μέγεθος %s bytes) "
 
 #
-#: handler.c:1384
+#: handler.c:1392
 msgid "has been deleted --]\n"
 msgstr "έχει διαγραφεί --]\n"
 
 #
-#: handler.c:1389
+#: handler.c:1397
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- στις %s --]\n"
 
 #
-#: handler.c:1394
+#: handler.c:1402
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- όνομα: %s --]\n"
 
 #
-#: handler.c:1407 handler.c:1423
+#: handler.c:1415 handler.c:1431
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Αυτή η %s/%s προσάρτηση δεν περιλαμβάνετε, --]\n"
 
 #
-#: handler.c:1409
+#: handler.c:1417
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -2281,41 +2281,41 @@ msgstr ""
 "[-- λήξει. --]\n"
 
 #
-#: handler.c:1427
+#: handler.c:1435
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- και το ενδεδειγμένο access-type %s δεν υποστηρίζεται --]\n"
 
 #
 # handler.c:1378
-#: handler.c:1542
+#: handler.c:1550
 msgid "Error: multipart/signed has no protocol."
 msgstr "Σφάλμα: το πολυμερές/υπογεγραμμένο δεν έχει πρωτόκολλο"
 
 #
-#: handler.c:1552
+#: handler.c:1560
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Σφάλμα: το πολυμερές/κρυπτογραφημένο δεν έχει παράμετρο πρωτοκόλλου!"
 
 #
-#: handler.c:1592
+#: handler.c:1600
 msgid "Unable to open temporary file!"
 msgstr "Αδυναμία ανοίγματος προσωρινού αρχείου!"
 
 #
-#: handler.c:1653
+#: handler.c:1667
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- Το %s/%s δεν υποστηρίζεται "
 
 #
-#: handler.c:1658
+#: handler.c:1672
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(χρησιμοποιήστε το '%s' για να δείτε αυτό το μέρος)"
 
 #
-#: handler.c:1660
+#: handler.c:1674
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(απαιτείται το 'view-attachments' να είναι συνδεδεμένο με πλήκτρο!"
 
@@ -2384,7 +2384,7 @@ msgstr "unhook: άγνωστος τύπος hook: %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Αδυναμία διαγραφής ενός %s μέσα από ένα %s."
 
-#: imap/auth.c:108 pop_auth.c:399 smtp.c:452
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:452
 msgid "No authenticators available"
 msgstr "Δεν υπάρχει διαθέσιμη αυθεντικοποίηση."
 
@@ -2418,12 +2418,12 @@ msgid "LOGIN disabled on this server."
 msgstr "Το LOGIN απενεργοποιήθηκε σε αυτό τον διακομιστή."
 
 #
-#: imap/auth_login.c:47 pop_auth.c:232
+#: imap/auth_login.c:47 pop_auth.c:231
 msgid "Logging in..."
 msgstr "Είσοδος στο σύστημα..."
 
 #
-#: imap/auth_login.c:67 pop_auth.c:275
+#: imap/auth_login.c:67 pop_auth.c:274
 msgid "Login failed."
 msgstr "Απέτυχε η είσοδος στο σύστημα."
 
@@ -2436,7 +2436,7 @@ msgstr "Αυθεντικοποίηση (%s)..."
 msgid "SASL authentication failed."
 msgstr "Αυθεντικοποίηση SASL απέτυχε."
 
-#: imap/browse.c:58 imap/imap.c:561
+#: imap/browse.c:58 imap/imap.c:562
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s είναι μη έγκυρη διαδρομή IMAP"
@@ -2500,101 +2500,101 @@ msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr ""
 "Αυτός ο εξυπηρετητής IMAP είναι αρχαίος. Το Mutt δεν είναι συμβατό με αυτόν."
 
-#: imap/imap.c:428 pop_lib.c:286 smtp.c:373
+#: imap/imap.c:429 pop_lib.c:286 smtp.c:373
 msgid "Secure connection with TLS?"
 msgstr "Ασφαλής σύνδεση με TLS;"
 
-#: imap/imap.c:437 pop_lib.c:306 smtp.c:385
+#: imap/imap.c:438 pop_lib.c:306 smtp.c:385
 msgid "Could not negotiate TLS connection"
 msgstr "Αδυναμία διαπραγμάτευσης σύνδεσης TLS"
 
-#: imap/imap.c:453 pop_lib.c:327
+#: imap/imap.c:454 pop_lib.c:327
 msgid "Encrypted connection unavailable"
 msgstr ""
 
 #
-#: imap/imap.c:593
+#: imap/imap.c:594
 #, c-format
 msgid "Selecting %s..."
 msgstr "Επιλογή %s..."
 
 #
-#: imap/imap.c:748
+#: imap/imap.c:749
 msgid "Error opening mailbox"
 msgstr "Σφάλμα κατά  το άνοιγμα του γραμματοκιβωτίου"
 
 #
-#: imap/imap.c:801 imap/message.c:792 muttlib.c:1417
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1467
 #, c-format
 msgid "Create %s?"
 msgstr "Δημιουργία του %s;"
 
 #
-#: imap/imap.c:1131
+#: imap/imap.c:1132
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Σημείωση %d διαγραφέντων μηνυμάτων..."
 
 #
-#: imap/imap.c:1140
+#: imap/imap.c:1141
 msgid "Expunge failed"
 msgstr "Διαγραφή απέτυχε"
 
 #
-#: imap/imap.c:1173
+#: imap/imap.c:1174
 #, fuzzy, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Αποθήκευση σημαιών κατάστασης μηνύματος... [%d/%d]"
 
-#: imap/imap.c:1227
+#: imap/imap.c:1228
 msgid "Error saving flags. Close anyway?"
 msgstr ""
 
 #
-#: imap/imap.c:1235
+#: imap/imap.c:1236
 #, fuzzy
 msgid "Error saving flags"
 msgstr "Σφάλμα κατά την ανάλυση της διεύθυνσης!"
 
 #
-#: imap/imap.c:1247
+#: imap/imap.c:1248
 msgid "Expunging messages from server..."
 msgstr "Διαγραφή μηνυμάτων από τον εξυπηρετητή..."
 
-#: imap/imap.c:1252
+#: imap/imap.c:1253
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE απέτυχε"
 
-#: imap/imap.c:1725
+#: imap/imap.c:1726
 #, c-format
 msgid "Header search without header name: %s"
 msgstr ""
 
 #
-#: imap/imap.c:1797
+#: imap/imap.c:1798
 msgid "Bad mailbox name"
 msgstr "Κακό όνομα γραμματοκιβωτίου"
 
 #
-#: imap/imap.c:1820
+#: imap/imap.c:1821
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Εγγραφή στο %s..."
 
 #
-#: imap/imap.c:1822
+#: imap/imap.c:1823
 #, fuzzy, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Διαγραφή στο %s..."
 
 #
-#: imap/imap.c:1832
+#: imap/imap.c:1833
 #, fuzzy, c-format
 msgid "Subscribed to %s"
 msgstr "Εγγραφή στο %s..."
 
 #
-#: imap/imap.c:1834
+#: imap/imap.c:1835
 #, fuzzy, c-format
 msgid "Unsubscribed from %s"
 msgstr "Διαγραφή στο %s..."
@@ -2656,197 +2656,207 @@ msgid "Continue?"
 msgstr "Συνέχεια;"
 
 #
-#: init.c:57 init.c:1691 pager.c:57
+#: init.c:57 init.c:1755 pager.c:57
 #, c-format
 msgid "Not available in this menu."
 msgstr "Δεν είναι διαθέσιμο σε αυτό το μενού."
 
-#: init.c:464
+#: init.c:465
 #, c-format
 msgid "Bad regexp: %s"
 msgstr "λανθασμένη κανονική έκφραση: %s"
 
+#: init.c:522
+#, c-format
+msgid "Not enough subexpressions for spam template"
+msgstr ""
+
 #
-#: init.c:738
+#: init.c:748
 msgid "spam: no matching pattern"
 msgstr "spam: δεν υπάρχει μοντέλο που να ταιριάζει"
 
 #
-#: init.c:740
+#: init.c:750
 msgid "nospam: no matching pattern"
 msgstr "nospam: δεν υπάρχει μοντέλο που να ταιριάζει"
 
-#: init.c:877
+#: init.c:887
 msgid "Missing -rx or -addr."
 msgstr ""
 
-#: init.c:890
+#: init.c:900
 #, fuzzy, c-format
 msgid "Warning: Bad IDN '%s'.\n"
 msgstr ""
 "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'.\n"
 
 #
-#: init.c:1098
+#: init.c:1108
 #, fuzzy
 msgid "attachments: no disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
 #
-#: init.c:1136
+#: init.c:1146
 #, fuzzy
 msgid "attachments: invalid disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
 #
-#: init.c:1150
+#: init.c:1160
 #, fuzzy
 msgid "unattachments: no disposition"
 msgstr "επεξεργασία της περιγραφής της προσάρτησης"
 
-#: init.c:1173
+#: init.c:1183
 msgid "unattachments: invalid disposition"
 msgstr ""
 
 #
-#: init.c:1300
+#: init.c:1310
 msgid "alias: no address"
 msgstr "ψευδώνυμο: καμμία διεύθυνση"
 
-#: init.c:1347
+#: init.c:1357
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr ""
 "Προειδοποίηση: Λανθασμένη διεθνής διεύθυνση IDN '%s' στο ψευδώνυμο '%s'.\n"
 
 #
-#: init.c:1435
+#: init.c:1445
 msgid "invalid header field"
 msgstr "μη έγκυρο πεδίο επικεφαλίδας"
 
 #
-#: init.c:1488
+#: init.c:1498
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: άγνωστη μέθοδος ταξινόμησης"
 
 #
-#: init.c:1598
+#: init.c:1608
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): λάθος στο regexp: %s\n"
 
 #
-#: init.c:1668 init.c:1781
+#: init.c:1732 init.c:1845
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: άγνωστη μεταβλητή"
 
 #
-#: init.c:1677
+#: init.c:1741
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "το πρόθεμα είναι άκυρο με την επαναφορά"
 
 #
-#: init.c:1683
+#: init.c:1747
 #, c-format
 msgid "value is illegal with reset"
 msgstr "η τιμή είναι άκυρη με την επαναφορά"
 
+#: init.c:1783 init.c:1795
+#, c-format
+msgid "Usage: set variable=yes|no"
+msgstr ""
+
 #
-#: init.c:1739
+#: init.c:1803
 #, c-format
 msgid "%s is set"
 msgstr "Το %s έχει τεθεί"
 
 #
-#: init.c:1739
+#: init.c:1803
 #, c-format
 msgid "%s is unset"
 msgstr "Το %s δεν έχει τεθεί"
 
 #
-#: init.c:1964
+#: init.c:2033
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: μη έγκυρος τύπος γραμματοκιβωτίου"
 
 #
-#: init.c:1995 init.c:2048
+#: init.c:2064 init.c:2117
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: μη έγκυρη τιμή"
 
 #
-#: init.c:2089
+#: init.c:2158
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: άγνωστος τύπος."
 
 #
-#: init.c:2116
+#: init.c:2185
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: άγνωστος τύπος"
 
 #
-#: init.c:2178
+#: init.c:2247
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Σφάλμα στο %s, γραμμή %d: %s"
 
 #
 #. the muttrc source keyword
-#: init.c:2201
+#: init.c:2270
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: λάθη στο %s"
 
-#: init.c:2202
+#: init.c:2271
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "πηγή: απόρριψη ανάγνωσης λόγω πολλών σφαλμάτων στο %s"
 
 #
-#: init.c:2216
+#: init.c:2285
 #, c-format
 msgid "source: error at %s"
 msgstr "source: λάθος στο %s"
 
 #
-#: init.c:2221
+#: init.c:2290
 msgid "source: too many arguments"
 msgstr "source: πάρα πολλά ορίσματα"
 
 #
-#: init.c:2272
+#: init.c:2341
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: άγνωστη εντολή"
 
 #
-#: init.c:2764
+#: init.c:2826
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Λάθος στη γραμμή εντολών: %s\n"
 
 #
-#: init.c:2816
+#: init.c:2878
 msgid "unable to determine home directory"
 msgstr "αδυναμία στον εντοπισμό του καταλόγου χρήστη (home directory)"
 
 #
-#: init.c:2824
+#: init.c:2886
 msgid "unable to determine username"
 msgstr "αδυναμία στον εντοπισμό του ονόματος χρήστη"
 
-#: init.c:3060
+#: init.c:3122
 msgid "-group: no group name"
 msgstr ""
 
 #
-#: init.c:3070
+#: init.c:3132
 #, fuzzy
 msgid "out of arguments"
 msgstr "πολύ λίγα ορίσματα"
@@ -3921,7 +3931,7 @@ msgid "Out of memory!"
 msgstr "Η μνήμη εξαντλήθηκε!"
 
 #
-#: main.c:59
+#: main.c:63
 #, fuzzy
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
@@ -3932,7 +3942,7 @@ msgstr ""
 "Για να αναφέρετε ένα πρόβλημα χρησιμοποιήσετε το εργαλείο flea(1).\n"
 
 #
-#: main.c:63
+#: main.c:67
 #, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
@@ -3947,7 +3957,7 @@ msgstr ""
 "επαναδιανέμετε\n"
 "υπό ορισμένους όρους; γράψτε `mutt -vv' για λεπτομέρειες.\n"
 
-#: main.c:69
+#: main.c:73
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3961,7 +3971,7 @@ msgid ""
 "and suggestions.\n"
 msgstr ""
 
-#: main.c:81
+#: main.c:85
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -3974,7 +3984,7 @@ msgid ""
 "    GNU General Public License for more details.\n"
 msgstr ""
 
-#: main.c:91
+#: main.c:95
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
@@ -3982,7 +3992,7 @@ msgid ""
 "1301, USA.\n"
 msgstr ""
 
-#: main.c:108
+#: main.c:112
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -3994,7 +4004,7 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 
-#: main.c:116
+#: main.c:120
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -4004,12 +4014,12 @@ msgid ""
 "  -D\t\tprint the value of all variables to stdout"
 msgstr ""
 
-#: main.c:124
+#: main.c:128
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr ""
 
 #
-#: main.c:127
+#: main.c:131
 #, fuzzy
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
@@ -4058,7 +4068,7 @@ msgstr ""
 "  -h\t\tαυτό το μήνυμα βοήθειας"
 
 #
-#: main.c:136
+#: main.c:140
 #, fuzzy
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
@@ -4107,14 +4117,14 @@ msgstr ""
 "  -Z\t\tανοίξτε τον πρώτο φάκελο με νέο μήνυμα, βγείτε εάν δεν υπάρχουν\n"
 "  -h\t\tαυτό το μήνυμα βοήθειας"
 
-#: main.c:146
+#: main.c:150
 msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
 
 #
-#: main.c:187
+#: main.c:195
 msgid ""
 "\n"
 "Compile options:"
@@ -4123,60 +4133,60 @@ msgstr ""
 "Παράμετροι μεταγλώττισης:"
 
 #
-#: main.c:500
+#: main.c:508
 msgid "Error initializing terminal."
 msgstr "Λάθος κατά την αρχικοποίηση του τερματικού."
 
 #
-#: main.c:618
+#: main.c:626
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Αποσφαλμάτωση στο επίπεδο %d.\n"
 
 #
-#: main.c:620
+#: main.c:628
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Το DEBUG δεν ορίστηκε κατά την διάρκεια του compile. Αγνοήθηκε.\n"
 
-#: main.c:783
+#: main.c:791
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Το %s δεν υπάρχει. Δημιουργία;"
 
 #
-#: main.c:787
+#: main.c:795
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Αδυναμία δημιουργίας του %s: %s."
 
 #
-#: main.c:833
+#: main.c:841
 msgid "No recipients specified.\n"
 msgstr "Δεν έχουν οριστεί παραλήπτες.\n"
 
 #
-#: main.c:919
+#: main.c:927
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: αδυναμία προσάρτησης του αρχείου.\n"
 
 #
-#: main.c:942
+#: main.c:950
 msgid "No mailbox with new mail."
 msgstr "Δεν υπάρχει νέα αλληλογραφία σε κανένα γραμματοκιβώτιο."
 
 #
-#: main.c:951
+#: main.c:959
 msgid "No incoming mailboxes defined."
 msgstr "Δεν έχει οριστεί γραμματοκιβώτιο εισερχομένων."
 
 #
-#: main.c:979
+#: main.c:987
 msgid "Mailbox is empty."
 msgstr "Το γραμματοκιβώτιο είναι άδειο."
 
 #
-#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:678
+#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "Ανάγνωση %s..."
@@ -4213,7 +4223,7 @@ msgstr ""
 "(αναφέρατε αυτό το σφάλμα)"
 
 #
-#: mbox.c:785 mh.c:1599 mx.c:771
+#: mbox.c:785 mh.c:1599 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "Εγγραφή %s..."
@@ -4661,18 +4671,18 @@ msgid "oac"
 msgstr "oac"
 
 #
-#: muttlib.c:1380
+#: muttlib.c:1430
 msgid "Can't save message to POP mailbox."
 msgstr "Αδυναμία εγγραφής του μηνύματος στο POP γραμματοκιβώτιο."
 
 #
-#: muttlib.c:1389
+#: muttlib.c:1439
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Πρόσθεση μηνυμάτων στο %s;"
 
 #
-#: muttlib.c:1401
+#: muttlib.c:1451
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "Το %s δεν είναι γραμματοκιβώτιο!"
@@ -4690,108 +4700,108 @@ msgid "Can't dotlock %s.\n"
 msgstr "Αδυναμία dotlock του %s.\n"
 
 #
-#: mx.c:186
+#: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος με fcntl!"
 
 #
-#: mx.c:192
+#: mx.c:190
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Αναμονή για το κλείδωμα fcntl... %d"
 
 #
-#: mx.c:220
+#: mx.c:217
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Το όριο χρόνου ξεπεράστηκε κατά την προσπάθεια κλειδώματος flock!"
 
 #
-#: mx.c:227
+#: mx.c:224
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Αναμονή για προσπάθεια flock... %d"
 
 #
-#: mx.c:591
+#: mx.c:586
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Αδυναμία κλειδώματος του %s\n"
 
 #
-#: mx.c:803
+#: mx.c:798
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Αδυναμία συγχρονισμού του γραμματοκιβωτίου %s!"
 
 #
-#: mx.c:867
+#: mx.c:862
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s;"
 
 #
-#: mx.c:883 mx.c:1135
+#: mx.c:878 mx.c:1130
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Καθαρισμός %d διεγραμμένου μηνύματος;"
 
 #
-#: mx.c:883 mx.c:1135
+#: mx.c:878 mx.c:1130
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Καθαρισμός %d διεγραμμένων μηνυμάτων;"
 
 #
-#: mx.c:903
+#: mx.c:898
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Μετακίνηση αναγνωσμένων μηνυμάτων στο %s..."
 
 #
-#: mx.c:962 mx.c:1126
+#: mx.c:957 mx.c:1121
 msgid "Mailbox is unchanged."
 msgstr "Δεν έγινε αλλαγή στο γραμματοκιβώτιο "
 
 #
-#: mx.c:998
+#: mx.c:993
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d κρατήθηκαν, %d μετακινήθηκαν, %d διαγράφηκαν."
 
 #
-#: mx.c:1001 mx.c:1175
+#: mx.c:996 mx.c:1170
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d κρατήθηκαν, %d διαγράφηκαν."
 
 #
-#: mx.c:1111
+#: mx.c:1106
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr "Πατήστε '%s' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1113
+#: mx.c:1108
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Χρησιμοποιήστε το 'toggle-write' για να ενεργοποιήσετε την εγγραφή!"
 
 #
-#: mx.c:1115
+#: mx.c:1110
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Το γραμματοκιβώτιο είναι σημειωμένο μη εγγράψιμο. %s"
 
 #
-#: mx.c:1172
+#: mx.c:1167
 msgid "Mailbox checkpointed."
 msgstr "Το γραμματοκιβώτιο σημειώθηκε."
 
 #
-#: mx.c:1484
+#: mx.c:1479
 msgid "Can't write message"
 msgstr "Αδυναμία εγγραφής του μηνύματος"
 
-#: mx.c:1529
+#: mx.c:1524
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Υπερχείλιση ακεραίου -- αδυναμία εκχώρησης μνήμης."
 
@@ -4906,8 +4916,8 @@ msgstr "αταίριαστη παρένθεση/εις: %s"
 
 #
 #: pattern.c:898
-#, c-format
-msgid "%c: invalid command"
+#, fuzzy, c-format
+msgid "%c: invalid pattern modifier"
 msgstr "%c: μη έγκυρη εντολή"
 
 #
@@ -5199,12 +5209,12 @@ msgstr ""
 msgid "Authenticating (APOP)..."
 msgstr "Αυθεντικοποίηση (APOP)..."
 
-#: pop_auth.c:217
+#: pop_auth.c:216
 msgid "APOP authentication failed."
 msgstr "Αυθεντικοποίηση APOP απέτυχε."
 
 #
-#: pop_auth.c:252
+#: pop_auth.c:251
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "Η εντολή USER δεν υποστηρίζετε από το διακομιστή."
@@ -5627,62 +5637,62 @@ msgid "Recall postponed message?"
 msgstr "Ανάκληση αναβληθέντος μηνύματος;"
 
 #
-#: send.c:1414
+#: send.c:1420
 msgid "Edit forwarded message?"
 msgstr "Επεξεργασία προωθημένου μηνύματος;"
 
 #
-#: send.c:1454
+#: send.c:1460
 msgid "Abort unmodified message?"
 msgstr "Ματαίωση αποστολής μη τροποποιημένου μηνύματος;"
 
 #
-#: send.c:1456
+#: send.c:1462
 msgid "Aborted unmodified message."
 msgstr "Ματαίωση αποστολής μη τροποποιημένου μηνύματος."
 
 #
-#: send.c:1525
+#: send.c:1531
 msgid "Message postponed."
 msgstr "Το μήνυμα ανεβλήθη."
 
 #
-#: send.c:1534
+#: send.c:1540
 msgid "No recipients are specified!"
 msgstr "Δεν έχουν καθοριστεί παραλήπτες!"
 
 #
-#: send.c:1539
+#: send.c:1545
 msgid "No recipients were specified."
 msgstr "Δεν καθορίστηκαν παραλήπτες."
 
 #
-#: send.c:1555
+#: send.c:1561
 msgid "No subject, abort sending?"
 msgstr "Δεν υπάρχει θέμα, ακύρωση αποστολής;"
 
 #
-#: send.c:1559
+#: send.c:1565
 msgid "No subject specified."
 msgstr "Δεν καθορίστηκε θέμα."
 
 #
-#: send.c:1621 smtp.c:158
+#: send.c:1627 smtp.c:158
 msgid "Sending message..."
 msgstr "Αποστολή μηνύματος..."
 
 #
-#: send.c:1762
+#: send.c:1768
 msgid "Could not send the message."
 msgstr "Αδυναμία αποστολής του μηνύματος."
 
 #
-#: send.c:1767
+#: send.c:1773
 msgid "Mail sent."
 msgstr "Το γράμμα εστάλη."
 
 #
-#: send.c:1767
+#: send.c:1773
 msgid "Sending in background."
 msgstr "Αποστολή στο παρασκήνιο."
 

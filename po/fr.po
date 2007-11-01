@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.16-20070910\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-10 12:19+0200\n"
+"POT-Creation-Date: 2007-11-01 14:06-0700\n"
 "PO-Revision-Date: 2007-09-10 12:20+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
@@ -2178,7 +2178,7 @@ msgid "Error opening mailbox"
 msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:802 imap/message.c:792 muttlib.c:1477
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1467
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -3355,7 +3355,7 @@ msgstr ""
 msgid "Out of memory!"
 msgstr "Plus de mémoire !"
 
-#: main.c:59
+#: main.c:63
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please visit http://bugs.mutt.org/.\n"
@@ -3363,7 +3363,7 @@ msgstr ""
 "Pour contacter les développeurs, veuillez écrire à <mutt-dev@mutt.org>.\n"
 "Pour signaler un bug, veuillez aller sur http://bugs.mutt.org/.\n"
 
-#: main.c:63
+#: main.c:67
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -3376,7 +3376,7 @@ msgstr ""
 "Mutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
-#: main.c:69
+#: main.c:73
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3400,7 +3400,7 @@ msgstr ""
 "De nombreuses autres personnes non mentionnées ici ont fourni\n"
 "du code, des corrections et des suggestions.\n"
 
-#: main.c:81
+#: main.c:85
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -3422,7 +3422,7 @@ msgstr ""
 "    QUALITÉ MARCHANDE ou d'ADÉQUATION À UN BESOIN PARTICULIER. Référez-vous\n"
 "    à la GNU General Public License pour plus de détails.\n"
 
-#: main.c:91
+#: main.c:95
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
@@ -3434,7 +3434,7 @@ msgstr ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
 "1301, USA.\n"
 
-#: main.c:108
+#: main.c:112
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -3454,7 +3454,7 @@ msgstr ""
 "        mutt [<options>] -D\n"
 "        mutt -v[v]\n"
 
-#: main.c:116
+#: main.c:120
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -3470,11 +3470,11 @@ msgstr ""
 "  -c <adresse>\tspécifie une adresse à mettre en copie (CC)\n"
 "  -D\t\técrit la valeur de toutes les variables sur stdout"
 
-#: main.c:124
+#: main.c:128
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <niveau>\técrit les infos de débuggage dans ~/.muttdebug0"
 
-#: main.c:127
+#: main.c:131
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3494,7 +3494,7 @@ msgstr ""
 "  -n\t\tfait que Mutt ne lit pas le fichier Muttrc système\n"
 "  -p\t\trappelle un message ajourné"
 
-#: main.c:136
+#: main.c:140
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -3516,7 +3516,7 @@ msgstr ""
 "  -Z\t\touvre le premier dossier ayant un nouveau message, quitte sinon\n"
 "  -h\t\tce message d'aide"
 
-#: main.c:146
+#: main.c:150
 msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
@@ -3524,7 +3524,7 @@ msgstr ""
 "  --\t\ttraite les arguments restants comme des adresses (même -arg...)\n"
 "\t\tquand -a est utilisé avec plusieurs arg, -- est obligatoire"
 
-#: main.c:187
+#: main.c:195
 msgid ""
 "\n"
 "Compile options:"
@@ -3532,50 +3532,50 @@ msgstr ""
 "\n"
 "Options de compilation :"
 
-#: main.c:500
+#: main.c:508
 msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
 # , c-format
-#: main.c:618
+#: main.c:626
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Débuggage au niveau %d.\n"
 
-#: main.c:620
+#: main.c:628
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
 
-#: main.c:783
+#: main.c:791
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer ?"
 
 # , c-format
-#: main.c:787
+#: main.c:795
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
 
-#: main.c:833
+#: main.c:841
 msgid "No recipients specified.\n"
 msgstr "Pas de destinataire spécifié.\n"
 
 # , c-format
-#: main.c:919
+#: main.c:927
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
-#: main.c:942
+#: main.c:950
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:951
+#: main.c:959
 msgid "No incoming mailboxes defined."
 msgstr "Pas de boîtes aux lettres recevant du courrier définies."
 
-#: main.c:979
+#: main.c:987
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
@@ -4026,18 +4026,18 @@ msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 msgid "oac"
 msgstr "eca"
 
-#: muttlib.c:1440
+#: muttlib.c:1430
 msgid "Can't save message to POP mailbox."
 msgstr "Impossible de sauver le message dans la boîte aux lettres POP."
 
 # , c-format
-#: muttlib.c:1449
+#: muttlib.c:1439
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
 
 # , c-format
-#: muttlib.c:1461
+#: muttlib.c:1451
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s n'est pas une boîte aux lettres !"

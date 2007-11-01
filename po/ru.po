@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-09 20:30-0700\n"
+"POT-Creation-Date: 2007-11-01 14:06-0700\n"
 "PO-Revision-Date: 2007-06-12 14:26+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
@@ -48,7 +48,7 @@ msgid "Select"
 msgstr "Выбрать"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3659 curs_main.c:414
+#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
 #: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
 #: postpone.c:46 query.c:53 recvattach.c:58 smime.c:437
 msgid "Help"
@@ -112,8 +112,8 @@ msgstr "Не удалось разобрать имя. Продолжить?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Указанный в mailcap способ создания требует наличия параметра %%s"
 
-#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:167
-#: curs_lib.c:484
+#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:175
+#: curs_lib.c:492
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Ошибка выполнения \"%s\"!"
@@ -159,7 +159,7 @@ msgstr "MIME-тип не определен.  Невозможно просмотреть вложение."
 msgid "Cannot create filter"
 msgstr "Не удалось создать фильтр"
 
-#: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1273
+#: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1279
 #: pgpkey.c:571 pgpkey.c:760
 msgid "Can't create filter"
 msgstr "Не удалось создать фильтр"
@@ -180,7 +180,7 @@ msgstr "Перейти в: "
 msgid "Mask"
 msgstr "Маска"
 
-#: browser.c:383 browser.c:1013
+#: browser.c:383 browser.c:1022
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s не является каталогом."
@@ -204,7 +204,7 @@ msgstr "Каталог [%s], маска файла: %s"
 msgid "Can't attach a directory!"
 msgstr "Вложение каталогов не поддерживается!"
 
-#: browser.c:670 browser.c:1081 browser.c:1179
+#: browser.c:670 browser.c:1091 browser.c:1189
 msgid "No files match the file mask"
 msgstr "Нет файлов, удовлетворяющих данной маске"
 
@@ -242,35 +242,35 @@ msgstr "Почтовый ящик не удален."
 msgid "Chdir to: "
 msgstr "Перейти в: "
 
-#: browser.c:1001 browser.c:1074
+#: browser.c:1010 browser.c:1084
 msgid "Error scanning directory."
 msgstr "Ошибка просмотра каталога."
 
-#: browser.c:1024
+#: browser.c:1034
 msgid "File Mask: "
 msgstr "Маска файла: "
 
-#: browser.c:1097
+#: browser.c:1107
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Обратный порядок по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
 
-#: browser.c:1098
+#: browser.c:1108
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Упорядочить по (d)дате, (a)имени, (z)размеру или (n)отсутствует?"
 
-#: browser.c:1099
+#: browser.c:1109
 msgid "dazn"
 msgstr "dazn"
 
-#: browser.c:1166
+#: browser.c:1176
 msgid "New file name: "
 msgstr "Новое имя файла: "
 
-#: browser.c:1197
+#: browser.c:1207
 msgid "Can't view a directory"
 msgstr "Не удалось просмотреть каталог"
 
-#: browser.c:1214
+#: browser.c:1224
 msgid "Error trying to view file"
 msgstr "Ошибка при попытке просмотра файла"
 
@@ -621,7 +621,7 @@ msgstr "Предупреждение: '%s' не является корректным IDN."
 msgid "You may not delete the only attachment."
 msgstr "Вы не можете удалить единственное вложение."
 
-#: compose.c:601 send.c:1546
+#: compose.c:601 send.c:1552
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Некорректный IDN в \"%s\": '%s'."
@@ -675,7 +675,7 @@ msgstr "Сохранить копию этого сообщения?"
 msgid "Rename to: "
 msgstr "Переименовать в: "
 
-#: compose.c:1014 editmsg.c:116 sendlib.c:857
+#: compose.c:1014 editmsg.c:96 editmsg.c:121 sendlib.c:857
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Не удалось получить информацию о %s: %s"
@@ -742,7 +742,7 @@ msgstr "ошибка включения CMS протокола: %s\n"
 msgid "error creating gpgme data object: %s\n"
 msgstr "ошибка создания объекта данных gpgme: %s\n"
 
-#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1401
+#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1400
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "ошибка размещения объекта данных: %s\n"
@@ -787,61 +787,61 @@ msgstr "ошибка установки примечания к подписи: %s\n"
 msgid "error encrypting data: %s\n"
 msgstr "ошибка шифрования данных: %s\n"
 
-#: crypt-gpgme.c:851
+#: crypt-gpgme.c:850
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "ошибка подписывания данных: %s\n"
 
-#: crypt-gpgme.c:1046
+#: crypt-gpgme.c:1045
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Предупреждение: один из ключей был отозван\n"
 
-#: crypt-gpgme.c:1055
+#: crypt-gpgme.c:1054
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Предупреждение: ключ, используемый для создания подписи, просрочен: "
 
-#: crypt-gpgme.c:1061
+#: crypt-gpgme.c:1060
 msgid "Warning: At least one certification key has expired\n"
 msgstr ""
 "Предупреждение: срок действия одного или нескольких сертификатов истек\n"
 
-#: crypt-gpgme.c:1077
+#: crypt-gpgme.c:1076
 msgid "Warning: The signature expired at: "
 msgstr "Предупреждение: срок действия подписи истёк: "
 
-#: crypt-gpgme.c:1083
+#: crypt-gpgme.c:1082
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Не удалось проверить по причине отсутствия ключа или сертификата\n"
 
-#: crypt-gpgme.c:1088
+#: crypt-gpgme.c:1087
 msgid "The CRL is not available\n"
 msgstr "CRL не доступен\n"
 
-#: crypt-gpgme.c:1094
+#: crypt-gpgme.c:1093
 msgid "Available CRL is too old\n"
 msgstr "Доступный CRL слишком старый\n"
 
-#: crypt-gpgme.c:1099
+#: crypt-gpgme.c:1098
 msgid "A policy requirement was not met\n"
 msgstr "Требование политики не было обнаружено\n"
 
-#: crypt-gpgme.c:1108
+#: crypt-gpgme.c:1107
 msgid "A system error occurred"
 msgstr "Системная ошибка"
 
-#: crypt-gpgme.c:1142
+#: crypt-gpgme.c:1141
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "ПРЕДУПРЕЖДЕНИЕ: PKA запись не соответствует адресу владельца:"
 
-#: crypt-gpgme.c:1149
+#: crypt-gpgme.c:1148
 msgid "PKA verified signer's address is: "
 msgstr "Адрес, проверенный при помощи PKA: "
 
-#: crypt-gpgme.c:1166 crypt-gpgme.c:3126
+#: crypt-gpgme.c:1165 crypt-gpgme.c:3114
 msgid "Fingerprint: "
 msgstr "Отпечаток пальца: "
 
-#: crypt-gpgme.c:1226
+#: crypt-gpgme.c:1225
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -849,11 +849,11 @@ msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: НЕ известно, принадлежит ли данный ключ указанной выше "
 "персоне\n"
 
-#: crypt-gpgme.c:1233
+#: crypt-gpgme.c:1232
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "ПРЕДУПРЕЖДЕНИЕ: ключ НЕ ПРИНАДЛЕЖИТ указанной выше персоне\n"
 
-#: crypt-gpgme.c:1237
+#: crypt-gpgme.c:1236
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
@@ -861,7 +861,7 @@ msgstr ""
 "ПРЕДУПРЕЖДЕНИЕ: НЕТ уверенности в том, что ключ принадлежит указанной выше "
 "персоне\n"
 
-#: crypt-gpgme.c:1312
+#: crypt-gpgme.c:1311
 msgid "Error getting key information: "
 msgstr "Ошибка получения информации о ключе: "
 
@@ -869,48 +869,48 @@ msgstr "Ошибка получения информации о ключе: "
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1319 crypt-gpgme.c:1352
+#: crypt-gpgme.c:1318 crypt-gpgme.c:1351
 msgid "Good signature from: "
 msgstr "Хорошая подпись от: "
 
-#: crypt-gpgme.c:1329
+#: crypt-gpgme.c:1328
 msgid "                aka: "
 msgstr "                aka: "
 
-#: crypt-gpgme.c:1333 crypt-gpgme.c:1355
+#: crypt-gpgme.c:1332 crypt-gpgme.c:1354
 msgid "            created: "
 msgstr "             создан: "
 
-#: crypt-gpgme.c:1342
+#: crypt-gpgme.c:1341
 msgid "*BAD* signature claimed to be from: "
 msgstr "*ПЛОХАЯ* подпись якобы от: "
 
-#: crypt-gpgme.c:1365
+#: crypt-gpgme.c:1364
 msgid "Error checking signature"
 msgstr "Ошибка проверки подписи"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1409 crypt-gpgme.c:1623 crypt-gpgme.c:2120
+#: crypt-gpgme.c:1408 crypt-gpgme.c:1623 crypt-gpgme.c:2108
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Начало информации о подписи --]\n"
 
-#: crypt-gpgme.c:1418
+#: crypt-gpgme.c:1417
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Ошибка: проверка не удалась: %s\n"
 
-#: crypt-gpgme.c:1467
+#: crypt-gpgme.c:1466
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Начало системы обозначения (подпись от: %s) ***\n"
 
-#: crypt-gpgme.c:1489
+#: crypt-gpgme.c:1488
 msgid "*** End Notation ***\n"
 msgstr "*** Конец системы обозначения ***\n"
 
-#: crypt-gpgme.c:1497 crypt-gpgme.c:1636 crypt-gpgme.c:2135
+#: crypt-gpgme.c:1496 crypt-gpgme.c:1636 crypt-gpgme.c:2123
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -927,16 +927,16 @@ msgstr ""
 "[-- Ошибка: не удалось расшифровать: %s --]\n"
 "\n"
 
-#: crypt-gpgme.c:2095
+#: crypt-gpgme.c:2083
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Ошибка: не удалось расшифровать или проверить подпись: %s\n"
 
-#: crypt-gpgme.c:2143
+#: crypt-gpgme.c:2131
 msgid "Error: copy data failed\n"
 msgstr "Ошибка: не удалось скопировать данные\n"
 
-#: crypt-gpgme.c:2163 pgp.c:428
+#: crypt-gpgme.c:2151 pgp.c:428
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -944,11 +944,11 @@ msgstr ""
 "[-- Начало PGP-сообщения --]\n"
 "\n"
 
-#: crypt-gpgme.c:2165 pgp.c:430
+#: crypt-gpgme.c:2153 pgp.c:430
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Начало блока открытого PGP-ключа --]\n"
 
-#: crypt-gpgme.c:2168 pgp.c:432
+#: crypt-gpgme.c:2156 pgp.c:432
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -956,19 +956,19 @@ msgstr ""
 "[-- Начало сообщения, подписанного PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2195 pgp.c:458
+#: crypt-gpgme.c:2183 pgp.c:458
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- Конец PGP-сообщения --]\n"
 
-#: crypt-gpgme.c:2197 pgp.c:465
+#: crypt-gpgme.c:2185 pgp.c:465
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- Конец блока открытого PGP-ключа --]\n"
 
-#: crypt-gpgme.c:2199 pgp.c:467
+#: crypt-gpgme.c:2187 pgp.c:467
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- Конец сообщения, подписанного PGP --]\n"
 
-#: crypt-gpgme.c:2220 pgp.c:497
+#: crypt-gpgme.c:2208 pgp.c:497
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -976,7 +976,7 @@ msgstr ""
 "[-- Ошибка: не удалось найти начало PGP-сообщения! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2251 pgp.c:926
+#: crypt-gpgme.c:2239 pgp.c:926
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -984,11 +984,11 @@ msgstr ""
 "[-- Ошибка: формат сообщения не соответствует стандарту PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2263 crypt-gpgme.c:2329 pgp.c:939
+#: crypt-gpgme.c:2251 crypt-gpgme.c:2317 pgp.c:939
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Ошибка: не удалось создать временный файл! --]\n"
 
-#: crypt-gpgme.c:2275
+#: crypt-gpgme.c:2263
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -996,7 +996,7 @@ msgstr ""
 "[-- Начало данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2276 pgp.c:948
+#: crypt-gpgme.c:2264 pgp.c:948
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1004,15 +1004,15 @@ msgstr ""
 "[-- Начало данных, зашифрованных в формате PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2298
+#: crypt-gpgme.c:2286
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Конец данных, подписанных и зашифрованных в формате PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2299 pgp.c:968
+#: crypt-gpgme.c:2287 pgp.c:968
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2341
+#: crypt-gpgme.c:2329
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1020,7 +1020,7 @@ msgstr ""
 "[-- Начало данных, подписанных в формате S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2342
+#: crypt-gpgme.c:2330
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1028,227 +1028,227 @@ msgstr ""
 "[-- Начало данных, зашифрованных в формате S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2372
+#: crypt-gpgme.c:2360
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Конец данных, подписанных в формате S/MIME --]\n"
 
-#: crypt-gpgme.c:2373
+#: crypt-gpgme.c:2361
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Конец данных, зашифрованных в формате S/MIME --]\n"
 
-#: crypt-gpgme.c:2966
+#: crypt-gpgme.c:2954
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неизвестная кодировка)]"
 
-#: crypt-gpgme.c:2968
+#: crypt-gpgme.c:2956
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr ""
 "[Не возможно отобразить ID этого пользователя (неправильная кодировка)]"
 
-#: crypt-gpgme.c:2973
+#: crypt-gpgme.c:2961
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Не возможно отобразить ID этого пользователя (неправильный DN)"
 
-#: crypt-gpgme.c:3052
+#: crypt-gpgme.c:3040
 msgid " aka ......: "
 msgstr " aka ......: "
 
-#: crypt-gpgme.c:3052
+#: crypt-gpgme.c:3040
 msgid "Name ......: "
 msgstr "Имя .......: "
 
-#: crypt-gpgme.c:3055 crypt-gpgme.c:3194
+#: crypt-gpgme.c:3043 crypt-gpgme.c:3182
 msgid "[Invalid]"
 msgstr "[Неправильное значение]"
 
-#: crypt-gpgme.c:3075 crypt-gpgme.c:3218
+#: crypt-gpgme.c:3063 crypt-gpgme.c:3206
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Действ. с .: %s\n"
 
-#: crypt-gpgme.c:3088 crypt-gpgme.c:3231
+#: crypt-gpgme.c:3076 crypt-gpgme.c:3219
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Действ. до : %s\n"
 
-#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
+#: crypt-gpgme.c:3089 crypt-gpgme.c:3232
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Тип ключа .: %s, %lu бит %s\n"
 
-#: crypt-gpgme.c:3103 crypt-gpgme.c:3246
+#: crypt-gpgme.c:3091 crypt-gpgme.c:3234
 #, c-format
 msgid "Key Usage .: "
 msgstr "Использован: "
 
-#: crypt-gpgme.c:3108 crypt-gpgme.c:3251
+#: crypt-gpgme.c:3096 crypt-gpgme.c:3239
 msgid "encryption"
 msgstr "шифрование"
 
-#: crypt-gpgme.c:3109 crypt-gpgme.c:3114 crypt-gpgme.c:3119 crypt-gpgme.c:3252
-#: crypt-gpgme.c:3257 crypt-gpgme.c:3262
+#: crypt-gpgme.c:3097 crypt-gpgme.c:3102 crypt-gpgme.c:3107 crypt-gpgme.c:3240
+#: crypt-gpgme.c:3245 crypt-gpgme.c:3250
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3113 crypt-gpgme.c:3256
+#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
 msgid "signing"
 msgstr "подпись"
 
-#: crypt-gpgme.c:3118 crypt-gpgme.c:3261
+#: crypt-gpgme.c:3106 crypt-gpgme.c:3249
 msgid "certification"
 msgstr "сертификация"
 
-#: crypt-gpgme.c:3158
+#: crypt-gpgme.c:3146
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Сер. номер : 0x%s\n"
 
-#: crypt-gpgme.c:3166
+#: crypt-gpgme.c:3154
 #, c-format
 msgid "Issued By .: "
 msgstr "Издан .....: "
 
 #. display only the short keyID
-#: crypt-gpgme.c:3185
+#: crypt-gpgme.c:3173
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Подключ ...: 0x%s"
 
-#: crypt-gpgme.c:3189
+#: crypt-gpgme.c:3177
 msgid "[Revoked]"
 msgstr "[Отозван]"
 
-#: crypt-gpgme.c:3199
+#: crypt-gpgme.c:3187
 msgid "[Expired]"
 msgstr "[Просрочен]"
 
-#: crypt-gpgme.c:3204
+#: crypt-gpgme.c:3192
 msgid "[Disabled]"
 msgstr "[Запрещён]"
 
-#: crypt-gpgme.c:3288 pgpkey.c:560 pgpkey.c:740
+#: crypt-gpgme.c:3276 pgpkey.c:560 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "Не удалось создать временный файл"
 
-#: crypt-gpgme.c:3291
+#: crypt-gpgme.c:3279
 msgid "Collecting data..."
 msgstr "Сбор данных..."
 
-#: crypt-gpgme.c:3317
+#: crypt-gpgme.c:3305
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Ошибка поиска ключа издателя: %s\n"
 
-#: crypt-gpgme.c:3327
+#: crypt-gpgme.c:3315
 msgid "Error: certification chain to long - stopping here\n"
 msgstr "Ошибка: цепь сертификации слишком длинная - поиск прекращён\n"
 
-#: crypt-gpgme.c:3338 pgpkey.c:581
+#: crypt-gpgme.c:3326 pgpkey.c:581
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Идентификатор ключа: 0x%s"
 
-#: crypt-gpgme.c:3421
+#: crypt-gpgme.c:3409
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "Ошибка gpgme_new: %s"
 
-#: crypt-gpgme.c:3460 crypt-gpgme.c:3523
+#: crypt-gpgme.c:3448 crypt-gpgme.c:3511
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "Ошибка gpgme_op_keylist_start: %s"
 
-#: crypt-gpgme.c:3510 crypt-gpgme.c:3551
+#: crypt-gpgme.c:3498 crypt-gpgme.c:3539
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "Ошибка gpgme_op_keylist_next: %s"
 
-#: crypt-gpgme.c:3622
+#: crypt-gpgme.c:3610
 msgid "All matching keys are marked expired/revoked."
 msgstr "Все подходящие ключи помечены как просроченные или отозванные."
 
-#: crypt-gpgme.c:3651 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Выход "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3653 pgpkey.c:517 smime.c:434
+#: crypt-gpgme.c:3641 pgpkey.c:517 smime.c:434
 msgid "Select  "
 msgstr "Выбрать "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3656 pgpkey.c:520
+#: crypt-gpgme.c:3644 pgpkey.c:520
 msgid "Check key  "
 msgstr "Тест ключа "
 
-#: crypt-gpgme.c:3673
+#: crypt-gpgme.c:3661
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP и S/MIME-ключи, соответствующие"
 
-#: crypt-gpgme.c:3675
+#: crypt-gpgme.c:3663
 msgid "PGP keys matching"
 msgstr "PGP-ключи, соответствующие"
 
-#: crypt-gpgme.c:3677
+#: crypt-gpgme.c:3665
 msgid "S/MIME keys matching"
 msgstr "S/MIME-ключи, соответствующие"
 
-#: crypt-gpgme.c:3679
+#: crypt-gpgme.c:3667
 msgid "keys matching"
 msgstr "ключи, соответствующие"
 
-#: crypt-gpgme.c:3682
+#: crypt-gpgme.c:3670
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
-#: crypt-gpgme.c:3684
+#: crypt-gpgme.c:3672
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:3711 pgpkey.c:601
+#: crypt-gpgme.c:3699 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Этот ключ не может быть использован: просрочен, запрещен или отозван."
 
-#: crypt-gpgme.c:3725 pgpkey.c:613
+#: crypt-gpgme.c:3713 pgpkey.c:613
 msgid "ID is expired/disabled/revoked."
 msgstr "ID просрочен, запрещен или отозван."
 
-#: crypt-gpgme.c:3745 pgpkey.c:617
+#: crypt-gpgme.c:3733 pgpkey.c:617
 msgid "ID has undefined validity."
 msgstr "Степень доверия для ID не определена."
 
-#: crypt-gpgme.c:3748 pgpkey.c:620
+#: crypt-gpgme.c:3736 pgpkey.c:620
 msgid "ID is not valid."
 msgstr "ID недействителен."
 
-#: crypt-gpgme.c:3751 pgpkey.c:623
+#: crypt-gpgme.c:3739 pgpkey.c:623
 msgid "ID is only marginally valid."
 msgstr "ID действителен только частично."
 
-#: crypt-gpgme.c:3759 pgpkey.c:627
+#: crypt-gpgme.c:3747 pgpkey.c:627
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Использовать этот ключ?"
 
-#: crypt-gpgme.c:3816 crypt-gpgme.c:3929 pgpkey.c:840 pgpkey.c:956
+#: crypt-gpgme.c:3804 crypt-gpgme.c:3917 pgpkey.c:840 pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Поиск ключей, соответствующих \"%s\"..."
 
-#: crypt-gpgme.c:4092 pgp.c:1175
+#: crypt-gpgme.c:4080 pgp.c:1175
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Использовать ключ \"%s\" для %s?"
 
-#: crypt-gpgme.c:4128 pgp.c:1209 smime.c:666 smime.c:791
+#: crypt-gpgme.c:4116 pgp.c:1209 smime.c:666 smime.c:791
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Введите идентификатор ключа для %s: "
 
-#: crypt-gpgme.c:4193
+#: crypt-gpgme.c:4181
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
@@ -1256,36 +1256,36 @@ msgstr ""
 "\n"
 "Используется GPGME, однако gpg-agent не запущен"
 
-#: crypt-gpgme.c:4221
+#: crypt-gpgme.c:4209
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "S/MIME (e)шифр, (s)подпись, (a)подпись как, (b)оба, (p)gp, (c)отказаться?"
 
-#: crypt-gpgme.c:4222
+#: crypt-gpgme.c:4210
 msgid "esabpfc"
 msgstr "esabpfc"
 
-#: crypt-gpgme.c:4225
+#: crypt-gpgme.c:4213
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
 "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, s/(m)ime, (c)отказаться?"
 
-#: crypt-gpgme.c:4226
+#: crypt-gpgme.c:4214
 msgid "esabmfc"
 msgstr "esabmfc"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4242 pgp.c:1585 smime.c:2036
+#: crypt-gpgme.c:4230 pgp.c:1585 smime.c:2036
 msgid "Sign as: "
 msgstr "Подписать как: "
 
-#: crypt-gpgme.c:4339
+#: crypt-gpgme.c:4327
 msgid "Failed to verify sender"
 msgstr "Не удалось проверить отправителя"
 
-#: crypt-gpgme.c:4342
+#: crypt-gpgme.c:4330
 msgid "Failed to figure out sender"
 msgstr "Не удалось вычислить отправителя"
 
@@ -1316,7 +1316,7 @@ msgstr ""
 "MIME?"
 
 #. abort
-#: crypt.c:158 send.c:1498
+#: crypt.c:158 send.c:1504
 msgid "Mail not sent."
 msgstr "Письмо не отправлено."
 
@@ -1391,28 +1391,28 @@ msgstr "Опция \"crypt_use_gpgme\" включена, но поддержка GPGME не собрана."
 msgid "Invoking S/MIME..."
 msgstr "Вызывается S/MIME..."
 
-#: curs_lib.c:177
+#: curs_lib.c:185
 msgid "yes"
 msgstr "да"
 
-#: curs_lib.c:178
+#: curs_lib.c:186
 msgid "no"
 msgstr "нет"
 
 #. restore blocking operation
-#: curs_lib.c:274
+#: curs_lib.c:282
 msgid "Exit Mutt?"
 msgstr "Завершить работу с Mutt?"
 
-#: curs_lib.c:436 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:444 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "неизвестная ошибка"
 
-#: curs_lib.c:456
+#: curs_lib.c:464
 msgid "Press any key to continue..."
 msgstr "Чтобы продолжить, нажмите любую клавишу..."
 
-#: curs_lib.c:500
+#: curs_lib.c:508
 msgid " ('?' for list): "
 msgstr " ('?' -- список): "
 
@@ -1424,7 +1424,7 @@ msgstr "Нет открытого почтового ящика."
 msgid "There are no messages."
 msgstr "Сообщений нет."
 
-#: curs_main.c:56 mx.c:1120 pager.c:58 recvattach.c:44
+#: curs_main.c:56 mx.c:1115 pager.c:58 recvattach.c:44
 msgid "Mailbox is read-only."
 msgstr "Почтовый ящик немодифицируем."
 
@@ -1569,7 +1569,7 @@ msgstr "Открыть почтовый ящик"
 msgid "No mailboxes have new mail"
 msgstr "Нет почтовых ящиков с новой почтой"
 
-#: curs_main.c:1105 mx.c:508 mx.c:657
+#: curs_main.c:1105 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s не является почтовым ящиком."
@@ -1772,30 +1772,30 @@ msgstr "не удалось создать временный почтовый ящик: %s"
 msgid "could not write temporary mail folder: %s"
 msgstr "ошибка записи во временный почтовый ящик: %s"
 
-#: editmsg.c:107
+#: editmsg.c:110
 #, c-format
 msgid "could not truncate temporary mail folder: %s"
 msgstr "не удалось усечь временный почтовый ящик: %s"
 
-#: editmsg.c:122
+#: editmsg.c:127
 msgid "Message file is empty!"
 msgstr "Файл сообщения пуст!"
 
-#: editmsg.c:129
+#: editmsg.c:134
 msgid "Message not modified!"
 msgstr "Сообщение не изменилось!"
 
-#: editmsg.c:137
+#: editmsg.c:142
 #, c-format
 msgid "Can't open message file: %s"
 msgstr "Не удалось открыть файл сообщения: %s"
 
-#: editmsg.c:144 editmsg.c:172
+#: editmsg.c:149 editmsg.c:177
 #, c-format
 msgid "Can't append to folder: %s"
 msgstr "Не удалось добавить к почтовому ящику: %s"
 
-#: editmsg.c:203
+#: editmsg.c:208
 #, c-format
 msgid "Error. Preserving temporary file: %s"
 msgstr "Ошибка. Временный файл оставлен: %s"
@@ -1824,61 +1824,61 @@ msgstr "[-- Вложение #%d"
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
 
-#: handler.c:1244
+#: handler.c:1250
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Автопросмотр; используется %s --]\n"
 
-#: handler.c:1245
+#: handler.c:1251
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Запускается программа автопросмотра: %s"
 
-#: handler.c:1277
+#: handler.c:1283
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Не удалось выполнить %s. --]\n"
 
-#: handler.c:1296 handler.c:1317
+#: handler.c:1302 handler.c:1323
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Автопросмотр стандартного потока ошибок %s --]\n"
 
-#: handler.c:1356
+#: handler.c:1362
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- Ошибка: тип message/external требует наличие параметра access-type --]\n"
 
-#: handler.c:1375
+#: handler.c:1383
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Это вложение типа %s/%s "
 
-#: handler.c:1382
+#: handler.c:1390
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(размер %s байтов) "
 
-#: handler.c:1384
+#: handler.c:1392
 msgid "has been deleted --]\n"
 msgstr "было удалено --]\n"
 
-#: handler.c:1389
+#: handler.c:1397
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- %s --]\n"
 
-#: handler.c:1394
+#: handler.c:1402
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- имя: %s --]\n"
 
-#: handler.c:1407 handler.c:1423
+#: handler.c:1415 handler.c:1431
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Это вложение типа %s/%s не было включено --]\n"
 
-#: handler.c:1409
+#: handler.c:1417
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -1886,34 +1886,34 @@ msgstr ""
 "[-- в сообщение, и более не содержится в указанном --]\n"
 "[-- внешнем источнике. --]\n"
 
-#: handler.c:1427
+#: handler.c:1435
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- в сообщение, и значение access-type %s не поддерживается --]\n"
 
-#: handler.c:1542
+#: handler.c:1550
 msgid "Error: multipart/signed has no protocol."
 msgstr "Ошибка: тип multipart/signed требует наличия параметра protocol."
 
-#: handler.c:1552
+#: handler.c:1560
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "Ошибка: тип multipart/encrypted требует наличия параметра protocol!"
 
-#: handler.c:1592
+#: handler.c:1600
 msgid "Unable to open temporary file!"
 msgstr "Не удалось открыть временный файл!"
 
-#: handler.c:1653
+#: handler.c:1667
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- тип %s/%s не поддерживается "
 
-#: handler.c:1658
+#: handler.c:1672
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(используйте '%s' для просмотра этой части)"
 
-#: handler.c:1660
+#: handler.c:1674
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(функция 'view-attachments' не назначена ни одной клавише!)"
 
@@ -1975,7 +1975,7 @@ msgstr "unhook: неизвестный тип события: %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Невозможно удалить %s из команды %s."
 
-#: imap/auth.c:108 pop_auth.c:399 smtp.c:452
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:452
 msgid "No authenticators available"
 msgstr "Нет доступных методов аутентификации."
 
@@ -2008,11 +2008,11 @@ msgstr "Ошибка GSSAPI-аутентификации."
 msgid "LOGIN disabled on this server."
 msgstr "Команда LOGIN запрещена на этом сервере."
 
-#: imap/auth_login.c:47 pop_auth.c:232
+#: imap/auth_login.c:47 pop_auth.c:231
 msgid "Logging in..."
 msgstr "Регистрация..."
 
-#: imap/auth_login.c:67 pop_auth.c:275
+#: imap/auth_login.c:67 pop_auth.c:274
 msgid "Login failed."
 msgstr "Регистрация не удалась."
 
@@ -2025,7 +2025,7 @@ msgstr "Аутентификация (%s)..."
 msgid "SASL authentication failed."
 msgstr "Ошибка SASL-аутентификации."
 
-#: imap/browse.c:58 imap/imap.c:561
+#: imap/browse.c:58 imap/imap.c:562
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "Неверно указано имя IMAP-ящика: %s"
@@ -2080,87 +2080,87 @@ msgstr ""
 "Этот IMAP-сервер использует устаревший протокол. Mutt не сможет работать с "
 "ним."
 
-#: imap/imap.c:428 pop_lib.c:286 smtp.c:373
+#: imap/imap.c:429 pop_lib.c:286 smtp.c:373
 msgid "Secure connection with TLS?"
 msgstr "Использовать безопасное TLS-соединение?"
 
-#: imap/imap.c:437 pop_lib.c:306 smtp.c:385
+#: imap/imap.c:438 pop_lib.c:306 smtp.c:385
 msgid "Could not negotiate TLS connection"
 msgstr "Не удалось установить TLS-соединение"
 
-#: imap/imap.c:453 pop_lib.c:327
+#: imap/imap.c:454 pop_lib.c:327
 msgid "Encrypted connection unavailable"
 msgstr "Зашифрованное соединение не доступно"
 
-#: imap/imap.c:593
+#: imap/imap.c:594
 #, c-format
 msgid "Selecting %s..."
 msgstr "Выбирается %s..."
 
-#: imap/imap.c:748
+#: imap/imap.c:749
 msgid "Error opening mailbox"
 msgstr "Ошибка открытия почтового ящика"
 
-#: imap/imap.c:801 imap/message.c:792 muttlib.c:1417
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1467
 #, c-format
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap/imap.c:1131
+#: imap/imap.c:1132
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d сообщений помечаются как удаленные..."
 
-#: imap/imap.c:1140
+#: imap/imap.c:1141
 msgid "Expunge failed"
 msgstr "Не удалось очистить почтовый ящик"
 
-#: imap/imap.c:1173
+#: imap/imap.c:1174
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Сохранение изменённых сообщений... [%d/%d]"
 
-#: imap/imap.c:1227
+#: imap/imap.c:1228
 msgid "Error saving flags. Close anyway?"
 msgstr "Ошибка сохранения флагов. Закрыть почтовый ящик?"
 
-#: imap/imap.c:1235
+#: imap/imap.c:1236
 msgid "Error saving flags"
 msgstr "Ошибка сохранения флагов"
 
-#: imap/imap.c:1247
+#: imap/imap.c:1248
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1252
+#: imap/imap.c:1253
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: ошибка выполнения команды EXPUNGE"
 
-#: imap/imap.c:1725
+#: imap/imap.c:1726
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Не указано имя заголовка при поиске заголовка: %s"
 
-#: imap/imap.c:1797
+#: imap/imap.c:1798
 msgid "Bad mailbox name"
 msgstr "Недопустимое имя почтового ящика"
 
-#: imap/imap.c:1820
+#: imap/imap.c:1821
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
-#: imap/imap.c:1822
+#: imap/imap.c:1823
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Отключение от %s..."
 
-#: imap/imap.c:1832
+#: imap/imap.c:1833
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Подключено к %s"
 
-#: imap/imap.c:1834
+#: imap/imap.c:1835
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отключено от %s"
@@ -2211,165 +2211,175 @@ msgstr "Сообщение %d копируется в %s..."
 msgid "Continue?"
 msgstr "Продолжить?"
 
-#: init.c:57 init.c:1691 pager.c:57
+#: init.c:57 init.c:1755 pager.c:57
 #, c-format
 msgid "Not available in this menu."
 msgstr "В этом меню недоступно."
 
-#: init.c:464
+#: init.c:465
 #, c-format
 msgid "Bad regexp: %s"
 msgstr "Некорректное регулярное выражение: %s"
 
-#: init.c:738
+#: init.c:522
+#, c-format
+msgid "Not enough subexpressions for spam template"
+msgstr ""
+
+#: init.c:748
 msgid "spam: no matching pattern"
 msgstr "спам: образец не найден"
 
-#: init.c:740
+#: init.c:750
 msgid "nospam: no matching pattern"
 msgstr "не спам: образец не найден"
 
-#: init.c:877
+#: init.c:887
 msgid "Missing -rx or -addr."
 msgstr "Отсутствует -rx или -addr."
 
-#: init.c:890
+#: init.c:900
 #, c-format
 msgid "Warning: Bad IDN '%s'.\n"
 msgstr "Предупреждение: некорректный IDN '%s'.\n"
 
-#: init.c:1098
+#: init.c:1108
 msgid "attachments: no disposition"
 msgstr "attachments: отсутствует параметр disposition"
 
-#: init.c:1136
+#: init.c:1146
 msgid "attachments: invalid disposition"
 msgstr "attachments: неверное значение параметра disposition"
 
-#: init.c:1150
+#: init.c:1160
 msgid "unattachments: no disposition"
 msgstr "unattachments: отсутствует параметр disposition"
 
-#: init.c:1173
+#: init.c:1183
 msgid "unattachments: invalid disposition"
 msgstr "unattachments: неверное значение параметра disposition"
 
-#: init.c:1300
+#: init.c:1310
 msgid "alias: no address"
 msgstr "псевдоним: отсутствует адрес"
 
-#: init.c:1347
+#: init.c:1357
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Предупреждение: некорректный IDN '%s' в псевдониме '%s'.\n"
 
-#: init.c:1435
+#: init.c:1445
 msgid "invalid header field"
 msgstr "недопустимое поле в заголовке"
 
-#: init.c:1488
+#: init.c:1498
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: неизвестный метод сортировки"
 
-#: init.c:1598
+#: init.c:1608
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): ошибка в регулярном выражении: %s\n"
 
-#: init.c:1668 init.c:1781
+#: init.c:1732 init.c:1845
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: неизвестная переменная"
 
-#: init.c:1677
+#: init.c:1741
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "префикс недопустим при сбросе значений"
 
-#: init.c:1683
+#: init.c:1747
 #, c-format
 msgid "value is illegal with reset"
 msgstr "значение недопустимо при сбросе значений"
 
-#: init.c:1739
+#: init.c:1783 init.c:1795
+#, c-format
+msgid "Usage: set variable=yes|no"
+msgstr ""
+
+#: init.c:1803
 #, c-format
 msgid "%s is set"
 msgstr "%s: значение установлено"
 
-#: init.c:1739
+#: init.c:1803
 #, c-format
 msgid "%s is unset"
 msgstr "%s: значение не определено"
 
-#: init.c:1964
+#: init.c:2033
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: недопустимый тип почтового ящика"
 
-#: init.c:1995 init.c:2048
+#: init.c:2064 init.c:2117
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: недопустимое значение"
 
-#: init.c:2089
+#: init.c:2158
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: неизвестный тип."
 
-#: init.c:2116
+#: init.c:2185
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: неизвестный тип"
 
-#: init.c:2178
+#: init.c:2247
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Ошибка в %s: строка %d: %s"
 
 #. the muttrc source keyword
-#: init.c:2201
+#: init.c:2270
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: ошибки в %s"
 
-#: init.c:2202
+#: init.c:2271
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: чтение прервано из-за большого количества ошибок в %s"
 
-#: init.c:2216
+#: init.c:2285
 #, c-format
 msgid "source: error at %s"
 msgstr "source: ошибка в %s"
 
-#: init.c:2221
+#: init.c:2290
 msgid "source: too many arguments"
 msgstr "source: слишком много аргументов"
 
-#: init.c:2272
+#: init.c:2341
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: неизвестная команда"
 
-#: init.c:2764
+#: init.c:2826
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Ошибка в командной строке: %s\n"
 
-#: init.c:2816
+#: init.c:2878
 msgid "unable to determine home directory"
 msgstr "не удалось определить домашний каталог"
 
-#: init.c:2824
+#: init.c:2886
 msgid "unable to determine username"
 msgstr "не удалось определить имя пользователя"
 
-#: init.c:3060
+#: init.c:3122
 msgid "-group: no group name"
 msgstr "-group: имя группы отсутствует"
 
-#: init.c:3070
+#: init.c:3132
 msgid "out of arguments"
 msgstr "слишком мало аргументов"
 
@@ -3239,7 +3249,7 @@ msgstr "Переполнение -- не удалось выделить память!"
 msgid "Out of memory!"
 msgstr "Нехватка памяти!"
 
-#: main.c:59
+#: main.c:63
 msgid ""
 "To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
 "To report a bug, please visit http://bugs.mutt.org/.\n"
@@ -3247,7 +3257,7 @@ msgstr ""
 "Чтобы связаться с разработчиками, используйте адрес <mutt-dev@mutt.org>.\n"
 "Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
 
-#: main.c:63
+#: main.c:67
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
@@ -3261,7 +3271,7 @@ msgstr ""
 "распространять его при соблюдении определенных условий; для получения\n"
 "более подробной информации введите `mutt -vv'.\n"
 
-#: main.c:69
+#: main.c:73
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3285,7 +3295,7 @@ msgstr ""
 "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
 "здесь людьми.\n"
 
-#: main.c:81
+#: main.c:85
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -3307,7 +3317,7 @@ msgstr ""
 "    ПРИГОДНОСТИ ДЛЯ ВЫПОЛНЕНИЯ ОПРЕДЕЛЕННЫХ ЗАДАЧ. Более подробную\n"
 "    информацию вы можете найти в GNU General Public License.\n"
 
-#: main.c:91
+#: main.c:95
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
@@ -3319,7 +3329,7 @@ msgstr ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
 "1301, USA.\n"
 
-#: main.c:108
+#: main.c:112
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -3339,7 +3349,7 @@ msgstr ""
 "        mutt [<options>] -D\n"
 "        mutt -v[v]\n"
 
-#: main.c:116
+#: main.c:120
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -3355,11 +3365,11 @@ msgstr ""
 "  -c <address>\tуказать carbon-copy (CC) адрес\n"
 "  -D\t\tвывести значения всех переменных на stdout"
 
-#: main.c:124
+#: main.c:128
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <level>\tзапись отладочной информации в ~/.muttdebug0"
 
-#: main.c:127
+#: main.c:131
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -3380,7 +3390,7 @@ msgstr ""
 "  -n\t\tзапретить чтение системного Muttrc\n"
 "  -p\t\tпродолжить отложенное сообщение"
 
-#: main.c:136
+#: main.c:140
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -3404,7 +3414,7 @@ msgstr ""
 "таковая отсутствует\n"
 "  -h\t\tтекст этой подсказки"
 
-#: main.c:146
+#: main.c:150
 msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
@@ -3412,7 +3422,7 @@ msgstr ""
 "  --\t\tсчитать аргументы адресами, даже если они начинаются со знака '-'\n"
 "\t\tнеобходимо применение при использовании -a с несколькими файлами"
 
-#: main.c:187
+#: main.c:195
 msgid ""
 "\n"
 "Compile options:"
@@ -3420,51 +3430,51 @@ msgstr ""
 "\n"
 "Параметры компиляции:"
 
-#: main.c:500
+#: main.c:508
 msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
-#: main.c:618
+#: main.c:626
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Отладка на уровне %d.\n"
 
-#: main.c:620
+#: main.c:628
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Символ DEBUG не был определен при компиляции.  Игнорируется.\n"
 
-#: main.c:783
+#: main.c:791
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Каталог %s не существует.  Создать?"
 
-#: main.c:787
+#: main.c:795
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Не удалось создать %s: %s"
 
-#: main.c:833
+#: main.c:841
 msgid "No recipients specified.\n"
 msgstr "Адресаты не указаны.\n"
 
-#: main.c:919
+#: main.c:927
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: не удалось вложить файл.\n"
 
-#: main.c:942
+#: main.c:950
 msgid "No mailbox with new mail."
 msgstr "Нет почтовых ящиков с новой почтой."
 
-#: main.c:951
+#: main.c:959
 msgid "No incoming mailboxes defined."
 msgstr "Не определено ни одного почтового ящика со входящими письмами."
 
-#: main.c:979
+#: main.c:987
 msgid "Mailbox is empty."
 msgstr "Почтовый ящик пуст."
 
-#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:678
+#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "Читается %s..."
@@ -3493,7 +3503,7 @@ msgstr "Не удалось заблокировать почтовый ящик!"
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: почтовый ящик изменен, но измененные сообщения отсутствуют!"
 
-#: mbox.c:785 mh.c:1599 mx.c:771
+#: mbox.c:785 mh.c:1599 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "Пишется %s..."
@@ -3892,16 +3902,16 @@ msgstr "Файл существует, (o)переписать, (a)добавить, (с)отказ?"
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1380
+#: muttlib.c:1430
 msgid "Can't save message to POP mailbox."
 msgstr "Запись сообщений не поддерживается POP-сервером."
 
-#: muttlib.c:1389
+#: muttlib.c:1439
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Добавить сообщения к %s?"
 
-#: muttlib.c:1401
+#: muttlib.c:1451
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s не является почтовым ящиком!"
@@ -3916,91 +3926,91 @@ msgstr "Невозможно заблокировать файл, удалить файл блокировки для %s?"
 msgid "Can't dotlock %s.\n"
 msgstr "dotlock: не удалось заблокировать %s.\n"
 
-#: mx.c:186
+#: mx.c:184
 msgid "Timeout exceeded while attempting fcntl lock!"
 msgstr "Тайм-аут fcntl-блокировки!"
 
-#: mx.c:192
+#: mx.c:190
 #, c-format
 msgid "Waiting for fcntl lock... %d"
 msgstr "Попытка fcntl-блокировки файла... %d"
 
-#: mx.c:220
+#: mx.c:217
 msgid "Timeout exceeded while attempting flock lock!"
 msgstr "Тайм-аут flock-блокировки!"
 
-#: mx.c:227
+#: mx.c:224
 #, c-format
 msgid "Waiting for flock attempt... %d"
 msgstr "Попытка flock-блокировки файла... %d"
 
-#: mx.c:591
+#: mx.c:586
 #, c-format
 msgid "Couldn't lock %s\n"
 msgstr "Не удалось заблокировать %s\n"
 
-#: mx.c:803
+#: mx.c:798
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Не удалось синхронизировать почтовый ящик %s!"
 
-#: mx.c:867
+#: mx.c:862
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Переместить прочитанные сообщения в %s?"
 
-#: mx.c:883 mx.c:1135
+#: mx.c:878 mx.c:1130
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Вычистить %d удаленное сообщение?"
 
-#: mx.c:883 mx.c:1135
+#: mx.c:878 mx.c:1130
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Вычистить %d удаленных сообщений?"
 
-#: mx.c:903
+#: mx.c:898
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Прочитанные сообщения перемещаются в %s..."
 
-#: mx.c:962 mx.c:1126
+#: mx.c:957 mx.c:1121
 msgid "Mailbox is unchanged."
 msgstr "Почтовый ящик не изменился."
 
-#: mx.c:998
+#: mx.c:993
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "Оставлено: %d, перемещено: %d, удалено: %d."
 
-#: mx.c:1001 mx.c:1175
+#: mx.c:996 mx.c:1170
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "Оставлено: %d, удалено: %d."
 
-#: mx.c:1111
+#: mx.c:1106
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Используйте '%s' для разрешения/запрещения записи"
 
-#: mx.c:1113
+#: mx.c:1108
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Используйте команду 'toggle-write' для разрешения записи!"
 
-#: mx.c:1115
+#: mx.c:1110
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "Почтовый ящик стал доступен только для чтения. %s"
 
-#: mx.c:1172
+#: mx.c:1167
 msgid "Mailbox checkpointed."
 msgstr "Почтовый ящик обновлен."
 
-#: mx.c:1484
+#: mx.c:1479
 msgid "Can't write message"
 msgstr "Ошибка записи сообщения"
 
-#: mx.c:1529
+#: mx.c:1524
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Переполнение -- не удалось выделить память."
 
@@ -4094,8 +4104,8 @@ msgid "mismatched brackets: %s"
 msgstr "пропущена скобка: %s"
 
 #: pattern.c:898
-#, c-format
-msgid "%c: invalid command"
+#, fuzzy, c-format
+msgid "%c: invalid pattern modifier"
 msgstr "%c: недопустимая команда"
 
 #: pattern.c:904
@@ -4330,11 +4340,11 @@ msgstr "APOP: неверное значение времени"
 msgid "Authenticating (APOP)..."
 msgstr "Аутентификация (метод APOP)..."
 
-#: pop_auth.c:217
+#: pop_auth.c:216
 msgid "APOP authentication failed."
 msgstr "Ошибка APOP-аутентификации."
 
-#: pop_auth.c:252
+#: pop_auth.c:251
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "Команда USER сервером не поддерживается."
@@ -4680,51 +4690,51 @@ msgstr "Подготовка пересылаемого сообщения..."
 msgid "Recall postponed message?"
 msgstr "Продолжить отложенное сообщение?"
 
-#: send.c:1414
+#: send.c:1420
 msgid "Edit forwarded message?"
 msgstr "Редактировать пересылаемое сообщение?"
 
-#: send.c:1454
+#: send.c:1460
 msgid "Abort unmodified message?"
 msgstr "Отказаться от неизмененного сообщения?"
 
-#: send.c:1456
+#: send.c:1462
 msgid "Aborted unmodified message."
 msgstr "Сообщение не изменилось, отказ."
 
-#: send.c:1525
+#: send.c:1531
 msgid "Message postponed."
 msgstr "Сообщение отложено."
 
-#: send.c:1534
+#: send.c:1540
 msgid "No recipients are specified!"
 msgstr "Не указано ни одного адресата!"
 
-#: send.c:1539
+#: send.c:1545
 msgid "No recipients were specified."
 msgstr "Не было указано ни одного адресата."
 
-#: send.c:1555
+#: send.c:1561
 msgid "No subject, abort sending?"
 msgstr "Нет темы сообщения, прервать отправку?"
 
-#: send.c:1559
+#: send.c:1565
 msgid "No subject specified."
 msgstr "Тема сообщения не указана."
 
-#: send.c:1621 smtp.c:158
+#: send.c:1627 smtp.c:158
 msgid "Sending message..."
 msgstr "Сообщение отправляется..."
 
-#: send.c:1762
+#: send.c:1768
 msgid "Could not send the message."
 msgstr "Сообщение отправить не удалось."
 
-#: send.c:1767
+#: send.c:1773
 msgid "Mail sent."
 msgstr "Сообщение отправлено."
 
-#: send.c:1767
+#: send.c:1773
 msgid "Sending in background."
 msgstr "Сообщение отправляется в фоновом режиме."
 
