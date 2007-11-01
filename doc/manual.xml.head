@@ -5583,9 +5583,9 @@ muttrc.
 
 <para>
 Mutt supports several of optional features which can be enabled or
-disabled at compile-time by giving the <literal>configure</literal> script
+disabled at compile-time by giving the <emphasis>configure</emphasis> script
 certain arguments. These are listed in the ``Optional features'' section of
-the <literal>configure --help</literal> output.
+the <emphasis>configure --help</emphasis> output.
 </para>
 
 <para>
@@ -5647,6 +5647,21 @@ to encrypt the communication.
 </para>
 
 </sect2>
+
+</sect1>
+
+<sect1 id="ssl">
+<title>SSL/TLS Support</title>
+
+<para>
+If mutt is compiled with IMAP, POP3 and/or SMTP support, it can also be
+compiled with support for SSL or TLS using either OpenSSL or GnuTLS (
+by running the <emphasis>configure</emphasis> script with the 
+<emphasis>--enable-ssl=...</emphasis> option for OpenSSL or
+<emphasis>--enable-gnutls=...</emphasis> for GnuTLS). Mutt can then
+attempt to encrypt communication with remote servers if these protocols
+are suffixed with ``s'' for ``secure communication''.
+</para>
 
 </sect1>
 
