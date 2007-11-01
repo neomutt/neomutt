@@ -1,3 +1,13 @@
+2007-11-01 13:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (a9e37e90ad40)
+
+	* doc/manual.xml.head: Manual: s/SMTP support/SMTP Support/ (for
+	consitency)
+
+2007-11-01 13:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (13f21ce1d474)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Remove 404 link for
+	fetchmail, mention getmail, too
+
 2007-11-01 12:56 +0100  Rocco Rutte  <pdmef@gmx.net>  (69ba99747f3e)
 
 	* doc/manual.xml.head: Manual: Add short section on SSL/TLS support
