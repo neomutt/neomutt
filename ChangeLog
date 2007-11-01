@@ -1,3 +1,14 @@
+2007-11-01 21:21 +0100  Rocco Rutte  <pdmef@gmx.net>  (4f3814a57eaf)
+
+	* INSTALL, UPDATING, rfc822.c: Unbreak exact address feature. The
+	problem was that when reading back tempfiles for pager display,
+	trailing \n were not removed from the input so the pager displayed 2
+	instead of 1.
+
+2007-11-01 12:13 -0700  Oswald Buddenhagen  <ossi@kde.org>  (8aebd2ea4db8)
+
+	* configure.ac: Detect BDB automatically if --with-bdb is empty
+
 2007-11-01 14:33 +0100  Rocco Rutte  <pdmef@gmx.net>  (80f1331abec2)
 
 	* doc/devel-notes.txt: devel-notes.txt: Mention where hg repo is, how

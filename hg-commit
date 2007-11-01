@@ -5,7 +5,7 @@ MUTTDIR=$(dirname $0)
 $MUTTDIR/check_sec.sh
 
 lrev=$(hg log --limit 1 --template '{rev}' ChangeLog)
-trev=$(hg tip --template '{rev'})
+trev=$(hg tip --template '{rev}')
 if [ $lrev = $trev ]
 then
   exec hg commit "$@"
