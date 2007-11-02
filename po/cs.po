@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.16\n"
+"Project-Id-Version: mutt 1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-01 14:06-0700\n"
-"PO-Revision-Date: 2007-06-11 10:25+0200\n"
+"PO-Revision-Date: 2007-11-02 01:05+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -2205,7 +2205,7 @@ msgstr "Chybný regulární výraz: %s"
 #: init.c:522
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "Na šablonu spamu není dost podvýrazů"
 
 #: init.c:748
 msgid "spam: no matching pattern"
@@ -2271,17 +2271,17 @@ msgstr "Proměnná %s není známa."
 #: init.c:1741
 #, c-format
 msgid "prefix is illegal with reset"
-msgstr "Prefix není s 'reset' povolen."
+msgstr "Prefix není s „reset“ povolen."
 
 #: init.c:1747
 #, c-format
 msgid "value is illegal with reset"
-msgstr "Hodnota není s 'reset' povolena."
+msgstr "Hodnota není s „reset“ povolena."
 
 #: init.c:1783 init.c:1795
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Použití: set proměnná=yes|no (ano|ne)"
 
 #: init.c:1803
 #, c-format
@@ -4081,9 +4081,9 @@ msgid "mismatched brackets: %s"
 msgstr "neshodují se závorky: %s"
 
 #: pattern.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "příkaz %c je nesprávný"
+msgstr "%c: nesprávný modifikátor vzoru"
 
 #: pattern.c:904
 #, c-format
