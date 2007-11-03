@@ -1,3 +1,11 @@
+2007-11-02 16:55 -0700  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (cc5de08f4612)
+
+	* po/pl.po: Updated Polish translation.
+
+2007-11-01 20:36 -0700  Petr Pisar  <petr.pisar@atlas.cz>  (0b4bd0452b5a)
+
+	* ChangeLog, po/cs.po: Updated Czech translation.
+
 2007-11-01 15:45 -0700  Brendan Cully  <brendan@kublai.com>  (5123cded9988)
 
 	* configure.ac: Use $datarootdir as default prefix for documentation
