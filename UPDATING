@@ -4,14 +4,18 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-1.5.17 (2007-11-01)
+1.5.17 (2007-11-01):
 
   ! --enable-exact-address works again
+
+1.5.16 (2007-06-09):
+
   + next-unread-mailbox
   + $message_cache_clean (clean cache on sync)
-  + %P expando for $pager_format
+  + $smtp_pass
+  ! $header_cache_compress defaults to yes
 
-1.5.15 (2007-04-06)
+1.5.15 (2007-04-06):
 
   - $imap_home_namespace (useless clutter)
   + $check_mbox_size (use size change instead of atime for new mail)
