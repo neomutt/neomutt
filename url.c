@@ -217,7 +217,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   char *tag, *value;
   char scratch[HUGE_STRING];
 
-  int taglen;
+  int taglen, rc = 0;
 
   LIST *last = NULL;
   
@@ -250,19 +250,25 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
       if (body)
 	mutt_str_replace (body, value);
     }
-    else 
+    else if ((taglen = mutt_strlen (tag)) <= sizeof (scratch) - 2)
     {
-      taglen = strlen (tag);
-      /* mutt_parse_rfc822_line makes some assumptions */
+      /* only try to parse if we can format it as header for
+       * mutt_parse_rfc822_line (tag fits in scratch) */
       snprintf (scratch, sizeof (scratch), "%s: %s", tag, value);
       scratch[taglen] = '\0';
       value = &scratch[taglen+1];
       SKIPWS (value);
       mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
     }
+    else
+    {
+      rc = -1;
+      goto out;
+    }
   }
-  
+
+out:
   FREE (&tmp);
-  return 0;
+  return rc;
 }
 
