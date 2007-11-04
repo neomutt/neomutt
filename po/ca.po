@@ -47,10 +47,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.16\n"
+"Project-Id-Version: mutt 1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-01 14:06-0700\n"
-"PO-Revision-Date: 2007-09-01 18:26+0200\n"
+"PO-Revision-Date: 2007-11-03 19:46+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "MIME-Version: 1.0\n"
@@ -2391,10 +2391,16 @@ msgstr "No es troba disponible en aquest menú."
 msgid "Bad regexp: %s"
 msgstr "L’expressió regular no és vàlida: %s"
 
+# Vol dir que a::
+#
+#    spam patró format
+#
+# Una regla usa més referències cap enrere al «format» que es defineixen
+# al «patró».  ivb
 #: init.c:522
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "spam: Hi ha més referències cap enrere que subexpressions definides."
 
 #: init.c:748
 msgid "spam: no matching pattern"
@@ -2469,10 +2475,11 @@ msgstr "El prefix emprat en «reset» no és permés."
 msgid "value is illegal with reset"
 msgstr "El valor emprat en «reset» no és permés."
 
+# Açò és sintaxi, no té traducció.  ivb
 #: init.c:1783 init.c:1795
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Forma d’ús: set variable=yes|no"
 
 # ivb (2001/11/24)
 # ivb  Es refereix a una variable lògica.
@@ -4346,9 +4353,9 @@ msgid "mismatched brackets: %s"
 msgstr "Els parèntesis no estan aparellats: %s"
 
 #: pattern.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: L’ordre no és vàlida."
+msgstr "%c: El modificador de patró no és vàlid."
 
 #: pattern.c:904
 #, c-format
