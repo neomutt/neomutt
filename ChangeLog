@@ -1,3 +1,25 @@
+2007-11-04 18:14 +0100  Rocco Rutte  <pdmef@gmx.net>  (6248b3c04f61)
+
+	* main.c, url.c: Prevent mailto parsing buffer overflow by ignoring
+	too long header. If they're longer than our buffer, we can't turn it
+	into a header to be parsed by mutt_parse_rfc822_line() anyway, so we
+	bail out in this case. Also make main() catchup mailto parsing
+	errors. Closes #2980.
+
+2007-11-04 17:02 +0100  Rocco Rutte  <pdmef@gmx.net>  (2157b46eb938)
+
+	* UPDATING: Add 1.5.17 to UPDATING
+
+2007-11-04 17:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (1416714ec4d1)
+
+	* doc/manual.xml.head, init.h: Improve DSN docs (require sendmail-
+	compatible MTA, add SMTP notes). Closes #2979
+
+2007-11-03 11:12 +0100  Rocco Rutte  <pdmef@gmx.net>  (0c054faeb285)
+
+	* ChangeLog, muttlib.c: Check Maildir for not being NULL when
+	expanding '='-paths. Closes #2977.
+
 2007-11-02 16:55 -0700  Pawel Dziekonski  <dzieko@pwr.wroc.pl>  (cc5de08f4612)
 
 	* po/pl.po: Updated Polish translation.

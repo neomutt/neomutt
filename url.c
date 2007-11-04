@@ -211,7 +211,7 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 
 int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
 {
-  char *t;
+  char *t, *p;
   char *tmp;
   char *headers;
   char *tag, *value;
@@ -233,9 +233,9 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   url_pct_decode (tmp);
   e->to = rfc822_parse_adrlist (e->to, tmp);
 
-  tag = headers ? strtok (headers, "&") : NULL;
+  tag = headers ? strtok_r (headers, "&", &p) : NULL;
   
-  for (; tag; tag = strtok (NULL, "&"))
+  for (; tag; tag = strtok_r (NULL, "&", &p))
   {
     if ((value = strchr (tag, '=')))
       *value++ = '\0';
