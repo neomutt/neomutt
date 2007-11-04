@@ -4615,17 +4615,31 @@ current message into a whole different thread.
 <para>
 RFC1894 defines a set of MIME content types for relaying information
 about the status of electronic mail messages.  These can be thought of as
-``return receipts.'' Berkeley sendmail 8.8.x currently has some command
-line options in which the mail client can make requests as to what type
-of status messages should be returned.
+``return receipts.''
 </para>
 
 <para>
-To support this, there are two variables. <link linkend="dsn-notify">&dollar;dsn&lowbar;notify</link> is used to request receipts for
+To support DSN, there are two variables. <link linkend="dsn-notify">&dollar;dsn&lowbar;notify</link> is used to request receipts for
 different results (such as failed message, message delivered, etc.).
 <link linkend="dsn-return">&dollar;dsn&lowbar;return</link> requests how much
 of your message should be returned with the receipt (headers or full
-message).  Refer to the man page on sendmail for more details on DSN.
+message).
+</para>
+
+<para>
+When using <link linkend="sendmail">&dollar;sendmail</link> for mail
+delivery, you need to use either Berkeley sendmail 8.8.x (or greater) a MTA
+supporting DSN command line options compatible to Sendmail: The -N and -R
+options can be used by the mail client to make requests as to what type of
+status messages should be returned. Please consider your MTA documentation
+whether DSN is supported.
+</para>
+
+<para>
+For SMTP delivery using <link
+  linkend="smtp-url">&dollar;smtp&lowbar;url</link>, it depends on the
+capabilities announced by the server whether mutt will attempt to
+request DSN or not.
 </para>
 
 </sect1>

@@ -497,9 +497,6 @@ struct option_t MuttVars[] = {
   { "dsn_notify",	DT_STR,	 R_NONE, UL &DsnNotify, UL "" },
   /*
   ** .pp
-  ** \fBNote:\fP you should not enable this unless you are using Sendmail
-  ** 8.8.x or greater.
-  ** .pp
   ** This variable sets the request for when notification is returned.  The
   ** string consists of a comma separated list (no spaces!) of one or more
   ** of the following: \fInever\fP, to never request notification,
@@ -508,18 +505,27 @@ struct option_t MuttVars[] = {
   ** notified of successful transmission.
   ** .pp
   ** Example: set dsn_notify="failure,delay"
+  ** .pp
+  ** \fBNote:\fP when using $$sendmail for delivery, you should not enable
+  ** this unless you are either using Sendmail 8.8.x or greater or a MTA
+  ** providing a sendmail(1)-compatible interface supporting the -N option
+  ** for DSN. For SMTP delivery, it depends on the server whether DSN is
+  ** supported or not.
   */
   { "dsn_return",	DT_STR,	 R_NONE, UL &DsnReturn, UL "" },
   /*
-  ** .pp
-  ** \fBNote:\fP you should not enable this unless you are using Sendmail
-  ** 8.8.x or greater.
   ** .pp
   ** This variable controls how much of your message is returned in DSN
   ** messages.  It may be set to either \fIhdrs\fP to return just the
   ** message header, or \fIfull\fP to return the full message.
   ** .pp
   ** Example: set dsn_return=hdrs
+  ** .pp
+  ** \fBNote:\fP when using $$sendmail for delivery, you should not enable
+  ** this unless you are either using Sendmail 8.8.x or greater or a MTA
+  ** providing a sendmail(1)-compatible interface supporting the -R option
+  ** for DSN. For SMTP delivery, it depends on the server whether DSN is
+  ** supported or not.
   */
   { "duplicate_threads",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTDUPTHREADS, 1 },
   /*
