@@ -521,6 +521,11 @@ fi
 
 AC_SUBST(DOTLOCK_TARGET)
 
+dnl autoconf <2.60 compatibility
+if test -z "$datarootdir"; then
+  datarootdir='${prefix}/share'
+fi
+AC_SUBST([datarootdir])
 
 AC_MSG_CHECKING(where to put the documentation)
 AC_ARG_WITH(docdir, AC_HELP_STRING([--with-docdir=PATH], [Specify where to put the documentation]),

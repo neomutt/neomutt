@@ -32,6 +32,7 @@ transform = @program_transform_name@
 libdir = @libdir@
 includedir = @includedir@
 datadir = @datadir@
+datarootdir = @datarootdir@
 localedir = $(datadir)/locale
 gettextsrcdir = $(datadir)/gettext/intl
 aliaspath = $(localedir)
