@@ -2495,7 +2495,7 @@ mailbox).
 </sect1>
 
 <sect1 id="mailboxes">
-<title>Monitoring incomming mail</title>
+<title>Monitoring incoming mail</title>
 
 <para>
 Usage: <literal>&lsqb;un&rsqb;mailboxes</literal> &lsqb;!&rsqb;<emphasis>folder</emphasis> &lsqb; <emphasis>folder</emphasis> ... &rsqb;
