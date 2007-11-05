@@ -1,3 +1,12 @@
+2007-11-05 15:53 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (b8dc6926ddf4)
+
+	* doc/manual.xml.head: Manual: Fix typo
+
+2007-11-05 14:53 +0100  Rocco Rutte  <pdmef@gmx.net>  (ad7983699656)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Improve [un]mailboxes
+	documentation. Closes #2204.
+
 2007-11-05 14:52 +0100  Rocco Rutte  <pdmef@gmx.net>  (3bac5aa1af75)
 
 	* hg-commit: hg-commit: Exclude merges when writing ChangeLog

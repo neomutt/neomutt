@@ -419,6 +419,8 @@ void mutt_show_error (void)
 
 void mutt_endwin (const char *msg)
 {
+  int e = errno;
+
   if (!option (OPTNOCURSES))
   {
     CLEARLINE (LINES - 1);
@@ -433,6 +435,8 @@ void mutt_endwin (const char *msg)
     puts (msg);
     fflush (stdout);
   }
+
+  errno = e;
 }
 
 void mutt_perror (const char *s)
