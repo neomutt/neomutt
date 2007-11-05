@@ -16,10 +16,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.16-20070910\n"
+"Project-Id-Version: Mutt 1.5.17-20071104\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-01 14:06-0700\n"
-"PO-Revision-Date: 2007-09-10 12:20+0200\n"
+"POT-Creation-Date: 2007-11-05 01:41+0100\n"
+"PO-Revision-Date: 2007-11-05 01:41+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -128,7 +128,7 @@ msgstr "Erreur en exécutant \"%s\" !"
 
 #: attach.c:144
 msgid "Failure to open file to parse headers."
-msgstr "Échec d'ouverture du fichier pour décoder les en-têtes."
+msgstr "Échec d'ouverture du fichier pour analyser les en-têtes."
 
 #: attach.c:175
 msgid "Failure to open file to strip headers."
@@ -3557,25 +3557,29 @@ msgstr "%s n'existe pas. Le créer ?"
 msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
 
-#: main.c:841
+#: main.c:837
+msgid "Failed to parse mailto: link\n"
+msgstr "Impossible d'analyser le lien mailto:\n"
+
+#: main.c:849
 msgid "No recipients specified.\n"
 msgstr "Pas de destinataire spécifié.\n"
 
 # , c-format
-#: main.c:927
+#: main.c:935
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
-#: main.c:950
+#: main.c:958
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:959
+#: main.c:967
 msgid "No incoming mailboxes defined."
 msgstr "Pas de boîtes aux lettres recevant du courrier définies."
 
-#: main.c:987
+#: main.c:995
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
