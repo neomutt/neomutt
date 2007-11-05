@@ -2495,10 +2495,10 @@ mailbox).
 </sect1>
 
 <sect1 id="mailboxes">
-<title>Defining mailboxes which receive mail</title>
+<title>Monitoring incomming mail</title>
 
 <para>
-Usage: <literal>&lsqb;un&rsqb;mailboxes</literal> &lsqb;!&rsqb;<emphasis>filename</emphasis> &lsqb; <emphasis>filename</emphasis> ... &rsqb;
+Usage: <literal>&lsqb;un&rsqb;mailboxes</literal> &lsqb;!&rsqb;<emphasis>folder</emphasis> &lsqb; <emphasis>folder</emphasis> ... &rsqb;
 </para>
 
 <para>
@@ -2506,6 +2506,15 @@ This command specifies folders which can receive mail and
 which will be checked for new messages.  By default, the
 main menu status bar displays how many of these folders have
 new messages.
+</para>
+
+<para>
+<literal>folder</literal> can either be a local file or directory
+(Mbox/Mmdf or Maildir/Mh). If Mutt was built with POP and/or IMAP
+support, <literal>folder</literal> can also be a POP/IMAP folder
+URL. The URL syntax is described in <xref linkend="url-syntax"/>,
+POP and IMAP are described in <xref linkend="pop"/> and <xref linkend="imap"/>
+respectively.
 </para>
 
 <para>
@@ -2527,18 +2536,29 @@ tokens.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis> new mail is detected by comparing the last modification time to
-the last access time.  Utilities like <literal>biff</literal> or <literal>frm</literal> or any other
-program which accesses the mailbox might cause Mutt to never detect new mail
-for that mailbox if they do not properly reset the access time.  Backup
-tools are another common reason for updated access times.
+<emphasis role="bold">Note:</emphasis> the folders in the <literal>mailboxes</literal> command are resolved when
+the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as ``='' and ``!''), any variable
+definition that affect these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
+should be executed before the <literal>mailboxes</literal> command. If
+none of these shorcuts are used, a local path should be absolute as
+otherwise mutt tries to find it within the current working directory
+from where mutt was started which may not always be desired.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis> the filenames in the <literal>mailboxes</literal> command are resolved when
-the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as ``='' and ``!''), any variable
-definition that affect these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
-should be executed before the <literal>mailboxes</literal> command.
+For local folders, new mail is detected by comparing access and/or
+modification times of files and folders. The interval in which Mutt
+checks for new mail is defined by
+<link linkend="mail-check">&dollar;mail&lowbar;check</link>.
+</para>
+
+<para>
+Special care is required with Mbox and Mmdf
+folders as Mutt assumes such a folder has new mail if it wasn't
+accessed after it was last modified. Utilities like <literal>biff</literal> or
+<literal>frm</literal> or any other program which accesses the mailbox might cause
+Mutt to never detect new mail for that mailbox if they do not properly reset the
+access time.  Backup tools are another common reason for updated access times.
 </para>
 
 </sect1>

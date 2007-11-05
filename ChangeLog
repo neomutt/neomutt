@@ -1,3 +1,18 @@
+2007-11-05 14:52 +0100  Rocco Rutte  <pdmef@gmx.net>  (3bac5aa1af75)
+
+	* hg-commit: hg-commit: Exclude merges when writing ChangeLog
+
+2007-11-05 12:11 +0100  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (645fcdd66828)
+
+	* configure.ac, intl/Makefile.in, po/Makefile.in.in: Optionally define
+	$datarootdir on our own for autoconf <2.60 compatibility. While I'm
+	at it, fix two warnings in other files about ignoring datarootdir
+	with autoconf >2.60. Closes #2905.
+
+2007-11-04 13:19 -0800  Vsevolod Volkov  <vvv@mutt.org.ua>  (dc5ec6dbb278)
+
+	* ChangeLog, po/ru.po: Updated Russian translation
+
 2007-11-04 13:17 -0800  Ivan Vilata i Balaguer  <ivan@selidor.net>  (1f72281eb36c)
 
 	* po/ca.po: Updated Catalan translation
