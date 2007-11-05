@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.16\n"
+"Project-Id-Version: 1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-01 14:06-0700\n"
-"PO-Revision-Date: 2007-06-10 17:18+0200\n"
+"PO-Revision-Date: 2007-11-03 14:41+0100\n"
 "Last-Translator: Roland Rosenfeld <roland@spinnaker.de>\n"
 "Language-Team: German <mutt-po@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -2209,7 +2209,7 @@ msgstr "Fehlerhafte regexp: %s"
 #: init.c:522
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "Nicht genügend Unterausdrücke für Spam-Vorlage"
 
 #: init.c:748
 msgid "spam: no matching pattern"
@@ -2285,7 +2285,7 @@ msgstr "Wertzuweisung ist bei \"reset\" nicht zulässig."
 #: init.c:1783 init.c:1795
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Benutzung: set variable=yes|no"
 
 #: init.c:1803
 #, c-format
@@ -4085,9 +4085,9 @@ msgid "mismatched brackets: %s"
 msgstr "Unpassende Klammern: %s"
 
 #: pattern.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: Ungültiges Kommando"
+msgstr "%c: Ungültiger Muster-Modifikator"
 
 #: pattern.c:904
 #, c-format

@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.16\n"
+"Project-Id-Version: mutt-1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-01 14:06-0700\n"
-"PO-Revision-Date: 2007-06-12 14:26+0300\n"
+"PO-Revision-Date: 2007-11-04 10:12+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -2224,7 +2224,7 @@ msgstr "Некорректное регулярное выражение: %s"
 #: init.c:522
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "Не достаточно условий для шаблона спама"
 
 #: init.c:748
 msgid "spam: no matching pattern"
@@ -2300,7 +2300,7 @@ msgstr "значение недопустимо при сбросе значений"
 #: init.c:1783 init.c:1795
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Использование: set variable=yes|no"
 
 #: init.c:1803
 #, c-format
@@ -4104,9 +4104,9 @@ msgid "mismatched brackets: %s"
 msgstr "пропущена скобка: %s"
 
 #: pattern.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: недопустимая команда"
+msgstr "%c: неверный модификатор образца"
 
 #: pattern.c:904
 #, c-format
