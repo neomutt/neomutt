@@ -145,7 +145,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   
     for (msgno = msgbegin; msgno <= msgend ; msgno++)
     {
-      mutt_progress_update (&progress, msgno + 1);
+      mutt_progress_update (&progress, msgno + 1, -1);
   
       memset (&h, 0, sizeof (h));
       h.data = safe_calloc (1, sizeof (IMAP_HEADER_DATA));
@@ -223,7 +223,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
-    mutt_progress_update (&progress, msgno + 1);
+    mutt_progress_update (&progress, msgno + 1, -1);
 
     /* we may get notification of new mail while fetching headers */
     if (msgno + 1 > fetchlast)
@@ -641,7 +641,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     {
       sent += len;
       flush_buffer(buf, &len, idata->conn);
-      mutt_progress_update (&progressbar, sent);
+      mutt_progress_update (&progressbar, sent, -1);
     }
   }
   

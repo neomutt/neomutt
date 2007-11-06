@@ -1,3 +1,17 @@
+2007-11-06 17:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (eae335942190)
+
+	* mh.c: (Re-)Add total msg count to progress for parsing maildirs
+
+2007-11-05 14:24 -0800  Vincent Lefevre  <vincent@vinc17.org>  (ecb694b6176b)
+
+	* po/fr.po: Updated French translation
+
+2007-11-05 17:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (6b9e91edba54)
+
+	* ChangeLog, curs_lib.c: Save value of errno across mutt_endwin()
+	calls. Mutt_endwin() is sometimes called after noticing an error but
+	before printing the message via perror(). Closes #2965.
+
 2007-11-05 15:53 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (b8dc6926ddf4)
 
 	* doc/manual.xml.head: Manual: Fix typo

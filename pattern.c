@@ -1318,7 +1318,7 @@ int mutt_pattern_func (int op, char *prompt)
 
     for (i = 0; i < Context->msgcount; i++)
     {
-      mutt_progress_update (&progress, i);
+      mutt_progress_update (&progress, i, -1);
       /* new limit pattern implicitly uncollapses all threads */
       Context->hdrs[i]->virtual = -1;
       Context->hdrs[i]->limited = 0;
@@ -1339,7 +1339,7 @@ int mutt_pattern_func (int op, char *prompt)
   {
     for (i = 0; i < Context->vcount; i++)
     {
-      mutt_progress_update (&progress, i);
+      mutt_progress_update (&progress, i, -1);
       if (mutt_pattern_exec (pat, M_MATCH_FULL_ADDRESS, Context, Context->hdrs[Context->v2r[i]]))
       {
 	switch (op)
@@ -1458,7 +1458,7 @@ int mutt_search_command (int cur, int op)
 
   for (i = cur + incr, j = 0 ; j != Context->vcount; j++)
   {
-    mutt_progress_update (&progress, j);
+    mutt_progress_update (&progress, j, -1);
     if (i > Context->vcount - 1)
     {
       i = 0;

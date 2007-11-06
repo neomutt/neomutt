@@ -132,7 +132,8 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
 
       count++;
       if (!ctx->quiet)
-	mutt_progress_update (&progress, count);
+	mutt_progress_update (&progress, count,
+			      (int)loc / (ctx->size / 100 + 1));
 
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
@@ -294,7 +295,8 @@ int mbox_parse_mailbox (CONTEXT *ctx)
       count++;
 
       if (!ctx->quiet)
-	mutt_progress_update (&progress, count);
+	mutt_progress_update (&progress, count,
+			      (int)(ftell (ctx->fp) / (ctx->size / 100 + 1)));
 
       if (ctx->msgcount == ctx->hdrmax)
 	mx_alloc_memory (ctx);
@@ -788,7 +790,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   for (i = first, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->quiet)
-      mutt_progress_update (&progress, i);
+      mutt_progress_update (&progress, i, (int)(ftell (ctx->fp) / (ctx->size / 100 + 1)));
     /*
      * back up some information which is needed to restore offsets when
      * something fails.

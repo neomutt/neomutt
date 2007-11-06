@@ -248,7 +248,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
     for (i = old_count; i < new_count; i++)
     {
       if (!ctx->quiet)
-	mutt_progress_update (&progress, i + 1 - old_count);
+	mutt_progress_update (&progress, i + 1 - old_count, -1);
 #if USE_HCACHE
       if ((data = mutt_hcache_fetch (hc, ctx->hdrs[i]->data, strlen)))
       {
@@ -622,7 +622,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
       {
 	j++;
 	if (!ctx->quiet)
-	  mutt_progress_update (&progress, j);
+	  mutt_progress_update (&progress, j, -1);
 	snprintf (buf, sizeof (buf), "DELE %d\r\n", ctx->hdrs[i]->refno);
 	if ((ret = pop_query (pop_data, buf, sizeof (buf))) == 0)
 	{

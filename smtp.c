@@ -190,7 +190,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
       return smtp_err_write;
     }
 
-    mutt_progress_update (&progress, ftell (fp));
+    mutt_progress_update (&progress, ftell (fp), -1);
   }
   fclose (fp);
 

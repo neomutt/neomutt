@@ -230,7 +230,7 @@ int imap_read_literal (FILE* fp, IMAP_DATA* idata, long bytes, progress_t* pbar)
     fputc (c, fp);
     
     if (pbar && !(pos % 1024))
-      mutt_progress_update (pbar, pos);
+      mutt_progress_update (pbar, pos, -1);
 #ifdef DEBUG
     if (debuglevel >= IMAP_LOG_LTRL)
       fputc (c, debugfile);

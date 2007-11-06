@@ -727,7 +727,7 @@ static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
     {
       (*count)++;
       if (!ctx->quiet && progress)
-	mutt_progress_update (progress, *count);
+	mutt_progress_update (progress, *count, -1);
     }
 
     if (subdir)
@@ -1007,7 +1007,7 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
       continue;
 
     if (!ctx->quiet && progress)
-      mutt_progress_update (progress, count);
+      mutt_progress_update (progress, count, -1);
 
 #if USE_HCACHE
     data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
@@ -1602,7 +1602,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
   for (i = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->quiet)
-      mutt_progress_update (&progress, i);
+      mutt_progress_update (&progress, i, -1);
 
     if (ctx->hdrs[i]->deleted
 	&& (ctx->magic != M_MAILDIR || !option (OPTMAILDIRTRASH)))

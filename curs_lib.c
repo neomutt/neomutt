@@ -350,10 +350,10 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   progress->flags = flags;
   progress->msg = msg;
   progress->size = size;
-  mutt_progress_update (progress, 0);
+  mutt_progress_update (progress, 0, 0);
 }
 
-void mutt_progress_update (progress_t* progress, long pos)
+void mutt_progress_update (progress_t* progress, long pos, int percent)
 {
   char posstr[SHORT_STRING];
   short update = 0;
@@ -396,10 +396,18 @@ void mutt_progress_update (progress_t* progress, long pos)
   if (update)
   {
     progress->pos = pos;
-    if (progress->size)
-      mutt_message ("%s %s/%s", progress->msg, posstr, progress->sizestr);
+    if (progress->size > 0)
+    {
+      mutt_message ("%s %s/%s (%d%%)", progress->msg, posstr, progress->sizestr,
+		    percent > 0 ? percent : progress->pos * 100 / progress->size);
+    }
     else
-      mutt_message ("%s %s", progress->msg, posstr);
+    {
+      if (percent > 0)
+	mutt_message ("%s %s (%d%%)", progress->msg, posstr, percent);
+      else
+	mutt_message ("%s %s", progress->msg, posstr);
+    }
   }
 
   if (pos >= progress->size)

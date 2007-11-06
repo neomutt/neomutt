@@ -496,7 +496,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     else
     {
       if (progressbar)
-	mutt_progress_update (progressbar, pos);
+	mutt_progress_update (progressbar, pos, -1);
       if (ret == 0 && funct (inbuf, data) < 0)
 	ret = -3;
       lenbuf = 0;

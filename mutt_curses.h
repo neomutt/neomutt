@@ -157,7 +157,10 @@ typedef struct
 void mutt_progress_init (progress_t* progress, const char *msg,
 			 unsigned short flags, unsigned short inc,
 			 long size);
-void mutt_progress_update (progress_t* progress, long pos);
+/* If percent is positive, it is displayed as percentage, otherwise
+ * percentage is calculated from progress->size and pos if progress
+ * was initialized with positive size, otherwise no percentage is shown */
+void mutt_progress_update (progress_t* progress, long pos, int percent);
 
 static inline int mutt_term_width(short wrap)
 {
