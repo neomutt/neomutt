@@ -1107,7 +1107,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (ctx->magic == M_MAILDIR)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
+    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, count);
     maildir_delayed_parsing (ctx, md, &progress);
   }
 
