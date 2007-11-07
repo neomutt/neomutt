@@ -2,7 +2,7 @@
 ## Use aclocal -I m4; automake --foreign
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap makedoc
+EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap
 
 if BUILD_IMAP
 IMAP_SUBDIR = imap
@@ -39,17 +39,6 @@ mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
 mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) \
 	$(INTLDEPS)
 
-makedoc_SOURCES = makedoc.c
-makedoc_LDADD =
-makedoc_DEPENDENCIES = 
-
-# $(makedoc_OBJECTS): $(makedoc_SOURCES)
-# 	$(HOST_CC) $(DEFS) $(AM_CPPFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
-
-# makedoc: $(makedoc_OBJECTS) $(makedoc_DEPENDENCIES)
-# 	@rm -rf makedoc
-# 	$(HOST_CC) $(AM_CFLAGS) $(LDFLAGS) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) -o makedoc
-
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
 	-DHAVE_CONFIG_H=1
@@ -76,8 +65,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
 	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types VERSION prepare \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
-	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h Muttrc.head Muttrc \
-	makedoc.c makedoc-defs.h stamp-doc-rc README.SSL smime.h \
+	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
+	README.SSL smime.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog ChangeLog.old mkchangelog.sh mutt_idna.h \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in
@@ -95,9 +84,9 @@ pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
-CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc keymap_alldefs.h $(BUILT_SOURCES)
+CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
-DISTCLEANFILES= flea Muttrc smime_keys
+DISTCLEANFILES= flea smime_keys
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -144,23 +133,15 @@ install-exec-hook:
 		{ echo "Can't fix mutt_dotlock's permissions!" >&2 ; exit 1 ; } \
 	fi
 
-install-data-local: Muttrc
+install-data-local:
 	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
-	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
 	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
-	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
-		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
-	elif [ -f $(DESTDIR)$(pkgdatadir)/../Muttrc ] ; then \
-	 	mv $(DESTDIR)$(pkgdatadir)/../Muttrc* $(DESTDIR)$(sysconfdir) ; \
-	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ] ; then \
-		$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir) ; \
-	fi
 	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
 	fi
 
 uninstall-local:
-	for i in Muttrc mime.types ; do \
+	for i in mime.types ; do \
 		if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i ; then \
 			rm $(DESTDIR)$(sysconfdir)/$$i ; \
 		fi ; \
@@ -192,18 +173,8 @@ update-changelog:
 mutt-dist:
 	(cd $(srcdir) && ./build-release )
 
-update-doc: stamp-doc-rc
+update-doc:
 	(cd doc && $(MAKE) update-doc)
-
-Muttrc: stamp-doc-rc
-
-stamp-doc-rc: $(srcdir)/init.h $(srcdir)/makedoc-defs.h makedoc Muttrc.head
-	-rm -f Muttrc stamp-doc-rc
-	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
-	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
-		$(srcdir)/init.h | ./makedoc -c >> Muttrc
-	touch stamp-doc-rc
-
 
 .PHONY: commit pclean check-security commit-real commit-changelog
 # .PHONY: changelog ChangeLog

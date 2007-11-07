@@ -19,7 +19,7 @@
 
 #ifdef _MAKEDOC
 # include "config.h"
-# include "makedoc-defs.h"
+# include "doc/makedoc-defs.h"
 #else
 # include "sort.h"
 #endif

@@ -7,6 +7,8 @@ AM_CPPFLAGS = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
 MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
 
+noinst_PROGRAMS = makedoc
+
 EXTRA_DIST = dotlock.man		\
 	muttbug.man			\
 	mutt.man			\
@@ -23,6 +25,8 @@ EXTRA_DIST = dotlock.man		\
 	instdoc.sh.in			\
 	patch-notes.txt			\
 	smime-notes.txt			\
+	Muttrc Muttrc.head stamp-doc-rc \
+	makedoc.c makedoc-defs.h 	\
 	html.xsl chunk.xsl $(BUILT_DISTFILES)
 
 HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
@@ -38,14 +42,14 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
-all:
-	$(MAKE) makedoc-all
+all: makedoc-all
 
 makedoc-all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
 
 install-data-local: makedoc-all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
+	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
 	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
@@ -65,6 +69,14 @@ install-data-local: makedoc-all instdoc
 	-for f in $(HTML_DOCFILES) ; do \
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir) ; \
 	done
+	$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir)/Muttrc.dist
+	-if [ -f $(DESTDIR)$(pkgdatadir)/Muttrc ] ; then \
+		mv $(DESTDIR)$(pkgdatadir)/Muttrc* $(DESTDIR)$(sysconfdir) ; \
+	elif [ -f $(DESTDIR)$(pkgdatadir)/../Muttrc ] ; then \
+	 	mv $(DESTDIR)$(pkgdatadir)/../Muttrc* $(DESTDIR)$(sysconfdir) ; \
+	elif [ ! -f $(DESTDIR)$(sysconfdir)/Muttrc ] ; then \
+		$(INSTALL) -m 644 Muttrc $(DESTDIR)$(sysconfdir) ; \
+	fi
 
 uninstall-local:
 	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 ; do \
@@ -78,12 +90,27 @@ uninstall-local:
 		rm -f $(DESTDIR)$(docdir)/$$f ; \
 	done
 	-rm -f $(DESTDIR)$(docdir)/manual.txt
+	for i in Muttrc ; do \
+	  if cmp -s $(DESTDIR)$(sysconfdir)/$$i.dist $(DESTDIR)$(sysconfdir)/$$i ; then \
+		rm $(DESTDIR)$(sysconfdir)/$$i ; \
+	  fi ; \
+	  rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
+	done
 
 check:
 manual.txt: manual.html
 	-lynx -dump -nolist -with_backspaces $^ > $@ || \
 	w3m -dump $^ > $@ || \
 	elinks -dump -no-numbering -no-references $^ > $@
+
+Muttrc: stamp-doc-rc
+
+stamp-doc-rc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
+	-rm -f Muttrc stamp-doc-rc
+	sed -e 's,[@]docdir[@],$(docdir),' $(srcdir)/Muttrc.head > Muttrc
+	$(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C \
+	  $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
+	touch stamp-doc-rc
 
 manual.html: $(srcdir)/html.xsl stamp-doc-xml
 	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
@@ -109,19 +136,17 @@ clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
 	rm -f *.aux *.log *.tex *.out
 
-DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html instdoc
+DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
+	       instdoc Muttrc
 
 instdoc: instdoc.sh
 	cat instdoc.sh > instdoc
 	chmod a+x instdoc
 
-../makedoc$(EXEEXT): $(top_srcdir)/makedoc.c
-	(cd .. && $(MAKE) makedoc$(EXEEXT))
+update-doc: stamp-doc-xml stamp-doc-chunked stamp-doc-rc manual.txt manual.html
 
-update-doc: stamp-doc-xml stamp-doc-chunked manual.txt manual.html
-
-muttrc.man: ../makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
-	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -m | 	    \
+muttrc.man: makedoc$(EXEEXT) $(top_srcdir)/init.h muttrc.man.head muttrc.man.tail
+	$(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -m | 	    \
 		cat $(srcdir)/muttrc.man.head - $(srcdir)/muttrc.man.tail\
 		> muttrc.man
 
@@ -132,13 +157,12 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
 
-stamp-doc-xml: $(top_srcdir)/makedoc.c $(top_srcdir)/makedoc-defs.h $(top_srcdir)/init.h \
+stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
                $(srcdir)/gen-map-doc $(top_srcdir)/VERSION $(top_srcdir)/ChangeLog
-	$(MAKE) ../makedoc$(EXEEXT) # we do not want to rebuild the documentation in tarball builds
 	( date=`head -n 1 $(top_srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1` && \
 	  sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` ($$date)/" $(srcdir)/manual.xml.head && \
-	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ../makedoc -s && \
+	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
 	    perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/OPS* \
 	) > manual.xml
