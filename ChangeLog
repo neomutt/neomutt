@@ -1,3 +1,15 @@
+2007-11-07 12:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (fce40f3a1aec)
+
+	* Makefile.am, Muttrc.head, doc/Makefile.am, doc/Muttrc.head, doc
+	/makedoc-defs.h, doc/makedoc.c, functions.h, init.h, makedoc-defs.h,
+	makedoc.c: Try to fix parallel build problems by moving makedoc to
+	doc/. This also requires to move Muttrc into doc/.
+
+2007-11-06 16:34 -0800  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (ac14b76ef8b2)
+
+	* Makefile.am: Remove unnecessary workaround for automake
+	dist target
+
 2007-11-06 18:23 +0100  Rocco Rutte  <pdmef@gmx.net>  (1770ab532bfd)
 
 	* curs_lib.c, imap/imap.c, imap/message.c, mbox.c, mh.c,
@@ -6,8 +18,6 @@
 	necessary to let the mbox driver print useful percentages. If
 	there's no percentage given and we have a size, calculate on it on
 	our own.  Closes #2929.
-
-2007-11-06 17:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (eae335942190)
 
 	* mh.c: (Re-)Add total msg count to progress for parsing maildirs
 
