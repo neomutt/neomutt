@@ -1,3 +1,12 @@
+2007-11-07 14:48 -0800  Brendan Cully  <brendan@kublai.com>  (b68ccc2e66e2)
+
+	* curs_lib.c, mutt_curses.h: Suppress progress bar updates less than
+	250ms apart. Closes #2899.
+
+2007-11-07 12:12 -0800  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (c62c5495d67c)
+
+	* wcwidth.c: Updated wcwidth to Unicode 5.0
+
 2007-11-07 12:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (fce40f3a1aec)
 
 	* Makefile.am, Muttrc.head, doc/Makefile.am, doc/Muttrc.head, doc

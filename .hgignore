@@ -21,7 +21,7 @@
 ^flea$
 ^hcversion\.h$
 ^keymap_(all)?defs\.h$
-^makedoc$
+^doc/makedoc$
 ^mutt$
 ^mutt_dotlock(\.c)?$
 ^patchlist\.c$
