@@ -1,3 +1,12 @@
+2007-11-06 18:23 +0100  Rocco Rutte  <pdmef@gmx.net>  (1770ab532bfd)
+
+	* curs_lib.c, imap/imap.c, imap/message.c, mbox.c, mh.c,
+	mutt_curses.h, pattern.c, pop.c, pop_lib.c, smtp.c: Add
+	percentages to progress bar optionally supplied by caller. This is
+	necessary to let the mbox driver print useful percentages. If
+	there's no percentage given and we have a size, calculate on it on
+	our own.  Closes #2929.
+
 2007-11-06 17:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (eae335942190)
 
 	* mh.c: (Re-)Add total msg count to progress for parsing maildirs
@@ -8,9 +17,9 @@
 
 2007-11-05 17:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (6b9e91edba54)
 
-	* ChangeLog, curs_lib.c: Save value of errno across mutt_endwin()
-	calls. Mutt_endwin() is sometimes called after noticing an error but
-	before printing the message via perror(). Closes #2965.
+	* curs_lib.c: Save value of errno across mutt_endwin()
+	calls. Mutt_endwin() is sometimes called after noticing an error
+	but before printing the message via perror(). Closes #2965.
 
 2007-11-05 15:53 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (b8dc6926ddf4)
 
@@ -18,12 +27,8 @@
 
 2007-11-05 14:53 +0100  Rocco Rutte  <pdmef@gmx.net>  (ad7983699656)
 
-	* ChangeLog, doc/manual.xml.head: Manual: Improve [un]mailboxes
+	* doc/manual.xml.head: Manual: Improve [un]mailboxes
 	documentation. Closes #2204.
-
-2007-11-05 14:52 +0100  Rocco Rutte  <pdmef@gmx.net>  (3bac5aa1af75)
-
-	* hg-commit: hg-commit: Exclude merges when writing ChangeLog
 
 2007-11-05 12:11 +0100  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (645fcdd66828)
 
@@ -34,7 +39,7 @@
 
 2007-11-04 13:19 -0800  Vsevolod Volkov  <vvv@mutt.org.ua>  (dc5ec6dbb278)
 
-	* ChangeLog, po/ru.po: Updated Russian translation
+	* po/ru.po: Updated Russian translation
 
 2007-11-04 13:17 -0800  Ivan Vilata i Balaguer  <ivan@selidor.net>  (1f72281eb36c)
 

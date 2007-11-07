@@ -16,7 +16,7 @@ bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
 BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h hcversion.h
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
-mutt_SOURCES = $(BUILT_SOURCES) \
+mutt_SOURCES = \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
 	crypt.c cryptglue.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
@@ -30,6 +30,8 @@ mutt_SOURCES = $(BUILT_SOURCES) \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c mbyte.c \
 	url.c ascii.c mutt_idna.c crypt-mod.c crypt-mod.h
+
+nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
 mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
 	$(INTLLIBS) $(LIBICONV)  $(GPGME_LIBS)
@@ -93,9 +95,7 @@ pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
-CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc \
-	keymap_alldefs.h keymap_defs.h patchlist.c \
-	reldate.h
+CLEANFILES = mutt_dotlock.c stamp-doc-rc makedoc keymap_alldefs.h $(BUILT_SOURCES)
 
 DISTCLEANFILES= flea Muttrc smime_keys
 
@@ -188,11 +188,6 @@ update-changelog:
 	(cd $(top_srcdir); \
 	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
 	$${VISUAL:-vi} ChangeLog)
-
-# kluge around automake problems.
-
-dist-hook:
-	-for file in $(BUILT_SOURCES) ; do rm -f $(distdir)/$$file ; done
 
 mutt-dist:
 	(cd $(srcdir) && ./build-release )
