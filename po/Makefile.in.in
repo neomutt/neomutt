@@ -63,7 +63,7 @@ CATALOGS = @CATALOGS@
 
 .po.pox:
 	$(MAKE) $(PACKAGE).pot
-	$(MSGMERGE) $< $(srcdir)/$(PACKAGE).pot -o $*.pox
+	$(MSGMERGE) $< $(PACKAGE).pot -o $*.pox
 
 .po.mo:
 	$(MSGFMT) -o $@ $<
@@ -86,14 +86,14 @@ $(top_srcdir)/keymap_alldefs.h:
 # otherwise packages like GCC can not be built if only parts of the source
 # have been downloaded.
 
-$(srcdir)/$(PACKAGE).pot: $(POTFILES) $(srcdir)/POTFILES.in
+$(PACKAGE).pot: $(POTFILES) $(srcdir)/POTFILES.in
 	rm -f $@
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
 	  --add-comments --keyword=_ --keyword=N_ \
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& test ! -f $(PACKAGE).po \
-	   || ( rm -f $(srcdir)/$(PACKAGE).pot \
-		&& mv $(PACKAGE).po $(srcdir)/$(PACKAGE).pot )
+	   || ( rm -f $(PACKAGE).pot \
+		&& mv $(PACKAGE).po $(PACKAGE).pot )
 
 
 install: install-exec install-data
