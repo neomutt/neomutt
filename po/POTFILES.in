@@ -34,7 +34,6 @@ imap/message.c
 imap/util.c
 init.c
 keymap.c
-keymap_alldefs.h
 lib.c
 main.c
 mbox.c

@@ -114,12 +114,11 @@ smime_keys: $(srcdir)/smime_keys.pl
 keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 	$(srcdir)/gen_defs $(OPS) > keymap_defs.h
 
-$(srcdir)/keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
-	chmod u+w $(srcdir)
+keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
 	rm -f $@
 	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.PGP \
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
-			> $(srcdir)/keymap_alldefs.h
+			> keymap_alldefs.h
 
 reldate.h: $(srcdir)/ChangeLog
 	echo 'const char *ReleaseDate = "'`head -n 1 $(srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1`'";' > reldate.h.tmp; \

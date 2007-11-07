@@ -51,6 +51,10 @@ GMOFILES = @GMOFILES@
 DISTFILES = Makefile.in.in POTFILES.in $(PACKAGE).pot \
 $(POFILES) $(GMOFILES)
 
+# need two spaces before = as m4/gettext.m4 matches against
+# 'POTFILES[space]=' to add files from POTFILES
+BUILT_POTFILES  = $(top_builddir)/keymap_alldefs.h
+
 POTFILES = \
 
 CATALOGS = @CATALOGS@
@@ -78,19 +82,22 @@ all: all-@USE_NLS@
 all-yes: $(CATALOGS)
 all-no:
 
-.PHONY: $(top_srcdir)/keymap_alldefs.h
-$(top_srcdir)/keymap_alldefs.h:
-	cd .. && $(MAKE) keymap_alldefs.h
+$(top_builddir)/keymap_alldefs.h:
+	( cd $(top_builddir) && $(MAKE) keymap_alldefs.h )
 
 # Note: Target 'all' must not depend on target '$(srcdir)/$(PACKAGE).pot',
 # otherwise packages like GCC can not be built if only parts of the source
 # have been downloaded.
 
-$(PACKAGE).pot: $(POTFILES) $(srcdir)/POTFILES.in
-	rm -f $@
+$(PACKAGE).pot: $(POTFILES) $(BUILT_POTFILES) $(srcdir)/POTFILES.in
+	rm -f $(PACKAGE).pot $(PACKAGE).po
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
 	  --add-comments --keyword=_ --keyword=N_ \
 	  --files-from=$(srcdir)/POTFILES.in \
+	&& \
+	$(XGETTEXT) --default-domain=$(PACKAGE) \
+	  --add-comments --keyword=_ --keyword=N_ \
+	  --join $(BUILT_POTFILES) \
 	&& test ! -f $(PACKAGE).po \
 	   || ( rm -f $(PACKAGE).pot \
 		&& mv $(PACKAGE).po $(PACKAGE).pot )
