@@ -1,5 +1,4 @@
 # autoconf products
-^Muttrc(\.head)?$
 ^aclocal\.m4$
 ^autom4te\.cache
 ^(contrib/|doc/|imap/|m4/|po/)?Makefile\.in$
@@ -9,6 +8,7 @@
 ^hcachever.sh$
 ^muttbug\.sh$
 ^stamp-h1$
+^doc/Muttrc$
 ^doc/instdoc\.sh$
 ^po/POTFILES$
 ^config.guess$
