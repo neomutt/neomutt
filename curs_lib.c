@@ -44,8 +44,6 @@
 #include <langinfo.h>
 #endif
 
-#define PROGRESS_REFRESH_MILLIS 250
-
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
@@ -368,7 +366,9 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   }
   if (gettimeofday (&tv, NULL) < 0)
     dprint (1, (debugfile, "gettimeofday failed: %d\n", errno));
-  progress->timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+  /* if timestamp is 0 no time-based suppression is done */
+  if (TimeInc)
+    progress->timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   mutt_progress_update (progress, 0, 0);
 }
 
@@ -392,7 +392,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   /* skip refresh if not enough time has passed */
   if (update && progress->timestamp && !gettimeofday (&tv, NULL)) {
     now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
-    if (now && now - progress->timestamp < PROGRESS_REFRESH_MILLIS)
+    if (now && now - progress->timestamp < TimeInc)
       update = 0;
   }
 
@@ -402,6 +402,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
 
   if (update)
   {
+    dprint (1, (debugfile, "Updating progress: %ld\n", pos));
     if (progress->flags & M_PROGRESS_SIZE)
     {
       pos = pos / (progress->inc << 10) * (progress->inc << 10);

@@ -1,3 +1,8 @@
+2007-11-08 11:26 -0800  Brendan Cully  <brendan@kublai.com>  (3869e46f6fd4)
+
+	* color.c, copy.c, imap/command.c: Turn down some debug logging
+	levels
+
 2007-11-08 09:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (92a6bfbed657)
 
 	* doc/Makefile.am: Add stamp-doc-rc to makedoc-all to build Muttrc

@@ -2864,6 +2864,15 @@ struct option_t MuttVars[] = {
   ** When set, the internal-pager will pad blank lines to the bottom of the
   ** screen with a tilde (~).
   */
+  { "time_inc",		DT_NUM,	 R_NONE, UL &TimeInc, 0 },
+  /*
+  ** .pp
+  ** Along with ``$read_inc'', ``$write_inc'', and ``$net_inc'', this
+  ** variable controls the frequency with which progress updates are
+  ** displayed. It suppresses updates less than ``$time_inc'' milliseconds
+  ** apart. This can improve throughput on systems with slow terminals,
+  ** or when running mutt on a remote system.
+  */
   { "timeout",		DT_NUM,	 R_NONE, UL &Timeout, 600 },
   /*
   ** .pp

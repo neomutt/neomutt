@@ -4,6 +4,9 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  + $time_inc suppresses progress updates less than $time_inc
+    milliseconds apart.
+
 1.5.17 (2007-11-01):
 
   ! --enable-exact-address works again
