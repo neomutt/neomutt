@@ -1,3 +1,8 @@
+2007-11-08 09:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (92a6bfbed657)
+
+	* doc/Makefile.am: Add stamp-doc-rc to makedoc-all to build Muttrc
+	with fresh checkout
+
 2007-11-07 14:48 -0800  Brendan Cully  <brendan@kublai.com>  (b68ccc2e66e2)
 
 	* curs_lib.c, mutt_curses.h: Suppress progress bar updates less than

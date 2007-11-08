@@ -209,7 +209,7 @@ int imap_cmd_step (IMAP_DATA* idata)
     rc = IMAP_CMD_CONTINUE;
   else
   {
-    dprint (2, (debugfile, "IMAP queue drained\n"));
+    dprint (3, (debugfile, "IMAP queue drained\n"));
     imap_cmd_finish (idata);
   }
   
@@ -486,7 +486,7 @@ static void cmd_parse_capability (IMAP_DATA* idata, char* s)
   int x;
   char* bracket;
 
-  dprint (2, (debugfile, "Handling CAPABILITY\n"));
+  dprint (3, (debugfile, "Handling CAPABILITY\n"));
 
   s = imap_next_word (s);
   if ((bracket = strchr (s, ']')))
@@ -545,7 +545,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
   int msgno, cur;
   HEADER* h = NULL;
 
-  dprint (2, (debugfile, "Handling FETCH\n"));
+  dprint (3, (debugfile, "Handling FETCH\n"));
 
   msgno = atoi (s);
   
@@ -566,7 +566,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s)
   
   if (!h)
   {
-    dprint (1, (debugfile, "FETCH response ignored for this message\n"));
+    dprint (3, (debugfile, "FETCH response ignored for this message\n"));
     return;
   }
   
