@@ -44,7 +44,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 
 all: makedoc-all
 
-makedoc-all: mutt.1 muttrc.man manual.html stamp-doc-chunked manual.txt
+makedoc-all: mutt.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt
 
 install-data-local: makedoc-all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
