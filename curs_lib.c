@@ -35,6 +35,10 @@
 #include <string.h>
 #include <errno.h>
 #include <ctype.h>
+#ifdef HAVE_SYS_TIME_H
+# include <sys/time.h>
+#endif
+#include <time.h>
 
 #ifdef HAVE_LANGINFO_YESEXPR
 #include <langinfo.h>
@@ -343,6 +347,8 @@ void mutt_progress_init (progress_t* progress, const char *msg,
 			 unsigned short flags, unsigned short inc,
 			 long size)
 {
+  struct timeval tv = { 0, 0 };
+
   if (!progress)
     return;
   memset (progress, 0, sizeof (progress_t));
@@ -350,6 +356,19 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   progress->flags = flags;
   progress->msg = msg;
   progress->size = size;
+  if (progress->size) {
+    if (progress->flags & M_PROGRESS_SIZE)
+      mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr),
+			progress->size);
+    else
+      snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld",
+		progress->size);
+  }
+  if (gettimeofday (&tv, NULL) < 0)
+    dprint (1, (debugfile, "gettimeofday failed: %d\n", errno));
+  /* if timestamp is 0 no time-based suppression is done */
+  if (TimeInc)
+    progress->timestamp = tv.tv_sec * 1000 + tv.tv_usec / 1000;
   mutt_progress_update (progress, 0, 0);
 }
 
@@ -357,45 +376,45 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
 {
   char posstr[SHORT_STRING];
   short update = 0;
+  struct timeval tv = { 0, 0 };
+  unsigned int now = 0;
 
-  if (!pos)
-  {
-    if (!progress->inc)
-      mutt_message (progress->msg);
-    else
-    {
-      if (progress->size)
-      {
-	if (progress->flags & M_PROGRESS_SIZE)
-	  mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr), progress->size);
-	else
-	  snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld", progress->size);
-      }
-      progress->pos = 0;
-    }
-  }
-
-  if (!progress->inc)
+  if (pos && !progress->inc)
     return;
 
-  if (progress->flags & M_PROGRESS_SIZE)
-  {
-    if (pos >= progress->pos + (progress->inc << 10))
-    {
-      pos = pos / (progress->inc << 10) * (progress->inc << 10);
-      mutt_pretty_size (posstr, sizeof (posstr), pos);
-      update = 1;
-    }
-  }
-  else if (pos >= progress->pos + progress->inc)
-  {
-    snprintf (posstr, sizeof (posstr), "%ld", pos);
+  /* refresh if size > inc */
+  if (progress->flags & M_PROGRESS_SIZE &&
+      (pos >= progress->pos + (progress->inc << 10)))
     update = 1;
+  else if (pos >= progress->pos + progress->inc)
+    update = 1;
+
+  /* skip refresh if not enough time has passed */
+  if (update && progress->timestamp && !gettimeofday (&tv, NULL)) {
+    now = tv.tv_sec * 1000 + tv.tv_usec / 1000;
+    if (now && now - progress->timestamp < TimeInc)
+      update = 0;
   }
+
+  /* always show the first update */
+  if (!pos)
+    update = 1;
 
   if (update)
   {
+    dprint (1, (debugfile, "Updating progress: %ld\n", pos));
+    if (progress->flags & M_PROGRESS_SIZE)
+    {
+      pos = pos / (progress->inc << 10) * (progress->inc << 10);
+      mutt_pretty_size (posstr, sizeof (posstr), pos);
+    }
+    else
+      snprintf (posstr, sizeof (posstr), "%ld", pos);
+    
     progress->pos = pos;
+    if (now)
+      progress->timestamp = now;
+
     if (progress->size > 0)
     {
       mutt_message ("%s %s/%s (%d%%)", progress->msg, posstr, progress->sizestr,

@@ -254,8 +254,8 @@ int mutt_alloc_color (int fg, int bg)
 
   init_pair(i, fg, bg);
 
-  dprint(1,(debugfile,"mutt_alloc_color(): Color pairs used so far: %d\n",
-                       UserColors));
+  dprint (3, (debugfile,"mutt_alloc_color(): Color pairs used so far: %d\n",
+	      UserColors));
 
   return (COLOR_PAIR (p->index));
 }

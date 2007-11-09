@@ -129,7 +129,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
   {
     for (t = HeaderOrderList; t; t = t->next)
     {
-      dprint(1, (debugfile, "Reorder list: %s\n", t->data));
+      dprint(3, (debugfile, "Reorder list: %s\n", t->data));
       hdr_count++;
     }
   }

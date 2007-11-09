@@ -35,7 +35,7 @@
 
 #ifdef _MAKEDOC
 # include "config.h"
-# include "makedoc-defs.h"
+# include "doc/makedoc-defs.h"
 #endif
 
 struct binding_t OpGeneric[] = { /* map: generic */
