@@ -1,3 +1,38 @@
+2007-11-13 11:50 +0100  Rocco Rutte  <pdmef@gmx.net>  (4ded279d93bb)
+
+	* doc/manual.xml.head, init.h: Document that %f in $index_format is
+	either Return-Path: or From: depending on which parses correctly.
+	Also note that alternates' regex should be as precise as possible to
+	avoid mismatches. Closes #1894.
+
+2007-11-13 11:15 +0100  Rocco Rutte  <pdmef@gmx.net>  (a259a755fa03)
+
+	* init.h: Properly document $hostname, link it to $use_domain and
+	$hidden_host. Closes #891.
+
+2007-11-07 14:54 +0100  Rocco Rutte  <pdmef@gmx.net>  (84284776659e)
+
+	* Makefile.am, po/Makefile.in.in, po/POTFILES.in: Don't build
+	keymap_alldefs.h in srcdir as it may be read-only
+
+2007-11-07 12:28 +0100  Rocco Rutte  <pdmef@gmx.net>  (fed536a2ce22)
+
+	* po/Makefile.in.in: Don't try to build $(PACKAGE).pot in srcdir as it
+	may be read-only
+
+2007-11-08 22:13 -0800  Michael Elkins  <me@mutt.org>  (4bba47e6d026)
+
+	* doc/manual.xml.head: Removed the [!] prefix from the usage from the
+	usage string for the un/mailboxes command since it has no special
+	meaning in this context other than referring to $spoolfile.
+
+2007-11-08 11:48 -0800  Brendan Cully  <brendan@kublai.com>  (daf29fe0ed4c)
+
+	* ChangeLog, UPDATING, curs_lib.c, globals.h, init.h: Add $time_inc to
+	control progress update frequency. I found 250ms to be noticeably
+	different from the old behaviour, and it ruins the rounding of the
+	other _inc variables.
+
 2007-11-08 11:26 -0800  Brendan Cully  <brendan@kublai.com>  (3869e46f6fd4)
 
 	* color.c, copy.c, imap/command.c: Turn down some debug logging
