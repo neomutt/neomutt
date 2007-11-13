@@ -811,9 +811,20 @@ struct option_t MuttVars[] = {
   { "hostname",		DT_STR,	 R_NONE, UL &Fqdn, 0 },
   /*
   ** .pp
-  ** Specifies the hostname to use after the ``@'' in local e-mail
-  ** addresses.  This overrides the compile time definition obtained from
-  ** /etc/resolv.conf.
+  ** Specifies the fully-qualified hostname of the system mutt is running on
+  ** containing the host's name and the DNS domain it belongs to. It is used
+  ** as the domain part (after ``@'') for local email addresses as well as
+  ** Message-Id headers.
+  ** .pp
+  ** Its value is determined at startup as follows: If the node's name
+  ** as returned by the uname(3) function contains the hostname and the
+  ** domain, these are used to construct $$hostname. If there is no
+  ** domain part returned, Mutt will look for a ``domain'' or ``search''
+  ** line in /etc/resolv.conf to determine the domain. Optionally, Mutt
+  ** can be compiled with a fixed domain name in which case a detected
+  ** one is not used.
+  ** .pp
+  ** Also see ``$$use_domain'' and ``$$hidden_host''.
   */
   { "ignore_linear_white_space",    DT_BOOL, R_NONE, OPTIGNORELWS, 0 },
   /*
