@@ -1021,7 +1021,7 @@ struct option_t MuttVars[] = {
   **            ``date_format'' converted to the local time zone
   ** .dt %e .dd current message number in thread
   ** .dt %E .dd number of messages in current thread
-  ** .dt %f .dd entire From: line (address + real name)
+  ** .dt %f .dd sender (address + real name), either From: or Return-Path:
   ** .dt %F .dd author name, or recipient name if the message is from you
   ** .dt %H .dd spam attribute(s) of this message
   ** .dt %i .dd message-id of the current message

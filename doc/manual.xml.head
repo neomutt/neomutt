@@ -2378,6 +2378,26 @@ receive e-mail.
 </para>
 
 <para>
+As addresses are matched using regular expressions and not exact strict
+comparisons, you should make sure you specify your addresses as precise
+as possible to avoid mismatches. For example, if you specify:
+</para>
+
+<screen>
+alternates user@example
+</screen>
+
+<para>
+mutt will consider ``<literal>some-user@example</literal>'' as
+being your address, too which may not be desired. As a solution, in such
+cases addresses should be specified as:
+</para>
+
+<screen>
+alternates '^user@example$'
+</screen>
+
+<para>
 The <literal>-group</literal> flag causes all of the subsequent regular expressions
 to be added to the named group.
 </para>
