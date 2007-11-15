@@ -46,6 +46,8 @@
 # include <getopt.h>
 #endif
 
+#include "makedoc-defs.h"
+
 #ifndef HAVE_STRERROR
 #ifndef STDC_HEADERS
 extern int sys_nerr;

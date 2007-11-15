@@ -51,4 +51,6 @@
 # ifndef HAVE_GETADDRINFO
 #  define HAVE_GETADDRINFO
 # endif
-
+# ifndef USE_SASL
+#  define USE_SASL
+# endif
