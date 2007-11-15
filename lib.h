@@ -52,6 +52,7 @@
 # else
 #  define _(a) (a)
 #  define N_(a) a
+#  define bind_textdomain_codeset(a, b)
 # endif
 
 # define TRUE 1
