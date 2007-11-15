@@ -1063,7 +1063,10 @@ if test "$BUILD_INCLUDED_LIBINTL" = "yes"; then
   AC_DEFINE(HAVE_BIND_TEXTDOMAIN_CODESET,1,
           [ Define if your gettext has bind_textdomain_codeset. ])
 else
+  mutt_save_LIBS="$LIBS"
+  LIBS="$LIBS $INTLLIBS"
   AC_CHECK_FUNCS(bind_textdomain_codeset)
+  LIBS="$mutt_save_LIBS"
 fi
 
 fi # libiconv

@@ -1,3 +1,13 @@
+2007-11-15 11:53 +0100  peb  <peb@mppmu.mpg.de>  (22c68faeec08)
+
+	* lib.h: Don't use bind_textdomain_codeset() if we're not using
+	NLS/gettext. Closes #2162.
+
+2007-11-15 11:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (933e57dff004)
+
+	* ChangeLog, doc/manual.xml.head: Properly document simple searches
+	and its "secret" keywords. Closes #2136.
+
 2007-11-13 13:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (7a4a154eefa5)
 
 	* wcwidth.c: Fix compiler warnings in new wcwidth.c (too large values
