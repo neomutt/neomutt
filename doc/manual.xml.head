@@ -3817,7 +3817,7 @@ they may or may not be available in stock libraries on various systems.
 </sect1>
 
 <sect1 id="patterns">
-<title>Patterns</title>
+<title>Patterns: Searching, Limiting and Tagging</title>
 
 <para>
 Many of Mutt's commands allow you to specify a pattern to match
@@ -3934,6 +3934,58 @@ This example matches all mails which only has recipients from Germany.
 ^~C \.de$
 </screen>
 
+</para>
+
+</sect2>
+
+<sect2>
+<title>Simple Patterns</title>
+
+<para>
+Mutt supports two versions of so called ``simple searches'' which are
+issued if the pattern entered for searching, limiting and similar
+operations does not actually contain a pattern modifier.
+</para>
+
+<para>
+The first type is by checking whether the query string equals
+a keyword case-insensitively from <xref linkend="tab-simplesearch-keywords"/>:
+If that is the case, Mutt will use the shown pattern modifier instead.
+If a keyword would conflict with your search keyword, you need to turn
+it into a regular expression to avoid matching the keyword table. For
+example, if you want to find all messages matching ``<literal>flag</literal>''
+(using <link linkend="simple-search">&dollar;simple&lowbar;search</link>,
+see below but not meaning flagged messages) simply search for
+``<literal>&lsqb;f&rsqb;lag</literal>''.
+</para>
+
+<table id="tab-simplesearch-keywords">
+<title>Simple search keywords</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Keyword</entry><entry>Pattern modifier</entry></row>
+</thead>
+<tbody>
+<row><entry>all</entry><entry>~A</entry></row>
+<row><entry>.</entry><entry>~A</entry></row>
+<row><entry>&circ;</entry><entry>~A</entry></row>
+<row><entry>del</entry><entry>~D</entry></row>
+<row><entry>flag</entry><entry>~F</entry></row>
+<row><entry>new</entry><entry>~N</entry></row>
+<row><entry>old</entry><entry>~O</entry></row>
+<row><entry>repl</entry><entry>~Q</entry></row>
+<row><entry>read</entry><entry>~R</entry></row>
+<row><entry>tag</entry><entry>~T</entry></row>
+<row><entry>unread</entry><entry>~U</entry></row>
+</tbody>
+</tgroup>
+</table>
+
+<para>
+The second type of simple search is to build a complex search
+pattern using <link linkend="simple-search">&dollar;simple&lowbar;search</link>
+as a template. Mutt will insert your query properly quoted and search
+for the composed complex query.
 </para>
 
 </sect2>

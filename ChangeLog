@@ -1,3 +1,13 @@
+2007-11-13 13:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (7a4a154eefa5)
+
+	* wcwidth.c: Fix compiler warnings in new wcwidth.c (too large values
+	for 'unsigned short')
+
+2007-11-13 11:53 +0100  Rocco Rutte  <pdmef@gmx.net>  (9e0bcfee7478)
+
+	* ChangeLog, hg-commit: hg-commit: Run 'make validate' in doc/ if
+	manual.xml is present
+
 2007-11-13 11:50 +0100  Rocco Rutte  <pdmef@gmx.net>  (4ded279d93bb)
 
 	* doc/manual.xml.head, init.h: Document that %f in $index_format is
