@@ -926,7 +926,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
 }
 
 /* extract the first substring that looks like a message-id */
-static char *extract_message_id (const char *s)
+char *mutt_extract_message_id (const char *s)
 {
   const char *p;
   char *r;
@@ -1132,7 +1132,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     {
       /* We add a new "Message-ID:" when building a message */
       FREE (&e->message_id);
-      e->message_id = extract_message_id (p);
+      e->message_id = mutt_extract_message_id (p);
       matched = 1;
     }
     else if (!ascii_strncasecmp (line + 1, "ail-", 4))

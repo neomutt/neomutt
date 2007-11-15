@@ -298,7 +298,15 @@ static void process_user_header (ENVELOPE *env)
       env->reply_to = rfc822_parse_adrlist (env->reply_to, uh->data + 9);
     }
     else if (ascii_strncasecmp ("message-id:", uh->data, 11) == 0)
-      mutt_str_replace (&env->message_id, uh->data + 11);
+    {
+      char *tmp = mutt_extract_message_id (uh->data + 11);
+      if (rfc822_valid_msgid (tmp) >= 0)
+      {
+	FREE(&env->message_id);
+	env->message_id = tmp;
+      } else
+	FREE(&tmp);
+    }
     else if (ascii_strncasecmp ("to:", uh->data, 3) != 0 &&
 	     ascii_strncasecmp ("cc:", uh->data, 3) != 0 &&
 	     ascii_strncasecmp ("bcc:", uh->data, 4) != 0 &&
