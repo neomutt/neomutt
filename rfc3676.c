@@ -53,7 +53,7 @@ static int get_quote_level (const char *line)
   return quoted;
 }
 
-static void print_indent (int ql, STATE *s, int sp)
+static size_t print_indent (int ql, STATE *s, int sp)
 {
   int i;
 
@@ -63,84 +63,79 @@ static void print_indent (int ql, STATE *s, int sp)
     state_putc ('>', s);
   if (sp)
     state_putc (' ', s);
+  return ql + sp;
 }
 
-static void print_flowed_line (const char *line, STATE *s, int ql)
+static void flush_par (STATE *s, size_t *sofar)
 {
-  int width;
-  char *pos, *oldpos;
-  int len = mutt_strlen (line);
+  if (*sofar > 0)
+  {
+    state_putc ('\n', s);
+    *sofar = 0;
+  }
+}
 
-  width = (Wrap ? mutt_term_width (Wrap) : FLOWED_MAX) - 1;
+static int quote_width (STATE *s, int ql)
+{
+  size_t width = (Wrap ? mutt_term_width (Wrap) : FLOWED_MAX) - 1;
   if (s->flags & M_REPLYING && width > FLOWED_MAX)
     width = FLOWED_MAX;
-  /* probably want a quote_width function */
   if (ql + 1 < width)
     width -= ql + 1;
-    
-  if (len == 0)
+  return width;
+}
+
+static void print_flowed_line (char *line, STATE *s, int ql, size_t *sofar, int term)
+{
+  size_t width, w, words;
+  char *p;
+
+  if (!line || !*line)
   {
+    /* flush current paragraph (if any) first */
+    flush_par (s, sofar);
     print_indent (ql, s, 0);
     state_putc ('\n', s);
     return;
   }
 
-  pos = (char *) line + width;
-  oldpos = (char *) line;
+  width = quote_width (s, ql);
 
-  for (; oldpos < line + len; pos += width)
+  dprint (4, (debugfile, "f-f: line [%s], width = %ld\n", NONULL(line), width));
+
+  for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
   {
-    /* only search for a new position when we're not over the end */
-    if (pos < line + len)
+    w = mutt_strwidth (NONULL(p));
+    dprint (4, (debugfile, "f-f: word [%s], width = %ld, line = %ld\n", NONULL(p), w, *sofar));
+    if (w + 1 + (*sofar) > width)
     {
-      if (*pos == ' ')
-      {
-        dprint (4, (debugfile, "f=f: found space directly at width\n"));
-        *pos = '\0';
-        ++pos;
-      }
-      else
-      {
-        char *save = pos;
-        dprint (4, (debugfile, "f=f: need to search for space\n"));
-
-        while (pos >= oldpos && *pos != ' ')
-          --pos;
-
-        if (pos < oldpos)
-        {
-          dprint (4, (debugfile, "f=f: no space found while searching "
-                           "to left; going right\n"));
-          pos = save;
-          while (pos < line + len && *pos && *pos != ' ')
-            ++pos;
-          dprint (4, (debugfile, "f=f: found space at pos %d\n", pos-line));
-        }
-        else
-        {
-          dprint (4, (debugfile, "f=f: found space while searching to left\n"));
-        }
-
-        *pos = '\0';
-        ++pos;
-      }
+      /* line would be too long, flush */
+      dprint (4, (debugfile, "f-f: width: %ld\n", *sofar));
+      state_puts (" \n", s);
+      *sofar = 0;
     }
-    else
+    if (*sofar == 0)
     {
-      dprint (4, (debugfile, "f=f: line completely fits on screen\n"));
+      /* indent empty lines */
+      *sofar = print_indent (ql, s, ql > 0 || s->prefix);
+      words = 0;
     }
-
-    print_indent (ql, s, ql > 0 || s->prefix);
-    state_puts (oldpos, s);
-
-    if (pos < line + len)
+    if (words > 0)
+    {
+      /* put space before current word if we have words already */
       state_putc (' ', s);
-    state_putc ('\n', s);
-    oldpos = pos;
+      (*sofar)++;
+    }
+    state_puts (NONULL(p), s);
+    (*sofar) += w;
+    words++;
   }
+
+  if (term)
+    flush_par (s, sofar);
 }
 
-static void print_fixed_line (const char *line, STATE *s, int ql)
+static void print_fixed_line (const char *line, STATE *s, int ql, size_t *sofar)
 {
   int len = mutt_strlen (line);
 
@@ -154,19 +149,19 @@ static void print_fixed_line (const char *line, STATE *s, int ql)
   print_indent (ql, s, ql > 0 || s->prefix);
   state_puts (line, s);
   state_putc ('\n', s);
+
+  *sofar = 0;
 }
 
 int rfc3676_handler (BODY * a, STATE * s)
 {
   int bytes = a->length;
   char buf[LONG_STRING];
-  char *curline = safe_malloc (STRING);
   char *t = NULL;
-  unsigned int curline_len = 1, quotelevel = 0, newql = 0, sigsep = 0;
-  int buf_off, buf_len;
+  unsigned int quotelevel = 0, newql = 0, sigsep = 0;
+  int buf_off = 0, buf_len;
   int delsp = 0, fixed = 0;
-
-  *curline = '\0';
+  size_t width = 0;
 
   /* respect DelSp of RfC3676 only with f=f parts */
   if ((t = (char *) mutt_get_parameter ("delsp", a->parameter)))
@@ -175,7 +170,7 @@ int rfc3676_handler (BODY * a, STATE * s)
     t = NULL;
   }
 
-  dprint (2, (debugfile, "f=f: DelSp: %s\n", delsp ? "yes" : "no"));
+  dprint (4, (debugfile, "f=f: DelSp: %s\n", delsp ? "yes" : "no"));
 
   while (bytes > 0 && fgets (buf, sizeof (buf), s->fpin))
   {
@@ -185,15 +180,12 @@ int rfc3676_handler (BODY * a, STATE * s)
 
     newql = get_quote_level (buf);
 
-    /* a change of quoting level in a paragraph - shouldn't happen, 
-     * but has to be handled - see RFC 3676, sec. 4.5.
+    /* end flowed paragraph (if we're within one) if quoting level
+     * changes (should not but can happen, see RFC 3676, sec. 4.5.)
      */
-    if (newql != quotelevel && *curline)
-    {
-      print_flowed_line (curline, s, quotelevel);
-      *curline = '\0';
-      curline_len = 1;
-    }
+    if (newql != quotelevel)
+      flush_par (s, &width);
+
     quotelevel = newql;
 
     /* XXX - If a line is longer than buf (shouldn't happen), it is split.
@@ -220,49 +212,25 @@ int rfc3676_handler (BODY * a, STATE * s)
      * signature separator */
     fixed = buf_len == buf_off || buf[buf_len - 1] != ' ' || sigsep;
 
+    /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
+     * fixed lines */
+    if ((fixed && (!width || !buf_len)) || sigsep)
+    {
+      /* if we're within a flowed paragraph, terminate it */
+      flush_par (s, &width);
+      print_fixed_line (buf + buf_off, s, quotelevel, &width);
+      continue;
+    }
+
     /* for DelSp=yes, we need to strip one SP prior to CRLF on flowed lines */
     if (delsp && !fixed)
       buf[--buf_len] = '\0';
 
-    /* signature separator also flushes the previous paragraph */
-    if (sigsep && *curline)
-    {
-      print_flowed_line (curline, s, quotelevel);
-      *curline = '\0';
-      curline_len = 1;
-    }
-
-    /* if this is a standalone fixed line, print it as-is */
-    if (fixed && curline_len == 1)
-    {
-      print_fixed_line (buf + buf_off, s, quotelevel);
-      continue;
-    }
-
-    /* append remaining contents without quotes, space-stuffed
-     * spaces and with 1 trailing space (0 or 1 for DelSp=yes) */
-    safe_realloc (&curline, curline_len + buf_len - buf_off);
-    strcpy (curline + curline_len - 1, buf + buf_off);	/* __STRCPY_CHECKED__ */
-    curline_len += buf_len - buf_off;
-
-    /* if this was a fixed line, the paragraph is finished */
-    if (fixed)
-    {
-      print_flowed_line (curline, s, quotelevel);
-      *curline = '\0';
-      curline_len = 1;
-    }
-
+    print_flowed_line (buf + buf_off, s, quotelevel, &width, fixed);
   }
 
-  if (*curline)
-  {
-    dprint (2, (debugfile,
-		"f=f: still content buffered af EOF, flushing at ql=%d\n", quotelevel));
-    print_flowed_line (curline, s, quotelevel);
-  }
+  flush_par (s, &width);
 
-  FREE(&curline);
   return (0);
 }
 
