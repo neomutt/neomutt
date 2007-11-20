@@ -1238,12 +1238,25 @@ static void quote_simple(char *tmp, size_t len, const char *p)
 void mutt_check_simple (char *s, size_t len, const char *simple)
 {
   char tmp[LONG_STRING];
+  int do_simple = 1;
+  char *p;
+
+  for (p = s; p && *p; p++)
+  {
+    if (*p == '\\' && *(p + 1))
+      p++;
+    else if (*p == '~' || *p == '=' || *p == '%')
+    {
+      do_simple = 0;
+      break;
+    }
+  }
 
   /* XXX - is ascii_strcasecmp() right here, or should we use locale's
    * equivalences?
    */
-  
-  if (!strchr (s, '~') && !strchr (s, '=') && !strchr (s, '%')) /* yup, so spoof a real request */
+
+  if (do_simple) /* yup, so spoof a real request */
   {
     /* convert old tokens into the new format */
     if (ascii_strcasecmp ("all", s) == 0 ||

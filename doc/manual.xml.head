@@ -3943,8 +3943,11 @@ This example matches all mails which only has recipients from Germany.
 
 <para>
 Mutt supports two versions of so called ``simple searches'' which are
-issued if the pattern entered for searching, limiting and similar
-operations does not actually contain a pattern modifier.
+issued if the query entered for searching, limiting and similar
+operations does not seem to be a valid pattern (i.e. it does not contain
+one of these characters: ``~'', ``='' or ``&percnt;''). If the query is
+supposed to contain one of these special characters, they must be escaped
+by prepending a backslash (``\'').
 </para>
 
 <para>

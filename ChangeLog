@@ -1,3 +1,33 @@
+2007-11-20 08:45 +0000  Rocco Rutte  <pdmef@gmx.net>  (3dd709959912)
+
+	* configure.ac, strsep.c: Add glibc implementation of strsep() in case
+	a system misses it. Closes #2989.
+
+2007-11-20 08:44 +0000  Rocco Rutte  <pdmef@gmx.net>  (a177e28ebcd4)
+
+	* lib.h, mbyte.c: Alternate fix for not calling
+	bind_textdomain_codeset() to fix Solaris build.
+
+2007-11-19 15:32 +0100  Rocco Rutte  <pdmef@gmx.net>  (033eba2d6834)
+
+	* rfc3676.c: Make f=f handler multibyte-aware by not buffering flowed
+	content until it's finished. We now write out content as we read it
+	(which simplifies the code quite a bit) and properly flow multibyte
+	paragraphs. This should improve DelSp=yes handling where a flowed
+	paragraph may not have spaces at all except trailing ones for
+	flowable paragraphs (after concatenating lines we didn't have access
+	to the original break points any longer). We still split content by
+	ASCII space (this should be safe as f=f itself uses ASCII space to
+	mark flowable lines (even for languages that aren't expected to use
+	spaces, see DelSp). Closes #862.
+
+2007-11-15 13:17 +0100  Rocco Rutte  <pdmef@gmx.net>  (a0161768f631)
+
+	* ChangeLog, doc/makedoc-defs.h, doc/makedoc.c: Fix more documentation
+	build issues. Define USE_SASL (for $smtp_authenticators) in makedoc-
+	defs.h, include it in makedoc.c to force doc rebuild if makedoc-
+	defs.h changes.
+
 2007-11-15 12:32 +0100  Rocco Rutte  <pdmef@gmx.net>  (8c5357e2b31c)
 
 	* parse.c, protos.h, send.c: Properly parse and validate Message-IDs
