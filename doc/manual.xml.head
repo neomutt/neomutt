@@ -2671,21 +2671,23 @@ hdr&lowbar;order From Date: From: To: Cc: Subject:
 </sect1>
 
 <sect1 id="save-hook">
-<title>Specify default save filename</title>
+<title>Specify default save mailbox</title>
 
 <para>
-Usage: <literal>save-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>filename</emphasis>
+Usage: <literal>save-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
 </para>
 
 <para>
-This command is used to override the default filename used when saving
-messages.  <emphasis>filename</emphasis> will be used as the default filename if the message is
-<emphasis>From:</emphasis> an address matching <emphasis>regexp</emphasis> or if you are the author and the
-message is addressed <emphasis>to:</emphasis> something matching <emphasis>regexp</emphasis>.
+This command is used to override the default mailbox used when saving
+messages. <emphasis>mailbox</emphasis> will be used as the default if the message
+matches <emphasis>pattern</emphasis>, see <xref linkend="pattern-hook"/> for information
+on the exact format.
 </para>
 
 <para>
-See <xref linkend="pattern-hook"/> for information on the exact format of <emphasis>pattern</emphasis>.
+To provide more flexibility and good defaults, Mutt applies the
+expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
+<emphasis>mailbox</emphasis> after it was expanded.
 </para>
 
 <para>
@@ -2695,7 +2697,11 @@ Examples:
 <para>
 
 <screen>
+# default: save all to ~/Mail/&lt;author name&gt;
+save-hook . ~/Mail/%F
+# save from me@turing.cs.hmc.edu/me@cs.hmc.edu to $folder/elinks
 save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
+# save from aol.com to $folder/spam
 save-hook aol\\.com$ +spam
 </screen>
 
@@ -2723,6 +2729,12 @@ to <link linkend="record">&dollar;record</link> mailbox.
 </para>
 
 <para>
+To provide more flexibility and good defaults, Mutt applies the
+expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
+<emphasis>mailbox</emphasis> after it was expanded.
+</para>
+
+<para>
 See <xref linkend="pattern-hook"/> for information on the exact format of <emphasis>pattern</emphasis>.
 </para>
 
@@ -2746,7 +2758,9 @@ Usage: <literal>fcc-save-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis
 
 <para>
 This command is a shortcut, equivalent to doing both a <link linkend="fcc-hook">fcc-hook</link>
-and a <link linkend="save-hook">save-hook</link> with its arguments.
+and a <link linkend="save-hook">save-hook</link> with its arguments,
+including &percnt;-expansion on <emphasis>mailbox</emphasis> according
+to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 </para>
 
 </sect1>

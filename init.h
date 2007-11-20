@@ -1074,6 +1074,9 @@ struct option_t MuttVars[] = {
   ** necessary, soft-fill will eat text leftwards to make room for
   ** rightward text.
   ** .pp
+  ** Note that these expandos are supported in 
+  ** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
+  ** .pp
   ** See also: ``$$to_chars''.
   */
   { "ispell",		DT_PATH, R_NONE, UL &Ispell, UL ISPELL },
