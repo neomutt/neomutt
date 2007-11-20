@@ -83,7 +83,7 @@ void mutt_set_charset (char *charset)
   }
 #endif
 
-#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+#if defined(HAVE_BIND_TEXTDOMAIN_CODESET) && defined(ENABLE_NLS)
   bind_textdomain_codeset(PACKAGE, buffer);
 #endif
 }
