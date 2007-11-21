@@ -1220,7 +1220,8 @@ ci_send_message (int flags,		/* send mode */
   if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDPOSTPONED|SENDRESEND)))
   {
     msg->env->from = mutt_default_from ();
-    killfrom = 1;	/* $use_from will be re-checked after send-hooks */
+    if (!(flags & SENDBATCH))
+      killfrom = 1;	/* $use_from will be re-checked after send-hooks */
   }
 
   if (flags & SENDBATCH) 
