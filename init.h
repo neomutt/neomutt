@@ -2890,10 +2890,17 @@ struct option_t MuttVars[] = {
   { "timeout",		DT_NUM,	 R_NONE, UL &Timeout, 600 },
   /*
   ** .pp
-  ** This variable controls the \fInumber of seconds\fP Mutt will wait
-  ** for a key to be pressed in the main menu before timing out and
-  ** checking for new mail.  A value of zero or less will cause Mutt
-  ** to never time out.
+  ** When Mutt is waiting for user input either idleing in menus or
+  ** in an interactive prompt, Mutt would block until input is
+  ** present. Depending on the context, this would prevent certain
+  ** operations from working, like checking for new mail or keeping
+  ** an IMAP connection alive.
+  ** .pp
+  ** This variable controls how many seconds Mutt will at most wait
+  ** until it aborts waiting for input, performs these operations and
+  ** continues to wait for input.
+  ** .pp
+  ** A value of zero or less will cause Mutt to never time out.
   */
   { "tmpdir",		DT_PATH, R_NONE, UL &Tempdir, 0 },
   /*
