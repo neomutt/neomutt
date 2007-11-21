@@ -1,3 +1,12 @@
+2007-11-21 14:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (b8d811e5931e)
+
+	* init.h: Clarify the description for $timeout
+
+2007-11-21 11:16 +0100  Rocco Rutte  <pdmef@gmx.net>  (849daa6be9f5)
+
+	* ChangeLog, UPDATING: Remove raw utf-8 char in UPDATING to make it
+	ascii again
+
 2007-11-20 19:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (96f931ae0b22)
 
 	* doc/manual.xml.head, init.h: Document that save-hook/fcc-hook/fcc-

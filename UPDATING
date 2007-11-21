@@ -29,6 +29,8 @@ The keys used are:
   + $smtp_url (ESMTP relay support)
   + $crypt_use_pka (use GPGME PKA signature verification)
   ! format pipe support: format strings ending in | are filtered
+  ! buffy size is configurable at runtime (no --enable-buffy-size
+    configure option, new $check_mbox_size variable)
 
 1.5.13 (2006-08-14):
 
