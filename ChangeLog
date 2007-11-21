@@ -1,3 +1,13 @@
+2007-11-20 19:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (96f931ae0b22)
+
+	* doc/manual.xml.head, init.h: Document that save-hook/fcc-hook/fcc-
+	save-hook use $index_format expandos. Closes #2135.
+
+2007-11-20 15:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (248df630188f)
+
+	* ChangeLog, doc/manual.xml.head, pattern.c: Simple search: Allow
+	[~+%] to be \-escaped. Closes #2426.
+
 2007-11-20 08:45 +0000  Rocco Rutte  <pdmef@gmx.net>  (3dd709959912)
 
 	* configure.ac, strsep.c: Add glibc implementation of strsep() in case

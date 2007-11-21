@@ -28,7 +28,7 @@ The keys used are:
   + $save_history, $history_file (save history across sessions)
   + $smtp_url (ESMTP relay support)
   + $crypt_use_pka (use GPGME PKA signature verification)
-  ! format pipe support: format strings ending in | are filtered
+  ! format pipe support: format strings ending in | are filtered
 
 1.5.13 (2006-08-14):
 
