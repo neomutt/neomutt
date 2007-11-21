@@ -5,11 +5,11 @@
 # Ronny Haryanto <ronny-mutt-po-file@haryan.to>, 1999-2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.14\n"
+"Project-Id-Version: 1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-11-01 14:06-0700\n"
-"PO-Revision-Date: 2007-03-13 10:15+1100\n"
-"Last-Translator: Ronny Haryanto <ronny-mutt-po-file@haryan.to>\n"
+"PO-Revision-Date: 2007-11-07 10:39+1100\n"
+"Last-Translator: Ronny Haryanto <ronny@haryan.to>\n"
 "Language-Team: Indonesian <web@linux.or.id>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
@@ -773,9 +773,9 @@ msgid "error setting secret key `%s': %s\n"
 msgstr "error saat memasang `%s' sebagai kunci rahasia: %s\n"
 
 #: crypt-gpgme.c:684
-#, fuzzy, c-format
+#, c-format
 msgid "error setting PKA signature notation: %s\n"
-msgstr "Error saat mengambil informasi tentang kunci: "
+msgstr "kesalahan mengatur notasi tanda tangan PKA: %s\n"
 
 #: crypt-gpgme.c:740
 #, c-format
@@ -827,13 +827,12 @@ msgid "A system error occurred"
 msgstr "Telah terjadi suatu kesalahan di sistem"
 
 #: crypt-gpgme.c:1141
-#, fuzzy
 msgid "WARNING: PKA entry does not match signer's address: "
-msgstr "PERHATIAN: Nama host server tidak cocok dengan sertifikat"
+msgstr "PERHATIAN: Masukan PKA tidak cocok dengan alamat penandatangan: "
 
 #: crypt-gpgme.c:1148
 msgid "PKA verified signer's address is: "
-msgstr ""
+msgstr "Alamat penandatangan PKA yang sudah diverifikasi adalah: "
 
 #: crypt-gpgme.c:1165 crypt-gpgme.c:3114
 msgid "Fingerprint: "
@@ -1565,7 +1564,6 @@ msgid "Open mailbox"
 msgstr "Buka kotak surat"
 
 #: curs_main.c:1077
-#, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Tidak ada kotak surat dengan surat baru."
 
@@ -1957,7 +1955,7 @@ msgstr "Bantuan utk %s"
 #: history.c:75 history.c:109 history.c:132
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr ""
+msgstr "Format berkas sejarah salah (baris %d)"
 
 #: hook.c:251
 #, c-format
@@ -2218,7 +2216,7 @@ msgstr "Regexp tidak benar: %s"
 #: init.c:522
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "Subekspresi untuk template spam kurang"
 
 #: init.c:748
 msgid "spam: no matching pattern"
@@ -2294,7 +2292,7 @@ msgstr "nilai tidak diperbolehkan dengan reset"
 #: init.c:1783 init.c:1795
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Penggunaan: set variable=yes|no"
 
 #: init.c:1803
 #, c-format
@@ -2875,9 +2873,8 @@ msgid "link tagged message to the current one"
 msgstr "hubungkan surat yang telah ditandai ke yang sedang dipilih"
 
 #: keymap_alldefs.h:114
-#, fuzzy
 msgid "open next mailbox with new mail"
-msgstr "Tidak ada kotak surat dengan surat baru."
+msgstr "buka kotak surat dengan surat baru"
 
 #: keymap_alldefs.h:115
 msgid "jump to the next new message"
@@ -3248,20 +3245,18 @@ msgstr ""
 "Untuk melaporkan bug, mohon kunjungi http://bugs.mutt.org/.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Hak Cipta (C) 1996-2002 Michael R. Elkins dan kawan-kawan.\n"
+"Hak Cipta (C) 1996-2007 Michael R. Elkins dan kawan-kawan.\n"
 "Mutt TIDAK menyertakan jaminan dalam bentuk apapun; baca 'mutt -vv'.\n"
 "Mutt adalah software bebas, anda diperbolehkan utk menyebarluaskannya\n"
 "dengan beberapa persyaratan; baca 'mutt -vv' utk jelasnya.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -3276,9 +3271,9 @@ msgid ""
 msgstr ""
 "Hak Cipta (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 "Hak Cipta (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Hak Cipta (C) 1997-2006 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Hak Cipta (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Hak Cipta (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Hak Cipta (C) 1999-2006 Brendan Cully <brendan@kublai.com>\n"
+"Hak Cipta (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
 "Hak Cipta (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Hak Cipta (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3385,6 +3380,9 @@ msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
 msgstr ""
+"  --\t\tanggap sisa argumen sebagai alamat bahkan jika dimulai dengan dash\n"
+"\t\tketika menggunakan -a dengan banyak berkas menggunakan -- adalah "
+"keharusan"
 
 #: main.c:195
 msgid ""
@@ -3563,9 +3561,9 @@ msgid "Tagging is not supported."
 msgstr "Penandaan tidak didukung."
 
 #: mh.c:1076
-#, fuzzy, c-format
+#, c-format
 msgid "Scanning %s..."
-msgstr "Memilih %s..."
+msgstr "Memindai %s..."
 
 #: mh.c:1323
 msgid "maildir_commit_message(): unable to set time on file"
@@ -3573,40 +3571,39 @@ msgstr "maildir_commit_message(): tidak dapat mengeset waktu pada file"
 
 #: mutt_sasl.c:189
 msgid "Unknown SASL profile"
-msgstr ""
+msgstr "Profil SASL tidak diketahui"
 
 #: mutt_sasl.c:195
 msgid "SASL failed to get local IP address"
-msgstr ""
+msgstr "SASL gagal mendapatkan alamat IP lokal"
 
 #: mutt_sasl.c:200
 msgid "SASL failed to parse local IP address"
-msgstr ""
+msgstr "SASL gagal membaca alamat IP lokal"
 
 #: mutt_sasl.c:206
 msgid "SASL failed to get remote IP address"
-msgstr ""
+msgstr "SASL gagal mendapatkan alamat IP remote"
 
 #: mutt_sasl.c:211
 msgid "SASL failed to parse remote IP address"
-msgstr ""
+msgstr "SASL gagal membaca alamat IP remote"
 
 #: mutt_sasl.c:222
-#, fuzzy
 msgid "Error allocating SASL connection"
-msgstr "error saat mengalokasikan objek data: %s\n"
+msgstr "Gagal mengalokasikan koneksi SASL"
 
 #: mutt_sasl.c:232
 msgid "Error setting SASL security properties"
-msgstr ""
+msgstr "Gagal mengeset detil keamanan SASL"
 
 #: mutt_sasl.c:242
 msgid "Error setting SASL external security strength"
-msgstr ""
+msgstr "Gagal mengeset tingkat keamanan eksternal SASL"
 
 #: mutt_sasl.c:248
 msgid "Error setting SASL external user name"
-msgstr ""
+msgstr "Gagal mengeset nama pengguna eksternal SASL"
 
 #: mutt_socket.c:103 mutt_socket.c:174
 #, c-format
@@ -4071,9 +4068,9 @@ msgid "mismatched brackets: %s"
 msgstr "tanda kurung tidak klop: %s"
 
 #: pattern.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: tidak ada perintah begitu"
+msgstr "%c: pengubah pola tidak valid"
 
 #: pattern.c:904
 #, c-format
@@ -4300,7 +4297,7 @@ msgstr "Mengauthentikasi (SASL)..."
 
 #: pop_auth.c:188
 msgid "POP timestamp is invalid!"
-msgstr ""
+msgstr "Tanda waktu POP tidak valid!"
 
 #: pop_auth.c:193
 msgid "Authenticating (APOP)..."
@@ -4935,41 +4932,39 @@ msgid "Can't sign: No key specified. Use Sign As."
 msgstr "Tdk bisa tandatangan: Kunci tdk diberikan. Gunakan Tandatangan Sbg."
 
 #: smtp.c:113
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: %s"
-msgstr "Penggantian nama gagal: %s"
+msgstr "Sesi SMTP gagal: %s"
 
 #: smtp.c:153
-#, fuzzy, c-format
+#, c-format
 msgid "SMTP session failed: unable to open %s"
-msgstr "Penggantian nama gagal: %s"
+msgstr "Sesi SMTP gagal: tidak dapat membuka %s"
 
 #: smtp.c:269
 msgid "SMTP session failed: read error"
-msgstr ""
+msgstr "Sesi SMTP gagal: kesalahan pembacaan"
 
 #: smtp.c:271
 msgid "SMTP session failed: write error"
-msgstr ""
+msgstr "Sesi SMTP gagal: kesalahan penulisan"
 
 #: smtp.c:294
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid SMTP URL: %s"
-msgstr "Tdk valid "
+msgstr "URL SMTP tidak valid: %s"
 
 #: smtp.c:400
 msgid "SMTP server does not support authentication"
-msgstr ""
+msgstr "Server SMTP tidak mendukung authentikasi"
 
 #: smtp.c:408
-#, fuzzy
 msgid "SMTP authentication requires SASL"
-msgstr "Authentikasi GSSAPI gagal."
+msgstr "Authentikasi SMTP membutuhkan SASL"
 
 #: smtp.c:551
-#, fuzzy
 msgid "SASL authentication failed"
-msgstr "Authentikasi SASL gagal."
+msgstr "Authentikasi SASL gagal"
 
 #: sort.c:265
 msgid "Sorting mailbox..."
