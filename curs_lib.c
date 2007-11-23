@@ -364,6 +364,14 @@ void mutt_progress_init (progress_t* progress, const char *msg,
       snprintf (progress->sizestr, sizeof (progress->sizestr), "%ld",
 		progress->size);
   }
+  if (!inc)
+  {
+    if (size)
+      mutt_message ("%s (%s)", msg, progress->sizestr);
+    else
+      mutt_message (msg);
+    return;
+  }
   if (gettimeofday (&tv, NULL) < 0)
     dprint (1, (debugfile, "gettimeofday failed: %d\n", errno));
   /* if timestamp is 0 no time-based suppression is done */
@@ -379,8 +387,8 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   struct timeval tv = { 0, 0 };
   unsigned int now = 0;
 
-  if (pos && !progress->inc)
-    return;
+  if (!progress->inc)
+    goto out;
 
   /* refresh if size > inc */
   if (progress->flags & M_PROGRESS_SIZE &&
@@ -429,6 +437,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
     }
   }
 
+out:
   if (pos >= progress->size)
     mutt_clear_error ();
 }

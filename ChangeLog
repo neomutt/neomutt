@@ -1,3 +1,11 @@
+2007-11-21 14:14 -0800  Ronny Haryanto  <ronnylist@haryan.to>  (0e99eaaecd67)
+
+	* po/id.po: Updated Indonesian translation
+
+2007-11-21 16:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (309ab3a63d91)
+
+	* ChangeLog, UPDATING: Add UPDATING entry for $check_mbox_size
+
 2007-11-21 14:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (b8d811e5931e)
 
 	* init.h: Clarify the description for $timeout
