@@ -22,7 +22,7 @@
 #include "config.h"
 #endif				/* HAVE_CONFIG_H */
 
-#if HAVE_VILLA_H
+#if HAVE_QDBM
 #include <depot.h>
 #include <cabin.h>
 #include <villa.h>

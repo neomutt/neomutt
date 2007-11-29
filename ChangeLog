@@ -1,3 +1,12 @@
+2007-11-21 13:19 +0100  Miroslav Lichvar  <mlichvar@redhat.com>  (9286a76e79a2)
+
+	* send.c: Don't ignore $from in batch send mode.
+
+2007-11-23 15:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (12a1d843c975)
+
+	* ChangeLog, curs_lib.c: Don't attempt to print progress if inc is 0,
+	just print initial message
+
 2007-11-21 14:14 -0800  Ronny Haryanto  <ronnylist@haryan.to>  (0e99eaaecd67)
 
 	* po/id.po: Updated Indonesian translation
