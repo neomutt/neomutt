@@ -1,3 +1,16 @@
+2007-11-29 15:24 +0100  Rocco Rutte  <pdmef@gmx.net>  (c64cb80a90a6)
+
+	* doc/Makefile.am, doc/db-cleanup.xsl: Add a really ugly hack to make
+	sure the plain text manual is us-ascii. The hack is filtering
+	manual.html to another HTML file but replacing unicode chars by
+	their ascii equivalents. The intermediate file is used to dump HTML
+	to us-ascii text (and only for that).
+
+2007-11-29 10:18 +0100  Rocco Rutte  <pdmef@gmx.net>  (33895288520e)
+
+	* ChangeLog, hcache.c: Fix hcache build issue when building with gdbm
+	if qdbm is installed, too
+
 2007-11-21 13:19 +0100  Miroslav Lichvar  <mlichvar@redhat.com>  (9286a76e79a2)
 
 	* send.c: Don't ignore $from in batch send mode.

@@ -42,9 +42,24 @@
   <!-- fixup a single string: -->
   <!-- 1) replace all non-breaking spaces by ascii-spaces (0xA0) -->
   <!-- 2) replace all quotes by ascii quotes (0x201C and 0x201D) -->
+  <!-- 3) replace "fancy" tilde with real tilde (sic!) (0x2DC)   -->
+  <!-- 4) replace "horizontal ellipses" with 3 dots (0x2026)     -->
   <xsl:template name="fixup">
     <xsl:param name="str"/>
-    <xsl:value-of select="translate(translate(translate($str,'&#xA0;',' '),'&#x201C;','&#x22;'),'&#x201D;','&#x22;')"/>
+    <xsl:choose>
+      <xsl:when test="contains($str,'&#x2026;')">
+        <xsl:call-template name="fixup">
+          <xsl:with-param name="str"><xsl:value-of select="substring-before($str,'&#x2026;')"/></xsl:with-param>
+        </xsl:call-template>
+        <xsl:text>...</xsl:text>
+        <xsl:call-template name="fixup">
+          <xsl:with-param name="str"><xsl:value-of select="substring-after($str,'&#x2026;')"/></xsl:with-param>
+        </xsl:call-template>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:value-of select="translate(translate(translate(translate($str,'&#xA0;',' '),'&#x201C;','&#x22;'),'&#x201D;','&#x22;'),'&#x2DC;','~')"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 </xsl:stylesheet>
