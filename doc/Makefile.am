@@ -27,6 +27,7 @@ EXTRA_DIST = dotlock.man		\
 	smime-notes.txt			\
 	Muttrc Muttrc.head stamp-doc-rc \
 	makedoc.c makedoc-defs.h 	\
+	db-cleanup.xsl			\
 	html.xsl chunk.xsl $(BUILT_DISTFILES)
 
 HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
@@ -98,10 +99,11 @@ uninstall-local:
 	done
 
 check:
-manual.txt: manual.html
-	-lynx -dump -nolist -with_backspaces $^ > $@ || \
-	w3m -dump $^ > $@ || \
-	elinks -dump -no-numbering -no-references $^ > $@
+manual.txt: manual.html db-cleanup.xsl
+	-xsltproc --nonet -o manual-txt.html $(srcdir)/db-cleanup.xsl manual.html || cp manual.html manual-txt.html
+	-lynx -dump -nolist -with_backspaces manual-txt.html > $@ || \
+	w3m -dump manual-txt.html > $@ || \
+	elinks -dump -no-numbering -no-references manual-txt.html > $@
 
 Muttrc: stamp-doc-rc
 
