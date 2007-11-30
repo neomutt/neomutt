@@ -1,3 +1,14 @@
+2007-11-30 08:39 +0100  Rocco Rutte  <pdmef@gmx.net>  (234c02747bb3)
+
+	* commands.c: Format status line for external and internal pager the
+	same way to make %P work
+
+2007-11-29 16:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (4899bcc1c2c3)
+
+	* ChangeLog, doc/db-cleanup.xsl: Add ascii-replacements for 0x2dc
+	(tilde) and 0x2026 (...) too. The manual cannot be clean us-acii but
+	now we should have at least latin1
+
 2007-11-29 15:24 +0100  Rocco Rutte  <pdmef@gmx.net>  (c64cb80a90a6)
 
 	* doc/Makefile.am, doc/db-cleanup.xsl: Add a really ugly hack to make

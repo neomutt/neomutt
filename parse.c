@@ -1435,6 +1435,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     rfc2047_decode_adrlist (e->mail_followup_to);
     rfc2047_decode_adrlist (e->return_path);
     rfc2047_decode_adrlist (e->sender);
+    rfc2047_decode (&e->x_label);
 
     if (e->subject)
     {
