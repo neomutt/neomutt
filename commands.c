@@ -51,6 +51,7 @@
 #include <sys/types.h>
 #include <utime.h>
 
+static const char *ExtPagerProgress = "all";
 
 /* The folder the user last saved to.  Used by ci_save_message() */
 static char LastSaveFolder[_POSIX_PATH_MAX] = "";
@@ -135,7 +136,11 @@ int mutt_display_message (HEADER *cur)
     builtin = 1;
   else
   {
-    mutt_make_string (buf, sizeof (buf), NONULL(PagerFmt), Context, cur);
+    struct hdr_format_info hfi;
+    hfi.ctx = Context;
+    hfi.pager_progress = ExtPagerProgress;
+    hfi.hdr = cur;
+    mutt_make_string_info (buf, sizeof (buf), NONULL(PagerFmt), &hfi, M_FORMAT_MAKEPRINT);
     fputs (buf, fpout);
     fputs ("\n\n", fpout);
   }
