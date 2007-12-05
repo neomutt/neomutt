@@ -758,16 +758,6 @@ if test x$ac_cv_dirent_d_ino = xyes ; then
 fi
 AC_MSG_RESULT($ac_cv_dirent_d_ino)
 
-dnl This may look cumbersome -- please keep it that way, so we can
-dnl quickly change the default to "yes" again.
-mutt_cv_inodesort=no
-AC_ARG_ENABLE(inodesort,  AC_HELP_STRING([--enable-inodesort], [Read files in maildir folders sorted by inode]),
-       [if test x$enableval = xyes && test x$ac_cv_dirent_d_ino = xyes ; then mutt_cv_inodesort=yes; fi])
-
-if test $mutt_cv_inodesort = yes; then
-	AC_DEFINE(USE_INODESORT, 1, [ Define to sort files in a	maildir by inode number. ])
-fi
-
 mutt_cv_warnings=yes
 AC_ARG_ENABLE(warnings, AC_HELP_STRING([--disable-warnings], [Turn off compiler warnings (not recommended)]),
 [if test $enableval = no; then

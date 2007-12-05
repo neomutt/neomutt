@@ -247,12 +247,6 @@ static void show_version (void)
 #else
 	"-USE_FLOCK   "
 #endif
-	
-#ifdef USE_INODESORT
-	"+USE_INODESORT   "
-#else
-	"-USE_INODESORT   "
-#endif
 	);
   puts (
 #ifdef USE_POP

@@ -1,3 +1,12 @@
+2007-11-30 10:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (5c635c9b5982)
+
+	* configure.ac: Add version numbers for bdb 4.6
+
+2007-11-30 09:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (a32a208f7e4b)
+
+	* ChangeLog, parse.c, sendlib.c: RfC2047 decode/encode X-Label: header
+	(Closes #2970).
+
 2007-11-30 08:39 +0100  Rocco Rutte  <pdmef@gmx.net>  (234c02747bb3)
 
 	* commands.c: Format status line for external and internal pager the

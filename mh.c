@@ -56,14 +56,16 @@
 #include <sys/time.h>
 #endif
 
+#define		INS_SORT_THRESHOLD		6
+
 struct maildir
 {
   HEADER *h;
   char *canon_fname;
   unsigned header_parsed:1;
-#ifdef USE_INODESORT
+#ifdef HAVE_DIRENT_D_INO
   ino_t inode;
-#endif /* USE_INODESORT */
+#endif /* HAVE_DIRENT_D_INO */
   struct maildir *next;
 };
 
@@ -662,99 +664,6 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
   return NULL;
 }
 
-/* 
- * Note that this routine will _not_ modify the context given by
- * ctx. 
- *
- * It's used in the first parsing pass on maildir and MH folders.
- * In the MH case, this means full parsing of the folder.  In the
- * maildir case, it means that we only look at flags, and create a
- * fake HEADER structure, which may later be filled in by
- * maildir_parse_message(), when called from
- * maildir_delayed_parsing().
- * 
- */
-
-static int maildir_parse_entry (CONTEXT * ctx, struct maildir ***last,
-				const char *subdir, const char *fname,
-				int *count, int is_old, progress_t *progress,
-				ino_t inode
-#if USE_HCACHE
-				, header_cache_t *hc
-#endif
-			       )
-{
-  struct maildir *entry;
-  HEADER *h = NULL;
-  char buf[_POSIX_PATH_MAX];
-#if USE_HCACHE
-  void *data;
-#endif
-
-  if (subdir)
-    snprintf (buf, sizeof (buf), "%s/%s/%s", ctx->path, subdir, fname);
-  else
-    snprintf (buf, sizeof (buf), "%s/%s", ctx->path, fname);
-
-  if (ctx->magic == M_MH)
-  {
-#ifdef USE_HCACHE
-    if (hc && (data = mutt_hcache_fetch (hc, fname, strlen)))
-    {
-      h = mutt_hcache_restore ((unsigned char *) data, NULL);
-      FREE (&data);
-    }
-    else
-    {
-      h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
-      if (h)
-        mutt_hcache_store (hc, fname, h, 0, strlen);
-    }
-#else
-    h = maildir_parse_message (ctx->magic, buf, is_old, NULL);
-#endif
-  }
-  else
-  {
-    h = mutt_new_header ();
-    h->old = is_old;
-    maildir_parse_flags (h, buf);
-  }
-
-  if (h != NULL)
-  {
-    if (count)
-    {
-      (*count)++;
-      if (!ctx->quiet && progress)
-	mutt_progress_update (progress, *count, -1);
-    }
-
-    if (subdir)
-    {
-      snprintf (buf, sizeof (buf), "%s/%s", subdir, fname);
-      h->path = safe_strdup (buf);
-    }
-    else
-      h->path = safe_strdup (fname);
-
-    entry = safe_calloc (sizeof (struct maildir), 1);
-    entry->h = h;
-    entry->header_parsed = (ctx->magic == M_MH);
-#ifdef USE_INODESORT
-    entry->inode = inode;
-#endif /* USE_INODESORT */
-    **last = entry;
-    *last = &entry->next;
-
-    return 0;
-  }
-
-  return -1;
-}
-
-
-
 /* Ignore the garbage files.  A valid MH message consists of only
  * digits.  Deleted message get moved to a filename with a comma before
  * it.
@@ -778,9 +687,8 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   struct dirent *de;
   char buf[_POSIX_PATH_MAX];
   int is_old = 0;
-#ifdef USE_HCACHE
-  header_cache_t *hc = NULL;
-#endif
+  struct maildir *entry;
+  HEADER *h;
 
   if (subdir)
   {
@@ -793,41 +701,48 @@ static int maildir_parse_dir (CONTEXT * ctx, struct maildir ***last,
   if ((dirp = opendir (buf)) == NULL)
     return -1;
 
-#ifdef USE_HCACHE
-  if (ctx && ctx->magic == M_MH)
-    hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
-#endif
-
   while ((de = readdir (dirp)) != NULL)
   {
-
     if ((ctx->magic == M_MH && !mh_valid_message (de->d_name))
 	|| (ctx->magic == M_MAILDIR && *de->d_name == '.'))
       continue;
 
     /* FOO - really ignore the return value? */
-
     dprint (2,
-	    (debugfile, "%s:%d: parsing %s\n", __FILE__, __LINE__,
+	    (debugfile, "%s:%d: queueing %s\n", __FILE__, __LINE__,
 	     de->d_name));
-    maildir_parse_entry (ctx, last, subdir, de->d_name, count, is_old,
-			 progress,
-#if HAVE_DIRENT_D_INO
-			 de->d_ino
-#else
-			 0
-#endif
-#if USE_HCACHE
-			 , hc
-#endif
-			 );
+
+    h = mutt_new_header ();
+    h->old = is_old;
+    if (ctx->magic == M_MAILDIR)
+      maildir_parse_flags (h, de->d_name);
+
+    if (count)
+    {
+      (*count)++;
+      if (!ctx->quiet && progress)
+	mutt_progress_update (progress, *count, -1);
+    }
+
+    if (subdir)
+    {
+      char tmp[_POSIX_PATH_MAX];
+      snprintf (tmp, sizeof (tmp), "%s/%s", subdir, de->d_name);
+      h->path = safe_strdup (tmp);
+    }
+    else
+      h->path = safe_strdup (de->d_name);
+
+    entry = safe_calloc (sizeof (struct maildir), 1);
+    entry->h = h;
+#ifdef HAVE_DIRENT_D_INO
+    entry->inode = de->d_ino;
+#endif /* HAVE_DIRENT_D_INO */
+    **last = entry;
+    *last = &entry->next;
   }
 
   closedir (dirp);
-
-#if USE_HCACHE
-  mutt_hcache_close (hc);
-#endif
 
   return 0;
 }
@@ -889,7 +804,7 @@ static size_t maildir_hcache_keylen (const char *fn)
 }
 #endif
 
-#ifdef USE_INODESORT
+#ifdef HAVE_DIRENT_D_INO
 /*
  * Merge two maildir lists according to the inode numbers.
  */
@@ -949,47 +864,81 @@ static struct maildir*  maildir_merge_inode (struct maildir *left,
   return head;
 }
 
+static struct maildir* maildir_ins_sort (struct maildir* list)
+{
+  struct maildir *tmp, *last, *ret = NULL, *back;
+
+  ret = list;
+  list = list->next;
+  ret->next = NULL;
+
+  while (list)
+  {
+    last = NULL;
+    back = list->next;
+    for (tmp = ret; tmp && tmp->inode <= list->inode; tmp = tmp->next)
+      last = tmp;
+
+    list->next = tmp;
+    if (last)
+      last->next = list;
+    else
+      ret = list;
+
+    list = back;
+  }
+
+  return ret;
+}
+
 /*
  * Sort maildir list according to inode.
  */
-static struct maildir* maildir_sort_inode(struct maildir* list)
+static struct maildir* maildir_sort_inode (struct maildir* list, size_t len)
 {
   struct maildir* left = list;
   struct maildir* right = list;
+  size_t c = 0;
 
   if (!list || !list->next) 
   {
     return list;
   }
 
+  if (len != (size_t)(-1) && len <= INS_SORT_THRESHOLD)
+    return maildir_ins_sort (list);
+
   list = list->next;
   while (list && list->next) 
   {
     right = right->next;
     list = list->next->next;
+    c++;
   }
 
   list = right;
   right = right->next;
   list->next = 0;
 
-  left = maildir_sort_inode(left);
-  right = maildir_sort_inode(right);
-  return maildir_merge_inode(left, right);
+  left = maildir_sort_inode (left, c);
+  right = maildir_sort_inode (right, c);
+  return maildir_merge_inode (left, right);
 }
 
-#endif /* USE_INODESORT */
+#endif /* HAVE_DIRENT_D_INO */
 
 /* 
- * This function does the second parsing pass for a maildir-style
- * folder.
+ * This function does the second parsing pass
  */
-void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
+void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 			      progress_t *progress)
-{
-  struct maildir *p;
+{ 
+  struct maildir *p, *last = NULL;
   char fn[_POSIX_PATH_MAX];
   int count;
+#if HAVE_DIRENT_D_INO
+  int sort = 0;
+#endif
 
 #if USE_HCACHE
   header_cache_t *hc = NULL;
@@ -1001,16 +950,22 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
   hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
-  for (p = md, count = 0; p; p = p->next, count++)
-  {
+  for (p = *md, count = 0; p; p = p->next, count++)
+   {
     if (! (p && p->h && !p->header_parsed))
+     {
+      last = p;
       continue;
+    }
 
     if (!ctx->quiet && progress)
       mutt_progress_update (progress, count, -1);
 
 #if USE_HCACHE
-    data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
+    if (ctx->magic == M_MH)
+      data = mutt_hcache_fetch (hc, p->h->path, strlen);
+    else
+      data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
     when = (struct timeval *) data;
 #endif
 
@@ -1018,29 +973,64 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir *md,
 
 #if USE_HCACHE
     if (option(OPTHCACHEVERIFY))
+     {
+#if HAVE_DIRENT_D_INO
+      if (!sort)
+      {
+	dprint (4, (debugfile, "maildir: need to sort %s by inode\n", ctx->path));
+	p = maildir_sort_inode (p, (size_t) -1);
+	if (!last)
+	  *md = p;
+	else
+	  last->next = p;
+	sort = 1;
+	snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
+      }
+#endif
       ret = stat(fn, &lastchanged);
+    }
     else {
       lastchanged.st_mtime = 0;
       ret = 0;
     }
-    
+
     if (data != NULL && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
       p->h = mutt_hcache_restore ((unsigned char *)data, &p->h);
-      maildir_parse_flags (p->h, fn);
+      if (ctx->magic == M_MAILDIR)
+	maildir_parse_flags (p->h, fn);
     } else
+    {
+#endif
+#if HAVE_DIRENT_D_INO
+    if (!sort)
+    {
+      dprint (4, (debugfile, "maildir: need to sort by inode\n"));
+      p = maildir_sort_inode (p, (size_t) -1);
+      if (!last)
+	*md = p;
+      else
+	last->next = p;
+      sort = 1;
+      snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
+    }
 #endif
     if (maildir_parse_message (ctx->magic, fn, p->h->old, p->h))
     {
       p->header_parsed = 1;
 #if USE_HCACHE
-      mutt_hcache_store (hc, p->h->path + 3, p->h, 0, &maildir_hcache_keylen);
+      if (ctx->magic == M_MH)
+	mutt_hcache_store (hc, p->h->path, p->h, 0, strlen);
+      else
+	mutt_hcache_store (hc, p->h->path + 3, p->h, 0, &maildir_hcache_keylen);
 #endif
     } else
       mutt_free_header (&p->h);
 #if USE_HCACHE
+    }
     FREE (&data);
 #endif
+    last = p;
   }
 #if USE_HCACHE
   mutt_hcache_close (hc);
@@ -1072,10 +1062,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   progress_t progress;
 
   memset (&mhs, 0, sizeof (mhs));
-  if (ctx->magic == M_MAILDIR)
-    snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
-  else
-    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+  snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
   mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
 
   if (!ctx->data)
@@ -1093,22 +1080,15 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (maildir_parse_dir (ctx, &last, subdir, &count, &progress) == -1)
     return -1;
 
+  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, count);
+  maildir_delayed_parsing (ctx, &md, &progress);
+
   if (ctx->magic == M_MH)
   {
     mh_read_sequences (&mhs, ctx->path);
     mh_update_maildir (md, &mhs);
     mhs_free_sequences (&mhs);
-  }
-#ifdef USE_INODESORT
-
-  md = maildir_sort_inode(md);
-#endif /* USE_INODESORT */
-
-  if (ctx->magic == M_MAILDIR)
-  {
-    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, count);
-    maildir_delayed_parsing (ctx, md, &progress);
   }
 
   maildir_move_to_context (ctx, &md);
@@ -1898,7 +1878,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
     maildir_update_tables (ctx, index_hint);
   
   /* do any delayed parsing we need to do. */
-  maildir_delayed_parsing (ctx, md, NULL);
+  maildir_delayed_parsing (ctx, &md, NULL);
 
   /* Incorporate new messages */
   have_new = maildir_move_to_context (ctx, &md);
@@ -1965,10 +1945,13 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   ctx->mtime = st.st_mtime;
 
   memset (&mhs, 0, sizeof (mhs));
-  
+
   md   = NULL;
   last = &md;
+
   maildir_parse_dir (ctx, &last, NULL, NULL, NULL);
+  maildir_delayed_parsing (ctx, &md, NULL);
+
   mh_read_sequences (&mhs, ctx->path);
   mh_update_maildir (md, &mhs);
   mhs_free_sequences (&mhs);
