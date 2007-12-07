@@ -1,3 +1,19 @@
+2007-12-07 10:57 +0100  Rocco Rutte  <pdmef@gmx.net>  (c3b31a421049)
+
+	* mx.c: Don't attempt to move messages when $mbox is unset.
+
+2007-12-05 10:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (63c97881cb76)
+
+	* ChangeLog, UPDATING, configure.ac, main.c, mh.c: Improve inode
+	sorting, enable it by default and add MH support. Sorting is done
+	on-demand only before the first stat() or open()
+	($maildir_header_cache_verify=yes/hcache miss). Furthermore, only a
+	partial list of messages starting from that item is sorted reducing
+	sorting overhead in most cases. For a fully hcache'd folder with
+	$maildir_header_cache_verify=no, no sorting is needed and no sorting
+	will be done. MH parsing is now two-pass, too to simplify the code
+	and remove duplication.
+
 2007-11-30 10:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (5c635c9b5982)
 
 	* configure.ac: Add version numbers for bdb 4.6

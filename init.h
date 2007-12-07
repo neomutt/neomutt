@@ -837,7 +837,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Affects the behaviour of the \fIreply\fP function when replying to
-  ** messages from mailing lists.  When set, if the ``Reply-To:'' field is
+  ** messages from mailing lists (as defined by the ``subscribe'' or
+  ** ``$lists'' commands).  When set, if the ``Reply-To:'' field is
   ** set to the same value as the ``To:'' field, Mutt assumes that the
   ** ``Reply-To:'' field was set by the mailing list to automate responses
   ** to the list, and will ignore this field.  To direct a response to the
