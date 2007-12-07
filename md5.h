@@ -30,6 +30,9 @@
 #if HAVE_STDINT_H || _LIBC
 # include <stdint.h>
 #endif
+#if HAVE_SYS_TYPES_H
+# include <sys/types.h>
+#endif
 
 #ifndef __GNUC_PREREQ
 # if defined __GNUC__ && defined __GNUC_MINOR__

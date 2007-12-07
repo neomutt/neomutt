@@ -1,40 +1,40 @@
-2007-12-07 10:57 +0100  Rocco Rutte  <pdmef@gmx.net>  (c3b31a421049)
+2007-12-07 13:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (468b9c86b0df)
+
+	* mh.c: Sort MH folders into natural order after 2nd pass (closes
+	#463).
+
+	* init.h: Mention subscribe and lists commands for
+	$ignore_list_reply_to (closes #2996).
 
 	* mx.c: Don't attempt to move messages when $mbox is unset.
 
 2007-12-05 10:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (63c97881cb76)
 
-	* ChangeLog, UPDATING, configure.ac, main.c, mh.c: Improve inode
-	sorting, enable it by default and add MH support. Sorting is done
-	on-demand only before the first stat() or open()
-	($maildir_header_cache_verify=yes/hcache miss). Furthermore, only a
-	partial list of messages starting from that item is sorted reducing
-	sorting overhead in most cases. For a fully hcache'd folder with
-	$maildir_header_cache_verify=no, no sorting is needed and no sorting
-	will be done. MH parsing is now two-pass, too to simplify the code
-	and remove duplication.
+	* UPDATING, configure.ac, main.c, mh.c: Improve inode sorting,
+	enable it by default and add MH support. Sorting is done on-demand
+	only before the first stat() or open()
+	($maildir_header_cache_verify=yes/hcache miss). Furthermore, only
+	a partial list of messages starting from that item is sorted
+	reducing sorting overhead in most cases. For a fully hcache'd
+	folder with $maildir_header_cache_verify=no, no sorting is needed
+	and no sorting will be done. MH parsing is now two-pass, too to
+	simplify the code and remove duplication.
 
 2007-11-30 10:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (5c635c9b5982)
 
 	* configure.ac: Add version numbers for bdb 4.6
 
-2007-11-30 09:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (a32a208f7e4b)
-
-	* ChangeLog, parse.c, sendlib.c: RfC2047 decode/encode X-Label: header
+	* parse.c, sendlib.c: RfC2047 decode/encode X-Label: header
 	(Closes #2970).
-
-2007-11-30 08:39 +0100  Rocco Rutte  <pdmef@gmx.net>  (234c02747bb3)
 
 	* commands.c: Format status line for external and internal pager the
 	same way to make %P work
 
 2007-11-29 16:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (4899bcc1c2c3)
 
-	* ChangeLog, doc/db-cleanup.xsl: Add ascii-replacements for 0x2dc
-	(tilde) and 0x2026 (...) too. The manual cannot be clean us-acii but
-	now we should have at least latin1
-
-2007-11-29 15:24 +0100  Rocco Rutte  <pdmef@gmx.net>  (c64cb80a90a6)
+	* doc/db-cleanup.xsl: Add ascii-replacements for 0x2dc
+	(tilde) and 0x2026 (...) too. The manual cannot be clean us-acii
+	but now we should have at least latin1
 
 	* doc/Makefile.am, doc/db-cleanup.xsl: Add a really ugly hack to make
 	sure the plain text manual is us-ascii. The hack is filtering
@@ -42,10 +42,8 @@
 	their ascii equivalents. The intermediate file is used to dump HTML
 	to us-ascii text (and only for that).
 
-2007-11-29 10:18 +0100  Rocco Rutte  <pdmef@gmx.net>  (33895288520e)
-
-	* ChangeLog, hcache.c: Fix hcache build issue when building with gdbm
-	if qdbm is installed, too
+	* hcache.c: Fix hcache build issue when building with gdbm if qdbm
+	is installed, too
 
 2007-11-21 13:19 +0100  Miroslav Lichvar  <mlichvar@redhat.com>  (9286a76e79a2)
 
@@ -53,8 +51,8 @@
 
 2007-11-23 15:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (12a1d843c975)
 
-	* ChangeLog, curs_lib.c: Don't attempt to print progress if inc is 0,
-	just print initial message
+	* curs_lib.c: Don't attempt to print progress if inc is 0, just
+	print initial message
 
 2007-11-21 14:14 -0800  Ronny Haryanto  <ronnylist@haryan.to>  (0e99eaaecd67)
 
@@ -62,33 +60,23 @@
 
 2007-11-21 16:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (309ab3a63d91)
 
-	* ChangeLog, UPDATING: Add UPDATING entry for $check_mbox_size
-
-2007-11-21 14:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (b8d811e5931e)
+	* UPDATING: Add UPDATING entry for $check_mbox_size
 
 	* init.h: Clarify the description for $timeout
 
-2007-11-21 11:16 +0100  Rocco Rutte  <pdmef@gmx.net>  (849daa6be9f5)
-
-	* ChangeLog, UPDATING: Remove raw utf-8 char in UPDATING to make it
-	ascii again
+	* UPDATING: Remove raw utf-8 char in UPDATING to make it ascii
+	again
 
 2007-11-20 19:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (96f931ae0b22)
 
 	* doc/manual.xml.head, init.h: Document that save-hook/fcc-hook/fcc-
 	save-hook use $index_format expandos. Closes #2135.
 
-2007-11-20 15:03 +0100  Rocco Rutte  <pdmef@gmx.net>  (248df630188f)
-
-	* ChangeLog, doc/manual.xml.head, pattern.c: Simple search: Allow
+	* doc/manual.xml.head, pattern.c: Simple search: Allow
 	[~+%] to be \-escaped. Closes #2426.
-
-2007-11-20 08:45 +0000  Rocco Rutte  <pdmef@gmx.net>  (3dd709959912)
 
 	* configure.ac, strsep.c: Add glibc implementation of strsep() in case
 	a system misses it. Closes #2989.
-
-2007-11-20 08:44 +0000  Rocco Rutte  <pdmef@gmx.net>  (a177e28ebcd4)
 
 	* lib.h, mbyte.c: Alternate fix for not calling
 	bind_textdomain_codeset() to fix Solaris build.
@@ -108,20 +96,16 @@
 
 2007-11-15 13:17 +0100  Rocco Rutte  <pdmef@gmx.net>  (a0161768f631)
 
-	* ChangeLog, doc/makedoc-defs.h, doc/makedoc.c: Fix more documentation
-	build issues. Define USE_SASL (for $smtp_authenticators) in makedoc-
+	* doc/makedoc-defs.h, doc/makedoc.c: Fix more documentation build
+	issues. Define USE_SASL (for $smtp_authenticators) in makedoc-
 	defs.h, include it in makedoc.c to force doc rebuild if makedoc-
 	defs.h changes.
-
-2007-11-15 12:32 +0100  Rocco Rutte  <pdmef@gmx.net>  (8c5357e2b31c)
 
 	* parse.c, protos.h, send.c: Properly parse and validate Message-IDs
 	from my_hdrs. Closes #2452.
 
-2007-11-15 11:55 +0100  Rocco Rutte  <pdmef@gmx.net>  (14f0985f1347)
-
-	* ChangeLog, configure.ac: Check for bind_textdomain_codeset() outside
-	libc, too.
+	* configure.ac: Check for bind_textdomain_codeset() outside libc,
+	too.
 
 2007-11-15 11:53 +0100  peb  <peb@mppmu.mpg.de>  (22c68faeec08)
 
@@ -130,27 +114,21 @@
 
 2007-11-15 11:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (933e57dff004)
 
-	* ChangeLog, doc/manual.xml.head: Properly document simple searches
-	and its "secret" keywords. Closes #2136.
+	* doc/manual.xml.head: Properly document simple searches and its
+	"secret" keywords. Closes #2136.
 
 2007-11-13 13:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (7a4a154eefa5)
 
 	* wcwidth.c: Fix compiler warnings in new wcwidth.c (too large values
 	for 'unsigned short')
 
-2007-11-13 11:53 +0100  Rocco Rutte  <pdmef@gmx.net>  (9e0bcfee7478)
-
-	* ChangeLog, hg-commit: hg-commit: Run 'make validate' in doc/ if
-	manual.xml is present
-
-2007-11-13 11:50 +0100  Rocco Rutte  <pdmef@gmx.net>  (4ded279d93bb)
+	* hg-commit: hg-commit: Run 'make validate' in doc/ if manual.xml
+	is present
 
 	* doc/manual.xml.head, init.h: Document that %f in $index_format is
 	either Return-Path: or From: depending on which parses correctly.
 	Also note that alternates' regex should be as precise as possible to
 	avoid mismatches. Closes #1894.
-
-2007-11-13 11:15 +0100  Rocco Rutte  <pdmef@gmx.net>  (a259a755fa03)
 
 	* init.h: Properly document $hostname, link it to $use_domain and
 	$hidden_host. Closes #891.
@@ -159,8 +137,6 @@
 
 	* Makefile.am, po/Makefile.in.in, po/POTFILES.in: Don't build
 	keymap_alldefs.h in srcdir as it may be read-only
-
-2007-11-07 12:28 +0100  Rocco Rutte  <pdmef@gmx.net>  (fed536a2ce22)
 
 	* po/Makefile.in.in: Don't try to build $(PACKAGE).pot in srcdir as it
 	may be read-only
@@ -173,12 +149,10 @@
 
 2007-11-08 11:48 -0800  Brendan Cully  <brendan@kublai.com>  (daf29fe0ed4c)
 
-	* ChangeLog, UPDATING, curs_lib.c, globals.h, init.h: Add $time_inc to
+	* UPDATING, curs_lib.c, globals.h, init.h: Add $time_inc to
 	control progress update frequency. I found 250ms to be noticeably
 	different from the old behaviour, and it ruins the rounding of the
 	other _inc variables.
-
-2007-11-08 11:26 -0800  Brendan Cully  <brendan@kublai.com>  (3869e46f6fd4)
 
 	* color.c, copy.c, imap/command.c: Turn down some debug logging
 	levels
