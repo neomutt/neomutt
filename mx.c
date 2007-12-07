@@ -855,10 +855,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       strfcpy (mbox, NONULL(Inbox), sizeof (mbox));
       isSpool = mutt_is_spool (ctx->path) && !mutt_is_spool (mbox);
     }
-    mutt_expand_path (mbox, sizeof (mbox));
 
-    if (isSpool)
+    if (isSpool && mbox && *mbox)
     {
+      mutt_expand_path (mbox, sizeof (mbox));
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
       if ((move_messages = query_quadoption (OPT_MOVE, buf)) == -1)
       {
