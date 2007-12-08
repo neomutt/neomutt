@@ -954,6 +954,25 @@ static void mh_sort_natural (CONTEXT *ctx, struct maildir **md)
   *md = maildir_sort (*md, (size_t) -1, md_cmp_path);
 }
 
+static struct maildir *skip_duplicates (struct maildir *p, struct maildir **last)
+{
+  /*
+   * Skip ahead to the next non-duplicate message.
+   *
+   * p should never reach NULL, because we couldn't have reached this point unless
+   * there was a message that needed to be parsed.
+   *
+   * the check for p->header_parsed is likely unnecessary since the dupes will most
+   * likely be at the head of the list.  but it is present for consistency with
+   * the check at the top of the for() loop in maildir_delayed_parsing().
+   */
+  while (!p->h || p->header_parsed) {
+    *last = p;
+    p = p->next;
+  }
+  return p;
+}
+
 /* 
  * This function does the second parsing pass
  */
@@ -1011,6 +1030,9 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 	else
 	  last->next = p;
 	sort = 1;
+
+	p = skip_duplicates(p, &last);
+
 	snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
       }
 #endif
@@ -1039,6 +1061,9 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
       else
 	last->next = p;
       sort = 1;
+
+      p = skip_duplicates(p, &last);
+
       snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
     }
 #endif
@@ -1058,7 +1083,7 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
     FREE (&data);
 #endif
     last = p;
-  }
+   }
 #if USE_HCACHE
   mutt_hcache_close (hc);
 #endif
