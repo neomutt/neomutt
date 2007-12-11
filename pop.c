@@ -336,7 +336,8 @@ static int pop_fetch_headers (CONTEXT *ctx)
    * clean up cache, i.e. wipe messages deleted outside
    * the availability of our cache
    */
-  mutt_bcache_list (pop_data->bcache, msg_cache_check, (void*)ctx);
+  if (option (OPTMESSAGECACHECLEAN))
+    mutt_bcache_list (pop_data->bcache, msg_cache_check, (void*)ctx);
 
   mutt_clear_error ();
   return (new_count - old_count);
