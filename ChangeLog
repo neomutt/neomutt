@@ -1,3 +1,16 @@
+2007-12-11 14:50 +0100  Rocco Rutte  <pdmef@gmx.net>  (f19984dcfacb)
+
+	* pop.c: POP: Respect $message_cache_clean
+
+2007-12-11 14:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (2707a97e0deb)
+
+	* doc/manual.xml.head: Manual: mention $time_inc in tuning chapter
+
+2007-12-11 13:12 +0100  Rocco Rutte  <pdmef@gmx.net>  (9709d244c64b)
+
+	* ChangeLog, enter.c, history.h: Maintain different history lists for
+	files and mailboxes. Closes #2999.
+
 2007-12-11 13:08 +0100  Rocco Rutte  <pdmef@gmx.net>  (35d778452444)
 
 	* history.c: Do not trust history file and mutt code about history

@@ -34,6 +34,11 @@
 #include <string.h>
 #include <unistd.h>
 
+#ifdef USE_HCACHE
+#define HC_FNAME	"mutt"		/* filename for hcache as POP lacks paths */
+#define HC_FEXT		"hcache"	/* extension for hcache as POP lacks paths */
+#endif
+
 /* write line to file */
 static int fetch_message (char *line, void *file)
 {
@@ -173,6 +178,12 @@ static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
   if (!(pop_data = (POP_DATA *)ctx->data))
     return -1;
 
+#ifdef USE_HCACHE
+  /* keep hcache file if hcache == bcache */
+  if (strcmp (HC_FNAME "." HC_FEXT, id) == 0)
+    return 0;
+#endif
+
   for (i = 0; i < ctx->msgcount; i++)
     /* if the id we get is known for a header: done (i.e. keep in cache) */
     if (ctx->hdrs[i]->data && mutt_strcmp (ctx->hdrs[i]->data, id) == 0)
@@ -183,6 +194,27 @@ static int msg_cache_check (const char *id, body_cache_t *bcache, void *data)
    */
   return mutt_bcache_del (bcache, id);
 }
+
+#ifdef USE_HCACHE
+static int pop_hcache_namer (const char *path, char *dest, size_t destlen)
+{
+  return snprintf (dest, destlen, "%s." HC_FEXT, path);
+}
+
+static header_cache_t *pop_hcache_open (POP_DATA *pop_data, const char *path)
+{
+  ciss_url_t url;
+  char p[LONG_STRING];
+
+  if (!pop_data || !pop_data->conn)
+    return mutt_hcache_open (HeaderCache, path, NULL);
+
+  mutt_account_tourl (&pop_data->conn->account, &url);
+  url.path = HC_FNAME;
+  url_ciss_tostring (&url, p, sizeof (p), U_PATH);
+  return mutt_hcache_open (HeaderCache, p, pop_hcache_namer);
+}
+#endif
 
 /*
  * Read headers
@@ -203,7 +235,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
   header_cache_t *hc = NULL;
   void *data;
 
-  hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
+  hc = pop_hcache_open (pop_data, ctx->path);
 #endif
 
   time (&pop_data->check_time);
@@ -614,7 +646,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 			M_PROGRESS_MSG, WriteInc, ctx->deleted);
 
 #if USE_HCACHE
-    hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
+    hc = pop_hcache_open (pop_data, ctx->path);
 #endif
 
     for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
