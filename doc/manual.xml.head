@@ -6204,6 +6204,14 @@ folder-hook ^pop 'set read_inc=1'</screen>
 </orderedlist>
 </para>
 
+<para>These settings work on a per-message basis. However, as messages may
+greatly differ in size and certain operations are much faster than others,
+even per-folder settings of the increment variables may not be
+desirable as they produce either too few or too much progress updates.
+Thus, Mutt allows to limit the number of progress updates per second it'll
+actually send to the terminal using the
+<link linkend="time-inc">&dollar;time&lowbar;inc</link> variable.</para>
+
 </sect1>
 
 <sect1 id="tuning-messages">
