@@ -6063,9 +6063,9 @@ so-called ``body caching'' which are both described in this section.
 </para>
 
 <para>
-These are optional which means they're not enabled by default.
-Details on how to enable either of these techniques are given in the
-following subsections.
+Header caching is optional as it depends on external libraries, body
+caching is always enabled if mutt is compiled with POP and/or IMAP
+support as these use it (body caching requires no external library).
 </para>
 
 <sect2 id="header-caching">
@@ -6097,17 +6097,17 @@ to a directory.
 </para>
 
 <para>
-For the one-file-per-folder case, database files will be named by MD5
-sums. They may be safely removed if a system is short on space. You
-can compute the name of the header cache file for a particular folder
+For the one-file-per-folder case, database files for remote folders
+will be named according to their URL while database files for local
+folders will be named by the MD5 checksums of their path. These database
+files may be safely removed if a system is short on space. You
+can compute the name of the header cache file for a particular local folder
 through a command like the following:
 </para>
 
 <para>
 <screen>
 $ printf '%s' '/path/to/folder' | md5sum
-$ printf '%s' 'imaps://user@host/path/to/folder' | md5sum
-$ printf '%s' 'pops://user@host' | md5sum
 </screen>
 </para>
 
@@ -6122,17 +6122,17 @@ named <literal>md5</literal>, depending on your operating system.
 <title>Body caching</title>
 
 <para>
+Both cache methods can be combined using the same directory for storage
+(and for IMAP/POP even provide meaningful file names) which simplifies
+manual maintenance tasks.
+</para>
+
+
+<para>
 In addition to caching message headers only, mutt can also cache
 whole message bodies. This results in faster display of messages
 for POP and IMAP folders because messages usually have to be
 downloaded only once.
-</para>
-
-<para>
-If the configure script is called with <emphasis>--enable-pop</emphasis>
-and/or <emphasis>--enable-imap</emphasis>, body caching will be
-built in as it does not require additional software packages such
-as database libraries.
 </para>
 
 <para>
@@ -6149,6 +6149,30 @@ directories can be examined with mutt as read-only Maildir folders.
 <para>
 All files can be removed as needed if the consumed disk space
 becomes an issue as mutt will silently fetch missing items again.
+</para>
+
+</sect2>
+
+<sect2 id="maint-cache">
+<title>Maintenance</title>
+
+<para>
+Mutt does not (yet) support maintenance features for header cache
+database files so that files have to be removed in case they grow too
+big. It depends on the database library used for header caching whether
+disk space freed by removing messages is re-used.
+</para>
+
+<para>
+For body caches, mutt can keep the local cache in sync with the
+remote mailbox if the
+<link linkend="message-cache-clean">&dollar;message&lowbar;cache&lowbar;clean</link>
+variable is set. Cleaning means to remove messages from the cache which
+are no longer present in the mailbox which only happens when other mail
+clients or instances of mutt using a different body cache location
+delete messages (Mutt itself removes deleted messages from the cache
+when syncing a mailbox). As cleaning can take a noticeable amount of time,
+it should not be set in general but only occasionally.
 </para>
 
 </sect2>
