@@ -23,8 +23,6 @@
 #include "mutt.h"
 #include "history.h"
 
-/* global vars used for the string-history routines */
-
 struct history
 {
   char **hist;
@@ -32,8 +30,12 @@ struct history
   short last;
 }; 
 
+/* global vars used for the string-history routines */
+
 static struct history History[HC_LAST];
 static int OldSize = 0;
+
+#define GET_HISTORY(CLASS)	((CLASS < 0 || CLASS >= HC_LAST) ? NULL : &History[CLASS])
 
 static void init_history (struct history *h)
 {
@@ -70,11 +72,14 @@ void mutt_read_histfile (void)
   {
     read = 0;
     if (sscanf (linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
-        *(p = linebuf + strlen (linebuf) - 1) != '|')
+        *(p = linebuf + strlen (linebuf) - 1) != '|' || hclass < 0)
     {
       mutt_error (_("Bad history file format (line %d)"), line);
       break;
     }
+    /* silently ignore too high class (probably newer mutt) */
+    if (hclass >= HC_LAST)
+      continue;
     *p = '\0';
     p = safe_strdup (linebuf + read);
     if (p)
@@ -104,11 +109,14 @@ static void shrink_histfile (void)
   line = 0;
   while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line)) != NULL)
   {
-    if (sscanf (linebuf, "%d", &hclass) < 1)
+    if (sscanf (linebuf, "%d", &hclass) < 1 || hclass < 0)
     {
       mutt_error (_("Bad history file format (line %d)"), line);
       goto cleanup;
     }
+    /* silently ignore too high class (probably newer mutt) */
+    if (hclass >= HC_LAST)
+      continue;
     n[hclass]++;
   }
 
@@ -127,11 +135,14 @@ static void shrink_histfile (void)
     line = 0;
     while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line)) != NULL)
     {
-      if (sscanf (linebuf, "%d", &hclass) < 1)
+      if (sscanf (linebuf, "%d", &hclass) < 1 || hclass < 0)
       {
         mutt_error (_("Bad history file format (line %d)"), line);
         goto cleanup;
       }
+      /* silently ignore too high class (probably newer mutt) */
+      if (hclass >= HC_LAST)
+	continue;
       if (n[hclass]-- <= SaveHist)
         fprintf (tmp, "%s\n", linebuf);
     }
@@ -211,9 +222,9 @@ void mutt_init_history(void)
 void mutt_history_add (history_class_t hclass, const char *s, int save)
 {
   int prev;
-  struct history *h = &History[hclass];
-  
-  if (!HistSize)
+  struct history *h = GET_HISTORY(hclass);
+
+  if (!HistSize || !h)
     return; /* disabled */
 
   if (*s)
@@ -240,9 +251,9 @@ void mutt_history_add (history_class_t hclass, const char *s, int save)
 char *mutt_history_next (history_class_t hclass)
 {
   int next;
-  struct history *h = &History[hclass];
-  
-  if (!HistSize)
+  struct history *h = GET_HISTORY(hclass);
+
+  if (!HistSize || !h)
     return (""); /* disabled */
 
   next = h->cur + 1;
@@ -255,9 +266,9 @@ char *mutt_history_next (history_class_t hclass)
 char *mutt_history_prev (history_class_t hclass)
 {
   int prev;
-  struct history *h = &History[hclass];
+  struct history *h = GET_HISTORY(hclass);
 
-  if (!HistSize)
+  if (!HistSize || !h)
     return (""); /* disabled */
 
   prev = h->cur - 1;
