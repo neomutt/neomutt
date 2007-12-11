@@ -1,3 +1,21 @@
+2007-12-11 13:08 +0100  Rocco Rutte  <pdmef@gmx.net>  (35d778452444)
+
+	* history.c: Do not trust history file and mutt code about history
+	class. This prevents crashes as result of programming errors and/or
+	wrong history file (e.g. negative or too high classes).
+
+2007-12-08 12:54 -0800  Michael Elkins  <me@mutt.org>  (3971bcfd9112)
+
+	* mh.c: Skip over messages which were previously parsed after sorting
+	the tail of the list. Avoids a segmentation fault when rescanning
+	the new/ subdir of a maildir when messages were left over from a
+	previous scan.
+
+2007-12-07 11:38 -0800  Rocco Rutte  <pdmef@gmx.net>  (b891b1736885)
+
+	* ChangeLog, lib.c, md5.h: Check definition of ENOTSUP before use
+	(closes #2983)
+
 2007-12-07 13:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (468b9c86b0df)
 
 	* mh.c: Sort MH folders into natural order after 2nd pass (closes

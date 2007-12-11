@@ -244,8 +244,10 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
     redraw = M_REDRAW_INIT;
   }
 
-  if (flags & (M_FILE | M_EFILE))
+  if (flags & M_FILE)
     hclass = HC_FILE;
+  else if (flags & M_EFILE)
+    hclass = HC_MBOX;
   else if (flags & M_CMD)
     hclass = HC_CMD;
   else if (flags & M_ALIAS)
