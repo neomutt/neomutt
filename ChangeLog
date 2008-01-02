@@ -1,3 +1,16 @@
+2007-12-11 15:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (68a9c3e74f9a)
+
+	* doc/manual.xml.head: Manual: Update caching docs (hcache naming,
+	maintenance)
+
+2007-12-11 14:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (d6e0b6f1f8ff)
+
+	* ChangeLog, pop.c: POP: Name hcache the way IMAP does. Place the file
+	under $header_cache/<url>/mutt.hcache. For now ignore that this may
+	break if hcache == bcache and a message's uid is "mutt.hcache"
+	(extremely unlikely) in which case the user will loose only the
+	hcache file.
+
 2007-12-11 14:50 +0100  Rocco Rutte  <pdmef@gmx.net>  (f19984dcfacb)
 
 	* pop.c: POP: Respect $message_cache_clean
