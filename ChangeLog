@@ -1,3 +1,11 @@
+2008-01-09 11:24 +0100  Rocco Rutte  <pdmef@gmx.net>  (0a9a5519a722)
+
+	* init.h: Mention $recall in description for $postpone
+
+2008-01-02 11:47 -0800  Johan Svedberg  <johan@svedberg.com>  (3cf8bc21bc3d)
+
+	* ChangeLog, po/sv.po: Updated Swedish translation
+
 2007-12-11 15:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (68a9c3e74f9a)
 
 	* doc/manual.xml.head: Manual: Update caching docs (hcache naming,

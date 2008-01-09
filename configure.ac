@@ -514,7 +514,7 @@ if test "x$mutt_cv_setgid" = "xyes" || test "x$mutt_cv_fchdir" = "xno" \
         || test "x$mutt_cv_external_dotlock" = "xyes"
 then
         AC_DEFINE(DL_STANDALONE,1,[ Define if you want to use an external dotlocking program. ])
-        DOTLOCK_TARGET="mutt_dotlock"
+        DOTLOCK_TARGET="mutt_dotlock\$(EXEEXT)"
 else
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS dotlock.o"
 fi
