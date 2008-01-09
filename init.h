@@ -2185,7 +2185,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not messages are saved in the ``$$postponed''
-  ** mailbox when you elect not to send immediately.
+  ** mailbox when you elect not to send immediately. Also see the
+  ** ``$$recall'' variable.
   */
   { "postponed",	DT_PATH, R_NONE, UL &Postponed, UL "~/postponed" },
   /*
