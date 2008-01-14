@@ -1,3 +1,12 @@
+2008-01-14 22:45 +0100  Rocco Rutte  <pdmef@gmx.net>  (9e07c4a95133)
+
+	* hcachever.sh.in: hcache: use HEADER for version calculation too
+
+2008-01-09 13:06 +0100  Rocco Rutte  <pdmef@gmx.net>  (2a5636080210)
+
+	* ChangeLog, configure.ac: Fix mutt_dotlock build issue on cygwin
+	(closes #3009).
+
 2008-01-09 11:24 +0100  Rocco Rutte  <pdmef@gmx.net>  (0a9a5519a722)
 
 	* init.h: Mention $recall in description for $postpone

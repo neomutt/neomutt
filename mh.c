@@ -1008,16 +1008,6 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
       mutt_progress_update (progress, count, -1);
 
 #if USE_HCACHE
-    if (ctx->magic == M_MH)
-      data = mutt_hcache_fetch (hc, p->h->path, strlen);
-    else
-      data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
-    when = (struct timeval *) data;
-#endif
-
-    snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
-
-#if USE_HCACHE
     if (option(OPTHCACHEVERIFY))
      {
 #if HAVE_DIRENT_D_INO
@@ -1042,6 +1032,16 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
       lastchanged.st_mtime = 0;
       ret = 0;
     }
+
+#if USE_HCACHE
+    if (ctx->magic == M_MH)
+      data = mutt_hcache_fetch (hc, p->h->path, strlen);
+    else
+      data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
+    when = (struct timeval *) data;
+#endif
+
+    snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
 
     if (data != NULL && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
