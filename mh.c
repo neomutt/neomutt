@@ -1007,6 +1007,8 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
     if (!ctx->quiet && progress)
       mutt_progress_update (progress, count, -1);
 
+    snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
+
 #if USE_HCACHE
     if (option(OPTHCACHEVERIFY))
      {
@@ -1040,8 +1042,6 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
       data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
     when = (struct timeval *) data;
 #endif
-
-    snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
 
     if (data != NULL && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
