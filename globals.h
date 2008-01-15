@@ -111,6 +111,7 @@ WHERE char *Postponed;
 WHERE char *Prefix;
 WHERE char *PrintCmd;
 WHERE char *QueryCmd;
+WHERE char *QueryFormat;
 WHERE char *Realname;
 WHERE char *SendCharset;
 WHERE char *Sendmail;

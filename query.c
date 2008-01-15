@@ -32,6 +32,7 @@
 
 typedef struct query
 {
+  int num;
   ADDRESS *addr;
   char *name;
   char *other;
@@ -180,41 +181,67 @@ static int query_search (MUTTMENU *m, regex_t *re, int n)
   return REG_NOMATCH;
 }
 
-/* This is the callback routine from mutt_menuLoop() which is used to generate
- * a menu entry for the requested item number.
- */
-#define QUERY_MIN_COLUMN_LENGHT 20 /* Must be < 70/2 */
-static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
+static const char * query_format_str (char *dest, size_t destlen, size_t col,
+				      char op, const char *src,
+				      const char *fmt, const char *ifstring,
+				      const char *elsestring,
+				      unsigned long data, format_flag flags)
 {
-  ENTRY *table = (ENTRY *) m->data;
-  char buf2[SHORT_STRING], buf[SHORT_STRING] = "";
+  ENTRY *entry = (ENTRY *)data;
+  QUERY *query = entry->data;
+  char tmp[SHORT_STRING];
+  char buf2[STRING] = "";
+  int optional = (flags & M_FORMAT_OPTIONAL);
 
-  /* need a query format ... hard coded constants are not good */
-  while (FirstColumn + SecondColumn > 70)
+  switch (op)
   {
-    FirstColumn = FirstColumn * 3 / 4;
-    SecondColumn = SecondColumn * 3 / 4;
-    if (FirstColumn < QUERY_MIN_COLUMN_LENGHT)
-      FirstColumn = QUERY_MIN_COLUMN_LENGHT;
-    if (SecondColumn < QUERY_MIN_COLUMN_LENGHT)
-      SecondColumn = QUERY_MIN_COLUMN_LENGHT;
+  case 'a':
+    rfc822_write_address (buf2, sizeof (buf2), query->addr, 1);
+    snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+    snprintf (dest, destlen, tmp, buf2);
+    break;
+  case 'c':
+    snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
+    snprintf (dest, destlen, tmp, query->num);
+    break;
+  case 'e':
+    if (!optional)
+    {
+      snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+      snprintf (dest, destlen, tmp, NONULL (query->other));
+    }
+    else if (!query->other || !*query->other)
+      optional = 0;
+    break;
+  case 'n':
+    snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
+    snprintf (dest, destlen, tmp, NONULL (query->name));
+    break;
+  case 't':
+    snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
+    snprintf (dest, destlen, tmp, entry->tagged ? '*' : ' ');
+    break;
+  default:
+    snprintf (tmp, sizeof (tmp), "%%%sc", fmt);
+    snprintf (dest, destlen, tmp, op);
+    break;
   }
 
-  rfc822_write_address (buf, sizeof (buf), table[num].data->addr, 1);
+  if (optional)
+    mutt_FormatString (dest, destlen, col, ifstring, query_format_str, data, 0);
+  else if (flags & M_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, col, elsestring, query_format_str, data, 0);
 
-  mutt_format_string (buf2, sizeof (buf2),
-		      FirstColumn + 2, FirstColumn + 2,
-		      FMT_LEFT, ' ', table[num].data->name,
-		      mutt_strlen (table[num].data->name), 0);
+  return src;
+}
 
-  snprintf (s, slen, " %c %3d %s %-*.*s %s", 
-	    table[num].tagged ? '*':' ',
-	    num+1,
-	    buf2,
-	    SecondColumn+2,
-	    SecondColumn+2,
-	    buf,
-	    NONULL (table[num].data->other));
+static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
+{
+  ENTRY *entry = &((ENTRY *) m->data)[num];
+
+  entry->data->num = num;
+  mutt_FormatString (s, slen, 0, NONULL (QueryFormat), query_format_str,
+		     (unsigned long) entry, M_FORMAT_ARROWCURSOR);
 }
 
 static int query_tag (MUTTMENU *menu, int n, int m)

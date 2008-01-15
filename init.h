@@ -2270,6 +2270,27 @@ struct option_t MuttVars[] = {
   ** with the query string the user types.  See ``$query'' for more
   ** information.
   */
+  { "query_format",	DT_STR, R_NONE, UL &QueryFormat, UL "%4c %t %-25.25a %-25.25n %?e?(%e)?" },
+  /*
+  ** .pp
+  ** This variable describes the format of the `query' menu. The
+  ** following printf-style sequences are understood:
+  ** .pp
+  ** .dl
+  ** .dt %a  .dd destination address
+  ** .dt %c  .dd current entry number
+  ** .dt %e  .dd extra information *
+  ** .dt %n  .dd destination name
+  ** .dt %t  .dd ``*'' if current entry is tagged, a space otherwise
+  ** .dt %>X .dd right justify the rest of the string and pad with "X"
+  ** .dt %|X .dd pad to the end of the line with "X"
+  ** .dt %*X .dd soft-fill with character "X" as pad
+  ** .de
+  ** .pp
+  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
+  ** .pp
+  ** * = can be optionally printed if nonzero, see the ``$$status_format'' documentation.
+  */
   { "quit",		DT_QUAD, R_NONE, OPT_QUIT, M_YES },
   /*
   ** .pp

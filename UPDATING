@@ -4,6 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  + $query_format (customize external query menu)
   ! inode sorting is always enabled
   + $time_inc suppresses progress updates less than $time_inc
     milliseconds apart.
