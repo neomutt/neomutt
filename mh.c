@@ -804,7 +804,7 @@ static size_t maildir_hcache_keylen (const char *fn)
 }
 #endif
 
-#ifdef HAVE_DIRENT_D_INO
+#if HAVE_DIRENT_D_INO
 static int md_cmp_inode (struct maildir *a, struct maildir *b)
 {
   return a->inode - b->inode;
@@ -954,6 +954,7 @@ static void mh_sort_natural (CONTEXT *ctx, struct maildir **md)
   *md = maildir_sort (*md, (size_t) -1, md_cmp_path);
 }
 
+#if HAVE_DIRENT_D_INO
 static struct maildir *skip_duplicates (struct maildir *p, struct maildir **last)
 {
   /*
@@ -972,6 +973,7 @@ static struct maildir *skip_duplicates (struct maildir *p, struct maildir **last
   }
   return p;
 }
+#endif
 
 /* 
  * This function does the second parsing pass
@@ -985,14 +987,34 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 #if HAVE_DIRENT_D_INO
   int sort = 0;
 #endif
-
 #if USE_HCACHE
   header_cache_t *hc = NULL;
   void *data;
   struct timeval *when = NULL;
   struct stat lastchanged;
   int ret;
+#endif
 
+#if HAVE_DIRENT_D_INO
+#define DO_SORT()	do { \
+  if (!sort) \
+  { \
+    dprint (4, (debugfile, "maildir: need to sort %s by inode\n", ctx->path)); \
+    p = maildir_sort (p, (size_t) -1, md_cmp_inode); \
+    if (!last) \
+      *md = p; \
+    else \
+      last->next = p; \
+    sort = 1; \
+    p = skip_duplicates (p, &last); \
+    snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path); \
+  } \
+} while(0)
+#else
+#define DO_SORT()	/* nothing */
+#endif
+
+#if USE_HCACHE
   hc = mutt_hcache_open (HeaderCache, ctx->path, NULL);
 #endif
 
@@ -1011,62 +1033,33 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 
 #if USE_HCACHE
     if (option(OPTHCACHEVERIFY))
-     {
-#if HAVE_DIRENT_D_INO
-      if (!sort)
-      {
-	dprint (4, (debugfile, "maildir: need to sort %s by inode\n", ctx->path));
-	p = maildir_sort (p, (size_t) -1, md_cmp_inode);
-	if (!last)
-	  *md = p;
-	else
-	  last->next = p;
-	sort = 1;
-
-	p = skip_duplicates(p, &last);
-
-	snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
-      }
-#endif
+    {
+      DO_SORT();
       ret = stat(fn, &lastchanged);
     }
-    else {
+    else
+    {
       lastchanged.st_mtime = 0;
       ret = 0;
     }
 
-#if USE_HCACHE
     if (ctx->magic == M_MH)
       data = mutt_hcache_fetch (hc, p->h->path, strlen);
     else
       data = mutt_hcache_fetch (hc, p->h->path + 3, &maildir_hcache_keylen);
     when = (struct timeval *) data;
-#endif
 
     if (data != NULL && !ret && lastchanged.st_mtime <= when->tv_sec)
     {
       p->h = mutt_hcache_restore ((unsigned char *)data, &p->h);
       if (ctx->magic == M_MAILDIR)
 	maildir_parse_flags (p->h, fn);
-    } else
-    {
-#endif
-#if HAVE_DIRENT_D_INO
-    if (!sort)
-    {
-      dprint (4, (debugfile, "maildir: need to sort %s by inode\n", ctx->path));
-      p = maildir_sort (p, (size_t) -1, md_cmp_inode);
-      if (!last)
-	*md = p;
-      else
-	last->next = p;
-      sort = 1;
-
-      p = skip_duplicates(p, &last);
-
-      snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
     }
-#endif
+    else
+    {
+#endif /* USE_HCACHE */
+
+    DO_SORT();
     if (maildir_parse_message (ctx->magic, fn, p->h->old, p->h))
     {
       p->header_parsed = 1;
@@ -1087,6 +1080,8 @@ void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
 #if USE_HCACHE
   mutt_hcache_close (hc);
 #endif
+
+#undef DO_SORT
 
   mh_sort_natural (ctx, md);
 }
