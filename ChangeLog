@@ -1,3 +1,14 @@
+2008-01-15 17:34 +0100  Rocco Rutte  <pdmef@gmx.net>  (b3cde588fe9a)
+
+	* recvattach.c: Prepend './' to (some) suggested filenames when saving
+	attachments. Attachment filenames may start with characters that are
+	special to mutt_expand_path() may cause undesired expansion. Closes
+	#1719.
+
+2008-01-15 15:07 +0100  Rocco Rutte  <pdmef@gmx.net>  (02fd1874a894)
+
+	* ChangeLog, INSTALL, README: Update stale INSTALL+README files
+
 2008-01-15 12:34 +0100  Rocco Rutte  <pdmef@gmx.net>  (c06891454c6e)
 
 	* mh.c: Make maildir_delayed_parsing() more readable

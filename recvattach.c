@@ -505,8 +505,8 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	{
 	  int append = 0;
 
-	  prepend_curdir (buf, sizeof (buf));
 	  strfcpy (buf, mutt_basename (NONULL (top->filename)), sizeof (buf));
+	  prepend_curdir (buf, sizeof (buf));
 
 	  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf),
 				    M_FILE | M_CLEAR) != 0 || !buf[0])
