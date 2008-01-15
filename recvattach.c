@@ -386,6 +386,24 @@ int mutt_is_message_type (int type, const char *subtype)
   return (ascii_strcasecmp (subtype, "rfc822") == 0 || ascii_strcasecmp (subtype, "news") == 0);
 }
 
+static void prepend_curdir (char *dst, size_t dstlen)
+{
+  size_t l;
+
+  if (!dst || !*dst || *dst == '/' || dstlen < 3 ||
+      /* XXX bad modularization, these are special to mutt_expand_path() */
+      !strchr ("~=+@<>!-^", *dst))
+    return;
+
+  dstlen -= 3;
+  l = strlen (dst) + 2;
+  l = (l > dstlen ? dstlen : l);
+  memmove (dst + 2, dst, l);
+  dst[0] = '.';
+  dst[1] = '/';
+  dst[l + 2] = 0;
+}
+
 static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char **directory)
 {
   char *prompt;
@@ -408,6 +426,8 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
     mutt_default_save(buf, sizeof(buf), body->hdr);
   else
     buf[0] = 0;
+
+  prepend_curdir (buf, sizeof (buf));
 
   prompt = _("Save to file: ");
   while (prompt)
@@ -485,6 +505,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	{
 	  int append = 0;
 
+	  prepend_curdir (buf, sizeof (buf));
 	  strfcpy (buf, mutt_basename (NONULL (top->filename)), sizeof (buf));
 
 	  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf),
