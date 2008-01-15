@@ -1102,7 +1102,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable configures how often (in seconds) mutt should look for
-  ** new mail.
+  ** new mail. Also see the ``$$timeout'' variable.
   */
   { "mailcap_path",	DT_STR,	 R_NONE, UL &MailcapPath, 0 },
   /*

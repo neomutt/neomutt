@@ -1,3 +1,16 @@
+2008-01-14 23:00 +0100  Rocco Rutte  <pdmef@gmx.net>  (130aa0517251)
+
+	* mh.c: Fix typo of in dae38f5ab2a5 commit
+
+2008-01-14 22:54 +0100  Rocco Rutte  <pdmef@gmx.net>  (dae38f5ab2a5)
+
+	* ChangeLog, mh.c: hcache: Fetch data for correct message from hcache.
+	With $maildir_header_cache_verify set (the default), the list (and
+	thus the current) header change after data was fetched from hcache
+	making some message appear as duplicate. Now fetch data for the
+	correct message after possible in-place inode sorting altering file
+	order. See debian bug #459739.
+
 2008-01-14 22:45 +0100  Rocco Rutte  <pdmef@gmx.net>  (9e07c4a95133)
 
 	* hcachever.sh.in: hcache: use HEADER for version calculation too
