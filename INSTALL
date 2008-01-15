@@ -14,6 +14,7 @@ systems:
 	HP-UX
 	IRIX
 	Linux
+	Mac OS X
 	Atari MiNT
 	MkLinux
 	NetBSD
@@ -25,7 +26,7 @@ systems:
 	Ultrix
 	UnixWare
 
-- If you are building from CVS, or if you are changing parts of mutt,
+- If you are building from Mercurial, or if you are changing parts of mutt,
   particularly the build system, do read doc/devel-notes.txt.
 
 - An ANSI C compiler (such as GCC) is required.
@@ -54,10 +55,10 @@ Installation
 Installing Mutt is rather painless through the use of the GNU
 autoconf package.  Simply untar the Mutt distribution, and run the
 ``configure'' script.  If you have obtained the distribution from
-the CVS repository, run the ``prepare'' script with the same command
+the Mercurial repository, run the ``prepare'' script with the same command
 line parameters you would pass to configure.  It will set up mutt's
 build environment and add the files which are present in the tar
-balls, but not in the CVS repository.
+balls, but not in the Mercurial repository.
 
 In most cases, configure will automatically determine everything it
 needs to know in order to compile.  However, there are a few options
@@ -298,5 +299,3 @@ Digital Unix (OSF/1)
 
 	The system curses library is said to be badly broken.  Use GNU
 	ncurses or SLang instead.
-
-$Id$

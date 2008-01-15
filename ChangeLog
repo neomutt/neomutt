@@ -1,3 +1,12 @@
+2008-01-15 12:34 +0100  Rocco Rutte  <pdmef@gmx.net>  (c06891454c6e)
+
+	* mh.c: Make maildir_delayed_parsing() more readable
+
+2008-01-15 11:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (2d88a6996973)
+
+	* ChangeLog, init.h: Mention that References: and Date: cannot be
+	changed in editor (closes #1234).
+
 2008-01-15 10:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (ba0d96408425)
 
 	* UPDATING, globals.h, init.h, query.c: Make formatting of query menu
