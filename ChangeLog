@@ -1,3 +1,13 @@
+2008-01-15 10:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (ba0d96408425)
+
+	* UPDATING, globals.h, init.h, query.c: Make formatting of query menu
+	configurable via $query_format (closes #170).
+
+2008-01-15 09:59 +0100  Rocco Rutte  <pdmef@gmx.net>  (6e40e869a477)
+
+	* ChangeLog, init.h: Link $timeout from $mail_check, see Debian
+	#385456.
+
 2008-01-14 23:00 +0100  Rocco Rutte  <pdmef@gmx.net>  (130aa0517251)
 
 	* mh.c: Fix typo of in dae38f5ab2a5 commit

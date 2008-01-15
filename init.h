@@ -540,6 +540,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This option allows you to edit the header of your outgoing messages
   ** along with the body of your message.
+  ** .pp
+  ** \fBNote\fP that changes made to the References: and Date: headers are
+  ** ignored for interoperability reasons.
   */
   { "edit_hdrs",	DT_SYN,  R_NONE, UL "edit_headers", 0 },
   /*
