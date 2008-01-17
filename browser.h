@@ -44,8 +44,8 @@ struct folder_file
 struct browser_state
 {
   struct folder_file *entry;
-  short entrylen; /* number of real entries */
-  short entrymax;  /* max entry */
+  unsigned int entrylen;	/* number of real entries */
+  unsigned int entrymax;	/* max entry */
 #ifdef USE_IMAP
   short imap_browse;
   char *folder;
