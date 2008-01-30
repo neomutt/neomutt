@@ -1,3 +1,12 @@
+2008-01-17 17:32 +0100  Rocco Rutte  <pdmef@gmx.net>  (039d939d8c3e)
+
+	* browser.h: Use 'unsigned int' for file browser state to browse huge
+	dirs (closes #3017).
+
+2008-01-15 17:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (6e6e6c4bee59)
+
+	* ChangeLog, recvattach.c: Fix logic error in b3cde588fe9a commit
+
 2008-01-15 17:34 +0100  Rocco Rutte  <pdmef@gmx.net>  (b3cde588fe9a)
 
 	* recvattach.c: Prepend './' to (some) suggested filenames when saving
