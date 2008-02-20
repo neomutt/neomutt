@@ -1,3 +1,11 @@
+2008-01-29 21:06 -0800  Brendan Cully  <brendan@kublai.com>  (fd741c1922f3)
+
+	* hg-commit: Fix typo in hg-commit
+
+2008-01-29 21:05 -0800  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (95807c4b824f)
+
+	* ChangeLog, po/nl.po: Improvements to the Dutch translation
+
 2008-01-17 17:32 +0100  Rocco Rutte  <pdmef@gmx.net>  (039d939d8c3e)
 
 	* browser.h: Use 'unsigned int' for file browser state to browse huge
