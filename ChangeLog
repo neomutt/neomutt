@@ -1,3 +1,12 @@
+2008-02-27 09:30 +0100  N.J. Mann  <njm@njm.f2s.com>  (eb4e214c8ced)
+
+	* status.c: Cleanup status_format_str()
+
+2008-02-20 12:02 +0100  Rocco Rutte  <pdmef@gmx.net>  (9414b9dd36db)
+
+	* ChangeLog, muttlib.c: Fix truncation logic for soft-padding (Closes
+	#3035).
+
 2008-01-29 21:06 -0800  Brendan Cully  <brendan@kublai.com>  (fd741c1922f3)
 
 	* hg-commit: Fix typo in hg-commit

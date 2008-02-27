@@ -426,7 +426,8 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
     if (progress->size > 0)
     {
       mutt_message ("%s %s/%s (%d%%)", progress->msg, posstr, progress->sizestr,
-		    percent > 0 ? percent : progress->pos * 100 / progress->size);
+		    percent > 0 ? percent :
+		   	(int) (100.0 * (double) progress->pos / progress->size));
     }
     else
     {
