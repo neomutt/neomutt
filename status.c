@@ -49,14 +49,16 @@ static void _menu_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *m
  * %h = hostname
  * %l = length of mailbox (in bytes) [option]
  * %m = total number of messages [option]
- * %M = number of messages shown (virutal message count when limiting) [option]
+ * %M = number of messages shown (virtual message count when limiting) [option]
  * %n = number of new messages [option]
+ * %o = number of old unread messages [option]
  * %p = number of postponed messages [option]
  * %P = percent of way through index
  * %r = readonly/wontwrite/changed flag
  * %s = current sorting method ($sort)
  * %S = current aux sorting method ($sort_aux)
  * %t = # of tagged messages [option]
+ * %u = number of unread messages [option]
  * %v = Mutt version 
  * %V = currently active limit pattern [option] */
 static const char *
@@ -92,11 +94,6 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
 	optional = 0;
       break;
 
-    case 'h':
-      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-      snprintf (buf, buflen, fmt, NONULL(Hostname));
-      break;
-
     case 'f':
       snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
       if (Context && Context->path)
@@ -117,6 +114,11 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
       }
       else if (!Context || !Context->flagged)
 	optional = 0;
+      break;
+
+    case 'h':
+      snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+      snprintf (buf, buflen, fmt, NONULL(Hostname));
       break;
 
     case 'l':
