@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -65,13 +65,13 @@ To contact the developers, please mail to <mutt-dev@mutt.org>.\n\
 To report a bug, please visit http://bugs.mutt.org/.\n");
 
 static const char *Notice = N_("\
-Copyright (C) 1996-2007 Michael R. Elkins and others.\n\
+Copyright (C) 1996-2008 Michael R. Elkins and others.\n\
 Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n\
 Mutt is free software, and you are welcome to redistribute it\n\
 under certain conditions; type `mutt -vv' for details.\n");
 
 static const char *Copyright = N_("\
-Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n\
+Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n\
 Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n\
 Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n\
 Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n\
