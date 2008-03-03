@@ -1,3 +1,13 @@
+2008-02-27 14:45 +0100  Rocco Rutte  <pdmef@gmx.net>  (553ae136f20e)
+
+	* COPYRIGHT, main.c: Update copyright years in 'mutt -v' output and
+	COPYRIGHT
+
+2008-02-27 13:27 +0100  Anders Helmersson  <anders.helmersson.utsikt@wasadata.net>  (d2eb082fd872)
+
+	* ChangeLog, curs_lib.c: Fix progress updates for large messages.
+	Closes #3029.
+
 2008-02-27 09:30 +0100  N.J. Mann  <njm@njm.f2s.com>  (eb4e214c8ced)
 
 	* status.c: Cleanup status_format_str()
@@ -22,7 +32,7 @@
 
 2008-01-15 17:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (6e6e6c4bee59)
 
-	* ChangeLog, recvattach.c: Fix logic error in b3cde588fe9a commit
+	* recvattach.c: Fix logic error in b3cde588fe9a commit
 
 2008-01-15 17:34 +0100  Rocco Rutte  <pdmef@gmx.net>  (b3cde588fe9a)
 
@@ -33,26 +43,17 @@
 
 2008-01-15 15:07 +0100  Rocco Rutte  <pdmef@gmx.net>  (02fd1874a894)
 
-	* ChangeLog, INSTALL, README: Update stale INSTALL+README files
-
-2008-01-15 12:34 +0100  Rocco Rutte  <pdmef@gmx.net>  (c06891454c6e)
+	* INSTALL, README: Update stale INSTALL+README files
 
 	* mh.c: Make maildir_delayed_parsing() more readable
 
-2008-01-15 11:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (2d88a6996973)
-
-	* ChangeLog, init.h: Mention that References: and Date: cannot be
+	* init.h: Mention that References: and Date: cannot be
 	changed in editor (closes #1234).
-
-2008-01-15 10:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (ba0d96408425)
 
 	* UPDATING, globals.h, init.h, query.c: Make formatting of query menu
 	configurable via $query_format (closes #170).
 
-2008-01-15 09:59 +0100  Rocco Rutte  <pdmef@gmx.net>  (6e40e869a477)
-
-	* ChangeLog, init.h: Link $timeout from $mail_check, see Debian
-	#385456.
+	* init.h: Link $timeout from $mail_check, see Debian #385456.
 
 2008-01-14 23:00 +0100  Rocco Rutte  <pdmef@gmx.net>  (130aa0517251)
 
@@ -67,50 +68,36 @@
 	correct message after possible in-place inode sorting altering file
 	order. See debian bug #459739.
 
-2008-01-14 22:45 +0100  Rocco Rutte  <pdmef@gmx.net>  (9e07c4a95133)
-
 	* hcachever.sh.in: hcache: use HEADER for version calculation too
 
 2008-01-09 13:06 +0100  Rocco Rutte  <pdmef@gmx.net>  (2a5636080210)
 
-	* ChangeLog, configure.ac: Fix mutt_dotlock build issue on cygwin
+	* configure.ac: Fix mutt_dotlock build issue on cygwin
 	(closes #3009).
-
-2008-01-09 11:24 +0100  Rocco Rutte  <pdmef@gmx.net>  (0a9a5519a722)
 
 	* init.h: Mention $recall in description for $postpone
 
 2008-01-02 11:47 -0800  Johan Svedberg  <johan@svedberg.com>  (3cf8bc21bc3d)
 
-	* ChangeLog, po/sv.po: Updated Swedish translation
+	* po/sv.po: Updated Swedish translation
 
 2007-12-11 15:22 +0100  Rocco Rutte  <pdmef@gmx.net>  (68a9c3e74f9a)
 
 	* doc/manual.xml.head: Manual: Update caching docs (hcache naming,
 	maintenance)
 
-2007-12-11 14:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (d6e0b6f1f8ff)
-
-	* ChangeLog, pop.c: POP: Name hcache the way IMAP does. Place the file
+	* pop.c: POP: Name hcache the way IMAP does. Place the file
 	under $header_cache/<url>/mutt.hcache. For now ignore that this may
 	break if hcache == bcache and a message's uid is "mutt.hcache"
 	(extremely unlikely) in which case the user will loose only the
 	hcache file.
 
-2007-12-11 14:50 +0100  Rocco Rutte  <pdmef@gmx.net>  (f19984dcfacb)
-
 	* pop.c: POP: Respect $message_cache_clean
-
-2007-12-11 14:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (2707a97e0deb)
 
 	* doc/manual.xml.head: Manual: mention $time_inc in tuning chapter
 
-2007-12-11 13:12 +0100  Rocco Rutte  <pdmef@gmx.net>  (9709d244c64b)
-
-	* ChangeLog, enter.c, history.h: Maintain different history lists for
+	* enter.c, history.h: Maintain different history lists for
 	files and mailboxes. Closes #2999.
-
-2007-12-11 13:08 +0100  Rocco Rutte  <pdmef@gmx.net>  (35d778452444)
 
 	* history.c: Do not trust history file and mutt code about history
 	class. This prevents crashes as result of programming errors and/or
@@ -125,10 +112,8 @@
 
 2007-12-07 11:38 -0800  Rocco Rutte  <pdmef@gmx.net>  (b891b1736885)
 
-	* ChangeLog, lib.c, md5.h: Check definition of ENOTSUP before use
+	* lib.c, md5.h: Check definition of ENOTSUP before use
 	(closes #2983)
-
-2007-12-07 13:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (468b9c86b0df)
 
 	* mh.c: Sort MH folders into natural order after 2nd pass (closes
 	#463).
