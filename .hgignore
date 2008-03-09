@@ -37,6 +37,10 @@
 ^doc/stamp-
 ^po/mutt\.pot$
 
+# xcode droppings
+^build/
+.xcodeproj/
+
 syntax: glob
 .deps
 Makefile
