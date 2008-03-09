@@ -856,7 +856,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       isSpool = mutt_is_spool (ctx->path) && !mutt_is_spool (mbox);
     }
 
-    if (isSpool && mbox && *mbox)
+    if (isSpool && *mbox)
     {
       mutt_expand_path (mbox, sizeof (mbox));
       snprintf (buf, sizeof (buf), _("Move read messages to %s?"), mbox);
