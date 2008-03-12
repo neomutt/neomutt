@@ -268,8 +268,9 @@ static int pop_fetch_headers (CONTEXT *ctx)
     }
   }
 
-  mutt_progress_init (&progress, _("Fetching message headers..."),
-		      M_PROGRESS_MSG, ReadInc, new_count - old_count);
+  if (!ctx->quiet)
+    mutt_progress_init (&progress, _("Fetching message headers..."),
+                        M_PROGRESS_MSG, ReadInc, new_count - old_count);
 
   if (ret == 0)
   {

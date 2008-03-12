@@ -1,3 +1,8 @@
+2008-03-09 14:01 -0700  Sébastien Hinderer  <Sebastien.Hinderer@ens-lyon.org>  (c4212a17fad6)
+
+	* compose.c, mx.c: Remove pointless NULL checks against
+	arrays. This silences a warning on newer GCCs.
+
 2008-03-04 22:00 -0800  Petr Písař  <petr.pisar@atlas.cz>  (fdad7b9fa741)
 
 	* po/cs.po: Updated Czech translation

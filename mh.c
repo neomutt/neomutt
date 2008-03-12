@@ -1111,8 +1111,11 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   progress_t progress;
 
   memset (&mhs, 0, sizeof (mhs));
-  snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
+  if (!ctx->quiet)
+  {
+    snprintf (msgbuf, sizeof (msgbuf), _("Scanning %s..."), ctx->path);
+    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
+  }
 
   if (!ctx->data)
   {
@@ -1129,8 +1132,11 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (maildir_parse_dir (ctx, &last, subdir, &count, &progress) == -1)
     return -1;
 
-  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, count);
+  if (!ctx->quiet)
+  {
+    snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, count);
+  }
   maildir_delayed_parsing (ctx, &md, &progress);
 
   if (ctx->magic == M_MH)
@@ -1625,8 +1631,11 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
     hc = mutt_hcache_open(HeaderCache, ctx->path, NULL);
 #endif /* USE_HCACHE */
 
-  snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
-  mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, WriteInc, ctx->msgcount);
+  if (!ctx->quiet)
+  {
+    snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
+    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, WriteInc, ctx->msgcount);
+  }
 
   for (i = 0; i < ctx->msgcount; i++)
   {
