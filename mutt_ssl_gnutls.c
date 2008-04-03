@@ -112,6 +112,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
 {
   tlssockdata *data = conn->sockdata;
   int ret;
+  size_t sent = 0;
 
   if (!data)
   {
@@ -120,14 +121,23 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
     return -1;
   }
 
-  ret = gnutls_record_send (data->state, buf, len);
-  if (ret < 0 && gnutls_error_is_fatal(ret) == 1)
+  do
   {
-    mutt_error ("tls_socket_write (%s)", gnutls_strerror (ret));
-    mutt_sleep (4);
-    return -1;
-  }
-  return ret;
+    ret = gnutls_record_send (data->state, buf + sent, len - sent);
+    if (ret < 0)
+    {
+      if (gnutls_error_is_fatal(ret) == 1)
+      {
+	mutt_error ("tls_socket_write (%s)", gnutls_strerror (ret));
+	mutt_sleep (4);
+	return -1;
+      }
+      return ret;
+    }
+    sent += ret;
+  } while (sent < len);
+
+  return sent;
 }
 
 static int tls_socket_open (CONNECTION* conn)
