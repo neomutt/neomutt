@@ -1,3 +1,12 @@
+2008-04-09 18:13 +0200  Christian Ebert  <blacktrash@gmx.net>  (ae90c8e8ea4d)
+
+	* doc/manual.xml.head: manual.xml.head: grammar correction
+
+2008-03-11 17:20 -0700  N.J. Mann  <njm@njm.f2s.com>  (e3bc99a4a6bd)
+
+	* mbox.c, mh.c, pop.c: Respect ctx->quiet when initializing
+	progress bar.
+
 2008-03-09 14:01 -0700  Sébastien Hinderer  <Sebastien.Hinderer@ens-lyon.org>  (c4212a17fad6)
 
 	* compose.c, mx.c: Remove pointless NULL checks against
