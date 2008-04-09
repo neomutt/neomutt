@@ -3836,7 +3836,7 @@ they may or may not be available in stock libraries on various systems.
 <para>
 Many of Mutt's commands allow you to specify a pattern to match
 (limit, tag-pattern, delete-pattern, etc.). <xref linkend="tab-patterns"/>
-shows several ways select messages.
+shows several ways to select messages.
 </para>
 
 <para>
