@@ -1233,10 +1233,10 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  {
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
-	    /* make sure right part is as most as wide as display */
+	    /* make sure right part is at most as wide as display */
 	    len = mutt_wstr_trunc (buf, destlen, COLS, &wid);
 	    /* truncate left so that right part fits completely in */
-	    wlen = mutt_wstr_trunc (dest, destlen - len, COLS - wid, &col);
+	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad, &col);
 	    wptr = dest + wlen;
 	  }
 	  if (len + wlen > destlen)
