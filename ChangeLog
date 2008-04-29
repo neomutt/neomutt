@@ -1,3 +1,13 @@
+2008-04-03 17:08 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (bdd44e92919d)
+
+	* mutt_ssl_gnutls.c: Fix sending long commands when using gnutls.
+
+2008-04-09 15:57 -0700  Dan Fandrich  <dan@coneharvesters.com>  (3b7b3c0e459e)
+
+	* configure.ac, strtok_r.c: Replace strtok_r when it's not
+	available. The implementation comes from glibc 2.6.1 (like the
+	strsep replacement) and uses the same autoconf hooks.
+
 2008-04-09 18:13 +0200  Christian Ebert  <blacktrash@gmx.net>  (ae90c8e8ea4d)
 
 	* doc/manual.xml.head: manual.xml.head: grammar correction

@@ -41,6 +41,42 @@
 #define GSS_AUTH_P_NONE      1
 #define GSS_AUTH_P_INTEGRITY 2
 #define GSS_AUTH_P_PRIVACY   4
+static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
+{
+	OM_uint32 maj_stat, min_stat; 
+	OM_uint32 msg_ctx = 0;
+	gss_buffer_desc status_string;
+	char buf_maj[512];
+	char buf_min[512];
+	
+	do
+	{
+		maj_stat = gss_display_status (&min_stat,
+					       err_maj,
+					       GSS_C_GSS_CODE,
+					       GSS_C_NO_OID,
+					       &msg_ctx,
+					       &status_string);
+		if (GSS_ERROR(maj_stat))
+			break;
+		strncpy(buf_maj, (char*) status_string.value, sizeof(buf_maj));
+		gss_release_buffer(&min_stat, &status_string);
+		
+		maj_stat = gss_display_status (&min_stat,
+					       err_min,
+					       GSS_C_MECH_CODE,
+					       GSS_C_NULL_OID,
+					       &msg_ctx,
+					       &status_string);
+		if (!GSS_ERROR(maj_stat))
+		{
+			strncpy(buf_min, (char*) status_string.value, sizeof(buf_min));
+			gss_release_buffer(&min_stat, &status_string);
+		}
+	} while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
+	
+	dprint (2, (debugfile, "((%s:%d )(%s:%d))", buf_maj, err_maj, buf_min, err_min));
+}
 
 /* imap_auth_gss: AUTH=GSSAPI support. */
 imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
@@ -95,6 +131,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     (unsigned int*) &cflags, NULL);
   if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
   {
+    print_gss_error(maj_stat, min_stat);
     dprint (1, (debugfile, "Error acquiring credentials - no TGT?\n"));
     gss_release_name (&min_stat, &target_name);
 
@@ -151,6 +188,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
       (unsigned int*) &cflags, NULL);
     if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
     {
+      print_gss_error(maj_stat, min_stat);
       dprint (1, (debugfile, "Error exchanging credentials\n"));
       gss_release_name (&min_stat, &target_name);
 
@@ -182,6 +220,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     &cflags, &quality);
   if (maj_stat != GSS_S_COMPLETE)
   {
+    print_gss_error(maj_stat, min_stat);
     dprint (2, (debugfile, "Couldn't unwrap security level data\n"));
     gss_release_buffer (&min_stat, &send_token);
     goto err_abort_cmd;
