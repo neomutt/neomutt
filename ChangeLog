@@ -1,3 +1,12 @@
+2008-04-29 10:44 -0700  David Champion  <dgc@uchicago.edu>  (1de934f1d618)
+
+	* muttlib.c: [9414b9dd36db] broke softfill. (closes #3035)
+
+2008-04-29 10:38 -0700  Wilfried Goesgens  <dothebart@uncensored.citadel.org>  (8017c8074f62)
+
+	* ChangeLog, imap/auth_gss.c: Print GSSAPI status messages to debug
+	log on error.
+
 2008-04-03 17:08 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (bdd44e92919d)
 
 	* mutt_ssl_gnutls.c: Fix sending long commands when using gnutls.

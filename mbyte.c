@@ -104,14 +104,14 @@ void mutt_set_charset (char *charset)
 
 static size_t wcrtomb_iconv (char *s, wchar_t wc, iconv_t cd)
 {
-  char buf[MB_LEN_MAX];
+  char buf[MB_LEN_MAX+1];
   ICONV_CONST char *ib;
   char *ob;
   size_t ibl, obl, r;
 
   if (s)
   {
-    ibl = mutt_wctoutf8 (buf, wc);
+    ibl = mutt_wctoutf8 (buf, wc, sizeof (buf));
     if (ibl == (size_t)(-1))
       return (size_t)(-1);
     ib = buf;
@@ -135,7 +135,7 @@ size_t wcrtomb (char *s, wchar_t wc, mbstate_t *ps)
   /* We only handle stateless encodings, so we can ignore ps. */
 
   if (Charset_is_utf8)
-    return mutt_wctoutf8 (s, wc);
+    return mutt_wctoutf8 (s, wc, MB_LEN_MAX);
   else if (charset_from_utf8 != (iconv_t)(-1))
     return wcrtomb_iconv (s, wc, charset_from_utf8);
   else
