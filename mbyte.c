@@ -179,8 +179,8 @@ size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
   else
   {
     /* use the real input */
-    ib = s;
-    ibmax = s + n;
+    ib = (ICONV_CONST char*) s;
+    ibmax = (ICONV_CONST char*) s + n;
   }
 
   ob = bufo;
@@ -205,8 +205,8 @@ size_t mbrtowc_iconv (wchar_t *pwc, const char *s, size_t n,
       else if (k && ib > bufi + k && bufi + k + n > ibmax)
       {
 	/* switch to using real input */
-	ib = s + (ib - bufi - k);
-	ibmax = s + n;
+	ib = (ICONV_CONST char*) s + (ib - bufi - k);
+	ibmax = (ICONV_CONST char*) s + n;
 	k = 0;
 	++ibl;
       }
