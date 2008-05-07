@@ -99,6 +99,7 @@ static int mutt_sasl_conn_close (CONNECTION* conn);
 static int mutt_sasl_conn_read (CONNECTION* conn, char* buf, size_t len);
 static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
   size_t count);
+static int mutt_sasl_conn_poll (CONNECTION* conn);
 
 /* utility function, stolen from sasl2 sample code */
 static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
@@ -168,6 +169,8 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   struct sockaddr_storage local, remote;
   socklen_t size;
   char iplocalport[IP_PORT_BUFLEN], ipremoteport[IP_PORT_BUFLEN];
+  char* plp = NULL;
+  char* prp = NULL;
   const char* service;
   int rc;
 
@@ -191,30 +194,31 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   }
 
   size = sizeof (local);
-  if (getsockname (conn->fd, (struct sockaddr *)&local, &size)) {
-    mutt_error (_("SASL failed to get local IP address"));
-    return -1;
+  if (!getsockname (conn->fd, (struct sockaddr *)&local, &size)) {
+    if (!iptostring((struct sockaddr *)&local, size, iplocalport,
+		      IP_PORT_BUFLEN) != SASL_OK)
+      plp = iplocalport;
+    else
+      dprint (2, (debugfile, "SASL failed to parse local IP address\n"));
   }
-  else 
-  if (iptostring((struct sockaddr *)&local, size, iplocalport, IP_PORT_BUFLEN) != SASL_OK) {
-    mutt_error (_("SASL failed to parse local IP address"));
-    return -1;
-  }
+  else
+    dprint (2, (debugfile, "SASL failed to get local IP address\n"));
   
   size = sizeof (remote);
-  if (getpeername (conn->fd, (struct sockaddr *)&remote, &size)){
-    mutt_error (_("SASL failed to get remote IP address"));
-    return -1;
+  if (!getpeername (conn->fd, (struct sockaddr *)&remote, &size)){
+    if (!iptostring((struct sockaddr *)&remote, size, ipremoteport,
+		      IP_PORT_BUFLEN) != SASL_OK)
+      prp = ipremoteport;
+    else
+      dprint (2, (debugfile, "SASL failed to parse remote IP address\n"));
   }
-  else 
-  if (iptostring((struct sockaddr *)&remote, size, ipremoteport, IP_PORT_BUFLEN) != SASL_OK){
-    mutt_error (_("SASL failed to parse remote IP address"));
-    return -1;
-  }
+  else
+    dprint (2, (debugfile, "SASL failed to get remote IP address\n"));
 
-  dprint(2, (debugfile, "local ip: %s, remote ip:%s\n", iplocalport, ipremoteport));
+  dprint (2, (debugfile, "SASL local ip: %s, remote ip:%s\n", NONULL(plp),
+	      NONULL(prp)));
   
-  rc = sasl_client_new (service, conn->account.host, iplocalport, ipremoteport,
+  rc = sasl_client_new (service, conn->account.host, plp, prp,
     mutt_sasl_get_callbacks (&conn->account), 0, saslconn);
 
   if (rc != SASL_OK)
@@ -350,6 +354,7 @@ void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
   sasldata->msasl_close = conn->conn_close;
   sasldata->msasl_read = conn->conn_read;
   sasldata->msasl_write = conn->conn_write;
+  sasldata->msasl_poll = conn->conn_poll;
 
   /* and set up new functions */
   conn->sockdata = sasldata;
@@ -357,6 +362,7 @@ void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
   conn->conn_close = mutt_sasl_conn_close;
   conn->conn_read = mutt_sasl_conn_read;
   conn->conn_write = mutt_sasl_conn_write;
+  conn->conn_poll = mutt_sasl_conn_poll;
 }
 
 /* mutt_sasl_cb_log: callback to log SASL messages */
@@ -588,4 +594,16 @@ static int mutt_sasl_conn_write (CONNECTION* conn, const char* buf,
  fail:
   conn->sockdata = sasldata;
   return -1;
+}
+
+static int mutt_sasl_conn_poll (CONNECTION* conn)
+{
+  SASL_DATA* sasldata = conn->sockdata;
+  int rc;
+
+  conn->sockdata = sasldata->sockdata;
+  rc = sasldata->msasl_poll (conn);
+  conn->sockdata = sasldata;
+
+  return rc;
 }

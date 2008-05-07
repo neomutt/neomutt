@@ -48,6 +48,7 @@ typedef struct
   int (*msasl_close) (CONNECTION* conn);
   int (*msasl_read) (CONNECTION* conn, char* buf, size_t len);
   int (*msasl_write) (CONNECTION* conn, const char* buf, size_t count);
+  int (*msasl_poll) (CONNECTION* conn);
 }
 SASL_DATA;
 
