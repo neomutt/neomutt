@@ -860,7 +860,6 @@ int imap_has_flag (LIST* flag_list, const char* flag)
  *   headers, given a flag enum to filter on.
  * Params: idata: IMAP_DATA containing context containing header set
  *         buf: to write message set into
- *         buflen: length of buffer
  *         flag: enum of flag type on which to filter
  *         changed: include only changed messages in message set
  *         invert: invert sense of flag, eg M_READ matches unread messages
@@ -942,8 +941,9 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
       else if (n == idata->ctx->msgcount-1)
 	mutt_buffer_printf (buf, ":%u", HEADER_DATA (hdrs[n])->uid);
     }
-    /* this message is not expunged and doesn't match. End current set. */
-    else if (setstart && hdrs[n]->active)
+    /* End current set if message doesn't match or we've reached the end
+     * of the mailbox via inactive messages following the last match. */
+    else if (setstart && (hdrs[n]->active || n == idata->ctx->msgcount-1))
     {
       if (HEADER_DATA (hdrs[n-1])->uid > setstart)
 	mutt_buffer_printf (buf, ":%u", HEADER_DATA (hdrs[n-1])->uid);

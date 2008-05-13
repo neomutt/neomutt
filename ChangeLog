@@ -1,3 +1,17 @@
+2008-05-11 10:52 +0200  Matthias Andree  <matthias.andree@gmx.de>  (09b0363cdf54)
+
+	* rfc3676.c: In debug output, cast size_t arguments to long for
+	consistency with printf %ld argument.
+
+2008-05-11 00:50 -0700  Brendan Cully  <brendan@kublai.com>  (98c39c5187a9)
+
+	* main.c: Update copyright in -vv output. Closes #3042.
+
+2008-05-07 11:54 -0700  Brendan Cully  <brendan@kublai.com>  (385efdbf9423)
+
+	* mutt_sasl.c, mutt_sasl.h: Make SASL support conn_poll method.
+        Make SASL IP lookup failure non-fatal. Both are for tunnel support.
+
 2008-05-05 19:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (0eacf5297484)
 
 	* mbyte.c, mbyte.h: Fix some compiler warnings if compiling without
