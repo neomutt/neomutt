@@ -927,6 +927,7 @@ int mutt_index_menu (void)
 	    resort_index (menu);
 	    set_option (OPTSEARCHINVALID);
 	  }
+	  menu->redraw |= REDRAW_STATUS;
 	}
 	break;
 
