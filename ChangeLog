@@ -1,3 +1,13 @@
+2008-05-14 15:19 +0200  Samuel Tardieu  <sam@rfc1149.net>  (5518355bc6da)
+
+	* curs_main.c: Always update status bar after sorting method changes
+	(closes #2120).
+
+2008-05-12 23:15 -0700  Brendan Cully  <brendan@kublai.com>  (97aa20438c47)
+
+	* imap/imap.c: Terminate open IMAP message sets at end of mailbox
+	even if the last message is inactive. Closes #3002.
+
 2008-05-11 10:52 +0200  Matthias Andree  <matthias.andree@gmx.de>  (09b0363cdf54)
 
 	* rfc3676.c: In debug output, cast size_t arguments to long for

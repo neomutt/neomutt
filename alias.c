@@ -331,8 +331,26 @@ retry_name:
   if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), M_FILE) != 0)
     return;
   mutt_expand_path (buf, sizeof (buf));
-  if ((rc = fopen (buf, "a")))
+  if ((rc = fopen (buf, "a+")))
   {
+    /* terminate existing file with \n if necessary */
+    if (fseek (rc, 0, SEEK_END))
+      goto fseek_err;
+    if (ftell(rc) > 0)
+    {
+      if (fseek (rc, -1, SEEK_CUR) < 0)
+	goto fseek_err;
+      if (fread(buf, 1, 1, rc) < 0)
+      {
+	mutt_perror (_("Error reading alias file"));
+	return;
+      }
+      if (fseek (rc, 0, SEEK_END) < 0)
+	goto fseek_err;
+      if (buf[0] != '\n')
+	fputc ('\n', rc);
+    }
+
     if (mutt_check_alias_name (new->name, NULL))
       mutt_quote_filename (buf, sizeof (buf), new->name);
     else
@@ -347,6 +365,13 @@ retry_name:
   }
   else
     mutt_perror (buf);
+
+  return;
+  
+  fseek_err:
+  mutt_perror (_("Error seeking in alias file"));
+  fclose(rc);
+  return;
 }
 
 /* 
