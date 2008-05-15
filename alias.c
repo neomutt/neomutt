@@ -214,7 +214,7 @@ ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
 void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 {
   ALIAS *new, *t;
-  char buf[LONG_STRING], prompt[SHORT_STRING], *pc;
+  char buf[LONG_STRING], tmp[LONG_STRING], prompt[SHORT_STRING], *pc;
   char *err = NULL;
   char fixed[LONG_STRING];
   FILE *rc;
@@ -231,15 +231,15 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 
   if (adr && adr->mailbox)
   {
-    strfcpy (buf, adr->mailbox, sizeof (buf));
-    if ((pc = strchr (buf, '@')))
+    strfcpy (tmp, adr->mailbox, sizeof (tmp));
+    if ((pc = strchr (tmp, '@')))
       *pc = 0;
   }
   else
-    buf[0] = '\0';
+    tmp[0] = '\0';
 
   /* Don't suggest a bad alias name in the event of a strange local part. */
-  mutt_check_alias_name (buf, buf);
+  mutt_check_alias_name (tmp, buf, sizeof (buf));
   
 retry_name:
   /* add a new alias */
@@ -253,7 +253,7 @@ retry_name:
     return;
   }
   
-  if (mutt_check_alias_name (buf, fixed))
+  if (mutt_check_alias_name (buf, fixed, sizeof (fixed)))
   {
     switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), M_YES))
     {
@@ -351,7 +351,7 @@ retry_name:
 	fputc ('\n', rc);
     }
 
-    if (mutt_check_alias_name (new->name, NULL))
+    if (mutt_check_alias_name (new->name, NULL, 0))
       mutt_quote_filename (buf, sizeof (buf), new->name);
     else
       strfcpy (buf, new->name, sizeof (buf));
@@ -379,32 +379,42 @@ retry_name:
  * the RFC 822 and the mutt configuration parser are permitted.
  */
 
-static int check_alias_name_char (char c)
+int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
 {
-  return (c == '-' || c == '_' || c == '+' || c == '=' || c == '.' ||
-	  isalnum ((unsigned char) c));
-}
+  wchar_t wc;
+  mbstate_t mb;
+  size_t l;
+  int rv = 0, bad = 0, dry = !dest || !destlen;
 
-int mutt_check_alias_name (const char *s, char *d)
-{
-  int rv = 0;
-  for (; *s; s++) 
+  memset (&mb, 0, sizeof (mbstate_t));
+
+  if (!dry)
+    destlen--;
+  for (; s && *s && (dry || destlen) &&
+       (l = mbrtowc (&wc, s, MB_CUR_MAX, &mb)) != 0;
+       s += l, destlen -= l)
   {
-    if (!check_alias_name_char (*s))
+    bad = l == (size_t)(-1) || l == (size_t)(-2); /* conversion error */
+    bad = bad || (!dry && l > destlen);		/* too few room for mb char */
+    if (l == 1)
+      bad = bad || (strchr ("-_+=.", *s) == NULL && !iswalnum (wc));
+    else
+      bad = bad || !iswalnum (wc);
+    if (bad)
     {
-      if (!d)
+      if (dry)
 	return -1;
-      else
-      {
-	*d++ = '_';
-	rv = -1;
-      }
+      *dest++ = '_';
+      rv = -1;
     }
-    else if (d)
-      *d++ = *s;
+    else if (!dry)
+    {
+      memcpy (dest, s, l);
+      dest += l;
+    }
   }
-  if (d)
-    *d++ = *s;
+  if (!dry)
+    *dest = 0;
   return rv;
 }
 
