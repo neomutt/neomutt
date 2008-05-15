@@ -6179,6 +6179,20 @@ it should not be set in general but only occasionally.
 
 </sect1>
 
+<sect1 id="exact-address">
+<title>Exact address generation</title>
+
+<para>
+Mutt supports the ``Name &lt;user@host&gt;'' address syntax for reading and
+writing messages, the older ``user@host (Name)'' syntax is only supported when
+reading messages. The <emphasis>--enable-exact-address</emphasis>
+switch can be given to configure to build it with write-support
+for the latter syntax. <literal>EXACT_ADDRESS</literal> in the output of
+<literal>mutt -v</literal> indicates whether it's supported.
+</para>
+
+</sect1>
+
 </chapter>
 
 <chapter id="tuning">
