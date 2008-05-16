@@ -20,6 +20,7 @@
 
 use strict;
 use File::Copy;
+use File::Glob ':glob';
 
 umask 077;
 
@@ -225,7 +226,7 @@ You must set this in your mutt config file. See contrib/smime.rc for an example.
 EOF
 #'
 
-    $answer =~ /\"(.*?)\"/ and return $1;
+    $answer =~ /\"(.*?)\"/ and return bsd_glob($1, GLOB_TILDE | GLOB_NOCHECK);
     
     $answer =~ /^Mutt (.*?) / and die<<EOF;
 This script requires mutt 1.5.0 or later. You are using mutt $1.
