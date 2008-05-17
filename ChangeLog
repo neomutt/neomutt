@@ -1,3 +1,15 @@
+2008-05-17 12:02 -0700  Brendan Cully  <brendan@kublai.com>  (ac00273b3a88)
+
+	* imap/browse.c: Use context to get IMAP new message count in mailbox
+	browser if possible.
+
+2008-05-17 11:08 -0700  Rocco Rutte  <pdmef@gmx.net>  (b341d157ae72)
+
+	* Makefile.am, hcache.c, hcachever.sh.in: When necessary,
+	convert strings to utf-8 in the header cache. If iconv is
+	unavailable, include the charset in effect as part of the cache file
+	name. Closes #3023.
+
 2008-05-16 09:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (001d6be61905)
 
 	* smime_keys.pl: Glob paths derived from mutt -Q output in

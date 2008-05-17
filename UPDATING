@@ -9,6 +9,10 @@ The keys used are:
   + $time_inc suppresses progress updates less than $time_inc
     milliseconds apart.
 
+1.5.18 (2008-05-17):
+
+  + $time_inc (control rate of progress updates)
+
 1.5.17 (2007-11-01):
 
   ! --enable-exact-address works again
