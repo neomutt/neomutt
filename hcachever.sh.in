@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BASEVERSION=1
+BASEVERSION=2
 
 MD5=@MD5@
 if test "$MD5" = "openssl"

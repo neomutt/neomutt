@@ -120,10 +120,20 @@ restore_int(unsigned int *i, const unsigned char *d, int *off)
   (*off) += sizeof (int);
 }
 
+static inline int is_ascii (const char *p, size_t len) {
+  register const char *s = p;
+  while (s && (unsigned) (s - p) < len) {
+    if ((*s & 0x80) != 0)
+      return 0;
+    s++;
+  }
+  return 1;
+}
+
 static unsigned char *
-dump_char(char *c, unsigned char *d, int *off)
+dump_char_size(char *c, unsigned char *d, int *off, ssize_t size, int convert)
 {
-  unsigned int size;
+  char *p = c;
 
   if (c == NULL)
   {
@@ -132,35 +142,33 @@ dump_char(char *c, unsigned char *d, int *off)
     return d;
   }
 
-  size = mutt_strlen(c) + 1;
+  if (convert && !is_ascii (c, size)) {
+    p = mutt_substrdup (c, c + size);
+    if (mutt_convert_string (&p, Charset, "utf-8", 0) == 0) {
+      c = p;
+      size = mutt_strlen (c) + 1;
+    }
+  }
+
   d = dump_int(size, d, off);
   lazy_realloc(&d, *off + size);
-  memcpy(d + *off, c, size);
+  memcpy(d + *off, p, size);
   *off += size;
+
+  if (p != c)
+    FREE(&p);
 
   return d;
 }
 
 static unsigned char *
-dump_char_size(char *c, unsigned char *d, int *off, ssize_t size)
+dump_char(char *c, unsigned char *d, int *off, int convert)
 {
-  if (c == NULL)
-  {
-    size = 0;
-    d = dump_int(size, d, off);
-    return d;
-  }
-
-  d = dump_int(size, d, off);
-  lazy_realloc(&d, *off + size);
-  memcpy(d + *off, c, size);
-  *off += size;
-
-  return d;
+  return dump_char_size (c, d, off, mutt_strlen (c) + 1, convert);
 }
 
 static void
-restore_char(char **c, const unsigned char *d, int *off)
+restore_char(char **c, const unsigned char *d, int *off, int convert)
 {
   unsigned int size;
   restore_int(&size, d, off);
@@ -173,11 +181,19 @@ restore_char(char **c, const unsigned char *d, int *off)
 
   *c = safe_malloc(size);
   memcpy(*c, d + *off, size);
+  if (convert && !is_ascii (*c, size)) {
+    char *tmp = safe_strdup (*c);
+    if (mutt_convert_string (&tmp, "utf-8", Charset, 0) == 0) {
+      mutt_str_replace (c, tmp);
+    } else {
+      FREE(&tmp);
+    }
+  }
   *off += size;
 }
 
 static unsigned char *
-dump_address(ADDRESS * a, unsigned char *d, int *off)
+dump_address(ADDRESS * a, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -187,10 +203,10 @@ dump_address(ADDRESS * a, unsigned char *d, int *off)
   while (a)
   {
 #ifdef EXACT_ADDRESS
-    d = dump_char(a->val, d, off);
+    d = dump_char(a->val, d, off, convert);
 #endif
-    d = dump_char(a->personal, d, off);
-    d = dump_char(a->mailbox, d, off);
+    d = dump_char(a->personal, d, off, convert);
+    d = dump_char(a->mailbox, d, off, 0);
     d = dump_int(a->group, d, off);
     a = a->next;
     counter++;
@@ -202,7 +218,7 @@ dump_address(ADDRESS * a, unsigned char *d, int *off)
 }
 
 static void
-restore_address(ADDRESS ** a, const unsigned char *d, int *off)
+restore_address(ADDRESS ** a, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -212,10 +228,10 @@ restore_address(ADDRESS ** a, const unsigned char *d, int *off)
   {
     *a = safe_malloc(sizeof (ADDRESS));
 #ifdef EXACT_ADDRESS
-    restore_char(&(*a)->val, d, off);
+    restore_char(&(*a)->val, d, off, convert);
 #endif
-    restore_char(&(*a)->personal, d, off);
-    restore_char(&(*a)->mailbox, d, off);
+    restore_char(&(*a)->personal, d, off, convert);
+    restore_char(&(*a)->mailbox, d, off, 0);
     restore_int((unsigned int *) &(*a)->group, d, off);
     a = &(*a)->next;
     counter--;
@@ -225,7 +241,7 @@ restore_address(ADDRESS ** a, const unsigned char *d, int *off)
 }
 
 static unsigned char *
-dump_list(LIST * l, unsigned char *d, int *off)
+dump_list(LIST * l, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -234,7 +250,7 @@ dump_list(LIST * l, unsigned char *d, int *off)
 
   while (l)
   {
-    d = dump_char(l->data, d, off);
+    d = dump_char(l->data, d, off, convert);
     l = l->next;
     counter++;
   }
@@ -245,7 +261,7 @@ dump_list(LIST * l, unsigned char *d, int *off)
 }
 
 static void
-restore_list(LIST ** l, const unsigned char *d, int *off)
+restore_list(LIST ** l, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -254,7 +270,7 @@ restore_list(LIST ** l, const unsigned char *d, int *off)
   while (counter)
   {
     *l = safe_malloc(sizeof (LIST));
-    restore_char(&(*l)->data, d, off);
+    restore_char(&(*l)->data, d, off, convert);
     l = &(*l)->next;
     counter--;
   }
@@ -263,7 +279,7 @@ restore_list(LIST ** l, const unsigned char *d, int *off)
 }
 
 static unsigned char *
-dump_buffer(BUFFER * b, unsigned char *d, int *off)
+dump_buffer(BUFFER * b, unsigned char *d, int *off, int convert)
 {
   if (!b)
   {
@@ -273,7 +289,7 @@ dump_buffer(BUFFER * b, unsigned char *d, int *off)
   else
     d = dump_int(1, d, off);
 
-  d = dump_char_size(b->data, d, off, b->dsize + 1);
+  d = dump_char_size(b->data, d, off, b->dsize + 1, convert);
   d = dump_int(b->dptr - b->data, d, off);
   d = dump_int(b->dsize, d, off);
   d = dump_int(b->destroy, d, off);
@@ -282,7 +298,7 @@ dump_buffer(BUFFER * b, unsigned char *d, int *off)
 }
 
 static void
-restore_buffer(BUFFER ** b, const unsigned char *d, int *off)
+restore_buffer(BUFFER ** b, const unsigned char *d, int *off, int convert)
 {
   unsigned int used;
   unsigned int offset;
@@ -294,7 +310,7 @@ restore_buffer(BUFFER ** b, const unsigned char *d, int *off)
 
   *b = safe_malloc(sizeof (BUFFER));
 
-  restore_char(&(*b)->data, d, off);
+  restore_char(&(*b)->data, d, off, convert);
   restore_int(&offset, d, off);
   (*b)->dptr = (*b)->data + offset;
   restore_int (&used, d, off);
@@ -304,7 +320,7 @@ restore_buffer(BUFFER ** b, const unsigned char *d, int *off)
 }
 
 static unsigned char *
-dump_parameter(PARAMETER * p, unsigned char *d, int *off)
+dump_parameter(PARAMETER * p, unsigned char *d, int *off, int convert)
 {
   unsigned int counter = 0;
   unsigned int start_off = *off;
@@ -313,8 +329,8 @@ dump_parameter(PARAMETER * p, unsigned char *d, int *off)
 
   while (p)
   {
-    d = dump_char(p->attribute, d, off);
-    d = dump_char(p->value, d, off);
+    d = dump_char(p->attribute, d, off, 0);
+    d = dump_char(p->value, d, off, convert);
     p = p->next;
     counter++;
   }
@@ -325,7 +341,7 @@ dump_parameter(PARAMETER * p, unsigned char *d, int *off)
 }
 
 static void
-restore_parameter(PARAMETER ** p, const unsigned char *d, int *off)
+restore_parameter(PARAMETER ** p, const unsigned char *d, int *off, int convert)
 {
   unsigned int counter;
 
@@ -334,8 +350,8 @@ restore_parameter(PARAMETER ** p, const unsigned char *d, int *off)
   while (counter)
   {
     *p = safe_malloc(sizeof (PARAMETER));
-    restore_char(&(*p)->attribute, d, off);
-    restore_char(&(*p)->value, d, off);
+    restore_char(&(*p)->attribute, d, off, 0);
+    restore_char(&(*p)->value, d, off, convert);
     p = &(*p)->next;
     counter--;
   }
@@ -344,92 +360,92 @@ restore_parameter(PARAMETER ** p, const unsigned char *d, int *off)
 }
 
 static unsigned char *
-dump_body(BODY * c, unsigned char *d, int *off)
+dump_body(BODY * c, unsigned char *d, int *off, int convert)
 {
   lazy_realloc(&d, *off + sizeof (BODY));
   memcpy(d + *off, c, sizeof (BODY));
   *off += sizeof (BODY);
 
-  d = dump_char(c->xtype, d, off);
-  d = dump_char(c->subtype, d, off);
+  d = dump_char(c->xtype, d, off, 0);
+  d = dump_char(c->subtype, d, off, 0);
 
-  d = dump_parameter(c->parameter, d, off);
+  d = dump_parameter(c->parameter, d, off, convert);
 
-  d = dump_char(c->description, d, off);
-  d = dump_char(c->form_name, d, off);
-  d = dump_char(c->filename, d, off);
-  d = dump_char(c->d_filename, d, off);
+  d = dump_char(c->description, d, off, convert);
+  d = dump_char(c->form_name, d, off, convert);
+  d = dump_char(c->filename, d, off, convert);
+  d = dump_char(c->d_filename, d, off, convert);
 
   return d;
 }
 
 static void
-restore_body(BODY * c, const unsigned char *d, int *off)
+restore_body(BODY * c, const unsigned char *d, int *off, int convert)
 {
   memcpy(c, d + *off, sizeof (BODY));
   *off += sizeof (BODY);
 
-  restore_char(&c->xtype, d, off);
-  restore_char(&c->subtype, d, off);
+  restore_char(&c->xtype, d, off, 0);
+  restore_char(&c->subtype, d, off, 0);
 
-  restore_parameter(&c->parameter, d, off);
+  restore_parameter(&c->parameter, d, off, convert);
 
-  restore_char(&c->description, d, off);
-  restore_char(&c->form_name, d, off);
-  restore_char(&c->filename, d, off);
-  restore_char(&c->d_filename, d, off);
+  restore_char(&c->description, d, off, convert);
+  restore_char(&c->form_name, d, off, convert);
+  restore_char(&c->filename, d, off, convert);
+  restore_char(&c->d_filename, d, off, convert);
 }
 
 static unsigned char *
-dump_envelope(ENVELOPE * e, unsigned char *d, int *off)
+dump_envelope(ENVELOPE * e, unsigned char *d, int *off, int convert)
 {
-  d = dump_address(e->return_path, d, off);
-  d = dump_address(e->from, d, off);
-  d = dump_address(e->to, d, off);
-  d = dump_address(e->cc, d, off);
-  d = dump_address(e->bcc, d, off);
-  d = dump_address(e->sender, d, off);
-  d = dump_address(e->reply_to, d, off);
-  d = dump_address(e->mail_followup_to, d, off);
+  d = dump_address(e->return_path, d, off, convert);
+  d = dump_address(e->from, d, off, convert);
+  d = dump_address(e->to, d, off, convert);
+  d = dump_address(e->cc, d, off, convert);
+  d = dump_address(e->bcc, d, off, convert);
+  d = dump_address(e->sender, d, off, convert);
+  d = dump_address(e->reply_to, d, off, convert);
+  d = dump_address(e->mail_followup_to, d, off, convert);
 
-  d = dump_char(e->list_post, d, off);
-  d = dump_char(e->subject, d, off);
+  d = dump_char(e->list_post, d, off, convert);
+  d = dump_char(e->subject, d, off, convert);
 
   if (e->real_subj)
     d = dump_int(e->real_subj - e->subject, d, off);
   else
     d = dump_int(-1, d, off);
 
-  d = dump_char(e->message_id, d, off);
-  d = dump_char(e->supersedes, d, off);
-  d = dump_char(e->date, d, off);
-  d = dump_char(e->x_label, d, off);
+  d = dump_char(e->message_id, d, off, 0);
+  d = dump_char(e->supersedes, d, off, 0);
+  d = dump_char(e->date, d, off, 0);
+  d = dump_char(e->x_label, d, off, convert);
 
-  d = dump_buffer(e->spam, d, off);
+  d = dump_buffer(e->spam, d, off, convert);
 
-  d = dump_list(e->references, d, off);
-  d = dump_list(e->in_reply_to, d, off);
-  d = dump_list(e->userhdrs, d, off);
+  d = dump_list(e->references, d, off, 0);
+  d = dump_list(e->in_reply_to, d, off, 0);
+  d = dump_list(e->userhdrs, d, off, convert);
 
   return d;
 }
 
 static void
-restore_envelope(ENVELOPE * e, const unsigned char *d, int *off)
+restore_envelope(ENVELOPE * e, const unsigned char *d, int *off, int convert)
 {
   int real_subj_off;
 
-  restore_address(&e->return_path, d, off);
-  restore_address(&e->from, d, off);
-  restore_address(&e->to, d, off);
-  restore_address(&e->cc, d, off);
-  restore_address(&e->bcc, d, off);
-  restore_address(&e->sender, d, off);
-  restore_address(&e->reply_to, d, off);
-  restore_address(&e->mail_followup_to, d, off);
+  restore_address(&e->return_path, d, off, convert);
+  restore_address(&e->from, d, off, convert);
+  restore_address(&e->to, d, off, convert);
+  restore_address(&e->cc, d, off, convert);
+  restore_address(&e->bcc, d, off, convert);
+  restore_address(&e->sender, d, off, convert);
+  restore_address(&e->reply_to, d, off, convert);
+  restore_address(&e->mail_followup_to, d, off, convert);
 
-  restore_char(&e->list_post, d, off);
-  restore_char(&e->subject, d, off);
+  restore_char(&e->list_post, d, off, convert);
+  restore_char(&e->subject, d, off, convert);
   restore_int((unsigned int *) (&real_subj_off), d, off);
 
   if (0 <= real_subj_off)
@@ -437,16 +453,16 @@ restore_envelope(ENVELOPE * e, const unsigned char *d, int *off)
   else
     e->real_subj = NULL;
 
-  restore_char(&e->message_id, d, off);
-  restore_char(&e->supersedes, d, off);
-  restore_char(&e->date, d, off);
-  restore_char(&e->x_label, d, off);
+  restore_char(&e->message_id, d, off, 0);
+  restore_char(&e->supersedes, d, off, 0);
+  restore_char(&e->date, d, off, 0);
+  restore_char(&e->x_label, d, off, convert);
 
-  restore_buffer(&e->spam, d, off);
+  restore_buffer(&e->spam, d, off, convert);
 
-  restore_list(&e->references, d, off);
-  restore_list(&e->in_reply_to, d, off);
-  restore_list(&e->userhdrs, d, off);
+  restore_list(&e->references, d, off, 0);
+  restore_list(&e->in_reply_to, d, off, 0);
+  restore_list(&e->userhdrs, d, off, convert);
 }
 
 static int
@@ -473,15 +489,33 @@ mutt_hcache_per_folder(const char *path, const char *folder,
   unsigned char md5sum[16];
   char* s;
   int ret, plen;
+#ifndef HAVE_ICONV
+  const char *chs = Charset && *Charset ? Charset : 
+		    mutt_get_default_charset ();
+#endif
 
   plen = mutt_strlen (path);
 
   ret = stat(path, &sb);
   if (ret < 0 && path[plen-1] != '/')
+  {
+#ifdef HAVE_ICONV
     return path;
+#else
+    snprintf (hcpath, _POSIX_PATH_MAX, "%s-%s", path, chs);
+    return hcpath;
+#endif
+  }
 
   if (ret >= 0 && !S_ISDIR(sb.st_mode))
+  {
+#ifdef HAVE_ICONV
     return path;
+#else
+    snprintf (hcpath, _POSIX_PATH_MAX, "%s-%s", path, chs);
+    return hcpath;
+#endif
+  }
 
   if (namer)
   {
@@ -498,11 +532,19 @@ mutt_hcache_per_folder(const char *path, const char *folder,
 
     ret = snprintf(hcpath, _POSIX_PATH_MAX,
                    "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
-                   "%02x%02x%02x%02x%02x%02x%02x%02x",
-                   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
+                   "%02x%02x%02x%02x%02x%02x%02x%02x"
+#ifndef HAVE_ICONV
+		   "-%s"
+#endif
+		   ,
+		   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
                    md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
                    md5sum[9], md5sum[10], md5sum[11], md5sum[12],
-                   md5sum[13], md5sum[14], md5sum[15]);
+                   md5sum[13], md5sum[14], md5sum[15]
+#ifndef HAVE_ICONV
+		   ,chs
+#endif
+		   );
   }
   
   if (ret <= 0)
@@ -533,8 +575,9 @@ mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
 {
   unsigned char *d = NULL;
   HEADER nh;
-  *off = 0;
+  int convert = !Charset_is_utf8;
 
+  *off = 0;
   d = lazy_malloc(sizeof (validate));
 
   if (uid_validity)
@@ -577,9 +620,9 @@ mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
   memcpy(d + *off, &nh, sizeof (HEADER));
   *off += sizeof (HEADER);
 
-  d = dump_envelope(header->env, d, off);
-  d = dump_body(header->content, d, off);
-  d = dump_char(header->maildir_flags, d, off);
+  d = dump_envelope(header->env, d, off, convert);
+  d = dump_body(header->content, d, off, convert);
+  d = dump_char(header->maildir_flags, d, off, convert);
 
   return d;
 }
@@ -589,6 +632,7 @@ mutt_hcache_restore(const unsigned char *d, HEADER ** oh)
 {
   int off = 0;
   HEADER *h = mutt_new_header();
+  int convert = !Charset_is_utf8;
 
   /* skip validate */
   off += sizeof (validate);
@@ -600,12 +644,12 @@ mutt_hcache_restore(const unsigned char *d, HEADER ** oh)
   off += sizeof (HEADER);
 
   h->env = mutt_new_envelope();
-  restore_envelope(h->env, d, &off);
+  restore_envelope(h->env, d, &off, convert);
 
   h->content = mutt_new_body();
-  restore_body(h->content, d, &off);
+  restore_body(h->content, d, &off, convert);
 
-  restore_char(&h->maildir_flags, d, &off);
+  restore_char(&h->maildir_flags, d, &off, convert);
 
   /* this is needed for maildir style mailboxes */
   if (oh)

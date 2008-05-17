@@ -1,12 +1,21 @@
-2008-05-15 16:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (9a229c41e980)
+2008-05-16 09:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (001d6be61905)
+
+	* smime_keys.pl: Glob paths derived from mutt -Q output in
+	smime_keys.pl. Patch by Fabrice Bellet and Miroslav Lichvar (closes
+	#3020).
+
+2008-05-15 17:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (132474d6dd3b)
+
+	* alias.c, protos.h: Make mutt_check_alias_name()
+	multibyte-aware (closes #2403).
 
 	* doc/manual.xml.head: Document exact address in the manual (closes
 	#3050)
 
 2008-05-14 16:23 -0700  Brendan Cully  <brendan@kublai.com>  (7f4711b9b61f)
 
-	* ChangeLog, alias.c: Ensure alias file ends with \n before appending
-	new aliases. Closes #1580.
+	* alias.c: Ensure alias file ends with \n before appending new
+	aliases. Closes #1580.
 
 2008-05-14 15:19 +0200  Samuel Tardieu  <sam@rfc1149.net>  (5518355bc6da)
 
