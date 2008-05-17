@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 9a7d802004d3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-03 10:43+0100\n"
+"POT-Creation-Date: 2008-05-17 12:35-0700\n"
 "PO-Revision-Date: 2008-03-03 10:55+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -44,7 +44,7 @@ msgstr "Volba"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
-#: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
+#: mutt_ssl.c:679 mutt_ssl_gnutls.c:783 pager.c:1579 pgpkey.c:522
 #: postpone.c:46 query.c:54 recvattach.c:58 smime.c:437
 msgid "Help"
 msgstr "Nápověda"
@@ -93,9 +93,19 @@ msgstr "[%s = %s] Přijmout?"
 msgid "Save to file: "
 msgstr "Uložit jako: "
 
-#: alias.c:346
+#: alias.c:345
+#, fuzzy
+msgid "Error reading alias file"
+msgstr "Chyba při zobrazování souboru"
+
+#: alias.c:364
 msgid "Alias added."
 msgstr "Přezdívka zavedena."
+
+#: alias.c:372
+#, fuzzy
+msgid "Error seeking in alias file"
+msgstr "Chyba při zobrazování souboru"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -330,7 +340,7 @@ msgstr "implicitní barvy nejsou podporovány"
 msgid "Verify PGP signature?"
 msgstr "Ověřit PGP podpis?"
 
-#: commands.c:115 mbox.c:748
+#: commands.c:115 mbox.c:754
 msgid "Could not create temporary file!"
 msgstr "Dočasný soubor nelze vytvořit!"
 
@@ -1154,7 +1164,7 @@ msgstr "gpgme_op_keylist_next selhala: %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Všem vyhovujícím klíčům vypršela platnost nebo byly zneplatněny."
 
-#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Ukončit  "
@@ -1498,7 +1508,7 @@ msgstr "Tato zpráva není viditelná."
 msgid "Invalid message number."
 msgstr "Číslo zprávy není správné."
 
-#: curs_main.c:808 curs_main.c:1848 pager.c:2279
+#: curs_main.c:808 curs_main.c:1849 pager.c:2279
 msgid "delete message(s)"
 msgstr "smazat zprávu(-y)"
 
@@ -1528,137 +1538,137 @@ msgstr "Pro zobrazení všech zpráv změňte omezení na „all“."
 msgid "Quit Mutt?"
 msgstr "Ukončit Mutt?"
 
-#: curs_main.c:966
+#: curs_main.c:967
 msgid "Tag messages matching: "
 msgstr "Označit zprávy shodující se s: "
 
-#: curs_main.c:975 curs_main.c:2137 pager.c:2589
+#: curs_main.c:976 curs_main.c:2138 pager.c:2589
 msgid "undelete message(s)"
 msgstr "obnovit zprávu(-y)"
 
-#: curs_main.c:977
+#: curs_main.c:978
 msgid "Undelete messages matching: "
 msgstr "Obnovit zprávy shodující se s: "
 
-#: curs_main.c:985
+#: curs_main.c:986
 msgid "Untag messages matching: "
 msgstr "Odznačit zprávy shodující se s: "
 
-#: curs_main.c:1065
+#: curs_main.c:1066
 msgid "Open mailbox in read-only mode"
 msgstr "Otevřít schránku pouze pro čtení"
 
-#: curs_main.c:1067
+#: curs_main.c:1068
 msgid "Open mailbox"
 msgstr "Otevřít schránku"
 
-#: curs_main.c:1077
+#: curs_main.c:1078
 msgid "No mailboxes have new mail"
 msgstr "V žádné schránce není nová pošta"
 
-#: curs_main.c:1105 mx.c:503 mx.c:652
+#: curs_main.c:1106 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s není schránkou."
 
-#: curs_main.c:1200
+#: curs_main.c:1201
 msgid "Exit Mutt without saving?"
 msgstr "Ukončit Mutt bez uložení změn?"
 
-#: curs_main.c:1218 curs_main.c:1251 curs_main.c:1695 curs_main.c:1727
+#: curs_main.c:1219 curs_main.c:1252 curs_main.c:1696 curs_main.c:1728
 #: flags.c:286 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "Vlákna nejsou podporována."
 
-#: curs_main.c:1230
+#: curs_main.c:1231
 msgid "Thread broken"
 msgstr "Vlákno rozbito"
 
-#: curs_main.c:1248
+#: curs_main.c:1249
 msgid "link threads"
 msgstr "spojit vlákna"
 
-#: curs_main.c:1253
+#: curs_main.c:1254
 msgid "No Message-ID: header available to link thread"
 msgstr "Pro spojení vláken chybí hlavička Message-ID:"
 
-#: curs_main.c:1255
+#: curs_main.c:1256
 msgid "First, please tag a message to be linked here"
 msgstr "Aby sem mohla být zpráva připojena, nejprve musíte nějakou označit"
 
-#: curs_main.c:1267
+#: curs_main.c:1268
 msgid "Threads linked"
 msgstr "Vlákna spojena"
 
-#: curs_main.c:1270
+#: curs_main.c:1271
 msgid "No thread linked"
 msgstr "Žádné vlákno nespojeno"
 
-#: curs_main.c:1306 curs_main.c:1331
+#: curs_main.c:1307 curs_main.c:1332
 msgid "You are on the last message."
 msgstr "Jste na poslední zprávě."
 
-#: curs_main.c:1313 curs_main.c:1357
+#: curs_main.c:1314 curs_main.c:1358
 msgid "No undeleted messages."
 msgstr "Nejsou žádné obnovené zprávy."
 
-#: curs_main.c:1350 curs_main.c:1374
+#: curs_main.c:1351 curs_main.c:1375
 msgid "You are on the first message."
 msgstr "Jste na první zprávě."
 
-#: curs_main.c:1449 pattern.c:1479
+#: curs_main.c:1450 pattern.c:1479
 msgid "Search wrapped to top."
 msgstr "Hledání pokračuje od začátku."
 
-#: curs_main.c:1458 pattern.c:1490
+#: curs_main.c:1459 pattern.c:1490
 msgid "Search wrapped to bottom."
 msgstr "Hledání pokračuje od konce."
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No new messages"
 msgstr "Nejsou žádné nové zprávy"
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No unread messages"
 msgstr "Nejsou žádné nepřečtené zprávy"
 
-#: curs_main.c:1500
+#: curs_main.c:1501
 msgid " in this limited view"
 msgstr " v tomto omezeném zobrazení"
 
-#: curs_main.c:1516
+#: curs_main.c:1517
 msgid "flag message"
 msgstr "nastavit příznak zprávě"
 
-#: curs_main.c:1553 pager.c:2555
+#: curs_main.c:1554 pager.c:2555
 msgid "toggle new"
 msgstr "přepnout mezi nová/stará"
 
-#: curs_main.c:1630
+#: curs_main.c:1631
 msgid "No more threads."
 msgstr "Nejsou další vlákna."
 
-#: curs_main.c:1632
+#: curs_main.c:1633
 msgid "You are on the first thread."
 msgstr "Jste na prvním vláknu."
 
-#: curs_main.c:1713
+#: curs_main.c:1714
 msgid "Thread contains unread messages."
 msgstr "Vlákno obsahuje nepřečtené zprávy."
 
-#: curs_main.c:1807 pager.c:2262
+#: curs_main.c:1808 pager.c:2262
 msgid "delete message"
 msgstr "smazat zprávu"
 
-#: curs_main.c:1889
+#: curs_main.c:1890
 msgid "edit message"
 msgstr "editovat zprávu"
 
-#: curs_main.c:2020
+#: curs_main.c:2021
 msgid "mark message(s) as read"
 msgstr "označit zprávu(-y) za přečtenou(-é)"
 
-#: curs_main.c:2110 pager.c:2574
+#: curs_main.c:2111 pager.c:2574
 msgid "undelete message"
 msgstr "obnovit zprávu"
 
@@ -1982,11 +1992,11 @@ msgid "CRAM-MD5 authentication failed."
 msgstr "CRAM-MD5 ověření se nezdařilo."
 
 #. now begin login
-#: imap/auth_gss.c:105
+#: imap/auth_gss.c:142
 msgid "Authenticating (GSSAPI)..."
 msgstr "Ověřuji (GSSAPI)…"
 
-#: imap/auth_gss.c:268
+#: imap/auth_gss.c:307
 msgid "GSSAPI authentication failed."
 msgstr "GSSAPI ověření se nezdařilo."
 
@@ -2024,29 +2034,29 @@ msgstr "Stahuji seznam schránek…"
 msgid "No such folder"
 msgstr "Složka nenalezena"
 
-#: imap/browse.c:271
+#: imap/browse.c:276
 msgid "Create mailbox: "
 msgstr "Vytvořit schránku: "
 
-#: imap/browse.c:276 imap/browse.c:322
+#: imap/browse.c:281 imap/browse.c:327
 msgid "Mailbox must have a name."
 msgstr "Schránka musí mít jméno."
 
-#: imap/browse.c:284
+#: imap/browse.c:289
 msgid "Mailbox created."
 msgstr "Schránka vytvořena."
 
-#: imap/browse.c:315
+#: imap/browse.c:320
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Přejmenovat schránku %s na: "
 
-#: imap/browse.c:328
+#: imap/browse.c:333
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Přejmenování selhalo: %s"
 
-#: imap/browse.c:333
+#: imap/browse.c:338
 msgid "Mailbox renamed."
 msgstr "Schránka přejmenována."
 
@@ -2162,15 +2172,15 @@ msgstr "Dočasný soubor %s nelze vytvořit"
 msgid "Evaluating cache..."
 msgstr "Vyhodnocuji cache…"
 
-#: imap/message.c:221 pop.c:271
+#: imap/message.c:221 pop.c:272
 msgid "Fetching message headers..."
 msgstr "Stahuji hlavičky zpráv…"
 
-#: imap/message.c:402 imap/message.c:459 pop.c:546
+#: imap/message.c:402 imap/message.c:459 pop.c:547
 msgid "Fetching message..."
 msgstr "Stahuji zprávu…"
 
-#: imap/message.c:448 pop.c:541
+#: imap/message.c:448 pop.c:542
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "Index zpráv je chybný. Zkuste schránku znovu otevřít."
 
@@ -2459,12 +2469,13 @@ msgstr ""
 "„mutt -vv“.\n"
 
 #: main.c:73
+#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -2661,24 +2672,24 @@ msgstr "Není definována žádná schránka přijímající novou poštu."
 msgid "Mailbox is empty."
 msgstr "Schránka je prázdná."
 
-#: mbox.c:121 mbox.c:272 mh.c:1132 mx.c:673
+#: mbox.c:123 mbox.c:277 mh.c:1137 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "Čtu %s…"
 
-#: mbox.c:158 mbox.c:215
+#: mbox.c:161 mbox.c:218
 msgid "Mailbox is corrupt!"
 msgstr "Schránka je poškozena!"
 
-#: mbox.c:672
+#: mbox.c:678
 msgid "Mailbox was corrupted!"
 msgstr "Schránka byla poškozena!"
 
-#: mbox.c:713 mbox.c:966
+#: mbox.c:719 mbox.c:975
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Kritická chyba! Schránku nelze znovu otevřít!"
 
-#: mbox.c:722
+#: mbox.c:728
 msgid "Unable to lock mailbox!"
 msgstr "Schránku nelze zamknout!"
 
@@ -2686,12 +2697,12 @@ msgstr "Schránku nelze zamknout!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:765
+#: mbox.c:771
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: mbox byl změněn, ale nebyly změněny žádné zprávy! (ohlaste tuto chybu)"
 
-#: mbox.c:787 mh.c:1628 mx.c:766
+#: mbox.c:795 mh.c:1636 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "Ukládám %s…"
@@ -2699,20 +2710,20 @@ msgstr "Ukládám %s…"
 #. copy the temp mailbox back into place starting at the first
 #. * change/deleted message
 #.
-#: mbox.c:919
+#: mbox.c:928
 msgid "Committing changes..."
 msgstr "Provádím změny…"
 
-#: mbox.c:950
+#: mbox.c:959
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Uložení se nezdařilo! Část schránky byla uložena do %s"
 
-#: mbox.c:1014
+#: mbox.c:1023
 msgid "Could not reopen mailbox!"
 msgstr "Schránku nelze znovu otevřít!"
 
-#: mbox.c:1049
+#: mbox.c:1058
 msgid "Reopening mailbox..."
 msgstr "Otevírám schránku znovu…"
 
@@ -2785,49 +2796,33 @@ msgstr "V dialozích není přeskakování implementováno."
 msgid "Tagging is not supported."
 msgstr "Označování není podporováno."
 
-#: mh.c:1114
+#: mh.c:1116
 #, c-format
 msgid "Scanning %s..."
 msgstr "Prohledávám %s…"
 
-#: mh.c:1352
+#: mh.c:1358
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr ""
 "při volání maildir_commit_message(): nemohu nastavit datum a čas u souboru"
 
-#: mutt_sasl.c:189
+#: mutt_sasl.c:192
 msgid "Unknown SASL profile"
 msgstr "Neznámý SASL profil"
 
-#: mutt_sasl.c:195
-msgid "SASL failed to get local IP address"
-msgstr "SASL nedokázala zjistit místní IP adresu"
-
-#: mutt_sasl.c:200
-msgid "SASL failed to parse local IP address"
-msgstr "SASL nedokázala rozebrat místní IP adresu"
-
-#: mutt_sasl.c:206
-msgid "SASL failed to get remote IP address"
-msgstr "SASL nedokázala zjistit vzdálenou IP adresu"
-
-#: mutt_sasl.c:211
-msgid "SASL failed to parse remote IP address"
-msgstr "SASL nedokázala rozebrat vzdálenou IP adresu"
-
-#: mutt_sasl.c:222
+#: mutt_sasl.c:226
 msgid "Error allocating SASL connection"
 msgstr "Chyba při alokování SASL spojení"
 
-#: mutt_sasl.c:232
+#: mutt_sasl.c:236
 msgid "Error setting SASL security properties"
 msgstr "Chyba při nastavování bezpečnostních vlastností SASL"
 
-#: mutt_sasl.c:242
+#: mutt_sasl.c:246
 msgid "Error setting SASL external security strength"
 msgstr "Chyba při nastavování úrovně zabezpečení vnějšího SASL mechanismu"
 
-#: mutt_sasl.c:248
+#: mutt_sasl.c:252
 msgid "Error setting SASL external user name"
 msgstr "Chyba při nastavování jména uživatele vnějšího SASL mechanismu"
 
@@ -2901,8 +2896,8 @@ msgstr "I/O chyba"
 msgid "SSL failed: %s"
 msgstr "Chyba SSL: %s"
 
-#: mutt_ssl.c:341 mutt_ssl_gnutls.c:494 mutt_ssl_gnutls.c:503
-#: mutt_ssl_gnutls.c:532
+#: mutt_ssl.c:341 mutt_ssl_gnutls.c:504 mutt_ssl_gnutls.c:513
+#: mutt_ssl_gnutls.c:542
 msgid "Unable to get certificate from peer"
 msgstr "Certifikát od serveru nelze získat"
 
@@ -2915,12 +2910,12 @@ msgstr "SSL spojení pomocí %s (%s)"
 msgid "Unknown"
 msgstr "Neznámý"
 
-#: mutt_ssl.c:418 mutt_ssl_gnutls.c:382
+#: mutt_ssl.c:418 mutt_ssl_gnutls.c:392
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[nelze spočítat]"
 
-#: mutt_ssl.c:436 mutt_ssl_gnutls.c:405
+#: mutt_ssl.c:436 mutt_ssl_gnutls.c:415
 msgid "[invalid date]"
 msgstr "[chybné datum]"
 
@@ -2932,25 +2927,25 @@ msgstr "Certifikát serveru není zatím platný"
 msgid "Server certificate has expired"
 msgstr "Platnost certifikátu serveru vypršela."
 
-#: mutt_ssl.c:630 mutt_ssl_gnutls.c:635
+#: mutt_ssl.c:630 mutt_ssl_gnutls.c:645
 msgid "This certificate belongs to:"
 msgstr "Tento certifikát patří:"
 
-#: mutt_ssl.c:641 mutt_ssl_gnutls.c:674
+#: mutt_ssl.c:641 mutt_ssl_gnutls.c:684
 msgid "This certificate was issued by:"
 msgstr "Tento certifikát vydal:"
 
-#: mutt_ssl.c:652 mutt_ssl_gnutls.c:713
+#: mutt_ssl.c:652 mutt_ssl_gnutls.c:723
 #, c-format
 msgid "This certificate is valid"
 msgstr "Tento certifikát platí:"
 
-#: mutt_ssl.c:653 mutt_ssl_gnutls.c:716
+#: mutt_ssl.c:653 mutt_ssl_gnutls.c:726
 #, c-format
 msgid "   from %s"
 msgstr "   od %s"
 
-#: mutt_ssl.c:655 mutt_ssl_gnutls.c:720
+#: mutt_ssl.c:655 mutt_ssl_gnutls.c:730
 #, c-format
 msgid "     to %s"
 msgstr "   do %s"
@@ -2964,91 +2959,91 @@ msgstr "Otisk klíče: %s"
 msgid "SSL Certificate check"
 msgstr "Kontrola SSL certifikátu"
 
-#: mutt_ssl.c:667 mutt_ssl_gnutls.c:761
+#: mutt_ssl.c:667 mutt_ssl_gnutls.c:771
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď, akceptovat (v)ždy "
 
-#: mutt_ssl.c:668 mutt_ssl_gnutls.c:762
+#: mutt_ssl.c:668 mutt_ssl_gnutls.c:772
 msgid "roa"
 msgstr "otv"
 
-#: mutt_ssl.c:672 mutt_ssl_gnutls.c:766
+#: mutt_ssl.c:672 mutt_ssl_gnutls.c:776
 msgid "(r)eject, accept (o)nce"
 msgstr "(o)dmítnout, akceptovat pouze (t)eď "
 
-#: mutt_ssl.c:673 mutt_ssl_gnutls.c:767
+#: mutt_ssl.c:673 mutt_ssl_gnutls.c:777
 msgid "ro"
 msgstr "ot"
 
-#: mutt_ssl.c:704 mutt_ssl_gnutls.c:816
+#: mutt_ssl.c:704 mutt_ssl_gnutls.c:826
 msgid "Warning: Couldn't save certificate"
 msgstr "Varování: Certifikát nelze uložit"
 
-#: mutt_ssl.c:709 mutt_ssl_gnutls.c:821
+#: mutt_ssl.c:709 mutt_ssl_gnutls.c:831
 msgid "Certificate saved"
 msgstr "Certifikát uložen"
 
-#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:118
+#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:119
 msgid "Error: no TLS socket open"
 msgstr "Chyba: TLS socket není otevřen"
 
-#: mutt_ssl_gnutls.c:205
+#: mutt_ssl_gnutls.c:215
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Všechny dostupné protokoly pro TLS/SSL byly zakázány"
 
-#: mutt_ssl_gnutls.c:266
+#: mutt_ssl_gnutls.c:276
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS spojení pomocí %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:509
+#: mutt_ssl_gnutls.c:519
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Chyba při ověřování certifikátu (%s)"
 
-#: mutt_ssl_gnutls.c:517
+#: mutt_ssl_gnutls.c:527
 msgid "Certificate is not X.509"
 msgstr "Certifikát není typu X.509"
 
-#: mutt_ssl_gnutls.c:524
+#: mutt_ssl_gnutls.c:534
 msgid "Error initialising gnutls certificate data"
 msgstr "Chyba při inicializaci certifikačních údajů GNU TLS"
 
-#: mutt_ssl_gnutls.c:540
+#: mutt_ssl_gnutls.c:550
 msgid "Error processing certificate data"
 msgstr "Chyba při zpracování certifikačních údajů"
 
-#: mutt_ssl_gnutls.c:725
+#: mutt_ssl_gnutls.c:735
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Otisk SHA1 klíče: %s"
 
-#: mutt_ssl_gnutls.c:728
+#: mutt_ssl_gnutls.c:738
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Otisk MD5 klíče: %s"
 
-#: mutt_ssl_gnutls.c:733
+#: mutt_ssl_gnutls.c:743
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "POZOR: Certifikát serveru není zatím platný"
 
-#: mutt_ssl_gnutls.c:738
+#: mutt_ssl_gnutls.c:748
 msgid "WARNING: Server certificate has expired"
 msgstr "POZOR: Platnost certifikátu serveru vypršela."
 
-#: mutt_ssl_gnutls.c:743
+#: mutt_ssl_gnutls.c:753
 msgid "WARNING: Server certificate has been revoked"
 msgstr "POZOR: Certifikátu serveru byl odvolán"
 
-#: mutt_ssl_gnutls.c:748
+#: mutt_ssl_gnutls.c:758
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "POZOR: Jméno serveru se neshoduje s jménem v certifikátu"
 
-#: mutt_ssl_gnutls.c:753
+#: mutt_ssl_gnutls.c:763
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "POZOR: Certifikát serveru nebyl podepsán certifikační autoritou"
 
-#: mutt_ssl_gnutls.c:756
+#: mutt_ssl_gnutls.c:766
 msgid "TLS/SSL Certificate check"
 msgstr "Kontrola TLS/SSL certifikátu"
 
@@ -3467,54 +3462,54 @@ msgstr "Nelze zapsat hlavičku do dočasného souboru!"
 msgid "Command UIDL is not supported by server."
 msgstr "Server nepodporuje příkaz UIDL."
 
-#: pop.c:390 pop.c:760
+#: pop.c:391 pop.c:761
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s není platná POP cesta"
 
-#: pop.c:428
+#: pop.c:429
 msgid "Fetching list of messages..."
 msgstr "Stahuji zprávu seznam zpráv…"
 
-#: pop.c:586
+#: pop.c:587
 msgid "Can't write message to temporary file!"
 msgstr "Nelze zapsat zprávu do dočasného souboru!"
 
-#: pop.c:645
+#: pop.c:646
 msgid "Marking messages deleted..."
 msgstr "Označuji zprávy ke smazání…"
 
-#: pop.c:715 pop.c:780
+#: pop.c:716 pop.c:781
 msgid "Checking for new messages..."
 msgstr "Hledám nové zprávy…"
 
-#: pop.c:744
+#: pop.c:745
 msgid "POP host is not defined."
 msgstr "POP server není definován."
 
-#: pop.c:808
+#: pop.c:809
 msgid "No new mail in POP mailbox."
 msgstr "Ve schránce na POP serveru nejsou nové zprávy."
 
-#: pop.c:815
+#: pop.c:816
 msgid "Delete messages from server?"
 msgstr "Odstranit zprávy ze serveru?"
 
-#: pop.c:817
+#: pop.c:818
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Načítám nové zprávy (počet bajtů: %d)…"
 
-#: pop.c:859
+#: pop.c:860
 msgid "Error while writing mailbox!"
 msgstr "Chyba při zápisu do schránky!"
 
-#: pop.c:863
+#: pop.c:864
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [počet přečtených zpráv: %d/%d]"
 
-#: pop.c:886 pop_lib.c:369
+#: pop.c:887 pop_lib.c:369
 msgid "Server closed connection!"
 msgstr "Server uzavřel spojení!"
 
@@ -5005,6 +5000,18 @@ msgstr "extrahovat všechny podporované veřejné klíče"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "zobrazit menu S/MIME"
+
+#~ msgid "SASL failed to get local IP address"
+#~ msgstr "SASL nedokázala zjistit místní IP adresu"
+
+#~ msgid "SASL failed to parse local IP address"
+#~ msgstr "SASL nedokázala rozebrat místní IP adresu"
+
+#~ msgid "SASL failed to get remote IP address"
+#~ msgstr "SASL nedokázala zjistit vzdálenou IP adresu"
+
+#~ msgid "SASL failed to parse remote IP address"
+#~ msgstr "SASL nedokázala rozebrat vzdálenou IP adresu"
 
 #~ msgid "Getting namespaces..."
 #~ msgstr "Stahuji jmenný prostor…"

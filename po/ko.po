@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.6i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-01 14:06-0700\n"
+"POT-Creation-Date: 2008-05-17 12:35-0700\n"
 "PO-Revision-Date: 2004-03-03 10:25+900\n"
 "Last-Translator: Im Eunjea <eunjea@kldp.org>\n"
 "Language-Team: Im Eunjea <eunjea@kldp.org>\n"
@@ -26,7 +26,7 @@ msgstr "이름 바꾸기 (%s): "
 msgid "Password for %s@%s: "
 msgstr "%s@%s의 암호: "
 
-#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:48
+#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:49
 #: recvattach.c:54
 msgid "Exit"
 msgstr "종료"
@@ -45,8 +45,8 @@ msgstr "선택"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
-#: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
-#: postpone.c:46 query.c:53 recvattach.c:58 smime.c:437
+#: mutt_ssl.c:679 mutt_ssl_gnutls.c:783 pager.c:1579 pgpkey.c:522
+#: postpone.c:46 query.c:54 recvattach.c:58 smime.c:437
 msgid "Help"
 msgstr "도움말"
 
@@ -89,14 +89,24 @@ msgstr "이름: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] 추가할까요?"
 
-#: alias.c:331 recvattach.c:412 recvattach.c:435 recvattach.c:448
-#: recvattach.c:461 recvattach.c:490
+#: alias.c:331 recvattach.c:432 recvattach.c:455 recvattach.c:468
+#: recvattach.c:481 recvattach.c:511
 msgid "Save to file: "
 msgstr "파일로 저장: "
 
-#: alias.c:346
+#: alias.c:345
+#, fuzzy
+msgid "Error reading alias file"
+msgstr "파일 보기 시도 중 오류"
+
+#: alias.c:364
 msgid "Alias added."
 msgstr "별칭 추가됨."
+
+#: alias.c:372
+#, fuzzy
+msgid "Error seeking in alias file"
+msgstr "파일 보기 시도 중 오류"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -108,8 +118,8 @@ msgstr "이름 템플레이트와 일치하지 않음. 계속할까요?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Mailcap 작성 항목은 %%s가 필요함"
 
-#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:175
-#: curs_lib.c:492
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1183 curs_lib.c:179
+#: curs_lib.c:533
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "\"%s\" 실행 오류!"
@@ -330,130 +340,130 @@ msgid "default colors not supported"
 msgstr "기본 색상들이 지원되지 않음"
 
 #. find out whether or not the verify signature
-#: commands.c:89
+#: commands.c:90
 msgid "Verify PGP signature?"
 msgstr "PGP 서명을 확인할까요?"
 
-#: commands.c:114 mbox.c:746
+#: commands.c:115 mbox.c:754
 msgid "Could not create temporary file!"
 msgstr "임시 파일을 만들 수 없음!"
 
-#: commands.c:127
+#: commands.c:128
 msgid "Cannot create display filter"
 msgstr "표시 필터를 만들 수 없음"
 
-#: commands.c:147
+#: commands.c:152
 msgid "Could not copy message"
 msgstr "메일을 복사할 수 없음"
 
-#: commands.c:184
+#: commands.c:189
 msgid "S/MIME signature successfully verified."
 msgstr "S/MIME 서명 확인에 성공함."
 
-#: commands.c:186
+#: commands.c:191
 msgid "S/MIME certificate owner does not match sender."
 msgstr "S/MIME 인증서 소유자와 보낸이가 일치하지 않음."
 
-#: commands.c:189 commands.c:200
+#: commands.c:194 commands.c:205
 msgid "Warning: Part of this message has not been signed."
 msgstr ""
 
-#: commands.c:191
+#: commands.c:196
 msgid "S/MIME signature could NOT be verified."
 msgstr "S/MIME 서명 검증에 실패함."
 
-#: commands.c:198
+#: commands.c:203
 msgid "PGP signature successfully verified."
 msgstr "PGP 서명 확인에 성공함."
 
-#: commands.c:202
+#: commands.c:207
 msgid "PGP signature could NOT be verified."
 msgstr "PGP 서명 검증에 실패함."
 
-#: commands.c:225
+#: commands.c:230
 msgid "Command: "
 msgstr "명령어: "
 
-#: commands.c:245 recvcmd.c:147
+#: commands.c:250 recvcmd.c:147
 msgid "Bounce message to: "
 msgstr "메일을 전달할 주소: "
 
-#: commands.c:247 recvcmd.c:149
+#: commands.c:252 recvcmd.c:149
 msgid "Bounce tagged messages to: "
 msgstr "선택한 메일을 전달한 주소: "
 
-#: commands.c:262 recvcmd.c:158
+#: commands.c:267 recvcmd.c:158
 msgid "Error parsing address!"
 msgstr "주소 분석 중 오류!"
 
-#: commands.c:270 recvcmd.c:166
+#: commands.c:275 recvcmd.c:166
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "잘못된 IDN: '%s'"
 
-#: commands.c:281 recvcmd.c:180
+#: commands.c:286 recvcmd.c:180
 #, c-format
 msgid "Bounce message to %s"
 msgstr "%s에게 메일 전달"
 
-#: commands.c:281 recvcmd.c:180
+#: commands.c:286 recvcmd.c:180
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "%s에게 메일 전달"
 
-#: commands.c:297 recvcmd.c:196
+#: commands.c:302 recvcmd.c:196
 msgid "Message not bounced."
 msgstr "메일이 전달 되지 않음."
 
-#: commands.c:297 recvcmd.c:196
+#: commands.c:302 recvcmd.c:196
 msgid "Messages not bounced."
 msgstr "메일들이 전달 되지 않음."
 
-#: commands.c:307 recvcmd.c:215
+#: commands.c:312 recvcmd.c:215
 msgid "Message bounced."
 msgstr "메일이 전달됨."
 
-#: commands.c:307 recvcmd.c:215
+#: commands.c:312 recvcmd.c:215
 msgid "Messages bounced."
 msgstr "메일들이 전달됨."
 
-#: commands.c:384 commands.c:418 commands.c:435
+#: commands.c:389 commands.c:423 commands.c:440
 msgid "Can't create filter process"
 msgstr "필터과정을 생성할 수 없음"
 
-#: commands.c:464
+#: commands.c:469
 msgid "Pipe to command: "
 msgstr "명령어로 연결: "
 
-#: commands.c:481
+#: commands.c:486
 msgid "No printing command has been defined."
 msgstr "프린트 명령이 정의되지 않음."
 
-#: commands.c:486
+#: commands.c:491
 msgid "Print message?"
 msgstr "메일을 프린트 할까요?"
 
-#: commands.c:486
+#: commands.c:491
 msgid "Print tagged messages?"
 msgstr "표시한 메일을 프린트 할까요?"
 
-#: commands.c:495
+#: commands.c:500
 msgid "Message printed"
 msgstr "메일을 프린트함"
 
-#: commands.c:495
+#: commands.c:500
 msgid "Messages printed"
 msgstr "메일들을 프린트함"
 
-#: commands.c:497
+#: commands.c:502
 msgid "Message could not be printed"
 msgstr "메일을 프린트 할 수 없음"
 
-#: commands.c:498
+#: commands.c:503
 msgid "Messages could not be printed"
 msgstr "메일들을 프린트 할 수 없음"
 
-#: commands.c:507
+#: commands.c:512
 #, fuzzy
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s"
@@ -461,7 +471,7 @@ msgid ""
 msgstr ""
 "역순정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
-#: commands.c:508
+#: commands.c:513
 #, fuzzy
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)"
@@ -469,74 +479,74 @@ msgid ""
 msgstr ""
 "정렬: (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore?: "
 
-#: commands.c:509
+#: commands.c:514
 #, fuzzy
 msgid "dfrsotuzcp"
 msgstr "dfrsotuzc"
 
-#: commands.c:566
+#: commands.c:571
 msgid "Shell command: "
 msgstr "쉘 명령어: "
 
-#: commands.c:711
+#: commands.c:716
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "복호화-저장%s 메일함으로"
 
-#: commands.c:712
+#: commands.c:717
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "복호화-복사%s 메일함으로"
 
-#: commands.c:713
+#: commands.c:718
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "해독-저장%s 메일함으로"
 
-#: commands.c:714
+#: commands.c:719
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "해독-복사%s 메일함으로"
 
-#: commands.c:715
+#: commands.c:720
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "저장%s 메일함으로"
 
-#: commands.c:715
+#: commands.c:720
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "복사%s 메일함으로"
 
-#: commands.c:716
+#: commands.c:721
 msgid " tagged"
 msgstr " 표시됨"
 
-#: commands.c:789
+#: commands.c:794
 #, c-format
 msgid "Copying to %s..."
 msgstr "%s로 복사..."
 
-#: commands.c:924
+#: commands.c:929
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "보낼때 %s로 변환할까요?"
 
-#: commands.c:934
+#: commands.c:939
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "%s로 Content-Type이 바뀜."
 
-#: commands.c:939
+#: commands.c:944
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "문자셋이 %s에서 %s로 바뀜."
 
-#: commands.c:941
+#: commands.c:946
 msgid "not converting"
 msgstr "변환하지 않음"
 
-#: commands.c:941
+#: commands.c:946
 msgid "converting"
 msgstr "변환중"
 
@@ -620,7 +630,7 @@ msgstr "경고: '%s' 잘못된 IDN."
 msgid "You may not delete the only attachment."
 msgstr "첨부물만을 삭제할 수는 없습니다."
 
-#: compose.c:601 send.c:1552
+#: compose.c:601 send.c:1561
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "잘못된 IDN \"%s\": '%s'"
@@ -1180,7 +1190,7 @@ msgstr ""
 msgid "All matching keys are marked expired/revoked."
 msgstr "모든 키가 만기/취소/사용 불가 입니다."
 
-#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "끝내기  "
@@ -1332,7 +1342,7 @@ msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
 #. abort
-#: crypt.c:158 send.c:1504
+#: crypt.c:158 send.c:1513
 msgid "Mail not sent."
 msgstr "보내지 않음."
 
@@ -1408,28 +1418,28 @@ msgstr ""
 msgid "Invoking S/MIME..."
 msgstr "S/MIME를 구동합니다..."
 
-#: curs_lib.c:185
+#: curs_lib.c:189
 msgid "yes"
 msgstr "yes"
 
-#: curs_lib.c:186
+#: curs_lib.c:190
 msgid "no"
 msgstr "no"
 
 #. restore blocking operation
-#: curs_lib.c:282
+#: curs_lib.c:286
 msgid "Exit Mutt?"
 msgstr "Mutt을 종료할까요?"
 
-#: curs_lib.c:444 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:485 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "알 수 없는 오류"
 
-#: curs_lib.c:464
+#: curs_lib.c:505
 msgid "Press any key to continue..."
 msgstr "아무키나 누르면 계속합니다..."
 
-#: curs_lib.c:508
+#: curs_lib.c:549
 msgid " ('?' for list): "
 msgstr "(목록 보기 '?'): "
 
@@ -1445,7 +1455,7 @@ msgstr "메일이 없음."
 msgid "Mailbox is read-only."
 msgstr "읽기 전용 메일함."
 
-#: curs_main.c:57 pager.c:59 recvattach.c:892
+#: curs_main.c:57 pager.c:59 recvattach.c:913
 msgid "Function not permitted in attach-message mode."
 msgstr "메일 첨부 모드에서 허가되지 않는 기능임."
 
@@ -1478,7 +1488,7 @@ msgstr "종료"
 msgid "Save"
 msgstr "저장"
 
-#: curs_main.c:411 query.c:49
+#: curs_main.c:411 query.c:50
 msgid "Mail"
 msgstr "메일"
 
@@ -1526,7 +1536,7 @@ msgstr "메일이 볼 수 없는 상태임."
 msgid "Invalid message number."
 msgstr "잘못된 메일 번호."
 
-#: curs_main.c:808 curs_main.c:1848 pager.c:2279
+#: curs_main.c:808 curs_main.c:1849 pager.c:2279
 #, fuzzy
 msgid "delete message(s)"
 msgstr "삭제 취소된 메일 없음."
@@ -1557,144 +1567,144 @@ msgstr ""
 msgid "Quit Mutt?"
 msgstr "Mutt을 종료할까요?"
 
-#: curs_main.c:966
+#: curs_main.c:967
 msgid "Tag messages matching: "
 msgstr "일치하는 메일에 표시함: "
 
-#: curs_main.c:975 curs_main.c:2137 pager.c:2589
+#: curs_main.c:976 curs_main.c:2138 pager.c:2589
 #, fuzzy
 msgid "undelete message(s)"
 msgstr "삭제 취소된 메일 없음."
 
-#: curs_main.c:977
+#: curs_main.c:978
 msgid "Undelete messages matching: "
 msgstr "일치하는 메일을 삭제 취소: "
 
-#: curs_main.c:985
+#: curs_main.c:986
 msgid "Untag messages matching: "
 msgstr "일치하는 메일을 표시 해제: "
 
-#: curs_main.c:1065
+#: curs_main.c:1066
 msgid "Open mailbox in read-only mode"
 msgstr "읽기 전용으로 메일함 열기"
 
-#: curs_main.c:1067
+#: curs_main.c:1068
 msgid "Open mailbox"
 msgstr "메일함 열기"
 
-#: curs_main.c:1077
+#: curs_main.c:1078
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: curs_main.c:1105 mx.c:503 mx.c:652
+#: curs_main.c:1106 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s는 메일함이 아님."
 
-#: curs_main.c:1200
+#: curs_main.c:1201
 msgid "Exit Mutt without saving?"
 msgstr "저장하지 않고 Mutt을 끝낼까요?"
 
-#: curs_main.c:1218 curs_main.c:1251 curs_main.c:1695 curs_main.c:1727
+#: curs_main.c:1219 curs_main.c:1252 curs_main.c:1696 curs_main.c:1728
 #: flags.c:286 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "글타래 모드가 아님."
 
-#: curs_main.c:1230
+#: curs_main.c:1231
 msgid "Thread broken"
 msgstr ""
 
-#: curs_main.c:1248
+#: curs_main.c:1249
 msgid "link threads"
 msgstr ""
 
-#: curs_main.c:1253
+#: curs_main.c:1254
 msgid "No Message-ID: header available to link thread"
 msgstr ""
 
-#: curs_main.c:1255
+#: curs_main.c:1256
 #, fuzzy
 msgid "First, please tag a message to be linked here"
 msgstr "현재 메일을 저장 후 나중에 보냄"
 
-#: curs_main.c:1267
+#: curs_main.c:1268
 msgid "Threads linked"
 msgstr ""
 
-#: curs_main.c:1270
+#: curs_main.c:1271
 msgid "No thread linked"
 msgstr ""
 
-#: curs_main.c:1306 curs_main.c:1331
+#: curs_main.c:1307 curs_main.c:1332
 msgid "You are on the last message."
 msgstr "마지막 메세지입니다."
 
-#: curs_main.c:1313 curs_main.c:1357
+#: curs_main.c:1314 curs_main.c:1358
 msgid "No undeleted messages."
 msgstr "삭제 취소된 메일 없음."
 
-#: curs_main.c:1350 curs_main.c:1374
+#: curs_main.c:1351 curs_main.c:1375
 msgid "You are on the first message."
 msgstr "첫번째 메세지입니다."
 
-#: curs_main.c:1449 pattern.c:1466
+#: curs_main.c:1450 pattern.c:1479
 msgid "Search wrapped to top."
 msgstr "위부터 다시 검색."
 
-#: curs_main.c:1458 pattern.c:1477
+#: curs_main.c:1459 pattern.c:1490
 msgid "Search wrapped to bottom."
 msgstr "아래부터 다시 검색."
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No new messages"
 msgstr "새 메일 없음"
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No unread messages"
 msgstr "읽지 않은 메일 없음"
 
-#: curs_main.c:1500
+#: curs_main.c:1501
 msgid " in this limited view"
 msgstr " 보기 제한"
 
-#: curs_main.c:1516
+#: curs_main.c:1517
 #, fuzzy
 msgid "flag message"
 msgstr "메일 보기"
 
-#: curs_main.c:1553 pager.c:2555
+#: curs_main.c:1554 pager.c:2555
 msgid "toggle new"
 msgstr ""
 
-#: curs_main.c:1630
+#: curs_main.c:1631
 msgid "No more threads."
 msgstr "더 이상 글타래 없음."
 
-#: curs_main.c:1632
+#: curs_main.c:1633
 msgid "You are on the first thread."
 msgstr "처음 글타래입니다."
 
-#: curs_main.c:1713
+#: curs_main.c:1714
 msgid "Thread contains unread messages."
 msgstr "글타래에 읽지 않은 메세지 있음."
 
-#: curs_main.c:1807 pager.c:2262
+#: curs_main.c:1808 pager.c:2262
 #, fuzzy
 msgid "delete message"
 msgstr "삭제 취소된 메일 없음."
 
-#: curs_main.c:1889
+#: curs_main.c:1890
 #, fuzzy
 msgid "edit message"
 msgstr "메세지 편집"
 
-#: curs_main.c:2020
+#: curs_main.c:2021
 #, fuzzy
 msgid "mark message(s) as read"
 msgstr "글타래의 부모 메일로 이동"
 
-#: curs_main.c:2110 pager.c:2574
+#: curs_main.c:2111 pager.c:2574
 #, fuzzy
 msgid "undelete message"
 msgstr "삭제 취소된 메일 없음."
@@ -1992,7 +2002,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "%s 도움말"
 
-#: history.c:75 history.c:109 history.c:132
+#: history.c:77 history.c:114 history.c:140
 #, c-format
 msgid "Bad history file format (line %d)"
 msgstr ""
@@ -2033,11 +2043,11 @@ msgid "CRAM-MD5 authentication failed."
 msgstr "CRAM-MD5 인증에 실패함."
 
 #. now begin login
-#: imap/auth_gss.c:105
+#: imap/auth_gss.c:142
 msgid "Authenticating (GSSAPI)..."
 msgstr "인증 중 (GSSAPI)..."
 
-#: imap/auth_gss.c:268
+#: imap/auth_gss.c:307
 msgid "GSSAPI authentication failed."
 msgstr "GSSAPI 인증에 실패함."
 
@@ -2075,29 +2085,29 @@ msgstr "폴더 목록 받는 중..."
 msgid "No such folder"
 msgstr "폴더 없음"
 
-#: imap/browse.c:271
+#: imap/browse.c:276
 msgid "Create mailbox: "
 msgstr "메일함 열기"
 
-#: imap/browse.c:276 imap/browse.c:322
+#: imap/browse.c:281 imap/browse.c:327
 msgid "Mailbox must have a name."
 msgstr "메일함은 이름을 가져야 함."
 
-#: imap/browse.c:284
+#: imap/browse.c:289
 msgid "Mailbox created."
 msgstr "메일함이 생성됨."
 
-#: imap/browse.c:315
+#: imap/browse.c:320
 #, fuzzy, c-format
 msgid "Rename mailbox %s to: "
 msgstr "메일함 열기"
 
-#: imap/browse.c:328
+#: imap/browse.c:333
 #, fuzzy, c-format
 msgid "Rename failed: %s"
 msgstr "SSL 실패: %s"
 
-#: imap/browse.c:333
+#: imap/browse.c:338
 #, fuzzy
 msgid "Mailbox renamed."
 msgstr "메일함이 생성됨."
@@ -2136,7 +2146,7 @@ msgstr "%s 선택 중..."
 msgid "Error opening mailbox"
 msgstr "메일함 여는중 오류"
 
-#: imap/imap.c:802 imap/message.c:792 muttlib.c:1467
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1466
 #, c-format
 msgid "Create %s?"
 msgstr "%s를 만들까요?"
@@ -2216,16 +2226,16 @@ msgstr "임시 파일 %s를 만들 수 없음!"
 msgid "Evaluating cache..."
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:221 pop.c:239
+#: imap/message.c:221 pop.c:272
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "메세지 헤더 가져오는 중... [%d/%d]"
 
-#: imap/message.c:402 imap/message.c:459 pop.c:513
+#: imap/message.c:402 imap/message.c:459 pop.c:547
 msgid "Fetching message..."
 msgstr "메세지 가져오는 중..."
 
-#: imap/message.c:448 pop.c:508
+#: imap/message.c:448 pop.c:542
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "잘못된 메일 인덱스. 메일함 열기 재시도."
 
@@ -2487,804 +2497,6 @@ msgstr "키 입력 (^G 취소): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Char = %s, Octal = %o, Decimal = %d"
 
-#: keymap_alldefs.h:5
-msgid "null operation"
-msgstr "공백 연산"
-
-#: keymap_alldefs.h:6
-msgid "end of conditional execution (noop)"
-msgstr ""
-
-#: keymap_alldefs.h:7
-msgid "force viewing of attachment using mailcap"
-msgstr "mailcap을 사용해 강제로 첨부물을 봄"
-
-#: keymap_alldefs.h:8
-msgid "view attachment as text"
-msgstr "첨부물을 text로 보기"
-
-#: keymap_alldefs.h:9
-msgid "Toggle display of subparts"
-msgstr "추가 첨부물의 표시 상태 바꿈"
-
-#: keymap_alldefs.h:10
-msgid "move to the bottom of the page"
-msgstr "페이지 마지막으로 이동"
-
-#: keymap_alldefs.h:11
-msgid "remail a message to another user"
-msgstr "메세지를 다른 사람에게 보냄"
-
-#: keymap_alldefs.h:12
-msgid "select a new file in this directory"
-msgstr "현재 디렉토리에서 새 파일 선택"
-
-#: keymap_alldefs.h:13
-msgid "view file"
-msgstr "파일 보기"
-
-#: keymap_alldefs.h:14
-msgid "display the currently selected file's name"
-msgstr "현재 선택된 파일의 이름 보기"
-
-#: keymap_alldefs.h:15
-msgid "subscribe to current mailbox (IMAP only)"
-msgstr "현재 메일함 가입 (IMAP만 지원)"
-
-#: keymap_alldefs.h:16
-#, fuzzy
-msgid "unsubscribe from current mailbox (IMAP only)"
-msgstr "현재 메일함 탈퇴 (IMAP만 지원)"
-
-#: keymap_alldefs.h:17
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr "모든/가입된 메일함 보기 선택 (IMAP만 지원)"
-
-#: keymap_alldefs.h:18
-msgid "list mailboxes with new mail"
-msgstr "새 메일이 도착한 메일함 목록."
-
-#: keymap_alldefs.h:19
-msgid "change directories"
-msgstr "디렉토리 바꾸기"
-
-#: keymap_alldefs.h:20
-msgid "check mailboxes for new mail"
-msgstr "메일함의 새 메일 확인"
-
-#: keymap_alldefs.h:21
-#, fuzzy
-msgid "attach file(s) to this message"
-msgstr "현재 메세지에 파일 첨부"
-
-#: keymap_alldefs.h:22
-msgid "attach message(s) to this message"
-msgstr "현재 메세지에 메세지 첨부"
-
-#: keymap_alldefs.h:23
-msgid "edit the BCC list"
-msgstr "BCC 목록 편집"
-
-#: keymap_alldefs.h:24
-msgid "edit the CC list"
-msgstr "CC 목록 편집"
-
-#: keymap_alldefs.h:25
-msgid "edit attachment description"
-msgstr "첨부물 설명 편집"
-
-#: keymap_alldefs.h:26
-msgid "edit attachment transfer-encoding"
-msgstr "첨부물 전송 부호화 방법 편집"
-
-#: keymap_alldefs.h:27
-msgid "enter a file to save a copy of this message in"
-msgstr "현재 메세지의 복사본을 저장할 파일 선택"
-
-#: keymap_alldefs.h:28
-msgid "edit the file to be attached"
-msgstr "파일을 고친 후 첨부하기"
-
-#: keymap_alldefs.h:29
-msgid "edit the from field"
-msgstr "from 필드 편집"
-
-#: keymap_alldefs.h:30
-msgid "edit the message with headers"
-msgstr "헤더를 포함한 메세지 편집"
-
-#: keymap_alldefs.h:31
-msgid "edit the message"
-msgstr "메세지 편집"
-
-#: keymap_alldefs.h:32
-msgid "edit attachment using mailcap entry"
-msgstr "mailcap 항목을 사용하여 첨부물 편집"
-
-#: keymap_alldefs.h:33
-msgid "edit the Reply-To field"
-msgstr "Reply-To 필드 편집"
-
-#: keymap_alldefs.h:34
-msgid "edit the subject of this message"
-msgstr "제목 편집"
-
-#: keymap_alldefs.h:35
-msgid "edit the TO list"
-msgstr "TO 목록 편집하기"
-
-#: keymap_alldefs.h:36
-msgid "create a new mailbox (IMAP only)"
-msgstr "새로운 메일함 만듬 (IMAP만 지원)"
-
-#: keymap_alldefs.h:37
-msgid "edit attachment content type"
-msgstr "첨부물 내용 유형 편집"
-
-#: keymap_alldefs.h:38
-msgid "get a temporary copy of an attachment"
-msgstr "첨부물의 임시 사본 가져옴"
-
-#: keymap_alldefs.h:39
-msgid "run ispell on the message"
-msgstr "ispell로 메일 검사"
-
-#: keymap_alldefs.h:40
-msgid "compose new attachment using mailcap entry"
-msgstr "mailcap 항목을 사용해 새로운 첨부물 작성"
-
-#: keymap_alldefs.h:41
-msgid "toggle recoding of this attachment"
-msgstr "첨부물의 저장 상태 토글"
-
-#: keymap_alldefs.h:42
-msgid "save this message to send later"
-msgstr "현재 메일을 저장 후 나중에 보냄"
-
-#: keymap_alldefs.h:43
-msgid "rename/move an attached file"
-msgstr "첨부 파일 이름 변경/이동"
-
-#: keymap_alldefs.h:44
-msgid "send the message"
-msgstr "메일 보냄"
-
-#: keymap_alldefs.h:45
-msgid "toggle disposition between inline/attachment"
-msgstr "inline 또는 attachment 선택"
-
-#: keymap_alldefs.h:46
-msgid "toggle whether to delete file after sending it"
-msgstr "발신 후 파일을 지울지 선택"
-
-#: keymap_alldefs.h:47
-msgid "update an attachment's encoding info"
-msgstr "첨부물의 인코딩 정보 다시 읽기"
-
-#: keymap_alldefs.h:48
-msgid "write the message to a folder"
-msgstr "메일을 폴더에 저장"
-
-#: keymap_alldefs.h:49
-msgid "copy a message to a file/mailbox"
-msgstr "메일을 파일/메일함에 복사"
-
-#: keymap_alldefs.h:50
-msgid "create an alias from a message sender"
-msgstr "발신인의 별칭 만들기"
-
-#: keymap_alldefs.h:51
-msgid "move entry to bottom of screen"
-msgstr "항목을 화면 아래로 이동"
-
-#: keymap_alldefs.h:52
-msgid "move entry to middle of screen"
-msgstr "항목을 화면 중간으로 이동"
-
-#: keymap_alldefs.h:53
-msgid "move entry to top of screen"
-msgstr "항목을 화면 위로 이동"
-
-#: keymap_alldefs.h:54
-msgid "make decoded (text/plain) copy"
-msgstr "text/plain 으로 디코딩후 복사"
-
-#: keymap_alldefs.h:55
-msgid "make decoded copy (text/plain) and delete"
-msgstr "text/plain 으로 디코딩후 복사, 지우기"
-
-#: keymap_alldefs.h:56
-msgid "delete the current entry"
-msgstr "현재 항목 지움"
-
-#: keymap_alldefs.h:57
-msgid "delete the current mailbox (IMAP only)"
-msgstr "현재 메일함을 삭제 (IMAP에서만)"
-
-#: keymap_alldefs.h:58
-msgid "delete all messages in subthread"
-msgstr "부속 글타래의 모든 메일 지움"
-
-#: keymap_alldefs.h:59
-msgid "delete all messages in thread"
-msgstr "글타래의 모든 메일 지우기"
-
-#: keymap_alldefs.h:60
-msgid "display full address of sender"
-msgstr "송신인의 주소 전부 보기"
-
-#: keymap_alldefs.h:61
-msgid "display message and toggle header weeding"
-msgstr "메일 출력과 헤더 숨기기 토글"
-
-#: keymap_alldefs.h:62
-msgid "display a message"
-msgstr "메일 보기"
-
-#: keymap_alldefs.h:63
-msgid "edit the raw message"
-msgstr "저장된 상태의 메일 편집"
-
-#: keymap_alldefs.h:64
-msgid "delete the char in front of the cursor"
-msgstr "커서 앞의 글자 지움"
-
-#: keymap_alldefs.h:65
-msgid "move the cursor one character to the left"
-msgstr "커서를 한글자 왼쪽으로 보냄"
-
-#: keymap_alldefs.h:66
-msgid "move the cursor to the beginning of the word"
-msgstr "단어의 처음으로 이동"
-
-#: keymap_alldefs.h:67
-msgid "jump to the beginning of the line"
-msgstr "줄의 처음으로 이동"
-
-#: keymap_alldefs.h:68
-msgid "cycle among incoming mailboxes"
-msgstr "수신 메일함 보기"
-
-#: keymap_alldefs.h:69
-msgid "complete filename or alias"
-msgstr "파일명 또는 별칭 완성하기"
-
-#: keymap_alldefs.h:70
-msgid "complete address with query"
-msgstr "쿼리로 주소 완성하기"
-
-#: keymap_alldefs.h:71
-msgid "delete the char under the cursor"
-msgstr "커서의 글자 지움"
-
-#: keymap_alldefs.h:72
-msgid "jump to the end of the line"
-msgstr "줄의 끝으로 이동"
-
-#: keymap_alldefs.h:73
-msgid "move the cursor one character to the right"
-msgstr "한글자 오른쪽으로 이동"
-
-#: keymap_alldefs.h:74
-msgid "move the cursor to the end of the word"
-msgstr "단어의 끝으로 이동"
-
-#: keymap_alldefs.h:75
-msgid "scroll down through the history list"
-msgstr "history 목록 아래로 내리기"
-
-#: keymap_alldefs.h:76
-msgid "scroll up through the history list"
-msgstr "history 목록 위로 올리기"
-
-#: keymap_alldefs.h:77
-msgid "delete chars from cursor to end of line"
-msgstr "커서부터 줄의 끝까지 글자 지움"
-
-#: keymap_alldefs.h:78
-msgid "delete chars from the cursor to the end of the word"
-msgstr "커서부터 단어의 끝까지 지움"
-
-#: keymap_alldefs.h:79
-msgid "delete all chars on the line"
-msgstr "현재 줄의 모든 글자 지움"
-
-#: keymap_alldefs.h:80
-msgid "delete the word in front of the cursor"
-msgstr "커서 앞의 단어 지움"
-
-#: keymap_alldefs.h:81
-msgid "quote the next typed key"
-msgstr "다음에 입력되는 문자를 인용"
-
-#: keymap_alldefs.h:82
-msgid "transpose character under cursor with previous"
-msgstr "앞뒤 문자 바꾸기"
-
-#: keymap_alldefs.h:83
-msgid "capitalize the word"
-msgstr "대문자로 변환"
-
-#: keymap_alldefs.h:84
-msgid "convert the word to lower case"
-msgstr "소문자로 변환"
-
-#: keymap_alldefs.h:85
-msgid "convert the word to upper case"
-msgstr "대문자로 변환"
-
-#: keymap_alldefs.h:86
-msgid "enter a muttrc command"
-msgstr "muttrc 명령어 입력"
-
-#: keymap_alldefs.h:87
-msgid "enter a file mask"
-msgstr "파일 매스크 입력"
-
-#: keymap_alldefs.h:88
-msgid "exit this menu"
-msgstr "현재 메뉴 나감"
-
-#: keymap_alldefs.h:89
-msgid "filter attachment through a shell command"
-msgstr "쉘 명령어를 통해 첨부물 걸르기"
-
-#: keymap_alldefs.h:90
-msgid "move to the first entry"
-msgstr "처음 항목으로 이동"
-
-#: keymap_alldefs.h:91
-msgid "toggle a message's 'important' flag"
-msgstr "메일의 '중요' 플래그 상태 바꾸기"
-
-#: keymap_alldefs.h:92
-msgid "forward a message with comments"
-msgstr "메일 포워딩"
-
-#: keymap_alldefs.h:93
-msgid "select the current entry"
-msgstr "현재 항목 선택"
-
-#: keymap_alldefs.h:94
-msgid "reply to all recipients"
-msgstr "모든 수신자에게 답장"
-
-#: keymap_alldefs.h:95
-msgid "scroll down 1/2 page"
-msgstr "1/2 페이지 내리기"
-
-#: keymap_alldefs.h:96
-msgid "scroll up 1/2 page"
-msgstr "1/2 페이지 올리기"
-
-#: keymap_alldefs.h:97
-msgid "this screen"
-msgstr "현재 화면"
-
-#: keymap_alldefs.h:98
-msgid "jump to an index number"
-msgstr "번호로 이동"
-
-#: keymap_alldefs.h:99
-msgid "move to the last entry"
-msgstr "마지막 항목으로 이동"
-
-#: keymap_alldefs.h:100
-msgid "reply to specified mailing list"
-msgstr "지정된 메일링 리스트로 답장하기"
-
-#: keymap_alldefs.h:101
-msgid "execute a macro"
-msgstr "매크로 실행"
-
-#: keymap_alldefs.h:102
-msgid "compose a new mail message"
-msgstr "새로운 메일 작성"
-
-#: keymap_alldefs.h:103
-msgid "break the thread in two"
-msgstr ""
-
-#: keymap_alldefs.h:104
-msgid "open a different folder"
-msgstr "다른 폴더 열기"
-
-#: keymap_alldefs.h:105
-msgid "open a different folder in read only mode"
-msgstr "다른 폴더를 읽기 전용으로 열기"
-
-#: keymap_alldefs.h:106
-msgid "clear a status flag from a message"
-msgstr "메일의 상태 플래그 해제하기"
-
-#: keymap_alldefs.h:107
-msgid "delete messages matching a pattern"
-msgstr "패턴과 일치하는 메일 삭제"
-
-#: keymap_alldefs.h:108
-msgid "force retrieval of mail from IMAP server"
-msgstr "IMAP 서버에서 메일 가져오기"
-
-#: keymap_alldefs.h:109
-msgid "retrieve mail from POP server"
-msgstr "POP 서버에서 메일 가져오기"
-
-#: keymap_alldefs.h:110
-msgid "move to the first message"
-msgstr "처음 메일로 이동"
-
-#: keymap_alldefs.h:111
-msgid "move to the last message"
-msgstr "마지막 메일로 이동"
-
-#: keymap_alldefs.h:112
-msgid "show only messages matching a pattern"
-msgstr "패턴과 일치하는 메일만 보임"
-
-#: keymap_alldefs.h:113
-#, fuzzy
-msgid "link tagged message to the current one"
-msgstr "선택한 메일을 전달한 주소: "
-
-#: keymap_alldefs.h:114
-#, fuzzy
-msgid "open next mailbox with new mail"
-msgstr "새 메일이 도착한 메일함 없음."
-
-#: keymap_alldefs.h:115
-msgid "jump to the next new message"
-msgstr "다음 새 메일로 이동"
-
-#: keymap_alldefs.h:116
-msgid "jump to the next new or unread message"
-msgstr "읽지 않은 다음 메일/새 메일로 이동"
-
-#: keymap_alldefs.h:117
-msgid "jump to the next subthread"
-msgstr "다음 부속 글타래로 이동"
-
-#: keymap_alldefs.h:118
-msgid "jump to the next thread"
-msgstr "다음 글타래로 이동"
-
-#: keymap_alldefs.h:119
-msgid "move to the next undeleted message"
-msgstr "삭제되지 않은 다음 메일로 이동"
-
-#: keymap_alldefs.h:120
-msgid "jump to the next unread message"
-msgstr "읽지 않은 다음 메일로 이동"
-
-#: keymap_alldefs.h:121
-msgid "jump to parent message in thread"
-msgstr "글타래의 부모 메일로 이동"
-
-#: keymap_alldefs.h:122
-msgid "jump to previous thread"
-msgstr "이전 글타래로 이동"
-
-#: keymap_alldefs.h:123
-msgid "jump to previous subthread"
-msgstr "이전 부속 글타래로 이동"
-
-#: keymap_alldefs.h:124
-msgid "move to the previous undeleted message"
-msgstr "삭제되지 않은 이전 메일로 이동"
-
-#: keymap_alldefs.h:125
-msgid "jump to the previous new message"
-msgstr "이전 새 메일로 이동"
-
-#: keymap_alldefs.h:126
-msgid "jump to the previous new or unread message"
-msgstr "읽지 않은 이전 메일/새 메일로 이동"
-
-#: keymap_alldefs.h:127
-msgid "jump to the previous unread message"
-msgstr "읽지 않은 이전 메일로 이동"
-
-#: keymap_alldefs.h:128
-msgid "mark the current thread as read"
-msgstr "현재 글타래에 읽은 표시하기"
-
-#: keymap_alldefs.h:129
-msgid "mark the current subthread as read"
-msgstr "현재 부속 글타래에 읽은 표시하기"
-
-#: keymap_alldefs.h:130
-msgid "set a status flag on a message"
-msgstr "메일의 상태 플래그 설정하기"
-
-#: keymap_alldefs.h:131
-msgid "save changes to mailbox"
-msgstr "메일함 변경 사항 저장"
-
-#: keymap_alldefs.h:132
-msgid "tag messages matching a pattern"
-msgstr "패턴과 일치하는 메일에 태그 붙임"
-
-#: keymap_alldefs.h:133
-msgid "undelete messages matching a pattern"
-msgstr "패턴과 일치하는 메일 복구"
-
-#: keymap_alldefs.h:134
-msgid "untag messages matching a pattern"
-msgstr "패턴과 일치하는 메일의 태그 해제"
-
-#: keymap_alldefs.h:135
-msgid "move to the middle of the page"
-msgstr "페이지 중간으로 이동"
-
-#: keymap_alldefs.h:136
-msgid "move to the next entry"
-msgstr "다음 항목으로 이동"
-
-#: keymap_alldefs.h:137
-msgid "scroll down one line"
-msgstr "한줄씩 내리기"
-
-#: keymap_alldefs.h:138
-msgid "move to the next page"
-msgstr "다음 페이지로 이동"
-
-#: keymap_alldefs.h:139
-msgid "jump to the bottom of the message"
-msgstr "메세지 마지막으로 이동"
-
-#: keymap_alldefs.h:140
-msgid "toggle display of quoted text"
-msgstr "인용문의 표시 상태 바꾸기"
-
-#: keymap_alldefs.h:141
-msgid "skip beyond quoted text"
-msgstr "인용문 다음으로 넘어가기"
-
-#: keymap_alldefs.h:142
-msgid "jump to the top of the message"
-msgstr "메세지 처음으로 이동"
-
-#: keymap_alldefs.h:143
-msgid "pipe message/attachment to a shell command"
-msgstr "메일/첨부물을 쉘 명령으로 연결하기"
-
-#: keymap_alldefs.h:144
-msgid "move to the previous entry"
-msgstr "이전 항목으로 이동"
-
-#: keymap_alldefs.h:145
-msgid "scroll up one line"
-msgstr "한줄씩 올리기"
-
-#: keymap_alldefs.h:146
-msgid "move to the previous page"
-msgstr "이전 페이지로 이동"
-
-#: keymap_alldefs.h:147
-msgid "print the current entry"
-msgstr "현재 항목 출력"
-
-#: keymap_alldefs.h:148
-msgid "query external program for addresses"
-msgstr "주소를 얻기 위해 외부 프로그램 실행"
-
-#: keymap_alldefs.h:149
-msgid "append new query results to current results"
-msgstr "쿼리 결과를 현재 결과에 추가"
-
-#: keymap_alldefs.h:150
-msgid "save changes to mailbox and quit"
-msgstr "메일함의 변경 사항 저장 후 끝내기"
-
-#: keymap_alldefs.h:151
-msgid "recall a postponed message"
-msgstr "발송 연기한 메일 다시 부르기"
-
-#: keymap_alldefs.h:152
-msgid "clear and redraw the screen"
-msgstr "화면 다시 그리기"
-
-#: keymap_alldefs.h:153
-msgid "{internal}"
-msgstr "{내부의}"
-
-#: keymap_alldefs.h:154
-#, fuzzy
-msgid "rename the current mailbox (IMAP only)"
-msgstr "현재 메일함을 삭제 (IMAP에서만)"
-
-#: keymap_alldefs.h:155
-msgid "reply to a message"
-msgstr "메일에 답장하기"
-
-#: keymap_alldefs.h:156
-msgid "use the current message as a template for a new one"
-msgstr "현재 메일을 새 메일의 템플레이트로 사용함"
-
-#: keymap_alldefs.h:157
-msgid "save message/attachment to a file"
-msgstr "메일/첨부물 파일로 저장"
-
-#: keymap_alldefs.h:158
-msgid "search for a regular expression"
-msgstr "정규 표현식을 이용해 검색"
-
-#: keymap_alldefs.h:159
-msgid "search backwards for a regular expression"
-msgstr "정규 표현식을 이용해 역순 검색"
-
-#: keymap_alldefs.h:160
-msgid "search for next match"
-msgstr "다음 찾기"
-
-#: keymap_alldefs.h:161
-msgid "search for next match in opposite direction"
-msgstr "역순으로 찾기"
-
-#: keymap_alldefs.h:162
-msgid "toggle search pattern coloring"
-msgstr "검색 패턴 컬러링 선택"
-
-#: keymap_alldefs.h:163
-msgid "invoke a command in a subshell"
-msgstr "하부 쉘 실행"
-
-#: keymap_alldefs.h:164
-msgid "sort messages"
-msgstr "메일 정렬"
-
-#: keymap_alldefs.h:165
-msgid "sort messages in reverse order"
-msgstr "메일 역순 정렬"
-
-#: keymap_alldefs.h:166
-msgid "tag the current entry"
-msgstr "현재 항목에 태그 붙임"
-
-#: keymap_alldefs.h:167
-msgid "apply next function to tagged messages"
-msgstr "다음 기능을 태그가 붙은 메일에 적용"
-
-#: keymap_alldefs.h:168
-msgid "apply next function ONLY to tagged messages"
-msgstr "다음 기능을 태그가 붙은 메일에 적용"
-
-#: keymap_alldefs.h:169
-msgid "tag the current subthread"
-msgstr "현재 부속 글타래에 태그 붙임"
-
-#: keymap_alldefs.h:170
-msgid "tag the current thread"
-msgstr "현재 글타래에 태그 붙임"
-
-#: keymap_alldefs.h:171
-msgid "toggle a message's 'new' flag"
-msgstr "메일의 '새글' 플래그 상태 바꿈"
-
-#: keymap_alldefs.h:172
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "메일함을 다시 쓸 것인지 선택"
-
-#: keymap_alldefs.h:173
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "메일함을 볼지 모든 파일을 볼지 선택"
-
-#: keymap_alldefs.h:174
-msgid "move to the top of the page"
-msgstr "첫 페이지로 이동"
-
-#: keymap_alldefs.h:175
-msgid "undelete the current entry"
-msgstr "현재 항목 복구"
-
-#: keymap_alldefs.h:176
-msgid "undelete all messages in thread"
-msgstr "글타래의 모든 메일 복구하기"
-
-#: keymap_alldefs.h:177
-msgid "undelete all messages in subthread"
-msgstr "부속 글타래의 모든 메일 복구하기"
-
-#: keymap_alldefs.h:178
-msgid "show the Mutt version number and date"
-msgstr "Mutt의 버젼과 제작일 보기"
-
-#: keymap_alldefs.h:179
-msgid "view attachment using mailcap entry if necessary"
-msgstr "필요하다면 mailcap 항목을 사용해 첨부물을 보여줌"
-
-#: keymap_alldefs.h:180
-msgid "show MIME attachments"
-msgstr "MIME 첨부물 보기"
-
-#: keymap_alldefs.h:181
-msgid "display the keycode for a key press"
-msgstr "눌려진 키 값 표시하기"
-
-#: keymap_alldefs.h:182
-msgid "show currently active limit pattern"
-msgstr "현재 제한 패턴 보기"
-
-#: keymap_alldefs.h:183
-msgid "collapse/uncollapse current thread"
-msgstr "현재 글타래 펴기/접기"
-
-#: keymap_alldefs.h:184
-msgid "collapse/uncollapse all threads"
-msgstr "모든 글타래 펴기/접기"
-
-#: keymap_alldefs.h:185
-msgid "attach a PGP public key"
-msgstr "PGP 공개 열쇠 첨부"
-
-#: keymap_alldefs.h:186
-msgid "show PGP options"
-msgstr "PGP 옵션 보기"
-
-#: keymap_alldefs.h:187
-msgid "mail a PGP public key"
-msgstr "PGP 공개 열쇠 발송"
-
-#: keymap_alldefs.h:188
-msgid "verify a PGP public key"
-msgstr "PGP 공개 열쇠 확인"
-
-#: keymap_alldefs.h:189
-msgid "view the key's user id"
-msgstr "열쇠의 사용자 ID 보기"
-
-#: keymap_alldefs.h:190
-#, fuzzy
-msgid "check for classic PGP"
-msgstr "Classic PGP 확인"
-
-#: keymap_alldefs.h:191
-msgid "Accept the chain constructed"
-msgstr "체인 구조를 허가함"
-
-#: keymap_alldefs.h:192
-msgid "Append a remailer to the chain"
-msgstr "체인에 리메일러 첨가"
-
-#: keymap_alldefs.h:193
-msgid "Insert a remailer into the chain"
-msgstr "체인에 리메일러 삽입"
-
-#: keymap_alldefs.h:194
-msgid "Delete a remailer from the chain"
-msgstr "체인에서 리메일러 삭제"
-
-#: keymap_alldefs.h:195
-msgid "Select the previous element of the chain"
-msgstr "체인의 이전 항목 선택"
-
-#: keymap_alldefs.h:196
-msgid "Select the next element of the chain"
-msgstr "체인의 다음 항목 선택"
-
-#: keymap_alldefs.h:197
-msgid "send the message through a mixmaster remailer chain"
-msgstr "mixmaster 리메일러 체인을 통한 메일 보내기"
-
-#: keymap_alldefs.h:198
-msgid "make decrypted copy and delete"
-msgstr "해독 사본 만든 후 삭제하기"
-
-#: keymap_alldefs.h:199
-msgid "make decrypted copy"
-msgstr "해독 사본 만들기"
-
-#: keymap_alldefs.h:200
-msgid "wipe passphrase(s) from memory"
-msgstr "메모리에서 암호 문구 지움"
-
-#: keymap_alldefs.h:201
-msgid "extract supported public keys"
-msgstr "공개 열쇠 추출"
-
-#: keymap_alldefs.h:202
-msgid "show S/MIME options"
-msgstr "S/MIME 옵션 보기"
-
 #: lib.c:129
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Integer overflow -- 메모리 할당 불가!"
@@ -3305,7 +2517,7 @@ msgstr ""
 #: main.c:67
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -3317,11 +2529,11 @@ msgstr ""
 
 #: main.c:73
 msgid ""
-"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3483,68 +2695,72 @@ msgstr ""
 "\n"
 "컴파일 선택사항:"
 
-#: main.c:508
+#: main.c:502
 msgid "Error initializing terminal."
 msgstr "터미널 초기화 오류."
 
-#: main.c:626
+#: main.c:620
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "디버깅 레벨 %d.\n"
 
-#: main.c:628
+#: main.c:622
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG가 컴파일시 정의되지 않음. 무시함\n"
 
-#: main.c:791
+#: main.c:785
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s가 없음. 만들까요?"
 
-#: main.c:795
+#: main.c:789
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "%s를 만들 수 없음: %s."
 
-#: main.c:841
+#: main.c:831
+msgid "Failed to parse mailto: link\n"
+msgstr ""
+
+#: main.c:843
 msgid "No recipients specified.\n"
 msgstr "수신자가 지정되지 않음.\n"
 
-#: main.c:927
+#: main.c:929
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: 파일을 첨부할 수 없음.\n"
 
-#: main.c:950
+#: main.c:952
 msgid "No mailbox with new mail."
 msgstr "새 메일이 도착한 메일함 없음."
 
-#: main.c:959
+#: main.c:961
 msgid "No incoming mailboxes defined."
 msgstr "수신 메일함이 정의되지 않음."
 
-#: main.c:987
+#: main.c:989
 msgid "Mailbox is empty."
 msgstr "메일함이 비었음"
 
-#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:673
+#: mbox.c:123 mbox.c:277 mh.c:1137 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "%s 읽는 중..."
 
-#: mbox.c:157 mbox.c:214
+#: mbox.c:161 mbox.c:218
 msgid "Mailbox is corrupt!"
 msgstr "메일함이 손상됨!"
 
-#: mbox.c:670
+#: mbox.c:678
 msgid "Mailbox was corrupted!"
 msgstr "메일함이 손상되었음!"
 
-#: mbox.c:711 mbox.c:964
+#: mbox.c:719 mbox.c:975
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "치명적 오류! 메일함을 다시 열 수 없음!"
 
-#: mbox.c:720
+#: mbox.c:728
 msgid "Unable to lock mailbox!"
 msgstr "메일함을 잠글 수 없음!"
 
@@ -3552,11 +2768,11 @@ msgstr "메일함을 잠글 수 없음!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:763
+#: mbox.c:771
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync: mbox가 수정되었으나, 수정된 메일는 없음! (버그 보고 바람)"
 
-#: mbox.c:785 mh.c:1599 mx.c:766
+#: mbox.c:795 mh.c:1636 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "%s 쓰는 중..."
@@ -3564,20 +2780,20 @@ msgstr "%s 쓰는 중..."
 #. copy the temp mailbox back into place starting at the first
 #. * change/deleted message
 #.
-#: mbox.c:917
+#: mbox.c:928
 msgid "Committing changes..."
 msgstr "수정중..."
 
-#: mbox.c:948
+#: mbox.c:959
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "쓰기 실패! 메일함의 일부가 %s에 저장되었음"
 
-#: mbox.c:1012
+#: mbox.c:1023
 msgid "Could not reopen mailbox!"
 msgstr "메일함을 다시 열 수 없음!"
 
-#: mbox.c:1047
+#: mbox.c:1058
 msgid "Reopening mailbox..."
 msgstr "메일함을 다시 여는 중..."
 
@@ -3618,19 +2834,19 @@ msgstr "마지막 항목에 위치하고 있습니다."
 msgid "You are on the first entry."
 msgstr "첫번째 항목에 위치하고 있습니다."
 
-#: menu.c:724 pattern.c:1404
+#: menu.c:724 pattern.c:1417
 msgid "Search for: "
 msgstr "찾아보기: "
 
-#: menu.c:725 pattern.c:1405
+#: menu.c:725 pattern.c:1418
 msgid "Reverse search for: "
 msgstr "반대 방향으로 찾아보기: "
 
-#: menu.c:735 pattern.c:1437
+#: menu.c:735 pattern.c:1450
 msgid "No search pattern."
 msgstr "패턴을 찾을 수 없음."
 
-#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1520
+#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1533
 msgid "Not found."
 msgstr "찾을 수 없음."
 
@@ -3650,49 +2866,33 @@ msgstr "선택창에는 바로 가기 기능이 없습니다."
 msgid "Tagging is not supported."
 msgstr "태그를 붙이는 것을 지원하지 않음."
 
-#: mh.c:1076
+#: mh.c:1116
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s 선택 중..."
 
-#: mh.c:1323
+#: mh.c:1358
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): 파일 시간을 설정할 수 없음"
 
-#: mutt_sasl.c:189
+#: mutt_sasl.c:192
 msgid "Unknown SASL profile"
 msgstr ""
 
-#: mutt_sasl.c:195
-msgid "SASL failed to get local IP address"
-msgstr ""
-
-#: mutt_sasl.c:200
-msgid "SASL failed to parse local IP address"
-msgstr ""
-
-#: mutt_sasl.c:206
-msgid "SASL failed to get remote IP address"
-msgstr ""
-
-#: mutt_sasl.c:211
-msgid "SASL failed to parse remote IP address"
-msgstr ""
-
-#: mutt_sasl.c:222
+#: mutt_sasl.c:226
 #, fuzzy
 msgid "Error allocating SASL connection"
 msgstr "패턴 오류: %s"
 
-#: mutt_sasl.c:232
+#: mutt_sasl.c:236
 msgid "Error setting SASL security properties"
 msgstr ""
 
-#: mutt_sasl.c:242
+#: mutt_sasl.c:246
 msgid "Error setting SASL external security strength"
 msgstr ""
 
-#: mutt_sasl.c:248
+#: mutt_sasl.c:252
 msgid "Error setting SASL external user name"
 msgstr ""
 
@@ -3766,8 +2966,8 @@ msgstr "입/출력 오류"
 msgid "SSL failed: %s"
 msgstr "SSL 실패: %s"
 
-#: mutt_ssl.c:341 mutt_ssl_gnutls.c:494 mutt_ssl_gnutls.c:503
-#: mutt_ssl_gnutls.c:532
+#: mutt_ssl.c:341 mutt_ssl_gnutls.c:504 mutt_ssl_gnutls.c:513
+#: mutt_ssl_gnutls.c:542
 msgid "Unable to get certificate from peer"
 msgstr "지정한 곳에서 인증서를 가져올 수 없음"
 
@@ -3780,12 +2980,12 @@ msgstr "%s를 사용해 SSL 연결 (%s)"
 msgid "Unknown"
 msgstr "알 수 없음"
 
-#: mutt_ssl.c:418 mutt_ssl_gnutls.c:382
+#: mutt_ssl.c:418 mutt_ssl_gnutls.c:392
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[계산할 수 없음]"
 
-#: mutt_ssl.c:436 mutt_ssl_gnutls.c:405
+#: mutt_ssl.c:436 mutt_ssl_gnutls.c:415
 msgid "[invalid date]"
 msgstr "[잘못된 날짜]"
 
@@ -3797,25 +2997,25 @@ msgstr "서버 인증서가 아직 유효하지 않음 "
 msgid "Server certificate has expired"
 msgstr "서버 인증서가 만기됨"
 
-#: mutt_ssl.c:630 mutt_ssl_gnutls.c:635
+#: mutt_ssl.c:630 mutt_ssl_gnutls.c:645
 msgid "This certificate belongs to:"
 msgstr "이 인증서는 다음에 속함:"
 
-#: mutt_ssl.c:641 mutt_ssl_gnutls.c:674
+#: mutt_ssl.c:641 mutt_ssl_gnutls.c:684
 msgid "This certificate was issued by:"
 msgstr "이 인증서의 발행인은:"
 
-#: mutt_ssl.c:652 mutt_ssl_gnutls.c:713
+#: mutt_ssl.c:652 mutt_ssl_gnutls.c:723
 #, c-format
 msgid "This certificate is valid"
 msgstr "이 인증서는 유효함"
 
-#: mutt_ssl.c:653 mutt_ssl_gnutls.c:716
+#: mutt_ssl.c:653 mutt_ssl_gnutls.c:726
 #, c-format
 msgid "   from %s"
 msgstr "   from %s"
 
-#: mutt_ssl.c:655 mutt_ssl_gnutls.c:720
+#: mutt_ssl.c:655 mutt_ssl_gnutls.c:730
 #, c-format
 msgid "     to %s"
 msgstr "     to %s"
@@ -3829,97 +3029,97 @@ msgstr "Fingerprint: %s"
 msgid "SSL Certificate check"
 msgstr "SSL 인증서 검사"
 
-#: mutt_ssl.c:667 mutt_ssl_gnutls.c:761
+#: mutt_ssl.c:667 mutt_ssl_gnutls.c:771
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "거부(r), 이번만 허가(o), 언제나 허가(a)"
 
-#: mutt_ssl.c:668 mutt_ssl_gnutls.c:762
+#: mutt_ssl.c:668 mutt_ssl_gnutls.c:772
 msgid "roa"
 msgstr "roa"
 
-#: mutt_ssl.c:672 mutt_ssl_gnutls.c:766
+#: mutt_ssl.c:672 mutt_ssl_gnutls.c:776
 msgid "(r)eject, accept (o)nce"
 msgstr "거부(r), 이번만 허가(o)"
 
-#: mutt_ssl.c:673 mutt_ssl_gnutls.c:767
+#: mutt_ssl.c:673 mutt_ssl_gnutls.c:777
 msgid "ro"
 msgstr "ro"
 
-#: mutt_ssl.c:704 mutt_ssl_gnutls.c:816
+#: mutt_ssl.c:704 mutt_ssl_gnutls.c:826
 msgid "Warning: Couldn't save certificate"
 msgstr "경고: 인증서를 저장하지 못함"
 
-#: mutt_ssl.c:709 mutt_ssl_gnutls.c:821
+#: mutt_ssl.c:709 mutt_ssl_gnutls.c:831
 msgid "Certificate saved"
 msgstr "인증서 저장됨"
 
-#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:118
+#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:119
 msgid "Error: no TLS socket open"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:205
+#: mutt_ssl_gnutls.c:215
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:266
+#: mutt_ssl_gnutls.c:276
 #, fuzzy, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "%s를 사용해 SSL 연결 (%s)"
 
-#: mutt_ssl_gnutls.c:509
+#: mutt_ssl_gnutls.c:519
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:517
+#: mutt_ssl_gnutls.c:527
 #, fuzzy
 msgid "Certificate is not X.509"
 msgstr "인증서 저장됨"
 
-#: mutt_ssl_gnutls.c:524
+#: mutt_ssl_gnutls.c:534
 #, fuzzy
 msgid "Error initialising gnutls certificate data"
 msgstr "터미널 초기화 오류."
 
-#: mutt_ssl_gnutls.c:540
+#: mutt_ssl_gnutls.c:550
 msgid "Error processing certificate data"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:725
+#: mutt_ssl_gnutls.c:735
 #, fuzzy, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Fingerprint: %s"
 
-#: mutt_ssl_gnutls.c:728
+#: mutt_ssl_gnutls.c:738
 #, fuzzy, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Fingerprint: %s"
 
-#: mutt_ssl_gnutls.c:733
+#: mutt_ssl_gnutls.c:743
 #, fuzzy
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "서버 인증서가 아직 유효하지 않음 "
 
-#: mutt_ssl_gnutls.c:738
+#: mutt_ssl_gnutls.c:748
 #, fuzzy
 msgid "WARNING: Server certificate has expired"
 msgstr "서버 인증서가 만기됨"
 
-#: mutt_ssl_gnutls.c:743
+#: mutt_ssl_gnutls.c:753
 #, fuzzy
 msgid "WARNING: Server certificate has been revoked"
 msgstr "서버 인증서가 만기됨"
 
-#: mutt_ssl_gnutls.c:748
+#: mutt_ssl_gnutls.c:758
 msgid "WARNING: Server hostname does not match certificate"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:753
+#: mutt_ssl_gnutls.c:763
 #, fuzzy
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "서버 인증서가 아직 유효하지 않음 "
 
-#: mutt_ssl_gnutls.c:756
+#: mutt_ssl_gnutls.c:766
 #, fuzzy
 msgid "TLS/SSL Certificate check"
 msgstr "SSL 인증서 검사"
@@ -3965,16 +3165,16 @@ msgstr "파일이 존재함, 덮어쓰기(o), 첨가(a), 취소(c)?"
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1430
+#: muttlib.c:1429
 msgid "Can't save message to POP mailbox."
 msgstr "POP 메일함에 메일을 저장할 수 없음."
 
-#: muttlib.c:1439
+#: muttlib.c:1438
 #, c-format
 msgid "Append messages to %s?"
 msgstr "%s에 메일을 첨가할까요?"
 
-#: muttlib.c:1451
+#: muttlib.c:1450
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s는 메일함이 아님!"
@@ -4195,32 +3395,32 @@ msgstr "빈 패턴"
 msgid "error: unknown op %d (report this error)."
 msgstr "오류: 알 수 없는 작동 %d (오류 보고 바람)."
 
-#: pattern.c:1288 pattern.c:1423
+#: pattern.c:1301 pattern.c:1436
 msgid "Compiling search pattern..."
 msgstr "검색 패턴 컴파일 중..."
 
-#: pattern.c:1307
+#: pattern.c:1320
 msgid "Executing command on matching messages..."
 msgstr "선택된 메일에 명령 실행중..."
 
-#: pattern.c:1374
+#: pattern.c:1387
 msgid "No messages matched criteria."
 msgstr "기준과 일치하는 메일이 없음."
 
-#: pattern.c:1456
+#: pattern.c:1469
 #, fuzzy
 msgid "Searching..."
 msgstr "저장중..."
 
-#: pattern.c:1469
+#: pattern.c:1482
 msgid "Search hit bottom without finding match"
 msgstr "일치하는 결과가 아래에 없음"
 
-#: pattern.c:1480
+#: pattern.c:1493
 msgid "Search hit top without finding match"
 msgstr "일치하는 결과가 위에 없음"
 
-#: pattern.c:1512
+#: pattern.c:1525
 msgid "Search interrupted."
 msgstr "찾는 도중 중단됨."
 
@@ -4329,69 +3529,69 @@ msgstr "열쇠 ID 를 입력하십시요: "
 msgid "PGP Key %s."
 msgstr "PGP 키 %s."
 
-#: pop.c:96 pop_lib.c:201
+#: pop.c:101 pop_lib.c:201
 #, c-format
 msgid "Command TOP is not supported by server."
 msgstr "명령어 TOP이 서버에서 지원되지 않음."
 
-#: pop.c:123
+#: pop.c:128
 msgid "Can't write header to temporary file!"
 msgstr "임시 파일 만들 수 없음"
 
-#: pop.c:235 pop_lib.c:203
+#: pop.c:267 pop_lib.c:203
 #, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "명령어 UIDL이 서버에서 지원되지 않음."
 
-#: pop.c:357 pop.c:727
+#: pop.c:391 pop.c:761
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s는 잘못된 POP 패스"
 
-#: pop.c:395
+#: pop.c:429
 msgid "Fetching list of messages..."
 msgstr "메일의 목록을 가져오는 중..."
 
-#: pop.c:553
+#: pop.c:587
 msgid "Can't write message to temporary file!"
 msgstr "메일을 임시 파일에 쓸수 없음!"
 
-#: pop.c:612
+#: pop.c:646
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "%d개의 메일을 삭제 표시함..."
 
-#: pop.c:682 pop.c:747
+#: pop.c:716 pop.c:781
 msgid "Checking for new messages..."
 msgstr "새 메일을 확인중..."
 
-#: pop.c:711
+#: pop.c:745
 msgid "POP host is not defined."
 msgstr "POP 서버가 지정되지 않음."
 
-#: pop.c:775
+#: pop.c:809
 msgid "No new mail in POP mailbox."
 msgstr "POP 메일함에 새 메일이 없음."
 
-#: pop.c:782
+#: pop.c:816
 msgid "Delete messages from server?"
 msgstr "서버의 메일을 삭제 할까요?"
 
-#: pop.c:784
+#: pop.c:818
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "새 메일 읽는 중 (%d 바이트)..."
 
-#: pop.c:826
+#: pop.c:860
 msgid "Error while writing mailbox!"
 msgstr "메일함에 쓰는 중 오류!"
 
-#: pop.c:830
+#: pop.c:864
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d - %d 메일 읽음]"
 
-#: pop.c:853 pop_lib.c:369
+#: pop.c:887 pop_lib.c:369
 msgid "Server closed connection!"
 msgstr "서버와 연결이 끊어짐!"
 
@@ -4463,37 +3663,37 @@ msgstr "메세지 가져오는 중..."
 msgid "Decryption failed."
 msgstr "해독 실패."
 
-#: query.c:50
+#: query.c:51
 msgid "New Query"
 msgstr "새 질문"
 
-#: query.c:51
+#: query.c:52
 msgid "Make Alias"
 msgstr "별칭 만들기"
 
-#: query.c:52
+#: query.c:53
 msgid "Search"
 msgstr "찾기"
 
-#: query.c:100
+#: query.c:101
 msgid "Waiting for response..."
 msgstr "응답을 기다리는 중..."
 
-#: query.c:236 query.c:264
+#: query.c:263 query.c:291
 msgid "Query command not defined."
 msgstr "질의 명령이 정의되지 않음."
 
-#: query.c:291
+#: query.c:318
 #, c-format
 msgid "Query"
 msgstr "질의"
 
 #. Prompt for Query
-#: query.c:304 query.c:329
+#: query.c:331 query.c:356
 msgid "Query: "
 msgstr "질의: "
 
-#: query.c:312 query.c:338
+#: query.c:339 query.c:365
 #, c-format
 msgid "Query '%s'"
 msgstr "질의 '%s'"
@@ -4506,65 +3706,65 @@ msgstr "연결"
 msgid "Print"
 msgstr "출력"
 
-#: recvattach.c:453
+#: recvattach.c:473
 msgid "Saving..."
 msgstr "저장중..."
 
-#: recvattach.c:456 recvattach.c:546
+#: recvattach.c:476 recvattach.c:567
 msgid "Attachment saved."
 msgstr "첨부물 저장됨."
 
-#: recvattach.c:558
+#: recvattach.c:579
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "주의! %s를 덮어 씌웁니다, 계속할까요?"
 
-#: recvattach.c:576
+#: recvattach.c:597
 msgid "Attachment filtered."
 msgstr "첨부물 필터됨."
 
-#: recvattach.c:643
+#: recvattach.c:664
 msgid "Filter through: "
 msgstr "필터: "
 
-#: recvattach.c:643
+#: recvattach.c:664
 msgid "Pipe to: "
 msgstr "연결: "
 
-#: recvattach.c:678
+#: recvattach.c:699
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "첨부물 %s의 출력 방법을 알 수 없음!"
 
-#: recvattach.c:743
+#: recvattach.c:764
 msgid "Print tagged attachment(s)?"
 msgstr "태그가 붙은 첨부물 출력?"
 
-#: recvattach.c:743
+#: recvattach.c:764
 msgid "Print attachment?"
 msgstr "첨부물 출력?"
 
-#: recvattach.c:976
+#: recvattach.c:997
 msgid "Can't decrypt encrypted message!"
 msgstr "암호화된 메일을 해독할 수 없음!"
 
-#: recvattach.c:989
+#: recvattach.c:1010
 msgid "Attachments"
 msgstr "첨부물"
 
-#: recvattach.c:1025
+#: recvattach.c:1046
 msgid "There are no subparts to show!"
 msgstr "더 이상 첨부물이 없습니다."
 
-#: recvattach.c:1086
+#: recvattach.c:1107
 msgid "Can't delete attachment from POP server."
 msgstr "POP 서버에서 첨부물을 삭제 할수 없음."
 
-#: recvattach.c:1094
+#: recvattach.c:1115
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "암호화된 메일의 첨부물 삭제는 지원되지 않음."
 
-#: recvattach.c:1113 recvattach.c:1130
+#: recvattach.c:1134 recvattach.c:1151
 msgid "Only deletion of multipart attachments is supported."
 msgstr "다중체계 첨부물의 삭제만이 지원됩니다."
 
@@ -4606,7 +3806,7 @@ msgstr "%s를 만들 수 없음."
 msgid "Can't find any tagged messages."
 msgstr "표시된 메일이 없습니다."
 
-#: recvcmd.c:749 send.c:720
+#: recvcmd.c:749 send.c:728
 msgid "No mailing lists found!"
 msgstr "메일링 리스트를 찾을 수 없음!"
 
@@ -4713,12 +3913,12 @@ msgstr "제목 없음. 끝냅니다."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:489
+#: send.c:497
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "%s%s에게 답장?"
 
-#: send.c:523
+#: send.c:531
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "%s%s에게 댓글?"
@@ -4726,82 +3926,82 @@ msgstr "%s%s에게 댓글?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:695
+#: send.c:703
 msgid "No tagged messages are visible!"
 msgstr "태그가 붙은 메일을 볼 수 없음!"
 
-#: send.c:746
+#: send.c:754
 msgid "Include message in reply?"
 msgstr "답장에 원본을 포함시킵니까?"
 
-#: send.c:751
+#: send.c:759
 msgid "Including quoted message..."
 msgstr "인용 메일 포함 중..."
 
-#: send.c:761
+#: send.c:769
 msgid "Could not include all requested messages!"
 msgstr "요청된 모든 메일을 포함할 수 없음!"
 
-#: send.c:775
+#: send.c:783
 msgid "Forward as attachment?"
 msgstr "첨부물로 포워딩?"
 
-#: send.c:779
+#: send.c:787
 msgid "Preparing forwarded message..."
 msgstr "메일 포워딩을 준비 중..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1109
+#: send.c:1117
 msgid "Recall postponed message?"
 msgstr "발송 연기된 메일을 다시 부를까요?"
 
-#: send.c:1420
+#: send.c:1429
 msgid "Edit forwarded message?"
 msgstr "포워딩된 메일을 수정할까요?"
 
-#: send.c:1460
+#: send.c:1469
 msgid "Abort unmodified message?"
 msgstr "변경되지 않은 메일을 취소할까요?"
 
-#: send.c:1462
+#: send.c:1471
 msgid "Aborted unmodified message."
 msgstr "변경되지 않은 메일 취소함."
 
-#: send.c:1531
+#: send.c:1540
 msgid "Message postponed."
 msgstr "발송 연기됨."
 
-#: send.c:1540
+#: send.c:1549
 msgid "No recipients are specified!"
 msgstr "수신자가 지정되지 않음!"
 
-#: send.c:1545
+#: send.c:1554
 msgid "No recipients were specified."
 msgstr "수신자가 지정되지 않음."
 
-#: send.c:1561
+#: send.c:1570
 msgid "No subject, abort sending?"
 msgstr "제목 없음, 보내기를 취소할까요?"
 
-#: send.c:1565
+#: send.c:1574
 msgid "No subject specified."
 msgstr "제목이 지정되지 않음."
 
-#: send.c:1627 smtp.c:158
+#: send.c:1636 smtp.c:158
 msgid "Sending message..."
 msgstr "메일 보내는 중..."
 
-#: send.c:1768
+#: send.c:1777
 msgid "Could not send the message."
 msgstr "메일을 보낼 수 없음."
 
-#: send.c:1773
+#: send.c:1782
 msgid "Mail sent."
 msgstr "메일 보냄."
 
-#: send.c:1773
+#: send.c:1782
 msgid "Sending in background."
 msgstr "백그라운드로 보냄."
 
@@ -4833,7 +4033,7 @@ msgstr "메일을 보내는 중 오류 %d (%s)."
 msgid "Output of the delivery process"
 msgstr "배달 프로세스의 출력"
 
-#: sendlib.c:2446
+#: sendlib.c:2448
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "resent-from을 준비하는 동안 잘못된 IDN %s"
@@ -5081,7 +4281,7 @@ msgstr "메일함 정렬 중..."
 msgid "Could not find sorting function! [report this bug]"
 msgstr "정렬 함수 찾을 수 없음! [버그 보고 바람]"
 
-#: status.c:108
+#: status.c:105
 msgid "(no mailbox)"
 msgstr "(메일함 없음)"
 
@@ -5092,6 +4292,804 @@ msgstr "제한된 보기로 부모 메일은 보이지 않는 상태임."
 #: thread.c:1099
 msgid "Parent message is not available."
 msgstr "부모 메일이 존재하지 않음."
+
+#: ../keymap_alldefs.h:5
+msgid "null operation"
+msgstr "공백 연산"
+
+#: ../keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr ""
+
+#: ../keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "mailcap을 사용해 강제로 첨부물을 봄"
+
+#: ../keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "첨부물을 text로 보기"
+
+#: ../keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "추가 첨부물의 표시 상태 바꿈"
+
+#: ../keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "페이지 마지막으로 이동"
+
+#: ../keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "메세지를 다른 사람에게 보냄"
+
+#: ../keymap_alldefs.h:12
+msgid "select a new file in this directory"
+msgstr "현재 디렉토리에서 새 파일 선택"
+
+#: ../keymap_alldefs.h:13
+msgid "view file"
+msgstr "파일 보기"
+
+#: ../keymap_alldefs.h:14
+msgid "display the currently selected file's name"
+msgstr "현재 선택된 파일의 이름 보기"
+
+#: ../keymap_alldefs.h:15
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "현재 메일함 가입 (IMAP만 지원)"
+
+#: ../keymap_alldefs.h:16
+#, fuzzy
+msgid "unsubscribe from current mailbox (IMAP only)"
+msgstr "현재 메일함 탈퇴 (IMAP만 지원)"
+
+#: ../keymap_alldefs.h:17
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr "모든/가입된 메일함 보기 선택 (IMAP만 지원)"
+
+#: ../keymap_alldefs.h:18
+msgid "list mailboxes with new mail"
+msgstr "새 메일이 도착한 메일함 목록."
+
+#: ../keymap_alldefs.h:19
+msgid "change directories"
+msgstr "디렉토리 바꾸기"
+
+#: ../keymap_alldefs.h:20
+msgid "check mailboxes for new mail"
+msgstr "메일함의 새 메일 확인"
+
+#: ../keymap_alldefs.h:21
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "현재 메세지에 파일 첨부"
+
+#: ../keymap_alldefs.h:22
+msgid "attach message(s) to this message"
+msgstr "현재 메세지에 메세지 첨부"
+
+#: ../keymap_alldefs.h:23
+msgid "edit the BCC list"
+msgstr "BCC 목록 편집"
+
+#: ../keymap_alldefs.h:24
+msgid "edit the CC list"
+msgstr "CC 목록 편집"
+
+#: ../keymap_alldefs.h:25
+msgid "edit attachment description"
+msgstr "첨부물 설명 편집"
+
+#: ../keymap_alldefs.h:26
+msgid "edit attachment transfer-encoding"
+msgstr "첨부물 전송 부호화 방법 편집"
+
+#: ../keymap_alldefs.h:27
+msgid "enter a file to save a copy of this message in"
+msgstr "현재 메세지의 복사본을 저장할 파일 선택"
+
+#: ../keymap_alldefs.h:28
+msgid "edit the file to be attached"
+msgstr "파일을 고친 후 첨부하기"
+
+#: ../keymap_alldefs.h:29
+msgid "edit the from field"
+msgstr "from 필드 편집"
+
+#: ../keymap_alldefs.h:30
+msgid "edit the message with headers"
+msgstr "헤더를 포함한 메세지 편집"
+
+#: ../keymap_alldefs.h:31
+msgid "edit the message"
+msgstr "메세지 편집"
+
+#: ../keymap_alldefs.h:32
+msgid "edit attachment using mailcap entry"
+msgstr "mailcap 항목을 사용하여 첨부물 편집"
+
+#: ../keymap_alldefs.h:33
+msgid "edit the Reply-To field"
+msgstr "Reply-To 필드 편집"
+
+#: ../keymap_alldefs.h:34
+msgid "edit the subject of this message"
+msgstr "제목 편집"
+
+#: ../keymap_alldefs.h:35
+msgid "edit the TO list"
+msgstr "TO 목록 편집하기"
+
+#: ../keymap_alldefs.h:36
+msgid "create a new mailbox (IMAP only)"
+msgstr "새로운 메일함 만듬 (IMAP만 지원)"
+
+#: ../keymap_alldefs.h:37
+msgid "edit attachment content type"
+msgstr "첨부물 내용 유형 편집"
+
+#: ../keymap_alldefs.h:38
+msgid "get a temporary copy of an attachment"
+msgstr "첨부물의 임시 사본 가져옴"
+
+#: ../keymap_alldefs.h:39
+msgid "run ispell on the message"
+msgstr "ispell로 메일 검사"
+
+#: ../keymap_alldefs.h:40
+msgid "compose new attachment using mailcap entry"
+msgstr "mailcap 항목을 사용해 새로운 첨부물 작성"
+
+#: ../keymap_alldefs.h:41
+msgid "toggle recoding of this attachment"
+msgstr "첨부물의 저장 상태 토글"
+
+#: ../keymap_alldefs.h:42
+msgid "save this message to send later"
+msgstr "현재 메일을 저장 후 나중에 보냄"
+
+#: ../keymap_alldefs.h:43
+msgid "rename/move an attached file"
+msgstr "첨부 파일 이름 변경/이동"
+
+#: ../keymap_alldefs.h:44
+msgid "send the message"
+msgstr "메일 보냄"
+
+#: ../keymap_alldefs.h:45
+msgid "toggle disposition between inline/attachment"
+msgstr "inline 또는 attachment 선택"
+
+#: ../keymap_alldefs.h:46
+msgid "toggle whether to delete file after sending it"
+msgstr "발신 후 파일을 지울지 선택"
+
+#: ../keymap_alldefs.h:47
+msgid "update an attachment's encoding info"
+msgstr "첨부물의 인코딩 정보 다시 읽기"
+
+#: ../keymap_alldefs.h:48
+msgid "write the message to a folder"
+msgstr "메일을 폴더에 저장"
+
+#: ../keymap_alldefs.h:49
+msgid "copy a message to a file/mailbox"
+msgstr "메일을 파일/메일함에 복사"
+
+#: ../keymap_alldefs.h:50
+msgid "create an alias from a message sender"
+msgstr "발신인의 별칭 만들기"
+
+#: ../keymap_alldefs.h:51
+msgid "move entry to bottom of screen"
+msgstr "항목을 화면 아래로 이동"
+
+#: ../keymap_alldefs.h:52
+msgid "move entry to middle of screen"
+msgstr "항목을 화면 중간으로 이동"
+
+#: ../keymap_alldefs.h:53
+msgid "move entry to top of screen"
+msgstr "항목을 화면 위로 이동"
+
+#: ../keymap_alldefs.h:54
+msgid "make decoded (text/plain) copy"
+msgstr "text/plain 으로 디코딩후 복사"
+
+#: ../keymap_alldefs.h:55
+msgid "make decoded copy (text/plain) and delete"
+msgstr "text/plain 으로 디코딩후 복사, 지우기"
+
+#: ../keymap_alldefs.h:56
+msgid "delete the current entry"
+msgstr "현재 항목 지움"
+
+#: ../keymap_alldefs.h:57
+msgid "delete the current mailbox (IMAP only)"
+msgstr "현재 메일함을 삭제 (IMAP에서만)"
+
+#: ../keymap_alldefs.h:58
+msgid "delete all messages in subthread"
+msgstr "부속 글타래의 모든 메일 지움"
+
+#: ../keymap_alldefs.h:59
+msgid "delete all messages in thread"
+msgstr "글타래의 모든 메일 지우기"
+
+#: ../keymap_alldefs.h:60
+msgid "display full address of sender"
+msgstr "송신인의 주소 전부 보기"
+
+#: ../keymap_alldefs.h:61
+msgid "display message and toggle header weeding"
+msgstr "메일 출력과 헤더 숨기기 토글"
+
+#: ../keymap_alldefs.h:62
+msgid "display a message"
+msgstr "메일 보기"
+
+#: ../keymap_alldefs.h:63
+msgid "edit the raw message"
+msgstr "저장된 상태의 메일 편집"
+
+#: ../keymap_alldefs.h:64
+msgid "delete the char in front of the cursor"
+msgstr "커서 앞의 글자 지움"
+
+#: ../keymap_alldefs.h:65
+msgid "move the cursor one character to the left"
+msgstr "커서를 한글자 왼쪽으로 보냄"
+
+#: ../keymap_alldefs.h:66
+msgid "move the cursor to the beginning of the word"
+msgstr "단어의 처음으로 이동"
+
+#: ../keymap_alldefs.h:67
+msgid "jump to the beginning of the line"
+msgstr "줄의 처음으로 이동"
+
+#: ../keymap_alldefs.h:68
+msgid "cycle among incoming mailboxes"
+msgstr "수신 메일함 보기"
+
+#: ../keymap_alldefs.h:69
+msgid "complete filename or alias"
+msgstr "파일명 또는 별칭 완성하기"
+
+#: ../keymap_alldefs.h:70
+msgid "complete address with query"
+msgstr "쿼리로 주소 완성하기"
+
+#: ../keymap_alldefs.h:71
+msgid "delete the char under the cursor"
+msgstr "커서의 글자 지움"
+
+#: ../keymap_alldefs.h:72
+msgid "jump to the end of the line"
+msgstr "줄의 끝으로 이동"
+
+#: ../keymap_alldefs.h:73
+msgid "move the cursor one character to the right"
+msgstr "한글자 오른쪽으로 이동"
+
+#: ../keymap_alldefs.h:74
+msgid "move the cursor to the end of the word"
+msgstr "단어의 끝으로 이동"
+
+#: ../keymap_alldefs.h:75
+msgid "scroll down through the history list"
+msgstr "history 목록 아래로 내리기"
+
+#: ../keymap_alldefs.h:76
+msgid "scroll up through the history list"
+msgstr "history 목록 위로 올리기"
+
+#: ../keymap_alldefs.h:77
+msgid "delete chars from cursor to end of line"
+msgstr "커서부터 줄의 끝까지 글자 지움"
+
+#: ../keymap_alldefs.h:78
+msgid "delete chars from the cursor to the end of the word"
+msgstr "커서부터 단어의 끝까지 지움"
+
+#: ../keymap_alldefs.h:79
+msgid "delete all chars on the line"
+msgstr "현재 줄의 모든 글자 지움"
+
+#: ../keymap_alldefs.h:80
+msgid "delete the word in front of the cursor"
+msgstr "커서 앞의 단어 지움"
+
+#: ../keymap_alldefs.h:81
+msgid "quote the next typed key"
+msgstr "다음에 입력되는 문자를 인용"
+
+#: ../keymap_alldefs.h:82
+msgid "transpose character under cursor with previous"
+msgstr "앞뒤 문자 바꾸기"
+
+#: ../keymap_alldefs.h:83
+msgid "capitalize the word"
+msgstr "대문자로 변환"
+
+#: ../keymap_alldefs.h:84
+msgid "convert the word to lower case"
+msgstr "소문자로 변환"
+
+#: ../keymap_alldefs.h:85
+msgid "convert the word to upper case"
+msgstr "대문자로 변환"
+
+#: ../keymap_alldefs.h:86
+msgid "enter a muttrc command"
+msgstr "muttrc 명령어 입력"
+
+#: ../keymap_alldefs.h:87
+msgid "enter a file mask"
+msgstr "파일 매스크 입력"
+
+#: ../keymap_alldefs.h:88
+msgid "exit this menu"
+msgstr "현재 메뉴 나감"
+
+#: ../keymap_alldefs.h:89
+msgid "filter attachment through a shell command"
+msgstr "쉘 명령어를 통해 첨부물 걸르기"
+
+#: ../keymap_alldefs.h:90
+msgid "move to the first entry"
+msgstr "처음 항목으로 이동"
+
+#: ../keymap_alldefs.h:91
+msgid "toggle a message's 'important' flag"
+msgstr "메일의 '중요' 플래그 상태 바꾸기"
+
+#: ../keymap_alldefs.h:92
+msgid "forward a message with comments"
+msgstr "메일 포워딩"
+
+#: ../keymap_alldefs.h:93
+msgid "select the current entry"
+msgstr "현재 항목 선택"
+
+#: ../keymap_alldefs.h:94
+msgid "reply to all recipients"
+msgstr "모든 수신자에게 답장"
+
+#: ../keymap_alldefs.h:95
+msgid "scroll down 1/2 page"
+msgstr "1/2 페이지 내리기"
+
+#: ../keymap_alldefs.h:96
+msgid "scroll up 1/2 page"
+msgstr "1/2 페이지 올리기"
+
+#: ../keymap_alldefs.h:97
+msgid "this screen"
+msgstr "현재 화면"
+
+#: ../keymap_alldefs.h:98
+msgid "jump to an index number"
+msgstr "번호로 이동"
+
+#: ../keymap_alldefs.h:99
+msgid "move to the last entry"
+msgstr "마지막 항목으로 이동"
+
+#: ../keymap_alldefs.h:100
+msgid "reply to specified mailing list"
+msgstr "지정된 메일링 리스트로 답장하기"
+
+#: ../keymap_alldefs.h:101
+msgid "execute a macro"
+msgstr "매크로 실행"
+
+#: ../keymap_alldefs.h:102
+msgid "compose a new mail message"
+msgstr "새로운 메일 작성"
+
+#: ../keymap_alldefs.h:103
+msgid "break the thread in two"
+msgstr ""
+
+#: ../keymap_alldefs.h:104
+msgid "open a different folder"
+msgstr "다른 폴더 열기"
+
+#: ../keymap_alldefs.h:105
+msgid "open a different folder in read only mode"
+msgstr "다른 폴더를 읽기 전용으로 열기"
+
+#: ../keymap_alldefs.h:106
+msgid "clear a status flag from a message"
+msgstr "메일의 상태 플래그 해제하기"
+
+#: ../keymap_alldefs.h:107
+msgid "delete messages matching a pattern"
+msgstr "패턴과 일치하는 메일 삭제"
+
+#: ../keymap_alldefs.h:108
+msgid "force retrieval of mail from IMAP server"
+msgstr "IMAP 서버에서 메일 가져오기"
+
+#: ../keymap_alldefs.h:109
+msgid "retrieve mail from POP server"
+msgstr "POP 서버에서 메일 가져오기"
+
+#: ../keymap_alldefs.h:110
+msgid "move to the first message"
+msgstr "처음 메일로 이동"
+
+#: ../keymap_alldefs.h:111
+msgid "move to the last message"
+msgstr "마지막 메일로 이동"
+
+#: ../keymap_alldefs.h:112
+msgid "show only messages matching a pattern"
+msgstr "패턴과 일치하는 메일만 보임"
+
+#: ../keymap_alldefs.h:113
+#, fuzzy
+msgid "link tagged message to the current one"
+msgstr "선택한 메일을 전달한 주소: "
+
+#: ../keymap_alldefs.h:114
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "새 메일이 도착한 메일함 없음."
+
+#: ../keymap_alldefs.h:115
+msgid "jump to the next new message"
+msgstr "다음 새 메일로 이동"
+
+#: ../keymap_alldefs.h:116
+msgid "jump to the next new or unread message"
+msgstr "읽지 않은 다음 메일/새 메일로 이동"
+
+#: ../keymap_alldefs.h:117
+msgid "jump to the next subthread"
+msgstr "다음 부속 글타래로 이동"
+
+#: ../keymap_alldefs.h:118
+msgid "jump to the next thread"
+msgstr "다음 글타래로 이동"
+
+#: ../keymap_alldefs.h:119
+msgid "move to the next undeleted message"
+msgstr "삭제되지 않은 다음 메일로 이동"
+
+#: ../keymap_alldefs.h:120
+msgid "jump to the next unread message"
+msgstr "읽지 않은 다음 메일로 이동"
+
+#: ../keymap_alldefs.h:121
+msgid "jump to parent message in thread"
+msgstr "글타래의 부모 메일로 이동"
+
+#: ../keymap_alldefs.h:122
+msgid "jump to previous thread"
+msgstr "이전 글타래로 이동"
+
+#: ../keymap_alldefs.h:123
+msgid "jump to previous subthread"
+msgstr "이전 부속 글타래로 이동"
+
+#: ../keymap_alldefs.h:124
+msgid "move to the previous undeleted message"
+msgstr "삭제되지 않은 이전 메일로 이동"
+
+#: ../keymap_alldefs.h:125
+msgid "jump to the previous new message"
+msgstr "이전 새 메일로 이동"
+
+#: ../keymap_alldefs.h:126
+msgid "jump to the previous new or unread message"
+msgstr "읽지 않은 이전 메일/새 메일로 이동"
+
+#: ../keymap_alldefs.h:127
+msgid "jump to the previous unread message"
+msgstr "읽지 않은 이전 메일로 이동"
+
+#: ../keymap_alldefs.h:128
+msgid "mark the current thread as read"
+msgstr "현재 글타래에 읽은 표시하기"
+
+#: ../keymap_alldefs.h:129
+msgid "mark the current subthread as read"
+msgstr "현재 부속 글타래에 읽은 표시하기"
+
+#: ../keymap_alldefs.h:130
+msgid "set a status flag on a message"
+msgstr "메일의 상태 플래그 설정하기"
+
+#: ../keymap_alldefs.h:131
+msgid "save changes to mailbox"
+msgstr "메일함 변경 사항 저장"
+
+#: ../keymap_alldefs.h:132
+msgid "tag messages matching a pattern"
+msgstr "패턴과 일치하는 메일에 태그 붙임"
+
+#: ../keymap_alldefs.h:133
+msgid "undelete messages matching a pattern"
+msgstr "패턴과 일치하는 메일 복구"
+
+#: ../keymap_alldefs.h:134
+msgid "untag messages matching a pattern"
+msgstr "패턴과 일치하는 메일의 태그 해제"
+
+#: ../keymap_alldefs.h:135
+msgid "move to the middle of the page"
+msgstr "페이지 중간으로 이동"
+
+#: ../keymap_alldefs.h:136
+msgid "move to the next entry"
+msgstr "다음 항목으로 이동"
+
+#: ../keymap_alldefs.h:137
+msgid "scroll down one line"
+msgstr "한줄씩 내리기"
+
+#: ../keymap_alldefs.h:138
+msgid "move to the next page"
+msgstr "다음 페이지로 이동"
+
+#: ../keymap_alldefs.h:139
+msgid "jump to the bottom of the message"
+msgstr "메세지 마지막으로 이동"
+
+#: ../keymap_alldefs.h:140
+msgid "toggle display of quoted text"
+msgstr "인용문의 표시 상태 바꾸기"
+
+#: ../keymap_alldefs.h:141
+msgid "skip beyond quoted text"
+msgstr "인용문 다음으로 넘어가기"
+
+#: ../keymap_alldefs.h:142
+msgid "jump to the top of the message"
+msgstr "메세지 처음으로 이동"
+
+#: ../keymap_alldefs.h:143
+msgid "pipe message/attachment to a shell command"
+msgstr "메일/첨부물을 쉘 명령으로 연결하기"
+
+#: ../keymap_alldefs.h:144
+msgid "move to the previous entry"
+msgstr "이전 항목으로 이동"
+
+#: ../keymap_alldefs.h:145
+msgid "scroll up one line"
+msgstr "한줄씩 올리기"
+
+#: ../keymap_alldefs.h:146
+msgid "move to the previous page"
+msgstr "이전 페이지로 이동"
+
+#: ../keymap_alldefs.h:147
+msgid "print the current entry"
+msgstr "현재 항목 출력"
+
+#: ../keymap_alldefs.h:148
+msgid "query external program for addresses"
+msgstr "주소를 얻기 위해 외부 프로그램 실행"
+
+#: ../keymap_alldefs.h:149
+msgid "append new query results to current results"
+msgstr "쿼리 결과를 현재 결과에 추가"
+
+#: ../keymap_alldefs.h:150
+msgid "save changes to mailbox and quit"
+msgstr "메일함의 변경 사항 저장 후 끝내기"
+
+#: ../keymap_alldefs.h:151
+msgid "recall a postponed message"
+msgstr "발송 연기한 메일 다시 부르기"
+
+#: ../keymap_alldefs.h:152
+msgid "clear and redraw the screen"
+msgstr "화면 다시 그리기"
+
+#: ../keymap_alldefs.h:153
+msgid "{internal}"
+msgstr "{내부의}"
+
+#: ../keymap_alldefs.h:154
+#, fuzzy
+msgid "rename the current mailbox (IMAP only)"
+msgstr "현재 메일함을 삭제 (IMAP에서만)"
+
+#: ../keymap_alldefs.h:155
+msgid "reply to a message"
+msgstr "메일에 답장하기"
+
+#: ../keymap_alldefs.h:156
+msgid "use the current message as a template for a new one"
+msgstr "현재 메일을 새 메일의 템플레이트로 사용함"
+
+#: ../keymap_alldefs.h:157
+msgid "save message/attachment to a file"
+msgstr "메일/첨부물 파일로 저장"
+
+#: ../keymap_alldefs.h:158
+msgid "search for a regular expression"
+msgstr "정규 표현식을 이용해 검색"
+
+#: ../keymap_alldefs.h:159
+msgid "search backwards for a regular expression"
+msgstr "정규 표현식을 이용해 역순 검색"
+
+#: ../keymap_alldefs.h:160
+msgid "search for next match"
+msgstr "다음 찾기"
+
+#: ../keymap_alldefs.h:161
+msgid "search for next match in opposite direction"
+msgstr "역순으로 찾기"
+
+#: ../keymap_alldefs.h:162
+msgid "toggle search pattern coloring"
+msgstr "검색 패턴 컬러링 선택"
+
+#: ../keymap_alldefs.h:163
+msgid "invoke a command in a subshell"
+msgstr "하부 쉘 실행"
+
+#: ../keymap_alldefs.h:164
+msgid "sort messages"
+msgstr "메일 정렬"
+
+#: ../keymap_alldefs.h:165
+msgid "sort messages in reverse order"
+msgstr "메일 역순 정렬"
+
+#: ../keymap_alldefs.h:166
+msgid "tag the current entry"
+msgstr "현재 항목에 태그 붙임"
+
+#: ../keymap_alldefs.h:167
+msgid "apply next function to tagged messages"
+msgstr "다음 기능을 태그가 붙은 메일에 적용"
+
+#: ../keymap_alldefs.h:168
+msgid "apply next function ONLY to tagged messages"
+msgstr "다음 기능을 태그가 붙은 메일에 적용"
+
+#: ../keymap_alldefs.h:169
+msgid "tag the current subthread"
+msgstr "현재 부속 글타래에 태그 붙임"
+
+#: ../keymap_alldefs.h:170
+msgid "tag the current thread"
+msgstr "현재 글타래에 태그 붙임"
+
+#: ../keymap_alldefs.h:171
+msgid "toggle a message's 'new' flag"
+msgstr "메일의 '새글' 플래그 상태 바꿈"
+
+#: ../keymap_alldefs.h:172
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "메일함을 다시 쓸 것인지 선택"
+
+#: ../keymap_alldefs.h:173
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "메일함을 볼지 모든 파일을 볼지 선택"
+
+#: ../keymap_alldefs.h:174
+msgid "move to the top of the page"
+msgstr "첫 페이지로 이동"
+
+#: ../keymap_alldefs.h:175
+msgid "undelete the current entry"
+msgstr "현재 항목 복구"
+
+#: ../keymap_alldefs.h:176
+msgid "undelete all messages in thread"
+msgstr "글타래의 모든 메일 복구하기"
+
+#: ../keymap_alldefs.h:177
+msgid "undelete all messages in subthread"
+msgstr "부속 글타래의 모든 메일 복구하기"
+
+#: ../keymap_alldefs.h:178
+msgid "show the Mutt version number and date"
+msgstr "Mutt의 버젼과 제작일 보기"
+
+#: ../keymap_alldefs.h:179
+msgid "view attachment using mailcap entry if necessary"
+msgstr "필요하다면 mailcap 항목을 사용해 첨부물을 보여줌"
+
+#: ../keymap_alldefs.h:180
+msgid "show MIME attachments"
+msgstr "MIME 첨부물 보기"
+
+#: ../keymap_alldefs.h:181
+msgid "display the keycode for a key press"
+msgstr "눌려진 키 값 표시하기"
+
+#: ../keymap_alldefs.h:182
+msgid "show currently active limit pattern"
+msgstr "현재 제한 패턴 보기"
+
+#: ../keymap_alldefs.h:183
+msgid "collapse/uncollapse current thread"
+msgstr "현재 글타래 펴기/접기"
+
+#: ../keymap_alldefs.h:184
+msgid "collapse/uncollapse all threads"
+msgstr "모든 글타래 펴기/접기"
+
+#: ../keymap_alldefs.h:185
+msgid "attach a PGP public key"
+msgstr "PGP 공개 열쇠 첨부"
+
+#: ../keymap_alldefs.h:186
+msgid "show PGP options"
+msgstr "PGP 옵션 보기"
+
+#: ../keymap_alldefs.h:187
+msgid "mail a PGP public key"
+msgstr "PGP 공개 열쇠 발송"
+
+#: ../keymap_alldefs.h:188
+msgid "verify a PGP public key"
+msgstr "PGP 공개 열쇠 확인"
+
+#: ../keymap_alldefs.h:189
+msgid "view the key's user id"
+msgstr "열쇠의 사용자 ID 보기"
+
+#: ../keymap_alldefs.h:190
+#, fuzzy
+msgid "check for classic PGP"
+msgstr "Classic PGP 확인"
+
+#: ../keymap_alldefs.h:191
+msgid "Accept the chain constructed"
+msgstr "체인 구조를 허가함"
+
+#: ../keymap_alldefs.h:192
+msgid "Append a remailer to the chain"
+msgstr "체인에 리메일러 첨가"
+
+#: ../keymap_alldefs.h:193
+msgid "Insert a remailer into the chain"
+msgstr "체인에 리메일러 삽입"
+
+#: ../keymap_alldefs.h:194
+msgid "Delete a remailer from the chain"
+msgstr "체인에서 리메일러 삭제"
+
+#: ../keymap_alldefs.h:195
+msgid "Select the previous element of the chain"
+msgstr "체인의 이전 항목 선택"
+
+#: ../keymap_alldefs.h:196
+msgid "Select the next element of the chain"
+msgstr "체인의 다음 항목 선택"
+
+#: ../keymap_alldefs.h:197
+msgid "send the message through a mixmaster remailer chain"
+msgstr "mixmaster 리메일러 체인을 통한 메일 보내기"
+
+#: ../keymap_alldefs.h:198
+msgid "make decrypted copy and delete"
+msgstr "해독 사본 만든 후 삭제하기"
+
+#: ../keymap_alldefs.h:199
+msgid "make decrypted copy"
+msgstr "해독 사본 만들기"
+
+#: ../keymap_alldefs.h:200
+msgid "wipe passphrase(s) from memory"
+msgstr "메모리에서 암호 문구 지움"
+
+#: ../keymap_alldefs.h:201
+msgid "extract supported public keys"
+msgstr "공개 열쇠 추출"
+
+#: ../keymap_alldefs.h:202
+msgid "show S/MIME options"
+msgstr "S/MIME 옵션 보기"
 
 #~ msgid "Getting namespaces..."
 #~ msgstr "네임스페이스 받는 중..."

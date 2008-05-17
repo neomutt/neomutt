@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.5.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-01 14:06-0700\n"
+"POT-Creation-Date: 2008-05-17 12:35-0700\n"
 "PO-Revision-Date: 2006-10-16 14:22-0500\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <ga@li.org>\n"
@@ -24,7 +24,7 @@ msgstr "Ainm úsáideora ag %s: "
 msgid "Password for %s@%s: "
 msgstr "Focal faire do %s@%s: "
 
-#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:48
+#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:49
 #: recvattach.c:54
 msgid "Exit"
 msgstr "Scoir"
@@ -43,8 +43,8 @@ msgstr "Roghnaigh"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
-#: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
-#: postpone.c:46 query.c:53 recvattach.c:58 smime.c:437
+#: mutt_ssl.c:679 mutt_ssl_gnutls.c:783 pager.c:1579 pgpkey.c:522
+#: postpone.c:46 query.c:54 recvattach.c:58 smime.c:437
 msgid "Help"
 msgstr "Cabhair"
 
@@ -88,14 +88,24 @@ msgstr "Ainm pearsanta: "
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Glac Leis?"
 
-#: alias.c:331 recvattach.c:412 recvattach.c:435 recvattach.c:448
-#: recvattach.c:461 recvattach.c:490
+#: alias.c:331 recvattach.c:432 recvattach.c:455 recvattach.c:468
+#: recvattach.c:481 recvattach.c:511
 msgid "Save to file: "
 msgstr "Sábháil go comhad: "
 
-#: alias.c:346
+#: alias.c:345
+#, fuzzy
+msgid "Error reading alias file"
+msgstr "Earráid ag iarraidh comhad a scrúdú"
+
+#: alias.c:364
 msgid "Alias added."
 msgstr "Cuireadh an t-ailias leis."
+
+#: alias.c:372
+#, fuzzy
+msgid "Error seeking in alias file"
+msgstr "Earráid ag iarraidh comhad a scrúdú"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -107,8 +117,8 @@ msgstr "Ní féidir ainmtheimpléad comhoiriúnach a fháil; lean ar aghaidh?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Tá gá le %%s in iontráil chumtha Mailcap"
 
-#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:175
-#: curs_lib.c:492
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1183 curs_lib.c:179
+#: curs_lib.c:533
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Earráid agus \"%s\" á rith!"
@@ -328,130 +338,130 @@ msgid "default colors not supported"
 msgstr "níl na dathanna réamhshocraithe ar fáil"
 
 #. find out whether or not the verify signature
-#: commands.c:89
+#: commands.c:90
 msgid "Verify PGP signature?"
 msgstr "Fíoraigh síniú PGP?"
 
-#: commands.c:114 mbox.c:746
+#: commands.c:115 mbox.c:754
 msgid "Could not create temporary file!"
 msgstr "Níorbh fhéidir comhad sealadach a chruthú!"
 
-#: commands.c:127
+#: commands.c:128
 msgid "Cannot create display filter"
 msgstr "Ní féidir scagaire taispeána a chruthú"
 
-#: commands.c:147
+#: commands.c:152
 msgid "Could not copy message"
 msgstr "Níorbh fhéidir teachtaireacht a chóipeáil"
 
-#: commands.c:184
+#: commands.c:189
 msgid "S/MIME signature successfully verified."
 msgstr "Bhí an síniú S/MIME fíoraithe."
 
-#: commands.c:186
+#: commands.c:191
 msgid "S/MIME certificate owner does not match sender."
 msgstr "Níl úinéir an teastais S/MIME comhoiriúnach leis an seoltóir."
 
-#: commands.c:189 commands.c:200
+#: commands.c:194 commands.c:205
 msgid "Warning: Part of this message has not been signed."
 msgstr "Rabhadh: Níor síníodh cuid den teachtaireacht seo."
 
-#: commands.c:191
+#: commands.c:196
 msgid "S/MIME signature could NOT be verified."
 msgstr "Níorbh fhéidir an síniú S/MIME a fhíorú."
 
-#: commands.c:198
+#: commands.c:203
 msgid "PGP signature successfully verified."
 msgstr "Bhí an síniú PGP fíoraithe."
 
-#: commands.c:202
+#: commands.c:207
 msgid "PGP signature could NOT be verified."
 msgstr "Níorbh fhéidir an síniú PGP a fhíorú."
 
-#: commands.c:225
+#: commands.c:230
 msgid "Command: "
 msgstr "Ordú: "
 
-#: commands.c:245 recvcmd.c:147
+#: commands.c:250 recvcmd.c:147
 msgid "Bounce message to: "
 msgstr "Scinn teachtaireacht go: "
 
-#: commands.c:247 recvcmd.c:149
+#: commands.c:252 recvcmd.c:149
 msgid "Bounce tagged messages to: "
 msgstr "Scinn teachtaireachtaí clibeáilte go: "
 
-#: commands.c:262 recvcmd.c:158
+#: commands.c:267 recvcmd.c:158
 msgid "Error parsing address!"
 msgstr "Earráid agus seoladh á pharsáil!"
 
-#: commands.c:270 recvcmd.c:166
+#: commands.c:275 recvcmd.c:166
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "DrochIDN: '%s'"
 
-#: commands.c:281 recvcmd.c:180
+#: commands.c:286 recvcmd.c:180
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Scinn teachtaireacht go %s"
 
-#: commands.c:281 recvcmd.c:180
+#: commands.c:286 recvcmd.c:180
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Scinn teachtaireachtaí go %s"
 
-#: commands.c:297 recvcmd.c:196
+#: commands.c:302 recvcmd.c:196
 msgid "Message not bounced."
 msgstr "Níor scinneadh an teachtaireacht."
 
-#: commands.c:297 recvcmd.c:196
+#: commands.c:302 recvcmd.c:196
 msgid "Messages not bounced."
 msgstr "Níor scinneadh na teachtaireachtaí."
 
-#: commands.c:307 recvcmd.c:215
+#: commands.c:312 recvcmd.c:215
 msgid "Message bounced."
 msgstr "Scinneadh an teachtaireacht."
 
-#: commands.c:307 recvcmd.c:215
+#: commands.c:312 recvcmd.c:215
 msgid "Messages bounced."
 msgstr "Scinneadh na teachtaireachtaí."
 
-#: commands.c:384 commands.c:418 commands.c:435
+#: commands.c:389 commands.c:423 commands.c:440
 msgid "Can't create filter process"
 msgstr "Ní féidir próiseas a chruthú chun scagadh a dhéanamh"
 
-#: commands.c:464
+#: commands.c:469
 msgid "Pipe to command: "
 msgstr "Píopa go dtí an t-ordú: "
 
-#: commands.c:481
+#: commands.c:486
 msgid "No printing command has been defined."
 msgstr "Níl aon ordú priontála sainmhínithe."
 
-#: commands.c:486
+#: commands.c:491
 msgid "Print message?"
 msgstr "Priontáil teachtaireacht?"
 
-#: commands.c:486
+#: commands.c:491
 msgid "Print tagged messages?"
 msgstr "Priontáil teachtaireachtaí clibeáilte?"
 
-#: commands.c:495
+#: commands.c:500
 msgid "Message printed"
 msgstr "Priontáilte"
 
-#: commands.c:495
+#: commands.c:500
 msgid "Messages printed"
 msgstr "Priontáilte"
 
-#: commands.c:497
+#: commands.c:502
 msgid "Message could not be printed"
 msgstr "Níorbh fhéidir an teachtaireacht a phriontáil"
 
-#: commands.c:498
+#: commands.c:503
 msgid "Messages could not be printed"
 msgstr "Níorbh fhéidir na teachtaireachtaí a phriontáil"
 
-#: commands.c:507
+#: commands.c:512
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s"
 "(p)am?: "
@@ -459,7 +469,7 @@ msgstr ""
 "DroimArAis (d)áta/(ó)/(f)ág/á(b)har/(g)o/s(n)áith/dí(s)hórt/(m)éid/s(c)ór/s"
 "(p)am?: "
 
-#: commands.c:508
+#: commands.c:513
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)"
 "am?: "
@@ -467,73 +477,73 @@ msgstr ""
 "Sórtáil (d)áta/(ó)/(f)ág/á(b)har/(g)o/s(n)áith/dí(s)hórt/(m)éid/s(c)ór/s(p)"
 "am?: "
 
-#: commands.c:509
+#: commands.c:514
 msgid "dfrsotuzcp"
 msgstr "dófbgnsmcp"
 
-#: commands.c:566
+#: commands.c:571
 msgid "Shell command: "
 msgstr "Ordú blaoisce: "
 
-#: commands.c:711
+#: commands.c:716
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Díchódaigh-sábháil%s go bosca poist"
 
-#: commands.c:712
+#: commands.c:717
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Díchódaigh-cóipeáil%s go bosca poist"
 
-#: commands.c:713
+#: commands.c:718
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Díchriptigh-sábháil%s go bosca poist"
 
-#: commands.c:714
+#: commands.c:719
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Díchriptigh-cóipeáil%s go bosca poist"
 
-#: commands.c:715
+#: commands.c:720
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Sábháil%s go dtí an bosca poist"
 
-#: commands.c:715
+#: commands.c:720
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Cóipeáil%s go dtí an bosca poist"
 
-#: commands.c:716
+#: commands.c:721
 msgid " tagged"
 msgstr " clibeáilte"
 
-#: commands.c:789
+#: commands.c:794
 #, c-format
 msgid "Copying to %s..."
 msgstr "Á chóipeáil go %s..."
 
-#: commands.c:924
+#: commands.c:929
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Tiontaigh go %s agus á sheoladh?"
 
-#: commands.c:934
+#: commands.c:939
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "Athraíodh Content-Type go %s."
 
-#: commands.c:939
+#: commands.c:944
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "Athraíodh an tacar carachtar go %s; %s."
 
-#: commands.c:941
+#: commands.c:946
 msgid "not converting"
 msgstr "gan tiontú"
 
-#: commands.c:941
+#: commands.c:946
 msgid "converting"
 msgstr "á tiontú"
 
@@ -616,7 +626,7 @@ msgstr "Rabhadh: is drochIDN '%s'."
 msgid "You may not delete the only attachment."
 msgstr "Ní féidir leat an t-iatán amháin a scriosadh."
 
-#: compose.c:601 send.c:1552
+#: compose.c:601 send.c:1561
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "DrochIDN i \"%s\": '%s'"
@@ -1162,7 +1172,7 @@ msgstr "theip ar gpgme_op_keylist_next: %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Tá gach eochair chomhoiriúnach marcáilte mar as feidhm/cúlghairthe."
 
-#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Scoir   "
@@ -1307,7 +1317,7 @@ msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Ní féidir an teachtaireacht a sheoladh inlíne.  Úsáid PGP/MIME?"
 
 #. abort
-#: crypt.c:158 send.c:1504
+#: crypt.c:158 send.c:1513
 msgid "Mail not sent."
 msgstr "Níor seoladh an post."
 
@@ -1384,28 +1394,28 @@ msgstr ""
 msgid "Invoking S/MIME..."
 msgstr "S/MIME á thosú..."
 
-#: curs_lib.c:185
+#: curs_lib.c:189
 msgid "yes"
 msgstr "is sea"
 
-#: curs_lib.c:186
+#: curs_lib.c:190
 msgid "no"
 msgstr "ní hea"
 
 #. restore blocking operation
-#: curs_lib.c:282
+#: curs_lib.c:286
 msgid "Exit Mutt?"
 msgstr "Scoir Mutt?"
 
-#: curs_lib.c:444 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:485 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "earráid anaithnid"
 
-#: curs_lib.c:464
+#: curs_lib.c:505
 msgid "Press any key to continue..."
 msgstr "Brúigh eochair ar bith chun leanúint..."
 
-#: curs_lib.c:508
+#: curs_lib.c:549
 msgid " ('?' for list): "
 msgstr " ('?' le haghaidh liosta): "
 
@@ -1421,7 +1431,7 @@ msgstr "Níl aon teachtaireacht ann."
 msgid "Mailbox is read-only."
 msgstr "Tá an bosca poist inléite amháin."
 
-#: curs_main.c:57 pager.c:59 recvattach.c:892
+#: curs_main.c:57 pager.c:59 recvattach.c:913
 msgid "Function not permitted in attach-message mode."
 msgstr "Ní cheadaítear an fheidhm seo sa mhód iatáin."
 
@@ -1454,7 +1464,7 @@ msgstr "Scoir"
 msgid "Save"
 msgstr "Sábháil"
 
-#: curs_main.c:411 query.c:49
+#: curs_main.c:411 query.c:50
 msgid "Mail"
 msgstr "Post"
 
@@ -1504,7 +1514,7 @@ msgstr "Níl an teachtaireacht sin infheicthe."
 msgid "Invalid message number."
 msgstr "Uimhir neamhbhailí theachtaireachta."
 
-#: curs_main.c:808 curs_main.c:1848 pager.c:2279
+#: curs_main.c:808 curs_main.c:1849 pager.c:2279
 #, fuzzy
 msgid "delete message(s)"
 msgstr "Níl aon teachtaireacht nach scriosta."
@@ -1535,143 +1545,143 @@ msgstr "Chun gach teachtaireacht a fheiceáil, socraigh teorainn mar \"all\"."
 msgid "Quit Mutt?"
 msgstr "Scoir Mutt?"
 
-#: curs_main.c:966
+#: curs_main.c:967
 msgid "Tag messages matching: "
 msgstr "Clibeáil teachtaireachtaí atá comhoiriúnach le: "
 
-#: curs_main.c:975 curs_main.c:2137 pager.c:2589
+#: curs_main.c:976 curs_main.c:2138 pager.c:2589
 #, fuzzy
 msgid "undelete message(s)"
 msgstr "Níl aon teachtaireacht nach scriosta."
 
-#: curs_main.c:977
+#: curs_main.c:978
 msgid "Undelete messages matching: "
 msgstr "Díscrios teachtaireachtaí atá comhoiriúnach le: "
 
-#: curs_main.c:985
+#: curs_main.c:986
 msgid "Untag messages matching: "
 msgstr "Díchlibeáil teachtaireachtaí atá comhoiriúnach le: "
 
-#: curs_main.c:1065
+#: curs_main.c:1066
 msgid "Open mailbox in read-only mode"
 msgstr "Oscail bosca poist i mód inléite amháin"
 
-#: curs_main.c:1067
+#: curs_main.c:1068
 msgid "Open mailbox"
 msgstr "Oscail bosca poist"
 
-#: curs_main.c:1077
+#: curs_main.c:1078
 #, fuzzy
 msgid "No mailboxes have new mail"
 msgstr "Níl aon bhosca le ríomhphost nua."
 
-#: curs_main.c:1105 mx.c:503 mx.c:652
+#: curs_main.c:1106 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "Ní bosca poist é %s."
 
-#: curs_main.c:1200
+#: curs_main.c:1201
 msgid "Exit Mutt without saving?"
 msgstr "Éirigh as Mutt gan sábháil?"
 
-#: curs_main.c:1218 curs_main.c:1251 curs_main.c:1695 curs_main.c:1727
+#: curs_main.c:1219 curs_main.c:1252 curs_main.c:1696 curs_main.c:1728
 #: flags.c:286 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "Snáithe gan cumasú."
 
-#: curs_main.c:1230
+#: curs_main.c:1231
 msgid "Thread broken"
 msgstr "Snáithe briste"
 
-#: curs_main.c:1248
+#: curs_main.c:1249
 msgid "link threads"
 msgstr ""
 
-#: curs_main.c:1253
+#: curs_main.c:1254
 msgid "No Message-ID: header available to link thread"
 msgstr "Gan cheanntásc `Message-ID:'; ní féidir an snáithe a nasc"
 
-#: curs_main.c:1255
+#: curs_main.c:1256
 msgid "First, please tag a message to be linked here"
 msgstr "Ar dtús, clibeáil teachtaireacht le nascadh anseo"
 
-#: curs_main.c:1267
+#: curs_main.c:1268
 msgid "Threads linked"
 msgstr "Snáitheanna nasctha"
 
-#: curs_main.c:1270
+#: curs_main.c:1271
 msgid "No thread linked"
 msgstr "Níor nascadh snáithe"
 
-#: curs_main.c:1306 curs_main.c:1331
+#: curs_main.c:1307 curs_main.c:1332
 msgid "You are on the last message."
 msgstr "An teachtaireacht deiridh."
 
-#: curs_main.c:1313 curs_main.c:1357
+#: curs_main.c:1314 curs_main.c:1358
 msgid "No undeleted messages."
 msgstr "Níl aon teachtaireacht nach scriosta."
 
-#: curs_main.c:1350 curs_main.c:1374
+#: curs_main.c:1351 curs_main.c:1375
 msgid "You are on the first message."
 msgstr "An chéad teachtaireacht."
 
-#: curs_main.c:1449 pattern.c:1466
+#: curs_main.c:1450 pattern.c:1479
 msgid "Search wrapped to top."
 msgstr "Thimfhill an cuardach go dtí an barr."
 
-#: curs_main.c:1458 pattern.c:1477
+#: curs_main.c:1459 pattern.c:1490
 msgid "Search wrapped to bottom."
 msgstr "Thimfhill an cuardach go dtí an bun."
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No new messages"
 msgstr "Níl aon teachtaireacht nua"
 
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No unread messages"
 msgstr "Níl aon teachtaireacht gan léamh"
 
-#: curs_main.c:1500
+#: curs_main.c:1501
 msgid " in this limited view"
 msgstr " san amharc teoranta seo"
 
-#: curs_main.c:1516
+#: curs_main.c:1517
 #, fuzzy
 msgid "flag message"
 msgstr "taispeáin teachtaireacht"
 
-#: curs_main.c:1553 pager.c:2555
+#: curs_main.c:1554 pager.c:2555
 msgid "toggle new"
 msgstr ""
 
-#: curs_main.c:1630
+#: curs_main.c:1631
 msgid "No more threads."
 msgstr "Níl aon snáithe eile."
 
-#: curs_main.c:1632
+#: curs_main.c:1633
 msgid "You are on the first thread."
 msgstr "Is é seo an chéad snáithe."
 
-#: curs_main.c:1713
+#: curs_main.c:1714
 msgid "Thread contains unread messages."
 msgstr "Tá teachtaireachtaí gan léamh sa snáithe seo."
 
-#: curs_main.c:1807 pager.c:2262
+#: curs_main.c:1808 pager.c:2262
 #, fuzzy
 msgid "delete message"
 msgstr "Níl aon teachtaireacht nach scriosta."
 
-#: curs_main.c:1889
+#: curs_main.c:1890
 #, fuzzy
 msgid "edit message"
 msgstr "cuir an teachtaireacht in eagar"
 
-#: curs_main.c:2020
+#: curs_main.c:2021
 #, fuzzy
 msgid "mark message(s) as read"
 msgstr "léim go máthair-theachtaireacht sa snáithe"
 
-#: curs_main.c:2110 pager.c:2574
+#: curs_main.c:2111 pager.c:2574
 #, fuzzy
 msgid "undelete message"
 msgstr "Níl aon teachtaireacht nach scriosta."
@@ -1958,7 +1968,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Cabhair le %s"
 
-#: history.c:75 history.c:109 history.c:132
+#: history.c:77 history.c:114 history.c:140
 #, c-format
 msgid "Bad history file format (line %d)"
 msgstr ""
@@ -1999,11 +2009,11 @@ msgid "CRAM-MD5 authentication failed."
 msgstr "Theip ar fhíordheimhniú CRAM-MD5."
 
 #. now begin login
-#: imap/auth_gss.c:105
+#: imap/auth_gss.c:142
 msgid "Authenticating (GSSAPI)..."
 msgstr "Á fhíordheimhniú (GSSAPI)..."
 
-#: imap/auth_gss.c:268
+#: imap/auth_gss.c:307
 msgid "GSSAPI authentication failed."
 msgstr "Theip ar fhíordheimhniú GSSAPI."
 
@@ -2042,29 +2052,29 @@ msgstr "Liosta fillteán á fháil..."
 msgid "No such folder"
 msgstr "Níl a leithéid d'fhillteán ann"
 
-#: imap/browse.c:271
+#: imap/browse.c:276
 msgid "Create mailbox: "
 msgstr "Cruthaigh bosca poist: "
 
-#: imap/browse.c:276 imap/browse.c:322
+#: imap/browse.c:281 imap/browse.c:327
 msgid "Mailbox must have a name."
 msgstr "Ní foláir ainm a thabhairt ar an mbosca."
 
-#: imap/browse.c:284
+#: imap/browse.c:289
 msgid "Mailbox created."
 msgstr "Cruthaíodh bosca poist."
 
-#: imap/browse.c:315
+#: imap/browse.c:320
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Athainmnigh bosca poist %s go: "
 
-#: imap/browse.c:328
+#: imap/browse.c:333
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Theip ar athainmniú: %s"
 
-#: imap/browse.c:333
+#: imap/browse.c:338
 msgid "Mailbox renamed."
 msgstr "Athainmníodh an bosca poist."
 
@@ -2102,7 +2112,7 @@ msgstr "%s á roghnú..."
 msgid "Error opening mailbox"
 msgstr "Earráid ag oscailt an bhosca poist"
 
-#: imap/imap.c:802 imap/message.c:792 muttlib.c:1467
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1466
 #, c-format
 msgid "Create %s?"
 msgstr "Cruthaigh %s?"
@@ -2181,16 +2191,16 @@ msgstr "Níorbh fhéidir comhad sealadach %s a chruthú"
 msgid "Evaluating cache..."
 msgstr "Taisce á scrúdú... [%d/%d]"
 
-#: imap/message.c:221 pop.c:239
+#: imap/message.c:221 pop.c:272
 #, fuzzy
 msgid "Fetching message headers..."
 msgstr "Ceanntásca na dteachtaireachtaí á bhfáil... [%d/%d]"
 
-#: imap/message.c:402 imap/message.c:459 pop.c:513
+#: imap/message.c:402 imap/message.c:459 pop.c:547
 msgid "Fetching message..."
 msgstr "Teachtaireacht á fáil..."
 
-#: imap/message.c:448 pop.c:508
+#: imap/message.c:448 pop.c:542
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "Tá innéacs na dteachtaireachtaí mícheart. Bain triail as an mbosca poist a "
@@ -2447,807 +2457,6 @@ msgstr "Iontráil eochracha (^G chun scor):"
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Car = %s, Ochtnártha = %o, Deachúlach = %d"
 
-#: keymap_alldefs.h:5
-msgid "null operation"
-msgstr "oibríocht nialasach"
-
-#: keymap_alldefs.h:6
-msgid "end of conditional execution (noop)"
-msgstr "deireadh an reatha choinníollaigh (no-op)"
-
-#: keymap_alldefs.h:7
-msgid "force viewing of attachment using mailcap"
-msgstr "amharc ar iatán trí úsáid mailcap"
-
-#: keymap_alldefs.h:8
-msgid "view attachment as text"
-msgstr "féach ar an iatán mar théacs"
-
-#: keymap_alldefs.h:9
-msgid "Toggle display of subparts"
-msgstr "Scoránaigh taispeáint na bhfopháirteanna"
-
-#: keymap_alldefs.h:10
-msgid "move to the bottom of the page"
-msgstr "téigh go bun an leathanaigh"
-
-#: keymap_alldefs.h:11
-msgid "remail a message to another user"
-msgstr "athsheol teachtaireacht go húsáideoir eile"
-
-#: keymap_alldefs.h:12
-msgid "select a new file in this directory"
-msgstr "roghnaigh comhad nua sa chomhadlann seo"
-
-#: keymap_alldefs.h:13
-msgid "view file"
-msgstr "féach ar chomhad"
-
-#: keymap_alldefs.h:14
-msgid "display the currently selected file's name"
-msgstr "taispeáin ainm an chomhaid atá roghnaithe faoi láthair"
-
-#: keymap_alldefs.h:15
-msgid "subscribe to current mailbox (IMAP only)"
-msgstr "liostáil leis an mbosca poist reatha (IMAP amháin)"
-
-#: keymap_alldefs.h:16
-#, fuzzy
-msgid "unsubscribe from current mailbox (IMAP only)"
-msgstr "díliostáil leis an mbosca poist reatha (IMAP amháin)"
-
-#: keymap_alldefs.h:17
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"scoránaigh cé acu gach bosca nó boscaí liostáilte amháin a thaispeántar "
-"(IMAP amháin)"
-
-#: keymap_alldefs.h:18
-msgid "list mailboxes with new mail"
-msgstr "taispeáin na boscaí le post nua"
-
-#: keymap_alldefs.h:19
-msgid "change directories"
-msgstr "athraigh an chomhadlann"
-
-#: keymap_alldefs.h:20
-msgid "check mailboxes for new mail"
-msgstr "seiceáil boscaí do phost nua"
-
-#: keymap_alldefs.h:21
-#, fuzzy
-msgid "attach file(s) to this message"
-msgstr "ceangail comha(i)d leis an teachtaireacht seo"
-
-#: keymap_alldefs.h:22
-msgid "attach message(s) to this message"
-msgstr "ceangail teachtaireacht(aí) leis an teachtaireacht seo"
-
-#: keymap_alldefs.h:23
-msgid "edit the BCC list"
-msgstr "cuir an liosta BCC in eagar"
-
-#: keymap_alldefs.h:24
-msgid "edit the CC list"
-msgstr "cuir an liosta CC in eagar"
-
-#: keymap_alldefs.h:25
-msgid "edit attachment description"
-msgstr "cuir cur síos an iatáin in eagar"
-
-#: keymap_alldefs.h:26
-msgid "edit attachment transfer-encoding"
-msgstr "cuir transfer-encoding an iatáin in eagar"
-
-#: keymap_alldefs.h:27
-msgid "enter a file to save a copy of this message in"
-msgstr "iontráil comhad ina sábhálfar cóip den teachtaireacht seo"
-
-#: keymap_alldefs.h:28
-msgid "edit the file to be attached"
-msgstr "cuir an comhad le ceangal in eagar"
-
-#: keymap_alldefs.h:29
-msgid "edit the from field"
-msgstr "cuir an réimse \"Ó\" in eagar\""
-
-#: keymap_alldefs.h:30
-msgid "edit the message with headers"
-msgstr "cuir an teachtaireacht in eagar le ceanntásca"
-
-#: keymap_alldefs.h:31
-msgid "edit the message"
-msgstr "cuir an teachtaireacht in eagar"
-
-#: keymap_alldefs.h:32
-msgid "edit attachment using mailcap entry"
-msgstr "cuir an t-iatán in eagar le hiontráil mailcap"
-
-#: keymap_alldefs.h:33
-msgid "edit the Reply-To field"
-msgstr "cuir an réimse \"Reply-To\" in eagar"
-
-#: keymap_alldefs.h:34
-msgid "edit the subject of this message"
-msgstr "cuir an t-ábhar teachtaireachta in eagar"
-
-#: keymap_alldefs.h:35
-msgid "edit the TO list"
-msgstr "cuir an liosta \"TO\" in eagar"
-
-#: keymap_alldefs.h:36
-msgid "create a new mailbox (IMAP only)"
-msgstr "cruthaigh bosca poist nua (IMAP)"
-
-#: keymap_alldefs.h:37
-msgid "edit attachment content type"
-msgstr "cuir content type an iatáin in eagar"
-
-#: keymap_alldefs.h:38
-msgid "get a temporary copy of an attachment"
-msgstr "faigh cóip shealadach d'iatán"
-
-#: keymap_alldefs.h:39
-msgid "run ispell on the message"
-msgstr "rith ispell ar an teachtaireacht"
-
-#: keymap_alldefs.h:40
-msgid "compose new attachment using mailcap entry"
-msgstr "cum iatán nua le hiontráil mailcap"
-
-#: keymap_alldefs.h:41
-msgid "toggle recoding of this attachment"
-msgstr "scoránaigh ath-ionchódú an iatáin seo"
-
-#: keymap_alldefs.h:42
-msgid "save this message to send later"
-msgstr "sábháil an teachtaireacht seo chun é a sheoladh ar ball"
-
-#: keymap_alldefs.h:43
-msgid "rename/move an attached file"
-msgstr "athainmnigh/bog comhad ceangailte"
-
-#: keymap_alldefs.h:44
-msgid "send the message"
-msgstr "seol an teachtaireacht"
-
-#: keymap_alldefs.h:45
-msgid "toggle disposition between inline/attachment"
-msgstr "scoránaigh idir inlíne/iatán"
-
-#: keymap_alldefs.h:46
-msgid "toggle whether to delete file after sending it"
-msgstr ""
-"scoránaigh cé acu a scriosfar comhad tar éis é a sheoladh, nó nach scriosfar"
-
-#: keymap_alldefs.h:47
-msgid "update an attachment's encoding info"
-msgstr "nuashonraigh eolas faoi ionchódú an iatáin"
-
-#: keymap_alldefs.h:48
-msgid "write the message to a folder"
-msgstr "scríobh teachtaireacht i bhfillteán"
-
-#: keymap_alldefs.h:49
-msgid "copy a message to a file/mailbox"
-msgstr "cóipeáil teachtaireacht go comhad/bosca poist"
-
-#: keymap_alldefs.h:50
-msgid "create an alias from a message sender"
-msgstr "cruthaigh ailias do sheoltóir"
-
-#: keymap_alldefs.h:51
-msgid "move entry to bottom of screen"
-msgstr "bog iontráil go bun an scáileáin"
-
-#: keymap_alldefs.h:52
-msgid "move entry to middle of screen"
-msgstr "bog iontráil go lár an scáileáin"
-
-#: keymap_alldefs.h:53
-msgid "move entry to top of screen"
-msgstr "bog iontráil go barr an scáileáin"
-
-#: keymap_alldefs.h:54
-msgid "make decoded (text/plain) copy"
-msgstr "déan cóip dhíchódaithe (text/plain)"
-
-#: keymap_alldefs.h:55
-msgid "make decoded copy (text/plain) and delete"
-msgstr "déan cóip dhíchódaithe (text/plain) agus scrios"
-
-#: keymap_alldefs.h:56
-msgid "delete the current entry"
-msgstr "scrios an iontráil reatha"
-
-#: keymap_alldefs.h:57
-msgid "delete the current mailbox (IMAP only)"
-msgstr "scrios an bosca poist reatha (IMAP amháin)"
-
-#: keymap_alldefs.h:58
-msgid "delete all messages in subthread"
-msgstr "scrios gach teachtaireacht san fhoshnáithe"
-
-#: keymap_alldefs.h:59
-msgid "delete all messages in thread"
-msgstr "scrios gach teachtaireacht sa snáithe"
-
-#: keymap_alldefs.h:60
-msgid "display full address of sender"
-msgstr "taispeáin seoladh iomlán an tseoltóra"
-
-#: keymap_alldefs.h:61
-msgid "display message and toggle header weeding"
-msgstr "taispeáin teachtaireacht agus scoránaigh na ceanntásca"
-
-#: keymap_alldefs.h:62
-msgid "display a message"
-msgstr "taispeáin teachtaireacht"
-
-#: keymap_alldefs.h:63
-msgid "edit the raw message"
-msgstr "cuir an teachtaireacht amh in eagar"
-
-#: keymap_alldefs.h:64
-msgid "delete the char in front of the cursor"
-msgstr "scrios an carachtar i ndiaidh an chúrsóra"
-
-#: keymap_alldefs.h:65
-msgid "move the cursor one character to the left"
-msgstr "bog an cúrsóir aon charachtar amháin ar chlé"
-
-#: keymap_alldefs.h:66
-msgid "move the cursor to the beginning of the word"
-msgstr "bog an cúrsóir go tús an fhocail"
-
-#: keymap_alldefs.h:67
-msgid "jump to the beginning of the line"
-msgstr "léim go tús na líne"
-
-#: keymap_alldefs.h:68
-msgid "cycle among incoming mailboxes"
-msgstr "bog trí na boscaí isteach"
-
-#: keymap_alldefs.h:69
-msgid "complete filename or alias"
-msgstr "comhlánaigh ainm comhaid nó ailias"
-
-#: keymap_alldefs.h:70
-msgid "complete address with query"
-msgstr "comhlánaigh seoladh le hiarratas"
-
-#: keymap_alldefs.h:71
-msgid "delete the char under the cursor"
-msgstr "scrios an carachtar faoin chúrsóir"
-
-#: keymap_alldefs.h:72
-msgid "jump to the end of the line"
-msgstr "léim go deireadh an líne"
-
-#: keymap_alldefs.h:73
-msgid "move the cursor one character to the right"
-msgstr "bog an cúrsóir aon charachtar amháin ar dheis"
-
-#: keymap_alldefs.h:74
-msgid "move the cursor to the end of the word"
-msgstr "bog an cúrsóir go deireadh an fhocail"
-
-#: keymap_alldefs.h:75
-msgid "scroll down through the history list"
-msgstr "scrollaigh síos tríd an stair"
-
-#: keymap_alldefs.h:76
-msgid "scroll up through the history list"
-msgstr "scrollaigh suas tríd an stair"
-
-#: keymap_alldefs.h:77
-msgid "delete chars from cursor to end of line"
-msgstr "scrios carachtair ón chúrsóir go deireadh an líne"
-
-#: keymap_alldefs.h:78
-msgid "delete chars from the cursor to the end of the word"
-msgstr "scrios carachtair ón chúrsóir go deireadh an fhocail"
-
-#: keymap_alldefs.h:79
-msgid "delete all chars on the line"
-msgstr "scrios gach carachtar ar an líne"
-
-#: keymap_alldefs.h:80
-msgid "delete the word in front of the cursor"
-msgstr "scrios an focal i ndiaidh an chúrsóra"
-
-#: keymap_alldefs.h:81
-msgid "quote the next typed key"
-msgstr "cuir an chéad charachtar eile clóscríofa idir comharthaí athfhriotail"
-
-#: keymap_alldefs.h:82
-msgid "transpose character under cursor with previous"
-msgstr "malartaigh an carachtar faoin chúrsóir agus an ceann roimhe"
-
-#: keymap_alldefs.h:83
-msgid "capitalize the word"
-msgstr "scríobh an focal le ceannlitir"
-
-#: keymap_alldefs.h:84
-msgid "convert the word to lower case"
-msgstr "tiontaigh an focal go cás íochtair"
-
-#: keymap_alldefs.h:85
-msgid "convert the word to upper case"
-msgstr "tiontaigh an focal go cás uachtair"
-
-#: keymap_alldefs.h:86
-msgid "enter a muttrc command"
-msgstr "iontráil ordú muttrc"
-
-#: keymap_alldefs.h:87
-msgid "enter a file mask"
-msgstr "iontráil masc comhaid"
-
-#: keymap_alldefs.h:88
-msgid "exit this menu"
-msgstr "scoir an roghchlár seo"
-
-#: keymap_alldefs.h:89
-msgid "filter attachment through a shell command"
-msgstr "scag iatán le hordú blaoisce"
-
-#: keymap_alldefs.h:90
-msgid "move to the first entry"
-msgstr "téigh go dtí an chéad iontráil"
-
-#: keymap_alldefs.h:91
-msgid "toggle a message's 'important' flag"
-msgstr "scoránaigh an bhratach 'important' ar theachtaireacht"
-
-#: keymap_alldefs.h:92
-msgid "forward a message with comments"
-msgstr "seol teachtaireacht ar aghaidh le nótaí sa bhreis"
-
-#: keymap_alldefs.h:93
-msgid "select the current entry"
-msgstr "roghnaigh an iontráil reatha"
-
-#: keymap_alldefs.h:94
-msgid "reply to all recipients"
-msgstr "seol freagra chuig gach faighteoir"
-
-#: keymap_alldefs.h:95
-msgid "scroll down 1/2 page"
-msgstr "scrollaigh síos leath de leathanach"
-
-#: keymap_alldefs.h:96
-msgid "scroll up 1/2 page"
-msgstr "scrollaigh suas leath de leathanach"
-
-#: keymap_alldefs.h:97
-msgid "this screen"
-msgstr "an scáileán seo"
-
-#: keymap_alldefs.h:98
-msgid "jump to an index number"
-msgstr "téigh go treoiruimhir"
-
-#: keymap_alldefs.h:99
-msgid "move to the last entry"
-msgstr "téigh go dtí an iontráil dheireanach"
-
-#: keymap_alldefs.h:100
-msgid "reply to specified mailing list"
-msgstr "seol freagra chuig liosta sonraithe ríomhphoist"
-
-#: keymap_alldefs.h:101
-msgid "execute a macro"
-msgstr "rith macra"
-
-#: keymap_alldefs.h:102
-msgid "compose a new mail message"
-msgstr "cum teachtaireacht nua ríomhphoist"
-
-#: keymap_alldefs.h:103
-msgid "break the thread in two"
-msgstr "bris an snáithe ina dhá pháirt"
-
-#: keymap_alldefs.h:104
-msgid "open a different folder"
-msgstr "oscail fillteán eile"
-
-#: keymap_alldefs.h:105
-msgid "open a different folder in read only mode"
-msgstr "oscail fillteán eile sa mhód inléite amháin"
-
-#: keymap_alldefs.h:106
-msgid "clear a status flag from a message"
-msgstr "glan bratach stádais ó theachtaireacht"
-
-#: keymap_alldefs.h:107
-msgid "delete messages matching a pattern"
-msgstr "scrios teachtaireachtaí atá comhoiriúnach le patrún"
-
-#: keymap_alldefs.h:108
-msgid "force retrieval of mail from IMAP server"
-msgstr "faigh ríomhphost ón fhreastalaí IMAP"
-
-#: keymap_alldefs.h:109
-msgid "retrieve mail from POP server"
-msgstr "faigh ríomhphost ó fhreastalaí POP"
-
-#: keymap_alldefs.h:110
-msgid "move to the first message"
-msgstr "téigh go dtí an chéad teachtaireacht"
-
-#: keymap_alldefs.h:111
-msgid "move to the last message"
-msgstr "téigh go dtí an teachtaireacht dheireanach"
-
-#: keymap_alldefs.h:112
-msgid "show only messages matching a pattern"
-msgstr "ná taispeáin ach na teachtaireachtaí atá comhoiriúnach le patrún"
-
-#: keymap_alldefs.h:113
-msgid "link tagged message to the current one"
-msgstr "nasc teachtaireacht chlibeáilte leis an cheann reatha"
-
-#: keymap_alldefs.h:114
-#, fuzzy
-msgid "open next mailbox with new mail"
-msgstr "Níl aon bhosca le ríomhphost nua."
-
-#: keymap_alldefs.h:115
-msgid "jump to the next new message"
-msgstr "léim go dtí an chéad teachtaireacht nua eile"
-
-#: keymap_alldefs.h:116
-msgid "jump to the next new or unread message"
-msgstr "léim go dtí an chéad teachtaireacht nua/neamhléite eile"
-
-#: keymap_alldefs.h:117
-msgid "jump to the next subthread"
-msgstr "léim go dtí an chéad fhoshnáithe eile"
-
-#: keymap_alldefs.h:118
-msgid "jump to the next thread"
-msgstr "téigh go dtí an chéad snáithe eile"
-
-#: keymap_alldefs.h:119
-msgid "move to the next undeleted message"
-msgstr "téigh go dtí an chéad teachtaireacht eile nach scriosta"
-
-#: keymap_alldefs.h:120
-msgid "jump to the next unread message"
-msgstr "léim go dtí an chéad teachtaireacht neamhléite eile"
-
-#: keymap_alldefs.h:121
-msgid "jump to parent message in thread"
-msgstr "léim go máthair-theachtaireacht sa snáithe"
-
-#: keymap_alldefs.h:122
-msgid "jump to previous thread"
-msgstr "léim go dtí an snáithe roimhe seo"
-
-#: keymap_alldefs.h:123
-msgid "jump to previous subthread"
-msgstr "léim go dtí an fhoshnáithe roimhe seo"
-
-#: keymap_alldefs.h:124
-msgid "move to the previous undeleted message"
-msgstr "téigh go dtí an teachtaireacht nach scriosta roimhe seo"
-
-#: keymap_alldefs.h:125
-msgid "jump to the previous new message"
-msgstr "léim go dtí an teachtaireacht nua roimhe seo"
-
-#: keymap_alldefs.h:126
-msgid "jump to the previous new or unread message"
-msgstr "léim go dtí an teachtaireacht nua/neamhléite roimhe seo"
-
-#: keymap_alldefs.h:127
-msgid "jump to the previous unread message"
-msgstr "léim go dtí an teachtaireacht neamhléite roimhe seo"
-
-#: keymap_alldefs.h:128
-msgid "mark the current thread as read"
-msgstr "marcáil an snáithe reatha \"léite\""
-
-#: keymap_alldefs.h:129
-msgid "mark the current subthread as read"
-msgstr "marcáil an fhoshnáithe reatha \"léite\""
-
-#: keymap_alldefs.h:130
-msgid "set a status flag on a message"
-msgstr "socraigh bratach stádais ar theachtaireacht"
-
-#: keymap_alldefs.h:131
-msgid "save changes to mailbox"
-msgstr "sábháil athruithe ar bhosca poist"
-
-#: keymap_alldefs.h:132
-msgid "tag messages matching a pattern"
-msgstr "clibeáil teachtaireachtaí atá comhoiriúnach le patrún"
-
-#: keymap_alldefs.h:133
-msgid "undelete messages matching a pattern"
-msgstr "díscrios teachtaireachtaí atá comhoiriúnach le patrún"
-
-#: keymap_alldefs.h:134
-msgid "untag messages matching a pattern"
-msgstr "díchlibeáil teachtaireachtaí atá comhoiriúnach le patrún"
-
-#: keymap_alldefs.h:135
-msgid "move to the middle of the page"
-msgstr "téigh go lár an leathanaigh"
-
-#: keymap_alldefs.h:136
-msgid "move to the next entry"
-msgstr "téigh go dtí an chéad iontráil eile"
-
-#: keymap_alldefs.h:137
-msgid "scroll down one line"
-msgstr "scrollaigh aon líne síos"
-
-#: keymap_alldefs.h:138
-msgid "move to the next page"
-msgstr "téigh go dtí an chéad leathanach eile"
-
-#: keymap_alldefs.h:139
-msgid "jump to the bottom of the message"
-msgstr "léim go bun na teachtaireachta"
-
-#: keymap_alldefs.h:140
-msgid "toggle display of quoted text"
-msgstr ""
-"scoránaigh cé acu a thaispeántar téacs athfhriotail nó nach dtaispeántar"
-
-#: keymap_alldefs.h:141
-msgid "skip beyond quoted text"
-msgstr "gabh thar théacs athfhriotail"
-
-#: keymap_alldefs.h:142
-msgid "jump to the top of the message"
-msgstr "léim go barr na teachtaireachta"
-
-#: keymap_alldefs.h:143
-msgid "pipe message/attachment to a shell command"
-msgstr "píopa teachtaireacht/iatán go hordú blaoisce"
-
-#: keymap_alldefs.h:144
-msgid "move to the previous entry"
-msgstr "téigh go dtí an iontráil roimhe seo"
-
-#: keymap_alldefs.h:145
-msgid "scroll up one line"
-msgstr "scrollaigh aon líne suas"
-
-#: keymap_alldefs.h:146
-msgid "move to the previous page"
-msgstr "téigh go dtí an leathanach roimhe seo"
-
-#: keymap_alldefs.h:147
-msgid "print the current entry"
-msgstr "priontáil an iontráil reatha"
-
-#: keymap_alldefs.h:148
-msgid "query external program for addresses"
-msgstr "bí ag iarraidh seoltaí ó chlár seachtrach"
-
-#: keymap_alldefs.h:149
-msgid "append new query results to current results"
-msgstr "iarcheangail torthaí an iarratais nua leis na torthaí reatha"
-
-#: keymap_alldefs.h:150
-msgid "save changes to mailbox and quit"
-msgstr "sábháil athruithe ar bhosca poist agus scoir"
-
-#: keymap_alldefs.h:151
-msgid "recall a postponed message"
-msgstr "athghlaoigh teachtaireacht a bhí curtha ar athlá"
-
-#: keymap_alldefs.h:152
-msgid "clear and redraw the screen"
-msgstr "glan an scáileán agus ataispeáin"
-
-#: keymap_alldefs.h:153
-msgid "{internal}"
-msgstr "{inmheánach}"
-
-#: keymap_alldefs.h:154
-msgid "rename the current mailbox (IMAP only)"
-msgstr "athainmnigh an bosca poist reatha (IMAP amháin)"
-
-#: keymap_alldefs.h:155
-msgid "reply to a message"
-msgstr "tabhair freagra ar theachtaireacht"
-
-#: keymap_alldefs.h:156
-msgid "use the current message as a template for a new one"
-msgstr "úsáid an teachtaireacht reatha mar theimpléad do cheann nua"
-
-#: keymap_alldefs.h:157
-msgid "save message/attachment to a file"
-msgstr "sábháil teachtaireacht/iatán go comhad"
-
-#: keymap_alldefs.h:158
-msgid "search for a regular expression"
-msgstr "déan cuardach ar shlonn ionadaíochta"
-
-#: keymap_alldefs.h:159
-msgid "search backwards for a regular expression"
-msgstr "déan cuardach ar gcúl ar shlonn ionadaíochta"
-
-#: keymap_alldefs.h:160
-msgid "search for next match"
-msgstr "déan cuardach arís"
-
-#: keymap_alldefs.h:161
-msgid "search for next match in opposite direction"
-msgstr "déan cuardach arís, ach sa treo eile"
-
-#: keymap_alldefs.h:162
-msgid "toggle search pattern coloring"
-msgstr "scoránaigh aibhsiú an phatrúin cuardaigh"
-
-#: keymap_alldefs.h:163
-msgid "invoke a command in a subshell"
-msgstr "rith ordú i bhfobhlaosc"
-
-#: keymap_alldefs.h:164
-msgid "sort messages"
-msgstr "sórtáil teachtaireachtaí"
-
-#: keymap_alldefs.h:165
-msgid "sort messages in reverse order"
-msgstr "sórtáil teachtaireachtaí san ord droim ar ais"
-
-#: keymap_alldefs.h:166
-msgid "tag the current entry"
-msgstr "clibeáil an iontráil reatha"
-
-#: keymap_alldefs.h:167
-msgid "apply next function to tagged messages"
-msgstr "cuir an chéad fheidhm eile i bhfeidhm ar theachtaireachtaí clibeáilte"
-
-#: keymap_alldefs.h:168
-msgid "apply next function ONLY to tagged messages"
-msgstr ""
-"cuir an chéad fheidhm eile i bhfeidhm ar theachtaireachtaí clibeáilte AMHÁIN"
-
-#: keymap_alldefs.h:169
-msgid "tag the current subthread"
-msgstr "clibeáil an fhoshnáithe reatha"
-
-#: keymap_alldefs.h:170
-msgid "tag the current thread"
-msgstr "clibeáil an snáithe reatha"
-
-#: keymap_alldefs.h:171
-msgid "toggle a message's 'new' flag"
-msgstr "scoránaigh bratach 'nua' ar theachtaireacht"
-
-#: keymap_alldefs.h:172
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "scoránaigh cé acu an mbeidh an bosca athscríofa, nó nach mbeidh"
-
-#: keymap_alldefs.h:173
-msgid "toggle whether to browse mailboxes or all files"
-msgstr "scoránaigh cé acu boscaí poist nó comhaid a bhrabhsálfar"
-
-#: keymap_alldefs.h:174
-msgid "move to the top of the page"
-msgstr "téigh go dtí an barr"
-
-#: keymap_alldefs.h:175
-msgid "undelete the current entry"
-msgstr "díscrios an iontráil reatha"
-
-#: keymap_alldefs.h:176
-msgid "undelete all messages in thread"
-msgstr "díscrios gach teachtaireacht sa snáithe"
-
-#: keymap_alldefs.h:177
-msgid "undelete all messages in subthread"
-msgstr "díscrios gach teachtaireacht san fhoshnáithe"
-
-#: keymap_alldefs.h:178
-msgid "show the Mutt version number and date"
-msgstr "taispeáin an uimhir leagain Mutt agus an dáta"
-
-#: keymap_alldefs.h:179
-msgid "view attachment using mailcap entry if necessary"
-msgstr "amharc ar iatán le hiontráil mailcap, más gá"
-
-#: keymap_alldefs.h:180
-msgid "show MIME attachments"
-msgstr "taispeáin iatáin MIME"
-
-#: keymap_alldefs.h:181
-msgid "display the keycode for a key press"
-msgstr "taispeáin an cód atá bainte le heochairbhrú"
-
-#: keymap_alldefs.h:182
-msgid "show currently active limit pattern"
-msgstr "taispeáin an patrún teorannaithe atá i bhfeidhm"
-
-#: keymap_alldefs.h:183
-msgid "collapse/uncollapse current thread"
-msgstr "laghdaigh/leathnaigh an snáithe reatha"
-
-#: keymap_alldefs.h:184
-msgid "collapse/uncollapse all threads"
-msgstr "laghdaigh/leathnaigh gach snáithe"
-
-#: keymap_alldefs.h:185
-msgid "attach a PGP public key"
-msgstr "ceangail eochair phoiblí PGP"
-
-#: keymap_alldefs.h:186
-msgid "show PGP options"
-msgstr "taispeáin roghanna PGP"
-
-#: keymap_alldefs.h:187
-msgid "mail a PGP public key"
-msgstr "seol eochair phoiblí PGP"
-
-#: keymap_alldefs.h:188
-msgid "verify a PGP public key"
-msgstr "fíoraigh eochair phoiblí PGP"
-
-#: keymap_alldefs.h:189
-msgid "view the key's user id"
-msgstr "amharc ar aitheantas úsáideora na heochrach"
-
-#: keymap_alldefs.h:190
-#, fuzzy
-msgid "check for classic PGP"
-msgstr "seiceáil le haghaidh pgp clasaiceach"
-
-#: keymap_alldefs.h:191
-msgid "Accept the chain constructed"
-msgstr "Glac leis an slabhra cruthaithe"
-
-#: keymap_alldefs.h:192
-msgid "Append a remailer to the chain"
-msgstr "Iarcheangail athphostóir leis an slabhra"
-
-#: keymap_alldefs.h:193
-msgid "Insert a remailer into the chain"
-msgstr "Ionsáigh athphostóir isteach sa slabhra"
-
-#: keymap_alldefs.h:194
-msgid "Delete a remailer from the chain"
-msgstr "Scrios athphostóir as an slabhra"
-
-#: keymap_alldefs.h:195
-msgid "Select the previous element of the chain"
-msgstr "Roghnaigh an ball roimhe seo ón slabhra"
-
-#: keymap_alldefs.h:196
-msgid "Select the next element of the chain"
-msgstr "Roghnaigh an chéad bhall eile ón slabhra"
-
-#: keymap_alldefs.h:197
-msgid "send the message through a mixmaster remailer chain"
-msgstr "seol an teachtaireacht trí shlabhra athphostóirí \"mixmaster\""
-
-#: keymap_alldefs.h:198
-msgid "make decrypted copy and delete"
-msgstr "déan cóip dhíchriptithe agus scrios"
-
-#: keymap_alldefs.h:199
-msgid "make decrypted copy"
-msgstr "déan cóip dhíchriptithe"
-
-#: keymap_alldefs.h:200
-msgid "wipe passphrase(s) from memory"
-msgstr "bánaigh frása(í) faire as cuimhne"
-
-#: keymap_alldefs.h:201
-msgid "extract supported public keys"
-msgstr "bain na heochracha poiblí le tacaíocht amach"
-
-#: keymap_alldefs.h:202
-msgid "show S/MIME options"
-msgstr "taispeáin roghanna S/MIME"
-
 #: lib.c:129
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Slánuimhir thar maoil -- ní féidir cuimhne a dháileadh!"
@@ -3268,7 +2477,7 @@ msgstr ""
 #: main.c:67
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -3282,11 +2491,11 @@ msgstr ""
 #: main.c:73
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3428,70 +2637,74 @@ msgstr ""
 "\n"
 "Roghanna tiomsaithe:"
 
-#: main.c:508
+#: main.c:502
 msgid "Error initializing terminal."
 msgstr "Earráid agus teirminéal á thúsú."
 
-#: main.c:626
+#: main.c:620
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Leibhéal dífhabhtaithe = %d.\n"
 
-#: main.c:628
+#: main.c:622
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr ""
 "Níor sonraíodh an athróg DEBUG le linn tiomsaithe.  Rinneadh neamhshuim "
 "air.\n"
 
-#: main.c:791
+#: main.c:785
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "Níl a leithéid de %s ann.  Cruthaigh?"
 
-#: main.c:795
+#: main.c:789
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Ní féidir %s a chruthú: %s."
 
-#: main.c:841
+#: main.c:831
+msgid "Failed to parse mailto: link\n"
+msgstr ""
+
+#: main.c:843
 msgid "No recipients specified.\n"
 msgstr "Níor sonraíodh aon fhaighteoir.\n"
 
-#: main.c:927
+#: main.c:929
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: ní féidir an comhad a cheangal.\n"
 
-#: main.c:950
+#: main.c:952
 msgid "No mailbox with new mail."
 msgstr "Níl aon bhosca le ríomhphost nua."
 
-#: main.c:959
+#: main.c:961
 msgid "No incoming mailboxes defined."
 msgstr "Níl aon bhosca isteach socraithe agat."
 
-#: main.c:987
+#: main.c:989
 msgid "Mailbox is empty."
 msgstr "Tá an bosca poist folamh."
 
-#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:673
+#: mbox.c:123 mbox.c:277 mh.c:1137 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "%s á léamh..."
 
-#: mbox.c:157 mbox.c:214
+#: mbox.c:161 mbox.c:218
 msgid "Mailbox is corrupt!"
 msgstr "Tá an bosca poist truaillithe!"
 
-#: mbox.c:670
+#: mbox.c:678
 msgid "Mailbox was corrupted!"
 msgstr "Truaillíodh an bosca poist!"
 
-#: mbox.c:711 mbox.c:964
+#: mbox.c:719 mbox.c:975
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Earráid mharfach!  Ní féidir an bosca poist a athoscailt!"
 
-#: mbox.c:720
+#: mbox.c:728
 msgid "Unable to lock mailbox!"
 msgstr "Ní féidir an bosca poist a chur faoi ghlas!"
 
@@ -3499,13 +2712,13 @@ msgstr "Ní féidir an bosca poist a chur faoi ghlas!"
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:763
+#: mbox.c:771
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: mionathraíodh mbox, ach níor mionathraíodh aon teachtaireacht! (seol "
 "tuairisc fhabht)"
 
-#: mbox.c:785 mh.c:1599 mx.c:766
+#: mbox.c:795 mh.c:1636 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "%s á scríobh..."
@@ -3513,20 +2726,20 @@ msgstr "%s á scríobh..."
 #. copy the temp mailbox back into place starting at the first
 #. * change/deleted message
 #.
-#: mbox.c:917
+#: mbox.c:928
 msgid "Committing changes..."
 msgstr "Athruithe á gcur i bhfeidhm..."
 
-#: mbox.c:948
+#: mbox.c:959
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Theip ar scríobh!  Sábháladh bosca poist neamhiomlán i %s"
 
-#: mbox.c:1012
+#: mbox.c:1023
 msgid "Could not reopen mailbox!"
 msgstr "Níorbh fhéidir an bosca poist a athoscailt!"
 
-#: mbox.c:1047
+#: mbox.c:1058
 msgid "Reopening mailbox..."
 msgstr "Bosca poist á athoscailt..."
 
@@ -3567,19 +2780,19 @@ msgstr "Ar an iontráil dheireanach."
 msgid "You are on the first entry."
 msgstr "Ar an chéad iontráil."
 
-#: menu.c:724 pattern.c:1404
+#: menu.c:724 pattern.c:1417
 msgid "Search for: "
 msgstr "Déan cuardach ar: "
 
-#: menu.c:725 pattern.c:1405
+#: menu.c:725 pattern.c:1418
 msgid "Reverse search for: "
 msgstr "Déan cuardach droim ar ais ar: "
 
-#: menu.c:735 pattern.c:1437
+#: menu.c:735 pattern.c:1450
 msgid "No search pattern."
 msgstr "Gan patrún cuardaigh."
 
-#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1520
+#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1533
 msgid "Not found."
 msgstr "Ar iarraidh."
 
@@ -3599,49 +2812,33 @@ msgstr "Ní féidir a léim i ndialóga."
 msgid "Tagging is not supported."
 msgstr "Níl clibeáil le fáil."
 
-#: mh.c:1076
+#: mh.c:1116
 #, fuzzy, c-format
 msgid "Scanning %s..."
 msgstr "%s á roghnú..."
 
-#: mh.c:1323
+#: mh.c:1358
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): ní féidir an t-am a shocrú ar chomhad"
 
-#: mutt_sasl.c:189
+#: mutt_sasl.c:192
 msgid "Unknown SASL profile"
 msgstr ""
 
-#: mutt_sasl.c:195
-msgid "SASL failed to get local IP address"
-msgstr ""
-
-#: mutt_sasl.c:200
-msgid "SASL failed to parse local IP address"
-msgstr ""
-
-#: mutt_sasl.c:206
-msgid "SASL failed to get remote IP address"
-msgstr ""
-
-#: mutt_sasl.c:211
-msgid "SASL failed to parse remote IP address"
-msgstr ""
-
-#: mutt_sasl.c:222
+#: mutt_sasl.c:226
 #, fuzzy
 msgid "Error allocating SASL connection"
 msgstr "earráid agus réad á dháileadh: %s\n"
 
-#: mutt_sasl.c:232
+#: mutt_sasl.c:236
 msgid "Error setting SASL security properties"
 msgstr ""
 
-#: mutt_sasl.c:242
+#: mutt_sasl.c:246
 msgid "Error setting SASL external security strength"
 msgstr ""
 
-#: mutt_sasl.c:248
+#: mutt_sasl.c:252
 msgid "Error setting SASL external user name"
 msgstr ""
 
@@ -3715,8 +2912,8 @@ msgstr "Earráid I/A"
 msgid "SSL failed: %s"
 msgstr "Theip ar SSL: %s"
 
-#: mutt_ssl.c:341 mutt_ssl_gnutls.c:494 mutt_ssl_gnutls.c:503
-#: mutt_ssl_gnutls.c:532
+#: mutt_ssl.c:341 mutt_ssl_gnutls.c:504 mutt_ssl_gnutls.c:513
+#: mutt_ssl_gnutls.c:542
 msgid "Unable to get certificate from peer"
 msgstr "Níorbh fhéidir an teastas a fháil ón gcomhghleacaí"
 
@@ -3729,12 +2926,12 @@ msgstr "Nasc SSL le %s (%s)"
 msgid "Unknown"
 msgstr "Anaithnid"
 
-#: mutt_ssl.c:418 mutt_ssl_gnutls.c:382
+#: mutt_ssl.c:418 mutt_ssl_gnutls.c:392
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[ní féidir a ríomh]"
 
-#: mutt_ssl.c:436 mutt_ssl_gnutls.c:405
+#: mutt_ssl.c:436 mutt_ssl_gnutls.c:415
 msgid "[invalid date]"
 msgstr "[dáta neamhbhailí]"
 
@@ -3746,25 +2943,25 @@ msgstr "Tá an teastas neamhbhailí fós"
 msgid "Server certificate has expired"
 msgstr "Tá an teastas as feidhm"
 
-#: mutt_ssl.c:630 mutt_ssl_gnutls.c:635
+#: mutt_ssl.c:630 mutt_ssl_gnutls.c:645
 msgid "This certificate belongs to:"
 msgstr "Tá an teastas seo ag:"
 
-#: mutt_ssl.c:641 mutt_ssl_gnutls.c:674
+#: mutt_ssl.c:641 mutt_ssl_gnutls.c:684
 msgid "This certificate was issued by:"
 msgstr "Bhí an teastas seo eisithe ag:"
 
-#: mutt_ssl.c:652 mutt_ssl_gnutls.c:713
+#: mutt_ssl.c:652 mutt_ssl_gnutls.c:723
 #, c-format
 msgid "This certificate is valid"
 msgstr "Tá an teastas bailí"
 
-#: mutt_ssl.c:653 mutt_ssl_gnutls.c:716
+#: mutt_ssl.c:653 mutt_ssl_gnutls.c:726
 #, c-format
 msgid "   from %s"
 msgstr "   ó %s"
 
-#: mutt_ssl.c:655 mutt_ssl_gnutls.c:720
+#: mutt_ssl.c:655 mutt_ssl_gnutls.c:730
 #, c-format
 msgid "     to %s"
 msgstr "     go %s"
@@ -3778,91 +2975,91 @@ msgstr "Méarlorg: %s"
 msgid "SSL Certificate check"
 msgstr "Seiceáil Teastais SSL"
 
-#: mutt_ssl.c:667 mutt_ssl_gnutls.c:761
+#: mutt_ssl.c:667 mutt_ssl_gnutls.c:771
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(d)iúltaigh, glac leis (u)air amháin, gl(a)c leis i gcónaí"
 
-#: mutt_ssl.c:668 mutt_ssl_gnutls.c:762
+#: mutt_ssl.c:668 mutt_ssl_gnutls.c:772
 msgid "roa"
 msgstr "dua"
 
-#: mutt_ssl.c:672 mutt_ssl_gnutls.c:766
+#: mutt_ssl.c:672 mutt_ssl_gnutls.c:776
 msgid "(r)eject, accept (o)nce"
 msgstr "(d)iúltaigh, glac leis (u)air amháin"
 
-#: mutt_ssl.c:673 mutt_ssl_gnutls.c:767
+#: mutt_ssl.c:673 mutt_ssl_gnutls.c:777
 msgid "ro"
 msgstr "du"
 
-#: mutt_ssl.c:704 mutt_ssl_gnutls.c:816
+#: mutt_ssl.c:704 mutt_ssl_gnutls.c:826
 msgid "Warning: Couldn't save certificate"
 msgstr "Rabhadh: Ní féidir an teastas a shábháil"
 
-#: mutt_ssl.c:709 mutt_ssl_gnutls.c:821
+#: mutt_ssl.c:709 mutt_ssl_gnutls.c:831
 msgid "Certificate saved"
 msgstr "Sábháladh an teastas"
 
-#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:118
+#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:119
 msgid "Error: no TLS socket open"
 msgstr "Earráid: níl aon soicéad oscailte TLS"
 
-#: mutt_ssl_gnutls.c:205
+#: mutt_ssl_gnutls.c:215
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Díchumasaíodh gach prótacal atá le fáil le haghaidh naisc TLS/SSL"
 
-#: mutt_ssl_gnutls.c:266
+#: mutt_ssl_gnutls.c:276
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Nasc SSL/TLS le %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:509
+#: mutt_ssl_gnutls.c:519
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Earráid agus teastas á fhíorú (%s)"
 
-#: mutt_ssl_gnutls.c:517
+#: mutt_ssl_gnutls.c:527
 msgid "Certificate is not X.509"
 msgstr "Ní X.509 é an teastas"
 
-#: mutt_ssl_gnutls.c:524
+#: mutt_ssl_gnutls.c:534
 msgid "Error initialising gnutls certificate data"
 msgstr "Earráid agus sonraí teastais gnutls á dtúsú"
 
-#: mutt_ssl_gnutls.c:540
+#: mutt_ssl_gnutls.c:550
 msgid "Error processing certificate data"
 msgstr "Earráid agus sonraí an teastais á bpróiseáil"
 
-#: mutt_ssl_gnutls.c:725
+#: mutt_ssl_gnutls.c:735
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Méarlorg SHA1: %s"
 
-#: mutt_ssl_gnutls.c:728
+#: mutt_ssl_gnutls.c:738
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Méarlorg MD5: %s"
 
-#: mutt_ssl_gnutls.c:733
+#: mutt_ssl_gnutls.c:743
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "RABHADH: Níl teastas an fhreastalaí bailí fós"
 
-#: mutt_ssl_gnutls.c:738
+#: mutt_ssl_gnutls.c:748
 msgid "WARNING: Server certificate has expired"
 msgstr "RABHADH: Tá teastas an fhreastalaí as feidhm"
 
-#: mutt_ssl_gnutls.c:743
+#: mutt_ssl_gnutls.c:753
 msgid "WARNING: Server certificate has been revoked"
 msgstr "RABHADH: Cúlghaireadh an teastas freastalaí"
 
-#: mutt_ssl_gnutls.c:748
+#: mutt_ssl_gnutls.c:758
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "RABHADH: Níl óstainm an fhreastalaí comhoiriúnach leis an teastas."
 
-#: mutt_ssl_gnutls.c:753
+#: mutt_ssl_gnutls.c:763
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "RABHADH: Ní CA é sínitheoir an teastais"
 
-#: mutt_ssl_gnutls.c:756
+#: mutt_ssl_gnutls.c:766
 msgid "TLS/SSL Certificate check"
 msgstr "Seiceáil Teastais TLS/SSL"
 
@@ -3907,16 +3104,16 @@ msgstr "Tá an comhad ann cheana, (f)orscríobh, c(u)ir leis, nó (c)ealaigh?"
 msgid "oac"
 msgstr "fuc"
 
-#: muttlib.c:1430
+#: muttlib.c:1429
 msgid "Can't save message to POP mailbox."
 msgstr "Ní féidir teachtaireacht a shábháil i mbosca poist POP."
 
-#: muttlib.c:1439
+#: muttlib.c:1438
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Iarcheangail teachtaireachtaí le %s?"
 
-#: muttlib.c:1451
+#: muttlib.c:1450
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "Ní bosca poist %s!"
@@ -4137,32 +3334,32 @@ msgstr "slonn folamh"
 msgid "error: unknown op %d (report this error)."
 msgstr "earráid: op anaithnid %d (seol tuairisc fhabht)."
 
-#: pattern.c:1288 pattern.c:1423
+#: pattern.c:1301 pattern.c:1436
 msgid "Compiling search pattern..."
 msgstr "Patrún cuardaigh á thiomsú..."
 
-#: pattern.c:1307
+#: pattern.c:1320
 msgid "Executing command on matching messages..."
 msgstr "Ordú á rith ar theachtaireachtaí comhoiriúnacha..."
 
-#: pattern.c:1374
+#: pattern.c:1387
 msgid "No messages matched criteria."
 msgstr "Ní raibh aon teachtaireacht chomhoiriúnach."
 
-#: pattern.c:1456
+#: pattern.c:1469
 #, fuzzy
 msgid "Searching..."
 msgstr "Á Shábháil..."
 
-#: pattern.c:1469
+#: pattern.c:1482
 msgid "Search hit bottom without finding match"
 msgstr "Bhuail an cuardach an bun gan teaghrán comhoiriúnach"
 
-#: pattern.c:1480
+#: pattern.c:1493
 msgid "Search hit top without finding match"
 msgstr "Bhuail an cuardach an barr gan teaghrán comhoiriúnach"
 
-#: pattern.c:1512
+#: pattern.c:1525
 msgid "Search interrupted."
 msgstr "Idirbhriseadh an cuardach."
 
@@ -4268,69 +3465,69 @@ msgstr "Iontráil aitheantas na heochrach, le do thoil: "
 msgid "PGP Key %s."
 msgstr "Eochair PGP %s."
 
-#: pop.c:96 pop_lib.c:201
+#: pop.c:101 pop_lib.c:201
 #, c-format
 msgid "Command TOP is not supported by server."
 msgstr "Ní ghlacann an freastalaí leis an ordú TOP."
 
-#: pop.c:123
+#: pop.c:128
 msgid "Can't write header to temporary file!"
 msgstr "ní féidir ceanntásc a scríobh chuig comhad sealadach!"
 
-#: pop.c:235 pop_lib.c:203
+#: pop.c:267 pop_lib.c:203
 #, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "Ní ghlacann an freastalaí leis an ordú UIDL."
 
-#: pop.c:357 pop.c:727
+#: pop.c:391 pop.c:761
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s: is conair POP neamhbhailí"
 
-#: pop.c:395
+#: pop.c:429
 msgid "Fetching list of messages..."
 msgstr "Liosta teachtaireachtaí á fháil..."
 
-#: pop.c:553
+#: pop.c:587
 msgid "Can't write message to temporary file!"
 msgstr "ní féidir teachtaireacht a scríobh i gcomhad sealadach!"
 
-#: pop.c:612
+#: pop.c:646
 #, fuzzy
 msgid "Marking messages deleted..."
 msgstr "Ag marcáil %d teachtaireacht mar scriosta..."
 
-#: pop.c:682 pop.c:747
+#: pop.c:716 pop.c:781
 msgid "Checking for new messages..."
 msgstr "Ag seiceáil do theachtaireachtaí nua..."
 
-#: pop.c:711
+#: pop.c:745
 msgid "POP host is not defined."
 msgstr "ní bhfuarthas an t-óstríomhaire POP."
 
-#: pop.c:775
+#: pop.c:809
 msgid "No new mail in POP mailbox."
 msgstr "Níl aon phost nua sa bhosca POP."
 
-#: pop.c:782
+#: pop.c:816
 msgid "Delete messages from server?"
 msgstr "Scrios teachtaireachtaí ón fhreastalaí?"
 
-#: pop.c:784
+#: pop.c:818
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Teachtaireachtaí nua á léamh (%d beart)..."
 
-#: pop.c:826
+#: pop.c:860
 msgid "Error while writing mailbox!"
 msgstr "Earráid agus bosca poist á scríobh!"
 
-#: pop.c:830
+#: pop.c:864
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [léadh %d as %d teachtaireacht]"
 
-#: pop.c:853 pop_lib.c:369
+#: pop.c:887 pop_lib.c:369
 msgid "Server closed connection!"
 msgstr "Dhún an freastalaí an nasc!"
 
@@ -4400,37 +3597,37 @@ msgstr "Teachtaireacht á díchriptiú..."
 msgid "Decryption failed."
 msgstr "Theip ar dhíchriptiú."
 
-#: query.c:50
+#: query.c:51
 msgid "New Query"
 msgstr "Iarratas Nua"
 
-#: query.c:51
+#: query.c:52
 msgid "Make Alias"
 msgstr "Déan Ailias"
 
-#: query.c:52
+#: query.c:53
 msgid "Search"
 msgstr "Cuardaigh"
 
-#: query.c:100
+#: query.c:101
 msgid "Waiting for response..."
 msgstr "Ag feitheamh le freagra..."
 
-#: query.c:236 query.c:264
+#: query.c:263 query.c:291
 msgid "Query command not defined."
 msgstr "Níl aon ordú iarratais sainmhínithe."
 
-#: query.c:291
+#: query.c:318
 #, c-format
 msgid "Query"
 msgstr "Iarratas"
 
 #. Prompt for Query
-#: query.c:304 query.c:329
+#: query.c:331 query.c:356
 msgid "Query: "
 msgstr "Iarratas: "
 
-#: query.c:312 query.c:338
+#: query.c:339 query.c:365
 #, c-format
 msgid "Query '%s'"
 msgstr "Iarratas '%s'"
@@ -4443,65 +3640,65 @@ msgstr "Píopa"
 msgid "Print"
 msgstr "Priontáil"
 
-#: recvattach.c:453
+#: recvattach.c:473
 msgid "Saving..."
 msgstr "Á Shábháil..."
 
-#: recvattach.c:456 recvattach.c:546
+#: recvattach.c:476 recvattach.c:567
 msgid "Attachment saved."
 msgstr "Sábháladh an t-iatán."
 
-#: recvattach.c:558
+#: recvattach.c:579
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "RABHADH!  Tá tú ar tí %s a fhorscríobh, lean ar aghaidh?"
 
-#: recvattach.c:576
+#: recvattach.c:597
 msgid "Attachment filtered."
 msgstr "Scagadh an t-iatán."
 
-#: recvattach.c:643
+#: recvattach.c:664
 msgid "Filter through: "
 msgstr "Scagaire: "
 
-#: recvattach.c:643
+#: recvattach.c:664
 msgid "Pipe to: "
 msgstr "Píopa go: "
 
-#: recvattach.c:678
+#: recvattach.c:699
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Ní eol dom conas a phriontáil iatáin %s!"
 
-#: recvattach.c:743
+#: recvattach.c:764
 msgid "Print tagged attachment(s)?"
 msgstr "Priontáil iatá(i)n c(h)libeáilte?"
 
-#: recvattach.c:743
+#: recvattach.c:764
 msgid "Print attachment?"
 msgstr "Priontáil iatán?"
 
-#: recvattach.c:976
+#: recvattach.c:997
 msgid "Can't decrypt encrypted message!"
 msgstr "Ní féidir teachtaireacht chriptithe a dhíchriptiú!"
 
-#: recvattach.c:989
+#: recvattach.c:1010
 msgid "Attachments"
 msgstr "Iatáin"
 
-#: recvattach.c:1025
+#: recvattach.c:1046
 msgid "There are no subparts to show!"
 msgstr "Níl aon fopháirt le taispeáint!"
 
-#: recvattach.c:1086
+#: recvattach.c:1107
 msgid "Can't delete attachment from POP server."
 msgstr "Ní féidir an t-iatán a scriosadh ón fhreastalaí POP."
 
-#: recvattach.c:1094
+#: recvattach.c:1115
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Ní cheadaítear iatáin a bheith scriosta ó theachtaireachtaí criptithe."
 
-#: recvattach.c:1113 recvattach.c:1130
+#: recvattach.c:1134 recvattach.c:1151
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Ní cheadaítear ach iatáin ilpháirt a bheith scriosta."
 
@@ -4545,7 +3742,7 @@ msgstr "Ní féidir %s a chruthú."
 msgid "Can't find any tagged messages."
 msgstr "Ní féidir aon teachtaireacht chlibeáilte a aimsiú."
 
-#: recvcmd.c:749 send.c:720
+#: recvcmd.c:749 send.c:728
 msgid "No mailing lists found!"
 msgstr "Níor aimsíodh aon liosta postála!"
 
@@ -4655,12 +3852,12 @@ msgstr "Gan ábhar, á thobscor."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:489
+#: send.c:497
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Tabhair freagra ar %s%s?"
 
-#: send.c:523
+#: send.c:531
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Teachtaireacht leantach go %s%s?"
@@ -4668,82 +3865,82 @@ msgstr "Teachtaireacht leantach go %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:695
+#: send.c:703
 msgid "No tagged messages are visible!"
 msgstr "Níl aon teachtaireacht chlibeáilte le feiceáil!"
 
-#: send.c:746
+#: send.c:754
 msgid "Include message in reply?"
 msgstr "Cuir an teachtaireacht isteach sa fhreagra?"
 
-#: send.c:751
+#: send.c:759
 msgid "Including quoted message..."
 msgstr "Teachtaireacht athfhriotail san áireamh..."
 
-#: send.c:761
+#: send.c:769
 msgid "Could not include all requested messages!"
 msgstr "Níorbh fhéidir gach teachtaireacht iarrtha a chur sa fhreagra!"
 
-#: send.c:775
+#: send.c:783
 msgid "Forward as attachment?"
 msgstr "Seol é ar aghaidh mar iatán?"
 
-#: send.c:779
+#: send.c:787
 msgid "Preparing forwarded message..."
 msgstr "Teachtaireacht curtha ar aghaidh á hullmhú..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1109
+#: send.c:1117
 msgid "Recall postponed message?"
 msgstr "Athghlaoigh teachtaireacht a bhí curtha ar athlá?"
 
-#: send.c:1420
+#: send.c:1429
 msgid "Edit forwarded message?"
 msgstr "Cuir teachtaireacht in eagar roimh é a chur ar aghaidh?"
 
-#: send.c:1460
+#: send.c:1469
 msgid "Abort unmodified message?"
 msgstr "Tobscoir an teachtaireacht seo (gan athrú)?"
 
-#: send.c:1462
+#: send.c:1471
 msgid "Aborted unmodified message."
 msgstr "Tobscoireadh teachtaireacht gan athrú."
 
-#: send.c:1531
+#: send.c:1540
 msgid "Message postponed."
 msgstr "Cuireadh an teachtaireacht ar athlá."
 
-#: send.c:1540
+#: send.c:1549
 msgid "No recipients are specified!"
 msgstr "Níl aon fhaighteoir ann!"
 
-#: send.c:1545
+#: send.c:1554
 msgid "No recipients were specified."
 msgstr "Níor sonraíodh aon fhaighteoir."
 
-#: send.c:1561
+#: send.c:1570
 msgid "No subject, abort sending?"
 msgstr "Níor sonraíodh aon ábhar, tobscoir?"
 
-#: send.c:1565
+#: send.c:1574
 msgid "No subject specified."
 msgstr "Níor sonraíodh aon ábhar."
 
-#: send.c:1627 smtp.c:158
+#: send.c:1636 smtp.c:158
 msgid "Sending message..."
 msgstr "Teachtaireacht á seoladh..."
 
-#: send.c:1768
+#: send.c:1777
 msgid "Could not send the message."
 msgstr "Níorbh fhéidir an teachtaireacht a sheoladh."
 
-#: send.c:1773
+#: send.c:1782
 msgid "Mail sent."
 msgstr "Seoladh an teachtaireacht."
 
-#: send.c:1773
+#: send.c:1782
 msgid "Sending in background."
 msgstr "Á seoladh sa chúlra."
 
@@ -4777,7 +3974,7 @@ msgstr ""
 msgid "Output of the delivery process"
 msgstr "Aschur an phróisis seolta"
 
-#: sendlib.c:2446
+#: sendlib.c:2448
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "DrochIDN %s agus resent-from á ullmhú."
@@ -5023,7 +4220,7 @@ msgstr "Bosca poist á shórtáil..."
 msgid "Could not find sorting function! [report this bug]"
 msgstr "Níorbh fhéidir feidhm shórtála a aimsiú! [seol tuairisc fhabht]"
 
-#: status.c:108
+#: status.c:105
 msgid "(no mailbox)"
 msgstr "(gan bosca poist)"
 
@@ -5034,6 +4231,807 @@ msgstr "Níl an mháthair-theachtaireacht infheicthe san amharc srianta seo."
 #: thread.c:1099
 msgid "Parent message is not available."
 msgstr "Níl an mháthair-theachtaireacht ar fáil."
+
+#: ../keymap_alldefs.h:5
+msgid "null operation"
+msgstr "oibríocht nialasach"
+
+#: ../keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "deireadh an reatha choinníollaigh (no-op)"
+
+#: ../keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "amharc ar iatán trí úsáid mailcap"
+
+#: ../keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "féach ar an iatán mar théacs"
+
+#: ../keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Scoránaigh taispeáint na bhfopháirteanna"
+
+#: ../keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "téigh go bun an leathanaigh"
+
+#: ../keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "athsheol teachtaireacht go húsáideoir eile"
+
+#: ../keymap_alldefs.h:12
+msgid "select a new file in this directory"
+msgstr "roghnaigh comhad nua sa chomhadlann seo"
+
+#: ../keymap_alldefs.h:13
+msgid "view file"
+msgstr "féach ar chomhad"
+
+#: ../keymap_alldefs.h:14
+msgid "display the currently selected file's name"
+msgstr "taispeáin ainm an chomhaid atá roghnaithe faoi láthair"
+
+#: ../keymap_alldefs.h:15
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "liostáil leis an mbosca poist reatha (IMAP amháin)"
+
+#: ../keymap_alldefs.h:16
+#, fuzzy
+msgid "unsubscribe from current mailbox (IMAP only)"
+msgstr "díliostáil leis an mbosca poist reatha (IMAP amháin)"
+
+#: ../keymap_alldefs.h:17
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr ""
+"scoránaigh cé acu gach bosca nó boscaí liostáilte amháin a thaispeántar "
+"(IMAP amháin)"
+
+#: ../keymap_alldefs.h:18
+msgid "list mailboxes with new mail"
+msgstr "taispeáin na boscaí le post nua"
+
+#: ../keymap_alldefs.h:19
+msgid "change directories"
+msgstr "athraigh an chomhadlann"
+
+#: ../keymap_alldefs.h:20
+msgid "check mailboxes for new mail"
+msgstr "seiceáil boscaí do phost nua"
+
+#: ../keymap_alldefs.h:21
+#, fuzzy
+msgid "attach file(s) to this message"
+msgstr "ceangail comha(i)d leis an teachtaireacht seo"
+
+#: ../keymap_alldefs.h:22
+msgid "attach message(s) to this message"
+msgstr "ceangail teachtaireacht(aí) leis an teachtaireacht seo"
+
+#: ../keymap_alldefs.h:23
+msgid "edit the BCC list"
+msgstr "cuir an liosta BCC in eagar"
+
+#: ../keymap_alldefs.h:24
+msgid "edit the CC list"
+msgstr "cuir an liosta CC in eagar"
+
+#: ../keymap_alldefs.h:25
+msgid "edit attachment description"
+msgstr "cuir cur síos an iatáin in eagar"
+
+#: ../keymap_alldefs.h:26
+msgid "edit attachment transfer-encoding"
+msgstr "cuir transfer-encoding an iatáin in eagar"
+
+#: ../keymap_alldefs.h:27
+msgid "enter a file to save a copy of this message in"
+msgstr "iontráil comhad ina sábhálfar cóip den teachtaireacht seo"
+
+#: ../keymap_alldefs.h:28
+msgid "edit the file to be attached"
+msgstr "cuir an comhad le ceangal in eagar"
+
+#: ../keymap_alldefs.h:29
+msgid "edit the from field"
+msgstr "cuir an réimse \"Ó\" in eagar\""
+
+#: ../keymap_alldefs.h:30
+msgid "edit the message with headers"
+msgstr "cuir an teachtaireacht in eagar le ceanntásca"
+
+#: ../keymap_alldefs.h:31
+msgid "edit the message"
+msgstr "cuir an teachtaireacht in eagar"
+
+#: ../keymap_alldefs.h:32
+msgid "edit attachment using mailcap entry"
+msgstr "cuir an t-iatán in eagar le hiontráil mailcap"
+
+#: ../keymap_alldefs.h:33
+msgid "edit the Reply-To field"
+msgstr "cuir an réimse \"Reply-To\" in eagar"
+
+#: ../keymap_alldefs.h:34
+msgid "edit the subject of this message"
+msgstr "cuir an t-ábhar teachtaireachta in eagar"
+
+#: ../keymap_alldefs.h:35
+msgid "edit the TO list"
+msgstr "cuir an liosta \"TO\" in eagar"
+
+#: ../keymap_alldefs.h:36
+msgid "create a new mailbox (IMAP only)"
+msgstr "cruthaigh bosca poist nua (IMAP)"
+
+#: ../keymap_alldefs.h:37
+msgid "edit attachment content type"
+msgstr "cuir content type an iatáin in eagar"
+
+#: ../keymap_alldefs.h:38
+msgid "get a temporary copy of an attachment"
+msgstr "faigh cóip shealadach d'iatán"
+
+#: ../keymap_alldefs.h:39
+msgid "run ispell on the message"
+msgstr "rith ispell ar an teachtaireacht"
+
+#: ../keymap_alldefs.h:40
+msgid "compose new attachment using mailcap entry"
+msgstr "cum iatán nua le hiontráil mailcap"
+
+#: ../keymap_alldefs.h:41
+msgid "toggle recoding of this attachment"
+msgstr "scoránaigh ath-ionchódú an iatáin seo"
+
+#: ../keymap_alldefs.h:42
+msgid "save this message to send later"
+msgstr "sábháil an teachtaireacht seo chun é a sheoladh ar ball"
+
+#: ../keymap_alldefs.h:43
+msgid "rename/move an attached file"
+msgstr "athainmnigh/bog comhad ceangailte"
+
+#: ../keymap_alldefs.h:44
+msgid "send the message"
+msgstr "seol an teachtaireacht"
+
+#: ../keymap_alldefs.h:45
+msgid "toggle disposition between inline/attachment"
+msgstr "scoránaigh idir inlíne/iatán"
+
+#: ../keymap_alldefs.h:46
+msgid "toggle whether to delete file after sending it"
+msgstr ""
+"scoránaigh cé acu a scriosfar comhad tar éis é a sheoladh, nó nach scriosfar"
+
+#: ../keymap_alldefs.h:47
+msgid "update an attachment's encoding info"
+msgstr "nuashonraigh eolas faoi ionchódú an iatáin"
+
+#: ../keymap_alldefs.h:48
+msgid "write the message to a folder"
+msgstr "scríobh teachtaireacht i bhfillteán"
+
+#: ../keymap_alldefs.h:49
+msgid "copy a message to a file/mailbox"
+msgstr "cóipeáil teachtaireacht go comhad/bosca poist"
+
+#: ../keymap_alldefs.h:50
+msgid "create an alias from a message sender"
+msgstr "cruthaigh ailias do sheoltóir"
+
+#: ../keymap_alldefs.h:51
+msgid "move entry to bottom of screen"
+msgstr "bog iontráil go bun an scáileáin"
+
+#: ../keymap_alldefs.h:52
+msgid "move entry to middle of screen"
+msgstr "bog iontráil go lár an scáileáin"
+
+#: ../keymap_alldefs.h:53
+msgid "move entry to top of screen"
+msgstr "bog iontráil go barr an scáileáin"
+
+#: ../keymap_alldefs.h:54
+msgid "make decoded (text/plain) copy"
+msgstr "déan cóip dhíchódaithe (text/plain)"
+
+#: ../keymap_alldefs.h:55
+msgid "make decoded copy (text/plain) and delete"
+msgstr "déan cóip dhíchódaithe (text/plain) agus scrios"
+
+#: ../keymap_alldefs.h:56
+msgid "delete the current entry"
+msgstr "scrios an iontráil reatha"
+
+#: ../keymap_alldefs.h:57
+msgid "delete the current mailbox (IMAP only)"
+msgstr "scrios an bosca poist reatha (IMAP amháin)"
+
+#: ../keymap_alldefs.h:58
+msgid "delete all messages in subthread"
+msgstr "scrios gach teachtaireacht san fhoshnáithe"
+
+#: ../keymap_alldefs.h:59
+msgid "delete all messages in thread"
+msgstr "scrios gach teachtaireacht sa snáithe"
+
+#: ../keymap_alldefs.h:60
+msgid "display full address of sender"
+msgstr "taispeáin seoladh iomlán an tseoltóra"
+
+#: ../keymap_alldefs.h:61
+msgid "display message and toggle header weeding"
+msgstr "taispeáin teachtaireacht agus scoránaigh na ceanntásca"
+
+#: ../keymap_alldefs.h:62
+msgid "display a message"
+msgstr "taispeáin teachtaireacht"
+
+#: ../keymap_alldefs.h:63
+msgid "edit the raw message"
+msgstr "cuir an teachtaireacht amh in eagar"
+
+#: ../keymap_alldefs.h:64
+msgid "delete the char in front of the cursor"
+msgstr "scrios an carachtar i ndiaidh an chúrsóra"
+
+#: ../keymap_alldefs.h:65
+msgid "move the cursor one character to the left"
+msgstr "bog an cúrsóir aon charachtar amháin ar chlé"
+
+#: ../keymap_alldefs.h:66
+msgid "move the cursor to the beginning of the word"
+msgstr "bog an cúrsóir go tús an fhocail"
+
+#: ../keymap_alldefs.h:67
+msgid "jump to the beginning of the line"
+msgstr "léim go tús na líne"
+
+#: ../keymap_alldefs.h:68
+msgid "cycle among incoming mailboxes"
+msgstr "bog trí na boscaí isteach"
+
+#: ../keymap_alldefs.h:69
+msgid "complete filename or alias"
+msgstr "comhlánaigh ainm comhaid nó ailias"
+
+#: ../keymap_alldefs.h:70
+msgid "complete address with query"
+msgstr "comhlánaigh seoladh le hiarratas"
+
+#: ../keymap_alldefs.h:71
+msgid "delete the char under the cursor"
+msgstr "scrios an carachtar faoin chúrsóir"
+
+#: ../keymap_alldefs.h:72
+msgid "jump to the end of the line"
+msgstr "léim go deireadh an líne"
+
+#: ../keymap_alldefs.h:73
+msgid "move the cursor one character to the right"
+msgstr "bog an cúrsóir aon charachtar amháin ar dheis"
+
+#: ../keymap_alldefs.h:74
+msgid "move the cursor to the end of the word"
+msgstr "bog an cúrsóir go deireadh an fhocail"
+
+#: ../keymap_alldefs.h:75
+msgid "scroll down through the history list"
+msgstr "scrollaigh síos tríd an stair"
+
+#: ../keymap_alldefs.h:76
+msgid "scroll up through the history list"
+msgstr "scrollaigh suas tríd an stair"
+
+#: ../keymap_alldefs.h:77
+msgid "delete chars from cursor to end of line"
+msgstr "scrios carachtair ón chúrsóir go deireadh an líne"
+
+#: ../keymap_alldefs.h:78
+msgid "delete chars from the cursor to the end of the word"
+msgstr "scrios carachtair ón chúrsóir go deireadh an fhocail"
+
+#: ../keymap_alldefs.h:79
+msgid "delete all chars on the line"
+msgstr "scrios gach carachtar ar an líne"
+
+#: ../keymap_alldefs.h:80
+msgid "delete the word in front of the cursor"
+msgstr "scrios an focal i ndiaidh an chúrsóra"
+
+#: ../keymap_alldefs.h:81
+msgid "quote the next typed key"
+msgstr "cuir an chéad charachtar eile clóscríofa idir comharthaí athfhriotail"
+
+#: ../keymap_alldefs.h:82
+msgid "transpose character under cursor with previous"
+msgstr "malartaigh an carachtar faoin chúrsóir agus an ceann roimhe"
+
+#: ../keymap_alldefs.h:83
+msgid "capitalize the word"
+msgstr "scríobh an focal le ceannlitir"
+
+#: ../keymap_alldefs.h:84
+msgid "convert the word to lower case"
+msgstr "tiontaigh an focal go cás íochtair"
+
+#: ../keymap_alldefs.h:85
+msgid "convert the word to upper case"
+msgstr "tiontaigh an focal go cás uachtair"
+
+#: ../keymap_alldefs.h:86
+msgid "enter a muttrc command"
+msgstr "iontráil ordú muttrc"
+
+#: ../keymap_alldefs.h:87
+msgid "enter a file mask"
+msgstr "iontráil masc comhaid"
+
+#: ../keymap_alldefs.h:88
+msgid "exit this menu"
+msgstr "scoir an roghchlár seo"
+
+#: ../keymap_alldefs.h:89
+msgid "filter attachment through a shell command"
+msgstr "scag iatán le hordú blaoisce"
+
+#: ../keymap_alldefs.h:90
+msgid "move to the first entry"
+msgstr "téigh go dtí an chéad iontráil"
+
+#: ../keymap_alldefs.h:91
+msgid "toggle a message's 'important' flag"
+msgstr "scoránaigh an bhratach 'important' ar theachtaireacht"
+
+#: ../keymap_alldefs.h:92
+msgid "forward a message with comments"
+msgstr "seol teachtaireacht ar aghaidh le nótaí sa bhreis"
+
+#: ../keymap_alldefs.h:93
+msgid "select the current entry"
+msgstr "roghnaigh an iontráil reatha"
+
+#: ../keymap_alldefs.h:94
+msgid "reply to all recipients"
+msgstr "seol freagra chuig gach faighteoir"
+
+#: ../keymap_alldefs.h:95
+msgid "scroll down 1/2 page"
+msgstr "scrollaigh síos leath de leathanach"
+
+#: ../keymap_alldefs.h:96
+msgid "scroll up 1/2 page"
+msgstr "scrollaigh suas leath de leathanach"
+
+#: ../keymap_alldefs.h:97
+msgid "this screen"
+msgstr "an scáileán seo"
+
+#: ../keymap_alldefs.h:98
+msgid "jump to an index number"
+msgstr "téigh go treoiruimhir"
+
+#: ../keymap_alldefs.h:99
+msgid "move to the last entry"
+msgstr "téigh go dtí an iontráil dheireanach"
+
+#: ../keymap_alldefs.h:100
+msgid "reply to specified mailing list"
+msgstr "seol freagra chuig liosta sonraithe ríomhphoist"
+
+#: ../keymap_alldefs.h:101
+msgid "execute a macro"
+msgstr "rith macra"
+
+#: ../keymap_alldefs.h:102
+msgid "compose a new mail message"
+msgstr "cum teachtaireacht nua ríomhphoist"
+
+#: ../keymap_alldefs.h:103
+msgid "break the thread in two"
+msgstr "bris an snáithe ina dhá pháirt"
+
+#: ../keymap_alldefs.h:104
+msgid "open a different folder"
+msgstr "oscail fillteán eile"
+
+#: ../keymap_alldefs.h:105
+msgid "open a different folder in read only mode"
+msgstr "oscail fillteán eile sa mhód inléite amháin"
+
+#: ../keymap_alldefs.h:106
+msgid "clear a status flag from a message"
+msgstr "glan bratach stádais ó theachtaireacht"
+
+#: ../keymap_alldefs.h:107
+msgid "delete messages matching a pattern"
+msgstr "scrios teachtaireachtaí atá comhoiriúnach le patrún"
+
+#: ../keymap_alldefs.h:108
+msgid "force retrieval of mail from IMAP server"
+msgstr "faigh ríomhphost ón fhreastalaí IMAP"
+
+#: ../keymap_alldefs.h:109
+msgid "retrieve mail from POP server"
+msgstr "faigh ríomhphost ó fhreastalaí POP"
+
+#: ../keymap_alldefs.h:110
+msgid "move to the first message"
+msgstr "téigh go dtí an chéad teachtaireacht"
+
+#: ../keymap_alldefs.h:111
+msgid "move to the last message"
+msgstr "téigh go dtí an teachtaireacht dheireanach"
+
+#: ../keymap_alldefs.h:112
+msgid "show only messages matching a pattern"
+msgstr "ná taispeáin ach na teachtaireachtaí atá comhoiriúnach le patrún"
+
+#: ../keymap_alldefs.h:113
+msgid "link tagged message to the current one"
+msgstr "nasc teachtaireacht chlibeáilte leis an cheann reatha"
+
+#: ../keymap_alldefs.h:114
+#, fuzzy
+msgid "open next mailbox with new mail"
+msgstr "Níl aon bhosca le ríomhphost nua."
+
+#: ../keymap_alldefs.h:115
+msgid "jump to the next new message"
+msgstr "léim go dtí an chéad teachtaireacht nua eile"
+
+#: ../keymap_alldefs.h:116
+msgid "jump to the next new or unread message"
+msgstr "léim go dtí an chéad teachtaireacht nua/neamhléite eile"
+
+#: ../keymap_alldefs.h:117
+msgid "jump to the next subthread"
+msgstr "léim go dtí an chéad fhoshnáithe eile"
+
+#: ../keymap_alldefs.h:118
+msgid "jump to the next thread"
+msgstr "téigh go dtí an chéad snáithe eile"
+
+#: ../keymap_alldefs.h:119
+msgid "move to the next undeleted message"
+msgstr "téigh go dtí an chéad teachtaireacht eile nach scriosta"
+
+#: ../keymap_alldefs.h:120
+msgid "jump to the next unread message"
+msgstr "léim go dtí an chéad teachtaireacht neamhléite eile"
+
+#: ../keymap_alldefs.h:121
+msgid "jump to parent message in thread"
+msgstr "léim go máthair-theachtaireacht sa snáithe"
+
+#: ../keymap_alldefs.h:122
+msgid "jump to previous thread"
+msgstr "léim go dtí an snáithe roimhe seo"
+
+#: ../keymap_alldefs.h:123
+msgid "jump to previous subthread"
+msgstr "léim go dtí an fhoshnáithe roimhe seo"
+
+#: ../keymap_alldefs.h:124
+msgid "move to the previous undeleted message"
+msgstr "téigh go dtí an teachtaireacht nach scriosta roimhe seo"
+
+#: ../keymap_alldefs.h:125
+msgid "jump to the previous new message"
+msgstr "léim go dtí an teachtaireacht nua roimhe seo"
+
+#: ../keymap_alldefs.h:126
+msgid "jump to the previous new or unread message"
+msgstr "léim go dtí an teachtaireacht nua/neamhléite roimhe seo"
+
+#: ../keymap_alldefs.h:127
+msgid "jump to the previous unread message"
+msgstr "léim go dtí an teachtaireacht neamhléite roimhe seo"
+
+#: ../keymap_alldefs.h:128
+msgid "mark the current thread as read"
+msgstr "marcáil an snáithe reatha \"léite\""
+
+#: ../keymap_alldefs.h:129
+msgid "mark the current subthread as read"
+msgstr "marcáil an fhoshnáithe reatha \"léite\""
+
+#: ../keymap_alldefs.h:130
+msgid "set a status flag on a message"
+msgstr "socraigh bratach stádais ar theachtaireacht"
+
+#: ../keymap_alldefs.h:131
+msgid "save changes to mailbox"
+msgstr "sábháil athruithe ar bhosca poist"
+
+#: ../keymap_alldefs.h:132
+msgid "tag messages matching a pattern"
+msgstr "clibeáil teachtaireachtaí atá comhoiriúnach le patrún"
+
+#: ../keymap_alldefs.h:133
+msgid "undelete messages matching a pattern"
+msgstr "díscrios teachtaireachtaí atá comhoiriúnach le patrún"
+
+#: ../keymap_alldefs.h:134
+msgid "untag messages matching a pattern"
+msgstr "díchlibeáil teachtaireachtaí atá comhoiriúnach le patrún"
+
+#: ../keymap_alldefs.h:135
+msgid "move to the middle of the page"
+msgstr "téigh go lár an leathanaigh"
+
+#: ../keymap_alldefs.h:136
+msgid "move to the next entry"
+msgstr "téigh go dtí an chéad iontráil eile"
+
+#: ../keymap_alldefs.h:137
+msgid "scroll down one line"
+msgstr "scrollaigh aon líne síos"
+
+#: ../keymap_alldefs.h:138
+msgid "move to the next page"
+msgstr "téigh go dtí an chéad leathanach eile"
+
+#: ../keymap_alldefs.h:139
+msgid "jump to the bottom of the message"
+msgstr "léim go bun na teachtaireachta"
+
+#: ../keymap_alldefs.h:140
+msgid "toggle display of quoted text"
+msgstr ""
+"scoránaigh cé acu a thaispeántar téacs athfhriotail nó nach dtaispeántar"
+
+#: ../keymap_alldefs.h:141
+msgid "skip beyond quoted text"
+msgstr "gabh thar théacs athfhriotail"
+
+#: ../keymap_alldefs.h:142
+msgid "jump to the top of the message"
+msgstr "léim go barr na teachtaireachta"
+
+#: ../keymap_alldefs.h:143
+msgid "pipe message/attachment to a shell command"
+msgstr "píopa teachtaireacht/iatán go hordú blaoisce"
+
+#: ../keymap_alldefs.h:144
+msgid "move to the previous entry"
+msgstr "téigh go dtí an iontráil roimhe seo"
+
+#: ../keymap_alldefs.h:145
+msgid "scroll up one line"
+msgstr "scrollaigh aon líne suas"
+
+#: ../keymap_alldefs.h:146
+msgid "move to the previous page"
+msgstr "téigh go dtí an leathanach roimhe seo"
+
+#: ../keymap_alldefs.h:147
+msgid "print the current entry"
+msgstr "priontáil an iontráil reatha"
+
+#: ../keymap_alldefs.h:148
+msgid "query external program for addresses"
+msgstr "bí ag iarraidh seoltaí ó chlár seachtrach"
+
+#: ../keymap_alldefs.h:149
+msgid "append new query results to current results"
+msgstr "iarcheangail torthaí an iarratais nua leis na torthaí reatha"
+
+#: ../keymap_alldefs.h:150
+msgid "save changes to mailbox and quit"
+msgstr "sábháil athruithe ar bhosca poist agus scoir"
+
+#: ../keymap_alldefs.h:151
+msgid "recall a postponed message"
+msgstr "athghlaoigh teachtaireacht a bhí curtha ar athlá"
+
+#: ../keymap_alldefs.h:152
+msgid "clear and redraw the screen"
+msgstr "glan an scáileán agus ataispeáin"
+
+#: ../keymap_alldefs.h:153
+msgid "{internal}"
+msgstr "{inmheánach}"
+
+#: ../keymap_alldefs.h:154
+msgid "rename the current mailbox (IMAP only)"
+msgstr "athainmnigh an bosca poist reatha (IMAP amháin)"
+
+#: ../keymap_alldefs.h:155
+msgid "reply to a message"
+msgstr "tabhair freagra ar theachtaireacht"
+
+#: ../keymap_alldefs.h:156
+msgid "use the current message as a template for a new one"
+msgstr "úsáid an teachtaireacht reatha mar theimpléad do cheann nua"
+
+#: ../keymap_alldefs.h:157
+msgid "save message/attachment to a file"
+msgstr "sábháil teachtaireacht/iatán go comhad"
+
+#: ../keymap_alldefs.h:158
+msgid "search for a regular expression"
+msgstr "déan cuardach ar shlonn ionadaíochta"
+
+#: ../keymap_alldefs.h:159
+msgid "search backwards for a regular expression"
+msgstr "déan cuardach ar gcúl ar shlonn ionadaíochta"
+
+#: ../keymap_alldefs.h:160
+msgid "search for next match"
+msgstr "déan cuardach arís"
+
+#: ../keymap_alldefs.h:161
+msgid "search for next match in opposite direction"
+msgstr "déan cuardach arís, ach sa treo eile"
+
+#: ../keymap_alldefs.h:162
+msgid "toggle search pattern coloring"
+msgstr "scoránaigh aibhsiú an phatrúin cuardaigh"
+
+#: ../keymap_alldefs.h:163
+msgid "invoke a command in a subshell"
+msgstr "rith ordú i bhfobhlaosc"
+
+#: ../keymap_alldefs.h:164
+msgid "sort messages"
+msgstr "sórtáil teachtaireachtaí"
+
+#: ../keymap_alldefs.h:165
+msgid "sort messages in reverse order"
+msgstr "sórtáil teachtaireachtaí san ord droim ar ais"
+
+#: ../keymap_alldefs.h:166
+msgid "tag the current entry"
+msgstr "clibeáil an iontráil reatha"
+
+#: ../keymap_alldefs.h:167
+msgid "apply next function to tagged messages"
+msgstr "cuir an chéad fheidhm eile i bhfeidhm ar theachtaireachtaí clibeáilte"
+
+#: ../keymap_alldefs.h:168
+msgid "apply next function ONLY to tagged messages"
+msgstr ""
+"cuir an chéad fheidhm eile i bhfeidhm ar theachtaireachtaí clibeáilte AMHÁIN"
+
+#: ../keymap_alldefs.h:169
+msgid "tag the current subthread"
+msgstr "clibeáil an fhoshnáithe reatha"
+
+#: ../keymap_alldefs.h:170
+msgid "tag the current thread"
+msgstr "clibeáil an snáithe reatha"
+
+#: ../keymap_alldefs.h:171
+msgid "toggle a message's 'new' flag"
+msgstr "scoránaigh bratach 'nua' ar theachtaireacht"
+
+#: ../keymap_alldefs.h:172
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "scoránaigh cé acu an mbeidh an bosca athscríofa, nó nach mbeidh"
+
+#: ../keymap_alldefs.h:173
+msgid "toggle whether to browse mailboxes or all files"
+msgstr "scoránaigh cé acu boscaí poist nó comhaid a bhrabhsálfar"
+
+#: ../keymap_alldefs.h:174
+msgid "move to the top of the page"
+msgstr "téigh go dtí an barr"
+
+#: ../keymap_alldefs.h:175
+msgid "undelete the current entry"
+msgstr "díscrios an iontráil reatha"
+
+#: ../keymap_alldefs.h:176
+msgid "undelete all messages in thread"
+msgstr "díscrios gach teachtaireacht sa snáithe"
+
+#: ../keymap_alldefs.h:177
+msgid "undelete all messages in subthread"
+msgstr "díscrios gach teachtaireacht san fhoshnáithe"
+
+#: ../keymap_alldefs.h:178
+msgid "show the Mutt version number and date"
+msgstr "taispeáin an uimhir leagain Mutt agus an dáta"
+
+#: ../keymap_alldefs.h:179
+msgid "view attachment using mailcap entry if necessary"
+msgstr "amharc ar iatán le hiontráil mailcap, más gá"
+
+#: ../keymap_alldefs.h:180
+msgid "show MIME attachments"
+msgstr "taispeáin iatáin MIME"
+
+#: ../keymap_alldefs.h:181
+msgid "display the keycode for a key press"
+msgstr "taispeáin an cód atá bainte le heochairbhrú"
+
+#: ../keymap_alldefs.h:182
+msgid "show currently active limit pattern"
+msgstr "taispeáin an patrún teorannaithe atá i bhfeidhm"
+
+#: ../keymap_alldefs.h:183
+msgid "collapse/uncollapse current thread"
+msgstr "laghdaigh/leathnaigh an snáithe reatha"
+
+#: ../keymap_alldefs.h:184
+msgid "collapse/uncollapse all threads"
+msgstr "laghdaigh/leathnaigh gach snáithe"
+
+#: ../keymap_alldefs.h:185
+msgid "attach a PGP public key"
+msgstr "ceangail eochair phoiblí PGP"
+
+#: ../keymap_alldefs.h:186
+msgid "show PGP options"
+msgstr "taispeáin roghanna PGP"
+
+#: ../keymap_alldefs.h:187
+msgid "mail a PGP public key"
+msgstr "seol eochair phoiblí PGP"
+
+#: ../keymap_alldefs.h:188
+msgid "verify a PGP public key"
+msgstr "fíoraigh eochair phoiblí PGP"
+
+#: ../keymap_alldefs.h:189
+msgid "view the key's user id"
+msgstr "amharc ar aitheantas úsáideora na heochrach"
+
+#: ../keymap_alldefs.h:190
+#, fuzzy
+msgid "check for classic PGP"
+msgstr "seiceáil le haghaidh pgp clasaiceach"
+
+#: ../keymap_alldefs.h:191
+msgid "Accept the chain constructed"
+msgstr "Glac leis an slabhra cruthaithe"
+
+#: ../keymap_alldefs.h:192
+msgid "Append a remailer to the chain"
+msgstr "Iarcheangail athphostóir leis an slabhra"
+
+#: ../keymap_alldefs.h:193
+msgid "Insert a remailer into the chain"
+msgstr "Ionsáigh athphostóir isteach sa slabhra"
+
+#: ../keymap_alldefs.h:194
+msgid "Delete a remailer from the chain"
+msgstr "Scrios athphostóir as an slabhra"
+
+#: ../keymap_alldefs.h:195
+msgid "Select the previous element of the chain"
+msgstr "Roghnaigh an ball roimhe seo ón slabhra"
+
+#: ../keymap_alldefs.h:196
+msgid "Select the next element of the chain"
+msgstr "Roghnaigh an chéad bhall eile ón slabhra"
+
+#: ../keymap_alldefs.h:197
+msgid "send the message through a mixmaster remailer chain"
+msgstr "seol an teachtaireacht trí shlabhra athphostóirí \"mixmaster\""
+
+#: ../keymap_alldefs.h:198
+msgid "make decrypted copy and delete"
+msgstr "déan cóip dhíchriptithe agus scrios"
+
+#: ../keymap_alldefs.h:199
+msgid "make decrypted copy"
+msgstr "déan cóip dhíchriptithe"
+
+#: ../keymap_alldefs.h:200
+msgid "wipe passphrase(s) from memory"
+msgstr "bánaigh frása(í) faire as cuimhne"
+
+#: ../keymap_alldefs.h:201
+msgid "extract supported public keys"
+msgstr "bain na heochracha poiblí le tacaíocht amach"
+
+#: ../keymap_alldefs.h:202
+msgid "show S/MIME options"
+msgstr "taispeáin roghanna S/MIME"
 
 #~ msgid "Getting namespaces..."
 #~ msgstr "Ainmspásanna á bhfáil..."

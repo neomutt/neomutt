@@ -49,7 +49,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-01 14:06-0700\n"
+"POT-Creation-Date: 2008-05-17 12:35-0700\n"
 "PO-Revision-Date: 2007-11-03 19:46+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -67,7 +67,7 @@ msgstr "Nom d’usuari a «%s»: "
 msgid "Password for %s@%s: "
 msgstr "Contrasenya per a «%s@%s»: "
 
-#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:48
+#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:49
 #: recvattach.c:54
 msgid "Exit"
 msgstr "Ix"
@@ -86,8 +86,8 @@ msgstr "Selecciona"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
-#: mutt_ssl.c:679 mutt_ssl_gnutls.c:773 pager.c:1579 pgpkey.c:522
-#: postpone.c:46 query.c:53 recvattach.c:58 smime.c:437
+#: mutt_ssl.c:679 mutt_ssl_gnutls.c:783 pager.c:1579 pgpkey.c:522
+#: postpone.c:46 query.c:54 recvattach.c:58 smime.c:437
 msgid "Help"
 msgstr "Ajuda"
 
@@ -130,14 +130,24 @@ msgstr "Nom personal: "
 msgid "[%s = %s] Accept?"
 msgstr "Voleu acceptar «%s» com a àlies de «%s»?"
 
-#: alias.c:331 recvattach.c:412 recvattach.c:435 recvattach.c:448
-#: recvattach.c:461 recvattach.c:490
+#: alias.c:331 recvattach.c:432 recvattach.c:455 recvattach.c:468
+#: recvattach.c:481 recvattach.c:511
 msgid "Save to file: "
 msgstr "Desa al fitxer: "
 
-#: alias.c:346
+#: alias.c:345
+#, fuzzy
+msgid "Error reading alias file"
+msgstr "Error en intentar veure el fitxer."
+
+#: alias.c:364
 msgid "Alias added."
 msgstr "S’ha afegit l’àlies."
+
+#: alias.c:372
+#, fuzzy
+msgid "Error seeking in alias file"
+msgstr "Error en intentar veure el fitxer."
 
 # ABREUJAT!
 #   El nom de fitxer no concorda amb cap «nametemplate»; voleu continuar?
@@ -151,8 +161,8 @@ msgstr "El nom de fitxer no concorda amb cap «nametemplate»; continuar?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Cal que l’entrada «compose» de «mailcap» continga «%%s»."
 
-#: attach.c:134 attach.c:266 commands.c:218 compose.c:1183 curs_lib.c:175
-#: curs_lib.c:492
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1183 curs_lib.c:179
+#: curs_lib.c:533
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "Error en executar «%s»."
@@ -386,134 +396,134 @@ msgid "default colors not supported"
 msgstr "No es permet l’ús de colors per defecte."
 
 #. find out whether or not the verify signature
-#: commands.c:89
+#: commands.c:90
 msgid "Verify PGP signature?"
 msgstr "Voleu verificar la signatura PGP?"
 
-#: commands.c:114 mbox.c:746
+#: commands.c:115 mbox.c:754
 msgid "Could not create temporary file!"
 msgstr "No s’ha pogut crear un fitxer temporal."
 
-#: commands.c:127
+#: commands.c:128
 msgid "Cannot create display filter"
 msgstr "No s’ha pogut crear el filtre de visualització."
 
-#: commands.c:147
+#: commands.c:152
 msgid "Could not copy message"
 msgstr "No s’ha pogut copiar el missatge."
 
-#: commands.c:184
+#: commands.c:189
 msgid "S/MIME signature successfully verified."
 msgstr "S’ha pogut verificar amb èxit la signatura S/MIME."
 
-#: commands.c:186
+#: commands.c:191
 msgid "S/MIME certificate owner does not match sender."
 msgstr "El propietari del certificat S/MIME no concorda amb el remitent."
 
-#: commands.c:189 commands.c:200
+#: commands.c:194 commands.c:205
 msgid "Warning: Part of this message has not been signed."
 msgstr "Avís: Part d’aquest missatge no ha estat signat."
 
-#: commands.c:191
+#: commands.c:196
 msgid "S/MIME signature could NOT be verified."
 msgstr "NO s’ha pogut verificar la signatura S/MIME."
 
-#: commands.c:198
+#: commands.c:203
 msgid "PGP signature successfully verified."
 msgstr "S’ha pogut verificar amb èxit la signatura PGP."
 
-#: commands.c:202
+#: commands.c:207
 msgid "PGP signature could NOT be verified."
 msgstr "NO s’ha pogut verificar la signatura PGP."
 
-#: commands.c:225
+#: commands.c:230
 msgid "Command: "
 msgstr "Ordre: "
 
-#: commands.c:245 recvcmd.c:147
+#: commands.c:250 recvcmd.c:147
 msgid "Bounce message to: "
 msgstr "Redirigeix el missatge a: "
 
-#: commands.c:247 recvcmd.c:149
+#: commands.c:252 recvcmd.c:149
 msgid "Bounce tagged messages to: "
 msgstr "Redirigeix els missatges marcats a: "
 
-#: commands.c:262 recvcmd.c:158
+#: commands.c:267 recvcmd.c:158
 msgid "Error parsing address!"
 msgstr "Error en interpretar l’adreça."
 
-#: commands.c:270 recvcmd.c:166
+#: commands.c:275 recvcmd.c:166
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "L’IDN no és vàlid: %s"
 
 # ivb (2001/12/02)
 # ivb  El programa posa l’interrogant.
-#: commands.c:281 recvcmd.c:180
+#: commands.c:286 recvcmd.c:180
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Voleu redirigir el missatge a «%s»"
 
 # ivb (2001/12/02)
 # ivb  El programa posa l’interrogant.
-#: commands.c:281 recvcmd.c:180
+#: commands.c:286 recvcmd.c:180
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Voleu redirigir els missatges a «%s»"
 
-#: commands.c:297 recvcmd.c:196
+#: commands.c:302 recvcmd.c:196
 msgid "Message not bounced."
 msgstr "No s’ha redirigit el missatge."
 
-#: commands.c:297 recvcmd.c:196
+#: commands.c:302 recvcmd.c:196
 msgid "Messages not bounced."
 msgstr "No s’han redirigit els missatges."
 
-#: commands.c:307 recvcmd.c:215
+#: commands.c:312 recvcmd.c:215
 msgid "Message bounced."
 msgstr "S’ha redirigit el missatge."
 
-#: commands.c:307 recvcmd.c:215
+#: commands.c:312 recvcmd.c:215
 msgid "Messages bounced."
 msgstr "S’han redirigit els missatges."
 
-#: commands.c:384 commands.c:418 commands.c:435
+#: commands.c:389 commands.c:423 commands.c:440
 msgid "Can't create filter process"
 msgstr "No s’ha pogut crear el procés filtre."
 
-#: commands.c:464
+#: commands.c:469
 msgid "Pipe to command: "
 msgstr "Redirigeix a l’ordre: "
 
-#: commands.c:481
+#: commands.c:486
 msgid "No printing command has been defined."
 msgstr "No s’ha definit cap ordre d’impressió."
 
-#: commands.c:486
+#: commands.c:491
 msgid "Print message?"
 msgstr "Voleu imprimir el missatge?"
 
-#: commands.c:486
+#: commands.c:491
 msgid "Print tagged messages?"
 msgstr "Voleu imprimir els misatges marcats?"
 
-#: commands.c:495
+#: commands.c:500
 msgid "Message printed"
 msgstr "S’ha imprés el missatge."
 
-#: commands.c:495
+#: commands.c:500
 msgid "Messages printed"
 msgstr "S’han imprés els missatges."
 
-#: commands.c:497
+#: commands.c:502
 msgid "Message could not be printed"
 msgstr "No s’ha pogut imprimir el missatge."
 
-#: commands.c:498
+#: commands.c:503
 msgid "Messages could not be printed"
 msgstr "No s’han pogut imprimir els missatges."
 
-#: commands.c:507
+#: commands.c:512
 msgid ""
 "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s"
 "(p)am?: "
@@ -521,7 +531,7 @@ msgstr ""
 "Dscnd (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unts/sp(a)"
 "m?: "
 
-#: commands.c:508
+#: commands.c:513
 msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)"
 "am?: "
@@ -531,80 +541,80 @@ msgstr ""
 
 # ivb (2004/08/16)
 # ivb  (d)ata/(o)rig/(r)ebut/(t)ema/de(s)t/(f)il/(c)ap/(m)ida/(p)unt/sp(a)m
-#: commands.c:509
+#: commands.c:514
 msgid "dfrsotuzcp"
 msgstr "dortsfcmpa"
 
-#: commands.c:566
+#: commands.c:571
 msgid "Shell command: "
 msgstr "Ordre per a l’intèrpret: "
 
 # «%s» podria ser « els marcats».  ivb
-#: commands.c:711
+#: commands.c:716
 #, c-format
 msgid "Decode-save%s to mailbox"
 msgstr "Descodifica i desa%s a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: commands.c:712
+#: commands.c:717
 #, c-format
 msgid "Decode-copy%s to mailbox"
 msgstr "Descodifica i còpia%s a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: commands.c:713
+#: commands.c:718
 #, c-format
 msgid "Decrypt-save%s to mailbox"
 msgstr "Desxifra i desa%s a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: commands.c:714
+#: commands.c:719
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
 msgstr "Desxifra i còpia%s a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: commands.c:715
+#: commands.c:720
 #, c-format
 msgid "Save%s to mailbox"
 msgstr "Desa%s a la bústia"
 
 # «%s» podria ser « els marcats».  ivb
-#: commands.c:715
+#: commands.c:720
 #, c-format
 msgid "Copy%s to mailbox"
 msgstr "Còpia%s a la bústia"
 
-#: commands.c:716
+#: commands.c:721
 msgid " tagged"
 msgstr " els marcats"
 
-#: commands.c:789
+#: commands.c:794
 #, c-format
 msgid "Copying to %s..."
 msgstr "S’està copiant a «%s»…"
 
 # «%s» és un codi de caràcters.  ivb
-#: commands.c:924
+#: commands.c:929
 #, c-format
 msgid "Convert to %s upon sending?"
 msgstr "Voleu convertir en %s en enviar?"
 
-#: commands.c:934
+#: commands.c:939
 #, c-format
 msgid "Content-Type changed to %s."
 msgstr "S’ha canviat «Content-Type» a «%s»."
 
-#: commands.c:939
+#: commands.c:944
 #, c-format
 msgid "Character set changed to %s; %s."
 msgstr "S’ha canviat el joc de caràcters a %s; %s."
 
-#: commands.c:941
+#: commands.c:946
 msgid "not converting"
 msgstr "es farà conversió"
 
-#: commands.c:941
+#: commands.c:946
 msgid "converting"
 msgstr "no es farà conversió"
 
@@ -693,7 +703,7 @@ msgid "You may not delete the only attachment."
 msgstr "No es pot esborrar l’única adjunció."
 
 # El primer camp és una capçalera de correu.  ivb
-#: compose.c:601 send.c:1552
+#: compose.c:601 send.c:1561
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "L’IDN de «%s» no és vàlid: %s"
@@ -1266,7 +1276,7 @@ msgid "All matching keys are marked expired/revoked."
 msgstr ""
 "Totes les claus concordants estan marcades com a expirades o revocades."
 
-#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:771 pgpkey.c:515
+#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Ix  "
@@ -1446,7 +1456,7 @@ msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "No s’ha pogut enviar el missatge en línia.  Emprar PGP/MIME?"
 
 #. abort
-#: crypt.c:158 send.c:1504
+#: crypt.c:158 send.c:1513
 msgid "Mail not sent."
 msgstr "No s’ha enviat el missatge."
 
@@ -1523,31 +1533,31 @@ msgstr "S’ha activat «crypt_use_gpgme», però aquest Mutt no pot emprar GPGM
 msgid "Invoking S/MIME..."
 msgstr "S’està invocant S/MIME…"
 
-#: curs_lib.c:185
+#: curs_lib.c:189
 msgid "yes"
 msgstr "sí"
 
-#: curs_lib.c:186
+#: curs_lib.c:190
 msgid "no"
 msgstr "no"
 
 #. restore blocking operation
-#: curs_lib.c:282
+#: curs_lib.c:286
 msgid "Exit Mutt?"
 msgstr "Voleu abandonar Mutt?"
 
 # ivb (2001/12/08)
 # ivb  Apareix amb més coses al darrere (curs_lib) o entre parèntesis
 # ivb  (mutt_socket) -> sense punt.
-#: curs_lib.c:444 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:485 mutt_socket.c:570 mutt_ssl.c:329
 msgid "unknown error"
 msgstr "Error desconegut"
 
-#: curs_lib.c:464
+#: curs_lib.c:505
 msgid "Press any key to continue..."
 msgstr "Premeu qualsevol tecla per a continuar…"
 
-#: curs_lib.c:508
+#: curs_lib.c:549
 msgid " ('?' for list): "
 msgstr " («?» llista): "
 
@@ -1563,7 +1573,7 @@ msgstr "No hi ha cap missatge."
 msgid "Mailbox is read-only."
 msgstr "La bústia és de només lectura."
 
-#: curs_main.c:57 pager.c:59 recvattach.c:892
+#: curs_main.c:57 pager.c:59 recvattach.c:913
 msgid "Function not permitted in attach-message mode."
 msgstr "No es permet aquesta funció al mode d’adjuntar missatges."
 
@@ -1597,7 +1607,7 @@ msgstr "Ix"
 msgid "Save"
 msgstr "Desa"
 
-#: curs_main.c:411 query.c:49
+#: curs_main.c:411 query.c:50
 msgid "Mail"
 msgstr "Nou correu"
 
@@ -1649,7 +1659,7 @@ msgid "Invalid message number."
 msgstr "El número de missatge no és vàlid."
 
 # Cannot…  ivb
-#: curs_main.c:808 curs_main.c:1848 pager.c:2279
+#: curs_main.c:808 curs_main.c:1849 pager.c:2279
 msgid "delete message(s)"
 msgstr "esborrar els missatges"
 
@@ -1681,151 +1691,151 @@ msgstr "Per a veure tots els missatges, limiteu a «all»."
 msgid "Quit Mutt?"
 msgstr "Voleu abandonar Mutt?"
 
-#: curs_main.c:966
+#: curs_main.c:967
 msgid "Tag messages matching: "
 msgstr "Marca els missatges que concorden amb: "
 
 # Cannot…  ivb
-#: curs_main.c:975 curs_main.c:2137 pager.c:2589
+#: curs_main.c:976 curs_main.c:2138 pager.c:2589
 msgid "undelete message(s)"
 msgstr "restaurar els missatges"
 
-#: curs_main.c:977
+#: curs_main.c:978
 msgid "Undelete messages matching: "
 msgstr "Restaura els missatges que concorden amb: "
 
-#: curs_main.c:985
+#: curs_main.c:986
 msgid "Untag messages matching: "
 msgstr "Desmarca els missatges que concorden amb: "
 
 # És una pregunta.  -- ivb
-#: curs_main.c:1065
+#: curs_main.c:1066
 msgid "Open mailbox in read-only mode"
 msgstr "Obri en mode de només lectura la bústia"
 
 # És una pregunta.  -- ivb
-#: curs_main.c:1067
+#: curs_main.c:1068
 msgid "Open mailbox"
 msgstr "Obri la bústia"
 
-#: curs_main.c:1077
+#: curs_main.c:1078
 msgid "No mailboxes have new mail"
 msgstr "No hi ha cap bústia amb correu nou."
 
-#: curs_main.c:1105 mx.c:503 mx.c:652
+#: curs_main.c:1106 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "«%s» no és una bústia."
 
-#: curs_main.c:1200
+#: curs_main.c:1201
 msgid "Exit Mutt without saving?"
 msgstr "Voleu abandonar Mutt sense desar els canvis?"
 
-#: curs_main.c:1218 curs_main.c:1251 curs_main.c:1695 curs_main.c:1727
+#: curs_main.c:1219 curs_main.c:1252 curs_main.c:1696 curs_main.c:1728
 #: flags.c:286 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "No s’ha habilitat l’ús de fils."
 
-#: curs_main.c:1230
+#: curs_main.c:1231
 msgid "Thread broken"
 msgstr "S’ha trencat el fil."
 
 # Cannot…  ivb
-#: curs_main.c:1248
+#: curs_main.c:1249
 msgid "link threads"
 msgstr "enllaçar els fils"
 
-#: curs_main.c:1253
+#: curs_main.c:1254
 msgid "No Message-ID: header available to link thread"
 msgstr "No hi ha capçalera «Message-ID:» amb què enllaçar el fil."
 
-#: curs_main.c:1255
+#: curs_main.c:1256
 msgid "First, please tag a message to be linked here"
 msgstr "Per favor, marqueu un missatge per a enllaçar‐lo ací."
 
-#: curs_main.c:1267
+#: curs_main.c:1268
 msgid "Threads linked"
 msgstr "S’han enllaçat els fils."
 
-#: curs_main.c:1270
+#: curs_main.c:1271
 msgid "No thread linked"
 msgstr "No s’ha enllaçat cap fil."
 
-#: curs_main.c:1306 curs_main.c:1331
+#: curs_main.c:1307 curs_main.c:1332
 msgid "You are on the last message."
 msgstr "Vos trobeu sobre el darrer missatge."
 
-#: curs_main.c:1313 curs_main.c:1357
+#: curs_main.c:1314 curs_main.c:1358
 msgid "No undeleted messages."
 msgstr "No hi ha cap missatge no esborrat."
 
-#: curs_main.c:1350 curs_main.c:1374
+#: curs_main.c:1351 curs_main.c:1375
 msgid "You are on the first message."
 msgstr "Vos trobeu sobre el primer missatge."
 
-#: curs_main.c:1449 pattern.c:1466
+#: curs_main.c:1450 pattern.c:1479
 msgid "Search wrapped to top."
 msgstr "La cerca ha tornat al principi."
 
-#: curs_main.c:1458 pattern.c:1477
+#: curs_main.c:1459 pattern.c:1490
 msgid "Search wrapped to bottom."
 msgstr "La cerca ha tornat al final."
 
 # ivb (2001/12/08)
 # ivb  Ací no hi ha forma de posar el punt final de segur :(
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No new messages"
 msgstr "No hi ha cap missatge nou"
 
 # ivb (2001/12/08)
 # ivb  Ací no hi ha forma de posar el punt final de segur :(
-#: curs_main.c:1499
+#: curs_main.c:1500
 msgid "No unread messages"
 msgstr "No hi ha cap missatge no llegit"
 
-#: curs_main.c:1500
+#: curs_main.c:1501
 msgid " in this limited view"
 msgstr " en aquesta vista limitada."
 
 # Cannot…  ivb
-#: curs_main.c:1516
+#: curs_main.c:1517
 msgid "flag message"
 msgstr "senyalar el missatge"
 
 # Cannot…  ivb
-#: curs_main.c:1553 pager.c:2555
+#: curs_main.c:1554 pager.c:2555
 msgid "toggle new"
 msgstr "canviar el senyalador «nou»"
 
-#: curs_main.c:1630
+#: curs_main.c:1631
 msgid "No more threads."
 msgstr "No hi ha més fils."
 
-#: curs_main.c:1632
+#: curs_main.c:1633
 msgid "You are on the first thread."
 msgstr "Vos trobeu al primer fil."
 
-#: curs_main.c:1713
+#: curs_main.c:1714
 msgid "Thread contains unread messages."
 msgstr "El fil conté missatges no llegits."
 
 # Cannot…  ivb
-#: curs_main.c:1807 pager.c:2262
+#: curs_main.c:1808 pager.c:2262
 msgid "delete message"
 msgstr "esborrar el missatge"
 
 # Cannot…  ivb
-#: curs_main.c:1889
+#: curs_main.c:1890
 msgid "edit message"
 msgstr "esborrar el missatge"
 
 # Cannot…  ivb
-#: curs_main.c:2020
+#: curs_main.c:2021
 msgid "mark message(s) as read"
 msgstr "marcar els missatges com a llegits"
 
 # Cannot…  ivb
-#: curs_main.c:2110 pager.c:2574
+#: curs_main.c:2111 pager.c:2574
 msgid "undelete message"
 msgstr "restaurar el missatge"
 
@@ -2128,7 +2138,7 @@ msgstr ""
 msgid "Help for %s"
 msgstr "Ajuda de «%s»"
 
-#: history.c:75 history.c:109 history.c:132
+#: history.c:77 history.c:114 history.c:140
 #, c-format
 msgid "Bad history file format (line %d)"
 msgstr "El format del fitxer d’historial no és vàlid (línia %d)."
@@ -2169,11 +2179,11 @@ msgid "CRAM-MD5 authentication failed."
 msgstr "L’autenticació CRAM‐MD5 ha fallat."
 
 #. now begin login
-#: imap/auth_gss.c:105
+#: imap/auth_gss.c:142
 msgid "Authenticating (GSSAPI)..."
 msgstr "S’està autenticant (GSSAPI)…"
 
-#: imap/auth_gss.c:268
+#: imap/auth_gss.c:307
 msgid "GSSAPI authentication failed."
 msgstr "L’autenticació GSSAPI ha fallat."
 
@@ -2211,29 +2221,29 @@ msgstr "S’està obtenint la llista de carpetes…"
 msgid "No such folder"
 msgstr "La carpeta no existeix."
 
-#: imap/browse.c:271
+#: imap/browse.c:276
 msgid "Create mailbox: "
 msgstr "Crea la bústia: "
 
-#: imap/browse.c:276 imap/browse.c:322
+#: imap/browse.c:281 imap/browse.c:327
 msgid "Mailbox must have a name."
 msgstr "La bústia ha de tenir un nom."
 
-#: imap/browse.c:284
+#: imap/browse.c:289
 msgid "Mailbox created."
 msgstr "S’ha creat la bústia."
 
-#: imap/browse.c:315
+#: imap/browse.c:320
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Reanomena la bústia «%s» a: "
 
-#: imap/browse.c:328
+#: imap/browse.c:333
 #, c-format
 msgid "Rename failed: %s"
 msgstr "El reanomenament ha fallat: %s"
 
-#: imap/browse.c:333
+#: imap/browse.c:338
 msgid "Mailbox renamed."
 msgstr "S’ha reanomenat la bústia."
 
@@ -2271,7 +2281,7 @@ msgstr "S’està seleccionant la bústia «%s»…"
 msgid "Error opening mailbox"
 msgstr "Error en obrir la bústia."
 
-#: imap/imap.c:802 imap/message.c:792 muttlib.c:1467
+#: imap/imap.c:802 imap/message.c:792 muttlib.c:1466
 #, c-format
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
@@ -2351,15 +2361,15 @@ msgstr "No s’ha pogut crear el fitxer temporal «%s»."
 msgid "Evaluating cache..."
 msgstr "S’està avaluant la memòria cau…"
 
-#: imap/message.c:221 pop.c:239
+#: imap/message.c:221 pop.c:272
 msgid "Fetching message headers..."
 msgstr "S’estan recollint les capçaleres dels missatges…"
 
-#: imap/message.c:402 imap/message.c:459 pop.c:513
+#: imap/message.c:402 imap/message.c:459 pop.c:547
 msgid "Fetching message..."
 msgstr "S’està recollint el missatge…"
 
-#: imap/message.c:448 pop.c:508
+#: imap/message.c:448 pop.c:542
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "L’índex del missatge no és correcte.  Proveu de reobrir la bústia."
 
@@ -2630,814 +2640,6 @@ msgstr "Premeu les tecles («^G» avorta): "
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Caràcter = %s, Octal = %o, Decimal = %d"
 
-# ivb (2001/11/24)
-# ivb  Totes aquestes cadenes són missatges d’ajuda.  No sembla haver
-# ivb  restriccions de longitud.
-#: keymap_alldefs.h:5
-msgid "null operation"
-msgstr "L’operació nuŀla."
-
-#: keymap_alldefs.h:6
-msgid "end of conditional execution (noop)"
-msgstr "Termina l’execució condicional (operació nuŀla)."
-
-#: keymap_alldefs.h:7
-msgid "force viewing of attachment using mailcap"
-msgstr "Força la visualització d’una adjunció emprant «mailcap»."
-
-#: keymap_alldefs.h:8
-msgid "view attachment as text"
-msgstr "Mostra una adjunció com a text."
-
-#: keymap_alldefs.h:9
-msgid "Toggle display of subparts"
-msgstr "Activa o desactiva la visualització de les subparts."
-
-#: keymap_alldefs.h:10
-msgid "move to the bottom of the page"
-msgstr "Va al final de la pàgina."
-
-#: keymap_alldefs.h:11
-msgid "remail a message to another user"
-msgstr "Redirigeix un missatge a un altre destinatari."
-
-#: keymap_alldefs.h:12
-msgid "select a new file in this directory"
-msgstr "Selecciona un nou fitxer d’aquest directori."
-
-#: keymap_alldefs.h:13
-msgid "view file"
-msgstr "Mostra un fitxer."
-
-#: keymap_alldefs.h:14
-msgid "display the currently selected file's name"
-msgstr "Mostra el nom del fitxer seleccionat actualment."
-
-#: keymap_alldefs.h:15
-msgid "subscribe to current mailbox (IMAP only)"
-msgstr "Es subscriu a la bústia actual (només a IMAP)."
-
-#: keymap_alldefs.h:16
-msgid "unsubscribe from current mailbox (IMAP only)"
-msgstr "Es dessubscriu de la bústia actual (només a IMAP)."
-
-#: keymap_alldefs.h:17
-msgid "toggle view all/subscribed mailboxes (IMAP only)"
-msgstr ""
-"Canvia entre veure totes les bústies o tan sols les subscrites (només a "
-"IMAP)."
-
-#: keymap_alldefs.h:18
-msgid "list mailboxes with new mail"
-msgstr "Llista les bústies amb correu nou."
-
-#: keymap_alldefs.h:19
-msgid "change directories"
-msgstr "Canvia de directori."
-
-#: keymap_alldefs.h:20
-msgid "check mailboxes for new mail"
-msgstr "Comprova si hi ha correu nou a les bústies."
-
-#: keymap_alldefs.h:21
-msgid "attach file(s) to this message"
-msgstr "Adjunta fitxers a aquest missatge."
-
-#: keymap_alldefs.h:22
-msgid "attach message(s) to this message"
-msgstr "Adjunta missatges a aquest missatge."
-
-#: keymap_alldefs.h:23
-msgid "edit the BCC list"
-msgstr "Edita la llista de còpia cega (Bcc)."
-
-#: keymap_alldefs.h:24
-msgid "edit the CC list"
-msgstr "Edita la llista de còpia (Cc)."
-
-#: keymap_alldefs.h:25
-msgid "edit attachment description"
-msgstr "Edita la descripció d’una adjunció."
-
-#: keymap_alldefs.h:26
-msgid "edit attachment transfer-encoding"
-msgstr "Edita la codificació de transferència d’una adjunció."
-
-#: keymap_alldefs.h:27
-msgid "enter a file to save a copy of this message in"
-msgstr "Demana un fitxer on desar una còpia d’aquest missatge."
-
-#: keymap_alldefs.h:28
-msgid "edit the file to be attached"
-msgstr "Edita un fitxer a adjuntar."
-
-#: keymap_alldefs.h:29
-msgid "edit the from field"
-msgstr "Edita el camp de remitent (From)."
-
-#: keymap_alldefs.h:30
-msgid "edit the message with headers"
-msgstr "Edita el missatge amb capçaleres."
-
-#: keymap_alldefs.h:31
-msgid "edit the message"
-msgstr "Edita el missatge."
-
-#: keymap_alldefs.h:32
-msgid "edit attachment using mailcap entry"
-msgstr "Edita l’adjunció emprant l’entrada de «mailcap»."
-
-#: keymap_alldefs.h:33
-msgid "edit the Reply-To field"
-msgstr "Edita el camp de resposta (Reply-To)."
-
-#: keymap_alldefs.h:34
-msgid "edit the subject of this message"
-msgstr "Edita l’assumpte del missatge (Subject)."
-
-#: keymap_alldefs.h:35
-msgid "edit the TO list"
-msgstr "Edita la llista de destinataris (To)."
-
-#: keymap_alldefs.h:36
-msgid "create a new mailbox (IMAP only)"
-msgstr "Crea una nova bústia (només a IMAP)."
-
-#: keymap_alldefs.h:37
-msgid "edit attachment content type"
-msgstr "Edita el tipus de contingut d’una adjunció."
-
-#: keymap_alldefs.h:38
-msgid "get a temporary copy of an attachment"
-msgstr "Crea una còpia temporal d’una adjunció."
-
-#: keymap_alldefs.h:39
-msgid "run ispell on the message"
-msgstr "Executa «ispell» (comprovació ortogràfica) sobre el missatge."
-
-#: keymap_alldefs.h:40
-msgid "compose new attachment using mailcap entry"
-msgstr "Crea una nova adjunció emprant l’entrada de «mailcap»."
-
-#: keymap_alldefs.h:41
-msgid "toggle recoding of this attachment"
-msgstr "Estableix si una adjunció serà recodificada."
-
-#: keymap_alldefs.h:42
-msgid "save this message to send later"
-msgstr "Desa aquest missatge per a enviar‐lo més endavant."
-
-#: keymap_alldefs.h:43
-msgid "rename/move an attached file"
-msgstr "Reanomena (o mou) un fitxer adjunt."
-
-#: keymap_alldefs.h:44
-msgid "send the message"
-msgstr "Envia el missatge."
-
-#: keymap_alldefs.h:45
-msgid "toggle disposition between inline/attachment"
-msgstr "Canvia la disposició entre en línia o adjunt."
-
-#: keymap_alldefs.h:46
-msgid "toggle whether to delete file after sending it"
-msgstr "Estableix si cal esborrar un fitxer una volta enviat."
-
-#: keymap_alldefs.h:47
-msgid "update an attachment's encoding info"
-msgstr "Edita la informació de codificació d’un missatge."
-
-#: keymap_alldefs.h:48
-msgid "write the message to a folder"
-msgstr "Escriu el missatge en una carpeta."
-
-#: keymap_alldefs.h:49
-msgid "copy a message to a file/mailbox"
-msgstr "Còpia un missatge en un fitxer o bústia."
-
-#: keymap_alldefs.h:50
-msgid "create an alias from a message sender"
-msgstr "Crea un àlies partint del remitent d’un missatge."
-
-#: keymap_alldefs.h:51
-msgid "move entry to bottom of screen"
-msgstr "Mou l’indicador al final de la pantalla."
-
-#: keymap_alldefs.h:52
-msgid "move entry to middle of screen"
-msgstr "Mou l’indicador al centre de la pantalla."
-
-#: keymap_alldefs.h:53
-msgid "move entry to top of screen"
-msgstr "Mou l’indicador al començament de la pantalla."
-
-#: keymap_alldefs.h:54
-msgid "make decoded (text/plain) copy"
-msgstr "Crea una còpia descodificada (text/plain) del missatge."
-
-#: keymap_alldefs.h:55
-msgid "make decoded copy (text/plain) and delete"
-msgstr "Crea una còpia descodificada (text/plain) del missatge i l’esborra."
-
-#: keymap_alldefs.h:56
-msgid "delete the current entry"
-msgstr "Esborra l’entrada actual."
-
-#: keymap_alldefs.h:57
-msgid "delete the current mailbox (IMAP only)"
-msgstr "Esborra la bústia actual (només a IMAP)."
-
-#: keymap_alldefs.h:58
-msgid "delete all messages in subthread"
-msgstr "Esborra tots els missatges d’un subfil."
-
-#: keymap_alldefs.h:59
-msgid "delete all messages in thread"
-msgstr "Esborra tots els missatges d’un fil."
-
-#: keymap_alldefs.h:60
-msgid "display full address of sender"
-msgstr "Mostra l’adreça completa del remitent."
-
-#: keymap_alldefs.h:61
-msgid "display message and toggle header weeding"
-msgstr "Mostra un missatge i oculta o mostra certs camps de la capçalera."
-
-#: keymap_alldefs.h:62
-msgid "display a message"
-msgstr "Mostra un missatge."
-
-#: keymap_alldefs.h:63
-msgid "edit the raw message"
-msgstr "Edita un missatge en brut."
-
-#: keymap_alldefs.h:64
-msgid "delete the char in front of the cursor"
-msgstr "Esborra el caràcter anterior al cursor."
-
-#: keymap_alldefs.h:65
-msgid "move the cursor one character to the left"
-msgstr "Mou el cursor un caràcter a l’esquerra."
-
-#: keymap_alldefs.h:66
-msgid "move the cursor to the beginning of the word"
-msgstr "Mou el cursor al començament de la paraula."
-
-#: keymap_alldefs.h:67
-msgid "jump to the beginning of the line"
-msgstr "Salta al començament de la línia."
-
-# ivb (2001/12/07)
-# ivb  Es refereix a les definides en «mailboxes».
-#: keymap_alldefs.h:68
-msgid "cycle among incoming mailboxes"
-msgstr "Canvia entre les bústies d’entrada."
-
-#: keymap_alldefs.h:69
-msgid "complete filename or alias"
-msgstr "Completa el nom de fitxer o l’àlies."
-
-#: keymap_alldefs.h:70
-msgid "complete address with query"
-msgstr "Completa una adreça fent una consulta."
-
-#: keymap_alldefs.h:71
-msgid "delete the char under the cursor"
-msgstr "Esborra el caràcter sota el cursor."
-
-#: keymap_alldefs.h:72
-msgid "jump to the end of the line"
-msgstr "Salta al final de la línia."
-
-#: keymap_alldefs.h:73
-msgid "move the cursor one character to the right"
-msgstr "Mou el cursor un caràcter a la dreta."
-
-#: keymap_alldefs.h:74
-msgid "move the cursor to the end of the word"
-msgstr "Mou el cursor al final de la paraula."
-
-#: keymap_alldefs.h:75
-msgid "scroll down through the history list"
-msgstr "Es desplaça cap avall a la llista d’historial."
-
-#: keymap_alldefs.h:76
-msgid "scroll up through the history list"
-msgstr "Es desplaça cap amunt a la llista d’historial."
-
-#: keymap_alldefs.h:77
-msgid "delete chars from cursor to end of line"
-msgstr "Esborra els caràcters des del cursor fins al final de la línia."
-
-#: keymap_alldefs.h:78
-msgid "delete chars from the cursor to the end of the word"
-msgstr "Esborra els caràcters des del cursor fins al final de la paraula."
-
-#: keymap_alldefs.h:79
-msgid "delete all chars on the line"
-msgstr "Esborra tots els caràcters de la línia."
-
-# Sí, enfront és a l’esquerra.  ivb
-#: keymap_alldefs.h:80
-msgid "delete the word in front of the cursor"
-msgstr "Esborra la paraula a l’esquerra del cursor."
-
-#: keymap_alldefs.h:81
-msgid "quote the next typed key"
-msgstr "Escriu tal qual la tecla premuda a continuació."
-
-#: keymap_alldefs.h:82
-msgid "transpose character under cursor with previous"
-msgstr "Transposa el caràcter sota el cursor i l’anterior."
-
-#: keymap_alldefs.h:83
-msgid "capitalize the word"
-msgstr "Posa la primera lletra de la paraula en majúscula."
-
-#: keymap_alldefs.h:84
-msgid "convert the word to lower case"
-msgstr "Converteix la paraula a minúscules."
-
-#: keymap_alldefs.h:85
-msgid "convert the word to upper case"
-msgstr "Converteix la paraula a majúscules."
-
-#: keymap_alldefs.h:86
-msgid "enter a muttrc command"
-msgstr "Executa una ordre de «muttrc»."
-
-#: keymap_alldefs.h:87
-msgid "enter a file mask"
-msgstr "Estableix una màscara de fitxers."
-
-#: keymap_alldefs.h:88
-msgid "exit this menu"
-msgstr "Abandona aquest menú."
-
-#: keymap_alldefs.h:89
-msgid "filter attachment through a shell command"
-msgstr "Filtra una adjunció amb una ordre de l’intèrpret."
-
-#: keymap_alldefs.h:90
-msgid "move to the first entry"
-msgstr "Va a la primera entrada."
-
-#: keymap_alldefs.h:91
-msgid "toggle a message's 'important' flag"
-msgstr "Canvia el senyalador «important» d’un missatge."
-
-#: keymap_alldefs.h:92
-msgid "forward a message with comments"
-msgstr "Reenvia un missatge amb comentaris."
-
-#: keymap_alldefs.h:93
-msgid "select the current entry"
-msgstr "Selecciona l’entrada actual."
-
-#: keymap_alldefs.h:94
-msgid "reply to all recipients"
-msgstr "Respon a tots els destinataris."
-
-#: keymap_alldefs.h:95
-msgid "scroll down 1/2 page"
-msgstr "Avança mitja pàgina."
-
-#: keymap_alldefs.h:96
-msgid "scroll up 1/2 page"
-msgstr "Endarrereix mitja pàgina."
-
-#: keymap_alldefs.h:97
-msgid "this screen"
-msgstr "Mostra aquesta pantalla."
-
-#: keymap_alldefs.h:98
-msgid "jump to an index number"
-msgstr "Salta a un número d’índex."
-
-#: keymap_alldefs.h:99
-msgid "move to the last entry"
-msgstr "Va a la darrera entrada."
-
-#: keymap_alldefs.h:100
-msgid "reply to specified mailing list"
-msgstr "Respon a la llista de correu indicada."
-
-#: keymap_alldefs.h:101
-msgid "execute a macro"
-msgstr "Executa una macro."
-
-#: keymap_alldefs.h:102
-msgid "compose a new mail message"
-msgstr "Redacta un nou missatge de correu."
-
-#: keymap_alldefs.h:103
-msgid "break the thread in two"
-msgstr "Parteix el fil en dos."
-
-#: keymap_alldefs.h:104
-msgid "open a different folder"
-msgstr "Obri una carpeta diferent."
-
-#: keymap_alldefs.h:105
-msgid "open a different folder in read only mode"
-msgstr "Obri una carpeta diferent en mode de només lectura."
-
-#: keymap_alldefs.h:106
-msgid "clear a status flag from a message"
-msgstr "Elimina un senyalador d’estat d’un missatge."
-
-#: keymap_alldefs.h:107
-msgid "delete messages matching a pattern"
-msgstr "Esborra els missatges que concorden amb un patró."
-
-#: keymap_alldefs.h:108
-msgid "force retrieval of mail from IMAP server"
-msgstr "Força l’obtenció del correu d’un servidor IMAP."
-
-#: keymap_alldefs.h:109
-msgid "retrieve mail from POP server"
-msgstr "Obté el correu d’un servidor POP."
-
-#: keymap_alldefs.h:110
-msgid "move to the first message"
-msgstr "Va al primer missatge."
-
-#: keymap_alldefs.h:111
-msgid "move to the last message"
-msgstr "Va al darrer missatge."
-
-#: keymap_alldefs.h:112
-msgid "show only messages matching a pattern"
-msgstr "Mostra només els missatges que concorden amb un patró."
-
-#: keymap_alldefs.h:113
-msgid "link tagged message to the current one"
-msgstr "Enllaça el missatge marcat a l’actual."
-
-#: keymap_alldefs.h:114
-msgid "open next mailbox with new mail"
-msgstr "Obri la següent bústia amb correu nou."
-
-#: keymap_alldefs.h:115
-msgid "jump to the next new message"
-msgstr "Salta al següent missatge nou."
-
-#: keymap_alldefs.h:116
-msgid "jump to the next new or unread message"
-msgstr "Salta al següent missatge nou o no llegit."
-
-#: keymap_alldefs.h:117
-msgid "jump to the next subthread"
-msgstr "Salta al subfil següent."
-
-#: keymap_alldefs.h:118
-msgid "jump to the next thread"
-msgstr "Salta al fil següent."
-
-#: keymap_alldefs.h:119
-msgid "move to the next undeleted message"
-msgstr "Va al següent missatge no esborrat."
-
-#: keymap_alldefs.h:120
-msgid "jump to the next unread message"
-msgstr "Salta al següent missatge no llegit."
-
-#: keymap_alldefs.h:121
-msgid "jump to parent message in thread"
-msgstr "Salta al missatge pare del fil."
-
-#: keymap_alldefs.h:122
-msgid "jump to previous thread"
-msgstr "Salta al fil anterior."
-
-#: keymap_alldefs.h:123
-msgid "jump to previous subthread"
-msgstr "Salta al subfil anterior."
-
-#: keymap_alldefs.h:124
-msgid "move to the previous undeleted message"
-msgstr "Va a l’anterior missatge no llegit."
-
-#: keymap_alldefs.h:125
-msgid "jump to the previous new message"
-msgstr "Salta a l’anterior missatge nou."
-
-#: keymap_alldefs.h:126
-msgid "jump to the previous new or unread message"
-msgstr "Salta a l’anterior missatge nou o no llegit."
-
-#: keymap_alldefs.h:127
-msgid "jump to the previous unread message"
-msgstr "Salta a l’anterior missatge no llegit."
-
-#: keymap_alldefs.h:128
-msgid "mark the current thread as read"
-msgstr "Marca el fil actual com a llegit."
-
-#: keymap_alldefs.h:129
-msgid "mark the current subthread as read"
-msgstr "Marca el subfil actual com a llegit."
-
-#: keymap_alldefs.h:130
-msgid "set a status flag on a message"
-msgstr "Estableix un senyalador d’estat d’un missatge."
-
-#: keymap_alldefs.h:131
-msgid "save changes to mailbox"
-msgstr "Desa els canvis realitzats a la bústia."
-
-#: keymap_alldefs.h:132
-msgid "tag messages matching a pattern"
-msgstr "Marca els missatges que concorden amb un patró."
-
-#: keymap_alldefs.h:133
-msgid "undelete messages matching a pattern"
-msgstr "Restaura els missatges que concorden amb un patró."
-
-#: keymap_alldefs.h:134
-msgid "untag messages matching a pattern"
-msgstr "Desmarca els missatges que concorden amb un patró."
-
-#: keymap_alldefs.h:135
-msgid "move to the middle of the page"
-msgstr "Va al centre de la pàgina."
-
-#: keymap_alldefs.h:136
-msgid "move to the next entry"
-msgstr "Va a l’entrada següent."
-
-#: keymap_alldefs.h:137
-msgid "scroll down one line"
-msgstr "Avança una línia."
-
-#: keymap_alldefs.h:138
-msgid "move to the next page"
-msgstr "Va a la pàgina següent."
-
-#: keymap_alldefs.h:139
-msgid "jump to the bottom of the message"
-msgstr "Salta al final del missatge."
-
-#: keymap_alldefs.h:140
-msgid "toggle display of quoted text"
-msgstr "Oculta o mostra el text citat."
-
-#: keymap_alldefs.h:141
-msgid "skip beyond quoted text"
-msgstr "Avança fins al final del text citat."
-
-#: keymap_alldefs.h:142
-msgid "jump to the top of the message"
-msgstr "Salta a l’inici del missatge."
-
-#: keymap_alldefs.h:143
-msgid "pipe message/attachment to a shell command"
-msgstr "Redirigeix un missatge o adjunció a una ordre de l’intèrpret."
-
-#: keymap_alldefs.h:144
-msgid "move to the previous entry"
-msgstr "Va a l’entrada anterior."
-
-#: keymap_alldefs.h:145
-msgid "scroll up one line"
-msgstr "Endarrereix una línia."
-
-#: keymap_alldefs.h:146
-msgid "move to the previous page"
-msgstr "Va a la pàgina anterior."
-
-#: keymap_alldefs.h:147
-msgid "print the current entry"
-msgstr "Imprimeix l’entrada actual."
-
-#: keymap_alldefs.h:148
-msgid "query external program for addresses"
-msgstr "Pregunta a un programa extern per una adreça."
-
-#: keymap_alldefs.h:149
-msgid "append new query results to current results"
-msgstr "Afegeix els resultats d’una consulta nova als resultats actuals."
-
-#: keymap_alldefs.h:150
-msgid "save changes to mailbox and quit"
-msgstr "Desa els canvis realitzats a la bústia i ix."
-
-#: keymap_alldefs.h:151
-msgid "recall a postponed message"
-msgstr "Recupera un missatge posposat."
-
-#: keymap_alldefs.h:152
-msgid "clear and redraw the screen"
-msgstr "Neteja i redibuixa la pantalla."
-
-# ivb (2001/11/26)
-# ivb  Es refereix a una funció -> femení.
-#: keymap_alldefs.h:153
-msgid "{internal}"
-msgstr "{interna}"
-
-#: keymap_alldefs.h:154
-msgid "rename the current mailbox (IMAP only)"
-msgstr "Reanomena la bústia actual (només a IMAP)."
-
-#: keymap_alldefs.h:155
-msgid "reply to a message"
-msgstr "Respon a un missatge."
-
-#: keymap_alldefs.h:156
-msgid "use the current message as a template for a new one"
-msgstr "Empra el missatge actual com a plantilla per a un de nou."
-
-#: keymap_alldefs.h:157
-msgid "save message/attachment to a file"
-msgstr "Desa un missatge o adjunció en un fitxer."
-
-#: keymap_alldefs.h:158
-msgid "search for a regular expression"
-msgstr "Cerca una expressió regular."
-
-#: keymap_alldefs.h:159
-msgid "search backwards for a regular expression"
-msgstr "Cerca cap enrere una expressió regular."
-
-#: keymap_alldefs.h:160
-msgid "search for next match"
-msgstr "Cerca la concordança següent."
-
-#: keymap_alldefs.h:161
-msgid "search for next match in opposite direction"
-msgstr "Cerca la concordança anterior."
-
-#: keymap_alldefs.h:162
-msgid "toggle search pattern coloring"
-msgstr "Estableix si cal resaltar les concordances trobades."
-
-#: keymap_alldefs.h:163
-msgid "invoke a command in a subshell"
-msgstr "Invoca una ordre en un subintèrpret."
-
-#: keymap_alldefs.h:164
-msgid "sort messages"
-msgstr "Ordena els missatges."
-
-#: keymap_alldefs.h:165
-msgid "sort messages in reverse order"
-msgstr "Ordena inversament els missatges."
-
-#: keymap_alldefs.h:166
-msgid "tag the current entry"
-msgstr "Marca l’entrada actual."
-
-#: keymap_alldefs.h:167
-msgid "apply next function to tagged messages"
-msgstr "Aplica la funció següent als missatges marcats."
-
-#: keymap_alldefs.h:168
-msgid "apply next function ONLY to tagged messages"
-msgstr "Aplica la funció següent NOMÉS als missatges marcats."
-
-#: keymap_alldefs.h:169
-msgid "tag the current subthread"
-msgstr "Marca el subfil actual."
-
-#: keymap_alldefs.h:170
-msgid "tag the current thread"
-msgstr "Marca el fil actual."
-
-#: keymap_alldefs.h:171
-msgid "toggle a message's 'new' flag"
-msgstr "Canvia el senyalador «nou» d’un missatge."
-
-#: keymap_alldefs.h:172
-msgid "toggle whether the mailbox will be rewritten"
-msgstr "Estableix si s’escriuran els canvis a la bústia."
-
-# ivb (2001/12/07)
-# ivb  Es refereix a les definides en «mailboxes».
-#: keymap_alldefs.h:173
-msgid "toggle whether to browse mailboxes or all files"
-msgstr ""
-"Estableix si es navegarà només per les bústies d’entrada o per tots els "
-"fitxers."
-
-#: keymap_alldefs.h:174
-msgid "move to the top of the page"
-msgstr "Va a l’inici de la pàgina."
-
-#: keymap_alldefs.h:175
-msgid "undelete the current entry"
-msgstr "Restaura l’entrada actual."
-
-#: keymap_alldefs.h:176
-msgid "undelete all messages in thread"
-msgstr "Restaura tots els missatges d’un fil."
-
-#: keymap_alldefs.h:177
-msgid "undelete all messages in subthread"
-msgstr "Restaura tots els missatges d’un subfil."
-
-#: keymap_alldefs.h:178
-msgid "show the Mutt version number and date"
-msgstr "Mostra el número de versió i la data de Mutt."
-
-#: keymap_alldefs.h:179
-msgid "view attachment using mailcap entry if necessary"
-msgstr "Mostra una adjunció emprant l’entrada de «mailcap» si és necessari."
-
-#: keymap_alldefs.h:180
-msgid "show MIME attachments"
-msgstr "Mostra les adjuncions MIME."
-
-#: keymap_alldefs.h:181
-msgid "display the keycode for a key press"
-msgstr "Mostra el codi d’una tecla premuda."
-
-#: keymap_alldefs.h:182
-msgid "show currently active limit pattern"
-msgstr "Mostra el patró limitant actiu."
-
-#: keymap_alldefs.h:183
-msgid "collapse/uncollapse current thread"
-msgstr "Plega o desplega el fil actual."
-
-#: keymap_alldefs.h:184
-msgid "collapse/uncollapse all threads"
-msgstr "Plega o desplega tots els fils."
-
-#: keymap_alldefs.h:185
-msgid "attach a PGP public key"
-msgstr "Adjunta una clau pública PGP."
-
-#: keymap_alldefs.h:186
-msgid "show PGP options"
-msgstr "Mostra les opcions de PGP."
-
-#: keymap_alldefs.h:187
-msgid "mail a PGP public key"
-msgstr "Envia una clau pública PGP."
-
-#: keymap_alldefs.h:188
-msgid "verify a PGP public key"
-msgstr "Verifica una clau pública PGP."
-
-#: keymap_alldefs.h:189
-msgid "view the key's user id"
-msgstr "Mostra l’identificador d’usuari d’una clau."
-
-# ivb (2001/12/02)
-# ivb  Es refereix al format del missatge.
-#: keymap_alldefs.h:190
-msgid "check for classic PGP"
-msgstr "Comprova si s’ha emprat el PGP clàssic."
-
-#: keymap_alldefs.h:191
-msgid "Accept the chain constructed"
-msgstr "Accepta la cadena construïda."
-
-#: keymap_alldefs.h:192
-msgid "Append a remailer to the chain"
-msgstr "Afegeix un redistribuïdor a la cadena."
-
-#: keymap_alldefs.h:193
-msgid "Insert a remailer into the chain"
-msgstr "Insereix un redistribuïdor a la cadena."
-
-#: keymap_alldefs.h:194
-msgid "Delete a remailer from the chain"
-msgstr "Esborra un redistribuïdor de la cadena."
-
-#: keymap_alldefs.h:195
-msgid "Select the previous element of the chain"
-msgstr "Selecciona l’element anterior de la cadena."
-
-#: keymap_alldefs.h:196
-msgid "Select the next element of the chain"
-msgstr "Selecciona l’element següent de la cadena."
-
-#: keymap_alldefs.h:197
-msgid "send the message through a mixmaster remailer chain"
-msgstr "Envia el missatge per una cadena de redistribuïdors Mixmaster."
-
-#: keymap_alldefs.h:198
-msgid "make decrypted copy and delete"
-msgstr "Fa una còpia desxifrada del missatge i esborra aquest."
-
-#: keymap_alldefs.h:199
-msgid "make decrypted copy"
-msgstr "Fa una còpia desxifrada del missatge."
-
-#: keymap_alldefs.h:200
-msgid "wipe passphrase(s) from memory"
-msgstr "Esborra de la memòria les frases clau."
-
-#: keymap_alldefs.h:201
-msgid "extract supported public keys"
-msgstr "Extreu totes les claus públiques possibles."
-
-#: keymap_alldefs.h:202
-msgid "show S/MIME options"
-msgstr "Mostra les opcions d’S/MIME."
-
 #: lib.c:129
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Desbordament enter, no s’ha pogut reservar memòria."
@@ -3457,8 +2659,9 @@ msgstr ""
 "amb Ivan Vilata i Balaguer <ivan@selidor.net>.\n"
 
 #: main.c:67
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2007 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -3470,12 +2673,13 @@ msgstr ""
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: main.c:73
+#, fuzzy
 msgid ""
-"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -3635,70 +2839,74 @@ msgstr ""
 "\n"
 "Opcions de compiŀlació:"
 
-#: main.c:508
+#: main.c:502
 msgid "Error initializing terminal."
 msgstr "Error en inicialitzar el terminal."
 
-#: main.c:626
+#: main.c:620
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "S’activa la depuració a nivell %d.\n"
 
-#: main.c:628
+#: main.c:622
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "No es va definir «DEBUG» a la compiŀlació.  Es descarta l’opció.\n"
 
 # ivb (2001/11/27)
 # ivb  Es refereix al directori «Maildir» -> masculí.
-#: main.c:791
+#: main.c:785
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "«%s» no existeix.  Voleu crear‐lo?"
 
-#: main.c:795
+#: main.c:789
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "No s’ha pogut crear «%s»: %s"
 
-#: main.c:841
+#: main.c:831
+msgid "Failed to parse mailto: link\n"
+msgstr ""
+
+#: main.c:843
 msgid "No recipients specified.\n"
 msgstr "No s’ha indicat cap destinatari.\n"
 
-#: main.c:927
+#: main.c:929
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: No s’ha pogut adjuntar el fitxer.\n"
 
-#: main.c:950
+#: main.c:952
 msgid "No mailbox with new mail."
 msgstr "No hi ha cap bústia amb correu nou."
 
-#: main.c:959
+#: main.c:961
 msgid "No incoming mailboxes defined."
 msgstr "No s’ha definit cap bústia d’entrada."
 
-#: main.c:987
+#: main.c:989
 msgid "Mailbox is empty."
 msgstr "La bústia és buida."
 
-#: mbox.c:121 mbox.c:271 mh.c:1078 mh.c:1109 mx.c:673
+#: mbox.c:123 mbox.c:277 mh.c:1137 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "S’està llegint «%s»…"
 
-#: mbox.c:157 mbox.c:214
+#: mbox.c:161 mbox.c:218
 msgid "Mailbox is corrupt!"
 msgstr "La bústia és corrupta."
 
-#: mbox.c:670
+#: mbox.c:678
 msgid "Mailbox was corrupted!"
 msgstr "La bústia ha estat corrompuda."
 
-#: mbox.c:711 mbox.c:964
+#: mbox.c:719 mbox.c:975
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Error fatal.  No s’ha pogut reobrir la bústia."
 
-#: mbox.c:720
+#: mbox.c:728
 msgid "Unable to lock mailbox!"
 msgstr "No s’ha pogut blocar la bústia."
 
@@ -3709,12 +2917,12 @@ msgstr "No s’ha pogut blocar la bústia."
 #. * messages were found to be changed or deleted.  This should
 #. * never happen, is we presume it is a bug in mutt.
 #.
-#: mbox.c:763
+#: mbox.c:771
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr ""
 "sync: La bústia és modificada però els missatges no (informeu de l’error)."
 
-#: mbox.c:785 mh.c:1599 mx.c:766
+#: mbox.c:795 mh.c:1636 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "S’està escrivint «%s»…"
@@ -3722,23 +2930,23 @@ msgstr "S’està escrivint «%s»…"
 #. copy the temp mailbox back into place starting at the first
 #. * change/deleted message
 #.
-#: mbox.c:917
+#: mbox.c:928
 msgid "Committing changes..."
 msgstr "S’estan realitzant els canvis…"
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  L’escriptura ha fallat.  S’ha desat la bústia parcial a «%s».
-#: mbox.c:948
+#: mbox.c:959
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "L’escriptura fallà.  Es desa la bústia parcial a «%s»."
 
-#: mbox.c:1012
+#: mbox.c:1023
 msgid "Could not reopen mailbox!"
 msgstr "No s’ha pogut reobrir la bústia."
 
-#: mbox.c:1047
+#: mbox.c:1058
 msgid "Reopening mailbox..."
 msgstr "S’està reobrint la bústia…"
 
@@ -3779,19 +2987,19 @@ msgstr "Vos trobeu a la darrera entrada."
 msgid "You are on the first entry."
 msgstr "Vos trobeu a la primera entrada."
 
-#: menu.c:724 pattern.c:1404
+#: menu.c:724 pattern.c:1417
 msgid "Search for: "
 msgstr "Cerca: "
 
-#: menu.c:725 pattern.c:1405
+#: menu.c:725 pattern.c:1418
 msgid "Reverse search for: "
 msgstr "Cerca cap enrere: "
 
-#: menu.c:735 pattern.c:1437
+#: menu.c:735 pattern.c:1450
 msgid "No search pattern."
 msgstr "No s’ha indicat cap patró de cerca."
 
-#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1520
+#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1533
 msgid "Not found."
 msgstr "No s’ha trobat."
 
@@ -3812,48 +3020,32 @@ msgid "Tagging is not supported."
 msgstr "No es pot marcar."
 
 # Mutt usa «scan» quan es refereix a llegir una bústia Maildir.  ivb
-#: mh.c:1076
+#: mh.c:1116
 #, c-format
 msgid "Scanning %s..."
 msgstr "S’està llegint «%s»…"
 
-#: mh.c:1323
+#: mh.c:1358
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): No s’ha pogut canviar la data del fitxer."
 
-#: mutt_sasl.c:189
+#: mutt_sasl.c:192
 msgid "Unknown SASL profile"
 msgstr "El perfil SASL no és conegut."
 
-#: mutt_sasl.c:195
-msgid "SASL failed to get local IP address"
-msgstr "SASL no ha pogut obtenir l’adreça IP local."
-
-#: mutt_sasl.c:200
-msgid "SASL failed to parse local IP address"
-msgstr "SASL no ha pogut interpretar l’adreça IP local."
-
-#: mutt_sasl.c:206
-msgid "SASL failed to get remote IP address"
-msgstr "SASL no ha pogut obtenir l’adreça IP remota."
-
-#: mutt_sasl.c:211
-msgid "SASL failed to parse remote IP address"
-msgstr "SASL no ha pogut interpretar l’adreça IP remota."
-
-#: mutt_sasl.c:222
+#: mutt_sasl.c:226
 msgid "Error allocating SASL connection"
 msgstr "Error en reservar una connexió SASL."
 
-#: mutt_sasl.c:232
+#: mutt_sasl.c:236
 msgid "Error setting SASL security properties"
 msgstr "Error en establir les propietats de seguretat de SASL."
 
-#: mutt_sasl.c:242
+#: mutt_sasl.c:246
 msgid "Error setting SASL external security strength"
 msgstr "Error en establir el nivell de seguretat extern de SASL."
 
-#: mutt_sasl.c:248
+#: mutt_sasl.c:252
 msgid "Error setting SASL external user name"
 msgstr "Error en establir el nom d’usuari extern de SASL."
 
@@ -3928,8 +3120,8 @@ msgstr "Error d’E/S."
 msgid "SSL failed: %s"
 msgstr "La negociació d’SSL ha fallat: %s"
 
-#: mutt_ssl.c:341 mutt_ssl_gnutls.c:494 mutt_ssl_gnutls.c:503
-#: mutt_ssl_gnutls.c:532
+#: mutt_ssl.c:341 mutt_ssl_gnutls.c:504 mutt_ssl_gnutls.c:513
+#: mutt_ssl_gnutls.c:542
 msgid "Unable to get certificate from peer"
 msgstr "No s’ha pogut obtenir el certificat del servidor."
 
@@ -3945,12 +3137,12 @@ msgstr "La connexió SSL empra «%s» (%s)."
 msgid "Unknown"
 msgstr "No es coneix"
 
-#: mutt_ssl.c:418 mutt_ssl_gnutls.c:382
+#: mutt_ssl.c:418 mutt_ssl_gnutls.c:392
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[no s’ha pogut calcular]"
 
-#: mutt_ssl.c:436 mutt_ssl_gnutls.c:405
+#: mutt_ssl.c:436 mutt_ssl_gnutls.c:415
 msgid "[invalid date]"
 msgstr "[la data no és vàlida]"
 
@@ -3962,27 +3154,27 @@ msgstr "El certificat del servidor encara no és vàlid."
 msgid "Server certificate has expired"
 msgstr "El certificat del servidor ha expirat."
 
-#: mutt_ssl.c:630 mutt_ssl_gnutls.c:635
+#: mutt_ssl.c:630 mutt_ssl_gnutls.c:645
 msgid "This certificate belongs to:"
 msgstr "Aquest certificat pertany a:"
 
-#: mutt_ssl.c:641 mutt_ssl_gnutls.c:674
+#: mutt_ssl.c:641 mutt_ssl_gnutls.c:684
 msgid "This certificate was issued by:"
 msgstr "Aquest certificat ha estat lliurat per:"
 
 # ivb (2001/12/08)
 # ivb  A continuació ve el rang de validesa.
-#: mutt_ssl.c:652 mutt_ssl_gnutls.c:713
+#: mutt_ssl.c:652 mutt_ssl_gnutls.c:723
 #, c-format
 msgid "This certificate is valid"
 msgstr "Aquest certificat té validesa"
 
-#: mutt_ssl.c:653 mutt_ssl_gnutls.c:716
+#: mutt_ssl.c:653 mutt_ssl_gnutls.c:726
 #, c-format
 msgid "   from %s"
 msgstr "   des de %s"
 
-#: mutt_ssl.c:655 mutt_ssl_gnutls.c:720
+#: mutt_ssl.c:655 mutt_ssl_gnutls.c:730
 #, c-format
 msgid "     to %s"
 msgstr "     fins a %s"
@@ -3996,95 +3188,95 @@ msgstr "Empremta digital: %s"
 msgid "SSL Certificate check"
 msgstr "Comprovació del certificat SSL"
 
-#: mutt_ssl.c:667 mutt_ssl_gnutls.c:761
+#: mutt_ssl.c:667 mutt_ssl_gnutls.c:771
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ebutja, accepta (u)na sola volta, accepta (s)empre"
 
 # ivb (2001/11/27)
 # ivb  (r)ebutja, accepta (u)na sola volta, accepta (s)empre
-#: mutt_ssl.c:668 mutt_ssl_gnutls.c:762
+#: mutt_ssl.c:668 mutt_ssl_gnutls.c:772
 msgid "roa"
 msgstr "rus"
 
-#: mutt_ssl.c:672 mutt_ssl_gnutls.c:766
+#: mutt_ssl.c:672 mutt_ssl_gnutls.c:776
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ebutja, accepta (u)na sola volta"
 
 # ivb (2001/11/27)
 # ivb  (r)ebutja, accepta (u)na sola volta
-#: mutt_ssl.c:673 mutt_ssl_gnutls.c:767
+#: mutt_ssl.c:673 mutt_ssl_gnutls.c:777
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:704 mutt_ssl_gnutls.c:816
+#: mutt_ssl.c:704 mutt_ssl_gnutls.c:826
 msgid "Warning: Couldn't save certificate"
 msgstr "Avís: No s’ha pogut desar el certificat."
 
-#: mutt_ssl.c:709 mutt_ssl_gnutls.c:821
+#: mutt_ssl.c:709 mutt_ssl_gnutls.c:831
 msgid "Certificate saved"
 msgstr "S’ha desat el certificat."
 
-#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:118
+#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:119
 msgid "Error: no TLS socket open"
 msgstr "Error: No hi ha un connector TLS obert."
 
-#: mutt_ssl_gnutls.c:205
+#: mutt_ssl_gnutls.c:215
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Tots els protocols de connexió TLS/SSL disponibles estan inhabilitats."
 
-#: mutt_ssl_gnutls.c:266
+#: mutt_ssl_gnutls.c:276
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "La connexió SSL/TLS empra «%s» (%s/%s/%s)."
 
-#: mutt_ssl_gnutls.c:509
+#: mutt_ssl_gnutls.c:519
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Error en verificar el certificat: %s"
 
-#: mutt_ssl_gnutls.c:517
+#: mutt_ssl_gnutls.c:527
 msgid "Certificate is not X.509"
 msgstr "El certificat no és de tipus X.509."
 
-#: mutt_ssl_gnutls.c:524
+#: mutt_ssl_gnutls.c:534
 msgid "Error initialising gnutls certificate data"
 msgstr "Error en inicialitzar les dades de certificat de GNU TLS."
 
-#: mutt_ssl_gnutls.c:540
+#: mutt_ssl_gnutls.c:550
 msgid "Error processing certificate data"
 msgstr "Error en processar les dades del certificat."
 
-#: mutt_ssl_gnutls.c:725
+#: mutt_ssl_gnutls.c:735
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Empremta digital SHA1: %s"
 
-#: mutt_ssl_gnutls.c:728
+#: mutt_ssl_gnutls.c:738
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Empremta digital MD5: %s"
 
-#: mutt_ssl_gnutls.c:733
+#: mutt_ssl_gnutls.c:743
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "Avís: El certificat del servidor encara no és vàlid."
 
-#: mutt_ssl_gnutls.c:738
+#: mutt_ssl_gnutls.c:748
 msgid "WARNING: Server certificate has expired"
 msgstr "Avís: El certificat del servidor ha expirat."
 
-#: mutt_ssl_gnutls.c:743
+#: mutt_ssl_gnutls.c:753
 msgid "WARNING: Server certificate has been revoked"
 msgstr "Avís: El certificat del servidor ha estat revocat."
 
-#: mutt_ssl_gnutls.c:748
+#: mutt_ssl_gnutls.c:758
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "Avís: El nom d’estació del servidor no concorda amb el del certificat."
 
-#: mutt_ssl_gnutls.c:753
+#: mutt_ssl_gnutls.c:763
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "Avís: El signatari del certificat del servidor no és una CA."
 
-#: mutt_ssl_gnutls.c:756
+#: mutt_ssl_gnutls.c:766
 msgid "TLS/SSL Certificate check"
 msgstr "Comprovació del certificat TLS/SSL"
 
@@ -4130,16 +3322,16 @@ msgstr "El fitxer ja existeix; (s)obreescriu, (a)fegeix o (c)anceŀla?"
 msgid "oac"
 msgstr "sac"
 
-#: muttlib.c:1430
+#: muttlib.c:1429
 msgid "Can't save message to POP mailbox."
 msgstr "No es poden desar missatges en bústies POP."
 
-#: muttlib.c:1439
+#: muttlib.c:1438
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Voleu afegir els missatges a «%s»?"
 
-#: muttlib.c:1451
+#: muttlib.c:1450
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "«%s» no és una bústia."
@@ -4381,31 +3573,31 @@ msgstr "El patró és buit."
 msgid "error: unknown op %d (report this error)."
 msgstr "Error: L’operació %d és desconeguda (informeu d’aquest error)."
 
-#: pattern.c:1288 pattern.c:1423
+#: pattern.c:1301 pattern.c:1436
 msgid "Compiling search pattern..."
 msgstr "S’està compiŀlant el patró de cerca…"
 
-#: pattern.c:1307
+#: pattern.c:1320
 msgid "Executing command on matching messages..."
 msgstr "S’està executant l’ordre sobre els missatges concordants…"
 
-#: pattern.c:1374
+#: pattern.c:1387
 msgid "No messages matched criteria."
 msgstr "No hi ha cap missatge que concorde amb el criteri."
 
-#: pattern.c:1456
+#: pattern.c:1469
 msgid "Searching..."
 msgstr "S’està cercant…"
 
-#: pattern.c:1469
+#: pattern.c:1482
 msgid "Search hit bottom without finding match"
 msgstr "La cerca ha arribat al final sense trobar cap concordança."
 
-#: pattern.c:1480
+#: pattern.c:1493
 msgid "Search hit top without finding match"
 msgstr "La cerca ha arribat a l’inici sense trobar cap concordança."
 
-#: pattern.c:1512
+#: pattern.c:1525
 msgid "Search interrupted."
 msgstr "S’ha interromput la cerca."
 
@@ -4518,72 +3710,72 @@ msgstr "Per favor, entreu l’ID de la clau: "
 msgid "PGP Key %s."
 msgstr "Clau PGP %s."
 
-#: pop.c:96 pop_lib.c:201
+#: pop.c:101 pop_lib.c:201
 #, c-format
 msgid "Command TOP is not supported by server."
 msgstr "El servidor no permet l’ordre «TOP»."
 
-#: pop.c:123
+#: pop.c:128
 msgid "Can't write header to temporary file!"
 msgstr "No s’ha pogut escriure la capçalera en un fitxer temporal."
 
-#: pop.c:235 pop_lib.c:203
+#: pop.c:267 pop_lib.c:203
 #, c-format
 msgid "Command UIDL is not supported by server."
 msgstr "El servidor no permet l’ordre «UIDL»."
 
-#: pop.c:357 pop.c:727
+#: pop.c:391 pop.c:761
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "«%s» no és un camí POP vàlid."
 
-#: pop.c:395
+#: pop.c:429
 msgid "Fetching list of messages..."
 msgstr "S’està recollint la llista de missatges…"
 
-#: pop.c:553
+#: pop.c:587
 msgid "Can't write message to temporary file!"
 msgstr "No s’ha pogut escriure el missatge en un fitxer temporal."
 
 # No els seleccionats, sinò els marcats per a esborrar.  ivb
-#: pop.c:612
+#: pop.c:646
 msgid "Marking messages deleted..."
 msgstr "S’estan marcant els missatges per a esborrar…"
 
-#: pop.c:682 pop.c:747
+#: pop.c:716 pop.c:781
 msgid "Checking for new messages..."
 msgstr "S’està comprovant si hi ha missatges nous…"
 
-#: pop.c:711
+#: pop.c:745
 msgid "POP host is not defined."
 msgstr "No s’ha definit el servidor POP (pop_host)."
 
-#: pop.c:775
+#: pop.c:809
 msgid "No new mail in POP mailbox."
 msgstr "No hi ha correu nou a la bústia POP."
 
 # ivb (2001/11/30)
 # ivb  Use «eliminar» pq en portar els missatges s’eliminen completament
 # ivb  del servidor POP.
-#: pop.c:782
+#: pop.c:816
 msgid "Delete messages from server?"
 msgstr "Voleu eliminar els missatges del servidor?"
 
-#: pop.c:784
+#: pop.c:818
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "S’estan llegint els missatges nous (%d octets)…"
 
-#: pop.c:826
+#: pop.c:860
 msgid "Error while writing mailbox!"
 msgstr "Error en escriure a la bústia."
 
-#: pop.c:830
+#: pop.c:864
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [llegits %d de %d missatges]"
 
-#: pop.c:853 pop_lib.c:369
+#: pop.c:887 pop_lib.c:369
 msgid "Server closed connection!"
 msgstr "El servidor ha tancat la connexió."
 
@@ -4656,37 +3848,37 @@ msgstr "S’està desxifrant el missatge…"
 msgid "Decryption failed."
 msgstr "El desxifratge ha fallat."
 
-#: query.c:50
+#: query.c:51
 msgid "New Query"
 msgstr "Nova consulta"
 
-#: query.c:51
+#: query.c:52
 msgid "Make Alias"
 msgstr "Crea àlies"
 
-#: query.c:52
+#: query.c:53
 msgid "Search"
 msgstr "Cerca"
 
-#: query.c:100
+#: query.c:101
 msgid "Waiting for response..."
 msgstr "S’està esperant una resposta…"
 
-#: query.c:236 query.c:264
+#: query.c:263 query.c:291
 msgid "Query command not defined."
 msgstr "No s’ha definit cap ordre de consulta."
 
-#: query.c:291
+#: query.c:318
 #, c-format
 msgid "Query"
 msgstr "Consulta"
 
 #. Prompt for Query
-#: query.c:304 query.c:329
+#: query.c:331 query.c:356
 msgid "Query: "
 msgstr "Consulta: "
 
-#: query.c:312 query.c:338
+#: query.c:339 query.c:365
 #, c-format
 msgid "Query '%s'"
 msgstr "Consulta de «%s»"
@@ -4699,68 +3891,68 @@ msgstr "Redirigeix"
 msgid "Print"
 msgstr "Imprimeix"
 
-#: recvattach.c:453
+#: recvattach.c:473
 msgid "Saving..."
 msgstr "S’està desant…"
 
-#: recvattach.c:456 recvattach.c:546
+#: recvattach.c:476 recvattach.c:567
 msgid "Attachment saved."
 msgstr "S’ha desat l’adjunció."
 
 # ivb (2001/12/08)
 # ivb  ABREUJAT!
 # ivb  AVÍS.  Esteu a punt de sobreescriure «%s»; voleu continuar?
-#: recvattach.c:558
+#: recvattach.c:579
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "AVÍS.  Aneu a sobreescriure «%s»; voleu continuar?"
 
-#: recvattach.c:576
+#: recvattach.c:597
 msgid "Attachment filtered."
 msgstr "S’ha filtrat l’adjunció."
 
-#: recvattach.c:643
+#: recvattach.c:664
 msgid "Filter through: "
 msgstr "Filtra amb: "
 
-#: recvattach.c:643
+#: recvattach.c:664
 msgid "Pipe to: "
 msgstr "Redirigeix a: "
 
-#: recvattach.c:678
+#: recvattach.c:699
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Es desconeix com imprimir adjuncions de tipus «%s»."
 
-#: recvattach.c:743
+#: recvattach.c:764
 msgid "Print tagged attachment(s)?"
 msgstr "Voleu imprimir les adjuncions seleccionades?"
 
-#: recvattach.c:743
+#: recvattach.c:764
 msgid "Print attachment?"
 msgstr "Voleu imprimir l’adjunció?"
 
-#: recvattach.c:976
+#: recvattach.c:997
 msgid "Can't decrypt encrypted message!"
 msgstr "No s’ha pogut desxifrar el missatge xifrat."
 
-#: recvattach.c:989
+#: recvattach.c:1010
 msgid "Attachments"
 msgstr "Adjuncions"
 
-#: recvattach.c:1025
+#: recvattach.c:1046
 msgid "There are no subparts to show!"
 msgstr "No hi ha cap subpart a mostrar."
 
-#: recvattach.c:1086
+#: recvattach.c:1107
 msgid "Can't delete attachment from POP server."
 msgstr "No es poden esborrar les adjuncions d’un servidor POP."
 
-#: recvattach.c:1094
+#: recvattach.c:1115
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "No es poden esborrar les adjuncions d’un missatge xifrat."
 
-#: recvattach.c:1113 recvattach.c:1130
+#: recvattach.c:1134 recvattach.c:1151
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Només es poden esborrar les adjuncions dels missatges «multipart»."
 
@@ -4805,7 +3997,7 @@ msgstr "No s’ha pogut crear «%s»."
 msgid "Can't find any tagged messages."
 msgstr "No s’ha trobat cap missatge marcat."
 
-#: recvcmd.c:749 send.c:720
+#: recvcmd.c:749 send.c:728
 msgid "No mailing lists found!"
 msgstr "No s’ha trobat cap llista de correu."
 
@@ -4923,14 +4115,14 @@ msgstr "S’avorta el missatge sense assumpte."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:489
+#: send.c:497
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Voleu escriure una resposta a %s%s?"
 
 # ivb (2001/12/07)
 # ivb  El primer «%s» és una adreça de correu i el segon potser «,...».
-#: send.c:523
+#: send.c:531
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Voleu escriure un seguiment a %s%s?"
@@ -4938,82 +4130,82 @@ msgstr "Voleu escriure un seguiment a %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:695
+#: send.c:703
 msgid "No tagged messages are visible!"
 msgstr "Cap dels missatges marcats és visible."
 
-#: send.c:746
+#: send.c:754
 msgid "Include message in reply?"
 msgstr "Voleu incloure el missatge a la resposta?"
 
-#: send.c:751
+#: send.c:759
 msgid "Including quoted message..."
 msgstr "S’està incloent el missatge citat…"
 
-#: send.c:761
+#: send.c:769
 msgid "Could not include all requested messages!"
 msgstr "No s’han pogut incloure tots els missatges soŀlicitats."
 
-#: send.c:775
+#: send.c:783
 msgid "Forward as attachment?"
 msgstr "Voleu reenviar com a adjunció?"
 
-#: send.c:779
+#: send.c:787
 msgid "Preparing forwarded message..."
 msgstr "S’està preparant el missatge a reenviar…"
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1109
+#: send.c:1117
 msgid "Recall postponed message?"
 msgstr "Voleu recuperar un missatge posposat?"
 
-#: send.c:1420
+#: send.c:1429
 msgid "Edit forwarded message?"
 msgstr "Voleu editar el missatge a reenviar?"
 
-#: send.c:1460
+#: send.c:1469
 msgid "Abort unmodified message?"
 msgstr "Voleu avortar el missatge no modificat?"
 
-#: send.c:1462
+#: send.c:1471
 msgid "Aborted unmodified message."
 msgstr "S’avorta el missatge no modificat."
 
-#: send.c:1531
+#: send.c:1540
 msgid "Message postponed."
 msgstr "S’ha posposat el missatge."
 
-#: send.c:1540
+#: send.c:1549
 msgid "No recipients are specified!"
 msgstr "No s’ha indicat cap destinatari."
 
-#: send.c:1545
+#: send.c:1554
 msgid "No recipients were specified."
 msgstr "No s’ha indicat cap destinatari."
 
-#: send.c:1561
+#: send.c:1570
 msgid "No subject, abort sending?"
 msgstr "No hi ha assumpte; voleu avortar l’enviament?"
 
-#: send.c:1565
+#: send.c:1574
 msgid "No subject specified."
 msgstr "No s’ha indicat l’assumpte."
 
-#: send.c:1627 smtp.c:158
+#: send.c:1636 smtp.c:158
 msgid "Sending message..."
 msgstr "S’està enviant el missatge…"
 
-#: send.c:1768
+#: send.c:1777
 msgid "Could not send the message."
 msgstr "No s’ha pogut enviar el missatge."
 
-#: send.c:1773
+#: send.c:1782
 msgid "Mail sent."
 msgstr "S’ha enviat el missatge."
 
-#: send.c:1773
+#: send.c:1782
 msgid "Sending in background."
 msgstr "S’està enviant en segon pla."
 
@@ -5048,7 +4240,7 @@ msgstr "Error en enviament, el fill isqué amb codi %d (%s)."
 msgid "Output of the delivery process"
 msgstr "Eixida del procés de repartiment"
 
-#: sendlib.c:2446
+#: sendlib.c:2448
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "En preparar «Resent-From»: L’IDN no és vàlid: %s"
@@ -5302,7 +4494,7 @@ msgstr "S’està ordenant la bústia."
 msgid "Could not find sorting function! [report this bug]"
 msgstr "No s’ha pogut trobar la funció d’ordenació (informeu d’aquest error)."
 
-#: status.c:108
+#: status.c:105
 msgid "(no mailbox)"
 msgstr "(cap bústia)"
 
@@ -5313,3 +4505,823 @@ msgstr "El missatge pare no és visible en aquesta vista limitada."
 #: thread.c:1099
 msgid "Parent message is not available."
 msgstr "El missatge pare no es troba disponible."
+
+# ivb (2001/11/24)
+# ivb  Totes aquestes cadenes són missatges d’ajuda.  No sembla haver
+# ivb  restriccions de longitud.
+#: ../keymap_alldefs.h:5
+msgid "null operation"
+msgstr "L’operació nuŀla."
+
+#: ../keymap_alldefs.h:6
+msgid "end of conditional execution (noop)"
+msgstr "Termina l’execució condicional (operació nuŀla)."
+
+#: ../keymap_alldefs.h:7
+msgid "force viewing of attachment using mailcap"
+msgstr "Força la visualització d’una adjunció emprant «mailcap»."
+
+#: ../keymap_alldefs.h:8
+msgid "view attachment as text"
+msgstr "Mostra una adjunció com a text."
+
+#: ../keymap_alldefs.h:9
+msgid "Toggle display of subparts"
+msgstr "Activa o desactiva la visualització de les subparts."
+
+#: ../keymap_alldefs.h:10
+msgid "move to the bottom of the page"
+msgstr "Va al final de la pàgina."
+
+#: ../keymap_alldefs.h:11
+msgid "remail a message to another user"
+msgstr "Redirigeix un missatge a un altre destinatari."
+
+#: ../keymap_alldefs.h:12
+msgid "select a new file in this directory"
+msgstr "Selecciona un nou fitxer d’aquest directori."
+
+#: ../keymap_alldefs.h:13
+msgid "view file"
+msgstr "Mostra un fitxer."
+
+#: ../keymap_alldefs.h:14
+msgid "display the currently selected file's name"
+msgstr "Mostra el nom del fitxer seleccionat actualment."
+
+#: ../keymap_alldefs.h:15
+msgid "subscribe to current mailbox (IMAP only)"
+msgstr "Es subscriu a la bústia actual (només a IMAP)."
+
+#: ../keymap_alldefs.h:16
+msgid "unsubscribe from current mailbox (IMAP only)"
+msgstr "Es dessubscriu de la bústia actual (només a IMAP)."
+
+#: ../keymap_alldefs.h:17
+msgid "toggle view all/subscribed mailboxes (IMAP only)"
+msgstr ""
+"Canvia entre veure totes les bústies o tan sols les subscrites (només a "
+"IMAP)."
+
+#: ../keymap_alldefs.h:18
+msgid "list mailboxes with new mail"
+msgstr "Llista les bústies amb correu nou."
+
+#: ../keymap_alldefs.h:19
+msgid "change directories"
+msgstr "Canvia de directori."
+
+#: ../keymap_alldefs.h:20
+msgid "check mailboxes for new mail"
+msgstr "Comprova si hi ha correu nou a les bústies."
+
+#: ../keymap_alldefs.h:21
+msgid "attach file(s) to this message"
+msgstr "Adjunta fitxers a aquest missatge."
+
+#: ../keymap_alldefs.h:22
+msgid "attach message(s) to this message"
+msgstr "Adjunta missatges a aquest missatge."
+
+#: ../keymap_alldefs.h:23
+msgid "edit the BCC list"
+msgstr "Edita la llista de còpia cega (Bcc)."
+
+#: ../keymap_alldefs.h:24
+msgid "edit the CC list"
+msgstr "Edita la llista de còpia (Cc)."
+
+#: ../keymap_alldefs.h:25
+msgid "edit attachment description"
+msgstr "Edita la descripció d’una adjunció."
+
+#: ../keymap_alldefs.h:26
+msgid "edit attachment transfer-encoding"
+msgstr "Edita la codificació de transferència d’una adjunció."
+
+#: ../keymap_alldefs.h:27
+msgid "enter a file to save a copy of this message in"
+msgstr "Demana un fitxer on desar una còpia d’aquest missatge."
+
+#: ../keymap_alldefs.h:28
+msgid "edit the file to be attached"
+msgstr "Edita un fitxer a adjuntar."
+
+#: ../keymap_alldefs.h:29
+msgid "edit the from field"
+msgstr "Edita el camp de remitent (From)."
+
+#: ../keymap_alldefs.h:30
+msgid "edit the message with headers"
+msgstr "Edita el missatge amb capçaleres."
+
+#: ../keymap_alldefs.h:31
+msgid "edit the message"
+msgstr "Edita el missatge."
+
+#: ../keymap_alldefs.h:32
+msgid "edit attachment using mailcap entry"
+msgstr "Edita l’adjunció emprant l’entrada de «mailcap»."
+
+#: ../keymap_alldefs.h:33
+msgid "edit the Reply-To field"
+msgstr "Edita el camp de resposta (Reply-To)."
+
+#: ../keymap_alldefs.h:34
+msgid "edit the subject of this message"
+msgstr "Edita l’assumpte del missatge (Subject)."
+
+#: ../keymap_alldefs.h:35
+msgid "edit the TO list"
+msgstr "Edita la llista de destinataris (To)."
+
+#: ../keymap_alldefs.h:36
+msgid "create a new mailbox (IMAP only)"
+msgstr "Crea una nova bústia (només a IMAP)."
+
+#: ../keymap_alldefs.h:37
+msgid "edit attachment content type"
+msgstr "Edita el tipus de contingut d’una adjunció."
+
+#: ../keymap_alldefs.h:38
+msgid "get a temporary copy of an attachment"
+msgstr "Crea una còpia temporal d’una adjunció."
+
+#: ../keymap_alldefs.h:39
+msgid "run ispell on the message"
+msgstr "Executa «ispell» (comprovació ortogràfica) sobre el missatge."
+
+#: ../keymap_alldefs.h:40
+msgid "compose new attachment using mailcap entry"
+msgstr "Crea una nova adjunció emprant l’entrada de «mailcap»."
+
+#: ../keymap_alldefs.h:41
+msgid "toggle recoding of this attachment"
+msgstr "Estableix si una adjunció serà recodificada."
+
+#: ../keymap_alldefs.h:42
+msgid "save this message to send later"
+msgstr "Desa aquest missatge per a enviar‐lo més endavant."
+
+#: ../keymap_alldefs.h:43
+msgid "rename/move an attached file"
+msgstr "Reanomena (o mou) un fitxer adjunt."
+
+#: ../keymap_alldefs.h:44
+msgid "send the message"
+msgstr "Envia el missatge."
+
+#: ../keymap_alldefs.h:45
+msgid "toggle disposition between inline/attachment"
+msgstr "Canvia la disposició entre en línia o adjunt."
+
+#: ../keymap_alldefs.h:46
+msgid "toggle whether to delete file after sending it"
+msgstr "Estableix si cal esborrar un fitxer una volta enviat."
+
+#: ../keymap_alldefs.h:47
+msgid "update an attachment's encoding info"
+msgstr "Edita la informació de codificació d’un missatge."
+
+#: ../keymap_alldefs.h:48
+msgid "write the message to a folder"
+msgstr "Escriu el missatge en una carpeta."
+
+#: ../keymap_alldefs.h:49
+msgid "copy a message to a file/mailbox"
+msgstr "Còpia un missatge en un fitxer o bústia."
+
+#: ../keymap_alldefs.h:50
+msgid "create an alias from a message sender"
+msgstr "Crea un àlies partint del remitent d’un missatge."
+
+#: ../keymap_alldefs.h:51
+msgid "move entry to bottom of screen"
+msgstr "Mou l’indicador al final de la pantalla."
+
+#: ../keymap_alldefs.h:52
+msgid "move entry to middle of screen"
+msgstr "Mou l’indicador al centre de la pantalla."
+
+#: ../keymap_alldefs.h:53
+msgid "move entry to top of screen"
+msgstr "Mou l’indicador al començament de la pantalla."
+
+#: ../keymap_alldefs.h:54
+msgid "make decoded (text/plain) copy"
+msgstr "Crea una còpia descodificada (text/plain) del missatge."
+
+#: ../keymap_alldefs.h:55
+msgid "make decoded copy (text/plain) and delete"
+msgstr "Crea una còpia descodificada (text/plain) del missatge i l’esborra."
+
+#: ../keymap_alldefs.h:56
+msgid "delete the current entry"
+msgstr "Esborra l’entrada actual."
+
+#: ../keymap_alldefs.h:57
+msgid "delete the current mailbox (IMAP only)"
+msgstr "Esborra la bústia actual (només a IMAP)."
+
+#: ../keymap_alldefs.h:58
+msgid "delete all messages in subthread"
+msgstr "Esborra tots els missatges d’un subfil."
+
+#: ../keymap_alldefs.h:59
+msgid "delete all messages in thread"
+msgstr "Esborra tots els missatges d’un fil."
+
+#: ../keymap_alldefs.h:60
+msgid "display full address of sender"
+msgstr "Mostra l’adreça completa del remitent."
+
+#: ../keymap_alldefs.h:61
+msgid "display message and toggle header weeding"
+msgstr "Mostra un missatge i oculta o mostra certs camps de la capçalera."
+
+#: ../keymap_alldefs.h:62
+msgid "display a message"
+msgstr "Mostra un missatge."
+
+#: ../keymap_alldefs.h:63
+msgid "edit the raw message"
+msgstr "Edita un missatge en brut."
+
+#: ../keymap_alldefs.h:64
+msgid "delete the char in front of the cursor"
+msgstr "Esborra el caràcter anterior al cursor."
+
+#: ../keymap_alldefs.h:65
+msgid "move the cursor one character to the left"
+msgstr "Mou el cursor un caràcter a l’esquerra."
+
+#: ../keymap_alldefs.h:66
+msgid "move the cursor to the beginning of the word"
+msgstr "Mou el cursor al començament de la paraula."
+
+#: ../keymap_alldefs.h:67
+msgid "jump to the beginning of the line"
+msgstr "Salta al començament de la línia."
+
+# ivb (2001/12/07)
+# ivb  Es refereix a les definides en «mailboxes».
+#: ../keymap_alldefs.h:68
+msgid "cycle among incoming mailboxes"
+msgstr "Canvia entre les bústies d’entrada."
+
+#: ../keymap_alldefs.h:69
+msgid "complete filename or alias"
+msgstr "Completa el nom de fitxer o l’àlies."
+
+#: ../keymap_alldefs.h:70
+msgid "complete address with query"
+msgstr "Completa una adreça fent una consulta."
+
+#: ../keymap_alldefs.h:71
+msgid "delete the char under the cursor"
+msgstr "Esborra el caràcter sota el cursor."
+
+#: ../keymap_alldefs.h:72
+msgid "jump to the end of the line"
+msgstr "Salta al final de la línia."
+
+#: ../keymap_alldefs.h:73
+msgid "move the cursor one character to the right"
+msgstr "Mou el cursor un caràcter a la dreta."
+
+#: ../keymap_alldefs.h:74
+msgid "move the cursor to the end of the word"
+msgstr "Mou el cursor al final de la paraula."
+
+#: ../keymap_alldefs.h:75
+msgid "scroll down through the history list"
+msgstr "Es desplaça cap avall a la llista d’historial."
+
+#: ../keymap_alldefs.h:76
+msgid "scroll up through the history list"
+msgstr "Es desplaça cap amunt a la llista d’historial."
+
+#: ../keymap_alldefs.h:77
+msgid "delete chars from cursor to end of line"
+msgstr "Esborra els caràcters des del cursor fins al final de la línia."
+
+#: ../keymap_alldefs.h:78
+msgid "delete chars from the cursor to the end of the word"
+msgstr "Esborra els caràcters des del cursor fins al final de la paraula."
+
+#: ../keymap_alldefs.h:79
+msgid "delete all chars on the line"
+msgstr "Esborra tots els caràcters de la línia."
+
+# Sí, enfront és a l’esquerra.  ivb
+#: ../keymap_alldefs.h:80
+msgid "delete the word in front of the cursor"
+msgstr "Esborra la paraula a l’esquerra del cursor."
+
+#: ../keymap_alldefs.h:81
+msgid "quote the next typed key"
+msgstr "Escriu tal qual la tecla premuda a continuació."
+
+#: ../keymap_alldefs.h:82
+msgid "transpose character under cursor with previous"
+msgstr "Transposa el caràcter sota el cursor i l’anterior."
+
+#: ../keymap_alldefs.h:83
+msgid "capitalize the word"
+msgstr "Posa la primera lletra de la paraula en majúscula."
+
+#: ../keymap_alldefs.h:84
+msgid "convert the word to lower case"
+msgstr "Converteix la paraula a minúscules."
+
+#: ../keymap_alldefs.h:85
+msgid "convert the word to upper case"
+msgstr "Converteix la paraula a majúscules."
+
+#: ../keymap_alldefs.h:86
+msgid "enter a muttrc command"
+msgstr "Executa una ordre de «muttrc»."
+
+#: ../keymap_alldefs.h:87
+msgid "enter a file mask"
+msgstr "Estableix una màscara de fitxers."
+
+#: ../keymap_alldefs.h:88
+msgid "exit this menu"
+msgstr "Abandona aquest menú."
+
+#: ../keymap_alldefs.h:89
+msgid "filter attachment through a shell command"
+msgstr "Filtra una adjunció amb una ordre de l’intèrpret."
+
+#: ../keymap_alldefs.h:90
+msgid "move to the first entry"
+msgstr "Va a la primera entrada."
+
+#: ../keymap_alldefs.h:91
+msgid "toggle a message's 'important' flag"
+msgstr "Canvia el senyalador «important» d’un missatge."
+
+#: ../keymap_alldefs.h:92
+msgid "forward a message with comments"
+msgstr "Reenvia un missatge amb comentaris."
+
+#: ../keymap_alldefs.h:93
+msgid "select the current entry"
+msgstr "Selecciona l’entrada actual."
+
+#: ../keymap_alldefs.h:94
+msgid "reply to all recipients"
+msgstr "Respon a tots els destinataris."
+
+#: ../keymap_alldefs.h:95
+msgid "scroll down 1/2 page"
+msgstr "Avança mitja pàgina."
+
+#: ../keymap_alldefs.h:96
+msgid "scroll up 1/2 page"
+msgstr "Endarrereix mitja pàgina."
+
+#: ../keymap_alldefs.h:97
+msgid "this screen"
+msgstr "Mostra aquesta pantalla."
+
+#: ../keymap_alldefs.h:98
+msgid "jump to an index number"
+msgstr "Salta a un número d’índex."
+
+#: ../keymap_alldefs.h:99
+msgid "move to the last entry"
+msgstr "Va a la darrera entrada."
+
+#: ../keymap_alldefs.h:100
+msgid "reply to specified mailing list"
+msgstr "Respon a la llista de correu indicada."
+
+#: ../keymap_alldefs.h:101
+msgid "execute a macro"
+msgstr "Executa una macro."
+
+#: ../keymap_alldefs.h:102
+msgid "compose a new mail message"
+msgstr "Redacta un nou missatge de correu."
+
+#: ../keymap_alldefs.h:103
+msgid "break the thread in two"
+msgstr "Parteix el fil en dos."
+
+#: ../keymap_alldefs.h:104
+msgid "open a different folder"
+msgstr "Obri una carpeta diferent."
+
+#: ../keymap_alldefs.h:105
+msgid "open a different folder in read only mode"
+msgstr "Obri una carpeta diferent en mode de només lectura."
+
+#: ../keymap_alldefs.h:106
+msgid "clear a status flag from a message"
+msgstr "Elimina un senyalador d’estat d’un missatge."
+
+#: ../keymap_alldefs.h:107
+msgid "delete messages matching a pattern"
+msgstr "Esborra els missatges que concorden amb un patró."
+
+#: ../keymap_alldefs.h:108
+msgid "force retrieval of mail from IMAP server"
+msgstr "Força l’obtenció del correu d’un servidor IMAP."
+
+#: ../keymap_alldefs.h:109
+msgid "retrieve mail from POP server"
+msgstr "Obté el correu d’un servidor POP."
+
+#: ../keymap_alldefs.h:110
+msgid "move to the first message"
+msgstr "Va al primer missatge."
+
+#: ../keymap_alldefs.h:111
+msgid "move to the last message"
+msgstr "Va al darrer missatge."
+
+#: ../keymap_alldefs.h:112
+msgid "show only messages matching a pattern"
+msgstr "Mostra només els missatges que concorden amb un patró."
+
+#: ../keymap_alldefs.h:113
+msgid "link tagged message to the current one"
+msgstr "Enllaça el missatge marcat a l’actual."
+
+#: ../keymap_alldefs.h:114
+msgid "open next mailbox with new mail"
+msgstr "Obri la següent bústia amb correu nou."
+
+#: ../keymap_alldefs.h:115
+msgid "jump to the next new message"
+msgstr "Salta al següent missatge nou."
+
+#: ../keymap_alldefs.h:116
+msgid "jump to the next new or unread message"
+msgstr "Salta al següent missatge nou o no llegit."
+
+#: ../keymap_alldefs.h:117
+msgid "jump to the next subthread"
+msgstr "Salta al subfil següent."
+
+#: ../keymap_alldefs.h:118
+msgid "jump to the next thread"
+msgstr "Salta al fil següent."
+
+#: ../keymap_alldefs.h:119
+msgid "move to the next undeleted message"
+msgstr "Va al següent missatge no esborrat."
+
+#: ../keymap_alldefs.h:120
+msgid "jump to the next unread message"
+msgstr "Salta al següent missatge no llegit."
+
+#: ../keymap_alldefs.h:121
+msgid "jump to parent message in thread"
+msgstr "Salta al missatge pare del fil."
+
+#: ../keymap_alldefs.h:122
+msgid "jump to previous thread"
+msgstr "Salta al fil anterior."
+
+#: ../keymap_alldefs.h:123
+msgid "jump to previous subthread"
+msgstr "Salta al subfil anterior."
+
+#: ../keymap_alldefs.h:124
+msgid "move to the previous undeleted message"
+msgstr "Va a l’anterior missatge no llegit."
+
+#: ../keymap_alldefs.h:125
+msgid "jump to the previous new message"
+msgstr "Salta a l’anterior missatge nou."
+
+#: ../keymap_alldefs.h:126
+msgid "jump to the previous new or unread message"
+msgstr "Salta a l’anterior missatge nou o no llegit."
+
+#: ../keymap_alldefs.h:127
+msgid "jump to the previous unread message"
+msgstr "Salta a l’anterior missatge no llegit."
+
+#: ../keymap_alldefs.h:128
+msgid "mark the current thread as read"
+msgstr "Marca el fil actual com a llegit."
+
+#: ../keymap_alldefs.h:129
+msgid "mark the current subthread as read"
+msgstr "Marca el subfil actual com a llegit."
+
+#: ../keymap_alldefs.h:130
+msgid "set a status flag on a message"
+msgstr "Estableix un senyalador d’estat d’un missatge."
+
+#: ../keymap_alldefs.h:131
+msgid "save changes to mailbox"
+msgstr "Desa els canvis realitzats a la bústia."
+
+#: ../keymap_alldefs.h:132
+msgid "tag messages matching a pattern"
+msgstr "Marca els missatges que concorden amb un patró."
+
+#: ../keymap_alldefs.h:133
+msgid "undelete messages matching a pattern"
+msgstr "Restaura els missatges que concorden amb un patró."
+
+#: ../keymap_alldefs.h:134
+msgid "untag messages matching a pattern"
+msgstr "Desmarca els missatges que concorden amb un patró."
+
+#: ../keymap_alldefs.h:135
+msgid "move to the middle of the page"
+msgstr "Va al centre de la pàgina."
+
+#: ../keymap_alldefs.h:136
+msgid "move to the next entry"
+msgstr "Va a l’entrada següent."
+
+#: ../keymap_alldefs.h:137
+msgid "scroll down one line"
+msgstr "Avança una línia."
+
+#: ../keymap_alldefs.h:138
+msgid "move to the next page"
+msgstr "Va a la pàgina següent."
+
+#: ../keymap_alldefs.h:139
+msgid "jump to the bottom of the message"
+msgstr "Salta al final del missatge."
+
+#: ../keymap_alldefs.h:140
+msgid "toggle display of quoted text"
+msgstr "Oculta o mostra el text citat."
+
+#: ../keymap_alldefs.h:141
+msgid "skip beyond quoted text"
+msgstr "Avança fins al final del text citat."
+
+#: ../keymap_alldefs.h:142
+msgid "jump to the top of the message"
+msgstr "Salta a l’inici del missatge."
+
+#: ../keymap_alldefs.h:143
+msgid "pipe message/attachment to a shell command"
+msgstr "Redirigeix un missatge o adjunció a una ordre de l’intèrpret."
+
+#: ../keymap_alldefs.h:144
+msgid "move to the previous entry"
+msgstr "Va a l’entrada anterior."
+
+#: ../keymap_alldefs.h:145
+msgid "scroll up one line"
+msgstr "Endarrereix una línia."
+
+#: ../keymap_alldefs.h:146
+msgid "move to the previous page"
+msgstr "Va a la pàgina anterior."
+
+#: ../keymap_alldefs.h:147
+msgid "print the current entry"
+msgstr "Imprimeix l’entrada actual."
+
+#: ../keymap_alldefs.h:148
+msgid "query external program for addresses"
+msgstr "Pregunta a un programa extern per una adreça."
+
+#: ../keymap_alldefs.h:149
+msgid "append new query results to current results"
+msgstr "Afegeix els resultats d’una consulta nova als resultats actuals."
+
+#: ../keymap_alldefs.h:150
+msgid "save changes to mailbox and quit"
+msgstr "Desa els canvis realitzats a la bústia i ix."
+
+#: ../keymap_alldefs.h:151
+msgid "recall a postponed message"
+msgstr "Recupera un missatge posposat."
+
+#: ../keymap_alldefs.h:152
+msgid "clear and redraw the screen"
+msgstr "Neteja i redibuixa la pantalla."
+
+# ivb (2001/11/26)
+# ivb  Es refereix a una funció -> femení.
+#: ../keymap_alldefs.h:153
+msgid "{internal}"
+msgstr "{interna}"
+
+#: ../keymap_alldefs.h:154
+msgid "rename the current mailbox (IMAP only)"
+msgstr "Reanomena la bústia actual (només a IMAP)."
+
+#: ../keymap_alldefs.h:155
+msgid "reply to a message"
+msgstr "Respon a un missatge."
+
+#: ../keymap_alldefs.h:156
+msgid "use the current message as a template for a new one"
+msgstr "Empra el missatge actual com a plantilla per a un de nou."
+
+#: ../keymap_alldefs.h:157
+msgid "save message/attachment to a file"
+msgstr "Desa un missatge o adjunció en un fitxer."
+
+#: ../keymap_alldefs.h:158
+msgid "search for a regular expression"
+msgstr "Cerca una expressió regular."
+
+#: ../keymap_alldefs.h:159
+msgid "search backwards for a regular expression"
+msgstr "Cerca cap enrere una expressió regular."
+
+#: ../keymap_alldefs.h:160
+msgid "search for next match"
+msgstr "Cerca la concordança següent."
+
+#: ../keymap_alldefs.h:161
+msgid "search for next match in opposite direction"
+msgstr "Cerca la concordança anterior."
+
+#: ../keymap_alldefs.h:162
+msgid "toggle search pattern coloring"
+msgstr "Estableix si cal resaltar les concordances trobades."
+
+#: ../keymap_alldefs.h:163
+msgid "invoke a command in a subshell"
+msgstr "Invoca una ordre en un subintèrpret."
+
+#: ../keymap_alldefs.h:164
+msgid "sort messages"
+msgstr "Ordena els missatges."
+
+#: ../keymap_alldefs.h:165
+msgid "sort messages in reverse order"
+msgstr "Ordena inversament els missatges."
+
+#: ../keymap_alldefs.h:166
+msgid "tag the current entry"
+msgstr "Marca l’entrada actual."
+
+#: ../keymap_alldefs.h:167
+msgid "apply next function to tagged messages"
+msgstr "Aplica la funció següent als missatges marcats."
+
+#: ../keymap_alldefs.h:168
+msgid "apply next function ONLY to tagged messages"
+msgstr "Aplica la funció següent NOMÉS als missatges marcats."
+
+#: ../keymap_alldefs.h:169
+msgid "tag the current subthread"
+msgstr "Marca el subfil actual."
+
+#: ../keymap_alldefs.h:170
+msgid "tag the current thread"
+msgstr "Marca el fil actual."
+
+#: ../keymap_alldefs.h:171
+msgid "toggle a message's 'new' flag"
+msgstr "Canvia el senyalador «nou» d’un missatge."
+
+#: ../keymap_alldefs.h:172
+msgid "toggle whether the mailbox will be rewritten"
+msgstr "Estableix si s’escriuran els canvis a la bústia."
+
+# ivb (2001/12/07)
+# ivb  Es refereix a les definides en «mailboxes».
+#: ../keymap_alldefs.h:173
+msgid "toggle whether to browse mailboxes or all files"
+msgstr ""
+"Estableix si es navegarà només per les bústies d’entrada o per tots els "
+"fitxers."
+
+#: ../keymap_alldefs.h:174
+msgid "move to the top of the page"
+msgstr "Va a l’inici de la pàgina."
+
+#: ../keymap_alldefs.h:175
+msgid "undelete the current entry"
+msgstr "Restaura l’entrada actual."
+
+#: ../keymap_alldefs.h:176
+msgid "undelete all messages in thread"
+msgstr "Restaura tots els missatges d’un fil."
+
+#: ../keymap_alldefs.h:177
+msgid "undelete all messages in subthread"
+msgstr "Restaura tots els missatges d’un subfil."
+
+#: ../keymap_alldefs.h:178
+msgid "show the Mutt version number and date"
+msgstr "Mostra el número de versió i la data de Mutt."
+
+#: ../keymap_alldefs.h:179
+msgid "view attachment using mailcap entry if necessary"
+msgstr "Mostra una adjunció emprant l’entrada de «mailcap» si és necessari."
+
+#: ../keymap_alldefs.h:180
+msgid "show MIME attachments"
+msgstr "Mostra les adjuncions MIME."
+
+#: ../keymap_alldefs.h:181
+msgid "display the keycode for a key press"
+msgstr "Mostra el codi d’una tecla premuda."
+
+#: ../keymap_alldefs.h:182
+msgid "show currently active limit pattern"
+msgstr "Mostra el patró limitant actiu."
+
+#: ../keymap_alldefs.h:183
+msgid "collapse/uncollapse current thread"
+msgstr "Plega o desplega el fil actual."
+
+#: ../keymap_alldefs.h:184
+msgid "collapse/uncollapse all threads"
+msgstr "Plega o desplega tots els fils."
+
+#: ../keymap_alldefs.h:185
+msgid "attach a PGP public key"
+msgstr "Adjunta una clau pública PGP."
+
+#: ../keymap_alldefs.h:186
+msgid "show PGP options"
+msgstr "Mostra les opcions de PGP."
+
+#: ../keymap_alldefs.h:187
+msgid "mail a PGP public key"
+msgstr "Envia una clau pública PGP."
+
+#: ../keymap_alldefs.h:188
+msgid "verify a PGP public key"
+msgstr "Verifica una clau pública PGP."
+
+#: ../keymap_alldefs.h:189
+msgid "view the key's user id"
+msgstr "Mostra l’identificador d’usuari d’una clau."
+
+# ivb (2001/12/02)
+# ivb  Es refereix al format del missatge.
+#: ../keymap_alldefs.h:190
+msgid "check for classic PGP"
+msgstr "Comprova si s’ha emprat el PGP clàssic."
+
+#: ../keymap_alldefs.h:191
+msgid "Accept the chain constructed"
+msgstr "Accepta la cadena construïda."
+
+#: ../keymap_alldefs.h:192
+msgid "Append a remailer to the chain"
+msgstr "Afegeix un redistribuïdor a la cadena."
+
+#: ../keymap_alldefs.h:193
+msgid "Insert a remailer into the chain"
+msgstr "Insereix un redistribuïdor a la cadena."
+
+#: ../keymap_alldefs.h:194
+msgid "Delete a remailer from the chain"
+msgstr "Esborra un redistribuïdor de la cadena."
+
+#: ../keymap_alldefs.h:195
+msgid "Select the previous element of the chain"
+msgstr "Selecciona l’element anterior de la cadena."
+
+#: ../keymap_alldefs.h:196
+msgid "Select the next element of the chain"
+msgstr "Selecciona l’element següent de la cadena."
+
+#: ../keymap_alldefs.h:197
+msgid "send the message through a mixmaster remailer chain"
+msgstr "Envia el missatge per una cadena de redistribuïdors Mixmaster."
+
+#: ../keymap_alldefs.h:198
+msgid "make decrypted copy and delete"
+msgstr "Fa una còpia desxifrada del missatge i esborra aquest."
+
+#: ../keymap_alldefs.h:199
+msgid "make decrypted copy"
+msgstr "Fa una còpia desxifrada del missatge."
+
+#: ../keymap_alldefs.h:200
+msgid "wipe passphrase(s) from memory"
+msgstr "Esborra de la memòria les frases clau."
+
+#: ../keymap_alldefs.h:201
+msgid "extract supported public keys"
+msgstr "Extreu totes les claus públiques possibles."
+
+#: ../keymap_alldefs.h:202
+msgid "show S/MIME options"
+msgstr "Mostra les opcions d’S/MIME."
+
+#~ msgid "SASL failed to get local IP address"
+#~ msgstr "SASL no ha pogut obtenir l’adreça IP local."
+
+#~ msgid "SASL failed to parse local IP address"
+#~ msgstr "SASL no ha pogut interpretar l’adreça IP local."
+
+#~ msgid "SASL failed to get remote IP address"
+#~ msgstr "SASL no ha pogut obtenir l’adreça IP remota."
+
+#~ msgid "SASL failed to parse remote IP address"
+#~ msgstr "SASL no ha pogut interpretar l’adreça IP remota."
