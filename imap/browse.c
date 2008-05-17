@@ -228,7 +228,12 @@ int imap_mailbox_state (const char* path, struct mailbox_state* state)
     return -1;
   }
 
-  if ((status = imap_mboxcache_get (idata, mx.mbox, 0)))
+  if (!imap_mxcmp(mx.mbox, idata->mailbox))
+  {
+    state->new = idata->ctx->new;
+    state->messages = idata->ctx->msgcount;
+  }
+  else if ((status = imap_mboxcache_get (idata, mx.mbox, 0)))
   {
     state->new = status->unseen;
     state->messages = status->messages;
