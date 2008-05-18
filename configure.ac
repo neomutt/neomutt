@@ -825,9 +825,6 @@ then
 
     need_md5="yes"
 
-    dnl hcachever.sh tool for calculating struct digest
-    AC_CHECK_PROGS([MD5], [md5 md5sum openssl], [none])
-
     dnl -- QDBM --
     if test "$with_qdbm" != "no"
     then
@@ -952,7 +949,9 @@ dnl -- end cache --
 if test "$need_md5" = "yes"
 then
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5.o"
+  MUTT_MD5="mutt_md5"
 fi
+AC_SUBST(MUTT_MD5)
 
 AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)

@@ -2,16 +2,6 @@
 
 BASEVERSION=2
 
-MD5=@MD5@
-if test "$MD5" = "openssl"
-then
-  MD5="openssl md5 -hex"
-elif test "$MD5" = "none"
-then
-  echo "ERROR: no MD5 tool found"
-  exit 1
-fi
-
 cleanstruct () {
   echo "$1" | sed -e 's/} *//' -e 's/;$//'
 }
@@ -91,7 +81,7 @@ do
 done
 echo " */" >> $TMPD
 
-MD5TEXT=`echo "$TEXT" | $MD5`
+MD5TEXT=`echo "$TEXT" | ./mutt_md5`
 echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
 
 # TODO: validate we have all structs

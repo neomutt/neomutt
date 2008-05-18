@@ -450,3 +450,22 @@ md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
   ctx->C = C;
   ctx->D = D;
 }
+
+#ifdef MD5UTIL
+/* local md5 equivalent for header cache versioning */
+int main(int argc, char** argv)
+{
+  unsigned char r[16];
+  int rc;
+
+  if ((rc = md5_stream(stdin, r)))
+    return rc;
+
+  printf("%02x%02x%02x%02x%02x%02x%02x%02x"
+         "%02x%02x%02x%02x%02x%02x%02x%02x\n",
+         r[0], r[1], r[2], r[3], r[4], r[5], r[6], r[7],
+         r[8], r[9], r[10], r[11], r[12], r[13], r[14], r[15]);
+
+  return 0;
+}
+#endif

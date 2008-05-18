@@ -2,7 +2,7 @@
 ## Use aclocal -I m4; automake --foreign
 
 AUTOMAKE_OPTIONS = 1.6 foreign
-EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap
+EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
 
 if BUILD_IMAP
 IMAP_SUBDIR = imap
@@ -80,6 +80,11 @@ mutt_dotlock_DEPENDENCIES = @LIBOBJS@
 pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5.c pgppacket.c ascii.c
 pgpring_LDADD = @LIBOBJS@ $(INTLLIBS) 
 pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
+
+mutt_md5_SOURCES = md5.c
+mutt_md5_CFLAGS = -DMD5UTIL
+
+noinst_PROGRAMS = $(MUTT_MD5)
 
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
