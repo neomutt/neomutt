@@ -33,6 +33,10 @@ bind browser y exit
 #
 # set use_8bitmime
 
+# Use mime.types to look up handlers for application/octet-stream. Can
+# be undone with unmime_lookup.
+mime_lookup application/octet-stream
+
 ##
 ## *** DEFAULT SETTINGS FOR THE ATTACHMENTS PATCH ***
 ##
