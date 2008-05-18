@@ -756,7 +756,7 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
    which must have been allocated by the caller with size BUFLEN.
    Returns 0 on success or -1 in case of an error.  The return string
    is truncted to BUFLEN - 1. */
-static int get_micalg (gpgme_ctx_t ctx, char *buf, size_t buflen)
+static int get_micalg (gpgme_ctx_t ctx, int use_smime, char *buf, size_t buflen)
 {
   gpgme_sign_result_t result = NULL;
   const char *algorithm_name = NULL;
@@ -771,9 +771,16 @@ static int get_micalg (gpgme_ctx_t ctx, char *buf, size_t buflen)
     algorithm_name = gpgme_hash_algo_name (result->signatures->hash_algo);
     if (algorithm_name)
     {
-      /* convert GPGME raw hash name to RFC 3156 format */
-      snprintf (buf, buflen, "pgp-%s", algorithm_name);
-      ascii_strlower (buf + 4);
+      if (use_smime)
+      {
+        /* convert GPGME raw hash name to RFC 2633 format */
+        snprintf (buf, buflen, "%s", algorithm_name);
+        ascii_strlower (buf);
+      } else {
+        /* convert GPGME raw hash name to RFC 3156 format */
+        snprintf (buf, buflen, "pgp-%s", algorithm_name);
+        ascii_strlower (buf + 4);
+      }
     }
   }
 
@@ -873,10 +880,10 @@ static BODY *sign_message (BODY *a, int use_smime)
                       &t->parameter);
   /* Get the micalg from gpgme.  Old gpgme versions don't support this
      for S/MIME so we assume sha-1 in this case. */
-  if (!get_micalg (ctx, buf, sizeof buf))
+  if (!get_micalg (ctx, use_smime, buf, sizeof buf))
     mutt_set_parameter ("micalg", buf, &t->parameter);
   else if (use_smime)
-    mutt_set_parameter ("micalg", "pgp-sha1", &t->parameter);
+    mutt_set_parameter ("micalg", "sha1", &t->parameter);
   gpgme_release (ctx);
 
   t->parts = a;
