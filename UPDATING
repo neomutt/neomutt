@@ -9,6 +9,8 @@ The keys used are:
   + $time_inc suppresses progress updates less than $time_inc
     milliseconds apart.
 
+  + 'mime_lookup application/octet-stream' added to system Muttrc
+
 1.5.18 (2008-05-17):
 
   + $time_inc (control rate of progress updates)

@@ -1,3 +1,12 @@
+2008-05-19 10:59 +0200  Paul Walker  <paul@black-sun.demon.co.uk>  (d3fd07d0016c)
+
+	* init.c: Use %p instead of %x to debug-print pointers (fixes warnings
+	on 64bit platforms)
+
+2008-05-19 10:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (771276a3bace)
+
+	* ChangeLog, Makefile.am: hcversion.h depends on new mutt_md5 tool
+
 2008-05-18 12:42 -0700  Roland Rosenfeld  <roland@spinnaker.de>  (4ef0fc2f8378)
 
 	* po/de.po: Updated German translation
