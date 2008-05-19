@@ -119,7 +119,7 @@ reldate.h: $(srcdir)/ChangeLog
 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
 	rm reldate.h.tmp
 
-hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh
+hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh mutt_md5$(EXEEXT)
 	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
 	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
 

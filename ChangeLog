@@ -1,3 +1,12 @@
+2008-05-18 12:42 -0700  Roland Rosenfeld  <roland@spinnaker.de>  (4ef0fc2f8378)
+
+	* po/de.po: Updated German translation
+
+2008-05-17 19:31 -0700  Andreas  <Andreas Jobs>  (aaeee8f868c4)
+
+	* ChangeLog, crypt-gpgme.c: Fix GPGME S/MIME micalg generation, broken
+	in [e6f958b093b6]. Closes #2994.
+
 2008-05-17 18:34 -0700  Brendan Cully  <brendan@kublai.com>  (f9545d5ec15f)
 
 	* doc/Muttrc.head: Add 'mime_lookup application/octet-stream' to the
