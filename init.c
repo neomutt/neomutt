@@ -943,8 +943,8 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
 
   /* Find the last item in the list that data points to. */
   lastp = NULL;
-  dprint(5, (debugfile, "parse_attach_list: ldata = %08x, *ldata = %08x\n",
-	      (unsigned int)ldata, (unsigned int)*ldata));
+  dprint(5, (debugfile, "parse_attach_list: ldata = %p, *ldata = %p\n",
+	      (void *)ldata, (void *)*ldata));
   for (listp = *ldata; listp; listp = listp->next)
   {
     a = (ATTACH_MATCH *)listp->data;
