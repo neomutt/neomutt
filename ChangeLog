@@ -1,3 +1,12 @@
+2008-05-19 18:49 +0200  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (8ac4b70221ee)
+
+	* Makefile.am: Unbreak build with included gettext by explicitly
+	removing libs for mutt_md5
+
+2008-05-19 11:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (85654735d27e)
+
+	* UPDATING: Mention mime_lookup change in UPDATING
+
 2008-05-19 10:59 +0200  Paul Walker  <paul@black-sun.demon.co.uk>  (d3fd07d0016c)
 
 	* init.c: Use %p instead of %x to debug-print pointers (fixes warnings
@@ -5,7 +14,7 @@
 
 2008-05-19 10:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (771276a3bace)
 
-	* ChangeLog, Makefile.am: hcversion.h depends on new mutt_md5 tool
+	* Makefile.am: hcversion.h depends on new mutt_md5 tool
 
 2008-05-18 12:42 -0700  Roland Rosenfeld  <roland@spinnaker.de>  (4ef0fc2f8378)
 

@@ -1,5 +1,5 @@
 # Catalan messages for mutt.
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2007.
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2008.
 #
 # Sóc Ivan, aquestes són les convencions que adopte per a la 1.5.12:
 #
@@ -47,10 +47,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.17\n"
+"Project-Id-Version: mutt 1.5.18\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-17 12:35-0700\n"
-"PO-Revision-Date: 2007-11-03 19:46+0100\n"
+"PO-Revision-Date: 2008-05-19 17:07+0200\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "MIME-Version: 1.0\n"
@@ -136,18 +136,16 @@ msgid "Save to file: "
 msgstr "Desa al fitxer: "
 
 #: alias.c:345
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Error en intentar veure el fitxer."
+msgstr "Error en llegir el fitxer d’àlies."
 
 #: alias.c:364
 msgid "Alias added."
 msgstr "S’ha afegit l’àlies."
 
 #: alias.c:372
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Error en intentar veure el fitxer."
+msgstr "Error en desplaçar‐se dins del fitxer d’àlies."
 
 # ABREUJAT!
 #   El nom de fitxer no concorda amb cap «nametemplate»; voleu continuar?
@@ -2659,21 +2657,18 @@ msgstr ""
 "amb Ivan Vilata i Balaguer <ivan@selidor.net>.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright © 1996‐2007 Michael R. Elkins i d’altres.\n"
+"Copyright © 1996‐2008 Michael R. Elkins i d’altres.\n"
 "Mutt s’ofereix SENSE CAP GARANTIA; useu «mutt -vv» per a obtenir‐ne més\n"
-"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo "
-"sota\n"
+"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2686,11 +2681,11 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Copyright © 1996‐2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright © 1996‐2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright © 1996‐2002 Brandon Long <blong@fiction.net>\n"
 "Copyright © 1997‐2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright © 1998‐2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright © 1999‐2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright © 1999‐2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright © 1999‐2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright © 2000‐2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -2864,9 +2859,10 @@ msgstr "«%s» no existeix.  Voleu crear‐lo?"
 msgid "Can't create %s: %s."
 msgstr "No s’ha pogut crear «%s»: %s"
 
+# Es refereix a l’esquema d’URL.  ivb
 #: main.c:831
 msgid "Failed to parse mailto: link\n"
-msgstr ""
+msgstr "No s’ha pogut interpretar l’enllaç de tipus «mailto:».\n"
 
 #: main.c:843
 msgid "No recipients specified.\n"
@@ -5313,15 +5309,3 @@ msgstr "Extreu totes les claus públiques possibles."
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "Mostra les opcions d’S/MIME."
-
-#~ msgid "SASL failed to get local IP address"
-#~ msgstr "SASL no ha pogut obtenir l’adreça IP local."
-
-#~ msgid "SASL failed to parse local IP address"
-#~ msgstr "SASL no ha pogut interpretar l’adreça IP local."
-
-#~ msgid "SASL failed to get remote IP address"
-#~ msgstr "SASL no ha pogut obtenir l’adreça IP remota."
-
-#~ msgid "SASL failed to parse remote IP address"
-#~ msgstr "SASL no ha pogut interpretar l’adreça IP remota."
