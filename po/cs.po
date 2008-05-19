@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 9a7d802004d3\n"
+"Project-Id-Version: mutt 85654735d27e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-17 12:35-0700\n"
-"PO-Revision-Date: 2008-03-03 10:55+0100\n"
+"PO-Revision-Date: 2008-05-19 12:43+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -94,18 +94,16 @@ msgid "Save to file: "
 msgstr "Uložit jako: "
 
 #: alias.c:345
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Chyba při zobrazování souboru"
+msgstr "Chyba při čtení souboru s přezdívkami"
 
 #: alias.c:364
 msgid "Alias added."
 msgstr "Přezdívka zavedena."
 
 #: alias.c:372
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Chyba při zobrazování souboru"
+msgstr "Chyba při pohybu v souboru s přezdívkami"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -2469,7 +2467,6 @@ msgstr ""
 "„mutt -vv“.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2486,7 +2483,7 @@ msgstr ""
 "Copyright © 1996–2002 Brandon Long <blong@fiction.net>\n"
 "Copyright © 1997–2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright © 1998–2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright © 1999–2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright © 1999–2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright © 1999–2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright © 2000–2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
