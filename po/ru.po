@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.17\n"
+"Project-Id-Version: mutt-1.5.18\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-17 12:35-0700\n"
-"PO-Revision-Date: 2007-11-04 10:12+0200\n"
+"PO-Revision-Date: 2008-05-19 12:56+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -99,18 +99,16 @@ msgid "Save to file: "
 msgstr "Сохранить в файл: "
 
 #: alias.c:345
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Ошибка при попытке просмотра файла"
+msgstr "Ошибка чтения файла псевдонимов"
 
 #: alias.c:364
 msgid "Alias added."
 msgstr "Псевдоним создан."
 
 #: alias.c:372
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Ошибка при попытке просмотра файла"
+msgstr "Ошибка позиционирования в файле псевдонимов"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -2471,14 +2469,13 @@ msgstr ""
 "Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2007 Michael R. Elkins и другие.\n"
+"Copyright (C) 1996-2008 Michael R. Elkins и другие.\n"
 "Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
 "подробной информации введите `mutt -vv'.\n"
 "Mutt является свободным программным обеспечением.  Вы можете\n"
@@ -2486,7 +2483,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2499,11 +2495,11 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -2670,7 +2666,7 @@ msgstr "Не удалось создать %s: %s"
 
 #: main.c:831
 msgid "Failed to parse mailto: link\n"
-msgstr ""
+msgstr "Не удалось распознать ссылку mailto:\n"
 
 #: main.c:843
 msgid "No recipients specified.\n"
@@ -5018,15 +5014,3 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
-
-#~ msgid "SASL failed to get local IP address"
-#~ msgstr "SASL: не удалось получить локальный IP адрес"
-
-#~ msgid "SASL failed to parse local IP address"
-#~ msgstr "SASL: не удалось распознать локальный IP адрес"
-
-#~ msgid "SASL failed to get remote IP address"
-#~ msgstr "SASL: не удалось получить удалённый IP адрес"
-
-#~ msgid "SASL failed to parse remote IP address"
-#~ msgstr "SASL: не удалось распознать удалённый IP адрес"
