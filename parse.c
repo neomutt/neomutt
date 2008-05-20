@@ -1600,14 +1600,14 @@ int count_body_parts (BODY *body, int flags)
       count++;
     bp->attach_qualifies = shallcount ? 1 : 0;
 
-    dprint(5, (debugfile, "cbp: %08x shallcount = %d\n", (unsigned int)bp, shallcount));
+    dprint(5, (debugfile, "cbp: %p shallcount = %d\n", (void *)bp, shallcount));
 
     if (shallrecurse)
     {
-      dprint(5, (debugfile, "cbp: %08x pre count = %d\n", (unsigned int)bp, count));
+      dprint(5, (debugfile, "cbp: %p pre count = %d\n", (void *)bp, count));
       bp->attach_count = count_body_parts(bp->parts, flags & ~M_PARTS_TOPLEVEL);
       count += bp->attach_count;
-      dprint(5, (debugfile, "cbp: %08x post count = %d\n", (unsigned int)bp, count));
+      dprint(5, (debugfile, "cbp: %p post count = %d\n", (void *)bp, count));
     }
   }
 
