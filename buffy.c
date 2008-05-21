@@ -48,7 +48,7 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 /* Find the last message in the file. 
  * upon success return 0. If no message found - return -1 */
 
-int fseek_last_message (FILE * f)
+static int fseek_last_message (FILE * f)
 {
   LOFF_T pos;
   char buffer[BUFSIZ + 9];	/* 7 for "\n\nFrom " */
@@ -94,7 +94,7 @@ int fseek_last_message (FILE * f)
 }
 
 /* Return 1 if the last message is new */
-int test_last_status_new (FILE * f)
+static int test_last_status_new (FILE * f)
 {
   HEADER *hdr;
   ENVELOPE* tmp_envelope;
@@ -114,7 +114,7 @@ int test_last_status_new (FILE * f)
   return result;
 }
 
-int test_new_folder (const char *path)
+static int test_new_folder (const char *path)
 {
   FILE *f;
   int rc = 0;
@@ -160,7 +160,7 @@ void mutt_update_mailbox (BUFFY * b)
     return;
 
   if (stat (b->path, &sb) == 0)
-    b->size = (long) sb.st_size;
+    b->size = (off_t) sb.st_size;
   else
     b->size = 0;
   return;
@@ -235,7 +235,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
 	stat ((*tmp)->path, &sb) == 0 && !test_new_folder ((*tmp)->path))
     {
       /* some systems out there don't have an off_t type */
-      (*tmp)->size = (long) sb.st_size;
+      (*tmp)->size = (off_t) sb.st_size;
     }
     else
       (*tmp)->size = 0;
@@ -358,7 +358,7 @@ int mutt_buffy_check (int force)
 	else if (option(OPTCHECKMBOXSIZE))
 	{
 	  /* some other program has deleted mail from the folder */
-	  tmp->size = (long) sb.st_size;
+	  tmp->size = (off_t) sb.st_size;
 	}
 	if (tmp->newly_created &&
 	    (sb.st_ctime != sb.st_mtime || sb.st_ctime != sb.st_atime))
@@ -396,7 +396,7 @@ int mutt_buffy_check (int force)
       }
     }
     else if (option(OPTCHECKMBOXSIZE) && Context && Context->path)
-      tmp->size = (long) sb.st_size;	/* update the size */
+      tmp->size = (off_t) sb.st_size;	/* update the size of current folder */
 
     if (!tmp->new)
       tmp->notified = 0;

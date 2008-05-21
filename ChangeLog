@@ -1,3 +1,13 @@
+2008-05-21 19:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (4a2a637ba8a3)
+
+	* mbox.c, sendlib.c: Use ftello() instead of ftell() in more places
+	that need it (fixes progress updates for >2 GB mbox files)
+
+2008-05-21 18:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (927465b4aab2)
+
+	* ChangeLog, doc/manual.xml.head, init.h: Improve documentation for
+	handling multiple folders and new mail detection
+
 2008-05-20 17:08 +0200  Paul Walker  <paul@black-sun.demon.co.uk>  (a4d423798321)
 
 	* parse.c: Fix more compiler warnings on amd64 by use of %p instead of

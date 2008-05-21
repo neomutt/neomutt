@@ -23,7 +23,7 @@
 typedef struct buffy_t
 {
   char *path;
-  long size;
+  off_t size;
   struct buffy_t *next;
   short new;			/* mailbox has new mail */
   short notified;		/* user has been notified */
