@@ -309,7 +309,10 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When this variable is set, mutt will use file size attribute instead of
-  ** access time when checking for new mail.
+  ** access time when checking for new mail in mbox and mmdf folders.
+  ** .pp
+  ** This variable is \fIunset\fP by default and should only be enabled when
+  ** new mail detection for these folder types is unreliable or doesn't work.
   */
   { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
   /*

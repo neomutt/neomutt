@@ -1,3 +1,12 @@
+2008-05-20 17:08 +0200  Paul Walker  <paul@black-sun.demon.co.uk>  (a4d423798321)
+
+	* parse.c: Fix more compiler warnings on amd64 by use of %p instead of
+	%x
+
+2008-05-19 09:52 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (38319cd7d832)
+
+	* ChangeLog, po/ca.po: Updated Catalan translation
+
 2008-05-19 18:49 +0200  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (8ac4b70221ee)
 
 	* Makefile.am: Unbreak build with included gettext by explicitly

@@ -2523,9 +2523,7 @@ Usage: <literal>&lsqb;un&rsqb;mailboxes</literal> <emphasis>folder</emphasis> &l
 
 <para>
 This command specifies folders which can receive mail and
-which will be checked for new messages.  By default, the
-main menu status bar displays how many of these folders have
-new messages.
+which will be checked for new messages periodically.
 </para>
 
 <para>
@@ -2538,15 +2536,10 @@ respectively.
 </para>
 
 <para>
-When changing folders, pressing <emphasis>space</emphasis> will cycle
-through folders with new mail.
-</para>
-
-<para>
-Pressing TAB in the directory browser will bring up a menu showing the files
-specified by the <literal>mailboxes</literal> command, and indicate which contain new
-messages.  Mutt will automatically enter this mode when invoked from the
-command line with the <literal>-y</literal> option.
+Mutt provides a number of advanced features for handling (possibly many)
+folders and new mail within them, please refer to
+<xref linkend="handling-folders"/> for details (including in what
+situations and how often Mutt checks for new mail).
 </para>
 
 <para>
@@ -2558,27 +2551,30 @@ tokens.
 <para>
 <emphasis role="bold">Note:</emphasis> the folders in the <literal>mailboxes</literal> command are resolved when
 the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as ``='' and ``!''), any variable
-definition that affect these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
-should be executed before the <literal>mailboxes</literal> command. If
+definition that affects these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
+should be set before the <literal>mailboxes</literal> command. If
 none of these shorcuts are used, a local path should be absolute as
-otherwise mutt tries to find it within the current working directory
+otherwise mutt tries to find it relative to the directory
 from where mutt was started which may not always be desired.
 </para>
 
 <para>
-For local folders, new mail is detected by comparing access and/or
-modification times of files and folders. The interval in which Mutt
-checks for new mail is defined by
-<link linkend="mail-check">&dollar;mail&lowbar;check</link>.
-</para>
-
-<para>
-Special care is required with Mbox and Mmdf
-folders as Mutt assumes such a folder has new mail if it wasn't
+For Mbox and Mmdf folders, new mail is detected by comparing access and/or
+modification times of files: Mutt assumes a folder has new mail if it wasn't
 accessed after it was last modified. Utilities like <literal>biff</literal> or
 <literal>frm</literal> or any other program which accesses the mailbox might cause
 Mutt to never detect new mail for that mailbox if they do not properly reset the
-access time.  Backup tools are another common reason for updated access times.
+access time. Other possible causes of Mutt not detecting new mail in these folders
+are backup tools (updating access times) or filesystems mounted without
+access time update support.
+</para>
+
+<para>
+In cases where new mail detection for Mbox or Mmdf folders appears to be
+unreliable, the
+<link linkend="check-mbox-size">&dollar;check&lowbar;mbox&lowbar;size</link>
+option can be used to make Mutt track and consult file sizes for new
+mail detection instead.
 </para>
 
 </sect1>
@@ -2635,9 +2631,7 @@ fields, or the fields to remove.  For example, to remove all ``To'' and
 </para>
 
 <para>
-<quote
->unmy&lowbar;hdr to cc</quote
->
+<quote>unmy&lowbar;hdr to cc</quote>
 </para>
 
 </sect1>
@@ -4668,6 +4662,56 @@ message and all of its replies are represented graphically.  If you've ever
 used a threaded news client, this is the same concept.  It makes dealing
 with large volume mailing lists easier because you can easily delete
 uninteresting threads and quickly find topics of value.
+</para>
+
+</sect1>
+
+<sect1 id="handling-folders">
+<title>Handling multiple folders</title>
+
+<para>
+Mutt supports setups with multiple folders, allowing all of them to
+be monitored for new mail (see <xref linkend="mailboxes"/> for details).
+</para>
+
+<para>
+When in the index menu and being idle (also see
+<link linkend="timeout">&dollar;timeout</link>), Mutt periodically checks
+for new mail in all folders which have been configured via the
+<literal>mailboxes</literal> command. The interval depends on the folder
+type: for local/IMAP folders it consults
+<link linkend="mail-check">&dollar;mail&lowbar;check</link> and
+<link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
+for POP folders.
+</para>
+
+<para>
+Outside the index menu the directory browser supports checking
+for new mail using the <emphasis>check-new</emphasis> function which is
+unbound by default. Pressing TAB will bring up a
+menu showing the files specified by the <literal>mailboxes</literal> command,
+and indicate which contain new messages. Mutt will automatically enter this
+mode when invoked from the command line with the <literal>-y</literal> option.
+</para>
+
+<para>
+For the pager, index and directory browser menus, Mutt contains the
+<emphasis>buffy-list</emphasis> function (bound to ``.'' by default)
+which will print a list of folders with new mail in the command line at
+the bottom of the screen.
+</para>
+
+<para>
+For the index, by default Mutt displays the number of mailboxes with new
+mail in the status bar, please refer to the
+<link linkend="index-format">&dollar;index&lowbar;format</link>
+variable for details.
+</para>
+
+<para>
+When changing folders, Mutt fills the prompt with the first folder from
+the mailboxes list containing new mail (if any), pressing
+<emphasis>space</emphasis> will cycle through folders with new mail.
 </para>
 
 </sect1>
