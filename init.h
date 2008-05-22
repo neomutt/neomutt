@@ -313,6 +313,12 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable is \fIunset\fP by default and should only be enabled when
   ** new mail detection for these folder types is unreliable or doesn't work.
+  ** .pp
+  ** Note that enabling this variable should happen before any ``mailboxes''
+  ** directives occur in configuration files regarding mbox or mmdf folders
+  ** because mutt needs to determine the initial new mail status of such a
+  ** mailbox by performing a fast mailbox scan when it is defined.
+  ** Afterwards the new mail status is tracked by file size changes.
   */
   { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
   /*
