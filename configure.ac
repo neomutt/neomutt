@@ -88,10 +88,18 @@ AH_TEMPLATE([ICONV_NONTRANS],
 AH_BOTTOM([/* fseeko portability defines */
 #ifdef HAVE_FSEEKO
 # define LOFF_T off_t
-# if SIZEOF_OFF_T == 8
-#  define OFF_T_FMT "%lld"
+# if HAVE_C99_INTTYPES && HAVE_INTTYPES_H
+#  if SIZEOF_OFF_T == 8
+#   define OFF_T_FMT "%" PRId64
+#  else
+#   define OFF_T_FMT "%" PRId32
+#  endif
 # else
-#  define OFF_T_FMT "%ld"
+#  if (SIZEOF_OFF_T == 8) && (SIZEOF_LONG == 4)
+#   define OFF_T_FMT "%lld"
+#  else
+#   define OFF_T_FMT "%ld"
+#  endif
 # endif
 #else
 # define LOFF_T long

@@ -10,11 +10,11 @@ AC_DEFUN([MUTT_C99_INTTYPES],
 [dnl
 AC_CHECK_HEADERS([inttypes.h])
 AC_CHECK_TYPE([uint32_t],
-  [AC_DEFINE(HAVE_C99_INTTYPES, 1, [Define if you have the C99 integer types])],
-  [AC_CHECK_SIZEOF(short)
-   AC_CHECK_SIZEOF(int)
-   AC_CHECK_SIZEOF(long)
-   AC_CHECK_SIZEOF(long long)])
+  [AC_DEFINE(HAVE_C99_INTTYPES, 1, [Define if you have the C99 integer types])])
+AC_CHECK_SIZEOF(short)
+AC_CHECK_SIZEOF(int)
+AC_CHECK_SIZEOF(long)
+AC_CHECK_SIZEOF(long long)])
 AH_VERBATIM([X_HAVE_C99_INTTYPES],
   [#ifndef HAVE_C99_INTTYPES
 #  if SIZEOF_SHORT == 4
@@ -33,4 +33,3 @@ typedef unsigned long long uint64_t;
 #  endif
 #endif
   ])
-])

@@ -1,3 +1,13 @@
+2008-05-22 16:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (b97e95fd5786)
+
+	* init.h: Document that $check_mbox_size should be set before
+	mailboxes commands
+
+2008-05-22 14:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (a697362846e9)
+
+	* ChangeLog, UPDATING: Mention requirement to encode X-Label: headers
+	in UPDATING
+
 2008-05-21 23:20 -0700  Rocco Rutte  <pdmef@gmx.net>  (bba92e401440)
 
 	* imap/browse.c: Guard idata->mailbox read in imap_mailbox_state.
