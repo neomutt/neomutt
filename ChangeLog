@@ -1,3 +1,12 @@
+2008-05-21 23:20 -0700  Rocco Rutte  <pdmef@gmx.net>  (bba92e401440)
+
+	* imap/browse.c: Guard idata->mailbox read in imap_mailbox_state.
+	Closes #3057.
+
+2008-05-21 22:59 -0700  Piarres Beobide Egaña  <pi@beobide.net>  (51c494a2e735)
+
+	* ChangeLog, po/eu.po: Updated Basque translation.
+
 2008-05-21 22:55 -0700  René Clerc  <rene@clerc.nl>  (e95a579cf5e4)
 
 	* po/nl.po: Updated Dutch translation

@@ -13,6 +13,7 @@ The keys used are:
 
 1.5.18 (2008-05-17):
 
+  + X-Label: headers must now be RfC2047-encoded
   + $time_inc (control rate of progress updates)
 
 1.5.17 (2007-11-01):
