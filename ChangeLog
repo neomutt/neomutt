@@ -1,12 +1,17 @@
-2008-05-21 19:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (4a2a637ba8a3)
+2008-05-21 22:55 -0700  René Clerc  <rene@clerc.nl>  (e95a579cf5e4)
+
+	* po/nl.po: Updated Dutch translation
+
+2008-05-21 20:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (1bdb7a7c3c8f)
+
+	* buffy.c, buffy.h: Fix new mail detection for >2 GB mboxes with
+	$check_mbox_size set
 
 	* mbox.c, sendlib.c: Use ftello() instead of ftell() in more places
 	that need it (fixes progress updates for >2 GB mbox files)
 
-2008-05-21 18:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (927465b4aab2)
-
-	* ChangeLog, doc/manual.xml.head, init.h: Improve documentation for
-	handling multiple folders and new mail detection
+	* doc/manual.xml.head, init.h: Improve documentation for handling
+	multiple folders and new mail detection
 
 2008-05-20 17:08 +0200  Paul Walker  <paul@black-sun.demon.co.uk>  (a4d423798321)
 
@@ -15,7 +20,7 @@
 
 2008-05-19 09:52 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (38319cd7d832)
 
-	* ChangeLog, po/ca.po: Updated Catalan translation
+	* po/ca.po: Updated Catalan translation
 
 2008-05-19 18:49 +0200  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (8ac4b70221ee)
 
@@ -41,7 +46,7 @@
 
 2008-05-17 19:31 -0700  Andreas  <Andreas Jobs>  (aaeee8f868c4)
 
-	* ChangeLog, crypt-gpgme.c: Fix GPGME S/MIME micalg generation, broken
+	* crypt-gpgme.c: Fix GPGME S/MIME micalg generation, broken
 	in [e6f958b093b6]. Closes #2994.
 
 2008-05-17 18:34 -0700  Brendan Cully  <brendan@kublai.com>  (f9545d5ec15f)
