@@ -1,10 +1,10 @@
 # $Id$
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.16\n"
+"Project-Id-Version: Mutt 1.5.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-17 12:35-0700\n"
-"PO-Revision-Date: 2007-06-11 12:01+0200\n"
+"POT-Creation-Date: 2008-05-20 15:00+0200\n"
+"PO-Revision-Date: 2008-05-20 14:01+0200\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,7 @@ msgid "Select"
 msgstr "Selecteren"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
+#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3654 curs_main.c:414
 #: mutt_ssl.c:679 mutt_ssl_gnutls.c:783 pager.c:1579 pgpkey.c:522
 #: postpone.c:46 query.c:54 recvattach.c:58 smime.c:437
 msgid "Help"
@@ -90,18 +90,16 @@ msgid "Save to file: "
 msgstr "Opslaan als: "
 
 #: alias.c:345
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Er is een fout opgetreden tijdens het weergeven van bestand"
+msgstr "Fout tijdens inlezen adresbestand"
 
 #: alias.c:364
 msgid "Alias added."
 msgstr "Adres toegevoegd."
 
 #: alias.c:372
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Er is een fout opgetreden tijdens het weergeven van bestand"
+msgstr "Fout tijdens doorzoeken adresbestand"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -742,7 +740,7 @@ msgstr "fout bij het inschakelen van CMS-protocol: %s\n"
 msgid "error creating gpgme data object: %s\n"
 msgstr "fout bij het creëren van GPGME-gegevensobject: %s\n"
 
-#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1400
+#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1407
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "fout bij het alloceren van gegevensobject: %s\n"
@@ -787,60 +785,60 @@ msgstr "fout bij het instellen van PKA-ondertekening: %s\n"
 msgid "error encrypting data: %s\n"
 msgstr "fout bij het versleutelen van gegevens: %s\n"
 
-#: crypt-gpgme.c:850
+#: crypt-gpgme.c:857
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "fout bij het ondertekenen van gegevens: %s\n"
 
-#: crypt-gpgme.c:1045
+#: crypt-gpgme.c:1052
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Waarschuwing: één van de sleutels is herroepen\n"
 
-#: crypt-gpgme.c:1054
+#: crypt-gpgme.c:1061
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Waarschuwing: de sleutel waarmee is ondertekend is verlopen op: "
 
-#: crypt-gpgme.c:1060
+#: crypt-gpgme.c:1067
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Waarschuwing: tenminste een certificeringssleutel is verlopen\n"
 
-#: crypt-gpgme.c:1076
+#: crypt-gpgme.c:1083
 msgid "Warning: The signature expired at: "
 msgstr "Waarschuwing: de ondertekening is verlopen op: "
 
-#: crypt-gpgme.c:1082
+#: crypt-gpgme.c:1089
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Kan niet verifiëren vanwege ontbrekende sleutel of certificaat\n"
 
-#: crypt-gpgme.c:1087
+#: crypt-gpgme.c:1094
 msgid "The CRL is not available\n"
 msgstr "De CRL is niet beschikbaar\n"
 
-#: crypt-gpgme.c:1093
+#: crypt-gpgme.c:1100
 msgid "Available CRL is too old\n"
 msgstr "De beschikbare CRL is te oud\n"
 
-#: crypt-gpgme.c:1098
+#: crypt-gpgme.c:1105
 msgid "A policy requirement was not met\n"
 msgstr "Aan een beleidsvereiste is niet voldaan\n"
 
-#: crypt-gpgme.c:1107
+#: crypt-gpgme.c:1114
 msgid "A system error occurred"
 msgstr "Er is een systeemfout opgetreden"
 
-#: crypt-gpgme.c:1141
+#: crypt-gpgme.c:1148
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "WAARSCHUWING: PKA-item komt niet overeen met adres van ondertekenaar: "
 
-#: crypt-gpgme.c:1148
+#: crypt-gpgme.c:1155
 msgid "PKA verified signer's address is: "
 msgstr "Adres van PKA-geverifieerde ondertekenaar is: "
 
-#: crypt-gpgme.c:1165 crypt-gpgme.c:3114
+#: crypt-gpgme.c:1172 crypt-gpgme.c:3121
 msgid "Fingerprint: "
 msgstr "Handtekening: "
 
-#: crypt-gpgme.c:1225
+#: crypt-gpgme.c:1232
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -848,11 +846,11 @@ msgstr ""
 "WAARSCHUWING: We hebben GEEN indicatie of de sleutel toebehoort aan de "
 "persoon zoals hierboven aangegeven\n"
 
-#: crypt-gpgme.c:1232
+#: crypt-gpgme.c:1239
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "WAARSCHUWING: De sleutel BEHOORT NIET TOE aan bovengenoemde persoon\n"
 
-#: crypt-gpgme.c:1236
+#: crypt-gpgme.c:1243
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
@@ -860,7 +858,7 @@ msgstr ""
 "WAARSCHUWING: Het is NIET zeker dat de sleutel toebehoort aan de persoon "
 "zoals hierboven aangegeven\n"
 
-#: crypt-gpgme.c:1311
+#: crypt-gpgme.c:1318
 msgid "Error getting key information: "
 msgstr "Fout bij het ophalen van sleutelinformatie: "
 
@@ -868,48 +866,48 @@ msgstr "Fout bij het ophalen van sleutelinformatie: "
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1318 crypt-gpgme.c:1351
+#: crypt-gpgme.c:1325 crypt-gpgme.c:1358
 msgid "Good signature from: "
 msgstr "Goede handtekening van: "
 
-#: crypt-gpgme.c:1328
+#: crypt-gpgme.c:1335
 msgid "                aka: "
 msgstr "        ook bekend als: "
 
-#: crypt-gpgme.c:1332 crypt-gpgme.c:1354
+#: crypt-gpgme.c:1339 crypt-gpgme.c:1361
 msgid "            created: "
 msgstr "         aangemaakt op: "
 
-#: crypt-gpgme.c:1341
+#: crypt-gpgme.c:1348
 msgid "*BAD* signature claimed to be from: "
 msgstr "*SLECHTE* handtekening gepretendeerd af te komen van: "
 
-#: crypt-gpgme.c:1364
+#: crypt-gpgme.c:1371
 msgid "Error checking signature"
 msgstr "Fout bij het controleren van handtekening"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1408 crypt-gpgme.c:1623 crypt-gpgme.c:2108
+#: crypt-gpgme.c:1415 crypt-gpgme.c:1630 crypt-gpgme.c:2115
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Begin handtekeninginformatie --]\n"
 
-#: crypt-gpgme.c:1417
+#: crypt-gpgme.c:1424
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Fout: verificatie is mislukt: %s\n"
 
-#: crypt-gpgme.c:1466
+#: crypt-gpgme.c:1473
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Begin Notatie (ondertekening van: %s) ***\n"
 
-#: crypt-gpgme.c:1488
+#: crypt-gpgme.c:1495
 msgid "*** End Notation ***\n"
 msgstr "*** Einde Notatie ***\n"
 
-#: crypt-gpgme.c:1496 crypt-gpgme.c:1636 crypt-gpgme.c:2123
+#: crypt-gpgme.c:1503 crypt-gpgme.c:1643 crypt-gpgme.c:2130
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -917,23 +915,23 @@ msgstr ""
 "[-- Einde van ondertekende gegevens --]\n"
 "\n"
 
-#: crypt-gpgme.c:1591
+#: crypt-gpgme.c:1598
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
 msgstr "[-- Fout: ontsleuteling is mislukt: %s --]\n"
 
-#: crypt-gpgme.c:2083
+#: crypt-gpgme.c:2090
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Fout: ontsleuteling/verificatie is mislukt: %s\n"
 
-#: crypt-gpgme.c:2131
+#: crypt-gpgme.c:2138
 msgid "Error: copy data failed\n"
 msgstr "Fout: kopiëren van gegevens is mislukt\n"
 
-#: crypt-gpgme.c:2151 pgp.c:428
+#: crypt-gpgme.c:2158 pgp.c:428
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -941,11 +939,11 @@ msgstr ""
 "[-- BEGIN PGP-BERICHT --]\n"
 "\n"
 
-#: crypt-gpgme.c:2153 pgp.c:430
+#: crypt-gpgme.c:2160 pgp.c:430
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- BEGIN PGP PUBLIC KEY BLOK --]\n"
 
-#: crypt-gpgme.c:2156 pgp.c:432
+#: crypt-gpgme.c:2163 pgp.c:432
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -953,19 +951,19 @@ msgstr ""
 "[-- BEGIN PGP-ONDERTEKEND BERICHT --]\n"
 "\n"
 
-#: crypt-gpgme.c:2183 pgp.c:458
+#: crypt-gpgme.c:2190 pgp.c:458
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- EINDE PGP-BERICHT --]\n"
 
-#: crypt-gpgme.c:2185 pgp.c:465
+#: crypt-gpgme.c:2192 pgp.c:465
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- EINDE PGP-PUBLIEKESLEUTELBLOK --]\n"
 
-#: crypt-gpgme.c:2187 pgp.c:467
+#: crypt-gpgme.c:2194 pgp.c:467
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- EINDE PGP-ONDERTEKEND BERICHT --]\n"
 
-#: crypt-gpgme.c:2208 pgp.c:497
+#: crypt-gpgme.c:2215 pgp.c:497
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -973,7 +971,7 @@ msgstr ""
 "[-- Fout: Kon begin van PGP-bericht niet vinden! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2239 pgp.c:926
+#: crypt-gpgme.c:2246 pgp.c:926
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -981,11 +979,11 @@ msgstr ""
 "[-- Fout: Foutief PGP/MIME-bericht! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2251 crypt-gpgme.c:2317 pgp.c:939
+#: crypt-gpgme.c:2258 crypt-gpgme.c:2324 pgp.c:939
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Fout: Kon geen tijdelijk bestand aanmaken! --]\n"
 
-#: crypt-gpgme.c:2263
+#: crypt-gpgme.c:2270
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -993,7 +991,7 @@ msgstr ""
 "[-- De volgende gegevens zijn PGP/MIME-ondertekend en -versleuteld --]\n"
 "\n"
 
-#: crypt-gpgme.c:2264 pgp.c:948
+#: crypt-gpgme.c:2271 pgp.c:948
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1001,15 +999,15 @@ msgstr ""
 "[-- De volgende gegevens zijn PGP/MIME-versleuteld --]\n"
 "\n"
 
-#: crypt-gpgme.c:2286
+#: crypt-gpgme.c:2293
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Einde van PGP/MIME-ondertekende en -versleutelde data --]\n"
 
-#: crypt-gpgme.c:2287 pgp.c:968
+#: crypt-gpgme.c:2294 pgp.c:968
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Einde van PGP/MIME-versleutelde data --]\n"
 
-#: crypt-gpgme.c:2329
+#: crypt-gpgme.c:2336
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1017,7 +1015,7 @@ msgstr ""
 "[-- De volgende gegevens zijn S/MIME-ondertekend --]\n"
 "\n"
 
-#: crypt-gpgme.c:2330
+#: crypt-gpgme.c:2337
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1025,226 +1023,226 @@ msgstr ""
 "[-- De volgende gegevens zijn S/MIME-versleuteld --]\n"
 "\n"
 
-#: crypt-gpgme.c:2360
+#: crypt-gpgme.c:2367
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Einde van S/MIME-ondertekende gegevens --]\n"
 
-#: crypt-gpgme.c:2361
+#: crypt-gpgme.c:2368
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Einde van S/MIME-versleutelde data --]\n"
 
-#: crypt-gpgme.c:2954
+#: crypt-gpgme.c:2961
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Kan dit gebruikers-ID niet weergeven (onbekende codering)]"
 
-#: crypt-gpgme.c:2956
+#: crypt-gpgme.c:2963
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Kan dit gebruikers-ID niet weergeven (ongeldige codering)]"
 
-#: crypt-gpgme.c:2961
+#: crypt-gpgme.c:2968
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Kan dit gebruikers-ID niet weergeven (ongeldige DN)]"
 
-#: crypt-gpgme.c:3040
+#: crypt-gpgme.c:3047
 msgid " aka ......: "
 msgstr " alias ....: "
 
-#: crypt-gpgme.c:3040
+#: crypt-gpgme.c:3047
 msgid "Name ......: "
 msgstr "Naam ......: "
 
-#: crypt-gpgme.c:3043 crypt-gpgme.c:3182
+#: crypt-gpgme.c:3050 crypt-gpgme.c:3189
 msgid "[Invalid]"
 msgstr "[Ongeldig]"
 
-#: crypt-gpgme.c:3063 crypt-gpgme.c:3206
+#: crypt-gpgme.c:3070 crypt-gpgme.c:3213
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Geldig van : %s\n"
 
-#: crypt-gpgme.c:3076 crypt-gpgme.c:3219
+#: crypt-gpgme.c:3083 crypt-gpgme.c:3226
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Geldig tot : %s\n"
 
-#: crypt-gpgme.c:3089 crypt-gpgme.c:3232
+#: crypt-gpgme.c:3096 crypt-gpgme.c:3239
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Sltl.type .: %s, %lu bit %s\n"
 
-#: crypt-gpgme.c:3091 crypt-gpgme.c:3234
+#: crypt-gpgme.c:3098 crypt-gpgme.c:3241
 #, c-format
 msgid "Key Usage .: "
 msgstr "Slt.gebruik: "
 
-#: crypt-gpgme.c:3096 crypt-gpgme.c:3239
+#: crypt-gpgme.c:3103 crypt-gpgme.c:3246
 msgid "encryption"
 msgstr "versleuteling "
 
-#: crypt-gpgme.c:3097 crypt-gpgme.c:3102 crypt-gpgme.c:3107 crypt-gpgme.c:3240
-#: crypt-gpgme.c:3245 crypt-gpgme.c:3250
+#: crypt-gpgme.c:3104 crypt-gpgme.c:3109 crypt-gpgme.c:3114 crypt-gpgme.c:3247
+#: crypt-gpgme.c:3252 crypt-gpgme.c:3257
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
+#: crypt-gpgme.c:3108 crypt-gpgme.c:3251
 msgid "signing"
 msgstr "ondertekening"
 
-#: crypt-gpgme.c:3106 crypt-gpgme.c:3249
+#: crypt-gpgme.c:3113 crypt-gpgme.c:3256
 msgid "certification"
 msgstr "certificering"
 
-#: crypt-gpgme.c:3146
+#: crypt-gpgme.c:3153
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Serienummer: 0x%s\n"
 
-#: crypt-gpgme.c:3154
+#: crypt-gpgme.c:3161
 #, c-format
 msgid "Issued By .: "
 msgstr "Uitg. door : "
 
 #. display only the short keyID
-#: crypt-gpgme.c:3173
+#: crypt-gpgme.c:3180
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Subsleutel : 0x%s"
 
-#: crypt-gpgme.c:3177
+#: crypt-gpgme.c:3184
 msgid "[Revoked]"
 msgstr "[Herroepen]"
 
-#: crypt-gpgme.c:3187
+#: crypt-gpgme.c:3194
 msgid "[Expired]"
 msgstr "[Verlopen]"
 
-#: crypt-gpgme.c:3192
+#: crypt-gpgme.c:3199
 msgid "[Disabled]"
 msgstr "[Uitgeschakeld]"
 
-#: crypt-gpgme.c:3276 pgpkey.c:560 pgpkey.c:740
+#: crypt-gpgme.c:3283 pgpkey.c:560 pgpkey.c:740
 msgid "Can't create temporary file"
 msgstr "Kan tijdelijk bestand niet aanmaken"
 
-#: crypt-gpgme.c:3279
+#: crypt-gpgme.c:3286
 msgid "Collecting data..."
 msgstr "Data aan het vergaren..."
 
-#: crypt-gpgme.c:3305
+#: crypt-gpgme.c:3312
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Fout bij het vinden van uitgever van sleutel: %s\n"
 
-#: crypt-gpgme.c:3315
+#: crypt-gpgme.c:3322
 msgid "Error: certification chain to long - stopping here\n"
 msgstr "Fout: certificeringsketen is te lang -- gestopt\n"
 
-#: crypt-gpgme.c:3326 pgpkey.c:581
+#: crypt-gpgme.c:3333 pgpkey.c:581
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Sleutel-ID: 0x%s"
 
-#: crypt-gpgme.c:3409
+#: crypt-gpgme.c:3416
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new is mislukt: %s"
 
-#: crypt-gpgme.c:3448 crypt-gpgme.c:3511
+#: crypt-gpgme.c:3455 crypt-gpgme.c:3518
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start is mislukt: %s"
 
-#: crypt-gpgme.c:3498 crypt-gpgme.c:3539
+#: crypt-gpgme.c:3505 crypt-gpgme.c:3546
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next is mislukt: %s"
 
-#: crypt-gpgme.c:3610
+#: crypt-gpgme.c:3617
 msgid "All matching keys are marked expired/revoked."
 msgstr "Alle overeenkomende sleutels zijn verlopen/ingetrokken."
 
-#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
+#: crypt-gpgme.c:3646 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Einde "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3641 pgpkey.c:517 smime.c:434
+#: crypt-gpgme.c:3648 pgpkey.c:517 smime.c:434
 msgid "Select  "
 msgstr "Selecteer  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3644 pgpkey.c:520
+#: crypt-gpgme.c:3651 pgpkey.c:520
 msgid "Check key  "
 msgstr "Controleer sleutel "
 
-#: crypt-gpgme.c:3661
+#: crypt-gpgme.c:3668
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP- en S/MIME-sleutels voor"
 
-#: crypt-gpgme.c:3663
+#: crypt-gpgme.c:3670
 msgid "PGP keys matching"
 msgstr "PGP-sleutels voor"
 
-#: crypt-gpgme.c:3665
+#: crypt-gpgme.c:3672
 msgid "S/MIME keys matching"
 msgstr "S/MIME-certficaten voor"
 
-#: crypt-gpgme.c:3667
+#: crypt-gpgme.c:3674
 msgid "keys matching"
 msgstr "sleutels voor"
 
-#: crypt-gpgme.c:3670
+#: crypt-gpgme.c:3677
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
-#: crypt-gpgme.c:3672
+#: crypt-gpgme.c:3679
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:3699 pgpkey.c:601
+#: crypt-gpgme.c:3706 pgpkey.c:601
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Deze sleutel is onbruikbaar: verlopen/ingetrokken."
 
-#: crypt-gpgme.c:3713 pgpkey.c:613
+#: crypt-gpgme.c:3720 pgpkey.c:613
 msgid "ID is expired/disabled/revoked."
 msgstr "Dit ID is verlopen/uitgeschakeld/ingetrokken."
 
-#: crypt-gpgme.c:3733 pgpkey.c:617
+#: crypt-gpgme.c:3740 pgpkey.c:617
 msgid "ID has undefined validity."
 msgstr "Dit ID heeft een ongedefinieerde geldigheid."
 
-#: crypt-gpgme.c:3736 pgpkey.c:620
+#: crypt-gpgme.c:3743 pgpkey.c:620
 msgid "ID is not valid."
 msgstr "Dit ID is niet geldig."
 
-#: crypt-gpgme.c:3739 pgpkey.c:623
+#: crypt-gpgme.c:3746 pgpkey.c:623
 msgid "ID is only marginally valid."
 msgstr "Dit ID is slechts marginaal vertrouwd."
 
-#: crypt-gpgme.c:3747 pgpkey.c:627
+#: crypt-gpgme.c:3754 pgpkey.c:627
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Wilt U deze sleutel gebruiken?"
 
-#: crypt-gpgme.c:3804 crypt-gpgme.c:3917 pgpkey.c:840 pgpkey.c:956
+#: crypt-gpgme.c:3811 crypt-gpgme.c:3924 pgpkey.c:840 pgpkey.c:956
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Zoeken naar sleutels voor \"%s\"..."
 
-#: crypt-gpgme.c:4080 pgp.c:1175
+#: crypt-gpgme.c:4087 pgp.c:1175
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Sleutel-ID = \"%s\" gebruiken voor %s?"
 
-#: crypt-gpgme.c:4116 pgp.c:1209 smime.c:666 smime.c:791
+#: crypt-gpgme.c:4123 pgp.c:1209 smime.c:666 smime.c:791
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Sleutel-ID voor %s: "
 
-#: crypt-gpgme.c:4181
+#: crypt-gpgme.c:4188
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
@@ -1252,36 +1250,36 @@ msgstr ""
 "\n"
 "GPGME-backend wordt gebruikt, hoewel er geen GPG-agent draait"
 
-#: crypt-gpgme.c:4209
+#: crypt-gpgme.c:4216
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "S/MIME (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, (p)gp of (g)"
 "een?"
 
-#: crypt-gpgme.c:4210
+#: crypt-gpgme.c:4217
 msgid "esabpfc"
 msgstr "vomabpg"
 
-#: crypt-gpgme.c:4213
+#: crypt-gpgme.c:4220
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr "PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (s)/mime of (g)een?"
 
-#: crypt-gpgme.c:4214
+#: crypt-gpgme.c:4221
 msgid "esabmfc"
 msgstr "vomabsg"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4230 pgp.c:1585 smime.c:2036
+#: crypt-gpgme.c:4237 pgp.c:1585 smime.c:2036
 msgid "Sign as: "
 msgstr "Ondertekenen als: "
 
-#: crypt-gpgme.c:4327
+#: crypt-gpgme.c:4334
 msgid "Failed to verify sender"
 msgstr "Verifiëren van afzender is mislukt"
 
-#: crypt-gpgme.c:4330
+#: crypt-gpgme.c:4337
 msgid "Failed to figure out sender"
 msgstr "Kan afzender niet bepalen"
 
@@ -2211,7 +2209,7 @@ msgstr "Ongeldige reguliere expressie: %s"
 #: init.c:522
 #, c-format
 msgid "Not enough subexpressions for spam template"
-msgstr ""
+msgstr "Niet genoeg subexpressies voor spamsjabloon"
 
 #: init.c:748
 msgid "spam: no matching pattern"
@@ -2287,7 +2285,7 @@ msgstr "Toekenning van een waarde is niet toegestaan"
 #: init.c:1783 init.c:1795
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr ""
+msgstr "Gebruik: set variable=yes|no"
 
 #: init.c:1803
 #, c-format
@@ -2448,20 +2446,18 @@ msgstr ""
 "Ga naar http://bugs.mutt.org/ om een programmafout te melden.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2007 Michael R. Elkins en anderen.\n"
+"Copyright (C) 1996-2008 Michael R. Elkins en anderen.\n"
 "Mutt komt ABSOLUUT ZONDER GARANTIE;  voor meer informatie `mutt -vv'.\n"
 "Mutt is vrije software, en u bent vrij om het te verspreiden\n"
 "onder bepaalde voorwaarden;  type `mutt -vv' voor meer informatie.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2474,11 +2470,11 @@ msgid ""
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -2645,7 +2641,7 @@ msgstr "Kan bestand %s niet aanmaken: %s"
 
 #: main.c:831
 msgid "Failed to parse mailto: link\n"
-msgstr ""
+msgstr "Kan mailto: koppeling niet verwerken\n"
 
 #: main.c:843
 msgid "No recipients specified.\n"
@@ -3282,9 +3278,9 @@ msgid "mismatched brackets: %s"
 msgstr "Haakjes kloppen niet: %s"
 
 #: pattern.c:898
-#, fuzzy, c-format
+#, c-format
 msgid "%c: invalid pattern modifier"
-msgstr "%c: Ongeldig commando"
+msgstr "%c: ongeldige patroonopgave"
 
 #: pattern.c:904
 #, c-format
