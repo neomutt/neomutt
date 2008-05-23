@@ -1,3 +1,15 @@
+2008-05-22 20:22 -0700  Brendan Cully  <brendan@kublai.com>  (96a01436f88b)
+
+	* imap/command.c: Escape LSUB mailbox names given to
+	mutt_parse_rc_line. Handle literals in STATUS responses for Notes
+	compatibility.
+
+2008-05-22 17:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (d612ef757ee9)
+
+	* ChangeLog, configure.ac, m4/types.m4: Use C99 macros
+	"PRId64"/"PRId32" to format file sizes/offsets if available. This
+	fixes warning about mismatching int argument sizes on amd64.
+
 2008-05-22 16:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (b97e95fd5786)
 
 	* init.h: Document that $check_mbox_size should be set before

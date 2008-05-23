@@ -4,17 +4,17 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-  + $query_format (customize external query menu)
-  ! inode sorting is always enabled
-  + $time_inc suppresses progress updates less than $time_inc
-    milliseconds apart.
+hg tip:
 
   + 'mime_lookup application/octet-stream' added to system Muttrc
 
 1.5.18 (2008-05-17):
 
+  + $query_format (customize external query menu)
+  ! inode sorting is always enabled
+  + $time_inc suppresses progress updates less than $time_inc
+    milliseconds apart.
   + X-Label: headers must now be RfC2047-encoded
-  + $time_inc (control rate of progress updates)
 
 1.5.17 (2007-11-01):
 
