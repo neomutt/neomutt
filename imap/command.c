@@ -696,7 +696,10 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
 
   strfcpy (buf, "mailboxes \"", sizeof (buf));
   mutt_account_tourl (&idata->conn->account, &url);
-  url.path = list.name;
+  /* escape \ and " */
+  imap_quote_string(errstr, sizeof (errstr), list.name);
+  url.path = errstr + 1;
+  url.path[strlen(url.path) - 1] = '\0';
   if (!mutt_strcmp (url.user, ImapUser))
     url.user = NULL;
   url_ciss_tostring (&url, buf + 11, sizeof (buf) - 10, 0);
@@ -818,11 +821,30 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   int count;
   IMAP_STATUS *status;
   unsigned int olduv, oldun;
+  long litlen;
 
   mailbox = imap_next_word (s);
-  s = imap_next_word (mailbox);
-  *(s - 1) = '\0';
-  imap_unmunge_mbox_name (mailbox);
+
+  /* We need a real tokenizer. */
+  if (!imap_get_literal_count (mailbox, &litlen))
+  {
+    if (imap_cmd_step (idata) != IMAP_CMD_CONTINUE)
+    {
+      idata->status = IMAP_FATAL;
+      return;
+    }
+    mailbox = idata->buf;
+    s = mailbox + litlen;
+    *s = '\0';
+    s++;
+    SKIPWS(s);
+  }
+  else
+  {
+    s = imap_next_word (mailbox);
+    *(s - 1) = '\0';
+    imap_unmunge_mbox_name (mailbox);
+  }
 
   status = imap_mboxcache_get (idata, mailbox, 1);
   olduv = status->uidvalidity;
