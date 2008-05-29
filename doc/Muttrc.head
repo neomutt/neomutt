@@ -2,10 +2,15 @@
 # System configuration file for Mutt
 #
 
-# default list of header fields to weed when displaying
-#
-ignore "from " received content- mime-version status x-status message-id
-ignore sender references return-path lines
+# Default list of header fields to weed when displaying.
+# Ignore all lines by default...
+ignore *
+
+# ... then allow these through.
+unignore from: subject to cc date x-mailer x-url user-agent
+
+# Display the fields in this order
+hdr_order date from to cc subject
 
 # imitate the old search-body function
 macro index \eb "<search>~b " "search in message bodies"

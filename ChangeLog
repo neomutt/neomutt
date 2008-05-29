@@ -1,3 +1,21 @@
+2008-05-23 01:40 -0400  Todd Zullinger  <tmz@pobox.com>  (73a180edce53)
+
+	* pgp.c: Call mutt_need_hard_redraw() in pgp_decrypt_part().
+
+	This change ensures that the screen is redrawn when using gpg-agent.
+	Without this, mutt's navigation keybindings are lost after pinentry
+	curses prompts for a passphrase to descrypt a message.
+
+2008-05-28 22:16 -0700  Moritz Schulte  <moritz@g10code.com>  (7fd74c40eced)
+
+	* curs_lib.c: Make sure that the redrawing/reinitializing is done
+	always, not only when the environment variable DISPLAY is not set.
+
+2008-05-28 22:05 -0700  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (9d0509641865)
+
+	* configure.ac, m4/iconv.m4: Cosmetic fix to configure
+	--help. Closes #3060.
+
 2008-05-28 21:44 -0700  Vincent Lefevre  <vincent@vinc17.org>  (7b8ef3b8ff5a)
 
 	* po/fr.po: Updated French translation
