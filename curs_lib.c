@@ -72,12 +72,9 @@ void mutt_refresh (void)
    customize this is of course the Mutt way.  */
 void mutt_need_hard_redraw (void)
 {
-  if (!getenv ("DISPLAY"))
-  {
-    keypad (stdscr, TRUE);
-    clearok (stdscr, TRUE);
-    set_option (OPTNEEDREDRAW);
-  }
+  keypad (stdscr, TRUE);
+  clearok (stdscr, TRUE);
+  set_option (OPTNEEDREDRAW);
 }
 
 event_t mutt_getch (void)
