@@ -166,7 +166,7 @@ if test x$have_smime != xno ; then
 	SMIMEAUX_TARGET="smime_keys"
 fi
 
-AC_ARG_WITH(mixmaster, AC_HELP_STRING([--with-mixmaster[=PATH]], [Include Mixmaster support]),
+AC_ARG_WITH(mixmaster, AC_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
   [if test "$withval" != no
    then
      if test -x "$withval"
@@ -192,7 +192,7 @@ if test $ISPELL != no; then
         AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
 fi
 
-AC_ARG_WITH(slang, AC_HELP_STRING([--with-slang[=DIR]], [Use S-Lang instead of ncurses]),
+AC_ARG_WITH(slang, AC_HELP_STRING([--with-slang@<:@=DIR@:>@], [Use S-Lang instead of ncurses]),
         [AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
                 [AC_TRY_RUN([#include <sys/param.h>
 #include <stdlib.h>
@@ -443,7 +443,7 @@ fi
 
 
 AC_ARG_WITH(homespool,
-  AC_HELP_STRING([--with-homespool[=FILE]], [File in user's directory where new mail is spooled]), with_homespool=${withval})
+  AC_HELP_STRING([--with-homespool@<:@=FILE@:>@], [File in user's directory where new mail is spooled]), with_homespool=${withval})
 if test x$with_homespool != x; then
         if test $with_homespool = yes; then
                 with_homespool=mailbox
@@ -618,7 +618,7 @@ fi
 
 dnl -- imap dependencies --
 
-AC_ARG_WITH(gss, AC_HELP_STRING([--with-gss[=PFX]], [Compile in GSSAPI authentication for IMAP]), 
+AC_ARG_WITH(gss, AC_HELP_STRING([--with-gss@<:@=PFX@:>@], [Compile in GSSAPI authentication for IMAP]), 
     gss_prefix="$withval", gss_prefix="no")
 if test "$gss_prefix" != "no"
 then
@@ -648,7 +648,7 @@ AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
 dnl -- end imap dependencies --
 
-AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using OpenSSL]),
+AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl@<:@=PFX@:>@], [Compile in SSL support for POP/IMAP/SMTP using OpenSSL]),
 [       if test "$with_ssl" != "no"
         then
           if test "$need_socket" != "yes"; then
@@ -681,7 +681,7 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl[=PFX]], [Compile in SSL support for 
         fi
 ])
 
-AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls[=PFX]], [Compile in SSL support for POP/IMAP/SMTP using gnutls]),
+AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls@<:@=PFX@:>@], [Compile in SSL support for POP/IMAP/SMTP using gnutls]),
     [gnutls_prefix="$withval"], [gnutls_prefix="no"])
 if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes
 then
@@ -706,7 +706,7 @@ then
 fi
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
-AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl[=PFX]], [Use Cyrus SASL 2 network security library]),
+AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl@<:@=PFX@:>@], [Use Cyrus SASL 2 network security library]),
         [	
         if test "$with_sasl" != "no"
         then
@@ -819,7 +819,7 @@ AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm],
   [Don't use qdbm even if it is available]))
 AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm],
   [Don't use gdbm even if it is available]))
-AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb[=DIR]],
+AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb@<:@=DIR@:>@],
   [Use BerkeleyDB4 if gdbm is not available]))
 
 if test x$enable_hcache = xyes
@@ -1070,7 +1070,7 @@ fi # libiconv
 
 dnl -- IDN depends on iconv
 
-AC_ARG_WITH(idn, AC_HELP_STRING([--with-idn=[PFX]], [Use GNU libidn for domain names]),
+AC_ARG_WITH(idn, AC_HELP_STRING([--with-idn=@<:@PFX@:>@], [Use GNU libidn for domain names]),
 		 [
 		  if test "$with_idn" != "no" ; then
 		  	if test "$with_idn" != "yes" ; then
