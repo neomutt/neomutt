@@ -713,7 +713,7 @@ void mutt_menuDestroy (MUTTMENU **p)
 
 static int menu_search (MUTTMENU *menu, int op)
 {
-  int r;
+  int r, wrap = 0;
   int searchDir;
   regex_t re;
   char buf[SHORT_STRING];
@@ -750,6 +750,9 @@ static int menu_search (MUTTMENU *menu, int op)
   }
 
   r = menu->current + searchDir;
+search_next:
+  if (wrap)
+    mutt_message (_("Search wrapped to top."));
   while (r >= 0 && r < menu->max)
   {
     if (menu->search (menu, &re, r) == 0)
@@ -761,6 +764,11 @@ static int menu_search (MUTTMENU *menu, int op)
     r += searchDir;
   }
 
+  if (option (OPTWRAPSEARCH) && wrap++ == 0)
+  {
+    r = searchDir == 1 ? 0 : menu->max - 1;
+    goto search_next;
+  }
   regfree (&re);
   mutt_error _("Not found.");
   return (-1);

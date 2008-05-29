@@ -1,3 +1,13 @@
+2008-05-29 11:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (18e7849e4c7c)
+
+	* doc/Makefile.am: Only install mutt_dotlock(1) if binary is
+	installed, too (closes #1601).
+
+2008-05-28 22:22 -0700  Paul Walker  <paul@black-sun.demon.co.uk>  (f4259a92dab6)
+
+	* ChangeLog, doc/Muttrc.head: Make default muttrc header weeding
+	tidier. Closes #286.
+
 2008-05-23 01:40 -0400  Todd Zullinger  <tmz@pobox.com>  (73a180edce53)
 
 	* pgp.c: Call mutt_need_hard_redraw() in pgp_decrypt_part().
