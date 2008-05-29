@@ -54,7 +54,7 @@ install-data-local: makedoc-all instdoc
 	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
-	./instdoc $(srcdir)/dotlock.man \
+	test x@DOTLOCK_TARGET@ = x || ./instdoc $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
