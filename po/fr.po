@@ -16,10 +16,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.17-20080228\n"
+"Project-Id-Version: Mutt 1.5.18\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-05-17 12:35-0700\n"
-"PO-Revision-Date: 2008-02-28 22:34+0100\n"
+"PO-Revision-Date: 2008-05-28 15:12+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -107,18 +107,16 @@ msgid "Save to file: "
 msgstr "Sauver dans le fichier : "
 
 #: alias.c:345
-#, fuzzy
 msgid "Error reading alias file"
-msgstr "Erreur en essayant de visualiser le fichier"
+msgstr "Erreur en lisant le fichier d'alias"
 
 #: alias.c:364
 msgid "Alias added."
 msgstr "Alias ajouté."
 
 #: alias.c:372
-#, fuzzy
 msgid "Error seeking in alias file"
-msgstr "Erreur en essayant de visualiser le fichier"
+msgstr "Erreur en se repositionnant (seek) dans le fichier d'alias"
 
 #: attach.c:113 attach.c:245 attach.c:477 attach.c:968
 msgid "Can't match nametemplate, continue?"
@@ -2592,7 +2590,6 @@ msgstr ""
 "sous certaines conditions ; tapez `mutt -vv' pour les détails.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2609,7 +2606,7 @@ msgstr ""
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
 "Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
 "\n"
@@ -5198,15 +5195,3 @@ msgstr "extraire les clés publiques supportées"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "afficher les options S/MIME"
-
-#~ msgid "SASL failed to get local IP address"
-#~ msgstr "SASL n'a pas pu obtenir l'adresse IP locale"
-
-#~ msgid "SASL failed to parse local IP address"
-#~ msgstr "SASL n'a pas pu analyser l'adresse IP locale"
-
-#~ msgid "SASL failed to get remote IP address"
-#~ msgstr "SASL n'a pas pu obtenir l'adresse IP distante"
-
-#~ msgid "SASL failed to parse remote IP address"
-#~ msgstr "SASL n'a pas pu analyser l'adresse IP distante"
