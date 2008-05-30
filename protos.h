@@ -523,4 +523,26 @@ int ioctl (int, int, ...);
 void ci_bounce_message (HEADER *, int *);
 int ci_send_message (int, HEADER *, char *, CONTEXT *, HEADER *);
 
+/* prototypes for compatibility functions */
+
+#ifndef HAVE_SETENV
+int setenv (const char *, const char *, int);
+#endif
+
+#ifndef HAVE_STRCASECMP
+int strcasecmp (char *, char *);
+int strncasecmp (char *, char *, size_t);
+#endif
+
+#ifndef HAVE_STRDUP
+char *strdup (const char *);
+#endif
+
+#ifndef HAVE_STRSEP
+char *strsep (char **, const char *);
+#endif
+
+#ifndef HAVE_STRTOK_R
+char *strtok_r (char *, const char *, char **)
+#endif
 
