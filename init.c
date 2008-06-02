@@ -1830,7 +1830,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       }
       else if (query || *s->dptr != '=')
       {
-	char _tmp[STRING];
+	char _tmp[LONG_STRING];
 	const char *val = NULL;
 
         if (myvar)
@@ -2703,7 +2703,7 @@ int mutt_query_variables (LIST *queries)
 {
   LIST *p;
   
-  char errbuff[STRING];
+  char errbuff[LONG_STRING];
   char command[STRING];
   
   BUFFER err, token;
@@ -2735,7 +2735,7 @@ int mutt_dump_variables (void)
 {
   int i;
   
-  char errbuff[STRING];
+  char errbuff[LONG_STRING];
   char command[STRING];
   
   BUFFER err, token;
