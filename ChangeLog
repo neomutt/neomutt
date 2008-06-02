@@ -1,3 +1,13 @@
+2008-05-30 16:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (2f59be26ad22)
+
+	* protos.h: Define prototypes for compatibility functions in protos.h
+	to silence compiler warnings
+
+2008-05-29 14:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (bf74c85070c4)
+
+	* ChangeLog, menu.c: Respect $wrap_search in generic menu search (e.g.
+	for browser)
+
 2008-05-29 11:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (18e7849e4c7c)
 
 	* doc/Makefile.am: Only install mutt_dotlock(1) if binary is
