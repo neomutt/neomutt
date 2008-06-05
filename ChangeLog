@@ -1,3 +1,13 @@
+2008-06-02 09:45 +0200  Rocco Rutte  <pdmef@gmx.net>  (d6d04a7f5aea)
+
+	* init.c: Allow for printing variable values longer than 256
+	characters
+
+2008-06-02 09:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (b2b844141ac1)
+
+	* ChangeLog, rfc822.c: Allow for mail addresses longer than 256
+	characters (closes #3066).
+
 2008-05-30 16:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (2f59be26ad22)
 
 	* protos.h: Define prototypes for compatibility functions in protos.h

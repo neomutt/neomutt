@@ -566,6 +566,8 @@ static int string_is_address(const char *str, const char *u, const char *d)
 /* returns TRUE if the given address belongs to the user. */
 int mutt_addr_is_user (ADDRESS *addr)
 {
+  const char *fqdn;
+
   /* NULL address is assumed to be the user. */
   if (!addr)
   {
@@ -588,14 +590,16 @@ int mutt_addr_is_user (ADDRESS *addr)
     dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, Hostname));
     return 1;
   }
-  if (string_is_address(addr->mailbox, Username, mutt_fqdn(0)))
+  fqdn = mutt_fqdn (0);
+  if (string_is_address(addr->mailbox, Username, fqdn))
   {
-    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (0)));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, NONULL(fqdn)));
     return 1;
   }
-  if (string_is_address(addr->mailbox, Username, mutt_fqdn(1)))
+  fqdn = mutt_fqdn (1);
+  if (string_is_address(addr->mailbox, Username, fqdn))
   {
-    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, mutt_fqdn (1)));
+    dprint (5, (debugfile, "mutt_addr_is_user: yes, %s = %s @ %s \n", addr->mailbox, Username, NONULL(fqdn)));
     return 1;
   }
 
