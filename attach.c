@@ -561,10 +561,11 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       if ((mutt_wait_filter (thepid) || (entry->needsterminal &&
 	  option (OPTWAITKEY))) && !use_pager)
 	mutt_any_key_to_continue (NULL);
-      
-      close(tempfd);
-      close(pagerfd);
-      
+
+      if (tempfd != -1)
+	close (tempfd);
+      if (pagerfd != -1)
+	close (pagerfd);
     }
     else
     {
