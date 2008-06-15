@@ -1,11 +1,18 @@
+2008-06-11 22:45 -0700  Alexey I. Froloff  <raorn@altlinux.org>  (1e8ca708a52f)
+
+	* attach.c: Do not attempt to close invalid descriptors. Closes #3075
+
+2008-06-05 13:06 +0200  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (5ab92dd44ce2)
+
+	* alias.c: Wrap Fqdn in NONULL() to prevent crash with -d5 if Fqdn
+	is NULL
+
 2008-06-02 09:45 +0200  Rocco Rutte  <pdmef@gmx.net>  (d6d04a7f5aea)
 
 	* init.c: Allow for printing variable values longer than 256
 	characters
 
-2008-06-02 09:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (b2b844141ac1)
-
-	* ChangeLog, rfc822.c: Allow for mail addresses longer than 256
+	* rfc822.c: Allow for mail addresses longer than 256
 	characters (closes #3066).
 
 2008-05-30 16:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (2f59be26ad22)
@@ -15,17 +22,15 @@
 
 2008-05-29 14:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (bf74c85070c4)
 
-	* ChangeLog, menu.c: Respect $wrap_search in generic menu search (e.g.
-	for browser)
-
-2008-05-29 11:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (18e7849e4c7c)
+	* menu.c: Respect $wrap_search in generic menu search (e.g.  for
+	browser)
 
 	* doc/Makefile.am: Only install mutt_dotlock(1) if binary is
 	installed, too (closes #1601).
 
 2008-05-28 22:22 -0700  Paul Walker  <paul@black-sun.demon.co.uk>  (f4259a92dab6)
 
-	* ChangeLog, doc/Muttrc.head: Make default muttrc header weeding
+	* doc/Muttrc.head: Make default muttrc header weeding
 	tidier. Closes #286.
 
 2008-05-23 01:40 -0400  Todd Zullinger  <tmz@pobox.com>  (73a180edce53)

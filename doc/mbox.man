@@ -36,7 +36,8 @@ The sender address is expected to be
 .B addr-spec
 as defined in \fBRFC2822\fP 3.4.1. The date is expected to be
 .B date-time
-as defined in \fBRFC2822\fP 3.3.
+as output by
+.BR asctime(3) .
 For compatibility reasons with legacy software, two-digit years
 greater than or equal to 70 should be interpreted as the years
 1970+, while two-digit years less than 70 should be interpreted as
@@ -168,6 +169,7 @@ format folders.
 .BR flock (2),
 .BR link (2),
 .BR stat (2),
+.BR asctime (3),
 .BR maildir (5),
 .BR mmdf (5),
 .BR RFC822 ,
