@@ -1,3 +1,13 @@
+1970-01-01 00:00 +0000  Brendan Cully  <brendan@kublai.com>  (a2e8f6fab8d3)
+
+	* smtp.c: Test that envelope from or from is set before attempting
+	SMTP delivery. Closes #3079.
+
+2008-06-14 18:23 -0700  Christoph Berg  <cb@df7cb.de>  (4b790909a037)
+
+	* doc/mbox.man: Document that From_ lines use asctime-style dates,
+	not RFC2822 dates. Closes #3077.
+
 2008-06-11 22:45 -0700  Alexey I. Froloff  <raorn@altlinux.org>  (1e8ca708a52f)
 
 	* attach.c: Do not attempt to close invalid descriptors. Closes #3075
