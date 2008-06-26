@@ -170,6 +170,7 @@ int safe_open (const char *, int);
 int safe_rename (const char *, const char *);
 int safe_symlink (const char *, const char *);
 int safe_fclose (FILE **);
+int safe_fsync_close (FILE **);
 
 size_t mutt_quote_filename (char *, size_t, const char *);
 size_t mutt_strlen (const char *);

@@ -1,4 +1,12 @@
-2008-06-25 23:13 -0700  Brendan Cully  <brendan@kublai.com>  (d2134eced31b)
+2008-06-26 00:18 -0700  Brendan Cully  <brendan@kublai.com>  (5d46ad49d04a)
+
+	* mh.c: fsync maildir/mh messages on commit. Closes #2962.
+
+2008-06-25 23:40 -0700  Brendan Cully  <brendan@kublai.com>  (32374c911c6c)
+
+	* smime.c: Check S/MIME signing ID exists before attempting to use
+	it. Closes #3069. Also make (s)ign automatically ask for a key if
+	no default is defined.
 
 	* init.h: Make $move default to no instead of ask-no. Closes #2945.
 

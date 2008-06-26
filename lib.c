@@ -209,6 +209,25 @@ int safe_fclose (FILE **f)
   return r;
 }
 
+int safe_fsync_close (FILE **f)
+{
+  int r = 0;
+
+  if (*f)
+  {
+    if (fflush (*f) || fsync (fileno (*f)))
+    {
+      r = -1;
+      fclose (*f);
+    }
+    else
+      r = fclose(*f);
+    *f = NULL;
+  }
+
+  return r;
+}
+
 char *safe_strdup (const char *s)
 {
   char *p;
