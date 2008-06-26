@@ -1,4 +1,9 @@
-2008-06-25 22:43 -0700  Brendan Cully  <brendan@kublai.com>  (e2780a423d96)
+2008-06-25 23:13 -0700  Brendan Cully  <brendan@kublai.com>  (d2134eced31b)
+
+	* init.h: Make $move default to no instead of ask-no. Closes #2945.
+
+	* doc/manual.xml.head: Document difference between index and pager
+	search. Closes #2886.
 
 	* commands.c, copy.c, crypt-gpgme.c, handler.c, mbox.c, pgp.c: Make
 	mutt_copy_message distinguish between fatal and non-fatal errors.
