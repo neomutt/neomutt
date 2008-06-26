@@ -2096,7 +2096,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                   char *tmpfname;
 
 		  {
-		    /* Check wether signatures have been verified.  */
+		    /* Check whether signatures have been verified.  */
 		    gpgme_verify_result_t verify_result;
 
                     verify_result = gpgme_op_verify_result (ctx);
@@ -2199,13 +2199,16 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
               safe_fclose (&pgpout);
             }
         }
+#if 0
       else
-        {
-          /* XXX - we may wish to recode here */
-          if (s->prefix)
-            state_puts (s->prefix, s);
-          state_puts (buf, s);
-        }
+      {
+        /* why would we want to display this at all? */
+        /* XXX - we may wish to recode here */
+        if (s->prefix)
+          state_puts (s->prefix, s);
+        state_puts (buf, s);
+      }
+#endif
     }
 
   m->goodsig = (maybe_goodsig && have_any_sigs);
@@ -2214,7 +2217,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
     {
       state_attach_puts (_("[-- Error: could not find beginning"
                            " of PGP message! --]\n\n"), s);
-      return -1;
+      return 1;
     }
   dprint (2, (debugfile, "Leaving pgp_application_pgp handler\n"));
 

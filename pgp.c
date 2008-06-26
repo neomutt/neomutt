@@ -467,13 +467,16 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  state_attach_puts (_("[-- END PGP SIGNED MESSAGE --]\n"), s);
       }
     }
+#if 0
     else
     {
+      /* why would we want to display this at all? */
       /* XXX - we may wish to recode here */
       if (s->prefix)
 	state_puts (s->prefix, s);
       state_puts (buf, s);
     }
+#endif
   }
 
   rc = 0;

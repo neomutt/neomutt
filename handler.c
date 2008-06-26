@@ -1211,7 +1211,10 @@ int multipart_handler (BODY *a, STATE *s)
   if (a->encoding == ENCBASE64 || a->encoding == ENCQUOTEDPRINTABLE ||
       a->encoding == ENCUUENCODED)
     mutt_free_body (&b);
-  
+
+  /* make failure of a single part non-fatal */
+  if (rc < 0)
+    rc = 1;
   return rc;
 }
 

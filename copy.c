@@ -718,6 +718,8 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   return rc;
 }
 
+/* should be made to return -1 on fatal errors, and 1 on non-fatal errors
+ * like partial decode, where it is worth displaying as much as possible */
 int
 mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
 		   int chflags)
