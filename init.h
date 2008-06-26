@@ -1332,7 +1332,7 @@ struct option_t MuttVars[] = {
 #endif
 
 
-  { "move",		DT_QUAD, R_NONE, OPT_MOVE, M_ASKNO },
+  { "move",		DT_QUAD, R_NONE, OPT_MOVE, M_NO },
   /*
   ** .pp
   ** Controls whether or not Mutt will move read messages
