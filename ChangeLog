@@ -1,3 +1,21 @@
+2008-06-25 22:43 -0700  Brendan Cully  <brendan@kublai.com>  (e2780a423d96)
+
+	* commands.c, copy.c, crypt-gpgme.c, handler.c, mbox.c, pgp.c: Make
+	mutt_copy_message distinguish between fatal and non-fatal errors.
+	Non-fatal errors should prevent moving messages, since they indicate
+	data loss. But mutt should still attempt to display them, since
+	being able to see some attachments is better than nothing. Also stop
+	printing out non-PGP material in application/pgp attachments. Closes
+	#2545, #2912.
+
+2008-06-24 23:12 -0700  Brendan Cully  <brendan@kublai.com>  (f5fe657f0633)
+
+	* handler.c: Make multipart decoding a little more
+	forgiving. First, ignore bad content-transfer-encoding in
+	multipart sections. Second, if an attachment fails to decode,
+	print a warning and continue instead of giving up on the entire
+	message.
+
 1970-01-01 00:00 +0000  Brendan Cully  <brendan@kublai.com>  (a2e8f6fab8d3)
 
 	* smtp.c: Test that envelope from or from is set before attempting

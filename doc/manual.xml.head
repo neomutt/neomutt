@@ -604,9 +604,9 @@ featureful.
 <row><entry>S</entry><entry>skip beyond quoted text</entry></row>
 <row><entry>T</entry><entry>toggle display of quoted text</entry></row>
 <row><entry>?</entry><entry>show keybindings</entry></row>
-<row><entry>/</entry><entry>search for a regular expression (pattern)</entry></row>
-<row><entry>ESC /</entry><entry>search backwards for a regular expression</entry></row>
-<row><entry>&bsol;</entry><entry>toggle search pattern coloring</entry></row>
+<row><entry>/</entry><entry>regular expression search</entry></row>
+<row><entry>ESC /</entry><entry>backward regular expression search</entry></row>
+<row><entry>&bsol;</entry><entry>toggle highlighting of search matches</entry></row>
 <row><entry>&circ;</entry><entry>jump to the top of the message</entry></row>
 </tbody>
 </tgroup>
@@ -684,6 +684,15 @@ can also be used by an external <link linkend="auto-view">autoview</link>
 script for highlighting purposes.  <emphasis role="bold">Note:</emphasis> If you change the colors for your
 display, for example by changing the color associated with color2 for
 your xterm, then that color will be used instead of green.
+</para>
+
+<para>
+Note that the search commands in the pager take regular expressions,
+which are not quite the same as the more
+complex <link linkend="patterns">patterns</link> used by the search
+command in the index. This is because the pager only performs simple
+text search, whereas the index provides boolean filtering on several
+aspects of messages.
 </para>
 
 </sect2>
