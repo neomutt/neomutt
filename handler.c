@@ -1199,7 +1199,7 @@ int multipart_handler (BODY *a, STATE *s)
     
     if (rc)
     {
-      mutt_error ("One or more parts of this message could not be displayed");
+      mutt_error (_("One or more parts of this message could not be displayed"));
       dprint (1, (debugfile, "Failed on attachment #%d, type %s/%s.\n", count, TYPE(p), NONULL (p->subtype)));
     }
     

@@ -1,4 +1,10 @@
-2008-06-26 00:18 -0700  Brendan Cully  <brendan@kublai.com>  (5d46ad49d04a)
+2008-06-26 12:47 -0700  Brendan Cully  <brendan@kublai.com>  (be7e07963099)
+
+	* curs_lib.c: Force a resize event after calling an external editor.
+	Closes #2207
+
+	* lib.c, lib.h, mh.c: fflush before fsync and close. Closes #2962
+	again.
 
 	* mh.c: fsync maildir/mh messages on commit. Closes #2962.
 
