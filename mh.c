@@ -1311,6 +1311,11 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
   char full[_POSIX_PATH_MAX];
   char *s;
 
+  if (msg->fp && fsync(fileno(msg->fp)) < 0)
+  {
+    mutt_perror("Could not flush message to disk");
+    return -1;
+  }
   if (safe_fclose (&msg->fp) != 0)
     return -1;
 
@@ -1386,6 +1391,11 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
   char path[_POSIX_PATH_MAX];
   char tmp[16];
 
+  if (msg->fp && fsync(fileno(msg->fp)) < 0)
+  {
+    mutt_perror("Could not flush message to disk");
+    return -1;
+  }
   if (safe_fclose (&msg->fp) != 0)
     return -1;
 
