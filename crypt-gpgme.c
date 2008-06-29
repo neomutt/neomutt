@@ -1252,24 +1252,36 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
     state_attach_puts (txt, s);
 }
 
-static void print_smime_keyinfo (gpgme_signature_t sig, gpgme_key_t key,
-                                 STATE *s)
+static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
+                                 gpgme_key_t key, STATE *s)
 {
+  size_t msglen;
   gpgme_user_id_t uids = NULL;
-  int aka = 0;
+  int i, aka = 0;
 
+  state_attach_puts (msg, s);
+  state_attach_puts (" ", s);
   for (uids = key->uids; uids; uids = uids->next)
   {
     if (uids->revoked)
       continue;
     if (aka)
-      state_attach_puts (_("                aka: "), s);
+    {
+      msglen = mutt_strlen (msg) - 4;
+      for (i = 0; i < msglen; i++)
+        state_attach_puts(" ", s);
+      state_attach_puts(_("aka: "), s);
+    }
     state_attach_puts (uids->uid, s);
     state_attach_puts ("\n", s);
     
     aka = 1;
   }
-  state_attach_puts (_("            created: "), s);
+
+  msglen = mutt_strlen (msg) - 8;
+  for (i = 0; i < msglen; i++)
+    state_attach_puts(" ", s);
+  state_attach_puts (_("created: "), s);
   print_time (sig->timestamp, s);
   state_attach_puts ("\n", s);  
 }
@@ -1287,7 +1299,6 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
   gpgme_key_t key = NULL;
   int i, anybad = 0, anywarn = 0;
   unsigned int sum;
-  gpgme_user_id_t uids = NULL;
   gpgme_verify_result_t result;
   gpgme_signature_t sig;
   gpgme_error_t err = GPG_ERR_NO_ERROR;
@@ -1342,42 +1353,31 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	}
       else if ((sum & GPGME_SIGSUM_GREEN))
       {
-        state_attach_puts (_("Good signature from: "), s);
-        print_smime_keyinfo (sig, key, s);
-        state_attach_puts (_("            expires: "), s);
-        print_time (sig->exp_timestamp, s);
-        state_attach_puts ("\n", s);
+        print_smime_keyinfo (_("Good signature from:"), sig, key, s);
 	if (show_sig_summary (sum, ctx, key, idx, s, sig))
 	  anywarn = 1;
 	show_one_sig_validity (ctx, idx, s);
       }
       else if ((sum & GPGME_SIGSUM_RED))
       {
-        state_attach_puts (_("*BAD* signature claimed to be from: "), s);
-        print_smime_keyinfo (sig, key, s);
+        print_smime_keyinfo (_("*BAD* signature from:"), sig, key, s);
         show_sig_summary (sum, ctx, key, idx, s, sig);
       }
       else if (!anybad && key && (key->protocol == GPGME_PROTOCOL_OpenPGP))
-	{ /* We can't decide (yellow) but this is a PGP key with a good
-	     signature, so we display what a PGP user expects: The name,
-	     fingerprint and the key validity (which is neither fully or
-	     ultimate). */
-	  state_attach_puts (_("Good signature from: "), s);
-	  state_attach_puts (uid, s);
-	  state_attach_puts ("\n", s);
-	  state_attach_puts (_("            created: "), s);
-	  print_time (sig->timestamp, s);
-	  state_attach_puts ("\n", s);
-	  show_one_sig_validity (ctx, idx, s);
-	  show_fingerprint (key,s);
-	  if (show_sig_summary (sum, ctx, key, idx, s, sig))
-	    anywarn = 1;
-	}
+      { /* We can't decide (yellow) but this is a PGP key with a good
+           signature, so we display what a PGP user expects: The name,
+	   fingerprint and the key validity (which is neither fully or
+	   ultimate). */
+        print_smime_keyinfo (_("Good signature from:"), sig, key, s);
+	show_one_sig_validity (ctx, idx, s);
+	show_fingerprint (key,s);
+	if (show_sig_summary (sum, ctx, key, idx, s, sig))
+	  anywarn = 1;
+      }
       else /* can't decide (yellow) */
       {
-	state_attach_puts (_("Problem signature from: "), s);
-        print_smime_keyinfo (sig, key, s);
-        state_attach_puts (_("            expires: "), s);
+        print_smime_keyinfo (_("Problem signature from:"), sig, key, s);
+        state_attach_puts (_("               expires: "), s);
         print_time (sig->exp_timestamp, s);
         state_attach_puts ("\n", s);
 	show_sig_summary (sum, ctx, key, idx, s, sig);
