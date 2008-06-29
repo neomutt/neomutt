@@ -1252,6 +1252,28 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
     state_attach_puts (txt, s);
 }
 
+static void print_smime_keyinfo (gpgme_signature_t sig, gpgme_key_t key,
+                                 STATE *s)
+{
+  gpgme_user_id_t uids = NULL;
+  int aka = 0;
+
+  for (uids = key->uids; uids; uids = uids->next)
+  {
+    if (uids->revoked)
+      continue;
+    if (aka)
+      state_attach_puts (_("                aka: "), s);
+    state_attach_puts (uids->uid, s);
+    state_attach_puts ("\n", s);
+    
+    aka = 1;
+  }
+  state_attach_puts (_("            created: "), s);
+  print_time (sig->timestamp, s);
+  state_attach_puts ("\n", s);  
+}
+
 /* Show information about one signature.  This fucntion is called with
    the context CTX of a sucessful verification operation and the
    enumerator IDX which should start at 0 and incremete for each
@@ -1261,7 +1283,6 @@ static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
    2 for a signature with a warning or -1 for no more signature.  */
 static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 {
-  time_t created;
   const char *fpr, *uid;
   gpgme_key_t key = NULL;
   int i, anybad = 0, anywarn = 0;
@@ -1290,7 +1311,6 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	  signature_key = NULL;
 	}
       
-      created = sig->timestamp;
       fpr = sig->fpr;
       sum = sig->summary;
 
@@ -1315,41 +1335,28 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	; /* No state information so no way to print anything. */
       else if (err)
 	{
-	  state_attach_puts (_("Error getting key information: "), s);
-         state_attach_puts ( gpg_strerror (err), s );
-	  state_attach_puts ("\n", s);
-         anybad = 1;
+          state_attach_puts (_("Error getting key information: "), s);
+          state_attach_puts ( gpg_strerror (err), s );
+          state_attach_puts ("\n", s);
+          anybad = 1;
 	}
       else if ((sum & GPGME_SIGSUM_GREEN))
-	{
-	  state_attach_puts (_("Good signature from: "), s);
-	  state_attach_puts (uid, s);
-	  state_attach_puts ("\n", s);
-	  for (i = 1, uids = key->uids; uids; i++, uids = uids->next)
-	    {
-	      if (i == 1)
-		/* Skip primary UID.  */
-		continue;
-	      if (uids->revoked)
-		continue;
-	      state_attach_puts (_("                aka: "), s);
-	      state_attach_puts (uids->uid, s);
-	      state_attach_puts ("\n", s);
-	    }
-	  state_attach_puts (_("            created: "), s);
-	  print_time (created, s);
-	  state_attach_puts ("\n", s);
-	  if (show_sig_summary (sum, ctx, key, idx, s, sig))
-	    anywarn = 1;
-	  show_one_sig_validity (ctx, idx, s);
-	}
+      {
+        state_attach_puts (_("Good signature from: "), s);
+        print_smime_keyinfo (sig, key, s);
+        state_attach_puts (_("            expires: "), s);
+        print_time (sig->exp_timestamp, s);
+        state_attach_puts ("\n", s);
+	if (show_sig_summary (sum, ctx, key, idx, s, sig))
+	  anywarn = 1;
+	show_one_sig_validity (ctx, idx, s);
+      }
       else if ((sum & GPGME_SIGSUM_RED))
-	{
-	  state_attach_puts (_("*BAD* signature claimed to be from: "), s);
-	  state_attach_puts (uid, s);
-	  state_attach_puts ("\n", s);
-	  show_sig_summary (sum, ctx, key, idx, s, sig);
-	}
+      {
+        state_attach_puts (_("*BAD* signature claimed to be from: "), s);
+        print_smime_keyinfo (sig, key, s);
+        show_sig_summary (sum, ctx, key, idx, s, sig);
+      }
       else if (!anybad && key && (key->protocol == GPGME_PROTOCOL_OpenPGP))
 	{ /* We can't decide (yellow) but this is a PGP key with a good
 	     signature, so we display what a PGP user expects: The name,
@@ -1359,7 +1366,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	  state_attach_puts (uid, s);
 	  state_attach_puts ("\n", s);
 	  state_attach_puts (_("            created: "), s);
-	  print_time (created, s);
+	  print_time (sig->timestamp, s);
 	  state_attach_puts ("\n", s);
 	  show_one_sig_validity (ctx, idx, s);
 	  show_fingerprint (key,s);
@@ -1367,11 +1374,15 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	    anywarn = 1;
 	}
       else /* can't decide (yellow) */
-	{
-	  state_attach_puts (_("Error checking signature"), s);
-	  state_attach_puts ("\n", s);
-	  show_sig_summary (sum, ctx, key, idx, s, sig);
-	}
+      {
+	state_attach_puts (_("Problem signature from: "), s);
+        print_smime_keyinfo (sig, key, s);
+        state_attach_puts (_("            expires: "), s);
+        print_time (sig->exp_timestamp, s);
+        state_attach_puts ("\n", s);
+	show_sig_summary (sum, ctx, key, idx, s, sig);
+        anywarn = 1;
+      }
 
       if (key != signature_key)
 	gpgme_key_release (key);

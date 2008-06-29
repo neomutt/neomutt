@@ -1,3 +1,13 @@
+2008-06-28 20:33 -0700  Brendan Cully  <brendan@kublai.com>  (1492c24f2a4e)
+
+	* mutt_ssl_gnutls.c: Extract CN from client certificate in gnutls.
+	Nothing currently uses it, but I suspect we should be using it as
+	the external auth name in mutt_sasl_client_new.
+
+	* UPDATING, globals.h, init.h, mutt_sasl.c, mutt_ssl_gnutls.c:
+	Basic support for $ssl_client_cert when compiled with
+	gnutls. The key must not be encrypted. Closes #2911.
+
 2008-06-27 12:04 -0700  Petr Písař  <petr.pisar@atlas.cz>  (40c6e851bf76)
 
 	* po/cs.po: Updated Czech translation.
