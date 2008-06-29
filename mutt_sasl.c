@@ -384,6 +384,9 @@ static int mutt_sasl_cb_authname (void* context, int id, const char** result,
 {
   ACCOUNT* account = (ACCOUNT*) context;
 
+  if (!result)
+    return SASL_FAIL;
+
   *result = NULL;
   if (len)
     *len = 0;

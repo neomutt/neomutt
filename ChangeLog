@@ -1,4 +1,10 @@
-2008-06-26 12:47 -0700  Brendan Cully  <brendan@kublai.com>  (be7e07963099)
+2008-06-27 12:04 -0700  Petr Písař  <petr.pisar@atlas.cz>  (40c6e851bf76)
+
+	* po/cs.po: Updated Czech translation.
+
+2008-06-26 12:52 -0700  Brendan Cully  <brendan@kublai.com>  (c5256c65eedb)
+
+	* handler.c: Mark new error message for translation.
 
 	* curs_lib.c: Force a resize event after calling an external editor.
 	Closes #2207

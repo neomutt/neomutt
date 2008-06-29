@@ -6,6 +6,7 @@ The keys used are:
 
 hg tip:
 
+  + $ssl_client_cert available with gnutls as well as openssl
   + 'mime_lookup application/octet-stream' added to system Muttrc
 
 1.5.18 (2008-05-17):

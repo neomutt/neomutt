@@ -1995,14 +1995,12 @@ struct option_t MuttVars[] = {
   */
   
 #if defined(USE_SSL)
-#ifdef USE_SSL_OPENSSL
   { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
   /*
   ** .pp
   ** The file containing a client certificate and its associated private
   ** key.
   */
-#endif /* USE_SSL_OPENSSL */
   { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
   /*
    ** .pp

@@ -199,10 +199,12 @@ static int tls_negotiate (CONNECTION * conn)
                                             GNUTLS_X509_FMT_PEM);
   }
 
-/*
-  gnutls_set_x509_client_key (data->xcred, "", "");
-  gnutls_set_x509_cert_callback (data->xcred, cert_callback);
-*/
+  if (SslClientCert)
+  {
+    dprint (2, (debugfile, "Using client certificate %s\n", SslClientCert));
+    gnutls_certificate_set_x509_key_file (data->xcred, SslClientCert,
+                                          SslClientCert, GNUTLS_X509_FMT_PEM);
+  }
 
   gnutls_init(&data->state, GNUTLS_CLIENT);
 
