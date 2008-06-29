@@ -169,6 +169,60 @@ int mutt_ssl_starttls (CONNECTION* conn)
   return 0;
 }
 
+static void tls_get_client_cert (CONNECTION* conn)
+{
+  tlssockdata *data = conn->sockdata;
+  const gnutls_datum_t* crtdata;
+  gnutls_x509_crt_t clientcrt;
+  char* dn;
+  char* cn;
+  char* cnend;
+  size_t dnlen;
+
+  /* get our cert CN if we have one */
+  if (!(crtdata = gnutls_certificate_get_ours (data->state)))
+    return;
+
+  if (gnutls_x509_crt_init (&clientcrt) < 0)
+  {
+    dprint (1, (debugfile, "Failed to init gnutls crt\n"));
+    return;
+  }
+  if (gnutls_x509_crt_import (clientcrt, crtdata, GNUTLS_X509_FMT_DER) < 0)
+  {
+    dprint (1, (debugfile, "Failed to import gnutls client crt\n"));
+    goto err_crt;
+  }
+  /* get length of DN */
+  dnlen = 0;
+  gnutls_x509_crt_get_dn (clientcrt, NULL, &dnlen);
+  if (!(dn = calloc (1, dnlen)))
+  {
+    dprint (1, (debugfile, "could not allocate DN\n"));
+    goto err_crt;
+  }
+  gnutls_x509_crt_get_dn (clientcrt, dn, &dnlen);
+  dprint (2, (debugfile, "client certificate DN: %s\n", dn));
+
+  /* extract CN to use as external user name */
+  if (!(cn = strstr (dn, "CN=")))
+  {
+    dprint (1, (debugfile, "no CN found in DN\n"));
+    goto err_dn;
+  }
+  cn += 3;
+
+  if ((cnend = strstr (dn, ",EMAIL=")))
+    *cnend = '\0';
+
+  dprint (2, (debugfile, "client CN: %s\n", cn));
+
+err_dn:
+  FREE (&dn);
+err_crt:
+  gnutls_x509_crt_deinit (clientcrt);
+}
+
 static int protocol_priority[] = {GNUTLS_TLS1, GNUTLS_SSL3, 0};
 
 /* tls_negotiate: After TLS state has been initialised, attempt to negotiate
@@ -274,6 +328,8 @@ static int tls_negotiate (CONNECTION * conn)
   /* set Security Strength Factor (SSF) for SASL */
   /* NB: gnutls_cipher_get_key_size() returns key length in bytes */
   conn->ssf = gnutls_cipher_get_key_size (gnutls_cipher_get (data->state)) * 8;
+
+  tls_get_client_cert (conn);
 
   mutt_message (_("SSL/TLS connection using %s (%s/%s/%s)"),
 		gnutls_protocol_get_name (gnutls_protocol_get_version (data->state)),
