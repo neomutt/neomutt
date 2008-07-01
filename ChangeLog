@@ -1,3 +1,13 @@
+2008-06-29 01:09 -0700  Brendan Cully  <brendan@kublai.com>  (677e7712d735)
+
+	* crypt-gpgme.c: Improve gpgme SMIME uid display: align each line by
+	the length of the first.
+
+	* crypt-gpgme.c: Show more information about problematic SMIME
+	signatures under gpgme. Also warn if the key is not known to be
+	good. For some reason expired keys in my environment are not
+	flagged as expired in sig->status or sig->summary.
+
 2008-06-28 20:33 -0700  Brendan Cully  <brendan@kublai.com>  (1492c24f2a4e)
 
 	* mutt_ssl_gnutls.c: Extract CN from client certificate in gnutls.

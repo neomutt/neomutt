@@ -572,7 +572,9 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       if (new_lines <= 0)
 	new_lines = 0;
       else
-	fprintf (fpout, "Lines: %d\n\n", new_lines);
+	fprintf (fpout, "Lines: %d\n", new_lines);
+
+      putc ('\n', fpout);
       if (ferror (fpout) || feof (fpout))
 	return -1;
       new_offset = ftello (fpout);
