@@ -654,7 +654,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   else if (WithCrypto
            && (flags & M_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
-    BODY *cur;
+    BODY *cur = NULL;
     FILE *fp;
 
     if ((WithCrypto & APPLICATION_PGP)
@@ -672,6 +672,12 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     {
       if (crypt_smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
 	return (-1);
+    }
+
+    if (!cur)
+    {
+      mutt_error (_("No decryption engine available for message"));
+      return -1;
     }
 
     mutt_write_mime_header (cur, fpout);
