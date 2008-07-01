@@ -1579,9 +1579,15 @@ int mutt_body_handler (BODY *b, STATE *s)
   }
   else if (WithCrypto && b->type == TYPEAPPLICATION)
   {
-    if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
+    if (option (OPTDONTHANDLEPGPKEYS)
+        && !ascii_strcasecmp("pgp-keys", b->subtype))
+    {
+      /* pass raw part through for key extraction */
+      plaintext = 1;
+    }
+    else if ((WithCrypto & APPLICATION_PGP) && mutt_is_application_pgp (b))
       handler = crypt_pgp_application_pgp_handler;
-    if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(b))
+    else if ((WithCrypto & APPLICATION_SMIME) && mutt_is_application_smime(b))
       handler = crypt_smime_application_smime_handler;
   }
 

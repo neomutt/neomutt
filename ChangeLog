@@ -1,3 +1,14 @@
+2008-07-01 13:32 -0700  Brendan Cully  <brendan@kublai.com>  (17525e17fa7b)
+
+	* copy.c: Bail out of copy if decryption is requested but the desired
+	engine is missing. This closes #2684, but handling of mixed crypto
+	in a single message needs more investigation.
+
+2008-07-01 01:10 -0700  rtc  <rtc@gmx.de>  (49fe0292b503)
+
+	* copy.c: When deleting attachments, always print newline
+	separating header from body. Closes #3085.
+
 2008-06-29 01:09 -0700  Brendan Cully  <brendan@kublai.com>  (677e7712d735)
 
 	* crypt-gpgme.c: Improve gpgme SMIME uid display: align each line by

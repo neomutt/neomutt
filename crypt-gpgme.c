@@ -2044,12 +2044,11 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
               clearsign = 1;
               needpass = 0;
             }
-          else if (!option (OPTDONTHANDLEPGPKEYS) &&
-                   !mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15))
-            {
-              needpass = 0;
-              pgp_keyblock =1;
-            } 
+          else if (!mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15))
+          {
+            needpass = 0;
+            pgp_keyblock = 1;
+          } 
           else
             {
               /* XXX - we may wish to recode here */
