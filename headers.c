@@ -143,7 +143,7 @@ void mutt_edit_headers (const char *editor,
       if (*p)
       {
 	strfcpy (fcc, p, fcclen);
-	mutt_pretty_mailbox (fcc);
+	mutt_pretty_mailbox (fcc, fcclen);
       }
       keep = 0;
     }
@@ -173,7 +173,7 @@ void mutt_edit_headers (const char *editor,
 	}
 	else
 	{
-	  mutt_pretty_mailbox (path);
+	  mutt_pretty_mailbox (path, sizeof (path));
 	  mutt_error (_("%s: unable to attach file"), path);
 	}
       }

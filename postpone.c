@@ -322,7 +322,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       p = tmp->data + 11;
       SKIPWS (p);
       strfcpy (fcc, p, fcclen);
-      mutt_pretty_mailbox (fcc);
+      mutt_pretty_mailbox (fcc, fcclen);
 
       /* remove the X-Mutt-Fcc: header field */
       next = tmp->next;

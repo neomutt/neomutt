@@ -753,11 +753,12 @@ void mutt_free_alias (ALIAS **p)
 }
 
 /* collapse the pathname using ~ or = when possible */
-void mutt_pretty_mailbox (char *s)
+void mutt_pretty_mailbox (char *s, size_t buflen)
 {
   char *p = s, *q = s;
   size_t len;
   url_scheme_t scheme;
+  char tmp[_POSIX_PATH_MAX];
 
   scheme = url_check_scheme (s);
 
@@ -779,24 +780,34 @@ void mutt_pretty_mailbox (char *s)
       q = strchr (p, '\0');
     p = q;
   }
-  
-  /* first attempt to collapse the pathname */
-  while (*p)
+
+  /* cleanup path */
+  if (strstr (p, "//") || strstr (p, "/./"))
   {
-    if (*p == '/' && p[1] == '/')
+    /* first attempt to collapse the pathname, this is more
+     * lightweight than realpath() and doesn't resolve links
+     */
+    while (*p)
     {
-      *q++ = '/';
-      p += 2;
+      if (*p == '/' && p[1] == '/')
+      {
+	*q++ = '/';
+	p += 2;
+      }
+      else if (p[0] == '/' && p[1] == '.' && p[2] == '/')
+      {
+	*q++ = '/';
+	p += 3;
+      }
+      else
+	*q++ = *p++;
     }
-    else if (p[0] == '/' && p[1] == '.' && p[2] == '/')
-    {
-      *q++ = '/';
-      p += 3;
-    }
-    else
-      *q++ = *p++;
+    *q = 0;
   }
-  *q = 0;
+  else if (strstr (p, "..") && 
+	   (scheme == U_UNKNOWN || scheme == U_FILE) &&
+	   realpath (p, tmp))
+    strfcpy (p, tmp, buflen - (p - s));
 
   if (mutt_strncmp (s, Maildir, (len = mutt_strlen (Maildir))) == 0 &&
       s[len] == '/')

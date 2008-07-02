@@ -758,7 +758,7 @@ int mutt_save_message (HEADER *h, int delete,
     }
   }
 
-  mutt_pretty_mailbox (buf);
+  mutt_pretty_mailbox (buf, sizeof (buf));
   if (mutt_enter_fname (prompt, buf, sizeof (buf), redraw, 0) == -1)
     return (-1);
 

@@ -1,3 +1,14 @@
+2008-07-02 10:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc2334fdf126)
+
+	* hash.c: Use casts to avoid triggering integer overflow detection in
+	hash function
+
+2008-07-01 20:06 -0700  Vincent Lefevre  <vincent@vinc17.org>  (fb0df4ae0836)
+
+	* ChangeLog, curs_lib.c: Clamp timeval math to unsigned int to match
+	progress timestamps. This is fine since only relative differences
+	matter. Closes #3018.
+
 2008-07-01 18:29 -0700  Brendan Cully  <brendan@kublai.com>  (f9af0501d2dd)
 
 	* crypt-gpgme.c: Set GPGME locale on first attempt to create context.

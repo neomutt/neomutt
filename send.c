@@ -1505,7 +1505,7 @@ ci_send_message (int flags,		/* send mode */
 main_loop:
 
     fcc_error = 0; /* reset value since we may have failed before */
-    mutt_pretty_mailbox (fcc);
+    mutt_pretty_mailbox (fcc, sizeof (fcc));
     i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur);
     if (i == -1)
     {

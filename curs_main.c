@@ -1071,7 +1071,7 @@ int mutt_index_menu (void)
 	if ((op == OP_MAIN_NEXT_UNREAD_MAILBOX) && Context && Context->path)
 	{
 	  strfcpy (buf, Context->path, sizeof (buf));
-	  mutt_pretty_mailbox (buf);
+	  mutt_pretty_mailbox (buf, sizeof (buf));
 	  mutt_buffy (buf, sizeof (buf));
 	  if (!buf[0])
 	  {

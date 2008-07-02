@@ -956,7 +956,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     rename (tempfile, savefile);
     mutt_unblock_signals ();
     mx_fastclose_mailbox (ctx);
-    mutt_pretty_mailbox (savefile);
+    mutt_pretty_mailbox (savefile, sizeof (savefile));
     mutt_error (_("Write failed!  Saved partial mailbox to %s"), savefile);
     mutt_sleep (5);
     return (-1);

@@ -1990,7 +1990,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   {
     /* reformat output */
     imap_qualify_path (dest, dlen, &mx, completion);
-    mutt_pretty_mailbox (dest);
+    mutt_pretty_mailbox (dest, dlen);
 
     FREE (&mx.mbox);
     return 0;

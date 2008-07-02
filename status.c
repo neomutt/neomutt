@@ -99,7 +99,7 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
       if (Context && Context->path)
       {
 	strfcpy (tmp, Context->path, sizeof (tmp));
-	mutt_pretty_mailbox (tmp);
+	mutt_pretty_mailbox (tmp, sizeof (tmp));
       }
       else
 	strfcpy (tmp, _("(no mailbox)"), sizeof (tmp));

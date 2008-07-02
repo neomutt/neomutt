@@ -254,7 +254,7 @@ const char *mutt_attach_fmt (char *dest,
 	  char path[_POSIX_PATH_MAX];
 	  
 	  strfcpy (path, aptr->content->filename, sizeof (path));
-	  mutt_pretty_mailbox (path);
+	  mutt_pretty_mailbox (path, sizeof (path));
 	  mutt_format_s (dest, destlen, prefix, path);
 	}
 	else

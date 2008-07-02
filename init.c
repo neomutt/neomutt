@@ -1856,7 +1856,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	{
 	  _tmp[0] = '\0';
 	  strfcpy (_tmp, NONULL(*((char **) MuttVars[idx].data)), sizeof (_tmp));
-	  mutt_pretty_mailbox (_tmp);
+	  mutt_pretty_mailbox (_tmp, sizeof (_tmp));
 	  val = _tmp;
 	}
 	else
@@ -2618,7 +2618,7 @@ static int var_to_string (int idx, char* val, size_t len)
   {
     strfcpy (tmp, NONULL (*((char **) MuttVars[idx].data)), sizeof (tmp));
     if (DTYPE (MuttVars[idx].type) == DT_PATH)
-      mutt_pretty_mailbox (tmp);
+      mutt_pretty_mailbox (tmp, sizeof (tmp));
   }
   else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
   {

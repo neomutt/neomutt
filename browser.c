@@ -462,7 +462,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
       continue;
     
     strfcpy (buffer, NONULL(tmp->path), sizeof (buffer));
-    mutt_pretty_mailbox (buffer);
+    mutt_pretty_mailbox (buffer, sizeof (buffer));
 
     add_folder (menu, state, buffer, &s, tmp->new);
   }
@@ -508,7 +508,7 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   else
   {
     strfcpy (path, LastDir, sizeof (path));
-    mutt_pretty_mailbox (path);
+    mutt_pretty_mailbox (path, sizeof (path));
 #ifdef USE_IMAP
   if (state->imap_browse && option (OPTIMAPLSUB))
     snprintf (title, titlelen, _("Subscribed [%s], File mask: %s"),

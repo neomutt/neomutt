@@ -426,7 +426,7 @@ void mutt_select_fcc (char *path, size_t pathlen, HEADER *hdr)
     else
       strfcpy (path, NONULL (Outbox), pathlen);
   }
-  mutt_pretty_mailbox (path);
+  mutt_pretty_mailbox (path, pathlen);
 }
 
 static char *_mutt_string_hook (const char *match, int hook)

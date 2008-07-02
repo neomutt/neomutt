@@ -572,7 +572,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
 	      {
-		mutt_pretty_mailbox (buf);
+		mutt_pretty_mailbox (buf, buflen);
 		if (!pass)
 		  mutt_history_add (hclass, buf, 1);
 		rv = 0;

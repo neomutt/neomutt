@@ -217,7 +217,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
     strfcpy(pretty, idx[i]->content->filename, sizeof(pretty));
     if(stat(idx[i]->content->filename, &st) != 0)
     {
-      mutt_pretty_mailbox(pretty);
+      mutt_pretty_mailbox(pretty, sizeof (pretty));
       mutt_error(_("%s [#%d] no longer exists!"),
 		 pretty, i+1);
       return -1;
@@ -225,7 +225,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
     
     if(idx[i]->content->stamp < st.st_mtime)
     {
-      mutt_pretty_mailbox(pretty);
+      mutt_pretty_mailbox(pretty, sizeof (pretty));
       snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"),
 	       pretty, i+1);
       
@@ -568,8 +568,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	strfcpy (buf, fcc, sizeof (buf));
 	if (mutt_get_field ("Fcc: ", buf, sizeof (buf), M_FILE | M_CLEAR) == 0)
 	{
-	  strfcpy (fcc, buf, _POSIX_PATH_MAX);
-	  mutt_pretty_mailbox (fcc);
+	  strfcpy (fcc, buf, fcclen);
+	  mutt_pretty_mailbox (fcc, fcclen);
 	  move (HDR_FCC, HDR_XOFFSET);
 	  mutt_paddstr (W, fcc);
 	  fccSet = 1;
@@ -717,7 +717,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  if (Context)
 	  {
 	    strfcpy (fname, NONULL (Context->path), sizeof (fname));
-	    mutt_pretty_mailbox (fname);
+	    mutt_pretty_mailbox (fname, sizeof (fname));
 	  }
 
 	  if (mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 1) == -1 || !fname[0])
@@ -1005,7 +1005,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_COMPOSE_RENAME_FILE:
 	CHECK_COUNT;
 	strfcpy (fname, idx[menu->current]->content->filename, sizeof (fname));
-	mutt_pretty_mailbox (fname);
+	mutt_pretty_mailbox (fname, sizeof (fname));
 	if (mutt_get_field (_("Rename to: "), fname, sizeof (fname), M_FILE)
 							== 0 && fname[0])
 	{
@@ -1194,7 +1194,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
        if (Context)
        {
 	 strfcpy (fname, NONULL (Context->path), sizeof (fname));
-	 mutt_pretty_mailbox (fname);
+	 mutt_pretty_mailbox (fname, sizeof (fname));
        }
        if (idxlen)
          msg->content = idx[0]->content;

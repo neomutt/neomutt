@@ -429,7 +429,7 @@ int mutt_buffy_list (void)
       continue;
 
     strfcpy (path, tmp->path, sizeof (path));
-    mutt_pretty_mailbox (path);
+    mutt_pretty_mailbox (path, sizeof (path));
     
     if (!first && pos + strlen (path) >= COLS - 7)
       break;
@@ -502,7 +502,7 @@ void mutt_buffy (char *s, size_t slen)
       break;
     }
     strfcpy (s, tmp->path, slen);
-    mutt_pretty_mailbox (s);
+    mutt_pretty_mailbox (s, slen);
     break;
 
   default:
@@ -528,7 +528,7 @@ void mutt_buffy (char *s, size_t slen)
       break;
     }
     strfcpy (s, tmp->path, slen);
-    mutt_pretty_mailbox (s);
+    mutt_pretty_mailbox (s, slen);
     break;
   }
 }
