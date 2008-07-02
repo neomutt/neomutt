@@ -30,7 +30,7 @@
 
 int hash_string (const unsigned char *s, int n)
 {
-  int h = 0;
+  unsigned int h = 0;
 
 #if 0
   while (*s)
@@ -42,7 +42,7 @@ int hash_string (const unsigned char *s, int n)
   h = (h >= 0) ? h : h + n;
 #endif
 
-  return (h % n);
+  return (signed) (h % n);
 }
 
 HASH *hash_create (int nelem)
