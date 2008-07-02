@@ -1,3 +1,17 @@
+2008-07-02 08:56 -0700  Brendan Cully  <brendan@kublai.com>  (c51c16db46cc)
+
+	* crypt-gpgme.c: Only make LC_MESSAGES conditional on NLS in GPGME
+	locale support.
+
+2008-07-02 11:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (8b783c916893)
+
+	* ChangeLog, browser.c, buffy.c, commands.c, compose.c, curs_main.c,
+	enter.c, headers.c, hook.c, imap/imap.c, init.c, mbox.c, muttlib.c,
+	postpone.c, protos.h, recvattach.c, send.c, status.c: Use realpath()
+	in mutt_pretty_mailbox() for paths that may need it. This requires
+	to add the buffer size as parameter since the result may be longer
+	than the original but still fit in the buffer. Closes #2948.
+
 2008-07-02 10:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc2334fdf126)
 
 	* hash.c: Use casts to avoid triggering integer overflow detection in

@@ -377,7 +377,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
     dprint (1, (debugfile, "gettimeofday failed: %d\n", errno));
   /* if timestamp is 0 no time-based suppression is done */
   if (TimeInc)
-    progress->timestamp = (unsigned int) (tv.tv_sec * 1000)
+    progress->timestamp = ((unsigned int) tv.tv_sec * 1000)
         + (unsigned int) (tv.tv_usec / 1000);
   mutt_progress_update (progress, 0, 0);
 }
@@ -401,7 +401,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
 
   /* skip refresh if not enough time has passed */
   if (update && progress->timestamp && !gettimeofday (&tv, NULL)) {
-    now = (unsigned int) (tv.tv_sec * 1000)
+    now = ((unsigned int) tv.tv_sec * 1000)
           + (unsigned int) (tv.tv_usec / 1000);
     if (now && now - progress->timestamp < TimeInc)
       update = 0;
