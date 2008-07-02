@@ -1,4 +1,13 @@
-2008-07-01 17:20 -0700  Brendan Cully  <brendan@kublai.com>  (8e2438ec5909)
+2008-07-01 18:29 -0700  Brendan Cully  <brendan@kublai.com>  (f9af0501d2dd)
+
+	* crypt-gpgme.c: Set GPGME locale on first attempt to create context.
+	Closes #2913.
+
+	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-gpgme.c: Stub in a
+	gpgme version of extract-keys. It doesn't currently work right
+	because apparently while gpg on the command line can parse a whole
+	message, we'll have to do it for gpgme. I really wonder about the
+	'ME' part of GPGME sometimes.
 
 	* crypt-gpgme.c, lib.c, lib.h: Support displaying application/pgp-keys
 	with GPGME. This was pretty convoluted because GPGME provides no way
