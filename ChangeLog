@@ -1,3 +1,13 @@
+2008-07-02 18:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (7783502a04c7)
+
+	* curs_main.c: Calculate menu->max after a possible resort in index
+	(maybe changing number of messages). Closes #3088.
+
+2008-07-02 18:08 +0200  Rocco Rutte  <pdmef@gmx.net>  (f41ba27be46f)
+
+	* ChangeLog, curs_lib.c: Fix casts for progress update to prevent
+	-ftrapv aborts to trigger. Closes #3018.
+
 2008-07-02 08:56 -0700  Brendan Cully  <brendan@kublai.com>  (c51c16db46cc)
 
 	* crypt-gpgme.c: Only make LC_MESSAGES conditional on NLS in GPGME
