@@ -82,6 +82,11 @@
 #define CRYPT_KV_STRONGID 8
 #define CRYPT_KV_MATCH (CRYPT_KV_ADDR|CRYPT_KV_STRING)
 
+/* static local variables */
+#ifdef ENABLE_NLS
+static int GpgmeLocaleSet = 0;
+#endif
+
 /*
  * Type definitions.
  */
@@ -338,6 +343,16 @@ static gpgme_ctx_t create_gpgme_context (int for_smime)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx;
+
+#ifdef ENABLE_NLS
+  if (!GpgmeLocaleSet)
+  {
+    gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
+    gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
+
+    GpgmeLocaleSet = 1;
+  }
+#endif
 
   err = gpgme_new (&ctx);
   if (err)
