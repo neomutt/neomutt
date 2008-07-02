@@ -41,6 +41,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <pwd.h>
+#include <dirent.h>
 
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
@@ -574,6 +575,38 @@ int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen,
   
   snprintf (newfile, nflen, "%s/%s", newdir, NONULL(basename));
   return 0;  
+}
+
+/* remove a directory and everything under it */
+int mutt_rmtree (const char* path)
+{
+  DIR* dirp;
+  struct dirent* de;
+  char cur[_POSIX_PATH_MAX];
+  int rc = 0;
+
+  if (!(dirp = opendir (path)))
+  {
+    dprint (1, (debugfile, "mutt_rmtree: error opening directory %s\n", path));
+    return -1;
+  }
+  while ((de = readdir (dirp)))
+  {
+    if (!strcmp (".", de->d_name) || !strcmp ("..", de->d_name))
+      continue;
+
+    snprintf (cur, sizeof (cur), "%s/%s", path, de->d_name);
+    /* XXX make nonrecursive version */
+    if (de->d_type == DT_DIR)
+      rc |= mutt_rmtree (cur);
+    else
+      rc |= unlink (cur);
+  }
+  closedir (dirp);
+
+  rc |= rmdir (path);
+
+  return rc;
 }
 
 int mutt_put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
