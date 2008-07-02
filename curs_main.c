@@ -451,16 +451,16 @@ int mutt_index_menu (void)
   {
     tag = 0; /* clear the tag-prefix */
 
-    menu->max = Context ? Context->vcount : 0;
-    oldcount = Context ? Context->msgcount : 0;
-
     /* check if we need to resort the index because just about
      * any 'op' below could do mutt_enter_command(), either here or
      * from any new menu launched, and change $sort/$sort_aux
      */
     if (option (OPTNEEDRESORT) && Context && Context->msgcount)
       resort_index (menu);
-    
+
+    menu->max = Context ? Context->vcount : 0;
+    oldcount = Context ? Context->msgcount : 0;
+
     if (option (OPTREDRAWTREE) && Context && Context->msgcount && (Sort & SORT_MASK) == SORT_THREADS)
     {
       mutt_draw_tree (Context);
