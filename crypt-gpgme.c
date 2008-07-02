@@ -1838,7 +1838,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   return *cur? 0:-1;
 }
 
-static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp)
+static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
 {
   /* there's no side-effect free way to view key data in GPGME,
    * so we import the key into a temporary keyring */
@@ -1856,40 +1856,43 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp)
   int more;
   int rc = -1;
 
-  snprintf (tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", Tempdir);
-  if (!mkdtemp (tmpdir))
-  {
-    dprint (1, (debugfile, "Error creating temporary GPGME home\n"));
-    return rc;
-  }
-
   if ((err = gpgme_new (&tmpctx)) != GPG_ERR_NO_ERROR)
   {
     dprint (1, (debugfile, "Error creating GPGME context\n"));
-    goto err_tmpdir;
-  }
-
-  engineinfo = gpgme_ctx_get_engine_info (tmpctx);
-  while (engineinfo && engineinfo->protocol != GPGME_PROTOCOL_OpenPGP)
-    engineinfo = engineinfo->next;
-  if (!engineinfo)
-  {
-    dprint (1, (debugfile, "Error finding GPGME PGP engine\n"));
-    goto err_ctx;
+    return rc;
   }
   
-  err = gpgme_ctx_set_engine_info (tmpctx, GPGME_PROTOCOL_OpenPGP,
-                                   engineinfo->file_name, tmpdir);
-  if (err != GPG_ERR_NO_ERROR)
+  if (dryrun)
   {
-    dprint (1, (debugfile, "Error setting GPGME context home\n"));
-    goto err_ctx;
+    snprintf (tmpdir, sizeof(tmpdir), "%s/mutt-gpgme-XXXXXX", Tempdir);
+    if (!mkdtemp (tmpdir))
+    {
+      dprint (1, (debugfile, "Error creating temporary GPGME home\n"));
+      goto err_ctx;
+    }
+
+    engineinfo = gpgme_ctx_get_engine_info (tmpctx);
+    while (engineinfo && engineinfo->protocol != GPGME_PROTOCOL_OpenPGP)
+      engineinfo = engineinfo->next;
+    if (!engineinfo)
+    {
+      dprint (1, (debugfile, "Error finding GPGME PGP engine\n"));
+      goto err_tmpdir;
+    }
+
+    err = gpgme_ctx_set_engine_info (tmpctx, GPGME_PROTOCOL_OpenPGP,
+                                     engineinfo->file_name, tmpdir);
+    if (err != GPG_ERR_NO_ERROR)
+    {
+      dprint (1, (debugfile, "Error setting GPGME context home\n"));
+      goto err_tmpdir;
+    }
   }
 
   if ((err = gpgme_op_import (tmpctx, keydata)) != GPG_ERR_NO_ERROR)
   {
     dprint (1, (debugfile, "Error importing key\n"));
-    goto err_ctx;
+    goto err_tmpdir;
   }
 
   mutt_mktemp (tmpfile);
@@ -1897,7 +1900,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp)
   if (!*fp)
   {
     mutt_perror (tmpfile);
-    goto err_ctx;
+    goto err_tmpdir;
   }
   unlink (tmpfile);
 
@@ -1944,10 +1947,11 @@ err_fp:
     fclose (*fp);
     *fp = NULL;
   }
+err_tmpdir:
+  if (dryrun)
+    mutt_rmtree (tmpdir);
 err_ctx:
   gpgme_release (tmpctx);
-err_tmpdir:
-  mutt_rmtree (tmpdir);
 
   return rc;
 }
@@ -2032,6 +2036,37 @@ int pgp_gpgme_check_traditional (FILE *fp, BODY *b, int tagged_only)
     }
   }
   return rv;
+}
+
+/* TODO: looks like this won't work and we'll have to fully parse the
+ * message file. GPGME makes life hard yet again. */
+void pgp_gpgme_invoke_import (const char *fname)
+{
+  gpgme_data_t keydata;
+  gpgme_error_t err;
+  FILE* in;
+  FILE* out;
+  long outlen;
+
+  if (!(in = safe_fopen (fname, "r")))
+    return;
+  if ((err = gpgme_data_new_from_stream (&keydata, in)) != GPG_ERR_NO_ERROR)
+  {
+    dprint (1, (debugfile, "error converting key file into data object\n"));
+    return;
+  }
+  fclose (in);
+
+  if (!pgp_gpgme_extract_keys (keydata, &out, 0))
+  {
+    /* display import results */
+    outlen = ftell (out);
+    fseek (out, 0, SEEK_SET);
+    mutt_copy_bytes (out, stdout, outlen);
+    fclose (out);
+  }
+  else
+    printf (_("Error extracting key data!\n"));
 }
 
 
@@ -2179,7 +2214,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
           /* Invoke PGP if needed */
           if (pgp_keyblock)
           {
-            pgp_gpgme_extract_keys (armored_data, &pgpout);
+            pgp_gpgme_extract_keys (armored_data, &pgpout, 1);
           }
           else if (!clearsign || (s->flags & M_VERIFY))
             {

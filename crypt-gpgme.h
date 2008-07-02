@@ -34,6 +34,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
 int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur);
 
 int pgp_gpgme_check_traditional (FILE *fp, BODY *b, int tagged_only);
+void pgp_gpgme_invoke_import (const char* fname);
 
 int pgp_gpgme_application_handler (BODY *m, STATE *s);
 int smime_gpgme_application_handler (BODY *a, STATE *s);

@@ -1,4 +1,15 @@
-2008-07-01 13:32 -0700  Brendan Cully  <brendan@kublai.com>  (17525e17fa7b)
+2008-07-01 17:20 -0700  Brendan Cully  <brendan@kublai.com>  (8e2438ec5909)
+
+	* crypt-gpgme.c, lib.c, lib.h: Support displaying application/pgp-keys
+	with GPGME. This was pretty convoluted because GPGME provides no way
+	to examine a key block without importing it. This code creates a
+	temporary GPG home in which to import the key in order to display
+	it.
+
+	* crypt-gpgme.c, handler.c, pgp.c: Handle DONTHANDLEPGPKEYS in
+	handler instead of crypto modules. This lets gpgme and classic pgp
+	share a bit of logic, and unbreaks key extraction at least for
+	classic PGP.
 
 	* copy.c: Bail out of copy if decryption is requested but the desired
 	engine is missing. This closes #2684, but handling of mixed crypto

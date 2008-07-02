@@ -65,6 +65,11 @@ static int crypt_mod_pgp_check_traditional (FILE *fp, BODY *b, int tagged_only)
   return pgp_gpgme_check_traditional (fp, b, tagged_only);
 }
 
+static void crypt_mod_pgp_invoke_import (const char *fname)
+{
+  pgp_gpgme_invoke_import (fname);
+}
+
 static char *crypt_mod_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
   return pgp_gpgme_findkeys (to, cc, bcc);
@@ -117,7 +122,7 @@ struct crypt_module_specs crypt_mod_pgp_gpgme =
       crypt_mod_pgp_check_traditional,
       NULL, 			/* pgp_traditional_encryptsign  */
       NULL, /* pgp_invoke_getkeys  */
-      NULL, /* pgp_invoke_import  */
+      crypt_mod_pgp_invoke_import,
       NULL, /* pgp_extract_keys_from_attachment_list  */
 
       NULL,			/* smime_getkeys */
