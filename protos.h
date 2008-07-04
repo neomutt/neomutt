@@ -543,6 +543,6 @@ char *strsep (char **, const char *);
 #endif
 
 #ifndef HAVE_STRTOK_R
-char *strtok_r (char *, const char *, char **)
+char *strtok_r (char *, const char *, char **);
 #endif
 
