@@ -39,6 +39,18 @@ mutt \- The Mutt Mail User Agent
 [\-\-]
 \fIaddr\fP [...]
 .PP
+.B mutt 
+[-nx] 
+[-e \fIcmd\fP] 
+[-F \fIfile\fP]
+[-s \fIsubj\fP]
+[-b \fIaddr\fP]
+[-c \fIaddr\fP]
+[\-a \fIfile\fP [...]]
+[\-\-]
+\fIaddr\fP [...]
+< message
+.PP
 .B mutt
 [-n] [-e \fIcmd\fP] [-F \fIfile\fP] -p
 .PP

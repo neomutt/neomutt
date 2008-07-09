@@ -1,3 +1,12 @@
+2008-07-04 09:09 +0200  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (74b54f11c919)
+
+	* protos.h: Fix syntax error for strtok_r compatitility prototype
+
+2008-07-02 18:26 +0200  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (f72fce68ca19)
+
+	* ChangeLog, lib.c: Use stat() instead of dirent->d_type to test for
+	directory. Closes #3089.
+
 2008-07-02 18:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (7783502a04c7)
 
 	* curs_main.c: Calculate menu->max after a possible resort in index
