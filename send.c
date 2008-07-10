@@ -299,7 +299,7 @@ static void process_user_header (ENVELOPE *env)
     }
     else if (ascii_strncasecmp ("message-id:", uh->data, 11) == 0)
     {
-      char *tmp = mutt_extract_message_id (uh->data + 11);
+      char *tmp = mutt_extract_message_id (uh->data + 11, NULL);
       if (rfc822_valid_msgid (tmp) >= 0)
       {
 	FREE(&env->message_id);

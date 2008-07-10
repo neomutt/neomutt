@@ -92,66 +92,17 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 static LIST *mutt_parse_references (char *s, int in_reply_to)
 {
   LIST *t, *lst = NULL;
-  int m, n = 0;
-  char *o = NULL, *new, *at;
+  char *m, *sp;
 
-  while ((s = strtok (s, " \t;")) != NULL)
+  for (; (m = mutt_extract_message_id (s, &sp)) != NULL; s = NULL)
   {
-    /*
-     * some mail clients add other garbage besides message-ids, so do a quick
-     * check to make sure this looks like a valid message-id
-     * some idiotic clients also break their message-ids between lines, deal
-     * with that too (give up if it's more than two lines, though)
-     */
-    t = NULL;
-    new = NULL;
-
-    if (*s == '<')
-    {
-      n = strlen (s);
-      if (s[n-1] != '>')
-      {
-	o = s;
-	s = NULL;
-	continue;
-      }
-
-      new = safe_strdup (s);
-    }
-    else if (o)
-    {
-      m = strlen (s);
-      if (s[m - 1] == '>')
-      {
-	new = safe_malloc (sizeof (char) * (n + m + 1));
-	strcpy (new, o);	/* __STRCPY_CHECKED__ */
-	strcpy (new + n, s);	/* __STRCPY_CHECKED__ */
-      }
-    }
-    if (new)
-    {
-      /* make sure that this really does look like a message-id.
-       * it should have exactly one @, and if we're looking at
-       * an in-reply-to header, make sure that the part before
-       * the @ has more than eight characters or it's probably
-       * an email address
-       */
-      if (!(at = strchr (new, '@')) || strchr (at + 1, '@')
-	  || (in_reply_to && at - new <= 8))
-	FREE (&new);
-      else
-      {
-	t = (LIST *) safe_malloc (sizeof (LIST));
-	t->data = new;
-	t->next = lst;
-	lst = t;
-      }
-    }
-    o = NULL;
-    s = NULL;
+    t = safe_malloc (sizeof (LIST));
+    t->data = m;
+    t->next = lst;
+    lst = t;
   }
 
-  return (lst);
+  return lst;
 }
 
 int mutt_check_encoding (const char *c)
@@ -925,20 +876,62 @@ time_t mutt_parse_date (const char *s, HEADER *h)
   return (mutt_mktime (&tm, 0) + tz_offset);
 }
 
-/* extract the first substring that looks like a message-id */
-char *mutt_extract_message_id (const char *s)
+/* extract the first substring that looks like a message-id.
+ * call back with NULL for more (like strtok).
+ */
+char *mutt_extract_message_id (const char *s, const char **saveptr)
 {
-  const char *p;
-  char *r;
-  size_t l;
+  const char *o, *onull, *p;
+  char *ret = NULL;
 
-  if ((s = strchr (s, '<')) == NULL || (p = strchr (s, '>')) == NULL)
-    return (NULL);
-  l = (size_t)(p - s) + 1;
-  r = safe_malloc (l + 1);
-  memcpy (r, s, l);
-  r[l] = 0;
-  return (r);
+  if (s)
+    p = s;
+  else if (saveptr)
+    p = *saveptr;
+
+  for (s = NULL, o = NULL, onull = NULL;
+       (p = strpbrk (p, "<> \t;")) != NULL; ++p)
+  {
+    if (*p == '<')
+    {
+      s = p; 
+      o = onull = NULL;
+      continue;
+    }
+
+    if (!s)
+      continue;
+
+    if (*p == '>')
+    {
+      size_t olen = onull - o, slen = p - s + 1;
+      ret = safe_malloc (olen + slen + 1);
+      if (o)
+	memcpy (ret, o, olen);
+      memcpy (ret + olen, s, slen);
+      ret[olen + slen] = '\0';
+      if (saveptr)
+	*saveptr = p + 1; /* next call starts after '>' */
+      return ret;
+    }
+
+    /* some idiotic clients break their message-ids between lines */
+    if (s == p) 
+      /* step past another whitespace */
+      s = p + 1;
+    else if (o)
+      /* more than two lines, give up */
+      s = o = onull = NULL;
+    else
+    {
+      /* remember the first line, start looking for the second */
+      o = s;
+      onull = p;
+      s = p + 1;
+    }
+  }
+
+  return NULL;
 }
 
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
@@ -1132,7 +1125,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     {
       /* We add a new "Message-ID:" when building a message */
       FREE (&e->message_id);
-      e->message_id = mutt_extract_message_id (p);
+      e->message_id = mutt_extract_message_id (p, NULL);
       matched = 1;
     }
     else if (!ascii_strncasecmp (line + 1, "ail-", 4))

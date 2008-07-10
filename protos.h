@@ -90,7 +90,7 @@ void set_quadoption (int, int);
 int query_quadoption (int, const char *);
 int quadoption (int);
 
-char* mutt_extract_message_id (const char *);
+char* mutt_extract_message_id (const char *, const char **);
 
 ADDRESS *mutt_default_from (void);
 ADDRESS *mutt_get_address (ENVELOPE *, char **);
