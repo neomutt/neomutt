@@ -362,48 +362,45 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     fputc('\n', out);
   }
 
-  if (flags & CH_UPDATE)
+  if ((flags & CH_UPDATE_IRT) && h->env->in_reply_to)
   {
-    if ((flags & CH_NOSTATUS) == 0)
+    LIST *listp = h->env->in_reply_to;
+    fputs ("In-Reply-To:", out);
+    for (; listp; listp = listp->next)
     {
-      if (h->env->irt_changed && h->env->in_reply_to)
-      {
-	LIST *listp = h->env->in_reply_to;
-	fputs ("In-Reply-To:", out);
-	for (; listp; listp = listp->next)
-	{
-	  fputc (' ', out);
-	  fputs (listp->data, out);
-	}
-	fputc ('\n', out);
-      }
+      fputc (' ', out);
+      fputs (listp->data, out);
+    }
+    fputc ('\n', out);
+  }
 
-      if (h->env->refs_changed && h->env->references)
-      {
-	fputs ("References:", out);
-	mutt_write_references (h->env->references, out, 0);
-	fputc ('\n', out);
-      }
+  if ((flags & CH_UPDATE_REFS) && h->env->references)
+  {
+    fputs ("References:", out);
+    mutt_write_references (h->env->references, out, 0);
+    fputc ('\n', out);
+  }
 
-      if (h->old || h->read)
-      {
-	fputs ("Status: ", out);
-	if (h->read)
-	  fputs ("RO", out);
-	else if (h->old)
-	  fputc ('O', out);
-	fputc ('\n', out);
-      }
+  if ((flags & CH_UPDATE) && (flags & CH_NOSTATUS) == 0)
+  {
+    if (h->old || h->read)
+    {
+      fputs ("Status: ", out);
+      if (h->read)
+	fputs ("RO", out);
+      else if (h->old)
+	fputc ('O', out);
+      fputc ('\n', out);
+    }
 
-      if (h->flagged || h->replied)
-      {
-	fputs ("X-Status: ", out);
-	if (h->replied)
-	  fputc ('A', out);
-	if (h->flagged)
-	  fputc ('F', out);
-	fputc ('\n', out);
-      }
+    if (h->flagged || h->replied)
+    {
+      fputs ("X-Status: ", out);
+      if (h->replied)
+	fputc ('A', out);
+      if (h->flagged)
+	fputc ('F', out);
+      fputc ('\n', out);
     }
   }
 
