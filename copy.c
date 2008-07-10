@@ -348,7 +348,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       | (h->env->refs_changed ? CH_UPDATE_REFS : 0);
   
   if (mutt_copy_hdr (in, out, h->offset, h->content->offset, flags, prefix) == -1)
-    return (-1);
+    return -1;
 
   if (flags & CH_TXTPLAIN)
   {
@@ -360,10 +360,6 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     rfc822_cat(buffer, sizeof(buffer), chsbuf, MimeSpecials);
     fputs(buffer, out);
     fputc('\n', out);
-    
-    if (ferror (out) != 0 || feof (out) != 0)
-      return -1;
-    
   }
 
   if (flags & CH_UPDATE)
@@ -373,24 +369,19 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       if (h->env->irt_changed && h->env->in_reply_to)
       {
 	LIST *listp = h->env->in_reply_to;
-
-	if (fputs ("In-Reply-To: ", out) == EOF)
-	  return (-1);
-
+	fputs ("In-Reply-To: ", out);
 	for (; listp; listp = listp->next)
-	  if ((fputs (listp->data, out) == EOF) || (fputc (' ', out) == EOF))
-	    return (-1);
-
-	if (fputc ('\n', out) == EOF)
-	  return (-1);
+	{
+	  fputs (listp->data, out);
+	  fputc (' ', out);
+	}
+	fputc ('\n', out);
       }
 
       if (h->env->refs_changed && h->env->references)
       {
 	LIST *listp = h->env->references, *refs = NULL, *t;
-
-	if (fputs ("References: ", out) == EOF)
-	  return (-1);
+	fputs ("References: ", out);
 
 	/* Mutt stores references in reverse order, thus we create
 	 * a reordered refs list that we can put in the headers */
@@ -402,56 +393,36 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 	}
 
 	for (; refs; refs = refs->next)
-	  if ((fputs (refs->data, out) == EOF) || (fputc (' ', out) == EOF))
-	    return (-1);
+	{
+	  fputs (refs->data, out);
+	  fputc (' ', out);
+	}
 
 	/* clearing refs from memory */
 	for (t = refs; refs; refs = t->next, t = refs)
 	  FREE (&refs);
 
-	if (fputc ('\n', out) == EOF)
-	  return (-1);
+	fputc ('\n', out);
       }
 
       if (h->old || h->read)
       {
-	if (fputs ("Status: ", out) == EOF)
-	  return (-1);
-
+	fputs ("Status: ", out);
 	if (h->read)
-	{
-	  if (fputs ("RO", out) == EOF)
-	    return (-1);
-	}
+	  fputs ("RO", out);
 	else if (h->old)
-	{
-	  if (fputc ('O', out) == EOF)
-	    return (-1);
-	}
-
-	if (fputc ('\n', out) == EOF)
-	  return (-1);
+	  fputc ('O', out);
+	fputc ('\n', out);
       }
 
       if (h->flagged || h->replied)
       {
-	if (fputs ("X-Status: ", out) == EOF)
-	  return (-1);
-
+	fputs ("X-Status: ", out);
 	if (h->replied)
-	{
-	  if (fputc ('A', out) == EOF)
-	    return (-1);
-	}
-
+	  fputc ('A', out);
 	if (h->flagged)
-	{
-	  if (fputc ('F', out) == EOF)
-	    return (-1);
-	}
-	
-	if (fputc ('\n', out) == EOF)
-	  return (-1);
+	  fputc ('F', out);
+	fputc ('\n', out);
       }
     }
   }
@@ -468,14 +439,13 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   {
     if (flags & CH_PREFIX)
       fputs(prefix, out);
-    if (fputc ('\n', out) == EOF) /* add header terminator */
-      return (-1);
+    fputc ('\n', out); /* add header terminator */
   }
 
   if (ferror (out) || feof (out))
     return -1;
   
-  return (0);
+  return 0;
 }
 
 /* Count the number of lines and bytes to be deleted in this body*/
