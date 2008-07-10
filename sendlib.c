@@ -1520,17 +1520,15 @@ void mutt_write_address_list (ADDRESS *adr, FILE *fp, int linelen, int display)
 /* arbitrary number of elements to grow the array by */
 #define REF_INC 16
 
-#define TrimRef 10
-
 /* need to write the list in reverse because they are stored in reverse order
  * when parsed to speed up threading
  */
-static void write_references (LIST *r, FILE *f)
+void mutt_write_references (LIST *r, FILE *f, int trim)
 {
   LIST **ref = NULL;
   int refcnt = 0, refmax = 0;
 
-  for ( ; (TrimRef == 0 || refcnt < TrimRef) && r ; r = r->next)
+  for ( ; (trim == 0 || refcnt < trim) && r ; r = r->next)
   {
     if (refcnt == refmax)
       safe_realloc (&ref, (refmax += REF_INC) * sizeof (LIST *));
@@ -1825,7 +1823,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     if (env->references)
     {
       fputs ("References:", fp);
-      write_references (env->references, fp);
+      mutt_write_references (env->references, fp, 10);
       fputc('\n', fp);
     }
 
@@ -1837,7 +1835,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->in_reply_to)
   {
     fputs ("In-Reply-To:", fp);
-    write_references (env->in_reply_to, fp);
+    mutt_write_references (env->in_reply_to, fp, 1);
     fputc ('\n', fp);
   }
   

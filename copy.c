@@ -369,11 +369,11 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       if (h->env->irt_changed && h->env->in_reply_to)
       {
 	LIST *listp = h->env->in_reply_to;
-	fputs ("In-Reply-To: ", out);
+	fputs ("In-Reply-To:", out);
 	for (; listp; listp = listp->next)
 	{
-	  fputs (listp->data, out);
 	  fputc (' ', out);
+	  fputs (listp->data, out);
 	}
 	fputc ('\n', out);
       }
@@ -381,27 +381,8 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       if (h->env->refs_changed && h->env->references)
       {
 	LIST *listp = h->env->references, *refs = NULL, *t;
-	fputs ("References: ", out);
-
-	/* Mutt stores references in reverse order, thus we create
-	 * a reordered refs list that we can put in the headers */
-	for (; listp; listp = listp->next, refs = t)
-	{
-	  t = (LIST *)safe_malloc (sizeof (LIST));
-	  t->data = listp->data;
-	  t->next = refs;
-	}
-
-	for (; refs; refs = refs->next)
-	{
-	  fputs (refs->data, out);
-	  fputc (' ', out);
-	}
-
-	/* clearing refs from memory */
-	for (t = refs; refs; refs = t->next, t = refs)
-	  FREE (&refs);
-
+	fputs ("References:", out);
+	mutt_write_references (h->env->references, out, 0);
 	fputc ('\n', out);
       }
 
