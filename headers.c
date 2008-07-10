@@ -122,8 +122,8 @@ void mutt_edit_headers (const char *editor,
 
   mutt_expand_aliases_env (msg->env);
 
-  /* search through the user defined headers added to see if either a 
-   * fcc: or attach-file: field was specified.  
+  /* search through the user defined headers added to see if 
+   * fcc: or attach: or pgp: was specified
    */
 
   cur = msg->env->userhdrs;
@@ -132,10 +132,6 @@ void mutt_edit_headers (const char *editor,
   {
     keep = 1;
 
-    /* keep track of whether or not we see the in-reply-to field.  if we did
-     * not, remove the references: field later so that we can generate a new
-     * message based upon this one.
-     */
     if (fcc && ascii_strncasecmp ("fcc:", cur->data, 4) == 0)
     {
       p = cur->data + 4;
@@ -179,10 +175,8 @@ void mutt_edit_headers (const char *editor,
       }
       keep = 0;
     }
-
-
     else if ((WithCrypto & APPLICATION_PGP)
-             &&ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
+             && ascii_strncasecmp ("pgp:", cur->data, 4) == 0)
     {
       msg->security = mutt_parse_crypt_hdr (cur->data + 4, 0, APPLICATION_PGP);
       if (msg->security)
