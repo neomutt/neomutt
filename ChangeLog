@@ -1,3 +1,15 @@
+2008-07-10 21:46 +0200  Aron Griffis  <agriffis@n01se.net>  (6244eefaea64)
+
+	* headers.c: Remove completely wrong comment regarding in-reply-to and
+	references
+
+	...plus fix one other comment and some whitespace.
+
+2008-07-09 09:14 +0000  Rocco Rutte  <pdmef@gmx.net>  (2a9e9c487bad)
+
+	* ChangeLog, doc/mutt.man, main.c: Document redirection to trigger
+	batch send mode in mutt(1) and mutt -h. Closes #2070.
+
 2008-07-04 09:09 +0200  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (74b54f11c919)
 
 	* protos.h: Fix syntax error for strtok_r compatitility prototype
