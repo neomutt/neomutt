@@ -5803,9 +5803,10 @@ system's default for the given protocol.
 <para>
 Since all protocols by mutt support authentication, the username may be
 given directly in the URL instead of using the <literal>pop_user</literal> or
-<literal>imap_user</literal> variables. A password can be given, too but
-is not recommended if the URL is specified in a configuration file on
-disk.
+<literal>imap_user</literal> variables. It may contain the ``@'' symbol
+being used by many mail systems as part of the login name. A password can be
+given, too but is not recommended if the URL is specified in a configuration
+file on disk.
 </para>
 
 <para>
