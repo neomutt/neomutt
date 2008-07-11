@@ -245,7 +245,7 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   char *p;
   char scratch[LONG_STRING];
 
-  if (!ascii_strcasecmp (name, "utf-8")) 
+  if (!ascii_strcasecmp (name, "utf-8") || !ascii_strcasecmp (name, "utf8"))
   {
     strfcpy (dest, "utf-8", dlen);
     return;

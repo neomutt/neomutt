@@ -1,3 +1,23 @@
+2008-07-11 08:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (934a802dff7f)
+
+	* mutt_ssl.c: Verify hostname in (Open)SSL certificate validation
+
+	This is based on the patch by gkloepfer attached to #3087 but passes
+	the proper connection as argument (avoiding adding hostname to
+	struct sslsockdata) and validates the hostname even in case OpenSSL
+	cannot find the local issuer certificate. GnuTLS already supports
+	hostname checking. Closes #3087.
+
+2008-07-10 22:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (b9ac445b035b)
+
+	* ChangeLog, hcache.c: Prevent some pointers of 'struct body' being
+	saved to hcache
+
+	This addresses the hcache safety issue but maybe doesn't fix it
+	completely, see #2942. This also prevents mutt from crashing when
+	using a hcache that was synced when syncing the mailbox (updating
+	changed and fully-parsed messages).
+
 2008-07-10 21:46 +0200  Aron Griffis  <agriffis@n01se.net>  (6244eefaea64)
 
 	* headers.c: Remove completely wrong comment regarding in-reply-to and
