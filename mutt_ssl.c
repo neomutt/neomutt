@@ -74,10 +74,10 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
 static int tls_close (CONNECTION* conn);
-static int ssl_check_certificate (sslsockdata * data);
+static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data);
 static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
-static int ssl_negotiate (sslsockdata*);
+static int ssl_negotiate (CONNECTION *conn, sslsockdata*);
 
 /* mutt_ssl_starttls: Negotiate TLS over an already opened connection.
  *   TODO: Merge this code better with ssl_socket_open. */
@@ -111,7 +111,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
     goto bail_ssl;
   }
 
-  if (ssl_negotiate (ssldata))
+  if (ssl_negotiate (conn, ssldata))
     goto bail_ssl;
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
@@ -290,7 +290,7 @@ static int ssl_socket_open (CONNECTION * conn)
   data->ssl = SSL_new (data->ctx);
   SSL_set_fd (data->ssl, conn->fd);
 
-  if (ssl_negotiate(data))
+  if (ssl_negotiate(conn, data))
   {
     mutt_socket_close (conn);
     return -1;
@@ -304,7 +304,7 @@ static int ssl_socket_open (CONNECTION * conn)
 
 /* ssl_negotiate: After SSL state has been initialised, attempt to negotiate
  *   SSL over the wire, including certificate checks. */
-static int ssl_negotiate (sslsockdata* ssldata)
+static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 {
   int err;
   const char* errmsg;
@@ -343,7 +343,7 @@ static int ssl_negotiate (sslsockdata* ssldata)
     return -1;
   }
 
-  if (!ssl_check_certificate (ssldata))
+  if (!ssl_check_certificate (conn, ssldata))
     return -1;
 
   mutt_message (_("SSL connection using %s (%s)"), 
@@ -588,14 +588,30 @@ static int check_certificate_by_digest (X509 *peercert)
   return pass;
 }
 
-static int ssl_check_certificate (sslsockdata * data)
+static int check_certificate_hostname(X509 *peercert, const char *host)
+{
+  char cert_CN[STRING];
+
+  if (!host || !*host)
+    return 0;
+
+  X509_NAME_get_text_by_NID (X509_get_subject_name (peercert),
+			     NID_commonName, cert_CN, sizeof (cert_CN));
+
+  dprint (2, (debugfile, "check_certificate_hostname: cert=[%s] host=[%s]\n",
+	      cert_CN, host));
+
+  return strcmp (cert_CN, host) == 0;
+}
+
+static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
 {
   char *part[] =
   {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
   char helpstr[LONG_STRING];
   char buf[SHORT_STRING];
   MUTTMENU *menu;
-  int done, row, i;
+  int done, row, i, certerr_hostname = 0;
   FILE *fp;
   char *name = NULL, *c;
 
@@ -606,14 +622,21 @@ static int ssl_check_certificate (sslsockdata * data)
     return 1;
   }
 
-  if (check_certificate_by_signer (data->cert))
+  if (check_certificate_hostname (data->cert, conn->account.host))
+  {
+    dprint (1, (debugfile, "ssl_check_certificate: hostname check passed\n"));
+  }
+  else
+    certerr_hostname = 1;
+
+  if (!certerr_hostname && check_certificate_by_signer (data->cert))
   {
     dprint (1, (debugfile, "ssl_check_certificate: signer check passed\n"));
     return 1;
   }
 
   /* automatic check from user's database */
-  if (SslCertFile && check_certificate_by_digest (data->cert))
+  if (!certerr_hostname && SslCertFile && check_certificate_by_digest (data->cert))
   {
     dprint (1, (debugfile, "ssl_check_certificate: digest check passed\n"));
     return 1;
