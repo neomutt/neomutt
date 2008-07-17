@@ -1,3 +1,11 @@
+2008-07-11 11:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc67b008038c)
+
+	* doc/manual.xml.head: Mention that @ can be used in usernames in URLs
+
+2008-07-11 11:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (953430663eff)
+
+	* ChangeLog, charset.c: Allow UTF-8 charset to be misspelled as "utf8"
+
 2008-07-11 08:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (934a802dff7f)
 
 	* mutt_ssl.c: Verify hostname in (Open)SSL certificate validation
