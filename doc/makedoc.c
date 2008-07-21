@@ -76,6 +76,7 @@ enum output_formats_t
 #define D_DT		(1 << 7)
 #define D_DD            (1 << 8)
 #define D_PA            (1 << 9)
+#define D_IL		(1 << 10)
 
 enum
 {
@@ -93,6 +94,8 @@ enum
   SP_DD,
   SP_END_DD,
   SP_END_DL,
+  SP_START_IL,
+  SP_END_IL,
   SP_END_SECT,
   SP_REFER
 };
@@ -733,6 +736,9 @@ static void print_confline (const char *varname, int type, const char *val, FILE
  ** - .dt starts a term in a definition list.
  ** - .dd starts a definition in a definition list.
  ** - .de on a line finishes a definition list.
+ ** - .il on a line starts an itemzied list
+ ** - .dd starts an item in an itemized list
+ ** - .ie on a line finishes an itemized list
  ** - .ts on a line starts a "tscreen" environment (name taken from SGML).
  ** - .te on a line finishes this environment.
  ** - .pp on a line starts a paragraph.
@@ -850,6 +856,8 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_DD:
 	{
+	  if (docstat & D_IL)
+	    fputs ("- ", out);
 	  Continuation = 0;
 	  break;
 	}
@@ -857,6 +865,17 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	{
 	  Continuation = 0;
 	  docstat &= ~D_DL;
+	  break;
+	}
+	case SP_START_IL:
+	{
+	  docstat |= D_IL;
+	  break;
+	}
+	case SP_END_IL:
+	{
+	  Continuation = 0;
+	  docstat &= ~D_IL;
 	  break;
 	}
 	case SP_STR:
@@ -959,10 +978,25 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_DD:
 	{
-	  fputs ("\n", out);
+	  if (docstat & D_IL)
+	    fputs (".TP\n\\(hy ", out);
+	  else
+	    fputs ("\n", out);
 	  break;
 	}
 	case SP_END_DL:
+	{
+	  fputs (".RE\n.PD 1", out);
+	  docstat &= ~D_DL;
+	  break;
+	}
+	case SP_START_IL:
+	{
+	  fputs (".RS\n.PD 0\n", out);
+	  docstat |= D_IL;
+	  break;
+	}
+	case SP_END_IL:
 	{
 	  fputs (".RE\n.PD 1", out);
 	  docstat &= ~D_DL;
@@ -1087,18 +1121,34 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	case SP_DD:
 	{
 	  docstat |= D_DD;
-	  fputs ("</term>\n<listitem><para>", out);
+	  if (docstat & D_DL)
+	    fputs("</term>\n", out);
+	  fputs ("<listitem><para>", out);
 	  break;
 	}
         case SP_END_DD:
         {
 	  docstat &= ~D_DD;
-	  fputs ("</para></listitem></varlistentry>\n", out);
+	  fputs ("</para></listitem>", out);
+	  if (docstat & D_DL)
+	    fputs("</varlistentry>\n", out);
 	  break;
         }
 	case SP_END_DL:
 	{
 	  fputs ("</para></listitem></varlistentry></variablelist>\n", out);
+	  docstat &= ~(D_DD|D_DL);
+	  break;
+	}
+	case SP_START_IL:
+	{
+	  fputs ("\n<itemizedlist>\n", out);
+	  docstat |= D_IL;
+	  break;
+	}
+	case SP_END_IL:
+	{
+	  fputs ("</para></listitem></itemizedlist>\n", out);
 	  docstat &= ~(D_DD|D_DL);
 	  break;
 	}
@@ -1183,6 +1233,10 @@ static int handle_docline (char *l, FILE *out, int docstat)
     return print_it (SP_START_DL, NULL, out, docstat);
   else if (!strncmp (l, ".de", 3))
     return print_it (SP_END_DL, NULL, out, docstat);
+  else if (!strncmp (l, ".il", 3))
+    return print_it (SP_START_IL, NULL, out, docstat);
+  else if (!strncmp (l, ".ie", 3))
+    return print_it (SP_END_IL, NULL, out, docstat);
   else if (!strncmp (l, ". ", 2))
     *l = ' ';
 
@@ -1229,6 +1283,11 @@ static int handle_docline (char *l, FILE *out, int docstat)
     }
     else if (!strncmp (s, ".dd", 3))
     {
+      if ((docstat & D_IL) && (docstat & D_DD))
+      {
+	docstat = commit_buff (buff, &d, out, docstat);
+	docstat = print_it (SP_END_DD, NULL, out, docstat);
+      }
       docstat = commit_buff (buff, &d, out, docstat);
       docstat = print_it (SP_DD, NULL, out, docstat);
       s += 3;
