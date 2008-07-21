@@ -2681,18 +2681,18 @@ struct option_t MuttVars[] = {
   ** Specifies how to sort messages in the \fIindex\fP menu.  Valid values
   ** are:
   ** .pp
-  ** .ts
-  ** .  date or date-sent
-  ** .  date-received
-  ** .  from
-  ** .  mailbox-order (unsorted)
-  ** .  score
-  ** .  size
-  ** .  spam
-  ** .  subject
-  ** .  threads
-  ** .  to
-  ** .te
+  ** .il
+  ** .dd date or date-sent
+  ** .dd date-received
+  ** .dd from
+  ** .dd mailbox-order (unsorted)
+  ** .dd score
+  ** .dd size
+  ** .dd spam
+  ** .dd subject
+  ** .dd threads
+  ** .dd to
+  ** .ie
   ** .pp
   ** You may optionally use the reverse- prefix to specify reverse sorting
   ** order (example: set sort=reverse-date-sent).
@@ -2703,11 +2703,11 @@ struct option_t MuttVars[] = {
   ** Specifies how the entries in the `alias' menu are sorted.  The
   ** following are legal values:
   ** .pp
-  ** .ts
-  ** .  address (sort alphabetically by email address)
-  ** .  alias (sort alphabetically by alias name)
-  ** .  unsorted (leave in order specified in .muttrc)
-  ** .te
+  ** .il
+  ** .dd address (sort alphabetically by email address)
+  ** .dd alias (sort alphabetically by alias name)
+  ** .dd unsorted (leave in order specified in .muttrc)
+  ** .ie
   */
   { "sort_aux",		DT_SORT|DT_SORT_AUX, R_INDEX|R_RESORT_BOTH, UL &SortAux, SORT_DATE },
   /*
@@ -2732,12 +2732,12 @@ struct option_t MuttVars[] = {
   ** Specifies how to sort entries in the file browser.  By default, the
   ** entries are sorted alphabetically.  Valid values:
   ** .pp
-  ** .ts
-  ** .  alpha (alphabetically)
-  ** .  date
-  ** .  size
-  ** .  unsorted
-  ** .te
+  ** .il
+  ** .dd alpha (alphabetically)
+  ** .dd date
+  ** .dd size
+  ** .dd unsorted
+  ** .ie
   ** .pp
   ** You may optionally use the reverse- prefix to specify reverse sorting
   ** order (example: set sort_browser=reverse-date).
