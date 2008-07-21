@@ -5957,7 +5957,12 @@ you may find managing all the authentication settings inconvenient and
 error-prone. The account-hook command may help. This hook works like
 folder-hook but is invoked whenever you access a remote mailbox
 (including inside the folder browser), not just when you open the
-mailbox.
+mailbox which includes (for example) polling for new mail, storing Fcc
+messages and saving messages to a folder. As a consequence,
+account-hook should only be used to set connection-related settings such
+as passwords or tunnel commands but not settings such as sender
+address or name (because in general it should be considered unpredictable
+which account-hook was last used).
 </para>
 
 <para>
