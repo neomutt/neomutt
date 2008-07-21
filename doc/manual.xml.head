@@ -381,105 +381,9 @@ are shown in <xref linkend="tab-key-index"/>.
 <para>
 In addition to who sent the message and the subject, a short summary of
 the disposition of each message is printed beside the message number.
-Zero or more of the following ``flags'' may appear, which mean:
+Zero or more of the ``flags'' in <xref linkend="tab-msg-status-flags"/>
+may appear, some of which can be turned on or off using these functions:
 </para>
-
-<para>
-<variablelist>
-
-<varlistentry>
-<term>D</term>
-<listitem>
-<para>
-message is deleted (is marked for deletion)
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>d</term>
-<listitem>
-<para>
-message have attachments marked for deletion
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>K</term>
-<listitem>
-<para>
-contains a PGP public key
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>N</term>
-<listitem>
-<para>
-message is new
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>O</term>
-<listitem>
-<para>
-message is old
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>P</term>
-<listitem>
-<para>
-message is PGP encrypted
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>r</term>
-<listitem>
-<para>
-message has been replied to
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>S</term>
-<listitem>
-<para>
-message is signed, and the signature is successfully verified
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>s</term>
-<listitem>
-<para>
-message is signed
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>!</term>
-<listitem>
-<para>
-message is flagged
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>*</term>
-<listitem>
-<para>
-message is tagged
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
-</para>
-
-<para>
-Some of the status flags can be turned on or off using
 
 <itemizedlist>
 <listitem>
@@ -497,59 +401,49 @@ Some of the status flags can be turned on or off using
 
 </itemizedlist>
 
-</para>
-
 <para>
-Furthermore, the following flags reflect who the message is addressed
-to.  They can be customized with the
+Furthermore, the flags in <xref linkend="tab-msg-recip-flags"/> reflect
+who the message is addressed to. They can be customized with the
 <link linkend="to-chars">&dollar;to&lowbar;chars</link> variable.
 </para>
 
-<para>
-<variablelist>
+<table id="tab-msg-status-flags">
+<title>Message status flags</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Flag</entry><entry>Desciption</entry></row>
+</thead>
+<tbody>
+<row><entry>D</entry><entry>message is deleted (is marked for deletion)</entry></row>
+<row><entry>d</entry><entry>message have attachments marked for deletion</entry></row>
+<row><entry>K</entry><entry>contains a PGP public key</entry></row>
+<row><entry>N</entry><entry>message is new</entry></row>
+<row><entry>O</entry><entry>message is old</entry></row>
+<row><entry>P</entry><entry>message is PGP encrypted</entry></row>
+<row><entry>r</entry><entry>message has been replied to</entry></row>
+<row><entry>S</entry><entry>message is signed, and the signature is successfully verified</entry></row>
+<row><entry>s</entry><entry>message is signed</entry></row>
+<row><entry>!</entry><entry>message is flagged</entry></row>
+<row><entry>*</entry><entry>message is tagged</entry></row>
+</tbody>
+</tgroup>
+</table>
 
-<varlistentry>
-<term>+</term>
-<listitem>
-<para>
-message is to you and you only
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>T</term>
-<listitem>
-<para>
-message is to you, but also to or cc'ed to others
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>C</term>
-<listitem>
-<para>
-message is cc'ed to you
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>F</term>
-<listitem>
-<para>
-message is from you
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>L</term>
-<listitem>
-<para>
-message is sent to a subscribed mailing list
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
-</para>
+<table id="tab-msg-recip-flags">
+<title>Message recipient flags</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Flag</entry><entry>Desciption</entry></row>
+</thead>
+<tbody>
+<row><entry>+</entry><entry>message is to you and you only</entry></row>
+<row><entry>T</entry><entry>message is to you, but also to or cc'ed to others</entry></row>
+<row><entry>C</entry><entry>message is cc'ed to you</entry></row>
+<row><entry>F</entry><entry>message is from you</entry></row>
+<row><entry>L</entry><entry>message is sent to a subscribed mailing list</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 </sect3>
 
