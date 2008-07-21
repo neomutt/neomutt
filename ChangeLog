@@ -1,3 +1,30 @@
+2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (7729b1ad530c)
+
+	* copy.c, protos.h, sendlib.c: Unify mutt_write_references
+
+	copy.c and sendlib.c have independent and different implementations
+	of writing references to a file. Choose the one in sendlib since
+	it's conservative with mallocs and supports trimming the list.
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (651ffe277dfd)
+
+	* copy.c: Clean up error handling in mutt_copy_header
+
+	mutt_copy_header unnecessarily tests the result of each fputc/fputs
+	(well, most of them anyway, it's not consistent). This obfuscates
+	the code and hides bugs. Remove these extraneous checks since
+	ferror/feof are checked at the bottom of the function, and get rid
+	of all the early returns.
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2008-07-17 19:48 +0200  Rocco Rutte  <pdmef@gmx.net>  (f135d64e0082)
+
+	* ChangeLog, query.c: Cleanup unused vars changeset ba0d96408425
+	didn't remove
+
 2008-07-11 11:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc67b008038c)
 
 	* doc/manual.xml.head: Mention that @ can be used in usernames in URLs

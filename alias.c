@@ -211,6 +211,20 @@ ADDRESS *mutt_get_address (ENVELOPE *env, char **pfxp)
   return adr;
 }
 
+static void recode_buf (char *buf, size_t buflen)
+{
+  char *s;
+
+  if (!ConfigCharset || !*ConfigCharset || !Charset)
+    return;
+  s = safe_strdup (buf);
+  if (!s)
+    return;
+  if (mutt_convert_string (&s, Charset, ConfigCharset, 0) == 0)
+    strfcpy (buf, s, buflen);
+  FREE(&s);
+}
+
 void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
 {
   ALIAS *new, *t;
@@ -355,9 +369,11 @@ retry_name:
       mutt_quote_filename (buf, sizeof (buf), new->name);
     else
       strfcpy (buf, new->name, sizeof (buf));
+    recode_buf (buf, sizeof (buf));
     fprintf (rc, "alias %s ", buf);
     buf[0] = 0;
     rfc822_write_address (buf, sizeof (buf), new->addr, 0);
+    recode_buf (buf, sizeof (buf));
     write_safe_address (rc, buf);
     fputc ('\n', rc);
     fclose (rc);
