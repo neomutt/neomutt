@@ -104,7 +104,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The default file in which to save aliases created by the 
   ** ``$create-alias'' function. Entries added to this file are
-  ** encoded in the charsacter set specified by $$config_charset if it
+  ** encoded in the character set specified by $$config_charset if it
   ** is set or the current character set otherwise.
   ** .pp
   ** \fBNote:\fP Mutt will not automatically source this file; you must
@@ -374,7 +374,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When defined, Mutt will recode commands in rc files from this
-  ** encoding to the current charsacter set and aliases written to
+  ** encoding to the current character set and aliases written to
   ** $$alias_file from the current character set.
   */
   { "confirmappend",	DT_BOOL, R_NONE, OPTCONFIRMAPPEND, 1 },

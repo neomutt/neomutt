@@ -415,7 +415,7 @@ who the message is addressed to. They can be customized with the
 </thead>
 <tbody>
 <row><entry>D</entry><entry>message is deleted (is marked for deletion)</entry></row>
-<row><entry>d</entry><entry>message have attachments marked for deletion</entry></row>
+<row><entry>d</entry><entry>message has attachments marked for deletion</entry></row>
 <row><entry>K</entry><entry>contains a PGP public key</entry></row>
 <row><entry>N</entry><entry>message is new</entry></row>
 <row><entry>O</entry><entry>message is old</entry></row>
