@@ -380,7 +380,6 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
 
       if (h->env->refs_changed && h->env->references)
       {
-	LIST *listp = h->env->references, *refs = NULL, *t;
 	fputs ("References:", out);
 	mutt_write_references (h->env->references, out, 0);
 	fputc ('\n', out);
