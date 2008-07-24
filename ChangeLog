@@ -1,3 +1,11 @@
+2008-07-24 12:15 -0400  Brendan Cully  <brendan@kublai.com>  (0d9c24dea7d0)
+
+	* copy.c: Remove variables no longer used since [7729b1ad530c]
+
+	* configure.ac: Disable GCC long long warnings with
+	-pedantic. Closes #2823. Thanks to Aron Griffis for the
+	suggestion.
+
 2008-07-22 16:30 +0200  Vincent Lefevre  <vincent@vinc17.org>  (e27d7ce09c40)
 
 	* doc/manual.xml.head, init.h: Fix typos in manual.xml.head and
