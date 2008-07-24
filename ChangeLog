@@ -1,4 +1,12 @@
-2008-07-21 11:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (7e6d98886cce)
+2008-07-22 16:30 +0200  Vincent Lefevre  <vincent@vinc17.org>  (e27d7ce09c40)
+
+	* doc/manual.xml.head, init.h: Fix typos in manual.xml.head and
+	init.h. Closes #3096.
+
+2008-07-21 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (5511a52bbc9f)
+
+	* init.h: Use itemized lists for listing possible sort config
+	settings.
 
 	* doc/makedoc.c: makedoc: Add ".ie" and ".il" to support itemized
 	lists.
@@ -7,23 +15,15 @@
 	while support for real lists will make it look nicer: for docbook
 	use <itemizedlist/>, \(hy for roff and '-' for text.
 
-2008-07-21 11:41 +0200  Rocco Rutte  <pdmef@gmx.net>  (e09af06a5312)
-
 	* doc/manual.xml.head: Document that account-hook is intended for
 	connection-related settings only
-
-2008-07-21 11:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (089c83504474)
 
 	* doc/manual.xml.head: Manual: Use tables for message flags as it's
 	more compact
 
-2008-07-21 11:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (7bdd9439304e)
-
 	* doc/manual.xml.head: Manual: minor formatting tweaks
 
-2008-07-21 09:11 +0200  Rocco Rutte  <pdmef@gmx.net>  (f93dcd689032)
-
-	* ChangeLog, alias.c, init.h: Encode lines written to $alias_file in
+	* alias.c, init.h: Encode lines written to $alias_file in
 	$config_charset if set. Closes #3095
 
 2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (7729b1ad530c)
