@@ -773,7 +773,7 @@ AC_ARG_ENABLE(warnings, AC_HELP_STRING([--disable-warnings], [Turn off compiler 
 fi])
 
 if test x$GCC = xyes && test $mutt_cv_warnings = yes; then
-        CFLAGS="-Wall -pedantic $CFLAGS"
+  CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
 fi
 
 AC_ARG_ENABLE(nfs-fix, AC_HELP_STRING([--enable-nfs-fix], [Work around an NFS with broken attributes caching]),

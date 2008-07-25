@@ -75,26 +75,6 @@
 
 #include "mutt_regex.h"
 
-/* flags for mutt_copy_header() */
-#define CH_UPDATE	1      /* update the status and x-status fields? */
-#define CH_WEED		(1<<1) /* weed the headers? */
-#define CH_DECODE	(1<<2) /* do RFC1522 decoding? */
-#define CH_XMIT		(1<<3) /* transmitting this message? */
-#define CH_FROM		(1<<4) /* retain the "From " message separator? */
-#define CH_PREFIX	(1<<5) /* use Prefix string? */
-#define CH_NOSTATUS	(1<<6) /* supress the status and x-status fields */
-#define CH_REORDER	(1<<7) /* Re-order output of headers */
-#define CH_NONEWLINE	(1<<8) /* don't output terminating newline */
-#define CH_MIME		(1<<9) /* ignore MIME fields */
-#define CH_UPDATE_LEN	(1<<10) /* update Lines: and Content-Length: */
-#define CH_TXTPLAIN	(1<<11) /* generate text/plain MIME headers */
-#define CH_NOLEN	(1<<12) /* don't write Content-Length: and Lines: */
-#define CH_WEED_DELIVERED (1<<13) /* weed eventual Delivered-To headers */
-#define CH_FORCE_FROM	(1<<14)	/* give CH_FROM precedence over CH_WEED? */
-#define CH_NOQFROM	(1<<15)	/* give CH_FROM precedence over CH_WEED? */
-#define CH_UPDATE_IRT	(1<<16) /* update In-Reply-To: */
-#define CH_UPDATE_REFS	(1<<17) /* update References: */
-
 /* flags for mutt_enter_string() */
 #define  M_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
 #define  M_FILE    (1<<1) /* do file completion */

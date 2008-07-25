@@ -1,3 +1,17 @@
+2008-07-21 10:24 -0400  Aron Griffis  <agriffis@n01se.net>  (96b0dd25a550)
+
+	* copy.h, mutt.h: noop cleanup: move mutt_copy_header flags to copy.h
+
+	Noticed while reading that these flags are better defined in copy.h
+	than mutt.h. Builds without warnings.
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2008-07-24 16:19 -0400  Brendan Cully  <brendan@kublai.com>  (0e2f9189a1dd)
+
+	* ChangeLog, m4/codeset.m4, m4/iconv.m4: Fix m4 serial numbers to
+	avoid aclocal 1.10 warnings
+
 2008-07-21 11:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (7e6d98886cce)
 
 	* doc/makedoc.c: makedoc: Add ".ie" and ".il" to support itemized
