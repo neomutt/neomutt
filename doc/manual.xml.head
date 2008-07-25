@@ -3083,8 +3083,9 @@ commands remove the variable entirely.
 <para>
 Since user-defined variables are expanded in the same way that
 environment variables are (except for
-the <link linkend="shell-escape">shell-escape</link> command), this
-feature can be used to make configuration files more readable.
+the <link linkend="shell-escape">shell-escape</link> command and
+backtick expansion), this feature can be used to make configuration
+files more readable.
 </para>
 
 </sect3>
