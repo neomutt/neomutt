@@ -1729,7 +1729,7 @@ be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 
 <para>
 <emphasis>key</emphasis> does not need to be enclosed in quotes unless it contains a
-space (`` '').
+space (`` '') or semi-colon (``;'').
 </para>
 
 <para>
