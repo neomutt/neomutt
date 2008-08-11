@@ -236,7 +236,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       } while (pc && *pc != '`');
       if (!pc)
       {
-	dprint (1, (debugfile, "mutt_get_token: mismatched backtics\n"));
+	dprint (1, (debugfile, "mutt_get_token: mismatched backticks\n"));
 	return (-1);
       }
       cmd = mutt_substrdup (tok->dptr, pc);

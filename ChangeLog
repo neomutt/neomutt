@@ -1,3 +1,12 @@
+2008-07-27 10:48 -0400  Aron Griffis  <agriffis@n01se.net>  (3f595d14a285)
+
+	* doc/manual.xml.head: doc: semi-colon needs quoting too
+
+	If semi-colon is bound or macro'd, it needs to be quoted like space,
+	otherwise mutt thinks it's separating commands.
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
 2008-07-21 10:24 -0400  Aron Griffis  <agriffis@n01se.net>  (96b0dd25a550)
 
 	* copy.h, mutt.h: noop cleanup: move mutt_copy_header flags to copy.h

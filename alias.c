@@ -148,9 +148,9 @@ void mutt_expand_aliases_env (ENVELOPE *env)
  * if someone has an address like
  *	From: Michael `/bin/rm -f ~` Elkins <me@mutt.org>
  * and the user creates an alias for this, Mutt could wind up executing
- * the backtics because it writes aliases like
+ * the backticks because it writes aliases like
  *	alias me Michael `/bin/rm -f ~` Elkins <me@mutt.org>
- * To avoid this problem, use a backslash (\) to quote any backtics.  We also
+ * To avoid this problem, use a backslash (\) to quote any backticks.  We also
  * need to quote backslashes as well, since you could defeat the above by
  * doing
  *	From: Michael \`/bin/rm -f ~\` Elkins <me@mutt.org>

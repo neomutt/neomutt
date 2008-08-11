@@ -1351,7 +1351,7 @@ the two types of quotes is similar to that of many popular shell programs,
 namely that a single quote is used to specify a literal string (one that is
 not interpreted for shell variables or quoting with a backslash &lsqb;see
 next paragraph&rsqb;), while double quotes indicate a string for which
-should be evaluated.  For example, backtics are evaluated inside of double
+should be evaluated.  For example, backticks are evaluated inside of double
 quotes, but <emphasis role="bold">not</emphasis> for single quotes.
 </para>
 
