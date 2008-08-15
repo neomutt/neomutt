@@ -333,14 +333,18 @@ int mutt_sasl_interact (sasl_interact_t* interaction)
 void mutt_sasl_setup_conn (CONNECTION* conn, sasl_conn_t* saslconn)
 {
   SASL_DATA* sasldata = (SASL_DATA*) safe_malloc (sizeof (SASL_DATA));
+  /* work around sasl_getprop aliasing issues */
+  const void* tmp;
 
   sasldata->saslconn = saslconn;
   /* get ssf so we know whether we have to (en|de)code read/write */
-  sasl_getprop (saslconn, SASL_SSF, (const void**) &sasldata->ssf);
+  sasl_getprop (saslconn, SASL_SSF, &tmp);
+  sasldata->ssf = tmp;
   dprint (3, (debugfile, "SASL protection strength: %u\n", *sasldata->ssf));
   /* Add SASL SSF to transport SSF */
   conn->ssf += *sasldata->ssf;
-  sasl_getprop (saslconn, SASL_MAXOUTBUF, (const void**) &sasldata->pbufsize);
+  sasl_getprop (saslconn, SASL_MAXOUTBUF, &tmp);
+  sasldata->pbufsize = tmp;
   dprint (3, (debugfile, "SASL protection buffer size: %u\n", *sasldata->pbufsize));
 
   /* clear input buffer */
