@@ -1,3 +1,43 @@
+2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (d3ee9644765f)
+
+	* copy.c: Fix three bugs handling flags in mutt_copy_header
+
+	1. mutt_copy_header incorrectly tests CH_UPDATE to determine whether
+	to write the In-Reply-To and References headers. CH_UPDATE
+	refers only to Status: and X-Status:
+
+	2. mutt_copy_header ignores CH_NOSTATUS which is supposed to
+	indicate that the mailbox type doesn't use those headers.
+
+	3. mutt_copy_header tests h->env->irt_changed and
+	h->env->refs_changed when it should be testing CH_UPDATE_IRT and
+	CH_UPDATE_REFS, respectively. Early in the function this
+	happens:
+
+	 if (h->env) flags |= (h->env->irt_changed ? CH_UPDATE_IRT
+	: 0) | (h->env->refs_changed ? CH_UPDATE_REFS : 0);
+
+	 This means that for most callers, the result is the same, but
+	mutt_copy_header should be testing the flags because the caller
+	might have set them explicitly without setting
+	irt_changed/refs_changed.
+
+	* parse.c, protos.h, send.c: Unify parser for message-ids
+
+	Rewrite mutt_extract_message_id and change mutt_parse_references to
+	us it. The parser in mutt_extract_message_id is looser than the old
+	one in mutt_parse_references; it just looks for <[^\s>]+> and
+	doesn't worry about @-signs. Additionally it doesn't use strtok, so
+	the input string can be const.
+
+	Closes #3090, #1935, #1116 (both the stated bug and the conversation
+	following).
+
+2008-08-11 16:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (508ffc26dad2)
+
+	* alias.c, doc/manual.xml.head, init.c: Prefer "backtick" over
+	"backtic" on comments and docs as it's more common, closes #3101.
+
 2008-07-27 10:48 -0400  Aron Griffis  <agriffis@n01se.net>  (3f595d14a285)
 
 	* doc/manual.xml.head: doc: semi-colon needs quoting too
@@ -18,8 +58,8 @@
 
 2008-07-24 16:19 -0400  Brendan Cully  <brendan@kublai.com>  (0e2f9189a1dd)
 
-	* ChangeLog, m4/codeset.m4, m4/iconv.m4: Fix m4 serial numbers to
-	avoid aclocal 1.10 warnings
+	* m4/codeset.m4, m4/iconv.m4: Fix m4 serial numbers to avoid
+	aclocal 1.10 warnings
 
 2008-07-21 11:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (7e6d98886cce)
 
@@ -30,23 +70,15 @@
 	while support for real lists will make it look nicer: for docbook
 	use <itemizedlist/>, \(hy for roff and '-' for text.
 
-2008-07-21 11:41 +0200  Rocco Rutte  <pdmef@gmx.net>  (e09af06a5312)
-
 	* doc/manual.xml.head: Document that account-hook is intended for
 	connection-related settings only
-
-2008-07-21 11:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (089c83504474)
 
 	* doc/manual.xml.head: Manual: Use tables for message flags as it's
 	more compact
 
-2008-07-21 11:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (7bdd9439304e)
-
 	* doc/manual.xml.head: Manual: minor formatting tweaks
 
-2008-07-21 09:11 +0200  Rocco Rutte  <pdmef@gmx.net>  (f93dcd689032)
-
-	* ChangeLog, alias.c, init.h: Encode lines written to $alias_file in
+	* alias.c, init.h: Encode lines written to $alias_file in
 	$config_charset if set. Closes #3095
 
 2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (7729b1ad530c)
@@ -58,8 +90,6 @@
 	it's conservative with mallocs and supports trimming the list.
 
 	Signed-off-by: Aron Griffis <agriffis@n01se.net>
-
-2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (651ffe277dfd)
 
 	* copy.c: Clean up error handling in mutt_copy_header
 
@@ -73,18 +103,14 @@
 
 2008-07-17 19:48 +0200  Rocco Rutte  <pdmef@gmx.net>  (f135d64e0082)
 
-	* ChangeLog, query.c: Cleanup unused vars changeset ba0d96408425
-	didn't remove
+	* query.c: Cleanup unused vars changeset ba0d96408425 didn't
+	remove
 
 2008-07-11 11:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc67b008038c)
 
 	* doc/manual.xml.head: Mention that @ can be used in usernames in URLs
 
-2008-07-11 11:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (953430663eff)
-
-	* ChangeLog, charset.c: Allow UTF-8 charset to be misspelled as "utf8"
-
-2008-07-11 08:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (934a802dff7f)
+	* charset.c: Allow UTF-8 charset to be misspelled as "utf8"
 
 	* mutt_ssl.c: Verify hostname in (Open)SSL certificate validation
 
@@ -96,8 +122,8 @@
 
 2008-07-10 22:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (b9ac445b035b)
 
-	* ChangeLog, hcache.c: Prevent some pointers of 'struct body' being
-	saved to hcache
+	* hcache.c: Prevent some pointers of 'struct body' being saved to
+	hcache
 
 	This addresses the hcache safety issue but maybe doesn't fix it
 	completely, see #2942. This also prevents mutt from crashing when
@@ -113,8 +139,8 @@
 
 2008-07-09 09:14 +0000  Rocco Rutte  <pdmef@gmx.net>  (2a9e9c487bad)
 
-	* ChangeLog, doc/mutt.man, main.c: Document redirection to trigger
-	batch send mode in mutt(1) and mutt -h. Closes #2070.
+	* doc/mutt.man, main.c: Document redirection to trigger batch send
+	mode in mutt(1) and mutt -h. Closes #2070.
 
 2008-07-04 09:09 +0200  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (74b54f11c919)
 
@@ -122,7 +148,7 @@
 
 2008-07-02 18:26 +0200  Vladimir Marek  <Vladimir.Marek@Sun.COM>  (f72fce68ca19)
 
-	* ChangeLog, lib.c: Use stat() instead of dirent->d_type to test for
+	* lib.c: Use stat() instead of dirent->d_type to test for
 	directory. Closes #3089.
 
 2008-07-02 18:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (7783502a04c7)
@@ -130,10 +156,8 @@
 	* curs_main.c: Calculate menu->max after a possible resort in index
 	(maybe changing number of messages). Closes #3088.
 
-2008-07-02 18:08 +0200  Rocco Rutte  <pdmef@gmx.net>  (f41ba27be46f)
-
-	* ChangeLog, curs_lib.c: Fix casts for progress update to prevent
-	-ftrapv aborts to trigger. Closes #3018.
+	* curs_lib.c: Fix casts for progress update to prevent -ftrapv
+	aborts to trigger. Closes #3018.
 
 2008-07-02 08:56 -0700  Brendan Cully  <brendan@kublai.com>  (c51c16db46cc)
 
@@ -142,14 +166,13 @@
 
 2008-07-02 11:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (8b783c916893)
 
-	* ChangeLog, browser.c, buffy.c, commands.c, compose.c, curs_main.c,
-	enter.c, headers.c, hook.c, imap/imap.c, init.c, mbox.c, muttlib.c,
-	postpone.c, protos.h, recvattach.c, send.c, status.c: Use realpath()
-	in mutt_pretty_mailbox() for paths that may need it. This requires
-	to add the buffer size as parameter since the result may be longer
-	than the original but still fit in the buffer. Closes #2948.
-
-2008-07-02 10:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc2334fdf126)
+	* browser.c, buffy.c, commands.c, compose.c, curs_main.c, enter.c,
+	headers.c, hook.c, imap/imap.c, init.c, mbox.c, muttlib.c,
+	postpone.c, protos.h, recvattach.c, send.c, status.c: Use
+	realpath() in mutt_pretty_mailbox() for paths that may need
+	it. This requires to add the buffer size as parameter since the
+	result may be longer than the original but still fit in the
+	buffer. Closes #2948.
 
 	* hash.c: Use casts to avoid triggering integer overflow detection in
 	hash function

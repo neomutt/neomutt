@@ -92,14 +92,18 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 static LIST *mutt_parse_references (char *s, int in_reply_to)
 {
   LIST *t, *lst = NULL;
-  char *m, *sp;
+  char *m;
+  const char *sp;
 
-  for (; (m = mutt_extract_message_id (s, &sp)) != NULL; s = NULL)
+  m = mutt_extract_message_id (s, &sp);
+  while (m)
   {
     t = safe_malloc (sizeof (LIST));
     t->data = m;
     t->next = lst;
     lst = t;
+
+    m = mutt_extract_message_id (NULL, &sp);
   }
 
   return lst;
@@ -888,6 +892,8 @@ char *mutt_extract_message_id (const char *s, const char **saveptr)
     p = s;
   else if (saveptr)
     p = *saveptr;
+  else
+    return NULL;
 
   for (s = NULL, o = NULL, onull = NULL;
        (p = strpbrk (p, "<> \t;")) != NULL; ++p)
