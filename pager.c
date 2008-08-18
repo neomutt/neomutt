@@ -1106,6 +1106,12 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     if (k == 0)
       k = 1;
 
+    if (Charset_is_utf8 && (wc == 0x200B || wc == 0xFEFF))
+    {
+	dprint (3, (debugfile, "skip zero-width character U+%04X\n", wc));
+	continue;
+    }
+
     /* Handle backspace */
     special = 0;
     if (IsWPrint (wc))
