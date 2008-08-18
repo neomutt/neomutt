@@ -1,10 +1,19 @@
+2008-08-18 10:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (51bd7a47d552)
+
+	* pager.c: Ignore zero width characters U+200B/U+FEFF which may garble
+	the display. Closes #3061, #3048.
+
+	* charset.c, charset.h, init.c: Validate charset names for all
+	charset options. Validation is either done against mutt's table of
+	IANA assigned names or local iconv implementation (based on the
+	assumption that iconv_open(charset,charset) fails if charset is
+	unknown to the implementation). Closes #1668.
+
 2008-08-15 11:53 -0700  Brendan Cully  <brendan@kublai.com>  (ff3fbb6a92a8)
 
 	* mutt_sasl.c: Fix type-punning warning in sasl_getprop usage
 
-2008-08-15 11:41 -0700  Brendan Cully  <brendan@kublai.com>  (622ef570a7e3)
-
-	* ChangeLog, parse.c: Fix a couple of compiler warnings introduced in
+	* parse.c: Fix a couple of compiler warnings introduced in
 	[00ce81d778bf]. Make the style of mutt_parse_references more
 	pleasing to me.
 
