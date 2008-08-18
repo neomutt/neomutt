@@ -1684,6 +1684,26 @@ static void pretty_var (char *dst, size_t len, const char *option, const char *v
   *p = 0;
 }
 
+static int check_charset (struct option_t *opt, const char *val)
+{
+  char *p, *q, *s = safe_strdup (val);
+  int rc = 0, strict = strcmp (opt->option, "send_charset") == 0;
+
+  for (p = strtok_r (s, ":", &q); p; p = strtok_r (NULL, ":", &q))
+  {
+    if (!*p)
+      continue;
+    if (mutt_check_charset (p, strict) < 0)
+    {
+      rc = -1;
+      break;
+    }
+  }
+
+  FREE(&s);
+  return rc;
+}
+
 static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, inv, reset, r = 0;
@@ -1877,14 +1897,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  myvar = safe_strdup (myvar);
           myvar_del (myvar);
 	}
-        else if (DTYPE (MuttVars[idx].type) == DT_ADDR)
-	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
-        else
-	  /* MuttVars[idx].data is already 'char**' (or some 'void**') or... 
-	   * so cast to 'void*' is okay */
-	  FREE ((void *) MuttVars[idx].data);		/* __FREE_CHECKED__ */
 
         mutt_extract_token (tmp, s, 0);
+
         if (myvar)
         {
           myvar_set (myvar, tmp->data);
@@ -1893,18 +1908,32 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         }
         else if (DTYPE (MuttVars[idx].type) == DT_PATH)
         {
+	  /* MuttVars[idx].data is already 'char**' (or some 'void**') or... 
+	   * so cast to 'void*' is okay */
+	  FREE ((void *) MuttVars[idx].data);		/* __FREE_CHECKED__ */
+
 	  strfcpy (scratch, tmp->data, sizeof (scratch));
 	  mutt_expand_path (scratch, sizeof (scratch));
 	  *((char **) MuttVars[idx].data) = safe_strdup (scratch);
         }
         else if (DTYPE (MuttVars[idx].type) == DT_STR)
         {
+	  if (strstr (MuttVars[idx].option, "charset") &&
+	      check_charset (&MuttVars[idx], tmp->data) < 0)
+	  {
+	    snprintf (err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
+		      MuttVars[idx].option, tmp->data);
+	    return (-1);
+	  }
+
+	  FREE ((void *) MuttVars[idx].data);		/* __FREE_CHECKED__ */
 	  *((char **) MuttVars[idx].data) = safe_strdup (tmp->data);
 	  if (mutt_strcmp (MuttVars[idx].option, "charset") == 0)
 	    mutt_set_charset (Charset);
         }
         else
         {
+	  rfc822_free_address ((ADDRESS **) MuttVars[idx].data);
 	  *((ADDRESS **) MuttVars[idx].data) = rfc822_parse_adrlist (NULL, tmp->data);
         }
       }

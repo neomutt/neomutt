@@ -1,3 +1,13 @@
+2008-08-15 11:53 -0700  Brendan Cully  <brendan@kublai.com>  (ff3fbb6a92a8)
+
+	* mutt_sasl.c: Fix type-punning warning in sasl_getprop usage
+
+2008-08-15 11:41 -0700  Brendan Cully  <brendan@kublai.com>  (622ef570a7e3)
+
+	* ChangeLog, parse.c: Fix a couple of compiler warnings introduced in
+	[00ce81d778bf]. Make the style of mutt_parse_references more
+	pleasing to me.
+
 2008-07-10 09:38 -0400  Aron Griffis  <agriffis@n01se.net>  (d3ee9644765f)
 
 	* copy.c: Fix three bugs handling flags in mutt_copy_header

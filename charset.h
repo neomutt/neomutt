@@ -56,4 +56,10 @@ char *mutt_get_default_charset ();
  */
 #define M_ICONV_HOOK_FROM 1	/* apply charset-hooks to fromcode */
 
+/* Check if given character set is valid (either officially assigned or
+ * known to local iconv implementation). If strict is non-zero, check
+ * against iconv only. Returns 0 if known and negative otherwise.
+ */
+int mutt_check_charset (const char *s, int strict);
+
 #endif /* _CHARSET_H */
