@@ -545,7 +545,7 @@ int main (int argc, char **argv)
   int dump_variables = 0;
   extern char *optarg;
   extern int optind;
-  int attach_sep = 0;
+  int double_dash = argc, nargc = 1;
 
   /* sanity check against stupid administrators */
   
@@ -573,14 +573,30 @@ int main (int argc, char **argv)
   memset (Options, 0, sizeof (Options));
   memset (QuadOptions, 0, sizeof (QuadOptions));
 
-  for (i = 1; i < argc; i++)
-    if (!strcmp(argv[i], "--"))
+  for (optind = 1; optind < double_dash; )
+  {
+   /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
+    * encounters a non-option.  That could be a file to attach 
+    * (all non-options between -a and --) or it could be an address
+    * (which gets collapsed to the front of argv).
+    */
+   for (; optind < argc; optind++)
+   {
+    if (argv[optind][0] == '-')
     {
-      attach_sep = i;
-      break;
+      if (argv[optind][1] == '-' && argv[optind][2] == '\0')
+        double_dash = optind; /* quit outer loop after getopt */
+      break;                  /* drop through to getopt */
     }
 
-  while ((i = getopt (argc, argv, "A:a:b:F:f:c:Dd:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+    /* non-option, either an attachment or address */
+    if (attach)
+      attach = mutt_add_list (attach, argv[optind]);
+    else
+      argv[nargc++] = argv[optind];
+   }
+
+   if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
     switch (i)
     {
       case 'A':
@@ -684,6 +700,13 @@ int main (int argc, char **argv)
       default:
 	mutt_usage ();
     }
+  }
+
+  /* collapse remaining argv */
+  while (optind < argc)
+    argv[nargc++] = argv[optind++];
+  optind = 1;
+  argc = nargc;
 
   switch (version)
   {
@@ -751,11 +774,6 @@ int main (int argc, char **argv)
     }
     return rv;
   }
-
-  /* if an -a option is present, all non-option arguments before -- are considered attachments */
-  if (attach)
-    for (; optind <= attach_sep; optind++)
-      attach = mutt_add_list (attach, argv[optind]);
 
   if (newMagic)
     mx_set_magic (newMagic);
