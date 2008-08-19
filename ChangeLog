@@ -1,3 +1,12 @@
+2008-08-19 09:39 +0200  Rocco Rutte  <pdmef@gmx.net>  (3e850c6e43fd)
+
+	* handler.c, mutt.h: Make text/enriched handler multibyte aware.
+	Closes #3033.
+
+2008-08-18 13:08 -0700  Vincent Lefevre  <vincent@vinc17.org>  (95a11c7f677d)
+
+	* po/fr.po: Updated French translation.
+
 2008-08-18 10:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (51bd7a47d552)
 
 	* pager.c: Ignore zero width characters U+200B/U+FEFF which may garble
