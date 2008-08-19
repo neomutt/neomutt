@@ -917,6 +917,8 @@ typedef struct
 #define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
+#define state_putws(x,y) fputws(x,(y)->fpout)
+#define state_putwc(x,y) fputwc(x,(y)->fpout)
 
 void state_mark_attach (STATE *);
 void state_attach_puts (const char *, STATE *);
