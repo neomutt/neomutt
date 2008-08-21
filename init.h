@@ -374,8 +374,15 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When defined, Mutt will recode commands in rc files from this
-  ** encoding to the current character set and aliases written to
-  ** $$alias_file from the current character set.
+  ** encoding to the current character set as specified by $$charset
+  ** and aliases written to $$alias_file from the current character set.
+  ** .pp
+  ** Please note that if setting $$charset it must be done before
+  ** setting $$config_charset.
+  ** .pp
+  ** Recoding should be avoided as it may render unconvertable
+  ** characters as question marks which can lead to undesired
+  ** side effects (for example in regular expressions).
   */
   { "confirmappend",	DT_BOOL, R_NONE, OPTCONFIRMAPPEND, 1 },
   /*
