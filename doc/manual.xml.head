@@ -1875,7 +1875,8 @@ silently truncated at the screen width, and are not wrapped.
 
 <para>
 <literallayout>
-Usage: <literal>color</literal> <emphasis>object</emphasis> <emphasis>foreground</emphasis> <emphasis>background</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
+Usage: <literal>color</literal> <emphasis>object</emphasis> <emphasis>foreground</emphasis> <emphasis>background</emphasis>
+Usage: <literal>color</literal> (header &verbar; body) <emphasis>foreground</emphasis> <emphasis>background</emphasis> <emphasis>regexp</emphasis>
 Usage: <literal>color</literal> index <emphasis>foreground</emphasis> <emphasis>background</emphasis> <emphasis>pattern</emphasis>
 Usage: <literal>uncolor</literal> index <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ...  &rsqb;
 </literallayout>
@@ -1889,129 +1890,33 @@ possible to only specify one or the other).
 </para>
 
 <para>
+<emphasis>header</emphasis> and <emphasis>body</emphasis> match <emphasis>regexp</emphasis>
+in the header/body of a message, <emphasis>index</emphasis> matches <emphasis>pattern</emphasis>
+(see <xref linkend="patterns"/>) in the message index.
+</para>
+
+<para>
 <emphasis>object</emphasis> can be one of:
 </para>
 
 <para>
-
 <itemizedlist>
-<listitem>
-
-<para>
-attachment
-</para>
-</listitem>
-<listitem>
-
-<para>
-body (match <emphasis>regexp</emphasis> in the body of messages)
-</para>
-</listitem>
-<listitem>
-
-<para>
-bold (hiliting bold patterns in the body of messages)
-</para>
-</listitem>
-<listitem>
-
-<para>
-error (error messages printed by Mutt)
-</para>
-</listitem>
-<listitem>
-
-<para>
-header (match <emphasis>regexp</emphasis> in the message header)
-</para>
-</listitem>
-<listitem>
-
-<para>
-hdrdefault (default color of the message header in the pager)
-</para>
-</listitem>
-<listitem>
-
-<para>
-index (match <emphasis>pattern</emphasis> in the message index)
-</para>
-</listitem>
-<listitem>
-
-<para>
-indicator (arrow or bar used to indicate the current item in a menu)
-</para>
-</listitem>
-<listitem>
-
-<para>
-markers (the ``+'' markers at the beginning of wrapped lines in the pager)
-</para>
-</listitem>
-<listitem>
-
-<para>
-message (informational messages)
-</para>
-</listitem>
-<listitem>
-
-<para>
-normal
-</para>
-</listitem>
-<listitem>
-
-<para>
-quoted (text matching <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> in the body of a message)
-</para>
-</listitem>
-<listitem>
-
-<para>
-quoted1, quoted2, ..., quoted<emphasis role="bold">N</emphasis> (higher levels of quoting)
-</para>
-</listitem>
-<listitem>
-
-<para>
-search (hiliting of words in the pager)
-</para>
-</listitem>
-<listitem>
-
-<para>
-signature
-</para>
-</listitem>
-<listitem>
-
-<para>
-status (mode lines used to display info about the mailbox or message)
-</para>
-</listitem>
-<listitem>
-
-<para>
-tilde (the ``&tilde;'' used to pad blank lines in the pager)
-</para>
-</listitem>
-<listitem>
-
-<para>
-tree (thread tree drawn in the message index and attachment menu)
-</para>
-</listitem>
-<listitem>
-
-<para>
-underline (hiliting underlined patterns in the body of messages)
-</para>
-</listitem>
-
+<listitem><para>attachment</para></listitem>
+<listitem><para>bold (hiliting bold patterns in the body of messages)</para></listitem>
+<listitem><para>error (error messages printed by Mutt)</para></listitem>
+<listitem><para>hdrdefault (default color of the message header in the pager)</para></listitem>
+<listitem><para>indicator (arrow or bar used to indicate the current item in a menu)</para></listitem>
+<listitem><para>markers (the ``+'' markers at the beginning of wrapped lines in the pager)</para></listitem>
+<listitem><para>message (informational messages)</para></listitem>
+<listitem><para>normal</para></listitem>
+<listitem><para>quoted (text matching <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> in the body of a message)</para></listitem>
+<listitem><para>quoted1, quoted2, ..., quoted<emphasis role="bold">N</emphasis> (higher levels of quoting)</para></listitem>
+<listitem><para>search (hiliting of words in the pager)</para></listitem>
+<listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
+<listitem><para>tilde (the ``&tilde;'' used to pad blank lines in the pager)</para></listitem>
+<listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
+<listitem><para>underline (hiliting underlined patterns in the body of messages)</para></listitem>
 </itemizedlist>
-
 </para>
 
 <para>
@@ -2019,71 +1924,19 @@ underline (hiliting underlined patterns in the body of messages)
 </para>
 
 <para>
-
 <itemizedlist>
-<listitem>
-
-<para>
-white
-</para>
+<listitem><para>white</para></listitem>
+<listitem><para>black</para></listitem>
+<listitem><para>green</para></listitem>
+<listitem><para>magenta</para></listitem>
+<listitem><para>blue</para></listitem>
+<listitem><para>cyan</para></listitem>
+<listitem><para>yellow</para></listitem>
+<listitem><para>red</para></listitem>
+<listitem><para>default</para></listitem>
+<listitem><para>color<emphasis>x</emphasis></para>
 </listitem>
-<listitem>
-
-<para>
-black
-</para>
-</listitem>
-<listitem>
-
-<para>
-green
-</para>
-</listitem>
-<listitem>
-
-<para>
-magenta
-</para>
-</listitem>
-<listitem>
-
-<para>
-blue
-</para>
-</listitem>
-<listitem>
-
-<para>
-cyan
-</para>
-</listitem>
-<listitem>
-
-<para>
-yellow
-</para>
-</listitem>
-<listitem>
-
-<para>
-red
-</para>
-</listitem>
-<listitem>
-
-<para>
-default
-</para>
-</listitem>
-<listitem>
-
-<para>
-color<emphasis>x</emphasis>
-</para>
-</listitem>
-
 </itemizedlist>
-
 </para>
 
 <para>
@@ -2136,52 +1989,26 @@ attributes through the use of the ``mono'' command:
 
 <para>
 <literallayout>
-Usage: <literal>mono</literal> <emphasis>&lt;object&gt; &lt;attribute&gt;</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
+Usage: <literal>mono</literal> <emphasis>object</emphasis> <emphasis>attribute</emphasis>
+Usage: <literal>mono</literal> (header &verbar; body) <emphasis>attribute</emphasis> <emphasis>regexp</emphasis>
 Usage: <literal>mono</literal> index <emphasis>attribute</emphasis> <emphasis>pattern</emphasis>
 Usage: <literal>unmono</literal> index <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ...  &rsqb;
 </literallayout>
 </para>
 
 <para>
-where <emphasis>attribute</emphasis> is one of the following:
+For <emphasis>object</emphasis>, see the color command. <emphasis>attribute</emphasis>
+can be one of the following:
 </para>
 
 <para>
-
 <itemizedlist>
-<listitem>
-
-<para>
-none
-</para>
-</listitem>
-<listitem>
-
-<para>
-bold
-</para>
-</listitem>
-<listitem>
-
-<para>
-underline
-</para>
-</listitem>
-<listitem>
-
-<para>
-reverse
-</para>
-</listitem>
-<listitem>
-
-<para>
-standout
-</para>
-</listitem>
-
+<listitem><para>none</para></listitem>
+<listitem><para>bold</para></listitem>
+<listitem><para>underline</para></listitem>
+<listitem><para>reverse</para></listitem>
+<listitem><para>standout</para></listitem>
 </itemizedlist>
-
 </para>
 
 </sect1>

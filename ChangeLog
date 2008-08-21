@@ -1,3 +1,15 @@
+2008-08-21 09:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (4139ac196ca8)
+
+	* init.h: Better document the effect of $thorough_search being unset.
+	Closes #3104.
+
+2008-08-21 07:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (9373afa9278f)
+
+	* ChangeLog, mutt_ssl.c: Port certificate host checking from msmtp to
+	mutt. It supports IDN, wildcards and extracting the hostname from
+	subject alternative field as well as common name which should be the
+	same gnutls supports. Closes #3087.
+
 2008-08-19 13:17 -0700  Brendan Cully  <brendan@kublai.com>  (573d1aab3c89)
 
 	* init.c: Silence an incorrect uninitialized variable warning.
