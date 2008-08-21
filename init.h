@@ -2908,9 +2908,15 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Affects the \fI~b\fP and \fI~h\fP search operations described in
-  ** section ``$patterns'' above.  If set, the headers and attachments of
-  ** messages to be searched are decoded before searching.  If unset,
+  ** section ``$patterns''.  If \fIset\fP, the headers and body/attachments of
+  ** messages to be searched are decoded before searching. If \fIunset\fP,
   ** messages are searched as they appear in the folder.
+  ** .pp
+  ** Users searching attachments or for non-ASCII characters should \fIset\fP
+  ** this value because decoding also includes MIME parsing/decoding and possible
+  ** character set conversions. Otherwise mutt will attempt to match against the
+  ** raw message received (for example quoted-printable encoded or with encoded
+  ** headers) which may lead to incorrect search results.
   */
   { "tilde",		DT_BOOL, R_PAGER, OPTTILDE, 0 },
   /*
