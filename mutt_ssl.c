@@ -22,6 +22,7 @@
 
 #include <openssl/ssl.h>
 #include <openssl/x509.h>
+#include <openssl/x509v3.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
 
@@ -34,6 +35,7 @@
 #include "mutt_menu.h"
 #include "mutt_curses.h"
 #include "mutt_ssl.h"
+#include "mutt_idna.h"
 
 #if OPENSSL_VERSION_NUMBER >= 0x00904000L
 #define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL, NULL)
@@ -588,20 +590,131 @@ static int check_certificate_by_digest (X509 *peercert)
   return pass;
 }
 
-static int check_certificate_hostname(X509 *peercert, const char *host)
+/* port to mutt from msmtp's tls.c */
+static int hostname_match (const char *hostname, const char *certname)
 {
-  char cert_CN[STRING];
+  const char *cmp1, *cmp2;
 
-  if (!host || !*host)
+  if (strncmp(certname, "*.", 2) == 0)
+  {
+    cmp1 = certname + 2;
+    cmp2 = strchr(hostname, '.');
+    if (!cmp2)
+    {
+      return 0;
+    }
+    else
+    {
+      cmp2++;
+    }
+  }
+  else
+  {
+    cmp1 = certname;
+    cmp2 = hostname;
+  }
+
+  if (*cmp1 == '\0' || *cmp2 == '\0')
+  {
     return 0;
+  }
 
-  X509_NAME_get_text_by_NID (X509_get_subject_name (peercert),
-			     NID_commonName, cert_CN, sizeof (cert_CN));
+  if (strcasecmp(cmp1, cmp2) != 0)
+  {
+    return 0;
+  }
 
-  dprint (2, (debugfile, "check_certificate_hostname: cert=[%s] host=[%s]\n",
-	      cert_CN, host));
+  return 1;
+}
 
-  return strcmp (cert_CN, host) == 0;
+/* port to mutt from msmtp's tls.c */
+static int check_host (X509 *x509cert, const char *hostname, char *err, size_t errlen)
+{
+  int i, rc = 0;
+  /* hostname in ASCII format: */
+  char *hostname_ascii = NULL;
+  /* needed to get the common name: */
+  X509_NAME *x509_subject;
+  char *buf = NULL;
+  int bufsize;
+  /* needed to get the DNS subjectAltNames: */
+  STACK *subj_alt_names;
+  int subj_alt_names_count;
+  GENERAL_NAME *subj_alt_name;
+  /* did we find a name matching hostname? */
+  int match_found;
+
+  /* Check if 'hostname' matches the one of the subjectAltName extensions of
+   * type DNS or the Common Name (CN). */
+
+#ifdef HAVE_LIBIDN
+  if (idna_to_ascii_lz(hostname, &hostname_ascii, 0) != IDNA_SUCCESS)
+  {
+    hostname_ascii = safe_strdup(hostname);
+  }
+#else
+  hostname_ascii = safe_strdup(hostname);
+#endif
+
+  /* Try the DNS subjectAltNames. */
+  match_found = 0;
+  if ((subj_alt_names = X509_get_ext_d2i(x509cert, NID_subject_alt_name,
+					 NULL, NULL)))
+  {
+    subj_alt_names_count = sk_GENERAL_NAME_num(subj_alt_names);
+    for (i = 0; i < subj_alt_names_count; i++)
+    {
+      subj_alt_name = sk_GENERAL_NAME_value(subj_alt_names, i);
+      if (subj_alt_name->type == GEN_DNS)
+      {
+	if ((match_found = hostname_match(hostname_ascii,
+					  (char *)(subj_alt_name->d.ia5->data))))
+	{
+	  break;
+	}
+      }
+    }
+  }
+
+  if (!match_found)
+  {
+    /* Try the common name */
+    if (!(x509_subject = X509_get_subject_name(x509cert)))
+    {
+      if (err && errlen)
+	strfcpy (err, _("cannot get certificate subject"), errlen);
+      goto out;
+    }
+
+    bufsize = X509_NAME_get_text_by_NID(x509_subject, NID_commonName,
+					NULL, 0);
+    bufsize++;
+    buf = safe_malloc((size_t)bufsize);
+    if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName,
+				  buf, bufsize) == -1)
+    {
+      if (err && errlen)
+	strfcpy (err, _("cannot get certificate common name"), errlen);
+      goto out;
+    }
+    match_found = hostname_match(hostname_ascii, buf);
+  }
+
+  if (!match_found)
+  {
+    if (err && errlen)
+      snprintf (err, errlen, _("certificate owner does not match hostname %s"),
+		hostname);
+    goto out;
+  }
+
+  rc = 1;
+
+out:
+  FREE(&buf);
+  FREE(&hostname_ascii);
+
+  return rc;
 }
 
 static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
@@ -622,12 +735,17 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
     return 1;
   }
 
-  if (check_certificate_hostname (data->cert, conn->account.host))
+  buf[0] = 0;
+  if (check_host (data->cert, conn->account.host, buf, sizeof (buf)))
   {
     dprint (1, (debugfile, "ssl_check_certificate: hostname check passed\n"));
   }
   else
+  {
+    mutt_error (_("Certificate host check failed: %s"), buf);
+    mutt_sleep (2);
     certerr_hostname = 1;
+  }
 
   if (!certerr_hostname && check_certificate_by_signer (data->cert))
   {

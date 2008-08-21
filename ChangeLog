@@ -1,3 +1,12 @@
+2008-08-19 13:17 -0700  Brendan Cully  <brendan@kublai.com>  (573d1aab3c89)
+
+	* init.c: Silence an incorrect uninitialized variable warning.
+
+2008-08-19 13:14 -0700  Brendan Cully  <brendan@kublai.com>  (6b4f25cd9dac)
+
+	* ChangeLog, init.h: Better documentation for how quote_regexp
+	determines quote level. Closes #1463.
+
 2008-08-19 09:39 +0200  Rocco Rutte  <pdmef@gmx.net>  (3e850c6e43fd)
 
 	* handler.c, mutt.h: Make text/enriched handler multibyte aware.
