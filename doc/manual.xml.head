@@ -186,12 +186,12 @@ for common keys used to navigate menus in Mutt.
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>j or Down</entry><entry>next-entry</entry><entry>move to the next entry</entry></row>
-<row><entry>k or Up</entry><entry>previous-entry</entry><entry>move to the previous entry</entry></row>
-<row><entry>z or PageDn</entry><entry>page-down</entry><entry>go to the next page</entry></row>
-<row><entry>Z or PageUp</entry><entry>page-up</entry><entry>go to the previous page</entry></row>
-<row><entry>= or Home</entry><entry>first-entry</entry><entry>jump to the first entry</entry></row>
-<row><entry>* or End</entry><entry>last-entry</entry><entry>jump to the last entry</entry></row>
+<row><entry>j or &lt;Down&gt;</entry><entry>next-entry</entry><entry>move to the next entry</entry></row>
+<row><entry>k or &lt;Up&gt;</entry><entry>previous-entry</entry><entry>move to the previous entry</entry></row>
+<row><entry>z or &lt;PageDn&gt;</entry><entry>page-down</entry><entry>go to the next page</entry></row>
+<row><entry>Z or &lt;PageUp&gt;</entry><entry>page-up</entry><entry>go to the previous page</entry></row>
+<row><entry>= or &lt;Home&gt;</entry><entry>first-entry</entry><entry>jump to the first entry</entry></row>
+<row><entry>* or &lt;End&gt;</entry><entry>last-entry</entry><entry>jump to the last entry</entry></row>
 <row><entry>q</entry><entry>quit</entry><entry>exit the current menu</entry></row>
 <row><entry>?</entry><entry>help</entry><entry>list all keybindings for the current menu</entry></row>
 </tbody>
@@ -296,12 +296,8 @@ following categories:
 <para>
 Mutt automatically filters out repeated items from the history.  It
 also mimics the behavior of some shells by ignoring items starting
-with a space.
-</para>
-
-<para>
-The latter feature can be useful in macros to not clobber the history's
-valuable entries with unwanted entries.
+with a space. The latter feature can be useful in macros to not clobber
+the history's valuable entries with unwanted entries.
 </para>
 
 </sect2>
@@ -328,11 +324,12 @@ modes.
 
 <para>
 Common keys used to navigate through and manage messages in the index
-are shown in <xref linkend="tab-key-index"/>.
+are shown in <xref linkend="tab-key-index"/>. How messages are presented
+in the index menu can be customized using the
+<link linkend="index-format">&dollar;index&lowbar;format</link> variable.
 </para>
 
 <para>
-
 <table id="tab-key-index">
 <title>Most common message index keys</title>
 <tgroup cols="2">
@@ -375,31 +372,14 @@ are shown in <xref linkend="tab-key-index"/>.
 
 </para>
 
-<sect3>
-<title>Status Flags</title>
-
 <para>
 In addition to who sent the message and the subject, a short summary of
 the disposition of each message is printed beside the message number.
 Zero or more of the ``flags'' in <xref linkend="tab-msg-status-flags"/>
 may appear, some of which can be turned on or off using these functions:
+<literal>set-flag</literal> and <literal>clear-flag</literal> bound by default
+to ``w'' and ``W'' respectively.
 </para>
-
-<itemizedlist>
-<listitem>
-
-<para>
-<emphasis role="bold">set-flag</emphasis> (default: w)
-</para>
-</listitem>
-<listitem>
-
-<para>
-<emphasis role="bold">clear-flag</emphasis> (default: W)
-</para>
-</listitem>
-
-</itemizedlist>
 
 <para>
 Furthermore, the flags in <xref linkend="tab-msg-recip-flags"/> reflect
@@ -445,8 +425,6 @@ who the message is addressed to. They can be customized with the
 </tgroup>
 </table>
 
-</sect3>
-
 </sect2>
 
 <sect2>
@@ -459,7 +437,6 @@ featureful.
 </para>
 
 <para>
-
 <table id="tab-key-pager">
 <title>Most common pager keys</title>
 <tgroup cols="2">
@@ -481,14 +458,13 @@ featureful.
 </tbody>
 </tgroup>
 </table>
-
 </para>
 
 <para>
 In addition to key bindings in <xref linkend="tab-key-pager"/>,
 many of the functions from the <emphasis>index</emphasis> are available in
-the pager, such as <emphasis>delete-message</emphasis> or <emphasis>copy-message</emphasis> (this is one
-advantage over using an external pager to view messages).
+the pager, such as <literal>delete-message</literal> or <literal>copy-message</literal>
+(this is one advantage over using an external pager to view messages).
 </para>
 
 <para>
@@ -549,9 +525,10 @@ where <emphasis>Ps</emphasis> can be one of the codes shown in
 </table>
 
 <para>
-Mutt uses these attributes for handling text/enriched messages, and they
-can also be used by an external <link linkend="auto-view">autoview</link>
-script for highlighting purposes.  <emphasis role="bold">Note:</emphasis> If you change the colors for your
+Mutt uses these attributes for handling <literal>text/enriched</literal>
+messages, and they can also be used by an external
+<link linkend="auto-view">autoview</link> script for highlighting purposes.
+<emphasis role="bold">Note:</emphasis> If you change the colors for your
 display, for example by changing the color associated with color2 for
 your xterm, then that color will be used instead of green.
 </para>
@@ -624,10 +601,22 @@ See also: <link linkend="strict-threads">&dollar;strict&lowbar;threads</link>.
 <title>Miscellaneous Functions</title>
 
 <para>
-<emphasis role="bold">create-alias</emphasis><anchor id="create-alias"/> (default: a)
-
+In addition, the <emphasis>index</emphasis> and <emphasis>pager</emphasis>
+have these interesting functions:
 </para>
 
+<variablelist>
+
+<varlistentry>
+<term></term>
+<listitem><para></para></listitem>
+</varlistentry>
+
+<varlistentry>
+<term>
+<literal>create-alias</literal><anchor id="create-alias"/> (default: a)
+</term>
+<listitem>
 <para>
 Creates a new alias based upon the current message (or prompts for a
 new one).  Once editing is complete, an <link linkend="alias">alias</link>
@@ -635,12 +624,14 @@ command is added to the file specified by the <link linkend="alias-file">&dollar
 Specifying an <link linkend="alias-file">&dollar;alias&lowbar;file</link>
 does not add the aliases specified there-in, you must also <link linkend="source">source</link> the file.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">check-traditional-pgp</emphasis><anchor id="check-traditional-pgp"/> (default: ESC P)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>check-traditional-pgp</literal><anchor id="check-traditional-pgp"/> (default: ESC P)
+</term>
+<listitem>
 <para>
 This function will search the current message for content signed or
 encrypted with PGP the "traditional" way, that is, without proper
@@ -649,21 +640,14 @@ the MIME content types of the body parts containing PGP data; this
 is similar to the <link linkend="edit-type">edit-type</link> function's
 effect.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">display-toggle-weed</emphasis><anchor id="display-toggle-weed"/> (default: h)
-
-</para>
-
-<para>
-Toggles the weeding of message header fields specified by <link linkend="ignore">ignore</link> commands.
-</para>
-
-<para>
-<emphasis role="bold">edit</emphasis><anchor id="edit"/> (default: e)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>edit</literal><anchor id="edit"/> (default: e)
+</term>
+<listitem>
 <para>
 This command (available in the ``index'' and ``pager'') allows you to
 edit the raw current message as it's present in the mail folder.
@@ -671,14 +655,17 @@ After you have finished editing, the changed message will be
 appended to the current folder, and the original message will be
 marked for deletion.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">edit-type</emphasis><anchor id="edit-type"/>
+<varlistentry>
+<term>
+<literal>edit-type</literal><anchor id="edit-type"/>
 
 (default: &circ;E on the attachment menu, and in the pager and index menus; &circ;T on the
 compose menu)
-</para>
-
+</term>
+<listitem>
 <para>
 This command is used to temporarily edit an attachment's content
 type to fix, for instance, bogus character set parameters.  When
@@ -694,45 +681,53 @@ Note that this command is also available on the <link linkend="compose-menu">com
 menu</link>.  There, it's used to fine-tune the properties of attachments you are going
 to send.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">enter-command</emphasis><anchor id="enter-command"/> (default: ``:'')
-
-</para>
-
+<varlistentry>
+<term>
+<literal>enter-command</literal><anchor id="enter-command"/> (default: ``:'')
+</term>
+<listitem>
 <para>
 This command is used to execute any command you would normally put in a
 configuration file.  A common use is to check the settings of variables, or
 in conjunction with <link linkend="macro">macros</link> to change settings on the
 fly.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">extract-keys</emphasis><anchor id="extract-keys"/> (default: &circ;K)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>extract-keys</literal><anchor id="extract-keys"/> (default: &circ;K)
+</term>
+<listitem>
 <para>
 This command extracts PGP public keys from the current or tagged
 message(s) and adds them to your PGP public key ring.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">forget-passphrase</emphasis><anchor id="forget-passphrase"/> (default:
+<varlistentry>
+<term>
+<literal>forget-passphrase</literal><anchor id="forget-passphrase"/> (default:
 &circ;F)
- 
-</para>
-
+</term>
+<listitem>
 <para>
 This command wipes the passphrase(s) from memory. It is useful, if
 you misspelled the passphrase.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">list-reply</emphasis><anchor id="list-reply"/> (default: L)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>list-reply</literal><anchor id="list-reply"/> (default: L)
+</term>
+<listitem>
 <para>
 Reply to the current or tagged message(s) by extracting any addresses which
 match the regular expressions given by the <link linkend="lists">lists or subscribe</link>
@@ -742,23 +737,27 @@ configuration variable is set.  Using this when replying to messages posted
 to mailing lists helps avoid duplicate copies being sent to the author of
 the message you are replying to.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">pipe-message</emphasis><anchor id="pipe-message"/> (default: &verbar;)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>pipe-message</literal><anchor id="pipe-message"/> (default: &verbar;)
+</term>
+<listitem>
 <para>
 Asks for an external Unix command and pipes the current or
 tagged message(s) to it.  The variables <link linkend="pipe-decode">&dollar;pipe&lowbar;decode</link>, <link linkend="pipe-split">&dollar;pipe&lowbar;split</link>,
 <link linkend="pipe-sep">&dollar;pipe&lowbar;sep</link> and <link linkend="wait-key">&dollar;wait&lowbar;key</link> control the exact behavior of this function.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">resend-message</emphasis><anchor id="resend-message"/> (default: ESC e)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>resend-message</literal><anchor id="resend-message"/> (default: ESC e)
+</term>
+<listitem>
 <para>
 With resend-message, mutt takes the current message as a template for a
 new message.  This function is best described as "recall from arbitrary
@@ -773,24 +772,28 @@ This function is also available from the attachment menu. You can use this
 to easily resend a message which was included with a bounce message
 as a message/rfc822 body part.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">shell-escape</emphasis><anchor id="shell-escape"/> (default: !)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>shell-escape</literal><anchor id="shell-escape"/> (default: !)
+</term>
+<listitem>
 <para>
 Asks for an external Unix command and executes it.  The <link linkend="wait-key">&dollar;wait&lowbar;key</link> can be used to control
 whether Mutt will wait for a key to be pressed when the command returns
 (presumably to let the user read the output of the command), based on
 the return status of the named command.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">toggle-quoted</emphasis><anchor id="toggle-quoted"/> (default: T)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>toggle-quoted</literal><anchor id="toggle-quoted"/> (default: T)
+</term>
+<listitem>
 <para>
 The <emphasis>pager</emphasis> uses the <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> variable to detect quoted text when
 displaying the body of the message.  This function toggles the display
@@ -798,16 +801,22 @@ of the quoted material in the message.  It is particularly useful when
 are interested in just the response and there is a large amount of
 quoted text in the way.
 </para>
+</listitem>
+</varlistentry>
 
-<para>
-<emphasis role="bold">skip-quoted</emphasis><anchor id="skip-quoted"/> (default: S)
-
-</para>
-
+<varlistentry>
+<term>
+<literal>skip-quoted</literal><anchor id="skip-quoted"/> (default: S)
+</term>
+<listitem>
 <para>
 This function will go to the next line of non-quoted text which come
 after a line of quoted text in the internal pager.
 </para>
+</listitem>
+</varlistentry>
+
+</variablelist>
 
 </sect2>
 
@@ -816,9 +825,12 @@ after a line of quoted text in the internal pager.
 <sect1 id="sending">
 <title>Sending Mail</title>
 
+<sect2>
+<title>Introduction</title>
+
 <para>
 The bindings shown in <xref linkend="tab-key-send"/> are available in the
-<emphasis>index</emphasis> for sending messages.
+<emphasis>index</emphasis> and <emphasis>pager</emphasis> to start a new message.
 </para>
 
 <para>
@@ -844,8 +856,8 @@ The bindings shown in <xref linkend="tab-key-send"/> are available in the
 </para>
 
 <para>
-Bouncing a message sends the message as is to the recipient you
-specify.  Forwarding a message allows you to add comments or
+<emphasis>Bouncing</emphasis> a message sends the message as is to the recipient you
+specify.  <emphasis>Forwarding</emphasis> a message allows you to add comments or
 modify the message you are forwarding.  These items are discussed
 in greater detail in the next chapter ``<link linkend="forwarding-mail">Forwarding
 and Bouncing Mail</link>.''
@@ -866,10 +878,14 @@ for changing how Mutt asks these questions.
 </para>
 
 <para>
-Mutt will then automatically start your <link linkend="editor">&dollar;editor</link> on the message body.  If the <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable is set, the headers will be at
-the top of the message in your editor.  Any messages you are replying
-to will be added in sort order to the message, with appropriate <link linkend="attribution">&dollar;attribution</link>, <link linkend="indent-string">&dollar;indent&lowbar;string</link> and <link linkend="post-indent-string">&dollar;post&lowbar;indent&lowbar;string</link>.  When forwarding a
-message, if the <link linkend="mime-forward">&dollar;mime&lowbar;forward</link>
+Mutt will then automatically start your <link linkend="editor">&dollar;editor</link>
+on the message body. If the <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>
+variable is set, the headers will be at the top of the message in your editor.
+Any messages you are replying to will be added in sort order to the message,
+with appropriate <link linkend="attribution">&dollar;attribution</link>,
+<link linkend="indent-string">&dollar;indent&lowbar;string</link> and
+<link linkend="post-indent-string">&dollar;post&lowbar;indent&lowbar;string</link>.
+When forwarding a message, if the <link linkend="mime-forward">&dollar;mime&lowbar;forward</link>
 variable is unset, a copy of the forwarded message will be included.  If
 you have specified a <link linkend="signature">&dollar;signature</link>, it
 will be appended to the message.
@@ -878,7 +894,8 @@ will be appended to the message.
 <para>
 Once you have finished editing the body of your mail message, you are
 returned to the <emphasis>compose</emphasis> menu providing the functions
-show in <xref linkend="tab-func-compose"/>.
+show in <xref linkend="tab-func-compose"/> to modify, send or postpone the
+message.
 </para>
 
 <para>
@@ -917,30 +934,43 @@ show in <xref linkend="tab-func-compose"/>.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis> The attach-message function will prompt you for a folder to
+The compose menu is also used to edit the attachments for a message which can be eiter files
+or other messages. The <literal>attach-message</literal> function to will prompt you for a folder to
 attach messages from. You can now tag messages in that folder and they
 will be attached to the message you are sending. Note that certain
 operations like composing a new mail, replying, forwarding, etc. are
-not permitted when you are in that folder. The &percnt;r in <link linkend="status-format">&dollar;status&lowbar;format</link> will change to
+not permitted when you are in that folder. The &percnt;r in
+<link linkend="status-format">&dollar;status&lowbar;format</link> will change to
 a 'A' to indicate that you are in attach-message mode.
 </para>
+
+</sect2>
 
 <sect2>
 <title>Editing the message header</title>
 
 <para>
-When editing the header of your outgoing message, there are a couple of
-special features available.
+When editing the header because of <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>
+being set, there are a couple of special features available.
 </para>
+
+<sect3>
+<title>Fcc: pseudo header</title>
 
 <para>
 If you specify
 
 <literal>Fcc:</literal> <emphasis>filename</emphasis>
 
-Mutt will pick up <emphasis>filename</emphasis>
+as a header, Mutt will pick up <emphasis>filename</emphasis>
 just as if you had used the <emphasis>edit-fcc</emphasis> function in the <emphasis>compose</emphasis> menu.
+This header will not be included in sent messages.
 </para>
+
+</sect3>
+
+<sect3>
+<title>Attach: pseudo header</title>
 
 <para>
 You can also attach files to your message by specifying
@@ -948,23 +978,14 @@ You can also attach files to your message by specifying
 <literal>Attach:</literal> <emphasis>filename</emphasis>  &lsqb; <emphasis>description</emphasis> &rsqb;
 
 where <emphasis>filename</emphasis> is the file to attach and <emphasis>description</emphasis> is an
-optional string to use as the description of the attached file.
+optional string to use as the description of the attached file. This header, too, won't be send
+out.
 </para>
 
-<para>
-When replying to messages, if you remove the <emphasis>In-Reply-To:</emphasis> field from
-the header field, Mutt will not generate a <emphasis>References:</emphasis> field, which
-allows you to create a new message thread.
-</para>
+</sect3>
 
-<para>
-Also see <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>.
-</para>
-
-</sect2>
-
-<sect2>
-<title>Using Mutt with PGP</title>
+<sect3>
+<title>Pgp: pseudo header</title>
 
 <para>
 If you want to use PGP, you can specify 
@@ -1055,13 +1076,27 @@ means a partially trusted association, and a plus character (<emphasis role="bol
 indicates complete validity.
 </para>
 
+</sect3>
+
+<sect3>
+<title>In-Reply-To: header</title>
+
+<para>
+When replying to messages, the <emphasis>In-Reply-To:</emphasis> header contains the
+Message-Id of the message(s) you reply to. If you remove its value, Mutt will not generate a
+<emphasis>References:</emphasis> field, which allows you to create a new message thread, for example
+to create a new list to a mailing list without having to needing to enter the mailing list's address.
+</para>
+
+</sect3>
+
 </sect2>
 
 <sect2>
-<title>Sending anonymous messages via mixmaster.</title>
+<title>Sending anonymous messages via mixmaster</title>
 
 <para>
-You may also have configured mutt to co-operate with Mixmaster, an
+You may also have compiled mutt to co-operate with Mixmaster, an
 anonymous remailer.  Mixmaster permits you to send your messages
 anonymously using a chain of remailers. Mixmaster support in mutt is for 
 mixmaster version 2.04 (beta 45 appears to be the latest) and 2.03. 
@@ -1205,28 +1240,13 @@ fo-table</literal> for details.
 
 <para>
 Bouncing and forwarding let you send an existing message to recipients
-that you specify.  Bouncing a message uses the <link linkend="sendmail">&dollar;sendmail</link> command to send a copy to alternative addresses as if
-they were the message's original recipients.  Forwarding a message, on
-the other hand, allows you to modify the message before it is resent
-(for example, by adding your own comments). The default key bindings
-are shown in <xref linkend="tab-key-fwd"/>.
-</para>
-
-<para>
-
-<table id="tab-key-fwd">
-<title>Message forwarding/bouncing keys</title>
-<tgroup cols="3">
-<thead>
-<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
-</thead>
-<tbody>
-<row><entry>f</entry><entry>forward</entry><entry>forward message</entry></row>
-<row><entry>b</entry><entry>bounce</entry><entry>bounce (remail) message</entry></row>
-</tbody>
-</tgroup>
-</table>
-
+that you specify. Bouncing a message sends a verbatim copy of a message
+to alternative addresses as if they were the message's original recipients.
+Forwarding a message, on the other hand, allows you to modify the message
+before it is resent (for example, by adding your own comments). Bouncing
+is done using the <literal>bounce</literal> function and forwarding
+using the <literal>forward</literal> command bound to ``b'' and ``f''
+respectively.
 </para>
 
 <para>
@@ -1256,7 +1276,7 @@ replying to a message does.
 
 <para>
 At times it is desirable to delay sending a message that you have
-already begun to compose.  When the <emphasis>postpone-message</emphasis> function is
+already begun to compose.  When the <literal>postpone-message</literal> function is
 used in the <emphasis>compose</emphasis> menu, the body of your message and attachments
 are stored in the mailbox specified by the <link linkend="postponed">&dollar;postponed</link> variable.  This means that you can recall the
 message even if you exit Mutt and then restart it at a later time.
@@ -1289,6 +1309,9 @@ See also the <link linkend="postpone">&dollar;postpone</link> quad-option.
 <chapter id="configuration">
 <title>Configuration</title>
 
+<sect1>
+<title>Location of initialization files</title>
+
 <para>
 While the default configuration (or ``preferences'') make Mutt
 usable right out of the box, it is often desirable to tailor Mutt to
@@ -1318,6 +1341,8 @@ instead of the default <literal>.muttrc</literal> file.  The version number is t
 same which is visible using the ``-v'' <link linkend="commandline">command line</link> switch or using the <literal>show-version</literal> key (default:
 V) from the index menu.
 </para>
+
+</sect1>
 
 <sect1 id="muttrc-syntax" xreflabel="Syntax of Initialization Files">
 <title>Syntax of Initialization Files</title>
@@ -1419,6 +1444,41 @@ not be affected.
 <para>
 The commands understood by mutt are explained in the next paragraphs.
 For a complete list, see the <link linkend="commands">command reference</link>.
+</para>
+
+<para>
+All configuration files are expected to be in the current locale as
+specified by the <link linkend="charset">&dollar;charset</link> variable
+which doesn't have a default value since it's determined by Mutt at startup.
+If a configuration file is not encoded in the same character set the
+<link linkend="config-charset">&dollar;config&lowbar;charset</link>
+variable should be used: all lines starting with the next are recoded
+from &dollar;config&lowbar;charset to &dollar;charset.
+</para>
+
+<para>
+This mechanism should be avoided if possible as it has the
+following implications:
+</para>
+
+<para>
+<itemizedlist>
+
+<listitem><para>These variables should be set early in a configuration
+file with &dollar;charset preceeding &dollar;config&lowbar;charset so Mutt
+know what character set to convert to.</para></listitem>
+
+<listitem><para>If &dollar;config&lowbar;charset is set, it should be set
+in each configuration file because the value is global and <emphasis>not</emphasis>
+per configuration file.</para></listitem>
+
+<listitem><para>Because Mutt first recodes a line before it attempts to parse it,
+a conversion introducing question marks or other characters as
+part of errors (unconvertable characters, transliteration) may introduce syntax
+errors or silently change the meaning of certain tokens (e.g. inserting
+question marks into regular expressions).</para></listitem>
+
+</itemizedlist>
 </para>
 
 </sect1>
@@ -1556,8 +1616,8 @@ multiple addresses.
 
 <para>
 In the alias menu, you can select as many aliases as you want with the
-<emphasis>select-entry</emphasis> key (default: RET), and use the <emphasis>exit</emphasis> key
-(default: q) to return to the address prompt.
+<literal>select-entry</literal> key (default: &lt;Return&gt;), and use the
+<emphasis>exit</emphasis> key (default: q) to return to the address prompt.
 </para>
 
 </sect1>
@@ -1804,15 +1864,18 @@ folder-hook mutt set sort=threads
 <para>
 However, the sorting method is not restored to its previous value when
 reading a different mailbox.  To specify a <emphasis>default</emphasis> command, use the
-pattern ``.'':
+pattern ``.'' before other folder-hooks adjusting a value on a per-folder basis
+because folder-hooks are evaluated in the order given in the configuration file.
+The following example will set the <link linkend="sort">sort</link> variable
+to <literal>date-sent</literal> for all folders but to <literal>threads</literal>
+for all folders containing ``mutt'' in their name.
 </para>
 
 <para>
-
 <screen>
 folder-hook . set sort=date-sent
+folder-hook mutt set sort=threads
 </screen>
-
 </para>
 
 </sect1>
@@ -1829,18 +1892,19 @@ Macros are useful when you would like a single key to perform a series of
 actions.  When you press <emphasis>key</emphasis> in menu <emphasis>menu</emphasis>, Mutt will behave as if
 you had typed <emphasis>sequence</emphasis>.  So if you have a common sequence of commands
 you type, you can create a macro to execute those commands with a single
-key.
+key or fewer keys.
 </para>
 
 <para>
-<emphasis>menu</emphasis> is the <link linkend="maps">map</link> which the macro will be bound.
+<emphasis>menu</emphasis> is the <link linkend="maps">map</link> which the macro will be bound in.
 Multiple maps may be specified by separating multiple menu arguments by
 commas. Whitespace may not be used in between the menu arguments and the
 commas separating them.
 </para>
 
 <para>
-<emphasis>key</emphasis> and <emphasis>sequence</emphasis> are expanded by the same rules as the <link linkend="bind">key bindings</link>.  There are some additions however.  The
+<emphasis>key</emphasis> and <emphasis>sequence</emphasis> are expanded by the same rules as the
+<link linkend="bind">key bindings</link> with some additions.  The
 first is that control characters in <emphasis>sequence</emphasis> can also be specified
 as <emphasis>&circ;x</emphasis>.  In order to get a caret (`&circ;'') you need to use
 <emphasis>&circ;&circ;</emphasis>.  Secondly, to specify a certain key such as <emphasis>up</emphasis>
@@ -2017,13 +2081,16 @@ can be one of the following:
 <title>Ignoring (weeding) unwanted message headers</title>
 
 <para>
+<literallayout>
 Usage: <literal>&lsqb;un&rsqb;ignore</literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
+Usage: <literal>hdr&lowbar;order</literal> <emphasis>header1</emphasis> <emphasis>header2</emphasis> <emphasis>header3</emphasis>
+</literallayout>
 </para>
 
 <para>
 Messages often have many header fields added by automatic processing systems,
 or which may not seem useful to display on the screen.  This command allows
-you to specify header fields which you don't normally want to see.
+you to specify header fields which you don't normally want to see in the pager.
 </para>
 
 <para>
@@ -2044,7 +2111,9 @@ For example, if you do ``ignore x-'' it is possible to ``unignore x-mailer''.
 
 <para>
 For example:
+</para>
 
+<para>
 <screen>
 # Sven's draconian header weeding
 ignore *
@@ -2052,7 +2121,22 @@ unignore from date subject to cc
 unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 </screen>
+</para>
 
+<para>
+With the <literal>hdr&lowbar;order</literal> command you can specify an order in
+which mutt will attempt to present these headers to you when viewing messages.
+</para>
+
+<para>
+``unhdr&lowbar;order *'' will clear all previous headers from the order list,
+thus removing the header order effects set by the system-wide startup file.
+</para>
+
+<para>
+<screen>
+hdr&lowbar;order From Date: From: To: Cc: Subject:
+</screen>
 </para>
 
 </sect1>
@@ -2062,7 +2146,6 @@ unignore posted-to:
 
 <para>
 Usage: <literal>&lsqb;un&rsqb;alternates</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-
 </para>
 
 <para>
@@ -2233,9 +2316,9 @@ which will be checked for new messages periodically.
 </para>
 
 <para>
-<literal>folder</literal> can either be a local file or directory
+<emphasis>folder</emphasis> can either be a local file or directory
 (Mbox/Mmdf or Maildir/Mh). If Mutt was built with POP and/or IMAP
-support, <literal>folder</literal> can also be a POP/IMAP folder
+support, <emphasis>folder</emphasis> can also be a POP/IMAP folder
 URL. The URL syntax is described in <xref linkend="url-syntax"/>,
 POP and IMAP are described in <xref linkend="pop"/> and <xref linkend="imap"/>
 respectively.
@@ -2286,18 +2369,18 @@ mail detection instead.
 </sect1>
 
 <sect1 id="my-hdr">
+<anchor id="hdr-order"/>
 <title>User defined headers</title>
 
 <para>
-Usage:
-
-<literal>my&lowbar;hdr</literal> <emphasis>string</emphasis>
-
-<literal>unmy&lowbar;hdr</literal> <emphasis>field</emphasis> &lsqb; <emphasis>field</emphasis> ... &rsqb;
+<literallayout>
+Usage: <literal>my&lowbar;hdr</literal> <emphasis>string</emphasis>
+Usage: <literal>unmy&lowbar;hdr</literal> <emphasis>field</emphasis> &lsqb; <emphasis>field</emphasis> &lsqb;... &rsqb; &rsqb;
+</literallayout>
 </para>
 
 <para>
-The ``my&lowbar;hdr'' command allows you to create your own header
+The <literal>my&lowbar;hdr</literal> command allows you to create your own header
 fields which will be added to every message you send.
 </para>
 
@@ -2307,9 +2390,9 @@ all of your outgoing messages, you can put the command
 </para>
 
 <para>
-<quote
->my&lowbar;hdr Organization: A Really Big Company, Anytown, USA</quote
->
+<screen>
+my&lowbar;hdr Organization: A Really Big Company, Anytown, USA
+</screen>
 </para>
 
 <para>
@@ -2317,55 +2400,29 @@ in your <literal>.muttrc</literal>.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis>  space characters are <emphasis>not</emphasis> allowed between the keyword and
-the colon (``:'').  The standard for electronic mail (RFC822) says that
+<emphasis role="bold">Note:</emphasis> space characters are <emphasis>not</emphasis> allowed between the keyword and
+the colon (``:''). The standard for electronic mail (RFC822) says that
 space is illegal there, so Mutt enforces the rule.
 </para>
 
 <para>
 If you would like to add a header field to a single message, you should
 either set the <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable,
-or use the <emphasis>edit-headers</emphasis> function (default: ``E'') in the send-menu so
+or use the <literal>edit-headers</literal> function (default: ``E'') in the compose menu so
 that you can edit the header of your message along with the body.
 </para>
 
 <para>
-To remove user defined header fields, use the ``unmy&lowbar;hdr''
-command.  You may specify an asterisk (``*'') to remove all header
-fields, or the fields to remove.  For example, to remove all ``To'' and
+To remove user defined header fields, use the <literal>unmy&lowbar;hdr</literal>
+command. You may specify an asterisk (``*'') to remove all header
+fields, or the fields to remove. For example, to remove all ``To'' and
 ``Cc'' header fields, you could use:
 </para>
 
 <para>
-<quote>unmy&lowbar;hdr to cc</quote>
-</para>
-
-</sect1>
-
-<sect1 id="hdr-order">
-<title>Defining the order of headers when viewing messages</title>
-
-<para>
-Usage: <literal>hdr&lowbar;order</literal> <emphasis>header1</emphasis> <emphasis>header2</emphasis> <emphasis>header3</emphasis>
-</para>
-
-<para>
-With this command, you can specify an order in which mutt will attempt
-to present headers to you when viewing messages.
-</para>
-
-<para>
-``unhdr&lowbar;order *'' will clear all previous headers from the order list,
-thus removing the header order effects set by the system-wide startup
-file.
-</para>
-
-<para>
-
 <screen>
-hdr&lowbar;order From Date: From: To: Cc: Subject:
+unmy&lowbar;hdr to cc
 </screen>
-
 </para>
 
 </sect1>
@@ -2395,16 +2452,16 @@ Examples:
 </para>
 
 <para>
-
 <screen>
 # default: save all to ~/Mail/&lt;author name&gt;
 save-hook . ~/Mail/%F
-# save from me@turing.cs.hmc.edu/me@cs.hmc.edu to $folder/elinks
+
+# save from me@turing.cs.hmc.edu and me@cs.hmc.edu to $folder/elkins
 save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
+
 # save from aol.com to $folder/spam
 save-hook aol\\.com$ +spam
 </screen>
-
 </para>
 
 <para>
@@ -2478,14 +2535,14 @@ Usage: <literal>send2-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <
 
 <para>
 These commands can be used to execute arbitrary configuration commands based
-upon recipients of the message.  <emphasis>pattern</emphasis> is a regular expression
-matching the desired address.  <emphasis>command</emphasis> is executed when <emphasis>regexp</emphasis>
-matches recipients of the message.
+upon recipients of the message.  <emphasis>pattern</emphasis> is used to match
+the message, see <xref linkend="pattern-hook"/> for details. <emphasis>command</emphasis>
+is executed when <emphasis>pattern</emphasis> matches.
 </para>
 
 <para>
-<literal>reply-hook</literal> is matched against the message you are <emphasis>replying</emphasis>
-<emphasis role="bold">to</emphasis>, instead of the message you are <emphasis>sending</emphasis>.  <literal>send-hook</literal> is
+<literal>reply-hook</literal> is matched against the message you are <emphasis>replying to</emphasis>,
+instead of the message you are <emphasis>sending</emphasis>.  <literal>send-hook</literal> is
 matched against all messages, both <emphasis>new</emphasis> and <emphasis>replies</emphasis>.  <emphasis role="bold">Note:</emphasis>
 <literal>reply-hook</literal>s are matched <emphasis role="bold">before</emphasis> the <literal>send-hook</literal>, <emphasis role="bold">regardless</emphasis>
 of the order specified in the user's configuration file.
@@ -2506,10 +2563,6 @@ occur, commands are executed in the order they are specified in the muttrc
 </para>
 
 <para>
-See <xref linkend="pattern-hook"/> for information on the exact format of <emphasis>pattern</emphasis>.
-</para>
-
-<para>
 Example: <literal>send-hook mutt &quot;set mime&lowbar;forward signature=''&quot;</literal>
 </para>
 
@@ -2521,10 +2574,10 @@ signatures based upon the recipients.
 </para>
 
 <para>
-<emphasis role="bold">Note:</emphasis> the send-hook's are only executed ONCE after getting the initial
+<emphasis role="bold">Note:</emphasis> the send-hook's are only executed once after getting the initial
 list of recipients.  Adding a recipient after replying or editing the
-message will NOT cause any send-hook to be executed.  Also note that
-my&lowbar;hdr commands which modify recipient headers, or the message's
+message will not cause any send-hook to be executed.  Also note that
+<literal>my&lowbar;hdr</literal> commands which modify recipient headers, or the message's
 subject, don't have any effect on the current message when executed
 from a send-hook.
 </para>
@@ -2571,17 +2624,17 @@ Usage: <literal>crypt-hook</literal> <emphasis>pattern</emphasis> <emphasis>keyi
 </para>
 
 <para>
-When encrypting messages with PGP or OpenSSL, you may want to associate a certain
+When encrypting messages with PGP/GnuPG or OpenSSL, you may want to associate a certain
 key with a given e-mail address automatically, either because the
 recipient's public key can't be deduced from the destination address,
 or because, for some reasons, you need to override the key Mutt would
-normally use.  The crypt-hook command provides a method by which you can
-specify the ID of the public key to be used when encrypting messages to
-a certain recipient.
+normally use.  The <literal>crypt-hook</literal> command provides a
+method by which you can specify the ID of the public key to be used
+when encrypting messages to a certain recipient.
 </para>
 
 <para>
-The meaning of "key id" is to be taken broadly in this context:  You
+The meaning of <emphasis>keyid</emphasis> is to be taken broadly in this context:  You
 can either put a numerical key ID here, an e-mail address, or even
 just a real name.
 </para>
@@ -2814,16 +2867,9 @@ This command is used to set (and unset) <link linkend="variables">configuration 
 boolean, number, string and quadoption.  <emphasis>boolean</emphasis> variables can be
 <emphasis>set</emphasis> (true) or <emphasis>unset</emphasis> (false).  <emphasis>number</emphasis> variables can be
 assigned a positive integer value.
-</para>
-
-<para>
-<emphasis>string</emphasis> variables consist of any number of printable characters.
-<emphasis>strings</emphasis> must be enclosed in quotes if they contain spaces or tabs.  You
-may also use the ``C'' escape sequences <emphasis role="bold">&bsol;n</emphasis> and <emphasis role="bold">&bsol;t</emphasis> for
-newline and tab, respectively.
-</para>
-
-<para>
+<emphasis>string</emphasis> variables consist of any number of printable characters and
+must be enclosed in quotes if they contain spaces or tabs.  You
+may also use the escape sequences ``&bsol;n'' and ``&bsol;t'' for newline and tab, respectively.
 <emphasis>quadoption</emphasis> variables are used to control whether or not to be prompted
 for certain actions, or to specify a default action.  A value of <emphasis>yes</emphasis>
 will cause the action to be carried out automatically as if you had answered
@@ -2901,9 +2947,9 @@ example, <literal>my&lowbar;cfgdir</literal>.
 </para>
 
 <para>
-The <literal>set</literal> command creates a
-custom <literal>$my&lowbar;</literal> variable and changes its
-value. The <literal>unset</literal> and <literal>reset</literal>
+The <literal>set</literal> command either creates a
+custom <literal>my&lowbar;</literal> variable or changes its
+value if does exist already. The <literal>unset</literal> and <literal>reset</literal>
 commands remove the variable entirely.
 </para>
 
@@ -3041,9 +3087,9 @@ something like <literal>unhook send-hook</literal>.
 <para>
 Format strings are a general concept you'll find in several locations
 through the mutt configuration, especially in the
-<link linkend="index-format">&dollar;index&lowbar;format"</link>,
-<link linkend="pager-format">&dollar;pager&lowbar;format"</link>,
-<link linkend="status-format">&dollar;status&lowbar;format"</link>,
+<link linkend="index-format">&dollar;index&lowbar;format</link>,
+<link linkend="pager-format">&dollar;pager&lowbar;format</link>,
+<link linkend="status-format">&dollar;status&lowbar;format</link>,
 and other ``*_format'' variables. These can be very straightforward,
 and it's quite possible you already know how to use them.
 </para>
@@ -3052,7 +3098,7 @@ and it's quite possible you already know how to use them.
 The most basic format string element is a percent symbol followed
 by another character. For example, <literal>%s</literal>
 represents a message's Subject: header in the <link
-linkend="index-format">&dollar;index&lowbar;format"</link> variable. The
+linkend="index-format">&dollar;index&lowbar;format</link> variable. The
 ``expandos'' available are documented with each format variable, but
 there are general modifiers available with all formatting expandos,
 too. Those are our concern here.
@@ -3208,111 +3254,33 @@ Finally, to include a literal hyphen ``-'' place it last.
 <para>
 Certain named classes of characters are predefined.  Character classes
 consist of ``&lsqb;:'', a keyword denoting the class, and ``:&rsqb;''.
-The following classes are defined by the POSIX standard:
+The following classes are defined by the POSIX standard in
+<xref linkend="posix-regex-char-classes"/>
 </para>
 
 <para>
-<variablelist>
-
-<varlistentry>
-<term>&lsqb;:alnum:&rsqb;</term>
-<listitem>
-<para>
-Alphanumeric characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:alpha:&rsqb;</term>
-<listitem>
-<para>
-Alphabetic characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:blank:&rsqb;</term>
-<listitem>
-<para>
-Space or tab characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:cntrl:&rsqb;</term>
-<listitem>
-<para>
-Control characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:digit:&rsqb;</term>
-<listitem>
-<para>
-Numeric characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:graph:&rsqb;</term>
-<listitem>
-<para>
-Characters that are both printable and visible.  (A space is printable,
-but not visible, while an ``a'' is both.)
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:lower:&rsqb;</term>
-<listitem>
-<para>
-Lower-case alphabetic characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:print:&rsqb;</term>
-<listitem>
-<para>
-Printable characters (characters that are not control characters.)
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:punct:&rsqb;</term>
-<listitem>
-<para>
-Punctuation characters (characters that are not letter, digits, control
-characters, or space characters).
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:space:&rsqb;</term>
-<listitem>
-<para>
-Space characters (such as space, tab and formfeed, to name a few).
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:upper:&rsqb;</term>
-<listitem>
-<para>
-Upper-case alphabetic characters.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lsqb;:xdigit:&rsqb;</term>
-<listitem>
-<para>
-Characters that are hexadecimal digits.
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
+<table id="posix-regex-char-classes">
+<title>POSIX regular expression character classes</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Character class</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>&lsqb;:alnum:&rsqb;</entry><entry>Alphanumeric characters</entry></row>
+<row><entry>&lsqb;:alpha:&rsqb;</entry><entry>Alphabetic characters</entry></row>
+<row><entry>&lsqb;:blank:&rsqb;</entry><entry>Space or tab characters</entry></row>
+<row><entry>&lsqb;:cntrl:&rsqb;</entry><entry>Control characters</entry></row>
+<row><entry>&lsqb;:digit:&rsqb;</entry><entry>Numeric characters</entry></row>
+<row><entry>&lsqb;:graph:&rsqb;</entry><entry>Characters that are both printable and visible. (A space is printable, but not visible, while an ``a'' is both)</entry></row>
+<row><entry>&lsqb;:lower:&rsqb;</entry><entry>Lower-case alphabetic characters</entry></row>
+<row><entry>&lsqb;:print:&rsqb;</entry><entry>Printable characters (characters that are not control characters)</entry></row>
+<row><entry>&lsqb;:punct:&rsqb;</entry><entry>Punctuation characters (characters that are not letter, digits, control characters, or space characters)</entry></row>
+<row><entry>&lsqb;:space:&rsqb;</entry><entry>Space characters (such as space, tab and formfeed, to name a few)</entry></row>
+<row><entry>&lsqb;:upper:&rsqb;</entry><entry>Upper-case alphabetic characters</entry></row>
+<row><entry>&lsqb;:xdigit:&rsqb;</entry><entry>Characters that are hexadecimal digits</entry></row>
+</tbody>
+</tgroup>
+</table>
 </para>
 
 <para>
@@ -3365,70 +3333,27 @@ represent all of ``&egrave;'' ``&eacute;'' and ``e''.  In this case,
 
 <para>
 A regular expression matching a single character may be followed by one
-of several repetition operators:
+of several repetition operators described in <xref linkend="regex-repeat"/>.
 </para>
 
 <para>
-<variablelist>
-
-<varlistentry>
-<term>?</term>
-<listitem>
-<para>
-The preceding item is optional and matched at most once.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>*</term>
-<listitem>
-<para>
-The preceding item will be matched zero or more times.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>+</term>
-<listitem>
-<para>
-The preceding item will be matched one or more times.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lcub;n&rcub;</term>
-<listitem>
-<para>
-The preceding item is matched exactly <emphasis>n</emphasis> times.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lcub;n,&rcub;</term>
-<listitem>
-<para>
-The preceding item is matched <emphasis>n</emphasis> or more times.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lcub;,m&rcub;</term>
-<listitem>
-<para>
-The preceding item is matched at most <emphasis>m</emphasis> times.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&lcub;n,m&rcub;</term>
-<listitem>
-<para>
-The preceding item is matched at least <emphasis>n</emphasis> times, but no more than
-<emphasis>m</emphasis> times.
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
+<table id="regex-repeat">
+<title>Regular expression repetition operators</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Operator</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>?</entry><entry>The preceding item is optional and matched at most once</entry></row>
+<row><entry>*</entry><entry>The preceding item will be matched zero or more times</entry></row>
+<row><entry>+</entry><entry>The preceding item will be matched one or more times</entry></row>
+<row><entry>&lcub;n&rcub;</entry><entry>The preceding item is matched exactly <emphasis>n</emphasis> times</entry></row>
+<row><entry>&lcub;n,&rcub;</entry><entry>The preceding item is matched <emphasis>n</emphasis> or more times</entry></row>
+<row><entry>&lcub;,m&rcub;</entry><entry>The preceding item is matched at most <emphasis>m</emphasis> times</entry></row>
+<row><entry>&lcub;n,m&rcub;</entry><entry>The preceding item is matched at least <emphasis>n</emphasis> times, but no more than <emphasis>m</emphasis> times</entry></row>
+</tbody>
+</tgroup>
+</table>
 </para>
 
 <para>
@@ -3451,77 +3376,28 @@ parentheses to override these precedence rules.
 
 <para>
 <emphasis role="bold">Note:</emphasis> If you compile Mutt with the GNU <emphasis>rx</emphasis> package, the
-following operators may also be used in regular expressions:
+following operators may also be used in regular expressions as described in <xref linkend="regex-gnu-ext"/>.
 </para>
 
 <para>
-<variablelist>
-
-<varlistentry>
-<term>&bsol;&bsol;y</term>
-<listitem>
-<para>
-Matches the empty string at either the beginning or the end of a word.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;B</term>
-<listitem>
-<para>
-Matches the empty string within a word.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;&lt;</term>
-<listitem>
-<para>
-Matches the empty string at the beginning of a word.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;&gt;</term>
-<listitem>
-<para>
-Matches the empty string at the end of a word.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;w</term>
-<listitem>
-<para>
-Matches any word-constituent character (letter, digit, or underscore).
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;W</term>
-<listitem>
-<para>
-Matches any character that is not word-constituent.
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;`</term>
-<listitem>
-<para>
-Matches the empty string at the beginning of a buffer (string).
-</para>
-</listitem>
-</varlistentry>
-<varlistentry>
-<term>&bsol;&bsol;'</term>
-<listitem>
-<para>
-Matches the empty string at the end of a buffer.
-</para>
-</listitem>
-</varlistentry>
-</variablelist>
+<table id="regex-gnu-ext">
+<title>GNU regular expression extensions</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Expression</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>&bsol;&bsol;y</entry><entry>Matches the empty string at either the beginning or the end of a word</entry></row>
+<row><entry>&bsol;&bsol;B</entry><entry>Matches the empty string within a word</entry></row>
+<row><entry>&bsol;&bsol;&lt;</entry><entry>Matches the empty string at the beginning of a word</entry></row>
+<row><entry>&bsol;&bsol;&gt;</entry><entry>Matches the empty string at the end of a word</entry></row>
+<row><entry>&bsol;&bsol;w</entry><entry>Matches any word-constituent character (letter, digit, or underscore)</entry></row>
+<row><entry>&bsol;&bsol;W</entry><entry>Matches any character that is not word-constituent</entry></row>
+<row><entry>&bsol;&bsol;`</entry><entry>Matches the empty string at the beginning of a buffer (string)</entry></row>
+<row><entry>&bsol;&bsol;'</entry><entry>Matches the empty string at the end of a buffer</entry></row>
+</tbody>
+</tgroup>
+</table>
 </para>
 
 <para>
@@ -3536,7 +3412,8 @@ they may or may not be available in stock libraries on various systems.
 
 <para>
 Many of Mutt's commands allow you to specify a pattern to match
-(limit, tag-pattern, delete-pattern, etc.). <xref linkend="tab-patterns"/>
+(<literal>limit</literal>, <literal>tag-pattern</literal>,
+<literal>delete-pattern</literal>, etc.). <xref linkend="tab-patterns"/>
 shows several ways to select messages.
 </para>
 
@@ -3550,55 +3427,55 @@ shows several ways to select messages.
 </thead>
 <tbody>
 <row><entry>~A</entry><entry>all messages</entry></row>
-<row><entry>~b EXPR</entry><entry>messages which contain EXPR in the message body</entry></row>
-<row><entry>=b STRING</entry><entry>messages which contain STRING in the message body. If IMAP is enabled, searches for STRING on the server, rather than downloading each message and searching it locally.</entry></row>
-<row><entry>~B EXPR</entry><entry>messages which contain EXPR in the whole message</entry></row>
-<row><entry>~c EXPR</entry><entry>messages carbon-copied to EXPR</entry></row>
-<row><entry>%c GROUP</entry><entry>messages carbon-copied to any member of GROUP</entry></row>
-<row><entry>~C EXPR</entry><entry>message is either to: or cc: EXPR</entry></row>
-<row><entry>%C GROUP</entry><entry>message is either to: or cc: to any member of GROUP</entry></row>
-<row><entry>~d &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with ``date-sent'' in a Date range</entry></row>
+<row><entry>~b <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message body</entry></row>
+<row><entry>=b <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the message body. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally.</entry></row>
+<row><entry>~B <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the whole message</entry></row>
+<row><entry>~c <emphasis>EXPR</emphasis></entry><entry>messages carbon-copied to <emphasis>EXPR</emphasis></entry></row>
+<row><entry>%c <emphasis>GROUP</emphasis></entry><entry>messages carbon-copied to any member of <emphasis>GROUP</emphasis></entry></row>
+<row><entry>~C <emphasis>EXPR</emphasis></entry><entry>message is either to: or cc: <emphasis>EXPR</emphasis></entry></row>
+<row><entry>%C <emphasis>GROUP</emphasis></entry><entry>message is either to: or cc: to any member of <emphasis>GROUP</emphasis></entry></row>
+<row><entry>~d &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with ``date-sent'' in a Date range</entry></row>
 <row><entry>~D</entry><entry>deleted messages</entry></row>
-<row><entry>~e EXPR</entry><entry>message which contains EXPR in the ``Sender'' field</entry></row>
-<row><entry>%e GROUP</entry><entry>message which contain a member of GROUP in the ``Sender'' field</entry></row>
+<row><entry>~e <emphasis>EXPR</emphasis></entry><entry>message which contains <emphasis>EXPR</emphasis> in the ``Sender'' field</entry></row>
+<row><entry>%e <emphasis>GROUP</emphasis></entry><entry>message which contain a member of <emphasis>GROUP</emphasis> in the ``Sender'' field</entry></row>
 <row><entry>~E</entry><entry>expired messages</entry></row>
 <row><entry>~F</entry><entry>flagged messages</entry></row>
-<row><entry>~f EXPR</entry><entry>messages originating from EXPR</entry></row>
-<row><entry>%f GROUP</entry><entry>messages originating from any member of GROUP</entry></row>
+<row><entry>~f <emphasis>EXPR</emphasis></entry><entry>messages originating from <emphasis>EXPR</emphasis></entry></row>
+<row><entry>%f <emphasis>GROUP</emphasis></entry><entry>messages originating from any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~g</entry><entry>cryptographically signed messages</entry></row>
 <row><entry>~G</entry><entry>cryptographically encrypted messages</entry></row>
-<row><entry>~h EXPR</entry><entry>messages which contain EXPR in the message header</entry></row>
-<row><entry>~H EXPR</entry><entry>messages with a spam attribute matching EXPR</entry></row>
-<row><entry>~i EXPR</entry><entry>message which match EXPR in the ``Message-ID'' field</entry></row>
+<row><entry>~h <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message header</entry></row>
+<row><entry>~H <emphasis>EXPR</emphasis></entry><entry>messages with a spam attribute matching <emphasis>EXPR</emphasis></entry></row>
+<row><entry>~i <emphasis>EXPR</emphasis></entry><entry>message which match <emphasis>EXPR</emphasis> in the ``Message-ID'' field</entry></row>
 <row><entry>~k</entry><entry>message contains PGP key material</entry></row>
-<row><entry>~L EXPR</entry><entry>message is either originated or received by EXPR</entry></row>
-<row><entry>%L GROUP</entry><entry>message is either originated or received by any member of GROUP</entry></row>
+<row><entry>~L <emphasis>EXPR</emphasis></entry><entry>message is either originated or received by <emphasis>EXPR</emphasis></entry></row>
+<row><entry>%L <emphasis>GROUP</emphasis></entry><entry>message is either originated or received by any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~l</entry><entry>message is addressed to a known mailing list</entry></row>
-<row><entry>~m &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>message in the range MIN to MAX *)</entry></row>
-<row><entry>~n &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with a score in the range MIN to MAX *)</entry></row>
+<row><entry>~m &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>message in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
+<row><entry>~n &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a score in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~N</entry><entry>new messages</entry></row>
 <row><entry>~O</entry><entry>old messages</entry></row>
 <row><entry>~p</entry><entry>message is addressed to you (consults alternates)</entry></row>
 <row><entry>~P</entry><entry>message is from you (consults alternates)</entry></row>
 <row><entry>~Q</entry><entry>messages which have been replied to</entry></row>
-<row><entry>~r &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with ``date-received'' in a Date range</entry></row>
+<row><entry>~r &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with ``date-received'' in a Date range</entry></row>
 <row><entry>~R</entry><entry>read messages</entry></row>
-<row><entry>~s EXPR</entry><entry>messages having EXPR in the ``Subject'' field.</entry></row>
+<row><entry>~s <emphasis>EXPR</emphasis></entry><entry>messages having <emphasis>EXPR</emphasis> in the ``Subject'' field.</entry></row>
 <row><entry>~S</entry><entry>superseded messages</entry></row>
-<row><entry>~t EXPR</entry><entry>messages addressed to EXPR</entry></row>
+<row><entry>~t <emphasis>EXPR</emphasis></entry><entry>messages addressed to <emphasis>EXPR</emphasis></entry></row>
 <row><entry>~T</entry><entry>tagged messages</entry></row>
 <row><entry>~u</entry><entry>message is addressed to a subscribed mailing list</entry></row>
 <row><entry>~U</entry><entry>unread messages</entry></row>
 <row><entry>~v</entry><entry>message is part of a collapsed thread.</entry></row>
 <row><entry>~V</entry><entry>cryptographically verified messages</entry></row>
-<row><entry>~x EXPR</entry><entry>messages which contain EXPR in the `References' field</entry></row>
-<row><entry>~X &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with MIN to MAX attachments *)</entry></row>
-<row><entry>~y EXPR</entry><entry>messages which contain EXPR in the `X-Label' field</entry></row>
-<row><entry>~z &lsqb;MIN&rsqb;-&lsqb;MAX&rsqb;</entry><entry>messages with a size in the range MIN to MAX *)</entry></row>
+<row><entry>~x <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the `References' field</entry></row>
+<row><entry>~X &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments *)</entry></row>
+<row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the `X-Label' field</entry></row>
+<row><entry>~z &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~=</entry><entry>duplicated messages (see $duplicate_threads)</entry></row>
 <row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
-<row><entry>~(PATTERN)</entry><entry>messages in threads
-containing messages matching a certain	pattern, e.g. all
+<row><entry>~(<emphasis>PATTERN</emphasis>)</entry><entry>messages in threads
+containing messages matching <emphasis>PATTERN</emphasis>, e.g. all
 threads containing messages from you: ~(~P)</entry></row>
 </tbody>
 </tgroup>
@@ -3607,13 +3484,13 @@ threads containing messages from you: ~(~P)</entry></row>
 </para>
 
 <para>
-Where EXPR is a
+Where <emphasis>EXPR</emphasis> is a
 <link linkend="regexp">regular expression</link>.  Special attention has to be
 made when using regular expressions inside of patterns.  Specifically,
-Mutt's parser for these patterns will strip one level of backslash (\),
+Mutt's parser for these patterns will strip one level of backslash (``\''),
 which is normally used for quoting.  If it is your intention to use a
 backslash in the regular expression, you will need to use two backslashes
-instead (\\). You can force mutt to treat EXPR as a simple string
+instead (``\\''). You can force mutt to treat <emphasis>EXPR</emphasis> as a simple string
 instead of a regular expression by using = instead of &tilde; in the
 pattern name. For example, =b *.* will find all messages that contain
 the literal string '*.*'. Simple string matches are less powerful than
@@ -3627,8 +3504,8 @@ its value.
 </para>
 
 <para>
-*) The forms <literal>&lt;&lsqb;MAX&rsqb;</literal>, <literal>&gt;&lsqb;MIN&rsqb;</literal>,
-<literal>&lsqb;MIN&rsqb;-</literal> and <literal>-&lsqb;MAX&rsqb;</literal>
+*) The forms ``&lt;&lsqb;<emphasis>MAX</emphasis>&rsqb;'', ``&gt;&lsqb;<emphasis>MIN</emphasis>&rsqb;'',
+``&lsqb;<emphasis>MIN</emphasis>&rsqb;-'' and ``-&lsqb;<emphasis>MAX</emphasis>&rsqb;''
 are allowed, too.
 </para>
 
@@ -3636,10 +3513,10 @@ are allowed, too.
 <title>Pattern Modifier</title>
 
 <para>
-Note that patterns matching 'lists' of addresses (notably c,C,p,P and t)
+Note that patterns matching 'lists' of addresses (notably c, C, p, P and t)
 match if there is at least one match in the whole list. If you want to
 make sure that all elements of that list match, you need to prefix your
-pattern with &circ;.
+pattern with ``&circ;''.
 This example matches all mails which only has recipients from Germany.
 </para>
 
@@ -3660,7 +3537,7 @@ This example matches all mails which only has recipients from Germany.
 Mutt supports two versions of so called ``simple searches'' which are
 issued if the query entered for searching, limiting and similar
 operations does not seem to be a valid pattern (i.e. it does not contain
-one of these characters: ``~'', ``='' or ``&percnt;''). If the query is
+one of these characters: ``&tilde;'', ``='' or ``&percnt;''). If the query is
 supposed to contain one of these special characters, they must be escaped
 by prepending a backslash (``\'').
 </para>
@@ -3967,7 +3844,7 @@ normal.
 <title>Using Hooks</title>
 
 <para>
-A <emphasis>hook</emphasis> is a concept borrowed from the EMACS editor which allows you to
+A <emphasis>hook</emphasis> is a concept found in many other programs which allows you to
 execute arbitrary commands before performing some operation.  For example,
 you may wish to tailor your configuration based upon which mailbox you are
 reading, or to whom you are sending mail.  In the Mutt world, a <emphasis>hook</emphasis>
@@ -4505,11 +4382,10 @@ request DSN or not.
 </sect1>
 
 <sect1 id="urlview">
-<title>Start a WWW Browser on URLs (EXTERNAL)</title>
+<title>Start a WWW Browser on URLs</title>
 
 <para>
-If a message contains URLs (<emphasis>unified resource locator</emphasis> = address in the
-WWW space like <emphasis>http://www.mutt.org/</emphasis>), it is efficient to get
+If a message contains URLs, it is efficient to get
 a menu with all the URLs and start a WWW browser on one of them.  This
 functionality is provided by the external urlview program which can be
 retrieved at <ulink

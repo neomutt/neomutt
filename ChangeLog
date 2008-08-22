@@ -1,3 +1,12 @@
+2008-08-21 10:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (15d93fe50e62)
+
+	* init.h: Clarify documentation for $config_charset. Closes #2021.
+
+2008-08-21 10:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (bc8b07e9e95b)
+
+	* ChangeLog, doc/manual.xml.head: Improve color/mono command synopsis.
+	Closes #2630.
+
 2008-08-21 09:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (4139ac196ca8)
 
 	* init.h: Better document the effect of $thorough_search being unset.
