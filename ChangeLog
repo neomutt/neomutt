@@ -1,32 +1,40 @@
+2008-08-19 16:44 -0400  Aron Griffis  <agriffis@n01se.net>  (31c9e9727d42)
+
+	* main.c: Handle -- correctly with or without -a, closes #3097
+
+	Prefix optstring with "+" to force POSIX behavior on GNU getopt, and
+	thereby prevent reordering argv. This allows us to correctly handle
+	mixed addresses, attachments, options and the double-dash to signal
+	end-of-options.
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2008-08-22 17:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (6fd1fa2d98bc)
+
+	* doc/manual.xml.head: Manual: fix/improve markup/content, see
+	#3109
+
 2008-08-21 10:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (15d93fe50e62)
 
 	* init.h: Clarify documentation for $config_charset. Closes #2021.
 
-2008-08-21 10:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (bc8b07e9e95b)
-
-	* ChangeLog, doc/manual.xml.head: Improve color/mono command synopsis.
+	* doc/manual.xml.head: Improve color/mono command synopsis.
 	Closes #2630.
-
-2008-08-21 09:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (4139ac196ca8)
 
 	* init.h: Better document the effect of $thorough_search being unset.
 	Closes #3104.
 
-2008-08-21 07:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (9373afa9278f)
-
-	* ChangeLog, mutt_ssl.c: Port certificate host checking from msmtp to
+	* mutt_ssl.c: Port certificate host checking from msmtp to
 	mutt. It supports IDN, wildcards and extracting the hostname from
-	subject alternative field as well as common name which should be the
-	same gnutls supports. Closes #3087.
+	subject alternative field as well as common name which should be
+	the same gnutls supports. Closes #3087.
 
 2008-08-19 13:17 -0700  Brendan Cully  <brendan@kublai.com>  (573d1aab3c89)
 
 	* init.c: Silence an incorrect uninitialized variable warning.
 
-2008-08-19 13:14 -0700  Brendan Cully  <brendan@kublai.com>  (6b4f25cd9dac)
-
-	* ChangeLog, init.h: Better documentation for how quote_regexp
-	determines quote level. Closes #1463.
+	* init.h: Better documentation for how quote_regexp determines
+	quote level. Closes #1463.
 
 2008-08-19 09:39 +0200  Rocco Rutte  <pdmef@gmx.net>  (3e850c6e43fd)
 

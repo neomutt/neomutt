@@ -582,7 +582,7 @@ int main (int argc, char **argv)
     */
    for (; optind < argc; optind++)
    {
-    if (argv[optind][0] == '-')
+    if (argv[optind][0] == '-' && argv[optind][1] != '\0')
     {
       if (argv[optind][1] == '-' && argv[optind][2] == '\0')
         double_dash = optind; /* quit outer loop after getopt */
