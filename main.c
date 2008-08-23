@@ -575,30 +575,30 @@ int main (int argc, char **argv)
 
   for (optind = 1; optind < double_dash; )
   {
-   /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
-    * encounters a non-option.  That could be a file to attach 
-    * (all non-options between -a and --) or it could be an address
-    * (which gets collapsed to the front of argv).
-    */
-   for (; optind < argc; optind++)
-   {
-    if (argv[optind][0] == '-' && argv[optind][1] != '\0')
+    /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
+     * encounters a non-option.  That could be a file to attach 
+     * (all non-options between -a and --) or it could be an address
+     * (which gets collapsed to the front of argv).
+     */
+    for (; optind < argc; optind++)
     {
-      if (argv[optind][1] == '-' && argv[optind][2] == '\0')
-        double_dash = optind; /* quit outer loop after getopt */
-      break;                  /* drop through to getopt */
+      if (argv[optind][0] == '-' && argv[optind][1] != '\0')
+      {
+        if (argv[optind][1] == '-' && argv[optind][2] == '\0')
+          double_dash = optind; /* quit outer loop after getopt */
+        break;                  /* drop through to getopt */
+      }
+
+      /* non-option, either an attachment or address */
+      if (attach)
+        attach = mutt_add_list (attach, argv[optind]);
+      else
+        argv[nargc++] = argv[optind];
     }
 
-    /* non-option, either an attachment or address */
-    if (attach)
-      attach = mutt_add_list (attach, argv[optind]);
-    else
-      argv[nargc++] = argv[optind];
-   }
-
-   if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
-    switch (i)
-    {
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+      switch (i)
+      {
       case 'A':
         alias_queries = mutt_add_list (alias_queries, optarg);
         break;
@@ -699,7 +699,7 @@ int main (int argc, char **argv)
 
       default:
 	mutt_usage ();
-    }
+      }
   }
 
   /* collapse remaining argv */
