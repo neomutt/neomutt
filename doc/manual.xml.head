@@ -2073,12 +2073,11 @@ can be one of the following:
 </sect1>
 
 <sect1 id="ignore">
-<title>Ignoring (weeding) unwanted message headers</title>
+<title>Message header display</title>
 
 <para>
 <literallayout>
 Usage: <literal>&lsqb;un&rsqb;ignore</literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-Usage: <literal>hdr&lowbar;order</literal> <emphasis>header1</emphasis> <emphasis>header2</emphasis> <emphasis>header3</emphasis>
 </literallayout>
 </para>
 
@@ -2117,6 +2116,11 @@ unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 </screen>
 </para>
+
+<anchor id="hdr-order"/>
+<literallayout>
+Usage: <literal>hdr&lowbar;order</literal> <emphasis>header1</emphasis> <emphasis>header2</emphasis> <emphasis>header3</emphasis>
+</literallayout>
 
 <para>
 With the <literal>hdr&lowbar;order</literal> command you can specify an order in
@@ -2364,7 +2368,6 @@ mail detection instead.
 </sect1>
 
 <sect1 id="my-hdr">
-<anchor id="hdr-order"/>
 <title>User defined headers</title>
 
 <para>

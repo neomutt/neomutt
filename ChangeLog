@@ -1,3 +1,12 @@
+2008-08-24 17:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (fec35f9ad30f)
+
+	* doc/manual.xml.head: Manual: Fix typo
+
+2008-08-24 17:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (a2fc5e7c77ae)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Fix style and typos. Noted
+	by Vincent Lefevre, see #3109.
+
 2008-08-23 15:25 -0700  Brendan Cully  <brendan@kublai.com>  (1f9849496bc2)
 
 	* main.c: Whitespace cleanup
