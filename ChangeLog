@@ -1,3 +1,13 @@
+2008-08-23 15:25 -0700  Brendan Cully  <brendan@kublai.com>  (1f9849496bc2)
+
+	* main.c: Whitespace cleanup
+
+2008-08-23 15:21 -0700  Brendan Cully  <brendan@kublai.com>  (63efed810906)
+
+	* ChangeLog, main.c: Fix infinite loop with "mutt -", introduced in
+	[31c9e9727d42]. Treats - as a non-option argument. It would be
+	reasonable to treat it as an error instead.
+
 2008-08-19 16:44 -0400  Aron Griffis  <agriffis@n01se.net>  (31c9e9727d42)
 
 	* main.c: Handle -- correctly with or without -a, closes #3097

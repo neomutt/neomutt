@@ -608,11 +608,6 @@ have these interesting functions:
 <variablelist>
 
 <varlistentry>
-<term></term>
-<listitem><para></para></listitem>
-</varlistentry>
-
-<varlistentry>
 <term>
 <literal>create-alias</literal><anchor id="create-alias"/> (default: a)
 </term>
@@ -934,7 +929,7 @@ message.
 </para>
 
 <para>
-The compose menu is also used to edit the attachments for a message which can be eiter files
+The compose menu is also used to edit the attachments for a message which can be either files
 or other messages. The <literal>attach-message</literal> function to will prompt you for a folder to
 attach messages from. You can now tag messages in that folder and they
 will be attached to the message you are sending. Note that certain
@@ -978,7 +973,7 @@ You can also attach files to your message by specifying
 <literal>Attach:</literal> <emphasis>filename</emphasis>  &lsqb; <emphasis>description</emphasis> &rsqb;
 
 where <emphasis>filename</emphasis> is the file to attach and <emphasis>description</emphasis> is an
-optional string to use as the description of the attached file. This header, too, won't be send
+optional string to use as the description of the attached file. This header, too, won't be sent
 out.
 </para>
 
@@ -1085,7 +1080,7 @@ indicates complete validity.
 When replying to messages, the <emphasis>In-Reply-To:</emphasis> header contains the
 Message-Id of the message(s) you reply to. If you remove its value, Mutt will not generate a
 <emphasis>References:</emphasis> field, which allows you to create a new message thread, for example
-to create a new list to a mailing list without having to needing to enter the mailing list's address.
+to create a new list to a mailing list without having to enter the mailing list's address.
 </para>
 
 </sect3>
@@ -2401,7 +2396,7 @@ in your <literal>.muttrc</literal>.
 
 <para>
 <emphasis role="bold">Note:</emphasis> space characters are <emphasis>not</emphasis> allowed between the keyword and
-the colon (``:''). The standard for electronic mail (RFC822) says that
+the colon (``:''). The standard for electronic mail (RFC2822) says that
 space is illegal there, so Mutt enforces the rule.
 </para>
 
@@ -2949,7 +2944,7 @@ example, <literal>my&lowbar;cfgdir</literal>.
 <para>
 The <literal>set</literal> command either creates a
 custom <literal>my&lowbar;</literal> variable or changes its
-value if does exist already. The <literal>unset</literal> and <literal>reset</literal>
+value if it does exist already. The <literal>unset</literal> and <literal>reset</literal>
 commands remove the variable entirely.
 </para>
 
@@ -3432,12 +3427,12 @@ shows several ways to select messages.
 <row><entry>~B <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the whole message</entry></row>
 <row><entry>~c <emphasis>EXPR</emphasis></entry><entry>messages carbon-copied to <emphasis>EXPR</emphasis></entry></row>
 <row><entry>%c <emphasis>GROUP</emphasis></entry><entry>messages carbon-copied to any member of <emphasis>GROUP</emphasis></entry></row>
-<row><entry>~C <emphasis>EXPR</emphasis></entry><entry>message is either to: or cc: <emphasis>EXPR</emphasis></entry></row>
-<row><entry>%C <emphasis>GROUP</emphasis></entry><entry>message is either to: or cc: to any member of <emphasis>GROUP</emphasis></entry></row>
+<row><entry>~C <emphasis>EXPR</emphasis></entry><entry>messages either to: or cc: <emphasis>EXPR</emphasis></entry></row>
+<row><entry>%C <emphasis>GROUP</emphasis></entry><entry>messages either to: or cc: to any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~d &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with ``date-sent'' in a Date range</entry></row>
 <row><entry>~D</entry><entry>deleted messages</entry></row>
-<row><entry>~e <emphasis>EXPR</emphasis></entry><entry>message which contains <emphasis>EXPR</emphasis> in the ``Sender'' field</entry></row>
-<row><entry>%e <emphasis>GROUP</emphasis></entry><entry>message which contain a member of <emphasis>GROUP</emphasis> in the ``Sender'' field</entry></row>
+<row><entry>~e <emphasis>EXPR</emphasis></entry><entry>messages which contains <emphasis>EXPR</emphasis> in the ``Sender'' field</entry></row>
+<row><entry>%e <emphasis>GROUP</emphasis></entry><entry>messages which contain a member of <emphasis>GROUP</emphasis> in the ``Sender'' field</entry></row>
 <row><entry>~E</entry><entry>expired messages</entry></row>
 <row><entry>~F</entry><entry>flagged messages</entry></row>
 <row><entry>~f <emphasis>EXPR</emphasis></entry><entry>messages originating from <emphasis>EXPR</emphasis></entry></row>
@@ -3446,17 +3441,17 @@ shows several ways to select messages.
 <row><entry>~G</entry><entry>cryptographically encrypted messages</entry></row>
 <row><entry>~h <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message header</entry></row>
 <row><entry>~H <emphasis>EXPR</emphasis></entry><entry>messages with a spam attribute matching <emphasis>EXPR</emphasis></entry></row>
-<row><entry>~i <emphasis>EXPR</emphasis></entry><entry>message which match <emphasis>EXPR</emphasis> in the ``Message-ID'' field</entry></row>
-<row><entry>~k</entry><entry>message contains PGP key material</entry></row>
-<row><entry>~L <emphasis>EXPR</emphasis></entry><entry>message is either originated or received by <emphasis>EXPR</emphasis></entry></row>
-<row><entry>%L <emphasis>GROUP</emphasis></entry><entry>message is either originated or received by any member of <emphasis>GROUP</emphasis></entry></row>
-<row><entry>~l</entry><entry>message is addressed to a known mailing list</entry></row>
-<row><entry>~m &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>message in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
+<row><entry>~i <emphasis>EXPR</emphasis></entry><entry>messages which match <emphasis>EXPR</emphasis> in the ``Message-ID'' field</entry></row>
+<row><entry>~k</entry><entry>messages which contain PGP key material</entry></row>
+<row><entry>~L <emphasis>EXPR</emphasis></entry><entry>messages either originated or received by <emphasis>EXPR</emphasis></entry></row>
+<row><entry>%L <emphasis>GROUP</emphasis></entry><entry>message either originated or received by any member of <emphasis>GROUP</emphasis></entry></row>
+<row><entry>~l</entry><entry>messages addressed to a known mailing list</entry></row>
+<row><entry>~m &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~n &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a score in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~N</entry><entry>new messages</entry></row>
 <row><entry>~O</entry><entry>old messages</entry></row>
-<row><entry>~p</entry><entry>message is addressed to you (consults alternates)</entry></row>
-<row><entry>~P</entry><entry>message is from you (consults alternates)</entry></row>
+<row><entry>~p</entry><entry>messages addressed to you (consults alternates)</entry></row>
+<row><entry>~P</entry><entry>messages from you (consults alternates)</entry></row>
 <row><entry>~Q</entry><entry>messages which have been replied to</entry></row>
 <row><entry>~r &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with ``date-received'' in a Date range</entry></row>
 <row><entry>~R</entry><entry>read messages</entry></row>
@@ -3464,15 +3459,15 @@ shows several ways to select messages.
 <row><entry>~S</entry><entry>superseded messages</entry></row>
 <row><entry>~t <emphasis>EXPR</emphasis></entry><entry>messages addressed to <emphasis>EXPR</emphasis></entry></row>
 <row><entry>~T</entry><entry>tagged messages</entry></row>
-<row><entry>~u</entry><entry>message is addressed to a subscribed mailing list</entry></row>
+<row><entry>~u</entry><entry>messages addressed to a subscribed mailing list</entry></row>
 <row><entry>~U</entry><entry>unread messages</entry></row>
-<row><entry>~v</entry><entry>message is part of a collapsed thread.</entry></row>
+<row><entry>~v</entry><entry>messages part of a collapsed thread.</entry></row>
 <row><entry>~V</entry><entry>cryptographically verified messages</entry></row>
-<row><entry>~x <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the `References' field</entry></row>
+<row><entry>~x <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the ``References'' field</entry></row>
 <row><entry>~X &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments *)</entry></row>
-<row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the `X-Label' field</entry></row>
+<row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the ``X-Label'' field</entry></row>
 <row><entry>~z &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
-<row><entry>~=</entry><entry>duplicated messages (see $duplicate_threads)</entry></row>
+<row><entry>~=</entry><entry>duplicated messages (see <link linkend="duplicate-threads">&dollar;duplicate&lowbar;threads</link>)</entry></row>
 <row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
 <row><entry>~(<emphasis>PATTERN</emphasis>)</entry><entry>messages in threads
 containing messages matching <emphasis>PATTERN</emphasis>, e.g. all
@@ -3492,11 +3487,11 @@ which is normally used for quoting.  If it is your intention to use a
 backslash in the regular expression, you will need to use two backslashes
 instead (``\\''). You can force mutt to treat <emphasis>EXPR</emphasis> as a simple string
 instead of a regular expression by using = instead of &tilde; in the
-pattern name. For example, =b *.* will find all messages that contain
-the literal string '*.*'. Simple string matches are less powerful than
+pattern name. For example, <literal>=b *.*</literal> will find all messages that contain
+the literal string ``*.*''. Simple string matches are less powerful than
 regular expressions but can be considerably faster. This is especially
 true for IMAP folders, because string matches can be performed on the
-server instead of by fetching every message. IMAP treats =h specially:
+server instead of by fetching every message. IMAP treats <literal>=h</literal> specially:
 it must be of the form "header: substring" and will not partially
 match header names. The substring part may be omitted if you simply
 wish to find messages containing a particular header without regard to
