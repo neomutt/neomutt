@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -143,7 +143,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   
     imap_cmd_start (idata, buf);
   
-    for (msgno = msgbegin; msgno <= msgend ; msgno++)
+    rc = IMAP_CMD_CONTINUE;
+    for (msgno = msgbegin; rc == IMAP_CMD_CONTINUE; msgno++)
     {
       mutt_progress_update (&progress, msgno + 1, -1);
   

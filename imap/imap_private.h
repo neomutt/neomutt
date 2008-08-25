@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -69,6 +69,7 @@
 /* imap_exec flags (see imap_exec) */
 #define IMAP_CMD_FAIL_OK (1<<0)
 #define IMAP_CMD_PASS    (1<<1)
+#define IMAP_CMD_QUEUE   (1<<2)
 
 enum
 {
@@ -243,12 +244,12 @@ int imap_has_flag (LIST* flag_list, const char* flag);
 int imap_authenticate (IMAP_DATA* idata);
 
 /* command.c */
-int imap_cmd_queue (IMAP_DATA* idata, const char* cmdstr);
 int imap_cmd_start (IMAP_DATA* idata, const char* cmd);
 int imap_cmd_step (IMAP_DATA* idata);
 void imap_cmd_finish (IMAP_DATA* idata);
 int imap_code (const char* s);
 int imap_exec (IMAP_DATA* idata, const char* cmd, int flags);
+int imap_cmd_idle (IMAP_DATA* idata);
 
 /* message.c */
 void imap_add_keywords (char* s, HEADER* keywords, LIST* mailbox_flags, size_t slen);

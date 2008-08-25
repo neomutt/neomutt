@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2007 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -347,7 +347,7 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
     break;
   }
   if (!conn)
-	  return NULL; /* this happens when the initial connection fails */
+    return NULL; /* this happens when the initial connection fails */
 
   if (!idata)
   {
@@ -383,12 +383,12 @@ IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags)
   if (new && idata->state == IMAP_AUTHENTICATED)
   {
     /* capabilities may have changed */
-    imap_cmd_queue (idata, "CAPABILITY");
+    imap_exec (idata, "CAPABILITY", IMAP_CMD_QUEUE);
     /* get root delimiter, '/' as default */
     idata->delim = '/';
-    imap_cmd_queue (idata, "LIST \"\" \"\"");
+    imap_exec (idata, "LIST \"\" \"\"", IMAP_CMD_QUEUE);
     if (option (OPTIMAPCHECKSUBSCRIBED))
-      imap_cmd_queue (idata, "LSUB \"\" \"*\"");
+      imap_exec (idata, "LSUB \"\" \"*\"", IMAP_CMD_QUEUE);
     /* we may need the root delimiter before we open a mailbox */
     imap_exec (idata, NULL, IMAP_CMD_FAIL_OK);
   }
@@ -598,7 +598,7 @@ int imap_open_mailbox (CONTEXT* ctx)
   if (mutt_bit_isset (idata->capabilities, ACL))
   {
     snprintf (bufout, sizeof (bufout), "MYRIGHTS %s", buf);
-    imap_cmd_queue (idata, bufout);
+    imap_exec (idata, bufout, IMAP_CMD_QUEUE);
   }
   /* assume we have all rights if ACL is unavailable */
   else
@@ -1072,7 +1072,7 @@ static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
   {
     rc++;
     mutt_buffer_printf (buf, " +FLAGS.SILENT (%s)", name);
-    imap_cmd_queue (idata, buf->data);
+    imap_exec (idata, buf->data, IMAP_CMD_QUEUE);
   }
   buf->dptr = buf->data;
   mutt_buffer_addstr (buf, "UID STORE ");
@@ -1080,7 +1080,7 @@ static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
   {
     rc++;
     mutt_buffer_printf (buf, " -FLAGS.SILENT (%s)", name);
-    imap_cmd_queue (idata, buf->data);
+    imap_exec (idata, buf->data, IMAP_CMD_QUEUE);
   }
   
   return rc;
@@ -1258,7 +1258,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   if (expunge && ctx->closing)
   {
-    imap_cmd_queue (idata, "CLOSE");
+    imap_exec (idata, "CLOSE", IMAP_CMD_QUEUE);
     idata->state = IMAP_AUTHENTICATED;
   }
 
@@ -1296,7 +1296,7 @@ int imap_close_mailbox (CONTEXT* ctx)
       /* mx_close_mailbox won't sync if there are no deleted messages
        * and the mailbox is unchanged, so we may have to close here */
       if (!ctx->deleted)
-        imap_cmd_queue (idata, "CLOSE");
+        imap_exec (idata, "CLOSE", IMAP_CMD_QUEUE);
       if (idata->state == IMAP_IDLE)
       {
         mutt_buffer_addstr (idata->cmdbuf, "DONE\r\n");
@@ -1352,19 +1352,8 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
   if (!force && option (OPTIMAPIDLE) && mutt_bit_isset (idata->capabilities, IDLE)
       && (idata->state != IMAP_IDLE || time(NULL) >= idata->lastread + ImapKeepalive))
   {
-    imap_cmd_start (idata, "IDLE");
-    idata->state = IMAP_IDLE;
-    do
-      result = imap_cmd_step (idata);
-    while (result == IMAP_CMD_CONTINUE);
-    /* it's possible that we were notified and fetched mail before
-     * getting to the +, in which case we've automatically unidled. */
-    if (result != IMAP_CMD_RESPOND && result != IMAP_CMD_OK)
-    {
-      dprint (1, (debugfile, "Error starting IDLE\n"));
-      idata->state = IMAP_SELECTED;
+    if (imap_cmd_idle (idata) < 0)
       return -1;
-    }
   }
   if (idata->state == IMAP_IDLE)
   {
@@ -1486,19 +1475,10 @@ int imap_buffy_check (int force)
     snprintf (command, sizeof (command),
 	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
 
-    if (imap_cmd_queue (idata, command) < 0)
+    if (imap_exec (idata, command, IMAP_CMD_QUEUE) < 0)
     {
-      /* pipeline must be full, drain it */
-      dprint (2, (debugfile, "IMAP command pipeline full, draining\n"));
-
-      if (imap_exec (idata, NULL, IMAP_CMD_FAIL_OK) == -1)
-        dprint (1, (debugfile, "Error polling mailboxes\n"));
-      
-      if (imap_cmd_queue (idata, command) < 0) {
-        /* real trouble */
-        dprint (1, (debugfile, "Error queueing command\n"));
-        return 0;
-      }
+      dprint (1, (debugfile, "Error queueing command\n"));
+      return 0;
     }
   }
 
@@ -1550,7 +1530,7 @@ int imap_status (char* path, int queue)
 
   if (queue)
   {
-    imap_cmd_queue (idata, buf);
+    imap_exec (idata, buf, IMAP_CMD_QUEUE);
     queued = 1;
     return 0;
   }
