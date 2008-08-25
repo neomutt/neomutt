@@ -969,6 +969,17 @@ struct option_t MuttVars[] = {
   ** but can make closing an IMAP folder somewhat slower. This option
   ** exists to appease speed freaks.
   */
+  { "imap_pipeline_depth", DT_NUM,  R_NONE, UL &ImapPipelineDepth, 15 },
+  /*
+  ** .pp
+  ** Controls the number of IMAP commands that may be queued up before they
+  ** are sent to the server. A deeper pipeline reduces the amount of time
+  ** mutt must wait for the server, and can make IMAP servers feel much
+  ** more responsive. But not all servers correctly handle pipelined commands,
+  ** so if you have problems you might want to try setting this variable to 0.
+  ** .pp
+  ** \fBNote:\fP Changes to this variable have no effect on open connections.
+  */
   { "imap_servernoise",		DT_BOOL, R_NONE, OPTIMAPSERVERNOISE, 1 },
   /*
   ** .pp

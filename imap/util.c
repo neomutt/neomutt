@@ -354,6 +354,13 @@ IMAP_DATA* imap_new_idata (void)
   if (!(idata->cmdbuf = mutt_buffer_init (NULL)))
     FREE (&idata);
 
+  idata->cmdslots = ImapPipelineDepth + 2;
+  if (!(idata->cmds = safe_calloc(idata->cmdslots, sizeof(*idata->cmds))))
+  {
+    mutt_buffer_free(&idata->cmdbuf);
+    FREE (&idata);
+  }
+
   return idata;
 }
 
@@ -369,6 +376,7 @@ void imap_free_idata (IMAP_DATA** idata)
   mutt_buffer_free(&(*idata)->cmdbuf);
   FREE (&(*idata)->buf);
   mutt_bcache_close (&(*idata)->bcache);
+  FREE (&(*idata)->cmds);
   FREE (idata);		/* __FREE_CHECKED__ */
 }
 

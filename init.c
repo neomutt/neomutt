@@ -2116,6 +2116,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	else
 	  *ptr = -*ptr;
       }
+#ifdef USE_IMAP
+      else if (mutt_strcmp (MuttVars[idx].option, "imap_pipeline_depth") == 0)
+      {
+        if (*ptr < 0)
+          *ptr = 0;
+      }
+#endif
     }
     else if (DTYPE (MuttVars[idx].type) == DT_QUAD)
     {

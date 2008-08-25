@@ -157,7 +157,7 @@ int imap_cmd_step (IMAP_DATA* idata)
 	if (!stillrunning)
 	{
 	  /* first command in queue has finished - move queue pointer up */
-	  idata->lastcmd = (idata->lastcmd + 1) % IMAP_PIPELINE_DEPTH;
+	  idata->lastcmd = (idata->lastcmd + 1) % idata->cmdslots;
 	}
 	cmd->state = cmd_status (idata->buf);
 	/* bogus - we don't know which command result to return here. Caller
@@ -168,7 +168,7 @@ int imap_cmd_step (IMAP_DATA* idata)
 	stillrunning++;
     }
 
-    c = (c + 1) % IMAP_PIPELINE_DEPTH;
+    c = (c + 1) % idata->cmdslots;
   }
   while (c != idata->nextcmd);
 
@@ -308,7 +308,7 @@ int imap_cmd_idle (IMAP_DATA* idata)
 
 static int cmd_queue_full (IMAP_DATA* idata)
 {
-  if ((idata->nextcmd + 1) % IMAP_PIPELINE_DEPTH == idata->lastcmd)
+  if ((idata->nextcmd + 1) % idata->cmdslots == idata->lastcmd)
     return 1;
 
   return 0;
@@ -327,7 +327,7 @@ static IMAP_COMMAND* cmd_new (IMAP_DATA* idata)
   }
 
   cmd = idata->cmds + idata->nextcmd;
-  idata->nextcmd = (idata->nextcmd + 1) % IMAP_PIPELINE_DEPTH;
+  idata->nextcmd = (idata->nextcmd + 1) % idata->cmdslots;
 
   snprintf (cmd->seq, sizeof (cmd->seq), "a%04u", idata->seqno++);
   if (idata->seqno > 9999)

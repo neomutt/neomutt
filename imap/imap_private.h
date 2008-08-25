@@ -54,10 +54,6 @@
 /* number of entries in the hash table */
 #define IMAP_CACHE_LEN 10
 
-/* number of commands that can be batched into a single request
- * ( - 1, for the easy way to detect ring buffer wrap) */
-#define IMAP_PIPELINE_DEPTH 15
-
 #define SEQLEN 5
 
 #define IMAP_REOPEN_ALLOW     (1<<0)
@@ -190,7 +186,8 @@ typedef struct
   void* cmddata;
 
   /* command queue */
-  IMAP_COMMAND cmds[IMAP_PIPELINE_DEPTH];
+  IMAP_COMMAND* cmds;
+  int cmdslots;
   int nextcmd;
   int lastcmd;
   BUFFER* cmdbuf;

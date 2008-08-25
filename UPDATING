@@ -6,6 +6,8 @@ The keys used are:
 
 hg tip:
 
+  + $imap_pipeline_depth controls the number of commands that mutt can issue
+    to an IMAP server before it must collect the responses
   + $ssl_client_cert available with gnutls as well as openssl
   + 'mime_lookup application/octet-stream' added to system Muttrc
 

@@ -1,19 +1,30 @@
-2008-08-24 17:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (fec35f9ad30f)
+2008-08-25 00:16 -0700  Brendan Cully  <brendan@kublai.com>  (53d9210aa4ee)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	Rework IMAP command queueing to allow pipelining to be disabled.
+	IDLE handling has been better abstracted, and there are fewer entry
+	points to the IMAP command issuing machinery. Any commands that are
+	simply queued may be executed whenever the pipeline fills, instead
+	of requiring explicit handling in the caller.
+
+	Tested on my Cyrus server, but I wouldn't be surprise if this causes
+	new problems.
+
+2008-08-24 20:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (045c5942e1ad)
+
+	* doc/manual.xml.head: Manual: Fix DTD validation error and
+	message header display section
 
 	* doc/manual.xml.head: Manual: Fix typo
 
-2008-08-24 17:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (a2fc5e7c77ae)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Fix style and typos. Noted
-	by Vincent Lefevre, see #3109.
+	* doc/manual.xml.head: Manual: Fix style and typos. Noted by
+	Vincent Lefevre, see #3109.
 
 2008-08-23 15:25 -0700  Brendan Cully  <brendan@kublai.com>  (1f9849496bc2)
 
 	* main.c: Whitespace cleanup
 
-2008-08-23 15:21 -0700  Brendan Cully  <brendan@kublai.com>  (63efed810906)
-
-	* ChangeLog, main.c: Fix infinite loop with "mutt -", introduced in
+	* main.c: Fix infinite loop with "mutt -", introduced in
 	[31c9e9727d42]. Treats - as a non-option argument. It would be
 	reasonable to treat it as an error instead.
 

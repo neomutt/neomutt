@@ -209,6 +209,7 @@ WHERE short ScoreThresholdFlag;
 
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
+WHERE short ImapPipelineDepth;
 #endif
 
 /* flags for received signals */
