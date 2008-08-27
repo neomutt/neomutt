@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -189,7 +189,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   }
 
   /* Defaults */
-  mx->account.flags = 0;
+  memset(&mx->account, 0, sizeof(mx->account));
   mx->account.port = ImapPort;
   mx->account.type = M_ACCT_TYPE_IMAP;
 

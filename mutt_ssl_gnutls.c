@@ -215,7 +215,8 @@ static void tls_get_client_cert (CONNECTION* conn)
   if ((cnend = strstr (dn, ",EMAIL=")))
     *cnend = '\0';
 
-  dprint (2, (debugfile, "client CN: %s\n", cn));
+  /* if we are using a client cert, SASL may expect an external auth name */
+  mutt_account_getuser (&conn->account);
 
 err_dn:
   FREE (&dn);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-7 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-8 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -246,6 +246,9 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
       mutt_error (_("Error setting SASL external security strength"));
       return -1;
     }
+  }
+  if (conn->account.user[0])
+  {
     dprint (2, (debugfile, "External authentication name: %s\n", conn->account.user));
     if (sasl_setprop (*saslconn, SASL_AUTH_EXTERNAL, conn->account.user) != SASL_OK)
     {

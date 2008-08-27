@@ -1,4 +1,16 @@
-2008-08-25 00:16 -0700  Brendan Cully  <brendan@kublai.com>  (53d9210aa4ee)
+2008-08-26 02:07 -0700  Brendan Cully  <brendan@kublai.com>  (22498996719f)
+
+	* imap/imap.c: Remove leftover IMAP IDLE handling from before
+	[53d9210aa4ee].
+
+2008-08-25 00:52 -0700  Brendan Cully  <brendan@kublai.com>  (36aa1130091a)
+
+	* UPDATING, globals.h, imap/command.c, imap/imap.c,
+	imap/imap_private.h, imap/util.c, init.c, init.h: Introduce
+	$imap_pipeline_depth. This lets users control the number of
+	commands that mutt will queue up before sending them to the
+	server. Setting this to 0 disables pipelining, which should close
+	#2892.
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
 	Rework IMAP command queueing to allow pipelining to be disabled.
