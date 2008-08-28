@@ -55,6 +55,9 @@
 #define IMAP_CACHE_LEN 10
 
 #define SEQLEN 5
+/* maximum length of command lines before they must be split (for
+ * lazy servers) */
+#define IMAP_MAX_CMDLEN 1024
 
 #define IMAP_REOPEN_ALLOW     (1<<0)
 #define IMAP_EXPUNGE_EXPECTED (1<<1)
@@ -225,8 +228,8 @@ int imap_rename_mailbox (IMAP_DATA* idata, IMAP_MBOX* mx, const char* newname);
 IMAP_STATUS* imap_mboxcache_get (IMAP_DATA* idata, const char* mbox,
                                  int create);
 void imap_mboxcache_free (IMAP_DATA* idata);
-int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
-                       int invert);
+int imap_exec_msgset (IMAP_DATA* idata, const char* pre, const char* post,
+                      int flag, int changed, int invert);
 int imap_open_connection (IMAP_DATA* idata);
 void imap_close_connection (IMAP_DATA* idata);
 IMAP_DATA* imap_conn_find (const ACCOUNT* account, int flags);
