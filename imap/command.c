@@ -196,7 +196,6 @@ int imap_code (const char *s)
  *   IMAP_CMD_FAIL_OK: the calling procedure can handle failure. This is used
  *     for checking for a mailbox on append and login
  *   IMAP_CMD_PASS: command contains a password. Suppress logging.
- *   IMAP_CMD_QUEUE: only queue command, do not execute.
  * Return 0 on success, -1 on Failure, -2 on OK Failure
  */
 int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
