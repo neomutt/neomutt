@@ -856,40 +856,23 @@ int imap_has_flag (LIST* flag_list, const char* flag)
   return 0;
 }
 
-/* imap_make_msg_set: make an IMAP4rev1 UID message set out of a set of
- *   headers, given a flag enum to filter on.
- * Params: idata: IMAP_DATA containing context containing header set
- *         buf: to write message set into
- *         flag: enum of flag type on which to filter
- *         changed: include only changed messages in message set
- *         invert: invert sense of flag, eg M_READ matches unread messages
- * Returns: number of messages in message set (0 if no matches) */
-int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
-                       int invert)
+/* Note: headers must be in SORT_ORDER. See imap_exec_msgset for args.
+ * Pos is an opaque pointer a la strtok. It should be 0 at first call. */
+static int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag,
+                              int changed, int invert, int* pos)
 {
-  HEADER** hdrs;	/* sorted local copy */
+  HEADER** hdrs = idata->ctx->hdrs;
   int count = 0;	/* number of messages in message set */
   int match = 0;	/* whether current message matches flag condition */
   unsigned int setstart = 0;	/* start of current message range */
   int n;
-  short oldsort;	/* we clobber reverse, must restore it */
   int started = 0;
 
-  if (Sort != SORT_ORDER)
-  {
-    hdrs = safe_calloc (idata->ctx->msgcount, sizeof (HEADER*));
-    memcpy (hdrs, idata->ctx->hdrs, idata->ctx->msgcount * sizeof (HEADER*));
-    
-    oldsort = Sort;
-    Sort = SORT_ORDER;
-    qsort ((void*) hdrs, idata->ctx->msgcount, sizeof (HEADER*),
-      mutt_get_sort_func (SORT_ORDER));
-    Sort = oldsort;
-  }
-  else
-    hdrs = idata->ctx->hdrs;
+  hdrs = idata->ctx->hdrs;
   
-  for (n = 0; n < idata->ctx->msgcount; n++)
+  for (n = *pos;
+       n < idata->ctx->msgcount && buf->dptr - buf->data < IMAP_MAX_CMDLEN;
+       n++)
   {
     match = 0;
     /* don't include pending expunged messages */
@@ -951,10 +934,85 @@ int imap_make_msg_set (IMAP_DATA* idata, BUFFER* buf, int flag, int changed,
     }
   }
 
-  if (Sort != SORT_ORDER)
-    FREE (&hdrs);
+  *pos = n;
 
   return count;
+}
+
+/* Prepares commands for all messages matching conditions (must be flushed
+ * with imap_exec)
+ * Params:
+ *   idata: IMAP_DATA containing context containing header set
+ *   pre, post: commands are of the form "%s %s %s %s", tag,
+ *     pre, message set, post
+ *   flag: enum of flag type on which to filter
+ *   changed: include only changed messages in message set
+ *   invert: invert sense of flag, eg M_READ matches unread messages
+ * Returns: number of matched messages, or -1 on failure */
+int imap_exec_msgset (IMAP_DATA* idata, const char* pre, const char* post,
+                      int flag, int changed, int invert)
+{
+  HEADER** hdrs = NULL;
+  short oldsort;
+  BUFFER* cmd;
+  int pos;
+  int rc;
+  int count = 0;
+
+  if (! (cmd = mutt_buffer_init (NULL)))
+  {
+    dprint (1, (debugfile, "imap_exec_msgset: unable to allocate buffer\n"));
+    return -1;
+  }
+
+  /* We make a copy of the headers just in case resorting doesn't give
+   exactly the original order (duplicate messages?), because other parts of
+   the ctx are tied to the header order. This may be overkill. */
+  oldsort = Sort;
+  if (Sort != SORT_ORDER)
+  {
+    hdrs = idata->ctx->hdrs;
+    idata->ctx->hdrs = safe_malloc (idata->ctx->msgcount * sizeof (HEADER*));
+    memcpy (idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof (HEADER*));
+
+    oldsort = Sort;
+    Sort = SORT_ORDER;
+    qsort (idata->ctx->hdrs, idata->ctx->msgcount, sizeof (HEADER*),
+           mutt_get_sort_func (SORT_ORDER));
+  }
+
+  pos = 0;
+
+  do
+  {
+    cmd->dptr = cmd->data;
+    mutt_buffer_printf (cmd, "%s ", pre);
+    rc = imap_make_msg_set (idata, cmd, flag, changed, invert, &pos);
+    if (rc > 0)
+    {
+      mutt_buffer_printf (cmd, " %s", post);
+      if (imap_exec (idata, cmd->data, IMAP_CMD_QUEUE))
+      {
+        rc = -1;
+        goto out;
+      }
+      count += rc;
+    }
+  }
+  while (rc > 0);
+  
+  rc = count;
+
+out:
+  mutt_buffer_free (&cmd);
+  if (oldsort != Sort)
+  {
+    Sort = oldsort;
+    FREE (&idata->ctx->hdrs);
+    idata->ctx->hdrs = hdrs;
+  }
+
+  return rc;
 }
 
 /* returns 0 if mutt's flags match cached server flags */
@@ -977,7 +1035,6 @@ static int compare_flags (HEADER* h)
 }
 
 /* Update the IMAP server to reflect the flags a single message.  */
-
 int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
 		       int *err_continue)
 {
@@ -1055,35 +1112,30 @@ int imap_sync_message (IMAP_DATA *idata, HEADER *hdr, BUFFER *cmd,
   return 0;
 }
 
-static int sync_helper (IMAP_DATA* idata, BUFFER* buf, int right, int flag,
-                        const char* name)
+static int sync_helper (IMAP_DATA* idata, int right, int flag, const char* name)
 {
-  int rc = 0;
+  int count = 0;
+  int rc;
+
+  char buf[LONG_STRING];
 
   if (!mutt_bit_isset (idata->ctx->rights, right))
     return 0;
-  
+
   if (right == M_ACL_WRITE && !imap_has_flag (idata->flags, name))
     return 0;
 
-  buf->dptr = buf->data;
-  mutt_buffer_addstr (buf, "UID STORE ");
-  if (imap_make_msg_set (idata, buf, flag, 1, 0))
-  {
-    rc++;
-    mutt_buffer_printf (buf, " +FLAGS.SILENT (%s)", name);
-    imap_exec (idata, buf->data, IMAP_CMD_QUEUE);
-  }
-  buf->dptr = buf->data;
-  mutt_buffer_addstr (buf, "UID STORE ");
-  if (imap_make_msg_set (idata, buf, flag, 1, 1))
-  {
-    rc++;
-    mutt_buffer_printf (buf, " -FLAGS.SILENT (%s)", name);
-    imap_exec (idata, buf->data, IMAP_CMD_QUEUE);
-  }
-  
-  return rc;
+  snprintf (buf, sizeof(buf), "+FLAGS.SILENT (%s)", name);
+  if ((rc = imap_exec_msgset (idata, "UID STORE", buf, flag, 1, 0)) < 0)
+    return rc;
+  count += rc;
+
+  buf[0] = '-';
+  if ((rc = imap_exec_msgset (idata, "UID STORE", buf, flag, 1, 1)) < 0)
+    return rc;
+  count += rc;
+
+  return count;
 }
 
 /* update the IMAP server to reflect message changes done within mutt.
@@ -1095,11 +1147,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 {
   IMAP_DATA* idata;
   CONTEXT* appendctx = NULL;
-  BUFFER cmd;
   HEADER* h;
   HEADER** hdrs = NULL;
   int oldsort;
-  int deleted;
   int n;
   int rc;
   
@@ -1118,31 +1168,25 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   if ((rc = imap_check_mailbox (ctx, index_hint, 0)) != 0)
     return rc;
 
-  memset (&cmd, 0, sizeof (cmd));
-
   /* if we are expunging anyway, we can do deleted messages very quickly... */
   if (expunge && mutt_bit_isset (idata->ctx->rights, M_ACL_DELETE))
   {
-    mutt_buffer_addstr (&cmd, "UID STORE ");
-    deleted = imap_make_msg_set (idata, &cmd, M_DELETED, 1, 0);
-
-    /* if we have a message set, then let's delete */
-    if (deleted)
+    if ((rc = imap_exec_msgset (idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
+                                M_DELETED, 1, 0)) < 0)
     {
-      mutt_message (_("Marking %d messages deleted..."), deleted);
-      mutt_buffer_addstr (&cmd, " +FLAGS.SILENT (\\Deleted)");
+      mutt_error (_("Expunge failed"));
+      mutt_sleep (1);
+      goto out;
+    }
+
+    if (rc > 0)
+    {
       /* mark these messages as unchanged so second pass ignores them. Done
        * here so BOGUS UW-IMAP 4.7 SILENT FLAGS updates are ignored. */
       for (n = 0; n < ctx->msgcount; n++)
-	if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
-	  ctx->hdrs[n]->active = 0;
-      if (imap_exec (idata, cmd.data, 0) != 0)
-      {
-	mutt_error (_("Expunge failed"));
-	mutt_sleep (1);
-	rc = -1;
-	goto out;
-      }
+        if (ctx->hdrs[n]->deleted && ctx->hdrs[n]->changed)
+          ctx->hdrs[n]->active = 0;
+      mutt_message (_("Marking %d messages deleted..."), rc);
     }
   }
 
@@ -1176,9 +1220,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	if (!appendctx)
 	  appendctx = mx_open_mailbox (ctx->path, M_APPEND | M_QUIET, NULL);
 	if (!appendctx)
-	{
 	  dprint (1, (debugfile, "imap_sync_mailbox: Error opening mailbox in append mode\n"));
-	}
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
       }
@@ -1192,7 +1234,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   /* sync +/- flags for the five flags mutt cares about */
   rc = 0;
 
-  /* presort here to avoid doing 10 resorts in imap_make_msg_set */
+  /* presort here to avoid doing 10 resorts in imap_exec_msgset */
   oldsort = Sort;
   if (Sort != SORT_ORDER)
   {
@@ -1206,11 +1248,11 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
            mutt_get_sort_func (SORT_ORDER));
   }
 
-  rc += sync_helper (idata, &cmd, M_ACL_DELETE, M_DELETED, "\\Deleted");
-  rc += sync_helper (idata, &cmd, M_ACL_WRITE, M_FLAG, "\\Flagged");
-  rc += sync_helper (idata, &cmd, M_ACL_WRITE, M_OLD, "Old");
-  rc += sync_helper (idata, &cmd, M_ACL_SEEN, M_READ, "\\Seen");
-  rc += sync_helper (idata, &cmd, M_ACL_WRITE, M_REPLIED, "\\Answered");
+  rc += sync_helper (idata, M_ACL_DELETE, M_DELETED, "\\Deleted");
+  rc += sync_helper (idata, M_ACL_WRITE, M_FLAG, "\\Flagged");
+  rc += sync_helper (idata, M_ACL_WRITE, M_OLD, "Old");
+  rc += sync_helper (idata, M_ACL_SEEN, M_READ, "\\Seen");
+  rc += sync_helper (idata, M_ACL_WRITE, M_REPLIED, "\\Answered");
 
   if (oldsort != Sort)
   {
@@ -1219,24 +1261,22 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     ctx->hdrs = hdrs;
   }
 
-  if (rc)
+  if (rc && (imap_exec (idata, NULL, 0) != IMAP_CMD_OK))
   {
-    if ((rc = imap_exec (idata, NULL, 0)) != IMAP_CMD_OK)
+    if (ctx->closing)
     {
-      if (ctx->closing)
+      if (mutt_yesorno (_("Error saving flags. Close anyway?"), 0) == M_YES)
       {
-        if (mutt_yesorno (_("Error saving flags. Close anyway?"), 0) == M_YES)
-        {
-          rc = 0;
-          idata->state = IMAP_AUTHENTICATED;
-          goto out;
-        }
+        rc = 0;
+        idata->state = IMAP_AUTHENTICATED;
+        goto out;
       }
-      else
-        mutt_error _("Error saving flags");
-      goto out;
     }
+    else
+      mutt_error _("Error saving flags");
+    goto out;
   }
+
   for (n = 0; n < ctx->msgcount; n++)
     ctx->hdrs[n]->changed = 0;
   ctx->changed = 0;
@@ -1268,8 +1308,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   rc = 0;
 
  out:
-  if (cmd.data)
-    FREE (&cmd.data);
   if (appendctx)
   {
     mx_fastclose_mailbox (appendctx);
