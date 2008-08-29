@@ -308,7 +308,7 @@ int mutt_buffy_check (int force)
       tmp->magic = M_POP;
     else
 #endif
-    if (stat (tmp->path, &sb) != 0 || sb.st_size == 0 ||
+    if (stat (tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
 	(!tmp->magic && (tmp->magic = mx_get_magic (tmp->path)) <= 0))
     {
       /* if the mailbox still doesn't exist, set the newly created flag to

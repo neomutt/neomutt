@@ -1,3 +1,23 @@
+2008-08-28 11:19 -0700  Brendan Cully  <brendan@kublai.com>  (1d94905ad00b)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	The msgset changes seem buggy. Reverting pending further testing.
+
+2008-08-28 02:31 -0700  Brendan Cully  <brendan@kublai.com>  (e68f79fef249)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	Split long IMAP commands for the benefit of lazy servers (closes
+	#3000). Also touches lots of old, hairy code. Likely to wake
+	sleeping dogs.
+
+2008-08-26 23:09 -0700  Brendan Cully  <brendan@kublai.com>  (2731e5174c5a)
+
+	* ChangeLog, imap/util.c, mutt_sasl.c, mutt_ssl.c, mutt_ssl_gnutls.c:
+	Properly set the SASL external auth name when using SSL client
+	certs. Also zero out the account structure before filling it with
+	available data. Client certificates + SASL EXTERNAL were only
+	working by luck.
+
 2008-08-26 02:07 -0700  Brendan Cully  <brendan@kublai.com>  (22498996719f)
 
 	* imap/imap.c: Remove leftover IMAP IDLE handling from before
