@@ -169,6 +169,59 @@ at the command line.  There are various command-line options, see
 either the mutt man page or the <link linkend="commandline">reference</link>.
 </para>
 
+<sect1 id="core-concepts">
+<title>Core concepts</title>
+
+<para>
+Mutt is a text-based application which interacts with users through
+different menus which are mostly line-/entry-based or page-based. A
+line-based menu is the so-called ``index'' menu (listing all messages of
+the currently opened folder) or the ``alias'' menu (allowing you to
+select recipients from a list). Examples for page-based menus are the
+``pager'' (showing one message at a time) or the ``help'' menu listing
+all available key bindings.
+</para>
+
+<para>
+The user interface consists of a context sensitive help line at the top,
+the menu's contents followed by a context sensitive status line and
+finally the command line. The command line is used to display
+informational and error messages as well as for prompts and for entering
+interactive commands.
+</para>
+
+<para>
+Because Mutt allows for customizing almost all key bindings, there're
+so-called ``functions'' which can be executed manually (using the
+command line) or in macros. Macros allow the user to bind a sequence of
+commands to a single key or a short key sequence instead of repeating a
+sequence of actions over and over.
+</para>
+
+<para>
+Many commands (such as saving or copying a message to another folder)
+can be applied to a single message or a set of messages (so-called
+``tagged'' messages). To help selecting messages, Mutt provides a rich
+set of message patterns (such as recipients, sender, body contents, date
+sent/received, etc.) which can be combined into complex expressions
+using the boolean <emphasis>and</emphasis> and <emphasis>or</emphasis>
+operations as well as negating. These patterns can also be used to (for
+example) search for messages or to limit the index to show only matching
+messages.
+</para>
+
+<para>
+Mutt supports a ``hook'' concept which allows the user to execute
+arbitrary configuration commands and functions in certain situations
+such as entering a folder, starting a new message or replying to an
+existing one. These hooks can be used to highly customize Mutt's
+behaviour including managing multiple identities, customizing the
+display for a folder or even implementing auto-archiving based on a
+per-folder basis and much more.
+</para>
+
+</sect1>
+
 <sect1 id="menus">
 <title>Moving Around in Menus</title>
 
