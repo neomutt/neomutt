@@ -270,7 +270,6 @@ short descriptions.
 </para>
 
 <para>
-
 <table id="tab-keys-editor">
 <title>Most common line editor keys</title>
 <tgroup cols="3">
@@ -303,7 +302,6 @@ short descriptions.
 </tbody>
 </tgroup>
 </table>
-
 </para>
 
 <para>
@@ -919,7 +917,7 @@ you are replying to or forwarding a message.  See also
 <link linkend="askcc">&dollar;askcc</link>,
 <link linkend="askbcc">&dollar;askbcc</link>,
 <link linkend="autoedit">&dollar;autoedit</link>,
-<link linkend="bounce">&dollar;bounce</link>, 
+<link linkend="bounce">&dollar;bounce</link>,
 <link linkend="fast-reply">&dollar;fast&lowbar;reply</link>,
 and <link linkend="include">&dollar;include</link>
 for changing how Mutt asks these questions.
@@ -1036,11 +1034,11 @@ out.
 <title>Pgp: pseudo header</title>
 
 <para>
-If you want to use PGP, you can specify 
+If you want to use PGP, you can specify
 </para>
 
 <para>
-<literal>Pgp:</literal> &lsqb; <literal>E</literal> &verbar; <literal>S</literal> &verbar; <literal>S</literal><emphasis>&lt;id&gt;</emphasis> &rsqb; 
+<literal>Pgp:</literal> &lsqb; <literal>E</literal> &verbar; <literal>S</literal> &verbar; <literal>S</literal><emphasis>&lt;id&gt;</emphasis> &rsqb;
 
 </para>
 
@@ -1073,8 +1071,8 @@ will be encrypted using the selected public keys, and sent out.
 </para>
 
 <para>
-Most fields of the entries in the key selection menu (see also <link linkend="pgp-entry-format">&dollar;pgp&lowbar;entry&lowbar;format</link>) 
-have obvious meanings.  But some explanations on the capabilities, flags, 
+Most fields of the entries in the key selection menu (see also <link linkend="pgp-entry-format">&dollar;pgp&lowbar;entry&lowbar;format</link>)
+have obvious meanings.  But some explanations on the capabilities, flags,
 and validity fields are in order.
 </para>
 
@@ -1102,15 +1100,15 @@ The flags sequence (&percnt;f) will expand to one of the flags in
 <para>
 The capabilities field (&percnt;c) expands to a two-character sequence
 representing a key's capabilities.  The first character gives
-the key's encryption capabilities: A minus sign (<emphasis role="bold">-</emphasis>) means 
+the key's encryption capabilities: A minus sign (<emphasis role="bold">-</emphasis>) means
 that the key cannot be used for encryption.  A dot (<emphasis role="bold">.</emphasis>) means that
-it's marked as a signature key in one of the user IDs, but may 
-also be used for encryption.  The letter <emphasis role="bold">e</emphasis> indicates that 
+it's marked as a signature key in one of the user IDs, but may
+also be used for encryption.  The letter <emphasis role="bold">e</emphasis> indicates that
 this key can be used for encryption.
 </para>
 
 <para>
-The second character indicates the key's signing capabilities.  Once 
+The second character indicates the key's signing capabilities.  Once
 again, a ``<emphasis role="bold">-</emphasis>'' implies ``not for signing'', ``<emphasis role="bold">.</emphasis>'' implies
 that the key is marked as an encryption key in one of the user-ids, and
 ``<emphasis role="bold">s</emphasis>'' denotes a key which can be used for signing.
@@ -1118,9 +1116,9 @@ that the key is marked as an encryption key in one of the user-ids, and
 
 <para>
 Finally, the validity field (&percnt;t) indicates how well-certified a user-id
-is.  A question mark (<emphasis role="bold">?</emphasis>) indicates undefined validity, a minus 
-character (<emphasis role="bold">-</emphasis>) marks an untrusted association, a space character 
-means a partially trusted association, and a plus character (<emphasis role="bold">+</emphasis>) 
+is.  A question mark (<emphasis role="bold">?</emphasis>) indicates undefined validity, a minus
+character (<emphasis role="bold">-</emphasis>) marks an untrusted association, a space character
+means a partially trusted association, and a plus character (<emphasis role="bold">+</emphasis>)
 indicates complete validity.
 </para>
 
@@ -1146,9 +1144,9 @@ to create a new message to a mailing list without having to enter the mailing li
 <para>
 You may also have compiled mutt to co-operate with Mixmaster, an
 anonymous remailer.  Mixmaster permits you to send your messages
-anonymously using a chain of remailers. Mixmaster support in mutt is for 
-mixmaster version 2.04 (beta 45 appears to be the latest) and 2.03. 
-It does not support earlier versions or the later so-called version 3 betas, 
+anonymously using a chain of remailers. Mixmaster support in mutt is for
+mixmaster version 2.04 (beta 45 appears to be the latest) and 2.03.
+It does not support earlier versions or the later so-called version 3 betas,
 of which the latest appears to be called 2.9b23.
 </para>
 
@@ -1370,7 +1368,7 @@ system administrator), unless the ``-n'' <link linkend="commandline">command lin
 will next look for a file named <literal>.muttrc</literal> in your home
 directory.  If this file does not exist and your home directory has
 a subdirectory named <literal>.mutt</literal>, mutt try to load a file named
-<literal>.mutt/muttrc</literal>. 
+<literal>.mutt/muttrc</literal>.
 </para>
 
 <para>
@@ -2309,7 +2307,7 @@ initialization file.  To tell mutt that you are subscribed to it,
 add ``subscribe mutt-users'' to your initialization file instead.
 If you also happen to get mail from someone whose address is
 <emphasis>mutt-users@example.com</emphasis>, you could use
-``lists ^mutt-users@mutt&bsol;&bsol;.org$'' 
+``lists ^mutt-users@mutt&bsol;&bsol;.org$''
 or ``subscribe ^mutt-users@mutt&bsol;&bsol;.org$'' to
 match only mail from the actual list.
 </para>
@@ -2965,7 +2963,7 @@ set ?allow_8bit
 </para>
 
 <para>
-The question mark is actually only required for boolean and quadoption 
+The question mark is actually only required for boolean and quadoption
 variables.
 </para>
 
@@ -3018,7 +3016,7 @@ files more readable.
 <title>Examples</title>
 
 <para>
-The following example defines and uses the variable <literal>my&lowbar;cfgdir</literal> 
+The following example defines and uses the variable <literal>my&lowbar;cfgdir</literal>
 to abbreviate the calls of the <link linkend="source">source</link> command:
 </para>
 
@@ -3034,7 +3032,7 @@ source $my_cfgdir/macros
 
 <para>
 A custom variable can also be used in macros to backup the current value
-of another variable. In the following example, the value of the 
+of another variable. In the following example, the value of the
 <link linkend="delete">&dollar;delete</link> is changed temporarily
 while its original value is saved as <literal>my&lowbar;delete</literal>.
 After the macro has executed all commands, the original value of <link
@@ -3767,7 +3765,7 @@ If you omit the minimum (first) date, and just specify ``-DD/MM/YY'', all
 messages <emphasis>before</emphasis> the given date will be selected.  If you omit the maximum
 (second) date, and specify ``DD/MM/YY-'', all messages <emphasis>after</emphasis> the given
 date will be selected.  If you specify a single date with no dash (``-''),
-only messages sent on the given date will be selected. 
+only messages sent on the given date will be selected.
 </para>
 
 <para>
@@ -3794,10 +3792,10 @@ sign by a ``*'' character, which is equivalent to giving identical plus and minu
 
 <para>
 Example: To select any messages two weeks around January 15, 2001,
-you'd use the following pattern: 
+you'd use the following pattern:
 
 <screen>
- 
+
 Limit to messages matching: ~d 15/1/2001*2w
 </screen>
 
@@ -4007,9 +4005,9 @@ which would execute the given command when sending mail to
 However, it is not required that you write the pattern to match using the
 full searching language.  You can still specify a simple <emphasis>regular
 expression</emphasis> like the other hooks, in which case Mutt will translate your
-pattern into the full language, using the translation specified by the 
+pattern into the full language, using the translation specified by the
 <link linkend="default-hook">&dollar;default&lowbar;hook</link> variable.  The
-pattern is translated at the time the hook is declared, so the value of 
+pattern is translated at the time the hook is declared, so the value of
 <link linkend="default-hook">&dollar;default&lowbar;hook</link> that is in effect
 at that time will be used.
 </para>
@@ -4464,7 +4462,7 @@ MIME MUA.  Every effort has been made to provide the functionality that
 the discerning MIME user requires, and the conformance to the standards
 wherever possible.  When configuring Mutt for MIME, there are two extra
 types of configuration files which Mutt uses.  One is the
-<literal>mime.types</literal> file, which contains the mapping of file extensions to 
+<literal>mime.types</literal> file, which contains the mapping of file extensions to
 IANA MIME types.  The other is the <literal>mailcap</literal> file, which specifies
 the external commands to use for handling specific MIME types.
 </para>
@@ -4531,7 +4529,7 @@ attachments as text, or view them using the mailcap viewer definition.
 </para>
 
 <para>
-Finally, you can apply the usual message-related functions (like 
+Finally, you can apply the usual message-related functions (like
 <link linkend="resend-message">resend-message</link>, and the reply
 and forward functions) to attachments of type <literal>message/rfc822</literal>.
 </para>
@@ -4618,11 +4616,11 @@ type that Mutt assigns to an attachment by using the <literal>edit-type</literal
 command from the compose menu (default: &circ;T). The MIME type is actually a
 major mime type followed by the sub-type, separated by a '/'. 6 major
 types: application, text, image, video, audio, and model have been approved
-after various internet discussions. Mutt recognizes all of these if the 
+after various internet discussions. Mutt recognizes all of these if the
 appropriate entry is found in the mime.types file. It also recognizes other
-major mime types, such as the chemical type that is widely used in the 
-molecular modeling community to pass molecular data in various forms to 
-various molecular viewers. Non-recognized mime types should only be used 
+major mime types, such as the chemical type that is widely used in the
+molecular modeling community to pass molecular data in various forms to
+various molecular viewers. Non-recognized mime types should only be used
 if the recipient of the message is likely to be expecting such attachments.
 </para>
 
@@ -4736,7 +4734,7 @@ Or, you could send the message as a file:
 text/plain; more %s
 </screen>
 
-Perhaps you would like to use lynx to interactively view a text/html 
+Perhaps you would like to use lynx to interactively view a text/html
 message:
 
 <screen>
@@ -4978,7 +4976,7 @@ entry with the print command.
 </para>
 
 <para>
-In addition, you can use this with <link linkend="auto-view">auto&lowbar;view</link> 
+In addition, you can use this with <link linkend="auto-view">auto&lowbar;view</link>
 to denote two commands for viewing an attachment, one to be viewed
 automatically, the other to be viewed interactively from the attachment
 menu.  In addition, you can then use the test feature to determine which
@@ -5147,7 +5145,7 @@ automatically viewing MIME attachments while in the pager.
 </para>
 
 <para>
-To work, you must define a viewer in the mailcap file which uses the 
+To work, you must define a viewer in the mailcap file which uses the
 <literal>copiousoutput</literal> option to denote that it is non-interactive.
 Usually, you also use the entry to convert the attachment to a text
 representation which you can view in the pager.
@@ -5196,7 +5194,7 @@ This can be used with message-hook to autoview messages based on size, etc.
 
 <para>
 Mutt has some heuristics for determining which attachment of a
-multipart/alternative type to display.  First, mutt will check the 
+multipart/alternative type to display.  First, mutt will check the
 alternative&lowbar;order list to determine if one of the available types
 is preferred.  The alternative&lowbar;order list consists of a number of
 mimetypes in order, including support for implicit and explicit
@@ -5209,7 +5207,7 @@ alternative_order text/enriched text/plain text application/postscript image/*
 </para>
 
 <para>
-Next, mutt will check if any of the types have a defined 
+Next, mutt will check if any of the types have a defined
 <link linkend="auto-view">auto&lowbar;view</link>, and use that.  Failing
 that, Mutt will look for any text type.  As a last attempt, mutt will
 look for any type it knows how to handle.
@@ -5458,7 +5456,7 @@ to encrypt the communication.
 <para>
 If mutt is compiled with IMAP, POP3 and/or SMTP support, it can also be
 compiled with support for SSL or TLS using either OpenSSL or GnuTLS (
-by running the <emphasis>configure</emphasis> script with the 
+by running the <emphasis>configure</emphasis> script with the
 <emphasis>--enable-ssl=...</emphasis> option for OpenSSL or
 <emphasis>--enable-gnutls=...</emphasis> for GnuTLS). Mutt can then
 attempt to encrypt communication with remote servers if these protocols
@@ -5532,7 +5530,7 @@ paths accordingly.
 <para>
 When browsing folders on an IMAP server, you can toggle whether to look
 at only the folders you are subscribed to, or all folders with the
-<emphasis>toggle-subscribed</emphasis> command.  See also the 
+<emphasis>toggle-subscribed</emphasis> command.  See also the
 <link linkend="imap-list-subscribed">&dollar;imap&lowbar;list&lowbar;subscribed</link> variable.
 </para>
 
@@ -5574,7 +5572,7 @@ In lieu of file permissions, mutt displays the string "IMAP",
 possibly followed by the symbol "+", indicating
 that the entry contains both messages and subfolders. On
 Cyrus-like servers folders will often contain both messages and
-subfolders. 
+subfolders.
 </para>
 </listitem>
 <listitem>
@@ -5634,7 +5632,7 @@ in the following order: SASL, ANONYMOUS, GSSAPI, CRAM-MD5, LOGIN.
 </para>
 
 <para>
-There are a few variables which control authentication: 
+There are a few variables which control authentication:
 
 <itemizedlist>
 <listitem>
@@ -5683,9 +5681,9 @@ was configured and built with <literal>--enable-smtp</literal>.
 </para>
 
 <para>
-If the configuration variable 
+If the configuration variable
 <link linkend="smtp-url">&dollar;smtp&lowbar;url</link> is set, mutt
-will contact the given SMTP server to deliver messages; if it is unset, 
+will contact the given SMTP server to deliver messages; if it is unset,
 mutt will use the program specified by <link linkend="sendmail">&dollar;sendmail</link>.
 </para>
 
@@ -6044,7 +6042,7 @@ To read messages in a mailbox
 </para>
 
 <para>
-<literal>mutt</literal> &lsqb; -nz &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -m <emphasis>type</emphasis> &rsqb; &lsqb; -f <emphasis>mailbox</emphasis> &rsqb; 
+<literal>mutt</literal> &lsqb; -nz &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -m <emphasis>type</emphasis> &rsqb; &lsqb; -f <emphasis>mailbox</emphasis> &rsqb;
 </para>
 
 <para>
@@ -6053,7 +6051,7 @@ To compose a new message
 
 <para>
 <literal>mutt</literal> &lsqb; -n &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -a <emphasis>file</emphasis> &rsqb; &lsqb; -c <emphasis>address</emphasis> &rsqb; &lsqb; -i <emphasis>filename</emphasis> &rsqb; &lsqb; -s <emphasis>subject</emphasis> &rsqb;
-&lsqb; &lsqb; <emphasis>file</emphasis> ... &rsqb; -- &rsqb; <emphasis>address</emphasis> &lsqb; <emphasis>address</emphasis> ... &rsqb; 
+&lsqb; &lsqb; <emphasis>file</emphasis> ... &rsqb; -- &rsqb; <emphasis>address</emphasis> &lsqb; <emphasis>address</emphasis> ... &rsqb;
 </para>
 
 <para>
@@ -6225,19 +6223,19 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="lists">lists</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
+<literal><link linkend="lists">lists</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="lists">unlists</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
+<literal><link linkend="lists">unlists</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="macro">macro</link></literal> <emphasis>menu</emphasis> <emphasis>key</emphasis> <emphasis>sequence</emphasis> &lsqb; <emphasis>description</emphasis> &rsqb; 
+<literal><link linkend="macro">macro</link></literal> <emphasis>menu</emphasis> <emphasis>key</emphasis> <emphasis>sequence</emphasis> &lsqb; <emphasis>description</emphasis> &rsqb;
 </para>
 </listitem>
 <listitem>
@@ -6381,13 +6379,13 @@ The following are the commands understood by mutt.
 <listitem>
 
 <para>
-<literal><link linkend="lists">subscribe</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
+<literal><link linkend="lists">subscribe</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
 
 <para>
-<literal><link linkend="lists">unsubscribe</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb; 
+<literal><link linkend="lists">unsubscribe</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
 </para>
 </listitem>
 <listitem>
