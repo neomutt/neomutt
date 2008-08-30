@@ -33,10 +33,6 @@
 
 #include "mx.h"
 
-#ifdef USE_IMAP
-#include "imap_private.h"
-#endif
-
 #include "mutt_crypt.h"
 
 #include <sys/stat.h>
@@ -1590,10 +1586,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   {
     mutt_curs_set (0);
 
-#ifdef USE_IMAP
-    imap_keepalive ();
-#endif
-    
     if (redraw & REDRAW_FULL)
     {
       SETCOLOR (MT_COLOR_NORMAL);

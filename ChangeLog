@@ -1,4 +1,8 @@
-2008-08-29 16:54 -0700  Brendan Cully  <brendan@kublai.com>  (e0f0a7915711)
+2008-08-29 22:40 -0700  Brendan Cully  <brendan@kublai.com>  (e37ae3f79ec0)
+
+	* imap/imap_private.h: Dead code
+
+	* imap/imap.c: Remove redundant code
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
 	Use sorted headers in imap_exec_msgset. Fixes [e68f79fef249]. Closes

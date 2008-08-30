@@ -26,6 +26,9 @@
 #include "keymap.h"
 #include "mapping.h"
 #include "mutt_crypt.h"
+#ifdef USE_IMAP
+#include "imap/imap.h"
+#endif
 
 #include <stdlib.h>
 #include <string.h>
@@ -386,7 +389,15 @@ int km_dokey (int menu)
   {
     /* ncurses doesn't return on resized screen when timeout is set to zero */
     if (menu != MENU_EDITOR)
-      timeout ((Timeout > 0 ? Timeout : 60) * 1000);
+    {
+      i = Timeout > 0 ? Timeout : 60;
+#ifdef USE_IMAP
+      imap_keepalive ();
+      if (ImapKeepalive && ImapKeepalive < i)
+        i = ImapKeepalive;
+#endif
+      timeout (i * 1000);
+    }
 
     tmp = mutt_getch();
 

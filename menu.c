@@ -25,10 +25,6 @@
 #include "mutt_menu.h"
 #include "mbyte.h"
 
-#ifdef USE_IMAP
-#include "imap.h"
-#endif
-
 #include <string.h>
 #include <stdlib.h>
 
@@ -860,10 +856,6 @@ int mutt_menuLoop (MUTTMENU *menu)
     
     
     mutt_curs_set (0);
-
-#ifdef USE_IMAP
-    imap_keepalive ();
-#endif
 
     if (menu_redraw (menu) == OP_REDRAW)
       return OP_REDRAW;

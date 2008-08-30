@@ -518,11 +518,6 @@ int mutt_index_menu (void)
       }
     }
 
-#ifdef USE_IMAP
-    imap_keepalive ();
-    imap_disallow_reopen (Context);
-#endif
-
     if (!attach_msg)
     {
      /* check for new mail in the incoming folders */
@@ -693,6 +688,10 @@ int mutt_index_menu (void)
       
       mutt_curs_set (1);	/* fallback from the pager */
     }
+
+#ifdef USE_IMAP
+    imap_disallow_reopen (Context);
+#endif
 
     switch (op)
     {
