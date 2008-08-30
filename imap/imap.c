@@ -975,7 +975,6 @@ int imap_exec_msgset (IMAP_DATA* idata, const char* pre, const char* post,
     idata->ctx->hdrs = safe_malloc (idata->ctx->msgcount * sizeof (HEADER*));
     memcpy (idata->ctx->hdrs, hdrs, idata->ctx->msgcount * sizeof (HEADER*));
 
-    oldsort = Sort;
     Sort = SORT_ORDER;
     qsort (idata->ctx->hdrs, idata->ctx->msgcount, sizeof (HEADER*),
            mutt_get_sort_func (SORT_ORDER));
@@ -1242,7 +1241,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     ctx->hdrs = safe_malloc (ctx->msgcount * sizeof (HEADER*));
     memcpy (ctx->hdrs, hdrs, ctx->msgcount * sizeof (HEADER*));
 
-    oldsort = Sort;
     Sort = SORT_ORDER;
     qsort (ctx->hdrs, ctx->msgcount, sizeof (HEADER*),
            mutt_get_sort_func (SORT_ORDER));

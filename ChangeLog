@@ -1,9 +1,26 @@
+2008-08-29 16:54 -0700  Brendan Cully  <brendan@kublai.com>  (e0f0a7915711)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
+	Use sorted headers in imap_exec_msgset. Fixes [e68f79fef249]. Closes
+	#3000 again.
+
+2008-08-29 10:23 +0200  YONETANI Tomokazu  <qhwt+mutt@les.ath.cx>  (78aab353e217)
+
+	* buffy.c: Only consider empty files non-existent for buffy's
+	purpose.
+
+	According to SUS, the st_size member of struct stat is undefined for
+	directories. In case a system reports 0, the newly_created flag will
+	be set for a directory and the magic will be cleared.
+
+	If the folder type is cleared, mutt won't check the folder for new
+	mail and thus will ignore MH and Maildir type folders on such a fs
+	completely (e.g. the HAMMER fs on DragonFly BSD).
+
 2008-08-28 11:19 -0700  Brendan Cully  <brendan@kublai.com>  (1d94905ad00b)
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
 	The msgset changes seem buggy. Reverting pending further testing.
-
-2008-08-28 02:31 -0700  Brendan Cully  <brendan@kublai.com>  (e68f79fef249)
 
 	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c:
 	Split long IMAP commands for the benefit of lazy servers (closes
@@ -12,13 +29,11 @@
 
 2008-08-26 23:09 -0700  Brendan Cully  <brendan@kublai.com>  (2731e5174c5a)
 
-	* ChangeLog, imap/util.c, mutt_sasl.c, mutt_ssl.c, mutt_ssl_gnutls.c:
+	* imap/util.c, mutt_sasl.c, mutt_ssl.c, mutt_ssl_gnutls.c:
 	Properly set the SASL external auth name when using SSL client
 	certs. Also zero out the account structure before filling it with
 	available data. Client certificates + SASL EXTERNAL were only
 	working by luck.
-
-2008-08-26 02:07 -0700  Brendan Cully  <brendan@kublai.com>  (22498996719f)
 
 	* imap/imap.c: Remove leftover IMAP IDLE handling from before
 	[53d9210aa4ee].
