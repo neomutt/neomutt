@@ -120,7 +120,7 @@ See the newsgroup <ulink url="news:comp.mail.mutt">comp.mail.mutt</ulink>.
 
 <para>
 Mutt is Copyright (C) 1996-2005 Michael R. Elkins
-<email>me@cs.hmc.edu</email> and others
+<email>me@cs.hmc.edu</email> and others.
 </para>
 
 <para>
@@ -154,7 +154,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 This section is intended as a brief overview of how to use Mutt.  There are
 many other features which are described elsewhere in the manual.  There
 is even more information available in the Mutt FAQ and various web
-pages. See the <ulink url="http://www.mutt.org/mutt/">Mutt Page</ulink> for more details.
+pages. See the <ulink url="http://www.mutt.org/">Mutt homepage</ulink> for more details.
 </para>
 
 <para>
@@ -164,8 +164,8 @@ You can always type ``?'' in any menu to display the current bindings.
 </para>
 
 <para>
-The first thing you need to do is invoke mutt, simply by typing mutt
-at the command line.  There are various command-line options, see 
+The first thing you need to do is invoke mutt, simply by typing <literal>mutt</literal>
+at the command line.  There are various command-line options, see
 either the mutt man page or the <link linkend="commandline">reference</link>.
 </para>
 
@@ -226,8 +226,8 @@ per-folder basis and much more.
 <title>Moving Around in Menus</title>
 
 <para>
-Information is presented in menus, very similar to ELM, see <xref linkend="tab-keys-nav"/>
-for common keys used to navigate menus in Mutt.
+The most important navigation keys common to all menus are shown in
+<xref linkend="tab-keys-nav"/>.
 </para>
 
 <para>
@@ -307,8 +307,8 @@ short descriptions.
 <para>
 You can remap the <emphasis>editor</emphasis> functions using the
 <link linkend="bind">bind</link> command.  For example, to make
-the <emphasis>Delete</emphasis> key delete the character in front of
-the cursor rather than under, you could use
+the &lt;Delete&gt; key delete the character in front of
+the cursor rather than under, you could use:
 </para>
 
 <screen>
@@ -485,7 +485,7 @@ who the message is addressed to. They can be customized with the
 <title>The Pager</title>
 
 <para>
-By default, Mutt uses its builtin pager to display the body of messages.
+By default, Mutt uses its builtin pager to display the contents of messages.
 The pager is very similar to the Unix program <emphasis>less</emphasis> though not nearly as
 featureful.
 </para>
@@ -535,8 +535,16 @@ objects to specify a color or mono attribute for them.
 <para>
 Additionally, the internal pager supports the ANSI escape sequences for
 character attributes.  Mutt translates them into the correct color and
-character settings.  The sequences Mutt supports are
-'&bsol;e&lsqb;<emphasis>Ps</emphasis>;<emphasis>Ps</emphasis>;..<emphasis>Ps</emphasis>;m'
+character settings.  The sequences Mutt supports are:
+</para>
+
+<para>
+<screen>
+&bsol;e&lsqb;<emphasis>Ps</emphasis>;<emphasis>Ps</emphasis>;..<emphasis>Ps</emphasis>;m
+</screen>
+</para>
+
+<para>
 where <emphasis>Ps</emphasis> can be one of the codes shown in
 <xref linkend="tab-ansi-esc"/>.
 </para>
@@ -548,7 +556,7 @@ where <emphasis>Ps</emphasis> can be one of the codes shown in
 <row><entry>Escape code</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>0</entry><entry>All Attributes Off</entry></row>
+<row><entry>0</entry><entry>All attributes off</entry></row>
 <row><entry>1</entry><entry>Bold on</entry></row>
 <row><entry>4</entry><entry>Underline on</entry></row>
 <row><entry>5</entry><entry>Blink on</entry></row>
@@ -656,7 +664,7 @@ See also: <link linkend="strict-threads">&dollar;strict&lowbar;threads</link>.
 
 <para>
 In addition, the <emphasis>index</emphasis> and <emphasis>pager</emphasis>
-have these interesting functions:
+menus have these interesting functions:
 </para>
 
 <variablelist>
@@ -670,8 +678,8 @@ have these interesting functions:
 Creates a new alias based upon the current message (or prompts for a
 new one).  Once editing is complete, an <link linkend="alias">alias</link>
 command is added to the file specified by the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable for future use. <emphasis role="bold">Note:</emphasis>
-Specifying an <link linkend="alias-file">&dollar;alias&lowbar;file</link>
-does not add the aliases specified there-in, you must also <link linkend="source">source</link> the file.
+Mutt does not read the <link linkend="alias-file">&dollar;alias&lowbar;file</link>
+upon startup so you must explicitly <link linkend="source">source</link> the file.
 </para>
 </listitem>
 </varlistentry>
@@ -683,7 +691,7 @@ does not add the aliases specified there-in, you must also <link linkend="source
 <listitem>
 <para>
 This function will search the current message for content signed or
-encrypted with PGP the "traditional" way, that is, without proper
+encrypted with PGP the ``traditional'' way, that is, without proper
 MIME tagging.  Technically, this function will temporarily change
 the MIME content types of the body parts containing PGP data; this
 is similar to the <link linkend="edit-type"><literal>&lt;edit-type&gt;</literal></link> function's
@@ -698,21 +706,20 @@ effect.
 </term>
 <listitem>
 <para>
-This command (available in the ``index'' and ``pager'') allows you to
+This command (available in the index and pager) allows you to
 edit the raw current message as it's present in the mail folder.
 After you have finished editing, the changed message will be
 appended to the current folder, and the original message will be
-marked for deletion.
+marked for deletion; if the message is unchanged it won't be replaced.
 </para>
 </listitem>
 </varlistentry>
 
 <varlistentry>
 <term>
-<literal>&lt;edit-type&gt;</literal><anchor id="edit-type"/>
-
-(default: &circ;E on the attachment menu, and in the pager and index menus; &circ;T on the
-compose menu)
+<literal>&lt;edit-type&gt;</literal><anchor id="edit-type"/> (default:
+&circ;E on the attachment menu, and in the pager and index menus;
+&circ;T on the compose menu)
 </term>
 <listitem>
 <para>
@@ -808,7 +815,7 @@ tagged message(s) to it.  The variables <link linkend="pipe-decode">&dollar;pipe
 </term>
 <listitem>
 <para>
-With resend-message, mutt takes the current message as a template for a
+Mutt takes the current message as a template for a
 new message.  This function is best described as "recall from arbitrary
 folders".  It can conveniently be used to forward MIME messages while
 preserving the original mail structure. Note that the amount of headers
@@ -819,7 +826,7 @@ variable.
 <para>
 This function is also available from the attachment menu. You can use this
 to easily resend a message which was included with a bounce message
-as a message/rfc822 body part.
+as a <literal>message/rfc822</literal> body part.
 </para>
 </listitem>
 </varlistentry>
@@ -833,7 +840,8 @@ as a message/rfc822 body part.
 Asks for an external Unix command and executes it.  The <link linkend="wait-key">&dollar;wait&lowbar;key</link> can be used to control
 whether Mutt will wait for a key to be pressed when the command returns
 (presumably to let the user read the output of the command), based on
-the return status of the named command.
+the return status of the named command. If no command is given, an
+interactive shell is executed.
 </para>
 </listitem>
 </varlistentry>
@@ -844,10 +852,10 @@ the return status of the named command.
 </term>
 <listitem>
 <para>
-The <emphasis>pager</emphasis> uses the <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> variable to detect quoted text when
+The pager uses the <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> variable to detect quoted text when
 displaying the body of the message.  This function toggles the display
 of the quoted material in the message.  It is particularly useful when
-are interested in just the response and there is a large amount of
+being interested in just the response and there is a large amount of
 quoted text in the way.
 </para>
 </listitem>
@@ -859,7 +867,7 @@ quoted text in the way.
 </term>
 <listitem>
 <para>
-This function will go to the next line of non-quoted text which come
+This function will go to the next line of non-quoted text which comes
 after a line of quoted text in the internal pager.
 </para>
 </listitem>
@@ -905,7 +913,7 @@ The bindings shown in <xref linkend="tab-key-send"/> are available in the
 </para>
 
 <para>
-<emphasis>Bouncing</emphasis> a message sends the message as is to the recipient you
+<emphasis>Bouncing</emphasis> a message sends the message as-is to the recipient you
 specify.  <emphasis>Forwarding</emphasis> a message allows you to add comments or
 modify the message you are forwarding.  These items are discussed
 in greater detail in the next chapter ``<link linkend="forwarding-mail">Forwarding
@@ -943,7 +951,7 @@ will be appended to the message.
 <para>
 Once you have finished editing the body of your mail message, you are
 returned to the <emphasis>compose</emphasis> menu providing the functions
-show in <xref linkend="tab-func-compose"/> to modify, send or postpone the
+shown in <xref linkend="tab-func-compose"/> to modify, send or postpone the
 message.
 </para>
 
@@ -990,7 +998,7 @@ will be attached to the message you are sending. Note that certain
 operations like composing a new mail, replying, forwarding, etc. are
 not permitted when you are in that folder. The &percnt;r in
 <link linkend="status-format">&dollar;status&lowbar;format</link> will change to
-a 'A' to indicate that you are in attach-message mode.
+a ``A'' to indicate that you are in attach-message mode.
 </para>
 
 </sect2>
@@ -1000,7 +1008,8 @@ a 'A' to indicate that you are in attach-message mode.
 
 <para>
 When editing the header because of <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>
-being set, there are a couple of special features available.
+being set, there are a several pseudo headers available which
+will not be included in sent messages.
 </para>
 
 <sect3 id="fcc-header">
@@ -1013,7 +1022,6 @@ If you specify
 
 as a header, Mutt will pick up <emphasis>filename</emphasis>
 just as if you had used the <literal>&lt;edit-fcc&gt;</literal> function in the <emphasis>compose</emphasis> menu.
-This header will not be included in sent messages.
 </para>
 
 </sect3>
@@ -1027,8 +1035,7 @@ You can also attach files to your message by specifying
 <literal>Attach:</literal> <emphasis>filename</emphasis>  &lsqb; <emphasis>description</emphasis> &rsqb;
 
 where <emphasis>filename</emphasis> is the file to attach and <emphasis>description</emphasis> is an
-optional string to use as the description of the attached file. This header, too, won't be sent
-out.
+optional string to use as the description of the attached file.
 </para>
 
 </sect3>
@@ -1046,12 +1053,33 @@ If you want to use PGP, you can specify
 </para>
 
 <para>
-``E'' encrypts, ``S'' signs and
-``S&lt;id&gt;'' signs with the given key, setting <link linkend="pgp-sign-as">&dollar;pgp&lowbar;sign&lowbar;as</link> permanently.
+``E'' selects encryption, ``S'' selects signing and
+``S&lt;id&gt;'' selects signing with the given key, setting
+<link linkend="pgp-sign-as">&dollar;pgp&lowbar;sign&lowbar;as</link>
+permanently.
 </para>
 
+</sect3>
+
+<sect3 id="in-reply-to-header">
+<title>In-Reply-To: header</title>
+
 <para>
-If you have told mutt to PGP encrypt a message, it will guide you
+When replying to messages, the <emphasis>In-Reply-To:</emphasis> header contains the
+Message-Id of the message(s) you reply to. If you remove its value, Mutt will not generate a
+<emphasis>References:</emphasis> field, which allows you to create a new message thread, for example
+to create a new message to a mailing list without having to enter the mailing list's address.
+</para>
+
+</sect3>
+
+</sect2>
+
+<sect2 id="sending-crypto">
+<title>Sending cryptographically signed/encrypted messages</title>
+
+<para>
+If you have told mutt to PGP or S/MIME encrypt a message, it will guide you
 through a key selection process when you try to send the message.
 Mutt will not ask you any questions about keys which have a
 certified user ID matching one of the message recipients' mail
@@ -1070,7 +1098,7 @@ return to the compose screen.
 
 <para>
 Once you have successfully finished the key selection, the message
-will be encrypted using the selected public keys, and sent out.
+will be encrypted using the selected public keys when sent out.
 </para>
 
 <para>
@@ -1103,41 +1131,27 @@ The flags sequence (&percnt;f) will expand to one of the flags in
 <para>
 The capabilities field (&percnt;c) expands to a two-character sequence
 representing a key's capabilities.  The first character gives
-the key's encryption capabilities: A minus sign (<emphasis role="bold">-</emphasis>) means
-that the key cannot be used for encryption.  A dot (<emphasis role="bold">.</emphasis>) means that
+the key's encryption capabilities: A minus sign (``-'') means
+that the key cannot be used for encryption.  A dot (``.'') means that
 it's marked as a signature key in one of the user IDs, but may
-also be used for encryption.  The letter <emphasis role="bold">e</emphasis> indicates that
+also be used for encryption.  The letter ``e'' indicates that
 this key can be used for encryption.
 </para>
 
 <para>
 The second character indicates the key's signing capabilities.  Once
-again, a ``<emphasis role="bold">-</emphasis>'' implies ``not for signing'', ``<emphasis role="bold">.</emphasis>'' implies
+again, a ``-'' implies ``not for signing'', ``.'' implies
 that the key is marked as an encryption key in one of the user-ids, and
-``<emphasis role="bold">s</emphasis>'' denotes a key which can be used for signing.
+``s'' denotes a key which can be used for signing.
 </para>
 
 <para>
 Finally, the validity field (&percnt;t) indicates how well-certified a user-id
-is.  A question mark (<emphasis role="bold">?</emphasis>) indicates undefined validity, a minus
-character (<emphasis role="bold">-</emphasis>) marks an untrusted association, a space character
-means a partially trusted association, and a plus character (<emphasis role="bold">+</emphasis>)
+is.  A question mark (``?'') indicates undefined validity, a minus
+character (``-'') marks an untrusted association, a space character
+means a partially trusted association, and a plus character (``+'')
 indicates complete validity.
 </para>
-
-</sect3>
-
-<sect3 id="in-reply-to-header">
-<title>In-Reply-To: header</title>
-
-<para>
-When replying to messages, the <emphasis>In-Reply-To:</emphasis> header contains the
-Message-Id of the message(s) you reply to. If you remove its value, Mutt will not generate a
-<emphasis>References:</emphasis> field, which allows you to create a new message thread, for example
-to create a new message to a mailing list without having to enter the mailing list's address.
-</para>
-
-</sect3>
 
 </sect2>
 
@@ -1202,7 +1216,8 @@ have a look at the mixmaster documentation.
 for short) are <literal>text/plain</literal> messages that consist of paragraphs which a receiver's
 mail client may reformat to its own needs which mostly means to
 customize line lengths regardless of what the sender sent. Technically this is
-achieved by letting lines of a ``flowable'' paragraph end in spaces.
+achieved by letting lines of a ``flowable'' paragraph end in spaces
+except for the last line.
 </para>
 
 <para>
@@ -1218,12 +1233,10 @@ receiver decide completely how to view a message.
 
 <para>
 Mutt only supports setting the required <literal>format=flowed</literal>
-MIME parameter on outgoing messages if the <link linkend="text-flowed"
->&dollar;text&lowbar;flowed</link> variable is set. It does not add the
-trailing spaces nor does it provide any other feature related to
-composing <literal>f=f</literal> messages (like reformatting
-non-<literal>f=f</literal> parts of a reply to <literal>f=f</literal>
-before calling the editor).
+MIME parameter on outgoing messages if the <link
+linkend="text-flowed">&dollar;text&lowbar;flowed</link>
+variable is set, specifically it does not add the
+trailing spaces.
 </para>
 
 <para>
@@ -1242,15 +1255,16 @@ is not intended to be a quote character</para></listitem>
 </itemizedlist>
 
 <para>
-All leading spaces are to be removed by receiving clients to restore
-the original message.
-</para>
-
-<para>
 <emphasis role="bold">Note</emphasis> that mutt only support space-stuffing
 for the first two types of lines but not for the third: It is impossible to
 safely detect whether a leading <literal>&gt;</literal> character starts a
-quote or not.
+quote or not. Futhermore, Mutt only applies space-stuffing
+<emphasis>once</emphasis> after the initial edit is finished.
+</para>
+
+<para>
+All leading spaces are to be removed by receiving clients to restore
+the original message prior to further processing.
 </para>
 
 </sect3>
@@ -1290,7 +1304,8 @@ fo-table</literal> for details.
 <para>
 Bouncing and forwarding let you send an existing message to recipients
 that you specify. Bouncing a message sends a verbatim copy of a message
-to alternative addresses as if they were the message's original recipients.
+to alternative addresses as if they were the message's original
+recipients specified in the Bcc header.
 Forwarding a message, on the other hand, allows you to modify the message
 before it is resent (for example, by adding your own comments). Bouncing
 is done using the <literal>&lt;bounce&gt;</literal> function and forwarding
@@ -1333,7 +1348,7 @@ message even if you exit Mutt and then restart it at a later time.
 
 <para>
 Once a message is postponed, there are several ways to resume it.  From the
-command line you can use the ``-p'' option, or if you <emphasis>compose</emphasis> a new
+command line you can use the ``-p'' option, or if you compose a new
 message from the <emphasis>index</emphasis> or <emphasis>pager</emphasis> you will be prompted if postponed
 messages exist.  If multiple messages are currently postponed, the
 <emphasis>postponed</emphasis> menu will pop up and you can select which message you would
