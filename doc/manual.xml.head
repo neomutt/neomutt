@@ -372,7 +372,7 @@ The next few sections describe the functions provided in each of these
 modes.
 </para>
 
-<sect2>
+<sect2 id="index-menu">
 <title>The Message Index</title>
 
 <para>
@@ -480,7 +480,7 @@ who the message is addressed to. They can be customized with the
 
 </sect2>
 
-<sect2>
+<sect2 id="pager-menu">
 <title>The Pager</title>
 
 <para>
@@ -650,7 +650,7 @@ See also: <link linkend="strict-threads">&dollar;strict&lowbar;threads</link>.
 
 </sect2>
 
-<sect2>
+<sect2 id="reading-misc">
 <title>Miscellaneous Functions</title>
 
 <para>
@@ -873,7 +873,7 @@ after a line of quoted text in the internal pager.
 <sect1 id="sending">
 <title>Sending Mail</title>
 
-<sect2>
+<sect2 id="sending-intro">
 <title>Introduction</title>
 
 <para>
@@ -994,7 +994,7 @@ a 'A' to indicate that you are in attach-message mode.
 
 </sect2>
 
-<sect2>
+<sect2 id="edit-header">
 <title>Editing the message header</title>
 
 <para>
@@ -1002,7 +1002,7 @@ When editing the header because of <link linkend="edit-headers">&dollar;edit&low
 being set, there are a couple of special features available.
 </para>
 
-<sect3>
+<sect3 id="fcc-header">
 <title>Fcc: pseudo header</title>
 
 <para>
@@ -1017,7 +1017,7 @@ This header will not be included in sent messages.
 
 </sect3>
 
-<sect3>
+<sect3 id="attach-header">
 <title>Attach: pseudo header</title>
 
 <para>
@@ -1032,7 +1032,7 @@ out.
 
 </sect3>
 
-<sect3>
+<sect3 id="pgp-header">
 <title>Pgp: pseudo header</title>
 
 <para>
@@ -1126,7 +1126,7 @@ indicates complete validity.
 
 </sect3>
 
-<sect3>
+<sect3 id="in-reply-to-header">
 <title>In-Reply-To: header</title>
 
 <para>
@@ -1140,7 +1140,7 @@ to create a new message to a mailing list without having to enter the mailing li
 
 </sect2>
 
-<sect2>
+<sect2 id="sending-mixmaster">
 <title>Sending anonymous messages via mixmaster</title>
 
 <para>
@@ -1190,10 +1190,10 @@ have a look at the mixmaster documentation.
 
 </sect2>
 
-<sect2>
+<sect2 id="ff">
 <title>Sending format=flowed messages</title>
 
-<sect3>
+<sect3 id="ff-concept">
 <title>Concept</title>
 
 <para>
@@ -1212,7 +1212,7 @@ receiver decide completely how to view a message.
 
 </sect3>
 
-<sect3>
+<sect3 id="ff-support">
 <title>Mutt support</title>
 
 <para>
@@ -1254,7 +1254,7 @@ quote or not.
 
 </sect3>
 
-<sect3>
+<sect3 id="ff-editor">
 <title>Editor considerations</title>
 
 <para>
@@ -1357,7 +1357,7 @@ See also the <link linkend="postpone">&dollar;postpone</link> quad-option.
 <chapter id="configuration">
 <title>Configuration</title>
 
-<sect1>
+<sect1 id="configuration-files">
 <title>Location of initialization files</title>
 
 <para>
@@ -3132,7 +3132,7 @@ something like <literal>unhook send-hook</literal>.
 <sect1 id="formatstrings">
 <title>Format Strings</title>
 
-<sect2>
+<sect2 id="formatstrings-basics">
 <title>Basic usage</title>
 
 <para>
@@ -3198,7 +3198,7 @@ replace all decimal points with underlines.
 
 </sect2>
 
-<sect2>
+<sect2 id="formatstrings-filters">
 <title>Filters</title>
 
 <para>
@@ -3560,7 +3560,7 @@ its value.
 are allowed, too.
 </para>
 
-<sect2>
+<sect2 id="patterns-modifier">
 <title>Pattern Modifier</title>
 
 <para>
@@ -3581,7 +3581,7 @@ This example matches all mails which only has recipients from Germany.
 
 </sect2>
 
-<sect2>
+<sect2 id="simple-patterns">
 <title>Simple Patterns</title>
 
 <para>
@@ -3636,7 +3636,7 @@ for the composed complex query.
 
 </sect2>
 
-<sect2>
+<sect2 id="complex-patterns">
 <title>Complex Patterns</title>
 
 <para>
@@ -3741,7 +3741,7 @@ and <emphasis>cs\.hmc\.edu)</emphasis>. They are never what you want.
 
 </sect2>
 
-<sect2>
+<sect2 id="date-patterns">
 <title>Searching by Date</title>
 
 <para>
@@ -4361,7 +4361,7 @@ correspondents. This allows to clean your mailboxes formats) from these
 annoyances which make it hard to follow a discussion.
 </para>
 
-<sect2>
+<sect2 id="link-threads">
 <title>Linking threads</title>
 
 <para>
@@ -4381,7 +4381,7 @@ tag-prefix command (';') or the auto&lowbar;tag option.
 
 </sect2>
 
-<sect2>
+<sect2 id="break-threads">
 <title>Breaking threads</title>
 
 <para>
@@ -4478,7 +4478,7 @@ pager (while viewing a message), the attachment menu and the compose
 menu.
 </para>
 
-<sect2>
+<sect2 id="mime-pager">
 <title>Viewing MIME messages in the pager</title>
 
 <para>
@@ -4628,7 +4628,7 @@ if the recipient of the message is likely to be expecting such attachments.
 
 </sect1>
 
-<sect1 id="mime-viewers">
+<sect1 id="mailcap">
 <title>MIME Viewer configuration with <literal>mailcap</literal></title>
 
 <para>
@@ -4677,7 +4677,7 @@ usually as <literal>/usr/local/etc/mailcap</literal>, which contains some baseli
 entries.
 </para>
 
-<sect2>
+<sect2 id="mailcap-basics">
 <title>The Basics of the mailcap file</title>
 
 <para>
@@ -4776,7 +4776,7 @@ This is the simplest form of a mailcap file.
 
 </sect2>
 
-<sect2>
+<sect2 id="secure-mailcap">
 <title>Secure use of mailcap</title>
 
 <para>
@@ -4821,10 +4821,10 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} &bsol;
 
 </sect2>
 
-<sect2>
+<sect2 id="advanced-mailcap">
 <title>Advanced mailcap Usage</title>
 
-<sect3>
+<sect3 id="optional-mailcap-fields">
 <title>Optional Fields</title>
 
 <para>
@@ -4957,7 +4957,7 @@ to the next entry and use lynx to display the text/html object.
 
 </sect3>
 
-<sect3>
+<sect3 id="mailcap-search-order">
 <title>Search Order</title>
 
 <para>
@@ -4999,7 +4999,7 @@ for interactive viewing.
 
 </sect3>
 
-<sect3>
+<sect3 id="mailcap-command-expansion">
 <title>Command Expansion</title>
 
 <para>
@@ -5070,7 +5070,7 @@ multipart messages, which is handled internally by Mutt.
 
 </sect2>
 
-<sect2>
+<sect2 id="mailcap-example">
 <title>Example mailcap files</title>
 
 <para>
@@ -5376,10 +5376,10 @@ muttrc.
 <chapter id="optionalfeatures">
 <title>Optional features</title>
 
-<sect1>
+<sect1 id="optionalfeatures-notes">
 <title>General notes</title>
 
-<sect2>
+<sect2 id="compile-time-features">
 <title>Enabling/disabling features</title>
 
 <para>
@@ -5558,7 +5558,7 @@ v12.250, the server has been reported to disconnect a client if another client
 selects the same folder.
 </para>
 
-<sect2>
+<sect2 id="imap-browser">
 <title>The Folder Browser</title>
 
 <para>
@@ -5605,7 +5605,7 @@ these are bound to <literal>s</literal> and <literal>u</literal>, respectively).
 
 </sect2>
 
-<sect2>
+<sect2 id="imap-authentication">
 <title>Authentication</title>
 
 <para>
@@ -6004,7 +6004,7 @@ to send messages from the command line as well.
 
 <para>
 
-<table>
+<table id="tab-commandline-options">
 <title>Command line options</title>
 <tgroup cols="2">
 <thead>
