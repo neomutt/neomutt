@@ -239,14 +239,14 @@ for common keys used to navigate menus in Mutt.
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>j or &lt;Down&gt;</entry><entry>next-entry</entry><entry>move to the next entry</entry></row>
-<row><entry>k or &lt;Up&gt;</entry><entry>previous-entry</entry><entry>move to the previous entry</entry></row>
-<row><entry>z or &lt;PageDn&gt;</entry><entry>page-down</entry><entry>go to the next page</entry></row>
-<row><entry>Z or &lt;PageUp&gt;</entry><entry>page-up</entry><entry>go to the previous page</entry></row>
-<row><entry>= or &lt;Home&gt;</entry><entry>first-entry</entry><entry>jump to the first entry</entry></row>
-<row><entry>* or &lt;End&gt;</entry><entry>last-entry</entry><entry>jump to the last entry</entry></row>
-<row><entry>q</entry><entry>quit</entry><entry>exit the current menu</entry></row>
-<row><entry>?</entry><entry>help</entry><entry>list all keybindings for the current menu</entry></row>
+<row><entry>j or &lt;Down&gt;</entry><entry><literal>&lt;next-entry&gt;</literal></entry><entry>move to the next entry</entry></row>
+<row><entry>k or &lt;Up&gt;</entry><entry><literal>&lt;previous-entry&gt;</literal></entry><entry>move to the previous entry</entry></row>
+<row><entry>z or &lt;PageDn&gt;</entry><entry><literal>&lt;page-down&gt;</literal></entry><entry>go to the next page</entry></row>
+<row><entry>Z or &lt;PageUp&gt;</entry><entry><literal>&lt;page-up&gt;</literal></entry><entry>go to the previous page</entry></row>
+<row><entry>= or &lt;Home&gt;</entry><entry><literal>&lt;first-entry&gt;</literal></entry><entry>jump to the first entry</entry></row>
+<row><entry>* or &lt;End&gt;</entry><entry><literal>&lt;last-entry&gt;</literal></entry><entry>jump to the last entry</entry></row>
+<row><entry>q</entry><entry><literal>&lt;quit&gt;</literal></entry><entry>exit the current menu</entry></row>
+<row><entry>?</entry><entry><literal>&lt;help&gt;</literal></entry><entry>list all keybindings for the current menu</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -277,26 +277,26 @@ short descriptions.
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>&circ;A or &lt;Home&gt;</entry><entry>bol</entry><entry>move to the start of the line</entry></row>
-<row><entry>&circ;B or &lt;Left&gt;</entry><entry>backward-char</entry><entry>move back one char</entry></row>
-<row><entry>Esc B</entry><entry>backward-word</entry><entry>move back one word</entry></row>
-<row><entry>&circ;D or &lt;Delete&gt;</entry><entry>delete-char</entry><entry>delete the char under the cursor</entry></row>
-<row><entry>&circ;E or &lt;End&gt;</entry><entry>eol</entry><entry>move to the end of the line</entry></row>
-<row><entry>&circ;F or &lt;Right&gt;</entry><entry>forward-char</entry><entry>move forward one char</entry></row>
-<row><entry>Esc F</entry><entry>forward-word</entry><entry>move forward one word</entry></row>
-<row><entry>&lt;Tab&gt;</entry><entry>complete</entry><entry>complete filename or alias</entry></row>
-<row><entry>&circ;T</entry><entry>complete-query</entry><entry>complete address with query</entry></row>
-<row><entry>&circ;K</entry><entry>kill-eol</entry><entry>delete to the end of the line</entry></row>
-<row><entry>ESC d</entry><entry>kill-eow</entry><entry>delete to the end ot the word</entry></row>
-<row><entry>&circ;W</entry><entry>kill-word</entry><entry>kill the word in front of the cursor</entry></row>
-<row><entry>&circ;U</entry><entry>kill-line</entry><entry>delete entire line</entry></row>
-<row><entry>&circ;V</entry><entry>quote-char</entry><entry>quote the next typed key</entry></row>
-<row><entry>&lt;Up&gt;</entry><entry>history-up</entry><entry>recall previous string from history</entry></row>
-<row><entry>&lt;Down&gt;</entry><entry>history-down</entry><entry>recall next string from history</entry></row>
-<row><entry>&lt;BackSpace&gt;</entry><entry>backspace</entry><entry>kill the char in front of the cursor</entry></row>
-<row><entry>Esc u</entry><entry>upcase-word</entry><entry>convert word to upper case</entry></row>
-<row><entry>Esc l</entry><entry>downcase-word</entry><entry>convert word to lower case</entry></row>
-<row><entry>Esc c</entry><entry>capitalize-word</entry><entry>capitalize the word</entry></row>
+<row><entry>&circ;A or &lt;Home&gt;</entry><entry><literal>&lt;bol&gt;</literal></entry><entry>move to the start of the line</entry></row>
+<row><entry>&circ;B or &lt;Left&gt;</entry><entry><literal>&lt;backward-char&gt;</literal></entry><entry>move back one char</entry></row>
+<row><entry>Esc B</entry><entry><literal>&lt;backward-word&gt;</literal></entry><entry>move back one word</entry></row>
+<row><entry>&circ;D or &lt;Delete&gt;</entry><entry><literal>&lt;delete-char&gt;</literal></entry><entry>delete the char under the cursor</entry></row>
+<row><entry>&circ;E or &lt;End&gt;</entry><entry><literal>&lt;eol&gt;</literal></entry><entry>move to the end of the line</entry></row>
+<row><entry>&circ;F or &lt;Right&gt;</entry><entry><literal>&lt;forward-char&gt;</literal></entry><entry>move forward one char</entry></row>
+<row><entry>Esc F</entry><entry><literal>&lt;forward-word&gt;</literal></entry><entry>move forward one word</entry></row>
+<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename or alias</entry></row>
+<row><entry>&circ;T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
+<row><entry>&circ;K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
+<row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end ot the word</entry></row>
+<row><entry>&circ;W</entry><entry><literal>&lt;kill-word&gt;</literal></entry><entry>kill the word in front of the cursor</entry></row>
+<row><entry>&circ;U</entry><entry><literal>&lt;kill-line&gt;</literal></entry><entry>delete entire line</entry></row>
+<row><entry>&circ;V</entry><entry><literal>&lt;quote-char&gt;</literal></entry><entry>quote the next typed key</entry></row>
+<row><entry>&lt;Up&gt;</entry><entry><literal>&lt;history-up&gt;</literal></entry><entry>recall previous string from history</entry></row>
+<row><entry>&lt;Down&gt;</entry><entry><literal>&lt;history-down&gt;</literal></entry><entry>recall next string from history</entry></row>
+<row><entry>&lt;BackSpace&gt;</entry><entry><literal>&lt;backspace&gt;</literal></entry><entry>kill the char in front of the cursor</entry></row>
+<row><entry>Esc u</entry><entry><literal>&lt;upcase-word&gt;</literal></entry><entry>convert word to upper case</entry></row>
+<row><entry>Esc l</entry><entry><literal>&lt;downcase-word&gt;</literal></entry><entry>convert word to lower case</entry></row>
+<row><entry>Esc c</entry><entry><literal>&lt;capitalize-word&gt;</literal></entry><entry>capitalize the word</entry></row>
 <row><entry>&circ;G</entry><entry>n/a</entry><entry>abort</entry></row>
 <row><entry>&lt;Return&gt;</entry><entry>n/a</entry><entry>finish editing</entry></row>
 </tbody>
@@ -321,11 +321,13 @@ bind editor &lt;delete&gt; backspace
 <title>History</title>
 
 <para>
-The number of items in the built-in editor's history is controlled by
-the <link linkend="history">&dollar;history</link> variable. You may
-cycle through them at an editor prompt by using the
-<literal>history-up</literal> and/or <literal>history-down</literal>
-commands.
+Mutt maintains a history for the built-in editor.  The number of items
+is controlled by the <link linkend="history">&dollar;history</link>
+variable and can be made persistent using an external file specified
+using <link linkend="history-file">&dollar;history&lowbar;file</link>.
+You may cycle through them at an editor prompt by using the
+<literal>&lt;history-up&gt;</literal> and/or
+<literal>&lt;history-down&gt;</literal> commands.
 </para>
 
 <para>
@@ -389,10 +391,10 @@ in the index menu can be customized using the
 </thead>
 <tbody>
 <row><entry>c</entry><entry>change to a different mailbox</entry></row>
-<row><entry>ESC c</entry><entry>change to a folder in read-only mode</entry></row>
+<row><entry>Esc c</entry><entry>change to a folder in read-only mode</entry></row>
 <row><entry>C</entry><entry>copy the current message to another mailbox</entry></row>
-<row><entry>ESC C</entry><entry>decode a message and copy it to a folder</entry></row>
-<row><entry>ESC s</entry><entry>decode a message and save it to a folder</entry></row>
+<row><entry>Esc C</entry><entry>decode a message and copy it to a folder</entry></row>
+<row><entry>Esc s</entry><entry>decode a message and save it to a folder</entry></row>
 <row><entry>D</entry><entry>delete messages matching a pattern</entry></row>
 <row><entry>d</entry><entry>delete the current message</entry></row>
 <row><entry>F</entry><entry>mark as important</entry></row>
@@ -404,7 +406,7 @@ in the index menu can be customized using the
 <row><entry>s</entry><entry>save-message</entry></row>
 <row><entry>T</entry><entry>tag messages matching a pattern</entry></row>
 <row><entry>t</entry><entry>toggle the tag on a message</entry></row>
-<row><entry>ESC t</entry><entry>toggle tag on entire message thread</entry></row>
+<row><entry>Esc t</entry><entry>toggle tag on entire message thread</entry></row>
 <row><entry>U</entry><entry>undelete messages matching a pattern</entry></row>
 <row><entry>u</entry><entry>undelete-message</entry></row>
 <row><entry>v</entry><entry>view-attachments</entry></row>
@@ -414,7 +416,7 @@ in the index menu can be customized using the
 <row><entry>@</entry><entry>show the author's full e-mail address</entry></row>
 <row><entry>$</entry><entry>save changes to mailbox</entry></row>
 <row><entry>/</entry><entry>search</entry></row>
-<row><entry>ESC /</entry><entry>search-reverse</entry></row>
+<row><entry>Esc /</entry><entry>search-reverse</entry></row>
 <row><entry>&circ;L</entry><entry>clear and redraw the screen</entry></row>
 <row><entry>&circ;T</entry><entry>untag messages matching a pattern</entry></row>
 </tbody>
@@ -428,8 +430,9 @@ In addition to who sent the message and the subject, a short summary of
 the disposition of each message is printed beside the message number.
 Zero or more of the ``flags'' in <xref linkend="tab-msg-status-flags"/>
 may appear, some of which can be turned on or off using these functions:
-<literal>set-flag</literal> and <literal>clear-flag</literal> bound by default
-to ``w'' and ``W'' respectively.
+<literal>&lt;set-flag&gt;</literal> and
+<literal>&lt;clear-flag&gt;</literal>
+bound by default to ``w'' and ``W'' respectively.
 </para>
 
 <para>
@@ -503,7 +506,7 @@ featureful.
 <row><entry>T</entry><entry>toggle display of quoted text</entry></row>
 <row><entry>?</entry><entry>show keybindings</entry></row>
 <row><entry>/</entry><entry>regular expression search</entry></row>
-<row><entry>ESC /</entry><entry>backward regular expression search</entry></row>
+<row><entry>Esc /</entry><entry>backward regular expression search</entry></row>
 <row><entry>&bsol;</entry><entry>toggle highlighting of search matches</entry></row>
 <row><entry>&circ;</entry><entry>jump to the top of the message</entry></row>
 </tbody>
@@ -513,8 +516,8 @@ featureful.
 
 <para>
 In addition to key bindings in <xref linkend="tab-key-pager"/>,
-many of the functions from the <emphasis>index</emphasis> are available in
-the pager, such as <literal>delete-message</literal> or <literal>copy-message</literal>
+many of the functions from the index menu are also available in
+the pager, such as <literal>&lt;delete-message&gt;</literal> or <literal>&lt;copy-message&gt;</literal>
 (this is one advantage over using an external pager to view messages).
 </para>
 
@@ -613,20 +616,20 @@ as shown in <xref linkend="tab-key-threads"/>.
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>&circ;D</entry><entry>delete-thread</entry><entry>delete all messages in the current thread</entry></row>
-<row><entry>&circ;U</entry><entry>undelete-thread</entry><entry>undelete all messages in the current thread</entry></row>
-<row><entry>&circ;N</entry><entry>next-thread</entry><entry>jump to the start of the next thread</entry></row>
-<row><entry>&circ;P</entry><entry>previous-thread</entry><entry>jump to the start of the previous thread</entry></row>
-<row><entry>&circ;R</entry><entry>read-thread</entry><entry>mark the current thread as read</entry></row>
-<row><entry>ESC d</entry><entry>delete-subthread</entry><entry>delete all messages in the current subthread</entry></row>
-<row><entry>ESC u</entry><entry>undelete-subthread</entry><entry>undelete all messages in the current subthread</entry></row>
-<row><entry>ESC n</entry><entry>next-subthread</entry><entry>jump to the start of the next subthread</entry></row>
-<row><entry>ESC p</entry><entry>previous-subthread</entry><entry>jump to the start of the previous subthread</entry></row>
-<row><entry>ESC r</entry><entry>read-subthread</entry><entry>mark the current subthread as read</entry></row>
-<row><entry>ESC t</entry><entry>tag-thread</entry><entry>toggle the tag on the current thread</entry></row>
-<row><entry>ESC v</entry><entry>collapse-thread</entry><entry>toggle collapse for the current thread</entry></row>
-<row><entry>ESC V</entry><entry>collapse-all</entry><entry>toggle collapse for all threads</entry></row>
-<row><entry>P</entry><entry>parent-message</entry><entry>jump to parent message in thread</entry></row>
+<row><entry>&circ;D</entry><entry><literal>&lt;delete-thread&gt;</literal></entry><entry>delete all messages in the current thread</entry></row>
+<row><entry>&circ;U</entry><entry><literal>&lt;undelete-thread&gt;</literal></entry><entry>undelete all messages in the current thread</entry></row>
+<row><entry>&circ;N</entry><entry><literal>&lt;next-thread&gt;</literal></entry><entry>jump to the start of the next thread</entry></row>
+<row><entry>&circ;P</entry><entry><literal>&lt;previous-thread&gt;</literal></entry><entry>jump to the start of the previous thread</entry></row>
+<row><entry>&circ;R</entry><entry><literal>&lt;read-thread&gt;</literal></entry><entry>mark the current thread as read</entry></row>
+<row><entry>Esc d</entry><entry><literal>&lt;delete-subthread&gt;</literal></entry><entry>delete all messages in the current subthread</entry></row>
+<row><entry>Esc u</entry><entry><literal>&lt;undelete-subthread&gt;</literal></entry><entry>undelete all messages in the current subthread</entry></row>
+<row><entry>Esc n</entry><entry><literal>&lt;next-subthread&gt;</literal></entry><entry>jump to the start of the next subthread</entry></row>
+<row><entry>Esc p</entry><entry><literal>&lt;previous-subthread&gt;</literal></entry><entry>jump to the start of the previous subthread</entry></row>
+<row><entry>Esc r</entry><entry><literal>&lt;read-subthread&gt;</literal></entry><entry>mark the current subthread as read</entry></row>
+<row><entry>Esc t</entry><entry><literal>&lt;tag-thread&gt;</literal></entry><entry>toggle the tag on the current thread</entry></row>
+<row><entry>Esc v</entry><entry><literal>&lt;collapse-thread&gt;</literal></entry><entry>toggle collapse for the current thread</entry></row>
+<row><entry>Esc V</entry><entry><literal>&lt;collapse-all&gt;</literal></entry><entry>toggle collapse for all threads</entry></row>
+<row><entry>P</entry><entry><literal>&lt;parent-message&gt;</literal></entry><entry>jump to parent message in thread</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -660,7 +663,7 @@ have these interesting functions:
 
 <varlistentry>
 <term>
-<literal>create-alias</literal><anchor id="create-alias"/> (default: a)
+<literal>&lt;create-alias&gt;</literal><anchor id="create-alias"/> (default: a)
 </term>
 <listitem>
 <para>
@@ -675,7 +678,7 @@ does not add the aliases specified there-in, you must also <link linkend="source
 
 <varlistentry>
 <term>
-<literal>check-traditional-pgp</literal><anchor id="check-traditional-pgp"/> (default: ESC P)
+<literal>&lt;check-traditional-pgp&gt;</literal><anchor id="check-traditional-pgp"/> (default: Esc P)
 </term>
 <listitem>
 <para>
@@ -683,7 +686,7 @@ This function will search the current message for content signed or
 encrypted with PGP the "traditional" way, that is, without proper
 MIME tagging.  Technically, this function will temporarily change
 the MIME content types of the body parts containing PGP data; this
-is similar to the <link linkend="edit-type">edit-type</link> function's
+is similar to the <link linkend="edit-type"><literal>&lt;edit-type&gt;</literal></link> function's
 effect.
 </para>
 </listitem>
@@ -691,7 +694,7 @@ effect.
 
 <varlistentry>
 <term>
-<literal>edit</literal><anchor id="edit"/> (default: e)
+<literal>&lt;edit&gt;</literal><anchor id="edit"/> (default: e)
 </term>
 <listitem>
 <para>
@@ -706,7 +709,7 @@ marked for deletion.
 
 <varlistentry>
 <term>
-<literal>edit-type</literal><anchor id="edit-type"/>
+<literal>&lt;edit-type&gt;</literal><anchor id="edit-type"/>
 
 (default: &circ;E on the attachment menu, and in the pager and index menus; &circ;T on the
 compose menu)
@@ -732,7 +735,7 @@ to send.
 
 <varlistentry>
 <term>
-<literal>enter-command</literal><anchor id="enter-command"/> (default: ``:'')
+<literal>&lt;enter-command&gt;</literal><anchor id="enter-command"/> (default: ``:'')
 </term>
 <listitem>
 <para>
@@ -746,7 +749,7 @@ fly.
 
 <varlistentry>
 <term>
-<literal>extract-keys</literal><anchor id="extract-keys"/> (default: &circ;K)
+<literal>&lt;extract-keys&gt;</literal><anchor id="extract-keys"/> (default: &circ;K)
 </term>
 <listitem>
 <para>
@@ -758,7 +761,7 @@ message(s) and adds them to your PGP public key ring.
 
 <varlistentry>
 <term>
-<literal>forget-passphrase</literal><anchor id="forget-passphrase"/> (default:
+<literal>&lt;forget-passphrase&gt;</literal><anchor id="forget-passphrase"/> (default:
 &circ;F)
 </term>
 <listitem>
@@ -771,7 +774,7 @@ you misspelled the passphrase.
 
 <varlistentry>
 <term>
-<literal>list-reply</literal><anchor id="list-reply"/> (default: L)
+<literal>&lt;list-reply&gt;</literal><anchor id="list-reply"/> (default: L)
 </term>
 <listitem>
 <para>
@@ -788,7 +791,7 @@ the message you are replying to.
 
 <varlistentry>
 <term>
-<literal>pipe-message</literal><anchor id="pipe-message"/> (default: &verbar;)
+<literal>&lt;pipe-message&gt;</literal><anchor id="pipe-message"/> (default: &verbar;)
 </term>
 <listitem>
 <para>
@@ -801,7 +804,7 @@ tagged message(s) to it.  The variables <link linkend="pipe-decode">&dollar;pipe
 
 <varlistentry>
 <term>
-<literal>resend-message</literal><anchor id="resend-message"/> (default: ESC e)
+<literal>&lt;resend-message&gt;</literal><anchor id="resend-message"/> (default: Esc e)
 </term>
 <listitem>
 <para>
@@ -823,7 +826,7 @@ as a message/rfc822 body part.
 
 <varlistentry>
 <term>
-<literal>shell-escape</literal><anchor id="shell-escape"/> (default: !)
+<literal>&lt;shell-escape&gt;</literal><anchor id="shell-escape"/> (default: !)
 </term>
 <listitem>
 <para>
@@ -837,7 +840,7 @@ the return status of the named command.
 
 <varlistentry>
 <term>
-<literal>toggle-quoted</literal><anchor id="toggle-quoted"/> (default: T)
+<literal>&lt;toggle-quoted&gt;</literal><anchor id="toggle-quoted"/> (default: T)
 </term>
 <listitem>
 <para>
@@ -852,7 +855,7 @@ quoted text in the way.
 
 <varlistentry>
 <term>
-<literal>skip-quoted</literal><anchor id="skip-quoted"/> (default: S)
+<literal>&lt;skip-quoted&gt;</literal><anchor id="skip-quoted"/> (default: S)
 </term>
 <listitem>
 <para>
@@ -888,13 +891,13 @@ The bindings shown in <xref linkend="tab-key-send"/> are available in the
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>m</entry><entry>compose</entry><entry>compose a new message</entry></row>
-<row><entry>r</entry><entry>reply</entry><entry>reply to sender</entry></row>
-<row><entry>g</entry><entry>group-reply</entry><entry>reply to all recipients</entry></row>
-<row><entry>L</entry><entry>list-reply</entry><entry>reply to mailing list address</entry></row>
-<row><entry>f</entry><entry>forward</entry><entry>forward message</entry></row>
-<row><entry>b</entry><entry>bounce</entry><entry>bounce (remail) message</entry></row>
-<row><entry>ESC k</entry><entry>mail-key</entry><entry>mail a PGP public key to someone</entry></row>
+<row><entry>m</entry><entry><literal>&lt;compose&gt;</literal></entry><entry>compose a new message</entry></row>
+<row><entry>r</entry><entry><literal>&lt;reply&gt;</literal></entry><entry>reply to sender</entry></row>
+<row><entry>g</entry><entry><literal>&lt;group-reply&gt;</literal></entry><entry>reply to all recipients</entry></row>
+<row><entry>L</entry><entry><literal>&lt;list-reply&gt;</literal></entry><entry>reply to mailing list address</entry></row>
+<row><entry>f</entry><entry><literal>&lt;forward&gt;</literal></entry><entry>forward message</entry></row>
+<row><entry>b</entry><entry><literal>&lt;bounce&gt;</literal></entry><entry>bounce (remail) message</entry></row>
+<row><entry>Esc k</entry><entry><literal>&lt;mail-key&gt;</literal></entry><entry>mail a PGP public key to someone</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -953,26 +956,26 @@ message.
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>a</entry><entry>attach-file</entry><entry>attach a file</entry></row>
-<row><entry>A</entry><entry>attach-message</entry><entry>attach message(s) to the message</entry></row>
-<row><entry>ESC k</entry><entry>attach-key</entry><entry>attach a PGP public key</entry></row>
-<row><entry>d</entry><entry>edit-description</entry><entry>edit description on attachment</entry></row>
-<row><entry>D</entry><entry>detach-file</entry><entry>detach a file</entry></row>
-<row><entry>t</entry><entry>edit-to</entry><entry>edit the To field</entry></row>
-<row><entry>ESC f</entry><entry>edit-from</entry><entry>edit the From field</entry></row>
-<row><entry>r</entry><entry>edit-reply-to</entry><entry>edit the Reply-To field</entry></row>
-<row><entry>c</entry><entry>edit-cc</entry><entry>edit the Cc field</entry></row>
-<row><entry>b</entry><entry>edit-bcc</entry><entry>edit the Bcc field</entry></row>
-<row><entry>y</entry><entry>send-message</entry><entry>send the message</entry></row>
-<row><entry>s</entry><entry>edit-subject</entry><entry>edit the Subject</entry></row>
-<row><entry>S</entry><entry>smime-menu</entry><entry>select S/MIME options</entry></row>
-<row><entry>f</entry><entry>edit-fcc</entry><entry>specify an ``Fcc'' mailbox</entry></row>
-<row><entry>p</entry><entry>pgp-menu</entry><entry>select PGP options</entry></row>
-<row><entry>P</entry><entry>postpone-message</entry><entry>postpone this message until later</entry></row>
-<row><entry>q</entry><entry>quit</entry><entry>quit (abort) sending the message</entry></row>
-<row><entry>w</entry><entry>write-fcc</entry><entry>write the message to a folder</entry></row>
-<row><entry>i</entry><entry>ispell</entry><entry>check spelling (if available on your system)</entry></row>
-<row><entry>&circ;F</entry><entry>forget-passphrase</entry><entry>wipe passphrase(s) from memory</entry></row>
+<row><entry>a</entry><entry><literal>&lt;attach-file&gt;</literal></entry><entry>attach a file</entry></row>
+<row><entry>A</entry><entry><literal>&lt;attach-message&gt;</literal></entry><entry>attach message(s) to the message</entry></row>
+<row><entry>Esc k</entry><entry><literal>&lt;attach-key&gt;</literal></entry><entry>attach a PGP public key</entry></row>
+<row><entry>d</entry><entry><literal>&lt;edit-description&gt;</literal></entry><entry>edit description on attachment</entry></row>
+<row><entry>D</entry><entry><literal>&lt;detach-file&gt;</literal></entry><entry>detach a file</entry></row>
+<row><entry>t</entry><entry><literal>&lt;edit-to&gt;</literal></entry><entry>edit the To field</entry></row>
+<row><entry>Esc f</entry><entry><literal>&lt;edit-from&gt;</literal></entry><entry>edit the From field</entry></row>
+<row><entry>r</entry><entry><literal>&lt;edit-reply-to&gt;</literal></entry><entry>edit the Reply-To field</entry></row>
+<row><entry>c</entry><entry><literal>&lt;edit-cc&gt;</literal></entry><entry>edit the Cc field</entry></row>
+<row><entry>b</entry><entry><literal>&lt;edit-bcc&gt;</literal></entry><entry>edit the Bcc field</entry></row>
+<row><entry>y</entry><entry><literal>&lt;send-message&gt;</literal></entry><entry>send the message</entry></row>
+<row><entry>s</entry><entry><literal>&lt;edit-subject&gt;</literal></entry><entry>edit the Subject</entry></row>
+<row><entry>S</entry><entry><literal>&lt;smime-menu&gt;</literal></entry><entry>select S/MIME options</entry></row>
+<row><entry>f</entry><entry><literal>&lt;edit-fcc&gt;</literal></entry><entry>specify an ``Fcc'' mailbox</entry></row>
+<row><entry>p</entry><entry><literal>&lt;pgp-menu&gt;</literal></entry><entry>select PGP options</entry></row>
+<row><entry>P</entry><entry><literal>&lt;postpone-message&gt;</literal></entry><entry>postpone this message until later</entry></row>
+<row><entry>q</entry><entry><literal>&lt;quit&gt;</literal></entry><entry>quit (abort) sending the message</entry></row>
+<row><entry>w</entry><entry><literal>&lt;write-fcc&gt;</literal></entry><entry>write the message to a folder</entry></row>
+<row><entry>i</entry><entry><literal>&lt;ispell&gt;</literal></entry><entry>check spelling (if available on your system)</entry></row>
+<row><entry>&circ;F</entry><entry><literal>&lt;forget-passphrase&gt;</literal></entry><entry>wipe passphrase(s) from memory</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -981,7 +984,7 @@ message.
 
 <para>
 The compose menu is also used to edit the attachments for a message which can be either files
-or other messages. The <literal>attach-message</literal> function to will prompt you for a folder to
+or other messages. The <literal>&lt;attach-message&gt;</literal> function to will prompt you for a folder to
 attach messages from. You can now tag messages in that folder and they
 will be attached to the message you are sending. Note that certain
 operations like composing a new mail, replying, forwarding, etc. are
@@ -1009,7 +1012,7 @@ If you specify
 <literal>Fcc:</literal> <emphasis>filename</emphasis>
 
 as a header, Mutt will pick up <emphasis>filename</emphasis>
-just as if you had used the <emphasis>edit-fcc</emphasis> function in the <emphasis>compose</emphasis> menu.
+just as if you had used the <literal>&lt;edit-fcc&gt;</literal> function in the <emphasis>compose</emphasis> menu.
 This header will not be included in sent messages.
 </para>
 
@@ -1164,15 +1167,15 @@ the lower part, you see the currently selected chain of remailers.
 </para>
 
 <para>
-You can navigate in the chain using the <literal>chain-prev</literal> and
-<literal>chain-next</literal> functions, which are by default bound to the left
+You can navigate in the chain using the <literal>&lt;chain-prev&gt;</literal> and
+<literal>&lt;chain-next&gt;</literal> functions, which are by default bound to the left
 and right arrows and to the <literal>h</literal> and <literal>l</literal> keys (think vi
 keyboard bindings).  To insert a remailer at the current chain
-position, use the <literal>insert</literal> function.  To append a remailer behind
-the current chain position, use <literal>select-entry</literal> or <literal>append</literal>.
+position, use the <literal>&lt;insert&gt;</literal> function.  To append a remailer behind
+the current chain position, use <literal>&lt;select-entry&gt;</literal> or <literal>&lt;append&gt;</literal>.
 You can also delete entries from the chain, using the corresponding
 function.  Finally, to abandon your changes, leave the menu, or
-<literal>accept</literal> them pressing (by default) the <literal>Return</literal> key.
+<literal>&lt;accept&gt;</literal> them pressing (by default) the <literal>Return</literal> key.
 </para>
 
 <para>
@@ -1290,8 +1293,8 @@ that you specify. Bouncing a message sends a verbatim copy of a message
 to alternative addresses as if they were the message's original recipients.
 Forwarding a message, on the other hand, allows you to modify the message
 before it is resent (for example, by adding your own comments). Bouncing
-is done using the <literal>bounce</literal> function and forwarding
-using the <literal>forward</literal> command bound to ``b'' and ``f''
+is done using the <literal>&lt;bounce&gt;</literal> function and forwarding
+using the <literal>&lt;forward&gt;</literal> function bound to ``b'' and ``f''
 respectively.
 </para>
 
@@ -1322,7 +1325,7 @@ replying to a message does.
 
 <para>
 At times it is desirable to delay sending a message that you have
-already begun to compose.  When the <literal>postpone-message</literal> function is
+already begun to compose.  When the <literal>&lt;postpone-message&gt;</literal> function is
 used in the <emphasis>compose</emphasis> menu, the body of your message and attachments
 are stored in the mailbox specified by the <link linkend="postponed">&dollar;postponed</link> variable.  This means that you can recall the
 message even if you exit Mutt and then restart it at a later time.
@@ -1623,7 +1626,7 @@ you can have all aliases defined in your muttrc.
 </para>
 
 <para>
-On the other hand, the <link linkend="create-alias">create-alias</link>
+On the other hand, the <link linkend="create-alias"><literal>&lt;create-alias&gt;</literal></link>
 function can use only one file, the one pointed to by the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable (which is
 <literal>&tilde;/.muttrc</literal> by default). This file is not special either,
 in the sense that Mutt will happily append aliases to any file, but in
@@ -1840,7 +1843,7 @@ space (`` '') or semi-colon (``;'').
 
 <para>
 <emphasis>function</emphasis> specifies which action to take when <emphasis>key</emphasis> is pressed.
-For a complete list of functions, see the <link linkend="functions">reference</link>.  The special function <literal>noop</literal> unbinds the specified key
+For a complete list of functions, see the <link linkend="functions">reference</link>.  The special function <literal>&lt;noop&gt;</literal> unbinds the specified key
 sequence.
 </para>
 
@@ -2273,7 +2276,7 @@ Usage: <literal>&lsqb;un&rsqb;subscribe</literal> &lsqb; <literal>-group</litera
 <para>
 Mutt has a few nice features for <link linkend="using-lists">handling mailing lists</link>.  In order to take advantage of them, you must
 specify which addresses belong to mailing lists, and which mailing
-lists you are subscribed to.  Once you have done this, the <link linkend="list-reply">list-reply</link> function will work for all known lists.
+lists you are subscribed to.  Once you have done this, the <link linkend="list-reply"><literal>&lt;list-reply&gt;</literal></link> function will work for all known lists.
 Additionally, when you send a message to a subscribed list, mutt will
 add a Mail-Followup-To header to tell other users' mail user agents
 not to send copies of replies to your personal address.   Note that
@@ -2457,7 +2460,7 @@ space is illegal there, so Mutt enforces the rule.
 <para>
 If you would like to add a header field to a single message, you should
 either set the <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable,
-or use the <literal>edit-headers</literal> function (default: ``E'') in the compose menu so
+or use the <literal>&lt;edit-headers&gt;</literal> function (default: ``E'') in the compose menu so
 that you can edit the header of your message along with the body.
 </para>
 
@@ -2832,7 +2835,7 @@ joined <emphasis>format</emphasis> strings, you'll get only the last one to matc
 The spam tag is what will be displayed in the index when you use
 <literal>&percnt;H</literal> in the <literal>&dollar;index&lowbar;format</literal> variable. It's also the
 string that the <literal>&tilde;H</literal> pattern-matching expression matches against for
-<emphasis>search</emphasis> and <emphasis>limit</emphasis> functions. And it's what sorting by spam
+<literal>&lt;search&gt;</literal> and <literal>&lt;limit&gt;</literal> functions. And it's what sorting by spam
 attribute will use as a sort key.
 </para>
 
@@ -2949,7 +2952,7 @@ specified variables.
 </para>
 
 <para>
-Using the enter-command function in the <emphasis>index</emphasis> menu, you can query the
+Using the <literal>&lt;enter-command&gt;</literal> function in the <emphasis>index</emphasis> menu, you can query the
 value of a variable by prefixing the name of the variable with a question
 mark:
 </para>
@@ -3861,9 +3864,9 @@ Sometimes it is desirable to perform an operation on a group of
 messages all at once rather than one at a time.  An example might be
 to save messages to a mailing list to a separate folder, or to
 delete all messages with a given subject.  To tag all messages
-matching a pattern, use the tag-pattern function, which is bound to
+matching a pattern, use the <literal>&lt;tag-pattern&gt;</literal> function, which is bound to
 ``shift-T'' by default.  Or you can select individual messages by
-hand using the ``tag-message'' function, which is bound to ``t'' by
+hand using the <literal>&lt;tag-message&gt;</literal> function, which is bound to ``t'' by
 default.  See <link linkend="patterns">patterns</link> for Mutt's pattern
 matching syntax.
 </para>
@@ -4056,7 +4059,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
 
 <para>
 There are two mechanisms for accessing the query function of mutt.  One
-is to do a query from the index menu using the query function (default: Q).
+is to do a query from the index menu using the <literal>&lt;query&gt;</literal> function (default: Q).
 This will prompt for a query, then bring up the query menu which will
 list the matching responses.  From the query menu, you can select
 addresses to create aliases, or to mail.  You can tag multiple addresses
@@ -4067,7 +4070,7 @@ responses.
 <para>
 The other mechanism for accessing the query function is for address
 completion, similar to the alias completion.  In any prompt for address
-entry, you can use the complete-query function (default: &circ;T) to run a
+entry, you can use the <literal>&lt;complete-query&gt;</literal> function (default: &circ;T) to run a
 query based on the current address you have typed.  Like aliases, mutt
 will look for what you have typed back to the last space or comma.  If
 there is a single response for that query, mutt will expand the address
@@ -4227,7 +4230,7 @@ field (otherwise it returns the name of the author).
 Often times the ``To'' and ``Cc'' fields in mailing list messages
 tend to get quite large. Most people do not bother to remove the
 author of the message they are reply to from the list, resulting in
-two or more copies being sent to that person.  The ``list-reply''
+two or more copies being sent to that person.  The <literal>&lt;list-reply&gt;</literal>
 function, which by default is bound to ``L'' in the <emphasis>index</emphasis> menu
 and <emphasis>pager</emphasis>, helps reduce the clutter by only replying to the
 known mailing list addresses instead of all recipients (except as
@@ -4320,7 +4323,7 @@ for POP folders.
 
 <para>
 Outside the index menu the directory browser supports checking
-for new mail using the <emphasis>check-new</emphasis> function which is
+for new mail using the <literal>&lt;check-new&gt;</literal> function which is
 unbound by default. Pressing TAB will bring up a
 menu showing the files specified by the <literal>mailboxes</literal> command,
 and indicate which contain new messages. Mutt will automatically enter this
@@ -4329,7 +4332,7 @@ mode when invoked from the command line with the <literal>-y</literal> option.
 
 <para>
 For the pager, index and directory browser menus, Mutt contains the
-<emphasis>buffy-list</emphasis> function (bound to ``.'' by default)
+<literal>&lt;buffy-list&gt;</literal> function (bound to ``.'' by default)
 which will print a list of folders with new mail in the command line at
 the bottom of the screen.
 </para>
@@ -4368,7 +4371,7 @@ Some mailers tend to "forget" to correctly set the "In-Reply-To:" and
 discussions because Mutt has not enough information to guess the correct
 threading.
 You can fix this by tagging the reply, then moving to the parent message
-and using the ``link-threads'' function (bound to &amp; by default). The
+and using the <literal>&lt;link-threads&gt;</literal> function (bound to &amp; by default). The
 reply will then be connected to this "parent" message.
 </para>
 
@@ -4386,7 +4389,7 @@ tag-prefix command (';') or the auto&lowbar;tag option.
 On mailing lists, some people are in the bad habit of starting a new
 discussion by hitting "reply" to any message from the list and changing
 the subject to a totally unrelated one.
-You can fix such threads by using the ``break-thread'' function (bound
+You can fix such threads by using the <literal>&lt;break-thread&gt;</literal> function (bound
 by default to &num;), which will turn the subthread starting from the
 current message into a whole different thread.
 </para>
@@ -4530,8 +4533,9 @@ attachments as text, or view them using the mailcap viewer definition.
 
 <para>
 Finally, you can apply the usual message-related functions (like
-<link linkend="resend-message">resend-message</link>, and the reply
-and forward functions) to attachments of type <literal>message/rfc822</literal>.
+<link linkend="resend-message"><literal>&lt;resend-message&gt;</literal></link>, and the
+<literal>&lt;reply&gt;</literal> and <literal>&lt;forward&gt;</literal>
+functions) to attachments of type <literal>message/rfc822</literal>.
 </para>
 
 <para>
@@ -5489,8 +5493,9 @@ controlled by the
 variable, which defaults to every 60 seconds.
 </para>
 
+<anchor id="fetch-mail"/>
 <para>
-Another way to access your POP3 mail is the <emphasis>fetch-mail</emphasis> function
+Another way to access your POP3 mail is the <literal>&lt;fetch-mail&dollar;</literal> function
 (default: G).  It allows to connect to <link linkend="pop-host">&dollar;pop&lowbar;host</link>, fetch all your new mail and place it in the
 local <link linkend="spoolfile">&dollar;spoolfile</link>.  After this
 point, Mutt runs exactly as if the mail had always been local.

@@ -629,12 +629,17 @@ static int sgml_id_fputs (const char *s, FILE* out)
 {
   char id;
 
+  if (*s == '<')
+    s++;
+
   for (; *s; s++)
   {
     if (*s == '_')
       id = '-';
     else
       id = *s;
+    if (*s == '>' && !*(s+1))
+      break;
 
     if (fputc ((unsigned int) id, out) == EOF)
       return EOF;
@@ -1335,7 +1340,7 @@ static int handle_docline (char *l, FILE *out, int docstat)
       else
       {
 	ref = s;
-	while (isalnum ((unsigned char) *s) || *s == '-' || *s == '_')
+	while (isalnum ((unsigned char) *s) || (*s && strchr("-_<>", *s)))
 	  ++s;
 
 	docstat = commit_buff (buff, &d, out, docstat);

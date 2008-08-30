@@ -103,7 +103,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** The default file in which to save aliases created by the 
-  ** ``$create-alias'' function. Entries added to this file are
+  ** \fC$<create-alias>\fP function. Entries added to this file are
   ** encoded in the character set specified by $$config_charset if it
   ** is set or the current character set otherwise.
   ** .pp
@@ -269,7 +269,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, functions in the \fIindex\fP menu which affect a message
   ** will be applied to all tagged messages (if there are any).  When
-  ** unset, you must first use the tag-prefix function (default: ";") to
+  ** unset, you must first use the \fC<tag-prefix>\fP function (default: ";") to
   ** make the next function apply to all tagged messages.
   */
   { "beep",		DT_BOOL, R_NONE, OPTBEEP, 1 },
@@ -858,14 +858,14 @@ struct option_t MuttVars[] = {
   { "ignore_list_reply_to", DT_BOOL, R_NONE, OPTIGNORELISTREPLYTO, 0 },
   /*
   ** .pp
-  ** Affects the behaviour of the \fIreply\fP function when replying to
+  ** Affects the behaviour of the \fC<reply>\fP function when replying to
   ** messages from mailing lists (as defined by the ``subscribe'' or
   ** ``$lists'' commands).  When set, if the ``Reply-To:'' field is
   ** set to the same value as the ``To:'' field, Mutt assumes that the
   ** ``Reply-To:'' field was set by the mailing list to automate responses
   ** to the list, and will ignore this field.  To direct a response to the
-  ** mailing list when this option is set, use the \fIlist-reply\fP
-  ** function; \fIgroup-reply\fP will reply to both the sender and the
+  ** mailing list when this option is set, use the \fC$<list-reply>\fP
+  ** function; \fC<group-reply>\fP will reply to both the sender and the
   ** list.
   */
 #ifdef USE_IMAP
@@ -934,7 +934,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable configures whether IMAP folder browsing will look for
   ** only subscribed folders or all folders.  This can be toggled in the
-  ** IMAP browser with the \fItoggle-subscribed\fP function.
+  ** IMAP browser with the \fC<toggle-subscribed>\fP function.
   */
   { "imap_login",	DT_STR,  R_NONE, UL &ImapLogin, UL 0 },
   /*
@@ -947,7 +947,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If \fIunset\fP, Mutt will
-  ** prompt you for your password when you invoke the fetch-mail function.
+  ** prompt you for your password when you invoke the \fC$<fetch-mail>\fP function.
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc even
   ** if you are the only one who can read the file.
@@ -1452,7 +1452,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When set, the internal-pager will \fBnot\fP move to the next message
-  ** when you are at the end of a message and invoke the \fInext-page\fP
+  ** when you are at the end of a message and invoke the \fC<next-page\fP
   ** function.
   */
   { "pgp_autosign", 	DT_SYN,  R_NONE, UL "crypt_autosign", 0 },
@@ -1733,7 +1733,7 @@ struct option_t MuttVars[] = {
   ** messages whenever the user performs an operation which ordinarily would
   ** result in the contents of the message being operated on.  For example,
   ** if the user displays a pgp-traditional message which has not been manually
-  ** checked with the check-traditional-pgp function, mutt will automatically
+  ** checked with the \fC$<check-traditional-pgp>\fP function, mutt will automatically
   ** check the message for traditional pgp.
   */
 
@@ -2109,8 +2109,8 @@ struct option_t MuttVars[] = {
   { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
   /*
   ** .pp
-  ** Used in connection with the \fIpipe-message\fP command and the ``tag-
-  ** prefix'' operator.  If this variable is unset, when piping a list of
+  ** Used in connection with the \fC<pipe-message>\fP function following
+  ** \fC<tag-prefix\fP.  If this variable is unset, when piping a list of
   ** tagged messages Mutt will concatenate the messages and will pipe them
   ** as a single folder.  When set, Mutt will pipe the messages one by one.
   ** In both cases the messages are piped in the current sorted order,
@@ -2162,13 +2162,13 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, Mutt will delete successfully downloaded messages from the POP
-  ** server when using the fetch-mail function.  When unset, Mutt will
+  ** server when using the \fC$<fetch-mail>\fP function.  When unset, Mutt will
   ** download messages but also leave them on the POP server.
   */
   { "pop_host",		DT_STR,	 R_NONE, UL &PopHost, UL "" },
   /*
   ** .pp
-  ** The name of your POP server for the fetch-mail function.  You
+  ** The name of your POP server for the \fC$<fetch-mail>\fP function.  You
   ** can also specify an alternative port, username and password, ie:
   ** .pp
   ** [pop[s]://][username[:password]@]popserver[:port]
@@ -2178,7 +2178,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If this variable is set, mutt will try to use the "LAST" POP command
   ** for retrieving only unread messages from the POP server when using
-  ** the fetch-mail function.
+  ** the \fC$<fetch-mail>\fP function.
   */
   { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
   /*

@@ -37,7 +37,7 @@ while (<STDIN>) {
     $binding =~ s/NULL/not bound/;
     die "unknown key $binding" if $binding =~ /\\[^\\]|<|>/;
     die "unknown OP $op" unless $OPS{$op};
-    $MAP{$map} .= "<row><entry>$function</entry><entry>$binding</entry><entry>$OPS{$op}</entry></row>\n";
+    $MAP{$map} .= "<row><entry><literal>&lt;$function&gt;</literal></entry><entry>$binding</entry><entry>$OPS{$op}</entry></row>\n";
   }
   if ($map and /^}/) {
     undef $map;
