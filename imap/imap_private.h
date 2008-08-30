@@ -73,8 +73,7 @@
 enum
 {
   IMAP_FATAL = 1,
-  IMAP_BYE,
-  IMAP_REOPENED
+  IMAP_BYE
 };
 
 enum
