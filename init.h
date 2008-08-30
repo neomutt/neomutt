@@ -230,7 +230,7 @@ struct option_t MuttVars[] = {
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
+  ** For an explanation of `soft-fill', see the $$index_format documentation.
   */
   { "attach_sep",	DT_STR,	 R_NONE, UL &AttachSep, UL "\n" },
   /*
@@ -244,7 +244,7 @@ struct option_t MuttVars[] = {
   ** If this variable is unset, when operating (saving, printing, piping,
   ** etc) on a list of tagged attachments, Mutt will concatenate the
   ** attachments and will operate on them as a single attachment. The
-  ** ``$$attach_sep'' separator is added after each attachment. When set,
+  ** $$attach_sep separator is added after each attachment. When set,
   ** Mutt will operate on the attachments one by one.
   */
   { "attribution",	DT_STR,	 R_NONE, UL &Attribution, UL "On %d, %n wrote:" },
@@ -252,17 +252,17 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is the string that will precede a message which has been included
   ** in a reply.  For a full listing of defined printf()-like sequences see
-  ** the section on ``$$index_format''.
+  ** the section on $$index_format.
   */
   { "autoedit",		DT_BOOL, R_NONE, OPTAUTOEDIT, 0 },
   /*
   ** .pp
-  ** When set along with ``$$edit_headers'', Mutt will skip the initial
+  ** When set along with $$edit_headers, Mutt will skip the initial
   ** send-menu and allow you to immediately begin editing the body of your
   ** message.  The send-menu may still be accessed once you have finished
   ** editing the body of your message.
   ** .pp
-  ** Also see ``$$fast_reply''.
+  ** Also see $$fast_reply.
   */
   { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
   /*
@@ -282,7 +282,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When this variable is set, mutt will beep whenever it prints a message
   ** notifying you of new mail.  This is independent of the setting of the
-  ** ``$$beep'' variable.
+  ** $$beep variable.
   */
   { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, M_ASKYES },
   /*
@@ -357,7 +357,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls the format of the status line displayed in the \fICompose\fP
-  ** menu.  This string is similar to ``$$status_format'', but has its own
+  ** menu.  This string is similar to $$status_format, but has its own
   ** set of printf()-like sequences:
   ** .pp
   ** .dl
@@ -367,8 +367,8 @@ struct option_t MuttVars[] = {
   ** .dt %v .dd Mutt version string
   ** .de
   ** .pp
-  ** See the text describing the ``$$status_format'' option for more 
-  ** information on how to set ``$$compose_format''.
+  ** See the text describing the $$status_format option for more 
+  ** information on how to set $$compose_format.
   */
   { "config_charset",	DT_STR,  R_NONE, UL &ConfigCharset, UL 0 },
   /*
@@ -412,8 +412,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls whether or not copies of your outgoing messages
-  ** will be saved for later references.  Also see ``$$record'',
-  ** ``$$save_name'', ``$$force_name'' and ``$fcc-hook''.
+  ** will be saved for later references.  Also see $$record,
+  ** $$save_name, $$force_name and ``$fcc-hook''.
   */
   
   { "crypt_use_gpgme",  DT_BOOL, R_NONE, OPTCRYPTUSEGPGME, 0 },
@@ -436,29 +436,29 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls whether or not mutt may automatically enable
-  ** PGP encryption/signing for messages.  See also ``$$crypt_autoencrypt'',
-  ** ``$$crypt_replyencrypt'',
-  ** ``$$crypt_autosign'', ``$$crypt_replysign'' and ``$$smime_is_default''.
+  ** PGP encryption/signing for messages.  See also $$crypt_autoencrypt,
+  ** $$crypt_replyencrypt,
+  ** $$crypt_autosign, $$crypt_replysign'' and $$smime_is_default.
   */
   { "crypt_autosmime",	DT_BOOL, R_NONE, OPTCRYPTAUTOSMIME, 1 },
   /*
   ** .pp
   ** This variable controls whether or not mutt may automatically enable
-  ** S/MIME encryption/signing for messages. See also ``$$crypt_autoencrypt'',
-  ** ``$$crypt_replyencrypt'',
-  ** ``$$crypt_autosign'', ``$$crypt_replysign'' and ``$$smime_is_default''.
+  ** S/MIME encryption/signing for messages. See also $$crypt_autoencrypt,
+  ** $$crypt_replyencrypt,
+  ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
   ** .pp
   ** This variable controls the format of the date printed by the ``%d''
-  ** sequence in ``$$index_format''.  This is passed to the \fIstrftime\fP
+  ** sequence in $$index_format.  This is passed to the \fIstrftime\fP
   ** call to process the date. See the man page for \fIstrftime(3)\fP for
   ** the proper syntax.
   ** .pp
   ** Unless the first character in the string is a bang (``!''), the month
   ** and week day names are expanded according to the locale specified in
-  ** the variable ``$$locale''. If the first character in the string is a
+  ** the variable $$locale. If the first character in the string is a
   ** bang, the bang is discarded, and the month and week day names in the
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
@@ -585,7 +585,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Manually sets the \fIenvelope\fP sender for outgoing messages.
-  ** This value is ignored if ``$$use_envelope_from'' is unset.
+  ** This value is ignored if $$use_envelope_from is unset.
   */
   { "escape",		DT_STR,	 R_NONE, UL &EscChar, UL "~" },
   /*
@@ -599,7 +599,7 @@ struct option_t MuttVars[] = {
   ** when replying to messages, and the initial prompt for subject is
   ** skipped when forwarding messages.
   ** .pp
-  ** \fBNote:\fP this variable has no effect when the ``$$autoedit''
+  ** \fBNote:\fP this variable has no effect when the $$autoedit
   ** variable is set.
   */
   { "fcc_attach",	DT_BOOL, R_NONE, OPTFCCATTACH, 1 },
@@ -630,7 +630,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable allows you to customize the file browser display to your
-  ** personal taste.  This string is similar to ``$$index_format'', but has
+  ** personal taste.  This string is similar to $$index_format, but has
   ** its own set of printf()-like sequences:
   ** .pp
   ** .dl
@@ -649,7 +649,7 @@ struct option_t MuttVars[] = {
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
+  ** For an explanation of `soft-fill', see the $$index_format documentation.
   */
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
   /*
@@ -657,7 +657,7 @@ struct option_t MuttVars[] = {
   ** Controls whether or not the \fIMail-Followup-To\fP header field is
   ** generated when sending mail.  When \fIset\fP, Mutt will generate this
   ** field when you are replying to a known mailing list, specified with
-  ** the ``subscribe'' or ``$lists'' commands.
+  ** the ``$subscribe'' or ``$lists'' commands.
   ** .pp
   ** This field has two purposes.  First, preventing you from
   ** receiving duplicate copies of replies to messages which you send
@@ -673,19 +673,19 @@ struct option_t MuttVars[] = {
   { "force_name",	DT_BOOL, R_NONE, OPTFORCENAME, 0 },
   /*
   ** .pp
-  ** This variable is similar to ``$$save_name'', except that Mutt will
+  ** This variable is similar to $$save_name, except that Mutt will
   ** store a copy of your outgoing message by the username of the address
   ** you are sending to even if that mailbox does not exist.
   ** .pp
-  ** Also see the ``$$record'' variable.
+  ** Also see the $$record variable.
   */
   { "forward_decode",	DT_BOOL, R_NONE, OPTFORWDECODE, 1 },
   /*
   ** .pp
   ** Controls the decoding of complex MIME messages into text/plain when
   ** forwarding a message.  The message header is also RFC2047 decoded.
-  ** This variable is only used, if ``$$mime_forward'' is \fIunset\fP,
-  ** otherwise ``$$mime_forward_decode'' is used instead.
+  ** This variable is only used, if $$mime_forward is \fIunset\fP,
+  ** otherwise $$mime_forward_decode is used instead.
   */
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
   /*
@@ -701,7 +701,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls the default subject when forwarding a message.
-  ** It uses the same format sequences as the ``$$index_format'' variable.
+  ** It uses the same format sequences as the $$index_format variable.
   */
   { "forw_format",	DT_SYN,  R_NONE, UL "forward_format", 0 },  
   /*
@@ -710,8 +710,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP forwarded messages included in the main body of the
-  ** message (when ``$$mime_forward'' is \fIunset\fP) will be quoted using
-  ** ``$$indent_string''.
+  ** message (when $$mime_forward is \fIunset\fP) will be quoted using
+  ** $$indent_string.
   */
   { "forw_quote",	DT_SYN,  R_NONE, UL "forward_quote", 0 },
   /*
@@ -721,7 +721,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, this variable contains a default from address.  It
   ** can be overridden using my_hdr (including from send-hooks) and
-  ** ``$$reverse_name''.  This variable is ignored if ``$$use_from''
+  ** $$reverse_name.  This variable is ignored if $$use_from
   ** is unset.
   ** .pp
   ** Defaults to the contents of the environment variable EMAIL.
@@ -757,7 +757,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When set, this variable causes Mutt to include the header
   ** of the message you are replying to into the edit buffer.
-  ** The ``$$weed'' setting applies.
+  ** The $$weed setting applies.
   */  
   { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
   /*
@@ -774,7 +774,7 @@ struct option_t MuttVars[] = {
   { "hidden_host",	DT_BOOL, R_NONE, OPTHIDDENHOST, 0 },
   /*
   ** .pp
-  ** When set, mutt will skip the host name part of ``$$hostname'' variable
+  ** When set, mutt will skip the host name part of $$hostname variable
   ** when adding the domain part to addresses.  This variable does not
   ** affect the generation of Message-IDs, and it will not lead to the 
   ** cut-off of first-level domains.
@@ -846,7 +846,7 @@ struct option_t MuttVars[] = {
   ** can be compiled with a fixed domain name in which case a detected
   ** one is not used.
   ** .pp
-  ** Also see ``$$use_domain'' and ``$$hidden_host''.
+  ** Also see $$use_domain and $$hidden_host.
   */
   { "ignore_linear_white_space",    DT_BOOL, R_NONE, OPTIGNORELWS, 0 },
   /*
@@ -859,7 +859,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Affects the behaviour of the \fC<reply>\fP function when replying to
-  ** messages from mailing lists (as defined by the ``subscribe'' or
+  ** messages from mailing lists (as defined by the ``$subscribe'' or
   ** ``$lists'' commands).  When set, if the ``Reply-To:'' field is
   ** set to the same value as the ``To:'' field, Mutt assumes that the
   ** ``Reply-To:'' field was set by the mailing list to automate responses
@@ -1027,7 +1027,7 @@ struct option_t MuttVars[] = {
   ** change this value, as it tends to agitate the more fanatical netizens.
   ** .pp
   ** This option is a format string, please see the description of
-  ** ``$$index_format'' for supported printf()-style sequences.
+  ** $$index_format for supported printf()-style sequences.
   */
   { "indent_str",	DT_SYN,  R_NONE, UL "indent_string", 0 },
   /*
@@ -1111,7 +1111,7 @@ struct option_t MuttVars[] = {
   ** Note that these expandos are supported in 
   ** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
   ** .pp
-  ** See also: ``$$to_chars''.
+  ** See also: $$to_chars.
   */
   { "ispell",		DT_PATH, R_NONE, UL &Ispell, UL ISPELL },
   /*
@@ -1122,7 +1122,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, read messages marked as flagged will not be moved
-  ** from your spool mailbox to your ``$$mbox'' mailbox, or as a result of
+  ** from your spool mailbox to your $$mbox mailbox, or as a result of
   ** a ``$mbox-hook'' command.
   */
   { "locale",		DT_STR,  R_BOTH, UL &Locale, UL "C" },
@@ -1135,7 +1135,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable configures how often (in seconds) mutt should look for
-  ** new mail. Also see the ``$$timeout'' variable.
+  ** new mail. Also see the $$timeout variable.
   */
   { "mailcap_path",	DT_STR,	 R_NONE, UL &MailcapPath, 0 },
   /*
@@ -1214,7 +1214,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls the display of wrapped lines in the internal pager. If set, a
   ** ``+'' marker is displayed at the beginning of wrapped lines. Also see
-  ** the ``$$smart_wrap'' variable.
+  ** the $$smart_wrap variable.
   */
   { "mask",		DT_RX,	 R_NONE, UL &Mask, UL "!^\\.[^.]" },
   /*
@@ -1226,7 +1226,7 @@ struct option_t MuttVars[] = {
   { "mbox",		DT_PATH, R_BOTH, UL &Inbox, UL "~/mbox" },
   /*
   ** .pp
-  ** This specifies the folder into which read mail in your ``$$spoolfile''
+  ** This specifies the folder into which read mail in your $$spoolfile
   ** folder will be appended.
   */
   { "mbox_type",	DT_MAGIC,R_NONE, UL &DefaultMagic, M_MBOX },
@@ -1245,7 +1245,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls the number of lines of context that are given
-  ** when scrolling through menus. (Similar to ``$$pager_context''.)
+  ** when scrolling through menus. (Similar to $$pager_context.)
   */
   { "menu_move_off",	DT_BOOL, R_NONE, OPTMENUMOVEOFF, 1 },
   /*
@@ -1306,14 +1306,14 @@ struct option_t MuttVars[] = {
   ** to switch between MIME and not MIME from mail to mail, set this
   ** variable to ask-no or ask-yes.
   ** .pp
-  ** Also see ``$$forward_decode'' and ``$$mime_forward_decode''.
+  ** Also see $$forward_decode and $$mime_forward_decode.
   */
   { "mime_forward_decode", DT_BOOL, R_NONE, OPTMIMEFORWDECODE, 0 },
   /*
   ** .pp
   ** Controls the decoding of complex MIME messages into text/plain when
-  ** forwarding a message while ``$$mime_forward'' is \fIset\fP. Otherwise
-  ** ``$$forward_decode'' is used instead.
+  ** forwarding a message while $$mime_forward is \fIset\fP. Otherwise
+  ** $$forward_decode is used instead.
   */
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },
   /*
@@ -1357,7 +1357,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not Mutt will move read messages
-  ** from your spool mailbox to your ``$$mbox'' mailbox, or as a result of
+  ** from your spool mailbox to your $$mbox mailbox, or as a result of
   ** a ``$mbox-hook'' command.
   */
 #if defined(USE_IMAP) || defined(USE_POP)
@@ -1382,7 +1382,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is the string displayed in the ``attachment'' menu for
   ** attachments of type message/rfc822.  For a full listing of defined
-  ** printf()-like sequences see the section on ``$$index_format''.
+  ** printf()-like sequences see the section on $$index_format.
   */
   { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
   /*
@@ -1401,7 +1401,7 @@ struct option_t MuttVars[] = {
    ** network will update their progress every \fInet_inc\fP kilobytes.
    ** If set to 0, no progress messages will be displayed.
    ** .pp
-   ** See also ``$$read_inc'' and ``$$write_inc''.
+   ** See also $$read_inc and $$write_inc.
    */
 #endif  
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
@@ -1430,7 +1430,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable controls the format of the one-line message ``status''
   ** displayed before each message in either the internal or an external
-  ** pager.  The valid sequences are listed in the ``$$index_format''
+  ** pager.  The valid sequences are listed in the $$index_format
   ** section.
   */
   { "pager_index_lines",DT_NUM,	 R_PAGER, UL &PagerIndexLines, 0 },
@@ -1462,7 +1462,7 @@ struct option_t MuttVars[] = {
   ** Setting this variable will cause Mutt to always attempt to
   ** cryptographically sign outgoing messages.  This can be overridden
   ** by use of the \fIpgp-menu\fP, when signing is not required or
-  ** encryption is requested as well. If ``$$smime_is_default'' is set,
+  ** encryption is requested as well. If $$smime_is_default is set,
   ** then OpenSSL is used instead to create S/MIME messages and settings can
   ** be overridden by use of the \fIsmime-menu\fP.
   ** (Crypto only)
@@ -1475,7 +1475,7 @@ struct option_t MuttVars[] = {
   ** encrypt outgoing messages.  This is probably only useful in
   ** connection to the \fIsend-hook\fP command.  It can be overridden
   ** by use of the \fIpgp-menu\fP, when encryption is not required or
-  ** signing is requested as well.  IF ``$$smime_is_default'' is set,
+  ** signing is requested as well.  IF $$smime_is_default is set,
   ** then OpenSSL is used instead to create S/MIME messages and
   ** settings can be overridden by use of the \fIsmime-menu\fP.
   ** (Crypto only)
@@ -1513,9 +1513,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If set, automatically PGP or OpenSSL sign replies to messages
   ** which are encrypted. This makes sense in combination with
-  ** ``$$crypt_replyencrypt'', because it allows you to sign all
+  ** $$crypt_replyencrypt, because it allows you to sign all
   ** messages which are automatically encrypted.  This works around
-  ** the problem noted in ``$$crypt_replysign'', that mutt is not able
+  ** the problem noted in $$crypt_replysign, that mutt is not able
   ** to find out whether an encrypted message is also signed.
   ** (Crypto only)
   */
@@ -1573,7 +1573,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable allows you to customize the PGP key selection menu to
-  ** your personal taste. This string is similar to ``$$index_format'', but
+  ** your personal taste. This string is similar to $$index_format, but
   ** has its own set of printf()-like sequences:
   ** .pp
   ** .dl
@@ -1637,7 +1637,7 @@ struct option_t MuttVars[] = {
   ** which consist of more than a single MIME part.  Mutt can be
   ** configured to ask before sending PGP/MIME messages when inline
   ** (traditional) would not work.
-  ** See also: ``$$pgp_mime_auto''.
+  ** See also: $$pgp_mime_auto.
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1659,7 +1659,7 @@ struct option_t MuttVars[] = {
   ** which consist of more than a single MIME part.  Mutt can be
   ** configured to ask before sending PGP/MIME messages when inline
   ** (traditional) would not work.
-  ** See also: ``$$pgp_mime_auto''.
+  ** See also: $$pgp_mime_auto.
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1858,8 +1858,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls the handling of encrypted messages when forwarding a message.
   ** When set, the outer layer of encryption is stripped off.  This
-  ** variable is only used if ``$$mime_forward'' is \fIset\fP and
-  ** ``$$mime_forward_decode'' is \fIunset\fP.
+  ** variable is only used if $$mime_forward is \fIset\fP and
+  ** $$mime_forward_decode is \fIunset\fP.
   ** (PGP only)
   */
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
@@ -2029,7 +2029,7 @@ struct option_t MuttVars[] = {
    ** to remote servers be encrypted. Furthermore it will attempt to
    ** negotiate TLS even if the server does not advertise the capability,
    ** since it would otherwise have to abort the connection anyway. This
-   ** option supersedes ``$$ssl_starttls''.
+   ** option supersedes $$ssl_starttls.
    */
   { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
   /*
@@ -2114,7 +2114,7 @@ struct option_t MuttVars[] = {
   ** tagged messages Mutt will concatenate the messages and will pipe them
   ** as a single folder.  When set, Mutt will pipe the messages one by one.
   ** In both cases the messages are piped in the current sorted order,
-  ** and the ``$$pipe_sep'' separator is added after each message.
+  ** and the $$pipe_sep separator is added after each message.
   */
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },
   /*
@@ -2206,7 +2206,7 @@ struct option_t MuttVars[] = {
   { "post_indent_string",DT_STR, R_NONE, UL &PostIndentString, UL "" },
   /*
   ** .pp
-  ** Similar to the ``$$attribution'' variable, Mutt will append this
+  ** Similar to the $$attribution variable, Mutt will append this
   ** string after the inclusion of a message which is being replied to.
   */
   { "post_indent_str",  DT_SYN,  R_NONE, UL "post_indent_string", 0 },
@@ -2215,16 +2215,16 @@ struct option_t MuttVars[] = {
   { "postpone",		DT_QUAD, R_NONE, OPT_POSTPONE, M_ASKYES },
   /*
   ** .pp
-  ** Controls whether or not messages are saved in the ``$$postponed''
+  ** Controls whether or not messages are saved in the $$postponed
   ** mailbox when you elect not to send immediately. Also see the
-  ** ``$$recall'' variable.
+  ** $$recall variable.
   */
   { "postponed",	DT_PATH, R_NONE, UL &Postponed, UL "~/postponed" },
   /*
   ** .pp
   ** Mutt allows you to indefinitely ``$postpone sending a message'' which
   ** you are editing.  When you choose to postpone a message, Mutt saves it
-  ** in the mailbox specified by this variable.  Also see the ``$$postpone''
+  ** in the mailbox specified by this variable.  Also see the $$postpone
   ** variable.
   */
 #ifdef USE_SOCKET
@@ -2288,7 +2288,7 @@ struct option_t MuttVars[] = {
   { "prompt_after",	DT_BOOL, R_NONE, OPTPROMPTAFTER, 1 },
   /*
   ** .pp
-  ** If you use an \fIexternal\fP ``$$pager'', setting this variable will
+  ** If you use an \fIexternal\fP $$pager, setting this variable will
   ** cause Mutt to prompt you for a command when the pager exits rather
   ** than returning to the index menu.  If unset, Mutt will return to the
   ** index menu when the external pager exits.
@@ -2318,9 +2318,9 @@ struct option_t MuttVars[] = {
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
+  ** For an explanation of `soft-fill', see the $$index_format documentation.
   ** .pp
-  ** * = can be optionally printed if nonzero, see the ``$$status_format'' documentation.
+  ** * = can be optionally printed if nonzero, see the $$status_format documentation.
   */
   { "quit",		DT_QUAD, R_NONE, OPT_QUIT, M_YES },
   /*
@@ -2343,7 +2343,7 @@ struct option_t MuttVars[] = {
   ** the last character from the matched text and recursively reapplying
   ** the regular expression until it fails to produce a match.
   ** .pp
-  ** Match detection may be overridden by the ``$smileys'' regular expression.
+  ** Match detection may be overridden by the $$smileys regular expression.
   */
   { "read_inc",		DT_NUM,	 R_NONE, UL &ReadInc, 10 },
   /*
@@ -2358,7 +2358,7 @@ struct option_t MuttVars[] = {
   ** When set to 0, only a single message will appear before the reading
   ** the mailbox.
   ** .pp
-  ** Also see the ``$$write_inc'' variable and the ``Tuning'' section of the
+  ** Also see the $$write_inc variable and the ``Tuning'' section of the
   ** manual for performance considerations.
   */
   { "read_only",	DT_BOOL, R_NONE, OPTREADONLY, 0 },
@@ -2380,7 +2380,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not Mutt recalls postponed messages
-  ** when composing a new message.  Also see ``$$postponed''.
+  ** when composing a new message.  Also see $$postponed.
   ** .pp
   ** Setting this variable to ``yes'' is not generally useful, and thus not
   ** recommended.
@@ -2393,8 +2393,8 @@ struct option_t MuttVars[] = {
   ** your messages, but another way to do this is using the ``$my_hdr''
   ** command to create a \fIBcc:\fP field with your email address in it.)
   ** .pp
-  ** The value of \fI$$record\fP is overridden by the ``$$force_name'' and
-  ** ``$$save_name'' variables, and the ``$fcc-hook'' command.
+  ** The value of \fI$$record\fP is overridden by the $$force_name and
+  ** $$save_name variables, and the ``$fcc-hook'' command.
   */
   { "reply_regexp",	DT_RX,	 R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
   /*
@@ -2464,10 +2464,10 @@ struct option_t MuttVars[] = {
   { "reverse_realname",	DT_BOOL, R_BOTH, OPTREVREAL, 1 },
   /*
   ** .pp
-  ** This variable fine-tunes the behaviour of the $reverse_name feature.
+  ** This variable fine-tunes the behaviour of the $$reverse_name feature.
   ** When it is set, mutt will use the address from incoming messages as-is,
   ** possibly including eventual real names.  When it is unset, mutt will
-  ** override any such real names with the setting of the $realname variable.
+  ** override any such real names with the setting of the $$realname variable.
   */
   { "rfc2047_parameters", DT_BOOL, R_NONE, OPTRFC2047PARAMS, 0 },
   /*
@@ -2491,14 +2491,14 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, mutt will take the sender's full address when choosing a
-  ** default folder for saving a mail. If ``$$save_name'' or ``$$force_name''
+  ** default folder for saving a mail. If $$save_name or $$force_name
   ** is set too, the selection of the fcc folder will be changed as well.
   */
   { "save_empty",	DT_BOOL, R_NONE, OPTSAVEEMPTY, 1 },
   /*
   ** .pp
   ** When unset, mailboxes which contain no saved messages will be removed
-  ** when closed (the exception is ``$$spoolfile'' which is never removed).
+  ** when closed (the exception is $$spoolfile which is never removed).
   ** If set, mailboxes are never removed.
   ** .pp
   ** \fBNote:\fP This only applies to mbox and MMDF folders, Mutt does not
@@ -2508,7 +2508,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls the size of the history saved in the
-  ** ``$$history_file'' file.
+  ** $$history_file file.
   */
   { "save_name",	DT_BOOL, R_NONE, OPTSAVENAME, 0 },
   /*
@@ -2516,19 +2516,19 @@ struct option_t MuttVars[] = {
   ** This variable controls how copies of outgoing messages are saved.
   ** When set, a check is made to see if a mailbox specified by the
   ** recipient address exists (this is done by searching for a mailbox in
-  ** the ``$$folder'' directory with the \fIusername\fP part of the
+  ** the $$folder directory with the \fIusername\fP part of the
   ** recipient address).  If the mailbox exists, the outgoing message will
   ** be saved to that mailbox, otherwise the message is saved to the
-  ** ``$$record'' mailbox.
+  ** $$record mailbox.
   ** .pp
-  ** Also see the ``$$force_name'' variable.
+  ** Also see the $$force_name variable.
   */
   { "score", 		DT_BOOL, R_NONE, OPTSCORE, 1 },
   /*
   ** .pp
   ** When this variable is \fIunset\fP, scoring is turned off.  This can
   ** be useful to selectively disable scoring for certain folders when the
-  ** ``$$score_threshold_delete'' variable and friends are used.
+  ** $$score_threshold_delete variable and friends are used.
   **
   */
   { "score_threshold_delete", DT_NUM, R_NONE, UL &ScoreThresholdDelete, UL -1 },
@@ -2558,14 +2558,14 @@ struct option_t MuttVars[] = {
   ** .pp
   ** A colon-delimited list of character sets for outgoing messages. Mutt will use the
   ** first character set into which the text can be converted exactly.
-  ** If your ``$$charset'' is not iso-8859-1 and recipients may not
+  ** If your $$charset is not iso-8859-1 and recipients may not
   ** understand UTF-8, it is advisable to include in the list an
   ** appropriate widely used standard character set (such as
   ** iso-8859-2, koi8-r or iso-2022-jp) either instead of or after
   ** "iso-8859-1".
   ** .pp
   ** In case the text cannot be converted into one of these exactly,
-  ** mutt uses ``$$charset'' as a fallback.
+  ** mutt uses $$charset as a fallback.
   */
   { "sendmail",		DT_PATH, R_NONE, UL &Sendmail, UL SENDMAIL " -oem -oi" },
   /*
@@ -2577,7 +2577,7 @@ struct option_t MuttVars[] = {
   { "sendmail_wait",	DT_NUM,  R_NONE, UL &SendmailWait, 0 },
   /*
   ** .pp
-  ** Specifies the number of seconds to wait for the ``$$sendmail'' process
+  ** Specifies the number of seconds to wait for the $$sendmail process
   ** to finish before giving up and putting delivery in the background.
   ** .pp
   ** Mutt interprets the value of this variable as follows:
@@ -2601,7 +2601,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, a line containing ``-- '' will be inserted before your
-  ** ``$$signature''.  It is \fBstrongly\fP recommended that you not unset
+  ** $$signature.  It is \fBstrongly\fP recommended that you not unset
   ** this variable unless your ``signature'' contains just your name.  The
   ** reason for this is because many software packages use ``-- \n'' to
   ** detect your signature.  For example, Mutt has the ability to highlight
@@ -2642,13 +2642,13 @@ struct option_t MuttVars[] = {
   ** Controls the display of lines longer than the screen width in the
   ** internal pager. If set, long lines are wrapped at a word boundary.  If
   ** unset, lines are simply wrapped at the screen edge. Also see the
-  ** ``$$markers'' variable.
+  ** $$markers variable.
   */
   { "smileys",		DT_RX,	 R_PAGER, UL &Smileys, UL "(>From )|(:[-^]?[][)(><}{|/DP])" },
   /*
   ** .pp
   ** The \fIpager\fP uses this variable to catch some common false
-  ** positives of ``$$quote_regexp'', most notably smileys in the beginning
+  ** positives of $$quote_regexp, most notably smileys in the beginning
   ** of a line
   */
   { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
@@ -2680,7 +2680,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies the password for your SMTP account.  If \fIunset\fP, Mutt will
   ** prompt you for your password when you first send mail via SMTP.
-  ** See ``$smtp_url'' to configure mutt to send mail via SMTP.
+  ** See $$smtp_url to configure mutt to send mail via SMTP.
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc even
   ** if you are the only one who can read the file.
@@ -2693,7 +2693,7 @@ struct option_t MuttVars[] = {
   ** .pp
   **   smtp[s]://[user[:pass]@]host[:port]/
   ** .pp
-  ** Setting this variable overrides the value of the ``$$sendmail''
+  ** Setting this variable overrides the value of the $$sendmail
   ** variable.
   */
 #endif /* USE_SMTP */
@@ -2736,7 +2736,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When sorting by threads, this variable controls how threads are sorted
   ** in relation to other threads, and how the branches of the thread trees
-  ** are sorted.  This can be set to any value that ``$$sort'' can, except
+  ** are sorted.  This can be set to any value that $$sort can, except
   ** threads (in that case, mutt will just use date-sent).  You can also
   ** specify the last- prefix in addition to the reverse- prefix, but last-
   ** must come after reverse-.  The last- prefix causes messages to be
@@ -2744,7 +2744,7 @@ struct option_t MuttVars[] = {
   ** the rest of sort_aux as an ordering.  For instance, set sort_aux=last-
   ** date-received would mean that if a new message is received in a
   ** thread, that thread becomes the last one displayed (or the first, if
-  ** you have set sort=reverse-threads.) Note: For reversed ``$$sort''
+  ** you have set sort=reverse-threads.) Note: For reversed $$sort
   ** order $$sort_aux is reversed again (which is not the right thing to do,
   ** but kept to not break any existing configuration setting).
   */
@@ -2768,21 +2768,21 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable is only useful when sorting by threads with
-  ** ``$$strict_threads'' unset.  In that case, it changes the heuristic
+  ** $$strict_threads unset.  In that case, it changes the heuristic
   ** mutt uses to thread messages by subject.  With sort_re set, mutt will
   ** only attach a message as the child of another message by subject if
   ** the subject of the child message starts with a substring matching the
-  ** setting of ``$$reply_regexp''.  With sort_re unset, mutt will attach
+  ** setting of $$reply_regexp.  With sort_re unset, mutt will attach
   ** the message whether or not this is the case, as long as the
-  ** non-``$$reply_regexp'' parts of both messages are identical.
+  ** non-$$reply_regexp parts of both messages are identical.
   */
   { "spam_separator",   DT_STR, R_NONE, UL &SpamSep, UL "," },
   /*
   ** .pp
-  ** ``$spam_separator'' controls what happens when multiple spam headers
+  ** This variable controls what happens when multiple spam headers
   ** are matched: if unset, each successive header will overwrite any
   ** previous matches value for the spam label. If set, each successive
-  ** match will append to the previous, using ``$spam_separator'' as a
+  ** match will append to the previous, using this variable's value as a
   ** separator.
   */
   { "spoolfile",	DT_PATH, R_NONE, UL &Spoolfile, 0 },
@@ -2797,7 +2797,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls the characters used by the "%r" indicator in
-  ** ``$$status_format''. The first character is used when the mailbox is
+  ** $$status_format. The first character is used when the mailbox is
   ** unchanged. The second is used when the mailbox has been changed, and
   ** it needs to be resynchronized. The third is used if the mailbox is in
   ** read-only mode, or if the mailbox will not be written when exiting
@@ -2811,7 +2811,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls the format of the status line displayed in the \fIindex\fP
-  ** menu.  This string is similar to ``$$index_format'', but has its own
+  ** menu.  This string is similar to $$index_format, but has its own
   ** set of printf()-like sequences:
   ** .pp
   ** .dl
@@ -2842,7 +2842,7 @@ struct option_t MuttVars[] = {
   ** .dt %*X .dd soft-fill with character "X" as pad
   ** .de
   ** .pp
-  ** For an explanation of `soft-fill', see the ``$$index_format'' documentation.
+  ** For an explanation of `soft-fill', see the $$index_format documentation.
   ** .pp
   ** * = can be optionally printed if nonzero
   ** .pp
@@ -2891,12 +2891,12 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set, threading will only make use of the ``In-Reply-To'' and
-  ** ``References'' fields when you ``$$sort'' by message threads.  By
+  ** ``References'' fields when you $$sort by message threads.  By
   ** default, messages with the same subject are grouped together in
   ** ``pseudo threads.''. This may not always be desirable, such as in a
   ** personal mailbox where you might have several unrelated messages with
   ** the subject ``hi'' which will get grouped together. See also
-  ** ``$$sort_re'' for a less drastic way of controlling this
+  ** $$sort_re for a less drastic way of controlling this
   ** behaviour.
   */
   { "suspend",		DT_BOOL, R_NONE, OPTSUSPEND, 1 },
@@ -2945,9 +2945,9 @@ struct option_t MuttVars[] = {
   { "time_inc",		DT_NUM,	 R_NONE, UL &TimeInc, 0 },
   /*
   ** .pp
-  ** Along with ``$read_inc'', ``$write_inc'', and ``$net_inc'', this
+  ** Along with $$read_inc, $$write_inc, and $$net_inc, this
   ** variable controls the frequency with which progress updates are
-  ** displayed. It suppresses updates less than ``$time_inc'' milliseconds
+  ** displayed. It suppresses updates less than time_inc milliseconds
   ** apart. This can improve throughput on systems with slow terminals,
   ** or when running mutt on a remote system.
   */
@@ -3009,27 +3009,27 @@ struct option_t MuttVars[] = {
   ** of sendmail which supports the -B8BITMIME flag (such as sendmail
   ** 8.8.x) or you may not be able to send mail.
   ** .pp
-  ** When \fIset\fP, Mutt will invoke ``$$sendmail'' with the -B8BITMIME
+  ** When \fIset\fP, Mutt will invoke $$sendmail with the -B8BITMIME
   ** flag when sending 8-bit messages to enable ESMTP negotiation.
   */
   { "use_domain",	DT_BOOL, R_NONE, OPTUSEDOMAIN, 1 },
   /*
   ** .pp
   ** When set, Mutt will qualify all local addresses (ones without the
-  ** @host portion) with the value of ``$$hostname''.  If \fIunset\fP, no
+  ** @host portion) with the value of $$hostname.  If \fIunset\fP, no
   ** addresses will be qualified.
   */
   { "use_envelope_from", 	DT_BOOL, R_NONE, OPTENVFROM, 0 },
   /*
    ** .pp
    ** When \fIset\fP, mutt will set the \fIenvelope\fP sender of the message.
-   ** If ``$$envelope_from_address'' is set, it will be used as the sender
+   ** If $$envelope_from_address is set, it will be used as the sender
    ** address. If not, mutt will attempt to derive the sender from the
    ** "From:" header.
    ** .pp
    ** Note that this information is passed to sendmail command using the
    ** "-f" command line switch. Therefore setting this option is not useful
-   ** if the ``$$sendmail'' variable already contains "-f" or if the
+   ** if the $$sendmail variable already contains "-f" or if the
    ** executable pointed to by $$sendmail doesn't support the "-f" switch.
    */
   { "envelope_from",	DT_SYN,  R_NONE, UL "use_envelope_from", 0 },
@@ -3112,7 +3112,7 @@ struct option_t MuttVars[] = {
   { "wrapmargin",	DT_NUM,	 R_PAGER, UL &Wrap, 0 },
   /*
   ** .pp
-  ** (DEPRECATED) Equivalent to setting $wrap with a negative value.
+  ** (DEPRECATED) Equivalent to setting $$wrap with a negative value.
   */
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   /*
@@ -3121,14 +3121,14 @@ struct option_t MuttVars[] = {
   ** \fIwrite_inc\fP messages to indicate progress.  If set to 0, only a
   ** single message will be displayed before writing a mailbox.
   ** .pp
-  ** Also see the ``$$read_inc'' variable.
+  ** Also see the $$read_inc variable.
   */
   { "write_bcc",	DT_BOOL, R_NONE, OPTWRITEBCC, 1},
   /*
   ** .pp
   ** Controls whether mutt writes out the Bcc header when preparing
   ** messages to be sent.  Exim users may wish to unset this. If mutt
-  ** is set to deliver directly via SMTP (see ``$$smtp_url''), this
+  ** is set to deliver directly via SMTP (see $$smtp_url), this
   ** option does nothing: mutt will never write out the BCC header
   ** in this case.
   */

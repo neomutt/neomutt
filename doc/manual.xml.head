@@ -2281,6 +2281,7 @@ is ``*'', <emphasis>all entries</emphasis> on <literal>alternates</literal> will
 <sect1 id="lists">
 <title>Mailing lists</title>
 
+<anchor id="subscribe"/>
 <para>
 <literallayout>
 Usage: <literal>&lsqb;un&rsqb;lists</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
