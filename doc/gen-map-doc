@@ -23,18 +23,19 @@ while (<STDIN>) {
   }
   if ($map and /{\s*"(.+)"\s*,\s*(\w+)\s*,\s*(?:"([^"]+)"|(\w+))\s*}/) {
     my ($function, $op, $binding) = ($1, $2, $3 || $4);
-    $binding =~ s/ /Space/;
-    $binding =~ s/^\\033/ESC /;
-    $binding =~ s/^\\010/Backspace/;
-    $binding =~ s/^\\(0\d+)$/'^'.chr(64+oct($1))/e;
-    $binding =~ s/^\\(0\d+)(.)/'^'.chr(64+oct($1)) ." $2"/e;
-    $binding =~ s/<(.+)>/$1/;
     $binding =~ s/&/&amp;/;
+    # for <key>, try CamelCasing into <Key>
+    $binding =~ s/<(.)(.+)>/&lt;\U$1\E$2&gt;/;
     $binding =~ s/</&lt;/;
     $binding =~ s/>/&gt;/;
-    $binding =~ s/\\t/TAB/;
-    $binding =~ s/M_ENTER_S/RET/;
-    $binding =~ s/NULL/not bound/;
+    $binding =~ s/ /&lt;Space&gt;/;
+    $binding =~ s/^\\033/Esc /;
+    $binding =~ s/^\\010/&lt;Backspace&gt;/;
+    $binding =~ s/^\\(0\d+)$/'^'.chr(64+oct($1))/e;
+    $binding =~ s/^\\(0\d+)(.)/'^'.chr(64+oct($1)) ." $2"/e;
+    $binding =~ s/\\t/&lt;Tab&gt;/;
+    $binding =~ s/M_ENTER_S/&lt;Return&gt;/;
+    $binding =~ s/NULL//;
     die "unknown key $binding" if $binding =~ /\\[^\\]|<|>/;
     die "unknown OP $op" unless $OPS{$op};
     $MAP{$map} .= "<row><entry><literal>&lt;$function&gt;</literal></entry><entry>$binding</entry><entry>$OPS{$op}</entry></row>\n";
