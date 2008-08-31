@@ -1,3 +1,39 @@
+2008-08-30 23:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (996e4e2d2855)
+
+	* doc/manual.xml.head, init.h: Manual: use $variable syntax, only
+	quote non-variable links
+
+	* doc/manual.xml.head: Manual: Various fixes+improvements in chapters
+	1+2
+
+	* doc/gen-map-doc, doc/makedoc.c, doc/manual.xml.head, init.h: Manual:
+	Layout functions as <function-name>, s/ESC/Esc/ for consistency
+
+	* doc/devel-notes.txt, doc/makedoc.c: makedoc: Add support for
+	monospace fonts with \fC...\fP
+
+	* doc/manual.xml.head: Manual: trim trailing whitespace
+
+	* doc/manual.xml.head: Manual: Fix processing warnings by manually
+	assigning missing id attributes
+
+	* doc/manual.xml.head: Manual: Add a section on mutt core concepts as
+	introduction
+
+2008-08-30 19:59 -0700  Brendan Cully  <brendan@kublai.com>  (12a6de725483)
+
+	* curs_lib.c, enter.c, flags.c, keymap.c, menu.c: Rework timeout
+	handling to support keepalive in the line editor. Also allow
+	keepalives of less than $timeout without returning before $timeout,
+	so people who don't want to be notified of new mail don't have to
+	be.
+
+2008-08-29 23:10 -0700  Rado Smiljanic  <regrado@web.de>  (4f67fc336986)
+
+	* curs_main.c, keymap.c, menu.c, pager.c: Make curses timeout the
+	minimum of $timeout and $imap_keepalive. Do keepalive in km_dokey
+	instead of directly in menu. Closes #2747.
+
 2008-08-29 22:40 -0700  Brendan Cully  <brendan@kublai.com>  (e37ae3f79ec0)
 
 	* imap/imap_private.h: Dead code
