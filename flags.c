@@ -331,7 +331,7 @@ int mutt_change_flag (HEADER *h, int bf)
 
   event = mutt_getch();
   i = event.ch;
-  if (i == -1)
+  if (i < 0)
   {
     CLEARLINE (LINES-1);
     return (-1);

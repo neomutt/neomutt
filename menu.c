@@ -796,7 +796,7 @@ static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
 
   ch = mutt_getch ();
 
-  if (ch.ch == -1)
+  if (ch.ch < 0)
   {
     *ip = -1;
     return 0;

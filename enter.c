@@ -603,7 +603,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    event_t event;
 	    /*ADDCH (LastKey);*/
 	    event = mutt_getch ();
-	    if (event.ch != -1)
+	    if (event.ch >= 0)
 	    {
 	      LastKey = event.ch;
 	      goto self_insert;

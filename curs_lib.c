@@ -81,6 +81,7 @@ event_t mutt_getch (void)
 {
   int ch;
   event_t err = {-1, OP_NULL }, ret;
+  event_t timeout = {-2, OP_NULL};
 
   if (!option(OPTUNBUFFEREDINPUT) && UngetCount)
     return (KeyEvent[--UngetCount]);
@@ -107,7 +108,7 @@ event_t mutt_getch (void)
       endwin ();
       exit (1);
     }
-    return err;
+    return timeout;
   }
 
   if ((ch & 0x80) && option (OPTMETAKEY))
@@ -228,7 +229,7 @@ int mutt_yesorno (const char *msg, int def)
     ch = mutt_getch ();
     if (CI_is_return (ch.ch))
       break;
-    if (ch.ch == -1)
+    if (ch.ch < 0)
     {
       def = -1;
       break;
@@ -556,7 +557,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   mutt_refresh ();
 
   ch = mutt_getch();
-  if (ch.ch == -1)
+  if (ch.ch < 0)
   {
     CLEARLINE (LINES-1);
     return (-1);
@@ -638,7 +639,7 @@ int mutt_multi_choice (char *prompt, char *letters)
   {
     mutt_refresh ();
     ch  = mutt_getch ();
-    if (ch.ch == -1 || CI_is_return (ch.ch))
+    if (ch.ch < 0 || CI_is_return (ch.ch))
     {
       choice = -1;
       break;
