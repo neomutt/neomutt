@@ -4,5 +4,4 @@
   <xsl:param name="section.autolabel" select="1"/>
   <xsl:param name="use.id.as.filename" select="1"/>
   <xsl:param name="chunk.section.depth" select="0"/>
-  <xsl:param name="toc.section.depth" select="1"/>
 </xsl:stylesheet>  
