@@ -43,89 +43,49 @@ co-developed the original MIME parsing code back in the ELM-ME days.
 <para>
 The following people have been very helpful to the development of Mutt:
 
-<simplelist>
-<member>Vikas Agnihotri <email>vikasa@writeme.com</email>,</member>
-
-<member>Francois Berjon <email>Francois.Berjon@aar.alcatel-alsthom.fr</email>,</member>
-
-<member>Aric Blumer <email>aric@fore.com</email>,</member>
-
-<member>John Capo <email>jc@irbs.com</email>,</member>
-
-<member>David Champion <email>dgc@uchicago.edu</email>,</member>
-
-<member>Brendan Cully <email>brendan@kublai.com</email>,</member>
-
-<member>Liviu Daia <email>daia@stoilow.imar.ro</email>,</member>
-
-<member>Thomas E. Dickey <email>dickey@herndon4.his.com</email>,</member>
-
-<member>David DeSimone <email>fox@convex.hp.com</email>,</member>
-
-<member>Nickolay N. Dudorov <email>nnd@wint.itfs.nsk.su</email>,</member>
-
-<member>Ruslan Ermilov <email>ru@freebsd.org</email>,</member>
-
-<member>Edmund Grimley Evans <email>edmundo@rano.org</email>,</member>
-
-<member>Michael Finken <email>finken@conware.de</email>,</member>
-
-<member>Sven Guckes <email>guckes@math.fu-berlin.de</email>,</member>
-
-<member>Lars Hecking <email>lhecking@nmrc.ie</email>,</member>
-
-<member>Mark Holloman <email>holloman@nando.net</email>,</member>
-
-<member>Andreas Holzmann <email>holzmann@fmi.uni-passau.de</email>,</member>
-
-<member>Marco d'Itri <email>md@linux.it</email>,</member>
-
-<member>Bj&ouml;rn Jacke <email>bjacke@suse.com</email>,</member>
-
-<member>Byrial Jensen <email>byrial@image.dk</email>,</member>
-
-<member>David Jeske <email>jeske@igcom.net</email>,</member>
-
-<member>Christophe Kalt <email>kalt@hugo.int-evry.fr</email>,</member>
-
-<member>Tommi Komulainen <email>Tommi.Komulainen@iki.fi</email>,</member>
-
-<member>Felix von Leitner (a.k.a ``Fefe'') <email>leitner@math.fu-berlin.de</email>,</member>
-
-<member>Brandon Long <email>blong@fiction.net</email>,</member>
-
-<member>Jimmy M&auml;kel&auml; <email>jmy@flashback.net</email>,</member>
-
-<member>Lars Marowsky-Bree <email>lmb@pointer.in-minden.de</email>,</member>
-
-<member>Thomas ``Mike'' Michlmayr <email>mike@cosy.sbg.ac.at</email>,</member>
-
-<member>Andrew W. Nosenko <email>awn@bcs.zp.ua</email>,</member>
-
-<member>David O'Brien <email>obrien@Nuxi.cs.ucdavis.edu</email>,</member>
-
-<member>Clint Olsen <email>olsenc@ichips.intel.com</email>,</member>
-
-<member>Park Myeong Seok <email>pms@romance.kaist.ac.kr</email>,</member>
-
-<member>Thomas Parmelan <email>tom@ankh.fr.eu.org</email>,</member>
-
-<member>Ollivier Robert <email>roberto@keltia.freenix.fr</email>,</member>
-
-<member>Thomas Roessler <email>roessler@does-not-exist.org</email>,</member>
-
-<member>Roland Rosenfeld <email>roland@spinnaker.de</email>,</member>
-
-<member>TAKIZAWA Takashi <email>taki@luna.email.ne.jp</email>,</member>
-
-<member>Allain Thivillon <email>Allain.Thivillon@alma.fr</email>,</member>
-
-<member>Gero Treuner <email>gero@70t.de</email>,</member>
-
-<member>Vsevolod Volkov <email>vvv@lucky.net</email>,</member>
-
-<member>Ken Weinert <email>kenw@ihs.com</email></member>
-</simplelist>
+<itemizedlist>
+<listitem><para>Vikas Agnihotri <email>vikasa@writeme.com</email></para></listitem>
+<listitem><para>Francois Berjon <email>Francois.Berjon@aar.alcatel-alsthom.fr</email></para></listitem>
+<listitem><para>Aric Blumer <email>aric@fore.com</email></para></listitem>
+<listitem><para>John Capo <email>jc@irbs.com</email></para></listitem>
+<listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
+<listitem><para>Brendan Cully <email>brendan@kublai.com</email></para></listitem>
+<listitem><para>Liviu Daia <email>daia@stoilow.imar.ro</email></para></listitem>
+<listitem><para>Thomas E. Dickey <email>dickey@herndon4.his.com</email></para></listitem>
+<listitem><para>David DeSimone <email>fox@convex.hp.com</email></para></listitem>
+<listitem><para>Nickolay N. Dudorov <email>nnd@wint.itfs.nsk.su</email></para></listitem>
+<listitem><para>Ruslan Ermilov <email>ru@freebsd.org</email></para></listitem>
+<listitem><para>Edmund Grimley Evans <email>edmundo@rano.org</email></para></listitem>
+<listitem><para>Michael Finken <email>finken@conware.de</email></para></listitem>
+<listitem><para>Sven Guckes <email>guckes@math.fu-berlin.de</email></para></listitem>
+<listitem><para>Lars Hecking <email>lhecking@nmrc.ie</email></para></listitem>
+<listitem><para>Mark Holloman <email>holloman@nando.net</email></para></listitem>
+<listitem><para>Andreas Holzmann <email>holzmann@fmi.uni-passau.de</email></para></listitem>
+<listitem><para>Marco d'Itri <email>md@linux.it</email></para></listitem>
+<listitem><para>Bj&ouml;rn Jacke <email>bjacke@suse.com</email></para></listitem>
+<listitem><para>Byrial Jensen <email>byrial@image.dk</email></para></listitem>
+<listitem><para>David Jeske <email>jeske@igcom.net</email></para></listitem>
+<listitem><para>Christophe Kalt <email>kalt@hugo.int-evry.fr</email></para></listitem>
+<listitem><para>Tommi Komulainen <email>Tommi.Komulainen@iki.fi</email></para></listitem>
+<listitem><para>Felix von Leitner (a.k.a ``Fefe'') <email>leitner@math.fu-berlin.de</email></para></listitem>
+<listitem><para>Brandon Long <email>blong@fiction.net</email></para></listitem>
+<listitem><para>Jimmy M&auml;kel&auml; <email>jmy@flashback.net</email></para></listitem>
+<listitem><para>Lars Marowsky-Bree <email>lmb@pointer.in-minden.de</email></para></listitem>
+<listitem><para>Thomas ``Mike'' Michlmayr <email>mike@cosy.sbg.ac.at</email></para></listitem>
+<listitem><para>Andrew W. Nosenko <email>awn@bcs.zp.ua</email></para></listitem>
+<listitem><para>David O'Brien <email>obrien@Nuxi.cs.ucdavis.edu</email></para></listitem>
+<listitem><para>Clint Olsen <email>olsenc@ichips.intel.com</email></para></listitem>
+<listitem><para>Park Myeong Seok <email>pms@romance.kaist.ac.kr</email></para></listitem>
+<listitem><para>Thomas Parmelan <email>tom@ankh.fr.eu.org</email></para></listitem>
+<listitem><para>Ollivier Robert <email>roberto@keltia.freenix.fr</email></para></listitem>
+<listitem><para>Thomas Roessler <email>roessler@does-not-exist.org</email></para></listitem>
+<listitem><para>Roland Rosenfeld <email>roland@spinnaker.de</email></para></listitem>
+<listitem><para>TAKIZAWA Takashi <email>taki@luna.email.ne.jp</email></para></listitem>
+<listitem><para>Allain Thivillon <email>Allain.Thivillon@alma.fr</email></para></listitem>
+<listitem><para>Gero Treuner <email>gero@70t.de</email></para></listitem>
+<listitem><para>Vsevolod Volkov <email>vvv@lucky.net</email></para></listitem>
+<listitem><para>Ken Weinert <email>kenw@ihs.com</email></para></listitem>
+</itemizedlist>
 </para>
 
 </sect1>
