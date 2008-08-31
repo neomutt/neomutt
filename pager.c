@@ -1981,8 +1981,14 @@ search_next:
 
 	    if (i < lastLine)
 	      topline = i;
-	    else
+	    else if (!option (OPTWRAPSEARCH))
 	      mutt_error _("Not found.");
+	    else
+	    {
+	      mutt_message _("Search wrapped to top.");
+	      topline = 1;
+	      goto search_next;
+	    }
 	  }
 	  else
 	  {
@@ -1997,8 +2003,14 @@ search_next:
 
 	    if (i >= 0)
 	      topline = i;
-	    else
+	    else if (!option (OPTWRAPSEARCH))
 	      mutt_error _("Not found.");
+	    else
+	    {
+	      mutt_message _("Search wrapped to bottom.");
+	      topline = lastLine - 1;
+	      goto search_next;
+	    }
 	  }
 
 	  if (lineInfo[topline].search_cnt > 0)

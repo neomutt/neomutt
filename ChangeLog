@@ -1,3 +1,62 @@
+2008-08-31 23:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (f4b10e6b415c)
+
+	* doc/chunk.xsl, doc/html.xsl: Backout [e5610347fb3f] for further
+	discussion
+
+2008-08-31 21:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (581037c15012)
+
+	* init.h: Manual: Fix trailing \ for $preconnect
+
+2008-08-31 21:12 +0200  Rocco Rutte  <pdmef@gmx.net>  (6d80c3d5b7aa)
+
+	* doc/makedoc.c: makedoc: Fix fall-through in [c11ce7feaa3e]
+
+2008-08-31 20:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (03d1344f7ea2)
+
+	* doc/gen-map-doc: Manual: Harmonize generated function mappings with
+	the rest of the manual. This includes named keys such as "<Return>",
+	attempts to use CamelCase and leaves the key column for unbound
+	functions empty so they're visually easier to spot.
+
+2008-08-31 20:12 +0200  Rocco Rutte  <pdmef@gmx.net>  (937c3976df5a)
+
+	* doc/manual.xml.head, init.h: Manual: Many content+markup
+	improvements for option documentation
+
+2008-08-31 19:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (df555876d480)
+
+	* doc/makedoc.c: makedoc: Also replace | and ^ by entities in XML
+	output
+
+2008-08-31 18:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (c11ce7feaa3e)
+
+	* doc/makedoc.c: makedoc: Escape <>& in <screen/> environments
+
+2008-08-31 15:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (4cc92c30543b)
+
+	* doc/makedoc.c, doc/manual.xml.head, doc/manual.xml.tail, init.h:
+	Manual: Use <quote/> quoting for DocBook rather than ``''. All
+	quotes characters are now rendered to Unicode quote chars in the
+	HTML output (as <xref/> does, too) but still " for manual.txt.
+
+2008-08-31 14:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (e5610347fb3f)
+
+	* doc/chunk.xsl, doc/html.xsl: Manual: Limit toc section depth to 1
+	This only lists sect1 items and prevents variables from being shown
+	making it unusable.
+
+2008-08-31 14:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (15a831b84d46)
+
+	* doc/manual.xml.tail: Manual: use itemizedlist for acknowledgements
+	DocBook XSL renders simplelist to a html table which is
+	inappropriate.
+
+2008-08-30 20:21 -0700  Brendan Cully  <brendan@kublai.com>  (c2af57b1e7ee)
+
+	* ChangeLog, mutt_ssl_gnutls.c: Make gnutls read function more robust
+	against interruptions. Signals should be masked off anyway, but see
+	#3074.
+
 2008-08-30 23:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (996e4e2d2855)
 
 	* doc/manual.xml.head, init.h: Manual: use $variable syntax, only

@@ -3205,10 +3205,10 @@ struct option_t MuttVars[] = {
   { "wrap_search",	DT_BOOL, R_NONE, OPTWRAPSEARCH, 1 },
   /*
   ** .pp
-  ** Controls whether searches wrap around the end of the menu.
+  ** Controls whether searches wrap around the end.
   ** .pp
   ** When \fIset\fP, searches will wrap around the first (or last) item. When
-  ** \fIunset\fP, searches will not wrap.
+  ** \fIunset\fP, incremental searches will not wrap.
   */
   { "wrapmargin",	DT_NUM,	 R_PAGER, UL &Wrap, 0 },
   /*
