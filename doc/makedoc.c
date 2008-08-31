@@ -600,12 +600,14 @@ static int sgml_fputc (int c, FILE *out, int full)
 {
   switch (c)
   {
+    /* the bare minimum for escaping */
     case '<': return fputs ("&lt;", out);
     case '>': return fputs ("&gt;", out);
+    case '&': return fputs ("&amp;", out);
+    /* map to entities, fall-through to raw if !full */
     case '$': if (full) return fputs ("&dollar;", out);
     case '_': if (full) return fputs ("&lowbar;", out);
     case '%': if (full) return fputs ("&percnt;", out);
-    case '&': return fputs ("&amp;", out);
     case '\\': if (full) return fputs ("&bsol;", out);
     case '"': if (full) return fputs ("&quot;", out);
     case '[': if (full) return fputs ("&lsqb;", out);
