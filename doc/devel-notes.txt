@@ -216,10 +216,12 @@ expected to be plain text, with some formatting instructions roughly
 similar to [ntg]roff:
 
  - \fI switches to italics
- 
+
  - \fB switches to boldface
 
- - \fP switches to normal display
+ - \fT switches to monospace
+
+ - \fP switches to normal display after \fI, \fB or \fT
 
  - \(as can be used to represent an asterisk (*).  This is intended
    to help avoiding character sequences such as /* or */ inside
