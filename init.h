@@ -2307,7 +2307,7 @@ struct option_t MuttVars[] = {
   ** status, mutt gives up opening the server. Example:
   ** .pp
   ** .ts
-  ** set preconnect="ssh -f -q -L 1234:mailhost.net:143 mailhost.net \
+  ** set preconnect="ssh -f -q -L 1234:mailhost.net:143 mailhost.net \(rs
   ** sleep 20 < /dev/null > /dev/null"
   ** .te
   ** .pp
