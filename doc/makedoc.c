@@ -1185,7 +1185,26 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	  if (docstat & D_TAB)
 	    fputs (str, out);
 	  else
-	    sgml_fputs (str, out);
+	  {
+	    while (*str)
+	    {
+	      for (; *str; str++)
+	      {
+	        if (!strncmp (str, "``", 2))
+	        {
+		  fputs ("<quote>", out);
+		  str++;
+	        }
+	        else if (!strncmp (str, "''", 2))
+	        {
+		  fputs ("</quote>", out);
+		  str++;
+	        }
+	        else
+		  sgml_fputc (*str, out);
+	      }
+	    }
+	  }
 	  break;
 	}
       }

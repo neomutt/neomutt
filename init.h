@@ -116,12 +116,12 @@ struct option_t MuttVars[] = {
   { "alias_format",	DT_STR,  R_NONE, UL &AliasFmt, UL "%4n %2f %t %-10a   %r" },
   /*
   ** .pp
-  ** Specifies the format of the data displayed for the `alias' menu.  The
+  ** Specifies the format of the data displayed for the ``$alias'' menu.  The
   ** following printf(3)-style sequences are available:
   ** .pp
   ** .dl
   ** .dt %a .dd alias name
-  ** .dt %f .dd flags - currently, a "d" for an alias marked for deletion
+  ** .dt %f .dd flags - currently, a ``d'' for an alias marked for deletion
   ** .dt %n .dd index number
   ** .dt %r .dd address which alias expands to
   ** .dt %t .dd character which indicates if the alias is tagged for inclusion
@@ -204,7 +204,7 @@ struct option_t MuttVars[] = {
   { "attach_format",	DT_STR,  R_NONE, UL &AttachFormat, UL "%u%D%I %t%4n %T%.40d%> [%.7m/%.10M, %.6e%?C?, %C?, %s] " },
   /*
   ** .pp
-  ** This variable describes the format of the `attachment' menu.  The
+  ** This variable describes the format of the ``attachment'' menu.  The
   ** following printf-style sequences are understood:
   ** .pp
   ** .dl
@@ -225,12 +225,12 @@ struct option_t MuttVars[] = {
   ** .dt %u  .dd unlink (=to delete) flag
   ** .dt %X  .dd number of qualifying MIME parts in this part and its children
   **             (please see the ``$attachments'' section for possible speed effects)
-  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
-  ** .dt %|X .dd pad to the end of the line with character "X"
-  ** .dt %*X .dd soft-fill with character "X" as pad
+  ** .dt %>X .dd right justify the rest of the string and pad with character ``X''
+  ** .dt %|X .dd pad to the end of the line with character ``X''
+  ** .dt %*X .dd soft-fill with character ``X'' as pad
   ** .de
   ** .pp
-  ** For an explanation of `soft-fill', see the $$index_format documentation.
+  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
   */
   { "attach_sep",	DT_STR,	 R_NONE, UL &AttachSep, UL "\n" },
   /*
@@ -316,7 +316,7 @@ struct option_t MuttVars[] = {
   ** This variable is \fIunset\fP by default and should only be enabled when
   ** new mail detection for these folder types is unreliable or doesn't work.
   ** .pp
-  ** Note that enabling this variable should happen before any ``mailboxes''
+  ** Note that enabling this variable should happen before any ``$mailboxes''
   ** directives occur in configuration files regarding mbox or mmdf folders
   ** because mutt needs to determine the initial new mail status of such a
   ** mailbox by performing a fast mailbox scan when it is defined.
@@ -438,7 +438,7 @@ struct option_t MuttVars[] = {
   ** This variable controls whether or not mutt may automatically enable
   ** PGP encryption/signing for messages.  See also $$crypt_autoencrypt,
   ** $$crypt_replyencrypt,
-  ** $$crypt_autosign, $$crypt_replysign'' and $$smime_is_default.
+  ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
   { "crypt_autosmime",	DT_BOOL, R_NONE, OPTCRYPTAUTOSMIME, 1 },
   /*
@@ -474,7 +474,7 @@ struct option_t MuttVars[] = {
   ** variable at the time the hook is declared.  The default value matches
   ** if the message is either from a user matching the regular expression
   ** given, or if it is from you (if the from address matches
-  ** ``alternates'') and is to or cc'ed to a user matching the given
+  ** ``$alternates'') and is to or cc'ed to a user matching the given
   ** regular expression.
   */
   { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
@@ -619,12 +619,12 @@ struct option_t MuttVars[] = {
   { "folder",		DT_PATH, R_NONE, UL &Maildir, UL "~/Mail" },
   /*
   ** .pp
-  ** Specifies the default location of your mailboxes.  A `+' or `=' at the
+  ** Specifies the default location of your mailboxes.  A ``+'' or ``='' at the
   ** beginning of a pathname will be expanded to the value of this
   ** variable.  Note that if you change this variable from the default
   ** value you need to make sure that the assignment occurs \fIbefore\fP
-  ** you use `+' or `=' for any other variables since expansion takes place
-  ** during the `set' command.
+  ** you use ``+'' or ``='' for any other variables since expansion takes place
+  ** during the ``$set'' command.
   */
   { "folder_format",	DT_STR,	 R_INDEX, UL &FolderFormat, UL "%2C %t %N %F %2l %-8.8u %-8.8g %8s %d %f" },
   /*
@@ -1050,9 +1050,9 @@ struct option_t MuttVars[] = {
   ** .dt %c .dd number of characters (bytes) in the message
   ** .dt %C .dd current message number
   ** .dt %d .dd date and time of the message in the format specified by
-  **            ``date_format'' converted to sender's time zone
+  **            ``$$date_format'' converted to sender's time zone
   ** .dt %D .dd date and time of the message in the format specified by
-  **            ``date_format'' converted to the local time zone
+  **            ``$$date_format'' converted to the local time zone
   ** .dt %e .dd current message number in thread
   ** .dt %E .dd number of messages in current thread
   ** .dt %f .dd sender (address + real name), either From: or Return-Path:
@@ -1062,7 +1062,7 @@ struct option_t MuttVars[] = {
   ** .dt %l .dd number of lines in the message (does not work with maildir,
   **            mh, and possibly IMAP folders)
   ** .dt %L .dd If an address in the To or CC header field matches an address
-  **            defined by the users ``subscribe'' command, this displays
+  **            defined by the users ``$subscribe'' command, this displays
   **            "To <list-name>", otherwise the same as %F.
   ** .dt %m .dd total number of message in the mailbox
   ** .dt %M .dd number of hidden messages if the thread is collapsed.
@@ -1238,7 +1238,7 @@ struct option_t MuttVars[] = {
   { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
   /*
   ** .pp
-  ** If unset, Mutt will remove your address (see the ``alternates''
+  ** If unset, Mutt will remove your address (see the ``$alternates''
   ** command) from the list of recipients when replying to a message.
   */
   { "menu_context",	DT_NUM,  R_NONE, UL &MenuContext, 0 },
@@ -2358,7 +2358,7 @@ struct option_t MuttVars[] = {
   ** When set to 0, only a single message will appear before the reading
   ** the mailbox.
   ** .pp
-  ** Also see the $$write_inc variable and the ``Tuning'' section of the
+  ** Also see the $$write_inc variable and the ``$tuning'' section of the
   ** manual for performance considerations.
   */
   { "read_only",	DT_BOOL, R_NONE, OPTREADONLY, 0 },
