@@ -117,8 +117,8 @@ static void print_confline (const char *, int, const char *, FILE *);
 static void handle_confline (char *, FILE *);
 static void makedoc (FILE *, FILE *);
 static void pretty_default (char *, size_t, const char *, int);
-static int sgml_fputc (int, FILE *);
-static int sgml_fputs (const char *, FILE *);
+static int sgml_fputc (int, FILE *, int);
+static int sgml_fputs (const char *, FILE *, int);
 static int sgml_id_fputs (const char *, FILE *);
 
 int main (int argc, char *argv[])
@@ -589,38 +589,38 @@ static void sgml_print_strval (const char *v, FILE *out)
     if (*v <  ' ' || *v & 0x80)
     {
       char_to_escape (buff, (unsigned int) *v);
-      sgml_fputs (buff, out);
+      sgml_fputs (buff, out, 1);
       continue;
     }
-    sgml_fputc ((unsigned int) *v, out);
+    sgml_fputc ((unsigned int) *v, out, 1);
   }
 }
 
-static int sgml_fputc (int c, FILE *out)
+static int sgml_fputc (int c, FILE *out, int full)
 {
   switch (c)
   {
     case '<': return fputs ("&lt;", out);
     case '>': return fputs ("&gt;", out);
-    case '$': return fputs ("&dollar;", out);
-    case '_': return fputs ("&lowbar;", out);
-    case '%': return fputs ("&percnt;", out);
+    case '$': if (full) return fputs ("&dollar;", out);
+    case '_': if (full) return fputs ("&lowbar;", out);
+    case '%': if (full) return fputs ("&percnt;", out);
     case '&': return fputs ("&amp;", out);
-    case '\\': return fputs ("&bsol;", out);
-    case '"': return fputs ("&quot;", out);
-    case '[': return fputs ("&lsqb;", out);
-    case ']': return fputs ("&rsqb;", out);
-    case '~': return fputs ("&tilde;", out);
+    case '\\': if (full) return fputs ("&bsol;", out);
+    case '"': if (full) return fputs ("&quot;", out);
+    case '[': if (full) return fputs ("&lsqb;", out);
+    case ']': if (full) return fputs ("&rsqb;", out);
+    case '~': if (full) return fputs ("&tilde;", out);
     default:  return fputc (c, out);
   }
 }
 
-static int sgml_fputs (const char *s, FILE *out)
+static int sgml_fputs (const char *s, FILE *out, int full)
 {
   for (; *s; s++)
-    if (sgml_fputc ((unsigned int) *s, out) == EOF)
+    if (sgml_fputc ((unsigned int) *s, out, full) == EOF)
       return EOF;
-  
+
   return 0;
 }
 
@@ -707,7 +707,7 @@ static void print_confline (const char *varname, int type, const char *val, FILE
       fputs ("\n<sect2 id=\"", out);
       sgml_id_fputs(varname, out);
       fputs ("\">\n<title>", out);
-      sgml_fputs (varname, out);
+      sgml_fputs (varname, out, 1);
       fprintf (out, "</title>\n<literallayout>Type: %s", type2human (type));
       
       if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH)
@@ -1183,7 +1183,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	case SP_STR:
 	{
 	  if (docstat & D_TAB)
-	    fputs (str, out);
+	    sgml_fputs (str, out, 0);
 	  else
 	  {
 	    while (*str)
@@ -1201,7 +1201,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 		  str++;
 	        }
 	        else
-		  sgml_fputc (*str, out);
+		  sgml_fputc (*str, out, 1);
 	      }
 	    }
 	  }
@@ -1235,7 +1235,7 @@ void print_ref (FILE *out, int output_dollar, const char *ref)
     fputs ("\">", out);
     if (output_dollar)
       fputs ("&dollar;", out);
-    sgml_fputs (ref, out);
+    sgml_fputs (ref, out, 1);
     fputs ("</link>", out);
     break;
 
