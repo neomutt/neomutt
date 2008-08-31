@@ -2593,6 +2593,8 @@ to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 <sect1 id="send-hook">
 <title>Change settings based upon message recipients</title>
 
+<anchor id="reply-hook"/>
+<anchor id="send2-hook"/>
 <para>
 <literallayout>
 Usage: <literal>reply-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
