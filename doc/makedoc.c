@@ -611,6 +611,8 @@ static int sgml_fputc (int c, FILE *out, int full)
     case '[': if (full) return fputs ("&lsqb;", out);
     case ']': if (full) return fputs ("&rsqb;", out);
     case '~': if (full) return fputs ("&tilde;", out);
+    case '|': if (full) return fputs ("&verbar;", out);
+    case '^': if (full) return fputs ("&circ;", out);
     default:  return fputc (c, out);
   }
 }
