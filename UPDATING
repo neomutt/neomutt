@@ -13,6 +13,7 @@ hg tip:
 
 1.5.18 (2008-05-17):
 
+  ! header caches internally are utf-8 regardless of current locale
   + $query_format (customize external query menu)
   ! inode sorting is always enabled
   + $time_inc suppresses progress updates less than $time_inc
