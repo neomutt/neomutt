@@ -1,3 +1,12 @@
+2008-09-01 18:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (17adea9cdff6)
+
+	* UPDATING: Add note about locale-safe hcaches to UPDATING as it's a
+	user-visible change
+
+2008-08-31 23:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (b6d07a662c7f)
+
+	* ChangeLog, init.h, pager.c: Fix pager to respect $wrap_search
+
 2008-08-31 23:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (f4b10e6b415c)
 
 	* doc/chunk.xsl, doc/html.xsl: Backout [e5610347fb3f] for further

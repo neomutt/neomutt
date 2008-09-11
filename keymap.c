@@ -390,16 +390,22 @@ int km_dokey (int menu)
     i = Timeout > 0 ? Timeout : 60;
 #ifdef USE_IMAP
     /* keepalive may need to run more frequently than Timeout allows */
-    while (ImapKeepalive && ImapKeepalive < i)
+    if (ImapKeepalive)
     {
-      timeout (ImapKeepalive * 1000);
-      tmp = mutt_getch ();
-      timeout (-1);
-      if (tmp.ch != -2)
-        /* something other than timeout */
-        goto gotkey;
-      i -= ImapKeepalive;
-      imap_keepalive ();
+      if (ImapKeepalive >= i)
+      	imap_keepalive ();
+      else
+	while (ImapKeepalive && ImapKeepalive < i)
+	{
+	  timeout (ImapKeepalive * 1000);
+	  tmp = mutt_getch ();
+	  timeout (-1);
+	  if (tmp.ch != -2)
+	    /* something other than timeout */
+	    goto gotkey;
+	  i -= ImapKeepalive;
+	  imap_keepalive ();
+	}
     }
 #endif
 
