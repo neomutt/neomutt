@@ -6,6 +6,7 @@ The keys used are:
 
 hg tip:
 
+  ! $move now defaults to "no" instead of "ask-no"
   + $imap_pipeline_depth controls the number of commands that mutt can issue
     to an IMAP server before it must collect the responses
   + $ssl_client_cert available with gnutls as well as openssl
