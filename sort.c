@@ -111,13 +111,13 @@ int compare_to (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  const char *fa, *fb;
+  char fa[SHORT_STRING];
+  const char *fb;
   int result;
 
-  fa = safe_strdup (mutt_get_name ((*ppa)->env->to));
+  strfcpy (fa, mutt_get_name ((*ppa)->env->to), SHORT_STRING);
   fb = mutt_get_name ((*ppb)->env->to);
-  result = mutt_strcasecmp (fa, fb);
-  FREE(&fa);
+  result = mutt_strncasecmp (fa, fb, SHORT_STRING);
   AUXSORT(result,a,b);
   return (SORTCODE (result));
 }
@@ -126,13 +126,13 @@ int compare_from (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  const char *fa, *fb;
+  char fa[SHORT_STRING];
+  const char *fb;
   int result;
 
-  fa = safe_strdup (mutt_get_name ((*ppa)->env->from));
+  strfcpy (fa, mutt_get_name ((*ppa)->env->from), SHORT_STRING);
   fb = mutt_get_name ((*ppb)->env->from);
-  result = mutt_strcasecmp (fa, fb);
-  FREE(&fa);
+  result = mutt_strncasecmp (fa, fb, SHORT_STRING);
   AUXSORT(result,a,b);
   return (SORTCODE (result));
 }

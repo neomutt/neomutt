@@ -332,6 +332,8 @@ retry_name:
     return;
   }
 
+  alias_add_reverse (new);
+  
   if ((t = Aliases))
   {
     while (t->next)
@@ -440,23 +442,36 @@ int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
  */
 ADDRESS *alias_reverse_lookup (ADDRESS *a)
 {
-  ALIAS *t = Aliases;
-  ADDRESS *ap;
-
   if (!a || !a->mailbox)
-    return NULL;
+      return NULL;
+  
+  return hash_find (ReverseAlias, a->mailbox);
+}
 
-  for (; t; t = t->next)
+void alias_add_reverse (ALIAS *t)
+{
+  ADDRESS *ap;
+  if (!t)
+    return;
+  
+  for (ap = t->addr; ap; ap = ap->next)
   {
-    /* cycle through all addresses if this is a group alias */
-    for (ap = t->addr; ap; ap = ap->next)
-    {
-      if (!ap->group && ap->mailbox &&
-	  ascii_strcasecmp (ap->mailbox, a->mailbox) == 0)
-	return ap;
-    }
+    if (!ap->group && ap->mailbox)
+      hash_insert (ReverseAlias, ap->mailbox, ap, 1);
   }
-  return 0;
+}
+
+void alias_delete_reverse (ALIAS *t)
+{
+  ADDRESS *ap;
+  if (!t)
+    return;
+  
+  for (ap = t->addr; ap; ap = ap->next)
+  {
+    if (!ap->group && ap->mailbox)
+      hash_delete (ReverseAlias, ap->mailbox, ap, NULL);
+  }
 }
 
 /* alias_complete() -- alias completion routine

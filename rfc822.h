@@ -39,6 +39,8 @@ typedef struct address_t
   char *mailbox;	/* mailbox and host address */
   int group;		/* group mailbox? */
   struct address_t *next;
+  unsigned is_idn      : 1;
+  unsigned idn_checked : 1;
 }
 ADDRESS;
 
