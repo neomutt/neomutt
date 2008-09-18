@@ -1336,7 +1336,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
   else
   {
-    alias_delete_reverse (tmp);
+    mutt_alias_delete_reverse (tmp);
     /* override the previous value */
     rfc822_free_address (&tmp->addr);
     if (CurrentMenu == MENU_ALIAS)
@@ -1361,7 +1361,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
 
   mutt_group_context_add_adrlist (gc, tmp->addr);
-  alias_add_reverse (tmp);
+  mutt_alias_add_reverse (tmp);
 
 #ifdef DEBUG
   if (debuglevel >= 2) 

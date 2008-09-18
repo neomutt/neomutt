@@ -746,7 +746,7 @@ void mutt_free_alias (ALIAS **p)
   {
     t = *p;
     *p = (*p)->next;
-    alias_delete_reverse (t);
+    mutt_alias_delete_reverse (t);
     FREE (&t->name);
     rfc822_free_address (&t->addr);
     FREE (&t);

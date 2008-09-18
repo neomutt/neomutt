@@ -332,7 +332,7 @@ retry_name:
     return;
   }
 
-  alias_add_reverse (new);
+  mutt_alias_add_reverse (new);
   
   if ((t = Aliases))
   {
@@ -448,7 +448,7 @@ ADDRESS *alias_reverse_lookup (ADDRESS *a)
   return hash_find (ReverseAlias, a->mailbox);
 }
 
-void alias_add_reverse (ALIAS *t)
+void mutt_alias_add_reverse (ALIAS *t)
 {
   ADDRESS *ap;
   if (!t)
@@ -461,7 +461,7 @@ void alias_add_reverse (ALIAS *t)
   }
 }
 
-void alias_delete_reverse (ALIAS *t)
+void mutt_alias_delete_reverse (ALIAS *t)
 {
   ADDRESS *ap;
   if (!t)

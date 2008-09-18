@@ -265,6 +265,8 @@ int mutt_add_to_rx_list (RX_LIST **list, const char *s, int flags, BUFFER *err);
 int mutt_addr_is_user (ADDRESS *);
 int mutt_addwch (wchar_t);
 int mutt_alias_complete (char *, size_t);
+void mutt_alias_add_reverse (ALIAS *t);
+void mutt_alias_delete_reverse (ALIAS *t);
 int mutt_alloc_color (int fg, int bg);
 int mutt_any_key_to_continue (const char *);
 int mutt_buffy_check (int);

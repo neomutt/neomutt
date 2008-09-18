@@ -1,3 +1,17 @@
+2008-09-17 22:27 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (77e25415a08a)
+
+	* alias.c, globals.h, init.c, mutt_idna.c, muttlib.c, rfc822.h,
+	sort.c: sorting efficiency
+
+2008-09-16 17:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (1cb0a127eb3d)
+
+	* UPDATING: UPDATING: $move now defaults to "no"
+
+2008-09-11 09:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (1a6842983357)
+
+	* ChangeLog, keymap.c: Fix IMAP keepalive if $imap_keepalive >=
+	$timeout
+
 2008-09-01 18:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (17adea9cdff6)
 
 	* UPDATING: Add note about locale-safe hcaches to UPDATING as it's a
