@@ -4247,7 +4247,7 @@ field (otherwise it returns the name of the author).
 <para>
 Often times the <quote>To</quote> and <quote>Cc</quote> fields in mailing list messages
 tend to get quite large. Most people do not bother to remove the
-author of the message they are reply to from the list, resulting in
+author of the message they reply to from the list, resulting in
 two or more copies being sent to that person.  The <literal>&lt;list-reply&gt;</literal>
 function, which by default is bound to <quote>L</quote> in the <emphasis>index</emphasis> menu
 and <emphasis>pager</emphasis>, helps reduce the clutter by only replying to the
