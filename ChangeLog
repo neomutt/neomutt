@@ -1,3 +1,17 @@
+2008-09-24 15:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (c842922bea10)
+
+	* doc/manual.xml.head: Manual: Fix typo
+
+2008-09-24 12:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (2a70f7166d9d)
+
+	* ChangeLog, mbyte.c: Provide legacy implementations for iswalpha()
+	and iswupper()
+
+	In mbyte.h and without using wc functions, only the prototypes were
+	defined but implementations were missing resulting in build errors.
+	These new functions are derived from the iswalnum() and towupper()
+	routines which don't provide full unicode coverage.
+
 2008-09-24 12:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (32bfe3700b27)
 
 	* imap/imap.c: Fix an infinite loop for imap searches
