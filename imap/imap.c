@@ -1714,8 +1714,8 @@ static int imap_compile_search (const pattern_t* pat, BUFFER* buf)
           if (clauses)
             mutt_buffer_addch (buf, ' ');
           
-          clause = clause->next;
         }
+        clause = clause->next;
       }
 
       mutt_buffer_addch (buf, ')');
