@@ -285,6 +285,21 @@ static wint_t towupper_ucs (wint_t x)
     return x;
 }
 
+static int iswupper_ucs (wint_t x)
+{
+  /* Only works for x < 0x130 */
+  if ((0x60 < x && x < 0x7b) || (0xe0 <= x && x < 0xff && x != 0xf7))
+    return 1;
+  else if (0x100 <= x && x < 0x130)
+    return 1;
+  else if (x == 0xb5)
+    return 1;
+  else if (x == 0xff)
+    return 1;
+  else
+    return 0;
+}
+
 static wint_t towlower_ucs (wint_t x)
 {
   /* Only works for x < 0x130 */
@@ -305,6 +320,21 @@ static int iswalnum_ucs (wint_t wc)
     return 0;
   else if (wc < 0x3a)
     return 1;
+  else if (wc < 0xa0)
+    return (0x40 < (wc & ~0x20) && (wc & ~0x20) < 0x5b);
+  else if (wc < 0xc0)
+    return (wc == 0xaa || wc == 0xb5 || wc == 0xba);
+  else
+    return !(wc == 0xd7 || wc == 0xf7);
+}
+
+static int iswalpha_ucs (wint_t wc)
+{
+  /* Only works for x < 0x220 */
+  if (wc >= 0x100)
+    return 1;
+  else if (wc < 0x3a)
+    return 0;
   else if (wc < 0xa0)
     return (0x40 < (wc & ~0x20) && (wc & ~0x20) < 0x5b);
   else if (wc < 0xc0)
@@ -335,6 +365,22 @@ int iswalnum (wint_t wc)
     return iswalnum_ucs (wc);
   else
     return (0 <= wc && wc < 256) ? isalnum (wc) : 0;
+}
+
+int iswalpha (wint_t wc)
+{
+  if (Charset_is_utf8 || charset_is_ja)
+    return iswalpha_ucs (wc);
+  else
+    return (0 <= wc && wc < 256) ? isalpha (wc) : 0;
+}
+
+int iswupper (wint_t wc)
+{
+  if (Charset_is_utf8 || charset_is_ja)
+    return iswupper_ucs (wc);
+  else
+    return (0 <= wc && wc < 256) ? isupper (wc) : 0;
 }
 
 /*

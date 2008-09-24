@@ -1,3 +1,14 @@
+2008-09-24 12:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (32bfe3700b27)
+
+	* imap/imap.c: Fix an infinite loop for imap searches
+
+	Reported by Emanuele Giaquinta on #mutt.
+
+2008-09-18 08:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (ffefb446142c)
+
+	* ChangeLog, alias.c, init.c, muttlib.c, protos.h: Fix compiler
+	warnings
+
 2008-09-17 22:27 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (77e25415a08a)
 
 	* alias.c, globals.h, init.c, mutt_idna.c, muttlib.c, rfc822.h,
