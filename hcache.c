@@ -26,6 +26,8 @@
 #include <depot.h>
 #include <cabin.h>
 #include <villa.h>
+#elif HAVE_TC
+#include <tcbdb.h>
 #elif HAVE_GDBM
 #include <gdbm.h>
 #elif HAVE_DB4
@@ -52,6 +54,13 @@
 static struct header_cache
 {
   VILLA *db;
+  char *folder;
+  unsigned int crc;
+} HEADER_CACHE;
+#elif HAVE_TC
+static struct header_cache
+{
+  TCBDB *db;
   char *folder;
   unsigned int crc;
 } HEADER_CACHE;
@@ -701,6 +710,9 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #endif
 #ifdef HAVE_QDBM
   char *data = NULL;
+#elif HAVE_TC
+  void *data;
+  int sp;
 #elif HAVE_GDBM
   datum key;
   datum data;
@@ -732,6 +744,10 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #ifdef HAVE_QDBM
   data = vlget(h->db, path, ksize, NULL);
   
+  return data;
+#elif HAVE_TC
+  data = tcbdbget(h->db, path, ksize, &sp);
+
   return data;
 #elif HAVE_GDBM
   key.dptr = path;
@@ -803,6 +819,8 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #endif
 #if HAVE_QDBM
   return vlput(h->db, path, ksize, data, dlen, VL_DOVER);
+#elif HAVE_TC
+  return tcbdbput(h->db, path, ksize, data, dlen);
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
@@ -874,6 +892,52 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
 
   return vlout(h->db, path, ksize);
+}
+
+#elif HAVE_TC
+static int
+hcache_open_tc (struct header_cache* h, const char* path)
+{
+  h->db = tcbdbnew();
+  if (option(OPTHCACHECOMPRESS))
+    tcbdbtune(h->db, 0, 0, 0, -1, -1, BDBTDEFLATE);
+  if (tcbdbopen(h->db, path, BDBOWRITER | BDBOCREAT))
+    return 0;
+  else
+  {
+    tcbdbdel(h->db);
+    return -1;
+  }
+}
+
+void
+mutt_hcache_close(header_cache_t *h)
+{
+  if (!h)
+    return;
+
+  tcbdbclose(h->db);
+  tcbdbdel(h->db);
+  FREE(&h->folder);
+  FREE(&h);
+}
+
+int
+mutt_hcache_delete(header_cache_t *h, const char *filename,
+		   size_t(*keylen) (const char *fn))
+{
+  char path[_POSIX_PATH_MAX];
+  int ksize;
+
+  if (!h)
+    return -1;
+
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  ksize = strlen(h->folder) + keylen(path + strlen(h->folder));
+
+  return tcbdbout(h->db, path, ksize);
 }
 
 #elif HAVE_GDBM
@@ -1039,6 +1103,8 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 
 #if HAVE_QDBM
   hcache_open = hcache_open_qdbm;
+#elif HAVE_TC
+  hcache_open= hcache_open_tc;
 #elif HAVE_GDBM
   hcache_open = hcache_open_gdbm;
 #elif HAVE_DB4
@@ -1089,5 +1155,10 @@ const char *mutt_hcache_backend (void)
 const char *mutt_hcache_backend (void)
 {
   return "qdbm " _QDBM_VERSION;
+}
+#elif HAVE_TC
+const char *mutt_hcache_backend (void)
+{
+  return "tokyocabinet " _TC_VERSION;
 }
 #endif

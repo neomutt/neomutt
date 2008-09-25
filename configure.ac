@@ -812,9 +812,11 @@ AC_ARG_ENABLE(exact-address, AC_HELP_STRING([--enable-exact-address], [Enable re
         fi])
 
 dnl -- start cache --
-use_qdbm=no
+db_found=no
 AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache],
   [Enable header caching]))
+AC_ARG_WITH(tokyocabinet, AC_HELP_STRING([--without-tokyocabinet],
+  [Don't use tokyocabinet even if it is available]))
 AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm],
   [Don't use qdbm even if it is available]))
 AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm],
@@ -833,8 +835,30 @@ then
 
     need_md5="yes"
 
+    dnl -- Tokyo Cabinet --
+    if test "$with_tokyocabinet" != "no"
+    then
+      if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "yes"
+      then
+        CPPFLAGS="$CPPFLAGS -I$with_tc/include"
+        LDFLAGS="$LDFLAGS -L$with_tc/lib"
+      fi
+
+      AC_CHECK_HEADER(tcbdb.h,
+      AC_CHECK_LIB(tokyocabinet, tcbdbopen,
+        [MUTTLIBS="$MUTTLIBS -ltokyocabinet"
+         AC_DEFINE(HAVE_TC, 1, [Tokyo Cabinet Support])
+         db_found=yes],
+        [CPPFLAGS="$OLDCPPFLAGS"
+         LDFLAGS="$OLDLDFLAGS"]))
+      if test -n "$with_tokyocabinet" && test "$use_tokyocabinet" != yes
+      then
+        AC_MSG_ERROR([Tokyo Cabinet could not be used. Check config.log for details.])
+      fi
+    fi
+
     dnl -- QDBM --
-    if test "$with_qdbm" != "no"
+    if test "$with_qdbm" != "no" && test $db_found != yes
     then
       if test -n "$with_qdbm" && test "$with_qdbm" != "yes"
       then
@@ -855,7 +879,7 @@ then
       AC_CHECK_LIB(qdbm, vlopen,
         [MUTTLIBS="$MUTTLIBS -lqdbm"
          AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
-         use_qdbm=yes],
+         db_found=yes],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"])
       LIBS="$saved_LIBS"
@@ -866,7 +890,7 @@ then
     fi
 
     dnl -- GDBM --
-    if test x$with_gdbm != xno && test $use_qdbm != yes
+    if test x$with_gdbm != xno && test $db_found != yes
     then
         if test "$with_gdbm" != "yes"
         then
@@ -884,6 +908,7 @@ then
         then
           AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
           MUTTLIBS="$MUTTLIBS -lgdbm"
+          db_found=yes
         elif test -n "$with_gdbm"
         then
           AC_MSG_ERROR([GDBM could not be used. Check config.log for details.])
@@ -892,7 +917,7 @@ then
 
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
-    if test x$ac_bdb_prefix != xno && test x$ac_cv_gdbmopen != xyes && test $use_qdbm != yes
+    if test x$ac_bdb_prefix != xno && test $db_found != yes
     then
         if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
         then
@@ -942,14 +967,15 @@ then
             CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
             LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
             AC_DEFINE(HAVE_DB4, 1, [Berkeley DB4 Support])
+            db_found=yes
         else
             AC_MSG_RESULT(no)
         fi
     fi
 
-    if test x$use_qdbm != xyes && test x$ac_cv_gdbmopen != xyes && test x$ac_cv_dbcreate != xyes
+    if test $db_found != yes
     then
-        AC_MSG_ERROR([You need QDBM, GDBM or Berkeley DB4 for hcache])
+        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM or Berkeley DB4 for hcache])
     fi
 fi
 dnl -- end cache --
