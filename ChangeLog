@@ -1,3 +1,12 @@
+2008-09-25 15:07 -0700  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (2050b44407bf)
+
+	* configure.ac, hcache.c, init.h, mutt.h: Support tokyocabinet
+	(successor to qdbm). Closes #3112
+
+2008-09-24 15:58 +0200  Matthias Andree  <matthias.andree@gmx.de>  (2c8bf79d99b7)
+
+	* ChangeLog, pager.c: Fix compiler warning in dprint() (closes #3120)
+
 2008-09-24 15:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (c842922bea10)
 
 	* doc/manual.xml.head: Manual: Fix typo

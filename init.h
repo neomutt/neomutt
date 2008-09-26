@@ -1227,7 +1227,7 @@ struct option_t MuttVars[] = {
   { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
   /*
   ** .pp
-  ** When mutt is compiled with qdbm as header cache backend,
+  ** When mutt is compiled with qdbm or tokyocabinet as header cache backend,
   ** this option determines whether the database will be compressed.
   ** Compression results in database files roughly being one fifth
   ** of the usual diskspace, but the uncompression can result in a
