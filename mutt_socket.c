@@ -528,19 +528,17 @@ int raw_socket_open (CONNECTION* conn)
 
   mutt_message (_("Looking up %s..."), conn->account.host);
 
-  if ((he = gethostbyname (host_idna)) == NULL)
-  {
+  he = gethostbyname (host_idna);
+
 # ifdef HAVE_LIBIDN
     FREE (&host_idna);
 # endif
+
+  if (! he) {
     mutt_error (_("Could not find the host \"%s\""), conn->account.host);
 	
     return -1;
   }
-
-# ifdef HAVE_LIBIDN
-  FREE (&host_idna);
-# endif
 
   mutt_message (_("Connecting to %s..."), conn->account.host); 
 
