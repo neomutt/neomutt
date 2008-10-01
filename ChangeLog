@@ -1,3 +1,12 @@
+2008-09-29 14:31 -0700  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (ec96c56be182)
+
+	* mutt_socket.c: Simplify host resolution code slightly.
+
+2008-09-26 08:55 +0200  Rocco Rutte  <pdmef@gmx.net>  (9e569296190b)
+
+	* UPDATING, doc/manual.xml.head, init.h: Mention tokyocabinet in
+	UPDATING and docs
+
 2008-09-25 15:07 -0700  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (2050b44407bf)
 
 	* configure.ac, hcache.c, init.h, mutt.h: Support tokyocabinet
@@ -11,17 +20,13 @@
 
 	* doc/manual.xml.head: Manual: Fix typo
 
-2008-09-24 12:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (2a70f7166d9d)
-
-	* ChangeLog, mbyte.c: Provide legacy implementations for iswalpha()
-	and iswupper()
+	* mbyte.c: Provide legacy implementations for iswalpha() and
+	iswupper()
 
 	In mbyte.h and without using wc functions, only the prototypes were
 	defined but implementations were missing resulting in build errors.
 	These new functions are derived from the iswalnum() and towupper()
 	routines which don't provide full unicode coverage.
-
-2008-09-24 12:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (32bfe3700b27)
 
 	* imap/imap.c: Fix an infinite loop for imap searches
 
@@ -29,8 +34,7 @@
 
 2008-09-18 08:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (ffefb446142c)
 
-	* ChangeLog, alias.c, init.c, muttlib.c, protos.h: Fix compiler
-	warnings
+	* alias.c, init.c, muttlib.c, protos.h: Fix compiler warnings
 
 2008-09-17 22:27 +0200  Thomas Roessler  <roessler@does-not-exist.org>  (77e25415a08a)
 
