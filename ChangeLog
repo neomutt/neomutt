@@ -1,3 +1,15 @@
+2008-10-07 15:27 -0700  Brendan Cully  <brendan@kublai.com>  (d13106731007)
+
+	* mutt_idna.c, mutt_idna.h: Build no-op versions of new IDN functions
+	if IDN is unavailable. Closes #3122, #3123.
+
+2008-10-01 09:33 -0700  Brendan Cully  <brendan@kublai.com>  (13a831a945be)
+
+	* configure.ac: Clean up autoconf header cache engine selection.
+
+	Any explicit --with-$engine will force that engine to be used or
+	make configure fail if the engine is unavailable.
+
 2008-09-29 14:31 -0700  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (ec96c56be182)
 
 	* mutt_socket.c: Simplify host resolution code slightly.

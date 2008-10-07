@@ -205,9 +205,8 @@ int mutt_socket_readln_d (char* buf, size_t buflen, CONNECTION* conn, int dbg)
 
   /* strip \r from \r\n termination */
   if (i && buf[i-1] == '\r')
-    buf[--i] = '\0';
-  else
-    buf[i] = '\0';
+    i--;
+  buf[i] = '\0';
 
   dprint (dbg, (debugfile, "%d< %s\n", conn->fd, buf));
   
