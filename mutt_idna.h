@@ -31,6 +31,9 @@
 int mutt_idna_to_local (const char *, char **, int);
 int mutt_local_to_idna (const char *, char **);
 
+/* Work around incompatibilities in the libidn API */
+
+#ifdef HAVE_LIBIDN
 int mutt_addrlist_to_idna (ADDRESS *, char **);
 int mutt_addrlist_to_local (ADDRESS *);
 
@@ -39,9 +42,6 @@ int mutt_env_to_idna (ENVELOPE *, char **, char **);
 
 const char *mutt_addr_for_display (ADDRESS *a);
 
-/* Work around incompatibilities in the libidn API */
-
-#ifdef HAVE_LIBIDN
 # if (!defined(HAVE_IDNA_TO_ASCII_8Z) && defined(HAVE_IDNA_TO_ASCII_FROM_UTF8))
 #  define idna_to_ascii_8z(a,b,c) idna_to_ascii_from_utf8(a,b,(c)&1,((c)&2)?1:0)
 # endif
@@ -51,6 +51,16 @@ const char *mutt_addr_for_display (ADDRESS *a);
 # if (!defined(HAVE_IDNA_TO_UNICODE_8Z8Z) && defined(HAVE_IDNA_TO_UNICODE_UTF8_FROM_UTF8))
 #  define idna_to_unicode_8z8z(a,b,c) idna_to_unicode_utf8_from_utf8(a,b,(c)&1,((c)&2)?1:0)
 # endif
-#endif
+#else
+
+#define mutt_addrlist_to_idna(addr, err) 0
+#define mutt_addrlist_to_local(addr) 0
+
+#define mutt_env_to_local(env)
+#define mutt_env_to_idna(env, tag, err) 0
+
+#define mutt_addr_for_display(a) (a->mailbox)
+
+#endif /* HAVE_LIBIDN */
 
 #endif

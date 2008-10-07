@@ -39,7 +39,7 @@ int mutt_local_to_idna (const char *in, char **out)
   *out = safe_strdup (in);
   return 0;
 }
-			
+
 #else
 
 /* check whether an address is an IDN */
@@ -147,9 +147,6 @@ int mutt_local_to_idna (const char *in, char **out)
   }
   return rv;
 }
-
-#endif
-
 
 /* higher level functions */
 
@@ -298,3 +295,5 @@ int mutt_env_to_idna (ENVELOPE *env, char **tag, char **err)
 }
 
 #undef H_TO_IDNA
+
+#endif /* HAVE_LIBIDN */
