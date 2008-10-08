@@ -26,21 +26,7 @@
 
 /* The low-level interface we use. */
 
-#ifndef HAVE_LIBIDN
-
-int mutt_idna_to_local (const char *in, char **out, int flags)
-{
-  *out = safe_strdup (in);
-  return 1;
-}
-
-int mutt_local_to_idna (const char *in, char **out)
-{
-  *out = safe_strdup (in);
-  return 0;
-}
-
-#else
+#ifdef HAVE_LIBIDN
 
 /* check whether an address is an IDN */
 

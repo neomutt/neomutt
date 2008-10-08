@@ -29,7 +29,7 @@ mutt_SOURCES = \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c mbyte.c \
-	url.c ascii.c mutt_idna.c crypt-mod.c crypt-mod.h
+	url.c ascii.c crypt-mod.c crypt-mod.h
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
@@ -47,14 +47,14 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
 
 CPPFLAGS=@CPPFLAGS@
 
-EXTRA_mutt_SOURCES = account.c md5.c mutt_sasl.c mutt_socket.c mutt_ssl.c \
-	mutt_tunnel.c pop.c pop_auth.c pop_lib.c smime.c pgp.c pgpinvoke.c pgpkey.c \
-	pgplib.c sha1.c pgpmicalg.c gnupgparse.c resize.c dotlock.c remailer.c \
-	smtp.c browser.h mbyte.h remailer.h url.h \
-	crypt-mod-pgp-classic.c crypt-mod-smime-classic.c \
-	pgppacket.c mutt_idna.h hcache.h hcache.c bcache.c bcache.h mutt_ssl_gnutls.c \
-	crypt-gpgme.c crypt-mod-pgp-gpgme.c crypt-mod-smime-gpgme.c \
-	utf8.c wcwidth.c 
+EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
+	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
+	crypt-mod-smime-gpgme.c dotlock.c gnupgparse.c hcache.c md5.c \
+	mutt_idna.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
+	mutt_tunnel.c pgp.c pgpinvoke.c pgpkey.c pgplib.c pgpmicalg.c \
+	pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c resize.c sha1.c \
+	smime.c smtp.c utf8.c wcwidth.c \
+	bcache.h browser.h hcache.h mbyte.h mutt_idna.h remailer.h url.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	configure account.h \

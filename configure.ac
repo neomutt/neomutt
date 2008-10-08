@@ -1149,7 +1149,10 @@ if test "x$with_idn" != "xno"; then
       AC_MSG_ERROR([IDN requested but iconv is disabled or unavailable])
     fi
   else
-    AC_CHECK_LIB(idn, stringprep_check_version)
+    AC_SEARCH_LIBS([stringprep_check_version], [idn], [
+      AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the `idn' library])
+      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+    ])
     AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
     AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
     AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)

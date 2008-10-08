@@ -28,9 +28,6 @@
 
 #define MI_MAY_BE_IRREVERSIBLE		(1 << 0)
 
-int mutt_idna_to_local (const char *, char **, int);
-int mutt_local_to_idna (const char *, char **);
-
 /* Work around incompatibilities in the libidn API */
 
 #ifdef HAVE_LIBIDN
@@ -53,13 +50,30 @@ const char *mutt_addr_for_display (ADDRESS *a);
 # endif
 #else
 
-#define mutt_addrlist_to_idna(addr, err) 0
-#define mutt_addrlist_to_local(addr) 0
+static inline int mutt_addrlist_to_idna (ADDRESS *addr, char **err)
+{
+  return 0;
+}
 
-#define mutt_env_to_local(env)
-#define mutt_env_to_idna(env, tag, err) 0
+static inline int mutt_addrlist_to_local (ADDRESS *addr)
+{
+  return 0;
+}
 
-#define mutt_addr_for_display(a) (a->mailbox)
+static inline void mutt_env_to_local (ENVELOPE *env)
+{
+  return;
+}
+
+static inline int mutt_env_to_idna (ENVELOPE *env, char **tag, char **err)
+{
+  return 0;
+}
+
+static inline const char *mutt_addr_for_display (ADDRESS *a)
+{
+  return a->mailbox;
+}
 
 #endif /* HAVE_LIBIDN */
 
