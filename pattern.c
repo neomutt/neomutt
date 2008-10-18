@@ -53,7 +53,7 @@ struct pattern_flags
   int class;
   int (*eat_arg) (pattern_t *, BUFFER *, BUFFER *);
 }
-Flags[] =
+static Flags[] =
 {
   { 'A', M_ALL,			0,		NULL },
   { 'b', M_BODY,		M_FULL_MSG,	eat_regexp },

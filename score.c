@@ -34,7 +34,7 @@ typedef struct score_t
   struct score_t *next;
 } SCORE;
 
-SCORE *Score = NULL;
+static SCORE *Score = NULL;
 
 void mutt_check_rescore (CONTEXT *ctx)
 {

@@ -2391,13 +2391,13 @@ finish:
 #define NUMCOMMANDS (sizeof (Commands)/sizeof (Commands[0]))
 /* initial string that starts completion. No telling how much crap 
  * the user has typed so far. Allocate LONG_STRING just to be sure! */
-char User_typed [LONG_STRING] = {0}; 
+static char User_typed [LONG_STRING] = {0}; 
 
-int  Num_matched = 0; /* Number of matches for completion */
-char Completed [STRING] = {0}; /* completed string (command or variable) */
-const char **Matches;
+static int  Num_matched = 0; /* Number of matches for completion */
+static char Completed [STRING] = {0}; /* completed string (command or variable) */
+static const char **Matches;
 /* this is a lie until mutt_init runs: */
-int  Matches_listsize = MAX(NUMVARS,NUMCOMMANDS) + 10;
+static int  Matches_listsize = MAX(NUMVARS,NUMCOMMANDS) + 10;
 
 static void matches_ensure_morespace(int current)
 {
