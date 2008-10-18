@@ -869,7 +869,8 @@ then
     fi
     
     dnl -- Tokyo Cabinet --
-    if test "$with_tokyocabinet" != "no"
+    if test "$with_tokyocabinet" != "no" \
+	    && test "$db_requested" = auto -o "$db_requested" = tc
     then
       if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "yes"
       then
@@ -891,7 +892,8 @@ then
     fi
 
     dnl -- QDBM --
-    if test "$with_qdbm" != "no" && test $db_found = no
+    if test "$with_qdbm" != "no" && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = qdbm
     then
       if test -n "$with_qdbm" && test "$with_qdbm" != "yes"
       then
@@ -923,7 +925,8 @@ then
     fi
 
     dnl -- GDBM --
-    if test x$with_gdbm != xno && test $db_found = no
+    if test x$with_gdbm != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = gdbm
     then
         if test "$with_gdbm" != "yes"
         then
