@@ -1,3 +1,11 @@
+2008-10-19 12:41 -0700  Brendan Cully  <brendan@kublai.com>  (1dd2d83b5c34)
+
+	* mutt_socket.c: Fix buglet in logging from previous commit
+
+	* mutt_socket.c: Handle short writes in mutt_socket_write_d. See
+	#3000. Apparently even blocking I/O with signals masked can
+	sometimes return early. Based on a patch by Patrick Welche.
+
 2008-10-19 15:14 +0200  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (2f04a811db3f)
 
 	* pattern.c, sendlib.c: Remove unused functions.

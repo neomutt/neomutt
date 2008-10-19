@@ -56,13 +56,15 @@ int imap_expand_path (char* path, size_t len)
 {
   IMAP_MBOX mx;
   ciss_url_t url;
+  char fixedpath[LONG_STRING];
   int rc;
 
   if (imap_parse_path (path, &mx) < 0)
     return -1;
 
   mutt_account_tourl (&mx.account, &url);
-  url.path = mx.mbox;
+  imap_fix_path(NULL, mx.mbox, fixedpath, sizeof (fixedpath));
+  url.path = fixedpath;
 
   rc = url_ciss_tostring (&url, path, len, U_DECODE_PASSWD);
   FREE (&mx.mbox);
@@ -391,25 +393,34 @@ void imap_free_idata (IMAP_DATA** idata)
 char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path, 
     size_t plen)
 {
-  int x = 0;
+  int i = 0;
+  char delim;
+  
+  if (idata)
+    delim = idata->delim;
+  else if (ImapDelimChars && ImapDelimChars[0])
+    delim = ImapDelimChars[0];
+  else
+    delim = '/';
 
-  while (mailbox && *mailbox && (x < (plen - 1)))
+  while (mailbox && *mailbox && i < plen - 1)
   {
-    if ((*mailbox == '/') || (*mailbox == idata->delim))
+    if (strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
     {
-      while ((*mailbox == '/') || (*mailbox == idata->delim)) mailbox++;
-      path[x] = idata->delim;
+      while (strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
+        mailbox++;
+      path[i] = delim;
     }
     else
     {
-      path[x] = *mailbox;
+      path[i] = *mailbox;
       mailbox++;
     }
-    x++;
+    i++;
   }
-  if (x && path[--x] != idata->delim)
-    x++;
-  path[x] = '\0';
+  if (i && path[--i] != delim)
+    i++;
+  path[i] = '\0';
 
   if (!path[0])
     strfcpy (path, "INBOX", plen);
