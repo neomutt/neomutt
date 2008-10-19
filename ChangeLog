@@ -1,3 +1,20 @@
+2008-10-19 15:14 +0200  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (2f04a811db3f)
+
+	* pattern.c, sendlib.c: Remove unused functions.
+
+	* curs_main.c, init.c, pattern.c, score.c: Make some variables static.
+
+	* configure.ac: Fix logic in [13a831a945be].
+
+2008-10-07 19:22 -0700  Brendan Cully  <brendan@kublai.com>  (10a1f06bc8aa)
+
+	* Makefile.am, configure.ac, mutt_idna.c, mutt_idna.h: Clean up with
+	/without-idn handling
+
+2008-10-07 15:58 -0700  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (cd3bd3858c6c)
+
+	* mutt_socket.c: Minor simplification in mutt_socket_readln_d
+
 2008-10-07 15:27 -0700  Brendan Cully  <brendan@kublai.com>  (d13106731007)
 
 	* mutt_idna.c, mutt_idna.h: Build no-op versions of new IDN functions

@@ -112,6 +112,7 @@ int mutt_socket_read (CONNECTION* conn, char* buf, size_t len)
 int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
 {
   int rc;
+  int sent = 0;
 
   dprint (dbg, (debugfile,"%d> %s", conn->fd, buf));
 
@@ -123,22 +124,28 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
 
   if (len < 0)
     len = mutt_strlen (buf);
-  if ((rc = conn->conn_write (conn, buf, len)) < 0)
+  
+  while (sent < len)
   {
-    dprint (1, (debugfile,
-      "mutt_socket_write: error writing, closing socket\n"));
-    mutt_socket_close (conn);
+    if ((rc = conn->conn_write (conn, buf + sent, len - sent)) < 0)
+    {
+      dprint (1, (debugfile,
+                  "mutt_socket_write: error writing (%s), closing socket\n",
+                  strerror(errno)));
+      mutt_socket_close (conn);
 
-    return -1;
+      return -1;
+    }
+
+    if (rc < len)
+      dprint (3, (debugfile,
+                  "mutt_socket_write: short write (%d of %d bytes)\n", rc,
+                  len - sent));
+    
+    sent += rc;
   }
 
-  if (rc < len)
-  {
-    dprint (1, (debugfile,
-      "mutt_socket_write: ERROR: wrote %d of %d bytes!\n", rc, len));
-  }
-
-  return rc;
+  return sent;
 }
 
 /* poll whether reads would block.
