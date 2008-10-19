@@ -329,7 +329,9 @@ int imap_mailbox_rename(const char* mailbox)
     goto fail;
   }
 
-  if (imap_rename_mailbox (idata, &mx, newname) < 0) {
+  imap_fix_path (idata, newname, buf, sizeof (buf));
+
+  if (imap_rename_mailbox (idata, &mx, buf) < 0) {
     mutt_error (_("Rename failed: %s"), imap_get_qualifier (idata->buf));
     mutt_sleep (1);
     goto fail;
