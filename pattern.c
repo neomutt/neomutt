@@ -118,19 +118,6 @@ static char LastSearchExpn[LONG_STRING] = { 0 }; /* expanded version of
 #define M_PDR_ERRORDONE	(M_PDR_ERROR | M_PDR_DONE)
 
 
-int mutt_getvaluebychar (char ch, struct mapping_t *table)
-{
-  int i;
-
-  for (i = 0; table[i].name; i++)
-  {
-    if (ch == table[i].name[0])
-      return table[i].value;
-  }
-
-  return (-1);
-}
-
 /* if no uppercase letters are given, do a case-insensitive search */
 int mutt_which_case (const char *s)
 {

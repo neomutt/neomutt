@@ -2250,59 +2250,6 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   return (i);
 }
 
-/* appends string 'b' to string 'a', and returns the pointer to the new
-   string. */
-char *mutt_append_string (char *a, const char *b)
-{
-  size_t la = mutt_strlen (a);
-  safe_realloc (&a, la + mutt_strlen (b) + 1);
-  strcpy (a + la, b);	/* __STRCPY_CHECKED__ */
-  return (a);
-}
-
-/* returns 1 if char `c' needs to be quoted to protect from shell
-   interpretation when executing commands in a subshell */
-#define INVALID_CHAR(c) (!isalnum ((unsigned char)c) && !strchr ("@.+-_,:", c))
-
-/* returns 1 if string `s' contains characters which could cause problems
-   when used on a command line to execute a command */
-int mutt_needs_quote (const char *s)
-{
-  while (*s)
-  {
-    if (INVALID_CHAR (*s))
-      return 1;
-    s++;
-  }
-  return 0;
-}
-
-/* Quote a string to prevent shell escapes when this string is used on the
-   command line to send mail. */
-char *mutt_quote_string (const char *s)
-{
-  char *r, *pr;
-  size_t rlen;
-
-  rlen = mutt_strlen (s) + 3;
-  pr = r = (char *) safe_malloc (rlen);
-  *pr++ = '"';
-  while (*s)
-  {
-    if (INVALID_CHAR (*s))
-    {
-      size_t o = pr - r;
-      safe_realloc (&r, ++rlen);
-      pr = r + o;
-      *pr++ = '\\';
-    }
-    *pr++ = *s++;
-  }
-  *pr++ = '"';
-  *pr = 0;
-  return (r);
-}
-
 /* For postponing (!final) do the necessary encodings only */
 void mutt_prepare_envelope (ENVELOPE *env, int final)
 {
