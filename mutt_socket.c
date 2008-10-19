@@ -137,7 +137,7 @@ int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg)
       return -1;
     }
 
-    if (rc < len)
+    if (rc < len - sent)
       dprint (3, (debugfile,
                   "mutt_socket_write: short write (%d of %d bytes)\n", rc,
                   len - sent));
