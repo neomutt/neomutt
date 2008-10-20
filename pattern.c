@@ -250,7 +250,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
   return match;
 }
 
-int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
+static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   BUFFER buf;
   int r;
