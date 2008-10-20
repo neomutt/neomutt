@@ -239,6 +239,8 @@ int imap_mailbox_state (const char* path, struct mailbox_state* state)
     state->messages = status->messages;
   }
 
+  FREE (&mx.mbox);
+
   return 0;
 }
 

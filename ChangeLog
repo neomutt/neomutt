@@ -1,4 +1,12 @@
-2008-10-19 12:41 -0700  Brendan Cully  <brendan@kublai.com>  (1dd2d83b5c34)
+2008-10-19 16:26 -0700  TAKAHASHI Tamotsu  <tamo@momonga-linux.org>  (e1fc907b2968)
+
+	* imap/browse.c: Fix up destination path when renaming mailbox. Closes
+	#2090.
+
+2008-10-19 16:14 -0700  Brendan Cully  <brendan@kublai.com>  (5d1cc2f0c1c4)
+
+	* imap/util.c: Normalize path component of IMAP URLs in
+	imap_expand_path (see #2897).
 
 	* mutt_socket.c: Fix buglet in logging from previous commit
 
