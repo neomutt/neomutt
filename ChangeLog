@@ -1,3 +1,10 @@
+2008-10-20 09:48 -0700  Brendan Cully  <brendan@kublai.com>  (f119005f8169)
+
+	* imap/imap.c, imap/imap_private.h: Call imap_free_idata instead of
+	freeing directly in imap_logout
+
+	* imap/browse.c: Fix memory leak in imap_mailbox_state
+
 2008-10-19 16:26 -0700  TAKAHASHI Tamotsu  <tamo@momonga-linux.org>  (e1fc907b2968)
 
 	* imap/browse.c: Fix up destination path when renaming mailbox. Closes

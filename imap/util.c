@@ -407,7 +407,8 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
   {
     if (strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
     {
-      while (strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
+      while (*mailbox &&
+	     (strchr(ImapDelimChars, *mailbox) || *mailbox == delim))
         mailbox++;
       path[i] = delim;
     }
