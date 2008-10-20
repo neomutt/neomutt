@@ -183,7 +183,7 @@ void imap_logout_all (void)
     if (conn->account.type == M_ACCT_TYPE_IMAP && conn->fd >= 0)
     {
       mutt_message (_("Closing connection to %s..."), conn->account.host);
-      imap_logout ((IMAP_DATA*) conn->data);
+      imap_logout ((IMAP_DATA**) (void*) &conn->data);
       mutt_clear_error ();
       mutt_socket_close (conn);
       mutt_socket_free (conn);
@@ -810,18 +810,16 @@ int imap_open_mailbox_append (CONTEXT *ctx)
 }
 
 /* imap_logout: Gracefully log out of server. */
-void imap_logout (IMAP_DATA* idata)
+void imap_logout (IMAP_DATA** idata)
 {
   /* we set status here to let imap_handle_untagged know we _expect_ to
    * receive a bye response (so it doesn't freak out and close the conn) */
-  idata->status = IMAP_BYE;
-  imap_cmd_start (idata, "LOGOUT");
-  while (imap_cmd_step (idata) == IMAP_CMD_CONTINUE)
+  (*idata)->status = IMAP_BYE;
+  imap_cmd_start (*idata, "LOGOUT");
+  while (imap_cmd_step (*idata) == IMAP_CMD_CONTINUE)
     ;
 
-  FREE(& idata->buf);
-  mutt_bcache_close (&idata->bcache);
-  FREE(& idata);
+  imap_free_idata (idata);
 }
 
 /* imap_set_flag: append str to flags if we currently have permission
