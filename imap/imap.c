@@ -76,6 +76,8 @@ int imap_access (const char* path, int flags)
   }
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
+  if (!*mailbox)
+    strfcpy (mailbox, "INBOX", sizeof (mailbox));
 
   /* we may already be in the folder we're checking */
   if (!ascii_strcmp(idata->mailbox, mx.mbox))
@@ -577,6 +579,8 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
+  if (!*buf)
+    strfcpy (buf, "INBOX", sizeof (buf));
   FREE(&(idata->mailbox));
   idata->mailbox = safe_strdup (buf);
   imap_qualify_path (buf, sizeof (buf), &mx, idata->mailbox);
@@ -790,6 +794,8 @@ int imap_open_mailbox_append (CONTEXT *ctx)
   ctx->data = idata;
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
+  if (!*mailbox)
+    strfcpy (mailbox, "INBOX", sizeof (mailbox));
   FREE (&mx.mbox);
 
   /* really we should also check for W_OK */
@@ -1440,6 +1446,8 @@ static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, si
   }
   
   imap_fix_path (*hidata, mx.mbox, buf, blen);
+  if (!*buf)
+    strfcpy (buf, "INBOX", blen);
   FREE (&mx.mbox);
 
   return 0;
@@ -1813,6 +1821,8 @@ int imap_subscribe (char *path, int subscribe)
   conn = idata->conn;
 
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
+  if (!*buf)
+    strfcpy (buf, "INBOX", sizeof (buf));
 
   if (option (OPTIMAPCHECKSUBSCRIBED))
   {

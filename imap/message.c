@@ -575,6 +575,8 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     return -1;
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
+  if (!*mailbox)
+    strfcpy (mailbox, "INBOX", sizeof (mailbox));
   
   if ((fp = fopen (msg->path, "r")) == NULL)
   {
@@ -720,6 +722,8 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   }
   
   imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
+  if (!*mbox)
+    strfcpy (mbox, "INBOX", sizeof (mbox));
   imap_munge_mbox_name (mmbox, sizeof (mmbox), mbox);
 
   /* loop in case of TRYCREATE */

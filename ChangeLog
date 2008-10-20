@@ -1,3 +1,11 @@
+2008-10-20 18:00 +0100  Vincent Lefevre  <vincent@vinc17.org>  (11d2c6712c88)
+
+	* pattern.c: Make eat_regexp static.
+
+2008-10-20 09:55 -0700  Kyle Wheeler  <kyle@memoryhole.net>  (361b298c9fe2)
+
+	* imap/util.c: Fix #3129
+
 2008-10-20 09:48 -0700  Brendan Cully  <brendan@kublai.com>  (f119005f8169)
 
 	* imap/imap.c, imap/imap_private.h: Call imap_free_idata instead of
