@@ -423,9 +423,6 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
     i++;
   path[i] = '\0';
 
-  if (!path[0])
-    strfcpy (path, "INBOX", plen);
-
   return path;
 }
 
