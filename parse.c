@@ -1484,7 +1484,7 @@ ADDRESS *mutt_parse_adrlist (ADDRESS *p, const char *s)
 }
 
 /* Compares mime types to the ok and except lists */
-int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
+static int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
 {
   LIST *type;
   ATTACH_MATCH *a;
@@ -1520,7 +1520,7 @@ int count_body_parts_check(LIST **checklist, BODY *b, int dflt)
 #define AT_COUNT(why)   { shallcount = 1; }
 #define AT_NOCOUNT(why) { shallcount = 0; }
 
-int count_body_parts (BODY *body, int flags)
+static int count_body_parts (BODY *body, int flags)
 {
   int count = 0;
   int shallcount, shallrecurse;

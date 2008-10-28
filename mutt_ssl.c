@@ -69,7 +69,7 @@ typedef struct _sslsockdata
 sslsockdata;
 
 /* local prototypes */
-int ssl_init (void);
+static int ssl_init (void);
 static int add_entropy (const char *file);
 static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len);
 static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
@@ -147,7 +147,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
  * versions also. (That's the reason for the ugly #ifdefs and macros,
  * otherwise I could have simply #ifdef'd the whole ssl_init funcion)
  */
-int ssl_init (void)
+static int ssl_init (void)
 {
   char path[_POSIX_PATH_MAX];
   static unsigned char init_complete = 0;

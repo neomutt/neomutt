@@ -271,7 +271,7 @@ int mx_unlock_file (const char *path, int fd, int dot)
   return 0;
 }
 
-void mx_unlink_empty (const char *path)
+static void mx_unlink_empty (const char *path)
 {
   int fd;
 #ifndef USE_DOTLOCK
@@ -1207,14 +1207,14 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
 /* {maildir,mh}_open_new_message are in mh.c. */
 
-int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+static int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
   msg->fp = dest->fp;
   return 0;
 }
 
 #ifdef USE_IMAP
-int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+static int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
   char tmp[_POSIX_PATH_MAX];
 

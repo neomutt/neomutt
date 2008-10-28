@@ -74,7 +74,7 @@ static void state_prefix_put (const char *d, size_t dlen, STATE *s)
     fwrite (d, dlen, 1, s->fpout);
 }
 
-void mutt_convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
+static void mutt_convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
 {
   char bufo[BUFO_SIZE];
   ICONV_CONST char *ib;
@@ -113,7 +113,7 @@ void mutt_convert_to_state(iconv_t cd, char *bufi, size_t *l, STATE *s)
   *l = ibl;
 }
 
-void mutt_decode_xbit (STATE *s, long len, int istext, iconv_t cd)
+static void mutt_decode_xbit (STATE *s, long len, int istext, iconv_t cd)
 {
   int c, ch;
   char bufi[BUFI_SIZE];
@@ -221,7 +221,7 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
  * 
  */
 
-void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
+static void mutt_decode_quoted (STATE *s, long len, int istext, iconv_t cd)
 {
   char line[STRING];
   char decline[2*STRING];
@@ -357,14 +357,14 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
   state_reset_prefix(s);
 }
 
-unsigned char decode_byte (char ch)
+static unsigned char decode_byte (char ch)
 {
   if (ch == 96)
     return 0;
   return ch - 32;
 }
 
-void mutt_decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
+static void mutt_decode_uuencoded (STATE *s, long len, int istext, iconv_t cd)
 {
   char tmps[SHORT_STRING];
   char linelen, c, l, out;
@@ -787,7 +787,7 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
   }
 }
 
-int text_enriched_handler (BODY *a, STATE *s)
+static int text_enriched_handler (BODY *a, STATE *s)
 {
   enum {
     TEXT, LANGLE, TAG, BOGUS_TAG, NEWLINE, ST_EOF, DONE
@@ -1078,7 +1078,7 @@ static int alternative_handler (BODY *a, STATE *s)
 }
 
 /* handles message/rfc822 body parts */
-int message_handler (BODY *a, STATE *s)
+static int message_handler (BODY *a, STATE *s)
 {
   struct stat st;
   BODY *b;
@@ -1158,7 +1158,7 @@ int mutt_can_decode (BODY *a)
   return (0);
 }
 
-int multipart_handler (BODY *a, STATE *s)
+static int multipart_handler (BODY *a, STATE *s)
 {
   BODY *b, *p;
   char length[5];
@@ -1239,7 +1239,7 @@ int multipart_handler (BODY *a, STATE *s)
   return rc;
 }
 
-int autoview_handler (BODY *a, STATE *s)
+static int autoview_handler (BODY *a, STATE *s)
 {
   rfc1524_entry *entry = rfc1524_new_entry ();
   char buffer[LONG_STRING];

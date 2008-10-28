@@ -51,7 +51,7 @@ static int check_idn (ADDRESS *ap)
   return ap->is_idn;
 }
 
-int mutt_idna_to_local (const char *in, char **out, int flags)
+static int mutt_idna_to_local (const char *in, char **out, int flags)
 {
   *out = NULL;
 
@@ -107,7 +107,7 @@ int mutt_idna_to_local (const char *in, char **out, int flags)
   return 1;
 }
 
-int mutt_local_to_idna (const char *in, char **out)
+static int mutt_local_to_idna (const char *in, char **out)
 {
   int rv = 0;
   char *tmp = safe_strdup (in);

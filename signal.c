@@ -35,7 +35,7 @@ static struct sigaction SysOldQuit;
 static int IsEndwin = 0;
 
 /* Attempt to catch "ordinary" signals and shut down gracefully. */
-RETSIGTYPE exit_handler (int sig)
+static RETSIGTYPE exit_handler (int sig)
 {
   curs_set (1);
   endwin (); /* just to be safe */
@@ -55,12 +55,12 @@ RETSIGTYPE exit_handler (int sig)
   exit (0);
 }
 
-RETSIGTYPE chld_handler (int sig)
+static RETSIGTYPE chld_handler (int sig)
 {
   /* empty */
 }
 
-RETSIGTYPE sighandler (int sig)
+static RETSIGTYPE sighandler (int sig)
 {
   int save_errno = errno;
 

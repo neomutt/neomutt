@@ -363,7 +363,7 @@ const char *mutt_attach_fmt (char *dest,
   return (src);
 }
 
-void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
+static void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
   mutt_FormatString (b, blen, 0, NONULL (AttachFormat), mutt_attach_fmt, (unsigned long) (((ATTACHPTR **)menu->data)[num]), M_FORMAT_ARROWCURSOR);
 }
@@ -780,7 +780,7 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
     print_attachment_list (fp, tag, top, &state);
 }
 
-void
+static void
 mutt_update_attach_index (BODY *cur, ATTACHPTR ***idxp,
 				      short *idxlen, short *idxmax,
 				      MUTTMENU *menu)

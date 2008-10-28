@@ -60,7 +60,7 @@ const char *RFC822Errors[] = {
   "bad address spec"
 };
 
-void rfc822_dequote_comment (char *s)
+static void rfc822_dequote_comment (char *s)
 {
   char *w = s;
 

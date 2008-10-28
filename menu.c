@@ -150,7 +150,7 @@ static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i)
     menu->make_entry (s, l, menu, i);
 }
 
-void menu_pad_string (char *s, size_t n)
+static void menu_pad_string (char *s, size_t n)
 {
   char *scratch = safe_strdup (s);
   int shift = option (OPTARROWCURSOR) ? 3 : 0;
@@ -351,7 +351,7 @@ void menu_redraw_current (MUTTMENU *menu)
   menu->redraw &= REDRAW_STATUS;
 }
 
-void menu_redraw_prompt (MUTTMENU *menu)
+static void menu_redraw_prompt (MUTTMENU *menu)
 {
   if (menu->dialog) 
   {
@@ -477,7 +477,7 @@ void menu_prev_line (MUTTMENU *menu)
  * halfdown: jumplen == pagelen/2
  */
 #define DIRECTION ((neg * 2) + 1)
-void menu_length_jump (MUTTMENU *menu, int jumplen)
+static void menu_length_jump (MUTTMENU *menu, int jumplen)
 {
   int tmp, neg = (jumplen >= 0) ? 0 : -1;
   int c = MIN (MenuContext, menu->pagelen / 2);
@@ -638,7 +638,7 @@ void menu_current_bottom (MUTTMENU *menu)
     mutt_error _("No entries.");
 }
 
-void menu_next_entry (MUTTMENU *menu)
+static void menu_next_entry (MUTTMENU *menu)
 {
   if (menu->current < menu->max - 1)
   {
@@ -649,7 +649,7 @@ void menu_next_entry (MUTTMENU *menu)
     mutt_error _("You are on the last entry.");
 }
 
-void menu_prev_entry (MUTTMENU *menu)
+static void menu_prev_entry (MUTTMENU *menu)
 {
   if (menu->current)
   {

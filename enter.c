@@ -120,7 +120,7 @@ static void my_wcstombs (char *dest, size_t dlen, const wchar_t *src, size_t sle
   }
 }
 
-size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
+static size_t my_mbstowcs (wchar_t **pwbuf, size_t *pwbuflen, size_t i, char *buf)
 {
   wchar_t wc;
   mbstate_t st;

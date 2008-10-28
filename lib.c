@@ -543,7 +543,7 @@ int safe_rename (const char *src, const char *target)
 
 /* Create a temporary directory next to a file name */
 
-int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen, 
+static int mutt_mkwrapdir (const char *path, char *newfile, size_t nflen, 
 		    char *newdir, size_t ndlen)
 {
   const char *basename;
@@ -618,7 +618,7 @@ int mutt_rmtree (const char* path)
   return rc;
 }
 
-int mutt_put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
+static int mutt_put_file_in_place (const char *path, const char *safe_file, const char *safe_dir)
 {
   int rv;
   

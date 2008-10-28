@@ -73,7 +73,7 @@ static void myvar_set (const char* var, const char* val);
 static const char* myvar_get (const char* var);
 static void myvar_del (const char* var);
 
-void toggle_quadoption (int opt)
+static void toggle_quadoption (int opt)
 {
   int n = opt/4;
   int b = (opt % 4) * 2;
@@ -119,7 +119,7 @@ int query_quadoption (int opt, const char *prompt)
 
 /* given the variable ``s'', return the index into the rc_vars array which
    matches, or -1 if the variable is not found.  */
-int mutt_option_index (char *s)
+static int mutt_option_index (char *s)
 {
   int i;
 

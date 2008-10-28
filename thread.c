@@ -568,7 +568,7 @@ void mutt_clear_threads (CONTEXT *ctx)
     hash_destroy (&ctx->thread_hash, *free);
 }
 
-int compare_threads (const void *a, const void *b)
+static int compare_threads (const void *a, const void *b)
 {
   static sort_t *sort_func = NULL;
 
