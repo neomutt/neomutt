@@ -70,4 +70,6 @@ void imap_pretty_mailbox (char* path);
 int imap_wait_keepalive (pid_t pid);
 void imap_keepalive (void);
 
+int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2);
+
 #endif

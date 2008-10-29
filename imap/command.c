@@ -948,7 +948,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     }
     /* dprint (2, (debugfile, "Buffy entry: [%s] mbox: [%s]\n", inc->path, NONULL(mx.mbox))); */
     
-    if (mutt_account_match (&idata->conn->account, &mx.account))
+    if (imap_account_match (&idata->conn->account, &mx.account))
     {
       if (mx.mbox)
       {
