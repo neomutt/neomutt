@@ -26,11 +26,10 @@
 #include "account.h"
 #include "url.h"
 
-/* mutt_account_match: compare account info (host/port/user/login) */
+/* mutt_account_match: compare account info (host/port/user) */
 int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 {
   const char* user = NONULL (Username);
-  const char* login = NONULL (Username);
 
   if (a1->type != a2->type)
     return 0;
@@ -44,8 +43,6 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
   {
     if (ImapUser)
       user = ImapUser;
-    if (ImapLogin)
-      login = ImapLogin;
   }
 #endif
 
