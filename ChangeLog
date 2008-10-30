@@ -1,3 +1,25 @@
+2008-10-30 01:02 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (6c58b678d360)
+
+	* account.c: Remove unused variable in mutt_account_match and fix
+	comment.
+
+	* imap/command.c, imap/imap.h, imap/util.c: Add imap_account_match
+	wrapper over mutt_account_match that canonicalizes accounts with
+	imap_conn_find so that username comparison always work as expected.
+
+2008-10-28 22:20 +0000  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (caa738600644)
+
+	* enter.c, group.c, handler.c, init.c, lib.c, menu.c, mh.c,
+	mutt_idna.c, mutt_ssl.c, mx.c, parse.c, recvattach.c, rfc822.c,
+	signal.c, sort.c, thread.c: Make some functions static.
+
+2008-10-20 11:50 -0700  Brendan Cully  <brendan@kublai.com>  (5ea9f336dd60)
+
+	* imap/util.c: Accidentally dropped from d4a9c0a68f2b prior to commit
+
+	* imap/imap.c, imap/message.c: Hack around INBOX.INBOX breakage
+	from [5d1cc2f0c1c4]
+
 2008-10-20 18:00 +0100  Vincent Lefevre  <vincent@vinc17.org>  (11d2c6712c88)
 
 	* pattern.c: Make eat_regexp static.

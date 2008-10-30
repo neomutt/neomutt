@@ -1511,7 +1511,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   struct q_class_t *QuoteList = NULL;
   int i, j, ch = 0, rc = -1, hideQuoted = 0, q_level = 0, force_redraw = 0;
   int lines = 0, curline = 0, topline = 0, oldtopline = 0, err, first = 1;
-  int r = -1;
+  int r = -1, wrapped = 0;
   int redraw = REDRAW_FULL;
   FILE *fp = NULL;
   LOFF_T last_pos = 0, last_offset = 0;
@@ -1967,12 +1967,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       case OP_SEARCH_OPPOSITE:
 	if (SearchCompiled)
 	{
+	  wrapped = 0;
+
 search_next:
 	  if ((!SearchBack && ch==OP_SEARCH_NEXT) ||
 	      (SearchBack &&ch==OP_SEARCH_OPPOSITE))
 	  {
 	    /* searching forward */
-	    for (i = topline + 1; i < lastLine; i++)
+	    for (i = wrapped ? 0 : topline + 1; i < lastLine; i++)
 	    {
 	      if ((!hideQuoted || lineInfo[i].type != MT_COLOR_QUOTED) && 
 		    !lineInfo[i].continuation && lineInfo[i].search_cnt > 0)
@@ -1981,19 +1983,19 @@ search_next:
 
 	    if (i < lastLine)
 	      topline = i;
-	    else if (!option (OPTWRAPSEARCH))
+	    else if (wrapped || !option (OPTWRAPSEARCH))
 	      mutt_error _("Not found.");
 	    else
 	    {
 	      mutt_message _("Search wrapped to top.");
-	      topline = 1;
+	      wrapped = 1;
 	      goto search_next;
 	    }
 	  }
 	  else
 	  {
 	    /* searching backward */
-	    for (i = topline - 1; i >= 0; i--)
+	    for (i = wrapped ? lastLine : topline - 1; i >= 0; i--)
 	    {
 	      if ((!hideQuoted || (has_types && 
 		    lineInfo[i].type != MT_COLOR_QUOTED)) && 
@@ -2003,12 +2005,12 @@ search_next:
 
 	    if (i >= 0)
 	      topline = i;
-	    else if (!option (OPTWRAPSEARCH))
+	    else if (wrapped || !option (OPTWRAPSEARCH))
 	      mutt_error _("Not found.");
 	    else
 	    {
 	      mutt_message _("Search wrapped to bottom.");
-	      topline = lastLine - 1;
+	      wrapped = 1;
 	      goto search_next;
 	    }
 	  }
@@ -2038,6 +2040,7 @@ search_next:
 	    else
 	      ch = OP_SEARCH_OPPOSITE;
 
+	    wrapped = 0;
 	    goto search_next;
 	  }
 	}
