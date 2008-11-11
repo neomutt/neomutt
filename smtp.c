@@ -242,8 +242,7 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
     FREE (&AuthMechs);
 
     /* send the sender's address */
-    ret = snprintf (buf, sizeof (buf), "MAIL FROM:<%s>",
-                    EnvFrom ? EnvFrom->mailbox : from->mailbox);
+    ret = snprintf (buf, sizeof (buf), "MAIL FROM:<%s>", envfrom);
     if (eightbit && mutt_bit_isset (Capabilities, EIGHTBITMIME))
     {
       safe_strncat (buf, sizeof (buf), " BODY=8BITMIME", 15);
