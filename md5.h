@@ -1,6 +1,7 @@
 /* Declaration of functions and data types used for MD5 sum computing
    library functions.
-   Copyright (C) 1995-1997,1999-2005 Free Software Foundation, Inc.
+   Copyright (C) 1995-1997,1999,2000,2001,2004,2005,2006,2008
+      Free Software Foundation, Inc.
 
    NOTE: The canonical source of this file is maintained with the GNU C
    Library.  Bugs can be reported to bug-glibc@prep.ai.mit.edu.
@@ -51,12 +52,6 @@
 # endif
 #endif
 
-#ifndef __attribute__
-# if ! __GNUC_PREREQ (2,8) || __STRICT_ANSI__
-#  define __attribute__(x)
-# endif
-#endif
-
 #ifndef _LIBC
 # define __md5_buffer md5_buffer
 # define __md5_finish_ctx md5_finish_ctx
@@ -79,7 +74,7 @@ struct md5_ctx
 
   md5_uint32 total[2];
   md5_uint32 buflen;
-  char buffer[128] __attribute__ ((__aligned__ (__alignof__ (md5_uint32))));
+  md5_uint32 buffer[32];
 };
 
 /*
@@ -108,19 +103,13 @@ extern void __md5_process_bytes (const void *buffer, size_t len,
 /* Process the remaining bytes in the buffer and put result from CTX
    in first 16 bytes following RESBUF.  The result is always in little
    endian byte order, so that a byte-wise output yields to the wanted
-   ASCII representation of the message digest.
-
-   IMPORTANT: On some systems it is required that RESBUF be correctly
-   aligned for a 32 bits value.  */
+   ASCII representation of the message digest.  */
 extern void *__md5_finish_ctx (struct md5_ctx *ctx, void *resbuf) __THROW;
 
 
 /* Put result from CTX in first 16 bytes following RESBUF.  The result is
    always in little endian byte order, so that a byte-wise output yields
-   to the wanted ASCII representation of the message digest.
-
-   IMPORTANT: On some systems it is required that RESBUF is correctly
-   aligned for a 32 bits value.  */
+   to the wanted ASCII representation of the message digest.  */
 extern void *__md5_read_ctx (const struct md5_ctx *ctx, void *resbuf) __THROW;
 
 
