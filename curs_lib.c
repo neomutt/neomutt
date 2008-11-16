@@ -353,6 +353,9 @@ void mutt_progress_init (progress_t* progress, const char *msg,
 
   if (!progress)
     return;
+  if (option(OPTNOCURSES))
+    return;
+
   memset (progress, 0, sizeof (progress_t));
   progress->inc = inc;
   progress->flags = flags;
@@ -389,6 +392,9 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
   short update = 0;
   struct timeval tv = { 0, 0 };
   unsigned int now = 0;
+
+  if (option(OPTNOCURSES))
+    return;
 
   if (!progress->inc)
     goto out;

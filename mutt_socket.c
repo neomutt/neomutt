@@ -474,8 +474,8 @@ int raw_socket_open (CONNECTION* conn)
   host_idna = conn->account.host;
 # endif
 
-  mutt_message (_("Looking up %s..."), conn->account.host);
-
+  if (!option(OPTNOCURSES))
+    mutt_message (_("Looking up %s..."), conn->account.host);
   
   rc = getaddrinfo (host_idna, port, &hints, &res);
 
@@ -490,7 +490,8 @@ int raw_socket_open (CONNECTION* conn)
     return -1;
   }
 
-  mutt_message (_("Connecting to %s..."), conn->account.host); 
+  if (!option(OPTNOCURSES))
+    mutt_message (_("Connecting to %s..."), conn->account.host); 
 
   rc = -1;
   for (cur = res; cur != NULL; cur = cur->ai_next)
@@ -532,7 +533,8 @@ int raw_socket_open (CONNECTION* conn)
   host_idna = conn->account.host;
 # endif
 
-  mutt_message (_("Looking up %s..."), conn->account.host);
+  if (!option(OPTNOCURSES))
+    mutt_message (_("Looking up %s..."), conn->account.host);
 
   he = gethostbyname (host_idna);
 
@@ -546,7 +548,8 @@ int raw_socket_open (CONNECTION* conn)
     return -1;
   }
 
-  mutt_message (_("Connecting to %s..."), conn->account.host); 
+  if (!option(OPTNOCURSES))
+    mutt_message (_("Connecting to %s..."), conn->account.host); 
 
   rc = -1;
   for (i = 0; he->h_addr_list[i] != NULL; i++)

@@ -1,3 +1,12 @@
+2008-11-11 11:41 -0800  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>  (53ffd34f4de3)
+
+	* smtp.c: Use envfrom instead of recomputing it in mutt_smpt_send.
+
+2008-10-29 20:49 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (c2439fc68cd6)
+
+	* pager.c: Restart pager search from top if called twice.  Do not
+	loop infinitely. Closes #3127.
+
 2008-10-30 01:02 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (6c58b678d360)
 
 	* account.c: Remove unused variable in mutt_account_match and fix

@@ -336,12 +336,14 @@ static int tls_negotiate (CONNECTION * conn)
 
   tls_get_client_cert (conn);
 
-  mutt_message (_("SSL/TLS connection using %s (%s/%s/%s)"),
-		gnutls_protocol_get_name (gnutls_protocol_get_version (data->state)),
-		gnutls_kx_get_name (gnutls_kx_get (data->state)),
-		gnutls_cipher_get_name (gnutls_cipher_get (data->state)),
-		gnutls_mac_get_name (gnutls_mac_get (data->state)));
-  mutt_sleep (0);
+  if (!option(OPTNOCURSES)) {
+    mutt_message (_("SSL/TLS connection using %s (%s/%s/%s)"),
+                  gnutls_protocol_get_name (gnutls_protocol_get_version (data->state)),
+                  gnutls_kx_get_name (gnutls_kx_get (data->state)),
+                  gnutls_cipher_get_name (gnutls_cipher_get (data->state)),
+                  gnutls_mac_get_name (gnutls_mac_get (data->state)));
+    mutt_sleep (0);
+  }
 
   return 0;
 

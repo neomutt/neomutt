@@ -496,7 +496,8 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
     return SMTP_AUTH_UNAVAIL;
   }
 
-  mutt_message (_("Authenticating (%s)..."), mech);
+  if (!option(OPTNOCURSES))
+    mutt_message (_("Authenticating (%s)..."), mech);
 
   snprintf (buf, sizeof (buf), "AUTH %s", mech);
   if (len)
