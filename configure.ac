@@ -874,8 +874,8 @@ then
     then
       if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "yes"
       then
-        CPPFLAGS="$CPPFLAGS -I$with_tc/include"
-        LDFLAGS="$LDFLAGS -L$with_tc/lib"
+        CPPFLAGS="$CPPFLAGS -I$with_tokyocabinet/include"
+        LDFLAGS="$LDFLAGS -L$with_tokyocabinet/lib"
       fi
 
       AC_CHECK_HEADER(tcbdb.h,

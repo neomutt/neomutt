@@ -1,6 +1,18 @@
+2008-11-15 19:51 -0800  Alexey I. Froloff  <raorn@altlinux.org>  (af87aa1846be)
+
+	* md5.c, md5.h: md5.h, md5.c: updated to latest version from gnulib.
+	Buggy old md5.h causes problems with gcc 4.3 compiler. In md5.h
+	__attribute__ is #define'd to no-op and causes mutt_md5 to enter
+	inifinite loop while calling memcpy().
+
+2008-11-15 19:36 -0800  Gary Johnson  <garyjohn@spk.agilent.com>  (01e4deee6827)
+
+	* curs_lib.c, mutt_socket.c, mutt_ssl_gnutls.c, smtp.c: Suppress
+	several progress messages in batch mode
+
 2008-11-11 11:41 -0800  Kyle Wheeler  <kyle-mutt-dev@memoryhole.net>  (53ffd34f4de3)
 
-	* smtp.c: Use envfrom instead of recomputing it in mutt_smpt_send.
+	* smtp.c: Use envfrom instead of recomputing it in mutt_smtp_send.
 
 2008-10-29 20:49 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (c2439fc68cd6)
 
