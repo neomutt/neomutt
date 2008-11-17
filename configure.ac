@@ -1289,6 +1289,16 @@ then
 fi
 AC_SUBST(DSLROOT)
 
+AC_ARG_ENABLE(full_doc,
+	      AC_HELP_STRING([--disable-full-doc], [Omit disabled variables]),
+[       if test x$enableval = xno ; then
+                full_doc=no
+        fi
+])
+if test x$full_doc != xno ; then
+  AC_DEFINE(MAKEDOC_FULL,1, [Define if you want complete documentation.])
+fi
+
 AC_OUTPUT(Makefile contrib/Makefile doc/Makefile imap/Makefile
         intl/Makefile m4/Makefile po/Makefile.in
         hcachever.sh muttbug.sh doc/instdoc.sh)

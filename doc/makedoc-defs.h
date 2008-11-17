@@ -1,5 +1,6 @@
 /* build complete documentation */
 
+#ifdef MAKEDOC_FULL
 # ifndef CRYPT_BACKEND_GPGME
 #  define CRYPT_BACKEND_GPGME
 # endif
@@ -54,3 +55,4 @@
 # ifndef USE_SASL
 #  define USE_SASL
 # endif
+#endif
