@@ -120,9 +120,10 @@ static void dopr_outch (char *buffer, size_t *currlen, size_t maxlen, char c );
 #define DP_F_UNSIGNED 	(1 << 6)
 
 /* Conversion Flags */
-#define DP_C_SHORT   1
-#define DP_C_LONG    2
-#define DP_C_LDOUBLE 3
+#define DP_C_SHORT    1
+#define DP_C_LONG     2
+#define DP_C_LONGLONG 3
+#define DP_C_LDOUBLE  4
 
 #define char_to_int(p) (p - '0')
 #undef MAX
@@ -230,7 +231,6 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	state = DP_S_MOD;
       break;
     case DP_S_MOD:
-      /* Currently, we don't support Long Long, bummer */
       switch (ch) 
       {
       case 'h':
@@ -240,6 +240,11 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
       case 'l':
 	cflags = DP_C_LONG;
 	ch = *format++;
+	if (ch == 'l')
+	{
+	  cflags = DP_C_LONGLONG;
+	  ch = *format++;
+	}
 	break;
       case 'L':
 	cflags = DP_C_LDOUBLE;
@@ -259,6 +264,8 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	  value = va_arg (args, short int);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, long int);
+	else if (cflags == DP_C_LONGLONG)
+	  value = va_arg (args, long long int);
 	else
 	  value = va_arg (args, int);
 	fmtint (buffer, &currlen, maxlen, value, 10, min, max, flags);
@@ -269,6 +276,8 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	  value = va_arg (args, unsigned short int);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, unsigned long int);
+	else if (cflags == DP_C_LONGLONG)
+	  value = va_arg (args, unsigned long long int);
 	else
 	  value = va_arg (args, unsigned int);
 	fmtint (buffer, &currlen, maxlen, value, 8, min, max, flags);
@@ -279,6 +288,8 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	  value = va_arg (args, unsigned short int);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, unsigned long int);
+	else if (cflags == DP_C_LONGLONG)
+	  value = va_arg (args, unsigned long long int);
 	else
 	  value = va_arg (args, unsigned int);
 	fmtint (buffer, &currlen, maxlen, value, 10, min, max, flags);
@@ -291,6 +302,8 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	  value = va_arg (args, unsigned short int);
 	else if (cflags == DP_C_LONG)
 	  value = va_arg (args, unsigned long int);
+	else if (cflags == DP_C_LONGLONG)
+	  value = va_arg (args, unsigned long long int);
 	else
 	  value = va_arg (args, unsigned int);
 	fmtint (buffer, &currlen, maxlen, value, 16, min, max, flags);
@@ -341,6 +354,12 @@ static int dopr (char *buffer, size_t maxlen, const char *format, va_list args)
 	{
 	  long int *num;
 	  num = va_arg (args, long int *);
+	  *num = currlen;
+        } 
+	else if (cflags == DP_C_LONGLONG) 
+	{
+	  long long int *num;
+	  num = va_arg (args, long long int *);
 	  *num = currlen;
         } 
 	else 
