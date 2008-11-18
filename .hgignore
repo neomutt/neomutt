@@ -41,7 +41,10 @@
 
 # xcode droppings
 ^build/
-.xcodeproj/
+\.xcodeproj/
+
+# eclipse
+^\.c?project$
 
 syntax: glob
 .deps
