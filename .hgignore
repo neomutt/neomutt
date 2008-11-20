@@ -45,6 +45,7 @@
 
 # eclipse
 ^\.c?project$
+^\.settings/
 
 syntax: glob
 .deps
