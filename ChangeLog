@@ -1,4 +1,7 @@
-2008-11-16 20:34 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (a2b55a15d6f0)
+2008-11-16 21:01 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (8199185fa595)
+
+	* snprintf.c: Add support for %ll to the bundled snprintf
+	replacement.
 
 	* configure.ac, doc/makedoc-defs.h: Add --disable-full-doc flag to
 	only build documentation for enabled features

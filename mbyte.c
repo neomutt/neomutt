@@ -541,6 +541,7 @@ int mutt_filter_unprintable (char **s)
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
       k = 1;
+      memset (&mbstate1, 0, sizeof (mbstate1));
       wc = replacement_char();
     }
     if (!IsWPrint (wc))
