@@ -2430,7 +2430,7 @@ msgstr "%s: Funktion unbekannt"
 
 #: keymap.c:966
 msgid "Enter keys (^G to abort): "
-msgstr "Schlüssel eingeben (^G zum Abbrechen): "
+msgstr "Tasten drücken (^G zum Abbrechen): "
 
 #: keymap.c:971
 #, c-format

@@ -1,3 +1,17 @@
+2008-11-22 17:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (fc9791c80c9e)
+
+	* UPDATING, functions.h, keymap.c, pager.c: Make what-key function
+	available in pager-based menus, too
+
+2008-11-21 11:34 -0800  Petr Písař  <petr.pisar@atlas.cz>  (870b7dfb89ef)
+
+	* po/cs.po: Updated Czech translation.
+
+2008-11-21 11:19 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (34315aab7401)
+
+	* ChangeLog, mbyte.c: Initialize mbstate in mutt_filter_unprintable.
+	Closes #3134
+
 2008-11-16 21:01 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (8199185fa595)
 
 	* snprintf.c: Add support for %ll to the bundled snprintf
