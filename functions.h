@@ -264,6 +264,7 @@ struct binding_t OpPager[] = { /* map: pager */
   { "decrypt-copy",	OP_DECRYPT_COPY,		NULL },
   { "decrypt-save",    	OP_DECRYPT_SAVE,		NULL },
 
+  { "what-key",		OP_WHAT_KEY,		NULL },
 
   { NULL,		0,				NULL }
 };

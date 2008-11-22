@@ -1000,4 +1000,5 @@ void mutt_what_key (void)
   while (ch != ERR && ch != ctrl ('G'));
 
   mutt_flushinp();
+  mutt_clear_error();
 }

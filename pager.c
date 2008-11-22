@@ -2671,6 +2671,10 @@ search_next:
         redraw = REDRAW_FULL;
         break;
 
+      case OP_WHAT_KEY:
+	mutt_what_key ();
+	break;
+
       default:
 	ch = -1;
 	break;
