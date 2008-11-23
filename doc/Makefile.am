@@ -99,9 +99,9 @@ uninstall-local:
 
 check:
 manual.txt: manual.html
-	LC_ALL=C -lynx -dump -nolist -with_backspaces manual-txt.html > $@ || \
-	LC_ALL=C w3m -dump manual-txt.html > $@ || \
-	LC_ALL=C elinks -dump -no-numbering -no-references manual-txt.html > $@
+	LC_ALL=C -lynx -dump -nolist -with_backspaces manual.html > $@ || \
+	LC_ALL=C w3m -dump manual.html > $@ || \
+	LC_ALL=C elinks -dump -no-numbering -no-references manual.html > $@
 
 Muttrc: stamp-doc-rc
 
