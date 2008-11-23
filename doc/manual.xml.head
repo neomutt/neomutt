@@ -3618,9 +3618,9 @@ a keyword case-insensitively from <xref linkend="tab-simplesearch-keywords"/>:
 If that is the case, Mutt will use the shown pattern modifier instead.
 If a keyword would conflict with your search keyword, you need to turn
 it into a regular expression to avoid matching the keyword table. For
-example, if you want to find all messages matching <quote><literal>flag</literal></quote>
-(using <link linkend="simple-search">&dollar;simple&lowbar;search</link>,
-see below but not meaning flagged messages) simply search for
+example, if you want to find all messages matching <quote>flag</quote>
+(using <link linkend="simple-search">&dollar;simple&lowbar;search</link>)
+but don't want to match flagged messages, simply search for
 <quote><literal>&lsqb;f&rsqb;lag</literal></quote>.
 </para>
 
