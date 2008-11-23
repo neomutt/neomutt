@@ -1,3 +1,11 @@
+2008-11-23 17:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (462579309bf2)
+
+	* doc/manual.xml.head: Manual: Fix wording for simple search
+
+2008-11-22 18:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (0837f7b13990)
+
+	* ChangeLog, po/de.po: Fix German translation for what-key
+
 2008-11-22 17:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (fc9791c80c9e)
 
 	* UPDATING, functions.h, keymap.c, pager.c: Make what-key function
