@@ -40,7 +40,7 @@ similar to that of many popular shell programs, namely that a single
 quote is used to specify a literal string (one that is not
 interpreted for shell variables or quoting with a backslash [see
 next paragraph]), while double quotes indicate a string which
-should be evaluated.  For example, backquotes are evaluated inside of
+should be evaluated.  For example, backticks are evaluated inside of
 double quotes, but not single quotes.
 .PP
 \fB\(rs\fP quotes the next character, just as in shells such as bash and zsh.
@@ -58,7 +58,7 @@ middle of command names.
 .PP
 It is also possible to substitute the output of a Unix command in an
 initialization file.  This is accomplished by enclosing the command
-in backquotes (\fB`\fP\fIcommand\fP\fB`\fP).
+in backticks (\fB`\fP\fIcommand\fP\fB`\fP).
 .PP
 UNIX environment variables can be accessed like the way it is done in shells
 like sh and bash: Prepend the name of the variable by a dollar

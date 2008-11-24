@@ -1471,7 +1471,7 @@ middle of command names.
 <para>
 It is also possible to substitute the output of a Unix command in an
 initialization file.  This is accomplished by enclosing the command in
-backquotes (``).  For example,
+backticks (``).  For example,
 
 <screen>
 my_hdr X-Operating-System: `uname -a`
