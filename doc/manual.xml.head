@@ -5273,7 +5273,8 @@ attachments   ?
 
 <para>
 Disposition is the attachment's Content-disposition type -- either
-"inline" or "attachment".  You can abbreviate this to I or A.
+<literal>inline</literal> or <literal>attachment</literal>.
+You can abbreviate this to <literal>I</literal> or <literal>A</literal>.
 </para>
 
 <para>
@@ -5286,11 +5287,11 @@ below of how this is useful.
 
 <para>
 Mime-type is, unsurprisingly, the MIME type of the attachment you want
-to affect.  A MIME type is always of the format "major/minor", where
-"major" describes the broad category of document you're looking at, and
-"minor" describes the specific type within that category.  The major
-part of mime-type must be literal text (or the special token "*"), but
-the minor part may be a regular expression.  (Therefore, "*/.*" matches
+to affect.  A MIME type is always of the format <literal>major/minor</literal>, where
+<literal>major</literal> describes the broad category of document you're looking at, and
+<literal>minor</literal> describes the specific type within that category.  The major
+part of mime-type must be literal text (or the special token <quote><literal>*</literal></quote>), but
+the minor part may be a regular expression.  (Therefore, <quote><literal>*/.*</literal></quote> matches
 any MIME type.)
 </para>
 
@@ -5358,8 +5359,9 @@ attachments   -I message/external-body
 </screen>
 
 <para>
-"attachments ?" will list your current settings in Muttrc format, so
-that it can be pasted elsewhere.
+Entering the command <quote><literal>attachments ?</literal></quote>
+as a command will list your current settings in Muttrc format, so that
+it can be pasted elsewhere.
 </para>
 
 </sect1>
