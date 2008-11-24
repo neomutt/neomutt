@@ -1,3 +1,14 @@
+2008-11-24 11:38 +0100  Rocco Rutte  <pdmef@gmx.net>  (8915e5aa7af7)
+
+	* doc/manual.xml.head, doc/muttrc.man.head: Documentation:
+	Consistently use "backtick" for `
+
+2008-11-24 11:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (89a81ec0fbb3)
+
+	* ChangeLog, doc/Makefile.am, doc/manual.xml.head,
+	doc/muttrc.man.head: Manual: Add 'spellcheck' target for aspell and
+	fix typos (closes #3137)
+
 2008-11-23 18:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (82b4664129cd)
 
 	* doc/Makefile.am: Complete e1304a641938 commit

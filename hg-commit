@@ -4,7 +4,7 @@ MUTTDIR=$(dirname $0)
 
 $MUTTDIR/check_sec.sh
 if [ -f $MUTTDIR/doc/manual.xml ] ; then
-  ( cd $MUTTDIR/doc/ && make validate )
+  ( cd $MUTTDIR/doc/ && make validate ) || exit 1
 fi
 
 lrev=$(hg log --limit 1 --template '{rev}' ChangeLog)
