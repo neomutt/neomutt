@@ -1,3 +1,11 @@
+2008-11-24 11:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (1b39f5505dec)
+
+	* doc/manual.xml.head: Manual: Fix/Improve quoting
+
+2008-11-24 11:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (d133f2da0b6e)
+
+	* ChangeLog, hg-commit: hg-commit: Exit if manual validation fails
+
 2008-11-24 11:38 +0100  Rocco Rutte  <pdmef@gmx.net>  (8915e5aa7af7)
 
 	* doc/manual.xml.head, doc/muttrc.man.head: Documentation:
