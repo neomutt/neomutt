@@ -287,7 +287,7 @@ short descriptions.
 <row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename or alias</entry></row>
 <row><entry>&circ;T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
 <row><entry>&circ;K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
-<row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end ot the word</entry></row>
+<row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end of the word</entry></row>
 <row><entry>&circ;W</entry><entry><literal>&lt;kill-word&gt;</literal></entry><entry>kill the word in front of the cursor</entry></row>
 <row><entry>&circ;U</entry><entry><literal>&lt;kill-line&gt;</literal></entry><entry>delete entire line</entry></row>
 <row><entry>&circ;V</entry><entry><literal>&lt;quote-char&gt;</literal></entry><entry>quote the next typed key</entry></row>
@@ -445,7 +445,7 @@ who the message is addressed to. They can be customized with the
 <title>Message status flags</title>
 <tgroup cols="2">
 <thead>
-<row><entry>Flag</entry><entry>Desciption</entry></row>
+<row><entry>Flag</entry><entry>Description</entry></row>
 </thead>
 <tbody>
 <row><entry>D</entry><entry>message is deleted (is marked for deletion)</entry></row>
@@ -467,7 +467,7 @@ who the message is addressed to. They can be customized with the
 <title>Message recipient flags</title>
 <tgroup cols="2">
 <thead>
-<row><entry>Flag</entry><entry>Desciption</entry></row>
+<row><entry>Flag</entry><entry>Description</entry></row>
 </thead>
 <tbody>
 <row><entry>+</entry><entry>message is to you and you only</entry></row>
@@ -1258,7 +1258,7 @@ is not intended to be a quote character</para></listitem>
 <emphasis role="bold">Note</emphasis> that mutt only support space-stuffing
 for the first two types of lines but not for the third: It is impossible to
 safely detect whether a leading <literal>&gt;</literal> character starts a
-quote or not. Futhermore, Mutt only applies space-stuffing
+quote or not. Furthermore, Mutt only applies space-stuffing
 <emphasis>once</emphasis> after the initial edit is finished.
 </para>
 
@@ -1529,7 +1529,7 @@ following implications:
 <itemizedlist>
 
 <listitem><para>These variables should be set early in a configuration
-file with &dollar;charset preceeding &dollar;config&lowbar;charset so Mutt
+file with &dollar;charset preceding &dollar;config&lowbar;charset so Mutt
 know what character set to convert to.</para></listitem>
 
 <listitem><para>If &dollar;config&lowbar;charset is set, it should be set
@@ -1565,7 +1565,7 @@ expression or an email address, respectively.
 </para>
 
 <para>
-These address groups can also be created implicitely by the
+These address groups can also be created implicitly by the
 <link linkend="alias">alias</link>, <link linkend="lists">lists</link>,
 <link linkend="lists">subscribe</link> and
 <link linkend="alternates">alternates</link> commands by specifying the
@@ -3175,11 +3175,11 @@ too. Those are our concern here.
 </para>
 
 <para>
-Some of the modifers are borrowed right out of C (though you might
-know them from Perl, Python, shell, or another langugage). These are
+Some of the modifiers are borrowed right out of C (though you might
+know them from Perl, Python, shell, or another language). These are
 the [-]m.n modifiers, as in <literal>%-12.12s</literal>. As with
 such programming languages, these modifiers allow you to specify the
-minumum and maximum size of the resulting string, as well as its
+minimum and maximum size of the resulting string, as well as its
 justification. If the <quote>-</quote> sign follows the percent, the string will
 be left-justified instead of right-justified. If there's a number
 immediately following that, it's the minimum amount of space the
@@ -3754,7 +3754,7 @@ pattern language.  For example,
 
 <para>
 Without the quotes, the parenthesis wouldn't end.
-This would be seperated to two OR'd patterns: <emphasis>&tilde;f me@(mutt\.org</emphasis>
+This would be separated to two OR'd patterns: <emphasis>&tilde;f me@(mutt\.org</emphasis>
 and <emphasis>cs\.hmc\.edu)</emphasis>. They are never what you want.
 </para>
 
@@ -5277,7 +5277,7 @@ Disposition is the attachment's Content-disposition type -- either
 </para>
 
 <para>
-Disposition is prefixed by either a + symbolor a - symbol.  If it's
+Disposition is prefixed by either a + symbol or a - symbol.  If it's
 a +, you're saying that you want to allow this disposition and MIME
 type to qualify.  If it's a -, you're saying that this disposition
 and MIME type is an exception to previous + rules.  There are examples
@@ -5289,7 +5289,7 @@ Mime-type is, unsurprisingly, the MIME type of the attachment you want
 to affect.  A MIME type is always of the format "major/minor", where
 "major" describes the broad category of document you're looking at, and
 "minor" describes the specific type within that category.  The major
-part of mim-type must be literal text (or the special token "*"), but
+part of mime-type must be literal text (or the special token "*"), but
 the minor part may be a regular expression.  (Therefore, "*/.*" matches
 any MIME type.)
 </para>
@@ -5464,7 +5464,7 @@ server: <literal>imap://imapserver:port/INBOX</literal>. You can also specify di
 username for each folder: <literal>imap://username@imapserver[:port]/INBOX</literal>
 or <literal>imap://username2@imapserver[:port]/path/to/folder</literal>.
 Replacing <literal>imap://</literal> by <literal>imaps://</literal>
-would make mutt attempt to conect using SSL or TLS on a different port
+would make mutt attempt to connect using SSL or TLS on a different port
 to encrypt the communication.
 </para>
 
@@ -5987,7 +5987,7 @@ searches. For regular expressions, patterns are prefixed with
 
 <para>
 Even though a regular expression search is fast, it's several times
-slower than a pure string search which is noticable especially on large
+slower than a pure string search which is noticeable especially on large
 folders. As a consequence, a string search should be used instead of a
 regular expression search if the user already knows enough about the
 search pattern.

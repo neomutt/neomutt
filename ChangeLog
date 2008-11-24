@@ -1,3 +1,15 @@
+2008-11-23 18:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (82b4664129cd)
+
+	* doc/Makefile.am: Complete e1304a641938 commit
+
+2008-11-23 18:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (e1304a641938)
+
+	* ChangeLog, doc/Makefile.am, doc/db-cleanup.xsl: Manual: Convert
+	manual.html to manual.txt under C locale
+
+	This ensures manual.txt is always pure ASCII and removes the
+	horrible XSLT-based and incomplete hack.
+
 2008-11-23 17:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (462579309bf2)
 
 	* doc/manual.xml.head: Manual: Fix wording for simple search

@@ -132,6 +132,10 @@ manual.tex: stamp-doc-xml
 validate: stamp-doc-xml
 	xmllint --noout --noblanks --postvalid manual.xml
 
+spellcheck:
+	-aspell -l en --mode sgml -c manual.xml.head && \
+	-aspell -l en --mode nroff -c muttrc.man.head
+
 clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
 	rm -f *.aux *.log *.tex *.out
