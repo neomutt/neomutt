@@ -1802,7 +1802,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 
   /* save message id if the user has set it */
   if (env->message_id && !privacy)
-    mutt_write_one_header (fp, "Message-ID", env->message_id, NULL, 0);
+    fprintf (fp, "Message-ID: %s\n", env->message_id);
 
   if (env->reply_to)
   {
