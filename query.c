@@ -186,7 +186,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col,
     break;
   case 'c':
     snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
-    snprintf (dest, destlen, tmp, query->num);
+    snprintf (dest, destlen, tmp, query->num + 1);
     break;
   case 'e':
     if (!optional)

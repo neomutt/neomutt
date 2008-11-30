@@ -1,3 +1,13 @@
+2008-11-24 11:44 -0800  Brendan Cully  <brendan@kublai.com>  (fd555f9fcb03)
+
+	* doc/manual.xml.tail, main.c: Belatedtly acknowledge Rocco's
+	significant contributions to mutt
+
+2008-11-24 12:41 +0100  Rocco Rutte  <pdmef@gmx.net>  (dc62594cc9e9)
+
+	* ChangeLog, doc/Makefile.am: Manual: Fix lynx call for html to text
+	conversion, strip \001 when dumping with elinks
+
 2008-11-24 11:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (1b39f5505dec)
 
 	* doc/manual.xml.head: Manual: Fix/Improve quoting
