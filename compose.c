@@ -511,8 +511,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   mutt_attach_init (msg->content);
   idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 
-  menu = mutt_new_menu ();
-  menu->menu = MENU_COMPOSE;
+  menu = mutt_new_menu (MENU_COMPOSE);
   menu->offset = HDR_ATTACH;
   menu->max = idxlen;
   menu->make_entry = snd_entry;

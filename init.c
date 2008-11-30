@@ -2884,6 +2884,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   Groups = hash_create (1031);
   ReverseAlias = hash_create (1031);
   
+  mutt_menu_init ();
+
   /* 
    * XXX - use something even more difficult to predict?
    */

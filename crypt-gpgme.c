@@ -3832,10 +3832,9 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
   mutt_make_help (buf, sizeof (buf), _("Help"), menu_to_use, OP_HELP);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
-  menu = mutt_new_menu ();
+  menu = mutt_new_menu (menu_to_use);
   menu->max = i;
   menu->make_entry = crypt_entry;
-  menu->menu = menu_to_use;
   menu->help = helpstr;
   menu->data = key_table;
 

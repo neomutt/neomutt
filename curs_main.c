@@ -435,8 +435,7 @@ int mutt_index_menu (void)
   int close = 0; /* did we OP_QUIT or OP_EXIT out of this menu? */
   int attach_msg = option(OPTATTACHMSG);
   
-  menu = mutt_new_menu ();
-  menu->menu = MENU_MAIN;
+  menu = mutt_new_menu (MENU_MAIN);
   menu->offset = 1;
   menu->pagelen = LINES - 3;
   menu->make_entry = index_make_entry;

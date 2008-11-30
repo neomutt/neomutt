@@ -438,10 +438,9 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
   
     /* Create the menu */
-    menu = mutt_new_menu();
+    menu = mutt_new_menu(MENU_SMIME);
     menu->max = cur;
     menu->make_entry = smime_entry;
-    menu->menu = MENU_SMIME;
     menu->help = helpstr;
     menu->data = Table;
     menu->title = title;

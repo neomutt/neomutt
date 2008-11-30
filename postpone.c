@@ -160,9 +160,8 @@ static HEADER *select_msg (void)
   char helpstr[LONG_STRING];
   short orig_sort;
 
-  menu = mutt_new_menu ();
+  menu = mutt_new_menu (MENU_POST);
   menu->make_entry = post_entry;
-  menu->menu = MENU_POST;
   menu->max = PostContext->msgcount;
   menu->title = _("Postponed Messages");
   menu->data = PostContext;

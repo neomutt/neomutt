@@ -1652,8 +1652,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	{
 	  /* only allocate the space if/when we need the index.
 	     Initialise the menu as per the main index */
-	  index = mutt_new_menu();
-	  index->menu = MENU_MAIN;
+	  index = mutt_new_menu(MENU_MAIN);
 	  index->make_entry = index_make_entry;
 	  index->color = index_color;
 	  index->max = Context->vcount;

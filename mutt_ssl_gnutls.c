@@ -700,7 +700,7 @@ static int tls_check_certificate (CONNECTION* conn)
 
 
   /* interactive check from user */
-  menu = mutt_new_menu ();
+  menu = mutt_new_menu (-1);
   menu->max = 25;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)

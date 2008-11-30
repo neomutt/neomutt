@@ -1005,8 +1005,7 @@ void mutt_view_attachments (HEADER *hdr)
     cur = hdr->content;
   }
 
-  menu = mutt_new_menu ();
-  menu->menu = MENU_ATTACH;
+  menu = mutt_new_menu (MENU_ATTACH);
   menu->title = _("Attachments");
   menu->make_entry = attach_entry;
   menu->tag = mutt_tag_attach;

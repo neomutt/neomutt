@@ -645,8 +645,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   if (examine_directory (NULL, &state, LastDir, prefix) == -1)
     goto bail;
 
-  menu = mutt_new_menu ();
-  menu->menu = MENU_FOLDER;
+  menu = mutt_new_menu (MENU_FOLDER);
   menu->make_entry = folder_entry;
   menu->search = select_file_search;
   menu->title = title;

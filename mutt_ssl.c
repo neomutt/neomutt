@@ -761,7 +761,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
   }
 
   /* interactive check from user */
-  menu = mutt_new_menu ();
+  menu = mutt_new_menu (-1);
   menu->max = 19;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)

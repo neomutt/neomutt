@@ -149,10 +149,9 @@ void mutt_alias_menu (char *buf, size_t buflen, ALIAS *aliases)
   /* tell whoever called me to redraw the screen when I return */
   set_option (OPTNEEDREDRAW);
   
-  menu = mutt_new_menu ();
+  menu = mutt_new_menu (MENU_ALIAS);
   menu->make_entry = alias_entry;
   menu->tag = alias_tag;
-  menu->menu = MENU_ALIAS;
   menu->title = _("Aliases");
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_ALIAS, AliasHelp);
 

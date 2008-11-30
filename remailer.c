@@ -535,8 +535,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
   
   mix_screen_coordinates (type2_list, &coords, chain, 0);
   
-  menu = mutt_new_menu ();
-  menu->menu = MENU_MIX;
+  menu = mutt_new_menu (MENU_MIX);
   menu->max = ttll;
   menu->make_entry = mix_entry;
   menu->tag = NULL;

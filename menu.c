@@ -32,6 +32,8 @@ extern int Charset_is_utf8; /* FIXME: bad modularisation */
 
 extern size_t UngetCount;
 
+char* SearchBuffers[MENU_MAX];
+
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
 {
   wchar_t wc;
@@ -673,10 +675,19 @@ static int menu_search_generic (MUTTMENU *m, regex_t *re, int n)
   return (regexec (re, buf, 0, NULL, 0));
 }
 
-MUTTMENU *mutt_new_menu (void)
+void mutt_menu_init (void)
+{
+  int i;
+
+  for (i = 0; i < MENU_MAX; i++)
+    SearchBuffers[i] = NULL;
+}
+
+MUTTMENU *mutt_new_menu (int menu)
 {
   MUTTMENU *p = (MUTTMENU *) safe_calloc (1, sizeof (MUTTMENU));
 
+  p->menu = menu;
   p->current = 0;
   p->top = 0;
   p->offset = 1;
@@ -691,9 +702,7 @@ void mutt_menuDestroy (MUTTMENU **p)
 {
   int i;
 
-  FREE (&(*p)->searchBuf);
-
-  if ((*p)->dialog) 
+  if ((*p)->dialog)
   {
     for (i=0; i < (*p)->max; i++)
       FREE (&(*p)->dialog[i]);
@@ -713,20 +722,26 @@ static int menu_search (MUTTMENU *menu, int op)
   int searchDir;
   regex_t re;
   char buf[SHORT_STRING];
+  char* searchBuf = menu->menu >= 0 && menu->menu < MENU_MAX ?
+                    SearchBuffers[menu->menu] : NULL;
 
   if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
   {
-    strfcpy (buf, menu->searchBuf ? menu->searchBuf : "", sizeof (buf));
+    strfcpy (buf, searchBuf ? searchBuf : "", sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH) ? _("Search for: ") : 
                                             _("Reverse search for: "),
 			 buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
       return (-1);
-    mutt_str_replace (&menu->searchBuf, buf);
+    if (menu->menu >= 0 && menu->menu < MENU_MAX)
+    {
+      mutt_str_replace (&SearchBuffers[menu->menu], buf);
+      searchBuf = SearchBuffers[menu->menu];
+    }
     menu->searchDir = (op == OP_SEARCH) ? M_SEARCH_DOWN : M_SEARCH_UP;
   }
   else 
   {
-    if (!menu->searchBuf)
+    if (!searchBuf || !*searchBuf)
     {
       mutt_error _("No search pattern.");
       return (-1);
@@ -737,7 +752,7 @@ static int menu_search (MUTTMENU *menu, int op)
   if (op == OP_SEARCH_OPPOSITE)
     searchDir = -searchDir;
 
-  if ((r = REGCOMP (&re, menu->searchBuf, REG_NOSUB | mutt_which_case (menu->searchBuf))) != 0)
+  if ((r = REGCOMP (&re, searchBuf, REG_NOSUB | mutt_which_case (searchBuf))) != 0)
   {
     regerror (r, &re, buf, sizeof (buf));
     regfree (&re);

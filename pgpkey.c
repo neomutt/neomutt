@@ -522,10 +522,9 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   mutt_make_help (buf, sizeof (buf), _("Help"), MENU_PGP, OP_HELP);
   strcat (helpstr, buf);	/* __STRCAT_CHECKED__ */
 
-  menu = mutt_new_menu ();
+  menu = mutt_new_menu (MENU_PGP);
   menu->max = i;
   menu->make_entry = pgp_entry;
-  menu->menu = MENU_PGP;
   menu->help = helpstr;
   menu->data = KeyTable;
 

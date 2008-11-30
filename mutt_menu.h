@@ -75,11 +75,11 @@ typedef struct menu_t
   /* the following are used only by mutt_menuLoop() */
   int top;		/* entry that is the top of the current page */
   int oldcurrent;	/* for driver use only. */
-  char *searchBuf;	/* last search pattern */
   int searchDir;	/* direction of search */
   int tagged;		/* number of tagged entries */
 } MUTTMENU;
 
+void mutt_menu_init (void);
 void menu_jump (MUTTMENU *);
 void menu_redraw_full (MUTTMENU *);
 void menu_redraw_index (MUTTMENU *);
@@ -104,7 +104,7 @@ void menu_current_bottom (MUTTMENU *);
 void menu_check_recenter (MUTTMENU *);
 void menu_status_line (char *, size_t, MUTTMENU *, const char *);
 
-MUTTMENU *mutt_new_menu (void);
+MUTTMENU *mutt_new_menu (int);
 void mutt_menuDestroy (MUTTMENU **);
 int mutt_menuLoop (MUTTMENU *);
 
