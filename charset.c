@@ -142,7 +142,7 @@ PreferredMIMENames[] =
   { "iso-ir-157",	"iso-8859-10"	},
   { "latin6",		"iso-8859-10"	}, /* this is not a bug */
   { "l6",		"iso-8859-10"	},
-  { "csISOLatin6"	"iso-8859-10"	}, 
+  { "csISOLatin6",	"iso-8859-10"	}, 
   
   { "csKOI8r",		"koi8-r"	},
   

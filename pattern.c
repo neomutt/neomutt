@@ -46,14 +46,14 @@ static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_range (pattern_t *pat, BUFFER *, BUFFER *);
 static int patmatch (const pattern_t *pat, const char *buf);
 
-struct pattern_flags
+static struct pattern_flags
 {
   int tag;	/* character used to represent this op */
   int op;	/* operation to perform */
   int class;
   int (*eat_arg) (pattern_t *, BUFFER *, BUFFER *);
 }
-static Flags[] =
+Flags[] =
 {
   { 'A', M_ALL,			0,		NULL },
   { 'b', M_BODY,		M_FULL_MSG,	eat_regexp },

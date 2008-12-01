@@ -56,7 +56,7 @@
 	  snprintf (err->data, err->dsize, \
 	    _("Not available in this menu.")); \
 	  return (-1); \
-	} else
+	}
 
 typedef struct myvar
 {

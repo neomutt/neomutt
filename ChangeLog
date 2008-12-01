@@ -1,3 +1,20 @@
+2008-11-30 20:28 +0100  Rocco Rutte  <pdmef@gmx.net>  (cb251bde7fc1)
+
+	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,
+	init.c, menu.c, mutt_menu.h, mutt_ssl.c, mutt_ssl_gnutls.c, pager.c,
+	pgpkey.c, postpone.c, query.c, recvattach.c, remailer.c, smime.c:
+	Manage last search pattern outside of menu lifecycle
+
+	Previously, the pattern was thrown away during menu destruction. For
+	the next search, mutt then can't provide a good suggestion. The new
+	behaviour is to manage the pattern outside the lifecyle to always
+	provide the last pattern as suggestion.
+
+2008-11-30 20:23 +0100  Rocco Rutte  <pdmef@gmx.net>  (927a1d30a44e)
+
+	* ChangeLog, query.c: Start numbering query results with 1 instead of
+	0
+
 2008-11-24 11:44 -0800  Brendan Cully  <brendan@kublai.com>  (fd555f9fcb03)
 
 	* doc/manual.xml.tail, main.c: Belatedtly acknowledge Rocco's

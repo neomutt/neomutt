@@ -35,7 +35,7 @@ struct history
 static struct history History[HC_LAST];
 static int OldSize = 0;
 
-#define GET_HISTORY(CLASS)	((CLASS < 0 || CLASS >= HC_LAST) ? NULL : &History[CLASS])
+#define GET_HISTORY(CLASS)	((CLASS >= HC_LAST) ? NULL : &History[CLASS])
 
 static void init_history (struct history *h)
 {

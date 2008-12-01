@@ -3334,7 +3334,6 @@ struct command_t
   char *name;
   int (*func) (BUFFER *, BUFFER *, unsigned long, BUFFER *);
   unsigned long data;
-  unsigned long data1;
 };
 
 struct command_t Commands[] = {
