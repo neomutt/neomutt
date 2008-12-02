@@ -23,6 +23,7 @@
 #include "mutt.h"
 #include "mapping.h"
 #include "mutt_curses.h"
+#include "mutt_menu.h"
 #include "mutt_regex.h"
 #include "history.h"
 #include "keymap.h"
