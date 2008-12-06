@@ -716,9 +716,9 @@ static void print_confline (const char *varname, int type, const char *val, FILE
       
       if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH)
       {
-	fputs ("\nDefault: &quot;", out);
+	fputs ("\nDefault: <quote><literal>", out);
 	sgml_print_strval (val, out);
-	fputs ("&quot;</literallayout>\n", out);
+	fputs ("</literal></quote></literallayout>\n", out);
       }
       else
 	fprintf (out, "\nDefault: %s</literallayout>\n", val);
