@@ -27,7 +27,7 @@ EXTRA_DIST = dotlock.man		\
 	smime-notes.txt			\
 	Muttrc Muttrc.head stamp-doc-rc \
 	makedoc.c makedoc-defs.h 	\
-	html.xsl chunk.xsl $(BUILT_DISTFILES)
+	mutt.css html.xsl chunk.xsl $(BUILT_DISTFILES)
 
 HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
@@ -112,10 +112,10 @@ stamp-doc-rc: $(top_srcdir)/init.h makedoc$(EXEEXT) $(srcdir)/Muttrc.head
 	  $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -c >> Muttrc
 	touch stamp-doc-rc
 
-manual.html: $(srcdir)/html.xsl stamp-doc-xml
+manual.html: $(srcdir)/html.xsl stamp-doc-xml $(srcdir)/mutt.css
 	-xsltproc --nonet -o $@ $(srcdir)/html.xsl manual.xml
 
-stamp-doc-chunked: $(srcdir)/chunk.xsl stamp-doc-xml
+stamp-doc-chunked: $(srcdir)/chunk.xsl stamp-doc-xml $(srcdir)/mutt.css
 	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
 	touch stamp-doc-chunked
 

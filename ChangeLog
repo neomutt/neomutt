@@ -1,3 +1,12 @@
+2008-12-02 16:10 +0100  Rocco Rutte  <pdmef@gmx.net>  (3a8e5756613c)
+
+	* init.c: Include mutt_menu.h in init.c for mutt_menu_init() prototype
+
+2008-12-01 21:27 +0100  Rocco Rutte  <pdmef@gmx.net>  (1e8252a9e92f)
+
+	* ChangeLog, charset.c, history.c, init.c, init.h, pattern.c: Fix some
+	typos to silence compiler warnings
+
 2008-11-30 20:28 +0100  Rocco Rutte  <pdmef@gmx.net>  (cb251bde7fc1)
 
 	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, curs_main.c,
