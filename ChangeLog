@@ -1,3 +1,16 @@
+2008-12-06 15:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (5799811e0821)
+
+	* doc/makedoc.c: makedoc: use <quote/> and <literal/> in string
+	default values
+
+	The goal is to improve readability of settings where spaces are
+	relevant.
+
+2008-12-06 11:41 +0100  Rocco Rutte  <pdmef@gmx.net>  (ec45eb382402)
+
+	* ChangeLog, doc/Makefile.am, doc/chunk.xsl, doc/html.xsl,
+	doc/mutt.css: Manual: Add simple and clean stylesheet, see #3109.
+
 2008-12-02 16:10 +0100  Rocco Rutte  <pdmef@gmx.net>  (3a8e5756613c)
 
 	* init.c: Include mutt_menu.h in init.c for mutt_menu_init() prototype

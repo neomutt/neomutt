@@ -4,18 +4,18 @@
 <book>
 
 <bookinfo>
-  <title>The Mutt E-Mail Client</title>
-  <author>
-    <firstname>Michael</firstname><surname>Elkins</surname>
-    <email>me@cs.hmc.edu</email>
-  </author>
-  <releaseinfo>version @VERSION@</releaseinfo>
+<title>The Mutt E-Mail Client</title>
+<author>
+<firstname>Michael</firstname><surname>Elkins</surname>
+<email>me@cs.hmc.edu</email>
+</author>
+<releaseinfo>version @VERSION@</releaseinfo>
 
-  <abstract>
-    <para>
-    <quote>All mail clients suck.  This one just sucks less.</quote> -me, circa 1995
-    </para>
-  </abstract>
+<abstract>
+<para>
+<quote>All mail clients suck.  This one just sucks less.</quote> -me, circa 1995
+</para>
+</abstract>
 </bookinfo>
 
 <chapter id="intro">
@@ -1550,9 +1550,46 @@ question marks into regular expressions).</para></listitem>
 <sect1 id="addrgroup">
 <title>Address groups</title>
 
-<para>
-Usage: <literal>group</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; <literal>-rx</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; <literal>-addr</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>group</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain" rep="repeat">
+<option>-rx</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<option>-addr</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>ungroup</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<option>-rx</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<option>-addr</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 <literal>group</literal> is used to directly add either addresses or
@@ -1579,10 +1616,6 @@ display to messages matching a group.
 </para>
 
 <para>
-Usage: <literal>ungroup</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; * | &lsqb; &lsqb; <literal>-rx</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb; &lsqb; <literal>-addr</literal> <emphasis>EXPR</emphasis> &lsqb; ... &rsqb; &rsqb; &rsqb;
-</para>
-
-<para>
 <literal>ungroup</literal> is used to remove addresses or regular
 expressions from the specified group or groups. The syntax is similar to
 the <literal>group</literal> command, however the special character
@@ -1595,9 +1628,24 @@ contents.
 <sect1 id="alias">
 <title>Defining/Using aliases</title>
 
-<para>
-Usage: <literal>alias</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>key</emphasis> <emphasis>address</emphasis> &lsqb; , <emphasis>address</emphasis>, ... &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>alias</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">key</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">address</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">address</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 It's usually very cumbersome to remember or type out the address of someone
@@ -1620,9 +1668,21 @@ the named <emphasis>group</emphasis>.
 To remove an alias or aliases (<quote>*</quote> means all aliases):
 </para>
 
-<para>
-<literal>unalias</literal> &lsqb; * &verbar; <emphasis>key</emphasis> <emphasis>...</emphasis> &rsqb;
-</para>
+<cmdsynopsis>
+<command>unalias</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">key</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 
@@ -1689,9 +1749,20 @@ In the alias menu, you can select as many aliases as you want with the
 <sect1 id="bind">
 <title>Changing the default key bindings</title>
 
-<para>
-Usage: <literal>bind</literal> <emphasis>map</emphasis> <emphasis>key</emphasis> <emphasis>function</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>bind</command>
+<arg choice="plain">
+<replaceable class="parameter">map</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">key</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">function</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command allows you to change the default key bindings (operation
@@ -1867,12 +1938,27 @@ sequence.
 <sect1 id="charset-hook">
 <title>Defining aliases for character sets </title>
 
-<para>
-<literallayout>
-Usage: <literal>charset-hook</literal> <emphasis>alias</emphasis> <emphasis>charset</emphasis>
-Usage: <literal>iconv-hook</literal> <emphasis>charset</emphasis> <emphasis>local-charset</emphasis>
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>charset-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">alias</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">charset</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>iconv-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">charset</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">local-charset</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 The <literal>charset-hook</literal> command defines an alias for a character set.
@@ -1892,9 +1978,17 @@ for character sets.
 <sect1 id="folder-hook">
 <title>Setting variables based upon mailbox</title>
 
-<para>
-Usage: <literal>folder-hook</literal> &lsqb;!&rsqb;<emphasis>regexp</emphasis> <emphasis>command</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>folder-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;regexp</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 It is often desirable to change settings based on which mailbox you are
@@ -1947,9 +2041,23 @@ folder-hook mutt set sort=threads
 <sect1 id="macro">
 <title>Keyboard macros</title>
 
-<para>
-Usage: <literal>macro</literal> <emphasis>menu</emphasis> <emphasis>key</emphasis> <emphasis>sequence</emphasis> &lsqb; <emphasis>description</emphasis> &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>macro</command>
+<arg choice="plain">
+<replaceable class="parameter">menu</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">key</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">sequence</replaceable>
+</arg>
+<arg choice="opt">
+<replaceable class="parameter">description</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 Macros are useful when you would like a single key to perform a series of
@@ -2001,14 +2109,72 @@ silently truncated at the screen width, and are not wrapped.
 <sect1 id="color">
 <title>Using color and mono video attributes</title>
 
-<para>
-<literallayout>
-Usage: <literal>color</literal> <emphasis>object</emphasis> <emphasis>foreground</emphasis> <emphasis>background</emphasis>
-Usage: <literal>color</literal> (header &verbar; body) <emphasis>foreground</emphasis> <emphasis>background</emphasis> <emphasis>regexp</emphasis>
-Usage: <literal>color</literal> index <emphasis>foreground</emphasis> <emphasis>background</emphasis> <emphasis>pattern</emphasis>
-Usage: <literal>uncolor</literal> index <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ...  &rsqb;
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>color</command>
+<arg choice="plain">
+<replaceable class="parameter">object</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>color</command>
+<group choice="req">
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>color</command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>uncolor</command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 If your terminal supports color, you can spice up Mutt by creating your own
@@ -2115,14 +2281,64 @@ If your terminal does not support color, it is still possible change the video
 attributes through the use of the <quote>mono</quote> command:
 </para>
 
-<para>
-<literallayout>
-Usage: <literal>mono</literal> <emphasis>object</emphasis> <emphasis>attribute</emphasis>
-Usage: <literal>mono</literal> (header &verbar; body) <emphasis>attribute</emphasis> <emphasis>regexp</emphasis>
-Usage: <literal>mono</literal> index <emphasis>attribute</emphasis> <emphasis>pattern</emphasis>
-Usage: <literal>unmono</literal> index <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ...  &rsqb;
-</literallayout>
-</para>
+<anchor id="mono"/>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>mono</command>
+<arg choice="plain">
+<replaceable class="parameter">object</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>mono</command>
+<group choice="req">
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>mono</command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unmono</command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 For <emphasis>object</emphasis>, see the color command. <emphasis>attribute</emphasis>
@@ -2144,11 +2360,29 @@ can be one of the following:
 <sect1 id="ignore">
 <title>Message header display</title>
 
-<para>
-<literallayout>
-Usage: <literal>&lsqb;un&rsqb;ignore</literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>ignore</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unignore</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 Messages often have many header fields added by automatic processing systems,
@@ -2187,9 +2421,29 @@ unignore posted-to:
 </para>
 
 <anchor id="hdr-order"/>
-<literallayout>
-Usage: <literal>hdr&lowbar;order</literal> <emphasis>header1</emphasis> <emphasis>header2</emphasis> <emphasis>header3</emphasis>
-</literallayout>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>hdr&lowbar;order</command>
+<arg choice="plain">
+<replaceable class="parameter">header</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">header</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unhdr&lowbar;order</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>header</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 With the <literal>hdr&lowbar;order</literal> command you can specify an order in
@@ -2212,9 +2466,37 @@ hdr&lowbar;order From Date: From: To: Cc: Subject:
 <sect1 id="alternates">
 <title>Alternative addresses</title>
 
-<para>
-Usage: <literal>&lsqb;un&rsqb;alternates</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>alternates</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable>regexp</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>regexp</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unalternates</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>regexp</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 With various functions, mutt will treat messages differently,
@@ -2282,12 +2564,67 @@ is <quote>*</quote>, <emphasis>all entries</emphasis> on <literal>alternates</li
 <title>Mailing lists</title>
 
 <anchor id="subscribe"/>
-<para>
-<literallayout>
-Usage: <literal>&lsqb;un&rsqb;lists</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-Usage: <literal>&lsqb;un&rsqb;subscribe</literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>lists</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unlists</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>subscribe</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unsubscribe</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 Mutt has a few nice features for <link linkend="using-lists">handling mailing lists</link>.  In order to take advantage of them, you must
@@ -2352,9 +2689,17 @@ but keep it on the list of known mailing lists, use <quote>unsubscribe</quote>.
 <sect1 id="mbox-hook">
 <title>Using Multiple spool mailboxes</title>
 
-<para>
-Usage: <literal>mbox-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>mbox-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command is used to move read messages from a specified mailbox to a
@@ -2375,9 +2720,29 @@ mailbox).
 <sect1 id="mailboxes">
 <title>Monitoring incoming mail</title>
 
-<para>
-Usage: <literal>&lsqb;un&rsqb;mailboxes</literal> <emphasis>folder</emphasis> &lsqb; <emphasis>folder</emphasis> ... &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>mailboxes</command>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unmailboxes</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 This command specifies folders which can receive mail and
@@ -2440,12 +2805,26 @@ mail detection instead.
 <sect1 id="my-hdr">
 <title>User defined headers</title>
 
-<para>
-<literallayout>
-Usage: <literal>my&lowbar;hdr</literal> <emphasis>string</emphasis>
-Usage: <literal>unmy&lowbar;hdr</literal> <emphasis>field</emphasis> &lsqb; <emphasis>field</emphasis> &lsqb;... &rsqb; &rsqb;
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>my&lowbar;hdr</command>
+<arg choice="plain">
+<replaceable class="parameter">string</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unmy&lowbar;hdr</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">field</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 The <literal>my&lowbar;hdr</literal> command allows you to create your own header
@@ -2498,9 +2877,17 @@ unmy&lowbar;hdr to cc
 <sect1 id="save-hook">
 <title>Specify default save mailbox</title>
 
-<para>
-Usage: <literal>save-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>save-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command is used to override the default mailbox used when saving
@@ -2541,9 +2928,17 @@ Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
 <sect1 id="fcc-hook">
 <title>Specify default Fcc: mailbox when composing</title>
 
-<para>
-Usage: <literal>fcc-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>fcc-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command is used to save outgoing mail in a mailbox other than
@@ -2577,9 +2972,17 @@ the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">
 <sect1 id="fcc-save-hook">
 <title>Specify default save filename and default Fcc: mailbox at once</title>
 
-<para>
-Usage: <literal>fcc-save-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>fcc-save-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command is a shortcut, equivalent to doing both a <link linkend="fcc-hook">fcc-hook</link>
@@ -2595,13 +2998,38 @@ to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 
 <anchor id="reply-hook"/>
 <anchor id="send2-hook"/>
-<para>
-<literallayout>
-Usage: <literal>reply-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
-Usage: <literal>send-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
-Usage: <literal>send2-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</literallayout>
-</para>
+
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>reply-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>send-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>send2-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 These commands can be used to execute arbitrary configuration commands based
@@ -2657,9 +3085,17 @@ from a send-hook.
 <sect1 id="message-hook">
 <title>Change settings before formatting a message</title>
 
-<para>
-Usage: <literal>message-hook</literal> &lsqb;!&rsqb;<emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>message-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command can be used to execute arbitrary configuration commands
@@ -2689,9 +3125,17 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 <sect1 id="crypt-hook">
 <title>Choosing the cryptographic key of the recipient</title>
 
-<para>
-Usage: <literal>crypt-hook</literal> <emphasis>pattern</emphasis> <emphasis>keyid</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>crypt-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">keyid</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 When encrypting messages with PGP/GnuPG or OpenSSL, you may want to associate a certain
@@ -2714,9 +3158,14 @@ just a real name.
 <sect1 id="push">
 <title>Adding key sequences to the keyboard buffer</title>
 
-<para>
-Usage: <literal>push</literal> <emphasis>string</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>push</command>
+<arg choice="plain">
+<replaceable class="parameter">string</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command adds the named string to the keyboard buffer. The string may
@@ -2736,9 +3185,17 @@ folder-hook . 'push &lt;collapse-all&gt;'
 <sect1 id="exec">
 <title>Executing functions</title>
 
-<para>
-Usage: <literal>exec</literal> <emphasis>function</emphasis> &lsqb; <emphasis>function</emphasis> ... &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>exec</command>
+<arg choice="plain">
+<replaceable class="parameter">function</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">function</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command can be used to execute any function. Functions are
@@ -2751,12 +3208,29 @@ listed in the <link linkend="functions">function reference</link>.
 <sect1 id="score-command">
 <title>Message Scoring</title>
 
-<para>
-<literallayout>
-Usage: <literal>score</literal> <emphasis>pattern</emphasis> <emphasis>value</emphasis>
-Usage: <literal>unscore</literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>score</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">value</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unscore</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 The <literal>score</literal> commands adds <emphasis>value</emphasis> to a message's score if <emphasis>pattern</emphasis>
@@ -2781,12 +3255,29 @@ of all score entries.
 <sect1 id="spam">
 <title>Spam detection</title>
 
-<para>
-<literallayout>
-Usage: <literal>spam</literal> <emphasis>pattern</emphasis> <emphasis>format</emphasis>
-Usage: <literal>nospam</literal> <emphasis>pattern</emphasis>
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>spam</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">format</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>nospam</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 Mutt has generalized support for external spam-scoring filters.
@@ -2923,14 +3414,54 @@ spam "^From: .*MAILER-DAEMON"       "999"
 The following commands are available to manipulate and query variables:
 </para>
 
-<para>
-<literallayout>
-Usage: <literal>set</literal> &lsqb;no&verbar;inv&rsqb;<emphasis>variable</emphasis>&lsqb;=<emphasis>value</emphasis>&rsqb; &lsqb; <emphasis>variable</emphasis> ... &rsqb;
-Usage: <literal>toggle</literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-Usage: <literal>unset</literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-Usage: <literal>reset</literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-</literallayout>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>set</command>
+<group choice="req">
+<arg choice="plain">
+<group choice="opt">
+<arg choice="plain"><option>no</option></arg>
+<arg choice="plain"><option>inv</option></arg>
+</group>
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">variable=value</replaceable>
+</arg>
+</group>
+<arg choice="opt" rep="repeat"/>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>toggle</command>
+<arg choice="plain">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>unset</command>
+<arg choice="plain">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+</cmdsynopsis>
+
+<cmdsynopsis>
+<command>reset</command>
+<arg choice="plain">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command is used to set (and unset) <link linkend="variables">configuration variables</link>.  There are four basic types of variables:
@@ -3108,9 +3639,14 @@ recording the macro's commands into its history.
 <sect1 id="source">
 <title>Reading initialization commands from another file</title>
 
-<para>
-Usage: <literal>source</literal> <emphasis>filename</emphasis>
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>source</command>
+<arg choice="plain">
+<replaceable class="parameter">filename</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 This command allows the inclusion of initialization commands
@@ -3135,9 +3671,19 @@ considered to be an executable program from which to read input (eg.
 <sect1 id="unhook">
 <title>Removing hooks</title>
 
-<para>
-Usage: <literal>unhook</literal> &lsqb; * &verbar; <emphasis>hook-type</emphasis> &rsqb;
-</para>
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>unhook</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">hook-type</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 This command permits you to flush hooks you have previously defined.
@@ -6066,18 +6612,55 @@ to send messages from the command line as well.
 To read messages in a mailbox
 </para>
 
-<para>
-<literal>mutt</literal> &lsqb; -nz &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -m <emphasis>type</emphasis> &rsqb; &lsqb; -f <emphasis>mailbox</emphasis> &rsqb;
-</para>
+<cmdsynopsis>
+<command>mutt</command>
+<arg choice="opt"><option>-nz</option></arg>
+<arg choice="opt"><option>-F</option>
+<replaceable>muttrc</replaceable>
+</arg>
+<arg choice="opt"><option>-m</option>
+<replaceable>type</replaceable>
+</arg>
+<arg choice="opt"><option>-f</option>
+<replaceable>mailbox</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 To compose a new message
 </para>
 
-<para>
-<literal>mutt</literal> &lsqb; -n &rsqb; &lsqb; -F <emphasis>muttrc</emphasis> &rsqb; &lsqb; -a <emphasis>file</emphasis> &rsqb; &lsqb; -c <emphasis>address</emphasis> &rsqb; &lsqb; -i <emphasis>filename</emphasis> &rsqb; &lsqb; -s <emphasis>subject</emphasis> &rsqb;
-&lsqb; &lsqb; <emphasis>file</emphasis> ... &rsqb; -- &rsqb; <emphasis>address</emphasis> &lsqb; <emphasis>address</emphasis> ... &rsqb;
-</para>
+<cmdsynopsis>
+<command>mutt</command>
+<arg choice="opt"><option>-n</option></arg>
+<arg choice="opt"><option>-F</option>
+<replaceable>muttrc</replaceable>
+</arg>
+<arg choice="opt"><option>-a</option>
+<replaceable>file</replaceable>
+</arg>
+<arg choice="opt"><option>-c</option>
+<replaceable>address</replaceable>
+</arg>
+<arg choice="opt"><option>-i</option>
+<replaceable>filename</replaceable>
+</arg>
+<arg choice="opt"><option>-s</option>
+<replaceable>subject</replaceable>
+</arg>
+<arg choice="opt">
+<arg choice="opt" rep="repeat">
+<replaceable>file</replaceable>
+</arg>
+<arg choice="plain">--</arg>
+</arg>
+<arg choice="plain">
+<replaceable>address</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>address</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 Mutt also supports a <quote>batch</quote> mode to send prepared messages.  Simply redirect
@@ -6113,317 +6696,836 @@ The following are the commands understood by mutt.
 <para>
 
 <itemizedlist>
-<listitem>
 
-<para>
-<literal><link linkend="account-hook">account-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="account-hook">account-hook</link></command>
+<arg choice="plain">
+<replaceable>pattern</replaceable>
+<replaceable>command</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="alias">alias</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">key</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">address</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">address</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="alias">unalias</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">key</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="alternates">alternates</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable>regexp</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>regexp</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="alternates">unalternates</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>regexp</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="alternative-order">alternative-order</link></command>
+<arg choice="plain">
+<replaceable>mimetype</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="alternative-order">unalternative-order</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="auto-view">auto-view</link></command>
+<arg choice="plain">
+<replaceable>mimetype</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
 <listitem>
 
+<cmdsynopsis>
+<command><link linkend="auto-view">unauto-view</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="bind">bind</link></command>
+<arg choice="plain">
+<replaceable class="parameter">map</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">key</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">function</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="charset-hook">charset-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">alias</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">charset</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="charset-hook">iconv-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">charset</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">local-charset</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
 <para>
-<literal><link linkend="alias">alias</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>key</emphasis> <emphasis>address</emphasis> &lsqb; , <emphasis>address</emphasis>, ... &rsqb;
+<cmdsynopsis>
+<command><link linkend="color">color</link></command>
+<arg choice="plain">
+<replaceable class="parameter">object</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+</cmdsynopsis>
+</para>
+<para>
+<cmdsynopsis>
+<command><link linkend="color">color</link></command>
+<group choice="req">
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+</para>
+<para>
+<cmdsynopsis>
+<command><link linkend="color">color</link></command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">foreground</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">background</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
 </para>
 </listitem>
-<listitem>
 
+<listitem>
+<cmdsynopsis>
+<command><link linkend="color">uncolor</link></command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="exec">exec</link></command>
+<arg choice="plain">
+<replaceable class="parameter">function</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">function</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="fcc-hook">fcc-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="fcc-save-hook">fcc-save-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="folder-hook">folder-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;regexp</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="addrgroup">group</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain" rep="repeat">
+<option>-rx</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<option>-addr</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="addrgroup">ungroup</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<option>-rx</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<option>-addr</option>
+<replaceable class="parameter">expr</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="hdr-order">hdr&lowbar;order</link></command>
+<arg choice="plain">
+<replaceable class="parameter">header</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">header</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="hdr-order">unhdr&lowbar;order</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>header</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="ignore">ignore</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="ignore">unignore</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="lists">lists</link></command>
+<arg>
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="lists">unlists</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>regexp</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="macro">macro</link></command>
+<arg choice="plain">
+<replaceable class="parameter">menu</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">key</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">sequence</replaceable>
+</arg>
+<arg choice="opt">
+<replaceable class="parameter">description</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mailboxes">mailboxes</link></command>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mailboxes">unmailboxes</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mbox-hook">mbox-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="message-hook">message-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mime-lookup">mime-lookup</link></command>
+<arg choice="plain">
+<replaceable>mimetype</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mime-lookup">unmime-lookup</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
 <para>
-<literal><link linkend="alias">unalias</link></literal> &lsqb; * &verbar; <emphasis>key</emphasis> ... &rsqb;
+<cmdsynopsis>
+<command><link linkend="mono">mono</link></command>
+<arg choice="plain">
+<replaceable class="parameter">object</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+</cmdsynopsis>
+</para>
+<para>
+<cmdsynopsis>
+<command><link linkend="mono">mono</link></command>
+<group choice="req">
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
+</para>
+<para>
+<cmdsynopsis>
+<command><link linkend="mono">mono</link></command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">attribute</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</cmdsynopsis>
 </para>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="alternates">alternates</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mono">unmono</link></command>
+<arg choice="plain">
+<option>index</option>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="alternates">unalternates</link></literal> &lsqb; * &verbar; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="my-hdr">my&lowbar;hdr</link></command>
+<arg choice="plain">
+<replaceable class="parameter">string</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="alternative-order">alternative-order</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="my-hdr">unmy&lowbar;hdr</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">field</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="alternative-order">unalternative-order</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="crypt-hook">crypt-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">keyid</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="auto-view">auto&lowbar;view</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="push">push</link></command>
+<arg choice="plain">
+<replaceable class="parameter">string</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="auto-view">unauto&lowbar;view</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="set">reset</link></command>
+<arg choice="plain">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="bind">bind</link></literal> <emphasis>map</emphasis> <emphasis>key</emphasis> <emphasis>function</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="save-hook">save-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">mailbox</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="charset-hook">charset-hook</link></literal> <emphasis>alias</emphasis> <emphasis>charset</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="score">score</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">value</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="charset-hook">iconv-hook</link></literal> <emphasis>charset</emphasis> <emphasis>local-charset</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="score">unscore</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="color">color</link></literal> <emphasis>object</emphasis> <emphasis>foreground</emphasis> <emphasis>background</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="reply-hook">reply-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="color">uncolor</link></literal> <emphasis>index</emphasis> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="send-hook">send-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="exec">exec</link></literal> <emphasis>function</emphasis> &lsqb; <emphasis>function</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="send2-hook">send2-hook</link></command>
+<arg choice="plain">
+<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="fcc-hook">fcc-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="set">set</link></command>
+<group choice="req">
+<arg choice="plain">
+<group choice="opt">
+<arg choice="plain"><option>no</option></arg>
+<arg choice="plain"><option>inv</option></arg>
+</group>
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">variable=value</replaceable>
+</arg>
+</group>
+<arg choice="opt" rep="repeat"/>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="fcc-save-hook">fcc-save-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="set">unset</link></command>
+<arg choice="plain">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="folder-hook">folder-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="source">source</link></command>
+<arg choice="plain">
+<replaceable class="parameter">filename</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="hdr-order">hdr&lowbar;order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="spam">spam</link></command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">format</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="hdr-order">unhdr&lowbar;order</link></literal> <emphasis>header</emphasis> &lsqb; <emphasis>header</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="spam">nospam</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="ignore">ignore</link></literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="subscribe">subscribe</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable class="parameter">name</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="ignore">unignore</link></literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="subscribe">unsubscribe</link></command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">regexp</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="lists">lists</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
+<listitem>
+<cmdsynopsis>
+<command><link linkend="set">toggle</link></command>
+<arg choice="plain">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable class="parameter">variable</replaceable>
+</arg>
+</cmdsynopsis>
 </listitem>
-<listitem>
 
-<para>
-<literal><link linkend="lists">unlists</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
-</listitem>
 <listitem>
-
-<para>
-<literal><link linkend="macro">macro</link></literal> <emphasis>menu</emphasis> <emphasis>key</emphasis> <emphasis>sequence</emphasis> &lsqb; <emphasis>description</emphasis> &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="mailboxes">mailboxes</link></literal> <emphasis>filename</emphasis> &lsqb; <emphasis>filename</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="mbox-hook">mbox-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>mailbox</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="message-hook">message-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="mime-lookup">mime&lowbar;lookup</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="mime-lookup">unmime&lowbar;lookup</link></literal> <emphasis>mimetype</emphasis> &lsqb; <emphasis>mimetype</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="color">mono</link></literal> <emphasis>object attribute</emphasis> &lsqb; <emphasis>regexp</emphasis> &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="color">unmono</link></literal> <emphasis>index</emphasis> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="my-hdr">my&lowbar;hdr</link></literal> <emphasis>string</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="my-hdr">unmy&lowbar;hdr</link></literal> <emphasis>field</emphasis> &lsqb; <emphasis>field</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="crypt-hook">crypt-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>key-id</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="push">push</link></literal> <emphasis>string</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="set">reset</link></literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="save-hook">save-hook</link></literal> <emphasis>regexp</emphasis> <emphasis>filename</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="score-command">score</link></literal> <emphasis>pattern</emphasis> <emphasis>value</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="score-command">unscore</link></literal> <emphasis>pattern</emphasis> &lsqb; <emphasis>pattern</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="send-hook">reply-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="send-hook">send-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="send-hook">send2-hook</link></literal> <emphasis>pattern</emphasis> <emphasis>command</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="set">set</link></literal> &lsqb;no&verbar;inv&rsqb;<emphasis>variable</emphasis>&lsqb;=<emphasis>value</emphasis>&rsqb; &lsqb; <emphasis>variable</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="set">unset</link></literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="source">source</link></literal> <emphasis>filename</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="spam">spam</link></literal> <emphasis>pattern</emphasis> <emphasis>format</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="spam">nospam</link></literal> <emphasis>pattern</emphasis>
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="lists">subscribe</link></literal> &lsqb; <literal>-group</literal> <emphasis>name</emphasis> &lsqb; ... &rsqb; &rsqb; <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="lists">unsubscribe</link></literal> <emphasis>regexp</emphasis> &lsqb; <emphasis>regexp</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="set">toggle</link></literal> <emphasis>variable</emphasis> &lsqb;<emphasis>variable</emphasis> ... &rsqb;
-</para>
-</listitem>
-<listitem>
-
-<para>
-<literal><link linkend="unhook">unhook</link></literal> <emphasis>hook-type</emphasis>
-</para>
+<cmdsynopsis>
+<command><link linkend="unhook">unhook</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">hook-type</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 </listitem>
 
 </itemizedlist>

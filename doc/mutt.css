@@ -2,6 +2,7 @@
   body { margin-left:2%; margin-right:2%; font-family:serif; }
   .toc a, .list-of-tables a { font-family:sans-serif; }
   h1, h2, h3, h4, h5, h6 { font-family:sans-serif; }
+  em.replaceable code { font-family:sans-serif; }
   p { text-align:justify; }
   div.table p.title { font-size:smaller; }
   div.table p.title b { font-weight:normal; }
