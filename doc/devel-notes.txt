@@ -141,6 +141,26 @@ is in the root directory.  The script does all the automake/autoconf
 magic that needs to be done with a fresh checkout.
 
 
+Contributing patches
+--------------------
+
+As Mercurial is a distributed version control system, it's easy to
+commit changes locally without impacting anybody else's work, starting
+over again, or turn several commit and backouts into a new single patch
+ready for submission.
+
+These so-called "changesets" (a diff with a reasonable message
+describing the change) can be exported using Mercurial through the
+"patchbomb" extension shipped with Mercurial (please see the hg
+documentation for details) which also is the preferred format for
+submission to the mutt-dev mailing list for discussion and review.
+
+In order to ease later bisecting in case of bugs and code history,
+changes should be grouped logically, feature by feature or bugfix by
+bugfix. Escpecially a single patch fixing several problems at once
+should be avoided.
+
+
 A word about warnings
 ---------------------
 
