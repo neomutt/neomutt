@@ -94,21 +94,76 @@ For a list of mirror sites, please refer to
 </sect1>
 
 <sect1 id="irc">
-<title>IRC</title>
+<title>Mutt online resources</title>
 
+<variablelist>
+
+<varlistentry>
+<term>Bug Tracking System</term>
+<listitem>
 <para>
-Visit channel <emphasis>&num;mutt</emphasis> on
-<ulink url="http://www.freenode.net/">irc.freenode.net</ulink> to chat with
-other people interested in Mutt.
+The official mutt bug tracking system can be found at
+<ulink url="http://dev.mutt.org/">http://dev.mutt.org/</ulink>
 </para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Wiki</term>
+<listitem>
+<para>
+An (unofficial) wiki can be found
+at <ulink url="http://wiki.mutt.org/">http://wiki.mutt.org/</ulink>.
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>IRC</term>
+<listitem>
+<para>
+For the IRC user community, visit channel <emphasis>&num;mutt</emphasis> on
+<ulink url="http://www.freenode.net/">irc.freenode.net</ulink>.
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>USENET</term>
+<listitem>
+<para>
+For USENET, see the newsgroup <ulink url="news:comp.mail.mutt">comp.mail.mutt</ulink>.
+</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
 
 </sect1>
 
-<sect1 id="usenet">
-<title>USENET</title>
+<sect1 id="contrib">
+<title>Contributing to Mutt</title>
 
 <para>
-See the newsgroup <ulink url="news:comp.mail.mutt">comp.mail.mutt</ulink>.
+There're various ways to contribute to the Mutt project.
+</para>
+
+<para>
+Especiall for new users it may be helpful to meet other new and
+experienced users to chat about Mutt, talk about problems and share
+tricks.
+</para>
+
+<para>
+Since translations of Mutt into other languages are highly appreciated,
+the mutt developers always look for skilled translators that help
+improve and continue to maintain stale translations.
+</para>
+
+<para>
+For contributing code patches for new features and bug fixes, please
+refer to the developer pages at
+<ulink url="http://dev.mutt.org/">http://dev.mutt.org/</ulink> for more details.
 </para>
 
 </sect1>
