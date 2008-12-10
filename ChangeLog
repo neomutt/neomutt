@@ -1,3 +1,13 @@
+2008-12-10 10:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (a38ec1a3f345)
+
+	* doc/manual.xml.head, doc/mutt.css: Manual: Wrap important examples
+	in <example/>
+
+2008-12-06 15:06 +0100  Rocco Rutte  <pdmef@gmx.net>  (e13e903af3bf)
+
+	* ChangeLog, doc/manual.xml.head, doc/mutt.css: Manual: Fixup
+	configuration command synopsis and switch to <cmdsynopsis/>
+
 2008-12-06 15:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (5799811e0821)
 
 	* doc/makedoc.c: makedoc: use <quote/> and <literal/> in string

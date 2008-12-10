@@ -115,6 +115,48 @@ See the newsgroup <ulink url="news:comp.mail.mutt">comp.mail.mutt</ulink>.
 
 </sect1>
 
+<sect1 id="typo">
+<title>Typograhical conventions</title>
+
+<para>
+This section lists typographical conventions followed throughout this
+manual. See table <xref linkend="tab-typo"/> for typographical
+conventions for special terms.
+</para>
+
+<table id="tab-typo">
+<title>Typographical convention for special terms</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Item</entry><entry>Refers to...</entry></row>
+</thead>
+<tbody>
+<row><entry><literal>printf(3)</literal></entry><entry>UNIX manual pages, execute <literal>man 3 printf</literal></entry></row>
+<row><entry><literal>&lt;PageUp&gt;</literal></entry><entry>named keys</entry></row>
+<row><entry><literal>&lt;create-alias&gt;</literal></entry><entry>named Mutt function</entry></row>
+<row><entry><literal>&circ;G</literal></entry><entry>Control+G key combination</entry></row>
+<row><entry><literal>&dollar;mail&lowbar;check</literal></entry><entry>Mutt configuration option</entry></row>
+</tbody>
+</tgroup>
+</table>
+
+<para>
+Examples are presented as:
+
+<screen>
+mutt -v
+</screen>
+</para>
+
+<para>
+Within command synopsis, curly brackets (<quote>&lcub;&rcub;</quote>) denote a set
+of options of which one is mandatory, square brackets
+(<quote>&lsqb;&rsqb;</quote>) denote optional arguments, three dots
+denote that the argument may be repeated arbitrary times.
+</para>
+
+</sect1>
+
 <sect1 id="copyright">
 <title>Copyright</title>
 
