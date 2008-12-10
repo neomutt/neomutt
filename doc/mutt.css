@@ -14,5 +14,8 @@
     font-weight:normal;
     vertical-align:top;
   }
-  pre.screen { background:#f0f0f0; border:1px solid #c0c0c0; padding:5px; }
+  pre.screen, div.note { background:#f0f0f0; border:1px solid #c0c0c0; padding:5px; }
+  div.note h3 { font-size:small; font-style:italic; font-variant: small-caps; }
+  div.note h3:after { content: ":" }
+  div.note { margin-bottom: 5px; }
 }

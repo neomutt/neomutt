@@ -70,12 +70,14 @@ word <emphasis>subscribe</emphasis> in the body to
 
 </itemizedlist>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> all messages posted to
+All messages posted to
 <emphasis>mutt-announce</emphasis> are automatically forwarded to
 <emphasis>mutt-users</emphasis>, so you do not need to be subscribed to
 both lists.
 </para>
+</note>
 
 </sect1>
 
@@ -612,12 +614,19 @@ where <emphasis>Ps</emphasis> can be one of the codes shown in
 <para>
 Mutt uses these attributes for handling <literal>text/enriched</literal>
 messages, and they can also be used by an external
-<link linkend="auto-view">autoview</link> script for highlighting purposes.
-<emphasis role="bold">Note:</emphasis> If you change the colors for your
+<link linkend="auto-view">autoview</link> script for highlighting
+purposes.
+</para>
+
+<note>
+<para>
+If you change the colors for your
 display, for example by changing the color associated with color2 for
 your xterm, then that color will be used instead of green.
 </para>
+</note>
 
+<note>
 <para>
 Note that the search commands in the pager take regular expressions,
 which are not quite the same as the more
@@ -626,6 +635,7 @@ command in the index. This is because the pager only performs simple
 text search, whereas the index provides boolean filtering on several
 aspects of messages.
 </para>
+</note>
 
 </sect2>
 
@@ -663,14 +673,16 @@ as shown in <xref linkend="tab-key-threads"/>.
 </tgroup>
 </table>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> Collapsing a thread displays only the first message
+Collapsing a thread displays only the first message
 in the thread and hides the others. This is useful when threads
 contain so many messages that you can only see a handful of threads on
 the screen. See &percnt;M in <link linkend="index-format">&dollar;index&lowbar;format</link>.
 For example, you could use "&percnt;?M?(&num;&percnt;03M)&amp;(&percnt;4l)?" in <link linkend="index-format">&dollar;index&lowbar;format</link> to optionally
 display the number of hidden messages if the thread is collapsed.
 </para>
+</note>
 
 <para>
 See also: <link linkend="strict-threads">&dollar;strict&lowbar;threads</link>.
@@ -696,10 +708,17 @@ menus have these interesting functions:
 <para>
 Creates a new alias based upon the current message (or prompts for a
 new one).  Once editing is complete, an <link linkend="alias">alias</link>
-command is added to the file specified by the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable for future use. <emphasis role="bold">Note:</emphasis>
+command is added to the file specified by
+the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable
+for future use
+</para>
+
+<note>
+<para>
 Mutt does not read the <link linkend="alias-file">&dollar;alias&lowbar;file</link>
 upon startup so you must explicitly <link linkend="source">source</link> the file.
 </para>
+</note>
 </listitem>
 </varlistentry>
 
@@ -1005,12 +1024,18 @@ message.
 The compose menu is also used to edit the attachments for a message which can be either files
 or other messages. The <literal>&lt;attach-message&gt;</literal> function to will prompt you for a folder to
 attach messages from. You can now tag messages in that folder and they
-will be attached to the message you are sending. Note that certain
+will be attached to the message you are sending.
+</para>
+
+<note>
+<para>
+Note that certain
 operations like composing a new mail, replying, forwarding, etc. are
 not permitted when you are in that folder. The &percnt;r in
 <link linkend="status-format">&dollar;status&lowbar;format</link> will change to
 a <quote>A</quote> to indicate that you are in attach-message mode.
 </para>
+</note>
 
 </sect2>
 
@@ -1264,13 +1289,15 @@ followed by space</para></listitem>
 is not intended to be a quote character</para></listitem>
 </itemizedlist>
 
+<note>
 <para>
-<emphasis role="bold">Note</emphasis> that mutt only support space-stuffing
+Mutt only supports space-stuffing
 for the first two types of lines but not for the third: It is impossible to
 safely detect whether a leading <literal>&gt;</literal> character starts a
 quote or not. Furthermore, Mutt only applies space-stuffing
 <emphasis>once</emphasis> after the initial edit is finished.
 </para>
+</note>
 
 <para>
 All leading spaces are to be removed by receiving clients to restore
@@ -1365,12 +1392,14 @@ messages exist.  If multiple messages are currently postponed, the
 like to resume.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> If you postpone a reply to a message, the reply setting of
+If you postpone a reply to a message, the reply setting of
 the message is only updated when you actually finish the message and
 send it.  Also, you must be in the same folder with the message you
 replied to for the status of the message to be updated.
 </para>
+</note>
 
 <para>
 See also the <link linkend="postpone">&dollar;postpone</link> quad-option.
@@ -1500,9 +1529,15 @@ my_hdr X-Operating-System: `uname -a`
 
 <para>
 The output of the Unix command <quote>uname -a</quote> will be substituted before the
-line is parsed.  Note that since initialization files are line oriented, only
+line is parsed.
+</para>
+
+<note>
+<para>
+Since initialization files are line oriented, only
 the first line of output from the Unix command will be substituted.
 </para>
+</note>
 
 <para>
 Both environment variables and mutt variables can be accessed by
@@ -1676,10 +1711,12 @@ you are communicating with.  Mutt allows you to create <quote>aliases</quote> wh
 a short string to a full address.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> if you want to create an alias for more than
+If you want to create an alias for more than
 one address, you <emphasis role="bold">must</emphasis> separate the addresses with a comma (<quote>,</quote>).
 </para>
+</note>
 
 <para>
 The optional <literal>-group</literal> argument to
@@ -2011,17 +2048,21 @@ matches multiple folder-hook's, they are executed in the order given in the
 muttrc.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> if you use the <quote>!</quote> shortcut for <link linkend="spoolfile">&dollar;spoolfile</link> at the beginning of the pattern, you must place it
+If you use the <quote>!</quote> shortcut for <link linkend="spoolfile">&dollar;spoolfile</link> at the beginning of the pattern, you must place it
 inside of double or single quotes in order to distinguish it from the
 logical <emphasis>not</emphasis> operator for the expression.
 </para>
+</note>
 
+<note>
 <para>
-Note that the settings are <emphasis>not</emphasis> restored when you leave the mailbox.
+Settings are <emphasis>not</emphasis> restored when you leave the mailbox.
 For example, a command action to perform is to change the sorting method
 based upon the mailbox being read:
 </para>
+</note>
 
 <screen>
 folder-hook mutt set sort=threads
@@ -2108,10 +2149,12 @@ Optionally you can specify a descriptive text after <emphasis>sequence</emphasis
 which is shown in the help screens.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> Macro definitions (if any) listed in the help screen(s), are
+Macro definitions (if any) listed in the help screen(s), are
 silently truncated at the screen width, and are not wrapped.
 </para>
+</note>
 
 </sect1>
 
@@ -2256,18 +2299,22 @@ set COLORFGBG="green;black"
 export COLORFGBG
 </screen>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> The <emphasis>S-Lang</emphasis> library requires you to use the <emphasis>lightgray</emphasis>
+The <emphasis>S-Lang</emphasis> library requires you to use the <emphasis>lightgray</emphasis>
 and <emphasis>brown</emphasis> keywords instead of <emphasis>white</emphasis> and <emphasis>yellow</emphasis> when
 setting this variable.
 </para>
+</note>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> The uncolor command can be applied to the index object only.  It
+The uncolor command can be applied to the index object only.  It
 removes entries from the list. You <emphasis role="bold">must</emphasis> specify the same pattern
 specified in the color command for it to be removed.  The pattern <quote>*</quote> is
 a special token which means to clear the color index list of all entries.
 </para>
+</note>
 
 <para>
 Mutt also recognizes the keywords <emphasis>color0</emphasis>, <emphasis>color1</emphasis>, &hellip;,
@@ -2633,12 +2680,19 @@ specify which addresses belong to mailing lists, and which mailing
 lists you are subscribed to.  Once you have done this, the <link linkend="list-reply"><literal>&lt;list-reply&gt;</literal></link> function will work for all known lists.
 Additionally, when you send a message to a subscribed list, mutt will
 add a Mail-Followup-To header to tell other users' mail user agents
-not to send copies of replies to your personal address.   Note that
-the Mail-Followup-To header is a non-standard extension which is not
+not to send copies of replies to your personal address.
+</para>
+
+<note>
+<para>
+The Mail-Followup-To header is a non-standard extension which is not
 supported by all mail user agents.  Adding it is not bullet-proof against
 receiving personal CCs of list messages.  Also note that the generation
-of the Mail-Followup-To header is controlled by the <link linkend="followup-to">&dollar;followup&lowbar;to</link> configuration variable.
+of the Mail-Followup-To header is controlled by the
+<link linkend="followup-to">&dollar;followup&lowbar;to</link>
+configuration variable.
 </para>
+</note>
 
 <para>
 More precisely, Mutt maintains lists of patterns for the addresses
@@ -2772,8 +2826,9 @@ of folders which receive mail. Use <quote>unmailboxes *</quote> to remove all
 tokens.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> the folders in the <literal>mailboxes</literal> command are resolved when
+The folders in the <literal>mailboxes</literal> command are resolved when
 the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as <quote>=</quote> and <quote>!</quote>), any variable
 definition that affects these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
 should be set before the <literal>mailboxes</literal> command. If
@@ -2781,6 +2836,7 @@ none of these shorcuts are used, a local path should be absolute as
 otherwise mutt tries to find it relative to the directory
 from where mutt was started which may not always be desired.
 </para>
+</note>
 
 <para>
 For Mbox and Mmdf folders, new mail is detected by comparing access and/or
@@ -2848,11 +2904,13 @@ my&lowbar;hdr Organization: A Really Big Company, Anytown, USA
 in your <literal>.muttrc</literal>.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> space characters are <emphasis>not</emphasis> allowed between the keyword and
+Space characters are <emphasis>not</emphasis> allowed between the keyword and
 the colon (<quote>:</quote>). The standard for electronic mail (RFC2822) says that
 space is illegal there, so Mutt enforces the rule.
 </para>
+</note>
 
 <para>
 If you would like to add a header field to a single message, you should
@@ -3042,10 +3100,16 @@ is executed when <emphasis>pattern</emphasis> matches.
 <para>
 <literal>reply-hook</literal> is matched against the message you are <emphasis>replying to</emphasis>,
 instead of the message you are <emphasis>sending</emphasis>.  <literal>send-hook</literal> is
-matched against all messages, both <emphasis>new</emphasis> and <emphasis>replies</emphasis>.  <emphasis role="bold">Note:</emphasis>
+matched against all messages, both <emphasis>new</emphasis>
+and <emphasis>replies</emphasis>.
+</para>
+
+<note>
+<para>
 <literal>reply-hook</literal>s are matched <emphasis role="bold">before</emphasis> the <literal>send-hook</literal>, <emphasis role="bold">regardless</emphasis>
 of the order specified in the user's configuration file.
 </para>
+</note>
 
 <para>
 <literal>send2-hook</literal> is matched every time a message is changed, either
@@ -3072,14 +3136,16 @@ variables in order to change the language of the attributions and
 signatures based upon the recipients.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> the send-hook's are only executed once after getting the initial
+send-hook's are only executed once after getting the initial
 list of recipients.  Adding a recipient after replying or editing the
 message will not cause any send-hook to be executed.  Also note that
 <literal>my&lowbar;hdr</literal> commands which modify recipient headers, or the message's
 subject, don't have any effect on the current message when executed
 from a send-hook.
 </para>
+</note>
 
 </sect1>
 
@@ -3825,10 +3891,16 @@ convenience, we have included below a brief description of this syntax.
 
 <para>
 The search is case sensitive if the pattern contains at least one upper
-case letter, and case insensitive otherwise. Note that <quote>&bsol;</quote>
+case letter, and case insensitive otherwise.
+</para>
+
+<note>
+<para>
+Note that <quote>&bsol;</quote>
 must be quoted if used for a regular expression in an initialization
 command: <quote>&bsol;&bsol;</quote>.
 </para>
+</note>
 
 <para>
 A regular expression is a pattern that describes a set of strings.
@@ -3836,6 +3908,7 @@ Regular expressions are constructed analogously to arithmetic
 expressions, by using various operators to combine smaller expressions.
 </para>
 
+<note>
 <para>
 Note that the regular expression can be enclosed/delimited by either &quot;
 or ' which is useful if the regular expression includes a white-space
@@ -3843,6 +3916,7 @@ character.  See <xref linkend="muttrc-syntax"/>
 for more information on &quot; and ' delimiter processing.  To match a
 literal &quot; or ' you must preface it with \ (backslash).
 </para>
+</note>
 
 <para>
 The fundamental building blocks are the regular expressions that match
@@ -3902,12 +3976,18 @@ The following classes are defined by the POSIX standard in
 
 <para>
 A character class is only valid in a regular expression inside the
-brackets of a character list.  Note that the brackets in these
+brackets of a character list.
+</para>
+
+<note>
+<para>
+Note that the brackets in these
 class names are part of the symbolic names, and must be included
-in addition to the brackets delimiting the bracket list.  For
+in addition to the brackets delimiting the bracket list. For
 example, <emphasis role="bold">&lsqb;&lsqb;:digit:&rsqb;&rsqb;</emphasis> is equivalent to
 <emphasis role="bold">&lsqb;0-9&rsqb;</emphasis>.
 </para>
+</note>
 
 <para>
 Two additional special sequences can appear in character lists.  These
@@ -3987,10 +4067,12 @@ precedence over alternation.  A whole subexpression may be enclosed in
 parentheses to override these precedence rules.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> If you compile Mutt with the GNU <emphasis>rx</emphasis> package, the
+If you compile Mutt with the GNU <emphasis>rx</emphasis> package, the
 following operators may also be used in regular expressions as described in <xref linkend="regex-gnu-ext"/>.
 </para>
+</note>
 
 <table id="regex-gnu-ext">
 <title>GNU regular expression extensions</title>
@@ -4119,6 +4201,7 @@ are allowed, too.
 <sect2 id="patterns-modifier">
 <title>Pattern Modifier</title>
 
+<note>
 <para>
 Note that patterns matching 'lists' of addresses (notably c, C, p, P and t)
 match if there is at least one match in the whole list. If you want to
@@ -4126,6 +4209,7 @@ make sure that all elements of that list match, you need to prefix your
 pattern with <quote>&circ;</quote>.
 This example matches all mails which only has recipients from Germany.
 </para>
+</note>
 
 <screen>
 ^~C \.de$
@@ -4257,16 +4341,14 @@ or <quote>Ed +SomeoneElse</quote>:
  '~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
 </screen>
 
+<note>
 <para>
-Note that if a regular expression contains parenthesis, or a vertical bar
+If a regular expression contains parenthesis, or a vertical bar
 ("&verbar;"), you <emphasis role="bold">must</emphasis> enclose the expression in double or single quotes since
 those characters are also used to separate different parts of Mutt's
-pattern language.  For example,
+pattern language.  For example: <literal>~f "me@(mutt\.org|cs\.hmc\.edu)"</literal>
 </para>
-
-<screen>
-~f "me@(mutt\.org|cs\.hmc\.edu)"
-</screen>
+</note>
 
 <para>
 Without the quotes, the parenthesis wouldn't end.
@@ -4371,12 +4453,14 @@ Example: to select messages less than 1 month old, you would use
 Limit to messages matching: ~d &lt;1m
 </screen>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> all dates used when searching are relative to the
+All dates used when searching are relative to the
 <emphasis role="bold">local</emphasis> time zone, so unless you change the setting of your <link linkend="index-format">&dollar;index&lowbar;format</link> to include a
 <literal>&percnt;&lsqb;...&rsqb;</literal> format, these are <emphasis role="bold">not</emphasis> the dates shown
 in the main index.
 </para>
+</note>
 
 </sect2>
 
@@ -4479,13 +4563,15 @@ configuration option/command.  See
 for specific details on each type of <emphasis>hook</emphasis> available.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> if a hook changes configuration settings, these changes remain
+If a hook changes configuration settings, these changes remain
 effective until the end of the current mutt session. As this is generally
 not desired, a default hook needs to be added before all other hooks to
 restore configuration defaults. Here is an example with send-hook and the
 my&lowbar;hdr directive:
 </para>
+</note>
 
 <example id="ex-send-hook-my-hdr">
 <title>Combining <literal>send-hook</literal> and <literal>my&lowbar;hdr</literal></title>
@@ -4637,7 +4723,7 @@ surrounded by lines containing <quote>&circ;A&circ;A&circ;A&circ;A</quote> (four
 consists of a directory and each message is stored in a separate file.
 The filename indicates the message number (however, this is may not
 correspond to the message number Mutt displays). Deleted messages are
-renamed with a comma (,) prepended to the filename. <emphasis role="bold">Note:</emphasis> Mutt
+renamed with a comma (,) prepended to the filename. Mutt
 detects this type of mailbox by looking for either <literal>.mh&lowbar;sequences</literal>
 or <literal>.xmhcache</literal> (needed to distinguish normal directories from MH
 mailboxes).
@@ -4772,11 +4858,13 @@ that the reply goes to the mailing list, even if it's not specified
 in the list of recipients in the <literal>Mail-Followup-To</literal>.
 </para>
 
+<note>
 <para>
-Note that, when header editing is enabled, you can create a
+When header editing is enabled, you can create a
 <literal>Mail-Followup-To</literal> header manually.  Mutt will only auto-generate
 this header if it doesn't exist when you send the message.
 </para>
+</note>
 
 <para>
 The other method some mailing list admins use is to generate a
@@ -5269,11 +5357,16 @@ text/html; lynx %s
 <para>
 In this case, lynx does not support viewing a file from stdin, so you
 must use the &percnt;s syntax.
-<emphasis role="bold">Note:</emphasis> <emphasis>Some older versions of lynx contain a bug where they
+</para>
+
+<note>
+<para>
+<emphasis>Some older versions of lynx contain a bug where they
 will check the mailcap file for a viewer for text/html.  They will find
 the line which calls lynx, and run it.  This causes lynx to continuously
 spawn itself to view the object.</emphasis>
 </para>
+</note>
 
 <para>
 On the other hand, maybe you don't want to use lynx interactively, you
@@ -5461,7 +5554,7 @@ entry should be used.  The command is defined with the command expansion
 rules defined in the next section.  If the command returns 0, then the
 test passed, and Mutt uses this entry.  If the command returns non-zero,
 then the test failed, and Mutt continues searching for the right entry.
-<emphasis role="bold">Note:</emphasis> <emphasis>the content-type must match before Mutt performs the test.</emphasis>
+Note that the content-type must match before Mutt performs the test.
 For example:
 </para>
 
@@ -6032,11 +6125,13 @@ local <link linkend="spoolfile">&dollar;spoolfile</link>.  After this
 point, Mutt runs exactly as if the mail had always been local.
 </para>
 
+<note>
 <para>
-<emphasis role="bold">Note:</emphasis> If you only need to fetch all messages to a
+If you only need to fetch all messages to a
 local mailbox you should consider using a specialized program, such as
 <literal>fetchmail</literal>, <literal>getmail</literal> or similar.
 </para>
+</note>
 
 </sect1>
 
@@ -6088,11 +6183,13 @@ set timeout=15
 with relatively good results over my slow modem line.
 </para>
 
+<note>
 <para>
 Note that if you are using mbox as the mail store on UW servers prior to
 v12.250, the server has been reported to disconnect a client if another client
 selects the same folder.
 </para>
+</note>
 
 <sect2 id="imap-browser">
 <title>The Folder Browser</title>

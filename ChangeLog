@@ -1,3 +1,20 @@
+2008-12-10 15:36 +0100  Rocco Rutte  <pdmef@gmx.net>  (ca2eee8d763e)
+
+	* doc/Makefile.am, doc/chunk.xsl, doc/html.xsl, doc/mutt.xsl: Move
+	common XSLT params to mutt.xsl imported into (chunk|html).xsl
+
+2008-12-10 13:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (11200e1a8b84)
+
+	* ChangeLog, doc/gen-map-doc, doc/makedoc.c, doc/manual.xml.head,
+	doc/manual.xml.tail, init.h: Manual: Only wrap real text paragraphs
+	in <para/>
+
+	Elements such as lists, tables, synopsis don't need it and produce
+	hundreds of warnings in tidy because of empty paragraphs.
+
+	With this change, the manual should be fully XHTML 1.0 Transitional
+	and validate without warnings and errors.
+
 2008-12-10 13:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (c1873847c50e)
 
 	* hg-commit: hg-commit: Work even in subdirectories
