@@ -2,12 +2,13 @@
 
 MUTTDIR=$(dirname $0)
 
-$MUTTDIR/check_sec.sh
+(cd $MUTTDIR && ./check_sec.sh) || exit 1
+
 if [ -f $MUTTDIR/doc/manual.xml ] ; then
   ( cd $MUTTDIR/doc/ && make validate ) || exit 1
 fi
 
-lrev=$(hg log --limit 1 --template '{rev}' ChangeLog)
+lrev=$(hg log --limit 1 --template '{rev}' $MUTTDIR/ChangeLog)
 trev=$(hg tip --template '{rev}')
 if [ $lrev = $trev ]
 then
@@ -26,14 +27,14 @@ do
     -?) i=$((i+1)); continue ;;
     # one-argument options with no space
     -*) continue ;;
-    *) cl=ChangeLog ;;
+    *) cl=$MUTTDIR/ChangeLog ;;
   esac
 done
 
 {
-  hg log --no-merges --style=./hg-changelog-map -r tip:$lrev
-  hg cat ChangeLog
-} > ChangeLog
-${VISUAL:-${EDITOR:-vi}} ChangeLog
+  hg log --no-merges --style=$MUTTDIR/hg-changelog-map -r tip:$lrev
+  hg cat $MUTTDIR/ChangeLog
+} > $MUTTDIR/ChangeLog
+${VISUAL:-${EDITOR:-vi}} $MUTTDIR/ChangeLog
 
 hg commit "$@" $cl
