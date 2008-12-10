@@ -145,11 +145,11 @@ For USENET, see the newsgroup <ulink url="news:comp.mail.mutt">comp.mail.mutt</u
 <title>Contributing to Mutt</title>
 
 <para>
-There're various ways to contribute to the Mutt project.
+There are various ways to contribute to the Mutt project.
 </para>
 
 <para>
-Especiall for new users it may be helpful to meet other new and
+Especially for new users it may be helpful to meet other new and
 experienced users to chat about Mutt, talk about problems and share
 tricks.
 </para>
@@ -178,7 +178,7 @@ conventions for special terms.
 </para>
 
 <table id="tab-typo">
-<title>Typographical convention for special terms</title>
+<title>Typographical conventions for special terms</title>
 <tgroup cols="2">
 <thead>
 <row><entry>Item</entry><entry>Refers to...</entry></row>
@@ -286,7 +286,7 @@ interactive commands.
 </para>
 
 <para>
-Because Mutt allows for customizing almost all key bindings, there're
+Because Mutt allows for customizing almost all key bindings, there are
 so-called <quote>functions</quote> which can be executed manually (using the
 command line) or in macros. Macros allow the user to bind a sequence of
 commands to a single key or a short key sequence instead of repeating a
