@@ -1,11 +1,10 @@
 @media screen {
   body { margin-left:2%; margin-right:2%; font-family:serif; }
-  .toc a, .list-of-tables a { font-family:sans-serif; }
+  .toc, .list-of-tables, .list-of-examples { font-family:sans-serif; }
   h1, h2, h3, h4, h5, h6 { font-family:sans-serif; }
   em.replaceable code { font-family:sans-serif; }
   p { text-align:justify; }
-  div.table p.title { font-size:smaller; }
-  div.table p.title b { font-weight:normal; }
+  div.table p.title, div.example p.title { font-size:smaller; font-family:sans-serif; }
   .email, .email a { font-family:monospace; }
   div.table-contents table { border-collapse:collapse; border:1px solid #c0c0c0; }
   div.table-contents table td, div.table-contents table th { padding:5px; text-align:left; }
@@ -15,5 +14,5 @@
     font-weight:normal;
     vertical-align:top;
   }
-  pre { background:#f0f0f0; border:1px solid #c0c0c0; padding:5px; }
+  pre.screen { background:#f0f0f0; border:1px solid #c0c0c0; padding:5px; }
 }

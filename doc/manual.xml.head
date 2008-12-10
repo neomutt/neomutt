@@ -1415,9 +1415,12 @@ V) from the index menu.
 An initialization file consists of a series of <link linkend="commands">commands</link>.  Each line of the file may contain one or more commands.
 When multiple commands are used, they must be separated by a semicolon (;).
 
+<example id="ex-rc-multiple-cmds">
+<title>Multiple configuration commands per line</title>
 <screen>
 set realname='Mutt user' ; ignore x-
 </screen>
+</example>
 
 The hash mark, or pound sign
 (<quote>&num;</quote>), is used as a <quote>comment</quote> character. You can use it to
@@ -1427,9 +1430,12 @@ to the end of the line is ignored. For example,
 
 <para>
 
+<example id="ex-ec-comment">
+<title>Commenting configuration files</title>
 <screen>
 my_hdr X-Disclaimer: Why are you listening to me? &num; This is a comment
 </screen>
+</example>
 
 </para>
 
@@ -1450,9 +1456,12 @@ For example, if want to put quotes <quote>&quot;</quote> inside of a string, you
 <quote>&bsol;</quote> to force the next character to be a literal instead of interpreted
 character.
 
+<example id="ex-rc-quote">
+<title>Escaping quotes in congfiguration files</title>
 <screen>
 set realname="Michael \"MuttDude\" Elkins"
 </screen>
+</example>
 
 </para>
 
@@ -1473,9 +1482,12 @@ It is also possible to substitute the output of a Unix command in an
 initialization file.  This is accomplished by enclosing the command in
 backticks (``).  For example,
 
+<example id="ex-rc-backtick">
+<title>Using external command's output in configuration files</title>
 <screen>
 my_hdr X-Operating-System: `uname -a`
 </screen>
+</example>
 
 The output of the Unix command <quote>uname -a</quote> will be substituted before the
 line is parsed.  Note that since initialization files are line oriented, only
@@ -1487,9 +1499,12 @@ Both environment variables and mutt variables can be accessed by
 prepending <quote>&dollar;</quote> to the name of the variable. For example,
 </para>
 
+<example id="ex-rc-env">
+<title>Using environment variables in configuration files</title>
 <screen>
 set record=+sent_on_$HOSTNAME
 </screen>
+</example>
 
 <para>
 will cause mutt to save outgoing messages to a folder named
@@ -1714,11 +1729,14 @@ For example:
 
 <para>
 
+<example id="ex-alias-external">
+<title>Configuring external alias files</title>
 <screen>
 source /usr/local/share/Mutt.aliases
 source ~/.mail_aliases
 set alias_file=~/.mail_aliases
 </screen>
+</example>
 
 </para>
 
@@ -2030,10 +2048,13 @@ for all folders containing <quote>mutt</quote> in their name.
 </para>
 
 <para>
+<example id="ex-folder-sorting">
+<title>Setting sort method based on mailbox name</title>
 <screen>
 folder-hook . set sort=date-sent
 folder-hook mutt set sort=threads
 </screen>
+</example>
 </para>
 
 </sect1>
@@ -2411,6 +2432,8 @@ For example:
 </para>
 
 <para>
+<example id="ex-header-weeding">
+<title>Header weeding</title>
 <screen>
 # Sven's draconian header weeding
 ignore *
@@ -2418,6 +2441,7 @@ unignore from date subject to cc
 unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 </screen>
+</example>
 </para>
 
 <anchor id="hdr-order"/>
@@ -2456,9 +2480,12 @@ thus removing the header order effects set by the system-wide startup file.
 </para>
 
 <para>
+<example id="ex-hdr-order">
+<title>Configuring header display order</title>
 <screen>
 hdr&lowbar;order From Date: From: To: Cc: Subject:
 </screen>
+</example>
 </para>
 
 </sect1>
@@ -2837,9 +2864,12 @@ all of your outgoing messages, you can put the command
 </para>
 
 <para>
+<example id="ex-my-hdr">
+<title>Defining custom headers</title>
 <screen>
 my&lowbar;hdr Organization: A Really Big Company, Anytown, USA
 </screen>
+</example>
 </para>
 
 <para>
@@ -2907,6 +2937,8 @@ Examples:
 </para>
 
 <para>
+<example id="ex-save-hook-exando">
+<title>Using %-expandos in <literal>save-hook</literal></title>
 <screen>
 # default: save all to ~/Mail/&lt;author name&gt;
 save-hook . ~/Mail/%F
@@ -2917,6 +2949,7 @@ save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
 # save from aol.com to $folder/spam
 save-hook aol\\.com$ +spam
 </screen>
+</example>
 </para>
 
 <para>
@@ -3175,9 +3208,12 @@ automatically run a sequence of commands at startup, or when entering
 certain folders. For example, the following command will automatically
 collapse all threads when entering a folder:
 
+<example id="ex-folder-hook-push">
+<title>Embedding <literal>push</literal> in <literal>folder-hook</literal></title>
 <screen>
 folder-hook . 'push &lt;collapse-all&gt;'
 </screen>
+</example>
 </para>
 
 </sect1>
@@ -3317,12 +3353,15 @@ them.
 For example, suppose I use DCC, SpamAssassin, and PureMessage. I might
 define these spam settings:
 
+<example id="ex-spam">
+<title>Configuring spam detection</title>
 <screen>
 spam "X-DCC-.*-Metrics:.*(....)=many"         "90+/DCC-%1"
 spam "X-Spam-Status: Yes"                     "90+/SA"
 spam "X-PerlMX-Spam: .*Probability=([0-9]+)%" "%1/PM"
 set spam_separator=", "
 </screen>
+</example>
 
 </para>
 
@@ -3573,6 +3612,8 @@ to abbreviate the calls of the <link linkend="source">source</link> command:
 </para>
 
 <para>
+<example id="ex-myvar1">
+<title>Using user-defined variables for config file readability</title>
 <screen>
 set my_cfgdir = $HOME/mutt/config
 
@@ -3580,6 +3621,7 @@ source $my_cfgdir/hooks
 source $my_cfgdir/macros
 # more source commands...
 </screen>
+</example>
 </para>
 
 <para>
@@ -3592,6 +3634,8 @@ linkend="delete">&dollar;delete</link> is restored.
 </para>
 
 <para>
+<example id="ex-myvar2">
+<title>Using user-defined variables for backing up other config option values</title>
 <screen>
 macro pager ,x '&bsol;
 &lt;enter-command&gt;set my_delete=$delete&lt;enter&gt;&bsol;
@@ -3599,6 +3643,7 @@ macro pager ,x '&bsol;
 ...&bsol;
 &lt;enter-command&gt;set delete=$my_delete&lt;enter&gt;'
 </screen>
+</example>
 </para>
 
 <para>
@@ -3614,6 +3659,8 @@ dollar sign.
 </para>
 
 <para>
+<example id="ex-myvar3">
+<title>Deferring user-defined variable expansion to runtime</title>
 <screen>
 macro pager &lt;PageDown&gt; "&bsol;
 &lt;enter-command&gt; set my&lowbar;old&lowbar;pager&lowbar;stop=&bsol;&dollar;pager&lowbar;stop pager&lowbar;stop&lt;Enter&gt;&bsol;
@@ -3621,6 +3668,7 @@ macro pager &lt;PageDown&gt; "&bsol;
 &lt;enter-command&gt; set pager&lowbar;stop=&bsol;&dollar;my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;&bsol;
 &lt;enter-command&gt; unset my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;"
 </screen>
+</example>
 </para>
 
 <para>
@@ -3780,9 +3828,12 @@ All &percnt; expandos in a format string are expanded before the script
 is called so that:
 </para>
 
+<example id="ex-fmtpipe">
+<title>Using external filters in format strings</title>
 <screen>
 set status_format="script.sh '%r %f (%L)'|"
 </screen>
+</example>
 
 <para>
 will make mutt expand <literal>&percnt;r</literal>,
@@ -4262,9 +4313,12 @@ field and which are from <quote>elkins</quote>.
 
 <para>
 
+<example id="ex-pattern-bool">
+<title>Using boolean operators in patterns</title>
 <screen>
 !(~t mutt|~c mutt) ~f elkins
 </screen>
+</example>
 
 </para>
 
@@ -4362,7 +4416,6 @@ Example: To select any messages two weeks around January 15, 2001,
 you'd use the following pattern:
 
 <screen>
-
 Limit to messages matching: ~d 15/1/2001*2w
 </screen>
 
@@ -4527,10 +4580,13 @@ my&lowbar;hdr directive:
 
 <para>
 
+<example id="ex-send-hook-my-hdr">
+<title>Combining <literal>send-hook</literal> and <literal>my&lowbar;hdr</literal></title>
 <screen>
 send-hook . 'unmy_hdr From:'
 send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 </screen>
+</example>
 
 </para>
 
@@ -5855,6 +5911,8 @@ Some examples might help to illustrate.  The examples that are not
 commented out define the default configuration of the lists.
 </para>
 
+<example id="ex-attach-count">
+<title>Attachment counting</title>
 <screen>
 ## Removing a pattern from a list removes that pattern literally. It
 ## does not remove any type matching the pattern.
@@ -5903,6 +5961,7 @@ attachments   +I text/plain
 attachments   -A message/external-body
 attachments   -I message/external-body
 </screen>
+</example>
 
 <para>
 Entering the command <quote><literal>attachments ?</literal></quote>
