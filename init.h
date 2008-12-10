@@ -118,7 +118,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies the format of the data displayed for the ``$alias'' menu.  The
   ** following \fCprintf(3)\fP-style sequences are available:
-  ** .pp
   ** .dl
   ** .dt %a .dd alias name
   ** .dt %f .dd flags - currently, a ``d'' for an alias marked for deletion
@@ -142,7 +141,6 @@ struct option_t MuttVars[] = {
   ** their text will be colored accordingly. Note that this may override
   ** your color choices, and even present a security problem, since a
   ** message could include a line like
-  ** .pp
   ** .ts
   ** [-- PGP output follows ...
   ** .te
@@ -187,7 +185,6 @@ struct option_t MuttVars[] = {
   ** indication are assumed to be in ``us-ascii''.
   ** .pp
   ** For example, Japanese users might prefer this:
-  ** .pp
   ** .ts
   ** set assumed_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
   ** .te
@@ -202,7 +199,6 @@ struct option_t MuttVars[] = {
   ** If \fIunset\fP, the value of $$charset will be used instead.
   ** For example, the following configuration would work for Japanese
   ** text handling:
-  ** .pp
   ** .ts
   ** set attach_charset="iso-2022-jp:euc-jp:shift_jis:utf-8"
   ** .te
@@ -215,7 +211,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable describes the format of the ``attachment'' menu.  The
   ** following \fCprintf(3)\fP-style sequences are understood:
-  ** .pp
   ** .dl
   ** .dt %C  .dd charset
   ** .dt %c  .dd requires charset conversion (``n'' or ``c'')
@@ -374,7 +369,6 @@ struct option_t MuttVars[] = {
   ** Controls the format of the status line displayed in the ``compose''
   ** menu.  This string is similar to $$status_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
-  ** .pp
   ** .dl
   ** .dt %a .dd total number of attachments
   ** .dt %h .dd local hostname
@@ -539,7 +533,6 @@ struct option_t MuttVars[] = {
   ** notified of successful transmission.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set dsn_notify="failure,delay"
   ** .te
@@ -558,7 +551,6 @@ struct option_t MuttVars[] = {
   ** message header, or \fIfull\fP to return the full message.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set dsn_return=hdrs
   ** .te
@@ -656,7 +648,6 @@ struct option_t MuttVars[] = {
   ** This variable allows you to customize the file browser display to your
   ** personal taste.  This string is similar to $$index_format, but has
   ** its own set of \fCprintf(3)\fP-like sequences:
-  ** .pp
   ** .dl
   ** .dt %C  .dd current file number
   ** .dt %d  .dd date/time folder was last modified
@@ -906,7 +897,6 @@ struct option_t MuttVars[] = {
   ** in order from most-secure to least-secure.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set imap_authenticators="gssapi:cram-md5:login"
   ** .te
@@ -1081,7 +1071,6 @@ struct option_t MuttVars[] = {
   ** ``Format strings'' are similar to the strings used in the C
   ** function \fCprintf(3)\fP to format output (see the man page for more details).
   ** The following sequences are defined in Mutt:
-  ** .pp
   ** .dl
   ** .dt %a .dd address of the author
   ** .dt %A .dd reply-to address (if present; otherwise: address of author)
@@ -1381,7 +1370,6 @@ struct option_t MuttVars[] = {
   ** This variable describes the format of a remailer line on the mixmaster
   ** chain selection screen.  The following \fCprintf(3)\fP-like sequences are
   ** supported:
-  ** .pp
   ** .dl
   ** .dt %n .dd The running number on the menu.
   ** .dt %c .dd Remailer capabilities.
@@ -1626,7 +1614,6 @@ struct option_t MuttVars[] = {
   ** This variable allows you to customize the PGP key selection menu to
   ** your personal taste. This string is similar to $$index_format, but
   ** has its own set of \fCprintf(3)\fP-like sequences:
-  ** .pp
   ** .dl
   ** .dt %n     .dd number
   ** .dt %k     .dd key id
@@ -1754,7 +1741,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies how the entries in the pgp menu are sorted. The
   ** following are legal values:
-  ** .pp
   ** .dl
   ** .dt address .dd sort alphabetically by user id
   ** .dt keyid   .dd sort alphabetically by key id
@@ -1797,7 +1783,6 @@ struct option_t MuttVars[] = {
   ** application/pgp attachments.
   ** .pp
   ** The PGP command formats have their own set of \fCprintf(3)\fP-like sequences:
-  ** .pp
   ** .dl
   ** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
   **            string otherwise. Note: This may be used with a %? construct.
@@ -1886,7 +1871,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to list the secret key ring's contents.  The
   ** output format must be analogous to the one used by:
-  ** .pp
   ** .ts
   ** gpg --list-keys --with-colons.
   ** .te
@@ -1900,7 +1884,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to list the public key ring's contents.  The
   ** output format must be analogous to the one used by
-  ** .pp
   ** .ts
   ** gpg --list-keys --with-colons.
   ** .te
@@ -1974,7 +1957,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like sequences
   ** similar to PGP's:
-  ** .pp
   ** .dl
   ** .dt %f .dd Expands to the name of a file containing a message.
   ** .dt %s .dd Expands to the name of a file containing the signature part
@@ -2106,7 +2088,6 @@ struct option_t MuttVars[] = {
   ** also automatically accepted.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set certificate_file=~/.mutt/certificates
   ** .te
@@ -2160,7 +2141,6 @@ struct option_t MuttVars[] = {
   ** certificates are also automatically accepted.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
   ** .te
@@ -2204,7 +2184,6 @@ struct option_t MuttVars[] = {
   ** most-secure to least-secure.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set pop_authenticators="digest-md5:apop:user"
   ** .te
@@ -2235,7 +2214,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The name of your POP server for the \fC$<fetch-mail>\fP function.  You
   ** can also specify an alternative port, username and password, ie:
-  ** .pp
   ** .ts
   ** [pop[s]://][username[:password]@]popserver[:port]
   ** .te
@@ -2305,7 +2283,6 @@ struct option_t MuttVars[] = {
   ** a connection to the server. This is useful for setting up secure
   ** connections, e.g. with \fCssh(1)\fP. If the command returns a  nonzero
   ** status, mutt gives up opening the server. Example:
-  ** .pp
   ** .ts
   ** set preconnect="ssh -f -q -L 1234:mailhost.net:143 mailhost.net \(rs
   ** sleep 20 < /dev/null > /dev/null"
@@ -2378,7 +2355,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable describes the format of the ``query'' menu. The
   ** following \fCprintf(3)\fP-style sequences are understood:
-  ** .pp
   ** .dl
   ** .dt %a  .dd destination address
   ** .dt %c  .dd current entry number
@@ -2508,13 +2484,11 @@ struct option_t MuttVars[] = {
   ** name from your aliases in the index menu if it finds an alias that
   ** matches the message's sender.  For example, if you have the following
   ** alias:
-  ** .pp
   ** .ts
   ** alias juser abd30425@somewhere.net (Joe User)
   ** .te
   ** .pp
   ** and then you receive mail which contains the following header:
-  ** .pp
   ** .ts
   ** From: abd30425@somewhere.net
   ** .te
@@ -2551,7 +2525,6 @@ struct option_t MuttVars[] = {
   ** When this variable is \fIset\fP, Mutt will decode RFC2047-encoded MIME
   ** parameters. You want to set this variable when mutt suggests you
   ** to save attachments to files named like:
-  ** .pp
   ** .ts
   ** =?iso-8859-1?Q?file=5F=E4=5F991116=2Ezip?=
   ** .te
@@ -2752,7 +2725,6 @@ struct option_t MuttVars[] = {
   ** most-secure to least-secure.
   ** .pp
   ** Example:
-  ** .pp
   ** .ts
   ** set smtp_authenticators="digest-md5:cram-md5"
   ** .te
@@ -2774,7 +2746,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Defines the SMTP smarthost where sent messages should relayed for
   ** delivery. This should take the form of an SMTP URL, eg:
-  ** .pp
   ** .ts
   ** smtp[s]://[user[:pass]@]host[:port]/
   ** .te
@@ -2789,7 +2760,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies how to sort messages in the ``index'' menu.  Valid values
   ** are:
-  ** .pp
   ** .il
   ** .dd date or date-sent
   ** .dd date-received
@@ -2811,7 +2781,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies how the entries in the ``alias'' menu are sorted.  The
   ** following are legal values:
-  ** .pp
   ** .il
   ** .dd address (sort alphabetically by email address)
   ** .dd alias (sort alphabetically by alias name)
@@ -2829,7 +2798,6 @@ struct option_t MuttVars[] = {
   ** must come after ``reverse-''.  The ``last-'' prefix causes messages to be
   ** sorted against its siblings by which has the last descendant, using
   ** the rest of $$sort_aux as an ordering.  For instance,
-  ** .pp
   ** .ts
   ** set sort_aux=last-date-received
   ** .te
@@ -2847,7 +2815,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies how to sort entries in the file browser.  By default, the
   ** entries are sorted alphabetically.  Valid values:
-  ** .pp
   ** .il
   ** .dd alpha (alphabetically)
   ** .dd date
@@ -2907,7 +2874,6 @@ struct option_t MuttVars[] = {
   ** Controls the format of the status line displayed in the ``index''
   ** menu.  This string is similar to $$index_format, but has its own
   ** set of \fCprintf(3)\fP-like sequences:
-  ** .pp
   ** .dl
   ** .dt %b  .dd number of mailboxes with new mail *
   ** .dt %d  .dd number of deleted messages *
@@ -3093,7 +3059,6 @@ struct option_t MuttVars[] = {
   ** Setting this variable will cause mutt to open a pipe to a command
   ** instead of a raw socket. You may be able to use this to set up
   ** preauthenticated connections to your IMAP/POP3/SMTP server. Example:
-  ** .pp
   ** .ts
   ** set tunnel="ssh -q mailhost.net /usr/local/libexec/imapd"
   ** .te

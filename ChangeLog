@@ -1,3 +1,12 @@
+2008-12-10 13:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (c1873847c50e)
+
+	* hg-commit: hg-commit: Work even in subdirectories
+
+2008-12-10 12:33 +0100  Rocco Rutte  <pdmef@gmx.net>  (e53becb2cfae)
+
+	* ChangeLog, doc/chunk.xsl, doc/html.xsl: Manual: Use right XSLT-way
+	to embed CSS to avoid invalid xmlns="" attributes on <style/>
+
 2008-12-10 11:37 +0100  Rocco Rutte  <pdmef@gmx.net>  (f6f74a034ab7)
 
 	* doc/devel-notes.txt: devel-notes.txt: add some words about preparing

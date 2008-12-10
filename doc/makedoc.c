@@ -713,12 +713,21 @@ static void print_confline (const char *varname, int type, const char *val, FILE
       fputs ("\">\n<title>", out);
       sgml_fputs (varname, out, 1);
       fprintf (out, "</title>\n<literallayout>Type: %s", type2human (type));
+
       
       if (type == DT_STR || type == DT_RX || type == DT_ADDR || type == DT_PATH)
       {
-	fputs ("\nDefault: <quote><literal>", out);
-	sgml_print_strval (val, out);
-	fputs ("</literal></quote></literallayout>\n", out);
+	if (val && *val)
+	{
+	  fputs ("\nDefault: <quote><literal>", out);
+	  sgml_print_strval (val, out);
+	  fputs ("</literal></quote>", out);
+	}
+	else
+	{
+	  fputs ("\nDefault: (empty)", out);
+	}
+	fputs ("</literallayout>\n", out);
       }
       else
 	fprintf (out, "\nDefault: %s</literallayout>\n", val);
@@ -1123,6 +1132,11 @@ static int print_it (int special, char *str, FILE *out, int docstat)
         }
 	case SP_START_TAB:
 	{
+	  if (docstat & D_PA)
+	  {
+	    fputs ("\n</para>\n", out);
+	    docstat &= ~D_PA;
+	  }
 	  fputs ("\n<screen>\n", out);
 	  docstat |= D_TAB | D_NL;
 	  break;
@@ -1136,6 +1150,11 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_START_DL:
 	{
+	  if (docstat & D_PA)
+	  {
+	    fputs ("\n</para>\n", out);
+	    docstat &= ~D_PA;
+	  }
 	  fputs ("\n<variablelist>\n", out);
 	  docstat |= D_DL;
 	  break;
@@ -1169,6 +1188,11 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_START_IL:
 	{
+	  if (docstat & D_PA)
+	  {
+	    fputs ("\n</para>\n", out);
+	    docstat &= ~D_PA;
+	  }
 	  fputs ("\n<itemizedlist>\n", out);
 	  docstat |= D_IL;
 	  break;

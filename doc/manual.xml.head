@@ -48,8 +48,6 @@ word <emphasis>subscribe</emphasis> in the body to
 <literal>list-name</literal><emphasis>-request</emphasis><literal>@mutt.org</literal>.
 </para>
 
-<para>
-
 <itemizedlist>
 <listitem>
 
@@ -71,8 +69,6 @@ word <emphasis>subscribe</emphasis> in the body to
 </listitem>
 
 </itemizedlist>
-
-</para>
 
 <para>
 <emphasis role="bold">Note:</emphasis> all messages posted to
@@ -142,11 +138,11 @@ conventions for special terms.
 
 <para>
 Examples are presented as:
+</para>
 
 <screen>
 mutt -v
 </screen>
-</para>
 
 <para>
 Within command synopsis, curly brackets (<quote>&lcub;&rcub;</quote>) denote a set
@@ -272,8 +268,6 @@ The most important navigation keys common to all menus are shown in
 <xref linkend="tab-keys-nav"/>.
 </para>
 
-<para>
-
 <table id="tab-keys-nav">
 <title>Most common navigation keys</title>
 <tgroup cols="3">
@@ -293,8 +287,6 @@ The most important navigation keys common to all menus are shown in
 </tgroup>
 </table>
 
-</para>
-
 </sect1>
 
 <sect1 id="editing">
@@ -311,7 +303,6 @@ reference of available functions, their default key bindings, and
 short descriptions.
 </para>
 
-<para>
 <table id="tab-keys-editor">
 <title>Most common line editor keys</title>
 <tgroup cols="3">
@@ -344,7 +335,6 @@ short descriptions.
 </tbody>
 </tgroup>
 </table>
-</para>
 
 <para>
 You can remap the <emphasis>editor</emphasis> functions using the
@@ -377,7 +367,6 @@ Mutt maintains several distinct history lists, one for each of the
 following categories:
 </para>
 
-<para>
 <itemizedlist>
 <listitem><para>muttrc commands</para></listitem>
 <listitem><para>addresses and aliases</para></listitem>
@@ -386,7 +375,6 @@ following categories:
 <listitem><para>patterns</para></listitem>
 <listitem><para>everything else</para></listitem>
 </itemizedlist>
-</para>
 
 <para>
 Mutt automatically filters out repeated items from the history.  It
@@ -424,7 +412,6 @@ in the index menu can be customized using the
 <link linkend="index-format">&dollar;index&lowbar;format</link> variable.
 </para>
 
-<para>
 <table id="tab-key-index">
 <title>Most common message index keys</title>
 <tgroup cols="2">
@@ -464,8 +451,6 @@ in the index menu can be customized using the
 </tbody>
 </tgroup>
 </table>
-
-</para>
 
 <para>
 In addition to who sent the message and the subject, a short summary of
@@ -532,7 +517,6 @@ The pager is very similar to the Unix program <emphasis>less</emphasis> though n
 featureful.
 </para>
 
-<para>
 <table id="tab-key-pager">
 <title>Most common pager keys</title>
 <tgroup cols="2">
@@ -554,7 +538,6 @@ featureful.
 </tbody>
 </tgroup>
 </table>
-</para>
 
 <para>
 In addition to key bindings in <xref linkend="tab-key-pager"/>,
@@ -580,11 +563,9 @@ character attributes.  Mutt translates them into the correct color and
 character settings.  The sequences Mutt supports are:
 </para>
 
-<para>
 <screen>
 &bsol;e&lsqb;<emphasis>Ps</emphasis>;<emphasis>Ps</emphasis>;..<emphasis>Ps</emphasis>;m
 </screen>
-</para>
 
 <para>
 where <emphasis>Ps</emphasis> can be one of the codes shown in
@@ -657,8 +638,6 @@ a few additional functions available in the <emphasis>index</emphasis> and <emph
 as shown in <xref linkend="tab-key-threads"/>.
 </para>
 
-<para>
-
 <table id="tab-key-threads">
 <title>Most common thread mode keys</title>
 <tgroup cols="3">
@@ -683,8 +662,6 @@ as shown in <xref linkend="tab-key-threads"/>.
 </tbody>
 </tgroup>
 </table>
-
-</para>
 
 <para>
 <emphasis role="bold">Note:</emphasis> Collapsing a thread displays only the first message
@@ -932,8 +909,6 @@ The bindings shown in <xref linkend="tab-key-send"/> are available in the
 <emphasis>index</emphasis> and <emphasis>pager</emphasis> to start a new message.
 </para>
 
-<para>
-
 <table id="tab-key-send">
 <title>Most common mail sending keys</title>
 <tgroup cols="3">
@@ -951,8 +926,6 @@ The bindings shown in <xref linkend="tab-key-send"/> are available in the
 </tbody>
 </tgroup>
 </table>
-
-</para>
 
 <para>
 <emphasis>Bouncing</emphasis> a message sends the message as-is to the recipient you
@@ -997,8 +970,6 @@ shown in <xref linkend="tab-func-compose"/> to modify, send or postpone the
 message.
 </para>
 
-<para>
-
 <table id="tab-func-compose">
 <title>Most common compose menu keys</title>
 <tgroup cols="3">
@@ -1029,8 +1000,6 @@ message.
 </tbody>
 </tgroup>
 </table>
-
-</para>
 
 <para>
 The compose menu is also used to edit the attachments for a message which can be either files
@@ -1152,6 +1121,7 @@ and validity fields are in order.
 <para>
 The flags sequence (&percnt;f) will expand to one of the flags in
 <xref linkend="tab-pgp-menuflags"/>.
+</para>
 
 <table id="tab-pgp-menuflags">
 <title>PGP key menu flags</title>
@@ -1167,8 +1137,6 @@ The flags sequence (&percnt;f) will expand to one of the flags in
 </tbody>
 </tgroup>
 </table>
-
-</para>
 
 <para>
 The capabilities field (&percnt;c) expands to a two-character sequence
@@ -1455,7 +1423,9 @@ V) from the index menu.
 
 <para>
 An initialization file consists of a series of <link linkend="commands">commands</link>.  Each line of the file may contain one or more commands.
-When multiple commands are used, they must be separated by a semicolon (;).
+When multiple commands are used, they must be separated by a semicolon
+(;).
+</para>
 
 <example id="ex-rc-multiple-cmds">
 <title>Multiple configuration commands per line</title>
@@ -1464,13 +1434,12 @@ set realname='Mutt user' ; ignore x-
 </screen>
 </example>
 
+<para>
 The hash mark, or pound sign
 (<quote>&num;</quote>), is used as a <quote>comment</quote> character. You can use it to
 annotate your initialization file. All text after the comment character
 to the end of the line is ignored. For example,
 </para>
-
-<para>
 
 <example id="ex-ec-comment">
 <title>Commenting configuration files</title>
@@ -1478,8 +1447,6 @@ to the end of the line is ignored. For example,
 my_hdr X-Disclaimer: Why are you listening to me? &num; This is a comment
 </screen>
 </example>
-
-</para>
 
 <para>
 Single quotes (') and double quotes (&quot;) can be used to quote strings
@@ -1497,6 +1464,7 @@ quotes, but <emphasis role="bold">not</emphasis> for single quotes.
 For example, if want to put quotes <quote>&quot;</quote> inside of a string, you can use
 <quote>&bsol;</quote> to force the next character to be a literal instead of interpreted
 character.
+</para>
 
 <example id="ex-rc-quote">
 <title>Escaping quotes in congfiguration files</title>
@@ -1504,8 +1472,6 @@ character.
 set realname="Michael \"MuttDude\" Elkins"
 </screen>
 </example>
-
-</para>
 
 <para>
 <quote>&bsol;&bsol;</quote> means to insert a literal <quote>&bsol;</quote> into the line.
@@ -1523,6 +1489,7 @@ middle of command names.
 It is also possible to substitute the output of a Unix command in an
 initialization file.  This is accomplished by enclosing the command in
 backticks (``).  For example,
+</para>
 
 <example id="ex-rc-backtick">
 <title>Using external command's output in configuration files</title>
@@ -1531,6 +1498,7 @@ my_hdr X-Operating-System: `uname -a`
 </screen>
 </example>
 
+<para>
 The output of the Unix command <quote>uname -a</quote> will be substituted before the
 line is parsed.  Note that since initialization files are line oriented, only
 the first line of output from the Unix command will be substituted.
@@ -1582,7 +1550,6 @@ This mechanism should be avoided if possible as it has the
 following implications:
 </para>
 
-<para>
 <itemizedlist>
 
 <listitem><para>These variables should be set early in a configuration
@@ -1600,7 +1567,6 @@ errors or silently change the meaning of certain tokens (e.g. inserting
 question marks into regular expressions).</para></listitem>
 
 </itemizedlist>
-</para>
 
 </sect1>
 
@@ -1741,14 +1707,10 @@ To remove an alias or aliases (<quote>*</quote> means all aliases):
 </group>
 </cmdsynopsis>
 
-<para>
-
 <screen>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
 alias theguys manny, moe, jack
 </screen>
-
-</para>
 
 <para>
 Unlike other mailers, Mutt doesn't require aliases to be defined
@@ -1769,8 +1731,6 @@ order for the new aliases to take effect you need to explicitly <link linkend="s
 For example:
 </para>
 
-<para>
-
 <example id="ex-alias-external">
 <title>Configuring external alias files</title>
 <screen>
@@ -1779,8 +1739,6 @@ source ~/.mail_aliases
 set alias_file=~/.mail_aliases
 </screen>
 </example>
-
-</para>
 
 <para>
 To use aliases, you merely use the alias at any place in mutt where mutt
@@ -1835,7 +1793,6 @@ be specified by separating them with commas (no additional whitespace is
 allowed). The currently defined maps are:
 </para>
 
-<para>
 <anchor id="maps"/>
 <variablelist>
 
@@ -1930,7 +1887,6 @@ recalling a message the user was composing, but saved until later.
 </listitem>
 </varlistentry>
 </variablelist>
-</para>
 
 <para>
 <emphasis>key</emphasis> is the key (or key sequence) you wish to bind.  To specify a
@@ -1943,8 +1899,6 @@ octal number prefixed with a <quote>&bsol;</quote> (for example <emphasis>&bsol;
 equivalent to <emphasis>&bsol;c?</emphasis>). In addition, <emphasis>key</emphasis> may
 be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 </para>
-
-<para>
 
 <table id="tab-key-names">
 <title>Symbolic key names</title>
@@ -1980,11 +1934,9 @@ be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 </tgroup>
 </table>
 
-</para>
-
 <para>
 <emphasis>key</emphasis> does not need to be enclosed in quotes unless it contains a
-space (<quote> </quote>) or semi-colon (<quote>;</quote>).
+space (<quote>&puncsp;</quote>) or semi-colon (<quote>;</quote>).
 </para>
 
 <para>
@@ -2071,13 +2023,9 @@ For example, a command action to perform is to change the sorting method
 based upon the mailbox being read:
 </para>
 
-<para>
-
 <screen>
 folder-hook mutt set sort=threads
 </screen>
-
-</para>
 
 <para>
 However, the sorting method is not restored to its previous value when
@@ -2089,7 +2037,6 @@ to <literal>date-sent</literal> for all folders but to <literal>threads</literal
 for all folders containing <quote>mutt</quote> in their name.
 </para>
 
-<para>
 <example id="ex-folder-sorting">
 <title>Setting sort method based on mailbox name</title>
 <screen>
@@ -2097,7 +2044,6 @@ folder-hook . set sort=date-sent
 folder-hook mutt set sort=threads
 </screen>
 </example>
-</para>
 
 </sect1>
 
@@ -2256,7 +2202,6 @@ in the header/body of a message, <emphasis>index</emphasis> matches <emphasis>pa
 <emphasis>object</emphasis> can be one of:
 </para>
 
-<para>
 <itemizedlist>
 <listitem><para>attachment</para></listitem>
 <listitem><para>bold (hiliting bold patterns in the body of messages)</para></listitem>
@@ -2274,13 +2219,11 @@ in the header/body of a message, <emphasis>index</emphasis> matches <emphasis>pa
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
 <listitem><para>underline (hiliting underlined patterns in the body of messages)</para></listitem>
 </itemizedlist>
-</para>
 
 <para>
 <emphasis>foreground</emphasis> and <emphasis>background</emphasis> can be one of the following:
 </para>
 
-<para>
 <itemizedlist>
 <listitem><para>white</para></listitem>
 <listitem><para>black</para></listitem>
@@ -2294,7 +2237,6 @@ in the header/body of a message, <emphasis>index</emphasis> matches <emphasis>pa
 <listitem><para>color<emphasis>x</emphasis></para>
 </listitem>
 </itemizedlist>
-</para>
 
 <para>
 <emphasis>foreground</emphasis> can optionally be prefixed with the keyword <literal>bright</literal> to make
@@ -2309,14 +2251,10 @@ the <emphasis>COLORFGBG</emphasis> environment variable to the default colors of
 terminal for this to work; for example (for Bourne-like shells):
 </para>
 
-<para>
-
 <screen>
 set COLORFGBG="green;black"
 export COLORFGBG
 </screen>
-
-</para>
 
 <para>
 <emphasis role="bold">Note:</emphasis> The <emphasis>S-Lang</emphasis> library requires you to use the <emphasis>lightgray</emphasis>
@@ -2408,7 +2346,6 @@ For <emphasis>object</emphasis>, see the color command. <emphasis>attribute</emp
 can be one of the following:
 </para>
 
-<para>
 <itemizedlist>
 <listitem><para>none</para></listitem>
 <listitem><para>bold</para></listitem>
@@ -2416,7 +2353,6 @@ can be one of the following:
 <listitem><para>reverse</para></listitem>
 <listitem><para>standout</para></listitem>
 </itemizedlist>
-</para>
 
 </sect1>
 
@@ -2473,7 +2409,6 @@ For example, if you do <quote>ignore x-</quote> it is possible to <quote>unignor
 For example:
 </para>
 
-<para>
 <example id="ex-header-weeding">
 <title>Header weeding</title>
 <screen>
@@ -2484,7 +2419,6 @@ unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
 unignore posted-to:
 </screen>
 </example>
-</para>
 
 <anchor id="hdr-order"/>
 <para>Usage:</para>
@@ -2521,14 +2455,12 @@ which mutt will attempt to present these headers to you when viewing messages.
 thus removing the header order effects set by the system-wide startup file.
 </para>
 
-<para>
 <example id="ex-hdr-order">
 <title>Configuring header display order</title>
 <screen>
 hdr&lowbar;order From Date: From: To: Cc: Subject:
 </screen>
 </example>
-</para>
 
 </sect1>
 
@@ -2905,14 +2837,12 @@ For example, if you would like to add an <quote>Organization:</quote> header fie
 all of your outgoing messages, you can put the command
 </para>
 
-<para>
 <example id="ex-my-hdr">
 <title>Defining custom headers</title>
 <screen>
 my&lowbar;hdr Organization: A Really Big Company, Anytown, USA
 </screen>
 </example>
-</para>
 
 <para>
 in your <literal>.muttrc</literal>.
@@ -2938,11 +2868,9 @@ fields, or the fields to remove. For example, to remove all <quote>To</quote> an
 <quote>Cc</quote> header fields, you could use:
 </para>
 
-<para>
 <screen>
 unmy&lowbar;hdr to cc
 </screen>
-</para>
 
 </sect1>
 
@@ -2978,7 +2906,6 @@ expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
 Examples:
 </para>
 
-<para>
 <example id="ex-save-hook-exando">
 <title>Using %-expandos in <literal>save-hook</literal></title>
 <screen>
@@ -2992,7 +2919,6 @@ save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
 save-hook aol\\.com$ +spam
 </screen>
 </example>
-</para>
 
 <para>
 Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
@@ -3187,13 +3113,12 @@ information on the exact format of <emphasis>pattern</emphasis>.
 
 <para>
 Example:
+</para>
 
 <screen>
 message-hook ~A 'set pager=builtin'
 message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </screen>
-
-</para>
 
 </sect1>
 
@@ -3249,6 +3174,7 @@ string in the <link linkend="macro">macro</link> command. You may use it to
 automatically run a sequence of commands at startup, or when entering
 certain folders. For example, the following command will automatically
 collapse all threads when entering a folder:
+</para>
 
 <example id="ex-folder-hook-push">
 <title>Embedding <literal>push</literal> in <literal>folder-hook</literal></title>
@@ -3256,7 +3182,6 @@ collapse all threads when entering a folder:
 folder-hook . 'push &lt;collapse-all&gt;'
 </screen>
 </example>
-</para>
 
 </sect1>
 
@@ -3394,6 +3319,7 @@ them.
 <para>
 For example, suppose I use DCC, SpamAssassin, and PureMessage. I might
 define these spam settings:
+</para>
 
 <example id="ex-spam">
 <title>Configuring spam detection</title>
@@ -3404,8 +3330,6 @@ spam "X-PerlMX-Spam: .*Probability=([0-9]+)%" "%1/PM"
 set spam_separator=", "
 </screen>
 </example>
-
-</para>
 
 <para>
 If I then received a message that DCC registered with <quote>many</quote> hits
@@ -3475,13 +3399,9 @@ example, if you consider all mail from <literal>MAILER-DAEMON</literal> to be sp
 you can use a <literal>spam</literal> command like this:
 </para>
 
-<para>
-
 <screen>
 spam "^From: .*MAILER-DAEMON"       "999"
 </screen>
-
-</para>
 
 </sect1>
 
@@ -3587,13 +3507,9 @@ value of a variable by prefixing the name of the variable with a question
 mark:
 </para>
 
-<para>
-
 <screen>
 set ?allow_8bit
 </screen>
-
-</para>
 
 <para>
 The question mark is actually only required for boolean and quadoption
@@ -3653,7 +3569,6 @@ The following example defines and uses the variable <literal>my&lowbar;cfgdir</l
 to abbreviate the calls of the <link linkend="source">source</link> command:
 </para>
 
-<para>
 <example id="ex-myvar1">
 <title>Using user-defined variables for config file readability</title>
 <screen>
@@ -3664,7 +3579,6 @@ source $my_cfgdir/macros
 # more source commands...
 </screen>
 </example>
-</para>
 
 <para>
 A custom variable can also be used in macros to backup the current value
@@ -3675,7 +3589,6 @@ After the macro has executed all commands, the original value of <link
 linkend="delete">&dollar;delete</link> is restored.
 </para>
 
-<para>
 <example id="ex-myvar2">
 <title>Using user-defined variables for backing up other config option values</title>
 <screen>
@@ -3686,7 +3599,6 @@ macro pager ,x '&bsol;
 &lt;enter-command&gt;set delete=$my_delete&lt;enter&gt;'
 </screen>
 </example>
-</para>
 
 <para>
 Since mutt expands such values already when parsing the configuration
@@ -3700,7 +3612,6 @@ be deferred to runtime, as shown in the next example, when escaping the
 dollar sign.
 </para>
 
-<para>
 <example id="ex-myvar3">
 <title>Deferring user-defined variable expansion to runtime</title>
 <screen>
@@ -3711,7 +3622,6 @@ macro pager &lt;PageDown&gt; "&bsol;
 &lt;enter-command&gt; unset my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;"
 </screen>
 </example>
-</para>
 
 <para>
 Note that there is a space
@@ -3967,7 +3877,6 @@ The following classes are defined by the POSIX standard in
 <xref linkend="posix-regex-char-classes"/>
 </para>
 
-<para>
 <table id="posix-regex-char-classes">
 <title>POSIX regular expression character classes</title>
 <tgroup cols="2">
@@ -3990,7 +3899,6 @@ The following classes are defined by the POSIX standard in
 </tbody>
 </tgroup>
 </table>
-</para>
 
 <para>
 A character class is only valid in a regular expression inside the
@@ -4009,7 +3917,6 @@ as well as several characters that are equivalent for collating or
 sorting purposes:
 </para>
 
-<para>
 <variablelist>
 
 <varlistentry>
@@ -4038,14 +3945,12 @@ represent all of <quote>&egrave;</quote> <quote>&eacute;</quote> and <quote>e</q
 </listitem>
 </varlistentry>
 </variablelist>
-</para>
 
 <para>
 A regular expression matching a single character may be followed by one
 of several repetition operators described in <xref linkend="regex-repeat"/>.
 </para>
 
-<para>
 <table id="regex-repeat">
 <title>Regular expression repetition operators</title>
 <tgroup cols="2">
@@ -4063,7 +3968,6 @@ of several repetition operators described in <xref linkend="regex-repeat"/>.
 </tbody>
 </tgroup>
 </table>
-</para>
 
 <para>
 Two regular expressions may be concatenated; the resulting regular
@@ -4088,7 +3992,6 @@ parentheses to override these precedence rules.
 following operators may also be used in regular expressions as described in <xref linkend="regex-gnu-ext"/>.
 </para>
 
-<para>
 <table id="regex-gnu-ext">
 <title>GNU regular expression extensions</title>
 <tgroup cols="2">
@@ -4107,7 +4010,6 @@ following operators may also be used in regular expressions as described in <xre
 </tbody>
 </tgroup>
 </table>
-</para>
 
 <para>
 Please note however that these operators are not defined by POSIX, so
@@ -4125,8 +4027,6 @@ Many of Mutt's commands allow you to specify a pattern to match
 <literal>delete-pattern</literal>, etc.). <xref linkend="tab-patterns"/>
 shows several ways to select messages.
 </para>
-
-<para>
 
 <table id="tab-patterns">
 <title>Pattern modifiers</title>
@@ -4190,8 +4090,6 @@ threads containing messages from you: ~(~P)</entry></row>
 </tgroup>
 </table>
 
-</para>
-
 <para>
 Where <emphasis>EXPR</emphasis> is a
 <link linkend="regexp">regular expression</link>.  Special attention has to be
@@ -4229,13 +4127,9 @@ pattern with <quote>&circ;</quote>.
 This example matches all mails which only has recipients from Germany.
 </para>
 
-<para>
-
 <screen>
 ^~C \.de$
 </screen>
-
-</para>
 
 </sect2>
 
@@ -4302,13 +4196,9 @@ Logical AND is performed by specifying more than one criterion.  For
 example:
 </para>
 
-<para>
-
 <screen>
 ~t mutt ~f elkins
 </screen>
-
-</para>
 
 <para>
 would select messages which contain the word <quote>mutt</quote> in the list of
@@ -4320,8 +4210,6 @@ field.
 Mutt also recognizes the following operators to create more complex search
 patterns:
 </para>
-
-<para>
 
 <itemizedlist>
 <listitem>
@@ -4345,15 +4233,11 @@ patterns:
 
 </itemizedlist>
 
-</para>
-
 <para>
 Here is an example illustrating a complex search pattern.  This pattern will
 select all messages which do not contain <quote>mutt</quote> in the <quote>To</quote> or <quote>Cc</quote>
 field and which are from <quote>elkins</quote>.
 </para>
-
-<para>
 
 <example id="ex-pattern-bool">
 <title>Using boolean operators in patterns</title>
@@ -4362,8 +4246,6 @@ field and which are from <quote>elkins</quote>.
 </screen>
 </example>
 
-</para>
-
 <para>
 Here is an example using white space in the regular expression (note
 the ' and &quot; delimiters).  For this to match, the mail's subject must
@@ -4371,13 +4253,9 @@ match the <quote>&circ;Junk +From +Me$</quote> and it must be from either <quote
 or <quote>Ed +SomeoneElse</quote>:
 </para>
 
-<para>
-
 <screen>
  '~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
 </screen>
-
-</para>
 
 <para>
 Note that if a regular expression contains parenthesis, or a vertical bar
@@ -4386,13 +4264,9 @@ those characters are also used to separate different parts of Mutt's
 pattern language.  For example,
 </para>
 
-<para>
-
 <screen>
 ~f "me@(mutt\.org|cs\.hmc\.edu)"
 </screen>
-
-</para>
 
 <para>
 Without the quotes, the parenthesis wouldn't end.
@@ -4415,13 +4289,9 @@ optional, defaulting to the current month and year).  An example of a valid
 range of dates is:
 </para>
 
-<para>
-
 <screen>
 Limit to messages matching: ~d 20/1/95-31/10
 </screen>
-
-</para>
 
 <para>
 If you omit the minimum (first) date, and just specify <quote>-DD/MM/YY</quote>, all
@@ -4456,16 +4326,16 @@ sign by a <quote>*</quote> character, which is equivalent to giving identical pl
 <para>
 Example: To select any messages two weeks around January 15, 2001,
 you'd use the following pattern:
+</para>
 
 <screen>
 Limit to messages matching: ~d 15/1/2001*2w
 </screen>
 
-</para>
-
 <para>
 <emphasis role="bold">Relative</emphasis>.  This type of date is relative to the current date, and may
 be specified as:
+</para>
 
 <itemizedlist>
 <listitem>
@@ -4489,20 +4359,17 @@ be specified as:
 
 </itemizedlist>
 
-</para>
-
 <para>
 <emphasis>offset</emphasis> is specified as a positive number with one of the units from <xref linkend="tab-date-units"/>.
 </para>
 
 <para>
 Example: to select messages less than 1 month old, you would use
+</para>
 
 <screen>
 Limit to messages matching: ~d &lt;1m
 </screen>
-
-</para>
 
 <para>
 <emphasis role="bold">Note:</emphasis> all dates used when searching are relative to the
@@ -4620,8 +4487,6 @@ restore configuration defaults. Here is an example with send-hook and the
 my&lowbar;hdr directive:
 </para>
 
-<para>
-
 <example id="ex-send-hook-my-hdr">
 <title>Combining <literal>send-hook</literal> and <literal>my&lowbar;hdr</literal></title>
 <screen>
@@ -4629,8 +4494,6 @@ send-hook . 'unmy_hdr From:'
 send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 </screen>
 </example>
-
-</para>
 
 <sect2 id="pattern-hook" xreflabel="Message Matching in Hooks">
 <title>Message Matching in Hooks</title>
@@ -4657,11 +4520,13 @@ the message (i.e., from, to, cc, date, subject, etc.).
 <para>
 For example, if you wanted to set your return address based upon sending
 mail to a specific address, you could do something like:
+</para>
 
 <screen>
 send-hook '~t ^me@cs\.hmc\.edu$' 'my_hdr From: Mutt User &lt;user@host&gt;'
 </screen>
 
+<para>
 which would execute the given command when sending mail to
 <emphasis>me@cs.hmc.edu</emphasis>.
 </para>
@@ -4691,13 +4556,9 @@ using a simple interface.  Using the <link linkend="query-command">&dollar;query
 command to use.  For example:
 </para>
 
-<para>
-
 <screen>
 set query_command = "mutt_ldap_query.pl '%s'"
 </screen>
-
-</para>
 
 <para>
 The wrapper script should accept the query on the command-line.  It
@@ -4709,6 +4570,7 @@ addresses, return a non-zero exit code and a one line error message.
 
 <para>
 An example multiple response output:
+</para>
 
 <screen>
 Searching database ... 20 entries ... 3 matching:
@@ -4716,8 +4578,6 @@ me@cs.hmc.edu           Michael Elkins  mutt dude
 blong@fiction.net       Brandon Long    mutt and more
 roessler@does-not-exist.org        Thomas Roessler mutt pgp
 </screen>
-
-</para>
 
 <para>
 There are two mechanisms for accessing the query function of mutt.  One
@@ -4758,13 +4618,9 @@ mailboxes, Mutt uses the default specified with the <link linkend="mbox-type">&d
 messages are stored in a single file.  Each message has a line of the form:
 </para>
 
-<para>
-
 <screen>
 From me@cs.hmc.edu Fri, 11 Apr 1997 11:44:56 PST
 </screen>
-
-</para>
 
 <para>
 to denote the start of a new message (this is often referred to as the
@@ -4806,8 +4662,6 @@ There are a number of built in shortcuts which refer to specific mailboxes.
 These shortcuts can be used anywhere you are prompted for a file or mailbox
 path.
 </para>
-
-<para>
 
 <itemizedlist>
 <listitem>
@@ -4860,8 +4714,6 @@ path.
 </listitem>
 
 </itemizedlist>
-
-</para>
 
 </sect1>
 
@@ -5102,17 +4954,15 @@ request DSN or not.
 If a message contains URLs, it is efficient to get
 a menu with all the URLs and start a WWW browser on one of them.  This
 functionality is provided by the external urlview program which can be
-retrieved at <ulink
-url="ftp://ftp.mutt.org/mutt/contrib/"
->ftp://ftp.mutt.org/mutt/contrib/</ulink
-> and the configuration commands:
+retrieved at
+<ulink url="ftp://ftp.mutt.org/mutt/contrib/">ftp://ftp.mutt.org/mutt/contrib/</ulink>
+and the configuration commands:
+</para>
 
 <screen>
 macro index \cb |urlview\n
 macro pager \cb |urlview\n
 </screen>
-
-</para>
 
 </sect1>
 
@@ -5156,12 +5006,14 @@ including PGP/MIME and application/pgp.
 <para>
 Mutt will denote attachments with a couple lines describing them.
 These lines are of the form:
+</para>
 
 <screen>
 [-- Attachment #1: Description --]
 [-- Type: text/plain, Encoding: 7bit, Size: 10000 --]
 </screen>
 
+<para>
 Where the <literal>Description</literal> is the description or filename given for the
 attachment, and the <literal>Encoding</literal> is one of
 <literal>7bit/8bit/quoted-printable/base64/binary</literal>.
@@ -5169,12 +5021,11 @@ attachment, and the <literal>Encoding</literal> is one of
 
 <para>
 If Mutt cannot deal with a MIME type, it will display a message like:
+</para>
 
 <screen>
 [-- image/gif is unsupported (use 'v' to view this part) --]
 </screen>
-
-</para>
 
 </sect2>
 
@@ -5221,13 +5072,12 @@ information, notably the type, encoding and description.
 
 <para>
 Attachments appear as follows:
+</para>
 
 <screen>
 - 1 [text/plain, 7bit, 1K]           /tmp/mutt-euler-8082-0 &lt;no description&gt;
   2 [applica/x-gunzip, base64, 422K] ~/src/mutt-0.85.tar.gz &lt;no description&gt;
 </screen>
-
-</para>
 
 <para>
 The '-' denotes that Mutt will delete the file after sending (or
@@ -5261,6 +5111,7 @@ the system mime.types file at <literal>/usr/local/share/mutt/mime.types</literal
 <para>
 The mime.types file consist of lines containing a MIME type and a space
 separated list of extensions.  For example:
+</para>
 
 <screen>
 application/postscript          ps eps
@@ -5268,6 +5119,7 @@ application/pgp                 pgp
 audio/x-aiff                    aif aifc aiff
 </screen>
 
+<para>
 A sample <literal>mime.types</literal> file comes with the Mutt distribution, and
 should contain most of the MIME types you are likely to use.
 </para>
@@ -5309,6 +5161,7 @@ In order to handle various MIME types that Mutt can not handle
 internally, Mutt parses a series of external configuration files to
 find an external handler. The default search string for these files
 is a colon delimited list containing the following files:
+</para>
 
 <orderedlist>
 <listitem><para><literal>&dollar;HOME/.mailcap</literal></para></listitem>
@@ -5319,6 +5172,7 @@ is a colon delimited list containing the following files:
 <listitem><para><literal>/usr/local/etc/mailcap</literal></para></listitem>
 </orderedlist>
 
+<para>
 where <literal>&dollar;HOME</literal> is your home directory. The
 <literal>&dollar;PKGDATADIR</literal> and the
 <literal>&dollar;SYSCONFDIR</literal> directories depend on where mutt
@@ -5389,24 +5243,30 @@ will remove the temporary file if it exists.
 <para>
 So, in the simplest form, you can send a text/plain message to the
 external pager more on stdin:
+</para>
 
 <screen>
 text/plain; more
 </screen>
 
+<para>
 Or, you could send the message as a file:
+</para>
 
 <screen>
 text/plain; more %s
 </screen>
 
+<para>
 Perhaps you would like to use lynx to interactively view a text/html
 message:
+</para>
 
 <screen>
 text/html; lynx %s
 </screen>
 
+<para>
 In this case, lynx does not support viewing a file from stdin, so you
 must use the &percnt;s syntax.
 <emphasis role="bold">Note:</emphasis> <emphasis>Some older versions of lynx contain a bug where they
@@ -5419,22 +5279,23 @@ spawn itself to view the object.</emphasis>
 On the other hand, maybe you don't want to use lynx interactively, you
 just want to have it convert the text/html to text/plain, then you can
 use:
+</para>
 
 <screen>
 text/html; lynx -dump %s | more
 </screen>
 
-</para>
-
 <para>
 Perhaps you wish to use lynx to view text/html files, and a pager on
 all other text formats, then you would use the following:
+</para>
 
 <screen>
 text/html; lynx %s
 text/*; more
 </screen>
 
+<para>
 This is the simplest form of a mailcap file.
 </para>
 
@@ -5474,14 +5335,10 @@ example (using <literal>&dollar;charset</literal> inside the backtick expansion 
 since it is not itself subject to any further expansion):
 </para>
 
-<para>
-
 <screen>
 text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} &bsol;
         &amp;&amp; test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
 </screen>
-
-</para>
 
 </sect2>
 
@@ -5495,6 +5352,8 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} &bsol;
 In addition to the required content-type and view command fields, you
 can add semi-colon ';' separated fields to set flags and other options.
 Mutt recognizes the following optional fields:
+</para>
+
 <variablelist>
 
 <varlistentry>
@@ -5507,11 +5366,13 @@ pager or the external pager defined by the pager variable) on the output
 of the view command.  Without this flag, Mutt assumes that the command
 is interactive.  One could use this to replace the pipe to <literal>more</literal>
 in the <literal>lynx -dump</literal> example in the Basic section:
+</para>
 
 <screen>
 text/html; lynx -dump %s ; copiousoutput
 </screen>
 
+<para>
 This will cause lynx to format the text/html output as text/plain
 and Mutt will use your standard pager to display the results.
 </para>
@@ -5583,12 +5444,12 @@ for instance, to correctly view a file.  For instance, lynx will only
 interpret a file as <literal>text/html</literal> if the file ends in <literal>.html</literal>.
 So, you would specify lynx as a <literal>text/html</literal> viewer with a line in
 the mailcap file like:
+</para>
 
 <screen>
 text/html; lynx %s; nametemplate=%s.html
 </screen>
 
-</para>
 </listitem>
 </varlistentry>
 <varlistentry>
@@ -5602,12 +5463,14 @@ test passed, and Mutt uses this entry.  If the command returns non-zero,
 then the test failed, and Mutt continues searching for the right entry.
 <emphasis role="bold">Note:</emphasis> <emphasis>the content-type must match before Mutt performs the test.</emphasis>
 For example:
+</para>
 
 <screen>
 text/html; netscape -remote 'openURL(%s)' ; test=RunningX
 text/html; lynx %s
 </screen>
 
+<para>
 In this example, Mutt will run the program RunningX which will return 0
 if the X Window manager is running, and non-zero if it isn't.  If
 RunningX returns 0, then Mutt will call netscape to display the
@@ -5617,7 +5480,6 @@ to the next entry and use lynx to display the text/html object.
 </listitem>
 </varlistentry>
 </variablelist>
-</para>
 
 </sect3>
 
@@ -5630,6 +5492,7 @@ the most useful entry for its purpose.  For instance, if you are
 attempting to print an <literal>image/gif</literal>, and you have the following
 entries in your mailcap file, Mutt will search for an entry with the
 print command:
+</para>
 
 <screen>
 image/*;        xv %s
@@ -5637,6 +5500,7 @@ image/gif;      ; print= anytopnm %s | pnmtops | lpr; &bsol;
                 nametemplate=%s.gif
 </screen>
 
+<para>
 Mutt will skip the <literal>image/*</literal> entry and use the <literal>image/gif</literal>
 entry with the print command.
 </para>
@@ -5647,6 +5511,7 @@ to denote two commands for viewing an attachment, one to be viewed
 automatically, the other to be viewed interactively from the attachment
 menu.  In addition, you can then use the test feature to determine which
 viewer to use interactively depending on your environment.
+</para>
 
 <screen>
 text/html;      netscape -remote 'openURL(%s)' ; test=RunningX
@@ -5654,6 +5519,7 @@ text/html;      lynx %s; nametemplate=%s.html
 text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
+<para>
 For <link linkend="auto-view">auto&lowbar;view</link>, Mutt will choose the third
 entry because of the copiousoutput tag.  For interactive viewing, Mutt
 will run the program RunningX to determine if it should use the first
@@ -5672,6 +5538,8 @@ The various commands defined in the mailcap files are passed to the
 command is passed to <literal>/bin/sh -c</literal>, it is parsed to expand
 various special parameters with information from Mutt.  The keywords
 Mutt expands are:
+</para>
+
 <variablelist>
 
 <varlistentry>
@@ -5705,11 +5573,13 @@ mailcap definition line, ie <literal>text/html</literal> or
 Mutt will expand this to the value of the specified parameter
 from the Content-Type: line of the mail message.  For instance, if
 Your mail message contains:
+</para>
 
 <screen>
 Content-Type: text/plain; charset=iso-8859-1
 </screen>
 
+<para>
 then Mutt will expand &percnt;&lcub;charset&rcub; to iso-8859-1.  The default metamail
 mailcap file uses this feature to test the charset to spawn an xterm
 using the right charset to view the message.
@@ -5725,6 +5595,8 @@ This will be replaced by a &percnt;
 </listitem>
 </varlistentry>
 </variablelist>
+
+<para>
 Mutt does not currently support the &percnt;F and &percnt;n keywords
 specified in RFC 1524.  The main purpose of these parameters is for
 multipart messages, which is handled internally by Mutt.
@@ -5739,25 +5611,22 @@ multipart messages, which is handled internally by Mutt.
 
 <para>
 This mailcap file is fairly simple and standard:
+</para>
 
-<programlisting>
+<screen>
 # I'm always running X :)
 video/*;        xanim %s &gt; /dev/null
 image/*;        xv %s &gt; /dev/null
 
 # I'm always running netscape (if my computer had more memory, maybe)
 text/html;      netscape -remote 'openURL(%s)'
-</programlisting>
-
-</para>
+</screen>
 
 <para>
 This mailcap file shows quite a number of examples:
 </para>
 
-<para>
-
-<programlisting>
+<screen>
 # Use xanim to view all videos   Xanim produces a header on startup,
 # send that to /dev/null so I don't see it
 video/*;        xanim %s &gt; /dev/null
@@ -5793,9 +5662,7 @@ pbmtoascii -1x2 ) 2&gt;&amp;1 ; copiousoutput
 
 # Send excel spreadsheets to my NT box
 application/ms-excel; open.pl %s
-</programlisting>
-
-</para>
+</screen>
 
 </sect2>
 
@@ -5824,17 +5691,17 @@ content-types that you wish to view automatically.
 
 <para>
 For instance, if you set auto&lowbar;view to:
+</para>
 
 <screen>
 auto_view text/html application/x-gunzip &bsol;
   application/postscript image/gif application/x-tar-gz
 </screen>
 
-</para>
-
 <para>
 Mutt could use the following mailcap entries to automatically view
 attachments of these types.
+</para>
 
 <screen>
 text/html;      lynx -dump %s; copiousoutput; nametemplate=%s.html
@@ -5844,8 +5711,6 @@ application/x-gunzip;   gzcat; copiousoutput
 application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
 application/postscript; ps2ascii %s; copiousoutput
 </screen>
-
-</para>
 
 <para>
 <quote>unauto&lowbar;view</quote> can be used to remove previous entries from the autoview list.
@@ -5865,12 +5730,11 @@ alternative&lowbar;order list to determine if one of the available types
 is preferred.  The alternative&lowbar;order list consists of a number of
 mimetypes in order, including support for implicit and explicit
 wildcards, for example:
+</para>
 
 <screen>
 alternative_order text/enriched text/plain text application/postscript image/*
 </screen>
-
-</para>
 
 <para>
 Next, mutt will check if any of the types have a defined
@@ -5909,6 +5773,7 @@ or not.
 <para>
 The syntax is:
 </para>
+
 <screen>
 attachments   {+|-}disposition mime-type
 unattachments {+|-}disposition mime-type
@@ -6025,12 +5890,11 @@ be compared to the list of extensions in the mime.types file.  The mime-type
 associated with this extension will then be used to process the attachment
 according to the rules in the mailcap file and according to any other configuration
 options (such as auto&lowbar;view) specified.  Common usage would be:
+</para>
 
 <screen>
 mime_lookup application/octet-stream application/X-Lotus-Manuscript
 </screen>
-
-</para>
 
 <para>
 In addition, the unmime&lowbar;lookup command may be used to disable this feature
@@ -6213,12 +6077,14 @@ want to carefully tune the
 and
 <link linkend="timeout">&dollar;timeout</link>
 variables. Personally I use
+</para>
 
 <screen>
 set mail_check=90
 set timeout=15
 </screen>
 
+<para>
 with relatively good results over my slow modem line.
 </para>
 
@@ -6235,6 +6101,7 @@ selects the same folder.
 As of version 1.2, mutt supports browsing mailboxes on an IMAP
 server. This is mostly the same as the local file browser, with the
 following differences:
+</para>
 
 <itemizedlist>
 <listitem>
@@ -6271,8 +6138,6 @@ these are bound to <literal>s</literal> and <literal>u</literal>, respectively).
 
 </itemizedlist>
 
-</para>
-
 </sect2>
 
 <sect2 id="imap-authentication">
@@ -6305,6 +6170,7 @@ in the following order: SASL, ANONYMOUS, GSSAPI, CRAM-MD5, LOGIN.
 
 <para>
 There are a few variables which control authentication:
+</para>
 
 <itemizedlist>
 <listitem>
@@ -6336,8 +6202,6 @@ listed above).
 </listitem>
 
 </itemizedlist>
-
-</para>
 
 </sect2>
 
@@ -6394,16 +6258,12 @@ which account-hook was last used).
 Some examples:
 </para>
 
-<para>
-
 <screen>
 account-hook . 'unset imap_user; unset imap_pass; unset tunnel'
 account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
 account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
 account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
 </screen>
-
-</para>
 
 </sect1>
 
@@ -6459,11 +6319,9 @@ can compute the name of the header cache file for a particular local folder
 through a command like the following:
 </para>
 
-<para>
 <screen>
 $ printf '%s' '/path/to/folder' | md5sum
 </screen>
-</para>
 
 <para>
 The <literal>md5sum</literal> command may also be
@@ -6559,17 +6417,21 @@ for the latter syntax. <literal>EXACT_ADDRESS</literal> in the output of
 Mutt's performance when reading mailboxes can be improved in two ways:
 </para>
 
-<para>
 <orderedlist>
-<listitem><para>
+
+<listitem>
+<para>
 For remote folders (IMAP and POP) as well as folders using
 one-file-per message storage (Maildir and MH), mutt's
 performance can be greatly improved using
 <link linkend="header-caching">header caching</link>.
 Using a single database per folder may further increase
 performance.
-</para></listitem>
-<listitem><para>
+</para>
+</listitem>
+
+<listitem>
+<para>
 Mutt provides the <link linkend="read-inc">&dollar;read&lowbar;inc</link>
 and <link linkend="write-inc">&dollar;write&lowbar;inc</link>
 variables to specify at which rate to update progress
@@ -6583,6 +6445,7 @@ thousand messages, the default value for
 <link linkend="read-inc">&dollar;read&lowbar;inc</link>
 may be too low. It can be tuned on on a folder-basis using
 <link linkend="folder-hook">folder-hooks</link>:
+</para>
 
 <screen>
 # use very high $read_inc to speed up reading hcache'd maildirs
@@ -6591,10 +6454,9 @@ folder-hook . 'set read_inc=1000'
 folder-hook ^imap 'set read_inc=100'
 # use even lower value for reading even slower remote POP folders
 folder-hook ^pop 'set read_inc=1'</screen>
-</para>
+
 </listitem>
 </orderedlist>
-</para>
 
 <para>These settings work on a per-message basis. However, as messages may
 greatly differ in size and certain operations are much faster than others,
@@ -6672,8 +6534,6 @@ mailbox.  However, it is possible to read other mailboxes and
 to send messages from the command line as well.
 </para>
 
-<para>
-
 <table id="tab-commandline-options">
 <title>Command line options</title>
 <tgroup cols="2">
@@ -6706,8 +6566,6 @@ to send messages from the command line as well.
 </tbody>
 </tgroup>
 </table>
-
-</para>
 
 <para>
 To read messages in a mailbox
@@ -6793,8 +6651,6 @@ recipient addresses: <literal>mutt -a *.png -- some@one.org</literal>
 <para>
 The following are the commands understood by mutt.
 </para>
-
-<para>
 
 <itemizedlist>
 
@@ -6971,7 +6827,6 @@ The following are the commands understood by mutt.
 </listitem>
 
 <listitem>
-<para>
 <cmdsynopsis>
 <command><link linkend="color">color</link></command>
 <arg choice="plain">
@@ -6984,8 +6839,6 @@ The following are the commands understood by mutt.
 <replaceable class="parameter">background</replaceable>
 </arg>
 </cmdsynopsis>
-</para>
-<para>
 <cmdsynopsis>
 <command><link linkend="color">color</link></command>
 <group choice="req">
@@ -7006,8 +6859,6 @@ The following are the commands understood by mutt.
 <replaceable class="parameter">regexp</replaceable>
 </arg>
 </cmdsynopsis>
-</para>
-<para>
 <cmdsynopsis>
 <command><link linkend="color">color</link></command>
 <arg choice="plain">
@@ -7023,7 +6874,6 @@ The following are the commands understood by mutt.
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 </cmdsynopsis>
-</para>
 </listitem>
 
 <listitem>
@@ -7310,7 +7160,6 @@ The following are the commands understood by mutt.
 </listitem>
 
 <listitem>
-<para>
 <cmdsynopsis>
 <command><link linkend="mono">mono</link></command>
 <arg choice="plain">
@@ -7320,8 +7169,6 @@ The following are the commands understood by mutt.
 <replaceable class="parameter">attribute</replaceable>
 </arg>
 </cmdsynopsis>
-</para>
-<para>
 <cmdsynopsis>
 <command><link linkend="mono">mono</link></command>
 <group choice="req">
@@ -7339,8 +7186,6 @@ The following are the commands understood by mutt.
 <replaceable class="parameter">regexp</replaceable>
 </arg>
 </cmdsynopsis>
-</para>
-<para>
 <cmdsynopsis>
 <command><link linkend="mono">mono</link></command>
 <arg choice="plain">
@@ -7353,7 +7198,6 @@ The following are the commands understood by mutt.
 <replaceable class="parameter">pattern</replaceable>
 </arg>
 </cmdsynopsis>
-</para>
 </listitem>
 
 <listitem>
@@ -7630,8 +7474,6 @@ The following are the commands understood by mutt.
 </listitem>
 
 </itemizedlist>
-
-</para>
 
 </sect1>
 

@@ -42,6 +42,7 @@ co-developed the original MIME parsing code back in the ELM-ME days.
 
 <para>
 The following people have been very helpful to the development of Mutt:
+</para>
 
 <itemizedlist>
 <listitem><para>Vikas Agnihotri <email>vikasa@writeme.com</email></para></listitem>
@@ -87,7 +88,6 @@ The following people have been very helpful to the development of Mutt:
 <listitem><para>Vsevolod Volkov <email>vvv@lucky.net</email></para></listitem>
 <listitem><para>Ken Weinert <email>kenw@ihs.com</email></para></listitem>
 </itemizedlist>
-</para>
 
 </sect1>
 
