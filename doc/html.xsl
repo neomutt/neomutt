@@ -7,8 +7,9 @@
   <xsl:import href="http://docbook.sourceforge.net/release/xsl/current/xhtml/docbook.xsl"/>
   <xsl:param name="section.autolabel" select="1"></xsl:param>
   <xsl:template name="user.head.content">
-    <style type="text/css">
+    <xsl:element name="style">
+      <xsl:attribute name="type">text/css</xsl:attribute>
       &css;
-    </style>
+    </xsl:element>
   </xsl:template>
 </xsl:stylesheet>

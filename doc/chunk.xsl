@@ -9,8 +9,9 @@
   <xsl:param name="use.id.as.filename" select="1"/>
   <xsl:param name="chunk.section.depth" select="0"/>
   <xsl:template name="user.head.content">
-    <style type="text/css">
+    <xsl:element name="style">
+      <xsl:attribute name="type">text/css</xsl:attribute>
       &css;
-    </style>
+    </xsl:element>
   </xsl:template>
 </xsl:stylesheet>
