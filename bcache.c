@@ -43,7 +43,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
 {
   char host[STRING];
   ciss_url_t url;
-  size_t len;
+  int len;
 
   if (!account || !MessageCachedir || !*MessageCachedir || !dst || !dstlen)
     return -1;
