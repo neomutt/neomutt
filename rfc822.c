@@ -594,8 +594,6 @@ void rfc822_write_address_single (char *buf, size_t buflen, ADDRESS *addr,
       {
 	if (*pc == '"' || *pc == '\\')
 	{
-	  if (!buflen)
-	    goto done;
 	  *pbuf++ = '\\';
 	  buflen--;
 	}
