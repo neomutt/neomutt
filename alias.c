@@ -356,7 +356,7 @@ retry_name:
     {
       if (fseek (rc, -1, SEEK_CUR) < 0)
 	goto fseek_err;
-      if (fread(buf, 1, 1, rc) < 0)
+      if (fread(buf, 1, 1, rc) != 1)
       {
 	mutt_perror (_("Error reading alias file"));
 	return;
