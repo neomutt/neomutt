@@ -1,4 +1,8 @@
-2008-12-16 12:42 -0800  Erik Hovland  <erik@hovland.org>  (21408a61a058)
+2008-12-16 12:49 -0800  Erik Hovland  <erik@hovland.org>  (758aaca73c65)
+
+	* smime.c: Remove check that always succeeds
+
+	* pattern.c: fclose correct fp
 
 	* rfc822.c: buflen cannot be 0 here
 
