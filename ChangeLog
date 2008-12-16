@@ -1,4 +1,10 @@
-2008-12-15 23:42 -0800  Erik Hovland  <erik@hovland.org>  (2991ac6bc363)
+2008-12-16 10:47 -0800  Brendan Cully  <brendan@kublai.com>  (6639e41e0c5e)
+
+	* imap/Makefile.am: Remove imap/BUGS from Makefile.am
+
+2008-12-15 23:45 -0800  Erik Hovland  <erik@hovland.org>  (adaf24e4117d)
+
+	* mh.c: Fix bad parentheses in stat rc
 
 	* bcache.c: snprintf returns int, not size_t
 
