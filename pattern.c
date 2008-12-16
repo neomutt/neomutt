@@ -180,9 +180,9 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
             && !crypt_valid_passphrase(h->security))
 	{
 	  mx_close_message (&msg);
-	  if (fp)
+	  if (s.fpout)
 	  {
-	    fclose (fp);
+	    fclose (s.fpout);
 	    unlink (tempfile);
 	  }
 	  return (0);

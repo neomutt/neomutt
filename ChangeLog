@@ -1,4 +1,10 @@
-2008-12-16 10:47 -0800  Brendan Cully  <brendan@kublai.com>  (6639e41e0c5e)
+2008-12-16 12:42 -0800  Erik Hovland  <erik@hovland.org>  (21408a61a058)
+
+	* rfc822.c: buflen cannot be 0 here
+
+2008-12-16 12:36 -0800  Brendan Cully  <brendan@kublai.com>  (bbf4dfc2aa41)
+
+	* ChangeLog.old, Makefile.am: Remove ChangeLog.old
 
 	* imap/Makefile.am: Remove imap/BUGS from Makefile.am
 
