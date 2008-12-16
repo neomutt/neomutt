@@ -14,7 +14,7 @@ else
 AUTHENTICATORS = auth_anon.c auth_cram.c
 endif
 
-EXTRA_DIST = BUGS README TODO auth_anon.c auth_cram.c auth_gss.c auth_sasl.c
+EXTRA_DIST = README TODO auth_anon.c auth_cram.c auth_gss.c auth_sasl.c
 
 AM_CPPFLAGS = -I$(top_srcdir) -I../intl
 
