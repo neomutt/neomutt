@@ -530,8 +530,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 	if (numFields < 2)
 	    continue;
 	if (mailbox && public && 
-	    (!fields[4] ||
-	     *fields[4] == 'i' || *fields[4] == 'e' || *fields[4] == 'r'))
+	    (*fields[4] == 'i' || *fields[4] == 'e' || *fields[4] == 'r'))
 	    continue;
 
 	if (found)
