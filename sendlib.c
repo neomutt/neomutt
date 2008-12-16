@@ -2342,6 +2342,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
   if ((f = safe_fopen (tempfile, "w")) != NULL)
   {
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
+    char* msgid_str;
     
     if (!option (OPTBOUNCEDELIVERED))
       ch_flags |= CH_WEED_DELIVERED;
@@ -2349,13 +2350,15 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     fseeko (fp, h->offset, 0);
     fprintf (f, "Resent-From: %s", resent_from);
     fprintf (f, "\nResent-%s", mutt_make_date (date, sizeof(date)));
-    fprintf (f, "Resent-Message-ID: %s\n", mutt_gen_msgid());
+    msgid_str = mutt_gen_msgid();
+    fprintf (f, "Resent-Message-ID: %s\n", msgid_str);
     fputs ("Resent-To: ", f);
     mutt_write_address_list (to, f, 11, 0);
     mutt_copy_header (fp, h, f, ch_flags, NULL);
     fputc ('\n', f);
     mutt_copy_bytes (fp, f, h->content->length);
-    fclose (f);
+    safe_fclose (&f);
+    FREE (&msgid_str);
 
 #if USE_SMTP
     if (SmtpUrl)
