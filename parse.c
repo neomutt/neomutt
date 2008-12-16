@@ -41,7 +41,7 @@
 char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
 {
   char *buf = line;
-  char ch;
+  int ch;
   size_t offset = 0;
 
   FOREVER

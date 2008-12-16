@@ -1,4 +1,8 @@
-2008-12-16 12:49 -0800  Erik Hovland  <erik@hovland.org>  (758aaca73c65)
+2008-12-16 13:00 -0800  Erik Hovland  <erik@hovland.org>  (26216d118339)
+
+	* alias.c: Fix fread rc check
+
+	* hash.c: Remove redundant int clamping
 
 	* smime.c: Remove check that always succeeds
 
