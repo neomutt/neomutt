@@ -1,22 +1,26 @@
-2008-12-10 15:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (ff27fdd6851c)
+2008-12-15 23:11 -0800  Brendan Cully  <brendan@kublai.com>  (101a8bcba613)
+
+	* imap/BUGS: imap/BUGS is superseded by the BTS
+
+2008-12-10 20:00 +0100  Rocco Rutte  <pdmef@gmx.net>  (817e5987633b)
+
+	* doc/manual.xml.head: Manual: Fix typos found by by Vincent Lefevre,
+	see #3109.
+
+	* doc/manual.xml.head: Manual: trim into chapter, add notes about
+	contributing
 
 	* doc/mutt.css: Make mutt.css apply for all media types
 
-2008-12-10 15:39 +0100  Rocco Rutte  <pdmef@gmx.net>  (5d71e189449a)
-
-	* ChangeLog, doc/manual.xml.head, doc/mutt.css: Manual: Wrap important
-	notes in <note/>
-
-2008-12-10 15:36 +0100  Rocco Rutte  <pdmef@gmx.net>  (ca2eee8d763e)
+	* doc/manual.xml.head, doc/mutt.css: Manual: Wrap important notes
+	in <note/>
 
 	* doc/Makefile.am, doc/chunk.xsl, doc/html.xsl, doc/mutt.xsl: Move
 	common XSLT params to mutt.xsl imported into (chunk|html).xsl
 
-2008-12-10 13:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (11200e1a8b84)
-
-	* ChangeLog, doc/gen-map-doc, doc/makedoc.c, doc/manual.xml.head,
-	doc/manual.xml.tail, init.h: Manual: Only wrap real text paragraphs
-	in <para/>
+	* doc/gen-map-doc, doc/makedoc.c, doc/manual.xml.head,
+	doc/manual.xml.tail, init.h: Manual: Only wrap real text
+	paragraphs in <para/>
 
 	Elements such as lists, tables, synopsis don't need it and produce
 	hundreds of warnings in tidy because of empty paragraphs.
@@ -24,36 +28,24 @@
 	With this change, the manual should be fully XHTML 1.0 Transitional
 	and validate without warnings and errors.
 
-2008-12-10 13:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (c1873847c50e)
-
 	* hg-commit: hg-commit: Work even in subdirectories
 
-2008-12-10 12:33 +0100  Rocco Rutte  <pdmef@gmx.net>  (e53becb2cfae)
-
-	* ChangeLog, doc/chunk.xsl, doc/html.xsl: Manual: Use right XSLT-way
-	to embed CSS to avoid invalid xmlns="" attributes on <style/>
-
-2008-12-10 11:37 +0100  Rocco Rutte  <pdmef@gmx.net>  (f6f74a034ab7)
+	* doc/chunk.xsl, doc/html.xsl: Manual: Use right XSLT-way to embed
+	CSS to avoid invalid xmlns="" attributes on <style/>
 
 	* doc/devel-notes.txt: devel-notes.txt: add some words about preparing
 	& contributing patches
 
-2008-12-10 10:30 +0100  Rocco Rutte  <pdmef@gmx.net>  (bbead9582048)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Add section about
-	typographical conventions, see #3109.
-
-2008-12-10 10:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (a38ec1a3f345)
+	* doc/manual.xml.head: Manual: Add section about typographical
+	conventions, see #3109.
 
 	* doc/manual.xml.head, doc/mutt.css: Manual: Wrap important examples
 	in <example/>
 
 2008-12-06 15:06 +0100  Rocco Rutte  <pdmef@gmx.net>  (e13e903af3bf)
 
-	* ChangeLog, doc/manual.xml.head, doc/mutt.css: Manual: Fixup
-	configuration command synopsis and switch to <cmdsynopsis/>
-
-2008-12-06 15:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (5799811e0821)
+	* doc/manual.xml.head, doc/mutt.css: Manual: Fixup configuration
+	command synopsis and switch to <cmdsynopsis/>
 
 	* doc/makedoc.c: makedoc: use <quote/> and <literal/> in string
 	default values
@@ -61,10 +53,8 @@
 	The goal is to improve readability of settings where spaces are
 	relevant.
 
-2008-12-06 11:41 +0100  Rocco Rutte  <pdmef@gmx.net>  (ec45eb382402)
-
-	* ChangeLog, doc/Makefile.am, doc/chunk.xsl, doc/html.xsl,
-	doc/mutt.css: Manual: Add simple and clean stylesheet, see #3109.
+	* doc/Makefile.am, doc/chunk.xsl, doc/html.xsl, doc/mutt.css:
+	Manual: Add simple and clean stylesheet, see #3109.
 
 2008-12-02 16:10 +0100  Rocco Rutte  <pdmef@gmx.net>  (3a8e5756613c)
 
@@ -87,10 +77,7 @@
 	behaviour is to manage the pattern outside the lifecyle to always
 	provide the last pattern as suggestion.
 
-2008-11-30 20:23 +0100  Rocco Rutte  <pdmef@gmx.net>  (927a1d30a44e)
-
-	* ChangeLog, query.c: Start numbering query results with 1 instead of
-	0
+	* query.c: Start numbering query results with 1 instead of 0
 
 2008-11-24 11:44 -0800  Brendan Cully  <brendan@kublai.com>  (fd555f9fcb03)
 
@@ -99,49 +86,35 @@
 
 2008-11-24 12:41 +0100  Rocco Rutte  <pdmef@gmx.net>  (dc62594cc9e9)
 
-	* ChangeLog, doc/Makefile.am: Manual: Fix lynx call for html to text
+	* doc/Makefile.am: Manual: Fix lynx call for html to text
 	conversion, strip \001 when dumping with elinks
-
-2008-11-24 11:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (1b39f5505dec)
 
 	* doc/manual.xml.head: Manual: Fix/Improve quoting
 
-2008-11-24 11:43 +0100  Rocco Rutte  <pdmef@gmx.net>  (d133f2da0b6e)
-
-	* ChangeLog, hg-commit: hg-commit: Exit if manual validation fails
-
-2008-11-24 11:38 +0100  Rocco Rutte  <pdmef@gmx.net>  (8915e5aa7af7)
+	* hg-commit: hg-commit: Exit if manual validation fails
 
 	* doc/manual.xml.head, doc/muttrc.man.head: Documentation:
 	Consistently use "backtick" for `
 
-2008-11-24 11:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (89a81ec0fbb3)
-
-	* ChangeLog, doc/Makefile.am, doc/manual.xml.head,
-	doc/muttrc.man.head: Manual: Add 'spellcheck' target for aspell and
-	fix typos (closes #3137)
+	* doc/Makefile.am, doc/manual.xml.head, doc/muttrc.man.head:
+	Manual: Add 'spellcheck' target for aspell and fix typos (closes
+	#3137)
 
 2008-11-23 18:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (82b4664129cd)
 
 	* doc/Makefile.am: Complete e1304a641938 commit
 
-2008-11-23 18:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (e1304a641938)
-
-	* ChangeLog, doc/Makefile.am, doc/db-cleanup.xsl: Manual: Convert
-	manual.html to manual.txt under C locale
+	* doc/Makefile.am, doc/db-cleanup.xsl: Manual: Convert manual.html
+	to manual.txt under C locale
 
 	This ensures manual.txt is always pure ASCII and removes the
 	horrible XSLT-based and incomplete hack.
-
-2008-11-23 17:31 +0100  Rocco Rutte  <pdmef@gmx.net>  (462579309bf2)
 
 	* doc/manual.xml.head: Manual: Fix wording for simple search
 
 2008-11-22 18:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (0837f7b13990)
 
-	* ChangeLog, po/de.po: Fix German translation for what-key
-
-2008-11-22 17:29 +0100  Rocco Rutte  <pdmef@gmx.net>  (fc9791c80c9e)
+	* po/de.po: Fix German translation for what-key
 
 	* UPDATING, functions.h, keymap.c, pager.c: Make what-key function
 	available in pager-based menus, too

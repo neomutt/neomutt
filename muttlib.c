@@ -1624,13 +1624,13 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
     safe_realloc (&buf->data, buf->dsize);
     buf->dptr = buf->data + doff;
     len = vsnprintf (buf->dptr, len, fmt, ap_retry);
-    va_end (ap_retry);
   }
   if (len > 0)
     buf->dptr += len;
 
   va_end (ap);
-  
+  va_end (ap_retry);
+
   return len;
 }
 
