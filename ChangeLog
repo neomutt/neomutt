@@ -1,3 +1,9 @@
+2008-12-15 23:42 -0800  Erik Hovland  <erik@hovland.org>  (2991ac6bc363)
+
+	* bcache.c: snprintf returns int, not size_t
+
+	* muttlib.c: Always va_end(ap_retry) in mutt_buffer_printf
+
 2008-12-15 23:11 -0800  Brendan Cully  <brendan@kublai.com>  (101a8bcba613)
 
 	* imap/BUGS: imap/BUGS is superseded by the BTS

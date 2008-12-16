@@ -1982,7 +1982,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   
   /* create .mh_sequences when there isn't one. */
   snprintf (buf, sizeof (buf), "%s/.mh_sequences", ctx->path);
-  if ((i = stat (buf, &st_cur) == -1) && errno == ENOENT)
+  if ((i = stat (buf, &st_cur)) == -1 && errno == ENOENT)
   {
     char *tmp;
     FILE *fp = NULL;
