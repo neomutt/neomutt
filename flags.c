@@ -25,10 +25,6 @@
 #include "sort.h"
 #include "mx.h"
 
-#ifdef USE_IMAP
-#include "imap_private.h"
-#endif
-
 void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 {
   int changed = h->changed;

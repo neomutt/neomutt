@@ -28,7 +28,6 @@
 #include "mutt.h"
 #include "pgp.h"
 #include "pgppacket.h"
-#include "mime.h"
 #include "charset.h"
 
 #include <stdio.h>

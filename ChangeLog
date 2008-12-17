@@ -1,4 +1,14 @@
-2008-12-16 13:00 -0800  Erik Hovland  <erik@hovland.org>  (26216d118339)
+2008-12-16 14:31 -0800  Erik Hovland  <erik@hovland.org>  (e86a97890e09)
+
+	* sendlib.c: mutt_gen_msgid() allocates the msgid off of the heap.
+
+	Since mutt_gen_msgid() allocates the msgid string with strdup, it is
+	getting it off of the heap.
+
+	When the fprintf writes the msgid, the string is no longer tracked
+	and that string is leaked.
+
+	* parse.c: Match variable type to getch return type
 
 	* alias.c: Fix fread rc check
 

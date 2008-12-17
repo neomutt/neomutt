@@ -26,12 +26,9 @@
 #include "keymap.h"
 #include "mutt_menu.h"
 #include "mapping.h"
-#include "sort.h"
 #include "pager.h"
 #include "attach.h"
 #include "mbyte.h"
-
-#include "mx.h"
 
 #include "mutt_crypt.h"
 

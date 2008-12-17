@@ -27,7 +27,6 @@
 #include "mime.h"
 #include "mailbox.h"
 #include "copy.h"
-#include "mx.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 #include "url.h"

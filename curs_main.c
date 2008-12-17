@@ -23,11 +23,9 @@
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "attach.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "sort.h"
-#include "buffy.h"
 #include "mx.h"
 
 #ifdef USE_POP

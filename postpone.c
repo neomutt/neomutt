@@ -23,13 +23,11 @@
 
 #include "mutt.h"
 #include "mutt_menu.h"
-#include "rfc1524.h"
 #include "mime.h"
 #include "mailbox.h"
 #include "mapping.h"
 #include "sort.h"
 #ifdef USE_IMAP
-#include "mx.h"
 #include "imap.h"
 #endif
 #include "mutt_crypt.h"

@@ -42,10 +42,6 @@
 #include "mutt.h"
 #include "hcache.h"
 #include "hcversion.h"
-#ifdef USE_IMAP
-#include "message.h"
-#endif
-#include "mime.h"
 #include "mx.h"
 #include "lib.h"
 #include "md5.h"

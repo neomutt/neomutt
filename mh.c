@@ -30,9 +30,7 @@
 #include "mailbox.h"
 #include "mx.h"
 #include "copy.h"
-#include "buffy.h"
 #include "sort.h"
-#include "account.h"
 #if USE_HCACHE
 #include "hcache.h"
 #endif

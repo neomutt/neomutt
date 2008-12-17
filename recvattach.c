@@ -30,7 +30,6 @@
 #include "attach.h"
 #include "mapping.h"
 #include "mx.h"
-#include "copy.h"
 #include "mutt_crypt.h"
 
 #include <ctype.h>

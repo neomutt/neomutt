@@ -26,12 +26,8 @@
 #include "mutt.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
-#include "rfc1524.h"
-#include "mime.h"
-#include "mailbox.h"
 #include "attach.h"
 #include "mapping.h"
-#include "mx.h"
 #include "copy.h"
 #include "mutt_idna.h"
 
