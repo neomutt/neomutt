@@ -26,7 +26,6 @@
 #include "mx.h"	/* for M_IMAP */
 #include "url.h"
 #include "imap_private.h"
-#include "mutt_ssl.h"
 #ifdef USE_HCACHE
 #include "message.h"
 #include "hcache.h"
