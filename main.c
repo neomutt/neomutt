@@ -236,8 +236,6 @@ static void show_version (void)
 	"-DL_STANDALONE  "
 #endif
 
-	"\n"
-	
 #ifdef USE_FCNTL
 	"+USE_FCNTL  "
 #else
@@ -249,7 +247,7 @@ static void show_version (void)
 #else
 	"-USE_FLOCK   "
 #endif
-	);
+    );
   puts (
 #ifdef USE_POP
 	"+USE_POP  "
@@ -268,13 +266,7 @@ static void show_version (void)
 #else
 	"-USE_SMTP  "
 #endif
-
-#ifdef USE_GSS
-	"+USE_GSS  "
-#else
-	"-USE_GSS  "
-#endif
-
+	"\n"
 	
 #ifdef USE_SSL_OPENSSL
 	"+USE_SSL_OPENSSL  "
@@ -292,6 +284,11 @@ static void show_version (void)
 	"+USE_SASL  "
 #else
 	"-USE_SASL  "
+#endif
+#ifdef USE_GSS
+	"+USE_GSS  "
+#else
+	"-USE_GSS  "
 #endif
 
 #if HAVE_GETADDRINFO
