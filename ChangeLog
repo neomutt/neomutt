@@ -1,4 +1,18 @@
-2008-12-16 14:31 -0800  Erik Hovland  <erik@hovland.org>  (e86a97890e09)
+2008-12-20 15:31 -0800  Brendan Cully  <brendan@kublai.com>  (a715dca3610c)
+
+	* main.c: Cosmetics for mutt -v
+
+2008-11-26 01:15 +0000  Peter Collingbourne  <peter@pcc.me.uk>  (2fefd56f440c)
+
+	* sendlib.c: Disable line wrapping for Message-ID header
+
+2008-12-16 20:19 -0800  Erik Hovland  <erik@hovland.org>  (f6ae8dc70850)
+
+	* imap/util.c: Remove unused #include directives
+
+	* crypt.c, curs_main.c, flags.c, group.c, hcache.c, mh.c, pager.c,
+	pgpmicalg.c, pgppacket.c, postpone.c, query.c, recvattach.c,
+	recvcmd.c, send.c: Remove unused #include directives
 
 	* sendlib.c: mutt_gen_msgid() allocates the msgid off of the heap.
 
