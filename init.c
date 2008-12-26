@@ -2348,6 +2348,9 @@ int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
   int i, r = -1;
   BUFFER expn;
 
+  if (!line || !*line)
+    return 0;
+
   memset (&expn, 0, sizeof (expn));
   expn.data = expn.dptr = line;
   expn.dsize = mutt_strlen (line);
