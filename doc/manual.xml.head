@@ -1970,11 +1970,38 @@ messages.
 </listitem>
 </varlistentry>
 <varlistentry>
+<term>smime</term>
+<listitem>
+<para>
+The smime menu is used to select the OpenSSL certifcates used for encrypting outgoing
+messages.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
 <term>postpone</term>
 <listitem>
 <para>
 The postpone menu is similar to the index menu, except is used when
 recalling a message the user was composing, but saved until later.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>query</term>
+<listitem>
+<para>
+The query menu is the browser for results returned by
+<link linkend="query-command">&dollar;query&lowbar;command</link>.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>mix</term>
+<listitem>
+<para>
+The mixmaster screen is used to select remailer options for outgoing
+messages (if Mutt is compiled with Mixmaster support).
 </para>
 </listitem>
 </varlistentry>
