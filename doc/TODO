@@ -17,8 +17,7 @@ Style/Technical
 
     If the filename ends with a vertical bar (&verbar;)
 
-  We need to choose either style and use it. Probably we want to add
-  a short typography section explaining layout details.
+  We need to choose either style and use it.
 
 * Think about some way of templating to a) help improve consistency
   (i.e. some sort of macro to refer to key, options, functions, etc.)
@@ -31,24 +30,12 @@ Style/Technical
   perl already to build docs, think about/look for simple perl
   templating engine.
 
-* Maybe add a mutt.css to contrib to make it look better.
-
-* As for sending patches, maybe add a short text file for documentation
-  hackers with guidelines. (Though nobody really seems to provide input
-  on the manual)
-
 * Find a way (XSLT?) to trim the TOC for the option reference; it's
   ugly but we probably want to keep the TOC depth as-is for other
   sections.
 
 Content
 -------
-
-* Especially the introduction needs to be reworked quite a bit,
-  the current reference-like way is unfriendly for new users. There
-  should be an introduction chapter explaining concepts (config, menus,
-  hooks, etc.) E.g. the intro for hooks should come _before_ their
-  syntactical definition, not after.
 
 * Some sections maybe should be better grouped by topic, instead of
   one section per task (e.g. hooks should be grouped under a section
