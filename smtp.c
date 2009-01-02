@@ -89,9 +89,10 @@ smtp_get_resp (CONNECTION * conn)
 
   do {
     n = mutt_socket_readln (buf, sizeof (buf), conn);
-    if (n == -1)
+    if (n < 4) {
+      /* read error, or no response code */
       return smtp_err_read;
-    n = atoi (buf);
+    }
 
     if (!ascii_strncasecmp ("8BITMIME", buf + 4, 8))
       mutt_bit_set (Capabilities, EIGHTBITMIME);
@@ -105,6 +106,8 @@ smtp_get_resp (CONNECTION * conn)
       mutt_bit_set (Capabilities, DSN);
     else if (!ascii_strncasecmp ("STARTTLS", buf + 4, 8))
       mutt_bit_set (Capabilities, STARTTLS);
+
+    n = atoi (buf);
   } while (buf[3] == '-');
 
   if (smtp_success (n) || n == smtp_continue)
