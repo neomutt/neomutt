@@ -1,3 +1,22 @@
+2009-01-01 16:55 -0800  Brendan Cully  <brendan@kublai.com>  (859009a507d8)
+
+	* smtp.c: SMTP: guard against short server responses
+
+2008-12-30 00:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (ac870203179d)
+
+	* doc/manual.xml.head: Manual: Add missing maps to bind command docs
+
+	* doc/TODO: Documentation: Update TODO
+
+2008-12-26 14:36 +0100  Rocco Rutte  <pdmef@gmx.net>  (4917897ac9b1)
+
+	* init.c: Ignore NULL/empty lines in rc parser, fixes mutt -e ''
+	crashing
+
+2008-12-20 15:33 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (349986b1af09)
+
+	* po/ja.po: Updated Japanese translation.
+
 2008-12-20 15:31 -0800  Brendan Cully  <brendan@kublai.com>  (a715dca3610c)
 
 	* main.c: Cosmetics for mutt -v

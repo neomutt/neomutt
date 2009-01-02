@@ -96,7 +96,7 @@ smtp_get_resp (CONNECTION * conn)
 
     if (!ascii_strncasecmp ("8BITMIME", buf + 4, 8))
       mutt_bit_set (Capabilities, EIGHTBITMIME);
-    else if (!ascii_strncasecmp ("AUTH", buf + 4, 4))
+    else if (!ascii_strncasecmp ("AUTH ", buf + 4, 5))
     {
       mutt_bit_set (Capabilities, AUTH);
       FREE (&AuthMechs);
