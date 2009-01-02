@@ -128,9 +128,6 @@ WHERE char *SpamSep;
 #if defined(USE_SSL)
 WHERE char *SslCertFile INITVAL (NULL);
 WHERE char *SslClientCert INITVAL (NULL);
-#ifdef USE_SSL_OPENSSL
-WHERE LIST *SslSessionCerts INITVAL (NULL);
-#endif
 WHERE char *SslEntropyFile INITVAL (NULL);
 #ifdef USE_SSL_GNUTLS
 WHERE short SslDHPrimeBits;

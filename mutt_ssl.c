@@ -60,6 +60,10 @@ static int entropy_byte_count = 0;
 #define HAVE_ENTROPY()	(!access(DEVRANDOM, R_OK) || entropy_byte_count >= 16)
 #endif
 
+/* keep a handle on accepted certificates in case we want to
+ * open up another connection to the same server in this session */
+static STACK_OF(X509) *SslSessionCerts = NULL;
+
 typedef struct _sslsockdata
 {
   SSL_CTX *ctx;
@@ -76,7 +80,9 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
 static int tls_close (CONNECTION* conn);
-static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data);
+static int ssl_cache_trusted_cert (X509 *cert);
+static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data, int);
+static int interactive_check_cert (X509 *cert);
 static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn);
 static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata);
 static int ssl_negotiate (CONNECTION *conn, sslsockdata*);
@@ -345,7 +351,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
     return -1;
   }
 
-  if (!ssl_check_certificate (conn, ssldata))
+  if (!ssl_check_certificate (conn, ssldata, 1))
     return -1;
 
   mutt_message (_("SSL connection using %s (%s)"), 
@@ -452,7 +458,7 @@ static int check_certificate_by_signer (X509 *peercert)
 {
   X509_STORE_CTX xsc;
   X509_STORE *ctx;
-  int pass = 0;
+  int pass = 0, i;
 
   ctx = X509_STORE_new ();
   if (ctx == NULL) return 0;
@@ -470,6 +476,9 @@ static int check_certificate_by_signer (X509 *peercert)
   else
     dprint (2, (debugfile, "X509_STORE_load_locations_failed\n"));
 
+  for (i = 0; i < sk_X509_num (SslSessionCerts); i++)
+    pass += (X509_STORE_add_cert (ctx, sk_X509_value (SslSessionCerts, i)) != 0);
+
   if (pass == 0)
   {
     /* nothing to do */
@@ -477,7 +486,7 @@ static int check_certificate_by_signer (X509 *peercert)
     return 0;
   }
 
-  X509_STORE_CTX_init (&xsc, ctx, peercert, NULL);
+  X509_STORE_CTX_init (&xsc, ctx, peercert, SslSessionCerts);
 
   pass = (X509_verify_cert (&xsc) > 0);
 #ifdef DEBUG
@@ -490,6 +499,7 @@ static int check_certificate_by_signer (X509 *peercert)
     snprintf (buf, sizeof (buf), "%s (%d)", 
 	X509_verify_cert_error_string(err), err);
     dprint (2, (debugfile, "X509_verify_cert: %s\n", buf));
+    dprint (2, (debugfile, " [%s]\n", peercert->name));
   }
 #endif
   X509_STORE_CTX_cleanup (&xsc);
@@ -525,16 +535,17 @@ static int check_certificate_cache (X509 *peercert)
   unsigned char peermd[EVP_MAX_MD_SIZE];
   unsigned int peermdlen;
   X509 *cert;
-  LIST *scert;
+  int i;
 
-  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
+  if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen)
+      || !SslSessionCerts)
   {
     return 0;
   }
   
-  for (scert = SslSessionCerts; scert; scert = scert->next)
+  for (i = sk_X509_num (SslSessionCerts); i-- > 0;)
   {
-    cert = *(X509**)scert->data;
+    cert = sk_X509_value (SslSessionCerts, i);
     if (!compare_certificates (cert, peercert, peermd, peermdlen))
     {
       return 1;
@@ -717,16 +728,20 @@ out:
   return rc;
 }
 
-static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
+static int ssl_cache_trusted_cert (X509 *c)
 {
-  char *part[] =
-  {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
-  char helpstr[LONG_STRING];
+  dprint (1, (debugfile, "trusted: %s\n", c->name));
+  if (!SslSessionCerts)
+    SslSessionCerts = sk_new_null();
+  return (sk_X509_push (SslSessionCerts, X509_dup(c)));
+}
+
+static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data, int interactive)
+{
   char buf[SHORT_STRING];
-  MUTTMENU *menu;
-  int done, row, i, certerr_hostname = 0;
-  FILE *fp;
-  char *name = NULL, *c;
+  int i, certerr_hostname = 0, chain_len;
+  STACK_OF(X509) *chain;
+  X509 *cert;
 
   /* check session cache first */
   if (check_certificate_cache (data->cert))
@@ -760,8 +775,60 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
     return 1;
   }
 
-  /* interactive check from user */
-  menu = mutt_new_menu (-1);
+  if (!interactive)
+    return 0;
+
+  chain = SSL_get_peer_cert_chain (data->ssl);
+  chain_len = sk_X509_num (chain);
+  if (!chain || (chain_len < 1))
+    return interactive_check_cert (data->cert);
+  else
+  {
+    /* check the chain from root to peer */
+    for (i = chain_len; i-- > 0;)
+    {
+      cert = sk_X509_value (chain, i);
+      if (check_certificate_cache (cert))
+	dprint (2, (debugfile, "ssl chain: already cached: %s\n", cert->name));
+      else if (i /* 0 is the peer */ || !certerr_hostname)
+      {
+	if (check_certificate_by_signer (cert))
+	{
+	  dprint (2, (debugfile, "ssl chain: checked by signer: %s\n", cert->name));
+	  ssl_cache_trusted_cert (cert);
+	}
+	else if (SslCertFile && check_certificate_by_digest (cert))
+	{
+	  dprint (2, (debugfile, "ssl chain: trusted with file: %s\n", cert->name));
+	  ssl_cache_trusted_cert (cert);
+	}
+	else /* allow users to shoot their foot */
+	{
+	  dprint (2, (debugfile, "ssl chain: check failed: %s\n", cert->name));
+	  interactive_check_cert (cert);
+	}
+      }
+      else /* highly suspicious because (i==0 && certerr_hostname) */
+	interactive_check_cert (cert);
+    }
+    /* retry with the trusted chain */
+    return ssl_check_certificate (conn, data, 0);
+  }
+}
+
+static int interactive_check_cert (X509 *cert)
+{
+  char *part[] =
+    {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
+  char helpstr[LONG_STRING];
+  char buf[SHORT_STRING];
+  MUTTMENU *menu = mutt_new_menu (-1);
+  int done, row, i;
+  FILE *fp;
+  char *name = NULL, *c;
+
+  dprint (2, (debugfile, "ssl interactive_check_cert: %s\n", cert->name));
+
   menu->max = 19;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
@@ -770,7 +837,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
   row = 0;
   strfcpy (menu->dialog[row], _("This certificate belongs to:"), SHORT_STRING);
   row++;
-  name = X509_NAME_oneline (X509_get_subject_name (data->cert),
+  name = X509_NAME_oneline (X509_get_subject_name (cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
   {
@@ -781,7 +848,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
   row++;
   strfcpy (menu->dialog[row], _("This certificate was issued by:"), SHORT_STRING);
   row++;
-  name = X509_NAME_oneline (X509_get_issuer_name (data->cert),
+  name = X509_NAME_oneline (X509_get_issuer_name (cert),
 			    buf, sizeof (buf));
   for (i = 0; i < 5; i++)
   {
@@ -792,18 +859,18 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
   row++;
   snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
   snprintf (menu->dialog[row++], SHORT_STRING, _("   from %s"), 
-      asn1time_to_string (X509_get_notBefore (data->cert)));
+      asn1time_to_string (X509_get_notBefore (cert)));
   snprintf (menu->dialog[row++], SHORT_STRING, _("     to %s"), 
-      asn1time_to_string (X509_get_notAfter (data->cert)));
+      asn1time_to_string (X509_get_notAfter (cert)));
 
   row++;
   buf[0] = '\0';
-  x509_fingerprint (buf, sizeof (buf), data->cert);
+  x509_fingerprint (buf, sizeof (buf), cert);
   snprintf (menu->dialog[row++], SHORT_STRING, _("Fingerprint: %s"), buf);
 
   menu->title = _("SSL Certificate check");
-  if (SslCertFile && X509_cmp_current_time (X509_get_notAfter (data->cert)) >= 0
-      && X509_cmp_current_time (X509_get_notBefore (data->cert)) < 0)
+  if (SslCertFile && X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
+      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
     menu->keys = _("roa");
@@ -836,7 +903,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
         done = 0;
         if ((fp = fopen (SslCertFile, "a")))
 	{
-	  if (PEM_write_X509 (fp, data->cert))
+	  if (PEM_write_X509 (fp, cert))
 	    done = 1;
 	  fclose (fp);
 	}
@@ -853,15 +920,13 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data)
         /* fall through */
       case OP_MAX + 2:		/* accept once */
         done = 2;
-        /* keep a handle on accepted certificates in case we want to
-         * open up another connection to the same server in this session */
-        SslSessionCerts = mutt_add_list_n (SslSessionCerts, &data->cert,
-                                           sizeof (X509 **));
+	ssl_cache_trusted_cert (cert);
         break;
     }
   }
   unset_option(OPTUNBUFFEREDINPUT);
   mutt_menuDestroy (&menu);
+  dprint (2, (debugfile, "ssl interactive_check_cert: done=%d\n", done));
   return (done == 2);
 }
 
