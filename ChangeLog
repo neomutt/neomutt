@@ -1,3 +1,13 @@
+2009-01-02 12:46 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (5db868a874b6)
+
+	* globals.h, mutt_ssl.c: Add support for intermediate certificates to
+	openssl code. Gnutls support is not included in this patch.
+
+2009-01-01 17:02 -0800  Marcel Telka  <marcel@telka.sk>  (532f695b4352)
+
+	* smtp.c: SMTP: Require SP after AUTH response (strict RFC
+	conformance). Closes #3141.
+
 2009-01-01 16:55 -0800  Brendan Cully  <brendan@kublai.com>  (859009a507d8)
 
 	* smtp.c: SMTP: guard against short server responses
