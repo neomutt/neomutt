@@ -1964,7 +1964,7 @@ listings.
 <term>pgp</term>
 <listitem>
 <para>
-The pgp menu is used to select the OpenPGP keys used for encrypting outgoing
+The pgp menu is used to select the OpenPGP keys used to encrypt outgoing
 messages.
 </para>
 </listitem>
@@ -1973,7 +1973,7 @@ messages.
 <term>smime</term>
 <listitem>
 <para>
-The smime menu is used to select the OpenSSL certifcates used for encrypting outgoing
+The smime menu is used to select the OpenSSL certificates used to encrypt outgoing
 messages.
 </para>
 </listitem>
