@@ -1,6 +1,6 @@
 /* mutt - text oriented MIME mail user agent
  * Copyright (C) 2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2005-7 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2005-9 Brendan Cully <brendan@kublai.com>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
