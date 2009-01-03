@@ -73,7 +73,7 @@ under certain conditions; type `mutt -vv' for details.\n");
 static const char *Copyright = N_("\
 Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n\
 Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n\
-Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n\
+Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n\
 Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n\
 Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
