@@ -1,3 +1,16 @@
+2009-01-02 22:37 -0800  Brendan Cully  <brendan@kublai.com>  (37ed3cc8d40c)
+
+	* init.h: More tyops
+
+	* doc/manual.xml.head: Tyops
+
+	* mutt_ssl_gnutls.c: Add SSL intermediate certificate support for
+	gnutls
+
+	* mutt_ssl.c: Simplify intermediate certificate handling.  Return
+	immediately if a certificate is interactively accepted.  Display
+	index of current certificate in chain in menu title.
+
 2009-01-02 12:46 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (5db868a874b6)
 
 	* globals.h, mutt_ssl.c: Add support for intermediate certificates to

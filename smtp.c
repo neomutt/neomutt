@@ -340,6 +340,7 @@ static int smtp_fill_account (ACCOUNT* account)
 static int smtp_helo (CONNECTION* conn)
 {
   char buf[LONG_STRING];
+  const char* fqdn;
 
   memset (Capabilities, 0, sizeof (Capabilities));
 
@@ -354,7 +355,10 @@ static int smtp_helo (CONNECTION* conn)
 #endif
   }
 
-  snprintf (buf, sizeof (buf), "%s %s\r\n", Esmtp ? "EHLO" : "HELO", Fqdn);
+  if(!(fqdn = mutt_fqdn (0)))
+    fqdn = NONULL (Hostname);
+
+  snprintf (buf, sizeof (buf), "%s %s\r\n", Esmtp ? "EHLO" : "HELO", fqdn);
   /* XXX there should probably be a wrapper in mutt_socket.c that
     * repeatedly calls conn->write until all data is sent.  This
     * currently doesn't check for a short write.
