@@ -38,7 +38,7 @@ HASH;
 #define hash_delete(table,key,data,destroy) hash_delete_hash(table, hash_string ((unsigned char *)key, table->nelem), key, data, destroy)
 
 HASH *hash_create (int nelem);
-int hash_string (const unsigned char *s, int n);
+unsigned int hash_string (const unsigned char *s, unsigned int n);
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup);
 void *hash_find_hash (const HASH * table, int hash, const char *key);
 void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,

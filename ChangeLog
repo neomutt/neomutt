@@ -1,4 +1,12 @@
-2009-01-02 22:37 -0800  Brendan Cully  <brendan@kublai.com>  (37ed3cc8d40c)
+2009-01-03 12:04 -0800  Brendan Cully  <brendan@kublai.com>  (a5981715a4ed)
+
+	* main.c: Another copyright update
+
+	* main.c, smtp.c: Update some copyrights
+
+2009-01-02 23:13 -0800  Brendan Cully  <brendan@kublai.com>  (87ef3e3550e4)
+
+	* smtp.c: SMTP: Use Hostname if Fqdn is bogus. Closes #3142.
 
 	* init.h: More tyops
 
