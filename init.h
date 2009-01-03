@@ -2151,7 +2151,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Used in connection with the \fC<pipe-message>\fP function following
-  ** \fC<tag-prefix\fP.  If this variable is \fIunset\fP, when piping a list of
+  ** \fC<tag-prefix>\fP.  If this variable is \fIunset\fP, when piping a list of
   ** tagged messages Mutt will concatenate the messages and will pipe them
   ** as a single folder.  When \fIset\fP, Mutt will pipe the messages one by one.
   ** In both cases the messages are piped in the current sorted order,
