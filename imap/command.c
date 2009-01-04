@@ -710,7 +710,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   if (list->name[0] == '\0')
   {
     idata->delim = list->delim;
-    dprint (2, (debugfile, "Root delimiter: %c\n", idata->delim));
+    dprint (3, (debugfile, "Root delimiter: %c\n", idata->delim));
   }
 }
 
@@ -739,7 +739,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   if (!list.name)
     return;
 
-  dprint (2, (debugfile, "Subscribing to %s\n", list.name));
+  dprint (3, (debugfile, "Subscribing to %s\n", list.name));
 
   strfcpy (buf, "mailboxes \"", sizeof (buf));
   mutt_account_tourl (&idata->conn->account, &url);

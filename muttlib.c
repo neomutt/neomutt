@@ -734,7 +734,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
 void _mutt_mktemp (char *s, const char *src, int line)
 {
   snprintf (s, _POSIX_PATH_MAX, "%s/mutt-%s-%d-%d-%d", NONULL (Tempdir), NONULL(Hostname), (int) getuid(), (int) getpid (), Counter++);
-  dprint (1, (debugfile, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s));
+  dprint (3, (debugfile, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s));
   unlink (s);
 }
 

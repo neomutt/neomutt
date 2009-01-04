@@ -1345,7 +1345,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   }
 
   mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE | M_TOKEN_SEMICOLON);
-  dprint (2, (debugfile, "parse_alias: Second token is '%s'.\n",
+  dprint (3, (debugfile, "parse_alias: Second token is '%s'.\n",
 	      buf->data));
 
   tmp->addr = mutt_parse_adrlist (tmp->addr, buf->data);
@@ -1372,10 +1372,10 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     for (a = tmp->addr; a && a->mailbox; a = a->next)
     {
       if (!a->group)
-	dprint (2, (debugfile, "parse_alias:   %s\n",
+	dprint (3, (debugfile, "parse_alias:   %s\n",
 		    a->mailbox));
       else
-	dprint (2, (debugfile, "parse_alias:   Group %s\n",
+	dprint (3, (debugfile, "parse_alias:   Group %s\n",
 		    a->mailbox));
     }
   }

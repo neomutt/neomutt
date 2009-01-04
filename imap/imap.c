@@ -648,7 +648,7 @@ int imap_open_mailbox (CONTEXT* ctx)
       /* don't override PERMANENTFLAGS */
       if (!idata->flags)
       {
-	dprint (2, (debugfile, "Getting mailbox FLAGS\n"));
+	dprint (3, (debugfile, "Getting mailbox FLAGS\n"));
 	if ((pc = imap_get_flags (&(idata->flags), pc)) == NULL)
 	  goto fail;
       }
@@ -656,7 +656,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     /* PERMANENTFLAGS are massaged to look like FLAGS, then override FLAGS */
     else if (ascii_strncasecmp ("OK [PERMANENTFLAGS", pc, 18) == 0)
     {
-      dprint (2, (debugfile, "Getting mailbox PERMANENTFLAGS\n"));
+      dprint (3, (debugfile, "Getting mailbox PERMANENTFLAGS\n"));
       /* safe to call on NULL */
       mutt_free_list (&(idata->flags));
       /* skip "OK [PERMANENT" so syntax is the same as FLAGS */
@@ -667,7 +667,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     /* save UIDVALIDITY for the header cache */
     else if (ascii_strncasecmp ("OK [UIDVALIDITY", pc, 14) == 0)
     {
-      dprint (2, (debugfile, "Getting mailbox UIDVALIDITY\n"));
+      dprint (3, (debugfile, "Getting mailbox UIDVALIDITY\n"));
       pc += 3;
       pc = imap_next_word (pc);
       idata->uid_validity = strtol (pc, NULL, 10);
@@ -675,7 +675,7 @@ int imap_open_mailbox (CONTEXT* ctx)
     }
     else if (ascii_strncasecmp ("OK [UIDNEXT", pc, 11) == 0)
     {
-      dprint (2, (debugfile, "Getting mailbox UIDNEXT\n"));
+      dprint (3, (debugfile, "Getting mailbox UIDNEXT\n"));
       pc += 3;
       pc = imap_next_word (pc);
       idata->uidnext = strtol (pc, NULL, 10);
