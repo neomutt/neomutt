@@ -76,7 +76,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
 #if USE_HCACHE
   unsigned int *uid_validity = NULL;
-  unsigned int *uidnext = NULL;
+  unsigned int *puidnext = NULL;
+  unsigned int uidnext = 0;
   int evalhc = 0;
 #endif /* USE_HCACHE */
 
@@ -124,12 +125,14 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   if (idata->hcache && !msgbegin)
   {
     uid_validity = mutt_hcache_fetch_raw (idata->hcache, "/UIDVALIDITY", imap_hcache_keylen);
-    uidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", imap_hcache_keylen);
-    if (uid_validity && uidnext && *uid_validity == idata->uid_validity
-        && *uidnext > 0)
+    puidnext = mutt_hcache_fetch_raw (idata->hcache, "/UIDNEXT", imap_hcache_keylen);
+    if (puidnext)
+    {
+      uidnext = *puidnext;
+      FREE (&puidnext);
+    }
+    if (uid_validity && uidnext && *uid_validity == idata->uid_validity)
       evalhc = 1;
-    else
-      FREE (&uidnext);
     FREE (&uid_validity);
   }
   if (evalhc)
@@ -138,8 +141,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 			M_PROGRESS_MSG, ReadInc, msgend + 1);
 
     snprintf (buf, sizeof (buf),
-      "UID FETCH 1:%u (UID FLAGS)", *uidnext - 1);
-    FREE (&uidnext);
+      "UID FETCH 1:%u (UID FLAGS)", uidnext - 1);
   
     imap_cmd_start (idata, buf);
   
@@ -174,6 +176,14 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           break;
 	}
 
+        if (!h.data->uid)
+        {
+          dprint (2, (debugfile, "imap_read_headers: skipping hcache FETCH "
+                      "response for unknown message number %d\n", h.sid));
+          mfhrc = -1;
+          continue;
+        }
+        
         idx = h.sid - 1;
         ctx->hdrs[idx] = imap_hcache_get (idata, h.data->uid);
         if (ctx->hdrs[idx])
@@ -259,10 +269,25 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       else if (mfhrc < 0)
 	break;
 
+      if (!ftello (fp))
+      {
+        dprint (2, (debugfile, "msg_fetch_header: ignoring fetch response with no body\n"));
+        mfhrc = -1;
+        continue;
+      }
+
       /* make sure we don't get remnants from older larger message headers */
       fputs ("\n\n", fp);
 
       idx = h.sid - 1;
+      if (idx > msgend)
+      {
+        dprint (1, (debugfile, "imap_read_headers: skipping FETCH response for "
+                    "unknown message number %d\n", h.sid));
+        mfhrc = -1;
+        continue;
+      }
+
       ctx->hdrs[idx] = mutt_new_header ();
 
       ctx->hdrs[idx]->index = h.sid - 1;
@@ -1059,7 +1084,7 @@ static int msg_fetch_header (CONTEXT* ctx, IMAP_HEADER* h, char* buf, FILE* fp)
 
   /* FIXME: current implementation - call msg_parse_fetch - if it returns -2,
    *   read header lines and call it again. Silly. */
-  if ((rc = msg_parse_fetch (h, buf) != -2) || !fp)
+  if ((rc = msg_parse_fetch (h, buf)) != -2 || !fp)
     return rc;
   
   if (imap_get_literal_count (buf, &bytes) == 0)
