@@ -85,7 +85,9 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   gss_buffer_t sec_token;
   gss_name_t target_name;
   gss_ctx_id_t context;
+#ifdef DEBUG
   gss_OID mech_name;
+#endif
   gss_qop_t quality;
   int cflags;
   OM_uint32 maj_stat, min_stat;

@@ -1,4 +1,15 @@
-2009-01-03 12:04 -0800  Brendan Cully  <brendan@kublai.com>  (a5981715a4ed)
+2009-01-03 20:40 -0800  Brendan Cully  <brendan@kublai.com>  (990da2bd329a)
+
+	* doc/Makefile.am: Remove obsolete reference to ChangeLog.old. Thanks
+	to Ingo Schwarze.
+
+	* imap/message.c: Ignore unexpected FETCH responses during
+	imap_read_headers. Thanks to Chris Li for the excellent bug report
+	in #3041. See #2902, #2935, #2985, #3028, #3041, #3143. With luck,
+	this may close them. In truth, imap_read_headers is still a horrible
+	kludge of duct tape and chicken wire.
+
+	* hash.c, hash.h: Make hash_string work in unsigned domain
 
 	* main.c: Another copyright update
 
