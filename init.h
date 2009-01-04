@@ -108,7 +108,8 @@ struct option_t MuttVars[] = {
   ** is \fIset\fP or the current character set otherwise.
   ** .pp
   ** \fBNote:\fP Mutt will not automatically source this file; you must
-  ** explicitly use the ``$source'' command for it to be executed.
+  ** explicitly use the ``$source'' command for it to be executed in case
+  ** this option points to a dedicated alias file.
   ** .pp
   ** The default for this option is the currently used muttrc file, or
   ** ``~/.muttrc'' if no user muttrc was found.
@@ -137,7 +138,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Controls whether ANSI color codes in messages (and color tags in
   ** rich text messages) are to be interpreted.
-  ** Messages containing these codes are rare, but if this option is set,
+  ** Messages containing these codes are rare, but if this option is \fIset\fP,
   ** their text will be colored accordingly. Note that this may override
   ** your color choices, and even present a security problem, since a
   ** message could include a line like
@@ -145,7 +146,8 @@ struct option_t MuttVars[] = {
   ** [-- PGP output follows ...
   ** .te
   ** .pp
-  ** and give it the same color as your attachment color.
+  ** and give it the same color as your attachment color (see also
+  ** $$crypt_timestamp).
   */
   { "arrow_cursor",	DT_BOOL, R_BOTH, OPTARROWCURSOR, 0 },
   /*
@@ -333,9 +335,10 @@ struct option_t MuttVars[] = {
   ** Character set your terminal uses to display and enter textual data.
   ** It is also the fallback for $$send_charset.
   ** .pp
-  ** Upon startup tries to derive this value from the environment variables
-  ** such as \fC$$$LC_CTYPE\fP or \fC$$$LANG\fP. \fBNote:\fP that this
-  ** variable should only be set in case Mutt isn't abled to determine the
+  ** Upon startup Mutt tries to derive this value from environment variables
+  ** such as \fC$$$LC_CTYPE\fP or \fC$$$LANG\fP.
+  ** .pp
+  ** \fBNote:\fP It should only be set in case Mutt isn't abled to determine the
   ** character set used correctly.
   */
   { "check_new",	DT_BOOL, R_NONE, OPTCHECKNEW, 1 },
@@ -966,7 +969,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Your login name on the IMAP server.
   ** .pp
-  ** This variable defaults to the value of \fIimap_user\fP.
+  ** This variable defaults to the value of $$imap_user.
   */
   { "imap_pass", 	DT_STR,  R_NONE, UL &ImapPass, UL 0 },
   /*
@@ -974,6 +977,7 @@ struct option_t MuttVars[] = {
   ** Specifies the password for your IMAP account.  If \fIunset\fP, Mutt will
   ** prompt you for your password when you invoke the \fC$<fetch-mail>\fP function
   ** or try to open an IMAP folder.
+  ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc even
   ** if you are the only one who can read the file.
@@ -1246,8 +1250,9 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls the display of wrapped lines in the internal pager. If set, a
-  ** ``+'' marker is displayed at the beginning of wrapped lines. Also see
-  ** the $$smart_wrap variable.
+  ** ``+'' marker is displayed at the beginning of wrapped lines.
+  ** .pp
+  ** Also see the $$smart_wrap variable.
   */
   { "mask",		DT_RX,	 R_NONE, UL &Mask, UL "!^\\.[^.]" },
   /*
@@ -1359,9 +1364,9 @@ struct option_t MuttVars[] = {
   { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, M_YES },
   /*
   ** .pp
-  ** When forwarding multiple attachments of a MIME message from the recvattach
+  ** When forwarding multiple attachments of a MIME message from the attachment
   ** menu, attachments which cannot be decoded in a reasonable manner will
-  ** be attached to the newly composed message if this option is set.
+  ** be attached to the newly composed message if this option is \fIset\fP.
   */
 #ifdef MIXMASTER
   { "mix_entry_format", DT_STR,  R_NONE, UL &MixEntryFormat, UL "%4n %c %-16s %a" },
@@ -1481,7 +1486,7 @@ struct option_t MuttVars[] = {
   ** giving the reader the context of a few messages before and after the
   ** message.  This is useful, for example, to determine how many messages
   ** remain to be read in the current thread.  One of the lines is reserved
-  ** for the status bar from the index, so a $$pager_index_lines of 6
+  ** for the status bar from the index, so a setting of 6
   ** will only show 5 lines of the actual index.  A value of 0 results in
   ** no index being shown.  If the number of messages in the current folder
   ** is less than $$pager_index_lines, then the index will only use as
@@ -1491,7 +1496,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** When \fIset\fP, the internal-pager will \fBnot\fP move to the next message
-  ** when you are at the end of a message and invoke the \fC<next-page\fP
+  ** when you are at the end of a message and invoke the \fC<next-page>\fP
   ** function.
   */
   { "pgp_autosign", 	DT_SYN,  R_NONE, UL "crypt_autosign", 0 },
@@ -1503,7 +1508,7 @@ struct option_t MuttVars[] = {
   ** by use of the pgp menu, when signing is not required or
   ** encryption is requested as well. If $$smime_is_default is \fIset\fP,
   ** then OpenSSL is used instead to create S/MIME messages and settings can
-  ** be overridden by use of the smime menu instead.
+  ** be overridden by use of the smime menu instead of the pgp menu.
   ** (Crypto only)
   */
   { "pgp_autoencrypt",		DT_SYN,  R_NONE, UL "crypt_autoencrypt", 0 },
@@ -1523,7 +1528,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Setting this variable will cause Mutt to ignore OpenPGP subkeys. Instead,
-  ** the principal key will inherit the subkeys' capabilities.  Unset this
+  ** the principal key will inherit the subkeys' capabilities.  \fIUnset\fP this
   ** if you want to play interesting key selection games.
   ** (PGP only)
   */
@@ -1570,16 +1575,16 @@ struct option_t MuttVars[] = {
   { "pgp_use_gpg_agent", DT_BOOL, R_NONE, OPTUSEGPGAGENT, 0},
   /*
   ** .pp
-  ** If \fIset\fP, mutt will use a possibly-running gpg-agent process.
+  ** If \fIset\fP, mutt will use a possibly-running \fCgpg-agent(1)\fP process.
   ** (PGP only)
   */
   { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
   { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
   /*
   ** .pp
-  ** If ``yes'', always attempt to verify PGP or S/MIME signatures.
-  ** If ``ask'', ask whether or not to verify the signature.
-  ** If ``no'', never attempt to verify cryptographic signatures.
+  ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
+  ** If \fI``ask-*''\fP, ask whether or not to verify the signature.
+  ** If \Fi``no''\fP, never attempt to verify cryptographic signatures.
   ** (Crypto only)
   */
   { "smime_is_default", DT_BOOL,  R_NONE, OPTSMIMEISDEFAULT, 0},
@@ -1648,7 +1653,7 @@ struct option_t MuttVars[] = {
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
   /*
   ** .pp
-  ** If \fIset\fP, use 64 bit PGP key IDs, if \fIUnset\fP use the normal 32 bit key IDs.
+  ** If \fIset\fP, use 64 bit PGP key IDs, if \fIunset\fP use the normal 32 bit key IDs.
   ** (PGP only)
   */
   { "pgp_retainable_sigs", DT_BOOL, R_NONE, OPTPGPRETAINABLESIG, 0 },
@@ -1667,7 +1672,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This option controls whether Mutt generates old-style inline
-  ** (``traditional'') PGP encrypted or signed messages under certain
+  ** (traditional) PGP encrypted or signed messages under certain
   ** circumstances.  This can be overridden by use of the pgp menu,
   ** when inline is not required.
   ** .pp
@@ -1675,7 +1680,8 @@ struct option_t MuttVars[] = {
   ** which consist of more than a single MIME part.  Mutt can be
   ** configured to ask before sending PGP/MIME messages when inline
   ** (traditional) would not work.
-  ** See also: $$pgp_mime_auto.
+  ** .pp
+  ** Also see the $$pgp_mime_auto variable.
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1697,7 +1703,8 @@ struct option_t MuttVars[] = {
   ** which consist of more than a single MIME part.  Mutt can be
   ** configured to ask before sending PGP/MIME messages when inline
   ** (traditional) would not work.
-  ** See also: $$pgp_mime_auto.
+  ** .pp
+  ** Also see the $$pgp_mime_auto variable.
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1788,7 +1795,7 @@ struct option_t MuttVars[] = {
   **            string otherwise. Note: This may be used with a %? construct.
   ** .dt %f .dd Expands to the name of a file containing a message.
   ** .dt %s .dd Expands to the name of a file containing the signature part
-  ** .          of a multipart/signed attachment when verifying it.
+  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
   ** .dt %a .dd The value of $$pgp_sign_as.
   ** .dt %r .dd One or more key IDs.
   ** .de
@@ -1803,19 +1810,26 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This command is invoked whenever mutt will need public key information.
-  ** %r is the only \fCprintf(3)\fP-like sequence used with this format.
+  ** Of the sequences supported by $$pgp_decode_command, %r is the only
+  ** \fCprintf(3)\fP-like sequence used with this format.
   ** (PGP only)
   */
   { "pgp_verify_command", 	DT_STR, R_NONE, UL &PgpVerifyCommand, 0},
   /*
   ** .pp
   ** This command is used to verify PGP signatures.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_decrypt_command", 	DT_STR, R_NONE, UL &PgpDecryptCommand, 0},
   /*
   ** .pp
   ** This command is used to decrypt a PGP encrypted message.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_clearsign_command",	DT_STR,	R_NONE, UL &PgpClearSignCommand, 0 },
@@ -1824,6 +1838,9 @@ struct option_t MuttVars[] = {
   ** This format is used to create a old-style ``clearsigned'' PGP
   ** message.  Note that the use of this format is \fBstrongly\fP
   ** \fBdeprecated\fP.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},
@@ -1831,18 +1848,27 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to create the detached PGP signature for a
   ** \fCmultipart/signed\fP PGP/MIME body part.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_encrypt_sign_command",	DT_STR, R_NONE, UL &PgpEncryptSignCommand, 0},
   /*
   ** .pp
   ** This command is used to both sign and encrypt a body part.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
   /*
   ** .pp
   ** This command is used to encrypt a body part without signing it.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_import_command",	DT_STR, R_NONE, UL &PgpImportCommand, 0},
@@ -1850,6 +1876,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to import a key from a message into
   ** the user's public key ring.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_export_command", 	DT_STR, R_NONE, UL &PgpExportCommand, 0},
@@ -1857,6 +1886,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to export a public key from the user's
   ** key ring.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_verify_key_command",	DT_STR, R_NONE, UL &PgpVerifyKeyCommand, 0},
@@ -1864,6 +1896,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to verify key information from the key selection
   ** menu.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_list_secring_command",	DT_STR, R_NONE, UL &PgpListSecringCommand, 0},
@@ -1877,6 +1912,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This format is also generated by the \fCpgpring\fP utility which comes
   ** with mutt.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_list_pubring_command", DT_STR, R_NONE, UL &PgpListPubringCommand, 0},
@@ -1890,6 +1928,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This format is also generated by the \fCpgpring\fP utility which comes
   ** with mutt.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "forward_decrypt",	DT_BOOL, R_NONE, OPTFORWDECRYPT, 1 },
@@ -1923,11 +1964,11 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Since for S/MIME there is no pubring/secring as with PGP, mutt has to handle
-  ** storage ad retrieval of keys/certs by itself. This is very basic right now,
+  ** storage and retrieval of keys/certs by itself. This is very basic right now,
   ** and stores keys and certificates in two different directories, both
   ** named as the hash-value retrieved from OpenSSL. There is an index file
   ** which contains mailbox-address keyid pair, and which can be manually
-  ** edited. This one points to the location of the private keys.
+  ** edited. This option points to the location of the private keys.
   ** (S/MIME only)
   */
   { "smime_ca_location",	DT_PATH, R_NONE, UL &SmimeCALocation, 0 },
@@ -1945,7 +1986,7 @@ struct option_t MuttVars[] = {
   ** now, and keys and certificates are stored in two different
   ** directories, both named as the hash-value retrieved from
   ** OpenSSL. There is an index file which contains mailbox-address
-  ** keyid pairs, and which can be manually edited. This one points to
+  ** keyid pairs, and which can be manually edited. This option points to
   ** the location of the certificates.
   ** (S/MIME only)
   */
@@ -1978,6 +2019,9 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This command is used to verify S/MIME signatures of type \fCmultipart/signed\fP.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_verify_opaque_command", 	DT_STR, R_NONE, UL &SmimeVerifyOpaqueCommand, 0},
@@ -1985,6 +2029,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to verify S/MIME signatures of type
   ** \fCapplication/x-pkcs7-mime\fP.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_sign_command", 	DT_STR, R_NONE, UL &SmimeSignCommand, 0},
@@ -1992,6 +2039,9 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to created S/MIME signatures of type
   ** \fCmultipart/signed\fP, which can be read by all mail clients.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_sign_opaque_command", 	DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0},
@@ -2000,12 +2050,18 @@ struct option_t MuttVars[] = {
   ** This command is used to created S/MIME signatures of type
   ** \fCapplication/x-pkcs7-signature\fP, which can only be handled by mail
   ** clients supporting the S/MIME extension.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_encrypt_command", 	DT_STR, R_NONE, UL &SmimeEncryptCommand, 0},
   /*
   ** .pp
   ** This command is used to create encrypted S/MIME messages.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_pk7out_command", 	DT_STR, R_NONE, UL &SmimePk7outCommand, 0},
@@ -2013,12 +2069,18 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This command is used to extract PKCS7 structures of S/MIME signatures,
   ** in order to extract the public X509 certificate(s).
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_get_cert_command", 	DT_STR, R_NONE, UL &SmimeGetCertCommand, 0},
   /*
   ** .pp
   ** This command is used to extract X509 certificates from a PKCS7 structure.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_get_signer_cert_command", 	DT_STR, R_NONE, UL &SmimeGetSignerCertCommand, 0},
@@ -2027,12 +2089,18 @@ struct option_t MuttVars[] = {
   ** This command is used to extract only the signers X509 certificate from a S/MIME
   ** signature, so that the certificate's owner may get compared to the
   ** email's ``From:'' field.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_import_cert_command", 	DT_STR, R_NONE, UL &SmimeImportCertCommand, 0},
   /*
   ** .pp
   ** This command is used to import a certificate via smime_keys.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_get_cert_email_command", 	DT_STR, R_NONE, UL &SmimeGetCertEmailCommand, 0},
@@ -2041,6 +2109,9 @@ struct option_t MuttVars[] = {
   ** This command is used to extract the mail address(es) used for storing
   ** X509 certificates, and for verification purposes (to check whether the
   ** certificate was issued for the sender's mailbox).
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (S/MIME only)
   */
   { "smime_sign_as",			DT_SYN,  R_NONE, UL "smime_default_key", 0 },
@@ -2084,7 +2155,7 @@ struct option_t MuttVars[] = {
   ** accepted.
   ** .pp
   ** You can also manually add CA certificates in this file. Any server
-  ** certificate that is signed with one of these CA certificates are
+  ** certificate that is signed with one of these CA certificates is
   ** also automatically accepted.
   ** .pp
   ** Example:
@@ -2097,7 +2168,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If set to \fIyes\fP, mutt will use CA certificates in the
-  ** system-wide certificate store when checking if server certificate
+  ** system-wide certificate store when checking if a server certificate
   ** is signed by a trusted CA.
   */
   { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
@@ -2138,7 +2209,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This variable specifies a file containing trusted CA certificates.
   ** Any server certificate that is signed with one of these CA
-  ** certificates are also automatically accepted.
+  ** certificates is also automatically accepted.
   ** .pp
   ** Example:
   ** .ts
@@ -2153,7 +2224,7 @@ struct option_t MuttVars[] = {
   ** Used in connection with the \fC<pipe-message>\fP function following
   ** \fC<tag-prefix>\fP.  If this variable is \fIunset\fP, when piping a list of
   ** tagged messages Mutt will concatenate the messages and will pipe them
-  ** as a single folder.  When \fIset\fP, Mutt will pipe the messages one by one.
+  ** all concatenated.  When \fIset\fP, Mutt will pipe the messages one by one.
   ** In both cases the messages are piped in the current sorted order,
   ** and the $$pipe_sep separator is added after each message.
   */
@@ -2162,7 +2233,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Used in connection with the \fC<pipe-message>\fP command.  When \fIunset\fP,
   ** Mutt will pipe the messages without any preprocessing. When \fIset\fP, Mutt
-  ** will weed headers and will attempt to PGP/MIME decode the messages
+  ** will weed headers and will attempt to decode the messages
   ** first.
   */
   { "pipe_sep",		DT_STR,	 R_NONE, UL &PipeSep, UL "\n" },
@@ -2191,10 +2262,10 @@ struct option_t MuttVars[] = {
   { "pop_auth_try_all",	DT_BOOL, R_NONE, OPTPOPAUTHTRYALL, 1 },
   /*
   ** .pp
-  ** If \fIset\fP, Mutt will try all available methods. When \fIunset\fP, Mutt will
-  ** only fall back to other authentication methods if the previous
-  ** methods are unavailable. If a method is available but authentication
-  ** fails, Mutt will not connect to the POP server.
+  ** If \fIset\fP, Mutt will try all available authentication methods.
+  ** When \fIunset\fP, Mutt will only fall back to other authentication
+  ** methods if the previous methods are unavailable. If a method is
+  ** available but authentication fails, Mutt will not connect to the POP server.
   */
   { "pop_checkinterval", DT_NUM, R_NONE, UL &PopCheckTimeout, 60 },
   /*
@@ -2230,7 +2301,7 @@ struct option_t MuttVars[] = {
   { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
   /*
   ** .pp
-  ** Controls whether or not Mutt will try to reconnect to POP server if
+  ** Controls whether or not Mutt will try to reconnect to the POP server if
   ** the connection is lost.
   */
   { "pop_user",		DT_STR,	 R_NONE, UL &PopUser, 0 },
@@ -2245,7 +2316,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Specifies the password for your POP account.  If \fIunset\fP, Mutt will
   ** prompt you for your password when you open a POP mailbox.
-  ** .pü
+  ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
   ** fairly secure machine, because the superuser can read your muttrc
   ** even if you are the only one who can read the file.
@@ -2264,16 +2335,18 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not messages are saved in the $$postponed
-  ** mailbox when you elect not to send immediately. Also see the
-  ** $$recall variable.
+  ** mailbox when you elect not to send immediately.
+  ** .pp
+  ** Also see the $$recall variable.
   */
   { "postponed",	DT_PATH, R_NONE, UL &Postponed, UL "~/postponed" },
   /*
   ** .pp
   ** Mutt allows you to indefinitely ``$postpone sending a message'' which
   ** you are editing.  When you choose to postpone a message, Mutt saves it
-  ** in the mailbox specified by this variable.  Also see the $$postpone
-  ** variable.
+  ** in the mailbox specified by this variable.
+  ** .pp
+  ** Also see the $$postpone variable.
   */
 #ifdef USE_SOCKET
   { "preconnect",	DT_STR, R_NONE, UL &Preconnect, UL 0},
@@ -2374,8 +2447,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable controls whether ``quit'' and ``exit'' actually quit
-  ** from mutt.  If it set to ``yes'', they do quit, if it is set to ``no'', they
-  ** have no effect, and if it is set to ``ask-yes'' or ``ask-no'', you are
+  ** from mutt.  If this option is \fIset\fP, they do quit, if it is \fIunset\fP, they
+  ** have no effect, and if it is set to \fIask-yes\fP or \fIask-no\fP, you are
   ** prompted for confirmation when you try to quit.
   */
   { "quote_regexp",	DT_RX,	 R_PAGER, UL &QuoteRegexp, UL "^([ \t]*[|>:}#])+" },
@@ -2399,7 +2472,7 @@ struct option_t MuttVars[] = {
   ** If set to a value greater than 0, Mutt will display which message it
   ** is currently on when reading a mailbox or when performing search actions
   ** such as search and limit. The message is printed after
-  ** $$read_inc messages have been read or searched (e.g., if set to 25, Mutt will
+  ** this many messages have been read or searched (e.g., if set to 25, Mutt will
   ** print a message when it is at message 25, and then again when it gets
   ** to message 50).  This variable is meant to indicate progress when
   ** reading or searching large mailboxes which may take some time.
@@ -2428,10 +2501,12 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Controls whether or not Mutt recalls postponed messages
-  ** when composing a new message.  Also see $$postponed.
+  ** when composing a new message.
   ** .pp
-  ** Setting this variable to ``yes'' is not generally useful, and thus not
+  ** \fISetting\fP this variable to is not generally useful, and thus not
   ** recommended.
+  ** .pp
+  ** Also see $$postponed variable.
   */
   { "record",		DT_PATH, R_NONE, UL &Outbox, UL "~/sent" },
   /*
@@ -2505,8 +2580,8 @@ struct option_t MuttVars[] = {
   ** from there.  If this variable is \fIset\fP, the default \fIFrom:\fP line of
   ** the reply messages is built using the address where you received the
   ** messages you are replying to \fBif\fP that address matches your
-  ** alternate.  If the variable is \fIunset\fP, or the address that would be
-  ** used doesn't match your alternates, the \fIFrom:\fP line will use
+  ** ``$alternates''.  If the variable is \fIunset\fP, or the address that would be
+  ** used doesn't match your ``$alternates'', the \fIFrom:\fP line will use
   ** your address on the current machine.
   ** .pp
   ** Also see the ``$alternates'' command.
@@ -2535,6 +2610,7 @@ struct option_t MuttVars[] = {
   ** Note that this use of RFC2047's encoding is explicitly
   ** prohibited by the standard, but nevertheless encountered in the
   ** wild.
+  ** .pp
   ** Also note that setting this parameter will \fInot\fP have the effect
   ** that mutt \fIgenerates\fP this kind of encoding.  Instead, mutt will
   ** unconditionally use the encoding specified in RFC2231.

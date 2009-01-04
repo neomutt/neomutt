@@ -1,3 +1,13 @@
+2009-01-03 21:02 -0800  Brendan Cully  <brendan@kublai.com>  (5a80ee54a05f)
+
+	* imap/command.c, imap/imap.c, init.c, muttlib.c, postpone.c: Raise
+	debug level for several messages
+
+2009-01-03 20:45 -0800  Brendan Cully  <brendan@kublai.com>  (31d325e81dd0)
+
+	* ChangeLog, imap/auth_gss.c: Guard against unused variable warning.
+	Thanks to Ingo Schwarze.
+
 2009-01-03 20:40 -0800  Brendan Cully  <brendan@kublai.com>  (990da2bd329a)
 
 	* doc/Makefile.am: Remove obsolete reference to ChangeLog.old. Thanks

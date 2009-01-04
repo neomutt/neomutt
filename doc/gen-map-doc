@@ -55,7 +55,7 @@ while (<XML>) {
     }
     print <<EOT;
 <sect2 id="${map}_map">
-<title>$map</title>
+<title>$map menu</title>
 $DOC{$map}
 
 <table id="${map}_table">
