@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2006 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2006-7 Brendan Cully <brendan@kublai.com>
  * Copyright (C) 2006 Rocco Rutte <pdmef@gmx.net>
  *
  *     This program is free software; you can redistribute it and/or modify

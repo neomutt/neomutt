@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 1996,1997 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1998,1999 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1996-7,2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1998-2005 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify

@@ -1,4 +1,15 @@
-2009-01-04 13:21 -0800  Brendan Cully  <brendan@kublai.com>  (a1a675f88354)
+2009-01-04 14:28 -0800  Brendan Cully  <brendan@kublai.com>  (04ab9048ef99)
+
+	* imap/auth_anon.c, imap/auth_cram.c, imap/auth_login.c,
+	imap/auth_sasl.c, imap/browse.c, imap/imap.h, imap/message.h,
+	imap/utf7.c: IMAP copyright header updates
+
+	* imap/auth_gss.c, imap/command.c, imap/imap.c, imap/message.c:
+	Updated copyrights
+
+	* smtp.c: SMTP: complain when authentication fails. Closes
+	#2117. Now each failed attempt emits an error before mutt tries
+	the next method. Possibly we should just fail immediately?
 
 	* parse.c, snprintf.c: Use ! instead of testing pointers against 0.
 	Closes #3125.

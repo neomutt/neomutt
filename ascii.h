@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2001-2 Thomas Roessler <roessler@does-not-exist.org>
  * 
  *     This program is free software; you can redistribute it
  *     and/or modify it under the terms of the GNU General Public

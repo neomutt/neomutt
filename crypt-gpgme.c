@@ -1,5 +1,5 @@
 /* crypt-gpgme.c - GPGME based crypto operations
- * Copyright (C) 1996,1997 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1996-7,2007 Michael R. Elkins <me@cs.hmc.edu>
  * Copyright (C) 1998,1999,2000 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>

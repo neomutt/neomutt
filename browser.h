@@ -1,4 +1,3 @@
-/* $Id$ */
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
  * 

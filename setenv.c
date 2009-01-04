@@ -1,6 +1,4 @@
-/*  $Id$
-**
-**  Replacement for a missing setenv.
+/*  Replacement for a missing setenv.
 **
 **  Written by Russ Allbery <rra@stanford.edu>
 **  This work is hereby placed in the public domain by its author.

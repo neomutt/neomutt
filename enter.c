@@ -1,6 +1,6 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2000 Edmund Grimley Evans <edmundo@rano.org>
+ * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2000-1 Edmund Grimley Evans <edmundo@rano.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
