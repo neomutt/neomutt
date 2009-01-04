@@ -39,7 +39,6 @@ srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
 
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
-	ChangeLog.old					\
 	README NEWS TODO README.SECURITY README.SSL 
 
 all: makedoc-all
