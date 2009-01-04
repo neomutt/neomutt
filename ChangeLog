@@ -1,14 +1,20 @@
+2009-01-04 13:21 -0800  Brendan Cully  <brendan@kublai.com>  (a1a675f88354)
+
+	* parse.c, snprintf.c: Use ! instead of testing pointers against 0.
+	Closes #3125.
+
+2009-01-04 20:12 +0100  Rocco Rutte  <pdmef@gmx.net>  (33fa1ca4b6af)
+
+	* doc/gen-map-doc, init.h: Documentation: Minor fixes and
+	improvements
+
 2009-01-03 21:02 -0800  Brendan Cully  <brendan@kublai.com>  (5a80ee54a05f)
 
 	* imap/command.c, imap/imap.c, init.c, muttlib.c, postpone.c: Raise
 	debug level for several messages
 
-2009-01-03 20:45 -0800  Brendan Cully  <brendan@kublai.com>  (31d325e81dd0)
-
-	* ChangeLog, imap/auth_gss.c: Guard against unused variable warning.
-	Thanks to Ingo Schwarze.
-
-2009-01-03 20:40 -0800  Brendan Cully  <brendan@kublai.com>  (990da2bd329a)
+	* imap/auth_gss.c: Guard against unused variable warning.  Thanks
+	to Ingo Schwarze.
 
 	* doc/Makefile.am: Remove obsolete reference to ChangeLog.old. Thanks
 	to Ingo Schwarze.
