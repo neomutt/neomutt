@@ -406,7 +406,7 @@ static void fmtstr (char *buffer, size_t *currlen, size_t maxlen,
   int padlen, strln;     /* amount to pad */
   int cnt = 0;
   
-  if (value == 0)
+  if (!value)
   {
     value = "<NULL>";
   }

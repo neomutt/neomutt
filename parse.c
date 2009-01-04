@@ -296,12 +296,12 @@ void mutt_parse_content_type (char *s, BODY *ct)
     /* Some pre-RFC1521 gateways still use the "name=filename" convention,
      * but if a filename has already been set in the content-disposition,
      * let that take precedence, and don't set it here */
-    if ((pc = mutt_get_parameter( "name", ct->parameter)) != 0 && !ct->filename)
+    if ((pc = mutt_get_parameter( "name", ct->parameter)) && !ct->filename)
       ct->filename = safe_strdup(pc);
     
 #ifdef SUN_ATTACHMENT
     /* this is deep and utter perversion */
-    if ((pc = mutt_get_parameter ("conversions", ct->parameter)) != 0)
+    if ((pc = mutt_get_parameter ("conversions", ct->parameter)))
       ct->encoding = mutt_check_encoding (pc);
 #endif
     
@@ -380,9 +380,9 @@ static void parse_content_disposition (char *s, BODY *ct)
   {
     s++;
     SKIPWS (s);
-    if ((s = mutt_get_parameter ("filename", (parms = parse_parameters (s)))) != 0)
+    if ((s = mutt_get_parameter ("filename", (parms = parse_parameters (s)))))
       mutt_str_replace (&ct->filename, s);
-    if ((s = mutt_get_parameter ("name", parms)) != 0)
+    if ((s = mutt_get_parameter ("name", parms)))
       ct->form_name = safe_strdup (s);
     mutt_free_parameter (&parms);
   }
