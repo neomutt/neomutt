@@ -17,7 +17,7 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .\"
-.TH mutt 1 "March 2007" Unix "User Manuals"
+.TH mutt 1 "January 2009" Unix "User Manuals"
 .SH NAME
 mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
@@ -70,6 +70,12 @@ mutt \- The Mutt Mail User Agent
 Mutt is a small but very powerful text based program for reading and sending electronic
 mail under unix operating systems, including support for color terminals, MIME,
 OpenPGP, and a threaded sorting mode.
+.PP
+.I Note:
+.IR
+This manual page gives a brief overview of mutt's command line
+options. You should find a copy of the full manual in @docdir@, in
+text, HTML, and/or PDF format.
 .SH OPTIONS
 .PP
 .IP "-A \fIalias\fP"
