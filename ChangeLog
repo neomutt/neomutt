@@ -1,4 +1,21 @@
-2009-01-04 14:28 -0800  Brendan Cully  <brendan@kublai.com>  (04ab9048ef99)
+2009-01-04 15:20 -0800  Brendan Cully  <brendan@kublai.com>  (f8fd60d8d3f2)
+
+	* COPYRIGHT: Update copyrights
+
+	* addrbook.c, ascii.h, attach.c, bcache.c, bcache.h, browser.c,
+	browser.h, charset.c, charset.h, commands.c, complete.c,
+	compose.c, crypt-gpgme.c, crypt.c, curs_main.c, dotlock.c,
+	editmsg.c, enter.c, functions.h, gnupgparse.c, handler.c,
+	hdrline.c, hook.c, init.h, lib.c, lib.h, menu.c, mh.c,
+	mutt_idna.c, mutt_idna.h, mutt_sasl.h, mutt_socket.c, muttlib.c,
+	mx.c, pager.c, pattern.c, pgp.c, pgp.h, pgpinvoke.c, pgpkey.c,
+	pgplib.c, pgplib.h, pgppacket.c, pgppubring.c, pop.c, postpone.c,
+	protos.h, query.c, recvattach.c, recvcmd.c, remailer.c, rfc1524.c,
+	rfc2047.c, rfc2231.c, rfc3676.h, send.c, setenv.c, status.c,
+	url.c: Update copyrights. Closes #3016. I went through the logs of
+	each file with a copyright header and updated the years for the
+	authors in the headers for any non-comment changes they
+	introduced. What a pain!
 
 	* imap/auth_anon.c, imap/auth_cram.c, imap/auth_login.c,
 	imap/auth_sasl.c, imap/browse.c, imap/imap.h, imap/message.h,
