@@ -1,4 +1,9 @@
-2009-01-05 12:19 -0800  Brendan Cully  <brendan@kublai.com>  (1cdc8d64b55c)
+2009-01-05 15:37 -0800  Brendan Cully  <brendan@kublai.com>  (55a58914feb1)
+
+	* browser.c: Style fixes
+
+	* browser.c: Leave error message on screen if imap_mailbox_create
+	fails
 
 	* doc/mutt.man: Add pointer to the full manual to the front of mutt.1
 
@@ -12,7 +17,7 @@
 
 2009-01-04 18:32 -0800  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (e47d05dc2633)
 
-	* ChangeLog, imap/util.c: Indentation fix
+	* imap/util.c: Indentation fix
 
 2009-01-04 18:12 -0800  Brendan Cully  <brendan@kublai.com>  (1947c370fcd9)
 

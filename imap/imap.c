@@ -122,7 +122,10 @@ int imap_create_mailbox (IMAP_DATA* idata, char* mailbox)
   snprintf (buf, sizeof (buf), "CREATE %s", mbox);
       
   if (imap_exec (idata, buf, 0) != 0)
+  {
+    mutt_error (_("CREATE failed: %s"), imap_cmd_trailer (idata));
     return -1;
+  }
 
   return 0;
 }

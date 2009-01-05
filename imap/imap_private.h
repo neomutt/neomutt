@@ -247,6 +247,7 @@ int imap_cmd_start (IMAP_DATA* idata, const char* cmd);
 int imap_cmd_step (IMAP_DATA* idata);
 void imap_cmd_finish (IMAP_DATA* idata);
 int imap_code (const char* s);
+const char* imap_cmd_trailer (IMAP_DATA* idata);
 int imap_exec (IMAP_DATA* idata, const char* cmd, int flags);
 int imap_cmd_idle (IMAP_DATA* idata);
 

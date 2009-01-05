@@ -190,6 +190,35 @@ int imap_code (const char *s)
   return cmd_status (s) == IMAP_CMD_OK;
 }
 
+/* imap_cmd_trailer: extra information after tagged command response if any */
+const char* imap_cmd_trailer (IMAP_DATA* idata)
+{
+  static const char* notrailer = "";
+  const char* s = idata->buf;
+
+  if (!s)
+  {
+    dprint (2, (debugfile, "imap_cmd_trailer: not a tagged response"));
+    return notrailer;
+  }
+
+  s = imap_next_word ((char *)s);
+  if (!s || (ascii_strncasecmp (s, "OK", 2) &&
+	     ascii_strncasecmp (s, "NO", 2) &&
+	     ascii_strncasecmp (s, "BAD", 3)))
+  {
+    dprint (2, (debugfile, "imap_cmd_trailer: not a command completion: %s",
+		idata->buf));
+    return notrailer;
+  }
+
+  s = imap_next_word ((char *)s);
+  if (!s)
+    return notrailer;
+
+  return s;
+}
+
 /* imap_exec: execute a command, and wait for the response from the server.
  * Also, handle untagged responses.
  * Flags:
