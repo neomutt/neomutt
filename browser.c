@@ -875,19 +875,22 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  mutt_error (_("Create is only supported for IMAP mailboxes"));
 	else
 	{
-	  imap_mailbox_create (LastDir);
-	  /* TODO: find a way to detect if the new folder would appear in
-	   *   this window, and insert it without starting over. */
-	  destroy_state (&state);
-	  init_state (&state, NULL);
-	  state.imap_browse = 1;
-	  imap_browse (LastDir, &state);
-	  browser_sort (&state);
-	  menu->data = state.entry;
-	  menu->current = 0; 
-	  menu->top = 0; 
-	  init_menu (&state, menu, title, sizeof (title), buffy);
-	  MAYBE_REDRAW (menu->redraw);
+	  if (!imap_mailbox_create (LastDir))
+	  {
+	    /* TODO: find a way to detect if the new folder would appear in
+	     *   this window, and insert it without starting over. */
+	    destroy_state (&state);
+	    init_state (&state, NULL);
+	    state.imap_browse = 1;
+	    imap_browse (LastDir, &state);
+	    browser_sort (&state);
+	    menu->data = state.entry;
+	    menu->current = 0; 
+	    menu->top = 0; 
+	    init_menu (&state, menu, title, sizeof (title), buffy);
+	    MAYBE_REDRAW (menu->redraw);
+	  }
+	  /* else leave error on screen */
 	}
 	break;
 
