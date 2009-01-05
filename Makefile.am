@@ -153,22 +153,14 @@ uninstall-local:
 		rm $(DESTDIR)$(sysconfdir)/$${i}.dist ; \
 	done
 
-# Don't make this one ChangeLog - it's intended to be
-# used manually.
-
 pclean:
 	cat /dev/null > $(top_srcdir)/PATCHES
 
 check-security:
 	(cd $(top_srcdir) && ./check_sec.sh)
 
-commit-real:
-	(cd $(top_srcdir) && cvs commit)
-
-commit-changelog:
-	(cd $(top_srcdir) && cvs commit -m "# changelog commit" ChangeLog)
-
-commit: pclean check-security commit-real update-changelog commit-changelog
+commit:
+	@echo "make commit is obsolete; use hg-commit"; false
 
 update-changelog:
 	(cd $(top_srcdir); \
@@ -181,5 +173,4 @@ mutt-dist:
 update-doc:
 	(cd doc && $(MAKE) update-doc)
 
-.PHONY: commit pclean check-security commit-real commit-changelog
-# .PHONY: changelog ChangeLog
+.PHONY: commit pclean check-security
