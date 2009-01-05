@@ -1,4 +1,10 @@
-2009-01-04 15:20 -0800  Brendan Cully  <brendan@kublai.com>  (f8fd60d8d3f2)
+2009-01-04 17:07 -0800  Vincent Lefevre  <vincent@vinc17.org>  (bbe8694acc33)
+
+	* po/fr.po: Updated French translation
+
+2009-01-04 17:04 -0800  Brendan Cully  <brendan@kublai.com>  (d98ab9a591e5)
+
+	* pgpkey.c: Remove dead code. Thanks to Ingo Schwarze.
 
 	* COPYRIGHT: Update copyrights
 
