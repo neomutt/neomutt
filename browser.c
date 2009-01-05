@@ -860,38 +860,36 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 
       case OP_BROWSER_TOGGLE_LSUB:
 	if (option (OPTIMAPLSUB))
-	{
 	  unset_option (OPTIMAPLSUB);
-	}
 	else
-	{
 	  set_option (OPTIMAPLSUB);
-	}
+
 	mutt_ungetch (0, OP_CHECK_NEW);
 	break;
 
       case OP_CREATE_MAILBOX:
 	if (!state.imap_browse)
-	  mutt_error (_("Create is only supported for IMAP mailboxes"));
-	else
 	{
-	  if (!imap_mailbox_create (LastDir))
-	  {
-	    /* TODO: find a way to detect if the new folder would appear in
-	     *   this window, and insert it without starting over. */
-	    destroy_state (&state);
-	    init_state (&state, NULL);
-	    state.imap_browse = 1;
-	    imap_browse (LastDir, &state);
-	    browser_sort (&state);
-	    menu->data = state.entry;
-	    menu->current = 0; 
-	    menu->top = 0; 
-	    init_menu (&state, menu, title, sizeof (title), buffy);
-	    MAYBE_REDRAW (menu->redraw);
-	  }
-	  /* else leave error on screen */
+	  mutt_error (_("Create is only supported for IMAP mailboxes"));
+	  break;
 	}
+
+	if (!imap_mailbox_create (LastDir))
+	{
+	  /* TODO: find a way to detect if the new folder would appear in
+	   *   this window, and insert it without starting over. */
+	  destroy_state (&state);
+	  init_state (&state, NULL);
+	  state.imap_browse = 1;
+	  imap_browse (LastDir, &state);
+	  browser_sort (&state);
+	  menu->data = state.entry;
+	  menu->current = 0; 
+	  menu->top = 0; 
+	  init_menu (&state, menu, title, sizeof (title), buffy);
+	  MAYBE_REDRAW (menu->redraw);
+	}
+	/* else leave error on screen */
 	break;
 
       case OP_RENAME_MAILBOX:
@@ -901,7 +899,8 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	{
 	  int nentry = menu->current;
 
-	  if (imap_mailbox_rename (state.entry[nentry].name) >= 0) {
+	  if (imap_mailbox_rename (state.entry[nentry].name) >= 0)
+	  {
 	    destroy_state (&state);
 	    init_state (&state, NULL);
 	    state.imap_browse = 1;
