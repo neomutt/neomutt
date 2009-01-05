@@ -19,10 +19,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.18-20090104\n"
+"Project-Id-Version: Mutt 1.5.18-20090105\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-04 13:51+0100\n"
-"PO-Revision-Date: 2009-01-04 13:53+0100\n"
+"POT-Creation-Date: 2009-01-05 05:27+0100\n"
+"PO-Revision-Date: 2009-01-05 05:30+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -1305,7 +1305,7 @@ msgstr "L'ID n'est que peu valide."
 msgid "%s Do you really want to use the key?"
 msgstr "%s Voulez-vous vraiment utiliser la clé ?"
 
-#: crypt-gpgme.c:3988 crypt-gpgme.c:4101 pgpkey.c:839 pgpkey.c:955
+#: crypt-gpgme.c:3988 crypt-gpgme.c:4101 pgpkey.c:834 pgpkey.c:935
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Recherche des clés correspondant à \"%s\"..."
@@ -2077,7 +2077,7 @@ msgstr "unhook : type hook inconnu : %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
-#: imap/auth.c:108 pop_auth.c:398 smtp.c:471
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:483
 msgid "No authenticators available"
 msgstr "Pas d'authentificateurs disponibles"
 
@@ -2118,7 +2118,7 @@ msgstr "Connexion..."
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: imap/auth_sasl.c:97 smtp.c:507
+#: imap/auth_sasl.c:97 smtp.c:519
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authentification (%s)..."
@@ -4429,7 +4429,12 @@ msgstr "Le serveur SMTP ne supporte pas l'authentification"
 msgid "SMTP authentication requires SASL"
 msgstr "L'authentification SMTP nécessite SASL"
 
-#: smtp.c:571
+#: smtp.c:461
+#, c-format
+msgid "%s authentication failed, trying next method"
+msgstr "L'authentification %s a échoué, essayons la méthode suivante"
+
+#: smtp.c:478
 msgid "SASL authentication failed"
 msgstr "L'authentification SASL a échoué"
 
