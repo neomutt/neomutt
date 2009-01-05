@@ -1,3 +1,9 @@
+2009-01-04 18:12 -0800  Brendan Cully  <brendan@kublai.com>  (1947c370fcd9)
+
+	* Makefile.am: Remove obsolete make target
+
+	* doc/manual.xml.head: Update copyright in manual
+
 2009-01-04 17:07 -0800  Vincent Lefevre  <vincent@vinc17.org>  (bbe8694acc33)
 
 	* po/fr.po: Updated French translation
