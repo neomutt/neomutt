@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 9af288ee9e91\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 17:08+0100\n"
+"POT-Creation-Date: 2009-01-05 16:36-0800\n"
 "PO-Revision-Date: 2009-01-05 17:31+0100\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -182,7 +182,7 @@ msgstr "Změnit adresář"
 msgid "Mask"
 msgstr "Maska"
 
-#: browser.c:383 browser.c:1021
+#: browser.c:383 browser.c:1023
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s není adresářem."
@@ -206,72 +206,72 @@ msgstr "Adresář [%s], Souborová maska: %s"
 msgid "Can't attach a directory!"
 msgstr "Adresář nelze připojit!"
 
-#: browser.c:669 browser.c:1090 browser.c:1188
+#: browser.c:669 browser.c:1092 browser.c:1190
 msgid "No files match the file mask"
 msgstr "Souborové masce nevyhovuje žádný soubor."
 
-#: browser.c:875
+#: browser.c:873
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Vytváření funguje pouze u IMAP schránek."
 
-#: browser.c:896
+#: browser.c:897
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Přejmenování funguje pouze u IMAP schránek."
 
-#: browser.c:918
+#: browser.c:920
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Mazání funguje pouze u IMAP schránek."
 
-#: browser.c:928
+#: browser.c:930
 msgid "Cannot delete root folder"
 msgstr "Kořenovou složku nelze smazat"
 
-#: browser.c:931
+#: browser.c:933
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Skutečně chcete smazat schránku \"%s\"?"
 
-#: browser.c:945
+#: browser.c:947
 msgid "Mailbox deleted."
 msgstr "Schránka byla smazána."
 
-#: browser.c:951
+#: browser.c:953
 msgid "Mailbox not deleted."
 msgstr "Schránka nebyla smazána."
 
-#: browser.c:970
+#: browser.c:972
 msgid "Chdir to: "
 msgstr "Nastavit pracovní adresář na: "
 
-#: browser.c:1009 browser.c:1083
+#: browser.c:1011 browser.c:1085
 msgid "Error scanning directory."
 msgstr "Chyba při načítání adresáře."
 
-#: browser.c:1033
+#: browser.c:1035
 msgid "File Mask: "
 msgstr "Souborová maska: "
 
-#: browser.c:1106
+#: browser.c:1108
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Obrácené řazení dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
 
-#: browser.c:1107
+#: browser.c:1109
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Řadit dle (d)ata, (p)ísmena, (v)elikosti či (n)eřadit?"
 
-#: browser.c:1108
+#: browser.c:1110
 msgid "dazn"
 msgstr "dpvn"
 
-#: browser.c:1175
+#: browser.c:1177
 msgid "New file name: "
 msgstr "Nové jméno souboru: "
 
-#: browser.c:1206
+#: browser.c:1208
 msgid "Can't view a directory"
 msgstr "Adresář nelze zobrazit"
 
-#: browser.c:1223
+#: browser.c:1225
 msgid "Error trying to view file"
 msgstr "Chyba při zobrazování souboru"
 
@@ -2033,7 +2033,7 @@ msgstr "Přihlašuji (%s)…"
 msgid "SASL authentication failed."
 msgstr "SASL ověření se nezdařilo."
 
-#: imap/browse.c:58 imap/imap.c:564
+#: imap/browse.c:58 imap/imap.c:567
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s není platná IMAP cesta"
@@ -2072,100 +2072,105 @@ msgstr "Přejmenování selhalo: %s"
 msgid "Mailbox renamed."
 msgstr "Schránka přejmenována."
 
-#: imap/command.c:419
+#: imap/command.c:448
 msgid "Mailbox closed"
 msgstr "Schránka uzavřena."
 
-#: imap/imap.c:187
+#: imap/imap.c:126
+#, fuzzy, c-format
+msgid "CREATE failed: %s"
+msgstr "Chyba SSL: %s"
+
+#: imap/imap.c:190
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Končím spojení s %s…"
 
-#: imap/imap.c:308
+#: imap/imap.c:311
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Tento IMAP server je zastaralý. Mutt s ním nebude fungovat."
 
-#: imap/imap.c:431 pop_lib.c:286 smtp.c:392
+#: imap/imap.c:434 pop_lib.c:286 smtp.c:392
 msgid "Secure connection with TLS?"
 msgstr "Bezpečné spojení přes TLS?"
 
-#: imap/imap.c:440 pop_lib.c:306 smtp.c:404
+#: imap/imap.c:443 pop_lib.c:306 smtp.c:404
 msgid "Could not negotiate TLS connection"
 msgstr "Nelze navázat TLS spojení"
 
-#: imap/imap.c:456 pop_lib.c:327
+#: imap/imap.c:459 pop_lib.c:327
 msgid "Encrypted connection unavailable"
 msgstr "Šifrované spojení není k dispozici"
 
-#: imap/imap.c:598
+#: imap/imap.c:601
 #, c-format
 msgid "Selecting %s..."
 msgstr "Volím %s…"
 
-#: imap/imap.c:753
+#: imap/imap.c:756
 msgid "Error opening mailbox"
 msgstr "Chyba při otevírání schránky"
 
-#: imap/imap.c:808 imap/message.c:834 muttlib.c:1478
+#: imap/imap.c:811 imap/message.c:834 muttlib.c:1478
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvořit %s?"
 
-#: imap/imap.c:1180
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "Příkaz EXPUNGE se nezdařil."
 
-#: imap/imap.c:1192
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Mažu zprávy (počet: %d)…"
 
-#: imap/imap.c:1221
+#: imap/imap.c:1224
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Ukládám změněné zprávy… [%d/%d]"
 
-#: imap/imap.c:1270
+#: imap/imap.c:1273
 msgid "Error saving flags. Close anyway?"
 msgstr "Došlo k chybě při ukládání příznaků. Přesto uzavřít?"
 
-#: imap/imap.c:1278
+#: imap/imap.c:1281
 msgid "Error saving flags"
 msgstr "Chyba při ukládání příznaků"
 
-#: imap/imap.c:1290
+#: imap/imap.c:1293
 msgid "Expunging messages from server..."
 msgstr "Odstraňuji zprávy ze serveru…"
 
-#: imap/imap.c:1295
+#: imap/imap.c:1298
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "při volání imap_sync_mailbox: EXPUNGE selhalo"
 
-#: imap/imap.c:1743
+#: imap/imap.c:1746
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Hledám v hlavičkách bez udání položky: %s"
 
-#: imap/imap.c:1815
+#: imap/imap.c:1818
 msgid "Bad mailbox name"
 msgstr "Chybný název schránky"
 
-#: imap/imap.c:1840
+#: imap/imap.c:1843
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Přihlašuji %s…"
 
-#: imap/imap.c:1842
+#: imap/imap.c:1845
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Odhlašuji %s…"
 
-#: imap/imap.c:1852
+#: imap/imap.c:1855
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s přihlášeno"
 
-#: imap/imap.c:1854
+#: imap/imap.c:1857
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s odhlášeno"

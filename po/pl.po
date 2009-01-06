@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.5.17\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-17 12:35-0700\n"
+"POT-Creation-Date: 2009-01-05 16:36-0800\n"
 "PO-Revision-Date: 2007-11-02 11:11+0200\n"
 "Last-Translator: Pawe³ Dziekoñski <dzieko@gmail.com>\n"
 "Language-Team: POLISH <pl@li.org>\n"
@@ -17,26 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: account.c:164
+#: account.c:161
 #, c-format
 msgid "Username at %s: "
 msgstr "Nazwa konta na %s: "
 
-#: account.c:223
+#: account.c:220
 #, c-format
 msgid "Password for %s@%s: "
 msgstr "Has³o dla %s@%s: "
 
-#: addrbook.c:37 browser.c:45 pager.c:1480 postpone.c:43 query.c:49
-#: recvattach.c:54
+#: addrbook.c:37 browser.c:45 pager.c:1479 postpone.c:41 query.c:48
+#: recvattach.c:53
 msgid "Exit"
 msgstr "Wyj¶cie"
 
-#: addrbook.c:38 curs_main.c:408 pager.c:1487 postpone.c:44
+#: addrbook.c:38 curs_main.c:406 pager.c:1486 postpone.c:42
 msgid "Del"
 msgstr "Usuñ"
 
-#: addrbook.c:39 curs_main.c:409 postpone.c:45
+#: addrbook.c:39 curs_main.c:407 postpone.c:43
 msgid "Undel"
 msgstr "Odtwórz"
 
@@ -45,9 +45,9 @@ msgid "Select"
 msgstr "Wybierz"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3647 curs_main.c:414
-#: mutt_ssl.c:679 mutt_ssl_gnutls.c:783 pager.c:1579 pgpkey.c:522
-#: postpone.c:46 query.c:54 recvattach.c:58 smime.c:437
+#: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3832 curs_main.c:412
+#: mutt_ssl.c:899 mutt_ssl_gnutls.c:805 pager.c:1578 pgpkey.c:522
+#: postpone.c:44 query.c:53 recvattach.c:57 smime.c:437
 msgid "Help"
 msgstr "Pomoc"
 
@@ -55,61 +55,61 @@ msgstr "Pomoc"
 msgid "You have no aliases!"
 msgstr "Brak aliasów!"
 
-#: addrbook.c:156
+#: addrbook.c:155
 msgid "Aliases"
 msgstr "Aliasy"
 
 #. add a new alias
-#: alias.c:246
+#: alias.c:260
 msgid "Alias as: "
 msgstr "Nazwa aliasu: "
 
-#: alias.c:252
+#: alias.c:266
 msgid "You already have an alias defined with that name!"
 msgstr "Istnieje ju¿ tak nazwany alias!"
 
-#: alias.c:258
+#: alias.c:272
 msgid "Warning: This alias name may not work.  Fix it?"
 msgstr "Ostrze¿enie: alias o takiej nazwie mo¿e nie zadzia³aæ. Poprawiæ?"
 
-#: alias.c:283
+#: alias.c:297
 msgid "Address: "
 msgstr "Adres: "
 
-#: alias.c:293 send.c:207
+#: alias.c:307 send.c:206
 #, c-format
 msgid "Error: '%s' is a bad IDN."
 msgstr "B³±d: '%s' to b³êdny IDN."
 
-#: alias.c:305
+#: alias.c:319
 msgid "Personal name: "
 msgstr "Nazwisko: "
 
-#: alias.c:314
+#: alias.c:328
 #, c-format
 msgid "[%s = %s] Accept?"
 msgstr "[%s = %s] Potwierdzasz?"
 
-#: alias.c:331 recvattach.c:432 recvattach.c:455 recvattach.c:468
-#: recvattach.c:481 recvattach.c:511
+#: alias.c:347 recvattach.c:431 recvattach.c:454 recvattach.c:467
+#: recvattach.c:480 recvattach.c:510
 msgid "Save to file: "
 msgstr "Zapisz do pliku: "
 
-#: alias.c:345
+#: alias.c:361
 #, fuzzy
 msgid "Error reading alias file"
 msgstr "B³±d podczas próby przegl±dania pliku"
 
-#: alias.c:364
+#: alias.c:382
 msgid "Alias added."
 msgstr "Alias dodany."
 
-#: alias.c:372
+#: alias.c:390
 #, fuzzy
 msgid "Error seeking in alias file"
 msgstr "B³±d podczas próby przegl±dania pliku"
 
-#: attach.c:113 attach.c:245 attach.c:477 attach.c:968
+#: attach.c:113 attach.c:245 attach.c:477 attach.c:969
 msgid "Can't match nametemplate, continue?"
 msgstr "Nie pasuj±cy szablon nazwy, kontynuowaæ?"
 
@@ -119,8 +119,8 @@ msgstr "Nie pasuj±cy szablon nazwy, kontynuowaæ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "Pole \"compose\" w pliku 'mailcap' wymaga %%s"
 
-#: attach.c:134 attach.c:266 commands.c:223 compose.c:1183 curs_lib.c:179
-#: curs_lib.c:533
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1182 curs_lib.c:177
+#: curs_lib.c:543
 #, c-format
 msgid "Error running \"%s\"!"
 msgstr "B³±d uruchomienia \"%s\"!"
@@ -165,16 +165,16 @@ msgstr "Typ MIME nie zosta³ zdefiniowany. Nie mo¿na wy¶wietliæ za³±cznika."
 msgid "Cannot create filter"
 msgstr "Nie mo¿na utworzyæ filtru"
 
-#: attach.c:676 attach.c:708 attach.c:1001 attach.c:1059 handler.c:1279
-#: pgpkey.c:571 pgpkey.c:760
+#: attach.c:677 attach.c:709 attach.c:1002 attach.c:1060 handler.c:1304
+#: pgpkey.c:570 pgpkey.c:759
 msgid "Can't create filter"
 msgstr "Nie mo¿na utworzyæ filtra"
 
-#: attach.c:840
+#: attach.c:841
 msgid "Write fault!"
 msgstr "B³±d zapisu!"
 
-#: attach.c:1082
+#: attach.c:1083
 msgid "I don't know how to print that!"
 msgstr "Nie wiem jak to wydrukowaæ!"
 
@@ -186,7 +186,7 @@ msgstr "Zmieñ katalog"
 msgid "Mask"
 msgstr "Wzorzec"
 
-#: browser.c:383 browser.c:1022
+#: browser.c:383 browser.c:1023
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s nie jest katalogiem."
@@ -210,11 +210,11 @@ msgstr "Katalog [%s], wzorzec nazw plików: %s"
 msgid "Can't attach a directory!"
 msgstr "Za³±cznikiem nie mo¿e zostaæ katalog!"
 
-#: browser.c:670 browser.c:1091 browser.c:1189
+#: browser.c:669 browser.c:1092 browser.c:1190
 msgid "No files match the file mask"
 msgstr "¯aden plik nie pasuje do wzorca"
 
-#: browser.c:876
+#: browser.c:873
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "Tworzenie skrzynek jest obs³ugiwane tylko dla skrzynek IMAP"
 
@@ -222,60 +222,60 @@ msgstr "Tworzenie skrzynek jest obs³ugiwane tylko dla skrzynek IMAP"
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Zmiania nazwy jest obs³ugiwana tylko dla skrzynek IMAP"
 
-#: browser.c:919
+#: browser.c:920
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "Usuwanie skrzynek jest obs³ugiwane tylko dla skrzynek IMAP"
 
-#: browser.c:929
+#: browser.c:930
 msgid "Cannot delete root folder"
 msgstr "Nie mo¿na usun±æ g³ównej skrzynki"
 
-#: browser.c:932
+#: browser.c:933
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Naprawdê usun±æ skrzynkê \"%s\"?"
 
-#: browser.c:946
+#: browser.c:947
 msgid "Mailbox deleted."
 msgstr "Skrzynka zosta³a usuniêta."
 
-#: browser.c:952
+#: browser.c:953
 msgid "Mailbox not deleted."
 msgstr "Skrzynka nie zosta³a usuniêta."
 
-#: browser.c:971
+#: browser.c:972
 msgid "Chdir to: "
 msgstr "Zmieñ katalog na: "
 
-#: browser.c:1010 browser.c:1084
+#: browser.c:1011 browser.c:1085
 msgid "Error scanning directory."
 msgstr "B³±d przegl±dania katalogu."
 
-#: browser.c:1034
+#: browser.c:1035
 msgid "File Mask: "
 msgstr "Wzorzec nazw plików: "
 
-#: browser.c:1107
+#: browser.c:1108
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortowanie odwrotne wg (d)aty, (a)lfabetu, (w)ielko¶ci, ¿ad(n)e?"
 
-#: browser.c:1108
+#: browser.c:1109
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Sortowanie wg (d)aty, (a)lfabetu, (w)ielko¶ci, ¿ad(n)e?"
 
-#: browser.c:1109
+#: browser.c:1110
 msgid "dazn"
 msgstr "dawn"
 
-#: browser.c:1176
+#: browser.c:1177
 msgid "New file name: "
 msgstr "Nazwa nowego pliku: "
 
-#: browser.c:1207
+#: browser.c:1208
 msgid "Can't view a directory"
 msgstr "Nie mo¿na przegl±daæ tego katalogu"
 
-#: browser.c:1224
+#: browser.c:1225
 msgid "Error trying to view file"
 msgstr "B³±d podczas próby przegl±dania pliku"
 
@@ -325,7 +325,7 @@ msgstr "mono: za ma³o argumentów"
 msgid "%s: no such attribute"
 msgstr "%s: nie ma takiego atrybutu"
 
-#: color.c:700 hook.c:69 hook.c:77 keymap.c:751
+#: color.c:700 hook.c:69 hook.c:77 keymap.c:776
 msgid "too few arguments"
 msgstr "za ma³o argumentów"
 
@@ -382,46 +382,46 @@ msgstr "Podpis PGP NIE mo¿e zostaæ zweryfikowany."
 msgid "Command: "
 msgstr "Wprowad¼ polecenie: "
 
-#: commands.c:250 recvcmd.c:147
+#: commands.c:250 recvcmd.c:143
 msgid "Bounce message to: "
 msgstr "Wy¶lij kopiê listu do: "
 
-#: commands.c:252 recvcmd.c:149
+#: commands.c:252 recvcmd.c:145
 msgid "Bounce tagged messages to: "
 msgstr "Wy¶lij kopie zaznaczonych listów do: "
 
-#: commands.c:267 recvcmd.c:158
+#: commands.c:267 recvcmd.c:154
 msgid "Error parsing address!"
 msgstr "B³±d interpretacji adresu!"
 
-#: commands.c:275 recvcmd.c:166
+#: commands.c:275 recvcmd.c:162
 #, c-format
 msgid "Bad IDN: '%s'"
 msgstr "B³êdny IDN: '%s'"
 
-#: commands.c:286 recvcmd.c:180
+#: commands.c:286 recvcmd.c:176
 #, c-format
 msgid "Bounce message to %s"
 msgstr "Wy¶lij kopiê listu do %s"
 
-#: commands.c:286 recvcmd.c:180
+#: commands.c:286 recvcmd.c:176
 #, c-format
 msgid "Bounce messages to %s"
 msgstr "Wy¶lij kopie listów do %s"
 
-#: commands.c:302 recvcmd.c:196
+#: commands.c:302 recvcmd.c:192
 msgid "Message not bounced."
 msgstr "Kopia nie zosta³a wys³ana."
 
-#: commands.c:302 recvcmd.c:196
+#: commands.c:302 recvcmd.c:192
 msgid "Messages not bounced."
 msgstr "Kopie nie zosta³y wys³ane."
 
-#: commands.c:312 recvcmd.c:215
+#: commands.c:312 recvcmd.c:211
 msgid "Message bounced."
 msgstr "Kopia zosta³a wys³ana."
 
-#: commands.c:312 recvcmd.c:215
+#: commands.c:312 recvcmd.c:211
 msgid "Messages bounced."
 msgstr "Kopie zosta³y wys³ane."
 
@@ -558,7 +558,7 @@ msgstr "Wy¶lij"
 msgid "Abort"
 msgstr "Anuluj"
 
-#: compose.c:94 compose.c:668
+#: compose.c:94 compose.c:667
 msgid "Attach file"
 msgstr "Do³±cz plik"
 
@@ -625,226 +625,226 @@ msgstr "Ostrze¿enie: '%s' to b³êdny IDN."
 msgid "You may not delete the only attachment."
 msgstr "Nie mo¿esz usun±æ jedynego za³±cznika."
 
-#: compose.c:601 send.c:1561
+#: compose.c:600 send.c:1560
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "B³êdny IDN w \"%s\": '%s'"
 
-#: compose.c:684
+#: compose.c:683
 msgid "Attaching selected files..."
 msgstr "Do³±czanie wybranych listów..."
 
-#: compose.c:696
+#: compose.c:695
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Nie mo¿na do³±czyæ %s!"
 
-#: compose.c:715
+#: compose.c:714
 msgid "Open mailbox to attach message from"
 msgstr "Otwórz skrzynkê w celu do³±czenia listu"
 
-#: compose.c:753
+#: compose.c:752
 msgid "No messages in that folder."
 msgstr "Brak listów w tej skrzynce."
 
-#: compose.c:762
+#: compose.c:761
 msgid "Tag the messages you want to attach!"
 msgstr "Zaznacz listy do do³±czenia!"
 
-#: compose.c:794
+#: compose.c:793
 msgid "Unable to attach!"
 msgstr "Nie mo¿na do³±czyæ!"
 
-#: compose.c:845
+#: compose.c:844
 msgid "Recoding only affects text attachments."
 msgstr "Tylko tekstowe za³±czniki mo¿na przekodowaæ."
 
-#: compose.c:850
+#: compose.c:849
 msgid "The current attachment won't be converted."
 msgstr "Bie¿±cy za³acznik nie zostanie przekonwertowany."
 
-#: compose.c:852
+#: compose.c:851
 msgid "The current attachment will be converted."
 msgstr "Bie¿±cy za³acznik zostanie przekonwertowany."
 
-#: compose.c:927
+#: compose.c:926
 msgid "Invalid encoding."
 msgstr "B³êdne kodowanie."
 
-#: compose.c:953
+#: compose.c:952
 msgid "Save a copy of this message?"
 msgstr "Zapisaæ kopiê tego listu?"
 
-#: compose.c:1009
+#: compose.c:1008
 msgid "Rename to: "
 msgstr "Zmieñ nazwê na: "
 
-#: compose.c:1014 editmsg.c:96 editmsg.c:121 sendlib.c:857
+#: compose.c:1013 editmsg.c:96 editmsg.c:121 sendlib.c:857
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Nie mo¿na ustaliæ stanu (stat) %s: %s"
 
-#: compose.c:1041
+#: compose.c:1040
 msgid "New file: "
 msgstr "Nowy plik: "
 
-#: compose.c:1054
+#: compose.c:1053
 msgid "Content-Type is of the form base/sub"
 msgstr "Typ \"Content-Type\" musi byæ w postaci podstawowy/po¶ledni"
 
-#: compose.c:1060
+#: compose.c:1059
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Nieznany typ \"Content-Type\" %s"
 
-#: compose.c:1073
+#: compose.c:1072
 #, c-format
 msgid "Can't create file %s"
 msgstr "Nie mo¿na utworzyæ %s"
 
-#: compose.c:1081
+#: compose.c:1080
 msgid "What we have here is a failure to make an attachment"
 msgstr "Mamy tu b³±d tworzenia za³±cznika"
 
-#: compose.c:1142
+#: compose.c:1141
 msgid "Postpone this message?"
 msgstr "Zachowaæ ten list do pó¼niejszej obróbki i ewentualnej wysy³ki?"
 
-#: compose.c:1201
+#: compose.c:1200
 msgid "Write message to mailbox"
 msgstr "Zapisz list do skrzynki"
 
-#: compose.c:1204
+#: compose.c:1203
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Zapisywanie listu do %s ..."
 
-#: compose.c:1213
+#: compose.c:1212
 msgid "Message written."
 msgstr "List zosta³ zapisany."
 
-#: compose.c:1225
+#: compose.c:1224
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "Wybrano ju¿ S/MIME. Anulowaæ wybór S/MIME i kontynuowaæ? "
 
-#: compose.c:1251
+#: compose.c:1250
 msgid "PGP already selected. Clear & continue ? "
 msgstr "Wybrano ju¿ PGP. Anulowaæ wybór PGP i kontynuowaæ? "
 
-#: crypt-gpgme.c:345
+#: crypt-gpgme.c:358
 #, c-format
 msgid "error creating gpgme context: %s\n"
 msgstr "B³±d tworzenia kontekstu gpgme: %s\n"
 
-#: crypt-gpgme.c:355
+#: crypt-gpgme.c:368
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
 msgstr "B³±d uruchamiania protoko³u CMS: %s\n"
 
-#: crypt-gpgme.c:375
+#: crypt-gpgme.c:388
 #, c-format
 msgid "error creating gpgme data object: %s\n"
 msgstr "B³±d tworzenia obiektu danych gpgme: %s\n"
 
-#: crypt-gpgme.c:441 crypt-gpgme.c:459 crypt-gpgme.c:1400
+#: crypt-gpgme.c:454 crypt-gpgme.c:472 crypt-gpgme.c:1431
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "B³±d alokacji obiektu danych: %s\n"
 
-#: crypt-gpgme.c:477
+#: crypt-gpgme.c:490
 #, c-format
 msgid "error rewinding data object: %s\n"
 msgstr "B³±d przeszukania obiektu danych: %s\n"
 
-#: crypt-gpgme.c:499 crypt-gpgme.c:546
+#: crypt-gpgme.c:512 crypt-gpgme.c:559
 #, c-format
 msgid "error reading data object: %s\n"
 msgstr "B³±d czytania obiektu danych: %s\n"
 
-#: crypt-gpgme.c:607
+#: crypt-gpgme.c:620
 #, c-format
 msgid "error adding recipient `%s': %s\n"
 msgstr "B³±d dodawania odbiorcy `%s': %s\n"
 
-#: crypt-gpgme.c:645
+#: crypt-gpgme.c:658
 #, c-format
 msgid "secret key `%s' not found: %s\n"
 msgstr "Klucz tajny `%s' nie zosta³ odnaleziony: %s\n"
 
-#: crypt-gpgme.c:655
+#: crypt-gpgme.c:668
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
 msgstr "Niejednoznaczne okre¶lenie klucza tajnego `%s'\n"
 
-#: crypt-gpgme.c:667
+#: crypt-gpgme.c:680
 #, c-format
 msgid "error setting secret key `%s': %s\n"
 msgstr "B³±d obs³ugi klucza tajnego `%s': %s\n"
 
-#: crypt-gpgme.c:684
+#: crypt-gpgme.c:697
 #, c-format
 msgid "error setting PKA signature notation: %s\n"
 msgstr "PKA: b³±d konfigurowania notacji podpisu: %s\n"
 
-#: crypt-gpgme.c:740
+#: crypt-gpgme.c:753
 #, c-format
 msgid "error encrypting data: %s\n"
 msgstr "B³±d szyfrowania danych: %s\n"
 
-#: crypt-gpgme.c:850
+#: crypt-gpgme.c:870
 #, c-format
 msgid "error signing data: %s\n"
 msgstr "B³±d podpisania danych: %s\n"
 
-#: crypt-gpgme.c:1045
+#: crypt-gpgme.c:1065
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Ostrze¿enie: jeden z kluczy zosta³ wycofany.\n"
 
-#: crypt-gpgme.c:1054
+#: crypt-gpgme.c:1074
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Ostrze¿enie: klucz u¿yty do podpisania wygas³ dnia: "
 
-#: crypt-gpgme.c:1060
+#: crypt-gpgme.c:1080
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Ostrze¿enie: co najmniej jeden z certyfikatów wygas³.\n"
 
-#: crypt-gpgme.c:1076
+#: crypt-gpgme.c:1096
 msgid "Warning: The signature expired at: "
 msgstr "Ostrze¿enie: podpis wygas³ dnia: "
 
-#: crypt-gpgme.c:1082
+#: crypt-gpgme.c:1102
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Nie mo¿na zweryfikowaæ: brak klucza lub certyfikatu.\n"
 
-#: crypt-gpgme.c:1087
+#: crypt-gpgme.c:1107
 msgid "The CRL is not available\n"
 msgstr "CRL nie jest dostêpny.\n"
 
-#: crypt-gpgme.c:1093
+#: crypt-gpgme.c:1113
 msgid "Available CRL is too old\n"
 msgstr "Ten CRL jest zbyt stary.\n"
 
-#: crypt-gpgme.c:1098
+#: crypt-gpgme.c:1118
 msgid "A policy requirement was not met\n"
 msgstr "Nie spe³niono wymagañ polityki.\n"
 
-#: crypt-gpgme.c:1107
+#: crypt-gpgme.c:1127
 msgid "A system error occurred"
 msgstr "Wyst±pi³ b³±d systemowy."
 
-#: crypt-gpgme.c:1141
+#: crypt-gpgme.c:1161
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "Ostrze¿enie: dane PKA nie odpowiadaj± adresowi nadawcy: "
 
-#: crypt-gpgme.c:1148
+#: crypt-gpgme.c:1168
 msgid "PKA verified signer's address is: "
 msgstr "Adres nadawcy zweryfikowany przez PKA to: "
 
-#: crypt-gpgme.c:1165 crypt-gpgme.c:3114
+#: crypt-gpgme.c:1185 crypt-gpgme.c:3299
 msgid "Fingerprint: "
 msgstr "Odcisk: "
 
-#: crypt-gpgme.c:1225
+#: crypt-gpgme.c:1245
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -852,18 +852,27 @@ msgstr ""
 "Ostrze¿enie: nie ma ¯ADNYCH dowodów, ¿e ten klucz nale¿y do osoby podanej "
 "powy¿ej.\n"
 
-#: crypt-gpgme.c:1232
+#: crypt-gpgme.c:1252
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "Ostrze¿enie: ten klucz NIE NALE¯Y do osoby podanej powy¿ej.\n"
 
-#: crypt-gpgme.c:1236
+#: crypt-gpgme.c:1256
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
 "Ostrze¿enie: NIE ma pewno¶ci, ¿e ten klucz nale¿y do osoby podanej powy¿ej.\n"
 
-#: crypt-gpgme.c:1311
+#: crypt-gpgme.c:1286
+msgid "aka: "
+msgstr ""
+
+#: crypt-gpgme.c:1297
+#, fuzzy
+msgid "created: "
+msgstr "Utworzyæ %s?"
+
+#: crypt-gpgme.c:1362
 msgid "Error getting key information: "
 msgstr "B³±d sprawdzania klucza: "
 
@@ -871,48 +880,48 @@ msgstr "B³±d sprawdzania klucza: "
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1318 crypt-gpgme.c:1351
-msgid "Good signature from: "
+#: crypt-gpgme.c:1369 crypt-gpgme.c:1384
+#, fuzzy
+msgid "Good signature from:"
 msgstr "Poprawny podpis z³o¿ony przez: "
 
-#: crypt-gpgme.c:1328
-msgid "                aka: "
+#: crypt-gpgme.c:1376
+#, fuzzy
+msgid "*BAD* signature from:"
+msgstr "Poprawny podpis z³o¿ony przez: "
+
+#: crypt-gpgme.c:1392
+#, fuzzy
+msgid "Problem signature from:"
+msgstr "Poprawny podpis z³o¿ony przez: "
+
+#: crypt-gpgme.c:1393
+#, fuzzy
+msgid "               expires: "
 msgstr "                aka: "
-
-#: crypt-gpgme.c:1332 crypt-gpgme.c:1354
-msgid "            created: "
-msgstr "            utworzony: "
-
-#: crypt-gpgme.c:1341
-msgid "*BAD* signature claimed to be from: "
-msgstr "B³êdny podpis z³o¿ony jakoby przez: "
-
-#: crypt-gpgme.c:1364
-msgid "Error checking signature"
-msgstr "B³±d sprawdzania podpisu"
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1408 crypt-gpgme.c:1623 crypt-gpgme.c:2108
+#: crypt-gpgme.c:1439 crypt-gpgme.c:1654 crypt-gpgme.c:2290
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Informacja o podpisie --]\n"
 
-#: crypt-gpgme.c:1417
+#: crypt-gpgme.c:1448
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "B³±d: weryfikacja nie powiod³a siê: %s\n"
 
-#: crypt-gpgme.c:1466
+#: crypt-gpgme.c:1497
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "[-- Pocz±tek danych (podpisane przez: %s) --]\n"
 
-#: crypt-gpgme.c:1488
+#: crypt-gpgme.c:1519
 msgid "*** End Notation ***\n"
 msgstr "[-- Koniec danych --]\n"
 
-#: crypt-gpgme.c:1496 crypt-gpgme.c:1636 crypt-gpgme.c:2123
+#: crypt-gpgme.c:1527 crypt-gpgme.c:1667 crypt-gpgme.c:2305
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -920,7 +929,7 @@ msgstr ""
 "[-- Koniec informacji o podpisie --]\n"
 "\n"
 
-#: crypt-gpgme.c:1591
+#: crypt-gpgme.c:1622
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
@@ -929,16 +938,21 @@ msgstr ""
 "[-- B³±d: odszyfrowanie nie powiod³ow siê: %s --]\n"
 "\n"
 
-#: crypt-gpgme.c:2083
+#: crypt-gpgme.c:2082
+#, fuzzy, c-format
+msgid "Error extracting key data!\n"
+msgstr "B³±d sprawdzania klucza: "
+
+#: crypt-gpgme.c:2265
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "B³±d: odszyfrowanie lub weryfikacja nie powiod³y siê: %s\n"
 
-#: crypt-gpgme.c:2131
+#: crypt-gpgme.c:2313
 msgid "Error: copy data failed\n"
 msgstr "B³±d: kopiowanie danych nie powiod³o siê\n"
 
-#: crypt-gpgme.c:2151 pgp.c:428
+#: crypt-gpgme.c:2333 pgp.c:427
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -946,11 +960,11 @@ msgstr ""
 "[-- POCZ¡TEK LISTU PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2153 pgp.c:430
+#: crypt-gpgme.c:2335 pgp.c:429
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- POCZ¡TEK KLUCZA PUBLICZNEGO PGP --]\n"
 
-#: crypt-gpgme.c:2156 pgp.c:432
+#: crypt-gpgme.c:2338 pgp.c:431
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -958,19 +972,19 @@ msgstr ""
 "[-- POCZ¡TEK LISTU PODPISANEGO PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2183 pgp.c:458
+#: crypt-gpgme.c:2365 pgp.c:457
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- KONIEC LISTU PGP --]\n"
 
-#: crypt-gpgme.c:2185 pgp.c:465
+#: crypt-gpgme.c:2367 pgp.c:464
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- KONIEC PUBLICZNEGO KLUCZA PGP --]\n"
 
-#: crypt-gpgme.c:2187 pgp.c:467
+#: crypt-gpgme.c:2369 pgp.c:466
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- KONIEC LISTU PODPISANEGO PGP --]\n"
 
-#: crypt-gpgme.c:2208 pgp.c:497
+#: crypt-gpgme.c:2393 pgp.c:499
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -978,7 +992,7 @@ msgstr ""
 "[-- B³±d: nie mo¿na odnale¼æ pocz±tku listu PGP! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2239 pgp.c:926
+#: crypt-gpgme.c:2424 pgp.c:931
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -986,11 +1000,11 @@ msgstr ""
 "[-- B³±d: uszkodzony list PGP/MIME! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2251 crypt-gpgme.c:2317 pgp.c:939
+#: crypt-gpgme.c:2436 crypt-gpgme.c:2502 pgp.c:944
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- B³±d: nie mo¿na utworzyæ pliku tymczasowego! --]\n"
 
-#: crypt-gpgme.c:2263
+#: crypt-gpgme.c:2448
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -998,7 +1012,7 @@ msgstr ""
 "[-- Nastêpuj±ce dane s± podpisane i zaszyfrowane PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2264 pgp.c:948
+#: crypt-gpgme.c:2449 pgp.c:953
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1006,15 +1020,15 @@ msgstr ""
 "[-- Nastêpuj±ce dane s± zaszyfrowane PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2286
+#: crypt-gpgme.c:2471
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Koniec danych podpisanych i zaszyfrowanych PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2287 pgp.c:968
+#: crypt-gpgme.c:2472 pgp.c:973
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Koniec danych zaszyfrowanych PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2329
+#: crypt-gpgme.c:2514
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
@@ -1022,7 +1036,7 @@ msgstr ""
 "[-- Poni¿sze dane s± podpisane S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2330
+#: crypt-gpgme.c:2515
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
@@ -1030,227 +1044,227 @@ msgstr ""
 "[-- Nastêpuj±ce dane s± zaszyfrowane S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2360
+#: crypt-gpgme.c:2545
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Koniec danych podpisanych S/MIME. --]\n"
 
-#: crypt-gpgme.c:2361
+#: crypt-gpgme.c:2546
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Koniec danych zaszyfrowanych S/MIME. --]\n"
 
-#: crypt-gpgme.c:2954
+#: crypt-gpgme.c:3139
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "Nie mo¿na wy¶wietliæ identyfikatora - nieznane kodowanie."
 
-#: crypt-gpgme.c:2956
+#: crypt-gpgme.c:3141
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "Nie mo¿na wy¶wietliæ identyfikatora - b³êdne kodowanie."
 
-#: crypt-gpgme.c:2961
+#: crypt-gpgme.c:3146
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "Nie mo¿na wy¶wietliæ identyfikatora - b³êdny DN."
 
-#: crypt-gpgme.c:3040
+#: crypt-gpgme.c:3225
 msgid " aka ......: "
 msgstr " aka ......: "
 
-#: crypt-gpgme.c:3040
+#: crypt-gpgme.c:3225
 msgid "Name ......: "
 msgstr "Nazwa/nazwisko ......: "
 
-#: crypt-gpgme.c:3043 crypt-gpgme.c:3182
+#: crypt-gpgme.c:3228 crypt-gpgme.c:3367
 msgid "[Invalid]"
 msgstr "[B³êdny]"
 
-#: crypt-gpgme.c:3063 crypt-gpgme.c:3206
+#: crypt-gpgme.c:3248 crypt-gpgme.c:3391
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Wa¿ny od: %s\n"
 
-#: crypt-gpgme.c:3076 crypt-gpgme.c:3219
+#: crypt-gpgme.c:3261 crypt-gpgme.c:3404
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Wa¿ny do: %s\n"
 
-#: crypt-gpgme.c:3089 crypt-gpgme.c:3232
+#: crypt-gpgme.c:3274 crypt-gpgme.c:3417
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Klucz: %s, %lu bitów %s\n"
 
-#: crypt-gpgme.c:3091 crypt-gpgme.c:3234
+#: crypt-gpgme.c:3276 crypt-gpgme.c:3419
 #, c-format
 msgid "Key Usage .: "
 msgstr "U¿ycie: "
 
-#: crypt-gpgme.c:3096 crypt-gpgme.c:3239
+#: crypt-gpgme.c:3281 crypt-gpgme.c:3424
 msgid "encryption"
 msgstr "szyfrowanie"
 
-#: crypt-gpgme.c:3097 crypt-gpgme.c:3102 crypt-gpgme.c:3107 crypt-gpgme.c:3240
-#: crypt-gpgme.c:3245 crypt-gpgme.c:3250
+#: crypt-gpgme.c:3282 crypt-gpgme.c:3287 crypt-gpgme.c:3292 crypt-gpgme.c:3425
+#: crypt-gpgme.c:3430 crypt-gpgme.c:3435
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3101 crypt-gpgme.c:3244
+#: crypt-gpgme.c:3286 crypt-gpgme.c:3429
 msgid "signing"
 msgstr "podpisywanie"
 
-#: crypt-gpgme.c:3106 crypt-gpgme.c:3249
+#: crypt-gpgme.c:3291 crypt-gpgme.c:3434
 msgid "certification"
 msgstr "certyfikowanie"
 
-#: crypt-gpgme.c:3146
+#: crypt-gpgme.c:3331
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Numer: 0x%s\n"
 
-#: crypt-gpgme.c:3154
+#: crypt-gpgme.c:3339
 #, c-format
 msgid "Issued By .: "
 msgstr "Wydany przez: "
 
 #. display only the short keyID
-#: crypt-gpgme.c:3173
+#: crypt-gpgme.c:3358
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Podklucz: 0x%s"
 
-#: crypt-gpgme.c:3177
+#: crypt-gpgme.c:3362
 msgid "[Revoked]"
 msgstr "[Wyprowadzony]"
 
-#: crypt-gpgme.c:3187
+#: crypt-gpgme.c:3372
 msgid "[Expired]"
 msgstr "[Wygas³y]"
 
-#: crypt-gpgme.c:3192
+#: crypt-gpgme.c:3377
 msgid "[Disabled]"
 msgstr "[Zablokowany]"
 
-#: crypt-gpgme.c:3276 pgpkey.c:560 pgpkey.c:740
+#: crypt-gpgme.c:3461 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "Nie mo¿na utworzyæ pliku tymczasowego"
 
-#: crypt-gpgme.c:3279
+#: crypt-gpgme.c:3464
 msgid "Collecting data..."
 msgstr "Gromadzenie danych..."
 
-#: crypt-gpgme.c:3305
+#: crypt-gpgme.c:3490
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Nie znaleziono klucza wydawcy: %s\n"
 
-#: crypt-gpgme.c:3315
+#: crypt-gpgme.c:3500
 msgid "Error: certification chain to long - stopping here\n"
 msgstr ""
 "B³±d: ³±ñcuch certyfikatów zbyt d³ugi - przetwarzanie zatrzymano tutaj\n"
 
-#: crypt-gpgme.c:3326 pgpkey.c:581
+#: crypt-gpgme.c:3511 pgpkey.c:580
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Identyfikator klucza: 0x%s"
 
-#: crypt-gpgme.c:3409
+#: crypt-gpgme.c:3594
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "wykonanie gpgme_new nie powiod³o siê: %s"
 
-#: crypt-gpgme.c:3448 crypt-gpgme.c:3511
+#: crypt-gpgme.c:3633 crypt-gpgme.c:3696
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "wykonanie gpgme_op_keylist_start nie powiod³o siê: %s"
 
-#: crypt-gpgme.c:3498 crypt-gpgme.c:3539
+#: crypt-gpgme.c:3683 crypt-gpgme.c:3724
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "wykonanie gpgme_op_keylist_next nie powiod³o siê: %s"
 
-#: crypt-gpgme.c:3610
+#: crypt-gpgme.c:3795
 msgid "All matching keys are marked expired/revoked."
 msgstr "Wszystkie pasuj±ce klucze s± zaznaczone jako wygas³e lub wycofane."
 
-#: crypt-gpgme.c:3639 mutt_ssl.c:677 mutt_ssl_gnutls.c:781 pgpkey.c:515
+#: crypt-gpgme.c:3824 mutt_ssl.c:897 mutt_ssl_gnutls.c:803 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Wyj¶cie  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3641 pgpkey.c:517 smime.c:434
+#: crypt-gpgme.c:3826 pgpkey.c:517 smime.c:434
 msgid "Select  "
 msgstr "Wybór  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3644 pgpkey.c:520
+#: crypt-gpgme.c:3829 pgpkey.c:520
 msgid "Check key  "
 msgstr "Sprawd¼ klucz  "
 
-#: crypt-gpgme.c:3661
+#: crypt-gpgme.c:3845
 msgid "PGP and S/MIME keys matching"
 msgstr "Pasuj±ce klucze PGP i S/MIME"
 
-#: crypt-gpgme.c:3663
+#: crypt-gpgme.c:3847
 msgid "PGP keys matching"
 msgstr "Pasuj±ce klucze PGP"
 
-#: crypt-gpgme.c:3665
+#: crypt-gpgme.c:3849
 msgid "S/MIME keys matching"
 msgstr "Pasuj±ce klucze S/MIME"
 
-#: crypt-gpgme.c:3667
+#: crypt-gpgme.c:3851
 msgid "keys matching"
 msgstr "pasuj±ce klucze"
 
-#: crypt-gpgme.c:3670
+#: crypt-gpgme.c:3854
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
-#: crypt-gpgme.c:3672
+#: crypt-gpgme.c:3856
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:3699 pgpkey.c:601
+#: crypt-gpgme.c:3883 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Nie mo¿na u¿yæ tego klucza: wygas³, zosta³ wy³±czony lub wyprowadzony."
 
-#: crypt-gpgme.c:3713 pgpkey.c:613
+#: crypt-gpgme.c:3897 pgpkey.c:612
 msgid "ID is expired/disabled/revoked."
 msgstr "Identyfikator wygas³, zosta³ wy³±czony lub wyprowadzony."
 
-#: crypt-gpgme.c:3733 pgpkey.c:617
+#: crypt-gpgme.c:3917 pgpkey.c:616
 msgid "ID has undefined validity."
 msgstr "Poziom wa¿no¶ci tego identyfikatora nie zosta³ okre¶lony."
 
-#: crypt-gpgme.c:3736 pgpkey.c:620
+#: crypt-gpgme.c:3920 pgpkey.c:619
 msgid "ID is not valid."
 msgstr "Nieprawid³owy identyfikator."
 
-#: crypt-gpgme.c:3739 pgpkey.c:623
+#: crypt-gpgme.c:3923 pgpkey.c:622
 msgid "ID is only marginally valid."
 msgstr "Ten identyfikator jest tylko czê¶ciowo wa¿ny."
 
-#: crypt-gpgme.c:3747 pgpkey.c:627
+#: crypt-gpgme.c:3931 pgpkey.c:626
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Czy naprawdê chcesz u¿yæ tego klucza?"
 
-#: crypt-gpgme.c:3804 crypt-gpgme.c:3917 pgpkey.c:840 pgpkey.c:956
+#: crypt-gpgme.c:3988 crypt-gpgme.c:4101 pgpkey.c:834 pgpkey.c:935
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Wyszukiwanie odpowiednich kluczy dla \"%s\"..."
 
-#: crypt-gpgme.c:4080 pgp.c:1175
+#: crypt-gpgme.c:4264 pgp.c:1180
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "U¿yæ klucza numer \"%s\" dla %s?"
 
-#: crypt-gpgme.c:4116 pgp.c:1209 smime.c:666 smime.c:791
+#: crypt-gpgme.c:4300 pgp.c:1214 smime.c:664 smime.c:789
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Wprowad¼ numer klucza dla %s: "
 
-#: crypt-gpgme.c:4181
+#: crypt-gpgme.c:4365
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
@@ -1258,81 +1272,81 @@ msgstr ""
 "\n"
 "U¿yto GPGME, jakkolwiek gpg-agent nie zosta³ uruchomiony."
 
-#: crypt-gpgme.c:4209
+#: crypt-gpgme.c:4393
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "S/MIME: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, p(g)p, (a)nuluj?"
 
-#: crypt-gpgme.c:4210
+#: crypt-gpgme.c:4394
 msgid "esabpfc"
 msgstr "zpjoga"
 
-#: crypt-gpgme.c:4213
+#: crypt-gpgme.c:4397
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
 "PGP: (z)aszyfruj, (p)odpisz, podpisz (j)ako, (o)ba, (s)/mime, (a)nuluj?"
 
-#: crypt-gpgme.c:4214
+#: crypt-gpgme.c:4398
 msgid "esabmfc"
 msgstr "zpjosa"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4230 pgp.c:1585 smime.c:2036
+#: crypt-gpgme.c:4414 pgp.c:1590 smime.c:2033 smime.c:2045
 msgid "Sign as: "
 msgstr "Podpisz jako: "
 
-#: crypt-gpgme.c:4327
+#: crypt-gpgme.c:4511
 msgid "Failed to verify sender"
 msgstr "B³±d weryfikacji nadawcy"
 
-#: crypt-gpgme.c:4330
+#: crypt-gpgme.c:4514
 msgid "Failed to figure out sender"
 msgstr "B³±d okre¶lenia nadawcy"
 
-#: crypt.c:69
+#: crypt.c:68
 #, c-format
 msgid " (current time: %c)"
 msgstr " (bie¿±ca data i czas: %c)"
 
-#: crypt.c:75
+#: crypt.c:74
 #, c-format
 msgid "[-- %s output follows%s --]\n"
 msgstr "[-- Wynik dzia³ania %s %s --]\n"
 
-#: crypt.c:90
+#: crypt.c:89
 msgid "Passphrase(s) forgotten."
 msgstr "Has³o(a) zosta³o(y) zapomniane."
 
 #. they really want to send it inline... go for it
-#: crypt.c:147 cryptglue.c:110 pgpkey.c:564 pgpkey.c:753
+#: crypt.c:146 cryptglue.c:110 pgpkey.c:563 pgpkey.c:752
 msgid "Invoking PGP..."
 msgstr "Wywo³ywanie PGP..."
 
 #. otherwise inline won't work...ask for revert
-#: crypt.c:156
+#: crypt.c:155
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Nie mo¿na wys³aæ listu w trybie inline. Zastosowaæ PGP/MIME?"
 
 #. abort
-#: crypt.c:158 send.c:1513
+#: crypt.c:157 send.c:1512
 msgid "Mail not sent."
 msgstr "List nie zosta³ wys³any."
 
-#: crypt.c:409
+#: crypt.c:408
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "Listy S/MIME bez wskazówek co do zawarto¶ci nie s± obs³ugiwane."
 
-#: crypt.c:628 crypt.c:672
+#: crypt.c:627 crypt.c:671
 msgid "Trying to extract PGP keys...\n"
 msgstr "Próba skopiowania kluczy PGP...\n"
 
-#: crypt.c:652 crypt.c:692
+#: crypt.c:651 crypt.c:691
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Próba skopiowania kluczy S/MIME...\n"
 
-#: crypt.c:814
+#: crypt.c:813
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -1340,7 +1354,7 @@ msgstr ""
 "[-- B³±d: Niespójna struktura multipart/signed ! --]\n"
 "\n"
 
-#: crypt.c:835
+#: crypt.c:834
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1349,7 +1363,7 @@ msgstr ""
 "[-- B³±d: Nieznany protokó³ multipart/signed %s! --]\n"
 "\n"
 
-#: crypt.c:874
+#: crypt.c:873
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1359,7 +1373,7 @@ msgstr ""
 "\n"
 
 #. Now display the signed body
-#: crypt.c:886
+#: crypt.c:885
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1367,7 +1381,7 @@ msgstr ""
 "[-- Poni¿sze dane s± podpisane --]\n"
 "\n"
 
-#: crypt.c:892
+#: crypt.c:891
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1375,7 +1389,7 @@ msgstr ""
 "[-- Ostrze¿enie: Nie znaleziono ¿adnych podpisów. --]\n"
 "\n"
 
-#: crypt.c:898
+#: crypt.c:897
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -1392,285 +1406,285 @@ msgstr ""
 msgid "Invoking S/MIME..."
 msgstr "Wywo³ywanie S/MIME..."
 
-#: curs_lib.c:189
+#: curs_lib.c:191
 msgid "yes"
 msgstr "tak"
 
-#: curs_lib.c:190
+#: curs_lib.c:192
 msgid "no"
 msgstr "nie"
 
 #. restore blocking operation
-#: curs_lib.c:286
+#: curs_lib.c:288
 msgid "Exit Mutt?"
 msgstr "Wyj¶æ z Mutta?"
 
-#: curs_lib.c:485 mutt_socket.c:570 mutt_ssl.c:329
+#: curs_lib.c:495 mutt_socket.c:577 mutt_ssl.c:337
 msgid "unknown error"
 msgstr "nieznany b³±d"
 
-#: curs_lib.c:505
+#: curs_lib.c:515
 msgid "Press any key to continue..."
 msgstr "Naci¶nij dowolny klawisz by kontynuowaæ..."
 
-#: curs_lib.c:549
+#: curs_lib.c:559
 msgid " ('?' for list): "
 msgstr " (przyci¶niêcie '?' wy¶wietla listê): "
 
-#: curs_main.c:54 curs_main.c:625 curs_main.c:655
+#: curs_main.c:52 curs_main.c:617 curs_main.c:647
 msgid "No mailbox is open."
 msgstr "Nie otwarto ¿adnej skrzynki."
 
-#: curs_main.c:55
+#: curs_main.c:53
 msgid "There are no messages."
 msgstr "Brak listów."
 
-#: curs_main.c:56 mx.c:1115 pager.c:58 recvattach.c:44
+#: curs_main.c:54 mx.c:1115 pager.c:51 recvattach.c:43
 msgid "Mailbox is read-only."
 msgstr "Skrzynka jest tylko do odczytu."
 
-#: curs_main.c:57 pager.c:59 recvattach.c:913
+#: curs_main.c:55 pager.c:52 recvattach.c:912
 msgid "Function not permitted in attach-message mode."
 msgstr "Funkcja niedostêpna w trybie za³±czania"
 
-#: curs_main.c:58
+#: curs_main.c:56
 msgid "No visible messages."
 msgstr "Brak widocznych listów."
 
-#: curs_main.c:98 pager.c:89
+#: curs_main.c:96 pager.c:82
 #, c-format
 msgid "Cannot %s: Operation not permitted by ACL"
 msgstr "Operacja %s nie mo¿e byæ wykonana: nie dozwolono (ACL)"
 
-#: curs_main.c:253
+#: curs_main.c:251
 msgid "Cannot toggle write on a readonly mailbox!"
 msgstr "Nie mo¿na zapisaæ do skrzynki oznaczonej jako 'tylko do odczytu'!"
 
-#: curs_main.c:260
+#: curs_main.c:258
 msgid "Changes to folder will be written on folder exit."
 msgstr "Zmiany zostan± naniesione niezw³ocznie po wyj¶ciu ze skrzynki."
 
-#: curs_main.c:265
+#: curs_main.c:263
 msgid "Changes to folder will not be written."
 msgstr "Zmiany w skrzynce nie zostan± naniesione."
 
-#: curs_main.c:407
+#: curs_main.c:405
 msgid "Quit"
 msgstr "Wyjd¼"
 
-#: curs_main.c:410 recvattach.c:55
+#: curs_main.c:408 recvattach.c:54
 msgid "Save"
 msgstr "Zapisz"
 
-#: curs_main.c:411 query.c:50
+#: curs_main.c:409 query.c:49
 msgid "Mail"
 msgstr "Wy¶lij"
 
-#: curs_main.c:412 pager.c:1488
+#: curs_main.c:410 pager.c:1487
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: curs_main.c:413
+#: curs_main.c:411
 msgid "Group"
 msgstr "Grupie"
 
-#: curs_main.c:502
+#: curs_main.c:499
 msgid "Mailbox was externally modified.  Flags may be wrong."
 msgstr "Skrzynka zosta³a zmodyfikowana z zewn±trz. Flagi mog± byæ nieaktualne."
 
-#: curs_main.c:505
+#: curs_main.c:502
 msgid "New mail in this mailbox."
 msgstr "Uwaga - w bie¿±cej skrzynce pojawi³a siê nowa poczta!"
 
-#: curs_main.c:509
+#: curs_main.c:506
 msgid "Mailbox was externally modified."
 msgstr "Skrzynka zosta³a zmodyfikowana z zewn±trz."
 
-#: curs_main.c:631
+#: curs_main.c:623
 msgid "No tagged messages."
 msgstr "Brak zaznaczonych listów."
 
-#: curs_main.c:667 menu.c:906
+#: curs_main.c:659 menu.c:921
 msgid "Nothing to do."
 msgstr "Brak akcji do wykonania."
 
-#: curs_main.c:753
+#: curs_main.c:749
 msgid "Jump to message: "
 msgstr "Skocz do listu: "
 
-#: curs_main.c:759
+#: curs_main.c:755
 msgid "Argument must be a message number."
 msgstr "Jako argument wymagany jest numer listu."
 
-#: curs_main.c:792
+#: curs_main.c:788
 msgid "That message is not visible."
 msgstr "Ten list nie jest widoczny."
 
-#: curs_main.c:795
+#: curs_main.c:791
 msgid "Invalid message number."
 msgstr "B³êdny numer listu."
 
-#: curs_main.c:808 curs_main.c:1849 pager.c:2279
+#: curs_main.c:804 curs_main.c:1845 pager.c:2288
 msgid "delete message(s)"
 msgstr "usuñ li(s)ty"
 
-#: curs_main.c:811
+#: curs_main.c:807
 msgid "Delete messages matching: "
 msgstr "Usuñ listy pasuj±ce do wzorca: "
 
-#: curs_main.c:833
+#: curs_main.c:829
 msgid "No limit pattern is in effect."
 msgstr "Wzorzec ograniczaj±cy nie zosta³ okre¶lony."
 
 #. i18n: ask for a limit to apply
-#: curs_main.c:838
+#: curs_main.c:834
 #, c-format
 msgid "Limit: %s"
 msgstr "Ograniczenie: %s"
 
-#: curs_main.c:848
+#: curs_main.c:844
 msgid "Limit to messages matching: "
 msgstr "Ogranicz do pasuj±cych listów: "
 
-#: curs_main.c:870
+#: curs_main.c:866
 msgid "To view all messages, limit to \"all\"."
 msgstr "Aby ponownie przegl±daæ wszystkie listy, ustaw ograniczenie na \".*\""
 
-#: curs_main.c:882
+#: curs_main.c:878
 msgid "Quit Mutt?"
 msgstr "Wyj¶æ z Mutta?"
 
-#: curs_main.c:967
+#: curs_main.c:963
 msgid "Tag messages matching: "
 msgstr "Zaznacz pasuj±ce listy: "
 
-#: curs_main.c:976 curs_main.c:2138 pager.c:2589
+#: curs_main.c:972 curs_main.c:2134 pager.c:2598
 msgid "undelete message(s)"
 msgstr "odtwórz li(s)ty"
 
-#: curs_main.c:978
+#: curs_main.c:974
 msgid "Undelete messages matching: "
 msgstr "Odtwórz pasuj±ce listy: "
 
-#: curs_main.c:986
+#: curs_main.c:982
 msgid "Untag messages matching: "
 msgstr "Odznacz pasuj±ce listy: "
 
-#: curs_main.c:1066
+#: curs_main.c:1062
 msgid "Open mailbox in read-only mode"
 msgstr "Otwórz skrzynkê tylko do odczytu"
 
-#: curs_main.c:1068
+#: curs_main.c:1064
 msgid "Open mailbox"
 msgstr "Otwórz skrzynkê"
 
-#: curs_main.c:1078
+#: curs_main.c:1074
 msgid "No mailboxes have new mail"
 msgstr "¯adna skrzynka nie zawiera nowych listów"
 
-#: curs_main.c:1106 mx.c:503 mx.c:652
+#: curs_main.c:1102 mx.c:503 mx.c:652
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s nie jest skrzynk±."
 
-#: curs_main.c:1201
+#: curs_main.c:1197
 msgid "Exit Mutt without saving?"
 msgstr "Wyj¶æ z Mutta bez zapisywania zmian?"
 
-#: curs_main.c:1219 curs_main.c:1252 curs_main.c:1696 curs_main.c:1728
-#: flags.c:286 thread.c:1026 thread.c:1081 thread.c:1136
+#: curs_main.c:1215 curs_main.c:1248 curs_main.c:1692 curs_main.c:1724
+#: flags.c:282 thread.c:1026 thread.c:1081 thread.c:1136
 msgid "Threading is not enabled."
 msgstr "W±tkowanie nie zosta³o w³±czone."
 
-#: curs_main.c:1231
+#: curs_main.c:1227
 msgid "Thread broken"
 msgstr "W±tek zosta³ przerwany"
 
-#: curs_main.c:1249
+#: curs_main.c:1245
 msgid "link threads"
 msgstr "po³±cz w±tki"
 
-#: curs_main.c:1254
+#: curs_main.c:1250
 msgid "No Message-ID: header available to link thread"
 msgstr "Brak nag³ówka Message-ID: wymaganego do po³±czenia w±tków"
 
-#: curs_main.c:1256
+#: curs_main.c:1252
 msgid "First, please tag a message to be linked here"
 msgstr "Najpierw zaznacz list do po³±czenia"
 
-#: curs_main.c:1268
+#: curs_main.c:1264
 msgid "Threads linked"
 msgstr "W±tki po³±czono"
 
-#: curs_main.c:1271
+#: curs_main.c:1267
 msgid "No thread linked"
 msgstr "W±tki nie zosta³y po³±czone"
 
-#: curs_main.c:1307 curs_main.c:1332
+#: curs_main.c:1303 curs_main.c:1328
 msgid "You are on the last message."
 msgstr "To jest ostatni list."
 
-#: curs_main.c:1314 curs_main.c:1358
+#: curs_main.c:1310 curs_main.c:1354
 msgid "No undeleted messages."
 msgstr "Brak odtworzonych listów."
 
-#: curs_main.c:1351 curs_main.c:1375
+#: curs_main.c:1347 curs_main.c:1371
 msgid "You are on the first message."
 msgstr "To jest pierwszy list."
 
-#: curs_main.c:1450 pattern.c:1479
+#: curs_main.c:1446 menu.c:766 pager.c:1986 pattern.c:1466
 msgid "Search wrapped to top."
 msgstr "Kontynuacja poszukiwania od pocz±tku."
 
-#: curs_main.c:1459 pattern.c:1490
+#: curs_main.c:1455 pager.c:2008 pattern.c:1477
 msgid "Search wrapped to bottom."
 msgstr "Kontynuacja poszukiwania od koñca."
 
-#: curs_main.c:1500
+#: curs_main.c:1496
 msgid "No new messages"
 msgstr "Brak nowych listów"
 
-#: curs_main.c:1500
+#: curs_main.c:1496
 msgid "No unread messages"
 msgstr "Przeczytano ju¿ wszystkie listy"
 
-#: curs_main.c:1501
+#: curs_main.c:1497
 msgid " in this limited view"
 msgstr " w trybie ograniczonego przegl±dania"
 
-#: curs_main.c:1517
+#: curs_main.c:1513
 msgid "flag message"
 msgstr "Zaznasz list"
 
-#: curs_main.c:1554 pager.c:2555
+#: curs_main.c:1550 pager.c:2564
 msgid "toggle new"
 msgstr "zaznacz jako nowy"
 
-#: curs_main.c:1631
+#: curs_main.c:1627
 msgid "No more threads."
 msgstr "Nie ma wiêcej w±tków."
 
-#: curs_main.c:1633
+#: curs_main.c:1629
 msgid "You are on the first thread."
 msgstr "To pierwszy w±tek."
 
-#: curs_main.c:1714
+#: curs_main.c:1710
 msgid "Thread contains unread messages."
 msgstr "W±tek zawiera nieprzeczytane listy."
 
-#: curs_main.c:1808 pager.c:2262
+#: curs_main.c:1804 pager.c:2271
 msgid "delete message"
 msgstr "skasuj list"
 
-#: curs_main.c:1890
+#: curs_main.c:1886
 msgid "edit message"
 msgstr "edytuj list"
 
-#: curs_main.c:2021
+#: curs_main.c:2017
 msgid "mark message(s) as read"
 msgstr "zaznacz li(s)t jako przeczytany"
 
-#: curs_main.c:2111 pager.c:2574
+#: curs_main.c:2107 pager.c:2583
 msgid "undelete message"
 msgstr "odtwórz listy"
 
@@ -1799,85 +1813,90 @@ msgstr "Nie mo¿na dopisaæ do skrzynki: %s"
 msgid "Error. Preserving temporary file: %s"
 msgstr "B³±d. Zachowano plik tymczasowy: %s"
 
-#: flags.c:329
+#: flags.c:325
 msgid "Set flag"
 msgstr "Ustaw flagê"
 
-#: flags.c:329
+#: flags.c:325
 msgid "Clear flag"
 msgstr "Wyczy¶æ flagê"
 
-#: handler.c:1049
+#: handler.c:1070
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
 msgstr ""
 "[--B³±d: Nie mo¿na wy¶wietliæ ¿adnego z fragmentów Multipart/Alternative! "
 "--]\n"
 
-#: handler.c:1166
+#: handler.c:1187
 #, c-format
 msgid "[-- Attachment #%d"
 msgstr "[-- Za³±cznik #%d"
 
-#: handler.c:1178
+#: handler.c:1199
 #, c-format
 msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Typ: %s/%s, Kodowanie: %s, Wielko¶æ: %s --]\n"
 
-#: handler.c:1250
+#: handler.c:1223
+#, fuzzy
+msgid "One or more parts of this message could not be displayed"
+msgstr "Ostrze¿enie: fragment tej wiadomo¶ci nie zosta³ podpisany."
+
+#: handler.c:1275
 #, c-format
 msgid "[-- Autoview using %s --]\n"
 msgstr "[-- Podgl±d za pomoc± %s --]\n"
 
-#: handler.c:1251
+#: handler.c:1276
 #, c-format
 msgid "Invoking autoview command: %s"
 msgstr "Wywo³ywanie polecenia podgl±du: %s"
 
-#: handler.c:1283
+#: handler.c:1308
 #, c-format
 msgid "[-- Can't run %s. --]\n"
 msgstr "[-- Nie mo¿na uruchomiæ %s. --]\n"
 
-#: handler.c:1302 handler.c:1323
+#: handler.c:1327 handler.c:1348
 #, c-format
 msgid "[-- Autoview stderr of %s --]\n"
 msgstr "[-- Komunikaty b³êdów %s --]\n"
 
-#: handler.c:1362
+#: handler.c:1387
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
 "[-- B³±d: message/external-body nie ma ustawionego rodzaju dostêpu --]\n"
 
-#: handler.c:1383
+#: handler.c:1408
 #, c-format
 msgid "[-- This %s/%s attachment "
 msgstr "[-- Ten za³±cznik typu %s/%s "
 
-#: handler.c:1390
+#: handler.c:1415
 #, c-format
 msgid "(size %s bytes) "
 msgstr "(o wielko¶ci %s bajtów) "
 
-#: handler.c:1392
+#: handler.c:1417
 msgid "has been deleted --]\n"
 msgstr "zosta³ usuniêty --]\n"
 
-#: handler.c:1397
+#: handler.c:1422
 #, c-format
 msgid "[-- on %s --]\n"
 msgstr "[-- na %s --]\n"
 
-#: handler.c:1402
+#: handler.c:1427
 #, c-format
 msgid "[-- name: %s --]\n"
 msgstr "[-- nazwa: %s --]\n"
 
-#: handler.c:1415 handler.c:1431
+#: handler.c:1440 handler.c:1456
 #, c-format
 msgid "[-- This %s/%s attachment is not included, --]\n"
 msgstr "[-- Ten za³±cznik typu %s/%s nie jest zawarty, --]\n"
 
-#: handler.c:1417
+#: handler.c:1442
 msgid ""
 "[-- and the indicated external source has --]\n"
 "[-- expired. --]\n"
@@ -1885,38 +1904,38 @@ msgstr ""
 "[-- a podane ¼ród³o zewnêtrzne jest --]\n"
 "[-- nieaktualne. --]\n"
 
-#: handler.c:1435
+#: handler.c:1460
 #, c-format
 msgid "[-- and the indicated access-type %s is unsupported --]\n"
 msgstr "[-- a podany typ dostêpu %s nie jest obs³ugiwany --]\n"
 
-#: handler.c:1550
+#: handler.c:1575
 msgid "Error: multipart/signed has no protocol."
 msgstr "B³±d: multipart/signed nie ma protoko³u."
 
-#: handler.c:1560
+#: handler.c:1585
 msgid "Error: multipart/encrypted has no protocol parameter!"
 msgstr "B³±d: multipart/encrypted nie ma parametru protoko³u!"
 
-#: handler.c:1600
+#: handler.c:1639
 msgid "Unable to open temporary file!"
 msgstr "Nie mo¿na otworzyæ pliku tymczasowego!"
 
-#: handler.c:1667
+#: handler.c:1706
 #, c-format
 msgid "[-- %s/%s is unsupported "
 msgstr "[-- typ %s/%s nie jest obs³ugiwany "
 
-#: handler.c:1672
+#: handler.c:1711
 #, c-format
 msgid "(use '%s' to view this part)"
 msgstr "(u¿yj '%s' do ogl±dania tego fragmentu)"
 
-#: handler.c:1674
+#: handler.c:1713
 msgid "(need 'view-attachments' bound to key!)"
 msgstr "(przypisz 'view-attachments' do klawisza!)"
 
-#: headers.c:177
+#: headers.c:173
 #, c-format
 msgid "%s: unable to attach file"
 msgstr "%s: nie mo¿na do³±czyæ pliku"
@@ -1974,7 +1993,7 @@ msgstr "unhook: nieznany typ polecenia hook: %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook: Nie mo¿na skasowaæ %s z wewn±trz %s."
 
-#: imap/auth.c:108 pop_auth.c:398 smtp.c:452
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:483
 msgid "No authenticators available"
 msgstr "¯adna z metod uwierzytelniania nie jest dostêpna"
 
@@ -1995,11 +2014,11 @@ msgid "CRAM-MD5 authentication failed."
 msgstr "Uwierzytelnianie CRAM-MD5 nie powiod³o siê."
 
 #. now begin login
-#: imap/auth_gss.c:142
+#: imap/auth_gss.c:144
 msgid "Authenticating (GSSAPI)..."
 msgstr "Uwierzytelnianie (GSSAPI)..."
 
-#: imap/auth_gss.c:307
+#: imap/auth_gss.c:309
 msgid "GSSAPI authentication failed."
 msgstr "Uwierzytelnianie GSSAPI nie powiod³o siê."
 
@@ -2015,7 +2034,7 @@ msgstr "Logowanie..."
 msgid "Login failed."
 msgstr "Zalogowanie nie powiod³o siê."
 
-#: imap/auth_sasl.c:97 smtp.c:487
+#: imap/auth_sasl.c:97 smtp.c:519
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Uwierzytelnianie (%s)..."
@@ -2024,7 +2043,7 @@ msgstr "Uwierzytelnianie (%s)..."
 msgid "SASL authentication failed."
 msgstr "Uwierzytelnianie SASL nie powiod³o siê."
 
-#: imap/browse.c:58 imap/imap.c:562
+#: imap/browse.c:58 imap/imap.c:567
 #, c-format
 msgid "%s is an invalid IMAP path"
 msgstr "%s jest b³êdn± ¶cie¿k± IMAP"
@@ -2037,412 +2056,422 @@ msgstr "Pobieranie listy skrzynek..."
 msgid "No such folder"
 msgstr "Brak skrzynki"
 
-#: imap/browse.c:276
+#: imap/browse.c:278
 msgid "Create mailbox: "
 msgstr "Nazwa skrzynki: "
 
-#: imap/browse.c:281 imap/browse.c:327
+#: imap/browse.c:283 imap/browse.c:329
 msgid "Mailbox must have a name."
 msgstr "Skrzynka musi zostaæ nazwana."
 
-#: imap/browse.c:289
+#: imap/browse.c:291
 msgid "Mailbox created."
 msgstr "Skrzynka zosta³a utworzona."
 
-#: imap/browse.c:320
+#: imap/browse.c:322
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Zmieñ nazwê skrzynki %s na: "
 
-#: imap/browse.c:333
+#: imap/browse.c:337
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Zmiana nazwy nie powiod³a siê: %s"
 
-#: imap/browse.c:338
+#: imap/browse.c:342
 msgid "Mailbox renamed."
 msgstr "Nazwa zosta³a zmieniona."
 
-#: imap/command.c:372
+#: imap/command.c:448
 msgid "Mailbox closed"
 msgstr "Skrzynka zosta³a zamkniêta"
 
-#: imap/imap.c:185
+#: imap/imap.c:126
+#, fuzzy, c-format
+msgid "CREATE failed: %s"
+msgstr "SSL nie powiod³o siê: %s"
+
+#: imap/imap.c:190
 #, c-format
 msgid "Closing connection to %s..."
 msgstr "Zamykanie po³±czenia do %s..."
 
-#: imap/imap.c:306
+#: imap/imap.c:311
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Zbyt stara wersja serwera IMAP. Praca z tym serwerem nie jest mo¿liwa."
 
-#: imap/imap.c:429 pop_lib.c:286 smtp.c:373
+#: imap/imap.c:434 pop_lib.c:286 smtp.c:392
 msgid "Secure connection with TLS?"
 msgstr "Po³±czyæ u¿ywaj±c TLS?"
 
-#: imap/imap.c:438 pop_lib.c:306 smtp.c:385
+#: imap/imap.c:443 pop_lib.c:306 smtp.c:404
 msgid "Could not negotiate TLS connection"
 msgstr "Po³±czenie TSL nie zosta³o wynegocjowane"
 
-#: imap/imap.c:454 pop_lib.c:327
+#: imap/imap.c:459 pop_lib.c:327
 msgid "Encrypted connection unavailable"
 msgstr "Po³±czenie szyfrowane nie jest dostêpne"
 
-#: imap/imap.c:594
+#: imap/imap.c:601
 #, c-format
 msgid "Selecting %s..."
 msgstr "Wybieranie %s..."
 
-#: imap/imap.c:749
+#: imap/imap.c:756
 msgid "Error opening mailbox"
 msgstr "B³±d otwarcia skrzynki"
 
-#: imap/imap.c:802 imap/message.c:792 muttlib.c:1466
+#: imap/imap.c:811 imap/message.c:834 muttlib.c:1478
 #, c-format
 msgid "Create %s?"
 msgstr "Utworzyæ %s?"
 
-#: imap/imap.c:1132
+#: imap/imap.c:1183
+msgid "Expunge failed"
+msgstr "Skasowanie nie powiod³o siê"
+
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Zaznaczanie %d listów jako skasowanych..."
 
-#: imap/imap.c:1141
-msgid "Expunge failed"
-msgstr "Skasowanie nie powiod³o siê"
-
-#: imap/imap.c:1174
+#: imap/imap.c:1224
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Zapisywanie zmienionych listów... [%d/%d]"
 
-#: imap/imap.c:1228
+#: imap/imap.c:1273
 msgid "Error saving flags. Close anyway?"
 msgstr "B³±d zapisywania listów. Potwierdzasz wyj¶cie?"
 
-#: imap/imap.c:1236
+#: imap/imap.c:1281
 msgid "Error saving flags"
 msgstr "B³±d zapisywania flag"
 
-#: imap/imap.c:1248
+#: imap/imap.c:1293
 msgid "Expunging messages from server..."
 msgstr "Kasowanie listów na serwerze... "
 
-#: imap/imap.c:1253
+#: imap/imap.c:1298
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: skasowanie nie powiod³o siê"
 
-#: imap/imap.c:1726
+#: imap/imap.c:1746
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Nie podano nazwy nag³ówka: %s"
 
-#: imap/imap.c:1798
+#: imap/imap.c:1818
 msgid "Bad mailbox name"
 msgstr "B³êdna nazwa skrzynki"
 
-#: imap/imap.c:1821
+#: imap/imap.c:1843
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Subskrybowanie %s..."
 
-#: imap/imap.c:1823
+#: imap/imap.c:1845
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Odsubskrybowanie %s..."
 
-#: imap/imap.c:1833
+#: imap/imap.c:1855
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Zasybskrybowano %s"
 
-#: imap/imap.c:1835
+#: imap/imap.c:1857
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Odsubskrybowano %s"
 
 #. Unable to fetch headers for lower versions
-#: imap/message.c:97
+#: imap/message.c:98
 msgid "Unable to fetch headers from this IMAP server version."
 msgstr "Nie mo¿na pobraæ nag³ówków z serwera IMAP w tej wersji."
 
-#: imap/message.c:107
+#: imap/message.c:108
 #, c-format
 msgid "Could not create temporary file %s"
 msgstr "Nie mo¿na utworzyæ pliku tymczasowego %s"
 
-#: imap/message.c:137
+#: imap/message.c:140
 msgid "Evaluating cache..."
 msgstr "Sprawdzanie pamiêci podrêcznej..."
 
-#: imap/message.c:221 pop.c:272
+#: imap/message.c:232 pop.c:272
 msgid "Fetching message headers..."
 msgstr "Pobieranie nag³ówków..."
 
-#: imap/message.c:402 imap/message.c:459 pop.c:547
+#: imap/message.c:428 imap/message.c:485 pop.c:547
 msgid "Fetching message..."
 msgstr "Pobieranie listu..."
 
-#: imap/message.c:448 pop.c:542
+#: imap/message.c:474 pop.c:542
 msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr "B³êdny indeks listów. Spróbuj ponownie otworzyæ skrzynkê."
 
-#: imap/message.c:599
+#: imap/message.c:627
 msgid "Uploading message..."
 msgstr "£adowanie listu..."
 
-#: imap/message.c:758
+#: imap/message.c:798
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Kopiowanie %d listów do %s..."
 
-#: imap/message.c:762
+#: imap/message.c:802
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Kopiowanie listu %d do %s..."
 
-#: imap/util.c:335
+#: imap/util.c:336
 msgid "Continue?"
 msgstr "Kontynuowaæ?"
 
-#: init.c:57 init.c:1755 pager.c:57
+#: init.c:58 init.c:1777 pager.c:50
 #, c-format
 msgid "Not available in this menu."
 msgstr "Nie ma takiego polecenia w tym menu."
 
-#: init.c:465
+#: init.c:466
 #, c-format
 msgid "Bad regexp: %s"
 msgstr "B³±d w wyra¿eniu regularnym: %s"
 
-#: init.c:522
+#: init.c:523
 #, c-format
 msgid "Not enough subexpressions for spam template"
 msgstr "Zbyt ma³o podwyra¿eñ dla wzorca spamu"
 
-#: init.c:748
+#: init.c:749
 msgid "spam: no matching pattern"
 msgstr "Spam: brak pasuj±cego wzorca"
 
-#: init.c:750
+#: init.c:751
 msgid "nospam: no matching pattern"
 msgstr "NieSpam: brak pasuj±cego wzorca"
 
-#: init.c:887
+#: init.c:888
 msgid "Missing -rx or -addr."
 msgstr "Brak -rx lub -addr."
 
-#: init.c:900
+#: init.c:901
 #, c-format
 msgid "Warning: Bad IDN '%s'.\n"
 msgstr "Ostrze¿enie: b³êdny IDN '%s'.\n"
 
-#: init.c:1108
+#: init.c:1109
 msgid "attachments: no disposition"
 msgstr "za³±czniki: brak specyfikacji inline/attachment"
 
-#: init.c:1146
+#: init.c:1147
 msgid "attachments: invalid disposition"
 msgstr "za³±czniki: b³êdna specyfikacja inline/attachment"
 
-#: init.c:1160
+#: init.c:1161
 msgid "unattachments: no disposition"
 msgstr "brak specyfikacji inline/attachment"
 
-#: init.c:1183
+#: init.c:1184
 msgid "unattachments: invalid disposition"
 msgstr "b³êdna specyfikacja inline/attachment"
 
-#: init.c:1310
+#: init.c:1311
 msgid "alias: no address"
 msgstr "alias: brak adresu"
 
-#: init.c:1357
+#: init.c:1359
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
 msgstr "Ostrze¿enie: b³êdny IDN '%s' w aliasie '%s'.\n"
 
-#: init.c:1445
+#: init.c:1447
 msgid "invalid header field"
 msgstr "nieprawid³owy nag³ówek"
 
-#: init.c:1498
+#: init.c:1500
 #, c-format
 msgid "%s: unknown sorting method"
 msgstr "%s: nieznana metoda sortowania"
 
-#: init.c:1608
+#: init.c:1610
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s): b³±d w wyra¿eniu regularnym: %s\n"
 
-#: init.c:1732 init.c:1845
+#: init.c:1754 init.c:1867
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s: nieznana zmienna"
 
-#: init.c:1741
+#: init.c:1763
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "reset: nieprawid³owy prefiks"
 
-#: init.c:1747
+#: init.c:1769
 #, c-format
 msgid "value is illegal with reset"
 msgstr "reset: nieprawid³owa warto¶æ"
 
-#: init.c:1783 init.c:1795
+#: init.c:1805 init.c:1817
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "U¿ycie: set variable=yes|no"
 
-#: init.c:1803
+#: init.c:1825
 #, c-format
 msgid "%s is set"
 msgstr "%s ustawiony"
 
-#: init.c:1803
+#: init.c:1825
 #, c-format
 msgid "%s is unset"
 msgstr "%s nie jest ustawiony"
 
-#: init.c:2033
+#: init.c:1926
+#, fuzzy, c-format
+msgid "Invalid value for option %s: \"%s\""
+msgstr "Niew³a¶ciwy dzieñ miesi±ca: %s"
+
+#: init.c:2064
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s: nieprawid³owy typ skrzynki"
 
-#: init.c:2064 init.c:2117
+#: init.c:2095 init.c:2155
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s: nieprawid³owa warto¶æ"
 
-#: init.c:2158
+#: init.c:2196
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s: nieznany typ"
 
-#: init.c:2185
+#: init.c:2223
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s: nieprawid³owy typ"
 
-#: init.c:2247
+#: init.c:2285
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "B³±d w %s, linia %d: %s"
 
 #. the muttrc source keyword
-#: init.c:2270
+#: init.c:2308
 #, c-format
 msgid "source: errors in %s"
 msgstr "source: b³êdy w %s"
 
-#: init.c:2271
+#: init.c:2309
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source: wczytywanie zaniechane z powodu zbyt wielu b³êdów w %s"
 
-#: init.c:2285
+#: init.c:2323
 #, c-format
 msgid "source: error at %s"
 msgstr "source: b³êdy w %s"
 
-#: init.c:2290
+#: init.c:2328
 msgid "source: too many arguments"
 msgstr "source: zbyt wiele argumentów"
 
-#: init.c:2341
+#: init.c:2382
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s: nieznane polecenie"
 
-#: init.c:2826
+#: init.c:2867
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "B³±d w poleceniu: %s\n"
 
-#: init.c:2878
+#: init.c:2922
 msgid "unable to determine home directory"
 msgstr "nie mo¿na ustaliæ po³o¿enia katalogu domowego"
 
-#: init.c:2886
+#: init.c:2930
 msgid "unable to determine username"
 msgstr "nie mo¿na ustaliæ nazwy u¿ytkownika"
 
-#: init.c:3122
+#: init.c:3166
 msgid "-group: no group name"
 msgstr "-group: brak nazwy grupy"
 
-#: init.c:3132
+#: init.c:3176
 msgid "out of arguments"
 msgstr "brak argumentów"
 
-#: keymap.c:466
+#: keymap.c:491
 msgid "Macro loop detected."
 msgstr "Wykryto pêtlê w makrze."
 
-#: keymap.c:676 keymap.c:684
+#: keymap.c:701 keymap.c:709
 msgid "Key is not bound."
 msgstr "Klawisz nie zosta³ przypisany."
 
-#: keymap.c:688
+#: keymap.c:713
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Klawisz nie zosta³ przypisany. Aby uzyskaæ pomoc przyci¶nij '%s'."
 
-#: keymap.c:699
+#: keymap.c:724
 msgid "push: too many arguments"
 msgstr "push: zbyt wiele argumentów"
 
-#: keymap.c:729
+#: keymap.c:754
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: nie ma takiego menu"
 
-#: keymap.c:744
+#: keymap.c:769
 msgid "null key sequence"
 msgstr "pusta sekwencja klawiszy"
 
-#: keymap.c:831
+#: keymap.c:856
 msgid "bind: too many arguments"
 msgstr "bind: zbyt wiele argumentów"
 
-#: keymap.c:854
+#: keymap.c:879
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: nie ma takiej funkcji"
 
-#: keymap.c:878
+#: keymap.c:903
 msgid "macro: empty key sequence"
 msgstr "macro: pusta sekwencja klawiszy"
 
-#: keymap.c:889
+#: keymap.c:914
 msgid "macro: too many arguments"
 msgstr "macro: zbyt wiele argumentów"
 
-#: keymap.c:925
+#: keymap.c:950
 msgid "exec: no arguments"
 msgstr "exec: brak argumentów"
 
-#: keymap.c:945
+#: keymap.c:970
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: brak takiej funkcji"
 
-#: keymap.c:966
+#: keymap.c:991
 msgid "Enter keys (^G to abort): "
 msgstr "Wprowad¼ klucze (^G aby przerwaæ): "
 
-#: keymap.c:971
+#: keymap.c:996
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Znak = %s, ósemkowo = %o, dziesiêtnie = %d"
 
-#: lib.c:129
+#: lib.c:131
 msgid "Integer overflow -- can't allocate memory!"
 msgstr "Przepe³nienie zmiennej ca³kowitej - nie mo¿na zaalokowaæ pamiêci!"
 
-#: lib.c:136 lib.c:151 lib.c:183
+#: lib.c:138 lib.c:153 lib.c:185
 msgid "Out of memory!"
 msgstr "Brak pamiêci!"
 
@@ -2457,7 +2486,7 @@ msgstr ""
 #: main.c:67
 #, fuzzy
 msgid ""
-"Copyright (C) 1996-2008 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2009 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
@@ -2474,11 +2503,12 @@ msgstr ""
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2006-2008 Rocco Rutte <pdmef@gmx.net>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
@@ -2494,7 +2524,7 @@ msgstr ""
 "Wielu innych twórców, nie wspomnianych tutaj,\n"
 "wnios³o wiele nowego kodu, poprawek i sugestii.\n"
 
-#: main.c:85
+#: main.c:86
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -2517,7 +2547,7 @@ msgstr ""
 "CELÓW.\n"
 "   Szczegó³y znajdziesz w Powszechnej Licencji Publicznej GNU.\n"
 
-#: main.c:95
+#: main.c:96
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
@@ -2529,11 +2559,14 @@ msgstr ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
 "1301, USA.\n"
 
-#: main.c:112
+#: main.c:113
+#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...]] [--] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] "
+"<addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2549,7 +2582,7 @@ msgstr ""
 "       mutt [<opcje>] -D\n"
 "       mutt -v[v]\n"
 
-#: main.c:120
+#: main.c:122
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -2565,11 +2598,11 @@ msgstr ""
 "  -c <adres>\tpodaj adres carbon-copy (CC)\n"
 "  -D\t\twydrukuj warto¶ci wszystkich zmiennych"
 
-#: main.c:128
+#: main.c:130
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <poziom>\tzapisuj komunikaty debugowania do ~/.muttdebug0"
 
-#: main.c:131
+#: main.c:133
 msgid ""
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
@@ -2589,7 +2622,7 @@ msgstr ""
 "  -n\t\tnie czytaj systemowego Muttrc\n"
 "  -p\t\tponownie edytuj zarzucony list"
 
-#: main.c:140
+#: main.c:142
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -2611,7 +2644,7 @@ msgstr ""
 "  -Z\t\totwórz pierwsz± skrzynkê z nowym listem i wyjd¼ je¶li brak nowych\n"
 "  -h\t\tten tekst"
 
-#: main.c:150
+#: main.c:152
 msgid ""
 "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 "\t\twhen using -a with multiple filenames using -- is mandatory"
@@ -2621,7 +2654,7 @@ msgstr ""
 "\t\tu¿ycie -- jest wymagane, je¶li jednocze¶nie zastosowano -a dla obs³ugi "
 "wielu plików"
 
-#: main.c:195
+#: main.c:197
 msgid ""
 "\n"
 "Compile options:"
@@ -2629,55 +2662,55 @@ msgstr ""
 "\n"
 "Parametry kompilacji:"
 
-#: main.c:502
+#: main.c:501
 msgid "Error initializing terminal."
 msgstr "B³±d inicjalizacji terminala."
 
-#: main.c:620
+#: main.c:635
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Diagnostyka b³êdów na poziomie %d.\n"
 
-#: main.c:622
+#: main.c:637
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "Diagnostyka b³êdów nie zosta³a wkompilowane. Zignorowano.\n"
 
-#: main.c:785
+#: main.c:802
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s nie istnieje. Utworzyæ?"
 
-#: main.c:789
+#: main.c:806
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Nie mo¿na utworzyæ %s: %s."
 
-#: main.c:831
+#: main.c:848
 msgid "Failed to parse mailto: link\n"
 msgstr ""
 
-#: main.c:843
+#: main.c:860
 msgid "No recipients specified.\n"
 msgstr "Nie wskazano adresatów listu.\n"
 
-#: main.c:929
+#: main.c:946
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s: nie mo¿na do³±czyæ pliku.\n"
 
-#: main.c:952
+#: main.c:969
 msgid "No mailbox with new mail."
 msgstr "Brak skrzynki z now± poczt±."
 
-#: main.c:961
+#: main.c:978
 msgid "No incoming mailboxes defined."
 msgstr "Nie zdefiniowano po³o¿enia skrzynek z now± poczt±."
 
-#: main.c:989
+#: main.c:1006
 msgid "Mailbox is empty."
 msgstr "Skrzynka pocztowa jest pusta."
 
-#: mbox.c:123 mbox.c:277 mh.c:1137 mx.c:673
+#: mbox.c:123 mbox.c:277 mh.c:1135 mx.c:673
 #, c-format
 msgid "Reading %s..."
 msgstr "Czytanie %s..."
@@ -2690,7 +2723,7 @@ msgstr "Skrzynka jest uszkodzona!"
 msgid "Mailbox was corrupted!"
 msgstr "Skrzynka pocztowa zosta³a uszkodzona!"
 
-#: mbox.c:719 mbox.c:975
+#: mbox.c:719 mbox.c:976
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "B³±d! Nie mo¿na ponownie otworzyæ skrzynki!"
 
@@ -2708,7 +2741,7 @@ msgstr ""
 "sync: skrzynka zmodyfikowana, ale ¿aden z listów nie zosta³ zmieniony! "
 "(zg³o¶ ten b³±d)"
 
-#: mbox.c:795 mh.c:1636 mx.c:766
+#: mbox.c:795 mh.c:1640 mx.c:766
 #, c-format
 msgid "Writing %s..."
 msgstr "Zapisywanie %s..."
@@ -2716,98 +2749,103 @@ msgstr "Zapisywanie %s..."
 #. copy the temp mailbox back into place starting at the first
 #. * change/deleted message
 #.
-#: mbox.c:928
+#: mbox.c:929
 msgid "Committing changes..."
 msgstr "Wprowadzanie zmian..."
 
-#: mbox.c:959
+#: mbox.c:960
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Zapis niemo¿liwy! Zapisano czê¶æ skrzynki do %s"
 
-#: mbox.c:1023
+#: mbox.c:1024
 msgid "Could not reopen mailbox!"
 msgstr "Nie mo¿na ponownie otworzyæ skrzynki pocztowej!"
 
-#: mbox.c:1058
+#: mbox.c:1059
 msgid "Reopening mailbox..."
 msgstr "Ponowne otwieranie skrzynki..."
 
-#: menu.c:425
+#: menu.c:423
 msgid "Jump to: "
 msgstr "Przeskocz do: "
 
-#: menu.c:434
+#: menu.c:432
 msgid "Invalid index number."
 msgstr "Niew³a¶ciwy numer indeksu."
 
-#: menu.c:438 menu.c:459 menu.c:524 menu.c:567 menu.c:583 menu.c:594
-#: menu.c:605 menu.c:616 menu.c:629 menu.c:642 menu.c:1043
+#: menu.c:436 menu.c:457 menu.c:522 menu.c:565 menu.c:581 menu.c:592
+#: menu.c:603 menu.c:614 menu.c:627 menu.c:640 menu.c:1058
 msgid "No entries."
 msgstr "Brak pozycji."
 
-#: menu.c:456
+#: menu.c:454
 msgid "You cannot scroll down farther."
 msgstr "Nie mo¿na ni¿ej przewin±æ."
 
-#: menu.c:474
+#: menu.c:472
 msgid "You cannot scroll up farther."
 msgstr "Nie mo¿na wy¿ej przewin±æ."
 
-#: menu.c:517
+#: menu.c:515
 msgid "You are on the first page."
 msgstr "To jest pierwsza strona."
 
-#: menu.c:518
+#: menu.c:516
 msgid "You are on the last page."
 msgstr "To jest ostatnia strona."
 
-#: menu.c:653
+#: menu.c:651
 msgid "You are on the last entry."
 msgstr "To jest ostatnia pozycja."
 
-#: menu.c:664
+#: menu.c:662
 msgid "You are on the first entry."
 msgstr "To jest pierwsza pozycja."
 
-#: menu.c:724 pattern.c:1417
+#: menu.c:731 pattern.c:1404
 msgid "Search for: "
 msgstr "Szukaj frazy: "
 
-#: menu.c:725 pattern.c:1418
+#: menu.c:732 pattern.c:1405
 msgid "Reverse search for: "
 msgstr "Szukaj frazy w przeciwnym kierunku: "
 
-#: menu.c:735 pattern.c:1450
+#: menu.c:746 pattern.c:1437
 msgid "No search pattern."
 msgstr "Nie ustalono wzorca poszukiwañ."
 
-#: menu.c:765 pager.c:1987 pager.c:2003 pager.c:2111 pattern.c:1533
+#: menu.c:784 pager.c:1983 pager.c:2005 pager.c:2120 pattern.c:1520
 msgid "Not found."
 msgstr "Nic nie znaleziono."
 
-#: menu.c:895
+#: menu.c:910
 msgid "No tagged entries."
 msgstr "Brak zaznaczonych pozycji listy."
 
-#: menu.c:1000
+#: menu.c:1015
 msgid "Search is not implemented for this menu."
 msgstr "Poszukiwanie nie jest mo¿liwe w tym menu."
 
-#: menu.c:1005
+#: menu.c:1020
 msgid "Jumping is not implemented for dialogs."
 msgstr "Przeskakiwanie nie jest mo¿liwe w oknach dialogowych."
 
-#: menu.c:1046
+#: menu.c:1061
 msgid "Tagging is not supported."
 msgstr "Zaznaczanie nie jest obs³ugiwane."
 
-#: mh.c:1116
+#: mh.c:1114
 #, c-format
 msgid "Scanning %s..."
 msgstr "Sprawdzanie %s..."
 
-#: mh.c:1358
+#: mh.c:1314 mh.c:1392
+#, fuzzy
+msgid "Could not flush message to disk"
+msgstr "Wys³anie listu nie powiod³o siê."
+
+#: mh.c:1359
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message(): nie mo¿na nadaæ plikowi daty"
 
@@ -2827,230 +2865,247 @@ msgstr "SASL: b³±d konfigurowania parametrów zabezpieczeñ"
 msgid "Error setting SASL external security strength"
 msgstr "SASL: b³±d konfigurowania SSF hosta zdalnego"
 
-#: mutt_sasl.c:252
+#: mutt_sasl.c:255
 msgid "Error setting SASL external user name"
 msgstr "SASL: b³±d konfigurowania nazwy u¿ytkownika hosta zdalnego"
 
-#: mutt_socket.c:103 mutt_socket.c:174
+#: mutt_socket.c:103 mutt_socket.c:181
 #, c-format
 msgid "Connection to %s closed"
 msgstr "Po³±czenie z %s zosta³o zakoñczone"
 
-#: mutt_socket.c:294
+#: mutt_socket.c:300
 msgid "SSL is unavailable."
 msgstr "Protokó³ SSL nie jest dostêpny."
 
-#: mutt_socket.c:326
+#: mutt_socket.c:332
 msgid "Preconnect command failed."
 msgstr "Polecenie 'preconnect' nie powiod³o siê."
 
-#: mutt_socket.c:397 mutt_socket.c:411
+#: mutt_socket.c:403 mutt_socket.c:417
 #, c-format
 msgid "Error talking to %s (%s)"
 msgstr "B³±d komunikacji z %s (%s)"
 
-#: mutt_socket.c:464 mutt_socket.c:522
+#: mutt_socket.c:470 mutt_socket.c:529
 #, c-format
 msgid "Bad IDN \"%s\"."
 msgstr "B³êdny IDN \"%s\"."
 
-#: mutt_socket.c:471 mutt_socket.c:529
+#: mutt_socket.c:478 mutt_socket.c:537
 #, c-format
 msgid "Looking up %s..."
 msgstr "Wyszukiwanie %s..."
 
-#: mutt_socket.c:482 mutt_socket.c:536
+#: mutt_socket.c:488 mutt_socket.c:546
 #, c-format
 msgid "Could not find the host \"%s\""
 msgstr "Host \"%s\" nie zosta³ znaleziony"
 
-#: mutt_socket.c:487 mutt_socket.c:545
+#: mutt_socket.c:494 mutt_socket.c:552
 #, c-format
 msgid "Connecting to %s..."
 msgstr "£±czenie z %s..."
 
-#: mutt_socket.c:569
+#: mutt_socket.c:576
 #, c-format
 msgid "Could not connect to %s (%s)."
 msgstr "Po³±czenie z %s (%s) nie zosta³o ustanowione."
 
-#: mutt_ssl.c:175
+#: mutt_ssl.c:183
 msgid "Failed to find enough entropy on your system"
 msgstr "Zgromadzenie odpowiedniej ilo¶ci entropii nie powiod³o siê"
 
-#: mutt_ssl.c:199
+#: mutt_ssl.c:207
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Wype³nianie zbiornika entropii: %s...\n"
 
-#: mutt_ssl.c:207
+#: mutt_ssl.c:215
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "Prawa dostêpu do %s mog± powodowaæ problemy z bezpieczeñstwem!"
 
-#: mutt_ssl.c:226
+#: mutt_ssl.c:234
 msgid "SSL disabled due the lack of entropy"
 msgstr "Protokó³ SSL nie mo¿e zostaæ u¿yty ze wzglêdu na brak entropii"
 
-#: mutt_ssl.c:323
+#: mutt_ssl.c:331
 msgid "I/O error"
 msgstr "B³±d wej¶cia/wyj¶cia"
 
-#: mutt_ssl.c:332
+#: mutt_ssl.c:340
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL nie powiod³o siê: %s"
 
-#: mutt_ssl.c:341 mutt_ssl_gnutls.c:504 mutt_ssl_gnutls.c:513
-#: mutt_ssl_gnutls.c:542
+#: mutt_ssl.c:349 mutt_ssl_gnutls.c:880 mutt_ssl_gnutls.c:889
+#: mutt_ssl_gnutls.c:912
 msgid "Unable to get certificate from peer"
 msgstr "Nie mo¿na pobraæ certyfikatu z docelowego hosta"
 
-#: mutt_ssl.c:349
+#: mutt_ssl.c:357
 #, c-format
 msgid "SSL connection using %s (%s)"
 msgstr "Po³±czenie SSL przy u¿yciu %s (%s)"
 
-#: mutt_ssl.c:393
+#: mutt_ssl.c:401
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: mutt_ssl.c:418 mutt_ssl_gnutls.c:392
+#: mutt_ssl.c:426 mutt_ssl_gnutls.c:457
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[niemo¿liwe do wyznaczenia]"
 
-#: mutt_ssl.c:436 mutt_ssl_gnutls.c:415
+#: mutt_ssl.c:444 mutt_ssl_gnutls.c:480
 msgid "[invalid date]"
 msgstr "[b³êdna data]"
 
-#: mutt_ssl.c:557
+#: mutt_ssl.c:570
 msgid "Server certificate is not yet valid"
 msgstr "Certyfikat serwera nie uzyska³ jeszcze wa¿no¶ci"
 
-#: mutt_ssl.c:564
+#: mutt_ssl.c:577
 msgid "Server certificate has expired"
 msgstr "Certyfikat serwera utraci³ wa¿no¶æ"
 
-#: mutt_ssl.c:630 mutt_ssl_gnutls.c:645
+#: mutt_ssl.c:696
+#, fuzzy
+msgid "cannot get certificate subject"
+msgstr "Nie mo¿na pobraæ certyfikatu z docelowego hosta"
+
+#: mutt_ssl.c:708
+#, fuzzy
+msgid "cannot get certificate common name"
+msgstr "Nie mo¿na pobraæ certyfikatu z docelowego hosta"
+
+#: mutt_ssl.c:717
+#, fuzzy, c-format
+msgid "certificate owner does not match hostname %s"
+msgstr "W³a¶ciciel certyfikatu nie odpowiada nadawcy."
+
+#: mutt_ssl.c:754
+#, fuzzy, c-format
+msgid "Certificate host check failed: %s"
+msgstr "Certyfikat zosta³ zapisany"
+
+#: mutt_ssl.c:845 mutt_ssl_gnutls.c:664
 msgid "This certificate belongs to:"
 msgstr "Ten certyfikat nale¿y do:"
 
-#: mutt_ssl.c:641 mutt_ssl_gnutls.c:684
+#: mutt_ssl.c:858 mutt_ssl_gnutls.c:703
 msgid "This certificate was issued by:"
 msgstr "Ten certyfikat zosta³ wydany przez:"
 
-#: mutt_ssl.c:652 mutt_ssl_gnutls.c:723
+#: mutt_ssl.c:869 mutt_ssl_gnutls.c:742
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ten certyfikat jest wa¿ny"
 
-#: mutt_ssl.c:653 mutt_ssl_gnutls.c:726
+#: mutt_ssl.c:870 mutt_ssl_gnutls.c:745
 #, c-format
 msgid "   from %s"
 msgstr "   od %s"
 
-#: mutt_ssl.c:655 mutt_ssl_gnutls.c:730
+#: mutt_ssl.c:872 mutt_ssl_gnutls.c:749
 #, c-format
 msgid "     to %s"
 msgstr "     do %s"
 
-#: mutt_ssl.c:661
+#: mutt_ssl.c:878
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Odcisk: %s"
 
-#: mutt_ssl.c:663
-msgid "SSL Certificate check"
-msgstr "sprawdzanie certyfikatu SSL"
+#: mutt_ssl.c:881 mutt_ssl_gnutls.c:786
+#, c-format
+msgid "SSL Certificate check (certificate %d of %d in chain)"
+msgstr ""
 
-#: mutt_ssl.c:667 mutt_ssl_gnutls.c:771
+#: mutt_ssl.c:887 mutt_ssl_gnutls.c:793
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(o)drzuæ, zaakceptuj (r)az, (a)kceptuj zawsze"
 
-#: mutt_ssl.c:668 mutt_ssl_gnutls.c:772
+#: mutt_ssl.c:888 mutt_ssl_gnutls.c:794
 msgid "roa"
 msgstr "ora"
 
-#: mutt_ssl.c:672 mutt_ssl_gnutls.c:776
+#: mutt_ssl.c:892 mutt_ssl_gnutls.c:798
 msgid "(r)eject, accept (o)nce"
 msgstr "(o)drzuæ, zaakceptuj (r)az"
 
-#: mutt_ssl.c:673 mutt_ssl_gnutls.c:777
+#: mutt_ssl.c:893 mutt_ssl_gnutls.c:799
 msgid "ro"
 msgstr "or"
 
-#: mutt_ssl.c:704 mutt_ssl_gnutls.c:826
+#: mutt_ssl.c:924 mutt_ssl_gnutls.c:848
 msgid "Warning: Couldn't save certificate"
 msgstr "Ostrze¿enie: Nie mo¿na zapisaæ certyfikatu"
 
-#: mutt_ssl.c:709 mutt_ssl_gnutls.c:831
+#: mutt_ssl.c:929 mutt_ssl_gnutls.c:853
 msgid "Certificate saved"
 msgstr "Certyfikat zosta³ zapisany"
 
-#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:119
+#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:123
 msgid "Error: no TLS socket open"
 msgstr "B³±d: brak otwartego gniazdka TLS"
 
-#: mutt_ssl_gnutls.c:215
+#: mutt_ssl_gnutls.c:276
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Wszystkie dostêpne protoko³y po³±czenia TLS/SSL zosta³y zablokowane"
 
-#: mutt_ssl_gnutls.c:276
+#: mutt_ssl_gnutls.c:340
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Po³±czenie SSL/TLS u¿ywaj±c %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:519
-#, c-format
-msgid "Certificate verification error (%s)"
-msgstr "B³±d weryfikacji certyfikatu (%s)"
-
-#: mutt_ssl_gnutls.c:527
-msgid "Certificate is not X.509"
-msgstr "To nie jest certyfikat X.509"
-
-#: mutt_ssl_gnutls.c:534
+#: mutt_ssl_gnutls.c:567
 msgid "Error initialising gnutls certificate data"
 msgstr "B³±d inicjalizacji gnutls"
 
-#: mutt_ssl_gnutls.c:550
+#: mutt_ssl_gnutls.c:574
 msgid "Error processing certificate data"
 msgstr "B³±d przetwarzana certyfikatu"
 
-#: mutt_ssl_gnutls.c:735
+#: mutt_ssl_gnutls.c:754
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Odcisk SHA1: %s"
 
-#: mutt_ssl_gnutls.c:738
+#: mutt_ssl_gnutls.c:757
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Odcisk MD5: %s"
 
-#: mutt_ssl_gnutls.c:743
+#: mutt_ssl_gnutls.c:762
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "Ostrze¿enie: certyfikat serwera jeszcze nie uzyska³ wa¿no¶ci"
 
-#: mutt_ssl_gnutls.c:748
+#: mutt_ssl_gnutls.c:767
 msgid "WARNING: Server certificate has expired"
 msgstr "Ostrze¿enie: certyfikat serwera wygas³"
 
-#: mutt_ssl_gnutls.c:753
+#: mutt_ssl_gnutls.c:772
 msgid "WARNING: Server certificate has been revoked"
 msgstr "Ostrze¿enie: certyfikat serwera zosta³ odwo³any"
 
-#: mutt_ssl_gnutls.c:758
+#: mutt_ssl_gnutls.c:777
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "Ostrze¿enie: nazwa (hostname) serwera nie odpowiada certyfikatowi"
 
-#: mutt_ssl_gnutls.c:763
+#: mutt_ssl_gnutls.c:782
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "Ostrze¿enie: certyfikat nie zosta³ podpisany przez CA"
 
-#: mutt_ssl_gnutls.c:766
-msgid "TLS/SSL Certificate check"
-msgstr "TLS/SSL: sprawdzanie certyfikatu"
+#: mutt_ssl_gnutls.c:895
+#, c-format
+msgid "Certificate verification error (%s)"
+msgstr "B³±d weryfikacji certyfikatu (%s)"
+
+#: mutt_ssl_gnutls.c:904
+msgid "Certificate is not X.509"
+msgstr "To nie jest certyfikat X.509"
 
 #: mutt_tunnel.c:72
 #, c-format
@@ -3067,40 +3122,40 @@ msgstr "Zestawianie tunelu: %s zwróci³ b³±d %d (%s)"
 msgid "Tunnel error talking to %s: %s"
 msgstr "Zestawianie tunelu: b³±d komunikacji z %s: %s"
 
-#: muttlib.c:911
+#: muttlib.c:923
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr "Ten plik jest katalogim, zapisaæ w nim? [(t)ak, (n)ie, (w)szystkie]"
 
-#: muttlib.c:911
+#: muttlib.c:923
 msgid "yna"
 msgstr "tnw"
 
-#: muttlib.c:927
+#: muttlib.c:939
 msgid "File is a directory, save under it?"
 msgstr "Ten plik jest katalogim, zapisaæ w nim?"
 
-#: muttlib.c:933
+#: muttlib.c:945
 msgid "File under directory: "
 msgstr "Plik w katalogu: "
 
-#: muttlib.c:945
+#: muttlib.c:957
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Plik istnieje: (n)adpisaæ, (d)o³±czyæ czy (a)nulowaæ?"
 
-#: muttlib.c:945
+#: muttlib.c:957
 msgid "oac"
 msgstr "nda"
 
-#: muttlib.c:1429
+#: muttlib.c:1441
 msgid "Can't save message to POP mailbox."
 msgstr "Nie mo¿na zapisaæ listu w skrzynce POP."
 
-#: muttlib.c:1438
+#: muttlib.c:1450
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Dopisaæ listy do %s?"
 
-#: muttlib.c:1450
+#: muttlib.c:1462
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s nie jest skrzynk±!"
@@ -3203,149 +3258,149 @@ msgstr "Nie mo¿na zapisaæ listu"
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Przepe³nienie zmiennej ca³kowitej - nie mo¿na zaalokowaæ pamiêci."
 
-#: pager.c:1481
+#: pager.c:1480
 msgid "PrevPg"
 msgstr "PoprzStr"
 
-#: pager.c:1482
+#: pager.c:1481
 msgid "NextPg"
 msgstr "NastStr"
 
-#: pager.c:1486
+#: pager.c:1485
 msgid "View Attachm."
 msgstr "Zobacz za³."
 
-#: pager.c:1489
+#: pager.c:1488
 msgid "Next"
 msgstr "Nastêpny"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1895 pager.c:1926 pager.c:1958 pager.c:2199
+#: pager.c:1889 pager.c:1920 pager.c:1952 pager.c:2208
 msgid "Bottom of message is shown."
 msgstr "Pokazany jest koniec listu."
 
-#: pager.c:1911 pager.c:1933 pager.c:1940 pager.c:1947
+#: pager.c:1905 pager.c:1927 pager.c:1934 pager.c:1941
 msgid "Top of message is shown."
 msgstr "Pokazany jest pocz±tek listu."
 
-#: pager.c:2016
+#: pager.c:2024
 msgid "Reverse search: "
 msgstr "Szukaj w przeciwnym kierunku: "
 
-#: pager.c:2017
+#: pager.c:2025
 msgid "Search: "
 msgstr "Szukaj: "
 
-#: pager.c:2137
+#: pager.c:2146
 msgid "Help is currently being shown."
 msgstr "Pomoc jest w³a¶nie wy¶wietlana."
 
-#: pager.c:2166
+#: pager.c:2175
 msgid "No more quoted text."
 msgstr "Nie ma wiêcej cytowanego tekstu."
 
-#: pager.c:2179
+#: pager.c:2188
 msgid "No more unquoted text after quoted text."
 msgstr "Brak tekstu za cytowanym fragmentem."
 
-#: parse.c:622
+#: parse.c:577
 msgid "multipart message has no boundary parameter!"
 msgstr "wieloczê¶ciowy list nie posiada wpisu ograniczaj±cego!"
 
-#: pattern.c:275
+#: pattern.c:262
 #, c-format
 msgid "Error in expression: %s"
 msgstr "B³±d w wyra¿eniu: %s"
 
-#: pattern.c:280
+#: pattern.c:267
 #, c-format
 msgid "Empty expression"
 msgstr "Puste wyra¿enie"
 
-#: pattern.c:411
+#: pattern.c:398
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Niew³a¶ciwy dzieñ miesi±ca: %s"
 
-#: pattern.c:425
+#: pattern.c:412
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Niew³a¶ciwy miesi±c: %s"
 
 #. getDate has its own error message, don't overwrite it here
-#: pattern.c:577
+#: pattern.c:564
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "B³êdna data wzglêdna: %s"
 
-#: pattern.c:591
+#: pattern.c:578
 msgid "error in expression"
 msgstr "b³±d w wyra¿eniu"
 
-#: pattern.c:812 pattern.c:958
+#: pattern.c:799 pattern.c:945
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "b³±d we wzorcu: %s"
 
-#: pattern.c:842
+#: pattern.c:829
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "niesparowane nawiasy: %s"
 
-#: pattern.c:898
+#: pattern.c:885
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c: b³êdny modyfikator wyra¿enia"
 
-#: pattern.c:904
+#: pattern.c:891
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c: nie obs³ugiwane w tym trybie"
 
-#: pattern.c:917
+#: pattern.c:904
 #, c-format
 msgid "missing parameter"
 msgstr "brakuj±cy parametr"
 
-#: pattern.c:933
+#: pattern.c:920
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "niesparowane nawiasy: %s"
 
-#: pattern.c:965
+#: pattern.c:952
 msgid "empty pattern"
 msgstr "pusty wzorzec"
 
-#: pattern.c:1218
+#: pattern.c:1205
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "b³±d: nieznany op %d (zg³o¶ ten b³±d)."
 
-#: pattern.c:1301 pattern.c:1436
+#: pattern.c:1288 pattern.c:1423
 msgid "Compiling search pattern..."
 msgstr "Kompilacja wzorca poszukiwañ..."
 
-#: pattern.c:1320
+#: pattern.c:1307
 msgid "Executing command on matching messages..."
 msgstr "Wykonywanie polecenia na pasuj±cych do wzorca listach..."
 
-#: pattern.c:1387
+#: pattern.c:1374
 msgid "No messages matched criteria."
 msgstr "¯aden z listów nie spe³nia kryteriów."
 
-#: pattern.c:1469
+#: pattern.c:1456
 msgid "Searching..."
 msgstr "Wyszukiwanie..."
 
-#: pattern.c:1482
+#: pattern.c:1469
 msgid "Search hit bottom without finding match"
 msgstr "Poszukiwanie dotar³o do koñca bez znalezienia frazy"
 
-#: pattern.c:1493
+#: pattern.c:1480
 msgid "Search hit top without finding match"
 msgstr "Poszukiwanie dotar³o do pocz±tku bez znalezienia frazy"
 
-#: pattern.c:1525
+#: pattern.c:1512
 msgid "Search interrupted."
 msgstr "Przeszukiwanie przerwano."
 
@@ -3357,11 +3412,11 @@ msgstr "Wprowad¼ has³o PGP:"
 msgid "PGP passphrase forgotten."
 msgstr "Has³o PGP zosta³o zapomniane."
 
-#: pgp.c:358
+#: pgp.c:357
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- B³±d: nie mo¿na utworzyæ podprocesu PGP! --]\n"
 
-#: pgp.c:392 pgp.c:641 pgp.c:845
+#: pgp.c:391 pgp.c:643 pgp.c:847
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3369,20 +3424,20 @@ msgstr ""
 "[-- Koniec komunikatów PGP --]\n"
 "\n"
 
-#: pgp.c:412 pgp.c:460 pgp.c:977
+#: pgp.c:411 pgp.c:459 pgp.c:982
 msgid "Could not decrypt PGP message"
 msgstr "Odszyfrowanie listu PGP nie powiod³o siê"
 
 #. clear 'Invoking...' message, since there's no error
-#: pgp.c:462 pgp.c:973
+#: pgp.c:461 pgp.c:978
 msgid "PGP message successfully decrypted."
 msgstr "List PGP zosta³ poprawnie odszyfrowany."
 
-#: pgp.c:749
+#: pgp.c:751
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
 msgstr "B³±d wewnêtrzny. Zg³o¶ go pod adres <roessler@does-not-exist.org>."
 
-#: pgp.c:810
+#: pgp.c:812
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3390,32 +3445,32 @@ msgstr ""
 "[-- B³±d: nie mo¿na utworzyæ podprocesu PGP! --]\n"
 "\n"
 
-#: pgp.c:854
+#: pgp.c:859
 msgid "Decryption failed"
 msgstr "Odszyfrowanie nie powiod³o siê"
 
-#: pgp.c:1029
+#: pgp.c:1034
 msgid "Can't open PGP subprocess!"
 msgstr "Nie mo¿na otworzyæ podprocesu PGP!"
 
-#: pgp.c:1466
+#: pgp.c:1471
 msgid "Can't invoke PGP"
 msgstr "Nie mo¿na wywo³aæ PGP"
 
-#: pgp.c:1567
+#: pgp.c:1572
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "
 msgstr "PGP: (z)aszyfruj, podpi(s)z, podpisz j(a)ko, o(b)a, %s , b(e)z PGP? "
 
-#: pgp.c:1568
+#: pgp.c:1573
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#: pgp.c:1568
+#: pgp.c:1573
 msgid "(i)nline"
 msgstr "(i)nline"
 
-#: pgp.c:1570
+#: pgp.c:1575
 msgid "esabifc"
 msgstr "zsabife"
 
@@ -3427,25 +3482,25 @@ msgstr "Sprowadzam klucz PGP..."
 msgid "All matching keys are expired, revoked, or disabled."
 msgstr "Wszystkie pasuj±ce klucze wygas³y, zosta³y wy³±czone lub wyprowadzone."
 
-#: pgpkey.c:533
+#: pgpkey.c:532
 #, c-format
 msgid "PGP keys matching <%s>."
 msgstr "Klucze PGP dla <%s>."
 
-#: pgpkey.c:535
+#: pgpkey.c:534
 #, c-format
 msgid "PGP keys matching \"%s\"."
 msgstr "Klucze PGP dla \"%s\"."
 
-#: pgpkey.c:554 pgpkey.c:746
+#: pgpkey.c:553 pgpkey.c:745
 msgid "Can't open /dev/null"
 msgstr "Nie mo¿na otworzyæ /dev/null"
 
-#: pgpkey.c:725
+#: pgpkey.c:724
 msgid "Please enter the key ID: "
 msgstr "Podaj identyfikator klucza: "
 
-#: pgpkey.c:778
+#: pgpkey.c:777
 #, c-format
 msgid "PGP Key %s."
 msgstr "Klucz PGP %s."
@@ -3557,179 +3612,179 @@ msgstr "Sprawdzanie indeksów listów..."
 msgid "Connection lost. Reconnect to POP server?"
 msgstr "Po³±czenie z serwerem POP zosta³o zerwane. Po³±czyæ ponownie?"
 
-#: postpone.c:167
+#: postpone.c:164
 msgid "Postponed Messages"
 msgstr "Od³o¿one listy"
 
-#: postpone.c:247 postpone.c:256
+#: postpone.c:244 postpone.c:253
 msgid "No postponed messages."
 msgstr "Brak od³o¿onych listów."
 
-#: postpone.c:444 postpone.c:465 postpone.c:499
+#: postpone.c:441 postpone.c:462 postpone.c:496
 msgid "Illegal crypto header"
 msgstr "Szyfrowanie: nieprawid³owy nag³ówek"
 
-#: postpone.c:485
+#: postpone.c:482
 msgid "Illegal S/MIME header"
 msgstr "S/MIME: nieprawid³owy nag³ówek"
 
-#: postpone.c:565
+#: postpone.c:562
 msgid "Decrypting message..."
 msgstr "Odszyfrowywanie listu..."
 
-#: postpone.c:574
+#: postpone.c:571
 msgid "Decryption failed."
 msgstr "Odszyfrowanie nie powiod³o siê."
 
-#: query.c:51
+#: query.c:50
 msgid "New Query"
 msgstr "Nowe pytanie"
 
-#: query.c:52
+#: query.c:51
 msgid "Make Alias"
 msgstr "Utwórz alias"
 
-#: query.c:53
+#: query.c:52
 msgid "Search"
 msgstr "Szukaj"
 
-#: query.c:101
+#: query.c:95
 msgid "Waiting for response..."
 msgstr "Oczekiwanie na odpowied¼..."
 
-#: query.c:263 query.c:291
+#: query.c:246 query.c:274
 msgid "Query command not defined."
 msgstr "Pytanie nie zosta³o okre¶lone."
 
-#: query.c:318
+#: query.c:301
 #, c-format
 msgid "Query"
 msgstr "Pytanie"
 
 #. Prompt for Query
-#: query.c:331 query.c:356
+#: query.c:313 query.c:338
 msgid "Query: "
 msgstr "Pytanie:"
 
-#: query.c:339 query.c:365
+#: query.c:321 query.c:347
 #, c-format
 msgid "Query '%s'"
 msgstr "Pytanie '%s'"
 
-#: recvattach.c:56
+#: recvattach.c:55
 msgid "Pipe"
 msgstr "Potok"
 
-#: recvattach.c:57
+#: recvattach.c:56
 msgid "Print"
 msgstr "Drukuj"
 
-#: recvattach.c:473
+#: recvattach.c:472
 msgid "Saving..."
 msgstr "Zapisywanie..."
 
-#: recvattach.c:476 recvattach.c:567
+#: recvattach.c:475 recvattach.c:566
 msgid "Attachment saved."
 msgstr "Za³±cznik zosta³ zapisany."
 
-#: recvattach.c:579
+#: recvattach.c:578
 #, c-format
 msgid "WARNING!  You are about to overwrite %s, continue?"
 msgstr "UWAGA! Nadpisujesz plik %s, kontynuowaæ?"
 
-#: recvattach.c:597
+#: recvattach.c:596
 msgid "Attachment filtered."
 msgstr "Za³±cznik przefiltrowany."
 
-#: recvattach.c:664
+#: recvattach.c:663
 msgid "Filter through: "
 msgstr "Przefiltruj przez: "
 
-#: recvattach.c:664
+#: recvattach.c:663
 msgid "Pipe to: "
 msgstr "Wy¶lij przez potok do: "
 
-#: recvattach.c:699
+#: recvattach.c:698
 #, c-format
 msgid "I dont know how to print %s attachments!"
 msgstr "Nie wiem jak wydrukowaæ %s za³±czników!"
 
-#: recvattach.c:764
+#: recvattach.c:763
 msgid "Print tagged attachment(s)?"
 msgstr "Wydrukowaæ zaznaczony(e) za³±cznik(i)?"
 
-#: recvattach.c:764
+#: recvattach.c:763
 msgid "Print attachment?"
 msgstr "Wydrukowaæ za³±cznik?"
 
-#: recvattach.c:997
+#: recvattach.c:996
 msgid "Can't decrypt encrypted message!"
 msgstr "Nie mo¿na odszyfrowaæ zaszyfrowanego listu!"
 
-#: recvattach.c:1010
+#: recvattach.c:1008
 msgid "Attachments"
 msgstr "Za³±czniki"
 
-#: recvattach.c:1046
+#: recvattach.c:1044
 msgid "There are no subparts to show!"
 msgstr "Brak pod-listów!"
 
-#: recvattach.c:1107
+#: recvattach.c:1105
 msgid "Can't delete attachment from POP server."
 msgstr "Nie mo¿na skasowaæ za³±cznika na serwerze POP."
 
-#: recvattach.c:1115
+#: recvattach.c:1113
 msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Usuwanie za³±czników z zaszyfrowanych listów jest niemo¿liwe."
 
-#: recvattach.c:1134 recvattach.c:1151
+#: recvattach.c:1132 recvattach.c:1149
 msgid "Only deletion of multipart attachments is supported."
 msgstr "Mo¿liwe jest jedynie usuwanie za³±czników multipart."
 
-#: recvcmd.c:47
+#: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Mo¿esz wysy³aæ kopie tylko listów zgodnych z RFC 822."
 
-#: recvcmd.c:217
+#: recvcmd.c:213
 msgid "Error bouncing message!"
 msgstr "B³±d wysy³ania kopii!"
 
-#: recvcmd.c:217
+#: recvcmd.c:213
 msgid "Error bouncing messages!"
 msgstr "B³±d wysy³ania kopii!"
 
-#: recvcmd.c:417
+#: recvcmd.c:413
 #, c-format
 msgid "Can't open temporary file %s."
 msgstr "Nie mo¿na otworzyæ pliku tymczasowego %s."
 
-#: recvcmd.c:448
+#: recvcmd.c:444
 msgid "Forward as attachments?"
 msgstr "Przes³aæ dalej jako za³±czniki?"
 
-#: recvcmd.c:462
+#: recvcmd.c:458
 msgid "Can't decode all tagged attachments.  MIME-forward the others?"
 msgstr ""
 "Nie mo¿na zdekodowaæ zaznaczonych za³. Przes³aæ pozosta³e dalej (MIME)?"
 
-#: recvcmd.c:587
+#: recvcmd.c:583
 msgid "Forward MIME encapsulated?"
 msgstr "Przes³aæ dalej w trybie MIME?"
 
-#: recvcmd.c:595 recvcmd.c:845
+#: recvcmd.c:591 recvcmd.c:841
 #, c-format
 msgid "Can't create %s."
 msgstr "Nie mo¿na utworzyæ %s."
 
-#: recvcmd.c:728
+#: recvcmd.c:724
 msgid "Can't find any tagged messages."
 msgstr "Nie mo¿na znale¼æ ¿adnego z zaznaczonych listów."
 
-#: recvcmd.c:749 send.c:728
+#: recvcmd.c:745 send.c:727
 msgid "No mailing lists found!"
 msgstr "Nie znaleziono list pocztowych!"
 
-#: recvcmd.c:824
+#: recvcmd.c:820
 msgid "Can't decode all tagged attachments.  MIME-encapsulate the others?"
 msgstr ""
 "Nie mo¿na zdekodowaæ wszystkich wybranych za³. Za³±czyæ (MIME) pozosta³e?"
@@ -3754,47 +3809,47 @@ msgstr "OK"
 msgid "Can't get mixmaster's type2.list!"
 msgstr "Nie mo¿na pobraæ type2.list mixmastera!"
 
-#: remailer.c:543
+#: remailer.c:542
 msgid "Select a remailer chain."
 msgstr "Wybierz ³añcuch remailera."
 
-#: remailer.c:603
+#: remailer.c:602
 #, c-format
 msgid "Error: %s can't be used as the final remailer of a chain."
 msgstr "B³±d: nie mo¿na u¿yæ %s jako finalnego remailera ³añcucha."
 
-#: remailer.c:633
+#: remailer.c:632
 #, c-format
 msgid "Mixmaster chains are limited to %d elements."
 msgstr "£añcuchy mixmasterów mog± mieæ maks. %d elementów."
 
-#: remailer.c:656
+#: remailer.c:655
 msgid "The remailer chain is already empty."
 msgstr "£añcuch remailera jest pusty."
 
-#: remailer.c:666
+#: remailer.c:665
 msgid "You already have the first chain element selected."
 msgstr "Ju¿ zdefiniowano pierwszy element ³añcucha."
 
-#: remailer.c:676
+#: remailer.c:675
 msgid "You already have the last chain element selected."
 msgstr "Ju¿ zdefiniowano ostatni element ³añcucha."
 
-#: remailer.c:715
+#: remailer.c:714
 msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster nie akceptuje nag³ówków Cc i Bcc."
 
-#: remailer.c:739
+#: remailer.c:738
 msgid ""
 "Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Ustaw poprawn± warto¶æ hostname je¶li chcesz u¿ywaæ mixmastera!"
 
-#: remailer.c:773
+#: remailer.c:772
 #, c-format
 msgid "Error sending message, child exited %d.\n"
 msgstr "B³±d podczas wysy³ania listu, proces potomny zwróci³ %d.\n"
 
-#: remailer.c:777
+#: remailer.c:776
 msgid "Error sending message."
 msgstr "B³±d podczas wysy³ania listu."
 
@@ -3820,11 +3875,11 @@ msgstr "score: za ma³o argumentów"
 msgid "score: too many arguments"
 msgstr "score: zbyt wiele argumentów"
 
-#: send.c:253
+#: send.c:252
 msgid "No subject, abort?"
 msgstr "Brak tematu, zaniechaæ wys³ania?"
 
-#: send.c:255
+#: send.c:254
 msgid "No subject, aborting."
 msgstr "Brak tematu, zaniechano wys³ania listy."
 
@@ -3833,12 +3888,12 @@ msgstr "Brak tematu, zaniechano wys³ania listy."
 #. * to send a message to only the sender of the message.  This
 #. * provides a way to do that.
 #.
-#: send.c:497
+#: send.c:496
 #, c-format
 msgid "Reply to %s%s?"
 msgstr "Odpowiedzieæ %s%s?"
 
-#: send.c:531
+#: send.c:530
 #, c-format
 msgid "Follow-up to %s%s?"
 msgstr "Follow-up do %s%s?"
@@ -3846,82 +3901,82 @@ msgstr "Follow-up do %s%s?"
 #. This could happen if the user tagged some messages and then did
 #. * a limit such that none of the tagged message are visible.
 #.
-#: send.c:703
+#: send.c:702
 msgid "No tagged messages are visible!"
 msgstr "¯aden z zaznaczonych listów nie jest widoczny!"
 
-#: send.c:754
+#: send.c:753
 msgid "Include message in reply?"
 msgstr "Zacytowaæ oryginalny list w odpowiedzi?"
 
-#: send.c:759
+#: send.c:758
 msgid "Including quoted message..."
 msgstr "Wczytywanie cytowanego listu..."
 
-#: send.c:769
+#: send.c:768
 msgid "Could not include all requested messages!"
 msgstr "Nie mo¿na do³±czyæ wszystkich wskazanych listów!"
 
-#: send.c:783
+#: send.c:782
 msgid "Forward as attachment?"
 msgstr "Przes³aæ dalej jako za³±cznik?"
 
-#: send.c:787
+#: send.c:786
 msgid "Preparing forwarded message..."
 msgstr "Przygotowywanie listu do przes³ania dalej..."
 
 #. If the user is composing a new message, check to see if there
 #. * are any postponed messages first.
 #.
-#: send.c:1117
+#: send.c:1116
 msgid "Recall postponed message?"
 msgstr "Wywo³aæ od³o¿ony list?"
 
-#: send.c:1429
+#: send.c:1428
 msgid "Edit forwarded message?"
 msgstr "Edytowaæ przesy³any list?"
 
-#: send.c:1469
+#: send.c:1468
 msgid "Abort unmodified message?"
 msgstr "List nie zosta³ zmieniony. Zaniechaæ wys³ania?"
 
-#: send.c:1471
+#: send.c:1470
 msgid "Aborted unmodified message."
 msgstr "List nie zosta³ zmieniony. Zaniechano wys³ania."
 
-#: send.c:1540
+#: send.c:1539
 msgid "Message postponed."
 msgstr "List od³o¿ono."
 
-#: send.c:1549
+#: send.c:1548
 msgid "No recipients are specified!"
 msgstr "Nie wskazano adresatów!"
 
-#: send.c:1554
+#: send.c:1553
 msgid "No recipients were specified."
 msgstr "Nie wskazano adresatów!"
 
-#: send.c:1570
+#: send.c:1569
 msgid "No subject, abort sending?"
 msgstr "Brak tematu, zaniechaæ wys³ania?"
 
-#: send.c:1574
+#: send.c:1573
 msgid "No subject specified."
 msgstr "Brak tematu."
 
-#: send.c:1636 smtp.c:158
+#: send.c:1635 smtp.c:161
 msgid "Sending message..."
 msgstr "Wysy³anie listu..."
 
-#: send.c:1777
+#: send.c:1776
 msgid "Could not send the message."
 msgstr "Wys³anie listu nie powiod³o siê."
 
-#: send.c:1782
+#: send.c:1781
 msgid "Mail sent."
 msgstr "Poczta zosta³a wys³ana."
 
-#: send.c:1782
+#: send.c:1781
 msgid "Sending in background."
 msgstr "Wysy³anie w tle."
 
@@ -3944,16 +3999,16 @@ msgstr "%s nie jest zwyk³ym plikiem."
 msgid "Could not open %s"
 msgstr "Nie mo¿na otworzyæ %s"
 
-#: sendlib.c:2228
+#: sendlib.c:2226
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
 msgstr "B³±d podczas wysy³ania listu, proces potomny zwróci³ %d (%s)."
 
-#: sendlib.c:2234
+#: sendlib.c:2232
 msgid "Output of the delivery process"
 msgstr "Wynik procesu dostarczania"
 
-#: sendlib.c:2448
+#: sendlib.c:2396
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
 msgstr "B³êdny IDN %s w trakcie przygotowywania resent-from."
@@ -4014,63 +4069,67 @@ msgstr "Podaj numer klucza: "
 msgid "S/MIME certificates matching \"%s\"."
 msgstr "Certyfikat S/MIME dla \"%s\"."
 
-#: smime.c:542 smime.c:612 smime.c:630
+#: smime.c:540 smime.c:610 smime.c:628
 #, c-format
 msgid "ID %s is unverified. Do you want to use it for %s ?"
 msgstr "Identyfikator %s nie zosta³ zweryfikowany. Mimo to u¿yæ dla %s ?"
 
-#: smime.c:546 smime.c:616
+#: smime.c:544 smime.c:614
 #, c-format
 msgid "Use (untrusted!) ID %s for %s ?"
 msgstr "U¿yæ nie zaufanego identyfikatora %s dla %s ?"
 
-#: smime.c:549 smime.c:619
+#: smime.c:547 smime.c:617
 #, c-format
 msgid "Use ID %s for %s ?"
 msgstr "U¿yæ identyfikatora %s dla %s ?"
 
-#: smime.c:638
+#: smime.c:636
 #, c-format
 msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
 msgstr ""
 "Ostrze¿enie: nie oke¶lono poziomu zaufania dla %s (dow. klawisz by "
 "kontynuowaæ)."
 
-#: smime.c:797
+#: smime.c:795
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Brak (poprawnych) certyfikatów dla %s."
 
-#: smime.c:852 smime.c:880 smime.c:945 smime.c:989 smime.c:1054 smime.c:1129
+#: smime.c:850 smime.c:878 smime.c:943 smime.c:987 smime.c:1052 smime.c:1127
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "B³±d: nie mo¿na wywo³aæ podprocesu OpenSSL!"
 
-#: smime.c:1207
+#: smime.c:1205
 msgid "no certfile"
 msgstr "brak certyfikatu"
 
-#: smime.c:1210
+#: smime.c:1208
 msgid "no mbox"
 msgstr "brak skrzynki"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1353
+#: smime.c:1351
 msgid "No output from OpenSSL.."
 msgstr "Brak wyników dzia³ania OpenSSL..."
 
-#: smime.c:1391
+#: smime.c:1389
+msgid "Can't sign: No key specified. Use Sign As."
+msgstr "Nie mo¿na podpisaæ - nie podano klucza. U¿yj Podpisz jako."
+
+#: smime.c:1395
 msgid "Warning: Intermediate certificate not found."
 msgstr "Ostrze¿enie: nie znaleziono certyfikatu po¶redniego CA."
 
-#: smime.c:1434
+#: smime.c:1438
 msgid "Can't open OpenSSL subprocess!"
 msgstr "B³±d: nie mo¿na wywo³aæ podprocesu OpenSSL!"
 
-#: smime.c:1472
+#: smime.c:1476
 msgid "No output from OpenSSL..."
 msgstr "Brak wyników dzia³ania OpenSSL..."
 
-#: smime.c:1637 smime.c:1762
+#: smime.c:1641 smime.c:1766
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4078,19 +4137,19 @@ msgstr ""
 "[-- Koniec komunikatów OpenSSL --]\n"
 "\n"
 
-#: smime.c:1721 smime.c:1732
+#: smime.c:1725 smime.c:1736
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- B³±d: nie mo¿na utworzyæ podprocesu OpenSSL! --]\n"
 
-#: smime.c:1766
+#: smime.c:1770
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Nastêpuj±ce dane s± zaszyfrowane S/MIME --]\n"
 
-#: smime.c:1769
+#: smime.c:1773
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Poni¿sze dane s± podpisane S/MIME --]\n"
 
-#: smime.c:1833
+#: smime.c:1837
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4098,7 +4157,7 @@ msgstr ""
 "\n"
 "[-- Koniec danych zaszyfrowanych S/MIME. --]\n"
 
-#: smime.c:1835
+#: smime.c:1839
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4106,85 +4165,90 @@ msgstr ""
 "\n"
 "[-- Koniec danych podpisanych S/MIME. --]\n"
 
-#: smime.c:1946
+#: smime.c:1950
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 "S/MIME: (z)aszyfruj, (p)odpisz, (m)etoda, podp. (j)ako, (o)ba, (a)nuluj?"
 
-#: smime.c:1947
+#: smime.c:1951
 msgid "eswabfc"
 msgstr "zpmjoa"
 
 #. I use "dra" because "123" is recognized anyway
-#: smime.c:1962
+#: smime.c:1966
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr "Wybierz algorytm: 1: DES, 2: RC2, 3: AES, (a)nuluj? "
 
-#: smime.c:1965
+#: smime.c:1969
 msgid "drac"
 msgstr "123a"
 
-#: smime.c:1968
+#: smime.c:1972
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:1969
+#: smime.c:1973
 msgid "dt"
 msgstr "12"
 
-#: smime.c:1981
+#: smime.c:1985
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:1982
+#: smime.c:1986
 msgid "468"
 msgstr "123"
 
-#: smime.c:1997
+#: smime.c:2001
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:1998
+#: smime.c:2002
 msgid "895"
 msgstr "123"
 
-#: smime.c:2026
-msgid "Can't sign: No key specified. Use Sign As."
-msgstr "Nie mo¿na podpisaæ - nie podano klucza. U¿yj Podpisz jako."
-
-#: smtp.c:113
+#: smtp.c:116
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "Sesja SMTP nie powiod³a siê: %s"
 
-#: smtp.c:153
+#: smtp.c:156
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "Sesja SMTP nie powiod³a siê: nie mo¿na otworzyæ %s"
 
-#: smtp.c:269
+#: smtp.c:228
+msgid "No from address given"
+msgstr ""
+
+#: smtp.c:284
 msgid "SMTP session failed: read error"
 msgstr "Sesja SMTP nie powiod³a siê: b³±d odczytu"
 
-#: smtp.c:271
+#: smtp.c:286
 msgid "SMTP session failed: write error"
 msgstr "Sesja SMTP nie powiod³a siê: b³±d zapisu"
 
-#: smtp.c:294
+#: smtp.c:309
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "B³êdny URL SMTP: %s"
 
-#: smtp.c:400
+#: smtp.c:419
 msgid "SMTP server does not support authentication"
 msgstr "Serwer SMTP nie wspiera uwierzytelniania"
 
-#: smtp.c:408
+#: smtp.c:427
 msgid "SMTP authentication requires SASL"
 msgstr "Uwierzytelnianie SMTP wymaga SASL"
 
-#: smtp.c:551
+#: smtp.c:461
+#, fuzzy, c-format
+msgid "%s authentication failed, trying next method"
+msgstr "Uwierzytelnianie SASL nie powiod³o siê"
+
+#: smtp.c:478
 msgid "SASL authentication failed"
 msgstr "Uwierzytelnianie SASL nie powiod³o siê"
 
@@ -5001,6 +5065,21 @@ msgstr "kopiuj klucze publiczne"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "poka¿ opcje S/MIME"
+
+#~ msgid "            created: "
+#~ msgstr "            utworzony: "
+
+#~ msgid "*BAD* signature claimed to be from: "
+#~ msgstr "B³êdny podpis z³o¿ony jakoby przez: "
+
+#~ msgid "Error checking signature"
+#~ msgstr "B³±d sprawdzania podpisu"
+
+#~ msgid "SSL Certificate check"
+#~ msgstr "sprawdzanie certyfikatu SSL"
+
+#~ msgid "TLS/SSL Certificate check"
+#~ msgstr "TLS/SSL: sprawdzanie certyfikatu"
 
 #~ msgid "SASL failed to get local IP address"
 #~ msgstr "SASL: b³±d pobierania lokalnego adresu IP"

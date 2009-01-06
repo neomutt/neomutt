@@ -1,4 +1,7 @@
-2009-01-05 16:31 -0800  Brendan Cully  <brendan@kublai.com>  (5a2f53bbe25c)
+2009-01-05 16:35 -0800  Brendan Cully  <brendan@kublai.com>  (a170f93fc5b1)
+
+	* build-release: Fall back to vi if VISUAL is unset in
+	build-release
 
 	* UPDATING: Update UPDATING
 
