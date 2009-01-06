@@ -44,7 +44,7 @@ OVERSION="`cat VERSION`"
 OTAG="mutt-`echo $OVERSION | tr . -`-rel" 
 
 echo $OVERSION | awk -F . '{printf("%d.%d.%d\n", $1, $2, $3 + 1);}' > VERSION 
-${VISUAL} VERSION
+${VISUAL:-vi} VERSION
 
 VERSION="`cat VERSION`" 
 TAG="mutt-`echo $VERSION | tr . -`-rel" 

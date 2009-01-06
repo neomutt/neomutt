@@ -1,4 +1,9 @@
-2009-01-05 15:37 -0800  Brendan Cully  <brendan@kublai.com>  (55a58914feb1)
+2009-01-05 16:31 -0800  Brendan Cully  <brendan@kublai.com>  (5a2f53bbe25c)
+
+	* UPDATING: Update UPDATING
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h: Report CREATE
+	failures
 
 	* browser.c: Style fixes
 
