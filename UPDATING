@@ -4,8 +4,9 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-hg tip:
+1.5.19 (2009-01-05):
 
+  + support for SSL certificate chains
   + <what-key> function works in pager, too
   + support for tokyocabinet (qdbm successor)
   ! $move now defaults to "no" instead of "ask-no"
