@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.18\n"
+"Project-Id-Version: mutt-1.5.19\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-05 16:36-0800\n"
-"PO-Revision-Date: 2008-05-19 12:56+0300\n"
+"PO-Revision-Date: 2009-01-06 19:52+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -871,12 +871,11 @@ msgstr ""
 
 #: crypt-gpgme.c:1286
 msgid "aka: "
-msgstr ""
+msgstr "aka: "
 
 #: crypt-gpgme.c:1297
-#, fuzzy
 msgid "created: "
-msgstr "Создать %s?"
+msgstr "создано: "
 
 #: crypt-gpgme.c:1362
 msgid "Error getting key information: "
@@ -887,24 +886,20 @@ msgstr "Ошибка получения информации о ключе: "
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
 #: crypt-gpgme.c:1369 crypt-gpgme.c:1384
-#, fuzzy
 msgid "Good signature from:"
-msgstr "Хорошая подпись от: "
+msgstr "Хорошая подпись от:"
 
 #: crypt-gpgme.c:1376
-#, fuzzy
 msgid "*BAD* signature from:"
-msgstr "Хорошая подпись от: "
+msgstr "*ПЛОХАЯ* подпись от:"
 
 #: crypt-gpgme.c:1392
-#, fuzzy
 msgid "Problem signature from:"
-msgstr "Хорошая подпись от: "
+msgstr "Сомнительная подпись от:"
 
 #: crypt-gpgme.c:1393
-#, fuzzy
 msgid "               expires: "
-msgstr "                aka: "
+msgstr "       действительна до: "
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
@@ -945,9 +940,9 @@ msgstr ""
 "\n"
 
 #: crypt-gpgme.c:2082
-#, fuzzy, c-format
+#, c-format
 msgid "Error extracting key data!\n"
-msgstr "Ошибка получения информации о ключе: "
+msgstr "Ошибка получения информации о ключе!\n"
 
 #: crypt-gpgme.c:2265
 #, c-format
@@ -1847,9 +1842,8 @@ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Тип: %s/%s, кодировка: %s, размер: %s --]\n"
 
 #: handler.c:1223
-#, fuzzy
 msgid "One or more parts of this message could not be displayed"
-msgstr "Предупреждение: часть этого сообщения не подписана."
+msgstr "Одна или несколько частей этого сообщения не могут быть отображены"
 
 #: handler.c:1275
 #, c-format
@@ -2096,9 +2090,9 @@ msgid "Mailbox closed"
 msgstr "Почтовый ящик закрыт"
 
 #: imap/imap.c:126
-#, fuzzy, c-format
+#, c-format
 msgid "CREATE failed: %s"
-msgstr "Не удалось установить SSL-соединение: %s"
+msgstr "Не удалось выполнить команду CREATE: %s"
 
 #: imap/imap.c:190
 #, c-format
@@ -2345,9 +2339,9 @@ msgid "%s is unset"
 msgstr "%s: значение не определено"
 
 #: init.c:1926
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: \"%s\""
-msgstr "Неверный день месяца: %s"
+msgstr "Неверное значение для параметра %s: \"%s\""
 
 #: init.c:2064
 #, c-format
@@ -2498,14 +2492,13 @@ msgstr ""
 "Чтобы сообщить об ошибке, посетите http://bugs.mutt.org/.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2009 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2008 Michael R. Elkins и другие.\n"
+"Copyright (C) 1996-2009 Michael R. Elkins и другие.\n"
 "Mutt распространяется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ; для получения более\n"
 "подробной информации введите `mutt -vv'.\n"
 "Mutt является свободным программным обеспечением.  Вы можете\n"
@@ -2513,7 +2506,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2529,11 +2521,12 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2006-2008 Rocco Rutte <pdmef@gmx.net>\n"
 "\n"
 "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
 "здесь людьми.\n"
@@ -2573,7 +2566,6 @@ msgstr ""
 "1301, USA.\n"
 
 #: main.c:113
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2589,6 +2581,8 @@ msgstr ""
 "запуск: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "        mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...]] [--] <addr> [...]\n"
+"        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] "
+"<addr> [...] < message\n"
 "        mutt [<options>] -p\n"
 "        mutt [<options>] -A <alias> [...]\n"
 "        mutt [<options>] -Q <query> [...]\n"
@@ -2853,9 +2847,8 @@ msgid "Scanning %s..."
 msgstr "Просматривается %s..."
 
 #: mh.c:1314 mh.c:1392
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "Сообщение отправить не удалось."
+msgstr "Не удалось сохранить сообщение на диске"
 
 #: mh.c:1359
 msgid "maildir_commit_message(): unable to set time on file"
@@ -2983,24 +2976,22 @@ msgid "Server certificate has expired"
 msgstr "Срок действия сертификата истек"
 
 #: mutt_ssl.c:696
-#, fuzzy
 msgid "cannot get certificate subject"
-msgstr "Не удалось получить сертификат сервера"
+msgstr "не удалось получить subject сертификата"
 
 #: mutt_ssl.c:708
-#, fuzzy
 msgid "cannot get certificate common name"
-msgstr "Не удалось получить сертификат сервера"
+msgstr "не удалось получить common name сертификата"
 
 #: mutt_ssl.c:717
-#, fuzzy, c-format
+#, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr "Отправитель сообщения не является владельцем S/MIME-сертификата."
+msgstr "владелец сертификата не соответствует имени хоста %s"
 
 #: mutt_ssl.c:754
-#, fuzzy, c-format
+#, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Сертификат сохранен"
+msgstr "Не удалось выполнить проверку хоста сертификата: %s"
 
 #: mutt_ssl.c:845 mutt_ssl_gnutls.c:664
 msgid "This certificate belongs to:"
@@ -3033,7 +3024,7 @@ msgstr "Отпечаток пальца: %s"
 #: mutt_ssl.c:881 mutt_ssl_gnutls.c:786
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr ""
+msgstr "Проверка SSL-сертификата (сертификат %d из %d в цепочке)"
 
 #: mutt_ssl.c:887 mutt_ssl_gnutls.c:793
 msgid "(r)eject, accept (o)nce, (a)ccept always"
@@ -4232,7 +4223,7 @@ msgstr "Ошибка SMTP сессии: не удалось открыть %s"
 
 #: smtp.c:228
 msgid "No from address given"
-msgstr ""
+msgstr "Не указан адрес отправителя"
 
 #: smtp.c:284
 msgid "SMTP session failed: read error"
@@ -4256,9 +4247,9 @@ msgid "SMTP authentication requires SASL"
 msgstr "SMTP аутентификация требует SASL"
 
 #: smtp.c:461
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed, trying next method"
-msgstr "Ошибка SASL-аутентификации"
+msgstr "Не удалось выполнить %s аутентификацию, пробуем следующий метод"
 
 #: smtp.c:478
 msgid "SASL authentication failed"
@@ -5080,18 +5071,3 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
-
-#~ msgid "            created: "
-#~ msgstr "             создан: "
-
-#~ msgid "*BAD* signature claimed to be from: "
-#~ msgstr "*ПЛОХАЯ* подпись якобы от: "
-
-#~ msgid "Error checking signature"
-#~ msgstr "Ошибка проверки подписи"
-
-#~ msgid "SSL Certificate check"
-#~ msgstr "Проверка SSL-сертификата"
-
-#~ msgid "TLS/SSL Certificate check"
-#~ msgstr "Проверка TLS/SSL-сертификата"

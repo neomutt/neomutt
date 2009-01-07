@@ -1,4 +1,17 @@
-2009-01-05 16:35 -0800  Brendan Cully  <brendan@kublai.com>  (a170f93fc5b1)
+2009-01-05 16:43 -0800  Brendan Cully  <brendan@kublai.com>  (0d81ef9d40fd)
+
+	* build-release: Sign tagged revision, not the one after
+
+	* .hgsigs: mutt-1.5.19 signed
+
+	* .hgtags: Added tag mutt-1-5-19-rel for changeset a4b47ac32d32
+
+	* VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po, po/de.po,
+	po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po, po/fr.po,
+	po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/ja.po,
+	po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po,
+	po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po:
+	automatic post-release commit for mutt-1.5.19
 
 	* build-release: Fall back to vi if VISUAL is unset in
 	build-release
