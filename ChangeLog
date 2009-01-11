@@ -1,4 +1,11 @@
-2009-01-10 17:47 -0800  Brendan Cully  <brendan@kublai.com>  (d6ee34f3ccaf)
+2009-01-10 21:43 -0800  Brendan Cully  <brendan@kublai.com>  (aa069968e4d5)
+
+	* imap/util.c: Guard against NULL pointers in imap_mxcmp
+
+	* imap/imap_private.h, imap/util.c: Canonicalize IMAP mailboxes before
+	comparing them.
+
+	* imap/util.c: Fix last commit
 
 	* imap/util.c: Prioritize the entered IMAP folder delimiter. First
 	priority is the connection delimiter. Second priority is the user's
