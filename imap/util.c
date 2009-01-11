@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 1996-8 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
- * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -270,6 +270,10 @@ int imap_mxcmp (const char* mx1, const char* mx2)
   char* b2;
   int rc;
 
+  if (!mx1)
+    return -1;
+  if (!mx2)
+    return 1;
   if (!ascii_strcasecmp (mx1, "INBOX") && !ascii_strcasecmp (mx2, "INBOX"))
     return 0;
 
