@@ -393,19 +393,19 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
     size_t plen)
 {
   int i = 0;
-  char delim;
+  char delim = '\0';
   
   if (idata)
     delim = idata->delim;
-  else if (ImapDelimChars && ImapDelimChars[0])
-    delim = ImapDelimChars[0];
-  else
-    delim = '/';
 
   while (mailbox && *mailbox && i < plen - 1)
   {
-    if (strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
+    if (ImapDelimChars && strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
     {
+      /* use connection delimiter if known. Otherwise use user delimiter */
+      if (!delim)
+        delim = *mailbox;
+
       while (*mailbox &&
 	     (strchr(ImapDelimChars, *mailbox) || *mailbox == delim))
         mailbox++;
