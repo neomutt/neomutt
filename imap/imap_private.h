@@ -272,7 +272,7 @@ int imap_continue (const char* msg, const char* resp);
 void imap_error (const char* where, const char* msg);
 IMAP_DATA* imap_new_idata (void);
 void imap_free_idata (IMAP_DATA** idata);
-char* imap_fix_path (IMAP_DATA* idata, char* mailbox, char* path, 
+char* imap_fix_path (IMAP_DATA* idata, const char* mailbox, char* path, 
   size_t plen);
 void imap_cachepath(IMAP_DATA* idata, const char* mailbox, char* dest,
                     size_t dlen);
