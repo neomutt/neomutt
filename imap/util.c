@@ -400,10 +400,11 @@ char *imap_fix_path (IMAP_DATA *idata, char *mailbox, char *path,
 
   while (mailbox && *mailbox && i < plen - 1)
   {
-    if (ImapDelimChars && strchr(ImapDelimChars, *mailbox) || *mailbox == delim)
+    if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox))
+        || *mailbox == delim)
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
-      if (!delim)
+      if (!idata)
         delim = *mailbox;
 
       while (*mailbox &&

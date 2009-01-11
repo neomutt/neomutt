@@ -1,3 +1,14 @@
+2009-01-10 17:47 -0800  Brendan Cully  <brendan@kublai.com>  (d6ee34f3ccaf)
+
+	* imap/util.c: Prioritize the entered IMAP folder delimiter. First
+	priority is the connection delimiter. Second priority is the user's
+	delimiter if it is in imap_delim_chars. We no longer use the first
+	character in imap_delim_chars.
+
+2009-01-06 18:34 -0800  Vsevolod Volkov  <vvv@mutt.org.ua>  (4032dfd52118)
+
+	* po/ru.po: Updated Russian translation
+
 2009-01-05 16:43 -0800  Brendan Cully  <brendan@kublai.com>  (0d81ef9d40fd)
 
 	* build-release: Sign tagged revision, not the one after
