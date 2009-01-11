@@ -272,10 +272,10 @@ int imap_mxcmp (const char* mx1, const char* mx2)
   char* b2;
   int rc;
 
-  if (!mx1)
-    return -1;
-  if (!mx2)
-    return 1;
+  if (!mx1 || !*mx1)
+    mx1 = "INBOX";
+  if (!mx2 || !*mx2)
+    mx2 = "INBOX";
   if (!ascii_strcasecmp (mx1, "INBOX") && !ascii_strcasecmp (mx2, "INBOX"))
     return 0;
 
