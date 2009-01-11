@@ -749,13 +749,16 @@ static int ssl_check_preauth (X509 *cert, CONNECTION *conn)
   }
 
   buf[0] = 0;
-  if (!check_host (cert, conn->account.host, buf, sizeof (buf)))
+  if (option (OPTSSLVERIFYHOST) != M_NO)
   {
-    mutt_error (_("Certificate host check failed: %s"), buf);
-    mutt_sleep (2);
-    return -1;
+    if (!check_host (cert, conn->account.host, buf, sizeof (buf)))
+    {
+      mutt_error (_("Certificate host check failed: %s"), buf);
+      mutt_sleep (2);
+      return -1;
+    }
+    dprint (2, (debugfile, "ssl_check_preauth: hostname check passed\n"));
   }
-  dprint (2, (debugfile, "ssl_check_preauth: hostname check passed\n"));
 
   if (check_certificate_by_signer (cert))
   {

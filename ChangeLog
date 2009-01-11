@@ -1,4 +1,8 @@
-2009-01-10 21:43 -0800  Brendan Cully  <brendan@kublai.com>  (aa069968e4d5)
+2009-01-10 22:09 -0800  Brendan Cully  <brendan@kublai.com>  (db3a61fcde35)
+
+	* imap/util.c: Assume INBOX for ""/NULL in imap_mxcmp
+
+	* imap/util.c: Use known connection delimiter in imap_expand_path
 
 	* imap/util.c: Guard against NULL pointers in imap_mxcmp
 

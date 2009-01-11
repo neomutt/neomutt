@@ -585,7 +585,8 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   if (!idx)
   {
     if (!gnutls_x509_crt_check_hostname (cert, hostname) &&
-        !tls_check_stored_hostname (certdata, hostname))
+        !tls_check_stored_hostname (certdata, hostname) &&
+        option (OPTSSLVERIFYHOST) != M_NO)
       certerr_hostname = 1;
   }
   

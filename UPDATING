@@ -4,6 +4,10 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+hg tip:
+  + $ssl_verify_hostname controls whether mutt will accept certificates whose
+    host names do not match the host name in the folder URL.
+
 1.5.19 (2009-01-05):
 
   + support for SSL certificate chains
