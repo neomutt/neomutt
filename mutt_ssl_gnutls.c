@@ -576,11 +576,14 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     gnutls_x509_crt_deinit (cert);
     return -1;
   }
-  
-  if (gnutls_x509_crt_get_expiration_time (cert) < time(NULL))
-    certerr_expired = 1;
-  if (gnutls_x509_crt_get_activation_time (cert) > time(NULL))
-    certerr_notyetvalid = 1;
+
+  if (option (OPTSSLVERIFYDATES) != M_NO)
+  {
+    if (gnutls_x509_crt_get_expiration_time (cert) < time(NULL))
+      certerr_expired = 1;
+    if (gnutls_x509_crt_get_activation_time (cert) > time(NULL))
+      certerr_notyetvalid = 1;
+  }
 
   if (!idx)
   {

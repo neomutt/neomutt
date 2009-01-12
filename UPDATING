@@ -5,6 +5,8 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+  + $ssl_verify_dates controls whether mutt checks the validity period of
+    SSL certificates
   + $ssl_verify_hostname controls whether mutt will accept certificates whose
     host names do not match the host name in the folder URL.
 

@@ -564,19 +564,22 @@ static int check_certificate_by_digest (X509 *peercert)
   FILE *fp;
 
   /* expiration check */
-  if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
+  if (option (OPTSSLVERIFYDATES) != M_NO)
   {
-    dprint (2, (debugfile, "Server certificate is not yet valid\n"));
-    mutt_error (_("Server certificate is not yet valid"));
-    mutt_sleep (2);
-    return 0;
-  }
-  if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
-  {
-    dprint (2, (debugfile, "Server certificate has expired"));
-    mutt_error (_("Server certificate has expired"));
-    mutt_sleep (2);
-    return 0;
+    if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
+    {
+      dprint (2, (debugfile, "Server certificate is not yet valid\n"));
+      mutt_error (_("Server certificate is not yet valid"));
+      mutt_sleep (2);
+      return 0;
+    }
+    if (X509_cmp_current_time (X509_get_notAfter (peercert)) <= 0)
+    {
+      dprint (2, (debugfile, "Server certificate has expired"));
+      mutt_error (_("Server certificate has expired"));
+      mutt_sleep (2);
+      return 0;
+    }
   }
 
   if ((fp = fopen (SslCertFile, "rt")) == NULL)
@@ -884,8 +887,10 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 	    _("SSL Certificate check (certificate %d of %d in chain)"),
 	    len - idx, len);
   menu->title = title;
-  if (SslCertFile && X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
-      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)
+  if (SslCertFile
+      && (option (OPTSSLVERIFYDATES) == M_NO
+	  || (X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
+	      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)))
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
     menu->keys = _("roa");

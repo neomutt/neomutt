@@ -2145,6 +2145,14 @@ struct option_t MuttVars[] = {
   ** advertising the capability. When \fIunset\fP, mutt will not attempt to
   ** use \fCSTARTTLS\fP regardless of the server's capabilities.
   */
+  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, M_YES },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will not automatically accept a server
+  ** certificate that is either not yet valid or already expired. You should
+  ** only unset this for particular known hosts, using the
+  ** \fC$<account-hook>\fP function.
+  */
   { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, M_YES },
   /*
   ** .pp
