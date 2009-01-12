@@ -1,3 +1,11 @@
+2009-01-11 16:04 -0800  Brendan Cully  <brendan@kublai.com>  (1097a060842a)
+
+	* UPDATING, init.h, mutt.h, mutt_ssl.c, mutt_ssl_gnutls.c: Add
+	$ssl_verify_dates option to relax certificate date validation
+
+	* UPDATING, init.h, mutt.h, mutt_ssl.c, mutt_ssl_gnutls.c: Add
+	$ssl_verify_host to allow skipping host name validation
+
 2009-01-10 22:09 -0800  Brendan Cully  <brendan@kublai.com>  (db3a61fcde35)
 
 	* imap/util.c: Assume INBOX for ""/NULL in imap_mxcmp
