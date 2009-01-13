@@ -460,10 +460,18 @@ char *mutt_crypt_hook (ADDRESS *adr)
 #ifdef USE_SOCKET
 void mutt_account_hook (const char* url)
 {
+  /* parsing commands with URLs in an account hook can cause a recursive
+   * call. We just skip processing if this occurs. Typically such commands
+   * belong in a folder-hook -- perhaps we should warn the user. */
+  static int inhook = 0;
+
   HOOK* hook;
   BUFFER token;
   BUFFER err;
   char buf[STRING];
+
+  if (inhook)
+    return;
 
   err.data = buf;
   err.dsize = sizeof (buf);
@@ -476,14 +484,19 @@ void mutt_account_hook (const char* url)
 
     if ((regexec (hook->rx.rx, url, 0, NULL, 0) == 0) ^ hook->rx.not)
     {
+      inhook = 1;
+
       if (mutt_parse_rc_line (hook->command, &token, &err) == -1)
       {
 	FREE (&token.data);
 	mutt_error ("%s", err.data);
 	mutt_sleep (1);
 
+        inhook = 0;
 	return;
       }
+
+      inhook = 0;
     }
   }
 
