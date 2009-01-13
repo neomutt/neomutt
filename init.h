@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2002,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #ifdef _MAKEDOC
 # include "config.h"
@@ -2145,7 +2145,7 @@ struct option_t MuttVars[] = {
   ** advertising the capability. When \fIunset\fP, mutt will not attempt to
   ** use \fCSTARTTLS\fP regardless of the server's capabilities.
   */
-  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, M_YES },
+  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, 1 },
   /*
   ** .pp
   ** If \fIset\fP (the default), mutt will not automatically accept a server
@@ -2153,10 +2153,10 @@ struct option_t MuttVars[] = {
   ** only unset this for particular known hosts, using the
   ** \fC$<account-hook>\fP function.
   */
-  { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, M_YES },
+  { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, 1 },
   /*
   ** .pp
-  ** If \fIset\fP (the default), mutt will not automatically accept a server 
+  ** If \fIset\fP (the default), mutt will not automatically accept a server
   ** certificate whose host name does not match the host used in your folder
   ** URL. You should only unset this for particular known hosts, using
   ** the \fC$<account-hook>\fP function.
@@ -3321,14 +3321,14 @@ const struct mapping_t SortAuxMethods[] = {
   { "from",		SORT_FROM },
   { "size",		SORT_SIZE },
   { "threads",		SORT_DATE },	/* note: sort_aux == threads
-					 * isn't possible. 
+					 * isn't possible.
 					 */
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
   { NULL,		0 }
 };
-  
+
 
 const struct mapping_t SortBrowserMethods[] = {
   { "alpha",	SORT_SUBJECT },
@@ -3418,7 +3418,7 @@ struct command_t Commands[] = {
   { "ungroup",		parse_ungroup,		0 },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
 #ifdef HAVE_ICONV
-  { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK }, 
+  { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK },
 #endif
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_lists,		0 },
