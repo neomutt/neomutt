@@ -1,4 +1,22 @@
-2009-01-11 16:04 -0800  Brendan Cully  <brendan@kublai.com>  (1097a060842a)
+2009-01-13 06:51 -0800  Brendan Cully  <brendan@kublai.com>  (10e224e86f0b)
+
+	* hook.c: Do not allow a command in an account-hook to trigger another
+	account-hook. Recent changes in the IMAP path canonifier mean that
+	account-hooks that set variables to URLs (eg folder, spoolfile) can
+	trigger a recursive account-hook. Now we just bail out of account-
+	hook early if we are called recursively, but perhaps we should warn
+	the user to use a folder-hook instead. Thanks to Kyle Wheeler for
+	finding this one.
+
+2009-01-12 10:27 -0800  Brendan Cully  <brendan@kublai.com>  (6976aca75d04)
+
+	* init.h: Correct defaults for new ssl options (fixes manual
+	generation)
+
+2009-01-11 21:47 -0800  Brendan Cully  <brendan@kublai.com>  (ff74e612f790)
+
+	* mutt_ssl_gnutls.c: GNUTLS: check all available certs
+	noninteractively before presenting any menus
 
 	* UPDATING, init.h, mutt.h, mutt_ssl.c, mutt_ssl_gnutls.c: Add
 	$ssl_verify_dates option to relax certificate date validation

@@ -2067,6 +2067,7 @@ sequence.
 </sect1>
 
 <sect1 id="charset-hook">
+
 <title>Defining aliases for character sets </title>
 
 <para>Usage:</para>
@@ -2082,7 +2083,7 @@ sequence.
 </cmdsynopsis>
 
 <cmdsynopsis>
-<command>iconv-hook</command>
+<command>iconv-hook<anchor id="iconv-hook"/></command>
 <arg choice="plain">
 <replaceable class="parameter">charset</replaceable>
 </arg>
@@ -4597,46 +4598,82 @@ consists of a <link linkend="regexp">regular expression</link> or
 configuration option/command.  See
 
 <itemizedlist>
-<listitem>
 
+<listitem>
 <para>
-<link linkend="folder-hook">folder-hook</link>
+<link linkend="account-hook">account-hook</link>
 </para>
 </listitem>
-<listitem>
 
+<listitem>
 <para>
-<link linkend="send-hook">send-hook</link>
+<link linkend="charset-hook">charset-hook</link>
 </para>
 </listitem>
-<listitem>
 
+<listitem>
 <para>
-<link linkend="message-hook">message-hook</link>
+<link linkend="crypt-hook">crypt-hook</link>
 </para>
 </listitem>
-<listitem>
 
-<para>
-<link linkend="save-hook">save-hook</link>
-</para>
-</listitem>
 <listitem>
-
-<para>
-<link linkend="mbox-hook">mbox-hook</link>
-</para>
-</listitem>
-<listitem>
-
 <para>
 <link linkend="fcc-hook">fcc-hook</link>
 </para>
 </listitem>
-<listitem>
 
+<listitem>
 <para>
 <link linkend="fcc-save-hook">fcc-save-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="folder-hook">folder-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="iconv-hook">iconv-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="mbox-hook">mbox-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="message-hook">message-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="reply-hook">reply-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="save-hook">save-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="send-hook">send-hook</link>
+</para>
+</listitem>
+
+<listitem>
+<para>
+<link linkend="send2-hook">send2-hook</link>
 </para>
 </listitem>
 
@@ -6995,7 +7032,7 @@ The following are the commands understood by mutt.
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="charset-hook">iconv-hook</link></command>
+<command><link linkend="iconv-hook">iconv-hook</link></command>
 <arg choice="plain">
 <replaceable class="parameter">charset</replaceable>
 </arg>
