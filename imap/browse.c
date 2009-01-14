@@ -72,11 +72,13 @@ int imap_browse (char* path, struct browser_state* state)
   if (mx.mbox && mx.mbox[0] != '\0')
   {
     int rc;
+    char *ptr;
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
-    imap_munge_mbox_name (buf, sizeof (buf), mbox);
-    imap_unquote_string(buf); /* As kludgy as it gets */
+    ptr = safe_strdup (mbox);
+    imap_utf7_encode (&ptr);
     mbox[sizeof (mbox) - 1] = '\0';
-    strncpy (mbox, buf, sizeof (mbox) - 1);
+    strncpy (mbox, ptr, sizeof (mbox) - 1);
+    FREE (&ptr);
     n = mutt_strlen (mbox);
 
     dprint (3, (debugfile, "imap_browse: mbox: %s\n", mbox));
