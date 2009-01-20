@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.18\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-05 16:36-0800\n"
-"PO-Revision-Date: 2008-05-20 14:01+0200\n"
+"POT-Creation-Date: 2009-01-20 19:55+0100\n"
+"PO-Revision-Date: 2009-01-07 21:31+0100\n"
 "Last-Translator: René Clerc <rene@clerc.nl>\n"
 "Language-Team: René Clerc <rene@clerc.nl>\n"
 "MIME-Version: 1.0\n"
@@ -40,7 +40,7 @@ msgstr "Selecteren"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3832 curs_main.c:412
-#: mutt_ssl.c:899 mutt_ssl_gnutls.c:805 pager.c:1578 pgpkey.c:522
+#: mutt_ssl.c:907 mutt_ssl_gnutls.c:841 pager.c:1578 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:437
 msgid "Help"
 msgstr "Hulp"
@@ -860,12 +860,11 @@ msgstr ""
 
 #: crypt-gpgme.c:1286
 msgid "aka: "
-msgstr ""
+msgstr "ook bekend als: "
 
 #: crypt-gpgme.c:1297
-#, fuzzy
 msgid "created: "
-msgstr "%s aanmaken?"
+msgstr "aangemaakt: "
 
 #: crypt-gpgme.c:1362
 msgid "Error getting key information: "
@@ -876,24 +875,20 @@ msgstr "Fout bij het ophalen van sleutelinformatie: "
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
 #: crypt-gpgme.c:1369 crypt-gpgme.c:1384
-#, fuzzy
 msgid "Good signature from:"
 msgstr "Goede handtekening van: "
 
 #: crypt-gpgme.c:1376
-#, fuzzy
 msgid "*BAD* signature from:"
-msgstr "Goede handtekening van: "
+msgstr "*SLECHTE* handtekening van: "
 
 #: crypt-gpgme.c:1392
-#, fuzzy
 msgid "Problem signature from:"
-msgstr "Goede handtekening van: "
+msgstr "Problematische handtekening van: "
 
 #: crypt-gpgme.c:1393
-#, fuzzy
 msgid "               expires: "
-msgstr "        ook bekend als: "
+msgstr "               verloopt op: "
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
@@ -932,9 +927,9 @@ msgid ""
 msgstr "[-- Fout: ontsleuteling is mislukt: %s --]\n"
 
 #: crypt-gpgme.c:2082
-#, fuzzy, c-format
+#, c-format
 msgid "Error extracting key data!\n"
-msgstr "Fout bij het ophalen van sleutelinformatie: "
+msgstr "Fout bij het onttrekken van sleutelgegevens!\n"
 
 #: crypt-gpgme.c:2265
 #, c-format
@@ -1175,7 +1170,7 @@ msgstr "gpgme_op_keylist_next is mislukt: %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Alle overeenkomende sleutels zijn verlopen/ingetrokken."
 
-#: crypt-gpgme.c:3824 mutt_ssl.c:897 mutt_ssl_gnutls.c:803 pgpkey.c:515
+#: crypt-gpgme.c:3824 mutt_ssl.c:905 mutt_ssl_gnutls.c:839 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Einde "
@@ -1830,9 +1825,8 @@ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Type: %s/%s, Codering: %s, Grootte: %s --]\n"
 
 #: handler.c:1223
-#, fuzzy
 msgid "One or more parts of this message could not be displayed"
-msgstr "Waarschuwing: een deel van dit bericht is niet ondertekend."
+msgstr "Een of meer delen van dit bericht konden niet worden weergegeven"
 
 #: handler.c:1275
 #, c-format
@@ -2043,33 +2037,33 @@ msgstr "%s is een ongeldig IMAP-pad"
 msgid "Getting folder list..."
 msgstr "Postvakkenlijst wordt opgehaald..."
 
-#: imap/browse.c:189
+#: imap/browse.c:191
 msgid "No such folder"
 msgstr "Niet-bestaand postvak"
 
-#: imap/browse.c:278
+#: imap/browse.c:280
 msgid "Create mailbox: "
 msgstr "Postvak aanmaken: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:285 imap/browse.c:331
 msgid "Mailbox must have a name."
 msgstr "Postvak moet een naam hebben."
 
-#: imap/browse.c:291
+#: imap/browse.c:293
 msgid "Mailbox created."
 msgstr "Postvak is aangemaakt."
 
-#: imap/browse.c:322
+#: imap/browse.c:324
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Postvak %s hernoemen naar: "
 
-#: imap/browse.c:337
+#: imap/browse.c:339
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Hernoemen mislukt: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:344
 msgid "Mailbox renamed."
 msgstr "Postvak is hernoemd."
 
@@ -2078,9 +2072,9 @@ msgid "Mailbox closed"
 msgstr "Postvak is gesloten."
 
 #: imap/imap.c:126
-#, fuzzy, c-format
+#, c-format
 msgid "CREATE failed: %s"
-msgstr "SSL mislukt: %s"
+msgstr "CREATE mislukt: %s"
 
 #: imap/imap.c:190
 #, c-format
@@ -2216,7 +2210,7 @@ msgstr "%d berichten worden gekopieerd naar %s..."
 msgid "Copying message %d to %s..."
 msgstr "Bericht %d wordt gekopieerd naar %s ..."
 
-#: imap/util.c:336
+#: imap/util.c:356
 msgid "Continue?"
 msgstr "Doorgaan?"
 
@@ -2322,9 +2316,9 @@ msgid "%s is unset"
 msgstr "%s is niet gezet"
 
 #: init.c:1926
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: \"%s\""
-msgstr "Ongeldige dag van de maand: %s"
+msgstr "Ongeldige waarde voor optie %s: \"%s\""
 
 #: init.c:2064
 #, c-format
@@ -2475,20 +2469,18 @@ msgstr ""
 "Ga naar http://bugs.mutt.org/ om een programmafout te melden.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2009 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2008 Michael R. Elkins en anderen.\n"
+"Copyright (C) 1996-2009 Michael R. Elkins en anderen.\n"
 "Mutt komt ABSOLUUT ZONDER GARANTIE;  voor meer informatie `mutt -vv'.\n"
 "Mutt is vrije software, en u bent vrij om het te verspreiden\n"
 "onder bepaalde voorwaarden;  type `mutt -vv' voor meer informatie.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2504,11 +2496,12 @@ msgid ""
 msgstr ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2007 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2006-2008 Rocco Rutte <pdmef@gmx.net>\n"
 "\n"
 "Vele anderen die hier niet vermeld zijn hebben code, verbeteringen,\n"
 "en suggesties bijgedragen.\n"
@@ -2549,7 +2542,6 @@ msgstr ""
 "1307 USA.\n"
 
 #: main.c:113
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2565,11 +2557,13 @@ msgstr ""
 "gebruik: mutt [<opties>] [-z] [-f <file> | -yZ]\n"
 "         mutt [<opties>] [-x] [-Hi <file>] [-s <ond>] [-bc <adr>] [-a <file> "
 "[...]] [--] <adr> [...]\n"
-"         mutt [<opties>] -p\n"
-"         mutt [<opties>] -A <alias> [...]\n"
-"         mutt [<opties>] -Q <query> [...]\n"
-"         mutt [<opties>] -D\n"
-"         mutt -v[v]\n"
+"       mutt [<opties>] [-x] [-s <ond>] [-bc <adr>] [-a <file> [...]] [--] "
+"<adr> [...] < bericht\n"
+"       mutt [<options>] -p\n"
+"       mutt [<options>] -A <alias> [...]\n"
+"       mutt [<options>] -Q <query> [...]\n"
+"       mutt [<options>] -D\n"
+"       mutt -v[v]\n"
 
 #: main.c:122
 msgid ""
@@ -2828,9 +2822,8 @@ msgid "Scanning %s..."
 msgstr "%s wordt geanalyseerd..."
 
 #: mh.c:1314 mh.c:1392
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "Bericht kon niet verstuurd worden."
+msgstr "Bericht kon niet naar schijf worden geschreven"
 
 #: mh.c:1359
 msgid "maildir_commit_message(): unable to set time on file"
@@ -2926,8 +2919,8 @@ msgstr "I/O fout"
 msgid "SSL failed: %s"
 msgstr "SSL mislukt: %s"
 
-#: mutt_ssl.c:349 mutt_ssl_gnutls.c:880 mutt_ssl_gnutls.c:889
-#: mutt_ssl_gnutls.c:912
+#: mutt_ssl.c:349 mutt_ssl_gnutls.c:916 mutt_ssl_gnutls.c:925
+#: mutt_ssl_gnutls.c:948
 msgid "Unable to get certificate from peer"
 msgstr "Kan server certificaat niet verkrijgen"
 
@@ -2940,157 +2933,155 @@ msgstr "SSL verbinding via %s (%s)"
 msgid "Unknown"
 msgstr "Onbekende fout"
 
-#: mutt_ssl.c:426 mutt_ssl_gnutls.c:457
+#: mutt_ssl.c:426 mutt_ssl_gnutls.c:466
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[kan niet berekend worden]"
 
-#: mutt_ssl.c:444 mutt_ssl_gnutls.c:480
+#: mutt_ssl.c:444 mutt_ssl_gnutls.c:489
 msgid "[invalid date]"
 msgstr "[ongeldige datum]"
 
-#: mutt_ssl.c:570
+#: mutt_ssl.c:572
 msgid "Server certificate is not yet valid"
 msgstr "Certificaat van de server is nog niet geldig"
 
-#: mutt_ssl.c:577
+#: mutt_ssl.c:579
 msgid "Server certificate has expired"
 msgstr "Certificaat van de server is verlopen"
 
-#: mutt_ssl.c:696
-#, fuzzy
+#: mutt_ssl.c:699
 msgid "cannot get certificate subject"
-msgstr "Kan server certificaat niet verkrijgen"
+msgstr "kan onderwerp van certificaat niet verkrijgen"
 
-#: mutt_ssl.c:708
-#, fuzzy
+#: mutt_ssl.c:711
 msgid "cannot get certificate common name"
-msgstr "Kan server certificaat niet verkrijgen"
+msgstr "kan common name van van certificaat niet verkrijgen"
 
-#: mutt_ssl.c:717
-#, fuzzy, c-format
+#: mutt_ssl.c:720
+#, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr "S/MIME-certificaateigenaar komt niet overeen met afzender."
+msgstr "certificaateigenaar komt niet overeen met naam van de server %s"
 
-#: mutt_ssl.c:754
-#, fuzzy, c-format
+#: mutt_ssl.c:759
+#, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Certificaat wordt bewaard"
+msgstr "Toets op servernaam van certificaat mislukt: %s"
 
-#: mutt_ssl.c:845 mutt_ssl_gnutls.c:664
+#: mutt_ssl.c:851 mutt_ssl_gnutls.c:699
 msgid "This certificate belongs to:"
 msgstr "Dit certificaat behoort aan:"
 
-#: mutt_ssl.c:858 mutt_ssl_gnutls.c:703
+#: mutt_ssl.c:864 mutt_ssl_gnutls.c:738
 msgid "This certificate was issued by:"
 msgstr "Dit certificaat is uitgegeven door:"
 
-#: mutt_ssl.c:869 mutt_ssl_gnutls.c:742
+#: mutt_ssl.c:875 mutt_ssl_gnutls.c:777
 #, c-format
 msgid "This certificate is valid"
 msgstr "Dit certificaat is geldig"
 
-#: mutt_ssl.c:870 mutt_ssl_gnutls.c:745
+#: mutt_ssl.c:876 mutt_ssl_gnutls.c:780
 #, c-format
 msgid "   from %s"
 msgstr "    van %s"
 
-#: mutt_ssl.c:872 mutt_ssl_gnutls.c:749
+#: mutt_ssl.c:878 mutt_ssl_gnutls.c:784
 #, c-format
 msgid "     to %s"
 msgstr "      tot %s"
 
-#: mutt_ssl.c:878
+#: mutt_ssl.c:884
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Handtekening: %s"
 
-#: mutt_ssl.c:881 mutt_ssl_gnutls.c:786
+#: mutt_ssl.c:887 mutt_ssl_gnutls.c:821
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr ""
+msgstr "SSL Certificaat-toets (certificaat %d van %d in keten)"
 
-#: mutt_ssl.c:887 mutt_ssl_gnutls.c:793
+#: mutt_ssl.c:895 mutt_ssl_gnutls.c:829
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(w)eigeren, (e)enmalig toelaten, (a)ltijd toelaten"
 
-#: mutt_ssl.c:888 mutt_ssl_gnutls.c:794
+#: mutt_ssl.c:896 mutt_ssl_gnutls.c:830
 msgid "roa"
 msgstr "wea"
 
-#: mutt_ssl.c:892 mutt_ssl_gnutls.c:798
+#: mutt_ssl.c:900 mutt_ssl_gnutls.c:834
 msgid "(r)eject, accept (o)nce"
 msgstr "(w)eigeren, (e)enmalig toelaten"
 
-#: mutt_ssl.c:893 mutt_ssl_gnutls.c:799
+#: mutt_ssl.c:901 mutt_ssl_gnutls.c:835
 msgid "ro"
 msgstr "we"
 
-#: mutt_ssl.c:924 mutt_ssl_gnutls.c:848
+#: mutt_ssl.c:932 mutt_ssl_gnutls.c:884
 msgid "Warning: Couldn't save certificate"
 msgstr "Waarschuwing: certificaat kan niet bewaard worden"
 
-#: mutt_ssl.c:929 mutt_ssl_gnutls.c:853
+#: mutt_ssl.c:937 mutt_ssl_gnutls.c:889
 msgid "Certificate saved"
 msgstr "Certificaat wordt bewaard"
 
-#: mutt_ssl_gnutls.c:96 mutt_ssl_gnutls.c:123
+#: mutt_ssl_gnutls.c:105 mutt_ssl_gnutls.c:132
 msgid "Error: no TLS socket open"
 msgstr "Fout: geen TLS socket open"
 
-#: mutt_ssl_gnutls.c:276
+#: mutt_ssl_gnutls.c:285
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr "Alle beschikbare protocollen voor TLS/SSL-verbinding uitgeschakeld"
 
-#: mutt_ssl_gnutls.c:340
+#: mutt_ssl_gnutls.c:349
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS verbinding via %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:567
+#: mutt_ssl_gnutls.c:554 mutt_ssl_gnutls.c:679
 msgid "Error initialising gnutls certificate data"
 msgstr "Kan gnutls certificaatgegevens niet initializeren"
 
-#: mutt_ssl_gnutls.c:574
+#: mutt_ssl_gnutls.c:561 mutt_ssl_gnutls.c:686
 msgid "Error processing certificate data"
 msgstr "Fout bij het verwerken van certificaatgegevens"
 
-#: mutt_ssl_gnutls.c:754
+#: mutt_ssl_gnutls.c:789
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1 Handtekening: %s"
 
-#: mutt_ssl_gnutls.c:757
+#: mutt_ssl_gnutls.c:792
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5 Handtekening: %s"
 
-#: mutt_ssl_gnutls.c:762
+#: mutt_ssl_gnutls.c:797
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "WAARSCHUWING: Certificaat van de server is nog niet geldig"
 
-#: mutt_ssl_gnutls.c:767
+#: mutt_ssl_gnutls.c:802
 msgid "WARNING: Server certificate has expired"
 msgstr "WAARSCHUWING: Certificaat van de server is verlopen"
 
-#: mutt_ssl_gnutls.c:772
+#: mutt_ssl_gnutls.c:807
 msgid "WARNING: Server certificate has been revoked"
 msgstr "WAARSCHUWING: Certificaat van de server is herroepen"
 
-#: mutt_ssl_gnutls.c:777
+#: mutt_ssl_gnutls.c:812
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "WAARSCHUWING: naam van de server komt niet overeen met certificaat"
 
-#: mutt_ssl_gnutls.c:782
+#: mutt_ssl_gnutls.c:817
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "WAARSCHUWING: Ondertekenaar van servercertificaat is geen CA"
 
-#: mutt_ssl_gnutls.c:895
+#: mutt_ssl_gnutls.c:931
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Fout bij verifiëren van certificaat (%s)"
 
-#: mutt_ssl_gnutls.c:904
+#: mutt_ssl_gnutls.c:940
 msgid "Certificate is not X.509"
 msgstr "Certificaat is niet in X.509-formaat"
 
@@ -4210,7 +4201,7 @@ msgstr "SMTP-sessie is mislukt: kan %s niet openen"
 
 #: smtp.c:228
 msgid "No from address given"
-msgstr ""
+msgstr "Geen van-adres opgegeven"
 
 #: smtp.c:284
 msgid "SMTP session failed: read error"
@@ -4234,9 +4225,9 @@ msgid "SMTP authentication requires SASL"
 msgstr "SMTP authenticatie vereist SASL"
 
 #: smtp.c:461
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed, trying next method"
-msgstr "SASL-authenticatie is mislukt"
+msgstr "%s authenticatie mislukt, volgende methode wordt geprobeerd"
 
 #: smtp.c:478
 msgid "SASL authentication failed"
