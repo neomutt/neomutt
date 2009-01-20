@@ -1,5 +1,5 @@
 # Catalan messages for mutt.
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2008.
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009.
 #
 # Sóc Ivan, aquestes són les convencions que adopte per a la 1.5.12:
 #
@@ -47,10 +47,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.18\n"
+"Project-Id-Version: mutt 1.5.19\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-05 16:36-0800\n"
-"PO-Revision-Date: 2008-05-19 17:07+0200\n"
+"PO-Revision-Date: 2009-01-18 20:59+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "MIME-Version: 1.0\n"
@@ -946,12 +946,12 @@ msgstr ""
 
 #: crypt-gpgme.c:1286
 msgid "aka: "
-msgstr ""
+msgstr "també conegut com a: "
 
+# Es refereix a una signatura.  ivb
 #: crypt-gpgme.c:1297
-#, fuzzy
 msgid "created: "
-msgstr "Voleu crear «%s»?"
+msgstr "creada en: "
 
 #: crypt-gpgme.c:1362
 msgid "Error getting key information: "
@@ -962,24 +962,20 @@ msgstr "Error en obtenir la informació de la clau: "
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
 #: crypt-gpgme.c:1369 crypt-gpgme.c:1384
-#, fuzzy
 msgid "Good signature from:"
-msgstr "Signatura correcta de: "
+msgstr "Signatura correcta de:"
 
 #: crypt-gpgme.c:1376
-#, fuzzy
 msgid "*BAD* signature from:"
-msgstr "Signatura correcta de: "
+msgstr "Signatura *INCORRECTA* de:"
 
 #: crypt-gpgme.c:1392
-#, fuzzy
 msgid "Problem signature from:"
-msgstr "Signatura correcta de: "
+msgstr "Problema, la signatura de:"
 
 #: crypt-gpgme.c:1393
-#, fuzzy
 msgid "               expires: "
-msgstr "  també conegut com a: "
+msgstr "                expira en: "
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
@@ -1019,10 +1015,11 @@ msgstr ""
 "[-- Error: El desxifratge ha fallat: %s --]\n"
 "\n"
 
+# Es refereix a múltiples claus.  ivb
 #: crypt-gpgme.c:2082
-#, fuzzy, c-format
+#, c-format
 msgid "Error extracting key data!\n"
-msgstr "Error en obtenir la informació de la clau: "
+msgstr "Error en extreure les dades de les claus.\n"
 
 #: crypt-gpgme.c:2265
 #, c-format
@@ -2007,9 +2004,8 @@ msgid "[-- Type: %s/%s, Encoding: %s, Size: %s --]\n"
 msgstr "[-- Tipus: %s/%s, Codificació: %s, Mida: %s --]\n"
 
 #: handler.c:1223
-#, fuzzy
 msgid "One or more parts of this message could not be displayed"
-msgstr "Avís: Part d’aquest missatge no ha estat signat."
+msgstr "No s’han pogut mostrar una o més parts d’aquest missatge."
 
 #: handler.c:1275
 #, c-format
@@ -2268,9 +2264,9 @@ msgid "Mailbox closed"
 msgstr "S’ha tancat la bústia."
 
 #: imap/imap.c:126
-#, fuzzy, c-format
+#, c-format
 msgid "CREATE failed: %s"
-msgstr "La negociació d’SSL ha fallat: %s"
+msgstr "L’ordre «CREATE» ha fallat: %s"
 
 #: imap/imap.c:190
 #, c-format
@@ -2527,9 +2523,9 @@ msgid "%s is unset"
 msgstr "«%s» no està activada."
 
 #: init.c:1926
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid value for option %s: \"%s\""
-msgstr "El dia del mes no és vàlid: %s"
+msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 
 #: init.c:2064
 #, c-format
@@ -2685,21 +2681,18 @@ msgstr ""
 "amb Ivan Vilata i Balaguer <ivan@selidor.net>.\n"
 
 #: main.c:67
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2009 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright © 1996‐2008 Michael R. Elkins i d’altres.\n"
+"Copyright © 1996‐2009 Michael R. Elkins i d’altres.\n"
 "Mutt s’ofereix SENSE CAP GARANTIA; useu «mutt -vv» per a obtenir‐ne més\n"
-"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo "
-"sota\n"
+"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2715,11 +2708,12 @@ msgid ""
 msgstr ""
 "Copyright © 1996‐2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright © 1996‐2002 Brandon Long <blong@fiction.net>\n"
-"Copyright © 1997‐2007 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright © 1997‐2008 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright © 1998‐2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright © 1999‐2008 Brendan Cully <brendan@kublai.com>\n"
+"Copyright © 1999‐2009 Brendan Cully <brendan@kublai.com>\n"
 "Copyright © 1999‐2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright © 2000‐2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright © 2006‐2008 Rocco Rutte <pdmef@gmx.net>\n"
 "\n"
 "Moltes altres persones que no s’hi mencionen han contribuït amb codi,\n"
 "solucions i suggeriments.\n"
@@ -2761,7 +2755,6 @@ msgstr ""
 "    MA  02110‐1301, USA.\n"
 
 #: main.c:113
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2777,6 +2770,8 @@ msgstr ""
 "Forma d’ús: mutt [OPCIÓ]… [-z] [-f FITXER | -yZ]\n"
 "            mutt [OPCIÓ]… [-x] [-Hi FITXER] [-s ASSUMPTE] [-bc ADREÇA]\n"
 "                 [-a FITXER…] [--] ADREÇA…\n"
+"            mutt [OPCIÓ]… [-x] [-s ASSUMPTE] [-bc ADREÇA] [-a FITXER…] [--]\n"
+"                 ADREÇA… < MISSATGE\n"
 "            mutt [OPCIÓ]… -p\n"
 "            mutt [OPCIÓ]… -A ÀLIES [-A ÀLIES]…\n"
 "            mutt [OPCIÓ]… -Q VAR [-Q VAR]…\n"
@@ -3057,9 +3052,8 @@ msgid "Scanning %s..."
 msgstr "S’està llegint «%s»…"
 
 #: mh.c:1314 mh.c:1392
-#, fuzzy
 msgid "Could not flush message to disk"
-msgstr "No s’ha pogut enviar el missatge."
+msgstr "No s’ha pogut escriure el missatge a disc."
 
 #: mh.c:1359
 msgid "maildir_commit_message(): unable to set time on file"
@@ -3190,25 +3184,24 @@ msgstr "El certificat del servidor encara no és vàlid."
 msgid "Server certificate has expired"
 msgstr "El certificat del servidor ha expirat."
 
+# Sí, «subjecte» del certificat X.509, no «assumpte».  ivb
 #: mutt_ssl.c:696
-#, fuzzy
 msgid "cannot get certificate subject"
-msgstr "No s’ha pogut obtenir el certificat del servidor."
+msgstr "No s’ha pogut obtenir el subjecte del certificat."
 
 #: mutt_ssl.c:708
-#, fuzzy
 msgid "cannot get certificate common name"
-msgstr "No s’ha pogut obtenir el certificat del servidor."
+msgstr "No s’ha pogut obtenir el nom comú del certificat."
 
 #: mutt_ssl.c:717
-#, fuzzy, c-format
+#, c-format
 msgid "certificate owner does not match hostname %s"
-msgstr "El propietari del certificat S/MIME no concorda amb el remitent."
+msgstr "El propietari del certificat no concorda amb l’amfitrió «%s»."
 
 #: mutt_ssl.c:754
-#, fuzzy, c-format
+#, c-format
 msgid "Certificate host check failed: %s"
-msgstr "S’ha desat el certificat."
+msgstr "La comprovació de l’amfitrió del certificat ha fallat: %s"
 
 #: mutt_ssl.c:845 mutt_ssl_gnutls.c:664
 msgid "This certificate belongs to:"
@@ -3243,7 +3236,7 @@ msgstr "Empremta digital: %s"
 #: mutt_ssl.c:881 mutt_ssl_gnutls.c:786
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
-msgstr ""
+msgstr "Comprovació del certificat SSL (%d de %d en la cadena)"
 
 #: mutt_ssl.c:887 mutt_ssl_gnutls.c:793
 msgid "(r)eject, accept (o)nce, (a)ccept always"
@@ -3624,7 +3617,7 @@ msgstr "El patró és buit."
 #: pattern.c:1205
 #, c-format
 msgid "error: unknown op %d (report this error)."
-msgstr "Error: L’operació %d és desconeguda (informeu d’aquest error)."
+msgstr "Error: L’operació %d no és coneguda (informeu d’aquest error)."
 
 #: pattern.c:1288 pattern.c:1423
 msgid "Compiling search pattern..."
@@ -4516,7 +4509,7 @@ msgstr "La sessió SMTP fallat: no s’ha pogut obrir «%s»"
 
 #: smtp.c:228
 msgid "No from address given"
-msgstr ""
+msgstr "No s’ha indicat el remitent (From)."
 
 #: smtp.c:284
 msgid "SMTP session failed: read error"
@@ -4540,9 +4533,9 @@ msgid "SMTP authentication requires SASL"
 msgstr "L’autenticació SMTP necessita SASL."
 
 #: smtp.c:461
-#, fuzzy, c-format
+#, c-format
 msgid "%s authentication failed, trying next method"
-msgstr "L’autenticació SASL ha fallat."
+msgstr "L’autenticació %s ha fallat, es provarà amb el mètode següent."
 
 #: smtp.c:478
 msgid "SASL authentication failed"
@@ -4550,7 +4543,7 @@ msgstr "L’autenticació SASL ha fallat."
 
 #: sort.c:265
 msgid "Sorting mailbox..."
-msgstr "S’està ordenant la bústia."
+msgstr "S’està ordenant la bústia…"
 
 #: sort.c:302
 msgid "Could not find sorting function! [report this bug]"
@@ -5375,18 +5368,3 @@ msgstr "Extreu totes les claus públiques possibles."
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "Mostra les opcions d’S/MIME."
-
-#~ msgid "            created: "
-#~ msgstr "            creada en: "
-
-#~ msgid "*BAD* signature claimed to be from: "
-#~ msgstr "Signatura *INCORRECTA* de qui diu ser: "
-
-#~ msgid "Error checking signature"
-#~ msgstr "Error en comprovar la signatura."
-
-#~ msgid "SSL Certificate check"
-#~ msgstr "Comprovació del certificat SSL"
-
-#~ msgid "TLS/SSL Certificate check"
-#~ msgstr "Comprovació del certificat TLS/SSL"
