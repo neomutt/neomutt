@@ -1,3 +1,11 @@
+2009-01-20 12:34 -0800  René Clerc  <rene@clerc.nl>  (2006526d1d26)
+
+	* po/nl.po: Updated Dutch translation
+
+2009-01-19 20:39 -0800  Ivan Vilata i Balaguer  <ivan@selidor.net>  (038f1e5cdaea)
+
+	* po/ca.po: Updated Catalan translation
+
 2009-01-14 20:04 +0000  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (ddf48761aacf)
 
 	* imap/browse.c: Use imap_utf7_encode instead of

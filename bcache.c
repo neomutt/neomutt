@@ -136,6 +136,13 @@ FILE* mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp)
   snprintf (path, sizeof (path), "%s%s%s", bcache->path, id,
             tmp ? ".tmp" : "");
 
+  if ((fp = safe_fopen (path, "w+")))
+    goto out;
+
+  if (errno == EEXIST)
+    /* clean up leftover tmp file */
+    mutt_unlink (path);
+
   s = strchr (path + 1, '/');
   while (!(fp = safe_fopen (path, "w+")) && errno == ENOENT && s)
   {
@@ -147,6 +154,7 @@ FILE* mutt_bcache_put(body_cache_t *bcache, const char *id, int tmp)
     s = strchr (s + 1, '/');
   }
 
+  out:
   dprint (3, (debugfile, "bcache: put: '%s'\n", path));
 
   return fp;
