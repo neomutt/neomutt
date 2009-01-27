@@ -78,7 +78,7 @@ Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n\
 Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
 Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n\
-Copyright (C) 2006-2008 Rocco Rutte <pdmef@gmx.net>\n\
+Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n\
 \n\
 Many others not mentioned here contributed code, fixes,\n\
 and suggestions.\n");
