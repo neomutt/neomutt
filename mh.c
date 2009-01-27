@@ -1027,13 +1027,14 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
     if (!ctx->quiet && progress)
       mutt_progress_update (progress, count, -1);
 
+    DO_SORT();
+
     snprintf (fn, sizeof (fn), "%s/%s", ctx->path, p->h->path);
 
 #if USE_HCACHE
     if (option(OPTHCACHEVERIFY))
     {
-      DO_SORT();
-      ret = stat(fn, &lastchanged);
+       ret = stat(fn, &lastchanged);
     }
     else
     {
@@ -1057,7 +1058,6 @@ static void maildir_delayed_parsing (CONTEXT * ctx, struct maildir **md,
     {
 #endif /* USE_HCACHE */
 
-    DO_SORT();
     if (maildir_parse_message (ctx->magic, fn, p->h->old, p->h))
     {
       p->header_parsed = 1;
