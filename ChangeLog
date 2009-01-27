@@ -1,12 +1,17 @@
-2009-01-27 15:25 +0100  Rocco Rutte  <pdmef@gmx.net>  (eb918af802ec)
+2009-01-27 18:48 +0100  Rocco Rutte  <pdmef@gmx.net>  (d7e44862a08a)
+
+	* help.c, main.c, mh.c: Update copyright years
+
+	* help.c: Fix help alignment for escape sequences at screen
+	boundary. Closes #3146.
 
 	* mh.c: Unconditionally inode-sort Maildir and MH folders. Closes
 	#3166.
 
 2009-01-26 12:32 -0800  Brendan Cully  <brendan@kublai.com>  (da94a92c3ba0)
 
-	* ChangeLog, bcache.c: Remove old bcache tmpfile before trying to
-	create new one. Closes #3163.
+	* bcache.c: Remove old bcache tmpfile before trying to create new
+	one. Closes #3163.
 
 2009-01-20 12:34 -0800  René Clerc  <rene@clerc.nl>  (2006526d1d26)
 
