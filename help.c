@@ -256,7 +256,7 @@ static void format_line (FILE *f, int ismacro,
 	n = get_wrapped_width (t3, n);
       }
 
-      print_macro (f, n, &t3);
+      n = print_macro (f, n, &t3);
 
       if (*t3)
       {
