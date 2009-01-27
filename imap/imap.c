@@ -190,7 +190,6 @@ void imap_logout_all (void)
       mutt_message (_("Closing connection to %s..."), conn->account.host);
       imap_logout ((IMAP_DATA**) (void*) &conn->data);
       mutt_clear_error ();
-      mutt_socket_close (conn);
       mutt_socket_free (conn);
     }
 
@@ -831,6 +830,7 @@ void imap_logout (IMAP_DATA** idata)
   while (imap_cmd_step (*idata) == IMAP_CMD_CONTINUE)
     ;
 
+  mutt_socket_close ((*idata)->conn);
   imap_free_idata (idata);
 }
 
