@@ -1,3 +1,12 @@
+2009-01-27 12:58 -0800  Brendan Cully  <brendan@kublai.com>  (7ddf1d1cc490)
+
+	* imap/imap.c: Move socket close into imap_logout from imap_logout_all
+
+2009-01-27 12:17 -0800  Brendan Cully  <brendan@kublai.com>  (7c1e4f1c2ed4)
+
+	* ChangeLog, imap/imap.c: IMAP: only close socket when not already
+	disconnected.
+
 2009-01-27 18:48 +0100  Rocco Rutte  <pdmef@gmx.net>  (d7e44862a08a)
 
 	* help.c, main.c, mh.c: Update copyright years

@@ -754,7 +754,7 @@ struct option_t MuttVars[] = {
   ** If the GECOS field contains a string like ``lastname, firstname'' then you
   ** should set it to ``\fC.*\fP''.
   ** .pp
-  ** This can be useful if you see the following behavior: you address a e-mail
+  ** This can be useful if you see the following behavior: you address an e-mail
   ** to user ID ``stevef'' whose full name is ``Steve Franklin''.  If mutt expands
   ** ``stevef'' to ``"Franklin" stevef@foo.bar'' then you should set the $$gecos_mask to
   ** a regular expression that will match the whole name so mutt will expand
@@ -1835,7 +1835,7 @@ struct option_t MuttVars[] = {
   { "pgp_clearsign_command",	DT_STR,	R_NONE, UL &PgpClearSignCommand, 0 },
   /*
   ** .pp
-  ** This format is used to create a old-style ``clearsigned'' PGP
+  ** This format is used to create an old-style ``clearsigned'' PGP
   ** message.  Note that the use of this format is \fBstrongly\fP
   ** \fBdeprecated\fP.
   ** .pp
@@ -2196,20 +2196,20 @@ struct option_t MuttVars[] = {
   { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
   /*
   ** .pp
-  ** This variables specifies whether to attempt to use SSLv2 in the
+  ** This variable specifies whether to attempt to use SSLv2 in the
   ** SSL authentication process.
   */
 # endif /* defined USE_SSL_OPENSSL */
   { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
   /*
   ** .pp
-  ** This variables specifies whether to attempt to use SSLv3 in the
+  ** This variable specifies whether to attempt to use SSLv3 in the
   ** SSL authentication process.
   */
   { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
   /*
   ** .pp
-  ** This variables specifies whether to attempt to use TLSv1 in the
+  ** This variable specifies whether to attempt to use TLSv1 in the
   ** SSL authentication process.
   */
 # ifdef USE_SSL_GNUTLS
