@@ -148,18 +148,27 @@ void mutt_edit_headers (const char *editor,
       BODY *body;
       BODY *parts;
       char *q;
+      int l = 0;
 
       p = cur->data + 7;
       SKIPWS (p);
       if (*p)
       {
-	if ((q = strpbrk (p, " \t")))
+	for (q = p; *q && *q != ' ' && *q != '\t'; q++)
 	{
-	  mutt_substrcpy (path, p, q, sizeof (path));
-	  SKIPWS (q);
+	  if (*q == '\\')
+	  {
+	    if (!*(q+1))
+	      break;
+	    q++;
+	  }
+	  if (l < sizeof (path) - 1)
+	    path[l++] = *q;
 	}
-	else
-	  strfcpy (path, p, sizeof (path));
+	*q++ = 0;
+	SKIPWS (q);
+	path[l] = 0;
+
 	mutt_expand_path (path, sizeof (path));
 	if ((body = mutt_make_file_attach (path)))
 	{

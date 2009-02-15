@@ -1126,7 +1126,8 @@ You can also attach files to your message by specifying
 <literal>Attach:</literal> <emphasis>filename</emphasis>  &lsqb; <emphasis>description</emphasis> &rsqb;
 
 where <emphasis>filename</emphasis> is the file to attach and <emphasis>description</emphasis> is an
-optional string to use as the description of the attached file.
+optional string to use as the description of the attached file. Spaces
+in filenames have to be escaped using backslash (<quote>&bsol;</quote>).
 </para>
 
 </sect3>
