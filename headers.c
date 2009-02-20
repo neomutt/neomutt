@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -147,32 +147,32 @@ void mutt_edit_headers (const char *editor,
     {
       BODY *body;
       BODY *parts;
-      char *q;
       int l = 0;
 
       p = cur->data + 7;
       SKIPWS (p);
       if (*p)
       {
-	for (q = p; *q && *q != ' ' && *q != '\t'; q++)
+	for ( ; *p && *p != ' ' && *p != '\t'; p++)
 	{
-	  if (*q == '\\')
+	  if (*p == '\\')
 	  {
-	    if (!*(q+1))
+	    if (!*(p+1))
 	      break;
-	    q++;
+	    p++;
 	  }
 	  if (l < sizeof (path) - 1)
-	    path[l++] = *q;
+	    path[l++] = *p;
 	}
-	*q++ = 0;
-	SKIPWS (q);
+	if (*p)
+	  *p++ = 0;
+	SKIPWS (p);
 	path[l] = 0;
 
 	mutt_expand_path (path, sizeof (path));
 	if ((body = mutt_make_file_attach (path)))
 	{
-	  body->description = safe_strdup (q);
+	  body->description = safe_strdup (p);
 	  for (parts = msg->content; parts->next; parts = parts->next) ;
 	  parts->next = body;
 	}

@@ -1,3 +1,13 @@
+2009-02-20 13:05 +0100  Rocco Rutte  <pdmef@gmx.net>  (b3f6d86e94f7)
+
+	* main.c: Set magic from -m before processing queries (-Q) or dumping
+	variables (-D)
+
+2009-02-20 13:02 +0100  Rocco Rutte  <pdmef@gmx.net>  (61755dc4e44c)
+
+	* ChangeLog, doc/mutt.man, init.h: Better document how the initial
+	folder is determined. Closes #3189.
+
 2009-02-15 16:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (ee5e696a9d08)
 
 	* doc/manual.xml.head, headers.c: Support spaces in Attach:
