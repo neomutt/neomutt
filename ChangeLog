@@ -1,3 +1,14 @@
+2009-02-20 18:27 +0100  Rocco Rutte  <pdmef@gmx.net>  (3f57a654639d)
+
+	* doc/manual.xml.head: Document address normalization. Closes #2430.
+
+2009-02-20 13:23 +0100  Rocco Rutte  <pdmef@gmx.net>  (e37e857afc14)
+
+	* ChangeLog, headers.c: Simplify and fix Attach: header parsing
+
+	With ee5e696a9d08 we would skip beyond the filename to look for a
+	description. This changeset fixes it.
+
 2009-02-20 13:05 +0100  Rocco Rutte  <pdmef@gmx.net>  (b3f6d86e94f7)
 
 	* main.c: Set magic from -m before processing queries (-Q) or dumping

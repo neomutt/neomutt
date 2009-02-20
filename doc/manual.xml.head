@@ -5199,6 +5199,24 @@ This normalization affects all headers mutt generates including aliases.
 </para>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>
+Initial folder selection
+</term>
+<listitem>
+<para>
+The folder Mutt opens at startup is determined as follows: the folder
+specified in the <literal>$MAIL</literal> environment variable if
+present. Otherwise, the value of <literal>$MAILDIR</literal> is taken
+into account. If that isn't present either, Mutt takes the user's
+mailbox in the mailspool as determined at compile-time (which may also
+reside in the home directory). The
+<link linkend="spoolfile">&dollar;spoolfile</link> setting overrides
+this selection. Highest priority has the mailbox given with the
+<literal>-f</literal> command line option.
+</para>
+</listitem>
+</varlistentry>
 </variablelist>
 
 </sect1>
