@@ -741,6 +741,9 @@ int main (int argc, char **argv)
   /* Initialize crypto backends.  */
   crypt_init ();
 
+  if (newMagic)
+    mx_set_magic (newMagic);
+
   if (queries)
   {
     for (; optind < argc; optind++)
@@ -772,9 +775,6 @@ int main (int argc, char **argv)
     }
     return rv;
   }
-
-  if (newMagic)
-    mx_set_magic (newMagic);
 
   if (!option (OPTNOCURSES))
   {
