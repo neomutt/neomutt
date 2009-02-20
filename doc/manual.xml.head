@@ -5174,6 +5174,35 @@ macro pager \cb |urlview\n
 
 </sect1>
 
+<sect1 id="misc-topics">
+<title>Miscellany</title>
+
+<para>
+This section documents various feature that fit nowhere else.
+</para>
+
+<variablelist>
+<varlistentry>
+<term>
+Address normalization
+</term>
+<listitem>
+<para>
+Mutt normalizes all e-mail addresses to the simplest form possible. If
+an address contains a realname, the form
+<emphasis>Joe User &lt;joe@example.com&gt;</emphasis> is used and the
+pure e-mail address without angle brackets otherwise, i.e. just
+<emphasis>joe@example.com</emphasis>.
+</para>
+<para>
+This normalization affects all headers mutt generates including aliases.
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect1>
+
 </chapter>
 
 <chapter id="mimesupport">
