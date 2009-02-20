@@ -1273,7 +1273,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
-  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''.
+  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overriden by the
+  ** \fC-m\fP command-line option.
   */
   { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
   /*
@@ -2943,8 +2944,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If your spool mailbox is in a non-default place where Mutt cannot find
   ** it, you can specify its location with this variable.  Mutt will
-  ** automatically set this variable to the value of the environment
-  ** variable \fC$$$MAIL\fP if it is not set.
+  ** initially set this variable to the value of the environment
+  ** variable \fC$$$MAIL\fP or \fC$$$MAILDIR\fP if either is defined.
   */
   { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
   /*

@@ -1,3 +1,12 @@
+2009-02-15 16:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (ee5e696a9d08)
+
+	* doc/manual.xml.head, headers.c: Support spaces in Attach:
+	pseudoheader. Closes #3179.
+
+2009-02-10 13:05 +0100  Rocco Rutte  <pdmef@gmx.net>  (a21f8bf84149)
+
+	* ChangeLog, init.h: Fix documentation typos. Closes #3178.
+
 2009-01-27 12:58 -0800  Brendan Cully  <brendan@kublai.com>  (7ddf1d1cc490)
 
 	* imap/imap.c: Move socket close into imap_logout from imap_logout_all
