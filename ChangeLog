@@ -1,3 +1,12 @@
+2009-03-07 12:26 +0100  Rocco Rutte  <pdmef@gmx.net>  (49d3d03d41c2)
+
+	* doc/manual.xml.head: Fix typo, see #2430.
+
+2009-02-20 22:14 +0100  Rocco Rutte  <pdmef@gmx.net>  (35fbea209c6e)
+
+	* ChangeLog, doc/manual.xml.head: Manual: verbosely document how the
+	initial folder is determined, see #3189.
+
 2009-02-20 18:27 +0100  Rocco Rutte  <pdmef@gmx.net>  (3f57a654639d)
 
 	* doc/manual.xml.head: Document address normalization. Closes #2430.
