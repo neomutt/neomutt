@@ -2861,7 +2861,7 @@ struct option_t MuttVars[] = {
   ** variable \fC$$$MAIL\fP or \fC$$$MAILDIR\fP if either is defined.
   */
 #if defined(USE_SSL)
-#if USE_SSL_GNUTLS
+#ifdef USE_SSL_GNUTLS
   { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
   /*
   ** .pp
