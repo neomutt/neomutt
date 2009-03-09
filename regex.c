@@ -56,6 +56,13 @@
 
 #undef DEBUG
 
+/* On OS X 10.5.x, wide char functions are inlined by default breaking
+ * --without-wc-funcs compilation
+ */
+#ifdef __APPLE_CC__
+#define _DONT_USE_CTYPE_INLINE_
+#endif
+
 #if (defined(HAVE_ALLOCA_H) && !defined(_AIX))
 # include <alloca.h>
 #endif
@@ -73,9 +80,11 @@
 
 /* For platform which support the ISO C amendement 1 functionality we
    support user defined character classes.  */
-#if defined _LIBC || (defined HAVE_WCTYPE_H && defined HAVE_WCHAR_H)
-# include <wctype.h>
+#ifdef HAVE_WCHAR_H
 # include <wchar.h>
+#endif
+#if defined(HAVE_WCTYPE_H) && defined(HAVE_WC_FUNCS)
+# include <wctype.h>
 #endif
 
 /* This is for other GNU distributions with internationalized messages.  */

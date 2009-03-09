@@ -35,6 +35,12 @@
 #include <limits.h>
 #include <stdarg.h>
 #include <signal.h>
+/* On OS X 10.5.x, wide char functions are inlined by default breaking
+ * --without-wc-funcs compilation
+ */
+#ifdef __APPLE_CC__
+#define _DONT_USE_CTYPE_INLINE_
+#endif
 #ifdef HAVE_WCHAR_H
 # include <wchar.h>
 #endif

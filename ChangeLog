@@ -1,3 +1,11 @@
+2009-03-09 11:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (bcf1e9692caf)
+
+	* init.h: Fix 11cd72da743a
+
+2009-03-09 11:30 +0100  Rocco Rutte  <pdmef@gmx.net>  (11cd72da743a)
+
+	* ChangeLog, init.h: Sort SSL-related variables, see #3191.
+
 2009-03-09 11:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (a96d427b203b)
 
 	* hash.c, hash.h, init.c, mh.c, thread.c: Restore $reverse_alias
