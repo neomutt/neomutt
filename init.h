@@ -314,6 +314,27 @@ struct option_t MuttVars[] = {
   ** follow these menus.  The option is \fIunset\fP by default because many
   ** visual terminals don't permit making the cursor invisible.
   */
+#if defined(USE_SSL)
+  { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
+  /*
+  ** .pp
+  ** This variable specifies the file where the certificates you trust
+  ** are saved. When an unknown certificate is encountered, you are asked
+  ** if you accept it or not. If you accept it, the certificate can also
+  ** be saved in this file and further connections are automatically
+  ** accepted.
+  ** .pp
+  ** You can also manually add CA certificates in this file. Any server
+  ** certificate that is signed with one of these CA certificates is
+  ** also automatically accepted.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set certificate_file=~/.mutt/certificates
+  ** .te
+  **
+  */
+#endif
   { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
   /*
   ** .pp
@@ -594,6 +615,14 @@ struct option_t MuttVars[] = {
   ** agents tend to do with messages (in order to prevent tools from
   ** misinterpreting the line as a mbox message separator).
   */
+#if defined(USE_SSL_OPENSSL)
+  { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
+  /*
+  ** .pp
+  ** The file which includes random data that is used to initialize SSL
+  ** library functions.
+  */
+#endif
   { "envelope_from_address", DT_ADDR, R_NONE, UL &EnvFrom, 0 },
   /*
   ** .pp
@@ -2119,118 +2148,6 @@ struct option_t MuttVars[] = {
   ** keyid (the hash-value that OpenSSL generates) to work properly
   ** (S/MIME only)
   */
-#if defined(USE_SSL)
-  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
-  /*
-  ** .pp
-  ** The file containing a client certificate and its associated private
-  ** key.
-  */
-  { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
-  /*
-   ** .pp
-   ** If this variable is \fIset\fP, Mutt will require that all connections
-   ** to remote servers be encrypted. Furthermore it will attempt to
-   ** negotiate TLS even if the server does not advertise the capability,
-   ** since it would otherwise have to abort the connection anyway. This
-   ** option supersedes $$ssl_starttls.
-   */
-  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
-  /*
-  ** .pp
-  ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
-  ** advertising the capability. When \fIunset\fP, mutt will not attempt to
-  ** use \fCSTARTTLS\fP regardless of the server's capabilities.
-  */
-  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP (the default), mutt will not automatically accept a server
-  ** certificate that is either not yet valid or already expired. You should
-  ** only unset this for particular known hosts, using the
-  ** \fC$<account-hook>\fP function.
-  */
-  { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP (the default), mutt will not automatically accept a server
-  ** certificate whose host name does not match the host used in your folder
-  ** URL. You should only unset this for particular known hosts, using
-  ** the \fC$<account-hook>\fP function.
-  */
-  { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
-  /*
-  ** .pp
-  ** This variable specifies the file where the certificates you trust
-  ** are saved. When an unknown certificate is encountered, you are asked
-  ** if you accept it or not. If you accept it, the certificate can also
-  ** be saved in this file and further connections are automatically
-  ** accepted.
-  ** .pp
-  ** You can also manually add CA certificates in this file. Any server
-  ** certificate that is signed with one of these CA certificates is
-  ** also automatically accepted.
-  ** .pp
-  ** Example:
-  ** .ts
-  ** set certificate_file=~/.mutt/certificates
-  ** .te
-  */
-# ifdef USE_SSL_OPENSSL
-  { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
-  /*
-  ** .pp
-  ** If set to \fIyes\fP, mutt will use CA certificates in the
-  ** system-wide certificate store when checking if a server certificate
-  ** is signed by a trusted CA.
-  */
-  { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
-  /*
-  ** .pp
-  ** The file which includes random data that is used to initialize SSL
-  ** library functions.
-   */
-  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
-  /*
-  ** .pp
-  ** This variable specifies whether to attempt to use SSLv2 in the
-  ** SSL authentication process.
-  */
-# endif /* defined USE_SSL_OPENSSL */
-  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
-  /*
-  ** .pp
-  ** This variable specifies whether to attempt to use SSLv3 in the
-  ** SSL authentication process.
-  */
-  { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
-  /*
-  ** .pp
-  ** This variable specifies whether to attempt to use TLSv1 in the
-  ** SSL authentication process.
-  */
-# ifdef USE_SSL_GNUTLS
-  { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
-  /*
-  ** .pp
-  ** This variable specifies the minimum acceptable prime size (in bits)
-  ** for use in any Diffie-Hellman key exchange. A value of 0 will use
-  ** the default from the GNUTLS library.
-  */
-  { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
-  /*
-  ** .pp
-  ** This variable specifies a file containing trusted CA certificates.
-  ** Any server certificate that is signed with one of these CA
-  ** certificates is also automatically accepted.
-  ** .pp
-  ** Example:
-  ** .ts
-  ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
-  ** .te
-  */
-# endif /* USE_SSL_GNUTLS */
-#endif /* defined(USE_SSL) */
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },
   /*
   ** .pp
@@ -2943,6 +2860,98 @@ struct option_t MuttVars[] = {
   ** initially set this variable to the value of the environment
   ** variable \fC$$$MAIL\fP or \fC$$$MAILDIR\fP if either is defined.
   */
+#if defined(USE_SSL)
+#if USE_SSL_GNUTLS
+  { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
+  /*
+  ** .pp
+  ** This variable specifies a file containing trusted CA certificates.
+  ** Any server certificate that is signed with one of these CA
+  ** certificates is also automatically accepted.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
+  ** .te
+  */
+#endif /* USE_SSL_GNUTLS */
+  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
+  /*
+  ** .pp
+  ** The file containing a client certificate and its associated private
+  ** key.
+  */
+  { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
+  /*
+   ** .pp
+   ** If this variable is \fIset\fP, Mutt will require that all connections
+   ** to remote servers be encrypted. Furthermore it will attempt to
+   ** negotiate TLS even if the server does not advertise the capability,
+   ** since it would otherwise have to abort the connection anyway. This
+   ** option supersedes $$ssl_starttls.
+   */
+# ifdef USE_SSL_GNUTLS
+  { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
+  /*
+  ** .pp
+  ** This variable specifies the minimum acceptable prime size (in bits)
+  ** for use in any Diffie-Hellman key exchange. A value of 0 will use
+  ** the default from the GNUTLS library.
+  */
+# endif /* USE_SSL_GNUTLS */
+  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
+  ** advertising the capability. When \fIunset\fP, mutt will not attempt to
+  ** use \fCSTARTTLS\fP regardless of the server's capabilities.
+  */
+# ifdef USE_SSL_OPENSSL
+  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
+  /*
+  ** .pp
+  ** This variable specifies whether to attempt to use SSLv2 in the
+  ** SSL authentication process.
+  */
+# endif /* defined USE_SSL_OPENSSL */
+  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
+  /*
+  ** .pp
+  ** This variable specifies whether to attempt to use SSLv3 in the
+  ** SSL authentication process.
+  */
+  { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
+  /*
+  ** .pp
+  ** This variable specifies whether to attempt to use TLSv1 in the
+  ** SSL authentication process.
+  */
+#ifdef USE_SSL_OPENSSL
+  { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
+  /*
+  ** .pp
+  ** If set to \fIyes\fP, mutt will use CA certificates in the
+  ** system-wide certificate store when checking if a server certificate
+  ** is signed by a trusted CA.
+  */
+#endif
+  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will not automatically accept a server
+  ** certificate that is either not yet valid or already expired. You should
+  ** only unset this for particular known hosts, using the
+  ** \fC$<account-hook>\fP function.
+  */
+  { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will not automatically accept a server
+  ** certificate whose host name does not match the host used in your folder
+  ** URL. You should only unset this for particular known hosts, using
+  ** the \fC$<account-hook>\fP function.
+  */
+#endif /* defined(USE_SSL) */
   { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
   /*
   ** .pp
