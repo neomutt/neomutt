@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -30,15 +30,16 @@ typedef struct
 {
   int nelem;
   struct hash_elem **table;
+  unsigned int (*hash_string)(const unsigned char *, unsigned int);
+  int (*cmp_string)(const char *, const char *);
 }
 HASH;
 
-#define hash_find(table, key) hash_find_hash(table, hash_string ((unsigned char *)key, table->nelem), key)
+#define hash_find(table, key) hash_find_hash(table, table->hash_string ((unsigned char *)key, table->nelem), key)
 
-#define hash_delete(table,key,data,destroy) hash_delete_hash(table, hash_string ((unsigned char *)key, table->nelem), key, data, destroy)
+#define hash_delete(table,key,data,destroy) hash_delete_hash(table, table->hash_string ((unsigned char *)key, table->nelem), key, data, destroy)
 
-HASH *hash_create (int nelem);
-unsigned int hash_string (const unsigned char *s, unsigned int n);
+HASH *hash_create (int nelem, int lower);
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup);
 void *hash_find_hash (const HASH * table, int hash, const char *key);
 void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,

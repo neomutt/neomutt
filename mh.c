@@ -1870,7 +1870,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.
    */
-  fnames = hash_create (1031);
+  fnames = hash_create (1031, 0);
 
   for (p = md; p; p = p->next)
   {
@@ -2019,7 +2019,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   mhs_free_sequences (&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = hash_create (1031);
+  fnames = hash_create (1031, 0);
 
   for (p = md; p; p = p->next)
     hash_insert (fnames, p->h->path, p, 0);
