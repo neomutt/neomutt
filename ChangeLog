@@ -1,3 +1,13 @@
+2009-03-09 12:04 +0100  Vincent Lefevre  <vincent@vinc17.org>  (4ce562b7f5d7)
+
+	* mbyte.h: Unbreak compilation on OS X with --with-regex/--without-wc-
+	funcs. Closes #3149.
+
+2009-03-09 11:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (f3a33b77dc90)
+
+	* ChangeLog, mutt.h, regex.c: Unbreak compilation with --without-wc-
+	funcs on OS X 10.5.*, see #3149.
+
 2009-03-09 11:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (bcf1e9692caf)
 
 	* init.h: Fix 11cd72da743a
