@@ -452,7 +452,7 @@ int mutt_index_menu (void)
      * any 'op' below could do mutt_enter_command(), either here or
      * from any new menu launched, and change $sort/$sort_aux
      */
-    if (option (OPTNEEDRESORT) && Context && Context->msgcount)
+    if (option (OPTNEEDRESORT) && Context && Context->msgcount && menu->current >= 0)
       resort_index (menu);
 
     menu->max = Context ? Context->vcount : 0;
