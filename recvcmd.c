@@ -509,7 +509,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
     }
 
     if (mime_fwd_any && 
-	(last = copy_problematic_attachments (fp, last, idx, idxlen, mime_fwd_all)) == NULL)
+	copy_problematic_attachments (fp, last, idx, idxlen, mime_fwd_all) == NULL)
       goto bail;
   }
   
