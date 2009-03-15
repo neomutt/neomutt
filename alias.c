@@ -488,7 +488,9 @@ int mutt_alias_complete (char *s, size_t buflen)
   char bestname[HUGE_STRING];
   int i;
 
+#ifndef min
 #define min(a,b)        ((a<b)?a:b)
+#endif
 
   if (s[0] != 0) /* avoid empty string as strstr argument */
   {
