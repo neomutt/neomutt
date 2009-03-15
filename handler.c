@@ -427,23 +427,23 @@ enum { RICH_PARAM=0, RICH_BOLD, RICH_UNDERLINE, RICH_ITALIC, RICH_NOFILL,
   RICH_FLUSHRIGHT, RICH_COLOR, RICH_LAST_TAG };
 
 static struct {
-  const char *tag_name;
+  const wchar_t *tag_name;
   int index;
 } EnrichedTags[] = {
-  { "param",		RICH_PARAM },
-  { "bold",		RICH_BOLD },
-  { "italic",		RICH_ITALIC },
-  { "underline",	RICH_UNDERLINE },
-  { "nofill",		RICH_NOFILL },
-  { "excerpt",		RICH_EXCERPT },
-  { "indent",		RICH_INDENT },
-  { "indentright",	RICH_INDENT_RIGHT },
-  { "center",		RICH_CENTER },
-  { "flushleft",	RICH_FLUSHLEFT },
-  { "flushright",	RICH_FLUSHRIGHT },
-  { "flushboth",	RICH_FLUSHLEFT },
-  { "color",		RICH_COLOR },
-  { "x-color",		RICH_COLOR },
+  { L"param",		RICH_PARAM },
+  { L"bold",		RICH_BOLD },
+  { L"italic",		RICH_ITALIC },
+  { L"underline",	RICH_UNDERLINE },
+  { L"nofill",		RICH_NOFILL },
+  { L"excerpt",		RICH_EXCERPT },
+  { L"indent",		RICH_INDENT },
+  { L"indentright",	RICH_INDENT_RIGHT },
+  { L"center",		RICH_CENTER },
+  { L"flushleft",	RICH_FLUSHLEFT },
+  { L"flushright",	RICH_FLUSHRIGHT },
+  { L"flushboth",	RICH_FLUSHLEFT },
+  { L"color",		RICH_COLOR },
+  { L"x-color",		RICH_COLOR },
   { NULL,		-1 }
 };
 
@@ -465,27 +465,6 @@ struct enriched_state
   int WrapMargin;
   STATE *s;
 };
-
-static int enriched_cmp (const char *a, const wchar_t *b)
-{
-  register const char *p = a;
-  register const wchar_t *q = b;
-  int i;
-
-  if (!a && !b)
-    return 0;
-  if (!a && b)
-    return -1;
-  if (a && !b)
-    return 1;
-
-  for ( ; *p || *q; p++, q++)
-  {
-    if ((i = ascii_tolower (*p)) - ascii_tolower (((char) *q) & 0x7f))
-      return i;
-  }
-  return 0;
-}
 
 static void enriched_wrap (struct enriched_state *stte)
 {
@@ -716,7 +695,7 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
     tagptr++;
   
   for (i = 0, j = -1; EnrichedTags[i].tag_name; i++)
-    if (enriched_cmp (EnrichedTags[i].tag_name, tagptr) == 0)
+    if (wcscasecmp (EnrichedTags[i].tag_name, tagptr) == 0)
     {
       j = EnrichedTags[i].index;
       break;
@@ -734,35 +713,35 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
       if ((stte->s->flags & M_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
       {
 	stte->param[stte->param_used] = (wchar_t) '\0';
-	if (!enriched_cmp("black", stte->param))
+	if (!wcscasecmp(L"black", stte->param))
 	{
 	  enriched_puts("\033[30m", stte);
 	}
-	else if (!enriched_cmp("red", stte->param))
+	else if (!wcscasecmp(L"red", stte->param))
 	{
 	  enriched_puts("\033[31m", stte);
 	}
-	else if (!enriched_cmp("green", stte->param))
+	else if (!wcscasecmp(L"green", stte->param))
 	{
 	  enriched_puts("\033[32m", stte);
 	}
-	else if (!enriched_cmp("yellow", stte->param))
+	else if (!wcscasecmp(L"yellow", stte->param))
 	{
 	  enriched_puts("\033[33m", stte);
 	}
-	else if (!enriched_cmp("blue", stte->param))
+	else if (!wcscasecmp(L"blue", stte->param))
 	{
 	  enriched_puts("\033[34m", stte);
 	}
-	else if (!enriched_cmp("magenta", stte->param))
+	else if (!wcscasecmp(L"magenta", stte->param))
 	{
 	  enriched_puts("\033[35m", stte);
 	}
-	else if (!enriched_cmp("cyan", stte->param))
+	else if (!wcscasecmp(L"cyan", stte->param))
 	{
 	  enriched_puts("\033[36m", stte);
 	}
-	else if (!enriched_cmp("white", stte->param))
+	else if (!wcscasecmp(L"white", stte->param))
 	{
 	  enriched_puts("\033[37m", stte);
 	}
