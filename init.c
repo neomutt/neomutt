@@ -2885,8 +2885,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   err.data = error;
   err.dsize = sizeof (error);
 
-  Groups = hash_create (1031);
-  ReverseAlias = hash_create (1031);
+  Groups = hash_create (1031, 0);
+  ReverseAlias = hash_create (1031, 1);
   
   mutt_menu_init ();
 

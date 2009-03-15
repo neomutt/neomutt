@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2009 Michael R. Elkins <me@mutt.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -23,12 +23,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <ctype.h>
 
 #include "mutt.h"
 
 #define SOMEPRIME 149711
 
-unsigned int hash_string (const unsigned char *s, unsigned int n)
+static unsigned int hash_string (const unsigned char *s, unsigned int n)
 {
   unsigned int h = 0;
 
@@ -39,13 +40,34 @@ unsigned int hash_string (const unsigned char *s, unsigned int n)
   return h;
 }
 
-HASH *hash_create (int nelem)
+static unsigned int hash_case_string (const unsigned char *s, unsigned int n)
+{
+  unsigned int h = 0;
+
+  while (*s)
+    h += (h << 7) + tolower (*s++);
+  h = (h * SOMEPRIME) % n;
+
+  return h;
+}
+
+HASH *hash_create (int nelem, int lower)
 {
   HASH *table = safe_malloc (sizeof (HASH));
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
   table->table = safe_calloc (nelem, sizeof (struct hash_elem *));
+  if (lower)
+  {
+    table->hash_string = hash_case_string;
+    table->cmp_string = mutt_strcasecmp;
+  }
+  else
+  {
+    table->hash_string = hash_string;
+    table->cmp_string = mutt_strcmp;
+  }
   return table;
 }
 
@@ -57,10 +79,10 @@ HASH *hash_create (int nelem)
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
 {
   struct hash_elem *ptr;
-  int h;
+  unsigned int h;
 
   ptr = (struct hash_elem *) safe_malloc (sizeof (struct hash_elem));
-  h = hash_string ((unsigned char *) key, table->nelem);
+  h = table->hash_string ((unsigned char *) key, table->nelem);
   ptr->key = key;
   ptr->data = data;
 
@@ -76,7 +98,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
 
     for (tmp = table->table[h], last = NULL; tmp; last = tmp, tmp = tmp->next)
     {
-      r = mutt_strcmp (tmp->key, key);
+      r = table->cmp_string (tmp->key, key);
       if (r == 0)
       {
 	FREE (&ptr);
@@ -99,7 +121,7 @@ void *hash_find_hash (const HASH * table, int hash, const char *key)
   struct hash_elem *ptr = table->table[hash];
   for (; ptr; ptr = ptr->next)
   {
-    if (mutt_strcmp (key, ptr->key) == 0)
+    if (table->cmp_string (key, ptr->key) == 0)
       return (ptr->data);
   }
   return NULL;
@@ -114,7 +136,7 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
   while (ptr) 
   {
     if ((data == ptr->data || !data)
-	&& mutt_strcmp (ptr->key, key) == 0)
+	&& table->cmp_string (ptr->key, key) == 0)
     {
       *last = ptr->next;
       if (destroy)

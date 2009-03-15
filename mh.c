@@ -1242,8 +1242,8 @@ int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
   omask = umask (mh_umask (dest));
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%ld.%u_%d.%s%s",
-	      dest->path, subdir, time (NULL), (unsigned int)getpid (),
+    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.%u_%d.%s%s",
+	      dest->path, subdir, (long long)time (NULL), (unsigned int)getpid (),
 	      Counter++, NONULL (Hostname), suffix);
 
     dprint (2, (debugfile, "maildir_open_new_message (): Trying %s.\n",
@@ -1328,8 +1328,8 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
   /* construct a new file name. */
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/%ld.%u_%d.%s%s", subdir,
-	      time (NULL), (unsigned int)getpid (), Counter++, 
+    snprintf (path, _POSIX_PATH_MAX, "%s/%lld.%u_%d.%s%s", subdir,
+	      (long long)time (NULL), (unsigned int)getpid (), Counter++,
 	      NONULL (Hostname), suffix);
     snprintf (full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
@@ -1870,7 +1870,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
    * of each message we scanned.  This is used in the loop over the
    * existing messages below to do some correlation.
    */
-  fnames = hash_create (1031);
+  fnames = hash_create (1031, 0);
 
   for (p = md; p; p = p->next)
   {
@@ -2019,7 +2019,7 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   mhs_free_sequences (&mhs);
 
   /* check for modifications and adjust flags */
-  fnames = hash_create (1031);
+  fnames = hash_create (1031, 0);
 
   for (p = md; p; p = p->next)
     hash_insert (fnames, p->h->path, p, 0);

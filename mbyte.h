@@ -11,6 +11,12 @@
 # endif
 
 # ifndef HAVE_WC_FUNCS
+#ifdef towupper
+# undef towupper
+#endif
+#ifdef towlower
+# undef towlower
+#endif
 #ifdef iswprint
 # undef iswprint
 #endif

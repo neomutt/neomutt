@@ -1,3 +1,49 @@
+2009-03-09 12:04 +0100  Vincent Lefevre  <vincent@vinc17.org>  (4ce562b7f5d7)
+
+	* mbyte.h: Unbreak compilation on OS X with --with-regex/--without-wc-
+	funcs. Closes #3149.
+
+2009-03-09 11:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (f3a33b77dc90)
+
+	* ChangeLog, mutt.h, regex.c: Unbreak compilation with --without-wc-
+	funcs on OS X 10.5.*, see #3149.
+
+2009-03-09 11:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (bcf1e9692caf)
+
+	* init.h: Fix 11cd72da743a
+
+2009-03-09 11:30 +0100  Rocco Rutte  <pdmef@gmx.net>  (11cd72da743a)
+
+	* ChangeLog, init.h: Sort SSL-related variables, see #3191.
+
+2009-03-09 11:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (a96d427b203b)
+
+	* hash.c, hash.h, init.c, mh.c, thread.c: Restore $reverse_alias
+	feature by using case-insensitive hash keys
+
+	The fix is implemented as callbacks in the hash table so we can
+	avoid working with copies of the mailbox keys but work on the
+	originals instead and don't pollute the code with lower-case
+	conversions all over the place.
+
+	While I'm at it, turn int hashes into unsigned values since the hash
+	function returns unsigned values now, too.
+
+	Closes #3185.
+
+2009-03-07 13:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (ff1906f70b1b)
+
+	* ChangeLog, init.h: Sort most variables (except crypto), see #3191.
+
+2009-03-07 12:26 +0100  Rocco Rutte  <pdmef@gmx.net>  (49d3d03d41c2)
+
+	* doc/manual.xml.head: Fix typo, see #2430.
+
+2009-02-20 22:14 +0100  Rocco Rutte  <pdmef@gmx.net>  (35fbea209c6e)
+
+	* ChangeLog, doc/manual.xml.head: Manual: verbosely document how the
+	initial folder is determined, see #3189.
+
 2009-02-20 18:27 +0100  Rocco Rutte  <pdmef@gmx.net>  (3f57a654639d)
 
 	* doc/manual.xml.head: Document address normalization. Closes #2430.

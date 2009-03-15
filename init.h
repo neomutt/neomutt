@@ -260,6 +260,14 @@ struct option_t MuttVars[] = {
   ** in a reply.  For a full listing of defined \fCprintf(3)\fP-like sequences see
   ** the section on $$index_format.
   */
+  { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, functions in the \fIindex\fP menu which affect a message
+  ** will be applied to all tagged messages (if there are any).  When
+  ** unset, you must first use the \fC<tag-prefix>\fP function (bound to ``;''
+  ** by default) to make the next function apply to all tagged messages.
+  */
   { "autoedit",		DT_BOOL, R_NONE, OPTAUTOEDIT, 0 },
   /*
   ** .pp
@@ -270,14 +278,6 @@ struct option_t MuttVars[] = {
   ** editing the body of your message.
   ** .pp
   ** Also see $$fast_reply.
-  */
-  { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
-  /*
-  ** .pp
-  ** When \fIset\fP, functions in the \fIindex\fP menu which affect a message
-  ** will be applied to all tagged messages (if there are any).  When
-  ** unset, you must first use the \fC<tag-prefix>\fP function (bound to ``;''
-  ** by default) to make the next function apply to all tagged messages.
   */
   { "beep",		DT_BOOL, R_NONE, OPTBEEP, 1 },
   /*
@@ -314,6 +314,39 @@ struct option_t MuttVars[] = {
   ** follow these menus.  The option is \fIunset\fP by default because many
   ** visual terminals don't permit making the cursor invisible.
   */
+#if defined(USE_SSL)
+  { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
+  /*
+  ** .pp
+  ** This variable specifies the file where the certificates you trust
+  ** are saved. When an unknown certificate is encountered, you are asked
+  ** if you accept it or not. If you accept it, the certificate can also
+  ** be saved in this file and further connections are automatically
+  ** accepted.
+  ** .pp
+  ** You can also manually add CA certificates in this file. Any server
+  ** certificate that is signed with one of these CA certificates is
+  ** also automatically accepted.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set certificate_file=~/.mutt/certificates
+  ** .te
+  **
+  */
+#endif
+  { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
+  /*
+  ** .pp
+  ** Character set your terminal uses to display and enter textual data.
+  ** It is also the fallback for $$send_charset.
+  ** .pp
+  ** Upon startup Mutt tries to derive this value from environment variables
+  ** such as \fC$$$LC_CTYPE\fP or \fC$$$LANG\fP.
+  ** .pp
+  ** \fBNote:\fP It should only be set in case Mutt isn't abled to determine the
+  ** character set used correctly.
+  */
   { "check_mbox_size",	DT_BOOL, R_NONE, OPTCHECKMBOXSIZE, 0 },
   /*
   ** .pp
@@ -328,18 +361,6 @@ struct option_t MuttVars[] = {
   ** because mutt needs to determine the initial new mail status of such a
   ** mailbox by performing a fast mailbox scan when it is defined.
   ** Afterwards the new mail status is tracked by file size changes.
-  */
-  { "charset",		DT_STR,	 R_NONE, UL &Charset, UL 0 },
-  /*
-  ** .pp
-  ** Character set your terminal uses to display and enter textual data.
-  ** It is also the fallback for $$send_charset.
-  ** .pp
-  ** Upon startup Mutt tries to derive this value from environment variables
-  ** such as \fC$$$LC_CTYPE\fP or \fC$$$LANG\fP.
-  ** .pp
-  ** \fBNote:\fP It should only be set in case Mutt isn't abled to determine the
-  ** character set used correctly.
   */
   { "check_new",	DT_BOOL, R_NONE, OPTCHECKNEW, 1 },
   /*
@@ -359,12 +380,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** When \fIunset\fP, Mutt will not collapse a thread if it contains any
   ** unread messages.
-  */
-  { "uncollapse_jump", 	DT_BOOL, R_NONE, OPTUNCOLLAPSEJUMP, 0 },
-  /*
-  ** .pp
-  ** When \fIset\fP, Mutt will jump to the next unread message, if any,
-  ** when the current thread is \fIun\fPcollapsed.
   */
   { "compose_format",	DT_STR,	 R_BOTH, UL &ComposeFormat, UL "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
   /*
@@ -600,6 +615,14 @@ struct option_t MuttVars[] = {
   ** agents tend to do with messages (in order to prevent tools from
   ** misinterpreting the line as a mbox message separator).
   */
+#if defined(USE_SSL_OPENSSL)
+  { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
+  /*
+  ** .pp
+  ** The file which includes random data that is used to initialize SSL
+  ** library functions.
+  */
+#endif
   { "envelope_from_address", DT_ADDR, R_NONE, UL &EnvFrom, 0 },
   /*
   ** .pp
@@ -778,6 +801,42 @@ struct option_t MuttVars[] = {
   ** of the message you are replying to into the edit buffer.
   ** The $$weed setting applies.
   */
+#ifdef USE_HCACHE
+  { "header_cache", DT_PATH, R_NONE, UL &HeaderCache, 0 },
+  /*
+  ** .pp
+  ** This variable points to the header cache database.
+  ** If pointing to a directory Mutt will contain a header cache
+  ** database file per folder, if pointing to a file that file will
+  ** be a single global header cache. By default it is \fIunset\fP so no header
+  ** caching will be used.
+  ** .pp
+  ** Header caching can greatly improve speed when opening POP, IMAP
+  ** MH or Maildir folders, see ``$caching'' for details.
+  */
+#if defined(HAVE_QDBM) || defined(HAVE_TC)
+  { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
+  /*
+  ** .pp
+  ** When mutt is compiled with qdbm or tokyocabinet as header cache backend,
+  ** this option determines whether the database will be compressed.
+  ** Compression results in database files roughly being one fifth
+  ** of the usual diskspace, but the uncompression can result in a
+  ** slower opening of cached folder(s) which in general is still
+  ** much faster than opening non header cached folders.
+  */
+#endif /* HAVE_QDBM */
+#if defined(HAVE_GDBM) || defined(HAVE_DB4)
+  { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
+  /*
+  ** .pp
+  ** When mutt is compiled with either gdbm or bdb4 as the header cache backend,
+  ** this option changes the database page size.  Too large or too small
+  ** values can waste space, memory, or CPU time. The default should be more
+  ** or less optimal for most use cases.
+  */
+#endif /* HAVE_GDBM || HAVE_DB4 */
+#endif /* USE_HCACHE */
   { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
   /*
   ** .pp
@@ -1186,18 +1245,6 @@ struct option_t MuttVars[] = {
   ** DOING!\fP
   */
 #ifdef USE_HCACHE
-  { "header_cache", DT_PATH, R_NONE, UL &HeaderCache, 0 },
-  /*
-  ** .pp
-  ** This variable points to the header cache database.
-  ** If pointing to a directory Mutt will contain a header cache
-  ** database file per folder, if pointing to a file that file will
-  ** be a single global header cache. By default it is \fIunset\fP so no header
-  ** caching will be used.
-  ** .pp
-  ** Header caching can greatly improve speed when opening POP, IMAP
-  ** MH or Maildir folders, see ``$caching'' for details.
-  */
   { "maildir_header_cache_verify", DT_BOOL, R_NONE, OPTHCACHEVERIFY, 1 },
   /*
   ** .pp
@@ -1206,29 +1253,7 @@ struct option_t MuttVars[] = {
   ** message every time the folder is opened (which can be very slow for NFS
   ** folders).
   */
-#if defined(HAVE_GDBM) || defined(HAVE_DB4)
-  { "header_cache_pagesize", DT_STR, R_NONE, UL &HeaderCachePageSize, UL "16384" },
-  /*
-  ** .pp
-  ** When mutt is compiled with either gdbm or bdb4 as the header cache backend,
-  ** this option changes the database page size.  Too large or too small
-  ** values can waste space, memory, or CPU time. The default should be more
-  ** or less optimal for most use cases.
-  */
-#endif /* HAVE_GDBM || HAVE_DB4 */
-#if defined(HAVE_QDBM) || defined(HAVE_TC)
-  { "header_cache_compress", DT_BOOL, R_NONE, OPTHCACHECOMPRESS, 1 },
-  /*
-  ** .pp
-  ** When mutt is compiled with qdbm or tokyocabinet as header cache backend,
-  ** this option determines whether the database will be compressed.
-  ** Compression results in database files roughly being one fifth
-  ** of the usual diskspace, but the uncompression can result in a
-  ** slower opening of cached folder(s) which in general is still
-  ** much faster than opening non header cached folders.
-  */
-#endif /* HAVE_QDBM */
-#endif /* USE_HCACHE */
+#endif
   { "maildir_trash", DT_BOOL, R_NONE, OPTMAILDIRTRASH, 0 },
   /*
   ** .pp
@@ -1276,12 +1301,6 @@ struct option_t MuttVars[] = {
   ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overriden by the
   ** \fC-m\fP command-line option.
   */
-  { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
-  /*
-  ** .pp
-  ** If \fIunset\fP, Mutt will remove your address (see the ``$alternates''
-  ** command) from the list of recipients when replying to a message.
-  */
   { "menu_context",	DT_NUM,  R_NONE, UL &MenuContext, 0 },
   /*
   ** .pp
@@ -1303,6 +1322,39 @@ struct option_t MuttVars[] = {
   ** is cleared and the next or previous page of the menu is displayed
   ** (useful for slow links to avoid many redraws).
   */
+#if defined(USE_IMAP) || defined(USE_POP)
+  { "message_cache_clean", DT_BOOL, R_NONE, OPTMESSAGECACHECLEAN, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, mutt will clean out obsolete entries from the message cache when
+  ** the mailbox is synchronized. You probably only want to set it
+  ** every once in a while, since it can be a little slow
+  ** (especially for large folders).
+  */
+  { "message_cachedir",	DT_PATH,	R_NONE,	UL &MessageCachedir, 0 },
+  /*
+  ** .pp
+  ** Set this to a directory and mutt will cache copies of messages from
+  ** your IMAP and POP servers here. You are free to remove entries at any
+  ** time.
+  ** .pp
+  ** When setting this variable to a directory, mutt needs to fetch every
+  ** remote message only once and can perform regular expression searches
+  ** as fast as for local folders.
+  ** .pp
+  ** Also see the $$message_cache_clean variable.
+  */
+#endif
+  { "message_format",	DT_STR,	 R_NONE, UL &MsgFmt, UL "%s" },
+  /*
+  ** .pp
+  ** This is the string displayed in the ``attachment'' menu for
+  ** attachments of type \fCmessage/rfc822\fP.  For a full listing of defined
+  ** \fCprintf(3)\fP-like sequences see the section on $$index_format.
+  */
+  { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
+  /*
+  */
   { "meta_key",		DT_BOOL, R_NONE, OPTMETAKEY, 0 },
   /*
   ** .pp
@@ -1313,6 +1365,12 @@ struct option_t MuttVars[] = {
   ** pressed Esc then ``x''.  This is because the result of removing the
   ** high bit from \fC0xf8\fP is \fC0x78\fP, which is the ASCII character
   ** ``x''.
+  */
+  { "metoo",		DT_BOOL, R_NONE, OPTMETOO, 0 },
+  /*
+  ** .pp
+  ** If \fIunset\fP, Mutt will remove your address (see the ``$alternates''
+  ** command) from the list of recipients when replying to a message.
   */
   { "mh_purge",		DT_BOOL, R_NONE, OPTMHPURGE, 0 },
   /*
@@ -1398,39 +1456,6 @@ struct option_t MuttVars[] = {
   ** Controls whether or not Mutt will move read messages
   ** from your spool mailbox to your $$mbox mailbox, or as a result of
   ** a ``$mbox-hook'' command.
-  */
-#if defined(USE_IMAP) || defined(USE_POP)
-  { "message_cachedir",	DT_PATH,	R_NONE,	UL &MessageCachedir, 0 },
-  /*
-  ** .pp
-  ** Set this to a directory and mutt will cache copies of messages from
-  ** your IMAP and POP servers here. You are free to remove entries at any
-  ** time.
-  ** .pp
-  ** When setting this variable to a directory, mutt needs to fetch every
-  ** remote message only once and can perform regular expression searches
-  ** as fast as for local folders.
-  ** .pp
-  ** Also see the $$message_cache_clean variable.
-  */
-  { "message_cache_clean", DT_BOOL, R_NONE, OPTMESSAGECACHECLEAN, 0 },
-  /*
-  ** .pp
-  ** If \fIset\fP, mutt will clean out obsolete entries from the message cache when
-  ** the mailbox is synchronized. You probably only want to set it
-  ** every once in a while, since it can be a little slow
-  ** (especially for large folders).
-  */
-#endif
-  { "message_format",	DT_STR,	 R_NONE, UL &MsgFmt, UL "%s" },
-  /*
-  ** .pp
-  ** This is the string displayed in the ``attachment'' menu for
-  ** attachments of type \fCmessage/rfc822\fP.  For a full listing of defined
-  ** \fCprintf(3)\fP-like sequences see the section on $$index_format.
-  */
-  { "msg_format",	DT_SYN,  R_NONE, UL "message_format", 0 },
-  /*
   */
   { "narrow_tree",	DT_BOOL, R_TREE|R_INDEX, OPTNARROWTREE, 0 },
   /*
@@ -2123,128 +2148,6 @@ struct option_t MuttVars[] = {
   ** keyid (the hash-value that OpenSSL generates) to work properly
   ** (S/MIME only)
   */
-#if defined(USE_SSL)
-  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
-  /*
-  ** .pp
-  ** The file containing a client certificate and its associated private
-  ** key.
-  */
-  { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
-  /*
-   ** .pp
-   ** If this variable is \fIset\fP, Mutt will require that all connections
-   ** to remote servers be encrypted. Furthermore it will attempt to
-   ** negotiate TLS even if the server does not advertise the capability,
-   ** since it would otherwise have to abort the connection anyway. This
-   ** option supersedes $$ssl_starttls.
-   */
-  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
-  /*
-  ** .pp
-  ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
-  ** advertising the capability. When \fIunset\fP, mutt will not attempt to
-  ** use \fCSTARTTLS\fP regardless of the server's capabilities.
-  */
-  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP (the default), mutt will not automatically accept a server
-  ** certificate that is either not yet valid or already expired. You should
-  ** only unset this for particular known hosts, using the
-  ** \fC$<account-hook>\fP function.
-  */
-  { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP (the default), mutt will not automatically accept a server
-  ** certificate whose host name does not match the host used in your folder
-  ** URL. You should only unset this for particular known hosts, using
-  ** the \fC$<account-hook>\fP function.
-  */
-  { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
-  /*
-  ** .pp
-  ** This variable specifies the file where the certificates you trust
-  ** are saved. When an unknown certificate is encountered, you are asked
-  ** if you accept it or not. If you accept it, the certificate can also
-  ** be saved in this file and further connections are automatically
-  ** accepted.
-  ** .pp
-  ** You can also manually add CA certificates in this file. Any server
-  ** certificate that is signed with one of these CA certificates is
-  ** also automatically accepted.
-  ** .pp
-  ** Example:
-  ** .ts
-  ** set certificate_file=~/.mutt/certificates
-  ** .te
-  */
-# ifdef USE_SSL_OPENSSL
-  { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
-  /*
-  ** .pp
-  ** If set to \fIyes\fP, mutt will use CA certificates in the
-  ** system-wide certificate store when checking if a server certificate
-  ** is signed by a trusted CA.
-  */
-  { "entropy_file",	DT_PATH, R_NONE, UL &SslEntropyFile, 0 },
-  /*
-  ** .pp
-  ** The file which includes random data that is used to initialize SSL
-  ** library functions.
-   */
-  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
-  /*
-  ** .pp
-  ** This variable specifies whether to attempt to use SSLv2 in the
-  ** SSL authentication process.
-  */
-# endif /* defined USE_SSL_OPENSSL */
-  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
-  /*
-  ** .pp
-  ** This variable specifies whether to attempt to use SSLv3 in the
-  ** SSL authentication process.
-  */
-  { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
-  /*
-  ** .pp
-  ** This variable specifies whether to attempt to use TLSv1 in the
-  ** SSL authentication process.
-  */
-# ifdef USE_SSL_GNUTLS
-  { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
-  /*
-  ** .pp
-  ** This variable specifies the minimum acceptable prime size (in bits)
-  ** for use in any Diffie-Hellman key exchange. A value of 0 will use
-  ** the default from the GNUTLS library.
-  */
-  { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
-  /*
-  ** .pp
-  ** This variable specifies a file containing trusted CA certificates.
-  ** Any server certificate that is signed with one of these CA
-  ** certificates is also automatically accepted.
-  ** .pp
-  ** Example:
-  ** .ts
-  ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
-  ** .te
-  */
-# endif /* USE_SSL_GNUTLS */
-#endif /* defined(USE_SSL) */
-  { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
-  /*
-  ** .pp
-  ** Used in connection with the \fC<pipe-message>\fP function following
-  ** \fC<tag-prefix>\fP.  If this variable is \fIunset\fP, when piping a list of
-  ** tagged messages Mutt will concatenate the messages and will pipe them
-  ** all concatenated.  When \fIset\fP, Mutt will pipe the messages one by one.
-  ** In both cases the messages are piped in the current sorted order,
-  ** and the $$pipe_sep separator is added after each message.
-  */
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },
   /*
   ** .pp
@@ -2259,7 +2162,25 @@ struct option_t MuttVars[] = {
   ** The separator to add between messages when piping a list of tagged
   ** messages to an external Unix command.
   */
+  { "pipe_split",	DT_BOOL, R_NONE, OPTPIPESPLIT, 0 },
+  /*
+  ** .pp
+  ** Used in connection with the \fC<pipe-message>\fP function following
+  ** \fC<tag-prefix>\fP.  If this variable is \fIunset\fP, when piping a list of
+  ** tagged messages Mutt will concatenate the messages and will pipe them
+  ** all concatenated.  When \fIset\fP, Mutt will pipe the messages one by one.
+  ** In both cases the messages are piped in the current sorted order,
+  ** and the $$pipe_sep separator is added after each message.
+  */
 #ifdef USE_POP
+  { "pop_auth_try_all",	DT_BOOL, R_NONE, OPTPOPAUTHTRYALL, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, Mutt will try all available authentication methods.
+  ** When \fIunset\fP, Mutt will only fall back to other authentication
+  ** methods if the previous methods are unavailable. If a method is
+  ** available but authentication fails, Mutt will not connect to the POP server.
+  */
   { "pop_authenticators", DT_STR, R_NONE, UL &PopAuthenticators, UL 0 },
   /*
   ** .pp
@@ -2275,14 +2196,6 @@ struct option_t MuttVars[] = {
   ** .ts
   ** set pop_authenticators="digest-md5:apop:user"
   ** .te
-  */
-  { "pop_auth_try_all",	DT_BOOL, R_NONE, OPTPOPAUTHTRYALL, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP, Mutt will try all available authentication methods.
-  ** When \fIunset\fP, Mutt will only fall back to other authentication
-  ** methods if the previous methods are unavailable. If a method is
-  ** available but authentication fails, Mutt will not connect to the POP server.
   */
   { "pop_checkinterval", DT_NUM, R_NONE, UL &PopCheckTimeout, 60 },
   /*
@@ -2315,6 +2228,16 @@ struct option_t MuttVars[] = {
   ** for retrieving only unread messages from the POP server when using
   ** the \fC$<fetch-mail>\fP function.
   */
+  { "pop_pass",		DT_STR,	 R_NONE, UL &PopPass, UL "" },
+  /*
+  ** .pp
+  ** Specifies the password for your POP account.  If \fIunset\fP, Mutt will
+  ** prompt you for your password when you open a POP mailbox.
+  ** .pp
+  ** \fBWarning\fP: you should only use this option when you are on a
+  ** fairly secure machine, because the superuser can read your muttrc
+  ** even if you are the only one who can read the file.
+  */
   { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
   /*
   ** .pp
@@ -2327,16 +2250,6 @@ struct option_t MuttVars[] = {
   ** Your login name on the POP server.
   ** .pp
   ** This variable defaults to your user name on the local machine.
-  */
-  { "pop_pass",		DT_STR,	 R_NONE, UL &PopPass, UL "" },
-  /*
-  ** .pp
-  ** Specifies the password for your POP account.  If \fIunset\fP, Mutt will
-  ** prompt you for your password when you open a POP mailbox.
-  ** .pp
-  ** \fBWarning\fP: you should only use this option when you are on a
-  ** fairly secure machine, because the superuser can read your muttrc
-  ** even if you are the only one who can read the file.
   */
 #endif /* USE_POP */
   { "post_indent_string",DT_STR, R_NONE, UL &PostIndentString, UL "" },
@@ -2780,6 +2693,14 @@ struct option_t MuttVars[] = {
   ** replacing ``%s'' with the supplied string.
   ** For the default value, ``joe'' would be expanded to: ``~f joe | ~s joe''.
   */
+  { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
+  /*
+  ** .pp
+  ** Specifies time, in seconds, to pause while displaying certain informational
+  ** messages, while moving from folder to folder and after expunging
+  ** messages from the current folder.  The default is to pause one second, so
+  ** a value of zero for this option suppresses the pause.
+  */
   { "smart_wrap",	DT_BOOL, R_PAGER, OPTWRAP, 1 },
   /*
   ** .pp
@@ -2795,14 +2716,6 @@ struct option_t MuttVars[] = {
   ** positives of $$quote_regexp, most notably smileys and not consider
   ** a line quoted text if it also matches $$smileys. This mostly
   ** happens at the beginning of a line.
-  */
-  { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
-  /*
-  ** .pp
-  ** Specifies time, in seconds, to pause while displaying certain informational
-  ** messages, while moving from folder to folder and after expunging
-  ** messages from the current folder.  The default is to pause one second, so
-  ** a value of zero for this option suppresses the pause.
   */
 #ifdef USE_SMTP
 # ifdef USE_SASL
@@ -2947,6 +2860,98 @@ struct option_t MuttVars[] = {
   ** initially set this variable to the value of the environment
   ** variable \fC$$$MAIL\fP or \fC$$$MAILDIR\fP if either is defined.
   */
+#if defined(USE_SSL)
+#ifdef USE_SSL_GNUTLS
+  { "ssl_ca_certificates_file", DT_PATH, R_NONE, UL &SslCACertFile, 0 },
+  /*
+  ** .pp
+  ** This variable specifies a file containing trusted CA certificates.
+  ** Any server certificate that is signed with one of these CA
+  ** certificates is also automatically accepted.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set ssl_ca_certificates_file=/etc/ssl/certs/ca-certificates.crt
+  ** .te
+  */
+#endif /* USE_SSL_GNUTLS */
+  { "ssl_client_cert", DT_PATH, R_NONE, UL &SslClientCert, 0 },
+  /*
+  ** .pp
+  ** The file containing a client certificate and its associated private
+  ** key.
+  */
+  { "ssl_force_tls",		DT_BOOL, R_NONE, OPTSSLFORCETLS, 0 },
+  /*
+   ** .pp
+   ** If this variable is \fIset\fP, Mutt will require that all connections
+   ** to remote servers be encrypted. Furthermore it will attempt to
+   ** negotiate TLS even if the server does not advertise the capability,
+   ** since it would otherwise have to abort the connection anyway. This
+   ** option supersedes $$ssl_starttls.
+   */
+# ifdef USE_SSL_GNUTLS
+  { "ssl_min_dh_prime_bits", DT_NUM, R_NONE, UL &SslDHPrimeBits, 0 },
+  /*
+  ** .pp
+  ** This variable specifies the minimum acceptable prime size (in bits)
+  ** for use in any Diffie-Hellman key exchange. A value of 0 will use
+  ** the default from the GNUTLS library.
+  */
+# endif /* USE_SSL_GNUTLS */
+  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
+  ** advertising the capability. When \fIunset\fP, mutt will not attempt to
+  ** use \fCSTARTTLS\fP regardless of the server's capabilities.
+  */
+# ifdef USE_SSL_OPENSSL
+  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
+  /*
+  ** .pp
+  ** This variable specifies whether to attempt to use SSLv2 in the
+  ** SSL authentication process.
+  */
+# endif /* defined USE_SSL_OPENSSL */
+  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
+  /*
+  ** .pp
+  ** This variable specifies whether to attempt to use SSLv3 in the
+  ** SSL authentication process.
+  */
+  { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
+  /*
+  ** .pp
+  ** This variable specifies whether to attempt to use TLSv1 in the
+  ** SSL authentication process.
+  */
+#ifdef USE_SSL_OPENSSL
+  { "ssl_usesystemcerts", DT_BOOL, R_NONE, OPTSSLSYSTEMCERTS, 1 },
+  /*
+  ** .pp
+  ** If set to \fIyes\fP, mutt will use CA certificates in the
+  ** system-wide certificate store when checking if a server certificate
+  ** is signed by a trusted CA.
+  */
+#endif
+  { "ssl_verify_dates", DT_BOOL, R_NONE, OPTSSLVERIFYDATES, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will not automatically accept a server
+  ** certificate that is either not yet valid or already expired. You should
+  ** only unset this for particular known hosts, using the
+  ** \fC$<account-hook>\fP function.
+  */
+  { "ssl_verify_host", DT_BOOL, R_NONE, OPTSSLVERIFYHOST, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP (the default), mutt will not automatically accept a server
+  ** certificate whose host name does not match the host used in your folder
+  ** URL. You should only unset this for particular known hosts, using
+  ** the \fC$<account-hook>\fP function.
+  */
+#endif /* defined(USE_SSL) */
   { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
   /*
   ** .pp
@@ -3071,12 +3076,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Note that $$indent_string is ignored when this option is \fIset\fP.
   */
-  { "thread_received",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTTHREADRECEIVED, 0 },
-  /*
-  ** .pp
-  ** When \fIset\fP, mutt uses the date received rather than the date sent
-  ** to thread messages by subject.
-  */
   { "thorough_search",	DT_BOOL, R_NONE, OPTTHOROUGHSRC, 0 },
   /*
   ** .pp
@@ -3090,6 +3089,12 @@ struct option_t MuttVars[] = {
   ** character set conversions. Otherwise mutt will attempt to match against the
   ** raw message received (for example quoted-printable encoded or with encoded
   ** headers) which may lead to incorrect search results.
+  */
+  { "thread_received",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTTHREADRECEIVED, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt uses the date received rather than the date sent
+  ** to thread messages by subject.
   */
   { "tilde",		DT_BOOL, R_PAGER, OPTTILDE, 0 },
   /*
@@ -3160,6 +3165,12 @@ struct option_t MuttVars[] = {
   ** machine without having to enter a password.
   */
 #endif
+  { "uncollapse_jump", 	DT_BOOL, R_NONE, OPTUNCOLLAPSEJUMP, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will jump to the next unread message, if any,
+  ** when the current thread is \fIun\fPcollapsed.
+  */
   { "use_8bitmime",	DT_BOOL, R_NONE, OPTUSE8BITMIME, 0 },
   /*
   ** .pp
@@ -3273,6 +3284,15 @@ struct option_t MuttVars[] = {
   ** .pp
   ** (DEPRECATED) Equivalent to setting $$wrap with a negative value.
   */
+  { "write_bcc",	DT_BOOL, R_NONE, OPTWRITEBCC, 1},
+  /*
+  ** .pp
+  ** Controls whether mutt writes out the ``Bcc:'' header when preparing
+  ** messages to be sent.  Exim users may wish to unset this. If mutt
+  ** is set to deliver directly via SMTP (see $$smtp_url), this
+  ** option does nothing: mutt will never write out the ``Bcc:'' header
+  ** in this case.
+  */
   { "write_inc",	DT_NUM,	 R_NONE, UL &WriteInc, 10 },
   /*
   ** .pp
@@ -3282,15 +3302,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$read_inc, $$net_inc and $$time_inc variables and the
   ** ``$tuning'' section of the manual for performance considerations.
-  */
-  { "write_bcc",	DT_BOOL, R_NONE, OPTWRITEBCC, 1},
-  /*
-  ** .pp
-  ** Controls whether mutt writes out the ``Bcc:'' header when preparing
-  ** messages to be sent.  Exim users may wish to unset this. If mutt
-  ** is set to deliver directly via SMTP (see $$smtp_url), this
-  ** option does nothing: mutt will never write out the ``Bcc:'' header
-  ** in this case.
   */
   /*--*/
   { NULL }
