@@ -84,6 +84,7 @@ An expanded version of the given alias is passed to stdout.
 Attach a file to your message using MIME.
 To attach multiple files, separating filenames and recipient addresses with
 "\-\-" is mandatory, e.g. \fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
+The \-a option must be placed at the end of command line options.
 .IP "-b \fIaddress\fP"
 Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"

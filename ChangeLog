@@ -1,3 +1,12 @@
+2009-03-15 16:38 +0100  Rocco Rutte  <pdmef@gmx.net>  (650829e3eb06)
+
+	* alias.c: Only define min() if not present. Closes #3199
+
+2009-03-15 14:25 +0100  Erik Hovland  <erik@hovland.org>  (3c154fcdad4c)
+
+	* ChangeLog, rfc822.c: The assigned value of dom is never used. Remove
+	assignment
+
 2009-03-15 14:24 +0100  Erik Hovland  <erik@hovland.org>  (557d52627a0e)
 
 	* alias.c: The file handle will leak if fread fails
