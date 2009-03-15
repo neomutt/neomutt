@@ -359,6 +359,7 @@ retry_name:
       if (fread(buf, 1, 1, rc) != 1)
       {
 	mutt_perror (_("Error reading alias file"));
+	safe_fclose (&rc);
 	return;
       }
       if (fseek (rc, 0, SEEK_END) < 0)
