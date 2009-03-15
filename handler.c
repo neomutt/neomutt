@@ -597,8 +597,9 @@ static void enriched_flush (struct enriched_state *stte, int wrap)
     stte->word_len = 0;
     stte->buff_used = 0;
   }
-  if (wrap) 
+  if (wrap)
     enriched_wrap(stte);
+  fflush (stte->s->fpout);
 }
 
 
