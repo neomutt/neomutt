@@ -417,7 +417,7 @@ static int tls_compare_certificates (const gnutls_datum *peercert)
   }
 
   b64_data.size = fread(b64_data.data, 1, b64_data.size, fd1);
-  fclose(fd1);
+  safe_fclose (&fd1);
 
   do {
     ret = gnutls_pem_base64_decode_alloc(NULL, &b64_data, &cert);
@@ -526,7 +526,7 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
           {
             regfree(&preg);
             FREE(&linestr);
-            fclose(fp);
+            safe_fclose (&fp);
             return 1;
           }
         }
@@ -534,7 +534,7 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
     }
 
     regfree(&preg);
-    fclose(fp);
+    safe_fclose (&fp);
   }
 
   /* not found a matching name */
@@ -877,7 +877,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
               gnutls_free (pemdata.data);
 	    }
 	  }
-	  fclose (fp);
+	  safe_fclose (&fp);
 	}
 	if (!done)
         {

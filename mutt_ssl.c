@@ -587,7 +587,7 @@ static int check_certificate_by_digest (X509 *peercert)
 
   if (!X509_digest (peercert, EVP_sha1(), peermd, &peermdlen))
   {
-    fclose (fp);
+    safe_fclose (&fp);
     return 0;
   }
 
@@ -599,7 +599,7 @@ static int check_certificate_by_digest (X509 *peercert)
       break;
   }
   X509_free (cert);
-  fclose (fp);
+  safe_fclose (&fp);
 
   return pass;
 }
@@ -925,7 +925,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 	{
 	  if (PEM_write_X509 (fp, cert))
 	    done = 1;
-	  fclose (fp);
+	  safe_fclose (&fp);
 	}
 	if (!done)
         {

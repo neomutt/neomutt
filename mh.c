@@ -637,7 +637,7 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
     h->env = mutt_read_rfc822_header (f, h, 0, 0);
 
     fstat (fileno (f), &st);
-    fclose (f);
+    safe_fclose (&f);
 
     if (!h->received)
       h->received = h->date_sent;

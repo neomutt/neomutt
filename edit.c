@@ -109,7 +109,7 @@ be_snarf_file (const char *path, char **buf, int *max, int *len, int verbose)
       snprintf(tmp, sizeof(tmp), "\"%s\" %lu bytes\n", path, (unsigned long) sb.st_size);
       addstr(tmp);
     }
-    fclose (f);
+    safe_fclose (&f);
   }
   else
   {

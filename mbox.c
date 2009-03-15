@@ -877,7 +877,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (fclose (fp) != 0)
   {
     fp = NULL;
-    dprint(1, (debugfile, "mbox_sync_mailbox: fclose() returned non-zero.\n"));
+    dprint(1, (debugfile, "mbox_sync_mailbox: safe_fclose (&) returned non-zero.\n"));
     unlink (tempfile);
     mutt_perror (tempfile);
     mutt_sleep (5);
@@ -939,7 +939,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  fclose (fp);
+  safe_fclose (&fp);
   fp = NULL;
   mbox_unlock_mailbox (ctx);
 

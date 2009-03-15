@@ -191,7 +191,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   mx_close_mailbox (&tmpctx, NULL);
   
   bail:
-  if (fp) fclose (fp);
+  if (fp) safe_fclose (&fp);
 
   if (rc >= 0)
     unlink (tmp);

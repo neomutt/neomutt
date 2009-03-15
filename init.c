@@ -254,7 +254,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       /* read line */
       memset (&expn, 0, sizeof (expn));
       expn.data = mutt_read_line (NULL, &expn.dsize, fp, &line);
-      fclose (fp);
+      safe_fclose (&fp);
       mutt_wait_filter (pid);
 
       /* if we got output, make a new string consiting of the shell ouptput
@@ -2299,7 +2299,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
   }
   FREE (&token.data);
   FREE (&linebuf);
-  fclose (f);
+  safe_fclose (&f);
   if (pid != -1)
     mutt_wait_filter (pid);
   if (rc)

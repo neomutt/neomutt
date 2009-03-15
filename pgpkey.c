@@ -555,7 +555,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       }
       if ((fp = safe_fopen (tempfile, "w")) == NULL)
       {
-	fclose (devnull);
+	safe_fclose (&devnull);
 	mutt_perror _("Can't create temporary file");
 	break;
       }
@@ -569,13 +569,13 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       {
 	mutt_perror _("Can't create filter");
 	unlink (tempfile);
-	fclose (fp);
-	fclose (devnull);
+	safe_fclose (&fp);
+	safe_fclose (&devnull);
       }
 
       mutt_wait_filter (thepid);
-      fclose (fp);
-      fclose (devnull);
+      safe_fclose (&fp);
+      safe_fclose (&devnull);
       mutt_clear_error ();
       snprintf (cmd, sizeof (cmd), _("Key ID: 0x%s"), 
 		pgp_keyid (pgp_principal_key (KeyTable[menu->current]->parent)));
@@ -743,7 +743,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
   {
     mutt_perror _("Can't open /dev/null");
-    fclose (tempfp);
+    safe_fclose (&tempfp);
     if (tempf == tempfb)
       unlink (tempf);
     return NULL;
@@ -758,15 +758,15 @@ BODY *pgp_make_key_attachment (char *tempf)
   {
     mutt_perror _("Can't create filter");
     unlink (tempf);
-    fclose (tempfp);
-    fclose (devnull);
+    safe_fclose (&tempfp);
+    safe_fclose (&devnull);
     return NULL;
   }
 
   mutt_wait_filter (thepid);
 
-  fclose (tempfp);
-  fclose (devnull);
+  safe_fclose (&tempfp);
+  safe_fclose (&devnull);
 
   att = mutt_new_body ();
   att->filename = safe_strdup (tempf);

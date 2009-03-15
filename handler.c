@@ -1643,7 +1643,7 @@ int mutt_body_handler (BODY *b, STATE *s)
       {
 	b->length = ftello (s->fpout);
 	b->offset = 0;
-	fclose (s->fpout);
+	safe_fclose (&s->fpout);
 
 	/* restore final destination and substitute the tempfile for input */
 	s->fpout = fp;
@@ -1674,7 +1674,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 	b->offset = tmpoffset;
 
 	/* restore the original source stream */
-	fclose (s->fpin);
+	safe_fclose (&s->fpin);
 	s->fpin = fp;
       }
     }

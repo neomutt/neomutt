@@ -633,12 +633,12 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     fseeko (fp, cur->offset, 0);
     if (mutt_copy_bytes (fp, fpout, cur->length) == -1)
     {
-      fclose (fp);
+      safe_fclose (&fp);
       mutt_free_body (&cur);
       return (-1);
     }
     mutt_free_body (&cur);
-    fclose (fp);
+    safe_fclose (&fp);
   }
   else
   {

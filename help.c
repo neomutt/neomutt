@@ -367,7 +367,7 @@ void mutt_help (int menu)
     if (menu != MENU_PAGER)
       dump_unbound (f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
   
-    fclose (f);
+    safe_fclose (&f);
   
     snprintf (buf, sizeof (buf), _("Help for %s"), desc);
   }

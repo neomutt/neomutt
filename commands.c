@@ -391,7 +391,7 @@ static int _mutt_pipe_message (HEADER *h, char *cmd,
     }
       
     pipe_msg (h, fpout, decode, print);
-    fclose (fpout);
+    safe_fclose (&fpout);
     rc = mutt_wait_filter (thepid);
   }
   else

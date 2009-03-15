@@ -90,7 +90,7 @@ void mutt_read_histfile (void)
     }
   }
 
-  fclose (f);
+  safe_fclose (&f);
   FREE (&linebuf);
 }
 
@@ -149,7 +149,7 @@ static void shrink_histfile (void)
   }
 
 cleanup:
-  fclose (f);
+  safe_fclose (&f);
   FREE (&linebuf);
   if (tmp != NULL)
   {
@@ -158,9 +158,9 @@ cleanup:
     {
       rewind (tmp);
       mutt_copy_stream (tmp, f);
-      fclose (f);
+      safe_fclose (&f);
     }
-    fclose (tmp);
+    safe_fclose (&tmp);
     unlink (tmpfname);
   }
 }
@@ -196,7 +196,7 @@ static void save_history (history_class_t hclass, const char *s)
   }
   fputs ("|\n", f);
 
-  fclose (f);
+  safe_fclose (&f);
   FREE (&tmp);
 
   if (--n < 0)

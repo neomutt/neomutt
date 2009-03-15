@@ -123,7 +123,7 @@ static QUERY *run_query (char *s, int quiet)
     }
   }
   FREE (&buf);
-  fclose (fp);
+  safe_fclose (&fp);
   if (mutt_wait_filter (thepid))
   {
     dprint (1, (debugfile, "Error: %s\n", msg));

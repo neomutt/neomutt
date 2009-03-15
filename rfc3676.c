@@ -270,7 +270,7 @@ void rfc3676_space_stuff (HEADER* hdr)
   mutt_mktemp (tmpfile);
   if ((out = safe_fopen (tmpfile, "w+")) == NULL)
   {
-    fclose (in);
+    safe_fclose (&in);
     return;
   }
 
@@ -294,8 +294,8 @@ void rfc3676_space_stuff (HEADER* hdr)
     }
     fputs (buf, out);
   }
-  fclose (in);
-  fclose (out);
+  safe_fclose (&in);
+  safe_fclose (&out);
   mutt_set_mtime (hdr->content->filename, tmpfile);
   unlink (hdr->content->filename);
   mutt_str_replace (&hdr->content->filename, tmpfile);

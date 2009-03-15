@@ -458,7 +458,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     mutt_copy_stream (fpin, f);
 
   fgetconv_close (&fc);
-  fclose (fpin);
+  safe_fclose (&fpin);
 
   return (ferror (f) ? -1 : 0);
 }
@@ -1004,7 +1004,7 @@ int mutt_lookup_mime_type (BODY *att, const char *path)
 	  p = NULL;
 	}
       }
-      fclose (f);
+      safe_fclose (&f);
     }
   }
   
@@ -1041,7 +1041,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     if (stat (a->filename, &sb) == -1)
     {
       mutt_perror ("stat");
-      fclose (fpin);
+      safe_fclose (&fpin);
     }
     a->length = sb.st_size;
   }
@@ -1070,9 +1070,9 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
   FREE (&line);
 
   if (fpin && !fp)
-    fclose (fpin);
+    safe_fclose (&fpin);
   if (fpout)
-    fclose (fpout);
+    safe_fclose (&fpout);
   else
     return;
   
@@ -1125,7 +1125,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       }
       s.fpin = fpin;
       mutt_decode_attachment (a, &s);
-      fclose (s.fpout);
+      safe_fclose (&s.fpout);
       a->d_filename = a->filename;
       a->filename = safe_strdup (buff);
       a->unlink = 1;
@@ -1328,7 +1328,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   mutt_update_encoding (body);
   body->parts = body->hdr->content;
 
-  fclose(fp);
+  safe_fclose (&fp);
   
   return (body);
 }
@@ -2604,7 +2604,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     if (ferror (tempfp))
     {
       dprint (1, (debugfile, "mutt_write_fcc(): %s: write failed.\n", tempfile));
-      fclose (tempfp);
+      safe_fclose (&tempfp);
       unlink (tempfile);
       mx_commit_message (msg, &f);	/* XXX - really? */
       mx_close_message (&msg);

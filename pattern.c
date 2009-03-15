@@ -182,7 +182,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	  mx_close_message (&msg);
 	  if (s.fpout)
 	  {
-	    fclose (s.fpout);
+	    safe_fclose (&s.fpout);
 	    unlink (tempfile);
 	  }
 	  return (0);
@@ -242,7 +242,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 
     if (option (OPTTHOROUGHSRC))
     {
-      fclose (fp);
+      safe_fclose (&fp);
       unlink (tempfile);
     }
   }

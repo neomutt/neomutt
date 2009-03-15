@@ -705,7 +705,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   bail:
   
   /* that's it. */
-  if (bfp != fp) fclose (bfp);
+  if (bfp != fp) safe_fclose (&bfp);
   if (msg) mx_close_message (&msg);
   
   if (rv == -1)

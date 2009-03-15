@@ -130,7 +130,7 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
     }
   }
 
-  fclose (f);
+  safe_fclose (&f);
   unlink (tempfile);
   return ret;
 }

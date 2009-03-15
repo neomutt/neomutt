@@ -1093,7 +1093,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
       if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)))
       {
         n = fread(dest, 1, destlen /* already decremented */, filter);
-        fclose(filter);
+        safe_fclose (&filter);
         dest[n] = '\0';
         while (dest[n-1] == '\n' || dest[n-1] == '\r')
           dest[--n] = '\0';

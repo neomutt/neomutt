@@ -1542,7 +1542,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   if (stat (fname, &sb) != 0)
   {
     mutt_perror (fname);
-    fclose (fp);
+    safe_fclose (&fp);
     return (-1);
   }
   unlink (fname);
@@ -2677,7 +2677,7 @@ search_next:
     }
   }
 
-  fclose (fp);
+  safe_fclose (&fp);
   if (IsHeader (extra))
   {
     Context->msgnotreadyet = -1;

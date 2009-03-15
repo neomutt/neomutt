@@ -440,12 +440,12 @@ static gpgme_data_t body_to_data_object (BODY *a, int convert)
           buf[0] = c;
           gpgme_data_write (data, buf, 1);
         }
-      fclose(fptmp);
+      safe_fclose (&fptmp);
       gpgme_data_seek (data, 0, SEEK_SET);
     }
   else
     {
-      fclose(fptmp);
+      safe_fclose (&fptmp);
       err = gpgme_data_new_from_file (&data, tempfile, 1);
     }
   unlink (tempfile);
@@ -544,7 +544,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
           if (fwrite (buf, nread, 1, fp) != 1)
             {
               mutt_perror (tempfile);
-              fclose (fp);
+              safe_fclose (&fp);
               unlink (tempfile);
               return NULL;
             }
@@ -553,12 +553,12 @@ static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
   if (ret_fp)
     rewind (fp);
   else
-    fclose (fp);
+    safe_fclose (&fp);
   if (nread == -1)
     {
       mutt_error (_("error reading data object: %s\n"), gpgme_strerror (err));
       unlink (tempfile);
-      fclose (fp);
+      safe_fclose (&fp);
       return NULL;
     }
   if (ret_fp)
@@ -1788,7 +1788,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   b->type = saved_b_type;
   b->length = saved_b_length;
   b->offset = saved_b_offset;
-  fclose (tmpfp);
+  safe_fclose (&tmpfp);
   rewind (*fpout);
   if (*cur && !is_signed && !(*cur)->parts && mutt_is_application_smime (*cur))
     {
@@ -1824,7 +1824,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       bb->length = ftello (s.fpout);
       bb->offset = 0;
       rewind (tmpfp);
-      fclose (*fpout); 
+      safe_fclose (fpout); 
 
       memset (&s, 0, sizeof (s));
       s.fpin = tmpfp;
@@ -1843,7 +1843,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       bb->type = saved_b_type;
       bb->length = saved_b_length;
       bb->offset = saved_b_offset;
-      fclose (tmpfp);
+      safe_fclose (&tmpfp);
       rewind (*fpout);
       mutt_free_body (cur);
       *cur = tmp_b;
@@ -1956,10 +1956,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
 
 err_fp:
   if (rc)
-  {
-    fclose (*fp);
-    *fp = NULL;
-  }
+    safe_fclose (fp);
 err_tmpdir:
   if (dryrun)
     mutt_rmtree (tmpdir);
@@ -2068,7 +2065,7 @@ void pgp_gpgme_invoke_import (const char *fname)
     dprint (1, (debugfile, "error converting key file into data object\n"));
     return;
   }
-  fclose (in);
+  safe_fclose (&in);
 
   if (!pgp_gpgme_extract_keys (keydata, &out, 0))
   {
@@ -2076,7 +2073,7 @@ void pgp_gpgme_invoke_import (const char *fname)
     outlen = ftell (out);
     fseek (out, 0, SEEK_SET);
     mutt_copy_bytes (out, stdout, outlen);
-    fclose (out);
+    safe_fclose (&out);
   }
   else
     printf (_("Error extracting key data!\n"));
@@ -2150,7 +2147,7 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
   }
   
   fgetconv_close (&fc);
-  fclose (fp);
+  safe_fclose (&fp);
 }
 
 
@@ -2476,7 +2473,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
       mutt_free_body (&tattach);
     }
   
-  fclose (fpout);
+  safe_fclose (&fpout);
   mutt_unlink(tempfile);
   dprint (2, (debugfile, "Leaving pgp_encrypted handler\n"));
 
@@ -2550,7 +2547,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
       mutt_free_body (&tattach);
     }
   
-  fclose (fpout);
+  safe_fclose (&fpout);
   mutt_unlink(tempfile);
   dprint (2, (debugfile, "Leaving smime_encrypted handler\n"));
   
@@ -3506,7 +3503,7 @@ verify_key (crypt_key_t *key)
  leave:
   gpgme_key_release (k);
   gpgme_release (listctx);
-  fclose (fp);
+  safe_fclose (&fp);
   mutt_clear_error ();
   snprintf (cmd, sizeof (cmd), _("Key ID: 0x%s"),  crypt_keyid (key));
   mutt_do_pager (cmd, tempfile, 0, NULL);

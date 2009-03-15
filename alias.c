@@ -378,7 +378,7 @@ retry_name:
     recode_buf (buf, sizeof (buf));
     write_safe_address (rc, buf);
     fputc ('\n', rc);
-    fclose (rc);
+    safe_fclose (&rc);
     mutt_message _("Alias added.");
   }
   else
@@ -388,7 +388,7 @@ retry_name:
   
   fseek_err:
   mutt_perror (_("Error seeking in alias file"));
-  fclose(rc);
+  safe_fclose (&rc);
   return;
 }
 

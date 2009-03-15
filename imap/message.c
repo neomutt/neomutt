@@ -220,7 +220,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         if (h.data)
           imap_free_header_data ((void**) (void*) &h.data);
         imap_hcache_close (idata);
-        fclose (fp);
+        safe_fclose (&fp);
         return -1;
       }
     }
@@ -331,7 +331,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 #if USE_HCACHE
       imap_hcache_close (idata);
 #endif
-      fclose (fp);
+      safe_fclose (&fp);
       return -1;
     }
 
@@ -364,7 +364,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   imap_hcache_close (idata);
 #endif /* USE_HCACHE */
 
-  fclose(fp);
+  safe_fclose (&fp);
 
   if (ctx->msgcount > oldmsgcount)
   {
@@ -654,7 +654,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     pc = imap_next_word (pc);
     mutt_error ("%s", pc);
     mutt_sleep (1);
-    fclose (fp);
+    safe_fclose (&fp);
     goto fail;
   }
 
@@ -677,7 +677,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
     flush_buffer(buf, &len, idata->conn);
 
   mutt_socket_write (idata->conn, "\r\n");
-  fclose (fp);
+  safe_fclose (&fp);
 
   do
     rc = imap_cmd_step (idata);

@@ -515,7 +515,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
   
   mutt_forward_trailer (tmpfp);
   
-  fclose (tmpfp);
+  safe_fclose (&tmpfp);
   tmpfp = NULL;
 
   /* now that we have the template, send it. */
@@ -526,7 +526,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
   
   if (tmpfp)
   {
-    fclose (tmpfp);
+    safe_fclose (&tmpfp);
     mutt_unlink (tmpbody);
   }
 
@@ -631,7 +631,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	}
       }
     }
-    fclose (tmpfp);
+    safe_fclose (&tmpfp);
   }
   else if (rc == M_YES)	/* do MIME encapsulation - we don't need to do much here */
   {
@@ -907,12 +907,12 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
 	copy_problematic_attachments (fp, &tmphdr->content, idx, idxlen, 0) == NULL)
     {
       mutt_free_header (&tmphdr);
-      fclose (tmpfp);
+      safe_fclose (&tmpfp);
       return;
     }
   }
 
-  fclose (tmpfp);
+  safe_fclose (&tmpfp);
   
   if (ci_send_message (flags, tmphdr, tmpbody, NULL, parent) == 0)
     mutt_set_flag (Context, hdr, M_REPLIED, 1);

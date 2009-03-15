@@ -31,6 +31,7 @@ do_check ()
 }
 
 do_check '\<fopen.*'\"'.*w' __FOPEN_CHECKED__ "Alert: Unchecked fopen calls."
+do_check '\<fclose.*'\"'.*w' __FCLOSE_CHECKED__ "Alert: Unchecked fclose calls."
 do_check '\<(mutt_)?strcpy' __STRCPY_CHECKED__ "Alert: Unchecked strcpy calls."
 do_check '\<strcat' __STRCAT_CHECKED__ "Alert: Unchecked strcat calls."
 do_check '\<sprintf.*%s' __SPRINTF_CHECKED__ "Alert: Unchecked sprintf calls."

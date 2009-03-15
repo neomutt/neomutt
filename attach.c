@@ -76,8 +76,8 @@ int mutt_get_tmp_attachment (BODY *a)
   else
     mutt_perror(fpin ? tempfile : a->filename);
   
-  if(fpin)  fclose(fpin);
-  if(fpout) fclose(fpout);
+  if(fpin)  safe_fclose (&fpin);
+  if(fpout) safe_fclose (&fpout);
   
   return a->unlink ? 0 : -1;
 }
@@ -176,8 +176,8 @@ int mutt_compose_attachment (BODY *a)
 	      goto bailout;
 	    }
 	    mutt_copy_stream (fp, tfp);
-	    fclose (fp);
-	    fclose (tfp);
+	    safe_fclose (&fp);
+	    safe_fclose (&tfp);
 	    mutt_unlink (a->filename);  
 	    if (mutt_rename_file (tempfile, a->filename) != 0) 
 	    {
@@ -884,7 +884,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
     if (stat (m->filename, &st) == -1)
     {
       mutt_perror ("stat");
-      fclose (s.fpout);
+      safe_fclose (&s.fpout);
       return (-1);
     }
 
@@ -915,7 +915,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
 
   mutt_body_handler (m, &s);
 
-  fclose (s.fpout);
+  safe_fclose (&s.fpout);
   if (fp == NULL)
   {
     m->length = 0;
@@ -926,7 +926,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
       m->parts = saved_parts;
       m->hdr = saved_hdr;
     }
-    fclose (s.fpin);
+    safe_fclose (&s.fpin);
   }
 
   return (0);

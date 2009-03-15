@@ -373,7 +373,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
   if (ferror (fp))
     mutt_perror ("fgets");
 
-  fclose (fp);
+  safe_fclose (&fp);
   mutt_wait_filter (thepid);
 
   close (devnull);

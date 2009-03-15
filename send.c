@@ -59,7 +59,7 @@ static void append_signature (FILE *f)
     if (option (OPTSIGDASHES))
       fputs ("\n-- \n", f);
     mutt_copy_stream (tmpfp, f);
-    fclose (tmpfp);
+    safe_fclose (&tmpfp);
     if (thepid != -1)
       mutt_wait_filter (thepid);
   }
@@ -997,7 +997,7 @@ static int send_message (HEADER *msg)
 
   if ((mutt_write_mime_body (msg->content, tempfp) == -1))
   {
-    fclose(tempfp);
+    safe_fclose (&tempfp);
     unlink (tempfile);
     return (-1);
   }

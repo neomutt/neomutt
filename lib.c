@@ -220,11 +220,10 @@ int safe_fsync_close (FILE **f)
     if (fflush (*f) || fsync (fileno (*f)))
     {
       r = -1;
-      fclose (*f);
+      safe_fclose (f);
     }
     else
-      r = fclose(*f);
-    *f = NULL;
+      r = safe_fclose (f);
   }
 
   return r;
@@ -345,7 +344,7 @@ void mutt_unlink (const char *s)
 	fwrite (buf, 1, MIN (sizeof (buf), sb.st_size), f);
 	sb.st_size -= MIN (sizeof (buf), sb.st_size);
       }
-      fclose (f);
+      safe_fclose (&f);
     }
   }
 }

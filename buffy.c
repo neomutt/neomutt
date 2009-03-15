@@ -128,7 +128,7 @@ static int test_new_folder (const char *path)
   if ((f = fopen (path, "rb")))
   {
     rc = test_last_status_new (f);
-    fclose (f);
+    safe_fclose (&f);
   }
 
   return rc;

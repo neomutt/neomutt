@@ -346,7 +346,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 	}
       }
     } /* while (!found && (buf = mutt_read_line ())) */
-    fclose (fp);
+    safe_fclose (&fp);
   } /* if ((fp = fopen ())) */
   FREE (&buf);
   return found;
@@ -581,12 +581,12 @@ int mutt_rename_file (char *oldfile, char *newfile)
     return 3;
   if ((nfp = safe_fopen (newfile,"w")) == NULL)
   {
-    fclose(ofp);
+    safe_fclose (&ofp);
     return 3;
   }
   mutt_copy_stream (ofp,nfp);
-  fclose (nfp);
-  fclose (ofp);
+  safe_fclose (&nfp);
+  safe_fclose (&ofp);
   mutt_unlink (oldfile);
   return 0;
 }

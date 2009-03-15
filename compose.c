@@ -1073,7 +1073,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    FREE (&idx[idxlen]);
 	    continue;
 	  }
-	  fclose (fp);
+	  safe_fclose (&fp);
 
 	  if ((idx[idxlen]->content = mutt_make_file_attach (fname)) == NULL)
 	  {

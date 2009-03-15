@@ -64,8 +64,8 @@ void mutt_edit_headers (const char *editor,
 
   mutt_copy_stream (ifp, ofp);
 
-  fclose (ifp);
-  fclose (ofp);
+  safe_fclose (&ifp);
+  safe_fclose (&ofp);
 
   if (stat (path, &st) == -1)
   {
@@ -98,7 +98,7 @@ void mutt_edit_headers (const char *editor,
   if ((ofp = safe_fopen (body, "w")) == NULL)
   {
     /* intentionally leak a possible temporary file here */
-    fclose (ifp);
+    safe_fclose (&ifp);
     mutt_perror (body);
     return;
   }
@@ -106,8 +106,8 @@ void mutt_edit_headers (const char *editor,
   n = mutt_read_rfc822_header (ifp, NULL, 1, 0);
   while ((i = fread (buffer, 1, sizeof (buffer), ifp)) > 0)
     fwrite (buffer, 1, i, ofp);
-  fclose (ofp);
-  fclose (ifp);
+  safe_fclose (&ofp);
+  safe_fclose (&ifp);
   mutt_unlink (path);
 
   /* restore old info. */

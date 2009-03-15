@@ -1,3 +1,7 @@
+2009-03-10 18:39 +0100  NONAKA Kimihiro  <nonakap@gmail.com>  (cc6fede605d4)
+
+	* ChangeLog, mh.c: Fix crashes with 64bit time_t. Closes #3184.
+
 2009-03-09 12:04 +0100  Vincent Lefevre  <vincent@vinc17.org>  (4ce562b7f5d7)
 
 	* mbyte.h: Unbreak compilation on OS X with --with-regex/--without-wc-
