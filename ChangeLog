@@ -1,3 +1,28 @@
+2009-03-15 14:24 +0100  Erik Hovland  <erik@hovland.org>  (557d52627a0e)
+
+	* alias.c: The file handle will leak if fread fails
+
+2009-03-12 15:16 -0700  Erik Hovland  <erik@hovland.org>  (53bea026a2a2)
+
+	* curs_main.c: resort_index will use menu->current as a index into an
+	array. If menu->current is negative, bad things can happen. So check
+	it before calling resort_index
+
+2009-03-12 16:12 -0700  Erik Hovland  <erik@hovland.org>  (96a72e38e55e)
+
+	* recvcmd.c: 'last' is assigned but never used. Remove assignment.
+
+2009-03-15 13:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (1238dff54a15)
+
+	* ChangeLog, alias.c, attach.c, buffy.c, check_sec.sh, commands.c,
+	compose.c, copy.c, crypt-gpgme.c, crypt.c, edit.c, editmsg.c,
+	gnupgparse.c, handler.c, headers.c, help.c, history.c,
+	imap/message.c, init.c, lib.c, main.c, mbox.c, mh.c, mutt_ssl.c,
+	mutt_ssl_gnutls.c, muttlib.c, pager.c, pattern.c, pgp.c, pgpkey.c,
+	pgppubring.c, pop.c, postpone.c, query.c, recvattach.c, recvcmd.c,
+	rfc1524.c, rfc3676.c, send.c, sendlib.c, smime.c, smtp.c: Use
+	safe_fclose() instead of fclose(), add fclose() to check_sec.sh
+
 2009-03-10 18:39 +0100  NONAKA Kimihiro  <nonakap@gmail.com>  (cc6fede605d4)
 
 	* ChangeLog, mh.c: Fix crashes with 64bit time_t. Closes #3184.
