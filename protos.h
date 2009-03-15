@@ -549,3 +549,6 @@ char *strsep (char **, const char *);
 char *strtok_r (char *, const char *, char **);
 #endif
 
+#ifndef HAVE_WCSCASECMP
+int wcscasecmp (const wchar_t *a, const wchar_t *b);
+#endif
