@@ -55,7 +55,7 @@ static struct mapping_t AttachHelp[] = {
   { N_("Pipe"),  OP_PIPE },
   { N_("Print"), OP_PRINT },
   { N_("Help"),  OP_HELP },
-  { NULL }
+  { NULL,        0 }
 };
 
 void mutt_update_tree (ATTACHPTR **idx, short idxlen)

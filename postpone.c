@@ -42,7 +42,7 @@ static struct mapping_t PostponeHelp[] = {
   { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },
   { N_("Help"),  OP_HELP },
-  { NULL }
+  { NULL,        0 }
 };
 
 

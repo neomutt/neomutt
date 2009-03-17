@@ -97,7 +97,7 @@ Flags[] =
   { 'z', M_SIZE,		0,		eat_range },
   { '=', M_DUPLICATED,		0,		NULL },
   { '$', M_UNREFERENCED,	0,		NULL },
-  { 0 }
+  { 0,   0,			0,		NULL }
 };
 
 static pattern_t *SearchPattern = NULL; /* current search pattern */

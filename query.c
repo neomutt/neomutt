@@ -51,7 +51,7 @@ static struct mapping_t QueryHelp[] = {
   { N_("Make Alias"), OP_CREATE_ALIAS },
   { N_("Search"), OP_SEARCH },
   { N_("Help"),   OP_HELP },
-  { NULL }
+  { NULL,	  0 }
 };
 
 static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf);

@@ -283,7 +283,7 @@ static pop_auth_t pop_authenticators[] = {
 #endif
   { pop_auth_apop, "apop" },
   { pop_auth_user, "user" },
-  { NULL }
+  { NULL,	   NULL }
 };
 
 /*

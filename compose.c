@@ -94,7 +94,7 @@ static struct mapping_t ComposeHelp[] = {
   { N_("Attach file"),  OP_COMPOSE_ATTACH_FILE },
   { N_("Descrip"), OP_COMPOSE_EDIT_DESCRIPTION },
   { N_("Help"),    OP_HELP },
-  { NULL }
+  { NULL,	0 }
 };
 
 static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)

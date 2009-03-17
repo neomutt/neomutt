@@ -251,7 +251,7 @@ int mx_lock_file (const char *path, int fd, int excl, int dot, int timeout)
 int mx_unlock_file (const char *path, int fd, int dot)
 {
 #ifdef USE_FCNTL
-  struct flock unlockit = { F_UNLCK, 0, 0, 0 };
+  struct flock unlockit = { F_UNLCK, 0, 0, 0, 0 };
 
   memset (&unlockit, 0, sizeof (struct flock));
   unlockit.l_type = F_UNLCK;

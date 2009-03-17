@@ -410,7 +410,7 @@ static struct mapping_t IndexHelp[] = {
   { N_("Reply"), OP_REPLY },
   { N_("Group"), OP_GROUP_REPLY },
   { N_("Help"),  OP_HELP },
-  { NULL }
+  { NULL,	 0 }
 };
 
 /* This function handles the message index window as well as commands returned

@@ -487,7 +487,7 @@ static struct mapping_t RemailerHelp[] =
   { N_("Delete"), OP_MIX_DELETE },
   { N_("Abort"),  OP_EXIT       },
   { N_("OK"),     OP_MIX_USE    },
-  { NULL }
+  { NULL,         0 }
 };
   
 
