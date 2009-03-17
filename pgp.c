@@ -390,6 +390,8 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	    
 	    state_attach_puts (_("[-- End of PGP output --]\n\n"), s);
 	  }
+	  if (pgp_use_gpg_agent())
+	    mutt_need_hard_redraw ();
 	}
 	
         /* treat empty result as sign of failure */

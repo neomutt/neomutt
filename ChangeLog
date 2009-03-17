@@ -1,3 +1,13 @@
+2009-03-15 16:44 +0100  Rocco Rutte  <pdmef@gmx.net>  (bc7c64ff3e48)
+
+	* configure.ac, protos.h, wcscasecmp.c: Add wcscasecmp() compatibility
+	function (for OS X)
+
+2009-03-15 16:39 +0100  Rocco Rutte  <pdmef@gmx.net>  (2b286d58647b)
+
+	* ChangeLog, doc/mutt.man: mutt.1: Mention that -a should be last in
+	option list. Closes #3202
+
 2009-03-15 16:38 +0100  Rocco Rutte  <pdmef@gmx.net>  (650829e3eb06)
 
 	* alias.c: Only define min() if not present. Closes #3199
