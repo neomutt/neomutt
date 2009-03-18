@@ -3304,7 +3304,7 @@ struct option_t MuttVars[] = {
   ** ``$tuning'' section of the manual for performance considerations.
   */
   /*--*/
-  { NULL }
+  { NULL, 0, 0, 0, 0 }
 };
 
 const struct mapping_t SortMethods[] = {
@@ -3319,7 +3319,7 @@ const struct mapping_t SortMethods[] = {
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
-  { NULL,		0 }
+  { NULL,               0 }
 };
 
 /* same as SortMethods, but with "threads" replaced by "date" */
@@ -3338,7 +3338,7 @@ const struct mapping_t SortAuxMethods[] = {
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
-  { NULL,		0 }
+  { NULL,               0 }
 };
 
 
@@ -3347,14 +3347,14 @@ const struct mapping_t SortBrowserMethods[] = {
   { "date",	SORT_DATE },
   { "size",	SORT_SIZE },
   { "unsorted",	SORT_ORDER },
-  { NULL }
+  { NULL,       0 }
 };
 
 const struct mapping_t SortAliasMethods[] = {
   { "alias",	SORT_ALIAS },
   { "address",	SORT_ADDRESS },
   { "unsorted", SORT_ORDER },
-  { NULL }
+  { NULL,       0 }
 };
 
 const struct mapping_t SortKeyMethods[] = {
@@ -3362,7 +3362,7 @@ const struct mapping_t SortKeyMethods[] = {
   { "date",	SORT_DATE },
   { "keyid",	SORT_KEYID },
   { "trust",	SORT_TRUST },
-  { NULL }
+  { NULL,       0 }
 };
 
 
@@ -3470,5 +3470,5 @@ struct command_t Commands[] = {
   { "unscore",		mutt_parse_unscore,	0 },
   { "unset",		parse_set,		M_SET_UNSET },
   { "unsubscribe",	parse_unsubscribe,	0 },
-  { NULL }
+  { NULL,		NULL,			0 }
 };
