@@ -1387,6 +1387,7 @@ BODY *smime_sign_message (BODY *a )
   if (!SmimeDefaultKey)
   {
     mutt_error _("Can't sign: No key specified. Use Sign As.");
+    FREE (&intermediates);
     return NULL;
   }
 
@@ -1402,6 +1403,8 @@ BODY *smime_sign_message (BODY *a )
   if ((sfp = safe_fopen (filetosign, "w+")) == NULL)
   {
     mutt_perror (filetosign);
+    if (intermediates != SmimeDefaultKey)
+      FREE (&intermediates);
     return NULL;
   }
 
@@ -1411,6 +1414,8 @@ BODY *smime_sign_message (BODY *a )
     mutt_perror (signedfile);
     safe_fclose (&sfp);
     mutt_unlink (filetosign);
+    if (intermediates != SmimeDefaultKey)
+      FREE (&intermediates);
     return NULL;
   }
   
@@ -1439,6 +1444,8 @@ BODY *smime_sign_message (BODY *a )
     safe_fclose (&smimeout);
     mutt_unlink (signedfile);
     mutt_unlink (filetosign);
+    if (intermediates != SmimeDefaultKey)
+      FREE (&intermediates);
     return NULL;
   }
   fputs (SmimePass, smimein);
