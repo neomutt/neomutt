@@ -1,3 +1,20 @@
+2009-03-17 20:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (903b3cee5485)
+
+	* addrbook.c, browser.c, compose.c, curs_main.c, imap/auth.c, mx.c,
+	pattern.c, pop_auth.c, postpone.c, query.c, recvattach.c,
+	remailer.c: Fix some warnings with -W about missing initializers in
+	structs
+
+2009-03-17 16:44 +0100  Todd Zullinger  <tmz@pobox.com>  (bb9b845800f6)
+
+	* ChangeLog, pgp.c: Ensure display is redrawn for application/pgp
+
+	When using gpg-agent, a hard redraw is needed after the pinentry
+	program is called. Otherwise, the screen is garbled and key
+	bindings are screwed up.
+
+	Closes #3196.
+
 2009-03-15 16:44 +0100  Rocco Rutte  <pdmef@gmx.net>  (bc7c64ff3e48)
 
 	* configure.ac, protos.h, wcscasecmp.c: Add wcscasecmp() compatibility

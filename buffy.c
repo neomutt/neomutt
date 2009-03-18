@@ -260,6 +260,10 @@ int mutt_buffy_check (int force)
   struct stat contex_sb;
   time_t t;
 
+  sb.st_size=0;
+  contex_sb.st_dev=0;
+  contex_sb.st_ino=0;
+
 #ifdef USE_IMAP
   /* update postponed count as well, on force */
   if (force)
