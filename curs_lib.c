@@ -420,7 +420,6 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
 
   if (update)
   {
-    dprint (1, (debugfile, "Updating progress: %ld\n", pos));
     if (progress->flags & M_PROGRESS_SIZE)
     {
       pos = pos / (progress->inc << 10) * (progress->inc << 10);
@@ -428,7 +427,9 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
     }
     else
       snprintf (posstr, sizeof (posstr), "%ld", pos);
-    
+
+    dprint (5, (debugfile, "updating progress: %s\n", posstr));
+
     progress->pos = pos;
     if (now)
       progress->timestamp = now;
