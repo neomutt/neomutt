@@ -1138,7 +1138,7 @@ static short is_numerical_keyid (const char *s)
  */
 char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
-  char *keyID, *keylist = NULL, *t;
+  char *keyID, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
   ADDRESS *tmp = NULL, *addr = NULL;
@@ -1190,7 +1190,7 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 	}
 	
 	/* check for e-mail address */
-	if ((t = strchr (keyID, '@')) && 
+	if (strchr (keyID, '@') && 
 	    (addr = rfc822_parse_adrlist (NULL, keyID)))
 	{
 	  if (fqdn) rfc822_qualify (addr, fqdn);
