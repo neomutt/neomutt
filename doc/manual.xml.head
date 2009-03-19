@@ -4187,6 +4187,9 @@ they may or may not be available in stock libraries on various systems.
 <sect1 id="patterns">
 <title>Patterns: Searching, Limiting and Tagging</title>
 
+<sect2 id="patterns-modifier">
+<title>Pattern Modifier</title>
+
 <para>
 Many of Mutt's commands allow you to specify a pattern to match
 (<literal>limit</literal>, <literal>tag-pattern</literal>,
@@ -4258,22 +4261,7 @@ threads containing messages from you: ~(~P)</entry></row>
 
 <para>
 Where <emphasis>EXPR</emphasis> is a
-<link linkend="regexp">regular expression</link>.  Special attention has to be
-made when using regular expressions inside of patterns.  Specifically,
-Mutt's parser for these patterns will strip one level of backslash (<quote>\</quote>),
-which is normally used for quoting.  If it is your intention to use a
-backslash in the regular expression, you will need to use two backslashes
-instead (<quote>\\</quote>). You can force mutt to treat <emphasis>EXPR</emphasis> as a simple string
-instead of a regular expression by using = instead of &tilde; in the
-pattern name. For example, <literal>=b *.*</literal> will find all messages that contain
-the literal string <quote>*.*</quote>. Simple string matches are less powerful than
-regular expressions but can be considerably faster. This is especially
-true for IMAP folders, because string matches can be performed on the
-server instead of by fetching every message. IMAP treats <literal>=h</literal> specially:
-it must be of the form "header: substring" and will not partially
-match header names. The substring part may be omitted if you simply
-wish to find messages containing a particular header without regard to
-its value.
+<link linkend="regexp">regular expression</link>. 
 </para>
 
 <para>
@@ -4286,32 +4274,49 @@ are allowed, too.
 **) The suffixes <quote>K</quote> and <quote>M</quote> are allowed to specify kilobyte and megabyte respectively.
 </para>
 
-<sect2 id="patterns-modifier">
-<title>Pattern Modifier</title>
-
-<note>
 <para>
-Note that patterns matching 'lists' of addresses (notably c, C, p, P and t)
+Special attention has to be
+made when using regular expressions inside of patterns.  Specifically,
+Mutt's parser for these patterns will strip one level of backslash (<quote>\</quote>),
+which is normally used for quoting.  If it is your intention to use a
+backslash in the regular expression, you will need to use two backslashes
+instead (<quote>\\</quote>). You can force mutt to treat <emphasis>EXPR</emphasis> as a simple string
+instead of a regular expression by using = instead of &tilde; in the
+pattern name. For example, <literal>=b *.*</literal> will find all messages that contain
+the literal string <quote>*.*</quote>. Simple string matches are less powerful than
+regular expressions but can be considerably faster. This is especially
+true for IMAP folders, because string matches can be performed on the
+server instead of by fetching every message. IMAP treats <literal>=h</literal> specially:
+it must be of the form <quote>header: substring</quote> and will not partially
+match header names. The substring part may be omitted if you simply
+wish to find messages containing a particular header without regard to
+its value.
+</para>
+
+<para>
+Patterns matching lists of addresses (notably c, C, p, P and t)
 match if there is at least one match in the whole list. If you want to
 make sure that all elements of that list match, you need to prefix your
 pattern with <quote>&circ;</quote>.
 This example matches all mails which only has recipients from Germany.
 </para>
-</note>
 
+<example id="ex-recips">
+<title>Matching all addresses in address lists</title>
 <screen>
 ^~C \.de$
 </screen>
+</example>
 
 </sect2>
 
-<sect2 id="simple-patterns">
-<title>Simple Patterns</title>
+<sect2 id="simple-searches">
+<title>Simple Searches</title>
 
 <para>
-Mutt supports two versions of so called <quote>simple searches</quote> which are
+Mutt supports two versions of so called <quote>simple searches</quote>. These are
 issued if the query entered for searching, limiting and similar
-operations does not seem to be a valid pattern (i.e. it does not contain
+operations does not seem contain a valid pattern modifier (i.e. it does not contain
 one of these characters: <quote>&tilde;</quote>, <quote>=</quote> or <quote>&percnt;</quote>). If the query is
 supposed to contain one of these special characters, they must be escaped
 by prepending a backslash (<quote>\</quote>).
@@ -4361,7 +4366,7 @@ for the composed complex query.
 </sect2>
 
 <sect2 id="complex-patterns">
-<title>Complex Patterns</title>
+<title>Nesting and Boolean Operators</title>
 
 <para>
 Logical AND is performed by specifying more than one criterion.  For

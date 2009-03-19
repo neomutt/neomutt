@@ -1,3 +1,15 @@
+2009-03-19 16:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (de835501d8db)
+
+	* curs_lib.c: Fix progress update debug message
+
+2009-03-19 15:35 +0100  Rocco Rutte  <pdmef@gmx.net>  (acfaa2273124)
+
+	* ChangeLog, doc/manual.xml.head, doc/muttrc.man.head: Document kilo
+	and mega suffixes for range patterns
+
+	Document it only for ~z (message size) as they don't make much sense
+	for other patterns like message score or number of attachments.
+
 2009-03-18 17:40 +0100  Rocco Rutte  <pdmef@gmx.net>  (8528b8e715da)
 
 	* init.h: Properly initialize more structs
