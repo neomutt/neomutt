@@ -1,3 +1,11 @@
+2009-03-18 14:48 +0100  Erik Hovland  <erik@hovland.org>  (17d770ae41e4)
+
+	* smime.c: S/MIME: Don't leak intermediate cert key
+
+2009-03-18 14:43 +0100  Erik Hovland  <erik@hovland.org>  (bcf0020afde2)
+
+	* ChangeLog, buffy.c: Properly initialize struct stats in buffy check
+
 2009-03-17 20:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (903b3cee5485)
 
 	* addrbook.c, browser.c, compose.c, curs_main.c, imap/auth.c, mx.c,
