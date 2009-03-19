@@ -4246,7 +4246,7 @@ shows several ways to select messages.
 <row><entry>~x <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the <quote>References</quote> field</entry></row>
 <row><entry>~X &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments *)</entry></row>
 <row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the <quote>X-Label</quote> field</entry></row>
-<row><entry>~z &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
+<row><entry>~z &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *) **)</entry></row>
 <row><entry>~=</entry><entry>duplicated messages (see <link linkend="duplicate-threads">&dollar;duplicate&lowbar;threads</link>)</entry></row>
 <row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
 <row><entry>~(<emphasis>PATTERN</emphasis>)</entry><entry>messages in threads
@@ -4280,6 +4280,10 @@ its value.
 *) The forms <quote>&lt;&lsqb;<emphasis>MAX</emphasis>&rsqb;</quote>, <quote>&gt;&lsqb;<emphasis>MIN</emphasis>&rsqb;</quote>,
 <quote>&lsqb;<emphasis>MIN</emphasis>&rsqb;-</quote> and <quote>-&lsqb;<emphasis>MAX</emphasis>&rsqb;</quote>
 are allowed, too.
+</para>
+
+<para>
+**) The suffixes <quote>K</quote> and <quote>M</quote> are allowed to specify kilobyte and megabyte respectively.
 </para>
 
 <sect2 id="patterns-modifier">

@@ -582,9 +582,12 @@ messages in threads containing messages matching a certain pattern, e.g. all thr
 .PP
 In the above, \fIEXPR\fP is a regular expression.
 .PP
-With the \fB~m\fP, \fB~n\fP, \fB~X\fP, and \fB~z\fP operators, you can also
+With the \fB~d\fP, \fB~m\fP, \fB~n\fP, \fB~r\fP, \fB~X\fP, and \fB~z\fP operators, you can also
 specify ranges in the forms \fB<\fP\fIMAX\fP, \fB>\fP\fIMIN\fP,
 \fIMIN\fP\fB-\fP, and \fB-\fP\fIMAX\fP.
+.PP
+With the \fB~z\fP operator, the suffixes \(lqK\(rq and \(lqM\(rq are allowed to specify
+kilobyte and megabyte respectively.
 .SS Matching dates
 .PP
 The \fB~d\fP and \fB~r\fP operators are used to match date ranges,
