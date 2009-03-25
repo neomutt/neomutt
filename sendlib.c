@@ -2237,7 +2237,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
       }
     }
   }
-  else
+  else if (childout)
     unlink (childout);
 
   FREE (&childout);
