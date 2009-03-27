@@ -101,16 +101,16 @@ static void print_flowed_line (char *line, STATE *s, int ql, size_t *sofar, int 
 
   width = quote_width (s, ql);
 
-  dprint (4, (debugfile, "f-f: line [%s], width = %ld\n", NONULL(line), (long)width));
+  dprint (4, (debugfile, "f=f: line [%s], width = %ld\n", NONULL(line), (long)width));
 
   for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
   {
     w = mutt_strwidth (NONULL(p));
-    dprint (4, (debugfile, "f-f: word [%s], width = %ld, line = %ld\n", NONULL(p), (long)w, (long)*sofar));
+    dprint (4, (debugfile, "f=f: word [%s], width = %ld, line = %ld\n", NONULL(p), (long)w, (long)*sofar));
     if (w + 1 + (*sofar) > width)
     {
       /* line would be too long, flush */
-      dprint (4, (debugfile, "f-f: width: %ld\n", (long)*sofar));
+      dprint (4, (debugfile, "f=f: width: %ld\n", (long)*sofar));
       state_puts (" \n", s);
       *sofar = 0;
     }
