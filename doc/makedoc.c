@@ -1143,7 +1143,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	}
 	case SP_END_TAB:
 	{
-	  fputs ("\n</screen>", out);
+	  fputs ("</screen>", out);
 	  docstat &= ~D_TAB;
 	  docstat |= D_NL;
 	  break;
@@ -1155,7 +1155,7 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	    fputs ("\n</para>\n", out);
 	    docstat &= ~D_PA;
 	  }
-	  fputs ("\n<variablelist>\n", out);
+	  fputs ("\n<variablelist>\n<?dbhtml list-presentation=\"table\"?>\n", out);
 	  docstat |= D_DL;
 	  break;
 	}

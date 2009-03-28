@@ -1,3 +1,11 @@
+2009-03-27 18:02 +0100  Rocco Rutte  <pdmef@gmx.net>  (a06a2a4c5ebc)
+
+	* rfc3676.c: f=f: Fix debug messages
+
+2009-03-19 17:19 +0100  Rocco Rutte  <pdmef@gmx.net>  (754ea0f091fc)
+
+	* ChangeLog, doc/manual.xml.head: Improve section on patterns
+
 2009-03-19 16:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (de835501d8db)
 
 	* curs_lib.c: Fix progress update debug message
