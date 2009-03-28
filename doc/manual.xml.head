@@ -3558,6 +3558,100 @@ spam "^From: .*MAILER-DAEMON"       "999"
 <sect1 id="set">
 <title>Setting and Querying Variables</title>
 
+<sect2 id="var-types">
+<title>Variable types</title>
+
+<para>
+Mutt supports these types of configuration variables:
+</para>
+
+<variablelist>
+<varlistentry>
+<term>boolean</term>
+<listitem>
+<para>
+A boolean expression, either <quote>yes</quote> or <quote>no</quote>.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>number</term>
+<listitem>
+<para>
+A signed integer number in the range -32768 to 32767.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>string</term>
+<listitem>
+<para>
+Arbitrary text.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>path</term>
+<listitem>
+<para>
+A specialized string for representing paths including support for
+mailbox shortcuts (see <xref linkend="shortcuts"/>) as well as tilde
+(<quote>&tilde;</quote>) for a user's home directory and more.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>quadoption</term>
+<listitem>
+<para>
+Like a boolean but triggers a prompt when set to <quote>ask-yes</quote>
+or <quote>ask-no</quote> with <quote>yes</quote> and <quote>no</quote>
+preselected respectively.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>sort order</term>
+<listitem>
+<para>
+A specialized string allowing only particular words as values depending
+on the variable.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>regular expression</term>
+<listitem>
+<para>
+A regular expression, see <xref linkend="regexp"/> for an introduction.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>folder magic</term>
+<listitem>
+<para>
+Specifies the type of folder to use: <emphasis>mbox</emphasis>,
+<emphasis>mmdf</emphasis>, <emphasis>mh</emphasis>
+or <emphasis>maildir</emphasis>.
+Currently only used to determine the type for newly created folders.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>e-mail address</term>
+<listitem>
+<para>
+An e-mail address either with or without
+realname. The older <quote><literal>user@example.org (Joe User)</literal></quote>
+form is supported but strongly deprecated.
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect2>
+
 <sect2 id="set-commands">
 <title>Commands</title>
 
