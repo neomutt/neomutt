@@ -1,3 +1,17 @@
+2009-03-28 16:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (77cfe8016930)
+
+	* doc/manual.xml.head: Manual: Add section roughly explaining config
+	option types
+
+2009-03-28 16:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (afcfd08c5319)
+
+	* ChangeLog, doc/makedoc.c: makedoc: make output slightly more
+	readable
+
+	Add <?dhtml... processing instructions to render <variablelist/>
+	using HTML <table/> which save lots of vertical space. Also, drop
+	the newline before </screen> to save some space.
+
 2009-03-27 18:02 +0100  Rocco Rutte  <pdmef@gmx.net>  (a06a2a4c5ebc)
 
 	* rfc3676.c: f=f: Fix debug messages

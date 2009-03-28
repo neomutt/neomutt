@@ -62,7 +62,7 @@ static int mutt_idna_to_local (const char *in, char **out, int flags)
     goto notrans;
 
   /* Is this the right function?  Interesting effects with some bad identifiers! */
-  if (idna_to_unicode_8z8z (in, out, 1) != IDNA_SUCCESS)
+  if (idna_to_unicode_8z8z (in, out, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
     goto notrans;
 
   /* we don't want charset-hook effects, so we set flags to 0 */
@@ -83,7 +83,7 @@ static int mutt_idna_to_local (const char *in, char **out, int flags)
     /* we don't want charset-hook effects, so we set flags to 0 */
     if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
       irrev = 1;
-    if (!irrev && idna_to_ascii_8z (tmp, &t2, 1) != IDNA_SUCCESS)
+    if (!irrev && idna_to_ascii_8z (tmp, &t2, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       irrev = 1;
     if (!irrev && ascii_strcasecmp (t2, in))
     {
@@ -122,7 +122,7 @@ static int mutt_local_to_idna (const char *in, char **out)
   /* we don't want charset-hook effects, so we set flags to 0 */
   if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
     rv = -1;
-  if (!rv && idna_to_ascii_8z (tmp, out, 1) != IDNA_SUCCESS)
+  if (!rv && idna_to_ascii_8z (tmp, out, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
     rv = -2;
   
   FREE (&tmp);
