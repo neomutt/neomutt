@@ -4964,14 +4964,16 @@ added to the prompt.
 <title>Mailbox Formats</title>
 
 <para>
-Mutt supports reading and writing of four different mailbox formats:
+Mutt supports reading and writing of four different local mailbox formats:
 mbox, MMDF, MH and Maildir.  The mailbox type is autodetected, so there
 is no need to use a flag for different mailbox types.  When creating new
-mailboxes, Mutt uses the default specified with the <link linkend="mbox-type">&dollar;mbox&lowbar;type</link> variable.
+mailboxes, Mutt uses the default specified with the
+<link linkend="mbox-type">&dollar;mbox&lowbar;type</link> variable. A
+short description of the formats follows.
 </para>
 
 <para>
-<emphasis role="bold">mbox</emphasis>.  This is the most widely used mailbox format for UNIX.  All
+<emphasis>mbox</emphasis>.  This is a widely used mailbox format for UNIX.  All
 messages are stored in a single file.  Each message has a line of the form:
 </para>
 
@@ -4981,32 +4983,50 @@ From me@cs.hmc.edu Fri, 11 Apr 1997 11:44:56 PST
 
 <para>
 to denote the start of a new message (this is often referred to as the
-<quote>From&lowbar;</quote> line).
+<quote>From&lowbar;</quote> line). The mbox format requires mailbox
+locking, is prone to mailbox corruption with concurrently writing
+clients or misinterpreted From&lowbar; lines. Depending on the
+environment, new mail detection can be unreliable. Mbox folders are fast
+to open and easy to archive.
 </para>
 
 <para>
-<emphasis role="bold">MMDF</emphasis>.  This is a variant of the <emphasis>mbox</emphasis> format.  Each message is
-surrounded by lines containing <quote>&circ;A&circ;A&circ;A&circ;A</quote> (four control-A's).
+<emphasis>MMDF</emphasis>.  This is a variant of
+the <emphasis>mbox</emphasis> format.  Each message is surrounded by
+lines containing <quote>&circ;A&circ;A&circ;A&circ;A</quote> (four
+control-A's). The same problems as for mbox apply (also with finding the
+right message separator as four control-A's may appear in message
+bodies).
 </para>
 
 <para>
-<emphasis role="bold">MH</emphasis>. A radical departure from <emphasis>mbox</emphasis> and <emphasis>MMDF</emphasis>, a mailbox
+<emphasis>MH</emphasis>. A radical departure from <emphasis>mbox</emphasis> and <emphasis>MMDF</emphasis>, a mailbox
 consists of a directory and each message is stored in a separate file.
 The filename indicates the message number (however, this is may not
 correspond to the message number Mutt displays). Deleted messages are
 renamed with a comma (,) prepended to the filename. Mutt
 detects this type of mailbox by looking for either <literal>.mh&lowbar;sequences</literal>
-or <literal>.xmhcache</literal> (needed to distinguish normal directories from MH
-mailboxes).
+or <literal>.xmhcache</literal> files (needed to distinguish normal directories from MH
+mailboxes). MH is more robust with concurrent clients writing the mailbox,
+but still may suffer from lost flags; message corruption is less likely
+to occur than with mbox/mmdf. It's usually slower to open compared to
+mbox/mmdf since many small files have to be read (Mutt provides
+<xref linkend="header-caching"/> to greatly speed this process up).
+Depending on the environment, MH is not very disk-space efficient.
 </para>
 
 <para>
-<emphasis role="bold">Maildir</emphasis>.  The newest of the mailbox formats, used by the Qmail MTA (a
+<emphasis>Maildir</emphasis>.  The newest of the mailbox formats, used by the Qmail MTA (a
 replacement for sendmail).  Similar to <emphasis>MH</emphasis>, except that it adds three
 subdirectories of the mailbox: <emphasis>tmp</emphasis>, <emphasis>new</emphasis> and <emphasis>cur</emphasis>.  Filenames
 for the messages are chosen in such a way they are unique, even when two
 programs are writing the mailbox over NFS, which means that no file locking
-is needed.
+is needed and corruption is very unlikely. Maildir maybe
+slower to open without caching in Mutt, it too is not very
+disk-space efficient depending on the environment. Since no additional
+files are used for metadata (which is embedded in the message filenames)
+and Maildir is locking-free, it's easy to sync across different machines
+using file-level synchronization tools.
 </para>
 
 </sect1>
