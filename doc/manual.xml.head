@@ -4007,6 +4007,54 @@ replace all decimal points with underlines.
 
 </sect2>
 
+<sect2 id="formatstrings-conditionals">
+<title>Conditionals</title>
+
+<para>
+Depending on the format string variable, some of its sequences can be
+used to optionally print a string if their value is nonzero. For
+example, you may only want to see the number of flagged messages if such
+messages exist, since zero is not particularly meaningful. To optionally
+print a string based upon one of the above sequences, the following
+construct is used:
+</para>
+
+<screen>
+&percnt;?&lt;sequence_char&gt;?&lt;optional_string&gt;?</screen>
+
+<para>
+where <emphasis>sequence_char</emphasis> is an expando, and
+<emphasis>optional_string</emphasis> is the string you would like printed if
+<emphasis>sequence_char</emphasis> is nonzero.
+<emphasis>optional_string</emphasis> may contain other
+sequences as well as normal text, but you may not nest optional
+strings.
+</para>
+
+<para>
+Here is an example illustrating how to optionally print the number of
+new messages in a mailbox in
+<link linkend="status-format">&dollar;status&lowbar;format</link>:
+</para>
+
+<screen>
+&percnt;?n?&percnt;n new messages.?</screen>
+
+<para>
+You can also switch between two strings using the following construct:
+</para>
+
+<screen>
+&percnt;?&lt;sequence_char&gt;?&lt;if_string&gt;&amp;&lt;else_string&gt;?</screen>
+
+<para>
+If the value of <emphasis>sequence_char</emphasis> is
+non-zero, <emphasis>if_string</emphasis> will be expanded,
+otherwise <emphasis>else_string</emphasis> will be expanded.
+</para>
+
+</sect2>
+
 <sect2 id="formatstrings-filters">
 <title>Filters</title>
 
