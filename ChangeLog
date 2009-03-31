@@ -1,3 +1,12 @@
+2009-03-31 13:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (17456a83bb06)
+
+	* doc/manual.xml.head: Manual: use <quote/> instead of " quotes
+
+2009-03-31 12:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (ab19eea64ab0)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Lots of minor improvements
+	(markup consistency, wording)
+
 2009-03-30 14:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (318748f3962b)
 
 	* doc/manual.xml.head: For mailbox formats, add some more verbose pros

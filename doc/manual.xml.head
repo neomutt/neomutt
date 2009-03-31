@@ -5647,7 +5647,7 @@ specific format specified in Appendix A of RFC 1524.  This file format
 is commonly referred to as the mailcap format.  Many MIME compliant
 programs utilize the mailcap format, allowing you to specify handling
 for all MIME types in one place for all programs.  Programs known to
-use this format include Netscape, XMosaic, lynx and metamail.
+use this format include Firefox, lynx and metamail.
 </para>
 
 <para>
@@ -5965,14 +5965,14 @@ For example:
 </para>
 
 <screen>
-text/html; netscape -remote 'openURL(%s)' ; test=RunningX
+text/html; firefox -remote 'openURL(%s)' ; test=RunningX
 text/html; lynx %s
 </screen>
 
 <para>
 In this example, Mutt will run the program RunningX which will return 0
 if the X Window manager is running, and non-zero if it isn't.  If
-RunningX returns 0, then Mutt will call netscape to display the
+RunningX returns 0, then Mutt will call firefox to display the
 <literal>text/html</literal> object.  If RunningX doesn't return 0, then Mutt will go on
 to the next entry and use lynx to display the <literal>text/html</literal> object.
 </para>
@@ -6013,7 +6013,7 @@ viewer to use interactively depending on your environment.
 </para>
 
 <screen>
-text/html;      netscape -remote 'openURL(%s)' ; test=RunningX
+text/html;      firefox -remote 'openURL(%s)' ; test=RunningX
 text/html;      lynx %s; nametemplate=%s.html
 text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
@@ -6117,8 +6117,8 @@ This mailcap file is fairly simple and standard:
 video/*;        xanim %s &gt; /dev/null
 image/*;        xv %s &gt; /dev/null
 
-# I'm always running netscape (if my computer had more memory, maybe)
-text/html;      netscape -remote 'openURL(%s)'
+# I'm always running firefox (if my computer had more memory, maybe)
+text/html;      firefox -remote 'openURL(%s)'
 </screen>
 
 <para>
@@ -6130,12 +6130,12 @@ This mailcap file shows quite a number of examples:
 # send that to /dev/null so I don't see it
 video/*;        xanim %s &gt; /dev/null
 
-# Send html to a running netscape by remote
-text/html;      netscape -remote 'openURL(%s)'; test=RunningNetscape
+# Send html to a running firefox by remote
+text/html;      firefox -remote 'openURL(%s)'; test=RunningFirefox
 
-# If I'm not running netscape but I am running X, start netscape on the
+# If I'm not running firefox but I am running X, start firefox on the
 # object
-text/html;      netscape %s; test=RunningX
+text/html;      firefox %s; test=RunningX
 
 # Else use lynx to view it as text
 text/html;      lynx %s
@@ -6146,7 +6146,7 @@ text/html;      lynx -dump %s; copiousoutput
 # I use enscript to print text in two columns to a page
 text/*;         more %s; print=enscript -2Gr %s
 
-# Netscape adds a flag to tell itself to view jpegs internally
+# Firefox adds a flag to tell itself to view jpegs internally
 image/jpeg;xv %s; x-mozilla-flags=internal
 
 # Use xv to view images if I'm running X
