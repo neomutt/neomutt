@@ -1,3 +1,17 @@
+2009-03-30 14:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (318748f3962b)
+
+	* doc/manual.xml.head: For mailbox formats, add some more verbose pros
+	and cons
+
+2009-03-30 13:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (63e458e83e5b)
+
+	* doc/manual.xml.head: Manual: Add section about zeroprinting format
+	strings to format string section
+
+2009-03-28 22:37 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (be9fb07730c6)
+
+	* ChangeLog, mutt_idna.c: Make IDNA code more readable
+
 2009-03-28 16:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (77cfe8016930)
 
 	* doc/manual.xml.head: Manual: Add section roughly explaining config
