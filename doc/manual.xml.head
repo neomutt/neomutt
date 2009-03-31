@@ -6761,7 +6761,7 @@ from most-secure to least-secure.
 If you happen to have accounts on multiple IMAP, POP and/or SMTP servers,
 you may find managing all the authentication settings inconvenient and
 error-prone. The <link linkend="account-hook">account-hook</link> command may help. This hook works like
-<link linkend="folder-hook">folder-hook</link> but is invoked whenever you access a remote mailbox
+<link linkend="folder-hook">folder-hook</link> but is invoked whenever Mutt needs to access a remote mailbox
 (including inside the folder browser), not just when you open the
 mailbox. This includes (for example) polling for new mail, storing Fcc
 messages and saving messages to a folder. As a consequence,
@@ -6781,6 +6781,45 @@ account-hook imap://host1/ 'set imap_user=me1 imap_pass=foo'
 account-hook imap://host2/ 'set tunnel="ssh host2 /usr/libexec/imapd"'
 account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
 </screen>
+
+<para>
+To manage multiple accounts with, for example, different values of
+<link linkend="record">&dollar;record</link> or sender addresses,
+<link linkend="folder-hook">folder-hook</link>
+has to be be used together with
+the <link linkend="mailboxes">mailboxes</link> command.
+</para>
+
+<example id="ex-multiaccount">
+<title>Managing multiple accounts</title>
+<screen>
+mailboxes imap://user@host1/INBOX
+folder-hook imap://user@host1/ 'set folder=imap://host1/ ; set record=+INBOX/Sent'
+
+mailboxes imap://user@host2/INBOX
+folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sent'
+</screen>
+</example>
+
+<para>
+In example
+<xref linkend="ex-multiaccount"/> the folders are defined using
+<link linkend="mailboxes">mailboxes</link> so Mutt polls them for new
+mail. Each <link linkend="folder-hook">folder-hook</link> triggers when
+one mailbox below each IMAP account is opened and sets
+<link linkend="folder">&dollar;folder</link> to the account's root
+folder. Next, it sets <link linkend="record">&dollar;record</link> to
+the <emphasis>INBOX/Sent</emphasis> folder below the newly
+set <link linkend="folder">&dollar;folder</link>. Please notice that the
+value the <quote>+</quote>
+<link linkend="shortcuts">mailbox shortcut</link> refers to depends on
+the <emphasis>current</emphasis> value
+of <link linkend="folder">&dollar;folder</link> and therefore has to be set
+separatedly per account. Setting other values
+like <link linkend="from">&dollar;from</link>
+or <link linkend="signature">&dollar;signature</link> is analogous to setting
+<link linkend="record">&dollar;record</link>.
+</para>
 
 </sect1>
 
