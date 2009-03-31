@@ -7006,9 +7006,9 @@ message bodies since a larger amount of input has to be searched.
 </para>
 
 <para>
-Please note that string search is an exact case-sensitive search
-while a regular expression search with only lower-case letters performs
-a case-insensitive search.
+As for regular expressions, a lower case string search pattern makes
+Mutt perform a case-insensitive search except for IMAP (because for IMAP
+Mutt performs server-side searches which don't support case-insensivity).
 </para>
 
 </sect1>

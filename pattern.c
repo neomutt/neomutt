@@ -277,6 +277,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   if (pat->stringmatch)
   {
     pat->p.str = safe_strdup (buf.data);
+    pat->ign_case = mutt_which_case (buf.data) == REG_ICASE;
     FREE (&buf.data);
   }
   else if (pat->groupmatch)
@@ -700,7 +701,8 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 static int patmatch (const pattern_t* pat, const char* buf)
 {
   if (pat->stringmatch)
-    return !strstr (buf, pat->p.str);
+    return pat->ign_case ? !strcasestr (buf, pat->p.str) :
+			   !strstr (buf, pat->p.str);
   else if (pat->groupmatch)
     return !mutt_group_match (pat->p.g, buf);
   else
