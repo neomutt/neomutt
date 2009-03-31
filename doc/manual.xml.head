@@ -435,7 +435,7 @@ following categories:
 </para>
 
 <itemizedlist>
-<listitem><para>muttrc commands</para></listitem>
+<listitem><para><literal>.muttrc</literal> commands</para></listitem>
 <listitem><para>addresses and aliases</para></listitem>
 <listitem><para>shell commands</para></listitem>
 <listitem><para>filenames</para></listitem>
@@ -1849,7 +1849,7 @@ alias theguys manny, moe, jack
 Unlike other mailers, Mutt doesn't require aliases to be defined
 in a special file.  The <literal>alias</literal> command can appear anywhere in
 a configuration file, as long as this file is <link linkend="source">sourced</link>.  Consequently, you can have multiple alias files, or
-you can have all aliases defined in your muttrc.
+you can have all aliases defined in your <literal>.muttrc</literal>.
 </para>
 
 <para>
@@ -1942,7 +1942,7 @@ multiple bind statements to accomplish the same task.
 <listitem>
 <para>
 The alias menu is the list of your personal aliases as defined in your
-muttrc.  It is the mapping from a short alias name to the full email
+<literal>.muttrc</literal>.  It is the mapping from a short alias name to the full email
 address(es) of the recipient(s).
 </para>
 </listitem>
@@ -2165,7 +2165,7 @@ reading.  The folder-hook command provides a method by which you can execute
 any configuration command.  <emphasis>regexp</emphasis> is a regular expression specifying
 in which mailboxes to execute <emphasis>command</emphasis> before loading.  If a mailbox
 matches multiple folder-hook's, they are executed in the order given in the
-muttrc.
+<literal>.muttrc</literal>.
 </para>
 
 <note>
@@ -3249,7 +3249,7 @@ address.
 
 <para>
 For each type of <literal>send-hook</literal> or <literal>reply-hook</literal>, when multiple matches
-occur, commands are executed in the order they are specified in the muttrc
+occur, commands are executed in the order they are specified in the <literal>.muttrc</literal>
 (for that type of hook).
 </para>
 
@@ -3297,7 +3297,7 @@ This command can be used to execute arbitrary configuration commands
 before viewing or formatting a message based upon information about the message.
 <emphasis>command</emphasis> is executed if the <emphasis>pattern</emphasis> matches the message to be
 displayed. When multiple matches occur, commands are executed in the order
-they are specified in the muttrc.
+they are specified in the <literal>.muttrc</literal>.
 </para>
 
 <para>
@@ -5171,7 +5171,7 @@ amounts of mail easier.  The first thing you must do is to let Mutt
 know what addresses you consider to be mailing lists (technically
 this does not have to be a mailing list, but that is what it is most
 often used for), and what lists you are subscribed to.  This is
-accomplished through the use of the <link linkend="lists">lists and subscribe</link> commands in your muttrc.
+accomplished through the use of the <link linkend="lists">lists and subscribe</link> commands in your <literal>.muttrc</literal>.
 </para>
 
 <para>
@@ -6184,7 +6184,7 @@ representation which you can view in the pager.
 </para>
 
 <para>
-You then use the auto&lowbar;view muttrc command to list the
+You then use the auto&lowbar;view <literal>.muttrc</literal> command to list the
 content-types that you wish to view automatically.  For instance, if you
 set it to:
 </para>
@@ -6416,7 +6416,7 @@ mime_lookup application/octet-stream application/X-Lotus-Manuscript
 <para>
 In addition, the <literal>unmime&lowbar;lookup</literal> command may be
 used to disable this feature for any particular mime-type if it had been
-set, for example, in a global muttrc.
+set, for example, in a global <literal>.muttrc</literal>.
 </para>
 
 </sect1>

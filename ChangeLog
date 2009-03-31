@@ -1,3 +1,12 @@
+2009-03-31 13:11 +0200  Rocco Rutte  <pdmef@gmx.net>  (d258178d0bd5)
+
+	* doc/manual.xml.head: Manual: Always spell mutt as "Mutt"
+
+2009-03-31 13:04 +0200  Rocco Rutte  <pdmef@gmx.net>  (73334d7c69db)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Replace netscape with
+	firefox
+
 2009-03-31 13:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (17456a83bb06)
 
 	* doc/manual.xml.head: Manual: use <quote/> instead of " quotes
