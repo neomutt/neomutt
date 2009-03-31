@@ -753,7 +753,7 @@ Collapsing a thread displays only the first message
 in the thread and hides the others. This is useful when threads
 contain so many messages that you can only see a handful of threads on
 the screen. See &percnt;M in <link linkend="index-format">&dollar;index&lowbar;format</link>.
-For example, you could use "&percnt;?M?(&num;&percnt;03M)&amp;(&percnt;4l)?" in <link linkend="index-format">&dollar;index&lowbar;format</link> to optionally
+For example, you could use <quote>&percnt;?M?(&num;&percnt;03M)&amp;(&percnt;4l)?</quote> in <link linkend="index-format">&dollar;index&lowbar;format</link> to optionally
 display the number of hidden messages if the thread is
 collapsed. The <literal>&percnt;?&lt;char&gt;?&lt;if-part&gt;&amp;&lt;else-part&gt;?</literal>
 syntax is explained in detail in
@@ -4035,7 +4035,7 @@ space range. For example, <literal>%=14y</literal> will reserve 14
 characters for the %y expansion -- that's the X-Label: header, in
 <link linkend="index-format">&dollar;index&lowbar;format</link>. If the expansion
 results in a string less than 14 characters, it will be centered in a
-14-character space.  If the X-Label for a message were "test", that
+14-character space.  If the X-Label for a message were <quote>test</quote>, that
 expansion would look like <quote>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</quote>.
 </para>
 
@@ -6624,8 +6624,8 @@ following differences:
 <listitem>
 
 <para>
-In lieu of file permissions, mutt displays the string "IMAP",
-possibly followed by the symbol "+", indicating
+In lieu of file permissions, mutt displays the string <quote>IMAP</quote>,
+possibly followed by the symbol <quote>+</quote>, indicating
 that the entry contains both messages and subfolders. On
 Cyrus-like servers folders will often contain both messages and
 subfolders.
