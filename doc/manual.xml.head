@@ -102,7 +102,7 @@ For a list of mirror sites, please refer to
 <term>Bug Tracking System</term>
 <listitem>
 <para>
-The official mutt bug tracking system can be found at
+The official Mutt bug tracking system can be found at
 <ulink url="http://dev.mutt.org/">http://dev.mutt.org/</ulink>
 </para>
 </listitem>
@@ -156,7 +156,7 @@ tricks.
 
 <para>
 Since translations of Mutt into other languages are highly appreciated,
-the mutt developers always look for skilled translators that help
+the Mutt developers always look for skilled translators that help
 improve and continue to maintain stale translations.
 </para>
 
@@ -260,9 +260,9 @@ You can always type <quote>?</quote> in any menu to display the current bindings
 </para>
 
 <para>
-The first thing you need to do is invoke mutt, simply by typing <literal>mutt</literal>
+The first thing you need to do is invoke Mutt, simply by typing <literal>mutt</literal>
 at the command line.  There are various command-line options, see
-either the mutt man page or the <link linkend="commandline">reference</link>.
+either the Mutt man page or the <link linkend="commandline">reference</link>.
 </para>
 
 <sect1 id="core-concepts">
@@ -1206,7 +1206,7 @@ to create a new message to a mailing list without having to enter the mailing li
 <title>Sending cryptographically signed/encrypted messages</title>
 
 <para>
-If you have told mutt to PGP or S/MIME encrypt a message, it will guide you
+If you have told Mutt to PGP or S/MIME encrypt a message, it will guide you
 through a key selection process when you try to send the message.
 Mutt will not ask you any questions about keys which have a
 certified user ID matching one of the message recipients' mail
@@ -1217,9 +1217,9 @@ keys can be found.
 
 <para>
 In these cases, you are dropped into a menu with a list of keys from
-which you can select one.  When you quit this menu, or mutt can't
+which you can select one.  When you quit this menu, or Mutt can't
 find any matching keys, you are prompted for a user ID.  You can, as
-usually, abort this prompt using <literal>&circ;G</literal>.  When you do so, mutt will
+usually, abort this prompt using <literal>&circ;G</literal>.  When you do so, Mutt will
 return to the compose screen.
 </para>
 
@@ -1285,9 +1285,9 @@ indicates complete validity.
 <title>Sending anonymous messages via mixmaster</title>
 
 <para>
-You may also have compiled mutt to co-operate with Mixmaster, an
+You may also have compiled Mutt to co-operate with Mixmaster, an
 anonymous remailer.  Mixmaster permits you to send your messages
-anonymously using a chain of remailers. Mixmaster support in mutt is for
+anonymously using a chain of remailers. Mixmaster support in Mutt is for
 mixmaster version 2.04 (beta 45 appears to be the latest) and 2.03.
 It does not support earlier versions or the later so-called version 3 betas,
 of which the latest appears to be called 2.9b23.
@@ -1347,7 +1347,7 @@ except for the last line.
 </para>
 
 <para>
-While for text-mode clients like mutt it's the best way to assume only a
+While for text-mode clients like Mutt it's the best way to assume only a
 standard 80x25 character cell terminal, it may be desired to let the
 receiver decide completely how to view a message.
 </para>
@@ -1367,7 +1367,7 @@ trailing spaces.
 
 <para>
 After editing the initial message text and before entering
-the compose menu, mutt properly space-stuffes the message.
+the compose menu, Mutt properly space-stuffes the message.
 <emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
 <literal>format=flowed</literal> and means to prepend a space to:
 </para>
@@ -1401,7 +1401,7 @@ the original message prior to further processing.
 <title>Editor considerations</title>
 
 <para>
-As mutt provides no additional features to compose <literal>f=f</literal>
+As Mutt provides no additional features to compose <literal>f=f</literal>
 messages, it's completely up to the user and his editor to produce
 proper messages. Please consider your editor's documentation if you
 intend to send <literal>f=f</literal> messages.
@@ -1515,7 +1515,7 @@ system administrator), unless the <quote>-n</quote> <link linkend="commandline">
 <literal>/usr/local/share/mutt/Muttrc</literal> or <literal>/etc/Muttrc</literal>. Mutt
 will next look for a file named <literal>.muttrc</literal> in your home
 directory.  If this file does not exist and your home directory has
-a subdirectory named <literal>.mutt</literal>, mutt try to load a file named
+a subdirectory named <literal>.mutt</literal>, Mutt tries to load a file named
 <literal>.mutt/muttrc</literal>.
 </para>
 
@@ -1524,13 +1524,13 @@ a subdirectory named <literal>.mutt</literal>, mutt try to load a file named
 </para>
 
 <para>
-In addition, mutt supports version specific configuration files that are
+In addition, Mutt supports version specific configuration files that are
 parsed instead of the default files as explained above.  For instance, if
 your system has a <literal>Muttrc-0.88</literal> file in the system configuration
-directory, and you are running version 0.88 of mutt, this file will be
+directory, and you are running version 0.88 of Mutt, this file will be
 sourced instead of the <literal>Muttrc</literal> file.  The same is true of the user
 configuration file, if you have a file <literal>.muttrc-0.88.6</literal> in your home
-directory, when you run mutt version 0.88.6, it will source this file
+directory, when you run Mutt version 0.88.6, it will source this file
 instead of the default <literal>.muttrc</literal> file.  The version number is the
 same which is visible using the <quote>-v</quote> <link linkend="commandline">command line</link> switch or using the <literal>show-version</literal> key (default:
 V) from the index menu.
@@ -1634,7 +1634,7 @@ my_hdr X-Operating-System: `uname -a`
 </example>
 
 <para>
-Both environment variables and mutt variables can be accessed by
+Both environment variables and Mutt variables can be accessed by
 prepending <quote>&dollar;</quote> to the name of the variable. For example,
 </para>
 
@@ -1646,7 +1646,7 @@ set record=+sent_on_$HOSTNAME
 </example>
 
 <para>
-will cause mutt to save outgoing messages to a folder named
+will cause Mutt to save outgoing messages to a folder named
 <quote>sent_on_kremvax</quote> if the environment variable <literal>$HOSTNAME</literal> is set to
 <quote>kremvax.</quote> (See <link linkend="record">&dollar;record</link> for
 details.)
@@ -1660,7 +1660,7 @@ not be affected.
 </para>
 
 <para>
-The commands understood by mutt are explained in the next paragraphs.
+The commands understood by Mutt are explained in the next paragraphs.
 For a complete list, see the <link linkend="commands">command reference</link>.
 </para>
 
@@ -1870,7 +1870,7 @@ set alias_file=~/.mail_aliases
 </example>
 
 <para>
-To use aliases, you merely use the alias at any place in mutt where mutt
+To use aliases, you merely use the alias at any place in Mutt where Mutt
 prompts for addresses, such as the <emphasis>To:</emphasis> or <emphasis>Cc:</emphasis> prompt.  You can
 also enter aliases in your editor at the appropriate headers if you have the
 <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable set.
@@ -1879,7 +1879,7 @@ also enter aliases in your editor at the appropriate headers if you have the
 <para>
 In addition, at the various address prompts, you can use the tab character
 to expand a partial alias to the full alias.  If there are multiple matches,
-mutt will bring up a menu with the matching aliases.  In order to be
+Mutt will bring up a menu with the matching aliases.  In order to be
 presented with the full list of aliases, you must hit tab without a partial
 alias, such as at the beginning of the prompt or after a comma denoting
 multiple addresses.
@@ -2132,7 +2132,7 @@ sequence.
 <para>
 The <literal>charset-hook</literal> command defines an alias for a character set.
 This is useful to properly display messages which are tagged with a
-character set name not known to mutt.
+character set name not known to Mutt.
 </para>
 
 <para>
@@ -2616,7 +2616,7 @@ unignore posted-to:
 
 <para>
 With the <literal>hdr&lowbar;order</literal> command you can specify an order in
-which mutt will attempt to present these headers to you when viewing messages.
+which Mutt will attempt to present these headers to you when viewing messages.
 </para>
 
 <para>
@@ -2670,17 +2670,17 @@ hdr&lowbar;order From Date: From: To: Cc: Subject:
 </cmdsynopsis>
 
 <para>
-With various functions, mutt will treat messages differently,
+With various functions, Mutt will treat messages differently,
 depending on whether you sent them or whether you received them from
 someone else.  For instance, when replying to a message that you
-sent to a different party, mutt will automatically suggest to send
+sent to a different party, Mutt will automatically suggest to send
 the response to the original message's recipients -- responding to
 yourself won't make much sense in many cases.  (See <link linkend="reply-to">&dollar;reply&lowbar;to</link>.)
 </para>
 
 <para>
 Many users receive e-mail under a number of different addresses. To
-fully use mutt's features here, the program must be able to
+fully use Mutt's features here, the program must be able to
 recognize what e-mail addresses you receive mail under. That's the
 purpose of the <literal>alternates</literal> command: It takes a list of regular
 expressions, each of which can identify an address under which you
@@ -2698,7 +2698,7 @@ alternates user@example
 </screen>
 
 <para>
-mutt will consider <quote><literal>some-user@example</literal></quote> as
+Mutt will consider <quote><literal>some-user@example</literal></quote> as
 being your address, too which may not be desired. As a solution, in such
 cases addresses should be specified as:
 </para>
@@ -2808,7 +2808,7 @@ specifying the list address via the <literal>lists</literal> command
 (except the group feature). Once you have done this, the
 <link linkend="list-reply"><literal>&lt;list-reply&gt;</literal></link>
 function will work for all known lists.
-Additionally, when you send a message to a subscribed list, mutt will
+Additionally, when you send a message to a subscribed list, Mutt will
 add a Mail-Followup-To header to tell other users' mail user agents
 not to send copies of replies to your personal address.
 </para>
@@ -2850,7 +2850,7 @@ Specify as much of the address as you need to to remove ambiguity.  For
 example, if you've subscribed to the Mutt mailing list, you will receive mail
 addressed to <literal>mutt-users@mutt.org</literal>.  So, to tell Mutt
 that this is a mailing list, you could add <literal>lists mutt-users@</literal> to your
-initialization file.  To tell mutt that you are subscribed to it,
+initialization file.  To tell Mutt that you are subscribed to it,
 add <literal>subscribe mutt-users</literal> to your initialization file instead.
 If you also happen to get mail from someone whose address is
 <literal>mutt-users@example.com</literal>, you could use
@@ -2969,8 +2969,8 @@ the command is executed, so if these names contain <link linkend="shortcuts">sho
 definition that affects these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
 should be set before the <literal>mailboxes</literal> command. If
 none of these shorcuts are used, a local path should be absolute as
-otherwise mutt tries to find it relative to the directory
-from where mutt was started which may not always be desired.
+otherwise Mutt tries to find it relative to the directory
+from where Mutt was started which may not always be desired.
 </para>
 </note>
 
@@ -3551,14 +3551,14 @@ attribute will use as a sort key.
 <para>
 That's a pretty complicated example, and most people's actual
 environments will have only one spam filter. The simpler your
-configuration, the more effective mutt can be, especially when it comes
+configuration, the more effective Mutt can be, especially when it comes
 to sorting.
 </para>
 
 <para>
-Generally, when you sort by spam tag, mutt will sort <emphasis>lexically</emphasis> --
+Generally, when you sort by spam tag, Mutt will sort <emphasis>lexically</emphasis> --
 that is, by ordering strings alphanumerically. However, if a spam tag
-begins with a number, mutt will sort numerically first, and lexically
+begins with a number, Mutt will sort numerically first, and lexically
 only when two numbers are equal in value. (This is like UNIX's
 <literal>sort -n</literal>.) A message with no spam attributes at all -- that is, one
 that didn't match <emphasis>any</emphasis> of your <literal>spam</literal> patterns -- is sorted at
@@ -3566,7 +3566,7 @@ lowest priority. Numbers are sorted next, beginning with 0 and ranging
 upward. Finally, non-numeric strings are sorted, with <quote>a</quote> taking lower
 priority than <quote>z</quote>. Clearly, in general, sorting by spam tags is most
 effective when you can coerce your filter to give you a raw number. But
-in case you can't, mutt can still do something useful.
+in case you can't, Mutt can still do something useful.
 </para>
 
 <para>
@@ -3589,7 +3589,7 @@ and <literal>nospam</literal> in conjunction with a <literal>folder-hook</litera
 
 <para>
 You can have as many <literal>spam</literal> or <literal>nospam</literal> commands as you like.
-You can even do your own primitive spam detection within mutt -- for
+You can even do your own primitive spam detection within Mutt -- for
 example, if you consider all mail from <literal>MAILER-DAEMON</literal> to be spam,
 you can use a <literal>spam</literal> command like this:
 </para>
@@ -3827,7 +3827,7 @@ which allows you to reset all variables to their system defaults.
 
 <para>
 Along with the variables listed in the
-<link linkend="variables">Configuration variables</link> section, mutt
+<link linkend="variables">Configuration variables</link> section, Mutt
 supports user-defined variables with names starting
 with <literal>my&lowbar;</literal> as in, for
 example, <literal>my&lowbar;cfgdir</literal>.
@@ -3890,7 +3890,7 @@ macro pager ,x '&bsol;
 </example>
 
 <para>
-Since mutt expands such values already when parsing the configuration
+Since Mutt expands such values already when parsing the configuration
 file(s), the value of <literal>&dollar;my&lowbar;delete</literal> in the
 last example would be the value of <link linkend="delete">&dollar;delete</link> exactly
 as it was at that point during parsing the configuration file. If
@@ -3915,7 +3915,7 @@ macro pager &lt;PageDown&gt; "&bsol;
 <para>
 Note that there is a space
 between <literal>&lt;enter-command&gt;</literal> and
-the <literal>set</literal> configuration command, preventing mutt from
+the <literal>set</literal> configuration command, preventing Mutt from
 recording the macro's commands into its history.
 </para>
 
@@ -3991,7 +3991,7 @@ something like <literal>unhook send-hook</literal>.
 
 <para>
 Format strings are a general concept you'll find in several locations
-through the mutt configuration, especially in the
+through the Mutt configuration, especially in the
 <link linkend="index-format">&dollar;index&lowbar;format</link>,
 <link linkend="pager-format">&dollar;pager&lowbar;format</link>,
 <link linkend="status-format">&dollar;status&lowbar;format</link>,
@@ -4122,7 +4122,7 @@ set status_format="script.sh '%r %f (%L)'|"
 </example>
 
 <para>
-will make mutt expand <literal>&percnt;r</literal>,
+will make Mutt expand <literal>&percnt;r</literal>,
 <literal>&percnt;f</literal> and <literal>&percnt;L</literal>
 before calling the script. The example also shows that arguments can be
 quoted: the script will receive the expanded string between the single quotes
@@ -4132,7 +4132,7 @@ as the only argument.
 <para>
 A practical example is the <literal>mutt&lowbar;xtitle</literal>
 script installed in the <literal>samples</literal>
-subdirectory of the mutt documentation: it can be used as filter for
+subdirectory of the Mutt documentation: it can be used as filter for
 <literal>&dollar;status&lowbar;format</literal> to set the current
 terminal's title, if supported.
 </para>
@@ -4464,7 +4464,7 @@ payed when using regular expressions inside of patterns.  Specifically,
 Mutt's parser for these patterns will strip one level of backslash (<quote>\</quote>),
 which is normally used for quoting.  If it is your intention to use a
 backslash in the regular expression, you will need to use two backslashes
-instead (<quote>\\</quote>). You can force mutt to treat <emphasis>EXPR</emphasis> as a simple string
+instead (<quote>\\</quote>). You can force Mutt to treat <emphasis>EXPR</emphasis> as a simple string
 instead of a regular expression by using = instead of &tilde; in the
 pattern name. For example, <literal>=b *.*</literal> will find all messages that contain
 the literal string <quote>*.*</quote>. Simple string matches are less powerful than
@@ -4778,7 +4778,7 @@ automatically, without requiring the <quote>tag-prefix</quote>.
 <para>
 In <link linkend="macro">macros</link> or <link linkend="push">push</link> commands,
 you can use the <literal>&lt;tag-prefix-cond&gt;</literal> operator.  If there are no tagged
-messages, mutt will <quote>eat</quote> the rest of the macro to abort it's execution.
+messages, Mutt will <quote>eat</quote> the rest of the macro to abort it's execution.
 Mutt will stop <quote>eating</quote> the macro when it encounters the <literal>&lt;end-cond&gt;</literal>
 operator; after this operator the rest of the macro will be executed as
 normal.
@@ -4886,7 +4886,7 @@ for specific details on each type of <emphasis>hook</emphasis> available.
 <note>
 <para>
 If a hook changes configuration settings, these changes remain
-effective until the end of the current mutt session. As this is generally
+effective until the end of the current Mutt session. As this is generally
 not desired, a <quote>default</quote> hook needs to be added before all
 other hooks  of that type to restore configuration defaults.
 </para>
@@ -4927,7 +4927,7 @@ Mutt allows the use of the <link linkend="patterns">search pattern</link>
 language for matching messages in hook commands.  This works in
 exactly the same way as it would when <emphasis>limiting</emphasis> or
 <emphasis>searching</emphasis> the mailbox, except that you are restricted to those
-operators which match information mutt extracts from the header of
+operators which match information Mutt extracts from the header of
 the message (i.e., from, to, cc, date, subject, etc.).
 </para>
 
@@ -4965,7 +4965,7 @@ at that time will be used.
 
 <para>
 Mutt supports connecting to external directory databases such as LDAP,
-ph/qi, bbdb, or NIS through a wrapper script which connects to mutt
+ph/qi, bbdb, or NIS through a wrapper script which connects to Mutt
 using a simple interface.  Using the <link linkend="query-command">&dollar;query&lowbar;command</link> variable, you specify the wrapper
 command to use.  For example:
 </para>
@@ -4994,7 +4994,7 @@ roessler@does-not-exist.org        Thomas Roessler mutt pgp
 </screen>
 
 <para>
-There are two mechanisms for accessing the query function of mutt.  One
+There are two mechanisms for accessing the query function of Mutt.  One
 is to do a query from the index menu using the <literal>&lt;query&gt;</literal> function (default: Q).
 This will prompt for a query, then bring up the query menu which will
 list the matching responses.  From the query menu, you can select
@@ -5007,10 +5007,10 @@ responses.
 The other mechanism for accessing the query function is for address
 completion, similar to the alias completion.  In any prompt for address
 entry, you can use the <literal>&lt;complete-query&gt;</literal> function (default: &circ;T) to run a
-query based on the current address you have typed.  Like aliases, mutt
+query based on the current address you have typed.  Like aliases, Mutt
 will look for what you have typed back to the last space or comma.  If
-there is a single response for that query, mutt will expand the address
-in place.  If there are multiple responses, mutt will activate the query
+there is a single response for that query, Mutt will expand the address
+in place.  If there are multiple responses, Mutt will activate the query
 menu.  At the query menu, you can select one or more addresses to be
 added to the prompt.
 </para>
@@ -5199,7 +5199,7 @@ specified by <literal>Mail-Followup-To</literal>, see below).
 <para>
 Mutt also supports the <literal>Mail-Followup-To</literal> header.  When you send
 a message to a list of recipients which includes one or several
-subscribed mailing lists, and if the <link linkend="followup-to">&dollar;followup&lowbar;to</link> option is set, mutt will generate
+subscribed mailing lists, and if the <link linkend="followup-to">&dollar;followup&lowbar;to</link> option is set, Mutt will generate
 a Mail-Followup-To header which contains all the recipients to whom
 you send this message, but not your address. This indicates that
 group-replies or list-replies (also known as <quote>followups</quote>) to this
@@ -5210,7 +5210,7 @@ one of the mailing lists you are subscribed to.
 
 <para>
 Conversely, when group-replying or list-replying to a message which
-has a <literal>Mail-Followup-To</literal> header, mutt will respect this header if
+has a <literal>Mail-Followup-To</literal> header, Mutt will respect this header if
 the <link linkend="honor-followup-to">&dollar;honor&lowbar;followup&lowbar;to</link> configuration
 variable is set.  Using <link linkend="list-reply">list-reply</link> will in this case also make sure
 that the reply goes to the mailing list, even if it's not specified
@@ -5388,7 +5388,7 @@ whether DSN is supported.
 <para>
 For SMTP delivery using <link
   linkend="smtp-url">&dollar;smtp&lowbar;url</link>, it depends on the
-capabilities announced by the server whether mutt will attempt to
+capabilities announced by the server whether Mutt will attempt to
 request DSN or not.
 </para>
 
@@ -5434,7 +5434,7 @@ pure e-mail address without angle brackets otherwise, i.e. just
 <emphasis>joe@example.com</emphasis>.
 </para>
 <para>
-This normalization affects all headers mutt generates including aliases.
+This normalization affects all headers Mutt generates including aliases.
 </para>
 </listitem>
 </varlistentry>
@@ -5669,7 +5669,7 @@ is a colon delimited list containing the following files:
 <para>
 where <literal>&dollar;HOME</literal> is your home directory. The
 <literal>&dollar;PKGDATADIR</literal> and the
-<literal>&dollar;SYSCONFDIR</literal> directories depend on where mutt
+<literal>&dollar;SYSCONFDIR</literal> directories depend on where Mutt
 is installed: the former is the default for shared data, the
 latter for system configuration files.
 </para>
@@ -5811,7 +5811,7 @@ substituting them, see the <link linkend="mailcap-sanitize">&dollar;mailcap&lowb
 </para>
 
 <para>
-Although mutt's procedures to invoke programs with mailcap seem to be
+Although Mutt's procedures to invoke programs with mailcap seem to be
 safe, there are other applications parsing mailcap, maybe taking less care
 of it.  Therefore you should pay attention to the following rules:
 </para>
@@ -5907,7 +5907,7 @@ specific MIME type.  Mutt supports this from the compose menu.
 <para>
 This flag specifies the command to use to create a new attachment of a
 specific MIME type.  This command differs from the compose command in
-that mutt will expect standard MIME headers on the data.  This can be
+that Mutt will expect standard MIME headers on the data.  This can be
 used to specify parameters, filename, description, etc. for a new
 attachment.   Mutt supports this from the compose menu.
 </para>
@@ -6221,7 +6221,7 @@ This can be used with <link linkend="message-hook">message-hook</link> to autovi
 
 <para>
 Mutt has some heuristics for determining which attachment of a
-<literal>multipart/alternative</literal> type to display.  First, mutt will check the
+<literal>multipart/alternative</literal> type to display.  First, Mutt will check the
 alternative&lowbar;order list
 to determine if one of the available types is preferred.  It consists of
 a number of mimetypes in order, including support for implicit and
@@ -6233,9 +6233,9 @@ alternative_order text/enriched text/plain text application/postscript image/*
 </screen>
 
 <para>
-Next, mutt will check if any of the types have a defined
+Next, Mutt will check if any of the types have a defined
 <link linkend="auto-view">auto&lowbar;view</link>, and use that.  Failing
-that, Mutt will look for any text type.  As a last attempt, mutt will
+that, Mutt will look for any text type.  As a last attempt, Mutt will
 look for any type it knows how to handle.
 </para>
 
@@ -6259,7 +6259,7 @@ configure what kinds of attachments qualify for this feature with the
 </para>
 
 <para>
-In order to provide this information, mutt needs to fully MIME-parse
+In order to provide this information, Mutt needs to fully MIME-parse
 all messages affected first. This can slow down operation especially for
 remote mail folders such as IMAP because all messages have to be
 downloaded first regardless whether the user really wants to view them
@@ -6443,7 +6443,7 @@ the <emphasis>configure --help</emphasis> output.
 Which features are enabled or disabled can later be determined from the
 output of <literal>mutt -v</literal>. If a compile option starts with
 <quote>+</quote> it is enabled and disabled if prefixed with <quote>-</quote>. For example, if
-mutt was compiled using GnuTLS for encrypted communication instead of
+Mutt was compiled using GnuTLS for encrypted communication instead of
 OpenSSL, <literal>mutt -v</literal> would contain:
 </para>
 
@@ -6458,7 +6458,7 @@ OpenSSL, <literal>mutt -v</literal> would contain:
 <para>
 Mutt optionally supports the IMAP, POP3 and SMTP protocols which require
 to access servers using URLs. The canonical syntax for specifying URLs
-in mutt is (an item enclosed in <literal>[]</literal> means it is optional and
+in Mutt is (an item enclosed in <literal>[]</literal> means it is optional and
 may be omitted):
 </para>
 
@@ -6470,13 +6470,13 @@ proto[s]://[username[:password]@]server[:port]/[path]
 <literal>proto</literal> is the communication protocol:
 <literal>imap</literal> for IMAP, <literal>pop</literal> for POP3 and
 <literal>smtp</literal> for SMTP. If <quote>s</quote> for <quote>secure communication</quote>
-is appended, mutt will attempt to establish an encrypted communication
-using SSL or TLS. If no explicit port is given, mutt will use the
+is appended, Mutt will attempt to establish an encrypted communication
+using SSL or TLS. If no explicit port is given, Mutt will use the
 system's default for the given protocol.
 </para>
 
 <para>
-Since all protocols supported by mutt support, the username may be
+Since all protocols supported by Mutt support, the username may be
 given directly in the URL instead of using the <literal>pop_user</literal> or
 <literal>imap_user</literal> variables. It may contain the <quote>@</quote> symbol
 being used by many mail systems as part of the login name. A password can be
@@ -6502,7 +6502,7 @@ or <literal>imap://username2@imapserver[:port]/path/to/folder</literal>.
 <title>SSL/TLS Support</title>
 
 <para>
-If mutt is compiled with IMAP, POP3 and/or SMTP support, it can also be
+If Mutt is compiled with IMAP, POP3 and/or SMTP support, it can also be
 compiled with support for SSL or TLS using either OpenSSL or GnuTLS (
 by running the <emphasis>configure</emphasis> script with the
 <emphasis>--enable-ssl=...</emphasis> option for OpenSSL or
@@ -6615,7 +6615,7 @@ selects the same folder.
 <title>The Folder Browser</title>
 
 <para>
-As of version 1.2, mutt supports browsing mailboxes on an IMAP
+As of version 1.2, Mutt supports browsing mailboxes on an IMAP
 server. This is mostly the same as the local file browser, with the
 following differences:
 </para>
@@ -6624,7 +6624,7 @@ following differences:
 <listitem>
 
 <para>
-In lieu of file permissions, mutt displays the string <quote>IMAP</quote>,
+In lieu of file permissions, Mutt displays the string <quote>IMAP</quote>,
 possibly followed by the symbol <quote>+</quote>, indicating
 that the entry contains both messages and subfolders. On
 Cyrus-like servers folders will often contain both messages and
@@ -6677,7 +6677,7 @@ method available on your host and the server. Using some of these methods
 (including DIGEST-MD5 and possibly GSSAPI), your entire session will be
 encrypted and invisible to those teeming network snoops. It is the best
 option if you have it. To use it, you must have the Cyrus SASL library
-installed on your system and compile mutt with the <emphasis>--with-sasl</emphasis> flag.
+installed on your system and compile Mutt with the <emphasis>--with-sasl</emphasis> flag.
 </para>
 
 <para>
@@ -6713,7 +6713,7 @@ a password is needed.
 <para>
 <link linkend="imap-authenticators">&dollar;imap&lowbar;authenticators</link> - a colon-delimited list of IMAP
 authentication methods to try, in the order you wish to try them. If
-specified, this overrides mutt's default (attempt everything, in the order
+specified, this overrides Mutt's default (attempt everything, in the order
 listed above).
 </para>
 </listitem>
@@ -6729,15 +6729,15 @@ listed above).
 
 <para>
 Besides supporting traditional mail delivery through a
-sendmail-compatible program, mutt supports delivery through SMTP if it
+sendmail-compatible program, Mutt supports delivery through SMTP if it
 was configured and built with <literal>--enable-smtp</literal>.
 </para>
 
 <para>
 If the configuration variable
-<link linkend="smtp-url">&dollar;smtp&lowbar;url</link> is set, mutt
+<link linkend="smtp-url">&dollar;smtp&lowbar;url</link> is set, Mutt
 will contact the given SMTP server to deliver messages; if it is unset,
-mutt will use the program specified by <link linkend="sendmail">&dollar;sendmail</link>.
+Mutt will use the program specified by <link linkend="sendmail">&dollar;sendmail</link>.
 </para>
 
 <para>
@@ -6748,7 +6748,7 @@ For details on the URL syntax, please see <xref linkend="url-syntax"/>.
 The built-in SMTP support supports encryption (the <literal>smtps</literal> protocol
 using SSL or TLS) as well as SMTP authentication using SASL. The authentication mechanisms
 for SASL are specified in <link linkend="smtp-authenticators">&dollar;smtp&lowbar;authenticators</link>
-defaulting to an empty list which makes mutt try all available methods
+defaulting to an empty list which makes Mutt try all available methods
 from most-secure to least-secure.
 </para>
 
@@ -6795,7 +6795,7 @@ so-called <quote>body caching</quote> which are both described in this section.
 
 <para>
 Header caching is optional as it depends on external libraries, body
-caching is always enabled if mutt is compiled with POP and/or IMAP
+caching is always enabled if Mutt is compiled with POP and/or IMAP
 support as these use it (body caching requires no external library).
 </para>
 
@@ -6840,7 +6840,7 @@ manual maintenance tasks.
 
 
 <para>
-In addition to caching message headers only, mutt can also cache
+In addition to caching message headers only, Mutt can also cache
 whole message bodies. This results in faster display of messages
 for POP and IMAP folders because messages usually have to be
 downloaded only once.
@@ -6849,12 +6849,12 @@ downloaded only once.
 <para>
 For configuration, the variable <link linkend="message-cachedir"
 >&dollar;message&lowbar;cachedir</link> must point to a
-directory. There, mutt will create a hierarchy of subdirectories
+directory. There, Mutt will create a hierarchy of subdirectories
 named like: <literal>proto:user@hostname</literal> where
 <literal>proto</literal> is either <quote>pop</quote> or <quote>imap.</quote> Within
-there for each folder, mutt stores messages in single files.
+there for each folder, Mutt stores messages in single files.
 All files can be removed as needed if the consumed disk space
-becomes an issue as mutt will silently fetch missing items again.
+becomes an issue as Mutt will silently fetch missing items again.
 </para>
 
 </sect2>
@@ -6870,12 +6870,12 @@ disk space freed by removing messages is re-used.
 </para>
 
 <para>
-For body caches, mutt can keep the local cache in sync with the
+For body caches, Mutt can keep the local cache in sync with the
 remote mailbox if the
 <link linkend="message-cache-clean">&dollar;message&lowbar;cache&lowbar;clean</link>
 variable is set. Cleaning means to remove messages from the cache which
 are no longer present in the mailbox which only happens when other mail
-clients or instances of mutt using a different body cache location
+clients or instances of Mutt using a different body cache location
 delete messages (Mutt itself removes deleted messages from the cache
 when syncing a mailbox). As cleaning can take a noticeable amount of time,
 it should not be set in general but only occasionally.
@@ -6916,7 +6916,7 @@ Mutt's performance when reading mailboxes can be improved in two ways:
 <listitem>
 <para>
 For remote folders (IMAP and POP) as well as folders using
-one-file-per message storage (Maildir and MH), mutt's
+one-file-per message storage (Maildir and MH), Mutt's
 performance can be greatly improved using
 <link linkend="header-caching">header caching</link>.
 using a single database per folder.
@@ -6928,7 +6928,7 @@ using a single database per folder.
 Mutt provides the <link linkend="read-inc">&dollar;read&lowbar;inc</link>
 and <link linkend="write-inc">&dollar;write&lowbar;inc</link>
 variables to specify at which rate to update progress
-counters. If these values are too low, mutt may spend more
+counters. If these values are too low, Mutt may spend more
 time on updating the progress counter than it spends on
 actually reading/writing folders.
 </para>
@@ -6966,14 +6966,14 @@ actually send to the terminal using the
 
 <para>
 Reading messages from remote folders such as IMAP an POP can be
-slow especially for large mailboxes since mutt only caches a very
+slow especially for large mailboxes since Mutt only caches a very
 limited number of recently viewed messages (usually 10) per
 session (so that it will be gone for the next session.)
 </para>
 
 <para>
 To improve performance and permanently cache whole messages,
-please refer to mutt's so-called
+please refer to Mutt's so-called
 <link linkend="body-caching">body caching</link> for details.
 </para>
 
@@ -6984,7 +6984,7 @@ please refer to mutt's so-called
 
 <para>
 When searching mailboxes either via a search or a limit action, for
-some patterns mutt distinguishes between regular expression and string
+some patterns Mutt distinguishes between regular expression and string
 searches. For regular expressions, patterns are prefixed with
 <quote>&tilde;</quote> and with <quote>=</quote> for string searches.
 </para>
@@ -7038,7 +7038,7 @@ to send messages from the command line as well.
 <row><entry>-a</entry><entry>attach a file to a message</entry></row>
 <row><entry>-b</entry><entry>specify a blind carbon-copy (BCC) address</entry></row>
 <row><entry>-c</entry><entry>specify a carbon-copy (Cc) address</entry></row>
-<row><entry>-D</entry><entry>print the value of all mutt variables to stdout</entry></row>
+<row><entry>-D</entry><entry>print the value of all Mutt variables to stdout</entry></row>
 <row><entry>-e</entry><entry>specify a config command to be run after initialization files are read</entry></row>
 <row><entry>-f</entry><entry>specify a mailbox to load</entry></row>
 <row><entry>-F</entry><entry>specify an alternate file to read initialization commands</entry></row>
@@ -7145,7 +7145,7 @@ The <literal>-a</literal> option must be last in the option list.
 <title>Configuration Commands</title>
 
 <para>
-The following are the commands understood by mutt.
+The following are the commands understood by Mutt:
 </para>
 
 <itemizedlist>
