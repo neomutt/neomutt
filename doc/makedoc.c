@@ -1155,34 +1155,36 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 	    fputs ("\n</para>\n", out);
 	    docstat &= ~D_PA;
 	  }
-	  fputs ("\n<variablelist>\n<?dbhtml list-presentation=\"table\"?>\n", out);
+	  fputs ("\n<informaltable>\n<tgroup cols=\"2\">\n<tbody>\n", out);
 	  docstat |= D_DL;
 	  break;
 	}
 	case SP_DT:
 	{
-	  fputs ("<varlistentry><term>", out);
+	  fputs ("<row><entry>", out);
 	  break;
 	}
 	case SP_DD:
 	{
 	  docstat |= D_DD;
 	  if (docstat & D_DL)
-	    fputs("</term>\n", out);
-	  fputs ("<listitem><para>", out);
+	    fputs("</entry><entry>", out);
+	  else
+	    fputs ("<listitem><para>", out);
 	  break;
 	}
         case SP_END_DD:
         {
-	  docstat &= ~D_DD;
-	  fputs ("</para></listitem>", out);
 	  if (docstat & D_DL)
-	    fputs("</varlistentry>\n", out);
+	    fputs ("</entry></row>\n", out);
+	  else
+	    fputs ("</para></listitem>", out);
+	  docstat &= ~D_DD;
 	  break;
         }
 	case SP_END_DL:
 	{
-	  fputs ("</para></listitem></varlistentry></variablelist>\n", out);
+	  fputs ("</entry></row></tbody></tgroup></informaltable>\n", out);
 	  docstat &= ~(D_DD|D_DL);
 	  break;
 	}
