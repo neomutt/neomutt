@@ -759,7 +759,7 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
   char *p = s, *q = s;
   size_t len;
   url_scheme_t scheme;
-  char tmp[_POSIX_PATH_MAX];
+  char tmp[PATH_MAX];
 
   scheme = url_check_scheme (s);
 

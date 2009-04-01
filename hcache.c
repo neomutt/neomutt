@@ -836,7 +836,7 @@ static char* get_foldername(const char *folder) {
    * to ensure equivalent paths share the hcache */
   if (stat (folder, &st) == 0)
   {
-    p = safe_malloc (_POSIX_PATH_MAX+1);
+    p = safe_malloc (PATH_MAX+1);
     if (!realpath (folder, p))
       mutt_str_replace (&p, folder);
   } else
