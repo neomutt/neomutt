@@ -1,3 +1,16 @@
+2009-04-01 11:39 +0200  Rocco Rutte  <pdmef@gmx.net>  (406de7244405)
+
+	* doc/makedoc.c, doc/mutt.css: makedoc: Render description lists as
+	<informaltable/>
+
+	This looks better and is more compact (except missing column
+	headers.)
+
+2009-03-31 16:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (22f21b558f57)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Add an example of how to
+	manage multiple accounts using folder-hook
+
 2009-03-31 14:50 +0200  Rocco Rutte  <pdmef@gmx.net>  (269e3da22cc2)
 
 	* UPDATING, doc/manual.xml.head, mutt.h, pattern.c: Perform case

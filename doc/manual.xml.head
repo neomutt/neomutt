@@ -3720,7 +3720,7 @@ The following commands are available to manipulate and query variables:
 <replaceable class="parameter">variable=value</replaceable>
 </arg>
 </group>
-<arg choice="opt" rep="repeat"/>
+<arg choice="opt" rep="repeat"></arg>
 </cmdsynopsis>
 
 <cmdsynopsis>
@@ -7879,7 +7879,7 @@ The following are the commands understood by Mutt:
 <replaceable class="parameter">variable=value</replaceable>
 </arg>
 </group>
-<arg choice="opt" rep="repeat"/>
+<arg choice="opt" rep="repeat"></arg>
 </cmdsynopsis>
 
 <cmdsynopsis>

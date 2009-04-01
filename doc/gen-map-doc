@@ -54,11 +54,11 @@ while (<XML>) {
       next;
     }
     print <<EOT;
-<sect2 id="${map}_map">
+<sect2 id="${map}-map">
 <title>$map menu</title>
 $DOC{$map}
 
-<table id="${map}_table">
+<table id="${map}-table">
 <title>Default $map function bindings</title>
 <tgroup cols="3">
 <thead>
