@@ -442,6 +442,87 @@ struct option_t MuttVars[] = {
   ** will be saved for later references.  Also see $$record,
   ** $$save_name, $$force_name and ``$fcc-hook''.
   */
+  { "pgp_autoencrypt",		DT_SYN,  R_NONE, UL "crypt_autoencrypt", 0 },
+  { "crypt_autoencrypt",	DT_BOOL, R_NONE, OPTCRYPTAUTOENCRYPT, 0 },
+  /*
+  ** .pp
+  ** Setting this variable will cause Mutt to always attempt to PGP
+  ** encrypt outgoing messages.  This is probably only useful in
+  ** connection to the ``$send-hook'' command.  It can be overridden
+  ** by use of the pgp menu, when encryption is not required or
+  ** signing is requested as well.  If $$smime_is_default is \fIset\fP,
+  ** then OpenSSL is used instead to create S/MIME messages and
+  ** settings can be overridden by use of the smime menu instead.
+  ** (Crypto only)
+  */
+  { "crypt_autopgp",	DT_BOOL, R_NONE, OPTCRYPTAUTOPGP, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether or not mutt may automatically enable
+  ** PGP encryption/signing for messages.  See also $$crypt_autoencrypt,
+  ** $$crypt_replyencrypt,
+  ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
+  */
+  { "pgp_autosign", 	DT_SYN,  R_NONE, UL "crypt_autosign", 0 },
+  { "crypt_autosign",	DT_BOOL, R_NONE, OPTCRYPTAUTOSIGN, 0 },
+  /*
+  ** .pp
+  ** Setting this variable will cause Mutt to always attempt to
+  ** cryptographically sign outgoing messages.  This can be overridden
+  ** by use of the pgp menu, when signing is not required or
+  ** encryption is requested as well. If $$smime_is_default is \fIset\fP,
+  ** then OpenSSL is used instead to create S/MIME messages and settings can
+  ** be overridden by use of the smime menu instead of the pgp menu.
+  ** (Crypto only)
+  */
+  { "crypt_autosmime",	DT_BOOL, R_NONE, OPTCRYPTAUTOSMIME, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether or not mutt may automatically enable
+  ** S/MIME encryption/signing for messages. See also $$crypt_autoencrypt,
+  ** $$crypt_replyencrypt,
+  ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
+  */
+  { "pgp_replyencrypt",		DT_SYN,  R_NONE, UL "crypt_replyencrypt", 1  },
+  { "crypt_replyencrypt",	DT_BOOL, R_NONE, OPTCRYPTREPLYENCRYPT, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, automatically PGP or OpenSSL encrypt replies to messages which are
+  ** encrypted.
+  ** (Crypto only)
+  */
+  { "pgp_replysign",	DT_SYN, R_NONE, UL "crypt_replysign", 0 },
+  { "crypt_replysign",	DT_BOOL, R_NONE, OPTCRYPTREPLYSIGN, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, automatically PGP or OpenSSL sign replies to messages which are
+  ** signed.
+  ** .pp
+  ** \fBNote:\fP this does not work on messages that are encrypted
+  ** \fIand\fP signed!
+  ** (Crypto only)
+  */
+  { "pgp_replysignencrypted",   DT_SYN,  R_NONE, UL "crypt_replysignencrypted", 0},
+  { "crypt_replysignencrypted", DT_BOOL, R_NONE, OPTCRYPTREPLYSIGNENCRYPTED, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, automatically PGP or OpenSSL sign replies to messages
+  ** which are encrypted. This makes sense in combination with
+  ** $$crypt_replyencrypt, because it allows you to sign all
+  ** messages which are automatically encrypted.  This works around
+  ** the problem noted in $$crypt_replysign, that mutt is not able
+  ** to find out whether an encrypted message is also signed.
+  ** (Crypto only)
+  */
+  { "crypt_timestamp", DT_BOOL, R_NONE, OPTCRYPTTIMESTAMP, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, mutt will include a time stamp in the lines surrounding
+  ** PGP or S/MIME output, so spoofing such lines is more difficult.
+  ** If you are using colors to mark these lines, and rely on these,
+  ** you may \fIunset\fP this setting.
+  ** (Crypto only)
+  */
   { "crypt_use_gpgme",  DT_BOOL, R_NONE, OPTCRYPTUSEGPGME, 0 },
   /*
   ** .pp
@@ -458,21 +539,14 @@ struct option_t MuttVars[] = {
   ** (see http://www.g10code.de/docs/pka-intro.de.pdf) during signature
   ** verification (only supported by the GPGME backend).
   */
-  { "crypt_autopgp",	DT_BOOL, R_NONE, OPTCRYPTAUTOPGP, 1 },
+  { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
+  { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
   /*
   ** .pp
-  ** This variable controls whether or not mutt may automatically enable
-  ** PGP encryption/signing for messages.  See also $$crypt_autoencrypt,
-  ** $$crypt_replyencrypt,
-  ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
-  */
-  { "crypt_autosmime",	DT_BOOL, R_NONE, OPTCRYPTAUTOSMIME, 1 },
-  /*
-  ** .pp
-  ** This variable controls whether or not mutt may automatically enable
-  ** S/MIME encryption/signing for messages. See also $$crypt_autoencrypt,
-  ** $$crypt_replyencrypt,
-  ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
+  ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
+  ** If \fI``ask-*''\fP, ask whether or not to verify the signature.
+  ** If \Fi``no''\fP, never attempt to verify cryptographic signatures.
+  ** (Crypto only)
   */
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
   /*
@@ -1537,93 +1611,104 @@ struct option_t MuttVars[] = {
   ** when you are at the end of a message and invoke the \fC<next-page>\fP
   ** function.
   */
-  { "pgp_autosign", 	DT_SYN,  R_NONE, UL "crypt_autosign", 0 },
-  { "crypt_autosign",	DT_BOOL, R_NONE, OPTCRYPTAUTOSIGN, 0 },
+  { "pgp_auto_decode", DT_BOOL, R_NONE, OPTPGPAUTODEC, 0 },
   /*
   ** .pp
-  ** Setting this variable will cause Mutt to always attempt to
-  ** cryptographically sign outgoing messages.  This can be overridden
-  ** by use of the pgp menu, when signing is not required or
-  ** encryption is requested as well. If $$smime_is_default is \fIset\fP,
-  ** then OpenSSL is used instead to create S/MIME messages and settings can
-  ** be overridden by use of the smime menu instead of the pgp menu.
-  ** (Crypto only)
+  ** If \fIset\fP, mutt will automatically attempt to decrypt traditional PGP
+  ** messages whenever the user performs an operation which ordinarily would
+  ** result in the contents of the message being operated on.  For example,
+  ** if the user displays a pgp-traditional message which has not been manually
+  ** checked with the \fC$<check-traditional-pgp>\fP function, mutt will automatically
+  ** check the message for traditional pgp.
   */
-  { "pgp_autoencrypt",		DT_SYN,  R_NONE, UL "crypt_autoencrypt", 0 },
-  { "crypt_autoencrypt",	DT_BOOL, R_NONE, OPTCRYPTAUTOENCRYPT, 0 },
+  { "pgp_create_traditional",	DT_SYN, R_NONE, UL "pgp_autoinline", 0 },
+  { "pgp_autoinline",		DT_BOOL, R_NONE, OPTPGPAUTOINLINE, 0 },
   /*
   ** .pp
-  ** Setting this variable will cause Mutt to always attempt to PGP
-  ** encrypt outgoing messages.  This is probably only useful in
-  ** connection to the ``$send-hook'' command.  It can be overridden
-  ** by use of the pgp menu, when encryption is not required or
-  ** signing is requested as well.  If $$smime_is_default is \fIset\fP,
-  ** then OpenSSL is used instead to create S/MIME messages and
-  ** settings can be overridden by use of the smime menu instead.
-  ** (Crypto only)
-  */
-  { "pgp_ignore_subkeys", DT_BOOL, R_NONE, OPTPGPIGNORESUB, 1},
-  /*
+  ** This option controls whether Mutt generates old-style inline
+  ** (traditional) PGP encrypted or signed messages under certain
+  ** circumstances.  This can be overridden by use of the pgp menu,
+  ** when inline is not required.
   ** .pp
-  ** Setting this variable will cause Mutt to ignore OpenPGP subkeys. Instead,
-  ** the principal key will inherit the subkeys' capabilities.  \fIUnset\fP this
-  ** if you want to play interesting key selection games.
+  ** Note that Mutt might automatically use PGP/MIME for messages
+  ** which consist of more than a single MIME part.  Mutt can be
+  ** configured to ask before sending PGP/MIME messages when inline
+  ** (traditional) would not work.
+  ** .pp
+  ** Also see the $$pgp_mime_auto variable.
+  ** .pp
+  ** Also note that using the old-style PGP message format is \fBstrongly\fP
+  ** \fBdeprecated\fP.
   ** (PGP only)
   */
-  { "pgp_replyencrypt",		DT_SYN,  R_NONE, UL "crypt_replyencrypt", 1  },
-  { "crypt_replyencrypt",	DT_BOOL, R_NONE, OPTCRYPTREPLYENCRYPT, 1 },
+  { "pgp_check_exit",	DT_BOOL, R_NONE, OPTPGPCHECKEXIT, 1 },
   /*
   ** .pp
-  ** If \fIset\fP, automatically PGP or OpenSSL encrypt replies to messages which are
-  ** encrypted.
-  ** (Crypto only)
-  */
-  { "pgp_replysign",	DT_SYN, R_NONE, UL "crypt_replysign", 0 },
-  { "crypt_replysign",	DT_BOOL, R_NONE, OPTCRYPTREPLYSIGN, 0 },
-  /*
-  ** .pp
-  ** If \fIset\fP, automatically PGP or OpenSSL sign replies to messages which are
-  ** signed.
-  ** .pp
-  ** \fBNote:\fP this does not work on messages that are encrypted
-  ** \fIand\fP signed!
-  ** (Crypto only)
-  */
-  { "pgp_replysignencrypted",   DT_SYN,  R_NONE, UL "crypt_replysignencrypted", 0},
-  { "crypt_replysignencrypted", DT_BOOL, R_NONE, OPTCRYPTREPLYSIGNENCRYPTED, 0 },
-  /*
-  ** .pp
-  ** If \fIset\fP, automatically PGP or OpenSSL sign replies to messages
-  ** which are encrypted. This makes sense in combination with
-  ** $$crypt_replyencrypt, because it allows you to sign all
-  ** messages which are automatically encrypted.  This works around
-  ** the problem noted in $$crypt_replysign, that mutt is not able
-  ** to find out whether an encrypted message is also signed.
-  ** (Crypto only)
-  */
-  { "crypt_timestamp", DT_BOOL, R_NONE, OPTCRYPTTIMESTAMP, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP, mutt will include a time stamp in the lines surrounding
-  ** PGP or S/MIME output, so spoofing such lines is more difficult.
-  ** If you are using colors to mark these lines, and rely on these,
-  ** you may \fIunset\fP this setting.
-  ** (Crypto only)
-  */
-  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, OPTUSEGPGAGENT, 0},
-  /*
-  ** .pp
-  ** If \fIset\fP, mutt will use a possibly-running \fCgpg-agent(1)\fP process.
+  ** If \fIset\fP, mutt will check the exit code of the PGP subprocess when
+  ** signing or encrypting.  A non-zero exit code means that the
+  ** subprocess failed.
   ** (PGP only)
   */
-  { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
-  { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
+  { "pgp_clearsign_command",	DT_STR,	R_NONE, UL &PgpClearSignCommand, 0 },
   /*
   ** .pp
-  ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
-  ** If \fI``ask-*''\fP, ask whether or not to verify the signature.
-  ** If \Fi``no''\fP, never attempt to verify cryptographic signatures.
-  ** (Crypto only)
+  ** This format is used to create an old-style ``clearsigned'' PGP
+  ** message.  Note that the use of this format is \fBstrongly\fP
+  ** \fBdeprecated\fP.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_decode_command",       DT_STR, R_NONE, UL &PgpDecodeCommand, 0},
+  /*
+  ** .pp
+  ** This format strings specifies a command which is used to decode
+  ** application/pgp attachments.
+  ** .pp
+  ** The PGP command formats have their own set of \fCprintf(3)\fP-like sequences:
+  ** .dl
+  ** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
+  **            string otherwise. Note: This may be used with a %? construct.
+  ** .dt %f .dd Expands to the name of a file containing a message.
+  ** .dt %s .dd Expands to the name of a file containing the signature part
+  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
+  ** .dt %a .dd The value of $$pgp_sign_as.
+  ** .dt %r .dd One or more key IDs.
+  ** .de
+  ** .pp
+  ** For examples on how to configure these formats for the various versions
+  ** of PGP which are floating around, see the pgp and gpg sample configuration files in
+  ** the \fCsamples/\fP subdirectory which has been installed on your system
+  ** alongside the documentation.
+  ** (PGP only)
+  */
+  { "pgp_decrypt_command", 	DT_STR, R_NONE, UL &PgpDecryptCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to decrypt a PGP encrypted message.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to encrypt a body part without signing it.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_encrypt_sign_command",	DT_STR, R_NONE, UL &PgpEncryptSignCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to both sign and encrypt a body part.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
   */
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
   /*
@@ -1645,6 +1730,24 @@ struct option_t MuttVars[] = {
   ** .pp
   ** (PGP only)
   */
+  { "pgp_export_command", 	DT_STR, R_NONE, UL &PgpExportCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to export a public key from the user's
+  ** key ring.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_getkeys_command",	DT_STR, R_NONE, UL &PgpGetkeysCommand, 0},
+  /*
+  ** .pp
+  ** This command is invoked whenever mutt will need public key information.
+  ** Of the sequences supported by $$pgp_decode_command, %r is the only
+  ** \fCprintf(3)\fP-like sequence used with this format.
+  ** (PGP only)
+  */
   { "pgp_good_sign",	DT_RX,  R_NONE, UL &PgpGoodSign, 0 },
   /*
   ** .pp
@@ -1654,12 +1757,54 @@ struct option_t MuttVars[] = {
   ** even for bad signatures.
   ** (PGP only)
   */
-  { "pgp_check_exit",	DT_BOOL, R_NONE, OPTPGPCHECKEXIT, 1 },
+  { "pgp_ignore_subkeys", DT_BOOL, R_NONE, OPTPGPIGNORESUB, 1},
   /*
   ** .pp
-  ** If \fIset\fP, mutt will check the exit code of the PGP subprocess when
-  ** signing or encrypting.  A non-zero exit code means that the
-  ** subprocess failed.
+  ** Setting this variable will cause Mutt to ignore OpenPGP subkeys. Instead,
+  ** the principal key will inherit the subkeys' capabilities.  \fIUnset\fP this
+  ** if you want to play interesting key selection games.
+  ** (PGP only)
+  */
+  { "pgp_import_command",	DT_STR, R_NONE, UL &PgpImportCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to import a key from a message into
+  ** the user's public key ring.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_list_pubring_command", DT_STR, R_NONE, UL &PgpListPubringCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to list the public key ring's contents.  The
+  ** output format must be analogous to the one used by
+  ** .ts
+  ** gpg --list-keys --with-colons.
+  ** .te
+  ** .pp
+  ** This format is also generated by the \fCpgpring\fP utility which comes
+  ** with mutt.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_list_secring_command",	DT_STR, R_NONE, UL &PgpListSecringCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to list the secret key ring's contents.  The
+  ** output format must be analogous to the one used by:
+  ** .ts
+  ** gpg --list-keys --with-colons.
+  ** .te
+  ** .pp
+  ** This format is also generated by the \fCpgpring\fP utility which comes
+  ** with mutt.
+  ** .pp
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_long_ids",	DT_BOOL, R_NONE, OPTPGPLONGIDS, 0 },
@@ -1668,32 +1813,12 @@ struct option_t MuttVars[] = {
   ** If \fIset\fP, use 64 bit PGP key IDs, if \fIunset\fP use the normal 32 bit key IDs.
   ** (PGP only)
   */
-  { "pgp_retainable_sigs", DT_BOOL, R_NONE, OPTPGPRETAINABLESIG, 0 },
+  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, M_ASKYES },
   /*
   ** .pp
-  ** If \fIset\fP, signed and encrypted messages will consist of nested
-  ** \fCmultipart/signed\fP and \fCmultipart/encrypted\fP body parts.
-  ** .pp
-  ** This is useful for applications like encrypted and signed mailing
-  ** lists, where the outer layer (\fCmultipart/encrypted\fP) can be easily
-  ** removed, while the inner \fCmultipart/signed\fP part is retained.
-  ** (PGP only)
-  */
-  { "pgp_create_traditional",	DT_SYN, R_NONE, UL "pgp_autoinline", 0 },
-  { "pgp_autoinline",		DT_BOOL, R_NONE, OPTPGPAUTOINLINE, 0 },
-  /*
-  ** .pp
-  ** This option controls whether Mutt generates old-style inline
-  ** (traditional) PGP encrypted or signed messages under certain
-  ** circumstances.  This can be overridden by use of the pgp menu,
-  ** when inline is not required.
-  ** .pp
-  ** Note that Mutt might automatically use PGP/MIME for messages
-  ** which consist of more than a single MIME part.  Mutt can be
-  ** configured to ask before sending PGP/MIME messages when inline
-  ** (traditional) would not work.
-  ** .pp
-  ** Also see the $$pgp_mime_auto variable.
+  ** This option controls whether Mutt will prompt you for
+  ** automatically sending a (signed/encrypted) message using
+  ** PGP/MIME when inline (traditional) fails (for any reason).
   ** .pp
   ** Also note that using the old-style PGP message format is \fBstrongly\fP
   ** \fBdeprecated\fP.
@@ -1723,6 +1848,17 @@ struct option_t MuttVars[] = {
   ** (PGP only)
   **
   */
+  { "pgp_retainable_sigs", DT_BOOL, R_NONE, OPTPGPRETAINABLESIG, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, signed and encrypted messages will consist of nested
+  ** \fCmultipart/signed\fP and \fCmultipart/encrypted\fP body parts.
+  ** .pp
+  ** This is useful for applications like encrypted and signed mailing
+  ** lists, where the outer layer (\fCmultipart/encrypted\fP) can be easily
+  ** removed, while the inner \fCmultipart/signed\fP part is retained.
+  ** (PGP only)
+  */
   { "pgp_show_unusable", DT_BOOL, R_NONE, OPTPGPSHOWUNUSABLE, 1 },
   /*
   ** .pp
@@ -1739,20 +1875,14 @@ struct option_t MuttVars[] = {
   ** keyid form to specify your key (e.g. \fC0x00112233\fP).
   ** (PGP only)
   */
-  { "pgp_strict_enc",	DT_BOOL, R_NONE, OPTPGPSTRICTENC, 1 },
+  { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},
   /*
   ** .pp
-  ** If \fIset\fP, Mutt will automatically encode PGP/MIME signed messages as
-  ** quoted-printable.  Please note that unsetting this variable may
-  ** lead to problems with non-verifyable PGP signatures, so only change
-  ** this if you know what you are doing.
-  ** (PGP only)
-  */
-  { "pgp_timeout",	DT_NUM,	 R_NONE, UL &PgpTimeout, 300 },
-  /*
+  ** This command is used to create the detached PGP signature for a
+  ** \fCmultipart/signed\fP PGP/MIME body part.
   ** .pp
-  ** The number of seconds after which a cached passphrase will expire if
-  ** not used.
+  ** This is a format string, see the $$pgp_decode_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
   { "pgp_sort_keys",	DT_SORT|DT_SORT_KEYS, R_NONE, UL &PgpSortKeys, SORT_ADDRESS },
@@ -1771,59 +1901,26 @@ struct option_t MuttVars[] = {
   ** ``reverse-''.
   ** (PGP only)
   */
-  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, M_ASKYES },
+  { "pgp_strict_enc",	DT_BOOL, R_NONE, OPTPGPSTRICTENC, 1 },
   /*
   ** .pp
-  ** This option controls whether Mutt will prompt you for
-  ** automatically sending a (signed/encrypted) message using
-  ** PGP/MIME when inline (traditional) fails (for any reason).
-  ** .pp
-  ** Also note that using the old-style PGP message format is \fBstrongly\fP
-  ** \fBdeprecated\fP.
+  ** If \fIset\fP, Mutt will automatically encode PGP/MIME signed messages as
+  ** quoted-printable.  Please note that unsetting this variable may
+  ** lead to problems with non-verifyable PGP signatures, so only change
+  ** this if you know what you are doing.
   ** (PGP only)
   */
-  { "pgp_auto_decode", DT_BOOL, R_NONE, OPTPGPAUTODEC, 0 },
+  { "pgp_timeout",	DT_NUM,	 R_NONE, UL &PgpTimeout, 300 },
   /*
   ** .pp
-  ** If \fIset\fP, mutt will automatically attempt to decrypt traditional PGP
-  ** messages whenever the user performs an operation which ordinarily would
-  ** result in the contents of the message being operated on.  For example,
-  ** if the user displays a pgp-traditional message which has not been manually
-  ** checked with the \fC$<check-traditional-pgp>\fP function, mutt will automatically
-  ** check the message for traditional pgp.
-  */
-
-  /* XXX Default values! */
-
-  { "pgp_decode_command", 	DT_STR, R_NONE, UL &PgpDecodeCommand, 0},
-  /*
-  ** .pp
-  ** This format strings specifies a command which is used to decode
-  ** application/pgp attachments.
-  ** .pp
-  ** The PGP command formats have their own set of \fCprintf(3)\fP-like sequences:
-  ** .dl
-  ** .dt %p .dd Expands to PGPPASSFD=0 when a pass phrase is needed, to an empty
-  **            string otherwise. Note: This may be used with a %? construct.
-  ** .dt %f .dd Expands to the name of a file containing a message.
-  ** .dt %s .dd Expands to the name of a file containing the signature part
-  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
-  ** .dt %a .dd The value of $$pgp_sign_as.
-  ** .dt %r .dd One or more key IDs.
-  ** .de
-  ** .pp
-  ** For examples on how to configure these formats for the various versions
-  ** of PGP which are floating around, see the pgp and gpg sample configuration files in
-  ** the \fCsamples/\fP subdirectory which has been installed on your system
-  ** alongside the documentation.
+  ** The number of seconds after which a cached passphrase will expire if
+  ** not used.
   ** (PGP only)
   */
-  { "pgp_getkeys_command",	DT_STR, R_NONE, UL &PgpGetkeysCommand, 0},
+  { "pgp_use_gpg_agent", DT_BOOL, R_NONE, OPTUSEGPGAGENT, 0},
   /*
   ** .pp
-  ** This command is invoked whenever mutt will need public key information.
-  ** Of the sequences supported by $$pgp_decode_command, %r is the only
-  ** \fCprintf(3)\fP-like sequence used with this format.
+  ** If \fIset\fP, mutt will use a possibly-running \fCgpg-agent(1)\fP process.
   ** (PGP only)
   */
   { "pgp_verify_command", 	DT_STR, R_NONE, UL &PgpVerifyCommand, 0},
@@ -1835,111 +1932,11 @@ struct option_t MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
-  { "pgp_decrypt_command", 	DT_STR, R_NONE, UL &PgpDecryptCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to decrypt a PGP encrypted message.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_clearsign_command",	DT_STR,	R_NONE, UL &PgpClearSignCommand, 0 },
-  /*
-  ** .pp
-  ** This format is used to create an old-style ``clearsigned'' PGP
-  ** message.  Note that the use of this format is \fBstrongly\fP
-  ** \fBdeprecated\fP.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_sign_command",		DT_STR, R_NONE, UL &PgpSignCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to create the detached PGP signature for a
-  ** \fCmultipart/signed\fP PGP/MIME body part.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_encrypt_sign_command",	DT_STR, R_NONE, UL &PgpEncryptSignCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to both sign and encrypt a body part.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to encrypt a body part without signing it.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_import_command",	DT_STR, R_NONE, UL &PgpImportCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to import a key from a message into
-  ** the user's public key ring.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_export_command", 	DT_STR, R_NONE, UL &PgpExportCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to export a public key from the user's
-  ** key ring.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
   { "pgp_verify_key_command",	DT_STR, R_NONE, UL &PgpVerifyKeyCommand, 0},
   /*
   ** .pp
   ** This command is used to verify key information from the key selection
   ** menu.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_list_secring_command",	DT_STR, R_NONE, UL &PgpListSecringCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to list the secret key ring's contents.  The
-  ** output format must be analogous to the one used by:
-  ** .ts
-  ** gpg --list-keys --with-colons.
-  ** .te
-  ** .pp
-  ** This format is also generated by the \fCpgpring\fP utility which comes
-  ** with mutt.
-  ** .pp
-  ** This is a format string, see the $$pgp_decode_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (PGP only)
-  */
-  { "pgp_list_pubring_command", DT_STR, R_NONE, UL &PgpListPubringCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to list the public key ring's contents.  The
-  ** output format must be analogous to the one used by
-  ** .ts
-  ** gpg --list-keys --with-colons.
-  ** .te
-  ** .pp
-  ** This format is also generated by the \fCpgpring\fP utility which comes
-  ** with mutt.
   ** .pp
   ** This is a format string, see the $$pgp_decode_command command for
   ** possible \fCprintf(3)\fP-like sequences.
