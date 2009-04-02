@@ -2206,7 +2206,11 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
     args = add_option (args, &argslen, &argsmax, "-R");
     args = add_option (args, &argslen, &argsmax, DsnReturn);
   }
-  args = add_option (args, &argslen, &argsmax, "--");
+  if (strstr (args, "--") == NULL)
+  {
+    /* Only append "--" if not already present. */
+    args = add_option (args, &argslen, &argsmax, "--");
+  }
   args = add_args (args, &argslen, &argsmax, to);
   args = add_args (args, &argslen, &argsmax, cc);
   args = add_args (args, &argslen, &argsmax, bcc);

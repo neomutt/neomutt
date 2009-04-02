@@ -1,3 +1,16 @@
+2009-04-02 12:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (bfb12cf02417)
+
+	* init.h: Clarify what $attach_charset does, closes #3165.
+
+2009-04-02 11:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (1759a509dd0a)
+
+	* ChangeLog, doc/Makefile.am: Add 'sortcheck' target to
+	doc/Makefile.am
+
+	This should be used from time to time to check if vars are sorted.
+
+	Closes #3191.
+
 2009-04-02 11:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (e8cdc049cf84)
 
 	* init.h: Sort $pgp_* and $crypt_* vars, see #3191.
