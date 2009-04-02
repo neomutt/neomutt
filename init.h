@@ -197,7 +197,10 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable is a colon-separated list of character encoding
-  ** schemes for text file attachments.
+  ** schemes for text file attachments. Mutt uses this setting to guess
+  ** which encoding files being attached are encoded in to convert them to
+  ** a proper character set given in $$send_charset.
+  ** .pp
   ** If \fIunset\fP, the value of $$charset will be used instead.
   ** For example, the following configuration would work for Japanese
   ** text handling:
