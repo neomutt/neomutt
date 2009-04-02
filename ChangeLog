@@ -1,3 +1,13 @@
+2009-04-01 14:33 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (8205a12329d3)
+
+	* hcache.c, muttlib.c: Use PATH_MAX for buffers passed to realpath(3)
+	as we're supposed to
+
+2009-04-01 13:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (47c64fd9ac70)
+
+	* ChangeLog, doc/gen-map-doc, doc/manual.xml.head: Manual: Fix
+	openjade warnings
+
 2009-04-01 11:39 +0200  Rocco Rutte  <pdmef@gmx.net>  (406de7244405)
 
 	* doc/makedoc.c, doc/mutt.css: makedoc: Render description lists as

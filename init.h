@@ -733,6 +733,18 @@ struct option_t MuttVars[] = {
   { "forw_decode",	DT_SYN,  R_NONE, UL "forward_decode", 0 },
   /*
   */
+  { "forward_decrypt",	DT_BOOL, R_NONE, OPTFORWDECRYPT, 1 },
+  /*
+  ** .pp
+  ** Controls the handling of encrypted messages when forwarding a message.
+  ** When \fIset\fP, the outer layer of encryption is stripped off.  This
+  ** variable is only used if $$mime_forward is \fIset\fP and
+  ** $$mime_forward_decode is \fIunset\fP.
+  ** (PGP only)
+  */
+  { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
+  /*
+  */
   { "forward_edit",	DT_QUAD, R_NONE, OPT_FORWEDIT, M_YES },
   /*
   ** .pp
@@ -1613,32 +1625,6 @@ struct option_t MuttVars[] = {
   ** If \Fi``no''\fP, never attempt to verify cryptographic signatures.
   ** (Crypto only)
   */
-  { "smime_is_default", DT_BOOL,  R_NONE, OPTSMIMEISDEFAULT, 0},
-  /*
-  ** .pp
-  ** The default behaviour of mutt is to use PGP on all auto-sign/encryption
-  ** operations. To override and to use OpenSSL instead this must be \fIset\fP.
-  ** However, this has no effect while replying, since mutt will automatically
-  ** select the same application that was used to sign/encrypt the original
-  ** message.  (Note that this variable can be overridden by unsetting $$crypt_autosmime.)
-  ** (S/MIME only)
-  */
-  { "smime_ask_cert_label",	DT_BOOL, R_NONE, OPTASKCERTLABEL, 1 },
-  /*
-  ** .pp
-  ** This flag controls whether you want to be asked to enter a label
-  ** for a certificate about to be added to the database or not. It is
-  ** \fIset\fP by default.
-  ** (S/MIME only)
-  */
-  { "smime_decrypt_use_default_key",	DT_BOOL, R_NONE, OPTSDEFAULTDECRYPTKEY, 1 },
-  /*
-  ** .pp
-  ** If \fIset\fP (default) this tells mutt to use the default key for decryption. Otherwise,
-  ** if managing multiple certificate-key-pairs, mutt will try to use the mailbox-address
-  ** to determine the key to use. It will ask you to supply a key, if it can't find one.
-  ** (S/MIME only)
-  */
   { "pgp_entry_format", DT_STR,  R_NONE, UL &PgpEntryFormat, UL "%4n %t%f %4l/0x%k %-4a %2c %u" },
   /*
   ** .pp
@@ -1958,195 +1944,6 @@ struct option_t MuttVars[] = {
   ** This is a format string, see the $$pgp_decode_command command for
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
-  */
-  { "forward_decrypt",	DT_BOOL, R_NONE, OPTFORWDECRYPT, 1 },
-  /*
-  ** .pp
-  ** Controls the handling of encrypted messages when forwarding a message.
-  ** When \fIset\fP, the outer layer of encryption is stripped off.  This
-  ** variable is only used if $$mime_forward is \fIset\fP and
-  ** $$mime_forward_decode is \fIunset\fP.
-  ** (PGP only)
-  */
-  { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
-  /*
-  */
-  { "smime_timeout",		DT_NUM,	 R_NONE, UL &SmimeTimeout, 300 },
-  /*
-  ** .pp
-  ** The number of seconds after which a cached passphrase will expire if
-  ** not used.
-  ** (S/MIME only)
-  */
-  { "smime_encrypt_with",	DT_STR,	 R_NONE, UL &SmimeCryptAlg, 0 },
-  /*
-  ** .pp
-  ** This sets the algorithm that should be used for encryption.
-  ** Valid choices are ``des'', ``des3'', ``rc2-40'', ``rc2-64'', ``rc2-128''.
-  ** If \fIunset\fP, ``3des'' (TripleDES) is used.
-  ** (S/MIME only)
-  */
-  { "smime_keys",		DT_PATH, R_NONE, UL &SmimeKeys, 0 },
-  /*
-  ** .pp
-  ** Since for S/MIME there is no pubring/secring as with PGP, mutt has to handle
-  ** storage and retrieval of keys/certs by itself. This is very basic right now,
-  ** and stores keys and certificates in two different directories, both
-  ** named as the hash-value retrieved from OpenSSL. There is an index file
-  ** which contains mailbox-address keyid pair, and which can be manually
-  ** edited. This option points to the location of the private keys.
-  ** (S/MIME only)
-  */
-  { "smime_ca_location",	DT_PATH, R_NONE, UL &SmimeCALocation, 0 },
-  /*
-  ** .pp
-  ** This variable contains the name of either a directory, or a file which
-  ** contains trusted certificates for use with OpenSSL.
-  ** (S/MIME only)
-  */
-  { "smime_certificates",	DT_PATH, R_NONE, UL &SmimeCertificates, 0 },
-  /*
-  ** .pp
-  ** Since for S/MIME there is no pubring/secring as with PGP, mutt has to handle
-  ** storage and retrieval of keys by itself. This is very basic right
-  ** now, and keys and certificates are stored in two different
-  ** directories, both named as the hash-value retrieved from
-  ** OpenSSL. There is an index file which contains mailbox-address
-  ** keyid pairs, and which can be manually edited. This option points to
-  ** the location of the certificates.
-  ** (S/MIME only)
-  */
-  { "smime_decrypt_command", 	DT_STR, R_NONE, UL &SmimeDecryptCommand, 0},
-  /*
-  ** .pp
-  ** This format string specifies a command which is used to decrypt
-  ** \fCapplication/x-pkcs7-mime\fP attachments.
-  ** .pp
-  ** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like sequences
-  ** similar to PGP's:
-  ** .dl
-  ** .dt %f .dd Expands to the name of a file containing a message.
-  ** .dt %s .dd Expands to the name of a file containing the signature part
-  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
-  ** .dt %k .dd The key-pair specified with $$smime_default_key
-  ** .dt %c .dd One or more certificate IDs.
-  ** .dt %a .dd The algorithm used for encryption.
-  ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
-  ** .          points to a directory or file, this expands to
-  ** .          ``-CApath $$smime_ca_location'' or ``-CAfile $$smime_ca_location''.
-  ** .de
-  ** .pp
-  ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
-  ** the \fCsamples/\fP subdirectory which has been installed on your system
-  ** alongside the documentation.
-  ** (S/MIME only)
-  */
-  { "smime_verify_command", 	DT_STR, R_NONE, UL &SmimeVerifyCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to verify S/MIME signatures of type \fCmultipart/signed\fP.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_verify_opaque_command", 	DT_STR, R_NONE, UL &SmimeVerifyOpaqueCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to verify S/MIME signatures of type
-  ** \fCapplication/x-pkcs7-mime\fP.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_sign_command", 	DT_STR, R_NONE, UL &SmimeSignCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to created S/MIME signatures of type
-  ** \fCmultipart/signed\fP, which can be read by all mail clients.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_sign_opaque_command", 	DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to created S/MIME signatures of type
-  ** \fCapplication/x-pkcs7-signature\fP, which can only be handled by mail
-  ** clients supporting the S/MIME extension.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_encrypt_command", 	DT_STR, R_NONE, UL &SmimeEncryptCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to create encrypted S/MIME messages.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_pk7out_command", 	DT_STR, R_NONE, UL &SmimePk7outCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to extract PKCS7 structures of S/MIME signatures,
-  ** in order to extract the public X509 certificate(s).
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_get_cert_command", 	DT_STR, R_NONE, UL &SmimeGetCertCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to extract X509 certificates from a PKCS7 structure.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_get_signer_cert_command", 	DT_STR, R_NONE, UL &SmimeGetSignerCertCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to extract only the signers X509 certificate from a S/MIME
-  ** signature, so that the certificate's owner may get compared to the
-  ** email's ``From:'' field.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_import_cert_command", 	DT_STR, R_NONE, UL &SmimeImportCertCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to import a certificate via smime_keys.
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_get_cert_email_command", 	DT_STR, R_NONE, UL &SmimeGetCertEmailCommand, 0},
-  /*
-  ** .pp
-  ** This command is used to extract the mail address(es) used for storing
-  ** X509 certificates, and for verification purposes (to check whether the
-  ** certificate was issued for the sender's mailbox).
-  ** .pp
-  ** This is a format string, see the $$smime_decrypt_command command for
-  ** possible \fCprintf(3)\fP-like sequences.
-  ** (S/MIME only)
-  */
-  { "smime_sign_as",			DT_SYN,  R_NONE, UL "smime_default_key", 0 },
-  { "smime_default_key",		DT_STR,	 R_NONE, UL &SmimeDefaultKey, 0 },
-  /*
-  ** .pp
-  ** This is the default key-pair to use for signing. This must be set to the
-  ** keyid (the hash-value that OpenSSL generates) to work properly
-  ** (S/MIME only)
   */
   { "pipe_decode",	DT_BOOL, R_NONE, OPTPIPEDECODE, 0 },
   /*
@@ -2716,6 +2513,212 @@ struct option_t MuttVars[] = {
   ** positives of $$quote_regexp, most notably smileys and not consider
   ** a line quoted text if it also matches $$smileys. This mostly
   ** happens at the beginning of a line.
+  */
+
+
+
+  { "smime_ask_cert_label",	DT_BOOL, R_NONE, OPTASKCERTLABEL, 1 },
+  /*
+  ** .pp
+  ** This flag controls whether you want to be asked to enter a label
+  ** for a certificate about to be added to the database or not. It is
+  ** \fIset\fP by default.
+  ** (S/MIME only)
+  */
+  { "smime_ca_location",	DT_PATH, R_NONE, UL &SmimeCALocation, 0 },
+  /*
+  ** .pp
+  ** This variable contains the name of either a directory, or a file which
+  ** contains trusted certificates for use with OpenSSL.
+  ** (S/MIME only)
+  */
+  { "smime_certificates",	DT_PATH, R_NONE, UL &SmimeCertificates, 0 },
+  /*
+  ** .pp
+  ** Since for S/MIME there is no pubring/secring as with PGP, mutt has to handle
+  ** storage and retrieval of keys by itself. This is very basic right
+  ** now, and keys and certificates are stored in two different
+  ** directories, both named as the hash-value retrieved from
+  ** OpenSSL. There is an index file which contains mailbox-address
+  ** keyid pairs, and which can be manually edited. This option points to
+  ** the location of the certificates.
+  ** (S/MIME only)
+  */
+  { "smime_decrypt_command", 	DT_STR, R_NONE, UL &SmimeDecryptCommand, 0},
+  /*
+  ** .pp
+  ** This format string specifies a command which is used to decrypt
+  ** \fCapplication/x-pkcs7-mime\fP attachments.
+  ** .pp
+  ** The OpenSSL command formats have their own set of \fCprintf(3)\fP-like sequences
+  ** similar to PGP's:
+  ** .dl
+  ** .dt %f .dd Expands to the name of a file containing a message.
+  ** .dt %s .dd Expands to the name of a file containing the signature part
+  ** .          of a \fCmultipart/signed\fP attachment when verifying it.
+  ** .dt %k .dd The key-pair specified with $$smime_default_key
+  ** .dt %c .dd One or more certificate IDs.
+  ** .dt %a .dd The algorithm used for encryption.
+  ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
+  ** .          points to a directory or file, this expands to
+  ** .          ``-CApath $$smime_ca_location'' or ``-CAfile $$smime_ca_location''.
+  ** .de
+  ** .pp
+  ** For examples on how to configure these formats, see the \fCsmime.rc\fP in
+  ** the \fCsamples/\fP subdirectory which has been installed on your system
+  ** alongside the documentation.
+  ** (S/MIME only)
+  */
+  { "smime_decrypt_use_default_key",	DT_BOOL, R_NONE, OPTSDEFAULTDECRYPTKEY, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP (default) this tells mutt to use the default key for decryption. Otherwise,
+  ** if managing multiple certificate-key-pairs, mutt will try to use the mailbox-address
+  ** to determine the key to use. It will ask you to supply a key, if it can't find one.
+  ** (S/MIME only)
+  */
+  { "smime_sign_as",			DT_SYN,  R_NONE, UL "smime_default_key", 0 },
+  { "smime_default_key",		DT_STR,	 R_NONE, UL &SmimeDefaultKey, 0 },
+  /*
+  ** .pp
+  ** This is the default key-pair to use for signing. This must be set to the
+  ** keyid (the hash-value that OpenSSL generates) to work properly
+  ** (S/MIME only)
+  */
+  { "smime_encrypt_command", 	DT_STR, R_NONE, UL &SmimeEncryptCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to create encrypted S/MIME messages.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_encrypt_with",	DT_STR,	 R_NONE, UL &SmimeCryptAlg, 0 },
+  /*
+  ** .pp
+  ** This sets the algorithm that should be used for encryption.
+  ** Valid choices are ``des'', ``des3'', ``rc2-40'', ``rc2-64'', ``rc2-128''.
+  ** If \fIunset\fP, ``3des'' (TripleDES) is used.
+  ** (S/MIME only)
+  */
+  { "smime_get_cert_command", 	DT_STR, R_NONE, UL &SmimeGetCertCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to extract X509 certificates from a PKCS7 structure.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_get_cert_email_command", 	DT_STR, R_NONE, UL &SmimeGetCertEmailCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to extract the mail address(es) used for storing
+  ** X509 certificates, and for verification purposes (to check whether the
+  ** certificate was issued for the sender's mailbox).
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_get_signer_cert_command", 	DT_STR, R_NONE, UL &SmimeGetSignerCertCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to extract only the signers X509 certificate from a S/MIME
+  ** signature, so that the certificate's owner may get compared to the
+  ** email's ``From:'' field.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_import_cert_command", 	DT_STR, R_NONE, UL &SmimeImportCertCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to import a certificate via smime_keys.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_is_default", DT_BOOL,  R_NONE, OPTSMIMEISDEFAULT, 0},
+  /*
+  ** .pp
+  ** The default behaviour of mutt is to use PGP on all auto-sign/encryption
+  ** operations. To override and to use OpenSSL instead this must be \fIset\fP.
+  ** However, this has no effect while replying, since mutt will automatically
+  ** select the same application that was used to sign/encrypt the original
+  ** message.  (Note that this variable can be overridden by unsetting $$crypt_autosmime.)
+  ** (S/MIME only)
+  */
+  { "smime_keys",		DT_PATH, R_NONE, UL &SmimeKeys, 0 },
+  /*
+  ** .pp
+  ** Since for S/MIME there is no pubring/secring as with PGP, mutt has to handle
+  ** storage and retrieval of keys/certs by itself. This is very basic right now,
+  ** and stores keys and certificates in two different directories, both
+  ** named as the hash-value retrieved from OpenSSL. There is an index file
+  ** which contains mailbox-address keyid pair, and which can be manually
+  ** edited. This option points to the location of the private keys.
+  ** (S/MIME only)
+  */
+  { "smime_pk7out_command", 	DT_STR, R_NONE, UL &SmimePk7outCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to extract PKCS7 structures of S/MIME signatures,
+  ** in order to extract the public X509 certificate(s).
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_sign_command", 	DT_STR, R_NONE, UL &SmimeSignCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to created S/MIME signatures of type
+  ** \fCmultipart/signed\fP, which can be read by all mail clients.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_sign_opaque_command", 	DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to created S/MIME signatures of type
+  ** \fCapplication/x-pkcs7-signature\fP, which can only be handled by mail
+  ** clients supporting the S/MIME extension.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_timeout",		DT_NUM,	 R_NONE, UL &SmimeTimeout, 300 },
+  /*
+  ** .pp
+  ** The number of seconds after which a cached passphrase will expire if
+  ** not used.
+  ** (S/MIME only)
+  */
+  { "smime_verify_command", 	DT_STR, R_NONE, UL &SmimeVerifyCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to verify S/MIME signatures of type \fCmultipart/signed\fP.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_verify_opaque_command", 	DT_STR, R_NONE, UL &SmimeVerifyOpaqueCommand, 0},
+  /*
+  ** .pp
+  ** This command is used to verify S/MIME signatures of type
+  ** \fCapplication/x-pkcs7-mime\fP.
+  ** .pp
+  ** This is a format string, see the $$smime_decrypt_command command for
+  ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
   */
 #ifdef USE_SMTP
 # ifdef USE_SASL
