@@ -1,3 +1,11 @@
+2009-04-02 11:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (e8cdc049cf84)
+
+	* init.h: Sort $pgp_* and $crypt_* vars, see #3191.
+
+2009-04-02 11:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (86faf8f79beb)
+
+	* ChangeLog, init.h: Sort $smime_* vars, see #3191.
+
 2009-04-01 14:33 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (8205a12329d3)
 
 	* hcache.c, muttlib.c: Use PATH_MAX for buffers passed to realpath(3)
