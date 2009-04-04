@@ -2861,7 +2861,7 @@ With various functions, Mutt will treat messages differently,
 depending on whether you sent them or whether you received them from
 someone else.  For instance, when replying to a message that you
 sent to a different party, Mutt will automatically suggest to send
-the response to the original message's recipients -- responding to
+the response to the original message's recipients &mdash; responding to
 yourself won't make much sense in many cases.  (See <link linkend="reply-to">&dollar;reply&lowbar;to</link>.)
 </para>
 
@@ -3679,7 +3679,7 @@ Your first step is to define your external filter's spam patterns using
 the <literal>spam</literal> command. <emphasis>pattern</emphasis> should be a regular expression
 that matches a header in a mail message. If any message in the mailbox
 matches this regular expression, it will receive a <quote>spam tag</quote> or
-<quote>spam attribute</quote> (unless it also matches a <literal>nospam</literal> pattern -- see
+<quote>spam attribute</quote> (unless it also matches a <literal>nospam</literal> pattern &mdash; see
 below.) The appearance of this attribute is entirely up to you, and is
 governed by the <emphasis>format</emphasis> parameter. <emphasis>format</emphasis> can be any static
 text, but it also can include back-references from the <emphasis>pattern</emphasis>
@@ -3718,7 +3718,7 @@ If then a message is received that DCC registered with <quote>many</quote> hits
 under the <quote>Fuz2</quote> checksum, and that PureMessage registered with a
 97&percnt; probability of being spam, that message's spam tag would read
 <literal>90+/DCC-Fuz2, 97/PM</literal>. (The four characters before <quote>=many</quote> in a
-DCC report indicate the checksum used -- in this case, <quote>Fuz2</quote>.)
+DCC report indicate the checksum used &mdash; in this case, <quote>Fuz2</quote>.)
 </para>
 
 <para>
@@ -3743,12 +3743,12 @@ to sorting.
 </para>
 
 <para>
-Generally, when you sort by spam tag, Mutt will sort <emphasis>lexically</emphasis> --
+Generally, when you sort by spam tag, Mutt will sort <emphasis>lexically</emphasis> &mdash;
 that is, by ordering strings alphanumerically. However, if a spam tag
 begins with a number, Mutt will sort numerically first, and lexically
 only when two numbers are equal in value. (This is like UNIX's
-<literal>sort -n</literal>.) A message with no spam attributes at all -- that is, one
-that didn't match <emphasis>any</emphasis> of your <literal>spam</literal> patterns -- is sorted at
+<literal>sort -n</literal>.) A message with no spam attributes at all &mdash; that is, one
+that didn't match <emphasis>any</emphasis> of your <literal>spam</literal> patterns &mdash; is sorted at
 lowest priority. Numbers are sorted next, beginning with 0 and ranging
 upward. Finally, non-numeric strings are sorted, with <quote>a</quote> taking lower
 priority than <quote>z</quote>. Clearly, in general, sorting by spam tags is most
@@ -3776,7 +3776,7 @@ and <literal>nospam</literal> in conjunction with a <literal>folder-hook</litera
 
 <para>
 You can have as many <literal>spam</literal> or <literal>nospam</literal> commands as you like.
-You can even do your own primitive spam detection within Mutt -- for
+You can even do your own primitive spam detection within Mutt &mdash; for
 example, if you consider all mail from <literal>MAILER-DAEMON</literal> to be spam,
 you can use a <literal>spam</literal> command like this:
 </para>
@@ -4205,9 +4205,9 @@ minimum and maximum size of the resulting string, as well as its
 justification. If the <quote>-</quote> sign follows the percent, the string will
 be left-justified instead of right-justified. If there's a number
 immediately following that, it's the minimum amount of space the
-formatted string will occupy -- if it's naturally smaller than that, it
+formatted string will occupy &mdash; if it's naturally smaller than that, it
 will be padded out with spaces.  If a decimal point and another number
-follow, that's the maximum space allowable -- the string will not be
+follow, that's the maximum space allowable &mdash; the string will not be
 permitted to exceed that width, no matter its natural size. Each of
 these three elements is optional, so that all these are legal format
 strings: <literal>%-12s</literal>, <literal>%4c</literal>,
@@ -4219,7 +4219,7 @@ Mutt adds some other modifiers to format strings. If you use an equals
 symbol (<literal>=</literal>) as a numeric prefix (like the minus
 above), it will force the string to be centered within its minimum
 space range. For example, <literal>%=14y</literal> will reserve 14
-characters for the %y expansion -- that's the X-Label: header, in
+characters for the %y expansion &mdash; that's the X-Label: header, in
 <link linkend="index-format">&dollar;index&lowbar;format</link>. If the expansion
 results in a string less than 14 characters, it will be centered in a
 14-character space.  If the X-Label for a message were <quote>test</quote>, that
@@ -4827,19 +4827,19 @@ patterns:
 <listitem>
 
 <para>
-! -- logical NOT operator
+! &mdash; logical NOT operator
 </para>
 </listitem>
 <listitem>
 
 <para>
-&verbar; -- logical OR operator
+&verbar; &mdash; logical OR operator
 </para>
 </listitem>
 <listitem>
 
 <para>
-() -- logical grouping operator
+() &mdash; logical grouping operator
 </para>
 </listitem>
 
@@ -5353,49 +5353,49 @@ work at the beginning of a string.
 <listitem>
 
 <para>
-! -- refers to your <link linkend="spoolfile">&dollar;spoolfile</link> (incoming) mailbox
+! &mdash; refers to your <link linkend="spoolfile">&dollar;spoolfile</link> (incoming) mailbox
 </para>
 </listitem>
 <listitem>
 
 <para>
-&gt; -- refers to your <link linkend="mbox">&dollar;mbox</link> file
+&gt; &mdash; refers to your <link linkend="mbox">&dollar;mbox</link> file
 </para>
 </listitem>
 <listitem>
 
 <para>
-&lt; -- refers to your <link linkend="record">&dollar;record</link> file
+&lt; &mdash; refers to your <link linkend="record">&dollar;record</link> file
 </para>
 </listitem>
 <listitem>
 
 <para>
-&circ; -- refers to the current mailbox
+&circ; &mdash; refers to the current mailbox
 </para>
 </listitem>
 <listitem>
 
 <para>
-- or !! -- refers to the file you've last visited
+- or !! &mdash; refers to the file you've last visited
 </para>
 </listitem>
 <listitem>
 
 <para>
-&tilde; -- refers to your home directory
+&tilde; &mdash; refers to your home directory
 </para>
 </listitem>
 <listitem>
 
 <para>
-= or + -- refers to your <link linkend="folder">&dollar;folder</link> directory
+= or + &mdash; refers to your <link linkend="folder">&dollar;folder</link> directory
 </para>
 </listitem>
 <listitem>
 
 <para>
-@<emphasis>alias</emphasis> -- refers to the <link linkend="save-hook">default save folder</link> as determined by the address of the alias
+@<emphasis>alias</emphasis> &mdash; refers to the <link linkend="save-hook">default save folder</link> as determined by the address of the alias
 </para>
 </listitem>
 
@@ -6549,7 +6549,7 @@ The syntax is:
 </cmdsynopsis>
 
 <para>
-<emphasis>disposition</emphasis> is the attachment's Content-Disposition type -- either
+<emphasis>disposition</emphasis> is the attachment's Content-Disposition type &mdash; either
 <literal>inline</literal> or <literal>attachment</literal>.
 You can abbreviate this to <literal>I</literal> or <literal>A</literal>.
 </para>
@@ -6577,7 +6577,7 @@ The MIME types you give to the attachments directive are a kind of
 pattern.  When you use the attachments directive, the patterns you
 specify are added to a list.  When you use unattachments, the pattern
 is removed from the list.  The patterns are not expanded and matched
-to specific MIME types at this time -- they're just text in a list.
+to specific MIME types at this time &mdash; they're just text in a list.
 They're only matched when actually evaluating a message.
 </para>
 
