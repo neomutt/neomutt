@@ -323,6 +323,136 @@ display for a folder or even implementing auto-archiving based on a
 per-folder basis and much more.
 </para>
 
+<para>
+Besides an interactive mode, Mutt can also be used as a command-line
+tool only send messages. It also supports a
+<literal>mailx(1)</literal>-compatible interface, see <xref
+linkend="tab-commandline-options"/> for a complete list of command-line
+options.
+</para>
+
+</sect1>
+
+<sect1 id="concept-screens-and-menus">
+<title>Screens and Menus</title>
+
+<sect2 id="intro-index">
+<title>Index</title>
+
+<para>
+The index is the screen that you usually see first when you start
+Mutt. It gives an overview over your emails in the currently opened
+mailbox. By default, this is your system mailbox.  The information you
+see in the index is a list of emails, each with its number on the left,
+its flags (new email, important email, email that has been forwarded or
+replied to, tagged email, ...), the date when email was sent, its
+sender, the email size, and the subject. Additionally, the index also
+shows thread hierarchies: when you reply to an email, and the other
+person replies back, you can see the other's person email in a
+"sub-tree" below.  This is especially useful for personal email between
+a group of people or when you've subscribed to mailing lists.
+</para>
+
+</sect2>
+
+<sect2 id="intro-pager">
+<title>Pager</title>
+
+<para>
+The pager is responsible for showing the email content. On the top of
+the pager you have an overview over the most important email headers
+like the sender, the recipient, the subject, and much more
+information. How much information you actually see depends on your
+configuration, which we'll describe below.
+</para>
+
+<para>
+Below the headers, you see the email body which usually contains the
+message. If the email contains any attachments, you will see more
+information about them below the email body, or, if the attachments are
+text files, you can view them directly in the pager.
+</para>
+
+<para>
+To give the user a good overview, it is possible to configure Mutt to
+show different things in the pager with different colors. Virtually
+everything that can be described with a regular expression can be
+colored, e.g. URLs, email addresses or smileys.
+</para>
+
+</sect2>
+
+<sect2 id="intro-browser">
+<title>File Browser</title>
+
+<para>
+The file browser is the interface to the local or remote file
+system. When selecting a mailbox to open, the browser allows custom
+sorting of items, limiting the items shown by a regular expression and a
+freely adjustable format of what to display in which way. It also allows
+for easy navigation through the file system when selecting file(s) to
+attach to a message, select multiple files to attach and many more.
+</para>
+
+</sect2>
+
+<sect2 id="intro-help">
+<title>Help</title>
+
+<para>
+The help screen is meant to offer a quick help to the user. It lists the
+current configuration of key bindings and their associated commands
+including a short description, and currently unbound functions that
+still need to be associated with a key binding (or alternatively, they
+can be called via the Mutt command prompt).
+</para>
+
+</sect2>
+
+<sect2 id="intro-compose">
+<title>Compose Menu</title>
+
+<para>
+The compose menu features a split screen containing the information
+which really matter before actually sending a message by mail: who gets
+the message as what (recipients and who gets what kind of
+copy). Additionally, users may set security options like deciding
+whether to sign, encrypt or sign and encrypt a message with/for what
+keys. Also, it's used to attach messages, to re-edit any attachment
+including the message itself.
+</para>
+
+</sect2>
+
+<sect2 id="intro-alias">
+<title>Alias Menu</title>
+
+<para>
+The alias menu is used to help users finding the recipients of
+messages. For users who need to contact many people, there's no need to
+remember addresses or names completely because it allows for searching,
+too. The alias mechanism and thus the alias menu also features grouping
+several addresses by a shorter nickname, the actual alias, so that users
+don't have to select each single recipient manually.
+</para>
+
+</sect2>
+
+<sect2 id="intro-attach">
+<title>Attachment Menu</title>
+
+<para>
+As will be later discussed in detail, Mutt features a good and stable
+MIME implementation, that is, it supports sending and receiving messages
+of arbitrary MIME types. The attachment menu displays a message's
+structure in detail: what content parts are attached to which parent
+part (which gives a true tree structure), which type is of what type and
+what size.  Single parts may saved, deleted or modified to offer great
+and easy access to message's internals.
+</para>
+
+</sect2>
+
 </sect1>
 
 <sect1 id="menus">
