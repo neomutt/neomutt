@@ -7191,6 +7191,178 @@ for the latter syntax. <literal>EXACT_ADDRESS</literal> in the output of
 
 </chapter>
 
+<chapter id="security">
+<title>Security Considerations</title>
+
+<para>
+First of all, Mutt contains no security holes included by intention but
+may contain unknown security holes. As a consequence, please run Mutt
+only with as few permissions as possible. Especially, do not run Mutt as
+the super user.
+</para>
+
+<para>
+When configuring Mutt, there're some points to note about secure setups
+so please read this chapter carefully.
+</para>
+
+<sect1 id="security-passwords">
+<title>Passwords</title>
+
+<para>
+Although Mutt can be told the various passwords for accounts, please
+never store passwords in configuration files. Besides the fact that the
+system's operator can always read them, you could forget to mask it out
+when reporting a bug or asking for help via a mailing list. Even worse,
+your mail including your password could be archived by internet search
+engines, mail-to-news gateways etc. It may already too late before you
+notice your mistake.
+</para>
+
+</sect1>
+
+<sect1 id="security-tempfiles">
+<title>Temporary Files</title>
+
+<para>
+Mutt uses many temporary files for viewing messages, verifying digital
+signatures, etc. As long as being used, these files are visible by other
+users and maybe even readable in case of misconfiguration.  Also, a
+different location for these files may be desired which can be changed
+via the <link linkend="tmpdir">&dollar;tmpdir</link> variable.
+</para>
+
+</sect1>
+
+<sect1 id="security-leaks">
+<title>Information Leaks</title>
+
+<sect2 id="security-leaks-mid">
+<title>Message-ID: headers</title>
+
+<para>
+Message-Id: headers contain a local part that is to be created in a
+unique fashion. In order to do so, Mutt will <quote>leak</quote> some
+information to the outside world when sending messages: the generation
+of this header includes a step counter which is increased (and rotated)
+with every message sent. In a longer running mutt session, others can
+make assumptions about your mailing habbits depending on the number of
+messages sent. If this is not desired, the header can be manually
+provided using <link
+linkend="edit-headers">&dollar;edit&lowbar;headers</link> (though not
+recommended).
+</para>
+
+</sect2>
+
+<sect2 id="security-leaks-mailto">
+<title><literal>mailto:</literal>-style links</title>
+
+<para>
+As Mutt be can be set up to be the mail client to handle
+<literal>mailto:</literal> style links in websites, there're security
+considerations, too. Arbitrary header fields can be embedded in these
+links which could override existing header fields or attach arbitrary
+files using <link linkend="attach-header">the Attach:
+psuedoheader</link>. This may be problematic if the <link
+linkend="edit-headers">&dollar;edit-headers</link> variable is
+<emphasis>unset</emphasis>, i.e. the user doesn't want to see header
+fields while editing the message and doesn't pay enough attention to the
+compose menu's listing of attachments.
+</para>
+
+<para>
+For example, following a link like
+</para>
+
+<screen>
+mailto:joe@host?Attach=~/.gnupg/secring.gpg</screen>
+
+<para>
+will send out the user's private gnupg keyring to
+<literal>joe@host</literal> if the user doesn't follow the information
+on screen carefully enough.
+</para>
+
+</sect2>
+
+</sect1>
+
+<sect1 id="security-external">
+<title>External applications</title>
+
+<para>
+Mutt in many places has to rely on external applications or for
+convenience supports mechanisms involving external applications.
+</para>
+
+<sect2 id="security-external-mailcap">
+<title>mailcap</title>
+
+<para>
+One of these is the <literal>mailcap</literal> mechanism as defined by
+RfC1524. Mutt can be set up to <emphasis>automatically</emphasis>
+execute any given utility as listed in one of the mailcap files (see the
+<link linkend="mailcap-path">&dollar;mailcap&lowbar;path</link> variable
+for details.)
+</para>
+
+<para>
+These utilities may have a variety of security vulnerabilities,
+including overwriting of arbitrary files, information leaks or other
+exploitable bugs.  These vulnerabilities may go unnoticed by the user,
+especially when they are called automatically (and without interactive
+prompting) from the mailcap file(s). When using Mutt's autoview
+mechanism in combination with mailcap files, please be sure to...
+</para>
+
+<itemizedlist>
+<listitem>
+<para>
+manually select trustworth applications with a reasonable calling
+sequence
+</para>
+</listitem>
+<listitem>
+<para>
+periodically check the contents of mailcap files, especially after
+software installations or upgrades
+</para>
+</listitem>
+<listitem>
+<para>
+keep the software packages referenced in the mailcap file up to date
+</para>
+</listitem>
+<listitem>
+<para>
+leave the <link linkend="mailcap-sanitize">&dollar;mailcap-sanitize</link>
+variable with its default value to restrict mailcap expandos to a safe set of
+characters
+</para>
+</listitem>
+</itemizedlist>
+
+</sect2>
+
+<sect2 id="security-external-other">
+<title>Other</title>
+
+<para>
+Besides the mailcap mechanism, Mutt uses a number of other external
+utilities for operation, for example to provide crypto support, in
+backtick expansion in configuration files or format string filters.  The
+same security considerations apply for these as for tools involved via
+mailcap.
+</para>
+
+</sect2>
+
+</sect1>
+
+</chapter>
+
+
 <chapter id="tuning">
 <title>Performance tuning</title>
 

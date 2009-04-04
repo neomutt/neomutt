@@ -31,7 +31,7 @@ EXTRA_DIST = dotlock.man		\
 
 HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
-	optionalfeatures.html tuning.html reference.html miscellany.html
+	optionalfeatures.html security.html tuning.html reference.html miscellany.html
 
 BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
 
