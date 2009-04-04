@@ -82,13 +82,18 @@ both lists.
 </sect1>
 
 <sect1 id="distribution">
-<title>Software Distribution Sites</title>
+<title>Getting Mutt</title>
 
 <para>
 Mutt releases can be downloaded from
 <ulink url="ftp://ftp.mutt.org/mutt/">ftp://ftp.mutt.org/mutt/</ulink>.
 For a list of mirror sites, please refer to
 <ulink url="http://www.mutt.org/download.html">http://www.mutt.org/download.html</ulink>.
+</para>
+
+<para>
+For nightly tarballs and version control access, please refer to the
+<ulink url="http://dev.mutt.org/">Mutt development site</ulink>.
 </para>
 
 </sect1>
@@ -103,7 +108,7 @@ For a list of mirror sites, please refer to
 <listitem>
 <para>
 The official Mutt bug tracking system can be found at
-<ulink url="http://dev.mutt.org/">http://dev.mutt.org/</ulink>
+<ulink url="http://bugs.mutt.org/">http://bugs.mutt.org/</ulink>
 </para>
 </listitem>
 </varlistentry>
@@ -188,7 +193,7 @@ conventions for special terms.
 <row><entry><literal>&lt;PageUp&gt;</literal></entry><entry>named keys</entry></row>
 <row><entry><literal>&lt;create-alias&gt;</literal></entry><entry>named Mutt function</entry></row>
 <row><entry><literal>&circ;G</literal></entry><entry>Control+G key combination</entry></row>
-<row><entry><literal>&dollar;mail&lowbar;check</literal></entry><entry>Mutt configuration option</entry></row>
+<row><entry>&dollar;mail&lowbar;check</entry><entry>Mutt configuration option</entry></row>
 <row><entry><literal>&dollar;HOME</literal></entry><entry>environment variable</entry></row>
 </tbody>
 </tgroup>
@@ -1330,6 +1335,7 @@ If you specify
 <para>
 as a header, Mutt will pick up <emphasis>filename</emphasis>
 just as if you had used the <literal>&lt;edit-fcc&gt;</literal> function in the <emphasis>compose</emphasis> menu.
+It can later be changed from the compose menu.
 </para>
 
 </sect3>
@@ -1350,6 +1356,7 @@ You can also attach files to your message by specifying
 where <emphasis>filename</emphasis> is the file to attach and <emphasis>description</emphasis> is an
 optional string to use as the description of the attached file. Spaces
 in filenames have to be escaped using backslash (<quote>&bsol;</quote>).
+The file can be removed as well as more added from the compose menu.
 </para>
 
 </sect3>
@@ -1370,7 +1377,7 @@ If you want to use PGP, you can specify
 <quote>E</quote> selects encryption, <quote>S</quote> selects signing and
 <quote>S&lt;id&gt;</quote> selects signing with the given key, setting
 <link linkend="pgp-sign-as">&dollar;pgp&lowbar;sign&lowbar;as</link>
-permanently.
+permanently. The selection can later be changed in the compose menu.
 </para>
 
 </sect3>
@@ -2370,7 +2377,7 @@ For example, a command action to perform is to change the sorting method
 based upon the mailbox being read:
 
 <screen>
-folder-hook mutt set sort=threads</screen>
+folder-hook mutt "set sort=threads"</screen>
 
 However, the sorting method is not restored to its previous value when
 reading a different mailbox.  To specify a <emphasis>default</emphasis> command, use the
@@ -2389,8 +2396,8 @@ for all folders containing <quote>mutt</quote> in their name.
 <example id="ex-folder-sorting">
 <title>Setting sort method based on mailbox name</title>
 <screen>
-folder-hook . set sort=date-sent
-folder-hook mutt set sort=threads
+folder-hook . "set sort=date-sent"
+folder-hook mutt "set sort=threads"
 </screen>
 </example>
 
@@ -4320,7 +4327,7 @@ as the only argument.
 A practical example is the <literal>mutt&lowbar;xtitle</literal>
 script installed in the <literal>samples</literal>
 subdirectory of the Mutt documentation: it can be used as filter for
-<literal>&dollar;status&lowbar;format</literal> to set the current
+<link linkend="status-format">&dollar;status&lowbar;format</link> to set the current
 terminal's title, if supported.
 </para>
 
