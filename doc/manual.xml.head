@@ -4326,6 +4326,70 @@ terminal's title, if supported.
 
 </sect2>
 
+<sect2 id="formatstrings-padding">
+<title>Padding</title>
+
+<para>
+In most format strings, Mutt supports different types of padding using
+special &percnt;-expandos:
+</para>
+
+<variablelist>
+<varlistentry>
+<term><literal>%|X</literal></term>
+<listitem>
+<para>
+When this occurs, Mutt will fill the rest of the
+line with the character <literal>X</literal>. For
+example, filling the rest of the line with dashes is
+done by setting:
+</para>
+<screen>
+set status_format = "%v on %h: %B: %?n?%n&amp;no? new messages %|-"</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>
+<literal>%&gt;X</literal>
+</term>
+<listitem>
+<para>
+Since the previous expando stops at the end of line, there must be a way
+to fill the gap between two items via the <literal>&percnt;&gt;X</literal>
+expando: it puts as many characters <literal>X</literal> in between two
+items so that the rest of the line will be right-justified. For example,
+to not put the version string and hostname the above example on the left
+but on the right and fill the gap with spaces, one might use (note the
+space after <literal>&percnt;&gt;</literal>):
+</para>
+<screen>
+set status_format = "%B: %?n?%n&amp;no? new messages %&gt; (%v on %h)"</screen>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term><literal>%*X</literal>
+</term>
+<listitem>
+<para>
+Normal right-justification will print everything to the left of the
+<literal>%&gt;</literal>, displaying padding and whatever lies to the
+right only if there's room. By contrast, <quote>soft-fill</quote> gives
+priority to the right-hand side, guaranteeing space to display it and
+showing padding only if there's still room. If necessary, soft-fill will
+eat text leftwards to make room for rightward text. For example, to
+right-justify the subject making sure as much as possible of it fits on
+screen, one might use (note two spaces after <literal>&percnt;*
+</literal>: the second ensures there's a space between the truncated
+right-hand side and the subject):
+</para>
+<screen>
+set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
+</listitem>
+</varlistentry>
+</variablelist>
+
+</sect2>
+
 </sect1>
 
 </chapter>
