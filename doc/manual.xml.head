@@ -99,7 +99,7 @@ For nightly tarballs and version control access, please refer to the
 </sect1>
 
 <sect1 id="irc">
-<title>Mutt online resources</title>
+<title>Mutt Online Resources</title>
 
 <variablelist>
 
@@ -174,7 +174,7 @@ refer to the developer pages at
 </sect1>
 
 <sect1 id="typo">
-<title>Typograhical conventions</title>
+<title>Typograhical Conventions</title>
 
 <para>
 This section lists typographical conventions followed throughout this
@@ -271,7 +271,7 @@ either the Mutt man page or the <link linkend="commandline">reference</link>.
 </para>
 
 <sect1 id="core-concepts">
-<title>Core concepts</title>
+<title>Core Concepts</title>
 
 <para>
 Mutt is a text-based application which interacts with users through
@@ -608,7 +608,7 @@ the history's valuable entries with unwanted entries.
 </sect1>
 
 <sect1 id="reading">
-<title>Reading Mail - The Index and Pager</title>
+<title>Reading Mail</title>
 
 <para>
 Similar to many other mail clients, there are two modes in which mail is
@@ -1313,7 +1313,7 @@ a <quote>A</quote> to indicate that you are in attach-message mode.
 </sect2>
 
 <sect2 id="edit-header">
-<title>Editing the message header</title>
+<title>Editing the Message Header</title>
 
 <para>
 When editing the header because of <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>
@@ -1322,7 +1322,7 @@ will not be included in sent messages but trigger special Mutt behavior.
 </para>
 
 <sect3 id="fcc-header">
-<title>Fcc: pseudo header</title>
+<title>Fcc: Pseudo Header</title>
 
 <para>
 If you specify
@@ -1341,7 +1341,7 @@ It can later be changed from the compose menu.
 </sect3>
 
 <sect3 id="attach-header">
-<title>Attach: pseudo header</title>
+<title>Attach: Pseudo Header</title>
 
 <para>
 You can also attach files to your message by specifying
@@ -1362,7 +1362,7 @@ The file can be removed as well as more added from the compose menu.
 </sect3>
 
 <sect3 id="pgp-header">
-<title>Pgp: pseudo header</title>
+<title>Pgp: Pseudo Header</title>
 
 <para>
 If you want to use PGP, you can specify
@@ -1383,7 +1383,7 @@ permanently. The selection can later be changed in the compose menu.
 </sect3>
 
 <sect3 id="in-reply-to-header">
-<title>In-Reply-To: header</title>
+<title>In-Reply-To: Header</title>
 
 <para>
 When replying to messages, the <emphasis>In-Reply-To:</emphasis> header contains the
@@ -1397,7 +1397,7 @@ to create a new message to a mailing list without having to enter the mailing li
 </sect2>
 
 <sect2 id="sending-crypto">
-<title>Sending cryptographically signed/encrypted messages</title>
+<title>Sending Cryptographically Signed/Encrypted Messages</title>
 
 <para>
 If you have told Mutt to PGP or S/MIME encrypt a message, it will guide you
@@ -1476,7 +1476,7 @@ indicates complete validity.
 </sect2>
 
 <sect2 id="ff">
-<title>Sending format=flowed messages</title>
+<title>Sending Format=Flowed Messages</title>
 
 <sect3 id="ff-concept">
 <title>Concept</title>
@@ -1499,7 +1499,7 @@ receiver decide completely how to view a message.
 </sect3>
 
 <sect3 id="ff-support">
-<title>Mutt support</title>
+<title>Mutt Support</title>
 
 <para>
 Mutt only supports setting the required <literal>format=flowed</literal>
@@ -1542,7 +1542,7 @@ the original message prior to further processing.
 </sect3>
 
 <sect3 id="ff-editor">
-<title>Editor considerations</title>
+<title>Editor Considerations</title>
 
 <para>
 As Mutt provides no additional features to compose <literal>f=f</literal>
@@ -1648,7 +1648,7 @@ See also the <link linkend="postpone">&dollar;postpone</link> quad-option.
 <title>Configuration</title>
 
 <sect1 id="configuration-files">
-<title>Location of initialization files</title>
+<title>Location of Initialization Files</title>
 
 <para>
 While the default configuration (or <quote>preferences</quote>) make Mutt
@@ -1846,7 +1846,7 @@ question marks into regular expressions).</para></listitem>
 </sect1>
 
 <sect1 id="addrgroup">
-<title>Address groups</title>
+<title>Address Groups</title>
 
 <para>Usage:</para>
 
@@ -1924,7 +1924,7 @@ contents.
 </sect1>
 
 <sect1 id="alias">
-<title>Defining/Using aliases</title>
+<title>Defining/Using Aliases</title>
 
 <para>Usage:</para>
 
@@ -2038,7 +2038,7 @@ In the alias menu, you can select as many aliases as you want with the
 </sect1>
 
 <sect1 id="bind">
-<title>Changing the default key bindings</title>
+<title>Changing the Default Key Bindings</title>
 
 <para>Usage:</para>
 
@@ -2248,8 +2248,7 @@ sequence.
 </sect1>
 
 <sect1 id="charset-hook">
-
-<title>Defining aliases for character sets </title>
+<title>Defining Aliases for Character Sets</title>
 
 <para>Usage:</para>
 
@@ -2289,7 +2288,7 @@ for character sets.
 </sect1>
 
 <sect1 id="folder-hook">
-<title>Setting variables based upon mailbox</title>
+<title>Setting Variables Based Upon Mailbox</title>
 
 <para>Usage:</para>
 
@@ -2354,7 +2353,7 @@ folder-hook mutt "set sort=threads"
 </sect1>
 
 <sect1 id="macro">
-<title>Keyboard macros</title>
+<title>Keyboard Macros</title>
 
 <para>Usage:</para>
 
@@ -2424,7 +2423,7 @@ silently truncated at the screen width, and are not wrapped.
 </sect1>
 
 <sect1 id="color">
-<title>Using color and mono video attributes</title>
+<title>Using Color and Mono Video Attributes</title>
 
 <para>Usage:</para>
 
@@ -2667,7 +2666,7 @@ can be one of the following:
 </sect1>
 
 <sect1 id="msg-hdr-display">
-<title>Message header display</title>
+<title>Message Header Display</title>
 
 <sect2 id="ignore">
 <title>Selecting Headers</title>
@@ -2779,7 +2778,7 @@ hdr&lowbar;order From Date: From: To: Cc: Subject:
 </sect1>
 
 <sect1 id="alternates">
-<title>Alternative addresses</title>
+<title>Alternative Addresses</title>
 
 <para>Usage:</para>
 
@@ -2876,7 +2875,7 @@ is <quote>*</quote>, <emphasis>all entries</emphasis> on <literal>alternates</li
 </sect1>
 
 <sect1 id="lists">
-<title>Mailing lists</title>
+<title>Mailing Lists</title>
 
 <anchor id="subscribe"/>
 <para>Usage:</para>
@@ -3022,7 +3021,7 @@ but keep it on the list of known mailing lists, use <quote>unsubscribe</quote>.
 </sect1>
 
 <sect1 id="mbox-hook">
-<title>Using Multiple spool mailboxes</title>
+<title>Using Multiple Spool Mailboxes</title>
 
 <para>Usage:</para>
 
@@ -3053,7 +3052,7 @@ mailbox).
 </sect1>
 
 <sect1 id="mailboxes">
-<title>Monitoring incoming mail</title>
+<title>Monitoring Incoming Mail</title>
 
 <para>Usage:</para>
 
@@ -3140,7 +3139,7 @@ mail detection instead which won't work for size-neutral changes.
 </sect1>
 
 <sect1 id="my-hdr">
-<title>User defined headers</title>
+<title>User-Defined Headers</title>
 
 <para>Usage:</para>
 
@@ -3211,7 +3210,7 @@ unmy&lowbar;hdr to cc
 </sect1>
 
 <sect1 id="save-hook">
-<title>Specify default save mailbox</title>
+<title>Specify Default Save Mailbox</title>
 
 <para>Usage:</para>
 
@@ -3259,7 +3258,7 @@ Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
 </sect1>
 
 <sect1 id="fcc-hook">
-<title>Specify default Fcc: mailbox when composing</title>
+<title>Specify Default Fcc: Mailbox When Composing</title>
 
 <para>Usage:</para>
 
@@ -3301,7 +3300,7 @@ the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">
 </sect1>
 
 <sect1 id="fcc-save-hook">
-<title>Specify default save filename and default Fcc: mailbox at once</title>
+<title>Specify Default Save Filename and Default Fcc: Mailbox at Once</title>
 
 <para>Usage:</para>
 
@@ -3325,7 +3324,7 @@ to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 </sect1>
 
 <sect1 id="send-hook">
-<title>Change settings based upon message recipients</title>
+<title>Change Settings Based Upon Message Recipients</title>
 
 <anchor id="reply-hook"/>
 <anchor id="send2-hook"/>
@@ -3422,7 +3421,7 @@ from a <literal>send-hook</literal>.
 </sect1>
 
 <sect1 id="message-hook">
-<title>Change settings before formatting a message</title>
+<title>Change Settings Before Formatting a Message</title>
 
 <para>Usage:</para>
 
@@ -3461,7 +3460,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 </sect1>
 
 <sect1 id="crypt-hook">
-<title>Choosing the cryptographic key of the recipient</title>
+<title>Choosing the Cryptographic Key of the Recipient</title>
 
 <para>Usage:</para>
 
@@ -3494,7 +3493,7 @@ just a real name.
 </sect1>
 
 <sect1 id="push">
-<title>Adding key sequences to the keyboard buffer</title>
+<title>Adding Key Sequences to the Keyboard Buffer</title>
 
 <para>Usage:</para>
 
@@ -3524,7 +3523,7 @@ folder-hook . 'push &lt;collapse-all&gt;'
 </sect1>
 
 <sect1 id="exec">
-<title>Executing functions</title>
+<title>Executing Functions</title>
 
 <para>Usage:</para>
 
@@ -3595,7 +3594,7 @@ of all score entries.
 </sect1>
 
 <sect1 id="spam">
-<title>Spam detection</title>
+<title>Spam Detection</title>
 
 <para>Usage:</para>
 
@@ -3748,7 +3747,7 @@ spam "^From: .*MAILER-DAEMON"       "999"
 <title>Setting and Querying Variables</title>
 
 <sect2 id="var-types">
-<title>Variable types</title>
+<title>Variable Types</title>
 
 <para>
 Mutt supports these types of configuration variables:
@@ -3964,7 +3963,7 @@ which allows you to reset all variables to their system defaults.
 </sect2>
 
 <sect2 id="set-myvar">
-<title>User-defined variables</title>
+<title>User-Defined Variables</title>
 
 <sect3 id="set-myvar-intro">
 <title>Introduction</title>
@@ -4070,7 +4069,7 @@ recording the macro's commands into its history.
 </sect1>
 
 <sect1 id="source">
-<title>Reading initialization commands from another file</title>
+<title>Reading Initialization Commands From Another File</title>
 
 <para>Usage:</para>
 
@@ -4102,7 +4101,7 @@ considered to be an executable program from which to read input (eg.
 </sect1>
 
 <sect1 id="unhook">
-<title>Removing hooks</title>
+<title>Removing Hooks</title>
 
 <para>Usage:</para>
 
@@ -5522,7 +5521,7 @@ the mailboxes list containing new mail (if any), pressing
 </sect1>
 
 <sect1 id="editing-threads">
-<title>Editing threads</title>
+<title>Editing Threads</title>
 
 <para>
 Mutt has the ability to dynamically restructure threads that are broken
@@ -5532,7 +5531,7 @@ annoyances which make it hard to follow a discussion.
 </para>
 
 <sect2 id="link-threads">
-<title>Linking threads</title>
+<title>Linking Threads</title>
 
 <para>
 Some mailers tend to <quote>forget</quote> to correctly set the <quote>In-Reply-To:</quote> and
@@ -5552,7 +5551,7 @@ You can also connect multiple children at once, tagging them and using the
 </sect2>
 
 <sect2 id="break-threads">
-<title>Breaking threads</title>
+<title>Breaking Threads</title>
 
 <para>
 On mailing lists, some people are in the bad habit of starting a new
@@ -5694,7 +5693,7 @@ menu.
 </para>
 
 <sect2 id="mime-pager">
-<title>Viewing MIME messages in the pager</title>
+<title>Viewing MIME Messages in the Pager</title>
 
 <para>
 When you select a message from the index and view it in the pager, Mutt
@@ -5801,7 +5800,7 @@ changed with the <literal>&lt;edit-description&gt;</literal> command (default: d
 </sect1>
 
 <sect1 id="mime-types">
-<title>MIME Type configuration with <literal>mime.types</literal></title>
+<title>MIME Type Configuration with <literal>mime.types</literal></title>
 
 <para>
 When you add an attachment to your mail message, Mutt searches your
@@ -5847,7 +5846,7 @@ if the recipient of the message is likely to be expecting such attachments.
 </sect1>
 
 <sect1 id="mailcap">
-<title>MIME Viewer configuration with mailcap</title>
+<title>MIME Viewer Configuration with Mailcap</title>
 
 <para>
 Mutt supports RFC 1524 MIME Configuration, in particular the Unix
@@ -5898,7 +5897,7 @@ entries.
 </para>
 
 <sect2 id="mailcap-basics">
-<title>The Basics of the mailcap file</title>
+<title>The Basics of the Mailcap File</title>
 
 <para>
 A mailcap file consists of a series of lines which are comments, blank,
@@ -6009,7 +6008,7 @@ This is the simplest form of a mailcap file.
 </sect2>
 
 <sect2 id="secure-mailcap">
-<title>Secure use of mailcap</title>
+<title>Secure Use of Mailcap</title>
 
 <para>
 The interpretation of shell meta-characters embedded in MIME parameters
@@ -6050,7 +6049,7 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} &bsol;
 </sect2>
 
 <sect2 id="advanced-mailcap">
-<title>Advanced mailcap Usage</title>
+<title>Advanced Mailcap Usage</title>
 
 <sect3 id="optional-mailcap-fields">
 <title>Optional Fields</title>
@@ -6314,7 +6313,7 @@ multipart messages, which is handled internally by Mutt.
 </sect2>
 
 <sect2 id="mailcap-example">
-<title>Example mailcap files</title>
+<title>Example Mailcap Files</title>
 
 <para>
 This mailcap file is fairly simple and standard:
@@ -6632,13 +6631,13 @@ set, for example, in a global <literal>.muttrc</literal>.
 </chapter>
 
 <chapter id="optionalfeatures">
-<title>Optional features</title>
+<title>Optional Features</title>
 
 <sect1 id="optionalfeatures-notes">
-<title>General notes</title>
+<title>General Notes</title>
 
 <sect2 id="compile-time-features">
-<title>Enabling/disabling features</title>
+<title>Enabling/Disabling Features</title>
 
 <para>
 Mutt supports several of optional features which can be enabled or
@@ -6661,7 +6660,7 @@ OpenSSL, <literal>mutt -v</literal> would contain:
 </sect2>
 
 <sect2 id="url-syntax">
-<title>URL syntax</title>
+<title>URL Syntax</title>
 
 <para>
 Mutt optionally supports the IMAP, POP3 and SMTP protocols which require
@@ -6820,7 +6819,7 @@ selects the same folder.
 </note>
 
 <sect2 id="imap-browser">
-<title>The Folder Browser</title>
+<title>The IMAP Folder Browser</title>
 
 <para>
 As of version 1.2, Mutt supports browsing mailboxes on an IMAP
@@ -6963,7 +6962,7 @@ from most-secure to least-secure.
 </sect1>
 
 <sect1 id="account-hook">
-<title>Managing multiple accounts</title>
+<title>Managing Multiple Accounts</title>
 
 <para>
 If you happen to have accounts on multiple IMAP, POP and/or SMTP servers,
@@ -7032,7 +7031,7 @@ or <link linkend="signature">&dollar;signature</link> is analogous to setting
 </sect1>
 
 <sect1 id="caching">
-<title>Local caching</title>
+<title>Local Caching</title>
 
 <para>
 Mutt contains two types of local caching: <emphasis>(1)</emphasis>
@@ -7047,7 +7046,7 @@ support as these use it (body caching requires no external library).
 </para>
 
 <sect2 id="header-caching">
-<title>Header caching</title>
+<title>Header Caching</title>
 
 <para>
 Mutt provides optional support for caching message headers for the
@@ -7077,7 +7076,7 @@ to a directory.
 </sect2>
 
 <sect2 id="body-caching">
-<title>Body caching</title>
+<title>Body Caching</title>
 
 <para>
 Both cache methods can be combined using the same directory for storage
@@ -7133,7 +7132,7 @@ it should not be set in general but only occasionally.
 </sect1>
 
 <sect1 id="exact-address">
-<title>Exact address generation</title>
+<title>Exact Address Generation</title>
 
 <para>
 Mutt supports the <quote>Name &lt;user@host&gt;</quote> address syntax for reading and
@@ -7245,7 +7244,7 @@ via the <link linkend="tmpdir">&dollar;tmpdir</link> variable.
 <title>Information Leaks</title>
 
 <sect2 id="security-leaks-mid">
-<title>Message-ID: headers</title>
+<title>Message-Id: headers</title>
 
 <para>
 Message-Id: headers contain a local part that is to be created in a
@@ -7263,7 +7262,7 @@ recommended).
 </sect2>
 
 <sect2 id="security-leaks-mailto">
-<title><literal>mailto:</literal>-style links</title>
+<title><literal>mailto:</literal>-style Links</title>
 
 <para>
 As Mutt be can be set up to be the mail client to handle
@@ -7296,7 +7295,7 @@ on screen carefully enough.
 </sect1>
 
 <sect1 id="security-external">
-<title>External applications</title>
+<title>External Applications</title>
 
 <para>
 Mutt in many places has to rely on external applications or for
@@ -7323,10 +7322,10 @@ mailcap.
 
 
 <chapter id="tuning">
-<title>Performance tuning</title>
+<title>Performance Tuning</title>
 
 <sect1 id="tuning-mailboxes">
-<title>Reading and writing mailboxes</title>
+<title>Reading and Writing Mailboxes</title>
 
 <para>
 Mutt's performance when reading mailboxes can be improved in two ways:
@@ -7383,7 +7382,7 @@ actually send to the terminal using the
 </sect1>
 
 <sect1 id="tuning-messages">
-<title>Reading messages from remote folders</title>
+<title>Reading Messages from Remote Folders</title>
 
 <para>
 Reading messages from remote folders such as IMAP an POP can be
@@ -7401,7 +7400,7 @@ please refer to Mutt's so-called
 </sect1>
 
 <sect1 id="tuning-search">
-<title>Searching and limiting</title>
+<title>Searching and Limiting</title>
 
 <para>
 When searching mailboxes either via a search or a limit action, for
@@ -7440,7 +7439,7 @@ Mutt performs server-side searches which don't support case-insensivity).
 <title>Reference</title>
 
 <sect1 id="commandline">
-<title>Command line options</title>
+<title>Command-Line Options</title>
 
 <para>
 Running <literal>mutt</literal> with no arguments will make Mutt attempt to read your spool
@@ -8379,4 +8378,4 @@ The following are the commands understood by Mutt:
 </sect1>
 
 <sect1 id="variables">
-<title>Configuration variables</title>
+<title>Configuration Variables</title>

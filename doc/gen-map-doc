@@ -49,17 +49,19 @@ open XML, $xml or die "$xml: $!";
 while (<XML>) {
   if (/__print_map\((.*)\)/) {
     my $map = $1;
+    my $maptitle = $1;
+    $maptitle =~ s/^(.)/\U$1\E/;
     unless ($MAP{$map}) {
       warn "map $map undefined";
       next;
     }
     print <<EOT;
 <sect2 id="${map}-map">
-<title>$map menu</title>
+<title>$maptitle Menu</title>
 $DOC{$map}
 
 <table id="${map}-table">
-<title>Default $map function bindings</title>
+<title>Default $map Function Bindings</title>
 <tgroup cols="3">
 <thead>
 <row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>
@@ -73,7 +75,7 @@ $MAP{$map}
 </sect2>
 
 EOT
-    delete $MAP{$1};
+    delete $MAP{$map};
   } else {
     print;
   }
