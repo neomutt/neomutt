@@ -1,3 +1,68 @@
+2009-04-04 15:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (d4ea8e9a9024)
+
+	* doc/gen-map-doc, doc/manual.xml.head, doc/manual.xml.tail: Manual:
+	Capitalize headlines
+
+2009-04-04 15:08 +0200  Rocco Rutte  <pdmef@gmx.net>  (6fd8d35891b0)
+
+	* doc/manual.xml.head: Manual: Move section on mixmaster support to
+	Optional Features
+
+2009-04-04 15:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (4d013dbd2a7d)
+
+	* doc/manual.xml.head: Manual: Remove duplicate section on mailcap use
+	from security chapter
+
+	We already have a more detailed section on secure mailcap usage, so
+	link to it.
+
+2009-04-04 14:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (e4c555e22ae4)
+
+	* doc/manual.xml.head: Manual: Minor improvements and fixes
+
+2009-04-04 14:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (0c3d03bae08f)
+
+	* doc/Makefile.am, doc/manual.xml.head: Manual: Add a short chapter
+	summarizing security considerations
+
+2009-04-04 13:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (e98bd4a2140e)
+
+	* doc/manual.xml.head: Manual: Use &mdash; in text rather than --
+
+2009-04-04 13:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (146ea199a322)
+
+	* doc/manual.xml.head: Manual: Add section on padding for format
+	strings
+
+2009-04-04 13:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (548417cbc818)
+
+	* doc/manual.xml.head: Manual: Mention reply types in "Sending Mail"
+	section
+
+2009-04-04 12:38 +0200  Rocco Rutte  <pdmef@gmx.net>  (9e4ca65ee5bd)
+
+	* doc/manual.xml.head: Manual: Add table with navigation keys for
+	page-based menus
+
+2009-04-04 12:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (6384fd337597)
+
+	* doc/mutt.css: mutt.css: Add left+right margins to screen, note and
+	examples
+
+2009-04-04 12:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (1052f8f5758d)
+
+	* doc/manual.xml.head: Manual: Add section on screens and menus with
+	short descriptions.
+
+	Mostly stolen from old mutt-ng docs with adjustments.
+
+2009-04-02 13:11 +0200  Steve Kemp  <skx@debian.org>  (23c7b469ff20)
+
+	* ChangeLog, init.h, sendlib.c: Only append -- to $sendmail if not
+	present. Closes #3168.
+
+	This allows users to add custom recipients via $sendmail.
+
 2009-04-02 12:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (bfb12cf02417)
 
 	* init.h: Clarify what $attach_charset does, closes #3165.

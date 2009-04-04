@@ -138,7 +138,8 @@ spellcheck:
 sortcheck: manual.xml
 	sed -n -e '1,/^<sect1 id="variables">/d' -e '1,/^<sect1 id="functions">/s/<sect2 id="\([^"]*\)">/\1/p' < manual.xml > vars.tmp.1
 	sort < vars.tmp.1 > vars.tmp.2
-	diff -u vars.tmp.1 vars.tmp.2 | less
+	cmp -s vars.tmp.1 vars.tmp.2 || diff -u vars.tmp.1 vars.tmp.2 | less
+	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
 	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
