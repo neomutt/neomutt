@@ -459,12 +459,13 @@ and easy access to message's internals.
 <title>Moving Around in Menus</title>
 
 <para>
-The most important navigation keys common to all menus are shown in
-<xref linkend="tab-keys-nav"/>.
+The most important navigation keys common to line- or entry-based menus
+are shown in <xref linkend="tab-keys-nav-line"/> and in
+<xref linkend="tab-keys-nav-page"/> for page-based menus.
 </para>
 
-<table id="tab-keys-nav">
-<title>Most common navigation keys</title>
+<table id="tab-keys-nav-line">
+<title>Most common navigation keys in entry-based menus</title>
 <tgroup cols="3">
 <thead>
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
@@ -478,6 +479,23 @@ The most important navigation keys common to all menus are shown in
 <row><entry>* or &lt;End&gt;</entry><entry><literal>&lt;last-entry&gt;</literal></entry><entry>jump to the last entry</entry></row>
 <row><entry>q</entry><entry><literal>&lt;quit&gt;</literal></entry><entry>exit the current menu</entry></row>
 <row><entry>?</entry><entry><literal>&lt;help&gt;</literal></entry><entry>list all keybindings for the current menu</entry></row>
+</tbody>
+</tgroup>
+</table>
+
+<table id="tab-keys-nav-page">
+<title>Most common navigation keys in page-based menus</title>
+<tgroup cols="3">
+<thead>
+<row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry>J or &lt;Return&gt;</entry><entry><literal>&lt;next-line&gt;</literal></entry><entry>scroll down one line</entry></row>
+<row><entry>&lt;Backspace&gt;</entry><entry><literal>&lt;previous-line&gt;</literal></entry><entry>sroll up one line</entry></row>
+<row><entry>K, &lt;Space&gt; or &lt;PageDn&gt;</entry><entry><literal>&lt;next-page&gt;</literal></entry><entry>move to the next page</entry></row>
+<row><entry>- or &lt;PageUp&gt;</entry><entry><literal>&lt;previous-page&gt;</literal></entry><entry>move the previous page</entry></row>
+<row><entry>&lt;Home&gt;</entry><entry><literal>&lt;top&gt;</literal></entry><entry>move to the top</entry></row>
+<row><entry>&lt;End&gt;</entry><entry><literal>&lt;bottom&gt;</literal></entry><entry>move to the bottom</entry></row>
 </tbody>
 </tgroup>
 </table>
