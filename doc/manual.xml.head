@@ -1183,7 +1183,7 @@ and Bouncing Mail</link>.</quote>
 
 <para>
 Mutt will then enter the <emphasis>compose</emphasis> menu and prompt you for the
-recipients to place on the <quote>To:</quote> header field.  Next, it will ask
+recipients to place on the <quote>To:</quote> header field when you hit <literal>m</literal> to start a new message. Next, it will ask
 you for the <quote>Subject:</quote> field for the message, providing a default if
 you are replying to or forwarding a message. You again
 have the chance to adjust recipients, subject, and security settings
@@ -1198,17 +1198,56 @@ for changing how and if Mutt asks these questions.
 </para>
 
 <para>
-Mutt will then automatically start your <link linkend="editor">&dollar;editor</link>
-on the message body. If the <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>
-variable is set, the headers will be at the top of the message in your editor.
-Any messages you are replying to will be added in sort order to the message,
+When replying, Mutt fills these fields with proper values depending on
+the reply type.  The types of replying supported are:
+</para>
+
+<variablelist>
+<varlistentry>
+<term>Simple reply</term>
+<listitem>
+<para>
+Reply to the author directly.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>Group reply</term>
+<listitem>
+<para>
+Reply to the author as well to all recipients except you; this consults
+<link linkend="alternates">alternates</link>.
+</para>
+</listitem>
+</varlistentry>
+<varlistentry>
+<term>List reply</term>
+<listitem>
+<para>
+Reply to all mailing list addresses found, either specified via
+configuration or auto-detected.  See <xref linkend="lists"/> for
+details.
+</para>
+</listitem>
+</varlistentry>
+</variablelist>
+
+<para>
+After getting recipients for new messages, forwards or replies, Mutt
+will then automatically start your <link
+linkend="editor">&dollar;editor</link> on the message body. If the <link
+linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable is
+set, the headers will be at the top of the message in your editor.  Any
+messages you are replying to will be added in sort order to the message,
 with appropriate <link linkend="attribution">&dollar;attribution</link>,
 <link linkend="indent-string">&dollar;indent&lowbar;string</link> and
-<link linkend="post-indent-string">&dollar;post&lowbar;indent&lowbar;string</link>.
-When forwarding a message, if the <link linkend="mime-forward">&dollar;mime&lowbar;forward</link>
-variable is unset, a copy of the forwarded message will be included.  If
-you have specified a <link linkend="signature">&dollar;signature</link>, it
-will be appended to the message.
+<link
+linkend="post-indent-string">&dollar;post&lowbar;indent&lowbar;string</link>.
+When forwarding a message, if the <link
+linkend="mime-forward">&dollar;mime&lowbar;forward</link> variable is
+unset, a copy of the forwarded message will be included.  If you have
+specified a <link linkend="signature">&dollar;signature</link>, it will
+be appended to the message.
 </para>
 
 <para>
