@@ -7303,57 +7303,11 @@ Mutt in many places has to rely on external applications or for
 convenience supports mechanisms involving external applications.
 </para>
 
-<sect2 id="security-external-mailcap">
-<title>mailcap</title>
-
 <para>
 One of these is the <literal>mailcap</literal> mechanism as defined by
-RfC1524. Mutt can be set up to <emphasis>automatically</emphasis>
-execute any given utility as listed in one of the mailcap files (see the
-<link linkend="mailcap-path">&dollar;mailcap&lowbar;path</link> variable
-for details.)
+RfC1524. Details about a secure use of the mailcap mechanisms is given
+in <xref linkend="secure-mailcap"/>.
 </para>
-
-<para>
-These utilities may have a variety of security vulnerabilities,
-including overwriting of arbitrary files, information leaks or other
-exploitable bugs.  These vulnerabilities may go unnoticed by the user,
-especially when they are called automatically (and without interactive
-prompting) from the mailcap file(s). When using Mutt's autoview
-mechanism in combination with mailcap files, please be sure to...
-</para>
-
-<itemizedlist>
-<listitem>
-<para>
-manually select trustworth applications with a reasonable calling
-sequence
-</para>
-</listitem>
-<listitem>
-<para>
-periodically check the contents of mailcap files, especially after
-software installations or upgrades
-</para>
-</listitem>
-<listitem>
-<para>
-keep the software packages referenced in the mailcap file up to date
-</para>
-</listitem>
-<listitem>
-<para>
-leave the <link linkend="mailcap-sanitize">&dollar;mailcap-sanitize</link>
-variable with its default value to restrict mailcap expandos to a safe set of
-characters
-</para>
-</listitem>
-</itemizedlist>
-
-</sect2>
-
-<sect2 id="security-external-other">
-<title>Other</title>
 
 <para>
 Besides the mailcap mechanism, Mutt uses a number of other external
@@ -7362,8 +7316,6 @@ backtick expansion in configuration files or format string filters.  The
 same security considerations apply for these as for tools involved via
 mailcap.
 </para>
-
-</sect2>
 
 </sect1>
 
