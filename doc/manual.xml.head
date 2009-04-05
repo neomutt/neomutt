@@ -1941,6 +1941,20 @@ contents.
 <arg choice="opt" rep="repeat">
 <replaceable class="parameter">address</replaceable>
 </arg>
+
+<command>unalias</command>
+<arg choice="opt" rep="repeat">
+<option>-group</option>
+<replaceable>name</replaceable>
+</arg>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">key</replaceable>
+</arg>
+</group>
 </cmdsynopsis>
 
 <para>
@@ -1965,22 +1979,6 @@ the named <emphasis>group</emphasis>.
 <para>
 To remove an alias or aliases (<quote>*</quote> means all aliases):
 </para>
-
-<cmdsynopsis>
-<command>unalias</command>
-<arg choice="opt" rep="repeat">
-<option>-group</option>
-<replaceable>name</replaceable>
-</arg>
-<group choice="req">
-<arg choice="plain">
-<replaceable class="parameter">*</replaceable>
-</arg>
-<arg choice="plain" rep="repeat">
-<replaceable class="parameter">key</replaceable>
-</arg>
-</group>
-</cmdsynopsis>
 
 <screen>
 alias muttdude me@cs.hmc.edu (Michael Elkins)
