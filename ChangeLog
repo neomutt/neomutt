@@ -1,3 +1,15 @@
+2009-04-05 09:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (864b19c6829f)
+
+	* doc/manual.xml.head: Manual: More entities and <quotes/> as
+	appropriate
+
+2009-04-04 16:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (a4b635e96b30)
+
+	* ChangeLog, doc/Makefile.am: Manual: Improve 'sortcheck' target
+
+	Don't call up diff+pager if all is sorted and remove the temp files
+	for diffing we created.
+
 2009-04-04 15:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (d4ea8e9a9024)
 
 	* doc/gen-map-doc, doc/manual.xml.head, doc/manual.xml.tail: Manual:
