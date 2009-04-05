@@ -1,7 +1,6 @@
 body { margin-left:2%; margin-right:2%; font-family:serif; }
 .toc, .list-of-tables, .list-of-examples { font-family:sans-serif; }
 h1, h2, h3, h4, h5, h6 { font-family:sans-serif; }
-em.replaceable code { font-family:sans-serif; }
 p { text-align:justify; }
 div.table p.title, div.example p.title { font-size:smaller; font-family:sans-serif; }
 .email, .email a { font-family:monospace; }
@@ -13,6 +12,8 @@ div.table-contents table th, div.informaltable table th {
     font-weight:normal;
     vertical-align:top;
 }
+div.cmdsynopsis { border-left:1px solid #707070; padding-left:5px; }
+li div.cmdsynopsis { border-left:none; padding-left:0px; }
 pre.screen, div.note { background:#f0f0f0; border:1px solid #c0c0c0; padding:5px; margin-left:2%; margin-right:2%; }
 div.example p.title { margin-left:2%; }
 div.note h3 { font-size:small; font-style:italic; font-variant: small-caps; }

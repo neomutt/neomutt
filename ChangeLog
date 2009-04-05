@@ -1,3 +1,15 @@
+2009-04-05 11:55 +0200  Rocco Rutte  <pdmef@gmx.net>  (7b6f1302e60d)
+
+	* doc/manual.xml.head: Manual: Make sure every rc command has a
+	synopsis in its describing section
+
+2009-04-05 11:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (1b844544a160)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Fold consecutive
+	<cmdsynopsis/> into just one
+
+	This make it visually easier to spot what belongs together.
+
 2009-04-05 09:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (864b19c6829f)
 
 	* doc/manual.xml.head: Manual: More entities and <quotes/> as
