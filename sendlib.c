@@ -1909,7 +1909,7 @@ static void encode_headers (LIST *h)
 
 const char *mutt_fqdn(short may_hide_host)
 {
-  char *p = NULL, *q;
+  char *p = NULL;
   
   if(Fqdn && Fqdn[0] != '@')
   {
@@ -1924,7 +1924,7 @@ const char *mutt_fqdn(short may_hide_host)
        * the fqdn is something like detebe.org.
        */
       
-      if(!p || !(q = strchr(p, '.')))
+      if(!p || !strchr(p, '.'))
 	p = Fqdn;
     }
   }
