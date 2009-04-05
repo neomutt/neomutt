@@ -1,3 +1,11 @@
+2009-04-05 13:41 +0200  Rocco Rutte  <pdmef@gmx.net>  (5d393e716c51)
+
+	* ChangeLog, init.h, sendlib.c: Backed out changeset 23c7b469ff20
+
+	This requires more thought: if the user has -- in $sendmail, we need
+	to add our arguments for 8BITMIME/DSN/etc. before it and not after.
+	See #3168.
+
 2009-04-05 11:55 +0200  Rocco Rutte  <pdmef@gmx.net>  (7b6f1302e60d)
 
 	* doc/manual.xml.head: Manual: Make sure every rc command has a
