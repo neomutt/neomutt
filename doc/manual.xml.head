@@ -6332,6 +6332,30 @@ application/ms-excel; open.pl %s
 <title>MIME Autoview</title>
 
 <para>
+Usage:
+</para>
+
+<cmdsynopsis>
+<command>auto-view</command>
+<arg choice="plain">
+<replaceable>mimetype</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+
+<command>unauto-view</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<para>
 In addition to explicitly telling Mutt to view an attachment with the
 MIME viewer defined in the mailcap file, Mutt has support for
 automatically viewing MIME attachments while in the pager.
@@ -6554,6 +6578,30 @@ it can be pasted elsewhere.
 
 <sect1 id="mime-lookup">
 <title>MIME Lookup</title>
+
+<para>
+Usage:
+</para>
+
+<cmdsynopsis>
+<command>mime-lookup</command>
+<arg choice="plain">
+<replaceable>mimetype</replaceable>
+</arg>
+<arg choice="opt" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+
+<command>unmime-lookup</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>mimetype</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
 
 <para>
 Mutt's mime&lowbar;lookup list specifies a list of mime-types that should not
@@ -6913,6 +6961,20 @@ from most-secure to least-secure.
 
 <sect1 id="account-hook">
 <title>Managing Multiple Accounts</title>
+
+<para>
+Usage:
+</para>
+
+<cmdsynopsis>
+<command>account-hook</command>
+<arg choice="plain">
+<replaceable class="parameter">pattern</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
 
 <para>
 If you happen to have accounts on multiple IMAP, POP and/or SMTP servers,
