@@ -13,7 +13,7 @@
 
 <abstract>
 <para>
-<quote>All mail clients suck.  This one just sucks less.</quote> -me, circa 1995
+<quote>All mail clients suck.  This one just sucks less.</quote> &mdash; me, circa 1995
 </para>
 </abstract>
 </bookinfo>
@@ -220,7 +220,7 @@ denote that the argument may be repeated arbitrary times.
 <title>Copyright</title>
 
 <para>
-Mutt is Copyright (C) 1996-2009 Michael R. Elkins
+Mutt is Copyright &copy; 1996-2009 Michael R. Elkins
 <email>me@mutt.org</email> and others.
 </para>
 
@@ -772,7 +772,7 @@ the pager, such as <literal>&lt;delete-message&gt;</literal> or <literal>&lt;cop
 Also, the internal pager supports a couple other advanced features. For
 one, it will accept and translate the <quote>standard</quote> nroff sequences for
 bold and underline. These sequences are a series of either the letter,
-backspace (&circ;H), the letter again for bold or the letter, backspace,
+backspace (<quote>&circ;H</quote>), the letter again for bold or the letter, backspace,
 <quote>&lowbar;</quote> for denoting underline. Mutt will attempt to display these
 in bold and underline respectively if your terminal supports them. If
 not, you can use the bold and underline <link linkend="color">color</link>
@@ -1429,7 +1429,7 @@ and validity fields are in order.
 </para>
 
 <para>
-The flags sequence (&percnt;f) will expand to one of the flags in
+The flags sequence (<quote>&percnt;f</quote>) will expand to one of the flags in
 <xref linkend="tab-pgp-menuflags"/>.
 </para>
 
@@ -1449,7 +1449,7 @@ The flags sequence (&percnt;f) will expand to one of the flags in
 </table>
 
 <para>
-The capabilities field (&percnt;c) expands to a two-character sequence
+The capabilities field (<quote>&percnt;c</quote>) expands to a two-character sequence
 representing a key's capabilities.  The first character gives
 the key's encryption capabilities: A minus sign (<quote>-</quote>) means
 that the key cannot be used for encryption.  A dot (<quote>.</quote>) means that
@@ -1466,7 +1466,7 @@ that the key is marked as an encryption key in one of the user-ids, and
 </para>
 
 <para>
-Finally, the validity field (&percnt;t) indicates how well-certified a user-id
+Finally, the validity field (<quote>&percnt;t</quote>) indicates how well-certified a user-id
 is.  A question mark (<quote>?</quote>) indicates undefined validity, a minus
 character (<quote>-</quote>) marks an untrusted association, a space character
 means a partially trusted association, and a plus character (<quote>+</quote>)
@@ -1688,7 +1688,7 @@ V) from the index menu.
 <para>
 An initialization file consists of a series of <link linkend="commands">commands</link>.  Each line of the file may contain one or more commands.
 When multiple commands are used, they must be separated by a semicolon
-(;).
+(<quote>;</quote>).
 </para>
 
 <example id="ex-rc-multiple-cmds">
@@ -1713,7 +1713,7 @@ my_hdr X-Disclaimer: Why are you listening to me? &num; This is a comment
 </example>
 
 <para>
-Single quotes (') and double quotes (&quot;) can be used to quote strings
+Single quotes (<quote>'</quote>) and double quotes (<quote>&quot;</quote>) can be used to quote strings
 which contain spaces or other special characters.  The difference between
 the two types of quotes is similar to that of many popular shell programs,
 namely that a single quote is used to specify a literal string (one that is
@@ -3580,7 +3580,7 @@ which scan information not available in the index, such as <literal>&tilde;b</li
 <literal>&tilde;B</literal> or <literal>&tilde;h</literal>, may not be used).  <emphasis>value</emphasis> is a
 positive or negative integer.  A message's final score is the sum total of all
 matching <literal>score</literal> entries.  However, you may optionally prefix <emphasis>value</emphasis> with
-an equal sign (=) to cause evaluation to stop at a particular entry if there is
+an equal sign (<quote>=</quote>) to cause evaluation to stop at a particular entry if there is
 a match.  Negative final scores are rounded up to 0.
 </para>
 
@@ -4093,7 +4093,7 @@ path of your home directory.
 </para>
 
 <para>
-If the filename ends with a vertical bar (&verbar;), then <emphasis>filename</emphasis> is
+If the filename ends with a vertical bar (<quote>&verbar;</quote>), then <emphasis>filename</emphasis> is
 considered to be an executable program from which to read input (eg.
 <literal>source &tilde;/bin/myscript&verbar;</literal>).
 </para>
@@ -5268,7 +5268,7 @@ bodies).
 consists of a directory and each message is stored in a separate file.
 The filename indicates the message number (however, this is may not
 correspond to the message number Mutt displays). Deleted messages are
-renamed with a comma (,) prepended to the filename. Mutt
+renamed with a comma (<quote>,</quote>) prepended to the filename. Mutt
 detects this type of mailbox by looking for either <literal>.mh&lowbar;sequences</literal>
 or <literal>.xmhcache</literal> files (needed to distinguish normal directories from MH
 mailboxes). MH is more robust with concurrent clients writing the mailbox,
