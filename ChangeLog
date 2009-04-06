@@ -1,3 +1,7 @@
+2009-04-06 19:07 +0200  Erik Hovland  <erik@hovland.org>  (b5cbd0dab863)
+
+	* sendlib.c: Plug memory leaks in sendlib.c
+
 2009-04-05 13:41 +0200  Rocco Rutte  <pdmef@gmx.net>  (5d393e716c51)
 
 	* ChangeLog, init.h, sendlib.c: Backed out changeset 23c7b469ff20

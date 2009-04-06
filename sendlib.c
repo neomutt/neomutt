@@ -1070,7 +1070,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
  cleanup:
   FREE (&line);
 
-  if (fpin && !fp)
+  if (fpin && fpin != fp)
     safe_fclose (&fpin);
   if (fpout)
     safe_fclose (&fpout);
