@@ -6742,7 +6742,7 @@ variable, which defaults to every 60 seconds.
 
 <anchor id="fetch-mail"/>
 <para>
-Another way to access your POP3 mail is the <literal>&lt;fetch-mail&dollar;</literal> function
+Another way to access your POP3 mail is the <literal>&lt;fetch-mail&gt;</literal> function
 (default: G).  It allows to connect to <link linkend="pop-host">&dollar;pop&lowbar;host</link>, fetch all your new mail and place it in the
 local <link linkend="spoolfile">&dollar;spoolfile</link>.  After this
 point, Mutt runs exactly as if the mail had always been local.
