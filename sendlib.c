@@ -766,7 +766,7 @@ static size_t convert_file_from_to (FILE *file,
 				    const char *fromcodes, const char *tocodes,
 				    char **fromcode, char **tocode, CONTENT *info)
 {
-  char *fcode;
+  char *fcode = NULL;
   char **tcode;
   const char *c, *c1;
   size_t ret;
@@ -828,8 +828,9 @@ static size_t convert_file_from_to (FILE *file,
   for (i = 0; i < ncodes; i++)
     FREE (&tcode[i]);
 
-  FREE (tcode);		/* __FREE_CHECKED__ */
-  
+  FREE (&tcode);
+  FREE (&fcode);
+
   return ret;
 }
 
@@ -1385,6 +1386,7 @@ BODY *mutt_make_file_attach (const char *path)
     }
   } 
 
+  FREE(&info);
   mutt_update_encoding (att);
   return (att);
 }
@@ -2395,6 +2397,7 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   {
     mutt_error (_("Bad IDN %s while preparing resent-from."),
 		err);
+    rfc822_free_address (&from);
     return -1;
   }
   rfc822_write_address (resent_from, sizeof (resent_from), from, 0);
