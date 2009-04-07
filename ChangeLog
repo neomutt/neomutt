@@ -1,3 +1,15 @@
+2009-04-06 22:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (d639baaf57fb)
+
+	* doc/manual.xml.head: Manual: Fix typo
+
+2009-04-06 19:10 +0200  Erik Hovland  <erik@hovland.org>  (4fe35e9984ba)
+
+	* ChangeLog, sendlib.c: mutt_message_to_7bit(): Only close file
+	pointer if we opened it
+
+	The pointer is to be managed outside the function and provided. Only
+	close it we opened it ourself using fopen().
+
 2009-04-06 19:07 +0200  Erik Hovland  <erik@hovland.org>  (b5cbd0dab863)
 
 	* sendlib.c: Plug memory leaks in sendlib.c

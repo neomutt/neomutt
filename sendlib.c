@@ -2027,7 +2027,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
       }
       unlink (msg);
 
-      if (SendmailWait >= 0 && tempfile)
+      if (SendmailWait >= 0 && tempfile && *tempfile)
       {
 	/* *tempfile will be opened as stdout */
 	if (open (*tempfile, O_WRONLY | O_APPEND | O_CREAT | O_EXCL, 0600) < 0)
@@ -2079,7 +2079,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     if (waitpid (pid, &st, 0) > 0)
     {
       st = WIFEXITED (st) ? WEXITSTATUS (st) : S_ERR;
-      if (SendmailWait && st == (0xff & EX_OK) && tempfile)
+      if (SendmailWait && st == (0xff & EX_OK) && tempfile && *tempfile)
       {
 	unlink (*tempfile); /* no longer needed */
 	FREE (tempfile);		/* __FREE_CHECKED__ */
@@ -2089,7 +2089,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     {
       st = (SendmailWait > 0 && errno == EINTR && SigAlrm) ?
 	      S_BKG : S_ERR;
-      if (SendmailWait > 0 && tempfile)
+      if (SendmailWait > 0 && tempfile && *tempfile)
       {
 	unlink (*tempfile);
 	FREE (tempfile);		/* __FREE_CHECKED__ */
@@ -2100,7 +2100,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
     alarm (0);
     sigaction (SIGALRM, &oldalrm, NULL);
 
-    if (kill (ppid, 0) == -1 && errno == ESRCH && tempfile)
+    if (kill (ppid, 0) == -1 && errno == ESRCH && tempfile && *tempfile)
     {
       /* the parent is already dead */
       unlink (*tempfile);
