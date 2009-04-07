@@ -829,7 +829,6 @@ static size_t convert_file_from_to (FILE *file,
     FREE (&tcode[i]);
 
   FREE (&tcode);
-  FREE (&fcode);
 
   return ret;
 }
