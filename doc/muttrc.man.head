@@ -558,7 +558,7 @@ message is part of a collapsed thread.
 cryptographically verified messages
 .TP
 ~x \fIEXPR\fP
-messages which contain \fIEXPR\fP in the \(lqReferences\(rq field
+messages which contain \fIEXPR\fP in the \(lqReferences\(rq or \(lqIn-Reply-To\(rq field
 .TP
 ~X \fIMIN\fP-\fIMAX\fP
 messages with MIN - MAX attachments

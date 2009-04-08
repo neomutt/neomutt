@@ -1155,7 +1155,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case M_SIZE:
       return (pat->not ^ (h->content->length >= pat->min && (pat->max == M_MAXRANGE || h->content->length <= pat->max)));
     case M_REFERENCE:
-      return (pat->not ^ match_reference (pat, h->env->references));
+      return (pat->not ^ (match_reference (pat, h->env->references) ||
+			  match_reference (pat, h->env->in_reply_to)));
     case M_ADDRESS:
       return (pat->not ^ match_adrlist (pat, flags & M_MATCH_FULL_ADDRESS, 4,
                                         h->env->from, h->env->sender,

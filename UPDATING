@@ -5,6 +5,7 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+  + ~x pattern also matches against In-Reply-To
   + lower case patterns for string searches perform case-insensitive
     search as regex patterns do (except IMAP)
   + $ssl_verify_dates controls whether mutt checks the validity period of

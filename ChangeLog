@@ -1,3 +1,16 @@
+2009-04-07 19:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (667b0006b586)
+
+	* sendlib.c: Fix b5cbd0dab863, closes #3215.
+
+	Still valgrind reports 'fromcode' as leaking.
+
+2009-04-07 11:32 +0200  Erik Hovland  <erik@hovland.org>  (d344c6429a48)
+
+	* ChangeLog, sendlib.c: Try to correct usage of tempfile and *tempfile
+
+	Since tempfile is a double pointer checking for tempfile and then
+	dereferencing with *tempfile is not correct.
+
 2009-04-06 22:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (d639baaf57fb)
 
 	* doc/manual.xml.head: Manual: Fix typo
