@@ -1,3 +1,13 @@
+2009-04-08 16:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (5b631ee33281)
+
+	* hdrline.c: For %F, display Bcc recipient if no other recipients
+	found. Closes #3157.
+
+2009-04-08 15:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (41786fbb344b)
+
+	* ChangeLog, UPDATING, doc/manual.xml.head, doc/muttrc.man.head,
+	pattern.c: Make ~x match In-Reply-To, too. Closes #771.
+
 2009-04-07 19:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (667b0006b586)
 
 	* sendlib.c: Fix b5cbd0dab863, closes #3215.

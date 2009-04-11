@@ -39,3 +39,7 @@ extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there w
 
 BUFFY *mutt_find_mailbox (const char *path);
 void mutt_update_mailbox (BUFFY * b);
+
+/* fixes up atime + mtime after mbox/mmdf mailbox was modified
+   according to stat() info taken before a modification */
+void mutt_buffy_cleanup (const char *buf, struct stat *st);

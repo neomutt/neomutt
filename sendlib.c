@@ -34,6 +34,7 @@
 #include "charset.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "buffy.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -2473,7 +2474,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   MESSAGE *msg;
   char tempfile[_POSIX_PATH_MAX];
   FILE *tempfp = NULL;
-  int r;
+  int r, need_buffy_cleanup = 0;
+  struct stat st;
 
   if (post)
     set_noconv_flags (hdr->content, 1);
@@ -2497,6 +2499,9 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       mx_close_mailbox (&f, NULL);
       return (-1);
     }
+    /* remember new mail status before appending message */
+    need_buffy_cleanup = 1;
+    stat (path, &st);
   }
 
   hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
@@ -2640,6 +2645,9 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     r = -1;
   mx_close_message (&msg);
   mx_close_mailbox (&f, NULL);
+
+  if (!post && need_buffy_cleanup)
+    mutt_buffy_cleanup (path, &st);
 
   if (post)
     set_noconv_flags (hdr->content, 0);
