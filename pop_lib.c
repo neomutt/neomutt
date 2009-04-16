@@ -31,36 +31,42 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <netdb.h>
 
 /* given an POP mailbox name, return host, port, username and password */
 int pop_parse_path (const char* path, ACCOUNT* acct)
 {
   ciss_url_t url;
   char *c;
-  int ret = -1;
+  struct servent *service;
 
   /* Defaults */
   acct->flags = 0;
-  acct->port = POP_PORT;
   acct->type = M_ACCT_TYPE_POP;
 
   c = safe_strdup (path);
   url_parse_ciss (&url, c);
 
-  if (url.scheme == U_POP || url.scheme == U_POPS)
+  if ((url.scheme != U_POP && url.scheme != U_POPS) ||
+      mutt_account_fromurl (acct, &url) < 0)
   {
-    if (url.scheme == U_POPS)
-    {
-      acct->flags |= M_ACCT_SSL;
-      acct->port = POP_SSL_PORT;
-    }
-
-    if ((!url.path || !*url.path) && mutt_account_fromurl (acct, &url) == 0)
-      ret = 0;
+    FREE(&c);
+    mutt_error(_("Invalid POP URL: %s\n"), path);
+    mutt_sleep(1);
+    return -1;
   }
 
+  if (url.scheme == U_POPS)
+    acct->flags |= M_ACCT_SSL;
+
+  service = getservbyname (url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
+  if (service)
+    acct->port = ntohs (service->s_port);
+  else
+    acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;;
+
   FREE (&c);
-  return ret;
+  return 0;
 }
 
 /* Copy error message to err_msg buffer */

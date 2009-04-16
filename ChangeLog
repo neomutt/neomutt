@@ -1,3 +1,18 @@
+2009-04-16 19:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (ca73c9e8c141)
+
+	* doc/manual.xml.head: Manual: Improve docs on URL syntax, add
+	examples
+
+2009-04-16 16:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (052b17f5f7f7)
+
+	* doc/manual.xml.head: Manual: Add user-defined variables to variable
+	types
+
+2009-04-11 10:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (7d7976cd4fc4)
+
+	* ChangeLog, buffy.c, buffy.h, commands.c, sendlib.c: Don't raise new
+	mail flag on mbox/mmdf Fcc mailboxes. Closes #1896.
+
 2009-04-08 16:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (5b631ee33281)
 
 	* hdrline.c: For %F, display Bcc recipient if no other recipients
