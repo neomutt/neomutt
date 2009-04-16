@@ -3794,6 +3794,14 @@ form is supported but strongly deprecated.
 </para>
 </listitem>
 </varlistentry>
+<varlistentry>
+<term>user-defined</term>
+<listitem>
+<para>
+Arbitrary text, see <xref linkend="set-myvar"/> for details.
+</para>
+</listitem>
+</varlistentry>
 </variablelist>
 
 </sect2>
