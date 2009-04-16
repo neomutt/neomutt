@@ -6678,32 +6678,41 @@ proto[s]://[username[:password]@]server[:port]/[path]
 </screen>
 
 <para>
-<literal>proto</literal> is the communication protocol:
+<emphasis>proto</emphasis> is the communication protocol:
 <literal>imap</literal> for IMAP, <literal>pop</literal> for POP3 and
-<literal>smtp</literal> for SMTP. If <quote>s</quote> for <quote>secure communication</quote>
-is appended, Mutt will attempt to establish an encrypted communication
-using SSL or TLS. If no explicit port is given, Mutt will use the
-system's default for the given protocol.
+<literal>smtp</literal> for SMTP. If <quote>s</quote> for <quote>secure
+communication</quote> is appended, Mutt will attempt to establish an
+encrypted communication using SSL or TLS.
 </para>
 
 <para>
-Since all protocols supported by Mutt support, the username may be
-given directly in the URL instead of using the <literal>pop_user</literal> or
-<literal>imap_user</literal> variables. It may contain the <quote>@</quote> symbol
-being used by many mail systems as part of the login name. A password can be
-given, too but is not recommended if the URL is specified in a configuration
-file on disk.
+Since all protocols supported by Mutt support/require authentication,
+login credentials may be specified in the URL. This has the advantage
+that multiple IMAP, POP3 or SMTP servers may be specified (which isn't
+possible using, for example,
+<link linkend="imap-user">&dollar;imap&lowbar;user</link>). The username
+may contain the <quote>@</quote> symbol being used by many mail systems
+as part of the login name. A password can be given, too but is not
+recommended if the URL is specified in a configuration file on disk.
+</para>
+
+<para>
+If no port number is given, Mutt will use the system's default for the
+given protocol (usually consulting <literal>/etc/services</literal>).
 </para>
 
 <para>
 The optional path is only relevant for IMAP.
 </para>
 
-<para>
-For IMAP for example, you can also specify different
-usernames for each folder: <literal>imap://username@imapserver[:port]/INBOX</literal>
-or <literal>imap://username2@imapserver[:port]/path/to/folder</literal>.
-</para>
+<example id="ex-url">
+<title>URLs</title>
+<screen>
+pops://host/
+imaps://user@host/INBOX/Sent
+smtp://user@host:587/
+</screen>
+</example>
 
 </sect2>
 
@@ -7239,8 +7248,8 @@ never store passwords in configuration files. Besides the fact that the
 system's operator can always read them, you could forget to mask it out
 when reporting a bug or asking for help via a mailing list. Even worse,
 your mail including your password could be archived by internet search
-engines, mail-to-news gateways etc. It may already too late before you
-notice your mistake.
+engines, mail-to-news gateways etc. It may already be too late before
+you notice your mistake.
 </para>
 
 </sect1>
