@@ -416,7 +416,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
   int use_pipe = 0;
   int use_pager = 1;
   char type[STRING];
-  char command[STRING];
+  char command[HUGE_STRING];
   char descrip[STRING];
   char *fname;
   rfc1524_entry *entry = NULL;
