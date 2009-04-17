@@ -1,3 +1,15 @@
+2009-04-17 12:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (85414f890777)
+
+	* attach.c: Enlarge buffer size for parsing mailcap files
+
+	We really need code for dynamic buffers which would solve a few
+	other bugs, too. Closes #2205.
+
+2009-04-16 19:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (a4f66ae72dc5)
+
+	* ChangeLog, pop_lib.c: POP: Default to using getservbyname() as we do
+	for IMAP and SMTP
+
 2009-04-16 19:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (ca73c9e8c141)
 
 	* doc/manual.xml.head: Manual: Improve docs on URL syntax, add

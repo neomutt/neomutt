@@ -812,8 +812,14 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
   if (lineInfo[n].type == MT_COLOR_NORMAL || 
       lineInfo[n].type == MT_COLOR_QUOTED)
   {
-    i = 0;
+    size_t nl;
 
+    /* don't consider line endings part of the buffer
+     * for regex matching */
+    if ((nl = mutt_strlen (buf)) > 0 && buf[nl-1] == '\n')
+      buf[nl-1] = 0;
+
+    i = 0;
     offset = 0;
     lineInfo[n].chunks = 0;
     do
@@ -863,6 +869,8 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
       else
 	offset = (lineInfo[n].syntax)[i].last;
     } while (found || null_rx);
+    if (nl > 0)
+      buf[nl] = '\n';
   }
 }
 
