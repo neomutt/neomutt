@@ -1,3 +1,13 @@
+2009-04-17 15:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (3a7ecc3f8aeb)
+
+	* UPDATING, functions.h, pager.c: Make <set-flag> and <clear-flag>
+	work in the pager, too. Closes #3212.
+
+2009-04-17 13:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (b9df4ac3d51e)
+
+	* ChangeLog, pager.c: Don't consider \n part of a line for body
+	coloring. Closes #2363.
+
 2009-04-17 12:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (85414f890777)
 
 	* attach.c: Enlarge buffer size for parsing mailcap files

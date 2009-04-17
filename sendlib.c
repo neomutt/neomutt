@@ -2389,6 +2389,16 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   resent_from[0] = '\0';
   from = mutt_default_from ();
 
+  /*
+   * mutt_default_from() does not use $realname if the real name is not set
+   * in $from, so we add it here.  The reason it is not added in
+   * mutt_default_from() is that during normal sending, we execute
+   * send-hooks and set the realname last so that it can be changed based
+   * upon message criteria.
+   */
+  if (! from->personal)
+    from->personal = safe_strdup(Realname);
+
   if (fqdn)
     rfc822_qualify (from, fqdn);
 
