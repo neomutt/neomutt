@@ -264,6 +264,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
   short maybe_goodsig = 1;
   short have_any_sigs = 0;
 
+  char *gpgcharset = NULL;
   char body_charset[STRING];
   mutt_get_body_charset (body_charset, sizeof (body_charset), m);
 
@@ -331,6 +332,16 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
              && (mutt_strcmp ("-----END PGP SIGNATURE-----\n", buf) == 0
                  || mutt_strcmp ("-----END PGP PUBLIC KEY BLOCK-----\n",buf) == 0)))
 	  break;
+	/* remember optional Charset: armor header as defined by RfC4880 */
+	if (mutt_strncmp ("Charset: ", buf, 9) == 0)
+	{
+	  size_t l = 0;
+	  gpgcharset = safe_strdup (buf + 9);
+	  if ((l = mutt_strlen (gpgcharset)) > 0 && gpgcharset[l-1] == '\n')
+	    gpgcharset[l-1] = 0;
+	  if (mutt_check_charset (gpgcharset, 0) < 0)
+	    mutt_str_replace (&gpgcharset, "UTF-8");
+	}
       }
 
       /* leave tmpfp open in case we still need it - but flush it! */
@@ -418,9 +429,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       }
       
       /*
-       * Now, copy cleartext to the screen.  NOTE - we expect that PGP
-       * outputs utf-8 cleartext.  This may not always be true, but it 
-       * seems to be a reasonable guess.
+       * Now, copy cleartext to the screen.
        */
 
       if(s->flags & M_DISPLAY)
@@ -443,9 +452,14 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       {
 	FGETCONV *fc;
 	int c;
+	char *expected_charset = gpgcharset && *gpgcharset ? gpgcharset : "utf-8";
+
+	dprint(4,(debugfile,"pgp: recoding inline from [%s] to [%s]\n",
+		  expected_charset, Charset));
+
 	rewind (pgpout);
 	state_set_prefix (s);
-	fc = fgetconv_open (pgpout, "utf-8", Charset, 0);
+	fc = fgetconv_open (pgpout, expected_charset, Charset, M_ICONV_HOOK_FROM);
 	while ((c = fgetconv (fc)) != EOF)
 	  state_prefix_putc (c, s);
 	fgetconv_close (&fc);
@@ -495,7 +509,9 @@ out:
     safe_fclose (&pgpout);
     mutt_unlink (outfile);
   }
-  
+
+  FREE(&gpgcharset);
+
   if (needpass == -1)
   {
     state_attach_puts (_("[-- Error: could not find beginning of PGP message! --]\n\n"), s);
