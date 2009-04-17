@@ -2289,6 +2289,20 @@ search_next:
 	}
 	break;
 
+      case OP_MAIN_SET_FLAG:
+      case OP_MAIN_CLEAR_FLAG:
+	CHECK_MODE(IsHeader (extra));
+	CHECK_READONLY;
+
+	if (mutt_change_flag (extra->hdr, (ch == OP_MAIN_SET_FLAG)) == 0)
+	  redraw |= REDRAW_STATUS | REDRAW_INDEX;
+	if (extra->hdr->deleted && option (OPTRESOLVE))
+	{
+	  ch = -1;
+	  rc = OP_MAIN_NEXT_UNDELETED;
+	}
+	break;
+
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));

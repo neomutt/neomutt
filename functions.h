@@ -183,6 +183,8 @@ struct binding_t OpPager[] = { /* map: pager */
   { "delete-message",	OP_DELETE,			"d" },
   { "delete-thread",	OP_DELETE_THREAD,		"\004" },
   { "delete-subthread",	OP_DELETE_SUBTHREAD,		"\033d" },
+  { "set-flag",  	OP_MAIN_SET_FLAG,		"w" },
+  { "clear-flag",       OP_MAIN_CLEAR_FLAG,		"W" },
   { "edit",		OP_EDIT_MESSAGE,		"e" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },

@@ -5,6 +5,7 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+  + <set-flag> and <clear-flag> work in the pager, too
   + ~x pattern also matches against In-Reply-To
   + lower case patterns for string searches perform case-insensitive
     search as regex patterns do (except IMAP)
