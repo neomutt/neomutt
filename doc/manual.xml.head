@@ -3371,12 +3371,15 @@ signatures based upon the recipients.
 
 <note>
 <para>
-<literal>send-hook</literal>'s are only executed once after getting the initial
-list of recipients.  Adding a recipient after replying or editing the
-message will not cause any send-hook to be executed.  Also note that
-<link linkend="my-hdr"><literal>my&lowbar;hdr</literal></link> commands which modify recipient headers, or the message's
-subject, don't have any effect on the current message when executed
-from a <literal>send-hook</literal>.
+<literal>send-hook</literal>'s are only executed once after getting the
+initial list of recipients.  Adding a recipient after replying or
+editing the message will not cause any send-hook to be executed,
+similarily if <link linkend="autoedit">&dollar;autoedit</link> is set
+(as then the initial list of recipients is empty). Also note that <link
+linkend="my-hdr"><literal>my&lowbar;hdr</literal></link> commands which
+modify recipient headers, or the message's subject, don't have any
+effect on the current message when executed from a
+<literal>send-hook</literal>.
 </para>
 </note>
 
