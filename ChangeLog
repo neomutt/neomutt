@@ -1,3 +1,24 @@
+2009-04-17 18:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (7d44a83efcc6)
+
+	* pgp.c: Support the Charset: armor header for inline PGP. Closes
+	#3039.
+
+	The header is defined as optional by RfC4880.
+
+	This is based on patch-1.5.9.tamo.pgp_charsetchack.1. We only
+	support reading this header and, if present, recode the PGP output
+	from the given charset to $charset if we find it valid; otherwise
+	fall back to UTF-8. Certain clients make use of the header when
+	sending mail, so mutt should respect it because some messages are
+	otherwise unreadable.
+
+	The sending side is not touched, we unconditionally send UTF-8.
+
+2009-04-17 15:45 +0200  Michael Elkins  <me@mutt.org>  (61a0c67ed727)
+
+	* ChangeLog, sendlib.c: Make sure Recent-From: consults $realname.
+	Closes #1721.
+
 2009-04-17 15:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (3a7ecc3f8aeb)
 
 	* UPDATING, functions.h, pager.c: Make <set-flag> and <clear-flag>

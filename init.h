@@ -1123,7 +1123,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Specifies the password for your IMAP account.  If \fIunset\fP, Mutt will
-  ** prompt you for your password when you invoke the \fC$<fetch-mail>\fP function
+  ** prompt you for your password when you invoke the \fC<imap-fetch-mail>\fP function
   ** or try to open an IMAP folder.
   ** .pp
   ** \fBWarning\fP: you should only use this option when you are on a
