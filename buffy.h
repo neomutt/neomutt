@@ -22,7 +22,7 @@
 
 typedef struct buffy_t
 {
-  char *path;
+  char path[_POSIX_PATH_MAX];
   off_t size;
   struct buffy_t *next;
   short new;			/* mailbox has new mail */

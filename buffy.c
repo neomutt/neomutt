@@ -206,7 +206,6 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     {
       for (tmp = &Incoming; *tmp;)
       {
-        FREE (&((*tmp)->path));
         tmp1=(*tmp)->next;
         FREE (tmp);		/* __FREE_CHECKED__ */
         *tmp=tmp1;
@@ -241,7 +240,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     if (!*tmp)
     {
       *tmp = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
-      (*tmp)->path = safe_strdup (buf);
+      strfcpy ((*tmp)->path, buf, sizeof ((*tmp)->path));
       (*tmp)->next = NULL;
       /* it is tempting to set magic right here */
       (*tmp)->magic = 0;
@@ -505,7 +504,7 @@ int mutt_buffy_notify (void)
  * mutt_buffy() -- incoming folders completion routine
  *
  * given a folder name, this routine gives the next incoming folder with new
- * new mail.
+ * mail.
  */
 void mutt_buffy (char *s, size_t slen)
 {
@@ -530,6 +529,7 @@ void mutt_buffy (char *s, size_t slen)
       mutt_buffy_check (1); /* buffy was wrong - resync things */
       break;
     }
+    mutt_expand_path (tmp->path, sizeof (tmp->path));
     strfcpy (s, tmp->path, slen);
     mutt_pretty_mailbox (s, slen);
     break;
@@ -539,6 +539,7 @@ void mutt_buffy (char *s, size_t slen)
     count = 0;
     while (count < 3)
     {
+      mutt_expand_path (tmp->path, sizeof (tmp->path));
       if (mutt_strcmp (s, tmp->path) == 0)
 	count++;
       else if (count && tmp->new)
