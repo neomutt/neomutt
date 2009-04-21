@@ -512,7 +512,7 @@ void mutt_buffy (char *s, size_t slen)
   int count;
   BUFFY *tmp = Incoming;
 
-  mutt_expand_path (s, _POSIX_PATH_MAX);
+  mutt_expand_path (s, slen);
   switch (mutt_buffy_check (0))
   {
   case 0:
