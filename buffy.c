@@ -508,57 +508,30 @@ int mutt_buffy_notify (void)
  */
 void mutt_buffy (char *s, size_t slen)
 {
-  int count;
   BUFFY *tmp = Incoming;
+  int pass, found = 0;
 
   mutt_expand_path (s, slen);
-  switch (mutt_buffy_check (0))
+
+  if (mutt_buffy_check (0)) 
   {
-  case 0:
-
-    *s = '\0';
-    break;
-
-  case 1:
-
-    while (tmp && !tmp->new)
-      tmp = tmp->next;
-    if (!tmp)
-    {
-      *s = '\0';
-      mutt_buffy_check (1); /* buffy was wrong - resync things */
-      break;
-    }
-    mutt_expand_path (tmp->path, sizeof (tmp->path));
-    strfcpy (s, tmp->path, slen);
-    mutt_pretty_mailbox (s, slen);
-    break;
-
-  default:
-    
-    count = 0;
-    while (count < 3)
-    {
-      mutt_expand_path (tmp->path, sizeof (tmp->path));
-      if (mutt_strcmp (s, tmp->path) == 0)
-	count++;
-      else if (count && tmp->new)
-	break;
-      tmp = tmp->next;
-      if (!tmp)
+    for (pass = 0; pass < 2; pass++)
+      for (tmp = Incoming; tmp; tmp = tmp->next) 
       {
-	tmp = Incoming;
-	count++;
+	mutt_expand_path (tmp->path, sizeof (tmp->path));
+	if ((found || pass) && tmp->new) 
+	{
+	  strfcpy (s, tmp->path, slen);
+	  mutt_pretty_mailbox (s, slen);
+	  return;
+	}
+	if (mutt_strcmp (s, tmp->path) == 0)
+	  found = 1;
       }
-    }
-    if (count >= 3)
-    {
-      *s = '\0';
-      mutt_buffy_check (1); /* buffy was wrong - resync things */
-      break;
-    }
-    strfcpy (s, tmp->path, slen);
-    mutt_pretty_mailbox (s, slen);
-    break;
+
+    mutt_buffy_check (1); /* buffy was wrong - resync things */
   }
+
+  /* no folders with new mail */
+  *s = '\0';
 }
