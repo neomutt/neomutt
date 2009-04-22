@@ -111,6 +111,7 @@ void mutt_edit_headers (const char *editor,
   mutt_unlink (path);
 
   /* restore old info. */
+  mutt_free_list (&n->references);
   n->references = msg->env->references;
   msg->env->references = NULL;
 
