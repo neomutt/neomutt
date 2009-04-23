@@ -1,3 +1,12 @@
+2009-04-20 18:36 +0200  Christoph Berg  <cb@df7cb.de>  (39fee3a9d034)
+
+	* doc/manual.xml.head, init.h: Better document that some send-hooks
+	can't work with $autoedit. Closes #1834.
+
+2009-04-20 18:26 +0200  Rocco Rutte  <pdmef@gmx.net>  (6cc887ccd229)
+
+	* init.h: Fix typo for $imap_pass
+
 2009-04-17 18:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (7d44a83efcc6)
 
 	* pgp.c: Support the Charset: armor header for inline PGP. Closes
@@ -16,20 +25,16 @@
 
 2009-04-17 15:45 +0200  Michael Elkins  <me@mutt.org>  (61a0c67ed727)
 
-	* ChangeLog, sendlib.c: Make sure Recent-From: consults $realname.
-	Closes #1721.
+	* sendlib.c: Make sure Recent-From: consults $realname.  Closes
+	#1721.
 
 2009-04-17 15:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (3a7ecc3f8aeb)
 
 	* UPDATING, functions.h, pager.c: Make <set-flag> and <clear-flag>
 	work in the pager, too. Closes #3212.
 
-2009-04-17 13:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (b9df4ac3d51e)
-
-	* ChangeLog, pager.c: Don't consider \n part of a line for body
+	* pager.c: Don't consider \n part of a line for body
 	coloring. Closes #2363.
-
-2009-04-17 12:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (85414f890777)
 
 	* attach.c: Enlarge buffer size for parsing mailcap files
 
@@ -41,12 +46,8 @@
 	* ChangeLog, pop_lib.c: POP: Default to using getservbyname() as we do
 	for IMAP and SMTP
 
-2009-04-16 19:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (ca73c9e8c141)
-
 	* doc/manual.xml.head: Manual: Improve docs on URL syntax, add
 	examples
-
-2009-04-16 16:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (052b17f5f7f7)
 
 	* doc/manual.xml.head: Manual: Add user-defined variables to variable
 	types
@@ -61,10 +62,8 @@
 	* hdrline.c: For %F, display Bcc recipient if no other recipients
 	found. Closes #3157.
 
-2009-04-08 15:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (41786fbb344b)
-
-	* ChangeLog, UPDATING, doc/manual.xml.head, doc/muttrc.man.head,
-	pattern.c: Make ~x match In-Reply-To, too. Closes #771.
+	* UPDATING, doc/manual.xml.head, doc/muttrc.man.head, pattern.c:
+	Make ~x match In-Reply-To, too. Closes #771.
 
 2009-04-07 19:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (667b0006b586)
 
@@ -103,41 +102,29 @@
 	to add our arguments for 8BITMIME/DSN/etc. before it and not after.
 	See #3168.
 
-2009-04-05 11:55 +0200  Rocco Rutte  <pdmef@gmx.net>  (7b6f1302e60d)
-
 	* doc/manual.xml.head: Manual: Make sure every rc command has a
 	synopsis in its describing section
 
-2009-04-05 11:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (1b844544a160)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Fold consecutive
-	<cmdsynopsis/> into just one
+	* doc/manual.xml.head: Manual: Fold consecutive <cmdsynopsis/>
+	into just one
 
 	This make it visually easier to spot what belongs together.
-
-2009-04-05 09:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (864b19c6829f)
 
 	* doc/manual.xml.head: Manual: More entities and <quotes/> as
 	appropriate
 
 2009-04-04 16:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (a4b635e96b30)
 
-	* ChangeLog, doc/Makefile.am: Manual: Improve 'sortcheck' target
+	* doc/Makefile.am: Manual: Improve 'sortcheck' target
 
 	Don't call up diff+pager if all is sorted and remove the temp files
 	for diffing we created.
 
-2009-04-04 15:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (d4ea8e9a9024)
-
 	* doc/gen-map-doc, doc/manual.xml.head, doc/manual.xml.tail: Manual:
 	Capitalize headlines
 
-2009-04-04 15:08 +0200  Rocco Rutte  <pdmef@gmx.net>  (6fd8d35891b0)
-
 	* doc/manual.xml.head: Manual: Move section on mixmaster support to
 	Optional Features
-
-2009-04-04 15:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (4d013dbd2a7d)
 
 	* doc/manual.xml.head: Manual: Remove duplicate section on mailcap use
 	from security chapter
@@ -145,40 +132,24 @@
 	We already have a more detailed section on secure mailcap usage, so
 	link to it.
 
-2009-04-04 14:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (e4c555e22ae4)
-
 	* doc/manual.xml.head: Manual: Minor improvements and fixes
-
-2009-04-04 14:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (0c3d03bae08f)
 
 	* doc/Makefile.am, doc/manual.xml.head: Manual: Add a short chapter
 	summarizing security considerations
 
-2009-04-04 13:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (e98bd4a2140e)
-
 	* doc/manual.xml.head: Manual: Use &mdash; in text rather than --
-
-2009-04-04 13:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (146ea199a322)
 
 	* doc/manual.xml.head: Manual: Add section on padding for format
 	strings
 
-2009-04-04 13:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (548417cbc818)
-
 	* doc/manual.xml.head: Manual: Mention reply types in "Sending Mail"
 	section
-
-2009-04-04 12:38 +0200  Rocco Rutte  <pdmef@gmx.net>  (9e4ca65ee5bd)
 
 	* doc/manual.xml.head: Manual: Add table with navigation keys for
 	page-based menus
 
-2009-04-04 12:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (6384fd337597)
-
 	* doc/mutt.css: mutt.css: Add left+right margins to screen, note and
 	examples
-
-2009-04-04 12:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (1052f8f5758d)
 
 	* doc/manual.xml.head: Manual: Add section on screens and menus with
 	short descriptions.
@@ -187,7 +158,7 @@
 
 2009-04-02 13:11 +0200  Steve Kemp  <skx@debian.org>  (23c7b469ff20)
 
-	* ChangeLog, init.h, sendlib.c: Only append -- to $sendmail if not
+	* init.h, sendlib.c: Only append -- to $sendmail if not
 	present. Closes #3168.
 
 	This allows users to add custom recipients via $sendmail.
@@ -196,22 +167,15 @@
 
 	* init.h: Clarify what $attach_charset does, closes #3165.
 
-2009-04-02 11:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (1759a509dd0a)
-
-	* ChangeLog, doc/Makefile.am: Add 'sortcheck' target to
-	doc/Makefile.am
+	* doc/Makefile.am: Add 'sortcheck' target to doc/Makefile.am
 
 	This should be used from time to time to check if vars are sorted.
 
 	Closes #3191.
 
-2009-04-02 11:47 +0200  Rocco Rutte  <pdmef@gmx.net>  (e8cdc049cf84)
-
 	* init.h: Sort $pgp_* and $crypt_* vars, see #3191.
 
-2009-04-02 11:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (86faf8f79beb)
-
-	* ChangeLog, init.h: Sort $smime_* vars, see #3191.
+	* init.h: Sort $smime_* vars, see #3191.
 
 2009-04-01 14:33 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (8205a12329d3)
 
@@ -223,8 +187,6 @@
 	* ChangeLog, doc/gen-map-doc, doc/manual.xml.head: Manual: Fix
 	openjade warnings
 
-2009-04-01 11:39 +0200  Rocco Rutte  <pdmef@gmx.net>  (406de7244405)
-
 	* doc/makedoc.c, doc/mutt.css: makedoc: Render description lists as
 	<informaltable/>
 
@@ -233,10 +195,8 @@
 
 2009-03-31 16:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (22f21b558f57)
 
-	* ChangeLog, doc/manual.xml.head: Manual: Add an example of how to
-	manage multiple accounts using folder-hook
-
-2009-03-31 14:50 +0200  Rocco Rutte  <pdmef@gmx.net>  (269e3da22cc2)
+	* doc/manual.xml.head: Manual: Add an example of how to manage
+	multiple accounts using folder-hook
 
 	* UPDATING, doc/manual.xml.head, mutt.h, pattern.c: Perform case
 	insensitive string search if pattern is lower case
@@ -244,34 +204,21 @@
 	...since we do that for regex patterns already. It doesn't work for
 	IMAP server-side searches.
 
-2009-03-31 13:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (6e6c6b9b4b67)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Fix markup of ".muttrc"
-
-2009-03-31 13:11 +0200  Rocco Rutte  <pdmef@gmx.net>  (d258178d0bd5)
+	* doc/manual.xml.head: Manual: Fix markup of ".muttrc"
 
 	* doc/manual.xml.head: Manual: Always spell mutt as "Mutt"
 
-2009-03-31 13:04 +0200  Rocco Rutte  <pdmef@gmx.net>  (73334d7c69db)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Replace netscape with
-	firefox
-
-2009-03-31 13:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (17456a83bb06)
+	* doc/manual.xml.head: Manual: Replace netscape with firefox
 
 	* doc/manual.xml.head: Manual: use <quote/> instead of " quotes
 
-2009-03-31 12:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (ab19eea64ab0)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Lots of minor improvements
+	* doc/manual.xml.head: Manual: Lots of minor improvements
 	(markup consistency, wording)
 
 2009-03-30 14:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (318748f3962b)
 
 	* doc/manual.xml.head: For mailbox formats, add some more verbose pros
 	and cons
-
-2009-03-30 13:18 +0200  Rocco Rutte  <pdmef@gmx.net>  (63e458e83e5b)
 
 	* doc/manual.xml.head: Manual: Add section about zeroprinting format
 	strings to format string section
@@ -285,10 +232,7 @@
 	* doc/manual.xml.head: Manual: Add section roughly explaining config
 	option types
 
-2009-03-28 16:01 +0100  Rocco Rutte  <pdmef@gmx.net>  (afcfd08c5319)
-
-	* ChangeLog, doc/makedoc.c: makedoc: make output slightly more
-	readable
+	* doc/makedoc.c: makedoc: make output slightly more readable
 
 	Add <?dhtml... processing instructions to render <variablelist/>
 	using HTML <table/> which save lots of vertical space. Also, drop
@@ -300,16 +244,12 @@
 
 2009-03-19 17:19 +0100  Rocco Rutte  <pdmef@gmx.net>  (754ea0f091fc)
 
-	* ChangeLog, doc/manual.xml.head: Improve section on patterns
-
-2009-03-19 16:47 +0100  Rocco Rutte  <pdmef@gmx.net>  (de835501d8db)
+	* doc/manual.xml.head: Improve section on patterns
 
 	* curs_lib.c: Fix progress update debug message
 
-2009-03-19 15:35 +0100  Rocco Rutte  <pdmef@gmx.net>  (acfaa2273124)
-
-	* ChangeLog, doc/manual.xml.head, doc/muttrc.man.head: Document kilo
-	and mega suffixes for range patterns
+	* doc/manual.xml.head, doc/muttrc.man.head: Document kilo and mega
+	suffixes for range patterns
 
 	Document it only for ~z (message size) as they don't make much sense
 	for other patterns like message score or number of attachments.
@@ -324,16 +264,14 @@
 
 2009-03-19 10:36 +0100  Roman Kraevskiy  <rkraevskiy@gmail.com>  (6fac57b97bf1)
 
-	* ChangeLog, mutt_sasl.c: Restore connection polling callback when
+	* mutt_sasl.c: Restore connection polling callback when
 	closing SASL connection. Closes #3206.
 
 2009-03-18 14:48 +0100  Erik Hovland  <erik@hovland.org>  (17d770ae41e4)
 
 	* smime.c: S/MIME: Don't leak intermediate cert key
 
-2009-03-18 14:43 +0100  Erik Hovland  <erik@hovland.org>  (bcf0020afde2)
-
-	* ChangeLog, buffy.c: Properly initialize struct stats in buffy check
+	* buffy.c: Properly initialize struct stats in buffy check
 
 2009-03-17 20:04 +0100  Rocco Rutte  <pdmef@gmx.net>  (903b3cee5485)
 
@@ -344,7 +282,7 @@
 
 2009-03-17 16:44 +0100  Todd Zullinger  <tmz@pobox.com>  (bb9b845800f6)
 
-	* ChangeLog, pgp.c: Ensure display is redrawn for application/pgp
+	* pgp.c: Ensure display is redrawn for application/pgp
 
 	When using gpg-agent, a hard redraw is needed after the pinentry
 	program is called. Otherwise, the screen is garbled and key
@@ -357,21 +295,15 @@
 	* configure.ac, protos.h, wcscasecmp.c: Add wcscasecmp() compatibility
 	function (for OS X)
 
-2009-03-15 16:39 +0100  Rocco Rutte  <pdmef@gmx.net>  (2b286d58647b)
-
-	* ChangeLog, doc/mutt.man: mutt.1: Mention that -a should be last in
-	option list. Closes #3202
-
-2009-03-15 16:38 +0100  Rocco Rutte  <pdmef@gmx.net>  (650829e3eb06)
+	* doc/mutt.man: mutt.1: Mention that -a should be last in option
+	list. Closes #3202
 
 	* alias.c: Only define min() if not present. Closes #3199
 
 2009-03-15 14:25 +0100  Erik Hovland  <erik@hovland.org>  (3c154fcdad4c)
 
-	* ChangeLog, rfc822.c: The assigned value of dom is never used. Remove
+	* rfc822.c: The assigned value of dom is never used. Remove
 	assignment
-
-2009-03-15 14:24 +0100  Erik Hovland  <erik@hovland.org>  (557d52627a0e)
 
 	* alias.c: The file handle will leak if fread fails
 
@@ -381,24 +313,22 @@
 	array. If menu->current is negative, bad things can happen. So check
 	it before calling resort_index
 
-2009-03-12 16:12 -0700  Erik Hovland  <erik@hovland.org>  (96a72e38e55e)
-
 	* recvcmd.c: 'last' is assigned but never used. Remove assignment.
 
 2009-03-15 13:46 +0100  Rocco Rutte  <pdmef@gmx.net>  (1238dff54a15)
 
-	* ChangeLog, alias.c, attach.c, buffy.c, check_sec.sh, commands.c,
-	compose.c, copy.c, crypt-gpgme.c, crypt.c, edit.c, editmsg.c,
-	gnupgparse.c, handler.c, headers.c, help.c, history.c,
-	imap/message.c, init.c, lib.c, main.c, mbox.c, mh.c, mutt_ssl.c,
-	mutt_ssl_gnutls.c, muttlib.c, pager.c, pattern.c, pgp.c, pgpkey.c,
-	pgppubring.c, pop.c, postpone.c, query.c, recvattach.c, recvcmd.c,
-	rfc1524.c, rfc3676.c, send.c, sendlib.c, smime.c, smtp.c: Use
-	safe_fclose() instead of fclose(), add fclose() to check_sec.sh
+	* alias.c, attach.c, buffy.c, check_sec.sh, commands.c, compose.c,
+	copy.c, crypt-gpgme.c, crypt.c, edit.c, editmsg.c, gnupgparse.c,
+	handler.c, headers.c, help.c, history.c, imap/message.c, init.c,
+	lib.c, main.c, mbox.c, mh.c, mutt_ssl.c, mutt_ssl_gnutls.c,
+	muttlib.c, pager.c, pattern.c, pgp.c, pgpkey.c, pgppubring.c,
+	pop.c, postpone.c, query.c, recvattach.c, recvcmd.c, rfc1524.c,
+	rfc3676.c, send.c, sendlib.c, smime.c, smtp.c: Use safe_fclose()
+	instead of fclose(), add fclose() to check_sec.sh
 
 2009-03-10 18:39 +0100  NONAKA Kimihiro  <nonakap@gmail.com>  (cc6fede605d4)
 
-	* ChangeLog, mh.c: Fix crashes with 64bit time_t. Closes #3184.
+	* mh.c: Fix crashes with 64bit time_t. Closes #3184.
 
 2009-03-09 12:04 +0100  Vincent Lefevre  <vincent@vinc17.org>  (4ce562b7f5d7)
 
@@ -407,18 +337,12 @@
 
 2009-03-09 11:58 +0100  Rocco Rutte  <pdmef@gmx.net>  (f3a33b77dc90)
 
-	* ChangeLog, mutt.h, regex.c: Unbreak compilation with --without-wc-
-	funcs on OS X 10.5.*, see #3149.
-
-2009-03-09 11:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (bcf1e9692caf)
+	* mutt.h, regex.c: Unbreak compilation with --without-wc- funcs on
+	OS X 10.5.*, see #3149.
 
 	* init.h: Fix 11cd72da743a
 
-2009-03-09 11:30 +0100  Rocco Rutte  <pdmef@gmx.net>  (11cd72da743a)
-
-	* ChangeLog, init.h: Sort SSL-related variables, see #3191.
-
-2009-03-09 11:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (a96d427b203b)
+	* init.h: Sort SSL-related variables, see #3191.
 
 	* hash.c, hash.h, init.c, mh.c, thread.c: Restore $reverse_alias
 	feature by using case-insensitive hash keys
@@ -435,37 +359,27 @@
 
 2009-03-07 13:49 +0100  Rocco Rutte  <pdmef@gmx.net>  (ff1906f70b1b)
 
-	* ChangeLog, init.h: Sort most variables (except crypto), see #3191.
-
-2009-03-07 12:26 +0100  Rocco Rutte  <pdmef@gmx.net>  (49d3d03d41c2)
+	* init.h: Sort most variables (except crypto), see #3191.
 
 	* doc/manual.xml.head: Fix typo, see #2430.
 
 2009-02-20 22:14 +0100  Rocco Rutte  <pdmef@gmx.net>  (35fbea209c6e)
 
-	* ChangeLog, doc/manual.xml.head: Manual: verbosely document how the
+	* doc/manual.xml.head: Manual: verbosely document how the
 	initial folder is determined, see #3189.
-
-2009-02-20 18:27 +0100  Rocco Rutte  <pdmef@gmx.net>  (3f57a654639d)
 
 	* doc/manual.xml.head: Document address normalization. Closes #2430.
 
-2009-02-20 13:23 +0100  Rocco Rutte  <pdmef@gmx.net>  (e37e857afc14)
-
-	* ChangeLog, headers.c: Simplify and fix Attach: header parsing
+	* headers.c: Simplify and fix Attach: header parsing
 
 	With ee5e696a9d08 we would skip beyond the filename to look for a
 	description. This changeset fixes it.
 
-2009-02-20 13:05 +0100  Rocco Rutte  <pdmef@gmx.net>  (b3f6d86e94f7)
-
 	* main.c: Set magic from -m before processing queries (-Q) or dumping
 	variables (-D)
 
-2009-02-20 13:02 +0100  Rocco Rutte  <pdmef@gmx.net>  (61755dc4e44c)
-
-	* ChangeLog, doc/mutt.man, init.h: Better document how the initial
-	folder is determined. Closes #3189.
+	* doc/mutt.man, init.h: Better document how the initial folder is
+	determined. Closes #3189.
 
 2009-02-15 16:09 +0100  Rocco Rutte  <pdmef@gmx.net>  (ee5e696a9d08)
 
@@ -480,9 +394,7 @@
 
 	* imap/imap.c: Move socket close into imap_logout from imap_logout_all
 
-2009-01-27 12:17 -0800  Brendan Cully  <brendan@kublai.com>  (7c1e4f1c2ed4)
-
-	* ChangeLog, imap/imap.c: IMAP: only close socket when not already
+	* imap/imap.c: IMAP: only close socket when not already
 	disconnected.
 
 2009-01-27 18:48 +0100  Rocco Rutte  <pdmef@gmx.net>  (d7e44862a08a)
