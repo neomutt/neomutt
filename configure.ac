@@ -344,7 +344,7 @@ AC_CHECK_TYPE(ssize_t, int)
 AC_CHECK_FUNCS(fgetpos memmove setegid srand48 strerror)
 
 AC_REPLACE_FUNCS([setenv strcasecmp strdup strsep strtok_r wcscasecmp])
-AC_REPLACE_FUNCS([strcasestr])
+AC_REPLACE_FUNCS([strcasestr mkdtemp])
 
 AC_CHECK_FUNC(getopt)
 if test $ac_cv_func_getopt = yes; then

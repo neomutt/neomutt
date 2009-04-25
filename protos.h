@@ -556,3 +556,7 @@ int wcscasecmp (const wchar_t *a, const wchar_t *b);
 #ifndef HAVE_STRCASESTR
 char *strcasestr (const char *, const char *);
 #endif
+
+#ifndef HAVE_MKDTEMP
+char *mkdtemp (char *tmpl);
+#endif
