@@ -2917,7 +2917,7 @@ struct option_t MuttVars[] = {
   ** use \fCSTARTTLS\fP regardless of the server's capabilities.
   */
 # ifdef USE_SSL_OPENSSL
-  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 1 },
+  { "ssl_use_sslv2", DT_BOOL, R_NONE, OPTSSLV2, 0 },
   /*
   ** .pp
   ** This variable specifies whether to attempt to use SSLv2 in the
