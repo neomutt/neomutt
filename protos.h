@@ -552,3 +552,7 @@ char *strtok_r (char *, const char *, char **);
 #ifndef HAVE_WCSCASECMP
 int wcscasecmp (const wchar_t *a, const wchar_t *b);
 #endif
+
+#ifndef HAVE_STRCASESTR
+char *strcasestr (const char *, const char *);
+#endif

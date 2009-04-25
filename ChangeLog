@@ -1,3 +1,26 @@
+2009-04-21 15:10 -0400  Aron Griffis  <agriffis@n01se.net>  (3d89eddb2d9a)
+
+	* buffy.c: Equivalent mutt_buffy, but readable code
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2009-04-21 15:06 -0400  Aron Griffis  <agriffis@n01se.net>  (7bc332ddd8fc)
+
+	* buffy.c, buffy.h: Call mutt_expand_path() from mutt_buffy to fix
+	imap separator. Closes #3208 and #3218
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2009-04-21 14:09 -0400  Aron Griffis  <agriffis@n01se.net>  (1dc96cc13a87)
+
+	* buffy.c: Use slen instead of assuming _POSIX_PATH_MAX
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2009-04-23 12:51 -0700  Vincent Lefevre  <vincent@vinc17.org>  (b5b4e652e4b1)
+
+	* ChangeLog, po/fr.po: Updated French translation.
+
 2009-04-20 18:36 +0200  Christoph Berg  <cb@df7cb.de>  (39fee3a9d034)
 
 	* doc/manual.xml.head, init.h: Better document that some send-hooks
