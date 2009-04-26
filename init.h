@@ -759,7 +759,9 @@ struct option_t MuttVars[] = {
   ** .dl
   ** .dt %C  .dd current file number
   ** .dt %d  .dd date/time folder was last modified
-  ** .dt %f  .dd filename
+  ** .dt %f  .dd filename (``/'' is appended to directory names,
+  **             ``@'' to symbolic links and ``*'' to executable
+  **             files)
   ** .dt %F  .dd file permissions
   ** .dt %g  .dd group name (or numeric gid, if missing)
   ** .dt %l  .dd number of hard links

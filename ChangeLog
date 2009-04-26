@@ -1,3 +1,17 @@
+2009-04-22 23:29 +0200  Bertram Felgenhauer  <int-e@gmx.de>  (0aa313a3bf20)
+
+	* headers.c: Fix memory leak in mutt_edit_headers(). Closes #3220.
+
+2009-04-25 10:51 +0200  Thomas Wiegner  <wiegner@gmx.de>  (8da22400a48d)
+
+	* configure.ac, mkdtemp.c, protos.h: Add mkdtemp() from xfce to
+	unbreak gpgme build on Solaris. Closes #3217.
+
+2009-04-25 10:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (c6de4f51b8c7)
+
+	* ChangeLog, configure.ac, protos.h, strcasestr.c: Add strcasestr()
+	from uclibc to unbreak (Open)Solaris build. Closes #3222.
+
 2009-04-21 15:10 -0400  Aron Griffis  <agriffis@n01se.net>  (3d89eddb2d9a)
 
 	* buffy.c: Equivalent mutt_buffy, but readable code
