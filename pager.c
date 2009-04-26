@@ -995,19 +995,64 @@ trim_incomplete_mbyte(unsigned char *buf, size_t len)
   return len;
 }
 
-static int
-fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *buf, 
-	     unsigned char *fmt, size_t blen, int *buf_ready)
+static char *read_line (char *s, size_t *size, FILE *fp)
 {
-  unsigned char *p;
+  size_t offset = 0;
+
+  if (!s)
+  {
+    s = safe_malloc (LONG_STRING);
+    *size = LONG_STRING;
+  }
+
+  *s = 0;
+
+  FOREVER
+  {
+    if (fgets (s + offset, *size - offset, fp) == NULL)
+    {
+      FREE (&s);
+      return NULL;
+    }
+    if (strchr (s + offset, '\n') != NULL)
+      return s;
+    else
+    {
+      int c;
+      c = getc (fp); /* This is kind of a hack. We want to know if the
+                        char at the current point in the input stream is EOF.
+                        feof() will only tell us if we've already hit EOF, not
+                        if the next character is EOF. So, we need to read in
+                        the next character and manually check if it is EOF. */
+      if (c == EOF)
+      {
+        /* The last line of fp isn't \n terminated */
+        return s;
+      }
+      else
+      {
+        ungetc (c, fp); /* undo our dammage */
+        /* There wasn't room for the line -- increase ``s'' */
+        offset = *size - 1; /* overwrite the terminating 0 */
+        *size += STRING;
+        safe_realloc (&s, *size);
+      }
+    }
+  }
+}
+
+static int
+fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
+	     unsigned char **fmt, size_t *blen, int *buf_ready)
+{
+  unsigned char *p, *q;
   static int b_read;
-  
+
   if (*buf_ready == 0)
   {
-    buf[blen - 1] = 0;
     if (offset != *last_pos)
       fseeko (f, offset, 0);
-    if (fgets ((char *) buf, blen - 1, f) == NULL)
+    if ((*buf = (unsigned char *) read_line ((char *) *buf, blen, f)) == NULL)
     {
       fmt[0] = 0;
       return (-1);
@@ -1016,26 +1061,29 @@ fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *buf,
     b_read = (int) (*last_pos - offset);
     *buf_ready = 1;
 
+    safe_realloc (fmt, *blen);
+
     /* incomplete mbyte characters trigger a segfault in regex processing for
      * certain versions of glibc. Trim them if necessary. */
-    if (b_read == blen - 2)
-      b_read -= trim_incomplete_mbyte(buf, b_read);
+    if (b_read == *blen - 2)
+      b_read -= trim_incomplete_mbyte(*buf, b_read);
     
     /* copy "buf" to "fmt", but without bold and underline controls */
-    p = buf;
+    p = *buf;
+    q = *fmt;
     while (*p)
     {
-      if (*p == '\010' && (p > buf))
+      if (*p == '\010' && (p > *buf))
       {
 	if (*(p+1) == '_')	/* underline */
 	  p += 2;
 	else if (*(p+1))	/* bold or overstrike */
 	{
-	  *(fmt-1) = *(p+1);
+	  *(q-1) = *(p+1);
 	  p += 2;
 	}
 	else			/* ^H */
-	  *fmt++ = *p++;
+	  *q++ = *p++;
       }
       else if (*p == '\033' && *(p+1) == '[' && is_ansi (p + 2))
       {
@@ -1049,9 +1097,9 @@ fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char *buf,
 	  ;
       }
       else
-	*fmt++ = *p++;
+	*q++ = *p++;
     }
-    *fmt = 0;
+    *q = 0;
   }
   return b_read;
 }
@@ -1236,7 +1284,8 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 	      int *last, int *max, int flags, struct q_class_t **QuoteList,
 	      int *q_level, int *force_redraw, regex_t *SearchRE)
 {
-  unsigned char buf[LONG_STRING], fmt[LONG_STRING];
+  unsigned char *buf = NULL, *fmt = NULL;
+  size_t buflen = 0;
   unsigned char *buf_ptr = buf;
   int ch, vch, col, cnt, b_read;
   int buf_ready = 0, change_last = 0;
@@ -1244,6 +1293,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   int offset;
   int def_color;
   int m;
+  int rc = -1;
   ansi_attr a = {0,0,0,-1};
   regmatch_t pmatch[1];
 
@@ -1272,11 +1322,11 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
     if ((*lineInfo)[n].type == -1)
     {
       /* determine the line class */
-      if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, buf, fmt, sizeof (buf), &buf_ready) < 0)
+      if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
       {
 	if (change_last)
 	  (*last)--;
-	return (-1);
+	goto out;
       }
 
       resolve_types ((char *) fmt, (char *) buf, *lineInfo, n, *last,
@@ -1301,11 +1351,11 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   if ((flags & M_SHOWCOLOR) && !(*lineInfo)[n].continuation &&
       (*lineInfo)[n].type == MT_COLOR_QUOTED && (*lineInfo)[n].quote == NULL)
   {
-    if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, buf, fmt, sizeof (buf), &buf_ready) < 0)
+    if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
 	(*last)--;
-      return (-1);
+      goto out;
     }
     regexec ((regex_t *) QuoteRegexp.rx, (char *) fmt, 1, pmatch, 0);
     (*lineInfo)[n].quote = classify_quote (QuoteList,
@@ -1316,11 +1366,11 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 
   if ((flags & M_SEARCH) && !(*lineInfo)[n].continuation && (*lineInfo)[n].search_cnt == -1) 
   {
-    if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, buf, fmt, sizeof (buf), &buf_ready) < 0)
+    if (fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, &buflen, &buf_ready) < 0)
     {
       if (change_last)
 	(*last)--;
-      return (-1);
+      goto out;
     }
 
     offset = 0;
@@ -1349,20 +1399,22 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   if (!(flags & M_SHOW) && (*lineInfo)[n+1].offset > 0)
   {
     /* we've already scanned this line, so just exit */
-    return (0);
+    rc = 0;
+    goto out;
   }
   if ((flags & M_SHOWCOLOR) && *force_redraw && (*lineInfo)[n+1].offset > 0)
   {
     /* no need to try to display this line... */
-    return (1); /* fake display */
+    rc = 1;
+    goto out; /* fake display */
   }
 
-  if ((b_read = fill_buffer (f, last_pos, (*lineInfo)[n].offset, buf, fmt, 
-			      sizeof (buf), &buf_ready)) < 0)
+  if ((b_read = fill_buffer (f, last_pos, (*lineInfo)[n].offset, &buf, &fmt, 
+			     &buflen, &buf_ready)) < 0)
   {
     if (change_last)
       (*last)--;
-    return (-1);
+    goto out;
   }
 
   /* now chose a good place to break the line */
@@ -1406,7 +1458,10 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
 
   /* if we don't need to display the line we are done */
   if (!(flags & M_SHOW))
-    return 0;
+  {
+    rc = 0;
+    goto out;
+  }
 
   /* display the line */
   format_line (lineInfo, n, buf, flags, &a, cnt, &ch, &vch, &col, &special);
@@ -1467,7 +1522,12 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   if (!(flags & M_SHOW))
     flags = 0;
 
-  return (flags);
+  rc = flags;
+
+out:
+  FREE(&buf);
+  FREE(&fmt);
+  return rc;
 }
 
 static int
