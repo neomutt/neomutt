@@ -1,3 +1,18 @@
+2009-04-26 12:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (addbd9145230)
+
+	* pager.c: Use dynamic buffer for displaying pager lines. Closes
+	#3162.
+
+	With too small fixed-size buffers we can't color/find certain words
+	that span buffers. This needs to duplicate mutt_read_line with the
+	adjustment to leave line termination in and not support breaking
+	long lines using \ at EOL. Other callers may want to use this one
+	instead, too as we support \-escaping in too many places.
+
+2009-04-26 09:52 +0200  Rocco Rutte  <pdmef@gmx.net>  (1b7f5a7a4f44)
+
+	* ChangeLog, init.h: Document suffixes for %f in $folder_format
+
 2009-04-22 23:29 +0200  Bertram Felgenhauer  <int-e@gmx.de>  (0aa313a3bf20)
 
 	* headers.c: Fix memory leak in mutt_edit_headers(). Closes #3220.

@@ -1208,6 +1208,10 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   {
     h = ctx->hdrs[n];
 
+#if USE_HCACHE
+      imap_hcache_put (idata, h);
+#endif
+
     if (h->deleted)
     {
       imap_cache_del (idata, h);

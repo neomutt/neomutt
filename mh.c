@@ -1690,6 +1690,18 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
 	  goto err;
       }
     }
+
+#if USE_HCACHE
+    if (ctx->hdrs[i]->changed)
+    {
+      if (ctx->magic == M_MAILDIR)
+	mutt_hcache_store (hc, ctx->hdrs[i]->path + 3, ctx->hdrs[i],
+			   0, &maildir_hcache_keylen);
+      else if (ctx->magic == M_MH)
+	mutt_hcache_store (hc, ctx->hdrs[i]->path, ctx->hdrs[i], 0, strlen);
+    }
+#endif
+
   }
 
 #if USE_HCACHE
