@@ -418,6 +418,11 @@ int pop_open_mailbox (CONTEXT *ctx)
   memset (ctx->rights, 0, sizeof (ctx->rights));
   mutt_bit_set (ctx->rights, M_ACL_SEEN);
   mutt_bit_set (ctx->rights, M_ACL_DELETE);
+#if USE_HCACHE
+  /* flags are managed using header cache, so it only makes sense to
+   * enable them in that case */
+  mutt_bit_set (ctx->rights, M_ACL_WRITE);
+#endif
 
   FOREVER
   {
@@ -666,6 +671,14 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 #endif
 	}
       }
+
+#if USE_HCACHE
+      if (ctx->hdrs[i]->changed)
+      {
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen);
+      }
+#endif
+
     }
 
 #if USE_HCACHE

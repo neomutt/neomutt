@@ -6760,6 +6760,16 @@ controlled by the
 variable, which defaults to every 60 seconds.
 </para>
 
+<para>
+POP is read-only which doesn't allow for some features like editing
+messages or changing flags. However, using
+<xref linkend="header-caching"/> and <xref linkend="body-caching"/>
+Mutt simulates the new/old/read flags as well as flagged and replied.
+Mutt applies some logic on top of remote messages but cannot change
+the messages itself so that modifications of flags are lost when
+messages are downloaded from the POP server.
+</para>
+
 <anchor id="fetch-mail"/>
 <para>
 Another way to access your POP3 mail is the <literal>&lt;fetch-mail&gt;</literal> function

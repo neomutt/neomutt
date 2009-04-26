@@ -5,6 +5,8 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+  + the "flagged" and "replied" flags are enabled/supported for
+    POP when built with header caching
   + <set-flag> and <clear-flag> work in the pager, too
   + ~x pattern also matches against In-Reply-To
   + lower case patterns for string searches perform case-insensitive
