@@ -1,3 +1,16 @@
+2009-04-28 14:18 +0200  Bertram Felgenhauer  <int-e@gmx.de>  (6b20a3545f03)
+
+	* doc/manual.xml.head, headers.c: Drop References header if In-Reply-
+	To is modified by user. Closes #3221.
+
+2009-04-28 13:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (a13d8fd40094)
+
+	* ChangeLog, send.c: Don't generate References: for reply to multiple
+	messages
+
+	All parent Message-Ids are present in In-Reply-To already. Also,
+	RfC2822, section 3.6.4 discourages its generation.
+
 2009-04-28 13:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (86334b572057)
 
 	* sendlib.c: Don't trim In-Reply-To with $edit_headers set

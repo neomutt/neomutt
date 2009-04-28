@@ -112,7 +112,7 @@ void mutt_edit_headers (const char *editor,
 
   /* in case the user modifies/removes the In-Reply-To header with
      $edit_headers set, we remove References: as they're likely invalid;
-     we can simply compare strings as we don't generate Refereces for
+     we can simply compare strings as we don't generate References for
      multiple Message-Ids in IRT anyways */
   if (!n->in_reply_to || (msg->env->in_reply_to &&
 			  mutt_strcmp (n->in_reply_to->data,
