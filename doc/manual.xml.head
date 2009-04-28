@@ -1387,7 +1387,7 @@ permanently. The selection can later be changed in the compose menu.
 
 <para>
 When replying to messages, the <emphasis>In-Reply-To:</emphasis> header contains the
-Message-Id of the message(s) you reply to. If you remove its value, Mutt will not generate a
+Message-Id of the message(s) you reply to. If you remove or modify its value, Mutt will not generate a
 <emphasis>References:</emphasis> field, which allows you to create a new message thread, for example
 to create a new message to a mailing list without having to enter the mailing list's address.
 </para>

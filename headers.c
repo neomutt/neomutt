@@ -110,6 +110,15 @@ void mutt_edit_headers (const char *editor,
   safe_fclose (&ifp);
   mutt_unlink (path);
 
+  /* in case the user modifies/removes the In-Reply-To header with
+     $edit_headers set, we remove References: as they're likely invalid;
+     we can simply compare strings as we don't generate Refereces for
+     multiple Message-Ids in IRT anyways */
+  if (!n->in_reply_to || (msg->env->in_reply_to &&
+			  mutt_strcmp (n->in_reply_to->data,
+				       msg->env->in_reply_to->data) != 0))
+    mutt_free_list (&msg->env->references);
+
   /* restore old info. */
   mutt_free_list (&n->references);
   n->references = msg->env->references;
@@ -117,9 +126,6 @@ void mutt_edit_headers (const char *editor,
 
   mutt_free_envelope (&msg->env);
   msg->env = n; n = NULL;
-
-  if (!msg->env->in_reply_to)
-    mutt_free_list (&msg->env->references);
 
   mutt_expand_aliases_env (msg->env);
 
