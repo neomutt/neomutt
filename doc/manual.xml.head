@@ -3606,6 +3606,14 @@ the first back-reference in the regex, <literal>&percnt;2</literal> with the sec
 </para>
 
 <para>
+To match spam tags, mutt needs the corresponding header information
+which is always the case for local and POP folders but not for IMAP in
+the default configuration. Depending on the spam header to be analyzed,
+<link linkend="imap-headers">&dollar;imap&lowbar;headers</link> may need
+to be adjusted.
+</para>
+
+<para>
 If you're using multiple spam filters, a message can have more than
 one spam-related header. You can define <literal>spam</literal> patterns for each
 filter you use. If a message matches two or more of these patterns, and
