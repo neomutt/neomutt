@@ -1,3 +1,15 @@
+2009-04-28 13:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (86334b572057)
+
+	* sendlib.c: Don't trim In-Reply-To with $edit_headers set
+
+	In case of a tagged reply to several messages, we want In-Reply-To
+	to contain all parent Message-Ids.
+
+2009-04-28 11:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (2012f37b7d64)
+
+	* ChangeLog, imap/imap.c: Only sync changed messages back to hcache on
+	mailbox sync
+
 2009-04-28 11:15 +0200  Rocco Rutte  <pdmef@gmx.net>  (c60ce9a3bae7)
 
 	* doc/manual.xml.head: For spam detection, mention $imap_headers.
