@@ -1,3 +1,13 @@
+2009-04-28 11:15 +0200  Rocco Rutte  <pdmef@gmx.net>  (c60ce9a3bae7)
+
+	* doc/manual.xml.head: For spam detection, mention $imap_headers.
+	Closes #3223.
+
+2009-04-28 11:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (b240c964db53)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Fix typo and reword
+	paragraph
+
 2009-04-26 21:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (9fa4a3e74355)
 
 	* UPDATING, doc/manual.xml.head, pop.c: POP: Support hcache updating,

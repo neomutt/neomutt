@@ -1208,10 +1208,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   {
     h = ctx->hdrs[n];
 
-#if USE_HCACHE
-      imap_hcache_put (idata, h);
-#endif
-
     if (h->deleted)
     {
       imap_cache_del (idata, h);
@@ -1222,6 +1218,9 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     
     if (h->active && h->changed)
     {
+#if USE_HCACHE
+      imap_hcache_put (idata, h);
+#endif
       /* if the message has been rethreaded or attachments have been deleted
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
