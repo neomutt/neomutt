@@ -1,3 +1,16 @@
+2009-04-26 21:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (9fa4a3e74355)
+
+	* UPDATING, doc/manual.xml.head, pop.c: POP: Support hcache updating,
+	too.
+
+	This also allows us to use hcache to manage "flagged" and "replied"
+	message flags.
+
+2009-04-26 20:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (2fe6f875c7ae)
+
+	* ChangeLog, imap/imap.c, mh.c: Sync header to hcache when synching
+	MH/Maildir/IMAP folders. Closes #2942.
+
 2009-04-26 12:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (addbd9145230)
 
 	* pager.c: Use dynamic buffer for displaying pager lines. Closes

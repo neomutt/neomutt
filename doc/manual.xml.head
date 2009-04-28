@@ -6766,8 +6766,9 @@ messages or changing flags. However, using
 <xref linkend="header-caching"/> and <xref linkend="body-caching"/>
 Mutt simulates the new/old/read flags as well as flagged and replied.
 Mutt applies some logic on top of remote messages but cannot change
-the messages itself so that modifications of flags are lost when
-messages are downloaded from the POP server.
+them so that modifications of flags are lost when
+messages are downloaded from the POP server (either by Mutt or other
+tools).
 </para>
 
 <anchor id="fetch-mail"/>
