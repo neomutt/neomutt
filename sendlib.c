@@ -1541,6 +1541,8 @@ void mutt_write_references (LIST *r, FILE *f, int trim)
   {
     fputc (' ', f);
     fputs (ref[refcnt]->data, f);
+    if (refcnt >= 1)
+      fputc ('\n', f);
   }
 
   FREE (&ref);
