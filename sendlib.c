@@ -1837,7 +1837,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
   if (env->in_reply_to)
   {
     fputs ("In-Reply-To:", fp);
-    mutt_write_references (env->in_reply_to, fp, 1);
+    mutt_write_references (env->in_reply_to, fp, 0);
     fputc ('\n', fp);
   }
   
