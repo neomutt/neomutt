@@ -1,3 +1,17 @@
+2009-04-29 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (366d992abcb4)
+
+	* mailbox.h, mh.c, mx.c: Move Maildir/MH folder detection from mx.c to
+	mh.c
+
+2009-04-28 15:12 +0200  Rocco Rutte  <pdmef@gmx.net>  (4d9685be5987)
+
+	* sendlib.c: Fold References: header so we never run into line length
+	problems
+
+2009-04-28 14:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (027edb15e455)
+
+	* ChangeLog, headers.c: Fix comment typo
+
 2009-04-28 14:18 +0200  Bertram Felgenhauer  <int-e@gmx.de>  (6b20a3545f03)
 
 	* doc/manual.xml.head, headers.c: Drop References header if In-Reply-

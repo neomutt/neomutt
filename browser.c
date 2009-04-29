@@ -460,6 +460,21 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
     if ((! S_ISREG (s.st_mode)) && (! S_ISDIR (s.st_mode)) &&
 	(! S_ISLNK (s.st_mode)))
       continue;
+
+    if (mx_is_maildir (tmp->path))
+    {
+      struct stat st2;
+      char md[_POSIX_PATH_MAX];
+
+      snprintf (md, sizeof (md), "%s/new", tmp->path);
+      if (stat (md, &s) < 0)
+	s.st_mtime = 0;
+      snprintf (md, sizeof (md), "%s/cur", tmp->path);
+      if (stat (md, &st2) < 0)
+	st2.st_mtime = 0;
+      if (st2.st_mtime > s.st_mtime)
+	memcpy (&s, &st2, sizeof (struct stat));
+    }
     
     strfcpy (buffer, NONULL(tmp->path), sizeof (buffer));
     mutt_pretty_mailbox (buffer, sizeof (buffer));
