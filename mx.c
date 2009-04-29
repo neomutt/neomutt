@@ -370,42 +370,12 @@ int mx_get_magic (const char *path)
   if (S_ISDIR (st.st_mode))
   {
     /* check for maildir-style mailbox */
-
-    snprintf (tmp, sizeof (tmp), "%s/cur", path);
-    if (stat (tmp, &st) == 0 && S_ISDIR (st.st_mode))
-      return (M_MAILDIR);
+    if (mx_is_maildir (path))
+      return M_MAILDIR;
 
     /* check for mh-style mailbox */
-
-    snprintf (tmp, sizeof (tmp), "%s/.mh_sequences", path);
-    if (access (tmp, F_OK) == 0)
-      return (M_MH);
-
-    snprintf (tmp, sizeof (tmp), "%s/.xmhcache", path);
-    if (access (tmp, F_OK) == 0)
-      return (M_MH);
-    
-    snprintf (tmp, sizeof (tmp), "%s/.mew_cache", path);
-    if (access (tmp, F_OK) == 0)
-      return (M_MH);
-
-    snprintf (tmp, sizeof (tmp), "%s/.mew-cache", path);
-    if (access (tmp, F_OK) == 0)
-      return (M_MH);
-    
-    snprintf (tmp, sizeof (tmp), "%s/.sylpheed_cache", path);
-    if (access (tmp, F_OK) == 0)
-      return (M_MH);
-
-    /* 
-     * ok, this isn't an mh folder, but mh mode can be used to read
-     * Usenet news from the spool. ;-) 
-     */
-
-    snprintf (tmp, sizeof (tmp), "%s/.overview", path);
-    if (access (tmp, F_OK) == 0)
-      return (M_MH);
-
+    if (mx_is_mh (path))
+      return M_MH;
   }
   else if (st.st_size == 0)
   {
