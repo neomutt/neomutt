@@ -1,3 +1,17 @@
+2009-05-12 15:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (644cfc8070f7)
+
+	* OPS, mbox.c: Fix description for <save-message>
+
+2009-04-29 14:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (335e6f782862)
+
+	* ChangeLog, browser.c: Fix maildir times in mailboxes browser. Closes
+	#626.
+
+	Instead of using the (pointless) mtime of the top-level maildir
+	folder, use the latest mtime of the "new" and "cur" subdirectories.
+	Maildir folders in the mailboxes list can now be properly sorted by
+	date. This does not affect the directory browser. Also see #2421.
+
 2009-04-29 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (366d992abcb4)
 
 	* mailbox.h, mh.c, mx.c: Move Maildir/MH folder detection from mx.c to
