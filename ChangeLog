@@ -1,3 +1,13 @@
+2009-05-13 14:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (c46e734a9f9f)
+
+	* mutt.h, muttlib.c: Add mutt_find_list() to lookup data in lists
+
+2009-05-13 12:52 +0200  Rocco Rutte  <pdmef@gmx.net>  (19e62bd1549b)
+
+	* ChangeLog, alias.c, crypt-gpgme.c, group.c, mbox.c, pgp.c, query.c,
+	rfc822.c, rfc822.h, send.c, smime.c: Prune empty address groups when
+	preparing replies. Closes #2875.
+
 2009-05-13 12:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (ce0e5c895032)
 
 	* mbox.c: Actually reopen mbox/mmdf files in case we find

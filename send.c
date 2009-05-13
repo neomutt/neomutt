@@ -1088,6 +1088,12 @@ int mutt_resend_message (FILE *fp, CONTEXT *ctx, HEADER *cur)
   return ci_send_message (SENDRESEND, msg, NULL, ctx, cur);
 }
 
+static int is_reply (HEADER *reply, HEADER *orig)
+{
+  return mutt_find_list (orig->env->references, reply->env->message_id) ||
+         mutt_find_list (orig->env->in_reply_to, reply->env->message_id);
+}
+
 int
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
@@ -1792,15 +1798,18 @@ full_fcc:
   if (WithCrypto && free_clear_content)
     mutt_free_body (&clear_content);
 
+  /* set 'replied' flag only if the user didn't change/remove
+     In-Reply-To: and References: headers during edit */
   if (flags & SENDREPLY)
   {
     if (cur && ctx)
-      mutt_set_flag (ctx, cur, M_REPLIED, 1);
+      mutt_set_flag (ctx, cur, M_REPLIED, is_reply (cur, msg));
     else if (!(flags & SENDPOSTPONED) && ctx && ctx->tagged)
     {
       for (i = 0; i < ctx->vcount; i++)
 	if (ctx->hdrs[ctx->v2r[i]]->tagged)
-	  mutt_set_flag (ctx, ctx->hdrs[ctx->v2r[i]], M_REPLIED, 1);
+	  mutt_set_flag (ctx, ctx->hdrs[ctx->v2r[i]], M_REPLIED,
+			 is_reply (ctx->hdrs[ctx->v2r[i]], msg));
     }
   }
 
