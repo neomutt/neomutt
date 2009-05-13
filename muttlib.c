@@ -252,6 +252,21 @@ LIST *mutt_add_list_n (LIST *head, const void *data, size_t len)
   return head;
 }
 
+LIST *mutt_find_list (LIST *l, const char *data)
+{
+  LIST *p = l;
+
+  while (p)
+  {
+    if (data == p->data)
+      return p;
+    if (data && p->data && mutt_strcmp (p->data, data) == 0)
+      return p;
+    p = p->next;
+  }
+  return NULL;
+}
+
 void mutt_free_list (LIST **list)
 {
   LIST *p;
