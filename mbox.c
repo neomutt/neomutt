@@ -1109,17 +1109,13 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
   {
     case M_MBOX:
     case M_MMDF:
-      if (fseek (ctx->fp, 0, SEEK_SET) != 0)
-      {
-        dprint (1, (debugfile, "mutt_reopen_mailbox: fseek() failed\n"));
-        rc = -1;
-      } 
-      else 
-      {
-        cmp_headers = mbox_strict_cmp_headers;
-        rc = ((ctx->magic == M_MBOX) ? mbox_parse_mailbox
-				     : mmdf_parse_mailbox) (ctx);
-      }
+      cmp_headers = mbox_strict_cmp_headers;
+      safe_fclose (&ctx->fp);
+      if (!(ctx->fp = safe_fopen (ctx->path, "r")))
+	rc = -1;
+      else
+	rc = ((ctx->magic == M_MBOX) ? mbox_parse_mailbox
+	                               : mmdf_parse_mailbox) (ctx);
       break;
 
     default:
