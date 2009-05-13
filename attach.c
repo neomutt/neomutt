@@ -805,6 +805,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       if ((s.fpout = mutt_save_attachment_open (path, flags)) == NULL)
       {
 	mutt_perror ("fopen");
+	mutt_sleep (2);
 	return (-1);
       }
       fseeko ((s.fpin = fp), m->offset, 0);
@@ -813,6 +814,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       if (fclose (s.fpout) != 0)
       {
 	mutt_perror ("fclose");
+	mutt_sleep (2);
 	return (-1);
       }
     }
