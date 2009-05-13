@@ -70,7 +70,7 @@ static ADDRESS *mutt_expand_aliases_r (ADDRESS *a, LIST **expn)
           u->data = safe_strdup (a->mailbox);
           u->next = *expn;
           *expn = u;
-	  w = rfc822_cpy_adr (t);
+	  w = rfc822_cpy_adr (t, 0);
 	  w = mutt_expand_aliases_r (w, expn);
 	  if (head)
 	    last->next = w;

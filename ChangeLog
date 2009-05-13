@@ -1,3 +1,16 @@
+2009-05-13 12:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (ce0e5c895032)
+
+	* mbox.c: Actually reopen mbox/mmdf files in case we find
+	modifications. Closes #2725.
+
+	Since the file is changed while we have it open in ctx->fp, we
+	likely get wrong information when parsing the mailbox. Now we
+	explicitely close and (re)open it.
+
+2009-05-12 16:26 +0200  Rocco Rutte  <pdmef@gmx.net>  (06e318bfe8f2)
+
+	* ChangeLog, mbox.c: Backout errorneously commited mbox atime fix
+
 2009-05-12 15:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (644cfc8070f7)
 
 	* OPS, mbox.c: Fix description for <save-message>

@@ -4237,7 +4237,7 @@ static char *find_keys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
         default: abort ();
         }
       
-      *last = rfc822_cpy_adr (p);
+      *last = rfc822_cpy_adr (p, 0);
       while (*last)
         last = &((*last)->next);
     }

@@ -451,7 +451,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 
   if (flags && env->mail_followup_to && hmfupto == M_YES) 
   {
-    rfc822_append (to, env->mail_followup_to);
+    rfc822_append (to, env->mail_followup_to, 1);
     return 0;
   }
 
@@ -464,7 +464,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
   if (!option(OPTREPLYSELF) && mutt_addr_is_user (env->from))
   {
     /* mail is from the user, assume replying to recipients */
-    rfc822_append (to, env->to);
+    rfc822_append (to, env->to, 1);
   }
   else if (env->reply_to)
   {
@@ -482,7 +482,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
        * in his From header.
        * 
        */
-      rfc822_append (to, env->from);
+      rfc822_append (to, env->from, 0);
     }
     else if (!(mutt_addrcmp (env->from, env->reply_to) && 
 	       !env->reply_to->next) &&
@@ -499,11 +499,11 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
       switch (query_quadoption (OPT_REPLYTO, prompt))
       {
       case M_YES:
-	rfc822_append (to, env->reply_to);
+	rfc822_append (to, env->reply_to, 0);
 	break;
 
       case M_NO:
-	rfc822_append (to, env->from);
+	rfc822_append (to, env->from, 0);
 	break;
 
       default:
@@ -511,10 +511,10 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
       }
     }
     else
-      rfc822_append (to, env->reply_to);
+      rfc822_append (to, env->reply_to, 0);
   }
   else
-    rfc822_append (to, env->from);
+    rfc822_append (to, env->from, 0);
 
   return (0);
 }
@@ -538,7 +538,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
   if (flags & SENDLISTREPLY)
   {
     tmp = find_mailing_lists (in->to, in->cc);
-    rfc822_append (&out->to, tmp);
+    rfc822_append (&out->to, tmp, 0);
     rfc822_free_address (&tmp);
 
     if (in->mail_followup_to && hmfupto == M_YES &&
@@ -553,8 +553,8 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != M_YES))
     {
       /* if(!mutt_addr_is_user(in->to)) */
-      rfc822_append (&out->cc, in->to);
-      rfc822_append (&out->cc, in->cc);
+      rfc822_append (&out->cc, in->to, 1);
+      rfc822_append (&out->cc, in->cc, 1);
     }
   }
   return 0;
@@ -869,8 +869,8 @@ void mutt_set_followup_to (ENVELOPE *e)
        * mail-followup-to header
        */
 
-      t = rfc822_append (&e->mail_followup_to, e->to);
-      rfc822_append (&t, e->cc);
+      t = rfc822_append (&e->mail_followup_to, e->to, 0);
+      rfc822_append (&t, e->cc, 1);
     }
 
     /* remove ourselves from the mail-followup-to header */
@@ -886,9 +886,9 @@ void mutt_set_followup_to (ENVELOPE *e)
     if (e->mail_followup_to && !mutt_is_list_recipient (0, e->to, e->cc))
     {
       if (e->reply_to)
-	from = rfc822_cpy_adr (e->reply_to);
+	from = rfc822_cpy_adr (e->reply_to, 0);
       else if (e->from)
-	from = rfc822_cpy_adr (e->from);
+	from = rfc822_cpy_adr (e->from, 0);
       else
 	from = mutt_default_from ();
       

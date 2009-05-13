@@ -60,7 +60,7 @@ static ADDRESS *result_to_addr (QUERY *r)
 {
   static ADDRESS *tmp;
   
-  if (!(tmp = rfc822_cpy_adr (r->addr)))
+  if (!(tmp = rfc822_cpy_adr (r->addr, 0)))
     return NULL;
   
   if(!tmp->next && !tmp->personal)
@@ -426,7 +426,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	      if (QueryTable[i].tagged)
 	      {
 		ADDRESS *a = result_to_addr(QueryTable[i].data);
-		rfc822_append (&naddr, a);
+		rfc822_append (&naddr, a, 0);
 		rfc822_free_address (&a);
 	      }
 
@@ -461,7 +461,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 	      if (QueryTable[i].tagged)
 	      {
 		ADDRESS *a = result_to_addr(QueryTable[i].data);
-		rfc822_append (&msg->env->to, a);
+		rfc822_append (&msg->env->to, a, 0);
 		rfc822_free_address (&a);
 	      }
 	  }
