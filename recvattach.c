@@ -433,7 +433,10 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
   {
     if (mutt_get_field (prompt, buf, sizeof (buf), M_FILE | M_CLEAR) != 0
 	|| !buf[0])
+    {
+      mutt_clear_error ();
       return -1;
+    }
     
     prompt = NULL;
     mutt_expand_path (buf, sizeof (buf));
