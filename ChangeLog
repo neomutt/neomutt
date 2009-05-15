@@ -1,3 +1,18 @@
+2009-05-13 18:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (0563c88ad6f0)
+
+	* attach.c, recvattach.c: Don't loose error message when attachment
+	saving fails. Closes #3156.
+
+2009-05-15 12:46 +0200  Seth Arnold  <seth.arnold@suse.de>  (1cea1ecf9f79)
+
+	* UPDATING, color.c, doc/manual.xml.head: Make "uncolor" also work
+	header and body objects. Closes #1046.
+
+2009-05-13 14:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (f96a176bb14c)
+
+	* ChangeLog, send.c: Don't set 'replied' flag if user changes
+	References/IRT. Closes #2044.
+
 2009-05-13 14:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (c46e734a9f9f)
 
 	* mutt.h, muttlib.c: Add mutt_find_list() to lookup data in lists

@@ -657,7 +657,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
     for (i = 0, j = 0, ret = 0; ret == 0 && i < ctx->msgcount; i++)
     {
-      if (ctx->hdrs[i]->deleted)
+      if (ctx->hdrs[i]->deleted && ctx->hdrs[i]->refno != -1)
       {
 	j++;
 	if (!ctx->quiet)
