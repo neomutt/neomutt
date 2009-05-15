@@ -364,12 +364,12 @@ int mutt_parse_unmono (BUFFER *buf, BUFFER *s, unsigned long data,
   return _mutt_parse_uncolor(buf, s, data, err, 0);
 }
 
-static int 
-_mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err, 
-			 short parse_uncolor)
+static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
+				BUFFER *err, short parse_uncolor)
 {
   int object = 0, do_cache = 0;
   COLOR_LINE *tmp, *last = NULL;
+  COLOR_LINE **list;
 
   mutt_extract_token (buf, s, 0);
 
@@ -379,14 +379,20 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
     return (-1);
   }
 
-  if (mutt_strncmp (buf->data, "index", 5) != 0)
+  if (mutt_strncmp (buf->data, "index", 5) == 0)
+    list = &ColorIndexList;
+  else if (mutt_strncmp (buf->data, "body", 4) == 0)
+    list = &ColorBodyList;
+  else if (mutt_strncmp (buf->data, "header", 7) == 0)
+    list = &ColorHdrList;
+  else
   {
     snprintf (err->data, err->dsize,
-	      _("%s: command valid only for index object"), 
+	      _("%s: command valid only for index, body, header objects"),
 	      parse_uncolor ? "uncolor" : "unmono");
     return (-1);
   }
-  
+
   if (!MoreArgs (s))
   {
     snprintf (err->data, err->dsize,
@@ -415,14 +421,13 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
 
     return 0;
   }
-     
-  
+
   do
   {
     mutt_extract_token (buf, s, 0);
     if (!mutt_strcmp ("*", buf->data))
     {
-      for (tmp = ColorIndexList; tmp; )
+      for (tmp = *list; tmp; )
       {
         if (!do_cache)
 	  do_cache = 1;
@@ -430,22 +435,22 @@ _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err,
 	tmp = tmp->next;
 	mutt_free_color_line(&last, parse_uncolor);
       }
-      ColorIndexList = NULL;
+      *list = NULL;
     }
     else
     {
-      for (last = NULL, tmp = ColorIndexList; tmp; last = tmp, tmp = tmp->next)
+      for (last = NULL, tmp = *list; tmp; last = tmp, tmp = tmp->next)
       {
 	if (!mutt_strcmp (buf->data, tmp->pattern))
 	{
           if (!do_cache)
 	    do_cache = 1;
-	  dprint(1,(debugfile,"Freeing pattern \"%s\" from ColorIndexList\n",
+	  dprint(1,(debugfile,"Freeing pattern \"%s\" from color list\n",
 	                       tmp->pattern));
 	  if (last)
 	    last->next = tmp->next;
 	  else
-	    ColorIndexList = tmp->next;
+	    *list = tmp->next;
 	  mutt_free_color_line(&tmp, parse_uncolor);
 	  break;
 	}

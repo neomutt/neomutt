@@ -2467,9 +2467,17 @@ silently truncated at the screen width, and are not wrapped.
 </arg>
 
 <command>uncolor</command>
+<group choice="req">
 <arg choice="plain">
 <option>index</option>
 </arg>
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -2561,10 +2569,10 @@ setting this variable.
 
 <note>
 <para>
-The uncolor command can be applied to the index object only.  It
+The uncolor command can be applied to the index, header and body objects only.  It
 removes entries from the list. You <emphasis>must</emphasis> specify the same pattern
 specified in the color command for it to be removed.  The pattern <quote>*</quote> is
-a special token which means to clear the color index list of all entries.
+a special token which means to clear the color list of all entries.
 </para>
 </note>
 
@@ -2619,9 +2627,17 @@ attributes through the use of the <quote>mono</quote> command. Usage:
 </arg>
 
 <command>unmono</command>
+<group choice="req">
 <arg choice="plain">
 <option>index</option>
 </arg>
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -7842,12 +7858,25 @@ The following are the commands understood by Mutt:
 </arg>
 
 <command><link linkend="color">uncolor</link></command>
+<group choice="req">
 <arg choice="plain">
 <option>index</option>
 </arg>
-<arg choice="plain" rep="repeat">
-<replaceable class="parameter">pattern</replaceable>
+<arg choice="plain">
+<option>header</option>
 </arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
+<group choice="req">
+<arg choice="plain">
+<replaceable>*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable>pattern</replaceable>
+</arg>
+</group>
 </cmdsynopsis>
 </listitem>
 
@@ -8148,9 +8177,17 @@ The following are the commands understood by Mutt:
 </arg>
 
 <command><link linkend="mono">unmono</link></command>
+<group choice="req">
 <arg choice="plain">
 <option>index</option>
 </arg>
+<arg choice="plain">
+<option>header</option>
+</arg>
+<arg choice="plain">
+<option>body</option>
+</arg>
+</group>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>
