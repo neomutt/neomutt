@@ -226,7 +226,7 @@ static header_cache_t *pop_hcache_open (POP_DATA *pop_data, const char *path)
  */
 static int pop_fetch_headers (CONTEXT *ctx)
 {
-  int i, ret, old_count, new_count;
+  int i, ret, old_count, new_count, deleted;
   unsigned short hcached = 0, bcached;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
   progress_t progress;
@@ -274,9 +274,20 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
   if (ret == 0)
   {
-    for (i = 0; i < old_count; i++)
+    for (i = 0, deleted = 0; i < old_count; i++)
+    {
       if (ctx->hdrs[i]->refno == -1)
+      {
 	ctx->hdrs[i]->deleted = 1;
+	deleted++;
+      }
+    }
+    if (deleted > 0)
+    {
+      mutt_error (_("%d messages have been lost. Try reopening the mailbox."),
+		  deleted);
+      mutt_sleep (2);
+    }
 
     for (i = old_count; i < new_count; i++)
     {
