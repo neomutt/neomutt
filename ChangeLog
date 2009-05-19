@@ -1,3 +1,10 @@
+2009-05-15 15:03 +0200  Takahashi Tamotsu  <ttakah@lapis.plala.or.jp>  (c665bdf5ff5f)
+
+	* pop.c: POP: Notify user when messages are lost. Closes #2226.
+
+	* pop.c: POP: Ignore already-deleted messages while
+	syncing. Closes #2225.
+
 2009-05-13 18:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (0563c88ad6f0)
 
 	* attach.c, recvattach.c: Don't loose error message when attachment
@@ -10,20 +17,14 @@
 
 2009-05-13 14:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (f96a176bb14c)
 
-	* ChangeLog, send.c: Don't set 'replied' flag if user changes
+	* send.c: Don't set 'replied' flag if user changes
 	References/IRT. Closes #2044.
-
-2009-05-13 14:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (c46e734a9f9f)
 
 	* mutt.h, muttlib.c: Add mutt_find_list() to lookup data in lists
 
-2009-05-13 12:52 +0200  Rocco Rutte  <pdmef@gmx.net>  (19e62bd1549b)
-
-	* ChangeLog, alias.c, crypt-gpgme.c, group.c, mbox.c, pgp.c, query.c,
-	rfc822.c, rfc822.h, send.c, smime.c: Prune empty address groups when
-	preparing replies. Closes #2875.
-
-2009-05-13 12:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (ce0e5c895032)
+	* alias.c, crypt-gpgme.c, group.c, mbox.c, pgp.c, query.c,
+	rfc822.c, rfc822.h, send.c, smime.c: Prune empty address groups
+	when preparing replies. Closes #2875.
 
 	* mbox.c: Actually reopen mbox/mmdf files in case we find
 	modifications. Closes #2725.
@@ -34,35 +35,28 @@
 
 2009-05-12 16:26 +0200  Rocco Rutte  <pdmef@gmx.net>  (06e318bfe8f2)
 
-	* ChangeLog, mbox.c: Backout errorneously commited mbox atime fix
-
-2009-05-12 15:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (644cfc8070f7)
+	* mbox.c: Backout errorneously commited mbox atime fix
 
 	* OPS, mbox.c: Fix description for <save-message>
 
 2009-04-29 14:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (335e6f782862)
 
-	* ChangeLog, browser.c: Fix maildir times in mailboxes browser. Closes
-	#626.
+	* browser.c: Fix maildir times in mailboxes browser. Closes #626.
 
 	Instead of using the (pointless) mtime of the top-level maildir
 	folder, use the latest mtime of the "new" and "cur" subdirectories.
 	Maildir folders in the mailboxes list can now be properly sorted by
 	date. This does not affect the directory browser. Also see #2421.
 
-2009-04-29 11:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (366d992abcb4)
-
-	* mailbox.h, mh.c, mx.c: Move Maildir/MH folder detection from mx.c to
-	mh.c
+	* mailbox.h, mh.c, mx.c: Move Maildir/MH folder detection from
+	mx.c to mh.c
 
 2009-04-28 15:12 +0200  Rocco Rutte  <pdmef@gmx.net>  (4d9685be5987)
 
 	* sendlib.c: Fold References: header so we never run into line length
 	problems
 
-2009-04-28 14:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (027edb15e455)
-
-	* ChangeLog, headers.c: Fix comment typo
+	* headers.c: Fix comment typo
 
 2009-04-28 14:18 +0200  Bertram Felgenhauer  <int-e@gmx.de>  (6b20a3545f03)
 
@@ -71,33 +65,24 @@
 
 2009-04-28 13:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (a13d8fd40094)
 
-	* ChangeLog, send.c: Don't generate References: for reply to multiple
+	* send.c: Don't generate References: for reply to multiple
 	messages
 
 	All parent Message-Ids are present in In-Reply-To already. Also,
 	RfC2822, section 3.6.4 discourages its generation.
-
-2009-04-28 13:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (86334b572057)
 
 	* sendlib.c: Don't trim In-Reply-To with $edit_headers set
 
 	In case of a tagged reply to several messages, we want In-Reply-To
 	to contain all parent Message-Ids.
 
-2009-04-28 11:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (2012f37b7d64)
-
-	* ChangeLog, imap/imap.c: Only sync changed messages back to hcache on
+	* imap/imap.c: Only sync changed messages back to hcache on
 	mailbox sync
-
-2009-04-28 11:15 +0200  Rocco Rutte  <pdmef@gmx.net>  (c60ce9a3bae7)
 
 	* doc/manual.xml.head: For spam detection, mention $imap_headers.
 	Closes #3223.
 
-2009-04-28 11:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (b240c964db53)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Fix typo and reword
-	paragraph
+	* doc/manual.xml.head: Manual: Fix typo and reword paragraph
 
 2009-04-26 21:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (9fa4a3e74355)
 
@@ -107,12 +92,8 @@
 	This also allows us to use hcache to manage "flagged" and "replied"
 	message flags.
 
-2009-04-26 20:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (2fe6f875c7ae)
-
-	* ChangeLog, imap/imap.c, mh.c: Sync header to hcache when synching
+	* imap/imap.c, mh.c: Sync header to hcache when synching
 	MH/Maildir/IMAP folders. Closes #2942.
-
-2009-04-26 12:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (addbd9145230)
 
 	* pager.c: Use dynamic buffer for displaying pager lines. Closes
 	#3162.
@@ -123,9 +104,7 @@
 	long lines using \ at EOL. Other callers may want to use this one
 	instead, too as we support \-escaping in too many places.
 
-2009-04-26 09:52 +0200  Rocco Rutte  <pdmef@gmx.net>  (1b7f5a7a4f44)
-
-	* ChangeLog, init.h: Document suffixes for %f in $folder_format
+	* init.h: Document suffixes for %f in $folder_format
 
 2009-04-22 23:29 +0200  Bertram Felgenhauer  <int-e@gmx.de>  (0aa313a3bf20)
 
@@ -145,20 +124,10 @@
 
 	* buffy.c: Equivalent mutt_buffy, but readable code
 
-	Signed-off-by: Aron Griffis <agriffis@n01se.net>
-
-2009-04-21 15:06 -0400  Aron Griffis  <agriffis@n01se.net>  (7bc332ddd8fc)
-
 	* buffy.c, buffy.h: Call mutt_expand_path() from mutt_buffy to fix
 	imap separator. Closes #3208 and #3218
 
-	Signed-off-by: Aron Griffis <agriffis@n01se.net>
-
-2009-04-21 14:09 -0400  Aron Griffis  <agriffis@n01se.net>  (1dc96cc13a87)
-
 	* buffy.c: Use slen instead of assuming _POSIX_PATH_MAX
-
-	Signed-off-by: Aron Griffis <agriffis@n01se.net>
 
 2009-04-23 12:51 -0700  Vincent Lefevre  <vincent@vinc17.org>  (b5b4e652e4b1)
 
@@ -239,7 +208,7 @@
 
 2009-04-07 11:32 +0200  Erik Hovland  <erik@hovland.org>  (d344c6429a48)
 
-	* ChangeLog, sendlib.c: Try to correct usage of tempfile and *tempfile
+	* sendlib.c: Try to correct usage of tempfile and *tempfile
 
 	Since tempfile is a double pointer checking for tempfile and then
 	dereferencing with *tempfile is not correct.
@@ -250,7 +219,7 @@
 
 2009-04-06 19:10 +0200  Erik Hovland  <erik@hovland.org>  (4fe35e9984ba)
 
-	* ChangeLog, sendlib.c: mutt_message_to_7bit(): Only close file
+	* sendlib.c: mutt_message_to_7bit(): Only close file
 	pointer if we opened it
 
 	The pointer is to be managed outside the function and provided. Only
@@ -262,7 +231,7 @@
 
 2009-04-05 13:41 +0200  Rocco Rutte  <pdmef@gmx.net>  (5d393e716c51)
 
-	* ChangeLog, init.h, sendlib.c: Backed out changeset 23c7b469ff20
+	* init.h, sendlib.c: Backed out changeset 23c7b469ff20
 
 	This requires more thought: if the user has -- in $sendmail, we need
 	to add our arguments for 8BITMIME/DSN/etc. before it and not after.
@@ -350,8 +319,8 @@
 
 2009-04-01 13:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (47c64fd9ac70)
 
-	* ChangeLog, doc/gen-map-doc, doc/manual.xml.head: Manual: Fix
-	openjade warnings
+	* doc/gen-map-doc, doc/manual.xml.head: Manual: Fix openjade
+	warnings
 
 	* doc/makedoc.c, doc/mutt.css: makedoc: Render description lists as
 	<informaltable/>
@@ -391,7 +360,7 @@
 
 2009-03-28 22:37 +0100  Thomas Roessler  <roessler@does-not-exist.org>  (be9fb07730c6)
 
-	* ChangeLog, mutt_idna.c: Make IDNA code more readable
+	* mutt_idna.c: Make IDNA code more readable
 
 2009-03-28 16:11 +0100  Rocco Rutte  <pdmef@gmx.net>  (77cfe8016930)
 
@@ -554,7 +523,7 @@
 
 2009-02-10 13:05 +0100  Rocco Rutte  <pdmef@gmx.net>  (a21f8bf84149)
 
-	* ChangeLog, init.h: Fix documentation typos. Closes #3178.
+	* init.h: Fix documentation typos. Closes #3178.
 
 2009-01-27 12:58 -0800  Brendan Cully  <brendan@kublai.com>  (7ddf1d1cc490)
 
