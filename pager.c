@@ -1812,21 +1812,21 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       SETCOLOR (MT_COLOR_STATUS);
       BKGDSET (MT_COLOR_STATUS);
       CLEARLINE (statusoffset);
-      if (IsHeader (extra))
+
+      if (IsHeader (extra) || IsMsgAttach (extra))
       {
 	size_t l1 = COLS * MB_LEN_MAX;
 	size_t l2 = sizeof (buffer);
-	hfi.hdr = extra->hdr;
+	hfi.hdr = (IsHeader (extra)) ? extra->hdr : extra->bdy->hdr;
 	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt), &hfi, M_FORMAT_MAKEPRINT);
+	mutt_paddstr (COLS, buffer);
       }
-      else if (IsMsgAttach (extra))
+      else
       {
-	size_t l1 = COLS * MB_LEN_MAX;
-	size_t l2 = sizeof (buffer);
-	hfi.hdr = extra->bdy->hdr;
-	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt), &hfi, M_FORMAT_MAKEPRINT);
+	char bn[STRING];
+	snprintf (bn, sizeof (bn), "%s (%s)", banner, pager_progress_str);
+	mutt_paddstr (COLS, bn);
       }
-      mutt_paddstr (COLS, IsHeader (extra) || IsMsgAttach (extra) ?  buffer : banner);
       BKGDSET (MT_COLOR_NORMAL);
       SETCOLOR (MT_COLOR_NORMAL);
     }
