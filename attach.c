@@ -551,11 +551,11 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       {
 	if (a->description)
 	  snprintf (descrip, sizeof (descrip),
-		    "---Command: %-20.20s Description: %s",
+		    _("---Command: %-20.20s Description: %s"),
 		    command, a->description);
 	else
 	  snprintf (descrip, sizeof (descrip),
-		    "---Command: %-30.30s Attachment: %s", command, type);
+		    _("---Command: %-30.30s Attachment: %s"), command, type);
       }
 
       if ((mutt_wait_filter (thepid) || (entry->needsterminal &&
@@ -601,10 +601,10 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
     if (a->description)
       strfcpy (descrip, a->description, sizeof (descrip));
     else if (a->filename)
-      snprintf (descrip, sizeof (descrip), "---Attachment: %s : %s",
+      snprintf (descrip, sizeof (descrip), _("---Attachment: %s: %s"),
 	  a->filename, type);
     else
-      snprintf (descrip, sizeof (descrip), "---Attachment: %s", type);
+      snprintf (descrip, sizeof (descrip), _("---Attachment: %s"), type);
   }
   
   /* We only reach this point if there have been no errors */
