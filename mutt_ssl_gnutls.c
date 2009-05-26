@@ -543,11 +543,13 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
 
 static int tls_check_preauth (const gnutls_datum_t *certdata,
                               gnutls_certificate_status certstat,
-                              const char *hostname, int checkhost, int* certerr)
+                              const char *hostname, int checkhost, int* certerr,
+                              int* savedcert)
 {
   gnutls_x509_crt cert;
 
   *certerr = CERTERR_VALID;
+  *savedcert = 0;
 
   if (gnutls_x509_crt_init (&cert) < 0)
   {
@@ -580,6 +582,8 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   /* see whether certificate is in our cache (certificates file) */
   if (tls_compare_certificates (certdata))
   {
+    *savedcert = 1;
+
     if (certstat & GNUTLS_CERT_INVALID)
     {
       /* doesn't matter - have decided is valid because server
@@ -649,7 +653,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
                                       gnutls_certificate_status certstat,
                                       const char* hostname, int idx, int len)
 {
-  int certerr;
+  int certerr, savedcert;
   gnutls_x509_crt cert;
   char buf[SHORT_STRING];
   char fpbuf[SHORT_STRING];
@@ -670,7 +674,8 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   gnutls_datum pemdata;
   int i, row, done, ret;
 
-  if (!tls_check_preauth (certdata, certstat, hostname, !idx, &certerr))
+  if (!tls_check_preauth (certdata, certstat, hostname, !idx, &certerr,
+      &savedcert))
     return 1;
 
   /* interactive check from user */
@@ -902,23 +907,14 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   return (done == 2);
 }
 
-static int tls_check_certificate (CONNECTION* conn)
+/* sanity-checking wrapper for gnutls_certificate_verify_peers */
+static gnutls_certificate_status tls_verify_peers (gnutls_session tlsstate)
 {
-  tlssockdata *data = conn->sockdata;
-  gnutls_session state = data->state;
-  const gnutls_datum *cert_list;
-  unsigned int cert_list_size = 0;
   gnutls_certificate_status certstat;
-  int certerr, i, rc;
 
-  if (gnutls_auth_get_type (state) != GNUTLS_CRD_CERTIFICATE)
-  {
-    mutt_error (_("Unable to get certificate from peer"));
-    mutt_sleep (2);
-    return 0;
-  }
-
-  certstat = gnutls_certificate_verify_peers (state);
+  certstat = gnutls_certificate_verify_peers (tlsstate);
+  if (!certstat)
+    return certstat;
 
   if (certstat == GNUTLS_E_NO_CERTIFICATE_FOUND)
   {
@@ -935,12 +931,33 @@ static int tls_check_certificate (CONNECTION* conn)
   }
 
   /* We only support X.509 certificates (not OpenPGP) at the moment */
-  if (gnutls_certificate_type_get (state) != GNUTLS_CRT_X509)
+  if (gnutls_certificate_type_get (tlsstate) != GNUTLS_CRT_X509)
   {
     mutt_error (_("Certificate is not X.509"));
     mutt_sleep (2);
     return 0;
   }
+
+  return certstat;
+}
+
+static int tls_check_certificate (CONNECTION* conn)
+{
+  tlssockdata *data = conn->sockdata;
+  gnutls_session state = data->state;
+  const gnutls_datum *cert_list;
+  unsigned int cert_list_size = 0;
+  gnutls_certificate_status certstat;
+  int certerr, i, preauthrc, savedcert, rc = 0;
+
+  if (gnutls_auth_get_type (state) != GNUTLS_CRD_CERTIFICATE)
+  {
+    mutt_error (_("Unable to get certificate from peer"));
+    mutt_sleep (2);
+    return 0;
+  }
+
+  certstat = tls_verify_peers (state);
 
   cert_list = gnutls_certificate_get_peers (state, &cert_list_size);
   if (!cert_list)
@@ -950,23 +967,43 @@ static int tls_check_certificate (CONNECTION* conn)
     return 0;
   }
 
-  /* first check chain noninteractively */
-  for (i = 0; i < cert_list_size; i++)
-  {
+  /* tls_verify_peers doesn't check hostname or expiration, so walk
+   * from most specific to least checking these. If we see a saved certificate,
+   * its status short-circuits the remaining checks. */
+  preauthrc = 0;
+  for (i = 0; i < cert_list_size; i++) {
     rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, !i,
-                           &certerr);
-    if (!rc)
-      return 1;
+                           &certerr, &savedcert);
+    if (savedcert) {
+      if (certerr)
+        break;
+      else
+        return 1;
+    }
+    preauthrc += rc;
   }
+  if (!preauthrc)
+    return 1;
 
   /* then check interactively, starting from chain root */
   for (i = cert_list_size - 1; i >= 0; i--)
   {
     rc = tls_check_one_certificate (&cert_list[i], certstat, conn->account.host,
                                     i, cert_list_size);
-    if (rc)
-      return rc;
+
+    /* add signers to trust set, then reverify */
+    if (i && rc) {
+      rc = gnutls_certificate_set_x509_trust_mem (data->xcred, &cert_list[i],
+                                                  GNUTLS_X509_FMT_DER);
+      if (rc != 1)
+        dprint (1, (debugfile, "error trusting certificate %d: %d\n",
+                    i, rc));
+
+      certstat = tls_verify_peers (state);
+      if (!certstat)
+        return 1;
+    }
   }
 
-  return 0;
+  return rc;
 }
