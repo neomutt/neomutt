@@ -7582,15 +7582,13 @@ To compose a new message
 <arg choice="opt"><option>-s</option>
 <replaceable>subject</replaceable>
 </arg>
-<arg choice="opt" rep="repeat">
+<arg choice="opt">
 <option>-a</option>
 <replaceable>file</replaceable>
+<arg choice="opt" rep="repeat"/>
+--
 </arg>
-<arg choice="opt">--</arg>
-<arg choice="plain">
-<replaceable>address</replaceable>
-</arg>
-<arg choice="opt" rep="repeat">
+<arg choice="plain" rep="repeat">
 <replaceable>address</replaceable>
 </arg>
 </cmdsynopsis>
@@ -7611,8 +7609,15 @@ of the file <quote>&tilde;/run2.dat</quote>.
 
 <para>
 All files passed with <literal>-a</literal> <emphasis>file</emphasis> will be attached as a MIME
-part to the message. To attach several files, use <quote>--</quote> to separate files and
+part to the message. To attach a single or several files, use <quote>--</quote> to separate files and
 recipient addresses:
+</para>
+
+<screen>
+mutt -a image.png -- some@one.org</screen>
+
+<para>
+or
 </para>
 
 <screen>

@@ -35,8 +35,7 @@ mutt \- The Mutt Mail User Agent
 [-s \fIsubj\fP]
 [-b \fIaddr\fP]
 [-c \fIaddr\fP]
-[\-a \fIfile\fP [...]]
-[\-\-]
+[\-a \fIfile\fP [...] \-\-]
 \fIaddr\fP [...]
 .PP
 .B mutt 
@@ -46,8 +45,7 @@ mutt \- The Mutt Mail User Agent
 [-s \fIsubj\fP]
 [-b \fIaddr\fP]
 [-c \fIaddr\fP]
-[\-a \fIfile\fP [...]]
-[\-\-]
+[\-a \fIfile\fP [...] \-\-]
 \fIaddr\fP [...]
 < message
 .PP
@@ -82,8 +80,9 @@ text, HTML, and/or PDF format.
 An expanded version of the given alias is passed to stdout.
 .IP "-a \fIfile\fP [...]"
 Attach a file to your message using MIME.
-To attach multiple files, separating filenames and recipient addresses with
-"\-\-" is mandatory, e.g. \fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
+When attaching single or multiple files, separating filenames and recipient addresses with
+"\-\-" is mandatory, e.g. \fBmutt -a image.jpg \-\- addr1\fP or
+\fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
 The \-a option must be placed at the end of command line options.
 .IP "-b \fIaddress\fP"
 Specify a blind-carbon-copy (BCC) recipient
