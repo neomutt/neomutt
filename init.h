@@ -3173,6 +3173,10 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Note: For this example to work you must be able to log in to the remote
   ** machine without having to enter a password.
+  ** .pp
+  ** When set, Mutt uses the tunnel for all remote connections.
+  ** Please see ``$account-hook'' in the manual for how to use different
+  ** tunnel commands per connection.
   */
 #endif
   { "uncollapse_jump", 	DT_BOOL, R_NONE, OPTUNCOLLAPSEJUMP, 0 },

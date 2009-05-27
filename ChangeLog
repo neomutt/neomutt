@@ -1,3 +1,13 @@
+2009-05-26 17:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (392e945dfba7)
+
+	* attach.c: Use charset parameter to view text attachments using
+	<view-attach>. Closes #3234.
+
+2009-05-25 15:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (3f0963dd9257)
+
+	* ChangeLog, pager.c: pager: print progress percentage for
+	attachments, too
+
 2009-05-25 15:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (1b9ca049cbc1)
 
 	* attach.c: Mark strings for translation
