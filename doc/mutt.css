@@ -19,3 +19,4 @@ div.example p.title { margin-left:2%; }
 div.note h3 { font-size:small; font-style:italic; font-variant: small-caps; }
 div.note h3:after { content: ":" }
 div.note { margin-bottom: 5px; }
+strong.command { font-family: monospace; font-weight: normal; }

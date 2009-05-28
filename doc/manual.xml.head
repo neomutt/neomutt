@@ -556,7 +556,7 @@ short descriptions.
 
 <para>
 You can remap the <emphasis>editor</emphasis> functions using the
-<link linkend="bind">bind</link> command.  For example, to make
+<link linkend="bind"><command>bind</command></link> command.  For example, to make
 the &lt;Delete&gt; key delete the character in front of
 the cursor rather than under, you could use:
 </para>
@@ -776,7 +776,7 @@ backspace (<quote>&circ;H</quote>), the letter again for bold or the letter, bac
 <quote>&lowbar;</quote> for denoting underline. Mutt will attempt to display these
 in bold and underline respectively if your terminal supports them. If
 not, you can use the bold and underline <link linkend="color">color</link>
-objects to specify a color or mono attribute for them.
+objects to specify a <command>color</command> or mono attribute for them.
 </para>
 
 <para>
@@ -939,7 +939,7 @@ menus have these interesting functions:
 <listitem>
 <para>
 Creates a new alias based upon the current message (or prompts for a
-new one).  Once editing is complete, an <link linkend="alias">alias</link>
+new one).  Once editing is complete, an <link linkend="alias"><command>alias</command></link>
 command is added to the file specified by
 the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable
 for future use
@@ -948,7 +948,7 @@ for future use
 <note>
 <para>
 Mutt does not read the <link linkend="alias-file">&dollar;alias&lowbar;file</link>
-upon startup so you must explicitly <link linkend="source">source</link> the file.
+upon startup so you must explicitly <link linkend="source"><command>source</command></link> the file.
 </para>
 </note>
 </listitem>
@@ -1056,7 +1056,7 @@ you misspelled the passphrase.
 <listitem>
 <para>
 Reply to the current or tagged message(s) by extracting any addresses which
-match the regular expressions given by the <link linkend="lists">lists or subscribe</link>
+match the regular expressions given by the <link linkend="lists"><command>lists</command> or <command>subscribe</command></link>
 commands, but also honor any <literal>Mail-Followup-To</literal> header(s) if the
 <link linkend="honor-followup-to">&dollar;honor&lowbar;followup&lowbar;to</link>
 configuration variable is set.  Using this when replying to messages posted
@@ -1221,7 +1221,7 @@ Reply to the author directly.
 <listitem>
 <para>
 Reply to the author as well to all recipients except you; this consults
-<link linkend="alternates">alternates</link>.
+<link linkend="alternates"><command>alternates</command></link>.
 </para>
 </listitem>
 </varlistentry>
@@ -1888,9 +1888,9 @@ question marks into regular expressions).</para></listitem>
 </cmdsynopsis>
 
 <para>
-<literal>group</literal> is used to directly add either addresses or
+<command>group</command> is used to directly add either addresses or
 regular expressions to the specified group or groups. The different
-categories of arguments to the <literal>group</literal> command can be
+categories of arguments to the <command>group</command> command can be
 in any order. The flags <literal>-rx</literal> and
 <literal>-addr</literal> specify what the following strings (that cannot
 begin with a hyphen) should be interpreted as: either a regular
@@ -1899,9 +1899,9 @@ expression or an email address, respectively.
 
 <para>
 These address groups can also be created implicitly by the
-<link linkend="alias">alias</link>, <link linkend="lists">lists</link>,
+<link linkend="alias"><command>alias</command></link>, <link linkend="lists">lists</link>,
 <link linkend="lists">subscribe</link> and
-<link linkend="alternates">alternates</link> commands by specifying the
+<link linkend="alternates"><command>alternates</command></link> commands by specifying the
 optional <literal>-group</literal> option.
 </para>
 
@@ -1912,9 +1912,9 @@ display to messages matching a group.
 </para>
 
 <para>
-<literal>ungroup</literal> is used to remove addresses or regular
+<command>ungroup</command> is used to remove addresses or regular
 expressions from the specified group or groups. The syntax is similar to
-the <literal>group</literal> command, however the special character
+the <command>group</command> command, however the special character
 <literal>*</literal> can be used to empty a group of all of its
 contents.
 </para>
@@ -1972,7 +1972,7 @@ one address, you <emphasis>must</emphasis> separate the addresses with a comma (
 
 <para>
 The optional <literal>-group</literal> argument to
-<literal>alias</literal> causes the aliased address(es) to be added to
+<command>alias</command> causes the aliased address(es) to be added to
 the named <emphasis>group</emphasis>.
 </para>
 
@@ -1987,8 +1987,8 @@ alias theguys manny, moe, jack
 
 <para>
 Unlike other mailers, Mutt doesn't require aliases to be defined
-in a special file.  The <literal>alias</literal> command can appear anywhere in
-a configuration file, as long as this file is <link linkend="source">sourced</link>.  Consequently, you can have multiple alias files, or
+in a special file.  The <command>alias</command> command can appear anywhere in
+a configuration file, as long as this file is <link linkend="source"><command>source</command>d</link>.  Consequently, you can have multiple alias files, or
 you can have all aliases defined in your <literal>.muttrc</literal>.
 </para>
 
@@ -1997,7 +1997,7 @@ On the other hand, the <link linkend="create-alias"><literal>&lt;create-alias&gt
 function can use only one file, the one pointed to by the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable (which is
 <literal>&tilde;/.muttrc</literal> by default). This file is not special either,
 in the sense that Mutt will happily append aliases to any file, but in
-order for the new aliases to take effect you need to explicitly <link linkend="source">source</link> this file too.
+order for the new aliases to take effect you need to explicitly <link linkend="source"><command>source</command></link> this file too.
 </para>
 
 <example id="ex-alias-external">
@@ -2073,7 +2073,7 @@ This is not a real menu, but is used as a fallback for all of the other
 menus except for the pager and editor modes.  If a key is not defined in
 another menu, Mutt will look for a binding to use in this menu.  This allows
 you to bind a key to a certain function in multiple menus instead of having
-multiple bind statements to accomplish the same task.
+multiple <command>bind</command> statements to accomplish the same task.
 </para>
 </listitem>
 </varlistentry>
@@ -2267,13 +2267,13 @@ sequence.
 </cmdsynopsis>
 
 <para>
-The <literal>charset-hook</literal> command defines an alias for a character set.
+The <command>charset-hook</command> command defines an alias for a character set.
 This is useful to properly display messages which are tagged with a
 character set name not known to Mutt.
 </para>
 
 <para>
-The <literal>iconv-hook</literal> command defines a system-specific name for a
+The <command>iconv-hook</command> command defines a system-specific name for a
 character set.  This is helpful when your systems character
 conversion library insists on using strange, system-specific names
 for character sets.
@@ -2298,10 +2298,10 @@ for character sets.
 
 <para>
 It is often desirable to change settings based on which mailbox you are
-reading.  The folder-hook command provides a method by which you can execute
+reading.  The <command>folder-hook</command> command provides a method by which you can execute
 any configuration command.  <emphasis>regexp</emphasis> is a regular expression specifying
 in which mailboxes to execute <emphasis>command</emphasis> before loading.  If a mailbox
-matches multiple folder-hook's, they are executed in the order given in the
+matches multiple <command>folder-hook</command>s, they are executed in the order given in the
 <literal>.muttrc</literal>.
 </para>
 
@@ -2324,8 +2324,8 @@ folder-hook mutt "set sort=threads"</screen>
 
 However, the sorting method is not restored to its previous value when
 reading a different mailbox.  To specify a <emphasis>default</emphasis> command, use the
-pattern <quote>.</quote> before other folder-hooks adjusting a value on a per-folder basis
-because folder-hooks are evaluated in the order given in the
+pattern <quote>.</quote> before other <command>folder-hook</command>s adjusting a value on a per-folder basis
+because <command>folder-hook</command>s are evaluated in the order given in the
 configuration file.
 </para>
 </note>
@@ -2569,9 +2569,9 @@ setting this variable.
 
 <note>
 <para>
-The uncolor command can be applied to the index, header and body objects only.  It
+The <command>uncolor</command> command can be applied to the index, header and body objects only.  It
 removes entries from the list. You <emphasis>must</emphasis> specify the same pattern
-specified in the color command for it to be removed.  The pattern <quote>*</quote> is
+specified in the <command>color</command> command for it to be removed.  The pattern <quote>*</quote> is
 a special token which means to clear the color list of all entries.
 </para>
 </note>
@@ -2649,7 +2649,7 @@ attributes through the use of the <quote>mono</quote> command. Usage:
 </cmdsynopsis>
 
 <para>
-For <emphasis>object</emphasis>, see the color command. <emphasis>attribute</emphasis>
+For <emphasis>object</emphasis>, see the <command>color</command> command. <emphasis>attribute</emphasis>
 can be one of the following:
 </para>
 
@@ -2752,12 +2752,12 @@ unignore posted-to:
 </cmdsynopsis>
 
 <para>
-With the <literal>hdr&lowbar;order</literal> command you can specify an order in
+With the <command>hdr&lowbar;order</command> command you can specify an order in
 which Mutt will attempt to present these headers to you when viewing messages.
 </para>
 
 <para>
-<quote>unhdr&lowbar;order *</quote> will clear all previous headers from the order list,
+<quote><command>unhdr&lowbar;order</command> *</quote> will clear all previous headers from the order list,
 thus removing the header order effects set by the system-wide startup file.
 </para>
 
@@ -2817,7 +2817,7 @@ yourself won't make much sense in many cases.  (See <link linkend="reply-to">&do
 Many users receive e-mail under a number of different addresses. To
 fully use Mutt's features here, the program must be able to
 recognize what e-mail addresses you receive mail under. That's the
-purpose of the <literal>alternates</literal> command: It takes a list of regular
+purpose of the <command>alternates</command> command: It takes a list of regular
 expressions, each of which can identify an address under which you
 receive e-mail.
 </para>
@@ -2848,20 +2848,20 @@ to be added to the named group.
 </para>
 
 <para>
-The <literal>unalternates</literal> command can be used to write exceptions to
-<literal>alternates</literal> patterns. If an address matches something in an
-<literal>alternates</literal> command, but you nonetheless do not think it is
-from you, you can list a more precise pattern under an <literal>unalternates</literal>
+The <command>unalternates</command> command can be used to write exceptions to
+<command>alternates</command> patterns. If an address matches something in an
+<command>alternates</command> command, but you nonetheless do not think it is
+from you, you can list a more precise pattern under an <command>unalternates</command>
 command.
 </para>
 
 <para>
-To remove a regular expression from the <literal>alternates</literal> list, use the
-<literal>unalternates</literal> command with exactly the same <emphasis>regexp</emphasis>.
-Likewise, if the <emphasis>regexp</emphasis> for an <literal>alternates</literal> command matches
-an entry on the <literal>unalternates</literal> list, that <literal>unalternates</literal>
-entry will be removed. If the <emphasis>regexp</emphasis> for <literal>unalternates</literal>
-is <quote>*</quote>, <emphasis>all entries</emphasis> on <literal>alternates</literal> will be removed.
+To remove a regular expression from the <command>alternates</command> list, use the
+<command>unalternates</command> command with exactly the same <emphasis>regexp</emphasis>.
+Likewise, if the <emphasis>regexp</emphasis> for an <command>alternates</command> command matches
+an entry on the <command>unalternates</command> list, that <command>unalternates</command>
+entry will be removed. If the <emphasis>regexp</emphasis> for <command>unalternates</command>
+is <quote>*</quote>, <emphasis>all entries</emphasis> on <command>alternates</command> will be removed.
 </para>
 
 </sect1>
@@ -2933,7 +2933,7 @@ lists you are subscribed to. Mutt also has limited support for
 auto-detecting mailing lists: it supports parsing
 <literal>mailto:</literal> links in the common
 <literal>List-Post:</literal> header which has the same effect as
-specifying the list address via the <literal>lists</literal> command
+specifying the list address via the <command>lists</command> command
 (except the group feature). Once you have done this, the
 <link linkend="list-reply"><literal>&lt;list-reply&gt;</literal></link>
 function will work for all known lists.
@@ -2957,8 +2957,8 @@ to send Cc upons replies (which is more a group- than a list-reply).
 <para>
 More precisely, Mutt maintains lists of patterns for the addresses
 of known and subscribed mailing lists.  Every subscribed mailing
-list is known. To mark a mailing list as known, use the <quote>lists</quote>
-command.  To mark it as subscribed, use <quote>subscribe</quote>.
+list is known. To mark a mailing list as known, use the <command>list</command>
+command.  To mark it as subscribed, use <command>subscribe</command>.
 </para>
 
 <para>
@@ -2980,11 +2980,11 @@ example, if you've subscribed to the Mutt mailing list, you will receive mail
 addressed to <literal>mutt-users@mutt.org</literal>.  So, to tell Mutt
 that this is a mailing list, you could add <literal>lists mutt-users@</literal> to your
 initialization file.  To tell Mutt that you are subscribed to it,
-add <literal>subscribe mutt-users</literal> to your initialization file instead.
+add <literal><command>subscribe</command> mutt-users</literal> to your initialization file instead.
 If you also happen to get mail from someone whose address is
 <literal>mutt-users@example.com</literal>, you could use
-<literal>lists ^mutt-users@mutt&bsol;&bsol;.org$</literal>
-or <literal>subscribe ^mutt-users@mutt&bsol;&bsol;.org$</literal> to
+<literal><command>lists</command> ^mutt-users@mutt&bsol;&bsol;.org$</literal>
+or <literal><command>subscribe</command> ^mutt-users@mutt&bsol;&bsol;.org$</literal> to
 match only mail from the actual list.
 </para>
 
@@ -3001,7 +3001,7 @@ tokens.
 
 <para>
 To remove a mailing list from the list of subscribed mailing lists,
-but keep it on the list of known mailing lists, use <quote>unsubscribe</quote>.
+but keep it on the list of known mailing lists, use <command>unsubscribe</command>.
 </para>
 
 </sect1>
@@ -3091,10 +3091,10 @@ tokens.
 
 <note>
 <para>
-The folders in the <literal>mailboxes</literal> command are resolved when
+The folders in the <command>mailboxes</command> command are resolved when
 the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as <quote>=</quote> and <quote>!</quote>), any variable
 definition that affects these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
-should be set before the <literal>mailboxes</literal> command. If
+should be set before the <command>mailboxes</command> command. If
 none of these shorcuts are used, a local path should be absolute as
 otherwise Mutt tries to find it relative to the directory
 from where Mutt was started which may not always be desired.
@@ -3145,7 +3145,7 @@ mail detection instead which won't work for size-neutral changes.
 </cmdsynopsis>
 
 <para>
-The <literal>my&lowbar;hdr</literal> command allows you to create your own header
+The <command>my&lowbar;hdr</command> command allows you to create your own header
 fields which will be added to every message you send and appear in the
 editor if <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> is set.
 </para>
@@ -3179,7 +3179,7 @@ that you can edit the header of your message along with the body.
 </para>
 
 <para>
-To remove user defined header fields, use the <literal>unmy&lowbar;hdr</literal>
+To remove user defined header fields, use the <command>unmy&lowbar;hdr</command>
 command. You may specify an asterisk (<quote>*</quote>) to remove all header
 fields, or the fields to remove. For example, to remove all <quote>To</quote> and
 <quote>Cc</quote> header fields, you could use:
@@ -3220,7 +3220,7 @@ expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
 </para>
 
 <example id="ex-save-hook-exando">
-<title>Using %-expandos in <literal>save-hook</literal></title>
+<title>Using %-expandos in <command>save-hook</command></title>
 <screen>
 # default: save all to ~/Mail/&lt;author name&gt;
 save-hook . ~/Mail/%F
@@ -3234,7 +3234,7 @@ save-hook aol\\.com$ +spam
 </example>
 
 <para>
-Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
+Also see the <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link> command.
 </para>
 
 </sect1>
@@ -3276,7 +3276,7 @@ See <xref linkend="pattern-hook"/> for information on the exact format of <empha
 
 <para>
 ...will save a copy of all messages going to the aol.com domain to
-the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">fcc-save-hook</link> command.
+the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook"><command>fcc-save-hook</command></link> command.
 </para>
 
 </sect1>
@@ -3297,8 +3297,8 @@ the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">
 </cmdsynopsis>
 
 <para>
-This command is a shortcut, equivalent to doing both a <link linkend="fcc-hook">fcc-hook</link>
-and a <link linkend="save-hook">save-hook</link> with its arguments,
+This command is a shortcut, equivalent to doing both a <link linkend="fcc-hook"><command>fcc-hook</command></link>
+and a <link linkend="save-hook"><command>save-hook</command></link> with its arguments,
 including &percnt;-expansion on <emphasis>mailbox</emphasis> according
 to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 </para>
@@ -3347,35 +3347,35 @@ is executed when <emphasis>pattern</emphasis> matches.
 </para>
 
 <para>
-<literal>reply-hook</literal> is matched against the message you are <emphasis>replying to</emphasis>,
-instead of the message you are <emphasis>sending</emphasis>.  <literal>send-hook</literal> is
+<command>reply-hook</command> is matched against the message you are <emphasis>replying to</emphasis>,
+instead of the message you are <emphasis>sending</emphasis>.  <command>send-hook</command> is
 matched against all messages, both <emphasis>new</emphasis>
 and <emphasis>replies</emphasis>.
 </para>
 
 <note>
 <para>
-<literal>reply-hook</literal>s are matched <emphasis>before</emphasis> the <literal>send-hook</literal>, <emphasis>regardless</emphasis>
+<command>reply-hook</command>s are matched <emphasis>before</emphasis> the <command>send-hook</command>, <emphasis>regardless</emphasis>
 of the order specified in the user's configuration file.
 </para>
 </note>
 
 <para>
-<literal>send2-hook</literal> is matched every time a message is changed, either
+<command>send2-hook</command> is matched every time a message is changed, either
 by editing it, or by using the compose menu to change its recipients
-or subject.  <literal>send2-hook</literal> is executed after <literal>send-hook</literal>, and
+or subject.  <command>send2-hook</command> is executed after <command>send-hook</command>, and
 can, e.g., be used to set parameters such as the <link linkend="sendmail">&dollar;sendmail</link> variable depending on the message's sender
 address.
 </para>
 
 <para>
-For each type of <literal>send-hook</literal> or <literal>reply-hook</literal>, when multiple matches
+For each type of <command>send-hook</command> or <command>reply-hook</command>, when multiple matches
 occur, commands are executed in the order they are specified in the <literal>.muttrc</literal>
 (for that type of hook).
 </para>
 
 <para>
-Example: <literal>send-hook mutt &quot;set mime&lowbar;forward signature=''&quot;</literal>
+Example: <literal><command>send-hook</command> mutt &quot;<command>set</command> mime&lowbar;forward signature=''&quot;</literal>
 </para>
 
 <para>
@@ -3387,15 +3387,15 @@ signatures based upon the recipients.
 
 <note>
 <para>
-<literal>send-hook</literal>'s are only executed once after getting the
+<command>send-hook</command>'s are only executed once after getting the
 initial list of recipients.  Adding a recipient after replying or
-editing the message will not cause any send-hook to be executed,
+editing the message will not cause any <command>send-hook</command> to be executed,
 similarily if <link linkend="autoedit">&dollar;autoedit</link> is set
 (as then the initial list of recipients is empty). Also note that <link
-linkend="my-hdr"><literal>my&lowbar;hdr</literal></link> commands which
+linkend="my-hdr"><command>my&lowbar;hdr</command></link> commands which
 modify recipient headers, or the message's subject, don't have any
 effect on the current message when executed from a
-<literal>send-hook</literal>.
+<command>send-hook</command>.
 </para>
 </note>
 
@@ -3460,7 +3460,7 @@ When encrypting messages with PGP/GnuPG or OpenSSL, you may want to associate a 
 key with a given e-mail address automatically, either because the
 recipient's public key can't be deduced from the destination address,
 or because, for some reasons, you need to override the key Mutt would
-normally use.  The <literal>crypt-hook</literal> command provides a
+normally use.  The <command>crypt-hook</command> command provides a
 method by which you can specify the ID of the public key to be used
 when encrypting messages to a certain recipient.
 </para>
@@ -3495,7 +3495,7 @@ shows how to automatically collapse all threads when entering a folder.
 </para>
 
 <example id="ex-folder-hook-push">
-<title>Embedding <literal>push</literal> in <literal>folder-hook</literal></title>
+<title>Embedding <command>push</command> in <command>folder-hook</command></title>
 <screen>
 folder-hook . 'push &lt;collapse-all&gt;'
 </screen>
@@ -3521,7 +3521,7 @@ folder-hook . 'push &lt;collapse-all&gt;'
 <para>
 This command can be used to execute any function. Functions are
 listed in the <link linkend="functions">function reference</link>.
-<quote><literal>exec function</literal></quote> is equivalent to
+<quote><command>exec</command><literal>function</literal></quote> is equivalent to
 <quote><literal>push &lt;function&gt;</literal></quote>.
 </para>
 
@@ -3553,19 +3553,19 @@ listed in the <link linkend="functions">function reference</link>.
 </cmdsynopsis>
 
 <para>
-The <literal>score</literal> commands adds <emphasis>value</emphasis> to a message's score if <emphasis>pattern</emphasis>
+The <command>score</command> commands adds <emphasis>value</emphasis> to a message's score if <emphasis>pattern</emphasis>
 matches it.  <emphasis>pattern</emphasis> is a string in the format described in the <link linkend="patterns">patterns</link> section (note: For efficiency reasons, patterns
 which scan information not available in the index, such as <literal>&tilde;b</literal>,
 <literal>&tilde;B</literal> or <literal>&tilde;h</literal>, may not be used).  <emphasis>value</emphasis> is a
 positive or negative integer.  A message's final score is the sum total of all
-matching <literal>score</literal> entries.  However, you may optionally prefix <emphasis>value</emphasis> with
+matching <command>score</command> entries.  However, you may optionally prefix <emphasis>value</emphasis> with
 an equal sign (<quote>=</quote>) to cause evaluation to stop at a particular entry if there is
 a match.  Negative final scores are rounded up to 0.
 </para>
 
 <para>
-The <literal>unscore</literal> command removes score entries from the list.  You <emphasis>must</emphasis>
-specify the same pattern specified in the <literal>score</literal> command for it to be
+The <command>unscore</command> command removes score entries from the list.  You <emphasis>must</emphasis>
+specify the same pattern specified in the <command>score</command> command for it to be
 removed.  The pattern <quote>*</quote> is a special token which means to clear the list
 of all score entries.
 </para>
@@ -3599,7 +3599,7 @@ of all score entries.
 
 <para>
 Mutt has generalized support for external spam-scoring filters.
-By defining your spam patterns with the <literal>spam</literal> and <literal>nospam</literal>
+By defining your spam patterns with the <command>spam</command> and <literal>nospam</literal>
 commands, you can <emphasis>limit</emphasis>, <emphasis>search</emphasis>, and <emphasis>sort</emphasis> your
 mail based on its spam attributes, as determined by the external
 filter. You also can display the spam attributes in your index
@@ -3609,10 +3609,10 @@ to display spam tags only when they are defined for a given message.)
 
 <para>
 Your first step is to define your external filter's spam patterns using
-the <literal>spam</literal> command. <emphasis>pattern</emphasis> should be a regular expression
+the <command>spam</command> command. <emphasis>pattern</emphasis> should be a regular expression
 that matches a header in a mail message. If any message in the mailbox
 matches this regular expression, it will receive a <quote>spam tag</quote> or
-<quote>spam attribute</quote> (unless it also matches a <literal>nospam</literal> pattern &mdash; see
+<quote>spam attribute</quote> (unless it also matches a <command>nospam</command> pattern &mdash; see
 below.) The appearance of this attribute is entirely up to you, and is
 governed by the <emphasis>format</emphasis> parameter. <emphasis>format</emphasis> can be any static
 text, but it also can include back-references from the <emphasis>pattern</emphasis>
@@ -3631,7 +3631,7 @@ to be adjusted.
 
 <para>
 If you're using multiple spam filters, a message can have more than
-one spam-related header. You can define <literal>spam</literal> patterns for each
+one spam-related header. You can define <command>spam</command> patterns for each
 filter you use. If a message matches two or more of these patterns, and
 the <link linkend="spam-separator">&dollar;spam&lowbar;separator</link> variable is set to a string, then the
 message's spam tag will consist of all the <emphasis>format</emphasis> strings joined
@@ -3689,7 +3689,7 @@ that is, by ordering strings alphanumerically. However, if a spam tag
 begins with a number, Mutt will sort numerically first, and lexically
 only when two numbers are equal in value. (This is like UNIX's
 <literal>sort -n</literal>.) A message with no spam attributes at all &mdash; that is, one
-that didn't match <emphasis>any</emphasis> of your <literal>spam</literal> patterns &mdash; is sorted at
+that didn't match <emphasis>any</emphasis> of your <command>spam</command> patterns &mdash; is sorted at
 lowest priority. Numbers are sorted next, beginning with 0 and ranging
 upward. Finally, non-numeric strings are sorted, with <quote>a</quote> taking lower
 priority than <quote>z</quote>. Clearly, in general, sorting by spam tags is most
@@ -3698,28 +3698,28 @@ in case you can't, Mutt can still do something useful.
 </para>
 
 <para>
-The <literal>nospam</literal> command can be used to write exceptions to <literal>spam</literal>
-patterns. If a header pattern matches something in a <literal>spam</literal> command,
+The <command>nospam</command> command can be used to write exceptions to <command>spam</command>
+patterns. If a header pattern matches something in a <command>spam</command> command,
 but you nonetheless do not want it to receive a spam tag, you can list a
-more precise pattern under a <literal>nospam</literal> command.
+more precise pattern under a <command>nospam</command> command.
 </para>
 
 <para>
-If the <emphasis>pattern</emphasis> given to <literal>nospam</literal> is exactly the same as the
-<emphasis>pattern</emphasis> on an existing <literal>spam</literal> list entry, the effect will be to
+If the <emphasis>pattern</emphasis> given to <command>nospam</command> is exactly the same as the
+<emphasis>pattern</emphasis> on an existing <command>spam</command> list entry, the effect will be to
 remove the entry from the spam list, instead of adding an exception.
-Likewise, if the <emphasis>pattern</emphasis> for a <literal>spam</literal> command matches an entry
-on the <literal>nospam</literal> list, that <literal>nospam</literal> entry will be removed. If the
-<emphasis>pattern</emphasis> for <literal>nospam</literal> is <quote>*</quote>, <emphasis>all entries on both lists</emphasis>
-will be removed. This might be the default action if you use <literal>spam</literal>
-and <literal>nospam</literal> in conjunction with a <literal>folder-hook</literal>.
+Likewise, if the <emphasis>pattern</emphasis> for a <command>spam</command> command matches an entry
+on the <command>nospam</command> list, that nospam entry will be removed. If the
+<emphasis>pattern</emphasis> for <command>nospam</command> is <quote>*</quote>, <emphasis>all entries on both lists</emphasis>
+will be removed. This might be the default action if you use <command>spam</command>
+and <command>nospam</command> in conjunction with a <command>folder-hook</command>.
 </para>
 
 <para>
-You can have as many <literal>spam</literal> or <literal>nospam</literal> commands as you like.
-You can even do your own primitive spam detection within Mutt &mdash; for
+You can have as many <command>spam</command> or <command>nospam</command> commands as you like.
+You can even do your own primitive <command>spam</command> detection within Mutt &mdash; for
 example, if you consider all mail from <literal>MAILER-DAEMON</literal> to be spam,
-you can use a <literal>spam</literal> command like this:
+you can use a <command>spam</command> command like this:
 </para>
 
 <screen>
@@ -3901,22 +3901,22 @@ action to be carried out as if you had answered <quote>no.</quote>  A value of
 </para>
 
 <para>
-Prefixing a variable with <quote>no</quote> will unset it.  Example: <literal>set noaskbcc</literal>.
+Prefixing a variable with <quote>no</quote> will unset it.  Example: <literal><command>set</command> noaskbcc</literal>.
 </para>
 
 <para>
 For <emphasis>boolean</emphasis> variables, you may optionally prefix the variable name with
 <literal>inv</literal> to toggle the value (on or off).  This is useful when writing
-macros.  Example: <literal>set invsmart&lowbar;wrap</literal>.
+macros.  Example: <literal><command>set</command> invsmart&lowbar;wrap</literal>.
 </para>
 
 <para>
-The <literal>toggle</literal> command automatically prepends the <literal>inv</literal> prefix to all
+The <command>toggle</command> command automatically prepends the <literal>inv</literal> prefix to all
 specified variables.
 </para>
 
 <para>
-The <literal>unset</literal> command automatically prepends the <literal>no</literal> prefix to all
+The <command>unset</command> command automatically prepends the <literal>no</literal> prefix to all
 specified variables.
 </para>
 
@@ -3936,14 +3936,14 @@ variables.
 </para>
 
 <para>
-The <literal>reset</literal> command resets all given variables to the compile time
+The <command>reset</command> command resets all given variables to the compile time
 defaults (hopefully mentioned in this manual). If you use the command
-<literal>set</literal> and prefix the variable with <quote>&amp;</quote> this has the same
-behavior as the reset command.
+<command>set</command> and prefix the variable with <quote>&amp;</quote> this has the same
+behavior as the <command>reset</command> command.
 </para>
 
 <para>
-With the <literal>reset</literal> command there exists the special variable <quote>all</quote>,
+With the <command>reset</command> command there exists the special variable <quote>all</quote>,
 which allows you to reset all variables to their system defaults.
 </para>
 
@@ -3964,9 +3964,9 @@ example, <literal>my&lowbar;cfgdir</literal>.
 </para>
 
 <para>
-The <literal>set</literal> command either creates a
+The <command>set</command> command either creates a
 custom <literal>my&lowbar;</literal> variable or changes its
-value if it does exist already. The <literal>unset</literal> and <literal>reset</literal>
+value if it does exist already. The <command>unset</command> and <command>reset</command>
 commands remove the variable entirely.
 </para>
 
@@ -3985,7 +3985,7 @@ files more readable.
 
 <para>
 The following example defines and uses the variable <literal>my&lowbar;cfgdir</literal>
-to abbreviate the calls of the <link linkend="source">source</link> command:
+to abbreviate the calls of the <link linkend="source"><command>source</command></link> command:
 </para>
 
 <example id="ex-myvar1">
@@ -4045,8 +4045,8 @@ macro pager &lt;PageDown&gt; "&bsol;
 <para>
 Note that there is a space
 between <literal>&lt;enter-command&gt;</literal> and
-the <literal>set</literal> configuration command, preventing Mutt from
-recording the macro's commands into its history.
+the <command>set</command> configuration command, preventing Mutt from
+recording the <command>macro</command>'s commands into its history.
 </para>
 
 </sect3>
@@ -4082,7 +4082,7 @@ path of your home directory.
 <para>
 If the filename ends with a vertical bar (<quote>&verbar;</quote>), then <emphasis>filename</emphasis> is
 considered to be an executable program from which to read input (eg.
-<literal>source &tilde;/bin/myscript&verbar;</literal>).
+<literal><command>source</command> &tilde;/bin/myscript&verbar;</literal>).
 </para>
 
 </sect1>
@@ -4108,7 +4108,7 @@ considered to be an executable program from which to read input (eg.
 This command permits you to flush hooks you have previously defined.
 You can either remove all hooks by giving the <quote>*</quote> character as an
 argument, or you can remove all hooks of a specific type by saying
-something like <literal>unhook send-hook</literal>.
+something like <literal><command>unhook</command> send-hook</literal>.
 </para>
 
 </sect1>
@@ -4611,8 +4611,8 @@ shows several ways to select messages.
 <row><entry>~n &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a score in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~N</entry><entry>new messages</entry></row>
 <row><entry>~O</entry><entry>old messages</entry></row>
-<row><entry>~p</entry><entry>messages addressed to you (consults alternates)</entry></row>
-<row><entry>~P</entry><entry>messages from you (consults alternates)</entry></row>
+<row><entry>~p</entry><entry>messages addressed to you (consults <command>alternates</command>)</entry></row>
+<row><entry>~P</entry><entry>messages from you (consults <command>alternates</command>)</entry></row>
 <row><entry>~Q</entry><entry>messages which have been replied to</entry></row>
 <row><entry>~r &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <quote>date-received</quote> in a Date range</entry></row>
 <row><entry>~R</entry><entry>read messages</entry></row>
@@ -4970,7 +4970,7 @@ automatically, without requiring the <quote>tag-prefix</quote>.
 </para>
 
 <para>
-In <link linkend="macro">macros</link> or <link linkend="push">push</link> commands,
+In <link linkend="macro"><command>macro</command>s</link> or <link linkend="push"><command>push</command></link> commands,
 you can use the <literal>&lt;tag-prefix-cond&gt;</literal> operator.  If there are no tagged
 messages, Mutt will <quote>eat</quote> the rest of the macro to abort it's execution.
 Mutt will stop <quote>eating</quote> the macro when it encounters the <literal>&lt;end-cond&gt;</literal>
@@ -4996,79 +4996,79 @@ configuration option/command.  See:
 
 <listitem>
 <para>
-<link linkend="account-hook">account-hook</link>
+<link linkend="account-hook"><command>account-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="charset-hook">charset-hook</link>
+<link linkend="charset-hook"><command>charset-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="crypt-hook">crypt-hook</link>
+<link linkend="crypt-hook"><command>crypt-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="fcc-hook">fcc-hook</link>
+<link linkend="fcc-hook"><command>fcc-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="fcc-save-hook">fcc-save-hook</link>
+<link linkend="fcc-save-hook"><command>fcc-save-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="folder-hook">folder-hook</link>
+<link linkend="folder-hook"><command>folder-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="iconv-hook">iconv-hook</link>
+<link linkend="iconv-hook"><command>iconv-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="mbox-hook">mbox-hook</link>
+<link linkend="mbox-hook"><command>mbox-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="message-hook">message-hook</link>
+<link linkend="message-hook"><command>message-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="reply-hook">reply-hook</link>
+<link linkend="reply-hook"><command>reply-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="save-hook">save-hook</link>
+<link linkend="save-hook"><command>save-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="send-hook">send-hook</link>
+<link linkend="send-hook"><command>send-hook</command></link>
 </para>
 </listitem>
 
 <listitem>
 <para>
-<link linkend="send2-hook">send2-hook</link>
+<link linkend="send2-hook"><command>send2-hook</command></link>
 </para>
 </listitem>
 
@@ -5107,8 +5107,8 @@ to <literal>&lt;b@b.b&gt;</literal>, the From: header is changed to
 <title>Message Matching in Hooks</title>
 
 <para>
-Hooks that act upon messages (<literal>message-hook, reply-hook,
-send-hook, send2-hook, save-hook, fcc-hook</literal>) are evaluated in a
+Hooks that act upon messages (<command>message-hook</command>, <command>reply-hook</command>,
+<command>send-hook</command>, <command>send2-hook</command>, <command>save-hook</command>, <command>fcc-hook</command>) are evaluated in a
 slightly different manner. For the other
 types of hooks, a <link linkend="regexp">regular expression</link> is
 sufficient.  But in dealing with messages a finer grain of control is
@@ -5347,7 +5347,7 @@ work at the beginning of a string.
 <para>
 For example, to store a copy of outgoing messages in the folder they
 were composed in,
-a <link linkend="folder-hook">folder-hook</link> can
+a <link linkend="folder-hook"><command>folder-hook</command></link> can
 be used to set <link linkend="record">&dollar;record</link>:
 </para>
 
@@ -5365,7 +5365,7 @@ amounts of mail easier.  The first thing you must do is to let Mutt
 know what addresses you consider to be mailing lists (technically
 this does not have to be a mailing list, but that is what it is most
 often used for), and what lists you are subscribed to.  This is
-accomplished through the use of the <link linkend="lists">lists and subscribe</link> commands in your <literal>.muttrc</literal>.
+accomplished through the use of the <link linkend="lists"><command>lists</command> and <command>subscribe</command></link> commands in your <literal>.muttrc</literal>.
 </para>
 
 <para>
@@ -5469,7 +5469,7 @@ be monitored for new mail (see <xref linkend="mailboxes"/> for details).
 When in the index menu and being idle (also see
 <link linkend="timeout">&dollar;timeout</link>), Mutt periodically checks
 for new mail in all folders which have been configured via the
-<literal>mailboxes</literal> command. The interval depends on the folder
+<command>mailboxes</command> command. The interval depends on the folder
 type: for local/IMAP folders it consults
 <link linkend="mail-check">&dollar;mail&lowbar;check</link> and
 <link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
@@ -5480,7 +5480,7 @@ for POP folders.
 Outside the index menu the directory browser supports checking
 for new mail using the <literal>&lt;check-new&gt;</literal> function which is
 unbound by default. Pressing TAB will bring up a
-menu showing the files specified by the <literal>mailboxes</literal> command,
+menu showing the files specified by the <command>mailboxes</command> command,
 and indicate which contain new messages. Mutt will automatically enter this
 mode when invoked from the command line with the <literal>-y</literal> option.
 </para>
@@ -6075,7 +6075,7 @@ and Mutt will use your standard pager to display the results.
 <term>needsterminal</term>
 <listitem>
 <para>
-Mutt uses this flag when viewing attachments with <link linkend="auto-view">auto&lowbar;view</link>, in order to decide whether it should honor the setting
+Mutt uses this flag when viewing attachments with <link linkend="auto-view"><command>auto&lowbar;view</command></link>, in order to decide whether it should honor the setting
 of the <link linkend="wait-key">&dollar;wait&lowbar;key</link> variable or
 not.  When an attachment is viewed using an interactive program, and the
 corresponding mailcap entry has a <emphasis>needsterminal</emphasis> flag, Mutt will use
@@ -6199,7 +6199,7 @@ entry with the print command.
 </para>
 
 <para>
-In addition, you can use this with <link linkend="auto-view">auto&lowbar;view</link>
+In addition, you can use this with <link linkend="auto-view"><command>auto&lowbar;view</command></link>
 to denote two commands for viewing an attachment, one to be viewed
 automatically, the other to be viewed interactively from the attachment
 menu.  In addition, you can then use the test feature to determine which
@@ -6213,7 +6213,7 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
 <para>
-For <link linkend="auto-view">auto&lowbar;view</link>, Mutt will choose the third
+For <link linkend="auto-view"><command>auto&lowbar;view</command></link>, Mutt will choose the third
 entry because of the copiousoutput tag.  For interactive viewing, Mutt
 will run the program RunningX to determine if it should use the first
 entry.  If the program returns non-zero, Mutt will use the second entry
@@ -6402,7 +6402,7 @@ representation which you can view in the pager.
 </para>
 
 <para>
-You then use the auto&lowbar;view <literal>.muttrc</literal> command to list the
+You then use the <command>auto&lowbar;view</command> <literal>.muttrc</literal> command to list the
 content-types that you wish to view automatically.  For instance, if you
 set it to:
 </para>
@@ -6427,9 +6427,9 @@ application/postscript; ps2ascii %s; copiousoutput
 </screen>
 
 <para>
-unauto&lowbar;view can be used to remove previous entries from the autoview list.
-This can be used with <link linkend="message-hook">message-hook</link> to autoview messages based on size, etc.
-<quote>unauto&lowbar;view *</quote> will remove all previous entries.
+<command>unauto&lowbar;view</command> can be used to remove previous entries from the autoview list.
+This can be used with <link linkend="message-hook"><command>message-hook</command></link> to autoview messages based on size, etc.
+<quote><command>unauto&lowbar;view</command> *</quote> will remove all previous entries.
 </para>
 
 </sect1>
@@ -6440,7 +6440,7 @@ This can be used with <link linkend="message-hook">message-hook</link> to autovi
 <para>
 Mutt has some heuristics for determining which attachment of a
 <literal>multipart/alternative</literal> type to display.  First, Mutt will check the
-alternative&lowbar;order list
+<command>alternative&lowbar;order</command> list
 to determine if one of the available types is preferred.  It consists of
 a number of mimetypes in order, including support for implicit and
 explicit wildcards, for example:
@@ -6452,14 +6452,14 @@ alternative_order text/enriched text/plain text application/postscript image/*
 
 <para>
 Next, Mutt will check if any of the types have a defined
-<link linkend="auto-view">auto&lowbar;view</link>, and use that.  Failing
+<link linkend="auto-view"><command>auto&lowbar;view</command></link>, and use that.  Failing
 that, Mutt will look for any text type.  As a last attempt, Mutt will
 look for any type it knows how to handle.
 </para>
 
 <para>
-To remove a MIME type from the alternative&lowbar;order list, use the
-unalternative&lowbar;order command.
+To remove a MIME type from the <command>alternative&lowbar;order</command> list, use the
+<command>unalternative&lowbar;order</command> command.
 </para>
 
 </sect1>
@@ -6473,7 +6473,7 @@ attachment-counting and -searching support might be for you.  You can
 make your message index display the number of qualifying attachments in
 each message, or search for messages by attachment count.  You also can
 configure what kinds of attachments qualify for this feature with the
-<literal>attachments</literal> and <literal>unattachments</literal> commands.
+<command>attachments</command> and <command>unattachments</command> commands.
 </para>
 
 <para>
@@ -6536,9 +6536,9 @@ any MIME type.)
 </para>
 
 <para>
-The MIME types you give to the attachments directive are a kind of
-pattern.  When you use the attachments directive, the patterns you
-specify are added to a list.  When you use unattachments, the pattern
+The MIME types you give to the <command>attachments</command> directive are a kind of
+pattern.  When you use the <command>attachments</command> directive, the patterns you
+specify are added to a list.  When you use <command>unattachments</command>, the pattern
 is removed from the list.  The patterns are not expanded and matched
 to specific MIME types at this time &mdash; they're just text in a list.
 They're only matched when actually evaluating a message.
@@ -6602,7 +6602,7 @@ attachments   -I message/external-body
 </example>
 
 <para>
-Entering the command <quote><literal>attachments ?</literal></quote>
+Entering the command <quote><command>attachments</command> ?</quote>
 as a command will list your current settings in Muttrc format, so that
 it can be pasted elsewhere.
 </para>
@@ -6644,7 +6644,7 @@ mime-type is listed in mime&lowbar;lookup, then the extension of the filename wi
 be compared to the list of extensions in the <literal>mime.types</literal> file.  The mime-type
 associated with this extension will then be used to process the attachment
 according to the rules in the mailcap file and according to any other configuration
-options (such as auto&lowbar;view) specified.  Common usage would be:
+options (such as <command>auto&lowbar;view</command>) specified.  Common usage would be:
 </para>
 
 <screen>
@@ -7032,15 +7032,15 @@ Usage:
 <para>
 If you happen to have accounts on multiple IMAP, POP and/or SMTP servers,
 you may find managing all the authentication settings inconvenient and
-error-prone. The <link linkend="account-hook">account-hook</link> command may help. This hook works like
-<link linkend="folder-hook">folder-hook</link> but is invoked whenever Mutt needs to access a remote mailbox
+error-prone. The <link linkend="account-hook"><command>account-hook</command></link> command may help. This hook works like
+<link linkend="folder-hook"><command>folder-hook</command></link> but is invoked whenever Mutt needs to access a remote mailbox
 (including inside the folder browser), not just when you open the
 mailbox. This includes (for example) polling for new mail, storing Fcc
 messages and saving messages to a folder. As a consequence,
-<link linkend="account-hook">account-hook</link> should only be used to set connection-related settings such
+<link linkend="account-hook"><command>account-hook</command></link> should only be used to set connection-related settings such
 as passwords or tunnel commands but not settings such as sender
 address or name (because in general it should be considered unpredictable
-which <link linkend="account-hook">account-hook</link> was last used).
+which <link linkend="account-hook"><command>account-hook</command></link> was last used).
 </para>
 
 <para>
@@ -7057,9 +7057,9 @@ account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
 <para>
 To manage multiple accounts with, for example, different values of
 <link linkend="record">&dollar;record</link> or sender addresses,
-<link linkend="folder-hook">folder-hook</link>
+<link linkend="folder-hook"><command>folder-hook</command></link>
 has to be be used together with
-the <link linkend="mailboxes">mailboxes</link> command.
+the <link linkend="mailboxes"><command>mailboxes</command></link> command.
 </para>
 
 <example id="ex-multiaccount">
@@ -7076,8 +7076,8 @@ folder-hook imap://user@host2/ 'set folder=imap://host2/ ; set record=+INBOX/Sen
 <para>
 In example
 <xref linkend="ex-multiaccount"/> the folders are defined using
-<link linkend="mailboxes">mailboxes</link> so Mutt polls them for new
-mail. Each <link linkend="folder-hook">folder-hook</link> triggers when
+<link linkend="mailboxes"><command>mailboxes</command></link> so Mutt polls them for new
+mail. Each <link linkend="folder-hook"><command>folder-hook</command></link> triggers when
 one mailbox below each IMAP account is opened and sets
 <link linkend="folder">&dollar;folder</link> to the account's root
 folder. Next, it sets <link linkend="record">&dollar;record</link> to
@@ -7422,7 +7422,7 @@ For example, when opening a maildir folder with a few
 thousand messages, the default value for
 <link linkend="read-inc">&dollar;read&lowbar;inc</link>
 may be too low. It can be tuned on on a folder-basis using
-<link linkend="folder-hook">folder-hooks</link>:
+<link linkend="folder-hook"><command>folder-hook</command>s</link>:
 </para>
 
 <screen>
@@ -7538,7 +7538,7 @@ to send messages from the command line as well.
 <row><entry>-s</entry><entry>specify a subject (enclose in quotes if it contains spaces)</entry></row>
 <row><entry>-v</entry><entry>show version number and compile-time definitions</entry></row>
 <row><entry>-x</entry><entry>simulate the mailx(1) compose mode</entry></row>
-<row><entry>-y</entry><entry>show a menu containing the files specified by the mailboxes command</entry></row>
+<row><entry>-y</entry><entry>show a menu containing the files specified by the <command>mailboxes</command> command</entry></row>
 <row><entry>-z</entry><entry>exit immediately if there are no messages in the mailbox</entry></row>
 <row><entry>-Z</entry><entry>open the first folder with new message, exit immediately if none</entry></row>
 </tbody>

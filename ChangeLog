@@ -1,3 +1,15 @@
+2009-05-27 23:14 -0700  Brendan Cully  <brendan@kublai.com>  (5502fb790bab)
+
+	* mutt_ssl_gnutls.c: gnutls: do not ignore certificate problems.
+	Specifically, do not allow revoked certificates or those signed by
+	non-CAs unless they have been explicitly stored in the trusted
+	certificate file. Thanks to Miroslav Lichvar.
+
+2009-05-27 22:55 -0700  Miroslav Lichvar  <mlichvar@redhat.com>  (85f41efec6bf)
+
+	* ChangeLog, mutt_ssl_gnutls.c: Don't prompt to save certificates that
+	are already saved but invalid.
+
 2009-05-27 22:52 -0700  Brendan Cully  <brendan@kublai.com>  (90ef283c103e)
 
 	* mutt_ssl_gnutls.c: Don't leak gnutls certs on preauth validation
