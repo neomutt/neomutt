@@ -1,3 +1,12 @@
+2009-05-28 15:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (84a56dcb0572)
+
+	* doc/mutt.css: Manual: vertical-align table cells at the top
+
+2009-05-28 15:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (ee2ebf6cf363)
+
+	* ChangeLog, doc/manual.xml.head, doc/mutt.css: Manual: Wrap muttrc
+	commands in <command/>
+
 2009-05-27 23:14 -0700  Brendan Cully  <brendan@kublai.com>  (5502fb790bab)
 
 	* mutt_ssl_gnutls.c: gnutls: do not ignore certificate problems.
