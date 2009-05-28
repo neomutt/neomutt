@@ -634,6 +634,8 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
     certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
   }
 
+  gnutls_x509_crt_deinit (cert);
+
   /* OK if signed by (or is) a trusted certificate */
   /* we've been zeroing the interesting bits in certstat -
    don't return OK if there are any unhandled bits we don't
@@ -641,10 +643,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   if (!(*certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID
                     | CERTERR_HOSTNAME | CERTERR_NOTTRUSTED))
       && certstat == 0)
-  {
-    gnutls_x509_crt_deinit (cert);
     return 0;
-  }
 
   return -1;
 }
