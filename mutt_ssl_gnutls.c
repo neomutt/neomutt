@@ -636,13 +636,10 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
 
   gnutls_x509_crt_deinit (cert);
 
-  /* OK if signed by (or is) a trusted certificate */
   /* we've been zeroing the interesting bits in certstat -
    don't return OK if there are any unhandled bits we don't
    understand */
-  if (!(*certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID
-                    | CERTERR_HOSTNAME | CERTERR_NOTTRUSTED))
-      && certstat == 0)
+  if (*certerr == CERTERR_VALID && certstat == 0)
     return 0;
 
   return -1;
@@ -974,16 +971,16 @@ static int tls_check_certificate (CONNECTION* conn)
   for (i = 0; i < cert_list_size; i++) {
     rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, !i,
                            &certerr, &savedcert);
-    if (savedcert) {
-      if (certerr)
-        break;
-      else
-        return 1;
-    }
     preauthrc += rc;
+
+    if (savedcert)
+    {
+      if (!preauthrc)
+        return 1;
+      else
+        break;
+    }
   }
-  if (!preauthrc)
-    return 1;
 
   /* then check interactively, starting from chain root */
   for (i = cert_list_size - 1; i >= 0; i--)
@@ -996,8 +993,7 @@ static int tls_check_certificate (CONNECTION* conn)
       rc = gnutls_certificate_set_x509_trust_mem (data->xcred, &cert_list[i],
                                                   GNUTLS_X509_FMT_DER);
       if (rc != 1)
-        dprint (1, (debugfile, "error trusting certificate %d: %d\n",
-                    i, rc));
+        dprint (1, (debugfile, "error trusting certificate %d: %d\n", i, rc));
 
       certstat = tls_verify_peers (state);
       if (!certstat)
