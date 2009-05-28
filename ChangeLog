@@ -1,3 +1,11 @@
+2009-05-27 10:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (97305eeb91ce)
+
+	* doc/manual.xml.head, doc/mutt.man: Document that -- is always
+	mandatory after -a. Closes #3235.
+
+	* init.h: Mention account-hook in the docs for $tunnel.  Closes
+	#3237.
+
 2009-05-26 17:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (392e945dfba7)
 
 	* attach.c: Use charset parameter to view text attachments using
@@ -5,16 +13,13 @@
 
 2009-05-25 15:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (3f0963dd9257)
 
-	* ChangeLog, pager.c: pager: print progress percentage for
-	attachments, too
-
-2009-05-25 15:25 +0200  Rocco Rutte  <pdmef@gmx.net>  (1b9ca049cbc1)
+	* pager.c: pager: print progress percentage for attachments, too
 
 	* attach.c: Mark strings for translation
 
 2009-05-18 20:48 -0700  Vincent Lefevre  <vincent@vinc17.org>  (6d810c5cf4fc)
 
-	* ChangeLog, po/fr.po: Updated French translation.
+	* po/fr.po: Updated French translation.
 
 2009-05-15 15:03 +0200  Takahashi Tamotsu  <ttakah@lapis.plala.or.jp>  (c665bdf5ff5f)
 
