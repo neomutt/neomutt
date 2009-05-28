@@ -1,3 +1,15 @@
+2009-05-25 17:31 -0700  Brendan Cully  <brendan@kublai.com>  (8f11dd00c770)
+
+	* mutt_ssl_gnutls.c: Fix a serious oversight validating TLS
+	certificates. If any certificate in a chain presented by a server
+	was accepted, the connection was allowed without verifying that the
+	presented certificate was actually signed by the certificate in the
+	chain.
+
+2009-05-27 22:13 -0700  Petr Písař  <petr.pisar@atlas.cz>  (05bc65d6ae70)
+
+	* po/cs.po: Updated Czech translation.
+
 2009-05-27 10:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (97305eeb91ce)
 
 	* doc/manual.xml.head, doc/mutt.man: Document that -- is always

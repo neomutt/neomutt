@@ -739,8 +739,9 @@ static int ssl_cache_trusted_cert (X509 *c)
   return (sk_X509_push (SslSessionCerts, X509_dup(c)));
 }
 
-/* check whether cert is preauthorized */
-static int ssl_check_preauth (X509 *cert, CONNECTION *conn)
+/* check whether cert is preauthorized. If host is not null, verify that
+ * it matches the certificate */
+static int ssl_check_preauth (X509 *cert, const char* host)
 {
   char buf[SHORT_STRING];
 
@@ -752,9 +753,9 @@ static int ssl_check_preauth (X509 *cert, CONNECTION *conn)
   }
 
   buf[0] = 0;
-  if (option (OPTSSLVERIFYHOST) != M_NO)
+  if (host && option (OPTSSLVERIFYHOST) != M_NO)
   {
-    if (!check_host (cert, conn->account.host, buf, sizeof (buf)))
+    if (!check_host (cert, host, buf, sizeof (buf)))
     {
       mutt_error (_("Certificate host check failed: %s"), buf);
       mutt_sleep (2);
@@ -785,44 +786,28 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
   STACK_OF(X509) *chain;
   X509 *cert;
 
-  if ((preauthrc = ssl_check_preauth (data->cert, conn)) > 0)
+  if ((preauthrc = ssl_check_preauth (data->cert, conn->account.host)) > 0)
     return preauthrc;
 
   chain = SSL_get_peer_cert_chain (data->ssl);
   chain_len = sk_X509_num (chain);
-  if (!chain || (chain_len < 1))
+  if (!chain || (chain_len <= 1))
     return interactive_check_cert (data->cert, 0, 0);
 
-  /* check the chain from root to peer */
+  /* check the chain from root to peer. */
   for (i = chain_len-1; i >= 0; i--)
   {
     cert = sk_X509_value (chain, i);
-    if (check_certificate_cache (cert))
-      dprint (2, (debugfile, "ssl chain: already cached: %s\n", cert->name));
-    else if (i /* 0 is the peer */ || !preauthrc)
+
+    /* if the certificate validates or is manually accepted, then add it to
+     * the trusted set and recheck the peer certificate */
+    if (ssl_check_preauth (cert, NULL)
+	|| interactive_check_cert (cert, i, chain_len))
     {
-      if (check_certificate_by_signer (cert))
-      {
-	dprint (2, (debugfile, "ssl chain: checked by signer: %s\n", cert->name));
-	ssl_cache_trusted_cert (cert);
+      ssl_cache_trusted_cert (cert);
+      if (ssl_check_preauth (data->cert, conn->account.host))
 	return 1;
-      }
-      else if (SslCertFile && check_certificate_by_digest (cert))
-      {
-	dprint (2, (debugfile, "ssl chain: trusted with file: %s\n", cert->name));
-	ssl_cache_trusted_cert (cert);
-	return 1;
-      }
-      else /* allow users to shoot their foot */
-      {
-	dprint (2, (debugfile, "ssl chain: check failed: %s\n", cert->name));
-	if (interactive_check_cert (cert, i, chain_len))
-	  return 1;
-      }
     }
-    else /* highly suspicious because (i==0 && preauthrc < 0) */
-      if (interactive_check_cert (cert, i, chain_len))
-	return 1;
   }
 
   return 0;
