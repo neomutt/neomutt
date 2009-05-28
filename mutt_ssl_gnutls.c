@@ -827,8 +827,9 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   menu->title = title;
   /* certificates with bad dates, or that are revoked, must be
    accepted manually each and every time */
-  if (SslCertFile && !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID
-                                  | CERTERR_REVOKED)))
+  if (SslCertFile && !savedcert
+        && !(certerr & (CERTERR_EXPIRED | CERTERR_NOTYETVALID
+                        | CERTERR_REVOKED)))
   {
     menu->prompt = _("(r)eject, accept (o)nce, (a)ccept always");
     menu->keys = _("roa");

@@ -1,3 +1,11 @@
+2009-05-27 22:52 -0700  Brendan Cully  <brendan@kublai.com>  (90ef283c103e)
+
+	* mutt_ssl_gnutls.c: Don't leak gnutls certs on preauth validation
+	failure. Thanks to Miroslav Lichvar.
+
+	* mutt_ssl.c: Fix TLS certificate chain validation for
+	openssl.
+
 2009-05-25 17:31 -0700  Brendan Cully  <brendan@kublai.com>  (8f11dd00c770)
 
 	* mutt_ssl_gnutls.c: Fix a serious oversight validating TLS
