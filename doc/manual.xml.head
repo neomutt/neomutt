@@ -1791,7 +1791,7 @@ set record=+sent_on_$HOSTNAME
 
 <para>
 will cause Mutt to save outgoing messages to a folder named
-<quote>sent_on_kremvax</quote> if the environment variable <literal>$HOSTNAME</literal> is set to
+<quote>sent_on_kremvax</quote> if the environment variable <literal>&dollar;HOSTNAME</literal> is set to
 <quote>kremvax.</quote> (See <link linkend="record">&dollar;record</link> for
 details.)
 </para>
@@ -2550,7 +2550,7 @@ the foreground color boldfaced (e.g., <literal>brightred</literal>).
 If your terminal supports it, the special keyword <emphasis>default</emphasis> can be
 used as a transparent color.  The value <emphasis>brightdefault</emphasis> is also valid.
 If Mutt is linked against the <emphasis>S-Lang</emphasis> library, you also need to set
-the <emphasis>COLORFGBG</emphasis> environment variable to the default colors of your
+the <literal>&dollar;COLORFGBG</literal> environment variable to the default colors of your
 terminal for this to work; for example (for Bourne-like shells):
 </para>
 
@@ -4531,7 +4531,7 @@ parentheses to override these precedence rules.
 
 <note>
 <para>
-If you compile Mutt with the GNU <emphasis>rx</emphasis> package, the
+If you compile Mutt with the included regular expression engine, the
 following operators may also be used in regular expressions as described in <xref linkend="regex-gnu-ext"/>.
 </para>
 </note>
@@ -5639,8 +5639,8 @@ Initial folder selection
 <listitem>
 <para>
 The folder Mutt opens at startup is determined as follows: the folder
-specified in the <literal>$MAIL</literal> environment variable if
-present. Otherwise, the value of <literal>$MAILDIR</literal> is taken
+specified in the <literal>&dollar;MAIL</literal> environment variable if
+present. Otherwise, the value of <literal>&dollar;MAILDIR</literal> is taken
 into account. If that isn't present either, Mutt takes the user's
 mailbox in the mailspool as determined at compile-time (which may also
 reside in the home directory). The
