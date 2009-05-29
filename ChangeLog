@@ -1,3 +1,20 @@
+2009-05-29 21:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (c4d86d4ea260)
+
+	* pager.c: Drop modified version of and use mutt_read_line() in pager,
+	too
+
+2009-05-29 21:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (776ef9dbe4d2)
+
+	* ChangeLog, history.c, init.c, lib.c, lib.h, mh.c, mutt_ssl_gnutls.c,
+	pgp.c, query.c, rfc1524.c, smime.c: Add flags to mutt_read_line()
+	for EOL-stripping and continuation support
+
+	We use these to stop supporting EOL-escaping with \ which was wrong
+	in most cases (e.g. $history_file), support is kept for reading
+	config and mailcap files.
+
+	Leaving CRLF in will be used for the pager.
+
 2009-05-29 16:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (d13500626ea6)
 
 	* menu.c, pager.c, pattern.c: Fall back to search if no query exists

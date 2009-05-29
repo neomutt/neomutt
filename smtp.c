@@ -422,7 +422,7 @@ static int smtp_open (CONNECTION* conn)
     }
 
 #ifdef USE_SASL
-    if (!(conn->account.flags & M_ACCT_PASS) || !option (OPTNOCURSES))
+    if (!(conn->account.flags & M_ACCT_PASS) && option (OPTNOCURSES))
     {
       mutt_error (_("Interactive SMTP authentication not supported"));
       mutt_sleep (1);
