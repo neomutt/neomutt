@@ -139,13 +139,17 @@ MUTT_LIB_WHERE int debuglevel MUTT_LIB_INITVAL(0);
 #define S_ERR 127
 #define S_BKG 126
 
+/* Flags for mutt_read_line() */
+#define M_CONT		(1<<0)		/* \-continuation */
+#define M_EOL		(1<<1)		/* don't strip \n/\r\n */
+
 /* The actual library functions. */
 
 FILE *safe_fopen (const char *, const char *);
 
 char *mutt_concatn_path (char *, size_t, const char *, size_t, const char *, size_t);
 char *mutt_concat_path (char *, const char *, const char *, size_t);
-char *mutt_read_line (char *, size_t *, FILE *, int *);
+char *mutt_read_line (char *, size_t *, FILE *, int *, int);
 char *mutt_skip_whitespace (char *);
 char *mutt_strlower (char *);
 char *mutt_substrcpy (char *, const char *, const char *, size_t);

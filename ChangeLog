@@ -1,3 +1,19 @@
+2009-05-29 16:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (d13500626ea6)
+
+	* menu.c, pager.c, pattern.c: Fall back to search if no query exists
+	for search-(next|opposite)
+
+	The pager had the fall-through to search, so for consistency do that
+	in other menues as well.
+
+2009-05-29 16:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (4d0640457c77)
+
+	* ChangeLog, pager.c: Fix pager search prompt for reverse search
+
+	When doing a reverse search for the first time after switching to
+	the pager, SearchBack is always 0 and thus gave the wrong prompt,
+	change to using op directly. While I'm at it, unify search prompts.
+
 2009-05-29 13:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (f1a1e50c375d)
 
 	* doc/manual.xml.head: Manual: Fix markup of environment variables

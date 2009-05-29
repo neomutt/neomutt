@@ -203,7 +203,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 
   if ((fp = fopen (filename, "r")) != NULL)
   {
-    while (!found && (buf = mutt_read_line (buf, &buflen, fp, &line)) != NULL)
+    while (!found && (buf = mutt_read_line (buf, &buflen, fp, &line, M_CONT)) != NULL)
     {
       /* ignore comments */
       if (*buf == '#')

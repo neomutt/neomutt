@@ -1632,7 +1632,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
       fflush (smimeerr);
       rewind (smimeerr);
       
-      line = mutt_read_line (line, &linelen, smimeerr, &lineno);
+      line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
       if (linelen && !ascii_strcasecmp (line, "verification successful"))
 	badsig = 0;
 
@@ -1854,7 +1854,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     
     rewind (smimeerr);
     
-    line = mutt_read_line (line, &linelen, smimeerr, &lineno);
+    line = mutt_read_line (line, &linelen, smimeerr, &lineno, 0);
     if (linelen && !ascii_strcasecmp (line, "verification successful"))
       m->goodsig = 1;
     FREE (&line);

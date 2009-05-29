@@ -170,7 +170,7 @@ static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
   if (!(fp = fopen (pathname, "r")))
     return;
 
-  while ((buff = mutt_read_line (buff, &sz, fp, &line)))
+  while ((buff = mutt_read_line (buff, &sz, fp, &line, 0)))
   {
     if (!(t = strtok (buff, " \t:")))
       continue;
@@ -350,7 +350,7 @@ static void mh_update_sequences (CONTEXT * ctx)
   /* first, copy unknown sequences */
   if ((ofp = fopen (sequences, "r")))
   {
-    while ((buff = mutt_read_line (buff, &s, ofp, &l)))
+    while ((buff = mutt_read_line (buff, &s, ofp, &l, 0)))
     {
       if (!mutt_strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)))
 	continue;
@@ -448,7 +448,7 @@ static void mh_sequences_add_one (CONTEXT * ctx, int n, short unseen,
   snprintf (sequences, sizeof (sequences), "%s/.mh_sequences", ctx->path);
   if ((ofp = fopen (sequences, "r")))
   {
-    while ((buff = mutt_read_line (buff, &sz, ofp, &line)))
+    while ((buff = mutt_read_line (buff, &sz, ofp, &line, 0)))
     {
       if (unseen && !strncmp (buff, seq_unseen, mutt_strlen (seq_unseen)))
       {

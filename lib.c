@@ -738,7 +738,7 @@ int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
  * If a line ends with "\", this char and the linefeed is removed,
  * and the next line is read too.
  */
-char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line)
+char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
 {
   size_t offset = 0;
   char *ch;
@@ -759,10 +759,12 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line)
     if ((ch = strchr (s + offset, '\n')) != NULL)
     {
       (*line)++;
+      if (flags & M_EOL)
+	return s;
       *ch = 0;
       if (ch > s && *(ch - 1) == '\r')
 	*--ch = 0;
-      if (ch == s || *(ch - 1) != '\\')
+      if (!(flags & M_CONT) || ch == s || *(ch - 1) != '\\')
 	return s;
       offset = ch - s - 1;
     }

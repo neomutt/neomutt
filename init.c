@@ -253,7 +253,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 
       /* read line */
       memset (&expn, 0, sizeof (expn));
-      expn.data = mutt_read_line (NULL, &expn.dsize, fp, &line);
+      expn.data = mutt_read_line (NULL, &expn.dsize, fp, &line, 0);
       safe_fclose (&fp);
       mutt_wait_filter (pid);
 
@@ -2268,7 +2268,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
   }
 
   memset (&token, 0, sizeof (token));
-  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line)) != NULL)
+  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, M_CONT)) != NULL)
   {
     conv=ConfigCharset && (*ConfigCharset) && Charset;
     if (conv) 

@@ -513,7 +513,7 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
 
     buf[0] = '\0';
     tls_fingerprint (GNUTLS_DIG_MD5, buf, sizeof (buf), cert);
-    while ((linestr = mutt_read_line(linestr, &linestrsize, fp, &linenum)) != NULL)
+    while ((linestr = mutt_read_line(linestr, &linestrsize, fp, &linenum, 0)) != NULL)
     {
       if(linestr[0] == '#' && linestr[1] == 'H')
       {

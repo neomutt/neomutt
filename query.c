@@ -96,7 +96,7 @@ static QUERY *run_query (char *s, int quiet)
   fgets (msg, sizeof (msg), fp);
   if ((p = strrchr (msg, '\n')))
     *p = '\0';
-  while ((buf = mutt_read_line (buf, &buflen, fp, &dummy)) != NULL)
+  while ((buf = mutt_read_line (buf, &buflen, fp, &dummy, 0)) != NULL)
   {
     if ((p = strtok(buf, "\t\n")))
     {

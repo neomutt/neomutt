@@ -68,7 +68,7 @@ void mutt_read_histfile (void)
   if ((f = fopen (HistFile, "r")) == NULL)
     return;
 
-  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line)) != NULL)
+  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, 0)) != NULL)
   {
     read = 0;
     if (sscanf (linebuf, "%d:%n", &hclass, &read) < 1 || read == 0 ||
@@ -107,7 +107,7 @@ static void shrink_histfile (void)
     return;
 
   line = 0;
-  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line)) != NULL)
+  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, 0)) != NULL)
   {
     if (sscanf (linebuf, "%d", &hclass) < 1 || hclass < 0)
     {
@@ -133,7 +133,7 @@ static void shrink_histfile (void)
   {
     rewind (f);
     line = 0;
-    while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line)) != NULL)
+    while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, 0)) != NULL)
     {
       if (sscanf (linebuf, "%d", &hclass) < 1 || hclass < 0)
       {

@@ -151,7 +151,7 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
     int lineno = 0;
     size_t linelen;
     
-    while ((line = mutt_read_line (line, &linelen, fpin, &lineno)) != NULL)
+    while ((line = mutt_read_line (line, &linelen, fpin, &lineno, 0)) != NULL)
     {
       if (regexec (PgpGoodSign.rx, line, 0, NULL, 0) == 0)
       {
