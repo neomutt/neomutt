@@ -995,64 +995,19 @@ trim_incomplete_mbyte(unsigned char *buf, size_t len)
   return len;
 }
 
-static char *read_line (char *s, size_t *size, FILE *fp)
-{
-  size_t offset = 0;
-
-  if (!s)
-  {
-    s = safe_malloc (LONG_STRING);
-    *size = LONG_STRING;
-  }
-
-  *s = 0;
-
-  FOREVER
-  {
-    if (fgets (s + offset, *size - offset, fp) == NULL)
-    {
-      FREE (&s);
-      return NULL;
-    }
-    if (strchr (s + offset, '\n') != NULL)
-      return s;
-    else
-    {
-      int c;
-      c = getc (fp); /* This is kind of a hack. We want to know if the
-                        char at the current point in the input stream is EOF.
-                        feof() will only tell us if we've already hit EOF, not
-                        if the next character is EOF. So, we need to read in
-                        the next character and manually check if it is EOF. */
-      if (c == EOF)
-      {
-        /* The last line of fp isn't \n terminated */
-        return s;
-      }
-      else
-      {
-        ungetc (c, fp); /* undo our dammage */
-        /* There wasn't room for the line -- increase ``s'' */
-        offset = *size - 1; /* overwrite the terminating 0 */
-        *size += STRING;
-        safe_realloc (&s, *size);
-      }
-    }
-  }
-}
-
 static int
 fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
 	     unsigned char **fmt, size_t *blen, int *buf_ready)
 {
   unsigned char *p, *q;
   static int b_read;
+  int l;
 
   if (*buf_ready == 0)
   {
     if (offset != *last_pos)
       fseeko (f, offset, 0);
-    if ((*buf = (unsigned char *) read_line ((char *) *buf, blen, f)) == NULL)
+    if ((*buf = (unsigned char *) mutt_read_line ((char *) *buf, blen, f, &l, M_EOL)) == NULL)
     {
       fmt[0] = 0;
       return (-1);
