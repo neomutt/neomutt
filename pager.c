@@ -2089,9 +2089,10 @@ search_next:
       case OP_SEARCH:
       case OP_SEARCH_REVERSE:
         strfcpy (buffer, searchbuf, sizeof (buffer));
-	if (mutt_get_field ((SearchBack ? _("Reverse search: ") :
-			  _("Search: ")), buffer, sizeof (buffer),
-			  M_CLEAR) != 0)
+	if (mutt_get_field ((ch == OP_SEARCH || ch == OP_SEARCH_NEXT) ?
+			    _("Search for: ") : _("Reverse search for: "),
+			    buffer, sizeof (buffer),
+			    M_CLEAR) != 0)
 	  break;
 
 	if (!strcmp (buffer, searchbuf))

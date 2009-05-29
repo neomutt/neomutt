@@ -1,3 +1,16 @@
+2009-05-29 13:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (f1a1e50c375d)
+
+	* doc/manual.xml.head: Manual: Fix markup of environment variables
+
+2009-05-28 16:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (f260f5836284)
+
+	* ChangeLog, smtp.c: SMTP: don't interactively authenticate without a
+	password in batch/mailx mode
+
+	Otherwise, if we don't have a password and curses is not running,
+	the SASL authentication callback will crash mutt. We now abort if
+	the password wasn't given in $smtp_url.
+
 2009-05-28 15:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (84a56dcb0572)
 
 	* doc/mutt.css: Manual: vertical-align table cells at the top
