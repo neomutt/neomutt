@@ -1401,15 +1401,17 @@ int mutt_search_command (int cur, int op)
   progress_t progress;
   const char* msg = NULL;
 
-  if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
+  if (!(LastSearch && *LastSearch) ||
+      (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    strfcpy (buf, LastSearch, sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH) ? _("Search for: ") :
-		      _("Reverse search for: "), buf, sizeof (buf),
+    strfcpy (buf, LastSearch && *LastSearch ? LastSearch : "", sizeof (buf));
+    if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
+			_("Search for: ") : _("Reverse search for: "),
+			buf, sizeof (buf),
 		      M_CLEAR | M_PATTERN) != 0 || !buf[0])
       return (-1);
 
-    if (op == OP_SEARCH)
+    if (op == OP_SEARCH || op == OP_SEARCH_NEXT)
       unset_option (OPTSEARCHREVERSE);
     else
       set_option (OPTSEARCHREVERSE);
@@ -1420,7 +1422,7 @@ int mutt_search_command (int cur, int op)
     mutt_check_simple (temp, sizeof (temp), NONULL (SimpleSearch));
 
     if (!SearchPattern || mutt_strcmp (temp, LastSearchExpn))
-    {
+     {
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));
       mutt_message _("Compiling search pattern...");
@@ -1428,17 +1430,12 @@ int mutt_search_command (int cur, int op)
       err.data = error;
       err.dsize = sizeof (error);
       if ((SearchPattern = mutt_pattern_comp (temp, M_FULL_MSG, &err)) == NULL)
-      {
+       {
 	mutt_error ("%s", error);
 	return (-1);
       }
       mutt_clear_error ();
     }
-  }
-  else if (!SearchPattern)
-  {
-    mutt_error _("No search pattern.");
-    return (-1);
   }
 
   if (option (OPTSEARCHINVALID))

@@ -725,27 +725,21 @@ static int menu_search (MUTTMENU *menu, int op)
   char* searchBuf = menu->menu >= 0 && menu->menu < MENU_MAX ?
                     SearchBuffers[menu->menu] : NULL;
 
-  if (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE)
+  if (!(searchBuf && *searchBuf) ||
+      (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    strfcpy (buf, searchBuf ? searchBuf : "", sizeof (buf));
-    if (mutt_get_field ((op == OP_SEARCH) ? _("Search for: ") : 
-                                            _("Reverse search for: "),
-			 buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
+    strfcpy (buf, searchBuf && *searchBuf ? searchBuf : "", sizeof (buf));
+    if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT)
+			? _("Search for: ") : _("Reverse search for: "),
+			buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
       return (-1);
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
       mutt_str_replace (&SearchBuffers[menu->menu], buf);
       searchBuf = SearchBuffers[menu->menu];
     }
-    menu->searchDir = (op == OP_SEARCH) ? M_SEARCH_DOWN : M_SEARCH_UP;
-  }
-  else 
-  {
-    if (!searchBuf || !*searchBuf)
-    {
-      mutt_error _("No search pattern.");
-      return (-1);
-    }
+    menu->searchDir = (op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
+		       M_SEARCH_DOWN : M_SEARCH_UP;
   }
 
   searchDir = (menu->searchDir == M_SEARCH_UP) ? -1 : 1;

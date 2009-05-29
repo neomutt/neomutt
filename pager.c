@@ -1567,7 +1567,7 @@ static struct mapping_t PagerHelpExtra[] = {
 int 
 mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 {
-  static char searchbuf[STRING];
+  static char searchbuf[STRING] = "";
   char buffer[LONG_STRING];
   char helpstr[SHORT_STRING*2];
   char tmphelp[SHORT_STRING*2];
