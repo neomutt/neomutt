@@ -19,10 +19,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.19-20090516\n"
+"Project-Id-Version: Mutt 1.5.19-20090528\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-17 02:01+0200\n"
-"PO-Revision-Date: 2009-05-17 02:09+0200\n"
+"POT-Creation-Date: 2009-05-29 15:15+0200\n"
+"PO-Revision-Date: 2009-05-29 15:18+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "Sélectionner"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3829 curs_main.c:412
-#: mutt_ssl.c:907 mutt_ssl_gnutls.c:841 pager.c:1646 pgpkey.c:522
+#: mutt_ssl.c:892 mutt_ssl_gnutls.c:843 pager.c:1646 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:437
 msgid "Help"
 msgstr "Aide"
@@ -121,7 +121,7 @@ msgstr "Alias ajouté."
 msgid "Error seeking in alias file"
 msgstr "Erreur en se repositionnant (seek) dans le fichier d'alias"
 
-#: attach.c:113 attach.c:245 attach.c:477 attach.c:971
+#: attach.c:113 attach.c:245 attach.c:477 attach.c:973
 msgid "Can't match nametemplate, continue?"
 msgstr "Ne correspond pas au nametemplate, continuer ?"
 
@@ -179,16 +179,36 @@ msgstr "Type MIME non défini. Impossible de visualiser l'attachement."
 msgid "Cannot create filter"
 msgstr "Impossible de créer le filtre"
 
-#: attach.c:677 attach.c:709 attach.c:1004 attach.c:1062 handler.c:1284
+#: attach.c:554
+#, c-format
+msgid "---Command: %-20.20s Description: %s"
+msgstr "---Commande: %-20.20s Description: %s"
+
+#: attach.c:558
+#, c-format
+msgid "---Command: %-30.30s Attachment: %s"
+msgstr "---Commande: %-30.30s Attachement: %s"
+
+#: attach.c:604
+#, c-format
+msgid "---Attachment: %s: %s"
+msgstr "---Attachement: %s: %s"
+
+#: attach.c:607
+#, c-format
+msgid "---Attachment: %s"
+msgstr "---Attachement: %s"
+
+#: attach.c:677 attach.c:709 attach.c:1006 attach.c:1064 handler.c:1284
 #: pgpkey.c:570 pgpkey.c:759
 msgid "Can't create filter"
 msgstr "Impossible de créer le filtre"
 
-#: attach.c:843
+#: attach.c:845
 msgid "Write fault!"
 msgstr "Erreur d'écriture !"
 
-#: attach.c:1085
+#: attach.c:1087
 msgid "I don't know how to print that!"
 msgstr "Je ne sais pas comment imprimer ceci !"
 
@@ -1238,7 +1258,7 @@ msgstr "gpgme_op_keylist_next a échoué : %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées."
 
-#: crypt-gpgme.c:3821 mutt_ssl.c:905 mutt_ssl_gnutls.c:839 pgpkey.c:515
+#: crypt-gpgme.c:3821 mutt_ssl.c:890 mutt_ssl_gnutls.c:841 pgpkey.c:515
 #: smime.c:432
 msgid "Exit  "
 msgstr "Quitter  "
@@ -2077,7 +2097,7 @@ msgstr "unhook : type hook inconnu : %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
-#: imap/auth.c:108 pop_auth.c:398 smtp.c:483
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:489
 msgid "No authenticators available"
 msgstr "Pas d'authentificateurs disponibles"
 
@@ -2118,7 +2138,7 @@ msgstr "Connexion..."
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: imap/auth_sasl.c:97 smtp.c:519
+#: imap/auth_sasl.c:97 smtp.c:525
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authentification (%s)..."
@@ -3067,8 +3087,8 @@ msgstr "erreur d'E/S"
 msgid "SSL failed: %s"
 msgstr "SSL a échoué : %s"
 
-#: mutt_ssl.c:349 mutt_ssl_gnutls.c:916 mutt_ssl_gnutls.c:925
-#: mutt_ssl_gnutls.c:948
+#: mutt_ssl.c:349 mutt_ssl_gnutls.c:918 mutt_ssl_gnutls.c:952
+#: mutt_ssl_gnutls.c:962
 msgid "Unable to get certificate from peer"
 msgstr "Impossible d'obtenir le certificat de la machine distante"
 
@@ -3114,65 +3134,65 @@ msgstr "impossible d'obtenir le nom du détenteur du certificat (CN)"
 msgid "certificate owner does not match hostname %s"
 msgstr "le propriétaire du certificat ne correspond pas au nom %s"
 
-#: mutt_ssl.c:759
+#: mutt_ssl.c:760
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Échec de vérification de machine : %s"
 
-#: mutt_ssl.c:851 mutt_ssl_gnutls.c:699
+#: mutt_ssl.c:836 mutt_ssl_gnutls.c:700
 msgid "This certificate belongs to:"
 msgstr "Ce certificat appartient à :"
 
-#: mutt_ssl.c:864 mutt_ssl_gnutls.c:738
+#: mutt_ssl.c:849 mutt_ssl_gnutls.c:739
 msgid "This certificate was issued by:"
 msgstr "Ce certificat a été émis par :"
 
-#: mutt_ssl.c:875 mutt_ssl_gnutls.c:777
+#: mutt_ssl.c:860 mutt_ssl_gnutls.c:778
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ce certificat est valide"
 
-#: mutt_ssl.c:876 mutt_ssl_gnutls.c:780
+#: mutt_ssl.c:861 mutt_ssl_gnutls.c:781
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: mutt_ssl.c:878 mutt_ssl_gnutls.c:784
+#: mutt_ssl.c:863 mutt_ssl_gnutls.c:785
 #, c-format
 msgid "     to %s"
 msgstr "      à %s"
 
-#: mutt_ssl.c:884
+#: mutt_ssl.c:869
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Empreinte : %s"
 
-#: mutt_ssl.c:887 mutt_ssl_gnutls.c:821
+#: mutt_ssl.c:872 mutt_ssl_gnutls.c:822
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr "Vérification du certificat SSL (certificat %d sur %d dans la chaîne)"
 
-#: mutt_ssl.c:895 mutt_ssl_gnutls.c:829
+#: mutt_ssl.c:880 mutt_ssl_gnutls.c:831
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
-#: mutt_ssl.c:896 mutt_ssl_gnutls.c:830
+#: mutt_ssl.c:881 mutt_ssl_gnutls.c:832
 msgid "roa"
 msgstr "rua"
 
-#: mutt_ssl.c:900 mutt_ssl_gnutls.c:834
+#: mutt_ssl.c:885 mutt_ssl_gnutls.c:836
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
-#: mutt_ssl.c:901 mutt_ssl_gnutls.c:835
+#: mutt_ssl.c:886 mutt_ssl_gnutls.c:837
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:932 mutt_ssl_gnutls.c:884
+#: mutt_ssl.c:917 mutt_ssl_gnutls.c:886
 msgid "Warning: Couldn't save certificate"
 msgstr "Attention : le certificat n'a pas pu être sauvé"
 
-#: mutt_ssl.c:937 mutt_ssl_gnutls.c:889
+#: mutt_ssl.c:922 mutt_ssl_gnutls.c:891
 msgid "Certificate saved"
 msgstr "Certificat sauvé"
 
@@ -3191,50 +3211,50 @@ msgstr ""
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Connexion SSL/TLS utilisant %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:554 mutt_ssl_gnutls.c:679
+#: mutt_ssl_gnutls.c:556 mutt_ssl_gnutls.c:680
 msgid "Error initialising gnutls certificate data"
 msgstr "Erreur d'initialisation des données du certificat gnutls"
 
-#: mutt_ssl_gnutls.c:561 mutt_ssl_gnutls.c:686
+#: mutt_ssl_gnutls.c:563 mutt_ssl_gnutls.c:687
 msgid "Error processing certificate data"
 msgstr "Erreur de traitement des données du certificat"
 
-#: mutt_ssl_gnutls.c:789
+#: mutt_ssl_gnutls.c:790
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Empreinte SHA1 : %s"
 
-#: mutt_ssl_gnutls.c:792
+#: mutt_ssl_gnutls.c:793
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Empreinte MD5 : %s"
 
-#: mutt_ssl_gnutls.c:797
+#: mutt_ssl_gnutls.c:798
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "ATTENTION ! Le certificat du serveur n'est pas encore valide"
 
-#: mutt_ssl_gnutls.c:802
+#: mutt_ssl_gnutls.c:803
 msgid "WARNING: Server certificate has expired"
 msgstr "ATTENTION ! Le certificat du serveur a expiré"
 
-#: mutt_ssl_gnutls.c:807
+#: mutt_ssl_gnutls.c:808
 msgid "WARNING: Server certificate has been revoked"
 msgstr "ATTENTION ! Le certificat du serveur a été révoqué"
 
-#: mutt_ssl_gnutls.c:812
+#: mutt_ssl_gnutls.c:813
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "ATTENTION ! Le nom du serveur ne correspond pas au certificat"
 
-#: mutt_ssl_gnutls.c:817
+#: mutt_ssl_gnutls.c:818
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "ATTENTION ! Le signataire du certificat du serveur n'est pas un CA"
 
-#: mutt_ssl_gnutls.c:931
+#: mutt_ssl_gnutls.c:924
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Erreur de vérification du certificat (%s)"
 
-#: mutt_ssl_gnutls.c:940
+#: mutt_ssl_gnutls.c:933
 msgid "Certificate is not X.509"
 msgstr "Le certificat n'est pas de type X.509"
 
@@ -4442,15 +4462,19 @@ msgid "SMTP server does not support authentication"
 msgstr "Le serveur SMTP ne supporte pas l'authentification"
 
 #: smtp.c:427
+msgid "Interactive SMTP authentication not supported"
+msgstr "Authentification SMTP interactive non supportée"
+
+#: smtp.c:433
 msgid "SMTP authentication requires SASL"
 msgstr "L'authentification SMTP nécessite SASL"
 
-#: smtp.c:461
+#: smtp.c:467
 #, c-format
 msgid "%s authentication failed, trying next method"
 msgstr "L'authentification %s a échoué, essayons la méthode suivante"
 
-#: smtp.c:478
+#: smtp.c:484
 msgid "SASL authentication failed"
 msgstr "L'authentification SASL a échoué"
 
