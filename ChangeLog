@@ -1,3 +1,11 @@
+2009-05-30 10:23 -0700  Vincent Lefevre  <vincent@vinc17.org>  (be7b3d349725)
+
+	* po/fr.po: Updated French translation.
+
+2009-05-30 00:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (f65a1eb8abce)
+
+	* ChangeLog, smtp.c: Fix logic in f260f5836284
+
 2009-05-29 21:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (c4d86d4ea260)
 
 	* pager.c: Drop modified version of and use mutt_read_line() in pager,
