@@ -1,3 +1,26 @@
+2009-05-31 11:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (68ee7fe4aa49)
+
+	* handler.c, init.h, rfc3676.c: f=f: Strip trailing spaces for
+	interoperability. Closes #3001.
+
+	If we make a fixed reply to a flowed message we remove trailing
+	spaces and can now safely allow $indent_string to be used which is
+	what users expect.
+
+	Second, if we make a flowed reply to a fixed message we also strip
+	trailing spaces since from format=fixed we assume all lines are
+	fixed (i.e. we don't want to errorneously make fixed lines flowed).
+
+2009-05-31 10:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (03ea7644f71b)
+
+	* ChangeLog, handler.c, init.h, mutt.h: Add $honor_disposition to not
+	display attachments inline. Closes #3170.
+
+	Previously all MIME parts were displayed inline regardless of the
+	Content-Disposition header (if present). With $honor_disposition
+	set, only inline parts are displayed inline, attachments can only be
+	viewed from the attachments menu.
+
 2009-04-25 01:56 -0400  Dan Loewenherz  <daniel.loewenherz@yale.edu>  (c1b947f60ea6)
 
 	* init.h: Disables the insecure SSLv2 protocol. Closes #3192.

@@ -1531,7 +1531,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   struct q_class_t *QuoteList = NULL;
   int i, j, ch = 0, rc = -1, hideQuoted = 0, q_level = 0, force_redraw = 0;
   int lines = 0, curline = 0, topline = 0, oldtopline = 0, err, first = 1;
-  int r = -1, wrapped = 0;
+  int r = -1, wrapped = 0, searchctx = 0;
   int redraw = REDRAW_FULL;
   FILE *fp = NULL;
   LOFF_T last_pos = 0, last_offset = 0;
@@ -1988,12 +1988,17 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	{
 	  wrapped = 0;
 
+	  if (PagerContext > 0 && PagerContext < LINES - 2 - option (OPTHELP) ? 1 : 0)
+	    searchctx = PagerContext;
+	  else
+	    searchctx = 0;
+
 search_next:
 	  if ((!SearchBack && ch==OP_SEARCH_NEXT) ||
 	      (SearchBack &&ch==OP_SEARCH_OPPOSITE))
 	  {
 	    /* searching forward */
-	    for (i = wrapped ? 0 : topline + 1; i < lastLine; i++)
+	    for (i = wrapped ? 0 : topline + searchctx + 1; i < lastLine; i++)
 	    {
 	      if ((!hideQuoted || lineInfo[i].type != MT_COLOR_QUOTED) && 
 		    !lineInfo[i].continuation && lineInfo[i].search_cnt > 0)
@@ -2014,7 +2019,7 @@ search_next:
 	  else
 	  {
 	    /* searching backward */
-	    for (i = wrapped ? lastLine : topline - 1; i >= 0; i--)
+	    for (i = wrapped ? lastLine : topline + searchctx - 1; i >= 0; i--)
 	    {
 	      if ((!hideQuoted || (has_types && 
 		    lineInfo[i].type != MT_COLOR_QUOTED)) && 
@@ -2035,7 +2040,12 @@ search_next:
 	  }
 
 	  if (lineInfo[topline].search_cnt > 0)
+	  {
 	    SearchFlag = M_SEARCH;
+	    /* give some context for search results */
+	    if (topline - searchctx > 0)
+	      topline -= searchctx;
+	  }
 
 	  break;
 	}
@@ -2144,7 +2154,17 @@ search_next:
 	    mutt_error _("Not found.");
 	  }
 	  else
+	  {
 	    SearchFlag = M_SEARCH;
+	    /* give some context for search results */
+	    if (PagerContext > 0 && PagerContext < LINES - 2 - option (OPTHELP) ? 1 : 0)
+	      searchctx = PagerContext;
+	    else
+	      searchctx = 0;
+	    if (topline - searchctx > 0)
+	      topline -= searchctx;
+	  }
+
 	}
 	redraw = REDRAW_BODY;
 	break;
