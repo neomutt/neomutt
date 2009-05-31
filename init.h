@@ -1600,6 +1600,10 @@ struct option_t MuttVars[] = {
   ** when displaying the next or previous page in the internal pager.  By
   ** default, Mutt will display the line after the last one on the screen
   ** at the top of the next page (0 lines of context).
+  ** .pp
+  ** This variable also specifies the amount of context given for search
+  ** results. If positive, this many lines will be given before a match,
+  ** if 0, the match will be top-aligned.
   */
   { "pager_format",	DT_STR,	 R_PAGER, UL &PagerFmt, UL "-%Z- %C/%m: %-20.20n   %s%*  -- (%P)" },
   /*
