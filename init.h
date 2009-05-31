@@ -1222,12 +1222,11 @@ struct option_t MuttVars[] = {
   ** message to which you are replying.  You are strongly encouraged not to
   ** change this value, as it tends to agitate the more fanatical netizens.
   ** .pp
+  ** The value of this option is ignored if $$text_flowed is set, too because
+  ** the quoting mechanism is strictly defined for format=flowed.
+  ** .pp
   ** This option is a format string, please see the description of
   ** $$index_format for supported \fCprintf(3)\fP-style sequences.
-  ** .pp
-  ** Because for \fCformat=lowed\fP style messages the quoting mechanism
-  ** is strictly defined, this setting is ignored if $$text_flowed is
-  ** \fIset\fP.
   */
   { "indent_str",	DT_SYN,  R_NONE, UL "indent_string", 0 },
   /*

@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
- * Copyright (C) 2005-7 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2005-9 Rocco Rutte <pdmef@gmx.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -56,14 +56,27 @@ static int get_quote_level (const char *line)
 static size_t print_indent (int ql, STATE *s, int sp)
 {
   int i;
+  size_t len = 0;
 
   if (s->prefix)
-    ql++;
+  {
+    /* use given prefix only for format=fixed replies to format=flowed,
+     * for format=flowed replies to format=flowed, use '>' indentation
+     */
+    if (option (OPTTEXTFLOWED))
+      ql++;
+    else
+    {
+      state_puts (s->prefix, s);
+      len = mutt_strlen (s->prefix);
+      sp = 0;
+    }
+  }
   for (i = 0; i < ql; i++)
     state_putc ('>', s);
   if (sp)
     state_putc (' ', s);
-  return ql + sp;
+  return ql + sp + len;
 }
 
 static void flush_par (STATE *s, size_t *sofar)
@@ -109,9 +122,11 @@ static void print_flowed_line (char *line, STATE *s, int ql, size_t *sofar, int 
     dprint (4, (debugfile, "f=f: word [%s], width = %ld, line = %ld\n", NONULL(p), (long)w, (long)*sofar));
     if (w + 1 + (*sofar) > width)
     {
-      /* line would be too long, flush */
+      /* line would be too long, flush; for format=flowed we keep a
+       * trailing space but remove it otherwise for interoperability
+       */
       dprint (4, (debugfile, "f=f: width: %ld\n", (long)*sofar));
-      state_puts (" \n", s);
+      state_puts (option (OPTTEXTFLOWED) ? " \n" : "\n", s);
       *sofar = 0;
     }
     if (*sofar == 0)
@@ -122,8 +137,10 @@ static void print_flowed_line (char *line, STATE *s, int ql, size_t *sofar, int 
     }
     if (words > 0)
     {
-      /* put space before current word if we have words already */
-      state_putc (' ', s);
+      /* put space before current word if we have words already,
+         and the current word isn't the trailing space */
+      if (w > 0)
+	state_putc (' ', s);
       (*sofar)++;
     }
     state_puts (NONULL(p), s);

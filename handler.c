@@ -1485,6 +1485,34 @@ void mutt_decode_attachment (BODY *b, STATE *s)
     iconv_close (cd);
 }
 
+/* when generating format=flowed ($text_flowed is set) from format=fixed,
+ * strip all trailing spaces to improve interoperability;
+ * if $text_flowed is unset, simply verbatim copy input
+ */
+static int text_plain_handler (BODY *b, STATE *s)
+{
+  char buf[LONG_STRING];
+  size_t l;
+
+  while (fgets (buf, sizeof (buf), s->fpin))
+  {
+    l = mutt_strlen (buf);
+    if (l > 0 && buf[l-1] == '\n')
+      buf[--l] = 0;
+    if (option (OPTTEXTFLOWED))
+    {
+      while (l > 0 && buf[l-1] == ' ')
+	buf[--l] = 0;
+    }
+    if (s->prefix)
+      state_puts (s->prefix, s);
+    state_puts (buf, s);
+    state_putc ('\n', s);
+  }
+
+  return 0;
+}
+
 int mutt_body_handler (BODY *b, STATE *s)
 {
   int decode = 0;
@@ -1525,7 +1553,7 @@ int mutt_body_handler (BODY *b, STATE *s)
       else if (ascii_strcasecmp ("flowed", mutt_get_parameter ("format", b->parameter)) == 0)
 	handler = rfc3676_handler;
       else
-	plaintext = 1;
+	handler = text_plain_handler;
     }
     else if (ascii_strcasecmp ("enriched", b->subtype) == 0)
       handler = text_enriched_handler;
