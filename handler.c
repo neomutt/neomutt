@@ -173,9 +173,9 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
 			    int last)
 {
   char *d, *s;
-  char c;
+  char c = 0;
 
-  int kind;
+  int kind = -1;
   int soft = 0;
 
   /* decode the line */
@@ -191,7 +191,15 @@ static void qp_decode_line (char *dest, char *src, size_t *l,
   }
 
   if (!soft && last == '\n')
-    *d++ = '\n';
+  {
+    /* neither \r nor \n as part of line-terminating CRLF
+     * may be qp-encoded, so remove \r and \n-terminate;
+     * see RfC2045, sect. 6.7, (1): General 8bit representation */
+    if (kind == 0 && c == '\r')
+      *(d-1) = '\n';
+    else
+      *d++ = '\n';
+  }
   
   *d = '\0';
   *l = d - dest;
