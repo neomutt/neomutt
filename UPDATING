@@ -5,6 +5,9 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+  + $honor_disposition to honor Content-Disposition headers
+  ! $pager_context specifies number of search context lines, too
+  + ssl_use_sslv2 defaults to no
   + uncolor works for header + body objects, too
   + the "flagged" and "replied" flags are enabled/supported for
     POP when built with header caching

@@ -1,3 +1,18 @@
+2009-05-31 12:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (fdaed73dd66a)
+
+	* handler.c: Turn trailing \r\n to \n for qp-encoded messages.
+
+	RFC2045 (sect. 6.7, (1) general 8bit representation) states that
+	neither CR nor LF of the trailing CRLF may be qp-encoded. So we
+	ignore trailing qp-encoded CRs.
+
+	See #2898 though this is a partial fix only.
+
+2009-05-31 12:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (c3502979422b)
+
+	* ChangeLog, pager.c: Give $pager_context lines of context when
+	searching page-based menus. Closes #976.
+
 2009-05-31 11:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (68ee7fe4aa49)
 
 	* handler.c, init.h, rfc3676.c: f=f: Strip trailing spaces for
