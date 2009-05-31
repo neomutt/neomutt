@@ -1,3 +1,12 @@
+2009-04-25 01:56 -0400  Dan Loewenherz  <daniel.loewenherz@yale.edu>  (c1b947f60ea6)
+
+	* init.h: Disables the insecure SSLv2 protocol. Closes #3192.
+
+2009-05-30 19:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (b080ae086a62)
+
+	* ChangeLog, mbox.c: Keep new mail flag for mbox/mmdf folders after
+	closing. Closes #1362.
+
 2009-05-30 10:23 -0700  Vincent Lefevre  <vincent@vinc17.org>  (be7b3d349725)
 
 	* po/fr.po: Updated French translation.

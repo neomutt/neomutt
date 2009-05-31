@@ -998,6 +998,17 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The file in which Mutt will save its history.
   */
+  { "honor_disposition", DT_BOOL, R_NONE, OPTHONORDISP, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will not display attachments with a
+  ** disposition of ``attachment'' inline even if it could
+  ** render the part to plain text. These MIME parts can only
+  ** be viewed from the attachment menu.
+  ** .pp
+  ** If \fIunset\fP, Mutt will render all MIME parts it can
+  ** properly transform to plain text.
+  */
   { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, M_YES },
   /*
   ** .pp

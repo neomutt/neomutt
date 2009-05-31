@@ -1592,8 +1592,11 @@ int mutt_body_handler (BODY *b, STATE *s)
       handler = crypt_smime_application_smime_handler;
   }
 
-
-  if (plaintext || handler)
+  /* only respect disposition == attachment if we're not
+     displaying from the attachment menu (i.e. pager) */
+  if ((!option (OPTHONORDISP) || (b->disposition != DISPATTACH ||
+				  option(OPTVIEWATTACH))) &&
+       (plaintext || handler))
   {
     fseeko (s->fpin, b->offset, 0);
 
@@ -1680,10 +1683,18 @@ int mutt_body_handler (BODY *b, STATE *s)
     }
     s->flags |= M_FIRSTDONE;
   }
-  else if (s->flags & M_DISPLAY)
+  /* print hint to use attachment menu for disposition == attachment
+     if we're not already being called from there */
+  else if ((s->flags & M_DISPLAY) || (b->disposition == DISPATTACH &&
+				      !option (OPTVIEWATTACH) &&
+				      option (OPTHONORDISP) &&
+				      (plaintext || handler)))
   {
     state_mark_attach (s);
-    state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
+    if (option (OPTHONORDISP) && b->disposition == DISPATTACH)
+      fputs (_("[-- This is an attachment "), s->fpout);
+    else
+      state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
       if (km_expand_key (type, sizeof(type),
