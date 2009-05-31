@@ -1,3 +1,11 @@
+2009-05-31 13:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (9594f10d2038)
+
+	* init.h: Document that $pager_context affects searching, too
+
+2009-05-31 13:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (d5065254c2f1)
+
+	* ChangeLog, UPDATING: Update UPDATING
+
 2009-05-31 12:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (fdaed73dd66a)
 
 	* handler.c: Turn trailing \r\n to \n for qp-encoded messages.

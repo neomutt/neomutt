@@ -125,6 +125,12 @@ smtp_rcpt_to (CONNECTION * conn, const ADDRESS * a)
 
   while (a)
   {
+    if (!a->mailbox || ascii_strcasecmp (a->mailbox,
+					 "undisclosed-recipients") == 0)
+    {
+      a = a->next;
+      continue;
+    }
     if (mutt_bit_isset (Capabilities, DSN) && DsnNotify)
       snprintf (buf, sizeof (buf), "RCPT TO:<%s> NOTIFY=%s\r\n",
                 a->mailbox, DsnNotify);
