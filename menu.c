@@ -422,9 +422,9 @@ void menu_jump (MUTTMENU *menu)
     buf[0] = 0;
     if (mutt_get_field (_("Jump to: "), buf, sizeof (buf), 0) == 0 && buf[0])
     {
-      n = atoi (buf) - 1;
-      if (n >= 0 && n < menu->max)
+      if (mutt_atoi (buf, &n) == 0 && n > 0 && n < menu->max + 1)
       {
+	n--;	/* msg numbers are 0-based */
 	menu->current = n;
 	menu->redraw = REDRAW_MOTION;
       }

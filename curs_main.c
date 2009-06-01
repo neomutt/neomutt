@@ -750,13 +750,12 @@ int mutt_index_menu (void)
 	    || !buf[0])
 	  break;
 
-	if (! isdigit ((unsigned char) buf[0]))
+	if (mutt_atoi (buf, &i) < 0)
 	{
 	  mutt_error _("Argument must be a message number.");
 	  break;
 	}
 
-	i = atoi (buf);
 	if (i > 0 && i <= Context->msgcount)
 	{
 	  for (j = i-1; j < Context->msgcount; j++)

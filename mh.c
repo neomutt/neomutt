@@ -140,20 +140,25 @@ static short mhs_unset (struct mh_sequences *mhs, int i, short f)
 
 #endif
 
-static void mh_read_token (char *t, int *first, int *last)
+static int mh_read_token (char *t, int *first, int *last)
 {
   char *p;
   if ((p = strchr (t, '-')))
   {
     *p++ = '\0';
-    *first = atoi (t);
-    *last = atoi (p);
+    if (mutt_atoi (t, first) < 0 || mutt_atoi (t, last) < 0)
+      return -1;
   }
   else
-    *first = *last = atoi (t);
+  {
+    if (mutt_atoi (t, first) < 0)
+      return -1;
+    *last = *first;
+  }
+  return 0;
 }
 
-static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
+static int mh_read_sequences (struct mh_sequences *mhs, const char *path)
 {
   FILE *fp;
   int line = 1;
@@ -162,13 +167,13 @@ static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
   size_t sz = 0;
 
   short f;
-  int first, last;
+  int first, last, rc;
 
   char pathname[_POSIX_PATH_MAX];
   snprintf (pathname, sizeof (pathname), "%s/.mh_sequences", path);
 
   if (!(fp = fopen (pathname, "r")))
-    return;
+    return 0; /* yes, ask callers to silently ignore the error */
 
   while ((buff = mutt_read_line (buff, &sz, fp, &line, 0)))
   {
@@ -186,14 +191,23 @@ static void mh_read_sequences (struct mh_sequences *mhs, const char *path)
 
     while ((t = strtok (NULL, " \t:")))
     {
-      mh_read_token (t, &first, &last);
+      if (mh_read_token (t, &first, &last) < 0)
+      {
+	mhs_free_sequences (mhs);
+	rc = -1;
+	goto out;
+      }
       for (; first <= last; first++)
 	mhs_set (mhs, first, f);
     }
   }
 
+  rc = 0;
+
+out:
   FREE (&buff);
   safe_fclose (&fp);
+  return 0;
 }
 
 static inline mode_t mh_umask (CONTEXT* ctx)
@@ -219,11 +233,11 @@ int mh_buffy (const char *path)
   struct mh_sequences mhs;
   memset (&mhs, 0, sizeof (mhs));
 
-  mh_read_sequences (&mhs, path);
+  if (mh_read_sequences (&mhs, path) < 0)
+    return 0;
   for (i = 0; !r && i <= mhs.max; i++)
     if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
       r = 1;
-  mhs_free_sequences (&mhs);
   return r;
 }
 
@@ -1139,7 +1153,8 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   if (ctx->magic == M_MH)
   {
-    mh_read_sequences (&mhs, ctx->path);
+    if (mh_read_sequences (&mhs, ctx->path) >= 0)
+      return -1;
     mh_update_maildir (md, &mhs);
     mhs_free_sequences (&mhs);
   }
@@ -1148,7 +1163,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   if (!data->mh_umask)
     data->mh_umask = mh_umask (ctx);
-  
+
   return 0;
 }
 
@@ -2026,7 +2041,8 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   maildir_parse_dir (ctx, &last, NULL, NULL, NULL);
   maildir_delayed_parsing (ctx, &md, NULL);
 
-  mh_read_sequences (&mhs, ctx->path);
+  if (mh_read_sequences (&mhs, ctx->path) < 0)
+    return -1;
   mh_update_maildir (md, &mhs);
   mhs_free_sequences (&mhs);
 

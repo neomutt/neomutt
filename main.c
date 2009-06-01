@@ -631,7 +631,11 @@ int main (int argc, char **argv)
 
       case 'd':
 #ifdef DEBUG
-	debuglevel = atoi (optarg);
+	if (mutt_atoi (optarg, &debuglevel) < 0 || debuglevel <= 0)
+	{
+	  fprintf (stderr, _("Error: value '%s' is invalid for -d.\n"), optarg);
+	  return 1;
+	}
 	printf (_("Debugging at level %d.\n"), debuglevel);
 #else
 	printf _("DEBUG was not defined during compilation.  Ignored.\n");

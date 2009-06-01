@@ -144,7 +144,8 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
   if ((p = strchr (t, ':')))
   {
     *p++ = '\0';
-    ciss->port = atoi (p);
+    if (mutt_atos (p, (short*) &ciss->port) < 0)
+      return NULL;
   }
   else
     ciss->port = 0;
@@ -165,7 +166,8 @@ int url_parse_ciss (ciss_url_t *ciss, char *src)
 
   tmp = strchr (src, ':') + 1;
 
-  ciss->path = ciss_parse_userhost (ciss, tmp);
+  if ((ciss->path = ciss_parse_userhost (ciss, tmp)) == NULL)
+    return -1;
   url_pct_decode (ciss->path);
   
   return 0;
