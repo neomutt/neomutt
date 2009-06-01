@@ -1094,6 +1094,19 @@ static int is_reply (HEADER *reply, HEADER *orig)
          mutt_find_list (orig->env->in_reply_to, reply->env->message_id);
 }
 
+static int has_recips (ADDRESS *a)
+{
+  int c = 0;
+
+  for ( ; a; a = a->next)
+  {
+    if (!a->mailbox || a->group)
+      continue;
+    c++;
+  }
+  return c;
+}
+
 int
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
@@ -1553,7 +1566,8 @@ main_loop:
     }
   }
 
-  if (!msg->env->to && !msg->env->cc && !msg->env->bcc)
+  if (!has_recips (msg->env->to) && !has_recips (msg->env->cc) &&
+      !has_recips (msg->env->bcc))
   {
     if (! (flags & SENDBATCH))
     {
