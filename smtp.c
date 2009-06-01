@@ -47,6 +47,7 @@
 
 #define smtp_err_read -2
 #define smtp_err_write -3
+#define smtp_err_code -4
 
 #define SMTP_PORT 25
 #define SMTPS_PORT 465
@@ -75,6 +76,21 @@ static int smtp_open (CONNECTION* conn);
 static int Esmtp = 0;
 static char* AuthMechs = NULL;
 static unsigned char Capabilities[(CAPMAX + 7)/ 8];
+
+static int smtp_code (char *buf, size_t len, int *n)
+{
+  char code[3];
+
+  if (len < 4)
+    return -1;
+  code[0] = buf[0];
+  code[1] = buf[1];
+  code[2] = buf[2];
+  code[3] = 0;
+  if (mutt_atoi (code, n) < 0)
+    return -1;
+  return 0;
+}
 
 /* Reads a command response from the SMTP server.
  * Returns:
@@ -107,7 +123,9 @@ smtp_get_resp (CONNECTION * conn)
     else if (!ascii_strncasecmp ("STARTTLS", buf + 4, 8))
       mutt_bit_set (Capabilities, STARTTLS);
 
-    n = atoi (buf);
+    if (smtp_code (buf, n, &n) < 0)
+      return smtp_err_code;
+
   } while (buf[3] == '-');
 
   if (smtp_success (n) || n == smtp_continue)
@@ -290,6 +308,8 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
     mutt_error (_("SMTP session failed: read error"));
   else if (ret == smtp_err_write)
     mutt_error (_("SMTP session failed: write error"));
+  else if (ret == smtp_err_code)
+    mutt_error (_("Invalid server response"));
 
   return ret;
 }
@@ -546,9 +566,10 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   do {
     if (mutt_socket_write (conn, buf) < 0)
       goto fail;
-    if (mutt_socket_readln (buf, sizeof (buf), conn) < 0)
+    if ((rc = mutt_socket_readln (buf, sizeof (buf), conn)) < 0)
       goto fail;
-    rc = atoi(buf);
+    if (smtp_code (buf, rc, &rc) < 0)
+      goto fail;
 
     if (rc != smtp_ready)
       break;

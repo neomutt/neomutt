@@ -1,3 +1,14 @@
+2009-06-01 11:26 +0200  Rocco Rutte  <pdmef@gmx.net>  (35a444838167)
+
+	* curs_main.c, edit.c, init.c, main.c, menu.c, mh.c, parse.c,
+	resize.c, score.c, url.c: Use strtol() wrappers for most atoi()
+	calls
+
+2009-06-01 11:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (f1b6eb09f2ad)
+
+	* ChangeLog, lib.c, lib.h: Add mutt_atos(), mutt_atoi() and
+	mutt_atol() (strtol() wrappers)
+
 2009-06-01 10:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (36b7e267ce33)
 
 	* send.c: Treat address groups as no recipients
