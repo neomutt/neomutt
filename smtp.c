@@ -125,8 +125,8 @@ smtp_rcpt_to (CONNECTION * conn, const ADDRESS * a)
 
   while (a)
   {
-    if (!a->mailbox || ascii_strcasecmp (a->mailbox,
-					 "undisclosed-recipients") == 0)
+    /* weed out group mailboxes, since those are for display only */
+    if (!a->mailbox || a->group)
     {
       a = a->next;
       continue;

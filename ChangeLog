@@ -1,3 +1,21 @@
+2009-05-31 19:19 -0700  Brendan Cully  <brendan@kublai.com>  (0024860ab03e)
+
+	* doc/Makefile.am: Allow chunked and unchunked manuals to build in
+	parallel.
+
+2009-05-31 19:07 -0700  Brendan Cully  <brendan@kublai.com>  (fd18d0d6f3d0)
+
+	* mutt_ssl_gnutls.c: Remove trailing whitespace
+
+2009-05-31 14:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (8e591e80cd48)
+
+	* ChangeLog, smtp.c: SMTP: Don't send "undisclosed-recipients" in RCPT
+	TO
+
+	This happened for Bcc only messages. "undisclosed-recipients" is
+	added in To: as guard against MTAs that leak BCCs if no To:/Cc:
+	header is given. See Debian #529090.
+
 2009-05-31 13:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (9594f10d2038)
 
 	* init.h: Document that $pager_context affects searching, too
