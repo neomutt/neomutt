@@ -29,9 +29,11 @@ EXTRA_DIST = dotlock.man		\
 	makedoc.c makedoc-defs.h 	\
 	mutt.css mutt.xsl html.xsl chunk.xsl $(BUILT_DISTFILES)
 
-HTML_DOCFILES = manual.html index.html intro.html gettingstarted.html \
+CHUNKED_DOCFILES = index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
 	optionalfeatures.html security.html tuning.html reference.html miscellany.html
+
+HTML_DOCFILES = manual.html $(CHUNKED_DOCFILES)
 
 BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
 
@@ -118,7 +120,7 @@ stamp-doc-chunked: $(srcdir)/chunk.xsl $(srcdir)/mutt.xsl stamp-doc-xml $(srcdir
 	-xsltproc --nonet $(srcdir)/chunk.xsl manual.xml
 	touch stamp-doc-chunked
 
-$(HTML_DOCFILES): stamp-doc-chunked
+$(CHUNKED_DOCFILES): stamp-doc-chunked
 
 manual.pdf: manual.tex
 	-if test -f manual.tex; then pdfjadetex manual.tex; fi
