@@ -389,7 +389,8 @@ static void mh_update_sequences (CONTEXT * ctx)
     else
       p = ctx->hdrs[l]->path;
 
-    i = atoi (p);
+    if (mutt_atoi (p, &i) < 0)
+      continue;
 
     if (!ctx->hdrs[l]->read)
     {
@@ -517,7 +518,8 @@ static void mh_update_maildir (struct maildir *md, struct mh_sequences *mhs)
     else
       p = md->h->path;
 
-    i = atoi (p);
+    if (mutt_atoi (p, &i) < 0)
+      continue;
     f = mhs_check (mhs, i);
 
     md->h->read = (f & MH_SEQ_UNSEEN) ? 0 : 1;

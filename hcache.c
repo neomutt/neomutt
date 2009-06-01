@@ -940,7 +940,10 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
 static int
 hcache_open_gdbm (struct header_cache* h, const char* path)
 {
-  int pagesize = atoi(HeaderCachePageSize) ? atoi(HeaderCachePageSize) : 16384;
+  int pagesize;
+
+  if (mutt_atoi (HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+    pagesize = 16384;
 
   h->db = gdbm_open((char *) path, pagesize, GDBM_WRCREAT, 00600, NULL);
   if (h->db)
@@ -1008,7 +1011,10 @@ hcache_open_db4 (struct header_cache* h, const char* path)
   struct stat sb;
   int ret;
   u_int32_t createflags = DB_CREATE;
-  int pagesize = atoi (HeaderCachePageSize);
+  int pagesize;
+
+  if (mutt_atoi (HeaderCachePageSize, &pagesize) < 0 || pagesize <= 0)
+    pagesize = 16384;
 
   snprintf (h->lockfile, _POSIX_PATH_MAX, "%s-lock-hack", path);
 
