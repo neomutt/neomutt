@@ -1,3 +1,16 @@
+2009-06-01 10:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (36b7e267ce33)
+
+	* send.c: Treat address groups as no recipients
+
+	When sending with Sendmail or SMTP we exclude address groups anyway,
+	so treat these addresses as not present when checking for valid
+	recipients before sending in the compose menu.
+
+2009-06-01 10:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (64250df0e9a4)
+
+	* ChangeLog, smtp.c: Weed out address groups for SMTP the same way we
+	do for sendmail
+
 2009-05-31 19:19 -0700  Brendan Cully  <brendan@kublai.com>  (0024860ab03e)
 
 	* doc/Makefile.am: Allow chunked and unchunked manuals to build in

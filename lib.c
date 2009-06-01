@@ -1006,3 +1006,58 @@ mutt_strsysexit(int e)
   
   return sysexits_h[i].str;
 }
+
+int mutt_atos (const char *str, short *dst)
+{
+  int rc;
+  long res;
+  short tmp;
+  short *t = dst ? dst : &tmp;
+
+  *t = 0;
+
+  if ((rc = mutt_atol (str, &res)) < 0)
+    return rc;
+  if ((short) res != res)
+    return -2;
+
+  *t = (short) res;
+  return 0;
+}
+
+int mutt_atoi (const char *str, int *dst)
+{
+  int rc;
+  long res;
+  int tmp;
+  int *t = dst ? dst : &tmp;
+
+  *t = 0;
+
+  if ((rc = mutt_atol (str, &res)) < 0)
+    return rc;
+  if ((int) res != res)
+    return -2;
+
+  *t = (int) res;
+  return 0;
+}
+
+int mutt_atol (const char *str, long *dst)
+{
+  long r;
+  long *res = dst ? dst : &r;
+  char *e = NULL;
+
+  /* no input: 0 */
+  if (!str || !*str)
+  {
+    *res = 0;
+    return 0;
+  }
+
+  *res = strtol (str, &e, 10);
+  if (e && *e != '\0')
+    return -1;
+  return 0;
+}

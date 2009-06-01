@@ -158,6 +158,16 @@ char *safe_strcat (char *, size_t, const char *);
 char *safe_strncat (char *, size_t, const char *, size_t);
 char *safe_strdup (const char *);
 
+/* strtol() wrappers with range checking; they return
+ * 	 0 success
+ * 	-1 format error
+ * 	-2 overflow (for int and short)
+ * the int pointer may be NULL to test only without conversion
+ */
+int mutt_atos (const char *, short *);
+int mutt_atoi (const char *, int *);
+int mutt_atol (const char *, long *);
+
 const char *mutt_stristr (const char *, const char *);
 const char *mutt_basename (const char *);
 
