@@ -123,13 +123,22 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   char *pend, *p;
   int trust = 0;
   int flags = 0;
+  struct pgp_keyinfo tmp;
 
   *is_subkey = 0;
   if (!*buf)
     return NULL;
-  
+
+  /* if we're given a key, merge our parsing results, else
+   * start with a fresh one to work with so that we don't
+   * mess up the real key in case we find parsing errors. */
+  if (k)
+    memcpy (&tmp, k, sizeof (tmp));
+  else
+    memset (&tmp, 0, sizeof (tmp));
+
   dprint (2, (debugfile, "parse_pub_line: buf = `%s'\n", buf));
-  
+
   for (p = buf; p; p = pend)
   {
     if ((pend = strchr (p, ':')))
@@ -143,7 +152,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
       case 1:			/* record type */
       {
 	dprint (2, (debugfile, "record type: %s\n", p));
-	
+
 	if (!mutt_strcmp (p, "pub"))
 	  ;
 	else if (!mutt_strcmp (p, "sub"))
@@ -156,16 +165,16 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	  is_uid = 1;
 	else
 	  return NULL;
-	
+
 	if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
-	  k = safe_calloc (sizeof *k, 1);
+	  memset (&tmp, 0, sizeof (tmp));
 
 	break;
       }
       case 2:			/* trust info */
       {
 	dprint (2, (debugfile, "trust info: %s\n", p));
-	
+
 	switch (*p)
 	{				/* look only at the first letter */
 	  case 'e':
@@ -192,37 +201,39 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	}
 
         if (!is_uid && !(*is_subkey && option (OPTPGPIGNORESUB)))
-	  k->flags |= flags;
+	  tmp.flags |= flags;
 
 	break;
       }
       case 3:			/* key length  */
       {
-	
 	dprint (2, (debugfile, "key len: %s\n", p));
-	
-	if (!(*is_subkey && option (OPTPGPIGNORESUB)))
-	  k->keylen = atoi (p);	/* fixme: add validation checks */
+
+	if (!(*is_subkey && option (OPTPGPIGNORESUB)) &&
+	    mutt_atos (p, &tmp.keylen) < 0)
+	  goto bail;
 	break;
       }
       case 4:			/* pubkey algo */
       {
-	
 	dprint (2, (debugfile, "pubkey algorithm: %s\n", p));
-	
+
 	if (!(*is_subkey && option (OPTPGPIGNORESUB)))
 	{
-	  k->numalg = atoi (p);
-	  k->algorithm = pgp_pkalgbytype (atoi (p));
+	  int x = 0;
+	  if (mutt_atoi (p, &x) < 0)
+	    goto bail;
+	  tmp.numalg = x;
+	  tmp.algorithm = pgp_pkalgbytype (x);
 	}
 	break;
       }
       case 5:			/* 16 hex digits with the long keyid. */
       {
 	dprint (2, (debugfile, "key id: %s\n", p));
-	
+
 	if (!(*is_subkey && option (OPTPGPIGNORESUB)))
-	  mutt_str_replace (&k->keyid, p);
+	  mutt_str_replace (&tmp.keyid, p);
 	break;
 
       }
@@ -230,9 +241,9 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
       {
 	char tstr[11];
 	struct tm time;
-	
+
 	dprint (2, (debugfile, "time stamp: %s\n", p));
-	
+
 	if (!p)
 	  break;
 	time.tm_sec = 0;
@@ -240,11 +251,25 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	time.tm_hour = 12;
 	strncpy (tstr, p, 11);
 	tstr[4] = '\0';
-	time.tm_year = atoi (tstr)-1900;
 	tstr[7] = '\0';
-	time.tm_mon = (atoi (tstr+5))-1;
-	time.tm_mday = atoi (tstr+8);
-	k->gen_time = mutt_mktime (&time, 0);
+	if (mutt_atoi (tstr, &time.tm_year) < 0)
+	{
+	  p = tstr;
+	  goto bail;
+	}
+	time.tm_year -= 1900;
+	if (mutt_atoi (tstr+5, &time.tm_mon) < 0)
+	{
+	  p = tstr+5;
+	  goto bail;
+	}
+	time.tm_mon -= 1;
+	if (mutt_atoi (tstr+8, &time.tm_mday) < 0)
+	{
+	  p = tstr+8;
+	  goto bail;
+	}
+	tmp.gen_time = mutt_mktime (&time, 0);
         break;
       }
       case 7:			/* valid for n days */
@@ -261,22 +286,21 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	/* ignore user IDs on subkeys */
 	if (!is_uid && (*is_subkey && option (OPTPGPIGNORESUB)))
 	  break;
-	
+
 	dprint (2, (debugfile, "user ID: %s\n", p));
-	
+
 	uid = safe_calloc (sizeof (pgp_uid_t), 1);
 	fix_uid (p);
 	uid->addr = safe_strdup (p);
 	uid->trust = trust;
 	uid->flags |= flags;
-	uid->parent = k;
-	uid->next = k->address;
-	k->address = uid;
-	
+	uid->next = tmp.address;
+	tmp.address = uid;
+
 	if (strstr (p, "ENCR"))
-	  k->flags |= KEYFLAG_PREFER_ENCRYPTION;
+	  tmp.flags |= KEYFLAG_PREFER_ENCRYPTION;
 	if (strstr (p, "SIGN"))
-	  k->flags |= KEYFLAG_PREFER_SIGNING;
+	  tmp.flags |= KEYFLAG_PREFER_SIGNING;
 
 	break;
       }
@@ -308,7 +332,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	     || !((flags & KEYFLAG_DISABLED)
 		  || (flags & KEYFLAG_REVOKED)
 		  || (flags & KEYFLAG_EXPIRED))))
-	  k->flags |= flags;
+	  tmp.flags |= flags;
 
 	break;
       
@@ -316,7 +340,24 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         break;
     }
   }
+
+  /* merge temp key back into real key */
+  if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
+    k = safe_malloc (sizeof (*k));
+  memcpy (k, &tmp, sizeof (*k));
+  /* fixup parentship of uids after mering the temp key into
+   * the real key */
+  if (tmp.address)
+  {
+    for (uid = k->address; uid; uid = uid->next)
+      uid->parent = k;
+  }
+
   return k;
+
+bail:
+  dprint(5,(debugfile,"parse_pub_line: invalid number: '%s'\n", p));
+  return NULL;
 }
 
 pgp_key_t pgp_get_candidates (pgp_ring_t keyring, LIST * hints)
