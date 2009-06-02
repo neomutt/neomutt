@@ -1,3 +1,12 @@
+2009-06-02 17:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (9ca14dff45c5)
+
+	* smtp.c: Fix array size
+
+2009-06-02 15:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (df4a17222b03)
+
+	* ChangeLog, buffy.c: Thoroughly check for duplicates when parsing
+	'mailboxes' command. Closes #1428.
+
 2009-06-01 14:50 +0200  Rocco Rutte  <pdmef@gmx.net>  (7a277ba306c9)
 
 	* gnupgparse.c: Use mutt_atoi() when parsing GnuPG output. Closes
