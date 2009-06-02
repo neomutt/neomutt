@@ -543,7 +543,7 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
 
 static int tls_check_preauth (const gnutls_datum_t *certdata,
                               gnutls_certificate_status certstat,
-                              const char *hostname, int checkhost, int* certerr,
+                              const char *hostname, int chainidx, int* certerr,
                               int* savedcert)
 {
   gnutls_x509_crt cert;
@@ -574,7 +574,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (checkhost && option (OPTSSLVERIFYHOST) != M_NO
+  if (chainidx == 0 && option (OPTSSLVERIFYHOST) != M_NO
       && !gnutls_x509_crt_check_hostname (cert, hostname)
       && !tls_check_stored_hostname (certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;
@@ -584,26 +584,26 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   {
     *savedcert = 1;
 
-    if (certstat & GNUTLS_CERT_INVALID)
+    if (chainidx == 0 && certstat & GNUTLS_CERT_INVALID)
     {
       /* doesn't matter - have decided is valid because server
        certificate is in our trusted cache */
       certstat ^= GNUTLS_CERT_INVALID;
     }
 
-    if (certstat & GNUTLS_CERT_SIGNER_NOT_FOUND)
+    if (chainidx == 0 && certstat & GNUTLS_CERT_SIGNER_NOT_FOUND)
     {
       /* doesn't matter that we haven't found the signer, since
        certificate is in our trusted cache */
       certstat ^= GNUTLS_CERT_SIGNER_NOT_FOUND;
     }
 
-    if (certstat & GNUTLS_CERT_SIGNER_NOT_CA)
+    if (chainidx <= 1 && certstat & GNUTLS_CERT_SIGNER_NOT_CA)
     {
       /* Hmm. Not really sure how to handle this, but let's say
        that we don't care if the CA certificate hasn't got the
-       correct X.509 basic constraints if server certificate is
-       in our cache. */
+       correct X.509 basic constraints if server or first signer
+       certificate is in our cache. */
       certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
     }
   }
@@ -670,7 +670,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   gnutls_datum pemdata;
   int i, row, done, ret;
 
-  if (!tls_check_preauth (certdata, certstat, hostname, !idx, &certerr,
+  if (!tls_check_preauth (certdata, certstat, hostname, idx, &certerr,
       &savedcert))
     return 1;
 
@@ -969,7 +969,7 @@ static int tls_check_certificate (CONNECTION* conn)
    * its status short-circuits the remaining checks. */
   preauthrc = 0;
   for (i = 0; i < cert_list_size; i++) {
-    rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, !i,
+    rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, i,
                            &certerr, &savedcert);
     preauthrc += rc;
 
