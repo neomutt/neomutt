@@ -41,6 +41,7 @@
 #define CERTERR_NOTTRUSTED  8
 #define CERTERR_HOSTNAME    16
 #define CERTERR_SIGNERNOTCA 32
+#define CERTERR_INSECUREALG 64
 
 typedef struct _tlssockdata
 {
@@ -606,6 +607,13 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
        certificate is in our cache. */
       certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
     }
+
+    if (chainidx == 0 && certstat & GNUTLS_CERT_INSECURE_ALGORITHM)
+    {
+      /* doesn't matter that it was signed using an insecure
+         algorithm, since certificate is in our trusted cache */
+      certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
+    }
   }
 
   if (certstat & GNUTLS_CERT_REVOKED)
@@ -632,6 +640,13 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
     /* NB: already cleared if cert in cache */
     *certerr |= CERTERR_SIGNERNOTCA;
     certstat ^= GNUTLS_CERT_SIGNER_NOT_CA;
+  }
+
+  if (certstat & GNUTLS_CERT_INSECURE_ALGORITHM)
+  {
+    /* NB: already cleared if cert in cache */
+    *certerr |= CERTERR_INSECUREALG;
+    certstat ^= GNUTLS_CERT_INSECURE_ALGORITHM;
   }
 
   gnutls_x509_crt_deinit (cert);
@@ -673,6 +688,17 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   if (!tls_check_preauth (certdata, certstat, hostname, idx, &certerr,
       &savedcert))
     return 1;
+
+  /* skip signers if insecure algorithm was used */
+  if (idx && (certerr & CERTERR_INSECUREALG))
+  {
+    if (idx == 1)
+    {
+      mutt_error (_("Warning: Server certificate was signed using an insecure algorithm"));
+      mutt_sleep (2);
+    }
+    return 0;
+  }
 
   /* interactive check from user */
   if (gnutls_x509_crt_init (&cert) < 0)
