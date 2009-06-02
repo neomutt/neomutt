@@ -79,7 +79,7 @@ static unsigned char Capabilities[(CAPMAX + 7)/ 8];
 
 static int smtp_code (char *buf, size_t len, int *n)
 {
-  char code[3];
+  char code[4];
 
   if (len < 4)
     return -1;
