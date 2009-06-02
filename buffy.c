@@ -196,6 +196,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   BUFFY **tmp,*tmp1;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
+  char f1[PATH_MAX], f2[PATH_MAX];
 
   while (MoreArgs (s))
   {
@@ -218,11 +219,19 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     /* Skip empty tokens. */
     if(!*buf) continue;
 
-    /* simple check to avoid duplicates */
+    if (!realpath (buf, f1))
+      continue;
+
+    /* avoid duplicates */
     for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
     {
-      if (mutt_strcmp (buf, (*tmp)->path) == 0)
+      if (!realpath ((*tmp)->path, f2))
+	continue;
+      if (mutt_strcmp (f1, f2) == 0)
+      {
+	dprint(3,(debugfile,"mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
 	break;
+      }
     }
 
     if(data == M_UNMAILBOXES)

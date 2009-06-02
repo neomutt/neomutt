@@ -1,3 +1,16 @@
+2009-06-01 14:50 +0200  Rocco Rutte  <pdmef@gmx.net>  (7a277ba306c9)
+
+	* gnupgparse.c: Use mutt_atoi() when parsing GnuPG output. Closes
+	#3145
+
+2009-06-01 13:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (82a581c24f1a)
+
+	* hcache.c, mh.c: More atoi() fixes
+
+2009-06-01 11:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (371d7556fec3)
+
+	* ChangeLog, smtp.c: SMTP: Use mutt_atoi() to parse server responses
+
 2009-06-01 11:26 +0200  Rocco Rutte  <pdmef@gmx.net>  (35a444838167)
 
 	* curs_main.c, edit.c, init.c, main.c, menu.c, mh.c, parse.c,
