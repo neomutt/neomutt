@@ -1,3 +1,22 @@
+2009-06-02 20:25 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (d1d0481d1ca1)
+
+	* mutt_ssl_gnutls.c: Add support for GNUTLS_CERT_INSECURE_ALGORITHM
+	error code
+
+2009-06-02 20:11 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (0b13183e40e0)
+
+	* mutt_ssl_gnutls.c: Don't ignore certificate verification errors on
+	saved signer certs
+
+2009-06-02 10:18 -0700  René Clerc  <rene@clerc.nl>  (761bc678b23e)
+
+	* po/nl.po: Updated Dutch translation.
+
+2009-06-02 17:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (8b2af5b64981)
+
+	* ChangeLog, buffy.c: Fix duplicate mailbox detection for remote
+	folders
+
 2009-06-02 17:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (9ca14dff45c5)
 
 	* smtp.c: Fix array size

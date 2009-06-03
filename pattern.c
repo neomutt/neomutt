@@ -1401,10 +1401,9 @@ int mutt_search_command (int cur, int op)
   progress_t progress;
   const char* msg = NULL;
 
-  if (!(LastSearch && *LastSearch) ||
-      (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
+  if (!*LastSearch || (op != OP_SEARCH_NEXT && op != OP_SEARCH_OPPOSITE))
   {
-    strfcpy (buf, LastSearch && *LastSearch ? LastSearch : "", sizeof (buf));
+    strfcpy (buf, *LastSearch ? LastSearch : "", sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
 			_("Search for: ") : _("Reverse search for: "),
 			buf, sizeof (buf),
