@@ -2429,6 +2429,12 @@ struct option_t MuttVars[] = {
   ** mutt scores are always greater than or equal to zero, the default setting
   ** of this variable will never mark a message read.
   */
+  { "search_context",	DT_NUM,  R_NONE, UL &SearchContext, UL 0 },
+  /*
+  ** .pp
+  ** For the pager, this variable specifies the number of lines shown
+  ** before search results. By default, search results will be top-aligned.
+  */
   { "send_charset",	DT_STR,  R_NONE, UL &SendCharset, UL "us-ascii:iso-8859-1:utf-8" },
   /*
   ** .pp

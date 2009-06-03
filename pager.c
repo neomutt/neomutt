@@ -1988,8 +1988,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	{
 	  wrapped = 0;
 
-	  if (PagerContext > 0 && PagerContext < LINES - 2 - option (OPTHELP) ? 1 : 0)
-	    searchctx = PagerContext;
+	  if (SearchContext > 0 && SearchContext < LINES - 2 - option (OPTHELP) ? 1 : 0)
+	    searchctx = SearchContext;
 	  else
 	    searchctx = 0;
 
@@ -2157,8 +2157,8 @@ search_next:
 	  {
 	    SearchFlag = M_SEARCH;
 	    /* give some context for search results */
-	    if (PagerContext > 0 && PagerContext < LINES - 2 - option (OPTHELP) ? 1 : 0)
-	      searchctx = PagerContext;
+	    if (SearchContext > 0 && SearchContext < LINES - 2 - option (OPTHELP) ? 1 : 0)
+	      searchctx = SearchContext;
 	    else
 	      searchctx = 0;
 	    if (topline - searchctx > 0)

@@ -113,6 +113,7 @@ WHERE char *PrintCmd;
 WHERE char *QueryCmd;
 WHERE char *QueryFormat;
 WHERE char *Realname;
+WHERE short SearchContext;
 WHERE char *SendCharset;
 WHERE char *Sendmail;
 WHERE char *Shell;
