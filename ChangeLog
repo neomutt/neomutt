@@ -1,3 +1,12 @@
+2009-06-03 21:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (cdfc2dc540b0)
+
+	* UPDATING, globals.h, init.h, pager.c: Don't abuse $pager_context for
+	searches, add $search_context. See #976.
+
+2009-06-03 09:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (9e45d5bedc79)
+
+	* ChangeLog, pattern.c: Fix compiler warning
+
 2009-06-02 20:25 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (d1d0481d1ca1)
 
 	* mutt_ssl_gnutls.c: Add support for GNUTLS_CERT_INSECURE_ALGORITHM

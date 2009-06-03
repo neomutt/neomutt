@@ -37,7 +37,13 @@
 #include "ascii.h"
 #include "lib.h"
 
-#define FLOWED_MAX 77
+#define FLOWED_MAX 72
+
+typedef struct flowed_state
+{
+  size_t width;
+  size_t spaces;
+} flowed_state_t;
 
 static int get_quote_level (const char *line)
 {
@@ -56,7 +62,7 @@ static int get_quote_level (const char *line)
 static size_t print_indent (int ql, STATE *s, int sp)
 {
   int i;
-  size_t len = 0;
+  size_t wid = 0;
 
   if (s->prefix)
   {
@@ -68,7 +74,7 @@ static size_t print_indent (int ql, STATE *s, int sp)
     else
     {
       state_puts (s->prefix, s);
-      len = mutt_strlen (s->prefix);
+      wid = mutt_strwidth (s->prefix);
       sp = 0;
     }
   }
@@ -76,15 +82,15 @@ static size_t print_indent (int ql, STATE *s, int sp)
     state_putc ('>', s);
   if (sp)
     state_putc (' ', s);
-  return ql + sp + len;
+  return ql + sp + wid;
 }
 
-static void flush_par (STATE *s, size_t *sofar)
+static void flush_par (STATE *s, flowed_state_t *fst)
 {
-  if (*sofar > 0)
+  if (fst->width > 0)
   {
     state_putc ('\n', s);
-    *sofar = 0;
+    fst->width = 0;
   }
 }
 
@@ -98,15 +104,16 @@ static int quote_width (STATE *s, int ql)
   return width;
 }
 
-static void print_flowed_line (char *line, STATE *s, int ql, size_t *sofar, int term)
+static void print_flowed_line (char *line, STATE *s, int ql,
+			       flowed_state_t *fst, int term)
 {
-  size_t width, w, words;
+  size_t width, w, words = 0;
   char *p;
 
   if (!line || !*line)
   {
     /* flush current paragraph (if any) first */
-    flush_par (s, sofar);
+    flush_par (s, fst);
     print_indent (ql, s, 0);
     state_putc ('\n', s);
     return;
@@ -114,60 +121,66 @@ static void print_flowed_line (char *line, STATE *s, int ql, size_t *sofar, int 
 
   width = quote_width (s, ql);
 
-  dprint (4, (debugfile, "f=f: line [%s], width = %ld\n", NONULL(line), (long)width));
+  dprint (4, (debugfile, "f=f: line [%s], width = %ld, spaces = %d\n",
+	      NONULL(line), (long)width, fst->spaces));
 
   for (p = (char *)line, words = 0; (p = strsep (&line, " ")) != NULL ; )
   {
-    w = mutt_strwidth (NONULL(p));
-    dprint (4, (debugfile, "f=f: word [%s], width = %ld, line = %ld\n", NONULL(p), (long)w, (long)*sofar));
-    if (w + 1 + (*sofar) > width)
+    dprint(4,(debugfile,"f=f: word [%s], width: %d, remaining = [%s]\n",
+	      p, fst->width, line));
+
+    /* remember number of spaces */
+    if (!*p)
     {
-      /* line would be too long, flush; for format=flowed we keep a
-       * trailing space but remove it otherwise for interoperability
-       */
-      dprint (4, (debugfile, "f=f: width: %ld\n", (long)*sofar));
-      state_puts (option (OPTTEXTFLOWED) ? " \n" : "\n", s);
-      *sofar = 0;
+      dprint(4,(debugfile,"f=f: additional space\n"));
+      fst->spaces++;
+      continue;
     }
-    if (*sofar == 0)
+    /* there's exactly one space prior to every but the first word */
+    if (words)
+      fst->spaces++;
+
+    w = mutt_strwidth (p);
+    /* see if we need to break the line but make sure the first
+       word is put on the line regardless */
+    if (w < width && w + fst->width + fst->spaces > width)
     {
-      /* indent empty lines */
-      *sofar = print_indent (ql, s, ql > 0 || s->prefix);
+      dprint(4,(debugfile,"f=f: break line at %d, %d spaces left\n",
+		fst->width, fst->spaces));
+      /* only honor trailing spaces for format=flowed replies */
+      if (option(OPTTEXTFLOWED))
+	for ( ; fst->spaces; fst->spaces--)
+	  state_putc (' ', s);
+      state_putc ('\n', s);
+      fst->width = 0;
+      fst->spaces = 0;
       words = 0;
     }
-    if (words > 0)
-    {
-      /* put space before current word if we have words already,
-         and the current word isn't the trailing space */
-      if (w > 0)
-	state_putc (' ', s);
-      (*sofar)++;
-    }
-    state_puts (NONULL(p), s);
-    (*sofar) += w;
+
+    if (!words && !fst->width)
+      fst->width = print_indent (ql, s, !(s->flags & M_REPLYING) &&
+				 (ql > 0 || s->prefix));
+    fst->width += w + fst->spaces;
+    for ( ; fst->spaces; fst->spaces--)
+      state_putc (' ', s);
+    state_puts (p, s);
     words++;
   }
 
   if (term)
-    flush_par (s, sofar);
+    flush_par (s, fst);
 }
 
-static void print_fixed_line (const char *line, STATE *s, int ql, size_t *sofar)
+static void print_fixed_line (const char *line, STATE *s, int ql,
+			      flowed_state_t *fst)
 {
-  int len = mutt_strlen (line);
-
-  if (len == 0)
-  {
-    print_indent (ql, s, 0);
-    state_putc ('\n', s);
-    return;
-  }
-
-  print_indent (ql, s, ql > 0 || s->prefix);
-  state_puts (line, s);
+  print_indent (ql, s, !(s->flags & M_REPLYING) && (ql > 0 || s->prefix));
+  if (line && *line)
+    state_puts (line, s);
   state_putc ('\n', s);
 
-  *sofar = 0;
+  fst->width = 0;
+  fst->spaces = 0;
 }
 
 int rfc3676_handler (BODY * a, STATE * s)
@@ -178,7 +191,9 @@ int rfc3676_handler (BODY * a, STATE * s)
   unsigned int quotelevel = 0, newql = 0, sigsep = 0;
   int buf_off = 0, buf_len;
   int delsp = 0, fixed = 0;
-  size_t width = 0;
+  flowed_state_t fst;
+
+  memset (&fst, 0, sizeof (fst));
 
   /* respect DelSp of RfC3676 only with f=f parts */
   if ((t = (char *) mutt_get_parameter ("delsp", a->parameter)))
@@ -201,12 +216,12 @@ int rfc3676_handler (BODY * a, STATE * s)
      * changes (should not but can happen, see RFC 3676, sec. 4.5.)
      */
     if (newql != quotelevel)
-      flush_par (s, &width);
+      flush_par (s, &fst);
 
     quotelevel = newql;
 
     /* XXX - If a line is longer than buf (shouldn't happen), it is split.
-     * This will almost always cause an unintended line break, and 
+     * This will almost always cause an unintended line break, and
      * possibly a change in quoting level. But that's better than not
      * displaying it at all.
      */
@@ -231,11 +246,11 @@ int rfc3676_handler (BODY * a, STATE * s)
 
     /* print fixed-and-standalone, fixed-and-empty and sigsep lines as
      * fixed lines */
-    if ((fixed && (!width || !buf_len)) || sigsep)
+    if ((fixed && (!fst.width || !buf_len)) || sigsep)
     {
       /* if we're within a flowed paragraph, terminate it */
-      flush_par (s, &width);
-      print_fixed_line (buf + buf_off, s, quotelevel, &width);
+      flush_par (s, &fst);
+      print_fixed_line (buf + buf_off, s, quotelevel, &fst);
       continue;
     }
 
@@ -243,10 +258,10 @@ int rfc3676_handler (BODY * a, STATE * s)
     if (delsp && !fixed)
       buf[--buf_len] = '\0';
 
-    print_flowed_line (buf + buf_off, s, quotelevel, &width, fixed);
+    print_flowed_line (buf + buf_off, s, quotelevel, &fst, fixed);
   }
 
-  flush_par (s, &width);
+  flush_par (s, &fst);
 
   return (0);
 }
