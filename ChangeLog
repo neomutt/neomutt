@@ -1,18 +1,33 @@
-2009-06-03 21:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (cdfc2dc540b0)
+2009-06-07 02:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (a786b0e8627c)
+
+	* doc/dotlock.man, doc/makedoc.c, doc/mbox.man, doc/mmdf.man,
+	doc/mutt.man, init.h: Fix hyphens in manpages. Closes #1937
+
+2009-06-04 17:07 +0200  Rocco Rutte  <pdmef@gmx.net>  (4f1ceaae93dc)
+
+	* rfc3676.c: Fix pretty quoting for f=f by resetting space count when
+	flushing paragraph
+
+2009-06-03 22:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (386f2ce6b872)
+
+	* rfc3676.c: Fix several f=f bugs
+
+	It fixes problems with space-handling in general (trailing spaces
+	for display, un-space-stuffing), fixes quote prefix for replies and
+	lowers FLOWED_MAX so we don't run into line length trouble too
+	early.
 
 	* UPDATING, globals.h, init.h, pager.c: Don't abuse $pager_context for
 	searches, add $search_context. See #976.
 
 2009-06-03 09:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (9e45d5bedc79)
 
-	* ChangeLog, pattern.c: Fix compiler warning
+	* pattern.c: Fix compiler warning
 
 2009-06-02 20:25 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (d1d0481d1ca1)
 
 	* mutt_ssl_gnutls.c: Add support for GNUTLS_CERT_INSECURE_ALGORITHM
 	error code
-
-2009-06-02 20:11 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (0b13183e40e0)
 
 	* mutt_ssl_gnutls.c: Don't ignore certificate verification errors on
 	saved signer certs
@@ -23,16 +38,12 @@
 
 2009-06-02 17:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (8b2af5b64981)
 
-	* ChangeLog, buffy.c: Fix duplicate mailbox detection for remote
+	* buffy.c: Fix duplicate mailbox detection for remote
 	folders
-
-2009-06-02 17:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (9ca14dff45c5)
 
 	* smtp.c: Fix array size
 
-2009-06-02 15:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (df4a17222b03)
-
-	* ChangeLog, buffy.c: Thoroughly check for duplicates when parsing
+	* buffy.c: Thoroughly check for duplicates when parsing
 	'mailboxes' command. Closes #1428.
 
 2009-06-01 14:50 +0200  Rocco Rutte  <pdmef@gmx.net>  (7a277ba306c9)
@@ -40,26 +51,16 @@
 	* gnupgparse.c: Use mutt_atoi() when parsing GnuPG output. Closes
 	#3145
 
-2009-06-01 13:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (82a581c24f1a)
-
 	* hcache.c, mh.c: More atoi() fixes
 
-2009-06-01 11:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (371d7556fec3)
-
-	* ChangeLog, smtp.c: SMTP: Use mutt_atoi() to parse server responses
-
-2009-06-01 11:26 +0200  Rocco Rutte  <pdmef@gmx.net>  (35a444838167)
+	* smtp.c: SMTP: Use mutt_atoi() to parse server responses
 
 	* curs_main.c, edit.c, init.c, main.c, menu.c, mh.c, parse.c,
 	resize.c, score.c, url.c: Use strtol() wrappers for most atoi()
 	calls
 
-2009-06-01 11:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (f1b6eb09f2ad)
-
-	* ChangeLog, lib.c, lib.h: Add mutt_atos(), mutt_atoi() and
+	* lib.c, lib.h: Add mutt_atos(), mutt_atoi() and
 	mutt_atol() (strtol() wrappers)
-
-2009-06-01 10:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (36b7e267ce33)
 
 	* send.c: Treat address groups as no recipients
 
@@ -67,9 +68,7 @@
 	so treat these addresses as not present when checking for valid
 	recipients before sending in the compose menu.
 
-2009-06-01 10:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (64250df0e9a4)
-
-	* ChangeLog, smtp.c: Weed out address groups for SMTP the same way we
+	* smtp.c: Weed out address groups for SMTP the same way we
 	do for sendmail
 
 2009-05-31 19:19 -0700  Brendan Cully  <brendan@kublai.com>  (0024860ab03e)
@@ -77,28 +76,19 @@
 	* doc/Makefile.am: Allow chunked and unchunked manuals to build in
 	parallel.
 
-2009-05-31 19:07 -0700  Brendan Cully  <brendan@kublai.com>  (fd18d0d6f3d0)
-
 	* mutt_ssl_gnutls.c: Remove trailing whitespace
 
 2009-05-31 14:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (8e591e80cd48)
 
-	* ChangeLog, smtp.c: SMTP: Don't send "undisclosed-recipients" in RCPT
-	TO
+	* smtp.c: SMTP: Don't send "undisclosed-recipients" in RCPT TO
 
 	This happened for Bcc only messages. "undisclosed-recipients" is
 	added in To: as guard against MTAs that leak BCCs if no To:/Cc:
 	header is given. See Debian #529090.
 
-2009-05-31 13:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (9594f10d2038)
-
 	* init.h: Document that $pager_context affects searching, too
 
-2009-05-31 13:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (d5065254c2f1)
-
-	* ChangeLog, UPDATING: Update UPDATING
-
-2009-05-31 12:54 +0200  Rocco Rutte  <pdmef@gmx.net>  (fdaed73dd66a)
+	* UPDATING: Update UPDATING
 
 	* handler.c: Turn trailing \r\n to \n for qp-encoded messages.
 
@@ -108,12 +98,8 @@
 
 	See #2898 though this is a partial fix only.
 
-2009-05-31 12:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (c3502979422b)
-
-	* ChangeLog, pager.c: Give $pager_context lines of context when
-	searching page-based menus. Closes #976.
-
-2009-05-31 11:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (68ee7fe4aa49)
+	* pager.c: Give $pager_context lines of context when searching
+	page-based menus. Closes #976.
 
 	* handler.c, init.h, rfc3676.c: f=f: Strip trailing spaces for
 	interoperability. Closes #3001.
@@ -126,10 +112,8 @@
 	trailing spaces since from format=fixed we assume all lines are
 	fixed (i.e. we don't want to errorneously make fixed lines flowed).
 
-2009-05-31 10:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (03ea7644f71b)
-
-	* ChangeLog, handler.c, init.h, mutt.h: Add $honor_disposition to not
-	display attachments inline. Closes #3170.
+	* handler.c, init.h, mutt.h: Add $honor_disposition to not display
+	attachments inline. Closes #3170.
 
 	Previously all MIME parts were displayed inline regardless of the
 	Content-Disposition header (if present). With $honor_disposition
@@ -151,18 +135,16 @@
 
 2009-05-30 00:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (f65a1eb8abce)
 
-	* ChangeLog, smtp.c: Fix logic in f260f5836284
+	* smtp.c: Fix logic in f260f5836284
 
 2009-05-29 21:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (c4d86d4ea260)
 
 	* pager.c: Drop modified version of and use mutt_read_line() in pager,
 	too
 
-2009-05-29 21:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (776ef9dbe4d2)
-
-	* ChangeLog, history.c, init.c, lib.c, lib.h, mh.c, mutt_ssl_gnutls.c,
-	pgp.c, query.c, rfc1524.c, smime.c: Add flags to mutt_read_line()
-	for EOL-stripping and continuation support
+	* history.c, init.c, lib.c, lib.h, mh.c, mutt_ssl_gnutls.c, pgp.c,
+	query.c, rfc1524.c, smime.c: Add flags to mutt_read_line() for
+	EOL-stripping and continuation support
 
 	We use these to stop supporting EOL-escaping with \ which was wrong
 	in most cases (e.g. $history_file), support is kept for reading
@@ -170,43 +152,33 @@
 
 	Leaving CRLF in will be used for the pager.
 
-2009-05-29 16:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (d13500626ea6)
-
 	* menu.c, pager.c, pattern.c: Fall back to search if no query exists
 	for search-(next|opposite)
 
 	The pager had the fall-through to search, so for consistency do that
 	in other menues as well.
 
-2009-05-29 16:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (4d0640457c77)
-
-	* ChangeLog, pager.c: Fix pager search prompt for reverse search
+	* pager.c: Fix pager search prompt for reverse search
 
 	When doing a reverse search for the first time after switching to
 	the pager, SearchBack is always 0 and thus gave the wrong prompt,
 	change to using op directly. While I'm at it, unify search prompts.
 
-2009-05-29 13:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (f1a1e50c375d)
-
 	* doc/manual.xml.head: Manual: Fix markup of environment variables
 
 2009-05-28 16:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (f260f5836284)
 
-	* ChangeLog, smtp.c: SMTP: don't interactively authenticate without a
+	* smtp.c: SMTP: don't interactively authenticate without a
 	password in batch/mailx mode
 
 	Otherwise, if we don't have a password and curses is not running,
 	the SASL authentication callback will crash mutt. We now abort if
 	the password wasn't given in $smtp_url.
 
-2009-05-28 15:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (84a56dcb0572)
-
 	* doc/mutt.css: Manual: vertical-align table cells at the top
 
-2009-05-28 15:19 +0200  Rocco Rutte  <pdmef@gmx.net>  (ee2ebf6cf363)
-
-	* ChangeLog, doc/manual.xml.head, doc/mutt.css: Manual: Wrap muttrc
-	commands in <command/>
+	* doc/manual.xml.head, doc/mutt.css: Manual: Wrap muttrc commands
+	in <command/>
 
 2009-05-27 23:14 -0700  Brendan Cully  <brendan@kublai.com>  (5502fb790bab)
 
