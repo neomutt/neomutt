@@ -2786,7 +2786,7 @@ struct option_t MuttVars[] = {
   ** smtp[s]://[user[:pass]@]host[:port]/
   ** .te
   ** .pp
-  ** ... where ``[...]'' denotes an optional part.
+  ** where ``[...]'' denotes an optional part.
   ** Setting this variable overrides the value of the $$sendmail
   ** variable.
   */

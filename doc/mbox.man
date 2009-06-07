@@ -60,15 +60,15 @@ line; the second (\fBMBOXRD\fP) also quotes already quoted "From "
 lines by prepending a '>' (i.e. ">From ", ">>From ", ...). The later
 has the advantage that lines like
 .IP "" 1
->From the command line you can use the '-p' option
+>From the command line you can use the '\-p' option
 .PP
 aren't dequoted wrongly as a \fBMBOXRD\fP-MDA would turn the line
 into
 .IP "" 1
->>From the command line you can use the '-p' option
+>>From the command line you can use the '\-p' option
 .PP
 before storing it. Besides \fBMBOXO\fP and \fBMBOXRD\fP there is also
-\fBMBOXCL\fP which is \fBMBOXO\fP with a "Content-Length:"-field with the
+\fBMBOXCL\fP which is \fBMBOXO\fP with a "Content-Length:"\-field with the
 number of bytes in the message body; some MUAs (like
 .BR mutt (1))
 do automatically transform \fBMBOXO\fP mailboxes into \fBMBOXCL\fP ones when

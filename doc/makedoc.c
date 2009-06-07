@@ -576,6 +576,8 @@ static void man_print_strval (const char *v, FILE *out)
       fputs ("\\(rq", out);
     else if (*v == '\\')
       fputs ("\\\\", out);
+    else if (*v == '-')
+      fputs ("\\-", out);
     else
       fputc (*v, out);
   }
@@ -697,8 +699,11 @@ static void print_confline (const char *varname, int type, const char *val, FILE
 	man_print_strval (val, out);
 	fputs ("\\(rq\n", out);
       }
-      else
-	fprintf (out, "Default: %s\n", val);
+      else {
+	fputs ("Default: ", out);
+	man_print_strval (val, out);
+	fputs ("\n", out);
+      }
 
       fputs (".fi", out);
 
@@ -1040,6 +1045,8 @@ static int print_it (int special, char *str, FILE *out, int docstat)
 		fputs ("\\(rq", out);
 	      else if (*str == '\\')
 		fputs ("\\\\", out);
+              else if (*str == '-')
+                fputs ("\\-", out);
 	      else if (!strncmp (str, "``", 2))
 	      {
 		fputs ("\\(lq", out);

@@ -24,7 +24,7 @@ mutt_dotlock \- Lock mail spool files.
 .SH SYNOPSIS
 .PP
 .B mutt_dotlock 
-[-t|-f|-u|-d] [-p] [-r \fIretries\fP] \fIfile\fP
+[\-t|\-f|\-u|\-d] [\-p] [\-r \fIretries\fP] \fIfile\fP
 .SH DESCRIPTION
 .PP
 .B mutt_dotlock

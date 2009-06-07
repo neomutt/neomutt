@@ -24,39 +24,39 @@ mutt \- The Mutt Mail User Agent
 .PP
 .B mutt
 [-nRyzZ] 
-[-e \fIcmd\fP] [-F \fIfile\fP] [-m \fItype\fP] [-f \fIfile\fP]
+[\-e \fIcmd\fP] [\-F \fIfile\fP] [\-m \fItype\fP] [\-f \fIfile\fP]
 .PP
 .B mutt 
-[-nx] 
-[-e \fIcmd\fP] 
-[-F \fIfile\fP]
-[-H \fIfile\fP]
-[-i \fIfile\fP]
-[-s \fIsubj\fP]
-[-b \fIaddr\fP]
-[-c \fIaddr\fP]
+[\-nx] 
+[\-e \fIcmd\fP] 
+[\-F \fIfile\fP]
+[\-H \fIfile\fP]
+[\-i \fIfile\fP]
+[\-s \fIsubj\fP]
+[\-b \fIaddr\fP]
+[\-c \fIaddr\fP]
 [\-a \fIfile\fP [...] \-\-]
 \fIaddr\fP [...]
 .PP
 .B mutt 
-[-nx] 
-[-e \fIcmd\fP] 
-[-F \fIfile\fP]
-[-s \fIsubj\fP]
-[-b \fIaddr\fP]
-[-c \fIaddr\fP]
+[\-nx] 
+[\-e \fIcmd\fP] 
+[\-F \fIfile\fP]
+[\-s \fIsubj\fP]
+[\-b \fIaddr\fP]
+[\-c \fIaddr\fP]
 [\-a \fIfile\fP [...] \-\-]
 \fIaddr\fP [...]
 < message
 .PP
 .B mutt
-[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -p
+[\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-p
 .PP
 .B mutt
-[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -A \fIalias\fP
+[\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-A \fIalias\fP
 .PP
 .B mutt
-[-n] [-e \fIcmd\fP] [-F \fIfile\fP] -Q \fIquery\fP
+[\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-Q \fIquery\fP
 .PP
 .B mutt 
 -v[v]
@@ -132,12 +132,12 @@ Emulate the mailx compose mode.
 Start Mutt with a listing of all mailboxes specified by the \fImailboxes\fP
 command.
 .IP "-z"
-When used with -f, causes Mutt not to start if there are no messages in the
+When used with \-f, causes Mutt not to start if there are no messages in the
 mailbox.
 .IP "-Z"
 Causes Mutt to open the first mailbox specified by the \fImailboxes\fP
 command which contains new mail.
-.IP "\-\-"
+.IP "--"
 Treat remaining arguments as \fIaddr\fP even if they start with a dash.
 See also "\-a" above.
 .SH ENVIRONMENT
