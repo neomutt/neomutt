@@ -92,6 +92,7 @@ static void flush_par (STATE *s, flowed_state_t *fst)
     state_putc ('\n', s);
     fst->width = 0;
   }
+  fst->spaces = 0;
 }
 
 static int quote_width (STATE *s, int ql)
