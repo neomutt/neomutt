@@ -785,7 +785,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
           if (rc < 0)
           {
             dprint (1, (debugfile, "imap_copy_messages: could not sync\n"));
-            goto fail;
+            goto out;
           }
         }
       }
@@ -794,12 +794,13 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       if (!rc)
       {
         dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
-        goto fail;
+        rc = -1;
+        goto out;
       }
       else if (rc < 0)
       {
         dprint (1, (debugfile, "could not queue copy\n"));
-        goto fail;
+        goto out;
       }
       else
         mutt_message (_("Copying %d messages to %s..."), rc, mbox);
@@ -815,13 +816,13 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
         if (rc < 0)
         {
           dprint (1, (debugfile, "imap_copy_messages: could not sync\n"));
-          goto fail;
+          goto out;
         }
       }
       if ((rc = imap_exec (idata, cmd.data, IMAP_CMD_QUEUE)) < 0)
       {
         dprint (1, (debugfile, "could not queue copy\n"));
-        goto fail;
+        goto out;
       }
     }
 
@@ -854,7 +855,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   if (rc != 0)
   {
     imap_error ("imap_copy_messages", idata->buf);
-    goto fail;
+    goto out;
   }
 
   /* cleanup */
@@ -878,20 +879,16 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     }
   }
 
-  if (cmd.data)
-    FREE (&cmd.data);
-  if (sync_cmd.data)
-    FREE (&sync_cmd.data);
-  FREE (&mx.mbox);
-  return 0;
+  rc = 0;
 
- fail:
+ out:
   if (cmd.data)
     FREE (&cmd.data);
   if (sync_cmd.data)
     FREE (&sync_cmd.data);
   FREE (&mx.mbox);
-  return -1;
+
+  return rc < 0 ? -1 : rc;
 }
 
 static body_cache_t *msg_cache_open (IMAP_DATA *idata)
