@@ -1,3 +1,17 @@
+2009-06-07 10:51 -0700  Brendan Cully  <brendan@kublai.com>  (4207435525e4)
+
+	* imap/message.c: Minor cleanup in imap_copy_messages.
+
+2009-06-07 08:14 +0200  Miroslav Lichvar  <mlichvar@redhat.com>  (16592f0dfdaf)
+
+	* configure.ac, mutt_ssl_gnutls.c: Disable checking certificate
+	activation/expiration times in gnutls as we do the checks ourselves.
+
+2009-06-06 22:31 -0700  Brendan Cully  <brendan@kublai.com>  (e5c2befbf0f5)
+
+	* imap/message.c: Do not treat already-seen headers as if they are
+	new. See #2935.
+
 2009-06-07 02:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (a786b0e8627c)
 
 	* doc/dotlock.man, doc/makedoc.c, doc/mbox.man, doc/mmdf.man,
@@ -19,8 +33,6 @@
 
 	* UPDATING, globals.h, init.h, pager.c: Don't abuse $pager_context for
 	searches, add $search_context. See #976.
-
-2009-06-03 09:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (9e45d5bedc79)
 
 	* pattern.c: Fix compiler warning
 

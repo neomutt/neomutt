@@ -843,7 +843,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       if (option (OPTCONFIRMCREATE) && mutt_yesorno (prompt, 1) < 1)
       {
         mutt_clear_error ();
-        break;
+        goto out;
       }
       if (imap_create_mailbox (idata, mbox) < 0)
         break;
