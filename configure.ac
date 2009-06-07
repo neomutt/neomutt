@@ -703,6 +703,8 @@ then
       [dnl GNUTLS not found
         AC_MSG_ERROR([could not find libgnutls])
       ])
+      AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
+                    [[#include <gnutls/x509.h>]])
   fi
 fi
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)

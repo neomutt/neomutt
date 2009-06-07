@@ -275,6 +275,12 @@ static int tls_negotiate (CONNECTION * conn)
                                           SslClientCert, GNUTLS_X509_FMT_PEM);
   }
 
+#if HAVE_DECL_GNUTLS_VERIFY_DISABLE_TIME_CHECKS
+  /* disable checking certificate activation/expiration times
+     in gnutls, we do the checks ourselves */
+  gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
+#endif
+
   gnutls_init(&data->state, GNUTLS_CLIENT);
 
   /* set socket */
