@@ -424,7 +424,7 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
         || *mailbox == delim)
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
-      if (!delim)
+      if (!idata)
         delim = *mailbox;
 
       while (*mailbox &&
