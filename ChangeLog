@@ -1,4 +1,18 @@
-2009-06-07 10:51 -0700  Brendan Cully  <brendan@kublai.com>  (4207435525e4)
+2009-06-09 21:17 -0700  Brendan Cully  <brendan@kublai.com>  (0fb94d6eee38)
+
+	* imap/util.c: Revert accidental change
+
+	* imap/util.c: Remove trailing whitespace.
+
+2009-06-08 23:55 -0700  Brendan Cully  <brendan@kublai.com>  (15c662a95b91)
+
+	* configure.ac, m4/libgnutls.m4: Test for libgnutls by hand rather
+	than relying on deprecated libgnutls-config script. Closes #3239.
+
+2009-06-07 10:55 -0700  Brendan Cully  <brendan@kublai.com>  (9831d4c2c3f9)
+
+	* imap/message.c: Do not display error message when user declines
+	to create target mailbox.
 
 	* imap/message.c: Minor cleanup in imap_copy_messages.
 
