@@ -865,7 +865,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (move_messages)
   {
-    mutt_message (_("Moving read messages to %s..."), mbox);
+    if (!ctx->quiet)
+      mutt_message (_("Moving read messages to %s..."), mbox);
 
 #ifdef USE_IMAP
     /* try to use server-side copy first */
@@ -924,7 +925,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   }
   else if (!ctx->changed && ctx->deleted == 0)
   {
-    mutt_message _("Mailbox is unchanged.");
+    if (!ctx->quiet)
+      mutt_message _("Mailbox is unchanged.");
     mx_fastclose_mailbox (ctx);
     return 0;
   }
@@ -959,12 +961,15 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     }
   }
 
-  if (move_messages)
-     mutt_message (_("%d kept, %d moved, %d deleted."),
-       ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
-  else
-    mutt_message (_("%d kept, %d deleted."),
-      ctx->msgcount - ctx->deleted, ctx->deleted);
+  if (!ctx->quiet)
+  {
+    if (move_messages)
+      mutt_message (_("%d kept, %d moved, %d deleted."),
+	ctx->msgcount - ctx->deleted, read_msgs, ctx->deleted);
+    else
+      mutt_message (_("%d kept, %d deleted."),
+	ctx->msgcount - ctx->deleted, ctx->deleted);
+  }
 
   if (ctx->msgcount == ctx->deleted &&
       (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
@@ -1088,7 +1093,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (!ctx->changed && !ctx->deleted)
   {
-    mutt_message _("Mailbox is unchanged.");
+    if (!ctx->quiet)
+      mutt_message _("Mailbox is unchanged.");
     return (0);
   }
 
@@ -1134,11 +1140,17 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
   {
 #ifdef USE_IMAP
     if (ctx->magic == M_IMAP && !purge)
-      mutt_message _("Mailbox checkpointed.");
+    {
+      if (!ctx->quiet)
+        mutt_message _("Mailbox checkpointed.");
+    }
     else
 #endif
-    mutt_message (_("%d kept, %d deleted."), msgcount - deleted,
-      deleted);
+    {
+      if (!ctx->quiet)
+	mutt_message (_("%d kept, %d deleted."), msgcount - deleted,
+		      deleted);
+    }
 
     mutt_sleep (0);
     
