@@ -1,4 +1,9 @@
-2009-06-09 21:17 -0700  Brendan Cully  <brendan@kublai.com>  (0fb94d6eee38)
+2009-06-09 22:03 -0700  Brendan Cully  <brendan@kublai.com>  (9dcb7288039d)
+
+	* mutt_ssl.c: Whitespace.
+
+	* imap/imap.c: Skip comparison against current mailbox for idle
+	connections. Closes #3216.
 
 	* imap/util.c: Revert accidental change
 

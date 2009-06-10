@@ -740,7 +740,8 @@ static int ssl_cache_trusted_cert (X509 *c)
 }
 
 /* check whether cert is preauthorized. If host is not null, verify that
- * it matches the certificate */
+ * it matches the certificate.
+ * Return > 0: authorized, < 0: problems, 0: unknown validity */
 static int ssl_check_preauth (X509 *cert, const char* host)
 {
   char buf[SHORT_STRING];
@@ -791,7 +792,9 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
 
   chain = SSL_get_peer_cert_chain (data->ssl);
   chain_len = sk_X509_num (chain);
-  if (!chain || (chain_len <= 1))
+  /* negative preauthrc means the certificate won't be accepted without
+   * manual override. */
+  if (preauthrc < 0 || !chain || (chain_len <= 1))
     return interactive_check_cert (data->cert, 0, 0);
 
   /* check the chain from root to peer. */
