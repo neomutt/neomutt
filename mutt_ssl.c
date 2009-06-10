@@ -1,16 +1,16 @@
 /*
  * Copyright (C) 1999-2001 Tommi Komulainen <Tommi.Komulainen@iki.fi>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -143,7 +143,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
   return -1;
 }
 
-/* 
+/*
  * OpenSSL library needs to be fed with sufficient entropy. On systems
  * with /dev/urandom, this is done transparently by the library itself,
  * on other systems we need to fill the entropy pool ourselves.
@@ -166,7 +166,7 @@ static int ssl_init (void)
     /* load entropy from files */
     add_entropy (SslEntropyFile);
     add_entropy (RAND_file_name (path, sizeof (path)));
-  
+
     /* load entropy from egd sockets */
 #ifdef HAVE_RAND_EGD
     add_entropy (getenv ("EGDSOCKET"));
@@ -206,9 +206,9 @@ static int add_entropy (const char *file)
 
   mutt_message (_("Filling entropy pool: %s...\n"),
 		file);
-  
+
   /* check that the file permissions are secure */
-  if (st.st_uid != getuid () || 
+  if (st.st_uid != getuid () ||
       ((st.st_mode & (S_IWGRP | S_IRGRP)) != 0) ||
       ((st.st_mode & (S_IWOTH | S_IROTH)) != 0))
   {
@@ -280,15 +280,15 @@ static int ssl_socket_open (CONNECTION * conn)
   data->ctx = SSL_CTX_new (SSLv23_client_method ());
 
   /* disable SSL protocols as needed */
-  if (!option(OPTTLSV1)) 
+  if (!option(OPTTLSV1))
   {
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_TLSv1);
   }
-  if (!option(OPTSSLV2)) 
+  if (!option(OPTSSLV2))
   {
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv2);
   }
-  if (!option(OPTSSLV3)) 
+  if (!option(OPTSSLV3))
   {
     SSL_CTX_set_options(data->ctx, SSL_OP_NO_SSLv3);
   }
@@ -303,7 +303,7 @@ static int ssl_socket_open (CONNECTION * conn)
     mutt_socket_close (conn);
     return -1;
   }
-  
+
   conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (data->ssl),
     &maxbits);
 
@@ -336,7 +336,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
     default:
       errmsg = _("unknown error");
     }
-    
+
     mutt_error (_("SSL failed: %s"), errmsg);
     mutt_sleep (1);
 
@@ -354,7 +354,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   if (!ssl_check_certificate (conn, ssldata))
     return -1;
 
-  mutt_message (_("SSL connection using %s (%s)"), 
+  mutt_message (_("SSL connection using %s (%s)"),
     SSL_get_cipher_version (ssldata->ssl), SSL_get_cipher_name (ssldata->ssl));
   mutt_sleep (0);
 
@@ -442,7 +442,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
   BIO *bio;
 
   strfcpy (buf, _("[invalid date]"), sizeof (buf));
-  
+
   bio = BIO_new (BIO_s_mem());
   if (bio)
   {
@@ -496,7 +496,7 @@ static int check_certificate_by_signer (X509 *peercert)
     int err;
 
     err = X509_STORE_CTX_get_error (&xsc);
-    snprintf (buf, sizeof (buf), "%s (%d)", 
+    snprintf (buf, sizeof (buf), "%s (%d)",
 	X509_verify_cert_error_string(err), err);
     dprint (2, (debugfile, "X509_verify_cert: %s\n", buf));
     dprint (2, (debugfile, " [%s]\n", peercert->name));
@@ -513,17 +513,17 @@ static int compare_certificates (X509 *cert, X509 *peercert,
 {
   unsigned char md[EVP_MAX_MD_SIZE];
   unsigned int mdlen;
-  
+
   /* Avoid CPU-intensive digest calculation if the certificates are
     * not even remotely equal.
     */
   if (X509_subject_name_cmp (cert, peercert) != 0 ||
       X509_issuer_name_cmp (cert, peercert) != 0)
     return -1;
-  
+
   if (!X509_digest (cert, EVP_sha1(), md, &mdlen) || peermdlen != mdlen)
     return -1;
-  
+
   if (memcmp(peermd, md, mdlen) != 0)
     return -1;
 
@@ -542,7 +542,7 @@ static int check_certificate_cache (X509 *peercert)
   {
     return 0;
   }
-  
+
   for (i = sk_X509_num (SslSessionCerts); i-- > 0;)
   {
     cert = sk_X509_value (SslSessionCerts, i);
@@ -551,7 +551,7 @@ static int check_certificate_cache (X509 *peercert)
       return 1;
     }
   }
-  
+
   return 0;
 }
 
@@ -594,7 +594,7 @@ static int check_certificate_by_digest (X509 *peercert)
   while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
   {
     pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
-    
+
     if (pass)
       break;
   }
@@ -838,7 +838,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   name = X509_NAME_oneline (X509_get_subject_name (cert),
 			    buf, sizeof (buf));
   dprint (2, (debugfile, "oneline: %s\n", name));
-  
+
   for (i = 0; i < 5; i++)
   {
     c = x509_get_part (name, part[i]);
@@ -858,9 +858,9 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 
   row++;
   snprintf (menu->dialog[row++], SHORT_STRING, _("This certificate is valid"));
-  snprintf (menu->dialog[row++], SHORT_STRING, _("   from %s"), 
+  snprintf (menu->dialog[row++], SHORT_STRING, _("   from %s"),
       asn1time_to_string (X509_get_notBefore (cert)));
-  snprintf (menu->dialog[row++], SHORT_STRING, _("     to %s"), 
+  snprintf (menu->dialog[row++], SHORT_STRING, _("     to %s"),
       asn1time_to_string (X509_get_notAfter (cert)));
 
   row++;
@@ -885,7 +885,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
     menu->prompt = _("(r)eject, accept (o)nce");
     menu->keys = _("ro");
   }
-  
+
   helpstr[0] = '\0';
   mutt_make_help (buf, sizeof (buf), _("Exit  "), MENU_GENERIC, OP_EXIT);
   safe_strcat (helpstr, sizeof (helpstr), buf);
@@ -944,7 +944,7 @@ static void ssl_get_client_cert(sslsockdata *ssldata, CONNECTION *conn)
     SSL_CTX_set_default_passwd_cb(ssldata->ctx, ssl_passwd_cb);
     SSL_CTX_use_certificate_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
     SSL_CTX_use_PrivateKey_file(ssldata->ctx, SslClientCert, SSL_FILETYPE_PEM);
-    
+
     /* if we are using a client cert, SASL may expect an external auth name */
     mutt_account_getuser (&conn->account);
   }
@@ -959,7 +959,7 @@ static int ssl_passwd_cb(char *buf, int size, int rwflag, void *userdata)
 
   dprint (2, (debugfile, "ssl_passwd_cb: getting password for %s@%s:%u\n",
 	      account->user, account->host, account->port));
-  
+
   if (mutt_account_getpass (account))
     return 0;
 
