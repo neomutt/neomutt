@@ -473,7 +473,7 @@ static int examine_mailboxes (MUTTMENU *menu, struct browser_state *state)
       if (stat (md, &st2) < 0)
 	st2.st_mtime = 0;
       if (st2.st_mtime > s.st_mtime)
-	memcpy (&s, &st2, sizeof (struct stat));
+	s.st_mtime = st2.st_mtime;
     }
     
     strfcpy (buffer, NONULL(tmp->path), sizeof (buffer));
