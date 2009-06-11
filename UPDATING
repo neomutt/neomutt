@@ -12,6 +12,7 @@ hg tip:
   + uncolor works for header + body objects, too
   + the "flagged" and "replied" flags are enabled/supported for
     POP when built with header caching
+  ! browser correctly displays maildir's mtime
   + <set-flag> and <clear-flag> work in the pager, too
   + ~x pattern also matches against In-Reply-To
   + lower case patterns for string searches perform case-insensitive
