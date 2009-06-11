@@ -309,7 +309,8 @@ static void process_user_header (ENVELOPE *env)
     else if (ascii_strncasecmp ("to:", uh->data, 3) != 0 &&
 	     ascii_strncasecmp ("cc:", uh->data, 3) != 0 &&
 	     ascii_strncasecmp ("bcc:", uh->data, 4) != 0 &&
-	     ascii_strncasecmp ("subject:", uh->data, 8) != 0)
+	     ascii_strncasecmp ("subject:", uh->data, 8) != 0 &&
+	     ascii_strncasecmp ("return-path:", uh->data, 12) != 0)
     {
       if (last)
       {

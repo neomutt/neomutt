@@ -1,3 +1,13 @@
+2009-06-11 18:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (8efc1cd0b8c0)
+
+	* browser.c: Use only latest mtime of new/cur for browser, not whole
+	stat() info
+
+2009-06-11 18:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (05f8c53b57a1)
+
+	* ChangeLog, copy.c: Don't reformat Return-Path (angle brackets are
+	not optional). Closes #1702.
+
 2009-06-10 17:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (0721c3f6320d)
 
 	* mbox.c, mx.c: Only print messages about CONTEXT when quiet flag not
