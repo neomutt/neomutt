@@ -865,7 +865,7 @@ static void format_address_header (char **h, ADDRESS *a)
 static int address_header_decode (char **h)
 {
   char *s = *h;
-  int l;
+  int l, rp = 0;
 
   ADDRESS *a = NULL;
 
@@ -876,6 +876,7 @@ static int address_header_decode (char **h)
       if (ascii_strncasecmp (s, "return-path:", 12) == 0)
       {
 	l = 12;
+	rp = 1;
 	break;
       }
       else if (ascii_strncasecmp (s, "reply-to:", 9) == 0)
@@ -936,15 +937,20 @@ static int address_header_decode (char **h)
   
   mutt_addrlist_to_local (a);
   rfc2047_decode_adrlist (a);
-  
-  *h = safe_calloc (1, l + 2);
-  
-  strfcpy (*h, s, l + 1);
-  
-  format_address_header (h, a);
+
+  /* angle brackets for return path are mandated by RfC5322,
+   * so leave Return-Path as-is */
+  if (rp)
+    *h = safe_strdup (s);
+  else
+  {
+    *h = safe_calloc (1, l + 2);
+    strfcpy (*h, s, l + 1);
+    format_address_header (h, a);
+  }
 
   rfc822_free_address (&a);
-  
+
   FREE (&s);
   return 1;
 }

@@ -1,3 +1,13 @@
+2009-06-10 17:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (0721c3f6320d)
+
+	* mbox.c, mx.c: Only print messages about CONTEXT when quiet flag not
+	set
+
+2009-06-09 22:09 -0700  Brendan Cully  <brendan@kublai.com>  (dc9ec900c657)
+
+	* ChangeLog, mutt_ssl.c: Improve host checking for SSL with
+	intermediate certificates.
+
 2009-06-09 22:03 -0700  Brendan Cully  <brendan@kublai.com>  (9dcb7288039d)
 
 	* mutt_ssl.c: Whitespace.
