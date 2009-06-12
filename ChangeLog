@@ -1,3 +1,13 @@
+2009-06-12 21:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (a9117f697b27)
+
+	* handler.c: Don't insert Content-Description/form name into reply.
+	Closes #3164.
+
+2009-06-12 18:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (d7afcf9a9f76)
+
+	* ChangeLog, pgpkey.c: Allow ! suffix for pgp keys via $pgp_sign_as
+	and prompt. Closes #1928.
+
 2009-06-12 13:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (ed206ad41108)
 
 	* ChangeLog, commands.c, recvcmd.c: Warn before bouncing messages

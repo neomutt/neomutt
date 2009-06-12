@@ -1692,7 +1692,8 @@ main_loop:
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
-    if (!option (OPTFCCATTACH) && msg->content->type == TYPEMULTIPART)
+    if (query_quadoption (OPT_FCCATTACH, _("Save attachments in Fcc?")) != M_YES &&
+	msg->content->type == TYPEMULTIPART)
     {
       if (WithCrypto
           && (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||

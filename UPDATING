@@ -5,6 +5,7 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+  ! $fcc_attach is a quadoption now
   + $honor_disposition to honor Content-Disposition headers
   + $search_context specifies number of context lines for search results
     in pager/page-based menus

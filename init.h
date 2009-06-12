@@ -726,7 +726,7 @@ struct option_t MuttVars[] = {
   ** \fBNote:\fP this variable has no effect when the $$autoedit
   ** variable is \fIset\fP.
   */
-  { "fcc_attach",	DT_BOOL, R_NONE, OPTFCCATTACH, 1 },
+  { "fcc_attach",	DT_QUAD, R_NONE, OPT_FCCATTACH, M_YES },
   /*
   ** .pp
   ** This variable controls whether or not attachments on outgoing messages
