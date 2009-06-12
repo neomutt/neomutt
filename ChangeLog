@@ -1,3 +1,13 @@
+2009-06-12 13:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (ed206ad41108)
+
+	* ChangeLog, commands.c, recvcmd.c: Warn before bouncing messages
+	without From: header. Closes #3180.
+
+2009-06-12 15:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (1673273a2e18)
+
+	* ChangeLog, smtp.c: SMTP: don't block but print CRLF for last line if
+	it's not terminated
+
 2009-06-11 18:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (f60eb41ef63c)
 
 	* UPDATING: Mention maildir mtime use in browser

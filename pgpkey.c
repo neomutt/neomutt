@@ -147,7 +147,7 @@ static const char *pgp_entry_fmt (char *dest,
 
   kflags = key->flags | (pkey->flags & KEYFLAG_RESTRICTIONS)
     | uid->flags;
-  
+
   switch (ascii_tolower (op))
   {
     case '[':
@@ -283,12 +283,12 @@ static const char *pgp_entry_fmt (char *dest,
     mutt_FormatString (dest, destlen, col, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
-      
+
 static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
 {
   pgp_uid_t **KeyTable = (pgp_uid_t **) menu->data;
   pgp_entry_t entry;
-  
+
   entry.uid = KeyTable[num];
   entry.num = num + 1;
 
@@ -390,7 +390,7 @@ static int pgp_key_is_valid (pgp_key_t k)
     return 0;
   if (pk->flags & KEYFLAG_CANTUSE)
     return 0;
-  
+
   return 1;
 }
 
@@ -422,21 +422,21 @@ static int pgp_id_is_valid (pgp_uid_t *uid)
 static int pgp_id_matches_addr (ADDRESS *addr, ADDRESS *u_addr, pgp_uid_t *uid)
 {
   int rv = 0;
-  
+
   if (pgp_id_is_valid (uid))
     rv |= PGP_KV_VALID;
 
   if (pgp_id_is_strong (uid))
     rv |= PGP_KV_STRONGID;
-  
+
   if (addr->mailbox && u_addr->mailbox
       && mutt_strcasecmp (addr->mailbox, u_addr->mailbox) == 0)
     rv |= PGP_KV_ADDR;
-    
+
   if (addr->personal && u_addr->personal
       && mutt_strcasecmp (addr->personal, u_addr->personal) == 0)
     rv |= PGP_KV_STRING;
-  
+
   return rv;
 }
 
@@ -475,13 +475,13 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 	unusable = 1;
 	continue;
       }
-      
+
       if (i == keymax)
       {
 	keymax += 5;
 	safe_realloc (&KeyTable, sizeof (pgp_uid_t *) * keymax);
       }
-      
+
       KeyTable[i++] = a;
     }
   }
@@ -532,14 +532,14 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
     snprintf (buf, sizeof (buf), _("PGP keys matching <%s>."), p->mailbox);
   else
     snprintf (buf, sizeof (buf), _("PGP keys matching \"%s\"."), s);
-    
-  
+
+
   menu->title = buf;
 
   kp = NULL;
 
   mutt_clear_error ();
-  
+
   while (!done)
   {
     switch (mutt_menuLoop (menu))
@@ -593,14 +593,14 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
 
       /* XXX make error reporting more verbose */
-      
+
       if (option (OPTPGPCHECKTRUST))
 	if (!pgp_key_is_valid (KeyTable[menu->current]->parent))
 	{
 	  mutt_error _("This key can't be used: expired/disabled/revoked.");
 	  break;
 	}
-      
+
       if (option (OPTPGPCHECKTRUST) &&
 	  (!pgp_id_is_valid (KeyTable[menu->current])
 	   || !pgp_id_is_strong (KeyTable[menu->current])))
@@ -653,7 +653,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
   FREE (&KeyTable);
 
   set_option (OPTNEEDREDRAW);
-  
+
   return (kp);
 }
 
@@ -665,7 +665,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   struct pgp_cache *l = NULL;
 
   mutt_clear_error ();
-  
+
   resp[0] = 0;
   if (whatfor)
   {
@@ -727,7 +727,7 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   snprintf (tmp, sizeof (tmp), "0x%s", pgp_keyid (pgp_principal_key (key)));
   pgp_free_key (&key);
-  
+
   if (!tempf)
   {
     mutt_mktemp (tempfb);
@@ -751,7 +751,7 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   mutt_message _("Invoking PGP...");
 
-  
+
   if ((thepid = 
        pgp_invoke_export (NULL, NULL, NULL, -1,
 			   fileno (tempfp), fileno (devnull), tmp)) == -1)
@@ -825,7 +825,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;
   pgp_uid_t *q;
-  
+
   if (a && a->mailbox)
     hints = pgp_add_string_to_hints (hints, a->mailbox);
   if (a && a->personal)
@@ -835,10 +835,10 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   keys = pgp_get_candidates (keyring, hints);
 
   mutt_free_list (&hints);
-  
+
   if (!keys)
     return NULL;
-  
+
   dprint (5, (debugfile, "pgp_getkeybyaddr: looking for %s <%s>.",
 	      a->personal, a->mailbox));
 
@@ -892,7 +892,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   }
 
   pgp_free_key (&keys);
-  
+
   if (matches)
   {
     if (the_valid_key && !multi)
@@ -931,17 +931,20 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   pgp_key_t k, kn;
   pgp_uid_t *a;
   short match;
+  size_t l;
+
+  if ((l = mutt_strlen (p)) && p[l-1] == '!')
+    p[l-1] = 0;
 
   mutt_message (_("Looking for keys matching \"%s\"..."), p);
-  
+
   hints = pgp_add_string_to_hints (hints, p);
   keys = pgp_get_candidates (keyring, hints);
   mutt_free_list (&hints);
 
   if (!keys)
-    return NULL;
-  
-  
+    goto out;
+
   for (k = keys; k; k = kn)
   {
     kn = k->next;
@@ -949,7 +952,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
       continue;
 
     match = 0;
-    
+
     for (a = k->address; a; a = a->next)
     {
       dprint (5, (debugfile, "pgp_getkeybystr: matching \"%s\" against key %s, \"%s\": ",
@@ -965,7 +968,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
 	break;
       }
     }
-    
+
     if (match)
     {
       *last = pgp_principal_key (k);
@@ -980,14 +983,17 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   {
     if ((k = pgp_select_key (matches, NULL, p)))
       pgp_remove_key (&matches, k);
-    
+
     pgp_free_key (&matches);
+    if (!p[l-1])
+      p[l-1] = '!';
     return k;
   }
 
+out:
+  if (!p[l-1])
+    p[l-1] = '!';
   return NULL;
 }
-
-
 
 #endif /* CRYPT_BACKEND_CLASSIC_PGP */
