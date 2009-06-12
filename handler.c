@@ -1194,15 +1194,7 @@ static int multipart_handler (BODY *a, STATE *s)
       else
 	state_putc ('\n', s);
     }
-    else
-    {
-      if (p->description && mutt_can_decode (p))
-	state_printf (s, "Content-Description: %s\n", p->description);
 
-      if (p->form_name)
-	state_printf(s, "%s: \n", p->form_name);
-
-    }
     rc = mutt_body_handler (p, s);
     state_putc ('\n', s);
     
