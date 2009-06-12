@@ -388,6 +388,10 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   if (option (OPTFORWQUOTE))
     cmflags |= M_CM_PREFIX;
 
+  /* wrapping headers for forwarding is considered a display
+   * rather than send action */
+  chflags |= CH_DISPLAY;
+
   mutt_copy_message (out, ctx, cur, cmflags, chflags);
   mutt_forward_trailer (out);
   return 0;

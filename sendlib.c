@@ -1548,179 +1548,269 @@ void mutt_write_references (LIST *r, FILE *f, int trim)
   FREE (&ref);
 }
 
-
-static void foldingstrfcpy (char *d, const char *s, int n)
+static const char *find_word (const char *src)
 {
-  while (--n >= 0 && *s)
-  {
-    *d = *s++;
-    if (*d == '\t')
-      *d = ' ';
-    if (!(d[0] == '\n' && (*s == '\t' || *s == ' ')))
-	d++;
-  }
-  *d = '\0';
+  const char *p = src;
+
+  while (p && *p && strchr (" \t\n", *p))
+    p++;
+  while (p && *p && !strchr (" \t\n", *p))
+    p++;
+  return p;
 }
 
-int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen)
+/* like wcwidth(), but gets const char* not wchar_t* */
+static int my_width (const char *str, int col, int flags)
 {
-  int col = 0;
-  int i, k, n;
-  const char *cp;
-  char buf [HUGE_STRING];
-  wchar_t w = (wchar_t) -1;
-  wchar_t last = (wchar_t) '\n';
-  int l = 0;
-  int first = 1;
-  int wrapped = 0;
-  int in_encoded_word = 0;
-  
-  if (wraplen <= 0)
-    wraplen = 76;
-  
-  if (tag)
-  {
-    if (fprintf (fp, "%s%s: ", NONULL (pfx), tag) < 0)
-      return -1;
-    
-    col = mutt_strlen (tag) + 2 + mutt_strlen (pfx);
-  }
-  else
-    col = 0;
-  
-  *buf = '\0';
-  cp = value;
-  
-  while (cp && *cp) 
-  {
-    if (!col) 
-    {
-      if (fputs (NONULL (pfx), fp) == EOF)
-	return -1;
-      col = mutt_strlen (pfx);
+  wchar_t wc;
+  int l, w = 0, nl = 0;
+  const char *p = str;
 
-      /* Space padding, but only if necessary */      
-      if (!first && *cp != '\t' && *cp != ' ')
+  while (p && *p)
+  {
+    if (mbtowc (&wc, p, MB_CUR_MAX) >= 0)
+    {
+      l = wcwidth (wc);
+      if (l < 0)
+	l = 1;
+      /* correctly calc tab stop, even for sending as the
+       * line should look pretty on the receiving end */
+      if (wc == L'\t' || (nl && wc == L' '))
       {
+	nl = 0;
+	l = 8 - (col % 8);
+      }
+      /* track newlines for display-case: if we have a space
+       * after a newline, assume 8 spaces as for display we
+       * always tab-fold */
+      else if ((flags & CH_DISPLAY) && wc == '\n')
+	nl = 1;
+    }
+    else
+      l = 1;
+    w += l;
+    p++;
+  }
+  return w;
+}
+
+static int print_val (FILE *fp, const char *pfx, const char *value, int flags)
+{
+  while (value && *value)
+  {
+    if (fputc (*value, fp) == EOF)
+      return -1;
+    if (*value == '\n')
+    {
+      if (*(value + 1) && pfx && *pfx && fputs (pfx, fp) == EOF)
+	return -1;
+      /* for display, turn folding spaces into folding tabs */
+      if ((flags & CH_DISPLAY) && (*(value + 1) == ' ' || *(value + 1) == '\t'))
+      {
+	value++;
+	while (*value && (*value == ' ' || *value == '\t'))
+	  value++;
 	if (fputc ('\t', fp) == EOF)
 	  return -1;
-	col += 8 - (col % 8);
+	continue;
       }
     }
-
-    if (first)
-    {
-      last = '\n';
-      wrapped = 0;
-      first = 0;
-    }
-
-    /*
-     * i is our running pointer, and always points to the *beginning* of an mb character.
-     * k is the pointer to the beginning of the last white-space character we have seen.
-     * n is the pointer to the beginning of the first character after white-space.
-     * 
-     * yuck
-     */
-    
-    for (i = 0, k = 0, l = 0, n = 0; i + MB_CUR_MAX < sizeof (buf)
-           && cp[i] != '\0' && (col < wraplen || in_encoded_word);
-	 i += l, last = w)
-    {
-
-      /* Brief look at the last character we had... */
-      if (iswspace (last))
-      {
-	/* ... and if the next thing is an encoded word ... */
-	if (strncmp (&cp[i], "=?", 2) == 0)
-	  in_encoded_word = 1;
-	else
-	  in_encoded_word = 0;
-      }
-      
-      /* If there is a line break in the header, honor it. */
-      if (cp[i] == '\n')
-      {
-	in_encoded_word = 0;
-
-	if (cp[i+1] != ' ' && cp[i+1] != '\t')
-	  first = 1;
-	
-	if (first || !wrapped)
-	{
-	  k = i;
-	  n = k + 1;
-	  l = 1;
-	  w = (wchar_t) '\n';
-	  break;
-	}
-      }
-
-      /* Eat the current character; cannot be '\0' */
-
-      if ((l = mbtowc (&w, &cp[i], MB_CUR_MAX)) <= 0)
-      {
-	dprint (1, (debugfile, "mutt_write_one_header: encoutered bad multi-byte character at %d.\n", i));
-	l = 1; /* if bad, move on by one character */
-	w = (wchar_t) -1;
-      }
-      else 
-      {
-	if (wcwidth (w) >= 0)
-	  col += wcwidth (w);
-
-	if (iswspace (w) && 
-	    (!k || col <= wraplen))
-	{
-	  if (!k || i != n)
-	    k = i;
-	  n = i + l;
-	}
-      }
-
-      /* 
-       * As long as we haven't seen whitespace, we advance at least by one character.
-       */
-      if (!k)
-	n = i + l;
-    }
-
-    /* If no whitespace was found, copy as much as we can */
-    if (!k)
-      k = n;
-    
-    /* If we're done, we're done. */
-    if (!cp[i])
-      k = n = i;
-
-    if (k < i) /* we had to go back to an earlier wrapping point */
-      wrapped = 1;
-    
-    buf[0] = *cp;
-    foldingstrfcpy (buf + 1, cp + 1, k - 1);
-
-    if (fprintf (fp, "%s\n", buf) < 0)
-      return -1;
-    col = 0;
-    
-    cp = &cp[n];
-
-    while (*cp)
-    {
-      last = w;
-      if ((l = mbtowc (&w, cp, MB_CUR_MAX)) > 0 && iswspace (w))
-	cp += l;
-      else
-	break;
-    }
+    value++;
   }
+  return 0;
+}
 
-  if (col)
+static int fold_one_header (FILE *fp, const char *tag, const char *value,
+			      const char *pfx, int wraplen, int flags)
+{
+  const char *p = value, *next, *sp;
+  char buf[HUGE_STRING] = "";
+  int first = 1, enc, col = 0, w, l = 0, fold;
+
+  dprint(4,(debugfile,"mwoh: pfx=[%s], tag=[%s], flags=%d value=[%s]\n",
+	    pfx, tag, flags, value));
+
+  if (fprintf (fp, "%s%s: ", NONULL (pfx), tag) < 0)
+    return -1;
+  col = mutt_strlen (tag) + 2 + mutt_strlen (pfx);
+
+  while (p && *p)
   {
-    if (fputc ('\n', fp) == EOF)
+    fold = 0;
+
+    /* find the next word and place it in `buf'. it may start with
+     * whitespace we can fold before */
+    next = find_word (p);
+    l = MIN(sizeof (buf), next - p);
+    memcpy (buf, p, l);
+    buf[l] = 0;
+
+    /* determine width: character cells for display, bytes for sending
+     * (we get pure ascii only) */
+    w = my_width (buf, col, flags);
+    enc = mutt_strncmp (buf, "=?", 2) == 0;
+
+    dprint(5,(debugfile,"mwoh: word=[%s], col=%d, w=%d, next=[0x0%x]\n",
+	      buf, col, w, *next));
+
+    /* insert a folding \n before the current word's lwsp except for
+     * header name, first word on a line (word longer than wrap width)
+     * and encoded words */
+    if (!first && !enc && col && col + w >= wraplen)
+    {
+      col = mutt_strlen (pfx);
+      fold = 1;
+      if (fprintf (fp, "\n%s", NONULL(pfx)) <= 0)
+	return -1;
+    }
+
+    /* print the actual word; for display, ignore leading ws for word
+     * and fold with tab for readability */
+    if ((flags & CH_DISPLAY) && fold)
+    {
+      char *p = buf;
+      while (*p && (*p == ' ' || *p == '\t'))
+      {
+	p++;
+	col--;
+      }
+      if (fputc ('\t', fp) == EOF)
+	return -1;
+      if (print_val (fp, pfx, p, flags) < 0)
+	return -1;
+      col += 8;
+    }
+    else if (print_val (fp, pfx, buf, flags) < 0)
       return -1;
-    col = 0;
+    col += w;
+
+    /* if the current word ends in \n, ignore all its trailing spaces
+     * and reset column; this prevents us from putting only spaces (or
+     * even none) on a line if the trailing spaces are located at our
+     * current line width
+     * XXX this covers ASCII space only, for display we probably
+     * XXX want something like iswspace() here */
+    sp = next;
+    while (*sp && (*sp == ' ' || *sp == '\t'))
+      sp++;
+    if (*sp == '\n')
+    {
+      next = sp;
+      col = 0;
+    }
+
+    p = next;
+    first = 0;
   }
+
+  /* if we have printed something but didn't \n-terminate it, do it
+   * except the last word we printed ended in \n already */
+  if (col && buf[l - 1] != '\n')
+    if (putc ('\n', fp) == EOF)
+      return -1;
+
+  return 0;
+}
+
+static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
+			     const char *pfx, const char *start, const char *end,
+			     int flags)
+{
+  char *tagbuf, *valbuf, *t;
+
+  /* only pass through folding machinery if necessary for sending */
+  if (!(flags & CH_DISPLAY) && pfxw + max <= wraplen)
+  {
+    valbuf = mutt_substrdup (start, end);
+    dprint(4,(debugfile,"mwoh: buf[%s%s] short enough, "
+	      "max width = %d <= %d\n",
+	      NONULL(pfx), valbuf, max, wraplen));
+    if (pfx && *pfx)
+      if (fputs (pfx, fp) == EOF)
+	return -1;
+    if (print_val (fp, pfx, valbuf, flags) < 0)
+    {
+      FREE(&valbuf);
+      return -1;
+    }
+    FREE(&valbuf);
+  }
+  else
+  {
+    dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
+	      "max width = %d > %dn",
+	      NONULL(pfx), valbuf, max, wraplen));
+    t = strchr (start, ':');
+    tagbuf = mutt_substrdup (start, t);
+    valbuf = mutt_substrdup (t + 2, end);
+    if (fold_one_header (fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
+      return -1;
+    FREE (&tagbuf);
+    FREE (&valbuf);
+  }
+  return 0;
+}
+
+/* split several headers into individual ones and call write_one_header
+ * for each one */
+int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
+			   const char *pfx, int wraplen, int flags)
+{
+  char *p = (char *)value, *last, *line;
+  int max = 0, w;
+  int pfxw = mutt_strwidth (pfx);
+
+  /* when not displaying, use sane wrap value */
+  if (!(flags & CH_DISPLAY))
+    wraplen = 76;
+  else if (wraplen <= 0 || wraplen > COLS)
+    wraplen = COLS;
+
+  if (tag)
+  {
+    /* if header is short enough, simply print it */
+    if (!(flags & CH_DISPLAY) && mutt_strwidth (tag) + 2 + pfxw +
+	mutt_strwidth (value) <= wraplen)
+    {
+      dprint(4,(debugfile,"mwoh: buf[%s%s: %s] is short enough\n",
+		NONULL(pfx), tag, value));
+      if (fprintf (fp, "%s%s: %s\n", NONULL(pfx), tag, value) <= 0)
+	return -1;
+      return 0;
+    }
+    else
+      return fold_one_header (fp, tag, value, pfx, wraplen, flags);
+  }
+
+  p = last = line = (char *)value;
+  while (p && *p)
+  {
+    p = strchr (p, '\n');
+
+    /* find maximum line width in current header */
+    if (p)
+      *p = 0;
+    if ((w = my_width (line, 0, flags)) > max)
+      max = w;
+    if (p)
+      *p = '\n';
+
+    if (!p)
+      break;
+
+    line = ++p;
+    if (*p != ' ' && *p != '\t')
+    {
+      if (write_one_header (fp, pfxw, max, wraplen, pfx, last, p, flags) < 0)
+	return -1;
+      last = p;
+      max = 0;
+    }
+  }
+
+  if (last && *last)
+    if (write_one_header (fp, pfxw, max, wraplen, pfx, last, p, flags) < 0)
+      return -1;
 
   return 0;
 }
@@ -1800,7 +1890,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fputs ("Bcc: \n", fp);
 
   if (env->subject)
-    mutt_write_one_header (fp, "Subject", env->subject, NULL, 0);
+    mutt_write_one_header (fp, "Subject", env->subject, NULL, 0, 0);
   else if (mode == 1)
     fputs ("Subject: \n", fp);
 
@@ -1870,7 +1960,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 	}
       }
       
-      mutt_write_one_header (fp, tmp->data, p, NULL, 0);
+      mutt_write_one_header (fp, tmp->data, p, NULL, 0, 0);
       *q = ':';
     }
   }

@@ -371,7 +371,7 @@ int mutt_which_case (const char *);
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *);
 int mutt_write_mime_body (BODY *, FILE *);
 int mutt_write_mime_header (BODY *, FILE *);
-int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen);
+int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, int flags);
 int mutt_write_rfc822_header (FILE *, ENVELOPE *, BODY *, int, int);
 void mutt_write_references (LIST *, FILE *, int);
 int mutt_yesorno (const char *, int);
