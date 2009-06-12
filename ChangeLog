@@ -1,3 +1,15 @@
+2009-06-11 18:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (f60eb41ef63c)
+
+	* UPDATING: Mention maildir mtime use in browser
+
+2009-06-11 18:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (fc60d44a5b22)
+
+	* ChangeLog, send.c: Don't allow setting Return-Path: header via
+	my_hdr
+
+	Mutt has use_envelope_from/envelope_from_address for that purpose.
+	Closes #1840.
+
 2009-06-11 18:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (8efc1cd0b8c0)
 
 	* browser.c: Use only latest mtime of new/cur for browser, not whole

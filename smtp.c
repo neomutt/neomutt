@@ -171,7 +171,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   FILE *fp = 0;
   progress_t progress;
   struct stat st;
-  int r;
+  int r, term = 0;
   size_t buflen;
 
   fp = fopen (msgfile, "r");
@@ -200,6 +200,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   while (fgets (buf, sizeof (buf) - 1, fp))
   {
     buflen = mutt_strlen (buf);
+    term = buf[buflen-1] == '\n';
     if (buflen && buf[buflen-1] == '\n'
 	&& (buflen == 1 || buf[buflen - 2] != '\r'))
       snprintf (buf + buflen - 1, sizeof (buf) - buflen + 1, "\r\n");
@@ -216,8 +217,13 @@ smtp_data (CONNECTION * conn, const char *msgfile)
       safe_fclose (&fp);
       return smtp_err_write;
     }
-
     mutt_progress_update (&progress, ftell (fp), -1);
+  }
+  if (!term && buflen &&
+      mutt_socket_write_d (conn, "\r\n", -1, M_SOCK_LOG_FULL) == -1)
+  {
+    safe_fclose (&fp);
+    return smtp_err_write;
   }
   safe_fclose (&fp);
 
