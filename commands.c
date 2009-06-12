@@ -246,6 +246,29 @@ void ci_bounce_message (HEADER *h, int *redraw)
   char *err = NULL;
   int rc;
 
+ /* RfC 5322 mandates a From: header, so warn before bouncing
+  * messages without one */
+  if (h)
+  {
+    if (!h->env->from)
+    {
+      mutt_error _("Warning: message has no From: header");
+      mutt_sleep (2);
+    }
+  }
+  else if (Context)
+  {
+    for (rc = 0; rc < Context->msgcount; rc++)
+    {
+      if (Context->hdrs[rc]->tagged && !Context->hdrs[rc]->env->from)
+      {
+	mutt_error ("Warning: message has no From: header");
+	mutt_sleep (2);
+	break;
+      }
+    }
+  }
+
   if(h)
     strfcpy(prompt, _("Bounce message to: "), sizeof(prompt));
   else

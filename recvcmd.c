@@ -139,6 +139,34 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   /* one or more messages? */
   p = (cur || count_tagged (idx, idxlen) == 1);
 
+  /* RfC 5322 mandates a From: header, so warn before bouncing
+   * messages without one */
+  if (cur)
+  {
+    if (!cur->hdr->env->from)
+    {
+      mutt_error _("Warning: message contains no From: header");
+      mutt_sleep (2);
+      mutt_clear_error ();
+    }
+  }
+  else
+  {
+    for (i = 0; i < idxlen; i++)
+    {
+      if (idx[i]->content->tagged)
+      {
+	if (!idx[i]->content->hdr->env->from)
+	{
+	  mutt_error _("Warning: message contains no From: header");
+	  mutt_sleep (2);
+	  mutt_clear_error ();
+	  break;
+	}
+      }
+    }
+  }
+
   if (p)
     strfcpy (prompt, _("Bounce message to: "), sizeof (prompt));
   else
