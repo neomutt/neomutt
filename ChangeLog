@@ -1,44 +1,45 @@
-2009-06-12 21:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (a9117f697b27)
+2009-06-13 01:08 +0200  Rocco Rutte  <pdmef@gmx.net>  (536771b4e085)
+
+	* commands.c, copy.c, copy.h, handler.c, protos.h, send.c, sendlib.c:
+	Rewrite header folding
+
+	We now distinct between sending and display case. For display, we
+	always use tabs for folding for readability; for sending we now
+	correctly fold using whitespace found in the header.
+
+	Closes #2995. Closes #3080.
+
+2009-06-12 23:10 +0200  Rocco Rutte  <pdmef@gmx.net>  (23de0e3c81f8)
+
+	* UPDATING, init.h, mutt.h, send.c: Turn $fcc_attach into a
+	quadoption. Closes #2528.
 
 	* handler.c: Don't insert Content-Description/form name into reply.
 	Closes #3164.
 
-2009-06-12 18:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (d7afcf9a9f76)
+	* pgpkey.c: Allow ! suffix for pgp keys via $pgp_sign_as and
+	prompt. Closes #1928.
 
-	* ChangeLog, pgpkey.c: Allow ! suffix for pgp keys via $pgp_sign_as
-	and prompt. Closes #1928.
+	* commands.c, recvcmd.c: Warn before bouncing messages without
+	From: header. Closes #3180.
 
-2009-06-12 13:43 +0200  Rocco Rutte  <pdmef@gmx.net>  (ed206ad41108)
-
-	* ChangeLog, commands.c, recvcmd.c: Warn before bouncing messages
-	without From: header. Closes #3180.
-
-2009-06-12 15:21 +0200  Rocco Rutte  <pdmef@gmx.net>  (1673273a2e18)
-
-	* ChangeLog, smtp.c: SMTP: don't block but print CRLF for last line if
-	it's not terminated
+	* smtp.c: SMTP: don't block but print CRLF for last line if it's
+	not terminated
 
 2009-06-11 18:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (f60eb41ef63c)
 
 	* UPDATING: Mention maildir mtime use in browser
 
-2009-06-11 18:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (fc60d44a5b22)
-
-	* ChangeLog, send.c: Don't allow setting Return-Path: header via
-	my_hdr
+	* send.c: Don't allow setting Return-Path: header via my_hdr
 
 	Mutt has use_envelope_from/envelope_from_address for that purpose.
 	Closes #1840.
 
-2009-06-11 18:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (8efc1cd0b8c0)
-
 	* browser.c: Use only latest mtime of new/cur for browser, not whole
 	stat() info
 
-2009-06-11 18:14 +0200  Rocco Rutte  <pdmef@gmx.net>  (05f8c53b57a1)
-
-	* ChangeLog, copy.c: Don't reformat Return-Path (angle brackets are
-	not optional). Closes #1702.
+	* copy.c: Don't reformat Return-Path (angle brackets are not
+	optional). Closes #1702.
 
 2009-06-10 17:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (0721c3f6320d)
 
@@ -47,10 +48,8 @@
 
 2009-06-09 22:09 -0700  Brendan Cully  <brendan@kublai.com>  (dc9ec900c657)
 
-	* ChangeLog, mutt_ssl.c: Improve host checking for SSL with
-	intermediate certificates.
-
-2009-06-09 22:03 -0700  Brendan Cully  <brendan@kublai.com>  (9dcb7288039d)
+	* mutt_ssl.c: Improve host checking for SSL with intermediate
+	certificates.
 
 	* mutt_ssl.c: Whitespace.
 

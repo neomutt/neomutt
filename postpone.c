@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -69,9 +69,9 @@ int mutt_num_postponed (int force)
     force = 1;
   }
 
-  if (Postponed != OldPostponed)
+  if (mutt_strcmp (Postponed, OldPostponed))
   {
-    OldPostponed = Postponed;
+    OldPostponed = safe_strdup (Postponed);
     LastModify = 0;
     force = 1;
   }
@@ -170,7 +170,7 @@ static HEADER *select_msg (void)
    * disabled while the postpone menu is being displayed. */
   orig_sort = Sort;
   Sort = SORT_ORDER;
-  
+
   while (!done)
   {
     switch (i = mutt_menuLoop (menu))
@@ -244,7 +244,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     mutt_error _("No postponed messages.");
     return (-1);
   }
-  
+
   if (! PostContext->msgcount)
   {
     PostCount = 0;
@@ -340,7 +340,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
 					    APPLICATION_PGP);
       hdr->security |= APPLICATION_PGP;
-       
+
       /* remove the pgp field */
       next = tmp->next;
       if (last)
@@ -357,7 +357,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       hdr->security = mutt_parse_crypt_hdr (strchr (tmp->data, ':') + 1, 1,
 					    APPLICATION_SMIME);
       hdr->security |= APPLICATION_SMIME;
-       
+
       /* remove the smime field */
       next = tmp->next;
       if (last)
@@ -374,16 +374,16 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     {
       char *t;
       mutt_free_list (&hdr->chain);
-      
+
       t = strtok (tmp->data + 11, " \t\n");
       while (t)
       {
 	hdr->chain = mutt_add_list (hdr->chain, t);
 	t = strtok (NULL, " \t\n");
       }
-      
+
       next = tmp->next;
-      if (last) 
+      if (last)
 	last->next = tmp->next;
       else
 	hdr->env->userhdrs = tmp->next;
@@ -412,11 +412,11 @@ int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
 
   if (!WithCrypto)
     return 0;
-   
+
   SKIPWS (p);
   for (; *p; p++)
-  {    
-     
+  {
+
     switch (*p)
     {
       case 'e':
@@ -424,14 +424,14 @@ int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
         flags |= ENCRYPT;
         break;
 
-      case 's':    
+      case 's':
       case 'S':
         flags |= SIGN;
         q = sign_as;
-      
+
         if (*(p+1) == '<')
         {
-          for (p += 2; 
+          for (p += 2;
 	       *p && *p != '>' && q < sign_as + sizeof (sign_as) - 1;
                *q++ = *p++)
 	    ;
@@ -442,12 +442,12 @@ int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
             return 0;
           }
         }
-       
+
         *q = '\0';
         break;
 
       /* This used to be the micalg parameter.
-       * 
+       *
        * It's no longer needed, so we just skip the parameter in order
        * to be able to recall old messages.
        */
@@ -465,18 +465,18 @@ int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
 	}
 
 	break;
-	  
-	  
+
+
       case 'c':
       case 'C':
    	q = smime_cryptalg;
-	
+
         if(*(p+1) == '<')
 	{
 	  for(p += 2; *p && *p != '>' && q < smime_cryptalg + sizeof(smime_cryptalg) - 1;
 	      *q++ = *p++)
 	    ;
-	  
+
 	  if(*p != '>')
 	  {
 	    mutt_error _("Illegal S/MIME header");
@@ -496,7 +496,7 @@ int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
         mutt_error _("Illegal crypto header");
         return 0;
     }
-     
+
   }
 
   /* the cryptalg field must not be empty */
@@ -525,12 +525,12 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   char file[_POSIX_PATH_MAX];
   BODY *b;
   FILE *bfp;
-  
+
   int rv = -1;
   STATE s;
-  
+
   memset (&s, 0, sizeof (s));
-  
+
   if (!fp && (msg = mx_open_message (ctx, hdr->msgno)) == NULL)
     return (-1);
 
@@ -560,8 +560,8 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       goto err;
 
     mutt_message _("Decrypting message...");
-    if (((ccap & APPLICATION_PGP) && crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1) 
-	|| ((ccap & APPLICATION_SMIME) && crypt_smime_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1) 
+    if (((ccap & APPLICATION_PGP) && crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
+	|| ((ccap & APPLICATION_SMIME) && crypt_smime_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
 	|| b == NULL)
     {
  err:
@@ -578,11 +578,11 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     mutt_clear_error ();
   }
 
-  /* 
+  /*
    * remove a potential multipart/signed layer - useful when
-   * resending messages 
+   * resending messages
    */
-  
+
   if (WithCrypto && mutt_is_multipart_signed (newhdr->content))
   {
     newhdr->security |= SIGN;
@@ -591,32 +591,32 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       newhdr->security |= APPLICATION_PGP;
     else if ((WithCrypto & APPLICATION_SMIME))
       newhdr->security |= APPLICATION_SMIME;
-    
+
     /* destroy the signature */
     mutt_free_body (&newhdr->content->parts->next);
     newhdr->content = mutt_remove_multipart (newhdr->content);
   }
 
 
-  /* 
+  /*
    * We don't need no primary multipart.
    * Note: We _do_ preserve messages!
-   * 
-   * XXX - we don't handle multipart/alternative in any 
+   *
+   * XXX - we don't handle multipart/alternative in any
    * smart way when sending messages.  However, one may
    * consider this a feature.
-   * 
+   *
    */
 
   if (newhdr->content->type == TYPEMULTIPART)
     newhdr->content = mutt_remove_multipart (newhdr->content);
 
   s.fpin = bfp;
-  
+
   /* create temporary files for all attachments */
   for (b = newhdr->content; b; b = b->next)
   {
-    
+
     /* what follows is roughly a receive-mode variant of
      * mutt_get_tmp_attachment () from muttlib.c
      */
@@ -654,11 +654,11 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
     if ((s.fpout = safe_fopen (file, "w")) == NULL)
       goto bail;
 
-    
-    if ((WithCrypto & APPLICATION_PGP) 
+
+    if ((WithCrypto & APPLICATION_PGP)
 	&& (mutt_is_application_pgp (b) & (ENCRYPT|SIGN)))
     {
-      
+
       mutt_body_handler (b, &s);
 
       newhdr->security |= mutt_is_application_pgp (newhdr->content);
@@ -683,14 +683,14 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   }
 
   /* Fix encryption flags. */
-  
+
   /* No inline if multipart. */
   if (WithCrypto && (newhdr->security & INLINE) && newhdr->content->next)
     newhdr->security &= ~INLINE;
-  
+
   /* Do we even support multiple mechanisms? */
   newhdr->security &= WithCrypto | ~(APPLICATION_PGP|APPLICATION_SMIME);
-  
+
   /* Theoretically, both could be set. Take the one the user wants to set by default. */
   if ((newhdr->security & APPLICATION_PGP) && (newhdr->security & APPLICATION_SMIME))
   {
@@ -701,18 +701,18 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   }
 
   rv = 0;
-  
+
   bail:
-  
+
   /* that's it. */
   if (bfp != fp) safe_fclose (&bfp);
   if (msg) mx_close_message (&msg);
-  
+
   if (rv == -1)
   {
     mutt_free_envelope (&newhdr->env);
     mutt_free_body (&newhdr->content);
   }
-  
+
   return rv;
 }
