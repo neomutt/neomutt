@@ -2087,7 +2087,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$recall variable.
   */
-  { "postponed",	DT_PATH, R_NONE, UL &Postponed, UL "~/postponed" },
+  { "postponed",	DT_PATH, R_INDEX, UL &Postponed, UL "~/postponed" },
   /*
   ** .pp
   ** Mutt allows you to indefinitely ``$postpone sending a message'' which
