@@ -1,3 +1,11 @@
+2009-06-13 14:36 -0700  Brendan Cully  <brendan@kublai.com>  (b12adeefffda)
+
+	* init.h: Force status to redraw when $postponed changes.
+
+	* postpone.c: Fix check for changed $postponed. The pointer-based
+	check fails when the new $postponed string is stored in the same
+	location.
+
 2009-06-13 01:08 +0200  Rocco Rutte  <pdmef@gmx.net>  (536771b4e085)
 
 	* commands.c, copy.c, copy.h, handler.c, protos.h, send.c, sendlib.c:
