@@ -5,11 +5,14 @@ The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
 hg tip:
+
+1.5.20 (2009-06-14):
+
   ! $fcc_attach is a quadoption now
   + $honor_disposition to honor Content-Disposition headers
   + $search_context specifies number of context lines for search results
     in pager/page-based menus
-  + ssl_use_sslv2 defaults to no
+  ! ssl_use_sslv2 defaults to no
   + uncolor works for header + body objects, too
   + the "flagged" and "replied" flags are enabled/supported for
     POP when built with header caching
