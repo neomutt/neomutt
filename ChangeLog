@@ -1,4 +1,11 @@
-2009-06-13 14:36 -0700  Brendan Cully  <brendan@kublai.com>  (b12adeefffda)
+2009-06-14 08:47 -0700  Brendan Cully  <brendan@kublai.com>  (45969ea3195e)
+
+	* sendlib.c: Initialize pointer before use under -d4
+
+2009-06-13 19:52 -0700  Brendan Cully  <brendan@kublai.com>  (83ffb5593bc6)
+
+	* curs_main.c: Adjust menu position after sync more
+	carefully. Closes #3092.
 
 	* init.h: Force status to redraw when $postponed changes.
 

@@ -1170,7 +1170,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     return -1;
   }
 
-  /* This function is only called when the calling code	expects the context
+  /* This function is only called when the calling code expects the context
    * to be changed. */
   imap_allow_reopen (ctx);
 
@@ -1178,7 +1178,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     return rc;
 
   /* if we are expunging anyway, we can do deleted messages very quickly... */
-  if (expunge && mutt_bit_isset (idata->ctx->rights, M_ACL_DELETE))
+  if (expunge && mutt_bit_isset (ctx->rights, M_ACL_DELETE))
   {
     if ((rc = imap_exec_msgset (idata, "UID STORE", "+FLAGS.SILENT (\\Deleted)",
                                 M_DELETED, 1, 0)) < 0)
@@ -1294,7 +1294,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 
   /* We must send an EXPUNGE command if we're not closing. */
   if (expunge && !(ctx->closing) &&
-      mutt_bit_isset(idata->ctx->rights, M_ACL_DELETE))
+      mutt_bit_isset(ctx->rights, M_ACL_DELETE))
   {
     mutt_message _("Expunging messages from server...");
     /* Set expunge bit so we don't get spurious reopened messages */
