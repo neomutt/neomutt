@@ -1,4 +1,6 @@
-2009-06-14 08:47 -0700  Brendan Cully  <brendan@kublai.com>  (45969ea3195e)
+2009-06-14 10:43 -0700  Brendan Cully  <brendan@kublai.com>  (a18e286f4365)
+
+	* imap/imap.c: Save a dereference, and close #3226 with voodoo.
 
 	* sendlib.c: Initialize pointer before use under -d4
 
