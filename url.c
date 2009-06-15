@@ -143,9 +143,11 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
   
   if ((p = strchr (t, ':')))
   {
+    int t;
     *p++ = '\0';
-    if (mutt_atos (p, (short*) &ciss->port) < 0)
+    if (mutt_atoi (p, &t) < 0 || t < 0 || t > 0xffff)
       return NULL;
+    ciss->port = (unsigned short)t;
   }
   else
     ciss->port = 0;
