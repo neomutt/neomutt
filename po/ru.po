@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.19\n"
+"Project-Id-Version: mutt-1.5.20\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-14 11:53-0700\n"
-"PO-Revision-Date: 2009-01-06 19:52+0200\n"
+"PO-Revision-Date: 2009-06-15 22:10+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -170,22 +170,22 @@ msgstr "Не удалось создать фильтр"
 #: attach.c:554
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---Команда: %-20.20s Описание: %s"
 
 #: attach.c:558
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---Команда: %-30.30s Вложение: %s"
 
 #: attach.c:604
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s: %s"
-msgstr "-- Вложения"
+msgstr "---Вложение: %s: %s"
 
 #: attach.c:607
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s"
-msgstr "-- Вложения"
+msgstr "---Вложение: %s"
 
 #: attach.c:677 attach.c:709 attach.c:1006 attach.c:1064 handler.c:1285
 #: pgpkey.c:570 pgpkey.c:759
@@ -322,9 +322,9 @@ msgid "%s: no such object"
 msgstr "%s: нет такого объекта"
 
 #: color.c:391
-#, fuzzy, c-format
+#, c-format
 msgid "%s: command valid only for index, body, header objects"
-msgstr "%s: команда доступна только для индекса"
+msgstr "%s: команда доступна только для индекса, заголовка и тела письма"
 
 #: color.c:399
 #, c-format
@@ -406,9 +406,8 @@ msgid "Command: "
 msgstr "Команда: "
 
 #: commands.c:255
-#, fuzzy
 msgid "Warning: message has no From: header"
-msgstr "Предупреждение: часть этого сообщения не подписана."
+msgstr "Предупреждение: сообщение не содержит заголовка From:"
 
 #: commands.c:273 recvcmd.c:171
 msgid "Bounce message to: "
@@ -1950,9 +1949,8 @@ msgid "Unable to open temporary file!"
 msgstr "Не удалось открыть временный файл!"
 
 #: handler.c:1724
-#, fuzzy
 msgid "[-- This is an attachment "
-msgstr "[-- Это вложение типа %s/%s "
+msgstr "[-- Это вложение "
 
 #: handler.c:1726
 #, c-format
@@ -2379,17 +2377,17 @@ msgid "%s: invalid mailbox type"
 msgstr "%s: недопустимый тип почтового ящика"
 
 #: init.c:2095
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: недопустимое значение"
+msgstr "%s: недопустимое значение (%s)"
 
 #: init.c:2096
 msgid "format error"
-msgstr ""
+msgstr "ошибка формата"
 
 #: init.c:2096
 msgid "number overflow"
-msgstr ""
+msgstr "переполнение числового значения"
 
 #: init.c:2156
 #, c-format
@@ -2549,7 +2547,6 @@ msgstr ""
 "более подробной информации введите `mutt -vv'.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2570,7 +2567,7 @@ msgstr ""
 "Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-"Copyright (C) 2006-2008 Rocco Rutte <pdmef@gmx.net>\n"
+"Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
 "\n"
 "Многие части кода, исправления и предложения были сделаны неупомянутыми\n"
 "здесь людьми.\n"
@@ -2719,9 +2716,9 @@ msgid "Error initializing terminal."
 msgstr "Ошибка инициализации терминала."
 
 #: main.c:636
-#, fuzzy, c-format
+#, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Ошибка: '%s' не является корректным IDN."
+msgstr "Ошибка: неверное значение '%s' для -d.\n"
 
 #: main.c:639
 #, c-format
@@ -3116,6 +3113,7 @@ msgstr "Ошибка обработки данных сертификата"
 #: mutt_ssl_gnutls.c:703
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
+"Предупреждение: сертификат подписан с использованием небезопасного алгоритма"
 
 #: mutt_ssl_gnutls.c:822
 #, c-format
@@ -3563,10 +3561,9 @@ msgid "Command UIDL is not supported by server."
 msgstr "Команда UIDL сервером не поддерживается."
 
 #: pop.c:287
-#, fuzzy, c-format
+#, c-format
 msgid "%d messages have been lost. Try reopening the mailbox."
-msgstr ""
-"Нумерация сообщений изменилась. Требуется повторно открыть почтовый ящик."
+msgstr "%d сообщений было потеряно. Требуется повторно открыть почтовый ящик."
 
 #: pop.c:402 pop.c:785
 #, c-format
@@ -3641,9 +3638,9 @@ msgid "Command USER is not supported by server."
 msgstr "Команда USER сервером не поддерживается."
 
 #: pop_lib.c:54
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid POP URL: %s\n"
-msgstr "Неверный SMTP URL: %s"
+msgstr "Неверный POP URL: %s\n"
 
 #: pop_lib.c:205
 msgid "Unable to leave messages on server."
@@ -3801,7 +3798,7 @@ msgstr "Вы можете перенаправлять только части типа message/rfc822."
 
 #: recvcmd.c:148 recvcmd.c:161
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Предупреждение: сообщение не содержит заголовка From:"
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -3935,7 +3932,7 @@ msgstr "score: слишком много аргументов"
 
 #: score.c:122
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Ошибка: score: неверное значение"
 
 #: send.c:252
 msgid "No subject, abort?"
@@ -4032,9 +4029,8 @@ msgstr "Сообщение отправляется..."
 
 #. check to see if the user wants copies of all attachments
 #: send.c:1699
-#, fuzzy
 msgid "Save attachments in Fcc?"
-msgstr "показать вложение как текст"
+msgstr "Сохранить вложения в Fcc?"
 
 #: send.c:1808
 msgid "Could not send the message."
@@ -4298,7 +4294,7 @@ msgstr "Ошибка SMTP сессии: ошибка записи"
 
 #: smtp.c:318
 msgid "Invalid server response"
-msgstr ""
+msgstr "Неверный ответ сервера"
 
 #: smtp.c:341
 #, c-format
@@ -4311,7 +4307,7 @@ msgstr "SMTP сервер не поддерживает аутентификацию"
 
 #: smtp.c:459
 msgid "Interactive SMTP authentication not supported"
-msgstr ""
+msgstr "Интерактивная SMTP-аутентификация не поддерживается"
 
 #: smtp.c:465
 msgid "SMTP authentication requires SASL"
@@ -4958,9 +4954,8 @@ msgid "use the current message as a template for a new one"
 msgstr "использовать текущее сообщение в качестве шаблона для нового"
 
 #: ../keymap_alldefs.h:157
-#, fuzzy
 msgid "save message/attachment to a mailbox/file"
-msgstr "сохранить сообщение/вложение в файл"
+msgstr "сохранить сообщение/вложение в ящик/файл"
 
 #: ../keymap_alldefs.h:158
 msgid "search for a regular expression"
@@ -5143,12 +5138,3 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
-
-#~ msgid "No search pattern."
-#~ msgstr "Нет образца поиска."
-
-#~ msgid "Reverse search: "
-#~ msgstr "Обратный поиск: "
-
-#~ msgid "Search: "
-#~ msgstr "Поиск: "
