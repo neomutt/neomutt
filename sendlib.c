@@ -1741,7 +1741,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     tagbuf = mutt_substrdup (start, t);
     valbuf = mutt_substrdup (t + 2, end);
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
-	      "max width = %d > %dn",
+	      "max width = %d > %d\n",
 	      NONULL(pfx), valbuf, max, wraplen));
     if (fold_one_header (fp, tagbuf, valbuf, pfx, wraplen, flags) < 0)
       return -1;

@@ -1069,9 +1069,11 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   int ch, vch, k, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
-
   int wrap_cols = mutt_term_width ((flags & M_PAGER_NOWRAP) ? 0 : Wrap);
-  
+
+  if (check_attachment_marker ((char *)buf) == 0)
+    wrap_cols = COLS;
+
   /* FIXME: this should come from lineInfo */
   memset(&mbstate, 0, sizeof(mbstate));
 
