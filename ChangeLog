@@ -1,3 +1,15 @@
+2009-06-15 17:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (d6f88fbf8387)
+
+	* url.c: Don't parse URL port as signed short, but to int and cast to
+	unsigned short. Closes #3264.
+
+2009-06-15 17:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (3c83b1e958ba)
+
+	* ChangeLog, doc/manual.xml.head: Manual: Add a short note about new
+	header folding
+
+	...so we don't get bug reports for tab folding.
+
 2009-06-15 16:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (7fadf564cb23)
 
 	* init.h: Clarify what $wrap=0 does

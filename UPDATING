@@ -23,7 +23,7 @@ hg tip:
     search as regex patterns do (except IMAP)
   + $ssl_verify_dates controls whether mutt checks the validity period of
     SSL certificates
-  + $ssl_verify_hostname controls whether mutt will accept certificates whose
+  + $ssl_verify_host controls whether mutt will accept certificates whose
     host names do not match the host name in the folder URL.
 
 1.5.19 (2009-01-05):
