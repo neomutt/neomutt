@@ -2783,7 +2783,7 @@ struct option_t MuttVars[] = {
   ** Defines the SMTP smarthost where sent messages should relayed for
   ** delivery. This should take the form of an SMTP URL, eg:
   ** .ts
-  ** smtp[s]://[user[:pass]@]host[:port]/
+  ** smtp[s]://[user[:pass]@]host[:port]
   ** .te
   ** .pp
   ** where ``[...]'' denotes an optional part.

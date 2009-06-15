@@ -6714,7 +6714,7 @@ may be omitted):
 </para>
 
 <screen>
-proto[s]://[username[:password]@]server[:port]/[path]
+proto[s]://[username[:password]@]server[:port][/path]
 </screen>
 
 <para>
@@ -6732,8 +6732,16 @@ that multiple IMAP, POP3 or SMTP servers may be specified (which isn't
 possible using, for example,
 <link linkend="imap-user">&dollar;imap&lowbar;user</link>). The username
 may contain the <quote>@</quote> symbol being used by many mail systems
-as part of the login name. A password can be given, too but is not
-recommended if the URL is specified in a configuration file on disk.
+as part of the login name. The special characters <quote>/</quote>
+(<literal>&percnt;2F</literal>),
+<quote>:</quote> (<literal>&percnt;3A</literal>)
+and <quote>&percnt;</quote> (<literal>&percnt;25</literal>) have to be
+URL-encoded in usernames using the <literal>&percnt;</literal>-notation.
+</para>
+
+<para>
+A password can be given, too but is not recommended if the URL is
+specified in a configuration file on disk.
 </para>
 
 <para>
@@ -6742,7 +6750,7 @@ given protocol (usually consulting <literal>/etc/services</literal>).
 </para>
 
 <para>
-The optional path is only relevant for IMAP.
+The optional path is only relevant for IMAP and ignored elsewhere.
 </para>
 
 <example id="ex-url">

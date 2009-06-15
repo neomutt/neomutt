@@ -45,28 +45,32 @@ static struct mapping_t UrlMap[] =
   { NULL,	U_UNKNOWN }
 };
 
-
-static void url_pct_decode (char *s)
+static int url_pct_decode (char *s)
 {
   char *d;
 
   if (!s)
-    return;
-  
+    return -1;
+
   for (d = s; *s; s++)
   {
-    if (*s == '%' && s[1] && s[2] &&
-	isxdigit ((unsigned char) s[1]) &&
-        isxdigit ((unsigned char) s[2]) &&
-	hexval (s[1]) >= 0 && hexval (s[2]) >= 0)
+    if (*s == '%')
     {
-      *d++ = (hexval (s[1]) << 4) | (hexval (s[2]));
-      s += 2;
-    }
-    else
+      if (s[1] && s[2] &&
+	  isxdigit ((unsigned char) s[1]) &&
+	  isxdigit ((unsigned char) s[2]) &&
+	  hexval (s[1]) >= 0 && hexval (s[2]) >= 0)
+      {
+	*d++ = (hexval (s[1]) << 4) | (hexval (s[2]));
+	s += 2;
+      }
+      else
+	return -1;
+    } else
       *d++ = *s;
   }
   *d ='\0';
+  return 0;
 }
 
 url_scheme_t url_check_scheme (const char *s)
@@ -74,12 +78,12 @@ url_scheme_t url_check_scheme (const char *s)
   char sbuf[STRING];
   char *t;
   int i;
-  
+
   if (!s || !(t = strchr (s, ':')))
     return U_UNKNOWN;
   if ((t - s) + 1 >= sizeof (sbuf))
     return U_UNKNOWN;
-  
+
   strfcpy (sbuf, s, t - s + 1);
   for (t = sbuf; *t; t++)
     *t = ascii_tolower (*t);
@@ -98,33 +102,33 @@ int url_parse_file (char *d, const char *src, size_t dl)
     return -1;
   else
     strfcpy (d, src + 5, dl);
-  
-  url_pct_decode (d);
-  return 0;
+
+  return url_pct_decode (d);
 }
 
 /* ciss_parse_userhost: fill in components of ciss with info from src. Note
  *   these are pointers into src, which is altered with '\0's. Port of 0
  *   means no port given. */
-static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
+static int ciss_parse_userhost (ciss_url_t *ciss, char *src)
 {
-  char *t;
-  char *p;
-  char *path;
+  char *t, *p;
 
   ciss->user = NULL;
   ciss->pass = NULL;
   ciss->host = NULL;
   ciss->port = 0;
 
-  if (strncmp (src, "//", 2))
-    return src;
-  
+  if (strncmp (src, "//", 2) != 0)
+  {
+    ciss->path = src;
+    return url_pct_decode (ciss->path);
+  }
+
   src += 2;
 
-  if ((path = strchr (src, '/')))
-    *path++ = '\0';
-  
+  if ((ciss->path = strchr (src, '/')))
+    *ciss->path++ = '\0';
+
   if ((t = strrchr (src, '@')))
   {
     *t = '\0';
@@ -132,29 +136,31 @@ static char *ciss_parse_userhost (ciss_url_t *ciss, char *src)
     {
       *p = '\0';
       ciss->pass = p + 1;
-      url_pct_decode (ciss->pass);
+      if (url_pct_decode (ciss->pass) < 0)
+	return -1;
     }
     ciss->user = src;
-    url_pct_decode (ciss->user);
+    if (url_pct_decode (ciss->user) < 0)
+      return -1;
     t++;
   }
   else
     t = src;
-  
+
   if ((p = strchr (t, ':')))
   {
     int t;
     *p++ = '\0';
     if (mutt_atoi (p, &t) < 0 || t < 0 || t > 0xffff)
-      return NULL;
+      return -1;
     ciss->port = (unsigned short)t;
   }
   else
     ciss->port = 0;
-  
+
   ciss->host = t;
-  url_pct_decode (ciss->host);
-  return path;
+  return url_pct_decode (ciss->host) >= 0 &&
+    (!ciss->path || url_pct_decode (ciss->path) >= 0) ? 0 : -1;
 }
 
 /* url_parse_ciss: Fill in ciss_url_t. char* elements are pointers into src,
@@ -168,15 +174,31 @@ int url_parse_ciss (ciss_url_t *ciss, char *src)
 
   tmp = strchr (src, ':') + 1;
 
-  if ((ciss->path = ciss_parse_userhost (ciss, tmp)) == NULL)
-    return -1;
-  url_pct_decode (ciss->path);
-  
-  return 0;
+  return ciss_parse_userhost (ciss, tmp);
+}
+
+static void url_pct_encode (char *dst, size_t l, const char *src)
+{
+  static const char *alph = "0123456789ABCDEF";
+
+  *dst = 0;
+  l--;
+  while (src && *src && l)
+  {
+    if (strchr ("/:%", *src) && l > 3)
+    {
+      *dst++ = '%';
+      *dst++ = alph[(*src >> 4) & 0xf];
+      *dst++ = alph[*src & 0xf];
+      src++;
+      continue;
+    }
+    *dst++ = *src++;
+  }
+  *dst = 0;
 }
 
 /* url_ciss_tostring: output the URL string for a given CISS object. */
-
 int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
 {
   long l;
@@ -191,12 +213,20 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
     if (!(flags & U_PATH))
       safe_strcat (dest, len, "//");
     len -= (l = strlen (dest)); dest += l;
-    
-    if (ciss->user) {
+
+    if (ciss->user)
+    {
+      char u[STRING];
+      url_pct_encode (u, sizeof (u), ciss->user);
+
       if (flags & U_DECODE_PASSWD && ciss->pass)
-	snprintf (dest, len, "%s:%s@", ciss->user, ciss->pass);
+      {
+	char p[STRING];
+	url_pct_encode (p, sizeof (p), ciss->pass);
+	snprintf (dest, len, "%s:%s@", u, p);
+      }
       else
-	snprintf (dest, len, "%s@", ciss->user);
+	snprintf (dest, len, "%s@", u);
 
       len -= (l = strlen (dest)); dest += l;
     }
@@ -221,24 +251,25 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   char *tag, *value;
   char scratch[HUGE_STRING];
 
-  int taglen, rc = 0;
+  int taglen, rc = -1;
 
   LIST *last = NULL;
-  
+
   if (!(t = strchr (src, ':')))
     return -1;
-  
+
   if ((tmp = safe_strdup (t + 1)) == NULL)
     return -1;
 
   if ((headers = strchr (tmp, '?')))
     *headers++ = '\0';
 
-  url_pct_decode (tmp);
+  if (url_pct_decode (tmp) < 0)
+    return -1;
   e->to = rfc822_parse_adrlist (e->to, tmp);
 
   tag = headers ? strtok_r (headers, "&", &p) : NULL;
-  
+
   for (; tag; tag = strtok_r (NULL, "&", &p))
   {
     if ((value = strchr (tag, '=')))
@@ -246,8 +277,10 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     if (!value || !*value)
       continue;
 
-    url_pct_decode (tag);
-    url_pct_decode (value);
+    if (url_pct_decode (tag) < 0)
+      return -1;
+    if (url_pct_decode (value) < 0)
+      return -1;
 
     if (!ascii_strcasecmp (tag, "body"))
     {
