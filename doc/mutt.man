@@ -23,7 +23,7 @@ mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
 .PP
 .B mutt
-[-nRyzZ] 
+[\-nRyzZ]
 [\-e \fIcmd\fP] [\-F \fIfile\fP] [\-m \fItype\fP] [\-f \fIfile\fP]
 .PP
 .B mutt 
@@ -59,10 +59,10 @@ mutt \- The Mutt Mail User Agent
 [\-n] [\-e \fIcmd\fP] [\-F \fIfile\fP] \-Q \fIquery\fP
 .PP
 .B mutt 
--v[v]
+\-v[v]
 .PP
 .B mutt 
--D
+\-D
 .SH DESCRIPTION
 .PP
 Mutt is a small but very powerful text based program for reading and sending electronic
@@ -81,7 +81,7 @@ An expanded version of the given alias is passed to stdout.
 .IP "-a \fIfile\fP [...]"
 Attach a file to your message using MIME.
 When attaching single or multiple files, separating filenames and recipient addresses with
-"\-\-" is mandatory, e.g. \fBmutt -a image.jpg \-\- addr1\fP or
+"\-\-" is mandatory, e.g. \fBmutt \-a image.jpg \-\- addr1\fP or
 \fBmutt \-a img.jpg *.png \-\- addr1 addr2\fP.
 The \-a option must be placed at the end of command line options.
 .IP "-b \fIaddress\fP"
