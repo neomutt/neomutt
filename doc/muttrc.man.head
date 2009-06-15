@@ -166,7 +166,8 @@ Valid maps are:
 .BR mix .
 .IP
 For more information on keys and functions, please consult the Mutt
-Manual.
+Manual. Note that the function name is to be specified without
+angle brackets.
 .TP
 \fBaccount-hook\fP [\fB!\fP]\fIregexp\fP \fIcommand\fP
 This hook is executed whenever you access a remote mailbox. Useful

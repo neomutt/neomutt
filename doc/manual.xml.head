@@ -2236,9 +2236,16 @@ space (<quote>&puncsp;</quote>) or semi-colon (<quote>;</quote>).
 </para>
 
 <para>
-<emphasis>function</emphasis> specifies which action to take when <emphasis>key</emphasis> is pressed.
-For a complete list of functions, see the <link linkend="functions">reference</link>.  The special function <literal>&lt;noop&gt;</literal> unbinds the specified key
-sequence.
+<emphasis>function</emphasis> specifies which action to take when
+<emphasis>key</emphasis> is pressed.  For a complete list of functions,
+see the <link linkend="functions">reference</link>. Note that the
+<command>bind</command> expects <emphasis>function</emphasis> to be
+specified without angle brackets.
+</para>
+
+<para>
+The special function <literal>&lt;noop&gt;</literal> unbinds the
+specified key sequence.
 </para>
 
 </sect1>

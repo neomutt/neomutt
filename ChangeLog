@@ -1,3 +1,16 @@
+2009-06-15 19:51 +0200  Rocco Rutte  <pdmef@gmx.net>  (6eadedb1f6c0)
+
+	* doc/manual.xml.head, init.h, url.c: Fixup URL parser
+
+	The fixes are: 1) allow / in usernames for IMAP (by %-encoding /, :
+	and % when pretty-printing urls), 2) for POP/SMTP the trailing / is
+	no longer mandatory, 3) more strict %-decoding to avoid unexpected
+	results
+
+2009-06-15 17:49 +0200  Bertrand Janin  <tamentis@neopulsar.org>  (abc8fa0abeee)
+
+	* ChangeLog, UPDATING: Fix UPDATING
+
 2009-06-15 17:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (d6f88fbf8387)
 
 	* url.c: Don't parse URL port as signed short, but to int and cast to
