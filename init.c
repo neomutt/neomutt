@@ -2846,8 +2846,8 @@ static void start_debug (void)
   {
     t = time (0);
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
-    fprintf (debugfile, "Mutt %s started at %s.\nDebugging at level %d.\n\n",
-	     MUTT_VERSION, asctime (localtime (&t)), debuglevel);
+    dprint(1,(debugfile,"Mutt/%s (%s) debugging at level %d\n",
+	      MUTT_VERSION, ReleaseDate, debuglevel));
   }
 }
 #endif

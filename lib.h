@@ -126,7 +126,9 @@ void mutt_exit (int);
 MUTT_LIB_WHERE FILE *debugfile MUTT_LIB_INITVAL(0);
 MUTT_LIB_WHERE int debuglevel MUTT_LIB_INITVAL(0);
 
-#  define dprint(N,X) do { if(debuglevel>=N && debugfile) fprintf X; } while (0)
+void mutt_debug (FILE *, const char *, ...);
+
+#  define dprint(N,X) do { if(debuglevel>=N && debugfile) mutt_debug X; } while (0)
 
 # else
 
