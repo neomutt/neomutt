@@ -1,3 +1,25 @@
+2009-06-15 16:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (737102af74eb)
+
+	* pager.c: pager: intermediate fix for wrapping long header lines with
+	$smart_wrap set
+
+	The header folding algorithm outputs a word without spaces and
+	longer than $wrap as-is. The pager however tries to break it. With
+	$smart_wrap unset, it simply breaks at $wrap regardless if there's a
+	space or not. With $smart_wrap set it tried to find a space and
+	break if the next word is too long. This logic doesn't work for
+	folded header lines which always start with space. Thus, the output
+	would always contain the folding whitespace on a line by itself
+	detaching the header value from the header name.
+
+	As an intermediate fix we don't try to be smart if the line begins
+	with space or tab.
+
+2009-06-15 16:15 +0200  Rocco Rutte  <pdmef@gmx.net>  (98a3b887a637)
+
+	* ChangeLog, pager.c, sendlib.c: pager: Ignore $wrap for attachment
+	markers
+
 2009-06-14 20:57 -0700  Brendan Cully  <brendan@kublai.com>  (d2e0b495b148)
 
 	* build-release: Remove duplicate update-changelog call.
