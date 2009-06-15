@@ -51,8 +51,6 @@ TAG="mutt-`echo $VERSION | tr . -`-rel"
 
 #echo 'const char *ReleaseDate = "'`date +%Y-%m-%d`'";' > reldate.h
 
-make update-changelog 
-
 # now, prepare the distribution tar balls
 
 #automake
