@@ -2666,6 +2666,19 @@ can be one of the following:
 <sect1 id="msg-hdr-display">
 <title>Message Header Display</title>
 
+<sect2 id="hdr-folding">
+<title>Header Display</title>
+
+<para>
+When displaying a message in the pager, Mutt folds long header lines at
+<link linkend="wrap">&dollar;wrap</link> columns. Though there're
+precise rules about where to break and how, Mutt always folds headers
+using a tab for readability. (Note that the sending side is not affected
+by this, Mutt tries to implement standards compliant folding.)
+</para>
+
+</sect2>
+
 <sect2 id="ignore">
 <title>Selecting Headers</title>
 

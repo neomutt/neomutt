@@ -1,3 +1,11 @@
+2009-06-15 16:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (7fadf564cb23)
+
+	* init.h: Clarify what $wrap=0 does
+
+2009-06-15 16:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (942623344469)
+
+	* ChangeLog, doc/mutt.css: CSS update for newer docbook xslt versions
+
 2009-06-15 16:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (737102af74eb)
 
 	* pager.c: pager: intermediate fix for wrapping long header lines with
