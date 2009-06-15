@@ -1383,7 +1383,8 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
   {
     if (cnt < b_read)
     {
-      if (ch != -1 && buf[cnt] != ' ' && buf[cnt] != '\t' && buf[cnt] != '\n' && buf[cnt] != '\r')
+      if (ch != -1 && buf[0] != ' ' && buf[0] != '\t' &&
+	  buf[cnt] != ' ' && buf[cnt] != '\t' && buf[cnt] != '\n' && buf[cnt] != '\r')
       {
 	buf_ptr = buf + ch;
 	/* skip trailing blanks */
