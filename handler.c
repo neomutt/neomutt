@@ -1090,7 +1090,7 @@ static int message_handler (BODY *a, STATE *s)
     mutt_copy_hdr (s->fpin, s->fpout, off_start, b->parts->offset,
 	(((s->flags & M_WEED) || ((s->flags & (M_DISPLAY|M_PRINTING)) && option (OPTWEED))) ? (CH_WEED | CH_REORDER) : 0) |
 	(s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
-	(s->flags & M_DISPLAY) ? CH_DISPLAY : 0, s->prefix);
+	((s->flags & M_DISPLAY) ? CH_DISPLAY : 0), s->prefix);
 
     if (s->prefix)
       state_puts (s->prefix, s);

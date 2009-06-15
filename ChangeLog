@@ -1,3 +1,12 @@
+2009-06-15 19:59 +0200  Rocco Rutte  <pdmef@gmx.net>  (b5ed5d96c775)
+
+	* init.c, lib.c, lib.h: Print timestamps in debug files. Closes #3263.
+
+2009-06-15 19:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (76b1e3721c7e)
+
+	* ChangeLog, doc/manual.xml.head, doc/muttrc.man.head: bind: Clarify
+	function argument usage
+
 2009-06-15 19:51 +0200  Rocco Rutte  <pdmef@gmx.net>  (6eadedb1f6c0)
 
 	* doc/manual.xml.head, init.h, url.c: Fixup URL parser
