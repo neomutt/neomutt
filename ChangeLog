@@ -1,3 +1,17 @@
+2009-06-17 20:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (33376ae23d8f)
+
+	* doc/devel-notes.txt: Mention check_sec.sh in doc/devel-notes.txt
+
+2009-06-17 11:09 -0700  Brendan Cully  <brendan@kublai.com>  (7f37d0a57d83)
+
+	* crypt-gpgme.c, pgp.c: Display unsigned part of traditional PGP
+	messages. Unbreaks [e2780a423d96], closes #3269
+
+2009-06-17 19:29 +0200  Antonio Radici  <antonio@dyne.org>  (a2a868fc40ea)
+
+	* mx.c: Leave error handling of mx_get_magic() up to the
+	caller. Closes #3268.
+
 2009-06-17 18:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (4b5326d8d2ee)
 
 	* UPDATING, muttlib.c: Always display text/* parts inline,
@@ -5,19 +19,13 @@
 
 2009-06-15 22:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (f40de578e8ed)
 
-	* ChangeLog, handler.c: Unbreak header weeding for message/rfc822
+	* handler.c: Unbreak header weeding for message/rfc822
 	parts. Closes #3265.
-
-2009-06-15 19:59 +0200  Rocco Rutte  <pdmef@gmx.net>  (b5ed5d96c775)
 
 	* init.c, lib.c, lib.h: Print timestamps in debug files. Closes #3263.
 
-2009-06-15 19:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (76b1e3721c7e)
-
-	* ChangeLog, doc/manual.xml.head, doc/muttrc.man.head: bind: Clarify
-	function argument usage
-
-2009-06-15 19:51 +0200  Rocco Rutte  <pdmef@gmx.net>  (6eadedb1f6c0)
+	* doc/manual.xml.head, doc/muttrc.man.head: bind: Clarify function
+	argument usage
 
 	* doc/manual.xml.head, init.h, url.c: Fixup URL parser
 
@@ -28,29 +36,21 @@
 
 2009-06-15 17:49 +0200  Bertrand Janin  <tamentis@neopulsar.org>  (abc8fa0abeee)
 
-	* ChangeLog, UPDATING: Fix UPDATING
+	* UPDATING: Fix UPDATING
 
 2009-06-15 17:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (d6f88fbf8387)
 
 	* url.c: Don't parse URL port as signed short, but to int and cast to
 	unsigned short. Closes #3264.
 
-2009-06-15 17:01 +0200  Rocco Rutte  <pdmef@gmx.net>  (3c83b1e958ba)
-
-	* ChangeLog, doc/manual.xml.head: Manual: Add a short note about new
-	header folding
+	* doc/manual.xml.head: Manual: Add a short note about new header
+	folding
 
 	...so we don't get bug reports for tab folding.
 
-2009-06-15 16:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (7fadf564cb23)
-
 	* init.h: Clarify what $wrap=0 does
 
-2009-06-15 16:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (942623344469)
-
-	* ChangeLog, doc/mutt.css: CSS update for newer docbook xslt versions
-
-2009-06-15 16:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (737102af74eb)
+	* doc/mutt.css: CSS update for newer docbook xslt versions
 
 	* pager.c: pager: intermediate fix for wrapping long header lines with
 	$smart_wrap set
@@ -67,10 +67,7 @@
 	As an intermediate fix we don't try to be smart if the line begins
 	with space or tab.
 
-2009-06-15 16:15 +0200  Rocco Rutte  <pdmef@gmx.net>  (98a3b887a637)
-
-	* ChangeLog, pager.c, sendlib.c: pager: Ignore $wrap for attachment
-	markers
+	* pager.c, sendlib.c: pager: Ignore $wrap for attachment markers
 
 2009-06-14 20:57 -0700  Brendan Cully  <brendan@kublai.com>  (d2e0b495b148)
 
@@ -84,24 +81,12 @@
 
 	* UPDATING: Update UPDATING
 
-2009-06-14 12:17 -0700  Brendan Cully  <brendan@kublai.com>  (71647a900ebe)
-
-	* .hgsigs: mutt-1.5.20 signed
-
-2009-06-14 11:55 -0700  Brendan Cully  <brendan@kublai.com>  (4c9c68ff5c33)
-
-	* .hgtags: Added tag mutt-1-5-20-rel for changeset f399371bb9b0
-
-2009-06-14 11:55 -0700  Brendan Cully  <brendan@kublai.com>  (f399371bb9b0)
-
-	* ChangeLog, VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po,
-	po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po,
-	po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po,
-	po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
-	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
-	po/zh_TW.po: automatic post-release commit for mutt-1.5.20
-
-2009-06-14 10:43 -0700  Brendan Cully  <brendan@kublai.com>  (a18e286f4365)
+	* VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po, po/de.po,
+	po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po, po/fr.po,
+	po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po, po/ja.po,
+	po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po,
+	po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po:
+	automatic post-release commit for mutt-1.5.20
 
 	* imap/imap.c: Save a dereference, and close #3226 with voodoo.
 

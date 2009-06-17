@@ -19,10 +19,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.19-20090528\n"
+"Project-Id-Version: Mutt 1.5.20-20090617\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-14 11:53-0700\n"
-"PO-Revision-Date: 2009-05-29 15:18+0200\n"
+"POT-Creation-Date: 2009-06-17 13:35+0200\n"
+"PO-Revision-Date: 2009-06-17 13:36+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,12 +40,12 @@ msgstr "Nom d'utilisateur sur %s : "
 msgid "Password for %s@%s: "
 msgstr "Mot de passe pour %s@%s : "
 
-#: addrbook.c:37 browser.c:45 pager.c:1502 postpone.c:41 query.c:48
+#: addrbook.c:37 browser.c:45 pager.c:1505 postpone.c:41 query.c:48
 #: recvattach.c:53
 msgid "Exit"
 msgstr "Quitter"
 
-#: addrbook.c:38 curs_main.c:406 pager.c:1509 postpone.c:42
+#: addrbook.c:38 curs_main.c:406 pager.c:1512 postpone.c:42
 msgid "Del"
 msgstr "Effacer"
 
@@ -59,7 +59,7 @@ msgstr "Sélectionner"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:48 compose.c:96 crypt-gpgme.c:3829 curs_main.c:412
-#: mutt_ssl.c:895 mutt_ssl_gnutls.c:875 pager.c:1601 pgpkey.c:522
+#: mutt_ssl.c:895 mutt_ssl_gnutls.c:875 pager.c:1604 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:437
 msgid "Help"
 msgstr "Aide"
@@ -428,9 +428,8 @@ msgid "Command: "
 msgstr "Commande : "
 
 #: commands.c:255
-#, fuzzy
 msgid "Warning: message has no From: header"
-msgstr "Attention ! Une partie de ce message n'a pas été signée."
+msgstr "Attention : le message n'a pas d'en-tête From:"
 
 #: commands.c:273 recvcmd.c:171
 msgid "Bounce message to: "
@@ -1565,7 +1564,7 @@ msgstr "Sauver"
 msgid "Mail"
 msgstr "Message"
 
-#: curs_main.c:410 pager.c:1510
+#: curs_main.c:410 pager.c:1513
 msgid "Reply"
 msgstr "Répondre"
 
@@ -1611,7 +1610,7 @@ msgstr "Ce message n'est pas visible."
 msgid "Invalid message number."
 msgstr "Numéro de message invalide."
 
-#: curs_main.c:803 curs_main.c:1852 pager.c:2346
+#: curs_main.c:803 curs_main.c:1852 pager.c:2349
 msgid "delete message(s)"
 msgstr "d'effacer des messages"
 
@@ -1646,7 +1645,7 @@ msgstr "Quitter Mutt ?"
 msgid "Tag messages matching: "
 msgstr "Marquer les messages correspondant à : "
 
-#: curs_main.c:971 curs_main.c:2141 pager.c:2656
+#: curs_main.c:971 curs_main.c:2141 pager.c:2659
 msgid "undelete message(s)"
 msgstr "de récupérer des messages"
 
@@ -1721,11 +1720,11 @@ msgstr "Pas de message non effacé."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1453 menu.c:760 pager.c:2014 pattern.c:1465
+#: curs_main.c:1453 menu.c:760 pager.c:2017 pattern.c:1465
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1462 pager.c:2036 pattern.c:1476
+#: curs_main.c:1462 pager.c:2039 pattern.c:1476
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
@@ -1745,7 +1744,7 @@ msgstr " dans cette vue limitée"
 msgid "flag message"
 msgstr "de marquer le message"
 
-#: curs_main.c:1557 pager.c:2622
+#: curs_main.c:1557 pager.c:2625
 msgid "toggle new"
 msgstr "d'inverser l'indic. 'nouveau'"
 
@@ -1761,7 +1760,7 @@ msgstr "Vous êtes sur la première discussion."
 msgid "Thread contains unread messages."
 msgstr "Cette discussion contient des messages non-lus."
 
-#: curs_main.c:1811 pager.c:2315
+#: curs_main.c:1811 pager.c:2318
 msgid "delete message"
 msgstr "d'effacer le message"
 
@@ -1773,7 +1772,7 @@ msgstr "d'éditer le message"
 msgid "mark message(s) as read"
 msgstr "de marquer des messages comme lus"
 
-#: curs_main.c:2114 pager.c:2641
+#: curs_main.c:2114 pager.c:2644
 msgid "undelete message"
 msgstr "de récupérer le message"
 
@@ -2027,9 +2026,8 @@ msgstr "Impossible d'ouvrir le fichier temporaire !"
 
 # , c-format
 #: handler.c:1724
-#, fuzzy
 msgid "[-- This is an attachment "
-msgstr "[-- Cet attachement %s/%s "
+msgstr "[-- Ceci est un attachement "
 
 # , c-format
 #: handler.c:1726
@@ -2480,17 +2478,17 @@ msgstr "%s : type de boîte aux lettres invalide"
 
 # , c-format
 #: init.c:2095
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s : valeur invalide"
+msgstr "%s : valeur invalide (%s)"
 
 #: init.c:2096
 msgid "format error"
-msgstr ""
+msgstr "erreur de format"
 
 #: init.c:2096
 msgid "number overflow"
-msgstr ""
+msgstr "nombre trop grand"
 
 # , c-format
 #: init.c:2156
@@ -2829,9 +2827,9 @@ msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
 #: main.c:636
-#, fuzzy, c-format
+#, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Erreur : '%s' est un mauvais IDN."
+msgstr "Erreur : la valeur '%s' est invalide pour -d.\n"
 
 # , c-format
 #: main.c:639
@@ -2971,15 +2969,15 @@ msgstr "Vous êtes sur la dernière entrée."
 msgid "You are on the first entry."
 msgstr "Vous êtes sur la première entrée."
 
-#: menu.c:733 pager.c:2058 pattern.c:1408
+#: menu.c:733 pager.c:2061 pattern.c:1408
 msgid "Search for: "
 msgstr "Rechercher : "
 
-#: menu.c:733 pager.c:2058 pattern.c:1408
+#: menu.c:733 pager.c:2061 pattern.c:1408
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
-#: menu.c:778 pager.c:2011 pager.c:2033 pager.c:2154 pattern.c:1519
+#: menu.c:778 pager.c:2014 pager.c:2036 pager.c:2157 pattern.c:1519
 msgid "Not found."
 msgstr "Non trouvé."
 
@@ -3245,6 +3243,7 @@ msgstr "Erreur de traitement des données du certificat"
 #: mutt_ssl_gnutls.c:703
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
+"Attention : le certificat du serveur a été signé avec un algorithme peu sûr"
 
 #: mutt_ssl_gnutls.c:822
 #, c-format
@@ -3454,40 +3453,40 @@ msgstr "Impossible d'écrire le message"
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Dépassement de capacité sur entier -- impossible d'allouer la mémoire."
 
-#: pager.c:1503
+#: pager.c:1506
 msgid "PrevPg"
 msgstr "PgPréc"
 
-#: pager.c:1504
+#: pager.c:1507
 msgid "NextPg"
 msgstr "PgSuiv"
 
-#: pager.c:1508
+#: pager.c:1511
 msgid "View Attachm."
 msgstr "Voir attach."
 
-#: pager.c:1511
+#: pager.c:1514
 msgid "Next"
 msgstr "Suivant"
 
 #. emulate "less -q" and don't go on to the next message.
-#: pager.c:1912 pager.c:1943 pager.c:1975 pager.c:2252
+#: pager.c:1915 pager.c:1946 pager.c:1978 pager.c:2255
 msgid "Bottom of message is shown."
 msgstr "La fin du message est affichée."
 
-#: pager.c:1928 pager.c:1950 pager.c:1957 pager.c:1964
+#: pager.c:1931 pager.c:1953 pager.c:1960 pager.c:1967
 msgid "Top of message is shown."
 msgstr "Le début du message est affiché."
 
-#: pager.c:2190
+#: pager.c:2193
 msgid "Help is currently being shown."
 msgstr "L'aide est actuellement affichée."
 
-#: pager.c:2219
+#: pager.c:2222
 msgid "No more quoted text."
 msgstr "Il n'y a plus de texte cité."
 
-#: pager.c:2232
+#: pager.c:2235
 msgid "No more unquoted text after quoted text."
 msgstr "Il n'y a plus de texte non cité après le texte cité."
 
@@ -3966,7 +3965,7 @@ msgstr "Vous ne pouvez renvoyer que des parties message/rfc822."
 
 #: recvcmd.c:148 recvcmd.c:161
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Attention : le message ne contient pas d'en-tête From:"
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -4107,7 +4106,7 @@ msgstr "score : trop d'arguments"
 
 #: score.c:122
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Erreur : score : nombre invalide"
 
 #: send.c:252
 msgid "No subject, abort?"
@@ -4206,9 +4205,8 @@ msgstr "Envoi du message..."
 
 #. check to see if the user wants copies of all attachments
 #: send.c:1699
-#, fuzzy
 msgid "Save attachments in Fcc?"
-msgstr "visualiser un attachment en tant que texte"
+msgstr "Sauver les attachements dans Fcc ?"
 
 #: send.c:1808
 msgid "Could not send the message."
@@ -4486,7 +4484,7 @@ msgstr "La session SMTP a échoué : erreur d'écriture"
 
 #: smtp.c:318
 msgid "Invalid server response"
-msgstr ""
+msgstr "Réponse du serveur invalide"
 
 # , c-format
 #: smtp.c:341
@@ -5330,12 +5328,3 @@ msgstr "extraire les clés publiques supportées"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "afficher les options S/MIME"
-
-#~ msgid "No search pattern."
-#~ msgstr "Pas de motif de recherche."
-
-#~ msgid "Reverse search: "
-#~ msgstr "Rechercher en arrière : "
-
-#~ msgid "Search: "
-#~ msgstr "Rechercher : "
