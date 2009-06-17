@@ -160,6 +160,8 @@ changes should be grouped logically, feature by feature or bugfix by
 bugfix. Escpecially a single patch fixing several problems at once
 should be avoided.
 
+Before submitting patches, please make sure the check_sec.sh script
+in the top-level source directory reports no errors/warnings.
 
 A word about warnings
 ---------------------
