@@ -6,6 +6,8 @@ The keys used are:
 
 hg tip:
 
+  + all text/* parts can be displayed inline without mailcap
+
 1.5.20 (2009-06-14):
 
   ! $fcc_attach is a quadoption now

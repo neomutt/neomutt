@@ -622,11 +622,8 @@ int mutt_needs_mailcap (BODY *m)
   switch (m->type)
   {
     case TYPETEXT:
-
-      if (!ascii_strcasecmp ("plain", m->subtype) ||
-	  !ascii_strcasecmp ("rfc822-headers", m->subtype) ||
-	  !ascii_strcasecmp ("enriched", m->subtype))
-	return 0;
+      /* we can display any text, overridable by auto_view */
+      return 0;
       break;
 
     case TYPEAPPLICATION:
