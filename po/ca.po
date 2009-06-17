@@ -47,10 +47,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.19\n"
+"Project-Id-Version: mutt 1.5.20\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-06-14 11:53-0700\n"
-"PO-Revision-Date: 2009-01-18 20:59+0100\n"
+"PO-Revision-Date: 2009-06-17 20:16+0200\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "MIME-Version: 1.0\n"
@@ -211,22 +211,24 @@ msgstr "No s’ha pogut crear el filtre."
 #: attach.c:554
 #, c-format
 msgid "---Command: %-20.20s Description: %s"
-msgstr ""
+msgstr "---Ordre: %-20.20s Descripció: %s"
 
 #: attach.c:558
 #, c-format
 msgid "---Command: %-30.30s Attachment: %s"
-msgstr ""
+msgstr "---Ordre: %-30.30s Adjunció: %s"
 
+# Nom de fitxer i tipus MIME.  ivb
 #: attach.c:604
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s: %s"
-msgstr "-- Adjuncions"
+msgstr "---Adjunció: %s: %s"
 
+# Nom de fitxer.  ivb
 #: attach.c:607
-#, fuzzy, c-format
+#, c-format
 msgid "---Attachment: %s"
-msgstr "-- Adjuncions"
+msgstr "---Adjunció: %s"
 
 #: attach.c:677 attach.c:709 attach.c:1006 attach.c:1064 handler.c:1285
 #: pgpkey.c:570 pgpkey.c:759
@@ -366,12 +368,11 @@ msgstr "%s: El color no existeix."
 msgid "%s: no such object"
 msgstr "%s: L’objecte no existeix."
 
-# ivb (2001/11/18)
-# ivb  «index» és una paraula clau.
+# «index» i companyia són paraules clau.  ivb
 #: color.c:391
-#, fuzzy, c-format
+#, c-format
 msgid "%s: command valid only for index, body, header objects"
-msgstr "%s: L’ordre només és vàlida per a un objecte «index»."
+msgstr "%s: L’ordre només és vàlida per a objectes «index», «body» i «header»."
 
 #: color.c:399
 #, c-format
@@ -459,9 +460,8 @@ msgid "Command: "
 msgstr "Ordre: "
 
 #: commands.c:255
-#, fuzzy
 msgid "Warning: message has no From: header"
-msgstr "Avís: Part d’aquest missatge no ha estat signat."
+msgstr "Avís: El missatge no té capçalera «From:»."
 
 #: commands.c:273 recvcmd.c:171
 msgid "Bounce message to: "
@@ -2062,8 +2062,7 @@ msgstr ""
 #: handler.c:1368
 msgid "[-- Error: message/external-body has no access-type parameter --]\n"
 msgstr ""
-"[-- Error: La part «message/external-body» no té paràmetre «access-type». "
-"--]\n"
+"[-- Error: La part «message/external-body» no té paràmetre «access-type». --]\n"
 
 #: handler.c:1389
 #, c-format
@@ -2120,26 +2119,25 @@ msgstr "Error: La part «multipart/encrypted» no té paràmetre «protocol»."
 msgid "Unable to open temporary file!"
 msgstr "No s’ha pogut obrir el fitxer temporal."
 
+# Es concatenen amb una o cap de les següents i en acabant « --]».  ivb
+# Sí, la concatenació original està malament.  ivb
 #: handler.c:1724
-#, fuzzy
 msgid "[-- This is an attachment "
-msgstr ""
-"[-- Aquesta adjunció de tipus «%s/%s» --]\n"
-"[-- "
+msgstr "[-- Açò és una adjunció."
 
 #: handler.c:1726
 #, c-format
 msgid "[-- %s/%s is unsupported "
-msgstr "[-- No es pot mostrar «%s/%s» "
+msgstr "[-- No es pot mostrar «%s/%s»."
 
 #: handler.c:1731
 #, c-format
 msgid "(use '%s' to view this part)"
-msgstr "(useu «%s» per a veure aquesta part)"
+msgstr " (Useu «%s» per a veure aquesta part.)"
 
 #: handler.c:1733
 msgid "(need 'view-attachments' bound to key!)"
-msgstr "(vinculeu «view-attachents» a una tecla)"
+msgstr " (Vinculeu «view-attachents» a una tecla.)"
 
 #: headers.c:189
 #, c-format
@@ -2565,18 +2563,19 @@ msgstr "El valor de l’opció «%s» no és vàlid: «%s»"
 msgid "%s: invalid mailbox type"
 msgstr "%s: El tipus de bústia no és vàlid."
 
+# La cadena entre parèntesis és un dels missatges següents.  ivb
 #: init.c:2095
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: El valor no és vàlid."
+msgstr "%s: El valor no és vàlid (%s)."
 
 #: init.c:2096
 msgid "format error"
-msgstr ""
+msgstr "error de format"
 
 #: init.c:2096
 msgid "number overflow"
-msgstr ""
+msgstr "desbordament numèric"
 
 #: init.c:2156
 #, c-format
@@ -2740,7 +2739,6 @@ msgstr ""
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: main.c:73
-#, fuzzy
 msgid ""
 "Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -2761,7 +2759,7 @@ msgstr ""
 "Copyright © 1999‐2009 Brendan Cully <brendan@kublai.com>\n"
 "Copyright © 1999‐2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
 "Copyright © 2000‐2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-"Copyright © 2006‐2008 Rocco Rutte <pdmef@gmx.net>\n"
+"Copyright © 2006‐2009 Rocco Rutte <pdmef@gmx.net>\n"
 "\n"
 "Moltes altres persones que no s’hi mencionen han contribuït amb codi,\n"
 "solucions i suggeriments.\n"
@@ -2917,9 +2915,9 @@ msgid "Error initializing terminal."
 msgstr "Error en inicialitzar el terminal."
 
 #: main.c:636
-#, fuzzy, c-format
+#, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Error: L’IDN no és vàlid: %s"
+msgstr "Error: L’argument de l’opció «-d» no és vàlid: %s\n"
 
 #: main.c:639
 #, c-format
@@ -3335,7 +3333,7 @@ msgstr "Error en processar les dades del certificat."
 
 #: mutt_ssl_gnutls.c:703
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr ""
+msgstr "Avís: El certificat del servidor s’ha signat emprant un algorisme insegur."
 
 #: mutt_ssl_gnutls.c:822
 #, c-format
@@ -3813,9 +3811,9 @@ msgid "Command UIDL is not supported by server."
 msgstr "El servidor no permet l’ordre «UIDL»."
 
 #: pop.c:287
-#, fuzzy, c-format
+#, c-format
 msgid "%d messages have been lost. Try reopening the mailbox."
-msgstr "L’índex del missatge no és correcte.  Proveu de reobrir la bústia."
+msgstr "S’han perdut %d missatges.  Proveu de reobrir la bústia."
 
 #: pop.c:402 pop.c:785
 #, c-format
@@ -3894,9 +3892,9 @@ msgid "Command USER is not supported by server."
 msgstr "El servidor no permet l’ordre «USER»."
 
 #: pop_lib.c:54
-#, fuzzy, c-format
+#, c-format
 msgid "Invalid POP URL: %s\n"
-msgstr "L’URL d’SMTP no és vàlid: %s"
+msgstr "L’URL de POP no és vàlid: %s\n"
 
 #: pop_lib.c:205
 msgid "Unable to leave messages on server."
@@ -4060,7 +4058,7 @@ msgstr "Només es poden redirigir parts de tipus «message/rfc822»."
 
 #: recvcmd.c:148 recvcmd.c:161
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Avís: El missatge no té capçalera «From:»."
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -4202,9 +4200,10 @@ msgstr "score: Manquen arguments."
 msgid "score: too many arguments"
 msgstr "score: Sobren arguments."
 
+# És un error com els anteriors.  ivb
 #: score.c:122
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "score: El número no és vàlid."
 
 #: send.c:252
 msgid "No subject, abort?"
@@ -4303,11 +4302,11 @@ msgstr "No s’ha indicat l’assumpte."
 msgid "Sending message..."
 msgstr "S’està enviant el missatge…"
 
+# El nom «Fcc» és bastant entenedor per a l’usuari si l’ha especificat.  ivb
 #. check to see if the user wants copies of all attachments
 #: send.c:1699
-#, fuzzy
 msgid "Save attachments in Fcc?"
-msgstr "Mostra una adjunció com a text."
+msgstr "Voleu desar les adjuncions a l’Fcc?"
 
 #: send.c:1808
 msgid "Could not send the message."
@@ -4579,15 +4578,15 @@ msgstr "No s’ha indicat el remitent (From)."
 
 #: smtp.c:314
 msgid "SMTP session failed: read error"
-msgstr "La sessió SMTP fallat: error de lectura"
+msgstr "La sessió SMTP ha fallat: error de lectura"
 
 #: smtp.c:316
 msgid "SMTP session failed: write error"
-msgstr "La sessió SMTP fallat: error d’escriptura"
+msgstr "La sessió SMTP ha fallat: error d’escriptura"
 
 #: smtp.c:318
 msgid "Invalid server response"
-msgstr ""
+msgstr "La resposta del servidor no és vàlida."
 
 #: smtp.c:341
 #, c-format
@@ -4600,7 +4599,7 @@ msgstr "El servidor SMTP no admet autenticació."
 
 #: smtp.c:459
 msgid "Interactive SMTP authentication not supported"
-msgstr ""
+msgstr "No es permet l’autenticació SMTP interactiva."
 
 #: smtp.c:465
 msgid "SMTP authentication requires SASL"
@@ -5254,9 +5253,8 @@ msgid "use the current message as a template for a new one"
 msgstr "Empra el missatge actual com a plantilla per a un de nou."
 
 #: ../keymap_alldefs.h:157
-#, fuzzy
 msgid "save message/attachment to a mailbox/file"
-msgstr "Desa un missatge o adjunció en un fitxer."
+msgstr "Desa un missatge o adjunció en una bústia o fitxer."
 
 #: ../keymap_alldefs.h:158
 msgid "search for a regular expression"
@@ -5443,12 +5441,3 @@ msgstr "Extreu totes les claus públiques possibles."
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "Mostra les opcions d’S/MIME."
-
-#~ msgid "No search pattern."
-#~ msgstr "No s’ha indicat cap patró de cerca."
-
-#~ msgid "Reverse search: "
-#~ msgstr "Cerca cap enrere: "
-
-#~ msgid "Search: "
-#~ msgstr "Cerca: "
