@@ -1,3 +1,13 @@
+2009-06-17 18:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (4b5326d8d2ee)
+
+	* UPDATING, muttlib.c: Always display text/* parts inline,
+	overrideable by auto_view. Closes #3246.
+
+2009-06-15 22:05 +0200  Rocco Rutte  <pdmef@gmx.net>  (f40de578e8ed)
+
+	* ChangeLog, handler.c: Unbreak header weeding for message/rfc822
+	parts. Closes #3265.
+
 2009-06-15 19:59 +0200  Rocco Rutte  <pdmef@gmx.net>  (b5ed5d96c775)
 
 	* init.c, lib.c, lib.h: Print timestamps in debug files. Closes #3263.

@@ -411,7 +411,6 @@ int mx_get_magic (const char *path)
   {
     dprint (1, (debugfile, "mx_get_magic(): unable to open file %s for reading.\n",
 		path));
-    mutt_perror (path);
     return (-1);
   }
 
