@@ -2371,16 +2371,14 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
               safe_fclose (&pgpout);
             }
         }
-#if 0
       else
       {
-        /* why would we want to display this at all? */
+	/* A traditional PGP part may mix signed and unsigned content */
         /* XXX - we may wish to recode here */
         if (s->prefix)
           state_puts (s->prefix, s);
         state_puts (buf, s);
       }
-#endif
     }
 
   m->goodsig = (maybe_goodsig && have_any_sigs);
