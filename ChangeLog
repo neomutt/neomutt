@@ -1,3 +1,11 @@
+2009-06-17 13:58 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (ef9b67c7ebc4)
+
+	* po/ca.po: Updated Catalan translation.
+
+2009-06-17 13:57 -0700  Vincent Lefevre  <vincent@vinc17.org>  (62471a5d3186)
+
+	* po/fr.po: Updated French translation.
+
 2009-06-17 20:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (33376ae23d8f)
 
 	* doc/devel-notes.txt: Mention check_sec.sh in doc/devel-notes.txt
