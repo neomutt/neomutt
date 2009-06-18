@@ -30,6 +30,7 @@ hg tip:
 
 1.5.19 (2009-01-05):
 
+  ! command-line arguments: -a now mandates -- at end of file list
   + support for SSL certificate chains
   + <what-key> function works in pager, too
   + support for tokyocabinet (qdbm successor)
