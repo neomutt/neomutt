@@ -10,6 +10,7 @@ MAKEDOC_CPP = $(CPP) $(AM_CPPFLAGS) $(DEFS) $(CPPFLAGS) -D_MAKEDOC -C
 noinst_PROGRAMS = makedoc
 
 EXTRA_DIST = dotlock.man		\
+        smime_keys.man                  \
 	muttbug.man			\
 	mutt.man			\
 	PGP-Notes.txt			\
@@ -45,13 +46,14 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 
 all: makedoc-all
 
-makedoc-all: mutt.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt
+makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt
 
 install-data-local: makedoc-all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
 	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
+	./instdoc smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
 	test x@DOTLOCK_TARGET@ = x || ./instdoc $(srcdir)/dotlock.man \
@@ -80,7 +82,7 @@ install-data-local: makedoc-all instdoc
 	fi
 
 uninstall-local:
-	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 ; do \
+	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 smime_keys.1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f ; \
 	done
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \
@@ -144,7 +146,7 @@ sortcheck: manual.xml
 	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
-	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 muttrc.man
+	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 smime_keys.1 muttrc.man
 	rm -f *.aux *.log *.tex *.out
 
 DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
@@ -167,6 +169,9 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
+
+smime_keys.1: $(srcdir)/smime_keys.man
+	$(EDIT) $(srcdir)/smime_keys.man > $@
 
 stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \

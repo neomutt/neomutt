@@ -37,6 +37,7 @@
 ^doc/muttrc\.man$
 ^doc/.*\.html$
 ^doc/stamp-
+^doc/smime_keys\.1$
 ^po/mutt\.pot$
 
 # xcode droppings

@@ -1,3 +1,20 @@
+2009-06-18 14:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (508bfe4a2e23)
+
+	* mbox.c: Backout experimental patch
+
+2009-06-18 14:45 +0200  Rocco Rutte  <pdmef@gmx.net>  (aca707871bcf)
+
+	* UPDATING, mbox.c: UPDATING: add note about -a and --
+
+2009-06-17 16:19 -0700  Antonio Radici  <antonio@dyne.org>  (25e46aad362b)
+
+	* buffy.c: Do not free statically-allocated buffy buffer. Unbreaks
+	unmailboxes, closes #3273.
+
+2009-06-17 15:23 -0700  Petr Písař  <petr.pisar@atlas.cz>  (fe94f01b369a)
+
+	* ChangeLog, po/cs.po: Updated Czech translation.
+
 2009-06-17 13:58 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (ef9b67c7ebc4)
 
 	* po/ca.po: Updated Catalan translation.
