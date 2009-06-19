@@ -1594,12 +1594,21 @@ static int my_width (const char *str, int col, int flags)
   return w;
 }
 
-static int print_val (FILE *fp, const char *pfx, const char *value, int flags)
+static int print_val (FILE *fp, const char *pfx, const char *value,
+		      int flags, size_t col)
 {
   while (value && *value)
   {
     if (fputc (*value, fp) == EOF)
       return -1;
+    /* corner-case: break words longer than 998 chars by force,
+     * mandated by RfC5322 */
+    if (!(flags & CH_DISPLAY) && ++col >= 998)
+    {
+      if (fputs ("\n ", fp) < 0)
+	return -1;
+      col = 1;
+    }
     if (*value == '\n')
     {
       if (*(value + 1) && pfx && *pfx && fputs (pfx, fp) == EOF)
@@ -1676,11 +1685,11 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
       }
       if (fputc ('\t', fp) == EOF)
 	return -1;
-      if (print_val (fp, pfx, p, flags) < 0)
+      if (print_val (fp, pfx, p, flags, col) < 0)
 	return -1;
       col += 8;
     }
-    else if (print_val (fp, pfx, buf, flags) < 0)
+    else if (print_val (fp, pfx, buf, flags, col) < 0)
       return -1;
     col += w;
 
@@ -1728,7 +1737,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     if (pfx && *pfx)
       if (fputs (pfx, fp) == EOF)
 	return -1;
-    if (print_val (fp, pfx, valbuf, flags) < 0)
+    if (print_val (fp, pfx, valbuf, flags, mutt_strlen (pfx)) < 0)
     {
       FREE(&valbuf);
       return -1;
