@@ -3998,6 +3998,14 @@ backtick expansion), this feature can be used to make configuration
 files more readable.
 </para>
 
+<para>
+Whenever a user-defined variable is used in an assignment for a built-in
+variable or vice versa, Mutt string representations to do the
+assignment. As a result, a user-defined variable can be assigned to any
+other variable under the restriction that its content is valid. See the
+following section for examples.
+</para>
+
 </sect3>
 
 <sect3 id="set-myvar-examples">
@@ -4068,6 +4076,24 @@ between <literal>&lt;enter-command&gt;</literal> and
 the <command>set</command> configuration command, preventing Mutt from
 recording the <command>macro</command>'s commands into its history.
 </para>
+
+<para>
+The following example demonstrates type conversion when using
+user-defined variables.
+</para>
+
+<example id="ex-myvar4">
+<title>Type conversion in user-defined variables</title>
+<screen>
+set my_lines = "5"                # value is string "5"
+set pager_index_lines = $my_lines # value is integer 5
+
+set my_sort = "date-received"     # value is string "date-received"
+set sort = "last-$my_sort"        # value is sort last-date-received
+
+set my_inc = $read_inc            # value is string "10" (default)
+</screen>
+</example>
 
 </sect3>
 
