@@ -451,8 +451,6 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       cur = rfc822_new_address ();
       if (phraselen)
       {
-	if (cur->personal)
-	  FREE (&cur->personal);
 	/* if we get something like "Michael R. Elkins" remove the quotes */
 	rfc822_dequote_comment (phrase);
 	cur->personal = safe_strdup (phrase);
