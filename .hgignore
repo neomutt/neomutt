@@ -32,7 +32,7 @@
 ^smime_keys$
 ^stamp-doc-rc$
 ^doc/instdoc$
-^doc/manual\.(txt|xml)$
+^doc/manual\.(txt|xml|aux|log|out|tex|pdf)$
 ^doc/mutt\.1$
 ^doc/muttrc\.man$
 ^doc/.*\.html$
