@@ -1,3 +1,22 @@
+2009-06-19 19:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (0fd362c870b8)
+
+	* doc/manual.xml.head: Manual: Add note and example for type
+	conversions with my_vars
+
+2009-06-19 18:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (9656d94b83b2)
+
+	* .hgignore: Ignore files from manual.pdf generation
+
+2009-06-19 18:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (439274e8eca4)
+
+	* sendlib.c: Enforce 998 char length limit on header lines when
+	sending.
+
+2009-06-18 15:06 +0200  Antonio Radici  <antonio@dyne.org>  (c6fe0bb8cf11)
+
+	* .hgignore, ChangeLog, doc/Makefile.am, doc/smime_keys.man: Provide
+	smime_keys(1). Closes #3272.
+
 2009-06-18 14:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (508bfe4a2e23)
 
 	* mbox.c: Backout experimental patch
