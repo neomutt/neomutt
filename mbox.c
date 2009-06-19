@@ -681,7 +681,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 
 /* if mailbox has at least 1 new message, sets mtime > atime of mailbox
  * so buffy check reports new mail */
-static void reset_atime (CONTEXT *ctx, struct stat *st)
+void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
 {
   struct utimbuf utimebuf;
   int i, found = 0;
@@ -991,7 +991,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   /* Restore the previous access/modification times */
-  reset_atime (ctx, &statbuf);
+  mbox_reset_atime (ctx, &statbuf);
 
   /* reopen the mailbox in read-only mode */
   if ((ctx->fp = fopen (ctx->path, "r")) == NULL)

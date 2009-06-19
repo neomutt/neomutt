@@ -926,6 +926,8 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   {
     if (!ctx->quiet)
       mutt_message _("Mailbox is unchanged.");
+    if (ctx->magic == M_MBOX || ctx->magic == M_MMDF)
+      mbox_reset_atime (ctx, NULL);
     mx_fastclose_mailbox (ctx);
     return 0;
   }
