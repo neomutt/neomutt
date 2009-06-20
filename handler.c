@@ -1500,7 +1500,7 @@ static int text_plain_handler (BODY *b, STATE *s)
     l = mutt_strlen (buf);
     if (l > 0 && buf[l-1] == '\n')
       buf[--l] = 0;
-    if (option (OPTTEXTFLOWED))
+    if (mutt_strcmp (buf, "-- ") != 0 && option (OPTTEXTFLOWED))
     {
       while (l > 0 && buf[l-1] == ' ')
 	buf[--l] = 0;
