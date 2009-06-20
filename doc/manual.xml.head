@@ -3998,14 +3998,6 @@ backtick expansion), this feature can be used to make configuration
 files more readable.
 </para>
 
-<para>
-Whenever a user-defined variable is used in an assignment for a built-in
-variable or vice versa, Mutt string representations to do the
-assignment. As a result, a user-defined variable can be assigned to any
-other variable under the restriction that its content is valid. See the
-following section for examples.
-</para>
-
 </sect3>
 
 <sect3 id="set-myvar-examples">
@@ -4077,13 +4069,28 @@ the <command>set</command> configuration command, preventing Mutt from
 recording the <command>macro</command>'s commands into its history.
 </para>
 
+</sect3>
+
+</sect2>
+
+<sect2 id="set-conversions">
+<title>Type Conversions</title>
+
 <para>
-The following example demonstrates type conversion when using
-user-defined variables.
+Variables are always assigned string values which Mutt parses into its
+internal representation according to the type of the variable, for
+example an integer number for numeric types. For all queries (including
+&dollar;-expansion) the value is converted from its internal type back
+into string. As a result, any variable can be assigned any value given
+that its content is valid for the target. This also counts for custom
+variables which are of type string. In case of parsing errors, mutt will
+print error messages as it would have if the new value was specified
+literally and not through another variable. <xref linkend="ex-myvar4"/>
+demonstrates type conversions.
 </para>
 
 <example id="ex-myvar4">
-<title>Type conversion in user-defined variables</title>
+<title>Type conversions using variables</title>
 <screen>
 set my_lines = "5"                # value is string "5"
 set pager_index_lines = $my_lines # value is integer 5
@@ -4091,11 +4098,46 @@ set pager_index_lines = $my_lines # value is integer 5
 set my_sort = "date-received"     # value is string "date-received"
 set sort = "last-$my_sort"        # value is sort last-date-received
 
-set my_inc = $read_inc            # value is string "10" (default)
+set my_inc = $read_inc            # value is string "10" (default of $read_inc)
+set my_foo = $my_inc              # value is string "10"
 </screen>
 </example>
 
-</sect3>
+<para>
+These assignments are all valid. If, however, the value of
+<literal>&dollar;my&lowbar;lines</literal> would have been
+<quote>five</quote> (or something else that cannot be parsed into a
+number), the assignment to
+<literal>&dollar;pager&lowbar;index&lowbar;lines</literal> would have
+produced an error message.
+</para>
+
+<para>
+Type conversion applies to all configuration commands which take
+arguments. But please note that every expanded value of a variable is
+considered just a single token. A working example is:
+</para>
+
+<screen>
+set my_pattern = "~A"
+set my_number = "10"
+
+# same as: score ~A +10
+score $my_pattern +$my_number</screen>
+
+<para>
+What does <emphasis>not</emphasis> work is:
+</para>
+
+<screen>
+set my_mx = "+mailbox1 +mailbox2"
+mailboxes $my_mx +mailbox3</screen>
+
+<para>
+because the value of <literal>&dollar;my&lowbar;mx</literal> is
+interpreted as a single mailbox named <quote>+mailbox1 +mailbox2</quote>
+and not two distinct mailboxes.
+</para>
 
 </sect2>
 
