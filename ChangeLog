@@ -1,3 +1,27 @@
+2009-06-20 15:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (580ab0256c49)
+
+	* doc/manual.xml.head: Manual: Clarify and extend variable type
+	conversion section
+
+2009-06-19 19:56 -0400  Aron Griffis  <agriffis@n01se.net>  (ee3d174297bb)
+
+	* rfc822.c: remove bogus FREE
+
+	It's impossible for cur->personal to be non-NULL at this point,
+	since cur was calloc'd just a couple lines prior.
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2009-06-19 22:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (9ae13dedb5ed)
+
+	* mbox.c, mx.c, mx.h: Fixup atime for mbox/mmdf also when mailbox is
+	unchanged but has new mail. See #1362.
+
+2009-06-19 19:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (bd59be56c6b0)
+
+	* ChangeLog, mbox.c: Don't mangle atime/mtime for mbox folders without
+	new mail upon sync. Closes #1362, #3271.
+
 2009-06-19 19:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (0fd362c870b8)
 
 	* doc/manual.xml.head: Manual: Add note and example for type

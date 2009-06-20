@@ -1220,7 +1220,7 @@ int mutt_index_menu (void)
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
 	  mutt_error _("Threading is not enabled.");
-	else
+	else if (CURHDR->env->in_reply_to || CURHDR->env->references)
 	{
 	  {
 	    HEADER *oldcur = CURHDR;
@@ -1241,8 +1241,10 @@ int mutt_index_menu (void)
 	  else
 	    menu->redraw |= REDRAW_INDEX;
 	}
+	else
+	  mutt_error _("Thread cannot be broken, message is not part of a thread");
 
-	  break;
+	break;
 
       case OP_MAIN_LINK_THREADS:
 
