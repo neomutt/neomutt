@@ -1,3 +1,13 @@
+2009-06-20 23:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (6447ebe80797)
+
+	* handler.c: f=f: Don't kill signature separator when stripping
+	trailing spaces. Closes #3275.
+
+2009-06-20 16:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc1aa7702c96)
+
+	* ChangeLog, curs_main.c: Disallow breaking threads for messages not
+	part of a thread
+
 2009-06-20 15:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (580ab0256c49)
 
 	* doc/manual.xml.head: Manual: Clarify and extend variable type

@@ -1737,6 +1737,12 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     if (pfx && *pfx)
       if (fputs (pfx, fp) == EOF)
 	return -1;
+    if (!(t = strchr (valbuf, ':')))
+    {
+      dprint (1, (debugfile, "mwoh: warning: header not in "
+		  "'key: value' format!\n"));
+      return 0;
+    }
     if (print_val (fp, pfx, valbuf, flags, mutt_strlen (pfx)) < 0)
     {
       FREE(&valbuf);
@@ -1747,6 +1753,12 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
   else
   {
     t = strchr (start, ':');
+    if (t > end)
+    {
+      dprint (1, (debugfile, "mwoh: warning: header not in "
+		  "'key: value' format!\n"));
+      return 0;
+    }
     tagbuf = mutt_substrdup (start, t);
     valbuf = mutt_substrdup (t + 2, end);
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
