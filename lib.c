@@ -758,7 +758,8 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
     }
     if ((ch = strchr (s + offset, '\n')) != NULL)
     {
-      (*line)++;
+      if (line)
+	(*line)++;
       if (flags & M_EOL)
 	return s;
       *ch = 0;
@@ -779,7 +780,8 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
       if (c == EOF)
       {
         /* The last line of fp isn't \n terminated */
-        (*line)++;
+	if (line)
+	  (*line)++;
         return s;
       }
       else
