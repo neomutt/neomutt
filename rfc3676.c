@@ -186,12 +186,10 @@ static void print_fixed_line (const char *line, STATE *s, int ql,
 
 int rfc3676_handler (BODY * a, STATE * s)
 {
-  int bytes = a->length;
-  char buf[LONG_STRING];
-  char *t = NULL;
+  char *buf = NULL, *t = NULL;
   unsigned int quotelevel = 0, newql = 0, sigsep = 0;
-  int buf_off = 0, buf_len;
-  int delsp = 0, fixed = 0;
+  int buf_off = 0, delsp = 0, fixed = 0;
+  size_t buf_len = 0, sz = 0;
   flowed_state_t fst;
 
   memset (&fst, 0, sizeof (fst));
@@ -205,12 +203,9 @@ int rfc3676_handler (BODY * a, STATE * s)
 
   dprint (4, (debugfile, "f=f: DelSp: %s\n", delsp ? "yes" : "no"));
 
-  while (bytes > 0 && fgets (buf, sizeof (buf), s->fpin))
+  while ((buf = mutt_read_line (buf, &sz, s->fpin, NULL, 0)))
   {
-
     buf_len = mutt_strlen (buf);
-    bytes -= buf_len;
-
     newql = get_quote_level (buf);
 
     /* end flowed paragraph (if we're within one) if quoting level
@@ -220,18 +215,6 @@ int rfc3676_handler (BODY * a, STATE * s)
       flush_par (s, &fst);
 
     quotelevel = newql;
-
-    /* XXX - If a line is longer than buf (shouldn't happen), it is split.
-     * This will almost always cause an unintended line break, and
-     * possibly a change in quoting level. But that's better than not
-     * displaying it at all.
-     */
-    if ((t = strrchr (buf, '\r')) || (t = strrchr (buf, '\n')))
-    {
-      *t = '\0';
-      buf_len = t - buf;
-    }
-
     buf_off = newql;
 
     /* respect sender's space-stuffing by removing one leading space */
@@ -264,6 +247,7 @@ int rfc3676_handler (BODY * a, STATE * s)
 
   flush_par (s, &fst);
 
+  FREE (&buf);
   return (0);
 }
 

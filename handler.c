@@ -1492,16 +1492,14 @@ void mutt_decode_attachment (BODY *b, STATE *s)
  */
 static int text_plain_handler (BODY *b, STATE *s)
 {
-  char buf[LONG_STRING];
-  size_t l;
+  char *buf = NULL;
+  size_t l = 0, sz = 0;
 
-  while (fgets (buf, sizeof (buf), s->fpin))
+  while ((buf = mutt_read_line (buf, &sz, s->fpin, NULL, 0)))
   {
-    l = mutt_strlen (buf);
-    if (l > 0 && buf[l-1] == '\n')
-      buf[--l] = 0;
     if (mutt_strcmp (buf, "-- ") != 0 && option (OPTTEXTFLOWED))
     {
+      l = mutt_strlen (buf);
       while (l > 0 && buf[l-1] == ' ')
 	buf[--l] = 0;
     }
@@ -1511,6 +1509,7 @@ static int text_plain_handler (BODY *b, STATE *s)
     state_putc ('\n', s);
   }
 
+  FREE (&buf);
   return 0;
 }
 

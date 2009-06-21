@@ -1,3 +1,12 @@
+2009-06-21 21:04 +0200  Rocco Rutte  <pdmef@gmx.net>  (23fd0edaab41)
+
+	* lib.c: mutt_read_line(): make line counting ptr optional
+
+2009-06-21 20:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (9f1d56c0a247)
+
+	* ChangeLog, sendlib.c: Silently drop headers not in "key: value"
+	format. Fixes out-of-memory exits.
+
 2009-06-20 23:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (6447ebe80797)
 
 	* handler.c: f=f: Don't kill signature separator when stripping
