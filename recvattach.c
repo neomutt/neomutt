@@ -584,7 +584,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
       CLEARLINE (LINES-1);
       return;
     }
-    mutt_mktemp (tfile);
+    mutt_mktemp (tfile, sizeof (tfile));
   }
   else
     tfile[0] = 0;
@@ -734,7 +734,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
 	  char newfile[_POSIX_PATH_MAX] = "";
 	  FILE *ifp;
 
-	  mutt_mktemp (newfile);
+	  mutt_mktemp (newfile, sizeof (newfile));
 	  if (mutt_decode_save_attachment (fp, top, newfile, M_PRINTING, 0) == 0)
 	  {
 	    if ((ifp = fopen (newfile, "r")) != NULL)

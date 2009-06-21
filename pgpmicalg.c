@@ -170,7 +170,7 @@ static short pgp_find_hash (const char *fname)
   
   short rv = -1;
   
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((out = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);

@@ -593,7 +593,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
   if (!WithCrypto)
     return;
 
-  mutt_mktemp (tempfname);
+  mutt_mktemp (tempfname, sizeof (tempfname));
   if (!(fpout = safe_fopen (tempfname, "w")))
   {
     mutt_perror (tempfname);
@@ -844,7 +844,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
     
     if (sigcnt)
     {
-      mutt_mktemp (tempfile);
+      mutt_mktemp (tempfile, sizeof (tempfile));
       if (crypt_write_signed (a, s, tempfile) == 0)
       {
 	for (i = 0; i < sigcnt; i++)

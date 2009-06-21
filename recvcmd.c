@@ -435,7 +435,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
   tmphdr->env = mutt_new_envelope ();
   mutt_make_forward_subject (tmphdr->env, Context, parent);
 
-  mutt_mktemp (tmpbody);
+  mutt_mktemp (tmpbody, sizeof (tmpbody));
   if ((tmpfp = safe_fopen (tmpbody, "w")) == NULL)
   {
     mutt_error (_("Can't open temporary file %s."), tmpbody);
@@ -613,7 +613,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
     
     /* no MIME encapsulation */
     
-    mutt_mktemp (tmpbody);
+    mutt_mktemp (tmpbody, sizeof (tmpbody));
     if (!(tmpfp = safe_fopen (tmpbody, "w")))
     {
       mutt_error (_("Can't create %s."), tmpbody);
@@ -863,7 +863,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
     return;
   }
   
-  mutt_mktemp (tmpbody);
+  mutt_mktemp (tmpbody, sizeof (tmpbody));
   if ((tmpfp = safe_fopen (tmpbody, "w")) == NULL)
   {
     mutt_error (_("Can't create %s."), tmpbody);

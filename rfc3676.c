@@ -284,7 +284,7 @@ void rfc3676_space_stuff (HEADER* hdr)
   if ((in = safe_fopen (hdr->content->filename, "r")) == NULL)
     return;
 
-  mutt_mktemp (tmpfile);
+  mutt_mktemp (tmpfile, sizeof (tmpfile));
   if ((out = safe_fopen (tmpfile, "w+")) == NULL)
   {
     safe_fclose (&in);

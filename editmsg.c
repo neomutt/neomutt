@@ -64,7 +64,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   struct stat sb;
   time_t mtime = 0;
   
-  mutt_mktemp (tmp);
+  mutt_mktemp (tmp, sizeof (tmp));
 
   omagic = DefaultMagic;
   DefaultMagic = M_MBOX;

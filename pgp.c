@@ -311,7 +311,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       have_any_sigs = have_any_sigs || (clearsign && (s->flags & M_VERIFY));
 
       /* Copy PGP material to temporary file */
-      mutt_mktemp (tmpfname);
+      mutt_mktemp (tmpfname, sizeof (tmpfname));
       if ((tmpfp = safe_fopen (tmpfname, "w+")) == NULL)
       {
 	mutt_perror (tmpfname);
@@ -350,7 +350,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       /* Invoke PGP if needed */
       if (!clearsign || (s->flags & M_VERIFY))
       {
-	mutt_mktemp (outfile);
+	mutt_mktemp (outfile, sizeof (outfile));
 	if ((pgpout = safe_fopen (outfile, "w+")) == NULL)
 	{
 	  mutt_perror (tmpfname);
@@ -535,7 +535,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
   if (tagged_only && !b->tagged)
     return 0;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (mutt_decode_save_attachment (fp, b, tempfile, 0, 0) != 0)
   {
     unlink (tempfile);
@@ -623,7 +623,7 @@ int pgp_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   mutt_copy_bytes (s->fpin, fp, sigbdy->length);
   safe_fclose (&fp);
   
-  mutt_mktemp(pgperrfile);
+  mutt_mktemp (pgperrfile, sizeof (pgperrfile));
   if(!(pgperr = safe_fopen(pgperrfile, "w+")))
   {
     mutt_perror(pgperrfile);
@@ -682,7 +682,7 @@ void pgp_extract_keys_from_messages (HEADER *h)
       return;
   }
 
-  mutt_mktemp (tempfname);
+  mutt_mktemp (tempfname, sizeof (tempfname));
   if (!(fpout = safe_fopen (tempfname, "w")))
   {
     mutt_perror (tempfname);
@@ -738,7 +738,7 @@ static void pgp_extract_keys_from_attachment (FILE *fp, BODY *top)
   FILE *tempfp;
   char tempfname[_POSIX_PATH_MAX];
 
-  mutt_mktemp (tempfname);
+  mutt_mktemp (tempfname, sizeof (tempfname));
   if (!(tempfp = safe_fopen (tempfname, "w")))
   {
     mutt_perror (tempfname);
@@ -795,7 +795,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   pid_t thepid;
   int rv;
   
-  mutt_mktemp (pgperrfile);
+  mutt_mktemp (pgperrfile, sizeof (pgperrfile));
   if ((pgperr = safe_fopen (pgperrfile, "w+")) == NULL)
   {
     mutt_perror (pgperrfile);
@@ -803,7 +803,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   }
   unlink (pgperrfile);
 
-  mutt_mktemp (pgptmpfile);
+  mutt_mktemp (pgptmpfile, sizeof (pgptmpfile));
   if((pgptmp = safe_fopen (pgptmpfile, "w")) == NULL)
   {
     mutt_perror (pgptmpfile);
@@ -911,7 +911,7 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((*fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
@@ -953,7 +953,7 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
    */
   a = a->next;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     if (s->flags & M_DISPLAY)
@@ -1024,13 +1024,13 @@ BODY *pgp_sign_message (BODY *a)
   
   convert_to_7bit (a); /* Signed data _must_ be in 7-bit format. */
 
-  mutt_mktemp (sigfile);
+  mutt_mktemp (sigfile, sizeof (sigfile));
   if ((fp = safe_fopen (sigfile, "w")) == NULL)
   {
     return (NULL);
   }
 
-  mutt_mktemp (signedfile);
+  mutt_mktemp (signedfile, sizeof (signedfile));
   if ((sfp = safe_fopen(signedfile, "w")) == NULL)
   {
     mutt_perror(signedfile);
@@ -1272,14 +1272,14 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   int empty = 0;
   pid_t thepid;
   
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
     return (NULL);
   }
 
-  mutt_mktemp (pgperrfile);
+  mutt_mktemp (pgperrfile, sizeof (pgperrfile));
   if ((pgperr = safe_fopen (pgperrfile, "w+")) == NULL)
   {
     mutt_perror (pgperrfile);
@@ -1289,7 +1289,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   }
   unlink (pgperrfile);
 
-  mutt_mktemp(pgpinfile);
+  mutt_mktemp (pgpinfile, sizeof (pgpinfile));
   if((fptmp = safe_fopen(pgpinfile, "w")) == NULL)
   {
     mutt_perror(pgpinfile);
@@ -1418,7 +1418,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
     return NULL;
   }
   
-  mutt_mktemp (pgpinfile);
+  mutt_mktemp (pgpinfile, sizeof (pgpinfile));
   if ((pgpin = safe_fopen (pgpinfile, "w")) == NULL)
   {
     mutt_perror (pgpinfile);
@@ -1463,8 +1463,8 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
   safe_fclose (&fp);
   safe_fclose (&pgpin);
 
-  mutt_mktemp (pgpoutfile);
-  mutt_mktemp (pgperrfile);
+  mutt_mktemp (pgpoutfile, sizeof (pgpoutfile));
+  mutt_mktemp (pgperrfile, sizeof (pgperrfile));
   if ((pgpout = safe_fopen (pgpoutfile, "w+")) == NULL ||
       (pgperr = safe_fopen (pgperrfile, "w+")) == NULL)
   {

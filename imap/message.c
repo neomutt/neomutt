@@ -102,7 +102,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   /* instead of downloading all headers and then parsing them, we parse them
    * as they come in. */
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fp = safe_fopen (tempfile, "w+")))
   {
     mutt_error (_("Could not create temporary file %s"), tempfile);
@@ -437,7 +437,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   if (!(msg->fp = msg_cache_put (idata, h)))
   {
     cache->uid = HEADER_DATA(h)->uid;
-    mutt_mktemp (path);
+    mutt_mktemp (path, sizeof (path));
     cache->path = safe_strdup (path);
     if (!(msg->fp = safe_fopen (path, "w+")))
     {

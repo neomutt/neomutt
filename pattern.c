@@ -162,7 +162,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       memset (&s, 0, sizeof (s));
       s.fpin = msg->fp;
       s.flags = M_CHARCONV;
-      mutt_mktemp (tempfile);
+      mutt_mktemp (tempfile, sizeof (tempfile));
       if ((s.fpout = safe_fopen (tempfile, "w+")) == NULL)
       {
 	mutt_perror (tempfile);

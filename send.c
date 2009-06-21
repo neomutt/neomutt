@@ -984,7 +984,7 @@ static int send_message (HEADER *msg)
 #endif
   
   /* Write out the message in MIME form. */
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((tempfp = safe_fopen (tempfile, "w")) == NULL)
     return (-1);
 
@@ -1210,7 +1210,7 @@ ci_send_message (int flags,		/* send mode */
     
     if (!tempfile)
     {
-      mutt_mktemp (buffer);
+      mutt_mktemp (buffer, sizeof (buffer));
       tempfp = safe_fopen (buffer, "w+");
       msg->content->filename = safe_strdup (buffer);
     }

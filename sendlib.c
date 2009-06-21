@@ -1047,7 +1047,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     a->length = sb.st_size;
   }
 
-  mutt_mktemp (temp);
+  mutt_mktemp (temp, sizeof (temp));
   if (!(fpout = safe_fopen (temp, "w+")))
   {
     mutt_perror ("fopen");
@@ -1118,7 +1118,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       a->noconv = 1;
       a->force_charset = 1;
 
-      mutt_mktemp (buff);
+      mutt_mktemp (buff, sizeof (buff));
       if ((s.fpout = safe_fopen (buff, "w")) == NULL)
       {
 	mutt_perror ("fopen");
@@ -1261,7 +1261,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
     }
   }
 
-  mutt_mktemp (buffer);
+  mutt_mktemp (buffer, sizeof (buffer));
   if ((fp = safe_fopen (buffer, "w+")) == NULL)
     return NULL;
 
@@ -2097,7 +2097,7 @@ send_msg (const char *path, char **args, const char *msg, char **tempfile)
   {
     char tmp[_POSIX_PATH_MAX];
 
-    mutt_mktemp (tmp);
+    mutt_mktemp (tmp, sizeof (tmp));
     *tempfile = safe_strdup (tmp);
   }
 
@@ -2453,7 +2453,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
 
   if (!fp) fp = msg->fp;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((f = safe_fopen (tempfile, "w")) != NULL)
   {
     int ch_flags = CH_XMIT | CH_NONEWLINE | CH_NOQFROM;
@@ -2615,7 +2615,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
    */
   if (f.magic == M_MMDF || f.magic == M_MBOX)
   {
-    mutt_mktemp (tempfile);
+    mutt_mktemp (tempfile, sizeof (tempfile));
     if ((tempfp = safe_fopen (tempfile, "w+")) == NULL)
     {
       mutt_perror (tempfile);

@@ -109,7 +109,7 @@ int mutt_display_message (HEADER *cur)
   }
 
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w")) == NULL)
   {
     mutt_error _("Could not create temporary file!");

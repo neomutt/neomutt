@@ -1644,7 +1644,7 @@ int mutt_body_handler (BODY *b, STATE *s)
       {
 	/* decode to a tempfile, saving the original destination */
 	fp = s->fpout;
-	mutt_mktemp (tempfile);
+	mutt_mktemp (tempfile, sizeof (tempfile));
 	if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
 	{
 	  mutt_error _("Unable to open temporary file!");

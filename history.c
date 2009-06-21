@@ -123,7 +123,7 @@ static void shrink_histfile (void)
   for(hclass = HC_FIRST; hclass < HC_LAST; hclass++)
     if (n[hclass] > SaveHist)
     {
-      mutt_mktemp (tmpfname);
+      mutt_mktemp (tmpfname, sizeof (tmpfname));
       if ((tmp = safe_fopen (tmpfname, "w+")) == NULL)
         mutt_perror (tmpfname);
       break;

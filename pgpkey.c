@@ -547,7 +547,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
     case OP_VERIFY_KEY:
 
-      mutt_mktemp (tempfile);
+      mutt_mktemp (tempfile, sizeof (tempfile));
       if ((devnull = fopen ("/dev/null", "w")) == NULL)	/* __FOPEN_CHECKED__ */
       {
 	mutt_perror _("Can't open /dev/null");
@@ -730,7 +730,7 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   if (!tempf)
   {
-    mutt_mktemp (tempfb);
+    mutt_mktemp (tempfb, sizeof (tempfb));
     tempf = tempfb;
   }
 

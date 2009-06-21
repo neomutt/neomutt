@@ -896,7 +896,7 @@ int main (int argc, char **argv)
       else
 	fin = NULL;
 
-      mutt_mktemp (buf);
+      mutt_mktemp (buf, sizeof (buf));
       tempfile = safe_strdup (buf);
 
       if (draftFile)

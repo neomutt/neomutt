@@ -340,7 +340,7 @@ void mutt_help (int menu)
   FILE *f;
   struct binding_t *funcs;
 
-  mutt_mktemp (t);
+  mutt_mktemp (t, sizeof (t));
 
   funcs = km_get_table (menu);
   desc = mutt_getnamebyvalue (menu, Menus);

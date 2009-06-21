@@ -169,7 +169,7 @@ int mutt_compose_attachment (BODY *a)
 	    /* Remove headers by copying out data to another file, then 
 	     * copying the file back */
 	    fseeko (fp, b->offset, 0);
-	    mutt_mktemp (tempfile);
+	    mutt_mktemp (tempfile, sizeof (tempfile));
 	    if ((tfp = safe_fopen (tempfile, "w")) == NULL)
 	    {
 	      mutt_perror _("Failure to open file to strip headers.");
@@ -508,7 +508,7 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
       mutt_adv_mktemp (pagerfile, sizeof(pagerfile));
     }
     else
-      mutt_mktemp (pagerfile);
+      mutt_mktemp (pagerfile, sizeof (pagerfile));
   }
     
   if (use_mailcap)
@@ -1043,7 +1043,7 @@ int mutt_print_attachment (FILE *fp, BODY *a)
     ifp = NULL;
     fpout = NULL;
     
-    mutt_mktemp (newfile);
+    mutt_mktemp (newfile, sizeof (newfile));
     if (mutt_decode_save_attachment (fp, a, newfile, M_PRINTING, 0) == 0)
     {
       

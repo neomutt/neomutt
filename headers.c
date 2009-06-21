@@ -44,7 +44,7 @@ void mutt_edit_headers (const char *editor,
   struct stat st;
   LIST *cur, **last = NULL, *tmp;
 
-  mutt_mktemp (path);
+  mutt_mktemp (path, sizeof (path));
   if ((ofp = safe_fopen (path, "w")) == NULL)
   {
     mutt_perror (path);

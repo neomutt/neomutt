@@ -67,7 +67,7 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX];
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(f = safe_fopen (tempfile, "w+")))
   {
     mutt_perror (tempfile);
@@ -568,7 +568,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     {
       /* no */
       bcache = 0;
-      mutt_mktemp (path);
+      mutt_mktemp (path, sizeof (path));
       if (!(msg->fp = safe_fopen (path, "w+")))
       {
 	mutt_perror (path);
