@@ -24,7 +24,7 @@ use File::Glob ':glob';
 
 umask 077;
 
-require "timelocal.pl";
+use Time::Local;
 
 sub usage ();
 sub newfile ($;$$);
