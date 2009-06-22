@@ -295,54 +295,48 @@ void mutt_query_exit (void)
   SigInt = 0;
 }
 
-void mutt_curses_error (const char *fmt, ...)
+static void curses_message (int error, const char *fmt, va_list ap)
 {
-  va_list ap;
   char scratch[LONG_STRING];
 
-  va_start (ap, fmt);
   vsnprintf (scratch, sizeof (scratch), fmt, ap);
-  va_end (ap);
-  
+
   dprint (1, (debugfile, "%s\n", scratch));
   mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, FMT_LEFT, 0, scratch, sizeof (scratch), 0);
+		      0, COLS, FMT_LEFT, 0, scratch, sizeof (scratch), 0);
 
   if (!option (OPTKEEPQUIET))
   {
     BEEP ();
-    SETCOLOR (MT_COLOR_ERROR);
+    SETCOLOR (error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mvaddstr (LINES-1, 0, Errorbuf);
     clrtoeol ();
     SETCOLOR (MT_COLOR_NORMAL);
     mutt_refresh ();
   }
 
-  set_option (OPTMSGERR);
+  if (error)
+    set_option (OPTMSGERR);
+  else
+    unset_option (OPTMSGERR);
+}
+
+void mutt_curses_error (const char *fmt, ...)
+{
+  va_list ap;
+
+  va_start (ap, fmt);
+  curses_message (1, fmt, ap);
+  va_end (ap);
 }
 
 void mutt_curses_message (const char *fmt, ...)
 {
   va_list ap;
-  char scratch[LONG_STRING];
 
   va_start (ap, fmt);
-  vsnprintf (scratch, sizeof (scratch), fmt, ap);
+  curses_message (0, fmt, ap);
   va_end (ap);
-
-  mutt_format_string (Errorbuf, sizeof (Errorbuf),
-		      0, COLS-2, FMT_LEFT, 0, scratch, sizeof (scratch), 0);
-
-  if (!option (OPTKEEPQUIET))
-  {
-    SETCOLOR (MT_COLOR_MESSAGE);
-    mvaddstr (LINES - 1, 0, Errorbuf);
-    clrtoeol ();
-    SETCOLOR (MT_COLOR_NORMAL);
-    mutt_refresh ();
-  }
-
-  unset_option (OPTMSGERR);
 }
 
 void mutt_progress_init (progress_t* progress, const char *msg,
