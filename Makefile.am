@@ -13,7 +13,11 @@ SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
 bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
 
-BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h hcversion.h
+if BUILD_HCACHE
+HCVERSION = hcversion.h
+endif
+
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h $(HCVERSION)
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = \

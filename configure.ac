@@ -835,6 +835,7 @@ AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm],
 AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb@<:@=DIR@:>@],
   [Use BerkeleyDB4 if gdbm is not available]))
 
+db_found=no
 if test x$enable_hcache = xyes
 then
     AC_DEFINE(USE_HCACHE, 1, [Enable header caching])
@@ -1027,9 +1028,14 @@ then
 fi
 dnl -- end cache --
 
+AM_CONDITIONAL(BUILD_HCACHE, test x$db_found != xno)
+
 if test "$need_md5" = "yes"
 then
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5.o"
+fi
+
+if test x$db_found != xno ; then
   MUTT_MD5="mutt_md5"
 fi
 AC_SUBST(MUTT_MD5)

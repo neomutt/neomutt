@@ -1,3 +1,14 @@
+2009-06-23 15:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (58a2e3aead59)
+
+	* handler.c, mutt.h, muttlib.c: Implement state_putws() and
+	state_putwc(), see #3148.
+
+	This is needed to unbreak text/enriched rendering on Linux.
+
+2009-06-23 15:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (8f52819935a3)
+
+	* ChangeLog, commands.c: Only use keypad() when curses is running
+
 2009-06-23 00:28 -0700  Vincent Lefevre  <vincent@vinc17.org>  (642987450d83)
 
 	* curs_lib.c: Only beep when displaying error messages (unbreaks
