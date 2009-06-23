@@ -307,7 +307,8 @@ static void curses_message (int error, const char *fmt, va_list ap)
 
   if (!option (OPTKEEPQUIET))
   {
-    BEEP ();
+    if (error)
+      BEEP ();
     SETCOLOR (error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mvaddstr (LINES-1, 0, Errorbuf);
     clrtoeol ();
