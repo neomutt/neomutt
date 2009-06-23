@@ -1,13 +1,16 @@
-2009-06-23 15:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (58a2e3aead59)
+2009-06-23 16:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (d152033cf967)
+
+	* doc/manual.xml.head: Manual: Simply type conversion section wording.
+
+	* Makefile.am, configure.ac: Don't build hcversion.h and mutt_md5
+	without hcache
 
 	* handler.c, mutt.h, muttlib.c: Implement state_putws() and
 	state_putwc(), see #3148.
 
 	This is needed to unbreak text/enriched rendering on Linux.
 
-2009-06-23 15:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (8f52819935a3)
-
-	* ChangeLog, commands.c: Only use keypad() when curses is running
+	* commands.c: Only use keypad() when curses is running
 
 2009-06-23 00:28 -0700  Vincent Lefevre  <vincent@vinc17.org>  (642987450d83)
 
@@ -16,7 +19,7 @@
 
 2009-06-23 00:20 -0700  Brendan Cully  <brendan@kublai.com>  (f5849c72a274)
 
-	* ChangeLog, crypt-gpgme.c: Update crypt-gpgme for mutt_mktemp change
+	* crypt-gpgme.c: Update crypt-gpgme for mutt_mktemp change
 	in [ed7eb5de7536]
 
 2009-06-22 17:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (54bc1ef602e7)
