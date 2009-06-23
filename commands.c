@@ -222,7 +222,8 @@ int mutt_display_message (HEADER *cur)
     if ((r = mutt_system (buf)) == -1)
       mutt_error (_("Error running \"%s\"!"), buf);
     unlink (tempfile);
-    keypad (stdscr, TRUE);
+    if (!option (OPTNOCURSES))
+      keypad (stdscr, TRUE);
     if (r != -1)
       mutt_set_flag (Context, cur, M_READ, 1);
     if (r != -1 && option (OPTPROMPTAFTER))

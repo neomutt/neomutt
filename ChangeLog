@@ -1,3 +1,13 @@
+2009-06-23 00:28 -0700  Vincent Lefevre  <vincent@vinc17.org>  (642987450d83)
+
+	* curs_lib.c: Only beep when displaying error messages (unbreaks
+	[54bc1ef602e7])
+
+2009-06-23 00:20 -0700  Brendan Cully  <brendan@kublai.com>  (f5849c72a274)
+
+	* ChangeLog, crypt-gpgme.c: Update crypt-gpgme for mutt_mktemp change
+	in [ed7eb5de7536]
+
 2009-06-22 17:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (54bc1ef602e7)
 
 	* curs_lib.c: Make mutt_curses_(error|message) format message to COLS
