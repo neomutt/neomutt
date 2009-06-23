@@ -4083,10 +4083,9 @@ example an integer number for numeric types. For all queries (including
 &dollar;-expansion) the value is converted from its internal type back
 into string. As a result, any variable can be assigned any value given
 that its content is valid for the target. This also counts for custom
-variables which are of type string. In case of parsing errors, mutt will
-print error messages as it would have if the new value was specified
-literally and not through another variable. <xref linkend="ex-myvar4"/>
-demonstrates type conversions.
+variables which are of type string. In case of parsing errors, Mutt will
+print error messages. <xref linkend="ex-myvar4"/> demonstrates type
+conversions.
 </para>
 
 <example id="ex-myvar4">
