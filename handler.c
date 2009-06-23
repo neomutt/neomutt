@@ -807,7 +807,7 @@ static int text_enriched_handler (BODY *a, STATE *s)
   {
     if (state != ST_EOF)
     {
-      if (!bytes || (wc = fgetwc (s->fpin)) == EOF)
+      if (!bytes || (wc = fgetwc (s->fpin)) == WEOF)
 	state = ST_EOF;
       else
 	bytes--;

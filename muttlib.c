@@ -1549,6 +1549,31 @@ void state_attach_puts (const char *t, STATE *s)
   }
 }
 
+int state_putwc (wchar_t wc, STATE *s)
+{
+  char mb[MB_LEN_MAX] = "";
+  int rc;
+
+  if ((rc = wcrtomb (mb, wc, NULL)) < 0)
+    return rc;
+  if (fputs (mb, s->fpout) == EOF)
+    return -1;
+  return 0;
+}
+
+int state_putws (const wchar_t *ws, STATE *s)
+{
+  const wchar_t *p = ws;
+
+  while (p && *p != L'\0')
+  {
+    if (state_putwc (*p, s) < 0)
+      return -1;
+    p++;
+  }
+  return 0;
+}
+
 void mutt_display_sanitize (char *s)
 {
   for (; *s; s++)

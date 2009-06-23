@@ -928,13 +928,13 @@ typedef struct
 #define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
-#define state_putws(x,y) fputws(x,(y)->fpout)
-#define state_putwc(x,y) fputwc(x,(y)->fpout)
 
 void state_mark_attach (STATE *);
 void state_attach_puts (const char *, STATE *);
 void state_prefix_putc (char, STATE *);
 int  state_printf(STATE *, const char *, ...);
+int state_putwc (wchar_t, STATE *);
+int state_putws (const wchar_t *, STATE *);
 
 /* for attachment counter */
 typedef struct
