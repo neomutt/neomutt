@@ -1,10 +1,19 @@
+2009-06-22 17:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (54bc1ef602e7)
+
+	* curs_lib.c: Make mutt_curses_(error|message) format message to COLS
+	chars. Closes #3278.
+
+	While I'm at it, fold both functions into one.
+
+2009-06-22 17:21 +0200  Alexey Tourbin  <at@altlinux.org>  (e378bbdc3f0f)
+
+	* smime_keys.pl: smime_keys: use Time::Local module. Closes #3277.
+
 2009-06-22 17:17 +0200  Rocco Rutte  <pdmef@gmx.net>  (4899f140ec25)
 
 	* mbyte.c: Fix included iswupper(). Closes #3276.
 
-2009-06-22 17:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (bdf80e095fe5)
-
-	* ChangeLog, lib.c: Catch range errors when converting to long.
+	* lib.c: Catch range errors when converting to long.
 
 2009-06-21 21:57 +0200  Rocco Rutte  <pdmef@gmx.net>  (ed7eb5de7536)
 
@@ -14,18 +23,12 @@
 	recvattach.c, recvcmd.c, rfc3676.c, send.c, sendlib.c, smime.c: Pass
 	buffer size to mutt_mktemp()
 
-2009-06-21 21:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (7f0f11b1b6fa)
-
-	* ChangeLog, handler.c, rfc3676.c: Port f=f and text/plain handlers to
+	* handler.c, rfc3676.c: Port f=f and text/plain handlers to
 	mutt_read_line()
-
-2009-06-21 21:04 +0200  Rocco Rutte  <pdmef@gmx.net>  (23fd0edaab41)
 
 	* lib.c: mutt_read_line(): make line counting ptr optional
 
-2009-06-21 20:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (9f1d56c0a247)
-
-	* ChangeLog, sendlib.c: Silently drop headers not in "key: value"
+	* sendlib.c: Silently drop headers not in "key: value"
 	format. Fixes out-of-memory exits.
 
 2009-06-20 23:09 +0200  Rocco Rutte  <pdmef@gmx.net>  (6447ebe80797)
@@ -33,10 +36,8 @@
 	* handler.c: f=f: Don't kill signature separator when stripping
 	trailing spaces. Closes #3275.
 
-2009-06-20 16:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (cc1aa7702c96)
-
-	* ChangeLog, curs_main.c: Disallow breaking threads for messages not
-	part of a thread
+	* curs_main.c: Disallow breaking threads for messages not part of
+	a thread
 
 2009-06-20 15:22 +0200  Rocco Rutte  <pdmef@gmx.net>  (580ab0256c49)
 
@@ -57,35 +58,23 @@
 	* mbox.c, mx.c, mx.h: Fixup atime for mbox/mmdf also when mailbox is
 	unchanged but has new mail. See #1362.
 
-2009-06-19 19:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (bd59be56c6b0)
-
-	* ChangeLog, mbox.c: Don't mangle atime/mtime for mbox folders without
-	new mail upon sync. Closes #1362, #3271.
-
-2009-06-19 19:23 +0200  Rocco Rutte  <pdmef@gmx.net>  (0fd362c870b8)
+	* mbox.c: Don't mangle atime/mtime for mbox folders without new
+	mail upon sync. Closes #1362, #3271.
 
 	* doc/manual.xml.head: Manual: Add note and example for type
 	conversions with my_vars
-
-2009-06-19 18:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (9656d94b83b2)
-
-	* .hgignore: Ignore files from manual.pdf generation
-
-2009-06-19 18:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (439274e8eca4)
 
 	* sendlib.c: Enforce 998 char length limit on header lines when
 	sending.
 
 2009-06-18 15:06 +0200  Antonio Radici  <antonio@dyne.org>  (c6fe0bb8cf11)
 
-	* .hgignore, ChangeLog, doc/Makefile.am, doc/smime_keys.man: Provide
+	* doc/Makefile.am, doc/smime_keys.man: Provide
 	smime_keys(1). Closes #3272.
 
 2009-06-18 14:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (508bfe4a2e23)
 
 	* mbox.c: Backout experimental patch
-
-2009-06-18 14:45 +0200  Rocco Rutte  <pdmef@gmx.net>  (aca707871bcf)
 
 	* UPDATING, mbox.c: UPDATING: add note about -a and --
 

@@ -403,7 +403,7 @@ static gpgme_data_t body_to_data_object (BODY *a, int convert)
   int err = 0;
   gpgme_data_t data;
   
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   fptmp = safe_fopen (tempfile, "w+");
   if (!fptmp)
     {
@@ -525,7 +525,7 @@ static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
   FILE *fp;
   size_t nread = 0;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   fp = safe_fopen (tempfile, "w+");
   if (!fp)
     {
@@ -1711,7 +1711,7 @@ int pgp_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(*fpout = safe_fopen (tempfile, "w+")))
   {
     mutt_perror (tempfile);
@@ -1756,7 +1756,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
   fseeko (s.fpin, b->offset, 0); 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(tmpfp = safe_fopen (tempfile, "w+")))
     {
       mutt_perror (tempfile);
@@ -1774,7 +1774,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   memset (&s, 0, sizeof (s));
   s.fpin = tmpfp;
   s.fpout = 0;
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(*fpout = safe_fopen (tempfile, "w+")))
     {
       mutt_perror (tempfile);
@@ -1810,7 +1810,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       memset (&s, 0, sizeof (s));
       s.fpin = *fpout;
       fseeko (s.fpin, bb->offset, 0); 
-      mutt_mktemp (tempfile);
+      mutt_mktemp (tempfile, sizeof (tempfile));
       if (!(tmpfp = safe_fopen (tempfile, "w+")))
         {
           mutt_perror (tempfile);
@@ -1829,7 +1829,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
       memset (&s, 0, sizeof (s));
       s.fpin = tmpfp;
       s.fpout = 0;
-      mutt_mktemp (tempfile);
+      mutt_mktemp (tempfile, sizeof (tempfile));
       if (!(*fpout = safe_fopen (tempfile, "w+")))
         {
           mutt_perror (tempfile);
@@ -1908,7 +1908,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
     goto err_tmpdir;
   }
 
-  mutt_mktemp (tmpfile);
+  mutt_mktemp (tmpfile, sizeof (tmpfile));
   *fp = safe_fopen (tmpfile, "w+");
   if (!*fp)
   {
@@ -1985,7 +1985,7 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
   if (tagged_only && !b->tagged)
     return 0;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (mutt_decode_save_attachment (fp, b, tempfile, 0, 0) != 0)
   {
     unlink (tempfile);
@@ -2424,7 +2424,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
   /* Move forward to the application/pgp-encrypted body. */
   a = a->next;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fpout = safe_fopen (tempfile, "w+")))
     {
       if (s->flags & M_DISPLAY)
@@ -2490,7 +2490,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
   dprint (2, (debugfile, "Entering smime_encrypted handler\n"));
   
   a->warnsig = 0;
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fpout = safe_fopen (tempfile, "w+")))
     {
       if (s->flags & M_DISPLAY)
@@ -3450,7 +3450,7 @@ verify_key (crypt_key_t *key)
   gpgme_key_t k = NULL;
   int maxdepth = 100;
 
-  mutt_mktemp (tempfile);
+  mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fp = safe_fopen (tempfile, "w")))
     {
       mutt_perror _("Can't create temporary file");
