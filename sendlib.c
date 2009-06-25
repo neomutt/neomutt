@@ -1639,9 +1639,9 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
   dprint(4,(debugfile,"mwoh: pfx=[%s], tag=[%s], flags=%d value=[%s]\n",
 	    pfx, tag, flags, value));
 
-  if (fprintf (fp, "%s%s: ", NONULL (pfx), tag) < 0)
+  if (tag && *tag && fprintf (fp, "%s%s: ", NONULL (pfx), tag) < 0)
     return -1;
-  col = mutt_strlen (tag) + 2 + mutt_strlen (pfx);
+  col = mutt_strlen (tag) + (tag && *tag ? 2 : 0) + mutt_strlen (pfx);
 
   while (p && *p)
   {
@@ -1726,9 +1726,12 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
 			     int flags)
 {
   char *tagbuf, *valbuf, *t;
+  int is_from = ((end - start) > 5 &&
+		 ascii_strncasecmp (start, "from ", 5) == 0);
 
-  /* only pass through folding machinery if necessary for sending */
-  if (!(flags & CH_DISPLAY) && pfxw + max <= wraplen)
+  /* only pass through folding machinery if necessary for sending,
+     never wrap From_ headers on sending */
+  if (!(flags & CH_DISPLAY) && (pfxw + max <= wraplen || is_from))
   {
     valbuf = mutt_substrdup (start, end);
     dprint(4,(debugfile,"mwoh: buf[%s%s] short enough, "
@@ -1759,8 +1762,16 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
 		  "'key: value' format!\n"));
       return 0;
     }
-    tagbuf = mutt_substrdup (start, t);
-    valbuf = mutt_substrdup (t + 2, end);
+    if (is_from)
+    {
+      tagbuf = NULL;
+      valbuf = mutt_substrdup (start, end);
+    }
+    else
+    {
+      tagbuf = mutt_substrdup (start, t);
+      valbuf = mutt_substrdup (t + 2, end);
+    }
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
 	      "max width = %d > %d\n",
 	      NONULL(pfx), valbuf, max, wraplen));
