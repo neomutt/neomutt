@@ -43,6 +43,7 @@ typedef struct flowed_state
 {
   size_t width;
   size_t spaces;
+  int delsp;
 } flowed_state_t;
 
 static int get_quote_level (const char *line)
@@ -110,6 +111,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
 {
   size_t width, w, words = 0;
   char *p;
+  char last;
 
   if (!line || !*line)
   {
@@ -121,6 +123,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
   }
 
   width = quote_width (s, ql);
+  last = line[mutt_strlen (line) - 1];
 
   dprint (4, (debugfile, "f=f: line [%s], width = %ld, spaces = %d\n",
 	      NONULL(line), (long)width, fst->spaces));
@@ -143,8 +146,12 @@ static void print_flowed_line (char *line, STATE *s, int ql,
 
     w = mutt_strwidth (p);
     /* see if we need to break the line but make sure the first
-       word is put on the line regardless */
-    if (w < width && w + fst->width + fst->spaces > width)
+       word is put on the line regardless;
+       if for DelSp=yes only one trailing space is used, we probably
+       have a long word that we should break within (we leave that
+       up to the pager or user) */
+    if (!(!fst->spaces && fst->delsp && last != ' ') &&
+	w < width && w + fst->width + fst->spaces > width)
     {
       dprint(4,(debugfile,"f=f: break line at %d, %d spaces left\n",
 		fst->width, fst->spaces));
@@ -199,6 +206,7 @@ int rfc3676_handler (BODY * a, STATE * s)
   {
     delsp = mutt_strlen (t) == 3 && ascii_strncasecmp (t, "yes", 3) == 0;
     t = NULL;
+    fst.delsp = 1;
   }
 
   dprint (4, (debugfile, "f=f: DelSp: %s\n", delsp ? "yes" : "no"));
