@@ -2599,6 +2599,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   FILE *tempfp = NULL;
   int r, need_buffy_cleanup = 0;
   struct stat st;
+  char buf[SHORT_STRING];
 
   if (post)
     set_noconv_flags (hdr->content, 1);
@@ -2656,6 +2657,11 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 
   if (f.magic == M_MMDF || f.magic == M_MBOX)
     fprintf (msg->fp, "Status: RO\n");
+
+  /* mutt_write_rfc822_header() only writes out a Date: header with
+   * mode == 0, i.e. _not_ postponment; so write out one ourself */
+  if (post)
+    fprintf (msg->fp, mutt_make_date (buf, sizeof (buf)));
 
   /* (postponment) if the mail is to be signed or encrypted, save this info */
   if ((WithCrypto & APPLICATION_PGP)
