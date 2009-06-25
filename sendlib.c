@@ -2653,9 +2653,9 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
    */
   if (post && fcc)
     fprintf (msg->fp, "X-Mutt-Fcc: %s\n", fcc);
-  fprintf (msg->fp, "Status: RO\n");
 
-
+  if (f.magic == M_MMDF || f.magic == M_MBOX)
+    fprintf (msg->fp, "Status: RO\n");
 
   /* (postponment) if the mail is to be signed or encrypted, save this info */
   if ((WithCrypto & APPLICATION_PGP)

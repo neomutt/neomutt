@@ -1,3 +1,12 @@
+2009-06-25 14:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (bd0828adede8)
+
+	* compose.c: Treat messages written with <write-fcc> as fcc, not
+	postponed.
+
+2009-06-23 10:13 -0700  Vincent Lefevre  <vincent@vinc17.org>  (bc2463863c15)
+
+	* ChangeLog, po/fr.po: Updated French translation.
+
 2009-06-23 16:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (d152033cf967)
 
 	* doc/manual.xml.head: Manual: Simply type conversion section wording.
