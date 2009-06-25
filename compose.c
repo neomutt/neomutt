@@ -1206,7 +1206,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          if (msg->content->next)
            msg->content = mutt_make_multipart (msg->content);
 
-         if (mutt_write_fcc (fname, msg, NULL, 1, NULL) < 0)
+         if (mutt_write_fcc (fname, msg, NULL, 0, NULL) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
            mutt_message _("Message written.");
