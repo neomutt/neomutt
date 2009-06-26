@@ -6286,11 +6286,14 @@ entry with the print command.
 </para>
 
 <para>
-In addition, you can use this with <link linkend="auto-view"><command>auto&lowbar;view</command></link>
+In addition, you can use this
+with <link linkend="auto-view"><command>auto&lowbar;view</command></link>
 to denote two commands for viewing an attachment, one to be viewed
 automatically, the other to be viewed interactively from the attachment
-menu.  In addition, you can then use the test feature to determine which
-viewer to use interactively depending on your environment.
+menu using the <literal>&lt;view-mailcap&lt;</literal> function (bound
+to <quote>m</quote> by default). In addition, you can then use the test
+feature to determine which viewer to use interactively depending on your
+environment.
 </para>
 
 <screen>
@@ -6300,11 +6303,27 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
 <para>
-For <link linkend="auto-view"><command>auto&lowbar;view</command></link>, Mutt will choose the third
-entry because of the copiousoutput tag.  For interactive viewing, Mutt
-will run the program RunningX to determine if it should use the first
-entry.  If the program returns non-zero, Mutt will use the second entry
-for interactive viewing.
+For <link linkend="auto-view"><command>auto&lowbar;view</command></link>,
+Mutt will choose the third entry because of
+the <literal>copiousoutput</literal> tag.  For interactive viewing, Mutt
+will run the program <literal>RunningX</literal> to determine if it
+should use the first entry.  If the program returns non-zero, Mutt will
+use the second entry for interactive viewing. The last entry is for
+inline display in the pager and
+the <literal>&lt;view-attach&gt;</literal> function in the attachment
+menu.
+</para>
+
+<para>
+Entries with the <literal>copiousoutput</literal> tag should always be
+specified as the last one per type. For non-interactive use, the last
+entry will then actually be the first matching one with the tag set.
+For non-interactive use, only <literal>copiousoutput</literal>-tagged
+entries are considered. For interactive use, Mutt ignores this tag and
+treats all entries equally. Therefore, if not specified last, all
+following entries without this tag would never be considered
+for <literal>&lt;view-attach&gt;</literal> because
+the <literal>copiousoutput</literal> before them matched already.
 </para>
 
 </sect3>
