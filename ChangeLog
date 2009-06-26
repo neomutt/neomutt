@@ -1,3 +1,12 @@
+2009-06-25 21:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (c5d0252e8f72)
+
+	* rfc3676.c: Fix f=f corner case with DelSp=yes abuse
+
+2009-06-25 17:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (5f590adfdf1a)
+
+	* ChangeLog, sendlib.c: header folding: treat From_ specially, never
+	wrap on sending side
+
 2009-06-25 14:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (e0ec1856e3f3)
 
 	* sendlib.c: Add Date: header to postponed messages
