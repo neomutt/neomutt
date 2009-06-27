@@ -577,6 +577,21 @@ time_t imap_parse_date (char *s)
   return (mutt_mktime (&t, 0) + tz);
 }
 
+/* format date in IMAP style: DD-MMM-YYYY HH:MM:SS +ZZzz.
+ * Caller should provide a buffer of IMAP_DATELEN bytes */
+void imap_make_date (char *buf, time_t timestamp)
+{
+  struct tm* tm = localtime (&timestamp);
+  time_t tz = mutt_local_tz (timestamp);
+
+  tz /= 60;
+
+  snprintf (buf, IMAP_DATELEN, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
+      tm->tm_mday, Months[tm->tm_mon], tm->tm_year + 1900,
+      tm->tm_hour, tm->tm_min, tm->tm_sec,
+      (int) tz / 60, (int) abs (tz) % 60);
+}
+
 /* imap_qualify_path: make an absolute IMAP folder target, given IMAP_MBOX
  *   and relative path. */
 void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path)

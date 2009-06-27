@@ -594,6 +594,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
   char mailbox[LONG_STRING];
+  char internaldate[IMAP_DATELEN];
   size_t len;
   progress_t progressbar;
   size_t sent;
@@ -635,12 +636,14 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 		      M_PROGRESS_SIZE, NetInc, len);
 
   imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
-  snprintf (buf, sizeof (buf), "APPEND %s (%s%s%s%s%s) {%lu}", mbox,
+  imap_make_date (internaldate, msg->received);
+  snprintf (buf, sizeof (buf), "APPEND %s (%s%s%s%s%s) \"%s\" {%lu}", mbox,
 	    msg->flags.read    ? "\\Seen"      : "",
 	    msg->flags.read && (msg->flags.replied || msg->flags.flagged) ? " " : "",
 	    msg->flags.replied ? "\\Answered" : "",
 	    msg->flags.replied && msg->flags.flagged ? " " : "",
 	    msg->flags.flagged ? "\\Flagged"  : "",
+	    internaldate,
 	    (unsigned long) len);
 
   imap_cmd_start (idata, buf);

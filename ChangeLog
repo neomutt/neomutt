@@ -1,29 +1,28 @@
+2009-06-26 20:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (156e6d6e34fc)
+
+	* doc/manual.xml.head: Manual: try to explain that and why
+	copiousoutput should come last
+
+	* po/de.po: Update German translation
+
 2009-06-25 21:46 +0200  Rocco Rutte  <pdmef@gmx.net>  (c5d0252e8f72)
 
 	* rfc3676.c: Fix f=f corner case with DelSp=yes abuse
 
-2009-06-25 17:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (5f590adfdf1a)
-
-	* ChangeLog, sendlib.c: header folding: treat From_ specially, never
-	wrap on sending side
-
-2009-06-25 14:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (e0ec1856e3f3)
+	* sendlib.c: header folding: treat From_ specially, never wrap on
+	sending side
 
 	* sendlib.c: Add Date: header to postponed messages
 
-2009-06-25 14:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (64402a72e968)
-
-	* ChangeLog, sendlib.c: Only add Status: header (fcc/postpone) when
+	* sendlib.c: Only add Status: header (fcc/postpone) when
 	saving to mbox/mmdf
-
-2009-06-25 14:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (bd0828adede8)
 
 	* compose.c: Treat messages written with <write-fcc> as fcc, not
 	postponed.
 
 2009-06-23 10:13 -0700  Vincent Lefevre  <vincent@vinc17.org>  (bc2463863c15)
 
-	* ChangeLog, po/fr.po: Updated French translation.
+	* po/fr.po: Updated French translation.
 
 2009-06-23 16:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (d152033cf967)
 

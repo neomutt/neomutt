@@ -70,6 +70,9 @@
 #define IMAP_CMD_PASS    (1<<1)
 #define IMAP_CMD_QUEUE   (1<<2)
 
+/* length of "DD-MMM-YYYY HH:MM:SS +ZZzz" (null-terminated) */
+#define IMAP_DATELEN 27
+
 enum
 {
   IMAP_FATAL = 1,
@@ -281,6 +284,7 @@ char* imap_get_qualifier (char* buf);
 int imap_mxcmp (const char* mx1, const char* mx2);
 char* imap_next_word (char* s);
 time_t imap_parse_date (char* s);
+void imap_make_date (char* buf, time_t timestamp);
 void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path);
 void imap_quote_string (char* dest, size_t slen, const char* src);
 void imap_unquote_string (char* s);
