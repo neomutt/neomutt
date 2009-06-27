@@ -32,7 +32,7 @@ do
 done
 
 {
-  hg log --no-merges --style=$MUTTDIR/hg-changelog-map -r tip:$lrev
+  hg log --no-merges --style=$MUTTDIR/hg-changelog-map -r tip:$lrev | sed 's#ChangeLog, ##' 
   hg cat $MUTTDIR/ChangeLog
 } > $MUTTDIR/ChangeLog
 ${VISUAL:-${EDITOR:-vi}} $MUTTDIR/ChangeLog

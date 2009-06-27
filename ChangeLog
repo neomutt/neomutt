@@ -1,3 +1,18 @@
+2009-06-27 17:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (8f7166888c6d)
+
+	* doc/makedoc.c, doc/manual.xml.head: Manual: stop using DocBook
+	entities mapping to ascii chars
+
+	There's no real benefit, it only makes reading/writing the manual
+	harder. All entities that potentially map to non-ascii characters
+	(&mdash, &auml, etc.) are left so that manual.xml remains pure
+	ascii.
+
+2009-06-26 21:47 -0700  Brendan Cully  <brendan@kublai.com>  (b2b97c7a2ae6)
+
+	* imap/imap_private.h, imap/message.c, imap/util.c: Set
+	internaldate of messages appended to IMAP mailboxes
+
 2009-06-26 20:27 +0200  Rocco Rutte  <pdmef@gmx.net>  (156e6d6e34fc)
 
 	* doc/manual.xml.head: Manual: try to explain that and why
