@@ -127,7 +127,7 @@ at <ulink url="http://wiki.mutt.org/">http://wiki.mutt.org/</ulink>.
 <term>IRC</term>
 <listitem>
 <para>
-For the IRC user community, visit channel <emphasis>&num;mutt</emphasis> on
+For the IRC user community, visit channel <emphasis>#mutt</emphasis> on
 <ulink url="http://www.freenode.net/">irc.freenode.net</ulink>.
 </para>
 </listitem>
@@ -192,9 +192,9 @@ conventions for special terms.
 <row><entry><literal>printf(3)</literal></entry><entry>UNIX manual pages, execute <literal>man 3 printf</literal></entry></row>
 <row><entry><literal>&lt;PageUp&gt;</literal></entry><entry>named keys</entry></row>
 <row><entry><literal>&lt;create-alias&gt;</literal></entry><entry>named Mutt function</entry></row>
-<row><entry><literal>&circ;G</literal></entry><entry>Control+G key combination</entry></row>
-<row><entry>&dollar;mail&lowbar;check</entry><entry>Mutt configuration option</entry></row>
-<row><entry><literal>&dollar;HOME</literal></entry><entry>environment variable</entry></row>
+<row><entry><literal>^G</literal></entry><entry>Control+G key combination</entry></row>
+<row><entry>$mail_check</entry><entry>Mutt configuration option</entry></row>
+<row><entry><literal>$HOME</literal></entry><entry>environment variable</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -208,9 +208,9 @@ mutt -v
 </screen>
 
 <para>
-Within command synopsis, curly brackets (<quote>&lcub;&rcub;</quote>) denote a set
+Within command synopsis, curly brackets (<quote>{}</quote>) denote a set
 of options of which one is mandatory, square brackets
-(<quote>&lsqb;&rsqb;</quote>) denote optional arguments, three dots
+(<quote>[]</quote>) denote optional arguments, three dots
 denote that the argument may be repeated arbitrary times.
 </para>
 
@@ -528,27 +528,27 @@ short descriptions.
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>&circ;A or &lt;Home&gt;</entry><entry><literal>&lt;bol&gt;</literal></entry><entry>move to the start of the line</entry></row>
-<row><entry>&circ;B or &lt;Left&gt;</entry><entry><literal>&lt;backward-char&gt;</literal></entry><entry>move back one char</entry></row>
+<row><entry>^A or &lt;Home&gt;</entry><entry><literal>&lt;bol&gt;</literal></entry><entry>move to the start of the line</entry></row>
+<row><entry>^B or &lt;Left&gt;</entry><entry><literal>&lt;backward-char&gt;</literal></entry><entry>move back one char</entry></row>
 <row><entry>Esc B</entry><entry><literal>&lt;backward-word&gt;</literal></entry><entry>move back one word</entry></row>
-<row><entry>&circ;D or &lt;Delete&gt;</entry><entry><literal>&lt;delete-char&gt;</literal></entry><entry>delete the char under the cursor</entry></row>
-<row><entry>&circ;E or &lt;End&gt;</entry><entry><literal>&lt;eol&gt;</literal></entry><entry>move to the end of the line</entry></row>
-<row><entry>&circ;F or &lt;Right&gt;</entry><entry><literal>&lt;forward-char&gt;</literal></entry><entry>move forward one char</entry></row>
+<row><entry>^D or &lt;Delete&gt;</entry><entry><literal>&lt;delete-char&gt;</literal></entry><entry>delete the char under the cursor</entry></row>
+<row><entry>^E or &lt;End&gt;</entry><entry><literal>&lt;eol&gt;</literal></entry><entry>move to the end of the line</entry></row>
+<row><entry>^F or &lt;Right&gt;</entry><entry><literal>&lt;forward-char&gt;</literal></entry><entry>move forward one char</entry></row>
 <row><entry>Esc F</entry><entry><literal>&lt;forward-word&gt;</literal></entry><entry>move forward one word</entry></row>
 <row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename or alias</entry></row>
-<row><entry>&circ;T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
-<row><entry>&circ;K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
+<row><entry>^T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
+<row><entry>^K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
 <row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end of the word</entry></row>
-<row><entry>&circ;W</entry><entry><literal>&lt;kill-word&gt;</literal></entry><entry>kill the word in front of the cursor</entry></row>
-<row><entry>&circ;U</entry><entry><literal>&lt;kill-line&gt;</literal></entry><entry>delete entire line</entry></row>
-<row><entry>&circ;V</entry><entry><literal>&lt;quote-char&gt;</literal></entry><entry>quote the next typed key</entry></row>
+<row><entry>^W</entry><entry><literal>&lt;kill-word&gt;</literal></entry><entry>kill the word in front of the cursor</entry></row>
+<row><entry>^U</entry><entry><literal>&lt;kill-line&gt;</literal></entry><entry>delete entire line</entry></row>
+<row><entry>^V</entry><entry><literal>&lt;quote-char&gt;</literal></entry><entry>quote the next typed key</entry></row>
 <row><entry>&lt;Up&gt;</entry><entry><literal>&lt;history-up&gt;</literal></entry><entry>recall previous string from history</entry></row>
 <row><entry>&lt;Down&gt;</entry><entry><literal>&lt;history-down&gt;</literal></entry><entry>recall next string from history</entry></row>
 <row><entry>&lt;BackSpace&gt;</entry><entry><literal>&lt;backspace&gt;</literal></entry><entry>kill the char in front of the cursor</entry></row>
 <row><entry>Esc u</entry><entry><literal>&lt;upcase-word&gt;</literal></entry><entry>convert word to upper case</entry></row>
 <row><entry>Esc l</entry><entry><literal>&lt;downcase-word&gt;</literal></entry><entry>convert word to lower case</entry></row>
 <row><entry>Esc c</entry><entry><literal>&lt;capitalize-word&gt;</literal></entry><entry>capitalize the word</entry></row>
-<row><entry>&circ;G</entry><entry>n/a</entry><entry>abort</entry></row>
+<row><entry>^G</entry><entry>n/a</entry><entry>abort</entry></row>
 <row><entry>&lt;Return&gt;</entry><entry>n/a</entry><entry>finish editing</entry></row>
 </tbody>
 </tgroup>
@@ -572,9 +572,9 @@ bind editor &lt;delete&gt; backspace
 
 <para>
 Mutt maintains a history for the built-in editor.  The number of items
-is controlled by the <link linkend="history">&dollar;history</link>
+is controlled by the <link linkend="history">$history</link>
 variable and can be made persistent using an external file specified
-using <link linkend="history-file">&dollar;history&lowbar;file</link>.
+using <link linkend="history-file">$history_file</link>.
 You may cycle through them at an editor prompt by using the
 <literal>&lt;history-up&gt;</literal> and/or
 <literal>&lt;history-down&gt;</literal> commands. But notice that Mutt
@@ -629,7 +629,7 @@ modes.
 Common keys used to navigate through and manage messages in the index
 are shown in <xref linkend="tab-key-index"/>. How messages are presented
 in the index menu can be customized using the
-<link linkend="index-format">&dollar;index&lowbar;format</link> variable.
+<link linkend="index-format">$index_format</link> variable.
 </para>
 
 <table id="tab-key-index">
@@ -666,8 +666,8 @@ in the index menu can be customized using the
 <row><entry>$</entry><entry>save changes to mailbox</entry></row>
 <row><entry>/</entry><entry>search</entry></row>
 <row><entry>Esc /</entry><entry>search-reverse</entry></row>
-<row><entry>&circ;L</entry><entry>clear and redraw the screen</entry></row>
-<row><entry>&circ;T</entry><entry>untag messages matching a pattern</entry></row>
+<row><entry>^L</entry><entry>clear and redraw the screen</entry></row>
+<row><entry>^T</entry><entry>untag messages matching a pattern</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -685,7 +685,7 @@ bound by default to <quote>w</quote> and <quote>W</quote> respectively.
 <para>
 Furthermore, the flags in <xref linkend="tab-msg-recip-flags"/> reflect
 who the message is addressed to. They can be customized with the
-<link linkend="to-chars">&dollar;to&lowbar;chars</link> variable.
+<link linkend="to-chars">$to_chars</link> variable.
 </para>
 
 <table id="tab-msg-status-flags">
@@ -734,7 +734,7 @@ who the message is addressed to. They can be customized with the
 <para>
 By default, Mutt uses its builtin pager to display the contents of
 messages (an external pager such as <literal>less(1)</literal> can be
-configured, see <link linkend="pager">&dollar;pager</link> variable).
+configured, see <link linkend="pager">$pager</link> variable).
 The pager is very similar to the Unix program <literal>less(1)</literal>
 though not nearly as featureful.
 </para>
@@ -755,8 +755,8 @@ though not nearly as featureful.
 <row><entry>?</entry><entry>show keybindings</entry></row>
 <row><entry>/</entry><entry>regular expression search</entry></row>
 <row><entry>Esc /</entry><entry>backward regular expression search</entry></row>
-<row><entry>&bsol;</entry><entry>toggle highlighting of search matches</entry></row>
-<row><entry>&circ;</entry><entry>jump to the top of the message</entry></row>
+<row><entry>\</entry><entry>toggle highlighting of search matches</entry></row>
+<row><entry>^</entry><entry>jump to the top of the message</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -772,8 +772,8 @@ the pager, such as <literal>&lt;delete-message&gt;</literal> or <literal>&lt;cop
 Also, the internal pager supports a couple other advanced features. For
 one, it will accept and translate the <quote>standard</quote> nroff sequences for
 bold and underline. These sequences are a series of either the letter,
-backspace (<quote>&circ;H</quote>), the letter again for bold or the letter, backspace,
-<quote>&lowbar;</quote> for denoting underline. Mutt will attempt to display these
+backspace (<quote>^H</quote>), the letter again for bold or the letter, backspace,
+<quote>_</quote> for denoting underline. Mutt will attempt to display these
 in bold and underline respectively if your terminal supports them. If
 not, you can use the bold and underline <link linkend="color">color</link>
 objects to specify a <command>color</command> or mono attribute for them.
@@ -786,7 +786,7 @@ character settings.  The sequences Mutt supports are:
 </para>
 
 <screen>
-&bsol;e&lsqb;<emphasis>Ps</emphasis>;<emphasis>Ps</emphasis>;..<emphasis>Ps</emphasis>;m
+\e[<emphasis>Ps</emphasis>;<emphasis>Ps</emphasis>;..<emphasis>Ps</emphasis>;m
 </screen>
 
 <para>
@@ -883,11 +883,11 @@ and <emphasis>pager</emphasis> modes as shown in
 <row><entry>Key</entry><entry>Function</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>&circ;D</entry><entry><literal>&lt;delete-thread&gt;</literal></entry><entry>delete all messages in the current thread</entry></row>
-<row><entry>&circ;U</entry><entry><literal>&lt;undelete-thread&gt;</literal></entry><entry>undelete all messages in the current thread</entry></row>
-<row><entry>&circ;N</entry><entry><literal>&lt;next-thread&gt;</literal></entry><entry>jump to the start of the next thread</entry></row>
-<row><entry>&circ;P</entry><entry><literal>&lt;previous-thread&gt;</literal></entry><entry>jump to the start of the previous thread</entry></row>
-<row><entry>&circ;R</entry><entry><literal>&lt;read-thread&gt;</literal></entry><entry>mark the current thread as read</entry></row>
+<row><entry>^D</entry><entry><literal>&lt;delete-thread&gt;</literal></entry><entry>delete all messages in the current thread</entry></row>
+<row><entry>^U</entry><entry><literal>&lt;undelete-thread&gt;</literal></entry><entry>undelete all messages in the current thread</entry></row>
+<row><entry>^N</entry><entry><literal>&lt;next-thread&gt;</literal></entry><entry>jump to the start of the next thread</entry></row>
+<row><entry>^P</entry><entry><literal>&lt;previous-thread&gt;</literal></entry><entry>jump to the start of the previous thread</entry></row>
+<row><entry>^R</entry><entry><literal>&lt;read-thread&gt;</literal></entry><entry>mark the current thread as read</entry></row>
 <row><entry>Esc d</entry><entry><literal>&lt;delete-subthread&gt;</literal></entry><entry>delete all messages in the current subthread</entry></row>
 <row><entry>Esc u</entry><entry><literal>&lt;undelete-subthread&gt;</literal></entry><entry>undelete all messages in the current subthread</entry></row>
 <row><entry>Esc n</entry><entry><literal>&lt;next-subthread&gt;</literal></entry><entry>jump to the start of the next subthread</entry></row>
@@ -905,10 +905,10 @@ and <emphasis>pager</emphasis> modes as shown in
 Collapsing a thread displays only the first message
 in the thread and hides the others. This is useful when threads
 contain so many messages that you can only see a handful of threads on
-the screen. See &percnt;M in <link linkend="index-format">&dollar;index&lowbar;format</link>.
-For example, you could use <quote>&percnt;?M?(&num;&percnt;03M)&amp;(&percnt;4l)?</quote> in <link linkend="index-format">&dollar;index&lowbar;format</link> to optionally
+the screen. See %M in <link linkend="index-format">$index_format</link>.
+For example, you could use <quote>%?M?(#%03M)&amp;(%4l)?</quote> in <link linkend="index-format">$index_format</link> to optionally
 display the number of hidden messages if the thread is
-collapsed. The <literal>&percnt;?&lt;char&gt;?&lt;if-part&gt;&amp;&lt;else-part&gt;?</literal>
+collapsed. The <literal>%?&lt;char&gt;?&lt;if-part&gt;&amp;&lt;else-part&gt;?</literal>
 syntax is explained in detail in
 <link linkend="formatstrings-conditionals">format string conditionals</link>.
 </para>
@@ -917,7 +917,7 @@ syntax is explained in detail in
 Technically, every reply should contain a list of its parent messages in
 the thread tree, but not all do. In these cases, Mutt groups them by
 subject which can be controlled using the
-<link linkend="strict-threads">&dollar;strict&lowbar;threads</link> variable.
+<link linkend="strict-threads">$strict_threads</link> variable.
 </para>
 
 </sect2>
@@ -941,13 +941,13 @@ menus have these interesting functions:
 Creates a new alias based upon the current message (or prompts for a
 new one).  Once editing is complete, an <link linkend="alias"><command>alias</command></link>
 command is added to the file specified by
-the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable
+the <link linkend="alias-file">$alias_file</link> variable
 for future use
 </para>
 
 <note>
 <para>
-Mutt does not read the <link linkend="alias-file">&dollar;alias&lowbar;file</link>
+Mutt does not read the <link linkend="alias-file">$alias_file</link>
 upon startup so you must explicitly <link linkend="source"><command>source</command></link> the file.
 </para>
 </note>
@@ -988,8 +988,8 @@ marked for deletion; if the message is unchanged it won't be replaced.
 <varlistentry>
 <term>
 <literal>&lt;edit-type&gt;</literal><anchor id="edit-type"/> (default:
-&circ;E on the attachment menu, and in the pager and index menus;
-&circ;T on the compose menu)
+^E on the attachment menu, and in the pager and index menus;
+^T on the compose menu)
 </term>
 <listitem>
 <para>
@@ -1026,7 +1026,7 @@ fly.
 
 <varlistentry>
 <term>
-<literal>&lt;extract-keys&gt;</literal><anchor id="extract-keys"/> (default: &circ;K)
+<literal>&lt;extract-keys&gt;</literal><anchor id="extract-keys"/> (default: ^K)
 </term>
 <listitem>
 <para>
@@ -1039,7 +1039,7 @@ message(s) and adds them to your PGP public key ring.
 <varlistentry>
 <term>
 <literal>&lt;forget-passphrase&gt;</literal><anchor id="forget-passphrase"/> (default:
-&circ;F)
+^F)
 </term>
 <listitem>
 <para>
@@ -1058,7 +1058,7 @@ you misspelled the passphrase.
 Reply to the current or tagged message(s) by extracting any addresses which
 match the regular expressions given by the <link linkend="lists"><command>lists</command> or <command>subscribe</command></link>
 commands, but also honor any <literal>Mail-Followup-To</literal> header(s) if the
-<link linkend="honor-followup-to">&dollar;honor&lowbar;followup&lowbar;to</link>
+<link linkend="honor-followup-to">$honor_followup_to</link>
 configuration variable is set.  Using this when replying to messages posted
 to mailing lists helps avoid duplicate copies being sent to the author of
 the message you are replying to.
@@ -1068,13 +1068,13 @@ the message you are replying to.
 
 <varlistentry>
 <term>
-<literal>&lt;pipe-message&gt;</literal><anchor id="pipe-message"/> (default: &verbar;)
+<literal>&lt;pipe-message&gt;</literal><anchor id="pipe-message"/> (default: |)
 </term>
 <listitem>
 <para>
 Asks for an external Unix command and pipes the current or
-tagged message(s) to it.  The variables <link linkend="pipe-decode">&dollar;pipe&lowbar;decode</link>, <link linkend="pipe-split">&dollar;pipe&lowbar;split</link>,
-<link linkend="pipe-sep">&dollar;pipe&lowbar;sep</link> and <link linkend="wait-key">&dollar;wait&lowbar;key</link> control the exact behavior of this function.
+tagged message(s) to it.  The variables <link linkend="pipe-decode">$pipe_decode</link>, <link linkend="pipe-split">$pipe_split</link>,
+<link linkend="pipe-sep">$pipe_sep</link> and <link linkend="wait-key">$wait_key</link> control the exact behavior of this function.
 </para>
 </listitem>
 </varlistentry>
@@ -1089,7 +1089,7 @@ Mutt takes the current message as a template for a
 new message.  This function is best described as "recall from arbitrary
 folders".  It can conveniently be used to forward MIME messages while
 preserving the original mail structure. Note that the amount of headers
-included here depends on the value of the <link linkend="weed">&dollar;weed</link>
+included here depends on the value of the <link linkend="weed">$weed</link>
 variable.
 </para>
 
@@ -1107,7 +1107,7 @@ as a <literal>message/rfc822</literal> body part.
 </term>
 <listitem>
 <para>
-Asks for an external Unix command and executes it.  The <link linkend="wait-key">&dollar;wait&lowbar;key</link> can be used to control
+Asks for an external Unix command and executes it.  The <link linkend="wait-key">$wait_key</link> can be used to control
 whether Mutt will wait for a key to be pressed when the command returns
 (presumably to let the user read the output of the command), based on
 the return status of the named command. If no command is given, an
@@ -1122,7 +1122,7 @@ interactive shell is executed.
 </term>
 <listitem>
 <para>
-The pager uses the <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> variable to detect quoted text when
+The pager uses the <link linkend="quote-regexp">$quote_regexp</link> variable to detect quoted text when
 displaying the body of the message.  This function toggles the display
 of the quoted material in the message.  It is particularly useful when
 being interested in just the response and there is a large amount of
@@ -1193,12 +1193,12 @@ you for the <quote>Subject:</quote> field for the message, providing a default i
 you are replying to or forwarding a message. You again
 have the chance to adjust recipients, subject, and security settings
 right before actually sending the message. See also
-<link linkend="askcc">&dollar;askcc</link>,
-<link linkend="askbcc">&dollar;askbcc</link>,
-<link linkend="autoedit">&dollar;autoedit</link>,
-<link linkend="bounce">&dollar;bounce</link>,
-<link linkend="fast-reply">&dollar;fast&lowbar;reply</link>,
-and <link linkend="include">&dollar;include</link>
+<link linkend="askcc">$askcc</link>,
+<link linkend="askbcc">$askbcc</link>,
+<link linkend="autoedit">$autoedit</link>,
+<link linkend="bounce">$bounce</link>,
+<link linkend="fast-reply">$fast_reply</link>,
+and <link linkend="include">$include</link>
 for changing how and if Mutt asks these questions.
 </para>
 
@@ -1240,18 +1240,18 @@ details.
 <para>
 After getting recipients for new messages, forwards or replies, Mutt
 will then automatically start your <link
-linkend="editor">&dollar;editor</link> on the message body. If the <link
-linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable is
+linkend="editor">$editor</link> on the message body. If the <link
+linkend="edit-headers">$edit_headers</link> variable is
 set, the headers will be at the top of the message in your editor.  Any
 messages you are replying to will be added in sort order to the message,
-with appropriate <link linkend="attribution">&dollar;attribution</link>,
-<link linkend="indent-string">&dollar;indent&lowbar;string</link> and
+with appropriate <link linkend="attribution">$attribution</link>,
+<link linkend="indent-string">$indent_string</link> and
 <link
-linkend="post-indent-string">&dollar;post&lowbar;indent&lowbar;string</link>.
+linkend="post-indent-string">$post_indent_string</link>.
 When forwarding a message, if the <link
-linkend="mime-forward">&dollar;mime&lowbar;forward</link> variable is
+linkend="mime-forward">$mime_forward</link> variable is
 unset, a copy of the forwarded message will be included.  If you have
-specified a <link linkend="signature">&dollar;signature</link>, it will
+specified a <link linkend="signature">$signature</link>, it will
 be appended to the message.
 </para>
 
@@ -1288,7 +1288,7 @@ message.
 <row><entry>q</entry><entry><literal>&lt;quit&gt;</literal></entry><entry>quit (abort) sending the message</entry></row>
 <row><entry>w</entry><entry><literal>&lt;write-fcc&gt;</literal></entry><entry>write the message to a folder</entry></row>
 <row><entry>i</entry><entry><literal>&lt;ispell&gt;</literal></entry><entry>check spelling (if available on your system)</entry></row>
-<row><entry>&circ;F</entry><entry><literal>&lt;forget-passphrase&gt;</literal></entry><entry>wipe passphrase(s) from memory</entry></row>
+<row><entry>^F</entry><entry><literal>&lt;forget-passphrase&gt;</literal></entry><entry>wipe passphrase(s) from memory</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -1304,8 +1304,8 @@ will be attached to the message you are sending.
 <para>
 Note that certain
 operations like composing a new mail, replying, forwarding, etc. are
-not permitted when you are in that folder. The &percnt;r in
-<link linkend="status-format">&dollar;status&lowbar;format</link> will change to
+not permitted when you are in that folder. The %r in
+<link linkend="status-format">$status_format</link> will change to
 a <quote>A</quote> to indicate that you are in attach-message mode.
 </para>
 </note>
@@ -1316,7 +1316,7 @@ a <quote>A</quote> to indicate that you are in attach-message mode.
 <title>Editing the Message Header</title>
 
 <para>
-When editing the header because of <link linkend="edit-headers">&dollar;edit&lowbar;headers</link>
+When editing the header because of <link linkend="edit-headers">$edit_headers</link>
 being set, there are a several pseudo headers available which
 will not be included in sent messages but trigger special Mutt behavior.
 </para>
@@ -1349,13 +1349,13 @@ You can also attach files to your message by specifying
 
 <para>
 <literal>Attach:</literal> <emphasis>filename</emphasis>
-&lsqb; <emphasis>description</emphasis> &rsqb;
+[ <emphasis>description</emphasis> ]
 </para>
 
 <para>
 where <emphasis>filename</emphasis> is the file to attach and <emphasis>description</emphasis> is an
 optional string to use as the description of the attached file. Spaces
-in filenames have to be escaped using backslash (<quote>&bsol;</quote>).
+in filenames have to be escaped using backslash (<quote>\</quote>).
 The file can be removed as well as more added from the compose menu.
 </para>
 
@@ -1369,14 +1369,14 @@ If you want to use PGP, you can specify
 </para>
 
 <para>
-<literal>Pgp:</literal> &lsqb; <literal>E</literal> &verbar; <literal>S</literal> &verbar; <literal>S</literal><emphasis>&lt;id&gt;</emphasis> &rsqb;
+<literal>Pgp:</literal> [ <literal>E</literal> | <literal>S</literal> | <literal>S</literal><emphasis>&lt;id&gt;</emphasis> ]
 
 </para>
 
 <para>
 <quote>E</quote> selects encryption, <quote>S</quote> selects signing and
 <quote>S&lt;id&gt;</quote> selects signing with the given key, setting
-<link linkend="pgp-sign-as">&dollar;pgp&lowbar;sign&lowbar;as</link>
+<link linkend="pgp-sign-as">$pgp_sign_as</link>
 permanently. The selection can later be changed in the compose menu.
 </para>
 
@@ -1413,7 +1413,7 @@ keys can be found.
 In these cases, you are dropped into a menu with a list of keys from
 which you can select one.  When you quit this menu, or Mutt can't
 find any matching keys, you are prompted for a user ID.  You can, as
-usually, abort this prompt using <literal>&circ;G</literal>.  When you do so, Mutt will
+usually, abort this prompt using <literal>^G</literal>.  When you do so, Mutt will
 return to the compose screen.
 </para>
 
@@ -1423,13 +1423,13 @@ will be encrypted using the selected public keys when sent out.
 </para>
 
 <para>
-Most fields of the entries in the key selection menu (see also <link linkend="pgp-entry-format">&dollar;pgp&lowbar;entry&lowbar;format</link>)
+Most fields of the entries in the key selection menu (see also <link linkend="pgp-entry-format">$pgp_entry_format</link>)
 have obvious meanings.  But some explanations on the capabilities, flags,
 and validity fields are in order.
 </para>
 
 <para>
-The flags sequence (<quote>&percnt;f</quote>) will expand to one of the flags in
+The flags sequence (<quote>%f</quote>) will expand to one of the flags in
 <xref linkend="tab-pgp-menuflags"/>.
 </para>
 
@@ -1449,7 +1449,7 @@ The flags sequence (<quote>&percnt;f</quote>) will expand to one of the flags in
 </table>
 
 <para>
-The capabilities field (<quote>&percnt;c</quote>) expands to a two-character sequence
+The capabilities field (<quote>%c</quote>) expands to a two-character sequence
 representing a key's capabilities.  The first character gives
 the key's encryption capabilities: A minus sign (<quote>-</quote>) means
 that the key cannot be used for encryption.  A dot (<quote>.</quote>) means that
@@ -1466,7 +1466,7 @@ that the key is marked as an encryption key in one of the user-ids, and
 </para>
 
 <para>
-Finally, the validity field (<quote>&percnt;t</quote>) indicates how well-certified a user-id
+Finally, the validity field (<quote>%t</quote>) indicates how well-certified a user-id
 is.  A question mark (<quote>?</quote>) indicates undefined validity, a minus
 character (<quote>-</quote>) marks an untrusted association, a space character
 means a partially trusted association, and a plus character (<quote>+</quote>)
@@ -1504,7 +1504,7 @@ receiver decide completely how to view a message.
 <para>
 Mutt only supports setting the required <literal>format=flowed</literal>
 MIME parameter on outgoing messages if the <link
-linkend="text-flowed">&dollar;text&lowbar;flowed</link>
+linkend="text-flowed">$text_flowed</link>
 variable is set, specifically it does not add the
 trailing spaces.
 </para>
@@ -1588,16 +1588,16 @@ respectively.
 <para>
 Forwarding can be done by including the original message in the new
 message's body (surrounded by indicating lines) or including it as a MIME
-attachment, depending on the value of the <link linkend="mime-forward">&dollar;mime&lowbar;forward</link> variable.  Decoding of attachments,
-like in the pager, can be controlled by the <link linkend="forward-decode">&dollar;forward&lowbar;decode</link> and <link linkend="mime-forward-decode">&dollar;mime&lowbar;forward&lowbar;decode</link> variables,
+attachment, depending on the value of the <link linkend="mime-forward">$mime_forward</link> variable.  Decoding of attachments,
+like in the pager, can be controlled by the <link linkend="forward-decode">$forward_decode</link> and <link linkend="mime-forward-decode">$mime_forward_decode</link> variables,
 respectively.  The desired forwarding format may depend on the content,
-therefore <link linkend="mime-forward">&dollar;mime&lowbar;forward</link> is a quadoption which, for
+therefore <link linkend="mime-forward">$mime_forward</link> is a quadoption which, for
 example, can be set to <quote>ask-no</quote>.
 </para>
 
 <para>
 The inclusion of headers is controlled by the current setting of the
-<link linkend="weed">&dollar;weed</link> variable, unless <link linkend="mime-forward">&dollar;mime&lowbar;forward</link> is set.
+<link linkend="weed">$weed</link> variable, unless <link linkend="mime-forward">$mime_forward</link> is set.
 </para>
 
 <para>
@@ -1614,7 +1614,7 @@ replying to a message does.
 At times it is desirable to delay sending a message that you have
 already begun to compose.  When the <literal>&lt;postpone-message&gt;</literal> function is
 used in the <emphasis>compose</emphasis> menu, the body of your message and attachments
-are stored in the mailbox specified by the <link linkend="postponed">&dollar;postponed</link> variable.  This means that you can recall the
+are stored in the mailbox specified by the <link linkend="postponed">$postponed</link> variable.  This means that you can recall the
 message even if you exit Mutt and then restart it at a later time.
 </para>
 
@@ -1637,7 +1637,7 @@ replied to for the status of the message to be updated.
 </note>
 
 <para>
-See also the <link linkend="postpone">&dollar;postpone</link> quad-option.
+See also the <link linkend="postpone">$postpone</link> quad-option.
 </para>
 
 </sect1>
@@ -1700,7 +1700,7 @@ set realname='Mutt user' ; ignore x-
 
 <para>
 The hash mark, or pound sign
-(<quote>&num;</quote>), is used as a <quote>comment</quote> character. You can use it to
+(<quote>#</quote>), is used as a <quote>comment</quote> character. You can use it to
 annotate your initialization file. All text after the comment character
 to the end of the line is ignored.
 </para>
@@ -1708,25 +1708,25 @@ to the end of the line is ignored.
 <example id="ex-ec-comment">
 <title>Commenting configuration files</title>
 <screen>
-my_hdr X-Disclaimer: Why are you listening to me? &num; This is a comment
+my_hdr X-Disclaimer: Why are you listening to me? # This is a comment
 </screen>
 </example>
 
 <para>
-Single quotes (<quote>'</quote>) and double quotes (<quote>&quot;</quote>) can be used to quote strings
+Single quotes (<quote>'</quote>) and double quotes (<quote>"</quote>) can be used to quote strings
 which contain spaces or other special characters.  The difference between
 the two types of quotes is similar to that of many popular shell programs,
 namely that a single quote is used to specify a literal string (one that is
-not interpreted for shell variables or quoting with a backslash &lsqb;see
-next paragraph&rsqb;), while double quotes indicate a string for which
+not interpreted for shell variables or quoting with a backslash [see
+next paragraph]), while double quotes indicate a string for which
 should be evaluated.  For example, backticks are evaluated inside of double
 quotes, but <emphasis>not</emphasis> for single quotes.
 </para>
 
 <para>
-<quote>&bsol;</quote> quotes the next character, just as in shells such as bash and zsh.
-For example, if want to put quotes <quote>&quot;</quote> inside of a string, you can use
-<quote>&bsol;</quote> to force the next character to be a literal instead of interpreted
+<quote>\</quote> quotes the next character, just as in shells such as bash and zsh.
+For example, if want to put quotes <quote>"</quote> inside of a string, you can use
+<quote>\</quote> to force the next character to be a literal instead of interpreted
 character.
 </para>
 
@@ -1738,13 +1738,13 @@ set realname="Michael \"MuttDude\" Elkins"
 </example>
 
 <para>
-<quote>&bsol;&bsol;</quote> means to insert a literal <quote>&bsol;</quote> into the line.
-<quote>&bsol;n</quote> and <quote>&bsol;r</quote> have their usual C meanings of linefeed and
+<quote>\\</quote> means to insert a literal <quote>\</quote> into the line.
+<quote>\n</quote> and <quote>\r</quote> have their usual C meanings of linefeed and
 carriage-return, respectively.
 </para>
 
 <para>
-A <quote>&bsol;</quote> at the end of a line can be used to split commands over
+A <quote>\</quote> at the end of a line can be used to split commands over
 multiple lines as it <quote>escapes</quote> the line end, provided that the split points don't appear in the
 middle of command names. Lines are first concatenated before
 interpretation so that a multi-line can be commented by commenting out
@@ -1779,7 +1779,7 @@ my_hdr X-Operating-System: `uname -a`
 
 <para>
 Both environment variables and Mutt variables can be accessed by
-prepending <quote>&dollar;</quote> to the name of the variable. For example,
+prepending <quote>$</quote> to the name of the variable. For example,
 </para>
 
 <example id="ex-rc-env">
@@ -1791,8 +1791,8 @@ set record=+sent_on_$HOSTNAME
 
 <para>
 will cause Mutt to save outgoing messages to a folder named
-<quote>sent_on_kremvax</quote> if the environment variable <literal>&dollar;HOSTNAME</literal> is set to
-<quote>kremvax.</quote> (See <link linkend="record">&dollar;record</link> for
+<quote>sent_on_kremvax</quote> if the environment variable <literal>$HOSTNAME</literal> is set to
+<quote>kremvax.</quote> (See <link linkend="record">$record</link> for
 details.)
 </para>
 
@@ -1810,13 +1810,13 @@ For a complete list, see the <link linkend="commands">command reference</link>.
 
 <para>
 All configuration files are expected to be in the current locale as
-specified by the <link linkend="charset">&dollar;charset</link> variable
+specified by the <link linkend="charset">$charset</link> variable
 which doesn't have a default value since it's determined by Mutt at startup.
 If a configuration file is not encoded in the same character set the
-<link linkend="config-charset">&dollar;config&lowbar;charset</link>
+<link linkend="config-charset">$config_charset</link>
 variable should be used: all lines starting with the next are recoded
-from <link linkend="config-charset">&dollar;config&lowbar;charset</link>
-to <link linkend="charset">&dollar;charset</link>.
+from <link linkend="config-charset">$config_charset</link>
+to <link linkend="charset">$charset</link>.
 </para>
 
 <para>
@@ -1827,11 +1827,11 @@ following implications:
 <itemizedlist>
 
 <listitem><para>These variables should be set early in a configuration
-file with <link linkend="charset">&dollar;charset</link> preceding
-<link linkend="config-charset">&dollar;config&lowbar;charset</link> so Mutt
+file with <link linkend="charset">$charset</link> preceding
+<link linkend="config-charset">$config_charset</link> so Mutt
 knows what character set to convert to.</para></listitem>
 
-<listitem><para>If <link linkend="config-charset">&dollar;config&lowbar;charset</link> is set, it should be set
+<listitem><para>If <link linkend="config-charset">$config_charset</link> is set, it should be set
 in each configuration file because the value is global and <emphasis>not</emphasis>
 per configuration file.</para></listitem>
 
@@ -1994,8 +1994,8 @@ you can have all aliases defined in your <literal>.muttrc</literal>.
 
 <para>
 On the other hand, the <link linkend="create-alias"><literal>&lt;create-alias&gt;</literal></link>
-function can use only one file, the one pointed to by the <link linkend="alias-file">&dollar;alias&lowbar;file</link> variable (which is
-<literal>&tilde;/.muttrc</literal> by default). This file is not special either,
+function can use only one file, the one pointed to by the <link linkend="alias-file">$alias_file</link> variable (which is
+<literal>#/.muttrc</literal> by default). This file is not special either,
 in the sense that Mutt will happily append aliases to any file, but in
 order for the new aliases to take effect you need to explicitly <link linkend="source"><command>source</command></link> this file too.
 </para>
@@ -2013,7 +2013,7 @@ set alias_file=~/.mail_aliases
 To use aliases, you merely use the alias at any place in Mutt where Mutt
 prompts for addresses, such as the <emphasis>To:</emphasis> or <emphasis>Cc:</emphasis> prompt.  You can
 also enter aliases in your editor at the appropriate headers if you have the
-<link linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable set.
+<link linkend="edit-headers">$edit_headers</link> variable set.
 </para>
 
 <para>
@@ -2169,7 +2169,7 @@ recalling a message the user was composing, but saved until later.
 <listitem>
 <para>
 The query menu is the browser for results returned by
-<link linkend="query-command">&dollar;query&lowbar;command</link>.
+<link linkend="query-command">$query_command</link>.
 </para>
 </listitem>
 </varlistentry>
@@ -2186,13 +2186,13 @@ messages (if Mutt is compiled with Mixmaster support).
 
 <para>
 <emphasis>key</emphasis> is the key (or key sequence) you wish to bind.  To specify a
-control character, use the sequence <emphasis>&bsol;Cx</emphasis>, where <emphasis>x</emphasis> is the
+control character, use the sequence <emphasis>\Cx</emphasis>, where <emphasis>x</emphasis> is the
 letter of the control character (for example, to specify control-A use
-<quote>&bsol;Ca</quote>).  Note that the case of <emphasis>x</emphasis> as well as <emphasis>&bsol;C</emphasis> is
-ignored, so that <emphasis>&bsol;CA</emphasis>, <emphasis>&bsol;Ca</emphasis>, <emphasis>&bsol;cA</emphasis> and <emphasis>&bsol;ca</emphasis> are all
+<quote>\Ca</quote>).  Note that the case of <emphasis>x</emphasis> as well as <emphasis>\C</emphasis> is
+ignored, so that <emphasis>\CA</emphasis>, <emphasis>\Ca</emphasis>, <emphasis>\cA</emphasis> and <emphasis>\ca</emphasis> are all
 equivalent.  An alternative form is to specify the key as a three digit
-octal number prefixed with a <quote>&bsol;</quote> (for example <emphasis>&bsol;177</emphasis> is
-equivalent to <emphasis>&bsol;c?</emphasis>). In addition, <emphasis>key</emphasis> may
+octal number prefixed with a <quote>\</quote> (for example <emphasis>\177</emphasis> is
+equivalent to <emphasis>\c?</emphasis>). In addition, <emphasis>key</emphasis> may
 be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 </para>
 
@@ -2203,12 +2203,12 @@ be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 <row><entry>Symbolic name</entry><entry>Meaning</entry></row>
 </thead>
 <tbody>
-<row><entry>&bsol;t</entry><entry>tab</entry></row>
+<row><entry>\t</entry><entry>tab</entry></row>
 <row><entry>&lt;tab&gt;</entry><entry>tab</entry></row>
 <row><entry>&lt;backtab&gt;</entry><entry>backtab / shift-tab</entry></row>
-<row><entry>&bsol;r</entry><entry>carriage return</entry></row>
-<row><entry>&bsol;n</entry><entry>newline</entry></row>
-<row><entry>&bsol;e</entry><entry>escape</entry></row>
+<row><entry>\r</entry><entry>carriage return</entry></row>
+<row><entry>\n</entry><entry>newline</entry></row>
+<row><entry>\e</entry><entry>escape</entry></row>
 <row><entry>&lt;esc&gt;</entry><entry>escape</entry></row>
 <row><entry>&lt;up&gt;</entry><entry>up arrow</entry></row>
 <row><entry>&lt;down&gt;</entry><entry>down arrow</entry></row>
@@ -2232,7 +2232,7 @@ be a symbolic name as shown in <xref linkend="tab-key-names"/>.
 
 <para>
 <emphasis>key</emphasis> does not need to be enclosed in quotes unless it contains a
-space (<quote>&puncsp;</quote>) or semi-colon (<quote>;</quote>).
+space (<quote>&nbsp;</quote>) or semi-colon (<quote>;</quote>).
 </para>
 
 <para>
@@ -2296,7 +2296,7 @@ for character sets.
 <cmdsynopsis>
 <command>folder-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;regexp</replaceable>
+<replaceable class="parameter">[!]regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -2314,7 +2314,7 @@ matches multiple <command>folder-hook</command>s, they are executed in the order
 
 <note>
 <para>
-If you use the <quote>!</quote> shortcut for <link linkend="spoolfile">&dollar;spoolfile</link> at the beginning of the pattern, you must place it
+If you use the <quote>!</quote> shortcut for <link linkend="spoolfile">$spoolfile</link> at the beginning of the pattern, you must place it
 inside of double or single quotes in order to distinguish it from the
 logical <emphasis>not</emphasis> operator for the expression.
 </para>
@@ -2393,8 +2393,8 @@ commas separating them.
 <emphasis>key</emphasis> and <emphasis>sequence</emphasis> are expanded by the same rules as the
 <link linkend="bind">key bindings</link> with some additions.  The
 first is that control characters in <emphasis>sequence</emphasis> can also be specified
-as <emphasis>&circ;x</emphasis>.  In order to get a caret (<quote>&circ;</quote>) you need to use
-<emphasis>&circ;&circ;</emphasis>.  Secondly, to specify a certain key such as <emphasis>up</emphasis>
+as <emphasis>^x</emphasis>.  In order to get a caret (<quote>^</quote>) you need to use
+<emphasis>^^</emphasis>.  Secondly, to specify a certain key such as <emphasis>up</emphasis>
 or to invoke a function directly, you can use the format
 <emphasis>&lt;key name&gt;</emphasis> and <emphasis>&lt;function name&gt;</emphasis>.  For a listing of key
 names see the section on <link linkend="bind">key bindings</link>.  Functions
@@ -2521,11 +2521,11 @@ in the header/body of a message, <emphasis>index</emphasis> matches <emphasis>pa
 <listitem><para>markers (the <quote>+</quote> markers at the beginning of wrapped lines in the pager)</para></listitem>
 <listitem><para>message (informational messages)</para></listitem>
 <listitem><para>normal</para></listitem>
-<listitem><para>quoted (text matching <link linkend="quote-regexp">&dollar;quote&lowbar;regexp</link> in the body of a message)</para></listitem>
+<listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
 <listitem><para>search (hiliting of words in the pager)</para></listitem>
 <listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
-<listitem><para>tilde (the <quote>&tilde;</quote> used to pad blank lines in the pager)</para></listitem>
+<listitem><para>tilde (the <quote>#</quote> used to pad blank lines in the pager)</para></listitem>
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
 <listitem><para>underline (hiliting underlined patterns in the body of messages)</para></listitem>
 </itemizedlist>
@@ -2557,7 +2557,7 @@ the foreground color boldfaced (e.g., <literal>brightred</literal>).
 If your terminal supports it, the special keyword <emphasis>default</emphasis> can be
 used as a transparent color.  The value <emphasis>brightdefault</emphasis> is also valid.
 If Mutt is linked against the <emphasis>S-Lang</emphasis> library, you also need to set
-the <literal>&dollar;COLORFGBG</literal> environment variable to the default colors of your
+the <literal>$COLORFGBG</literal> environment variable to the default colors of your
 terminal for this to work; for example (for Bourne-like shells):
 </para>
 
@@ -2584,7 +2584,7 @@ a special token which means to clear the color list of all entries.
 </note>
 
 <para>
-Mutt also recognizes the keywords <emphasis>color0</emphasis>, <emphasis>color1</emphasis>, &hellip;,
+Mutt also recognizes the keywords <emphasis>color0</emphasis>, <emphasis>color1</emphasis>, ...,
 <emphasis>color</emphasis><emphasis>N-1</emphasis> (<emphasis>N</emphasis> being the number of colors supported
 by your terminal).  This is useful when you remap the colors for your
 display (for example by changing the color associated with <emphasis>color2</emphasis>
@@ -2678,7 +2678,7 @@ can be one of the following:
 
 <para>
 When displaying a message in the pager, Mutt folds long header lines at
-<link linkend="wrap">&dollar;wrap</link> columns. Though there're
+<link linkend="wrap">$wrap</link> columns. Though there're
 precise rules about where to break and how, Mutt always folds headers
 using a tab for readability. (Note that the sending side is not affected
 by this, Mutt tries to implement standards compliant folding.)
@@ -2752,7 +2752,7 @@ unignore posted-to:
 <para>Usage:</para>
 
 <cmdsynopsis>
-<command>hdr&lowbar;order</command>
+<command>hdr_order</command>
 <arg choice="plain">
 <replaceable class="parameter">header</replaceable>
 </arg>
@@ -2760,7 +2760,7 @@ unignore posted-to:
 <replaceable class="parameter">header</replaceable>
 </arg>
 
-<command>unhdr&lowbar;order</command>
+<command>unhdr_order</command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -2772,19 +2772,19 @@ unignore posted-to:
 </cmdsynopsis>
 
 <para>
-With the <command>hdr&lowbar;order</command> command you can specify an order in
+With the <command>hdr_order</command> command you can specify an order in
 which Mutt will attempt to present these headers to you when viewing messages.
 </para>
 
 <para>
-<quote><command>unhdr&lowbar;order</command> *</quote> will clear all previous headers from the order list,
+<quote><command>unhdr_order</command> *</quote> will clear all previous headers from the order list,
 thus removing the header order effects set by the system-wide startup file.
 </para>
 
 <example id="ex-hdr-order">
 <title>Configuring header display order</title>
 <screen>
-hdr&lowbar;order From Date: From: To: Cc: Subject:
+hdr_order From Date: From: To: Cc: Subject:
 </screen>
 </example>
 
@@ -2830,7 +2830,7 @@ depending on whether you sent them or whether you received them from
 someone else.  For instance, when replying to a message that you
 sent to a different party, Mutt will automatically suggest to send
 the response to the original message's recipients &mdash; responding to
-yourself won't make much sense in many cases.  (See <link linkend="reply-to">&dollar;reply&lowbar;to</link>.)
+yourself won't make much sense in many cases.  (See <link linkend="reply-to">$reply_to</link>.)
 </para>
 
 <para>
@@ -2968,7 +2968,7 @@ The Mail-Followup-To header is a non-standard extension which is not
 supported by all mail user agents.  Adding it is not bullet-proof against
 receiving personal CCs of list messages.  Also note that the generation
 of the Mail-Followup-To header is controlled by the
-<link linkend="followup-to">&dollar;followup&lowbar;to</link>
+<link linkend="followup-to">$followup_to</link>
 configuration variable since it's common practice on some mailing lists
 to send Cc upons replies (which is more a group- than a list-reply).
 </para>
@@ -2988,7 +2988,7 @@ tracking system as list mail, for instance, you could say
 </para>
 
 <screen>
-subscribe &lsqb;0-9&rsqb;*.*@bugs.debian.org</screen>
+subscribe [0-9]*.*@bugs.debian.org</screen>
 
 <para>
 as it's often, it's sufficient to just give a portion of the list's e-mail address.
@@ -3003,8 +3003,8 @@ initialization file.  To tell Mutt that you are subscribed to it,
 add <literal><command>subscribe</command> mutt-users</literal> to your initialization file instead.
 If you also happen to get mail from someone whose address is
 <literal>mutt-users@example.com</literal>, you could use
-<literal><command>lists</command> ^mutt-users@mutt&bsol;&bsol;.org$</literal>
-or <literal><command>subscribe</command> ^mutt-users@mutt&bsol;&bsol;.org$</literal> to
+<literal><command>lists</command> ^mutt-users@mutt\\.org$</literal>
+or <literal><command>subscribe</command> ^mutt-users@mutt\\.org$</literal> to
 match only mail from the actual list.
 </para>
 
@@ -3034,7 +3034,7 @@ but keep it on the list of known mailing lists, use <command>unsubscribe</comman
 <cmdsynopsis>
 <command>mbox-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -3113,7 +3113,7 @@ tokens.
 <para>
 The folders in the <command>mailboxes</command> command are resolved when
 the command is executed, so if these names contain <link linkend="shortcuts">shortcut characters</link> (such as <quote>=</quote> and <quote>!</quote>), any variable
-definition that affects these characters (like <link linkend="folder">&dollar;folder</link> and <link linkend="spoolfile">&dollar;spoolfile</link>)
+definition that affects these characters (like <link linkend="folder">$folder</link> and <link linkend="spoolfile">$spoolfile</link>)
 should be set before the <command>mailboxes</command> command. If
 none of these shorcuts are used, a local path should be absolute as
 otherwise Mutt tries to find it relative to the directory
@@ -3135,7 +3135,7 @@ access time update support.
 <para>
 In cases where new mail detection for Mbox or Mmdf folders appears to be
 unreliable, the
-<link linkend="check-mbox-size">&dollar;check&lowbar;mbox&lowbar;size</link>
+<link linkend="check-mbox-size">$check_mbox_size</link>
 option can be used to make Mutt track and consult file sizes for new
 mail detection instead which won't work for size-neutral changes.
 </para>
@@ -3148,12 +3148,12 @@ mail detection instead which won't work for size-neutral changes.
 <para>Usage:</para>
 
 <cmdsynopsis>
-<command>my&lowbar;hdr</command>
+<command>my_hdr</command>
 <arg choice="plain">
 <replaceable class="parameter">string</replaceable>
 </arg>
 
-<command>unmy&lowbar;hdr</command>
+<command>unmy_hdr</command>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>
@@ -3165,9 +3165,9 @@ mail detection instead which won't work for size-neutral changes.
 </cmdsynopsis>
 
 <para>
-The <command>my&lowbar;hdr</command> command allows you to create your own header
+The <command>my_hdr</command> command allows you to create your own header
 fields which will be added to every message you send and appear in the
-editor if <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> is set.
+editor if <link linkend="edit-headers">$edit_headers</link> is set.
 </para>
 
 <para>
@@ -3179,7 +3179,7 @@ shown in <xref linkend="ex-my-hdr"/> in your <literal>.muttrc</literal>.
 <example id="ex-my-hdr">
 <title>Defining custom headers</title>
 <screen>
-my&lowbar;hdr Organization: A Really Big Company, Anytown, USA
+my_hdr Organization: A Really Big Company, Anytown, USA
 </screen>
 </example>
 
@@ -3193,20 +3193,20 @@ space is illegal there, so Mutt enforces the rule.
 
 <para>
 If you would like to add a header field to a single message, you should
-either set the <link linkend="edit-headers">&dollar;edit&lowbar;headers</link> variable,
+either set the <link linkend="edit-headers">$edit_headers</link> variable,
 or use the <literal>&lt;edit-headers&gt;</literal> function (default: <quote>E</quote>) in the compose menu so
 that you can edit the header of your message along with the body.
 </para>
 
 <para>
-To remove user defined header fields, use the <command>unmy&lowbar;hdr</command>
+To remove user defined header fields, use the <command>unmy_hdr</command>
 command. You may specify an asterisk (<quote>*</quote>) to remove all header
 fields, or the fields to remove. For example, to remove all <quote>To</quote> and
 <quote>Cc</quote> header fields, you could use:
 </para>
 
 <screen>
-unmy&lowbar;hdr to cc
+unmy_hdr to cc
 </screen>
 
 </sect1>
@@ -3219,7 +3219,7 @@ unmy&lowbar;hdr to cc
 <cmdsynopsis>
 <command>save-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -3235,7 +3235,7 @@ on the exact format.
 
 <para>
 To provide more flexibility and good defaults, Mutt applies the
-expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
+expandos of <link linkend="index-format">$index_format</link> to
 <emphasis>mailbox</emphasis> after it was expanded.
 </para>
 
@@ -3267,7 +3267,7 @@ Also see the <link linkend="fcc-save-hook"><command>fcc-save-hook</command></lin
 <cmdsynopsis>
 <command>fcc-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -3276,15 +3276,15 @@ Also see the <link linkend="fcc-save-hook"><command>fcc-save-hook</command></lin
 
 <para>
 This command is used to save outgoing mail in a mailbox other than
-<link linkend="record">&dollar;record</link>.  Mutt searches the initial list of
+<link linkend="record">$record</link>.  Mutt searches the initial list of
 message recipients for the first matching <emphasis>regexp</emphasis> and uses <emphasis>mailbox</emphasis>
 as the default Fcc: mailbox.  If no match is found the message will be saved
-to <link linkend="record">&dollar;record</link> mailbox.
+to <link linkend="record">$record</link> mailbox.
 </para>
 
 <para>
 To provide more flexibility and good defaults, Mutt applies the
-expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
+expandos of <link linkend="index-format">$index_format</link> to
 <emphasis>mailbox</emphasis> after it was expanded.
 </para>
 
@@ -3292,7 +3292,7 @@ expandos of <link linkend="index-format">&dollar;index&lowbar;format</link> to
 See <xref linkend="pattern-hook"/> for information on the exact format of <emphasis>pattern</emphasis>.
 </para>
 
-<screen>fcc-hook &lsqb;@.&rsqb;aol&bsol;&bsol;.com&dollar; +spammers</screen>
+<screen>fcc-hook [@.]aol\\.com$ +spammers</screen>
 
 <para>
 ...will save a copy of all messages going to the aol.com domain to
@@ -3309,7 +3309,7 @@ the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">
 <cmdsynopsis>
 <command>fcc-save-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -3319,8 +3319,8 @@ the `+spammers' mailbox by default.  Also see the <link linkend="fcc-save-hook">
 <para>
 This command is a shortcut, equivalent to doing both a <link linkend="fcc-hook"><command>fcc-hook</command></link>
 and a <link linkend="save-hook"><command>save-hook</command></link> with its arguments,
-including &percnt;-expansion on <emphasis>mailbox</emphasis> according
-to <link linkend="index-format">&dollar;index&lowbar;format</link>.
+including %-expansion on <emphasis>mailbox</emphasis> according
+to <link linkend="index-format">$index_format</link>.
 </para>
 
 </sect1>
@@ -3336,7 +3336,7 @@ to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 <cmdsynopsis>
 <command>reply-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -3344,7 +3344,7 @@ to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 
 <command>send-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -3352,7 +3352,7 @@ to <link linkend="index-format">&dollar;index&lowbar;format</link>.
 
 <command>send2-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -3384,7 +3384,7 @@ of the order specified in the user's configuration file.
 <command>send2-hook</command> is matched every time a message is changed, either
 by editing it, or by using the compose menu to change its recipients
 or subject.  <command>send2-hook</command> is executed after <command>send-hook</command>, and
-can, e.g., be used to set parameters such as the <link linkend="sendmail">&dollar;sendmail</link> variable depending on the message's sender
+can, e.g., be used to set parameters such as the <link linkend="sendmail">$sendmail</link> variable depending on the message's sender
 address.
 </para>
 
@@ -3395,12 +3395,12 @@ occur, commands are executed in the order they are specified in the <literal>.mu
 </para>
 
 <para>
-Example: <literal><command>send-hook</command> mutt &quot;<command>set</command> mime&lowbar;forward signature=''&quot;</literal>
+Example: <literal><command>send-hook</command> mutt "<command>set</command> mime_forward signature=''"</literal>
 </para>
 
 <para>
 Another typical use for this command is to change the values of the
-<link linkend="attribution">&dollar;attribution</link>, <link linkend="signature">&dollar;signature</link> and <link linkend="locale">&dollar;locale</link>
+<link linkend="attribution">$attribution</link>, <link linkend="signature">$signature</link> and <link linkend="locale">$locale</link>
 variables in order to change the language of the attributions and
 signatures based upon the recipients.
 </para>
@@ -3410,9 +3410,9 @@ signatures based upon the recipients.
 <command>send-hook</command>'s are only executed once after getting the
 initial list of recipients.  Adding a recipient after replying or
 editing the message will not cause any <command>send-hook</command> to be executed,
-similarily if <link linkend="autoedit">&dollar;autoedit</link> is set
+similarily if <link linkend="autoedit">$autoedit</link> is set
 (as then the initial list of recipients is empty). Also note that <link
-linkend="my-hdr"><command>my&lowbar;hdr</command></link> commands which
+linkend="my-hdr"><command>my_hdr</command></link> commands which
 modify recipient headers, or the message's subject, don't have any
 effect on the current message when executed from a
 <command>send-hook</command>.
@@ -3429,7 +3429,7 @@ effect on the current message when executed from a
 <cmdsynopsis>
 <command>message-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -3575,8 +3575,8 @@ listed in the <link linkend="functions">function reference</link>.
 <para>
 The <command>score</command> commands adds <emphasis>value</emphasis> to a message's score if <emphasis>pattern</emphasis>
 matches it.  <emphasis>pattern</emphasis> is a string in the format described in the <link linkend="patterns">patterns</link> section (note: For efficiency reasons, patterns
-which scan information not available in the index, such as <literal>&tilde;b</literal>,
-<literal>&tilde;B</literal> or <literal>&tilde;h</literal>, may not be used).  <emphasis>value</emphasis> is a
+which scan information not available in the index, such as <literal>#b</literal>,
+<literal>#B</literal> or <literal>#h</literal>, may not be used).  <emphasis>value</emphasis> is a
 positive or negative integer.  A message's final score is the sum total of all
 matching <command>score</command> entries.  However, you may optionally prefix <emphasis>value</emphasis> with
 an equal sign (<quote>=</quote>) to cause evaluation to stop at a particular entry if there is
@@ -3623,7 +3623,7 @@ By defining your spam patterns with the <command>spam</command> and <literal>nos
 commands, you can <emphasis>limit</emphasis>, <emphasis>search</emphasis>, and <emphasis>sort</emphasis> your
 mail based on its spam attributes, as determined by the external
 filter. You also can display the spam attributes in your index
-display using the <literal>&percnt;H</literal> selector in the <link linkend="index-format">&dollar;index&lowbar;format</link> variable. (Tip: try <literal>&percnt;?H?[&percnt;H] ?</literal>
+display using the <literal>%H</literal> selector in the <link linkend="index-format">$index_format</link> variable. (Tip: try <literal>%?H?[%H] ?</literal>
 to display spam tags only when they are defined for a given message.)
 </para>
 
@@ -3637,15 +3637,15 @@ below.) The appearance of this attribute is entirely up to you, and is
 governed by the <emphasis>format</emphasis> parameter. <emphasis>format</emphasis> can be any static
 text, but it also can include back-references from the <emphasis>pattern</emphasis>
 expression. (A regular expression <quote>back-reference</quote> refers to a
-sub-expression contained within parentheses.) <literal>&percnt;1</literal> is replaced with
-the first back-reference in the regex, <literal>&percnt;2</literal> with the second, etc.
+sub-expression contained within parentheses.) <literal>%1</literal> is replaced with
+the first back-reference in the regex, <literal>%2</literal> with the second, etc.
 </para>
 
 <para>
 To match spam tags, mutt needs the corresponding header information
 which is always the case for local and POP folders but not for IMAP in
 the default configuration. Depending on the spam header to be analyzed,
-<link linkend="imap-headers">&dollar;imap&lowbar;headers</link> may need
+<link linkend="imap-headers">$imap_headers</link> may need
 to be adjusted.
 </para>
 
@@ -3653,9 +3653,9 @@ to be adjusted.
 If you're using multiple spam filters, a message can have more than
 one spam-related header. You can define <command>spam</command> patterns for each
 filter you use. If a message matches two or more of these patterns, and
-the <link linkend="spam-separator">&dollar;spam&lowbar;separator</link> variable is set to a string, then the
+the <link linkend="spam-separator">$spam_separator</link> variable is set to a string, then the
 message's spam tag will consist of all the <emphasis>format</emphasis> strings joined
-together, with the value of <link linkend="spam-separator">&dollar;spam&lowbar;separator</link> separating
+together, with the value of <link linkend="spam-separator">$spam_separator</link> separating
 them.
 </para>
 
@@ -3677,21 +3677,21 @@ set spam_separator=", "
 <para>
 If then a message is received that DCC registered with <quote>many</quote> hits
 under the <quote>Fuz2</quote> checksum, and that PureMessage registered with a
-97&percnt; probability of being spam, that message's spam tag would read
+97% probability of being spam, that message's spam tag would read
 <literal>90+/DCC-Fuz2, 97/PM</literal>. (The four characters before <quote>=many</quote> in a
 DCC report indicate the checksum used &mdash; in this case, <quote>Fuz2</quote>.)
 </para>
 
 <para>
-If the <link linkend="spam-separator">&dollar;spam&lowbar;separator</link> variable is unset, then each
+If the <link linkend="spam-separator">$spam_separator</link> variable is unset, then each
 spam pattern match supersedes the previous one. Instead of getting
 joined <emphasis>format</emphasis> strings, you'll get only the last one to match.
 </para>
 
 <para>
 The spam tag is what will be displayed in the index when you use
-<literal>&percnt;H</literal> in the <link linkend="index-format">&dollar;index&lowbar;format</link> variable. It's also the
-string that the <literal>&tilde;H</literal> pattern-matching expression matches against for
+<literal>%H</literal> in the <link linkend="index-format">$index_format</link> variable. It's also the
+string that the <literal>#H</literal> pattern-matching expression matches against for
 <literal>&lt;search&gt;</literal> and <literal>&lt;limit&gt;</literal> functions. And it's what sorting by spam
 attribute will use as a sort key.
 </para>
@@ -3789,7 +3789,7 @@ Arbitrary text.
 <para>
 A specialized string for representing paths including support for
 mailbox shortcuts (see <xref linkend="shortcuts"/>) as well as tilde
-(<quote>&tilde;</quote>) for a user's home directory and more.
+(<quote>#</quote>) for a user's home directory and more.
 </para>
 </listitem>
 </varlistentry>
@@ -3910,7 +3910,7 @@ boolean, number, string and quadoption.  <emphasis>boolean</emphasis> variables 
 assigned a positive integer value.
 <emphasis>string</emphasis> variables consist of any number of printable characters and
 must be enclosed in quotes if they contain spaces or tabs.  You
-may also use the escape sequences <quote>&bsol;n</quote> and <quote>&bsol;t</quote> for newline and tab, respectively.
+may also use the escape sequences <quote>\n</quote> and <quote>\t</quote> for newline and tab, respectively.
 <emphasis>quadoption</emphasis> variables are used to control whether or not to be prompted
 for certain actions, or to specify a default action.  A value of <emphasis>yes</emphasis>
 will cause the action to be carried out automatically as if you had answered
@@ -3927,7 +3927,7 @@ Prefixing a variable with <quote>no</quote> will unset it.  Example: <literal><c
 <para>
 For <emphasis>boolean</emphasis> variables, you may optionally prefix the variable name with
 <literal>inv</literal> to toggle the value (on or off).  This is useful when writing
-macros.  Example: <literal><command>set</command> invsmart&lowbar;wrap</literal>.
+macros.  Example: <literal><command>set</command> invsmart_wrap</literal>.
 </para>
 
 <para>
@@ -3979,13 +3979,13 @@ which allows you to reset all variables to their system defaults.
 Along with the variables listed in the
 <link linkend="variables">Configuration variables</link> section, Mutt
 supports user-defined variables with names starting
-with <literal>my&lowbar;</literal> as in, for
-example, <literal>my&lowbar;cfgdir</literal>.
+with <literal>my_</literal> as in, for
+example, <literal>my_cfgdir</literal>.
 </para>
 
 <para>
 The <command>set</command> command either creates a
-custom <literal>my&lowbar;</literal> variable or changes its
+custom <literal>my_</literal> variable or changes its
 value if it does exist already. The <command>unset</command> and <command>reset</command>
 commands remove the variable entirely.
 </para>
@@ -4004,7 +4004,7 @@ files more readable.
 <title>Examples</title>
 
 <para>
-The following example defines and uses the variable <literal>my&lowbar;cfgdir</literal>
+The following example defines and uses the variable <literal>my_cfgdir</literal>
 to abbreviate the calls of the <link linkend="source"><command>source</command></link> command:
 </para>
 
@@ -4022,31 +4022,31 @@ source $my_cfgdir/macros
 <para>
 A custom variable can also be used in macros to backup the current value
 of another variable. In the following example, the value of the
-<link linkend="delete">&dollar;delete</link> is changed temporarily
-while its original value is saved as <literal>my&lowbar;delete</literal>.
+<link linkend="delete">$delete</link> is changed temporarily
+while its original value is saved as <literal>my_delete</literal>.
 After the macro has executed all commands, the original value of <link
-linkend="delete">&dollar;delete</link> is restored.
+linkend="delete">$delete</link> is restored.
 </para>
 
 <example id="ex-myvar2">
 <title>Using user-defined variables for backing up other config option values</title>
 <screen>
-macro pager ,x '&bsol;
-&lt;enter-command&gt;set my_delete=$delete&lt;enter&gt;&bsol;
-&lt;enter-command&gt;set delete=yes&lt;enter&gt;&bsol;
-...&bsol;
+macro pager ,x '\
+&lt;enter-command&gt;set my_delete=$delete&lt;enter&gt;\
+&lt;enter-command&gt;set delete=yes&lt;enter&gt;\
+...\
 &lt;enter-command&gt;set delete=$my_delete&lt;enter&gt;'
 </screen>
 </example>
 
 <para>
 Since Mutt expands such values already when parsing the configuration
-file(s), the value of <literal>&dollar;my&lowbar;delete</literal> in the
-last example would be the value of <link linkend="delete">&dollar;delete</link> exactly
+file(s), the value of <literal>$my_delete</literal> in the
+last example would be the value of <link linkend="delete">$delete</link> exactly
 as it was at that point during parsing the configuration file. If
-another statement would change the value for <link linkend="delete">&dollar;delete</link>
+another statement would change the value for <link linkend="delete">$delete</link>
 later in the same or another file, it would have no effect on
-<literal>&dollar;my&lowbar;delete</literal>. However, the expansion can
+<literal>$my_delete</literal>. However, the expansion can
 be deferred to runtime, as shown in the next example, when escaping the
 dollar sign.
 </para>
@@ -4054,11 +4054,11 @@ dollar sign.
 <example id="ex-myvar3">
 <title>Deferring user-defined variable expansion to runtime</title>
 <screen>
-macro pager &lt;PageDown&gt; "&bsol;
-&lt;enter-command&gt; set my&lowbar;old&lowbar;pager&lowbar;stop=&bsol;&dollar;pager&lowbar;stop pager&lowbar;stop&lt;Enter&gt;&bsol;
-&lt;next-page&gt;&bsol;
-&lt;enter-command&gt; set pager&lowbar;stop=&bsol;&dollar;my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;&bsol;
-&lt;enter-command&gt; unset my&lowbar;old&lowbar;pager&lowbar;stop&lt;Enter&gt;"
+macro pager &lt;PageDown&gt; "\
+&lt;enter-command&gt; set my_old_pager_stop=\$pager_stop pager_stop&lt;Enter&gt;\
+&lt;next-page&gt;\
+&lt;enter-command&gt; set pager_stop=\$my_old_pager_stop&lt;Enter&gt;\
+&lt;enter-command&gt; unset my_old_pager_stop&lt;Enter&gt;"
 </screen>
 </example>
 
@@ -4080,7 +4080,7 @@ recording the <command>macro</command>'s commands into its history.
 Variables are always assigned string values which Mutt parses into its
 internal representation according to the type of the variable, for
 example an integer number for numeric types. For all queries (including
-&dollar;-expansion) the value is converted from its internal type back
+$-expansion) the value is converted from its internal type back
 into string. As a result, any variable can be assigned any value given
 that its content is valid for the target. This also counts for custom
 variables which are of type string. In case of parsing errors, Mutt will
@@ -4104,10 +4104,10 @@ set my_foo = $my_inc              # value is string "10"
 
 <para>
 These assignments are all valid. If, however, the value of
-<literal>&dollar;my&lowbar;lines</literal> would have been
+<literal>$my_lines</literal> would have been
 <quote>five</quote> (or something else that cannot be parsed into a
 number), the assignment to
-<literal>&dollar;pager&lowbar;index&lowbar;lines</literal> would have
+<literal>$pager_index_lines</literal> would have
 produced an error message.
 </para>
 
@@ -4133,7 +4133,7 @@ set my_mx = "+mailbox1 +mailbox2"
 mailboxes $my_mx +mailbox3</screen>
 
 <para>
-because the value of <literal>&dollar;my&lowbar;mx</literal> is
+because the value of <literal>$my_mx</literal> is
 interpreted as a single mailbox named <quote>+mailbox1 +mailbox2</quote>
 and not two distinct mailboxes.
 </para>
@@ -4157,19 +4157,19 @@ and not two distinct mailboxes.
 <para>
 This command allows the inclusion of initialization commands
 from other files.  For example, I place all of my aliases in
-<literal>&tilde;/.mail&lowbar;aliases</literal> so that I can make my
-<literal>&tilde;/.muttrc</literal> readable and keep my aliases private.
+<literal>#/.mail_aliases</literal> so that I can make my
+<literal>#/.muttrc</literal> readable and keep my aliases private.
 </para>
 
 <para>
-If the filename begins with a tilde (<quote>&tilde;</quote>), it will be expanded to the
+If the filename begins with a tilde (<quote>#</quote>), it will be expanded to the
 path of your home directory.
 </para>
 
 <para>
-If the filename ends with a vertical bar (<quote>&verbar;</quote>), then <emphasis>filename</emphasis> is
+If the filename ends with a vertical bar (<quote>|</quote>), then <emphasis>filename</emphasis> is
 considered to be an executable program from which to read input (eg.
-<literal><command>source</command> &tilde;/bin/myscript&verbar;</literal>).
+<literal><command>source</command> #/bin/myscript|</literal>).
 </para>
 
 </sect1>
@@ -4209,9 +4209,9 @@ something like <literal><command>unhook</command> send-hook</literal>.
 <para>
 Format strings are a general concept you'll find in several locations
 through the Mutt configuration, especially in the
-<link linkend="index-format">&dollar;index&lowbar;format</link>,
-<link linkend="pager-format">&dollar;pager&lowbar;format</link>,
-<link linkend="status-format">&dollar;status&lowbar;format</link>,
+<link linkend="index-format">$index_format</link>,
+<link linkend="pager-format">$pager_format</link>,
+<link linkend="status-format">$status_format</link>,
 and other related variables. These can be very straightforward,
 and it's quite possible you already know how to use them.
 </para>
@@ -4220,7 +4220,7 @@ and it's quite possible you already know how to use them.
 The most basic format string element is a percent symbol followed
 by another character. For example, <literal>%s</literal>
 represents a message's Subject: header in the <link
-linkend="index-format">&dollar;index&lowbar;format</link> variable. The
+linkend="index-format">$index_format</link> variable. The
 <quote>expandos</quote> available are documented with each format variable, but
 there are general modifiers available with all formatting expandos,
 too. Those are our concern here.
@@ -4229,7 +4229,7 @@ too. Those are our concern here.
 <para>
 Some of the modifiers are borrowed right out of C (though you might
 know them from Perl, Python, shell, or another language). These are
-the <literal>&lsqb;-&rsqb;m.n</literal> modifiers, as in <literal>%-12.12s</literal>. As with
+the <literal>[-]m.n</literal> modifiers, as in <literal>%-12.12s</literal>. As with
 such programming languages, these modifiers allow you to specify the
 minimum and maximum size of the resulting string, as well as its
 justification. If the <quote>-</quote> sign follows the percent, the string will
@@ -4250,7 +4250,7 @@ symbol (<literal>=</literal>) as a numeric prefix (like the minus
 above), it will force the string to be centered within its minimum
 space range. For example, <literal>%=14y</literal> will reserve 14
 characters for the %y expansion &mdash; that's the X-Label: header, in
-<link linkend="index-format">&dollar;index&lowbar;format</link>. If the expansion
+<link linkend="index-format">$index_format</link>. If the expansion
 results in a string less than 14 characters, it will be centered in a
 14-character space.  If the X-Label for a message were <quote>test</quote>, that
 expansion would look like <quote>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</quote>.
@@ -4258,7 +4258,7 @@ expansion would look like <quote>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;test&nbsp;&nbsp;&
 
 <para>
 There are two very little-known modifiers that affect the way that an
-expando is replaced. If there is an underline (<quote>&lowbar;</quote>) character
+expando is replaced. If there is an underline (<quote>_</quote>) character
 between any format modifiers (as above) and the expando letter, it will
 expands in all lower case. And if you use a colon (<quote>:</quote>), it will
 replace all decimal points with underlines.
@@ -4279,7 +4279,7 @@ construct is used:
 </para>
 
 <screen>
-&percnt;?&lt;sequence_char&gt;?&lt;optional_string&gt;?</screen>
+%?&lt;sequence_char&gt;?&lt;optional_string&gt;?</screen>
 
 <para>
 where <emphasis>sequence_char</emphasis> is an expando, and
@@ -4293,18 +4293,18 @@ strings.
 <para>
 Here is an example illustrating how to optionally print the number of
 new messages in a mailbox in
-<link linkend="status-format">&dollar;status&lowbar;format</link>:
+<link linkend="status-format">$status_format</link>:
 </para>
 
 <screen>
-&percnt;?n?&percnt;n new messages.?</screen>
+%?n?%n new messages.?</screen>
 
 <para>
 You can also switch between two strings using the following construct:
 </para>
 
 <screen>
-&percnt;?&lt;sequence_char&gt;?&lt;if_string&gt;&amp;&lt;else_string&gt;?</screen>
+%?&lt;sequence_char&gt;?&lt;if_string&gt;&amp;&lt;else_string&gt;?</screen>
 
 <para>
 If the value of <emphasis>sequence_char</emphasis> is
@@ -4318,16 +4318,16 @@ otherwise <emphasis>else_string</emphasis> will be expanded.
 <title>Filters</title>
 
 <para>
-Any format string ending in a vertical bar (<quote>&verbar;</quote>) will be
+Any format string ending in a vertical bar (<quote>|</quote>) will be
 expanded and piped through the first word in the string, using spaces
 as separator. The string returned will be used for display.
-If the returned string ends in &percnt;, it will be passed through
+If the returned string ends in %, it will be passed through
 the formatter a second time. This allows the filter to generate a
-replacement format string including &percnt; expandos.
+replacement format string including % expandos.
 </para>
 
 <para>
-All &percnt; expandos in a format string are expanded before the script
+All % expandos in a format string are expanded before the script
 is called so that:
 </para>
 
@@ -4339,18 +4339,18 @@ set status_format="script.sh '%r %f (%L)'|"
 </example>
 
 <para>
-will make Mutt expand <literal>&percnt;r</literal>,
-<literal>&percnt;f</literal> and <literal>&percnt;L</literal>
+will make Mutt expand <literal>%r</literal>,
+<literal>%f</literal> and <literal>%L</literal>
 before calling the script. The example also shows that arguments can be
 quoted: the script will receive the expanded string between the single quotes
 as the only argument.
 </para>
 
 <para>
-A practical example is the <literal>mutt&lowbar;xtitle</literal>
+A practical example is the <literal>mutt_xtitle</literal>
 script installed in the <literal>samples</literal>
 subdirectory of the Mutt documentation: it can be used as filter for
-<link linkend="status-format">&dollar;status&lowbar;format</link> to set the current
+<link linkend="status-format">$status_format</link> to set the current
 terminal's title, if supported.
 </para>
 
@@ -4361,7 +4361,7 @@ terminal's title, if supported.
 
 <para>
 In most format strings, Mutt supports different types of padding using
-special &percnt;-expandos:
+special %-expandos:
 </para>
 
 <variablelist>
@@ -4385,12 +4385,12 @@ set status_format = "%v on %h: %B: %?n?%n&amp;no? new messages %|-"</screen>
 <listitem>
 <para>
 Since the previous expando stops at the end of line, there must be a way
-to fill the gap between two items via the <literal>&percnt;&gt;X</literal>
+to fill the gap between two items via the <literal>%&gt;X</literal>
 expando: it puts as many characters <literal>X</literal> in between two
 items so that the rest of the line will be right-justified. For example,
 to not put the version string and hostname the above example on the left
 but on the right and fill the gap with spaces, one might use (note the
-space after <literal>&percnt;&gt;</literal>):
+space after <literal>%&gt;</literal>):
 </para>
 <screen>
 set status_format = "%B: %?n?%n&amp;no? new messages %&gt; (%v on %h)"</screen>
@@ -4408,7 +4408,7 @@ priority to the right-hand side, guaranteeing space to display it and
 showing padding only if there's still room. If necessary, soft-fill will
 eat text leftwards to make room for rightward text. For example, to
 right-justify the subject making sure as much as possible of it fits on
-screen, one might use (note two spaces after <literal>&percnt;*
+screen, one might use (note two spaces after <literal>%*
 </literal>: the second ensures there's a space between the truncated
 right-hand side and the subject):
 </para>
@@ -4445,9 +4445,9 @@ case letter, and case insensitive otherwise.
 
 <note>
 <para>
-<quote>&bsol;</quote>
+<quote>\</quote>
 must be quoted if used for a regular expression in an initialization
-command: <quote>&bsol;&bsol;</quote>.
+command: <quote>\\</quote>.
 </para>
 </note>
 
@@ -4459,11 +4459,11 @@ expressions, by using various operators to combine smaller expressions.
 
 <note>
 <para>
-The regular expression can be enclosed/delimited by either &quot;
+The regular expression can be enclosed/delimited by either "
 or ' which is useful if the regular expression includes a white-space
 character.  See <xref linkend="muttrc-syntax"/>
-for more information on &quot; and ' delimiter processing.  To match a
-literal &quot; or ' you must preface it with \ (backslash).
+for more information on " and ' delimiter processing.  To match a
+literal " or ' you must preface it with \ (backslash).
 </para>
 </note>
 
@@ -4475,27 +4475,27 @@ special meaning may be quoted by preceding it with a backslash.
 </para>
 
 <para>
-The period <quote>.</quote> matches any single character.  The caret <quote>&circ;</quote> and
-the dollar sign <quote>&dollar;</quote> are metacharacters that respectively match
+The period <quote>.</quote> matches any single character.  The caret <quote>^</quote> and
+the dollar sign <quote>$</quote> are metacharacters that respectively match
 the empty string at the beginning and end of a line.
 </para>
 
 <para>
-A list of characters enclosed by <quote>&lsqb;</quote> and <quote>&rsqb;</quote> matches any
+A list of characters enclosed by <quote>[</quote> and <quote>]</quote> matches any
 single character in that list; if the first character of the list
-is a caret <quote>&circ;</quote> then it matches any character <emphasis>not</emphasis> in the
-list.  For example, the regular expression <emphasis>&lsqb;0123456789&rsqb;</emphasis>
+is a caret <quote>^</quote> then it matches any character <emphasis>not</emphasis> in the
+list.  For example, the regular expression <emphasis>[0123456789]</emphasis>
 matches any single digit.  A range of ASCII characters may be specified
 by giving the first and last characters, separated by a hyphen
 <quote>-</quote>.  Most metacharacters lose their special meaning inside
-lists.  To include a literal <quote>&rsqb;</quote> place it first in the list.
-Similarly, to include a literal <quote>&circ;</quote> place it anywhere but first.
+lists.  To include a literal <quote>]</quote> place it first in the list.
+Similarly, to include a literal <quote>^</quote> place it anywhere but first.
 Finally, to include a literal hyphen <quote>-</quote> place it last.
 </para>
 
 <para>
 Certain named classes of characters are predefined.  Character classes
-consist of <quote>&lsqb;:</quote>, a keyword denoting the class, and <quote>:&rsqb;</quote>.
+consist of <quote>[:</quote>, a keyword denoting the class, and <quote>:]</quote>.
 The following classes are defined by the POSIX standard in
 <xref linkend="posix-regex-char-classes"/>
 </para>
@@ -4507,18 +4507,18 @@ The following classes are defined by the POSIX standard in
 <row><entry>Character class</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>&lsqb;:alnum:&rsqb;</entry><entry>Alphanumeric characters</entry></row>
-<row><entry>&lsqb;:alpha:&rsqb;</entry><entry>Alphabetic characters</entry></row>
-<row><entry>&lsqb;:blank:&rsqb;</entry><entry>Space or tab characters</entry></row>
-<row><entry>&lsqb;:cntrl:&rsqb;</entry><entry>Control characters</entry></row>
-<row><entry>&lsqb;:digit:&rsqb;</entry><entry>Numeric characters</entry></row>
-<row><entry>&lsqb;:graph:&rsqb;</entry><entry>Characters that are both printable and visible. (A space is printable, but not visible, while an <quote>a</quote> is both)</entry></row>
-<row><entry>&lsqb;:lower:&rsqb;</entry><entry>Lower-case alphabetic characters</entry></row>
-<row><entry>&lsqb;:print:&rsqb;</entry><entry>Printable characters (characters that are not control characters)</entry></row>
-<row><entry>&lsqb;:punct:&rsqb;</entry><entry>Punctuation characters (characters that are not letter, digits, control characters, or space characters)</entry></row>
-<row><entry>&lsqb;:space:&rsqb;</entry><entry>Space characters (such as space, tab and formfeed, to name a few)</entry></row>
-<row><entry>&lsqb;:upper:&rsqb;</entry><entry>Upper-case alphabetic characters</entry></row>
-<row><entry>&lsqb;:xdigit:&rsqb;</entry><entry>Characters that are hexadecimal digits</entry></row>
+<row><entry>[:alnum:]</entry><entry>Alphanumeric characters</entry></row>
+<row><entry>[:alpha:]</entry><entry>Alphabetic characters</entry></row>
+<row><entry>[:blank:]</entry><entry>Space or tab characters</entry></row>
+<row><entry>[:cntrl:]</entry><entry>Control characters</entry></row>
+<row><entry>[:digit:]</entry><entry>Numeric characters</entry></row>
+<row><entry>[:graph:]</entry><entry>Characters that are both printable and visible. (A space is printable, but not visible, while an <quote>a</quote> is both)</entry></row>
+<row><entry>[:lower:]</entry><entry>Lower-case alphabetic characters</entry></row>
+<row><entry>[:print:]</entry><entry>Printable characters (characters that are not control characters)</entry></row>
+<row><entry>[:punct:]</entry><entry>Punctuation characters (characters that are not letter, digits, control characters, or space characters)</entry></row>
+<row><entry>[:space:]</entry><entry>Space characters (such as space, tab and formfeed, to name a few)</entry></row>
+<row><entry>[:upper:]</entry><entry>Upper-case alphabetic characters</entry></row>
+<row><entry>[:xdigit:]</entry><entry>Characters that are hexadecimal digits</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -4533,8 +4533,8 @@ brackets of a character list.
 Note that the brackets in these
 class names are part of the symbolic names, and must be included
 in addition to the brackets delimiting the bracket list. For
-example, <emphasis>&lsqb;&lsqb;:digit:&rsqb;&rsqb;</emphasis> is equivalent to
-<emphasis>&lsqb;0-9&rsqb;</emphasis>.
+example, <emphasis>[[:digit:]]</emphasis> is equivalent to
+<emphasis>[0-9]</emphasis>.
 </para>
 </note>
 
@@ -4553,9 +4553,9 @@ sorting purposes:
 <listitem>
 <para>
 A collating symbol is a multi-character collating element enclosed in
-<quote>&lsqb;.</quote> and <quote>.&rsqb;</quote>.  For example, if <quote>ch</quote> is a collating
-element, then <emphasis>&lsqb;&lsqb;.ch.&rsqb;&rsqb;</emphasis> is a regexp that matches
-this collating element, while <emphasis>&lsqb;ch&rsqb;</emphasis> is a regexp that
+<quote>[.</quote> and <quote>.]</quote>.  For example, if <quote>ch</quote> is a collating
+element, then <emphasis>[[.ch.]]</emphasis> is a regexp that matches
+this collating element, while <emphasis>[ch]</emphasis> is a regexp that
 matches either <quote>c</quote> or <quote>h</quote>.
 </para>
 </listitem>
@@ -4565,10 +4565,10 @@ matches either <quote>c</quote> or <quote>h</quote>.
 <listitem>
 <para>
 An equivalence class is a locale-specific name for a list of
-characters that are equivalent. The name is enclosed in <quote>&lsqb;=</quote>
-and <quote>=&rsqb;</quote>.  For example, the name <quote>e</quote> might be used to
+characters that are equivalent. The name is enclosed in <quote>[=</quote>
+and <quote>=]</quote>.  For example, the name <quote>e</quote> might be used to
 represent all of <quote>&egrave;</quote> <quote>&eacute;</quote> and <quote>e</quote>.  In this case,
-<emphasis>&lsqb;&lsqb;=e=&rsqb;&rsqb;</emphasis> is a regexp that matches any of
+<emphasis>[[=e=]]</emphasis> is a regexp that matches any of
 <quote>&egrave;</quote>, <quote>&eacute;</quote> and <quote>e</quote>.
 </para>
 </listitem>
@@ -4590,10 +4590,10 @@ of several repetition operators described in <xref linkend="regex-repeat"/>.
 <row><entry>?</entry><entry>The preceding item is optional and matched at most once</entry></row>
 <row><entry>*</entry><entry>The preceding item will be matched zero or more times</entry></row>
 <row><entry>+</entry><entry>The preceding item will be matched one or more times</entry></row>
-<row><entry>&lcub;n&rcub;</entry><entry>The preceding item is matched exactly <emphasis>n</emphasis> times</entry></row>
-<row><entry>&lcub;n,&rcub;</entry><entry>The preceding item is matched <emphasis>n</emphasis> or more times</entry></row>
-<row><entry>&lcub;,m&rcub;</entry><entry>The preceding item is matched at most <emphasis>m</emphasis> times</entry></row>
-<row><entry>&lcub;n,m&rcub;</entry><entry>The preceding item is matched at least <emphasis>n</emphasis> times, but no more than <emphasis>m</emphasis> times</entry></row>
+<row><entry>{n}</entry><entry>The preceding item is matched exactly <emphasis>n</emphasis> times</entry></row>
+<row><entry>{n,}</entry><entry>The preceding item is matched <emphasis>n</emphasis> or more times</entry></row>
+<row><entry>{,m}</entry><entry>The preceding item is matched at most <emphasis>m</emphasis> times</entry></row>
+<row><entry>{n,m}</entry><entry>The preceding item is matched at least <emphasis>n</emphasis> times, but no more than <emphasis>m</emphasis> times</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -4605,7 +4605,7 @@ that respectively match the concatenated subexpressions.
 </para>
 
 <para>
-Two regular expressions may be joined by the infix operator <quote>&verbar;</quote>;
+Two regular expressions may be joined by the infix operator <quote>|</quote>;
 the resulting regular expression matches any string matching either
 subexpression.
 </para>
@@ -4630,14 +4630,14 @@ following operators may also be used in regular expressions as described in <xre
 <row><entry>Expression</entry><entry>Description</entry></row>
 </thead>
 <tbody>
-<row><entry>&bsol;&bsol;y</entry><entry>Matches the empty string at either the beginning or the end of a word</entry></row>
-<row><entry>&bsol;&bsol;B</entry><entry>Matches the empty string within a word</entry></row>
-<row><entry>&bsol;&bsol;&lt;</entry><entry>Matches the empty string at the beginning of a word</entry></row>
-<row><entry>&bsol;&bsol;&gt;</entry><entry>Matches the empty string at the end of a word</entry></row>
-<row><entry>&bsol;&bsol;w</entry><entry>Matches any word-constituent character (letter, digit, or underscore)</entry></row>
-<row><entry>&bsol;&bsol;W</entry><entry>Matches any character that is not word-constituent</entry></row>
-<row><entry>&bsol;&bsol;`</entry><entry>Matches the empty string at the beginning of a buffer (string)</entry></row>
-<row><entry>&bsol;&bsol;'</entry><entry>Matches the empty string at the end of a buffer</entry></row>
+<row><entry>\\y</entry><entry>Matches the empty string at either the beginning or the end of a word</entry></row>
+<row><entry>\\B</entry><entry>Matches the empty string within a word</entry></row>
+<row><entry>\\&lt;</entry><entry>Matches the empty string at the beginning of a word</entry></row>
+<row><entry>\\&gt;</entry><entry>Matches the empty string at the end of a word</entry></row>
+<row><entry>\\w</entry><entry>Matches any word-constituent character (letter, digit, or underscore)</entry></row>
+<row><entry>\\W</entry><entry>Matches any character that is not word-constituent</entry></row>
+<row><entry>\\`</entry><entry>Matches the empty string at the beginning of a buffer (string)</entry></row>
+<row><entry>\\'</entry><entry>Matches the empty string at the end of a buffer</entry></row>
 </tbody>
 </tgroup>
 </table>
@@ -4677,7 +4677,7 @@ shows several ways to select messages.
 <row><entry>%c <emphasis>GROUP</emphasis></entry><entry>messages carbon-copied to any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~C <emphasis>EXPR</emphasis></entry><entry>messages either to: or cc: <emphasis>EXPR</emphasis></entry></row>
 <row><entry>%C <emphasis>GROUP</emphasis></entry><entry>messages either to: or cc: to any member of <emphasis>GROUP</emphasis></entry></row>
-<row><entry>~d &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <quote>date-sent</quote> in a Date range</entry></row>
+<row><entry>~d [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with <quote>date-sent</quote> in a Date range</entry></row>
 <row><entry>~D</entry><entry>deleted messages</entry></row>
 <row><entry>~e <emphasis>EXPR</emphasis></entry><entry>messages which contains <emphasis>EXPR</emphasis> in the <quote>Sender</quote> field</entry></row>
 <row><entry>%e <emphasis>GROUP</emphasis></entry><entry>messages which contain a member of <emphasis>GROUP</emphasis> in the <quote>Sender</quote> field</entry></row>
@@ -4694,14 +4694,14 @@ shows several ways to select messages.
 <row><entry>~L <emphasis>EXPR</emphasis></entry><entry>messages either originated or received by <emphasis>EXPR</emphasis></entry></row>
 <row><entry>%L <emphasis>GROUP</emphasis></entry><entry>message either originated or received by any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~l</entry><entry>messages addressed to a known mailing list</entry></row>
-<row><entry>~m &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
-<row><entry>~n &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a score in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
+<row><entry>~m [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
+<row><entry>~n [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with a score in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *)</entry></row>
 <row><entry>~N</entry><entry>new messages</entry></row>
 <row><entry>~O</entry><entry>old messages</entry></row>
 <row><entry>~p</entry><entry>messages addressed to you (consults <command>alternates</command>)</entry></row>
 <row><entry>~P</entry><entry>messages from you (consults <command>alternates</command>)</entry></row>
 <row><entry>~Q</entry><entry>messages which have been replied to</entry></row>
-<row><entry>~r &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <quote>date-received</quote> in a Date range</entry></row>
+<row><entry>~r [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with <quote>date-received</quote> in a Date range</entry></row>
 <row><entry>~R</entry><entry>read messages</entry></row>
 <row><entry>~s <emphasis>EXPR</emphasis></entry><entry>messages having <emphasis>EXPR</emphasis> in the <quote>Subject</quote> field.</entry></row>
 <row><entry>~S</entry><entry>superseded messages</entry></row>
@@ -4712,10 +4712,10 @@ shows several ways to select messages.
 <row><entry>~v</entry><entry>messages part of a collapsed thread.</entry></row>
 <row><entry>~V</entry><entry>cryptographically verified messages</entry></row>
 <row><entry>~x <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the <quote>References</quote> or <quote>In-Reply-To</quote> field</entry></row>
-<row><entry>~X &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments *)</entry></row>
+<row><entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments *)</entry></row>
 <row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the <quote>X-Label</quote> field</entry></row>
-<row><entry>~z &lsqb;<emphasis>MIN</emphasis>&rsqb;-&lsqb;<emphasis>MAX</emphasis>&rsqb;</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *) **)</entry></row>
-<row><entry>~=</entry><entry>duplicated messages (see <link linkend="duplicate-threads">&dollar;duplicate&lowbar;threads</link>)</entry></row>
+<row><entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *) **)</entry></row>
+<row><entry>~=</entry><entry>duplicated messages (see <link linkend="duplicate-threads">$duplicate_threads</link>)</entry></row>
 <row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
 <row><entry>~(<emphasis>PATTERN</emphasis>)</entry><entry>messages in threads
 containing messages matching <emphasis>PATTERN</emphasis>, e.g. all
@@ -4730,8 +4730,8 @@ Where <emphasis>EXPR</emphasis> is a
 </para>
 
 <para>
-*) The forms <quote>&lt;&lsqb;<emphasis>MAX</emphasis>&rsqb;</quote>, <quote>&gt;&lsqb;<emphasis>MIN</emphasis>&rsqb;</quote>,
-<quote>&lsqb;<emphasis>MIN</emphasis>&rsqb;-</quote> and <quote>-&lsqb;<emphasis>MAX</emphasis>&rsqb;</quote>
+*) The forms <quote>&lt;[<emphasis>MAX</emphasis>]</quote>, <quote>&gt;[<emphasis>MIN</emphasis>]</quote>,
+<quote>[<emphasis>MIN</emphasis>]-</quote> and <quote>-[<emphasis>MAX</emphasis>]</quote>
 are allowed, too.
 </para>
 
@@ -4746,7 +4746,7 @@ Mutt's parser for these patterns will strip one level of backslash (<quote>\</qu
 which is normally used for quoting.  If it is your intention to use a
 backslash in the regular expression, you will need to use two backslashes
 instead (<quote>\\</quote>). You can force Mutt to treat <emphasis>EXPR</emphasis> as a simple string
-instead of a regular expression by using = instead of &tilde; in the
+instead of a regular expression by using = instead of # in the
 pattern name. For example, <literal>=b *.*</literal> will find all messages that contain
 the literal string <quote>*.*</quote>. Simple string matches are less powerful than
 regular expressions but can be considerably faster. This is especially
@@ -4762,7 +4762,7 @@ its value.
 Patterns matching lists of addresses (notably c, C, p, P and t)
 match if there is at least one match in the whole list. If you want to
 make sure that all elements of that list match, you need to prefix your
-pattern with <quote>&circ;</quote>.
+pattern with <quote>^</quote>.
 This example matches all mails which only has recipients from Germany.
 </para>
 
@@ -4782,7 +4782,7 @@ This example matches all mails which only has recipients from Germany.
 Mutt supports two versions of so called <quote>simple searches</quote>. These are
 issued if the query entered for searching, limiting and similar
 operations does not seem to contain a valid pattern modifier (i.e. it does not contain
-one of these characters: <quote>&tilde;</quote>, <quote>=</quote> or <quote>&percnt;</quote>). If the query is
+one of these characters: <quote>#</quote>, <quote>=</quote> or <quote>%</quote>). If the query is
 supposed to contain one of these special characters, they must be escaped
 by prepending a backslash (<quote>\</quote>).
 </para>
@@ -4794,9 +4794,9 @@ If that is the case, Mutt will use the shown pattern modifier instead.
 If a keyword would conflict with your search keyword, you need to turn
 it into a regular expression to avoid matching the keyword table. For
 example, if you want to find all messages matching <quote>flag</quote>
-(using <link linkend="simple-search">&dollar;simple&lowbar;search</link>)
+(using <link linkend="simple-search">$simple_search</link>)
 but don't want to match flagged messages, simply search for
-<quote><literal>&lsqb;f&rsqb;lag</literal></quote>.
+<quote><literal>[f]lag</literal></quote>.
 </para>
 
 <table id="tab-simplesearch-keywords">
@@ -4808,7 +4808,7 @@ but don't want to match flagged messages, simply search for
 <tbody>
 <row><entry>all</entry><entry>~A</entry></row>
 <row><entry>.</entry><entry>~A</entry></row>
-<row><entry>&circ;</entry><entry>~A</entry></row>
+<row><entry>^</entry><entry>~A</entry></row>
 <row><entry>del</entry><entry>~D</entry></row>
 <row><entry>flag</entry><entry>~F</entry></row>
 <row><entry>new</entry><entry>~N</entry></row>
@@ -4823,7 +4823,7 @@ but don't want to match flagged messages, simply search for
 
 <para>
 The second type of simple search is to build a complex search
-pattern using <link linkend="simple-search">&dollar;simple&lowbar;search</link>
+pattern using <link linkend="simple-search">$simple_search</link>
 as a template. Mutt will insert your query properly quoted and search
 for the composed complex query.
 </para>
@@ -4863,7 +4863,7 @@ patterns:
 <listitem>
 
 <para>
-&verbar; &mdash; logical OR operator
+| &mdash; logical OR operator
 </para>
 </listitem>
 <listitem>
@@ -4890,8 +4890,8 @@ field and which are from <quote>elkins</quote>.
 
 <para>
 Here is an example using white space in the regular expression (note
-the ' and &quot; delimiters).  For this to match, the mail's subject must
-match the <quote>&circ;Junk +From +Me$</quote> and it must be from either <quote>Jim +Somebody</quote>
+the ' and " delimiters).  For this to match, the mail's subject must
+match the <quote>^Junk +From +Me$</quote> and it must be from either <quote>Jim +Somebody</quote>
 or <quote>Ed +SomeoneElse</quote>:
 </para>
 
@@ -4902,11 +4902,11 @@ or <quote>Ed +SomeoneElse</quote>:
 <note>
 <para>
 If a regular expression contains parenthesis, or a vertical bar
-("&verbar;"), you <emphasis>must</emphasis> enclose the expression in double or single quotes since
+("|"), you <emphasis>must</emphasis> enclose the expression in double or single quotes since
 those characters are also used to separate different parts of Mutt's
 pattern language.  For example: <literal>~f "me@(mutt\.org|cs\.hmc\.edu)"</literal>
 Without the quotes, the parenthesis wouldn't end.
-This would be separated to two OR'd patterns: <emphasis>&tilde;f me@(mutt\.org</emphasis>
+This would be separated to two OR'd patterns: <emphasis>#f me@(mutt\.org</emphasis>
 and <emphasis>cs\.hmc\.edu)</emphasis>. They are never what you want.
 </para>
 </note>
@@ -5019,8 +5019,8 @@ Limit to messages matching: ~d &lt;1m
 <note>
 <para>
 All dates used when searching are relative to the
-<emphasis>local</emphasis> time zone, so unless you change the setting of your <link linkend="index-format">&dollar;index&lowbar;format</link> to include a
-<literal>&percnt;&lsqb;...&rsqb;</literal> format, these are <emphasis>not</emphasis> the dates shown
+<emphasis>local</emphasis> time zone, so unless you change the setting of your <link linkend="index-format">$index_format</link> to include a
+<literal>%[...]</literal> format, these are <emphasis>not</emphasis> the dates shown
 in the main index.
 </para>
 </note>
@@ -5051,7 +5051,7 @@ Once you have tagged the desired messages, you can use the
 <quote>tag-prefix</quote> operator, which is the <quote>;</quote> (semicolon) key by default.
 When the <quote>tag-prefix</quote> operator is used, the <emphasis>next</emphasis> operation will
 be applied to all tagged messages if that operation can be used in that
-manner.  If the <link linkend="auto-tag">&dollar;auto&lowbar;tag</link>
+manner.  If the <link linkend="auto-tag">$auto_tag</link>
 variable is set, the next operation applies to the tagged messages
 automatically, without requiring the <quote>tag-prefix</quote>.
 </para>
@@ -5183,8 +5183,8 @@ send-hook ~C'^b@b\.b$' my_hdr from: c@c.c
 
 <para>
 In <xref linkend="ex-default-hook"/>, by default the value of
-<link linkend="from">&dollar;from</link>
-and <link linkend="realname">&dollar;realname</link>
+<link linkend="from">$from</link>
+and <link linkend="realname">$realname</link>
 is not overridden. When sending messages either To: or Cc:
 to <literal>&lt;b@b.b&gt;</literal>, the From: header is changed to
 <literal>&lt;c@c.c&gt;</literal>.
@@ -5231,9 +5231,9 @@ However, it is not required that you write the pattern to match using the
 full searching language.  You can still specify a simple <emphasis>regular
 expression</emphasis> like the other hooks, in which case Mutt will translate your
 pattern into the full language, using the translation specified by the
-<link linkend="default-hook">&dollar;default&lowbar;hook</link> variable.  The
+<link linkend="default-hook">$default_hook</link> variable.  The
 pattern is translated at the time the hook is declared, so the value of
-<link linkend="default-hook">&dollar;default&lowbar;hook</link> that is in effect
+<link linkend="default-hook">$default_hook</link> that is in effect
 at that time will be used.
 </para>
 
@@ -5247,7 +5247,7 @@ at that time will be used.
 <para>
 Mutt supports connecting to external directory databases such as LDAP,
 ph/qi, bbdb, or NIS through a wrapper script which connects to Mutt
-using a simple interface.  Using the <link linkend="query-command">&dollar;query&lowbar;command</link> variable, you specify the wrapper
+using a simple interface.  Using the <link linkend="query-command">$query_command</link> variable, you specify the wrapper
 command to use.  For example:
 </para>
 
@@ -5287,7 +5287,7 @@ responses.
 <para>
 The other mechanism for accessing the query function is for address
 completion, similar to the alias completion.  In any prompt for address
-entry, you can use the <literal>&lt;complete-query&gt;</literal> function (default: &circ;T) to run a
+entry, you can use the <literal>&lt;complete-query&gt;</literal> function (default: ^T) to run a
 query based on the current address you have typed.  Like aliases, Mutt
 will look for what you have typed back to the last space or comma.  If
 there is a single response for that query, Mutt will expand the address
@@ -5306,7 +5306,7 @@ Mutt supports reading and writing of four different local mailbox formats:
 mbox, MMDF, MH and Maildir.  The mailbox type is autodetected, so there
 is no need to use a flag for different mailbox types.  When creating new
 mailboxes, Mutt uses the default specified with the
-<link linkend="mbox-type">&dollar;mbox&lowbar;type</link> variable. A
+<link linkend="mbox-type">$mbox_type</link> variable. A
 short description of the formats follows.
 </para>
 
@@ -5321,9 +5321,9 @@ From me@cs.hmc.edu Fri, 11 Apr 1997 11:44:56 PST
 
 <para>
 to denote the start of a new message (this is often referred to as the
-<quote>From&lowbar;</quote> line). The mbox format requires mailbox
+<quote>From_</quote> line). The mbox format requires mailbox
 locking, is prone to mailbox corruption with concurrently writing
-clients or misinterpreted From&lowbar; lines. Depending on the
+clients or misinterpreted From_ lines. Depending on the
 environment, new mail detection can be unreliable. Mbox folders are fast
 to open and easy to archive.
 </para>
@@ -5331,7 +5331,7 @@ to open and easy to archive.
 <para>
 <emphasis>MMDF</emphasis>.  This is a variant of
 the <emphasis>mbox</emphasis> format.  Each message is surrounded by
-lines containing <quote>&circ;A&circ;A&circ;A&circ;A</quote> (four
+lines containing <quote>^A^A^A^A</quote> (four
 control-A's). The same problems as for mbox apply (also with finding the
 right message separator as four control-A's may appear in message
 bodies).
@@ -5343,7 +5343,7 @@ consists of a directory and each message is stored in a separate file.
 The filename indicates the message number (however, this is may not
 correspond to the message number Mutt displays). Deleted messages are
 renamed with a comma (<quote>,</quote>) prepended to the filename. Mutt
-detects this type of mailbox by looking for either <literal>.mh&lowbar;sequences</literal>
+detects this type of mailbox by looking for either <literal>.mh_sequences</literal>
 or <literal>.xmhcache</literal> files (needed to distinguish normal directories from MH
 mailboxes). MH is more robust with concurrent clients writing the mailbox,
 but still may suffer from lost flags; message corruption is less likely
@@ -5383,25 +5383,25 @@ work at the beginning of a string.
 <listitem>
 
 <para>
-! &mdash; refers to your <link linkend="spoolfile">&dollar;spoolfile</link> (incoming) mailbox
+! &mdash; refers to your <link linkend="spoolfile">$spoolfile</link> (incoming) mailbox
 </para>
 </listitem>
 <listitem>
 
 <para>
-&gt; &mdash; refers to your <link linkend="mbox">&dollar;mbox</link> file
+&gt; &mdash; refers to your <link linkend="mbox">$mbox</link> file
 </para>
 </listitem>
 <listitem>
 
 <para>
-&lt; &mdash; refers to your <link linkend="record">&dollar;record</link> file
+&lt; &mdash; refers to your <link linkend="record">$record</link> file
 </para>
 </listitem>
 <listitem>
 
 <para>
-&circ; &mdash; refers to the current mailbox
+^ &mdash; refers to the current mailbox
 </para>
 </listitem>
 <listitem>
@@ -5413,13 +5413,13 @@ work at the beginning of a string.
 <listitem>
 
 <para>
-&tilde; &mdash; refers to your home directory
+# &mdash; refers to your home directory
 </para>
 </listitem>
 <listitem>
 
 <para>
-= or + &mdash; refers to your <link linkend="folder">&dollar;folder</link> directory
+= or + &mdash; refers to your <link linkend="folder">$folder</link> directory
 </para>
 </listitem>
 <listitem>
@@ -5435,11 +5435,11 @@ work at the beginning of a string.
 For example, to store a copy of outgoing messages in the folder they
 were composed in,
 a <link linkend="folder-hook"><command>folder-hook</command></link> can
-be used to set <link linkend="record">&dollar;record</link>:
+be used to set <link linkend="record">$record</link>:
 </para>
 
 <screen>
-folder-hook . 'set record=&circ;'</screen>
+folder-hook . 'set record=^'</screen>
 
 </sect1>
 
@@ -5460,7 +5460,7 @@ Now that Mutt knows what your mailing lists are, it can do several
 things, the first of which is the ability to show the name of a list
 through which you received a message (i.e., of a subscribed list) in
 the <emphasis>index</emphasis> menu display.  This is useful to distinguish between
-personal and list mail in the same mailbox.  In the <link linkend="index-format">&dollar;index&lowbar;format</link> variable, the expando <quote>&percnt;L</quote>
+personal and list mail in the same mailbox.  In the <link linkend="index-format">$index_format</link> variable, the expando <quote>%L</quote>
 will print the string <quote>To &lt;list&gt;</quote> when <quote>list</quote> appears in the
 <quote>To</quote> field, and <quote>Cc &lt;list&gt;</quote> when it appears in the <quote>Cc</quote>
 field (otherwise it prints the name of the author).
@@ -5480,7 +5480,7 @@ specified by <literal>Mail-Followup-To</literal>, see below).
 <para>
 Mutt also supports the <literal>Mail-Followup-To</literal> header.  When you send
 a message to a list of recipients which includes one or several
-subscribed mailing lists, and if the <link linkend="followup-to">&dollar;followup&lowbar;to</link> option is set, Mutt will generate
+subscribed mailing lists, and if the <link linkend="followup-to">$followup_to</link> option is set, Mutt will generate
 a Mail-Followup-To header which contains all the recipients to whom
 you send this message, but not your address. This indicates that
 group-replies or list-replies (also known as <quote>followups</quote>) to this
@@ -5492,7 +5492,7 @@ one of the mailing lists you are subscribed to.
 <para>
 Conversely, when group-replying or list-replying to a message which
 has a <literal>Mail-Followup-To</literal> header, Mutt will respect this header if
-the <link linkend="honor-followup-to">&dollar;honor&lowbar;followup&lowbar;to</link> configuration
+the <link linkend="honor-followup-to">$honor_followup_to</link> configuration
 variable is set.  Using <link linkend="list-reply">list-reply</link> will in this case also make sure
 that the reply goes to the mailing list, even if it's not specified
 in the list of recipients in the <literal>Mail-Followup-To</literal>.
@@ -5512,7 +5512,7 @@ The other method some mailing list admins use is to generate a
 than the author of the message.  This can create problems when trying
 to reply directly to the author in private, since most mail clients
 will automatically reply to the address given in the <quote>Reply-To</quote>
-field.  Mutt uses the <link linkend="reply-to">&dollar;reply&lowbar;to</link>
+field.  Mutt uses the <link linkend="reply-to">$reply_to</link>
 variable to help decide which address to use.  If set to <emphasis>ask-yes</emphasis> or
 <emphasis>ask-no</emphasis>, you will be
 prompted as to whether or not you would like to use the address given in
@@ -5524,10 +5524,10 @@ present.
 <para>
 The <quote>X-Label:</quote> header field can be used to further identify mailing
 lists or list subject matter (or just to annotate messages
-individually).  The <link linkend="index-format">&dollar;index&lowbar;format</link> variable's <quote>&percnt;y</quote> and
-<quote>&percnt;Y</quote> expandos can be used to expand <quote>X-Label:</quote> fields in the
+individually).  The <link linkend="index-format">$index_format</link> variable's <quote>%y</quote> and
+<quote>%Y</quote> expandos can be used to expand <quote>X-Label:</quote> fields in the
 index, and Mutt's pattern-matcher can match regular expressions to
-<quote>X-Label:</quote> fields with the <quote>&tilde;y</quote> selector.  <quote>X-Label:</quote> is not a
+<quote>X-Label:</quote> fields with the <quote>#y</quote> selector.  <quote>X-Label:</quote> is not a
 standard message header field, but it can easily be inserted by procmail
 and other mail filtering agents.
 </para>
@@ -5554,12 +5554,12 @@ be monitored for new mail (see <xref linkend="mailboxes"/> for details).
 
 <para>
 When in the index menu and being idle (also see
-<link linkend="timeout">&dollar;timeout</link>), Mutt periodically checks
+<link linkend="timeout">$timeout</link>), Mutt periodically checks
 for new mail in all folders which have been configured via the
 <command>mailboxes</command> command. The interval depends on the folder
 type: for local/IMAP folders it consults
-<link linkend="mail-check">&dollar;mail&lowbar;check</link> and
-<link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
+<link linkend="mail-check">$mail_check</link> and
+<link linkend="pop-checkinterval">$pop_checkinterval</link>
 for POP folders.
 </para>
 
@@ -5582,7 +5582,7 @@ the bottom of the screen.
 <para>
 For the index, by default Mutt displays the number of mailboxes with new
 mail in the status bar, please refer to the
-<link linkend="status-format">&dollar;status&lowbar;format</link>
+<link linkend="status-format">$status_format</link>
 variable for details.
 </para>
 
@@ -5619,7 +5619,7 @@ reply will then be connected to this parent message.
 
 <para>
 You can also connect multiple children at once, tagging them and using the
-<literal>&lt;tag-prefix&gt;</literal> command (';') or the <link linkend="auto-tag">&dollar;auto&lowbar;tag</link> option.
+<literal>&lt;tag-prefix&gt;</literal> command (';') or the <link linkend="auto-tag">$auto_tag</link> option.
 </para>
 
 </sect2>
@@ -5632,7 +5632,7 @@ On mailing lists, some people are in the bad habit of starting a new
 discussion by hitting <quote>reply</quote> to any message from the list and changing
 the subject to a totally unrelated one.
 You can fix such threads by using the <literal>&lt;break-thread&gt;</literal> function (bound
-by default to &num;), which will turn the subthread starting from the
+by default to #), which will turn the subthread starting from the
 current message into a whole different thread.
 </para>
 
@@ -5650,15 +5650,15 @@ about the status of electronic mail messages.  These can be thought of as
 </para>
 
 <para>
-To support DSN, there are two variables. <link linkend="dsn-notify">&dollar;dsn&lowbar;notify</link> is used to request receipts for
+To support DSN, there are two variables. <link linkend="dsn-notify">$dsn_notify</link> is used to request receipts for
 different results (such as failed message, message delivered, etc.).
-<link linkend="dsn-return">&dollar;dsn&lowbar;return</link> requests how much
+<link linkend="dsn-return">$dsn_return</link> requests how much
 of your message should be returned with the receipt (headers or full
 message).
 </para>
 
 <para>
-When using <link linkend="sendmail">&dollar;sendmail</link> for mail
+When using <link linkend="sendmail">$sendmail</link> for mail
 delivery, you need to use either Berkeley sendmail 8.8.x (or greater) a MTA
 supporting DSN command line options compatible to Sendmail: The -N and -R
 options can be used by the mail client to make requests as to what type of
@@ -5668,7 +5668,7 @@ whether DSN is supported.
 
 <para>
 For SMTP delivery using <link
-  linkend="smtp-url">&dollar;smtp&lowbar;url</link>, it depends on the
+  linkend="smtp-url">$smtp_url</link>, it depends on the
 capabilities announced by the server whether Mutt will attempt to
 request DSN or not.
 </para>
@@ -5726,12 +5726,12 @@ Initial folder selection
 <listitem>
 <para>
 The folder Mutt opens at startup is determined as follows: the folder
-specified in the <literal>&dollar;MAIL</literal> environment variable if
-present. Otherwise, the value of <literal>&dollar;MAILDIR</literal> is taken
+specified in the <literal>$MAIL</literal> environment variable if
+present. Otherwise, the value of <literal>$MAILDIR</literal> is taken
 into account. If that isn't present either, Mutt takes the user's
 mailbox in the mailspool as determined at compile-time (which may also
 reside in the home directory). The
-<link linkend="spoolfile">&dollar;spoolfile</link> setting overrides
+<link linkend="spoolfile">$spoolfile</link> setting overrides
 this selection. Highest priority has the mailbox given with the
 <literal>-f</literal> command line option.
 </para>
@@ -5859,10 +5859,10 @@ The '-' denotes that Mutt will delete the file after sending (or
 postponing, or canceling) the message.  It can be toggled with the
 <literal>&lt;toggle-unlink&gt;</literal> command (default: u).  The next field is the MIME
 content-type, and can be changed with the <literal>&lt;edit-type&gt;</literal> command
-(default: &circ;T).  The next field is the encoding for the attachment,
+(default: ^T).  The next field is the encoding for the attachment,
 which allows a binary message to be encoded for transmission on 7bit
 links.  It can be changed with the <literal>&lt;edit-encoding&gt;</literal> command
-(default: &circ;E).  The next field is the size of the attachment,
+(default: ^E).  The next field is the size of the attachment,
 rounded to kilobytes or megabytes.  The next field is the filename,
 which can be changed with the <literal>&lt;rename-file&gt;</literal> command (default: R).
 The final field is the description of the attachment, and can be
@@ -5878,7 +5878,7 @@ changed with the <literal>&lt;edit-description&gt;</literal> command (default: d
 
 <para>
 When you add an attachment to your mail message, Mutt searches your
-personal <literal>mime.types</literal> file at <literal>&dollar;&lcub;HOME&rcub;/.mime.types</literal>, and then
+personal <literal>mime.types</literal> file at <literal>${HOME}/.mime.types</literal>, and then
 the system <literal>mime.types</literal> file at <literal>/usr/local/share/mutt/mime.types</literal> or
 <literal>/etc/mime.types</literal>
 </para>
@@ -5906,7 +5906,7 @@ information, Mutt will assume that the file is plain text, and mark it
 as <literal>text/plain</literal>.  If the file contains binary information, then Mutt will
 mark it as <literal>application/octet-stream</literal>.  You can change the MIME
 type that Mutt assigns to an attachment by using the <literal>&lt;edit-type&gt;</literal>
-command from the compose menu (default: &circ;T). The MIME type is actually a
+command from the compose menu (default: ^T). The MIME type is actually a
 major mime type followed by the sub-type, separated by a '/'. 6 major
 types: application, text, image, video, audio, and model have been approved
 after various internet discussions. Mutt recognizes all of these if the
@@ -5939,18 +5939,18 @@ is a colon delimited list containing the following files:
 </para>
 
 <orderedlist>
-<listitem><para><literal>&dollar;HOME/.mailcap</literal></para></listitem>
-<listitem><para><literal>&dollar;PKGDATADIR/mailcap</literal></para></listitem>
-<listitem><para><literal>&dollar;SYSCONFDIR/mailcap</literal></para></listitem>
+<listitem><para><literal>$HOME/.mailcap</literal></para></listitem>
+<listitem><para><literal>$PKGDATADIR/mailcap</literal></para></listitem>
+<listitem><para><literal>$SYSCONFDIR/mailcap</literal></para></listitem>
 <listitem><para><literal>/etc/mailcap</literal></para></listitem>
 <listitem><para><literal>/usr/etc/mailcap</literal></para></listitem>
 <listitem><para><literal>/usr/local/etc/mailcap</literal></para></listitem>
 </orderedlist>
 
 <para>
-where <literal>&dollar;HOME</literal> is your home directory. The
-<literal>&dollar;PKGDATADIR</literal> and the
-<literal>&dollar;SYSCONFDIR</literal> directories depend on where Mutt
+where <literal>$HOME</literal> is your home directory. The
+<literal>$PKGDATADIR</literal> and the
+<literal>$SYSCONFDIR</literal> directories depend on where Mutt
 is installed: the former is the default for shared data, the
 latter for system configuration files.
 </para>
@@ -5979,7 +5979,7 @@ or definitions.
 </para>
 
 <para>
-A comment line consists of a &num; character followed by anything you want.
+A comment line consists of a # character followed by anything you want.
 </para>
 
 <para>
@@ -6007,9 +6007,9 @@ respectively.
 The view command is a Unix command for viewing the type specified. There
 are two different types of commands supported. The default is to send
 the body of the MIME message to the command on stdin. You can change
-this behavior by using &percnt;s as a parameter to your view command.
+this behavior by using %s as a parameter to your view command.
 This will cause Mutt to save the body of the MIME message to a temporary
-file, and then call the view command with the &percnt;s replaced by
+file, and then call the view command with the %s replaced by
 the name of the temporary file. In both cases, Mutt will turn over the
 terminal to the view program until the program quits, at which time Mutt
 will remove the temporary file if it exists.
@@ -6043,7 +6043,7 @@ text/html; lynx %s
 
 <para>
 In this case, lynx does not support viewing a file from stdin, so you
-must use the &percnt;s syntax.
+must use the %s syntax.
 </para>
 
 <note>
@@ -6087,8 +6087,8 @@ This is the simplest form of a mailcap file.
 <para>
 The interpretation of shell meta-characters embedded in MIME parameters
 can lead to security problems in general.  Mutt tries to quote parameters
-in expansion of &percnt;s syntaxes properly, and avoids risky characters by
-substituting them, see the <link linkend="mailcap-sanitize">&dollar;mailcap&lowbar;sanitize</link> variable.
+in expansion of %s syntaxes properly, and avoids risky characters by
+substituting them, see the <link linkend="mailcap-sanitize">$mailcap_sanitize</link> variable.
 </para>
 
 <para>
@@ -6098,7 +6098,7 @@ of it.  Therefore you should pay attention to the following rules:
 </para>
 
 <para>
-<emphasis>Keep the &percnt;-expandos away from shell quoting.</emphasis>
+<emphasis>Keep the %-expandos away from shell quoting.</emphasis>
 Don't quote them with single or double quotes.  Mutt does this for
 you, the right way, as should any other program which interprets
 mailcap.  Don't put them into backtick expansions.  Be highly careful
@@ -6108,15 +6108,15 @@ alternative to correct quoting in the first place.
 </para>
 
 <para>
-If you have to use the &percnt;-expandos' values in context where you need
+If you have to use the %-expandos' values in context where you need
 quoting or backtick expansions, put that value into a shell variable
 and reference the shell variable where necessary, as in the following
-example (using <literal>&dollar;charset</literal> inside the backtick expansion is safe,
+example (using <literal>$charset</literal> inside the backtick expansion is safe,
 since it is not itself subject to any further expansion):
 </para>
 
 <screen>
-text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} &bsol;
+text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
         &amp;&amp; test "`echo $charset | tr '[A-Z]' '[a-z]'`" != iso-8859-1
 </screen>
 
@@ -6162,11 +6162,11 @@ and Mutt will use your standard pager to display the results.
 <term>needsterminal</term>
 <listitem>
 <para>
-Mutt uses this flag when viewing attachments with <link linkend="auto-view"><command>auto&lowbar;view</command></link>, in order to decide whether it should honor the setting
-of the <link linkend="wait-key">&dollar;wait&lowbar;key</link> variable or
+Mutt uses this flag when viewing attachments with <link linkend="auto-view"><command>auto_view</command></link>, in order to decide whether it should honor the setting
+of the <link linkend="wait-key">$wait_key</link> variable or
 not.  When an attachment is viewed using an interactive program, and the
 corresponding mailcap entry has a <emphasis>needsterminal</emphasis> flag, Mutt will use
-<link linkend="wait-key">&dollar;wait&lowbar;key</link> and the exit status
+<link linkend="wait-key">$wait_key</link> and the exit status
 of the program to decide if it will ask you to press a key after the
 external program has exited.  In all other situations it will not prompt
 you for a key.
@@ -6218,7 +6218,7 @@ attachments.
 <term>nametemplate=&lt;template&gt;</term>
 <listitem>
 <para>
-This field specifies the format for the file denoted by &percnt;s in the
+This field specifies the format for the file denoted by %s in the
 command fields.  Certain programs will require a certain file extension,
 for instance, to correctly view a file.  For instance, lynx will only
 interpret a file as <literal>text/html</literal> if the file ends in <literal>.html</literal>.
@@ -6276,7 +6276,7 @@ print command:
 
 <screen>
 image/*;        xv %s
-image/gif;      ; print= anytopnm %s | pnmtops | lpr; &bsol;
+image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
                 nametemplate=%s.gif
 </screen>
 
@@ -6287,7 +6287,7 @@ entry with the print command.
 
 <para>
 In addition, you can use this
-with <link linkend="auto-view"><command>auto&lowbar;view</command></link>
+with <link linkend="auto-view"><command>auto_view</command></link>
 to denote two commands for viewing an attachment, one to be viewed
 automatically, the other to be viewed interactively from the attachment
 menu using the <literal>&lt;view-mailcap&lt;</literal> function (bound
@@ -6303,7 +6303,7 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
 <para>
-For <link linkend="auto-view"><command>auto&lowbar;view</command></link>,
+For <link linkend="auto-view"><command>auto_view</command></link>,
 Mutt will choose the third entry because of
 the <literal>copiousoutput</literal> tag.  For interactive viewing, Mutt
 will run the program <literal>RunningX</literal> to determine if it
@@ -6342,7 +6342,7 @@ Mutt expands are:
 <variablelist>
 
 <varlistentry>
-<term>&percnt;s</term>
+<term>%s</term>
 <listitem>
 <para>
 As seen in the basic mailcap section, this variable is expanded
@@ -6355,10 +6355,10 @@ to the view/print/edit program on stdin.
 </listitem>
 </varlistentry>
 <varlistentry>
-<term>&percnt;t</term>
+<term>%t</term>
 <listitem>
 <para>
-Mutt will expand &percnt;t to the text representation of the content
+Mutt will expand %t to the text representation of the content
 type of the message in the same form as the first parameter of the
 mailcap definition line, ie <literal>text/html</literal> or
 <literal>image/gif</literal>.
@@ -6366,7 +6366,7 @@ mailcap definition line, ie <literal>text/html</literal> or
 </listitem>
 </varlistentry>
 <varlistentry>
-<term>&percnt;&lcub;&lt;parameter&gt;&rcub;</term>
+<term>%{&lt;parameter&gt;}</term>
 <listitem>
 <para>
 Mutt will expand this to the value of the specified parameter
@@ -6379,24 +6379,24 @@ Content-Type: text/plain; charset=iso-8859-1
 </screen>
 
 <para>
-then Mutt will expand &percnt;&lcub;charset&rcub; to iso-8859-1.  The default metamail
+then Mutt will expand %{charset} to iso-8859-1.  The default metamail
 mailcap file uses this feature to test the charset to spawn an xterm
 using the right charset to view the message.
 </para>
 </listitem>
 </varlistentry>
 <varlistentry>
-<term>&bsol;&percnt;</term>
+<term>\%</term>
 <listitem>
 <para>
-This will be replaced by a &percnt;
+This will be replaced by a %
 </para>
 </listitem>
 </varlistentry>
 </variablelist>
 
 <para>
-Mutt does not currently support the &percnt;F and &percnt;n keywords
+Mutt does not currently support the %F and %n keywords
 specified in RFC 1524.  The main purpose of these parameters is for
 multipart messages, which is handled internally by Mutt.
 </para>
@@ -6452,7 +6452,7 @@ image/jpeg;xv %s; x-mozilla-flags=internal
 # Use xv to view images if I'm running X
 # In addition, this uses the \ to extend the line and set my editor
 # for images
-image/*;xv %s; test=RunningX; &bsol;
+image/*;xv %s; test=RunningX; \
         edit=xpaint %s
 
 # Convert images to text using the netpbm tools
@@ -6508,13 +6508,13 @@ representation which you can view in the pager.
 </para>
 
 <para>
-You then use the <command>auto&lowbar;view</command> <literal>.muttrc</literal> command to list the
+You then use the <command>auto_view</command> <literal>.muttrc</literal> command to list the
 content-types that you wish to view automatically.  For instance, if you
 set it to:
 </para>
 
 <screen>
-auto_view text/html application/x-gunzip &bsol;
+auto_view text/html application/x-gunzip \
   application/postscript image/gif application/x-tar-gz
 </screen>
 
@@ -6525,7 +6525,7 @@ attachments of these types.
 
 <screen>
 text/html;      lynx -dump %s; copiousoutput; nametemplate=%s.html
-image/*;        anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | &bsol;
+image/*;        anytopnm %s | pnmscale -xsize 80 -ysize 50 | ppmtopgm | \
                 pgmtopbm | pbmtoascii ; copiousoutput
 application/x-gunzip;   gzcat; copiousoutput
 application/x-tar-gz; gunzip -c %s | tar -tf - ; copiousoutput
@@ -6533,9 +6533,9 @@ application/postscript; ps2ascii %s; copiousoutput
 </screen>
 
 <para>
-<command>unauto&lowbar;view</command> can be used to remove previous entries from the autoview list.
+<command>unauto_view</command> can be used to remove previous entries from the autoview list.
 This can be used with <link linkend="message-hook"><command>message-hook</command></link> to autoview messages based on size, etc.
-<quote><command>unauto&lowbar;view</command> *</quote> will remove all previous entries.
+<quote><command>unauto_view</command> *</quote> will remove all previous entries.
 </para>
 
 </sect1>
@@ -6546,7 +6546,7 @@ This can be used with <link linkend="message-hook"><command>message-hook</comman
 <para>
 Mutt has some heuristics for determining which attachment of a
 <literal>multipart/alternative</literal> type to display.  First, Mutt will check the
-<command>alternative&lowbar;order</command> list
+<command>alternative_order</command> list
 to determine if one of the available types is preferred.  It consists of
 a number of mimetypes in order, including support for implicit and
 explicit wildcards, for example:
@@ -6558,14 +6558,14 @@ alternative_order text/enriched text/plain text application/postscript image/*
 
 <para>
 Next, Mutt will check if any of the types have a defined
-<link linkend="auto-view"><command>auto&lowbar;view</command></link>, and use that.  Failing
+<link linkend="auto-view"><command>auto_view</command></link>, and use that.  Failing
 that, Mutt will look for any text type.  As a last attempt, Mutt will
 look for any type it knows how to handle.
 </para>
 
 <para>
-To remove a MIME type from the <command>alternative&lowbar;order</command> list, use the
-<command>unalternative&lowbar;order</command> command.
+To remove a MIME type from the <command>alternative_order</command> list, use the
+<command>unalternative_order</command> command.
 </para>
 
 </sect1>
@@ -6597,7 +6597,7 @@ The syntax is:
 <cmdsynopsis>
 <command>attachments</command>
 <arg choice="plain">
-<replaceable>&lcub; + &verbar; - &rcub;disposition</replaceable>
+<replaceable>{ + | - }disposition</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable>mime-type</replaceable>
@@ -6605,7 +6605,7 @@ The syntax is:
 
 <command>unattachments</command>
 <arg choice="plain">
-<replaceable>&lcub; + &verbar; - &rcub;disposition</replaceable>
+<replaceable>{ + | - }disposition</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable>mime-type</replaceable>
@@ -6743,14 +6743,14 @@ Usage:
 </cmdsynopsis>
 
 <para>
-Mutt's mime&lowbar;lookup list specifies a list of mime-types that should not
+Mutt's mime_lookup list specifies a list of mime-types that should not
 be treated according to their mailcap entry.  This option is designed to
 deal with binary types such as <literal>application/octet-stream</literal>.  When an attachment's
-mime-type is listed in mime&lowbar;lookup, then the extension of the filename will
+mime-type is listed in mime_lookup, then the extension of the filename will
 be compared to the list of extensions in the <literal>mime.types</literal> file.  The mime-type
 associated with this extension will then be used to process the attachment
 according to the rules in the mailcap file and according to any other configuration
-options (such as <command>auto&lowbar;view</command>) specified.  Common usage would be:
+options (such as <command>auto_view</command>) specified.  Common usage would be:
 </para>
 
 <screen>
@@ -6758,7 +6758,7 @@ mime_lookup application/octet-stream application/X-Lotus-Manuscript
 </screen>
 
 <para>
-In addition, the <literal>unmime&lowbar;lookup</literal> command may be
+In addition, the <literal>unmime_lookup</literal> command may be
 used to disable this feature for any particular mime-type if it had been
 set, for example, in a global <literal>.muttrc</literal>.
 </para>
@@ -6823,13 +6823,13 @@ Since all protocols supported by Mutt support/require authentication,
 login credentials may be specified in the URL. This has the advantage
 that multiple IMAP, POP3 or SMTP servers may be specified (which isn't
 possible using, for example,
-<link linkend="imap-user">&dollar;imap&lowbar;user</link>). The username
+<link linkend="imap-user">$imap_user</link>). The username
 may contain the <quote>@</quote> symbol being used by many mail systems
 as part of the login name. The special characters <quote>/</quote>
-(<literal>&percnt;2F</literal>),
-<quote>:</quote> (<literal>&percnt;3A</literal>)
-and <quote>&percnt;</quote> (<literal>&percnt;25</literal>) have to be
-URL-encoded in usernames using the <literal>&percnt;</literal>-notation.
+(<literal>%2F</literal>),
+<quote>:</quote> (<literal>%3A</literal>)
+and <quote>%</quote> (<literal>%25</literal>) have to be
+URL-encoded in usernames using the <literal>%</literal>-notation.
 </para>
 
 <para>
@@ -6894,7 +6894,7 @@ communication, see <xref linkend="url-syntax"/> for details.
 Polling for new mail is more expensive over POP3 than locally. For this
 reason the frequency at which Mutt will check for mail remotely can be
 controlled by the
-<link linkend="pop-checkinterval">&dollar;pop&lowbar;checkinterval</link>
+<link linkend="pop-checkinterval">$pop_checkinterval</link>
 variable, which defaults to every 60 seconds.
 </para>
 
@@ -6912,8 +6912,8 @@ tools).
 <anchor id="fetch-mail"/>
 <para>
 Another way to access your POP3 mail is the <literal>&lt;fetch-mail&gt;</literal> function
-(default: G).  It allows to connect to <link linkend="pop-host">&dollar;pop&lowbar;host</link>, fetch all your new mail and place it in the
-local <link linkend="spoolfile">&dollar;spoolfile</link>.  After this
+(default: G).  It allows to connect to <link linkend="pop-host">$pop_host</link>, fetch all your new mail and place it in the
+local <link linkend="spoolfile">$spoolfile</link>.  After this
 point, Mutt runs exactly as if the mail had always been local.
 </para>
 
@@ -6941,7 +6941,7 @@ You can access the remote inbox by selecting the folder by its URL
 (see <xref linkend="url-syntax"/> for details) using the
 <literal>imap</literal> or <literal>imaps</literal> protocol.
 Alternatively, a pine-compatible notation is also supported, ie
-<literal>&lcub;[username@]imapserver[:port][/ssl]&rcub;path/to/folder</literal>
+<literal>{[username@]imapserver[:port][/ssl]}path/to/folder</literal>
 </para>
 
 <para>
@@ -6954,15 +6954,15 @@ paths accordingly.
 When browsing folders on an IMAP server, you can toggle whether to look
 at only the folders you are subscribed to, or all folders with the
 <emphasis>toggle-subscribed</emphasis> command.  See also the
-<link linkend="imap-list-subscribed">&dollar;imap&lowbar;list&lowbar;subscribed</link> variable.
+<link linkend="imap-list-subscribed">$imap_list_subscribed</link> variable.
 </para>
 
 <para>
 Polling for new mail on an IMAP server can cause noticeable delays. So, you'll
 want to carefully tune the
-<link linkend="mail-check">&dollar;mail&lowbar;check</link>
+<link linkend="mail-check">$mail_check</link>
 and
-<link linkend="timeout">&dollar;timeout</link>
+<link linkend="timeout">$timeout</link>
 variables. Reasonable values are:
 </para>
 
@@ -7065,17 +7065,17 @@ There are a few variables which control authentication:
 <listitem>
 
 <para>
-<link linkend="imap-user">&dollar;imap&lowbar;user</link> - controls
+<link linkend="imap-user">$imap_user</link> - controls
 the username under which you request authentication on the IMAP server,
 for all authenticators. This is overridden by an explicit username in
 the mailbox path (ie by using a mailbox name of the form
-<literal>&lcub;user@host&rcub;</literal>).
+<literal>{user@host}</literal>).
 </para>
 </listitem>
 <listitem>
 
 <para>
-<link linkend="imap-pass">&dollar;imap&lowbar;pass</link> - a
+<link linkend="imap-pass">$imap_pass</link> - a
 password which you may preset, used by all authentication methods where
 a password is needed.
 </para>
@@ -7083,7 +7083,7 @@ a password is needed.
 <listitem>
 
 <para>
-<link linkend="imap-authenticators">&dollar;imap&lowbar;authenticators</link> - a colon-delimited list of IMAP
+<link linkend="imap-authenticators">$imap_authenticators</link> - a colon-delimited list of IMAP
 authentication methods to try, in the order you wish to try them. If
 specified, this overrides Mutt's default (attempt everything, in the order
 listed above).
@@ -7107,9 +7107,9 @@ was configured and built with <literal>--enable-smtp</literal>.
 
 <para>
 If the configuration variable
-<link linkend="smtp-url">&dollar;smtp&lowbar;url</link> is set, Mutt
+<link linkend="smtp-url">$smtp_url</link> is set, Mutt
 will contact the given SMTP server to deliver messages; if it is unset,
-Mutt will use the program specified by <link linkend="sendmail">&dollar;sendmail</link>.
+Mutt will use the program specified by <link linkend="sendmail">$sendmail</link>.
 </para>
 
 <para>
@@ -7119,7 +7119,7 @@ For details on the URL syntax, please see <xref linkend="url-syntax"/>.
 <para>
 The built-in SMTP support supports encryption (the <literal>smtps</literal> protocol
 using SSL or TLS) as well as SMTP authentication using SASL. The authentication mechanisms
-for SASL are specified in <link linkend="smtp-authenticators">&dollar;smtp&lowbar;authenticators</link>
+for SASL are specified in <link linkend="smtp-authenticators">$smtp_authenticators</link>
 defaulting to an empty list which makes Mutt try all available methods
 from most-secure to least-secure.
 </para>
@@ -7170,7 +7170,7 @@ account-hook smtp://user@host3/ 'set tunnel="ssh host3 /usr/libexec/smtpd"'
 
 <para>
 To manage multiple accounts with, for example, different values of
-<link linkend="record">&dollar;record</link> or sender addresses,
+<link linkend="record">$record</link> or sender addresses,
 <link linkend="folder-hook"><command>folder-hook</command></link>
 has to be be used together with
 the <link linkend="mailboxes"><command>mailboxes</command></link> command.
@@ -7193,18 +7193,18 @@ In example
 <link linkend="mailboxes"><command>mailboxes</command></link> so Mutt polls them for new
 mail. Each <link linkend="folder-hook"><command>folder-hook</command></link> triggers when
 one mailbox below each IMAP account is opened and sets
-<link linkend="folder">&dollar;folder</link> to the account's root
-folder. Next, it sets <link linkend="record">&dollar;record</link> to
+<link linkend="folder">$folder</link> to the account's root
+folder. Next, it sets <link linkend="record">$record</link> to
 the <emphasis>INBOX/Sent</emphasis> folder below the newly
-set <link linkend="folder">&dollar;folder</link>. Please notice that the
+set <link linkend="folder">$folder</link>. Please notice that the
 value the <quote>+</quote>
 <link linkend="shortcuts">mailbox shortcut</link> refers to depends on
 the <emphasis>current</emphasis> value
-of <link linkend="folder">&dollar;folder</link> and therefore has to be set
+of <link linkend="folder">$folder</link> and therefore has to be set
 separatedly per account. Setting other values
-like <link linkend="from">&dollar;from</link>
-or <link linkend="signature">&dollar;signature</link> is analogous to setting
-<link linkend="record">&dollar;record</link>.
+like <link linkend="from">$from</link>
+or <link linkend="signature">$signature</link> is analogous to setting
+<link linkend="record">$record</link>.
 </para>
 
 </sect1>
@@ -7245,7 +7245,7 @@ of tokyocabinet, qdbm, gdbm or bdb must be present.
 
 <para>
 If enabled, <link
-linkend="header-cache">&dollar;header&lowbar;cache</link> can be
+linkend="header-cache">$header_cache</link> can be
 used to either point to a file or a directory. If set to point to
 a file, one database file for all folders will be used (which may
 result in lower performance), but one file per folder if it points
@@ -7273,7 +7273,7 @@ downloaded only once.
 
 <para>
 For configuration, the variable <link linkend="message-cachedir"
->&dollar;message&lowbar;cachedir</link> must point to a
+>$message_cachedir</link> must point to a
 directory. There, Mutt will create a hierarchy of subdirectories
 named like: <literal>proto:user@hostname</literal> where
 <literal>proto</literal> is either <quote>pop</quote> or <quote>imap.</quote> Within
@@ -7297,7 +7297,7 @@ disk space freed by removing messages is re-used.
 <para>
 For body caches, Mutt can keep the local cache in sync with the
 remote mailbox if the
-<link linkend="message-cache-clean">&dollar;message&lowbar;cache&lowbar;clean</link>
+<link linkend="message-cache-clean">$message_cache_clean</link>
 variable is set. Cleaning means to remove messages from the cache which
 are no longer present in the mailbox which only happens when other mail
 clients or instances of Mutt using a different body cache location
@@ -7363,8 +7363,8 @@ function.  Finally, to abandon your changes, leave the menu, or
 
 <para>
 Note that different remailers do have different capabilities,
-indicated in the &percnt;c entry of the remailer menu lines (see
-<link linkend="mix-entry-format">&dollar;mix&lowbar;entry&lowbar;format</link>).  Most important is
+indicated in the %c entry of the remailer menu lines (see
+<link linkend="mix-entry-format">$mix_entry_format</link>).  Most important is
 the <quote>middleman</quote> capability, indicated by a capital <quote>M</quote>: This
 means that the remailer in question cannot be used as the final
 element of a chain, but will only forward messages to other
@@ -7414,7 +7414,7 @@ Mutt uses many temporary files for viewing messages, verifying digital
 signatures, etc. As long as being used, these files are visible by other
 users and maybe even readable in case of misconfiguration.  Also, a
 different location for these files may be desired which can be changed
-via the <link linkend="tmpdir">&dollar;tmpdir</link> variable.
+via the <link linkend="tmpdir">$tmpdir</link> variable.
 </para>
 
 </sect1>
@@ -7434,7 +7434,7 @@ with every message sent. In a longer running mutt session, others can
 make assumptions about your mailing habbits depending on the number of
 messages sent. If this is not desired, the header can be manually
 provided using <link
-linkend="edit-headers">&dollar;edit&lowbar;headers</link> (though not
+linkend="edit-headers">$edit_headers</link> (though not
 recommended).
 </para>
 
@@ -7450,7 +7450,7 @@ considerations, too. Arbitrary header fields can be embedded in these
 links which could override existing header fields or attach arbitrary
 files using <link linkend="attach-header">the Attach:
 psuedoheader</link>. This may be problematic if the <link
-linkend="edit-headers">&dollar;edit-headers</link> variable is
+linkend="edit-headers">$edit-headers</link> variable is
 <emphasis>unset</emphasis>, i.e. the user doesn't want to see header
 fields while editing the message and doesn't pay enough attention to the
 compose menu's listing of attachments.
@@ -7524,8 +7524,8 @@ using a single database per folder.
 
 <listitem>
 <para>
-Mutt provides the <link linkend="read-inc">&dollar;read&lowbar;inc</link>
-and <link linkend="write-inc">&dollar;write&lowbar;inc</link>
+Mutt provides the <link linkend="read-inc">$read_inc</link>
+and <link linkend="write-inc">$write_inc</link>
 variables to specify at which rate to update progress
 counters. If these values are too low, Mutt may spend more
 time on updating the progress counter than it spends on
@@ -7534,7 +7534,7 @@ actually reading/writing folders.
 <para>
 For example, when opening a maildir folder with a few
 thousand messages, the default value for
-<link linkend="read-inc">&dollar;read&lowbar;inc</link>
+<link linkend="read-inc">$read_inc</link>
 may be too low. It can be tuned on on a folder-basis using
 <link linkend="folder-hook"><command>folder-hook</command>s</link>:
 </para>
@@ -7556,7 +7556,7 @@ even per-folder settings of the increment variables may not be
 desirable as they produce either too few or too much progress updates.
 Thus, Mutt allows to limit the number of progress updates per second it'll
 actually send to the terminal using the
-<link linkend="time-inc">&dollar;time&lowbar;inc</link> variable.</para>
+<link linkend="time-inc">$time_inc</link> variable.</para>
 
 </sect1>
 
@@ -7585,7 +7585,7 @@ please refer to Mutt's so-called
 When searching mailboxes either via a search or a limit action, for
 some patterns Mutt distinguishes between regular expression and string
 searches. For regular expressions, patterns are prefixed with
-<quote>&tilde;</quote> and with <quote>=</quote> for string searches.
+<quote>#</quote> and with <quote>=</quote> for string searches.
 </para>
 
 <para>
@@ -7600,7 +7600,7 @@ search pattern.
 For example, when limiting a large folder to all messages sent to or by
 an author, it's much faster to search for the initial part of an e-mail
 address via <literal>=Luser@</literal> instead of
-<literal>&tilde;Luser@</literal>. This is especially true for searching
+<literal>#Luser@</literal>. This is especially true for searching
 message bodies since a larger amount of input has to be searched.
 </para>
 
@@ -7713,12 +7713,12 @@ input from the file you wish to send.  For example,
 </para>
 
 <screen>
-mutt -s &quot;data set for run &num;2&quot; professor@bigschool.edu &lt; &tilde;/run2.dat</screen>
+mutt -s "data set for run #2" professor@bigschool.edu &lt; #/run2.dat</screen>
 
 <para>
 will send a message to <literal>&lt;professor@bigschool.edu&gt;</literal> with a subject
-of <quote>data set for run &num;2</quote>.  In the body of the message will be the contents
-of the file <quote>&tilde;/run2.dat</quote>.
+of <quote>data set for run #2</quote>.  In the body of the message will be the contents
+of the file <quote>#/run2.dat</quote>.
 </para>
 
 <para>
@@ -7853,7 +7853,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="attachments">attachments</link></command>
 <arg choice="plain">
-<replaceable>&lcub; + &verbar; - &rcub;disposition</replaceable>
+<replaceable>{ + | - }disposition</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable>mime-type</replaceable>
@@ -7861,7 +7861,7 @@ The following are the commands understood by Mutt:
 
 <command><link linkend="attachments">unattachments</link></command>
 <arg choice="plain">
-<replaceable>&lcub; + &verbar; - &rcub;disposition</replaceable>
+<replaceable>{ + | - }disposition</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable>mime-type</replaceable>
@@ -8027,7 +8027,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="fcc-hook">fcc-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -8039,7 +8039,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="fcc-save-hook">fcc-save-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -8051,7 +8051,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="folder-hook">folder-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;regexp</replaceable>
+<replaceable class="parameter">[!]regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -8100,7 +8100,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="hdr-order">hdr&lowbar;order</link></command>
+<command><link linkend="hdr-order">hdr_order</link></command>
 <arg choice="plain">
 <replaceable class="parameter">header</replaceable>
 </arg>
@@ -8108,7 +8108,7 @@ The following are the commands understood by Mutt:
 <replaceable class="parameter">header</replaceable>
 </arg>
 
-<command><link linkend="hdr-order">unhdr&lowbar;order</link></command>
+<command><link linkend="hdr-order">unhdr_order</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -8216,7 +8216,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="mbox-hook">mbox-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -8228,7 +8228,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="message-hook">message-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -8320,12 +8320,12 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="my-hdr">my&lowbar;hdr</link></command>
+<command><link linkend="my-hdr">my_hdr</link></command>
 <arg choice="plain">
 <replaceable class="parameter">string</replaceable>
 </arg>
 
-<command><link linkend="my-hdr">unmy&lowbar;hdr</link></command>
+<command><link linkend="my-hdr">unmy_hdr</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>
@@ -8350,7 +8350,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="save-hook">save-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -8384,7 +8384,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="reply-hook">reply-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -8396,7 +8396,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="send-hook">send-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -8408,7 +8408,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="send2-hook">send2-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">&lsqb;!&rsqb;pattern</replaceable>
+<replaceable class="parameter">[!]pattern</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
