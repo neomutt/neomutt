@@ -177,7 +177,17 @@ int url_parse_ciss (ciss_url_t *ciss, char *src)
   return ciss_parse_userhost (ciss, tmp);
 }
 
-static void url_pct_encode (char *dst, size_t l, const char *src)
+static int bad_username (char c)
+{
+  return strchr ("/:%", c) != NULL;
+}
+
+static int bad_path (char c)
+{
+  return (c <= 0x20 || c >= 0x7f || strchr ("\"<>#%{}|\\^~[]`", c)) ? 1 : 0;
+}
+
+static void url_pct_encode (char *dst, size_t l, const char *src, int (*bad) (char))
 {
   static const char *alph = "0123456789ABCDEF";
 
@@ -185,7 +195,7 @@ static void url_pct_encode (char *dst, size_t l, const char *src)
   l--;
   while (src && *src && l)
   {
-    if (strchr ("/:%", *src) && l > 3)
+    if (bad (*src) && l > 3)
     {
       *dst++ = '%';
       *dst++ = alph[(*src >> 4) & 0xf];
@@ -217,12 +227,12 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
     if (ciss->user)
     {
       char u[STRING];
-      url_pct_encode (u, sizeof (u), ciss->user);
+      url_pct_encode (u, sizeof (u), ciss->user, bad_username);
 
       if (flags & U_DECODE_PASSWD && ciss->pass)
       {
 	char p[STRING];
-	url_pct_encode (p, sizeof (p), ciss->pass);
+	url_pct_encode (p, sizeof (p), ciss->pass, bad_username);
 	snprintf (dest, len, "%s:%s@", u, p);
       }
       else
@@ -238,7 +248,11 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
   }
 
   if (ciss->path)
-    safe_strcat (dest, len, ciss->path);
+  {
+    char p[STRING];
+    url_pct_encode (p, sizeof (p), ciss->path, bad_path);
+    safe_strcat (dest, len, p);
+  }
 
   return 0;
 }
@@ -309,3 +323,9 @@ out:
   return rc;
 }
 
+void url_encode_path (char *dest, size_t len, const char *src)
+{
+  len--;
+  url_pct_encode (dest, len, src, bad_path);
+  dest[len] = 0;
+}
