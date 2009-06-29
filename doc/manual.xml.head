@@ -3099,7 +3099,7 @@ respectively.
 <para>
 Mutt provides a number of advanced features for handling (possibly many)
 folders and new mail within them, please refer to
-<xref linkend="handling-folders"/> for details (including in what
+<xref linkend="new-mail"/> for details (including in what
 situations and how often Mutt checks for new mail).
 </para>
 
@@ -3120,25 +3120,6 @@ otherwise Mutt tries to find it relative to the directory
 from where Mutt was started which may not always be desired.
 </para>
 </note>
-
-<para>
-For Mbox and Mmdf folders, new mail is detected by comparing access and/or
-modification times of files: Mutt assumes a folder has new mail if it wasn't
-accessed after it was last modified. Utilities like <literal>biff</literal> or
-<literal>frm</literal> or any other program which accesses the mailbox might cause
-Mutt to never detect new mail for that mailbox if they do not properly reset the
-access time. Other possible causes of Mutt not detecting new mail in these folders
-are backup tools (updating access times) or filesystems mounted without
-access time update support.
-</para>
-
-<para>
-In cases where new mail detection for Mbox or Mmdf folders appears to be
-unreliable, the
-<link linkend="check-mbox-size">$check_mbox_size</link>
-option can be used to make Mutt track and consult file sizes for new
-mail detection instead which won't work for size-neutral changes.
-</para>
 
 </sect1>
 
@@ -5544,53 +5525,113 @@ uninteresting threads and quickly find topics of value.
 
 </sect1>
 
-<sect1 id="handling-folders">
-<title>Handling multiple folders</title>
+<sect1 id="new-mail">
+<title>New Mail Detection</title>
 
 <para>
-Mutt supports setups with multiple folders, allowing all of them to
-be monitored for new mail (see <xref linkend="mailboxes"/> for details).
+Mutt supports setups with multiple folders, allowing all of them to be
+monitored for new mail (see <xref linkend="mailboxes"/> for details).
+</para>
+
+<sect2 id="new-mail-formats">
+<title>How New Mail Detection Works</title>
+
+<para>
+For Mbox and Mmdf folders, new mail is detected by comparing access
+and/or modification times of files: Mutt assumes a folder has new mail
+if it wasn't accessed after it was last modified. Utilities like
+<literal>biff</literal> or <literal>frm</literal> or any other program
+which accesses the mailbox might cause Mutt to never detect new mail for
+that mailbox if they do not properly reset the access time. Other
+possible causes of Mutt not detecting new mail in these folders are
+backup tools (updating access times) or filesystems mounted without
+access time update support (for Linux systems, see the
+<literal>relatime</literal> option).
+</para>
+
+<note>
+<para>
+Contrary to older Mutt releases, it now maintains the new mail status of
+a folder by properly resetting the access time if the folder contains at
+least one message which is neither read, nor deleted, nor marked as old.
+</para>
+</note>
+
+<para>
+In cases where new mail detection for Mbox or Mmdf folders appears to be
+unreliable, the <link linkend="check-mbox-size">$check_mbox_size</link>
+option can be used to make Mutt track and consult file sizes for new
+mail detection instead which won't work for size-neutral changes.
 </para>
 
 <para>
-When in the index menu and being idle (also see
-<link linkend="timeout">$timeout</link>), Mutt periodically checks
-for new mail in all folders which have been configured via the
+New mail for Maildir is assumed if there is one message in the
+<literal>new/</literal> subdirectory which is not marked deleted (see
+<link linkend="maildir-trash">$maildir_trash</link>). For MH folders, a
+mailbox is considered having new mail if there's at least one message in
+the <quote>unseen</quote> sequence as specified by <link
+linkend="mh-seq-unseen">$mh_seq_unseen</link>.
+</para>
+
+<para>
+Mutt does not poll POP3 folders for new mail, it only periodically
+checks the currently opened folder (if it's a POP3 folder).
+</para>
+
+<para>
+For IMAP, by default Mutt uses recent message counts provided by the
+server to detect new mail. If the <link
+linkend="imap-idle">$imap_idle</link> option is set, it'll use the IMAP
+IDLE extension if advertised by the server.
+</para>
+
+</sect2>
+
+<sect2 id="new-mail-polling">
+<title>Polling For New Mail</title>
+
+<para>
+When in the index menu and being idle (also see <link
+linkend="timeout">$timeout</link>), Mutt periodically checks for new
+mail in all folders which have been configured via the
 <command>mailboxes</command> command. The interval depends on the folder
-type: for local/IMAP folders it consults
-<link linkend="mail-check">$mail_check</link> and
-<link linkend="pop-checkinterval">$pop_checkinterval</link>
-for POP folders.
+type: for local/IMAP folders it consults <link
+linkend="mail-check">$mail_check</link> and <link
+linkend="pop-checkinterval">$pop_checkinterval</link> for POP folders.
 </para>
 
 <para>
-Outside the index menu the directory browser supports checking
-for new mail using the <literal>&lt;check-new&gt;</literal> function which is
-unbound by default. Pressing TAB will bring up a
-menu showing the files specified by the <command>mailboxes</command> command,
-and indicate which contain new messages. Mutt will automatically enter this
-mode when invoked from the command line with the <literal>-y</literal> option.
+Outside the index menu the directory browser supports checking for new
+mail using the <literal>&lt;check-new&gt;</literal> function which is
+unbound by default. Pressing TAB will bring up a menu showing the files
+specified by the <command>mailboxes</command> command, and indicate
+which contain new messages. Mutt will automatically enter this mode when
+invoked from the command line with the <literal>-y</literal> option.
 </para>
 
 <para>
 For the pager, index and directory browser menus, Mutt contains the
-<literal>&lt;buffy-list&gt;</literal> function (bound to <quote>.</quote> by default)
-which will print a list of folders with new mail in the command line at
-the bottom of the screen.
+<literal>&lt;buffy-list&gt;</literal> function (bound to
+<quote>.</quote> by default) which will print a list of folders with new
+mail in the command line at the bottom of the screen.
 </para>
 
 <para>
 For the index, by default Mutt displays the number of mailboxes with new
-mail in the status bar, please refer to the
-<link linkend="status-format">$status_format</link>
-variable for details.
+mail in the status bar, please refer to the <link
+linkend="status-format">$status_format</link> variable for details.
 </para>
 
 <para>
 When changing folders, Mutt fills the prompt with the first folder from
 the mailboxes list containing new mail (if any), pressing
-<emphasis>space</emphasis> will cycle through folders with new mail.
+<literal>&lt;Space&gt;</literal> will cycle through folders with new
+mail.  The (by default unbound) function
+<literal>&lt;mutt-unread-mailbox&gt;</literal> in the index can be used
+to immediately open the next folder with unread mail (if any).
 </para>
+
+</sect2>
 
 </sect1>
 

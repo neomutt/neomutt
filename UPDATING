@@ -10,6 +10,7 @@ hg tip:
 
 1.5.20 (2009-06-14):
 
+  ! mbox/mmdf new mail flag is kept when leaving folders with new mail
   ! $fcc_attach is a quadoption now
   + $honor_disposition to honor Content-Disposition headers
   + $search_context specifies number of context lines for search results
