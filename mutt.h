@@ -693,6 +693,9 @@ typedef struct body
 
 } BODY;
 
+/* #3279: AIX defines conflicting struct thread */
+typedef struct mutt_thread THREAD;
+
 typedef struct header
 {
   unsigned int security : 11;  /* bit 0-6: flags, bit 7,8: application.
@@ -753,7 +756,7 @@ typedef struct header
   char *path;
   
   char *tree;           	/* character string to print thread tree */
-  struct thread *thread;
+  THREAD *thread;
 
   /* Number of qualifying attachments in message, if attach_valid */
   short attach_total;
@@ -773,7 +776,7 @@ typedef struct header
   char *maildir_flags;		/* unknown maildir flags */
 } HEADER;
 
-typedef struct thread
+struct mutt_thread
 {
   unsigned int fake_thread : 1;
   unsigned int duplicate_thread : 1;
@@ -783,13 +786,13 @@ typedef struct thread
   unsigned int deep : 1;
   unsigned int subtree_visible : 2;
   unsigned int next_subtree_visible : 1;
-  struct thread *parent;
-  struct thread *child;
-  struct thread *next;
-  struct thread *prev;
+  THREAD *parent;
+  THREAD *child;
+  THREAD *next;
+  THREAD *prev;
   HEADER *message;
   HEADER *sort_key;
-} THREAD;
+};
 
 
 /* flag to mutt_pattern_comp() */
