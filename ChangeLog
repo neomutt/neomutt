@@ -1,4 +1,9 @@
-2009-06-28 16:00 -0700  Brendan Cully  <brendan@kublai.com>  (de948f407a1b)
+2009-06-28 19:21 -0700  Brendan Cully  <brendan@kublai.com>  (ef6523d11f24)
+
+	* mutt.h: Rename struct thread to struct mutt_thread. Closes #3279.
+
+	* imap/command.c: Not being able to start an IMAP command
+	is a fatal error. Closes #3155.
 
 	* imap/auth_login.c: IMAP LOGIN does not support separate user and
 	login accounts. Use the user account for both. Closes #3240.

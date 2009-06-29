@@ -316,7 +316,7 @@ void imap_pretty_mailbox (char* path)
     {
       if (! hlen)
 	home_match = 1;
-      else
+      else if (ImapDelimChars)
 	for (delim = ImapDelimChars; *delim != '\0'; delim++)
 	  if (target.mbox[hlen] == *delim)
 	    home_match = 1;
@@ -421,14 +421,15 @@ char *imap_fix_path (IMAP_DATA *idata, const char *mailbox, char *path,
   while (mailbox && *mailbox && i < plen - 1)
   {
     if ((ImapDelimChars && strchr(ImapDelimChars, *mailbox))
-        || *mailbox == delim)
+        || (delim && *mailbox == delim))
     {
       /* use connection delimiter if known. Otherwise use user delimiter */
       if (!idata)
         delim = *mailbox;
 
-      while (*mailbox &&
-	     (strchr(ImapDelimChars, *mailbox) || *mailbox == delim))
+      while (*mailbox
+	     && ((ImapDelimChars && strchr(ImapDelimChars, *mailbox))
+	         || (delim && *mailbox == delim)))
         mailbox++;
       path[i] = delim;
     }
