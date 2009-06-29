@@ -1,3 +1,11 @@
+2009-06-28 20:49 -0700  Brendan Cully  <brendan@kublai.com>  (298194c414f0)
+
+	* configure.ac, curs_lib.c: Allow tabs in index subject. Closes #3270.
+
+2009-06-28 20:21 -0700  Brendan Cully  <brendan@kublai.com>  (ecea9568202f)
+
+	* imap/util.c: Allow ImapDelimChars to be unset
+
 2009-06-28 19:21 -0700  Brendan Cully  <brendan@kublai.com>  (ef6523d11f24)
 
 	* mutt.h: Rename struct thread to struct mutt_thread. Closes #3279.

@@ -34,6 +34,5 @@ int url_parse_file (char *d, const char *src, size_t dl);
 int url_parse_ciss (ciss_url_t *ciss, char *src);
 int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags);
 int url_parse_mailto (ENVELOPE *e, char **body, const char *src);
-void url_encode_path (char *dest, size_t len, const char *src);
 
 #endif
