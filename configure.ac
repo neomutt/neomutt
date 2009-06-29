@@ -1215,7 +1215,7 @@ if test "$mutt_cv_wint_t" = no; then
 fi
 
 AC_CHECK_HEADERS(wctype.h)
-AC_CHECK_FUNCS(iswalnum iswalpha  iswcntrl iswdigit)
+AC_CHECK_FUNCS(iswalnum iswalpha iswblank iswcntrl iswdigit)
 AC_CHECK_FUNCS(iswgraph iswlower iswprint iswpunct iswspace iswupper)
 AC_CHECK_FUNCS(iswxdigit towupper towlower)
 

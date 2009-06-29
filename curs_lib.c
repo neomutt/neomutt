@@ -725,7 +725,11 @@ void mutt_format_string (char *dest, size_t destlen,
       w = 1; /* hack */
     else
     {
-      if (!IsWPrint (wc))
+      if (!IsWPrint (wc)
+#ifdef HAVE_ISWBLANK
+	  && !iswblank (wc)
+#endif
+      )
 	wc = '?';
       w = wcwidth (wc);
     }
