@@ -233,9 +233,6 @@ int imap_exec (IMAP_DATA* idata, const char* cmdstr, int flags)
   int rc;
 
   if ((rc = cmd_start (idata, cmdstr, flags)) < 0)
-    return rc;
-
-  if (rc < 0)
   {
     cmd_handle_fatal (idata);
     return -1;

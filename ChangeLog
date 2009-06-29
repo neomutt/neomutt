@@ -1,3 +1,12 @@
+2009-06-28 16:00 -0700  Brendan Cully  <brendan@kublai.com>  (de948f407a1b)
+
+	* imap/auth_login.c: IMAP LOGIN does not support separate user and
+	login accounts. Use the user account for both. Closes #3240.
+
+2009-06-28 22:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (71a84cf22c42)
+
+	* url.c, url.h: Fix URL parser to encode paths
+
 2009-06-28 15:42 +0200  Deng Xiyue  <manphiz@gmail.com>  (fe688db8099a)
 
 	* po/zh_CN.po: Update Simplified Chinese translation. Closes #3281.
@@ -5,8 +14,6 @@
 2009-06-27 17:07 +0200  Rocco Rutte  <pdmef@gmx.net>  (7ca8d09f7d2c)
 
 	* hg-commit: hg-commit: drop changelog entries from hg log
-
-2009-06-27 17:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (8f7166888c6d)
 
 	* doc/makedoc.c, doc/manual.xml.head: Manual: stop using DocBook
 	entities mapping to ascii chars
