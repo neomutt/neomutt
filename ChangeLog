@@ -1,3 +1,20 @@
+2009-06-29 18:20 +0000  Rocco Rutte  <pdmef@gmx.net>  (03c65df651e0)
+
+	* UPDATING, doc/manual.xml.head: Manual: Move new mail detection into
+	its own section
+
+	This also updates some parts of docs and adds missing ones. It also
+	adds a note about the recent changes, also to UPDATING.
+
+2009-06-29 18:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (d3a7e0334e5d)
+
+	* url.c, url.h: Revert URL path encoding for now
+
+	It breaks gmail url display and makes bcache use different paths.
+	Still we need to think about whether we want to allow any character
+	in bcache paths (possibly multibyte, possibly depending on
+	$charset).
+
 2009-06-28 20:49 -0700  Brendan Cully  <brendan@kublai.com>  (298194c414f0)
 
 	* configure.ac, curs_lib.c: Allow tabs in index subject. Closes #3270.

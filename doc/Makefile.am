@@ -102,7 +102,7 @@ uninstall-local:
 
 check:
 manual.txt: manual.html
-	-LC_ALL=C lynx -dump -nolist -with_backspaces manual.html > $@ || \
+	-LC_ALL=C lynx -dump -nolist -with_backspaces -display_charset=us-ascii manual.html > $@ || \
 	LC_ALL=C w3m -dump manual.html > $@ || \
 	LC_ALL=C elinks -dump -no-numbering -no-references manual.html | sed -e 's,\\001, ,g' > $@
 
