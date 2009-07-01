@@ -1,3 +1,15 @@
+2009-06-30 17:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (f4baa2f1251a)
+
+	* pgpewrap.c: Add missing config.h include to pgpewrap.c
+
+	It technically doesn't need it, but pgpewrap should be rebuilt after
+	configure ran, too.
+
+2009-06-30 17:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (7c8f018d33a5)
+
+	* doc/Makefile.am: Manual: Run lynx with --display_charset
+	=us-ascii, see #3286.
+
 2009-06-29 18:20 +0000  Rocco Rutte  <pdmef@gmx.net>  (03c65df651e0)
 
 	* UPDATING, doc/manual.xml.head: Manual: Move new mail detection into

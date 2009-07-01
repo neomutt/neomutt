@@ -172,7 +172,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   progress_t progress;
   struct stat st;
   int r, term = 0;
-  size_t buflen;
+  size_t buflen = 0;
 
   fp = fopen (msgfile, "r");
   if (!fp)
@@ -346,6 +346,12 @@ static int smtp_fill_account (ACCOUNT* account)
 
   if (url.scheme == U_SMTPS)
     account->flags |= M_ACCT_SSL;
+
+  if (!(account->flags & M_ACCT_PASS) && SmtpPass && *SmtpPass)
+  {
+    strfcpy (account->pass, SmtpPass, sizeof (account->pass));
+    account->flags |= M_ACCT_PASS;
+  }
 
   if (!account->port)
   {
