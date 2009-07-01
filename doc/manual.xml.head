@@ -4408,6 +4408,51 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
 <chapter id="advancedusage">
 <title>Advanced Usage</title>
 
+<sect1 id="charset-handling">
+<title>Character Set Handling</title>
+
+<para>
+Mutt supports all character sets the system supports which can be
+determined by running <literal>locale -a</literal>. A <quote>character
+set</quote> is basically a mapping between bytes and glyphs and implies
+a certain character encoding scheme. For example, for the ISO 8859
+family of character sets, an encoding of 8bit per character is used. For
+the Unicode character set, different character encodings may be used,
+UTF-8 being the most popular.
+</para>
+
+<para>
+Since Mutt is a command-line tool run from a shell, and delegates
+certain tasks to external tools (such as an editor for composing/editing
+messages), all of these tools need to agree on a character set and
+encoding. There exists no way to reliably deduce the character set a
+plain text file has. Interoperability is gained by the use of
+well-defined environment variables. The full set can be printed by
+issueing <literal>locale</literal> on the command line.
+</para>
+
+<para>
+Upon startup, Mutt determines the character set on its own using
+routines that inspect locale-specific environment variables. Therefore,
+it is generally not necessary to set the <literal>$charset</literal>
+variable in Mutt. It may even be counter-productive as Mutt uses system
+and library functions that derive the character set themselves and on
+which Mutt has no influence. It's safest to let Mutt work out the locale
+setup itself.
+</para>
+
+<para>
+Warning: A mismatch between what these functions think the locale is and
+what mutt was told what the locale is may make it behave badly with
+non-ascii input. This warning is to be taken seriously since not only
+local mail handling may suffer: sent messages may carry wrong character
+set information the <emphasis>receiver</emphasis> has too deal with. The
+need to set <literal>$charset</literal> directly in most cases points at
+terminal and environment variable setup problems, not Mutt problems.
+</para>
+
+</sect1>
+
 <sect1 id="regexp">
 <title>Regular Expressions</title>
 
