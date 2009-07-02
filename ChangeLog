@@ -1,11 +1,20 @@
+2009-07-01 23:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (9a5f4364c166)
+
+	* doc/manual.xml.head: Manual: Add detailed section on charset
+	handling
+
+	* smtp.c: SMTP: use $smtp_pass in batch mode. Closes #3289.
+
+	mutt_account_getpass() copying the password from $smtp_pass into the
+	account structure is only called from the SASL callback we only use
+	if we're sure we don't need curses (i.e. have the pass already).
+
 2009-06-30 17:32 +0200  Rocco Rutte  <pdmef@gmx.net>  (f4baa2f1251a)
 
 	* pgpewrap.c: Add missing config.h include to pgpewrap.c
 
 	It technically doesn't need it, but pgpewrap should be rebuilt after
 	configure ran, too.
-
-2009-06-30 17:31 +0200  Rocco Rutte  <pdmef@gmx.net>  (7c8f018d33a5)
 
 	* doc/Makefile.am: Manual: Run lynx with --display_charset
 	=us-ascii, see #3286.
@@ -31,11 +40,7 @@
 
 	* configure.ac, curs_lib.c: Allow tabs in index subject. Closes #3270.
 
-2009-06-28 20:21 -0700  Brendan Cully  <brendan@kublai.com>  (ecea9568202f)
-
 	* imap/util.c: Allow ImapDelimChars to be unset
-
-2009-06-28 19:21 -0700  Brendan Cully  <brendan@kublai.com>  (ef6523d11f24)
 
 	* mutt.h: Rename struct thread to struct mutt_thread. Closes #3279.
 

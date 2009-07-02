@@ -347,12 +347,6 @@ static int smtp_fill_account (ACCOUNT* account)
   if (url.scheme == U_SMTPS)
     account->flags |= M_ACCT_SSL;
 
-  if (!(account->flags & M_ACCT_PASS) && SmtpPass && *SmtpPass)
-  {
-    strfcpy (account->pass, SmtpPass, sizeof (account->pass));
-    account->flags |= M_ACCT_PASS;
-  }
-
   if (!account->port)
   {
     if (account->flags & M_ACCT_SSL)
@@ -460,12 +454,6 @@ static int smtp_open (CONNECTION* conn)
     }
 
 #ifdef USE_SASL
-    if (!(conn->account.flags & M_ACCT_PASS) && option (OPTNOCURSES))
-    {
-      mutt_error (_("Interactive SMTP authentication not supported"));
-      mutt_sleep (1);
-      return -1;
-    }
     return smtp_auth (conn);
 #else
     mutt_error (_("SMTP authentication requires SASL"));
@@ -609,7 +597,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
       }
     }
     strfcpy (buf + len, "\r\n", sizeof (buf) - len);
-  } while (rc == smtp_ready);
+  } while (rc == smtp_ready && saslrc != SASL_FAIL);
 
   if (smtp_success (rc))
   {

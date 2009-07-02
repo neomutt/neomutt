@@ -155,6 +155,8 @@ int mutt_account_getuser (ACCOUNT* account)
   else if ((account->type == M_ACCT_TYPE_POP) && PopUser)
     strfcpy (account->user, PopUser, sizeof (account->user));
 #endif
+  else if (option (OPTNOCURSES))
+    return -1;
   /* prompt (defaults to unix username), copy into account->user */
   else
   {
@@ -215,6 +217,8 @@ int mutt_account_getpass (ACCOUNT* account)
   else if ((account->type == M_ACCT_TYPE_SMTP) && SmtpPass)
     strfcpy (account->pass, SmtpPass, sizeof (account->pass));
 #endif
+  else if (option (OPTNOCURSES))
+    return -1;
   else
   {
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
