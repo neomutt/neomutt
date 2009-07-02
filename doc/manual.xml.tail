@@ -36,8 +36,8 @@ __print_map(editor)
 <title>Acknowledgements</title>
 
 <para>
-Kari Hurtta <email>kari.hurtta@fmi.fi</email>
-co-developed the original MIME parsing code back in the ELM-ME days.
+Kari Hurtta <email>kari.hurtta@fmi.fi</email> co-developed the original
+MIME parsing code back in the ELM-ME days.
 </para>
 
 <para>
@@ -95,8 +95,10 @@ The following people have been very helpful to the development of Mutt:
 <title>About This Document</title>
 
 <para>
-This document was written in <ulink url="http://docbook.sourceforge.net">DocBook</ulink>,
-and then rendered using the <ulink url="http://xmlsoft.org/XSLT/">Gnome XSLT toolkit</ulink>.
+This document was written in <ulink
+url="http://docbook.sourceforge.net">DocBook</ulink>, and then rendered
+using the <ulink url="http://xmlsoft.org/XSLT/">Gnome XSLT
+toolkit</ulink>.
 </para>
 
 </sect1>
@@ -104,7 +106,3 @@ and then rendered using the <ulink url="http://xmlsoft.org/XSLT/">Gnome XSLT too
 </chapter>
 
 </book>
-
-<!--
-vim:ft=xml
--->
