@@ -3093,8 +3093,8 @@ as list mail, for instance, you could say
 subscribe [0-9]*.*@bugs.debian.org</screen>
 
 <para>
-as it's often, it's sufficient to just give a portion of the list's
-e-mail address.
+as it's often sufficient to just give a portion of the list's e-mail
+address.
 </para>
 
 <para>
@@ -5091,13 +5091,14 @@ will select all messages which do not contain <quote>mutt</quote> in the
 
 <para>
 Here is an example using white space in the regular expression (note the
-' and " delimiters).  For this to match, the mail's subject must match
-the <quote>^Junk +From +Me$</quote> and it must be from either
-<quote>Jim +Somebody</quote> or <quote>Ed +SomeoneElse</quote>:
+<quote>'</quote> and <quote>"</quote> delimiters).  For this to match,
+the mail's subject must match the <quote>^Junk +From +Me$</quote> and it
+must be from either <quote>Jim +Somebody</quote> or <quote>Ed
++SomeoneElse</quote>:
 </para>
 
 <screen>
- '~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
+'~s "^Junk +From +Me$" ~f ("Jim +Somebody"|"Ed +SomeoneElse")'
 </screen>
 
 <note>
@@ -5550,9 +5551,9 @@ archive.
 <para>
 <emphasis>MMDF</emphasis>.  This is a variant of the
 <emphasis>mbox</emphasis> format.  Each message is surrounded by lines
-containing <quote>^A^A^A^A</quote> (four control-A's). The same problems
-as for mbox apply (also with finding the right message separator as four
-control-A's may appear in message bodies).
+containing <quote>^A^A^A^A</quote> (four times control-A's). The same
+problems as for mbox apply (also with finding the right message
+separator as four control-A's may appear in message bodies).
 </para>
 
 <para>
@@ -5915,8 +5916,8 @@ default). The reply will then be connected to this parent message.
 
 <para>
 You can also connect multiple children at once, tagging them and using
-the <literal>&lt;tag-prefix&gt;</literal> command (';') or the <link
-linkend="auto-tag">$auto_tag</link> option.
+the <literal>&lt;tag-prefix&gt;</literal> command (<quote>;</quote>) or
+the <link linkend="auto-tag">$auto_tag</link> option.
 </para>
 
 </sect2>
@@ -6402,7 +6403,7 @@ temporary file, and then call the view command with the
 <literal>%s</literal> replaced by the name of the temporary file. In
 both cases, Mutt will turn over the terminal to the view program until
 the program quits, at which time Mutt will remove the temporary file if
-it exists. This means that mailcap toe's <emphasis>not</emphasis> work
+it exists. This means that mailcap does <emphasis>not</emphasis> work
 out of the box with programs which detach themselves from the terminal
 right after starting, like <literal>open</literal> on Mac OS X. In order
 to nevertheless use these programs with mailcap, you probably need
@@ -7795,10 +7796,10 @@ mixmaster version 2.04 or later.
 </para>
 
 <para>
-To use it, you'll have to obey certain restrictions.  Most
-important, you cannot use the <literal>Cc</literal> and <literal>Bcc</literal> headers.  To tell
-Mutt to use mixmaster, you have to select a remailer chain, using
-the mix function on the compose menu.
+To use it, you'll have to obey certain restrictions.  Most important,
+you cannot use the <literal>Cc</literal> and <literal>Bcc</literal>
+headers.  To tell Mutt to use mixmaster, you have to select a remailer
+chain, using the mix function on the compose menu.
 </para>
 
 <para>
