@@ -55,13 +55,15 @@ while (<XML>) {
       warn "map $map undefined";
       next;
     }
+    my $title = $map;
+    $title =~ s/(.)(.+)/\U$1\E$2/;
     print <<EOT;
 <sect2 id="${map}-map">
 <title>$maptitle Menu</title>
 $DOC{$map}
 
-<table id="${map}-table">
-<title>Default $map Function Bindings</title>
+<table id="tab-${map}-bindings">
+<title>Default $title Menu Bindings</title>
 <tgroup cols="3">
 <thead>
 <row><entry>Function</entry><entry>Default key</entry><entry>Description</entry></row>

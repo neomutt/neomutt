@@ -271,7 +271,7 @@ struct binding_t OpPager[] = { /* map: pager */
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpAttach[] = { /* map: attach */
+struct binding_t OpAttach[] = { /* map: attachment */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
@@ -441,7 +441,7 @@ struct binding_t OpSmime[] = { /* map: smime */
 
 
 #ifdef MIXMASTER
-struct binding_t OpMix[] = { /* map: mix */
+struct binding_t OpMix[] = { /* map: mixmaster */
   { "accept",		OP_MIX_USE,	M_ENTER_S },
   { "append",		OP_MIX_APPEND,	"a"       },
   { "insert",		OP_MIX_INSERT,	"i"       },
