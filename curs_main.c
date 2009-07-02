@@ -1111,6 +1111,10 @@ int mutt_index_menu (void)
 	}
 	mutt_str_replace (&CurrentFolder, buf);
 
+	/* keepalive failure in mutt_enter_fname may kill connection. #3028 */
+	if (Context && !Context->path)
+	  FREE (&Context);
+
         if (Context)
         {
 	  int check;
