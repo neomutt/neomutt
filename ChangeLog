@@ -1,3 +1,15 @@
+2009-07-02 00:06 -0700  Brendan Cully  <brendan@kublai.com>  (029ba140fb48)
+
+	* curs_main.c: Handle keepalive failure when changing folders. There
+	are probably many other places where this kind of thing could happen
+	though. See #3028.
+
+2009-07-01 18:13 -0700  Rocco Rutte  <pdmef@gmx.net>  (f6c6066a5925)
+
+	* account.c, mutt_sasl.c, smtp.c: Make getuser/pass abort
+	if input is required in batch mode. Replaces [0a3de4d9a009]. See
+	#3289.
+
 2009-07-01 23:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (9a5f4364c166)
 
 	* doc/manual.xml.head: Manual: Add detailed section on charset
