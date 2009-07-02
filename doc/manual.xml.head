@@ -4451,6 +4451,12 @@ need to set <literal>$charset</literal> directly in most cases points at
 terminal and environment variable setup problems, not Mutt problems.
 </para>
 
+<para>
+A list of officially assigned and known character sets can be found at
+<ulink
+url="http://www.iana.org/assignments/character-sets">IANA</ulink>.
+</para>
+
 </sect1>
 
 <sect1 id="regexp">
@@ -5846,22 +5852,68 @@ the external commands to use for handling specific MIME types.
 <sect1 id="using-mime">
 <title>Using MIME in Mutt</title>
 
+<sect2 id="mime-overview">
+<title>MIME Overview</title>
+
 <para>
-There are three areas/menus in Mutt which deal with MIME, they are the
-pager (while viewing a message), the attachment menu and the compose
-menu.
+MIME is short for <quote>Multipurpose Internet Mail Extension</quote>
+and describes mechanisms to internationalize and structure mail
+messages. Before the introduction of MIME, messages had a single text
+part and were limited to us-ascii header and content. With MIME,
+messages can have attachments (and even attachments which itself have
+attachments and thus form a tree structure), nearly arbitrary characters
+can be used for sender names, recipients and subjects.
 </para>
+
+<para>
+Besides the handling of non-ascii characters in message headers, to Mutt
+the most important aspect of MIME are so-called MIME types. These are
+constructed using a <emphasis>major</emphasis> and
+<emphasis>minor</emphasis> type separated by a forward slash.
+These specify details about the content that follows. Based upon these,
+Mutt decides how to handle this part. The most popular major type is
+<quote><literal>text</literal></quote> with minor types for plain text,
+HTML and various other formats. Major types also exist for images,
+audio, video and of course general application data (e.g. to separate
+cryptographically signed data with a signature, send office documents,
+and in general arbitrary binary data). There's also the
+<literal>multipart</literal> major type which represents the root of
+a subtree of MIME parts. A list of supported MIME types can be found in
+<xref linkend="supported-mime-types"/>.
+</para>
+
+<para>
+MIME also defines a set of encoding schemes for transporting MIME
+content over the network: <literal>7bit</literal>,
+<literal>8bit</literal>, <literal>quoted-printable</literal>,
+<literal>base64</literal> and <literal>binary</literal>. There're some
+rules when to choose what for encoding headers and/or body (if needed),
+and Mutt will in general make a good choice.
+</para>
+
+<para>
+Mutt does most of MIME encoding/decoding behind the scenes to form
+messages conforming to MIME on the sending side. On reception, it can be
+flexibly configured as to how what MIME structure is displayed (and if
+it's displayed): these decisions are based on the content's MIME type.
+There are three areas/menus in dealing with MIME: the pager (while
+viewing a message), the attachment menu and the compose menu.
+</para>
+
+</sect2>
 
 <sect2 id="mime-pager">
 <title>Viewing MIME Messages in the Pager</title>
 
 <para>
 When you select a message from the index and view it in the pager, Mutt
-decodes the message to a text representation.  Mutt internally supports
-a number of MIME types, including <literal>text/plain, text/enriched,
-message/rfc822, and message/news</literal>.  In addition, the export
-controlled version of Mutt recognizes a variety of PGP MIME types,
-including PGP/MIME and application/pgp.
+decodes as much of a message as possible to a text representation.  Mutt
+internally supports a number of MIME types, including the
+<literal>text</literal> major type (with all minor types), the
+<literal>message/rfc822</literal> (mail messages) type and some
+<literal>multipart</literal> types. In addition, it recognizes a variety
+of PGP MIME types, including PGP/MIME and
+<literal>application/pgp</literal>.
 </para>
 
 <para>
@@ -5875,9 +5927,9 @@ These lines are of the form:
 </screen>
 
 <para>
-Where the <literal>Description</literal> is the description or filename given for the
-attachment, and the <literal>Encoding</literal> is one of
-<literal>7bit/8bit/quoted-printable/base64/binary</literal>.
+Where the <emphasis>Description</emphasis> is the description or
+filename given for the attachment, and the <emphasis>Encoding</emphasis>
+is one of the already mentioned content encodings.
 </para>
 
 <para>
@@ -5894,26 +5946,30 @@ If Mutt cannot deal with a MIME type, it will display a message like:
 <title>The Attachment Menu</title>
 
 <para>
-The default binding for <literal>&lt;view-attachments&gt;</literal> is <quote>v</quote>, which displays the
-attachment menu for a message.  The attachment menu displays a list of
-the attachments in a message.  From the attachment menu, you can save,
-print, pipe, delete, and view attachments.  You can apply these
-operations to a group of attachments at once, by tagging the attachments
-and by using the <literal>&lt;tag-prefix&gt;</literal> operator.  You can also reply to the
-current message from this menu, and only the current attachment (or the
-attachments tagged) will be quoted in your reply.  You can view
-attachments as text, or view them using the mailcap viewer definition.
+The default binding for <literal>&lt;view-attachments&gt;</literal> is
+<quote>v</quote>, which displays the attachment menu for a message.  The
+attachment menu displays a list of the attachments in a message.  From
+the attachment menu, you can save, print, pipe, delete, and view
+attachments.  You can apply these operations to a group of attachments
+at once, by tagging the attachments and by using the
+<literal>&lt;tag-prefix&gt;</literal> operator.  You can also reply to
+the current message from this menu, and only the current attachment (or
+the attachments tagged) will be quoted in your reply.  You can view
+attachments as text, or view them using the mailcap viewer definition
+(the mailcap mechanism is explained later in detail).
 </para>
 
 <para>
-Finally, you can apply the usual message-related functions (like
-<link linkend="resend-message"><literal>&lt;resend-message&gt;</literal></link>, and the
-<literal>&lt;reply&gt;</literal> and <literal>&lt;forward&gt;</literal>
-functions) to attachments of type <literal>message/rfc822</literal>.
+Finally, you can apply the usual message-related functions (like <link
+linkend="resend-message"><literal>&lt;resend-message&gt;</literal></link>,
+and the <literal>&lt;reply&gt;</literal> and
+<literal>&lt;forward&gt;</literal> functions) to attachments of type
+<literal>message/rfc822</literal>.
 </para>
 
 <para>
-See the help on the attachment menu for more information.
+See table <xref linkend="tab-attachment-bindings"/> for all available
+functions.
 </para>
 
 </sect2>
@@ -5923,16 +5979,16 @@ See the help on the attachment menu for more information.
 
 <para>
 The compose menu is the menu you see before you send a message.  It
-allows you to edit the recipient list, the subject, and other aspects
-of your message.  It also contains a list of the attachments of your
+allows you to edit the recipient list, the subject, and other aspects of
+your message.  It also contains a list of the attachments of your
 message, including the main body.  From this menu, you can print, copy,
-filter, pipe, edit, compose, review, and rename an attachment or a
-list of tagged attachments.  You can also modifying the attachment
+filter, pipe, edit, compose, review, and rename an attachment or a list
+of tagged attachments.  You can also modifying the attachment
 information, notably the type, encoding and description.
 </para>
 
 <para>
-Attachments appear as follows:
+Attachments appear as follows by default:
 </para>
 
 <screen>
@@ -5941,18 +5997,21 @@ Attachments appear as follows:
 </screen>
 
 <para>
-The '-' denotes that Mutt will delete the file after sending (or
-postponing, or canceling) the message.  It can be toggled with the
-<literal>&lt;toggle-unlink&gt;</literal> command (default: u).  The next field is the MIME
-content-type, and can be changed with the <literal>&lt;edit-type&gt;</literal> command
-(default: ^T).  The next field is the encoding for the attachment,
-which allows a binary message to be encoded for transmission on 7bit
-links.  It can be changed with the <literal>&lt;edit-encoding&gt;</literal> command
-(default: ^E).  The next field is the size of the attachment,
-rounded to kilobytes or megabytes.  The next field is the filename,
-which can be changed with the <literal>&lt;rename-file&gt;</literal> command (default: R).
-The final field is the description of the attachment, and can be
-changed with the <literal>&lt;edit-description&gt;</literal> command (default: d).
+The <quote>-</quote> denotes that Mutt will delete the file after
+sending (or postponing, or canceling) the message.  It can be toggled
+with the <literal>&lt;toggle-unlink&gt;</literal> command (default: u).
+The next field is the MIME content-type, and can be changed with the
+<literal>&lt;edit-type&gt;</literal> command (default: ^T).  The next
+field is the encoding for the attachment, which allows a binary message
+to be encoded for transmission on 7bit links.  It can be changed with
+the <literal>&lt;edit-encoding&gt;</literal> command (default: ^E).  The
+next field is the size of the attachment, rounded to kilobytes or
+megabytes.  The next field is the filename, which can be changed with
+the <literal>&lt;rename-file&gt;</literal> command (default: R).  The
+final field is the description of the attachment, and can be changed
+with the <literal>&lt;edit-description&gt;</literal> command (default:
+d). See <link linkend="attach-format">$attach_format</link> for a full
+list of available expandos to format this display to your needs.
 </para>
 
 </sect2>
@@ -5963,44 +6022,83 @@ changed with the <literal>&lt;edit-description&gt;</literal> command (default: d
 <title>MIME Type Configuration with <literal>mime.types</literal></title>
 
 <para>
+To get most out of MIME, it's important that a MIME part's content type
+matches the content as closely as possible so that the recipient's
+client can automatically select the right viewer for the
+content. However, there's no reliable for Mutt to know how to detect
+every possible file type. Instead, it uses a simple plain text mapping
+file that specifies what file extension corresponds to what MIME
+type. This file is called <literal>mime.types</literal>.
+</para>
+
+<para>
 When you add an attachment to your mail message, Mutt searches your
-personal <literal>mime.types</literal> file at <literal>${HOME}/.mime.types</literal>, and then
-the system <literal>mime.types</literal> file at <literal>/usr/local/share/mutt/mime.types</literal> or
+personal <literal>mime.types</literal> file at
+<literal>$HOME/.mime.types</literal>, and then the system
+<literal>mime.types</literal> file at
+<literal>/usr/local/share/mutt/mime.types</literal> or
 <literal>/etc/mime.types</literal>
 </para>
 
 <para>
-The <literal>mime.types</literal> file consist of lines containing a MIME type and a space
-separated list of extensions.  For example:
+Each line starts with the full MIME type, followed by a space and
+space-separated list of file extensions. For example you could use:
 </para>
 
+<example id="ex-mime-types">
+<title><literal>mime.types</literal></title>
 <screen>
 application/postscript          ps eps
 application/pgp                 pgp
 audio/x-aiff                    aif aifc aiff
 </screen>
+</example>
 
 <para>
-A sample <literal>mime.types</literal> file comes with the Mutt distribution, and
-should contain most of the MIME types you are likely to use.
+A sample <literal>mime.types</literal> file comes with the Mutt
+distribution, and should contain most of the MIME types you are likely
+to use.
 </para>
 
 <para>
-If Mutt can not determine the mime type by the extension of the file you
+If Mutt can not determine the MIME type by the extension of the file you
 attach, it will look at the file.  If the file is free of binary
 information, Mutt will assume that the file is plain text, and mark it
-as <literal>text/plain</literal>.  If the file contains binary information, then Mutt will
-mark it as <literal>application/octet-stream</literal>.  You can change the MIME
-type that Mutt assigns to an attachment by using the <literal>&lt;edit-type&gt;</literal>
-command from the compose menu (default: ^T). The MIME type is actually a
-major mime type followed by the sub-type, separated by a '/'. 6 major
-types: application, text, image, video, audio, and model have been approved
-after various internet discussions. Mutt recognizes all of these if the
-appropriate entry is found in the <literal>mime.types</literal> file. It also recognizes other
-major mime types, such as the chemical type that is widely used in the
-molecular modeling community to pass molecular data in various forms to
-various molecular viewers. Non-recognized mime types should only be used
-if the recipient of the message is likely to be expecting such attachments.
+as <literal>text/plain</literal>.  If the file contains binary
+information, then Mutt will mark it as
+<literal>application/octet-stream</literal>.  You can change the MIME
+type that Mutt assigns to an attachment by using the
+<literal>&lt;edit-type&gt;</literal> command from the compose menu
+(default: ^T), see <xref linkend="supported-mime-types"/> for supported
+major types. Mutt recognizes all of these if the appropriate entry is
+found in the <literal>mime.types</literal> file. Non-recognized mime
+types should only be used if the recipient of the message is likely to
+be expecting such attachments.
+</para>
+
+<table id="supported-mime-types">
+<title>Supported MIME types</title>
+<tgroup cols="3">
+<thead>
+<row><entry>MIME major type</entry><entry>Standard</entry><entry>Description</entry></row>
+</thead>
+<tbody>
+<row><entry><literal>application</literal></entry><entry>yes</entry><entry>General application data</entry></row>
+<row><entry><literal>audio</literal></entry><entry>yes</entry><entry>Audio data</entry></row>
+<row><entry><literal>image</literal></entry><entry>yes</entry><entry>Image data</entry></row>
+<row><entry><literal>message</literal></entry><entry>yes</entry><entry>Mail messages, message status information</entry></row>
+<row><entry><literal>model</literal></entry><entry>yes</entry><entry>VRML and other modeling data</entry></row>
+<row><entry><literal>multipart</literal></entry><entry>yes</entry><entry>Container for other MIME parts</entry></row>
+<row><entry><literal>text</literal></entry><entry>yes</entry><entry>Text data</entry></row>
+<row><entry><literal>video</literal></entry><entry>yes</entry><entry>Video data</entry></row>
+<row><entry><literal>chemical</literal></entry><entry>no</entry><entry>Mostly molecular data</entry></row>
+</tbody>
+</tgroup>
+</table>
+
+<para>
+MIME types are not arbitrary, they need to be assigned by <ulink
+url="http://www.iana.org/assignments/media-types/">IANA</ulink>.
 </para>
 
 </sect1>
@@ -6011,17 +6109,17 @@ if the recipient of the message is likely to be expecting such attachments.
 <para>
 Mutt supports RFC 1524 MIME Configuration, in particular the Unix
 specific format specified in Appendix A of RFC 1524.  This file format
-is commonly referred to as the mailcap format.  Many MIME compliant
-programs utilize the mailcap format, allowing you to specify handling
-for all MIME types in one place for all programs.  Programs known to
-use this format include Firefox, lynx and metamail.
+is commonly referred to as the <quote>mailcap</quote> format.  Many MIME
+compliant programs utilize the mailcap format, allowing you to specify
+handling for all MIME types in one place for all programs.  Programs
+known to use this format include Firefox, lynx and metamail.
 </para>
 
 <para>
-In order to handle various MIME types that Mutt can not handle
-internally, Mutt parses a series of external configuration files to
-find an external handler. The default search string for these files
-is a colon delimited list containing the following files:
+In order to handle various MIME types that Mutt doesn't have built-in
+support for, it parses a series of external configuration files to find
+an external handler. The default search string for these files is a
+colon delimited list containing the following files:
 </para>
 
 <orderedlist>
@@ -6035,10 +6133,9 @@ is a colon delimited list containing the following files:
 
 <para>
 where <literal>$HOME</literal> is your home directory. The
-<literal>$PKGDATADIR</literal> and the
-<literal>$SYSCONFDIR</literal> directories depend on where Mutt
-is installed: the former is the default for shared data, the
-latter for system configuration files.
+<literal>$PKGDATADIR</literal> and the <literal>$SYSCONFDIR</literal>
+directories depend on where Mutt is installed: the former is the default
+for shared data, the latter for system configuration files.
 </para>
 
 <para>
@@ -6052,8 +6149,8 @@ mutt -nF /dev/null -Q mailcap_path
 
 <para>
 In particular, the metamail distribution will install a mailcap file,
-usually as <literal>/usr/local/etc/mailcap</literal>, which contains some baseline
-entries.
+usually as <literal>/usr/local/etc/mailcap</literal>, which contains
+some baseline entries.
 </para>
 
 <sect2 id="mailcap-basics">
@@ -6075,17 +6172,18 @@ A blank line is blank.
 <para>
 A definition line consists of a content type, a view command, and any
 number of optional fields.  Each field of a definition line is divided
-by a semicolon ';' character.
+by a semicolon <quote>;</quote> character.
 </para>
 
 <para>
-The content type is specified in the MIME standard type/subtype method.
-For example,
-<literal>text/plain, text/html, image/gif, </literal>
-etc.  In addition, the mailcap format includes two formats for
-wildcards, one using the special '*' subtype, the other is the implicit
-wild, where you only include the major type.  For example, <literal>image/*</literal>, or
-<literal>video,</literal> will match all image types and video types,
+The content type is specified in the MIME standard
+<quote>type/subtype</quote> notation.  For example,
+<literal>text/plain</literal>, <literal>text/html</literal>,
+<literal>image/gif</literal>, etc.  In addition, the mailcap format
+includes two formats for wildcards, one using the special
+<quote>*</quote> subtype, the other is the implicit wild, where you only
+include the major type.  For example, <literal>image/*</literal>, or
+<literal>video</literal> will match all image types and video types,
 respectively.
 </para>
 
@@ -6093,17 +6191,22 @@ respectively.
 The view command is a Unix command for viewing the type specified. There
 are two different types of commands supported. The default is to send
 the body of the MIME message to the command on stdin. You can change
-this behavior by using %s as a parameter to your view command.
-This will cause Mutt to save the body of the MIME message to a temporary
-file, and then call the view command with the %s replaced by
-the name of the temporary file. In both cases, Mutt will turn over the
-terminal to the view program until the program quits, at which time Mutt
-will remove the temporary file if it exists.
+this behavior by using <literal>%s</literal> as a parameter to your view
+command.  This will cause Mutt to save the body of the MIME message to a
+temporary file, and then call the view command with the
+<literal>%s</literal> replaced by the name of the temporary file. In
+both cases, Mutt will turn over the terminal to the view program until
+the program quits, at which time Mutt will remove the temporary file if
+it exists. This means that mailcap toe's <emphasis>not</emphasis> work
+out of the box with programs which detach themselves from the terminal
+right after starting, like <literal>open</literal> on Mac OS X. In order
+to nevertheless use these programs with mailcap, you probably need
+custom shell scripts.
 </para>
 
 <para>
-So, in the simplest form, you can send a text/plain message to the
-external pager more on stdin:
+So, in the simplest form, you can send a <literal>text/plain</literal>
+message to the external pager more on standard input:
 </para>
 
 <screen>
@@ -6119,8 +6222,8 @@ text/plain; more %s
 </screen>
 
 <para>
-Perhaps you would like to use lynx to interactively view a text/html
-message:
+Perhaps you would like to use lynx to interactively view a
+<literal>text/html</literal> message:
 </para>
 
 <screen>
@@ -6128,23 +6231,23 @@ text/html; lynx %s
 </screen>
 
 <para>
-In this case, lynx does not support viewing a file from stdin, so you
-must use the %s syntax.
+In this case, lynx does not support viewing a file from standard input,
+so you must use the <literal>%s</literal> syntax.
 </para>
 
 <note>
 <para>
-<emphasis>Some older versions of lynx contain a bug where they
-will check the mailcap file for a viewer for text/html.  They will find
-the line which calls lynx, and run it.  This causes lynx to continuously
-spawn itself to view the object.</emphasis>
+<emphasis>Some older versions of lynx contain a bug where they will
+check the mailcap file for a viewer for <literal>text/html</literal>.
+They will find the line which calls lynx, and run it.  This causes lynx
+to continuously spawn itself to view the object.</emphasis>
 </para>
 </note>
 
 <para>
 On the other hand, maybe you don't want to use lynx interactively, you
-just want to have it convert the text/html to text/plain, then you can
-use:
+just want to have it convert the <literal>text/html</literal> to
+<literal>text/plain</literal>, then you can use:
 </para>
 
 <screen>
@@ -6152,18 +6255,14 @@ text/html; lynx -dump %s | more
 </screen>
 
 <para>
-Perhaps you wish to use lynx to view text/html files, and a pager on
-all other text formats, then you would use the following:
+Perhaps you wish to use lynx to view <literal>text/html</literal> files,
+and a pager on all other text formats, then you would use the following:
 </para>
 
 <screen>
 text/html; lynx %s
 text/*; more
 </screen>
-
-<para>
-This is the simplest form of a mailcap file.
-</para>
 
 </sect2>
 
@@ -6172,33 +6271,34 @@ This is the simplest form of a mailcap file.
 
 <para>
 The interpretation of shell meta-characters embedded in MIME parameters
-can lead to security problems in general.  Mutt tries to quote parameters
-in expansion of %s syntaxes properly, and avoids risky characters by
-substituting them, see the <link linkend="mailcap-sanitize">$mailcap_sanitize</link> variable.
+can lead to security problems in general.  Mutt tries to quote
+parameters in expansion of <literal>%s</literal> syntaxes properly, and
+avoids risky characters by substituting them, see the <link
+linkend="mailcap-sanitize">$mailcap_sanitize</link> variable.
 </para>
 
 <para>
 Although Mutt's procedures to invoke programs with mailcap seem to be
-safe, there are other applications parsing mailcap, maybe taking less care
-of it.  Therefore you should pay attention to the following rules:
+safe, there are other applications parsing mailcap, maybe taking less
+care of it.  Therefore you should pay attention to the following rules:
 </para>
 
 <para>
-<emphasis>Keep the %-expandos away from shell quoting.</emphasis>
-Don't quote them with single or double quotes.  Mutt does this for
-you, the right way, as should any other program which interprets
-mailcap.  Don't put them into backtick expansions.  Be highly careful
-with eval statements, and avoid them if possible at all.  Trying to fix
-broken behavior with quotes introduces new leaks - there is no
+<emphasis>Keep the %-expandos away from shell quoting.</emphasis> Don't
+quote them with single or double quotes.  Mutt does this for you, the
+right way, as should any other program which interprets mailcap.  Don't
+put them into backtick expansions.  Be highly careful with evil
+statements, and avoid them if possible at all.  Trying to fix broken
+behavior with quotes introduces new leaks &mdash; there is no
 alternative to correct quoting in the first place.
 </para>
 
 <para>
 If you have to use the %-expandos' values in context where you need
-quoting or backtick expansions, put that value into a shell variable
-and reference the shell variable where necessary, as in the following
-example (using <literal>$charset</literal> inside the backtick expansion is safe,
-since it is not itself subject to any further expansion):
+quoting or backtick expansions, put that value into a shell variable and
+reference the shell variable where necessary, as in the following
+example (using <literal>$charset</literal> inside the backtick expansion
+is safe, since it is not itself subject to any further expansion):
 </para>
 
 <screen>
@@ -6216,8 +6316,8 @@ text/test-mailcap-bug; cat %s; copiousoutput; test=charset=%{charset} \
 
 <para>
 In addition to the required content-type and view command fields, you
-can add semi-colon ';' separated fields to set flags and other options.
-Mutt recognizes the following optional fields:
+can add semi-colon <quote>;</quote> separated fields to set flags and
+other options.  Mutt recognizes the following optional fields:
 </para>
 
 <variablelist>
@@ -6227,11 +6327,12 @@ Mutt recognizes the following optional fields:
 <listitem>
 <para>
 This flag tells Mutt that the command passes possibly large amounts of
-text on stdout.  This causes Mutt to invoke a pager (either the internal
-pager or the external pager defined by the pager variable) on the output
-of the view command.  Without this flag, Mutt assumes that the command
-is interactive.  One could use this to replace the pipe to <literal>more</literal>
-in the <literal>lynx -dump</literal> example in the Basic section:
+text on standard output.  This causes Mutt to invoke a pager (either
+the internal pager or the external pager defined by the pager variable)
+on the output of the view command.  Without this flag, Mutt assumes that
+the command is interactive.  One could use this to replace the pipe to
+<literal>more</literal> in the <literal>lynx -dump</literal> example in
+the Basic section:
 </para>
 
 <screen>
@@ -6239,8 +6340,15 @@ text/html; lynx -dump %s ; copiousoutput
 </screen>
 
 <para>
-This will cause lynx to format the text/html output as text/plain
-and Mutt will use your standard pager to display the results.
+This will cause lynx to format the <literal>text/html</literal> output
+as <literal>text/plain</literal> and Mutt will use your standard pager
+to display the results.
+</para>
+
+<para>
+Note that when using the built-in pager, <emphasis>only</emphasis>
+entries with this flag will be considered a handler for a MIME type
+&mdash; all other entries will be ignored.
 </para>
 </listitem>
 </varlistentry>
@@ -6248,14 +6356,15 @@ and Mutt will use your standard pager to display the results.
 <term>needsterminal</term>
 <listitem>
 <para>
-Mutt uses this flag when viewing attachments with <link linkend="auto-view"><command>auto_view</command></link>, in order to decide whether it should honor the setting
-of the <link linkend="wait-key">$wait_key</link> variable or
-not.  When an attachment is viewed using an interactive program, and the
-corresponding mailcap entry has a <emphasis>needsterminal</emphasis> flag, Mutt will use
-<link linkend="wait-key">$wait_key</link> and the exit status
-of the program to decide if it will ask you to press a key after the
-external program has exited.  In all other situations it will not prompt
-you for a key.
+Mutt uses this flag when viewing attachments with <link
+linkend="auto-view"><command>auto_view</command></link>, in order to
+decide whether it should honor the setting of the <link
+linkend="wait-key">$wait_key</link> variable or not.  When an attachment
+is viewed using an interactive program, and the corresponding mailcap
+entry has a <emphasis>needsterminal</emphasis> flag, Mutt will use <link
+linkend="wait-key">$wait_key</link> and the exit status of the program
+to decide if it will ask you to press a key after the external program
+has exited.  In all other situations it will not prompt you for a key.
 </para>
 </listitem>
 </varlistentry>
@@ -6276,7 +6385,7 @@ This flag specifies the command to use to create a new attachment of a
 specific MIME type.  This command differs from the compose command in
 that Mutt will expect standard MIME headers on the data.  This can be
 used to specify parameters, filename, description, etc. for a new
-attachment.   Mutt supports this from the compose menu.
+attachment.  Mutt supports this from the compose menu.
 </para>
 </listitem>
 </varlistentry>
@@ -6295,8 +6404,8 @@ Mutt supports this from the attachment and compose menus.
 <para>
 This flag specifies the command to use to edit a specific MIME type.
 Mutt supports this from the compose menu, and also uses it to compose
-new attachments.  Mutt will default to the defined editor for text
-attachments.
+new attachments.  Mutt will default to the defined <link
+linkend="editor">$editor</link> for text attachments.
 </para>
 </listitem>
 </varlistentry>
@@ -6304,12 +6413,14 @@ attachments.
 <term>nametemplate=&lt;template&gt;</term>
 <listitem>
 <para>
-This field specifies the format for the file denoted by %s in the
-command fields.  Certain programs will require a certain file extension,
-for instance, to correctly view a file.  For instance, lynx will only
-interpret a file as <literal>text/html</literal> if the file ends in <literal>.html</literal>.
-So, you would specify lynx as a <literal>text/html</literal> viewer with a line in
-the mailcap file like:
+This field specifies the format for the file denoted by
+<literal>%s</literal> in the command fields.  Certain programs will
+require a certain file extension, for instance, to correctly view a
+file.  For instance, lynx will only interpret a file as
+<literal>text/html</literal> if the file ends in
+<literal>.html</literal>.  So, you would specify lynx as a
+<literal>text/html</literal> viewer with a line in the mailcap file
+like:
 </para>
 
 <screen>
@@ -6322,13 +6433,13 @@ text/html; lynx %s; nametemplate=%s.html
 <term>test=&lt;command&gt;</term>
 <listitem>
 <para>
-This field specifies a command to run to test whether this mailcap
-entry should be used.  The command is defined with the command expansion
-rules defined in the next section.  If the command returns 0, then the
-test passed, and Mutt uses this entry.  If the command returns non-zero,
-then the test failed, and Mutt continues searching for the right entry.
-Note that the content-type must match before Mutt performs the test.
-For example:
+This field specifies a command to run to test whether this mailcap entry
+should be used.  The command is defined with the command expansion rules
+defined in the next section.  If the command returns 0, then the test
+passed, and Mutt uses this entry.  If the command returns non-zero, then
+the test failed, and Mutt continues searching for the right entry.  Note
+that the content-type must match before Mutt performs the test.  For
+example:
 </para>
 
 <screen>
@@ -6337,11 +6448,12 @@ text/html; lynx %s
 </screen>
 
 <para>
-In this example, Mutt will run the program RunningX which will return 0
-if the X Window manager is running, and non-zero if it isn't.  If
-RunningX returns 0, then Mutt will call firefox to display the
-<literal>text/html</literal> object.  If RunningX doesn't return 0, then Mutt will go on
-to the next entry and use lynx to display the <literal>text/html</literal> object.
+In this example, Mutt will run the program <literal>RunningX</literal>
+which will return 0 if the X Window manager is running, and non-zero if
+it isn't.  If <literal>RunningX</literal> returns 0, then Mutt will run
+firefox to display the <literal>text/html</literal> object.  If RunningX
+doesn't return 0, then Mutt will go on to the next entry and use lynx to
+display the <literal>text/html</literal> object.
 </para>
 </listitem>
 </varlistentry>
@@ -6355,9 +6467,9 @@ to the next entry and use lynx to display the <literal>text/html</literal> objec
 <para>
 When searching for an entry in the mailcap file, Mutt will search for
 the most useful entry for its purpose.  For instance, if you are
-attempting to print an <literal>image/gif</literal>, and you have the following
-entries in your mailcap file, Mutt will search for an entry with the
-print command:
+attempting to print an <literal>image/gif</literal>, and you have the
+following entries in your mailcap file, Mutt will search for an entry
+with the print command:
 </para>
 
 <screen>
@@ -6367,17 +6479,17 @@ image/gif;      ; print= anytopnm %s | pnmtops | lpr; \
 </screen>
 
 <para>
-Mutt will skip the <literal>image/*</literal> entry and use the <literal>image/gif</literal>
-entry with the print command.
+Mutt will skip the <literal>image/*</literal> entry and use the
+<literal>image/gif</literal> entry with the print command.
 </para>
 
 <para>
-In addition, you can use this
-with <link linkend="auto-view"><command>auto_view</command></link>
-to denote two commands for viewing an attachment, one to be viewed
-automatically, the other to be viewed interactively from the attachment
-menu using the <literal>&lt;view-mailcap&lt;</literal> function (bound
-to <quote>m</quote> by default). In addition, you can then use the test
+In addition, you can use this with <link
+linkend="auto-view"><command>auto_view</command></link> to denote two
+commands for viewing an attachment, one to be viewed automatically, the
+other to be viewed interactively from the attachment menu using the
+<literal>&lt;view-mailcap&gt;</literal> function (bound to
+<quote>m</quote> by default). In addition, you can then use the test
 feature to determine which viewer to use interactively depending on your
 environment.
 </para>
@@ -6389,15 +6501,14 @@ text/html;      lynx -dump %s; nametemplate=%s.html; copiousoutput
 </screen>
 
 <para>
-For <link linkend="auto-view"><command>auto_view</command></link>,
-Mutt will choose the third entry because of
-the <literal>copiousoutput</literal> tag.  For interactive viewing, Mutt
+For <link linkend="auto-view"><command>auto_view</command></link>, Mutt
+will choose the third entry because of the
+<literal>copiousoutput</literal> tag.  For interactive viewing, Mutt
 will run the program <literal>RunningX</literal> to determine if it
 should use the first entry.  If the program returns non-zero, Mutt will
 use the second entry for interactive viewing. The last entry is for
-inline display in the pager and
-the <literal>&lt;view-attach&gt;</literal> function in the attachment
-menu.
+inline display in the pager and the
+<literal>&lt;view-attach&gt;</literal> function in the attachment menu.
 </para>
 
 <para>
@@ -6407,9 +6518,9 @@ entry will then actually be the first matching one with the tag set.
 For non-interactive use, only <literal>copiousoutput</literal>-tagged
 entries are considered. For interactive use, Mutt ignores this tag and
 treats all entries equally. Therefore, if not specified last, all
-following entries without this tag would never be considered
-for <literal>&lt;view-attach&gt;</literal> because
-the <literal>copiousoutput</literal> before them matched already.
+following entries without this tag would never be considered for
+<literal>&lt;view-attach&gt;</literal> because the
+<literal>copiousoutput</literal> before them matched already.
 </para>
 
 </sect3>
@@ -6419,10 +6530,10 @@ the <literal>copiousoutput</literal> before them matched already.
 
 <para>
 The various commands defined in the mailcap files are passed to the
-<literal>/bin/sh</literal> shell using the <literal>system(3)</literal> function.  Before the
-command is passed to <literal>/bin/sh -c</literal>, it is parsed to expand
-various special parameters with information from Mutt.  The keywords
-Mutt expands are:
+<literal>/bin/sh</literal> shell using the <literal>system(3)</literal>
+function.  Before the command is passed to <literal>/bin/sh
+-c</literal>, it is parsed to expand various special parameters with
+information from Mutt.  The keywords Mutt expands are:
 </para>
 
 <variablelist>
@@ -6431,12 +6542,12 @@ Mutt expands are:
 <term>%s</term>
 <listitem>
 <para>
-As seen in the basic mailcap section, this variable is expanded
-to a filename specified by the calling program.  This file contains
-the body of the message to view/print/edit or where the composing
-program should place the results of composition.  In addition, the
-use of this keyword causes Mutt to not pass the body of the message
-to the view/print/edit program on stdin.
+As seen in the basic mailcap section, this variable is expanded to a
+filename specified by the calling program.  This file contains the body
+of the message to view/print/edit or where the composing program should
+place the results of composition.  In addition, the use of this keyword
+causes Mutt to not pass the body of the message to the view/print/edit
+program on stdin.
 </para>
 </listitem>
 </varlistentry>
@@ -6444,9 +6555,9 @@ to the view/print/edit program on stdin.
 <term>%t</term>
 <listitem>
 <para>
-Mutt will expand %t to the text representation of the content
-type of the message in the same form as the first parameter of the
-mailcap definition line, ie <literal>text/html</literal> or
+Mutt will expand <literal>%t</literal> to the text representation of the
+content type of the message in the same form as the first parameter of
+the mailcap definition line, ie <literal>text/html</literal> or
 <literal>image/gif</literal>.
 </para>
 </listitem>
@@ -6455,9 +6566,9 @@ mailcap definition line, ie <literal>text/html</literal> or
 <term>%{&lt;parameter&gt;}</term>
 <listitem>
 <para>
-Mutt will expand this to the value of the specified parameter
-from the Content-Type: line of the mail message.  For instance, if
-Your mail message contains:
+Mutt will expand this to the value of the specified parameter from the
+Content-Type: line of the mail message.  For instance, if your mail
+message contains:
 </para>
 
 <screen>
@@ -6465,9 +6576,10 @@ Content-Type: text/plain; charset=iso-8859-1
 </screen>
 
 <para>
-then Mutt will expand %{charset} to iso-8859-1.  The default metamail
-mailcap file uses this feature to test the charset to spawn an xterm
-using the right charset to view the message.
+then Mutt will expand <literal>%{charset}</literal> to
+<quote>iso-8859-1</quote>.  The default metamail mailcap file uses this
+feature to test the charset to spawn an xterm using the right charset to
+view the message.
 </para>
 </listitem>
 </varlistentry>
@@ -6475,16 +6587,17 @@ using the right charset to view the message.
 <term>\%</term>
 <listitem>
 <para>
-This will be replaced by a %
+This will be replaced by a literal <literal>%</literal>.
 </para>
 </listitem>
 </varlistentry>
 </variablelist>
 
 <para>
-Mutt does not currently support the %F and %n keywords
-specified in RFC 1524.  The main purpose of these parameters is for
-multipart messages, which is handled internally by Mutt.
+Mutt does not currently support the <literal>%F</literal> and
+<literal>%n</literal> keywords specified in RFC 1524.  The main purpose
+of these parameters is for multipart messages, which is handled
+internally by Mutt.
 </para>
 
 </sect3>
@@ -6582,21 +6695,22 @@ Usage:
 
 <para>
 In addition to explicitly telling Mutt to view an attachment with the
-MIME viewer defined in the mailcap file, Mutt has support for
-automatically viewing MIME attachments while in the pager.
+MIME viewer defined in the mailcap file from the attachments menu, Mutt
+has support for automatically viewing MIME attachments while in the
+pager.
 </para>
 
 <para>
-To work, you must define a viewer in the mailcap file which uses the
-<literal>copiousoutput</literal> option to denote that it is non-interactive.
-Usually, you also use the entry to convert the attachment to a text
-representation which you can view in the pager.
+For this to work, you must define a viewer in the mailcap file which
+uses the <literal>copiousoutput</literal> option to denote that it is
+non-interactive.  Usually, you also use the entry to convert the
+attachment to a text representation which you can view in the pager.
 </para>
 
 <para>
-You then use the <command>auto_view</command> <literal>.muttrc</literal> command to list the
-content-types that you wish to view automatically.  For instance, if you
-set it to:
+You then use the <command>auto_view</command> configuration command to
+list the content-types that you wish to view automatically.  For
+instance, if you set it to:
 </para>
 
 <screen>
@@ -6605,8 +6719,9 @@ auto_view text/html application/x-gunzip \
 </screen>
 
 <para>
-Mutt could use the following mailcap entries to automatically view
-attachments of these types.
+...Mutt would try to find corresponding entries for rendering
+attachments of these types as text. A corresponding mailcap could look
+like:
 </para>
 
 <screen>
@@ -6619,9 +6734,12 @@ application/postscript; ps2ascii %s; copiousoutput
 </screen>
 
 <para>
-<command>unauto_view</command> can be used to remove previous entries from the autoview list.
-This can be used with <link linkend="message-hook"><command>message-hook</command></link> to autoview messages based on size, etc.
-<quote><command>unauto_view</command> *</quote> will remove all previous entries.
+<command>unauto_view</command> can be used to remove previous entries
+from the <command>auto_view</command> list.  This can be used with <link
+linkend="message-hook"><command>message-hook</command></link> to
+autoview messages based on size, etc.
+<quote><command>unauto_view</command> *</quote> will remove all previous
+entries.
 </para>
 
 </sect1>
@@ -6630,28 +6748,52 @@ This can be used with <link linkend="message-hook"><command>message-hook</comman
 <title>MIME Multipart/Alternative</title>
 
 <para>
+The <literal>multipart/alternative</literal> container type only has
+child MIME parts which represent the same content in an alternative
+way. This is often used to send HTML messages which contain an
+alternative plain text representation.
+</para>
+
+<para>
 Mutt has some heuristics for determining which attachment of a
-<literal>multipart/alternative</literal> type to display.  First, Mutt will check the
-<command>alternative_order</command> list
-to determine if one of the available types is preferred.  It consists of
-a number of mimetypes in order, including support for implicit and
-explicit wildcards, for example:
+<literal>multipart/alternative</literal> type to display:
+</para>
+
+<orderedlist>
+<listitem>
+<para>
+First, Mutt will check the <command>alternative_order</command> list to
+determine if one of the available types is preferred.  It consists of a
+number of MIME types in order, including support for implicit and
+explicit wildcards. For example:
 </para>
 
 <screen>
-alternative_order text/enriched text/plain text application/postscript image/*
+alternative_order text/enriched text/plain text \
+  application/postscript image/*
 </screen>
-
+</listitem>
+<listitem>
 <para>
-Next, Mutt will check if any of the types have a defined
-<link linkend="auto-view"><command>auto_view</command></link>, and use that.  Failing
-that, Mutt will look for any text type.  As a last attempt, Mutt will
-look for any type it knows how to handle.
+Next, Mutt will check if any of the types have a defined <link
+linkend="auto-view"><command>auto_view</command></link>, and use that.
 </para>
+</listitem>
+<listitem>
+<para>
+Failing that, Mutt will look for any text type.
+</para>
+</listitem>
+<listitem>
+<para>
+As a last attempt, Mutt will look for any type it knows how to handle.
+</para>
+</listitem>
+</orderedlist>
 
 <para>
-To remove a MIME type from the <command>alternative_order</command> list, use the
-<command>unalternative_order</command> command.
+To remove a MIME type from the <command>alternative_order</command>
+list, use the <command>unalternative_order</command> command.
 </para>
 
 </sect1>
@@ -6665,15 +6807,17 @@ attachment-counting and -searching support might be for you.  You can
 make your message index display the number of qualifying attachments in
 each message, or search for messages by attachment count.  You also can
 configure what kinds of attachments qualify for this feature with the
-<command>attachments</command> and <command>unattachments</command> commands.
+<command>attachments</command> and <command>unattachments</command>
+commands.
 </para>
 
 <para>
-In order to provide this information, Mutt needs to fully MIME-parse
-all messages affected first. This can slow down operation especially for
+In order to provide this information, Mutt needs to fully MIME-parse all
+messages affected first. This can slow down operation especially for
 remote mail folders such as IMAP because all messages have to be
 downloaded first regardless whether the user really wants to view them
-or not.
+or not though using <xref linkend="body-caching"/> usually means to
+download the message just once.
 </para>
 
 <para>
@@ -6704,36 +6848,41 @@ The syntax is:
 </cmdsynopsis>
 
 <para>
-<emphasis>disposition</emphasis> is the attachment's Content-Disposition type &mdash; either
-<literal>inline</literal> or <literal>attachment</literal>.
-You can abbreviate this to <literal>I</literal> or <literal>A</literal>.
+<emphasis>disposition</emphasis> is the attachment's Content-Disposition
+type &mdash; either <literal>inline</literal> or
+<literal>attachment</literal>.  You can abbreviate this to
+<literal>I</literal> or <literal>A</literal>.
 </para>
 
 <para>
-Disposition is prefixed by either a + symbol or a - symbol.  If it's
-a +, you're saying that you want to allow this disposition and MIME
-type to qualify.  If it's a -, you're saying that this disposition
-and MIME type is an exception to previous + rules.  There are examples
+Disposition is prefixed by either a <quote>+</quote> symbol or a
+<quote>-</quote> symbol.  If it's a <quote>+</quote>, you're saying that
+you want to allow this disposition and MIME type to qualify.  If it's a
+<quote>-</quote>, you're saying that this disposition and MIME type is
+an exception to previous <quote>+</quote> rules.  There are examples
 below of how this is useful.
 </para>
 
 <para>
-<emphasis>mime-type</emphasis> is, unsurprisingly, the MIME type of the attachment you want
-to affect.  A MIME type is always of the format <literal>major/minor</literal>, where
-<literal>major</literal> describes the broad category of document you're looking at, and
-<literal>minor</literal> describes the specific type within that category.  The major
-part of mime-type must be literal text (or the special token <quote><literal>*</literal></quote>), but
-the minor part may be a regular expression.  (Therefore, <quote><literal>*/.*</literal></quote> matches
-any MIME type.)
+<emphasis>mime-type</emphasis> is the MIME type of the attachment you
+want the command to affect.  A MIME type is always of the format
+<literal>major/minor</literal>, where <literal>major</literal> describes
+the broad category of document you're looking at, and
+<literal>minor</literal> describes the specific type within that
+category.  The major part of mime-type must be literal text (or the
+special token <quote><literal>*</literal></quote>), but the minor part
+may be a regular expression.  (Therefore,
+<quote><literal>*/.*</literal></quote> matches any MIME type.)
 </para>
 
 <para>
-The MIME types you give to the <command>attachments</command> directive are a kind of
-pattern.  When you use the <command>attachments</command> directive, the patterns you
-specify are added to a list.  When you use <command>unattachments</command>, the pattern
-is removed from the list.  The patterns are not expanded and matched
-to specific MIME types at this time &mdash; they're just text in a list.
-They're only matched when actually evaluating a message.
+The MIME types you give to the <command>attachments</command> directive
+are a kind of pattern.  When you use the <command>attachments</command>
+directive, the patterns you specify are added to a list.  When you use
+<command>unattachments</command>, the pattern is removed from the list.
+The patterns are not expanded and matched to specific MIME types at this
+time &mdash; they're just text in a list.  They're only matched when
+actually evaluating a message.
 </para>
 
 <para>
@@ -6758,7 +6907,6 @@ commented out define the default configuration of the lists.
 ## Remember: "unattachments" only undoes what "attachments" has done!
 ## It does not trigger any matching on actual messages.
 
-
 ## Qualify any MIME part with an "attachment" disposition, EXCEPT for
 ## text/x-vcard and application/pgp parts. (PGP parts are already known
 ## to mutt, and can be searched for with ~g, ~G, and ~k.)
@@ -6782,7 +6930,7 @@ attachments   +I text/plain
 ## line is unnecessary if you already have "attach-allow */.*", of
 ## course.  These are off by default!  The MIME elements contained
 ## within a message/* or multipart/* are still examined, even if the
-## containers themseves don't qualify.
+## containers themselves don't qualify.
 ##
 #attachments  +A message/.* multipart/.*
 #attachments  +I message/.* multipart/.*
@@ -6794,9 +6942,9 @@ attachments   -I message/external-body
 </example>
 
 <para>
-Entering the command <quote><command>attachments</command> ?</quote>
-as a command will list your current settings in Muttrc format, so that
-it can be pasted elsewhere.
+Entering the command <quote><command>attachments</command> ?</quote> as
+a command will list your current settings in Muttrc format, so that it
+can be pasted elsewhere.
 </para>
 
 </sect1>
@@ -6829,14 +6977,17 @@ Usage:
 </cmdsynopsis>
 
 <para>
-Mutt's mime_lookup list specifies a list of mime-types that should not
-be treated according to their mailcap entry.  This option is designed to
-deal with binary types such as <literal>application/octet-stream</literal>.  When an attachment's
-mime-type is listed in mime_lookup, then the extension of the filename will
-be compared to the list of extensions in the <literal>mime.types</literal> file.  The mime-type
-associated with this extension will then be used to process the attachment
-according to the rules in the mailcap file and according to any other configuration
-options (such as <command>auto_view</command>) specified.  Common usage would be:
+Mutt's <command>mime_lookup</command> list specifies a list of MIME
+types that should <emphasis>not</emphasis> be treated according to their
+mailcap entry.  This option is designed to deal with binary types such
+as <literal>application/octet-stream</literal>.  When an attachment's
+MIME type is listed in <command>mime_lookup</command>, then the
+extension of the filename will be compared to the list of extensions in
+the <literal>mime.types</literal> file.  The MIME type associated with
+this extension will then be used to process the attachment according to
+the rules in the mailcap file and according to any other configuration
+options (such as <command>auto_view</command>) specified.  Common usage
+would be:
 </para>
 
 <screen>
@@ -6844,9 +6995,9 @@ mime_lookup application/octet-stream application/X-Lotus-Manuscript
 </screen>
 
 <para>
-In addition, the <literal>unmime_lookup</literal> command may be
-used to disable this feature for any particular mime-type if it had been
-set, for example, in a global <literal>.muttrc</literal>.
+In addition, the <literal>unmime_lookup</literal> command may be used to
+disable this feature for any particular MIME type if it had been set,
+for example, in a global <literal>.muttrc</literal>.
 </para>
 
 </sect1>

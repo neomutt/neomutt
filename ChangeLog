@@ -1,3 +1,13 @@
+2009-07-02 16:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (705534ee1479)
+
+	* doc/gen-map-doc, doc/manual.xml.tail, functions.h: Manual: Generate
+	more pretty titles/ids for key binding tables
+
+2009-07-02 13:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (4771a4fb4c0e)
+
+	* doc/manual.xml.head: Manual: fix supported version
+	numbers for mixmaster
+
 2009-07-02 00:06 -0700  Brendan Cully  <brendan@kublai.com>  (029ba140fb48)
 
 	* curs_main.c: Handle keepalive failure when changing folders. There
