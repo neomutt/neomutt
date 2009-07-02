@@ -1758,7 +1758,7 @@ the line is ignored.
 <example id="ex-ec-comment">
 <title>Commenting configuration files</title>
 <screen>
-my_hdr X-Disclaimer: Why are you listening to me? # This is a comment
+my_hdr X-Disclaimer: Why are you listening to me? <emphasis role="comment"># This is a comment</emphasis>
 </screen>
 </example>
 
@@ -2832,7 +2832,7 @@ x-mailer</quote>.
 <example id="ex-header-weeding">
 <title>Header weeding</title>
 <screen>
-# Sven's draconian header weeding
+<emphasis role="comment"># Sven's draconian header weeding</emphasis>
 ignore *
 unignore from date subject to cc
 unignore organization organisation x-mailer: x-newsreader: x-mailing-list:
@@ -3337,13 +3337,13 @@ of <link linkend="index-format">$index_format</link> to
 <example id="ex-save-hook-exando">
 <title>Using %-expandos in <command>save-hook</command></title>
 <screen>
-# default: save all to ~/Mail/&lt;author name&gt;
+<emphasis role="comment"># default: save all to ~/Mail/&lt;author name&gt;</emphasis>
 save-hook . ~/Mail/%F
 
-# save from me@turing.cs.hmc.edu and me@cs.hmc.edu to $folder/elkins
+<emphasis role="comment"># save from me@turing.cs.hmc.edu and me@cs.hmc.edu to $folder/elkins</emphasis>
 save-hook me@(turing\\.)?cs\\.hmc\\.edu$ +elkins
 
-# save from aol.com to $folder/spam
+<emphasis role="comment"># save from aol.com to $folder/spam</emphasis>
 save-hook aol\\.com$ +spam
 </screen>
 </example>
@@ -4155,7 +4155,7 @@ set my_cfgdir = $HOME/mutt/config
 
 source $my_cfgdir/hooks
 source $my_cfgdir/macros
-# more source commands...
+<emphasis role="comment"># more source commands...</emphasis>
 </screen>
 </example>
 
@@ -4231,14 +4231,14 @@ conversions.
 <example id="ex-myvar4">
 <title>Type conversions using variables</title>
 <screen>
-set my_lines = "5"                # value is string "5"
-set pager_index_lines = $my_lines # value is integer 5
+set my_lines = "5"                <emphasis role="comment"># value is string "5"</emphasis>
+set pager_index_lines = $my_lines <emphasis role="comment"># value is integer 5</emphasis>
 
-set my_sort = "date-received"     # value is string "date-received"
-set sort = "last-$my_sort"        # value is sort last-date-received
+set my_sort = "date-received"     <emphasis role="comment"># value is string "date-received"</emphasis>
+set sort = "last-$my_sort"        <emphasis role="comment"># value is sort last-date-received</emphasis>
 
-set my_inc = $read_inc            # value is string "10" (default of $read_inc)
-set my_foo = $my_inc              # value is string "10"
+set my_inc = $read_inc            <emphasis role="comment"># value is string "10" (default of $read_inc)</emphasis>
+set my_foo = $my_inc              <emphasis role="comment"># value is string "10"</emphasis>
 </screen>
 </example>
 
@@ -4261,7 +4261,7 @@ considered just a single token. A working example is:
 set my_pattern = "~A"
 set my_number = "10"
 
-# same as: score ~A +10
+<emphasis role="comment"># same as: score ~A +10</emphasis>
 score $my_pattern +$my_number</screen>
 
 <para>
@@ -6817,11 +6817,11 @@ This mailcap file is fairly simple and standard:
 </para>
 
 <screen>
-# I'm always running X :)
+<emphasis role="comment"># I'm always running X :)</emphasis>
 video/*;        xanim %s &gt; /dev/null
 image/*;        xv %s &gt; /dev/null
 
-# I'm always running firefox (if my computer had more memory, maybe)
+<emphasis role="comment"># I'm always running firefox (if my computer had more memory, maybe)</emphasis>
 text/html;      firefox -remote 'openURL(%s)'
 </screen>
 
@@ -6830,40 +6830,40 @@ This mailcap file shows quite a number of examples:
 </para>
 
 <screen>
-# Use xanim to view all videos   Xanim produces a header on startup,
-# send that to /dev/null so I don't see it
+<emphasis role="comment"># Use xanim to view all videos   Xanim produces a header on startup,
+# send that to /dev/null so I don't see it</emphasis>
 video/*;        xanim %s &gt; /dev/null
 
-# Send html to a running firefox by remote
+<emphasis role="comment"># Send html to a running firefox by remote</emphasis>
 text/html;      firefox -remote 'openURL(%s)'; test=RunningFirefox
 
-# If I'm not running firefox but I am running X, start firefox on the
-# object
+<emphasis role="comment"># If I'm not running firefox but I am running X, start firefox on the
+# object</emphasis>
 text/html;      firefox %s; test=RunningX
 
-# Else use lynx to view it as text
+<emphasis role="comment"># Else use lynx to view it as text</emphasis>
 text/html;      lynx %s
 
-# This version would convert the text/html to text/plain
+<emphasis role="comment"># This version would convert the text/html to text/plain</emphasis>
 text/html;      lynx -dump %s; copiousoutput
 
-# I use enscript to print text in two columns to a page
+<emphasis role="comment"># I use enscript to print text in two columns to a page</emphasis>
 text/*;         more %s; print=enscript -2Gr %s
 
-# Firefox adds a flag to tell itself to view jpegs internally
+<emphasis role="comment"># Firefox adds a flag to tell itself to view jpegs internally</emphasis>
 image/jpeg;xv %s; x-mozilla-flags=internal
 
-# Use xv to view images if I'm running X
-# In addition, this uses the \ to extend the line and set my editor
-# for images
+<emphasis role="comment"># Use xv to view images if I'm running X</emphasis>
+<emphasis role="comment"># In addition, this uses the \ to extend the line and set my editor</emphasis>
+<emphasis role="comment"># for images</emphasis>
 image/*;xv %s; test=RunningX; \
         edit=xpaint %s
 
-# Convert images to text using the netpbm tools
+<emphasis role="comment"># Convert images to text using the netpbm tools</emphasis>
 image/*;  (anytopnm %s | pnmscale -xysize 80 46 | ppmtopgm | pgmtopbm |
 pbmtoascii -1x2 ) 2&gt;&amp;1 ; copiousoutput
 
-# Send excel spreadsheets to my NT box
+<emphasis role="comment"># Send excel spreadsheets to my NT box</emphasis>
 application/ms-excel; open.pl %s
 </screen>
 
@@ -7098,49 +7098,54 @@ commented out define the default configuration of the lists.
 <example id="ex-attach-count">
 <title>Attachment counting</title>
 <screen>
-## Removing a pattern from a list removes that pattern literally. It
-## does not remove any type matching the pattern.
-##
-##  attachments   +A */.*
-##  attachments   +A image/jpeg
-##  unattachments +A */.*
-##
-## This leaves "attached" image/jpeg files on the allowed attachments
-## list. It does not remove all items, as you might expect, because the
-## second */.* is not a matching expression at this time.
-##
-## Remember: "unattachments" only undoes what "attachments" has done!
-## It does not trigger any matching on actual messages.
+<emphasis role="comment">
+# Removing a pattern from a list removes that pattern literally. It
+# does not remove any type matching the pattern.
+#
+#  attachments   +A */.*
+#  attachments   +A image/jpeg
+#  unattachments +A */.*
+#
+# This leaves "attached" image/jpeg files on the allowed attachments
+# list. It does not remove all items, as you might expect, because the
+# second */.* is not a matching expression at this time.
+#
+# Remember: "unattachments" only undoes what "attachments" has done!
+# It does not trigger any matching on actual messages.
 
-## Qualify any MIME part with an "attachment" disposition, EXCEPT for
-## text/x-vcard and application/pgp parts. (PGP parts are already known
-## to mutt, and can be searched for with ~g, ~G, and ~k.)
-##
-## I've added x-pkcs7 to this, since it functions (for S/MIME)
-## analogously to PGP signature attachments. S/MIME isn't supported
-## in a stock mutt build, but we can still treat it specially here.
-##
+# Qualify any MIME part with an "attachment" disposition, EXCEPT for
+# text/x-vcard and application/pgp parts. (PGP parts are already known
+# to mutt, and can be searched for with ~g, ~G, and ~k.)
+#
+# I've added x-pkcs7 to this, since it functions (for S/MIME)
+# analogously to PGP signature attachments. S/MIME isn't supported
+# in a stock mutt build, but we can still treat it specially here.
+#
+</emphasis>
 attachments   +A */.*
 attachments   -A text/x-vcard application/pgp.*
 attachments   -A application/x-pkcs7-.*
 
-## Discount all MIME parts with an "inline" disposition, unless they're
-## text/plain. (Why inline a text/plain part unless it's external to the
-## message flow?)
-##
+<emphasis role="comment">
+# Discount all MIME parts with an "inline" disposition, unless they're
+# text/plain. (Why inline a text/plain part unless it's external to the
+# message flow?)
+</emphasis>
 attachments   +I text/plain
 
-## These two lines make Mutt qualify MIME containers.  (So, for example,
-## a message/rfc822 forward will count as an attachment.)  The first
-## line is unnecessary if you already have "attach-allow */.*", of
-## course.  These are off by default!  The MIME elements contained
-## within a message/* or multipart/* are still examined, even if the
-## containers themselves don't qualify.
-##
+<emphasis role="comment">
+# These two lines make Mutt qualify MIME containers.  (So, for example,
+# a message/rfc822 forward will count as an attachment.)  The first
+# line is unnecessary if you already have "attach-allow */.*", of
+# course.  These are off by default!  The MIME elements contained
+# within a message/* or multipart/* are still examined, even if the
+# containers themselves don't qualify.
+
 #attachments  +A message/.* multipart/.*
 #attachments  +I message/.* multipart/.*
+</emphasis>
 
-## You probably don't really care to know about deleted attachments.
+<emphasis role="comment">## You probably don't really care to know about deleted attachments.</emphasis>
 attachments   -A message/external-body
 attachments   -I message/external-body
 </screen>
@@ -7993,11 +7998,11 @@ linkend="folder-hook"><command>folder-hook</command>s</link>:
 </para>
 
 <screen>
-# use very high $read_inc to speed up reading hcache'd maildirs
+<emphasis role="comment"># use very high $read_inc to speed up reading hcache'd maildirs</emphasis>
 folder-hook . 'set read_inc=1000'
-# use lower value for reading slower remote IMAP folders
+<emphasis role="comment"># use lower value for reading slower remote IMAP folders</emphasis>
 folder-hook ^imap 'set read_inc=100'
-# use even lower value for reading even slower remote POP folders
+<emphasis role="comment"># use even lower value for reading even slower remote POP folders</emphasis>
 folder-hook ^pop 'set read_inc=1'</screen>
 
 </listitem>

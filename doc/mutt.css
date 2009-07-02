@@ -22,3 +22,4 @@ div.note { margin-bottom: 5px; }
 .command { font-family: monospace; font-weight: normal; }
 .command strong { font-weight: normal; }
 tr { vertical-align: top; }
+.comment { color:#707070; }
