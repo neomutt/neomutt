@@ -1,18 +1,17 @@
-2009-07-02 20:13 +0200  Rocco Rutte  <pdmef@gmx.net>  (a7ef17e2e493)
+2009-07-02 20:42 +0200  Rocco Rutte  <pdmef@gmx.net>  (042f2ce0b870)
+
+	* doc/manual.xml.head: Manual: minor fixes
+
+	* doc/manual.xml.head, doc/mutt.css: Manual: Render
+	comments in examples a lighter for readability
 
 	* doc/manual.xml.head, doc/manual.xml.tail: Manual: Reformat
 	paragraphs, fix &tilde; -> ~ breakage
 
-2009-07-02 19:36 +0200  Rocco Rutte  <pdmef@gmx.net>  (d40e288e3fbf)
-
 	* doc/manual.xml.head: Manual: rework MIME chapter a bit
-
-2009-07-02 16:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (705534ee1479)
 
 	* doc/gen-map-doc, doc/manual.xml.tail, functions.h: Manual: Generate
 	more pretty titles/ids for key binding tables
-
-2009-07-02 13:02 +0200  Rocco Rutte  <pdmef@gmx.net>  (4771a4fb4c0e)
 
 	* doc/manual.xml.head: Manual: fix supported version
 	numbers for mixmaster
@@ -28,8 +27,6 @@
 	* account.c, mutt_sasl.c, smtp.c: Make getuser/pass abort
 	if input is required in batch mode. Replaces [0a3de4d9a009]. See
 	#3289.
-
-2009-07-01 23:24 +0200  Rocco Rutte  <pdmef@gmx.net>  (9a5f4364c166)
 
 	* doc/manual.xml.head: Manual: Add detailed section on charset
 	handling

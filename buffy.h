@@ -43,3 +43,6 @@ void mutt_update_mailbox (BUFFY * b);
 /* fixes up atime + mtime after mbox/mmdf mailbox was modified
    according to stat() info taken before a modification */
 void mutt_buffy_cleanup (const char *buf, struct stat *st);
+
+/* mark mailbox just left as already notified */
+void mutt_buffy_setnotified (const char *path);

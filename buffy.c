@@ -45,6 +45,8 @@ time_t BuffyDoneTime = 0;	/* last time we knew for sure how much mail there was.
 static short BuffyCount = 0;	/* how many boxes with new mail */
 static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
+static BUFFY* buffy_get (const char *path);
+
 /* Find the last message in the file. 
  * upon success return 0. If no message found - return -1 */
 
@@ -497,6 +499,17 @@ int mutt_buffy_list (void)
   return (0);
 }
 
+void mutt_buffy_setnotified (const char *path)
+{
+  BUFFY *buffy;
+
+  buffy = buffy_get(path);
+  if (!buffy)
+    return;
+
+  buffy->notified = 1;
+}
+
 int mutt_buffy_notify (void)
 {
   if (mutt_buffy_check (0) && BuffyNotify)
@@ -540,4 +553,31 @@ void mutt_buffy (char *s, size_t slen)
 
   /* no folders with new mail */
   *s = '\0';
+}
+
+/* fetch buffy object for given path, if present */
+static BUFFY* buffy_get (const char *path)
+{
+  BUFFY *cur;
+  char *epath;
+
+  if (!path)
+    return NULL;
+
+  epath = safe_strdup(path);
+  mutt_expand_path(epath, mutt_strlen(epath));
+
+  for (cur = Incoming; cur; cur = cur->next)
+  {
+    /* must be done late because e.g. IMAP delimiter may change */
+    mutt_expand_path (cur->path, sizeof (cur->path));
+    if (!mutt_strcmp(cur->path, path))
+    {
+      FREE (&epath);
+      return cur;
+    }
+  }
+
+  FREE (&epath);
+  return NULL;
 }
