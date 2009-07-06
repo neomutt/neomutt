@@ -46,7 +46,7 @@ The official homepage can be found at
 <para>
 To subscribe to one of the following mailing lists, send a message with
 the word <emphasis>subscribe</emphasis> in the body to
-<literal>list-name</literal><emphasis>-request</emphasis><literal>@mutt.org</literal>.
+<emphasis>list-name</emphasis><literal>-request@mutt.org</literal>.
 </para>
 
 <itemizedlist>
@@ -73,14 +73,11 @@ feature requests
 
 </itemizedlist>
 
-<note>
 <para>
-All messages posted to
-<emphasis>mutt-announce</emphasis> are automatically forwarded to
-<emphasis>mutt-users</emphasis>, so you do not need to be subscribed to
-both lists.
+All messages posted to <emphasis>mutt-announce</emphasis> are
+automatically forwarded to <emphasis>mutt-users</emphasis>, so you do
+not need to be subscribed to both lists.
 </para>
-</note>
 
 </sect1>
 
@@ -4571,13 +4568,11 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
 <title>Character Set Handling</title>
 
 <para>
-Mutt supports all character sets the system supports which can be
-determined by running <literal>locale -a</literal>. A <quote>character
-set</quote> is basically a mapping between bytes and glyphs and implies
-a certain character encoding scheme. For example, for the ISO 8859
-family of character sets, an encoding of 8bit per character is used. For
-the Unicode character set, different character encodings may be used,
-UTF-8 being the most popular.
+A <quote>character set</quote> is basically a mapping between bytes and
+glyphs and implies a certain character encoding scheme. For example, for
+the ISO 8859 family of character sets, an encoding of 8bit per character
+is used. For the Unicode character set, different character encodings
+may be used, UTF-8 being the most popular.
 </para>
 
 <para>
@@ -4601,19 +4596,30 @@ setup itself.
 </para>
 
 <para>
-Warning: A mismatch between what these functions think the locale is and
-what mutt was told what the locale is may make it behave badly with
-non-ascii input. This warning is to be taken seriously since not only
-local mail handling may suffer: sent messages may carry wrong character
-set information the <emphasis>receiver</emphasis> has too deal with. The
+If you happen to work with several character sets on a regular basis,
+it's highly advisable to use Unicode and an UTF-8 locale. Unicode can
+represent nearly all characters in a message at the same time, making
+all conversions superfluous which eliminates the risk of conversion
+errors. It also eliminates potentially wrong expectations about the
+character set between Mutt and external programs.
+</para>
+
+<para>
+Warning: A mismatch between what system and library functions think the
+locale is and what Mutt was told what the locale is may make it behave
+badly with non-ascii input: it will fail at seemingly random
+places. This warning is to be taken seriously since not only local mail
+handling may suffer: sent messages may carry wrong character set
+information the <emphasis>receiver</emphasis> has too deal with. The
 need to set <literal>$charset</literal> directly in most cases points at
 terminal and environment variable setup problems, not Mutt problems.
 </para>
 
 <para>
 A list of officially assigned and known character sets can be found at
-<ulink
-url="http://www.iana.org/assignments/character-sets">IANA</ulink>.
+<ulink url="http://www.iana.org/assignments/character-sets">IANA</ulink>,
+a list of locally supported locales can be obtained by
+running <literal>locale -a</literal>.
 </para>
 
 </sect1>
