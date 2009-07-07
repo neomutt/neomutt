@@ -1794,7 +1794,12 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
 
   /* when not displaying, use sane wrap value */
   if (!(flags & CH_DISPLAY))
-    wraplen = 76;
+  {
+    if (WrapHeaders < 78 || WrapHeaders > 998)
+      wraplen = 78;
+    else
+      wraplen = WrapHeaders;
+  }
   else if (wraplen <= 0 || wraplen > COLS)
     wraplen = COLS;
 

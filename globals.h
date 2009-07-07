@@ -200,6 +200,7 @@ WHERE short SleepTime INITVAL (1);
 WHERE short TimeInc;
 WHERE short Timeout;
 WHERE short Wrap;
+WHERE short WrapHeaders;
 WHERE short WriteInc;
 
 WHERE short ScoreThresholdDelete;
