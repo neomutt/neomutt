@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2006-7 Brendan Cully <brendan@kublai.com>
- * Copyright (C) 2006 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2006, 2009 Rocco Rutte <pdmef@gmx.net>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -42,6 +42,7 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
 		       char *dst, size_t dstlen)
 {
   char host[STRING];
+  char path[_POSIX_PATH_MAX];
   ciss_url_t url;
   int len;
 
@@ -62,12 +63,14 @@ static int bcache_path(ACCOUNT *account, const char *mailbox,
     return -1;
   }
 
-  dprint (3, (debugfile, "bcache_path: URL: '%s'\n", host));
+  mutt_encode_path (path, sizeof (path), NONULL (mailbox));
 
   len = snprintf (dst, dstlen-1, "%s/%s%s%s", MessageCachedir,
-		  host, NONULL(mailbox),
-		  (mailbox && *mailbox &&
-		   mailbox[mutt_strlen(mailbox) - 1] == '/') ? "" : "/");
+		  host, NONULL (path),
+		  (*path && path[mutt_strlen (path) - 1] == '/') ? "" : "/");
+
+  dprint (3, (debugfile, "bcache_path: rc: %d, path: '%s'\n", len, dst));
+
   if (len < 0 || len >= dstlen-1)
     return -1;
 

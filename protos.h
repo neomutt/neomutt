@@ -190,6 +190,7 @@ void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 int mutt_filter_unprintable (char **);
 void mutt_curses_error (const char *, ...);
 void mutt_curses_message (const char *, ...);
+void mutt_encode_path (char *, size_t, const char *);
 void mutt_enter_command (void);
 void mutt_expand_aliases_env (ENVELOPE *);
 void mutt_expand_file_fmt (char *, size_t, const char *, const char *);

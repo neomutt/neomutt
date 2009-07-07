@@ -7720,10 +7720,11 @@ support as these use it (body caching requires no external library).
 <para>
 Mutt provides optional support for caching message headers for the
 following types of folders: IMAP, POP, Maildir and MH. Header caching
-greatly improves speed because for remote folders, headers usually only
-need to be downloaded once. For Maildir and MH, reading the headers from
-a single file is much faster than looking at possibly thousands of
-single files (since Maildir and MH use one file per message.)
+greatly speeds up opening large folders because for remote folders,
+headers usually only need to be downloaded once. For Maildir and MH,
+reading the headers from a single file is much faster than looking at
+possibly thousands of single files (since Maildir and MH use one file
+per message.)
 </para>
 
 <para>
@@ -7752,7 +7753,6 @@ Both cache methods can be combined using the same directory for storage
 manual maintenance tasks.
 </para>
 
-
 <para>
 In addition to caching message headers only, Mutt can also cache whole
 message bodies. This results in faster display of messages for POP and
@@ -7762,12 +7762,36 @@ IMAP folders because messages usually have to be downloaded only once.
 <para>
 For configuration, the variable <link linkend="message-cachedir"
 >$message_cachedir</link> must point to a directory. There, Mutt will
-create a hierarchy of subdirectories named like:
-<literal>proto:user@hostname</literal> where <literal>proto</literal> is
-either <quote>pop</quote> or <quote>imap.</quote> Within there for each
-folder, Mutt stores messages in single files.  All files can be removed
-as needed if the consumed disk space becomes an issue as Mutt will
-silently fetch missing items again.
+create a hierarchy of subdirectories named like the account and mailbox
+path the cache is for.
+</para>
+
+</sect2>
+
+<sect2 id="cache-dirs">
+<title>Cache Directories</title>
+
+<para>
+For using both, header and body caching, <link
+linkend="header-cache">$header_cache</link> and <link
+linkend="message-cachedir" >$message_cachedir</link> can be safely set
+to the same value.
+</para>
+
+<para>
+In a header or body cache directory, Mutt creates a directory hierarchy
+named like: <literal>proto:user@hostname</literal> where
+<literal>proto</literal> is either <quote>pop</quote> or
+<quote>imap.</quote> Within there, for each folder, Mutt stores messages
+in single files and header caches in files with the
+<quote>.hcache</quote> extension.  All files can be removed as needed if
+the consumed disk space becomes an issue as Mutt will silently fetch
+missing items again. Pathnames are always stored in UTF-8 encoding.
+</para>
+
+<para>
+For Maildir and MH, the header cache files are named after the MD5
+checksum of the path.
 </para>
 
 </sect2>
