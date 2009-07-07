@@ -202,7 +202,7 @@ A_NORMAL or KEY_MIN, then you probably don't have a SysV compliant curses
 library.  You should install either ncurses or S-Lang (see above), and then
 run the ``configure'' script again.
 
-Please note that "VPATH" builds currently do _not_ work.
+Please note that "VPATH" builds currently only work with GNU make (gmake).
 
 
 
