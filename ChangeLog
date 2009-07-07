@@ -1,3 +1,13 @@
+2009-07-07 10:49 +0200  Matthias Andree  <matthias.andree@gmx.de>  (cc4d6044b31e)
+
+	* INSTALL: GNU-make based VPATH builds work.
+
+2009-07-07 13:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (f161c2f00d84)
+
+	* UPDATING, bcache.c, doc/manual.xml.head, hcache.c,
+	muttlib.c, protos.h: Make hcache+bcache paths always UTF-8. Closes
+	#3284.
+
 2009-07-07 13:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (376545d6909c)
 
 	* UPDATING, globals.h, init.h, sendlib.c: Add $wrap_headers. Closes
