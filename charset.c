@@ -239,36 +239,42 @@ void mutt_set_langinfo_charset (void)
 
 #endif
 
+/* this first ties off any charset extension such as //TRANSLIT,
+   canonicalizes the charset and re-adds the extension */
 void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
 {
   size_t i;
-  char *p;
-  char scratch[LONG_STRING];
+  char *p, *ext;
+  char in[LONG_STRING], scratch[LONG_STRING];
 
-  if (!ascii_strcasecmp (name, "utf-8") || !ascii_strcasecmp (name, "utf8"))
+  strfcpy (in, name, sizeof (in));
+  if ((ext = strchr (in, '/')))
+    *ext++ = 0;
+
+  if (!ascii_strcasecmp (in, "utf-8") || !ascii_strcasecmp (in, "utf8"))
   {
     strfcpy (dest, "utf-8", dlen);
-    return;
+    goto out;
   }
 
   /* catch some common iso-8859-something misspellings */
-  if (!ascii_strncasecmp (name, "8859", 4) && name[4] != '-')
-    snprintf (scratch, sizeof (scratch), "iso-8859-%s", name +4);
-  else if (!ascii_strncasecmp (name, "8859-", 5))
-    snprintf (scratch, sizeof (scratch), "iso-8859-%s", name + 5);
-  else if (!ascii_strncasecmp (name, "iso8859", 7) && name[7] != '-')
-    snprintf (scratch, sizeof (scratch), "iso_8859-%s", name + 7);
-  else if (!ascii_strncasecmp (name, "iso8859-", 8))
-    snprintf (scratch, sizeof (scratch), "iso_8859-%s", name + 8);
+  if (!ascii_strncasecmp (in, "8859", 4) && in[4] != '-')
+    snprintf (scratch, sizeof (scratch), "iso-8859-%s", in +4);
+  else if (!ascii_strncasecmp (in, "8859-", 5))
+    snprintf (scratch, sizeof (scratch), "iso-8859-%s", in + 5);
+  else if (!ascii_strncasecmp (in, "iso8859", 7) && in[7] != '-')
+    snprintf (scratch, sizeof (scratch), "iso_8859-%s", in + 7);
+  else if (!ascii_strncasecmp (in, "iso8859-", 8))
+    snprintf (scratch, sizeof (scratch), "iso_8859-%s", in + 8);
   else
-    strfcpy (scratch, NONULL(name), sizeof (scratch));
+    strfcpy (scratch, NONULL(in), sizeof (scratch));
 
   for (i = 0; PreferredMIMENames[i].key; i++)
     if (!ascii_strcasecmp (scratch, PreferredMIMENames[i].key) ||
 	!mutt_strcasecmp (scratch, PreferredMIMENames[i].key))
     {
       strfcpy (dest, PreferredMIMENames[i].pref, dlen);
-      return;
+      goto out;
     }
 
   strfcpy (dest, scratch, dlen);
@@ -276,16 +282,33 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   /* for cosmetics' sake, transform to lowercase. */
   for (p = dest; *p; p++)
     *p = ascii_tolower (*p);
+
+out:
+  if (ext && *ext)
+  {
+    safe_strcat (dest, dlen, "/");
+    safe_strcat (dest, dlen, ext);
+  }
 }
 
 int mutt_chscmp (const char *s, const char *chs)
 {
   char buffer[STRING];
+  int a, b;
 
   if (!s) return 0;
 
+  /* charsets may have extensions mutt_canonical_charset()
+     leaves intact; we expect `chs' to originate from mutt
+     code, not user input (i.e. `chs' does _not_ have any
+     extension)
+     we simply check if the shorter string is a prefix for
+     the longer */
   mutt_canonical_charset (buffer, sizeof (buffer), s);
-  return !ascii_strcasecmp (buffer, chs);
+  a = mutt_strlen (buffer);
+  b = mutt_strlen (chs);
+  return !ascii_strncasecmp (a > b ? buffer : chs,
+			     a > b ? chs : buffer, MIN(a,b));
 }
 
 char *mutt_get_default_charset ()
