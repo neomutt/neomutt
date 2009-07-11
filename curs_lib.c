@@ -725,11 +725,12 @@ void mutt_format_string (char *dest, size_t destlen,
       w = 1; /* hack */
     else
     {
-      if (!IsWPrint (wc)
 #ifdef HAVE_ISWBLANK
-	  && !iswblank (wc)
+      if (iswblank (wc))
+	wc = ' ';
+      else
 #endif
-      )
+      if (!IsWPrint (wc))
 	wc = '?';
       w = wcwidth (wc);
     }
@@ -740,7 +741,7 @@ void mutt_format_string (char *dest, size_t destlen,
       min_width -= w;
       max_width -= w;
       strncpy (p, scratch, k2);
-      p += k2;            
+      p += k2;
       destlen -= k2;
     }
   }

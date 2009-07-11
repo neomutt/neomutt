@@ -1,3 +1,11 @@
+2009-07-08 13:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (f22b71d8005a)
+
+	* mbyte.c: Fix compiler warning
+
+2009-07-07 15:03 +0200  Rocco Rutte  <pdmef@gmx.net>  (d5e03a46518c)
+
+	* TODO: Update TODO
+
 2009-07-07 10:49 +0200  Matthias Andree  <matthias.andree@gmx.de>  (cc4d6044b31e)
 
 	* INSTALL: GNU-make based VPATH builds work.
