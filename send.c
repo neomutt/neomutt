@@ -1246,24 +1246,7 @@ ci_send_message (int flags,		/* send mode */
     msg->env->from = set_reverse_name (cur->env);
   }
 
-  if (!msg->env->from && option (OPTUSEFROM) && !(flags & (SENDPOSTPONED|SENDRESEND)))
-  {
-    msg->env->from = mutt_default_from ();
-    if (!(flags & SENDBATCH))
-      killfrom = 1;	/* $use_from will be re-checked after send-hooks */
-  }
-
-  if (flags & SENDBATCH) 
-  {
-    mutt_copy_stream (stdin, tempfp);
-    if (option (OPTHDRS))
-    {
-      process_user_recips (msg->env);
-      process_user_header (msg->env);
-    }
-    mutt_expand_aliases_env (msg->env);
-  }
-  else if (! (flags & (SENDPOSTPONED|SENDRESEND)))
+  if (! (flags & (SENDPOSTPONED|SENDRESEND)))
   {
     if ((flags & (SENDREPLY | SENDFORWARD)) && ctx &&
 	envelope_defaults (msg->env, ctx, cur, flags) == -1)
@@ -1278,7 +1261,7 @@ ci_send_message (int flags,		/* send mode */
     if (flags & SENDREPLY)
       mutt_fix_reply_recipients (msg->env);
 
-    if (! (flags & SENDMAILX) &&
+    if (! (flags & (SENDMAILX|SENDBATCH)) &&
 	! (option (OPTAUTOEDIT) && option (OPTEDITHDRS)) &&
 	! ((flags & SENDREPLY) && option (OPTFASTREPLY)))
     {
@@ -1334,8 +1317,11 @@ ci_send_message (int flags,		/* send mode */
     if (option (OPTHDRS))
       process_user_header (msg->env);
 
+    if (flags & SENDBATCH)
+       mutt_copy_stream (stdin, tempfp);
 
-    if (option (OPTSIGONTOP) && (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0))
+    if (option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
+	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
       append_signature (tempfp);
 
     /* include replies/forwarded messages, unless we are given a template */
@@ -1343,7 +1329,8 @@ ci_send_message (int flags,		/* send mode */
 	&& generate_body (tempfp, msg, flags, ctx, cur) == -1)
       goto cleanup;
 
-    if (!option (OPTSIGONTOP) && (! (flags & (SENDMAILX | SENDKEY)) && Editor && mutt_strcmp (Editor, "builtin") != 0))
+    if (!option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
+	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
       append_signature (tempfp);
 
     /* 
@@ -1351,7 +1338,7 @@ ci_send_message (int flags,		/* send mode */
      * can take effect.
      */
 
-    if (WithCrypto && !(flags & SENDMAILX))
+    if (WithCrypto && !(flags & (SENDMAILX|SENDBATCH)))
     {
       if (option (OPTCRYPTAUTOSIGN))
 	msg->security |= SIGN;

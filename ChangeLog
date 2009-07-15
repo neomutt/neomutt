@@ -1,3 +1,20 @@
+2009-07-11 14:52 +0200  Rocco Rutte  <pdmef@gmx.net>  (6f942afe60b5)
+
+	* charset.c, mbyte.c: Recognize charset extensions, see #3150.
+
+	With utf-8//TRANSLIT, we internally didn't recognize it as utf-8.
+	This leads to badly broken behaviour if --without-wc-funcs is used
+	for some reason. In that case, if we have utf-8 as charset, we
+	implement our own wide char functions; for all other charsets, we
+	use the system single-byte locale functions. And using these with
+	utf-8 is broken.
+
+	* curs_lib.c: Render blanks to spaces in index, fixes
+	[298194c414f0]
+
+	wcwidth(<tab>) returns -1 so 'foo<tab>bar' was rendered to 'foobar',
+	and now to 'foo bar'. Closes #3270 again.
+
 2009-07-08 13:37 +0200  Rocco Rutte  <pdmef@gmx.net>  (f22b71d8005a)
 
 	* mbyte.c: Fix compiler warning
@@ -16,12 +33,8 @@
 	muttlib.c, protos.h: Make hcache+bcache paths always UTF-8. Closes
 	#3284.
 
-2009-07-07 13:00 +0200  Rocco Rutte  <pdmef@gmx.net>  (376545d6909c)
-
 	* UPDATING, globals.h, init.h, sendlib.c: Add $wrap_headers. Closes
 	#3135
-
-2009-07-07 12:53 +0200  Rocco Rutte  <pdmef@gmx.net>  (0980cdb206d2)
 
 	* doc/manual.xml.head: Manual: mention terminal setup for
 	charsets, more unicode pros.
