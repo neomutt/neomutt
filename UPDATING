@@ -9,6 +9,7 @@ hg tip:
   ! header/body cache paths are always UTF-8
   + $wrap_headers to control outgoing message's header length
   + all text/* parts can be displayed inline without mailcap
+  + send-hooks now run in batch mode; previously only send2-hooks ran.
 
 1.5.20 (2009-06-14):
 
