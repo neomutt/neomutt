@@ -19,6 +19,8 @@
 #ifndef rfc822_h
 #define rfc822_h
 
+#include "lib.h"
+
 /* possible values for RFC822Error */
 enum
 {
@@ -60,6 +62,6 @@ extern int RFC822Error;
 extern const char *RFC822Errors[];
 
 #define rfc822_error(x) RFC822Errors[x]
-#define rfc822_new_address() calloc(1,sizeof(ADDRESS))
+#define rfc822_new_address() safe_calloc(1,sizeof(ADDRESS))
 
 #endif /* rfc822_h */

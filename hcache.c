@@ -45,6 +45,7 @@
 #include "mx.h"
 #include "lib.h"
 #include "md5.h"
+#include "rfc822.h"
 
 #if HAVE_QDBM
 static struct header_cache
@@ -231,7 +232,7 @@ restore_address(ADDRESS ** a, const unsigned char *d, int *off, int convert)
 
   while (counter)
   {
-    *a = safe_malloc(sizeof (ADDRESS));
+    *a = rfc822_new_address();
 #ifdef EXACT_ADDRESS
     restore_char(&(*a)->val, d, off, convert);
 #endif
