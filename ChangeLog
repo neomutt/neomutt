@@ -1,3 +1,16 @@
+2009-07-17 17:57 -0400  Aron Griffis  <agriffis@n01se.net>  (a3c4b605cfad)
+
+	* UPDATING: add batch mode send-hooks note to UPDATING
+
+2009-07-14 20:25 -0700  Aron Griffis  <agriffis@n01se.net>  (084fb086a0e7)
+
+	* send.c: Make send-hooks work for batch mode. Closes
+	#3219.
+
+	Handle SENDBATCH inline with the normal sending code, instead of
+	handling it separately. This allows send-hooks to run, along with
+	removing a number of unnecessarily lines of code.
+
 2009-07-11 14:52 +0200  Rocco Rutte  <pdmef@gmx.net>  (6f942afe60b5)
 
 	* charset.c, mbyte.c: Recognize charset extensions, see #3150.

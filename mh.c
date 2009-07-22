@@ -238,6 +238,7 @@ int mh_buffy (const char *path)
   for (i = 0; !r && i <= mhs.max; i++)
     if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
       r = 1;
+  mhs_free_sequences (&mhs);
   return r;
 }
 
