@@ -1,3 +1,12 @@
+2009-07-22 14:43 +0200  kees  <kees@outflux.net>  (848f08512bf3)
+
+	* hcache.c, rfc822.h: Properly restore addresses from hcache using
+	rfc822_new_address(). Closes #3302.
+
+2009-07-22 14:40 +0200  kees  <kees@outflux.net>  (9f3053f75f27)
+
+	* mh.c: Don't leak mhs flags in mh_buffy(). Closes #3303.
+
 2009-07-17 17:57 -0400  Aron Griffis  <agriffis@n01se.net>  (a3c4b605cfad)
 
 	* UPDATING: add batch mode send-hooks note to UPDATING

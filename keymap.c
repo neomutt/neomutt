@@ -47,7 +47,7 @@ struct mapping_t Menus[] = {
  { "postpone",	MENU_POST },
  { "pgp",	MENU_PGP },
  { "smime",	MENU_SMIME },
-#ifdef HAVE_GPGME
+#ifdef CRYPT_BACKEND_GPGME
  { "key_select_pgp",	MENU_KEY_SELECT_PGP },
  { "key_select_smime",	MENU_KEY_SELECT_SMIME },
 #endif
