@@ -1,3 +1,18 @@
+2009-07-23 16:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (77ac8b5c2be6)
+
+	* group.c, group.h, init.c, init.h, pattern.c, protos.h, rfc822.c,
+	rfc822.h: Implement ungroup command. Closes #3304.
+
+2009-07-23 16:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (7c4484ba9e4b)
+
+	* init.c, mutt.h, muttlib.c: Move remove_from_rx_list() to muttlib.c,
+	name it mutt_remove_from_rx_list()
+
+2009-07-22 15:25 +0200  Fabian Groffen  <grobian@gentoo.org>  (d41e043fa775)
+
+	* keymap.c: Use CRYPT_BACKEND_GPGME instead of non-existent
+	HAVE_GPGME
+
 2009-07-22 14:43 +0200  kees  <kees@outflux.net>  (848f08512bf3)
 
 	* hcache.c, rfc822.h: Properly restore addresses from hcache using

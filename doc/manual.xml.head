@@ -1938,10 +1938,27 @@ expressions).</para></listitem>
 </cmdsynopsis>
 
 <para>
-<command>group</command> is used to directly add either addresses or
-regular expressions to the specified group or groups. The different
-categories of arguments to the <command>group</command> command can be
-in any order. The flags <literal>-rx</literal> and
+Mutt supports grouping addresses logically into named groups. An address
+or address pattern can appear in several groups at the same time. These
+groups can be used in patterns (for searching, limiting and tagging) and
+in hooks by using group patterns. This can be useful to classify mail
+and take certain actions depending on in what groups the message is.
+For example, the mutt user's mailing list would fit into the categories
+<quote>mailing list</quote> and <quote>mutt-related</quote>. Using <link
+linkend="send-hook"><literal>send-hook</literal></link>, the sender can
+be set to a dedicated one for writing mailing list messages, and the
+signature could be set to a mutt-related one for writing to a mutt list
+&mdash; for other lists, the list sender setting still applies but a
+different signature can be selected. Or, given a group only containing
+recipients known to accept encrypted mail,
+<quote>auto-encryption</quote> can be achieved easily.
+</para>
+
+<para>
+The <command>group</command> command is used to directly add either
+addresses or regular expressions to the specified group or groups. The
+different categories of arguments to the <command>group</command>
+command can be in any order. The flags <literal>-rx</literal> and
 <literal>-addr</literal> specify what the following strings (that cannot
 begin with a hyphen) should be interpreted as: either a regular
 expression or an email address, respectively.
@@ -1950,23 +1967,36 @@ expression or an email address, respectively.
 <para>
 These address groups can also be created implicitly by the <link
 linkend="alias"><command>alias</command></link>, <link
-linkend="lists">lists</link>, <link linkend="lists">subscribe</link> and
-<link linkend="alternates"><command>alternates</command></link> commands
-by specifying the optional <literal>-group</literal> option.
+linkend="lists"><command>lists</command></link>, <link
+linkend="lists"><command>subscribe</command></link> and <link
+linkend="alternates"><command>alternates</command></link> commands by
+specifying the optional <literal>-group</literal> option. For example,
+</para>
+
+<screen>
+alternates -group me address1 address2
+alternates -group me -group work address3
+</screen>
+
+<para>
+would create a group named <quote>me</quote> which contains all your
+addresses and a group named <quote>work</quote> which contains only your
+work address <emphasis>address3</emphasis>. Besides many other
+possibilities, this could be used to automatically mark your own
+messages in a mailing list folder as read or use a special signature for
+work-related messages.
 </para>
 
 <para>
-Once defined, these address groups can be used in <link
-linkend="patterns">patterns</link> to search for and limit the display
-to messages matching a group.
-</para>
-
-<para>
-<command>ungroup</command> is used to remove addresses or regular
-expressions from the specified group or groups. The syntax is similar to
-the <command>group</command> command, however the special character
-<literal>*</literal> can be used to empty a group of all of its
-contents.
+The <command>ungroup</command> command is used to remove addresses or
+regular expressions from the specified group or groups. The syntax is
+similar to the <command>group</command> command, however the special
+character <literal>*</literal> can be used to empty a group of all of
+its contents. As soon as a group gets empty because all addresses and
+regular expressions have been removed, it'll internally be removed, too
+(i.e. there cannot be an empty group). When removing regular expressions
+from a group, the pattern must be specified exactly as given to the
+<command>group</command> command or <literal>-group</literal> argument.
 </para>
 
 </sect1>
