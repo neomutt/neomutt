@@ -267,7 +267,7 @@ void mutt_canonical_charset (char *dest, size_t dlen, const char *name)
   else if (!ascii_strncasecmp (in, "iso8859-", 8))
     snprintf (scratch, sizeof (scratch), "iso_8859-%s", in + 8);
   else
-    strfcpy (scratch, NONULL(in), sizeof (scratch));
+    strfcpy (scratch, in, sizeof (scratch));
 
   for (i = 0; PreferredMIMENames[i].key; i++)
     if (!ascii_strcasecmp (scratch, PreferredMIMENames[i].key) ||
