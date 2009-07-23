@@ -47,7 +47,7 @@ char * fgetconvs (char *, size_t, FGETCONV *);
 void fgetconv_close (FGETCONV **);
 
 void mutt_set_langinfo_charset (void);
-char *mutt_get_default_charset ();
+char *mutt_get_default_charset (void);
 
 /* flags for charset.c:mutt_convert_string(), fgetconv_open(), and
  * mutt_iconv_open(). Note that applying charset-hooks to tocode is
