@@ -554,6 +554,7 @@ int mutt_matches_ignore (const char *, LIST *);
 LIST *mutt_add_list (LIST *, const char *);
 LIST *mutt_add_list_n (LIST*, const void *, size_t);
 LIST *mutt_find_list (LIST *, const char *);
+int mutt_remove_from_rx_list (RX_LIST **l, const char *str);
 
 void mutt_init (int, LIST *);
 
