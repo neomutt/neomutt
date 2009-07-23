@@ -31,6 +31,7 @@
 #include "charset.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "group.h"
 
 #if defined(USE_SSL)
 #include "mutt_ssl.h"
@@ -833,57 +834,67 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   group_state_t state = NONE;
   ADDRESS *addr = NULL;
   char *estr = NULL;
-  
-  do 
+
+  do
   {
     mutt_extract_token (buf, s, 0);
     if (parse_group_context (&gc, buf, s, data, err) == -1)
       goto bail;
-    
+
+    if (data == M_UNGROUP && !mutt_strcasecmp (buf->data, "*"))
+    {
+      if (mutt_group_remove (gc->g, err) < 0)
+	goto bail;
+      goto out;
+    }
+
     if (!mutt_strcasecmp (buf->data, "-rx"))
       state = RX;
     else if (!mutt_strcasecmp (buf->data, "-addr"))
       state = ADDR;
-    else 
+    else
     {
-      switch (state) 
+      switch (state)
       {
 	case NONE:
-	  strfcpy (err->data, _("Missing -rx or -addr."), err->dsize);
+	  snprintf (err->data, err->dsize, _("%sgroup: missing -rx or -addr."),
+		   data == M_UNGROUP ? "un" : "");
 	  goto bail;
-	
+
 	case RX:
-	  if (mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
+	  if (data == M_GROUP &&
+	      mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
+	    goto bail;
+	  else if (data == M_UNGROUP &&
+		   mutt_group_context_remove_rx (gc, buf->data) < 0)
 	    goto bail;
 	  break;
-	
+
 	case ADDR:
 	  if ((addr = mutt_parse_adrlist (NULL, buf->data)) == NULL)
 	    goto bail;
-	  if (mutt_addrlist_to_idna (addr, &estr)) 
-	  {
-	    snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s'.\n"),
-		      estr);
+	  if (mutt_addrlist_to_idna (addr, &estr))
+	  { 
+	    snprintf (err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
+		      data == 1 ? "un" : "", estr);
 	    goto bail;
 	  }
-	  mutt_group_context_add_adrlist (gc, addr);
+	  if (data == M_GROUP)
+	    mutt_group_context_add_adrlist (gc, addr);
+	  else if (data == M_UNGROUP)
+	    mutt_group_context_remove_adrlist (gc, addr);
 	  rfc822_free_address (&addr);
 	  break;
       }
     }
   } while (MoreArgs (s));
 
+out:
   mutt_group_context_destroy (&gc);
   return 0;
 
-  bail:
+bail:
   mutt_group_context_destroy (&gc);
-  return -1;
-}
-
-static int parse_ungroup (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
-{
-  strfcpy (err->data, "not implemented", err->dsize);
   return -1;
 }
 

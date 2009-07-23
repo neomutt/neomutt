@@ -75,11 +75,6 @@ typedef const char * format_t (char *, size_t, size_t, char, const char *, const
 void mutt_FormatString (char *, size_t, size_t, const char *, format_t *, unsigned long, format_flag);
 void mutt_parse_content_type (char *, BODY *);
 void mutt_generate_boundary (PARAMETER **);
-void mutt_group_add_adrlist (group_t *, ADDRESS *);
-void mutt_group_context_add (group_context_t **ctx, group_t *group);
-void mutt_group_context_destroy (group_context_t **ctx);
-void mutt_group_add_adrlist (group_t *g, ADDRESS *a);
-void mutt_group_context_add_adrlist (group_context_t *ctx, ADDRESS *a);
 void mutt_delete_parameter (const char *attribute, PARAMETER **p);
 void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
@@ -311,8 +306,6 @@ int mutt_get_field_unbuffered (char *, char *, size_t, int);
 #define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,M_PASS)
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);
-int mutt_group_match (group_t *g, const char *s);
-int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, BUFFER *err);
 int mutt_index_menu (void);
 int mutt_invoke_sendmail (ADDRESS *, ADDRESS *, ADDRESS *, ADDRESS *, const char *, int);
 int mutt_is_autoview (BODY *, const char *);

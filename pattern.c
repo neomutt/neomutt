@@ -35,6 +35,7 @@
 
 #include "mutt_crypt.h"
 #include "mutt_curses.h"
+#include "group.h"
 
 #ifdef USE_IMAP
 #include "mx.h"

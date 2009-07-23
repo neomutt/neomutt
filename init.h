@@ -3419,7 +3419,6 @@ static int parse_spam_list (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlist (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 static int parse_group (BUFFER *, BUFFER *, unsigned long, BUFFER *);
-static int parse_ungroup (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 static int parse_lists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -3472,8 +3471,8 @@ struct command_t Commands[] = {
   { "fcc-hook",		mutt_parse_hook,	M_FCCHOOK },
   { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
   { "folder-hook",	mutt_parse_hook,	M_FOLDERHOOK },
-  { "group",		parse_group,		0 },
-  { "ungroup",		parse_ungroup,		0 },
+  { "group",		parse_group,		M_GROUP },
+  { "ungroup",		parse_group,		M_UNGROUP },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
 #ifdef HAVE_ICONV
   { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK },
