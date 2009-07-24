@@ -1,3 +1,28 @@
+2009-07-23 23:36 -0400  Aron Griffis  <agriffis@n01se.net>  (0ee27568ad09)
+
+	* init.c: fix :reset to work with empty strings
+
+	Signed-off-by: Aron Griffis <agriffis@n01se.net>
+
+2009-07-23 23:32 -0700  Vincent Lefevre  <vincent@vinc17.org>  (223020f50cb7)
+
+	* po/fr.po: Updated French translation.
+
+2009-07-23 23:51 +0200  Matthias Andree  <matthias.andree@gmx.de>  (1e77b368ef55)
+
+	* charset.h, rfc2047.c: Use proper prototype for
+	mutt_get_default_charset(), fix fallout.
+
+2009-07-23 23:52 +0200  Matthias Andree  <matthias.andree@gmx.de>  (6b6272aa3a3a)
+
+	* bcache.c, charset.c: Fix two warnings "the address of 'foo' will
+	always evaluate as 'true'".
+
+2009-07-23 17:28 +0200  Rocco Rutte  <pdmef@gmx.net>  (1597c2074a52)
+
+	* doc/manual.xml.head: Manual: better document what address
+	groups are (for)
+
 2009-07-23 16:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (77ac8b5c2be6)
 
 	* group.c, group.h, init.c, init.h, pattern.c, protos.h, rfc822.c,

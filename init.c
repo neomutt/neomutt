@@ -1524,7 +1524,7 @@ static void mutt_restore_default (struct option_t *p)
       mutt_str_replace ((char **) p->data, (char *) p->init); 
       break;
     case DT_PATH:
-      FREE((char **) p->data);
+      FREE((char **) p->data);		/* __FREE_CHECKED__ */
       if (p->init)
       {
 	char path[_POSIX_PATH_MAX];
