@@ -1521,25 +1521,22 @@ static void mutt_restore_default (struct option_t *p)
   switch (p->type & DT_MASK)
   {
     case DT_STR:
-      if (p->init)
-	mutt_str_replace ((char **) p->data, (char *) p->init); 
+      mutt_str_replace ((char **) p->data, (char *) p->init); 
       break;
     case DT_PATH:
+      FREE((char **) p->data);
       if (p->init)
       {
 	char path[_POSIX_PATH_MAX];
-
 	strfcpy (path, (char *) p->init, sizeof (path));
 	mutt_expand_path (path, sizeof (path));
-	mutt_str_replace ((char **) p->data, path);
+	*((char **) p->data) = safe_strdup (path);
       }
       break;
     case DT_ADDR:
+      rfc822_free_address ((ADDRESS **) p->data);
       if (p->init)
-      {
-	rfc822_free_address ((ADDRESS **) p->data);
 	*((ADDRESS **) p->data) = rfc822_parse_adrlist (NULL, (char *) p->init);
-      }
       break;
     case DT_BOOL:
       if (p->init)
