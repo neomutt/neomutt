@@ -167,7 +167,7 @@ static int mh_read_sequences (struct mh_sequences *mhs, const char *path)
   size_t sz = 0;
 
   short f;
-  int first, last, rc;
+  int first, last, rc = 0;
 
   char pathname[_POSIX_PATH_MAX];
   snprintf (pathname, sizeof (pathname), "%s/.mh_sequences", path);
@@ -207,7 +207,7 @@ static int mh_read_sequences (struct mh_sequences *mhs, const char *path)
 out:
   FREE (&buff);
   safe_fclose (&fp);
-  return 0;
+  return rc;
 }
 
 static inline mode_t mh_umask (CONTEXT* ctx)
@@ -1156,7 +1156,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 
   if (ctx->magic == M_MH)
   {
-    if (mh_read_sequences (&mhs, ctx->path) >= 0)
+    if (mh_read_sequences (&mhs, ctx->path) < 0)
       return -1;
     mh_update_maildir (md, &mhs);
     mhs_free_sequences (&mhs);
