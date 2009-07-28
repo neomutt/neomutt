@@ -541,8 +541,10 @@ AC_ARG_WITH(docdir, AC_HELP_STRING([--with-docdir=PATH], [Specify where to put t
         [mutt_cv_docdir=$withval],
         [mutt_cv_docdir='${datarootdir}/doc/mutt'])
 AC_MSG_RESULT($mutt_cv_docdir)
-
-docdir=$mutt_cv_docdir
+if test -z "$docdir" -o -n "$with_docdir"
+then
+  docdir=$mutt_cv_docdir
+fi
 AC_SUBST(docdir)
 
 if test x$mutt_cv_setgid = xyes; then

@@ -1,3 +1,9 @@
+2009-07-24 14:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (86e066a206ac)
+
+	* po/de.po: Update German translation
+
+	* init.c: Fix check_sec.sh warning
+
 2009-07-23 23:36 -0400  Aron Griffis  <agriffis@n01se.net>  (0ee27568ad09)
 
 	* init.c: fix :reset to work with empty strings
@@ -13,8 +19,6 @@
 	* charset.h, rfc2047.c: Use proper prototype for
 	mutt_get_default_charset(), fix fallout.
 
-2009-07-23 23:52 +0200  Matthias Andree  <matthias.andree@gmx.de>  (6b6272aa3a3a)
-
 	* bcache.c, charset.c: Fix two warnings "the address of 'foo' will
 	always evaluate as 'true'".
 
@@ -23,12 +27,8 @@
 	* doc/manual.xml.head: Manual: better document what address
 	groups are (for)
 
-2009-07-23 16:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (77ac8b5c2be6)
-
 	* group.c, group.h, init.c, init.h, pattern.c, protos.h, rfc822.c,
 	rfc822.h: Implement ungroup command. Closes #3304.
-
-2009-07-23 16:40 +0200  Rocco Rutte  <pdmef@gmx.net>  (7c4484ba9e4b)
 
 	* init.c, mutt.h, muttlib.c: Move remove_from_rx_list() to muttlib.c,
 	name it mutt_remove_from_rx_list()
@@ -42,8 +42,6 @@
 
 	* hcache.c, rfc822.h: Properly restore addresses from hcache using
 	rfc822_new_address(). Closes #3302.
-
-2009-07-22 14:40 +0200  kees  <kees@outflux.net>  (9f3053f75f27)
 
 	* mh.c: Don't leak mhs flags in mh_buffy(). Closes #3303.
 
