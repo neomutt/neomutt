@@ -1,3 +1,14 @@
+2009-07-27 21:14 -0700  Kees Cook  <kees@outflux.net>  (2fc9348684fe)
+
+	* mh.c: Properly propagate mh_read_sequences result. Closes #3308.
+
+2009-07-27 20:49 -0700  Brendan Cully  <brendan@kublai.com>  (5c076ed18883)
+
+	* configure.ac: Do not overwrite docdir unless --with-
+	docdir was explicitly given. This allows --docdir from autoconf
+	2.60+ to work, though if given --with-docdir will silently override
+	--docdir. Closes #3282.
+
 2009-07-24 14:30 +0200  Rocco Rutte  <pdmef@gmx.net>  (86e066a206ac)
 
 	* po/de.po: Update German translation

@@ -89,6 +89,7 @@ static void free_address (ADDRESS *a)
 #ifdef EXACT_ADDRESS
   FREE(&a->val);
 #endif
+  FREE(&a);
 }
 
 int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox)

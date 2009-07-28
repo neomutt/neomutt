@@ -32,7 +32,7 @@ int mutt_group_context_add_rx (group_context_t *ctx, const char *s, int flags, B
 
 int mutt_group_match (group_t *g, const char *s);
 
-int mutt_group_remove (group_t *, BUFFER *);
+int mutt_group_context_clear (group_context_t **ctx);
 int mutt_group_context_remove_rx (group_context_t *ctx, const char *s);
 int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS *);
 

@@ -843,7 +843,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
     if (data == M_UNGROUP && !mutt_strcasecmp (buf->data, "*"))
     {
-      if (mutt_group_remove (gc->g, err) < 0)
+      if (mutt_group_context_clear (&gc) < 0)
 	goto bail;
       goto out;
     }

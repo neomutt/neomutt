@@ -53,32 +53,26 @@ group_t *mutt_pattern_group (const char *k)
   return p;
 }
 
-static void group_free (void *p)
+static void mutt_group_remove (group_t *g)
 {
-  group_t *g = (group_t *)p;
-
   if (!g)
     return;
-  FREE(&g->name);
+  hash_delete (Groups, g->name, g, NULL);
   rfc822_free_address (&g->as);
   mutt_free_rx_list (&g->rs);
+  FREE(&g->name);
   FREE(&g);
 }
 
-int mutt_group_remove (group_t * g, BUFFER * err)
+int mutt_group_context_clear (group_context_t **ctx)
 {
-  int h;
-
-  if (!g)
-    return -1;
-  h = Groups->hash_string ((const unsigned char *)g->name, Groups->nelem);
-  if (!hash_find_hash (Groups, h, g->name))
+  group_context_t *t;
+  for ( ; ctx && *ctx; (*ctx) = t)
   {
-    if (err)
-      snprintf (err->data, err->dsize, _("No such group: %s"), g->name);
-    return -1;
+    mutt_group_remove ((*ctx)->g);
+    t = (*ctx)->next;
+    FREE(ctx);				/* __FREE_CHECKED__ */
   }
-  hash_delete_hash (Groups, h, g->name, g, group_free);
   return 0;
 }
 
@@ -167,7 +161,7 @@ int mutt_group_context_remove_adrlist (group_context_t *ctx, ADDRESS * a)
   {
     rv = mutt_group_remove_adrlist (ctx->g, a);
     if (empty_group (ctx->g))
-      mutt_group_remove (ctx->g, NULL);
+      mutt_group_remove (ctx->g);
   }
 
   return rv;
@@ -191,7 +185,7 @@ int mutt_group_context_remove_rx (group_context_t *ctx, const char *s)
   {
     rv = mutt_group_remove_rx (ctx->g, s);
     if (empty_group (ctx->g))
-      mutt_group_remove (ctx->g, NULL);
+      mutt_group_remove (ctx->g);
   }
 
   return rv;
