@@ -129,6 +129,8 @@ HEADER* imap_hcache_get (IMAP_DATA* idata, unsigned int uid)
   {
     if (*uv == idata->uid_validity)
       h = mutt_hcache_restore ((unsigned char*)uv, NULL);
+    else
+      dprint (3, (debugfile, "hcache uidvalidity mismatch: %u", *uv));
     FREE (&uv);
   }
 

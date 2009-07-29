@@ -33,8 +33,9 @@ HEADER *mutt_hcache_restore(const unsigned char *d, HEADER **oh);
 void *mutt_hcache_fetch(header_cache_t *h, const char *filename, size_t (*keylen)(const char *fn));
 void *mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
                              size_t (*keylen)(const char *fn));
+/* uidvalidity is an IMAP-specific unsigned 32 bit number */
 int mutt_hcache_store(header_cache_t *h, const char *filename, HEADER *header,
-                      unsigned long uid_validity, size_t (*keylen)(const char *fn));
+                      unsigned int uidvalidity, size_t (*keylen)(const char *fn));
 int mutt_hcache_store_raw (header_cache_t *h, const char* filename, void* data,
                            size_t dlen, size_t(*keylen) (const char* fn));
 int mutt_hcache_delete(header_cache_t *h, const char *filename, size_t (*keylen)(const char *fn));
