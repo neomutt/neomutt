@@ -1,3 +1,17 @@
+2009-07-29 13:26 -0700  Brendan Cully  <brendan@kublai.com>  (a2a4286491b4)
+
+	* hcache.c, hcache.h, imap/util.c: Harmonize hcache uidvalidity size
+	to unsigned int (per IMAP RFC). Closes #3296.
+
+2009-07-28 23:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (153eac9e03e7)
+
+	* Makefile.am: Add group.h to distribution
+
+2009-07-28 23:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (aff86191ad02)
+
+	* group.c, group.h, init.c, rfc822.c: Fix some issues with
+	ungroup [...] *
+
 2009-07-27 21:14 -0700  Kees Cook  <kees@outflux.net>  (2fc9348684fe)
 
 	* mh.c: Properly propagate mh_read_sequences result. Closes #3308.

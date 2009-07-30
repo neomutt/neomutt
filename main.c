@@ -111,8 +111,8 @@ static void mutt_usage (void)
 
   puts _(
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n\
-       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] <addr> [...]\n\
-       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] <addr> [...] < message\n\
+       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n\
+       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n\
        mutt [<options>] -p\n\
        mutt [<options>] -A <alias> [...]\n\
        mutt [<options>] -Q <query> [...]\n\
@@ -149,8 +149,8 @@ options:\n\
   -z\t\texit immediately if there are no messages in the mailbox\n\
   -Z\t\topen the first folder with new message, exit immediately if none\n\
   -h\t\tthis help message");
-  puts _("  --\t\ttreat remaining arguments as addr even if starting with a dash\n\
-\t\twhen using -a with multiple filenames using -- is mandatory");
+  puts _("  --\t\tseparate filename(s) and recipients,\n\
+\t\twhen using -a, -- is mandatory");
 
   exit (0);
 }
