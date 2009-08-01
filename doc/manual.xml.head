@@ -4818,10 +4818,12 @@ element, while <emphasis>[ch]</emphasis> is a regexp that matches either
 An equivalence class is a locale-specific name for a list of characters
 that are equivalent. The name is enclosed in <quote>[=</quote> and
 <quote>=]</quote>.  For example, the name <quote>e</quote> might be used
-to represent all of <quote>&egrave;</quote> <quote>&eacute;</quote> and
-<quote>e</quote>.  In this case, <emphasis>[[=e=]]</emphasis> is a
-regexp that matches any of <quote>&egrave;</quote>,
-<quote>&eacute;</quote> and <quote>e</quote>.
+to represent all of <quote>e</quote> with grave
+(<quote>&egrave;</quote>), <quote>e</quote> with acute
+(<quote>&eacute;</quote>) and <quote>e</quote>.  In this case,
+<emphasis>[[=e=]]</emphasis> is a regexp that matches any of:
+<quote>e</quote> with grave (<quote>&egrave;</quote>), <quote>e</quote>
+with acute (<quote>&eacute;</quote>) and <quote>e</quote>.
 </para>
 </listitem>
 </varlistentry>
