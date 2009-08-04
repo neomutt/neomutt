@@ -1,3 +1,15 @@
+2009-08-01 15:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (29727d19634a)
+
+	* doc/manual.xml.head: Manual: use full names for &eacute; and
+	&egrave; entities. Closes #3286.
+
+	This is necessary because we want to install a us-ascii manual.txt
+	that would contain only "e" instead of accented characters.
+
+2009-07-30 17:56 +0200  Rocco Rutte  <pdmef@gmx.net>  (4a572310c3b5)
+
+	* main.c: Fix mutt -h output for -a/-- options
+
 2009-07-29 13:26 -0700  Brendan Cully  <brendan@kublai.com>  (a2a4286491b4)
 
 	* hcache.c, hcache.h, imap/util.c: Harmonize hcache uidvalidity size
