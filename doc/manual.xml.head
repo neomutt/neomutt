@@ -1421,6 +1421,14 @@ message thread, for example to create a new message to a mailing list
 without having to enter the mailing list's address.
 </para>
 
+<para>
+If you intend to start a new thread by replying, please make really sure
+you remove the <emphasis>In-Reply-To:</emphasis> header in your
+editor. Otherwise, though you'll produce a technically valid reply, some
+netiquette guardians will be annoyed by this so-called <quote>thread
+hijacking</quote>.
+</para>
+
 </sect3>
 
 </sect2>
