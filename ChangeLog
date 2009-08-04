@@ -1,4 +1,10 @@
-2009-08-04 12:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (0257197c8163)
+2009-08-04 12:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (25c2d70f2f00)
+
+	* doc/manual.xml.head: Manual: Add some words of warning to really
+	remove IRT header when intended
+
+	* doc/manual.xml.head: Manual: Put mailbox shortcuts into
+	table for readability
 
 	* doc/manual.xml.head: Manual: Fix docs for push/exec
 
@@ -26,8 +32,6 @@
 2009-07-28 23:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (153eac9e03e7)
 
 	* Makefile.am: Add group.h to distribution
-
-2009-07-28 23:06 +0200  Rocco Rutte  <pdmef@gmx.net>  (aff86191ad02)
 
 	* group.c, group.h, init.c, rfc822.c: Fix some issues with
 	ungroup [...] *

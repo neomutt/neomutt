@@ -19,10 +19,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.20-20090723\n"
+"Project-Id-Version: Mutt 1.5.20-20090731\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-24 00:43+0200\n"
-"PO-Revision-Date: 2009-07-24 00:51+0200\n"
+"POT-Creation-Date: 2009-07-31 13:07+0200\n"
+"PO-Revision-Date: 2009-07-31 13:15+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.org>\n"
 "Language-Team: mutt-dev <mutt-dev@mutt.org>\n"
 "MIME-Version: 1.0\n"
@@ -2360,11 +2360,11 @@ msgstr "Copie de %d messages dans %s..."
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
 
-#: imap/util.c:356
+#: imap/util.c:358
 msgid "Continue?"
 msgstr "Continuer ?"
 
-#: init.c:59 init.c:1752 pager.c:50
+#: init.c:59 init.c:1749 pager.c:50
 #, c-format
 msgid "Not available in this menu."
 msgstr "Non disponible dans ce menu."
@@ -2433,141 +2433,141 @@ msgid "%s: unknown sorting method"
 msgstr "%s : méthode de tri inconnue"
 
 # , c-format
-#: init.c:1585
+#: init.c:1582
 #, c-format
 msgid "mutt_restore_default(%s): error in regexp: %s\n"
 msgstr "mutt_restore_default(%s) : erreur dans l'expression rationnelle : %s\n"
 
 # , c-format
-#: init.c:1729 init.c:1842
+#: init.c:1726 init.c:1839
 #, c-format
 msgid "%s: unknown variable"
 msgstr "%s : variable inconnue"
 
-#: init.c:1738
+#: init.c:1735
 #, c-format
 msgid "prefix is illegal with reset"
 msgstr "ce préfixe est illégal avec reset"
 
-#: init.c:1744
+#: init.c:1741
 #, c-format
 msgid "value is illegal with reset"
 msgstr "cette valeur est illégale avec reset"
 
-#: init.c:1780 init.c:1792
+#: init.c:1777 init.c:1789
 #, c-format
 msgid "Usage: set variable=yes|no"
 msgstr "Usage : set variable=yes|no"
 
 # , c-format
-#: init.c:1800
+#: init.c:1797
 #, c-format
 msgid "%s is set"
 msgstr "%s est positionné"
 
 # , c-format
-#: init.c:1800
+#: init.c:1797
 #, c-format
 msgid "%s is unset"
 msgstr "%s n'est pas positionné"
 
 # , c-format
-#: init.c:1901
+#: init.c:1898
 #, c-format
 msgid "Invalid value for option %s: \"%s\""
 msgstr "Valeur invalide pour l'option %s : \"%s\""
 
 # , c-format
-#: init.c:2039
+#: init.c:2036
 #, c-format
 msgid "%s: invalid mailbox type"
 msgstr "%s : type de boîte aux lettres invalide"
 
 # , c-format
-#: init.c:2070
+#: init.c:2067
 #, c-format
 msgid "%s: invalid value (%s)"
 msgstr "%s : valeur invalide (%s)"
 
-#: init.c:2071
+#: init.c:2068
 msgid "format error"
 msgstr "erreur de format"
 
-#: init.c:2071
+#: init.c:2068
 msgid "number overflow"
 msgstr "nombre trop grand"
 
 # , c-format
-#: init.c:2131
+#: init.c:2128
 #, c-format
 msgid "%s: invalid value"
 msgstr "%s : valeur invalide"
 
 # , c-format
-#: init.c:2172
+#: init.c:2169
 #, c-format
 msgid "%s: Unknown type."
 msgstr "%s : type inconnu."
 
 # , c-format
-#: init.c:2199
+#: init.c:2196
 #, c-format
 msgid "%s: unknown type"
 msgstr "%s : type inconnu"
 
 # , c-format
-#: init.c:2261
+#: init.c:2258
 #, c-format
 msgid "Error in %s, line %d: %s"
 msgstr "Erreur dans %s, ligne %d : %s"
 
 # , c-format
 #. the muttrc source keyword
-#: init.c:2284
+#: init.c:2281
 #, c-format
 msgid "source: errors in %s"
 msgstr "source : erreurs dans %s"
 
-#: init.c:2285
+#: init.c:2282
 #, c-format
 msgid "source: reading aborted due too many errors in %s"
 msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 
 # , c-format
-#: init.c:2299
+#: init.c:2296
 #, c-format
 msgid "source: error at %s"
 msgstr "source : erreur dans %s"
 
-#: init.c:2304
+#: init.c:2301
 msgid "source: too many arguments"
 msgstr "source : trop d'arguments"
 
 # , c-format
-#: init.c:2358
+#: init.c:2355
 #, c-format
 msgid "%s: unknown command"
 msgstr "%s : commande inconnue"
 
 # , c-format
-#: init.c:2843
+#: init.c:2840
 #, c-format
 msgid "Error in command line: %s\n"
 msgstr "Erreur dans la ligne de commande : %s\n"
 
-#: init.c:2898
+#: init.c:2895
 msgid "unable to determine home directory"
 msgstr "impossible de déterminer le répertoire personnel"
 
-#: init.c:2906
+#: init.c:2903
 msgid "unable to determine username"
 msgstr "impossible de déterminer le nom d'utilisateur"
 
-#: init.c:3142
+#: init.c:3139
 msgid "-group: no group name"
 msgstr "-group: pas de nom de groupe"
 
-#: init.c:3152
+#: init.c:3149
 msgid "out of arguments"
 msgstr "à court d'arguments"
 
@@ -2731,8 +2731,8 @@ msgstr ""
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...]] [--] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] [--] "
+"<file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
 "<addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
@@ -2742,9 +2742,9 @@ msgid ""
 msgstr ""
 "usage : mutt [<options>] [-z] [-f <fichier> | -yZ]\n"
 "        mutt [<options>] [-x] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] [-"
-"a <fichier> [...]] [--] <adresse> [...]\n"
+"a <fichier> [...] --] <adresse> [...]\n"
 "        mutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a <fichier> "
-"[...]] [--] <adresse> [...] < message\n"
+"[...] --] <adresse> [...] < message\n"
 "        mutt [<options>] -p\n"
 "        mutt [<options>] -A <alias> [...]\n"
 "        mutt [<options>] -Q <requête> [...]\n"
@@ -2815,11 +2815,11 @@ msgstr ""
 
 #: main.c:152
 msgid ""
-"  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
-"\t\twhen using -a with multiple filenames using -- is mandatory"
+"  --\t\tseparate filename(s) and recipients,\n"
+"\t\twhen using -a, -- is mandatory"
 msgstr ""
-"  --\t\ttraite les arguments restants comme des adresses (même -arg...)\n"
-"\t\tquand -a est utilisé avec plusieurs arg, -- est obligatoire"
+"  --\t\tsépare le(s) nom(s) de fichier et les destinataires,\n"
+"\t\tlorsque -a est utilisé, -- est obligatoire"
 
 #: main.c:197
 msgid ""
@@ -5331,6 +5331,13 @@ msgstr "extraire les clés publiques supportées"
 #: ../keymap_alldefs.h:202
 msgid "show S/MIME options"
 msgstr "afficher les options S/MIME"
+
+#~ msgid ""
+#~ "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
+#~ "\t\twhen using -a with multiple filenames using -- is mandatory"
+#~ msgstr ""
+#~ "  --\t\ttraite les arguments restants comme des adresses (même -arg...)\n"
+#~ "\t\tquand -a est utilisé avec plusieurs arg, -- est obligatoire"
 
 #~ msgid "Interactive SMTP authentication not supported"
 #~ msgstr "Authentification SMTP interactive non supportée"
