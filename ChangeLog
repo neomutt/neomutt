@@ -1,3 +1,11 @@
+2009-08-04 12:20 +0200  Rocco Rutte  <pdmef@gmx.net>  (0257197c8163)
+
+	* doc/manual.xml.head: Manual: Fix docs for push/exec
+
+2009-08-04 12:08 +0200  Johan D  <djo33@free.fr>  (14bb498c6a1c)
+
+	* mh.c: Fix MH parsing, fixes [0698e8195545]. Closes #3312
+
 2009-08-01 15:16 +0200  Rocco Rutte  <pdmef@gmx.net>  (29727d19634a)
 
 	* doc/manual.xml.head: Manual: use full names for &eacute; and

@@ -5687,61 +5687,24 @@ file or mailbox path or in path-related configuration variables. Note
 that these only work at the beginning of a string.
 </para>
 
-<itemizedlist>
-<listitem>
-
-<para>
-! &mdash; refers to your <link linkend="spoolfile">$spoolfile</link>
-(incoming) mailbox
-</para>
-</listitem>
-<listitem>
-
-<para>
-&gt; &mdash; refers to your <link linkend="mbox">$mbox</link> file
-</para>
-</listitem>
-<listitem>
-
-<para>
-&lt; &mdash; refers to your <link linkend="record">$record</link> file
-</para>
-</listitem>
-<listitem>
-
-<para>
-^ &mdash; refers to the current mailbox
-</para>
-</listitem>
-<listitem>
-
-<para>
-- or !! &mdash; refers to the file you've last visited
-</para>
-</listitem>
-<listitem>
-
-<para>
-~ &mdash; refers to your home directory
-</para>
-</listitem>
-<listitem>
-
-<para>
-= or + &mdash; refers to your <link linkend="folder">$folder</link>
-directory
-</para>
-</listitem>
-<listitem>
-
-<para>
-@<emphasis>alias</emphasis> &mdash; refers to the <link
-linkend="save-hook">default save folder</link> as determined by the
-address of the alias
-</para>
-</listitem>
-
-</itemizedlist>
+<table id="tab-mailbox-shortcuts">
+<title>Mailbox shortcuts</title>
+<tgroup cols="2">
+<thead>
+<row><entry>Shortcut</entry><entry>Refers to...</entry></row>
+</thead>
+<tbody>
+<row><entry><literal>!</literal></entry><entry>your <link linkend="spoolfile">$spoolfile</link> (incoming) mailbox</entry></row>
+<row><entry><literal>&gt;</literal></entry><entry>your <link linkend="mbox">$mbox</link> file</entry></row>
+<row><entry><literal>&lt;</literal></entry><entry>your <link linkend="record">$record</link> file</entry></row>
+<row><entry><literal>^</literal></entry><entry>the current mailbox</entry></row>
+<row><entry><literal>-</literal> or <literal>!!</literal></entry><entry>the file you've last visited</entry></row>
+<row><entry><literal>~</literal></entry><entry>your home directory</entry></row>
+<row><entry><literal>=</literal> or <literal>+</literal></entry><entry>your <link linkend="folder">$folder</link> directory</entry></row>
+<row><entry><emphasis>@alias</emphasis></entry><entry>to the <link linkend="save-hook">default save folder</link> as determined by the address of the alias</entry></row>
+</tbody>
+</tgroup>
+</table>
 
 <para>
 For example, to store a copy of outgoing messages in the folder they
