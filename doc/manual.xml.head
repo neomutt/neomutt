@@ -3657,6 +3657,32 @@ folder-hook . 'push &lt;collapse-all&gt;'
 </screen>
 </example>
 
+<para>
+For using functions like shown in the example, it's important to use
+angle brackets (<quote>&lt;</quote> and <quote>&gt;</quote>) to make
+Mutt recognize the input as a function name. Otherwise it will simulate
+individual just keystrokes, i.e. <quote><literal>push
+collapse-all</literal></quote> would be interpreted as if you had typed
+<quote>c</quote>, followed by <quote>o</quote>, followed by
+<quote>l</quote>, ..., which is not desired and may lead to very
+unexpected behaviour.
+</para>
+
+<para>
+Keystrokes can be used, too, but are less portable because of
+potentially changed key bindings. With default bindings, this is
+equivalent to the above example:
+</para>
+
+<screen>
+folder-hook . 'push \eV'
+</screen>
+
+<para>
+because it simulates that ESC+V was pressed (which is the default
+binding of <literal>&lt;collapse-all&gt;</literal>.
+</para>
+
 </sect1>
 
 <sect1 id="exec">
@@ -3677,7 +3703,7 @@ folder-hook . 'push &lt;collapse-all&gt;'
 <para>
 This command can be used to execute any function. Functions are listed
 in the <link linkend="functions">function reference</link>.
-<quote><command>exec</command><literal>function</literal></quote> is
+<quote><command>exec</command> <literal>function</literal></quote> is
 equivalent to <quote><literal>push &lt;function&gt;</literal></quote>.
 </para>
 
