@@ -98,7 +98,10 @@ event_t mutt_getch (void)
   mutt_allow_interrupt (0);
 
   if (SigInt)
+  {
     mutt_query_exit ();
+    return err;
+  }
 
   if(ch == ERR)
   {
