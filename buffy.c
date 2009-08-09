@@ -275,20 +275,73 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   return 0;
 }
 
-/* people use check_mbox_size on systems where modified time attributes are 
- * BADLY broken. Ignore them.
- */
-#define STAT_CHECK_SIZE (sb.st_size > tmp->size)
-#define STAT_CHECK_TIME (sb.st_mtime > sb.st_atime || (tmp->newly_created && sb.st_ctime == sb.st_mtime && sb.st_ctime == sb.st_atime))
-#define STAT_CHECK (option(OPTCHECKMBOXSIZE) ? STAT_CHECK_SIZE : STAT_CHECK_TIME)
+/* returns 1 if maildir has new mail */
+static int buffy_maildir_hasnew (BUFFY* mailbox)
+{
+  char path[_POSIX_PATH_MAX];
+  DIR *dirp;
+  struct dirent *de;
+  char *p;
+  int rc = 0;
+
+  snprintf (path, sizeof (path), "%s/new", mailbox->path);
+
+  if ((dirp = opendir (path)) == NULL)
+  {
+    mailbox->magic = 0;
+    return 0;
+  }
+
+  while ((de = readdir (dirp)) != NULL)
+  {
+    if (*de->d_name == '.')
+      continue;
+
+    if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')) {
+      /* one new and undeleted message is enough */
+      mailbox->new = 1;
+      rc = 1;
+      break;
+    }
+  }
+
+  closedir (dirp);
+
+  return rc;
+}
+
+/* returns 1 if mailbox has new mail */ 
+static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
+{
+  int rc = 0;
+  int statcheck;
+
+  if (option (OPTCHECKMBOXSIZE))
+    statcheck = sb->st_size > mailbox->size;
+  else
+    statcheck = sb->st_mtime > sb->st_atime
+      || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
+  if (statcheck)
+  {
+    rc = 1;
+    mailbox->new = 1;
+  }
+  else if (option(OPTCHECKMBOXSIZE))
+  {
+    /* some other program has deleted mail from the folder */
+    mailbox->size = (off_t) sb->st_size;
+  }
+  if (mailbox->newly_created &&
+      (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
+    mailbox->newly_created = 0;
+
+  return rc;
+}
 
 int mutt_buffy_check (int force)
 {
   BUFFY *tmp;
   struct stat sb;
-  struct dirent *de;
-  DIR *dirp;
-  char path[_POSIX_PATH_MAX];
   struct stat contex_sb;
   time_t t;
 
@@ -318,7 +371,7 @@ int mutt_buffy_check (int force)
 #endif
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || Context->magic != M_IMAP || Context->magic != M_POP
+  if (!Context || Context->magic == M_IMAP || Context->magic == M_POP
       || stat (Context->path, &contex_sb) != 0)
   {
     contex_sb.st_dev=0;
@@ -360,44 +413,13 @@ int mutt_buffy_check (int force)
       {
       case M_MBOX:
       case M_MMDF:
-
-	if (STAT_CHECK)
-	{
+	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
-	  tmp->new = 1;
-	}
-	else if (option(OPTCHECKMBOXSIZE))
-	{
-	  /* some other program has deleted mail from the folder */
-	  tmp->size = (off_t) sb.st_size;
-	}
-	if (tmp->newly_created &&
-	    (sb.st_ctime != sb.st_mtime || sb.st_ctime != sb.st_atime))
-	  tmp->newly_created = 0;
-
 	break;
 
       case M_MAILDIR:
-
-	snprintf (path, sizeof (path), "%s/new", tmp->path);
-	if ((dirp = opendir (path)) == NULL)
-	{
-	  tmp->magic = 0;
-	  break;
-	}
-	while ((de = readdir (dirp)) != NULL)
-	{
-	  char *p;
-	  if (*de->d_name != '.' && 
-	      (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')))
-	  {
-	    /* one new and undeleted message is enough */
-	    BuffyCount++;
-	    tmp->new = 1;
-	    break;
-	  }
-	}
-	closedir (dirp);
+	if (buffy_maildir_hasnew (tmp) > 0)
+	  BuffyCount++;
 	break;
 
       case M_MH:
