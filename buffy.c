@@ -193,6 +193,23 @@ void mutt_update_mailbox (BUFFY * b)
   return;
 }
 
+static BUFFY *buffy_new (const char *path)
+{
+  BUFFY* buffy;
+
+  buffy = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
+  strfcpy (buffy->path, path, sizeof (buffy->path));
+  buffy->next = NULL;
+  buffy->magic = 0;
+
+  return buffy;
+}
+
+static void buffy_free (BUFFY **mailbox)
+{
+  FREE (mailbox); /* __FREE_CHECKED__ */
+}
+
 int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
 {
   BUFFY **tmp,*tmp1;
@@ -211,7 +228,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       for (tmp = &Incoming; *tmp;)
       {
         tmp1=(*tmp)->next;
-        FREE (tmp);		/* __FREE_CHECKED__ */
+        buffy_free (tmp);
         *tmp=tmp1;
       }
       return 0;
@@ -239,21 +256,14 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       if(*tmp)
       {
         tmp1=(*tmp)->next;
-        FREE (tmp);		/* __FREE_CHECKED__ */
+        buffy_free (tmp);
         *tmp=tmp1;
       }
       continue;
     }
 
     if (!*tmp)
-    {
-      *tmp = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
-      strfcpy ((*tmp)->path, buf, sizeof ((*tmp)->path));
-      (*tmp)->next = NULL;
-      /* it is tempting to set magic right here */
-      (*tmp)->magic = 0;
-      
-    }
+      *tmp = buffy_new (buf);
 
     (*tmp)->new = 0;
     (*tmp)->notified = 1;

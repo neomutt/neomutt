@@ -1,14 +1,19 @@
+2009-08-09 14:53 +0200  Christian Ebert  <blacktrash@gmx.net>  (0153dbc12dc4)
+
+	* doc/manual.xml.head: manual: fix wrong spell checker assumptions
+
+2009-08-09 14:35 +0200  Rocco Rutte  <pdmef@gmx.net>  (59b4c73e7254)
+
+	* doc/manual.xml.head: Manual: Fix typos, consequently use
+	en_US spelling
+
 2009-08-08 22:50 -0700  Brendan Cully  <brendan@kublai.com>  (d4ea7f571f10)
 
 	* buffy.c: Split out mailbox-specific code in mutt_buffy_check
 
-2009-08-08 20:58 -0700  Brendan Cully  <brendan@kublai.com>  (3b30cebbb35e)
-
 	* buffy.c, muttlib.c, mx.c, mx.h, status.c: Unconditionally define
 	M_IMAP, M_POP. These aren't bloat, and not having them creates a lot
 	of #ifdef clutter.
-
-2009-08-08 16:40 -0700  Brendan Cully  <brendan@kublai.com>  (c837ab790d2e)
 
 	* curs_lib.c: Abort prompt on ^C, as was the case prior to
 	12a6de725483
