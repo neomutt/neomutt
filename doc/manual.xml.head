@@ -2639,11 +2639,11 @@ specify one or the other).
 <listitem><para>normal</para></listitem>
 <listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
-<listitem><para>search (humiliating of words in the pager)</para></listitem>
+<listitem><para>search (highlighting of words in the pager)</para></listitem>
 <listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
 <listitem><para>tilde (the <quote>~</quote> used to pad blank lines in the pager)</para></listitem>
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
-<listitem><para>underline (holing underlined patterns in the body of messages)</para></listitem>
+<listitem><para>underline (highlighting underlined patterns in the body of messages)</para></listitem>
 </itemizedlist>
 
 <para>
