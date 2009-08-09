@@ -1511,10 +1511,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
       return 1;
     }
   }
-  else
-#ifdef USE_IMAP
-  if (magic != M_IMAP)
-#endif /* execute the block unconditionally if we don't use imap */
+  else if (magic != M_IMAP)
   {
     st->st_mtime = 0;
     st->st_atime = 0;

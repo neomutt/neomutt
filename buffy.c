@@ -315,14 +315,11 @@ int mutt_buffy_check (int force)
 
 #ifdef USE_IMAP
   BuffyCount += imap_buffy_check (force);
+#endif
 
-  if (!Context || Context->magic != M_IMAP)
-#endif
-#ifdef USE_POP
-  if (!Context || Context->magic != M_POP)
-#endif
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || !Context->path || stat (Context->path, &contex_sb) != 0)
+  if (!Context || Context->magic != M_IMAP || Context->magic != M_POP
+      || stat (Context->path, &contex_sb) != 0)
   {
     contex_sb.st_dev=0;
     contex_sb.st_ino=0;
@@ -330,56 +327,34 @@ int mutt_buffy_check (int force)
   
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
-#ifdef USE_IMAP
     if (tmp->magic != M_IMAP)
-#endif
-    tmp->new = 0;
+      tmp->new = 0;
 
-#ifdef USE_IMAP
     if (tmp->magic != M_IMAP)
     {
-#endif
 #ifdef USE_POP
-    if (mx_is_pop (tmp->path))
-      tmp->magic = M_POP;
-    else
+      if (mx_is_pop (tmp->path))
+	tmp->magic = M_POP;
+      else
 #endif
-    if (stat (tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
-	(!tmp->magic && (tmp->magic = mx_get_magic (tmp->path)) <= 0))
-    {
-      /* if the mailbox still doesn't exist, set the newly created flag to
-       * be ready for when it does. */
-      tmp->newly_created = 1;
-      tmp->magic = 0;
-      tmp->size = 0;
-      continue;
+      if (stat (tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
+	  (!tmp->magic && (tmp->magic = mx_get_magic (tmp->path)) <= 0))
+      {
+	/* if the mailbox still doesn't exist, set the newly created flag to
+	 * be ready for when it does. */
+	tmp->newly_created = 1;
+	tmp->magic = 0;
+	tmp->size = 0;
+	continue;
+      }
     }
-#ifdef USE_IMAP
-    }
-#endif
 
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
-#if defined USE_IMAP || defined USE_POP
-	((
-#ifdef USE_IMAP
-	tmp->magic == M_IMAP
-#endif
-#ifdef USE_POP
-#ifdef USE_IMAP
-	||
-#endif
-	tmp->magic == M_POP
-#endif
-	) ? mutt_strcmp (tmp->path, Context->path) :
-#endif
-	 (sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)
-#if defined USE_IMAP || defined USE_POP	 
-	    )
-#endif
-	)
-	
+	(( tmp->magic == M_IMAP || tmp->magic == M_POP )
+	    ? mutt_strcmp (tmp->path, Context->path) :
+	      (sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)))
     {
       switch (tmp->magic)
       {

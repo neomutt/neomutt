@@ -1116,10 +1116,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
     {
       if (!ctx->changed)
 	return 0; /* nothing to do! */
-#ifdef USE_IMAP
       /* let IMAP servers hold on to D flags */
       if (ctx->magic != M_IMAP)
-#endif
       {
         for (i = 0 ; i < ctx->msgcount ; i++)
           ctx->hdrs[i]->deleted = 0;
@@ -1177,10 +1175,8 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
      */
     if (purge || (ctx->magic != M_MAILDIR && ctx->magic != M_MH))
     {
-#ifdef USE_IMAP
       /* IMAP does this automatically after handling EXPUNGE */
       if (ctx->magic != M_IMAP)
-#endif
       {
 	mx_update_tables (ctx, 1);
 	mutt_sort_headers (ctx, 1); /* rethread from scratch */
@@ -1476,13 +1472,7 @@ int mx_close_message (MESSAGE **msg)
   int r = 0;
 
   if ((*msg)->magic == M_MH || (*msg)->magic == M_MAILDIR
-#ifdef USE_IMAP
-      || (*msg)->magic == M_IMAP
-#endif
-#ifdef USE_POP
-      || (*msg)->magic == M_POP
-#endif
-      )
+      || (*msg)->magic == M_IMAP || (*msg)->magic == M_POP)
   {
     r = safe_fclose (&(*msg)->fp);
   }
