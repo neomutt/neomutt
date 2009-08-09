@@ -174,7 +174,7 @@ refer to the developer pages at
 </sect1>
 
 <sect1 id="typo">
-<title>Typograhical Conventions</title>
+<title>Typographical Conventions</title>
 
 <para>
 This section lists typographical conventions followed throughout this
@@ -327,7 +327,7 @@ Mutt supports a <quote>hook</quote> concept which allows the user to
 execute arbitrary configuration commands and functions in certain
 situations such as entering a folder, starting a new message or replying
 to an existing one. These hooks can be used to highly customize Mutt's
-behaviour including managing multiple identities, customizing the
+behavior including managing multiple identities, customizing the
 display for a folder or even implementing auto-archiving based on a
 per-folder basis and much more.
 </para>
@@ -500,7 +500,7 @@ linkend="tab-keys-nav-page"/> for page-based menus.
 </thead>
 <tbody>
 <row><entry>J or &lt;Return&gt;</entry><entry><literal>&lt;next-line&gt;</literal></entry><entry>scroll down one line</entry></row>
-<row><entry>&lt;Backspace&gt;</entry><entry><literal>&lt;previous-line&gt;</literal></entry><entry>sroll up one line</entry></row>
+<row><entry>&lt;Backspace&gt;</entry><entry><literal>&lt;previous-line&gt;</literal></entry><entry>scroll up one line</entry></row>
 <row><entry>K, &lt;Space&gt; or &lt;PageDn&gt;</entry><entry><literal>&lt;next-page&gt;</literal></entry><entry>move to the next page</entry></row>
 <row><entry>- or &lt;PageUp&gt;</entry><entry><literal>&lt;previous-page&gt;</literal></entry><entry>move the previous page</entry></row>
 <row><entry>&lt;Home&gt;</entry><entry><literal>&lt;top&gt;</literal></entry><entry>move to the top</entry></row>
@@ -736,7 +736,7 @@ linkend="to-chars">$to_chars</link> variable.
 <title>The Pager</title>
 
 <para>
-By default, Mutt uses its builtin pager to display the contents of
+By default, Mutt uses its built-in pager to display the contents of
 messages (an external pager such as <literal>less(1)</literal> can be
 configured, see <link linkend="pager">$pager</link> variable).  The
 pager is very similar to the Unix program <literal>less(1)</literal>
@@ -1787,7 +1787,7 @@ character to be a literal instead of interpreted character.
 </para>
 
 <example id="ex-rc-quote">
-<title>Escaping quotes in congfiguration files</title>
+<title>Escaping quotes in configuration files</title>
 <screen>
 set realname="Michael \"MuttDude\" Elkins"
 </screen>
@@ -2630,7 +2630,7 @@ specify one or the other).
 
 <itemizedlist>
 <listitem><para>attachment</para></listitem>
-<listitem><para>bold (hiliting bold patterns in the body of messages)</para></listitem>
+<listitem><para>bold (highlighting bold patterns in the body of messages)</para></listitem>
 <listitem><para>error (error messages printed by Mutt)</para></listitem>
 <listitem><para>hdrdefault (default color of the message header in the pager)</para></listitem>
 <listitem><para>indicator (arrow or bar used to indicate the current item in a menu)</para></listitem>
@@ -2639,11 +2639,11 @@ specify one or the other).
 <listitem><para>normal</para></listitem>
 <listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
-<listitem><para>search (hiliting of words in the pager)</para></listitem>
+<listitem><para>search (humiliating of words in the pager)</para></listitem>
 <listitem><para>signature</para></listitem><listitem><para>status (mode lines used to display info about the mailbox or message)</para></listitem>
 <listitem><para>tilde (the <quote>~</quote> used to pad blank lines in the pager)</para></listitem>
 <listitem><para>tree (thread tree drawn in the message index and attachment menu)</para></listitem>
-<listitem><para>underline (hiliting underlined patterns in the body of messages)</para></listitem>
+<listitem><para>underline (holing underlined patterns in the body of messages)</para></listitem>
 </itemizedlist>
 
 <para>
@@ -3106,7 +3106,7 @@ supported by all mail user agents.  Adding it is not bullet-proof
 against receiving personal CCs of list messages.  Also note that the
 generation of the Mail-Followup-To header is controlled by the <link
 linkend="followup-to">$followup_to</link> configuration variable since
-it's common practice on some mailing lists to send Cc upons replies
+it's common practice on some mailing lists to send Cc upon replies
 (which is more a group- than a list-reply).
 </para>
 </note>
@@ -3258,7 +3258,7 @@ linkend="shortcuts">shortcut characters</link> (such as <quote>=</quote>
 and <quote>!</quote>), any variable definition that affects these
 characters (like <link linkend="folder">$folder</link> and <link
 linkend="spoolfile">$spoolfile</link>) should be set before the
-<command>mailboxes</command> command. If none of these shorcuts are
+<command>mailboxes</command> command. If none of these shortcuts are
 used, a local path should be absolute as otherwise Mutt tries to find it
 relative to the directory from where Mutt was started which may not
 always be desired.
@@ -3552,7 +3552,7 @@ language of the attributions and signatures based upon the recipients.
 <command>send-hook</command>'s are only executed once after getting the
 initial list of recipients.  Adding a recipient after replying or
 editing the message will not cause any <command>send-hook</command> to
-be executed, similarily if <link linkend="autoedit">$autoedit</link> is
+be executed, similarly if <link linkend="autoedit">$autoedit</link> is
 set (as then the initial list of recipients is empty). Also note that
 <link linkend="my-hdr"><command>my_hdr</command></link> commands which
 modify recipient headers, or the message's subject, don't have any
@@ -3673,7 +3673,7 @@ individual just keystrokes, i.e. <quote><literal>push
 collapse-all</literal></quote> would be interpreted as if you had typed
 <quote>c</quote>, followed by <quote>o</quote>, followed by
 <quote>l</quote>, ..., which is not desired and may lead to very
-unexpected behaviour.
+unexpected behavior.
 </para>
 
 <para>
@@ -3687,8 +3687,8 @@ folder-hook . 'push \eV'
 </screen>
 
 <para>
-because it simulates that ESC+V was pressed (which is the default
-binding of <literal>&lt;collapse-all&gt;</literal>.
+because it simulates that Esc+V was pressed (which is the default
+binding of <literal>&lt;collapse-all&gt;</literal>).
 </para>
 
 </sect1>
@@ -4370,7 +4370,7 @@ expanded to the path of your home directory.
 <para>
 If the filename ends with a vertical bar (<quote>|</quote>), then
 <emphasis>filename</emphasis> is considered to be an executable program
-from which to read input (eg.  <literal><command>source</command>
+from which to read input (em.  <literal><command>source</command>
 ~/bin/myscript|</literal>).
 </para>
 
@@ -6820,7 +6820,7 @@ program on stdin.
 <para>
 Mutt will expand <literal>%t</literal> to the text representation of the
 content type of the message in the same form as the first parameter of
-the mailcap definition line, ie <literal>text/html</literal> or
+the mailcap definition line, i.e. <literal>text/html</literal> or
 <literal>image/gif</literal>.
 </para>
 </listitem>
@@ -7452,7 +7452,7 @@ with folders located on a remote IMAP server.
 You can access the remote inbox by selecting the folder by its URL (see
 <xref linkend="url-syntax"/> for details) using the
 <literal>imap</literal> or <literal>imaps</literal> protocol.
-Alternatively, a pine-compatible notation is also supported, ie
+Alternatively, a pine-compatible notation is also supported, i.e.
 <literal>{[username@]imapserver[:port][/ssl]}path/to/folder</literal>
 </para>
 
@@ -7582,7 +7582,7 @@ There are a few variables which control authentication:
 <link linkend="imap-user">$imap_user</link> - controls the username
 under which you request authentication on the IMAP server, for all
 authenticators. This is overridden by an explicit username in the
-mailbox path (ie by using a mailbox name of the form
+mailbox path (i.e. by using a mailbox name of the form
 <literal>{user@host}</literal>).
 </para>
 </listitem>
@@ -7719,7 +7719,7 @@ sets <link linkend="record">$record</link> to the
 linkend="folder">$folder</link>. Please notice that the value the
 <quote>+</quote> <link linkend="shortcuts">mailbox shortcut</link>
 refers to depends on the <emphasis>current</emphasis> value of <link
-linkend="folder">$folder</link> and therefore has to be set separatedly
+linkend="folder">$folder</link> and therefore has to be set separately
 per account. Setting other values like <link linkend="from">$from</link>
 or <link linkend="signature">$signature</link> is analogous to setting
 <link linkend="record">$record</link>.
@@ -7974,7 +7974,7 @@ unique fashion. In order to do so, Mutt will <quote>leak</quote> some
 information to the outside world when sending messages: the generation
 of this header includes a step counter which is increased (and rotated)
 with every message sent. In a longer running mutt session, others can
-make assumptions about your mailing habbits depending on the number of
+make assumptions about your mailing habits depending on the number of
 messages sent. If this is not desired, the header can be manually
 provided using <link linkend="edit-headers">$edit_headers</link> (though
 not recommended).
@@ -8150,7 +8150,7 @@ message bodies since a larger amount of input has to be searched.
 As for regular expressions, a lower case string search pattern makes
 Mutt perform a case-insensitive search except for IMAP (because for IMAP
 Mutt performs server-side searches which don't support
-case-insensivity).
+case-insensitivity).
 </para>
 
 </sect1>

@@ -1,3 +1,22 @@
+2009-08-08 22:50 -0700  Brendan Cully  <brendan@kublai.com>  (d4ea7f571f10)
+
+	* buffy.c: Split out mailbox-specific code in mutt_buffy_check
+
+2009-08-08 20:58 -0700  Brendan Cully  <brendan@kublai.com>  (3b30cebbb35e)
+
+	* buffy.c, muttlib.c, mx.c, mx.h, status.c: Unconditionally define
+	M_IMAP, M_POP. These aren't bloat, and not having them creates a lot
+	of #ifdef clutter.
+
+2009-08-08 16:40 -0700  Brendan Cully  <brendan@kublai.com>  (c837ab790d2e)
+
+	* curs_lib.c: Abort prompt on ^C, as was the case prior to
+	12a6de725483
+
+2009-08-04 10:47 -0700  Vincent Lefevre  <vincent@vinc17.org>  (15a695678b7b)
+
+	* po/fr.po: Updated French translation.
+
 2009-08-04 12:34 +0200  Rocco Rutte  <pdmef@gmx.net>  (25c2d70f2f00)
 
 	* doc/manual.xml.head: Manual: Add some words of warning to really
