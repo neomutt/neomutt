@@ -640,7 +640,7 @@ struct option_t MuttVars[] = {
   ** \fBNote:\fP when using $$sendmail for delivery, you should not enable
   ** this unless you are either using Sendmail 8.8.x or greater or a MTA
   ** providing a \fCsendmail(1)\fP-compatible interface supporting the \fC-N\fP option
-  ** for DSN. For SMTP delivery, DSN support is autodetected so that it
+  ** for DSN. For SMTP delivery, DSN support is auto-detected so that it
   ** depends on the server whether DSN will be used or not.
   */
   { "dsn_return",	DT_STR,	 R_NONE, UL &DsnReturn, UL "" },
@@ -658,7 +658,7 @@ struct option_t MuttVars[] = {
   ** \fBNote:\fP when using $$sendmail for delivery, you should not enable
   ** this unless you are either using Sendmail 8.8.x or greater or a MTA
   ** providing a \fCsendmail(1)\fP-compatible interface supporting the \fC-R\fP option
-  ** for DSN. For SMTP delivery, DSN support is autodetected so that it
+  ** for DSN. For SMTP delivery, DSN support is auto-detected so that it
   ** depends on the server whether DSN will be used or not.
   */
   { "duplicate_threads",	DT_BOOL, R_RESORT|R_RESORT_INIT|R_INDEX, OPTDUPTHREADS, 1 },
@@ -714,7 +714,7 @@ struct option_t MuttVars[] = {
   { "escape",		DT_STR,	 R_NONE, UL &EscChar, UL "~" },
   /*
   ** .pp
-  ** Escape character to use for functions in the builtin editor.
+  ** Escape character to use for functions in the built-in editor.
   */
   { "fast_reply",	DT_BOOL, R_NONE, OPTFASTREPLY, 0 },
   /*
@@ -1043,7 +1043,7 @@ struct option_t MuttVars[] = {
   { "ignore_list_reply_to", DT_BOOL, R_NONE, OPTIGNORELISTREPLYTO, 0 },
   /*
   ** .pp
-  ** Affects the behaviour of the \fC<reply>\fP function when replying to
+  ** Affects the behavior of the \fC<reply>\fP function when replying to
   ** messages from mailing lists (as defined by the ``$subscribe'' or
   ** ``$lists'' commands).  When \fIset\fP, if the ``Reply-To:'' field is
   ** set to the same value as the ``To:'' field, Mutt assumes that the
@@ -1060,7 +1060,7 @@ struct option_t MuttVars[] = {
   ** This is a colon-delimited list of authentication methods mutt may
   ** attempt to use to log in to an IMAP server, in the order mutt should
   ** try them.  Authentication methods are either ``login'' or the right
-  ** side of an IMAP ``AUTH=xxx'' capability string, eg ``digest-md5'', ``gssapi''
+  ** side of an IMAP ``AUTH=xxx'' capability string, e.g. ``digest-md5'', ``gssapi''
   ** or ``cram-md5''. This option is case-insensitive. If it's
   ** \fIunset\fP (the default) mutt will try all available methods,
   ** in order from most-secure to least-secure.
@@ -1269,7 +1269,7 @@ struct option_t MuttVars[] = {
   ** .dt %O .dd original save folder where mutt would formerly have
   **            stashed the message: list name or recipient name
   **            if not sent to a list
-  ** .dt %P .dd progress indicator for the builtin pager (how much of the file has been displayed)
+  ** .dt %P .dd progress indicator for the built-in pager (how much of the file has been displayed)
   ** .dt %s .dd subject of the message
   ** .dt %S .dd status of the message (``N''/``D''/``d''/``!''/``r''/\(as)
   ** .dt %t .dd ``To:'' field (recipients)
@@ -1404,7 +1404,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
-  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overriden by the
+  ** ``mbox'', ``MMDF'', ``MH'' and ``Maildir''. This is overridden by the
   ** \fC-m\fP command-line option.
   */
   { "menu_context",	DT_NUM,  R_NONE, UL &MenuContext, 0 },
@@ -1481,7 +1481,7 @@ struct option_t MuttVars[] = {
   { "mh_purge",		DT_BOOL, R_NONE, OPTMHPURGE, 0 },
   /*
   ** .pp
-  ** When \fIunset\fP, mutt will mimic mh's behaviour and rename deleted messages
+  ** When \fIunset\fP, mutt will mimic mh's behavior and rename deleted messages
   ** to \fI,<old file name>\fP in mh folders instead of really deleting
   ** them. This leaves the message on disk but makes programs reading the folder
   ** ignore it. If the variable is \fIset\fP, the message files will simply be
@@ -1584,7 +1584,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies which pager you would like to use to view
-  ** messages. The value ``builtin'' means to use the builtin pager, otherwise this
+  ** messages. The value ``builtin'' means to use the built-in pager, otherwise this
   ** variable should specify the pathname of the external pager you would
   ** like to use.
   ** .pp
@@ -2005,7 +2005,7 @@ struct option_t MuttVars[] = {
   ** This is a colon-delimited list of authentication methods mutt may
   ** attempt to use to log in to an POP server, in the order mutt should
   ** try them.  Authentication methods are either ``user'', ``apop'' or any
-  ** SASL mechanism, eg ``digest-md5'', ``gssapi'' or ``cram-md5''.
+  ** SASL mechanism, e.g. ``digest-md5'', ``gssapi'' or ``cram-md5''.
   ** This option is case-insensitive. If this option is \fIunset\fP
   ** (the default) mutt will try all available methods, in order from
   ** most-secure to least-secure.
@@ -2032,7 +2032,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** The name of your POP server for the \fC$<fetch-mail>\fP function.  You
-  ** can also specify an alternative port, username and password, ie:
+  ** can also specify an alternative port, username and password, i.e.:
   ** .ts
   ** [pop[s]://][username[:password]@]popserver[:port]
   ** .te
@@ -2337,7 +2337,7 @@ struct option_t MuttVars[] = {
   { "reverse_realname",	DT_BOOL, R_BOTH, OPTREVREAL, 1 },
   /*
   ** .pp
-  ** This variable fine-tunes the behaviour of the $$reverse_name feature.
+  ** This variable fine-tunes the behavior of the $$reverse_name feature.
   ** When it is \fIset\fP, mutt will use the address from incoming messages as-is,
   ** possibly including eventual real names.  When it is \fIunset\fP, mutt will
   ** override any such real names with the setting of the $$realname variable.
@@ -2487,7 +2487,7 @@ struct option_t MuttVars[] = {
   ** this variable unless your signature contains just your name.  The
   ** reason for this is because many software packages use ``-- \n'' to
   ** detect your signature.  For example, Mutt has the ability to highlight
-  ** the signature in a different color in the builtin pager.
+  ** the signature in a different color in the built-in pager.
   */
   { "sig_on_top",	DT_BOOL, R_NONE, OPTSIGONTOP, 0},
   /*
@@ -2672,7 +2672,7 @@ struct option_t MuttVars[] = {
   { "smime_is_default", DT_BOOL,  R_NONE, OPTSMIMEISDEFAULT, 0},
   /*
   ** .pp
-  ** The default behaviour of mutt is to use PGP on all auto-sign/encryption
+  ** The default behavior of mutt is to use PGP on all auto-sign/encryption
   ** operations. To override and to use OpenSSL instead this must be \fIset\fP.
   ** However, this has no effect while replying, since mutt will automatically
   ** select the same application that was used to sign/encrypt the original
@@ -2754,7 +2754,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is a colon-delimited list of authentication methods mutt may
   ** attempt to use to log in to an SMTP server, in the order mutt should
-  ** try them.  Authentication methods are any SASL mechanism, eg
+  ** try them.  Authentication methods are any SASL mechanism, e.g.
   ** ``digest-md5'', ``gssapi'' or ``cram-md5''.
   ** This option is case-insensitive. If it is ``unset''
   ** (the default) mutt will try all available methods, in order from
@@ -2781,7 +2781,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Defines the SMTP smarthost where sent messages should relayed for
-  ** delivery. This should take the form of an SMTP URL, eg:
+  ** delivery. This should take the form of an SMTP URL, e.g.:
   ** .ts
   ** smtp[s]://[user[:pass]@]host[:port]
   ** .te
@@ -3086,7 +3086,7 @@ struct option_t MuttVars[] = {
   ** personal mailbox where you might have several unrelated messages with
   ** the subjects like ``hi'' which will get grouped together. See also
   ** $$sort_re for a less drastic way of controlling this
-  ** behaviour.
+  ** behavior.
   */
   { "suspend",		DT_BOOL, R_NONE, OPTSUSPEND, 1 },
   /*
@@ -3146,7 +3146,7 @@ struct option_t MuttVars[] = {
   { "timeout",		DT_NUM,	 R_NONE, UL &Timeout, 600 },
   /*
   ** .pp
-  ** When Mutt is waiting for user input either idleing in menus or
+  ** When Mutt is waiting for user input either idling in menus or
   ** in an interactive prompt, Mutt would block until input is
   ** present. Depending on the context, this would prevent certain
   ** operations from working, like checking for new mail or keeping
@@ -3275,7 +3275,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
-  ** given in the builtin editor.
+  ** given in the built-in editor.
   */
   { "wait_key",		DT_BOOL, R_NONE, OPTWAITKEY, 1 },
   /*

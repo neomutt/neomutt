@@ -87,7 +87,7 @@ attachments   +I text/plain
 ## line is unnecessary if you already have "attach-allow */.*", of
 ## course.  These are off by default!  The MIME elements contained
 ## within a message/* or multipart/* are still examined, even if the
-## containers themseves don't qualify.
+## containers themselves don't qualify.
 ##
 #attachments  +A message/.* multipart/.*
 #attachments  +I message/.* multipart/.*
