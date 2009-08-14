@@ -1436,8 +1436,9 @@ int mutt_search_command (int cur, int op)
       err.data = error;
       err.dsize = sizeof (error);
       if ((SearchPattern = mutt_pattern_comp (temp, M_FULL_MSG, &err)) == NULL)
-       {
+      {
 	mutt_error ("%s", error);
+	LastSearch[0] = '\0';
 	return (-1);
       }
       mutt_clear_error ();

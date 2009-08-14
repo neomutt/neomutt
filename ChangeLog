@@ -1,3 +1,13 @@
+2009-08-14 02:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (053ef7bbaa72)
+
+	* pattern.c: Bail on missing pattern modifiers at end of pattern.
+	Closes #3314.
+
+2009-08-13 23:49 +0200  Rocco Rutte  <pdmef@gmx.net>  (f8d50e968853)
+
+	* doc/Muttrc.head, doc/manual.xml.head, init.h: Docs: fix
+	typos/style
+
 2009-08-11 12:22 -0700  Tomas Hoger  <thoger@redhat.com>  (dc09812e63a3)
 
 	* mutt_ssl.c: Catch SSL null prefix attach (openssl)
