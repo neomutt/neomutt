@@ -823,7 +823,13 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
       case '%':
       case '=':
       case '~':
-	if (*(ps.dptr + 1) == '(') 
+	if (!*(ps.dptr + 1))
+	{
+	  snprintf (err->data, err->dsize, _("missing pattern: %s"), ps.dptr);
+	  mutt_pattern_free (&curlist);
+	  return NULL;
+	}
+	if (*(ps.dptr + 1) == '(')
         {
 	  ps.dptr ++; /* skip ~ */
 	  p = find_matching_paren (ps.dptr + 1);
