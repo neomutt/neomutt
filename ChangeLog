@@ -1,3 +1,21 @@
+2009-08-17 16:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (e67f4c347bb4)
+
+	* curs_main.c: Require already opened folder when using templates for
+	change-folder.
+
+	For example, start with -y and type a wrong IMAP password so that no
+	mailbox is open. Trying to change folders resulted in a crash.
+
+2009-08-14 21:29 +0200  Rocco Rutte  <pdmef@gmx.net>  (6a08a5244d60)
+
+	* pattern.c: Clear last search pattern if it's invalid.
+	Closes #3315.
+
+	We keep both, the string version and compiled version around for
+	search-next; however, in case of parsing errors we dropped only the
+	compiled version and not the string one making the code attempting
+	to perform a search using a NULL pattern.
+
 2009-08-14 02:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (053ef7bbaa72)
 
 	* pattern.c: Bail on missing pattern modifiers at end of pattern.

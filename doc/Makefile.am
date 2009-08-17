@@ -136,8 +136,9 @@ validate: stamp-doc-xml
 	xmllint --noout --noblanks --postvalid manual.xml
 
 spellcheck:
-	-aspell -l en --mode sgml -c manual.xml.head && \
-	-aspell -l en --mode nroff -c muttrc.man.head
+	-aspell -d american --mode=sgml  --encoding=utf-8 -p $(srcdir)/mutt.pwl check manual.xml.head
+	-aspell -d american --mode=nroff --encoding=utf-8 -p $(srcdir)/mutt.pwl check muttrc.man.head
+	-aspell -d american --mode=ccpp  --encoding=utf-8 -p $(srcdir)/mutt.pwl check $(top_srcdir)/init.h
 
 sortcheck: manual.xml
 	sed -n -e '1,/^<sect1 id="variables">/d' -e '1,/^<sect1 id="functions">/s/<sect2 id="\([^"]*\)">/\1/p' < manual.xml > vars.tmp.1
