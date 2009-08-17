@@ -1082,7 +1082,7 @@ int mutt_index_menu (void)
 	    break;
 	  }
 	}
-	else
+	else if (Context && Context->path)
 	{
 	  mutt_buffy (buf, sizeof (buf));
 
