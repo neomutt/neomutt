@@ -357,7 +357,7 @@ its flags (new email, important email, email that has been forwarded or
 replied to, tagged email, ...), the date when email was sent, its
 sender, the email size, and the subject. Additionally, the index also
 shows thread hierarchies: when you reply to an email, and the other
-person replies back, you can see the other's person email in a
+person replies back, you can see the other person's email in a
 "sub-tree" below.  This is especially useful for personal email between
 a group of people or when you've subscribed to mailing lists.
 </para>
@@ -722,8 +722,8 @@ linkend="to-chars">$to_chars</link> variable.
 </thead>
 <tbody>
 <row><entry>+</entry><entry>message is to you and you only</entry></row>
-<row><entry>T</entry><entry>message is to you, but also to or cc'ed to others</entry></row>
-<row><entry>C</entry><entry>message is cc'ed to you</entry></row>
+<row><entry>T</entry><entry>message is to you, but also to or CC'ed to others</entry></row>
+<row><entry>C</entry><entry>message is CC'ed to you</entry></row>
 <row><entry>F</entry><entry>message is from you</entry></row>
 <row><entry>L</entry><entry>message is sent to a subscribed mailing list</entry></row>
 </tbody>
@@ -4647,7 +4647,7 @@ messages), all of these tools need to agree on a character set and
 encoding. There exists no way to reliably deduce the character set a
 plain text file has. Interoperability is gained by the use of
 well-defined environment variables. The full set can be printed by
-issueing <literal>locale</literal> on the command line.
+issuing <literal>locale</literal> on the command line.
 </para>
 
 <para>
@@ -5616,7 +5616,7 @@ can select one or more addresses to be added to the prompt.
 
 <para>
 Mutt supports reading and writing of four different local mailbox
-formats: mbox, MMDF, MH and Maildir.  The mailbox type is autodetected,
+formats: mbox, MMDF, MH and Maildir.  The mailbox type is auto detected,
 so there is no need to use a flag for different mailbox types.  When
 creating new mailboxes, Mutt uses the default specified with the <link
 linkend="mbox-type">$mbox_type</link> variable. A short description of
@@ -7991,7 +7991,7 @@ As Mutt be can be set up to be the mail client to handle
 considerations, too. Arbitrary header fields can be embedded in these
 links which could override existing header fields or attach arbitrary
 files using <link linkend="attach-header">the Attach:
-psuedoheader</link>. This may be problematic if the <link
+pseudoheader</link>. This may be problematic if the <link
 linkend="edit-headers">$edit-headers</link> variable is
 <emphasis>unset</emphasis>, i.e. the user doesn't want to see header
 fields while editing the message and doesn't pay enough attention to the

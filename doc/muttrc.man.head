@@ -401,7 +401,7 @@ when \(lq\fB*\fP\(rq is used as an argument.  \fIhook-type\fP
 can be any of the \fB-hook\fP commands documented above.
 .SH PATTERNS
 .PP
-In various places with mutt, including some of the abovementioned
+In various places with mutt, including some of the above mentioned
 \fBhook\fP commands, you can specify patterns to match messages.
 .SS Constructing Patterns
 .PP
@@ -606,7 +606,7 @@ lying in the 21st century (i.e., \(lq38\(rq means 2038 and not 1938,
 and \(lq00\(rq is interpreted as 2000), and values
 greater than or equal to 70 as lying in the 20th century.
 .PP
-Note that this behaviour \fIis\fP Y2K compliant, but that mutt
+Note that this behavior \fIis\fP Y2K compliant, but that mutt
 \fIdoes\fP have a Y2.07K problem.
 .PP
 If a date range consists of a single date, the operator in question
