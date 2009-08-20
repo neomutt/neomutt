@@ -6937,7 +6937,7 @@ Usage:
 </para>
 
 <cmdsynopsis>
-<command>auto_view</command>
+<command>auto-view</command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -6945,7 +6945,7 @@ Usage:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command>unauto_view</command>
+<command>unauto-view</command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -8417,7 +8417,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="auto-view">auto_view</link></command>
+<command><link linkend="auto-view">auto-view</link></command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -8425,7 +8425,7 @@ The following are the commands understood by Mutt:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command><link linkend="auto-view">unauto_view</link></command>
+<command><link linkend="auto-view">unauto-view</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
