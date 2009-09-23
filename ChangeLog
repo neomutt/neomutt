@@ -1,4 +1,31 @@
-2009-08-17 16:58 +0200  Rocco Rutte  <pdmef@gmx.net>  (e67f4c347bb4)
+2009-08-27 22:10 -0700  Petr Písař  <petr.pisar@atlas.cz>  (605559e4f88f)
+
+	* po/cs.po: Updated Czech translation.
+
+2009-08-20 11:34 +0200  René Clerc  <rene@clerc.nl>  (6b48ff4e69a3)
+
+	* doc/manual.xml.head: No-brain documentation typo fix
+
+2009-08-20 11:33 +0200  Rocco Rutte  <pdmef@gmx.net>  (e196cfc00105)
+
+	* doc/manual.xml.head: Backed out changeset c9dd93b09ce7
+
+2009-08-20 11:25 +0200  René Clerc  <rene@clerc.nl>  (c9dd93b09ce7)
+
+	* doc/manual.xml.head: No-brain documentation typo fix Hi Rocco,
+
+	Attached a patch for the documentation that fixes a small typo I
+	stumbled upon. If you'd rather have me opening a trac ticket,
+	please say so; since this is such a no-brainer I figured I'd e-mail
+	you directly.
+
+2009-08-17 17:07 +0200  Rocco Rutte  <pdmef@gmx.net>  (d0fce0eec0b3)
+
+	* doc/manual.xml.head, doc/muttrc.man.head, init.h: Doc: fix more
+	typos
+
+	* doc/Makefile.am, doc/mutt.pwl: Doc: fix aspell calls, add
+	custom mutt-only wordlist
 
 	* curs_main.c: Require already opened folder when using templates for
 	change-folder.
@@ -15,8 +42,6 @@
 	search-next; however, in case of parsing errors we dropped only the
 	compiled version and not the string one making the code attempting
 	to perform a search using a NULL pattern.
-
-2009-08-14 02:44 +0200  Rocco Rutte  <pdmef@gmx.net>  (053ef7bbaa72)
 
 	* pattern.c: Bail on missing pattern modifiers at end of pattern.
 	Closes #3314.

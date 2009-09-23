@@ -3233,7 +3233,7 @@ msgstr "Il file è una directory, salvo lì dentro? [(s)ì, (n)o, (t)utti]"
 
 #: muttlib.c:938
 msgid "yna"
-msgstr "yna"
+msgstr "snt"
 
 #: muttlib.c:954
 msgid "File is a directory, save under it?"
