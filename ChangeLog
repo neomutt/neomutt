@@ -1,3 +1,14 @@
+2009-10-28 23:03 -0700  Brendan Cully  <brendan@kublai.com>  (89fb586edda2)
+
+	* sendlib.c: Unfold headers to wrap length in pager, when weed is set.
+
+	From Rocco's patch queue.
+
+2009-09-22 23:29 -0700  Antonio Radici  <antonio@dyne.org>  (5037c59a589e)
+
+	* po/it.po: Correct Italian translation of y/n/a prompt.
+	Closes #3336
+
 2009-08-27 22:10 -0700  Petr Písař  <petr.pisar@atlas.cz>  (605559e4f88f)
 
 	* po/cs.po: Updated Czech translation.
