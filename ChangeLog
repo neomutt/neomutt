@@ -1,3 +1,15 @@
+2009-12-07 22:46 -0800  Peter Rosin  <peda@lysator.liu.se>  (fc9563de3dcb)
+
+	* snprintf.c: Output %p as unsigned in the bundled snprintf
+
+2009-11-14 14:31 -0800  Brendan Cully  <brendan@kublai.com>  (6928f522ac48)
+
+	* curs_main.c: Back out e67f4c347bb4.
+
+	I could not reproduce the problem, and the change makes it
+	impossible to change to a real folder when no folder is currently
+	open.
+
 2009-10-28 23:03 -0700  Brendan Cully  <brendan@kublai.com>  (89fb586edda2)
 
 	* sendlib.c: Unfold headers to wrap length in pager, when weed is set.

@@ -652,7 +652,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
   char *buf = NULL;
   int bufsize;
   /* needed to get the DNS subjectAltNames: */
-  STACK *subj_alt_names;
+  STACK_OF(GENERAL_NAME) *subj_alt_names;
   int subj_alt_names_count;
   GENERAL_NAME *subj_alt_name;
   /* did we find a name matching hostname? */
