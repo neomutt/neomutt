@@ -1,3 +1,14 @@
+2009-12-10 22:52 -0800  Daniel Jacobowitz  <dan@debian.org>  (b7d2cb7c7ce1)
+
+	* hcache.c: Do not store header color in hcache. If the color
+	directive is removed from muttrc, the cached value from the last
+	directive would otherwise still be in effect.
+
+2009-12-07 23:08 -0800  Patrick Welche  <prlw1@cam.ac.uk>  (1cf34ea1f128)
+
+	* mutt_ssl.c: STACK* is not defined with newer SSL, use
+	STACK_OF instead. Closes #3356.
+
 2009-12-07 22:46 -0800  Peter Rosin  <peda@lysator.liu.se>  (fc9563de3dcb)
 
 	* snprintf.c: Output %p as unsigned in the bundled snprintf

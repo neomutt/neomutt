@@ -68,9 +68,10 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
   if (option (OPTMAILCAPSANITIZE))
     mutt_sanitize_filename (type, 0);
 
-  while (command[x] && x<clen && y<sizeof(buf)) 
+  while (x < clen && command[x] && y < sizeof (buf) - 1)
   {
-    if (command[x] == '\\') {
+    if (command[x] == '\\')
+    {
       x++;
       buf[y++] = command[x++];
     }
@@ -85,7 +86,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
 	int z = 0;
 
 	x++;
-	while (command[x] && command[x] != '}' && z<sizeof(param))
+	while (command[x] && command[x] != '}' && z < sizeof (param) - 1)
 	  param[z++] = command[x++];
 	param[z] = '\0';
 	
