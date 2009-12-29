@@ -5564,7 +5564,7 @@ wrapper command to use.  For example:
 </para>
 
 <screen>
-set query_command = "mutt_ldap_query.pl '%s'"
+set query_command = "mutt_ldap_query.pl %s"
 </screen>
 
 <para>
