@@ -1038,7 +1038,7 @@ then
 fi
 
 if test x$db_found != xno ; then
-  MUTT_MD5="mutt_md5"
+  MUTT_MD5="mutt_md5$EXEEXT"
 fi
 AC_SUBST(MUTT_MD5)
 
