@@ -553,7 +553,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
   ** If \fI``ask-*''\fP, ask whether or not to verify the signature.
-  ** If \Fi``no''\fP, never attempt to verify cryptographic signatures.
+  ** If \fI``no''\fP, never attempt to verify cryptographic signatures.
   ** (Crypto only)
   */
   { "date_format",	DT_STR,	 R_BOTH, UL &DateFmt, UL "!%a, %b %d, %Y at %I:%M:%S%p %Z" },
