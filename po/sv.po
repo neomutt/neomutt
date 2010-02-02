@@ -74,7 +74,7 @@ msgstr "Adress: "
 #: alias.c:307 send.c:206
 #, c-format
 msgid "Error: '%s' is a bad IDN."
-msgstr "Fel: '%s' är ett dåligt IDN."
+msgstr "Fel: '%s' är ett felaktigt IDN."
 
 #: alias.c:319
 msgid "Personal name: "
@@ -417,7 +417,7 @@ msgstr "Fel vid tolkning av adress!"
 #: commands.c:298 recvcmd.c:190
 #, c-format
 msgid "Bad IDN: '%s'"
-msgstr "Dåligt IDN: \"%s\""
+msgstr "Felaktigt IDN: \"%s\""
 
 #: commands.c:309 recvcmd.c:204
 #, c-format
@@ -640,7 +640,7 @@ msgstr "-- Bilagor"
 #: compose.c:302
 #, c-format
 msgid "Warning: '%s' is a bad IDN."
-msgstr "Varning: \"%s\" är ett dåligt IDN."
+msgstr "Varning: \"%s\" är ett felaktigt IDN."
 
 #: compose.c:325
 msgid "You may not delete the only attachment."
@@ -649,7 +649,7 @@ msgstr "Du får inte ta bort den enda bilagan."
 #: compose.c:600 send.c:1591
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
-msgstr "Dåligt IDN i \"%s\": \"%s\""
+msgstr "Felaktigt IDN i \"%s\": \"%s\""
 
 #: compose.c:683
 msgid "Attaching selected files..."
@@ -1788,7 +1788,7 @@ msgstr "Inga rader i meddelandet.\n"
 #: edit.c:446
 #, c-format
 msgid "Bad IDN in %s: '%s'\n"
-msgstr "Dåligt IDN i %s: \"%s\"\n"
+msgstr "Felaktigt IDN i %s: \"%s\"\n"
 
 #: edit.c:464
 #, c-format
@@ -1999,7 +1999,7 @@ msgstr "Hjälp för %s"
 #: history.c:77 history.c:114 history.c:140
 #, c-format
 msgid "Bad history file format (line %d)"
-msgstr "Dåligt filformat för historia (rad %d)"
+msgstr "Felaktigt filformat för historik (rad %d)"
 
 #: hook.c:251
 #, c-format
@@ -2186,7 +2186,7 @@ msgstr "Huvudsökning utan huvudnamn: %s"
 
 #: imap/imap.c:1826
 msgid "Bad mailbox name"
-msgstr "Dåligt namn på brevlåda"
+msgstr "Felaktigt namn på brevlåda"
 
 #: imap/imap.c:1851
 #, c-format
@@ -2260,7 +2260,7 @@ msgstr "Inte tillgänglig i den här menyn."
 #: init.c:466
 #, c-format
 msgid "Bad regexp: %s"
-msgstr "Dåligt reguljärt uttryck: %s"
+msgstr "Felaktigt reguljärt uttryck: %s"
 
 #: init.c:523
 #, c-format
@@ -2282,7 +2282,7 @@ msgstr "Saknar -rx eller -addr."
 #: init.c:901
 #, c-format
 msgid "Warning: Bad IDN '%s'.\n"
-msgstr "Varning: Dåligt IDN \"%s\".\n"
+msgstr "Varning: Felaktigtt IDN \"%s\".\n"
 
 #: init.c:1109
 msgid "attachments: no disposition"
@@ -2307,7 +2307,7 @@ msgstr "alias: ingen adress"
 #: init.c:1359
 #, c-format
 msgid "Warning: Bad IDN '%s' in alias '%s'.\n"
-msgstr "Varning: Dåligt IDN \"%s\" i alias \"%s\".\n"
+msgstr "Varning: Felaktigt IDN \"%s\" i alias \"%s\".\n"
 
 #: init.c:1447
 msgid "invalid header field"
@@ -2925,7 +2925,7 @@ msgstr "Fel uppstod vid förbindelsen till %s (%s)"
 #: mutt_socket.c:470 mutt_socket.c:529
 #, c-format
 msgid "Bad IDN \"%s\"."
-msgstr "Dåligt IDN \"%s\"."
+msgstr "Felaktigt IDN \"%s\"."
 
 #: mutt_socket.c:478 mutt_socket.c:537
 #, c-format
@@ -4066,7 +4066,7 @@ msgstr "Utdata från sändprocessen"
 #: sendlib.c:2500
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr "Dåligt IDN %s vid förberedning av \"resent-from\"."
+msgstr "Felaktigt IDN %s vid förberedning av \"resent-from\"."
 
 #: signal.c:43
 #, c-format

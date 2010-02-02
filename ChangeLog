@@ -1,3 +1,27 @@
+2010-02-01 23:36 -0800  Antonio Radici  <antonio@dyne.org>  (68deb90baa34)
+
+	* init.h: Small fix to the muttrc manpage. Closes #3374
+
+2010-01-13 19:12 +0100  Matthias Andree  <matthias.andree@gmx.de>  (e2c60de29015)
+
+	* configure.ac: Fix hcache build on systems with $(EXEEXT), include it
+	in mutt_md5.
+
+2009-12-29 00:33 -0500  Brendan Cully  <brendan@kublai.com>  (31881f38ca1e)
+
+	* curs_lib.c: Hack mutt_wstr_trunc to treat M_TREE characters as 1
+	cell. Closes #3364.
+
+2009-12-28 22:13 -0500  Brendan Cully  <brendan@kublai.com>  (359de549b2d1)
+
+	* doc/manual.xml.head: Remove spurious quotes from query_command
+	example. Closes #3365.
+
+2009-12-14 10:24 -0800  Brendan Cully  <brendan@kublai.com>  (736b6af3c5f1)
+
+	* rfc1524.c: Fix off-by-one errors in mailcap parser.
+	Closes #3362
+
 2009-12-10 22:52 -0800  Daniel Jacobowitz  <dan@debian.org>  (b7d2cb7c7ce1)
 
 	* hcache.c: Do not store header color in hcache. If the color
