@@ -1550,7 +1550,7 @@ it does not add the trailing spaces.
 
 <para>
 After editing the initial message text and before entering the compose
-menu, Mutt properly space-stuffes the message.
+menu, Mutt properly space-stuffs the message.
 <emphasis>Space-stuffing</emphasis> is required by RfC3676 defining
 <literal>format=flowed</literal> and means to prepend a space to:
 </para>
