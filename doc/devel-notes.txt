@@ -157,7 +157,7 @@ submission to the mutt-dev mailing list for discussion and review.
 
 In order to ease later bisecting in case of bugs and code history,
 changes should be grouped logically, feature by feature or bugfix by
-bugfix. Escpecially a single patch fixing several problems at once
+bugfix. Especially a single patch fixing several problems at once
 should be avoided.
 
 Before submitting patches, please make sure the check_sec.sh script

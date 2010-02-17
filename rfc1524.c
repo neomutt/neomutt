@@ -388,7 +388,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
   /* rfc1524 specifies that a path of mailcap files should be searched.
    * joy.  They say 
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
-   * and overriden by the MAILCAPS environment variable, and, just to be nice, 
+   * and overridden by the MAILCAPS environment variable, and, just to be nice,
    * we'll make it specifiable in .muttrc
    */
   if (!curr || !*curr)

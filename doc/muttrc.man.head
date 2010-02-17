@@ -475,7 +475,7 @@ expired messages
 messages originating from \fIEXPR\fP
 .TP
 %f \fIGROUP\fP
-messages originating form any member of \fIGROUP\fP
+messages originating from any member of \fIGROUP\fP
 .TP
 ~F
 flagged messages

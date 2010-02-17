@@ -352,7 +352,7 @@ struct option_t MuttVars[] = {
   ** Upon startup Mutt tries to derive this value from environment variables
   ** such as \fC$$$LC_CTYPE\fP or \fC$$$LANG\fP.
   ** .pp
-  ** \fBNote:\fP It should only be set in case Mutt isn't abled to determine the
+  ** \fBNote:\fP It should only be set in case Mutt isn't able to determine the
   ** character set used correctly.
   */
   { "check_mbox_size",	DT_BOOL, R_NONE, OPTCHECKMBOXSIZE, 0 },
