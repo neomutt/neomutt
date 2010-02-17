@@ -710,6 +710,8 @@ linkend="to-chars">$to_chars</link> variable.
 <row><entry>s</entry><entry>message is signed</entry></row>
 <row><entry>!</entry><entry>message is flagged</entry></row>
 <row><entry>*</entry><entry>message is tagged</entry></row>
+<row><entry>n</entry><entry>thread contains new messages (only if collapsed)</entry></row>
+<row><entry>o</entry><entry>thread contains old messages (only if collapsed)</entry></row>
 </tbody>
 </tgroup>
 </table>
