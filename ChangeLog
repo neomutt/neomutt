@@ -1,3 +1,10 @@
+2010-02-17 00:47 -0800  Simon Ruderich  <simon@ruderich.org>  (260d39279161)
+
+	* doc/manual.xml.head: Document 'n' and 'o' flags in index
+
+	* doc/devel-notes.txt, doc/muttrc.man.head, init.h,
+	rfc1524.c: Spelling fixes
+
 2010-02-10 23:29 -0800  Brendan Cully  <brendan@kublai.com>  (b7ec848af36b)
 
 	* doc/manual.xml.head: Fix a typo (closes #3379)

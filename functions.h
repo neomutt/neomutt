@@ -108,6 +108,7 @@ struct binding_t OpMain[] = { /* map: index */
 #endif
 #ifdef USE_IMAP
   { "imap-fetch-mail",		OP_MAIN_IMAP_FETCH,		NULL },
+  { "imap-logout-all",		OP_MAIN_IMAP_LOGOUT_ALL,	NULL },
 #endif
   { "display-toggle-weed",		OP_DISPLAY_HEADERS,		"h" },
   { "next-undeleted",		OP_MAIN_NEXT_UNDELETED,		"j" },
@@ -192,6 +193,7 @@ struct binding_t OpPager[] = { /* map: pager */
   { "group-reply",	OP_GROUP_REPLY,			"g" },
 #ifdef USE_IMAP
   { "imap-fetch-mail",  OP_MAIN_IMAP_FETCH,		NULL },
+  { "imap-logout-all",  OP_MAIN_IMAP_LOGOUT_ALL,	NULL },
 #endif
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,		"h" },
   { "next-undeleted",	OP_MAIN_NEXT_UNDELETED,		"j" },

@@ -991,6 +991,23 @@ int mutt_index_menu (void)
 	if (Context && Context->magic == M_IMAP)
 	  imap_check_mailbox (Context, &index_hint, 1);
         break;
+
+      case OP_MAIN_IMAP_LOGOUT_ALL:
+	if (Context && Context->magic == M_IMAP)
+	{
+	  if (mx_close_mailbox (Context, &index_hint) != 0)
+	  {
+	    set_option (OPTSEARCHINVALID);
+	    menu->redraw = REDRAW_FULL;
+	    break;
+	  }
+	  FREE (&Context);
+	}
+	imap_logout_all();
+	mutt_message _("Logged out of IMAP servers.");
+	set_option (OPTSEARCHINVALID);
+	menu->redraw = REDRAW_FULL;
+	break;
 #endif
 
       case OP_MAIN_SYNC_FOLDER:
