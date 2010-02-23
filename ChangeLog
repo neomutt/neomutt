@@ -1,3 +1,13 @@
+2010-02-21 13:16 -0800  Brendan Cully  <brendan@kublai.com>  (a6fddecdc5f5)
+
+	* curs_lib.c: Make mutt_yesorno use mutt_message to print query.
+	Closes #3352.
+
+2010-02-20 21:56 -0800  Gregory Shapiro  <dev.mutt.org@g.gshapiro.net>  (f723e07c8e6d)
+
+	* OPS, UPDATING, curs_main.c, functions.h: Add imap-logout-
+	all to log out of all IMAP connections. Closes #2880.
+
 2010-02-17 00:47 -0800  Simon Ruderich  <simon@ruderich.org>  (260d39279161)
 
 	* doc/manual.xml.head: Document 'n' and 'o' flags in index
