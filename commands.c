@@ -863,7 +863,7 @@ int mutt_save_message (HEADER *h, int delete,
     mx_close_mailbox (&ctx, NULL);
 
     if (need_buffy_cleanup)
-      mutt_buffy_cleanup (ctx.path, &st);
+      mutt_buffy_cleanup (buf, &st);
 
     mutt_clear_error ();
     return (0);
