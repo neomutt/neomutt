@@ -1,3 +1,12 @@
+2010-02-23 12:42 -0800  Brendan Cully  <brendan@kublai.com>  (57124ea5592e)
+
+	* commands.c: Don't use freed ctx.path when updating utime of target
+	mailbox in save-message. Thanks to Sean Boudreau for the bug report.
+
+2010-02-22 23:01 -0800  Vincent Lefevre  <vincent@vinc17.net>  (f17302c10229)
+
+	* po/fr.po: Updated French translation.
+
 2010-02-21 13:16 -0800  Brendan Cully  <brendan@kublai.com>  (a6fddecdc5f5)
 
 	* curs_lib.c: Make mutt_yesorno use mutt_message to print query.

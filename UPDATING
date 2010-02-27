@@ -6,6 +6,7 @@ The keys used are:
 
 hg tip:
 
+  ! $thorough_search defaults to yes
   + imap-logout-all closes all open IMAP connections
   ! header/body cache paths are always UTF-8
   + $wrap_headers to control outgoing message's header length

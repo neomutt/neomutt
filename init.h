@@ -3106,7 +3106,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Note that $$indent_string is ignored when this option is \fIset\fP.
   */
-  { "thorough_search",	DT_BOOL, R_NONE, OPTTHOROUGHSRC, 0 },
+  { "thorough_search",	DT_BOOL, R_NONE, OPTTHOROUGHSRC, 1 },
   /*
   ** .pp
   ** Affects the \fC~b\fP and \fC~h\fP search operations described in
