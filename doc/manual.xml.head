@@ -5942,7 +5942,7 @@ When changing folders, Mutt fills the prompt with the first folder from
 the mailboxes list containing new mail (if any), pressing
 <literal>&lt;Space&gt;</literal> will cycle through folders with new
 mail.  The (by default unbound) function
-<literal>&lt;mutt-unread-mailbox&gt;</literal> in the index can be used
+<literal>&lt;next-unread-mailbox&gt;</literal> in the index can be used
 to immediately open the next folder with unread mail (if any).
 </para>
 

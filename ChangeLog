@@ -1,3 +1,11 @@
+2010-02-28 17:23 -0800  Antonio Radici  <antonio@dyne.org>  (25459cbb132a)
+
+	* po/de.po: Fix German translation of "No undeleted messages." (closes
+	#3372)
+
+	* pop_lib.c: pop: allow user-specified port to override
+	default in URL. Closes #3322.
+
 2010-02-28 17:00 -0800  ludwig  <ludwig@fh-worms.de>  (2c78b28027cc)
 
 	* crypt-gpgme.c: GPGME: Sender verification should be canse-
