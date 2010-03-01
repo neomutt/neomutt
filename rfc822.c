@@ -38,6 +38,7 @@
 #endif
 
 #include "mutt_idna.h"
+#include "rfc2047.h"
 
 #define terminate_string(a, b, c) do { if ((b) < (c)) a[(b)] = 0; else \
 	a[(c)] = 0; } while (0)
@@ -491,9 +492,11 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       cur = rfc822_new_address ();
       if (phraselen)
       {
-	/* if we get something like "Michael R. Elkins" remove the quotes */
-	rfc822_dequote_comment (phrase);
 	cur->personal = safe_strdup (phrase);
+	/* if we get something like "Michael R. Elkins" remove the quotes */
+	/* quotes may be encoded in RFC2047 */
+	rfc2047_decode (&cur->personal);
+	rfc822_dequote_comment (cur->personal);
       }
       if ((ps = parse_route_addr (s + 1, comment, &commentlen, sizeof (comment) - 1, cur)) == NULL)
       {
