@@ -1646,7 +1646,7 @@ msgstr "Sie sind bereits auf der letzten Nachricht."
 
 #: curs_main.c:1323 curs_main.c:1367
 msgid "No undeleted messages."
-msgstr "Alle Nachrichten gelöscht."
+msgstr "Keine ungelöschten Nachrichten."
 
 #: curs_main.c:1360 curs_main.c:1384
 msgid "You are on the first message."
