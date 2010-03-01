@@ -1,3 +1,13 @@
+2010-02-28 17:00 -0800  ludwig  <ludwig@fh-worms.de>  (2c78b28027cc)
+
+	* crypt-gpgme.c: GPGME: Sender verification should be canse-
+	insensitive for domain names. Closes #2180
+
+2010-02-26 18:18 -0800  Brendan Cully  <brendan@kublai.com>  (40eca68c394a)
+
+	* UPDATING, init.h: Make $thorough_search default to yes
+	(closes #3386)
+
 2010-02-23 12:42 -0800  Brendan Cully  <brendan@kublai.com>  (57124ea5592e)
 
 	* commands.c: Don't use freed ctx.path when updating utime of target

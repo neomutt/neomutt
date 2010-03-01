@@ -43,6 +43,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
   /* Defaults */
   acct->flags = 0;
   acct->type = M_ACCT_TYPE_POP;
+  acct->port = 0;
 
   c = safe_strdup (path);
   url_parse_ciss (&url, c);
@@ -60,10 +61,12 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
     acct->flags |= M_ACCT_SSL;
 
   service = getservbyname (url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
-  if (service)
-    acct->port = ntohs (service->s_port);
-  else
-    acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;;
+  if (!acct->port) {
+    if (service)
+      acct->port = ntohs (service->s_port);
+    else
+      acct->port = url.scheme == U_POP ? POP_PORT : POP_SSL_PORT;;
+  }
 
   FREE (&c);
   return 0;
