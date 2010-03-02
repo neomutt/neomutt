@@ -1,4 +1,13 @@
-2010-03-01 16:14 -0800  Brendan Cully  <brendan@kublai.com>  (86d93280e5b3)
+2010-03-02 11:16 -0800  Brendan Cully  <brendan@kublai.com>  (41cf44ddbb4c)
+
+	* copy.c: Fix thinko in [cc02f079b1b9]
+
+2010-03-01 22:40 -0800  Brendan Cully  <brendan@kublai.com>  (cc02f079b1b9)
+
+	* copy.c: Guard dequote with NULL check on personal field
+
+	* copy.c, rfc822.c, rfc822.h: Another attempt to dequote
+	RFC2047-encoded address comments (see #2014)
 
 	* rfc822.c: Backed out changeset 2a4ca6917fd0. It is incompatible with
 	$assumed_charset (see #2014).
