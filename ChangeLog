@@ -1,3 +1,16 @@
+2010-03-01 16:14 -0800  Brendan Cully  <brendan@kublai.com>  (86d93280e5b3)
+
+	* rfc822.c: Backed out changeset 2a4ca6917fd0. It is incompatible with
+	$assumed_charset (see #2014).
+
+2010-02-28 23:03 -0800  Brendan Cully  <brendan@kublai.com>  (2a4ca6917fd0)
+
+	* rfc822.c: RFC-2047 decode address text before dequoting it (see
+	#2014)
+
+	* doc/manual.xml.head: Fix next-unread-mailbox name in
+	documentation. Closes #3319.
+
 2010-02-28 17:23 -0800  Antonio Radici  <antonio@dyne.org>  (25459cbb132a)
 
 	* po/de.po: Fix German translation of "No undeleted messages." (closes

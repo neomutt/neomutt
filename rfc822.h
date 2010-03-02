@@ -46,6 +46,7 @@ typedef struct address_t
 }
 ADDRESS;
 
+void rfc822_dequote_comment (char *s);
 void rfc822_free_address (ADDRESS **);
 void rfc822_qualify (ADDRESS *, const char *);
 ADDRESS *rfc822_parse_adrlist (ADDRESS *, const char *s);
