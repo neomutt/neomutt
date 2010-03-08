@@ -254,6 +254,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   BUFFER buf;
+  char errmsg[STRING];
   int r;
 
   memset (&buf, 0, sizeof (buf));
@@ -290,13 +291,15 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   {
     pat->p.rx = safe_malloc (sizeof (regex_t));
     r = REGCOMP (pat->p.rx, buf.data, REG_NEWLINE | REG_NOSUB | mutt_which_case (buf.data));
-    FREE (&buf.data);
     if (r)
     {
-      regerror (r, pat->p.rx, err->data, err->dsize);
+      regerror (r, pat->p.rx, errmsg, sizeof (errmsg));
+      mutt_buffer_printf (err, "'%s': %s", buf.data, errmsg);
+      FREE (&buf.data);
       FREE (&pat->p.rx);
       return (-1);
     }
+    FREE (&buf.data);
   }
 
   return 0;
