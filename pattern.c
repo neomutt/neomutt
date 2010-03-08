@@ -294,7 +294,6 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
     if (r)
     {
       regerror (r, pat->p.rx, err->data, err->dsize);
-      regfree (pat->p.rx);
       FREE (&pat->p.rx);
       return (-1);
     }
