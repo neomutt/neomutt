@@ -1675,6 +1675,9 @@ int mutt_buffer_printf (BUFFER* buf, const char* fmt, ...)
   va_start (ap, fmt);
   va_copy (ap_retry, ap);
 
+  if (!buf->dptr)
+    buf->dptr = buf->data;
+
   doff = buf->dptr - buf->data;
   blen = buf->dsize - doff;
   /* solaris 9 vsnprintf barfs when blen is 0 */

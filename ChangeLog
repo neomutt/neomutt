@@ -1,3 +1,13 @@
+2010-03-08 14:52 -0800  Brendan Cully  <brendan@kublai.com>  (8ec606f6cafb)
+
+	* pattern.c: If regcomp fails, assume rx has not been allocated. Fixes
+	a core dump for save-hook '~f foo\.bar@(something|other)\.com' =foo.
+
+2010-03-02 11:31 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (fec2720ff6ef)
+
+	* rfc822.c: Fix #2014. Thanks to Vincent Lefevre for help
+	with this one.
+
 2010-03-02 11:16 -0800  Brendan Cully  <brendan@kublai.com>  (41cf44ddbb4c)
 
 	* copy.c: Fix thinko in [cc02f079b1b9]
