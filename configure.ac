@@ -736,6 +736,7 @@ AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl@<:@=PFX@:>@], [Use SASL network se
           saved_LIBS="$LIBS"
           LIBS=
 
+          # OpenSolaris provides a SASL2 interface in libsasl
           sasl_libs="sasl2 sasl"
           AC_SEARCH_LIBS(sasl_encode64, [$sasl_libs],,
                   AC_MSG_ERROR([could not find sasl lib]),)
