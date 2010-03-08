@@ -718,7 +718,7 @@ fi
 
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
-AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl@<:@=PFX@:>@], [Use Cyrus SASL 2 network security library]),
+AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl@<:@=PFX@:>@], [Use SASL network security library]),
         [	
         if test "$with_sasl" != "no"
         then
@@ -734,15 +734,18 @@ AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl@<:@=PFX@:>@], [Use Cyrus SASL 2 ne
           fi
 
           saved_LIBS="$LIBS"
+          LIBS=
 
-          AC_CHECK_LIB(sasl2, sasl_client_init,,
-            AC_MSG_ERROR([could not find libsasl2]),)
+          sasl_libs="sasl2 sasl"
+          AC_SEARCH_LIBS(sasl_encode64, [$sasl_libs],,
+                  AC_MSG_ERROR([could not find sasl lib]),)
 
+          MUTTLIBS="$MUTTLIBS $LIBS"
           MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_sasl.o"
-          MUTTLIBS="$MUTTLIBS -lsasl2"
           LIBS="$saved_LIBS"
+
           AC_DEFINE(USE_SASL,1,
-                  [ Define if want to use the Cyrus SASL library for POP/IMAP authentication. ])
+                  [ Define if want to use the SASL library for POP/IMAP authentication. ])
           need_sasl=yes
         fi
         ])
