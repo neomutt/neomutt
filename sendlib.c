@@ -1799,7 +1799,9 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     else
     {
       tagbuf = mutt_substrdup (start, t);
-      valbuf = mutt_substrdup (t + 2, end);
+      ++t; /* skip over the colon separating the header field name and value */
+      SKIPWS(t); /* skip over any leading whitespace */
+      valbuf = mutt_substrdup (t, end);
     }
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
 	      "max width = %d > %d\n",
