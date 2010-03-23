@@ -581,7 +581,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  mutt_edit_file (Editor, msg->content->filename);
 	  mutt_update_encoding (msg->content);
-	  menu->redraw = REDRAW_CURRENT | REDRAW_STATUS;
+	  menu->redraw = REDRAW_FULL;
 	  mutt_message_hook (NULL, msg, M_SEND2HOOK);
 	  break;
 	}
