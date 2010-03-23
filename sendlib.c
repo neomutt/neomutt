@@ -2720,7 +2720,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   /* mutt_write_rfc822_header() only writes out a Date: header with
    * mode == 0, i.e. _not_ postponment; so write out one ourself */
   if (post)
-    fprintf (msg->fp, mutt_make_date (buf, sizeof (buf)));
+    fprintf (msg->fp, "%s", mutt_make_date (buf, sizeof (buf)));
 
   /* (postponment) if the mail is to be signed or encrypted, save this info */
   if ((WithCrypto & APPLICATION_PGP)

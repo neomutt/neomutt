@@ -1,4 +1,31 @@
-2010-03-08 14:52 -0800  Brendan Cully  <brendan@kublai.com>  (8ec606f6cafb)
+2010-03-22 20:02 -0700  marcel  <marcel@telka.sk>  (f544730656c1)
+
+	* compose.c: redraw entire screen when exiting editor after re-editing
+	the message body in the send menu.
+
+	closes #3393.
+
+2010-03-21 09:52 -0700  Michael Elkins  <me@mutt.org>  (0a29e3f4f4b9)
+
+	* sendlib.c: Do not assume whitespace follows the colon in a header
+	field.
+
+	Closes #3385.
+
+2010-03-08 15:13 -0800  Brendan Cully  <brendan@kublai.com>  (ad6d799951cb)
+
+	* configure.ac: Comment about search libsasl for sasl2 functions
+
+2010-03-08 14:04 -0600  Will Fiveash  <Will.Fiveash@Sun.COM>  (b92b9c6a1c85)
+
+	* configure.ac: OpenSolaris sasl fix for configure.ac
+
+2010-03-08 15:00 -0800  Brendan Cully  <brendan@kublai.com>  (05cec973f0d9)
+
+	* pattern.c: When regexp compilation fails, report actual pattern
+	along with error.
+
+	* muttlib.c: mutt_buffer_printf: NULL dptr means use data
 
 	* pattern.c: If regcomp fails, assume rx has not been allocated. Fixes
 	a core dump for save-hook '~f foo\.bar@(something|other)\.com' =foo.
