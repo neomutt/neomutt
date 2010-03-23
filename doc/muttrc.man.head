@@ -103,8 +103,8 @@ Once defined, these address groups can be used in patterns to search for and lim
 display to messages matching a group.
 .PP
 .nf
-\fBalternates\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]]
-\fBunalternates\fP [\fB * \fP | \fIregexp\fP [ \fB,\fP \fIregexp\fP [ ... ]] ]
+\fBalternates\fP [\fB-group\fP \fIname\fP] \fIregexp\fP [ \fIregexp\fP [ ... ]]
+\fBunalternates\fP [\fB * \fP | \fIregexp\fP [ \fIregexp\fP [ ... ]] ]
 .fi
 .IP
 \fBalternates\fP is used to inform mutt about alternate addresses
