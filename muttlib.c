@@ -1859,16 +1859,21 @@ int mutt_match_rx_list (const char *s, RX_LIST *l)
   return 0;
 }
 
-int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
+/* Match a string against the patterns defined by the 'spam' command and output
+ * the expanded format into `text` when there is a match.  If textsize<=0, the
+ * match is performed but the format is not expanded and no assumptions are made
+ * about the value of `text` so it may be NULL.
+ *
+ * Returns 1 if the argument `s` matches a pattern in the spam list, otherwise
+ * 0. */
+int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int textsize)
 {
   static regmatch_t *pmatch = NULL;
   static int nmatch = 0;
-  int i, n, tlen;
+  int tlen = 0;
   char *p;
 
-  if (!s)  return 0;
-
-  tlen = 0;
+  if (!s) return 0;
 
   for (; l; l = l->next)
   {
@@ -1886,23 +1891,42 @@ int mutt_match_spam_list (const char *s, SPAM_LIST *l, char *text, int x)
       dprint (5, (debugfile, "mutt_match_spam_list: %d subs\n", (int)l->rx->rx->re_nsub));
 
       /* Copy template into text, with substitutions. */
-      for (p = l->template; *p;)
+      for (p = l->template; *p && tlen < textsize - 1;)
       {
+	/* backreference to pattern match substring, eg. %1, %2, etc) */
 	if (*p == '%')
 	{
-	  n = atoi(++p);			/* find pmatch index */
-	  while (isdigit((unsigned char)*p))
-	    ++p;				/* skip subst token */
-	  for (i = pmatch[n].rm_so; (i < pmatch[n].rm_eo) && (tlen < x); i++)
-	    text[tlen++] = s[i];
+	  char *e; /* used as pointer to end of integer backreference in strtol() call */
+	  int n;
+
+	  ++p; /* skip over % char */
+	  n = strtol(p, &e, 10);
+	  /* Ensure that the integer conversion succeeded (e!=p) and bounds check.  The upper bound check
+	   * should not strictly be necessary since add_to_spam_list() finds the largest value, and
+	   * the static array above is always large enough based on that value. */
+	  if (e != p && n >= 0 && n <= l->nmatch && pmatch[n].rm_so != -1) {
+	    /* copy as much of the substring match as will fit in the output buffer, saving space for
+	     * the terminating nul char */
+	    int idx;
+	    for (idx = pmatch[n].rm_so; (idx < pmatch[n].rm_eo) && (tlen < textsize - 1); ++idx)
+	      text[tlen++] = s[idx];
+	  }
+	  p = e; /* skip over the parsed integer */
 	}
 	else
 	{
 	  text[tlen++] = *p++;
 	}
       }
-      text[tlen] = '\0';
-      dprint (5, (debugfile, "mutt_match_spam_list: \"%s\"\n", text));
+      /* tlen should always be less than textsize except when textsize<=0
+       * because the bounds checks in the above code leave room for the
+       * terminal nul char.   This should avoid returning an unterminated
+       * string to the caller.  When textsize<=0 we make no assumption about
+       * the validity of the text pointer. */
+      if (tlen < textsize) {
+	text[tlen] = '\0';
+	dprint (5, (debugfile, "mutt_match_spam_list: \"%s\"\n", text));
+      }
       return 1;
     }
   }
