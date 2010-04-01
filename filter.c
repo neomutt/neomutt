@@ -26,7 +26,7 @@
 #include <stdlib.h>
 #include <sys/wait.h>
 
-/* Invokes a commmand on a pipe and optionally connects its stdin and stdout
+/* Invokes a command on a pipe and optionally connects its stdin and stdout
  * to the specified handles.
  */
 pid_t

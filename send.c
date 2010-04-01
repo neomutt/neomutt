@@ -1362,7 +1362,7 @@ ci_send_message (int flags,		/* send mode */
     if (WithCrypto && msg->security)
     {
       /* 
-       * When reypling / forwarding, use the original message's
+       * When replying / forwarding, use the original message's
        * crypto system.  According to the documentation,
        * smime_is_default should be disregarded here.
        * 
@@ -1434,7 +1434,7 @@ ci_send_message (int flags,		/* send mode */
      * don't want to do this when:
      * 1) we are sending a key/cert
      * 2) we are forwarding a message and the user doesn't want to edit it.
-     *    This is controled by the quadoption $forward_edit.  However, if
+     *    This is controlled by the quadoption $forward_edit.  However, if
      *    both $edit_headers and $autoedit are set, we want to ignore the
      *    setting of $forward_edit because the user probably needs to add the
      *    recipients.

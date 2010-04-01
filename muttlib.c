@@ -1439,7 +1439,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
 /* This function allows the user to specify a command to read stdout from in
    place of a normal file.  If the last character in the string is a pipe (|),
-   then we assume it is a commmand to run instead of a normal file. */
+   then we assume it is a command to run instead of a normal file. */
 FILE *mutt_open_read (const char *path, pid_t *thepid)
 {
   FILE *f;

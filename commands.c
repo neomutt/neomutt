@@ -72,7 +72,7 @@ int mutt_display_message (HEADER *cur)
   mutt_parse_mime_message (Context, cur);
   mutt_message_hook (Context, cur, M_MESSAGEHOOK);
 
-  /* see if crytpo is needed for this message.  if so, we should exit curses */
+  /* see if crypto is needed for this message.  if so, we should exit curses */
   if (WithCrypto && cur->security)
   {
     if (cur->security & ENCRYPT)

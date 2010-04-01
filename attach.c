@@ -938,7 +938,7 @@ int mutt_decode_save_attachment (FILE *fp, BODY *m, char *path,
 
 /* Ok, the difference between send and receive:
  * recv: BODY->filename is a suggested name, and Context|HEADER points
- *       to the attachment in mailbox which is encooded
+ *       to the attachment in mailbox which is encoded
  * send: BODY->filename points to the un-encoded file which contains the 
  *       attachment
  */
