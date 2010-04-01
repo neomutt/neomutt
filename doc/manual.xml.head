@@ -2208,7 +2208,9 @@ for listing all of your incoming mailboxes.
 <term>editor</term>
 <listitem>
 <para>
-The editor is the line-based editor the user enters text data.
+The editor is used to allow the user to enter a single line of text, such as
+the <emphasis>To</emphasis> or <emphasis>Subject</emphasis> prompts in the
+<literal>compose</literal> menu.
 </para>
 </listitem>
 </varlistentry>
