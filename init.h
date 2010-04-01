@@ -2166,10 +2166,13 @@ struct option_t MuttVars[] = {
   { "query_command",	DT_PATH, R_NONE, UL &QueryCmd, UL "" },
   /*
   ** .pp
-  ** This specifies the command that mutt will use to make external address
-  ** queries.  The string should contain a ``%s'', which will be substituted
-  ** with the query string the user types.  See ``$query'' for more
-  ** information.
+  ** This specifies the command Mutt will use to make external address
+  ** queries.  The string may contain a ``%s'', which will be substituted
+  ** with the query string the user types.  Mutt will add quotes around the
+  ** string substituted for ``%s'' automatically according to shell quoting
+  ** rules, so you should avoid adding your own.  If no ``%s'' is found in
+  ** the string, Mutt will append the user's query to the end of the string.
+  ** See ``$query'' for more information.
   */
   { "query_format",	DT_STR, R_NONE, UL &QueryFormat, UL "%4c %t %-25.25a %-25.25n %?e?(%e)?" },
   /*
