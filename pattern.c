@@ -1404,7 +1404,6 @@ int mutt_search_command (int cur, int op)
   char buf[STRING];
   char temp[LONG_STRING];
   char error[STRING];
-  BUFFER err;
   int incr;
   HEADER *h;
   progress_t progress;
@@ -1430,7 +1429,9 @@ int mutt_search_command (int cur, int op)
     mutt_check_simple (temp, sizeof (temp), NONULL (SimpleSearch));
 
     if (!SearchPattern || mutt_strcmp (temp, LastSearchExpn))
-     {
+    {
+      BUFFER err;
+      memset(&err, 0, sizeof(err));
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));
       mutt_message _("Compiling search pattern...");
