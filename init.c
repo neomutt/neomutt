@@ -1892,8 +1892,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         }
         else if (DTYPE (MuttVars[idx].type) == DT_STR)
         {
-	  if (strstr (MuttVars[idx].option, "charset") &&
-	      check_charset (&MuttVars[idx], tmp->data) < 0)
+	  if ((strstr (MuttVars[idx].option, "charset") &&
+	       check_charset (&MuttVars[idx], tmp->data) < 0) |
+	      /* $charset can't be empty, others can */
+	      (strcmp(MuttVars[idx].option, "charset") == 0 && ! *tmp->data))
 	  {
 	    snprintf (err->data, err->dsize, _("Invalid value for option %s: \"%s\""),
 		      MuttVars[idx].option, tmp->data);
