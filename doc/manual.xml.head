@@ -1950,7 +1950,7 @@ expressions).</para></listitem>
 <para>
 Mutt supports grouping addresses logically into named groups. An address
 or address pattern can appear in several groups at the same time. These
-groups can be used in patterns (for searching, limiting and tagging) and
+groups can be used in <link linkend="patterns">patterns</link> (for searching, limiting and tagging) and
 in hooks by using group patterns. This can be useful to classify mail
 and take certain actions depending on in what groups the message is.
 For example, the mutt user's mailing list would fit into the categories
@@ -3047,10 +3047,6 @@ matches an entry on the <command>unalternates</command> list, that
 </arg>
 
 <command>unlists</command>
-<arg choice="opt" rep="repeat">
-<option>-group</option>
-<replaceable class="parameter">name</replaceable>
-</arg>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>
@@ -3073,10 +3069,6 @@ matches an entry on the <command>unalternates</command> list, that
 </arg>
 
 <command>unsubscribe</command>
-<arg choice="opt" rep="repeat">
-<option>-group</option>
-<replaceable class="parameter">name</replaceable>
-</arg>
 <group choice="req">
 <arg choice="plain">
 <replaceable class="parameter">*</replaceable>
@@ -3153,7 +3145,8 @@ to match only mail from the actual list.
 
 <para>
 The <literal>-group</literal> flag adds all of the subsequent regular
-expressions to the named group.
+expressions to the named <link linkend="addrgroup">address group</link>
+in addition to adding to the specified address list.
 </para>
 
 <para>
@@ -5019,8 +5012,8 @@ threads containing messages from you: ~(~P)</entry></row>
 </table>
 
 <para>
-Where <emphasis>EXPR</emphasis> is a <link linkend="regexp">regular
-expression</link>.
+Where <emphasis>EXPR</emphasis> is a <link linkend="regexp">regular expression</link>, and <emphasis>GROUP</emphasis> is an
+<link linkend="addrgroup">address group</link>.
 </para>
 
 <para>
