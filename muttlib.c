@@ -177,13 +177,13 @@ void mutt_free_body (BODY **p)
 
     if (b->parameter)
       mutt_free_parameter (&b->parameter);
-    if (b->unlink && b->filename)
+    if (b->filename)
     {
-      dprint (1, (debugfile, "mutt_free_body: Unlinking %s.\n", b->filename));
-      unlink (b->filename);
+      if (b->unlink)
+	unlink (b->filename);
+      dprint (1, (debugfile, "mutt_free_body: %sunlinking %s.\n",
+	    b->unlink ? "" : "not ", b->filename));
     }
-    else if (b->filename) 
-      dprint (1, (debugfile, "mutt_free_body: Not unlinking %s.\n", b->filename));
 
     FREE (&b->filename);
     FREE (&b->content);

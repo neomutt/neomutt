@@ -1252,11 +1252,11 @@ if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
 #define _XOPEN_SOURCE 1
 #include <stddef.h>
 #include <stdlib.h>
-#ifdef HAVE_WCTYPE_H
-#include <wctype.h>
-#endif
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
+#endif
+#ifdef HAVE_WCTYPE_H
+#include <wctype.h>
 #endif],
                         [mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);
         iswprint(0); iswspace(0); towlower(0); towupper(0); iswalnum(0)],
