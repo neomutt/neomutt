@@ -1571,10 +1571,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 
 int pgp_send_menu (HEADER *msg, int *redraw)
 {
-  pgp_key_t p;
-  char input_signas[SHORT_STRING];
-
-  char prompt[LONG_STRING];
+  int choice;
   
   if (!(WithCrypto & APPLICATION_PGP))
     return msg->security;
@@ -1584,16 +1581,38 @@ int pgp_send_menu (HEADER *msg, int *redraw)
       !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN|ENCRYPT))))
     msg->security |= INLINE;
   
-  snprintf (prompt, sizeof (prompt), 
-	    _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s, or (c)lear? "),
-	    (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
-  
-  switch (mutt_multi_choice (prompt, _("esabifc")))
+  /* When the message is not selected for signing or encryption, the toggle
+   * between PGP/MIME and Traditional doesn't make sense.
+   */
+  if (msg->security & (ENCRYPT | SIGN))
   {
-  case 1: /* (e)ncrypt */
-    msg->security |= ENCRYPT;
-    msg->security &= ~SIGN;
-    break;
+    char prompt[LONG_STRING];
+
+    snprintf (prompt, sizeof (prompt), 
+	_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, toggle %s, or (c)lear? "),
+	(msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+
+    /* The keys accepted for this prompt *must* match the order in the second
+     * version in the else clause since the switch statement below depends on
+     * it.  The 'i' key is appended in this version.
+     */
+    choice = mutt_multi_choice (prompt, _("esabfci"));
+  }
+  else
+  {
+    /* The keys accepted *must* be a prefix of the accepted keys in the "if"
+     * clause above since the switch statement below depends on it.
+     */
+    choice = mutt_multi_choice(_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "),
+	_("esabfc"));
+  }
+
+  switch (choice)
+  {
+    case 1: /* (e)ncrypt */
+      msg->security |= ENCRYPT;
+      msg->security &= ~SIGN;
+      break;
 
   case 2: /* (s)ign */
     msg->security |= SIGN;
@@ -1601,43 +1620,44 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     break;
 
   case 3: /* sign (a)s */
-    unset_option(OPTPGPCHECKTRUST);
+    {
+      pgp_key_t p;
+      char input_signas[SHORT_STRING];
 
-    if ((p = pgp_ask_for_key (_("Sign as: "), NULL, 0, PGP_SECRING)))
-    {
-      snprintf (input_signas, sizeof (input_signas), "0x%s",
-                pgp_keyid (p));
-      mutt_str_replace (&PgpSignAs, input_signas);
-      pgp_free_key (&p);
-      
-      msg->security |= SIGN;
-	
-      crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
-    }
+      unset_option(OPTPGPCHECKTRUST);
+
+      if ((p = pgp_ask_for_key (_("Sign as: "), NULL, 0, PGP_SECRING)))
+      {
+	snprintf (input_signas, sizeof (input_signas), "0x%s",
+	    pgp_keyid (p));
+	mutt_str_replace (&PgpSignAs, input_signas);
+	pgp_free_key (&p);
+
+	msg->security |= SIGN;
+
+	crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
+      }
 #if 0
-    else
-    {
-      msg->security &= ~SIGN;
-    }
+      else
+      {
+	msg->security &= ~SIGN;
+      }
 #endif
 
-    *redraw = REDRAW_FULL;
-    break;
+      *redraw = REDRAW_FULL;
+    } break;
 
   case 4: /* (b)oth */
     msg->security |= (ENCRYPT | SIGN);
     break;
 
-  case 5: /* (i)nline */
-    if ((msg->security & (ENCRYPT | SIGN)))
-      msg->security ^= INLINE;
-    else
-      msg->security &= ~INLINE;
+  case 5: /* (f)orget it */
+  case 6: /* (c)lear     */
+    msg->security = 0;
     break;
 
-  case 6: /* (f)orget it */
-  case 7: /* (c)lear     */
-    msg->security = 0;
+  case 7: /* toggle (i)nline */
+    msg->security ^= INLINE;
     break;
   }
 
