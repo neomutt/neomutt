@@ -1291,12 +1291,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  }
 	  else if (soft && pad < 0)
 	  {
+	    int offset = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
 	    /* make sure right part is at most as wide as display */
-	    len = mutt_wstr_trunc (buf, destlen, COLS, &wid);
+	    len = mutt_wstr_trunc (buf, destlen, COLS-offset, &wid);
 	    /* truncate left so that right part fits completely in */
-	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad, &col);
+	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad -offset, &col);
 	    wptr = dest + wlen;
 	  }
 	  if (len + wlen > destlen)
