@@ -241,7 +241,7 @@ check_attachments(ATTACHPTR **idx, short idxlen)
 
 static void draw_envelope_addr (int line, ADDRESS *addr)
 {
-  char buf[STRING];
+  char buf[LONG_STRING];
 
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), addr, 1);
