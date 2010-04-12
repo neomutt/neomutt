@@ -112,21 +112,13 @@ static void redraw_crypt_lines (HEADER *msg)
 {
   int off = 0;
 
-  if ((WithCrypto & APPLICATION_PGP) && (WithCrypto & APPLICATION_SMIME))
-  {     
-    if (!msg->security)
-      mvaddstr (HDR_CRYPT, 0,     "Security: ");
-    else if (msg->security & APPLICATION_SMIME)
-      mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
-    else if (msg->security & APPLICATION_PGP)
-      mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
-  }
-  else if ((WithCrypto & APPLICATION_SMIME))
-    mvaddstr (HDR_CRYPT, 0,     "  S/MIME: ");
-  else if ((WithCrypto & APPLICATION_PGP))
-    mvaddstr (HDR_CRYPT, 0,     "     PGP: ");
-  else
+  mvaddstr (HDR_CRYPT, 0, "Security: ");
+
+  if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
+  {
+    addstr(_("Not supported"));
     return;
+  }
 
   if ((msg->security & (ENCRYPT | SIGN)) == (ENCRYPT | SIGN))
     addstr (_("Sign, Encrypt"));
@@ -135,21 +127,26 @@ static void redraw_crypt_lines (HEADER *msg)
   else if (msg->security & SIGN)
     addstr (_("Sign"));
   else
-    addstr (_("Clear"));
+    addstr (_("None"));
 
-  if ((WithCrypto & APPLICATION_PGP))
-    if ((msg->security & APPLICATION_PGP) 
-	&& (msg->security & (ENCRYPT | SIGN)))
+  if ((msg->security & (ENCRYPT | SIGN)))
+  {
+    if ((WithCrypto & APPLICATION_PGP) && (msg->security & APPLICATION_PGP))
     {
       if ((msg->security & INLINE))
-	addstr (_(" (inline)"));
+        addstr (_(" (inline PGP)"));
       else
-	addstr (_(" (PGP/MIME)"));
+        addstr (_(" (PGP/MIME)"));
     }
-  clrtoeol ();
+    else if ((WithCrypto & APPLICATION_SMIME) &&
+             (msg->security & APPLICATION_SMIME))
+      addstr (_(" (S/MIME)"));
+  }
 
+  clrtoeol ();
   move (HDR_CRYPTINFO, 0);
   clrtoeol ();
+
   if ((WithCrypto & APPLICATION_PGP)
       && msg->security & APPLICATION_PGP  && msg->security & SIGN)
     printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
