@@ -278,6 +278,12 @@ int mutt_yesorno (const char *msg, int def)
     addstr ((char *) (def == M_YES ? yes : no));
     mutt_refresh ();
   }
+  else
+  {
+    /* when the users cancels with ^G, clear the message stored with
+     * mutt_message() so it isn't displayed when the screen is refreshed. */
+    mutt_clear_error();
+  }
   return (def);
 }
 
