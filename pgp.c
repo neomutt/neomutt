@@ -1589,7 +1589,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
     char prompt[LONG_STRING];
 
     snprintf (prompt, sizeof (prompt), 
-	_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, toggle %s, or (c)lear? "),
+	_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "),
 	(msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
 
     /* The keys accepted for this prompt *must* match the order in the second
