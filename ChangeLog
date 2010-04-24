@@ -1,4 +1,98 @@
-2010-03-22 20:02 -0700  marcel  <marcel@telka.sk>  (f544730656c1)
+2010-04-22 09:14 -0700  Vincent Lefevre  <vincent@vinc17.net>  (6ebdfd09abc1)
+
+	* po/fr.po: updated French translation
+
+2010-04-14 15:47 -0700  Michael Elkins  <me@mutt.org>  (15b9d6f3284f)
+
+	* pgp.c: remove toggle and replace with format in pgp-menu
+
+2010-04-12 15:13 -0500  David Champion  <dgc@uchicago.edu>  (41a46373ddd9)
+
+	* compose.c: Improve clarity/uniformity in compose menu's crypto
+	display
+
+	Incorporates feedback on "Security: None" key hints.
+
+2010-04-13 06:49 -0700  Michael Elkins  <me@mutt.org>  (4d798ee2898e)
+
+	* muttlib.c: fix bug handling wide pad char in soft-fill mode
+
+2010-04-11 20:00 -0700  Michael Elkins  <me@mutt.org>  (2cd62f40d840)
+
+	* compose.c: increase size of buffer used for displaying addresses in
+	the compose menu to avoid truncating on widescreen displays
+
+	* curs_lib.c: clear prompt when user cancels with ^G from a yes/no
+	prompt
+
+	* muttlib.c: Fix bug in soft-fill (%*) in $index_format not accounting
+	for 'set arrow_cursor'
+
+	* pgp.c: Remove the (i) option from the PGP-menu when encryption or
+	signing is not yet selected. The toggle between PGP/MIME and
+	Traditional doesn't make sense unless some type of security has been
+	requested.
+
+	Closes #3402.
+
+2010-04-06 09:47 -0700  Michael Elkins  <me@mutt.org>  (889aa698cc49)
+
+	* configure.ac, muttlib.c: fix for compiling Mutt with clang: check
+	for wchar_h prior to wctype_h in check for wc funcs
+
+2010-04-05 11:12 -0700  Michael Elkins  <me@mutt.org>  (844174efa648)
+
+	* doc/manual.xml.head: [doc] Remove bogus -group parameter from
+	unlists and unsubscribe commands; add links to address group section
+	for context.
+
+2010-04-03 20:34 -0700  Michael Elkins  <me@mutt.org>  (cf97505addf8)
+
+	* init.c: prevent user from setting $charset to an empty string since
+	other code requires it to be set to a valid string
+
+	closes #3326
+
+	* pager.c: allow regexps to match on continuation header lines in
+	'color header' commands.
+
+	closes #3373
+
+	* pattern.c: Fix crash on invalid regexp in search string due to
+	uninitialized BUFFER variable.
+
+	Closes #3401
+
+2010-04-01 10:10 -0700  Simon Ruderich  <simon@ruderich.org>  (b9baa0234846)
+
+	* attach.c, commands.c, filter.c, muttlib.c, send.c: fix comment typos
+
+2010-04-01 09:59 -0700  Michael Elkins  <me@mutt.org>  (96ed7cdacdc6)
+
+	* init.h: Improve documentation for $query_command to note that Mutt
+	automatically adds quotes according to shell quoting rules (thx:
+	Simon Ruderich).
+
+	* doc/manual.xml.head: Clarify the documentation on what the line-
+	editor is (thx: Simon Ruderich)
+
+2010-03-31 08:50 -0700  Michael Elkins  <me@mutt.org>  (7e9e31b1bd7b)
+
+	* muttlib.c: avoid buffer overflow when expanding the format string
+	associated with a 'spam' command.
+
+	closes #3397
+
+2010-03-23 16:03 -0700  Michael Elkins  <me@mutt.org>  (fe29d691deff)
+
+	* doc/muttrc.man.head: remove errant commands in secton on setting
+	alternates
+
+2010-03-22 22:16 -0700  Brendan Cully  <brendan@kublai.com>  (69e9a1a0ba2f)
+
+	* sendlib.c: Fix a format string warning
+
+2010-03-22 20:02 -0700  Marcel Telka  <marcel@telka.sk>  (f544730656c1)
 
 	* compose.c: redraw entire screen when exiting editor after re-editing
 	the message body in the send menu.

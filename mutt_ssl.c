@@ -64,11 +64,12 @@ static int entropy_byte_count = 0;
  * open up another connection to the same server in this session */
 static STACK_OF(X509) *SslSessionCerts = NULL;
 
-typedef struct _sslsockdata
+typedef struct
 {
   SSL_CTX *ctx;
   SSL *ssl;
   X509 *cert;
+  unsigned char isopen;
 }
 sslsockdata;
 
@@ -80,6 +81,7 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len);
 static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
 static int tls_close (CONNECTION* conn);
+static void ssl_err (sslsockdata *data, int err);
 static int ssl_cache_trusted_cert (X509 *cert);
 static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data);
 static int interactive_check_cert (X509 *cert, int idx, int len);
@@ -121,6 +123,8 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   if (ssl_negotiate (conn, ssldata))
     goto bail_ssl;
+
+  ssldata->isopen = 1;
 
   /* hmm. watch out if we're starting TLS over any method other than raw. */
   conn->sockdata = ssldata;
@@ -257,13 +261,28 @@ int mutt_ssl_socket_setup (CONNECTION * conn)
 static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
-  return SSL_read (data->ssl, buf, len);
+  int rc;
+
+  rc = SSL_read (data->ssl, buf, len);
+  if (rc <= 0)
+  {
+    data->isopen = 0;
+    ssl_err (data, rc);
+  }
+
+  return rc;
 }
 
 static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
 {
   sslsockdata *data = conn->sockdata;
-  return SSL_write (data->ssl, buf, len);
+  int rc;
+
+  rc = SSL_write (data->ssl, buf, len);
+  if (rc <= 0)
+    ssl_err (data, rc);
+
+  return rc;
 }
 
 static int ssl_socket_open (CONNECTION * conn)
@@ -303,6 +322,8 @@ static int ssl_socket_open (CONNECTION * conn)
     mutt_socket_close (conn);
     return -1;
   }
+
+  data->isopen = 1;
 
   conn->ssf = SSL_CIPHER_get_bits (SSL_get_current_cipher (data->ssl),
     &maxbits);
@@ -366,7 +387,8 @@ static int ssl_socket_close (CONNECTION * conn)
   sslsockdata *data = conn->sockdata;
   if (data)
   {
-    SSL_shutdown (data->ssl);
+    if (data->isopen)
+      SSL_shutdown (data->ssl);
 
     /* hold onto this for the life of mutt, in case we want to reconnect.
      * The purist in me wants a mutt_exit hook. */
@@ -391,6 +413,63 @@ static int tls_close (CONNECTION* conn)
   conn->conn_close = raw_socket_close;
 
   return rc;
+}
+
+static void ssl_err (sslsockdata *data, int err)
+{
+  const char* errmsg;
+  unsigned long sslerr;
+
+  switch (SSL_get_error (data->ssl, err))
+  {
+  case SSL_ERROR_NONE:
+    return;
+  case SSL_ERROR_ZERO_RETURN:
+    errmsg = "SSL connection closed";
+    data->isopen = 0;
+    break;
+  case SSL_ERROR_WANT_READ:
+    errmsg = "retry read";
+    break;
+  case SSL_ERROR_WANT_WRITE:
+    errmsg = "retry write";
+    break;
+  case SSL_ERROR_WANT_CONNECT:
+    errmsg = "retry connect";
+    break;
+  case SSL_ERROR_WANT_ACCEPT:
+    errmsg = "retry accept";
+    break;
+  case SSL_ERROR_WANT_X509_LOOKUP:
+    errmsg = "retry x509 lookup";
+    break;
+  case SSL_ERROR_SYSCALL:
+    errmsg = "I/O error";
+    data->isopen = 0;
+    break;
+  case SSL_ERROR_SSL:
+    sslerr = ERR_get_error ();
+    switch (sslerr)
+    {
+    case 0:
+      switch (err)
+      {
+      case 0:
+	errmsg = "EOF";
+	break;
+      default:
+	errmsg = strerror(errno);
+      }
+      break;
+    default:
+      errmsg = ERR_error_string (sslerr, NULL);
+    }
+    break;
+  default:
+    errmsg = "unknown error";
+  }
+
+  dprint (1, (debugfile, "SSL error: %s\n", errmsg));
 }
 
 static char *x509_get_part (char *line, const char *ndx)
