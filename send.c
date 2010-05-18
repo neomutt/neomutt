@@ -1766,7 +1766,7 @@ full_fcc:
    * the send failed as well so we give the user a chance to fix the
    * error.
    */
-  if (fcc_error || (i = send_message (msg)) == -1)
+  if (fcc_error || (i = send_message (msg)) < 0)
   {
     if (!(flags & SENDBATCH))
     {
