@@ -3003,7 +3003,7 @@ msgstr "Servercertifikat är inte giltigt än"
 
 #: mutt_ssl.c:579
 msgid "Server certificate has expired"
-msgstr "Serverertifikat har utgått"
+msgstr "Servercertifikat har utgått"
 
 #: mutt_ssl.c:699
 #, fuzzy
