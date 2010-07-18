@@ -966,7 +966,7 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
     tmpminor[len+2] = '\0';
 
     a->major_int = mutt_check_mime_type(a->major);
-    ret = regcomp(&a->minor_rx, tmpminor, REG_ICASE|REG_EXTENDED);
+    ret = REGCOMP(&a->minor_rx, tmpminor, 0);
 
     FREE(&tmpminor);
 
