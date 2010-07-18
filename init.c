@@ -916,6 +916,7 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
   char *p;
   char *tmpminor;
   int len;
+  int ret;
 
   /* Find the last item in the list that data points to. */
   lastp = NULL;
@@ -965,9 +966,18 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
     tmpminor[len+2] = '\0';
 
     a->major_int = mutt_check_mime_type(a->major);
-    regcomp(&a->minor_rx, tmpminor, REG_ICASE|REG_EXTENDED);
+    ret = regcomp(&a->minor_rx, tmpminor, REG_ICASE|REG_EXTENDED);
 
     FREE(&tmpminor);
+
+    if (ret)
+    {
+      regerror(ret, &a->minor_rx, err->data, err->dsize);
+      regfree(&a->minor_rx);
+      FREE(&a->major);
+      FREE(&a);
+      return -1;
+    }
 
     dprint(5, (debugfile, "parse_attach_list: added %s/%s [%d]\n",
 		a->major, a->minor, a->major_int));
