@@ -2221,6 +2221,7 @@ regex_compile (pattern, size, syntax, bufp)
                         boolean is_lower = STREQ (str, "lower");
                         boolean is_upper = STREQ (str, "upper");
 			wctype_t wt;
+			wchar_t twt;
                         int ch;
 
 			wt = wctype (str);
@@ -2235,7 +2236,7 @@ regex_compile (pattern, size, syntax, bufp)
 
                         for (ch = 0; ch < 1 << BYTEWIDTH; ++ch)
 			  {
-			    if (iswctype (btowc (ch), wt))
+			    if (mbtowc (&twt, (char *)&ch, 1) >= 0 && iswctype (twt, wt))
 			      SET_LIST_BIT (ch);
 
 			    if (translate && (is_upper || is_lower)
