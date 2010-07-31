@@ -1138,35 +1138,51 @@ void mutt_FormatString (char *dest,		/* output buffer */
       col -= wlen;	/* reset to passed in value */
       wptr = dest;      /* reset write ptr */
       wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
-      if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)))
+      if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)) != -1)
       {
+	int rc;
+
         n = fread(dest, 1, destlen /* already decremented */, filter);
         safe_fclose (&filter);
-        dest[n] = '\0';
-        while (dest[n-1] == '\n' || dest[n-1] == '\r')
-          dest[--n] = '\0';
-        dprint(3, (debugfile, "fmtpipe < %s\n", dest));
+	rc = mutt_wait_filter(pid);
+	if (rc != 0)
+	  dprint(1, (debugfile, "format pipe command exited code %d\n", rc));
+	if (n > 0) {
+	  dest[n] = 0;
+	  while ((n > 0) && (dest[n-1] == '\n' || dest[n-1] == '\r'))
+	    dest[--n] = '\0';
+	  dprint(3, (debugfile, "fmtpipe < %s\n", dest));
 
-        if (pid != -1)
-          mutt_wait_filter(pid);
-  
-        /* If the result ends with '%', this indicates that the filter
-         * generated %-tokens that mutt can expand.  Eliminate the '%'
-         * marker and recycle the string through mutt_FormatString().
-         * To literally end with "%", use "%%". */
-        if (dest[--n] == '%')
-        {
-          dest[n] = '\0';               /* remove '%' */
-          if (dest[--n] != '%')
-          {
-            recycler = safe_strdup(dest);
-            if (recycler)
-            {
-              mutt_FormatString(dest, destlen++, col, recycler, callback, data, flags);
-              FREE(&recycler);
-            }
-          }
-        }
+	  /* If the result ends with '%', this indicates that the filter
+	   * generated %-tokens that mutt can expand.  Eliminate the '%'
+	   * marker and recycle the string through mutt_FormatString().
+	   * To literally end with "%", use "%%". */
+	  if ((n > 0) && dest[n-1] == '%')
+	  {
+	    --n;
+	    dest[n] = '\0';               /* remove '%' */
+	    if ((n > 0) && dest[n-1] != '%')
+	    {
+	      recycler = safe_strdup(dest);
+	      if (recycler)
+	      {
+		/* destlen is decremented at the start of this function
+		 * to save space for the terminal nul char.  We can add
+		 * it back for the recursive call since the expansion of
+		 * format pipes does not try to append a nul itself.
+		 */
+		mutt_FormatString(dest, destlen+1, col, recycler, callback, data, flags);
+		FREE(&recycler);
+	      }
+	    }
+	  }
+	}
+	else
+	{
+	  /* read error */
+	  dprint(1, (debugfile, "error reading from fmtpipe: %s (errno=%d)\n", strerror(errno), errno));
+	  *wptr = 0;
+	}
       }
       else
       {
