@@ -122,7 +122,8 @@ static void mutt_usage (void)
   puts _("\
 options:\n\
   -A <alias>\texpand the given alias\n\
-  -a <file>\tattach a file to the message\n\
+  -a <file> [...] --\tattach file(s) to the message\n\
+\t\tthe list of files must be terminated with the \"--\" sequence\n\
   -b <address>\tspecify a blind carbon-copy (BCC) address\n\
   -c <address>\tspecify a carbon-copy (CC) address\n\
   -D\t\tprint the value of all variables to stdout");
@@ -149,8 +150,6 @@ options:\n\
   -z\t\texit immediately if there are no messages in the mailbox\n\
   -Z\t\topen the first folder with new message, exit immediately if none\n\
   -h\t\tthis help message");
-  puts _("  --\t\tseparate filename(s) and recipients,\n\
-\t\twhen using -a, -- is mandatory");
 
   exit (0);
 }
