@@ -40,6 +40,7 @@
 #include <unistd.h>
 #include <sys/stat.h>
 #include <errno.h>
+#include <locale.h>
 
 static struct mapping_t FolderHelp[] = {
   { N_("Exit"),  OP_EXIT },
