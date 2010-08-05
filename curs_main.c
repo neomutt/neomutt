@@ -2056,6 +2056,11 @@ int mutt_index_menu (void)
 	    if ((menu->current = (op == OP_MAIN_READ_THREAD ?
 				  mutt_next_thread (CURHDR) : mutt_next_subthread (CURHDR))) == -1)
 	      menu->current = menu->oldcurrent;
+	    else if (menu->menu == MENU_PAGER)
+	    {
+	      op = OP_DISPLAY_MESSAGE;
+	      continue;
+	    }
 	  }
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 	}
