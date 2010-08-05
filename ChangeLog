@@ -1,3 +1,46 @@
+2010-08-04 06:37 -0700  Vincent Lefevre  <vincent@vinc17.org>  (a7f05f29d9bc)
+
+	* po/fr.po: updated French translation
+
+2010-08-03 10:10 -0700  Michael Elkins  <me@mutt.org>  (2c42f4760c8f)
+
+	* browser.c: add locale.h for compililng with -std=c99
+
+	* main.c: adjust help for -a to make it clearer that -- is required
+	terminator
+
+2010-07-31 08:21 -0700  Michael Elkins  <me@mutt.org>  (7cd85c18bfaf)
+
+	* muttlib.c: Fix buffer underflow in expansion of format pipes. Add
+	better error detection.
+
+	Closes #3432.
+
+2010-07-18 14:24 -0700  Michael Elkins  <me@mutt.org>  (1a35f096c8cb)
+
+	* init.c: use REGCOMP() macro
+
+2010-07-18 22:09 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (d0e0d174d620)
+
+	* init.c: Skip 'attachments' directive if minor type is not a valid
+	regexp
+
+2010-07-09 11:07 -0700  Joel Dahl  <joel@FreeBSD.org>  (6b13e8319c1f)
+
+	* po/sv.po: fix misspelling in Swedish translation
+
+2010-05-18 08:39 -0700  Michael Elkins  <me@sigpipe.org>  (29e37994a536)
+
+	* send.c: Consider any negative return value from send_message() to be
+	an error and allow the user to resend.
+
+	Closes #3411.
+
+2010-04-24 16:10 -0700  Brendan Cully  <brendan@kublai.com>  (4cd2daafd03b)
+
+	* mutt_ssl.c: openssl: only call SSL_shutdown during clean
+	shutdown (closes #3407)
+
 2010-04-22 09:14 -0700  Vincent Lefevre  <vincent@vinc17.net>  (6ebdfd09abc1)
 
 	* po/fr.po: updated French translation
