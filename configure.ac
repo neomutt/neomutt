@@ -1249,7 +1249,7 @@ if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
         AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
                 mutt_cv_wc_funcs=no
                 AC_TRY_LINK([
-#define _XOPEN_SOURCE 1
+#define _XOPEN_SOURCE 600
 #include <stddef.h>
 #include <stdlib.h>
 #ifdef HAVE_WCHAR_H
