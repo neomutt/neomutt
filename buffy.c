@@ -456,13 +456,11 @@ int mutt_buffy_list (void)
   BUFFY *tmp;
   char path[_POSIX_PATH_MAX];
   char buffylist[2*STRING];
-  int pos;
-  int first;
+  size_t pos = 0;
+  int first = 1;
 
   int have_unnotified = BuffyNotify;
   
-  pos = 0;
-  first = 1;
   buffylist[0] = 0;
   pos += strlen (strncat (buffylist, _("New mail in "), sizeof (buffylist) - 1 - pos)); /* __STRNCAT_CHECKED__ */
   for (tmp = Incoming; tmp; tmp = tmp->next)
@@ -474,7 +472,7 @@ int mutt_buffy_list (void)
     strfcpy (path, tmp->path, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
     
-    if (!first && pos + strlen (path) >= COLS - 7)
+    if (!first && (COLS - 7 >= 0) && (pos + strlen (path) >= (size_t)COLS - 7))
       break;
     
     if (!first)
