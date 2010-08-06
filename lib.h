@@ -132,7 +132,7 @@ void mutt_debug (FILE *, const char *, ...);
 
 # else
 
-#  define dprint(N,X)
+#  define dprint(N,X) do { } while (0)
 
 # endif
 
