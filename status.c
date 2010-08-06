@@ -209,7 +209,7 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
 
     case 'r':
     {
-      int i = 0;
+      size_t i = 0;
 
       if (Context)
       {
