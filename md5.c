@@ -456,7 +456,7 @@ md5_process_block (const void *buffer, size_t len, struct md5_ctx *ctx)
 
 #ifdef MD5UTIL
 /* local md5 equivalent for header cache versioning */
-int main(int argc, char** argv)
+int main(void)
 {
   unsigned char r[16];
   int rc;
