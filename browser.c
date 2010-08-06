@@ -162,11 +162,27 @@ folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *
       break;
       
     case 'd':
+    case 'D':
       if (folder->ff->st != NULL)
       {
-	tnow = time (NULL);
-	t_fmt = tnow - folder->ff->st->st_mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
+	bool do_locales = true;
+
+	if (op == 'D') {
+	  t_fmt = NONULL(DateFmt);
+	  if (*t_fmt == '!') {
+	    ++t_fmt;
+	    do_locales = false;
+	  }
+	} else {
+	  tnow = time (NULL);
+	  t_fmt = tnow - folder->ff->st->st_mtime < 31536000 ? "%b %d %H:%M" : "%b %d  %Y";
+	}
+	if (do_locales)
+	  setlocale(LC_TIME, NONULL (Locale)); /* use environment if $locale is not set */
+	else
+	  setlocale(LC_TIME, "C");
 	strftime (date, sizeof (date), t_fmt, localtime (&folder->ff->st->st_mtime));
+
 	mutt_format_s (dest, destlen, fmt, date);
       }
       else

@@ -759,6 +759,7 @@ struct option_t MuttVars[] = {
   ** .dl
   ** .dt %C  .dd current file number
   ** .dt %d  .dd date/time folder was last modified
+  ** .dt %D  .dd date/time folder was last modified using $$date_format.
   ** .dt %f  .dd filename (``/'' is appended to directory names,
   **             ``@'' to symbolic links and ``*'' to executable
   **             files)
