@@ -50,6 +50,7 @@
 #include <sys/utsname.h>
 #include <errno.h>
 #include <sys/wait.h>
+#include <sys/time.h>
 
 #define CHECK_PAGER \
   if ((CurrentMenu == MENU_PAGER) && (idx >= 0) &&	\
@@ -2858,6 +2859,20 @@ static int mutt_execute_commands (LIST *p)
   return 0;
 }
 
+static void mutt_srandom (void)
+{
+  struct timeval tv;
+  unsigned seed;
+
+  gettimeofday(&tv, NULL);
+  /* POSIX.1-2008 states that seed is 'unsigned' without specifying its width.
+   * Use as many of the lower order bits from the current time of day as the seed.
+   * If the upper bound is truncated, that is fine.
+   */
+  seed = (tv.tv_sec << 20) | tv.tv_usec;
+  srandom(seed);
+}
+
 void mutt_init (int skip_sys_rc, LIST *commands)
 {
   struct passwd *pw;
@@ -2874,6 +2889,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   ReverseAlias = hash_create (1031, 1);
   
   mutt_menu_init ();
+  mutt_srandom ();
 
   /* 
    * XXX - use something even more difficult to predict?
