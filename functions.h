@@ -208,6 +208,8 @@ struct binding_t OpPager[] = { /* map: pager */
   { "search-next",	OP_SEARCH_NEXT,			"n" },
   { "next-thread",	OP_MAIN_NEXT_THREAD,		"\016" },
   { "next-subthread",	OP_MAIN_NEXT_SUBTHREAD,		"\033n" },
+  { "sort-mailbox",	OP_SORT,			"o" },
+  { "sort-reverse",	OP_SORT_REVERSE,		"O" },
   { "print-message",	OP_PRINT,			"p" },
   { "previous-thread",	OP_MAIN_PREV_THREAD,		"\020" },
   { "previous-subthread",OP_MAIN_PREV_SUBTHREAD,	"\033p" },
