@@ -1016,6 +1016,9 @@ static HEADER *find_virtual (THREAD *cur, int reverse)
   }
 }
 
+/* dir => true when moving forward, false when moving in reverse
+ * subthreads => false when moving to next thread, true when moving to next subthread
+ */
 int _mutt_aside_thread (HEADER *hdr, short dir, short subthreads)
 {
   THREAD *cur;
