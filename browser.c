@@ -165,13 +165,13 @@ folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *
     case 'D':
       if (folder->ff->st != NULL)
       {
-	bool do_locales = true;
+	int do_locales = TRUE;
 
 	if (op == 'D') {
 	  t_fmt = NONULL(DateFmt);
 	  if (*t_fmt == '!') {
 	    ++t_fmt;
-	    do_locales = false;
+	    do_locales = FALSE;
 	  }
 	} else {
 	  tnow = time (NULL);
