@@ -760,7 +760,7 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
       subj_alt_name = sk_GENERAL_NAME_value(subj_alt_names, i);
       if (subj_alt_name->type == GEN_DNS)
       {
-	if (mutt_strlen(subj_alt_name) == subj_alt_name->d.ia5->length  &&
+	if (mutt_strlen((char *)subj_alt_name->d.ia5->data) == subj_alt_name->d.ia5->length  &&
 	    (match_found = hostname_match(hostname_ascii,
 					  (char *)(subj_alt_name->d.ia5->data))))
 	{
