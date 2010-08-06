@@ -60,3 +60,4 @@ cscope.*
 *.rej
 *.a
 .gdb_history
+*~
