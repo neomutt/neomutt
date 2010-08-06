@@ -498,7 +498,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     strfcpy (inbuf + lenbuf, p, sizeof (buf));
     pos += chunk;
 
-    if (chunk >= sizeof (buf))
+    if ((size_t)chunk >= sizeof (buf))
     {
       lenbuf += strlen (p);
     }
