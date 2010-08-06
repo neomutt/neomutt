@@ -81,7 +81,7 @@ url_scheme_t url_check_scheme (const char *s)
 
   if (!s || !(t = strchr (s, ':')))
     return U_UNKNOWN;
-  if ((t - s) + 1 >= sizeof (sbuf))
+  if ((size_t)(t - s) >= sizeof (sbuf) - 1)
     return U_UNKNOWN;
 
   strfcpy (sbuf, s, t - s + 1);
@@ -251,7 +251,8 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   char *tag, *value;
   char scratch[HUGE_STRING];
 
-  int taglen, rc = -1;
+  size_t taglen;
+  int rc = -1;
 
   LIST *last = NULL;
 
