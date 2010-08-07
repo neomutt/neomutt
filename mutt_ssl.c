@@ -760,7 +760,8 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
       subj_alt_name = sk_GENERAL_NAME_value(subj_alt_names, i);
       if (subj_alt_name->type == GEN_DNS)
       {
-	if (mutt_strlen((char *)subj_alt_name->d.ia5->data) == subj_alt_name->d.ia5->length  &&
+	if (subj_alt_name->d.ia5->length >= 0 &&
+	    mutt_strlen((char *)subj_alt_name->d.ia5->data) == (size_t)subj_alt_name->d.ia5->length &&
 	    (match_found = hostname_match(hostname_ascii,
 					  (char *)(subj_alt_name->d.ia5->data))))
 	{
@@ -780,9 +781,16 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
       goto out;
     }
 
+    /* first get the space requirements */
     bufsize = X509_NAME_get_text_by_NID(x509_subject, NID_commonName,
 					NULL, 0);
-    bufsize++;
+    if (bufsize == -1)
+    {
+      if (err && errlen)
+	strfcpy (err, _("cannot get certificate common name"), errlen);
+      goto out;
+    }
+    bufsize++; /* space for the terminal nul char */
     buf = safe_malloc((size_t)bufsize);
     if (X509_NAME_get_text_by_NID(x509_subject, NID_commonName,
 				  buf, bufsize) == -1)
@@ -791,7 +799,10 @@ static int check_host (X509 *x509cert, const char *hostname, char *err, size_t e
 	strfcpy (err, _("cannot get certificate common name"), errlen);
       goto out;
     }
-    if (mutt_strlen(buf) == bufsize - 1) {
+    /* cast is safe since bufsize is incremented above, so bufsize-1 is always
+     * zero or greater.
+     */
+    if (mutt_strlen(buf) == (size_t)bufsize - 1) {
       match_found = hostname_match(hostname_ascii, buf);
     }
   }
