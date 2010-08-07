@@ -498,6 +498,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
     strfcpy (inbuf + lenbuf, p, sizeof (buf));
     pos += chunk;
 
+    /* cast is safe since we break out of the loop when chunk<=0 */
     if ((size_t)chunk >= sizeof (buf))
     {
       lenbuf += strlen (p);
