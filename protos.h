@@ -410,6 +410,15 @@ void mutt_pattern_free (pattern_t **pat);
  * Prototypes for broken systems
  */
 
+#ifdef HAVE_LONG_LONG_INT
+#ifdef LONGLONG
+#error LONGLONG is already defined
+#endif
+#define LONGLONG long long
+#else
+#define LONGLONG long
+#endif
+
 #ifdef HAVE_SRAND48
 #define LRAND lrand48
 #define SRAND srand48
