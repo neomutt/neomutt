@@ -36,7 +36,7 @@ mutt \- The Mutt Mail User Agent
 [\-b \fIaddr\fP]
 [\-c \fIaddr\fP]
 [\-a \fIfile\fP [...] \-\-]
-\fIaddr\fP [...]
+\fIaddr|mailto_url\fP [...]
 .PP
 .B mutt 
 [\-nx] 
@@ -46,7 +46,7 @@ mutt \- The Mutt Mail User Agent
 [\-b \fIaddr\fP]
 [\-c \fIaddr\fP]
 [\-a \fIfile\fP [...] \-\-]
-\fIaddr\fP [...]
+\fIaddr|mailto_url\fP [...]
 < message
 .PP
 .B mutt

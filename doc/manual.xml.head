@@ -8242,9 +8242,14 @@ To compose a new message
 <arg choice="opt" rep="repeat"/>
 --
 </arg>
-<arg choice="plain" rep="repeat">
+<group choice="plain" rep="repeat">
+<arg choice="plain">
 <replaceable>address</replaceable>
 </arg>
+<arg choice="plain">
+<replaceable>mailto_url</replaceable>
+</arg>
+</group>
 </cmdsynopsis>
 
 <para>
@@ -8285,6 +8290,15 @@ mutt -a *.png -- some@one.org</screen>
 The <literal>-a</literal> option must be last in the option list.
 </para>
 </note>
+
+<para>
+In addition to accepting a list of email addresses, Mutt also accepts a URL with
+the <literal>mailto:</literal> schema as specified in RFC2368.  This is useful
+when configuring a web browser to launch Mutt when clicking on mailto links.
+</para>
+
+<screen>
+mutt mailto:some@one.org&amp;subject=test</screen>
 
 </sect1>
 
