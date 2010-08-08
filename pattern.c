@@ -1302,6 +1302,7 @@ int mutt_pattern_func (int op, char *prompt)
   simple = safe_strdup (buf);
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
 
+  memset (&err, 0, sizeof(err));
   err.data = error;
   err.dsize = sizeof (error);
   if ((pat = mutt_pattern_comp (buf, M_FULL_MSG, &err)) == NULL)
