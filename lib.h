@@ -153,6 +153,7 @@ char *mutt_concatn_path (char *, size_t, const char *, size_t, const char *, siz
 char *mutt_concat_path (char *, const char *, const char *, size_t);
 char *mutt_read_line (char *, size_t *, FILE *, int *, int);
 char *mutt_skip_whitespace (char *);
+char *mutt_sprintf (const char *, ...);
 char *mutt_strlower (char *);
 char *mutt_substrcpy (char *, const char *, const char *, size_t);
 char *mutt_substrdup (const char *, const char *);

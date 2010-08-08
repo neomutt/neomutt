@@ -1082,3 +1082,34 @@ int mutt_atol (const char *str, long *dst)
     return -1;
   return 0;
 }
+
+/* Allocate a C-string large enough to contain the formatted string.
+ * This is essentially malloc+sprintf in one.
+ */
+char *mutt_sprintf (const char *fmt, ...)
+{
+  size_t rlen = STRING;
+  char *r = safe_malloc (rlen);
+  for (;;)
+  {
+    va_list ap;
+    va_start (ap, fmt);
+    size_t n = vsnprintf (r, rlen, fmt, ap);
+    va_end (ap);
+    if (n < rlen)
+    {
+      /* reduce space to just that which was used.  note that 'n' does not
+       * include the terminal nul char.
+       */
+      if (n == 0) /* convention is to use NULL for zero-length strings. */
+	FREE (&r);
+      else if (n != rlen - 1)
+	safe_realloc (&r, n + 1);
+      return r;
+    }
+    /* increase size and try again */
+    rlen = n + 1;
+    safe_realloc(&r, rlen);
+  }
+  /* not reached */
+}
