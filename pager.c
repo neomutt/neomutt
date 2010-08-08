@@ -1057,7 +1057,7 @@ fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
       {
 	if (*(p+1) == '_')	/* underline */
 	  p += 2;
-	else if (*(p+1))	/* bold or overstrike */
+	else if (*(p+1) && q > *fmt)	/* bold or overstrike */
 	{
 	  *(q-1) = *(p+1);
 	  p += 2;
