@@ -939,10 +939,11 @@ static ADDRESS *set_reverse_name (ENVELOPE *env)
   if (tmp)
   {
     tmp = rfc822_cpy_adr_real (tmp);
+    /* when $reverse_realname is not set, clear the personal name so that it
+     * may be set vi a reply- or send-hook.
+     */
     if (!option (OPTREVREAL))
       FREE (&tmp->personal);
-    if (!tmp->personal)
-      tmp->personal = safe_strdup (Realname);
   }
   return (tmp);
 }
