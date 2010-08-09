@@ -8298,7 +8298,7 @@ when configuring a web browser to launch Mutt when clicking on mailto links.
 </para>
 
 <screen>
-mutt mailto:some@one.org&amp;subject=test</screen>
+mutt mailto:some@one.org?subject=test&amp;cc=other@one.org</screen>
 
 </sect1>
 
