@@ -71,6 +71,7 @@ int mutt_num_postponed (int force)
 
   if (mutt_strcmp (Postponed, OldPostponed))
   {
+    FREE (&OldPostponed);
     OldPostponed = safe_strdup (Postponed);
     LastModify = 0;
     force = 1;
