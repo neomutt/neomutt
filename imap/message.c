@@ -86,12 +86,12 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
   if (mutt_bit_isset (idata->capabilities,IMAP4REV1))
   {
-    hdrreq = mutt_sprintf ("BODY.PEEK[HEADER.FIELDS (%s%s%s)]",
+    safe_asprintf (&hdrreq, "BODY.PEEK[HEADER.FIELDS (%s%s%s)]",
                            want_headers, ImapHeaders ? " " : "", NONULL (ImapHeaders));
   }
   else if (mutt_bit_isset (idata->capabilities,IMAP4))
   {
-    hdrreq = mutt_sprintf ("RFC822.HEADER.LINES (%s%s%s)",
+    safe_asprintf (&hdrreq, "RFC822.HEADER.LINES (%s%s%s)",
                            want_headers, ImapHeaders ? " " : "", NONULL (ImapHeaders));
   }
   else
@@ -242,8 +242,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       char *cmd;
 
       fetchlast = msgend + 1;
-      cmd = mutt_sprintf ("FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
-                          msgno + 1, fetchlast, hdrreq);
+      safe_asprintf (&cmd, "FETCH %d:%d (UID FLAGS INTERNALDATE RFC822.SIZE %s)",
+                     msgno + 1, fetchlast, hdrreq);
       imap_cmd_start (idata, cmd);
       FREE (&cmd);
     }

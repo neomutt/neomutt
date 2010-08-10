@@ -33,7 +33,7 @@ mutt_SOURCES = \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c mbyte.c \
-	url.c ascii.c crypt-mod.c crypt-mod.h
+	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
