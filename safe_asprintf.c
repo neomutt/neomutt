@@ -67,12 +67,12 @@ int safe_asprintf (char **strp, const char *fmt, ...)
     va_list ap;
     va_start (ap, fmt);
     n = vsnprintf (*strp, rlen, fmt, ap);
+    va_end (ap);
     if (n < 0)
     {
       FREE (strp);
       return n;
     }
-    va_end (ap);
 
     if (n < rlen)
     {
