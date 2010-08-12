@@ -249,9 +249,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   char *tmp;
   char *headers;
   char *tag, *value;
-  char scratch[HUGE_STRING];
 
-  size_t taglen;
   int rc = -1;
 
   LIST *last = NULL;
@@ -259,6 +257,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
   if (!(t = strchr (src, ':')))
     return -1;
 
+  /* copy string for safe use of strtok() */
   if ((tmp = safe_strdup (t + 1)) == NULL)
     return -1;
 
@@ -266,7 +265,8 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     *headers++ = '\0';
 
   if (url_pct_decode (tmp) < 0)
-    return -1;
+    goto out;
+
   e->to = rfc822_parse_adrlist (e->to, tmp);
 
   tag = headers ? strtok_r (headers, "&", &p) : NULL;
@@ -279,31 +279,30 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
       continue;
 
     if (url_pct_decode (tag) < 0)
-      return -1;
+      goto out;
     if (url_pct_decode (value) < 0)
-      return -1;
+      goto out;
 
     if (!ascii_strcasecmp (tag, "body"))
     {
       if (body)
 	mutt_str_replace (body, value);
     }
-    else if ((taglen = mutt_strlen (tag)) <= sizeof (scratch) - 2)
-    {
-      /* only try to parse if we can format it as header for
-       * mutt_parse_rfc822_line (tag fits in scratch) */
-      snprintf (scratch, sizeof (scratch), "%s: %s", tag, value);
-      scratch[taglen] = '\0';
-      value = &scratch[taglen+1];
-      SKIPWS (value);
-      mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
-    }
     else
     {
-      rc = -1;
-      goto out;
+      char *scratch;
+     
+      safe_asprintf (&scratch, "%s: %s", tag, value);
+      size_t taglen = mutt_strlen (tag);
+      scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
+      value = &scratch[taglen + 1];
+      SKIPWS (value);
+      mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
+      FREE (&scratch);
     }
   }
+
+  rc = 0;
 
 out:
   FREE (&tmp);
