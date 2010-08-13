@@ -659,8 +659,8 @@ static HEADER *maildir_parse_message (int magic, const char *fname,
     if (!h->received)
       h->received = h->date_sent;
 
-    if (h->content->length <= 0)
-      h->content->length = st.st_size - h->content->offset;
+    /* always update the length since we have fresh information available. */
+    h->content->length = st.st_size - h->content->offset;
 
     h->index = -1;
 
