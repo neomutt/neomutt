@@ -291,9 +291,9 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     else
     {
       char *scratch;
+      size_t taglen = mutt_strlen (tag);
      
       safe_asprintf (&scratch, "%s: %s", tag, value);
-      size_t taglen = mutt_strlen (tag);
       scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
       value = &scratch[taglen + 1];
       SKIPWS (value);
