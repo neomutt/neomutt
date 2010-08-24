@@ -2129,7 +2129,6 @@ search_next:
 	{
 	  regerror (err, &SearchRE, buffer, sizeof (buffer));
 	  mutt_error ("%s", buffer);
-	  regfree (&SearchRE);
 	  for (i = 0; i < maxLine ; i++)
 	  {
 	    /* cleanup */

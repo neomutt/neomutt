@@ -974,7 +974,6 @@ static int parse_attach_list (BUFFER *buf, BUFFER *s, LIST **ldata, BUFFER *err)
     if (ret)
     {
       regerror(ret, &a->minor_rx, err->data, err->dsize);
-      regfree(&a->minor_rx);
       FREE(&a->major);
       FREE(&a);
       return -1;
@@ -1593,7 +1592,6 @@ static void mutt_restore_default (struct option_t *p)
 	    fprintf (stderr, _("mutt_restore_default(%s): error in regexp: %s\n"),
 		     p->option, pp->pattern);
 	    FREE (&pp->pattern);
-	    regfree (pp->rx);
 	    FREE (&pp->rx);
 	  }
 	}
@@ -1973,7 +1971,6 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if ((e = REGCOMP (rx, p, flags)) != 0)
 	{
 	  regerror (e, rx, err->data, err->dsize);
-	  regfree (rx);
 	  FREE (&rx);
 	  break;
 	}

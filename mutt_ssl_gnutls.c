@@ -515,7 +515,6 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
     if (REGCOMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
                 REG_ICASE) != 0)
     {
-       regfree(&preg);
        return 0;
     }
 

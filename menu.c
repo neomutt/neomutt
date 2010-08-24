@@ -749,7 +749,6 @@ static int menu_search (MUTTMENU *menu, int op)
   if ((r = REGCOMP (&re, searchBuf, REG_NOSUB | mutt_which_case (searchBuf))) != 0)
   {
     regerror (r, &re, buf, sizeof (buf));
-    regfree (&re);
     mutt_error ("%s", buf);
     return (-1);
   }

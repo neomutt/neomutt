@@ -172,7 +172,6 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 #endif /* M_CRYPTHOOK */
     {
       regerror (rc, rx, err->data, err->dsize);
-      regfree (rx);
       FREE (&rx);
       goto error;
     }
