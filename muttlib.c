@@ -781,14 +781,14 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
 
 void _mutt_mktemp (char *s, size_t slen, const char *src, int line)
 {
-  size_t n = snprintf (s, slen, "%s/mutt-%s-%d-%d-%ld%ld", NONULL(Tempdir), NONULL(Hostname),
-      (int) getuid(), (int) getpid(), random(), random());
+  size_t n = snprintf (s, slen, "%s/mutt-%s-%d-%d-%ld%ld", NONULL (Tempdir), NONULL (Hostname),
+      (int) getuid (), (int) getpid (), random (), random ());
   if (n >= slen)
-    dprint(1, (debugfile, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! slen=%zu but need %zu\n",
-	  src, line, slen, n));
+    dprint (1, (debugfile, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! slen=%zu but need %zu\n",
+	    src, line, slen, n));
   dprint (3, (debugfile, "%s:%d: mutt_mktemp returns \"%s\".\n", src, line, s));
-  if (unlink (s))
-    dprint(1, (debugfile, "%s:%d: ERROR: unable to unlink temporary file\n", src, line));
+  if (unlink (s) && errno != ENOENT)
+    dprint (1, (debugfile, "%s:%d: ERROR: unlink(\"%s\"): %s (errno %d)\n", src, line, s, strerror (errno), errno));
 }
 
 void mutt_free_alias (ALIAS **p)
