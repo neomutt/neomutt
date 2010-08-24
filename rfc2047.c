@@ -877,7 +877,11 @@ void rfc2047_decode (char **pd)
       }
     }
 
-    rfc2047_decode_word (d, p, dlen);
+    if (rfc2047_decode_word (d, p, dlen) == -1)
+    {
+      /* could not decode word, fall back to displaying the raw string */
+      strfcpy(d, p, dlen);
+    }
     found_encoded = 1;
     s = q;
     n = mutt_strlen (d);
