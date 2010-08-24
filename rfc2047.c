@@ -642,9 +642,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
 	t = pp1;
         if ((t1 = memchr (pp, '*', t - pp)))
 	  t = t1;
-	charset = safe_malloc (t - pp + 1);
-	memcpy (charset, pp, t - pp);
-	charset[t-pp] = '\0';
+	charset = mutt_substrdup (pp, t);
 	break;
       case 3:
 	if (toupper ((unsigned char) *pp) == 'Q')
