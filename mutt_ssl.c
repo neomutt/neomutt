@@ -553,7 +553,7 @@ static int check_certificate_by_signer (X509 *peercert)
   if (X509_STORE_load_locations (ctx, SslCertFile, NULL))
     pass++;
   else
-    dprint (2, (debugfile, "X509_STORE_load_locations_failed\n"));
+    dprint (2, (debugfile, "X509_STORE_load_locations failed\n"));
 
   for (i = 0; i < sk_X509_num (SslSessionCerts); i++)
     pass += (X509_STORE_add_cert (ctx, sk_X509_value (SslSessionCerts, i)) != 0);
