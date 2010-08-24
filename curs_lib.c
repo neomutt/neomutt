@@ -207,9 +207,9 @@ int mutt_yesorno (const char *msg, int def)
   answer[1] = 0;
   
   reyes_ok = (expr = nl_langinfo (YESEXPR)) && expr[0] == '^' &&
-	     !regcomp (&reyes, expr, REG_NOSUB|REG_EXTENDED);
+	     !REGCOMP (&reyes, expr, REG_NOSUB);
   reno_ok = (expr = nl_langinfo (NOEXPR)) && expr[0] == '^' &&
-            !regcomp (&reno, expr, REG_NOSUB|REG_EXTENDED);
+            !REGCOMP (&reno, expr, REG_NOSUB);
 #endif
 
   CLEARLINE(LINES-1);

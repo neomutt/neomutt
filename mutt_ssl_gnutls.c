@@ -512,7 +512,8 @@ static int tls_check_stored_hostname (const gnutls_datum *cert,
   /* try checking against names stored in stored certs file */
   if ((fp = fopen (SslCertFile, "r")))
   {
-    if (regcomp(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$", REG_ICASE|REG_EXTENDED) != 0)
+    if (REGCOMP(&preg, "^#H ([a-zA-Z0-9_\\.-]+) ([0-9A-F]{4}( [0-9A-F]{4}){7})[ \t]*$",
+                REG_ICASE) != 0)
     {
        regfree(&preg);
        return 0;
