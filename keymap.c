@@ -134,14 +134,16 @@ static int parse_fkey(char *s)
  */
 static int parse_keycode (const char *s)
 {
-  if (isdigit ((unsigned char) s[1]) &&
-      isdigit ((unsigned char) s[2]) &&
-      isdigit ((unsigned char) s[3]) &&
-      s[4] == '>')
-  {
-    return (s[3] - '0') + (s[2] - '0') * 8 + (s[1] - '0') * 64;
-  }
-  return -1;
+    const char *endChar;
+    long int result = strtol(s+1, &endChar, 8);
+    /* allow trailing whitespace, eg.  < 1001 > */
+    while (ISSPACE(*endChar))
+	++endChar;
+    /* negative keycodes don't make sense, also detect overflow */
+    if (*endChar != '>' || result < 0 || result == LONG_MAX) {
+	return -1;
+    }
+    return result;
 }
 
 static int parsekeys (char *str, keycode_t *d, int max)
