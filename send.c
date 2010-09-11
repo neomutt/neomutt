@@ -1333,73 +1333,6 @@ ci_send_message (int flags,		/* send mode */
     if (!option (OPTSIGONTOP) && ! (flags & (SENDMAILX|SENDKEY|SENDBATCH))
 	&& Editor && mutt_strcmp (Editor, "builtin") != 0)
       append_signature (tempfp);
-
-    /* 
-     * this wants to be done _after_ generate_body, so message-hooks
-     * can take effect.
-     */
-
-    if (WithCrypto && !(flags & (SENDMAILX|SENDBATCH)))
-    {
-      if (option (OPTCRYPTAUTOSIGN))
-	msg->security |= SIGN;
-      if (option (OPTCRYPTAUTOENCRYPT))
-	msg->security |= ENCRYPT;
-      if (option (OPTCRYPTREPLYENCRYPT) && cur && (cur->security & ENCRYPT))
-	msg->security |= ENCRYPT;
-      if (option (OPTCRYPTREPLYSIGN) && cur && (cur->security & SIGN))
-	msg->security |= SIGN;
-      if (option (OPTCRYPTREPLYSIGNENCRYPTED) && cur && (cur->security & ENCRYPT))
-	msg->security |= SIGN;
-      if (WithCrypto & APPLICATION_PGP && (msg->security & (ENCRYPT | SIGN)))
-      {
-	if (option (OPTPGPAUTOINLINE))
-	  msg->security |= INLINE;
-	if (option (OPTPGPREPLYINLINE) && cur && (cur->security & INLINE))
-	  msg->security |= INLINE;
-      }
-    }
-
-    if (WithCrypto && msg->security)
-    {
-      /* 
-       * When replying / forwarding, use the original message's
-       * crypto system.  According to the documentation,
-       * smime_is_default should be disregarded here.
-       * 
-       * Problem: At least with forwarding, this doesn't really
-       * make much sense. Should we have an option to completely
-       * disable individual mechanisms at run-time?
-       */
-      if (cur)
-      {
-	if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP) 
-	    && (cur->security & APPLICATION_PGP))
-	  msg->security |= APPLICATION_PGP;
-	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME)
-		 && (cur->security & APPLICATION_SMIME))
-	  msg->security |= APPLICATION_SMIME;
-      }
-      
-      /*
-       * No crypto mechanism selected? Use availability + smime_is_default
-       * for the decision. 
-       */
-      if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
-      {
-	if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME) 
-	    && option (OPTSMIMEISDEFAULT))
-	  msg->security |= APPLICATION_SMIME;
-	else if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP))
-	  msg->security |= APPLICATION_PGP;
-	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME))
-	  msg->security |= APPLICATION_SMIME;
-      }
-    }
-    
-    /* No permissible mechanisms found.  Don't sign or encrypt. */
-    if (!(msg->security & (APPLICATION_SMIME|APPLICATION_PGP)))
-      msg->security = 0;
   }
   
   /* 
@@ -1492,6 +1425,80 @@ ci_send_message (int flags,		/* send mode */
       else
 	mutt_perror (msg->content->filename);
     }
+  }
+
+  /* 
+   * Set the message security unless:
+   * 1) crypto support is not enabled (WithCrypto==0)
+   * 2) pgp: header field was present during message editing with $edit_headers (msg->security != 0)
+   * 3) we are resending a message
+   * 4) we are recalling a postponed message (don't override the user's saved settings)
+   * 5) we are in mailx mode
+   * 6) we are in batch mode
+   *
+   * This is done after allowing the user to edit the message so that security
+   * settings can be configured with send2-hook and $edit_headers.
+   */
+  if (WithCrypto && (msg->security == 0) && !(flags & (SENDBATCH | SENDMAILX | SENDPOSTPONED | SENDRESEND)))
+  {
+    if (option (OPTCRYPTAUTOSIGN))
+      msg->security |= SIGN;
+    if (option (OPTCRYPTAUTOENCRYPT))
+      msg->security |= ENCRYPT;
+    if (option (OPTCRYPTREPLYENCRYPT) && cur && (cur->security & ENCRYPT))
+      msg->security |= ENCRYPT;
+    if (option (OPTCRYPTREPLYSIGN) && cur && (cur->security & SIGN))
+      msg->security |= SIGN;
+    if (option (OPTCRYPTREPLYSIGNENCRYPTED) && cur && (cur->security & ENCRYPT))
+      msg->security |= SIGN;
+    if (WithCrypto & APPLICATION_PGP && (msg->security & (ENCRYPT | SIGN)))
+    {
+      if (option (OPTPGPAUTOINLINE))
+	msg->security |= INLINE;
+      if (option (OPTPGPREPLYINLINE) && cur && (cur->security & INLINE))
+	msg->security |= INLINE;
+    }
+
+    if (msg->security)
+    {
+      /* 
+       * When replying / forwarding, use the original message's
+       * crypto system.  According to the documentation,
+       * smime_is_default should be disregarded here.
+       * 
+       * Problem: At least with forwarding, this doesn't really
+       * make much sense. Should we have an option to completely
+       * disable individual mechanisms at run-time?
+       */
+      if (cur)
+      {
+	if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP) 
+	    && (cur->security & APPLICATION_PGP))
+	  msg->security |= APPLICATION_PGP;
+	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME)
+	    && (cur->security & APPLICATION_SMIME))
+	  msg->security |= APPLICATION_SMIME;
+      }
+
+      /*
+       * No crypto mechanism selected? Use availability + smime_is_default
+       * for the decision. 
+       */
+      if (!(msg->security & (APPLICATION_SMIME | APPLICATION_PGP)))
+      {
+	if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME) 
+	    && option (OPTSMIMEISDEFAULT))
+	  msg->security |= APPLICATION_SMIME;
+	else if ((WithCrypto & APPLICATION_PGP) && option (OPTCRYPTAUTOPGP))
+	  msg->security |= APPLICATION_PGP;
+	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME))
+	  msg->security |= APPLICATION_SMIME;
+      }
+    }
+
+    /* No permissible mechanisms found.  Don't sign or encrypt. */
+    if (!(msg->security & (APPLICATION_SMIME|APPLICATION_PGP)))
+      msg->security = 0;
   }
 
   /* specify a default fcc.  if we are in batchmode, only save a copy of
