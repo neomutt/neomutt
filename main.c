@@ -514,6 +514,7 @@ static void start_curses (void)
 #if HAVE_META
   meta (stdscr, TRUE);
 #endif
+init_extended_keys();
 }
 
 #define M_IGNORE  (1<<0)	/* -z */

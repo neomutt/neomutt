@@ -89,6 +89,39 @@ static struct mapping_t KeyNames[] = {
 #ifdef KEY_NEXT
   { "<Next>",    KEY_NEXT },
 #endif  
+#ifdef NCURSES_VERSION
+  /* extensions supported by ncurses.  values are filled in during initialization */
+
+  /* CTRL+key */
+  { "<C-Up>",	-1 },
+  { "<C-Down>",	-1 },
+  { "<C-Left>", -1 },
+  { "<C-Right>",	-1 },
+  { "<C-Home>",	-1 },
+  { "<C-End>",	-1 },
+  { "<C-Next>",	-1 },
+  { "<C-Prev>",	-1 },
+
+  /* SHIFT+key */
+  { "<S-Up>",	-1 },
+  { "<S-Down>",	-1 },
+  { "<S-Left>", -1 },
+  { "<S-Right>",	-1 },
+  { "<S-Home>",	-1 },
+  { "<S-End>",	-1 },
+  { "<S-Next>",	-1 },
+  { "<S-Prev>",	-1 },
+
+  /* ALT+key */
+  { "<A-Up>",	-1 },
+  { "<A-Down>",	-1 },
+  { "<A-Left>", -1 },
+  { "<A-Right>",	-1 },
+  { "<A-Home>",	-1 },
+  { "<A-End>",	-1 },
+  { "<A-Next>",	-1 },
+  { "<A-Prev>",	-1 },
+#endif /* NCURSES_VERSION */
   { NULL,	0 }
 };
 
@@ -146,7 +179,7 @@ static int parse_keycode (const char *s)
     return result;
 }
 
-static int parsekeys (char *str, keycode_t *d, int max)
+static int parsekeys (const char *str, keycode_t *d, int max)
 {
   int n, len = max;
   char buff[SHORT_STRING];
@@ -573,6 +606,97 @@ struct keymap_t *km_find_func (int menu, int func)
     if (map->op == func)
       break;
   return (map);
+}
+
+#ifdef NCURSES_VERSION
+struct extkey {
+  const char *name;
+  const char *sym;
+};
+
+static const struct extkey ExtKeys[] = {
+  { "<c-up>", "kUP5" },
+  { "<s-up>", "kUP" },
+  { "<a-up>", "kUP3" },
+
+  { "<s-down>", "kDN" },
+  { "<a-down>", "kDN3" },
+  { "<c-down>", "kDN5" },
+
+  { "<c-right>", "kRIT5" },
+  { "<s-right>", "kRIT" },
+  { "<a-right>", "kRIT3" },
+
+  { "<s-left>", "kLFT" },
+  { "<a-left>", "kLFT3" },
+  { "<c-left>", "kLFT5" },
+
+  { "<s-home>", "kHOM" },
+  { "<a-home>", "kHOM3" },
+  { "<c-home>", "kHOM5" },
+
+  { "<s-end>", "kEND" },
+  { "<a-end>", "kEND3" },
+  { "<c-end>", "kEND5" },
+
+  { "<s-next>", "kNXT" },
+  { "<a-next>", "kNXT3" },
+  { "<c-next>", "kNXT5" },
+
+  { "<s-prev>", "kPRV" },
+  { "<a-prev>", "kPRV3" },
+  { "<c-prev>", "kPRV5" },
+
+  { 0, 0 }
+};
+
+/* Look up Mutt's name for a key and find the ncurses extended name for it */
+static const char *find_ext_name(const char *key)
+{
+  int j;
+
+  for (j = 0; ExtKeys[j].name; ++j)
+  {
+    if (strcasecmp(key, ExtKeys[j].name) == 0)
+      return ExtKeys[j].sym;
+  }
+  return 0;
+}
+#endif /* NCURSES_VERSION */
+
+/* Determine the keycodes for ncurses extended keys and fill in the KeyNames array.
+ *
+ * This function must be called *after* initscr(), or tigetstr() returns -1.  This
+ * creates a bit of a chicken-and-egg problem because km_init() is called prior to
+ * start_curses().  This means that the default keybindings can't include any of the
+ * extended keys because they won't be defined until later.
+ */
+void init_extended_keys(void)
+{
+#ifdef NCURSES_VERSION
+  int j;
+
+  use_extended_names(TRUE);
+
+  for (j = 0; KeyNames[j].name; ++j)
+  {
+    if (KeyNames[j].value == -1)
+    {
+      const char *keyname = find_ext_name(KeyNames[j].name);
+
+      if (keyname)
+      {
+	char *s = tigetstr(keyname);
+	if (s && (long)(s) != -1)
+	{
+	  int code = key_defined(s);
+	  if (code > 0)
+	    KeyNames[j].value = code;
+	}
+      }
+    }
+  }
+#endif
 }
 
 void km_init (void)
