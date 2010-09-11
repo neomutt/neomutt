@@ -918,7 +918,7 @@ static BODY *sign_message (BODY *a, int use_smime)
     {
       t->subtype = safe_strdup ("pgp-signature");
       t->use_disp = 0;
-      t->disposition = DISPINLINE;
+      t->disposition = DISPNONE;
       t->encoding = ENC7BIT;
     }
   t->filename = sigfile;
@@ -991,7 +991,7 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = outfile;
   t->parts->next->use_disp = 1;
-  t->parts->next->disposition = DISPINLINE;
+  t->parts->next->disposition = DISPATTACH;
   t->parts->next->unlink = 1; /* delete after sending the message */
   t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime
                                                            can save */

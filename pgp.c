@@ -1126,7 +1126,7 @@ BODY *pgp_sign_message (BODY *a)
   t->subtype = safe_strdup ("pgp-signature");
   t->filename = safe_strdup (sigfile);
   t->use_disp = 0;
-  t->disposition = DISPINLINE;
+  t->disposition = DISPNONE;
   t->encoding = ENC7BIT;
   t->unlink = 1; /* ok to remove this file after sending. */
 
@@ -1378,7 +1378,7 @@ BODY *pgp_encrypt_message (BODY *a, char *keylist, int sign)
   t->parts->next->encoding = ENC7BIT;
   t->parts->next->filename = safe_strdup (tempfile);
   t->parts->next->use_disp = 1;
-  t->parts->next->disposition = DISPINLINE;
+  t->parts->next->disposition = DISPATTACH;
   t->parts->next->unlink = 1; /* delete after sending the message */
   t->parts->next->d_filename = safe_strdup ("msg.asc"); /* non pgp/mime can save */
 
@@ -1557,7 +1557,7 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 
 #endif
 
-  b->disposition = DISPINLINE;
+  b->disposition = DISPNONE;
   b->unlink   = 1;
 
   b->noconv = 1;

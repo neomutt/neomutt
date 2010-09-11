@@ -48,7 +48,8 @@ enum
 {
   DISPINLINE,
   DISPATTACH,
-  DISPFORMDATA
+  DISPFORMDATA,
+  DISPNONE /* no preferred disposition */
 };
 
 /* MIME encoding/decoding global vars */

@@ -63,8 +63,6 @@
 
 extern char RFC822Specials[];
 
-#define DISPOSITION(X) X==DISPATTACH?"attachment":"inline"
-
 const char MimeSpecials[] = "@.,;:<>[]\\\"()?/= \t";
 
 char B64Chars[64] = {
@@ -355,33 +353,49 @@ int mutt_write_mime_header (BODY *a, FILE *f)
   if (a->description)
     fprintf(f, "Content-Description: %s\n", a->description);
 
-  fprintf (f, "Content-Disposition: %s", DISPOSITION (a->disposition));
-
-  if (a->use_disp)
+  if (a->disposition != DISPNONE)
   {
-    if(!(fn = a->d_filename))
-      fn = a->filename;
+    const char *dispstr[] = {
+      "inline",
+      "attachment",
+      "form-data"
+    };
 
-    if (fn)
+    if (a->disposition < sizeof(dispstr)/sizeof(char*))
     {
-      char *tmp;
+      fprintf (f, "Content-Disposition: %s", dispstr[a->disposition]);
 
-      /* Strip off the leading path... */
-      if ((t = strrchr (fn, '/')))
-	t++;
-      else
-	t = fn;
+      if (a->use_disp)
+      {
+	if (!(fn = a->d_filename))
+	  fn = a->filename;
 
-      buffer[0] = 0;
-      tmp = safe_strdup (t);
-      encode = rfc2231_encode_string (&tmp);
-      rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
-      FREE (&tmp);
-      fprintf (f, "; filename%s=%s", encode ? "*" : "", buffer);
+	if (fn)
+	{
+	  char *tmp;
+
+	  /* Strip off the leading path... */
+	  if ((t = strrchr (fn, '/')))
+	    t++;
+	  else
+	    t = fn;
+
+	  buffer[0] = 0;
+	  tmp = safe_strdup (t);
+	  encode = rfc2231_encode_string (&tmp);
+	  rfc822_cat (buffer, sizeof (buffer), tmp, MimeSpecials);
+	  FREE (&tmp);
+	  fprintf (f, "; filename%s=%s", encode ? "*" : "", buffer);
+	}
+      }
+
+      fputc ('\n', f);
+    }
+    else
+    {
+      dprint(1, (debugfile, "ERROR: invalid content-disposition %d\n", a->disposition));
     }
   }
-
-  fputc ('\n', f);
 
   if (a->encoding != ENC7BIT)
     fprintf(f, "Content-Transfer-Encoding: %s\n", ENCODING (a->encoding));

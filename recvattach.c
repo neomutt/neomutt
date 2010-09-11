@@ -276,8 +276,17 @@ const char *mutt_attach_fmt (char *dest,
     case 'I':
       if (!optional)
       {
-	  snprintf (dest, destlen, "%c",
-		  (aptr->content->disposition == DISPINLINE) ? 'I' : 'A');
+	const char dispchar[] = { 'I', 'A', 'F', '-' };
+	char ch;
+
+	if (aptr->content->disposition < sizeof(dispchar))
+	  ch = dispchar[aptr->content->disposition];
+	else
+	{
+	  dprint(1, (debugfile, "ERROR: invalid content-disposition %d\n", aptr->content->disposition));
+	  ch = '!';
+	}
+	snprintf (dest, destlen, "%c", ch);
       }
       break;
     case 'm':
