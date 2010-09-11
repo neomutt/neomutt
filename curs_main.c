@@ -473,10 +473,6 @@ int mutt_index_menu (void)
        * modified underneath us.)
        */
 
-#ifdef USE_IMAP
-      imap_allow_reopen (Context);
-#endif
-
       index_hint = (Context->vcount && menu->current >= 0 && menu->current < Context->vcount) ? CURHDR->index : 0;
 
       if ((check = mx_check_mailbox (Context, &index_hint, 0)) < 0)
@@ -685,10 +681,6 @@ int mutt_index_menu (void)
 
       mutt_curs_set (1);	/* fallback from the pager */
     }
-
-#ifdef USE_IMAP
-    imap_disallow_reopen (Context);
-#endif
 
     switch (op)
     {
