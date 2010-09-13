@@ -992,17 +992,17 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
         
 	if (option(OPTMAILCHECKRECENT))
 	{
-	  /*
-	   * the \Recent flag will be set on messages that have been delivered since the mailbox
-	   * was last opened.
-	   */
-	  inc->new = status->recent;
+	  if (olduv && olduv == status->uidvalidity)
+	  {
+	    if (oldun < status->uidnext)
+	      inc->new = status->unseen;
+	  }
+	  else if (!olduv && !oldun)
+	    /* first check per session, use recent. might need a flag for this. */
+	    inc->new = status->recent;
+	  else
+	    inc->new = status->unseen;
 	}
-	else if (olduv && olduv == status->uidvalidity)
-        {
-          if (oldun < status->uidnext)
-            inc->new = status->unseen;
-        }
 	else
           inc->new = status->unseen;
 
