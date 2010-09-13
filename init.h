@@ -1335,6 +1335,17 @@ struct option_t MuttVars[] = {
   ** This variable configures how often (in seconds) mutt should look for
   ** new mail. Also see the $$timeout variable.
   */
+  { "mail_check_recent",DT_BOOL, R_NONE, OPTMAILCHECKRECENT, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will only notify you about new mail that has been received
+  ** since the last time you opened the mailbox.  When \fIunset\fP, Mutt will notify you
+  ** if any new mail exists in the mailbox, regardless of whether you have visited it
+  ** recently.
+  ** .pp
+  ** When \fI$$mark_old\fP is set, Mutt does not consider the mailbox to contain new
+  ** mail if only old messages exist.
+  */
   { "mailcap_path",	DT_STR,	 R_NONE, UL &MailcapPath, 0 },
   /*
   ** .pp

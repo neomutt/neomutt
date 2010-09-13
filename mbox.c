@@ -671,12 +671,26 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
   return (-1);
 }
 
+/*
+ * Returns 1 if the mailbox has at least 1 new messages (not old)
+ * otherwise returns 0.
+ */
+static int mbox_has_new(CONTEXT *ctx)
+{
+  int i;
+
+  for (i = 0; i < ctx->msgcount; i++)
+    if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read && !ctx->hdrs[i]->old)
+      return 1;
+  return 0;
+}
+
 /* if mailbox has at least 1 new message, sets mtime > atime of mailbox
  * so buffy check reports new mail */
 void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
 {
   struct utimbuf utimebuf;
-  int i, found = 0;
+  int i;
   struct stat _st;
 
   if (!st)
@@ -689,11 +703,11 @@ void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
   utimebuf.actime = st->st_atime;
   utimebuf.modtime = st->st_mtime;
 
-  for (i = 0; !found && i < ctx->msgcount; i++)
-    if (!ctx->hdrs[i]->deleted && !ctx->hdrs[i]->read && !ctx->hdrs[i]->old)
-      found = 1;
-
-  if (found && utimebuf.actime >= utimebuf.modtime)
+  /*
+   * When $mbox_check_recent is set, existing new mail is ignored, so do not
+   * recent the atime to mtime-1 to signal new mail.
+   */
+  if (!option(OPTMAILCHECKRECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
     utimebuf.actime = utimebuf.modtime - 1;
 
   utime (ctx->path, &utimebuf);

@@ -293,8 +293,18 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
   struct dirent *de;
   char *p;
   int rc = 0;
+  struct stat sb;
 
   snprintf (path, sizeof (path), "%s/new", mailbox->path);
+
+  /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
+   * the user last exited the mailbox, then we know there is no recent mail.
+   */
+  if (option(OPTMAILCHECKRECENT))
+  {
+    if (stat(path, &sb) == 0 && sb.st_mtime < mailbox->last_visited)
+      return 0;
+  }
 
   if ((dirp = opendir (path)) == NULL)
   {
@@ -307,7 +317,17 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
     if (*de->d_name == '.')
       continue;
 
-    if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')) {
+    if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T'))
+    {
+      if (option(OPTMAILCHECKRECENT))
+      {
+	char msgpath[_POSIX_PATH_MAX];
+
+	snprintf(msgpath, sizeof(msgpath), "%s/%s", path, de->d_name);
+	/* ensure this message was received since leaving this mailbox */
+	if (stat(msgpath, &sb) == 0 && (sb.st_ctime <= mailbox->last_visited))
+	  continue;
+      }
       /* one new and undeleted message is enough */
       mailbox->new = 1;
       rc = 1;
@@ -333,8 +353,11 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
       || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
   if (statcheck)
   {
-    rc = 1;
-    mailbox->new = 1;
+    if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
+    {
+      rc = 1;
+      mailbox->new = 1;
+    }
   }
   else if (option(OPTCHECKMBOXSIZE))
   {
@@ -391,10 +414,8 @@ int mutt_buffy_check (int force)
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
     if (tmp->magic != M_IMAP)
-      tmp->new = 0;
-
-    if (tmp->magic != M_IMAP)
     {
+      tmp->new = 0;
 #ifdef USE_POP
       if (mx_is_pop (tmp->path))
 	tmp->magic = M_POP;
@@ -513,6 +534,7 @@ void mutt_buffy_setnotified (const char *path)
     return;
 
   buffy->notified = 1;
+  time(&buffy->last_visited);
 }
 
 int mutt_buffy_notify (void)
