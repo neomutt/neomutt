@@ -1335,7 +1335,7 @@ struct option_t MuttVars[] = {
   ** This variable configures how often (in seconds) mutt should look for
   ** new mail. Also see the $$timeout variable.
   */
-  { "mail_check_recent",DT_BOOL, R_NONE, OPTMAILCHECKRECENT, 0 },
+  { "mail_check_recent",DT_BOOL, R_NONE, OPTMAILCHECKRECENT, 1 },
   /*
   ** .pp
   ** When \fIset\fP, Mutt will only notify you about new mail that has been received
