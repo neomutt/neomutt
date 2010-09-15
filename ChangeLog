@@ -1,3 +1,258 @@
+2010-09-15 10:05 -0700  Michael Elkins  <me@mutt.org>  (54e3139a0362)
+
+	* safe_asprintf.c: suppress check_sec errors
+
+2010-09-13 17:25 -0700  Michael Elkins  <me@mutt.org>  (20b2d496349f)
+
+	* init.h: make $mail_check_recent set by default
+
+2010-09-13 19:00 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (fea3860ff672)
+
+	* imap/command.c: Restore the previous behaviour of checking for new
+	messages in imap folders when mail_check_recent is set.
+
+2010-09-12 19:54 -0700  Michael Elkins  <me@mutt.org>  (a51df78218e8)
+
+	* buffy.c, buffy.h, imap/command.c, init.h, mbox.c, mutt.h: add
+	$mail_check_recent boolean to control whether Mutt will notify about
+	all new mail, or just new mail received since the last visit to a
+	mailbox
+
+	closes #3271
+
+	partly addresses #3310
+
+	* smime.c: fix crash when index contains 0 keys
+
+2010-09-11 07:34 -0700  Michael Elkins  <me@mutt.org>  (0f962f1a6bbb)
+
+	* send.c: Allow setting message security in send2-hook
+
+	This patch delays checking the message security options until after
+	the user has an initial chance to edit the message. This allows the
+	security options to be set in a send2-hook when using $edit_headers.
+	Without this patch, the user has no way of automatically setting
+	security based on recipients since the to/cc prompts are bypassed.
+
+	The other change in behavior is if the user happened to use a
+	send2-hook to see if the message had security applied *prior* to
+	editing the message, that no longer works.
+
+	* keymap.c, keymap.h, main.c: support for ncurses extension allowing
+	binding to function keys with modifiers
+
+	* keymap.c: allow octal codes with more than three digits
+
+	* crypt-gpgme.c, mime.h, pgp.c, recvattach.c, sendlib.c: add DISPNONE
+	to mean no preferred Content-Disposition; make pgp-signature parts
+	DISPNONE for multipart/signed
+
+	* recvcmd.c: fix problem with reply-hook not working when a
+	message/rfc822 attachment is selected
+
+	* rfc2047.c: more lenient RFC2047 decoding: accept illegal spaces and
+	bare question marks in encoded words
+
+	* curs_main.c, mx.c: fix crash when new mail is received during IMAP
+	IDLE
+
+	closes #3335
+
+2010-08-25 00:30 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (5302767aa6aa)
+
+	* rfc2047.c: Use mutt_substrdup in rfc2047_decode_word
+
+2010-08-24 16:40 -0700  Michael Elkins  <me@mutt.org>  (92b02f77e780)
+
+	* rfc2047.c: detect failure to decode word and copy raw string
+	instead; avoids calling strlen() on uninitialized memory
+
+	closes #2923
+
+2010-08-24 18:39 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (ebd4beafe5eb)
+
+	* mutt_ssl.c: Fix typo.
+
+	* browser.c, hook.c, init.c, menu.c, mutt_ssl_gnutls.c, pager.c: Do
+	not call regfree if regcomp fails. The content of the regex_t
+	structure is undefined in this case.
+
+	* curs_lib.c, mutt_ssl_gnutls.c: use REGCOMP() macro
+
+2010-08-24 10:03 -0700  Michael Elkins  <me@mutt.org>  (5d59c8b737ba)
+
+	* init.c: add REG_ICASE accidentally removed in changeset 1a35f096c8cb
+
+	* muttlib.c: do not print debug message on ENOENT
+
+2010-08-14 09:18 -0700  Michael Elkins  <me@mutt.org>  (04fd8ddea579)
+
+	* url.c: avoid c99 syntax for backwards compat
+
+2010-08-06 21:52 +0200  Matthias Andree  <matthias.andree@gmx.de>  (24a7b1aa2e55)
+
+	* buffy.c: Fix comparison signedness warnings.
+
+2010-08-12 16:04 -0700  Michael Elkins  <me@mutt.org>  (ced5d3dca974)
+
+	* imap/util.c: Fix bug in imap_keepalive() which erroneously free
+	Context when the IMAP connection is shut down by the server.
+
+	Closes #3410
+
+	* url.c: url_parse_mailto should return 0 on success
+
+	fix memory leak errors when unable to parse mailto: URL
+
+	closes #3441
+
+	* mh.c: always update message body size when parsing a maildir message
+
+	* safe_asprintf.c: call va_end() even when vasprintf returns <0
+
+2010-08-09 20:48 -0700  Michael Elkins  <me@mutt.org>  (6572e8bcd723)
+
+	* Makefile.am, imap/message.c, lib.c, lib.h, safe_asprintf.c: rename
+	mutt_sprintf() to safe_asprintf() to match the GNU extension that
+	performs a similar task
+
+2010-08-09 10:27 -0700  Vincent Lefevre  <vincent@vinc17.org>  (e86ee9991dc3)
+
+	* postpone.c: In postpone.c, function mutt_num_postponed, the old
+	{{{OldPostponed}}} is never freed.
+
+	closes #3442
+
+2010-08-09 09:38 -0700  Michael Elkins  <me@mutt.org>  (8051fc8b631c)
+
+	* send.c: clear the real name when $reverse_realname is unset and a
+	match is hit so that $realname can be set in a reply- or send-hook
+
+	closes #3427
+
+	* doc/manual.xml.head: fix example of mailto: use on the command line
+
+	* pager.c: fix buffer underrun when processing ANSI escape sequences
+
+	closes #3371
+
+2010-08-08 12:29 -0700  Michael Elkins  <me@mutt.org>  (4dcf19c58139)
+
+	* doc/manual.xml.head, doc/mutt.man: document support for mailto: URLs
+	on the command line
+
+	closes #3400
+
+	* imap/message.c: avoid error when the user has requested many extra
+	headers via IMAP
+
+	closes #3435
+
+	* lib.c, lib.h: add a malloc+sprintf combo function
+
+2010-08-08 10:21 -0700  Fabian Groffen  <grobian@gentoo.org>  (d4d703e21cdd)
+
+	* pattern.c: fix crash in limit when user enters invalid regexp
+
+	closes #3417
+
+2010-08-07 06:44 -0700  Michael Elkins  <me@mutt.org>  (cc881d855f05)
+
+	* mutt_ssl.c: Fix comparison signedness warnings
+
+	* pop_lib.c: add comment about safety of cast
+
+2010-08-06 21:58 +0200  Matthias Andree  <matthias.andree@gmx.de>  (55f50b2db1f8)
+
+	* pop_lib.c: Fix comparison signedness warning.
+
+	* status.c: Fix signedness warning.
+
+	* .hgignore: Ignore backup files ending in a tilde character.
+
+	* url.c: Fix comparison signedness warnings.
+
+	* gnupgparse.c, pop_auth.c: Fix comparison signedness warnings.
+
+	* lib.h: Resolve if/else empty body ambiguity/warnings when compiling
+	without DEBUG.
+
+2010-08-06 17:08 -0700  Michael Elkins  <me@mutt.org>  (5b15d4d96277)
+
+	* configure.ac, init.c, protos.h: detect availablity of 'long long'
+
+	cast time_t to 'long long' prior to bitshifting since it can be a
+	float value according to POSIX.1-2008
+
+	closes #3439
+
+2010-08-06 21:22 +0200  Matthias Andree  <matthias.andree@gmx.de>  (bf13863e682e)
+
+	* md5.c: Drop declaration for unused argv/argc parameters.
+
+	Fixes GCC warning with -Wextra.
+
+2010-08-06 13:11 -0700  Michael Elkins  <me@mutt.org>  (998ca956b41b)
+
+	* init.c, muttlib.c: use a 64-bit random value in temporary filenames.
+
+	closes #3158
+
+	* browser.c: avoid using C99 bool
+
+	* browser.c, init.h: add %D format string to $folder_format to expand
+	the time based on $date_format.
+
+	properly set the locale for LC_TIME prior to calling strftime()
+	closes #1734 closes #3406
+
+	* mutt_ssl.c: fix compiler warning about wrong type for
+	SslSessionCerts
+
+2010-08-06 09:58 +0200  Matthias Andree  <matthias.andree@gmx.de>  (473fbe29f626)
+
+	* mutt_ssl.c: Unbreak X.509 SubjAltName checks,
+
+	regression in 6016:dc09812e63a3 that calls strlen on an SSL sk
+	rather than its string payload.
+
+	closes #3426
+
+2010-08-06 07:12 -0700  Michael Elkins  <me@mutt.org>  (4ae33a8a1391)
+
+	* configure.ac: properly set _XOPEN_SOURCE to 600 (POSIX.1-2004) when
+	detecting th wc*() functions
+
+	closes #3341
+
+2010-08-05 21:57 -0700  Michael Elkins  <me@mutt.org>  (bc5fb152e2ba)
+
+	* mbox.c: when parsing From_ lines in mmdf/mbox, the TZ should be
+	computed based on the time in the string rather than the current
+	time, otherwise DST issues cause the computed time to be wrong.
+
+	closes #2177
+
+	* thread.c: explanatory comments
+
+2010-08-05 17:03 -0700  andreas  <andreas.amann@tyndall.ie>  (0666d9588eac)
+
+	* curs_main.c, functions.h: do not leave pager when changing sort
+	order.
+
+	closes #2143
+
+2010-08-05 16:47 -0700  Michael Elkins  <me@mutt.org>  (57d4b3839172)
+
+	* curs_main.c: do not leave pager when using read-thread and read-
+	subthread
+
+	closes #2137
+
+2010-08-04 17:04 -0700  Petr Písař  <petr.pisar@atlas.cz>  (59ca5d7b1656)
+
+	* ChangeLog, po/cs.po: Updated Czech translation
+
 2010-08-04 06:37 -0700  Vincent Lefevre  <vincent@vinc17.org>  (a7f05f29d9bc)
 
 	* po/fr.po: updated French translation
