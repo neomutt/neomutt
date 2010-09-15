@@ -4,8 +4,11 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-hg tip:
+1.5.21 (2010-09-15):
 
+  + $mail_check_recent controls whether all unread mail or only new mail
+    since the last mailbox visit will be reported as new
+  + %D format expando for $folder_format
   ! $thorough_search defaults to yes
   + imap-logout-all closes all open IMAP connections
   ! header/body cache paths are always UTF-8
