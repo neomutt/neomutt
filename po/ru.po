@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.20\n"
+"Project-Id-Version: mutt-1.5.21\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-09-15 10:09-0700\n"
-"PO-Revision-Date: 2009-06-15 22:10+0300\n"
+"PO-Revision-Date: 2010-09-16 11:18+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: RUSSIAN <mutt-ru@woe.spb.ru>\n"
 "MIME-Version: 1.0\n"
@@ -595,9 +595,8 @@ msgid "Descrip"
 msgstr "Описание"
 
 #: compose.c:119
-#, fuzzy
 msgid "Not supported"
-msgstr "Возможность пометки не поддерживается."
+msgstr "Не поддерживается"
 
 #: compose.c:124
 msgid "Sign, Encrypt"
@@ -613,25 +612,23 @@ msgstr "Подписать"
 
 #: compose.c:130
 msgid "None"
-msgstr ""
+msgstr "Нет"
 
 #: compose.c:137
-#, fuzzy
 msgid " (inline PGP)"
-msgstr "(PGP/текст)"
+msgstr " (PGP/текст)"
 
 #: compose.c:139
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
 #: compose.c:143
-#, fuzzy
 msgid " (S/MIME)"
-msgstr " (PGP/MIME)"
+msgstr " (S/MIME)"
 
 #: compose.c:152 compose.c:156
 msgid " sign as: "
-msgstr " подписать как: "
+msgstr "подпись как: "
 
 #: compose.c:152 compose.c:156
 msgid "<default>"
@@ -1611,7 +1608,7 @@ msgstr "Снять пометку с сообщений по образцу: "
 
 #: curs_main.c:1004
 msgid "Logged out of IMAP servers."
-msgstr ""
+msgstr "Соединения с IMAP-серверами отключены."
 
 #: curs_main.c:1083
 msgid "Open mailbox in read-only mode"
@@ -1645,7 +1642,7 @@ msgstr "Дискуссия разделена"
 
 #: curs_main.c:1263
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "Дискуссия не может быть разделена, сообщение не является частью дискуссии"
 
 #: curs_main.c:1272
 msgid "link threads"
@@ -2308,14 +2305,12 @@ msgid "nospam: no matching pattern"
 msgstr "не спам: образец не найден"
 
 #: init.c:861
-#, fuzzy, c-format
 msgid "%sgroup: missing -rx or -addr."
-msgstr "Отсутствует -rx или -addr."
+msgstr "%sgroup: отсутствует -rx или -addr."
 
 #: init.c:879
-#, fuzzy, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Предупреждение: некорректный IDN '%s'.\n"
+msgstr "%sgroup: предупреждение: некорректный IDN '%s'.\n"
 
 #: init.c:1094
 msgid "attachments: no disposition"
@@ -2627,7 +2622,6 @@ msgstr ""
 "1301, USA.\n"
 
 #: main.c:113
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2642,9 +2636,9 @@ msgid ""
 msgstr ""
 "запуск: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "        mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
-"<file> [...]] [--] <addr> [...]\n"
-"        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...]] "
-"[--] <addr> [...] < message\n"
+"<file> [...] --] <addr> [...]\n"
+"        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
+"<addr> [...] < message\n"
 "        mutt [<options>] -p\n"
 "        mutt [<options>] -A <alias> [...]\n"
 "        mutt [<options>] -Q <query> [...]\n"
@@ -2652,7 +2646,6 @@ msgstr ""
 "        mutt -v[v]\n"
 
 #: main.c:122
-#, fuzzy
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -2664,7 +2657,8 @@ msgid ""
 msgstr ""
 "параметры:\n"
 "  -A <alias>\tраскрыть данный псевдоним\n"
-"  -a <file>\tвложить файл в сообщение\n"
+"  -a <file> [...] --\tвложить файл(ы) в сообщение\n"
+"\t\tсписок файлов должен заканчиваться строкой \"--\"\n"
 "  -b <address>\tуказать blind carbon-copy (BCC) адрес\n"
 "  -c <address>\tуказать carbon-copy (CC) адрес\n"
 "  -D\t\tвывести значения всех переменных на stdout"
@@ -3397,9 +3391,8 @@ msgid "error in pattern at: %s"
 msgstr "ошибка в образце: %s"
 
 #: pattern.c:830
-#, fuzzy, c-format
 msgid "missing pattern: %s"
-msgstr "пропущен параметр"
+msgstr "пропущен образец: %s"
 
 #: pattern.c:840
 #, c-format
@@ -3518,7 +3511,6 @@ msgid "Can't invoke PGP"
 msgstr "Не удалось запустить программу PGP"
 
 #: pgp.c:1592
-#, fuzzy, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказаться? "
 
@@ -3535,22 +3527,19 @@ msgstr "(i)PGP/текст"
 #. * it.  The 'i' key is appended in this version.
 #.
 #: pgp.c:1599
-#, fuzzy
 msgid "esabfci"
-msgstr "esabpfc"
+msgstr "esabfci"
 
 #. The keys accepted *must* be a prefix of the accepted keys in the "if"
 #. * clause above since the switch statement below depends on it.
 #.
 #: pgp.c:1606
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, %s, (c)отказаться? "
+msgstr "PGP (e)шифр, (s)подпись, (a)подпись как, (b)оба, (c)отказаться? "
 
 #: pgp.c:1607
-#, fuzzy
 msgid "esabfc"
-msgstr "esabpfc"
+msgstr "esabfc"
 
 #: pgpinvoke.c:308
 msgid "Fetching PGP key..."
@@ -4797,7 +4786,7 @@ msgstr "забрать почту с IMAP-сервера"
 
 #: ../keymap_alldefs.h:109
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "отключение от всех IMAP-серверов"
 
 #: ../keymap_alldefs.h:110
 msgid "retrieve mail from POP server"
@@ -5176,20 +5165,3 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
-
-#~ msgid "Clear"
-#~ msgstr "Не применять"
-
-#~ msgid ""
-#~ "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
-#~ "\t\twhen using -a with multiple filenames using -- is mandatory"
-#~ msgstr ""
-#~ "  --\t\tсчитать аргументы адресами, даже если они начинаются со знака "
-#~ "'-'\n"
-#~ "\t\tнеобходимо применение при использовании -a с несколькими файлами"
-
-#~ msgid "esabifc"
-#~ msgstr "esabifc"
-
-#~ msgid "Interactive SMTP authentication not supported"
-#~ msgstr "Интерактивная SMTP-аутентификация не поддерживается"
