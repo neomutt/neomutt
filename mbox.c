@@ -705,7 +705,7 @@ void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
 
   /*
    * When $mbox_check_recent is set, existing new mail is ignored, so do not
-   * recent the atime to mtime-1 to signal new mail.
+   * reset the atime to mtime-1 to signal new mail.
    */
   if (!option(OPTMAILCHECKRECENT) && utimebuf.actime >= utimebuf.modtime && mbox_has_new(ctx))
     utimebuf.actime = utimebuf.modtime - 1;
