@@ -47,10 +47,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.20\n"
+"Project-Id-Version: mutt 1.5.21\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-09-15 10:09-0700\n"
-"PO-Revision-Date: 2009-06-17 20:16+0200\n"
+"PO-Revision-Date: 2010-09-23 14:27+0200\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "MIME-Version: 1.0\n"
@@ -662,9 +662,8 @@ msgid "Descrip"
 msgstr "Descriu"
 
 #: compose.c:119
-#, fuzzy
 msgid "Not supported"
-msgstr "No es pot marcar."
+msgstr "No es permet"
 
 #: compose.c:124
 msgid "Sign, Encrypt"
@@ -680,21 +679,19 @@ msgstr "Signa"
 
 #: compose.c:130
 msgid "None"
-msgstr ""
+msgstr "Cap"
 
 #: compose.c:137
-#, fuzzy
 msgid " (inline PGP)"
-msgstr " (en línia)"
+msgstr " (PGP en línia)"
 
 #: compose.c:139
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
 #: compose.c:143
-#, fuzzy
 msgid " (S/MIME)"
-msgstr " (PGP/MIME)"
+msgstr " (S/MIME)"
 
 # ivb (2001/11/19)
 # ivb  L’espai de principi és per a alinear, però no hi ha res a fer…
@@ -1755,7 +1752,7 @@ msgstr "Desmarca els missatges que concorden amb: "
 
 #: curs_main.c:1004
 msgid "Logged out of IMAP servers."
-msgstr ""
+msgstr "S’ha eixit dels servidors IMAP."
 
 # És una pregunta.  -- ivb
 #: curs_main.c:1083
@@ -1791,7 +1788,7 @@ msgstr "S’ha trencat el fil."
 
 #: curs_main.c:1263
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "No es pot trencar el fil, el missatge no n’és part de cap."
 
 # Cannot…  ivb
 #: curs_main.c:1272
@@ -2487,15 +2484,17 @@ msgstr "spam: No s’ha indicat el patró de concordança."
 msgid "nospam: no matching pattern"
 msgstr "nospam: No s’ha indicat el patró de concordança."
 
+# L’indicador de format inicial altera l’ordre de configuració.  ivb
 #: init.c:861
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: missing -rx or -addr."
-msgstr "Manca «-rx» o «-addr»."
+msgstr "%sgroup: Manca «-rx» o «-addr»."
 
+# L’indicador de format inicial altera l’ordre de configuració.  ivb
 #: init.c:879
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Avís: L’IDN no és vàlid: %s\n"
+msgstr "%sgroup: Avís: L’IDN no és vàlid: %s\n"
 
 # «attachments» és una ordre de configuració.  ivb
 #: init.c:1094
@@ -2821,7 +2820,6 @@ msgstr ""
 "    MA  02110‐1301, USA.\n"
 
 #: main.c:113
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2836,8 +2834,8 @@ msgid ""
 msgstr ""
 "Forma d’ús: mutt [OPCIÓ]… [-z] [-f FITXER | -yZ]\n"
 "            mutt [OPCIÓ]… [-x] [-Hi FITXER] [-s ASSUMPTE] [-bc ADREÇA]\n"
-"                 [-a FITXER…] [--] ADREÇA…\n"
-"            mutt [OPCIÓ]… [-x] [-s ASSUMPTE] [-bc ADREÇA] [-a FITXER…] [--]\n"
+"                 [-a FITXER… --] ADREÇA…\n"
+"            mutt [OPCIÓ]… [-x] [-s ASSUMPTE] [-bc ADREÇA] [-a FITXER… --]\n"
 "                 ADREÇA… < MISSATGE\n"
 "            mutt [OPCIÓ]… -p\n"
 "            mutt [OPCIÓ]… -A ÀLIES [-A ÀLIES]…\n"
@@ -2846,7 +2844,6 @@ msgstr ""
 "            mutt -v[v]\n"
 
 #: main.c:122
-#, fuzzy
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -2858,7 +2855,8 @@ msgid ""
 msgstr ""
 "Opcions:\n"
 "  -A ÀLIES             Expandeix l’ÀLIES indicat.\n"
-"  -a FITXER            Adjunta un FITXER al missatge.\n"
+"  -a FITXER… --        Adjunta cada FITXER al missatge.  La llista de fitxers\n"
+"                       ha d’acabar amb l’argument «--».\n"
 "  -b ADREÇA            Indica una ADREÇA per a la còpia cega (Bcc).\n"
 "  -c ADREÇA            Indica una ADREÇA per a la còpia (Cc).\n"
 "  -D                   Mostra el valor de totes les variables a l’eixida\n"
@@ -3640,9 +3638,9 @@ msgid "error in pattern at: %s"
 msgstr "Error al patró a: %s"
 
 #: pattern.c:830
-#, fuzzy, c-format
+#, c-format
 msgid "missing pattern: %s"
-msgstr "Manca un paràmetre."
+msgstr "Manca el patró: %s"
 
 # Realment són parèntesis!  ivb
 #: pattern.c:840
@@ -3760,8 +3758,10 @@ msgstr "No s’ha pogut obrir el subprocés PGP."
 msgid "Can't invoke PGP"
 msgstr "No s’ha pogut invocar PGP."
 
+# Prescindesc de la paraula «format» perquè en reemplaçar‐hi les cadenes
+# següents la línia esdevé massa llarga.  ivb
 #: pgp.c:1592
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, o en (c)lar? "
 
@@ -3781,21 +3781,18 @@ msgstr "en lín(i)a"
 #. * it.  The 'i' key is appended in this version.
 #.
 #: pgp.c:1599
-#, fuzzy
 msgid "esabfci"
-msgstr "xsgapc"
+msgstr "xsgapci"
 
 #. The keys accepted *must* be a prefix of the accepted keys in the "if"
 #. * clause above since the switch statement below depends on it.
 #.
 #: pgp.c:1606
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, o en (c)lar? "
+msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, o en (c)lar? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, o en (c)lar
 #: pgp.c:1607
-#, fuzzy
 msgid "esabfc"
 msgstr "xsgapc"
 
@@ -5093,7 +5090,7 @@ msgstr "Força l’obtenció del correu d’un servidor IMAP."
 
 #: ../keymap_alldefs.h:109
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "Ix de tots els servidors IMAP."
 
 #: ../keymap_alldefs.h:110
 msgid "retrieve mail from POP server"
@@ -5478,25 +5475,3 @@ msgstr "Extreu totes les claus públiques possibles."
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "Mostra les opcions d’S/MIME."
-
-#~ msgid "Clear"
-#~ msgstr "En clar"
-
-#~ msgid ""
-#~ "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
-#~ "\t\twhen using -a with multiple filenames using -- is mandatory"
-#~ msgstr ""
-#~ "  --                   Tracta la resta d’arguments com a adreces encara "
-#~ "que\n"
-#~ "                       comencen per «-».  És obligatori usar açò quan "
-#~ "s’use\n"
-#~ "                       «-a» amb múltiples noms de fitxer."
-
-# ivb (2004/08/16)
-# ivb  (x)ifra, (s)igna, si(g)na com a, (a)mbdós, {PGP/M(i)ME|en lín(i)a}, o en (c)lar
-# La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
-#~ msgid "esabifc"
-#~ msgstr "xsgaic"
-
-#~ msgid "Interactive SMTP authentication not supported"
-#~ msgstr "No es permet l’autenticació SMTP interactiva."
