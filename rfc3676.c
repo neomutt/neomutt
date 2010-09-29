@@ -2,6 +2,7 @@
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
  * Copyright (C) 2005-9 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2010 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -101,7 +102,7 @@ static void flush_par (STATE *s, flowed_state_t *fst)
  * for the prefix from the terminal width. */
 static int quote_width (STATE *s, int ql)
 {
-  int width = mutt_term_width (Wrap);
+  int width = mutt_term_width (ReflowWrap);
   if (option(OPTTEXTFLOWED) && (s->flags & M_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676

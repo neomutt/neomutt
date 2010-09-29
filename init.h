@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -2282,6 +2282,27 @@ struct option_t MuttVars[] = {
   ** The value of \fI$$record\fP is overridden by the $$force_name and
   ** $$save_name variables, and the ``$fcc-hook'' command.
   */
+  { "reflow_text",	DT_BOOL, R_NONE, OPTREFLOWTEXT, 1 },
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will reformat paragraphs in text/plain
+  ** parts marked format=flowed.  If \fIunset\fP, Mutt will display paragraphs
+  ** unaltered from how they appear in the message body.  See RFC3676 for
+  ** details on the \fIformat=flowed\fP format.
+  ** .pp
+  ** Also see $$reflow_wrap, and $$wrap.
+  */
+  { "reflow_wrap",	DT_NUM,	R_NONE, UL &ReflowWrap, 78 },
+  /*
+  ** .pp
+  ** This variable controls the maximum paragraph width when reformatting text/plain
+  ** parts when $$reflow_text is \fIset\fP.  When the value is 0, paragraphs will
+  ** be wrapped at the terminal's right margin.  A positive value sets the
+  ** paragraph width relative to the left margin.  A negative value set the
+  ** paragraph width relative to the right margin.
+  ** .pp
+  ** Also see $$wrap.
+  */
   { "reply_regexp",	DT_RX,	 R_INDEX|R_RESORT, UL &ReplyRegexp, UL "^(re([\\[0-9\\]+])*|aw):[ \t]*" },
   /*
   ** .pp
@@ -3320,6 +3341,8 @@ struct option_t MuttVars[] = {
   ** When set to a negative value, mutt will wrap text so that there are $$wrap
   ** characters of empty space on the right side of the terminal. Setting it
   ** to zero makes mutt wrap at the terminal width.
+  ** .pp
+  ** Also see $$reflow_wrap.
   */
   { "wrap_headers",     DT_NUM,  R_PAGER, UL &WrapHeaders, 78 },
   /*
