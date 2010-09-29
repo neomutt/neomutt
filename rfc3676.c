@@ -97,7 +97,7 @@ static void flush_par (STATE *s, flowed_state_t *fst)
 }
 
 /* Calculate the paragraph width based upon the current quote level. The start
- * of a quoted line will be ">>> ", so we need to subtrace the space required
+ * of a quoted line will be ">>> ", so we need to subtract the space required
  * for the prefix from the terminal width. */
 static int quote_width (STATE *s, int ql)
 {
