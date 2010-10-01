@@ -1360,7 +1360,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       else if (err)
 	{
           state_attach_puts (_("Error getting key information: "), s);
-          state_attach_puts ( gpg_strerror (err), s );
+          state_attach_puts ( gpgme_strerror (err), s );
           state_attach_puts ("\n", s);
           anybad = 1;
 	}
