@@ -572,7 +572,7 @@ static int compare_threads (const void *a, const void *b)
 {
   static sort_t *sort_func = NULL;
 
-  if (a || b)
+  if (a && b)
     return ((*sort_func) (&(*((THREAD **) a))->sort_key,
 			  &(*((THREAD **) b))->sort_key));
   /* a hack to let us reset sort_func even though we can't
@@ -580,7 +580,6 @@ static int compare_threads (const void *a, const void *b)
    */
   else
   {
-    sort_func = NULL;
     sort_func = mutt_get_sort_func (Sort);
     return (sort_func ? 1 : 0);
   }
