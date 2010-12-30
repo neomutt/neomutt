@@ -1799,7 +1799,7 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
   else
   {
     t = strchr (start, ':');
-    if (t > end)
+    if (!t || t > end)
     {
       dprint (1, (debugfile, "mwoh: warning: header not in "
 		  "'key: value' format!\n"));
