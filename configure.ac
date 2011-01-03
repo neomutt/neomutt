@@ -7,7 +7,7 @@ AC_PREREQ([2.54])
 AC_INIT([mutt.h])
 AM_CONFIG_HEADER([config.h])
 
-mutt_cv_version=`cat $srcdir/VERSION`
+mutt_cv_version=`./version.sh`
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 
