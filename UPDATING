@@ -4,6 +4,9 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+  ! $imap_keepalive default lowered to 300
+  + $reflow_text, $reflow_wrap for finer control of flowed wrapping
+
 1.5.21 (2010-09-15):
 
   + $mail_check_recent controls whether all unread mail or only new mail

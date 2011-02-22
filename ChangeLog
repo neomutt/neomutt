@@ -1,3 +1,83 @@
+2010-12-30 10:09 -0800  Brendan Cully  <brendan@kublai.com>  (f01b306ebe0e)
+
+	* sendlib.c: Handle missing : in write_one_header debug statement.
+	Closes #3483
+
+2010-10-13 07:38 -0700  Ralf Wildenhues  <wildenhues@ins.uni-bonn.de>  (57568da7d9aa)
+
+	* thread.c: fix a minor logic error in thread.c, and a dead code line
+
+2010-10-11 07:56 -0700  Michael Elkins  <me@mutt.org>  (033acdc0a947)
+
+	* pager.c: Backed out changeset 11399121296a
+
+2010-10-07 14:43 -0700  Michael Elkins  <me@mutt.org>  (11399121296a)
+
+	* pager.c: support non-breakable space character in the pager
+
+2010-10-01 07:14 -0700  Michael Elkins  <me@mutt.org>  (1a4c43138685)
+
+	* muttlib.c: fix segfault when $message_cachedir is set and opening a
+	POP3 mailbox.
+
+	fixes #3457
+
+2010-09-30 18:11 -0700  Roman Kagan  <rkagan@mail.ru>  (c10f8863e979)
+
+	* crypt-gpgme.c: use gpgme_strerror() in lieu of gpg_strerror()
+
+2010-09-29 14:17 -0700  Michael Elkins  <me@mutt.org>  (a23835db228d)
+
+	* globals.h, handler.c, init.h, mutt.h, rfc3676.c: Add $reflow_text
+	boolean, and $reflow_wrap variables to control display of
+	format=flowed text parts.
+
+	* rfc3676.c: fix typoh in comment
+
+	* rfc3676.c: fix handling of format=flowed when $wrap is 0.
+
+2010-09-23 11:06 -0700  Michael Elkins  <me@mutt.org>  (f2452f1f1fef)
+
+	* rfc2047.c: RFC2047 encode/decode the group name in an address list.
+	closes #3317
+
+2010-09-23 06:56 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (51ee8e8a56bb)
+
+	* po/ca.po: updated Catalan translation
+
+2010-09-20 14:04 +0100  Emanuele Giaquinta  <e.giaquinta@glauco.it>  (d2f10c550d90)
+
+	* mbox.c: Fix typo
+
+2010-09-16 07:19 -0700  Vsevolod Volkov  <vvv@mutt.org.ua>  (0ca7ed91fe7f)
+
+	* po/ru.po: update ru.po for 1.5.21
+
+2010-09-15 11:47 -0700  me  <me@sigpipe.org>  (59aad6c21703)
+
+	* regex.c: fix compile error with --with-regex and --without-wc-funcs
+
+2010-09-15 10:53 -0700  Brendan Cully  <brendan@kublai.com>  (bd0afbb35c65)
+
+	* UPDATING: Belatedly update UPDATING
+
+2010-09-15 10:21 -0700  Brendan Cully  <brendan@kublai.com>  (b42be44bb41a)
+
+	* .hgsigs: mutt-1.5.21 signed
+
+2010-09-15 10:10 -0700  Brendan Cully  <brendan@kublai.com>  (9c7bd63635de)
+
+	* .hgtags: Added tag mutt-1-5-21-rel for changeset 25a7f8f7d50d
+
+2010-09-15 10:10 -0700  Brendan Cully  <brendan@kublai.com>  (25a7f8f7d50d)
+
+	* VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po,
+	po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po,
+	po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po,
+	po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
+	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po: automatic post-release commit for mutt-1.5.21
+
 2010-09-15 10:05 -0700  Michael Elkins  <me@mutt.org>  (54e3139a0362)
 
 	* safe_asprintf.c: suppress check_sec errors

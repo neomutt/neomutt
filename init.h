@@ -1113,7 +1113,7 @@ struct option_t MuttVars[] = {
   ** to mutt's implementation. If your connection seems to freeze
   ** up periodically, try unsetting this.
   */
-  { "imap_keepalive",           DT_NUM,  R_NONE, UL &ImapKeepalive, 900 },
+  { "imap_keepalive",           DT_NUM,  R_NONE, UL &ImapKeepalive, 300 },
   /*
   ** .pp
   ** This variable specifies the maximum amount of time in seconds that mutt
