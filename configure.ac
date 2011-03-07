@@ -11,6 +11,9 @@ mutt_cv_version=`cat $srcdir/VERSION`
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 
+MUTT_VERSION=`sh ./version.sh`
+AC_DEFINE_UNQUOTED(MUTT_VERSION,"$MUTT_VERSION", [Full textual version string.])
+
 AC_GNU_SOURCE
 
 ALL_LINGUAS="de eu ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg ga"

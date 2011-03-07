@@ -66,8 +66,6 @@
 # define MB_LEN_MAX 16
 #endif
 
-#define MUTT_VERSION (VERSION)
-
 /* nifty trick I stole from ELM 2.5alpha. */
 #ifdef MAIN_C
 #define WHERE 
