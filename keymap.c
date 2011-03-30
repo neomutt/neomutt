@@ -435,8 +435,11 @@ int km_dokey (int menu)
 	  timeout (ImapKeepalive * 1000);
 	  tmp = mutt_getch ();
 	  timeout (-1);
-	  if (tmp.ch != -2)
-	    /* something other than timeout */
+	  /* If a timeout was not received, or the window was resized, exit the
+	   * loop now.  Otherwise, continue to loop until reaching a total of
+	   * $timeout seconds.
+	   */
+	  if (tmp.ch != -2 || SigWinch)
 	    goto gotkey;
 	  i -= ImapKeepalive;
 	  imap_keepalive ();
