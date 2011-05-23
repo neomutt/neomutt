@@ -167,16 +167,17 @@ static int parse_fkey(char *s)
  */
 static int parse_keycode (const char *s)
 {
-    const char *endChar;
-    long int result = strtol(s+1, &endChar, 8);
-    /* allow trailing whitespace, eg.  < 1001 > */
-    while (ISSPACE(*endChar))
-	++endChar;
-    /* negative keycodes don't make sense, also detect overflow */
-    if (*endChar != '>' || result < 0 || result == LONG_MAX) {
-	return -1;
-    }
-    return result;
+  char *endChar;
+  long int result = strtol(s+1, &endChar, 8);
+  /* allow trailing whitespace, eg.  < 1001 > */
+  while (ISSPACE(*endChar))
+    ++endChar;
+  /* negative keycodes don't make sense, also detect overflow */
+  if (*endChar != '>' || result < 0 || result == LONG_MAX) {
+    return -1;
+  }
+
+  return result;
 }
 
 static int parsekeys (const char *str, keycode_t *d, int max)
@@ -689,7 +690,7 @@ void init_extended_keys(void)
 
       if (keyname)
       {
-	char *s = tigetstr(keyname);
+        char *s = tigetstr((char *)keyname);
 	if (s && (long)(s) != -1)
 	{
 	  int code = key_defined(s);

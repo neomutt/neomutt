@@ -690,7 +690,6 @@ static int mbox_has_new(CONTEXT *ctx)
 void mbox_reset_atime (CONTEXT *ctx, struct stat *st)
 {
   struct utimbuf utimebuf;
-  int i;
   struct stat _st;
 
   if (!st)
