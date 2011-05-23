@@ -420,8 +420,6 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l,
                                pgp_key_t p, pgp_sig_t *s)
 {
   unsigned char sigtype;
-  unsigned char pkalg;
-  unsigned char hashalg;
   unsigned char skt;
   time_t sig_gen_time = -1;
   long validity = -1;
@@ -440,8 +438,7 @@ static int pgp_parse_pgp3_sig (unsigned char *buff, size_t l,
   j = 2;
 
   sigtype = buff[j++];
-  pkalg = buff[j++];
-  hashalg = buff[j++];
+  j += 2; /* pkalg, hashalg */
 
   for (ii = 0; ii < 2; ii++)
   {
