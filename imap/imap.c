@@ -555,7 +555,6 @@ static char* imap_get_flags (LIST** hflags, char* s)
 
 int imap_open_mailbox (CONTEXT* ctx)
 {
-  CONNECTION *conn;
   IMAP_DATA *idata;
   IMAP_STATUS* status;
   char buf[LONG_STRING];
@@ -575,8 +574,6 @@ int imap_open_mailbox (CONTEXT* ctx)
     goto fail_noidata;
   if (idata->state < IMAP_AUTHENTICATED)
     goto fail;
-
-  conn = idata->conn;
 
   /* once again the context is new */
   ctx->data = idata;
@@ -774,7 +771,6 @@ int imap_open_mailbox (CONTEXT* ctx)
 
 int imap_open_mailbox_append (CONTEXT *ctx)
 {
-  CONNECTION *conn;
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char mailbox[LONG_STRING];
@@ -792,8 +788,6 @@ int imap_open_mailbox_append (CONTEXT *ctx)
     FREE (&mx.mbox);
     return -1;
   }
-
-  conn = idata->conn;
 
   ctx->magic = M_IMAP;
   ctx->data = idata;
@@ -1813,7 +1807,6 @@ int imap_search (CONTEXT* ctx, const pattern_t* pat)
 
 int imap_subscribe (char *path, int subscribe)
 {
-  CONNECTION *conn;
   IMAP_DATA *idata;
   char buf[LONG_STRING];
   char mbox[LONG_STRING];
@@ -1828,8 +1821,6 @@ int imap_subscribe (char *path, int subscribe)
   }
   if (!(idata = imap_conn_find (&(mx.account), 0)))
     goto fail;
-
-  conn = idata->conn;
 
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
   if (!*buf)
@@ -1941,7 +1932,6 @@ imap_complete_hosts (char *dest, size_t len)
 /* imap_complete: given a partial IMAP folder path, return a string which
  *   adds as much to the path as is unique */
 int imap_complete(char* dest, size_t dlen, char* path) {
-  CONNECTION* conn;
   IMAP_DATA* idata;
   char list[LONG_STRING];
   char buf[LONG_STRING];
@@ -1966,7 +1956,6 @@ int imap_complete(char* dest, size_t dlen, char* path) {
     strfcpy (dest, path, dlen);
     return imap_complete_hosts (dest, dlen);
   }
-  conn = idata->conn;
 
   /* reformat path for IMAP list, and append wildcard */
   /* don't use INBOX in place of "" */
