@@ -29,7 +29,7 @@ struct folder_file
   char *name;
   char *desc;
 
-  unsigned short new;
+  unsigned int new;
 #ifdef USE_IMAP
   char delim;
   

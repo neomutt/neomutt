@@ -325,7 +325,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *
 }
 
 static void add_folder (MUTTMENU *m, struct browser_state *state,
-			const char *name, const struct stat *s, int new)
+			const char *name, const struct stat *s, unsigned int new)
 {
   if (state->entrylen == state->entrymax)
   {
