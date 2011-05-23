@@ -1660,7 +1660,6 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
 {
   int len=0;
   int c;
-  long last_pos;
   char buf[HUGE_STRING];
   char outfile[_POSIX_PATH_MAX], errfile[_POSIX_PATH_MAX];
   char tmpfname[_POSIX_PATH_MAX];
@@ -1701,7 +1700,6 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   }
 
   fseeko (s->fpin, m->offset, 0);
-  last_pos = m->offset;
 
   mutt_copy_bytes (s->fpin, tmpfp,  m->length);
 
