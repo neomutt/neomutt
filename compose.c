@@ -110,8 +110,6 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static void redraw_crypt_lines (HEADER *msg)
 {
-  int off = 0;
-
   mvaddstr (HDR_CRYPT, 0, "Security: ");
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
@@ -163,7 +161,6 @@ static void redraw_crypt_lines (HEADER *msg)
       && *SmimeCryptAlg) {
       mvprintw (HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
 		NONULL(SmimeCryptAlg));
-      off = 20;
   }
 }
 
