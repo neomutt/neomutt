@@ -251,7 +251,6 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0, rv, rc;
   int c = 1; /* silence GCC warning */
-  long start_pos = 0;
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
@@ -285,7 +284,6 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
     if (mutt_strncmp ("-----BEGIN PGP ", buf, 15) == 0)
     {
       clearsign = 0;
-      start_pos = last_pos;
 
       if (mutt_strcmp ("MESSAGE-----\n", buf + 15) == 0)
         needpass = 1;
