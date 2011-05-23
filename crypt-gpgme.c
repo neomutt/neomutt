@@ -1308,7 +1308,7 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
    2 for a signature with a warning or -1 for no more signature.  */
 static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 {
-  const char *fpr, *uid;
+  const char *fpr;
   gpgme_key_t key = NULL;
   int i, anybad = 0, anywarn = 0;
   unsigned int sum;
@@ -1344,7 +1344,6 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       err = gpgme_get_key (ctx, fpr, &key, 0); /* secret key?  */
       if (! err)
 	{
-	  uid = (key->uids && key->uids->uid) ? key->uids->uid : "[?]";
 	  if (! signature_key)
 	    signature_key = key;
 	}
@@ -1352,7 +1351,6 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
        {
           key = NULL; /* Old gpgme versions did not set KEY to NULL on
                          error.   Do it here to avoid a double free. */
-          uid = "[?]";
        }
 
       if (!s || !s->fpout || !(s->flags & M_DISPLAY))
@@ -2156,7 +2154,6 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
 {
   int needpass = -1, pgp_keyblock = 0;
   int clearsign = 0;
-  long start_pos = 0;
   long bytes;
   LOFF_T last_pos, offset;
   char buf[HUGE_STRING];
@@ -2193,7 +2190,6 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
       if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
         {
           clearsign = 0;
-          start_pos = last_pos;
           
           if (!mutt_strcmp ("MESSAGE-----\n", buf + 15))
             needpass = 1;
@@ -2282,7 +2278,6 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                     {
                       int res, idx;
                       int anybad = 0;
-                      int anywarn = 0;
 
                       state_attach_puts (_("[-- Begin signature "
                                            "information --]\n"), s);
@@ -2293,8 +2288,6 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                         {
                           if (res == 1)
                             anybad = 1;
-                          else if (res == 2)
-                            anywarn = 1;
                         }
                       if (!anybad && idx)
                         maybe_goodsig = 1;
@@ -4091,7 +4084,6 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
   crypt_key_t *matches = NULL;
   crypt_key_t **matches_endp = &matches;
   crypt_key_t *k;
-  int match;
 
   mutt_message (_("Looking for keys matching \"%s\"..."), p);
 
@@ -4109,7 +4101,6 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
       if (abilities && !(k->flags & abilities))
         continue;
 
-      match = 0;
       dprint (5, (debugfile, "crypt_getkeybystr: matching \"%s\" against "
                   "key %s, \"%s\": ",  p, crypt_keyid (k), k->uid));
 
