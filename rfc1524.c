@@ -450,7 +450,7 @@ int rfc1524_expand_filename (char *nametemplate,
 			     char *newfile,
 			     size_t nflen)
 {
-  int i, j, k, ps, r;
+  int i, j, k, ps;
   char *s;
   short lmatch = 0, rmatch = 0; 
   char left[_POSIX_PATH_MAX];
@@ -518,7 +518,7 @@ int rfc1524_expand_filename (char *nametemplate,
       
       rmatch = 1;
 
-      for(r = 0, j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1 ;
+      for(j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1 ;
 	  j >= (lmatch ? i : 0) && k >= i + 2;
 	  j--, k--)
       {
