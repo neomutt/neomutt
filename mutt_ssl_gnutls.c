@@ -939,22 +939,23 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
 /* sanity-checking wrapper for gnutls_certificate_verify_peers */
 static gnutls_certificate_status tls_verify_peers (gnutls_session tlsstate)
 {
-  gnutls_certificate_status certstat;
+  int verify_ret;
+  unsigned int status;
 
-  certstat = gnutls_certificate_verify_peers (tlsstate);
-  if (!certstat)
-    return certstat;
+  verify_ret = gnutls_certificate_verify_peers2 (tlsstate, &status);
+  if (!verify_ret)
+    return status;
 
-  if (certstat == GNUTLS_E_NO_CERTIFICATE_FOUND)
+  if (status == GNUTLS_E_NO_CERTIFICATE_FOUND)
   {
     mutt_error (_("Unable to get certificate from peer"));
     mutt_sleep (2);
     return 0;
   }
-  if (certstat < 0)
+  if (verify_ret < 0)
   {
     mutt_error (_("Certificate verification error (%s)"),
-                gnutls_strerror (certstat));
+                gnutls_strerror (status));
     mutt_sleep (2);
     return 0;
   }
@@ -967,7 +968,7 @@ static gnutls_certificate_status tls_verify_peers (gnutls_session tlsstate)
     return 0;
   }
 
-  return certstat;
+  return status;
 }
 
 static int tls_check_certificate (CONNECTION* conn)
