@@ -62,7 +62,10 @@ imap_auth_res_t imap_auth_login (IMAP_DATA* idata, const char* method)
   rc = imap_exec (idata, buf, IMAP_CMD_FAIL_OK | IMAP_CMD_PASS);
   
   if (!rc)
+  {
+    mutt_clear_error(); /* clear "Logging in...".  fixes #3524 */
     return IMAP_AUTH_SUCCESS;
+  }
 
   mutt_error _("Login failed.");
   mutt_sleep (2);
