@@ -3121,7 +3121,7 @@ as list mail, for instance, you could say
 </para>
 
 <screen>
-subscribe [0-9]*.*@bugs.debian.org</screen>
+subscribe [0-9]+.*@bugs.debian.org</screen>
 
 <para>
 as it's often sufficient to just give a portion of the list's e-mail
