@@ -2566,7 +2566,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
 
 int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
 {
-  ADDRESS *from;
+  ADDRESS *from, *resent_to;
   const char *fqdn = mutt_fqdn (1);
   char resent_from[STRING];
   int ret;
@@ -2598,8 +2598,17 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
   }
   rfc822_write_address (resent_from, sizeof (resent_from), from, 0);
 
-  ret = _mutt_bounce_message (fp, h, to, resent_from, from);
+  /*
+   * prepare recipient list. idna conversion appears to happen before this
+   * function is called, since the user receives confirmation of the address
+   * list being bounced to.
+   */
+  resent_to = rfc822_cpy_adr(to, 0);
+  rfc2047_encode_adrlist(resent_to, "Resent-To");
 
+  ret = _mutt_bounce_message (fp, h, resent_to, resent_from, from);
+
+  rfc822_free_address (&resent_to);
   rfc822_free_address (&from);
 
   return ret;
