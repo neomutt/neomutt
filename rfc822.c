@@ -793,6 +793,8 @@ ADDRESS *rfc822_cpy_adr_real (ADDRESS *addr)
   p->personal = safe_strdup (addr->personal);
   p->mailbox = safe_strdup (addr->mailbox);
   p->group = addr->group;
+  p->is_idn = addr->is_idn;
+  p->idn_checked = addr->idn_checked;
   return p;
 }
 
