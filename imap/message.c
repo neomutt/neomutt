@@ -65,7 +65,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   char *hdrreq = NULL;
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
-  int msgno, idx;
+  int msgno, idx = msgbegin - 1;
   IMAP_HEADER h;
   IMAP_STATUS* status;
   int rc, mfhrc, oldmsgcount;
@@ -185,7 +185,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           continue;
         }
 
-        idx = h.sid - 1;
+        idx++;
         ctx->hdrs[idx] = imap_hcache_get (idata, h.data->uid);
         if (ctx->hdrs[idx])
         {
@@ -211,6 +211,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           dprint (3, (debugfile, "bad cache entry at %d, giving up\n", h.sid - 1));
           imap_free_header_data((void**) (void*) &h.data);
           evalhc = 0;
+          idx--;
         }
       }
       while (rc != IMAP_CMD_OK && mfhrc == -1);
@@ -273,18 +274,20 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       {
         dprint (2, (debugfile, "msg_fetch_header: ignoring fetch response with no body\n"));
         mfhrc = -1;
+        msgend--;
         continue;
       }
 
       /* make sure we don't get remnants from older larger message headers */
       fputs ("\n\n", fp);
 
-      idx = h.sid - 1;
+      idx++;
       if (idx > msgend)
       {
         dprint (1, (debugfile, "imap_read_headers: skipping FETCH response for "
                     "unknown message number %d\n", h.sid));
         mfhrc = -1;
+        idx--;
         continue;
       }
       /* May receive FLAGS updates in a separate untagged response (#2935) */
@@ -292,6 +295,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
       {
 	dprint (2, (debugfile, "imap_read_headers: message %d is not new\n",
 		    h.sid));
+        idx--;
 	continue;
       }
 
