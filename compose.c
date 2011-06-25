@@ -146,11 +146,11 @@ static void redraw_crypt_lines (HEADER *msg)
   clrtoeol ();
 
   if ((WithCrypto & APPLICATION_PGP)
-      && msg->security & APPLICATION_PGP  && msg->security & SIGN)
+      && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
     printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
 
   if ((WithCrypto & APPLICATION_SMIME)
-      && msg->security & APPLICATION_SMIME  && msg->security & SIGN) {
+      && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
       printw ("%s%s", _(" sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
 
@@ -1213,7 +1213,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         if (!(WithCrypto & APPLICATION_PGP))
           break;
 	if ((WithCrypto & APPLICATION_SMIME)
-            && msg->security & APPLICATION_SMIME)
+            && (msg->security & APPLICATION_SMIME))
 	{
 	  if (mutt_yesorno (_("S/MIME already selected. Clear & continue ? "),
 			     M_YES) != M_YES)
@@ -1239,7 +1239,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
           break;
 
 	if ((WithCrypto & APPLICATION_PGP)
-            && msg->security & APPLICATION_PGP)
+            && (msg->security & APPLICATION_PGP))
 	{
 	  if (mutt_yesorno (_("PGP already selected. Clear & continue ? "),
 			      M_YES) != M_YES)

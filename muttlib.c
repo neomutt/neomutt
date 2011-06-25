@@ -1072,7 +1072,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
-  wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+  wlen = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
   col += wlen;
 
   if ((flags & M_FORMAT_NOFILTER) == 0)
@@ -1142,7 +1142,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       col -= wlen;	/* reset to passed in value */
       wptr = dest;      /* reset write ptr */
-      wlen = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+      wlen = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
       if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)) != -1)
       {
 	int rc;
@@ -1312,7 +1312,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  }
 	  else if (soft && pad < 0)
 	  {
-	    int offset = (flags & M_FORMAT_ARROWCURSOR && option (OPTARROWCURSOR)) ? 3 : 0;
+	    int offset = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
 	    /* make sure right part is at most as wide as display */
