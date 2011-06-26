@@ -762,7 +762,8 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   idata->cmddata = &list;
   cmd_parse_list (idata, s);
   idata->cmddata = NULL;
-  if (!list.name)
+  /* noselect is for a gmail quirk (#3445) */
+  if (!list.name || list.noselect)
     return;
 
   dprint (3, (debugfile, "Subscribing to %s\n", list.name));
