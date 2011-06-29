@@ -1,13 +1,17 @@
 #!/bin/sh
 
+# Adopt $HGROOT from the environment, if present
+HG=hg
+[ -n "$HGROOT" ] && HG="$HG -R '$HGROOT'"
+
 # Ensure that we have a repo here and that mercurial is installed.  If
 # not, just cat the VERSION file; it contains the latest release number.
-{ [ -d .hg ] && hg >/dev/null 2>&1; } || exec cat VERSION
+{ [ -d "$HGROOT/.hg" ] && $HG >/dev/null 2>&1; } || exec cat VERSION
 
 # This is a mercurial repo and we have the hg command.
 
 # Get essential properties of the current working copy
-set -- `hg parents --template='{rev} {node|short}\n'`
+set -- `$HG parents --template='{rev} {node|short}\n'`
 rev="$1"
 node="$2"
 
@@ -21,7 +25,7 @@ cleantag () {
 
 getdistance_old () {
 	# fudge it
-	set -- `hg tags | sort -n +1 | egrep 'mutt-.*rel' | tail -1 | cut -d: -f1`
+	set -- `$HG tags | sort -n +1 | egrep 'mutt-.*rel' | tail -1 | cut -d: -f1`
 	latesttag="$1"
 	latestrev="$2"
 	distance=`expr $rev - $latestrev`
@@ -29,12 +33,12 @@ getdistance_old () {
 }
 
 getdistance_new () {
-	hg parents --template='{latesttag} {latesttagdistance}\n'
+	$HG parents --template='{latesttag} {latesttagdistance}\n'
 }
 
 
 # latesttag appeared in hg 1.4.  Test for it.
-[ "`hg log -r . --template='{latesttag}'`" = '' ] && 
+[ "`$HG log -r . --template='{latesttag}'`" = '' ] && 
 set -- `getdistance_old` ||
 set -- `getdistance_new`
 
@@ -48,7 +52,7 @@ else
 fi
 
 # if we have mq patches applied, mention it
-qparent=`hg log -r qparent --template='{rev}\n' 2>/dev/null || echo $rev`
+qparent=`$HG log -r qparent --template='{rev}\n' 2>/dev/null || echo $rev`
 qdelta=`expr $rev - $qparent`
 if [ $qdelta -eq 0 ]; then
 	qdist=""

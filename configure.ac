@@ -7,11 +7,11 @@ AC_PREREQ([2.54])
 AC_INIT([mutt.h])
 AM_CONFIG_HEADER([config.h])
 
-mutt_cv_version=`cat $srcdir/VERSION`
+mutt_cv_version=`cat "$srcdir/VERSION"`
 AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 
-MUTT_VERSION=`sh ./version.sh`
+MUTT_VERSION=`env HGROOT="$srcdir" sh "$srcdir/version.sh"`
 AC_DEFINE_UNQUOTED(MUTT_VERSION,"$MUTT_VERSION", [Full textual version string.])
 
 AC_GNU_SOURCE
