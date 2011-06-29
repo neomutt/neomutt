@@ -25,7 +25,7 @@ cleantag () {
 
 getdistance_old () {
 	# fudge it
-	set -- `$HG tags | sort -n +1 | egrep 'mutt-.*rel' | tail -1 | cut -d: -f1`
+	set -- `$HG tags | sort -n -k 2 | egrep 'mutt-.*rel' | tail -1 | cut -d: -f1`
 	latesttag="$1"
 	latestrev="$2"
 	distance=`expr $rev - $latestrev`
