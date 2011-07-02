@@ -2,7 +2,7 @@
 
 # Adopt $HGROOT from the environment, if present
 HG=hg
-[ -n "$HGROOT" ] && HG="$HG -R '$HGROOT'"
+[ -n "$HGROOT" ] && HG="$HG -R \$HGROOT"
 
 # Ensure that we have a repo here and that mercurial is installed.  If
 # not, just cat the VERSION file; it contains the latest release number.
