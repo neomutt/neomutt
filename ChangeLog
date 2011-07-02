@@ -1,3 +1,204 @@
+2011-07-01 17:23 -0700  Brendan Cully  <brendan@kublai.com>  (94eee9410f7a)
+
+	* version.sh: version.sh: fix(?) failure due to bizarre sh quoting
+	rules
+
+	I have not checked POSIX, and sh quoting always makes my head hurt,
+	but this seems to suffice for my sh (actually bash in sh mode) when
+	HGROOT contains a space.
+
+2011-05-23 13:22 +0200  Olaf Hering  <olaf@aepfle.de>  (81a7c41040bf)
+
+	* browser.c, browser.h: folder_file: change type of new from short to
+	int
+
+	As requested by Rocco Rutte in bug #2421 increase the type to int.
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+	* pgppubring.c: fix gcc 4.6 warning -Wunused-but-set-variable in
+	pgppubring.c
+
+	pgppubring.c: In function 'pgp_parse_pgp3_sig': pgppubring.c:424:17:
+	warning: variable 'hashalg' set but not used [-Wunused-but-set-
+	variable] pgppubring.c:423:17: warning: variable 'pkalg' set but not
+	used [-Wunused-but-set-variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+2011-06-29 12:01 -0500  David Champion  <dgc@uchicago.edu>  (8b5e41c6a517)
+
+	* version.sh: version.sh: 1003.1 "-k" instead of obsolete "+" syntax
+	(closes: #3528)
+
+	* configure.ac, version.sh: version.sh: support building outside of
+	source directory
+
+	Reported by Emanuele Giaquinta <e.giaquinta@glauco.it>. Thanks also
+	to Michael Elkins <me@sigpipe.org>.
+
+2011-06-25 20:07 -0700  Brendan Cully  <brendan@kublai.com>  (b477d7c5733e)
+
+	* imap/command.c: Parentheses suggested
+
+	* imap/command.c: Do not subscribe to \noselect mailboxes. Closes
+	#3445
+
+2011-06-25 15:42 -0700  Honza Horak  <hhorak@redhat.com>  (0e4f1782ea2e)
+
+	* imap/message.c: Avoid creating sparse ctx array when fetch responses
+	are ignored. Closes #3288.
+
+2011-06-25 15:23 -0700  Brendan Cully  <brendan@kublai.com>  (53dcb3a21da4)
+
+	* compose.c, muttlib.c: Silence some eclipse warnings
+
+2011-06-20 16:39 -0700  Michael Elkins  <me@mutt.org>  (b574d6f9f532)
+
+	* sendlib.c: rfc2047 encode recipient list in resent-to header field.
+	closes #3512
+
+	* rfc822.c: copy idn status when duplicating address object
+
+2011-06-20 16:07 -0700  antonio  <antonio@dyne.org>  (1bb9002567c4)
+
+	* doc/manual.xml.head: fix regexp example in documentation
+
+2011-06-18 21:29 -0700  antonio  <antonio@dyne.org>  (b9856206eee4)
+
+	* mutt_ssl_gnutls.c: Remove the deprecated
+	gnutls_certificate_verify_peers() in favour of the new
+	gnutls_certificate_veirfy_peers2()
+
+	Reported on http://bugs.debian.org/624085
+
+	closes #3516
+
+2011-06-18 21:07 -0700  Michael Elkins  <me@mutt.org>  (beebe6a4d25d)
+
+	* imap/auth_login.c: clear logging in message when login succeeded.
+	closes #3524
+
+2011-05-23 12:59 +0200  Olaf Hering  <olaf@aepfle.de>  (8570f8a10572)
+
+	* smime.c: fix gcc 4.6 warning -Wunused-but-set-variable in smime.c
+
+	smime.c: In function 'smime_handle_entity': smime.c:1663:8: warning:
+	variable 'last_pos' set but not used [-Wunused-but-set-variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+	* pgp.c: fix gcc 4.6 warning -Wunused-but-set-variable in pgp.c
+
+	pgp.c: In function 'pgp_application_pgp_handler': pgp.c:254:8:
+	warning: variable 'start_pos' set but not used [-Wunused-but-set-
+	variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+	* crypt-gpgme.c: fix gcc 4.6 warning -Wunused-but-set-variable in
+	crypt-gpgme.c
+
+	crypt-gpgme.c: In function 'show_one_sig_status': crypt-
+	gpgme.c:1311:21: warning: variable 'uid' set but not used [-Wunused-
+	but-set-variable] crypt-gpgme.c: In function
+	'pgp_gpgme_application_handler': crypt-gpgme.c:2285:27: warning:
+	variable 'anywarn' set but not used [-Wunused-but-set-variable]
+	crypt-gpgme.c:2159:8: warning: variable 'start_pos' set but not used
+	[-Wunused-but-set-variable] crypt-gpgme.c: In function
+	'crypt_getkeybystr': crypt-gpgme.c:4094:7: warning: variable 'match'
+	set but not used [-Wunused-but-set-variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+	* rfc1524.c: fix gcc 4.6 warning -Wunused-but-set-variable in
+	rfc1524.c
+
+	rfc1524.c: In function 'rfc1524_expand_filename': rfc1524.c:453:20:
+	warning: variable 'r' set but not used [-Wunused-but-set-variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+	* compose.c: fix gcc 4.6 warning -Wunused-but-set-variable in
+	compose.c
+
+	compose.c: In function 'redraw_crypt_lines': compose.c:113:7:
+	warning: variable 'off' set but not used [-Wunused-but-set-variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+	* imap/imap.c: fix gcc 4.6 warning -Wunused-but-set-variable in imap.c
+
+	imap.c: In function 'imap_open_mailbox': imap.c:558:15: warning:
+	variable 'conn' set but not used [-Wunused-but-set-variable] imap.c:
+	In function 'imap_open_mailbox_append': imap.c:777:15: warning:
+	variable 'conn' set but not used [-Wunused-but-set-variable] imap.c:
+	In function 'imap_subscribe': imap.c:1816:15: warning: variable
+	'conn' set but not used [-Wunused-but-set-variable] imap.c: In
+	function 'imap_complete': imap.c:1944:15: warning: variable 'conn'
+	set but not used [-Wunused-but-set-variable]
+
+	Signed-off-by: Olaf Hering <olaf@aepfle.de>
+
+2011-05-22 22:13 -0700  Brendan Cully  <brendan@kublai.com>  (1fc2afbf9e3a)
+
+	* keymap.c, mbox.c: Fix some minor warnings
+
+2011-03-30 07:52 -0700  Michael Elkins  <me@mutt.org>  (f7160c94ff70)
+
+	* keymap.c: fix bug where SIGWICH is ignored when $imap_keepalive <
+	$timeout
+
+	closes #3507
+
+2011-03-07 10:17 -0600  David Champion  <dgc@uchicago.edu>  (8d0281f79b21)
+
+	* configure.ac, dotlock.c, mutt.h, version.sh: Extra information in
+	mutt version string, redux.
+
+	Restores [f1b4d1d17200] functionality with a slight change to keep
+	'make dist' working (see backout in [6b38124a5b81]).
+
+	Automake is too much voodoo for me at this time, so I let it keep
+	VERSION. mutt.h defined MUTT_VERSION as VERSION and the code used
+	that, so I removed MUTT_VERSION from mutt.h and put it into config.h
+	via configure.ac. A couple of tweaks were needed elsewhere. This
+	restores the fancy-versioning feature within mutt and keeps 'make
+	dist' happy.
+
+2011-03-06 07:31 -0800  Brendan Cully  <brendan@kublai.com>  (6b38124a5b81)
+
+	* configure.ac, version.sh: Back out f1b4d1d17200. It is nice, but it
+	breaks make dist.
+
+2011-01-03 13:19 -0600  David Champion  <dgc@uchicago.edu>  (b107737c415c)
+
+	* patchlist.sh: Include mq-based patches in the mutt patch list.
+
+	This augments the contents of the PATCHES file, so that mq-based
+	builds do not need to maintain that file.
+
+	* configure.ac, version.sh: Include extra information in mutt version
+	string for developer builds.
+
+	When a build is based on an hg clone, include extra information
+	about the changeset node, distance from a tagged release, and mq
+	applied patch count.
+
+	For example, after this patch is applied my mutt build identifies
+	itself (in mutt -v and in <show-version>) as:
+
+	Mutt 1.5.21+26,mq+22 (7edc2073390d) (2010-09-15)
+
+	I have applied 26 changesets applied since 1.5.21 was tagged, 22 of
+	which are in my mq patch series. A 1.5.21 release build that is not
+	mercurial-based would still appear simply as "1.5.21".
+
+2011-02-21 23:12 -0800  Brendan Cully  <brendan@kublai.com>  (047bd501d6db)
+
+	* UPDATING, init.h: Lower $imap_keepalive default to 300
+	seconds
+
 2010-12-30 10:09 -0800  Brendan Cully  <brendan@kublai.com>  (f01b306ebe0e)
 
 	* sendlib.c: Handle missing : in write_one_header debug statement.
