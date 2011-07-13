@@ -47,6 +47,8 @@
 #include "md5.h"
 #include "rfc822.h"
 
+unsigned int hcachever = 0x0;
+
 #if HAVE_QDBM
 static struct header_cache
 {
@@ -1119,9 +1121,41 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   hcache_open = hcache_open_db4;
 #endif
 
+  /* Calculate the current hcache version from dynamic configuration */
+  if (hcachever == 0x0) {
+    unsigned char digest[16];
+    struct md5_ctx ctx;
+    SPAM_LIST *spam;
+    RX_LIST *nospam;
+
+    hcachever = HCACHEVER;
+
+    md5_init_ctx(&ctx);
+
+    /* Seed with the compiled-in header structure hash */
+    md5_process_bytes(&hcachever, sizeof(hcachever), &ctx);
+
+    /* Mix in user's spam list */
+    for (spam = SpamList; spam; spam = spam->next)
+    {
+      md5_process_bytes(spam->rx->pattern, strlen(spam->rx->pattern), &ctx);
+      md5_process_bytes(spam->template, strlen(spam->template), &ctx);
+    }
+
+    /* Mix in user's nospam list */
+    for (nospam = NoSpamList; nospam; nospam = nospam->next)
+    {
+      md5_process_bytes(nospam->rx->pattern, strlen(nospam->rx->pattern), &ctx);
+    }
+
+    /* Get a hash and take its bytes as an (unsigned int) hash version */
+    md5_finish_ctx(&ctx, digest);
+    hcachever = *((unsigned int *)digest);
+  }
+
   h->db = NULL;
   h->folder = get_foldername(folder);
-  h->crc = HCACHEVER;
+  h->crc = hcachever;
 
   if (!path || path[0] == '\0')
   {
