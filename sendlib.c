@@ -2344,6 +2344,13 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   size_t argslen = 0, argsmax = 0;
   int i;
 
+  /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
+  if (!s)
+  {
+    mutt_error(_("$sendmail must be set in order to send mail."));
+    return -1;
+  }
+
   ps = s;
   i = 0;
   while ((ps = strtok (ps, " ")))
