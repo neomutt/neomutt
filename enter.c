@@ -460,11 +460,29 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 
 	case OP_EDITOR_KILL_EOW:
 	  /* delete to end of word */
+
+	  /* first skip over whitespace */
 	  for (i = state->curpos;
 	       i < state->lastchar && iswspace (state->wbuf[i]); i++)
 	    ;
-	  for (; i < state->lastchar && !iswspace (state->wbuf[i]); i++)
-	    ;
+
+	  /* if there are any characters left.. */
+	  if (i < state->lastchar)
+	  {
+	    /* if the current character is alphanumeric.. */
+	    if (iswalnum (state->wbuf[i]))
+	    {
+	      /* skip over the rest of the word consistent of only alphanumerics */
+	      for (; i < state->lastchar && iswalnum (state->wbuf[i]); i++)
+		;
+	    }
+	    else
+	    {
+	      /* skip over one non-alphanumeric character */
+	      ++i;
+	    }
+	  }
+
 	  memmove (state->wbuf + state->curpos, state->wbuf + i,
 		   (state->lastchar - i) * sizeof (wchar_t));
 	  state->lastchar += state->curpos - i;
