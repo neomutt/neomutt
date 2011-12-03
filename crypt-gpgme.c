@@ -129,7 +129,7 @@ static char *current_sender = NULL;
  * General helper functions.
  */
 
-/* return true when S pints to a didgit or letter. */
+/* return true when s points to a digit or letter. */
 static int
 digit_or_letter (const unsigned char *s)
 {
@@ -2923,7 +2923,7 @@ print_dn_part (FILE *fp, struct dn_array_s *dn, const char *key)
 static void
 print_dn_parts (FILE *fp, struct dn_array_s *dn)
 {
-  const char *stdpart[] = {
+  static const char * const stdpart[] = {
     "CN", "OU", "O", "STREET", "L", "ST", "C", NULL 
   };
   int any=0, any2=0, i;

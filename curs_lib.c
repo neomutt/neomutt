@@ -129,7 +129,7 @@ event_t mutt_getch (void)
   return (ch == ctrl ('G') ? err : ret);
 }
 
-int _mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles)
+int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, int multiple, char ***files, int *numfiles)
 {
   int ret;
   int x, y;
@@ -139,7 +139,7 @@ int _mutt_get_field (/* const */ char *field, char *buf, size_t buflen, int comp
   do
   {
     CLEARLINE (LINES-1);
-    addstr (field);
+    addstr ((char *)field); /* cast to get around bad prototypes */
     mutt_refresh ();
     getyx (stdscr, y, x);
     ret = _mutt_enter_string (buf, buflen, y, x, complete, multiple, files, numfiles, es);

@@ -234,7 +234,7 @@ static size_t b_encoder (char *s, ICONV_CONST char *d, size_t dlen,
 static size_t q_encoder (char *s, ICONV_CONST char *d, size_t dlen,
 			 const char *tocode)
 {
-  char hex[] = "0123456789ABCDEF";
+  static const char hex[] = "0123456789ABCDEF";
   char *s0 = s;
 
   memcpy (s, "=?", 2), s += 2;

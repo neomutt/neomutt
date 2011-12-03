@@ -74,7 +74,7 @@ enum
 #define TITLE_FMT "%10s" /* Used for Prompts, which are ASCII */
 #define W (COLS - HDR_XOFFSET)
 
-static char *Prompts[] =
+static const char * const Prompts[] =
 {
   "From: ",
   "To: ",
@@ -85,7 +85,7 @@ static char *Prompts[] =
   "Fcc: "
 };
 
-static struct mapping_t ComposeHelp[] = {
+static const struct mapping_t ComposeHelp[] = {
   { N_("Send"),    OP_COMPOSE_SEND_MESSAGE },
   { N_("Abort"),   OP_EXIT },
   { "To",      OP_COMPOSE_EDIT_TO },

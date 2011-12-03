@@ -50,10 +50,10 @@
  * a preferred MIME name is given.
  */
 
-static struct 
+static const const struct 
 {
-  char *key;
-  char *pref;
+  const char *key;
+  const char *pref;
 }
 PreferredMIMENames[] = 
 {

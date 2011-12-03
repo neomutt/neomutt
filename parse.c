@@ -672,7 +672,7 @@ static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
   return buf;
 }
 
-static struct tz_t
+static const struct tz_t
 {
   char tzname[5];
   unsigned char zhours;

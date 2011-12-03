@@ -37,7 +37,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-static struct mapping_t PostponeHelp[] = {
+static const struct mapping_t PostponeHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },

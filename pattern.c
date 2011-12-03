@@ -47,7 +47,7 @@ static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_range (pattern_t *pat, BUFFER *, BUFFER *);
 static int patmatch (const pattern_t *pat, const char *buf);
 
-static struct pattern_flags
+static const struct pattern_flags
 {
   int tag;	/* character used to represent this op */
   int op;	/* operation to perform */
@@ -712,7 +712,7 @@ static int patmatch (const pattern_t* pat, const char* buf)
     return regexec (pat->p.rx, buf, 0, NULL, 0);
 }
 
-static struct pattern_flags *lookup_tag (char tag)
+static const struct pattern_flags *lookup_tag (char tag)
 {
   int i;
 
@@ -774,7 +774,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   int alladdr = 0;
   int or = 0;
   int implicit = 1;	/* used to detect logical AND operator */
-  struct pattern_flags *entry;
+  const struct pattern_flags *entry;
   char *p;
   char *buf;
   BUFFER ps;

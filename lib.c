@@ -53,7 +53,7 @@
 #include "lib.h"
 
 
-static struct sysexits
+static const struct sysexits
 {
   int v;
   const char *str;
@@ -696,7 +696,7 @@ FILE *safe_fopen (const char *path, const char *mode)
     return (fopen (path, mode));
 }
 
-static char safe_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
+static const char safe_chars[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+@{}._-:%/";
 
 void mutt_sanitize_filename (char *f, short slash)
 {
@@ -711,7 +711,7 @@ void mutt_sanitize_filename (char *f, short slash)
 
 /* these characters must be escaped in regular expressions */
 
-static char rx_special_chars[] = "^.[$()|*+?{\\";
+static const char rx_special_chars[] = "^.[$()|*+?{\\";
 
 int mutt_rx_sanitize_string (char *dest, size_t destlen, const char *src)
 {

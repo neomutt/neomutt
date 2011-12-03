@@ -32,7 +32,7 @@
 
 #include <ctype.h>
 
-static struct mapping_t UrlMap[] =
+static const struct mapping_t UrlMap[] =
 {
   { "file", 	U_FILE },
   { "imap", 	U_IMAP },

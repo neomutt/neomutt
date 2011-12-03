@@ -51,7 +51,7 @@ const char RFC822Specials[] = "@.,:;<>[]\\\"()";
 int RFC822Error = 0;
 
 /* these must defined in the same order as the numerated errors given in rfc822.h */
-const char *RFC822Errors[] = {
+const char * const RFC822Errors[] = {
   "out of memory",
   "mismatched parenthesis",
   "mismatched quotes",

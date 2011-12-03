@@ -61,7 +61,7 @@ int rfc822_valid_msgid (const char *msgid);
 int rfc822_remove_from_adrlist (ADDRESS **a, const char *mailbox);
 
 extern int RFC822Error;
-extern const char *RFC822Errors[];
+extern const char * const RFC822Errors[];
 
 #define rfc822_error(x) RFC822Errors[x]
 #define rfc822_new_address() safe_calloc(1,sizeof(ADDRESS))

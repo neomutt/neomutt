@@ -21,12 +21,12 @@
 
 struct mapping_t
 {
-  char *name;
+  const char *name;
   int value;
 };
 
-char *mutt_getnamebyvalue (int, const struct mapping_t *);
-char *mutt_compile_help (char *, size_t, int, struct mapping_t *);
+const char *mutt_getnamebyvalue (int, const struct mapping_t *);
+char *mutt_compile_help (char *, size_t, int, const struct mapping_t *);
 
 int mutt_getvaluebyname (const char *, const struct mapping_t *);
 

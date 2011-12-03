@@ -300,7 +300,7 @@ int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, 
 int  mutt_enter_string (char *buf, size_t buflen, int y, int x, int flags);
 int _mutt_enter_string (char *, size_t, int, int, int, int, char ***, int *, ENTER_STATE *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
-int _mutt_get_field (char *, char *, size_t, int, int, char ***, int *);
+int _mutt_get_field (const char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_hook_type (const char *);
 int mutt_get_field_unbuffered (char *, char *, size_t, int);
 #define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,M_PASS)

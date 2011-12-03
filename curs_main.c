@@ -401,7 +401,7 @@ static void resort_index (MUTTMENU *menu)
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 }
 
-static struct mapping_t IndexHelp[] = {
+static const struct mapping_t IndexHelp[] = {
   { N_("Quit"),  OP_QUIT },
   { N_("Del"),   OP_DELETE },
   { N_("Undel"), OP_UNDELETE },

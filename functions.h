@@ -38,7 +38,7 @@
 # include "doc/makedoc-defs.h"
 #endif
 
-struct binding_t OpGeneric[] = { /* map: generic */
+const struct binding_t OpGeneric[] = { /* map: generic */
   /*
   ** <para>
   ** The <emphasis>generic</emphasis> menu is not a real menu, but specifies common functions
@@ -82,7 +82,7 @@ struct binding_t OpGeneric[] = { /* map: generic */
   { NULL,		0,			NULL }
 };
 
-struct binding_t OpMain[] = { /* map: index */
+const struct binding_t OpMain[] = { /* map: index */
   { "create-alias",		OP_CREATE_ALIAS,		"a" },
   { "bounce-message",		OP_BOUNCE_MESSAGE,		"b" },
   { "break-thread",		OP_MAIN_BREAK_THREAD,		"#" },
@@ -172,7 +172,7 @@ struct binding_t OpMain[] = { /* map: index */
   { NULL,			0,				NULL }
 };
 
-struct binding_t OpPager[] = { /* map: pager */
+const struct binding_t OpPager[] = { /* map: pager */
   { "break-thread",	OP_MAIN_BREAK_THREAD,		"#" },
   { "create-alias",	OP_CREATE_ALIAS,		"a" },
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
@@ -275,7 +275,7 @@ struct binding_t OpPager[] = { /* map: pager */
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpAttach[] = { /* map: attachment */
+const struct binding_t OpAttach[] = { /* map: attachment */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
@@ -301,7 +301,7 @@ struct binding_t OpAttach[] = { /* map: attachment */
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpCompose[] = { /* map: compose */
+const struct binding_t OpCompose[] = { /* map: compose */
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
@@ -351,13 +351,13 @@ struct binding_t OpCompose[] = { /* map: compose */
   { NULL,		0,				NULL }
 };
 
-struct binding_t OpPost[] = { /* map: postpone */
+const struct binding_t OpPost[] = { /* map: postpone */
   { "delete-entry",	OP_DELETE,	"d" },
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
 };
 
-struct binding_t OpAlias[] = { /* map: alias */
+const struct binding_t OpAlias[] = { /* map: alias */
   { "delete-entry",	OP_DELETE,	"d" },
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
@@ -365,7 +365,7 @@ struct binding_t OpAlias[] = { /* map: alias */
   
 
 /* The file browser */
-struct binding_t OpBrowser[] = { /* map: browser */
+const struct binding_t OpBrowser[] = { /* map: browser */
   { "change-dir",	OP_CHANGE_DIRECTORY,	"c" },
   { "display-filename",	OP_BROWSER_TELL,	"@" },
   { "enter-mask",	OP_ENTER_MASK,		"m" },
@@ -388,7 +388,7 @@ struct binding_t OpBrowser[] = { /* map: browser */
 };
 
 /* External Query Menu */
-struct binding_t OpQuery[] = { /* map: query */
+const struct binding_t OpQuery[] = { /* map: query */
   { "create-alias",	OP_CREATE_ALIAS,	"a" },
   { "mail",		OP_MAIL,		"m" },
   { "query",		OP_QUERY,		"Q" },
@@ -396,7 +396,7 @@ struct binding_t OpQuery[] = { /* map: query */
   { NULL,		0,			NULL }
 };
 
-struct binding_t OpEditor[] = { /* map: editor */
+const struct binding_t OpEditor[] = { /* map: editor */
   { "bol",		OP_EDITOR_BOL,			"\001" },
   { "backward-char",	OP_EDITOR_BACKWARD_CHAR,	"\002" },
   { "backward-word",	OP_EDITOR_BACKWARD_WORD,	"\033b"},
@@ -424,7 +424,7 @@ struct binding_t OpEditor[] = { /* map: editor */
 
 
 
-struct binding_t OpPgp[] = { /* map: pgp */
+const struct binding_t OpPgp[] = { /* map: pgp */
   { "verify-key",	OP_VERIFY_KEY,		"c" },
   { "view-name",	OP_VIEW_ID,		"%" },
   { NULL,		0,				NULL }
@@ -434,7 +434,7 @@ struct binding_t OpPgp[] = { /* map: pgp */
 
 /* When using the GPGME based backend we have some useful functions
    for the SMIME menu.  */
-struct binding_t OpSmime[] = { /* map: smime */
+const struct binding_t OpSmime[] = { /* map: smime */
 #ifdef CRYPT_BACKEND_GPGME
   { "verify-key",    OP_VERIFY_KEY,             "c" },
   { "view-name",     OP_VIEW_ID,	        "%" },
@@ -445,7 +445,7 @@ struct binding_t OpSmime[] = { /* map: smime */
 
 
 #ifdef MIXMASTER
-struct binding_t OpMix[] = { /* map: mixmaster */
+const struct binding_t OpMix[] = { /* map: mixmaster */
   { "accept",		OP_MIX_USE,	M_ENTER_S },
   { "append",		OP_MIX_APPEND,	"a"       },
   { "insert",		OP_MIX_INSERT,	"i"       },

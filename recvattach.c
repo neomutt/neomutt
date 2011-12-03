@@ -49,7 +49,7 @@ static const char *Mailbox_is_read_only = N_("Mailbox is read-only.");
     break; \
 }
 
-static struct mapping_t AttachHelp[] = {
+static const struct mapping_t AttachHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Save"),  OP_SAVE },
   { N_("Pipe"),  OP_PIPE },

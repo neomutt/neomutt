@@ -42,7 +42,7 @@
 #include <errno.h>
 #include <locale.h>
 
-static struct mapping_t FolderHelp[] = {
+static const struct mapping_t FolderHelp[] = {
   { N_("Exit"),  OP_EXIT },
   { N_("Chdir"), OP_CHANGE_DIRECTORY },
   { N_("Mask"),  OP_ENTER_MASK },

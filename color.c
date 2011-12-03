@@ -55,7 +55,7 @@ typedef struct color_list
 static COLOR_LIST *ColorList = NULL;
 static int UserColors = 0;
 
-static struct mapping_t Colors[] =
+static const struct mapping_t Colors[] =
 {
   { "black",	COLOR_BLACK },
   { "blue",	COLOR_BLUE },
@@ -73,7 +73,7 @@ static struct mapping_t Colors[] =
 
 #endif /* HAVE_COLOR */
 
-static struct mapping_t Fields[] =
+static const struct mapping_t Fields[] =
 {
   { "hdrdefault",	MT_COLOR_HDEFAULT },
   { "quoted",		MT_COLOR_QUOTED },
@@ -159,7 +159,7 @@ void ci_start_color (void)
 #ifdef USE_SLANG_CURSES
 static char *get_color_name (char *dest, size_t destlen, int val)
 {
-  static char * missing[3] = {"brown", "lightgray", "default"};
+  static const char * const missing[3] = {"brown", "lightgray", "default"};
   int i;
 
   switch (val)

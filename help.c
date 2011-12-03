@@ -31,10 +31,10 @@
 #include <ctype.h>
 #include <string.h>
 
-static struct binding_t *help_lookupFunction (int op, int menu)
+static const struct binding_t *help_lookupFunction (int op, int menu)
 {
   int i;
-  struct binding_t *map;
+  const struct binding_t *map;
 
   if (menu != MENU_PAGER)
   {
@@ -66,7 +66,7 @@ void mutt_make_help (char *d, size_t dlen, char *txt, int menu, int op)
 }
 
 char *
-mutt_compile_help (char *buf, size_t buflen, int menu, struct mapping_t *items)
+mutt_compile_help (char *buf, size_t buflen, int menu, const struct mapping_t *items)
 {
   int i;
   size_t len;
@@ -282,7 +282,7 @@ static void format_line (FILE *f, int ismacro,
 static void dump_menu (FILE *f, int menu)
 {
   struct keymap_t *map;
-  struct binding_t *b;
+  const struct binding_t *b;
   char buf[SHORT_STRING];
 
   /* browse through the keymap table */
@@ -318,7 +318,7 @@ static int is_bound (struct keymap_t *map, int op)
 }
 
 static void dump_unbound (FILE *f,
-			  struct binding_t *funcs,
+			  const struct binding_t *funcs,
 			  struct keymap_t *map,
 			  struct keymap_t *aux)
 {
@@ -336,9 +336,9 @@ void mutt_help (int menu)
 {
   char t[_POSIX_PATH_MAX];
   char buf[SHORT_STRING];
-  char *desc;
+  const char *desc;
   FILE *f;
-  struct binding_t *funcs;
+  const struct binding_t *funcs;
 
   mutt_mktemp (t, sizeof (t));
 

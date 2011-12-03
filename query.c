@@ -44,7 +44,7 @@ typedef struct entry
   QUERY *data;
 } ENTRY;
 
-static struct mapping_t QueryHelp[] = {
+static const struct mapping_t QueryHelp[] = {
   { N_("Exit"),   OP_EXIT },
   { N_("Mail"),   OP_MAIL },
   { N_("New Query"),  OP_QUERY },

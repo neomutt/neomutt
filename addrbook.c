@@ -33,7 +33,7 @@
 
 #define RSORT(x) (SortAlias & SORT_REVERSE) ? -x : x
 
-static struct mapping_t AliasHelp[] = {
+static const struct mapping_t AliasHelp[] = {
   { N_("Exit"),   OP_EXIT },
   { N_("Del"),    OP_DELETE },
   { N_("Undel"),  OP_UNDELETE },

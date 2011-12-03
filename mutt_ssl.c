@@ -911,7 +911,7 @@ static int ssl_check_certificate (CONNECTION *conn, sslsockdata *data)
 
 static int interactive_check_cert (X509 *cert, int idx, int len)
 {
-  char *part[] =
+  static const char * const part[] =
     {"/CN=", "/Email=", "/O=", "/OU=", "/L=", "/ST=", "/C="};
   char helpstr[LONG_STRING];
   char buf[STRING];

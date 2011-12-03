@@ -480,7 +480,7 @@ static int mix_chain_add (MIXCHAIN *chain, const char *s,
   return 0;
 }
 
-static struct mapping_t RemailerHelp[] = 
+static const struct mapping_t RemailerHelp[] = 
 {
   { N_("Append"), OP_MIX_APPEND },
   { N_("Insert"), OP_MIX_INSERT },

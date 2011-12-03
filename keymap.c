@@ -36,7 +36,7 @@
 
 #include "functions.h"
 
-struct mapping_t Menus[] = {
+const struct mapping_t Menus[] = {
  { "alias",	MENU_ALIAS },
  { "attach",	MENU_ATTACH },
  { "browser",	MENU_FOLDER },
@@ -298,7 +298,7 @@ void km_bindkey (char *s, int menu, int op)
   km_bind (s, menu, op, NULL, NULL);
 }
 
-static int get_op (struct binding_t *bindings, const char *start, size_t len)
+static int get_op (const struct binding_t *bindings, const char *start, size_t len)
 {
   int i;
 
@@ -312,7 +312,7 @@ static int get_op (struct binding_t *bindings, const char *start, size_t len)
   return OP_NULL;
 }
 
-static char *get_func (struct binding_t *bindings, int op)
+static char *get_func (const struct binding_t *bindings, int op)
 {
   int i;
 
@@ -366,7 +366,7 @@ static void push_string (char *s)
 	 * skip the '<' and the '>' when comparing */
 	for (i = 0; Menus[i].name; i++)
 	{
-	  struct binding_t *binding = km_get_table (Menus[i].value);
+	  const struct binding_t *binding = km_get_table (Menus[i].value);
 	  if (binding)
 	  {
 	    op = get_op (binding, pp + 1, l - 2);
@@ -465,7 +465,7 @@ int km_dokey (int menu)
     if (tmp.op)
     {
       char *func = NULL;
-      struct binding_t *bindings;
+      const struct binding_t *bindings;
 
       /* is this a valid op for this menu? */
       if ((bindings = km_get_table (menu)) &&
@@ -540,7 +540,7 @@ int km_dokey (int menu)
   /* not reached */
 }
 
-static void create_bindings (struct binding_t *map, int menu)
+static void create_bindings (const struct binding_t *map, int menu)
 {
   int i;
 
@@ -549,10 +549,10 @@ static void create_bindings (struct binding_t *map, int menu)
       km_bindkey (map[i].seq, menu, map[i].op);
 }
 
-char *km_keyname (int c)
+static const char *km_keyname (int c)
 {
   static char buf[10];
-  char *p;
+  const char *p;
 
   if ((p = mutt_getnamebyvalue (c, KeyNames)))
     return p;
@@ -911,7 +911,7 @@ error:
 }
 
 static int
-try_bind (char *key, int menu, char *func, struct binding_t *bindings)
+try_bind (char *key, int menu, char *func, const struct binding_t *bindings)
 {
   int i;
   
@@ -924,7 +924,7 @@ try_bind (char *key, int menu, char *func, struct binding_t *bindings)
   return (-1);
 }
 
-struct binding_t *km_get_table (int menu)
+const struct binding_t *km_get_table (int menu)
 {
   switch (menu)
   {
@@ -971,7 +971,7 @@ struct binding_t *km_get_table (int menu)
 /* bind menu-name '<key_sequence>' function-name */
 int mutt_parse_bind (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  struct binding_t *bindings = NULL;
+  const struct binding_t *bindings = NULL;
   char *key;
   int menu[sizeof(Menus)/sizeof(struct mapping_t)-1], r = 0, nummenus, i;
 
@@ -1072,7 +1072,7 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int ops[128]; 
   int nops = 0;
-  struct binding_t *bindings = NULL;
+  const struct binding_t *bindings = NULL;
   char *function;
 
   if (!MoreArgs (s))

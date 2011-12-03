@@ -69,7 +69,7 @@ time_t mutt_mktime (struct tm *t, int local)
 {
   time_t g;
 
-  static int AccumDaysPerMonth[12] = {
+  static const int AccumDaysPerMonth[12] = {
     0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334
   };
 
@@ -118,7 +118,7 @@ static int isLeapYearFeb (struct tm *tm)
 
 void mutt_normalize_time (struct tm *tm)
 {
-  static char DaysPerMonth[12] = {
+  static const char DaysPerMonth[12] = {
     31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
   };
   int nLeap;

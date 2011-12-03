@@ -612,7 +612,8 @@ void imap_qualify_path (char *dest, size_t len, IMAP_MBOX *mx, char* path)
  *   surround string with quotes, escape " and \ with \ */
 void imap_quote_string (char *dest, size_t dlen, const char *src)
 {
-  char quote[] = "\"\\", *pt;
+  static const char quote[] = "\"\\";
+  char *pt;
   const char *s;
 
   pt = dest;

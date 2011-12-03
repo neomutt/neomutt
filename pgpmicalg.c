@@ -35,7 +35,7 @@
 #include <string.h>
 #include <ctype.h>
 
-static struct 
+static const struct 
 {
   short id;
   const char *name;

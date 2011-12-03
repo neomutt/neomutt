@@ -3488,7 +3488,7 @@ struct command_t
   unsigned long data;
 };
 
-struct command_t Commands[] = {
+const struct command_t Commands[] = {
   { "alternates",	parse_alternates,	0 },
   { "unalternates",	parse_unalternates,	0 },
 #ifdef USE_SOCKET

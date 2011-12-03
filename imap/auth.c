@@ -28,7 +28,7 @@
 #include "imap_private.h"
 #include "auth.h"
 
-static imap_auth_t imap_authenticators[] = {
+static const imap_auth_t imap_authenticators[] = {
 #ifdef USE_SASL
   { imap_auth_sasl, NULL },
 #else
@@ -50,7 +50,7 @@ static imap_auth_t imap_authenticators[] = {
  *   authentication method if specified, or any. */
 int imap_authenticate (IMAP_DATA* idata)
 {
-  imap_auth_t* authenticator;
+  const imap_auth_t* authenticator;
   char* methods;
   char* method;
   char* delim;

@@ -1526,13 +1526,13 @@ upNLines (int nlines, struct line_t *info, int cur, int hiding)
   return cur;
 }
 
-static struct mapping_t PagerHelp[] = {
+static const struct mapping_t PagerHelp[] = {
   { N_("Exit"),	OP_EXIT },
   { N_("PrevPg"), OP_PREV_PAGE },
   { N_("NextPg"), OP_NEXT_PAGE },
   { NULL,	0 }
 };
-static struct mapping_t PagerHelpExtra[] = {
+static const struct mapping_t PagerHelpExtra[] = {
   { N_("View Attachm."), OP_VIEW_ATTACHMENTS },
   { N_("Del"), OP_DELETE },
   { N_("Reply"), OP_REPLY },

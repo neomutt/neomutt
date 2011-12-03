@@ -53,7 +53,7 @@ static void cmd_parse_myrights (IMAP_DATA* idata, const char* s);
 static void cmd_parse_search (IMAP_DATA* idata, const char* s);
 static void cmd_parse_status (IMAP_DATA* idata, char* s);
 
-static char *Capabilities[] = {
+static const char * const Capabilities[] = {
   "IMAP4",
   "IMAP4rev1",
   "STATUS",

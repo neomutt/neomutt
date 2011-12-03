@@ -71,7 +71,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   int rc, mfhrc, oldmsgcount;
   int fetchlast = 0;
   int maxuid = 0;
-  const char *want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
+  static const char * const want_headers = "DATE FROM SUBJECT TO CC MESSAGE-ID REFERENCES CONTENT-TYPE CONTENT-DESCRIPTION IN-REPLY-TO REPLY-TO LINES LIST-POST X-LABEL";
   progress_t progress;
   int retval = -1;
 

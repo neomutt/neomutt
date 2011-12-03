@@ -277,7 +277,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
   return POP_A_FAILURE;
 }
 
-static pop_auth_t pop_authenticators[] = {
+static const pop_auth_t pop_authenticators[] = {
 #ifdef USE_SASL
   { pop_auth_sasl, NULL },
 #endif
@@ -296,7 +296,7 @@ static pop_auth_t pop_authenticators[] = {
 int pop_authenticate (POP_DATA* pop_data)
 {
   ACCOUNT *acct = &pop_data->conn->account;
-  pop_auth_t* authenticator;
+  const pop_auth_t* authenticator;
   char* methods;
   char* comma;
   char* method;

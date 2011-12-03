@@ -1691,7 +1691,8 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int query, unset, inv, reset, r = 0;
   int idx = -1;
-  char *p, scratch[_POSIX_PATH_MAX];
+  const char *p;
+  char scratch[_POSIX_PATH_MAX];
   char* myvar;
 
   while (MoreArgs (s))
@@ -2113,7 +2114,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     {
       if (query)
       {
-	char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
+	static const char * const vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
 	snprintf (err->data, err->dsize, "%s=%s", MuttVars[idx].option,
 		  vals [ quadoption (MuttVars[idx].data) ]);
@@ -2481,7 +2482,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
 	   || !mutt_strncmp (buffer, "reset", 5)
 	   || !mutt_strncmp (buffer, "toggle", 6))
   { 		/* complete variables */
-    char *prefixes[] = { "no", "inv", "?", "&", 0 };
+    static const char * const prefixes[] = { "no", "inv", "?", "&", 0 };
     
     pt++;
     /* loop through all the possible prefixes (no, inv, ...) */
@@ -2533,7 +2534,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
   }
   else if (!mutt_strncmp (buffer, "exec", 4))
   {
-    struct binding_t *menu = km_get_table (CurrentMenu);
+    const struct binding_t *menu = km_get_table (CurrentMenu);
 
     if (!menu && CurrentMenu != MENU_PAGER)
       menu = OpGeneric;
@@ -2632,7 +2633,7 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
 static int var_to_string (int idx, char* val, size_t len)
 {
   char tmp[LONG_STRING];
-  char *vals[] = { "no", "yes", "ask-no", "ask-yes" };
+  static const char * const vals[] = { "no", "yes", "ask-no", "ask-yes" };
 
   tmp[0] = '\0';
 
@@ -2663,7 +2664,7 @@ static int var_to_string (int idx, char* val, size_t len)
   else if (DTYPE (MuttVars[idx].type) == DT_SORT)
   {
     const struct mapping_t *map;
-    char *p;
+    const char *p;
 
     switch (MuttVars[idx].type & DT_SUBTYPE_MASK)
     {
@@ -2789,7 +2790,7 @@ int mutt_dump_variables (void)
   return 0;
 }
 
-char *mutt_getnamebyvalue (int val, const struct mapping_t *map)
+const char *mutt_getnamebyvalue (int val, const struct mapping_t *map)
 {
   int i;
 
@@ -3150,7 +3151,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
 int mutt_get_hook_type (const char *name)
 {
-  struct command_t *c;
+  const struct command_t *c;
 
   for (c = Commands ; c->name ; c++)
     if (c->func == mutt_parse_hook && ascii_strcasecmp (c->name, name) == 0)

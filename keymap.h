@@ -45,7 +45,6 @@ struct keymap_t
   keycode_t *keys;       /* key sequence */
 };
 
-char *km_keyname (int);
 int km_expand_key (char *, size_t, struct keymap_t *);
 struct keymap_t *km_find_func (int, int);
 void km_init (void);
@@ -89,7 +88,7 @@ extern struct keymap_t *Keymaps[];
 /* dokey() records the last real key pressed  */
 extern int LastKey;
 
-extern struct mapping_t Menus[];
+extern const struct mapping_t Menus[];
 
 struct binding_t
 {
@@ -98,25 +97,25 @@ struct binding_t
   char *seq;	/* default key binding */
 };
 
-struct binding_t *km_get_table (int menu);
+const struct binding_t *km_get_table (int menu);
 
-extern struct binding_t OpGeneric[];
-extern struct binding_t OpPost[];
-extern struct binding_t OpMain[];
-extern struct binding_t OpAttach[];
-extern struct binding_t OpPager[];
-extern struct binding_t OpCompose[];
-extern struct binding_t OpBrowser[];
-extern struct binding_t OpEditor[];
-extern struct binding_t OpQuery[];
-extern struct binding_t OpAlias[];
+extern const struct binding_t OpGeneric[];
+extern const struct binding_t OpPost[];
+extern const struct binding_t OpMain[];
+extern const struct binding_t OpAttach[];
+extern const struct binding_t OpPager[];
+extern const struct binding_t OpCompose[];
+extern const struct binding_t OpBrowser[];
+extern const struct binding_t OpEditor[];
+extern const struct binding_t OpQuery[];
+extern const struct binding_t OpAlias[];
 
-extern struct binding_t OpPgp[];
+extern const struct binding_t OpPgp[];
 
-extern struct binding_t OpSmime[];
+extern const struct binding_t OpSmime[];
 
 #ifdef MIXMASTER
-extern struct binding_t OpMix[];
+extern const struct binding_t OpMix[];
 #endif
 
 #include "keymap_defs.h"

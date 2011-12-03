@@ -52,7 +52,7 @@ struct pgp_cache
 
 static struct pgp_cache *id_defaults = NULL;
 
-static char trust_flags[] = "?- +";
+static const char trust_flags[] = "?- +";
 
 static char *pgp_key_abilities (int flags)
 {
