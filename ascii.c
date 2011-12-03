@@ -34,17 +34,17 @@
 #include <stdlib.h>
 #include "ascii.h"
 
-int ascii_isupper (int c)
+inline int ascii_isupper (int c)
 {
   return (c >= 'A') && (c <= 'Z');
 }
 
-int ascii_islower (int c)
+inline int ascii_islower (int c)
 {
   return (c >= 'a') && (c <= 'z');
 }
 
-int ascii_toupper (int c)
+inline int ascii_toupper (int c)
 {
   if (ascii_islower (c))
     return c & ~32;
@@ -52,7 +52,7 @@ int ascii_toupper (int c)
   return c;
 }
 
-int ascii_tolower (int c)
+inline int ascii_tolower (int c)
 {
   if (ascii_isupper (c))
     return c | 32;
