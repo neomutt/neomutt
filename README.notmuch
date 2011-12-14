@@ -1,0 +1,15 @@
+
+notmuch support for mutt
+------------------------
+
+ * notmuch is e-email library for e-mail fulltext indexing and tagging; see
+   http://notmuchmail.org/ for more information.
+
+ * compile:
+
+  $ git clone git://github.com/karelzak/mutt-kz.git
+  $ cd mutt-kz
+  $ ./prepare
+  $ ./configure --enable-notmuch
+  $ make
+
