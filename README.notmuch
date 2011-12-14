@@ -14,6 +14,33 @@ notmuch support for mutt
   $ ./configure --enable-notmuch
   $ make
 
+ * folders URI
+
+   notmuch:///<path>[?<item>=<name>[& ...]]
+
+   The <path> is absolute path to the the directory where is notmuch database
+   as returned by 'notmuch config get database.path' command. Note that the
+   <path> should NOT include .notmuch directory name.
+
+   Items:
+
+      query=<string>
+
+	 See SEARCH SYNTAX in notmuch man page. Don't forget to use "and" and
+         "or" operators in your queries.
+
+      Note that proper URI should not contain blank space and all "bad" chars
+      should be encoded, for example
+
+	 "tag:AAA and tag:BBB" --encoding-> tag:AAA%20and%20tag:BBB
+
+      but mutt config file parser is smart enough to accept space in quoted
+      strings. It means that you can use
+
+         "notmuch:///foo?query=tag:AAA and tag:BBB"
+
+      in your config files to keep things readable.
+
 
  * virtual mailboxes
 
