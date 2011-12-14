@@ -1524,6 +1524,7 @@ int mx_close_message (MESSAGE **msg)
     FREE (&(*msg)->path);
   }
 
+  FREE (&(*msg)->commited_path);
   FREE (msg);		/* __FREE_CHECKED__ */
   return (r);
 }
