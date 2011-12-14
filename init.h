@@ -1668,6 +1668,28 @@ struct option_t MuttVars[] = {
    ** See also $$read_inc, $$write_inc and $$net_inc.
    */
 #endif
+#ifdef USE_NOTMUCH
+  { "notmuch_default_uri", DT_STR, R_NONE, UL &NotmuchDefaultUri, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default Notmuch database in format
+   ** notmuch://<absolute path>.
+   */
+
+  { "notmuch_hidden_tags", DT_STR, R_NONE, UL &NotmuchHiddenTags, UL "unread,draft,flagged,passed,replied,attachment" },
+  /*
+   ** .pp
+   ** This variable specifies private notmuch tags which should not be printed
+   ** on screen.
+   */
+  { "notmuch_unread_tag", DT_STR, R_NONE, UL &NotmuchUnreadTag, UL "tag:unread" },
+  /*
+   ** .pp
+   ** This variable specifies notmuch tag which is used for unread messages. The
+   ** variable is used to count unread messages in DB only. All other mutt commands
+   ** use standard (e.g. maildir) flags.
+   */
+#endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
   ** .pp
@@ -3657,6 +3679,25 @@ struct option_t MuttVars[] = {
   ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
   ** given in the built-in editor.
   */
+#ifdef USE_NOTMUCH
+  { "vfolder_format",	DT_STR,	 R_INDEX, UL &VirtFolderFormat, UL " %6n(%6N) %f " },
+  /*
+  ** .pp
+  ** This variable allows you to customize the file browser display for virtual
+  ** folders to your ** personal taste.  This string is similar to $$index_format,
+  ** but has its own set of \fCprintf(3)\fP-like sequences:
+  ** .dl
+  ** .dt %f  .dd folder name (description)
+  ** .dt %n  .dd number of all messages
+  ** .dt %N  .dd number of new messages
+  ** .dt %>X .dd right justify the rest of the string and pad with character ``X''
+  ** .dt %|X .dd pad to the end of the line with character ``X''
+  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .de
+  ** .pp
+  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  */
+#endif
   { "wait_key",		DT_BOOL, R_NONE, OPTWAITKEY, 1 },
   /*
   ** .pp

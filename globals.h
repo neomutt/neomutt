@@ -281,6 +281,12 @@ WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
 
+#ifdef USE_NOTMUCH
+WHERE char *NotmuchDefaultUri;
+WHERE char *NotmuchUnreadTag;
+WHERE char *NotmuchHiddenTags;
+WHERE char *VirtFolderFormat;
+#endif
 
 
 

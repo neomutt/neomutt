@@ -42,16 +42,54 @@ notmuch support for mutt
       in your config files to keep things readable.
 
 
- * virtual mailboxes
+ * muttrc:
 
-   .muttrc:
+   virtual-mailboxes <description> <uri> [ ...]
 
-     synopsis:
+      This command specifies one or more virtual folder. The folders are
+      accessioble by command 'X'.
 
-      virtual-mailboxes <desciption> <uri> [ ...]
+      example:
 
-     example:
+      virtual-mailboxes "Linux Kernel" "notmuch:///whereis/db?query=tag:lkml&limit=1000" \
+                        "Filesystems"  "notmuch:///whereis/db?query=tag:fs" \
+                        "Music"        "notmuch:///another/db?query=tag:hard and tag:heavy"
 
-       virtual-mailboxes "Linux Kernel" "notmuch:///whereis/db?query=tag:lkml&limit=1000" \
-                         "Filesystems"  "notmuch:///whereis/db?query=tag:fs" \
-                         "Music"        "notmuch:///another/db?query=tag:hard and tag:heavy"
+
+   notmuch_default_uri = <uri>
+
+      This variable specifies the default Notmuch database in format
+      notmuch://<absolute path>, the URI is used for notmuch queries (ESC+X) when
+      the current folder is not based on notmuch.
+
+   notmuch_hidden_tags = <comma delimited list>
+
+      This variable specifies private notmuch tags which should not be printed
+      on screen (index, pager).
+
+   notmuch_unread_tag = tag:<name>
+
+      This variable specifies notmuch tag which is used for unread messages. The
+      variable is used to count unread messages in DB only. All other mutt
+      commands use standard (e.g. maildir) flags. Default is "tag:unread".
+
+   vfolder_format = <string>
+
+      This variable allows you to customize the file browser display for virtual
+      folders to your ** personal taste.  This string is similar to $$index_format,
+      but has its own set of printf(3)-like sequences:
+
+	%f  .dd folder name (description)
+	%n  .dd number of all messages
+	%N  .dd number of new messages
+	%>X .dd right justify the rest of the string and pad with character ``X''
+	%|X .dd pad to the end of the line with character ``X''
+	%*X .dd soft-fill with character ``X'' as pad
+
+      default is "%6n(%6N) %f "
+
+
+
+
+
+
