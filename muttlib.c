@@ -441,6 +441,11 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	  strfcpy (p, NONULL (Maildir), sizeof (p));
 	else
 #endif
+#ifdef USE_NOTMUCH
+	if (mx_is_notmuch (NONULL (Maildir)))
+	  strfcpy (p, NONULL (Maildir), sizeof (p));
+	else
+#endif
 	if (Maildir && *Maildir && Maildir[strlen (Maildir) - 1] == '/')
 	  strfcpy (p, NONULL (Maildir), sizeof (p));
 	else
@@ -885,6 +890,11 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
     imap_pretty_mailbox (s);
     return;
   }
+#endif
+
+#ifdef USE_NOTMUCH
+  if (scheme == U_NOTMUCH)
+    return;
 #endif
 
   /* if s is an url, only collapse path component */
