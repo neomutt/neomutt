@@ -67,6 +67,15 @@ int maildir_read_dir (CONTEXT *);
 int maildir_check_mailbox (CONTEXT *, int *);
 int maildir_check_empty (const char *);
 
+HEADER *maildir_parse_message (int magic, const char *fname, int is_old, HEADER * _h);
+
+#if USE_HCACHE
+#include <hcache.h>
+int mh_sync_mailbox_message (CONTEXT * ctx, int msgno, header_cache_t *hc);
+#else
+int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
+#endif
+
 int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 
