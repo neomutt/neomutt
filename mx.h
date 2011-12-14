@@ -35,6 +35,7 @@ enum
   M_MH,
   M_MAILDIR,
   M_IMAP,
+  M_NOTMUCH,
   M_POP
 };
 
@@ -74,6 +75,10 @@ HEADER *maildir_parse_message (int magic, const char *fname, int is_old, HEADER 
 int mh_sync_mailbox_message (CONTEXT * ctx, int msgno, header_cache_t *hc);
 #else
 int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
+#endif
+
+#ifdef USE_NOTMUCH
+int mx_is_notmuch(const char *p);
 #endif
 
 int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
