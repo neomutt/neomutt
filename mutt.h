@@ -796,7 +796,7 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP
+#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
   void *data;            	/* driver-specific data */
 #endif
   
