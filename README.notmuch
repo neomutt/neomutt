@@ -5,6 +5,7 @@ notmuch support for mutt
  * notmuch is e-email library for e-mail fulltext indexing and tagging; see
    http://notmuchmail.org/ for more information.
 
+
  * compile:
 
   $ git clone git://github.com/karelzak/mutt-kz.git
@@ -13,3 +14,17 @@ notmuch support for mutt
   $ ./configure --enable-notmuch
   $ make
 
+
+ * virtual mailboxes
+
+   .muttrc:
+
+     synopsis:
+
+      virtual-mailboxes <desciption> <uri> [ ...]
+
+     example:
+
+       virtual-mailboxes "Linux Kernel" "notmuch:///whereis/db?query=tag:lkml&limit=1000" \
+                         "Filesystems"  "notmuch:///whereis/db?query=tag:fs" \
+                         "Music"        "notmuch:///another/db?query=tag:hard and tag:heavy"

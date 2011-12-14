@@ -26,6 +26,7 @@ typedef struct buffy_t
 #ifdef USE_SIDEBAR
   char realpath[_POSIX_PATH_MAX];
 #endif
+  char *desc;
   off_t size;
   struct buffy_t *next;
 #ifdef USE_SIDEBAR
@@ -50,6 +51,10 @@ BUFFY;
 
 WHERE BUFFY *Incoming INITVAL (0);
 WHERE short BuffyTimeout INITVAL (3);
+
+#ifdef USE_NOTMUCH
+WHERE BUFFY *VirtIncoming INITVAL (0);
+#endif
 
 extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
 
