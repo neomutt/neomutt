@@ -80,6 +80,9 @@ void mutt_generate_boundary (PARAMETER **);
 void mutt_delete_parameter (const char *attribute, PARAMETER **p);
 void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
+#ifdef USE_NOTMUCH
+int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+#endif
 
 FILE *mutt_open_read (const char *, pid_t *);
 

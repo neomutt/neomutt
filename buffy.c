@@ -219,6 +219,8 @@ static BUFFY *buffy_new (const char *path)
 
 static void buffy_free (BUFFY **mailbox)
 {
+  if (mailbox && *mailbox)
+    FREE (&(*mailbox)->desc);
   FREE (mailbox); /* __FREE_CHECKED__ */
 }
 
@@ -376,6 +378,46 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
 
   return rc;
 }
+
+#ifdef USE_NOTMUCH
+int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  BUFFY **tmp;
+  char buf[_POSIX_PATH_MAX];
+
+  while (MoreArgs (s))
+  {
+    mutt_extract_token (path, s, 0);
+    strfcpy (buf, path->data, sizeof (buf));
+
+    /* Skip empty tokens. */
+    if(!*buf) continue;
+
+    /* avoid duplicates */
+    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
+    {
+      if (mutt_strcmp (buf, (*tmp)->path) == 0)
+      {
+	dprint(3,(debugfile,"vistual mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
+	break;
+      }
+    }
+
+    if (!*tmp)
+      *tmp = buffy_new (buf);
+
+    mutt_extract_token (path, s, 0);
+    if (path->data && *path->data)
+      (*tmp)->desc = safe_strdup( path->data);
+
+    (*tmp)->new = 0;
+    (*tmp)->notified = 1;
+    (*tmp)->newly_created = 0;
+    (*tmp)->size = 0;
+  }
+  return 0;
+}
+#endif
 
 /* returns 1 if maildir has new mail */
 static int buffy_maildir_hasnew (BUFFY* mailbox)
