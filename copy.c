@@ -35,6 +35,10 @@
 #include <ctype.h>
 #include <unistd.h> /* needed for SEEK_SET under SunOS 4.1.4 */
 
+#if USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 static int address_header_decode (char **str);
 static int copy_delete_attach (BODY *b, FILE *fpin, FILE *fpout, char *date);
 
@@ -682,7 +686,7 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
 {
   MESSAGE *msg;
   int r;
-  
+
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
     return -1;
   if ((r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 
@@ -726,6 +730,15 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);
   if (mx_commit_message (msg, dest) != 0)
     r = -1;
+
+#ifdef USE_NOTMUCH
+  if (r != -1 && src->magic == M_NOTMUCH) {
+	char old[_POSIX_PATH_MAX];
+
+	if (nm_header_get_fullpath(hdr, old, sizeof(old)))
+		nm_update_filename(src, old, msg->commited_path);
+  }
+#endif
 
   mx_close_message (&msg);
   return r;

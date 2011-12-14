@@ -610,7 +610,9 @@ int mutt_do_pager (const char *banner,
   return rc;
 }
 
-int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, int buffy, int multiple, char ***files, int *numfiles)
+int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
+		int *redraw, int buffy, int multiple,
+		char ***files, int *numfiles, int flags)
 {
   event_t ch;
 
@@ -633,8 +635,14 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   {
     mutt_refresh ();
     buf[0] = 0;
-    _mutt_select_file (buf, blen, M_SEL_FOLDER | (multiple ? M_SEL_MULTI : 0), 
-		       files, numfiles);
+    if (!flags)
+      flags = M_SEL_FOLDER | (multiple ? M_SEL_MULTI : 0);
+
+    _mutt_select_file (buf, blen, flags, files, numfiles);
+    *redraw = REDRAW_FULL;
+  }
+  else if (flags & M_SEL_VFOLDER) {
+    _mutt_select_file (buf, blen, flags, files, numfiles);
     *redraw = REDRAW_FULL;
   }
   else

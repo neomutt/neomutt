@@ -687,7 +687,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  numfiles = 0;
 	  files = NULL;
 
-	  if (_mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 0, 1, &files, &numfiles) == -1 ||
+	  if (_mutt_enter_fname (prompt, fname, sizeof (fname),
+			&menu->redraw, 0, 1, &files, &numfiles, 0) == -1 ||
 	      *fname == '\0')
 	    break;
 
