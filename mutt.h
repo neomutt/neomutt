@@ -321,6 +321,7 @@ enum
 #define M_SEL_BUFFY	(1<<0)
 #define M_SEL_MULTI	(1<<1)
 #define M_SEL_FOLDER	(1<<2)
+#define M_SEL_VFOLDER	(1<<3)
 
 /* flags for parse_spam_list */
 #define M_SPAM          1
