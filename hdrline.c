@@ -36,6 +36,10 @@
 #include <alloca.h>
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 int mutt_is_mail_list (ADDRESS *addr)
 {
   if (!mutt_match_rx_list (addr->mailbox, UnMailLists))
@@ -243,6 +247,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %E = number of messages in current thread
  * %f = entire from line
  * %F = like %n, unless from self
+ * %g = message labes (e.g. notmuch tags)
  * %i = message-id
  * %l = number of lines in the message
  * %L = like %F, except `lists' are displayed first
@@ -584,7 +589,11 @@ hdr_format_str (char *dest,
       else if (mutt_addr_is_user (hdr->env->from))
         optional = 0;
       break;
-
+#ifdef USE_NOTMUCH
+    case 'g':
+      mutt_format_s (dest, destlen, prefix, nm_header_get_tags(hdr));
+      break;
+#endif
     case 'H':
       /* (Hormel) spam score */
       if (optional)
