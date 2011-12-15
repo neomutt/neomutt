@@ -3137,6 +3137,11 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   mutt_read_histfile ();
 
+#ifdef USE_NOTMUCH
+  if (option (OPTVIRTSPOOLFILE) && VirtIncoming)
+    mutt_str_replace(&Spoolfile, VirtIncoming->path);
+#endif
+
 #if 0
   set_option (OPTWEED); /* turn weeding on by default */
 #endif

@@ -3628,6 +3628,12 @@ struct option_t MuttVars[] = {
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
   */
+  { "virtual_spoolfile", DT_BOOL, R_NONE, OPTVIRTSPOOLFILE, 0 },
+  /*
+  ** .pp
+  ** When \fset\fP, mutt will use the first defined virtual mailbox (see
+  ** virtual-mailboxes) as a spool file.
+  */
 #endif
   { "wait_key",		DT_BOOL, R_NONE, OPTWAITKEY, 1 },
   /*
