@@ -152,7 +152,7 @@ err:
 	return -1;
 }
 
-static void free_hdrdata(HEADER *h)
+static void free_header_data(HEADER *h)
 {
 	struct nm_hdrdata *data = h->data;
 
@@ -174,7 +174,7 @@ static int free_data(CONTEXT *ctx)
 		HEADER *h = ctx->hdrs[i];
 
 		if (h)
-			free_hdrdata(h);
+			free_header_data(h);
 	}
 
 	if (data) {
@@ -393,6 +393,8 @@ static struct nm_hdrdata *create_hdrdata(HEADER *h, const char *path,
 		data->id = safe_strdup(id);
 
 	h->data = data;
+	h->free_cb = free_header_data;
+
 	init_message_tags(data, msg);
 
 	return data;
