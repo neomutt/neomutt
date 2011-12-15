@@ -19,4 +19,6 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *tags);
 void nm_longrun_init(CONTEXT *cxt, int writable);
 void nm_longrun_done(CONTEXT *cxt);
 
+char *nm_get_description(CONTEXT *ctx);
+
 #endif /* _MUTT_NOTMUCH_H_ */
