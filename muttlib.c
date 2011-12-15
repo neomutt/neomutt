@@ -32,6 +32,10 @@
 #include "imap.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include "mutt_crypt.h"
 
 #include <string.h>
@@ -330,7 +334,9 @@ void mutt_free_header (HEADER **h)
 #ifdef MIXMASTER
   mutt_free_list (&(*h)->chain);
 #endif
-#if defined USE_POP || defined USE_IMAP
+#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
+  if ((*h)->free_cb)
+    (*h)->free_cb(*h);
   FREE (&(*h)->data);
 #endif
   FREE (h);		/* __FREE_CHECKED__ */

@@ -799,6 +799,7 @@ typedef struct header
 
 #if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
   void *data;            	/* driver-specific data */
+  void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif
   
   char *maildir_flags;		/* unknown maildir flags */
