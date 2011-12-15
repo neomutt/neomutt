@@ -442,7 +442,10 @@ int nm_read_query(CONTEXT *ctx)
 
 		create_hdrdata(h, path, m);
 
-		ctx->size += h->content->length;
+		h->index = ctx->msgcount;
+		ctx->size += h->content->length
+			   + h->content->offset
+			   - h->content->hdr_offset;
 		ctx->hdrs[ctx->msgcount] = h;
 		ctx->msgcount++;
 
@@ -452,6 +455,7 @@ int nm_read_query(CONTEXT *ctx)
 	notmuch_query_destroy(q);
 	release_db(ctx);
 
+	mx_update_context(ctx, ctx->msgcount);
 	return 0;
 }
 
