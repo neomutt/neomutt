@@ -42,6 +42,9 @@ notmuch support for mutt
 
       in your config files to keep things readable.
 
+   See http://xapian.org/docs/queryparser.html for more details about Xapian
+   queries.
+
 
  * commands:
 
@@ -108,4 +111,13 @@ notmuch support for mutt
    index_format and pager_format
 
         %g   notmuch tags (labels)
+
+
+ * TODO:
+
+   add "entire-thread" command
+
+      to display all e-mails that belongs to the same thread as the current
+      message. This command will be useful when you have a new email ion your INBOX
+      and you want to see the rest of the archived thread.
 
