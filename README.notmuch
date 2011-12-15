@@ -86,6 +86,10 @@ notmuch support for mutt
                         "Filesystems"  "notmuch:///whereis/db?query=tag:fs" \
                         "Music"        "notmuch:///another/db?query=tag:hard and tag:heavy"
 
+   virtual_spoolfile = <boolean>
+
+      When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
+      as a spoolfile.
 
    notmuch_default_uri = <uri>
 

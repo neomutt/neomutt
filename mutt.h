@@ -544,6 +544,10 @@ enum
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
   OPTIGNOREMACROEVENTS, /* (pseudo) don't process macro/push/exec events while set */
 
+#ifdef USE_NOTMUCH
+  OPTVIRTSPOOLFILE,
+#endif
+
   OPTMAX
 };
 
