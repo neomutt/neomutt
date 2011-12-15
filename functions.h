@@ -184,6 +184,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,         "X" },
   { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,     "\033X" },
   { "modify-labels",		OP_MAIN_MODIFY_LABELS,		"`" },
+  { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
 #endif
   { NULL,			0,				NULL }
 };
@@ -304,6 +305,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,		"X" },
   { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,	"\033X" },
   { "modify-labels",		OP_MAIN_MODIFY_LABELS,		"`" },
+  { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
 #endif
 
   { NULL,		0,				NULL }

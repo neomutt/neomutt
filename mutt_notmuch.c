@@ -478,7 +478,7 @@ static notmuch_message_t *get_message(notmuch_database_t *db, HEADER *hdr)
 	return id && db ? notmuch_database_find_message(db, id) :  NULL;
 }
 
-int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0, size_t bufsz)
+int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
 {
 	notmuch_database_t *db = NULL;
 	notmuch_message_t *msg = NULL;

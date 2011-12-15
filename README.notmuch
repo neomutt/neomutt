@@ -61,6 +61,17 @@ notmuch support for mutt
       - default key: `
       - example: "+AAA +BBB -CCC"
 
+   modify-labels-then-hide:
+      - same as <modify-labels> but message is marked by <quasi-delete>
+      - not mapped to any key
+      - example (add "archive" notmuch tag and remove message from screen):
+
+       macro index A "<modify-labels-then-hide>archive\n<sync-mailbox>"
+
+   quasi-delete:
+      - delete message from mutt (usualy after <sync-mailbox> function), but
+        don't touch message on disk
+
 
  * muttrc:
 
