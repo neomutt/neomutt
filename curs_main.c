@@ -1382,16 +1382,18 @@ int mutt_index_menu (void)
 
 #ifdef USE_NOTMUCH
       case OP_MAIN_MODIFY_LABELS:
+      case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
+      {
 	if (Context->magic != M_NOTMUCH) {
 	  mutt_message _("No virtual folder, aborting.");
 	  break;
 	}
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	buf[0] = '\0';
-        if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), 0) != 0 || !buf[0])
-        {
-          mutt_message _("No labels, aborting.");
+	*buf = '\0';
+	if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), 0) || !*buf)
+	{
+          mutt_message _("No label specified, aborting.");
           break;
         }
 	if (tag && !option (OPTAUTOTAG))
@@ -1410,7 +1412,12 @@ int mutt_index_menu (void)
 	    if (Context->hdrs[Context->v2r[j]]->tagged) {
 	      if (!Context->quiet)
 		mutt_progress_update(&progress, ++px, -1);
-	      nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf, sizeof (buf));
+	      nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf);
+	      if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
+	      {
+		Context->hdrs[Context->v2r[j]]->quasi_deleted = TRUE;
+	        Context->changed = TRUE;
+	      }
 	    }
 	  }
 	  nm_longrun_done(Context);
@@ -1418,9 +1425,14 @@ int mutt_index_menu (void)
 	}
 	else
 	{
-	  if (nm_modify_message_tags(Context, CURHDR, buf, sizeof (buf))) {
+	  if (nm_modify_message_tags(Context, CURHDR, buf)) {
 	    mutt_message _("Failed to modify labels, aborting.");
 	    break;
+	  }
+	  if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
+	  {
+	    CURHDR->quasi_deleted = TRUE;
+	    Context->changed = TRUE;
 	  }
 	  if (option (OPTRESOLVE))
 	  {
@@ -1437,6 +1449,7 @@ int mutt_index_menu (void)
 	}
 	menu->redraw |= REDRAW_STATUS;
 	break;
+      }
 
       case OP_MAIN_VFOLDER_FROM_QUERY:
 	buf[0] = '\0';

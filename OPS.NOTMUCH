@@ -1,3 +1,4 @@
 OP_MAIN_CHANGE_VFOLDER "open a different virtual folder"
 OP_MAIN_VFOLDER_FROM_QUERY "generate virtual folder from query"
 OP_MAIN_MODIFY_LABELS "modify (notmuch) tags"
+OP_MAIN_MODIFY_LABELS_THEN_HIDE "modify labeld and then hide message"
