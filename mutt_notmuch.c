@@ -240,8 +240,6 @@ static int init_data(CONTEXT *ctx)
 
 static struct nm_data *get_data(CONTEXT *ctx)
 {
-	if (ctx->magic != M_NOTMUCH)
-		return NULL;
 	return ctx->data;
 }
 
@@ -301,6 +299,7 @@ static void release_db(CONTEXT *ctx)
 	if (data && data->db) {
 		notmuch_database_close(data->db);
 		data->db = NULL;
+		data->longrun = FALSE;
 	}
 }
 
@@ -308,20 +307,16 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
 {
 	struct nm_data *data = get_data(ctx);
 
-	if (data) {
-		get_db(ctx, writable);
+	if (data && get_db(ctx, writable))
 		data->longrun = TRUE;
-	}
 }
 
 void nm_longrun_done(CONTEXT *ctx)
 {
 	struct nm_data *data = get_data(ctx);
 
-	if (data) {
+	if (data)
 		release_db(ctx);
-		data->longrun = FALSE;
-	}
 }
 
 static int is_longrun(CONTEXT *ctx)
@@ -410,7 +405,7 @@ int nm_read_query(CONTEXT *ctx)
 	notmuch_messages_t *msgs;
 	int limit;
 
-	if (!ctx->data && init_data(ctx))
+	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
 		return -1;
 
 	db = get_db(ctx, FALSE);
@@ -481,20 +476,20 @@ static notmuch_message_t *get_message(notmuch_database_t *db, HEADER *hdr)
 	return id && db ? notmuch_database_find_message(db, id) :  NULL;
 }
 
-int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf, size_t bufsz)
+int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0, size_t bufsz)
 {
 	notmuch_database_t *db = NULL;
 	notmuch_message_t *msg = NULL;
 	int rc = -1;
-	char *tag = NULL, *end = NULL, *p;
+	char *tag = NULL, *end = NULL, *p, *buf = NULL;
 
-	if (!buf || !*buf || !ctx
+	if (!buf0 || !*buf0 || !ctx
 	       || ctx->magic != M_NOTMUCH
 	       || !(db = get_db(ctx, TRUE))
 	       || !(msg = get_message(db, hdr)))
 		goto done;
 
-	buf = safe_strdup(buf);
+	buf = safe_strdup(buf0);
 
 	notmuch_message_freeze(msg);
 
@@ -526,6 +521,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf, size_t bufsz)
 	init_message_tags(hdr->data, msg);
 
 	rc = 0;
+	hdr->changed = TRUE;
 done:
 	FREE(&buf);
 	if (msg)
@@ -570,7 +566,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 	char *uri = ctx->path;
 	notmuch_database_t *db = NULL;
 
-	if (!ctx->data && init_data(ctx))
+	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
 		return -1;
 
 	if (!ctx->quiet) {
@@ -587,6 +583,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 		if (!ctx->quiet)
 			mutt_progress_update(&progress, i, -1);
 
+		*old = *new = '\0';
 
 		nm_header_get_fullpath(h, old, sizeof(old));
 
@@ -601,9 +598,10 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 		if (rc)
 			break;
 
-		nm_header_get_fullpath(h, new, sizeof(new));
+		if (!h->deleted)
+			nm_header_get_fullpath(h, new, sizeof(new));
 
-		if (h->deleted || strcmp(old, new)) {
+		if (h->deleted || strcmp(old, new) != 0) {
 			/* email renamed or deleted -- update DB */
 			if (!db)
 				db = get_db(ctx, TRUE);
