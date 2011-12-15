@@ -2,7 +2,7 @@
 notmuch support for mutt
 ------------------------
 
- * notmuch is e-email library for e-mail fulltext indexing and tagging; see
+ * notmuch is e-mail fulltext indexing and tagging engine; see
    http://notmuchmail.org/ for more information.
 
 
@@ -13,6 +13,7 @@ notmuch support for mutt
   $ ./prepare
   $ ./configure --enable-notmuch
   $ make
+
 
  * folders URI
 
@@ -40,6 +41,22 @@ notmuch support for mutt
          "notmuch:///foo?query=tag:AAA and tag:BBB"
 
       in your config files to keep things readable.
+
+
+ * commands:
+
+   change-vfolder:
+      - switch to virtual folder
+      - default key: X
+
+   vfolder-from-query:
+      - generate new virtual folder from notmuch search query
+      - default key: <Esc>X
+
+   modify-labels:
+      - add or remove notmuch tags; [+]<tag> to add, -<tag> to remove
+      - default key: `
+      - example: "+AAA +BBB -CCC"
 
 
  * muttrc:
@@ -79,17 +96,16 @@ notmuch support for mutt
       folders to your ** personal taste.  This string is similar to $$index_format,
       but has its own set of printf(3)-like sequences:
 
-	%f  .dd folder name (description)
-	%n  .dd number of all messages
-	%N  .dd number of new messages
-	%>X .dd right justify the rest of the string and pad with character ``X''
-	%|X .dd pad to the end of the line with character ``X''
-	%*X .dd soft-fill with character ``X'' as pad
+	%f   folder name (description)
+	%n   number of all messages
+	%N   number of new messages
+	%>X  right justify the rest of the string and pad with character ``X''
+	%|X  pad to the end of the line with character ``X''
+	%*X  soft-fill with character ``X'' as pad
 
       default is "%6n(%6N) %f "
 
+   index_format and pager_format
 
-
-
-
+        %g   notmuch tags (labels)
 
