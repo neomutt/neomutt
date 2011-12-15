@@ -27,6 +27,10 @@
 #include "mapping.h"
 #include "mx.h"
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
@@ -95,7 +99,14 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
       break;
 
     case 'f':
-      snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
+    {
+#ifdef USE_NOTMUCH
+      char *p;
+      if (Context && Context->magic == M_NOTMUCH &&
+                   (p = nm_get_description(Context)))
+	  strfcpy(tmp, p, sizeof (tmp));
+      else
+#endif
       if (Context && Context->path)
       {
 	strfcpy (tmp, Context->path, sizeof (tmp));
@@ -103,9 +114,11 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
       }
       else
 	strfcpy (tmp, _("(no mailbox)"), sizeof (tmp));
+
+      snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
       snprintf (buf, buflen, fmt, tmp);
       break;
-
+    }
     case 'F':
       if (!optional)
       {

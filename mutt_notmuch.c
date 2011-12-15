@@ -701,3 +701,14 @@ done:
 	url_free_tags(query_items);
 	return rc;
 }
+
+char *nm_get_description(CONTEXT *ctx)
+{
+	BUFFY *p;
+
+	for (p = VirtIncoming; p; p = p->next)
+		if (p->path && p->desc && strcmp(p->path, ctx->path) == 0)
+			return p->desc;
+
+	return NULL;
+}
