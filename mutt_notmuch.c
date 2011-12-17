@@ -243,7 +243,7 @@ static struct nm_data *get_data(CONTEXT *ctx)
 	return ctx->data;
 }
 
-static char *get_query(CONTEXT *ctx)
+static char *get_query_string(CONTEXT *ctx)
 {
 	struct nm_data *data = get_data(ctx);
 	struct uri_tag *item;
@@ -326,6 +326,28 @@ static int is_longrun(CONTEXT *ctx)
 	return data && data->longrun;
 }
 
+static notmuch_query_t *get_query(CONTEXT *ctx, int writable)
+{
+	notmuch_database_t *db = get_db(ctx, writable);
+	notmuch_query_t *q = NULL;
+	const char *str = get_query_string(ctx);
+
+	if (!db || !str)
+		goto err;
+
+	q = notmuch_query_create(db, str);
+	if (!q)
+		goto err;
+
+	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
+	return q;
+err:
+	if (!is_longrun(ctx))
+		release_db(ctx);
+	return NULL;
+}
+
+
 static int init_message_tags(struct nm_hdrdata *data, notmuch_message_t *msg)
 {
 	notmuch_tags_t *tags;
@@ -402,22 +424,17 @@ static struct nm_hdrdata *create_hdrdata(HEADER *h, const char *path,
 
 int nm_read_query(CONTEXT *ctx)
 {
-	notmuch_database_t *db;
 	notmuch_query_t *q;
 	notmuch_messages_t *msgs;
-	int limit;
+	struct nm_data *data;
+	int limit, rc = -1;
 
 	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
 		return -1;
 
-	db = get_db(ctx, FALSE);
-	if (!db)
-		return -1;
-
-	q = notmuch_query_create(db, get_query(ctx));
-	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
-
-	msgs = notmuch_query_search_messages(q);
+	q = get_query(ctx, FALSE);
+	if (!q)
+		goto done;
 
 	limit = get_limit(ctx);
 
@@ -453,10 +470,13 @@ int nm_read_query(CONTEXT *ctx)
 	}
 
 	notmuch_query_destroy(q);
-	release_db(ctx);
+	rc = 0;
+done:
+	if (!is_longrun(ctx))
+		release_db(ctx);
 
 	mx_update_context(ctx, ctx->msgcount);
-	return 0;
+	return rc;
 }
 
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
@@ -532,7 +552,7 @@ done:
 	FREE(&buf);
 	if (msg)
 		notmuch_message_destroy(msg);
-	if (!is_longrun(ctx) && db)
+	if (!is_longrun(ctx))
 		release_db(ctx);
 	return rc;
 }
@@ -595,7 +615,6 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 
 		ctx->path = data->folder;
 		ctx->magic = data->magic;
-
 #if USE_HCACHE
 		rc = mh_sync_mailbox_message(ctx, i, NULL);
 #else
@@ -621,15 +640,11 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 
 	ctx->path = uri;
 	ctx->magic = M_NOTMUCH;
-	release_db(ctx);
+
+	if (!is_longrun(ctx))
+		release_db(ctx);
 
 	return rc;
-}
-
-int nm_check_database(CONTEXT * ctx, int *index_hint)
-{
-	fprintf(stderr, "nm_check_database() not implemented yet");
-	return 0;
 }
 
 static unsigned count_query(notmuch_database_t *db, const char *qstr)
@@ -716,3 +731,10 @@ char *nm_get_description(CONTEXT *ctx)
 
 	return NULL;
 }
+
+int nm_check_database(CONTEXT *ctx, int *index_hint)
+{
+	return 0;
+}
+
+
