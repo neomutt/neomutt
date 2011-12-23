@@ -1422,9 +1422,9 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
 	return (pop_check_mailbox (ctx, index_hint));
 #endif /* USE_POP */
 
-#ifdef USE_NOTMUTCH
+#ifdef USE_NOTMUCH
       case M_NOTMUCH:
-	return nm_check_database(cxt, index_hint);
+	return nm_check_database(ctx, index_hint);
 #endif
     }
   }

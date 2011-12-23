@@ -48,7 +48,6 @@ struct uri_tag {
 struct nm_hdrdata {
 	char *folder;
 	char *tags;
-	char *id;	/* notmuch message ID */
 	int magic;
 };
 
@@ -159,7 +158,6 @@ static void free_header_data(HEADER *h)
 	if (data) {
 		FREE(&data->folder);
 		FREE(&data->tags);
-		FREE(&data->id);
 		FREE(&data);
 	}
 	h->data = NULL;
@@ -205,9 +203,20 @@ int nm_header_get_magic(HEADER *h)
 	return h && h->data ? ((struct nm_hdrdata *) h->data)->magic : 0;
 }
 
-static const char *nm_header_get_id(HEADER *h)
+/*
+ * Returns (allocated) message Id compatible notmuch.
+ */
+static char *nm_header_get_id(HEADER *h)
 {
-	return h && h->data ? ((struct nm_hdrdata *) h->data)->id : NULL;
+	size_t sz;
+
+	if (!h || !h->env || !h->env->message_id)
+		return NULL;
+
+	sz = strlen(h->env->message_id);
+
+	/* remove '<' and '>' from id */
+	return strndup(h->env->message_id + 1, sz - 2);
 }
 
 
@@ -326,6 +335,25 @@ static int is_longrun(CONTEXT *ctx)
 	return data && data->longrun;
 }
 
+static int get_database_mtime(CONTEXT *ctx, time_t *mtime)
+{
+	char path[_POSIX_PATH_MAX];
+	struct nm_data *data = get_data(ctx);
+	struct stat st;
+
+	if (!data)
+	       return -1;
+
+	snprintf(path, sizeof(path), "%s/.notmuch/xapian", data->db_filename);
+	if (stat(path, &st))
+		return -1;
+
+	if (mtime)
+		*mtime = st.st_mtime;
+
+	return 0;
+}
+
 static notmuch_query_t *get_query(CONTEXT *ctx, int writable)
 {
 	notmuch_database_t *db = get_db(ctx, writable);
@@ -348,8 +376,9 @@ err:
 }
 
 
-static int init_message_tags(struct nm_hdrdata *data, notmuch_message_t *msg)
+static int update_message_tags(HEADER *h, notmuch_message_t *msg)
 {
+	struct nm_hdrdata *data = h->data;
 	notmuch_tags_t *tags;
 	char *tstr = NULL, *p;
 	size_t sz = 0;
@@ -386,17 +415,22 @@ static int init_message_tags(struct nm_hdrdata *data, notmuch_message_t *msg)
 		sz += xsz;
 	}
 
+	if (data->tags && tstr && strcmp(data->tags, tstr) == 0) {
+		FREE(&tstr);
+		return 1;
+	}
+
 	FREE(&data->tags);
 	data->tags = tstr;
 	return 0;
 }
 
-static struct nm_hdrdata *create_hdrdata(HEADER *h, const char *path,
-					      notmuch_message_t *msg)
+/*
+ * set/update HEADE->path and HEADER->data->path
+ */
+static void update_message_path(HEADER *h, const char *path)
 {
-	struct nm_hdrdata *data =
-			safe_calloc(1, sizeof(struct nm_hdrdata));
-	const char *id;
+	struct nm_hdrdata *data = h->data;
 	char *p;
 
 	p = strrchr(path, '/');
@@ -404,29 +438,63 @@ static struct nm_hdrdata *create_hdrdata(HEADER *h, const char *path,
 	    (strncmp(p - 3, "cur", 3) == 0 ||
 	     strncmp(p - 3, "new", 3) == 0 ||
 	     strncmp(p - 3, "tmp", 3) == 0)) {
-			data->magic = M_MAILDIR;
-			p -= 3;
-			h->path = safe_strdup(p);
-			data->folder = strndup(path, p - path - 1);
-	}
 
-	id = notmuch_message_get_message_id(msg);
-	if (id)
-		data->id = safe_strdup(id);
+		data->magic = M_MAILDIR;
+
+		FREE(&h->path);
+		FREE(&data->folder);
+
+		p -= 3;
+		h->path = safe_strdup(p);
+		data->folder = strndup(path, p - path - 1);
+	}
+}
+
+static struct nm_hdrdata *create_hdrdata(HEADER *h, const char *path,
+					      notmuch_message_t *msg)
+{
+	struct nm_hdrdata *data =
+			safe_calloc(1, sizeof(struct nm_hdrdata));
 
 	h->data = data;
 	h->free_cb = free_header_data;
 
-	init_message_tags(data, msg);
+	update_message_path(h, path);
+	update_message_tags(h, msg);
 
 	return data;
+}
+
+static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
+{
+	const char *path = notmuch_message_get_filename(msg);
+	HEADER *h;
+
+	if (!path)
+		return;
+
+	if (ctx->msgcount >= ctx->hdrmax)
+		mx_alloc_memory(ctx);
+
+	h = maildir_parse_message(M_MAILDIR, path, 0, NULL);
+	if (!h)
+		return;
+
+	create_hdrdata(h, path, msg);
+
+	h->active = 1;
+	h->index = ctx->msgcount;
+	ctx->size += h->content->length
+		   + h->content->offset
+		   - h->content->hdr_offset;
+	ctx->hdrs[ctx->msgcount] = h;
+	ctx->msgcount++;
 }
 
 int nm_read_query(CONTEXT *ctx)
 {
 	notmuch_query_t *q;
 	notmuch_messages_t *msgs;
-	struct nm_data *data;
 	int limit, rc = -1;
 
 	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
@@ -444,28 +512,7 @@ int nm_read_query(CONTEXT *ctx)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		const char *path = notmuch_message_get_filename(m);
-		HEADER *h;
-
-		if (!path)
-			continue;
-
-		if (ctx->msgcount >= ctx->hdrmax)
-			mx_alloc_memory(ctx);
-
-		h = maildir_parse_message(M_MAILDIR, path, 0, NULL);
-		if (!h)
-			continue;
-
-		create_hdrdata(h, path, m);
-
-		h->index = ctx->msgcount;
-		ctx->size += h->content->length
-			   + h->content->offset
-			   - h->content->hdr_offset;
-		ctx->hdrs[ctx->msgcount] = h;
-		ctx->msgcount++;
-
+		append_message(ctx, m);
 		notmuch_message_destroy(m);
 	}
 
@@ -474,6 +521,8 @@ int nm_read_query(CONTEXT *ctx)
 done:
 	if (!is_longrun(ctx))
 		release_db(ctx);
+
+	ctx->mtime = time(NULL);
 
 	mx_update_context(ctx, ctx->msgcount);
 	return rc;
@@ -496,10 +545,18 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 	return buf;
 }
 
-static notmuch_message_t *get_message(notmuch_database_t *db, HEADER *hdr)
+/*
+ * returns message from notmuch database
+ */
+static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
 {
-	const char *id = nm_header_get_id(hdr);
-	return id && db ? notmuch_database_find_message(db, id) :  NULL;
+	notmuch_message_t *msg;
+	char *id = nm_header_get_id(hdr);
+
+	msg = id && db ? notmuch_database_find_message(db, id) : NULL;
+
+	FREE(&id);
+	return msg;
 }
 
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
@@ -512,7 +569,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
 	if (!buf0 || !*buf0 || !ctx
 	       || ctx->magic != M_NOTMUCH
 	       || !(db = get_db(ctx, TRUE))
-	       || !(msg = get_message(db, hdr)))
+	       || !(msg = get_nm_message(db, hdr)))
 		goto done;
 
 	buf = safe_strdup(buf0);
@@ -544,7 +601,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
 
 	notmuch_message_thaw(msg);
 
-	init_message_tags(hdr->data, msg);
+	update_message_tags(hdr, msg);
 
 	rc = 0;
 	hdr->changed = TRUE;
@@ -554,6 +611,8 @@ done:
 		notmuch_message_destroy(msg);
 	if (!is_longrun(ctx))
 		release_db(ctx);
+	if (hdr->changed)
+		ctx->mtime = time(NULL);
 	return rc;
 }
 
@@ -591,6 +650,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 	progress_t progress;
 	char *uri = ctx->path;
 	notmuch_database_t *db = NULL;
+	int changed = 0;
 
 	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
 		return -1;
@@ -631,10 +691,13 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 			if (!db)
 				db = get_db(ctx, TRUE);
 
-			if (h->deleted)
+			if (h->deleted) {
 				notmuch_database_remove_message(db, old);
-			else if (*new && *old)
+				changed = 1;
+			} else if (*new && *old) {
 				_nm_update_filename(db, old, new);
+				changed = 1;
+			}
 		}
 	}
 
@@ -643,7 +706,8 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 
 	if (!is_longrun(ctx))
 		release_db(ctx);
-
+	if (changed)
+		ctx->mtime = time(NULL);
 	return rc;
 }
 
@@ -732,9 +796,114 @@ char *nm_get_description(CONTEXT *ctx)
 	return NULL;
 }
 
+/*
+ * returns header from mutt context
+ */
+static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg, char **mid)
+{
+	const char *id;
+	size_t sz;
+
+	if (!ctx || !msg || !mid)
+		return NULL;
+
+	id = notmuch_message_get_message_id(msg);
+	if (!id)
+		return NULL;
+
+	if (!ctx->id_hash) {
+		ctx->id_hash = mutt_make_id_hash(ctx);
+		if (!ctx->id_hash)
+			return NULL;
+	}
+
+	sz = strlen(id) + 3;
+	safe_realloc(mid, sz);
+
+	snprintf(*mid, sz, "<%s>", id);
+	return hash_find(ctx->id_hash, *mid);
+}
+
 int nm_check_database(CONTEXT *ctx, int *index_hint)
 {
-	return 0;
+	time_t mtime;
+	notmuch_query_t *q;
+	notmuch_messages_t *msgs;
+	int i, limit, new_messages = 0, occult = 0, new_flags = 0;
+	char *id = NULL;
+
+	if (get_database_mtime(ctx, &mtime))
+		return -1;
+	if (ctx->mtime >= mtime)
+		return 0;
+
+	q = get_query(ctx, FALSE);
+	if (!q)
+		goto done;
+
+	for (i = 0; i < ctx->msgcount; i++)
+		ctx->hdrs[i]->active = 0;
+
+	limit = get_limit(ctx);
+
+	for (i = 0, msgs = notmuch_query_search_messages(q);
+	     notmuch_messages_valid(msgs) && (limit == 0 || i < limit);
+	     notmuch_messages_move_to_next(msgs), i++) {
+
+		char old[_POSIX_PATH_MAX];
+		const char *new;
+
+		notmuch_message_t *m = notmuch_messages_get(msgs);
+		HEADER *h = get_mutt_header(ctx, m, &id);
+
+		if (!h) {
+			/* new email */
+			append_message(ctx, m);
+			new_messages++;
+			continue;
+		}
+
+		/* message already exists, merge flags */
+		h->active = 1;
+
+		/* check to see if the message has moved to a different
+		 * subdirectory.  If so, update the associated filename.
+		 */
+		new = notmuch_message_get_filename(m);
+		nm_header_get_fullpath(h, old, sizeof(old));
+
+		if (mutt_strcmp(old, new)) {
+			HEADER tmp;
+
+			update_message_path(h, new);
+
+			if (!h->changed) {
+				maildir_parse_flags(&tmp, new);
+				maildir_update_flags(ctx, h, &tmp);
+			}
+		}
+
+		if (update_message_tags(h, m) == 0)
+			new_flags++;
+	}
+
+	for (i = 0; i < ctx->msgcount; i++) {
+		if (ctx->hdrs[i]->active == 0) {
+			occult = 1;
+			break;
+		}
+	}
+
+	mx_update_context(ctx, new_messages);
+done:
+	if (!is_longrun(ctx))
+		release_db(ctx);
+
+	ctx->mtime = time(NULL);
+
+	return occult ? M_REOPENED :
+	       new_messages ? M_NEW_MAIL :
+	       new_flags ? M_FLAGS : 0;
 }
 
 
