@@ -653,7 +653,7 @@ static void maildir_free_maildir (struct maildir **md)
   }
 }
 
-static void maildir_parse_flags (HEADER * h, const char *path)
+void maildir_parse_flags (HEADER * h, const char *path)
 {
   char *p, *q = NULL;
 
@@ -1913,7 +1913,7 @@ static void maildir_update_tables (CONTEXT *ctx, int *index_hint)
   mutt_clear_threads (ctx);
 }
 
-static void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
+void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
 {
   /* save the global state here so we can reset it at the
    * end of list block if required.
