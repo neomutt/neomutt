@@ -94,14 +94,11 @@ static int url_parse_query(char *url, char **filename, struct uri_tag **tags)
 
 	e = strchr(p, '?');
 
-	*filename = e ? strndup(p, e - p) : safe_strdup(p);
-	if (!*filename)
-		return -1;
-
+	*filename = e ? e == p ? NULL : strndup(p, e - p) : safe_strdup(p);
 	if (!e)
 		return 0;
 
-	if (url_pct_decode(*filename) < 0)
+	if (*filename && url_pct_decode(*filename) < 0)
 		goto err;
 	if (!e)
 		return 0;	/* only filename */
@@ -283,6 +280,23 @@ static int get_limit(CONTEXT *ctx)
 	return data->db_limit;
 }
 
+static const char *get_db_filename(CONTEXT *ctx)
+{
+	struct nm_data *data = get_data(ctx);
+
+	if (data) {
+		char *db_filename = data->db_filename ? data->db_filename : NotmuchDefaultUri;
+
+		if (!db_filename)
+			return NULL;
+		if (strncmp(db_filename, "notmuch://", 10) == 0)
+			db_filename += 10;
+
+		return db_filename;
+	}
+	return NULL;
+}
+
 static notmuch_database_t *get_db(CONTEXT *ctx, int writable)
 {
 	struct nm_data *data = get_data(ctx);
@@ -290,12 +304,17 @@ static notmuch_database_t *get_db(CONTEXT *ctx, int writable)
 	if (!data)
 	       return NULL;
 	if (!data->db) {
-		data->db = notmuch_database_open(data->db_filename,
+		const char *db_filename = get_db_filename(ctx);
+
+		if (!db_filename)
+			return NULL;
+
+		data->db = notmuch_database_open(db_filename,
 				writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
 				NOTMUCH_DATABASE_MODE_READ_ONLY);
 		if (!data->db)
 			mutt_error (_("Cannot open notmuch database: %s"),
-					data->db_filename);
+					db_filename);
 	}
 
 	return data->db;
@@ -344,7 +363,7 @@ static int get_database_mtime(CONTEXT *ctx, time_t *mtime)
 	if (!data)
 	       return -1;
 
-	snprintf(path, sizeof(path), "%s/.notmuch/xapian", data->db_filename);
+	snprintf(path, sizeof(path), "%s/.notmuch/xapian", get_db_filename(ctx));
 	if (stat(path, &st))
 		return -1;
 
@@ -534,7 +553,7 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 	char uri[_POSIX_PATH_MAX];
 
 	if (ctx && ctx->magic == M_NOTMUCH && (data = get_data(ctx)))
-		snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", data->db_filename, buf);
+		snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", get_db_filename(ctx), buf);
 	else if (NotmuchDefaultUri)
 		snprintf(uri, sizeof(uri), "%s?query=%s", NotmuchDefaultUri, buf);
 	else
@@ -688,9 +707,11 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 
 		if (h->deleted || strcmp(old, new) != 0) {
 			/* email renamed or deleted -- update DB */
-			if (!db)
+			if (!db) {
 				db = get_db(ctx, TRUE);
-
+				if (!db)
+					break;
+			}
 			if (h->deleted) {
 				notmuch_database_remove_message(db, old);
 				changed = 1;
@@ -727,14 +748,13 @@ int nm_get_count(char *path, unsigned *all, unsigned *new)
 	struct uri_tag *query_items = NULL, *item;
 	char *db_filename = NULL, *db_query = NULL;
 	notmuch_database_t *db = NULL;
-
-	int rc = -1;
+	int rc = -1, dflt = 0;
 
 	if (url_parse_query(path, &db_filename, &query_items)) {
 		mutt_error(_("failed to parse notmuch uri: %s"), path);
 		goto done;
 	}
-	if (!db_filename || !query_items)
+	if (!query_items)
 		goto done;
 
 	for (item = query_items; item; item = item->next) {
@@ -746,6 +766,13 @@ int nm_get_count(char *path, unsigned *all, unsigned *new)
 
 	if (!db_query)
 		goto done;
+	if (!db_filename && NotmuchDefaultUri) {
+		if (strncmp(NotmuchDefaultUri, "notmuch://", 10) == 0)
+			db_filename = NotmuchDefaultUri + 10;
+		else
+			db_filename = NotmuchDefaultUri;
+		dflt = 1;
+	}
 
 	db = notmuch_database_open(db_filename,	NOTMUCH_DATABASE_MODE_READ_ONLY);
 	if (!db) {
@@ -780,7 +807,8 @@ int nm_get_count(char *path, unsigned *all, unsigned *new)
 done:
 	if (db)
 		notmuch_database_close(db);
-	FREE(&db_filename);
+	if (!dflt)
+		FREE(&db_filename);
 	url_free_tags(query_items);
 	return rc;
 }
