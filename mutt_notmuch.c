@@ -886,14 +886,14 @@ int nm_get_count(char *path, unsigned *all, unsigned *new)
 			*new = all ? *all : count_query(db, db_query);
 		else {
 			size_t qsz = strlen(db_query)
-					+ sizeof(" and ")
+					+ sizeof(" and tag:")
 					+ strlen(NotmuchUnreadTag);
 			char *qstr = safe_malloc(qsz + 10);
 
 			if (!qstr)
 				goto done;
 
-			snprintf(qstr, qsz, "%s and %s", db_query, NotmuchUnreadTag);
+			snprintf(qstr, qsz, "%s and tag:%s", db_query, NotmuchUnreadTag);
 			*new = count_query(db, qstr);
 			FREE(&qstr);
 		}

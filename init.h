@@ -1682,7 +1682,7 @@ struct option_t MuttVars[] = {
    ** This variable specifies private notmuch tags which should not be printed
    ** on screen.
    */
-  { "nm_unread_tag", DT_STR, R_NONE, UL &NotmuchUnreadTag, UL "tag:unread" },
+  { "nm_unread_tag", DT_STR, R_NONE, UL &NotmuchUnreadTag, UL "unread" },
   /*
    ** .pp
    ** This variable specifies notmuch tag which is used for unread messages. The
