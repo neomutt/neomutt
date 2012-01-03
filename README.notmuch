@@ -114,13 +114,13 @@ notmuch support for mutt
 
       Default is "unread,draft,flagged,passed,replied,attachment".
 
-   notmuch_unread_tag = tag:<name>
+   notmuch_unread_tag = <name>
 
       This variable specifies notmuch tag which is used for unread messages. The
       variable is used to count unread messages in DB only. All other mutt
       commands use standard (e.g. maildir) flags.
 
-      Default is "tag:unread".
+      Default is "unread".
 
    vfolder_format = <string>
 
