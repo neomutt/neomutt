@@ -81,6 +81,10 @@ notmuch support for mutt
 
  * muttrc:
 
+   Note that you can use notmuch specific mutt config file, see -F <config> in
+   mutt docs.
+
+
    virtual-mailboxes <description> <uri> [ ...]
 
       This command specifies one or more virtual folder. The folders are
@@ -145,4 +149,86 @@ notmuch support for mutt
       to display all e-mails that belongs to the same thread as the current
       message. This command will be useful when you have a new email ion your INBOX
       and you want to see the rest of the archived thread.
+
+
+* .muttrc example:
+
+	set nm_default_uri="notmuch:///home/kzak/Mail/Maildir"
+	set virtual_spoolfile	= yes
+
+	virtual-mailboxes \
+	   "INBOX"                "notmuch://?query=tag:inbox and NOT tag:archive" \
+	   "Util-linux"           "notmuch://?query=tag:ul and NOT tag:archive" \
+	   "Bugs"                 "notmuch://?query=tag:bug NOT tag:archive" \
+	   "RH"                   "notmuch://?query=tag:rh and NOT tag:archive" \
+	   "Fedora"               "notmuch://?query=tag:fed and NOT tag:archive" \
+	   "Linux"                "notmuch://?query=tag:lk and NOT tag:archive" \
+	   "NFS"                  "notmuch://?query=tag:nfs and NOT tag:archive" \
+	   "Filesystems"          "notmuch://?query=tag:fs and NOT tag:archive" \
+	   "Security"             "notmuch://?query=tag:sec" \
+	   "Partitioning"         "notmuch://?query=tag:part" \
+	   "GNU"                  "notmuch://?query=tag:gnu" \
+	   "udev"                 "notmuch://?query=tag:udev" \
+	   "initrd"               "notmuch://?query=tag:initrd" \
+	   "Linux CZ"             "notmuch://?query=tag:cz" \
+	   "Notmuch"              "notmuch://?query=tag:nm" \
+	   "Procps"               "notmuch://?query=tag:proc" \
+	\
+	   " Util-linux  [archive]" "notmuch://?query=tag:ul and tag:archive" \
+	   " Bugs        [archive]" "notmuch://?query=tag:bug and tag:archive" \
+	   " RH          [archive]" "notmuch://?query=tag:rh and tag:archive" \
+	   " Fedora      [archive]" "notmuch://?query=tag:fed and tag:archive" \
+	   " Linux       [archive]" "notmuch://?query=tag:lk and tag:archive" \
+	   " Filesystems [archive]" "notmuch://?query=tag:fs and tag:archive" \
+
+	macro index A "<modify-labels-then-hide>+archive -inbox\n<sync-mailbox>"
+	macro index I "<modify-labels-then-hide>-inbox\n<sync-mailbox>"
+
+	# mark emails for git-am
+	# (e.g. "git am -i -3 $(notmuch search --output=files tag:PATCH)"
+	#
+	macro index P "<modify-labels>PATCH\n"
+	macro index <Esc>P "<modify-labels>-PATCH\n"
+
+
+* .procmailrc example:
+
+	NOINBOX="-r inbox"
+
+	### Add 'kw' (keyword) tag to all interesting e-mails and make the emails
+	### visible in inbox.
+	:0
+	* ^Subject:.*(mount|umount|libmount|losetup|util-linux|blkid|hwclock|mkswap|fdisk|parted|partition|gpt|topology)
+	{
+		TAGS="-t kw"
+		NOINBOX=""
+	}
+
+	### Lists
+
+	:0:notmuch.lock
+	* ^List-Id:.*linux.linux.cz
+	| notmuch-deliver $NOINBOX -t cz $TAGS linux.cz
+
+	:0:notmuch.lock
+	* ^X-Mailing-List:.*util-linux@vger.kernel.org
+	| notmuch-deliver -t ul $TAGS util-linux
+
+	:0:notmuch.lock
+	* ^List-Id:.*parted-devel.lists.alioth.debian.org
+	| notmuch-deliver $NOINBOX -t part $TAGS parted
+
+	### [...cut to make the example short...] ###
+
+	### All unmatched mails
+	:0:notmuch.lock
+	* ^From
+	| notmuch-deliver $TAGS misc
+
+	### fallback if notmuch does not work
+	:0:
+	* ^From
+	Mail/Maildir/misc/
+
+
 

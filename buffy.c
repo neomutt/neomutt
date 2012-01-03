@@ -387,11 +387,22 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
 
   while (MoreArgs (s))
   {
+    char *desc;
+
+    mutt_extract_token (path, s, 0);
+    if (path->data && *path->data)
+      desc = safe_strdup( path->data);
+    else
+      continue;
+
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
 
     /* Skip empty tokens. */
-    if(!*buf) continue;
+    if(!*buf) {
+	    FREE(&desc);
+	    continue;
+    }
 
     /* avoid duplicates */
     for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
@@ -406,14 +417,11 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
     if (!*tmp)
       *tmp = buffy_new (buf);
 
-    mutt_extract_token (path, s, 0);
-    if (path->data && *path->data)
-      (*tmp)->desc = safe_strdup( path->data);
-
     (*tmp)->new = 0;
     (*tmp)->notified = 1;
     (*tmp)->newly_created = 0;
     (*tmp)->size = 0;
+    (*tmp)->desc = desc;
   }
   return 0;
 }
