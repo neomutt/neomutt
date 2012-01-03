@@ -21,4 +21,6 @@ void nm_longrun_done(CONTEXT *cxt);
 
 char *nm_get_description(CONTEXT *ctx);
 
+void nm_debug_check(CONTEXT *ctx);
+
 #endif /* _MUTT_NOTMUCH_H_ */
