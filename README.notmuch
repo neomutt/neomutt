@@ -11,7 +11,7 @@ notmuch support for mutt
   $ git clone git://github.com/karelzak/mutt-kz.git
   $ cd mutt-kz
   $ ./prepare
-  $ ./configure --enable-notmuch
+  $ ./configure --enable-notmuch [--enable-debug]
   $ make
 
 
@@ -22,6 +22,11 @@ notmuch support for mutt
    The <path> is absolute path to the the directory where is notmuch database
    as returned by 'notmuch config get database.path' command. Note that the
    <path> should NOT include .notmuch directory name.
+
+   If the "<path>" is not defined then $nm_default_uri is used, for example:
+
+	set nm_default_uri = "notmuch:///home/foo/maildir"
+	virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
 
    Items:
 
@@ -49,7 +54,7 @@ notmuch support for mutt
  * commands:
 
    change-vfolder:
-      - switch to virtual folder
+      - switch to another virtual folder
       - default key: X
 
    vfolder-from-query:
@@ -66,7 +71,8 @@ notmuch support for mutt
       - not mapped to any key
       - example (add "archive" notmuch tag and remove message from screen):
 
-       macro index A "<modify-labels-then-hide>archive\n<sync-mailbox>"
+       macro index A "<modify-labels-then-hide>+archive -inbox\n<sync-mailbox>"
+       macro index I "<modify-labels-then-hide>-inbox\n<sync-mailbox>"
 
    quasi-delete:
       - delete message from mutt (usualy after <sync-mailbox> function), but
@@ -102,16 +108,20 @@ notmuch support for mutt
       This variable specifies private notmuch tags which should not be printed
       on screen (index, pager).
 
+      Default is "unread,draft,flagged,passed,replied,attachment".
+
    notmuch_unread_tag = tag:<name>
 
       This variable specifies notmuch tag which is used for unread messages. The
       variable is used to count unread messages in DB only. All other mutt
-      commands use standard (e.g. maildir) flags. Default is "tag:unread".
+      commands use standard (e.g. maildir) flags.
+
+      Default is "tag:unread".
 
    vfolder_format = <string>
 
       This variable allows you to customize the file browser display for virtual
-      folders to your ** personal taste.  This string is similar to $$index_format,
+      folders to your personal taste.  This string is similar to $index_format,
       but has its own set of printf(3)-like sequences:
 
 	%f   folder name (description)
@@ -121,7 +131,7 @@ notmuch support for mutt
 	%|X  pad to the end of the line with character ``X''
 	%*X  soft-fill with character ``X'' as pad
 
-      default is "%6n(%6N) %f "
+      Default is "%6n(%6N) %f ".
 
    index_format and pager_format
 
