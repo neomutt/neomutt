@@ -635,12 +635,13 @@ char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
  */
 static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
 {
-	notmuch_message_t *msg;
+	notmuch_message_t *msg = NULL;
 	char *id = nm_header_get_id(hdr);
 
 	dprint(2, (debugfile, "nm: find message (%s)\n", id));
 
-	msg = id && db ? notmuch_database_find_message(db, id) : NULL;
+	if (id && db)
+		notmuch_database_find_message(db, id, &msg);
 
 	FREE(&id);
 	return msg;
