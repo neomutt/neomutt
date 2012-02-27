@@ -5,6 +5,13 @@ notmuch support for mutt
  * notmuch is e-mail fulltext indexing and tagging engine; see
    http://notmuchmail.org/ for more information.
 
+ * home page (wiki)
+
+   https://github.com/karelzak/mutt-kz
+
+ * mailing list:
+
+   https://admin.fedoraproject.org/mailman/listinfo/mutt-kz
 
  * compile:
 
