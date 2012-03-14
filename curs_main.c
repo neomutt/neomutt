@@ -599,7 +599,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   mutt_expand_path (buf, bufsz);
 #ifdef USE_SIDEBAR
   if (sb_set_open_buffy (buf) == NULL)
-    break;
+    return -1;
 #endif
   if (mx_get_magic (buf) <= 0)
   {
@@ -2586,6 +2586,10 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_TOGGLE_VISIBLE:
 	toggle_option (OPTSIDEBAR);
 	menu->redraw = REDRAW_FULL;
+	break;
+
+      case OP_SIDEBAR_TOGGLE:
+	toggle_sidebar(menu->menu);
 	break;
 #endif
       default:

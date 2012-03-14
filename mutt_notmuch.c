@@ -837,7 +837,7 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
 	return res;
 }
 
-int nm_get_count(char *path, unsigned *all, unsigned *new)
+int nm_get_count(char *path, int *all, int *new)
 {
 	struct uri_tag *query_items = NULL, *item;
 	char *db_filename = NULL, *db_query = NULL;
