@@ -108,6 +108,10 @@ notmuch support for mutt
       When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
       as a spoolfile.
 
+      When set together with sidebar, mutt will use list of virtual folders in
+      the sidebar. It's possible to toggle between virtual and normal folders by
+      sidebar-toggle command.
+
    notmuch_default_uri = <uri>
 
       This variable specifies the default Notmuch database in format
@@ -163,6 +167,21 @@ notmuch support for mutt
 	set nm_default_uri="notmuch:///home/kzak/Mail/Maildir"
 	set virtual_spoolfile	= yes
 
+	# normal folders
+	set mbox_type=Maildir
+	set folder="~/Mail/Maildir"
+	mailboxes =rh =fedora =misc
+
+	# sidebar
+	set sidebar_width	= 35
+	set sidebar_visible	= yes
+	color sidebar_new yellow default
+	bind index <left> sidebar-prev
+	bind index <right> sidebar-next
+	bind index <space> sidebar-open
+	bind index <Esc>S sidebar-toggle
+
+        # virtual folders
 	virtual-mailboxes \
 	   "INBOX"                "notmuch://?query=tag:inbox and NOT tag:archive" \
 	   "Util-linux"           "notmuch://?query=tag:ul and NOT tag:archive" \
