@@ -973,7 +973,10 @@ int mutt_index_menu (void)
       mutt_curs_set (1);	/* fallback from the pager */
     }
 
-    nm_debug_check(Context);
+    if (Context)
+    {
+      nm_debug_check(Context);
+    }
 
     switch (op)
     {
@@ -2597,7 +2600,11 @@ int mutt_index_menu (void)
 	  km_error_key (MENU_MAIN);
     }
 
-    nm_debug_check(Context);
+    if (Context)
+    {
+      nm_debug_check(Context);
+    }
+
 
     if (menu->menu == MENU_PAGER)
     {
