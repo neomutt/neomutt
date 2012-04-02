@@ -66,6 +66,7 @@ get_incoming (void)
 	case SB_SRC_NONE:
 		sidebar_source = SB_SRC_INCOMING;
 
+#ifdef USE_NOTMUCH
 		if (option (OPTVIRTSPOOLFILE) && VirtIncoming) {
 			sidebar_source = SB_SRC_VIRT;
 			return VirtIncoming;
@@ -76,6 +77,7 @@ get_incoming (void)
 			return VirtIncoming;
 		}
 		break;
+#endif
 	case SB_SRC_INCOMING:
 		break;
 	}

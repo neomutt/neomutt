@@ -700,7 +700,11 @@ int mutt_buffy_check (int force)
 #endif
 
   /* fastest return if there are no mailboxes */
+#ifdef USE_NOTMUCH
   if (!Incoming && !VirtIncoming)
+    return 0;
+#endif
+  if (!Incoming)
     return 0;
   t = time (NULL);
   if (!force && (t - BuffyTime < BuffyTimeout))
@@ -733,8 +737,10 @@ int mutt_buffy_check (int force)
     buffy_check(tmp, &contex_sb);
 #endif
 
+#ifdef USE_NOTMUCH
   for (tmp = VirtIncoming; tmp; tmp = tmp->next)
     buffy_check(tmp, &contex_sb);
+#endif
 
   BuffyDoneTime = BuffyTime;
   return (BuffyCount);
