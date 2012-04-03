@@ -8184,6 +8184,211 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="keywords">
+	<title>Keywords Patch</title>
+	<subtitle>Labels/Tagging for emails</subtitle>
+
+	<sect2 id="keywords-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Keywords</quote>, look for
+			<quote>patch-keywords</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="keywords-intro">
+		<title>Introduction</title>
+
+		<para>
+		Unify label/keyword handling.
+		</para>
+
+		<para>
+		Since x-labels were added to mutt in 2000, a number of other approaches
+		to what we now call <quote>tagging</quote> have also emerged.
+		One of them was even made standard in RFC 2822.
+		This update unifies the handling of all these strategies.
+		</para>
+
+		<para>
+		We start by changing mutt's internal keyword storage from a single
+		string which may contain whitespace to a list of discrete keywords.
+		This has advantages for keyword completion as well as for portabilty
+		among varying "standards" for keyword storage.  This may represent
+		a significant change for existing mutt users who have set x-labels
+		containing spaces, and should be regarded with suspicion.  The
+		advantages are significant, though.
+		</para>
+
+		<para>
+		Next we allow mutt to parse keywords into this internal list from
+		any of the following headers: X-Label (freeform), X-Keywords
+		(space-delimited), X-Mozilla-Keys (space-delimited), and Keywords (RFC
+		2822, comma-space-delimited).  Mutt remembers which headers it sourced
+		keywords from, and can rewrite those headers when saving messages for
+		compatibility with the mailer of origin.
+		</para>
+
+		<para>
+		(X-Label was specified as freeform text by mutt, its only known
+		implementation.  X-Labels have been used both as a
+		<quote>tagging</quote> device, probably with space delimiting, and as a
+		<quote>memo</quote> field, where space-delimited parsing would ruin the
+		semantics of the memo.  By default mutt will not split X-Labels at all.
+		Set $xlabel_delimiter if your needs vary.)
+		</para>
+
+		<para>
+		Finally we add two booleans: $keywords_legacy=true and
+		$keywords_standard=FALSE.  When $keywords_legacy is true, mutt will
+		always save keyword to whatever original header it came from.  When
+		$keywords_standard=true, mutt will save to the Keywords: header.  If
+		both are true mutt saves to both; if neither is true, mutt saves only
+		to legacy headers to avoid complete loss of keywords.
+		</para>
+
+		<para>
+		Overall this represents convergence path for all competing
+		labelling/tagging/keywording systems toward one that is specified by
+		RFC.
+		</para>
+
+		<para>
+		You can change or delete the X-Label: field within
+		Mutt using the edit-label command, bound to the
+		y key by default.  This works for tagged messages, too.
+		</para>
+	</sect2>
+
+	<sect2 id="keywords-variables">
+		<title>Variables</title>
+
+		<table id="table-keywords-variables">
+			<title>Keywords Variables</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Type</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>keywords_legacy</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>keywords_standard</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+					<row>
+						<entry><literal>xlabel_delimiter</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="keywords-functions">
+		<title>Functions</title>
+
+		<table id="table-keywords-funcions">
+			<title>Keyword Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index,pager</entry>
+						<entry>y</entry>
+						<entry><literal>&lt;edit-label&gt;</literal></entry>
+						<entry>add, change, or delete a message's label</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="keywords-commands">
+		<title>Commands</title>
+	</sect2>
+
+	<sect2 id="keywords-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="keywords-sort">
+		<title>Sort</title>
+		<table id="table-keywords-sort">
+			<title>Keywords Sort</title>
+			<tgroup cols="2">
+				<thead>
+					<row>
+						<entry>Sort</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>label</literal></entry>
+						<entry>Sort by label</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="keywords-muttrc">
+		<title>Muttrc</title>
+	</sect2>
+
+	<sect2 id="keywords-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="keywords-known-bugs">
+		<title>Known Bugs</title>
+	</sect2>
+
+	<sect2 id="keywords-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
