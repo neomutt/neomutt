@@ -1,4 +1,3 @@
-
 notmuch support for mutt
 ------------------------
 
@@ -22,13 +21,13 @@ notmuch support for mutt
   $ make
 
 
- * folders URI
+ * Folders URI
 
    notmuch:///<path>[?<item>=<name>[& ...]]
 
-   The <path> is absolute path to the the directory where is notmuch database
-   as returned by 'notmuch config get database.path' command. Note that the
-   <path> should NOT include .notmuch directory name.
+   The <path> is an absolute path to the directory where the notmuch database
+   is found as returned by 'notmuch config get database.path' command. Note that
+   the <path> should NOT include .notmuch directory name.
 
    If the "<path>" is not defined then $nm_default_uri is used, for example:
 
