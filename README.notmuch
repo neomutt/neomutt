@@ -12,6 +12,10 @@ notmuch support for mutt
 
    https://admin.fedoraproject.org/mailman/listinfo/mutt-kz
 
+ * requirements:
+
+   notmuch >= 0.9
+
  * compile:
 
   $ git clone git://github.com/karelzak/mutt-kz.git
