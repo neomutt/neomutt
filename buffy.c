@@ -703,9 +703,10 @@ int mutt_buffy_check (int force)
 #ifdef USE_NOTMUCH
   if (!Incoming && !VirtIncoming)
     return 0;
-#endif
+#else
   if (!Incoming)
     return 0;
+#endif
   t = time (NULL);
   if (!force && (t - BuffyTime < BuffyTimeout))
     return BuffyCount;
