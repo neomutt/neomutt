@@ -60,6 +60,7 @@ struct uri_tag {
 struct nm_hdrdata {
 	char *folder;
 	char *tags;
+	char *oldpath;
 	int magic;
 };
 
@@ -76,7 +77,6 @@ struct nm_ctxdata {
 
 	struct uri_tag *query_items;
 };
-
 
 static void url_free_tags(struct uri_tag *tags)
 {
@@ -168,6 +168,7 @@ static void free_hdrdata(struct nm_hdrdata *data)
 	dprint(2, (debugfile, "nm: freeing header %p\n", data));
 	FREE(&data->folder);
 	FREE(&data->tags);
+	FREE(&data->oldpath);
 	FREE(&data);
 }
 
@@ -548,6 +549,22 @@ static int update_message_path(HEADER *h, const char *path)
 	return 1;
 }
 
+static char *get_folder_from_path(const char *path)
+{
+	char *p = strrchr(path, '/');
+
+	if (p && p - path > 3 &&
+	    (strncmp(p - 3, "cur", 3) == 0 ||
+	     strncmp(p - 3, "new", 3) == 0 ||
+	     strncmp(p - 3, "tmp", 3) == 0)) {
+
+		p -= 3;
+		return strndup(path, p - path - 1);
+	}
+
+	return NULL;
+}
+
 static void deinit_header(HEADER *h)
 {
 	if (h) {
@@ -577,7 +594,8 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 {
 	const char *path = notmuch_message_get_filename(msg);
-	HEADER *h;
+	char *newpath = NULL;
+	HEADER *h = NULL;
 
 	if (!path)
 		return;
@@ -589,14 +607,33 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 	if (ctx->msgcount >= ctx->hdrmax)
 		mx_alloc_memory(ctx);
 
-	h = maildir_parse_message(M_MAILDIR, path, 0, NULL);
-	if (!h)
-		return;
+	if (access(path, F_OK) == 0)
+		h = maildir_parse_message(M_MAILDIR, path, 0, NULL);
+	else {
+		/* maybe moved try find it... */
+		char *folder = get_folder_from_path(path);
 
-	if (init_header(h, path, msg) != 0) {
+		if (folder) {
+			FILE *f = maildir_open_find_message(folder, path, &newpath);
+			if (f) {
+				h = maildir_parse_stream(M_MAILDIR, f, path, 0, NULL);
+				fclose(f);
+
+				dprint(1, (debugfile, "nm: not up-to-date: %s -> %s\n",
+							path, newpath));
+			}
+		}
+		FREE(&folder);
+	}
+
+	if (!h) {
+		dprint(1, (debugfile, "nm: failed to parse message: %s\n", path));
+		goto done;
+	}
+	if (init_header(h, newpath ? newpath : path, msg) != 0) {
 		mutt_free_header(&h);
 		dprint(1, (debugfile, "nm: failed to append header!\n"));
-		return;
+		goto done;
 	}
 
 	h->active = 1;
@@ -606,6 +643,15 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 		   - h->content->hdr_offset;
 	ctx->hdrs[ctx->msgcount] = h;
 	ctx->msgcount++;
+
+	if (newpath) {
+		/* remember that file has been moved -- nm_sync() will update the DB */
+		struct nm_hdrdata *hd = (struct nm_hdrdata *) h->data;
+		if (hd)
+			hd->oldpath = safe_strdup(path);
+	}
+done:
+	FREE(&newpath);
 }
 
 int nm_read_query(CONTEXT *ctx)
@@ -824,7 +870,11 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 
 		*old = *new = '\0';
 
-		nm_header_get_fullpath(h, old, sizeof(old));
+		if (hd->oldpath) {
+			strncpy(old, hd->oldpath, sizeof(old));
+			old[sizeof(old) - 1] = '\0';
+		} else
+			nm_header_get_fullpath(h, old, sizeof(old));
 
 		ctx->path = hd->folder;
 		ctx->magic = hd->magic;
@@ -855,6 +905,8 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 				changed = 1;
 			}
 		}
+
+		FREE(&hd->oldpath);
 	}
 
 	ctx->path = uri;

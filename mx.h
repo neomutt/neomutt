@@ -69,6 +69,7 @@ int maildir_check_mailbox (CONTEXT *, int *);
 int maildir_check_empty (const char *);
 
 HEADER *maildir_parse_message (int magic, const char *fname, int is_old, HEADER * _h);
+HEADER *maildir_parse_stream (int magic, FILE *f, const char *fname, int is_old, HEADER * _h);
 void maildir_parse_flags (HEADER * h, const char *path);
 void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n);
 
@@ -89,7 +90,7 @@ int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 int maildir_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
 int mh_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
 
-FILE *maildir_open_find_message (const char *, const char *);
+FILE *maildir_open_find_message (const char *, const char *, char **);
 
 int mbox_strict_cmp_headers (const HEADER *, const HEADER *);
 int mutt_reopen_mailbox (CONTEXT *, int *);

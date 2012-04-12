@@ -1458,7 +1458,7 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 
       if ((msg->fp = fopen (path, "r")) == NULL && errno == ENOENT &&
 	  (ctx->magic == M_MAILDIR || ctx->magic == M_NOTMUCH))
-	msg->fp = maildir_open_find_message (folder, cur->path);
+	msg->fp = maildir_open_find_message (folder, cur->path, NULL);
       
       if (msg->fp == NULL)
       {
