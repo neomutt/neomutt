@@ -54,7 +54,7 @@ struct nm_hdrdata {
 /*
  * CONTEXT->data
  */
-struct nm_data {
+struct nm_ctxdata {
 	notmuch_database_t *db;
 
 	char *db_filename;
@@ -148,42 +148,88 @@ err:
 	return -1;
 }
 
-static void free_header_data(HEADER *h)
+static void free_hdrdata(struct nm_hdrdata *data)
 {
-	struct nm_hdrdata *data = h->data;
+	if (!data)
+		return;
 
-	if (data) {
-		dprint(2, (debugfile, "nm: freeing header %p\n", data));
-		FREE(&data->folder);
-		FREE(&data->tags);
-		FREE(&data);
-	}
-	h->data = NULL;
+	dprint(2, (debugfile, "nm: freeing header %p\n", data));
+	FREE(&data->folder);
+	FREE(&data->tags);
+	FREE(&data);
 }
 
-static int free_data(CONTEXT *ctx)
+static void free_ctxdata(struct nm_ctxdata *data)
 {
-	struct nm_data *data = ctx->data;
+	if (!data)
+		return;
+
+	dprint(1, (debugfile, "nm: freeing context data %p\n", data));
+
+	if (data->db)
+		notmuch_database_close(data->db);
+	data->db = NULL;
+
+	FREE(&data->db_filename);
+	FREE(&data->db_query);
+	url_free_tags(data->query_items);
+	FREE(&data);
+}
+
+static struct nm_ctxdata *new_ctxdata(char *uri)
+{
+	struct nm_ctxdata *data;
+
+	if (!uri)
+		return NULL;
+
+	data = safe_calloc(1, sizeof(struct nm_ctxdata));
+	dprint(1, (debugfile, "nm: initialize context data %p\n", data));
+
+	if (url_parse_query(uri, &data->db_filename, &data->query_items)) {
+		mutt_error(_("failed to parse notmuch uri: %s"), uri);
+		data->db_filename = NULL;
+		data->query_items = NULL;
+		return NULL;
+	}
+
+	return data;
+}
+
+static int deinit_context(CONTEXT *ctx)
+{
 	int i;
+
+	if (!ctx)
+		return -1;
 
 	for (i = 0; i < ctx->msgcount; i++) {
 		HEADER *h = ctx->hdrs[i];
 
-		if (h)
-			free_header_data(h);
+		if (h) {
+			free_hdrdata(h->data);
+			h->data = NULL;
+		}
 	}
 
-	if (data) {
-		dprint(1, (debugfile, "nm: freeing context data %p\n", data));
-		if (data->db)
-			notmuch_database_close(data->db);
-		FREE(&data->db_filename);
-		FREE(&data->db_query);
-		url_free_tags(data->query_items);
-		FREE(&data);
-	}
-
+	free_ctxdata(ctx->data);
 	ctx->data = NULL;
+	return 0;
+}
+
+static int init_context(CONTEXT *ctx)
+{
+	if (!ctx || ctx->magic != M_NOTMUCH)
+		return -1;
+
+	if (ctx->data)
+		return 0;
+
+	ctx->data = new_ctxdata(ctx->path);
+	if (!ctx->data)
+		return -1;
+
+	ctx->mx_close = deinit_context;
 	return 0;
 }
 
@@ -203,7 +249,7 @@ int nm_header_get_magic(HEADER *h)
 }
 
 /*
- * Returns (allocated) message Id compatible notmuch.
+ * Returns (allocated) notmuch compatible message Id.
  */
 static char *nm_header_get_id(HEADER *h)
 {
@@ -226,37 +272,15 @@ char *nm_header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
 	return buf;
 }
 
-static int init_data(CONTEXT *ctx)
-{
-	struct nm_data *data = ctx->data;
 
-	if (data)
-		return 0;
-
-	data = safe_calloc(1, sizeof(struct nm_data));
-	ctx->data = (void *) data;
-	ctx->mx_close = free_data;
-
-	dprint(1, (debugfile, "nm: initialize context data %p\n", data));
-
-	if (url_parse_query(ctx->path, &data->db_filename, &data->query_items)) {
-		mutt_error(_("failed to parse notmuch uri: %s"), ctx->path);
-		data->db_filename = NULL;
-		data->query_items = NULL;
-		return -1;
-	}
-
-	return 0;
-}
-
-static struct nm_data *get_data(CONTEXT *ctx)
+static struct nm_ctxdata *get_ctxdata(CONTEXT *ctx)
 {
 	return ctx->data;
 }
 
 static char *get_query_string(CONTEXT *ctx)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 	struct uri_tag *item;
 
 	if (!data)
@@ -283,13 +307,13 @@ static char *get_query_string(CONTEXT *ctx)
 
 static int get_limit(CONTEXT *ctx)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 	return data->db_limit;
 }
 
 static const char *get_db_filename(CONTEXT *ctx)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (data) {
 		char *db_filename = data->db_filename ? data->db_filename : NotmuchDefaultUri;
@@ -307,7 +331,7 @@ static const char *get_db_filename(CONTEXT *ctx)
 
 static notmuch_database_t *get_db(CONTEXT *ctx, int writable)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (!data)
 	       return NULL;
@@ -332,7 +356,7 @@ static notmuch_database_t *get_db(CONTEXT *ctx, int writable)
 
 static void release_db(CONTEXT *ctx)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (data && data->db) {
 		dprint(1, (debugfile, "nm: db close\n"));
@@ -344,7 +368,7 @@ static void release_db(CONTEXT *ctx)
 
 void nm_longrun_init(CONTEXT *ctx, int writable)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (data && get_db(ctx, writable)) {
 		data->longrun = TRUE;
@@ -354,7 +378,7 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
 
 void nm_longrun_done(CONTEXT *ctx)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (data) {
 		release_db(ctx);
@@ -364,19 +388,19 @@ void nm_longrun_done(CONTEXT *ctx)
 
 static int is_longrun(CONTEXT *ctx)
 {
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	return data && data->longrun;
 }
 
 void nm_debug_check(CONTEXT *ctx)
 {
-	struct nm_data *data;
+	struct nm_ctxdata *data;
 
 	if (ctx->magic != M_NOTMUCH)
 		return;
 
-	data = get_data(ctx);
+	data = get_ctxdata(ctx);
 	if (!data)
 		return;
 
@@ -389,7 +413,7 @@ void nm_debug_check(CONTEXT *ctx)
 static int get_database_mtime(CONTEXT *ctx, time_t *mtime)
 {
 	char path[_POSIX_PATH_MAX];
-	struct nm_data *data = get_data(ctx);
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 	struct stat st;
 
 	if (!data)
@@ -516,23 +540,30 @@ static int update_message_path(HEADER *h, const char *path)
 	return 1;
 }
 
-static struct nm_hdrdata *create_hdrdata(HEADER *h, const char *path,
-					      notmuch_message_t *msg)
+static void deinit_header(HEADER *h)
 {
-	struct nm_hdrdata *data =
-			safe_calloc(1, sizeof(struct nm_hdrdata));
+	if (h) {
+		free_hdrdata(h->data);
+		h->data = NULL;
+	}
+}
 
-	h->data = data;
-	h->free_cb = free_header_data;
+static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
+{
+	if (h->data)
+		return 0;
+
+	h->data = safe_calloc(1, sizeof(struct nm_hdrdata));
+	h->free_cb = deinit_header;
 
 	dprint(2, (debugfile, "nm: initialize header data: [hdr=%p, data=%p] (%s)\n",
-				h, data, h->env->message_id));
+				h, h->data, h->env->message_id));
 
 	if (update_message_path(h, path))
-		return NULL;
+		return -1;
 
 	update_message_tags(h, msg);
-	return data;
+	return 0;
 }
 
 static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
@@ -554,7 +585,7 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 	if (!h)
 		return;
 
-	if (create_hdrdata(h, path, msg) == NULL) {
+	if (init_header(h, path, msg) != 0) {
 		mutt_free_header(&h);
 		dprint(1, (debugfile, "nm: failed to append header!\n"));
 		return;
@@ -575,7 +606,7 @@ int nm_read_query(CONTEXT *ctx)
 	notmuch_messages_t *msgs;
 	int limit, rc = -1;
 
-	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
+	if (init_context(ctx) != 0)
 		return -1;
 
 	dprint(1, (debugfile, "nm: reading messages...\n"));
@@ -613,10 +644,10 @@ done:
 
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 {
-	struct nm_data *data;
+	struct nm_ctxdata *data;
 	char uri[_POSIX_PATH_MAX];
 
-	if (ctx && ctx->magic == M_NOTMUCH && (data = get_data(ctx)))
+	if (ctx && ctx->magic == M_NOTMUCH && (data = get_ctxdata(ctx)))
 		snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", get_db_filename(ctx), buf);
 	else if (NotmuchDefaultUri)
 		snprintf(uri, sizeof(uri), "%s?query=%s", NotmuchDefaultUri, buf);
@@ -739,10 +770,7 @@ static int _nm_update_filename(notmuch_database_t *db,
 
 int nm_update_filename(CONTEXT *ctx, const char *old, const char *new)
 {
-	if (ctx->magic != M_NOTMUCH
-	    || (!ctx->data && init_data(ctx))
-	    || !new
-	    || !old)
+	if (init_context(ctx) != 0 || !new || !old)
 		return -1;
 
 	dprint(1, (debugfile, "nm: update filenames, old='%s', new='%s'\n", old, new));
@@ -758,7 +786,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 	notmuch_database_t *db = NULL;
 	int changed = 0;
 
-	if (ctx->magic != M_NOTMUCH || (!ctx->data && init_data(ctx)))
+	if (init_context(ctx) != 0)
 		return -1;
 
 	dprint(1, (debugfile, "nm: sync start ...\n"));
