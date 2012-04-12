@@ -2,6 +2,18 @@
  * Notmuch support for mutt
  *
  * Copyright (C) 2011, 2012 Karel Zak <kzak@redhat.com>
+ *
+ * Notes:
+ *
+ * - notmuch uses private CONTEXT->data and private HEADER->data
+ *
+ * - all exported functions are usable within notmuch context only
+ *
+ * - all functions have to be covered by "ctx->magic == M_NOTMUCH" check
+ *   (it's implemented in get_ctxdata(), get_db() and another basic functions).
+ *
+ * - exception are nm_nonctx_* functions -- these functions use nm_default_uri
+ *   (or parse URI from another resourse)
  */
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -200,7 +212,7 @@ static int deinit_context(CONTEXT *ctx)
 {
 	int i;
 
-	if (!ctx)
+	if (!ctx || ctx->magic != M_NOTMUCH)
 		return -1;
 
 	for (i = 0; i < ctx->msgcount; i++) {
@@ -275,7 +287,10 @@ char *nm_header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
 
 static struct nm_ctxdata *get_ctxdata(CONTEXT *ctx)
 {
-	return ctx->data;
+	if (ctx && ctx->magic == M_NOTMUCH)
+		return ctx->data;
+
+	return NULL;
 }
 
 static char *get_query_string(CONTEXT *ctx)
@@ -354,7 +369,7 @@ static notmuch_database_t *get_db(CONTEXT *ctx, int writable)
 	return data->db;
 }
 
-static void release_db(CONTEXT *ctx)
+static int release_db(CONTEXT *ctx)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
@@ -363,7 +378,10 @@ static void release_db(CONTEXT *ctx)
 		notmuch_database_close(data->db);
 		data->db = NULL;
 		data->longrun = FALSE;
+		return 0;
 	}
+
+	return -1;
 }
 
 void nm_longrun_init(CONTEXT *ctx, int writable)
@@ -378,12 +396,8 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
 
 void nm_longrun_done(CONTEXT *ctx)
 {
-	struct nm_ctxdata *data = get_ctxdata(ctx);
-
-	if (data) {
-		release_db(ctx);
+	if (release_db(ctx) == 0)
 		dprint(2, (debugfile, "nm: long run deinitialied\n"));
-	}
 }
 
 static int is_longrun(CONTEXT *ctx)
@@ -644,10 +658,10 @@ done:
 
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 {
-	struct nm_ctxdata *data;
+	struct nm_ctxdata *data = get_ctxdata(ctx);
 	char uri[_POSIX_PATH_MAX];
 
-	if (ctx && ctx->magic == M_NOTMUCH && (data = get_ctxdata(ctx)))
+	if (data)
 		snprintf(uri, sizeof(uri), "notmuch://%s?query=%s", get_db_filename(ctx), buf);
 	else if (NotmuchDefaultUri)
 		snprintf(uri, sizeof(uri), "%s?query=%s", NotmuchDefaultUri, buf);
@@ -685,10 +699,8 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
 	int rc = -1;
 	char *tag = NULL, *end = NULL, *p, *buf = NULL;
 
-	if (!buf0 || !*buf0 || !ctx
-	       || ctx->magic != M_NOTMUCH
-	       || !(db = get_db(ctx, TRUE))
-	       || !(msg = get_nm_message(db, hdr)))
+	if (!buf0 || !*buf0 || !(db = get_db(ctx, TRUE))
+			    || !(msg = get_nm_message(db, hdr)))
 		goto done;
 
 	dprint(1, (debugfile, "nm: tags modify: '%s'\n", buf0));
@@ -865,7 +877,7 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
 	return res;
 }
 
-int nm_get_count(char *path, int *all, int *new)
+int nm_nonctx_get_count(char *path, int *all, int *new)
 {
 	struct uri_tag *query_items = NULL, *item;
 	char *db_filename = NULL, *db_query = NULL;
