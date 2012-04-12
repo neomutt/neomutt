@@ -352,7 +352,8 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
 		if (!db_filename)
 			return NULL;
 
-		dprint(1, (debugfile, "nm: db open '%s'\n", db_filename));
+		dprint(1, (debugfile, "nm: db open '%s' %s\n", db_filename,
+					writable ? "[WRITE]" : "[READ]"));
 
 		data->db = notmuch_database_open(db_filename,
 				writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
@@ -652,8 +653,11 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 	if (newpath) {
 		/* remember that file has been moved -- nm_sync() will update the DB */
 		struct nm_hdrdata *hd = (struct nm_hdrdata *) h->data;
-		if (hd)
+
+		if (hd) {
+			dprint(1, (debugfile, "nm: remember obsolete path: %s\n", path));
 			hd->oldpath = safe_strdup(path);
+		}
 	}
 done:
 	FREE(&newpath);
@@ -826,12 +830,16 @@ static int _nm_update_filename(notmuch_database_t *db,
 	    st == NOTMUCH_STATUS_SUCCESS) {
 		dprint(2, (debugfile, "nm: remove filename '%s'\n", old));
 		st = notmuch_database_remove_message(db, old);
-		if (st != NOTMUCH_STATUS_SUCCESS ||
+		if (st != NOTMUCH_STATUS_SUCCESS &&
 		    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
-			dprint(2, (debugfile, "nm: failed to remove '%s'\n", old));
+			dprint(1, (debugfile, "nm: failed to remove '%s' [st=%d]\n",
+						old, (int) st));
 	}
-	if (msg)
+
+	if (msg) {
 		notmuch_message_maildir_flags_to_tags(msg);
+		notmuch_message_destroy(msg);
+	}
 
 	return 0;
 }
@@ -881,6 +889,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 		if (hd->oldpath) {
 			strncpy(old, hd->oldpath, sizeof(old));
 			old[sizeof(old) - 1] = '\0';
+			dprint(2, (debugfile, "nm: fixing obsolete path '%s'\n", old));
 		} else
 			nm_header_get_fullpath(h, old, sizeof(old));
 
