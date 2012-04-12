@@ -281,7 +281,7 @@ static char *nm_header_get_id(HEADER *h)
 char *nm_header_get_fullpath(HEADER *h, char *buf, size_t bufsz)
 {
 	snprintf(buf, bufsz, "%s/%s", nm_header_get_folder(h), h->path);
-	dprint(2, (debugfile, "nm: returns fullpath '%s'\n", buf));
+	/*dprint(2, (debugfile, "nm: returns fullpath '%s'\n", buf));*/
 	return buf;
 }
 
@@ -538,9 +538,12 @@ static int update_message_path(HEADER *h, const char *path)
 		FREE(&h->path);
 		FREE(&data->folder);
 
-		p -= 3;
+		p -= 3;				/* skip subfolder (e.g. "new") */
 		h->path = safe_strdup(p);
-		data->folder = strndup(path, p - path - 1);
+
+		for (; p > path && *(p - 1) == '/'; p--);
+
+		data->folder = strndup(path, p - path);
 
 		dprint(2, (debugfile, "nm: folder='%s', file='%s'\n", data->folder, h->path));
 		return 0;
@@ -559,7 +562,9 @@ static char *get_folder_from_path(const char *path)
 	     strncmp(p - 3, "tmp", 3) == 0)) {
 
 		p -= 3;
-		return strndup(path, p - path - 1);
+		for (; p > path && *(p - 1) == '/'; p--);
+
+		return strndup(path, p - path);
 	}
 
 	return NULL;
@@ -820,7 +825,10 @@ static int _nm_update_filename(notmuch_database_t *db,
 	if (st == NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID ||
 	    st == NOTMUCH_STATUS_SUCCESS) {
 		dprint(2, (debugfile, "nm: remove filename '%s'\n", old));
-		notmuch_database_remove_message(db, old);
+		st = notmuch_database_remove_message(db, old);
+		if (st != NOTMUCH_STATUS_SUCCESS ||
+		    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
+			dprint(2, (debugfile, "nm: failed to remove '%s'\n", old));
 	}
 	if (msg)
 		notmuch_message_maildir_flags_to_tags(msg);
