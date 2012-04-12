@@ -891,6 +891,9 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 #else
 		rc = mh_sync_mailbox_message(ctx, i);
 #endif
+		ctx->path = uri;
+		ctx->magic = M_NOTMUCH;
+
 		if (rc)
 			break;
 
