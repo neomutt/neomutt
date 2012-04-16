@@ -342,6 +342,36 @@ static const char *get_db_filename(struct nm_ctxdata *data)
 	return db_filename;
 }
 
+static notmuch_database_t *do_database_open(const char *filename,
+					    int writable, int verbose)
+{
+	notmuch_database_t *db = NULL;
+	unsigned int ct = 0;
+
+	dprint(1, (debugfile, "nm: db open '%s' %s (timeout %d)\n", filename,
+			writable ? "[WRITE]" : "[READ]", NotmuchOpenTimeout));
+	do {
+		db = notmuch_database_open(filename,
+					writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
+					NOTMUCH_DATABASE_MODE_READ_ONLY);
+		if (db || !NotmuchOpenTimeout || ct / 2 > NotmuchOpenTimeout)
+			break;
+
+		if (verbose && ct && ct % 2 == 0)
+			mutt_error(_("Waiting for notmuch DB... (%d sec)"), ct / 2);
+		usleep(500000);
+		ct++;
+	} while (1);
+
+	if (verbose) {
+		if (!db)
+			mutt_error (_("Cannot open notmuch database: %s"), filename);
+		else if (ct > 1)
+			mutt_clear_error();
+	}
+	return db;
+}
+
 static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
 {
 	if (!data)
@@ -349,20 +379,9 @@ static notmuch_database_t *get_db(struct nm_ctxdata *data, int writable)
 	if (!data->db) {
 		const char *db_filename = get_db_filename(data);
 
-		if (!db_filename)
-			return NULL;
-
-		dprint(1, (debugfile, "nm: db open '%s' %s\n", db_filename,
-					writable ? "[WRITE]" : "[READ]"));
-
-		data->db = notmuch_database_open(db_filename,
-				writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
-				NOTMUCH_DATABASE_MODE_READ_ONLY);
-		if (!data->db)
-			mutt_error (_("Cannot open notmuch database: %s"),
-					db_filename);
+		if (db_filename)
+			data->db = do_database_open(db_filename, writable, TRUE);
 	}
-
 	return data->db;
 }
 
@@ -987,12 +1006,11 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 		dflt = 1;
 	}
 
-	dprint(1, (debugfile, "nm: count open DB\n"));
-	db = notmuch_database_open(db_filename,	NOTMUCH_DATABASE_MODE_READ_ONLY);
-	if (!db) {
-		mutt_error (_("Cannot open notmuch database: %s"), db_filename);
+	/* don't be verbose about connection, as we're called from
+	 * sidebar/buffy very often */
+	db = do_database_open(db_filename, FALSE, FALSE);
+	if (!db)
 		goto done;
-	}
 
 	/* all emails */
 	if (all)

@@ -115,6 +115,10 @@ notmuch support for mutt
       the sidebar. It's possible to toggle between virtual and normal folders by
       sidebar-toggle command.
 
+   notmuch_open_timeout = <seconds>
+
+      This option specifies timeout for Notmuch database. Default is 5 seconds.
+
    notmuch_default_uri = <uri>
 
       This variable specifies the default Notmuch database in format

@@ -1648,6 +1648,12 @@ struct option_t MuttVars[] = {
    */
 #endif
 #ifdef USE_NOTMUCH
+  { "nm_open_timeout", DT_NUM, R_NONE, UL &NotmuchOpenTimeout, 5 },
+  /*
+   ** .pp
+   ** This variable specifies the timeout for database open in seconds.
+   */
+
   { "nm_default_uri", DT_STR, R_NONE, UL &NotmuchDefaultUri, 0 },
   /*
    ** .pp
