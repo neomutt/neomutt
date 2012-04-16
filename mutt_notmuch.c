@@ -1131,15 +1131,18 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		new = notmuch_message_get_filename(m);
 		nm_header_get_fullpath(h, old, sizeof(old));
 
-		if (mutt_strcmp(old, new)) {
-			HEADER tmp;
-
+		if (mutt_strcmp(old, new) != 0)
 			update_message_path(h, new);
 
-			if (!h->changed) {
-				maildir_parse_flags(&tmp, new);
-				maildir_update_flags(ctx, h, &tmp);
-			}
+		if (!h->changed) {
+			/* if the user hasn't modified the flags on
+			 * this message, update the flags we just
+			 * detected.
+			 */
+			HEADER tmp;
+			memset(&tmp, 0, sizeof(tmp));
+			maildir_parse_flags(&tmp, new);
+			maildir_update_flags(ctx, h, &tmp);
 		}
 
 		if (update_message_tags(h, m) == 0)
