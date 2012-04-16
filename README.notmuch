@@ -115,24 +115,24 @@ notmuch support for mutt
       the sidebar. It's possible to toggle between virtual and normal folders by
       sidebar-toggle command.
 
-   notmuch_open_timeout = <seconds>
+   nm_open_timeout = <seconds>
 
       This option specifies timeout for Notmuch database. Default is 5 seconds.
 
-   notmuch_default_uri = <uri>
+   nm_default_uri = <uri>
 
       This variable specifies the default Notmuch database in format
       notmuch://<absolute path>, the URI is used for notmuch queries (ESC+X) when
       the current folder is not based on notmuch.
 
-   notmuch_hidden_tags = <comma delimited list>
+   nm_hidden_tags = <comma delimited list>
 
       This variable specifies private notmuch tags which should not be printed
       on screen (index, pager).
 
       Default is "unread,draft,flagged,passed,replied,attachment".
 
-   notmuch_unread_tag = <name>
+   nm_unread_tag = <name>
 
       This variable specifies notmuch tag which is used for unread messages. The
       variable is used to count unread messages in DB only. All other mutt
