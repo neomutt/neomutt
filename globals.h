@@ -282,6 +282,7 @@ WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
 
 #ifdef USE_NOTMUCH
+WHERE int NotmuchOpenTimeout;
 WHERE char *NotmuchDefaultUri;
 WHERE char *NotmuchUnreadTag;
 WHERE char *NotmuchHiddenTags;
