@@ -641,7 +641,7 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 		if (folder) {
 			FILE *f = maildir_open_find_message(folder, path, &newpath);
 			if (f) {
-				h = maildir_parse_stream(M_MAILDIR, f, path, 0, NULL);
+				h = maildir_parse_stream(M_MAILDIR, f, newpath, 0, NULL);
 				fclose(f);
 
 				dprint(1, (debugfile, "nm: not up-to-date: %s -> %s\n",
@@ -936,7 +936,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 					break;
 			}
 			if (h->deleted) {
-				dprint(2, (debugfile, "nm: remove filename '%s'\n", old));
+				dprint(2, (debugfile, "nm: delete filename '%s'\n", old));
 				notmuch_database_remove_message(db, old);
 				changed = 1;
 			} else if (*new && *old) {
