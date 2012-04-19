@@ -483,7 +483,7 @@ err:
 }
 
 
-static int update_message_tags(HEADER *h, notmuch_message_t *msg)
+static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 {
 	struct nm_hdrdata *data = h->data;
 	notmuch_tags_t *tags;
@@ -612,18 +612,35 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 	if (update_message_path(h, path))
 		return -1;
 
-	update_message_tags(h, msg);
+	update_header_tags(h, msg);
 	return 0;
+}
+
+static const char *get_message_last_filename(notmuch_message_t *msg)
+{
+	notmuch_filenames_t *ls;
+	const char *name = NULL;
+
+	for (ls = notmuch_message_get_filenames(msg);
+	     ls && notmuch_filenames_valid(ls);
+	     notmuch_filenames_move_to_next(ls)) {
+
+		name = notmuch_filenames_get(ls);
+	}
+
+	return name;
 }
 
 static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 {
-	const char *path = notmuch_message_get_filename(msg);
+	const char *path = get_message_last_filename(msg);
 	char *newpath = NULL;
 	HEADER *h = NULL;
 
 	if (!path)
 		return;
+
+
 
 	dprint(2, (debugfile, "nm: appending message, i=%d, (%s)\n",
 				ctx->msgcount,
@@ -765,23 +782,13 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
 	return msg;
 }
 
-int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
+static int update_tags(notmuch_message_t *msg, const char *tags)
 {
-	struct nm_ctxdata *data = get_ctxdata(ctx);
-	notmuch_database_t *db = NULL;
-	notmuch_message_t *msg = NULL;
-	int rc = -1;
-	char *tag = NULL, *end = NULL, *p, *buf = NULL;
+	char *tag = NULL, *end = NULL, *p;
+	char *buf = safe_strdup(tags);
 
-	if (!buf0 || !*buf0 || !data)
+	if (!buf)
 		return -1;
-
-	if (!(db = get_db(data, TRUE)) || !(msg = get_nm_message(db, hdr)))
-		goto done;
-
-	dprint(1, (debugfile, "nm: tags modify: '%s'\n", buf0));
-
-	buf = safe_strdup(buf0);
 
 	notmuch_message_freeze(msg);
 
@@ -812,15 +819,31 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf0)
 	}
 
 	notmuch_message_thaw(msg);
+	FREE(&buf);
+	return 0;
+}
 
-	update_message_tags(hdr, msg);
+int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
+{
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+	notmuch_database_t *db = NULL;
+	notmuch_message_t *msg = NULL;
+	int rc = -1;
+
+	if (!buf || !*buf || !data)
+		return -1;
+
+	if (!(db = get_db(data, TRUE)) || !(msg = get_nm_message(db, hdr)))
+		goto done;
+
+	dprint(1, (debugfile, "nm: tags modify: '%s'\n", buf));
+
+	update_tags(msg, buf);
+	update_header_tags(hdr, msg);
 
 	rc = 0;
 	hdr->changed = TRUE;
 done:
-	FREE(&buf);
-	if (msg)
-		notmuch_message_destroy(msg);
 	if (!is_longrun(data))
 		release_db(data);
 	if (hdr->changed)
@@ -829,49 +852,97 @@ done:
 	return rc;
 }
 
-static int _nm_update_filename(notmuch_database_t *db,
-			const char *old, const char *new)
+static int remove_filename(notmuch_database_t *db, const char *path)
 {
 	notmuch_status_t st;
 	notmuch_message_t *msg = NULL;
 
+	dprint(2, (debugfile, "nm: removing filename '%s'\n", path));
+
+	st = notmuch_database_begin_atomic(db);
+	if (st)
+		return -1;
+
+	st = notmuch_database_find_message_by_filename(db, path, &msg);
+	if (st || !msg)
+		return -1;
+
+	st = notmuch_database_remove_message(db, path);
+	if (st != NOTMUCH_STATUS_SUCCESS &&
+	    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
+		dprint(1, (debugfile, "nm: failed to remove '%s' [st=%d]\n",
+						path, (int) st));
+
+	if (st == NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
+		notmuch_message_maildir_flags_to_tags(msg);
+
+	notmuch_message_destroy(msg);
+	notmuch_database_end_atomic(db);
+	return 0;
+}
+
+static int add_filename(notmuch_database_t *db, const char *path, HEADER *h)
+{
+	int rc = -1;
+	notmuch_status_t st;
+	notmuch_message_t *msg;
+
+	dprint(2, (debugfile, "nm: adding filename '%s'\n", path));
+
+	st = notmuch_database_begin_atomic(db);
+	if (st)
+		return -1;
+
+	st = notmuch_database_add_message(db, path, &msg);
+	switch (st) {
+	case NOTMUCH_STATUS_SUCCESS:
+		if (h)
+			update_tags(msg, nm_header_get_tags(h));
+		break;
+	case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
+		notmuch_message_maildir_flags_to_tags(msg);
+		break;
+	default:
+		dprint(1, (debugfile, "nm: failed to add '%s' [st=%d]\n",
+					path, (int) st));
+		goto done;
+	}
+
+	st = notmuch_database_end_atomic(db);
+	if (st)
+	    goto done;
+
+	rc = 0;
+done:
+	if (msg)
+	    notmuch_message_destroy(msg);
+	return rc;
+}
+
+static int rename_filename(notmuch_database_t *db,
+			const char *old, const char *new, HEADER *h)
+{
 	if (!db)
 		return -1;
 
-	if (new && access(new, F_OK) == 0) {
-		dprint(2, (debugfile, "nm: add filename '%s'\n", new));
-		st = notmuch_database_add_message(db, new, &msg);
-	} else
-		/* if the new file does not exist then we remove old file only */
-		st = NOTMUCH_STATUS_SUCCESS;
+	dprint(1, (debugfile, "nm: rename filename, %s -> %s\n", old, new));
 
-	if (st == NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID ||
-	    st == NOTMUCH_STATUS_SUCCESS) {
-		dprint(2, (debugfile, "nm: remove filename '%s'\n", old));
-		st = notmuch_database_remove_message(db, old);
-		if (st != NOTMUCH_STATUS_SUCCESS &&
-		    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
-			dprint(1, (debugfile, "nm: failed to remove '%s' [st=%d]\n",
-						old, (int) st));
-	}
-
-	if (msg) {
-		notmuch_message_maildir_flags_to_tags(msg);
-		notmuch_message_destroy(msg);
-	}
+	if (new && access(new, F_OK) == 0 && add_filename(db, new, h) != 0)
+		return -1;
+	if (old && remove_filename(db, old) != 0)
+		return -1;
 
 	return 0;
 }
 
-int nm_update_filename(CONTEXT *ctx, const char *old, const char *new)
+int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (!data || !new || !old)
 		return -1;
 
-	dprint(1, (debugfile, "nm: update filenames, old='%s', new='%s'\n", old, new));
-	return _nm_update_filename(get_db(data, TRUE), old, new);
+	return rename_filename(get_db(data, TRUE), old, new, h);
 }
 
 int nm_sync(CONTEXT *ctx, int *index_hint)
@@ -935,14 +1006,10 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 				if (!db)
 					break;
 			}
-			if (h->deleted) {
-				dprint(2, (debugfile, "nm: delete filename '%s'\n", old));
-				notmuch_database_remove_message(db, old);
+			if (h->deleted && remove_filename(db, old) == 0)
 				changed = 1;
-			} else if (*new && *old) {
-				_nm_update_filename(db, old, new);
+			else if (*new && *old && rename_filename(db, old, new, h) == 0)
 				changed = 1;
-			}
 		}
 
 		FREE(&hd->oldpath);
@@ -1163,7 +1230,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 			maildir_update_flags(ctx, h, &tmp);
 		}
 
-		if (update_message_tags(h, m) == 0)
+		if (update_header_tags(h, m) == 0)
 			new_flags++;
 	}
 

@@ -736,7 +736,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
 	char old[_POSIX_PATH_MAX];
 
 	if (nm_header_get_fullpath(hdr, old, sizeof(old)))
-		nm_update_filename(src, old, msg->commited_path);
+		nm_update_filename(src, old, msg->commited_path, hdr);
   }
 #endif
 
