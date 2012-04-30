@@ -281,7 +281,12 @@ static int tls_negotiate (CONNECTION * conn)
   gnutls_certificate_set_verify_flags(data->xcred, GNUTLS_VERIFY_DISABLE_TIME_CHECKS);
 #endif
 
-  gnutls_init(&data->state, GNUTLS_CLIENT);
+  if ((err = gnutls_init(&data->state, GNUTLS_CLIENT)))
+  {
+    mutt_error ("gnutls_handshake: %s", gnutls_strerror(err));
+    mutt_sleep (2);
+    goto fail;
+  }
 
   /* set socket */
   gnutls_transport_set_ptr (data->state, (gnutls_transport_ptr)conn->fd);
