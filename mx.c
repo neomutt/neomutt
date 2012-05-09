@@ -64,6 +64,10 @@
 #include <ctype.h>
 #include <utime.h>
 
+#if USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 
 #define mutt_is_spool(s)  (mutt_strcmp (Spoolfile, s) == 0)
 
@@ -1581,6 +1585,9 @@ int mx_close_message (MESSAGE **msg)
   }
   else
     (*msg)->fp = NULL;
+
+  dprint (2, (debugfile, "mx_close_message (): close: path=%s, commited=%s\n",
+	(*msg)->path, (*msg)->commited_path));
 
   if ((*msg)->path && (*msg)->magic != M_NOTMUCH)
   {

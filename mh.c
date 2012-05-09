@@ -56,6 +56,10 @@
 #include <sys/time.h>
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #define		INS_SORT_THRESHOLD		6
 
 struct maildir
@@ -1463,11 +1467,6 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 
     if (safe_rename (msg->path, full) == 0)
     {
-      if (hdr)
-	mutt_str_replace (&hdr->path, path);
-      mutt_str_replace (&msg->commited_path, full);
-      FREE (&msg->path);
-
       /*
        * Adjust the mtime on the file to match the time at which this
        * message was received.  Currently this is only set when copying
@@ -1483,11 +1482,23 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 	if (utime (full, &ut))
 	{
 	  mutt_perror (_("maildir_commit_message(): unable to set time on file"));
-	  return -1;
+	  goto post_rename_err;
 	}
       }
 
+#ifdef USE_NOTMUCH
+      if (ctx->magic == M_NOTMUCH)
+	nm_update_filename(ctx, hdr->path, full, hdr);
+#endif
+      if (hdr)
+	mutt_str_replace (&hdr->path, path);
+      mutt_str_replace (&msg->commited_path, full);
+      FREE (&msg->path);
+
       return 0;
+
+post_rename_err:
+      return -1;
     }
     else if (errno != EEXIST)
     {
