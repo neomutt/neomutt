@@ -32,6 +32,7 @@
 
 #include "mutt.h"
 #include "rfc1524.h"
+#include "mutt_curses.h"	/* COLS */
 
 #include <string.h>
 #include <stdlib.h>
@@ -50,6 +51,7 @@
  * Unsupported rfc1524 parameters: these would probably require some doing
  * by mutt, and can probably just be done by piping the message to metamail
  * %n is the integer number of sub-parts in the multipart
+ * %w is the usable width for the output, eg. when sidebar is visible
  * %F is "content-type filename" repeated for each sub-part
  *
  * In addition, this function returns a 0 if the command works on a file,
@@ -105,6 +107,10 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
       else if (command[x] == 't')
       {
 	y += mutt_quote_filename (buf + y, sizeof (buf) - y, type);
+      }
+      else if (command[x] == 'w')
+      {
+	y += snprintf(buf + y, 6, "%d", COLS - SidebarWidth);
       }
       x++;
     }
