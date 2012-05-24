@@ -43,7 +43,7 @@ typedef struct
 {
   char user[64];
   char login[64];
-  char pass[64];
+  char pass[128];
   char host[128];
   unsigned short port;
   unsigned char type;
