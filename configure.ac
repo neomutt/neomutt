@@ -30,7 +30,6 @@ AC_MSG_RESULT($mutt_cv_prefix)
 
 AC_PROG_CC
 AC_ISC_POSIX
-AM_C_PROTOTYPES
 if test "x$U" != "x"; then
   AC_MSG_ERROR(Compiler not ANSI compliant)
 fi
