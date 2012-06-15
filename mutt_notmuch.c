@@ -45,6 +45,12 @@
 #include "mutt_notmuch.h"
 #include "mutt_curses.h"
 
+/* read whole-thread or maching messages only? */
+enum {
+	NM_QUERY_TYPE_MESGS = 0,	/* default */
+	NM_QUERY_TYPE_THREADS
+};
+
 /*
  * Parsed URI arguments
  */
@@ -73,6 +79,7 @@ struct nm_ctxdata {
 	char *db_filename;
 	char *db_query;
 	int db_limit;
+	int query_type;
 	int longrun;
 
 	struct uri_tag *query_items;
@@ -203,6 +210,7 @@ static struct nm_ctxdata *new_ctxdata(char *uri)
 		mutt_error(_("failed to parse notmuch uri: %s"), uri);
 		data->db_filename = NULL;
 		data->query_items = NULL;
+		data->query_type = 0;
 		return NULL;
 	}
 
@@ -311,6 +319,14 @@ static char *get_query_string(struct nm_ctxdata *data)
 			if (mutt_atoi(item->value, &data->db_limit))
 				mutt_error (_("failed to parse notmuch limit: %s"), item->value);
 
+		} else if (strcmp(item->name, "type") == 0) {
+			if (strcmp(item->value, "threads") == 0)
+				data->query_type = NM_QUERY_TYPE_THREADS;
+			else if (strcmp(item->value, "messages") == 0)
+				data->query_type = NM_QUERY_TYPE_MESGS;
+			else
+				mutt_error (_("failed to parse notmuch query type: %s"), item->value);
+
 		} else if (strcmp(item->name, "query") == 0)
 			data->db_query = safe_strdup(item->value);
 	}
@@ -323,6 +339,11 @@ static char *get_query_string(struct nm_ctxdata *data)
 static int get_limit(struct nm_ctxdata *data)
 {
 	return data ? data->db_limit : 0;
+}
+
+static int get_query_type(struct nm_ctxdata *data)
+{
+	return data ? data->query_type : 0;
 }
 
 static const char *get_db_filename(struct nm_ctxdata *data)
@@ -699,12 +720,95 @@ done:
 	FREE(&newpath);
 }
 
+/*
+ * add all the replies to a given messages into the display.
+ * Careful, this calls itself recursively to make sure we get
+ * everything.
+ */
+static void append_replies(CONTEXT *ctx, notmuch_message_t *top)
+{
+	notmuch_messages_t *msgs;
+
+	for (msgs = notmuch_message_get_replies(top);
+	     notmuch_messages_valid(msgs);
+	     notmuch_messages_move_to_next(msgs)) {
+
+		notmuch_message_t *m = notmuch_messages_get(msgs);
+		append_message(ctx, m);
+		/* recurse through all the replies to this message too */
+		append_replies(ctx, m);
+		notmuch_message_destroy(m);
+	}
+}
+
+/*
+ * add each top level reply in the thread, and then add each
+ * reply to the top level replies
+ */
+static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread)
+{
+	notmuch_messages_t *msgs;
+
+	for (msgs = notmuch_thread_get_toplevel_messages(thread);
+	     notmuch_messages_valid(msgs);
+	     notmuch_messages_move_to_next(msgs)) {
+
+		notmuch_message_t *m = notmuch_messages_get(msgs);
+		append_message(ctx, m);
+		append_replies(ctx, m);
+		notmuch_message_destroy(m);
+	}
+}
+
+static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q)
+{
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+	int limit;
+	notmuch_messages_t *msgs;
+
+	if (!data)
+		return;
+
+	limit = get_limit(data);
+
+	for (msgs = notmuch_query_search_messages(q);
+	     notmuch_messages_valid(msgs) &&
+		(limit == 0 || ctx->msgcount < limit);
+	     notmuch_messages_move_to_next(msgs)) {
+
+		notmuch_message_t *m = notmuch_messages_get(msgs);
+		append_message(ctx, m);
+		notmuch_message_destroy(m);
+	}
+}
+
+static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q)
+{
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+	int limit;
+	notmuch_threads_t *threads;
+
+	if (!data)
+		return;
+
+	limit = get_limit(data);
+
+	for (threads = notmuch_query_search_threads(q);
+	     notmuch_threads_valid(threads) &&
+		(limit == 0 || ctx->msgcount < limit);
+	     notmuch_threads_move_to_next(threads)) {
+
+		notmuch_thread_t *thread = notmuch_threads_get(threads);
+		append_thread(ctx, thread);
+		notmuch_thread_destroy(thread);
+	}
+}
+
 int nm_read_query(CONTEXT *ctx)
 {
 	notmuch_query_t *q;
-	notmuch_messages_t *msgs;
 	struct nm_ctxdata *data;
-	int limit, rc = -1;
+	int rc = -1;
 
 	if (init_context(ctx) != 0)
 		return -1;
@@ -717,20 +821,19 @@ int nm_read_query(CONTEXT *ctx)
 
 	q = get_query(data, FALSE);
 	if (q) {
-		limit = get_limit(data);
+		int type = get_query_type(data);
 
-		for (msgs = notmuch_query_search_messages(q);
-		     notmuch_messages_valid(msgs) &&
-			(limit == 0 || ctx->msgcount < limit);
-		     notmuch_messages_move_to_next(msgs)) {
-
-			notmuch_message_t *m = notmuch_messages_get(msgs);
-			append_message(ctx, m);
-			notmuch_message_destroy(m);
+		switch(type) {
+		case NM_QUERY_TYPE_MESGS:
+			read_mesgs_query(ctx, q);
+			break;
+		case NM_QUERY_TYPE_THREADS:
+			read_threads_query(ctx, q);
+			break;
 		}
-
 		notmuch_query_destroy(q);
 		rc = 0;
+
 	}
 
 	if (!is_longrun(data))
