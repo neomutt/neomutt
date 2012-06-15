@@ -57,8 +57,17 @@ notmuch support for mutt
 
       in your config files to keep things readable.
 
-   See http://xapian.org/docs/queryparser.html for more details about Xapian
-   queries.
+      See http://xapian.org/docs/queryparser.html for more details about Xapian
+      queries.
+
+
+      limit=<number>
+
+         Restricts number of messages/threads in the result.
+
+      type=<threads|messages>
+
+         Reads all matching messages or whole-threads. The defauls is 'messages'.
 
 
  * commands:
