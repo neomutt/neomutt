@@ -312,7 +312,7 @@ static char *get_query_string(struct nm_ctxdata *data)
 		return data->db_query;
 
 	for (item = data->query_items; item; item = item->next) {
-		if (!item->value)
+		if (!item->value || !item->name)
 			continue;
 
 		if (strcmp(item->name, "limit") == 0) {
@@ -661,15 +661,14 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 	if (!path)
 		return;
 
-
-
 	dprint(2, (debugfile, "nm: appending message, i=%d, (%s)\n",
 				ctx->msgcount,
 				notmuch_message_get_message_id(msg)));
 
-	if (ctx->msgcount >= ctx->hdrmax)
+	if (ctx->msgcount >= ctx->hdrmax) {
+		dprint(2, (debugfile, "nm: allocate mx memory\n"));
 		mx_alloc_memory(ctx);
-
+	}
 	if (access(path, F_OK) == 0)
 		h = maildir_parse_message(M_MAILDIR, path, 0, NULL);
 	else {
@@ -817,7 +816,8 @@ int nm_read_query(CONTEXT *ctx)
 	if (!data)
 		return -1;
 
-	dprint(1, (debugfile, "nm: reading messages...\n"));
+	dprint(1, (debugfile, "nm: reading messages...[current count=%d]\n",
+				ctx->msgcount));
 
 	q = get_query(data, FALSE);
 	if (q) {
@@ -1194,7 +1194,7 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 			size_t qsz = strlen(db_query)
 					+ sizeof(" and tag:")
 					+ strlen(NotmuchUnreadTag);
-			char *qstr = safe_malloc(qsz + 10);
+			char *qstr = safe_malloc(qsz);
 
 			if (!qstr)
 				goto done;
@@ -1269,7 +1269,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 	time_t mtime = 0;
 	notmuch_query_t *q;
 	notmuch_messages_t *msgs;
-	int i, limit, new_messages = 0, occult = 0, new_flags = 0;
+	int i, limit, oldmsgcount = 0, occult = 0, new_flags = 0;
 	char *id = NULL;
 
 	if (!data || get_database_mtime(data, &mtime) != 0)
@@ -1287,6 +1287,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		goto done;
 
 	dprint(1, (debugfile, "nm: start checking (count=%d)\n", ctx->msgcount));
+	oldmsgcount = ctx->msgcount;
 
 	for (i = 0; i < ctx->msgcount; i++)
 		ctx->hdrs[i]->active = 0;
@@ -1306,7 +1307,6 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		if (!h) {
 			/* new email */
 			append_message(ctx, m);
-			new_messages++;
 			continue;
 		}
 
@@ -1344,17 +1344,18 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		}
 	}
 
-	mx_update_context(ctx, new_messages);
+	if (ctx->msgcount > oldmsgcount)
+		mx_update_context(ctx, ctx->msgcount - oldmsgcount);
 done:
 	if (!is_longrun(data))
 		release_db(data);
 
 	ctx->mtime = time(NULL);
 
-	dprint(1, (debugfile, "nm: ... check done [new=%d, new_flags=%d, occult=%d]\n",
-				new_messages, new_flags, occult));
+	dprint(1, (debugfile, "nm: ... check done [count=%d, new_flags=%d, occult=%d]\n",
+				ctx->msgcount, new_flags, occult));
 
 	return occult ? M_REOPENED :
-	       new_messages ? M_NEW_MAIL :
+	       ctx->msgcount > oldmsgcount ? M_NEW_MAIL :
 	       new_flags ? M_FLAGS : 0;
 }
