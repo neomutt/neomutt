@@ -187,7 +187,11 @@ static void free_ctxdata(struct nm_ctxdata *data)
 	dprint(1, (debugfile, "nm: freeing context data %p\n", data));
 
 	if (data->db)
+#ifdef NOTMUCH_API_3
+	        notmuch_database_destroy(data->db);
+#else
 		notmuch_database_close(data->db);
+#endif
 	data->db = NULL;
 
 	FREE(&data->db_filename);
@@ -368,13 +372,20 @@ static notmuch_database_t *do_database_open(const char *filename,
 {
 	notmuch_database_t *db = NULL;
 	unsigned int ct = 0;
+	int status = 0;
 
 	dprint(1, (debugfile, "nm: db open '%s' %s (timeout %d)\n", filename,
 			writable ? "[WRITE]" : "[READ]", NotmuchOpenTimeout));
 	do {
+#ifdef NOTMUCH_API_3
+		status = notmuch_database_open(filename,
+					writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
+					NOTMUCH_DATABASE_MODE_READ_ONLY, &db);
+#else
 		db = notmuch_database_open(filename,
 					writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
 					NOTMUCH_DATABASE_MODE_READ_ONLY);
+#endif
 		if (db || !NotmuchOpenTimeout || ct / 2 > NotmuchOpenTimeout)
 			break;
 
@@ -410,7 +421,11 @@ static int release_db(struct nm_ctxdata *data)
 {
 	if (data && data->db) {
 		dprint(1, (debugfile, "nm: db close\n"));
+#ifdef NOTMUCH_API_3
+		notmuch_database_destroy(data->db);
+#else
 		notmuch_database_close(data->db);
+#endif
 		data->db = NULL;
 		data->longrun = FALSE;
 		return 0;
