@@ -372,13 +372,13 @@ static notmuch_database_t *do_database_open(const char *filename,
 {
 	notmuch_database_t *db = NULL;
 	unsigned int ct = 0;
-	int status = 0;
+	notmuch_status_t st = NOTMUCH_STATUS_SUCCESS;
 
 	dprint(1, (debugfile, "nm: db open '%s' %s (timeout %d)\n", filename,
 			writable ? "[WRITE]" : "[READ]", NotmuchOpenTimeout));
 	do {
 #ifdef NOTMUCH_API_3
-		status = notmuch_database_open(filename,
+		st = notmuch_database_open(filename,
 					writable ? NOTMUCH_DATABASE_MODE_READ_WRITE :
 					NOTMUCH_DATABASE_MODE_READ_ONLY, &db);
 #else
@@ -397,7 +397,10 @@ static notmuch_database_t *do_database_open(const char *filename,
 
 	if (verbose) {
 		if (!db)
-			mutt_error (_("Cannot open notmuch database: %s"), filename);
+			mutt_error (_("Cannot open notmuch database: %s: %s"),
+				    filename,
+				    st ? notmuch_status_to_string(st) :
+					 _("unknown reason"));
 		else if (ct > 1)
 			mutt_clear_error();
 	}
