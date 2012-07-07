@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-6 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-6,2012 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -69,7 +69,10 @@ imap_auth_res_t imap_auth_sasl (IMAP_DATA* idata, const char* method)
 	 !ascii_strncmp (idata->conn->account.user, "anonymous", 9)))
       rc = sasl_client_start (saslconn, "AUTH=ANONYMOUS", NULL, &pc, &olen, 
                               &mech);
-  }
+  } else if (!ascii_strcasecmp ("login", method) &&
+	!strstr (idata->capstr, "AUTH=LOGIN"))
+    /* do not use SASL login for regular IMAP login (#3556) */
+    return IMAP_AUTH_UNAVAIL;
   
   if (rc != SASL_OK && rc != SASL_CONTINUE)
     do
