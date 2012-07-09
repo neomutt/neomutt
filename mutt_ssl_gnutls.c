@@ -439,8 +439,16 @@ static int tls_compare_certificates (const gnutls_datum *peercert)
       return 0;
     }
 
-    ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP) + 1;
-    ptr = (unsigned char *)strstr((char*)ptr, CERT_SEP);
+    /* find start of cert, skipping junk */
+    ptr = (unsigned char *)strstr((char*)b64_data.data, CERT_SEP);
+    if (!ptr)
+    {
+      gnutls_free(cert.data);
+      FREE (&b64_data_data);
+      return 0;
+    }
+    /* find start of next cert */
+    ptr = (unsigned char *)strstr((char*)ptr + 1, CERT_SEP);
 
     b64_data.size = b64_data.size - (ptr - b64_data.data);
     b64_data.data = ptr;
