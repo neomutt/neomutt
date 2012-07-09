@@ -1206,8 +1206,6 @@ ci_send_message (int flags,		/* send mode */
     msg->content->unlink = 1;
     msg->content->use_disp = 0;
     msg->content->disposition = DISPINLINE;
-    if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp (msg->content->subtype, "plain"))
-      mutt_set_parameter ("format", "flowed", &msg->content->parameter);
     
     if (!tempfile)
     {
@@ -1306,6 +1304,12 @@ ci_send_message (int flags,		/* send mode */
      */
     msg->replied = 0;
 
+    if (! (flags & SENDKEY))
+    {
+      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp (msg->content->subtype, "plain"))
+        mutt_set_parameter ("format", "flowed", &msg->content->parameter);
+    }
+
     /* $use_from and/or $from might have changed in a send-hook */
     if (killfrom)
     {
@@ -1341,7 +1345,7 @@ ci_send_message (int flags,		/* send mode */
    * envelope sender.
    */
   mutt_message_hook (NULL, msg, M_SEND2HOOK);
-  
+
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
   if (msg->env->from && !msg->env->from->personal
