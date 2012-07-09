@@ -39,7 +39,7 @@
  * declared "static" (sigh)
  */
 static char* EditorHelp1 = N_("\
-~~		insert a line begining with a single ~\n\
+~~		insert a line beginning with a single ~\n\
 ~b users	add users to the Bcc: field\n\
 ~c users	add users to the Cc: field\n\
 ~f messages	include messages\n\

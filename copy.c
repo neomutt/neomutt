@@ -77,7 +77,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       if ((fgets (buf, sizeof (buf), in)) == NULL)
 	break;
 
-      /* Is it the begining of a header? */
+      /* Is it the beginning of a header? */
       if (nl && buf[0] != ' ' && buf[0] != '\t')
       {
 	ignore = 1;
@@ -147,7 +147,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
     if ((fgets (buf, sizeof (buf), in)) == NULL)
       break;
 
-    /* Is it the begining of a header? */
+    /* Is it the beginning of a header? */
     if (nl && buf[0] != ' ' && buf[0] != '\t')
     {
       /* Do we have anything pending? */

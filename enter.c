@@ -435,7 +435,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  break;
 
 	case OP_EDITOR_KILL_WORD:
-	  /* delete to begining of word */
+	  /* delete to beginning of word */
 	  if (state->curpos != 0)
 	  {
 	    i = state->curpos;

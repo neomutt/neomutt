@@ -224,7 +224,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       /* free tmp_body if messages was signed AND encrypted ... */
       if (tmp_smime_pbody != msg->content && tmp_smime_pbody != tmp_pbody)
       {
-	/* detatch and dont't delete msg->content,
+	/* detatch and don't delete msg->content,
 	   which tmp_smime_pbody->parts after signing. */
 	tmp_smime_pbody->parts = tmp_smime_pbody->parts->next;
 	msg->content->next = NULL;

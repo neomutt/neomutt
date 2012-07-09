@@ -2460,7 +2460,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
       Matches[Num_matched++] = User_typed;
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. dont change 'buffer'. Fake successful return this time */
+       * i.e. don't change 'buffer'. Fake successful return this time */
       if (User_typed[0] == 0)
 	return 1;
     }
@@ -2516,7 +2516,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
       Matches[Num_matched++] = User_typed;
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. dont change 'buffer'. Fake successful return this time */
+       * i.e. don't change 'buffer'. Fake successful return this time */
       if (User_typed[0] == 0)
 	return 1;
     }
@@ -2563,7 +2563,7 @@ int mutt_command_complete (char *buffer, size_t len, int pos, int numtabs)
       Matches[Num_matched++] = User_typed;
 
       /* All matches are stored. Longest non-ambiguous string is ""
-       * i.e. dont change 'buffer'. Fake successful return this time */
+       * i.e. don't change 'buffer'. Fake successful return this time */
       if (User_typed[0] == 0)
 	return 1;
     }
