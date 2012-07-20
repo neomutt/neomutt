@@ -1288,7 +1288,7 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
 int mutt_pattern_func (int op, char *prompt)
 {
   pattern_t *pat;
-  char buf[LONG_STRING] = "", *simple, error[STRING];
+  char buf[LONG_STRING] = "", *simple;
   BUFFER err;
   int i;
   progress_t progress;
@@ -1303,12 +1303,13 @@ int mutt_pattern_func (int op, char *prompt)
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
 
   memset (&err, 0, sizeof(err));
-  err.data = error;
-  err.dsize = sizeof (error);
+  err.dsize = STRING;
+  err.data = safe_malloc(err.dsize);
   if ((pat = mutt_pattern_comp (buf, M_FULL_MSG, &err)) == NULL)
   {
     FREE (&simple);
     mutt_error ("%s", err.data);
+    FREE (&err.data);
     return (-1);
   }
 
@@ -1396,6 +1397,8 @@ int mutt_pattern_func (int op, char *prompt)
   }
   FREE (&simple);
   mutt_pattern_free (&pat);
+  FREE (&err.data);
+
   return 0;
 }
 
@@ -1404,7 +1407,6 @@ int mutt_search_command (int cur, int op)
   int i, j;
   char buf[STRING];
   char temp[LONG_STRING];
-  char error[STRING];
   int incr;
   HEADER *h;
   progress_t progress;
@@ -1437,11 +1439,12 @@ int mutt_search_command (int cur, int op)
       strfcpy (LastSearch, buf, sizeof (LastSearch));
       mutt_message _("Compiling search pattern...");
       mutt_pattern_free (&SearchPattern);
-      err.data = error;
-      err.dsize = sizeof (error);
+      err.dsize = STRING;
+      err.data = safe_malloc (err.dsize);
       if ((SearchPattern = mutt_pattern_comp (temp, M_FULL_MSG, &err)) == NULL)
       {
-	mutt_error ("%s", error);
+	mutt_error ("%s", err.data);
+	FREE (&err.data);
 	LastSearch[0] = '\0';
 	return (-1);
       }

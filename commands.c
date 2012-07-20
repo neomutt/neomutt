@@ -611,27 +611,29 @@ void mutt_shell_escape (void)
 void mutt_enter_command (void)
 {
   BUFFER err, token;
-  char buffer[LONG_STRING], errbuf[LONG_STRING];
+  char buffer[LONG_STRING];
   int r;
 
   buffer[0] = 0;
   if (mutt_get_field (":", buffer, sizeof (buffer), M_COMMAND) != 0 || !buffer[0])
     return;
-  err.data = errbuf;
-  err.dsize = sizeof (errbuf);
+  err.dsize = STRING;
+  err.data = safe_malloc(err.dsize);
   memset (&token, 0, sizeof (token));
   r = mutt_parse_rc_line (buffer, &token, &err);
   FREE (&token.data);
-  if (errbuf[0])
+  if (err.data[0])
   {
     /* since errbuf could potentially contain printf() sequences in it,
        we must call mutt_error() in this fashion so that vsprintf()
        doesn't expect more arguments that we passed */
     if (r == 0)
-      mutt_message ("%s", errbuf);
+      mutt_message ("%s", err.data);
     else
-      mutt_error ("%s", errbuf);
+      mutt_error ("%s", err.data);
   }
+
+  FREE (&err.data);
 }
 
 void mutt_display_address (ENVELOPE *env)

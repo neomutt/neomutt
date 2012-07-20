@@ -2731,7 +2731,6 @@ int mutt_query_variables (LIST *queries)
 {
   LIST *p;
   
-  char errbuff[LONG_STRING];
   char command[STRING];
   
   BUFFER err, token;
@@ -2739,8 +2738,8 @@ int mutt_query_variables (LIST *queries)
   memset (&err, 0, sizeof (err));
   memset (&token, 0, sizeof (token));
   
-  err.data = errbuff;
-  err.dsize = sizeof (errbuff);
+  err.dsize = STRING;
+  err.data = safe_malloc (err.dsize);
   
   for (p = queries; p; p = p->next)
   {
@@ -2749,12 +2748,16 @@ int mutt_query_variables (LIST *queries)
     {
       fprintf (stderr, "%s\n", err.data);
       FREE (&token.data);
+      FREE (&err.data);
+
       return 1;
     }
     printf ("%s\n", err.data);
   }
   
   FREE (&token.data);
+  FREE (&err.data);
+
   return 0;
 }
 
@@ -2763,7 +2766,6 @@ int mutt_dump_variables (void)
 {
   int i;
   
-  char errbuff[LONG_STRING];
   char command[STRING];
   
   BUFFER err, token;
@@ -2771,8 +2773,8 @@ int mutt_dump_variables (void)
   memset (&err, 0, sizeof (err));
   memset (&token, 0, sizeof (token));
   
-  err.data = errbuff;
-  err.dsize = sizeof (errbuff);
+  err.dsize = STRING;
+  err.data = safe_malloc (err.dsize);
   
   for (i = 0; MuttVars[i].option; i++)
   {
@@ -2784,12 +2786,16 @@ int mutt_dump_variables (void)
     {
       fprintf (stderr, "%s\n", err.data);
       FREE (&token.data);
+      FREE (&err.data);
+
       return 1;
     }
     printf("%s\n", err.data);
   }
   
   FREE (&token.data);
+  FREE (&err.data);
+
   return 0;
 }
 
@@ -2841,11 +2847,10 @@ static void start_debug (void)
 static int mutt_execute_commands (LIST *p)
 {
   BUFFER err, token;
-  char errstr[SHORT_STRING];
 
   memset (&err, 0, sizeof (err));
-  err.data = errstr;
-  err.dsize = sizeof (errstr);
+  err.dsize = STRING;
+  err.data = safe_malloc (err.dsize);
   memset (&token, 0, sizeof (token));
   for (; p; p = p->next)
   {
@@ -2853,10 +2858,14 @@ static int mutt_execute_commands (LIST *p)
     {
       fprintf (stderr, _("Error in command line: %s\n"), err.data);
       FREE (&token.data);
-      return (-1);
+      FREE (&err.data);
+
+      return -1;
     }
   }
   FREE (&token.data);
+  FREE (&err.data);
+
   return 0;
 }
 
@@ -2881,13 +2890,14 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 {
   struct passwd *pw;
   struct utsname utsname;
-  char *p, buffer[STRING], error[STRING];
+  char *p, buffer[STRING];
   int i, default_rc = 0, need_pause = 0;
   BUFFER err;
 
   memset (&err, 0, sizeof (err));
-  err.data = error;
-  err.dsize = sizeof (error);
+  err.dsize = STRING;
+  err.data = safe_malloc(err.dsize);
+  err.dptr = err.data;
 
   Groups = hash_create (1031, 0);
   ReverseAlias = hash_create (1031, 1);
@@ -3150,6 +3160,8 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 #if 0
   set_option (OPTWEED); /* turn weeding on by default */
 #endif
+
+  FREE (&err.data);
 }
 
 int mutt_get_hook_type (const char *name)

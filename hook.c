@@ -279,12 +279,11 @@ void mutt_folder_hook (char *path)
 {
   HOOK *tmp = Hooks;
   BUFFER err, token;
-  char buf[STRING];
 
   current_hook_type = M_FOLDERHOOK;
   
-  err.data = buf;
-  err.dsize = sizeof (buf);
+  err.dsize = STRING;
+  err.data = safe_malloc (err.dsize);
   memset (&token, 0, sizeof (token));
   for (; tmp; tmp = tmp->next)
   {
@@ -301,12 +300,15 @@ void mutt_folder_hook (char *path)
 	  FREE (&token.data);
 	  mutt_sleep (1);	/* pause a moment to let the user see the error */
 	  current_hook_type = 0;
+	  FREE (&err.data);
+
 	  return;
 	}
       }
     }
   }
   FREE (&token.data);
+  FREE (&err.data);
   
   current_hook_type = 0;
 }
@@ -328,12 +330,11 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 {
   BUFFER err, token;
   HOOK *hook;
-  char buf[STRING];
 
   current_hook_type = type;
   
-  err.data = buf;
-  err.dsize = sizeof (buf);
+  err.dsize = STRING;
+  err.data = safe_malloc (err.dsize);
   memset (&token, 0, sizeof (token));
   for (hook = Hooks; hook; hook = hook->next)
   {
@@ -348,10 +349,14 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
 	  mutt_error ("%s", err.data);
 	  mutt_sleep (1);
 	  current_hook_type = 0;
+	  FREE (&err.data);
+
 	  return;
 	}
   }
   FREE (&token.data);
+  FREE (&err.data);
+
   current_hook_type = 0;
 }
 
@@ -467,13 +472,12 @@ void mutt_account_hook (const char* url)
   HOOK* hook;
   BUFFER token;
   BUFFER err;
-  char buf[STRING];
 
   if (inhook)
     return;
 
-  err.data = buf;
-  err.dsize = sizeof (buf);
+  err.dsize = STRING;
+  err.data = safe_malloc (err.dsize);
   memset (&token, 0, sizeof (token));
 
   for (hook = Hooks; hook; hook = hook->next)
@@ -489,6 +493,7 @@ void mutt_account_hook (const char* url)
       {
 	FREE (&token.data);
 	mutt_error ("%s", err.data);
+	FREE (&err.data);
 	mutt_sleep (1);
 
         inhook = 0;
@@ -500,5 +505,6 @@ void mutt_account_hook (const char* url)
   }
 
   FREE (&token.data);
+  FREE (&err.data);
 }
 #endif
