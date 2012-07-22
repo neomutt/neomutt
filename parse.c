@@ -1392,13 +1392,13 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	/* spam tag is new, and match expr is non-empty; copy */
 	else if (!e->spam && *buf)
 	{
-	  e->spam = mutt_buffer_from(NULL, buf);
+	  e->spam = mutt_buffer_from (buf);
 	}
 
 	/* match expr is empty; plug in null string if no existing tag */
 	else if (!e->spam)
 	{
-	  e->spam = mutt_buffer_from(NULL, "");
+	  e->spam = mutt_buffer_from("");
 	}
 
 	if (e->spam && e->spam->data)

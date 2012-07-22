@@ -374,7 +374,7 @@ IMAP_DATA* imap_new_idata (void)
   if (!idata)
     return NULL;
 
-  if (!(idata->cmdbuf = mutt_buffer_init (NULL)))
+  if (!(idata->cmdbuf = mutt_buffer_new ()))
     FREE (&idata);
 
   idata->cmdslots = ImapPipelineDepth + 2;
