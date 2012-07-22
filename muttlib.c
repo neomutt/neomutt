@@ -1657,21 +1657,8 @@ BUFFER *mutt_buffer_new(void) {
   return b;
 }
 
-/*
- * Creates and initializes a BUFFER*. If passed an existing BUFFER*,
- * just initializes. Frees anything already in the buffer.
- *
- * Disregards the 'destroy' flag, which seems reserved for caller.
- * This is bad, but there's no apparent protocol for it.
- */
+/* initialize a new BUFFER */
 BUFFER *mutt_buffer_init (BUFFER *b) {
-  if (!b) {
-    b = safe_malloc(sizeof(BUFFER));
-    if (!b)
-      return NULL ;
-  } else {
-    FREE(&b->data);
-  }
   memset(b, 0, sizeof(BUFFER));
   return b;
 }
