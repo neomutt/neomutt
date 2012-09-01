@@ -83,6 +83,7 @@ struct nm_ctxdata {
 	int longrun;
 
 	struct uri_tag *query_items;
+	progress_t *progress;
 };
 
 static void url_free_tags(struct uri_tag *tags)
@@ -782,6 +783,8 @@ static void append_replies(CONTEXT *ctx, notmuch_message_t *top)
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
 		append_message(ctx, m);
+		if (!ctx->quiet)
+		  mutt_progress_update (get_ctxdata(ctx)->progress, ctx->msgcount, -1);
 		/* recurse through all the replies to this message too */
 		append_replies(ctx, m);
 		notmuch_message_destroy(m);
@@ -802,6 +805,8 @@ static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread)
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
 		append_message(ctx, m);
+		if (!ctx->quiet)
+		  mutt_progress_update (get_ctxdata(ctx)->progress, ctx->msgcount, -1);
 		append_replies(ctx, m);
 		notmuch_message_destroy(m);
 	}
@@ -825,6 +830,8 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q)
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
 		append_message(ctx, m);
+		if (!ctx->quiet)
+		  mutt_progress_update (get_ctxdata(ctx)->progress, ctx->msgcount, -1);
 		notmuch_message_destroy(m);
 	}
 }
@@ -856,6 +863,8 @@ int nm_read_query(CONTEXT *ctx)
 	notmuch_query_t *q;
 	struct nm_ctxdata *data;
 	int rc = -1;
+	char msgbuf[STRING];
+	progress_t progress;
 
 	if (init_context(ctx) != 0)
 		return -1;
@@ -864,8 +873,14 @@ int nm_read_query(CONTEXT *ctx)
 	if (!data)
 		return -1;
 
+	data->progress = &progress;
+
 	dprint(1, (debugfile, "nm: reading messages...[current count=%d]\n",
 				ctx->msgcount));
+	if (!ctx->quiet) {
+	  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
+	  mutt_progress_init (data->progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
+	}
 
 	q = get_query(data, FALSE);
 	if (q) {
