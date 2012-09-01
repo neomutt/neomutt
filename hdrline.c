@@ -591,7 +591,10 @@ hdr_format_str (char *dest,
       break;
 #ifdef USE_NOTMUCH
     case 'g':
-      mutt_format_s (dest, destlen, prefix, nm_header_get_tags(hdr));
+      if (!optional)
+        mutt_format_s (dest, destlen, prefix, nm_header_get_tags(hdr));
+      else if (!nm_header_get_tags(hdr))
+        optional = 0;
       break;
 #endif
     case 'H':
