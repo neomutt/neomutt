@@ -1297,6 +1297,7 @@ struct option_t MuttVars[] = {
   ** .dt %E .dd number of messages in current thread
   ** .dt %f .dd sender (address + real name), either From: or Return-Path:
   ** .dt %F .dd author name, or recipient name if the message is from you
+  ** .dt %g .dd message labels (e.g. notmuch tags)
   ** .dt %H .dd spam attribute(s) of this message
   ** .dt %i .dd message-id of the current message
   ** .dt %l .dd number of lines in the message (does not work with maildir,
