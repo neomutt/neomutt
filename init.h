@@ -3847,13 +3847,15 @@ static int parse_unsubscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_attachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unattachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
-
 static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 /* Parse -group arguments */
 static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
 
+#ifdef USE_NOTMUCH
+static int parse_tag_transforms (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+#endif
 
 struct command_t
 {
@@ -3896,6 +3898,7 @@ const struct command_t Commands[] = {
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
 #ifdef USE_NOTMUCH
   { "virtual-mailboxes",mutt_parse_virtual_mailboxes, 0 },
+  { "tag-transforms",parse_tag_transforms, 0 },
 #endif
   { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },

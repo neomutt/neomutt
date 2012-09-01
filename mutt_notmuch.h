@@ -11,6 +11,7 @@ char *nm_header_get_folder(HEADER *h);
 int nm_header_get_magic(HEADER *h);
 char *nm_header_get_fullpath(HEADER *h, char *buf, size_t bufsz);
 char *nm_header_get_tags(HEADER *h);
+char *nm_header_get_tags_transformed(HEADER *h);
 int nm_update_filename(CONTEXT *ctx, const char *o, const char *n, HEADER *h);
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz);
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *tags);

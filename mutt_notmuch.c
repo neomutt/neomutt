@@ -66,6 +66,7 @@ struct uri_tag {
 struct nm_hdrdata {
 	char *folder;
 	char *tags;
+	char *tags_transformed;
 	char *oldpath;
 	int magic;
 };
@@ -176,6 +177,7 @@ static void free_hdrdata(struct nm_hdrdata *data)
 	dprint(2, (debugfile, "nm: freeing header %p\n", data));
 	FREE(&data->folder);
 	FREE(&data->tags);
+	FREE(&data->tags_transformed);
 	FREE(&data->oldpath);
 	FREE(&data);
 }
@@ -269,6 +271,11 @@ char *nm_header_get_folder(HEADER *h)
 char *nm_header_get_tags(HEADER *h)
 {
 	return h && h->data ? ((struct nm_hdrdata *) h->data)->tags : NULL;
+}
+
+char *nm_header_get_tags_transformed(HEADER *h)
+{
+	return h && h->data ? ((struct nm_hdrdata *) h->data)->tags_transformed : NULL;
 }
 
 int nm_header_get_magic(HEADER *h)
@@ -545,8 +552,8 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 {
 	struct nm_hdrdata *data = h->data;
 	notmuch_tags_t *tags;
-	char *tstr = NULL, *p;
-	size_t sz = 0;
+	char *tstr = NULL, *ttstr = NULL, *p;
+	size_t sz = 0, tsz = 0;
 
 	dprint(2, (debugfile, "nm: tags update requested (%s)\n", h->env->message_id));
 
@@ -556,6 +563,8 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 
 		const char *t = notmuch_tags_get(tags);
 		size_t xsz = t ? strlen(t) : 0;
+		const char *tt = NULL;
+		size_t txsz = 0;
 
 		if (!xsz)
 			continue;
@@ -572,6 +581,26 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 				continue;
 		}
 
+		tt = hash_find(TagTransforms, t);
+
+		if (tt) {
+			txsz = strlen(tt);
+		} else {
+			tt = t;
+			txsz = xsz;
+		}
+
+		/* expand the transformed tag string */
+		safe_realloc(&ttstr, tsz + (tsz ? 1 : 0) + txsz + 1);
+		p = ttstr + tsz;
+		if (tsz) {
+		    *p++ = ' ';
+		    tsz++;
+		}
+		memcpy(p, tt, txsz + 1);
+		tsz += txsz;
+
+		/* expand the un-transformed tag string */
 		safe_realloc(&tstr, sz + (sz ? 1 : 0) + xsz + 1);
 		p = tstr + sz;
 		if (sz) {
@@ -584,6 +613,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 
 	if (data->tags && tstr && strcmp(data->tags, tstr) == 0) {
 		FREE(&tstr);
+		FREE(&ttstr);
 		dprint(2, (debugfile, "nm: tags unchanged\n"));
 		return 1;
 	}
@@ -591,6 +621,8 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 	FREE(&data->tags);
 	data->tags = tstr;
 	dprint(2, (debugfile, "nm: new tags: '%s'\n", tstr));
+	data->tags_transformed = ttstr;
+	dprint(2, (debugfile, "nm: new tag transforms: '%s'\n", ttstr));
 	return 0;
 }
 
