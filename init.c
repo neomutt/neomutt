@@ -3070,7 +3070,10 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   Groups = hash_create (1031, 0);
   ReverseAlias = hash_create (1031, 1);
-  
+#ifdef USE_NOTMUCH
+  TagTransforms = hash_create (64, 1);
+#endif
+
   mutt_menu_init ();
 
   snprintf (AttachmentMarker, sizeof (AttachmentMarker),
@@ -3405,6 +3408,39 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
   mutt_group_context_destroy (ctx);
   return -1;
 }
+
+#ifdef USE_NOTMUCH
+int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  char *tmp;
+
+  while (MoreArgs (s))
+  {
+    char *tag, *transform;
+
+    mutt_extract_token (b, s, 0);
+    if (b->data && *b->data)
+      tag = safe_strdup (b->data);
+    else
+      continue;
+
+    mutt_extract_token (b, s, 0);
+    transform = safe_strdup (b->data);
+
+    /* avoid duplicates */
+    tmp = hash_find(TagTransforms, tag);
+    if (tmp) {
+      dprint(3,(debugfile,"tag transform '%s' already registered as '%s'\n", tag, tmp));
+      FREE(&tag);
+      FREE(&transform);
+      continue;
+    }
+
+    hash_insert(TagTransforms, tag, transform, 0);
+  }
+  return 0;
+}
+#endif
 
 static void myvar_set (const char* var, const char* val)
 {

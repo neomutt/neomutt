@@ -141,6 +141,21 @@ notmuch support for mutt
       the sidebar. It's possible to toggle between virtual and normal folders by
       sidebar-toggle command.
 
+   tag-transforms <tag> <transform> [ ...]
+
+      This command specifies text transforms to be shown instead of the actual
+      tag names with '%g' in the index and pager formats. Note that Unicode
+      symbols can be used for transforms.
+
+      example:
+
+      tag-transforms "inbox"   "i"   \
+                     "unread"  "u"   \
+                     "replied" "↻ "  \
+                     "sent"    "➥ "  \
+                     "todo"    "T"   \
+                     "deleted" "DEL" \
+
    nm_record = <boolean>
 
       Add messages stored to the mutt record (see $record in the mutt docs)
