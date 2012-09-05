@@ -33,7 +33,8 @@ notmuch support for mutt
    is found as returned by 'notmuch config get database.path' command. Note that
    the <path> should NOT include .notmuch directory name.
 
-   If the "<path>" is not defined then $nm_default_uri is used, for example:
+   If the "<path>" is not defined then $nm_default_uri or $folder is used,
+   for example:
 
 	set nm_default_uri = "notmuch:///home/foo/maildir"
 	virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
@@ -131,8 +132,9 @@ notmuch support for mutt
    nm_default_uri = <uri>
 
       This variable specifies the default Notmuch database in format
-      notmuch://<absolute path>, the URI is used for notmuch queries (ESC+X) when
-      the current folder is not based on notmuch.
+      notmuch://<absolute path>, the URI is used for notmuch queries (ESC+X) when the
+      current folder is not based on notmuch. If the default URI is not specified
+      then mutt will try to use $folder variable (see mutt manual for more details).
 
    nm_hidden_tags = <comma delimited list>
 
