@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2013 Karel Zak <kzak@redhat.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -566,4 +567,12 @@ char *strcasestr (const char *, const char *);
 
 #ifndef HAVE_MKDTEMP
 char *mkdtemp (char *tmpl);
+#endif
+
+#ifndef HAVE_STRNLEN
+size_t strnlen(const char *s, size_t maxlen);
+#endif
+
+#ifndef HAVE_STRNDUP
+char *strndup(const char *s, size_t n);
 #endif
