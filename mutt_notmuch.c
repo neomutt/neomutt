@@ -879,8 +879,6 @@ int nm_read_query(CONTEXT *ctx)
 	notmuch_query_t *q;
 	struct nm_ctxdata *data;
 	int rc = -1;
-	char msgbuf[STRING];
-	progress_t progress;
 
 	if (init_context(ctx) != 0)
 		return -1;
@@ -889,18 +887,24 @@ int nm_read_query(CONTEXT *ctx)
 	if (!data)
 		return -1;
 
-	data->progress = &progress;
-
 	dprint(1, (debugfile, "nm: reading messages...[current count=%d]\n",
 				ctx->msgcount));
-	if (!ctx->quiet) {
-	  snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-	  mutt_progress_init (data->progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
-	}
 
 	q = get_query(data, FALSE);
 	if (q) {
 		int type = get_query_type(data);
+		char msgbuf[STRING];
+		progress_t progress;
+
+		if (!ctx->quiet) {
+			unsigned ct = notmuch_query_count_messages(q);
+
+			data->progress = &progress;
+			snprintf (msgbuf, sizeof(msgbuf),
+					_("Reading %s..."), ctx->path);
+			mutt_progress_init(data->progress, msgbuf,
+					M_PROGRESS_MSG, ReadInc, ct);
+		}
 
 		switch(type) {
 		case NM_QUERY_TYPE_MESGS:
