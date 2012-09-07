@@ -69,7 +69,8 @@ notmuch support for mutt
 
       type=<threads|messages>
 
-         Reads all matching messages or whole-threads. The defauls is 'messages'.
+         Reads all matching messages or whole-threads. The defauls is 'messages'
+         or nm_query_type.
 
 
  * commands:
@@ -157,6 +158,13 @@ notmuch support for mutt
      This variable specifies notmuch query limit.
 
      Default is unlimited.
+
+   nm_query_type = <threads|messages>
+
+     This variable specifies notmuch query type, supported types: 'threads' and
+     'messages'.
+
+     Default is 'messages'.
 
    vfolder_format = <string>
 
