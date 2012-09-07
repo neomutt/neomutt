@@ -309,6 +309,22 @@ static struct nm_ctxdata *get_ctxdata(CONTEXT *ctx)
 	return NULL;
 }
 
+static int string_to_guery_type(const char *str)
+{
+	if (!str)
+		str = NotmuchQueryType;		/* user's default */
+	if (!str)
+		return NM_QUERY_TYPE_MESGS;	/* hardcoded default */
+
+	if (strcmp(str, "threads") == 0)
+		return NM_QUERY_TYPE_THREADS;
+	else if (strcmp(str, "messages") == 0)
+		return NM_QUERY_TYPE_MESGS;
+
+	mutt_error (_("failed to parse notmuch query type: %s"), str);
+	return NM_QUERY_TYPE_MESGS;
+}
+
 static char *get_query_string(struct nm_ctxdata *data)
 {
 	struct uri_tag *item;
@@ -326,17 +342,15 @@ static char *get_query_string(struct nm_ctxdata *data)
 			if (mutt_atoi(item->value, &data->db_limit))
 				mutt_error (_("failed to parse notmuch limit: %s"), item->value);
 
-		} else if (strcmp(item->name, "type") == 0) {
-			if (strcmp(item->value, "threads") == 0)
-				data->query_type = NM_QUERY_TYPE_THREADS;
-			else if (strcmp(item->value, "messages") == 0)
-				data->query_type = NM_QUERY_TYPE_MESGS;
-			else
-				mutt_error (_("failed to parse notmuch query type: %s"), item->value);
+		} else if (strcmp(item->name, "type") == 0)
+			data->query_type = string_to_guery_type(item->value);
 
-		} else if (strcmp(item->name, "query") == 0)
+		else if (strcmp(item->name, "query") == 0)
 			data->db_query = safe_strdup(item->value);
 	}
+
+	if (!data->query_type)
+		data->query_type = string_to_guery_type(NULL);
 
 	dprint(2, (debugfile, "nm: query '%s'\n", data->db_query));
 

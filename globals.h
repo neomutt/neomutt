@@ -285,6 +285,7 @@ WHERE char *NotmuchUnreadTag;
 WHERE char *NotmuchHiddenTags;
 WHERE char *VirtFolderFormat;
 WHERE int NotmuchDBLimit;
+WHERE char *NotmuchQueryType;
 #endif
 
 

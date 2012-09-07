@@ -1680,6 +1680,11 @@ struct option_t MuttVars[] = {
    ** .pp
    ** This variable specifies the default limit used in notmuch queries.
    */
+  { "nm_query_type", DT_STR, R_NONE, UL &NotmuchQueryType, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default query type (threads or messages) used in notmuch queries.
+   */
 #endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
