@@ -1683,7 +1683,7 @@ struct option_t MuttVars[] = {
    ** notmuch://<absolute path>.
    */
 
-  { "nm_hidden_tags", DT_STR, R_NONE, UL &NotmuchHiddenTags, UL "unread,draft,flagged,passed,replied,attachment" },
+  { "nm_hidden_tags", DT_STR, R_NONE, UL &NotmuchHiddenTags, UL "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
   /*
    ** .pp
    ** This variable specifies private notmuch tags which should not be printed
