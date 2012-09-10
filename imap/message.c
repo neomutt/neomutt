@@ -160,8 +160,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         rc = imap_cmd_step (idata);
         if (rc != IMAP_CMD_CONTINUE)
 	{
-          /* suppress GCC aliasing warning */
-	  imap_free_header_data ((void**) (void*) &h.data);
+	  imap_free_header_data (&h.data);
           break;
 	}
 
@@ -173,7 +172,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
           continue;
         else if (mfhrc < 0)
 	{
-	  imap_free_header_data ((void**) (void*) &h.data);
+	  imap_free_header_data (&h.data);
           break;
 	}
 
@@ -209,7 +208,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         {
 	  /* bad header in the cache, we'll have to refetch. */
           dprint (3, (debugfile, "bad cache entry at %d, giving up\n", h.sid - 1));
-          imap_free_header_data((void**) (void*) &h.data);
+          imap_free_header_data(&h.data);
           evalhc = 0;
           idx--;
         }
@@ -219,8 +218,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
         break;
       if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
       {
-        if (h.data)
-          imap_free_header_data ((void**) (void*) &h.data);
+        imap_free_header_data (&h.data);
         imap_hcache_close (idata);
 	goto error_out_1;
       }
@@ -337,8 +335,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 
     if ((mfhrc < -1) || ((rc != IMAP_CMD_CONTINUE) && (rc != IMAP_CMD_OK)))
     {
-      if (h.data)
-        imap_free_header_data ((void**) (void*) &h.data);
+      imap_free_header_data (&h.data);
 #if USE_HCACHE
       imap_hcache_close (idata);
 #endif
@@ -1019,12 +1016,14 @@ void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)
 }
 
 /* imap_free_header_data: free IMAP_HEADER structure */
-void imap_free_header_data (void** data)
+void imap_free_header_data (IMAP_HEADER_DATA** data)
 {
-  /* this should be safe even if the list wasn't used */
-  mutt_free_list (&(((IMAP_HEADER_DATA*) *data)->keywords));
+  if (data) {
+    /* this should be safe even if the list wasn't used */
+    mutt_free_list (&((*data)->keywords));
 
-  FREE (data);		/* __FREE_CHECKED__ */
+    FREE (data);		/* __FREE_CHECKED__ */
+  }
 }
 
 /* imap_set_flags: fill out the message header according to the flags from
