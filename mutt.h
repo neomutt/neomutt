@@ -238,6 +238,9 @@ enum
   M_CRYPT_ENCRYPT,
   M_PGP_KEY,
   M_XLABEL,
+#ifdef USE_NOTMUCH
+  M_NOTMUCH_LABEL,
+#endif
   M_MIMEATTACH,
   
   /* Options for Mailcap lookup */
