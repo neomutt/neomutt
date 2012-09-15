@@ -100,6 +100,16 @@ notmuch support for mutt
       - delete message from mutt (usualy after <sync-mailbox> function), but
         don't touch message on disk
 
+ * Pattern modifiers:
+
+   Many of Mutt's commands allow you to specify a pattern to match (limit,
+   tag-pattern, delete-pattern, color, etc.). The following notmuch specific
+   mutt pattern modifiers are available:
+
+   - '~Y EXPR': Messages which contain EXPR in the list of labels.
+     Example:
+        # Color red all messages labeled as 'spam'.
+        color index    red      default        "~Y '\W?spam\W?'"
 
  * muttrc:
 
