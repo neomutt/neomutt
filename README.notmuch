@@ -185,6 +185,10 @@ notmuch support for mutt
 
         %g   notmuch tags (labels)
 
+        for example:
+
+        set index_format = "%4C %Z  %[%d/%b]  %-16.15F %s %> %?g?(%g)?"
+        set pager_format = "-%Z- %C/%m: %-20.20n   %s%*  -- %?g?(%g)? - (%P)"
 
  * TODO:
 
