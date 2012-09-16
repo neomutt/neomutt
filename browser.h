@@ -30,6 +30,8 @@ struct folder_file
   char *desc;
 
   unsigned int new;
+  unsigned int all;
+
 #ifdef USE_IMAP
   char delim;
   
