@@ -1696,6 +1696,11 @@ struct option_t MuttVars[] = {
    ** variable is used to count unread messages in DB only. All other mutt commands
    ** use standard (e.g. maildir) flags.
    */
+  { "nm_db_limit", DT_NUM, R_NONE, UL &NotmuchDBLimit, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default limit used in notmuch queries.
+   */
 #endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
