@@ -211,6 +211,8 @@ static struct nm_ctxdata *new_ctxdata(char *uri)
 	data = safe_calloc(1, sizeof(struct nm_ctxdata));
 	dprint(1, (debugfile, "nm: initialize context data %p\n", data));
 
+	data->db_limit = NotmuchDBLimit;
+
 	if (url_parse_query(uri, &data->db_filename, &data->query_items)) {
 		mutt_error(_("failed to parse notmuch uri: %s"), uri);
 		data->db_filename = NULL;
