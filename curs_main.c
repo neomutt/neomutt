@@ -1399,7 +1399,7 @@ int mutt_index_menu (void)
           mutt_message _("No label specified, aborting.");
           break;
         }
-	if (tag && !option (OPTAUTOTAG))
+	if (tag)
 	{
 	  char msgbuf[STRING];
 	  progress_t progress;
