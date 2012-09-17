@@ -758,9 +758,10 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 	if (!path)
 		return;
 
-	dprint(2, (debugfile, "nm: appending message, i=%d, (%s)\n",
+	dprint(2, (debugfile, "nm: appending message, i=%d, id=%s, path=%s\n",
 				ctx->msgcount,
-				notmuch_message_get_message_id(msg)));
+				notmuch_message_get_message_id(msg),
+				path));
 
 	if (ctx->msgcount >= ctx->hdrmax) {
 		dprint(2, (debugfile, "nm: allocate mx memory\n"));
@@ -1524,7 +1525,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		/* check to see if the message has moved to a different
 		 * subdirectory.  If so, update the associated filename.
 		 */
-		new = notmuch_message_get_filename(m);
+		new = get_message_last_filename(m);
 		nm_header_get_fullpath(h, old, sizeof(old));
 
 		if (mutt_strcmp(old, new) != 0)
