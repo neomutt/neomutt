@@ -123,7 +123,8 @@ notmuch support for mutt
    virtual-mailboxes <description> <uri> [ ...]
 
       This command specifies one or more virtual folder. The folders are
-      accessioble by command 'X'.
+      accessible by command 'X'. It's possible to use the virtual mailbox
+      description as a sort key (e.g set sort_sidebar=desc)
 
       example:
 
@@ -245,6 +246,7 @@ notmuch support for mutt
 	# sidebar
 	set sidebar_width	= 35
 	set sidebar_visible	= yes
+        set sort_sidebar        = unsorted
 	color sidebar_new yellow default
 	bind index <left> sidebar-prev
 	bind index <right> sidebar-next
