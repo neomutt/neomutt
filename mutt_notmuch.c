@@ -657,6 +657,34 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 	return 0;
 }
 
+/**
+static void debug_print_filenames(notmuch_message_t *msg)
+{
+	notmuch_filenames_t *ls;
+	const char *id = notmuch_message_get_message_id(msg);
+
+	for (ls = notmuch_message_get_filenames(msg);
+	     ls && notmuch_filenames_valid(ls);
+	     notmuch_filenames_move_to_next(ls)) {
+
+		dprint(2, (debugfile, "nm: %s: %s\n", id, notmuch_filenames_get(ls)));
+	}
+}
+
+static void debug_print_tags(notmuch_message_t *msg)
+{
+	notmuch_tags_t *tags;
+	const char *id = notmuch_message_get_message_id(msg);
+
+	for (tags = notmuch_message_get_tags(msg);
+	     tags && notmuch_tags_valid(tags);
+	     notmuch_tags_move_to_next(tags)) {
+
+		dprint(2, (debugfile, "nm: %s: %s\n", id, notmuch_tags_get(tags)));
+	}
+}
+***/
+
 static const char *get_message_last_filename(notmuch_message_t *msg)
 {
 	notmuch_filenames_t *ls;
@@ -977,12 +1005,57 @@ done:
 	return rc;
 }
 
+static int rename_maildir_filename(const char *old, char *newpath, size_t newsz, HEADER *h)
+{
+	char filename[_POSIX_PATH_MAX];
+	char suffix[_POSIX_PATH_MAX];
+	char folder[_POSIX_PATH_MAX];
+	char *p;
+
+	strfcpy(folder, old, sizeof(folder));
+	p = strrchr(folder, '/');
+	if (p)
+		*p = '\0';
+
+	p++;
+	strfcpy(filename, p, sizeof(filename));
+
+	/* remove (new,cur,...) from folder path */
+	p = strrchr(folder, '/');
+	if (p)
+		*p = '\0';
+
+	/* remove old flags from filename */
+	if ((p = strchr(filename, ':')))
+		*p = '\0';
+
+	/* compose new flags */
+	maildir_flags(suffix, sizeof(suffix), h);
+
+	snprintf(newpath, newsz, "%s/%s/%s%s",
+			folder,
+			(h->read || h->old) ? "cur" : "new",
+			filename,
+			suffix);
+
+	if (strcmp(old, newpath) == 0)
+		return 1;
+
+	if (rename(old, newpath) != 0) {
+		dprint(1, (debugfile, "nm: rename(2) failed %s -> %s\n", old, newpath));
+		return -1;
+	}
+
+	return 0;
+}
+
 static int remove_filename(notmuch_database_t *db, const char *path)
 {
 	notmuch_status_t st;
+	notmuch_filenames_t *ls;
 	notmuch_message_t *msg = NULL;
 
-	dprint(2, (debugfile, "nm: removing filename '%s'\n", path));
+	dprint(2, (debugfile, "nm: remove filename '%s'\n", path));
 
 	st = notmuch_database_begin_atomic(db);
 	if (st)
@@ -992,72 +1065,109 @@ static int remove_filename(notmuch_database_t *db, const char *path)
 	if (st || !msg)
 		return -1;
 
+	/*
+	 * note that unlink() is probably unecessary here, it's already removed
+	 * by mh_sync_mailbox_message(), but for sure...
+	 */
 	st = notmuch_database_remove_message(db, path);
-	if (st != NOTMUCH_STATUS_SUCCESS &&
-	    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
-		dprint(1, (debugfile, "nm: failed to remove '%s' [st=%d]\n",
-						path, (int) st));
+	switch (st) {
+	case NOTMUCH_STATUS_SUCCESS:
+		unlink(path);
+		break;
+	case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
+		unlink(path);
+		for (ls = notmuch_message_get_filenames(msg);
+		     ls && notmuch_filenames_valid(ls);
+		     notmuch_filenames_move_to_next(ls)) {
 
-	if (st == NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID)
-		notmuch_message_maildir_flags_to_tags(msg);
+			path = notmuch_filenames_get(ls);
+
+			dprint(2, (debugfile, "nm: remove duplicate: '%s'\n", path));
+			unlink(path);
+			notmuch_database_remove_message(db, path);
+		}
+		break;
+	default:
+		dprint(1, (debugfile, "nm: failed to remove '%s' [st=%d]\n", path, (int) st));
+		break;
+	}
 
 	notmuch_message_destroy(msg);
 	notmuch_database_end_atomic(db);
 	return 0;
 }
 
-static int add_filename(notmuch_database_t *db, const char *path, HEADER *h)
+static int rename_filename(notmuch_database_t *db,
+			const char *old, const char *new, HEADER *h)
 {
 	int rc = -1;
 	notmuch_status_t st;
+	notmuch_filenames_t *ls;
 	notmuch_message_t *msg;
 
-	dprint(2, (debugfile, "nm: adding filename '%s'\n", path));
+	if (!db || !new || !old || access(new, F_OK) != 0)
+		return -1;
 
+	dprint(1, (debugfile, "nm: rename filename, %s -> %s\n", old, new));
 	st = notmuch_database_begin_atomic(db);
 	if (st)
 		return -1;
 
-	st = notmuch_database_add_message(db, path, &msg);
-	switch (st) {
-	case NOTMUCH_STATUS_SUCCESS:
-		if (h)
-			update_tags(msg, nm_header_get_tags(h));
-		break;
-	case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
-		notmuch_message_maildir_flags_to_tags(msg);
-		break;
-	default:
-		dprint(1, (debugfile, "nm: failed to add '%s' [st=%d]\n",
-					path, (int) st));
+	dprint(2, (debugfile, "nm: rename: add '%s'\n", new));
+	st = notmuch_database_add_message(db, new, &msg);
+
+	if (st != NOTMUCH_STATUS_SUCCESS &&
+	    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID) {
+		dprint(1, (debugfile, "nm: failed to add '%s' [st=%d]\n", new, (int) st));
 		goto done;
 	}
 
-	st = notmuch_database_end_atomic(db);
-	if (st)
-	    goto done;
+	dprint(2, (debugfile, "nm: rename: rem '%s'\n", old));
+	st = notmuch_database_remove_message(db, old);
+	switch (st) {
+	case NOTMUCH_STATUS_SUCCESS:
+		break;
+	case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
+		dprint(2, (debugfile, "nm: rename: syncing duplicate filename\n"));
+		notmuch_message_destroy(msg);
+		msg = NULL;
+		notmuch_database_find_message_by_filename(db, new, &msg);
+
+		for (ls = notmuch_message_get_filenames(msg);
+		     msg && ls && notmuch_filenames_valid(ls);
+		     notmuch_filenames_move_to_next(ls)) {
+
+			const char *path = notmuch_filenames_get(ls);
+			char newpath[_POSIX_PATH_MAX];
+
+			if (strcmp(new, path) == 0)
+				continue;
+
+			if (rename_maildir_filename(path, newpath, sizeof(newpath), h) == 0) {
+				dprint(2, (debugfile, "nm: rename dup %s -> %s\n", path, newpath));
+				notmuch_database_remove_message(db, path);
+				notmuch_database_add_message(db, newpath, NULL);
+			}
+		}
+		st = NOTMUCH_STATUS_SUCCESS;
+		break;
+	default:
+		dprint(1, (debugfile, "nm: failed to remove '%s' [st=%d]\n",
+					old, (int) st));
+		break;
+	}
+
+	if (st == NOTMUCH_STATUS_SUCCESS && h && msg) {
+		notmuch_message_maildir_flags_to_tags(msg);
+		update_tags(msg, nm_header_get_tags(h));
+	}
 
 	rc = 0;
 done:
 	if (msg)
-	    notmuch_message_destroy(msg);
+		notmuch_message_destroy(msg);
+	notmuch_database_end_atomic(db);
 	return rc;
-}
-
-static int rename_filename(notmuch_database_t *db,
-			const char *old, const char *new, HEADER *h)
-{
-	if (!db)
-		return -1;
-
-	dprint(1, (debugfile, "nm: rename filename, %s -> %s\n", old, new));
-
-	if (new && access(new, F_OK) == 0 && add_filename(db, new, h) != 0)
-		return -1;
-	if (old && remove_filename(db, old) != 0)
-		return -1;
-
-	return 0;
 }
 
 int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h)
