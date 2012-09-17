@@ -363,6 +363,9 @@ cb_qsort_buffy (const void *a, const void *b)
 		case SORT_COUNT_NEW:
 			result = (b2->msg_unread - b1->msg_unread);
 			break;
+		case SORT_DESC:
+			result = mutt_strcmp (b1->desc, b2->desc);
+			break;
 		case SORT_FLAGGED:
 			result = (b2->msg_flagged - b1->msg_flagged);
 			break;

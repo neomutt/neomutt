@@ -3256,14 +3256,15 @@ struct option_t MuttVars[] = {
   { "sort_re",		DT_BOOL, R_INDEX|R_RESORT|R_RESORT_INIT, OPTSORTRE, 1 },
   /*
   ** .pp
-  ** This variable is only useful when sorting by threads with
-  ** $$strict_threads \fIunset\fP.  In that case, it changes the heuristic
-  ** mutt uses to thread messages by subject.  With $$sort_re \fIset\fP, mutt will
-  ** only attach a message as the child of another message by subject if
-  ** the subject of the child message starts with a substring matching the
-  ** setting of $$reply_regexp.  With $$sort_re \fIunset\fP, mutt will attach
-  ** the message whether or not this is the case, as long as the
-  ** non-$$reply_regexp parts of both messages are identical.
+  ** This variable is only useful when sorting by mailboxes in sidebar. By default,
+  ** entries are unsorted.  Valid values:
+  ** .il
+  ** .dd count (all message count)
+  ** .dd desc  (virtual mailbox description)
+  ** .dd new (new message count)
+  ** .dd path
+  ** .dd unsorted
+  ** .ie
   */
   { "spam_separator",   DT_STR, R_NONE, UL &SpamSep, UL "," },
   /*
@@ -3881,6 +3882,7 @@ const struct mapping_t SortKeyMethods[] = {
 
 const struct mapping_t SortSidebarMethods[] = {
   { "count",	SORT_COUNT },
+  { "desc",	SORT_DESC },
   { "flagged",	SORT_FLAGGED },
   { "new",	SORT_COUNT_NEW },
   { "path",	SORT_PATH },
