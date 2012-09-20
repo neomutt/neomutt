@@ -1474,6 +1474,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		if (!h) {
 			/* new email */
 			append_message(ctx, m);
+			notmuch_message_destroy(m);
 			continue;
 		}
 
@@ -1502,6 +1503,8 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 
 		if (update_header_tags(h, m) == 0)
 			new_flags++;
+
+		notmuch_message_destroy(m);
 	}
 
 	for (i = 0; i < ctx->msgcount; i++) {
@@ -1514,6 +1517,9 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 	if (ctx->msgcount > oldmsgcount)
 		mx_update_context(ctx, ctx->msgcount - oldmsgcount);
 done:
+	if (q)
+		notmuch_query_destroy(q);
+
 	if (!is_longrun(data))
 		release_db(data);
 
