@@ -64,7 +64,8 @@ notmuch support for mutt
 
       limit=<number>
 
-         Restricts number of messages/threads in the result.
+         Restricts number of messages/threads in the result. The default limit
+         is nm_db_limit.
 
       type=<threads|messages>
 
@@ -150,6 +151,12 @@ notmuch support for mutt
       commands use standard (e.g. maildir) flags.
 
       Default is "unread".
+
+   nm_db_limit = <num>
+
+     This variable specifies notmuch query limit.
+
+     Default is unlimited.
 
    vfolder_format = <string>
 
