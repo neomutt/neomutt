@@ -1379,7 +1379,11 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 	rc = 0;
 done:
 	if (db) {
+#ifdef NOTMUCH_API_3
+		notmuch_database_destroy(db);
+#else
 		notmuch_database_close(db);
+#endif
 		dprint(1, (debugfile, "nm: count close DB\n"));
 	}
 	if (!dflt)
