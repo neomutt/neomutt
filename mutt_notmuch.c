@@ -13,7 +13,7 @@
  *   (it's implemented in get_ctxdata() and init_context() functions).
  *
  * - exception are nm_nonctx_* functions -- these functions use nm_default_uri
- *   (or parse URI from another resourse)
+ *   (or parse URI from another resource)
  */
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -45,7 +45,7 @@
 #include "mutt_notmuch.h"
 #include "mutt_curses.h"
 
-/* read whole-thread or maching messages only? */
+/* read whole-thread or matching messages only? */
 enum {
 	NM_QUERY_TYPE_MESGS = 0,	/* default */
 	NM_QUERY_TYPE_THREADS
@@ -462,7 +462,7 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
 
 	if (data && get_db(data, writable)) {
 		data->longrun = TRUE;
-		dprint(2, (debugfile, "nm: long run initialied\n"));
+		dprint(2, (debugfile, "nm: long run initialized\n"));
 	}
 }
 
@@ -471,7 +471,7 @@ void nm_longrun_done(CONTEXT *ctx)
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (data && release_db(data) == 0)
-		dprint(2, (debugfile, "nm: long run deinitialied\n"));
+		dprint(2, (debugfile, "nm: long run deinitialized\n"));
 }
 
 static int is_longrun(struct nm_ctxdata *data)
@@ -532,7 +532,7 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
 		goto err;
 
 	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
-	dprint(2, (debugfile, "nm: query succesfully initialized\n"));
+	dprint(2, (debugfile, "nm: query successfully initialized\n"));
 	return q;
 err:
 	if (!is_longrun(data))
@@ -595,7 +595,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 }
 
 /*
- * set/update HEADE->path and HEADER->data->path
+ * set/update HEADER->path and HEADER->data->path
  */
 static int update_message_path(HEADER *h, const char *path)
 {
@@ -1101,7 +1101,7 @@ static int remove_filename(notmuch_database_t *db, const char *path)
 		return -1;
 
 	/*
-	 * note that unlink() is probably unecessary here, it's already removed
+	 * note that unlink() is probably unnecessary here, it's already removed
 	 * by mh_sync_mailbox_message(), but for sure...
 	 */
 	st = notmuch_database_remove_message(db, path);
