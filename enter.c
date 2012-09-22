@@ -632,6 +632,16 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 
 	    replace_part (state, 0, buf);
 	  }
+	  else if (flags & M_NM_TAG)
+	  {
+	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
+	    i = strlen (buf);
+	    if (!mutt_nm_tag_complete(buf, buflen, i, state->tabs))
+	      BEEP ();
+
+	    replace_part (state, 0, buf);
+	  }
+
 #endif
 	  else
 	    goto self_insert;

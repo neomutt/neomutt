@@ -1396,7 +1396,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	*buf = '\0';
-	if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), 0) || !*buf)
+	if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), M_NM_TAG) || !*buf)
 	{
           mutt_message _("No label specified, aborting.");
           break;
