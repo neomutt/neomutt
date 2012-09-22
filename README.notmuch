@@ -69,7 +69,7 @@ notmuch support for mutt
 
       type=<threads|messages>
 
-         Reads all matching messages or whole-threads. The defauls is 'messages'
+         Reads all matching messages or whole-threads. The default is 'messages'
          or nm_query_type.
 
 
@@ -100,7 +100,7 @@ notmuch support for mutt
        macro index I "<modify-labels-then-hide>-inbox\n<sync-mailbox>"
 
    quasi-delete:
-      - delete message from mutt (usualy after <sync-mailbox> function), but
+      - delete message from mutt (usually after <sync-mailbox> function), but
         don't touch message on disk
 
  * Pattern modifiers:
