@@ -21,6 +21,7 @@ void nm_longrun_done(CONTEXT *cxt);
 char *nm_get_description(CONTEXT *ctx);
 
 void nm_debug_check(CONTEXT *ctx);
+int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count);
 
 /*
  * functions usable outside notmuch CONTEXT

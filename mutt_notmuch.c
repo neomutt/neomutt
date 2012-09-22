@@ -1540,3 +1540,46 @@ done:
 	       ctx->msgcount > oldmsgcount ? M_NEW_MAIL :
 	       new_flags ? M_FLAGS : 0;
 }
+
+/*
+ * Fill a list with all notmuch tags.
+ *
+ * If tag_list is NULL, just count the tags.
+ */
+int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
+{
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+	notmuch_database_t *db = NULL;
+	notmuch_tags_t *tags = NULL;
+	int rc = -1;
+
+	if (!data)
+		return -1;
+
+	if (!(db = get_db(data, TRUE)) ||
+			!(tags = notmuch_database_get_all_tags(db)))
+		goto done;
+
+	*tag_count = 0;
+	dprint(1, (debugfile, "nm: get all tags\n"));
+
+	while (notmuch_tags_valid(tags)) {
+		if (tag_list != NULL) {
+			tag_list[*tag_count] = safe_strdup(notmuch_tags_get(tags));
+		}
+		(*tag_count)++;
+		notmuch_tags_move_to_next(tags);
+	}
+
+	rc = 0;
+done:
+	if (tags)
+		notmuch_tags_destroy(tags);
+
+	if (!is_longrun(data))
+		release_db(data);
+
+	dprint(1, (debugfile, "nm: get all tags done [rc=%d tag_count=%u]\n", rc,
+						 *tag_count));
+	return rc;
+}
