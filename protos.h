@@ -291,6 +291,7 @@ int mutt_command_complete (char *, size_t, int, int);
 int mutt_var_value_complete (char *, size_t, int);
 #if USE_NOTMUCH
 int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs);
+int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs);
 #endif
 int mutt_complete (char *, size_t);
 int mutt_compose_attachment (BODY *a);

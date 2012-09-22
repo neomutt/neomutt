@@ -103,6 +103,7 @@
 #define  M_PATTERN (1<<7) /* pattern mode - only used for history classes */
 #if USE_NOTMUCH
 #define  M_NM_QUERY (1<<8) /* Notmuch query mode. */
+#define  M_NM_TAG   (1<<9) /* Notmuch tag +/- mode. */
 #endif
 
 /* flags for mutt_get_token() */

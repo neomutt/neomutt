@@ -2762,6 +2762,28 @@ int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
   return 1;
 }
 
+/* Complete the nearest "+" or "-" -prefixed string previous to pos. */
+int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
+{
+  char *pt = buffer;
+  int spaces;
+  const char *first_plus = NULL;
+  const char *first_minus = NULL;
+
+  SKIPWS (buffer);
+  spaces = buffer - pt;
+
+  first_plus = rstrnstr((char *)buffer, pos, "+");
+  first_minus = rstrnstr((char *)buffer, pos, "-");
+  pt = (char *)MAX(first_plus, first_minus);
+
+  if (pt != NULL) {
+    pt++;
+
+    if (numtabs == 1)
+    {
+      /* First TAB. Collect all the matches */
+      complete_all_nm_tags(pt);
 
       /* All matches are stored. Longest non-ambiguous string is ""
        * i.e. don't change 'buffer'. Fake successful return this time.
