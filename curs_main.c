@@ -1456,7 +1456,7 @@ int mutt_index_menu (void)
 
       case OP_MAIN_VFOLDER_FROM_QUERY:
 	buf[0] = '\0';
-        if (mutt_get_field ("Query: ", buf, sizeof (buf), 0) != 0 || !buf[0])
+        if (mutt_get_field ("Query: ", buf, sizeof (buf), M_NM_QUERY) != 0 || !buf[0])
         {
           mutt_message _("No query, aborting.");
           break;

@@ -82,6 +82,7 @@ notmuch support for mutt
    vfolder-from-query:
       - generate new virtual folder from notmuch search query
       - default key: <Esc>X
+      - note: TAB completion of 'tag:' names is available
 
    modify-labels:
       - add or remove notmuch tags; [+]<tag> to add, -<tag> to remove
