@@ -289,6 +289,7 @@ WHERE char *NotmuchHiddenTags;
 WHERE char *VirtFolderFormat;
 WHERE int NotmuchDBLimit;
 WHERE char *NotmuchQueryType;
+WHERE char *NotmuchRecordTags;
 #endif
 
 

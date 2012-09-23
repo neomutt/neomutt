@@ -140,6 +140,22 @@ notmuch support for mutt
       the sidebar. It's possible to toggle between virtual and normal folders by
       sidebar-toggle command.
 
+   nm_record = <boolean>
+
+      Add messages stored to the mutt record (see $record in the mutt docs)
+      also to notmuch DB. If you reply to an email then the new email inherits
+      tags from the original email.
+
+   nm_record_tags = <comma delimited list>
+
+      Tags that should be removed or added to the to the messages stored in the mutt record.
+
+      example:
+
+      set record = "~/sent-mails"
+      set nm_record = yes
+      set nm_record_tags = "-inbox,archive,me"
+
    nm_open_timeout = <seconds>
 
       This option specifies timeout for Notmuch database. Default is 5 seconds.
@@ -213,6 +229,10 @@ notmuch support for mutt
 
 
 * .muttrc example:
+
+	set record="~/Mail/Maildir/sent-mail"
+	set nm_record = yes
+	set nm_record_tags ="-inbox me archive"
 
 	set nm_default_uri="notmuch:///home/kzak/Mail/Maildir"
 	set virtual_spoolfile	= yes

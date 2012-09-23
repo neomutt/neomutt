@@ -1706,6 +1706,16 @@ struct option_t MuttVars[] = {
    ** .pp
    ** This variable specifies the default query type (threads or messages) used in notmuch queries.
    */
+  { "nm_record", DT_BOOL, R_NONE, OPTNOTMUCHRECORD, 0 },
+  /*
+   ** .pp
+   ** This variable specifies if the mutt record should indexed by notmuch.
+   */
+  { "nm_record_tags", DT_STR, R_NONE, UL &NotmuchRecordTags, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default tags applied to messages stored to the mutt record.
+   */
 #endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
