@@ -1541,6 +1541,52 @@ done:
 	       new_flags ? M_FLAGS : 0;
 }
 
+int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
+{
+	notmuch_database_t *db;
+	notmuch_status_t st;
+	notmuch_message_t *msg;
+	int rc = -1;
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+
+	if (!path || !data || access(path, F_OK) != 0)
+		return 0;
+	db = get_db(data, TRUE);
+	if (!db)
+		return -1;
+
+	dprint(1, (debugfile, "nm: record message: %s\n", path));
+	st = notmuch_database_begin_atomic(db);
+	if (st)
+		return -1;
+
+	st = notmuch_database_add_message(db, path, &msg);
+
+	if (st != NOTMUCH_STATUS_SUCCESS &&
+	    st != NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID) {
+		dprint(1, (debugfile, "nm: failed to add '%s' [st=%d]\n", path, (int) st));
+		goto done;
+	}
+
+	if (st == NOTMUCH_STATUS_SUCCESS && msg) {
+		notmuch_message_maildir_flags_to_tags(msg);
+		if (h)
+			update_tags(msg, nm_header_get_tags(h));
+		if (NotmuchRecordTags)
+			update_tags(msg, NotmuchRecordTags);
+	}
+
+	rc = 0;
+done:
+	if (msg)
+		notmuch_message_destroy(msg);
+	notmuch_database_end_atomic(db);
+
+	if (!is_longrun(data))
+		release_db(data);
+	return rc;
+}
+
 /*
  * Fill a list with all notmuch tags.
  *
@@ -1556,7 +1602,7 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count)
 	if (!data)
 		return -1;
 
-	if (!(db = get_db(data, TRUE)) ||
+	if (!(db = get_db(data, FALSE)) ||
 			!(tags = notmuch_database_get_all_tags(db)))
 		goto done;
 
