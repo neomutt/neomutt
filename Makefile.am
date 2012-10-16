@@ -17,7 +17,7 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
-BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c $(HCVERSION)
 
 bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
 mutt_SOURCES = \
@@ -94,9 +94,26 @@ noinst_PROGRAMS = $(MUTT_MD5)
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
 
+# If this fails, we will fall back to the implementation in txt2c.sh
+txt2c: txt2c.c
+	-$${NATIVECC-$(CC)} -o $@ $<
+
+conststrings.c: txt2c config.status
+	( \
+		$(CC) -v || \
+		$(CC) --version || \
+		$(CC) -V || \
+		echo "unknown compiler"; \
+	) 2>&1 | ./txt2c.sh cc_version >conststrings_c
+	echo "$(CFLAGS)" | ./txt2c.sh cc_cflags >>conststrings_c
+	grep ac_cs_config= config.status | \
+	cut -d= -f2- | \
+	sed -e 's/^"//' -e 's/"$$//' | ./txt2c.sh configure_options >>conststrings_c
+	mv -f conststrings_c conststrings.c
+
 CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
-DISTCLEANFILES= flea smime_keys
+DISTCLEANFILES= flea smime_keys txt2c
 
 ACLOCAL_AMFLAGS = -I m4
 

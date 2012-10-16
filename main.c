@@ -154,6 +154,24 @@ options:\n\
   exit (0);
 }
 
+extern const char cc_version[];
+extern const char cc_cflags[];
+extern const char configure_options[];
+
+static char *
+rstrip_in_place(char *s)
+{
+  char *p;
+
+  p = &s[strlen(s)];
+  if (p == s)
+    return s;
+  p--;
+  while (p >= s && (*p == '\n' || *p == '\r'))
+    *p-- = '\0';
+  return s;
+}
+
 static void show_version (void)
 {
   struct utsname uts;
@@ -192,6 +210,16 @@ static void show_version (void)
 #ifdef USE_HCACHE
   printf ("\nhcache backend: %s", mutt_hcache_backend ());
 #endif
+
+  puts ("\n\nCompiler:");
+  rstrip_in_place((char *)cc_version);
+  puts (cc_version);
+
+  rstrip_in_place((char *)configure_options);
+  printf ("\nConfigure options: %s\n", configure_options);
+
+  rstrip_in_place((char *)cc_cflags);
+  printf ("\nCompilation CFLAGS: %s\n", cc_cflags);
 
   puts (_("\nCompile options:"));
 

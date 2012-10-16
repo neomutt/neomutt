@@ -248,21 +248,6 @@ else
 	# Please provide more of these if you have any.
 fi
 
-echo 
-echo "-- Build environment information"
-echo
-echo "(Note: This is the build environment installed on the system"
-echo "muttbug is run on.  Information may or may not match the environment"
-echo "used to build mutt.)"
-echo
-echo "- gcc version information"
-echo "@CC@"
-@CC@ -v 2>&1
-echo
-echo "- CFLAGS"
-echo @CFLAGS@
-
-
 echo
 echo "-- Mutt Version Information"
 echo

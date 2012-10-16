@@ -27,9 +27,11 @@
 ^mutt_dotlock(\.c)?$
 ^mutt_md5$
 ^patchlist\.c$
+^conststrings\.c$
 ^pgpewrap|pgpring$
 ^reldate\.h$
 ^smime_keys$
+^txt2c$
 ^stamp-doc-rc$
 ^doc/instdoc$
 ^doc/manual\.(txt|xml|aux|log|out|tex|pdf)$
