@@ -1076,9 +1076,10 @@ linkend="lists"><command>lists</command> or
 <command>subscribe</command></link> commands, but also honor any
 <literal>Mail-Followup-To</literal> header(s) if the <link
 linkend="honor-followup-to">$honor_followup_to</link> configuration
-variable is set.  Using this when replying to messages posted to mailing
-lists helps avoid duplicate copies being sent to the author of the
-message you are replying to.
+variable is set.  In addition, the <literal>List-Post</literal> header field is
+examined for <literal>mailto:</literal> URLs specifying a mailing list address.
+Using this when replying to messages posted to mailing lists helps avoid
+duplicate copies being sent to the author of the message you are replying to.
 </para>
 </listitem>
 </varlistentry>
