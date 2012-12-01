@@ -1408,8 +1408,17 @@ ci_send_message (int flags,		/* send mode */
 	  mutt_perror (msg->content->filename);
       }
       
-      if (option (OPTTEXTFLOWED))
-	rfc3676_space_stuff (msg);
+      /* If using format=flowed, perform space stuffing.  Avoid stuffing when
+       * recalling a postponed message where the stuffing was already
+       * performed.  If it has already been performed, the format=flowed
+       * parameter will be present.
+       */
+      if (option (OPTTEXTFLOWED) && msg->content->type == TYPETEXT && !ascii_strcasecmp("plain", msg->content->subtype))
+      {
+	char *p = mutt_get_parameter("format", msg->content->parameter);
+	if (ascii_strcasecmp("flowed", NONULL(p)))
+	  rfc3676_space_stuff (msg);
+      }
 
       mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
