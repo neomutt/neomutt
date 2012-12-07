@@ -4,6 +4,7 @@
  * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002, 2003, 2004 g10 Code GmbH
+ * Copyright (C) 2012 Michael R. Elkins <me@sigpipe.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -81,9 +82,6 @@
 #define CRYPT_KV_STRING   4
 #define CRYPT_KV_STRONGID 8
 #define CRYPT_KV_MATCH (CRYPT_KV_ADDR|CRYPT_KV_STRING)
-
-/* static local variables */
-static int GpgmeLocaleSet = 0;
 
 /*
  * Type definitions.
@@ -341,16 +339,6 @@ static gpgme_ctx_t create_gpgme_context (int for_smime)
 {
   gpgme_error_t err;
   gpgme_ctx_t ctx;
-
-  if (!GpgmeLocaleSet)
-  {
-    gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
-#ifdef ENABLE_NLS
-    gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
-#endif
-
-    GpgmeLocaleSet = 1;
-  }
 
   err = gpgme_new (&ctx);
   if (err)
@@ -4342,6 +4330,23 @@ char *smime_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
  * Implementation of `init'.
  */
 
+/* This function contains common code needed to be executed for both the pgp
+ * and smime support of gpgme. */
+static void init_common(void)
+{
+  /* this initialization should only run one time, but it may be called by
+   * either pgp_gpgme_init or smime_gpgme_init */
+  static bool has_run = 0;
+  if (!has_run) {
+    gpgme_check_version(NULL);
+    gpgme_set_locale (NULL, LC_CTYPE, setlocale (LC_CTYPE, NULL));
+#ifdef ENABLE_NLS
+    gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
+#endif
+    has_run = true;
+  }
+}
+
 /* Initialization.  */
 static void init_gpgme (void)
 {
@@ -4356,11 +4361,13 @@ static void init_gpgme (void)
 
 void pgp_gpgme_init (void)
 {
+  init_common();
   init_gpgme ();
 }
 
 void smime_gpgme_init (void)
 {
+  init_common();
 }
 
 static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
