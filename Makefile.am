@@ -104,11 +104,11 @@ conststrings.c: txt2c config.status
 		$(CC) --version || \
 		$(CC) -V || \
 		echo "unknown compiler"; \
-	) 2>&1 | ./txt2c.sh cc_version >conststrings_c
-	echo "$(CFLAGS)" | ./txt2c.sh cc_cflags >>conststrings_c
+	) 2>&1 | ${srcdir}/txt2c.sh cc_version >conststrings_c
+	echo "$(CFLAGS)" | ${srcdir}/txt2c.sh cc_cflags >>conststrings_c
 	grep ac_cs_config= config.status | \
 	cut -d= -f2- | \
-	sed -e 's/^"//' -e 's/"$$//' | ./txt2c.sh configure_options >>conststrings_c
+	sed -e 's/^"//' -e 's/"$$//' | ${srcdir}/txt2c.sh configure_options >>conststrings_c
 	mv -f conststrings_c conststrings.c
 
 CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
