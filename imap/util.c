@@ -27,7 +27,6 @@
 #include "url.h"
 #include "imap_private.h"
 #ifdef USE_HCACHE
-#include "message.h"
 #include "hcache.h"
 #endif
 

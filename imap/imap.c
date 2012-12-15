@@ -30,7 +30,6 @@
 #include "globals.h"
 #include "sort.h"
 #include "browser.h"
-#include "message.h"
 #include "imap_private.h"
 #if defined(USE_SSL)
 # include "mutt_ssl.h"
@@ -281,7 +280,7 @@ void imap_expunge_mailbox (IMAP_DATA* idata)
 	FREE (&idata->cache[cacheno].path);
       }
 
-      imap_free_header_data (&h->data);
+      imap_free_header_data ((IMAP_HEADER_DATA**)&h->data);
     }
   }
 
@@ -1353,7 +1352,7 @@ int imap_close_mailbox (CONTEXT* ctx)
   for (i = 0; i < ctx->msgcount; i++)
     /* mailbox may not have fully loaded */
     if (ctx->hdrs[i] && ctx->hdrs[i]->data)
-      imap_free_header_data (&(ctx->hdrs[i]->data));
+      imap_free_header_data ((IMAP_HEADER_DATA**)&(ctx->hdrs[i]->data));
 
   for (i = 0; i < IMAP_CACHE_LEN; i++)
   {

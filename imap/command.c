@@ -27,7 +27,6 @@
 
 #include "mutt.h"
 #include "imap_private.h"
-#include "message.h"
 #include "mx.h"
 #include "buffy.h"
 

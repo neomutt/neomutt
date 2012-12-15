@@ -30,7 +30,6 @@
 
 #include "mutt.h"
 #include "imap_private.h"
-#include "message.h"
 #include "mx.h"
 
 #ifdef HAVE_PGP
@@ -1018,11 +1017,11 @@ void imap_add_keywords (char* s, HEADER* h, LIST* mailbox_flags, size_t slen)
 /* imap_free_header_data: free IMAP_HEADER structure */
 void imap_free_header_data (IMAP_HEADER_DATA** data)
 {
-  if (data) {
+  if (*data)
+  {
     /* this should be safe even if the list wasn't used */
     mutt_free_list (&((*data)->keywords));
-
-    FREE (data);		/* __FREE_CHECKED__ */
+    FREE (data);
   }
 }
 
