@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2012 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by

@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1996-2000 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2012 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,7 +22,6 @@
 #endif
 
 #include <string.h>
-#include <ctype.h>
 #include <stdlib.h>
 
 #ifndef TESTING
@@ -29,9 +29,8 @@
 #else
 #define safe_strdup strdup
 #define safe_malloc malloc
-#define SKIPWS(x) while(isspace(*x))x++
+#define SKIPWS(x) while(iswsp(*x))x++
 #define FREE(x) safe_free(x)
-#define ISSPACE isspace
 #define strfcpy(a,b,c) {if (c) {strncpy(a,b,c);a[c-1]=0;}}
 #define LONG_STRING 1024
 #include "rfc822.h"
@@ -44,6 +43,11 @@
 
 #define terminate_buffer(a, b) terminate_string(a, b, sizeof (a) - 1)
 
+/* undefine the version defined in lib.h */
+#undef SKIPWS
+
+/* uses the iswsp() function defined in this module so we get RFC5322 semantics */
+#define SKIPWS(s) while(iswsp(*s)) s++
 
 const char RFC822Specials[] = "@.,:;<>[]\\\"()";
 #define is_special(x) strchr(RFC822Specials,x)
@@ -59,6 +63,17 @@ const char * const RFC822Errors[] = {
   "bad address in <>",
   "bad address spec"
 };
+
+/* iswsp
+ *
+ * Returns non-zero if 'c' is a whitespace character as defined by RFC5322.
+ *
+ * WSP is defined as ASCII space (32) or hard tab (9).
+ */
+static inline int iswsp(char c)
+{
+  return (c == ' ' || c == '\t');
+}
 
 void rfc822_dequote_comment (char *s)
 {
@@ -213,7 +228,7 @@ next_token (const char *s, char *token, size_t *tokenlen, size_t tokenmax)
   }
   while (*s)
   {
-    if (ISSPACE ((unsigned char) *s) || is_special (*s))
+    if (iswsp(*s) || is_special (*s))
       break;
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = *s;
@@ -384,7 +399,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
   while (last && last->next)
     last = last->next;
 
-  ws_pending = isspace ((unsigned char) *s);
+  ws_pending = iswsp (*s);
   if ((nl = mutt_strlen (s)))
     nl = s[nl - 1] == '\n';
   
@@ -525,7 +540,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
       }
       s = ps;
     }
-    ws_pending = isspace ((unsigned char) *s);
+    ws_pending = iswsp (*s);
     SKIPWS (s);
   }
   
