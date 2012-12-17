@@ -677,6 +677,9 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl@<:@=PFX@:>@], [Enable TLS support us
             LIBS="$LIBS $crypto_libs"
             AC_CHECK_FUNCS(RAND_status RAND_egd)
 
+	    dnl -- TLSv1_2_client_method() was added in OpenSSL 1.0.1 --
+	    AC_CHECK_FUNCS(TLSv1_2_client_method)
+
             AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
             AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
             LIBS="$saved_LIBS"

@@ -100,8 +100,17 @@ int mutt_ssl_starttls (CONNECTION* conn)
     goto bail;
 
   ssldata = (sslsockdata*) safe_calloc (1, sizeof (sslsockdata));
-  /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS. */
-  if (! (ssldata->ctx = SSL_CTX_new (TLSv1_client_method ())))
+  /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
+   * TLSv1.2 support was added in OpenSSL 1.0.1.  RHEL6 shipped with 1.0.0 so
+   * our configure script checks for TLSv1.2 availability.
+   */
+  if (! (ssldata->ctx = SSL_CTX_new (
+#ifdef HAVE_TLSV1_2_CLIENT_METHOD
+				  TLSv1_2_client_method ()
+#else
+				  TLSv1_client_method ()
+#endif
+				  )))
   {
     dprint (1, (debugfile, "mutt_ssl_starttls: Error allocating SSL_CTX\n"));
     goto bail_ssldata;
