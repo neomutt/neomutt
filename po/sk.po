@@ -4083,7 +4083,7 @@ msgstr "Chyba pri posielaní správy."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Nesprávne formátovaná polo¾ka pre typ %s v \"%s\", riadok %d"
 
 #: rfc1524.c:396

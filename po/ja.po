@@ -3922,7 +3922,7 @@ msgstr "メッセージ送信エラー。"
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "%s 形式に不適切なエントリが \"%s\" の %d 行目にある"
 
 #: rfc1524.c:396

@@ -161,7 +161,7 @@ static int get_field_text (char *field, char **entry,
   }
   else 
   {
-    mutt_error (_("Improperly formated entry for type %s in \"%s\" line %d"),
+    mutt_error (_("Improperly formatted entry for type %s in \"%s\" line %d"),
 		type, filename, line);
     return 0;
   }

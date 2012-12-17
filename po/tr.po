@@ -3961,7 +3961,7 @@ msgstr "İleti gönderilirken hata oluştu."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr ""
 "\"%2$s\" dosyasında %3$d nolu satırdaki %1$s tipi için hatalı "
 "biçimlendirilmiş öge"

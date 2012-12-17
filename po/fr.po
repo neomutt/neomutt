@@ -4117,7 +4117,7 @@ msgstr "Erreur en envoyant le message."
 # , c-format
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entrée incorrectement formatée pour le type %s dans \"%s\" ligne %d"
 
 #: rfc1524.c:396

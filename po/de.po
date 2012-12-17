@@ -3934,7 +3934,7 @@ msgstr "Fehler beim Versand der Nachricht."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Ungültiger Eintrag für Typ %s in \"%s\", Zeile %d."
 
 #: rfc1524.c:396

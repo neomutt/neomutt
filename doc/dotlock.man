@@ -90,7 +90,7 @@ The program was successful.
 .TP 
 .B "1 \- DL_EX_ERROR"
 An unspecified error such as bad command line parameters,
-lack of system memory and the like has occured.
+lack of system memory and the like has occurred.
 .TP 
 .B "3 \- DL_EX_EXIST"
 The 

@@ -3914,7 +3914,7 @@ msgstr "发送信件出错。"
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "在 \"%2$s\" 的第 %3$d 行发现类型 %1$s 为错误的格式纪录"
 
 #: rfc1524.c:396

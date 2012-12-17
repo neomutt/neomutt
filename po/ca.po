@@ -4214,7 +4214,7 @@ msgstr "Error en enviar el missatge."
 # ivb  L’entrada del tipus «%s» a «%s», línia %d, no té un format vàlid.
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Entrada de tipus «%s» a «%s», línia %d: format no vàlid."
 
 #: rfc1524.c:396

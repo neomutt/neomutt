@@ -4063,7 +4063,7 @@ msgstr "Klaida siunèiant laiðkà."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Blogai suformuotas tipo %s áraðas \"%s\" %d eilutëje"
 
 #: rfc1524.c:396

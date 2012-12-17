@@ -3899,7 +3899,7 @@ msgstr "Errore durante l'invio del messaggio."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Voce impropriamente formattata per il tipo %s in \"%s\", linea %d"
 
 #: rfc1524.c:396

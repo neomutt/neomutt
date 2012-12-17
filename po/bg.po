@@ -4057,7 +4057,7 @@ msgstr "Грешка при изпращане на писмото."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Невалидно форматирано вписване за типа %s в \"%s\" на ред %d"
 
 #: rfc1524.c:396

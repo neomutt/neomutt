@@ -42,7 +42,7 @@ keyID required. changes/removes/adds label.
 keyID required.
 .IP \fBverify\fP
 1=keyID and optionally 2=CRL
-Verifies the certificate chain, and optionally wether
+Verifies the certificate chain, and optionally whether
 this certificate is included in supplied CRL (PEM format).
 Note: to verify all certificates at the same time,
 replace keyID with "all"

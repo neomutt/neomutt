@@ -4014,7 +4014,7 @@ msgstr "메일 보내는 중 오류."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "\"%2$s\" %d 번째 줄의 %1$s 유형의 항목은 잘못된 형식임"
 
 #: rfc1524.c:396

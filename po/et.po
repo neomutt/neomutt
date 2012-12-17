@@ -4031,7 +4031,7 @@ msgstr "Viga teate saatmisel."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Vigaselt formaaditud kirje tüübile %s faili \"%s\" real %d"
 
 #: rfc1524.c:396

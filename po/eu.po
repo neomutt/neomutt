@@ -3918,7 +3918,7 @@ msgstr "Errorea mezua bidaltzerakoan."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Gaizki eratutako %s motako sarrera \"%s\"-n %d lerroan"
 
 #: rfc1524.c:396

@@ -4001,7 +4001,7 @@ msgstr "Fejl ved afsendelse af brev."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Ugyldig angivelse for type %s i \"%s\" linje %d"
 
 #: rfc1524.c:396

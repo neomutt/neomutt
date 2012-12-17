@@ -3937,7 +3937,7 @@ msgstr "Fel vid sändning av meddelande."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "Felaktigt formatterad post för typ %s i \"%s\", rad %d"
 
 #: rfc1524.c:396

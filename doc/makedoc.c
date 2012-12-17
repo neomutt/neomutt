@@ -255,7 +255,7 @@ static char *get_token (char *d, size_t l, char *s)
   s = skip_ws (s);
 
   if (Debug > 1)
-    fprintf (stderr, "%s: argumet after skip_ws():  `%s'.\n",
+    fprintf (stderr, "%s: argument after skip_ws():  `%s'.\n",
 	     Progname, s);
 
   if (!*s)

@@ -3941,7 +3941,7 @@ msgstr "B³±d podczas wysy³ania listu."
 
 #: rfc1524.c:164
 #, c-format
-msgid "Improperly formated entry for type %s in \"%s\" line %d"
+msgid "Improperly formatted entry for type %s in \"%s\" line %d"
 msgstr "B³êdnie sformatowane pole dla typu %s w \"%s\" linii %d"
 
 #: rfc1524.c:396
