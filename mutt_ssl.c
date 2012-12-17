@@ -375,8 +375,8 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   if (!ssl_check_certificate (conn, ssldata))
     return -1;
 
-  mutt_message (_("SSL connection using %s (%s)"),
-    SSL_get_cipher_version (ssldata->ssl), SSL_get_cipher_name (ssldata->ssl));
+  mutt_message (_("%s connection using %s (%s)"),
+    SSL_get_version(ssldata->ssl), SSL_get_cipher_version (ssldata->ssl), SSL_get_cipher_name (ssldata->ssl));
   mutt_sleep (0);
 
   return 0;
