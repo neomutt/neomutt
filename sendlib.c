@@ -1814,7 +1814,11 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     {
       tagbuf = mutt_substrdup (start, t);
       ++t; /* skip over the colon separating the header field name and value */
-      SKIPWS(t); /* skip over any leading whitespace */
+
+      /* skip over any leading whitespace (WSP, as defined in RFC5322) */
+      while (*t == ' ' || *t == '\t')
+	t++;
+
       valbuf = mutt_substrdup (t, end);
     }
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
