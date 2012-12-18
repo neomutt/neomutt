@@ -618,8 +618,15 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   }
   rewind (msg->fp);
   uidl = h->data;
+
+  /* we replace envelop, key in subj_hash has to be updated as well */
+  if (ctx->subj_hash && h->env->real_subj)
+    hash_delete (ctx->subj_hash, h->env->real_subj, h, NULL);
   mutt_free_envelope (&h->env);
   h->env = mutt_read_rfc822_header (msg->fp, h, 0, 0);
+  if (ctx->subj_hash && h->env->real_subj)
+    hash_insert (ctx->subj_hash, h->env->real_subj, h, 1);
+
   h->data = uidl;
   h->lines = 0;
   fgets (buf, sizeof (buf), msg->fp);
