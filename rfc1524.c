@@ -136,8 +136,8 @@ static char *get_field (char *s)
     }
     else
     {
-      *ch++ = 0;
-      SKIPWS (ch);
+      *ch = 0;
+      ch = skip_email_wsp(ch + 1);
       break;
     }
   }

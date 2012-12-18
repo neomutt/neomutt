@@ -152,19 +152,25 @@ static PARAMETER *parse_parameters (const char *s)
     if (*p != ';')
     {
       i = p - s;
-
-      new = mutt_new_parameter ();
-
-      new->attribute = safe_malloc (i + 1);
-      memcpy (new->attribute, s, i);
-      new->attribute[i] = 0;
-
       /* remove whitespace from the end of the attribute name */
-      while (ISSPACE (new->attribute[--i]))
-	new->attribute[i] = 0;
+      while (i > 0 && is_email_wsp(s[i-1]))
+	--i;
 
-      s = p + 1; /* skip over the = */
-      SKIPWS (s);
+      /* the check for the missing parameter token is here so that we can skip
+       * over any quoted value that may be present.
+       */
+      if (i == 0)
+      {
+	dprint(1, (debugfile, "parse_parameters: missing attribute: %s\n", s));
+	new = NULL;
+      }
+      else
+      {
+	new = mutt_new_parameter ();
+	new->attribute = mutt_substrdup(s, s + i);
+      }
+
+      s = skip_email_wsp(p + 1); /* skip over the = */
 
       if (*s == '"')
       {
@@ -206,20 +212,24 @@ static PARAMETER *parse_parameters (const char *s)
 	buffer[i] = 0;
       }
 
-      new->value = safe_strdup (buffer);
-
-      dprint (2, (debugfile, "parse_parameter: `%s' = `%s'\n",
-		  new->attribute ? new->attribute : "",
-		  new->value ? new->value : ""));
-      
-      /* Add this parameter to the list */
-      if (head)
+      /* if the attribute token was missing, 'new' will be NULL */
+      if (new)
       {
-	cur->next = new;
-	cur = cur->next;
+	new->value = safe_strdup (buffer);
+
+	dprint (2, (debugfile, "parse_parameter: `%s' = `%s'\n",
+	      new->attribute ? new->attribute : "",
+	      new->value ? new->value : ""));
+
+	/* Add this parameter to the list */
+	if (head)
+	{
+	  cur->next = new;
+	  cur = cur->next;
+	}
+	else
+	  head = cur = new;
       }
-      else
-	head = cur = new;
     }
     else
     {
@@ -229,19 +239,17 @@ static PARAMETER *parse_parameters (const char *s)
 
     /* Find the next parameter */
     if (*s != ';' && (s = strchr (s, ';')) == NULL)
-	break; /* no more parameters */
+      break; /* no more parameters */
 
     do
     {
-      s++;
-
-      /* Move past any leading whitespace */
-      SKIPWS (s);
+      /* Move past any leading whitespace. the +1 skips over the semicolon */
+      s = skip_email_wsp(s + 1);
     }
     while (*s == ';'); /* skip empty parameters */
   }    
 
-  bail:
+bail:
 
   rfc2231_decode_parameters (&head);
   return (head);
@@ -364,7 +372,7 @@ void mutt_parse_content_type (char *s, BODY *ct)
 
 }
 
-static void parse_content_disposition (char *s, BODY *ct)
+static void parse_content_disposition (const char *s, BODY *ct)
 {
   PARAMETER *parms;
 
@@ -378,8 +386,7 @@ static void parse_content_disposition (char *s, BODY *ct)
   /* Check to see if a default filename was given */
   if ((s = strchr (s, ';')) != NULL)
   {
-    s++;
-    SKIPWS (s);
+    s = skip_email_wsp(s + 1);
     if ((s = mutt_get_parameter ("filename", (parms = parse_parameters (s)))))
       mutt_str_replace (&ct->filename, s);
     if ((s = mutt_get_parameter ("name", parms)))
@@ -414,8 +421,7 @@ BODY *mutt_read_mime_header (FILE *fp, int digest)
     if ((c = strchr (line, ':')))
     {
       *c = 0;
-      c++;
-      SKIPWS (c);
+      c = skip_email_wsp(c + 1);
       if (!*c)
       {
 	dprint (1, (debugfile, "mutt_read_mime_header(): skipping empty header field: %s\n", line));
@@ -660,8 +666,7 @@ static const char *uncomment_timezone (char *buf, size_t buflen, const char *tz)
 
   if (*tz != '(')
     return tz; /* no need to do anything */
-  tz++;
-  SKIPWS (tz);
+  tz = skip_email_wsp(tz + 1);
   if ((p = strpbrk (tz, " )")) == NULL)
     return tz;
   len = p - tz;
@@ -764,7 +769,7 @@ time_t mutt_parse_date (const char *s, HEADER *h)
     t++;
   else
     t = scratch;
-  SKIPWS (t);
+  t = skip_email_wsp(t);
 
   memset (&tm, 0, sizeof (tm));
 
@@ -1407,8 +1412,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     }
 
     *p = 0;
-    p++;
-    SKIPWS (p);
+    p = skip_email_wsp(p + 1);
     if (!*p)
       continue; /* skip empty header fields */
 

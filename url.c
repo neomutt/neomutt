@@ -295,8 +295,7 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
      
       safe_asprintf (&scratch, "%s: %s", tag, value);
       scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
-      value = &scratch[taglen + 1];
-      SKIPWS (value);
+      value = skip_email_wsp(&scratch[taglen + 1]);
       mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
       FREE (&scratch);
     }

@@ -233,7 +233,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   LIST *tmp;
   LIST *last = NULL;
   LIST *next;
-  char *p;
+  const char *p;
   int opt_delete;
 
   if (!Postponed)
@@ -296,8 +296,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       {
 	/* if a mailbox is currently open, look to see if the orignal message
 	   the user attempted to reply to is in this mailbox */
-	p = tmp->data + 18;
-	SKIPWS (p);
+	p = skip_email_wsp(tmp->data + 18);
 	if (!ctx->id_hash)
 	  ctx->id_hash = mutt_make_id_hash (ctx);
 	*cur = hash_find (ctx->id_hash, p);
@@ -317,8 +316,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
     }
     else if (ascii_strncasecmp ("X-Mutt-Fcc:", tmp->data, 11) == 0)
     {
-      p = tmp->data + 11;
-      SKIPWS (p);
+      p = skip_email_wsp(tmp->data + 11);
       strfcpy (fcc, p, fcclen);
       mutt_pretty_mailbox (fcc, fcclen);
 
@@ -405,7 +403,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 
-int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
+int mutt_parse_crypt_hdr (const char *p, int set_signas, int crypt_app)
 {
   char smime_cryptalg[LONG_STRING] = "\0";
   char sign_as[LONG_STRING] = "\0", *q;
@@ -414,7 +412,7 @@ int mutt_parse_crypt_hdr (char *p, int set_signas, int crypt_app)
   if (!WithCrypto)
     return 0;
 
-  SKIPWS (p);
+  p = skip_email_wsp(p);
   for (; *p; p++)
   {
 

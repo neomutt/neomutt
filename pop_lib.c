@@ -82,8 +82,7 @@ void pop_error (POP_DATA *pop_data, char *msg)
 
   if (!mutt_strncmp (msg, "-ERR ", 5))
   {
-    c2 = msg + 5;
-    SKIPWS (c2);
+    c2 = skip_email_wsp(msg + 5);
 
     if (*c2)
       c = c2;
@@ -102,8 +101,7 @@ static int fetch_capa (char *line, void *data)
   if (!ascii_strncasecmp (line, "SASL", 4))
   {
     FREE (&pop_data->auth_list);
-    c = line + 4;
-    SKIPWS (c);
+    c = skip_email_wsp(line + 4);
     pop_data->auth_list = safe_strdup (c);
   }
 

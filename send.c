@@ -234,15 +234,14 @@ static int edit_envelope (ENVELOPE *en)
   }
   else
   {
-    char *p;
+    const char *p;
 
     buf[0] = 0;
     for (; uh; uh = uh->next)
     {
       if (ascii_strncasecmp ("subject:", uh->data, 8) == 0)
       {
-	p = uh->data + 8;
-	SKIPWS (p);
+	p = skip_email_wsp(uh->data + 8);
 	strncpy (buf, p, sizeof (buf));
       }
     }

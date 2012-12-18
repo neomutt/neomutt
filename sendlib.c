@@ -1813,12 +1813,8 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     else
     {
       tagbuf = mutt_substrdup (start, t);
-      ++t; /* skip over the colon separating the header field name and value */
-
-      /* skip over any leading whitespace (WSP, as defined in RFC5322) */
-      while (*t == ' ' || *t == '\t')
-	t++;
-
+      /* skip over the colon separating the header field name and value */
+      t = skip_email_wsp(t + 1);
       valbuf = mutt_substrdup (t, end);
     }
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
@@ -2040,7 +2036,7 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
 
       *p = '\0';
 
-      p++; SKIPWS (p);
+      p = skip_email_wsp(p + 1);
       if (!*p)
       {
 	*q = ':';
@@ -2084,7 +2080,7 @@ static void encode_headers (LIST *h)
       continue;
 
     i = p - h->data;
-    ++p; SKIPWS (p);
+    p = skip_email_wsp(p + 1);
     tmp = safe_strdup (p);
 
     if (!tmp)
