@@ -992,6 +992,7 @@ static int tls_check_certificate (CONNECTION* conn)
   unsigned int cert_list_size = 0;
   gnutls_certificate_status certstat;
   int certerr, i, preauthrc, savedcert, rc = 0;
+  int rcpeer = -1; /* the result of tls_check_preauth() on the peer's EE cert */
 
   if (gnutls_auth_get_type (state) != GNUTLS_CRD_CERTIFICATE)
   {
@@ -1018,6 +1019,13 @@ static int tls_check_certificate (CONNECTION* conn)
     rc = tls_check_preauth(&cert_list[i], certstat, conn->account.host, i,
                            &certerr, &savedcert);
     preauthrc += rc;
+    if (i == 0)
+    {
+      /* This is the peer's end-entity X.509 certificate.  Stash the result
+       * to check later in this function.
+       */
+      rcpeer = rc;
+    }
 
     if (savedcert)
     {
@@ -1042,7 +1050,10 @@ static int tls_check_certificate (CONNECTION* conn)
         dprint (1, (debugfile, "error trusting certificate %d: %d\n", i, rc));
 
       certstat = tls_verify_peers (state);
-      if (!certstat)
+      /* If the cert chain now verifies, and the peer's cert was otherwise
+       * valid (rcpeer==0), we are done.
+       */
+      if (!certstat && !rcpeer)
         return 1;
     }
   }
