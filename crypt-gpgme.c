@@ -73,7 +73,8 @@
 #define xtoi_2(p)   ((xtoi_1(p) * 16) + xtoi_1((p)+1))
 
 #define PKA_NOTATION_NAME "pka-address@gnupg.org"
-#define is_pka_notation(notation) (! strcmp ((notation)->name, \
+#define is_pka_notation(notation) ((notation)->name && \
+				    ! strcmp ((notation)->name, \
 					     PKA_NOTATION_NAME))
 
 /* Values used for comparing addresses. */
