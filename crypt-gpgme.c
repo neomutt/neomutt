@@ -1953,6 +1953,29 @@ err_ctx:
   return rc;
 }
 
+/* Check that 'b' is a complete line containing 'a' followed by either LF or CRLF.
+ *
+ * returns:
+ * 0 if the is a match
+ * -1 otherwise
+ */
+static int line_compare(const char *a, size_t n, const char *b)
+{
+  if (mutt_strncmp(a, b, n) == 0)
+  {
+    /* at this point we know that 'b' is at least 'n' chars long */
+    if (b[n] == '\n' || (b[n] == '\r' && b[n+1] == '\n'))
+      return 0;
+  }
+  return -1;
+}
+
+#define _LINE_COMPARE(_x,_y) !line_compare(_x, sizeof(_x)-1, _y)
+#define MESSAGE(_y) _LINE_COMPARE("MESSAGE-----", _y)
+#define SIGNED_MESSAGE(_y) _LINE_COMPARE("SIGNED MESSAGE-----", _y)
+#define PUBLIC_KEY_BLOCK(_y) _LINE_COMPARE("PUBLIC KEY BLOCK-----", _y)
+#define BEGIN_PGP_SIGNATURE(_y) _LINE_COMPARE("-----BEGIN PGP SIGNATURE-----", _y)
+
 /* 
  * Implementation of `pgp_check_traditional'.
  */
@@ -1989,12 +2012,12 @@ static int pgp_check_traditional_one_body (FILE *fp, BODY *b, int tagged_only)
   {
     if (!mutt_strncmp ("-----BEGIN PGP ", buf, 15))
     {
-      if (!mutt_strcmp ("MESSAGE-----\n", buf + 15))
+      if (MESSAGE(buf + 15))
       {
 	enc = 1;
 	break;
       }
-      else if (!mutt_strcmp ("SIGNED MESSAGE-----\n", buf + 15))
+      else if (SIGNED_MESSAGE(buf + 15))
       {
 	sgn = 1;
 	break;
@@ -2114,7 +2137,7 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
       continue;
     }
 
-    if (!mutt_strcmp (buf, "-----BEGIN PGP SIGNATURE-----\n"))
+    if (BEGIN_PGP_SIGNATURE(buf))
       break;
     
     if (armor_header)
@@ -2136,7 +2159,6 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
   fgetconv_close (&fc);
   safe_fclose (&fp);
 }
-
 
 /* Support for classic_application/pgp */
 int pgp_gpgme_application_handler (BODY *m, STATE *s)
@@ -2180,14 +2202,14 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
         {
           clearsign = 0;
           
-          if (!mutt_strcmp ("MESSAGE-----\n", buf + 15))
+          if (MESSAGE(buf + 15))
             needpass = 1;
-          else if (!mutt_strcmp ("SIGNED MESSAGE-----\n", buf + 15))
+          else if (SIGNED_MESSAGE(buf + 15))
             {
               clearsign = 1;
               needpass = 0;
             }
-          else if (!mutt_strcmp ("PUBLIC KEY BLOCK-----\n", buf + 15))
+          else if (PUBLIC_KEY_BLOCK(buf + 15))
           {
             needpass = 0;
             pgp_keyblock = 1;
