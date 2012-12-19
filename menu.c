@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2002,2012 Michael R. Elkins <me@mutt.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -55,58 +55,93 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	  case M_TREE_LLCORNER:
 	    if (option (OPTASCIICHARS))
 	      addch ('`');
+#ifdef WACS_LLCORNER
+	    else
+	      add_wch(WACS_LLCORNER);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\224"); /* WACS_LLCORNER */
 	    else
 	      addch (ACS_LLCORNER);
+#endif
 	    break;
 	  case M_TREE_ULCORNER:
 	    if (option (OPTASCIICHARS))
 	      addch (',');
+#ifdef WACS_ULCORNER
+	    else
+	      add_wch(WACS_ULCORNER);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\214"); /* WACS_ULCORNER */
 	    else
 	      addch (ACS_ULCORNER);
+#endif
 	    break;
 	  case M_TREE_LTEE:
 	    if (option (OPTASCIICHARS))
 	      addch ('|');
+#ifdef WACS_LTEE
+	    else
+	      add_wch(WACS_LTEE);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\234"); /* WACS_LTEE */
 	    else
 	      addch (ACS_LTEE);
+#endif
 	    break;
 	  case M_TREE_HLINE:
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
+#ifdef WACS_HLINE
+	    else
+	      add_wch(WACS_HLINE);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\200"); /* WACS_HLINE */
 	    else
 	      addch (ACS_HLINE);
+#endif
 	    break;
 	  case M_TREE_VLINE:
 	    if (option (OPTASCIICHARS))
 	      addch ('|');
+#ifdef WACS_VLINE
+	    else
+	      add_wch(WACS_VLINE);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\202"); /* WACS_VLINE */
 	    else
 	      addch (ACS_VLINE);
+#endif
 	    break;
 	  case M_TREE_TTEE:
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
+#ifdef WACS_TTEE
+	    else
+	      add_wch(WACS_TTEE);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\254"); /* WACS_TTEE */
 	    else
 	      addch (ACS_TTEE);
+#endif
 	    break;
 	  case M_TREE_BTEE:
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
+#ifdef WACS_BTEE
+	    else
+	      add_wch(WACS_BTEE);
+#else
 	    else if (Charset_is_utf8)
 	      addstr ("\342\224\264"); /* WACS_BTEE */
 	    else
 	      addch (ACS_BTEE);
+#endif
 	    break;
 	  case M_TREE_SPACE:
 	    addch (' ');
