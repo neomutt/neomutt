@@ -238,7 +238,11 @@ err_crt:
   gnutls_x509_crt_deinit (clientcrt);
 }
 
-static int protocol_priority[] = {GNUTLS_TLS1, GNUTLS_SSL3, 0};
+/* This array needs to be large enough to hold all the possible values support
+ * by Mutt.  The initialized values are just placeholders--the array gets
+ * overwrriten in tls_negotiate() depending on the $ssl_use_* options.
+ */
+static int protocol_priority[] = {GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1, GNUTLS_SSL3, 0};
 
 /* tls_negotiate: After TLS state has been initialised, attempt to negotiate
  *   TLS over the wire, including certificate checks. */
@@ -246,6 +250,7 @@ static int tls_negotiate (CONNECTION * conn)
 {
   tlssockdata *data;
   int err;
+  size_t nproto = 0; /* number of tls/ssl protocols */
 
   data = (tlssockdata *) safe_calloc (1, sizeof (tlssockdata));
   conn->sockdata = data;
@@ -291,21 +296,21 @@ static int tls_negotiate (CONNECTION * conn)
   /* set socket */
   gnutls_transport_set_ptr (data->state, (gnutls_transport_ptr)conn->fd);
 
+  if (option(OPTTLSV1_2))
+    protocol_priority[nproto++] = GNUTLS_TLS1_2;
+  if (option(OPTTLSV1_1))
+    protocol_priority[nproto++] = GNUTLS_TLS1_1;
+  if (option(OPTTLSV1))
+    protocol_priority[nproto++] = GNUTLS_TLS1;
+  if (option(OPTSSLV3))
+    protocol_priority[nproto++] = GNUTLS_SSL3;
+  protocol_priority[nproto] = 0;
+
   /* disable TLS/SSL protocols as needed */
-  if (!option(OPTTLSV1) && !option(OPTSSLV3))
+  if (nproto == 0)
   {
     mutt_error (_("All available protocols for TLS/SSL connection disabled"));
     goto fail;
-  }
-  else if (!option(OPTTLSV1))
-  {
-    protocol_priority[0] = GNUTLS_SSL3;
-    protocol_priority[1] = 0;
-  }
-  else if (!option(OPTSSLV3))
-  {
-    protocol_priority[0] = GNUTLS_TLS1;
-    protocol_priority[1] = 0;
   }
   /*
   else
