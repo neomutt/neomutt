@@ -993,7 +993,7 @@ then
                 bdbpfx="$bdbpfx $d/$v"
             done
         done
-        BDB_VERSIONS="db-4 db4 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db ''"
+        BDB_VERSIONS="db-4 db4 db-5 db5 db-5.2 db5.2 db52 db-5.1 db5.1 db51 db-5.0 db5.0 db50 db-4.8 db4.8 db48 db-4.7 db4.7 db47 db-4.6 db4.6 db46 db-4.5 db4.5 db45 db-4.4 db4.4 db44 db-4.3 db4.3 db43 db-4.2 db4.2 db42 db-4.1 db4.1 db41 db ''"
         AC_MSG_CHECKING([for BerkeleyDB > 4.0])
         for d in $bdbpfx; do
             BDB_INCLUDE_DIR=""
