@@ -14,6 +14,10 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 MUTT_VERSION=`env HGROOT="$srcdir" sh "$srcdir/version.sh"`
 AC_DEFINE_UNQUOTED(MUTT_VERSION,"$MUTT_VERSION", [Full textual version string.])
 
+AC_DEFINE(_POSIX_C_SOURCE, 200809L, [Enable POSIX.1-2008 features.])
+AC_DEFINE(_XOPEN_SOURCE, 700, [Enable POSIX and XPG features.])
+AC_DEFINE(_XOPEN_SOURCE_EXTENDED, 1, [Enable XPG Extensions.])
+
 AC_GNU_SOURCE
 
 ALL_LINGUAS="de eu ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg ga"
