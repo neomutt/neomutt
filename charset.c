@@ -50,7 +50,7 @@
  * a preferred MIME name is given.
  */
 
-static const const struct 
+static const struct 
 {
   const char *key;
   const char *pref;
