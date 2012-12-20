@@ -28,8 +28,6 @@
 #include <string.h>
 #include <stdlib.h>
 
-extern int Charset_is_utf8; /* FIXME: bad modularisation */
-
 extern size_t UngetCount;
 
 char* SearchBuffers[MENU_MAX];
