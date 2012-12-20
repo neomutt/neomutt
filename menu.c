@@ -25,9 +25,6 @@
 #include "mutt_menu.h"
 #include "mbyte.h"
 
-#include <string.h>
-#include <stdlib.h>
-
 extern size_t UngetCount;
 
 char* SearchBuffers[MENU_MAX];
