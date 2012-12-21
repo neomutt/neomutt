@@ -3,12 +3,12 @@ dnl Process this file with autoconf to produce a configure script.
 dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
 dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 
-AC_PREREQ([2.54])
-AC_INIT([mutt.h])
+AC_PREREQ([2.59])
 AM_CONFIG_HEADER([config.h])
 
-mutt_cv_version=`cat "$srcdir/VERSION"`
-AM_INIT_AUTOMAKE(mutt, $mutt_cv_version)
+AC_INIT([mutt], [m4_esyscmd_s(cat VERSION)])
+AC_CONFIG_SRCDIR(mutt.h)
+AM_INIT_AUTOMAKE
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 
 MUTT_VERSION=`env HGROOT="$srcdir" sh "$srcdir/version.sh"`
