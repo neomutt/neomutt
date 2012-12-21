@@ -733,7 +733,7 @@ int imap_wordcasecmp(const char *a, const char *b)
  *
  */
 
-static RETSIGTYPE alrm_handler (int sig)
+static void alrm_handler (int sig)
 {
   /* empty */
 }
