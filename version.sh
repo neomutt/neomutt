@@ -6,7 +6,8 @@ HG=hg
 
 # Ensure that we have a repo here and that mercurial is installed.  If
 # not, just cat the VERSION file; it contains the latest release number.
-{ [ -d "$HGROOT/.hg" ] && $HG >/dev/null 2>&1; } || exec cat VERSION
+{ [ -d "$HGROOT/.hg" ] && $HG >/dev/null 2>&1; } \
+|| exec cat "$HGROOT/VERSION"
 
 # This is a mercurial repo and we have the hg command.
 
