@@ -1,7 +1,7 @@
 #!/bin/sh --
 
 list_patches_PATCHES () {
-	cat PATCHES
+	cat -
 }
 
 list_patches_mq () {
