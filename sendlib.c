@@ -2139,7 +2139,7 @@ char *mutt_gen_msgid (void)
   return (safe_strdup (buf));
 }
 
-static RETSIGTYPE alarm_handler (int sig)
+static void alarm_handler (int sig)
 {
   SigAlrm = 1;
 }

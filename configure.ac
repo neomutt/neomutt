@@ -306,19 +306,6 @@ AC_CHECK_HEADERS(unix.h)
 
 AC_CHECK_FUNCS(setrlimit getsid)
 
-AC_DIAGNOSE([obsolete],[your code may safely assume C89 semantics that RETSIGTYPE is void.
-Remove this warning and the `AC_CACHE_CHECK' when you adjust the code.])dnl
-AC_CACHE_CHECK([return type of signal handlers],[ac_cv_type_signal],[AC_COMPILE_IFELSE(
-[AC_LANG_PROGRAM([#include <sys/types.h>
-#include <signal.h>
-],
-		 [return *(signal (0, 0)) (0) == 1;])],
-		   [ac_cv_type_signal=int],
-		   [ac_cv_type_signal=void])])
-AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type of signal handlers
-		    (`int' or `void').])
-
-
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(sig_atomic_t,signal.h,
   [
