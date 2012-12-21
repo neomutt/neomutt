@@ -3,7 +3,7 @@ dnl Process this file with autoconf to produce a configure script.
 dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
 dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 
-AC_INIT([mutt], [m4_esyscmd_s(cat VERSION)])
+AC_INIT([mutt],[m4_esyscmd_s(cat VERSION)])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -13,7 +13,7 @@ AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 MUTT_VERSION=`env HGROOT="$srcdir" sh "$srcdir/version.sh"`
 AC_DEFINE_UNQUOTED(MUTT_VERSION,"$MUTT_VERSION", [Full textual version string.])
 
-AC_GNU_SOURCE
+AC_USE_SYSTEM_EXTENSIONS
 
 ALL_LINGUAS="de eu ru it es uk fr pl nl cs id sk ko el zh_TW zh_CN pt_BR eo gl sv da lt tr ja hu et ca bg ga"
 
@@ -28,7 +28,7 @@ fi
 AC_MSG_RESULT($mutt_cv_prefix)
 
 AC_PROG_CC
-AC_ISC_POSIX
+AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
   AC_MSG_ERROR(Compiler not ANSI compliant)
 fi
@@ -119,7 +119,7 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 OPS='$(srcdir)/OPS'
 
 AC_MSG_CHECKING([whether to build with GPGME support])
-AC_ARG_ENABLE(gpgme, AC_HELP_STRING([--enable-gpgme], [Enable GPGME support]),
+AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]),
 [       if test x$enableval = xyes; then
 		enable_gpgme=yes
 	fi
@@ -144,7 +144,7 @@ else
    AC_MSG_RESULT([no])
 fi
 
-AC_ARG_ENABLE(pgp, AC_HELP_STRING([--disable-pgp], [Disable PGP support]),
+AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]),
 [       if test x$enableval = xno ; then
                 have_pgp=no
         fi
@@ -156,7 +156,7 @@ if test x$have_pgp != xno ; then
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
 fi
 
-AC_ARG_ENABLE(smime, AC_HELP_STRING([--disable-smime], [Disable SMIME support]),
+AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]),
 [	if test x$enableval = xno ; then
 		have_smime=no
 	fi
@@ -168,7 +168,7 @@ if test x$have_smime != xno ; then
 	SMIMEAUX_TARGET="smime_keys"
 fi
 
-AC_ARG_WITH(mixmaster, AC_HELP_STRING([--with-mixmaster@<:@=PATH@:>@], [Include Mixmaster support]),
+AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
    then
      if test -x "$withval"
@@ -194,9 +194,9 @@ if test $ISPELL != no; then
         AC_DEFINE_UNQUOTED(ISPELL,"$ISPELL",[ Where to find ispell on your system. ])
 fi
 
-AC_ARG_WITH(slang, AC_HELP_STRING([--with-slang@<:@=DIR@:>@], [Use S-Lang instead of ncurses]),
+AC_ARG_WITH(slang, AS_HELP_STRING([--with-slang@<:@=DIR@:>@],[Use S-Lang instead of ncurses]),
         [AC_CACHE_CHECK([if this is a BSD system], mutt_cv_bsdish,
-                [AC_TRY_RUN([#include <sys/param.h>
+                [AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <sys/param.h>
 #include <stdlib.h>
 
 main ()
@@ -206,10 +206,7 @@ main ()
 #else
         exit (1);
 #endif
-}],
-                        mutt_cv_bsdish=yes,
-                        mutt_cv_bsdish=no,
-                        mutt_cv_bsdish=no)])
+}]])],[mutt_cv_bsdish=yes],[mutt_cv_bsdish=no],[mutt_cv_bsdish=no])])
 
         AC_MSG_CHECKING(for S-Lang)
         if test $withval = yes; then
@@ -260,7 +257,7 @@ main ()
         ],
 
         [mutt_cv_curses=/usr
-        AC_ARG_WITH(curses, AC_HELP_STRING([--with-curses=DIR], [Where ncurses is installed]),
+        AC_ARG_WITH(curses, AS_HELP_STRING([--with-curses=DIR],[Where ncurses is installed]),
                 [if test $withval != yes; then
                         mutt_cv_curses=$withval
                 fi
@@ -309,7 +306,18 @@ AC_CHECK_HEADERS(unix.h)
 
 AC_CHECK_FUNCS(setrlimit getsid)
 
-AC_TYPE_SIGNAL
+AC_DIAGNOSE([obsolete],[your code may safely assume C89 semantics that RETSIGTYPE is void.
+Remove this warning and the `AC_CACHE_CHECK' when you adjust the code.])dnl
+AC_CACHE_CHECK([return type of signal handlers],[ac_cv_type_signal],[AC_COMPILE_IFELSE(
+[AC_LANG_PROGRAM([#include <sys/types.h>
+#include <signal.h>
+],
+		 [return *(signal (0, 0)) (0) == 1;])],
+		   [ac_cv_type_signal=int],
+		   [ac_cv_type_signal=void])])
+AC_DEFINE_UNQUOTED([RETSIGTYPE],[$ac_cv_type_signal],[Define as the return type of signal handlers
+		    (`int' or `void').])
+
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(sig_atomic_t,signal.h,
@@ -338,7 +346,13 @@ else
     AC_DEFINE(SIG_ATOMIC_VOLATILE_T, [volatile sig_atomic_t])
 fi
 
-AC_DECL_SYS_SIGLIST
+AC_CHECK_DECLS([sys_siglist],[],[],[#include <signal.h>
+/* NetBSD declares sys_siglist in unistd.h.  */
+#ifdef HAVE_UNISTD_H
+# include <unistd.h>
+#endif
+])
+
 
 AC_TYPE_PID_T
 AC_CHECK_TYPE(ssize_t, int)
@@ -359,7 +373,7 @@ AC_CHECK_FUNC(vsnprintf, [mutt_cv_func_vsnprintf=yes], [mutt_cv_func_vsnprintf=n
 if test $mutt_cv_func_snprintf = yes; then
 AC_CACHE_CHECK([whether your system's snprintf is C99 compliant],
         [mutt_cv_c99_snprintf],
-        AC_TRY_RUN([
+        AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <stdio.h>
 int main()
 {
@@ -369,14 +383,14 @@ changequote(, )dnl
   return (len != 7 || buf[3] != '\0');
 changequote([, ])dnl
 }
-        ], mutt_cv_c99_snprintf=yes, mutt_cv_c99_snprintf=no, mutt_cv_c99_snprintf=no))
+        ]])],[mutt_cv_c99_snprintf=yes],[mutt_cv_c99_snprintf=no],[mutt_cv_c99_snprintf=no]))
 else
         mutt_cv_c99_snprintf=no
 fi
 if test $mutt_cv_func_vsnprintf = yes; then
 AC_CACHE_CHECK([whether your system's vsnprintf is C99 compliant],
         [mutt_cv_c99_vsnprintf],
-        AC_TRY_RUN([
+        AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <stdarg.h>
 #include <stdio.h>
 int foo(const char *fmt, ...)
@@ -396,7 +410,7 @@ int main()
 {
   return foo("%s", "1234567");
 }
-        ], mutt_cv_c99_vsnprintf=yes, mutt_cv_c99_vsnprintf=no, mutt_cv_c99_vsnprintf=no))
+        ]])],[mutt_cv_c99_vsnprintf=yes],[mutt_cv_c99_vsnprintf=no],[mutt_cv_c99_vsnprintf=no]))
 else
         mutt_cv_c99_vsnprintf=no
 fi
@@ -421,20 +435,19 @@ AC_CHECK_FUNCS(strftime, , [AC_CHECK_LIB(intl, strftime)])
 dnl AIX may not have fchdir()
 AC_CHECK_FUNCS(fchdir, , [mutt_cv_fchdir=no])
 
-AC_ARG_WITH(regex, AC_HELP_STRING([--with-regex], [Use the GNU regex library]),
+AC_ARG_WITH(regex, AS_HELP_STRING([--with-regex],[Use the GNU regex library]),
         [mutt_cv_regex=yes],
         [AC_CHECK_FUNCS(regcomp, mutt_cv_regex=no, mutt_cv_regex=yes)])
 
 if test $mutt_cv_regex = no ; then
 AC_CACHE_CHECK([whether your system's regexp library is completely broken],
         [mutt_cv_regex_broken],
-        AC_TRY_RUN([
+        AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <unistd.h>
 #include <regex.h>
-main() { regex_t blah ; regmatch_t p; p.rm_eo = p.rm_eo; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }],
-        mutt_cv_regex_broken=no, mutt_cv_regex_broken=yes, mutt_cv_regex_broken=yes))
+main() { regex_t blah ; regmatch_t p; p.rm_eo = p.rm_eo; return regcomp(&blah, "foo.*bar", REG_NOSUB) || regexec (&blah, "foobar", 0, NULL, 0); }]])],[mutt_cv_regex_broken=no],[mutt_cv_regex_broken=yes],[mutt_cv_regex_broken=yes]))
         if test $mutt_cv_regex_broken = yes ; then
-                echo "Using the included GNU regex instead." >&AC_FD_MSG
+                echo "Using the included GNU regex instead." >&AS_MESSAGE_FD
                 mutt_cv_regex=yes
         fi
 fi
@@ -446,7 +459,7 @@ fi
 
 
 AC_ARG_WITH(homespool,
-  AC_HELP_STRING([--with-homespool@<:@=FILE@:>@], [File in user's directory where new mail is spooled]), with_homespool=${withval})
+  AS_HELP_STRING([--with-homespool@<:@=FILE@:>@],[File in user's directory where new mail is spooled]), with_homespool=${withval})
 if test x$with_homespool != x; then
         if test $with_homespool = yes; then
                 with_homespool=mailbox
@@ -460,7 +473,7 @@ if test x$with_homespool != x; then
         AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
         mutt_cv_setgid=no
 else
-        AC_ARG_WITH(mailpath, AC_HELP_STRING([--with-mailpath=DIR], [Directory where spool mailboxes are located]),
+        AC_ARG_WITH(mailpath, AS_HELP_STRING([--with-mailpath=DIR],[Directory where spool mailboxes are located]),
                 [mutt_cv_mailpath=$withval],
                 [ AC_CACHE_CHECK(where new mail is stored, mutt_cv_mailpath,
                         [mutt_cv_mailpath=no
@@ -479,7 +492,7 @@ else
         fi
         AC_DEFINE_UNQUOTED(MAILPATH,"$mutt_cv_mailpath",[ Where new mail is spooled. ])
 
-        AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, [AC_TRY_RUN([#include <sys/types.h>
+        AC_CACHE_CHECK(if $mutt_cv_mailpath is world writable, mutt_cv_worldwrite, [AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 
@@ -490,14 +503,14 @@ int main (int argc, char **argv)
         stat ("$mutt_cv_mailpath", &s);
         if (s.st_mode & S_IWOTH) exit (0);
         exit (1);
-}], mutt_cv_worldwrite=yes, mutt_cv_worldwrite=no, mutt_cv_worldwrite=no)])
+}]])],[mutt_cv_worldwrite=yes],[mutt_cv_worldwrite=no],[mutt_cv_worldwrite=no])])
 
         mutt_cv_setgid=no
         if test $mutt_cv_worldwrite = yes; then
                 AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
         else
 
-                AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, [AC_TRY_RUN([#include <sys/types.h>
+                AC_CACHE_CHECK(if $mutt_cv_mailpath is group writable, mutt_cv_groupwrite, [AC_RUN_IFELSE([AC_LANG_SOURCE([[#include <sys/types.h>
 #include <sys/stat.h>
 #include <stdlib.h>
 
@@ -508,7 +521,7 @@ int main (int argc, char **argv)
         stat ("$mutt_cv_mailpath", &s);
         if (s.st_mode & S_IWGRP) exit (0);
         exit (1);
-}], mutt_cv_groupwrite=yes, mutt_cv_groupwrite=no, mutt_cv_groupwrite=no)])
+}]])],[mutt_cv_groupwrite=yes],[mutt_cv_groupwrite=no],[mutt_cv_groupwrite=no])])
 
                 if test $mutt_cv_groupwrite = yes; then
                         AC_DEFINE(USE_DOTLOCK,1,[ Define to use dotlocking for mailboxes. ])
@@ -518,7 +531,7 @@ int main (int argc, char **argv)
         fi
 fi
 
-AC_ARG_ENABLE(external_dotlock, AC_HELP_STRING([--enable-external-dotlock], [Force use of an external dotlock program]),
+AC_ARG_ENABLE(external_dotlock, AS_HELP_STRING([--enable-external-dotlock],[Force use of an external dotlock program]),
         [mutt_cv_external_dotlock="$enableval"])
 
 if test "x$mutt_cv_setgid" = "xyes" || test "x$mutt_cv_fchdir" = "xno" \
@@ -539,7 +552,7 @@ fi
 AC_SUBST([datarootdir])
 
 AC_MSG_CHECKING(where to put the documentation)
-AC_ARG_WITH(docdir, AC_HELP_STRING([--with-docdir=PATH], [Specify where to put the documentation]),
+AC_ARG_WITH(docdir, AS_HELP_STRING([--with-docdir=PATH],[Specify where to put the documentation]),
         [mutt_cv_docdir=$withval],
         [mutt_cv_docdir='${datarootdir}/doc/mutt'])
 AC_MSG_RESULT($mutt_cv_docdir)
@@ -559,7 +572,7 @@ fi
 AC_SUBST(DOTLOCK_GROUP)
 AC_SUBST(DOTLOCK_PERMISSION)
 
-AC_ARG_WITH(domain, AC_HELP_STRING([--with-domain=DOMAIN], [Specify your DNS domain name]),
+AC_ARG_WITH(domain, AS_HELP_STRING([--with-domain=DOMAIN],[Specify your DNS domain name]),
         [if test $withval != yes; then
             if test $withval != no; then
                 AC_DEFINE_UNQUOTED(DOMAIN,"$withval",[ Define your domain name. ])
@@ -570,7 +583,7 @@ need_socket="no"
 
 dnl -- socket dependencies --
 
-AC_ARG_ENABLE(pop,  AC_HELP_STRING([--enable-pop], [Enable POP3 support]),
+AC_ARG_ENABLE(pop,  AS_HELP_STRING([--enable-pop],[Enable POP3 support]),
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_POP,1,[ Define if you want support for the POP3 protocol. ])
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pop.o pop_lib.o pop_auth.o"
@@ -580,7 +593,7 @@ AC_ARG_ENABLE(pop,  AC_HELP_STRING([--enable-pop], [Enable POP3 support]),
         fi
 ])
 
-AC_ARG_ENABLE(imap, AC_HELP_STRING([--enable-imap], [Enable IMAP support]),
+AC_ARG_ENABLE(imap, AS_HELP_STRING([--enable-imap],[Enable IMAP support]),
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_IMAP,1,[ Define if you want support for the IMAP protocol. ])
                 LIBIMAP="-Limap -limap"
@@ -592,7 +605,7 @@ AC_ARG_ENABLE(imap, AC_HELP_STRING([--enable-imap], [Enable IMAP support]),
 ])
 AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
-AC_ARG_ENABLE(smtp, AC_HELP_STRING([--enable-smtp], [include internal SMTP relay support]),
+AC_ARG_ENABLE(smtp, AS_HELP_STRING([--enable-smtp],[include internal SMTP relay support]),
 	[if test $enableval = yes; then
 		AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
             	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smtp.o"
@@ -623,7 +636,7 @@ fi
 
 dnl -- imap dependencies --
 
-AC_ARG_WITH(gss, AC_HELP_STRING([--with-gss@<:@=PFX@:>@], [Compile in GSSAPI authentication for IMAP]), 
+AC_ARG_WITH(gss, AS_HELP_STRING([--with-gss@<:@=PFX@:>@],[Compile in GSSAPI authentication for IMAP]), 
     gss_prefix="$withval", gss_prefix="no")
 if test "$gss_prefix" != "no"
 then
@@ -653,7 +666,7 @@ AM_CONDITIONAL(USE_GSS, test x$need_gss = xyes)
 
 dnl -- end imap dependencies --
 
-AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl@<:@=PFX@:>@], [Enable TLS support using OpenSSL]),
+AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support using OpenSSL]),
 [       if test "$with_ssl" != "no"
         then
           if test "$need_socket" != "yes"; then
@@ -689,7 +702,7 @@ AC_ARG_WITH(ssl, AC_HELP_STRING([--with-ssl@<:@=PFX@:>@], [Enable TLS support us
         fi
 ])
 
-AC_ARG_WITH([gnutls], AC_HELP_STRING([--with-gnutls@<:@=PFX@:>@], [enable TLS support using gnutls]),
+AC_ARG_WITH([gnutls], AS_HELP_STRING([--with-gnutls@<:@=PFX@:>@],[enable TLS support using gnutls]),
     [gnutls_prefix="$withval"], [gnutls_prefix="no"])
 if test "$gnutls_prefix" != "no" && test x"$need_ssl" != xyes
 then
@@ -723,7 +736,7 @@ fi
 
 AM_CONDITIONAL(USE_SSL, test x$need_ssl = xyes)
 
-AC_ARG_WITH(sasl, AC_HELP_STRING([--with-sasl@<:@=PFX@:>@], [Use SASL network security library]),
+AC_ARG_WITH(sasl, AS_HELP_STRING([--with-sasl@<:@=PFX@:>@],[Use SASL network security library]),
         [	
         if test "$with_sasl" != "no"
         then
@@ -759,19 +772,19 @@ AM_CONDITIONAL(USE_SASL, test x$need_sasl = xyes)
 
 dnl -- end socket --
 
-AC_ARG_ENABLE(debug, AC_HELP_STRING([--enable-debug], [Enable debugging support]),
+AC_ARG_ENABLE(debug, AS_HELP_STRING([--enable-debug],[Enable debugging support]),
         [ if test x$enableval = xyes ; then
                 AC_DEFINE(DEBUG,1,[ Define to enable debugging info. ])
           fi
          ])
 
-AC_ARG_ENABLE(flock, AC_HELP_STRING([--enable-flock], [Use flock() to lock files]),
+AC_ARG_ENABLE(flock, AS_HELP_STRING([--enable-flock],[Use flock() to lock files]),
         [if test $enableval = yes; then
                 AC_DEFINE(USE_FLOCK,1, [ Define to use flock() to lock mailboxes. ])
         fi])
 
 mutt_cv_fcntl=yes
-AC_ARG_ENABLE(fcntl, AC_HELP_STRING([--disable-fcntl], [Do NOT use fcntl() to lock files]),
+AC_ARG_ENABLE(fcntl, AS_HELP_STRING([--disable-fcntl],[Do NOT use fcntl() to lock files]),
         [if test $enableval = no; then mutt_cv_fcntl=no; fi])
 
 if test $mutt_cv_fcntl = yes; then
@@ -780,7 +793,7 @@ fi
 
 AC_MSG_CHECKING(whether struct dirent defines d_ino)
 ac_cv_dirent_d_ino=no
-AC_TRY_LINK([#include <dirent.h>],[struct dirent dp; (void)dp.d_ino],[ac_cv_dirent_d_ino=yes])
+AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <dirent.h>]], [[struct dirent dp; (void)dp.d_ino]])],[ac_cv_dirent_d_ino=yes],[])
 if test x$ac_cv_dirent_d_ino = xyes ; then
   AC_DEFINE(HAVE_DIRENT_D_INO,1,
             [Define to 1 if your system has the dirent::d_ino member])
@@ -788,7 +801,7 @@ fi
 AC_MSG_RESULT($ac_cv_dirent_d_ino)
 
 mutt_cv_warnings=yes
-AC_ARG_ENABLE(warnings, AC_HELP_STRING([--disable-warnings], [Turn off compiler warnings (not recommended)]),
+AC_ARG_ENABLE(warnings, AS_HELP_STRING([--disable-warnings],[Turn off compiler warnings (not recommended)]),
 [if test $enableval = no; then
         mutt_cv_warnings=no
 fi])
@@ -797,7 +810,7 @@ if test x$GCC = xyes && test $mutt_cv_warnings = yes; then
   CFLAGS="-Wall -pedantic -Wno-long-long $CFLAGS"
 fi
 
-AC_ARG_ENABLE(nfs-fix, AC_HELP_STRING([--enable-nfs-fix], [Work around an NFS with broken attributes caching]),
+AC_ARG_ENABLE(nfs-fix, AS_HELP_STRING([--enable-nfs-fix],[Work around an NFS with broken attributes caching]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(NFS_ATTRIBUTE_HACK,1,
                   [Define if you have problems with mutt not detecting
@@ -805,17 +818,17 @@ AC_ARG_ENABLE(nfs-fix, AC_HELP_STRING([--enable-nfs-fix], [Work around an NFS wi
                    incorrectly cache the attributes of small files.])
         fi])
 
-AC_ARG_ENABLE(mailtool, AC_HELP_STRING([--enable-mailtool], [Enable Sun mailtool attachments support]),
+AC_ARG_ENABLE(mailtool, AS_HELP_STRING([--enable-mailtool],[Enable Sun mailtool attachments support]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(SUN_ATTACHMENT,1,[ Define to enable Sun mailtool attachments support. ])
         fi])
 
-AC_ARG_ENABLE(locales-fix, AC_HELP_STRING([--enable-locales-fix], [The result of isprint() is unreliable]),
+AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of isprint() is unreliable]),
         [if test x$enableval = xyes; then
                 AC_DEFINE(LOCALES_HACK,1,[ Define if the result of isprint() is unreliable. ])
         fi])
 
-AC_ARG_WITH(exec-shell, AC_HELP_STRING([--with-exec-shell=SHELL], [Specify alternate shell (ONLY if /bin/sh is broken)]),
+AC_ARG_WITH(exec-shell, AS_HELP_STRING([--with-exec-shell=SHELL],[Specify alternate shell (ONLY if /bin/sh is broken)]),
         [if test $withval != yes; then
                 AC_DEFINE_UNQUOTED(EXECSHELL, "$withval",
                  [program to use for shell commands])
@@ -824,7 +837,7 @@ AC_ARG_WITH(exec-shell, AC_HELP_STRING([--with-exec-shell=SHELL], [Specify alter
         fi],
         [AC_DEFINE_UNQUOTED(EXECSHELL, "/bin/sh")])
 
-AC_ARG_ENABLE(exact-address, AC_HELP_STRING([--enable-exact-address], [Enable regeneration of email addresses]),
+AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable regeneration of email addresses]),
         [if test $enableval = yes; then
                 AC_DEFINE(EXACT_ADDRESS,1,
                   [Enable exact regeneration of email addresses as parsed?
@@ -835,16 +848,11 @@ AC_ARG_ENABLE(exact-address, AC_HELP_STRING([--enable-exact-address], [Enable re
 dnl -- start cache --
 db_found=no
 db_requested=auto
-AC_ARG_ENABLE(hcache, AC_HELP_STRING([--enable-hcache],
-  [Enable header caching]))
-AC_ARG_WITH(tokyocabinet, AC_HELP_STRING([--without-tokyocabinet],
-  [Don't use tokyocabinet even if it is available]))
-AC_ARG_WITH(qdbm, AC_HELP_STRING([--without-qdbm],
-  [Don't use qdbm even if it is available]))
-AC_ARG_WITH(gdbm, AC_HELP_STRING([--without-gdbm],
-  [Don't use gdbm even if it is available]))
-AC_ARG_WITH(bdb, AC_HELP_STRING([--with-bdb@<:@=DIR@:>@],
-  [Use BerkeleyDB4 if gdbm is not available]))
+AC_ARG_ENABLE(hcache, AS_HELP_STRING([--enable-hcache],[Enable header caching]))
+AC_ARG_WITH(tokyocabinet, AS_HELP_STRING([--without-tokyocabinet],[Don't use tokyocabinet even if it is available]))
+AC_ARG_WITH(qdbm, AS_HELP_STRING([--without-qdbm],[Don't use qdbm even if it is available]))
+AC_ARG_WITH(gdbm, AS_HELP_STRING([--without-gdbm],[Don't use gdbm even if it is available]))
+AC_ARG_WITH(bdb, AS_HELP_STRING([--with-bdb@<:@=DIR@:>@],[Use BerkeleyDB4 if gdbm is not available]))
 
 db_found=no
 if test x$enable_hcache = xyes
@@ -959,7 +967,7 @@ then
         LIBS="$LIBS -lgdbm"
         AC_CACHE_CHECK(for gdbm_open, ac_cv_gdbmopen,[
             ac_cv_gdbmopen=no
-            AC_TRY_LINK([#include <gdbm.h>],[gdbm_open(0,0,0,0,0);],[ac_cv_gdbmopen=yes])
+            AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <gdbm.h>]], [[gdbm_open(0,0,0,0,0);]])],[ac_cv_gdbmopen=yes],[])
         ])
         LIBS="$saved_LIBS"
         if test "$ac_cv_gdbmopen" = yes
@@ -1002,17 +1010,17 @@ then
                         for l in `echo $BDB_VERSIONS`; do
                             CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
                             LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$l"
-                            AC_TRY_LINK([
+                            AC_LINK_IFELSE([AC_LANG_PROGRAM([[
                                 #include <stdlib.h>
                                 #include <db.h>
-                            ],[
+                            ]], [[
                                 DB *db = NULL;
                                 db->open(db,NULL,NULL,NULL,0,0,0);
-                            ],[
+                            ]])],[
                                 ac_cv_dbcreate=yes
                                 BDB_LIB="$l"
                                 break
-                            ])
+                            ],[])
                         done
                         test x$ac_cv_dbcreate = xyes && break 2
                     done
@@ -1058,7 +1066,7 @@ AC_SUBST(LIBIMAPDEPS)
 
 dnl -- iconv/gettext --
 
-AC_ARG_ENABLE(iconv, AC_HELP_STRING([--disable-iconv], [Disable iconv support]),
+AC_ARG_ENABLE(iconv, AS_HELP_STRING([--disable-iconv],[Disable iconv support]),
         [if test x$enableval = xno ; then
                 am_cv_func_iconv=no
         fi
@@ -1085,7 +1093,7 @@ dnl     obl when args 2 and 3 are 0 (fixed in glibc-2.1.3).
 AC_CACHE_CHECK([whether this iconv is good enough], mutt_cv_iconv_good,
         mutt_save_LIBS="$LIBS"
         LIBS="$LIBS $LIBICONV"
-        AC_TRY_RUN([
+        AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <iconv.h>
 int main()
 {
@@ -1101,10 +1109,7 @@ changequote([, ])dnl
            !(ob == buf && obl == sizeof(buf)) ||
            iconv_close(cd)));
 }
-                ],
-                mutt_cv_iconv_good=yes,
-                mutt_cv_iconv_good=no,
-                mutt_cv_iconv_good=yes)
+                ]])],[mutt_cv_iconv_good=yes],[mutt_cv_iconv_good=no],[mutt_cv_iconv_good=yes])
         LIBS="$mutt_save_LIBS")
 if test "$mutt_cv_iconv_good" = no; then
   AC_MSG_ERROR(Try using libiconv instead)
@@ -1116,7 +1121,7 @@ dnl converted instead of the number converted inexactly.
 AC_CACHE_CHECK([whether iconv is non-transcribing], mutt_cv_iconv_nontrans,
         mutt_save_LIBS="$LIBS"
         LIBS="$LIBS $LIBICONV"
-        AC_TRY_RUN([
+        AC_RUN_IFELSE([AC_LANG_SOURCE([[
 #include <iconv.h>
 #include <string.h>
 int main()
@@ -1133,10 +1138,7 @@ changequote([, ])dnl
   return ((cd = iconv_open("UTF-8", "UTF-8")) == (iconv_t)(-1) ||
           iconv(cd, &ib, &ibl, &ob, &obl));
 }
-                ],
-                mutt_cv_iconv_nontrans=no,
-                mutt_cv_iconv_nontrans=yes,
-                mutt_cv_iconv_nontrans=no)
+                ]])],[mutt_cv_iconv_nontrans=no],[mutt_cv_iconv_nontrans=yes],[mutt_cv_iconv_nontrans=no])
         LIBS="$mutt_save_LIBS")
 if test "$mutt_cv_iconv_nontrans" = yes; then
   AC_DEFINE(ICONV_NONTRANS, 1)
@@ -1160,7 +1162,7 @@ fi # libiconv
 
 dnl -- IDN depends on iconv
 
-AC_ARG_WITH(idn, AC_HELP_STRING([--with-idn=@<:@PFX@:>@], [Use GNU libidn for domain names]),
+AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for domain names]),
 		 [
 		  if test "$with_idn" != "no" ; then
 		  	if test "$with_idn" != "yes" ; then
@@ -1194,32 +1196,26 @@ dnl -- locales --
 AC_CHECK_HEADERS(wchar.h)
 
 AC_CACHE_CHECK([for wchar_t], mutt_cv_wchar_t,
-        AC_TRY_COMPILE([
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <stddef.h>
 #include <stdlib.h>
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-                ],
-                [ wchar_t wc; return 0; ],
-                mutt_cv_wchar_t=yes,
-                mutt_cv_wchar_t=no))
+                ]], [[ wchar_t wc; return 0; ]])],[mutt_cv_wchar_t=yes],[mutt_cv_wchar_t=no]))
 
 if test "$mutt_cv_wchar_t" = no; then
         AC_DEFINE(wchar_t,int,[ Define to 'int' if system headers don't define. ])
 fi
 
 AC_CACHE_CHECK([for wint_t], mutt_cv_wint_t,
-        AC_TRY_COMPILE([
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <stddef.h>
 #include <stdlib.h>
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-                ],
-                [ wint_t wc; return 0; ],
-                mutt_cv_wint_t=yes,
-                mutt_cv_wint_t=no))
+                ]], [[ wint_t wc; return 0; ]])],[mutt_cv_wint_t=yes],[mutt_cv_wint_t=no]))
 
 if test "$mutt_cv_wint_t" = no; then
         AC_DEFINE(wint_t,int,[ Define to 'int' if system headers don't define. ])
@@ -1231,29 +1227,26 @@ AC_CHECK_FUNCS(iswgraph iswlower iswprint iswpunct iswspace iswupper)
 AC_CHECK_FUNCS(iswxdigit towupper towlower)
 
 AC_CACHE_CHECK([for mbstate_t], mutt_cv_mbstate_t,
-        AC_TRY_COMPILE([
+        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
 #include <stddef.h>
 #include <stdlib.h>
 #ifdef HAVE_WCHAR_H
 #include <wchar.h>
 #endif
-                ],
-                [ mbstate_t s; return 0; ],
-                mutt_cv_mbstate_t=yes,
-                mutt_cv_mbstate_t=no))
+                ]], [[ mbstate_t s; return 0; ]])],[mutt_cv_mbstate_t=yes],[mutt_cv_mbstate_t=no]))
 
 if test "$mutt_cv_mbstate_t" = no; then
         AC_DEFINE(mbstate_t,int,[ Define to 'int' if system headers don't define. ])
 fi
 
 wc_funcs=maybe
-AC_ARG_WITH(wc-funcs, AC_HELP_STRING([--without-wc-funcs], [Do not use the system's wchar_t functions]),
+AC_ARG_WITH(wc-funcs, AS_HELP_STRING([--without-wc-funcs],[Do not use the system's wchar_t functions]),
         wc_funcs=$withval)
 
 if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
         AC_CACHE_CHECK([for wchar_t functions], mutt_cv_wc_funcs,
                 mutt_cv_wc_funcs=no
-                AC_TRY_LINK([
+                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
 #define _XOPEN_SOURCE 600
 #include <stddef.h>
 #include <stdlib.h>
@@ -1262,10 +1255,8 @@ if test "$wc_funcs" != yes && test "$wc_funcs" != no; then
 #endif
 #ifdef HAVE_WCTYPE_H
 #include <wctype.h>
-#endif],
-                        [mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);
-        iswprint(0); iswspace(0); towlower(0); towupper(0); iswalnum(0)],
-                        mutt_cv_wc_funcs=yes))
+#endif]], [[mbrtowc(0, 0, 0, 0); wctomb(0, 0); wcwidth(0);
+        iswprint(0); iswspace(0); towlower(0); towupper(0); iswalnum(0)]])],[mutt_cv_wc_funcs=yes],[]))
         wc_funcs=$mutt_cv_wc_funcs
 fi
 
@@ -1276,19 +1267,13 @@ else
 fi
 
 AC_CACHE_CHECK([for nl_langinfo and CODESET], mutt_cv_langinfo_codeset,
-  [AC_TRY_LINK([#include <langinfo.h>],
-    [char* cs = nl_langinfo(CODESET);],
-    mutt_cv_langinfo_codeset=yes,
-    mutt_cv_langinfo_codeset=no)])
+  [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <langinfo.h>]], [[char* cs = nl_langinfo(CODESET);]])],[mutt_cv_langinfo_codeset=yes],[mutt_cv_langinfo_codeset=no])])
 if test $mutt_cv_langinfo_codeset = yes; then
   AC_DEFINE(HAVE_LANGINFO_CODESET,1,[ Define if you have <langinfo.h> and nl_langinfo(CODESET). ])
 fi
 
 AC_CACHE_CHECK([for nl_langinfo and YESEXPR], mutt_cv_langinfo_yesexpr,
-  [AC_TRY_LINK([#include <langinfo.h>],
-    [char* cs = nl_langinfo(YESEXPR);],
-    mutt_cv_langinfo_yesexpr=yes,
-    mutt_cv_langinfo_yesexpr=no)])
+  [AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <langinfo.h>]], [[char* cs = nl_langinfo(YESEXPR);]])],[mutt_cv_langinfo_yesexpr=yes],[mutt_cv_langinfo_yesexpr=no])])
 if test $mutt_cv_langinfo_yesexpr = yes; then
   AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
 fi
@@ -1317,7 +1302,7 @@ fi
 AC_SUBST(DSLROOT)
 
 AC_ARG_ENABLE(full_doc,
-	      AC_HELP_STRING([--disable-full-doc], [Omit disabled variables]),
+	      AS_HELP_STRING([--disable-full-doc],[Omit disabled variables]),
 [       if test x$enableval = xno ; then
                 full_doc=no
         fi
