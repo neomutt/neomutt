@@ -1149,7 +1149,7 @@ fi # libiconv
 
 dnl -- IDN depends on iconv
 
-AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for domain names]),
+AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for internationalized domain names]),
 		 [
 		  if test "$with_idn" != "no" ; then
 		  	if test "$with_idn" != "yes" ; then
@@ -1157,24 +1157,44 @@ AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for dom
 			   LDFLAGS="$LDFLAGS -L$with_idn/lib"
 			fi
 		  fi
-		 ]
+		 ],
+		 [with_idn=auto]
+
 )
 
 if test "x$with_idn" != "xno"; then
   if test "$am_cv_func_iconv" != "yes"
   then
-    if test "x$with_idn" != "x"
+    if test "$with_idn" != "auto"
     then
       AC_MSG_ERROR([IDN requested but iconv is disabled or unavailable])
     fi
   else
-    AC_SEARCH_LIBS([stringprep_check_version], [idn], [
-      AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the `idn' library])
-      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
-    ])
-    AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-    AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-    AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+    OLDCPPFLAGS=$CPPFLAGS
+    if test "$with_idn" = "auto" && test -d /usr/include/idn; then
+      CPPFLAGS="$CPPFLAGS -I/usr/include/idn"
+    fi
+    have_idna_includes=no
+    have_idna_libs=no
+    dnl AC_CHECK_HEADERS also defines HAVE_<NAME> which we don't care about here
+    AC_CHECK_HEADER(stringprep.h,
+      AC_CHECK_HEADER(idna.h, [have_idna_includes=yes]))
+    if test $have_idna_includes = yes; then
+      AC_SEARCH_LIBS([stringprep_check_version], [idn], [
+	have_idna_libs=yes
+	AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the `idn' library])
+	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+	AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+	AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+	AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+      ])
+    fi
+    if test $have_idna_libs = no; then
+      if test "$with_idn" != auto; then
+	AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
+      fi
+      CPPFLAGS=$OLDCPPFLAGS
+    fi
   fi
 fi
 
