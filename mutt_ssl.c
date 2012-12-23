@@ -95,38 +95,48 @@ int mutt_ssl_starttls (CONNECTION* conn)
 {
   sslsockdata* ssldata;
   int maxbits;
+  long ssl_options = 0;
 
   if (ssl_init())
     goto bail;
 
   ssldata = (sslsockdata*) safe_calloc (1, sizeof (sslsockdata));
   /* the ssl_use_xxx protocol options don't apply. We must use TLS in TLS.
-   * TLSv1.2 support was added in OpenSSL 1.0.1.  RHEL6 shipped with 1.0.0 so
-   * our configure script checks for TLSv1.2 availability.
+   *
+   * However, we need to be able to negotiate amongst various TLS versions,
+   * which at present can only be done with the SSLv23_client_method;
+   * TLSv1_client_method gives us explicitly TLSv1.0, not 1.1 or 1.2 (True as
+   * of OpenSSL 1.0.1c)
    */
-  if (! (ssldata->ctx = SSL_CTX_new (
-#ifdef HAVE_TLSV1_2_CLIENT_METHOD
-				  TLSv1_2_client_method ()
-#else
-				  TLSv1_client_method ()
-#endif
-				  )))
+  if (! (ssldata->ctx = SSL_CTX_new (SSLv23_client_method())))
   {
     dprint (1, (debugfile, "mutt_ssl_starttls: Error allocating SSL_CTX\n"));
     goto bail_ssldata;
   }
-#ifdef SSL_OP_NO_TLSv1_1
-  if (!option(OPTTLSV1_1))
-  {
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_1);
-  }
-#endif
 #ifdef SSL_OP_NO_TLSv1_2
   if (!option(OPTTLSV1_2))
-  {
-    SSL_CTX_set_options(ssldata->ctx, SSL_OP_NO_TLSv1_2);
-  }
+    ssl_options |= SSL_OP_NO_TLSv1_2;
 #endif
+#ifdef SSL_OP_NO_TLSv1_1
+  if (!option(OPTTLSV1_1))
+    ssl_options |= SSL_OP_NO_TLSv1_1;
+#endif
+#ifdef SSL_OP_NO_TLSv1
+  if (!option(OPTTLSV1))
+    ssl_options |= SSL_OP_NO_TLSv1;
+#endif
+  /* these are always set */
+#ifdef SSL_OP_NO_SSLv3
+  ssl_options |= SSL_OP_NO_SSLv3;
+#endif
+#ifdef SSL_OP_NO_SSLv2
+  ssl_options |= SSL_OP_NO_SSLv2;
+#endif
+  if (! SSL_CTX_set_options(ssldata->ctx, ssl_options))
+  {
+    dprint(1, (debugfile, "mutt_ssl_starttls: Error setting options to %ld\n", ssl_options));
+    goto bail_ctx;
+  }
 
   ssl_get_client_cert(ssldata, conn);
 

@@ -3001,7 +3001,7 @@ struct option_t MuttVars[] = {
   { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
   /*
   ** .pp
-  ** This variable specifies whether to attempt to use TLSv1 in the
+  ** This variable specifies whether to attempt to use TLSv1.0 in the
   ** SSL authentication process.
   */
   { "ssl_use_tlsv1_1", DT_BOOL, R_NONE, OPTTLSV1_1, 1 },
