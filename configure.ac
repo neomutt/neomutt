@@ -1176,7 +1176,7 @@ if test "x$with_idn" != "xno"; then
     have_idna_libs=no
     dnl AC_CHECK_HEADERS also defines HAVE_<NAME> which we don't care about here
     AC_CHECK_HEADER(stringprep.h,
-      AC_CHECK_HEADER(idna.h, [have_idna_includes=yes]))
+      [AC_CHECK_HEADER(idna.h, [have_idna_includes=yes])])
     if test $have_idna_includes = yes; then
       AC_SEARCH_LIBS([stringprep_check_version], [idn], [
 	have_idna_libs=yes
