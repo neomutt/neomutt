@@ -11,7 +11,7 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
 
-MUTT_VERSION=`env HGROOT="$srcdir" sh "$srcdir/version.sh"`
+MUTT_VERSION=`env sh "$srcdir/version.sh"`
 AC_DEFINE_UNQUOTED(MUTT_VERSION,"$MUTT_VERSION", [Full textual version string.])
 
 AC_USE_SYSTEM_EXTENSIONS

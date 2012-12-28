@@ -1,13 +1,15 @@
 #!/bin/sh
 
-# Adopt $HGROOT from the environment, if present
 HG=hg
-[ -n "$HGROOT" ] && HG="$HG -R \$HGROOT"
+
+# Switch to directory where this script lives so that further commands are run
+# from the root directory of the source
+cd `dirname $0`
 
 # Ensure that we have a repo here and that mercurial is installed.  If
 # not, just cat the VERSION file; it contains the latest release number.
-{ [ -d "$HGROOT/.hg" ] && $HG >/dev/null 2>&1; } \
-|| exec cat "$HGROOT/VERSION"
+{ [ -d ".hg" ] && $HG >/dev/null 2>&1; } \
+|| exec cat VERSION
 
 # This is a mercurial repo and we have the hg command.
 
