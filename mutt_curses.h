@@ -72,12 +72,6 @@
 #define curs_set(x)
 #endif
 
-#if !defined(USE_SLANG_CURSES) && defined(HAVE_BKGDSET)
-#define BKGDSET(x) bkgdset (ColorDefs[x] | ' ')
-#else
-#define BKGDSET(x)
-#endif
-
 #if (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
 void mutt_curs_set (int);
 #else
@@ -183,8 +177,20 @@ extern COLOR_LINE *ColorIndexList;
 void ci_init_color (void);
 void ci_start_color (void);
 
+/* If the system has bkgdset() use it rather than attrset() so that the clr*()
+ * functions will properly set the background attributes all the way to the
+ * right column.
+ */
+#if defined(HAVE_BKGDSET)
+#define SETCOLOR(X) bkgdset(ColorDefs[X] | ' ')
+#define ATTRSET(X) bkgdset(X | ' ')
+#else
 #define SETCOLOR(X) attrset(ColorDefs[X])
-#define ADDCOLOR(X) attron(ColorDefs[X])
+#define ATTRSET attrset
+#endif
+
+/* reset the color to the normal terminal color as defined by 'color normal ...' */
+#define NORMAL_COLOR SETCOLOR(MT_COLOR_NORMAL)
 
 #define MAYBE_REDRAW(x) if (option (OPTNEEDREDRAW)) { unset_option (OPTNEEDREDRAW); x = REDRAW_FULL; }
 

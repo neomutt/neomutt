@@ -769,13 +769,6 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   else
     ColorDefs[object] = fgbgattr_to_color(fg, bg, attr);
 
-#ifdef HAVE_COLOR
-# ifdef HAVE_BKGDSET
-  if (object == MT_COLOR_NORMAL && !option (OPTNOCURSES) && has_colors())
-    BKGDSET (MT_COLOR_NORMAL);
-# endif
-#endif
-
   return (r);
 }
 

@@ -264,11 +264,9 @@ static void draw_envelope (HEADER *msg, char *fcc)
 
   SETCOLOR (MT_COLOR_STATUS);
   mvaddstr (HDR_ATTACH - 1, 0, _("-- Attachments"));
-  BKGDSET (MT_COLOR_STATUS);
   clrtoeol ();
 
-  BKGDSET (MT_COLOR_NORMAL);
-  SETCOLOR (MT_COLOR_NORMAL);
+  NORMAL_COLOR;
 }
 
 static int edit_address_list (int line, ADDRESS **addr)
@@ -547,9 +545,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  mutt_str_replace (&msg->env->subject, buf);
 	  move (HDR_SUBJECT, HDR_XOFFSET);
-	  clrtoeol ();
 	  if (msg->env->subject)
 	    mutt_paddstr (W, msg->env->subject);
+	  else
+	    clrtoeol();
 	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
@@ -1269,12 +1268,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     if (menu->redraw & REDRAW_STATUS) 
     {
 	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));
-	CLEARLINE (option (OPTSTATUSONTOP) ? 0 : LINES-2);
+	move(option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-	BKGDSET (MT_COLOR_STATUS);
 	mutt_paddstr (COLS, buf);
-	SETCOLOR (MT_COLOR_NORMAL);
-	BKGDSET (MT_COLOR_NORMAL);
+	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
     }
   }

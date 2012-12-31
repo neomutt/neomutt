@@ -159,7 +159,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	}
 	s++, n--;
       }
-      if (do_color) attrset(attr);
+      if (do_color) ATTRSET(attr);
     }
     else if ((k = mbrtowc (&wc, (char *)s, n, &mbstate)) > 0)
     {
@@ -195,7 +195,7 @@ static void menu_pad_string (char *s, size_t n)
 
 void menu_redraw_full (MUTTMENU *menu)
 {
-  SETCOLOR (MT_COLOR_NORMAL);
+  NORMAL_COLOR;
   /* clear() doesn't optimize screen redraws */
   move (0, 0);
   clrtobot ();
@@ -205,7 +205,7 @@ void menu_redraw_full (MUTTMENU *menu)
     SETCOLOR (MT_COLOR_STATUS);
     move (option (OPTSTATUSONTOP) ? LINES-2 : 0, 0);
     mutt_paddstr (COLS, menu->help);
-    SETCOLOR (MT_COLOR_NORMAL);
+    NORMAL_COLOR;
     menu->offset = 1;
     menu->pagelen = LINES - 3;
   }
@@ -228,7 +228,7 @@ void menu_redraw_status (MUTTMENU *menu)
   SETCOLOR (MT_COLOR_STATUS);
   move (option (OPTSTATUSONTOP) ? 0 : LINES - 2, 0);
   mutt_paddstr (COLS, buf);
-  SETCOLOR (MT_COLOR_NORMAL);
+  NORMAL_COLOR;
   menu->redraw &= ~REDRAW_STATUS;
 }
 
@@ -236,55 +236,46 @@ void menu_redraw_index (MUTTMENU *menu)
 {
   char buf[LONG_STRING];
   int i;
+  int do_color;
+  int attr;
 
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
   {
     if (i < menu->max)
     {
+      attr = menu->color(i);
+
       menu_make_entry (buf, sizeof (buf), menu, i);
       menu_pad_string (buf, sizeof (buf));
 
-      if (option (OPTARROWCURSOR))
+      ATTRSET(attr);
+      move(i - menu->top + menu->offset, 0);
+      do_color = 1;
+
+      if (i == menu->current)
       {
-        attrset (menu->color (i));
-	CLEARLINE (i - menu->top + menu->offset);
-
-	if (i == menu->current)
-	{
-          attrset (menu->color (i));
-	  ADDCOLOR (MT_COLOR_INDICATOR);
-	  addstr ("->");
-          attrset (menu->color (i));
-	  addch (' ');
-	}
-	else
-	{
-	  attrset (menu->color (i));
-	  addstr ("   ");
-	}
-
-        print_enriched_string (menu->color(i), (unsigned char *) buf, 1);
-        SETCOLOR (MT_COLOR_NORMAL);          
+	  SETCOLOR(MT_COLOR_INDICATOR);
+	  if (option(OPTARROWCURSOR))
+	  {
+	    addstr ("->");
+	    ATTRSET(attr);
+	    addch (' ');
+	  }
+	  else
+	    do_color = 0;
       }
-      else
-      {
-        attrset (menu->color (i));
-            
-	if (i == menu->current)
-	{
-	  ADDCOLOR (MT_COLOR_INDICATOR);
-	  BKGDSET (MT_COLOR_INDICATOR);
-	}
+      else if (option(OPTARROWCURSOR))
+	addstr("   ");
 
-	CLEARLINE (i - menu->top + menu->offset);
-	print_enriched_string (menu->color(i), (unsigned char *) buf, i != menu->current);
-        SETCOLOR (MT_COLOR_NORMAL);
-        BKGDSET (MT_COLOR_NORMAL);
-      }
+      print_enriched_string (attr, (unsigned char *) buf, do_color);
     }
     else
-      CLEARLINE (i - menu->top + menu->offset);
+    {
+      NORMAL_COLOR;
+      CLEARLINE(i - menu->top + menu->offset);
+    }
   }
+  NORMAL_COLOR;
   menu->redraw = 0;
 }
 
@@ -299,37 +290,28 @@ void menu_redraw_motion (MUTTMENU *menu)
   }
   
   move (menu->oldcurrent + menu->offset - menu->top, 0);
-  SETCOLOR (MT_COLOR_NORMAL);
-  BKGDSET (MT_COLOR_NORMAL);
+  ATTRSET(menu->color (menu->oldcurrent));
 
   if (option (OPTARROWCURSOR))
   {
     /* clear the pointer */
-    attrset (menu->color (menu->oldcurrent));
     addstr ("  ");
 
     if (menu->redraw & REDRAW_MOTION_RESYNCH)
     {
-      clrtoeol ();
       menu_make_entry (buf, sizeof (buf), menu, menu->oldcurrent);
       menu_pad_string (buf, sizeof (buf));
       move (menu->oldcurrent + menu->offset - menu->top, 3);
       print_enriched_string (menu->color(menu->oldcurrent), (unsigned char *) buf, 1);
-      SETCOLOR (MT_COLOR_NORMAL);
     }
 
     /* now draw it in the new location */
-    move (menu->current + menu->offset - menu->top, 0);
-    attrset (menu->color (menu->current));
-    ADDCOLOR (MT_COLOR_INDICATOR);
-    addstr ("->");
-    SETCOLOR (MT_COLOR_NORMAL);
+    SETCOLOR(MT_COLOR_INDICATOR);
+    mvaddstr(menu->current + menu->offset - menu->top, 0, "->");
   }
   else
   {
     /* erase the current indicator */
-    attrset (menu->color (menu->oldcurrent));
-    clrtoeol ();
     menu_make_entry (buf, sizeof (buf), menu, menu->oldcurrent);
     menu_pad_string (buf, sizeof (buf));
     print_enriched_string (menu->color(menu->oldcurrent), (unsigned char *) buf, 1);
@@ -337,50 +319,36 @@ void menu_redraw_motion (MUTTMENU *menu)
     /* now draw the new one to reflect the change */
     menu_make_entry (buf, sizeof (buf), menu, menu->current);
     menu_pad_string (buf, sizeof (buf));
-    attrset (menu->color (menu->current));
-    ADDCOLOR (MT_COLOR_INDICATOR);
-    BKGDSET (MT_COLOR_INDICATOR);
-    CLEARLINE (menu->current - menu->top + menu->offset);
+    SETCOLOR(MT_COLOR_INDICATOR);
+    move(menu->current - menu->top + menu->offset, 0);
     print_enriched_string (menu->color(menu->current), (unsigned char *) buf, 0);
-    SETCOLOR (MT_COLOR_NORMAL);
-    BKGDSET (MT_COLOR_NORMAL);
   }
   menu->redraw &= REDRAW_STATUS;
+  NORMAL_COLOR;
 }
 
 void menu_redraw_current (MUTTMENU *menu)
 {
   char buf[LONG_STRING];
+  int attr = menu->color (menu->current);
   
   move (menu->current + menu->offset - menu->top, 0);
   menu_make_entry (buf, sizeof (buf), menu, menu->current);
   menu_pad_string (buf, sizeof (buf));
 
+  SETCOLOR(MT_COLOR_INDICATOR);
   if (option (OPTARROWCURSOR))
   {
-    int attr = menu->color (menu->current);
-    attrset (attr);
-    clrtoeol ();
-    attrset (menu->color (menu->current));
-    ADDCOLOR (MT_COLOR_INDICATOR);
     addstr ("->");
-    attrset (attr);
+    ATTRSET(attr);
     addch (' ');
     menu_pad_string (buf, sizeof (buf));
-    print_enriched_string (menu->color(menu->current), (unsigned char *) buf, 1);
-    SETCOLOR (MT_COLOR_NORMAL);
+    print_enriched_string (attr, (unsigned char *) buf, 1);
   }
   else
-  {
-    attrset (menu->color (menu->current));
-    ADDCOLOR (MT_COLOR_INDICATOR);
-    BKGDSET (MT_COLOR_INDICATOR);
-    clrtoeol ();
-    print_enriched_string (menu->color(menu->current), (unsigned char *) buf, 0);
-    SETCOLOR (MT_COLOR_NORMAL);
-    BKGDSET (MT_COLOR_NORMAL);
-  }
+    print_enriched_string (attr, (unsigned char *) buf, 0);
   menu->redraw &= REDRAW_STATUS;
+  NORMAL_COLOR;
 }
 
 static void menu_redraw_prompt (MUTTMENU *menu)
@@ -396,7 +364,6 @@ static void menu_redraw_prompt (MUTTMENU *menu)
     if (*Errorbuf)
       mutt_clear_error ();
 
-    SETCOLOR (MT_COLOR_NORMAL);
     mvaddstr (LINES - 1, 0, menu->prompt);
     clrtoeol ();
   }

@@ -321,7 +321,7 @@ static void curses_message (int error, const char *fmt, va_list ap)
     SETCOLOR (error ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
     mvaddstr (LINES-1, 0, Errorbuf);
     clrtoeol ();
-    SETCOLOR (MT_COLOR_NORMAL);
+    NORMAL_COLOR;
     mutt_refresh ();
   }
 
@@ -464,9 +464,9 @@ void mutt_show_error (void)
     return;
   
   SETCOLOR (option (OPTMSGERR) ? MT_COLOR_ERROR : MT_COLOR_MESSAGE);
-  CLEARLINE (LINES-1);
-  addstr (Errorbuf);
-  SETCOLOR (MT_COLOR_NORMAL);
+  mvaddstr(LINES-1, 0, Errorbuf);
+  clrtoeol();
+  NORMAL_COLOR;
 }
 
 void mutt_endwin (const char *msg)
@@ -475,9 +475,8 @@ void mutt_endwin (const char *msg)
 
   if (!option (OPTNOCURSES))
   {
+    ATTRSET(A_NORMAL);
     CLEARLINE (LINES - 1);
-    
-    attrset (A_NORMAL);
     mutt_refresh ();
     endwin ();
   }

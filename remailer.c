@@ -285,10 +285,10 @@ static void mix_redraw_ce (REMAILER **type2_list,
     if (selected)
       SETCOLOR (MT_COLOR_INDICATOR);
     else
-      SETCOLOR (MT_COLOR_NORMAL);
+      NORMAL_COLOR;
     
     mvaddstr (coords[i].r, coords[i].c, type2_list[chain->ch[i]]->shortname);
-    SETCOLOR (MT_COLOR_NORMAL);
+    NORMAL_COLOR;
 
     if (i + 1 < chain->cl)
       addstr (", ");
@@ -301,9 +301,6 @@ static void mix_redraw_chain (REMAILER **type2_list,
 			      int cur)
 {
   int i;
-  
-  SETCOLOR (MT_COLOR_NORMAL);
-  BKGDSET (MT_COLOR_NORMAL);
   
   for (i = MIX_VOFFSET; i < MIX_MAXROW; i++)
   {
@@ -319,12 +316,8 @@ static void mix_redraw_head (MIXCHAIN *chain)
 {
   SETCOLOR (MT_COLOR_STATUS);
   mvprintw (MIX_VOFFSET - 1, 0, "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
-  
-  BKGDSET (MT_COLOR_STATUS);
   clrtoeol ();
-  
-  BKGDSET (MT_COLOR_NORMAL);
-  SETCOLOR (MT_COLOR_NORMAL);
+  NORMAL_COLOR;
 }
 
 static const char *mix_format_caps (REMAILER *r)
