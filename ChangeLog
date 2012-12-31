@@ -1,3 +1,546 @@
+2012-12-30 19:14 -0800  Michael Elkins  <me@sigpipe.org>  (c03ba94d8750)
+
+	* imap/message.c: add __FREE_CHECKED__
+
+2012-12-30 19:12 -0800  Michael Elkins  <me@sigpipe.org>  (f7247ad288e7)
+
+	* UPDATING: document the TLS changes since 1.5.21
+
+2012-12-30 18:49 -0800  Michael Elkins  <me@sigpipe.org>  (10cc06eff52b)
+
+	* color.c, compose.c, curs_lib.c, curs_main.c, menu.c, mutt_curses.h,
+	pager.c, remailer.c: make the SETCOLOR() macro use bkgdset() on
+	systems which have it, and attrset() when we don't.
+
+	closes #3005
+
+2012-12-30 09:26 -0800  Michael Elkins  <me@sigpipe.org>  (8c0b9ddee11f)
+
+	* configure.ac: remove m4_translit because it generates a warning with
+	newer versions of autoconf when used in AC_INIT. Instead, use tr -d
+	to output the version string without a trailing newline.
+
+2012-12-27 21:04 -0800  Michael Elkins  <me@mutt.org>  (b0265d385207)
+
+	* version.sh: restore ability for version.sh to cope with a repository
+	directory with a space in it.
+
+2012-12-27 20:33 -0800  Aaron Schrab  <aaron@schrab.com>  (13c9a5d820f2)
+
+	* configure.ac, version.sh: Use the directory where the version.sh
+	script is located as the directory where it is run. Since this will
+	be run in a separate shell anyway, there's no need to worry about
+	changing current directory.
+
+	This eliminates the need for the caller to specify where the source
+	directory is located, and doesn't require that the code take special
+	care to use the appropriate directory. The fallback method of using
+	`cat VERSION` was broken in this respect, it would not work when run
+	from a different directory.
+	--- configure.ac | 2 +- version.sh | 7 ++++--- 2 files
+	changed, 5 insertions(+), 4 deletions(-)
+
+2012-12-27 17:37 -0800  Michael Elkins  <me@sigpipe.org>  (0f281c548d69)
+
+	* configure.ac: use [] around body of AC_CHECK_HEADER to avoid
+	problems with older versions of autoconf
+
+2012-12-27 18:56 -0800  Michael Elkins  <me@mutt.org>  (8728418605fd)
+
+	* configure.ac: avoid using m4_esyscmd_s() since it is not available
+	in older versions of autoconf. use m4_esyscmd() and m4_translit()
+	to whack the newline instead.
+
+	see #3613
+
+2012-12-22 18:00 -0800  Michael Elkins  <me@sigpipe.org>  (de974f67eba3)
+
+	* configure.ac, init.h, mutt_ssl.c: Uses SSLv23_client_method() in
+	mutt_ssl_starttls() because TLSv1_2_client_method() does not honor
+	the SSL_OP_NO_TLS* flags.
+
+	closes #3612
+
+2012-12-22 15:04 -0800  Michael Elkins  <me@sigpipe.org>  (d07c9ee9a92b)
+
+	* configure.ac: If neither --with-idn nor --without-idn are given, use
+	-I/usr/include/idn when checking for the libidn header files, if
+	present (needed for Solaris 11).
+
+	Don't bother checking for the idna_* functions if we didn't find
+	-lidn
+
+2012-12-21 11:17 +0100  Matthias Andree  <matthias.andree@gmx.de>  (7d55bad3b11f)
+
+	* patchlist.sh: Fix VPATH-based generation of non-hg-mq based
+	patchlists.
+
+	Note: Makefile.am runs patchlist.sh with $(srcdir)/PATCHES provided
+	on stdin.
+
+2012-12-21 11:07 +0100  Matthias Andree  <matthias.andree@gmx.de>  (759dd53302a0)
+
+	* version.sh: Fix VPATH build outside Mercurial repositories.
+
+2012-12-21 12:37 -0800  Michael Elkins  <me@sigpipe.org>  (494af2a964cb)
+
+	* Makefile.am: add version.sh and check_sec.sh to EXTRA_DIST so they
+	are including in the "make dist" output.
+
+2012-12-20 21:13 -0800  Michael Elkins  <me@mutt.org>  (5554d811eb99)
+
+	* imap/util.c: fix forgotten RETSIGTYPE change id [18a724e9eba0]
+
+2012-12-20 20:49 -0800  Michael Elkins  <me@mutt.org>  (18a724e9eba0)
+
+	* configure.ac, sendlib.c, signal.c: remove deprecated check for
+	signal() return type
+
+2012-12-20 20:45 -0800  Michael Elkins  <me@mutt.org>  (6de2578088ab)
+
+	* configure.ac: update configure.ac with autoupdate
+
+2012-12-20 20:34 -0800  Michael Elkins  <me@mutt.org>  (fe28a8bdd598)
+
+	* configure.ac: change AM_CONFIG_HEADER to AC_CONFIG_HEADERS and move
+	it after the AM_INIT_AUTOMAKE. config.h was not being generated
+	from the dist package.
+
+2012-12-20 17:09 -0800  Michael Elkins  <me@sigpipe.org>  (21c085ae6e8f)
+
+	* configure.ac: modernize intialization of configure.ac
+
+2012-12-21 00:38 +0100  Matthias Andree  <matthias.andree@gmx.de>  (0703095bf52d)
+
+	* Makefile.am: Fix 'make distcheck': missing txt2c* and po/mutt.pot
+	cleanup
+
+2012-12-20 14:44 -0800  Michael Elkins  <me@sigpipe.org>  (f8774119c433)
+
+	* menu.c: remove redundant #include statements
+
+2012-12-20 14:40 -0800  Michael Elkins  <me@sigpipe.org>  (489031af8fdd)
+
+	* menu.c: remove extern decl for Charset_is_utf8 since menu.c includes
+	mbyte.h which has the same decl.
+
+2012-12-20 11:20 -0800  Michael Elkins  <me@mutt.org>  (6674c087fd4f)
+
+	* configure.ac: backout out changeset 36b0cc717ecc
+
+2012-12-19 15:26 -0800  Michael Elkins  <me@sigpipe.org>  (879c9516154c)
+
+	* crypt-gpgme.c: allow for CRLF line endings when comparing for the
+	OpenPGP block identifiers
+
+	adapted from http://svnweb.freebsd.org/ports/head/mail/mutt/files
+	/patch-pgp?revision=301308&view=markup
+
+2012-12-19 14:52 -0800  Michael Elkins  <me@sigpipe.org>  (41089c2982e3)
+
+	* pager.c: support nbsp in the pager.
+
+	imported from http://svnweb.freebsd.org/ports/head/mail/mutt/files
+	/patch-nbsp?revision=301308&view=markup
+
+2012-12-19 14:40 -0800  Michael Elkins  <me@sigpipe.org>  (fd2d94a0eb20)
+
+	* configure.ac: detect newer BDB versions up to 5.2
+
+	imported from http://svnweb.freebsd.org/ports/head/mail/mutt/files
+	/patch-bdb?revision=301308&view=markup
+
+2010-07-22 20:06 +0200  Fabian Groffen  <grobian@gentoo.org>  (bc39bac75ea8)
+
+	* regex.c: http://thread.gmane.org/gmane.mail.mutt.devel/15710
+
+	Interix doesn't have btowc, but it does have mbtowc. Linux manpage
+	also discourages the use of btowc.
+
+2012-12-19 13:29 -0800  Petr Pisar  <petr.pisar@atlas.cz>  (f7bd9642217f)
+
+	* po/cs.po: updated cs.po
+
+2012-12-19 11:56 -0800  Michael Elkins  <me@sigpipe.org>  (73900ca5db9a)
+
+	* menu.c: use WACS_* macros for printing wide versions of the line
+	drawing characters when linking against ncursesw.
+
+	This patch is based on http://prefix.gentooexperimental.org:8000
+	/mutt-patches/file/fea851a2808f/solaris-ncurses-chars.patch
+
+2012-12-19 11:08 -0800  Michael Elkins  <me@sigpipe.org>  (36b0cc717ecc)
+
+	* configure.ac: make configure define _POSIX_C_SOURCE, _XOPEN_SOURCE
+	and _XOPEN_SOURCE_EXTENDED to comply with POSIX.1-2008 and XSI
+	conforming applications.
+
+2012-12-19 06:57 -0800  Vsevolod Volkov  <vvv@mutt.org.ua>  (52219fecdac8)
+
+	* po/ru.po: update ru.po
+
+2012-12-19 06:55 -0800  Vincent Lefevre  <vincent@vinc17.org>  (caf64f14142d)
+
+	* charset.c: remove duplicate const keyword
+
+2012-12-18 20:46 -0800  Michael Elkins  <me@mutt.org>  (940e528ef852)
+
+	* mutt_ssl.c: disable tls v1.1/1.2 in mutt_ssl_starttls() based on
+	$ssl_use_tlsv1_*
+
+	see #3571
+
+2012-12-18 20:38 -0800  Michael Elkins  <me@mutt.org>  (6bdd35fb3378)
+
+	* mutt_ssl_gnutls.c: add support for TLSv1.1/1.2 when using GNUTLS.
+
+	see #3571
+
+2012-12-18 19:44 -0800  hncaldwell  <hncaldwell>  (fab920f01ca7)
+
+	* init.h, mutt.h, mutt_ssl.c: add variables for disabling TLSv1.1/1.2
+	when compiled against OpenSSL 1.0.1
+
+	see #3571
+
+2012-12-18 13:50 -0800  Michael Elkins  <me@mutt.org>  (f251d523ca5a)
+
+	* headers.c, lib.h, mutt_crypt.h, parse.c, pop_lib.c, postpone.c,
+	rfc1524.c, rfc822.c, send.c, sendlib.c, url.c: rename iswsp() to
+	is_email_wsp()
+
+	add new inline funtion skip_email_wsp() to be used in lieu of
+	SKIPWS() when parsing ASCII protocols rather than user input.
+
+	change use of SKIPWS() to skip_email_wsp() in places where it is
+	likely to be a problem.
+
+2012-12-18 02:21 -0800  Michael Elkins  <me@mutt.org>  (897dcc62e4aa)
+
+	* sendlib.c: fix problem where mutt_substrdup() was called with the
+	start pointer > end pointer, as a result of using SKIPWS(). This
+	occurred because the header field had an empty body, so the trailing
+	newline was skipped over. The fix is to just skip over ascii space
+	and htab.
+
+	closes #3609
+
+2012-12-18 01:53 -0800  Honza Horak  <hhorak@redhat.com>  (d7f4b2e2b09a)
+
+	* mutt_ssl_gnutls.c: if the peer's x.509 cert is not valid, we need to
+	allow the user to inspect it even if the digital signatures are
+	valid
+
+	closes #3506
+
+2012-12-17 20:42 -0800  Vincent Lefevre  <vincent@vinc17.org>  (722c47f6ede9)
+
+	* po/fr.po: updated fr.po
+
+2012-12-17 17:09 -0800  Honza Horak  <hhorak@redhat.com>  (ca4747442189)
+
+	* pop.c: fix segfault in pop driver. when rereading the message
+	header, the ENVELOPE* struct is freed, but ctx->subj_hash retains a
+	pointer to env->real_subj, so the hash table entry must be deleted
+	prior to calling mutt_free_envelope()
+
+	http://pkgs.fedoraproject.org/cgit/mutt.git/tree/mutt-1.5.21-pophash
+	.patch?h=f18
+
+2012-12-17 16:47 -0800  Petr Pisar  <petr.pisar@atlas.cz>  (9f8e41dd4e1d)
+
+	* crypt-gpgme.c: Fix NULL pointer dereference in notation name
+
+	closes #3574
+
+2012-12-17 10:39 -0800  Michael Elkins  <me@sigpipe.org>  (e6b271ed1d7f)
+
+	* configure.ac, mutt_ssl.c: use TLSv1.2 if available in the system
+	OpenSSL when using starttls
+
+2012-12-17 10:09 -0800  Michael Elkins  <me@sigpipe.org>  (d77d81a69999)
+
+	* mutt_ssl.c: use SSL_get_version() to display the actual SSL protocol
+	used rather than the fixed string SSL.
+
+2012-12-16 20:23 -0800  Andrew Gaul  <andrew@gaul.org>  (ed06326ae8a8)
+
+	* doc/dotlock.man, doc/makedoc.c, doc/smime_keys.man, po/bg.po,
+	po/ca.po, po/cs.po, po/da.po, po/de.po, po/el.po, po/eo.po,
+	po/es.po, po/et.po, po/eu.po, po/fr.po, po/ga.po, po/gl.po,
+	po/hu.po, po/id.po, po/it.po, po/ja.po, po/ko.po, po/lt.po,
+	po/nl.po, po/pl.po, po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po,
+	po/tr.po, po/uk.po, po/zh_CN.po, po/zh_TW.po, rfc1524.c: Correct
+	typos
+
+2012-12-16 19:33 -0800  Michael Elkins  <me@mutt.org>  (5e745e37fe6e)
+
+	* init.h: update documentation for $pgp_getkeys_command to note that
+	%r is replaced with the email address, not the public key ID
+
+	closes #1208
+
+2012-12-16 13:28 -0800  Michael Elkins  <me@mutt.org>  (1cc05de753c2)
+
+	* rfc822.c, rfc822.h: use new function iswsp() in place of isspace()
+	when testing for whitespace.
+
+	closes #3608 closes #2956
+
+2012-12-15 07:48 -0800  Michael Elkins  <me@mutt.org>  (8aee8497cc2b)
+
+	* imap/command.c, imap/imap.c, imap/imap_private.h, imap/message.c,
+	imap/util.c: make imap_private.h include message.h for
+	IMAP_HEADER_DATA definition
+
+	cast &ctx->data to IMAP_HEADER_DATA** to fix compiler warning
+
+	imap_free_header_data should check for *data being NULL, rather than
+	"data"
+
+2012-09-09 19:54 -0700  Andrew Gaul  <andrew@gaul.org>  (d39813193f27)
+
+	* imap/imap_private.h, imap/message.c: Make imap_free_header_data
+	type-safe
+
+	Also push conditional into function for safety and consistency with
+	other free functions.
+
+2012-12-08 12:31 +0100  Matthias Andree  <matthias.andree@gmx.de>  (c4c65eadeb71)
+
+	* Makefile.am: Fix VPATH build by running txt2c.sh from ${srcdir}
+	rather than ".".
+
+2012-12-07 09:51 -0800  Michael Elkins  <me@sigpipe.org>  (d626fb87c489)
+
+	* crypt-gpgme.c: invoke gpgme_check_version() as required to
+	initialize the library.
+
+	move locale code to initialization function.
+
+	closes #3300
+
+2012-12-06 07:56 -0800  Michael Elkins  <me@mutt.org>  (ed5ad234aeed)
+
+	* init.h: additional documentation for $editor. closes #3602
+
+2012-12-01 14:48 -0800  Michael Elkins  <me@mutt.org>  (dace74dd904a)
+
+	* doc/manual.xml.head: list-reply documentation should mention its
+	behavior wrt the List-Post header field.
+
+	closes #3599
+
+2012-12-01 14:32 -0800  Michael Elkins  <me@mutt.org>  (109ebf6d4e53)
+
+	* send.c: don't perform rfc3676 space stuffing when recalling a
+	postponed message where it has already been done.
+
+	closes #3600
+
+2012-12-01 14:31 -0800  Michael Elkins  <me@mutt.org>  (2bf065dd23d6)
+
+	* ascii.c: make ascii_strcasecmp properly handle unequal length
+	strings with the same prefix
+
+	closes #3601
+
+2012-10-16 18:13 -0500  David Champion  <dgc@uchicago.edu>  (d414971f0c48)
+
+	* .hgignore, Makefile.am, main.c, muttbug.sh.in, txt2c.c, txt2c.sh:
+	Add compiler and configure info to mutt -v output (closes #3537)
+
+	Makefile(.am) updated to produce conststrings.c, which contains C
+	strings representing:
+
+	* the compiler's own version information;
+	* the CFLAGS value from the Make environment
+	* the ./configure options
+
+	main.c is updated to print them when running 'mutt -v'.
+
+	txt2c.sh is added to produce conststrings.c. txt2c.sh uses a
+	compiled txt2c binary if possible, for complete fidelity to the
+	source strings in whatever encoding they may use. If txt2c is not
+	available (could not be compiled, or was not compiled natively) it
+	falls back on a shell function to approximate the output using sed
+	and tr.
+
+2012-07-22 11:15 -0700  Brendan Cully  <brendan@kublai.com>  (70810a88ce9f)
+
+	* muttlib.c: mutt_buffer_init: just memset the buffer (closes #3588)
+
+	This was meant to be part of the previous commit.
+
+2012-07-21 19:51 -0700  Brendan Cully  <brendan@kublai.com>  (99dbd23ce78f)
+
+	* imap/imap.c, imap/util.c, mbyte.c, muttlib.c, parse.c, protos.h:
+	Split mutt_buffer_new out of mutt_buffer_init.
+
+	Currently, no callers were providing a non-NULL buffer to
+	mutt_buffer_init, and splitting it will allow more sane semantics
+	for buffer allocation, initialization, and destruction in a later
+	patch.
+
+2012-07-20 12:32 -0700  Brendan Cully  <brendan@kublai.com>  (6d6df167185c)
+
+	* commands.c, hook.c, init.c, pattern.c: Do not use stack-allocated
+	space for BUFFERs
+
+	It will cause mutt_buffer_* to segfault if it needs to grow the
+	space. Thanks to Steve Losh for discovering the issue. I have done
+	some simple grepping to find other cases, but some may remain.
+
+2012-07-08 22:40 -0700  Dan Fandrich  <dan@coneharvesters.com>  (2f2ebc24920d)
+
+	* send.c: Set text_flowed after send-hook has been applied (closes
+	#3550)
+
+2012-07-08 22:27 -0700  Brendan Cully  <brendan@kublai.com>  (5bf02605d988)
+
+	* mutt_ssl_gnutls.c: silence some style warnings
+
+2012-07-08 17:34 -0700  Antonio Radici  <antonio@dyne.org>  (33415ca7d976)
+
+	* copy.c, crypt.c, edit.c, enter.c, init.c: Fix some spelling errors
+	(closes #3493)
+
+2012-07-08 17:25 -0700  Brendan Cully  <brendan@kublai.com>  (243710db60e0)
+
+	* mutt_ssl_gnutls.c: gnutls:tls_compare_certificates: check strstr for
+	failure (closes #3547)
+
+	A malformed certificate file could cause strstr to return an
+	unhandled NULL. Thanks to hhorak for the proposed patch. This one is
+	similar but avoids using memmem for the first time (I am not sure
+	about its portability).
+
+2012-07-07 21:57 -0700  Antonio Radici  <antonio@dyne.org>  (8fabaffc2c00)
+
+	* init.c: check_charset: check for NULL before calling strtok_r
+	(closes #3326)
+
+	Otherwise, if strtok_r cannot handle NULL an empty *charset setting
+	will segfault
+
+2012-07-07 15:50 -0700  Brendan Cully  <brendan@kublai.com>  (c6a44f4f6a99)
+
+	* imap/auth_sasl.c: Do not use SASL for login unless AUTH=LOGIN is
+	advertised (closes #3556)
+
+2012-05-25 22:30 +0200  Marco Paolone  <marcopaolone@gmail.com>  (e452440f92a4)
+
+	* po/it.po: Update Italian translation
+
+2012-05-24 22:02 -0700  Brendan Cully  <brendan@kublai.com>  (0488deb39a35)
+
+	* configure.ac: Remove AM_C_PROTOTYPES from configure.ac (closes
+	#3579)
+
+	I doubt we have any users of that macro nowadays. It will be
+	interesting to hear about it if we do.
+
+2012-05-23 23:29 -0400  Brendan Cully  <brendan@kublai.com>  (0fb6d7579fd1)
+
+	* account.h: Support passwords of up to 127 characters.
+
+	I received a report on IRC of a failure due to a 64-byte password.
+
+2012-04-29 22:15 -0700  Brendan Cully  <brendan@kublai.com>  (41a8d7dceb6c)
+
+	* mutt_ssl_gnutls.c: gnutls: catch gnutls_init failures
+
+	I haven't actually experienced these, but it seems like a good idea.
+
+2012-04-29 22:14 -0700  Brendan Cully  <brendan@kublai.com>  (aadaeb69cbd0)
+
+	* mutt_sasl.c: give user time to read SASL init error message
+
+2011-12-20 22:24 -0800  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (c26dbc7021f4)
+
+	* po/ja.po: Updated Japanese translation
+
+2011-12-03 11:13 -0800  Dan Fandrich  <dan@coneharvesters.com>  (9e756d1adb76)
+
+	* addrbook.c, browser.c, charset.c, color.c, compose.c, crypt-gpgme.c,
+	curs_lib.c, curs_main.c, date.c, enter.c, functions.h, globals.h,
+	handler.c, help.c, imap/auth.c, imap/command.c, imap/message.c,
+	imap/utf7.c, imap/util.c, init.c, init.h, keymap.c, keymap.h, lib.c,
+	mapping.h, mime.h, mutt_ssl.c, pager.c, parse.c, pattern.c,
+	pgpkey.c, pgpmicalg.c, pop_auth.c, postpone.c, protos.h, query.c,
+	recvattach.c, remailer.c, rfc2047.c, rfc822.c, rfc822.h, sendlib.c,
+	url.c: Declare many structures const (closes #3552)
+
+	Many structs used in mutt are actually constant but are defined
+	without the 'const' keyword. This can slow initialization (slightly)
+	in some environments due to extra copying and increases the amount
+	of writable RAM required at run-time, which can be significant on
+	non-MMU systems. Using const can also increase the opportunities for
+	compiler optimization.
+
+	The attached patch marks many such structures as const. On my test
+	x86 build, this reduces the size of .data by over 50%.
+
+2011-12-03 11:07 -0800  Dan Fandrich  <dan@coneharvesters.com>  (1ed2657f6e24)
+
+	* ascii.c: Inline some small, often-used functions (closes #3551)
+
+	When I first sent this patch to the mailing list in 2008, my
+	benchmarking found a reduction in startup time of 15%.
+
+2011-11-26 20:41 -0800  Vincent Lefevre  <vincent@vinc17.net>  (d7b14ea9f708)
+
+	* po/fr.po: Updated French translation
+
+2011-11-28 09:46 -0800  Michael Elkins  <me@mutt.org>  (6f65f6d7d4c9)
+
+	* enter.c: make kill-eow and kill-word consistent in considering words
+	to consist only of alphanumeric characters. closes #3549.
+
+2011-11-25 12:52 -0800  Michael Elkins  <me@mutt.org>  (ab1b84289213)
+
+	* sendlib.c: Check that $sendmail is set to avoid potential segfault.
+	Closes #3548.
+
+2011-07-13 11:05 -0500  David Champion  <dgc@uchicago.edu>  (b01d63af6fea)
+
+	* hcache.c: Invalidate header caches when spam rules change. closes
+	#3473
+
+	User 'exg' on #mutt reported a problem when using header cache with
+	IMAP and spam rules. Spam tags are retrieved from cache and not
+	updated when spam rules change.
+
+	1. Enable header caching in muttrc 2. Set spam rules in muttrc 3.
+	Use IMAP (or POP or Maildir). Your spam rules store spam tags into
+	your message headers, and these get cached. 4. Quit mutt 5. Change
+	your spam rules in muttrc 6. Relaunch mutt 7. Because of header
+	caching, the rfc822 headers are not reparsed, and spam rules are
+	not reapplied. User has outdated spam tags.
+
+	Spam rules are applied during rfc822 header parsing because it's the
+	only time we get a full and unadulterated view of all headers. Once
+	header parse is done we have only processed headers and 'user
+	headers' (X-headers). We might do spam rule matching against the
+	struct HEADER copy of headers, except that:
+
+	a. the header might not be in HEADER if it's non-standard and not an
+	X-header; b. spam rules are regular expressions matching any
+	arbitrary header line, and we would need to map these regexps to
+	the header used to create the HEADER fields. This would change
+	the syntax and behavior of spam rules dramatically.
+
+	One solution, perhaps stopgap, is to invalidate the header cache
+	when spam rules change. That's what this patch does. It alters the
+	hcache versioning algorithm so that in addition to using the
+	compiled-in checksum of mutt's structures definitions, we also mix
+	in the user's runtime spam rules. Any time spam rules change the
+	hcachever hash value changes, causing the hcache to be rewritten.
+
+2011-07-01 18:21 -0700  Brendan Cully  <brendan@kublai.com>  (54a454492bd0)
+
+	* ChangeLog: Update ChangeLog
+
 2011-07-01 17:23 -0700  Brendan Cully  <brendan@kublai.com>  (94eee9410f7a)
 
 	* version.sh: version.sh: fix(?) failure due to bizarre sh quoting
