@@ -4,8 +4,13 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.5.22 (2013-xx-xx):
+
   ! $imap_keepalive default lowered to 300
   + $reflow_text, $reflow_wrap for finer control of flowed wrapping
+  + Support for TLSv1.1 and TLSv1.2.  $ssl_use_tlsv1_1 and $ssl_tlsv1_2
+    variables control whether the new protocols are used.
+  ! $ssl_use_tlsv1 now specifically refers to TLSv1.0.
 
 1.5.21 (2010-09-15):
 
