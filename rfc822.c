@@ -371,7 +371,7 @@ ADDRESS *rfc822_parse_adrlist (ADDRESS *top, const char *s)
 {
   int ws_pending, nl;
 #ifdef EXACT_ADDRESS
-  const char *begin, *ps;
+  const char *begin;
 #endif
   const char *ps;
   char comment[LONG_STRING], phrase[LONG_STRING];
