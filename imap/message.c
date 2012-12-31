@@ -1021,7 +1021,7 @@ void imap_free_header_data (IMAP_HEADER_DATA** data)
   {
     /* this should be safe even if the list wasn't used */
     mutt_free_list (&((*data)->keywords));
-    FREE (data);
+    FREE (data); /* __FREE_CHECKED__ */
   }
 }
 
