@@ -696,6 +696,7 @@ struct option_t MuttVars[] = {
   ** .ts
   ** sh -c 'string'
   ** .te
+  ** .pp
   ** where \fIstring\fP is the expansion of \fC$$editor\fP described above.
   */
   { "encode_from",	DT_BOOL, R_NONE, OPTENCODEFROM, 0 },
