@@ -14,7 +14,7 @@ while (<F>) {
 close F;
 
 while (<STDIN>) {
-  if (/^struct binding_t Op.*{ \/\* map: (.*) \*\//) {
+  if (/^const struct binding_t Op.*{ \/\* map: (.*) \*\//) {
     $map = $1;
     $DOC{$map} = "";
   }
