@@ -50,28 +50,28 @@
 unsigned int hcachever = 0x0;
 
 #if HAVE_QDBM
-static struct header_cache
+struct header_cache
 {
   VILLA *db;
   char *folder;
   unsigned int crc;
-} HEADER_CACHE;
+};
 #elif HAVE_TC
-static struct header_cache
+struct header_cache
 {
   TCBDB *db;
   char *folder;
   unsigned int crc;
-} HEADER_CACHE;
+};
 #elif HAVE_GDBM
-static struct header_cache
+struct header_cache
 {
   GDBM_FILE db;
   char *folder;
   unsigned int crc;
-} HEADER_CACHE;
+};
 #elif HAVE_DB4
-static struct header_cache
+struct header_cache
 {
   DB_ENV *env;
   DB *db;
@@ -79,7 +79,7 @@ static struct header_cache
   unsigned int crc;
   int fd;
   char lockfile[_POSIX_PATH_MAX];
-} HEADER_CACHE;
+};
 
 static void mutt_hcache_dbt_init(DBT * dbt, void *data, size_t len);
 static void mutt_hcache_dbt_empty_init(DBT * dbt);
@@ -1107,7 +1107,7 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
 header_cache_t *
 mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 {
-  struct header_cache *h = safe_calloc(1, sizeof (HEADER_CACHE));
+  struct header_cache *h = safe_calloc(1, sizeof (struct header_cache));
   int (*hcache_open) (struct header_cache* h, const char* path);
   struct stat sb;
 
