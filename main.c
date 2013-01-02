@@ -192,7 +192,13 @@ static void show_version (void)
   printf (" (%s)", uts.machine);
 
 #ifdef NCURSES_VERSION
-  printf ("\nncurses: %s (compiled with %s)", curses_version(), NCURSES_VERSION);
+  printf ("\nncurses: %s (compiled with %s) %cNCURSES_WIDECHAR", curses_version(), NCURSES_VERSION,
+#ifdef NCURSES_WIDECHAR
+		  '+'
+#else
+		  '-'
+#endif
+	 );
 #elif defined(USE_SLANG_CURSES)
   printf ("\nslang: %d", SLANG_VERSION);
 #endif
