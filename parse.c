@@ -1220,7 +1220,10 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     }
     else if ((!ascii_strcasecmp ("upersedes", line + 1) ||
 	      !ascii_strcasecmp ("upercedes", line + 1)) && hdr)
+    {
+      FREE(&e->supersedes);
       e->supersedes = safe_strdup (p);
+    }
     break;
     
     case 't':
@@ -1259,6 +1262,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     }
     else if (ascii_strcasecmp (line+1, "-label") == 0)
     {
+      FREE(&e->x_label);
       e->x_label = safe_strdup(p);
       matched = 1;
     }
