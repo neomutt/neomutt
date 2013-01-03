@@ -1326,7 +1326,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   char *line = safe_malloc (LONG_STRING);
   char *p;
   LOFF_T loc;
-  int matched;
   size_t linelen = LONG_STRING;
   char buf[LONG_STRING+1];
 
@@ -1350,8 +1349,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
   while ((loc = ftello (f)),
 	  *(line = mutt_read_rfc822_line (f, line, &linelen)) != 0)
   {
-    matched = 0;
-
     if ((p = strpbrk (line, ": \t")) == NULL || *p != ':')
     {
       char return_path[LONG_STRING];
@@ -1420,8 +1417,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     if (!*p)
       continue; /* skip empty header fields */
 
-    matched = mutt_parse_rfc822_line (e, hdr, line, p, user_hdrs, weed, 1, &last);
-    
+    mutt_parse_rfc822_line (e, hdr, line, p, user_hdrs, weed, 1, &last);
   }
 
   FREE (&line);
