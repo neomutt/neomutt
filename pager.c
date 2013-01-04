@@ -1794,6 +1794,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	strfcpy(pager_progress_str, (topline == 0) ? "all" : "end", sizeof(pager_progress_str));
 
       /* print out the pager status bar */
+      move (statusoffset, 0);
       SETCOLOR (MT_COLOR_STATUS);
 
       if (IsHeader (extra) || IsMsgAttach (extra))
