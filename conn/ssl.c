@@ -1376,9 +1376,11 @@ static int ssl_setup(struct Connection *conn)
   return 0;
 
 free_ssl:
-  FREE(&ssldata->ssl);
+  SSL_free (ssldata->ssl);
+  ssldata->ssl = 0;
 free_ctx:
-  FREE(&ssldata->ctx);
+  SSL_CTX_free (ssldata->ctx);
+  ssldata->ctx = 0;
 free_sasldata:
   FREE(&ssldata);
 
