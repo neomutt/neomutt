@@ -306,8 +306,10 @@ void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd)
     }
     if (i != 4)
     {
-      dprint (2, (debugfile, "%s:%d [mutt_decode_base64()]: "
-		  "didn't get a multiple of 4 chars.\n", __FILE__, __LINE__));
+      /* "i" may be zero if there is trailing whitespace, which is not an error */
+      if (i != 0)
+	dprint (2, (debugfile, "%s:%d [mutt_decode_base64()]: "
+	      "didn't get a multiple of 4 chars.\n", __FILE__, __LINE__));
       break;
     }
 
