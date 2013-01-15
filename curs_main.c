@@ -1011,7 +1011,6 @@ int mutt_index_menu (void)
 	  break;
 
 	CHECK_MSGCOUNT;
-        CHECK_VISIBLE;
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
@@ -1019,15 +1018,19 @@ int mutt_index_menu (void)
 	  int check, newidx;
 	  HEADER *newhdr = NULL;
 
-	  /* threads may be reordered, so figure out what header the cursor
-	   * should be on. #3092 */
-	  newidx = menu->current;
-	  if (CURHDR->deleted)
-	    newidx = ci_next_undeleted (menu->current);
-	  if (newidx < 0)
-	    newidx = ci_previous_undeleted (menu->current);
-	  if (newidx >= 0)
-	    newhdr = Context->hdrs[Context->v2r[newidx]];
+	  /* don't attempt to move the cursor if there are no visible messages in the current limit */
+	  if (menu->current < Context->vcount)
+	  {
+	    /* threads may be reordered, so figure out what header the cursor
+	     * should be on. #3092 */
+	    newidx = menu->current;
+	    if (CURHDR->deleted)
+	      newidx = ci_next_undeleted (menu->current);
+	    if (newidx < 0)
+	      newidx = ci_previous_undeleted (menu->current);
+	    if (newidx >= 0)
+	      newhdr = Context->hdrs[Context->v2r[newidx]];
+	  }
 
 	  if ((check = mx_sync_mailbox (Context, &index_hint)) == 0)
 	  {
