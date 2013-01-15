@@ -96,8 +96,19 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 	q = !q;
       }
     }
-    
+
     if (q || !*p) return 0;
+
+    /* pipermail archives have the return_path obscured such as "me at mutt.org" */
+    if (ascii_strncasecmp(p, " at ", 4) == 0)
+    {
+      p = strchr(p + 4, ' ');
+      if (!p)
+      {
+	dprint (1, (debugfile, "is_from(): error parsing what appears to be a pipermail-style obscured return_path: %s\n", s));
+	return 0;
+      }
+    }
     
     if (path)
     {
