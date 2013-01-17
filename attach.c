@@ -739,12 +739,10 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
     else
     {
       /* In recv mode, extract from folder and decode */
-
+      
       STATE s;
-
+      
       memset (&s, 0, sizeof (s));
-      s.flags |= M_CHARCONV;
-
       if ((s.fpout = mutt_save_attachment_open (path, flags)) == NULL)
       {
 	mutt_perror ("fopen");
@@ -753,7 +751,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       }
       fseeko ((s.fpin = fp), m->offset, 0);
       mutt_decode_attachment (m, &s);
-
+      
       if (fclose (s.fpout) != 0)
       {
 	mutt_perror ("fclose");
