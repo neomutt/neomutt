@@ -324,7 +324,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 #if USE_HCACHE
       else
       {
-	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen);
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, M_GENERATE_UIDVALIDITY);
       }
 
       FREE(&data);
@@ -693,7 +693,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 #if USE_HCACHE
       if (ctx->hdrs[i]->changed)
       {
-	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen);
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, M_GENERATE_UIDVALIDITY);
       }
 #endif
 

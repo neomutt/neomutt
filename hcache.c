@@ -588,10 +588,11 @@ mutt_hcache_per_folder(const char *path, const char *folder,
 }
 
 /* This function transforms a header into a char so that it is useable by
- * db_store */
+ * db_store.
+ */
 static void *
 mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
-		 unsigned int uidvalidity)
+		 unsigned int uidvalidity, mutt_hcache_store_flags_t flags)
 {
   unsigned char *d = NULL;
   HEADER nh;
@@ -600,14 +601,14 @@ mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
   *off = 0;
   d = lazy_malloc(sizeof (validate));
 
-  if (uidvalidity)
-    memcpy(d, &uidvalidity, sizeof (uidvalidity));
-  else
+  if (flags & M_GENERATE_UIDVALIDITY)
   {
     struct timeval now;
     gettimeofday(&now, NULL);
     memcpy(d, &now, sizeof (struct timeval));
   }
+  else
+    memcpy(d, &uidvalidity, sizeof (uidvalidity));
   *off += sizeof (validate);
 
   d = dump_int(h->crc, d, off);
@@ -759,10 +760,17 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #endif
 }
 
+/*
+ * flags
+ *
+ * M_GENERATE_UIDVALIDITY
+ * ignore uidvalidity param and store gettimeofday() as the value
+ */
 int
 mutt_hcache_store(header_cache_t *h, const char *filename, HEADER * header,
 		  unsigned int uidvalidity,
-		  size_t(*keylen) (const char *fn))
+		  size_t(*keylen) (const char *fn),
+		  mutt_hcache_store_flags_t flags)
 {
   char* data;
   int dlen;
@@ -771,7 +779,7 @@ mutt_hcache_store(header_cache_t *h, const char *filename, HEADER * header,
   if (!h)
     return -1;
   
-  data = mutt_hcache_dump(h, header, &dlen, uidvalidity);
+  data = mutt_hcache_dump(h, header, &dlen, uidvalidity, flags);
   ret = mutt_hcache_store_raw (h, filename, data, dlen, keylen);
   
   FREE(&data);

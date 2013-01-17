@@ -145,7 +145,7 @@ int imap_hcache_put (IMAP_DATA* idata, HEADER* h)
 
   sprintf (key, "/%u", HEADER_DATA (h)->uid);
   return mutt_hcache_store (idata->hcache, key, h, idata->uid_validity,
-                            imap_hcache_keylen);
+                            imap_hcache_keylen, 0);
 }
 
 int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
