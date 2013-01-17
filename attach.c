@@ -293,49 +293,6 @@ int mutt_edit_attachment (BODY *a)
 }
 
 
-/* for compatibility with metamail */
-static int is_mmnoask (const char *buf)
-{
-  char tmp[LONG_STRING], *p, *q;
-  int lng;
-
-  if ((p = getenv ("MM_NOASK")) != NULL && *p)
-  {
-    if (mutt_strcmp (p, "1") == 0)
-      return (1);
-
-    strfcpy (tmp, p, sizeof (tmp));
-    p = tmp;
-
-    while ((p = strtok (p, ",")) != NULL)
-    {
-      if ((q = strrchr (p, '/')) != NULL)
-      {
-	if (*(q+1) == '*')
-	{
-	  if (ascii_strncasecmp (buf, p, q-p) == 0)
-	    return (1);
-	}
-	else
-	{
-	  if (ascii_strcasecmp (buf, p) == 0)
-	    return (1);
-	}
-      }
-      else
-      {
-	lng = mutt_strlen (p);
-	if (buf[lng] == '/' && mutt_strncasecmp (buf, p, lng) == 0)
-	  return (1);
-      }
-
-      p = NULL;
-    }
-  }
-
-  return (0);
-}
-
 void mutt_check_lookup_list (BODY *b, char *type, int len)
 {
   LIST *t = MimeLookupList;
@@ -369,40 +326,6 @@ void mutt_check_lookup_list (BODY *b, char *type, int len)
       FREE (&tmp.xtype);
     }
   }
-}
-
-int mutt_is_autoview (BODY *b, const char *type)
-{
-  LIST *t = AutoViewList;
-  char _type[SHORT_STRING];
-  int i;
-
-  if (!type)
-    snprintf (_type, sizeof (_type), "%s/%s", TYPE (b), b->subtype);
-  else
-    strncpy (_type, type, sizeof(_type));
-
-  mutt_check_lookup_list (b, _type, sizeof(_type));
-  type = _type;
-
-  if (mutt_needs_mailcap (b))
-  {
-    if (option (OPTIMPLICITAUTOVIEW))
-      return 1;
-    
-    if (is_mmnoask (type))
-      return 1;
-  }
-
-  for (; t; t = t->next) {
-    i = mutt_strlen (t->data) - 1;
-    if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
-	 ascii_strncasecmp (type, t->data, i) == 0) ||
-	ascii_strcasecmp (type, t->data) == 0)
-      return 1;
-  }
-
-  return 0;
 }
 
 /* returns -1 on error, 0 or the return code from mutt_do_pager() on success */

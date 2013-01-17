@@ -903,6 +903,92 @@ static int text_enriched_handler (BODY *a, STATE *s)
   return 0;
 }                                                                              
 
+/* for compatibility with metamail */
+static int is_mmnoask (const char *buf)
+{
+  char tmp[LONG_STRING], *p, *q;
+  int lng;
+
+  if ((p = getenv ("MM_NOASK")) != NULL && *p)
+  {
+    if (mutt_strcmp (p, "1") == 0)
+      return (1);
+
+    strfcpy (tmp, p, sizeof (tmp));
+    p = tmp;
+
+    while ((p = strtok (p, ",")) != NULL)
+    {
+      if ((q = strrchr (p, '/')) != NULL)
+      {
+	if (*(q+1) == '*')
+	{
+	  if (ascii_strncasecmp (buf, p, q-p) == 0)
+	    return (1);
+	}
+	else
+	{
+	  if (ascii_strcasecmp (buf, p) == 0)
+	    return (1);
+	}
+      }
+      else
+      {
+	lng = mutt_strlen (p);
+	if (buf[lng] == '/' && mutt_strncasecmp (buf, p, lng) == 0)
+	  return (1);
+      }
+
+      p = NULL;
+    }
+  }
+
+  return (0);
+}
+
+/*
+ * Returns:
+ * 1    if the body part should be filtered by a mailcap entry prior to viewing inline.
+ *
+ * 0    otherwise
+ */
+static int mutt_is_autoview (BODY *b)
+{
+  char type[SHORT_STRING];
+
+  snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
+
+  /* determine if there is a mailcap entry suitable for auto_view
+   *
+   * WARNING: _type is altered by this call as a result of `mime_lookup' support */
+  if (rfc1524_mailcap_lookup(b, type, NULL, M_AUTOVIEW))
+  {
+    if (option(OPTIMPLICITAUTOVIEW))
+    {
+      /* $implicit_autoview is essentially the same as "auto_view *" */
+      return 1;
+    }
+    else
+    {
+      /* determine if this type is on ther user's auto_view list */
+      LIST *t = AutoViewList;
+
+      for (; t; t = t->next) {
+	int i = mutt_strlen (t->data) - 1;
+	if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
+	      ascii_strncasecmp (type, t->data, i) == 0) ||
+	    ascii_strcasecmp (type, t->data) == 0)
+	  return 1;
+      }
+
+      if (is_mmnoask (type))
+	return 1;
+    }
+  }
+
+  return 0;
+}
+
 #define TXTHTML     1
 #define TXTPLAIN    2
 #define TXTENRICHED 3
@@ -912,7 +998,6 @@ static int alternative_handler (BODY *a, STATE *s)
   BODY *choice = NULL;
   BODY *b;
   LIST *t;
-  char buf[STRING];
   int type = 0;
   int mustfree = 0;
   int rc = 0;
@@ -983,17 +1068,8 @@ static int alternative_handler (BODY *a, STATE *s)
       b = a;
     while (b)
     {
-      snprintf (buf, sizeof (buf), "%s/%s", TYPE (b), b->subtype);
-      if (mutt_is_autoview (b, buf))
-      {
-	rfc1524_entry *entry = rfc1524_new_entry ();
-
-	if (rfc1524_mailcap_lookup (b, buf, entry, M_AUTOVIEW))
-	{
-	  choice = b;
-	}
-	rfc1524_free_entry (&entry);
-      }
+      if (mutt_is_autoview (b))
+	choice = b;
       b = b->next;
     }
   }
@@ -1111,11 +1187,8 @@ static int message_handler (BODY *a, STATE *s)
 /* returns 1 if decoding the attachment will produce output */
 int mutt_can_decode (BODY *a)
 {
-  char type[STRING];
-
-  snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
-  if (mutt_is_autoview (a, type))
-    return (rfc1524_mailcap_lookup (a, type, NULL, M_AUTOVIEW));
+  if (mutt_is_autoview (a))
+    return 1;
   else if (a->type == TYPETEXT)
     return (1);
   else if (a->type == TYPEMESSAGE)
@@ -1524,24 +1597,16 @@ int mutt_body_handler (BODY *b, STATE *s)
   handler_t handler = NULL;
   long tmpoffset = 0;
   size_t tmplength = 0;
-  char type[STRING];
   int rc = 0;
 
   int oflags = s->flags;
   
   /* first determine which handler to use to process this part */
 
-  snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
-  if (mutt_is_autoview (b, type))
+  if (mutt_is_autoview (b))
   {
-    rfc1524_entry *entry = rfc1524_new_entry ();
-
-    if (rfc1524_mailcap_lookup (b, type, entry, M_AUTOVIEW))
-    {
-      handler   = autoview_handler;
-      s->flags &= ~M_CHARCONV;
-    }
-    rfc1524_free_entry (&entry);
+    handler = autoview_handler;
+    s->flags &= ~M_CHARCONV;
   }
   else if (b->type == TYPETEXT)
   {
@@ -1727,9 +1792,11 @@ int mutt_body_handler (BODY *b, STATE *s)
       state_printf (s, _("[-- %s/%s is unsupported "), TYPE (b), b->subtype);
     if (!option (OPTVIEWATTACH))
     {
-      if (km_expand_key (type, sizeof(type),
+      char keystroke[SHORT_STRING];
+
+      if (km_expand_key (keystroke, sizeof(keystroke),
 			km_find_func (MENU_PAGER, OP_VIEW_ATTACHMENTS)))
-	fprintf (s->fpout, _("(use '%s' to view this part)"), type);
+	fprintf (s->fpout, _("(use '%s' to view this part)"), keystroke);
       else
 	fputs (_("(need 'view-attachments' bound to key!)"), s->fpout);
     }
