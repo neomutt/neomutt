@@ -504,9 +504,27 @@ int mutt_view_attachment (FILE *fp, BODY *a, int flag, HEADER *hdr,
 
     if (flag == M_AS_TEXT)
     {
-      /* just let me see the raw data */
-      if (mutt_save_attachment (fp, a, pagerfile, 0, NULL))
+      /* just let me see the raw data.
+       *
+       * Don't use mutt_save_attachment() because we want to perform charset
+       * conversion since this will be displayed by the internal pager.
+       */
+      STATE decode_state;
+
+      memset(&decode_state, 0, sizeof(decode_state));
+      decode_state.fpout = safe_fopen(pagerfile, "w");
+      if (!decode_state.fpout)
+      {
+	dprint(1, (debugfile, "mutt_view_attachment:%d safe_fopen(%s) errno=%d %s\n", __LINE__, pagerfile, errno, strerror(errno)));
+	mutt_perror(pagerfile);
+	mutt_sleep(1);
 	goto return_error;
+      }
+      decode_state.fpin = fp;
+      decode_state.flags = M_CHARCONV;
+      mutt_decode_attachment(a, &decode_state);
+      if (fclose(decode_state.fpout) == EOF)
+	dprint(1, (debugfile, "mutt_view_attachment:%d fclose errno=%d %s\n", __LINE__, pagerfile, errno, strerror(errno)));
     }
     else
     {
