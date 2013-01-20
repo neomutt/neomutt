@@ -22,8 +22,10 @@
 #include "rfc822.h"
 #include "charset.h"
 
-#ifdef HAVE_LIBIDN
+#ifdef HAVE_IDNA_H
 #include <idna.h>
+#elif defined(HAVE_IDN_IDNA_H)
+#include <idn/idna.h>
 #endif
 
 #define MI_MAY_BE_IRREVERSIBLE		(1 << 0)

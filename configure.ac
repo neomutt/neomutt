@@ -1155,42 +1155,39 @@ AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for int
 			fi
 		  fi
 		 ],
-		 [with_idn=auto]
-
-)
+		 [with_idn=auto])
 
 if test "x$with_idn" != "xno"; then
-  if test "$am_cv_func_iconv" != "yes"
-  then
-    if test "$with_idn" != "auto"
-    then
+  if test "$am_cv_func_iconv" != "yes"; then
+    if test "$with_idn" != "auto"; then
       AC_MSG_ERROR([IDN requested but iconv is disabled or unavailable])
     fi
   else
-    OLDCPPFLAGS=$CPPFLAGS
-    if test "$with_idn" = "auto" && test -d /usr/include/idn; then
-      CPPFLAGS="$CPPFLAGS -I/usr/include/idn"
+    have_libidn=no
+    if test "$with_idn" = auto || test "$with_idn" = yes; then
+      PKG_CHECK_MODULES([gnuidn], [libidn],
+			[CFLAGS="$CFLAGS $gnuidn_CFLAGS"
+			 LIBS="$LIBS $gnuidn_LIBS"
+			 have_libidn=yes],
+			[]) dnl empty block inhibits default action of aborting with an error
     fi
-    have_idna_includes=no
-    have_idna_libs=no
-    dnl AC_CHECK_HEADERS also defines HAVE_<NAME> which we don't care about here
-    AC_CHECK_HEADER(stringprep.h,
-      [AC_CHECK_HEADER(idna.h, [have_idna_includes=yes])])
-    if test $have_idna_includes = yes; then
-      AC_SEARCH_LIBS([stringprep_check_version], [idn], [
-	have_idna_libs=yes
-	AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the `idn' library])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
-	AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-	AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-	AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
-      ])
+
+    dnl Solaris 11 has /usr/include/idn
+    AC_CHECK_HEADERS(stringprep.h idn/stringprep.h idna.h idn/idna.h)
+
+    if test $have_libidn = no; then
+      dnl libidn was not registered with pkg-config or user specified alternative path
+      AC_SEARCH_LIBS([stringprep_check_version], [idn], [have_libidn=yes])
     fi
-    if test $have_idna_libs = no; then
-      if test "$with_idn" != auto; then
+
+    if test $have_libidn = yes; then
+	  AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
+	  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+	  AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+	  AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+	  AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+    elif test "$with_idn" != auto; then
 	AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
-      fi
-      CPPFLAGS=$OLDCPPFLAGS
     fi
   fi
 fi

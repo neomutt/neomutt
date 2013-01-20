@@ -56,8 +56,10 @@
 #include <getopt.h>
 #endif
 
-#ifdef HAVE_LIBIDN
+#ifdef HAVE_STRINGPREP_H
 #include <stringprep.h>
+#elif defined(HAVE_IDN_STRINGPREP_H)
+#include <idn/stringprep.h>
 #endif
 
 static const char *ReachingUs = N_("\
