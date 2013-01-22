@@ -1163,31 +1163,28 @@ if test "x$with_idn" != "xno"; then
       AC_MSG_ERROR([IDN requested but iconv is disabled or unavailable])
     fi
   else
-    have_libidn=no
-    if test "$with_idn" = auto || test "$with_idn" = yes; then
-      PKG_CHECK_MODULES([gnuidn], [libidn],
-			[CFLAGS="$CFLAGS $gnuidn_CFLAGS"
-			 LIBS="$LIBS $gnuidn_LIBS"
-			 have_libidn=yes],
-			[]) dnl empty block inhibits default action of aborting with an error
-    fi
-
     dnl Solaris 11 has /usr/include/idn
-    AC_CHECK_HEADERS(stringprep.h idn/stringprep.h idna.h idn/idna.h)
+    have_stringprep_h=no
+    AC_CHECK_HEADERS([stringprep.h idn/stringprep.h], [
+		      have_stringprep_h=yes
+		      break])
+    have_idna_h=no
+    AC_CHECK_HEADERS([idna.h idn/idna.h], [
+		      have_idna_h=yes
+		      break])
 
-    if test $have_libidn = no; then
-      dnl libidn was not registered with pkg-config or user specified alternative path
-      AC_SEARCH_LIBS([stringprep_check_version], [idn], [have_libidn=yes])
-    fi
+    AC_SEARCH_LIBS([stringprep_check_version], [idn], [
+      AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
+      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+      AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
+      AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
+      AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
+    ])
 
-    if test $have_libidn = yes; then
-	  AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
-	  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
-	  AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
-	  AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
-	  AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
-    elif test "$with_idn" != auto; then
+    if test "$with_idn" != auto; then
+      if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_STRINGPREP_CHECK_VERSION = no; then
 	AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
+      fi
     fi
   fi
 fi
