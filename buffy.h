@@ -47,3 +47,5 @@ void mutt_buffy_cleanup (const char *buf, struct stat *st);
 
 /* mark mailbox just left as already notified */
 void mutt_buffy_setnotified (const char *path);
+
+void mh_buffy (BUFFY *);

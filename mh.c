@@ -1,6 +1,7 @@
 /*
  * Copyright (C) 1996-2002,2007,2009 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2005 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2013 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -35,6 +36,7 @@
 #include "hcache.h"
 #endif
 #include "mutt_curses.h"
+#include "buffy.h"
 
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -227,19 +229,70 @@ static inline mode_t mh_umask (CONTEXT* ctx)
   return 0777 & ~st.st_mode;
 }
 
-int mh_buffy (const char *path)
+/*
+ * Returns 1 if the .mh_sequences last modification time is more recent than the last visit to this mailbox
+ * Returns 0 if the modifcation time is older
+ * Returns -1 on error
+ */
+static int mh_sequences_changed(BUFFY *b)
 {
-  int i, r = 0;
+  char path[_POSIX_PATH_MAX];
+  struct stat sb;
+
+  if ((snprintf(path, sizeof(path), "%s/.mh_sequences", b->path) < sizeof(path)) &&
+      (stat(path, &sb) == 0))
+    return (sb.st_mtime > b->last_visited);
+  return -1;
+}
+
+/*
+ * Returns 1 if the modification time on the message file is older than the last visit to this mailbox
+ * Returns 0 if the modtime is newer
+ * Returns -1 on error
+ */
+static int mh_already_notified(BUFFY *b, int msgno)
+{
+  char path[_POSIX_PATH_MAX];
+  struct stat sb;
+
+  if ((snprintf(path, sizeof(path), "%s/%d", b->path, msgno) < sizeof(path)) &&
+      (stat(path, &sb) == 0))
+    return (sb.st_mtime <= b->last_visited);
+  return -1;
+}
+
+void mh_buffy(BUFFY *b)
+{
+  int i;
   struct mh_sequences mhs;
+
+  b->new = 0;
+
+  /* when $mail_check_recent is set and the .mh_sequences file hasn't changed
+   * since the last mailbox visit, there is nothing to do */
+  if (option(OPTMAILCHECKRECENT) && mh_sequences_changed(b) <= 0)
+      return;
+
   memset (&mhs, 0, sizeof (mhs));
 
-  if (mh_read_sequences (&mhs, path) < 0)
-    return 0;
-  for (i = 0; !r && i <= mhs.max; i++)
+  if (mh_read_sequences (&mhs, b->path) < 0)
+    return;
+
+  /* Traverse the sequence from high to low in order to support
+   * $mail_check_recent.  Given that new messages are appended, this should
+   * also be faster when it is unset as well.
+   */
+  for (i = mhs.max; i > 0; i--)
+  {
     if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
-      r = 1;
+    {
+      /* if the first unseen message we encounter was in the mailbox during the last visit, don't notify about it */
+      if (!option(OPTMAILCHECKRECENT) || mh_already_notified(b, i) == 0)
+	b->new = 1;
+      break;
+    }
+  }
   mhs_free_sequences (&mhs);
-  return r;
 }
 
 static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)

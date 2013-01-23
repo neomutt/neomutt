@@ -454,7 +454,8 @@ int mutt_buffy_check (int force)
 	break;
 
       case M_MH:
-	if ((tmp->new = mh_buffy (tmp->path)) > 0)
+	mh_buffy(tmp);
+	if (tmp->new)
 	  BuffyCount++;
 	break;
       }
