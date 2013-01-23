@@ -474,12 +474,7 @@ void mutt_endwin (const char *msg)
   int e = errno;
 
   if (!option (OPTNOCURSES))
-  {
-    ATTRSET(A_NORMAL);
-    CLEARLINE (LINES - 1);
-    mutt_refresh ();
     endwin ();
-  }
   
   if (msg && *msg)
   {
