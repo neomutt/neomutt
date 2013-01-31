@@ -195,6 +195,7 @@ int mutt_yesorno (const char *msg, int def)
   char *no = _("no");
   char *answer_string;
   size_t answer_string_len;
+  size_t msglen;
 
 #ifdef HAVE_LANGINFO_YESEXPR
   char *expr;
@@ -220,10 +221,12 @@ int mutt_yesorno (const char *msg, int def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.
    */
-  answer_string = safe_malloc (COLS + 1);
-  snprintf (answer_string, COLS + 1, " ([%s]/%s): ", def == M_YES ? yes : no, def == M_YES ? no : yes);
-  answer_string_len = strlen (answer_string);
-  mutt_message ("%.*s%s", COLS - answer_string_len, msg, answer_string);
+  safe_asprintf (&answer_string, " ([%s]/%s): ", def == M_YES ? yes : no, def == M_YES ? no : yes);
+  answer_string_len = mutt_strwidth (answer_string);
+  /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
+  msglen = mutt_wstr_trunc (msg, 4*COLS, COLS - answer_string_len, NULL);
+  addnstr (msg, msglen);
+  addstr (answer_string);
   FREE (&answer_string);
 
   FOREVER
