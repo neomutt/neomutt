@@ -1664,7 +1664,7 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
     /* find the next word and place it in `buf'. it may start with
      * whitespace we can fold before */
     next = find_word (p);
-    l = MIN(sizeof (buf), next - p);
+    l = MIN(sizeof (buf) - 1, next - p);
     memcpy (buf, p, l);
     buf[l] = 0;
 

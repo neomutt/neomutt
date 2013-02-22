@@ -68,7 +68,7 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
   if (option (OPTMAILCAPSANITIZE))
     mutt_sanitize_filename (type, 0);
 
-  while (x < clen && command[x] && y < sizeof (buf) - 1)
+  while (x < clen - 1 && command[x] && y < sizeof (buf) - 1)
   {
     if (command[x] == '\\')
     {
