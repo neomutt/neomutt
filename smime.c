@@ -357,7 +357,7 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
   char index_file[_POSIX_PATH_MAX];
   FILE *index;
   char buf[LONG_STRING];
-  char fields[5][STRING];
+  char fields[5][STRING+1]; /* +1 due to use of fscanf() below. the max field width does not include the null terminator (see http://dev.mutt.org/trac/ticket/3636) */
   int numFields, hash_suffix, done, cur; /* The current entry */
   MUTTMENU* menu;
   unsigned int hash;
@@ -470,7 +470,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
   int addr_len, query_len, found = 0, ask = 0, choice = 0;
   char cert_path[_POSIX_PATH_MAX];
   char buf[LONG_STRING], prompt[STRING];
-  char fields[5][STRING];
+  char fields[5][STRING+1]; /* +1 due to use of fscanf() below. the max field width does not include the null terminator (see http://dev.mutt.org/trac/ticket/3636) */
   char key[STRING];  
   int numFields;
   struct stat info;
