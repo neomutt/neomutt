@@ -33,6 +33,7 @@
 
 #include <string.h>
 #include <unistd.h>
+#include <errno.h>
 
 #ifdef USE_HCACHE
 #define HC_FNAME	"mutt"		/* filename for hcache as POP lacks paths */
@@ -141,8 +142,16 @@ static int fetch_uidl (char *line, void *data)
   int i, index;
   CONTEXT *ctx = (CONTEXT *)data;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
+  char *endp;
 
-  sscanf (line, "%d %s", &index, line);
+  errno = 0;
+  index = strtol(line, &endp, 10);
+  if (errno)
+      return -1;
+  while (*endp == ' ')
+      endp++;
+  memmove(line, endp, strlen(endp) + 1);
+
   for (i = 0; i < ctx->msgcount; i++)
     if (!mutt_strcmp (line, ctx->hdrs[i]->data))
       break;
