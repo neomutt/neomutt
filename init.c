@@ -2887,7 +2887,6 @@ static void mutt_srandom (void)
 void mutt_init (int skip_sys_rc, LIST *commands)
 {
   struct passwd *pw;
-  struct utsname utsname;
   char *p, buffer[STRING];
   int i, default_rc = 0, need_pause = 0;
   BUFFER err;
@@ -2953,30 +2952,21 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 #endif
 
   /* And about the host... */
-  uname (&utsname);
-  /* some systems report the FQDN instead of just the hostname */
-  if ((p = strchr (utsname.nodename, '.')))
   {
-    Hostname = mutt_substrdup (utsname.nodename, p);
-    p++;
-    strfcpy (buffer, p, sizeof (buffer)); /* save the domain for below */
+    size_t namelen = sysconf(_SC_HOST_NAME_MAX);
+    char *name = safe_malloc(namelen + 1);
+    if (gethostname(name, namelen) == -1)
+    {
+      fputs (_("unable to determine hostname"), stderr);
+      exit (1);
+    }
+    Hostname = safe_strdup(name);
+    FREE (&name);
   }
-  else
-    Hostname = safe_strdup (utsname.nodename);
 
-#ifndef DOMAIN
-#define DOMAIN buffer
-  if (!p && getdnsdomainname (buffer, sizeof (buffer)) == -1)
-    Fqdn = safe_strdup ("@");
-  else
-#endif /* DOMAIN */
-    if (*DOMAIN != '@')
-  {
-    Fqdn = safe_malloc (mutt_strlen (DOMAIN) + mutt_strlen (Hostname) + 2);
-    sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);	/* __SPRINTF_CHECKED__ */
-  }
-  else
-    Fqdn = safe_strdup(NONULL(Hostname));
+  /* determine the DNS domain name */
+  getdnsdomainname (buffer, sizeof (buffer));
+  Fqdn = safe_strdup(buffer);
 
   if ((p = getenv ("MAIL")))
     Spoolfile = safe_strdup (p);
