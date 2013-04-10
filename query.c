@@ -93,7 +93,12 @@ static QUERY *run_query (char *s, int quiet)
   }
   if (!quiet)
     mutt_message _("Waiting for response...");
-  fgets (msg, sizeof (msg), fp);
+  if (fgets (msg, sizeof (msg), fp) == NULL)
+  {
+    dprint(1, (debugfile, "%s:%d query_command produced no output (fgets() returned NULL)\n", __FILE__, __LINE__));
+    return 0;
+  }
+
   if ((p = strrchr (msg, '\n')))
     *p = '\0';
   while ((buf = mutt_read_line (buf, &buflen, fp, &dummy, 0)) != NULL)

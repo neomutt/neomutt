@@ -67,6 +67,7 @@ void mutt_adv_mktemp (char *s, size_t l)
   char buf[_POSIX_PATH_MAX];
   char tmp[_POSIX_PATH_MAX];
   char *period;
+  char *r;
   size_t sl;
   struct stat sb;
   
@@ -75,7 +76,9 @@ void mutt_adv_mktemp (char *s, size_t l)
   if (s[0] == '\0')
   {
     snprintf (s, l, "%s/muttXXXXXX", buf);
-    mktemp (s);
+    r = mktemp (s);
+    if (*r == '\0')
+      dprint (1, (debugfile, "%s:%d mktemp returned an empty string (errno=%d)\n", __FILE__, __LINE__, errno));
   }
   else
   {
@@ -87,7 +90,9 @@ void mutt_adv_mktemp (char *s, size_t l)
     if ((period = strrchr (tmp, '.')) != NULL)
       *period = 0;
     snprintf (s, l, "%s/%s.XXXXXX", buf, tmp);
-    mktemp (s);
+    r = mktemp (s);
+    if (*r == '\0')
+      dprint (1, (debugfile, "%s:%d mktemp returned an empty string (errno=%d)\n", __FILE__, __LINE__, errno));
     if (period != NULL)
     {
       *period = '.';

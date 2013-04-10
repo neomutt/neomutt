@@ -615,7 +615,11 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       }
       else
       {
-	getcwd (LastDir, sizeof (LastDir));
+	if (getcwd (LastDir, sizeof (LastDir)) == NULL)
+	{
+	  dprint(1, (debugfile, "%s:%d getcwd() returned NULL\n", __FILE__, __LINE__));
+	  LastDir[0] = '\0';
+	}
 	safe_strcat (LastDir, sizeof (LastDir), "/");
 	safe_strncat (LastDir, sizeof (LastDir), f, i);
       }
@@ -625,7 +629,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       if (f[0] == '/')
 	strcpy (LastDir, "/");		/* __STRCPY_CHECKED__ */
       else
-	getcwd (LastDir, sizeof (LastDir));
+      {
+	if (getcwd (LastDir, sizeof (LastDir)) == NULL)
+	{
+	  dprint(1, (debugfile, "%s:%d getcwd() returned NULL\n", __FILE__, __LINE__));
+	  LastDir[0] = '\0';
+	}
+      }
     }
 
     if (i <= 0 && f[0] != '/')
@@ -640,7 +650,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   else 
   {
     if (!folder)
-      getcwd (LastDir, sizeof (LastDir));
+    {
+      if (getcwd (LastDir, sizeof (LastDir)) == NULL)
+      {
+	dprint(1, (debugfile, "%s:%d getcwd() returned NULL\n", __FILE__, __LINE__));
+	LastDir[0] = '\0';
+      }
+    }
     else if (!LastDir[0])
       strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
     
@@ -659,7 +675,13 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       while (i && LastDir[--i] == '/')
         LastDir[i] = '\0';
       if (!LastDir[0])
-        getcwd (LastDir, sizeof (LastDir));
+      {
+        if (getcwd (LastDir, sizeof (LastDir)) == NULL)
+	{
+	  dprint(1, (debugfile, "%s:%d getcwd() returned NULL\n", __FILE__, __LINE__));
+	  LastDir[0] = '\0';
+	}
+      }
     }
   }
 

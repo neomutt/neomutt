@@ -28,6 +28,7 @@
 #include "history.h"
 
 #include <string.h>
+#include <errno.h>
 
 /* redraw flags for mutt_enter_string() */
 enum
@@ -94,7 +95,8 @@ static void my_wcstombs (char *dest, size_t dlen, const wchar_t *src, size_t sle
 
   /* If this works, we can stop now */
   if (dlen >= MB_LEN_MAX) {
-    wcrtomb (dest, 0, &st);
+    if (wcrtomb (dest, 0, &st) == (size_t) -1)
+      dprint(1, (debugfile, "%s:%d wcrtomb() returned -1, errno=%d\n", __FILE__, __LINE__, errno));
     return;
   }
 

@@ -561,11 +561,13 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   }
 
   h->lines = 0;
-  fgets (buf, sizeof (buf), msg->fp);
+  if (fgets (buf, sizeof (buf), msg->fp) == NULL)
+      ; /* EOF checked below */
   while (!feof (msg->fp))
   {
     h->lines++;
-    fgets (buf, sizeof (buf), msg->fp);
+    if (fgets (buf, sizeof (buf), msg->fp) == NULL)
+	; /* EOF checked in while loop condition */
   }
 
   h->content->length = ftell (msg->fp) - h->content->offset;
