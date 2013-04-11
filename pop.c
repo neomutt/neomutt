@@ -67,7 +67,6 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
   long length;
   char buf[LONG_STRING];
   char tempfile[_POSIX_PATH_MAX];
-  int rv;
 
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(f = safe_fopen (tempfile, "w+")))
@@ -80,8 +79,7 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
   ret = pop_query (pop_data, buf, sizeof (buf));
   if (ret == 0)
   {
-    if ((rv = sscanf (buf, "+OK %d %ld", &index, &length)) < 2)
-      dprint(1, (debugfile, "%s:%d sscanf() returned %d\n", __FILE__, __LINE__, rv));
+    sscanf (buf, "+OK %d %ld", &index, &length);
 
     snprintf (buf, sizeof (buf), "TOP %d 0\r\n", h->refno);
     ret = pop_fetch_data (pop_data, buf, NULL, fetch_message, f);
@@ -112,21 +110,12 @@ static int pop_read_header (POP_DATA *pop_data, HEADER *h)
     {
       rewind (f);
       h->env = mutt_read_rfc822_header (f, h, 0, 0);
-      /*
-       * The following code seems to be trying to alter the content length by
-       * removing the CR characters for the header.  Note that this value is
-       * still incorrect, since "TOP 0" only returns the message header, so it
-       * only ends up accounting for the CR characters in the header.  The
-       * correct length is set when the entire message is downloaded by
-       * pop_fetch_message().
-       */
       h->content->length = length - h->content->offset + 1;
       rewind (f);
       while (!feof (f))
       {
 	h->content->length--;
-	if (fgets (buf, sizeof (buf), f) == NULL)
-	  ; /* EOF checked in while loop condition */
+	fgets (buf, sizeof (buf), f);
       }
       break;
     }
@@ -649,13 +638,11 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
 
   h->data = uidl;
   h->lines = 0;
-  if (fgets (buf, sizeof (buf), msg->fp) == NULL)
-    ; /* EOF checked in following while loop condition */
+  fgets (buf, sizeof (buf), msg->fp);
   while (!feof (msg->fp))
   {
     ctx->hdrs[msgno]->lines++;
-    if (fgets (buf, sizeof (buf), msg->fp) == NULL)
-      ; /* EOF checked in following while loop condition */
+    fgets (buf, sizeof (buf), msg->fp);
   }
 
   h->content->length = ftello (msg->fp) - h->content->offset;

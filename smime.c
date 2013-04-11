@@ -391,24 +391,8 @@ char* smime_ask_for_key (char *prompt, char *mailbox, short public)
     while (!feof(index)) {
         numFields = fscanf (index, MUTT_FORMAT(STRING) " %x.%i " MUTT_FORMAT(STRING), fields[0], &hash,
           &hash_suffix, fields[2]);
-	/*
-	 * ensure good values for these fields since they may not be set if
-	 * `public` is false, and they are used below.
-	 */
-	fields[3][0] = '\0';
-	fields[4][0] = '\0';
         if (public)
-	{
-	  /*
-	   * The original code here did not check the return value of fscanf,
-	   * so I'm unsure whether the entire line should be ignored upon
-	   * error.  Just log it for now.
-	   */
-	  int rv;
-          rv = fscanf (index, MUTT_FORMAT(STRING) " " MUTT_FORMAT(STRING) "\n", fields[3], fields[4]);
-	  if (rv < 2)
-	   dprint (1, (debugfile, "%s:%d fscanf() returned %d\n", __FILE__, __LINE__, errno));
-	}
+          fscanf (index, MUTT_FORMAT(STRING) " " MUTT_FORMAT(STRING) "\n", fields[3], fields[4]);
   
       /* 0=email 1=name 2=nick 3=intermediate 4=trust */
       if (numFields < 2) continue;

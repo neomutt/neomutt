@@ -968,11 +968,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     if (i == 0)
     {
       ctx->size = ftello (ctx->fp); /* update the size of the mailbox */
-      if (ftruncate (fileno (ctx->fp), ctx->size) == -1)
-      {
-	dprint(1, (debugfile, "%s:%d ftrunctate() returned -1, errno=%d\n", __FILE__, __LINE__, errno));
-	i = -1;
-      }
+      ftruncate (fileno (ctx->fp), ctx->size);
     }
   }
 

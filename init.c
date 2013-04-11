@@ -2822,6 +2822,7 @@ int mutt_getvaluebyname (const char *name, const struct mapping_t *map)
 #ifdef DEBUG
 static void start_debug (void)
 {
+  time_t t;
   int i;
   char buf[_POSIX_PATH_MAX];
   char buf2[_POSIX_PATH_MAX];
@@ -2835,6 +2836,7 @@ static void start_debug (void)
   }
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
+    t = time (0);
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
     dprint(1,(debugfile,"Mutt/%s (%s) debugging at level %d\n",
 	      MUTT_VERSION, ReleaseDate, debuglevel));

@@ -379,7 +379,6 @@ int mx_get_magic (const char *path)
   }
   else if (st.st_size == 0)
   {
-zero_size_file:
     /* hard to tell what zero-length files are, so assume the default magic */
     if (DefaultMagic == M_MBOX || DefaultMagic == M_MMDF)
       return (DefaultMagic);
@@ -390,12 +389,7 @@ zero_size_file:
   {
     struct utimbuf times;
 
-    if (fgets (tmp, sizeof (tmp), f) == NULL)
-    {
-      /* This situation should not occur since we check for size==0 above.. */
-      dprint(1, (debugfile, "%s:%d fgets() returned NULL.  this should not happen!\n", __FILE__, __LINE__));
-      goto zero_size_file;
-    }
+    fgets (tmp, sizeof (tmp), f);
     if (mutt_strncmp ("From ", tmp, 5) == 0)
       magic = M_MBOX;
     else if (mutt_strcmp (MMDF_SEP, tmp) == 0)
