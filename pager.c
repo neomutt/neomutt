@@ -1927,6 +1927,15 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	ch = -1;
 	break;
 
+      case OP_QUIT:
+	if (query_quadoption (OPT_QUIT, _("Quit Mutt?")) == M_YES)
+	{
+	  /* avoid prompting again in the index menu */
+	  set_quadoption (OPT_QUIT, M_YES);
+	  ch = -1;
+	}
+	break;
+
       case OP_NEXT_PAGE:
 	if (lineInfo[curline].offset < sb.st_size-1)
 	{
