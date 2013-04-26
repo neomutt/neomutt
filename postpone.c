@@ -551,8 +551,15 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   newhdr->content->length = hdr->content->length;
   mutt_parse_part (fp, newhdr->content);
 
-  FREE (&newhdr->env->message_id);
-  FREE (&newhdr->env->mail_followup_to); /* really? */
+  /* If message_id is set, then we are resending a message and don't want
+   * message_id or mail_followup_to. Otherwise, we are resuming a
+   * postponed message, and want to keep the mail_followup_to.
+   */
+  if (newhdr->env->message_id != NULL)
+  {
+    FREE (&newhdr->env->message_id);
+    FREE (&newhdr->env->mail_followup_to);
+  }
 
   /* decrypt pgp/mime encoded messages */
 
