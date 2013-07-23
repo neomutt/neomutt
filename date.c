@@ -77,7 +77,7 @@ time_t mutt_mktime (struct tm *t, int local)
   g = AccumDaysPerMonth [t->tm_mon % 12];
 
   /* The leap years are 1972 and every 4. year until 2096,
-   * but this algoritm will fail after year 2099 */
+   * but this algorithm will fail after year 2099 */
   g += t->tm_mday;
   if ((t->tm_year % 4) || t->tm_mon < 2)
     g--;

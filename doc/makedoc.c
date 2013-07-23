@@ -750,7 +750,7 @@ static void print_confline (const char *varname, int type, const char *val, FILE
  ** - .dt starts a term in a definition list.
  ** - .dd starts a definition in a definition list.
  ** - .de on a line finishes a definition list.
- ** - .il on a line starts an itemzied list
+ ** - .il on a line starts an itemized list
  ** - .dd starts an item in an itemized list
  ** - .ie on a line finishes an itemized list
  ** - .ts on a line starts a "tscreen" environment (name taken from SGML).

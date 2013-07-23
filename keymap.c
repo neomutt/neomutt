@@ -408,7 +408,7 @@ static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
 /* return values:
  *	>0		function to execute
  *	OP_NULL		no function bound to key sequence
- *	-1		error occured while reading input
+ *	-1		error occurred while reading input
  */
 int km_dokey (int menu)
 {

@@ -481,7 +481,7 @@ enum
 
   /* pseudo options */
 
-  OPTAUXSORT,		/* (pseudo) using auxillary sort function */
+  OPTAUXSORT,		/* (pseudo) using auxiliary sort function */
   OPTFORCEREFRESH,	/* (pseudo) refresh even during macros */
   OPTLOCALES,		/* (pseudo) set if user has valid locale definition */
   OPTNOCURSES,		/* (pseudo) when sending in batch mode */
@@ -889,7 +889,7 @@ typedef struct _context
   unsigned int locked : 1;	/* is the mailbox locked? */
   unsigned int changed : 1;	/* mailbox has been modified */
   unsigned int readonly : 1;    /* don't allow changes to the mailbox */
-  unsigned int dontwrite : 1;   /* dont write the mailbox on close */
+  unsigned int dontwrite : 1;   /* don't write the mailbox on close */
   unsigned int append : 1;	/* mailbox is opened in append mode */
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */

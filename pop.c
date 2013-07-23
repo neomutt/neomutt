@@ -56,7 +56,7 @@ static int fetch_message (char *line, void *file)
  * Read header
  * returns:
  *  0 on success
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - invalid command or execution error,
  * -3 - error writing to tempfile
  */
@@ -229,7 +229,7 @@ static header_cache_t *pop_hcache_open (POP_DATA *pop_data, const char *path)
  * Read headers
  * returns:
  *  0 on success
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - invalid command or execution error,
  * -3 - error writing to tempfile
  */

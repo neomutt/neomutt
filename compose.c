@@ -1264,7 +1264,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
     }
 
-    /* Draw formated compose status line */
+    /* Draw formatted compose status line */
     if (menu->redraw & REDRAW_STATUS) 
     {
 	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));

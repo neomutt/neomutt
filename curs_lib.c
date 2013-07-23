@@ -67,7 +67,7 @@ void mutt_refresh (void)
 }
 
 /* Make sure that the next refresh does a full refresh.  This could be
-   optmized by not doing it at all if DISPLAY is set as this might
+   optimized by not doing it at all if DISPLAY is set as this might
    indicate that a GUI based pinentry was used.  Having an option to
    customize this is of course the Mutt way.  */
 void mutt_need_hard_redraw (void)

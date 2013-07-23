@@ -481,7 +481,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
       /* If the Reply-To: address is a mailing list, assume that it was
        * put there by the mailing list, and use the From: address
        * 
-       * We also take the from header if our correspondant has a reply-to
+       * We also take the from header if our correspondent has a reply-to
        * header which is identical to the electronic mail address given
        * in his From header.
        * 
@@ -1270,7 +1270,7 @@ ci_send_message (int flags,		/* send mode */
     /* the from address must be set here regardless of whether or not
      * $use_from is set so that the `~P' (from you) operator in send-hook
      * patterns will work.  if $use_from is unset, the from address is killed
-     * after send-hooks are evaulated */
+     * after send-hooks are evaluated */
 
     if (!msg->env->from)
     {

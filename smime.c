@@ -635,7 +635,7 @@ char *smime_get_field_from_db (char *mailbox, char *query, short public, short m
 
 /* 
    This sets the '*ToUse' variables for an upcoming decryption, where
-   the reuquired key is different from SmimeDefaultKey.
+   the required key is different from SmimeDefaultKey.
 */
 
 void _smime_getkeys (char *mailbox)

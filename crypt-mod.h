@@ -26,7 +26,7 @@
 
 
 /* 
-    Type defintions for crypto module functions.
+    Type definitions for crypto module functions.
  */
 typedef void (*crypt_func_void_passphrase_t) (void);
 typedef int (*crypt_func_valid_passphrase_t)  (void);
@@ -107,7 +107,7 @@ typedef struct crypt_module_functions
 
 
 /*
-   A structure to decribe a crypto module. 
+   A structure to describe a crypto module. 
  */
 typedef struct crypt_module_specs
 {

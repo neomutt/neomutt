@@ -978,7 +978,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
   if (fclose (ctx->fp) != 0 || i == -1)
   {
-    /* error occured while writing the mailbox back, so keep the temp copy
+    /* error occurred while writing the mailbox back, so keep the temp copy
      * around
      */
     

@@ -23,7 +23,7 @@
  *    probably requires libm on most operating systems.  Don't yet
  *    support the exponent (e,E) and sigfig (g,G).  Also, fmtint()
  *    was pretty badly broken, it just wasn't being exercised in ways
- *    which showed it, so that's been fixed.  Also, formated the code
+ *    which showed it, so that's been fixed.  Also, formatted the code
  *    to mutt conventions, and removed dead code left over from the
  *    original.  Also, there is now a builtin-test, just compile with:
  *           gcc -DTEST_SNPRINTF -o snprintf snprintf.c -lm
@@ -41,7 +41,7 @@
  *  Holger Weiss <holger@zedat.fu-berlin.de> 07/23/06 for mutt 1.5.13
  *    A C99 compliant [v]snprintf() returns the number of characters that
  *    would have been written to a sufficiently sized buffer (excluding
- *    the '\0').  Mutt now relies on this behaviour, but the original
+ *    the '\0').  Mutt now relies on this behavior, but the original
  *    code simply returned the length of the resulting output string, so
  *    that's been fixed.
  *

@@ -94,8 +94,8 @@ struct expression
     greater_than,		/* Comparison.  */
     less_or_equal,		/* Comparison.  */
     greater_or_equal,		/* Comparison.  */
-    equal,			/* Comparision for equality.  */
-    not_equal,			/* Comparision for inequality.  */
+    equal,			/* Comparison for equality.  */
+    not_equal,			/* Comparison for inequality.  */
     land,			/* Logical AND.  */
     lor,			/* Logical OR.  */
     /* Ternary operators:  */

@@ -179,7 +179,7 @@ static PARAMETER *parse_parameters (const char *s)
 	for (i=0; *s && i < sizeof (buffer) - 1; i++, s++)
 	{
 	  if (AssumedCharset && *AssumedCharset) {
-            /* As iso-2022-* has a characer of '"' with non-ascii state,
+            /* As iso-2022-* has a character of '"' with non-ascii state,
 	     * ignore it. */
             if (*s == 0x1b && i < sizeof (buffer) - 2)
             {
@@ -1359,7 +1359,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
 	continue; /* just ignore */
       else if (is_from (line, return_path, sizeof (return_path), &t))
       {
-	/* MH somtimes has the From_ line in the middle of the header! */
+	/* MH sometimes has the From_ line in the middle of the header! */
 	if (hdr && !hdr->received)
 	  hdr->received = t - mutt_local_tz (t);
 	continue;

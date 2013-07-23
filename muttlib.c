@@ -1744,7 +1744,7 @@ void mutt_buffer_free (BUFFER **p)
    FREE(p);		/* __FREE_CHECKED__ */
 }
 
-/* dynamically grows a BUFFER to accomodate s, in increments of 128 bytes.
+/* dynamically grows a BUFFER to accommodate s, in increments of 128 bytes.
  * Always one byte bigger than necessary for the null terminator, and
  * the buffer is always null-terminated */
 void mutt_buffer_add (BUFFER* buf, const char* s, size_t len)

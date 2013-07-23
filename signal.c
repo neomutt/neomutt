@@ -128,7 +128,7 @@ void mutt_signal_init (void)
 
   /* we want SIGALRM to abort the current syscall, so we do this before
    * setting the SA_RESTART flag below.  currently this is only used to
-   * timeout on a connect() call in a reasonable amout of time.
+   * timeout on a connect() call in a reasonable amount of time.
    */
   sigaction (SIGALRM, &act, NULL);
 

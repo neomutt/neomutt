@@ -244,7 +244,7 @@ err_crt:
  */
 static int protocol_priority[] = {GNUTLS_TLS1_2, GNUTLS_TLS1_1, GNUTLS_TLS1, GNUTLS_SSL3, 0};
 
-/* tls_negotiate: After TLS state has been initialised, attempt to negotiate
+/* tls_negotiate: After TLS state has been initialized, attempt to negotiate
  *   TLS over the wire, including certificate checks. */
 static int tls_negotiate (CONNECTION * conn)
 {

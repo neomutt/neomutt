@@ -161,7 +161,7 @@ int imap_hcache_del (IMAP_DATA* idata, unsigned int uid)
 #endif
 
 /* imap_parse_path: given an IMAP mailbox name, return host, port
- *   and a path IMAP servers will recognise.
+ *   and a path IMAP servers will recognize.
  * mx.mbox is malloc'd, caller must free it */
 int imap_parse_path (const char* path, IMAP_MBOX* mx)
 {

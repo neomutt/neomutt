@@ -377,7 +377,7 @@ static int ssl_socket_open (CONNECTION * conn)
   return 0;
 }
 
-/* ssl_negotiate: After SSL state has been initialised, attempt to negotiate
+/* ssl_negotiate: After SSL state has been initialized, attempt to negotiate
  *   SSL over the wire, including certificate checks. */
 static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
 {

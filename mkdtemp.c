@@ -6,7 +6,7 @@
 #include <time.h>
 #include <string.h>
 
-/* mkdtemp fuction for systems which don't have one */
+/* mkdtemp function for systems which don't have one */
 char *mkdtemp (char *tmpl)
 {
     static const char LETTERS[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

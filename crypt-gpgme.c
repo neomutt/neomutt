@@ -587,7 +587,7 @@ static gpgme_key_t *create_recipient_set (const char *keylist,
 	  {
 	    if (i>1 && buf[i-1] == '!') 
 	      {
-		/* The user selected to override the valididy of that
+		/* The user selected to override the validity of that
 		   key. */
 		buf[i-1] = 0;
 	    
@@ -1217,7 +1217,7 @@ static void show_fingerprint (gpgme_key_t key, STATE *state)
   FREE (&buf);
 }
 
-/* Show the valididy of a key used for one signature. */
+/* Show the validity of a key used for one signature. */
 static void show_one_sig_validity (gpgme_ctx_t ctx, int idx, STATE *s)
 {
   gpgme_verify_result_t result = NULL;
@@ -1288,8 +1288,8 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
   state_attach_puts ("\n", s);  
 }
 
-/* Show information about one signature.  This fucntion is called with
-   the context CTX of a sucessful verification operation and the
+/* Show information about one signature.  This function is called with
+   the context CTX of a successful verification operation and the
    enumerator IDX which should start at 0 and incremete for each
    call/signature. 
 
@@ -1783,7 +1783,7 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
          an ugly way of doing it but we have anyway a problem with
          arbitrary encoded S/MIME messages: Only the outer part may be
          encrypted.  The entire mime parsing should be revamped,
-         probably by keeping the temportary files so that we don't
+         probably by keeping the temporary files so that we don't
          need to decrypt them all the time.  Inner parts of an
          encrypted part can then pint into this file and tehre won't
          never be a need to decrypt again.  This needs a partial
@@ -2785,7 +2785,7 @@ static const char *crypt_entry_fmt (char *dest,
   return (src);
 }
       
-/* Used by the display fucntion to format a line. */
+/* Used by the display function to format a line. */
 static void crypt_entry (char *s, size_t l, MUTTMENU * menu, int num)
 {
   crypt_key_t **key_table = (crypt_key_t **) menu->data;

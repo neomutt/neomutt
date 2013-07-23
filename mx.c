@@ -1213,7 +1213,7 @@ static int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 #endif
 
 /* args:
- *	dest	destintation mailbox
+ *	dest	destination mailbox
  *	hdr	message being copied (required for maildir support, because
  *		the filename depends on the message flags)
  */

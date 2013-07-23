@@ -646,7 +646,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
     int untilNow = FALSE;
     if (isdigit ((unsigned char)*pc))
     {
-      /* mininum date specified */
+      /* minimum date specified */
       if ((pc = getDate (pc, &min, err)) == NULL)
       {
 	FREE (&buffer.data);
@@ -1499,7 +1499,7 @@ int mutt_search_command (int cur, int op)
     h = Context->hdrs[Context->v2r[i]];
     if (h->searched)
     {
-      /* if we've already evaulated this message, use the cached value */
+      /* if we've already evaluated this message, use the cached value */
       if (h->matched)
       {
 	mutt_clear_error();

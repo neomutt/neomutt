@@ -163,7 +163,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   /* 
    * XXX - we have to play games with the message flags to avoid
-   * problematic behaviour with maildir folders.
+   * problematic behavior with maildir folders.
    *
    */
 

@@ -345,7 +345,7 @@ static const short yycheck[] = {     1,
 #if (!defined (__STDC__) && defined (sparc)) || defined (__sparc__) || defined (__sparc) || defined (__sgi) || (defined (__sun) && defined (__i386))
 #define YYSTACK_USE_ALLOCA
 #include <alloca.h>
-#else /* not sparc */
+#else /* not SPARC */
 /* We think this test detects Watcom and Microsoft C.  */
 /* This used to test MSDOS, but that is a bad idea
    since that symbol is in the user namespace.  */
@@ -371,7 +371,7 @@ static const short yycheck[] = {     1,
 #endif
 #endif /* not _AIX */
 #endif /* not MSDOS, or __TURBOC__ */
-#endif /* not sparc */
+#endif /* not SPARC */
 #endif /* not GNU C */
 #endif /* alloca not defined */
 #endif /* YYSTACK_USE_ALLOCA not defined */

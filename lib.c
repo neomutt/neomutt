@@ -787,7 +787,7 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
       }
       else
       {
-        ungetc (c, fp); /* undo our dammage */
+        ungetc (c, fp); /* undo our damage */
         /* There wasn't room for the line -- increase ``s'' */
         offset = *size - 1; /* overwrite the terminating 0 */
         *size += STRING;

@@ -1367,7 +1367,7 @@ static void clean_references (THREAD *brk, THREAD *cur)
 
     /* Looking for the first bad reference according to the new threading.
      * Optimal since Mutt stores the references in reverse order, and the
-     * first loop should match immediatly for mails respecting RFC2822. */
+     * first loop should match immediately for mails respecting RFC2822. */
     for (p = brk; !done && p; p = p->parent)
       for (ref = cur->message->env->references; p->message && ref; ref = ref->next)
 	if (!mutt_strcasecmp (ref->data, p->message->env->message_id))

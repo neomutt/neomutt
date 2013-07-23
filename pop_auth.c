@@ -142,7 +142,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
 bail:
   sasl_dispose (&saslconn);
 
-  /* terminate SASL sessoin if the last responce is not +OK nor -ERR */
+  /* terminate SASL sessoin if the last response is not +OK nor -ERR */
   if (!mutt_strncmp (inbuf, "+ ", 2))
   {
     snprintf (buf, sizeof (buf), "*\r\n");
@@ -289,7 +289,7 @@ static const pop_auth_t pop_authenticators[] = {
 /*
  * Authentication
  *  0 - successful,
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - login failed,
  * -3 - authentication canceled.
 */

@@ -145,7 +145,7 @@ static int fetch_auth (char *line, void *data)
 /*
  * Get capabilities
  *  0 - successful,
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - execution error.
 */
 static int pop_capabilities (POP_DATA *pop_data, int mode)
@@ -223,7 +223,7 @@ static int pop_capabilities (POP_DATA *pop_data, int mode)
 /*
  * Open connection
  *  0 - successful,
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - invalid response.
 */
 int pop_connect (POP_DATA *pop_data)
@@ -256,7 +256,7 @@ int pop_connect (POP_DATA *pop_data)
 /*
  * Open connection and authenticate
  *  0 - successful,
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - invalid command or execution error,
  * -3 - authentication canceled.
 */
@@ -412,7 +412,7 @@ void pop_logout (CONTEXT *ctx)
 /*
  * Send data from buffer and receive answer to the same buffer
  *  0 - successful,
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - invalid command or execution error.
 */
 int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
@@ -424,7 +424,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     return -1;
 
 #ifdef DEBUG
-    /* print msg instaed of real command */
+    /* print msg instead of real command */
     if (msg)
     {
       dbg = M_SOCK_LOG_FULL;
@@ -455,7 +455,7 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
  * funct(NULL, *data)  if  rewind(*data)  needs, exits when fail or done.
  * Returned codes:
  *  0 - successful,
- * -1 - conection lost,
+ * -1 - connection lost,
  * -2 - invalid command or execution error,
  * -3 - error in funct(*line, *data)
  */

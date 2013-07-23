@@ -970,7 +970,7 @@ static int mutt_is_autoview (BODY *b)
     }
     else
     {
-      /* determine if this type is on ther user's auto_view list */
+      /* determine if this type is on there user's auto_view list */
       LIST *t = AutoViewList;
 
       for (; t; t = t->next) {
@@ -1019,7 +1019,7 @@ static int alternative_handler (BODY *a, STATE *s)
 
   a = b;
 
-  /* First, search list of prefered types */
+  /* First, search list of preferred types */
   t = AlternativeOrderList;
   while (t && !choice)
   {
