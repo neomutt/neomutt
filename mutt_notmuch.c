@@ -570,31 +570,33 @@ static int get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
 
 static void apply_exclude_tags(notmuch_query_t *query)
 {
-	if (NotmuchExcludeTags) {
-		char *buf = safe_strdup(NotmuchExcludeTags);
-		char *p, *tag = NULL, *end = NULL;
+	char *buf, *p, *end = NULL, *tag = NULL;
 
-		for (p = buf; p && *p; p++) {
-			if (!tag && isspace(*p))
-				continue;
-			if (!tag)
-				tag = p;		/* begin of the tag */
-			if (*p == ',' || *p == ' ')
-				end = p;		/* terminate the tag */
-			else if (*(p + 1) == '\0')
-				end = p + 1;		/* end of optstr */
-			if (!tag || !end)
-				continue;
-			if (tag >= end)
-				break;
-			*end = '\0';
+	if (!NotmuchExcludeTags || !*NotmuchExcludeTags)
+		return;
+	buf = safe_strdup(NotmuchExcludeTags);
 
-			dprint(2, (debugfile, "nm: query explude tag '%s'\n", tag));
-			notmuch_query_add_tag_exclude(query, tag);
-			end = tag = NULL;
-		}
-		FREE(&buf);
+	for (p = buf; p && *p; p++) {
+		if (!tag && isspace(*p))
+			continue;
+		if (!tag)
+			tag = p;		/* begin of the tag */
+		if (*p == ',' || *p == ' ')
+			end = p;		/* terminate the tag */
+		else if (*(p + 1) == '\0')
+			end = p + 1;		/* end of optstr */
+		if (!tag || !end)
+			continue;
+		if (tag >= end)
+			break;
+		*end = '\0';
+
+		dprint(2, (debugfile, "nm: query exclude tag '%s'\n", tag));
+		notmuch_query_add_tag_exclude(query, tag);
+		end = tag = NULL;
 	}
+	notmuch_query_set_omit_excluded(query, 1);
+	FREE(&buf);
 }
 
 static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
@@ -1079,6 +1081,9 @@ int nm_read_query(CONTEXT *ctx)
 		int type = get_query_type(data);
 		char msgbuf[STRING];
 
+		dprint(1, (debugfile, "nm: reading messages... [newcount=%d]\n",
+					notmuch_query_count_messages(q)));
+
 		if (!ctx->quiet) {
 			unsigned ct = notmuch_query_count_messages(q);
 
@@ -1143,6 +1148,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 	FREE(&qstr);
 	if (!q)
 		goto done;
+	apply_exclude_tags(q);
 	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
 	ct = notmuch_query_count_messages(q);
