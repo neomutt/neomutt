@@ -101,7 +101,8 @@ struct nm_ctxdata {
 	int ignmsgcount;	/* ingored messages */
 
 	unsigned int noprogress : 1,
-		     longrun : 1;
+		     longrun : 1,
+		     progress_ready : 1;
 
 };
 
@@ -868,7 +869,7 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
 	return name;
 }
 
-static void nm_progress_init(CONTEXT *ctx, const char *msg, int maxct, int rd)
+static void nm_progress_reset(CONTEXT *ctx)
 {
 	struct nm_ctxdata *data;
 
@@ -881,23 +882,35 @@ static void nm_progress_init(CONTEXT *ctx, const char *msg, int maxct, int rd)
 	data->oldmsgcount = ctx->msgcount;
 	data->ignmsgcount = 0;
 	data->noprogress = 0;
-
-	mutt_progress_init(&data->progress, msg, M_PROGRESS_MSG,
-			rd ? ReadInc : WriteInc, maxct);
+	data->progress_ready = 0;
 }
 
-static void nm_progress_update(CONTEXT *ctx)
+static void nm_progress_update(CONTEXT *ctx, notmuch_query_t *q)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (ctx->quiet || data->noprogress)
 		return;
 
-	mutt_progress_update(&data->progress,
-			ctx->msgcount + data->ignmsgcount - data->oldmsgcount, -1);
+	if (!data->progress_ready && q) {
+		static char msg[STRING];
+		snprintf(msg, sizeof(msg), _("Reading messages..."));
+
+		mutt_progress_init(&data->progress, msg, M_PROGRESS_MSG,
+			ReadInc, notmuch_query_count_messages(q));
+		data->progress_ready = 1;
+	}
+
+	if (data->progress_ready)
+		mutt_progress_update(&data->progress,
+				ctx->msgcount + data->ignmsgcount
+					      - data->oldmsgcount, -1);
 }
 
-static void append_message(CONTEXT *ctx, notmuch_message_t *msg, int dedup)
+static void append_message(CONTEXT *ctx,
+			   notmuch_query_t *q,
+			   notmuch_message_t *msg,
+			   int dedup)
 {
 	char *newpath = NULL;
 	const char *path;
@@ -906,7 +919,7 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg, int dedup)
 	/* deduplicate */
 	if (dedup && get_mutt_header(ctx, msg)) {
 		get_ctxdata(ctx)->ignmsgcount++;
-		nm_progress_update(ctx);
+		nm_progress_update(ctx, q);
 	        dprint(2, (debugfile, "nm: ignore id=%s, already in the context\n",
 					notmuch_message_get_message_id(msg)));
 		return;
@@ -971,7 +984,7 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg, int dedup)
 			hd->oldpath = safe_strdup(path);
 		}
 	}
-	nm_progress_update(ctx);
+	nm_progress_update(ctx, q);
 done:
 	FREE(&newpath);
 }
@@ -981,7 +994,10 @@ done:
  * Careful, this calls itself recursively to make sure we get
  * everything.
  */
-static void append_replies(CONTEXT *ctx, notmuch_message_t *top, int dedup)
+static void append_replies(CONTEXT *ctx,
+			   notmuch_query_t *q,
+			   notmuch_message_t *top,
+			   int dedup)
 {
 	notmuch_messages_t *msgs;
 
@@ -990,9 +1006,9 @@ static void append_replies(CONTEXT *ctx, notmuch_message_t *top, int dedup)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		append_message(ctx, m, dedup);
+		append_message(ctx, q, m, dedup);
 		/* recurse through all the replies to this message too */
-		append_replies(ctx, m, dedup);
+		append_replies(ctx, q, m, dedup);
 		notmuch_message_destroy(m);
 	}
 }
@@ -1001,7 +1017,10 @@ static void append_replies(CONTEXT *ctx, notmuch_message_t *top, int dedup)
  * add each top level reply in the thread, and then add each
  * reply to the top level replies
  */
-static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread, int dedup)
+static void append_thread(CONTEXT *ctx,
+			  notmuch_query_t *q,
+			  notmuch_thread_t *thread,
+			  int dedup)
 {
 	notmuch_messages_t *msgs;
 
@@ -1010,8 +1029,8 @@ static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread, int dedup)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		append_message(ctx, m, dedup);
-		append_replies(ctx, m, dedup);
+		append_message(ctx, q, m, dedup);
+		append_replies(ctx, q, m, dedup);
 		notmuch_message_destroy(m);
 	}
 }
@@ -1033,7 +1052,7 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		append_message(ctx, m, dedup);
+		append_message(ctx, q, m, dedup);
 		notmuch_message_destroy(m);
 	}
 }
@@ -1055,7 +1074,7 @@ static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 	     notmuch_threads_move_to_next(threads)) {
 
 		notmuch_thread_t *thread = notmuch_threads_get(threads);
-		append_thread(ctx, thread, dedup);
+		append_thread(ctx, q, thread, dedup);
 		notmuch_thread_destroy(thread);
 	}
 }
@@ -1076,22 +1095,11 @@ int nm_read_query(CONTEXT *ctx)
 	dprint(1, (debugfile, "nm: reading messages...[current count=%d]\n",
 				ctx->msgcount));
 
+	nm_progress_reset(ctx);
+
 	q = get_query(data, FALSE);
 	if (q) {
-		int type = get_query_type(data);
-		char msgbuf[STRING];
-
-		dprint(1, (debugfile, "nm: reading messages... [newcount=%d]\n",
-					notmuch_query_count_messages(q)));
-
-		if (!ctx->quiet) {
-			unsigned ct = notmuch_query_count_messages(q);
-
-			snprintf (msgbuf, sizeof(msgbuf), _("Reading %s..."), ctx->path);
-			nm_progress_init(ctx, msgbuf, ct, 1);
-		}
-
-		switch(type) {
+		switch(get_query_type(data)) {
 		case NM_QUERY_TYPE_MESGS:
 			read_mesgs_query(ctx, q, 0);
 			break;
@@ -1125,9 +1133,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 	notmuch_query_t *q = NULL;
 	notmuch_database_t *db = NULL;
 	notmuch_message_t *msg = NULL;
-	char msgbuf[STRING];
 	int rc = -1;
-	unsigned ct;
 
 	if (!data)
 		return -1;
@@ -1137,7 +1143,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 	dprint(1, (debugfile, "nm: reading entire-thread messages...[current count=%d]\n",
 				ctx->msgcount));
 
-	data->oldmsgcount = ctx->msgcount;
+	nm_progress_reset(ctx);
 	id = notmuch_message_get_thread_id(msg);
 	if (!id)
 		goto done;
@@ -1150,18 +1156,6 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 		goto done;
 	apply_exclude_tags(q);
 	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
-
-	ct = notmuch_query_count_messages(q);
-	if (ct == 1) {
-		mutt_message _("Only one messages in the thread.");
-		rc = 0;
-		goto done;
-	}
-	if (!ctx->quiet) {
-		snprintf (msgbuf, sizeof(msgbuf),
-				_("Reading thread: %s..."), id);
-		nm_progress_init(ctx, msgbuf, ct, 1);
-	}
 
 	read_threads_query(ctx, q, 1);
 	ctx->mtime = time(NULL);
@@ -1759,7 +1753,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 
 		if (!h) {
 			/* new email */
-			append_message(ctx, m, 0);
+			append_message(ctx, NULL, m, 0);
 			notmuch_message_destroy(m);
 			continue;
 		}
