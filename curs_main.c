@@ -1468,6 +1468,11 @@ int mutt_index_menu (void)
 	    CURHDR->quasi_deleted = TRUE;
 	    Context->changed = TRUE;
 	  }
+	  if (menu->menu == MENU_PAGER)
+	  {
+	    op = OP_DISPLAY_MESSAGE;
+	    continue;
+	  }
 	  if (option (OPTRESOLVE))
 	  {
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
