@@ -54,6 +54,7 @@ WHERE short BuffyTimeout INITVAL (3);
 
 #ifdef USE_NOTMUCH
 WHERE BUFFY *VirtIncoming INITVAL (0);
+void mutt_buffy_vfolder (char *s, size_t slen);
 #endif
 
 extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
