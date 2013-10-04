@@ -20,6 +20,7 @@ void nm_longrun_init(CONTEXT *cxt, int writable);
 void nm_longrun_done(CONTEXT *cxt);
 
 char *nm_get_description(CONTEXT *ctx);
+int nm_description_to_path(const char *desc, char *buf, size_t bufsz);
 
 int nm_record_message(CONTEXT *ctx, char *path, HEADER *h);
 

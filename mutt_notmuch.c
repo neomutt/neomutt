@@ -1664,6 +1664,23 @@ char *nm_get_description(CONTEXT *ctx)
 	return NULL;
 }
 
+int nm_description_to_path(const char *desc, char *buf, size_t bufsz)
+{
+	BUFFY *p;
+
+	if (!desc || !buf || !bufsz)
+		return -EINVAL;
+
+	for (p = VirtIncoming; p; p = p->next)
+		if (p->path && p->desc && strcmp(desc, p->desc) == 0) {
+			strncpy(buf, p->path, bufsz);
+			buf[bufsz - 1] = '\0';
+			return 0;
+		}
+
+	return -1;
+}
+
 /*
  * returns header from mutt context
  */
