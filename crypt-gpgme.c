@@ -1263,21 +1263,31 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
 
   state_attach_puts (msg, s);
   state_attach_puts (" ", s);
-  for (uids = key->uids; uids; uids = uids->next)
+  /* key is NULL when not present in the user's keyring */
+  if (key)
   {
-    if (uids->revoked)
-      continue;
-    if (aka)
+    for (uids = key->uids; uids; uids = uids->next)
     {
-      msglen = mutt_strlen (msg) - 4;
-      for (i = 0; i < msglen; i++)
-        state_attach_puts(" ", s);
-      state_attach_puts(_("aka: "), s);
+      if (uids->revoked)
+	continue;
+      if (aka)
+      {
+	msglen = mutt_strlen (msg) - 4;
+	for (i = 0; i < msglen; i++)
+	  state_attach_puts(" ", s);
+	state_attach_puts(_("aka: "), s);
+      }
+      state_attach_puts (uids->uid, s);
+      state_attach_puts ("\n", s);
+
+      aka = 1;
     }
-    state_attach_puts (uids->uid, s);
+  }
+  else
+  {
+    state_attach_puts (_("KeyID "), s);
+    state_attach_puts (sig->fpr, s);
     state_attach_puts ("\n", s);
-    
-    aka = 1;
   }
 
   msglen = mutt_strlen (msg) - 8;
@@ -1330,23 +1340,32 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       if (gpg_err_code (sig->status) != GPG_ERR_NO_ERROR)
 	anybad = 1;
 
-      err = gpgme_get_key (ctx, fpr, &key, 0); /* secret key?  */
-      if (! err)
+      if (gpg_err_code (sig->status) != GPG_ERR_NO_PUBKEY)
+      {
+	err = gpgme_get_key (ctx, fpr, &key, 0); /* secret key?  */
+	if (! err)
 	{
 	  if (! signature_key)
 	    signature_key = key;
 	}
+	else
+	{
+	  key = NULL; /* Old gpgme versions did not set KEY to NULL on
+			 error.   Do it here to avoid a double free. */
+	}
+      }
       else
-       {
-          key = NULL; /* Old gpgme versions did not set KEY to NULL on
-                         error.   Do it here to avoid a double free. */
-       }
+      {
+	/* pubkey not present */
+      }
 
       if (!s || !s->fpout || !(s->flags & M_DISPLAY))
 	; /* No state information so no way to print anything. */
       else if (err)
 	{
-          state_attach_puts (_("Error getting key information: "), s);
+          state_attach_puts (_("Error getting key information for KeyID "), s);
+	  state_attach_puts ( fpr, s );
+          state_attach_puts (_(": "), s);
           state_attach_puts ( gpgme_strerror (err), s );
           state_attach_puts ("\n", s);
           anybad = 1;
@@ -1377,9 +1396,13 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       else /* can't decide (yellow) */
       {
         print_smime_keyinfo (_("Problem signature from:"), sig, key, s);
-        state_attach_puts (_("               expires: "), s);
-        print_time (sig->exp_timestamp, s);
-        state_attach_puts ("\n", s);
+	/* 0 indicates no expiration */
+	if (sig->exp_timestamp)
+	{
+	  state_attach_puts (_("               expires: "), s);
+	  print_time (sig->exp_timestamp, s);
+	  state_attach_puts ("\n", s);
+	}
 	show_sig_summary (sum, ctx, key, idx, s, sig);
         anywarn = 1;
       }
