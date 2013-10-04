@@ -142,7 +142,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
 bail:
   sasl_dispose (&saslconn);
 
-  /* terminate SASL sessoin if the last response is not +OK nor -ERR */
+  /* terminate SASL session if the last response is not +OK nor -ERR */
   if (!mutt_strncmp (inbuf, "+ ", 2))
   {
     snprintf (buf, sizeof (buf), "*\r\n");

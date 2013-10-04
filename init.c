@@ -259,7 +259,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
       safe_fclose (&fp);
       mutt_wait_filter (pid);
 
-      /* if we got output, make a new string consiting of the shell output
+      /* if we got output, make a new string consisting of the shell output
 	 plus whatever else was left on the original line */
       /* BUT: If this is inside a quoted string, directly add output to 
        * the token */

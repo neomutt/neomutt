@@ -970,7 +970,7 @@ static int mutt_is_autoview (BODY *b)
     }
     else
     {
-      /* determine if this type is on there user's auto_view list */
+      /* determine if this type is on the user's auto_view list */
       LIST *t = AutoViewList;
 
       for (; t; t = t->next) {

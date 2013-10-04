@@ -1290,7 +1290,7 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
 
 /* Show information about one signature.  This function is called with
    the context CTX of a successful verification operation and the
-   enumerator IDX which should start at 0 and incremete for each
+   enumerator IDX which should start at 0 and increment for each
    call/signature. 
 
    Return values are: 0 for normal procession, 1 for a bad signature,
@@ -1785,8 +1785,8 @@ int smime_gpgme_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
          encrypted.  The entire mime parsing should be revamped,
          probably by keeping the temporary files so that we don't
          need to decrypt them all the time.  Inner parts of an
-         encrypted part can then pint into this file and tehre won't
-         never be a need to decrypt again.  This needs a partial
+         encrypted part can then point into this file and there won't
+         ever be a need to decrypt again.  This needs a partial
          rewrite of the MIME engine. */
       BODY *bb = *cur;
       BODY *tmp_b;
