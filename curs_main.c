@@ -1536,6 +1536,10 @@ int mutt_index_menu (void)
 	}
 #ifdef USE_NOTMUCH
 	else if (op == OP_MAIN_CHANGE_VFOLDER) {
+	  if (Context->magic == M_NOTMUCH) {
+		  strfcpy(buf, Context->path, sizeof (buf));
+		  mutt_buffy_vfolder (buf, sizeof (buf));
+	  }
 	  mutt_enter_vfolder (cp, buf, sizeof (buf), &menu->redraw, 1);
 	  if (!buf[0])
 	  {

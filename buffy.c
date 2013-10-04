@@ -669,8 +669,11 @@ static void buffy_check(BUFFY *tmp, struct stat *contex_sb)
 	tmp->msg_unread = 0;
 	tmp->msg_flagged = 0;
 	nm_nonctx_get_count(tmp->path, &tmp->msg_count, &tmp->msg_unread);
-	if (tmp->msg_unread > 0)
+	if (tmp->msg_unread > 0) {
 	  BuffyCount++;
+	  tmp->new = 1;
+	}
+	sb_set_update_time();
 	break;
 #endif
       }
@@ -856,6 +859,35 @@ void mutt_buffy (char *s, size_t slen)
   /* no folders with new mail */
   *s = '\0';
 }
+
+#ifdef USE_NOTMUCH
+void mutt_buffy_vfolder (char *s, size_t slen)
+{
+  BUFFY *tmp;
+  int pass, found = 0;
+
+  if (mutt_buffy_check (0))
+  {
+    for (pass = 0; pass < 2; pass++) {
+      for (tmp = VirtIncoming; tmp; tmp = tmp->next)
+      {
+	if ((found || pass) && tmp->new)
+	{
+	  strfcpy (s, tmp->desc, slen);
+	  return;
+	}
+	if (mutt_strcmp (s, tmp->path) == 0)
+	  found = 1;
+      }
+    }
+
+    mutt_buffy_check (1); /* buffy was wrong - resync things */
+  }
+
+  /* no folders with new mail */
+  *s = '\0';
+}
+#endif
 
 /* fetch buffy object for given path, if present */
 static BUFFY* buffy_get (const char *path)
