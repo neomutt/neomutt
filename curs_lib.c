@@ -44,6 +44,10 @@
 #include <langinfo.h>
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
@@ -655,10 +659,6 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
     _mutt_select_file (buf, blen, flags, files, numfiles);
     *redraw = REDRAW_FULL;
   }
-  else if (flags & M_SEL_VFOLDER) {
-    _mutt_select_file (buf, blen, flags, files, numfiles);
-    *redraw = REDRAW_FULL;
-  }
   else
   {
     char *pc = safe_malloc (mutt_strlen (prompt) + 3);
@@ -670,6 +670,10 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
       buf[0] = 0;
     MAYBE_REDRAW (*redraw);
     FREE (&pc);
+#ifdef USE_NOTMUCH
+    if ((flags & M_SEL_VFOLDER) && buf[0] && strncmp(buf, "notmuch://", 10) != 0)
+      nm_description_to_path(buf, buf, blen);
+#endif
   }
 
   return 0;
