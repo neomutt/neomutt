@@ -298,6 +298,7 @@ enum
 #define SENDMAILX	(1<<6)
 #define SENDKEY		(1<<7)
 #define SENDRESEND	(1<<8)
+#define SENDPOSTPONEDFCC	(1<<9) /* used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
 
 /* flags to _mutt_select_file() */
 #define M_SEL_BUFFY	(1<<0)
