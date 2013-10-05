@@ -179,6 +179,9 @@ notmuch support for mutt
 
       set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU& ? %?GR?%GR& ? %?GI?%GI& ? %s'
 
+      The %G formatting sequence may display all tags including tags hidden by
+      nm_hidden_tags.
+
    nm_record = <boolean>
 
       Add messages stored to the mutt record (see $record in the mutt docs)
@@ -252,10 +255,12 @@ notmuch support for mutt
    index_format and pager_format
 
         %g   notmuch tags (labels)
+        %Gx  specific notmuch tag defined by tag-formats (see above)
 
         for example:
 
-        set index_format = "%4C %Z  %[%d/%b]  %-16.15F %s %> %?g?(%g)?"
+        tag-formats "inbox" "GI"
+        set index_format = "%4C %Z %?GI?%GI? ?  %[%d/%b]  %-16.15F %s %> %?g?(%g)?"
         set pager_format = "-%Z- %C/%m: %-20.20n   %s%*  -- %?g?(%g)? - (%P)"
 
  * TODO:
