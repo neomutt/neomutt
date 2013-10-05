@@ -866,7 +866,7 @@ static char *parse_keymap (int *menu, BUFFER *s, int maxmenus, int *nummenus, BU
   int i=0;
   char *p, *q;
 
-  memset (&buf, 0, sizeof (buf));
+  mutt_buffer_init (&buf);
 
   /* menu name */
   mutt_extract_token (&buf, s, 0);

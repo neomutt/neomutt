@@ -76,7 +76,7 @@ int mutt_parse_score (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     return (-1);
   }
   pattern = buf->data;
-  memset (buf, 0, sizeof (BUFFER));
+  mutt_buffer_init (buf);
   mutt_extract_token (buf, s, 0);
   if (MoreArgs (s))
   {

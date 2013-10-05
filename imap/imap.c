@@ -1787,7 +1787,7 @@ int imap_search (CONTEXT* ctx, const pattern_t* pat)
   if (!do_search (pat, 1))
     return 0;
 
-  memset (&buf, 0, sizeof (buf));
+  mutt_buffer_init (&buf);
   mutt_buffer_addstr (&buf, "UID SEARCH ");
   if (imap_compile_search (pat, &buf) < 0)
   {
@@ -1827,7 +1827,7 @@ int imap_subscribe (char *path, int subscribe)
 
   if (option (OPTIMAPCHECKSUBSCRIBED))
   {
-    memset (&token, 0, sizeof (token));
+    mutt_buffer_init (&token);
     err.data = errstr;
     err.dsize = sizeof (errstr);
     snprintf (mbox, sizeof (mbox), "%smailboxes \"%s\"",

@@ -257,7 +257,7 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   char errmsg[STRING];
   int r;
 
-  memset (&buf, 0, sizeof (buf));
+  mutt_buffer_init (&buf);
   if (mutt_extract_token (&buf, s, M_TOKEN_PATTERN | M_TOKEN_COMMENT) != 0 ||
       !buf.data)
   {
@@ -575,7 +575,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
   BUFFER buffer;
   struct tm min, max;
 
-  memset (&buffer, 0, sizeof (buffer));
+  mutt_buffer_init (&buffer);
   if (mutt_extract_token (&buffer, s, M_TOKEN_COMMENT | M_TOKEN_PATTERN) != 0
       || !buffer.data)
   {
@@ -779,7 +779,7 @@ pattern_t *mutt_pattern_comp (/* const */ char *s, int flags, BUFFER *err)
   char *buf;
   BUFFER ps;
 
-  memset (&ps, 0, sizeof (ps));
+  mutt_buffer_init (&ps);
   ps.dptr = s;
   ps.dsize = mutt_strlen (s);
 
@@ -1302,7 +1302,7 @@ int mutt_pattern_func (int op, char *prompt)
   simple = safe_strdup (buf);
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
 
-  memset (&err, 0, sizeof(err));
+  mutt_buffer_init (&err);
   err.dsize = STRING;
   err.data = safe_malloc(err.dsize);
   if ((pat = mutt_pattern_comp (buf, M_FULL_MSG, &err)) == NULL)
@@ -1434,7 +1434,7 @@ int mutt_search_command (int cur, int op)
     if (!SearchPattern || mutt_strcmp (temp, LastSearchExpn))
     {
       BUFFER err;
-      memset(&err, 0, sizeof(err));
+      mutt_buffer_init (&err);
       set_option (OPTSEARCHINVALID);
       strfcpy (LastSearch, buf, sizeof (LastSearch));
       mutt_message _("Compiling search pattern...");

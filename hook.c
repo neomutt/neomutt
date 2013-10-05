@@ -52,8 +52,8 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   pattern_t *pat = NULL;
   char path[_POSIX_PATH_MAX];
 
-  memset (&pattern, 0, sizeof (pattern));
-  memset (&command, 0, sizeof (command));
+  mutt_buffer_init (&pattern);
+  mutt_buffer_init (&command);
 
   if (*s->dptr == '!')
   {
@@ -284,7 +284,7 @@ void mutt_folder_hook (char *path)
   
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
-  memset (&token, 0, sizeof (token));
+  mutt_buffer_init (&token);
   for (; tmp; tmp = tmp->next)
   {
     if(!tmp->command)
@@ -335,7 +335,7 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
   
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
-  memset (&token, 0, sizeof (token));
+  mutt_buffer_init (&token);
   for (hook = Hooks; hook; hook = hook->next)
   {
     if(!hook->command)
@@ -478,7 +478,7 @@ void mutt_account_hook (const char* url)
 
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
-  memset (&token, 0, sizeof (token));
+  mutt_buffer_init (&token);
 
   for (hook = Hooks; hook; hook = hook->next)
   {
