@@ -10,8 +10,6 @@ int nm_check_database(CONTEXT * ctx, int *index_hint);
 char *nm_header_get_folder(HEADER *h);
 int nm_header_get_magic(HEADER *h);
 char *nm_header_get_fullpath(HEADER *h, char *buf, size_t bufsz);
-char *nm_header_get_tags(HEADER *h);
-char *nm_header_get_tags_transformed(HEADER *h);
 int nm_update_filename(CONTEXT *ctx, const char *o, const char *n, HEADER *h);
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz);
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *tags);
@@ -31,17 +29,8 @@ int nm_get_all_tags(CONTEXT *ctx, char **tag_list, int *tag_count);
  */
 int nm_nonctx_get_count(char *path, int *all, int *new);
 
-/*
- * HEADER->(nm_hdrdata *)data->tag_list node
- */
-typedef struct nm_hdr_tag
-{
-  char *tag;
-  char *transformed;
-  struct nm_hdr_tag *next;
-} NM_HDR_TAG;
-
-NM_HDR_TAG *nm_header_get_tags_list(HEADER *h);
 char *nm_header_get_tag_transformed(char *tag, HEADER *h);
+char *nm_header_get_tags_transformed(HEADER *h);
+char *nm_header_get_tags(HEADER *h);
 
 #endif /* _MUTT_NOTMUCH_H_ */

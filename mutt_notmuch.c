@@ -61,13 +61,23 @@ struct uri_tag {
 };
 
 /*
+ * HEADER->(nm_hdrdata *)data->tag_list node
+ */
+struct nm_hdrtag
+{
+  char *tag;
+  char *transformed;
+  struct nm_hdrtag *next;
+};
+
+/*
  * HEADER->data
  */
 struct nm_hdrdata {
 	char *folder;
 	char *tags;
 	char *tags_transformed;
-	NM_HDR_TAG *tag_list;
+	struct nm_hdrtag *tag_list;
 	char *oldpath;
 	int magic;
 };
@@ -170,9 +180,9 @@ err:
 	return -1;
 }
 
-static void free_tag_list(NM_HDR_TAG **tag_list)
+static void free_tag_list(struct nm_hdrtag **tag_list)
 {
-	NM_HDR_TAG *tmp;
+	struct nm_hdrtag *tmp;
 
 	while ((tmp = *tag_list) != NULL)
 	{
@@ -285,6 +295,7 @@ char *nm_header_get_folder(HEADER *h)
 	return h && h->data ? ((struct nm_hdrdata *) h->data)->folder : NULL;
 }
 
+/* returns all unhidden tags */
 char *nm_header_get_tags(HEADER *h)
 {
 	return h && h->data ? ((struct nm_hdrdata *) h->data)->tags : NULL;
@@ -295,14 +306,9 @@ char *nm_header_get_tags_transformed(HEADER *h)
 	return h && h->data ? ((struct nm_hdrdata *) h->data)->tags_transformed : NULL;
 }
 
-NM_HDR_TAG *nm_header_get_tags_list(HEADER *h)
-{
-	return h && h->data ? ((struct nm_hdrdata *) h->data)->tag_list : NULL;
-}
-
 char *nm_header_get_tag_transformed(char *tag, HEADER *h)
 {
-	NM_HDR_TAG *tmp;
+	struct nm_hdrtag *tmp;
 
 	if (!h || !h->data)
 		return NULL;
@@ -587,15 +593,27 @@ err:
 	return NULL;
 }
 
+static void append_str_item(char **str, const char *item)
+{
+	char *p;
+	size_t sz = strlen(item);
+	size_t ssz = *str ? strlen(*str) : 0;
+
+	safe_realloc(str, ssz + (ssz ? 1 : 0) + sz + 1);
+	p = *str + ssz;
+	if (ssz) {
+	    *p++ = ' ';
+	    sz++;
+	}
+	memcpy(p, item, sz + 1);
+}
 
 static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 {
 	struct nm_hdrdata *data = h->data;
 	notmuch_tags_t *tags;
-	char *tstr = NULL, *ttstr = NULL, *p;
-	size_t sz = 0, tsz = 0;
-	NM_HDR_TAG *tag_list = NULL;
-	NM_HDR_TAG *tmp;
+	char *tstr = NULL, *ttstr = NULL;
+	struct nm_hdrtag *tag_list = NULL, *tmp;
 
 	dprint(2, (debugfile, "nm: tags update requested (%s)\n", h->env->message_id));
 
@@ -604,15 +622,26 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 	     notmuch_tags_move_to_next(tags)) {
 
 		const char *t = notmuch_tags_get(tags);
-		size_t xsz = t ? strlen(t) : 0;
 		const char *tt = NULL;
-		size_t txsz = 0;
 
-		if (!xsz)
+		if (!t || !*t)
 			continue;
 
+		tt = hash_find(TagTransforms, t);
+		if (!tt)
+			tt = t;
+
+		/* tags list contains all tags */
+		tmp = safe_calloc(1, sizeof(*tmp));
+		tmp->tag = safe_strdup(t);
+		tmp->transformed = safe_strdup(tt);
+		tmp->next = tag_list;
+		tag_list = tmp;
+
+		/* filter out hidden tags */
 		if (NotmuchHiddenTags) {
-			p = strstr(NotmuchHiddenTags, t);
+			char *p = strstr(NotmuchHiddenTags, t);
+			size_t xsz = p ? strlen(t) : 0;
 
 			if (p && (p == NotmuchHiddenTags
 				  || *(p - 1) == ','
@@ -623,40 +652,11 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 				continue;
 		}
 
-		tt = hash_find(TagTransforms, t);
-
-		if (tt) {
-			txsz = strlen(tt);
-		} else {
-			tt = t;
-			txsz = xsz;
-		}
-
 		/* expand the transformed tag string */
-		safe_realloc(&ttstr, tsz + (tsz ? 1 : 0) + txsz + 1);
-		p = ttstr + tsz;
-		if (tsz) {
-		    *p++ = ' ';
-		    tsz++;
-		}
-		memcpy(p, tt, txsz + 1);
-		tsz += txsz;
+		append_str_item(&ttstr, tt);
 
 		/* expand the un-transformed tag string */
-		safe_realloc(&tstr, sz + (sz ? 1 : 0) + xsz + 1);
-		p = tstr + sz;
-		if (sz) {
-			*p++ = ' ';
-			sz++;
-		}
-		memcpy(p, t, xsz + 1);
-		sz += xsz;
-
-		tmp = safe_calloc(1, sizeof(NM_HDR_TAG));
-		tmp->tag = safe_strdup(t);
-		tmp->transformed = safe_strdup(tt);
-		tmp->next = tag_list;
-		tag_list = tmp;
+		append_str_item(&tstr, t);
 	}
 
 	if (data->tags && tstr && strcmp(data->tags, tstr) == 0) {
@@ -667,14 +667,18 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 		return 1;
 	}
 
+	/* free old version */
 	FREE(&data->tags);
 	FREE(&data->tags_transformed);
 	free_tag_list(&data->tag_list);
 
+	/* new version */
 	data->tags = tstr;
 	dprint(2, (debugfile, "nm: new tags: '%s'\n", tstr));
+
 	data->tags_transformed = ttstr;
 	dprint(2, (debugfile, "nm: new tag transforms: '%s'\n", ttstr));
+
 	data->tag_list = tag_list;
 	return 0;
 }
