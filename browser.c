@@ -603,6 +603,13 @@ static int select_file_search (MUTTMENU *menu, regex_t *re, int n)
   return (regexec (re, ((struct folder_file *) menu->data)[n].name, 0, NULL, 0));
 }
 
+#ifdef USE_NOTMUCH
+static int select_vfolder_search (MUTTMENU *menu, regex_t *re, int n)
+{
+  return (regexec (re, ((struct folder_file *) menu->data)[n].desc, 0, NULL, 0));
+}
+#endif
+
 static void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
 {
   FOLDER folder;
@@ -797,18 +804,19 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
     goto bail;
   }
   menu = mutt_new_menu (MENU_FOLDER);
-#ifdef USE_NOTMUCH
-  if (flags & M_SEL_VFOLDER)
-    menu->make_entry = vfolder_entry;
-  else
-#endif
-    menu->make_entry = folder_entry;
-
   menu->search = select_file_search;
   menu->title = title;
   menu->data = state.entry;
   if (multiple)
     menu->tag = file_tag;
+
+#ifdef USE_NOTMUCH
+  if (flags & M_SEL_VFOLDER) {
+    menu->make_entry = vfolder_entry;
+    menu->search = select_vfolder_search;
+  } else
+#endif
+    menu->make_entry = folder_entry;
 
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_FOLDER,
     FolderHelp);
