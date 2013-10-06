@@ -27,7 +27,7 @@ notmuch support for mutt
 
  * Folders URI
 
-   notmuch:///<path>[?<item>=<name>[& ...]]
+   notmuch://[<path>][?<item>=<name>[& ...]]
 
    The <path> is an absolute path to the directory where the notmuch database
    is found as returned by 'notmuch config get database.path' command. Note that
@@ -76,7 +76,9 @@ notmuch support for mutt
  * commands:
 
    change-vfolder:
-      - switch to another virtual folder
+      - switch to another virtual folder, a new folder maybe be specified by
+        vfolder description (see virtual-mailboxes) or URI
+      - the default is next vfolder with unread messages
       - default key: X
 
    vfolder-from-query:
@@ -137,6 +139,10 @@ notmuch support for mutt
       virtual-mailboxes "Linux Kernel" "notmuch:///whereis/db?query=tag:lkml&limit=1000" \
                         "Filesystems"  "notmuch:///whereis/db?query=tag:fs" \
                         "Music"        "notmuch:///another/db?query=tag:hard and tag:heavy"
+
+      The folder description is used for status line, folders browser, sidebar
+      and <change-vfolder> command (this command also accepts vfolder URI). The
+      folder-hook regex uses the URI.
 
    virtual_spoolfile = <boolean>
 
@@ -285,6 +291,7 @@ notmuch support for mutt
 
 	set nm_default_uri="notmuch:///home/kzak/Mail/Maildir"
 	set virtual_spoolfile	= yes
+	set sort_browser        = unsorted
 
 	# normal folders
 	set mbox_type=Maildir
@@ -294,12 +301,14 @@ notmuch support for mutt
 	# sidebar
 	set sidebar_width	= 35
 	set sidebar_visible	= yes
-        set sort_sidebar        = unsorted
+	set sort_sidebar        = unsorted
 	color sidebar_new yellow default
 	bind index <left> sidebar-prev
 	bind index <right> sidebar-next
 	bind index <space> sidebar-open
 	bind index <Esc>S sidebar-toggle
+
+	set index_format="%4C %Z %?GI?%GI& ? %[%d/%b]  %-16.15F %?M?(%3M)&     ? %s %> %?g?%g?"
 
         # virtual folders
 	virtual-mailboxes \
@@ -327,7 +336,10 @@ notmuch support for mutt
 	   " Linux       [archive]" "notmuch://?query=tag:lk and tag:archive" \
 	   " Filesystems [archive]" "notmuch://?query=tag:fs and tag:archive" \
 
+	# move message to archive
 	macro index A "<modify-labels-then-hide>+archive -inbox\n<sync-mailbox>"
+
+	# remove message from inbox
 	macro index I "<modify-labels-then-hide>-inbox\n<sync-mailbox>"
 
 	# mark emails for git-am
@@ -350,7 +362,10 @@ notmuch support for mutt
 		NOINBOX=""
 	}
 
-	### Lists
+	### Deliver emails to maildirs by notmuch-deliver
+	### from notmuch contrib/
+	###
+	###    notmuch-deliver -t <tags> [-t ...] <maildir>
 
 	:0:notmuch.lock
 	* ^List-Id:.*linux.linux.cz
