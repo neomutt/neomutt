@@ -281,7 +281,8 @@ void mutt_folder_hook (char *path)
   BUFFER err, token;
 
   current_hook_type = M_FOLDERHOOK;
-  
+
+  mutt_buffer_init (&err);
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
   mutt_buffer_init (&token);
@@ -332,7 +333,8 @@ void mutt_message_hook (CONTEXT *ctx, HEADER *hdr, int type)
   HOOK *hook;
 
   current_hook_type = type;
-  
+
+  mutt_buffer_init (&err);
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
   mutt_buffer_init (&token);
@@ -476,6 +478,7 @@ void mutt_account_hook (const char* url)
   if (inhook)
     return;
 
+  mutt_buffer_init (&err);
   err.dsize = STRING;
   err.data = safe_malloc (err.dsize);
   mutt_buffer_init (&token);

@@ -778,6 +778,7 @@ static void cmd_parse_lsub (IMAP_DATA* idata, char* s)
   url_ciss_tostring (&url, buf + 11, sizeof (buf) - 10, 0);
   safe_strcat (buf, sizeof (buf), "\"");
   mutt_buffer_init (&token);
+  mutt_buffer_init (&err);
   err.data = errstr;
   err.dsize = sizeof (errstr);
   if (mutt_parse_rc_line (buf, &token, &err))

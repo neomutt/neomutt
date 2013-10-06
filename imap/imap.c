@@ -1828,6 +1828,7 @@ int imap_subscribe (char *path, int subscribe)
   if (option (OPTIMAPCHECKSUBSCRIBED))
   {
     mutt_buffer_init (&token);
+    mutt_buffer_init (&err);
     err.data = errstr;
     err.dsize = sizeof (errstr);
     snprintf (mbox, sizeof (mbox), "%smailboxes \"%s\"",
