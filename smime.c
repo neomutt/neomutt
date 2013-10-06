@@ -1546,7 +1546,7 @@ int smime_verify_one (BODY *sigbdy, STATE *s, const char *tempfile)
   pid_t thepid;
   int badsig = -1;
 
-  long tmpoffset = 0;
+  LOFF_T tmpoffset = 0;
   size_t tmplength = 0;
   int origType = sigbdy->type;
   char *savePrefix = NULL;
@@ -1863,7 +1863,7 @@ int smime_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
 
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
-  long tmpoffset = b->offset;
+  LOFF_T tmpoffset = b->offset;
   size_t tmplength = b->length;
   int origType = b->type;
   FILE *tmpfp=NULL;

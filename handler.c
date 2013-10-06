@@ -1595,7 +1595,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
   handler_t handler = NULL;
-  long tmpoffset = 0;
+  LOFF_T tmpoffset = 0;
   size_t tmplength = 0;
   int rc = 0;
 
