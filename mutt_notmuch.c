@@ -102,6 +102,7 @@ struct nm_ctxdata {
 
 	unsigned int noprogress : 1,
 		     longrun : 1,
+		     trans : 1,
 		     progress_ready : 1;
 
 };
@@ -511,6 +512,41 @@ static int release_db(struct nm_ctxdata *data)
 	}
 
 	return -1;
+}
+
+/* returns:	< 0 = error
+ *		  1 = new transaction started
+ *		  0 = already within transaction
+ */
+static int db_trans_begin(struct nm_ctxdata *data)
+{
+	if (!data || !data->db)
+		return -1;
+
+	if (!data->trans) {
+		dprint(2, (debugfile, "nm: db trans start\n"));
+		if (notmuch_database_begin_atomic(data->db))
+			return -1;
+		data->trans = 1;
+		return 1;
+	}
+
+	return 0;
+}
+
+static int db_trans_end(struct nm_ctxdata *data)
+{
+	if (!data || !data->db)
+		return -1;
+
+	if (data->trans) {
+		dprint(2, (debugfile, "nm: db trans end\n"));
+		data->trans = 0;
+		if (notmuch_database_end_atomic(data->db))
+			return -1;
+	}
+
+	return 0;
 }
 
 void nm_longrun_init(CONTEXT *ctx, int writable)
@@ -1330,20 +1366,23 @@ static int rename_maildir_filename(const char *old, char *newpath, size_t newsz,
 	return 0;
 }
 
-static int remove_filename(notmuch_database_t *db, const char *path)
+static int remove_filename(struct nm_ctxdata *data, const char *path)
 {
 	notmuch_status_t st;
 	notmuch_filenames_t *ls;
 	notmuch_message_t *msg = NULL;
+	notmuch_database_t *db = get_db(data, TRUE);
+	int trans;
 
 	dprint(2, (debugfile, "nm: remove filename '%s'\n", path));
 
-	st = notmuch_database_begin_atomic(db);
-	if (st)
+	if (!db)
 		return -1;
-
 	st = notmuch_database_find_message_by_filename(db, path, &msg);
 	if (st || !msg)
+		return -1;
+	trans = db_trans_begin(data);
+	if (trans < 0)
 		return -1;
 
 	/*
@@ -1376,24 +1415,27 @@ static int remove_filename(notmuch_database_t *db, const char *path)
 	}
 
 	notmuch_message_destroy(msg);
-	notmuch_database_end_atomic(db);
+	if (trans)
+		db_trans_end(data);
 	return 0;
 }
 
-static int rename_filename(notmuch_database_t *db,
+static int rename_filename(struct nm_ctxdata *data,
 			const char *old, const char *new, HEADER *h)
 {
 	int rc = -1;
 	notmuch_status_t st;
 	notmuch_filenames_t *ls;
 	notmuch_message_t *msg;
+	notmuch_database_t *db = get_db(data, TRUE);
+	int trans;
 
 	if (!db || !new || !old || access(new, F_OK) != 0)
 		return -1;
 
 	dprint(1, (debugfile, "nm: rename filename, %s -> %s\n", old, new));
-	st = notmuch_database_begin_atomic(db);
-	if (st)
+	trans = db_trans_begin(data);
+	if (trans < 0)
 		return -1;
 
 	dprint(2, (debugfile, "nm: rename: add '%s'\n", new));
@@ -1451,7 +1493,8 @@ static int rename_filename(notmuch_database_t *db,
 done:
 	if (msg)
 		notmuch_message_destroy(msg);
-	notmuch_database_end_atomic(db);
+	if (trans)
+		db_trans_end(data);
 	return rc;
 }
 
@@ -1469,7 +1512,7 @@ int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h
 		old = buf;
 	}
 
-	rc = rename_filename(get_db(data, TRUE), old, new, h);
+	rc = rename_filename(data, old, new, h);
 
 	if (!is_longrun(data))
 		release_db(data);
@@ -1484,7 +1527,6 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 	char msgbuf[STRING];
 	progress_t progress;
 	char *uri = ctx->path;
-	notmuch_database_t *db = NULL;
 	int changed = 0;
 
 	if (!data)
@@ -1533,15 +1575,9 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 			nm_header_get_fullpath(h, new, sizeof(new));
 
 		if (h->deleted || strcmp(old, new) != 0) {
-			/* email renamed or deleted -- update DB */
-			if (!db) {
-				db = get_db(data, TRUE);
-				if (!db)
-					break;
-			}
-			if (h->deleted && remove_filename(db, old) == 0)
+			if (h->deleted && remove_filename(data, old) == 0)
 				changed = 1;
-			else if (*new && *old && rename_filename(db, old, new, h) == 0)
+			else if (*new && *old && rename_filename(data, old, new, h) == 0)
 				changed = 1;
 		}
 
@@ -1817,8 +1853,8 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
 {
 	notmuch_database_t *db;
 	notmuch_status_t st;
-	notmuch_message_t *msg;
-	int rc = -1;
+	notmuch_message_t *msg = NULL;
+	int rc = -1, trans;
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (!path || !data || access(path, F_OK) != 0)
@@ -1828,9 +1864,9 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
 		return -1;
 
 	dprint(1, (debugfile, "nm: record message: %s\n", path));
-	st = notmuch_database_begin_atomic(db);
-	if (st)
-		return -1;
+	trans = db_trans_begin(data);
+	if (trans < 0)
+		goto done;
 
 	st = notmuch_database_add_message(db, path, &msg);
 
@@ -1852,8 +1888,8 @@ int nm_record_message(CONTEXT *ctx, char *path, HEADER *h)
 done:
 	if (msg)
 		notmuch_message_destroy(msg);
-	notmuch_database_end_atomic(db);
-
+	if (trans == 1)
+		db_trans_end(data);
 	if (!is_longrun(data))
 		release_db(data);
 	return rc;
