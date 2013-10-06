@@ -43,6 +43,7 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
+#include <stdbool.h> /* for "true" */
 
 #include <gpgme.h>
 
