@@ -79,6 +79,7 @@ struct nm_hdrdata {
 	char *tags_transformed;
 	struct nm_hdrtag *tag_list;
 	char *oldpath;
+	char *virtual_id;
 	int magic;
 };
 
@@ -206,6 +207,7 @@ static void free_hdrdata(struct nm_hdrdata *data)
 	FREE(&data->tags_transformed);
 	free_tag_list(&data->tag_list);
 	FREE(&data->oldpath);
+	FREE(&data->virtual_id);
 	FREE(&data);
 }
 
@@ -330,19 +332,11 @@ int nm_header_get_magic(HEADER *h)
 }
 
 /*
- * Returns (allocated) notmuch compatible message Id.
+ * Returns notmuch message Id.
  */
 static char *nm_header_get_id(HEADER *h)
 {
-	size_t sz;
-
-	if (!h || !h->env || !h->env->message_id)
-		return NULL;
-
-	sz = strlen(h->env->message_id);
-
-	/* remove '<' and '>' from id */
-	return strndup(h->env->message_id + 1, sz - 2);
+	return h && h->data ? ((struct nm_hdrdata *) h->data)->virtual_id : NULL;
 }
 
 
@@ -639,7 +633,7 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 	char *tstr = NULL, *ttstr = NULL;
 	struct nm_hdrtag *tag_list = NULL, *tmp;
 
-	dprint(2, (debugfile, "nm: tags update requested (%s)\n", h->env->message_id));
+	dprint(2, (debugfile, "nm: tags update requested (%s)\n", data->virtual_id));
 
 	for (tags = notmuch_message_get_tags(msg);
 	     tags && notmuch_tags_valid(tags);
@@ -716,7 +710,7 @@ static int update_message_path(HEADER *h, const char *path)
 	char *p;
 
 	dprint(2, (debugfile, "nm: path update requested path=%s, (%s)\n",
-				path, h->env->message_id));
+				path, data->virtual_id));
 
 	p = strrchr(path, '/');
 	if (p && p - path > 3 &&
@@ -771,19 +765,30 @@ static void deinit_header(HEADER *h)
 
 static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 {
+	const char *id;
+
 	if (h->data)
 		return 0;
+
+	id = notmuch_message_get_message_id(msg);
 
 	h->data = safe_calloc(1, sizeof(struct nm_hdrdata));
 	h->free_cb = deinit_header;
 
+	/*
+	 * Notmuch ensures that message Id exists (if not notmuch Notmuch will
+	 * generate an ID), so it's more safe than use mutt HEADER->env->id
+	 */
+	((struct nm_hdrdata *) h->data)->virtual_id = safe_strdup( id );
+
 	dprint(2, (debugfile, "nm: initialize header data: [hdr=%p, data=%p] (%s)\n",
-				h, h->data, h->env->message_id));
+				h, h->data, id));
 
 	if (update_message_path(h, path))
 		return -1;
 
 	update_header_tags(h, msg);
+
 	return 0;
 }
 
@@ -1080,7 +1085,6 @@ static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr)
 	if (id && db)
 		notmuch_database_find_message(db, id, &msg);
 
-	FREE(&id);
 	return msg;
 }
 
