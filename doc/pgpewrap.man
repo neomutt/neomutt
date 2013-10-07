@@ -1,0 +1,46 @@
+.\" -*-nroff-*-
+.\"
+.\"     pgpewrap, a command line munging tool
+.\"     Manpage Copyright (c) 2013 Honza Horak
+.\"
+.\"     This program is free software; you can redistribute it and/or modify
+.\"     it under the terms of the GNU General Public License as published by
+.\"     the Free Software Foundation; either version 2 of the License, or
+.\"     (at your option) any later version.
+.\"
+.\"     This program is distributed in the hope that it will be useful,
+.\"     but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\"     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\"     GNU General Public License for more details.
+.\"
+.\"     You should have received a copy of the GNU General Public License
+.\"     along with this program; if not, write to the Free Software
+.\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+.\"
+.TH pgpewrap 1 "May 2013" Unix "User Manuals"
+.SH NAME
+pgpewrap \- Mutt command line munging tool
+
+.SH SYNTAX
+.PP
+\fBpgpewrap\fP [ \fBflags\fP ] \-\- \fBprefix\fP [ \fBrecipients\fP ]
+
+.SH DESCRIPTION
+.PP
+This is a little C program which does some command line munging: The
+first argument is a command to be executed.  When \fBpgpewrap\fP
+encounters a "\-\-" (dash\-dash) argument, it will interpret the next
+argument as a prefix which is put in front of all following
+arguments.
+
+.SH EXAMPLE
+
+        pgpewrap pgpe file \-\- \-r a b c
+
+will execute:
+
+        pgpe file -r a -r b -r c
+
+This script is needed with PGP 5 and with GPG, since their command
+line interfaces can't be properly served by mutt's format mechanism.
+
