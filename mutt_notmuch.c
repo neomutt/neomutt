@@ -627,10 +627,8 @@ static void append_str_item(char **str, const char *item)
 
 	safe_realloc(str, ssz + (ssz ? 1 : 0) + sz + 1);
 	p = *str + ssz;
-	if (ssz) {
+	if (ssz)
 	    *p++ = ' ';
-	    sz++;
-	}
 	memcpy(p, item, sz + 1);
 }
 
@@ -685,10 +683,12 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 		append_str_item(&tstr, t);
 	}
 
+	free_tag_list(&data->tag_list);
+	data->tag_list = tag_list;
+
 	if (data->tags && tstr && strcmp(data->tags, tstr) == 0) {
 		FREE(&tstr);
 		FREE(&ttstr);
-		free_tag_list(&tag_list);
 		dprint(2, (debugfile, "nm: tags unchanged\n"));
 		return 1;
 	}
@@ -696,7 +696,6 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 	/* free old version */
 	FREE(&data->tags);
 	FREE(&data->tags_transformed);
-	free_tag_list(&data->tag_list);
 
 	/* new version */
 	data->tags = tstr;
@@ -705,7 +704,6 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 	data->tags_transformed = ttstr;
 	dprint(2, (debugfile, "nm: new tag transforms: '%s'\n", ttstr));
 
-	data->tag_list = tag_list;
 	return 0;
 }
 
