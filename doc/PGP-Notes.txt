@@ -182,6 +182,10 @@ Command line options:
 			
 	-s		Dump the secret key ring.
 
+	-S		Dump signatures.
+
+	-f		Dump fingerprints.
+
 
 
 2. pgpewrap

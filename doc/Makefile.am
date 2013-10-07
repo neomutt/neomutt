@@ -13,6 +13,8 @@ EXTRA_DIST = dotlock.man		\
         smime_keys.man                  \
 	muttbug.man			\
 	mutt.man			\
+	pgpewrap.man			\
+	pgpring.man			\
 	PGP-Notes.txt			\
 	applying-patches.txt		\
 	devel-notes.txt			\
@@ -46,7 +48,7 @@ topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
 
 all: makedoc-all
 
-makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt
+makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt pgpewrap.1 pgpring.1
 
 install-data-local: makedoc-all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
@@ -54,6 +56,8 @@ install-data-local: makedoc-all instdoc
 	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
 	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
 	./instdoc smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
+	./instdoc pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
+	./instdoc pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
 	test x@DOTLOCK_TARGET@ = x || ./instdoc $(srcdir)/dotlock.man \
@@ -82,7 +86,7 @@ install-data-local: makedoc-all instdoc
 	fi
 
 uninstall-local:
-	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 smime_keys.1; do \
+	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f ; \
 	done
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \
@@ -147,7 +151,7 @@ sortcheck: manual.xml
 	rm -rf vars.tmp.1 vars.tmp.2
 
 clean-local:
-	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 smime_keys.1 muttrc.man
+	rm -f *~ *.html *.orig *.rej  stamp-doc-* *.ps mutt.1 smime_keys.1 muttrc.man pgpewrap.1 pgpring.1
 	rm -f *.aux *.log *.tex *.out
 
 DISTCLEANFILES=manual.txt manual.html manual.xml manual.pdf html \
@@ -170,6 +174,12 @@ EDIT = sed -e 's,@sysconfdir\@,$(sysconfdir),g' \
 
 mutt.1: $(srcdir)/mutt.man
 	$(EDIT) $(srcdir)/mutt.man > $@
+
+pgpewrap.1: $(srcdir)/pgpewrap.man
+	$(EDIT) $(srcdir)/pgpewrap.man > $@
+
+pgpring.1: $(srcdir)/pgpring.man
+	$(EDIT) $(srcdir)/pgpring.man > $@
 
 smime_keys.1: $(srcdir)/smime_keys.man
 	$(EDIT) $(srcdir)/smime_keys.man > $@
