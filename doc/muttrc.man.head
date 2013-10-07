@@ -18,6 +18,14 @@
 .\"     along with this program; if not, write to the Free Software
 .\"     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 .\"
+.de EX
+.nf
+.ft CW
+..
+.de EE
+.ft
+.fi
+..
 .TH muttrc 5 "September 2002" Unix "User Manuals"
 .SH NAME
 muttrc \- Configuration file for the Mutt Mail User Agent
@@ -270,7 +278,7 @@ known mailing lists.  The \fBunlists\fP command removes a mailing
 list from the lists of known and subscribed mailing lists.  The
 \fBsubscribe\fP command adds a mailing list to the lists of known
 and subscribed mailing lists.  The \fBunsubscribe\fP command removes
-it from the list of subscribed mailing lists. The \fb-group\fP flag
+it from the list of subscribed mailing lists. The \fB-group\fP flag
 adds all of the subsequent regular expressions to the named group.
 .TP
 \fBmbox-hook\fP [\fB!\fP]\fIpattern\fP \fImailbox\fP
@@ -385,11 +393,12 @@ variables will reset to their compile time defaults.
 .TP
 \fBsource\fP \fIfilename\fP
 The given file will be evaluated as a configuration file.
-.TP
+.PP
 .nf
 \fBspam\fP \fIpattern\fP \fIformat\fP
 \fBnospam\fP \fIpattern\fP
 .fi
+.IP
 These commands define spam-detection patterns from external spam
 filters, so that mutt can sort, limit, and search on
 ``spam tags'' or ``spam attributes'', or display them
