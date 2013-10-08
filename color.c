@@ -487,6 +487,10 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
     mutt_do_uncolor(buf, s, &ColorIndexAuthorList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_FLAGS)
     mutt_do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
+  else if (object == MT_COLOR_BODY)
+    mutt_do_uncolor(buf, s, &ColorBodyList, &do_cache, parse_uncolor);
+  else if (object == MT_COLOR_HEADER)
+    mutt_do_uncolor(buf, s, &ColorHdrList, &do_cache, parse_uncolor);
 
   if (do_cache && !option (OPTNOCURSES))
   {
