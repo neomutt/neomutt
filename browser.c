@@ -336,8 +336,12 @@ folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *
 #ifdef USE_NOTMUCH
       if (mx_is_notmuch (folder->ff->name))
       {
-	snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
-	snprintf (dest, destlen, tmp, folder->ff->new);
+	if (!optional)
+	{
+	  snprintf (tmp, sizeof (tmp), "%%%sd", fmt);
+	  snprintf (dest, destlen, tmp, folder->ff->new);
+	} else if (!folder->ff->new)
+	  optional = 0;
 	break;
       }
 #endif
