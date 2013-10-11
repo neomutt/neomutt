@@ -1474,6 +1474,9 @@ static int rename_filename(struct nm_ctxdata *data,
 				notmuch_database_add_message(db, newpath, NULL);
 			}
 		}
+		notmuch_message_destroy(msg);
+		msg = NULL;
+		notmuch_database_find_message_by_filename(db, new, &msg);
 		st = NOTMUCH_STATUS_SUCCESS;
 		break;
 	default:
@@ -1484,6 +1487,7 @@ static int rename_filename(struct nm_ctxdata *data,
 
 	if (st == NOTMUCH_STATUS_SUCCESS && h && msg) {
 		notmuch_message_maildir_flags_to_tags(msg);
+		update_header_tags(h, msg);
 		update_tags(msg, nm_header_get_tags(h));
 	}
 
