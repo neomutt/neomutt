@@ -568,25 +568,8 @@ static int get_database_mtime(struct nm_ctxdata *data, time_t *mtime)
 	return 0;
 }
 
-static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
+static void apply_exclude_tags(notmuch_query_t *query)
 {
-	notmuch_database_t *db = NULL;
-	notmuch_query_t *q = NULL;
-	const char *str;
-
-	if (!data)
-		return NULL;
-
-	db = get_db(data, writable);
-	str = get_query_string(data);
-
-	if (!db || !str)
-		goto err;
-
-	q = notmuch_query_create(db, str);
-	if (!q)
-		goto err;
-
 	if (NotmuchExcludeTags) {
 		char *buf = safe_strdup(NotmuchExcludeTags);
 		char *p, *tag = NULL, *end = NULL;
@@ -607,12 +590,33 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
 			*end = '\0';
 
 			dprint(2, (debugfile, "nm: query explude tag '%s'\n", tag));
-			notmuch_query_add_tag_exclude(q, tag);
+			notmuch_query_add_tag_exclude(query, tag);
 			end = tag = NULL;
 		}
 		FREE(&buf);
-
 	}
+}
+
+static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
+{
+	notmuch_database_t *db = NULL;
+	notmuch_query_t *q = NULL;
+	const char *str;
+
+	if (!data)
+		return NULL;
+
+	db = get_db(data, writable);
+	str = get_query_string(data);
+
+	if (!db || !str)
+		goto err;
+
+	q = notmuch_query_create(db, str);
+	if (!q)
+		goto err;
+
+	apply_exclude_tags(q);
 	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 	dprint(2, (debugfile, "nm: query successfully initialized\n"));
 	return q;
@@ -1562,6 +1566,7 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
 	notmuch_query_t *q = notmuch_query_create(db, qstr);
 
 	if (q) {
+		apply_exclude_tags(q);
 		res = notmuch_query_count_messages(q);
 		notmuch_query_destroy(q);
 		dprint(1, (debugfile, "nm: count '%s', result=%d\n", qstr, res));
