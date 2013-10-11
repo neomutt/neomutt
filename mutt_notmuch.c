@@ -1623,21 +1623,12 @@ int nm_nonctx_get_count(char *path, int *all, int *new)
 
 	/* new messages */
 	if (new) {
-		if (strstr(db_query, NotmuchUnreadTag))
-			*new = all ? *all : count_query(db, db_query);
-		else {
-			size_t qsz = strlen(db_query)
-					+ sizeof(" and tag:")
-					+ strlen(NotmuchUnreadTag);
-			char *qstr = safe_malloc(qsz);
+		char *qstr;
 
-			if (!qstr)
-				goto done;
-
-			snprintf(qstr, qsz, "%s and tag:%s", db_query, NotmuchUnreadTag);
-			*new = count_query(db, qstr);
-			FREE(&qstr);
-		}
+		safe_asprintf(&qstr, "( %s ) tag:%s",
+				db_query, NotmuchUnreadTag);
+		*new = count_query(db, qstr);
+		FREE(&qstr);
 	}
 
 	rc = 0;
