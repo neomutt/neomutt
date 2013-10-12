@@ -1410,6 +1410,11 @@ int mutt_index_menu (void)
 			mutt_set_virtual(Context);
 		}
 	}
+	if (menu->menu == MENU_PAGER)
+	{
+	  op = OP_DISPLAY_MESSAGE;
+	  continue;
+	}
 	break;
       }
 
