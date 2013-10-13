@@ -1310,6 +1310,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
 
 	update_tags(msg, buf);
 	update_header_tags(hdr, msg);
+	mutt_set_header_color(ctx, hdr);
 
 	rc = 0;
 	hdr->changed = TRUE;
