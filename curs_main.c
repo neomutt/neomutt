@@ -1395,29 +1395,22 @@ int mutt_index_menu (void)
 	}
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-	if (tag)
-	{
-	  nm_longrun_init(Context, FALSE);
-	  for (j = 0; j < Context->vcount; j++) {
-	    if (Context->hdrs[Context->v2r[j]]->tagged)
-	      nm_read_entire_thread(Context, Context->hdrs[Context->v2r[j]]);
-	  }
-	  nm_longrun_done(Context);
-	}
-	else
-	{
-	  if (nm_read_entire_thread(Context, CURHDR) < 0) {
-	    mutt_message _("Failed to read thread, aborting.");
-	    break;
-	  }
+	if (nm_read_entire_thread(Context, CURHDR) < 0) {
+	   mutt_message _("Failed to read thread, aborting.");
+	   break;
 	}
 	if (oldcount < Context->msgcount) {
 		HEADER *oldcur = CURHDR;
 
 		if ((Sort & SORT_MASK) == SORT_THREADS)
-			mutt_sort_headers (Context, 1);
+			mutt_sort_headers (Context, 0);
 		menu->current = oldcur->virtual;
 		menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+
+		if (oldcur->collapsed || Context->collapsed) {
+			menu->current = mutt_uncollapse_thread(Context, CURHDR);
+			mutt_set_virtual(Context);
+		}
 	}
 	break;
       }

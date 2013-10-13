@@ -1165,6 +1165,9 @@ done:
 	if (!is_longrun(data))
 		release_db(data);
 
+	if (ctx->msgcount == data->oldmsgcount)
+		mutt_message _("No more messages in the thread.");
+
 	data->oldmsgcount = 0;
 	dprint(1, (debugfile, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
 				rc, ctx->msgcount));
