@@ -93,11 +93,20 @@ struct nm_ctxdata {
 	char *db_query;
 	int db_limit;
 	int query_type;
-	int longrun;
 
 	struct uri_tag *query_items;
-	progress_t *progress;
+
+	progress_t progress;
+	int oldmsgcount;
+	int ignmsgcount;	/* ingored messages */
+
+	unsigned int noprogress : 1,
+		     longrun : 1;
+
 };
+
+static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg);
+static notmuch_message_t *get_nm_message(notmuch_database_t *db, HEADER *hdr);
 
 static void url_free_tags(struct uri_tag *tags)
 {
@@ -496,7 +505,7 @@ static int release_db(struct nm_ctxdata *data)
 		notmuch_database_close(data->db);
 #endif
 		data->db = NULL;
-		data->longrun = FALSE;
+		data->longrun = 0;
 		return 0;
 	}
 
@@ -508,7 +517,7 @@ void nm_longrun_init(CONTEXT *ctx, int writable)
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
 	if (data && get_db(data, writable)) {
-		data->longrun = TRUE;
+		data->longrun = 1;
 		dprint(2, (debugfile, "nm: long run initialized\n"));
 	}
 }
@@ -613,16 +622,16 @@ err:
 	return NULL;
 }
 
-static void append_str_item(char **str, const char *item)
+static void append_str_item(char **str, const char *item, int sep)
 {
 	char *p;
 	size_t sz = strlen(item);
 	size_t ssz = *str ? strlen(*str) : 0;
 
-	safe_realloc(str, ssz + (ssz ? 1 : 0) + sz + 1);
+	safe_realloc(str, ssz + (ssz && sep ? 1 : 0) + sz + 1);
 	p = *str + ssz;
-	if (ssz)
-	    *p++ = ' ';
+	if (sep && ssz)
+	    *p++ = sep;
 	memcpy(p, item, sz + 1);
 }
 
@@ -671,10 +680,10 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 		}
 
 		/* expand the transformed tag string */
-		append_str_item(&ttstr, tt);
+		append_str_item(&ttstr, tt, ' ');
 
 		/* expand the un-transformed tag string */
-		append_str_item(&tstr, t);
+		append_str_item(&tstr, t, ' ');
 	}
 
 	free_tag_list(&data->tag_list);
@@ -763,6 +772,21 @@ static void deinit_header(HEADER *h)
 	}
 }
 
+/* converts notmuch message Id to mutt message <Id> */
+static char *nm2mutt_message_id(const char *id)
+{
+	size_t sz;
+	char *mid;
+
+	if (!id)
+		return NULL;
+	sz = strlen(id) + 3;
+	mid = safe_malloc(sz);
+
+	snprintf(mid, sz, "<%s>", id);
+	return mid;
+}
+
 static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 {
 	const char *id;
@@ -783,6 +807,9 @@ static int init_header(HEADER *h, const char *path, notmuch_message_t *msg)
 
 	dprint(2, (debugfile, "nm: initialize header data: [hdr=%p, data=%p] (%s)\n",
 				h, h->data, id));
+
+	if (!h->env->message_id)
+		h->env->message_id = nm2mutt_message_id( id );
 
 	if (update_message_path(h, path))
 		return -1;
@@ -835,12 +862,51 @@ static const char *get_message_last_filename(notmuch_message_t *msg)
 	return name;
 }
 
-static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
+static void nm_progress_init(CONTEXT *ctx, const char *msg, int maxct, int rd)
 {
-	const char *path = get_message_last_filename(msg);
+	struct nm_ctxdata *data;
+
+	if (ctx->quiet)
+		return;
+
+	data = get_ctxdata(ctx);
+
+	memset(&data->progress, 0, sizeof(data->progress));
+	data->oldmsgcount = ctx->msgcount;
+	data->ignmsgcount = 0;
+	data->noprogress = 0;
+
+	mutt_progress_init(&data->progress, msg, M_PROGRESS_MSG,
+			rd ? ReadInc : WriteInc, maxct);
+}
+
+static void nm_progress_update(CONTEXT *ctx)
+{
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+
+	if (ctx->quiet || data->noprogress)
+		return;
+
+	mutt_progress_update(&data->progress,
+			ctx->msgcount + data->ignmsgcount - data->oldmsgcount, -1);
+}
+
+static void append_message(CONTEXT *ctx, notmuch_message_t *msg, int dedup)
+{
 	char *newpath = NULL;
+	const char *path;
 	HEADER *h = NULL;
 
+	/* deduplicate */
+	if (dedup && get_mutt_header(ctx, msg)) {
+		get_ctxdata(ctx)->ignmsgcount++;
+		nm_progress_update(ctx);
+	        dprint(2, (debugfile, "nm: ignore id=%s, already in the context\n",
+					notmuch_message_get_message_id(msg)));
+		return;
+	}
+
+	path = get_message_last_filename(msg);
 	if (!path)
 		return;
 
@@ -899,6 +965,7 @@ static void append_message(CONTEXT *ctx, notmuch_message_t *msg)
 			hd->oldpath = safe_strdup(path);
 		}
 	}
+	nm_progress_update(ctx);
 done:
 	FREE(&newpath);
 }
@@ -908,7 +975,7 @@ done:
  * Careful, this calls itself recursively to make sure we get
  * everything.
  */
-static void append_replies(CONTEXT *ctx, notmuch_message_t *top)
+static void append_replies(CONTEXT *ctx, notmuch_message_t *top, int dedup)
 {
 	notmuch_messages_t *msgs;
 
@@ -917,11 +984,9 @@ static void append_replies(CONTEXT *ctx, notmuch_message_t *top)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		append_message(ctx, m);
-		if (!ctx->quiet)
-		  mutt_progress_update (get_ctxdata(ctx)->progress, ctx->msgcount, -1);
+		append_message(ctx, m, dedup);
 		/* recurse through all the replies to this message too */
-		append_replies(ctx, m);
+		append_replies(ctx, m, dedup);
 		notmuch_message_destroy(m);
 	}
 }
@@ -930,7 +995,7 @@ static void append_replies(CONTEXT *ctx, notmuch_message_t *top)
  * add each top level reply in the thread, and then add each
  * reply to the top level replies
  */
-static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread)
+static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread, int dedup)
 {
 	notmuch_messages_t *msgs;
 
@@ -939,15 +1004,13 @@ static void append_thread(CONTEXT *ctx, notmuch_thread_t *thread)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		append_message(ctx, m);
-		if (!ctx->quiet)
-		  mutt_progress_update (get_ctxdata(ctx)->progress, ctx->msgcount, -1);
-		append_replies(ctx, m);
+		append_message(ctx, m, dedup);
+		append_replies(ctx, m, dedup);
 		notmuch_message_destroy(m);
 	}
 }
 
-static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q)
+static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 	int limit;
@@ -964,14 +1027,12 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q)
 	     notmuch_messages_move_to_next(msgs)) {
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		append_message(ctx, m);
-		if (!ctx->quiet)
-		  mutt_progress_update (get_ctxdata(ctx)->progress, ctx->msgcount, -1);
+		append_message(ctx, m, dedup);
 		notmuch_message_destroy(m);
 	}
 }
 
-static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q)
+static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 	int limit;
@@ -988,7 +1049,7 @@ static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q)
 	     notmuch_threads_move_to_next(threads)) {
 
 		notmuch_thread_t *thread = notmuch_threads_get(threads);
-		append_thread(ctx, thread);
+		append_thread(ctx, thread, dedup);
 		notmuch_thread_destroy(thread);
 	}
 }
@@ -1013,24 +1074,20 @@ int nm_read_query(CONTEXT *ctx)
 	if (q) {
 		int type = get_query_type(data);
 		char msgbuf[STRING];
-		progress_t progress;
 
 		if (!ctx->quiet) {
 			unsigned ct = notmuch_query_count_messages(q);
 
-			data->progress = &progress;
-			snprintf (msgbuf, sizeof(msgbuf),
-					_("Reading %s..."), ctx->path);
-			mutt_progress_init(data->progress, msgbuf,
-					M_PROGRESS_MSG, ReadInc, ct);
+			snprintf (msgbuf, sizeof(msgbuf), _("Reading %s..."), ctx->path);
+			nm_progress_init(ctx, msgbuf, ct, 1);
 		}
 
 		switch(type) {
 		case NM_QUERY_TYPE_MESGS:
-			read_mesgs_query(ctx, q);
+			read_mesgs_query(ctx, q, 0);
 			break;
 		case NM_QUERY_TYPE_THREADS:
-			read_threads_query(ctx, q);
+			read_threads_query(ctx, q, 0);
 			break;
 		}
 		notmuch_query_destroy(q);
@@ -1044,8 +1101,72 @@ int nm_read_query(CONTEXT *ctx)
 	ctx->mtime = time(NULL);
 
 	mx_update_context(ctx, ctx->msgcount);
+	data->oldmsgcount = 0;
 
 	dprint(1, (debugfile, "nm: reading messages... done [rc=%d, count=%d]\n",
+				rc, ctx->msgcount));
+	return rc;
+}
+
+int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
+{
+	struct nm_ctxdata *data = get_ctxdata(ctx);
+	const char *id;
+	char *qstr = NULL;
+	notmuch_query_t *q = NULL;
+	notmuch_database_t *db = NULL;
+	notmuch_message_t *msg = NULL;
+	char msgbuf[STRING];
+	int rc = -1;
+	unsigned ct;
+
+	if (!data)
+		return -1;
+	if (!(db = get_db(data, FALSE)) || !(msg = get_nm_message(db, h)))
+		goto done;
+
+	dprint(1, (debugfile, "nm: reading entire-thread messages...[current count=%d]\n",
+				ctx->msgcount));
+
+	data->oldmsgcount = ctx->msgcount;
+	id = notmuch_message_get_thread_id(msg);
+	if (!id)
+		goto done;
+	append_str_item(&qstr, "thread:", 0);
+	append_str_item(&qstr, id, 0);
+
+	q = notmuch_query_create(db, qstr);
+	FREE(&qstr);
+	if (!q)
+		goto done;
+	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
+
+	ct = notmuch_query_count_messages(q);
+	if (ct == 1) {
+		mutt_message _("Only one messages in the thread.");
+		rc = 0;
+		goto done;
+	}
+	if (!ctx->quiet) {
+		snprintf (msgbuf, sizeof(msgbuf),
+				_("Reading thread: %s..."), id);
+		nm_progress_init(ctx, msgbuf, ct, 1);
+	}
+
+	read_threads_query(ctx, q, 1);
+	ctx->mtime = time(NULL);
+	rc = 0;
+
+	if (ctx->msgcount > data->oldmsgcount)
+		mx_update_context(ctx, ctx->msgcount - data->oldmsgcount);
+done:
+	if (q)
+		notmuch_query_destroy(q);
+	if (!is_longrun(data))
+		release_db(data);
+
+	data->oldmsgcount = 0;
+	dprint(1, (debugfile, "nm: reading entire-thread messages... done [rc=%d, count=%d]\n",
 				rc, ctx->msgcount));
 	return rc;
 }
@@ -1349,6 +1470,7 @@ int nm_sync(CONTEXT *ctx, int *index_hint)
 	dprint(1, (debugfile, "nm: sync start ...\n"));
 
 	if (!ctx->quiet) {
+		/* all is in this function so we don't use data->progress here */
 		snprintf(msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
 		mutt_progress_init(&progress, msgbuf, M_PROGRESS_MSG,
 				   WriteInc, ctx->msgcount);
@@ -1526,12 +1648,13 @@ char *nm_get_description(CONTEXT *ctx)
 /*
  * returns header from mutt context
  */
-static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg, char **mid)
+static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg)
 {
+	char *mid;
 	const char *id;
-	size_t sz;
+	HEADER *h;
 
-	if (!ctx || !msg || !mid)
+	if (!ctx || !msg)
 		return NULL;
 
 	id = notmuch_message_get_message_id(msg);
@@ -1547,13 +1670,12 @@ static HEADER *get_mutt_header(CONTEXT *ctx, notmuch_message_t *msg, char **mid)
 			return NULL;
 	}
 
-	sz = strlen(id) + 3;
-	safe_realloc(mid, sz);
+	mid = nm2mutt_message_id( id );
+	dprint(2, (debugfile, "nm: mutt id='%s'\n", mid));
 
-	snprintf(*mid, sz, "<%s>", id);
-
-	dprint(2, (debugfile, "nm: mutt id='%s'\n", *mid));
-	return hash_find(ctx->id_hash, *mid);
+	h = hash_find(ctx->id_hash, mid);
+	FREE(&mid);
+	return h;
 }
 
 int nm_check_database(CONTEXT *ctx, int *index_hint)
@@ -1562,8 +1684,7 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 	time_t mtime = 0;
 	notmuch_query_t *q;
 	notmuch_messages_t *msgs;
-	int i, limit, oldmsgcount = 0, occult = 0, new_flags = 0;
-	char *id = NULL;
+	int i, limit, occult = 0, new_flags = 0;
 
 	if (!data || get_database_mtime(data, &mtime) != 0)
 		return -1;
@@ -1580,7 +1701,8 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		goto done;
 
 	dprint(1, (debugfile, "nm: start checking (count=%d)\n", ctx->msgcount));
-	oldmsgcount = ctx->msgcount;
+	data->oldmsgcount = ctx->msgcount;
+	data->noprogress = 1;
 
 	for (i = 0; i < ctx->msgcount; i++)
 		ctx->hdrs[i]->active = 0;
@@ -1595,11 +1717,11 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		const char *new;
 
 		notmuch_message_t *m = notmuch_messages_get(msgs);
-		HEADER *h = get_mutt_header(ctx, m, &id);
+		HEADER *h = get_mutt_header(ctx, m);
 
 		if (!h) {
 			/* new email */
-			append_message(ctx, m);
+			append_message(ctx, m, 0);
 			notmuch_message_destroy(m);
 			continue;
 		}
@@ -1640,8 +1762,8 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 		}
 	}
 
-	if (ctx->msgcount > oldmsgcount)
-		mx_update_context(ctx, ctx->msgcount - oldmsgcount);
+	if (ctx->msgcount > data->oldmsgcount)
+		mx_update_context(ctx, ctx->msgcount - data->oldmsgcount);
 done:
 	if (q)
 		notmuch_query_destroy(q);
@@ -1655,7 +1777,7 @@ done:
 				ctx->msgcount, new_flags, occult));
 
 	return occult ? M_REOPENED :
-	       ctx->msgcount > oldmsgcount ? M_NEW_MAIL :
+	       ctx->msgcount > data->oldmsgcount ? M_NEW_MAIL :
 	       new_flags ? M_FLAGS : 0;
 }
 

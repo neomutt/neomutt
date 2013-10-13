@@ -103,6 +103,12 @@ notmuch support for mutt
       - delete message from mutt (usually after <sync-mailbox> function), but
         don't touch message on disk
 
+   entire-thread:
+      - add to the current list of the messages all messages that belongs to the same thread
+        as the current message. This command is useful when you have a new email in your INBOX
+        and you want to see the rest of the archived thread.
+      - default key: +
+
  * Pattern modifiers:
 
    Many of Mutt's commands allow you to specify a pattern to match (limit,
@@ -270,14 +276,6 @@ notmuch support for mutt
         set index_format = "%4C %Z %?GI?%GI? ?  %[%d/%b]  %-16.15F %s %> %?g?(%g)?"
         set pager_format = "-%Z- %C/%m: %-20.20n   %s%*  -- %?g?(%g)? - (%P)"
 
- * TODO:
-
-   add "entire-thread" command
-
-      to display all e-mails that belongs to the same thread as the current
-      message. This command will be useful when you have a new email ion your INBOX
-      and you want to see the rest of the archived thread.
-
 
 * .muttrc example:
 
@@ -382,4 +380,3 @@ notmuch support for mutt
 * another example:
 
   http://notmuchmail.org/mutttips/
-

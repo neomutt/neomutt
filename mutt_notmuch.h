@@ -5,6 +5,8 @@
 #define _MUTT_NOTMUCH_H_ 1
 
 int nm_read_query(CONTEXT *ctx);
+int nm_read_entire_thread(CONTEXT *ctx, HEADER *h);
+
 int nm_sync(CONTEXT * ctx, int *index_hint);
 int nm_check_database(CONTEXT * ctx, int *index_hint);
 char *nm_header_get_folder(HEADER *h);
