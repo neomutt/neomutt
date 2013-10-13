@@ -1386,6 +1386,42 @@ int mutt_index_menu (void)
 	break;
 
 #ifdef USE_NOTMUCH
+      case OP_MAIN_ENTIRE_THREAD:
+      {
+	int oldcount  = Context->msgcount;
+	if (Context->magic != M_NOTMUCH) {
+	  mutt_message _("No virtual folder, aborting.");
+	  break;
+	}
+	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
+	if (tag)
+	{
+	  nm_longrun_init(Context, FALSE);
+	  for (j = 0; j < Context->vcount; j++) {
+	    if (Context->hdrs[Context->v2r[j]]->tagged)
+	      nm_read_entire_thread(Context, Context->hdrs[Context->v2r[j]]);
+	  }
+	  nm_longrun_done(Context);
+	}
+	else
+	{
+	  if (nm_read_entire_thread(Context, CURHDR) < 0) {
+	    mutt_message _("Failed to read thread, aborting.");
+	    break;
+	  }
+	}
+	if (oldcount < Context->msgcount) {
+		HEADER *oldcur = CURHDR;
+
+		if ((Sort & SORT_MASK) == SORT_THREADS)
+			mutt_sort_headers (Context, 1);
+		menu->current = oldcur->virtual;
+		menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	}
+	break;
+      }
+
       case OP_MAIN_MODIFY_LABELS:
       case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
       {
