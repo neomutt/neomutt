@@ -338,6 +338,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	CH_NOQFROM      ignore ">From " line
 	CH_UPDATE_IRT	update the In-Reply-To: header
 	CH_UPDATE_REFS	update the References: header
+	CH_VIRTUAL      write virtual header lines too
 
    prefix
    	string to use if CH_PREFIX is set
@@ -418,7 +419,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   }
 
 #ifdef USE_NOTMUCH
-  if (nm_header_get_tags(h))
+  if ((flags & CH_VIRTUAL) && nm_header_get_tags(h))
   {
     fputs ("Tags: ", out);
     fputs (nm_header_get_tags(h), out);
