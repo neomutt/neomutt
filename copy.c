@@ -741,8 +741,12 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   if (mx_commit_message (msg, dest) != 0)
     r = -1;
 
-  mx_close_message (&msg);
+#ifdef USE_NOTMUCH
+  if (hdr && msg->commited_path && dest->magic == M_MAILDIR && src->magic == M_NOTMUCH)
+	  nm_update_filename(src, NULL, msg->commited_path, hdr);
+#endif
 
+  mx_close_message (&msg);
   return r;
 }
 

@@ -1349,9 +1349,11 @@ static int remove_filename(notmuch_database_t *db, const char *path)
 	st = notmuch_database_remove_message(db, path);
 	switch (st) {
 	case NOTMUCH_STATUS_SUCCESS:
+		dprint(2, (debugfile, "nm: remove success, call unlink\n"));
 		unlink(path);
 		break;
 	case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
+		dprint(2, (debugfile, "nm: remove succes (duplicate), call unlink\n"));
 		unlink(path);
 		for (ls = notmuch_message_get_filenames(msg);
 		     ls && notmuch_filenames_valid(ls);
@@ -1420,6 +1422,8 @@ static int rename_filename(notmuch_database_t *db,
 			if (strcmp(new, path) == 0)
 				continue;
 
+			dprint(2, (debugfile, "nm: rename: syncing duplicate: %s\n", path));
+
 			if (rename_maildir_filename(path, newpath, sizeof(newpath), h) == 0) {
 				dprint(2, (debugfile, "nm: rename dup %s -> %s\n", path, newpath));
 				notmuch_database_remove_message(db, path);
@@ -1449,12 +1453,24 @@ done:
 
 int nm_update_filename(CONTEXT *ctx, const char *old, const char *new, HEADER *h)
 {
+	char buf[PATH_MAX];
+	int rc;
 	struct nm_ctxdata *data = get_ctxdata(ctx);
 
-	if (!data || !new || !old)
+	if (!data || !new)
 		return -1;
 
-	return rename_filename(get_db(data, TRUE), old, new, h);
+	if (!old && h && h->data) {
+		nm_header_get_fullpath(h, buf, sizeof(buf));
+		old = buf;
+	}
+
+	rc = rename_filename(get_db(data, TRUE), old, new, h);
+
+	if (!is_longrun(data))
+		release_db(data);
+	ctx->mtime = time(NULL);
+	return rc;
 }
 
 int nm_sync(CONTEXT *ctx, int *index_hint)
