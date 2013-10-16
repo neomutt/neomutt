@@ -27,6 +27,7 @@
 
 #include <string.h>
 #include <ctype.h>
+#include <errno.h>
 
 ADDRESS *mutt_lookup_alias (const char *s)
 {
@@ -379,8 +380,10 @@ retry_name:
     recode_buf (buf, sizeof (buf));
     write_safe_address (rc, buf);
     fputc ('\n', rc);
-    safe_fclose (&rc);
-    mutt_message _("Alias added.");
+    if (safe_fsync_close(&rc) != 0)
+      mutt_message ("Trouble adding alias: %s.", strerror(errno));
+    else
+      mutt_message _("Alias added.");
   }
   else
     mutt_perror (buf);
