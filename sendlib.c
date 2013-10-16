@@ -2559,9 +2559,12 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     mutt_copy_header (fp, h, f, ch_flags, NULL);
     fputc ('\n', f);
     mutt_copy_bytes (fp, f, h->content->length);
-    safe_fclose (&f);
     FREE (&msgid_str);
-
+    if (safe_fclose (&f) != 0) {
+      mutt_perror(tempfile);
+      unlink(tempfile);
+      return -1;
+    }
 #if USE_SMTP
     if (SmtpUrl)
       ret = mutt_smtp_send (env_from, to, NULL, NULL, tempfile,
