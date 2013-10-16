@@ -812,10 +812,9 @@ ADDRESS *rfc822_cpy_adr (ADDRESS *addr, int prune)
   {
     if (prune && addr->group && (!addr->next || !addr->next->mailbox))
     {
-      addr = addr->next;
-      continue;
+      /* ignore this element of the list */
     }
-    if (last)
+    else if (last)
     {
       last->next = rfc822_cpy_adr_real (addr);
       last = last->next;
