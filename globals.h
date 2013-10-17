@@ -163,6 +163,7 @@ WHERE HASH *Groups;
 WHERE HASH *ReverseAlias;
 #ifdef USE_NOTMUCH
 WHERE HASH *TagTransforms;
+WHERE HASH *TagFormats;
 #endif
 
 WHERE LIST *AutoViewList INITVAL(0);

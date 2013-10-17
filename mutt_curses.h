@@ -136,6 +136,9 @@ enum
   MT_COLOR_SB_SPOOLFILE,
 #endif
   /* please no non-MT_COLOR_INDEX objects after this point */
+#ifdef USE_NOTMUCH
+  MT_COLOR_INDEX_TAG,
+#endif
   MT_COLOR_INDEX,
   MT_COLOR_INDEX_AUTHOR,
   MT_COLOR_INDEX_FLAGS,
@@ -146,6 +149,9 @@ enum
   MT_COLOR_INDEX_LABEL,
   MT_COLOR_INDEX_NUMBER,
   MT_COLOR_INDEX_SIZE,
+#ifdef USE_NOTMUCH
+  MT_COLOR_INDEX_TAGS,
+#endif
   MT_COLOR_MAX
 };
 
@@ -204,6 +210,9 @@ extern COLOR_LINE *ColorIndexList;
 extern COLOR_LINE *ColorIndexAuthorList;
 extern COLOR_LINE *ColorIndexFlagsList;
 extern COLOR_LINE *ColorIndexSubjectList;
+#ifdef USE_NOTMUCH
+extern COLOR_LINE *ColorIndexTagList;
+#endif
 
 void ci_init_color (void);
 void ci_start_color (void);

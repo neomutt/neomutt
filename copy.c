@@ -30,6 +30,10 @@
 #include "mutt_idna.h"
 #include "mutt_curses.h"
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -347,7 +351,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   if (h->env)
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0)
       | (h->env->refs_changed ? CH_UPDATE_REFS : 0);
-  
+
   if (mutt_copy_hdr (in, out, h->offset, h->content->offset, flags, prefix) == -1)
     return -1;
 
@@ -412,6 +416,15 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     if (h->lines != 0 || h->content->length == 0)
       fprintf (out, "Lines: %d\n", h->lines);
   }
+
+#ifdef USE_NOTMUCH
+  if (nm_header_get_tags(h))
+  {
+    fputs ("Tags: ", out);
+    fputs (nm_header_get_tags(h), out);
+    fputc ('\n', out);
+  }
+#endif
 
   if ((flags & CH_NONEWLINE) == 0)
   {

@@ -3924,6 +3924,7 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
 
 #ifdef USE_NOTMUCH
 static int parse_tag_transforms (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_tag_formats (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 #endif
 
 struct command_t
@@ -3967,7 +3968,8 @@ const struct command_t Commands[] = {
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
 #ifdef USE_NOTMUCH
   { "virtual-mailboxes",mutt_parse_virtual_mailboxes, 0 },
-  { "tag-transforms",parse_tag_transforms, 0 },
+  { "tag-transforms",	parse_tag_transforms,	0 },
+  { "tag-formats",	parse_tag_formats,	0 },
 #endif
   { "mailto_allow",	parse_list,		UL &MailtoAllow },
   { "unmailto_allow",	parse_unlist,		UL &MailtoAllow },
