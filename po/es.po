@@ -3999,7 +3999,7 @@ msgstr "Redirigir a: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "¡No sé cómo imprimir archivos adjuntos %s!"
 
 #: recvattach.c:775

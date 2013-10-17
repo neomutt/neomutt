@@ -3895,7 +3895,7 @@ msgstr "Wy¶lij przez potok do: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Nie wiem jak wydrukowaæ %s za³±czników!"
 
 #: recvattach.c:775

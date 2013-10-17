@@ -3884,7 +3884,7 @@ msgstr "Trakti per: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Mi ne scias presi %s-partojn!"
 
 #: recvattach.c:775

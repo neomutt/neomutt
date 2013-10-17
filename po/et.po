@@ -3984,7 +3984,7 @@ msgstr "Toru käsule: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Ma ei tea, kuidas trükkida %s lisasid!"
 
 #: recvattach.c:775

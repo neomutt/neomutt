@@ -3865,7 +3865,7 @@ msgstr "Manda con una pipe a: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Non so come stampare %s allegati!"
 
 #: recvattach.c:775

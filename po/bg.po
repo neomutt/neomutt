@@ -4007,7 +4007,7 @@ msgstr "Предаване на (pipe): "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Не е дефинирана команда за отпечатване на %s приложения!"
 
 #: recvattach.c:775

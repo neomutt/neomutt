@@ -3911,7 +3911,7 @@ msgstr "Píopa go: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Ní eol dom conas a phriontáil iatáin %s!"
 
 #: recvattach.c:775
