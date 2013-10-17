@@ -587,14 +587,20 @@ hdr_format_str (char *dest,
       else if (mutt_addr_is_user (hdr->env->from))
         optional = 0;
       break;
+
 #ifdef USE_NOTMUCH
     case 'g':
       if (!optional)
-        mutt_format_s (dest, destlen, prefix, nm_header_get_tags_transformed(hdr));
+      {
+        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, nm_header_get_tags_transformed(hdr));
+        add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
+      }
       else if (!nm_header_get_tags_transformed(hdr))
         optional = 0;
       break;
 #endif
+
     case 'H':
       /* (Hormel) spam score */
       if (optional)
@@ -885,6 +891,48 @@ hdr_format_str (char *dest,
       add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
 
       break;
+
+#ifdef USE_NOTMUCH
+    case 'G':
+    {
+      char *tag_transformed;
+      char format[3];
+      char *tag;
+
+      if (!optional)
+      {
+        format[0] = op;
+        format[1] = *src;
+        format[2] = 0;
+
+        tag = hash_find(TagFormats, format);
+        if (tag != NULL)
+        {
+            tag_transformed = nm_header_get_tag_transformed(tag, hdr);
+
+            colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
+            mutt_format_s (dest+colorlen, destlen-colorlen, prefix,
+                           (tag_transformed) ? tag_transformed : "");
+            add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
+        }
+
+        src++;
+      }
+      else
+      {
+        format[0] = op;
+        format[1] = *prefix;
+        format[2] = 0;
+
+        tag = hash_find(TagFormats, format);
+        if (tag != NULL)
+          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
+            optional = 0;
+      }
+
+      break;
+    }
+#endif
 
     default:
       snprintf (dest, destlen, "%%%s%c", prefix, op);

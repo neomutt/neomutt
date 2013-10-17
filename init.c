@@ -3071,6 +3071,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   ReverseAlias = hash_create (1031, 1);
 #ifdef USE_NOTMUCH
   TagTransforms = hash_create (64, 1);
+  TagFormats = hash_create (64, 0);
 #endif
 
   mutt_menu_init ();
@@ -3404,6 +3405,37 @@ int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
     }
 
     hash_insert(TagTransforms, tag, transform, 0);
+  }
+  return 0;
+}
+
+int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  char *tmp;
+
+  while (MoreArgs (s))
+  {
+    char *tag, *format;
+
+    mutt_extract_token (b, s, 0);
+    if (b->data && *b->data)
+      tag = safe_strdup (b->data);
+    else
+      continue;
+
+    mutt_extract_token (b, s, 0);
+    format = safe_strdup (b->data);
+
+    /* avoid duplicates */
+    tmp = hash_find(TagFormats, format);
+    if (tmp) {
+      dprint(3,(debugfile,"tag format '%s' already registered as '%s'\n", format, tmp));
+      FREE(&tag);
+      FREE(&format);
+      continue;
+    }
+
+    hash_insert(TagFormats, format, tag, 0);
   }
   return 0;
 }

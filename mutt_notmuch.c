@@ -67,6 +67,7 @@ struct nm_hdrdata {
 	char *folder;
 	char *tags;
 	char *tags_transformed;
+	NM_HDR_TAG *tag_list;
 	char *oldpath;
 	int magic;
 };
@@ -169,6 +170,21 @@ err:
 	return -1;
 }
 
+static void free_tag_list(NM_HDR_TAG **tag_list)
+{
+	NM_HDR_TAG *tmp;
+
+	while ((tmp = *tag_list) != NULL)
+	{
+		*tag_list = tmp->next;
+		FREE(&tmp->tag);
+		FREE(&tmp->transformed);
+		FREE(&tmp);
+	}
+
+	*tag_list = 0;
+}
+
 static void free_hdrdata(struct nm_hdrdata *data)
 {
 	if (!data)
@@ -178,6 +194,7 @@ static void free_hdrdata(struct nm_hdrdata *data)
 	FREE(&data->folder);
 	FREE(&data->tags);
 	FREE(&data->tags_transformed);
+	free_tag_list(&data->tag_list);
 	FREE(&data->oldpath);
 	FREE(&data);
 }
@@ -276,6 +293,29 @@ char *nm_header_get_tags(HEADER *h)
 char *nm_header_get_tags_transformed(HEADER *h)
 {
 	return h && h->data ? ((struct nm_hdrdata *) h->data)->tags_transformed : NULL;
+}
+
+NM_HDR_TAG *nm_header_get_tags_list(HEADER *h)
+{
+	return h && h->data ? ((struct nm_hdrdata *) h->data)->tag_list : NULL;
+}
+
+char *nm_header_get_tag_transformed(char *tag, HEADER *h)
+{
+	NM_HDR_TAG *tmp;
+
+	if (!h || !h->data)
+		return NULL;
+
+	for (tmp = ((struct nm_hdrdata *) h->data)->tag_list;
+	     tmp != NULL;
+	     tmp = tmp->next)
+	{
+		if (strcmp(tag, tmp->tag) == 0)
+			return tmp->transformed;
+	}
+
+	return NULL;
 }
 
 int nm_header_get_magic(HEADER *h)
@@ -554,6 +594,8 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 	notmuch_tags_t *tags;
 	char *tstr = NULL, *ttstr = NULL, *p;
 	size_t sz = 0, tsz = 0;
+	NM_HDR_TAG *tag_list = NULL;
+	NM_HDR_TAG *tmp;
 
 	dprint(2, (debugfile, "nm: tags update requested (%s)\n", h->env->message_id));
 
@@ -609,20 +651,31 @@ static int update_header_tags(HEADER *h, notmuch_message_t *msg)
 		}
 		memcpy(p, t, xsz + 1);
 		sz += xsz;
+
+		tmp = safe_calloc(1, sizeof(NM_HDR_TAG));
+		tmp->tag = safe_strdup(t);
+		tmp->transformed = safe_strdup(tt);
+		tmp->next = tag_list;
+		tag_list = tmp;
 	}
 
 	if (data->tags && tstr && strcmp(data->tags, tstr) == 0) {
 		FREE(&tstr);
 		FREE(&ttstr);
+		free_tag_list(&tag_list);
 		dprint(2, (debugfile, "nm: tags unchanged\n"));
 		return 1;
 	}
 
 	FREE(&data->tags);
+	FREE(&data->tags_transformed);
+	free_tag_list(&data->tag_list);
+
 	data->tags = tstr;
 	dprint(2, (debugfile, "nm: new tags: '%s'\n", tstr));
 	data->tags_transformed = ttstr;
 	dprint(2, (debugfile, "nm: new tag transforms: '%s'\n", ttstr));
+	data->tag_list = tag_list;
 	return 0;
 }
 
