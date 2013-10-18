@@ -1,3 +1,374 @@
+2013-10-16 16:04 +0000  Michael Elkins  <me@sigpipe.org>  (5648f4b2ed44)
+
+	* rfc822.c: Rework logic to avoid advancing list pointer inside the
+	for loop.
+
+	closes #3531
+
+2013-10-15 15:41 +0000  Ivan Vilata i Balaguer  <ivan@selidor.net>  (20954d6af1b1)
+
+	* po/ca.po: updated Catalan translation
+
+2013-10-11 15:51 +0000  Vsevolod Volkov  <vvv@mutt.org.ua>  (d60465c5ee6a)
+
+	* po/uk.po: updated Ukranian translation
+
+2013-10-11 15:49 +0000  Tamotsu TAKAHASHI  <ttakah@lapis.plala.or.jp>  (b9ba481ed72a)
+
+	* po/ja.po: updated Japanese translation
+
+2013-10-07 17:32 +0000  Michael Elkins  <me@sigpipe.org>  (804e46bc366e)
+
+	* doc/pgpewrap.man, doc/pgpring.man: add missing files that were
+	supposed to be included with
+	[76f8df0ac80396559aa80e7f145be6f235a6db51]
+
+2013-10-07 17:21 +0000  hhorak  <hhorak@redhat.com>  (76f8df0ac803)
+
+	* doc/Makefile.am, doc/PGP-Notes.txt: adds some missing options in doc
+	and adds man pages for binaries pgpewrap and pgpring.
+
+	closes #3643
+
+2013-10-07 17:09 +0000  esr  <esr@thyrsus.com>  (8d888e4d4f0b)
+
+	* doc/makedoc.c, doc/muttrc.man.head: Problems with muttrc.5:
+
+	Ambiguous or invalid backslash. This doesn't cause groff a problem.
+	but it confuses doclifter and may confuse older troff
+	implementations.
+
+	Unknown or invalid macro. That is, one that does not fit in the
+	macro set that the man page seems to be using. This is a serious
+	error; it often means part of your text is being lost or rendered
+	incorrectly.
+
+	Use local definitions of .EX/.EE or .DS/.DE to avoid low-level troff
+	requests in the page body. There are plans to add these to groff
+	man; in the interim, this patch adds a compatible definition to your
+	page.
+
+2013-10-07 16:10 +0000  esr  <esr@thyrsus.com>  (02234de89d2a)
+
+	* doc/mutt.man: Problems with mutt.1:
+
+	Ambiguous or invalid backslash. This doesn't cause groff a problem.
+	but it confuses doclifter and may confuse older troff
+	implementations.
+
+	Spelling error or typo.
+
+2013-10-06 09:31 -0700  nihilhill  <nihilhill@gmail.com>  (24bb691dcde7)
+
+	* crypt-gpgme.c: include <stdbool.h> for definition 'true'
+
+	closes #3642
+
+2013-10-05 15:57 +0800  Kevin McCarthy  <kevin@8t8.us>  (035306822940)
+
+	* attach.c: Fix segfault when viewing text attachments in compose
+	menu. (closes #3644)
+
+	The segfault was introduced in changeset b9f9e3147eb4. Since
+	decoding and charset conversion aren't needed for attachments when
+	composing a message, this patch reverts to just using
+	mutt_save_attachment() to view "raw data" for text attachments in
+	the compose/send case.
+
+	This patch is based on Michael Elkins' patch at http://dev.mutt.org/
+	trac/attachment/ticket/3644/view_attach_compose_segfault with just a
+	missing return value check added.
+
+2013-10-06 14:32 +0000  Aaron Schrab  <aaron+mutt@schrab.com>  (6bcde5f1c7a7)
+
+	* commands.c, hook.c, imap/command.c, imap/imap.c: Ensure that BUFFER
+	variables are initialized to prevent later attempts to traverse an
+	uninitialized pointer.
+
+2013-10-05 19:25 +0000  Aaron Schrab  <aaron+mutt@schrab.com>  (132861c8b4e9)
+
+	* commands.c, hook.c, imap/command.c, imap/imap.c, imap/message.c,
+	init.c, keymap.c, pattern.c, score.c: Consistently use
+	mutt_buffer_init function
+
+	Despite the existence of the mutt_buffer_init function, most
+	initializations were instead done with memset. Use the specific
+	function instead to make it easier if later changes are made to how
+	the initialization should be done.
+
+2013-10-04 16:47 +0000  Michael Elkins  <me@sigpipe.org>  (0beba37c336b)
+
+	* crypt-gpgme.c, handler.c, init.c, pop_auth.c: fix more comment typos
+
+2013-07-23 14:07 +0200  Ondřej Bílka  <neleai@seznam.cz>  (bc7e7cf0fed3)
+
+	* compose.c, crypt-gpgme.c, crypt-mod.h, curs_lib.c, date.c,
+	doc/makedoc.c, editmsg.c, handler.c, imap/util.c, init.c,
+	intl/gettextP.h, intl/plural.c, keymap.c, lib.c, mbox.c, mkdtemp.c,
+	mutt.h, mutt_menu.h, mutt_ssl.c, mutt_ssl_gnutls.c, muttlib.c, mx.c,
+	parse.c, pattern.c, pop.c, pop_auth.c, pop_lib.c, recvcmd.c,
+	regex.c, send.c, signal.c, smime.c, snprintf.c, sort.h, thread.c:
+	fix typos in comments
+
+2013-04-16 20:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (d3096e8796e7)
+
+	* pager.c: Don't exit pager if quit=ask is answered "no".
+
+	This patch addresses ticket 2788.
+
+	Currently if you quit ('Q') from inside the pager, with quit=ask-yes
+	or quit=ask-no, and you respond "no", mutt leaves you back in the
+	index menu.
+
+	This patch changes it so that mutt does not exit the pager.
+
+2013-04-11 02:17 +0000  Michael Elkins  <me@sigpipe.org>  (4c5163272b9c)
+
+	* browser.c, enter.c, imap/message.c, init.c, mbox.c, muttlib.c, mx.c,
+	pop.c, query.c, smime.c, system.c: backout c1371176ea45
+
+2013-04-11 01:59 +0000  Michael Elkins  <me@sigpipe.org>  (f99e91980f0f)
+
+	* getdomain.c, init.c: Backed out changeset 1142ed8974fa
+
+2013-04-10 23:40 +0000  Michael Elkins  <me@sigpipe.org>  (1142ed8974fa)
+
+	* getdomain.c, init.c: use gethostname() to determine the system host
+	name
+
+	use getaddrinfo() to look up canonical DNS name, and fall back to
+	hinting from /etc/resolv.conf
+
+	see #3298
+
+2013-04-10 22:38 +0000  Michael Elkins  <me@sigpipe.org>  (c1371176ea45)
+
+	* browser.c, enter.c, imap/message.c, init.c, mbox.c, muttlib.c, mx.c,
+	pop.c, query.c, smime.c, system.c: fix various compiler warnings;
+	most were due to unchecked return values from system calls.
+
+2013-03-04 04:14 +0000  is  <is@netbsd.org>  (d498f0e91914)
+
+	* lib.c: use mkdtemp() to create temporary directory rather than
+	mktemp() followed by mkdir()
+
+	closes #3637
+
+2013-02-23 03:12 +0000  Michael Elkins  <me@sigpipe.org>  (4c16c0d1ba9e)
+
+	* pop.c, pop_lib.c: use of sscanf() had undefined behavior, replace
+	with simple parsing instead
+
+	see #3636
+
+2013-02-22 18:31 +0000  Michael Elkins  <me@sigpipe.org>  (c7eff98bb299)
+
+	* smime.c: increase string size by one byte to accomodate the
+	terminating null character in fscanf() since the maximum field width
+	does not include it
+
+	closes #3636
+
+	hat tip: Will Fiveash
+
+2013-02-22 16:30 +0000  john beck  <john.beck@oracle.com>  (14596ac2b323)
+
+	* rfc1524.c, sendlib.c: fix potential buffer overflow in off-by-one
+	bounds checking error
+
+	closes #3635
+
+2013-02-08 17:06 +0000  Michael Elkins  <me@sigpipe.org>  (302044b4ed3f)
+
+	* curs_lib.c: explicitly call mutt_refresh() prior to endwin() to
+	force a screen redraw.
+
+	[4903e80356d3] removed the call, but some environments (screen+xterm
+	under SuSE11/12) don't properly flush without it prior to the
+	endwin() call
+
+2013-01-31 05:06 +0000  Michael Elkins  <me@sigpipe.org>  (2a1c5d3dd72e)
+
+	* curs_lib.c: do not use mutt_message() to display prompt in
+	mutt_yesorno().
+
+	properly calculate screen width of prompt string by using
+	mutt_strwidth() rather than strlen()
+
+	use safe_asprintf() return the formatted yes/no string since
+	specifying COLS+1 is wrong when dealing with multibyte characters
+
+	closes #3412 closes #3352
+
+2013-01-23 21:52 +0000  Michael Elkins  <me@sigpipe.org>  (b86b154f3988)
+
+	* buffy.c, buffy.h, mh.c, mx.h: add support for $mail_check_recent to
+	mh mailbox driver
+
+	closes #3629
+
+2013-01-23 19:52 +0000  Michael Elkins  <me@sigpipe.org>  (4903e80356d3)
+
+	* curs_lib.c: do not explicitly reset the terminal attributes and move
+	the cursor in mutt_endwin(). endwin() itself should handle this.
+
+	closes #3627
+
+2013-01-22 02:02 +0000  Michael Elkins  <me@sigpipe.org>  (acc8b2afdf29)
+
+	* configure.ac: remove PKG_CHECK_MODULE() check and always use
+	AC_CHECK_HEADERS()
+
+	only check for <idn/idna.h> when <idna.h> isn't found
+
+	closes #3626
+
+2013-01-20 21:45 +0000  Michael Elkins  <me@sigpipe.org>  (98e031cd81d4)
+
+	* configure.ac, main.c, mutt_idna.h: use pkg-config to look for libidn
+	if available.
+
+	checking <idn/idna.h> rather than including -I/usr/include/idn for
+	Solaris 11.
+
+	closes #3624
+
+2013-01-17 23:04 +0000  Michael Elkins  <me@sigpipe.org>  (7fcc0049f250)
+
+	* attach.c: backout [392e945dfba7]
+
+	closes #3293 see #3234
+
+2013-01-17 23:03 +0000  Michael Elkins  <me@sigpipe.org>  (b9f9e3147eb4)
+
+	* attach.c: when falling back to viewing an attachment as text in the
+	internal pager, perform charset conversion
+
+	this change is meant to replace [392e945dfba7]
+
+	see #3234 see #3293
+
+2013-01-17 02:43 +0000  Michael Elkins  <me@sigpipe.org>  (571e945d6544)
+
+	* hcache.c, hcache.h, imap/util.c, mh.c, pop.c: use a separate flag
+	for mutt_hcache_store() to signal that the gettimeofday() value
+	should be substituted, so that a 0 uidvalidity can be used by the
+	imap driver.
+
+	closes #3501
+
+2013-01-17 02:10 +0000  Michael Elkins  <me@sigpipe.org>  (b58cdfacfb89)
+
+	* attach.c, handler.c, protos.h: change semantics of
+	mutt_is_autoview() to return 1 if there is a matching mailcap entry
+	and either $implicit_autoview is set or the MIME type matches the
+	user's auto_view list.
+
+	closes #3496 closes #3426
+
+2013-01-14 20:39 -0800  Michael Elkins  <me@mutt.org>  (1a75c9e477b4)
+
+	* from.c: detect pipermail-style obscured return path in mbox From
+	lines
+
+	see #1200
+
+2013-01-14 19:23 -0800  Michael Elkins  <me@mutt.org>  (8c75478735a3)
+
+	* curs_main.c: allow use of sync-mailbox when the current limit has no
+	visible messages
+
+	closes #3538
+
+2013-01-14 08:50 -0800  Michael Elkins  <me@sigpipe.org>  (05cd8d0d1450)
+
+	* handler.c: avoid debug warning about trailing whitespace in a base64
+	encoded attachment
+
+	closes #3558
+
+2013-01-04 04:05 +0000  Michael Elkins  <me@sigpipe.org>  (90f7869decec)
+
+	* Makefile.am: When "make install" fails to chgrp or chmod the
+	mutt_dotlock binary, add the reason why we are doing this so the
+	user knows what to look for.
+
+2013-01-03 16:12 -0800  Michael Elkins  <me@sigpipe.org>  (d7d26c40e1e5)
+
+	* pager.c: Fix regression introduced by [10cc06eff52b] where the
+	CLEARLINE() removal was not replaced by a move() to position the
+	cursor at the correct location to draw the status bar.
+
+	closes #3619
+
+2013-01-03 19:04 +0000  Michael Elkins  <me@sigpipe.org>  (7fe92ce1cfc1)
+
+	* parse.c: Remove unused variable `matched'.
+
+2013-01-03 19:04 +0000  Michael Elkins  <me@sigpipe.org>  (6f4ce8ce80a7)
+
+	* parse.c: Fix memory leak when multiple x-label or supersedes header
+	fields exist in the header.
+
+	In order to keep the current behavior where the value of the last
+	header field present is the one used, free any previous value.
+
+2013-01-03 08:03 -0800  Michael Elkins  <me@sigpipe.org>  (21457574a9b6)
+
+	* main.c: Backed out changeset bf84f24e512d
+
+2013-01-02 23:43 +0000  Michael Elkins  <me@sigpipe.org>  (bf84f24e512d)
+
+	* main.c: display +/-NCURSES_WIDECHAR when displaying ncurses version
+	to show whether we are linked against -lncurses or -lncursesw
+
+2013-01-01 21:39 +0100  Matthias Andree  <matthias.andree@gmx.de>  (ea52317444ef)
+
+	* hcache.c: Drop unneeded variable HEADER_CACHE that causes clang
+	warnings.
+
+	The variable was unused and clang warned that it was not emitted to
+	the .o file.
+
+2012-12-31 23:29 +0000  Michael Elkins  <me@sigpipe.org>  (32ec63debe52)
+
+	* init.h: fix xml validation error in manual.xml in auto-generated
+	content due to missing paragraph mark in the $editor docstring
+
+2012-12-31 15:03 -0800  guns  <self@sungpae.com>  (474e9e809054)
+
+	* rfc822.c: Fix accidental var redeclation with --enable-exact-address
+
+	closes #3615
+
+2012-12-31 14:54 -0800  Michael Elkins  <me@sigpipe.org>  (bf6bf2a80c35)
+
+	* merge
+
+2012-12-31 14:52 -0800  Michael Elkins  <me@sigpipe.org>  (5196c3d6c5d0)
+
+	* curs_lib.c: reset to color normal before clearing to end of line
+	when printing a message/error string
+
+	closes #3617
+
+2012-12-31 19:06 +0000  Michael Elkins  <me@sigpipe.org>  (ca67a3dad949)
+
+	* doc/gen-map-doc: update regexp to include const keyword. The auto
+	generated documentation of functions was failing due to a change in
+	the source code format.
+
+2012-12-30 19:48 -0800  Antonio Radici  <antonio@dyne.org>  (b1b49019fec0)
+
+	* headers.c: Ensure that the in-reply-to header field was actually
+	present before deciding it was removed.
+
+	closes #3378
+
+2012-12-30 19:17 -0800  Michael Elkins  <me@sigpipe.org>  (a90f57e0adbd)
+
+	* ChangeLog: update ChangeLog
+
 2012-12-30 19:14 -0800  Michael Elkins  <me@sigpipe.org>  (c03ba94d8750)
 
 	* imap/message.c: add __FREE_CHECKED__
