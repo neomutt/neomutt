@@ -43,7 +43,6 @@
 #include <sys/stat.h>
 #include <errno.h>
 #include <ctype.h>
-#include <stdbool.h> /* for "true" */
 
 #include <gpgme.h>
 
@@ -4367,7 +4366,8 @@ static void init_common(void)
 #ifdef ENABLE_NLS
     gpgme_set_locale (NULL, LC_MESSAGES, setlocale (LC_MESSAGES, NULL));
 #endif
-    has_run = true;
+    has_run = 1; /* note use of 1 here is intentional to avoid requiring "true"
+		    to be defined.  see #3657 */
   }
 }
 
