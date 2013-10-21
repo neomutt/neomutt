@@ -3510,9 +3510,13 @@ against all messages, both <emphasis>new</emphasis> and
 
 <note>
 <para>
-<command>reply-hook</command>s are matched <emphasis>before</emphasis>
-the <command>send-hook</command>, <emphasis>regardless</emphasis> of the
-order specified in the user's configuration file.
+<command>reply-hook</command>s are matched <emphasis>before</emphasis> the
+<command>send-hook</command>, <emphasis>regardless</emphasis> of the order
+specified in the user's configuration file.  However, you can inhibit
+<command>send-hook</command> in the reply case by using the pattern
+<literal>'! ~Q'</literal> (<emphasis>not replied</emphasis>, see
+<xref linkend="pattern-hook"/>) in the <command>send-hook</command> to tell
+when <command>reply-hook</command> have been executed.
 </para>
 </note>
 
