@@ -768,6 +768,9 @@ int main (int argc, char **argv)
   if (!option (OPTNOCURSES))
     start_curses ();
 
+  /* check whether terminal status is supported (must follow curses init) */
+  TSSupported = mutt_ts_capability();
+
   /* set defaults and read init files */
   mutt_init (flags & M_NOSYSRC, commands);
   mutt_free_list (&commands);

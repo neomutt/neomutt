@@ -195,6 +195,8 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
       break;
 
     case 'P':
+      if (!menu)
+	break;
       if (menu->top + menu->pagelen >= menu->max)
 	cp = menu->top ? "end" : "all";
       else

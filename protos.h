@@ -250,6 +250,7 @@ void mutt_signal_init (void);
 void mutt_stamp_attachment (BODY *a);
 void mutt_tabs_to_spaces (char *);
 void mutt_tag_set_flag (int, int);
+short mutt_ts_capability (void);
 void mutt_unblock_signals (void);
 void mutt_unblock_signals_system (int);
 void mutt_update_encoding (BODY *a);

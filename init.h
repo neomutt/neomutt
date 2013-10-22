@@ -3241,6 +3241,27 @@ struct option_t MuttVars[] = {
   ** by \fIyou\fP.  The sixth character is used to indicate when a mail
   ** was sent to a mailing-list you subscribe to.
   */
+  {"ts_icon_format",	DT_STR,  R_BOTH, UL &TSIconFormat, UL "M%?n?AIL&ail?"},
+  /*
+  ** .pp
+  ** Controls the format of the icon title, as long as ``$$ts_enabled'' is set.
+  ** This string is identical in formatting to the one used by
+  ** ``$$status_format''.
+  */
+  {"ts_enabled",	DT_BOOL,  R_BOTH, OPTTSENABLED, 0},
+  /* The default must be off to force in the validity checking. */
+  /*
+  ** .pp
+  ** Controls whether mutt tries to set the terminal status line and icon name.
+  ** Most terminal emulators emulate the status line in the window title.
+  */
+  {"ts_status_format",	DT_STR,   R_BOTH, UL &TSStatusFormat, UL "Mutt with %?m?%m messages&no messages?%?n? [%n NEW]?"},
+  /*
+  ** .pp
+  ** Controls the format of the terminal status line (or window title),
+  ** provided that ``$$ts_enabled'' has been set. This string is identical in
+  ** formatting to the one used by ``$$status_format''.
+  */
 #ifdef USE_SOCKET
   { "tunnel",            DT_STR, R_NONE, UL &Tunnel, UL 0 },
   /*
@@ -3411,6 +3432,15 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$read_inc, $$net_inc and $$time_inc variables and the
   ** ``$tuning'' section of the manual for performance considerations.
+  */
+  {"xterm_icon",	DT_SYN,  R_NONE, UL "ts_icon_format", 0 },
+  /*
+  */
+  {"xterm_title",	DT_SYN,  R_NONE, UL "ts_status_format", 0 },
+  /*
+  */
+  {"xterm_set_titles",	DT_SYN,  R_NONE, UL "ts_enabled", 0 },
+  /*
   */
   /*--*/
   { NULL, 0, 0, 0, 0 }
