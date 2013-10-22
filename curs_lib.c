@@ -911,8 +911,10 @@ int mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *widt
   memset (&mbstate, 0, sizeof (mbstate));
   for (w = 0; n && (cl = mbrtowc (&wc, src, n, &mbstate)); src += cl, n -= cl)
   {
-    if (cl == (size_t)(-1) || cl == (size_t)(-2))
+    if (cl == (size_t)(-1) || cl == (size_t)(-2)) {
       cw = cl = 1;
+      memset(&mbstate, 0, sizeof (mbstate));
+    }
     else
     {
       cw = wcwidth (wc);
@@ -920,6 +922,8 @@ int mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *widt
        * until rendered by print_enriched_string (#3364) */
       if (cw < 0 && cl == 1 && src[0] && src[0] < M_TREE_MAX)
 	cw = 1;
+      else if (cw < 0)
+	cw = 0;			/* unprintable wchar */
     }
     if (cl + l > maxlen || cw + w > maxwid)
       break;
