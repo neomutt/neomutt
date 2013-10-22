@@ -4,6 +4,11 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.5.23 (unreleased):
+
+  + terminal status-line (TS) support, a.k.a. xterm title. see the
+    following variables: $ts_enabled, $ts_icon_format, $ts_status_format
+
 1.5.22 (2013-10-18):
 
   ! $imap_keepalive default lowered to 300
