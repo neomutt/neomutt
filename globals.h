@@ -288,6 +288,7 @@ WHERE char *SmimeGetCertEmailCommand;
 #ifdef USE_NOTMUCH
 WHERE int NotmuchOpenTimeout;
 WHERE char *NotmuchDefaultUri;
+WHERE char *NotmuchExcludeTags;
 WHERE char *NotmuchUnreadTag;
 WHERE char *NotmuchHiddenTags;
 WHERE char *VirtFolderFormat;

@@ -216,6 +216,13 @@ notmuch support for mutt
 
       Default is "unread,draft,flagged,passed,replied,attachment".
 
+   nm_exclude_tags = <comma delimited list>
+
+      The messages tagged with these tags are excluded and not loaded
+      from notmuch DB to mutt unless specified explicitly.
+
+      Not set by default.
+
    nm_unread_tag = <name>
 
       This variable specifies notmuch tag which is used for unread messages. The

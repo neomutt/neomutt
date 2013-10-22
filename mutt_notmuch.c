@@ -584,6 +584,32 @@ static notmuch_query_t *get_query(struct nm_ctxdata *data, int writable)
 	if (!q)
 		goto err;
 
+	if (NotmuchExcludeTags) {
+		char *buf = safe_strdup(NotmuchExcludeTags);
+		char *p, *tag = NULL, *end = NULL;
+
+		for (p = buf; p && *p; p++) {
+			if (!tag && isspace(*p))
+				continue;
+			if (!tag)
+				tag = p;		/* begin of the tag */
+			if (*p == ',' || *p == ' ')
+				end = p;		/* terminate the tag */
+			else if (*(p + 1) == '\0')
+				end = p + 1;		/* end of optstr */
+			if (!tag || !end)
+				continue;
+			if (tag >= end)
+				break;
+			*end = '\0';
+
+			dprint(2, (debugfile, "nm: query explude tag '%s'\n", tag));
+			notmuch_query_add_tag_exclude(q, tag);
+			end = tag = NULL;
+		}
+		FREE(&buf);
+
+	}
 	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 	dprint(2, (debugfile, "nm: query successfully initialized\n"));
 	return q;
