@@ -323,6 +323,7 @@ AC_CHECK_HEADERS(sys/time.h sys/resource.h sys/syscall.h)
 AC_CHECK_HEADERS(unix.h)
 
 AC_CHECK_FUNCS(setrlimit getsid)
+AC_CHECK_FUNCS(fgets_unlocked fgetc_unlocked)
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(sig_atomic_t,signal.h,
