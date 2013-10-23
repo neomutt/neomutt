@@ -692,6 +692,9 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
   return -1;
 }
 
+/*
+ * Returns 0 on failure, nonzero on success.
+ */
 static int tls_check_one_certificate (const gnutls_datum_t *certdata,
                                       gnutls_certificate_status certstat,
                                       const char* hostname, int idx, int len)
@@ -745,7 +748,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     mutt_error (_("Error processing certificate data"));
     mutt_sleep (2);
     gnutls_x509_crt_deinit (cert);
-    return -1;
+    return 0;
   }
 
   menu = mutt_new_menu (-1);
