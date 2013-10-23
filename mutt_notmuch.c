@@ -1093,16 +1093,13 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 	}
 }
 
-static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
+static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int limit)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
-	int limit;
 	notmuch_threads_t *threads;
 
 	if (!data)
 		return;
-
-	limit = get_limit(data);
 
 	for (threads = notmuch_query_search_threads(q);
 	     notmuch_threads_valid(threads) &&
@@ -1140,7 +1137,7 @@ int nm_read_query(CONTEXT *ctx)
 			read_mesgs_query(ctx, q, 0);
 			break;
 		case NM_QUERY_TYPE_THREADS:
-			read_threads_query(ctx, q, 0);
+			read_threads_query(ctx, q, 0, get_limit(data));
 			break;
 		}
 		notmuch_query_destroy(q);
@@ -1193,7 +1190,7 @@ int nm_read_entire_thread(CONTEXT *ctx, HEADER *h)
 	apply_exclude_tags(q);
 	notmuch_query_set_sort(q, NOTMUCH_SORT_NEWEST_FIRST);
 
-	read_threads_query(ctx, q, 1);
+	read_threads_query(ctx, q, 1, 0);
 	ctx->mtime = time(NULL);
 	rc = 0;
 
