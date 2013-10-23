@@ -329,6 +329,12 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       tmp->next = NULL;
       mutt_free_list (&tmp);
       tmp = next;
+     /* note that x-mutt-fcc was present.  we do this because we want to add a
+      * default fcc if the header was missing, but preserve the request of the
+      * user to not make a copy if the header field is present, but empty.
+      * see http://dev.mutt.org/trac/ticket/3653
+      */
+      code |= SENDPOSTPONEDFCC;
     }
     else if ((WithCrypto & APPLICATION_PGP)
              && (mutt_strncmp ("Pgp:", tmp->data, 4) == 0 /* this is generated
