@@ -155,6 +155,29 @@ notmuch support for mutt
                      "sent"    "➥ "  \
                      "todo"    "T"   \
                      "deleted" "DEL" \
+                     "invites" "CAL"
+
+   tag-formats <tag> <format sequence> [ ...]
+
+      Specify index formatting sequences for individual tags for direct
+      placement in the $index_format. The formats must start with 'G' and
+      the entire sequence is case sensitive.
+
+      example:
+
+      tag-formats "inbox"   "GI" \
+                  "unread"  "GU" \
+                  "replied" "GR" \
+                  "sent"    "GS" \
+                  "todo"    "Gt" \
+                  "deleted" "GD" \
+                  "invites" "Gi"
+
+      Now instead of using '%g' in your $index_format, which lists all tags
+      in a non-deterministic order, you can something like the following which puts
+      a transformed tag name in a specific spot on the index line:
+
+      set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU& ? %?GR?%GR& ? %?GI?%GI& ? %s'
 
    nm_record = <boolean>
 
