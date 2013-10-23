@@ -818,6 +818,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   char buf[100];
   gpgme_ctx_t ctx;
   gpgme_data_t message, signature;
+  gpgme_sign_result_t sigres;
 
   convert_to_7bit (a); /* Signed data _must_ be in 7-bit format. */
 
@@ -859,6 +860,17 @@ static BODY *sign_message (BODY *a, int use_smime)
       mutt_error (_("error signing data: %s\n"), gpgme_strerror (err));
       return NULL;
     }
+  /* Check for zero signatures generated.  This can occur when $pgp_sign_as is
+   * unset and there is no default key specified in ~/.gnupg/gpg.conf
+   */
+  sigres = gpgme_op_sign_result (ctx);
+  if (!sigres->signatures)
+  {
+      gpgme_data_release (signature);
+      gpgme_release (ctx);
+      mutt_error (_("$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"));
+      return NULL;
+  }
 
   sigfile = data_object_to_tempfile (signature, NULL);
   gpgme_data_release (signature);
