@@ -1217,7 +1217,7 @@ done:
 char *nm_uri_from_query(CONTEXT *ctx, char *buf, size_t bufsz)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
-	char uri[_POSIX_PATH_MAX];
+	char uri[_POSIX_PATH_MAX + LONG_STRING + 32];	/* path to DB + query + URI "decoration" */
 
 	if (data)
 		snprintf(uri, sizeof(uri), "notmuch://%s?query=%s",
