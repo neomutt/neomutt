@@ -47,7 +47,7 @@
 
 /* read whole-thread or matching messages only? */
 enum {
-	NM_QUERY_TYPE_MESGS = 0,	/* default */
+	NM_QUERY_TYPE_MESGS = 1,	/* default */
 	NM_QUERY_TYPE_THREADS
 };
 
@@ -422,7 +422,7 @@ static int get_limit(struct nm_ctxdata *data)
 
 static int get_query_type(struct nm_ctxdata *data)
 {
-	return data ? data->query_type : 0;
+	return (data && data->query_type) ? data->query_type : string_to_guery_type(NULL);
 }
 
 static const char *get_db_filename(struct nm_ctxdata *data)
