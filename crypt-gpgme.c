@@ -918,6 +918,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   else
     {
       t->subtype = safe_strdup ("pgp-signature");
+      mutt_set_parameter ("name", "signature.asc", &t->parameter);
       t->use_disp = 0;
       t->disposition = DISPNONE;
       t->encoding = ENC7BIT;
