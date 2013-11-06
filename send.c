@@ -1555,6 +1555,28 @@ main_loop:
       if (msg->content->next)
 	msg->content = mutt_make_multipart (msg->content);
 
+      if (WithCrypto && option (OPTPOSTPONEENCRYPT) && PostponeEncryptAs
+          && (msg->security & ENCRYPT))
+      {
+        int is_signed = msg->security & SIGN;
+        if (is_signed)
+          msg->security &= ~SIGN;
+
+        pgpkeylist = safe_strdup (PostponeEncryptAs);
+        if (mutt_protect (msg, pgpkeylist) == -1)
+        {
+          if (is_signed)
+            msg->security |= SIGN;
+          FREE (&pgpkeylist);
+          msg->content = mutt_remove_multipart (msg->content);
+          goto main_loop;
+        }
+
+        if (is_signed)
+          msg->security |= SIGN;
+        FREE (&pgpkeylist);
+      }
+
       /*
        * make sure the message is written to the right part of a maildir 
        * postponed folder.

@@ -108,6 +108,7 @@ WHERE char *PopUser INITVAL (NULL);
 #endif
 WHERE char *PostIndentString;
 WHERE char *Postponed;
+WHERE char *PostponeEncryptAs;
 WHERE char *Prefix;
 WHERE char *PrintCmd;
 WHERE char *QueryCmd;

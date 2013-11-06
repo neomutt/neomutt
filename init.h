@@ -2121,6 +2121,21 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$postpone variable.
   */
+  { "postpone_encrypt",    DT_BOOL, R_NONE, OPTPOSTPONEENCRYPT, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, postponed messages that are marked for encryption will be
+  ** encrypted using the key in $$postpone_encrypt_as before saving.
+  ** (Crypto only)
+  */
+  { "postpone_encrypt_as", DT_STR,  R_NONE, UL &PostponeEncryptAs, 0 },
+  /*
+  ** .pp
+  ** This is the key used to encrypt postponed messages.  It should be in
+  ** keyid form (e.g. 0x00112233 for PGP or the hash-value that OpenSSL
+  ** generates for S/MIME).
+  ** (Crypto only)
+  */
 #ifdef USE_SOCKET
   { "preconnect",	DT_STR, R_NONE, UL &Preconnect, UL 0},
   /*
