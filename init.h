@@ -2633,6 +2633,12 @@ struct option_t MuttVars[] = {
   ** replacing ``%s'' with the supplied string.
   ** For the default value, ``joe'' would be expanded to: ``~f joe | ~s joe''.
   */
+  { "skip_quoted_offset", DT_NUM, R_NONE, UL &SkipQuotedOffset, 0 },
+  /*
+  ** .pp
+  ** Lines of quoted text that are displayed before the unquoted text after
+  ** 'skip to quoted' command (S)
+  */
   { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
   /*
   ** .pp
