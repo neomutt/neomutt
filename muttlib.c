@@ -568,8 +568,8 @@ void mutt_pretty_mailbox(char *s, size_t buflen)
 
 void mutt_pretty_size(char *s, size_t len, size_t n)
 {
-  if (n == 0)
-    mutt_str_strfcpy(s, "0K", len);
+  if (n < 1000)
+    snprintf(s, len, "%d", (int) n);
   else if (n < 10189) /* 0.1K - 9.9K */
     snprintf(s, len, "%3.1fK", (n < 103) ? 0.1 : n / 1024.0);
   else if (n < 1023949) /* 10K - 999K */
