@@ -1270,8 +1270,10 @@ After getting recipients for new messages, forwards or replies, Mutt
 will then automatically start your <link linkend="editor">$editor</link>
 on the message body. If the <link
 linkend="edit-headers">$edit_headers</link> variable is set, the headers
-will be at the top of the message in your editor.  Any messages you are
-replying to will be added in sort order to the message, with appropriate
+will be at the top of the message in your editor; the message body
+should start on a new line after the existing blank line at the end of
+headers.  Any messages you are replying to will be added in sort order
+to the message, with appropriate
 <link linkend="attribution">$attribution</link>, <link
 linkend="indent-string">$indent_string</link> and <link
 linkend="post-indent-string">$post_indent_string</link>.  When
