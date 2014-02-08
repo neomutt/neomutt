@@ -1,16 +1,22 @@
-# $Id$
+# Dutch translations for Mutt.
+# This file is distributed under the same license as the mutt package.
+#
+# RenÃ© Clerc <rene@clerc.nl>, 2002, 2003, 20004, 2005, 2006, 2007, 2008, 2009.
+# Benno Schulenberg <benno@vertaalt.nl>, 2008, 2014.
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.19\n"
+"Project-Id-Version: Mutt 1.5.22\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-10-17 22:42-0700\n"
-"PO-Revision-Date: 2009-05-29 12:31+0100\n"
-"Last-Translator: René Clerc <rene@clerc.nl>\n"
-"Language-Team: René Clerc <rene@clerc.nl>\n"
-"Language: \n"
+"PO-Revision-Date: 2014-01-27 14:18+0100\n"
+"Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
+"Language-Team: Dutch <vertaling@vrijschrift.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: account.c:163
 #, c-format
@@ -397,9 +403,8 @@ msgid "Command: "
 msgstr "Commando: "
 
 #: commands.c:256
-#, fuzzy
 msgid "Warning: message has no From: header"
-msgstr "Waarschuwing: een deel van dit bericht is niet ondertekend."
+msgstr "Waarschuwing: bericht heeft geen 'From:'-kopregel"
 
 #: commands.c:274 recvcmd.c:171
 msgid "Bounce message to: "
@@ -512,7 +517,7 @@ msgstr "Decoderen-opslaan%s in postvak"
 #: commands.c:742
 #, c-format
 msgid "Decode-copy%s to mailbox"
-msgstr "Decoderen-kopiëren%s naar postvak"
+msgstr "Decoderen-kopiÃ«ren%s naar postvak"
 
 #: commands.c:743
 #, c-format
@@ -522,7 +527,7 @@ msgstr "Ontsleutelen-opslaan%s in postvak"
 #: commands.c:744
 #, c-format
 msgid "Decrypt-copy%s to mailbox"
-msgstr "Ontsleutelen-kopiëren%s naar postvak"
+msgstr "Ontsleutelen-kopiÃ«ren%s naar postvak"
 
 #: commands.c:745
 #, c-format
@@ -532,7 +537,7 @@ msgstr "Opslaan%s in postvak"
 #: commands.c:745
 #, c-format
 msgid "Copy%s to mailbox"
-msgstr "Kopiëren%s naar postvak"
+msgstr "KopiÃ«ren%s naar postvak"
 
 #: commands.c:746
 msgid " tagged"
@@ -541,7 +546,7 @@ msgstr " gemarkeerd"
 #: commands.c:819
 #, c-format
 msgid "Copying to %s..."
-msgstr "Kopiëren naar %s..."
+msgstr "KopiÃ«ren naar %s..."
 
 #: commands.c:935
 #, c-format
@@ -587,9 +592,8 @@ msgid "Descrip"
 msgstr "Omschrijving"
 
 #: compose.c:117
-#, fuzzy
 msgid "Not supported"
-msgstr "Markeren is niet ondersteund."
+msgstr "Niet ondersteund"
 
 #: compose.c:122
 msgid "Sign, Encrypt"
@@ -605,21 +609,19 @@ msgstr "Ondertekenen"
 
 #: compose.c:128
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #: compose.c:135
-#, fuzzy
 msgid " (inline PGP)"
-msgstr " (traditioneel)"
+msgstr " (inline-PGP)"
 
 #: compose.c:137
 msgid " (PGP/MIME)"
 msgstr " (PGP/MIME)"
 
 #: compose.c:141
-#, fuzzy
 msgid " (S/MIME)"
-msgstr " (PGP/MIME)"
+msgstr " (S/MIME)"
 
 #: compose.c:150 compose.c:154
 msgid " sign as: "
@@ -654,7 +656,7 @@ msgstr "Waarschuwing: '%s' is een ongeldige IDN."
 
 #: compose.c:317
 msgid "You may not delete the only attachment."
-msgstr "Een bericht bestaat uit minimaal één gedeelte."
+msgstr "Een bericht bestaat uit minimaal Ã©Ã©n gedeelte."
 
 #: compose.c:593 send.c:1598
 #, c-format
@@ -765,7 +767,7 @@ msgstr "PGP is al geselecteerd.  Wissen & doorgaan? "
 #: crypt-gpgme.c:348
 #, c-format
 msgid "error creating gpgme context: %s\n"
-msgstr "fout bij het creëren van GPGME-context: %s\n"
+msgstr "fout bij het creÃ«ren van GPGME-context: %s\n"
 
 #: crypt-gpgme.c:358
 #, c-format
@@ -775,7 +777,7 @@ msgstr "fout bij het inschakelen van CMS-protocol: %s\n"
 #: crypt-gpgme.c:378
 #, c-format
 msgid "error creating gpgme data object: %s\n"
-msgstr "fout bij het creëren van GPGME-gegevensobject: %s\n"
+msgstr "fout bij het creÃ«ren van GPGME-gegevensobject: %s\n"
 
 #: crypt-gpgme.c:444 crypt-gpgme.c:462 crypt-gpgme.c:1419
 #, c-format
@@ -795,22 +797,22 @@ msgstr "fout bij het lezen van het gegevensobject: %s\n"
 #: crypt-gpgme.c:610
 #, c-format
 msgid "error adding recipient `%s': %s\n"
-msgstr "fout bij het toevoegen van ontvanger `%s': %s\n"
+msgstr "fout bij het toevoegen van ontvanger '%s': %s\n"
 
 #: crypt-gpgme.c:648
 #, c-format
 msgid "secret key `%s' not found: %s\n"
-msgstr "geheime sleutel `%s' niet gevonden: %s\n"
+msgstr "geheime sleutel '%s' niet gevonden: %s\n"
 
 #: crypt-gpgme.c:658
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
-msgstr "dubbelzinnige specificatie van geheime sleutel `%s'\n"
+msgstr "dubbelzinnige specificatie van geheime sleutel '%s'\n"
 
 #: crypt-gpgme.c:670
 #, c-format
 msgid "error setting secret key `%s': %s\n"
-msgstr "fout bij het instellen van geheime sleutel `%s': %s\n"
+msgstr "fout bij het instellen van geheime sleutel '%s': %s\n"
 
 #: crypt-gpgme.c:687
 #, c-format
@@ -829,7 +831,7 @@ msgstr "fout bij het ondertekenen van gegevens: %s\n"
 
 #: crypt-gpgme.c:1055
 msgid "Warning: One of the keys has been revoked\n"
-msgstr "Waarschuwing: één van de sleutels is herroepen\n"
+msgstr "Waarschuwing: Ã©Ã©n van de sleutels is herroepen\n"
 
 #: crypt-gpgme.c:1064
 msgid "Warning: The key used to create the signature expired at: "
@@ -845,7 +847,7 @@ msgstr "Waarschuwing: de ondertekening is verlopen op: "
 
 #: crypt-gpgme.c:1092
 msgid "Can't verify due to a missing key or certificate\n"
-msgstr "Kan niet verifiëren vanwege ontbrekende sleutel of certificaat\n"
+msgstr "Kan niet verifiÃ«ren vanwege ontbrekende sleutel of certificaat\n"
 
 #: crypt-gpgme.c:1097
 msgid "The CRL is not available\n"
@@ -873,7 +875,7 @@ msgstr "Adres van PKA-geverifieerde ondertekenaar is: "
 
 #: crypt-gpgme.c:1175 crypt-gpgme.c:3299
 msgid "Fingerprint: "
-msgstr "Handtekening: "
+msgstr "Vingerafdruk: "
 
 #: crypt-gpgme.c:1235
 msgid ""
@@ -975,7 +977,7 @@ msgstr "Fout: ontsleuteling/verificatie is mislukt: %s\n"
 
 #: crypt-gpgme.c:2315
 msgid "Error: copy data failed\n"
-msgstr "Fout: kopiëren van gegevens is mislukt\n"
+msgstr "Fout: kopiÃ«ren van gegevens is mislukt\n"
 
 #: crypt-gpgme.c:2335 pgp.c:436
 msgid ""
@@ -1220,7 +1222,7 @@ msgstr "Selecteer  "
 #. __STRCAT_CHECKED__
 #: crypt-gpgme.c:3829 pgpkey.c:520
 msgid "Check key  "
-msgstr "Controleer sleutel "
+msgstr "Controleer sleutel  "
 
 #: crypt-gpgme.c:3845
 msgid "PGP and S/MIME keys matching"
@@ -1323,7 +1325,7 @@ msgstr "Ondertekenen als: "
 
 #: crypt-gpgme.c:4557
 msgid "Failed to verify sender"
-msgstr "Verifiëren van afzender is mislukt"
+msgstr "VerifiÃ«ren van afzender is mislukt"
 
 #: crypt-gpgme.c:4560
 msgid "Failed to figure out sender"
@@ -1597,7 +1599,7 @@ msgstr "Verwijder markering volgens patroon: "
 
 #: curs_main.c:1002
 msgid "Logged out of IMAP servers."
-msgstr ""
+msgstr "Uitgelogd uit IMAP-servers."
 
 #: curs_main.c:1084
 msgid "Open mailbox in read-only mode"
@@ -1627,11 +1629,11 @@ msgstr "Het weergeven van threads is niet ingeschakeld."
 
 #: curs_main.c:1253
 msgid "Thread broken"
-msgstr "Thread gebroken"
+msgstr "Thread is verbroken"
 
 #: curs_main.c:1264
 msgid "Thread cannot be broken, message is not part of a thread"
-msgstr ""
+msgstr "Thread kan niet verbroken worden; bericht is geen deel van een thread"
 
 #: curs_main.c:1273
 msgid "link threads"
@@ -1726,7 +1728,6 @@ msgstr "herstel bericht"
 #. * declared "static" (sigh)
 #.
 #: edit.c:41
-#, fuzzy
 msgid ""
 "~~\t\tinsert a line beginning with a single ~\n"
 "~b users\tadd users to the Bcc: field\n"
@@ -1738,15 +1739,15 @@ msgid ""
 "~M messages\tsame as ~m, except include headers\n"
 "~p\t\tprint the message\n"
 msgstr ""
-"~~\t\tVoeg een regel in die begint met een enkele ~\n"
-"~b adressen\tVoeg adressen aan Bcc: veld toe\n"
-"~c adressen\tVoeg adressen aan Cc: veld toe\n"
-"~f berichten\tBerichten toevoegen\n"
-"~F berichten\tAls ~f, maar met header\n"
-"~h\t\tBewerk header\n"
-"~m berichten\tBerichten citeren\n"
-"~M berichten\tAls ~m, maar met header\n"
-"~p\t\tBericht afdrukken\n"
+"~~            een regel invoegen die begint met een enkele ~\n"
+"~b adressen   deze adressen aan Bcc:-veld toevoegen\n"
+"~c adressen   deze adressen aan Cc:-veld toevoegen\n"
+"~f berichten  berichten toevoegen\n"
+"~F berichten  als ~f, maar met headers\n"
+"~h            header bewerken\n"
+"~m berichten  deze berichten citeren\n"
+"~M berichten  als ~m, maar met headers\n"
+"~p            bericht afdrukken\n"
 
 #: edit.c:52
 msgid ""
@@ -1760,15 +1761,15 @@ msgid ""
 "~?\t\tthis message\n"
 ".\t\ton a line by itself ends input\n"
 msgstr ""
-"~q\t\tBericht opslaan en editor verlaten\n"
-"~r bestand\tBestand inlezen\n"
-"~t adressen\tVoeg adresen aan To: veld toe\n"
-"~u\t\tLaatste regel opnieuw bewerken\n"
-"~v\t\tBewerk bericht met alternatieve editor ($visual)\n"
-"~w bestand\tSla bericht op in een bestand\n"
-"~x\t\tVerlaat de editor zonder wijzigingen te behouden\n"
-"~?\t\tDit bericht\n"
-".\t\tals enige inhoud van een regel beëndigt het invoegen\n"
+"~q            bericht opslaan en editor verlaten\n"
+"~r bestand    bestand inlezen\n"
+"~t adressen   deze adressen aan To:-veld toevoegen\n"
+"~u            laatste regel opnieuw bewerken\n"
+"~v            bericht bewerken met alternatieve editor ($visual)\n"
+"~w bestand    bericht opslaan in dit bestand\n"
+"~x            de editor verlaten zonder wijzigingen te behouden\n"
+"~?            deze hulptekst\n"
+".             als enige inhoud van een regel beÃ«indigt de invoer\n"
 
 #: edit.c:187
 #, c-format
@@ -1777,7 +1778,7 @@ msgstr "%d: ongeldig berichtnummer.\n"
 
 #: edit.c:329
 msgid "(End message with a . on a line by itself)\n"
-msgstr "(Beëindig bericht met een . als enige inhoud van de regel)\n"
+msgstr "(BeÃ«indig bericht met een . als enige inhoud van de regel)\n"
 
 #: edit.c:388
 msgid "No mailbox.\n"
@@ -1953,9 +1954,8 @@ msgid "Unable to open temporary file!"
 msgstr "Tijdelijk bestand kon niet worden geopend!"
 
 #: handler.c:1790
-#, fuzzy
 msgid "[-- This is an attachment "
-msgstr "[-- Deze %s/%s bijlage "
+msgstr "[-- Dit is een bijlage "
 
 #: handler.c:1792
 #, c-format
@@ -2134,7 +2134,7 @@ msgstr "Verbinding met %s wordt gesloten..."
 
 #: imap/imap.c:309
 msgid "This IMAP server is ancient. Mutt does not work with it."
-msgstr "Mutt kan niet overweg met deze antieke IMAP server."
+msgstr "Mutt kan niet overweg met deze antieke IMAP-server."
 
 #: imap/imap.c:432 pop_lib.c:294 smtp.c:424
 msgid "Secure connection with TLS?"
@@ -2214,7 +2214,7 @@ msgstr "Abonnement opzeggen op %s..."
 #: imap/imap.c:1854
 #, c-format
 msgid "Subscribed to %s"
-msgstr "Geabonneerd op %s..."
+msgstr "Geabonneerd op %s"
 
 #: imap/imap.c:1856
 #, c-format
@@ -2224,7 +2224,7 @@ msgstr "Abonnement op %s opgezegd"
 #. Unable to fetch headers for lower versions
 #: imap/message.c:98
 msgid "Unable to fetch headers from this IMAP server version."
-msgstr "Kan berichtenoverzicht niet overhalen van deze IMAP server."
+msgstr "Kan berichtenoverzicht niet overhalen van deze IMAP-server."
 
 #: imap/message.c:108
 #, c-format
@@ -2289,14 +2289,14 @@ msgid "nospam: no matching pattern"
 msgstr "nospam: geen overeenkomstig patroon"
 
 #: init.c:861
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: missing -rx or -addr."
-msgstr "Ontbrekende -rx of -addr."
+msgstr "%s-groep: Ontbrekende -rx of -addr."
 
 #: init.c:879
-#, fuzzy, c-format
+#, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "Waarschuwing: Ongeldige IDN '%s'.\n"
+msgstr "%s-groep: waarschuwing: Ongeldige IDN '%s'.\n"
 
 #: init.c:1094
 msgid "attachments: no disposition"
@@ -2325,7 +2325,7 @@ msgstr "Waarschuwing: Ongeldige IDN '%s' in alias '%s'.\n"
 
 #: init.c:1432
 msgid "invalid header field"
-msgstr "my_hdr: Ongeldig veld in berichtenkop"
+msgstr "ongeldig veld in berichtenkop"
 
 #: init.c:1485
 #, c-format
@@ -2355,7 +2355,7 @@ msgstr "Toekenning van een waarde is niet toegestaan"
 #: init.c:1790 init.c:1802
 #, c-format
 msgid "Usage: set variable=yes|no"
-msgstr "Gebruik: set variable=yes|no"
+msgstr "Gebruik:  set variable=yes|no"
 
 #: init.c:1810
 #, c-format
@@ -2378,17 +2378,17 @@ msgid "%s: invalid mailbox type"
 msgstr "%s: Ongeldig postvaktype"
 
 #: init.c:2081
-#, fuzzy, c-format
+#, c-format
 msgid "%s: invalid value (%s)"
-msgstr "%s: ongeldige waarde"
+msgstr "%s: ongeldige waarde (%s)"
 
 #: init.c:2082
 msgid "format error"
-msgstr ""
+msgstr "opmaakfout"
 
 #: init.c:2082
 msgid "number overflow"
-msgstr ""
+msgstr "overloop van getal"
 
 #: init.c:2142
 #, c-format
@@ -2541,9 +2541,9 @@ msgid ""
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
 "Copyright (C) 1996-2009 Michael R. Elkins en anderen.\n"
-"Mutt komt ABSOLUUT ZONDER GARANTIE;  voor meer informatie `mutt -vv'.\n"
+"Mutt komt ABSOLUUT ZONDER GARANTIE;  voor meer informatie 'mutt -vv'.\n"
 "Mutt is vrije software, en u bent vrij om het te verspreiden\n"
-"onder bepaalde voorwaarden;  type `mutt -vv' voor meer informatie.\n"
+"onder bepaalde voorwaarden;  type 'mutt -vv' voor meer informatie.\n"
 
 #: main.c:75
 msgid ""
@@ -2583,14 +2583,14 @@ msgid ""
 "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
 "    GNU General Public License for more details.\n"
 msgstr ""
-"    Dit Programma is vrije software; U kan het verspreiden en/of wijzigen\n"
-"    onder de bepalingen van de GNU Algemene Publieke Licentie, zoals\n"
-"    uitgegeven door de Free Software Foundation; oftewel versie 2 van de\n"
-"    Licentie, of (naar vrije keuze) een latere versie.\n"
+"    Dit programma is vrije software; u mag het verspreiden en/of wijzigen\n"
+"    onder de bepalingen van de GNU Algemene Publieke Licentie zoals\n"
+"    uitgegeven door de Free Software Foundation; ofwel onder versie 2 van\n"
+"    de Licentie, of (naar vrije keuze) een latere versie.\n"
 "\n"
-"    Dit Programma is verspreid met de hoop dat het nuttig zal zijn maar\n"
-"    ZONDER EENDER WELKE GARANTIE; zelfs zonder de impliciete garantie van\n"
-"    VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de GNU\n"
+"    Dit programma wordt verspreid in de hoop dat het nuttig zal zijn\n"
+"    maar ZONDER ENIGE GARANTIE; zelfs zonder de impliciete garantie van\n"
+"    VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL.  Zie de GNU\n"
 "    Algemene Publieke Licentie voor meer details.\n"
 
 #: main.c:98
@@ -2601,13 +2601,11 @@ msgid ""
 "02110-1301, USA.\n"
 msgstr ""
 "    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen moeten\n"
-"    hebben samen met dit Programma; indien dit niet zo is, schrijf naar de\n"
-"    Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA "
-"02111-\n"
-"1307 USA.\n"
+"    hebben samen met dit programma; indien dit niet zo is, schrijf naar de\n"
+"    Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,\n"
+"    Boston, MA 02110-1301, USA.\n"
 
 #: main.c:115
-#, fuzzy
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
 "       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
@@ -2620,19 +2618,18 @@ msgid ""
 "       mutt [<options>] -D\n"
 "       mutt -v[v]\n"
 msgstr ""
-"gebruik: mutt [<opties>] [-z] [-f <file> | -yZ]\n"
-"         mutt [<opties>] [-x] [-Hi <file>] [-s <ond>] [-bc <adr>] [-a <file> "
-"[...]] [--] <adr> [...]\n"
-"       mutt [<opties>] [-x] [-s <ond>] [-bc <adr>] [-a <file> [...]] [--] "
-"<adr> [...] < bericht\n"
-"       mutt [<options>] -p\n"
-"       mutt [<options>] -A <alias> [...]\n"
-"       mutt [<options>] -Q <query> [...]\n"
-"       mutt [<options>] -D\n"
-"       mutt -v[v]\n"
+"Gebruik:  mutt [<opties>] [-z] [-f <bestand> | -yZ]\n"
+"          mutt [<opties>] [-x] [-Hi <bestand>] [-s <onderwerp>]\n"
+"               [-bc <adres>] [-a <bestand> [...] --] <adres> [...]\n"
+"          mutt [<opties>] [-x] [-s <onderwerp>] [-bc <adres>]\n"
+"               [-a <bestand> [...] --] <adres> [...] < bericht\n"
+"          mutt [<opties>] -p\n"
+"          mutt [<opties>] -A <afkorting> [...]\n"
+"          mutt [<opties>] -Q <vraag> [...]\n"
+"          mutt [<opties>] -D\n"
+"          mutt -v[v]\n"
 
 #: main.c:124
-#, fuzzy
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -2642,16 +2639,17 @@ msgid ""
 "  -c <address>\tspecify a carbon-copy (CC) address\n"
 "  -D\t\tprint the value of all variables to stdout"
 msgstr ""
-"opties:\n"
-"  -A <alias>\tgebruik een afkorting\n"
-"  -a <file>\tvoeg een bestand bij het bericht\n"
+"Opties:\n"
+"  -A <afkorting>\tgebruik een afkorting\n"
+"  -a <bestand> [...] --\tvoeg een bestand bij het bericht;\n"
+"\t\tde lijst met bestanden dient afgesloten te worden met '--'\n"
 "  -b <adres>\tspecificeer een blind carbon-copy (BCC) adres\n"
 "  -c <adres>\tspecificeer een carbon-copy (CC) adres\n"
 "  -D\t\tdruk de waardes van alle variabelen af op stdout"
 
 #: main.c:133
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
-msgstr "  -d <niveau>\tlog debug-output naar ~/.muttdebug0"
+msgstr "  -d <niveau>\tlog debug-uitvoer naar ~/.muttdebug0"
 
 #: main.c:136
 msgid ""
@@ -2692,7 +2690,7 @@ msgstr ""
 "spaties)\n"
 "  -v\t\ttoont het versienummer en opties tijdens het compileren\n"
 "  -x\t\tsimuleert de mailx verzendmodus\n"
-"  -y\t\tselecteert een postvak gespecificeerd in de `mailboxes' lijst\n"
+"  -y\t\tselecteert een postvak gespecificeerd in de 'mailboxes'-lijst\n"
 "  -z\t\tsluit meteen af als er geen berichten in het postvak staan\n"
 "  -Z\t\topent het eerste postvak met nieuwe berichten, sluit af indien geen\n"
 "  -h\t\tdeze hulptekst"
@@ -2710,18 +2708,18 @@ msgid "Error initializing terminal."
 msgstr "Kan terminal niet initialiseren."
 
 #: main.c:666
-#, fuzzy, c-format
+#, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
-msgstr "Fout: '%s' is een ongeldige IDN."
+msgstr "Fout: waarde '%s' is een ongeldig voor optie '-d'.\n"
 
 #: main.c:669
 #, c-format
 msgid "Debugging at level %d.\n"
-msgstr "Debug informatie level %d.\n"
+msgstr "Debug-informatie op niveau %d.\n"
 
 #: main.c:671
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
-msgstr "DEBUG optie niet beschikbaar: deze wordt genegeerd.\n"
+msgstr "DEBUG-optie is niet beschikbaar: deze wordt genegeerd.\n"
 
 #: main.c:836
 #, c-format
@@ -2807,7 +2805,7 @@ msgstr "Kan postvak niet opnieuw openen!"
 
 #: mbox.c:1091
 msgid "Reopening mailbox..."
-msgstr "Postvak wordt heropend.."
+msgstr "Heropenen van postvak..."
 
 #: menu.c:420
 msgid "Jump to: "
@@ -2910,7 +2908,7 @@ msgstr "Fout bij het instellen van de externe SASL-gebruikersnaam"
 #: mutt_socket.c:103 mutt_socket.c:181
 #, c-format
 msgid "Connection to %s closed"
-msgstr "Verbinding met %s beëindigd"
+msgstr "Verbinding met %s beÃ«indigd"
 
 #: mutt_socket.c:300
 msgid "SSL is unavailable."
@@ -2983,9 +2981,9 @@ msgid "Unable to get certificate from peer"
 msgstr "Kan server certificaat niet verkrijgen"
 
 #: mutt_ssl.c:424
-#, fuzzy, c-format
+#, c-format
 msgid "%s connection using %s (%s)"
-msgstr "SSL verbinding via %s (%s)"
+msgstr "%s-verbinding via %s (%s)"
 
 #: mutt_ssl.c:526
 msgid "Unknown"
@@ -3024,7 +3022,7 @@ msgstr "certificaateigenaar komt niet overeen met naam van de server %s"
 #: mutt_ssl.c:900
 #, c-format
 msgid "Certificate host check failed: %s"
-msgstr "Toets op servernaam van certificaat mislukt: %s"
+msgstr "Toets op servernaam van certificaat is mislukt: %s"
 
 #: mutt_ssl.c:978 mutt_ssl_gnutls.c:750
 msgid "This certificate belongs to:"
@@ -3052,7 +3050,7 @@ msgstr "      tot %s"
 #: mutt_ssl.c:1011
 #, c-format
 msgid "Fingerprint: %s"
-msgstr "Handtekening: %s"
+msgstr "Vingerafdruk: %s"
 
 #: mutt_ssl.c:1014 mutt_ssl_gnutls.c:872
 #, c-format
@@ -3107,16 +3105,18 @@ msgstr "Fout bij het verwerken van certificaatgegevens"
 #: mutt_ssl_gnutls.c:721
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
+"Waarschuwing: het server-certificaat werd ondertekend met een onveilig "
+"algoritme"
 
 #: mutt_ssl_gnutls.c:840
 #, c-format
 msgid "SHA1 Fingerprint: %s"
-msgstr "SHA1 Handtekening: %s"
+msgstr "SHA1-vingerafdruk: %s"
 
 #: mutt_ssl_gnutls.c:843
 #, c-format
 msgid "MD5 Fingerprint: %s"
-msgstr "MD5 Handtekening: %s"
+msgstr "MD5-vingerafdruk: %s"
 
 #: mutt_ssl_gnutls.c:848
 msgid "WARNING: Server certificate is not yet valid"
@@ -3141,7 +3141,7 @@ msgstr "WAARSCHUWING: Ondertekenaar van servercertificaat is geen CA"
 #: mutt_ssl_gnutls.c:975
 #, c-format
 msgid "Certificate verification error (%s)"
-msgstr "Fout bij verifiëren van certificaat (%s)"
+msgstr "Fout bij verifiÃ«ren van certificaat (%s)"
 
 #: mutt_ssl_gnutls.c:984
 msgid "Certificate is not X.509"
@@ -3375,9 +3375,9 @@ msgid "error in pattern at: %s"
 msgstr "Fout in expressie bij: %s"
 
 #: pattern.c:830
-#, fuzzy, c-format
+#, c-format
 msgid "missing pattern: %s"
-msgstr "Te weinig parameters"
+msgstr "ontbrekend patroon: %s"
 
 #: pattern.c:840
 #, c-format
@@ -3488,17 +3488,17 @@ msgstr "Ontsleuteling mislukt"
 
 #: pgp.c:1048
 msgid "Can't open PGP subprocess!"
-msgstr "Kan PGP-Subproces niet starten!"
+msgstr "Kan PGP-subproces niet starten!"
 
 #: pgp.c:1485
 msgid "Can't invoke PGP"
 msgstr "Kan PGP niet aanroepen"
 
 #: pgp.c:1590
-#, fuzzy, c-format
+#, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr ""
-"PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
+"PGP (v)ersleutel, (o)nderteken, (a)ls, (b)eiden, %s, of (g)een? "
 
 #: pgp.c:1591
 msgid "PGP/M(i)ME"
@@ -3513,27 +3513,23 @@ msgstr "trad(i)tioneel"
 #. * it.  The 'i' key is appended in this version.
 #.
 #: pgp.c:1597
-#, fuzzy
 msgid "esabfci"
-msgstr "vomabpg"
+msgstr "voabpgi"
 
 #. The keys accepted *must* be a prefix of the accepted keys in the "if"
 #. * clause above since the switch statement below depends on it.
 #.
 #: pgp.c:1604
-#, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
-msgstr ""
-"PGP (v)ersleutel, (o)ndertekenen, ondert. (a)ls, (b)eiden, %s, of (g)een? "
+msgstr "PGP (v)ersleutel, (o)nderteken, ondert. (a)ls, (b)eiden, of (g)een? "
 
 #: pgp.c:1605
-#, fuzzy
 msgid "esabfc"
-msgstr "vomabpg"
+msgstr "voabpg"
 
 #: pgpinvoke.c:308
 msgid "Fetching PGP key..."
-msgstr "PGP sleutel wordt gelezen..."
+msgstr "PGP-sleutel wordt gelezen..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
@@ -3669,7 +3665,7 @@ msgstr "Fout tijdens verbinden met server: %s"
 
 #: pop_lib.c:391
 msgid "Closing connection to POP server..."
-msgstr "Verbinding met POP-server wordt gesloten.."
+msgstr "Verbinding met POP-server wordt gesloten..."
 
 #: pop_lib.c:570
 msgid "Verifying message indexes..."
@@ -3798,7 +3794,7 @@ msgstr "Er zijn geen onderdelen om te laten zien!"
 
 #: recvattach.c:1117
 msgid "Can't delete attachment from POP server."
-msgstr "Kan de bijlage niet van de POP server verwijderen."
+msgstr "Kan de bijlage niet van de POP-server verwijderen."
 
 #: recvattach.c:1125
 msgid "Deletion of attachments from encrypted messages is unsupported."
@@ -3815,7 +3811,7 @@ msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
 
 #: recvcmd.c:148 recvcmd.c:161
 msgid "Warning: message contains no From: header"
-msgstr ""
+msgstr "Waarschuwing: bericht bevat geen 'From:'-kopregel"
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -3921,7 +3917,7 @@ msgstr "Externe fout %d opgetreden tijdens versturen van bericht.\n"
 
 #: remailer.c:769
 msgid "Error sending message."
-msgstr "Er is een fout opgetreden tijdens het verzenden van het bericht."
+msgstr "Er is een fout opgetreden tijdens het versturen van het bericht."
 
 #: rfc1524.c:164
 #, c-format
@@ -3947,7 +3943,7 @@ msgstr "score: te veel argumenten"
 
 #: score.c:122
 msgid "Error: score: invalid number"
-msgstr ""
+msgstr "Fout: score: ongeldig getal"
 
 #: send.c:251
 msgid "No subject, abort?"
@@ -4040,13 +4036,12 @@ msgstr "Geen onderwerp."
 
 #: send.c:1673 smtp.c:185
 msgid "Sending message..."
-msgstr "Verstuur bericht..."
+msgstr "Versturen van bericht..."
 
 #. check to see if the user wants copies of all attachments
 #: send.c:1706
-#, fuzzy
 msgid "Save attachments in Fcc?"
-msgstr "toon bijlage als tekst"
+msgstr "Bijlages opslaan in Fcc?"
 
 #: send.c:1815
 msgid "Could not send the message."
@@ -4081,7 +4076,7 @@ msgstr "Kan %s niet openen."
 
 #: sendlib.c:2350
 msgid "$sendmail must be set in order to send mail."
-msgstr ""
+msgstr "$sendmail moet ingesteld zijn om mail te kunnen versturen."
 
 #: sendlib.c:2421
 #, c-format
@@ -4191,6 +4186,7 @@ msgstr "geen certfile"
 msgid "no mbox"
 msgstr "geen mbox"
 
+# XXX FIXME: why a double period?
 #. fatal error while trying to encrypt message
 #: smime.c:1337
 msgid "No output from OpenSSL.."
@@ -4217,7 +4213,7 @@ msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
 msgstr ""
-"[-- Einde van OpenSSL uitvoer --]\n"
+"[-- Einde van OpenSSL-uitvoer --]\n"
 "\n"
 
 #: smime.c:1716 smime.c:1727
@@ -4319,7 +4315,7 @@ msgstr "SMTP-sessie is mislukt: schrijffout"
 
 #: smtp.c:318
 msgid "Invalid server response"
-msgstr ""
+msgstr "Ongeldige reactie van server"
 
 #: smtp.c:341
 #, c-format
@@ -4328,7 +4324,7 @@ msgstr "Ongeldig SMTP-URL: %s"
 
 #: smtp.c:451
 msgid "SMTP server does not support authentication"
-msgstr "SMTP server ondersteunt geen authenticatie"
+msgstr "SMTP-server ondersteunt geen authenticatie"
 
 #: smtp.c:459
 msgid "SMTP authentication requires SASL"
@@ -4513,7 +4509,7 @@ msgstr "omschakelen decodering van de bijlage"
 
 #: ../keymap_alldefs.h:42
 msgid "save this message to send later"
-msgstr "sla dit bericht op om later te verzenden"
+msgstr "sla dit bericht op om later te versturen"
 
 #: ../keymap_alldefs.h:43
 msgid "rename/move an attached file"
@@ -4529,7 +4525,7 @@ msgstr "omschakelen weergave in bericht/als bijlage"
 
 #: ../keymap_alldefs.h:46
 msgid "toggle whether to delete file after sending it"
-msgstr "kies of bestand na verzenden gewist wordt"
+msgstr "kies of bestand na versturen gewist wordt"
 
 #: ../keymap_alldefs.h:47
 msgid "update an attachment's encoding info"
@@ -4757,7 +4753,7 @@ msgstr "maak nieuw bericht aan"
 
 #: ../keymap_alldefs.h:103
 msgid "break the thread in two"
-msgstr "splits de thread in tweeën"
+msgstr "splits de thread in tweeÃ«n"
 
 #: ../keymap_alldefs.h:104
 msgid "open a different folder"
@@ -4781,7 +4777,7 @@ msgstr "forceer ophalen van mail vanaf IMAP-server"
 
 #: ../keymap_alldefs.h:109
 msgid "logout from all IMAP servers"
-msgstr ""
+msgstr "uitloggen uit alle IMAP-servers"
 
 #: ../keymap_alldefs.h:110
 msgid "retrieve mail from POP server"
@@ -4976,9 +4972,8 @@ msgid "use the current message as a template for a new one"
 msgstr "gebruik het huidige bericht als template voor een nieuw bericht"
 
 #: ../keymap_alldefs.h:158
-#, fuzzy
 msgid "save message/attachment to a mailbox/file"
-msgstr "sla bericht/bijlage op in een bestand"
+msgstr "sla bericht/bijlage op in een postvak/bestand"
 
 #: ../keymap_alldefs.h:159
 msgid "search for a regular expression"
@@ -5193,10 +5188,10 @@ msgstr "geef S/MIME-opties weer"
 #~ msgstr "Fout bij het controleren van handtekening"
 
 #~ msgid "SSL Certificate check"
-#~ msgstr "SSL certificaat controle"
+#~ msgstr "SSL-certificaatcontrole"
 
 #~ msgid "TLS/SSL Certificate check"
-#~ msgstr "TLS/SSL certificaat controle"
+#~ msgstr "TLS/SSL-certificaatcontrole"
 
 #~ msgid "SASL failed to get local IP address"
 #~ msgstr "SASL kon het lokale IP-adres niet opvragen"
@@ -5208,42 +5203,16 @@ msgstr "geef S/MIME-opties weer"
 #~ msgstr "SASL kon het externe IP-adres niet ophalen"
 
 #~ msgid "SASL failed to parse remote IP address"
-#~ msgstr "SASL kon he texterne IP-adres niet parseren"
+#~ msgstr "SASL kon het externe IP-adres niet parseren"
 
 #~ msgid "Getting namespaces..."
 #~ msgstr "Namespace wordt overgehaald..."
-
-#~ msgid ""
-#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-#~ "<file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
-#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
-#~ "[ ... ]\n"
-#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-#~ "       mutt -v[v]\n"
-#~ msgstr ""
-#~ "gebruik: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
-#~ "<file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
-#~ "[...]\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
-#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
-#~ "[ ... ]\n"
-#~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
-#~ "       mutt -v[v]\n"
 
 #~ msgid "Can't change 'important' flag on POP server."
 #~ msgstr "Kan markering 'belangrijk' op POP server niet veranderen."
 
 #~ msgid "Can't edit message on POP server."
-#~ msgstr "Kan bericht op POP server niet aanpassen."
+#~ msgstr "Kan bericht op POP-server niet aanpassen."
 
 #~ msgid "Reading %s... %d (%d%%)"
 #~ msgstr "Bezig met het lezen van %s... %d (%d%%)"
@@ -5264,64 +5233,7 @@ msgstr "geef S/MIME-opties weer"
 #~ msgstr "Mailfolder-abonnementen worden gecontroleerd"
 
 #~ msgid "CLOSE failed"
-#~ msgstr "CLOSE mislukt"
-
-#~ msgid ""
-#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
-#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-#~ "Copyright (C) 1997-2005 Thomas Roessler <roessler@does-not-exist.org>\n"
-#~ "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-#~ "Copyright (C) 1999-2005 Brendan Cully <brendan@kublai.com>\n"
-#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-#~ "\n"
-#~ "Lots of others not mentioned here contributed lots of code,\n"
-#~ "fixes, and suggestions.\n"
-#~ "\n"
-#~ "    This program is free software; you can redistribute it and/or modify\n"
-#~ "    it under the terms of the GNU General Public License as published by\n"
-#~ "    the Free Software Foundation; either version 2 of the License, or\n"
-#~ "    (at your option) any later version.\n"
-#~ "\n"
-#~ "    This program is distributed in the hope that it will be useful,\n"
-#~ "    but WITHOUT ANY WARRANTY; without even the implied warranty of\n"
-#~ "    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n"
-#~ "    GNU General Public License for more details.\n"
-#~ "\n"
-#~ "    You should have received a copy of the GNU General Public License\n"
-#~ "    along with this program; if not, write to the Free Software\n"
-#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
-#~ "02110-1301, USA.\n"
-#~ msgstr ""
-#~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
-#~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-#~ "Copyright (C) 1997-2002 Thomas Roessler <roessler@does-not-exist.org>\n"
-#~ "Copyright (C) 1998-2002 Werner Koch <wk@isil.d.shuttle.de>\n"
-#~ "Copyright (C) 1999-2002 Brendan Cully <brendan@kublai.com>\n"
-#~ "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-#~ "Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
-#~ "\n"
-#~ "Vele anderen, hier niet genoemd, hebben veel code, verbeteringen\n"
-#~ "en suggesties aangedragen.\n"
-#~ "\n"
-#~ "    Dit Programma is vrije software; U kan het verspreiden en/of "
-#~ "wijzigen\n"
-#~ "    onder de bepalingen van de GNU Algemene Publieke Licentie, zoals\n"
-#~ "    uitgegeven door de Free Software Foundation; oftewel versie 2 van\n"
-#~ "    de Licentie,of (naar vrije keuze) een latere versie.\n"
-#~ "\n"
-#~ "    Dit Programma is verspreid met de hoop dat het nuttig zal zijn maar\n"
-#~ "    ZONDER EENDER WELKE GARANTIE; zelfs zonder de impliciete garantie "
-#~ "van\n"
-#~ "    VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de GNU\n"
-#~ "    Algemene Publieke Licentie voor meer details.\n"
-#~ "\n"
-#~ "    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen "
-#~ "moeten\n"
-#~ "    hebben samen met dit Programma; zoniet, schrijf naar de Free "
-#~ "Software\n"
-#~ "    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02110-1301 "
-#~ "USA.\n"
+#~ msgstr "CLOSE is mislukt"
 
 #~ msgid ""
 #~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
@@ -5341,7 +5253,7 @@ msgstr "geef S/MIME-opties weer"
 #~ msgstr "Onverwacht antwoord ontvangen van de server: %s"
 
 #~ msgid "Unable to append to IMAP mailboxes at this server"
-#~ msgstr "IMAP server laat het toevoegen van berichten niet toe"
+#~ msgstr "IMAP-server laat het toevoegen van berichten niet toe"
 
 #~ msgid "unspecified protocol error"
 #~ msgstr "algemene protocolfout"
