@@ -21,7 +21,7 @@ else
 fi
 
 
-devel="devel/"	# comment out for the stable branch
+#devel="devel/"	# comment out for the stable branch
 
 # test for uncommitted changes
 if hg id | grep -q '+'
