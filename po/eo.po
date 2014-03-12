@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.16\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-17 22:42-0700\n"
+"POT-Creation-Date: 2014-03-12 09:18-0700\n"
 "PO-Revision-Date: 2007-07-08 19:30+0100\n"
 "Last-Translator: Edmund GRIMLEY EVANS <edmundo@rano.org>\n"
 "Language-Team: eo <eo@li.org>\n"
@@ -42,8 +42,8 @@ msgid "Select"
 msgstr "Elekto"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:3832 curs_main.c:412
-#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:893 pager.c:1630 pgpkey.c:522
+#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:3866 curs_main.c:412
+#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:904 pager.c:1630 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:425
 msgid "Help"
 msgstr "Helpo"
@@ -767,62 +767,62 @@ msgstr "S/MIME jam elektita. Ĉu nuligi kaj daŭrigi? "
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP jam elektita. Ĉu nuligi kaj daŭrigi? "
 
-#: crypt-gpgme.c:348
+#: crypt-gpgme.c:347
 #, c-format
 msgid "error creating gpgme context: %s\n"
 msgstr "eraro en kreado de gpgme-kunteksto: %s\n"
 
-#: crypt-gpgme.c:358
+#: crypt-gpgme.c:357
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
 msgstr "eraro en funkciigo de CMS-protokolo: %s\n"
 
-#: crypt-gpgme.c:378
+#: crypt-gpgme.c:377
 #, c-format
 msgid "error creating gpgme data object: %s\n"
 msgstr "eraro en kreado de gpgme-datenobjekto: %s\n"
 
-#: crypt-gpgme.c:444 crypt-gpgme.c:462 crypt-gpgme.c:1419
+#: crypt-gpgme.c:443 crypt-gpgme.c:461 crypt-gpgme.c:1453
 #, c-format
 msgid "error allocating data object: %s\n"
 msgstr "eraro en asignado por datenobjekto: %s\n"
 
-#: crypt-gpgme.c:480
+#: crypt-gpgme.c:479
 #, c-format
 msgid "error rewinding data object: %s\n"
 msgstr "eraro en rebobenado de datenobjekto: %s\n"
 
-#: crypt-gpgme.c:502 crypt-gpgme.c:549
+#: crypt-gpgme.c:501 crypt-gpgme.c:548
 #, c-format
 msgid "error reading data object: %s\n"
 msgstr "eraro en legado de datenobjekto: %s\n"
 
-#: crypt-gpgme.c:610
+#: crypt-gpgme.c:609
 #, c-format
 msgid "error adding recipient `%s': %s\n"
 msgstr "eraro en aldonado de ricevonto '%s': %s\n"
 
-#: crypt-gpgme.c:648
+#: crypt-gpgme.c:647
 #, c-format
 msgid "secret key `%s' not found: %s\n"
 msgstr "sekreta ŝlosilo '%s' ne trovita: %s\n"
 
-#: crypt-gpgme.c:658
+#: crypt-gpgme.c:657
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
 msgstr "plursenca specifo de sekreta ŝlosilo '%s'\n"
 
-#: crypt-gpgme.c:670
+#: crypt-gpgme.c:669
 #, c-format
 msgid "error setting secret key `%s': %s\n"
 msgstr "eraro en elekto de sekreta ŝlosilo '%s': %s\n"
 
-#: crypt-gpgme.c:687
+#: crypt-gpgme.c:686
 #, c-format
 msgid "error setting PKA signature notation: %s\n"
 msgstr "eraro en elektado de PKA-subskribo-notacio: %s\n"
 
-#: crypt-gpgme.c:743
+#: crypt-gpgme.c:742
 #, c-format
 msgid "error encrypting data: %s\n"
 msgstr "eraro en ĉifrado de datenoj: %s\n"
@@ -832,55 +832,59 @@ msgstr "eraro en ĉifrado de datenoj: %s\n"
 msgid "error signing data: %s\n"
 msgstr "eraro en subskribado de datenoj: %s\n"
 
-#: crypt-gpgme.c:1055
+#: crypt-gpgme.c:871
+msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
+msgstr ""
+
+#: crypt-gpgme.c:1066
 msgid "Warning: One of the keys has been revoked\n"
 msgstr "Averto: Unu el la ŝlosiloj estas revokita\n"
 
-#: crypt-gpgme.c:1064
+#: crypt-gpgme.c:1075
 msgid "Warning: The key used to create the signature expired at: "
 msgstr "Averto: La ŝlosilo uzita por krei la subskribon eksvalidiĝis je: "
 
-#: crypt-gpgme.c:1070
+#: crypt-gpgme.c:1081
 msgid "Warning: At least one certification key has expired\n"
 msgstr "Averto: Almenaŭ unu atestila ŝlosilo eksvalidiĝis\n"
 
-#: crypt-gpgme.c:1086
+#: crypt-gpgme.c:1097
 msgid "Warning: The signature expired at: "
 msgstr "Averto: La subskribo eksvalidiĝis je: "
 
-#: crypt-gpgme.c:1092
+#: crypt-gpgme.c:1103
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr "Ne povas kontroli pro mankanta ŝlosilo aŭ atestilo\n"
 
-#: crypt-gpgme.c:1097
+#: crypt-gpgme.c:1108
 msgid "The CRL is not available\n"
 msgstr "CRL ne estas disponata\n"
 
-#: crypt-gpgme.c:1103
+#: crypt-gpgme.c:1114
 msgid "Available CRL is too old\n"
 msgstr "Disponata CRL estas tro malnova\n"
 
-#: crypt-gpgme.c:1108
+#: crypt-gpgme.c:1119
 msgid "A policy requirement was not met\n"
 msgstr "Politika postulo ne estis plenumita\n"
 
-#: crypt-gpgme.c:1117
+#: crypt-gpgme.c:1128
 msgid "A system error occurred"
 msgstr "Sistemeraro okazis"
 
-#: crypt-gpgme.c:1151
+#: crypt-gpgme.c:1162
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr "AVERTO: PKA-registro ne kongruas kun adreso de subskribinto: "
 
-#: crypt-gpgme.c:1158
+#: crypt-gpgme.c:1169
 msgid "PKA verified signer's address is: "
 msgstr "PKA-kontrolita adreso de subskribinto estas: "
 
-#: crypt-gpgme.c:1175 crypt-gpgme.c:3299
+#: crypt-gpgme.c:1186 crypt-gpgme.c:3333
 msgid "Fingerprint: "
 msgstr "Fingrospuro: "
 
-#: crypt-gpgme.c:1235
+#: crypt-gpgme.c:1246
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
@@ -888,50 +892,59 @@ msgstr ""
 "AVERTO: Ni havas NENIAN indikon, ĉu la ŝlosilo apartenas al la persono "
 "nomita supre\n"
 
-#: crypt-gpgme.c:1242
+#: crypt-gpgme.c:1253
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "AVERTO: La ŝlosilo NE APARTENAS al la persono nomita supre\n"
 
-#: crypt-gpgme.c:1246
+#: crypt-gpgme.c:1257
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
 "AVERTO: NE estas certe, ke la ŝlosilo apartenas al la persono nomita supre\n"
 
-#: crypt-gpgme.c:1276
+#: crypt-gpgme.c:1290
 msgid "aka: "
 msgstr ""
 
-#: crypt-gpgme.c:1287
+#: crypt-gpgme.c:1300
+msgid "KeyID "
+msgstr ""
+
+#: crypt-gpgme.c:1308
 #, fuzzy
 msgid "created: "
 msgstr "Ĉu krei %s?"
 
-#: crypt-gpgme.c:1350
-msgid "Error getting key information: "
+#: crypt-gpgme.c:1378
+#, fuzzy
+msgid "Error getting key information for KeyID "
 msgstr "Eraro en akirado de ŝlosilinformo: "
+
+#: crypt-gpgme.c:1380
+msgid ": "
+msgstr ""
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1357 crypt-gpgme.c:1372
+#: crypt-gpgme.c:1387 crypt-gpgme.c:1402
 #, fuzzy
 msgid "Good signature from:"
 msgstr "Bona subskribo de: "
 
-#: crypt-gpgme.c:1364
+#: crypt-gpgme.c:1394
 #, fuzzy
 msgid "*BAD* signature from:"
 msgstr "Bona subskribo de: "
 
-#: crypt-gpgme.c:1380
+#: crypt-gpgme.c:1410
 #, fuzzy
 msgid "Problem signature from:"
 msgstr "Bona subskribo de: "
 
-#: crypt-gpgme.c:1381
+#: crypt-gpgme.c:1414
 #, fuzzy
 msgid "               expires: "
 msgstr "                 : "
@@ -939,25 +952,25 @@ msgstr "                 : "
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1427 crypt-gpgme.c:1642 crypt-gpgme.c:2294
+#: crypt-gpgme.c:1461 crypt-gpgme.c:1676 crypt-gpgme.c:2328
 msgid "[-- Begin signature information --]\n"
 msgstr "[-- Komenco de subskribinformo --]\n"
 
-#: crypt-gpgme.c:1436
+#: crypt-gpgme.c:1470
 #, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Eraro: kontrolado malsukcesis: %s\n"
 
-#: crypt-gpgme.c:1485
+#: crypt-gpgme.c:1519
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr "*** Komenco de notacio (subskribo de: %s) ***\n"
 
-#: crypt-gpgme.c:1507
+#: crypt-gpgme.c:1541
 msgid "*** End Notation ***\n"
 msgstr "*** Fino de notacio ***\n"
 
-#: crypt-gpgme.c:1515 crypt-gpgme.c:1655 crypt-gpgme.c:2307
+#: crypt-gpgme.c:1549 crypt-gpgme.c:1689 crypt-gpgme.c:2341
 msgid ""
 "[-- End signature information --]\n"
 "\n"
@@ -965,38 +978,38 @@ msgstr ""
 "[-- Fino de subskribo-informoj --]\n"
 "\n"
 
-#: crypt-gpgme.c:1610
+#: crypt-gpgme.c:1644
 #, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
 msgstr "[-- Eraro: malĉifrado malsukcesis: %s --]\n"
 
-#: crypt-gpgme.c:2090
+#: crypt-gpgme.c:2124
 #, fuzzy, c-format
 msgid "Error extracting key data!\n"
 msgstr "Eraro en akirado de ŝlosilinformo: "
 
-#: crypt-gpgme.c:2270
+#: crypt-gpgme.c:2304
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr "Eraro: malĉifrado/kontrolado malsukcesis: %s\n"
 
-#: crypt-gpgme.c:2315
+#: crypt-gpgme.c:2349
 msgid "Error: copy data failed\n"
 msgstr "Eraro: datenkopiado malsukcesis\n"
 
-#: crypt-gpgme.c:2335 pgp.c:436
+#: crypt-gpgme.c:2369 pgp.c:436
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
 msgstr "[-- KOMENCO DE PGP-MESAĜO --]\n"
 
-#: crypt-gpgme.c:2337 pgp.c:438
+#: crypt-gpgme.c:2371 pgp.c:438
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- KOMENCO DE PUBLIKA PGP-ŜLOSILO --]\n"
 
-#: crypt-gpgme.c:2340 pgp.c:440
+#: crypt-gpgme.c:2374 pgp.c:440
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1004,19 +1017,19 @@ msgstr ""
 "[-- KOMENCO DE PGP-SUBSKRIBITA MESAĜO --]\n"
 "\n"
 
-#: crypt-gpgme.c:2367 pgp.c:471
+#: crypt-gpgme.c:2401 pgp.c:471
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- FINO DE PGP-MESAĜO --]\n"
 
-#: crypt-gpgme.c:2369 pgp.c:478
+#: crypt-gpgme.c:2403 pgp.c:478
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FINO DE PUBLIKA PGP-ŜLOSILO --]\n"
 
-#: crypt-gpgme.c:2371 pgp.c:480
+#: crypt-gpgme.c:2405 pgp.c:480
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- FINO DE PGP-SUBSKRIBITA MESAĜO --]\n"
 
-#: crypt-gpgme.c:2393 pgp.c:513
+#: crypt-gpgme.c:2427 pgp.c:513
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1024,7 +1037,7 @@ msgstr ""
 "[-- Eraro: ne povas trovi komencon de PGP-mesaĝo! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2424 pgp.c:945
+#: crypt-gpgme.c:2458 pgp.c:945
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -1032,11 +1045,11 @@ msgstr ""
 "[-- Eraro: misformita PGP/MIME-mesaĝo! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2436 crypt-gpgme.c:2502 pgp.c:958
+#: crypt-gpgme.c:2470 crypt-gpgme.c:2536 pgp.c:958
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Eraro: ne povas krei dumtempan dosieron! --]\n"
 
-#: crypt-gpgme.c:2448
+#: crypt-gpgme.c:2482
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
 "\n"
@@ -1044,7 +1057,7 @@ msgstr ""
 "[-- La sekvaj datenoj estas PGP/MIME-subskribitaj kaj -ĉifritaj --]\n"
 "\n"
 
-#: crypt-gpgme.c:2449 pgp.c:967
+#: crypt-gpgme.c:2483 pgp.c:967
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1052,246 +1065,246 @@ msgstr ""
 "[-- La sekvaj datenoj estas PGP/MIME-ĉifritaj --]\n"
 "\n"
 
-#: crypt-gpgme.c:2471
+#: crypt-gpgme.c:2505
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Fino de PGP/MIME-subskribitaj kaj -ĉifritaj datenoj --]\n"
 
-#: crypt-gpgme.c:2472 pgp.c:987
+#: crypt-gpgme.c:2506 pgp.c:987
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Fino de PGP/MIME-ĉifritaj datenoj --]\n"
 
-#: crypt-gpgme.c:2514
+#: crypt-gpgme.c:2548
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
 "\n"
 msgstr "[-- La sekvaj datenoj estas S/MIME-subskribitaj --]\n"
 
-#: crypt-gpgme.c:2515
+#: crypt-gpgme.c:2549
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
 "\n"
 msgstr "[-- La sekvaj datenoj estas S/MIME-ĉifritaj --]\n"
 
-#: crypt-gpgme.c:2545
+#: crypt-gpgme.c:2579
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr "[-- Fino de S/MIME-subskribitaj datenoj. --]\n"
 
-#: crypt-gpgme.c:2546
+#: crypt-gpgme.c:2580
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr "[-- Fino de S/MIME-ĉifritaj datenoj. --]\n"
 
-#: crypt-gpgme.c:3139
+#: crypt-gpgme.c:3173
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr "[Ne povas montri ĉi tiun ID (nekonata kodado)]"
 
-#: crypt-gpgme.c:3141
+#: crypt-gpgme.c:3175
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr "[Ne povas montri ĉi tiun ID (nevalida kodado)]"
 
-#: crypt-gpgme.c:3146
+#: crypt-gpgme.c:3180
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr "[Ne povas montri ĉi tiun ID (nevalida DN)]"
 
-#: crypt-gpgme.c:3225
+#: crypt-gpgme.c:3259
 msgid " aka ......: "
 msgstr " alinome ..: "
 
-#: crypt-gpgme.c:3225
+#: crypt-gpgme.c:3259
 msgid "Name ......: "
 msgstr "Nomo ......: "
 
-#: crypt-gpgme.c:3228 crypt-gpgme.c:3367
+#: crypt-gpgme.c:3262 crypt-gpgme.c:3401
 msgid "[Invalid]"
 msgstr "[Nevalida]"
 
-#: crypt-gpgme.c:3248 crypt-gpgme.c:3391
+#: crypt-gpgme.c:3282 crypt-gpgme.c:3425
 #, c-format
 msgid "Valid From : %s\n"
 msgstr "Valida de .: %s\n"
 
-#: crypt-gpgme.c:3261 crypt-gpgme.c:3404
+#: crypt-gpgme.c:3295 crypt-gpgme.c:3438
 #, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Valida ĝis : %s\n"
 
-#: crypt-gpgme.c:3274 crypt-gpgme.c:3417
+#: crypt-gpgme.c:3308 crypt-gpgme.c:3451
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr "Ŝlosilspeco: %s, %lu-bita %s\n"
 
-#: crypt-gpgme.c:3276 crypt-gpgme.c:3419
+#: crypt-gpgme.c:3310 crypt-gpgme.c:3453
 #, c-format
 msgid "Key Usage .: "
 msgstr "Ŝlosiluzado: "
 
-#: crypt-gpgme.c:3281 crypt-gpgme.c:3424
+#: crypt-gpgme.c:3315 crypt-gpgme.c:3458
 msgid "encryption"
 msgstr "ĉifrado"
 
-#: crypt-gpgme.c:3282 crypt-gpgme.c:3287 crypt-gpgme.c:3292 crypt-gpgme.c:3425
-#: crypt-gpgme.c:3430 crypt-gpgme.c:3435
+#: crypt-gpgme.c:3316 crypt-gpgme.c:3321 crypt-gpgme.c:3326 crypt-gpgme.c:3459
+#: crypt-gpgme.c:3464 crypt-gpgme.c:3469
 msgid ", "
 msgstr ", "
 
-#: crypt-gpgme.c:3286 crypt-gpgme.c:3429
+#: crypt-gpgme.c:3320 crypt-gpgme.c:3463
 msgid "signing"
 msgstr "subskribo"
 
-#: crypt-gpgme.c:3291 crypt-gpgme.c:3434
+#: crypt-gpgme.c:3325 crypt-gpgme.c:3468
 msgid "certification"
 msgstr "atestado"
 
-#: crypt-gpgme.c:3331
+#: crypt-gpgme.c:3365
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr "Seri-numero: 0x%s\n"
 
-#: crypt-gpgme.c:3339
+#: crypt-gpgme.c:3373
 #, c-format
 msgid "Issued By .: "
 msgstr "Eldonita de: "
 
 #. display only the short keyID
-#: crypt-gpgme.c:3358
+#: crypt-gpgme.c:3392
 #, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "Subŝlosilo : 0x%s"
 
-#: crypt-gpgme.c:3362
+#: crypt-gpgme.c:3396
 msgid "[Revoked]"
 msgstr "[Revokite]"
 
-#: crypt-gpgme.c:3372
+#: crypt-gpgme.c:3406
 msgid "[Expired]"
 msgstr "[Eksvalidiĝinte]"
 
-#: crypt-gpgme.c:3377
+#: crypt-gpgme.c:3411
 msgid "[Disabled]"
 msgstr "[Malŝaltita]"
 
-#: crypt-gpgme.c:3461 pgpkey.c:559 pgpkey.c:739
+#: crypt-gpgme.c:3495 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "Ne povas krei dumtempan dosieron"
 
-#: crypt-gpgme.c:3464
+#: crypt-gpgme.c:3498
 msgid "Collecting data..."
 msgstr "Kolektas datenojn ..."
 
-#: crypt-gpgme.c:3490
+#: crypt-gpgme.c:3524
 #, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Eraro dum trovado de eldoninto-ŝlosilo: %s\n"
 
-#: crypt-gpgme.c:3500
+#: crypt-gpgme.c:3534
 msgid "Error: certification chain to long - stopping here\n"
 msgstr "Eraro: atestado-ĉeno tro longa - haltas ĉi tie\n"
 
-#: crypt-gpgme.c:3511 pgpkey.c:580
+#: crypt-gpgme.c:3545 pgpkey.c:580
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "Key ID: 0x%s"
 
-#: crypt-gpgme.c:3594
+#: crypt-gpgme.c:3628
 #, c-format
 msgid "gpgme_new failed: %s"
 msgstr "gpgme_new malsukcesis: %s"
 
-#: crypt-gpgme.c:3633 crypt-gpgme.c:3696
+#: crypt-gpgme.c:3667 crypt-gpgme.c:3730
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr "gpgme_op_keylist_start malsukcesis: %s"
 
-#: crypt-gpgme.c:3683 crypt-gpgme.c:3724
+#: crypt-gpgme.c:3717 crypt-gpgme.c:3758
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr "gpgme_op_keylist_next malsukcesis: %s"
 
-#: crypt-gpgme.c:3795
+#: crypt-gpgme.c:3829
 msgid "All matching keys are marked expired/revoked."
 msgstr "Ĉiuj kongruaj ŝlosiloj estas eksvalidiĝintaj/revokitaj."
 
-#: crypt-gpgme.c:3824 mutt_ssl.c:1032 mutt_ssl_gnutls.c:891 pgpkey.c:515
+#: crypt-gpgme.c:3858 mutt_ssl.c:1032 mutt_ssl_gnutls.c:902 pgpkey.c:515
 #: smime.c:420
 msgid "Exit  "
 msgstr "Eliri  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3826 pgpkey.c:517 smime.c:422
+#: crypt-gpgme.c:3860 pgpkey.c:517 smime.c:422
 msgid "Select  "
 msgstr "Elekti  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3829 pgpkey.c:520
+#: crypt-gpgme.c:3863 pgpkey.c:520
 msgid "Check key  "
 msgstr "Kontroli ŝlosilon  "
 
-#: crypt-gpgme.c:3845
+#: crypt-gpgme.c:3879
 msgid "PGP and S/MIME keys matching"
 msgstr "PGP- kaj S/MIME-ŝlosiloj kongruaj"
 
-#: crypt-gpgme.c:3847
+#: crypt-gpgme.c:3881
 msgid "PGP keys matching"
 msgstr "PGP-ŝlosiloj kongruaj"
 
-#: crypt-gpgme.c:3849
+#: crypt-gpgme.c:3883
 msgid "S/MIME keys matching"
 msgstr "S/MIME-ŝlosiloj kongruaj"
 
-#: crypt-gpgme.c:3851
+#: crypt-gpgme.c:3885
 msgid "keys matching"
 msgstr "ŝlosiloj kongruaj"
 
-#: crypt-gpgme.c:3854
+#: crypt-gpgme.c:3888
 #, c-format
 msgid "%s <%s>."
 msgstr "%s <%s>."
 
-#: crypt-gpgme.c:3856
+#: crypt-gpgme.c:3890
 #, c-format
 msgid "%s \"%s\"."
 msgstr "%s \"%s\"."
 
-#: crypt-gpgme.c:3883 pgpkey.c:600
+#: crypt-gpgme.c:3917 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Ĉi tiu ŝlosilo ne estas uzebla: eksvalidiĝinta/malŝaltita/revokita."
 
-#: crypt-gpgme.c:3897 pgpkey.c:612
+#: crypt-gpgme.c:3931 pgpkey.c:612
 msgid "ID is expired/disabled/revoked."
 msgstr "ID estas eksvalidiĝinta/malŝaltita/revokita."
 
-#: crypt-gpgme.c:3917 pgpkey.c:616
+#: crypt-gpgme.c:3951 pgpkey.c:616
 msgid "ID has undefined validity."
 msgstr "ID havas nedifinitan validecon."
 
-#: crypt-gpgme.c:3920 pgpkey.c:619
+#: crypt-gpgme.c:3954 pgpkey.c:619
 msgid "ID is not valid."
 msgstr "ID ne estas valida."
 
-#: crypt-gpgme.c:3923 pgpkey.c:622
+#: crypt-gpgme.c:3957 pgpkey.c:622
 msgid "ID is only marginally valid."
 msgstr "ID estas nur iomete valida."
 
-#: crypt-gpgme.c:3931 pgpkey.c:626
+#: crypt-gpgme.c:3965 pgpkey.c:626
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Ĉu vi vere volas uzi la ŝlosilon?"
 
-#: crypt-gpgme.c:3988 crypt-gpgme.c:4100 pgpkey.c:834 pgpkey.c:939
+#: crypt-gpgme.c:4022 crypt-gpgme.c:4134 pgpkey.c:834 pgpkey.c:939
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr "Serĉas ŝlosilojn, kiuj kongruas kun \"%s\" ..."
 
-#: crypt-gpgme.c:4262 pgp.c:1194
+#: crypt-gpgme.c:4296 pgp.c:1194
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Ĉu uzi keyID = \"%s\" por %s?"
 
-#: crypt-gpgme.c:4298 pgp.c:1228 smime.c:650 smime.c:775
+#: crypt-gpgme.c:4332 pgp.c:1228 smime.c:650 smime.c:775
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Donu keyID por %s: "
 
-#: crypt-gpgme.c:4380
+#: crypt-gpgme.c:4415
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
@@ -1299,38 +1312,38 @@ msgstr ""
 "\n"
 "Uzas GPGME-malantaŭon, kvankam neniu gpg-agent rulas"
 
-#: crypt-gpgme.c:4410
+#: crypt-gpgme.c:4445
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "S/MIME ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"(p)gp\", aŭ "
 "(f)orgesi?"
 
-#: crypt-gpgme.c:4411
+#: crypt-gpgme.c:4446
 msgid "esabpfc"
 msgstr "iskapff"
 
-#: crypt-gpgme.c:4414
+#: crypt-gpgme.c:4449
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
 "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"s/(m)ime\", aŭ "
 "(f)orgesi?"
 
-#: crypt-gpgme.c:4415
+#: crypt-gpgme.c:4450
 msgid "esabmfc"
 msgstr "iskamff"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4431 pgp.c:1627 smime.c:2024 smime.c:2036
+#: crypt-gpgme.c:4466 pgp.c:1627 smime.c:2024 smime.c:2036
 msgid "Sign as: "
 msgstr "Subskribi kiel: "
 
-#: crypt-gpgme.c:4557
+#: crypt-gpgme.c:4592
 msgid "Failed to verify sender"
 msgstr "Malsukcesis kontroli sendinton"
 
-#: crypt-gpgme.c:4560
+#: crypt-gpgme.c:4595
 msgid "Failed to figure out sender"
 msgstr "Malsukcesis eltrovi sendinton"
 
@@ -2158,7 +2171,7 @@ msgstr "Elektas %s ..."
 msgid "Error opening mailbox"
 msgstr "Eraro dum malfermado de poŝtfako"
 
-#: imap/imap.c:806 imap/message.c:851 muttlib.c:1545
+#: imap/imap.c:806 imap/message.c:851 muttlib.c:1540
 #, c-format
 msgid "Create %s?"
 msgstr "Ĉu krei %s?"
@@ -2975,8 +2988,8 @@ msgstr "eraro ĉe legado aŭ skribado"
 msgid "SSL failed: %s"
 msgstr "SSL malsukcesis: %s"
 
-#: mutt_ssl.c:416 mutt_ssl_gnutls.c:969 mutt_ssl_gnutls.c:1004
-#: mutt_ssl_gnutls.c:1014
+#: mutt_ssl.c:416 mutt_ssl_gnutls.c:980 mutt_ssl_gnutls.c:1015
+#: mutt_ssl_gnutls.c:1025
 msgid "Unable to get certificate from peer"
 msgstr "Ne povas akiri SSL-atestilon"
 
@@ -2989,12 +3002,12 @@ msgstr "SSL-konekto per %s (%s)"
 msgid "Unknown"
 msgstr "Nekonata"
 
-#: mutt_ssl.c:551 mutt_ssl_gnutls.c:491
+#: mutt_ssl.c:551 mutt_ssl_gnutls.c:499
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[ne povas kalkuli]"
 
-#: mutt_ssl.c:569 mutt_ssl_gnutls.c:514
+#: mutt_ssl.c:569 mutt_ssl_gnutls.c:522
 msgid "[invalid date]"
 msgstr "[nevalida dato]"
 
@@ -3026,25 +3039,25 @@ msgstr "Posedanto de S/MIME-atestilo ne kongruas kun sendinto."
 msgid "Certificate host check failed: %s"
 msgstr "Atestilo skribita"
 
-#: mutt_ssl.c:978 mutt_ssl_gnutls.c:750
+#: mutt_ssl.c:978 mutt_ssl_gnutls.c:761
 msgid "This certificate belongs to:"
 msgstr "Ĉi tiu atestilo apartenas al:"
 
-#: mutt_ssl.c:991 mutt_ssl_gnutls.c:789
+#: mutt_ssl.c:991 mutt_ssl_gnutls.c:800
 msgid "This certificate was issued by:"
 msgstr "Ĉi tiu atestilo estis eldonita de:"
 
-#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:828
+#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:839
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ĉi tiu atestilo estis valida"
 
-#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:831
+#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:842
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:835
+#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:846
 #, c-format
 msgid "     to %s"
 msgstr "     al %s"
@@ -3054,32 +3067,32 @@ msgstr "     al %s"
 msgid "Fingerprint: %s"
 msgstr "Fingrospuro: %s"
 
-#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:872
+#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:883
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr ""
 
-#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:881
+#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:892
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(m)alakcepti, akcepti (u)nufoje, (a)kcepti ĉiam"
 
-#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:882
+#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:893
 msgid "roa"
 msgstr "mua"
 
-#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:886
+#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:897
 msgid "(r)eject, accept (o)nce"
 msgstr "(m)alakcepti, akcepti (u)nufoje"
 
-#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:887
+#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:898
 msgid "ro"
 msgstr "mu"
 
-#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:936
+#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:947
 msgid "Warning: Couldn't save certificate"
 msgstr "Averto: Ne povis skribi atestilon"
 
-#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:941
+#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:952
 msgid "Certificate saved"
 msgstr "Atestilo skribita"
 
@@ -3096,54 +3109,54 @@ msgstr "Ĉiuj disponataj protokoloj por TLS/SSL-konekto malŝaltitaj"
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "SSL/TLS-konekto per %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:581 mutt_ssl_gnutls.c:730
+#: mutt_ssl_gnutls.c:589 mutt_ssl_gnutls.c:741
 msgid "Error initialising gnutls certificate data"
 msgstr "Eraro dum starigo de gnutls-atestilo-datenoj"
 
-#: mutt_ssl_gnutls.c:588 mutt_ssl_gnutls.c:737
+#: mutt_ssl_gnutls.c:596 mutt_ssl_gnutls.c:748
 msgid "Error processing certificate data"
 msgstr "Eraro dum traktado de atestilodatenoj"
 
-#: mutt_ssl_gnutls.c:721
+#: mutt_ssl_gnutls.c:732
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:840
+#: mutt_ssl_gnutls.c:851
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "SHA1-fingrospuro: %s"
 
-#: mutt_ssl_gnutls.c:843
+#: mutt_ssl_gnutls.c:854
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "MD5-fingrospuro: %s"
 
-#: mutt_ssl_gnutls.c:848
+#: mutt_ssl_gnutls.c:859
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "AVERTO: Atestilo de servilo ankoraŭ ne validas"
 
-#: mutt_ssl_gnutls.c:853
+#: mutt_ssl_gnutls.c:864
 msgid "WARNING: Server certificate has expired"
 msgstr "AVERTO: Atestilo de servilo estas eksvalidiĝinta"
 
-#: mutt_ssl_gnutls.c:858
+#: mutt_ssl_gnutls.c:869
 msgid "WARNING: Server certificate has been revoked"
 msgstr "AVERTO: Atestilo de servilo estas revokita"
 
-#: mutt_ssl_gnutls.c:863
+#: mutt_ssl_gnutls.c:874
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "AVERTO: Nomo de serviloj ne kongruas kun atestilo"
 
-#: mutt_ssl_gnutls.c:868
+#: mutt_ssl_gnutls.c:879
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "AVERTO: Subskribinto de servilo-atestilo ne estas CA"
 
-#: mutt_ssl_gnutls.c:975
+#: mutt_ssl_gnutls.c:986
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Eraro dum kontrolo de atestilo (%s)"
 
-#: mutt_ssl_gnutls.c:984
+#: mutt_ssl_gnutls.c:995
 msgid "Certificate is not X.509"
 msgstr "Atestilo ne estas X.509"
 
@@ -3174,28 +3187,28 @@ msgstr "jni"
 msgid "File is a directory, save under it?"
 msgstr "Tio estas dosierujo; ĉu skribi dosieron en ĝi?"
 
-#: muttlib.c:998
+#: muttlib.c:996
 msgid "File under directory: "
 msgstr "Dosiero en dosierujo: "
 
-#: muttlib.c:1010
+#: muttlib.c:1005
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Dosiero ekzistas; ĉu (s)urskribi, (a)ldoni, aŭ (n)uligi?"
 
-#: muttlib.c:1010
+#: muttlib.c:1005
 msgid "oac"
 msgstr "san"
 
-#: muttlib.c:1511
+#: muttlib.c:1506
 msgid "Can't save message to POP mailbox."
 msgstr "Ne eblas skribi mesaĝon al POP-poŝtfako."
 
-#: muttlib.c:1520
+#: muttlib.c:1515
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ĉu aldoni mesaĝojn al %s?"
 
-#: muttlib.c:1532
+#: muttlib.c:1527
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s ne estas poŝtfako!"
@@ -3688,19 +3701,19 @@ msgstr "Prokrastitaj Mesaĝoj"
 msgid "No postponed messages."
 msgstr "Mankas prokrastitaj mesaĝoj."
 
-#: postpone.c:440 postpone.c:461 postpone.c:495
+#: postpone.c:446 postpone.c:467 postpone.c:501
 msgid "Illegal crypto header"
 msgstr "Nevalida kripto-ĉapo"
 
-#: postpone.c:481
+#: postpone.c:487
 msgid "Illegal S/MIME header"
 msgstr "Nevalida S/MIME-ĉapo"
 
-#: postpone.c:561
+#: postpone.c:574
 msgid "Decrypting message..."
 msgstr "Malĉifras mesaĝon ..."
 
-#: postpone.c:570
+#: postpone.c:583
 msgid "Decryption failed."
 msgstr "Malĉifro malsukcesis."
 
