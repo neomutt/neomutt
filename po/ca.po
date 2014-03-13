@@ -1,5 +1,5 @@
 # Catalan messages for mutt.
-# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009, 2013.
+# Ivan Vilata i Balaguer <ivan@selidor.net>, 2001-2004, 2006-2009, 2013, 2014.
 #
 # Sóc Ivan, aquestes són les convencions que adopte per a la 1.5.22:
 #
@@ -44,10 +44,10 @@
 # IDN = Internationalized Domain Name
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt 1.5.22\n"
+"Project-Id-Version: mutt 1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-12 09:18-0700\n"
-"PO-Revision-Date: 2013-10-15 11:05+0200\n"
+"PO-Revision-Date: 2014-03-14 00:21+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
 "Language: ca\n"
@@ -908,7 +908,7 @@ msgstr "Error en signar les dades: %s\n"
 
 #: crypt-gpgme.c:871
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
+msgstr "$pgp_sign_as no està establerta i «~/.gnupg/gpg.conf» no conté una clau per defecte"
 
 #: crypt-gpgme.c:1066
 msgid "Warning: One of the keys has been revoked\n"
@@ -983,23 +983,25 @@ msgstr ""
 msgid "aka: "
 msgstr "també conegut com a: "
 
+# Millor amb cometes però no es pot.  ivb
 #: crypt-gpgme.c:1300
 msgid "KeyID "
-msgstr ""
+msgstr "identificador "
 
 # Es refereix a una signatura.  ivb
 #: crypt-gpgme.c:1308
 msgid "created: "
 msgstr "creada en: "
 
+# Missatge partit, enmig va l’empremta digital.  ivb
+# Millor amb cometes però no es pot (per coherència amb l’anterior).  ivb
 #: crypt-gpgme.c:1378
-#, fuzzy
 msgid "Error getting key information for KeyID "
-msgstr "Error en obtenir la informació de la clau: "
+msgstr "Error en obtenir la informació de la clau amb identificador "
 
 #: crypt-gpgme.c:1380
 msgid ": "
-msgstr ""
+msgstr ": "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
@@ -5107,9 +5109,8 @@ msgid "force retrieval of mail from IMAP server"
 msgstr "Força l’obtenció del correu d’un servidor IMAP."
 
 #: ../keymap_alldefs.h:109
-#, fuzzy
 msgid "logout from all IMAP servers"
-msgstr "S’ha eixit dels servidors IMAP."
+msgstr "Ix de tots els servidors IMAP."
 
 #: ../keymap_alldefs.h:110
 msgid "retrieve mail from POP server"
@@ -5306,9 +5307,8 @@ msgid "use the current message as a template for a new one"
 msgstr "Empra el missatge actual com a plantilla per a un de nou."
 
 #: ../keymap_alldefs.h:158
-#, fuzzy
 msgid "save message/attachment to a mailbox/file"
-msgstr "Desa un missatge o adjunció en un fitxer."
+msgstr "Desa un missatge o adjunció en una bústia o fitxer."
 
 #: ../keymap_alldefs.h:159
 msgid "search for a regular expression"
