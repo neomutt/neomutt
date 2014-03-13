@@ -10,10 +10,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: mutt-1.5.21\n"
+"Project-Id-Version: mutt-1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2014-03-12 09:18-0700\n"
-"PO-Revision-Date: 2012-12-19 10:05+0200\n"
+"PO-Revision-Date: 2014-03-13 13:06+0200\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: mutt-ru@woe.spb.ru\n"
 "Language: ru\n"
@@ -835,7 +835,7 @@ msgstr "ошибка подписывания данных: %s\n"
 
 #: crypt-gpgme.c:871
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr ""
+msgstr "ключ по умолчанию не определён в $pgp_sign_as и в ~/.gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1066
 msgid "Warning: One of the keys has been revoked\n"
@@ -912,20 +912,19 @@ msgstr "aka: "
 
 #: crypt-gpgme.c:1300
 msgid "KeyID "
-msgstr ""
+msgstr "ID ключа "
 
 #: crypt-gpgme.c:1308
 msgid "created: "
 msgstr "создано: "
 
 #: crypt-gpgme.c:1378
-#, fuzzy
 msgid "Error getting key information for KeyID "
-msgstr "Ошибка получения информации о ключе: "
+msgstr "Ошибка получения информации о ключе с ID: "
 
 #: crypt-gpgme.c:1380
 msgid ": "
-msgstr ""
+msgstr ": "
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
