@@ -201,7 +201,7 @@ pid_t pgp_invoke_decode (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			 const char *fname, short need_passphrase)
 {
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		     need_passphrase, fname, NULL, NULL, NULL, 
+		     need_passphrase, fname, NULL, PgpSignAs, NULL, 
 		     PgpDecodeCommand);
 }
 
@@ -210,7 +210,7 @@ pid_t pgp_invoke_verify (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			 const char *fname, const char *sig_fname)
 {
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		     0, fname, sig_fname, NULL, NULL, PgpVerifyCommand);
+		     0, fname, sig_fname, PgpSignAs, NULL, PgpVerifyCommand);
 }
 
 pid_t pgp_invoke_decrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
@@ -218,7 +218,7 @@ pid_t pgp_invoke_decrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			  const char *fname)
 {
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		     1, fname, NULL, NULL, NULL, PgpDecryptCommand);
+		     1, fname, NULL, PgpSignAs, NULL, PgpDecryptCommand);
 }
 
 pid_t pgp_invoke_sign (FILE **pgpin, FILE **pgpout, FILE **pgperr,
@@ -240,7 +240,7 @@ pid_t pgp_invoke_encrypt (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 		       PgpEncryptSignCommand);
   else
     return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		       0, fname, NULL, NULL, uids, 
+		       0, fname, NULL, PgpSignAs, uids,
 		       PgpEncryptOnlyCommand);
 }
 
@@ -269,6 +269,7 @@ void pgp_invoke_import (const char *fname)
   
   mutt_quote_filename (_fname, sizeof (_fname), fname);
   cctx.fname = _fname;
+  cctx.signas = PgpSignAs;
   
   mutt_pgp_command (cmd, sizeof (cmd), &cctx, PgpImportCommand);
   mutt_system (cmd);
@@ -319,7 +320,7 @@ pid_t pgp_invoke_export (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			 const char *uids)
 {
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		     0, NULL, NULL, NULL, uids,
+		     0, NULL, NULL, PgpSignAs, uids,
 		     PgpExportCommand);
 }
 
@@ -328,7 +329,7 @@ pid_t pgp_invoke_verify_key (FILE **pgpin, FILE **pgpout, FILE **pgperr,
 			     const char *uids)
 {
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		     0, NULL, NULL, NULL, uids,
+		     0, NULL, NULL, PgpSignAs, uids,
 		     PgpVerifyKeyCommand);
 }
 
@@ -350,7 +351,7 @@ pid_t pgp_invoke_list_keys (FILE **pgpin, FILE **pgpout, FILE **pgperr,
   }
 
   return pgp_invoke (pgpin, pgpout, pgperr, pgpinfd, pgpoutfd, pgperrfd,
-		     0, NULL, NULL, NULL, uids,
+		     0, NULL, NULL, PgpSignAs, uids,
 		     keyring == PGP_SECRING ? PgpListSecringCommand :
 		     PgpListPubringCommand);
 }
