@@ -673,23 +673,24 @@ void imap_unquote_string (char *s)
   *d = '\0';
 }
 
+
 /*
  * Quoting and UTF-7 conversion
  */
 
-void imap_munge_mbox_name (char *dest, size_t dlen, const char *src)
+void imap_munge_mbox_name (IMAP_DATA *idata, char *dest, size_t dlen, const char *src)
 {
   char *buf;
 
   buf = safe_strdup (src);
-  imap_utf7_encode (&buf);
+  imap_utf_encode (idata, &buf);
 
   imap_quote_string (dest, dlen, buf);
 
   FREE (&buf);
 }
 
-void imap_unmunge_mbox_name (char *s)
+void imap_unmunge_mbox_name (IMAP_DATA *idata, char *s)
 {
   char *buf;
 
@@ -698,7 +699,7 @@ void imap_unmunge_mbox_name (char *s)
   buf = safe_strdup (s);
   if (buf)
   {
-    imap_utf7_decode (&buf);
+    imap_utf_decode (idata, &buf);
     strncpy (s, buf, strlen (s));
   }
 

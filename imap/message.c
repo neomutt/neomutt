@@ -642,7 +642,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   mutt_progress_init (&progressbar, _("Uploading message..."),
 		      M_PROGRESS_SIZE, NetInc, len);
 
-  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
+  imap_munge_mbox_name (idata, mbox, sizeof (mbox), mailbox);
   imap_make_date (internaldate, msg->received);
 
   imap_flags[0] = imap_flags[1] = 0;
@@ -773,7 +773,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
   if (!*mbox)
     strfcpy (mbox, "INBOX", sizeof (mbox));
-  imap_munge_mbox_name (mmbox, sizeof (mmbox), mbox);
+  imap_munge_mbox_name (idata, mmbox, sizeof (mmbox), mbox);
 
   /* loop in case of TRYCREATE */
   do

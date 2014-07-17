@@ -51,6 +51,7 @@ static void cmd_parse_fetch (IMAP_DATA* idata, char* s);
 static void cmd_parse_myrights (IMAP_DATA* idata, const char* s);
 static void cmd_parse_search (IMAP_DATA* idata, const char* s);
 static void cmd_parse_status (IMAP_DATA* idata, char* s);
+static void cmd_parse_enabled (IMAP_DATA* idata, const char* s);
 
 static const char * const Capabilities[] = {
   "IMAP4",
@@ -65,6 +66,7 @@ static const char * const Capabilities[] = {
   "LOGINDISABLED",
   "IDLE",
   "SASL-IR",
+  "ENABLE",
 
   NULL
 };
@@ -522,6 +524,8 @@ static int cmd_handle_untagged (IMAP_DATA* idata)
     cmd_parse_search (idata, s);
   else if (ascii_strncasecmp ("STATUS", s, 6) == 0)
     cmd_parse_status (idata, s);
+  else if (ascii_strncasecmp ("ENABLED", s, 7) == 0)
+    cmd_parse_enabled (idata, s);
   else if (ascii_strncasecmp ("BYE", s, 3) == 0)
   {
     dprint (2, (debugfile, "Handling BYE\n"));
@@ -728,7 +732,7 @@ static void cmd_parse_list (IMAP_DATA* idata, char* s)
   }
   else
   {
-    imap_unmunge_mbox_name (s);
+    imap_unmunge_mbox_name (idata, s);
     list->name = s;
   }
 
@@ -917,7 +921,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   {
     s = imap_next_word (mailbox);
     *(s - 1) = '\0';
-    imap_unmunge_mbox_name (mailbox);
+    imap_unmunge_mbox_name (idata, mailbox);
   }
 
   status = imap_mboxcache_get (idata, mailbox, 1);
@@ -1020,5 +1024,18 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     }
 
     FREE (&mx.mbox);
+  }
+}
+
+/* cmd_parse_enabled: record what the server has enabled */
+static void cmd_parse_enabled (IMAP_DATA* idata, const char* s)
+{
+  dprint (2, (debugfile, "Handling ENABLED\n"));
+
+  while ((s = imap_next_word ((char*)s)) && *s != '\0')
+  {
+    if (ascii_strncasecmp(s, "UTF8=ACCEPT", 11) == 0 ||
+        ascii_strncasecmp(s, "UTF8=ONLY", 9) == 0)
+      idata->unicode = 1;
   }
 }

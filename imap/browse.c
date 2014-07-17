@@ -75,7 +75,7 @@ int imap_browse (char* path, struct browser_state* state)
     char *ptr;
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
     ptr = safe_strdup (mbox);
-    imap_utf7_encode (&ptr);
+    imap_utf_encode (idata, &ptr);
     mbox[sizeof (mbox) - 1] = '\0';
     strncpy (mbox, ptr, sizeof (mbox) - 1);
     FREE (&ptr);
@@ -400,11 +400,14 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
   IMAP_MBOX mx;
+  IMAP_DATA* idata;
 
   if (imap_parse_path (state->folder, &mx))
     return;
+  if (!(idata = imap_conn_find (&(mx.account), 0)))
+    return;
 
-  imap_unmunge_mbox_name (folder);
+  imap_unmunge_mbox_name (idata, folder);
 
   if (state->entrylen + 1 == state->entrymax)
   {
