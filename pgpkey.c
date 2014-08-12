@@ -228,7 +228,7 @@ static const char *pgp_entry_fmt (char *dest,
       if (!optional)
       {
 	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
-	snprintf (dest, destlen, fmt, uid->addr);
+	snprintf (dest, destlen, fmt, NONULL (uid->addr));
       }
       break;
     case 'a':
@@ -586,7 +586,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
     case OP_VIEW_ID:
 
-      mutt_message ("%s", KeyTable[menu->current]->addr);
+      mutt_message ("%s", NONULL (KeyTable[menu->current]->addr));
       break;
 
     case OP_GENERIC_SELECT_ENTRY:
@@ -956,7 +956,7 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
     for (a = k->address; a; a = a->next)
     {
       dprint (5, (debugfile, "pgp_getkeybystr: matching \"%s\" against key %s, \"%s\": ",
-		  p, pgp_keyid (k), a->addr));
+		  p, pgp_keyid (k), NONULL (a->addr)));
       if (!*p || mutt_strcasecmp (p, pgp_keyid (k)) == 0 ||
 	  (!mutt_strncasecmp (p, "0x", 2) && !mutt_strcasecmp (p + 2, pgp_keyid (k))) ||
 	  (option (OPTPGPLONGIDS) && !mutt_strncasecmp (p, "0x", 2) &&

@@ -294,7 +294,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	if (!is_uid && (*is_subkey && option (OPTPGPIGNORESUB)))
 	  break;
 
-	dprint (2, (debugfile, "user ID: %s\n", p));
+	dprint (2, (debugfile, "user ID: %s\n", NONULL (p)));
 
 	uid = safe_calloc (sizeof (pgp_uid_t), 1);
 	fix_uid (p);
