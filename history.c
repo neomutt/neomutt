@@ -45,14 +45,14 @@ static void init_history (struct history *h)
   {
     if (h->hist)
     {
-      for (i = 0 ; i < OldSize ; i ++)
+      for (i = 0 ; i <= OldSize ; i ++)
 	FREE (&h->hist[i]);
       FREE (&h->hist);
     }
   }
   
   if (HistSize)
-    h->hist = safe_calloc (HistSize, sizeof (char *));
+    h->hist = safe_calloc (HistSize + 1, sizeof (char *));
   
   h->cur = 0;
   h->last = 0;
@@ -230,7 +230,7 @@ void mutt_history_add (history_class_t hclass, const char *s, int save)
   if (*s)
   {
     prev = h->last - 1;
-    if (prev < 0) prev = HistSize - 1;
+    if (prev < 0) prev = HistSize;
 
     /* don't add to prompt history:
      *  - lines beginning by a space
@@ -241,7 +241,7 @@ void mutt_history_add (history_class_t hclass, const char *s, int save)
       if (save && SaveHist)
         save_history (hclass, s);
       mutt_str_replace (&h->hist[h->last++], s);
-      if (h->last > HistSize - 1)
+      if (h->last > HistSize)
 	h->last = 0;
     }
   }
@@ -257,9 +257,12 @@ char *mutt_history_next (history_class_t hclass)
     return (""); /* disabled */
 
   next = h->cur + 1;
-  if (next > HistSize - 1)
+  if (next > HistSize)
     next = 0;
-  h->cur = h->hist[next] ? next : 0;
+  if (h->hist[next] || (next == h->last))
+    h->cur = next;
+  else
+    h->cur = 0;
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
 }
 
@@ -274,11 +277,43 @@ char *mutt_history_prev (history_class_t hclass)
   prev = h->cur - 1;
   if (prev < 0)
   {
-    prev = HistSize - 1;
-    while (prev > 0 && h->hist[prev] == NULL)
+    prev = HistSize;
+    while ((prev > 0) && (prev != h->last) && (h->hist[prev] == NULL))
       prev--;
   }
-  if (h->hist[prev])
+  if (h->hist[prev] || (prev == h->last))
     h->cur = prev;
   return (h->hist[h->cur] ? h->hist[h->cur] : "");
+}
+
+void mutt_reset_history_state (history_class_t hclass)
+{
+  struct history *h = GET_HISTORY(hclass);
+
+  if (!HistSize || !h)
+    return; /* disabled */
+
+  h->cur = h->last;
+}
+
+int mutt_history_at_scratch (history_class_t hclass)
+{
+  struct history *h = GET_HISTORY(hclass);
+
+  if (!HistSize || !h)
+    return 0; /* disabled */
+
+  return h->cur == h->last;
+}
+
+void mutt_history_save_scratch (history_class_t hclass, const char *s)
+{
+  struct history *h = GET_HISTORY(hclass);
+
+  if (!HistSize || !h)
+    return; /* disabled */
+
+  /* Don't check if s has a value because the scratch buffer may contain
+   * an old garbage value that should be overwritten */
+  mutt_str_replace (&h->hist[h->last], s);
 }

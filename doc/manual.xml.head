@@ -580,9 +580,9 @@ is controlled by the <link linkend="history">$history</link> variable
 and can be made persistent using an external file specified using <link
 linkend="history-file">$history_file</link>.  You may cycle through them
 at an editor prompt by using the <literal>&lt;history-up&gt;</literal>
-and/or <literal>&lt;history-down&gt;</literal> commands. But notice that
-Mutt does not remember the currently entered text, it only cycles
-through history and wraps around at the end or beginning.
+and/or <literal>&lt;history-down&gt;</literal> commands.  Mutt will
+remember the currently entered text as you cycle through history, and
+will wrap around to the initial entry line.
 </para>
 
 <para>
