@@ -120,6 +120,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 {
   pgp_uid_t *uid = NULL;
   int field = 0, is_uid = 0;
+  int is_pub = 0;
   char *pend, *p;
   int trust = 0;
   int flags = 0;
@@ -144,7 +145,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
     if ((pend = strchr (p, ':')))
       *pend++ = 0;
     field++;
-    if (field > 1 && !*p)
+    if (!*p && (field != 1) && (field != 10))
       continue;
 
     switch (field)
@@ -154,7 +155,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	dprint (2, (debugfile, "record type: %s\n", p));
 
 	if (!mutt_strcmp (p, "pub"))
-	  ;
+	  is_pub = 1;
 	else if (!mutt_strcmp (p, "sub"))
 	  *is_subkey = 1;
 	else if (!mutt_strcmp (p, "sec"))
@@ -280,8 +281,14 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         break;
       case 10:			/* name             */
       {
-	if (!pend || !*p)
-	  break;			/* empty field or no trailing colon */
+        /* Empty field or no trailing colon.
+         * We allow an empty field for a pub record type because it is
+         * possible for a primary uid record to have an empty User-ID
+         * field.  Without any address records, it is not possible to
+         * use the key in mutt.
+         */
+        if (!(pend && (*p || is_pub)))
+	  break;
 
 	/* ignore user IDs on subkeys */
 	if (!is_uid && (*is_subkey && option (OPTPGPIGNORESUB)))
