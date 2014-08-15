@@ -1182,7 +1182,7 @@ if test "x$with_idn" != "xno"; then
     ])
 
     if test "$with_idn" != auto; then
-      if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_STRINGPREP_CHECK_VERSION = no; then
+      if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
 	AC_MSG_ERROR([IDN was requested, but libidn was not usable on this system])
       fi
     fi
