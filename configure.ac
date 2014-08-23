@@ -707,6 +707,9 @@ then
       AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
                     [[#include <gnutls/x509.h>]])
 
+      LIBS="$LIBS -lgnutls"
+      AC_CHECK_FUNCS(gnutls_priority_set_direct)
+
       LIBS="$saved_LIBS"
       MUTTLIBS="$MUTTLIBS -lgnutls"
 
