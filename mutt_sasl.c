@@ -197,8 +197,8 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
 
   size = sizeof (local);
   if (!getsockname (conn->fd, (struct sockaddr *)&local, &size)) {
-    if (!iptostring((struct sockaddr *)&local, size, iplocalport,
-		      IP_PORT_BUFLEN) != SASL_OK)
+    if (iptostring((struct sockaddr *)&local, size, iplocalport,
+                   IP_PORT_BUFLEN) == SASL_OK)
       plp = iplocalport;
     else
       dprint (2, (debugfile, "SASL failed to parse local IP address\n"));
@@ -208,8 +208,8 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   
   size = sizeof (remote);
   if (!getpeername (conn->fd, (struct sockaddr *)&remote, &size)){
-    if (!iptostring((struct sockaddr *)&remote, size, ipremoteport,
-		      IP_PORT_BUFLEN) != SASL_OK)
+    if (iptostring((struct sockaddr *)&remote, size, ipremoteport,
+                   IP_PORT_BUFLEN) == SASL_OK)
       prp = ipremoteport;
     else
       dprint (2, (debugfile, "SASL failed to parse remote IP address\n"));
