@@ -103,27 +103,29 @@ static int mutt_sasl_conn_poll (CONNECTION* conn);
 
 /* utility function, stolen from sasl2 sample code */
 static int iptostring(const struct sockaddr *addr, socklen_t addrlen,
-                     char *out, unsigned outlen) {
-    char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
-    int ret;
-    
-    if(!addr || !out) return SASL_BADPARAM;
+                      char *out, unsigned outlen)
+{
+  char hbuf[NI_MAXHOST], pbuf[NI_MAXSERV];
+  int ret;
 
-    ret=getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
-                   NI_NUMERICHOST |
+  if (!addr || !out)
+    return SASL_BADPARAM;
+
+  ret = getnameinfo(addr, addrlen, hbuf, sizeof(hbuf), pbuf, sizeof(pbuf),
+                    NI_NUMERICHOST |
 #ifdef NI_WITHSCOPEID
-		   NI_WITHSCOPEID |
+                    NI_WITHSCOPEID |
 #endif
-		   NI_NUMERICSERV);
-    if(ret)
-      return getnameinfo_err(ret);
+                    NI_NUMERICSERV);
+  if (ret)
+    return getnameinfo_err(ret);
 
-    if(outlen < strlen(hbuf) + strlen(pbuf) + 2)
-        return SASL_BUFOVER;
+  if (outlen < strlen(hbuf) + strlen(pbuf) + 2)
+    return SASL_BUFOVER;
 
-    snprintf(out, outlen, "%s;%s", hbuf, pbuf);
+  snprintf(out, outlen, "%s;%s", hbuf, pbuf);
 
-    return SASL_OK;
+  return SASL_OK;
 }
 
 /* mutt_sasl_start: called before doing a SASL exchange - initialises library
