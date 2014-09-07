@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.95.6i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-17 22:42-0700\n"
+"POT-Creation-Date: 2014-03-12 09:18-0700\n"
 "PO-Revision-Date: 1999-07-29 00:00+0100\n"
 "Last-Translator: Miroslav Vasko <vasko@ies.sk>\n"
 "Language-Team: Slovak <sk@li.org>\n"
@@ -43,8 +43,8 @@ msgid "Select"
 msgstr "Oznaèi»"
 
 #. __STRCAT_CHECKED__
-#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:3832 curs_main.c:412
-#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:893 pager.c:1630 pgpkey.c:522
+#: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:3866 curs_main.c:412
+#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:904 pager.c:1630 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:425
 msgid "Help"
 msgstr "Pomoc"
@@ -787,62 +787,62 @@ msgstr ""
 msgid "PGP already selected. Clear & continue ? "
 msgstr ""
 
-#: crypt-gpgme.c:348
+#: crypt-gpgme.c:347
 #, fuzzy, c-format
 msgid "error creating gpgme context: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:358
+#: crypt-gpgme.c:357
 #, c-format
 msgid "error enabling CMS protocol: %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:378
+#: crypt-gpgme.c:377
 #, fuzzy, c-format
 msgid "error creating gpgme data object: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:444 crypt-gpgme.c:462 crypt-gpgme.c:1419
+#: crypt-gpgme.c:443 crypt-gpgme.c:461 crypt-gpgme.c:1453
 #, fuzzy, c-format
 msgid "error allocating data object: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:480
+#: crypt-gpgme.c:479
 #, fuzzy, c-format
 msgid "error rewinding data object: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:502 crypt-gpgme.c:549
+#: crypt-gpgme.c:501 crypt-gpgme.c:548
 #, fuzzy, c-format
 msgid "error reading data object: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:610
+#: crypt-gpgme.c:609
 #, fuzzy, c-format
 msgid "error adding recipient `%s': %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:648
+#: crypt-gpgme.c:647
 #, c-format
 msgid "secret key `%s' not found: %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:658
+#: crypt-gpgme.c:657
 #, c-format
 msgid "ambiguous specification of secret key `%s'\n"
 msgstr ""
 
-#: crypt-gpgme.c:670
+#: crypt-gpgme.c:669
 #, c-format
 msgid "error setting secret key `%s': %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:687
+#: crypt-gpgme.c:686
 #, fuzzy, c-format
 msgid "error setting PKA signature notation: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:743
+#: crypt-gpgme.c:742
 #, fuzzy, c-format
 msgid "error encrypting data: %s\n"
 msgstr "chyba vo vzore na: %s"
@@ -852,126 +852,138 @@ msgstr "chyba vo vzore na: %s"
 msgid "error signing data: %s\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:1055
+#: crypt-gpgme.c:871
+msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
+msgstr ""
+
+#: crypt-gpgme.c:1066
 msgid "Warning: One of the keys has been revoked\n"
 msgstr ""
 
-#: crypt-gpgme.c:1064
+#: crypt-gpgme.c:1075
 msgid "Warning: The key used to create the signature expired at: "
 msgstr ""
 
-#: crypt-gpgme.c:1070
+#: crypt-gpgme.c:1081
 msgid "Warning: At least one certification key has expired\n"
 msgstr ""
 
-#: crypt-gpgme.c:1086
+#: crypt-gpgme.c:1097
 msgid "Warning: The signature expired at: "
 msgstr ""
 
-#: crypt-gpgme.c:1092
+#: crypt-gpgme.c:1103
 msgid "Can't verify due to a missing key or certificate\n"
 msgstr ""
 
-#: crypt-gpgme.c:1097
+#: crypt-gpgme.c:1108
 #, fuzzy
 msgid "The CRL is not available\n"
 msgstr "Táto správa nie je viditeµná."
 
-#: crypt-gpgme.c:1103
+#: crypt-gpgme.c:1114
 msgid "Available CRL is too old\n"
 msgstr ""
 
-#: crypt-gpgme.c:1108
+#: crypt-gpgme.c:1119
 msgid "A policy requirement was not met\n"
 msgstr ""
 
-#: crypt-gpgme.c:1117
+#: crypt-gpgme.c:1128
 msgid "A system error occurred"
 msgstr ""
 
-#: crypt-gpgme.c:1151
+#: crypt-gpgme.c:1162
 msgid "WARNING: PKA entry does not match signer's address: "
 msgstr ""
 
-#: crypt-gpgme.c:1158
+#: crypt-gpgme.c:1169
 msgid "PKA verified signer's address is: "
 msgstr ""
 
-#: crypt-gpgme.c:1175 crypt-gpgme.c:3299
+#: crypt-gpgme.c:1186 crypt-gpgme.c:3333
 msgid "Fingerprint: "
 msgstr ""
 
-#: crypt-gpgme.c:1235
+#: crypt-gpgme.c:1246
 msgid ""
 "WARNING: We have NO indication whether the key belongs to the person named "
 "as shown above\n"
 msgstr ""
 
-#: crypt-gpgme.c:1242
+#: crypt-gpgme.c:1253
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr ""
 
-#: crypt-gpgme.c:1246
+#: crypt-gpgme.c:1257
 msgid ""
 "WARNING: It is NOT certain that the key belongs to the person named as shown "
 "above\n"
 msgstr ""
 
-#: crypt-gpgme.c:1276
+#: crypt-gpgme.c:1290
 msgid "aka: "
 msgstr ""
 
-#: crypt-gpgme.c:1287
+#: crypt-gpgme.c:1300
+msgid "KeyID "
+msgstr ""
+
+#: crypt-gpgme.c:1308
 #, fuzzy
 msgid "created: "
 msgstr "Vytvori» %s?"
 
-#: crypt-gpgme.c:1350
-msgid "Error getting key information: "
+#: crypt-gpgme.c:1378
+msgid "Error getting key information for KeyID "
+msgstr ""
+
+#: crypt-gpgme.c:1380
+msgid ": "
 msgstr ""
 
 #. We can't decide (yellow) but this is a PGP key with a good
 #. signature, so we display what a PGP user expects: The name,
 #. fingerprint and the key validity (which is neither fully or
 #. ultimate).
-#: crypt-gpgme.c:1357 crypt-gpgme.c:1372
+#: crypt-gpgme.c:1387 crypt-gpgme.c:1402
 msgid "Good signature from:"
 msgstr ""
 
-#: crypt-gpgme.c:1364
+#: crypt-gpgme.c:1394
 msgid "*BAD* signature from:"
 msgstr ""
 
-#: crypt-gpgme.c:1380
+#: crypt-gpgme.c:1410
 msgid "Problem signature from:"
 msgstr ""
 
-#: crypt-gpgme.c:1381
+#: crypt-gpgme.c:1414
 msgid "               expires: "
 msgstr ""
 
 #. Note: We don't need a current time output because GPGME avoids
 #. such an attack by separating the meta information from the
 #. data.
-#: crypt-gpgme.c:1427 crypt-gpgme.c:1642 crypt-gpgme.c:2294
+#: crypt-gpgme.c:1461 crypt-gpgme.c:1676 crypt-gpgme.c:2328
 msgid "[-- Begin signature information --]\n"
 msgstr ""
 
-#: crypt-gpgme.c:1436
+#: crypt-gpgme.c:1470
 #, fuzzy, c-format
 msgid "Error: verification failed: %s\n"
 msgstr "Chyba v príkazovom riadku: %s\n"
 
-#: crypt-gpgme.c:1485
+#: crypt-gpgme.c:1519
 #, c-format
 msgid "*** Begin Notation (signature by: %s) ***\n"
 msgstr ""
 
-#: crypt-gpgme.c:1507
+#: crypt-gpgme.c:1541
 msgid "*** End Notation ***\n"
 msgstr ""
 
-#: crypt-gpgme.c:1515 crypt-gpgme.c:1655 crypt-gpgme.c:2307
+#: crypt-gpgme.c:1549 crypt-gpgme.c:1689 crypt-gpgme.c:2341
 #, fuzzy
 msgid ""
 "[-- End signature information --]\n"
@@ -980,28 +992,28 @@ msgstr ""
 "\n"
 "[-- Koniec dát s podpisom PGP/MIME --]\n"
 
-#: crypt-gpgme.c:1610
+#: crypt-gpgme.c:1644
 #, fuzzy, c-format
 msgid ""
 "[-- Error: decryption failed: %s --]\n"
 "\n"
 msgstr "[-- Chyba: neoèakávaný koniec súboru! --]\n"
 
-#: crypt-gpgme.c:2090
+#: crypt-gpgme.c:2124
 #, fuzzy, c-format
 msgid "Error extracting key data!\n"
 msgstr "chyba vo vzore na: %s"
 
-#: crypt-gpgme.c:2270
+#: crypt-gpgme.c:2304
 #, c-format
 msgid "Error: decryption/verification failed: %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:2315
+#: crypt-gpgme.c:2349
 msgid "Error: copy data failed\n"
 msgstr ""
 
-#: crypt-gpgme.c:2335 pgp.c:436
+#: crypt-gpgme.c:2369 pgp.c:436
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1009,11 +1021,11 @@ msgstr ""
 "[-- ZAÈIATOK SPRÁVY PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2337 pgp.c:438
+#: crypt-gpgme.c:2371 pgp.c:438
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- ZAÈIATOK BLOKU VEREJNÉHO K¥ÚÈA PGP --]\n"
 
-#: crypt-gpgme.c:2340 pgp.c:440
+#: crypt-gpgme.c:2374 pgp.c:440
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1021,25 +1033,25 @@ msgstr ""
 "[-- ZAÈIATOK SPRÁVY PODPÍSANEJ S PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2367 pgp.c:471
+#: crypt-gpgme.c:2401 pgp.c:471
 #, fuzzy
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr ""
 "\n"
 "[-- KONIEC SPRÁVY PGP --]\n"
 
-#: crypt-gpgme.c:2369 pgp.c:478
+#: crypt-gpgme.c:2403 pgp.c:478
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- KONIEC BLOKU VEREJNÉHO K¥ÚÈA PGP --]\n"
 
-#: crypt-gpgme.c:2371 pgp.c:480
+#: crypt-gpgme.c:2405 pgp.c:480
 #, fuzzy
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr ""
 "\n"
 "[-- KONIEC SPRÁVY PODPÍSANEJ S PGP --]\n"
 
-#: crypt-gpgme.c:2393 pgp.c:513
+#: crypt-gpgme.c:2427 pgp.c:513
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1047,7 +1059,7 @@ msgstr ""
 "[-- Chyba: nemo¾no nájs» zaèiatok správy PGP! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2424 pgp.c:945
+#: crypt-gpgme.c:2458 pgp.c:945
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -1055,11 +1067,11 @@ msgstr ""
 "[-- Chyba: poru¹ení správa PGP/MIME! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2436 crypt-gpgme.c:2502 pgp.c:958
+#: crypt-gpgme.c:2470 crypt-gpgme.c:2536 pgp.c:958
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Chyba: nemo¾no vytvori» doèasný súbor! --]\n"
 
-#: crypt-gpgme.c:2448
+#: crypt-gpgme.c:2482
 #, fuzzy
 msgid ""
 "[-- The following data is PGP/MIME signed and encrypted --]\n"
@@ -1068,7 +1080,7 @@ msgstr ""
 "[-- Nasledujúce dáta sú ¹ifrované pomocou PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2449 pgp.c:967
+#: crypt-gpgme.c:2483 pgp.c:967
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1076,21 +1088,21 @@ msgstr ""
 "[-- Nasledujúce dáta sú ¹ifrované pomocou PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2471
+#: crypt-gpgme.c:2505
 #, fuzzy
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Koniec dát ¹ifrovaných pomocou PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2472 pgp.c:987
+#: crypt-gpgme.c:2506 pgp.c:987
 #, fuzzy
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Koniec dát ¹ifrovaných pomocou PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2514
+#: crypt-gpgme.c:2548
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME signed --]\n"
@@ -1099,7 +1111,7 @@ msgstr ""
 "[-- Nasledujúce dáta sú podpísané s S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2515
+#: crypt-gpgme.c:2549
 #, fuzzy
 msgid ""
 "[-- The following data is S/MIME encrypted --]\n"
@@ -1108,265 +1120,265 @@ msgstr ""
 "[-- Nasledujúce dáta sú ¹ifrované pomocou S/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2545
+#: crypt-gpgme.c:2579
 #, fuzzy
 msgid "[-- End of S/MIME signed data --]\n"
 msgstr ""
 "\n"
 "[-- Koniec dát s podpisom S/MIME --]\n"
 
-#: crypt-gpgme.c:2546
+#: crypt-gpgme.c:2580
 #, fuzzy
 msgid "[-- End of S/MIME encrypted data --]\n"
 msgstr ""
 "\n"
 "[-- Koniec dát ¹ifrovaných pomocou S/MIME --]\n"
 
-#: crypt-gpgme.c:3139
+#: crypt-gpgme.c:3173
 msgid "[Can't display this user ID (unknown encoding)]"
 msgstr ""
 
-#: crypt-gpgme.c:3141
+#: crypt-gpgme.c:3175
 msgid "[Can't display this user ID (invalid encoding)]"
 msgstr ""
 
-#: crypt-gpgme.c:3146
+#: crypt-gpgme.c:3180
 msgid "[Can't display this user ID (invalid DN)]"
 msgstr ""
 
-#: crypt-gpgme.c:3225
+#: crypt-gpgme.c:3259
 msgid " aka ......: "
 msgstr ""
 
-#: crypt-gpgme.c:3225
+#: crypt-gpgme.c:3259
 msgid "Name ......: "
 msgstr ""
 
-#: crypt-gpgme.c:3228 crypt-gpgme.c:3367
+#: crypt-gpgme.c:3262 crypt-gpgme.c:3401
 #, fuzzy
 msgid "[Invalid]"
 msgstr "Neplatný mesiac: %s"
 
-#: crypt-gpgme.c:3248 crypt-gpgme.c:3391
+#: crypt-gpgme.c:3282 crypt-gpgme.c:3425
 #, fuzzy, c-format
 msgid "Valid From : %s\n"
 msgstr "Neplatný mesiac: %s"
 
-#: crypt-gpgme.c:3261 crypt-gpgme.c:3404
+#: crypt-gpgme.c:3295 crypt-gpgme.c:3438
 #, fuzzy, c-format
 msgid "Valid To ..: %s\n"
 msgstr "Neplatný mesiac: %s"
 
-#: crypt-gpgme.c:3274 crypt-gpgme.c:3417
+#: crypt-gpgme.c:3308 crypt-gpgme.c:3451
 #, c-format
 msgid "Key Type ..: %s, %lu bit %s\n"
 msgstr ""
 
-#: crypt-gpgme.c:3276 crypt-gpgme.c:3419
+#: crypt-gpgme.c:3310 crypt-gpgme.c:3453
 #, c-format
 msgid "Key Usage .: "
 msgstr ""
 
-#: crypt-gpgme.c:3281 crypt-gpgme.c:3424
+#: crypt-gpgme.c:3315 crypt-gpgme.c:3458
 #, fuzzy
 msgid "encryption"
 msgstr "Za¹ifruj"
 
-#: crypt-gpgme.c:3282 crypt-gpgme.c:3287 crypt-gpgme.c:3292 crypt-gpgme.c:3425
-#: crypt-gpgme.c:3430 crypt-gpgme.c:3435
+#: crypt-gpgme.c:3316 crypt-gpgme.c:3321 crypt-gpgme.c:3326 crypt-gpgme.c:3459
+#: crypt-gpgme.c:3464 crypt-gpgme.c:3469
 msgid ", "
 msgstr ""
 
-#: crypt-gpgme.c:3286 crypt-gpgme.c:3429
+#: crypt-gpgme.c:3320 crypt-gpgme.c:3463
 msgid "signing"
 msgstr ""
 
-#: crypt-gpgme.c:3291 crypt-gpgme.c:3434
+#: crypt-gpgme.c:3325 crypt-gpgme.c:3468
 msgid "certification"
 msgstr ""
 
-#: crypt-gpgme.c:3331
+#: crypt-gpgme.c:3365
 #, c-format
 msgid "Serial-No .: 0x%s\n"
 msgstr ""
 
-#: crypt-gpgme.c:3339
+#: crypt-gpgme.c:3373
 #, c-format
 msgid "Issued By .: "
 msgstr ""
 
 #. display only the short keyID
-#: crypt-gpgme.c:3358
+#: crypt-gpgme.c:3392
 #, fuzzy, c-format
 msgid "Subkey ....: 0x%s"
 msgstr "ID kµúèa: 0x%s"
 
-#: crypt-gpgme.c:3362
+#: crypt-gpgme.c:3396
 msgid "[Revoked]"
 msgstr ""
 
-#: crypt-gpgme.c:3372
+#: crypt-gpgme.c:3406
 #, fuzzy
 msgid "[Expired]"
 msgstr "Koniec  "
 
-#: crypt-gpgme.c:3377
+#: crypt-gpgme.c:3411
 msgid "[Disabled]"
 msgstr ""
 
-#: crypt-gpgme.c:3461 pgpkey.c:559 pgpkey.c:739
+#: crypt-gpgme.c:3495 pgpkey.c:559 pgpkey.c:739
 msgid "Can't create temporary file"
 msgstr "Nemo¾no vytvori» doèasný súbor"
 
-#: crypt-gpgme.c:3464
+#: crypt-gpgme.c:3498
 #, fuzzy
 msgid "Collecting data..."
 msgstr "Spájam sa s %s..."
 
-#: crypt-gpgme.c:3490
+#: crypt-gpgme.c:3524
 #, fuzzy, c-format
 msgid "Error finding issuer key: %s\n"
 msgstr "Pripájam sa na %s"
 
-#: crypt-gpgme.c:3500
+#: crypt-gpgme.c:3534
 msgid "Error: certification chain to long - stopping here\n"
 msgstr ""
 
-#: crypt-gpgme.c:3511 pgpkey.c:580
+#: crypt-gpgme.c:3545 pgpkey.c:580
 #, c-format
 msgid "Key ID: 0x%s"
 msgstr "ID kµúèa: 0x%s"
 
-#: crypt-gpgme.c:3594
+#: crypt-gpgme.c:3628
 #, fuzzy, c-format
 msgid "gpgme_new failed: %s"
 msgstr "Prihlasovanie zlyhalo."
 
-#: crypt-gpgme.c:3633 crypt-gpgme.c:3696
+#: crypt-gpgme.c:3667 crypt-gpgme.c:3730
 #, c-format
 msgid "gpgme_op_keylist_start failed: %s"
 msgstr ""
 
-#: crypt-gpgme.c:3683 crypt-gpgme.c:3724
+#: crypt-gpgme.c:3717 crypt-gpgme.c:3758
 #, c-format
 msgid "gpgme_op_keylist_next failed: %s"
 msgstr ""
 
-#: crypt-gpgme.c:3795
+#: crypt-gpgme.c:3829
 msgid "All matching keys are marked expired/revoked."
 msgstr ""
 
-#: crypt-gpgme.c:3824 mutt_ssl.c:1032 mutt_ssl_gnutls.c:891 pgpkey.c:515
+#: crypt-gpgme.c:3858 mutt_ssl.c:1032 mutt_ssl_gnutls.c:902 pgpkey.c:515
 #: smime.c:420
 msgid "Exit  "
 msgstr "Koniec  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3826 pgpkey.c:517 smime.c:422
+#: crypt-gpgme.c:3860 pgpkey.c:517 smime.c:422
 msgid "Select  "
 msgstr "Oznaèi»  "
 
 #. __STRCAT_CHECKED__
-#: crypt-gpgme.c:3829 pgpkey.c:520
+#: crypt-gpgme.c:3863 pgpkey.c:520
 msgid "Check key  "
 msgstr "Skontrolova» kµúè  "
 
-#: crypt-gpgme.c:3845
+#: crypt-gpgme.c:3879
 #, fuzzy
 msgid "PGP and S/MIME keys matching"
 msgstr "Kµúèe S/MIME zhodujúce sa "
 
-#: crypt-gpgme.c:3847
+#: crypt-gpgme.c:3881
 #, fuzzy
 msgid "PGP keys matching"
 msgstr "Kµúèe PGP zhodujúce sa "
 
-#: crypt-gpgme.c:3849
+#: crypt-gpgme.c:3883
 #, fuzzy
 msgid "S/MIME keys matching"
 msgstr "Kµúèe S/MIME zhodujúce sa "
 
-#: crypt-gpgme.c:3851
+#: crypt-gpgme.c:3885
 #, fuzzy
 msgid "keys matching"
 msgstr "Kµúèe PGP zhodujúce sa "
 
-#: crypt-gpgme.c:3854
+#: crypt-gpgme.c:3888
 #, c-format
 msgid "%s <%s>."
 msgstr ""
 
-#: crypt-gpgme.c:3856
+#: crypt-gpgme.c:3890
 #, c-format
 msgid "%s \"%s\"."
 msgstr ""
 
-#: crypt-gpgme.c:3883 pgpkey.c:600
+#: crypt-gpgme.c:3917 pgpkey.c:600
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr ""
 
-#: crypt-gpgme.c:3897 pgpkey.c:612
+#: crypt-gpgme.c:3931 pgpkey.c:612
 msgid "ID is expired/disabled/revoked."
 msgstr ""
 
-#: crypt-gpgme.c:3917 pgpkey.c:616
+#: crypt-gpgme.c:3951 pgpkey.c:616
 msgid "ID has undefined validity."
 msgstr ""
 
-#: crypt-gpgme.c:3920 pgpkey.c:619
+#: crypt-gpgme.c:3954 pgpkey.c:619
 #, fuzzy
 msgid "ID is not valid."
 msgstr "Toto ID nie je dôveryhodné."
 
-#: crypt-gpgme.c:3923 pgpkey.c:622
+#: crypt-gpgme.c:3957 pgpkey.c:622
 #, fuzzy
 msgid "ID is only marginally valid."
 msgstr "Toto ID je dôveryhodné iba nepatrne."
 
-#: crypt-gpgme.c:3931 pgpkey.c:626
+#: crypt-gpgme.c:3965 pgpkey.c:626
 #, fuzzy, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Chcete to naozaj pou¾i»?"
 
-#: crypt-gpgme.c:3988 crypt-gpgme.c:4100 pgpkey.c:834 pgpkey.c:939
+#: crypt-gpgme.c:4022 crypt-gpgme.c:4134 pgpkey.c:834 pgpkey.c:939
 #, c-format
 msgid "Looking for keys matching \"%s\"..."
 msgstr ""
 
-#: crypt-gpgme.c:4262 pgp.c:1194
+#: crypt-gpgme.c:4296 pgp.c:1194
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Pou¾i» ID kµúèa = \"%s\" pre %s?"
 
-#: crypt-gpgme.c:4298 pgp.c:1228 smime.c:650 smime.c:775
+#: crypt-gpgme.c:4332 pgp.c:1228 smime.c:650 smime.c:775
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Zadajte ID kµúèa pre %s: "
 
-#: crypt-gpgme.c:4380
+#: crypt-gpgme.c:4415
 msgid ""
 "\n"
 "Using GPGME backend, although no gpg-agent is running"
 msgstr ""
 
-#: crypt-gpgme.c:4410
+#: crypt-gpgme.c:4445
 #, fuzzy
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "(e)-¹ifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnú» na to? "
 
-#: crypt-gpgme.c:4411
+#: crypt-gpgme.c:4446
 #, fuzzy
 msgid "esabpfc"
 msgstr "eswabf"
 
-#: crypt-gpgme.c:4414
+#: crypt-gpgme.c:4449
 #, fuzzy
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
 "(e)-¹ifr, (s)-podp, podp (a)ko, o(b)e, (i)nline, alebo (f)-zabudnú» na to? "
 
-#: crypt-gpgme.c:4415
+#: crypt-gpgme.c:4450
 #, fuzzy
 msgid "esabmfc"
 msgstr "eswabf"
@@ -1374,15 +1386,15 @@ msgstr "eswabf"
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4431 pgp.c:1627 smime.c:2024 smime.c:2036
+#: crypt-gpgme.c:4466 pgp.c:1627 smime.c:2024 smime.c:2036
 msgid "Sign as: "
 msgstr "Podpí¹ ako: "
 
-#: crypt-gpgme.c:4557
+#: crypt-gpgme.c:4592
 msgid "Failed to verify sender"
 msgstr ""
 
-#: crypt-gpgme.c:4560
+#: crypt-gpgme.c:4595
 #, fuzzy
 msgid "Failed to figure out sender"
 msgstr "Nemo¾no otvori» súbor na analýzu hlavièiek."
@@ -2258,7 +2270,7 @@ msgstr "Vyberám %s..."
 msgid "Error opening mailbox"
 msgstr "Chyba pri zapisovaní do schránky!"
 
-#: imap/imap.c:806 imap/message.c:851 muttlib.c:1545
+#: imap/imap.c:806 imap/message.c:851 muttlib.c:1540
 #, c-format
 msgid "Create %s?"
 msgstr "Vytvori» %s?"
@@ -3095,8 +3107,8 @@ msgstr ""
 msgid "SSL failed: %s"
 msgstr "Prihlasovanie zlyhalo."
 
-#: mutt_ssl.c:416 mutt_ssl_gnutls.c:969 mutt_ssl_gnutls.c:1004
-#: mutt_ssl_gnutls.c:1014
+#: mutt_ssl.c:416 mutt_ssl_gnutls.c:980 mutt_ssl_gnutls.c:1015
+#: mutt_ssl_gnutls.c:1025
 #, fuzzy
 msgid "Unable to get certificate from peer"
 msgstr "nemo¾no urèi» domáci adresár"
@@ -3111,12 +3123,12 @@ msgstr "Pripájam sa na %s"
 msgid "Unknown"
 msgstr "neznáma chyba"
 
-#: mutt_ssl.c:551 mutt_ssl_gnutls.c:491
+#: mutt_ssl.c:551 mutt_ssl_gnutls.c:499
 #, fuzzy, c-format
 msgid "[unable to calculate]"
 msgstr "%s: súbor nemo¾no pripoji»"
 
-#: mutt_ssl.c:569 mutt_ssl_gnutls.c:514
+#: mutt_ssl.c:569 mutt_ssl_gnutls.c:522
 #, fuzzy
 msgid "[invalid date]"
 msgstr "%s: neplatná hodnota"
@@ -3149,25 +3161,25 @@ msgstr ""
 msgid "Certificate host check failed: %s"
 msgstr "Chyba v príkazovom riadku: %s\n"
 
-#: mutt_ssl.c:978 mutt_ssl_gnutls.c:750
+#: mutt_ssl.c:978 mutt_ssl_gnutls.c:761
 msgid "This certificate belongs to:"
 msgstr ""
 
-#: mutt_ssl.c:991 mutt_ssl_gnutls.c:789
+#: mutt_ssl.c:991 mutt_ssl_gnutls.c:800
 msgid "This certificate was issued by:"
 msgstr ""
 
-#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:828
+#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:839
 #, c-format
 msgid "This certificate is valid"
 msgstr ""
 
-#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:831
+#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:842
 #, c-format
 msgid "   from %s"
 msgstr ""
 
-#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:835
+#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:846
 #, c-format
 msgid "     to %s"
 msgstr ""
@@ -3177,33 +3189,33 @@ msgstr ""
 msgid "Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:872
+#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:883
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr ""
 
-#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:881
+#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:892
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr ""
 
-#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:882
+#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:893
 #, fuzzy
 msgid "roa"
 msgstr "oac"
 
-#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:886
+#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:897
 msgid "(r)eject, accept (o)nce"
 msgstr ""
 
-#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:887
+#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:898
 msgid "ro"
 msgstr ""
 
-#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:936
+#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:947
 msgid "Warning: Couldn't save certificate"
 msgstr ""
 
-#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:941
+#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:952
 msgid "Certificate saved"
 msgstr ""
 
@@ -3220,55 +3232,55 @@ msgstr ""
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Pripájam sa na %s"
 
-#: mutt_ssl_gnutls.c:581 mutt_ssl_gnutls.c:730
+#: mutt_ssl_gnutls.c:589 mutt_ssl_gnutls.c:741
 #, fuzzy
 msgid "Error initialising gnutls certificate data"
 msgstr "Chyba pri inicializácii terminálu."
 
-#: mutt_ssl_gnutls.c:588 mutt_ssl_gnutls.c:737
+#: mutt_ssl_gnutls.c:596 mutt_ssl_gnutls.c:748
 msgid "Error processing certificate data"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:721
+#: mutt_ssl_gnutls.c:732
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:840
+#: mutt_ssl_gnutls.c:851
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:843
+#: mutt_ssl_gnutls.c:854
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:848
+#: mutt_ssl_gnutls.c:859
 msgid "WARNING: Server certificate is not yet valid"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:853
+#: mutt_ssl_gnutls.c:864
 msgid "WARNING: Server certificate has expired"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:858
+#: mutt_ssl_gnutls.c:869
 msgid "WARNING: Server certificate has been revoked"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:863
+#: mutt_ssl_gnutls.c:874
 msgid "WARNING: Server hostname does not match certificate"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:868
+#: mutt_ssl_gnutls.c:879
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:975
+#: mutt_ssl_gnutls.c:986
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr ""
 
-#: mutt_ssl_gnutls.c:984
+#: mutt_ssl_gnutls.c:995
 msgid "Certificate is not X.509"
 msgstr ""
 
@@ -3300,29 +3312,29 @@ msgstr ""
 msgid "File is a directory, save under it?"
 msgstr "Súbor je adresár, ulo¾i» v òom?"
 
-#: muttlib.c:998
+#: muttlib.c:996
 msgid "File under directory: "
 msgstr "Súbor v adresári: "
 
-#: muttlib.c:1010
+#: muttlib.c:1005
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Súbor existuje, (o)-prepísa», prid(a)» alebo (c)-zru¹i»?"
 
-#: muttlib.c:1010
+#: muttlib.c:1005
 msgid "oac"
 msgstr "oac"
 
-#: muttlib.c:1511
+#: muttlib.c:1506
 #, fuzzy
 msgid "Can't save message to POP mailbox."
 msgstr "Zapísa» správu do schránky"
 
-#: muttlib.c:1520
+#: muttlib.c:1515
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Prida» správy do %s?"
 
-#: muttlib.c:1532
+#: muttlib.c:1527
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s nie je schránka!"
@@ -3831,22 +3843,22 @@ msgstr "Odlo¾ené správy"
 msgid "No postponed messages."
 msgstr "®iadne odlo¾ené správy."
 
-#: postpone.c:440 postpone.c:461 postpone.c:495
+#: postpone.c:446 postpone.c:467 postpone.c:501
 #, fuzzy
 msgid "Illegal crypto header"
 msgstr "Neplatná hlavièka PGP"
 
-#: postpone.c:481
+#: postpone.c:487
 #, fuzzy
 msgid "Illegal S/MIME header"
 msgstr "Neplatná hlavièka S/MIME"
 
-#: postpone.c:561
+#: postpone.c:574
 #, fuzzy
 msgid "Decrypting message..."
 msgstr "Vyvolávam správu..."
 
-#: postpone.c:570
+#: postpone.c:583
 #, fuzzy
 msgid "Decryption failed."
 msgstr "Prihlasovanie zlyhalo."

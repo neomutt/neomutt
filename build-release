@@ -21,7 +21,7 @@ else
 fi
 
 
-devel="devel/"	# comment out for the stable branch
+#devel="devel/"	# comment out for the stable branch
 
 # test for uncommitted changes
 if hg id | grep -q '+'
@@ -53,8 +53,8 @@ TAG="mutt-`echo $VERSION | tr . -`-rel"
 
 # now, prepare the distribution tar balls
 
-#automake
-#touch configure.in
+automake
+touch configure.ac
 make config.status
 ./config.status
 make update-doc

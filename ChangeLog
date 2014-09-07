@@ -1,3 +1,140 @@
+2014-03-12 09:25 -0700  Brendan Cully  <brendan@kublai.com>  (07556816c588)
+
+	* build-release: build-release: make sure version is picked up by
+	autoconf
+
+	* mkchangelog.sh: mkchangelog: only show log entries on current branch
+
+	* build-release: No more devel
+
+2014-03-11 10:04 -0700  Michael Elkins  <me@sigpipe.org>  (3c13c4188912)
+
+	* UPDATING: add user visible changes since 1.5.22 release.
+
+	* copy.c: Fix buffer overrun caused by not updating a string length
+	after address expansion.
+
+2013-10-24 09:55 -0700  Michael Elkins  <me@sigpipe.org>  (3d5e23a66a1a)
+
+	* init.h: remove trailing period from documentation for
+	$pgp_list_secring_command
+
+	* init.h: remove trailing period from documentation for
+	$pgp_list_pubring_command
+
+2013-04-26 12:10 -0700  Kevin McCarthy  <kevin@8t8.us>  (914e13a3694d)
+
+	* postpone.c: Fix postpone/resume to not remove a Mail-Followup-To
+	header (closes #3070)
+
+	This solution changes mutt_prepare_template() to check whether the
+	message_id field is NULL to decide whether to wipe the message-id
+	and mail-followup-to headers when instantiating the message.
+
+	If we are resending a message, we don't want the previous message-id
+	and mail-followup-to headers. If we are resuming a postponed
+	message, however, we want to keep the mail-followup-to header if any
+	was set before the postpone. (grafted from
+	d7d83298011a6e7aa31bde49e0b6b21209a85fd2)
+
+2013-10-22 15:12 -0500  Aaron Schrab  <aaron@schrab.com>  (4a24e6233a5f)
+
+	* version.sh: version.sh: step back from $() to ``. closes #3661
+	(grafted from 01cf5814dfe5e79b65b1d950aab1276d19a9f031)
+
+2013-07-14 19:48 -0700  Kevin McCarthy  <kevin@8t8.us>  (b5c894182719)
+
+	* muttlib.c: Allow filename prompt when saving multiple attachments to
+	a directory. (closes #3083)
+
+	Currently, if you specify a directory when saving multiple
+	attachments and choose (a)ll, the first attachment is saved without
+	confirming the filename. Subsequent attachments prompt for the
+	filename.
+
+2013-10-04 18:22 +0000  Michael Elkins  <me@sigpipe.org>  (95a2230ef889)
+
+	* mutt.h, postpone.c, send.c: When recalling a postponed message that
+	does not have a x-mutt-fcc header field, generate a default FCC just
+	as we do for new messages. If x-mutt-fcc is present but empty, we
+	assume that means the user does not want a copy.
+
+	closes #3653
+
+2013-10-23 11:11 -0700  Michael Elkins  <me@sigpipe.org>  (331d48da153b)
+
+	* crypt-gpgme.c: Ensure that at least one signature was generated to
+	catch the case where $pgp_sign_as is unset and no default key is
+	specified in ~/.gnupg/gpg.conf
+
+	closes #3658
+
+2013-10-06 09:15 -0700  Michael Elkins  <me@sigpipe.org>  (99d913f46eb9)
+
+	* handler.c, smime.c: use LOFF_T as the type for variables used in
+	fseeko()
+
+	closes #3487
+
+2013-10-04 18:04 +0000  Michael Elkins  <me@sigpipe.org>  (dd67e8649ea4)
+
+	* crypt-gpgme.c: Display the KeyID when the pubkey is not found in the
+	user's keyring during signature verification.
+
+	closes #3654
+
+2013-10-23 11:11 -0700  Michael Elkins  <me@sigpipe.org>  (db3028e34ce0)
+
+	* mutt_ssl_gnutls.c: return 0 if import of cert failed to match other
+	error conditions.
+
+2013-10-23 11:11 -0700  Michael Elkins  <me@sigpipe.org>  (4dde4bcda519)
+
+	* mutt_ssl_gnutls.c: only terminate the write-half of the TLS
+	connection to avoid hanging if the remote doesn't respond.
+
+	RFC5246 section 7.2.4 states that the initiator of the closure need
+	not wait for the remote to response before closing the read-half.
+
+	closes #3633
+
+2013-10-22 21:11 -0700  Brendan Cully  <brendan@kublai.com>  (2ab618f4f6b0)
+
+	* create stable branch
+
+2013-10-21 11:58 -0700  Michael Elkins  <me@sigpipe.org>  (0d9d7c486331)
+
+	* doc/manual.xml.head: add note about use of ! ~Q in send-hook when
+	paired with reply-hook.
+
+2013-10-19 11:23 -0700  Michael Elkins  <me@sigpipe.org>  (84acf5f0ce92)
+
+	* crypt-gpgme.c: remove <stdbool.h> and use "1" instead of "true".
+	closes #3657
+
+	see #3642 for the change that caused this bug.
+
+2013-10-18 14:12 -0700  Michael Elkins  <me@sigpipe.org>  (b9693e10f431)
+
+	* UPDATING: update UPDATING with 1.5.22 release date
+
+2013-10-17 22:55 -0700  Brendan Cully  <brendan@kublai.com>  (6f5fe49fdf64)
+
+	* .hgsigs: mutt-1.5.22 signed
+
+2013-10-17 22:43 -0700  Brendan Cully  <brendan@kublai.com>  (941ba77040a8)
+
+	* .hgtags: Added tag mutt-1-5-22-rel for changeset 8c5ea668e7e0
+
+2013-10-17 22:43 -0700  Brendan Cully  <brendan@kublai.com>  (8c5ea668e7e0)
+
+	* ChangeLog, VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po,
+	po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po,
+	po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po,
+	po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
+	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po: automatic post-release commit for mutt-1.5.22
+
 2013-10-16 16:04 +0000  Michael Elkins  <me@sigpipe.org>  (5648f4b2ed44)
 
 	* rfc822.c: Rework logic to avoid advancing list pointer inside the

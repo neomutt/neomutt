@@ -89,7 +89,7 @@ Specify a blind-carbon-copy (BCC) recipient
 .IP "-c \fIaddress\fP"
 Specify a carbon-copy (CC) recipient
 .IP "-d \fIlevel\fP"
-If mutt was complied with +DEBUG log debugging output to ~/.muttdebug0.
+If mutt was compiled with +DEBUG log debugging output to ~/.muttdebug0.
 \fILevel\fP can range from 1-5 and effects verbosity. A value of 2 is
 recommended.
 .IP "-D"
