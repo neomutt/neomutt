@@ -70,6 +70,25 @@ static ADDRESS *result_to_addr (QUERY *r)
   return tmp;
 }
 
+static void free_query (QUERY **query)
+{
+  QUERY *p;
+
+  if (!query)
+    return;
+
+  while (*query)
+  {
+    p = *query;
+    *query = (*query)->next;
+
+    rfc822_free_address (&p->addr);
+    FREE (&p->name);
+    FREE (&p->other);
+    FREE (&p);
+  }
+}
+
 static QUERY *run_query (char *s, int quiet)
 {
   FILE *fp;
@@ -258,6 +277,7 @@ int mutt_query_complete (char *buf, size_t buflen)
       buf[0] = '\0';
       rfc822_write_address (buf, buflen, tmpa, 0);
       rfc822_free_address (&tmpa);
+      free_query (&results);
       mutt_clear_error ();
       return (0);
     }
@@ -348,16 +368,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
 
 	      if (op == OP_QUERY)
 	      {
-		queryp = results;
-		while (queryp)
-		{
-		  rfc822_free_address (&queryp->addr);
-		  FREE (&queryp->name);
-		  FREE (&queryp->other);
-		  results = queryp->next;
-		  FREE (&queryp);
-		  queryp = results;
-		}
+                free_query (&results);
 		results = newresults;
 		FREE (&QueryTable);
 	      }
@@ -520,16 +531,7 @@ static void query_menu (char *buf, size_t buflen, QUERY *results, int retbuf)
       
     }
 
-    queryp = results;
-    while (queryp)
-    {
-      rfc822_free_address (&queryp->addr);
-      FREE (&queryp->name);
-      FREE (&queryp->other);
-      results = queryp->next;
-      FREE (&queryp);
-      queryp = results;
-    }
+    free_query (&results);
     FREE (&QueryTable);
     
     /* tell whoever called me to redraw the screen when I return */
