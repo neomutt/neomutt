@@ -53,6 +53,9 @@
 syntax: glob
 .deps
 Makefile
+GPATH
+GRTAGS
+GTAGS
 TAGS
 cscope.*
 *.swp
