@@ -911,12 +911,15 @@ static int
 hcache_open_tc (struct header_cache* h, const char* path)
 {
   h->db = tcbdbnew();
+  if (!h->db)
+      return -1;
   if (option(OPTHCACHECOMPRESS))
     tcbdbtune(h->db, 0, 0, 0, -1, -1, BDBTDEFLATE);
   if (tcbdbopen(h->db, path, BDBOWRITER | BDBOCREAT))
     return 0;
   else
   {
+    dprint(2, (debugfile, "tcbdbopen %s failed: %s\n", path, errno));
     tcbdbdel(h->db);
     return -1;
   }
@@ -928,7 +931,8 @@ mutt_hcache_close(header_cache_t *h)
   if (!h)
     return;
 
-  tcbdbclose(h->db);
+  if (!tcbdbclose(h->db))
+      dprint (2, (debugfile, "tcbdbclose failed for %s: %d\n", h->folder, errno));
   tcbdbdel(h->db);
   FREE(&h->folder);
   FREE(&h);
