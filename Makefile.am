@@ -1,5 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 ## Use aclocal -I m4; automake --foreign
+include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5

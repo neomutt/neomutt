@@ -1,3 +1,5 @@
+include $(top_srcdir)/flymake.am
+
 subdir = doc
 
 DSLROOT = @DSLROOT@
