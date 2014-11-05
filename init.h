@@ -2990,14 +2990,16 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This variable specifies whether to attempt to use SSLv2 in the
-  ** SSL authentication process.
+  ** SSL authentication process. Note that SSLv2 and SSLv3 are now
+  ** considered fundamentally insecure and are no longer recommended.
   */
 # endif /* defined USE_SSL_OPENSSL */
-  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 1 },
+  { "ssl_use_sslv3", DT_BOOL, R_NONE, OPTSSLV3, 0 },
   /*
   ** .pp
   ** This variable specifies whether to attempt to use SSLv3 in the
-  ** SSL authentication process.
+  ** SSL authentication process. Note that SSLv2 and SSLv3 are now
+  ** considered fundamentally insecure and are no longer recommended.
   */
   { "ssl_use_tlsv1", DT_BOOL, R_NONE, OPTTLSV1, 1 },
   /*
