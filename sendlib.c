@@ -1814,7 +1814,14 @@ static int write_one_header (FILE *fp, int pfxw, int max, int wraplen,
     {
       tagbuf = mutt_substrdup (start, t);
       /* skip over the colon separating the header field name and value */
-      t = skip_email_wsp(t + 1);
+      ++t;
+
+      /* skip over any leading whitespace (WSP, as defined in RFC5322)
+       * NOTE: skip_email_wsp() does the wrong thing here.
+       *       See tickets 3609 and 3716. */
+      while (*t == ' ' || *t == '\t')
+        t++;
+
       valbuf = mutt_substrdup (t, end);
     }
     dprint(4,(debugfile,"mwoh: buf[%s%s] too long, "
