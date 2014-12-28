@@ -247,7 +247,6 @@ WHERE char *PgpGetkeysCommand;
 
 /*-- formerly in smime.h --*/
 WHERE char *SmimeDefaultKey;
-WHERE char *SmimeCryptAlg;
 WHERE short SmimeTimeout;
 WHERE char *SmimeCertificates;
 WHERE char *SmimeKeys;
