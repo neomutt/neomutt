@@ -286,7 +286,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   if (rc || !buf[0])
     return;
 
-  if (!(adr = rfc822_parse_adrlist (adr, buf)))
+  if (!(adr = mutt_parse_adrlist (adr, buf)))
   {
     mutt_error _("Error parsing address!");
     return;
