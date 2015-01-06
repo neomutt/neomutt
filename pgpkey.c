@@ -985,13 +985,13 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
       pgp_remove_key (&matches, k);
 
     pgp_free_key (&matches);
-    if (!p[l-1])
+    if (l && !p[l-1])
       p[l-1] = '!';
     return k;
   }
 
 out:
-  if (!p[l-1])
+  if (l && !p[l-1])
     p[l-1] = '!';
   return NULL;
 }
