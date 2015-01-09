@@ -139,7 +139,9 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
   do
   {
     CLEARLINE (LINES-1);
+    SETCOLOR (MT_COLOR_PROMPT);
     addstr ((char *)field); /* cast to get around bad prototypes */
+    NORMAL_COLOR;
     mutt_refresh ();
     getyx (stdscr, y, x);
     ret = _mutt_enter_string (buf, buflen, y, x, complete, multiple, files, numfiles, es);
@@ -225,8 +227,10 @@ int mutt_yesorno (const char *msg, int def)
   answer_string_len = mutt_strwidth (answer_string);
   /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
   msglen = mutt_wstr_trunc (msg, 4*COLS, COLS - answer_string_len, NULL);
+  SETCOLOR (MT_COLOR_PROMPT);
   addnstr (msg, msglen);
   addstr (answer_string);
+  NORMAL_COLOR;
   FREE (&answer_string);
 
   FOREVER
@@ -647,7 +651,9 @@ int mutt_multi_choice (char *prompt, char *letters)
   int choice;
   char *p;
 
+  SETCOLOR (MT_COLOR_PROMPT);
   mvaddstr (LINES - 1, 0, prompt);
+  NORMAL_COLOR;
   clrtoeol ();
   FOREVER
   {

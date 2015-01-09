@@ -233,7 +233,7 @@ objects.  Valid objects are:
 .BR hdrdefault ", " index ", " indicator ", " markers ", "
 .BR message ", " normal ", " quoted ", " quoted\fIN\fP ", "
 .BR search ", " signature ", " status ", " tilde ", " tree ", "
-.BR underline .
+.BR underline ", " prompt .
 The
 .BR body " and " header
 objects allow you to restrict the colorization to a regular
