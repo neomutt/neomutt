@@ -2696,6 +2696,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   int r, need_buffy_cleanup = 0;
   struct stat st;
   char buf[SHORT_STRING];
+  int onm_flags;
 
   if (post)
     set_noconv_flags (hdr->content, 1);
@@ -2725,7 +2726,10 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   }
 
   hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
-  if ((msg = mx_open_new_message (&f, hdr, M_ADD_FROM)) == NULL)
+  onm_flags = M_ADD_FROM;
+  if (post)
+    onm_flags |= M_SET_DRAFT;
+  if ((msg = mx_open_new_message (&f, hdr, onm_flags)) == NULL)
   {
     mx_close_mailbox (&f, NULL);
     return (-1);

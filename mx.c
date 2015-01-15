@@ -1255,6 +1255,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     msg->flags.flagged = hdr->flagged;
     msg->flags.replied = hdr->replied;
     msg->flags.read    = hdr->read;
+    msg->flags.draft   = (flags & M_SET_DRAFT) ? 1 : 0;
     msg->received = hdr->received;
   }
 
