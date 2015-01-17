@@ -1135,7 +1135,10 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 
   /* Calculate the current hcache version from dynamic configuration */
   if (hcachever == 0x0) {
-    unsigned char digest[16];
+    union {
+      unsigned char charval[16];
+      unsigned int intval;
+    } digest;
     struct md5_ctx ctx;
     SPAM_LIST *spam;
     RX_LIST *nospam;
@@ -1161,8 +1164,8 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     }
 
     /* Get a hash and take its bytes as an (unsigned int) hash version */
-    md5_finish_ctx(&ctx, digest);
-    hcachever = *((unsigned int *)digest);
+    md5_finish_ctx(&ctx, digest.charval);
+    hcachever = digest.intval;
   }
 
   h->db = NULL;
