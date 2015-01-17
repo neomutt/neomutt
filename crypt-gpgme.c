@@ -248,12 +248,19 @@ static crypt_key_t *crypt_copy_key (crypt_key_t *key)
    to NULL. */
 static void crypt_free_key (crypt_key_t **keylist)
 {
+  crypt_key_t *k;
+
+  if (!keylist)
+    return;
+
   while (*keylist)
-    {
-      crypt_key_t *k = (*keylist)->next;
-      FREE (&k);
-      *keylist = k;
-    }
+  {
+    k = *keylist;
+    *keylist = (*keylist)->next;
+
+    gpgme_key_unref (k->kobj);
+    FREE (&k);
+  }
 }
 
 /* Return trute when key K is valid. */
@@ -556,6 +563,28 @@ static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
 }
 
 
+static void free_recipient_set (gpgme_key_t **p_rset)
+{
+  gpgme_key_t *rset, k;
+
+  if (!p_rset)
+    return;
+
+  rset = *p_rset;
+  if (!rset)
+    return;
+
+  while (*rset)
+  {
+    k = *rset;
+    gpgme_key_unref (k);
+    rset++;
+  }
+
+  FREE (p_rset);	/* __FREE_CHECKED__ */
+}
+
+
 /* Create a GpgmeRecipientSet from the keys in the string KEYLIST.
    The keys must be space delimited. */
 static gpgme_key_t *create_recipient_set (const char *keylist,
@@ -608,7 +637,9 @@ static gpgme_key_t *create_recipient_set (const char *keylist,
 	      {
 		mutt_error (_("error adding recipient `%s': %s\n"),
 			    buf, gpgme_strerror (err));
-		FREE (&rset);
+		rset[rset_n] = NULL;
+		free_recipient_set (&rset);
+		gpgme_release (context);
 		return NULL;
 	      }
 	  }
@@ -651,8 +682,8 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
   err = gpgme_op_keylist_next (listctx, &key2);
   if (!err)
     {
-      gpgme_key_release (key);
-      gpgme_key_release (key2);
+      gpgme_key_unref (key);
+      gpgme_key_unref (key2);
       gpgme_release (listctx);
       mutt_error (_("ambiguous specification of secret key `%s'\n"),
                   signid);
@@ -663,7 +694,7 @@ static int set_signer (gpgme_ctx_t ctx, int for_smime)
 
   gpgme_signers_clear (ctx);
   err = gpgme_signers_add (ctx, key);
-  gpgme_key_release (key);
+  gpgme_key_unref (key);
   if (err)
     {
       mutt_error (_("error setting secret key `%s': %s\n"),
@@ -834,6 +865,7 @@ static BODY *sign_message (BODY *a, int use_smime)
   if (set_signer (ctx, use_smime))
     {
       gpgme_data_release (signature);
+      gpgme_data_release (message);
       gpgme_release (ctx);
       return NULL;
     }
@@ -962,13 +994,13 @@ BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign)
   plaintext = body_to_data_object (a, 0);
   if (!plaintext)
     {
-      FREE (&rset);
+      free_recipient_set (&rset);
       return NULL;
     }
   
   outfile = encrypt_gpgme_object (plaintext, rset, 0, sign);
   gpgme_data_release (plaintext);
-  FREE (&rset);
+  free_recipient_set (&rset);
   if (!outfile)
       return NULL;
 
@@ -1021,13 +1053,13 @@ BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist)
   plaintext = body_to_data_object (a, 0);
   if (!plaintext)
     {
-      FREE (&rset);
+      free_recipient_set (&rset);
       return NULL;
     }
 
   outfile = encrypt_gpgme_object (plaintext, rset, 1, 0);
   gpgme_data_release (plaintext);
-  FREE (&rset);
+  free_recipient_set (&rset);
   if (!outfile) 
       return NULL;
 
@@ -1343,7 +1375,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 
       if (signature_key)
 	{
-	  gpgme_key_release (signature_key);
+	  gpgme_key_unref (signature_key);
 	  signature_key = NULL;
 	}
       
@@ -1421,7 +1453,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
       }
 
       if (key != signature_key)
-	gpgme_key_release (key);
+	gpgme_key_unref (key);
     }
 
   return anybad ? 1 : anywarn ? 2 : 0;
@@ -1462,6 +1494,9 @@ static int verify_one (BODY *sigbdy, STATE *s,
   state_attach_puts (_("[-- Begin signature information --]\n"), s);
 
   err = gpgme_op_verify (ctx, signature, message, NULL);
+  gpgme_data_release (message);
+  gpgme_data_release (signature);
+
   mutt_need_hard_redraw ();
   if (err)
     {
@@ -1479,7 +1514,7 @@ static int verify_one (BODY *sigbdy, STATE *s,
 
       if (signature_key)
 	{
-	  gpgme_key_release (signature_key);
+	  gpgme_key_unref (signature_key);
 	  signature_key = NULL;
 	}
 
@@ -1967,7 +2002,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
       subkey = subkey->next;
       more = 1;
     }
-    gpgme_key_release (key);
+    gpgme_key_unref (key);
   }
   if (gpg_err_code (err) != GPG_ERR_EOF)
   {
@@ -2354,6 +2389,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                       FREE (&tmpfname);
                     }
                 }
+              gpgme_data_release (plaintext);
               gpgme_release (ctx);
             }
       
@@ -2405,6 +2441,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                 state_attach_puts (_("[-- END PGP SIGNED MESSAGE --]\n"), s);
             }
           
+          gpgme_data_release (armored_data);
           if (pgpout)
             {
               safe_fclose (&pgpout);
@@ -3515,7 +3552,7 @@ verify_key (crypt_key_t *key)
     {
       putc ('\n', fp);
       err = gpgme_op_keylist_start (listctx, s, 0);
-      gpgme_key_release (k);
+      gpgme_key_unref (k);
       k = NULL;
       if (!err)
 	err = gpgme_op_keylist_next (listctx, &k);
@@ -3538,7 +3575,7 @@ verify_key (crypt_key_t *key)
     }
 
  leave:
-  gpgme_key_release (k);
+  gpgme_key_unref (k);
   gpgme_release (listctx);
   safe_fclose (&fp);
   mutt_clear_error ();
@@ -3706,12 +3743,14 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
             {
               k = safe_calloc (1, sizeof *k);
               k->kobj = key;
+              gpgme_key_ref (k->kobj);
               k->idx = idx;
               k->uid = uid->uid;
               k->flags = flags;
               *kend = k;
               kend = &k->next;
             }
+          gpgme_key_unref (key);
         }
       if (gpg_err_code (err) != GPG_ERR_EOF)
         mutt_error (_("gpgme_op_keylist_next failed: %s"), gpgme_strerror (err));
@@ -3747,12 +3786,14 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
             {
               k = safe_calloc (1, sizeof *k);
               k->kobj = key;
+              gpgme_key_ref (k->kobj);
               k->idx = idx;
               k->uid = uid->uid;
               k->flags = flags;
               *kend = k;
               kend = &k->next;
             }
+          gpgme_key_unref (key);
         }
       if (gpg_err_code (err) != GPG_ERR_EOF)
         mutt_error (_("gpgme_op_keylist_next failed: %s"), gpgme_strerror (err));
@@ -4596,7 +4637,7 @@ static int verify_sender (HEADER *h, gpgme_protocol_t protocol)
 
   if (signature_key)
   {
-    gpgme_key_release (signature_key);
+    gpgme_key_unref (signature_key);
     signature_key = NULL;
   }
 
