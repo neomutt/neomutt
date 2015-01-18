@@ -179,6 +179,34 @@ static const char *crypt_keyid (crypt_key_t *k)
   return s;
 }
 
+/* Return the long keyID for the key K. */
+static const char *crypt_long_keyid (crypt_key_t *k)
+{
+  const char *s = "????????????????";
+
+  if (k->kobj && k->kobj->subkeys)
+    {
+      s = k->kobj->subkeys->keyid;
+    }
+
+  return s;
+}
+
+/* Return the short keyID for the key K. */
+static const char *crypt_short_keyid (crypt_key_t *k)
+{
+  const char *s = "????????";
+
+  if (k->kobj && k->kobj->subkeys)
+    {
+      s = k->kobj->subkeys->keyid;
+      if (strlen (s) == 16)
+        s += 8;
+    }
+
+  return s;
+}
+
 /* Return the hexstring fingerprint from the key K. */
 static const char *crypt_fpr (crypt_key_t *k)
 {
@@ -4171,6 +4199,7 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
   crypt_key_t *matches = NULL;
   crypt_key_t **matches_endp = &matches;
   crypt_key_t *k;
+  const char *ps, *pl;
 
   mutt_message (_("Looking for keys matching \"%s\"..."), p);
 
@@ -4182,6 +4211,19 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
 
   if (!keys)
     return NULL;
+
+  /* User input may be short or long key ID, independent of OPTPGPLONGIDS.
+   * crypt_key_t->keyid should always contain a long key ID without 0x.
+   * Strip leading "0x" before loops so it doesn't have to be done over and
+   * over again, and prepare pl and ps to simplify logic in the loop's inner
+   * condition.
+   */
+  pl = (!mutt_strncasecmp (p, "0x", 2) ? p + 2 : p);
+  ps = (mutt_strlen (pl) == 16 ? pl + 8 : pl);
+
+  /* If ps != pl it means a long ID (or name of 16 characters) was given, do
+   * not attempt to match short IDs then. Also, it is unnecessary to try to
+   * match pl against long IDs if ps == pl as pl could not be a long ID. */
   
   for (k = keys; k; k = k->next)
     {
@@ -4189,15 +4231,11 @@ static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
         continue;
 
       dprint (5, (debugfile, "crypt_getkeybystr: matching \"%s\" against "
-                  "key %s, \"%s\": ",  p, crypt_keyid (k), k->uid));
+                  "key %s, \"%s\": ",  p, crypt_long_keyid (k), k->uid));
 
       if (!*p
-          || !mutt_strcasecmp (p, crypt_keyid (k))
-          || (!mutt_strncasecmp (p, "0x", 2)
-              && !mutt_strcasecmp (p + 2, crypt_keyid (k)))
-          || (option (OPTPGPLONGIDS)
-              && !mutt_strncasecmp (p, "0x", 2) 
-              && !mutt_strcasecmp (p + 2, crypt_keyid (k) + 8))
+          || (ps != pl && mutt_strcasecmp (pl, crypt_long_keyid (k)) == 0)
+          || (ps == pl && mutt_strcasecmp (ps, crypt_short_keyid (k)) == 0)
           || mutt_stristr (k->uid, p))
         {
           crypt_key_t *tmp;
