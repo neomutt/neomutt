@@ -117,10 +117,31 @@ int pgp_use_gpg_agent (void)
   return 1;
 }
 
-char *pgp_keyid(pgp_key_t k)
+static pgp_key_t _pgp_parent(pgp_key_t k)
 {
   if((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPTPGPIGNORESUB))
     k = k->parent;
+
+  return k;
+}
+
+char *pgp_long_keyid(pgp_key_t k)
+{
+  k = _pgp_parent(k);
+
+  return k->keyid;
+}
+
+char *pgp_short_keyid(pgp_key_t k)
+{
+  k = _pgp_parent(k);
+
+  return k->keyid + 8;
+}
+
+char *pgp_keyid(pgp_key_t k)
+{
+  k = _pgp_parent(k);
 
   return _pgp_keyid(k);
 }

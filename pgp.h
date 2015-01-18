@@ -35,6 +35,8 @@ const char *pgp_micalg (const char *fname);
 
 char *_pgp_keyid (pgp_key_t);
 char *pgp_keyid (pgp_key_t);
+char *pgp_short_keyid (pgp_key_t);
+char *pgp_long_keyid (pgp_key_t);
 
 
 int mutt_check_pgp (HEADER * h);
