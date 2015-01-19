@@ -955,30 +955,45 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   pl = (!mutt_strncasecmp (p, "0x", 2) ? p + 2 : p);
   ps = (mutt_strlen (pl) == 16 ? pl + 8 : pl);
 
-  /* If ps != pl it means a long ID (or name of 16 characters) was given, do
-   * not attempt to match short IDs then. Also, it is unnecessary to try to
-   * match pl against long IDs if ps == pl as pl could not be a long ID. */
-
   for (k = keys; k; k = kn)
   {
     kn = k->next;
     if (abilities && !(k->flags & abilities))
       continue;
 
+    /* This shouldn't happen, but keys without any addresses aren't selectable
+     * in pgp_select_key().
+     */
+    if (!k->address)
+      continue;
+
     match = 0;
 
-    for (a = k->address; a; a = a->next)
+    dprint (5, (debugfile, "pgp_getkeybystr: matching \"%s\" against key %s:\n",
+                p, pgp_long_keyid (k)));
+
+    /* If ps != pl it means a long ID (or name of 16 characters) was given, do
+     * not attempt to match short IDs then. Also, it is unnecessary to try to
+     * match pl against long IDs if ps == pl as pl could not be a long ID. */
+    if (!*p ||
+        (ps != pl && mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0) ||
+        (ps == pl && mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0))
     {
-      dprint (5, (debugfile, "pgp_getkeybystr: matching \"%s\" against key %s, \"%s\": ",
-                  p, pgp_long_keyid (k), NONULL (a->addr)));
-      if (!*p ||
-          (ps != pl && mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0) ||
-          (ps == pl && mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0) ||
-	  mutt_stristr (a->addr, p))
+      dprint (5, (debugfile, "\t\tmatch.\n"));
+      match = 1;
+    }
+    else
+    {
+      for (a = k->address; a; a = a->next)
       {
-	dprint (5, (debugfile, "match.\n"));
-	match = 1;
-	break;
+        dprint (5, (debugfile, "pgp_getkeybystr: matching \"%s\" against key %s, \"%s\":\n",
+                    p, pgp_long_keyid (k), NONULL (a->addr)));
+        if (mutt_stristr (a->addr, p))
+        {
+          dprint (5, (debugfile, "\t\tmatch.\n"));
+          match = 1;
+          break;
+        }
       }
     }
 
