@@ -129,12 +129,6 @@ http://dev.mutt.org/hg/mutt/. You can get a fresh clone via:
 
   $ hg clone http://dev.mutt.org/hg/mutt/ mutt
 
-As a result of CVS-to-Mercurial conversion, you need to do:
-
-  $ hg update -C HEAD
-
-in the cloned directory.
-
 Once you've checked out a copy of the source, or changed your
 automake version, you'll need to run the script called './prepare' that
 is in the root directory.  The script does all the automake/autoconf
