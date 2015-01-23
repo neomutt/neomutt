@@ -539,21 +539,27 @@ static int data_object_to_stream (gpgme_data_t data, FILE *fp)
   return 0;
 }
 
-/* Copy a data object to a newly created temporay file and return that
-   filename. Caller must free.  With RET_FP not NULL, don't close the
-   stream but return it there. */
-static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
+/* Copy a data object to a temporary file.
+ * The tempfile name may be optionally passed in.
+ * If ret_fp is passed in, the file will be rewound, left open, and returned
+ * via that parameter.
+ * The tempfile name is returned, and must be freed.
+ */
+static char *data_object_to_tempfile (gpgme_data_t data, char *tempf, FILE **ret_fp)
 {
   int err;
-  char tempfile[_POSIX_PATH_MAX];
+  char tempfb[_POSIX_PATH_MAX];
   FILE *fp;
   size_t nread = 0;
 
-  mutt_mktemp (tempfile, sizeof (tempfile));
-  fp = safe_fopen (tempfile, "w+");
-  if (!fp)
+  if (!tempf)
     {
-      mutt_perror (tempfile);
+      mutt_mktemp (tempfb, sizeof (tempfb));
+      tempf = tempfb;
+    }
+  if ((fp = safe_fopen (tempf, tempf == tempfb ? "w+" : "a+")) == NULL)
+    {
+      mutt_perror _("Can't create temporary file");
       return NULL;
     }
 
@@ -567,9 +573,9 @@ static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
         {
           if (fwrite (buf, nread, 1, fp) != 1)
             {
-              mutt_perror (tempfile);
+              mutt_perror (tempf);
               safe_fclose (&fp);
-              unlink (tempfile);
+              unlink (tempf);
               return NULL;
             }
         }
@@ -581,13 +587,13 @@ static char *data_object_to_tempfile (gpgme_data_t data, FILE **ret_fp)
   if (nread == -1)
     {
       mutt_error (_("error reading data object: %s\n"), gpgme_strerror (err));
-      unlink (tempfile);
+      unlink (tempf);
       safe_fclose (&fp);
       return NULL;
     }
   if (ret_fp)
     *ret_fp = fp;
-  return safe_strdup (tempfile);
+  return safe_strdup (tempf);
 }
 
 
@@ -806,7 +812,7 @@ static char *encrypt_gpgme_object (gpgme_data_t plaintext, gpgme_key_t *rset,
 
   gpgme_release (ctx);
 
-  outfile = data_object_to_tempfile (ciphertext, NULL);
+  outfile = data_object_to_tempfile (ciphertext, NULL, NULL);
   gpgme_data_release (ciphertext);
   return outfile;
 }
@@ -932,7 +938,7 @@ static BODY *sign_message (BODY *a, int use_smime)
       return NULL;
   }
 
-  sigfile = data_object_to_tempfile (signature, NULL);
+  sigfile = data_object_to_tempfile (signature, NULL, NULL);
   gpgme_data_release (signature);
   if (!sigfile)
     {
@@ -2212,7 +2218,7 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
   char *fname;
   FILE *fp;
 
-  fname = data_object_to_tempfile (data, &fp);
+  fname = data_object_to_tempfile (data, NULL, &fp);
   if (!fname)
     return;
   unlink (fname);
@@ -2405,7 +2411,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                                            "information --]\n\n"), s);
                     }
 
-                  tmpfname = data_object_to_tempfile (plaintext, &pgpout);
+                  tmpfname = data_object_to_tempfile (plaintext, NULL, &pgpout);
                   if (!tmpfname)
                     {
                       pgpout = NULL;
@@ -4461,6 +4467,63 @@ char *pgp_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 char *smime_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 {
   return find_keys (to, cc, bcc, APPLICATION_SMIME);
+}
+
+BODY *pgp_gpgme_make_key_attachment (char *tempf)
+{
+  crypt_key_t *key = NULL;
+  gpgme_ctx_t context = NULL;
+  gpgme_key_t export_keys[2];
+  gpgme_data_t keydata = NULL;
+  gpgme_error_t err;
+  BODY *att = NULL;
+  char buff[LONG_STRING];
+  struct stat sb;
+
+  unset_option (OPTPGPCHECKTRUST);
+
+  key = crypt_ask_for_key (_("Please enter the key ID: "), NULL, 0,
+                           APPLICATION_PGP, NULL);
+  if (!key)
+    goto bail;
+  export_keys[0] = key->kobj;
+  export_keys[1] = NULL;
+
+  context = create_gpgme_context (0);
+  gpgme_set_armor (context, 1);
+  keydata = create_gpgme_data ();
+  err = gpgme_op_export_keys (context, export_keys, 0, keydata);
+  if (err != GPG_ERR_NO_ERROR)
+  {
+    mutt_error (_("Error exporting key: %s\n"), gpgme_strerror (err));
+    mutt_sleep (1);
+    goto bail;
+  }
+
+  tempf = data_object_to_tempfile (keydata, tempf, NULL);
+  if (!tempf)
+    goto bail;
+
+  att = mutt_new_body ();
+  /* tempf is a newly allocated string, so this is correct: */
+  att->filename = tempf;
+  att->unlink = 1;
+  att->use_disp = 0;
+  att->type = TYPEAPPLICATION;
+  att->subtype = safe_strdup ("pgp-keys");
+  snprintf (buff, sizeof (buff), _("PGP Key 0x%s."), crypt_keyid (key));
+  att->description = safe_strdup (buff);
+  mutt_update_encoding (att);
+
+  stat (tempf, &sb);
+  att->length = sb.st_size;
+
+bail:
+  crypt_free_key (&key);
+  gpgme_data_release (keydata);
+  gpgme_release (context);
+
+  return att;
 }
 
 /*

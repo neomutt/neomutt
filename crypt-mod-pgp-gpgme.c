@@ -95,6 +95,11 @@ static BODY *crypt_mod_pgp_encrypt_message (BODY *a, char *keylist, int sign)
   return pgp_gpgme_encrypt_message (a, keylist, sign);
 }
 
+static BODY *crypt_mod_pgp_make_key_attachment (char *tempf)
+{
+  return pgp_gpgme_make_key_attachment (tempf);
+}
+
 static void crypt_mod_pgp_set_sender (const char *sender)
 {
   gpgme_set_sender (sender);
@@ -118,7 +123,7 @@ struct crypt_module_specs crypt_mod_pgp_gpgme =
 
       /* PGP specific.  */
       crypt_mod_pgp_encrypt_message,
-      NULL,			/* pgp_make_key_attachment, */
+      crypt_mod_pgp_make_key_attachment,
       crypt_mod_pgp_check_traditional,
       NULL, 			/* pgp_traditional_encryptsign  */
       NULL, /* pgp_invoke_getkeys  */
