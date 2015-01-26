@@ -958,7 +958,7 @@ int mutt_charlen (const char *s, int *width)
 
 /*
  * mutt_strwidth is like mutt_strlen except that it returns the width
- * refering to the number of characters cells.
+ * referring to the number of character cells.
  */
 
 int mutt_strwidth (const char *s)

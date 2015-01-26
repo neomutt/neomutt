@@ -163,7 +163,7 @@ AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]),
 ])
  
 if test x$have_smime != xno ; then
-	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want clasic S/MIME support.])
+	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
 	SMIMEAUX_TARGET="smime_keys"
 fi

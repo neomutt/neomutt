@@ -280,7 +280,7 @@ Solaris 2.6
  	For the real fix, applying Sun patches # 105490-05 (linker
 	patch) and # 105210-17 (libc and malloc patch) from
 	sunsolve.sun.com has been reported to stop these problems
-	from occuring.
+	from occurring.
 
 Linux
 

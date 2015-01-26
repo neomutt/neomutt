@@ -97,7 +97,7 @@ each of these, you use the following:
     openssl s_client -host <imap server> -port <port> -verify -debug -no_ssl2
     openssl s_client -host <imap server> -port <port> -verify -debug -no_ssl3
 
-You can also combine the options until you get a successfull connect.  Once
+You can also combine the options until you get a successful connect.  Once
 you know which options do not work, you can set the variables for non-working
 protocols to know.  The variables for the protocols are ssl_use_tlsv1, 
 ssl_use_sslv2, and ssl_use_sslv3.

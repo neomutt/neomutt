@@ -547,7 +547,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
    * IMAP server doesn't know the message has been \Seen. So we capture
    * the server's notion of 'read' and if it differs from the message info
    * picked up in mutt_read_rfc822_header, we mark the message (and context
-   * changed). Another possiblity: ignore Status on IMAP?*/
+   * changed). Another possibility: ignore Status on IMAP?*/
   read = h->read;
   newenv = mutt_read_rfc822_header (msg->fp, h, 0, 0);
   mutt_merge_envelopes(h->env, &newenv);

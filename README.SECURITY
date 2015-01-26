@@ -19,7 +19,7 @@ While we don't completely agree that this is an actual MUA problem
 
 - Backticks are handled specially when preparing % expandos for
   mailcap entries.  This fix will keep the current problem from
-  occuring, but we are sure there are other possible mailcap entries
+  occurring, but we are sure there are other possible mailcap entries
   where this doesn't help.
 
 - We have added a configuration variable named $mailcap_sanitize,
