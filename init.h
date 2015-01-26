@@ -1970,6 +1970,8 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** If \fIset\fP, mutt will use a possibly-running \fCgpg-agent(1)\fP process.
+  ** Note that as of version 2.1, GnuPG no longer exports GPG_AGENT_INFO, so
+  ** mutt no longer verifies if the agent is running.
   ** (PGP only)
   */
   { "pgp_verify_command", 	DT_STR, R_NONE, UL &PgpVerifyCommand, 0},

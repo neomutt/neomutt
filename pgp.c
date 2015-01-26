@@ -108,7 +108,8 @@ int pgp_use_gpg_agent (void)
 {
   char *tty;
 
-  if (!option (OPTUSEGPGAGENT) || !getenv ("GPG_AGENT_INFO"))
+  /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
+  if (!option (OPTUSEGPGAGENT))
     return 0;
 
   if ((tty = ttyname(0)))

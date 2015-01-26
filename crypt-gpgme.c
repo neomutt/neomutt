@@ -4548,27 +4548,36 @@ static void init_common(void)
   }
 }
 
-/* Initialization.  */
-static void init_gpgme (void)
+static void init_pgp (void)
 {
-  /* Make sure that gpg-agent is running.  */
-  if (! getenv ("GPG_AGENT_INFO"))
-    {
-      mutt_error (_("\nUsing GPGME backend, although no gpg-agent is running"));
-      if (mutt_any_key_to_continue (NULL) == -1)
-	mutt_exit(1);
-    }
+  if (gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP) != GPG_ERR_NO_ERROR)
+  {
+    mutt_error (_("GPGME: OpenPGP protocol not available"));
+    if (mutt_any_key_to_continue (NULL) == -1)
+      mutt_exit(1);
+  }
+}
+
+static void init_smime (void)
+{
+  if (gpgme_engine_check_version (GPGME_PROTOCOL_CMS) != GPG_ERR_NO_ERROR)
+  {
+    mutt_error (_("GPGME: CMS protocol not available"));
+    if (mutt_any_key_to_continue (NULL) == -1)
+      mutt_exit(1);
+  }
 }
 
 void pgp_gpgme_init (void)
 {
-  init_common();
-  init_gpgme ();
+  init_common ();
+  init_pgp ();
 }
 
 void smime_gpgme_init (void)
 {
-  init_common();
+  init_common ();
+  init_smime ();
 }
 
 static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
