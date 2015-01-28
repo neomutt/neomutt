@@ -709,6 +709,13 @@ then
 
       LIBS="$LIBS -lgnutls"
       AC_CHECK_FUNCS(gnutls_priority_set_direct)
+      AC_CHECK_TYPES([gnutls_certificate_credentials_t,
+                      gnutls_certificate_status_t,
+                      gnutls_datum_t,
+                      gnutls_digest_algorithm_t,
+                      gnutls_session_t,
+                      gnutls_transport_ptr_t,
+                      gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
 
       LIBS="$saved_LIBS"
       MUTTLIBS="$MUTTLIBS -lgnutls"
