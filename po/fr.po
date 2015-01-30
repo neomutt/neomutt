@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-01-27 00:42+0100\n"
-"PO-Revision-Date: 2015-01-27 00:47+0100\n"
+"POT-Creation-Date: 2015-01-30 14:12+0100\n"
+"PO-Revision-Date: 2015-01-30 14:15+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -60,7 +60,7 @@ msgstr "Sélectionner"
 
 #. __STRCAT_CHECKED__
 #: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:3941 curs_main.c:489
-#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:956 pager.c:1630 pgpkey.c:522
+#: mutt_ssl.c:1034 mutt_ssl_gnutls.c:987 pager.c:1630 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:425
 msgid "Help"
 msgstr "Aide"
@@ -1050,7 +1050,7 @@ msgstr "Erreur : le déchiffrage/vérification a échoué : %s\n"
 msgid "Error: copy data failed\n"
 msgstr "Erreur : la copie des données a échoué\n"
 
-#: crypt-gpgme.c:2439 pgp.c:457
+#: crypt-gpgme.c:2439 pgp.c:458
 msgid ""
 "[-- BEGIN PGP MESSAGE --]\n"
 "\n"
@@ -1058,11 +1058,11 @@ msgstr ""
 "[-- DÉBUT DE MESSAGE PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2441 pgp.c:459
+#: crypt-gpgme.c:2441 pgp.c:460
 msgid "[-- BEGIN PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- DÉBUT DE BLOC DE CLÉ PUBLIQUE PGP --]\n"
 
-#: crypt-gpgme.c:2444 pgp.c:461
+#: crypt-gpgme.c:2444 pgp.c:462
 msgid ""
 "[-- BEGIN PGP SIGNED MESSAGE --]\n"
 "\n"
@@ -1070,19 +1070,19 @@ msgstr ""
 "[-- DÉBUT DE MESSAGE SIGNÉ PGP --]\n"
 "\n"
 
-#: crypt-gpgme.c:2471 pgp.c:492
+#: crypt-gpgme.c:2471 pgp.c:493
 msgid "[-- END PGP MESSAGE --]\n"
 msgstr "[-- FIN DE MESSAGE PGP --]\n"
 
-#: crypt-gpgme.c:2473 pgp.c:499
+#: crypt-gpgme.c:2473 pgp.c:500
 msgid "[-- END PGP PUBLIC KEY BLOCK --]\n"
 msgstr "[-- FIN DE BLOC DE CLÉ PUBLIQUE PGP --]\n"
 
-#: crypt-gpgme.c:2475 pgp.c:501
+#: crypt-gpgme.c:2475 pgp.c:502
 msgid "[-- END PGP SIGNED MESSAGE --]\n"
 msgstr "[-- FIN DE MESSAGE SIGNÉ PGP --]\n"
 
-#: crypt-gpgme.c:2498 pgp.c:534
+#: crypt-gpgme.c:2498 pgp.c:535
 msgid ""
 "[-- Error: could not find beginning of PGP message! --]\n"
 "\n"
@@ -1090,7 +1090,7 @@ msgstr ""
 "[-- Erreur : impossible de trouver le début du message PGP ! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2529 pgp.c:966
+#: crypt-gpgme.c:2529 pgp.c:967
 msgid ""
 "[-- Error: malformed PGP/MIME message! --]\n"
 "\n"
@@ -1098,7 +1098,7 @@ msgstr ""
 "[-- Erreur : message PGP/MIME mal formé ! --]\n"
 "\n"
 
-#: crypt-gpgme.c:2541 crypt-gpgme.c:2607 pgp.c:979
+#: crypt-gpgme.c:2541 crypt-gpgme.c:2607 pgp.c:980
 msgid "[-- Error: could not create temporary file! --]\n"
 msgstr "[-- Erreur : impossible de créer le fichier temporaire ! --]\n"
 
@@ -1110,7 +1110,7 @@ msgstr ""
 "[-- Les données suivantes sont signées et chiffrées avec PGP/MIME --]\n"
 "\n"
 
-#: crypt-gpgme.c:2554 pgp.c:988
+#: crypt-gpgme.c:2554 pgp.c:989
 msgid ""
 "[-- The following data is PGP/MIME encrypted --]\n"
 "\n"
@@ -1122,7 +1122,7 @@ msgstr ""
 msgid "[-- End of PGP/MIME signed and encrypted data --]\n"
 msgstr "[-- Fin des données signées et chiffrées avec PGP/MIME --]\n"
 
-#: crypt-gpgme.c:2577 pgp.c:1008
+#: crypt-gpgme.c:2577 pgp.c:1009
 msgid "[-- End of PGP/MIME encrypted data --]\n"
 msgstr "[-- Fin des données chiffrées avec PGP/MIME --]\n"
 
@@ -1283,7 +1283,7 @@ msgstr "gpgme_op_keylist_next a échoué : %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées."
 
-#: crypt-gpgme.c:3933 mutt_ssl.c:1032 mutt_ssl_gnutls.c:954 pgpkey.c:515
+#: crypt-gpgme.c:3933 mutt_ssl.c:1032 mutt_ssl_gnutls.c:985 pgpkey.c:515
 #: smime.c:420
 msgid "Exit  "
 msgstr "Quitter  "
@@ -1356,13 +1356,13 @@ msgid "Looking for keys matching \"%s\"..."
 msgstr "Recherche des clés correspondant à \"%s\"..."
 
 # , c-format
-#: crypt-gpgme.c:4381 pgp.c:1216
+#: crypt-gpgme.c:4381 pgp.c:1217
 #, c-format
 msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
-#: crypt-gpgme.c:4417 pgp.c:1250 smime.c:650 smime.c:775
+#: crypt-gpgme.c:4417 pgp.c:1251 smime.c:650 smime.c:775
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
@@ -1382,44 +1382,44 @@ msgstr "Erreur à l'export de la clé : %s\n"
 msgid "PGP Key 0x%s."
 msgstr "Clé PGP 0x%s."
 
-#: crypt-gpgme.c:4557
-msgid ""
-"\n"
-"Using GPGME backend, although no gpg-agent is running"
-msgstr ""
-"\n"
-"Utilisation du service GPGME, mais pas de gpg-agent qui tourne"
+#: crypt-gpgme.c:4555
+msgid "GPGME: OpenPGP protocol not available"
+msgstr "GPGME : protocole OpenPGP non disponible"
 
-#: crypt-gpgme.c:4587
+#: crypt-gpgme.c:4565
+msgid "GPGME: CMS protocol not available"
+msgstr "GPGME : protocole CMS non disponible"
+
+#: crypt-gpgme.c:4596
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear?"
 msgstr ""
 "(c)hiffrer S/MIME, (s)igner, (e)n tant que, les (d)eux, (p)gp ou en clai(r) ?"
 
-#: crypt-gpgme.c:4588
+#: crypt-gpgme.c:4597
 msgid "esabpfc"
 msgstr "csedpor"
 
-#: crypt-gpgme.c:4591
+#: crypt-gpgme.c:4600
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear?"
 msgstr ""
 "(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, s/(m)ime ou en clai(r) ?"
 
-#: crypt-gpgme.c:4592
+#: crypt-gpgme.c:4601
 msgid "esabmfc"
 msgstr "csedmor"
 
 #. sign (a)s
 #. unset_option(OPTCRYPTCHECKTRUST);
 #. sign (a)s
-#: crypt-gpgme.c:4608 pgp.c:1649 smime.c:2024 smime.c:2036
+#: crypt-gpgme.c:4617 pgp.c:1650 smime.c:2024 smime.c:2036
 msgid "Sign as: "
 msgstr "Signer en tant que : "
 
-#: crypt-gpgme.c:4734
+#: crypt-gpgme.c:4743
 msgid "Failed to verify sender"
 msgstr "Impossible de vérifier l'expéditeur"
 
-#: crypt-gpgme.c:4737
+#: crypt-gpgme.c:4746
 msgid "Failed to figure out sender"
 msgstr "Impossible de trouver l'expéditeur"
 
@@ -3149,8 +3149,8 @@ msgstr "erreur d'E/S"
 msgid "SSL failed: %s"
 msgstr "SSL a échoué : %s"
 
-#: mutt_ssl.c:416 mutt_ssl_gnutls.c:1032 mutt_ssl_gnutls.c:1067
-#: mutt_ssl_gnutls.c:1077
+#: mutt_ssl.c:416 mutt_ssl_gnutls.c:1063 mutt_ssl_gnutls.c:1098
+#: mutt_ssl_gnutls.c:1108
 msgid "Unable to get certificate from peer"
 msgstr "Impossible d'obtenir le certificat de la machine distante"
 
@@ -3165,13 +3165,13 @@ msgid "Unknown"
 msgstr "Inconnu"
 
 # , c-format
-#: mutt_ssl.c:551 mutt_ssl_gnutls.c:551
+#: mutt_ssl.c:551 mutt_ssl_gnutls.c:582
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[impossible de calculer]"
 
 # , c-format
-#: mutt_ssl.c:569 mutt_ssl_gnutls.c:574
+#: mutt_ssl.c:569 mutt_ssl_gnutls.c:605
 msgid "[invalid date]"
 msgstr "[date invalide]"
 
@@ -3201,25 +3201,25 @@ msgstr "le propriétaire du certificat ne correspond pas au nom %s"
 msgid "Certificate host check failed: %s"
 msgstr "Échec de vérification de machine : %s"
 
-#: mutt_ssl.c:978 mutt_ssl_gnutls.c:813
+#: mutt_ssl.c:978 mutt_ssl_gnutls.c:844
 msgid "This certificate belongs to:"
 msgstr "Ce certificat appartient à :"
 
-#: mutt_ssl.c:991 mutt_ssl_gnutls.c:852
+#: mutt_ssl.c:991 mutt_ssl_gnutls.c:883
 msgid "This certificate was issued by:"
 msgstr "Ce certificat a été émis par :"
 
-#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:891
+#: mutt_ssl.c:1002 mutt_ssl_gnutls.c:922
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ce certificat est valide"
 
-#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:894
+#: mutt_ssl.c:1003 mutt_ssl_gnutls.c:925
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:898
+#: mutt_ssl.c:1005 mutt_ssl_gnutls.c:929
 #, c-format
 msgid "     to %s"
 msgstr "      à %s"
@@ -3229,99 +3229,99 @@ msgstr "      à %s"
 msgid "Fingerprint: %s"
 msgstr "Empreinte : %s"
 
-#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:935
+#: mutt_ssl.c:1014 mutt_ssl_gnutls.c:966
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr "Vérification du certificat SSL (certificat %d sur %d dans la chaîne)"
 
-#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:944
+#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:975
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
-#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:945
+#: mutt_ssl.c:1023 mutt_ssl_gnutls.c:976
 msgid "roa"
 msgstr "rua"
 
-#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:949
+#: mutt_ssl.c:1027 mutt_ssl_gnutls.c:980
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
-#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:950
+#: mutt_ssl.c:1028 mutt_ssl_gnutls.c:981
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:999
+#: mutt_ssl.c:1059 mutt_ssl_gnutls.c:1030
 msgid "Warning: Couldn't save certificate"
 msgstr "Attention : le certificat n'a pas pu être sauvé"
 
-#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:1004
+#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:1035
 msgid "Certificate saved"
 msgstr "Certificat sauvé"
 
-#: mutt_ssl_gnutls.c:106 mutt_ssl_gnutls.c:133
+#: mutt_ssl_gnutls.c:137 mutt_ssl_gnutls.c:164
 msgid "Error: no TLS socket open"
 msgstr "Erreur : pas de socket TLS ouverte"
 
-#: mutt_ssl_gnutls.c:274 mutt_ssl_gnutls.c:310
+#: mutt_ssl_gnutls.c:305 mutt_ssl_gnutls.c:341
 msgid "All available protocols for TLS/SSL connection disabled"
 msgstr ""
 "Tous les protocoles disponibles pour une connexion TLS/SSL sont désactivés"
 
 # , c-format
-#: mutt_ssl_gnutls.c:418
+#: mutt_ssl_gnutls.c:449
 #, c-format
 msgid "SSL/TLS connection using %s (%s/%s/%s)"
 msgstr "Connexion SSL/TLS utilisant %s (%s/%s/%s)"
 
-#: mutt_ssl_gnutls.c:641 mutt_ssl_gnutls.c:793
+#: mutt_ssl_gnutls.c:672 mutt_ssl_gnutls.c:824
 msgid "Error initialising gnutls certificate data"
 msgstr "Erreur d'initialisation des données du certificat gnutls"
 
-#: mutt_ssl_gnutls.c:648 mutt_ssl_gnutls.c:800
+#: mutt_ssl_gnutls.c:679 mutt_ssl_gnutls.c:831
 msgid "Error processing certificate data"
 msgstr "Erreur de traitement des données du certificat"
 
-#: mutt_ssl_gnutls.c:784
+#: mutt_ssl_gnutls.c:815
 msgid "Warning: Server certificate was signed using an insecure algorithm"
 msgstr ""
 "Attention : le certificat du serveur a été signé avec un algorithme peu sûr"
 
-#: mutt_ssl_gnutls.c:903
+#: mutt_ssl_gnutls.c:934
 #, c-format
 msgid "SHA1 Fingerprint: %s"
 msgstr "Empreinte SHA1 : %s"
 
-#: mutt_ssl_gnutls.c:906
+#: mutt_ssl_gnutls.c:937
 #, c-format
 msgid "MD5 Fingerprint: %s"
 msgstr "Empreinte MD5 : %s"
 
-#: mutt_ssl_gnutls.c:911
+#: mutt_ssl_gnutls.c:942
 msgid "WARNING: Server certificate is not yet valid"
 msgstr "ATTENTION ! Le certificat du serveur n'est pas encore valide"
 
-#: mutt_ssl_gnutls.c:916
+#: mutt_ssl_gnutls.c:947
 msgid "WARNING: Server certificate has expired"
 msgstr "ATTENTION ! Le certificat du serveur a expiré"
 
-#: mutt_ssl_gnutls.c:921
+#: mutt_ssl_gnutls.c:952
 msgid "WARNING: Server certificate has been revoked"
 msgstr "ATTENTION ! Le certificat du serveur a été révoqué"
 
-#: mutt_ssl_gnutls.c:926
+#: mutt_ssl_gnutls.c:957
 msgid "WARNING: Server hostname does not match certificate"
 msgstr "ATTENTION ! Le nom du serveur ne correspond pas au certificat"
 
-#: mutt_ssl_gnutls.c:931
+#: mutt_ssl_gnutls.c:962
 msgid "WARNING: Signer of server certificate is not a CA"
 msgstr "ATTENTION ! Le signataire du certificat du serveur n'est pas un CA"
 
-#: mutt_ssl_gnutls.c:1038
+#: mutt_ssl_gnutls.c:1069
 #, c-format
 msgid "Certificate verification error (%s)"
 msgstr "Erreur de vérification du certificat (%s)"
 
-#: mutt_ssl_gnutls.c:1047
+#: mutt_ssl_gnutls.c:1078
 msgid "Certificate is not X.509"
 msgstr "Le certificat n'est pas de type X.509"
 
@@ -3655,11 +3655,11 @@ msgstr "Entrez la phrase de passe PGP :"
 msgid "PGP passphrase forgotten."
 msgstr "Phrase de passe PGP oubliée."
 
-#: pgp.c:387
+#: pgp.c:388
 msgid "[-- Error: unable to create PGP subprocess! --]\n"
 msgstr "[-- Erreur : impossible de créer le sous-processus PGP ! --]\n"
 
-#: pgp.c:421 pgp.c:678 pgp.c:882
+#: pgp.c:422 pgp.c:679 pgp.c:883
 msgid ""
 "[-- End of PGP output --]\n"
 "\n"
@@ -3667,20 +3667,20 @@ msgstr ""
 "[-- Fin de sortie PGP --]\n"
 "\n"
 
-#: pgp.c:443 pgp.c:494 pgp.c:1017
+#: pgp.c:444 pgp.c:495 pgp.c:1018
 msgid "Could not decrypt PGP message"
 msgstr "Impossible de déchiffrer le message PGP"
 
 #. clear 'Invoking...' message, since there's no error
-#: pgp.c:496 pgp.c:1013
+#: pgp.c:497 pgp.c:1014
 msgid "PGP message successfully decrypted."
 msgstr "Message PGP déchiffré avec succès."
 
-#: pgp.c:786
+#: pgp.c:787
 msgid "Internal error. Inform <roessler@does-not-exist.org>."
 msgstr "Erreur interne. Veuillez avertir <roessler@does-not-exist.org>."
 
-#: pgp.c:847
+#: pgp.c:848
 msgid ""
 "[-- Error: could not create a PGP subprocess! --]\n"
 "\n"
@@ -3688,28 +3688,28 @@ msgstr ""
 "[-- Erreur : impossible de créer un sous-processus PGP ! --]\n"
 "\n"
 
-#: pgp.c:894
+#: pgp.c:895
 msgid "Decryption failed"
 msgstr "Le déchiffrage a échoué"
 
-#: pgp.c:1069
+#: pgp.c:1070
 msgid "Can't open PGP subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus PGP !"
 
-#: pgp.c:1507
+#: pgp.c:1508
 msgid "Can't invoke PGP"
 msgstr "Impossible d'invoquer PGP"
 
-#: pgp.c:1612
+#: pgp.c:1613
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
 msgstr "(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, %s, en clai(r) ? "
 
-#: pgp.c:1613
+#: pgp.c:1614
 msgid "PGP/M(i)ME"
 msgstr "PGP/M(i)ME"
 
-#: pgp.c:1613
+#: pgp.c:1614
 msgid "(i)nline"
 msgstr "en l(i)gne"
 
@@ -3717,18 +3717,18 @@ msgstr "en l(i)gne"
 #. * version in the else clause since the switch statement below depends on
 #. * it.  The 'i' key is appended in this version.
 #.
-#: pgp.c:1619
+#: pgp.c:1620
 msgid "esabfci"
 msgstr "csedori"
 
 #. The keys accepted *must* be a prefix of the accepted keys in the "if"
 #. * clause above since the switch statement below depends on it.
 #.
-#: pgp.c:1626
+#: pgp.c:1627
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "
 msgstr "(c)hiffrer PGP, (s)igner, (e)n tant que, les (d)eux, ou en clai(r) ? "
 
-#: pgp.c:1627
+#: pgp.c:1628
 msgid "esabfc"
 msgstr "csedor"
 
