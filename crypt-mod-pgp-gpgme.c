@@ -95,7 +95,7 @@ static BODY *crypt_mod_pgp_encrypt_message (BODY *a, char *keylist, int sign)
   return pgp_gpgme_encrypt_message (a, keylist, sign);
 }
 
-#ifdef HAVE_GPGPME_OP_EXPORT_KEYS
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
 static BODY *crypt_mod_pgp_make_key_attachment (char *tempf)
 {
   return pgp_gpgme_make_key_attachment (tempf);
