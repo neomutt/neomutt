@@ -138,6 +138,11 @@ if test x"$enable_gpgme" = xyes; then
       #needed to get GPGME_LIBS and al correctly
       AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
                     [Define if you use GPGME to support OpenPGP]))
+      dnl AC_CHECK_FUNCS([gpgme_op_export_keys])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS $GPGME_LIBS"
+      AC_CHECK_FUNCS([gpgme_op_export_keys])
+      LIBS="$saved_LIBS"
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
    fi
 else
