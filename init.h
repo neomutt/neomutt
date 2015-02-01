@@ -2691,7 +2691,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** This sets the algorithm that should be used for encryption.
-  ** Valid choices are ``des'', ``des3'', ``rc2-40'', ``rc2-64'', ``rc2-128''.
+  ** Valid choices are ``aes128'', ``aes192'', ``aes256'', ``des'', ``des3'', ``rc2-40'', ``rc2-64'', ``rc2-128''.
   ** If \fIunset\fP, ``3des'' (TripleDES) is used.
   ** (S/MIME only)
   */
