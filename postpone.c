@@ -409,7 +409,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
 
 
-int mutt_parse_crypt_hdr (const char *p, int set_signas, int crypt_app)
+int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 {
   char smime_cryptalg[LONG_STRING] = "\0";
   char sign_as[LONG_STRING] = "\0", *q;
@@ -511,11 +511,13 @@ int mutt_parse_crypt_hdr (const char *p, int set_signas, int crypt_app)
   /* Set {Smime,Pgp}SignAs, if desired. */
 
   if ((WithCrypto & APPLICATION_PGP) && (crypt_app == APPLICATION_PGP)
-      && (set_signas || *sign_as))
+      && (flags & SIGN)
+      && (set_empty_signas || *sign_as))
     mutt_str_replace (&PgpSignAs, sign_as);
 
   if ((WithCrypto & APPLICATION_SMIME) && (crypt_app == APPLICATION_SMIME)
-      && (set_signas || *sign_as))
+      && (flags & SIGN)
+      && (set_empty_signas || *sign_as))
     mutt_str_replace (&SmimeDefaultKey, sign_as);
 
   return flags;
