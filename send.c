@@ -1130,8 +1130,9 @@ ci_send_message (int flags,		/* send mode */
   BODY *save_content = NULL;
   BODY *clear_content = NULL;
   char *pgpkeylist = NULL;
-  /* save current value of "pgp_sign_as" */
-  char *signas = NULL;
+  /* save current value of "pgp_sign_as"  and "smime_default_key" */
+  char *pgp_signas = NULL;
+  char *smime_default_key = NULL;
   char *tag = NULL, *err = NULL;
   char *ctype;
 
@@ -1151,8 +1152,13 @@ ci_send_message (int flags,		/* send mode */
   }
   
   
-  if ((WithCrypto & APPLICATION_PGP) && (flags & SENDPOSTPONED))
-    signas = safe_strdup(PgpSignAs);
+  if (flags & SENDPOSTPONED)
+  {
+    if (WithCrypto & APPLICATION_PGP)
+      pgp_signas = safe_strdup(PgpSignAs);
+    if (WithCrypto & APPLICATION_SMIME)
+      smime_default_key = safe_strdup(SmimeDefaultKey);
+  }
 
   /* Delay expansion of aliases until absolutely necessary--shouldn't
    * be necessary unless we are prompting the user or about to execute a
@@ -1867,12 +1873,17 @@ full_fcc:
   
 cleanup:
 
-  if ((WithCrypto & APPLICATION_PGP) && (flags & SENDPOSTPONED))
+  if (flags & SENDPOSTPONED)
   {
-    if(signas)
+    if (WithCrypto & APPLICATION_PGP)
     {
       FREE (&PgpSignAs);
-      PgpSignAs = signas;
+      PgpSignAs = pgp_signas;
+    }
+    if (WithCrypto & APPLICATION_SMIME)
+    {
+      FREE (&SmimeDefaultKey);
+      SmimeDefaultKey = smime_default_key;
     }
   }
    
