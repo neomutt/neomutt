@@ -110,6 +110,7 @@ typedef struct crypt_keyinfo
   int idx;             /* and the user ID at this index */
   const char *uid;     /* and for convenience point to this user ID */
   unsigned int flags;  /* global and per uid flags (for convenience)*/
+  gpgme_validity_t validity;  /* uid validity (cached for convenience) */
 } crypt_key_t;
 
 typedef struct crypt_entry
@@ -268,6 +269,7 @@ static crypt_key_t *crypt_copy_key (crypt_key_t *key)
   k->idx = key->idx;
   k->uid = key->uid;
   k->flags = key->flags;
+  k->validity = key->validity;
 
   return k;
 }
@@ -302,21 +304,12 @@ static int crypt_key_is_valid (crypt_key_t *k)
 /* Return true whe validity of KEY is sufficient. */
 static int crypt_id_is_strong (crypt_key_t *key)
 {
-  gpgme_validity_t val = GPGME_VALIDITY_UNKNOWN;
-  gpgme_user_id_t uid = NULL;
   unsigned int is_strong = 0;
-  unsigned int i = 0;
 
   if ((key->flags & KEYFLAG_ISX509))
     return 1;
 
-  for (i = 0, uid = key->kobj->uids; (i < key->idx) && uid;
-       i++, uid = uid->next)
-    ;
-  if (uid)
-    val = uid->validity;
-
-  switch (val)
+  switch (key->validity)
     {
     case GPGME_VALIDITY_UNKNOWN:
     case GPGME_VALIDITY_UNDEFINED:
@@ -2841,35 +2834,28 @@ static const char *crypt_entry_fmt (char *dest,
         s = "x";
       else
 	{
-	  gpgme_user_id_t uid = NULL;
-	  unsigned int i = 0;
-
-	  for (i = 0, uid = key->kobj->uids; uid && (i < key->idx);
-               i++, uid = uid->next)
-            ;
-	  if (uid)
-	    switch (uid->validity)
-	      {
-	      case GPGME_VALIDITY_UNDEFINED:
-		s = "q";
-		break;
-	      case GPGME_VALIDITY_NEVER:
-		s = "n";
-		break;
-	      case GPGME_VALIDITY_MARGINAL:
-		s = "m";
-		break;
-	      case GPGME_VALIDITY_FULL:
-		s = "f";
-		break;
-	      case GPGME_VALIDITY_ULTIMATE:
-		s = "u";
-		break;
-	      case GPGME_VALIDITY_UNKNOWN:
-	      default:
-		s = "?";
-		break;
-	      }
+          switch (key->validity)
+            {
+            case GPGME_VALIDITY_UNDEFINED:
+              s = "q";
+              break;
+            case GPGME_VALIDITY_NEVER:
+              s = "n";
+              break;
+            case GPGME_VALIDITY_MARGINAL:
+              s = "m";
+              break;
+            case GPGME_VALIDITY_FULL:
+              s = "f";
+              break;
+            case GPGME_VALIDITY_ULTIMATE:
+              s = "u";
+              break;
+            case GPGME_VALIDITY_UNKNOWN:
+            default:
+              s = "?";
+              break;
+            }
 	}
       snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
       snprintf (dest, destlen, fmt, s? *s: 'B');
@@ -2982,10 +2968,8 @@ static int _crypt_compare_trust (const void *a, const void *b)
 	    - ((*t)->flags & (KEYFLAG_RESTRICTIONS)))))
     return r > 0;
 
-  if ((*s)->kobj->uids)
-    ts = (*s)->kobj->uids->validity;
-  if ((*t)->kobj->uids)
-    tt = (*t)->kobj->uids->validity;
+  ts = (*s)->validity;
+  tt = (*t)->validity;
   if ((r = (tt - ts)))
     return r < 0;
 
@@ -3790,6 +3774,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
               k->flags = flags;
               if (uid->revoked)
                 k->flags |= KEYFLAG_REVOKED;
+              k->validity = uid->validity;
               *kend = k;
               kend = &k->next;
             }
@@ -3833,6 +3818,7 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
               k->idx = idx;
               k->uid = uid->uid;
               k->flags = flags;
+              k->validity = uid->validity;
               *kend = k;
               kend = &k->next;
             }
@@ -4015,20 +4001,8 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
                 warn_s = N_("ID is expired/disabled/revoked.");
               else 
                 {
-		  gpgme_validity_t val = GPGME_VALIDITY_UNKNOWN;
-		  gpgme_user_id_t uid = NULL;
-		  unsigned int j = 0;
-
                   warn_s = "??";
-
-		  uid = key_table[menu->current]->kobj->uids;
-		  for (j = 0; (j < key_table[menu->current]->idx) && uid;
-                       j++, uid = uid->next)
-                    ;
-		  if (uid)
-		    val = uid->validity;
-
-                  switch (val)
+                  switch (key_table[menu->current]->validity)
                     {
                     case GPGME_VALIDITY_UNKNOWN:   
                     case GPGME_VALIDITY_UNDEFINED: 
