@@ -3751,6 +3751,13 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
 	  if (key_check_cap (key, KEY_CAP_CAN_SIGN))
             flags |= KEYFLAG_CANSIGN;
 
+          if (key->revoked)
+            flags |= KEYFLAG_REVOKED;
+          if (key->expired)
+            flags |= KEYFLAG_EXPIRED;
+          if (key->disabled)
+            flags |= KEYFLAG_DISABLED;
+
 #if 0 /* DISABLED code */
           if (!flags)
             {
@@ -3781,6 +3788,8 @@ static crypt_key_t *get_candidates (LIST * hints, unsigned int app, int secret)
               k->idx = idx;
               k->uid = uid->uid;
               k->flags = flags;
+              if (uid->revoked)
+                k->flags |= KEYFLAG_REVOKED;
               *kend = k;
               kend = &k->next;
             }
@@ -4003,7 +4012,7 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
               char buff[LONG_STRING];
               
               if (key_table[menu->current]->flags & KEYFLAG_CANTUSE)
-                s = N_("ID is expired/disabled/revoked.");
+                warn_s = N_("ID is expired/disabled/revoked.");
               else 
                 {
 		  gpgme_validity_t val = GPGME_VALIDITY_UNKNOWN;
@@ -4035,18 +4044,18 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
                     case GPGME_VALIDITY_ULTIMATE:  
                       break;
                     }
-
-                  snprintf (buff, sizeof (buff),
-                            _("%s Do you really want to use the key?"),
-                            _(warn_s));
-		  
-                  if (mutt_yesorno (buff, 0) != 1)
-                    {
-                      mutt_clear_error ();
-                      break;
-                    }
-                  *forced_valid = 1;
                 }
+
+              snprintf (buff, sizeof (buff),
+                        _("%s Do you really want to use the key?"),
+                        _(warn_s));
+              
+              if (mutt_yesorno (buff, 0) != 1)
+                {
+                  mutt_clear_error ();
+                  break;
+                }
+              *forced_valid = 1;
             }  
 
           k = crypt_copy_key (key_table[menu->current]);
