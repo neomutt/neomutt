@@ -1728,7 +1728,7 @@ static int fold_one_header (FILE *fp, const char *tag, const char *value,
 
   /* if we have printed something but didn't \n-terminate it, do it
    * except the last word we printed ended in \n already */
-  if (col && buf[l - 1] != '\n')
+  if (col && (l == 0 || buf[l - 1] != '\n'))
     if (putc ('\n', fp) == EOF)
       return -1;
 
