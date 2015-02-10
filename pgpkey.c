@@ -861,7 +861,7 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
 
     for (q = k->address; q; q = q->next)
     {
-      r = rfc822_parse_adrlist (NULL, q->addr);
+      r = rfc822_parse_adrlist (NULL, NONULL (q->addr));
 
       for (p = r; p; p = p->next)
       {
