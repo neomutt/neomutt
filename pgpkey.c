@@ -932,28 +932,20 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
   pgp_uid_t *a;
   short match;
   size_t l;
-  const char *ps, *pl;
+  const char *ps, *pl, *pfcopy, *phint;
 
   if ((l = mutt_strlen (p)) && p[l-1] == '!')
     p[l-1] = 0;
 
   mutt_message (_("Looking for keys matching \"%s\"..."), p);
 
-  hints = pgp_add_string_to_hints (hints, p);
+  pfcopy = crypt_get_fingerprint_or_id (p, &phint, &pl, &ps);
+  hints = pgp_add_string_to_hints (hints, phint);
   keys = pgp_get_candidates (keyring, hints);
   mutt_free_list (&hints);
 
   if (!keys)
     goto out;
-
-  /* User input may be short or long key ID, independent of OPTPGPLONGIDS.
-   * pgp_key_t->keyid should always contain a long key ID without 0x.
-   * Strip leading "0x" before loops so it doesn't have to be done over and
-   * over again, and prepare pl and ps to simplify logic in the loop's inner
-   * condition.
-   */
-  pl = (!mutt_strncasecmp (p, "0x", 2) ? p + 2 : p);
-  ps = (mutt_strlen (pl) == 16 ? pl + 8 : pl);
 
   for (k = keys; k; k = kn)
   {
@@ -972,12 +964,10 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
     dprint (5, (debugfile, "pgp_getkeybystr: matching \"%s\" against key %s:\n",
                 p, pgp_long_keyid (k)));
 
-    /* If ps != pl it means a long ID (or name of 16 characters) was given, do
-     * not attempt to match short IDs then. Also, it is unnecessary to try to
-     * match pl against long IDs if ps == pl as pl could not be a long ID. */
     if (!*p ||
-        (ps != pl && mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0) ||
-        (ps == pl && mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0))
+        (pfcopy && mutt_strcasecmp (pfcopy, k->fingerprint) == 0) ||
+        (pl && mutt_strcasecmp (pl, pgp_long_keyid (k)) == 0) ||
+        (ps && mutt_strcasecmp (ps, pgp_short_keyid (k)) == 0))
     {
       dprint (5, (debugfile, "\t\tmatch.\n"));
       match = 1;
@@ -1013,12 +1003,14 @@ pgp_key_t pgp_getkeybystr (char *p, short abilities, pgp_ring_t keyring)
       pgp_remove_key (&matches, k);
 
     pgp_free_key (&matches);
+    FREE (&pfcopy);
     if (l && !p[l-1])
       p[l-1] = '!';
     return k;
   }
 
 out:
+  FREE (&pfcopy);
   if (l && !p[l-1])
     p[l-1] = '!';
   return NULL;
