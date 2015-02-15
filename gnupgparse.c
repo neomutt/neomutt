@@ -121,6 +121,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   pgp_uid_t *uid = NULL;
   int field = 0, is_uid = 0;
   int is_pub = 0;
+  int is_fpr = 0;
   char *pend, *p;
   int trust = 0;
   int flags = 0;
@@ -148,6 +149,9 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
     if (!*p && (field != 1) && (field != 10))
       continue;
 
+    if (is_fpr && (field != 10))
+      continue;
+
     switch (field)
     {
       case 1:			/* record type */
@@ -164,10 +168,12 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	  *is_subkey = 1;
 	else if (!mutt_strcmp (p, "uid"))
 	  is_uid = 1;
+	else if (!mutt_strcmp (p, "fpr"))
+	  is_fpr = 1;
 	else
 	  return NULL;
 
-	if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
+	if (!(is_uid || is_fpr || (*is_subkey && option (OPTPGPIGNORESUB))))
 	  memset (&tmp, 0, sizeof (tmp));
 
 	break;
@@ -290,6 +296,14 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         if (!(pend && (*p || is_pub)))
 	  break;
 
+        if (is_fpr)
+        {
+          /* don't let a subkey fpr overwrite an existing primary key fpr */
+          if (!tmp.fingerprint)
+            tmp.fingerprint = safe_strdup (p);
+          break;
+        }
+
 	/* ignore user IDs on subkeys */
 	if (!is_uid && (*is_subkey && option (OPTPGPIGNORESUB)))
 	  break;
@@ -349,7 +363,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   }
 
   /* merge temp key back into real key */
-  if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
+  if (!(is_uid || is_fpr || (*is_subkey && option (OPTPGPIGNORESUB))))
     k = safe_malloc (sizeof (*k));
   memcpy (k, &tmp, sizeof (*k));
   /* fixup parentship of uids after mering the temp key into

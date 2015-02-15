@@ -65,10 +65,10 @@ set pgp_export_command="gpg --no-verbose --export --armor %r"
 set pgp_verify_key_command="gpg --verbose --batch --fingerprint --check-sigs %r"
 
 # read in the public key ring
-set pgp_list_pubring_command="gpg --no-verbose --batch --quiet --with-colons --list-keys %r" 
+set pgp_list_pubring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-keys %r"
 
 # read in the secret key ring
-set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --list-secret-keys %r" 
+set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --with-fingerprint --with-fingerprint --list-secret-keys %r"
 
 # fetch keys
 # set pgp_getkeys_command="pkspxycwrap %r"
