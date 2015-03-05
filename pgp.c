@@ -373,7 +373,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	mutt_mktemp (outfile, sizeof (outfile));
 	if ((pgpout = safe_fopen (outfile, "w+")) == NULL)
 	{
-	  mutt_perror (tmpfname);
+	  mutt_perror (outfile);
 	  return -1;
 	}
 	
@@ -483,6 +483,18 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	while ((c = fgetconv (fc)) != EOF)
 	  state_prefix_putc (c, s);
 	fgetconv_close (&fc);
+      }
+
+      /*
+       * Multiple PGP blocks can exist, so these need to be closed and
+       * unlinked inside the loop.
+       */
+      safe_fclose (&tmpfp);
+      mutt_unlink (tmpfname);
+      if (pgpout)
+      {
+	safe_fclose (&pgpout);
+	mutt_unlink (outfile);
       }
 
       if (s->flags & M_DISPLAY)
