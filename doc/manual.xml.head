@@ -3175,7 +3175,7 @@ keep it on the list of known mailing lists, use
 <cmdsynopsis>
 <command>mbox-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">[!]pattern</replaceable>
+<replaceable class="parameter">[!]regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -3185,7 +3185,7 @@ keep it on the list of known mailing lists, use
 <para>
 This command is used to move read messages from a specified mailbox to a
 different mailbox automatically when you quit or change folders.
-<emphasis>pattern</emphasis> is a regular expression specifying the
+<emphasis>regexp</emphasis> is a regular expression specifying the
 mailbox to treat as a <quote>spool</quote> mailbox and
 <emphasis>mailbox</emphasis> specifies where mail should be saved when
 read.
@@ -3193,7 +3193,7 @@ read.
 
 <para>
 Unlike some of the other <emphasis>hook</emphasis> commands, only the
-<emphasis>first</emphasis> matching pattern is used (it is not possible
+<emphasis>first</emphasis> matching regexp is used (it is not possible
 to save read mail in more than a single mailbox).
 </para>
 
@@ -3409,7 +3409,7 @@ linkend="fcc-save-hook"><command>fcc-save-hook</command></link> command.
 <para>
 This command is used to save outgoing mail in a mailbox other than <link
 linkend="record">$record</link>.  Mutt searches the initial list of
-message recipients for the first matching <emphasis>regexp</emphasis>
+message recipients for the first matching <emphasis>pattern</emphasis>
 and uses <emphasis>mailbox</emphasis> as the default Fcc: mailbox.  If
 no match is found the message will be saved to <link
 linkend="record">$record</link> mailbox.
@@ -3616,7 +3616,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 <cmdsynopsis>
 <command>crypt-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">pattern</replaceable>
+<replaceable class="parameter">regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">keyid</replaceable>
@@ -7656,7 +7656,7 @@ Usage:
 <cmdsynopsis>
 <command>account-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">pattern</replaceable>
+<replaceable class="parameter">regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
