@@ -4968,6 +4968,7 @@ shows several ways to select messages.
 <row><entry>~b <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message body</entry></row>
 <row><entry>=b <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the message body. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally.</entry></row>
 <row><entry>~B <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the whole message</entry></row>
+<row><entry>=B <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the whole message. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally.</entry></row>
 <row><entry>~c <emphasis>EXPR</emphasis></entry><entry>messages carbon-copied to <emphasis>EXPR</emphasis></entry></row>
 <row><entry>%c <emphasis>GROUP</emphasis></entry><entry>messages carbon-copied to any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~C <emphasis>EXPR</emphasis></entry><entry>messages either to: or cc: <emphasis>EXPR</emphasis></entry></row>
@@ -4983,6 +4984,7 @@ shows several ways to select messages.
 <row><entry>~g</entry><entry>cryptographically signed messages</entry></row>
 <row><entry>~G</entry><entry>cryptographically encrypted messages</entry></row>
 <row><entry>~h <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message header</entry></row>
+<row><entry>=h <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the message header. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally; <emphasis>STRING</emphasis> must be of the form <quote>header: substring</quote> (see below).</entry></row>
 <row><entry>~H <emphasis>EXPR</emphasis></entry><entry>messages with a spam attribute matching <emphasis>EXPR</emphasis></entry></row>
 <row><entry>~i <emphasis>EXPR</emphasis></entry><entry>messages which match <emphasis>EXPR</emphasis> in the <quote>Message-ID</quote> field</entry></row>
 <row><entry>~k</entry><entry>messages which contain PGP key material</entry></row>
