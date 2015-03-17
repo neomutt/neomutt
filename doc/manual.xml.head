@@ -2628,7 +2628,9 @@ specify one or the other).
 <emphasis>header</emphasis> and <emphasis>body</emphasis> match
 <emphasis>regexp</emphasis> in the header/body of a message,
 <emphasis>index</emphasis> matches <emphasis>pattern</emphasis> (see
-<xref linkend="patterns"/>) in the message index.
+<xref linkend="patterns"/>) in the message index.  Note that IMAP
+server-side searches (=b, =B, =h) are not supported for color index
+patterns.
 </para>
 
 <para>
