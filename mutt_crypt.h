@@ -140,8 +140,14 @@ void crypt_extract_keys_from_messages (HEADER *h);
 
 /* Do a quick check to make sure that we can find all of the
    encryption keys if the user has requested this service. 
-   Return the list of keys in KEYLIST. */
-int crypt_get_keys (HEADER *msg, char **keylist);
+   Return the list of keys in KEYLIST.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode);
+
+/* Check if all recipients keys can be automatically determined.
+ * Enable encryption if they can, otherwise disable encryption.  */
+void crypt_opportunistic_encrypt(HEADER *msg);
 
 /* Forget a passphrase and display a message. */
 void crypt_forget_passphrase (void);
