@@ -70,9 +70,9 @@ static void crypt_mod_pgp_invoke_import (const char *fname)
   pgp_gpgme_invoke_import (fname);
 }
 
-static char *crypt_mod_pgp_findkeys (ADDRESS *adrlist)
+static char *crypt_mod_pgp_findkeys (ADDRESS *adrlist, int oppenc_mode)
 {
-  return pgp_gpgme_findkeys (adrlist);
+  return pgp_gpgme_findkeys (adrlist, oppenc_mode);
 }
 
 static BODY *crypt_mod_pgp_sign_message (BODY *a)

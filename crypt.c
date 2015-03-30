@@ -737,7 +737,7 @@ int crypt_get_keys (HEADER *msg, char **keylist)
      if ((WithCrypto & APPLICATION_PGP)
          && (msg->security & APPLICATION_PGP))
      {
-       if ((*keylist = crypt_pgp_findkeys (adrlist)) == NULL)
+       if ((*keylist = crypt_pgp_findkeys (adrlist, 0)) == NULL)
        {
            rfc822_free_address (&adrlist);
            return (-1);
@@ -747,7 +747,7 @@ int crypt_get_keys (HEADER *msg, char **keylist)
      if ((WithCrypto & APPLICATION_SMIME)
          && (msg->security & APPLICATION_SMIME))
      {
-       if ((*keylist = crypt_smime_findkeys (adrlist)) == NULL)
+       if ((*keylist = crypt_smime_findkeys (adrlist, 0)) == NULL)
        {
            rfc822_free_address (&adrlist);
            return (-1);

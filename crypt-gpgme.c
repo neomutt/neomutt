@@ -4305,8 +4305,10 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
 }
 
 /* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.  */
-static char *find_keys (ADDRESS *adrlist, unsigned int app)
+   message.  It returns NULL if any of the keys can not be found.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 {
   char *keyID, *keylist = NULL, *t;
   size_t keylist_size = 0;
@@ -4409,14 +4411,14 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app)
   return (keylist);
 }
 
-char *pgp_gpgme_findkeys (ADDRESS *adrlist)
+char *pgp_gpgme_findkeys (ADDRESS *adrlist, int oppenc_mode)
 {
-  return find_keys (adrlist, APPLICATION_PGP);
+  return find_keys (adrlist, APPLICATION_PGP, oppenc_mode);
 }
 
-char *smime_gpgme_findkeys (ADDRESS *adrlist)
+char *smime_gpgme_findkeys (ADDRESS *adrlist, int oppenc_mode)
 {
-  return find_keys (adrlist, APPLICATION_SMIME);
+  return find_keys (adrlist, APPLICATION_SMIME, oppenc_mode);
 }
 
 #ifdef HAVE_GPGME_OP_EXPORT_KEYS

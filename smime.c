@@ -729,9 +729,11 @@ void smime_getkeys (ENVELOPE *env)
 
 /* This routine attempts to find the keyids of the recipients of a message.
  * It returns NULL if any of the keys can not be found.
+ * If oppenc_mode is true, only keys that can be determined without
+ * prompting will be used.
  */
 
-char *smime_findKeys (ADDRESS *adrlist)
+char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
 {
   char *keyID, *keylist = NULL;
   size_t keylist_size = 0;

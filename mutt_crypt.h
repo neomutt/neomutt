@@ -210,8 +210,10 @@ void crypt_pgp_free_key (pgp_key_t *kpp);
 BODY *crypt_pgp_make_key_attachment (char *tempf);
 
 /* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_pgp_findkeys (ADDRESS *adrlist);
+   message.  It returns NULL if any of the keys can not be found.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+char *crypt_pgp_findkeys (ADDRESS *adrlist, int oppenc_mode);
 
 /* Create a new body with a PGP signed message from A. */
 BODY *crypt_pgp_sign_message (BODY *a);
@@ -259,8 +261,10 @@ int crypt_smime_verify_sender(HEADER *h);
 char *crypt_smime_ask_for_key (char *prompt, char *mailbox, short public);
 
 /* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_smime_findkeys (ADDRESS *adrlist);
+   message.  It returns NULL if any of the keys can not be found.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+char *crypt_smime_findkeys (ADDRESS *adrlist, int oppenc_mode);
 
 /* fixme: Needs documentation. */
 BODY *crypt_smime_sign_message (BODY *a);

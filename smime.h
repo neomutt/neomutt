@@ -50,7 +50,7 @@ void  smime_getkeys (ENVELOPE *);
 
 char* smime_ask_for_key (char *, char *, short);
 
-char *smime_findKeys (ADDRESS *adrlist);
+char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode);
 
 void  smime_invoke_import (char *, char *);
 
