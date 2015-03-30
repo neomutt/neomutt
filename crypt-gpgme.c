@@ -4206,7 +4206,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
 }
 
 
-static crypt_key_t *crypt_getkeybystr (const char *p, short abilities,
+static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
 				       unsigned int app, int *forced_valid)
 {
   LIST *hints = NULL;
@@ -4336,6 +4336,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
    prompting will be used.  */
 static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 {
+  char *crypt_hook_val = NULL;
   const char *keyID = NULL;
   char *keylist = NULL, *t;
   size_t keylist_size = 0;
@@ -4357,27 +4358,28 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
       q = p;
       k_info = NULL;
       
-      if ((keyID = mutt_crypt_hook (p)) != NULL)
+      if ((crypt_hook_val = mutt_crypt_hook (p)) != NULL)
         {
           int r = M_NO;
           if (! oppenc_mode)
             {
               snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"),
-                        keyID, p->mailbox);
+                        crypt_hook_val, p->mailbox);
               r = mutt_yesorno (buf, M_YES);
             }
           if (oppenc_mode || (r == M_YES))
             {
-              if (crypt_is_numerical_keyid (keyID))
+              if (crypt_is_numerical_keyid (crypt_hook_val))
                 {
+                  keyID = crypt_hook_val;
                   if (strncmp (keyID, "0x", 2) == 0)
                     keyID += 2;
                   goto bypass_selection;                /* you don't see this. */
                 }
 
               /* check for e-mail address */
-              if ((t = strchr (keyID, '@')) && 
-                  (addr = rfc822_parse_adrlist (NULL, keyID)))
+              if ((t = strchr (crypt_hook_val, '@')) && 
+                  (addr = rfc822_parse_adrlist (NULL, crypt_hook_val)))
                 {
                   if (fqdn)
                     rfc822_qualify (addr, fqdn);
@@ -4386,10 +4388,10 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
               else if (! oppenc_mode)
 		{
 #if 0		  
-		  k_info = crypt_getkeybystr (keyID, KEYFLAG_CANENCRYPT, 
+		  k_info = crypt_getkeybystr (crypt_hook_val, KEYFLAG_CANENCRYPT, 
 					      *r_application, &forced_valid);
 #else
-		  k_info = crypt_getkeybystr (keyID, KEYFLAG_CANENCRYPT, 
+		  k_info = crypt_getkeybystr (crypt_hook_val, KEYFLAG_CANENCRYPT, 
 					      app, &forced_valid);
 #endif
 		}
