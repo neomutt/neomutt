@@ -746,7 +746,8 @@ char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
 
     q = p;
 
-    if ((keyID = smime_get_field_from_db (q->mailbox, NULL, 1, 1)) == NULL)
+    keyID = smime_get_field_from_db (q->mailbox, NULL, 1, !oppenc_mode);
+    if ((keyID == NULL) && (! oppenc_mode))
     {
       snprintf(buf, sizeof(buf),
 	       _("Enter keyID for %s: "),
@@ -755,7 +756,8 @@ char *smime_findKeys (ADDRESS *adrlist, int oppenc_mode)
     }
     if(!keyID)
     {
-      mutt_message (_("No (valid) certificate found for %s."), q->mailbox);
+      if (! oppenc_mode)
+        mutt_message (_("No (valid) certificate found for %s."), q->mailbox);
       FREE (&keylist);
       return NULL;
     }

@@ -48,7 +48,7 @@ int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 /* pgp_key_t gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *); */
 pgp_key_t pgp_ask_for_key (char *, char *, short, pgp_ring_t);
 pgp_key_t pgp_get_candidates (pgp_ring_t, LIST *);
-pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t);
+pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t, int);
 pgp_key_t pgp_getkeybystr (char *, short, pgp_ring_t);
 
 char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode);

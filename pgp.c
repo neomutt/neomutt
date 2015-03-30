@@ -1179,7 +1179,7 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
   size_t keylist_used = 0;
   ADDRESS *addr = NULL;
   ADDRESS *p, *q;
-  pgp_key_t k_info = NULL, key = NULL;
+  pgp_key_t k_info = NULL;
 
   const char *fqdn = mutt_fqdn (1);
 
@@ -1192,9 +1192,13 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
 
     if ((keyID = mutt_crypt_hook (p)) != NULL)
     {
-      int r;
-      snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
-      if ((r = mutt_yesorno (buf, M_YES)) == M_YES)
+      int r = M_NO;
+      if (! oppenc_mode)
+      {
+        snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
+        r = mutt_yesorno (buf, M_YES);
+      }
+      if (oppenc_mode || (r == M_YES))
       {
 	if (crypt_is_numerical_keyid (keyID))
 	{
@@ -1210,8 +1214,10 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
 	  if (fqdn) rfc822_qualify (addr, fqdn);
 	  q = addr;
 	}
-	else
+	else if (! oppenc_mode)
+	{
 	  k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+	}
       }
       else if (r == -1)
       {
@@ -1222,24 +1228,26 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
     }
 
     if (k_info == NULL)
+    {
       pgp_invoke_getkeys (q);
+      k_info = pgp_getkeybyaddr (q, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
+    }
 
-    if (k_info == NULL && (k_info = pgp_getkeybyaddr (q, KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
+    if ((k_info == NULL) && (! oppenc_mode))
     {
       snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), q->mailbox);
-
-      if ((key = pgp_ask_for_key (buf, q->mailbox,
-				  KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
-      {
-	FREE (&keylist);
-	rfc822_free_address (&addr);
-	return NULL;
-      }
+      k_info = pgp_ask_for_key (buf, q->mailbox,
+                             KEYFLAG_CANENCRYPT, PGP_PUBRING);
     }
-    else
-      key = k_info;
 
-    keyID = pgp_keyid (key);
+    if (k_info == NULL)
+    {
+      FREE (&keylist);
+      rfc822_free_address (&addr);
+      return NULL;
+    }
+
+    keyID = pgp_keyid (k_info);
     
   bypass_selection:
     keylist_size += mutt_strlen (keyID) + 4;
@@ -1248,7 +1256,7 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
 	     keyID);
     keylist_used = mutt_strlen (keylist);
 
-    pgp_free_key (&key);
+    pgp_free_key (&k_info);
     rfc822_free_address (&addr);
 
   }

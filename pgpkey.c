@@ -812,7 +812,8 @@ static pgp_key_t *pgp_get_lastp (pgp_key_t p)
   return NULL;
 }
 
-pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
+pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
+                            int oppenc_mode)
 {
   ADDRESS *r, *p;
   LIST *hints = NULL;
@@ -821,7 +822,8 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   int match;
 
   pgp_key_t keys, k, kn;
-  pgp_key_t the_valid_key = NULL;
+  pgp_key_t the_strong_valid_key = NULL;
+  pgp_key_t a_valid_addrmatch_key = NULL;
   pgp_key_t matches = NULL;
   pgp_key_t *last = &matches;
   pgp_uid_t *q;
@@ -831,7 +833,8 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
   if (a && a->personal)
     hints = pgp_add_string_to_hints (hints, a->personal);
 
-  mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
+  if (! oppenc_mode )
+    mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
   keys = pgp_get_candidates (keyring, hints);
 
   mutt_free_list (&hints);
@@ -870,14 +873,20 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
 	if (validity & PGP_KV_MATCH)	/* something matches */
 	  match = 1;
 
-	/* is this key a strong candidate? */
-	if ((validity & PGP_KV_VALID) && (validity & PGP_KV_STRONGID) 
-	    && (validity & PGP_KV_ADDR))
-	{
-	  if (the_valid_key && the_valid_key != k)
-	    multi             = 1;
-	  the_valid_key       = k;
-	}
+        if ((validity & PGP_KV_VALID)
+            && (validity & PGP_KV_ADDR))
+        {
+          if (validity & PGP_KV_STRONGID)
+          {
+            if (the_strong_valid_key && the_strong_valid_key != k)
+              multi = 1;
+            the_strong_valid_key = k;
+          }
+          else
+          {
+            a_valid_addrmatch_key = k;
+          }
+        }
       }
 
       rfc822_free_address (&r);
@@ -895,16 +904,30 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
 
   if (matches)
   {
-    if (the_valid_key && !multi)
+    if (oppenc_mode)
+    {
+      if (the_strong_valid_key)
+      {
+        pgp_remove_key (&matches, the_strong_valid_key);
+        k = the_strong_valid_key;
+      }
+      else if (a_valid_addrmatch_key)
+      {
+        pgp_remove_key (&matches, a_valid_addrmatch_key);
+        k = a_valid_addrmatch_key;
+      }
+      else
+        k = NULL;
+    }
+    else if (the_strong_valid_key && !multi)
     {
       /*
        * There was precisely one strong match on a valid ID.
        * 
        * Proceed without asking the user.
        */
-      pgp_remove_key (&matches, the_valid_key);
-      pgp_free_key (&matches);
-      k = the_valid_key;
+      pgp_remove_key (&matches, the_strong_valid_key);
+      k = the_strong_valid_key;
     }
     else 
     {
@@ -913,8 +936,9 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring)
        */
       if ((k = pgp_select_key (matches, a, NULL)))
 	pgp_remove_key (&matches, k);
-      pgp_free_key (&matches);
     }
+
+    pgp_free_key (&matches);
 
     return k;
   }

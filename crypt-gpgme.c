@@ -4052,21 +4052,25 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
 }
 
 static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
-					unsigned int app, int *forced_valid)
+					unsigned int app, int *forced_valid,
+					int oppenc_mode)
 {
   ADDRESS *r, *p;
   LIST *hints = NULL;
 
   int weak    = 0;
   int invalid = 0;
+  int addr_match = 0;
   int multi   = 0;
   int this_key_has_strong;
+  int this_key_has_addr_match;
   int this_key_has_weak;
   int this_key_has_invalid;
   int match;
 
   crypt_key_t *keys, *k;
-  crypt_key_t *the_valid_key = NULL;
+  crypt_key_t *the_strong_valid_key = NULL;
+  crypt_key_t *a_valid_addrmatch_key = NULL;
   crypt_key_t *matches = NULL;
   crypt_key_t **matches_endp = &matches;
   
@@ -4077,7 +4081,8 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
   if (a && a->personal)
     hints = crypt_add_string_to_hints (hints, a->personal);
 
-  mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
+  if (! oppenc_mode )
+    mutt_message (_("Looking for keys matching \"%s\"..."), a->mailbox);
   keys = get_candidates (hints, app, (abilities & KEYFLAG_CANSIGN) );
 
   mutt_free_list (&hints);
@@ -4103,6 +4108,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
       this_key_has_weak    = 0;	/* weak but valid match   */
       this_key_has_invalid = 0;   /* invalid match          */
       this_key_has_strong  = 0;	/* strong and valid match */
+      this_key_has_addr_match = 0;
       match                = 0;   /* any match 		  */
 
       r = rfc822_parse_adrlist (NULL, k->uid);
@@ -4111,25 +4117,29 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
           int validity = crypt_id_matches_addr (a, p, k);
               
           if (validity & CRYPT_KV_MATCH)	/* something matches */
+          {
             match = 1;
 
-          /* is this key a strong candidate? */
-          if ((validity & CRYPT_KV_VALID)
-              && (validity & CRYPT_KV_STRONGID) 
-              && (validity & CRYPT_KV_ADDR))
+            if (validity & CRYPT_KV_VALID)
             {
-              if (the_valid_key && the_valid_key != k)
-                multi             = 1;
-              the_valid_key       = k;
-              this_key_has_strong = 1;
+              if (validity & CRYPT_KV_ADDR)
+              {
+                if (validity & CRYPT_KV_STRONGID)
+                {
+                  if (the_strong_valid_key
+                      && the_strong_valid_key->kobj != k->kobj)
+                    multi             = 1;
+                  this_key_has_strong = 1;
+                }
+                else
+                  this_key_has_addr_match = 1;
+              }
+              else
+                this_key_has_weak = 1;
             }
-          else if ((validity & CRYPT_KV_MATCH)
-                   && !(validity & CRYPT_KV_VALID))
-            this_key_has_invalid = 1;
-          else if ((validity & CRYPT_KV_MATCH) 
-                   && (!(validity & CRYPT_KV_STRONGID)
-                       || !(validity & CRYPT_KV_ADDR)))
-            this_key_has_weak    = 1;
+            else
+              this_key_has_invalid = 1;
+          }
         }
       rfc822_free_address (&r);
       
@@ -4137,14 +4147,20 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
         {
           crypt_key_t *tmp;
 
-          if (!this_key_has_strong && this_key_has_invalid)
-            invalid = 1;
-          if (!this_key_has_strong && this_key_has_weak)
-            weak = 1;
-
           *matches_endp = tmp = crypt_copy_key (k);
           matches_endp = &tmp->next;
-	  the_valid_key = tmp;
+
+          if (this_key_has_strong)
+            the_strong_valid_key = tmp;
+          else if (this_key_has_addr_match)
+          {
+            addr_match = 1;
+            a_valid_addrmatch_key = tmp;
+          }
+          else if (this_key_has_invalid)
+            invalid = 1;
+          else if (this_key_has_weak)
+            weak = 1;
         }
     }
   
@@ -4152,7 +4168,16 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
   
   if (matches)
     {
-      if (the_valid_key && !multi && !weak 
+      if (oppenc_mode)
+        {
+          if (the_strong_valid_key)
+            k = crypt_copy_key (the_strong_valid_key);
+          else if (a_valid_addrmatch_key)
+            k = crypt_copy_key (a_valid_addrmatch_key);
+          else
+            k = NULL;
+        }
+      else if (the_strong_valid_key && !multi && !weak && !addr_match
           && !(invalid && option (OPTPGPSHOWUNUSABLE)))
         {	
           /* 
@@ -4162,7 +4187,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
            * 
            * Proceed without asking the user.
            */
-          k = crypt_copy_key (the_valid_key);
+          k = crypt_copy_key (the_strong_valid_key);
         }
       else 
         {
@@ -4171,6 +4196,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
            */
           k = crypt_select_key (matches, a, NULL, app, forced_valid);
         }
+
       crypt_free_key (&matches);
     }
   else 
@@ -4180,7 +4206,7 @@ static crypt_key_t *crypt_getkeybyaddr (ADDRESS * a, short abilities,
 }
 
 
-static crypt_key_t *crypt_getkeybystr (char *p, short abilities,
+static crypt_key_t *crypt_getkeybystr (const char *p, short abilities,
 				       unsigned int app, int *forced_valid)
 {
   LIST *hints = NULL;
@@ -4310,12 +4336,13 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
    prompting will be used.  */
 static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 {
-  char *keyID, *keylist = NULL, *t;
+  const char *keyID = NULL;
+  char *keylist = NULL, *t;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
   ADDRESS *addr = NULL;
   ADDRESS *p, *q;
-  crypt_key_t *k_info, *key;
+  crypt_key_t *k_info;
   const char *fqdn = mutt_fqdn (1);
 
 #if 0
@@ -4332,11 +4359,22 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
       
       if ((keyID = mutt_crypt_hook (p)) != NULL)
         {
-          int r;
-          snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"),
-                    keyID, p->mailbox);
-          if ((r = mutt_yesorno (buf, M_YES)) == M_YES)
+          int r = M_NO;
+          if (! oppenc_mode)
             {
+              snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"),
+                        keyID, p->mailbox);
+              r = mutt_yesorno (buf, M_YES);
+            }
+          if (oppenc_mode || (r == M_YES))
+            {
+              if (crypt_is_numerical_keyid (keyID))
+                {
+                  if (strncmp (keyID, "0x", 2) == 0)
+                    keyID += 2;
+                  goto bypass_selection;                /* you don't see this. */
+                }
+
               /* check for e-mail address */
               if ((t = strchr (keyID, '@')) && 
                   (addr = rfc822_parse_adrlist (NULL, keyID)))
@@ -4345,7 +4383,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
                     rfc822_qualify (addr, fqdn);
                   q = addr;
                 }
-              else
+              else if (! oppenc_mode)
 		{
 #if 0		  
 		  k_info = crypt_getkeybystr (keyID, KEYFLAG_CANENCRYPT, 
@@ -4364,48 +4402,52 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
             }
         }
 
-      if (k_info == NULL
-          && (k_info = crypt_getkeybyaddr (q, KEYFLAG_CANENCRYPT,
-                                           app, &forced_valid)) == NULL)
+      if (k_info == NULL)
+        {
+          k_info = crypt_getkeybyaddr (q, KEYFLAG_CANENCRYPT,
+                                       app, &forced_valid, oppenc_mode);
+        }
+
+      if ((k_info == NULL) && (! oppenc_mode))
         {
           snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), q->mailbox);
           
-          if ((key = crypt_ask_for_key (buf, q->mailbox,
-                                        KEYFLAG_CANENCRYPT,
+          k_info = crypt_ask_for_key (buf, q->mailbox,
+                                      KEYFLAG_CANENCRYPT,
 #if 0
-                                        *r_application,
+                                      *r_application,
 #else
-					app,
+                                      app,
 #endif
-					&forced_valid)) == NULL)
-            {
-              FREE (&keylist);
-              rfc822_free_address (&addr);
-              return NULL;
-            }
+                                      &forced_valid);
         }
-      else
-        key = k_info;
 
-      {
-        const char *s = crypt_fpr (key);
+      if (k_info == NULL)
+        {
+          FREE (&keylist);
+          rfc822_free_address (&addr);
+          return NULL;
+        }
+
+
+      keyID = crypt_fpr (k_info);
 
 #if 0
-        if (key->flags & KEYFLAG_ISX509)
-          *r_application &= ~APPLICATION_PGP;
-        if (!(key->flags & KEYFLAG_ISX509))
-          *r_application &= ~APPLICATION_SMIME;
+      if (k_info->flags & KEYFLAG_ISX509)
+        *r_application &= ~APPLICATION_PGP;
+      if (!(k_info->flags & KEYFLAG_ISX509))
+        *r_application &= ~APPLICATION_SMIME;
 #endif
       
-        keylist_size += mutt_strlen (s) + 4 + 1;
-        safe_realloc (&keylist, keylist_size);
-        sprintf (keylist + keylist_used, "%s0x%s%s", /* __SPRINTF_CHECKED__ */
-                 keylist_used ? " " : "",  s,
-                 forced_valid? "!":"");
-      }
+  bypass_selection:
+      keylist_size += mutt_strlen (keyID) + 4 + 1;
+      safe_realloc (&keylist, keylist_size);
+      sprintf (keylist + keylist_used, "%s0x%s%s", /* __SPRINTF_CHECKED__ */
+               keylist_used ? " " : "",  keyID,
+               forced_valid? "!":"");
       keylist_used = mutt_strlen (keylist);
         
-      crypt_free_key (&key);
+      crypt_free_key (&k_info);
       rfc822_free_address (&addr);
     }
   return (keylist);
