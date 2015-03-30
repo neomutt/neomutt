@@ -211,7 +211,7 @@ BODY *crypt_pgp_make_key_attachment (char *tempf);
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+char *crypt_pgp_findkeys (ADDRESS *adrlist);
 
 /* Create a new body with a PGP signed message from A. */
 BODY *crypt_pgp_sign_message (BODY *a);
@@ -260,7 +260,7 @@ char *crypt_smime_ask_for_key (char *prompt, char *mailbox, short public);
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_smime_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+char *crypt_smime_findkeys (ADDRESS *adrlist);
 
 /* fixme: Needs documentation. */
 BODY *crypt_smime_sign_message (BODY *a);

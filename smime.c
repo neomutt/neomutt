@@ -731,39 +731,14 @@ void smime_getkeys (ENVELOPE *env)
  * It returns NULL if any of the keys can not be found.
  */
 
-char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *smime_findKeys (ADDRESS *adrlist)
 {
   char *keyID, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *tmp = NULL, *addr = NULL;
-  ADDRESS **last = &tmp;
   ADDRESS *p, *q;
-  int i;
 
-  const char *fqdn = mutt_fqdn (1);
-  
-  for (i = 0; i < 3; i++)
-  {
-    switch (i)
-    {
-      case 0: p = to; break;
-      case 1: p = cc; break;
-      case 2: p = bcc; break;
-      default: abort ();
-    }
-    
-    *last = rfc822_cpy_adr (p, 0);
-    while (*last)
-      last = &((*last)->next);
-  }
-
-  if (fqdn)
-    rfc822_qualify (tmp, fqdn);
-
-  tmp = mutt_remove_duplicates (tmp);
-  
-  for (p = tmp; p ; p = p->next)
+  for (p = adrlist; p ; p = p->next)
   {
     char buf[LONG_STRING];
 
@@ -780,8 +755,6 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     {
       mutt_message (_("No (valid) certificate found for %s."), q->mailbox);
       FREE (&keylist);
-      rfc822_free_address (&tmp);
-      rfc822_free_address (&addr);
       return NULL;
     }
     
@@ -790,10 +763,7 @@ char *smime_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     sprintf (keylist + keylist_used, "%s\n", keyID);	/* __SPRINTF_CHECKED__ */
     keylist_used = mutt_strlen (keylist);
 
-    rfc822_free_address (&addr);
-
   }
-  rfc822_free_address (&tmp);
   return (keylist);
 }
 

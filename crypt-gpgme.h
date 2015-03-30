@@ -24,8 +24,8 @@
 void pgp_gpgme_init (void);
 void smime_gpgme_init (void);
 
-char *pgp_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
-char *smime_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+char *pgp_gpgme_findkeys (ADDRESS *adrlist);
+char *smime_gpgme_findkeys (ADDRESS *adrlist);
 
 BODY *pgp_gpgme_encrypt_message (BODY *a, char *keylist, int sign);
 BODY *smime_gpgme_build_smime_entity (BODY *a, char *keylist);

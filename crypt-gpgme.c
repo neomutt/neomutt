@@ -4306,44 +4306,21 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
-static char *find_keys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
-                        unsigned int app)
+static char *find_keys (ADDRESS *adrlist, unsigned int app)
 {
   char *keyID, *keylist = NULL, *t;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *tmp = NULL, *addr = NULL;
-  ADDRESS **last = &tmp;
+  ADDRESS *addr = NULL;
   ADDRESS *p, *q;
-  int i;
   crypt_key_t *k_info, *key;
   const char *fqdn = mutt_fqdn (1);
 
 #if 0
   *r_application = APPLICATION_PGP|APPLICATION_SMIME;
 #endif
-  
-  for (i = 0; i < 3; i++) 
-    {
-      switch (i)
-        {
-        case 0: p = to; break;
-        case 1: p = cc; break;
-        case 2: p = bcc; break;
-        default: abort ();
-        }
-      
-      *last = rfc822_cpy_adr (p, 0);
-      while (*last)
-        last = &((*last)->next);
-    }
-  
-  if (fqdn)
-    rfc822_qualify (tmp, fqdn);
-  
-  tmp = mutt_remove_duplicates (tmp);
-  
-  for (p = tmp; p ; p = p->next)
+
+  for (p = adrlist; p ; p = p->next)
     {
       char buf[LONG_STRING];
       int forced_valid = 0;
@@ -4380,7 +4357,6 @@ static char *find_keys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
           else if (r == -1)
             {
               FREE (&keylist);
-              rfc822_free_address (&tmp);
               rfc822_free_address (&addr);
               return NULL;
             }
@@ -4402,7 +4378,6 @@ static char *find_keys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
 					&forced_valid)) == NULL)
             {
               FREE (&keylist);
-              rfc822_free_address (&tmp);
               rfc822_free_address (&addr);
               return NULL;
             }
@@ -4431,18 +4406,17 @@ static char *find_keys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc,
       crypt_free_key (&key);
       rfc822_free_address (&addr);
     }
-  rfc822_free_address (&tmp);
   return (keylist);
 }
 
-char *pgp_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *pgp_gpgme_findkeys (ADDRESS *adrlist)
 {
-  return find_keys (to, cc, bcc, APPLICATION_PGP);
+  return find_keys (adrlist, APPLICATION_PGP);
 }
 
-char *smime_gpgme_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *smime_gpgme_findkeys (ADDRESS *adrlist)
 {
-  return find_keys (to, cc, bcc, APPLICATION_SMIME);
+  return find_keys (adrlist, APPLICATION_SMIME);
 }
 
 #ifdef HAVE_GPGME_OP_EXPORT_KEYS

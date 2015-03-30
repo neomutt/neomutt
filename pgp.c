@@ -1183,40 +1183,18 @@ static short is_numerical_keyid (const char *s)
 /* This routine attempts to find the keyids of the recipients of a message.
  * It returns NULL if any of the keys can not be found.
  */
-char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *pgp_findKeys (ADDRESS *adrlist)
 {
   char *keyID, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *tmp = NULL, *addr = NULL;
-  ADDRESS **last = &tmp;
+  ADDRESS *addr = NULL;
   ADDRESS *p, *q;
-  int i;
   pgp_key_t k_info = NULL, key = NULL;
 
   const char *fqdn = mutt_fqdn (1);
 
-  for (i = 0; i < 3; i++) 
-  {
-    switch (i)
-    {
-      case 0: p = to; break;
-      case 1: p = cc; break;
-      case 2: p = bcc; break;
-      default: abort ();
-    }
-    
-    *last = rfc822_cpy_adr (p, 0);
-    while (*last)
-      last = &((*last)->next);
-  }
-
-  if (fqdn)
-    rfc822_qualify (tmp, fqdn);
-
-  tmp = mutt_remove_duplicates (tmp);
-  
-  for (p = tmp; p ; p = p->next)
+  for (p = adrlist; p ; p = p->next)
   {
     char buf[LONG_STRING];
 
@@ -1249,7 +1227,6 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
       else if (r == -1)
       {
 	FREE (&keylist);
-	rfc822_free_address (&tmp);
 	rfc822_free_address (&addr);
 	return NULL;
       }
@@ -1266,7 +1243,6 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
 				  KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
       {
 	FREE (&keylist);
-	rfc822_free_address (&tmp);
 	rfc822_free_address (&addr);
 	return NULL;
       }
@@ -1287,7 +1263,6 @@ char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
     rfc822_free_address (&addr);
 
   }
-  rfc822_free_address (&tmp);
   return (keylist);
 }
 

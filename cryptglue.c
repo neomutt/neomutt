@@ -200,10 +200,10 @@ BODY *crypt_pgp_make_key_attachment (char *tempf)
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *crypt_pgp_findkeys (ADDRESS *adrlist)
 {
   if (CRYPT_MOD_CALL_CHECK (PGP, findkeys))
-    return (CRYPT_MOD_CALL (PGP, findkeys)) (to, cc, bcc);
+    return (CRYPT_MOD_CALL (PGP, findkeys)) (adrlist);
 
   return NULL;
 }
@@ -334,10 +334,10 @@ int crypt_smime_verify_sender(HEADER *h)
 
 /* This routine attempts to find the keyids of the recipients of a
    message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_smime_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *crypt_smime_findkeys (ADDRESS *adrlist)
 {
   if (CRYPT_MOD_CALL_CHECK (SMIME, findkeys))
-    return (CRYPT_MOD_CALL (SMIME, findkeys)) (to, cc, bcc);
+    return (CRYPT_MOD_CALL (SMIME, findkeys)) (adrlist);
 
   return NULL;
 }

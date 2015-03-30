@@ -51,7 +51,7 @@ pgp_key_t pgp_get_candidates (pgp_ring_t, LIST *);
 pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t);
 pgp_key_t pgp_getkeybystr (char *, short, pgp_ring_t);
 
-char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+char *pgp_findKeys (ADDRESS *adrlist);
 
 void pgp_forget_passphrase (void);
 int pgp_application_pgp_handler (BODY *, STATE *);
