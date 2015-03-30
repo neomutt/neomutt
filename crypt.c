@@ -773,8 +773,7 @@ void crypt_opportunistic_encrypt(HEADER *msg)
   if (!WithCrypto)
     return;
 
-  /* crypt_autoencrypt should override crypt_opportunistic_encrypt */
-  if (option (OPTCRYPTAUTOENCRYPT))
+  if (! (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT)) )
     return;
 
   crypt_get_keys (msg, &pgpkeylist, 1);

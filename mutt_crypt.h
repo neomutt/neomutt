@@ -39,11 +39,12 @@
 #define SIGNOPAQUE (1 << 5)
 #define KEYBLOCK   (1 << 6) /* KEY too generic? */
 #define INLINE     (1 << 7)
+#define OPPENCRYPT (1 << 8) /* Opportunistic encrypt mode */
 
-#define APPLICATION_PGP    (1 << 8) 
-#define APPLICATION_SMIME  (1 << 9)
+#define APPLICATION_PGP    (1 << 9)
+#define APPLICATION_SMIME  (1 << 10)
 
-#define PGP_TRADITIONAL_CHECKED (1 << 10)
+#define PGP_TRADITIONAL_CHECKED (1 << 11)
 
 #define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
 #define PGPSIGN     (APPLICATION_PGP | SIGN)

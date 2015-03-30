@@ -404,6 +404,10 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
       tmp = tmp->next;
     }
   }
+
+  if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+    crypt_opportunistic_encrypt (hdr);
+
   return (code);
 }
 
@@ -427,6 +431,11 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
       case 'e':
       case 'E':
         flags |= ENCRYPT;
+        break;
+
+      case 'o':
+      case 'O':
+        flags |= OPPENCRYPT;
         break;
 
       case 's':

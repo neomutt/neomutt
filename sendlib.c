@@ -2770,6 +2770,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     fputs ("X-Mutt-PGP: ", msg->fp);
     if (hdr->security & ENCRYPT)
       fputc ('E', msg->fp);
+    if (hdr->security & OPPENCRYPT)
+      fputc ('O', msg->fp);
     if (hdr->security & SIGN)
     {
       fputc ('S', msg->fp);
@@ -2791,6 +2793,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 	if (SmimeCryptAlg && *SmimeCryptAlg)
 	    fprintf (msg->fp, "C<%s>", SmimeCryptAlg);
     }
+    if (hdr->security & OPPENCRYPT)
+      fputc ('O', msg->fp);
     if (hdr->security & SIGN) {
 	fputc ('S', msg->fp);
 	if (SmimeDefaultKey && *SmimeDefaultKey)
