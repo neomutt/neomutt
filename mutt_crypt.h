@@ -167,6 +167,9 @@ int crypt_write_signed(BODY *a, STATE *s, const char *tempf);
 const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
     const char **ppl, const char **pps);
 
+/* Check if a string contains a numerical key */
+short crypt_is_numerical_keyid (const char *s);
+
 
 
 /*-- cryptglue.c --*/

@@ -31,6 +31,7 @@
 #endif
 
 #include "mutt.h"
+#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "pgp.h"
 #include "mime.h"
@@ -1166,20 +1167,6 @@ BODY *pgp_sign_message (BODY *a)
   return (a);
 }
 
-static short is_numerical_keyid (const char *s)
-{
-  /* or should we require the "0x"? */
-  if (strncmp (s, "0x", 2) == 0)
-    s += 2;
-  if (strlen (s) % 8)
-    return 0;
-  while (*s)
-    if (strchr ("0123456789ABCDEFabcdef", *s++) == NULL)
-      return 0;
-  
-  return 1;
-}
-
 /* This routine attempts to find the keyids of the recipients of a message.
  * It returns NULL if any of the keys can not be found.
  * If oppenc_mode is true, only keys that can be determined without
@@ -1209,7 +1196,7 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
       snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
       if ((r = mutt_yesorno (buf, M_YES)) == M_YES)
       {
-	if (is_numerical_keyid (keyID))
+	if (crypt_is_numerical_keyid (keyID))
 	{
 	  if (strncmp (keyID, "0x", 2) == 0)
 	    keyID += 2;
