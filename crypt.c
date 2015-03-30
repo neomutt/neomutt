@@ -770,6 +770,9 @@ void crypt_opportunistic_encrypt(HEADER *msg)
 {
   char *pgpkeylist = NULL;
 
+  if (!WithCrypto)
+    return;
+
   /* crypt_autoencrypt should override crypt_opportunistic_encrypt */
   if (option (OPTCRYPTAUTOENCRYPT))
     return;

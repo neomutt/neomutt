@@ -526,14 +526,29 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
       case OP_COMPOSE_EDIT_TO:
 	menu->redraw = edit_address_list (HDR_TO, &msg->env->to);
+	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	{
+	  crypt_opportunistic_encrypt (msg);
+	  redraw_crypt_lines (msg);
+	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_BCC:
 	menu->redraw = edit_address_list (HDR_BCC, &msg->env->bcc);
+	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	{
+	  crypt_opportunistic_encrypt (msg);
+	  redraw_crypt_lines (msg);
+	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_CC:
 	menu->redraw = edit_address_list (HDR_CC, &msg->env->cc);
+	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	{
+	  crypt_opportunistic_encrypt (msg);
+	  redraw_crypt_lines (msg);
+	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);	
         break;
       case OP_COMPOSE_EDIT_SUBJECT:
@@ -593,6 +608,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
 	    FREE (&err);
 	  }
+	  if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	    crypt_opportunistic_encrypt (msg);
 	}
 	else
 	{

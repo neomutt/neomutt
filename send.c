@@ -1477,7 +1477,7 @@ ci_send_message (int flags,		/* send mode */
 	msg->security |= INLINE;
     }
 
-    if (msg->security)
+    if (msg->security || option (OPTCRYPTOPPORTUNISTICENCRYPT))
     {
       /* 
        * When replying / forwarding, use the original message's
@@ -1512,6 +1512,12 @@ ci_send_message (int flags,		/* send mode */
 	else if ((WithCrypto & APPLICATION_SMIME) && option (OPTCRYPTAUTOSMIME))
 	  msg->security |= APPLICATION_SMIME;
       }
+    }
+
+    /* opportunistic encrypt relys on SMIME or PGP already being selected */
+    if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+    {
+      crypt_opportunistic_encrypt(msg);
     }
 
     /* No permissible mechanisms found.  Don't sign or encrypt. */
