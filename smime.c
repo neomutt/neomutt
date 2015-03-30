@@ -1908,136 +1908,178 @@ int smime_application_smime_handler (BODY *m, STATE *s)
 int smime_send_menu (HEADER *msg, int *redraw)
 {
   char *p;
+  char *prompt, *letters, *choices;
+  int choice;
 
   if (!(WithCrypto & APPLICATION_SMIME))
     return msg->security;
 
-  switch (mutt_multi_choice (_("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "),
-			     _("eswabfc")))
+  msg->security |= APPLICATION_SMIME;
+
+  /*
+   * Opportunistic encrypt is controlling encryption.
+   * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
+   *       letter choices for those.
+   */
+  if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
   {
-  case 1: /* (e)ncrypt */
-    msg->security |= ENCRYPT;
-    msg->security &= ~SIGN;
-    break;
-
-  case 3: /* encrypt (w)ith */
-    {
-      int choice = 0;
-
-      msg->security |= ENCRYPT;
-      do
-      {
-        /* I use "dra" because "123" is recognized anyway */
-        switch (mutt_multi_choice (_("Choose algorithm family:"
-                                     " 1: DES, 2: RC2, 3: AES,"
-                                     " or (c)lear? "),
-                                   _("drac")))
-        {
-        case 1:
-          switch (choice = mutt_multi_choice (_("1: DES, 2: Triple-DES "),
-                                              _("dt")))
-          {
-          case 1:
-            mutt_str_replace (&SmimeCryptAlg, "des");
-            break;
-          case 2:
-            mutt_str_replace (&SmimeCryptAlg, "des3");
-            break;
-          }
-          break;
-
-        case 2:
-          switch (choice = mutt_multi_choice (_("1: RC2-40, 2: RC2-64, 3: RC2-128 "),
-                                              _("468")))
-          {
-          case 1:
-            mutt_str_replace (&SmimeCryptAlg, "rc2-40");
-            break;
-          case 2:
-            mutt_str_replace (&SmimeCryptAlg, "rc2-64");
-            break;
-          case 3:
-            mutt_str_replace (&SmimeCryptAlg, "rc2-128");
-            break;
-          }
-          break;
-
-        case 3:
-          switch (choice = mutt_multi_choice (_("1: AES128, 2: AES192, 3: AES256 "),
-                                              _("895")))
-          {
-          case 1:
-            mutt_str_replace (&SmimeCryptAlg, "aes128");
-            break;
-          case 2:
-            mutt_str_replace (&SmimeCryptAlg, "aes192");
-            break;
-          case 3:
-            mutt_str_replace (&SmimeCryptAlg, "aes256");
-            break;
-          }
-          break;
-
-        case 4: /* (c)lear */
-          FREE (&SmimeCryptAlg);
-          /* fallback */
-        case -1: /* Ctrl-G or Enter */
-          choice = 0;
-          break;
-        }
-      } while (choice == -1);
-    }
-    break;
-
-  case 2: /* (s)ign */
-      
-    if(!SmimeDefaultKey)
-    {
-      *redraw = REDRAW_FULL;
-
-      if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0)))
-        mutt_str_replace (&SmimeDefaultKey, p);
-      else
-        break;
-    }
-
-    msg->security |= SIGN;
-    msg->security &= ~ENCRYPT;
-    break;
-
-  case 4: /* sign (a)s */
-
-    if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) 
-    {
-      mutt_str_replace (&SmimeDefaultKey, p);
-	
-      msg->security |= SIGN;
-
-      /* probably need a different passphrase */
-      crypt_smime_void_passphrase ();
-    }
-#if 0
-    else
-      msg->security &= ~SIGN;
-#endif
-
-    *redraw = REDRAW_FULL;
-    break;
-
-  case 5: /* (b)oth */
-    msg->security |= (ENCRYPT | SIGN);
-    break;
-
-  case 6: /* (f)orget it */
-  case 7: /* (c)lear */
-    msg->security = 0;
-    break;
+    prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? ");
+    letters = _("swafco");
+    choices = "SwaFCo";
+  }
+  /*
+   * Opportunistic encryption option is set, but is toggled off
+   * for this message.
+   */
+  else if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+  {
+    prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? ");
+    letters = _("eswabfco");
+    choices = "eswabfcO";
+  }
+  /*
+   * Opportunistic encryption is unset
+   */
+  else
+  {
+    prompt = _("S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? ");
+    letters = _("eswabfc");
+    choices = "eswabfc";
   }
 
-  if (msg->security && msg->security != APPLICATION_SMIME)
-    msg->security |= APPLICATION_SMIME;
-  else
-    msg->security = 0;
+
+  choice = mutt_multi_choice (prompt, letters);
+  if (choice > 0)
+  {
+    switch (choices[choice - 1])
+    {
+    case 'e': /* (e)ncrypt */
+      msg->security |= ENCRYPT;
+      msg->security &= ~SIGN;
+      break;
+
+    case 'w': /* encrypt (w)ith */
+      {
+        msg->security |= ENCRYPT;
+        do
+        {
+          /* I use "dra" because "123" is recognized anyway */
+          switch (mutt_multi_choice (_("Choose algorithm family:"
+                                      " 1: DES, 2: RC2, 3: AES,"
+                                      " or (c)lear? "),
+                                    _("drac")))
+          {
+          case 1:
+            switch (choice = mutt_multi_choice (_("1: DES, 2: Triple-DES "),
+                                                _("dt")))
+            {
+            case 1:
+              mutt_str_replace (&SmimeCryptAlg, "des");
+              break;
+            case 2:
+              mutt_str_replace (&SmimeCryptAlg, "des3");
+              break;
+            }
+            break;
+
+          case 2:
+            switch (choice = mutt_multi_choice (_("1: RC2-40, 2: RC2-64, 3: RC2-128 "),
+                                                _("468")))
+            {
+            case 1:
+              mutt_str_replace (&SmimeCryptAlg, "rc2-40");
+              break;
+            case 2:
+              mutt_str_replace (&SmimeCryptAlg, "rc2-64");
+              break;
+            case 3:
+              mutt_str_replace (&SmimeCryptAlg, "rc2-128");
+              break;
+            }
+            break;
+
+          case 3:
+            switch (choice = mutt_multi_choice (_("1: AES128, 2: AES192, 3: AES256 "),
+                                                _("895")))
+            {
+            case 1:
+              mutt_str_replace (&SmimeCryptAlg, "aes128");
+              break;
+            case 2:
+              mutt_str_replace (&SmimeCryptAlg, "aes192");
+              break;
+            case 3:
+              mutt_str_replace (&SmimeCryptAlg, "aes256");
+              break;
+            }
+            break;
+
+          case 4: /* (c)lear */
+            FREE (&SmimeCryptAlg);
+            /* fallback */
+          case -1: /* Ctrl-G or Enter */
+            choice = 0;
+            break;
+          }
+        } while (choice == -1);
+      }
+      break;
+
+    case 's': /* (s)ign */
+    case 'S': /* (s)ign in oppenc mode */
+      if(!SmimeDefaultKey)
+      {
+        *redraw = REDRAW_FULL;
+
+        if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0)))
+          mutt_str_replace (&SmimeDefaultKey, p);
+        else
+          break;
+      }
+      if (choices[choice - 1] == 's')
+        msg->security &= ~ENCRYPT;
+      msg->security |= SIGN;
+      break;
+
+    case 'a': /* sign (a)s */
+
+      if ((p = smime_ask_for_key (_("Sign as: "), NULL, 0))) 
+      {
+        mutt_str_replace (&SmimeDefaultKey, p);
+          
+        msg->security |= SIGN;
+
+        /* probably need a different passphrase */
+        crypt_smime_void_passphrase ();
+      }
+
+      *redraw = REDRAW_FULL;
+      break;
+
+    case 'b': /* (b)oth */
+      msg->security |= (ENCRYPT | SIGN);
+      break;
+
+    case 'f': /* (f)orget it */
+    case 'c': /* (c)lear */
+      msg->security &= ~(ENCRYPT | SIGN);
+      break;
+
+    case 'F': /* (f)orget it or (c)lear in oppenc mode */
+    case 'C':
+      msg->security &= ~SIGN;
+      break;
+
+    case 'O': /* oppenc mode on */
+      msg->security |= OPPENCRYPT;
+      crypt_opportunistic_encrypt (msg);
+      break;
+
+    case 'o': /* oppenc mode off */
+      msg->security &= ~OPPENCRYPT;
+      break;
+    }
+  }
 
   return (msg->security);
 }

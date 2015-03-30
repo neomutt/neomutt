@@ -1576,8 +1576,12 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 
 int pgp_send_menu (HEADER *msg, int *redraw)
 {
+  pgp_key_t p;
+  char input_signas[SHORT_STRING];
+  char *prompt, *letters, *choices;
+  char promptbuf[LONG_STRING];
   int choice;
-  
+
   if (!(WithCrypto & APPLICATION_PGP))
     return msg->security;
 
@@ -1585,93 +1589,145 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   if (option (OPTPGPAUTOINLINE) && 
       !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN|ENCRYPT))))
     msg->security |= INLINE;
-  
-  /* When the message is not selected for signing or encryption, the toggle
-   * between PGP/MIME and Traditional doesn't make sense.
+
+  msg->security |= APPLICATION_PGP;
+
+  /*
+   * Opportunistic encrypt is controlling encryption.  Allow to toggle
+   * between inline and mime, but not turn encryption on or off.
+   * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
+   *       letter choices for those.
    */
-  if (msg->security & (ENCRYPT | SIGN))
+  if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
   {
-    char prompt[LONG_STRING];
-
-    snprintf (prompt, sizeof (prompt), 
-	_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "),
-	(msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
-
-    /* The keys accepted for this prompt *must* match the order in the second
-     * version in the else clause since the switch statement below depends on
-     * it.  The 'i' key is appended in this version.
-     */
-    choice = mutt_multi_choice (prompt, _("esabfci"));
+    if (msg->security & (ENCRYPT | SIGN))
+    {
+      snprintf (promptbuf, sizeof (promptbuf),
+          _("PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "),
+          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+      prompt = promptbuf;
+      letters = _("safcoi");
+      choices = "SaFCoi";
+    }
+    else
+    {
+      prompt = _("PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? ");
+      letters = _("safco");
+      choices = "SaFCo";
+    }
   }
+  /*
+   * Opportunistic encryption option is set, but is toggled off
+   * for this message.
+   */
+  else if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+  {
+    /* When the message is not selected for signing or encryption, the toggle
+    * between PGP/MIME and Traditional doesn't make sense.
+    */
+    if (msg->security & (ENCRYPT | SIGN))
+    {
+
+      snprintf (promptbuf, sizeof (promptbuf), 
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "),
+          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+      prompt = promptbuf;
+      letters = _("esabfcoi");
+      choices = "esabfcOi";
+    }
+    else
+    {
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? ");
+      letters = _("esabfco");
+      choices = "esabfcO";
+    }
+  }
+  /*
+   * Opportunistic encryption is unset
+   */
   else
   {
-    /* The keys accepted *must* be a prefix of the accepted keys in the "if"
-     * clause above since the switch statement below depends on it.
-     */
-    choice = mutt_multi_choice(_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "),
-	_("esabfc"));
+    if (msg->security & (ENCRYPT | SIGN))
+    {
+
+      snprintf (promptbuf, sizeof (promptbuf), 
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "),
+          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+      prompt = promptbuf;
+      letters = _("esabfci");
+      choices = "esabfci";
+    }
+    else
+    {
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? ");
+      letters = _("esabfc");
+      choices = "esabfc";
+    }
   }
 
-  switch (choice)
+  choice = mutt_multi_choice (prompt, letters);
+  if (choice > 0)
   {
-    case 1: /* (e)ncrypt */
+    switch (choices[choice - 1])
+    {
+    case 'e': /* (e)ncrypt */
       msg->security |= ENCRYPT;
       msg->security &= ~SIGN;
       break;
 
-  case 2: /* (s)ign */
-    msg->security |= SIGN;
-    msg->security &= ~ENCRYPT;
-    break;
+    case 's': /* (s)ign */
+      msg->security &= ~ENCRYPT;
+      msg->security |= SIGN;
+      break;
 
-  case 3: /* sign (a)s */
-    {
-      pgp_key_t p;
-      char input_signas[SHORT_STRING];
+    case 'S': /* (s)ign in oppenc mode */
+      msg->security |= SIGN;
+      break;
 
+    case 'a': /* sign (a)s */
       unset_option(OPTPGPCHECKTRUST);
 
       if ((p = pgp_ask_for_key (_("Sign as: "), NULL, 0, PGP_SECRING)))
       {
-	snprintf (input_signas, sizeof (input_signas), "0x%s",
-	    pgp_keyid (p));
-	mutt_str_replace (&PgpSignAs, input_signas);
-	pgp_free_key (&p);
+        snprintf (input_signas, sizeof (input_signas), "0x%s",
+            pgp_keyid (p));
+        mutt_str_replace (&PgpSignAs, input_signas);
+        pgp_free_key (&p);
 
-	msg->security |= SIGN;
+        msg->security |= SIGN;
 
-	crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
+        crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
       }
-#if 0
-      else
-      {
-	msg->security &= ~SIGN;
-      }
-#endif
-
       *redraw = REDRAW_FULL;
-    } break;
+      break;
 
-  case 4: /* (b)oth */
-    msg->security |= (ENCRYPT | SIGN);
-    break;
+    case 'b': /* (b)oth */
+      msg->security |= (ENCRYPT | SIGN);
+      break;
 
-  case 5: /* (f)orget it */
-  case 6: /* (c)lear     */
-    msg->security = 0;
-    break;
+    case 'f': /* (f)orget it */
+    case 'c': /* (c)lear     */
+      msg->security &= ~(ENCRYPT | SIGN);
+      break;
 
-  case 7: /* toggle (i)nline */
-    msg->security ^= INLINE;
-    break;
-  }
+    case 'F': /* (f)orget it or (c)lear in oppenc mode */
+    case 'C':
+      msg->security &= ~SIGN;
+      break;
 
-  if (msg->security)
-  {
-    if (! (msg->security & (ENCRYPT | SIGN)))
-      msg->security = 0;
-    else
-      msg->security |= APPLICATION_PGP;
+    case 'O': /* oppenc mode on */
+      msg->security |= OPPENCRYPT;
+      crypt_opportunistic_encrypt (msg);
+      break;
+
+    case 'o': /* oppenc mode off */
+      msg->security &= ~OPPENCRYPT;
+      break;
+
+    case 'i': /* toggle (i)nline */
+      msg->security ^= INLINE;
+      break;
+    }
   }
 
   return (msg->security);
