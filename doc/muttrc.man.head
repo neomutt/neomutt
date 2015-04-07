@@ -281,8 +281,8 @@ and subscribed mailing lists.  The \fBunsubscribe\fP command removes
 it from the list of subscribed mailing lists. The \fB-group\fP flag
 adds all of the subsequent regular expressions to the named group.
 .TP
-\fBmbox-hook\fP [\fB!\fP]\fIpattern\fP \fImailbox\fP
-When mutt changes to a mail folder which matches \fIpattern\fP,
+\fBmbox-hook\fP [\fB!\fP]\fIregexp\fP \fImailbox\fP
+When mutt changes to a mail folder which matches \fIregexp\fP,
 \fImailbox\fP will be used as the \(lqmbox\(rq folder, i.e., read
 messages will be moved to that folder when the mail folder is left.
 .IP
@@ -348,7 +348,7 @@ in the order in which they occur in the configuration file, but all
 \fBreply-hook\fPs are matched and executed before \fBsend-hook\fPs,
 regardless of their order in the configuration file.
 .TP
-\fBcrypt-hook\fP \fIpattern\fP \fIkey-id\fP
+\fBcrypt-hook\fP \fIregexp\fP \fIkey-id\fP
 The crypt-hook command provides a method by which you can
 specify the ID of the public key to be used when encrypting messages
 to a certain recipient.  The meaning of "key ID" is to be taken
