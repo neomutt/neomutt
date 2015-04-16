@@ -306,8 +306,8 @@ static int _pgp_compare_address (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
   else
-    return (mutt_strcasecmp (_pgp_keyid ((*s)->parent),
-			     _pgp_keyid ((*t)->parent)) > 0);
+    return (mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent),
+			     pgp_fpr_or_lkeyid ((*t)->parent)) > 0);
 }
 
 static int pgp_compare_address (const void *a, const void *b)
@@ -325,8 +325,8 @@ static int _pgp_compare_keyid (const void *a, const void *b)
   pgp_uid_t **s = (pgp_uid_t **) a;
   pgp_uid_t **t = (pgp_uid_t **) b;
 
-  if ((r = mutt_strcasecmp (_pgp_keyid ((*s)->parent), 
-			    _pgp_keyid ((*t)->parent))))
+  if ((r = mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent), 
+			    pgp_fpr_or_lkeyid ((*t)->parent))))
     return r > 0;
   else
     return (mutt_strcasecmp ((*s)->addr, (*t)->addr)) > 0;
@@ -373,8 +373,8 @@ static int _pgp_compare_trust (const void *a, const void *b)
     return r < 0;
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
-  return (mutt_strcasecmp (_pgp_keyid ((*s)->parent), 
-			   _pgp_keyid ((*t)->parent))) > 0;
+  return (mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent), 
+			   pgp_fpr_or_lkeyid ((*t)->parent))) > 0;
 }
 
 static int pgp_compare_trust (const void *a, const void *b)
@@ -562,7 +562,8 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 
       mutt_message _("Invoking PGP...");
 
-      snprintf (tmpbuf, sizeof (tmpbuf), "0x%s", pgp_keyid (pgp_principal_key (KeyTable[menu->current]->parent)));
+      snprintf (tmpbuf, sizeof (tmpbuf), "0x%s",
+          pgp_fpr_or_lkeyid (pgp_principal_key (KeyTable[menu->current]->parent)));
 
       if ((thepid = pgp_invoke_verify_key (NULL, NULL, NULL, -1,
 		    fileno (fp), fileno (devnull), tmpbuf)) == -1)
@@ -725,7 +726,7 @@ BODY *pgp_make_key_attachment (char *tempf)
 
   if (!key)    return NULL;
 
-  snprintf (tmp, sizeof (tmp), "0x%s", pgp_keyid (pgp_principal_key (key)));
+  snprintf (tmp, sizeof (tmp), "0x%s", pgp_fpr_or_lkeyid (pgp_principal_key (key)));
   pgp_free_key (&key);
 
   if (!tempf)

@@ -3637,8 +3637,8 @@ key to be used when encrypting messages to a certain recipient.
 
 <para>
 The meaning of <emphasis>keyid</emphasis> is to be taken broadly in this
-context: You can either put a numerical key ID here, an e-mail address,
-or even just a real name.
+context: You can either put a numerical key ID or fingerprint here, an
+e-mail address, or even just a real name.
 </para>
 
 </sect1>

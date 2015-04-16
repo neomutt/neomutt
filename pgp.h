@@ -37,6 +37,8 @@ char *_pgp_keyid (pgp_key_t);
 char *pgp_keyid (pgp_key_t);
 char *pgp_short_keyid (pgp_key_t);
 char *pgp_long_keyid (pgp_key_t);
+char *pgp_fingerprint (pgp_key_t k);
+char *pgp_fpr_or_lkeyid (pgp_key_t k);
 
 
 int mutt_check_pgp (HEADER * h);

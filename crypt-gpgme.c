@@ -219,6 +219,24 @@ static const char *crypt_fpr (crypt_key_t *k)
   return s;
 }
 
+/* Returns the fingerprint if available, otherwise
+ * returns the long keyid.
+ */
+static const char *crypt_fpr_or_lkeyid(crypt_key_t *k)
+{
+  const char *s = "????????????????";
+
+  if (k->kobj && k->kobj->subkeys)
+  {
+    if (k->kobj->subkeys->fpr)
+      s = k->kobj->subkeys->fpr;
+    else
+      s = k->kobj->subkeys->keyid;
+  }
+
+  return s;
+}
+
 /* Parse FLAGS and return a statically allocated(!) string with them. */
 static char *crypt_key_abilities (int flags)
 {
@@ -2900,7 +2918,7 @@ static int _crypt_compare_address (const void *a, const void *b)
   if ((r = mutt_strcasecmp ((*s)->uid, (*t)->uid)))
     return r > 0;
   else
-    return mutt_strcasecmp (crypt_keyid (*s), crypt_keyid (*t)) > 0;
+    return mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t)) > 0;
 }
 
 static int crypt_compare_address (const void *a, const void *b)
@@ -2917,7 +2935,7 @@ static int _crypt_compare_keyid (const void *a, const void *b)
   crypt_key_t **t = (crypt_key_t **) b;
   int r;
 
-  if ((r = mutt_strcasecmp (crypt_keyid (*s), crypt_keyid (*t))))
+  if ((r = mutt_strcasecmp (crypt_fpr_or_lkeyid (*s), crypt_fpr_or_lkeyid (*t))))
     return r > 0;
   else
     return mutt_strcasecmp ((*s)->uid, (*t)->uid) > 0;
@@ -2991,7 +3009,7 @@ static int _crypt_compare_trust (const void *a, const void *b)
 
   if ((r = mutt_strcasecmp ((*s)->uid, (*t)->uid)))
     return r > 0;
-  return (mutt_strcasecmp (crypt_keyid ((*s)), crypt_keyid ((*t)))) > 0;
+  return (mutt_strcasecmp (crypt_fpr_or_lkeyid ((*s)), crypt_fpr_or_lkeyid ((*t)))) > 0;
 }
 
 static int crypt_compare_trust (const void *a, const void *b)
@@ -4432,7 +4450,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
         }
 
 
-      keyID = crypt_fpr (k_info);
+      keyID = crypt_fpr_or_lkeyid (k_info);
 
 #if 0
       if (k_info->flags & KEYFLAG_ISX509)
@@ -4672,7 +4690,8 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
                                   is_smime? APPLICATION_SMIME:APPLICATION_PGP,
                                   NULL)))
       {
-        snprintf (input_signas, sizeof (input_signas), "0x%s", crypt_keyid (p));
+        snprintf (input_signas, sizeof (input_signas), "0x%s",
+            crypt_fpr_or_lkeyid (p));
         mutt_str_replace (is_smime? &SmimeDefaultKey : &PgpSignAs, input_signas);
         crypt_free_key (&p); 
 

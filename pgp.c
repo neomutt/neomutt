@@ -156,6 +156,27 @@ char *_pgp_keyid(pgp_key_t k)
     return (k->keyid + 8);
 }
 
+char *pgp_fingerprint(pgp_key_t k)
+{
+  k = _pgp_parent(k);
+
+  return k->fingerprint;
+}
+
+/* Grab the longest key identifier available: fingerprint or else
+ * the long keyid.
+ *
+ * The longest available should be used for internally identifying
+ * the key and for invoking pgp commands.
+ */
+char *pgp_fpr_or_lkeyid(pgp_key_t k)
+{
+  char *fingerprint;
+
+  fingerprint = pgp_fingerprint (k);
+  return fingerprint ? fingerprint : pgp_long_keyid (k);
+}
+
 /* ----------------------------------------------------------------------------
  * Routines for handing PGP input.
  */
@@ -1247,7 +1268,7 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
       return NULL;
     }
 
-    keyID = pgp_keyid (k_info);
+    keyID = pgp_fpr_or_lkeyid (k_info);
     
   bypass_selection:
     keylist_size += mutt_strlen (keyID) + 4;
@@ -1690,7 +1711,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
       if ((p = pgp_ask_for_key (_("Sign as: "), NULL, 0, PGP_SECRING)))
       {
         snprintf (input_signas, sizeof (input_signas), "0x%s",
-            pgp_keyid (p));
+            pgp_fpr_or_lkeyid (p));
         mutt_str_replace (&PgpSignAs, input_signas);
         pgp_free_key (&p);
 
