@@ -8327,7 +8327,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="account-hook">account-hook</link></command>
 <arg choice="plain">
-<replaceable>pattern</replaceable>
+<replaceable>regexp</replaceable>
 <replaceable>command</replaceable>
 </arg>
 </cmdsynopsis>
@@ -8572,7 +8572,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="crypt-hook">crypt-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">pattern</replaceable>
+<replaceable class="parameter">regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">keyid</replaceable>
@@ -8785,7 +8785,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="mbox-hook">mbox-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">[!]pattern</replaceable>
+<replaceable class="parameter">[!]regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
