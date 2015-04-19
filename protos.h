@@ -146,7 +146,7 @@ char *mutt_gen_msgid (void);
 char *mutt_get_body_charset (char *, size_t, BODY *);
 const char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
-char *mutt_crypt_hook (ADDRESS *);
+LIST *mutt_crypt_hook (ADDRESS *);
 char *mutt_make_date (char *, size_t);
 
 const char *mutt_make_version (void);

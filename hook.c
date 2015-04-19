@@ -125,7 +125,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
-      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_SEND2HOOK | M_MESSAGEHOOK | M_ACCOUNTHOOK | M_REPLYHOOK))
+      if (data & (M_FOLDERHOOK | M_SENDHOOK | M_SEND2HOOK | M_MESSAGEHOOK | M_ACCOUNTHOOK | M_REPLYHOOK | M_CRYPTHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
@@ -448,6 +448,20 @@ static char *_mutt_string_hook (const char *match, int hook)
   return (NULL);
 }
 
+static LIST *_mutt_list_hook (const char *match, int hook)
+{
+  HOOK *tmp = Hooks;
+  LIST *matches = NULL;
+
+  for (; tmp; tmp = tmp->next)
+  {
+    if ((tmp->type & hook) &&
+        ((match && regexec (tmp->rx.rx, match, 0, NULL, 0) == 0) ^ tmp->rx.not))
+      matches = mutt_add_list (matches, tmp->command);
+  }
+  return (matches);
+}
+
 char *mutt_charset_hook (const char *chs)
 {
   return _mutt_string_hook (chs, M_CHARSETHOOK);
@@ -458,9 +472,9 @@ char *mutt_iconv_hook (const char *chs)
   return _mutt_string_hook (chs, M_ICONVHOOK);
 }
 
-char *mutt_crypt_hook (ADDRESS *adr)
+LIST *mutt_crypt_hook (ADDRESS *adr)
 {
-  return _mutt_string_hook (adr->mailbox, M_CRYPTHOOK);
+  return _mutt_list_hook (adr->mailbox, M_CRYPTHOOK);
 }
 
 #ifdef USE_SOCKET

@@ -354,6 +354,11 @@ specify the ID of the public key to be used when encrypting messages
 to a certain recipient.  The meaning of "key ID" is to be taken
 broadly: This can be a different e-mail address, a numerical key ID,
 or even just an arbitrary search string.
+You may use multiple
+\fBcrypt-hook\fPs with the same \fIregexp\fP; multiple matching
+\fBcrypt-hook\fPs result in the use of multiple \fIkey-id\fPs for
+a recipient.
+
 .TP
 \fBpush\fP \fIstring\fP
 This command adds the named \fIstring\fP to the keyboard buffer.
