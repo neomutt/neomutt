@@ -3636,9 +3636,10 @@ key to be used when encrypting messages to a certain recipient.
 You may use multiple crypt-hooks with the same regexp; multiple
 matching crypt-hooks result in the use of multiple keyids for
 a recipient.  During key selection, Mutt will confirm whether each
-crypt-hook is to be used.  If all crypt-hooks for a recipient are
-declined, Mutt will use the original recipient address for key selection
-instead.
+crypt-hook is to be used (unless the <link
+linkend="crypt-confirmhook">$crypt_confirmhook</link> option is unset).
+If all crypt-hooks for a recipient are declined, Mutt will use the
+original recipient address for key selection instead.
 </para>
 
 <para>

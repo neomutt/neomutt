@@ -491,6 +491,14 @@ struct option_t MuttVars[] = {
   ** $$crypt_replyencrypt,
   ** $$crypt_autosign, $$crypt_replysign and $$smime_is_default.
   */
+  { "crypt_confirmhook",	DT_BOOL, R_NONE, OPTCRYPTCONFIRMHOOK, 1 },
+  /*
+  ** .pp
+  ** If set, then you will be prompted for confirmation of keys when using
+  ** the \fIcrypt-hook\fP command.  If unset, no such confirmation prompt will
+  ** be presented.  This is generally considered unsafe, especially where
+  ** typos are concerned.
+  */
   { "crypt_opportunistic_encrypt", DT_BOOL, R_NONE, OPTCRYPTOPPORTUNISTICENCRYPT, 0 },
   /*
   ** .pp

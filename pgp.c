@@ -1220,13 +1220,13 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
       if (crypt_hook != NULL)
       {
         keyID = crypt_hook->data;
-        r = M_NO;
-        if (! oppenc_mode)
+        r = M_YES;
+        if (! oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
         {
           snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
           r = mutt_yesorno (buf, M_YES);
         }
-        if (oppenc_mode || (r == M_YES))
+        if (r == M_YES)
         {
           if (crypt_is_numerical_keyid (keyID))
           {
