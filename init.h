@@ -3092,6 +3092,17 @@ struct option_t MuttVars[] = {
   ** URL. You should only unset this for particular known hosts, using
   ** the \fC$<account-hook>\fP function.
   */
+  { "ssl_ciphers", DT_STR, R_NONE, UL &SslCiphers, UL 0 },
+  /*
+  ** .pp
+  ** Contains a colon-seperated list of ciphers to use when using SSL.
+  ** For OpenSSL, see ciphers(1) for the syntax of the string.
+  ** .pp
+  ** For GnuTLS, this option will be used in place of "NORMAL" at the
+  ** start of the priority string.  See gnutls_priority_init(3) for the
+  ** syntax and more details. (Note: GnuTLS version 2.1.7 or higher is
+  ** required.)
+  */
 #endif /* defined(USE_SSL) */
   { "status_chars",	DT_STR,	 R_BOTH, UL &StChars, UL "-*%A" },
   /*
