@@ -303,7 +303,7 @@ sub openssl_hash ($) {
   my ($filename) = @_;
 
   my $format = openssl_format($filename);
-  my $cmd = "$opensslbin x509 -noout -hash -in $filename -inform $format";
+  my $cmd = "$opensslbin x509 -noout -hash -in '$filename' -inform $format";
   my $cert_hash = `$cmd`;
   $? and die "'$cmd' returned $?";
 
@@ -315,7 +315,7 @@ sub openssl_fingerprint ($) {
   my ($filename) = @_;
 
   my $format = openssl_format($filename);
-  my $cmd = "$opensslbin x509 -in $filename -inform $format -fingerprint -noout";
+  my $cmd = "$opensslbin x509 -in '$filename' -inform $format -fingerprint -noout";
   my $fingerprint = `$cmd`;
   $? and die "'$cmd' returned $?";
 
@@ -327,7 +327,7 @@ sub openssl_emails ($) {
   my ($filename) = @_;
 
   my $format = openssl_format($filename);
-  my $cmd = "$opensslbin x509 -in $filename -inform $format -email -noout";
+  my $cmd = "$opensslbin x509 -in '$filename' -inform $format -email -noout";
   my @mailboxes = `$cmd`;
   $? and die "'$cmd' returned $?";
 
@@ -348,7 +348,7 @@ sub openssl_do_verify ($$$) {
     $issuer_path = "$certificates_path/$issuerid";
   }
 
-  my $cmd = "$opensslbin verify $root_certs_switch $root_certs_path -purpose smimesign -purpose smimeencrypt -untrusted $issuer_path $cert_path";
+  my $cmd = "$opensslbin verify $root_certs_switch '$root_certs_path' -purpose smimesign -purpose smimeencrypt -untrusted '$issuer_path' '$cert_path'";
   my $output = `$cmd`;
   chomp $output;
   if ($?) {
@@ -364,7 +364,7 @@ sub openssl_do_verify ($$$) {
   }
 
   my $format = openssl_format($cert_path);
-  $cmd = "$opensslbin x509 -dates -serial -noout -in $cert_path -inform $format";
+  $cmd = "$opensslbin x509 -dates -serial -noout -in '$cert_path' -inform $format";
   (my $not_before, my $not_after, my $serial_in) = `$cmd`;
   $? and die "'$cmd' returned $?";
 
@@ -404,7 +404,7 @@ sub openssl_do_verify ($$$) {
 
   if ( defined $crl ) {
     my @serial = split (/\=/, $serial_in);
-    my $cmd = "$opensslbin crl -text -noout -in $crl | grep -A1 $serial[1]";
+    my $cmd = "$opensslbin crl -text -noout -in '$crl' | grep -A1 $serial[1]";
     (my $l1, my $l2) = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -537,7 +537,7 @@ sub cm_list_certs () {
     my $date2_in;
 
     my $format = openssl_format($certfile);
-    my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in $certfile -inform $format";
+    my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in '$certfile' -inform $format";
     ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
     $? and print "ERROR: '$cmd' returned $?\n\n" and next;
 
@@ -572,7 +572,7 @@ sub cm_list_certs () {
       print "$tab - Matching private key installed -\n";
 
     $format = openssl_format("$certificates_path/$fields[1]");
-    $cmd = "$opensslbin x509 -purpose -noout -in $certfile -inform $format";
+    $cmd = "$opensslbin x509 -purpose -noout -in '$certfile' -inform $format";
     my $purpose_in = `$cmd`;
     $? and die "'$cmd' returned $?";
 
@@ -879,7 +879,7 @@ sub handle_add_p12 ($) {
   my ($pem_fh, $pem_file) = create_tempfile();
   close($pem_fh);
 
-  my $cmd = "$opensslbin pkcs12 -in $filename -out $pem_file";
+  my $cmd = "$opensslbin pkcs12 -in '$filename' -out '$pem_file'";
   system $cmd and die "'$cmd' returned $?";
 
   -e $pem_file and -s $pem_file or die("Conversion of $filename failed.");
@@ -945,7 +945,7 @@ sub handle_add_root_cert ($) {
     my $md5fp = openssl_fingerprint($root_cert);
     my $format = openssl_format($root_cert);
 
-    my $cmd = "$opensslbin x509 -in $root_cert -inform $format -text -noout";
+    my $cmd = "$opensslbin x509 -in '$root_cert' -inform $format -text -noout";
     $? and die "'$cmd' returned $?";
     my @cert_text = `$cmd`;
 
@@ -955,7 +955,7 @@ sub handle_add_root_cert ($) {
     my $line = "=======================================\n";
     print ROOT_CERTS "\n$input$line$md5fp\nPEM-Data:\n";
 
-    $cmd = "$opensslbin x509 -in $root_cert -inform $format";
+    $cmd = "$opensslbin x509 -in '$root_cert' -inform $format";
     my $cert = `$cmd`;
     $? and die "'$cmd' returned $?";
     print ROOT_CERTS $cert;
