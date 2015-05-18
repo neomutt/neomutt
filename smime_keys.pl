@@ -38,12 +38,18 @@ sub create_tempfile (;$);
 sub new_cert_structure ();
 
 # openssl helpers
+sub openssl_exec (@);
 sub openssl_format ($);
+sub openssl_x509_query ($@);
 sub openssl_hash ($);
 sub openssl_fingerprint ($);
 sub openssl_emails ($);
-sub openssl_do_verify($$$);
+sub openssl_p12_to_pem ($$);
+sub openssl_verify ($$);
+sub openssl_crl_text($);
+sub openssl_cert_flag ($$$);
 sub openssl_parse_pem ($$);
+sub openssl_dump_cert ($);
 
 # key/certificate management methods
 sub cm_list_certs ();
@@ -293,19 +299,43 @@ sub new_cert_structure () {
 # openssl helpers
 ##################
 
+sub openssl_exec (@) {
+  my (@args) = @_;
+
+  my $fh;
+
+  open($fh, "-|", $opensslbin, @args)
+    or die "Failed to run '$opensslbin @args': $!";
+  my @output = <$fh>;
+  if (! close($fh)) {
+    # NOTE: Callers should check the value of $? for the exit status.
+    if ($!) {
+      die "Syserr closing '$opensslbin @args' pipe: $!";
+    }
+  }
+
+  return @output;
+}
+
 sub openssl_format ($) {
   my ($filename) = @_;
 
   return -B $filename ? 'DER' : 'PEM';
 }
 
+sub openssl_x509_query ($@) {
+  my ($filename, @query) = @_;
+
+  my $format = openssl_format($filename);
+  my @args = ("x509", "-in", $filename, "-inform", $format, "-noout", @query);
+  return openssl_exec(@args);
+}
+
 sub openssl_hash ($) {
   my ($filename) = @_;
 
-  my $format = openssl_format($filename);
-  my $cmd = "$opensslbin x509 -noout -hash -in '$filename' -inform $format";
-  my $cert_hash = `$cmd`;
-  $? and die "'$cmd' returned $?";
+  my $cert_hash = join("", openssl_x509_query($filename, "-hash"));
+  $? and die "openssl -hash '$filename' returned $?";
 
   chomp($cert_hash);
   return $cert_hash;
@@ -314,10 +344,8 @@ sub openssl_hash ($) {
 sub openssl_fingerprint ($) {
   my ($filename) = @_;
 
-  my $format = openssl_format($filename);
-  my $cmd = "$opensslbin x509 -in '$filename' -inform $format -fingerprint -noout";
-  my $fingerprint = `$cmd`;
-  $? and die "'$cmd' returned $?";
+  my $fingerprint = join("", openssl_x509_query($filename, "-fingerprint"));
+  $? and die "openssl -fingerprint '$filename' returned $?";
 
   chomp($fingerprint);
   return $fingerprint;
@@ -326,16 +354,44 @@ sub openssl_fingerprint ($) {
 sub openssl_emails ($) {
   my ($filename) = @_;
 
-  my $format = openssl_format($filename);
-  my $cmd = "$opensslbin x509 -in '$filename' -inform $format -email -noout";
-  my @mailboxes = `$cmd`;
-  $? and die "'$cmd' returned $?";
+  my @mailboxes = openssl_x509_query($filename, "-email");
+  $? and die "openssl -email '$filename' returned $?";
 
   chomp(@mailboxes);
   return @mailboxes;
 }
 
-sub openssl_do_verify ($$$) {
+sub openssl_p12_to_pem ($$) {
+  my ($p12_file, $pem_file) = @_;
+
+  my @args = ("pkcs12", "-in", $p12_file, "-out", $pem_file);
+  openssl_exec(@args);
+  $? and die "openssl pkcs12 conversion returned $?";
+}
+
+sub openssl_verify ($$) {
+  my ($issuer_path, $cert_path) = @_;
+
+  my @args = ("verify", $root_certs_switch, $root_certs_path,
+              "-purpose", "smimesign", "-purpose", "smimeencrypt", "-untrusted",
+              $issuer_path, $cert_path);
+  my $output = join("", openssl_exec(@args));
+
+  chomp($output);
+  return $output;
+}
+
+sub openssl_crl_text($) {
+  my ($crl) = @_;
+
+  my @args = ("crl", "-text", "-noout", "-in", $crl);
+  my @output = openssl_exec(@args);
+  $? and die "openssl crl -text '$crl' returned $?";
+
+  return @output;
+}
+
+sub openssl_cert_flag ($$$) {
   my ($cert, $issuerid, $crl) = @_;
 
   my $result = 't';
@@ -348,13 +404,11 @@ sub openssl_do_verify ($$$) {
     $issuer_path = "$certificates_path/$issuerid";
   }
 
-  my $cmd = "$opensslbin verify $root_certs_switch '$root_certs_path' -purpose smimesign -purpose smimeencrypt -untrusted '$issuer_path' '$cert_path'";
-  my $output = `$cmd`;
-  chomp $output;
+  my $output = openssl_verify($issuer_path, $cert_path);
   if ($?) {
-    print "'$cmd' returned exit code " . ($? >> 8) . " with output:\n";
+    print "openssl verify returned exit code " . ($? >> 8) . " with output:\n";
     print "$output\n\n";
-    print "Marking as invalid\n";
+    print "Marking certificate as invalid\n";
     return 'i';
   }
   print "\n$output\n";
@@ -363,10 +417,8 @@ sub openssl_do_verify ($$$) {
     return 'i';
   }
 
-  my $format = openssl_format($cert_path);
-  $cmd = "$opensslbin x509 -dates -serial -noout -in '$cert_path' -inform $format";
-  (my $not_before, my $not_after, my $serial_in) = `$cmd`;
-  $? and die "'$cmd' returned $?";
+  my ($not_before, $not_after, $serial_in) = openssl_x509_query($cert_path, "-dates", "-serial");
+  $? and die "openssl -dates -serial '$cert_path' returned $?";
 
   if ( defined $not_before and defined $not_after ) {
     my %months = ('Jan', '00', 'Feb', '01', 'Mar', '02', 'Apr', '03',
@@ -403,13 +455,19 @@ sub openssl_do_verify ($$$) {
   }
 
   if ( defined $crl ) {
+    chomp($serial_in);
     my @serial = split (/\=/, $serial_in);
-    my $cmd = "$opensslbin crl -text -noout -in '$crl' | grep -A1 $serial[1]";
-    (my $l1, my $l2) = `$cmd`;
-    $? and die "'$cmd' returned $?";
+    my $match_line = undef;
+    my @crl_lines = openssl_crl_text($crl);
+    for (my $index = 0; $index <= $#crl_lines; $index++) {
+      if ($crl_lines[$index] =~ /Serial Number:\s*\Q$serial[1]\E\b/) {
+        $match_line = $crl_lines[$index + 1];
+        last;
+      }
+    }
 
-    if ( defined $l2 ) {
-      my @revoke_date = split (/:\s/, $l2);
+    if ( defined $match_line ) {
+      my @revoke_date = split (/:\s/, $match_line);
       print "FAILURE: Certificate $cert has been revoked on $revoke_date[1]\n";
       $result = 'r';
     }
@@ -496,6 +554,17 @@ sub openssl_parse_pem ($$) {
   return @certs;
 }
 
+sub openssl_dump_cert ($) {
+  my ($filename) = @_;
+
+  my $format = openssl_format($filename);
+  my @args = ("x509", "-in", $filename, "-inform", $format);
+  my $output = join("", openssl_exec(@args));
+  $? and die "openssl x509 certicate dump returned $?";
+
+  return $output;
+}
+
 
 #################################
 # certificate management methods
@@ -531,15 +600,9 @@ sub cm_list_certs () {
         close F;
     }
 
-    my $subject_in;
-    my $issuer_in;
-    my $date1_in;
-    my $date2_in;
-
-    my $format = openssl_format($certfile);
-    my $cmd = "$opensslbin x509 -subject -issuer -dates -noout -in '$certfile' -inform $format";
-    ($subject_in, $issuer_in, $date1_in, $date2_in) = `$cmd`;
-    $? and print "ERROR: '$cmd' returned $?\n\n" and next;
+    my ($subject_in, $issuer_in, $date1_in, $date2_in) =
+      openssl_x509_query($certfile, "-subject", "-issuer", "-dates");
+    $? and print "ERROR: openssl -subject -issuer -dates '$certfile' returned $?\n\n" and next;
 
 
     my @subject = split(/\//, $subject_in);
@@ -571,12 +634,10 @@ sub cm_list_certs () {
     -e "$private_keys_path/$fields[1]" and
       print "$tab - Matching private key installed -\n";
 
-    $format = openssl_format("$certificates_path/$fields[1]");
-    $cmd = "$opensslbin x509 -purpose -noout -in '$certfile' -inform $format";
-    my $purpose_in = `$cmd`;
-    $? and die "'$cmd' returned $?";
+    my @purpose = openssl_x509_query($certfile, "-purpose");
+    $? and die "openssl -purpose '$certfile' returned $?";
+    chomp(@purpose);
 
-    my @purpose = split (/\n/, $purpose_in);
     print "$tab$purpose[0] (displays S/MIME options only)\n";
     while(@purpose) {
       $tmp = shift @purpose;
@@ -711,7 +772,7 @@ sub cm_modify_entry ($$$;$) {
 
       if ($op eq 'V') {
         print "\n==> about to verify certificate of $fields[0]\n";
-        my $flag = openssl_do_verify($fields[1], $fields[3], $crl);
+        my $flag = openssl_cert_flag($fields[1], $fields[3], $crl);
         print $newindex_fh " $fields[2] $fields[3] $flag";
       }
 
@@ -879,10 +940,9 @@ sub handle_add_p12 ($) {
   my ($pem_fh, $pem_file) = create_tempfile();
   close($pem_fh);
 
-  my $cmd = "$opensslbin pkcs12 -in '$filename' -out '$pem_file'";
-  system $cmd and die "'$cmd' returned $?";
-
+  openssl_p12_to_pem($filename, $pem_file);
   -e $pem_file and -s $pem_file or die("Conversion of $filename failed.");
+
   handle_add_pem($pem_file);
 }
 
@@ -943,11 +1003,9 @@ sub handle_add_root_cert ($) {
       die ("Couldn't open $root_certs_path for writing");
 
     my $md5fp = openssl_fingerprint($root_cert);
-    my $format = openssl_format($root_cert);
 
-    my $cmd = "$opensslbin x509 -in '$root_cert' -inform $format -text -noout";
-    $? and die "'$cmd' returned $?";
-    my @cert_text = `$cmd`;
+    my @cert_text = openssl_x509_query($root_cert, "-text");
+    $? and die "openssl -text '$root_cert' returned $?";
 
     print "Enter a label, name or description for this certificate: ";
     my $input = <STDIN>;
@@ -955,12 +1013,9 @@ sub handle_add_root_cert ($) {
     my $line = "=======================================\n";
     print ROOT_CERTS "\n$input$line$md5fp\nPEM-Data:\n";
 
-    $cmd = "$opensslbin x509 -in '$root_cert' -inform $format";
-    my $cert = `$cmd`;
-    $? and die "'$cmd' returned $?";
+    my $cert = openssl_dump_cert($root_cert);
     print ROOT_CERTS $cert;
     print ROOT_CERTS @cert_text;
     close (ROOT_CERTS);
   }
-
 }
