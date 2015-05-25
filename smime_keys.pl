@@ -36,6 +36,7 @@ sub mkdir_recursive ($);
 sub verify_files_exist (@);
 sub create_tempfile (;$);
 sub new_cert_structure ();
+sub create_cert_chains (@);
 
 # openssl helpers
 sub openssl_exec (@);
@@ -294,6 +295,46 @@ sub new_cert_structure () {
   return $cert_data;
 }
 
+sub create_cert_chains (@) {
+  my (@certs) = @_;
+
+  my (%subject_hash, @leaves, @chains);
+
+  foreach my $cert (@certs) {
+    $cert->{children} = 0;
+    if ($cert->{subject}) {
+      $subject_hash{$cert->{subject}} = $cert;
+    }
+  }
+
+  foreach my $cert (@certs) {
+    my $parent = $subject_hash{$cert->{issuer}};
+    if (defined($parent)) {
+      $parent->{children} += 1;
+    }
+  }
+
+  @leaves = grep { $_->{children} == 0 } @certs;
+  foreach my $leaf (@leaves) {
+    my $chain = [];
+    my $cert = $leaf;
+
+    while (defined($cert)) {
+      push @$chain, $cert;
+
+      $cert = $subject_hash{$cert->{issuer}};
+      if (defined($cert) &&
+          (scalar(grep {$_ == $cert} @$chain) != 0)) {
+        $cert = undef;
+      }
+    }
+
+    push @chains, $chain;
+  }
+
+  return @chains;
+}
+
 
 ##################
 # openssl helpers
@@ -499,7 +540,8 @@ sub openssl_parse_pem ($$) {
       $state = 1;
     }
 
-    if ($state == 1) {
+    # Allow attributes without the "Bag Attributes" header
+    if ($state != 2) {
       if (/localKeyID:\s*(.*)/) {
         $cert_data->{localKeyID} = $1;
       }
@@ -833,23 +875,40 @@ sub handle_add_cert($) {
   my ($filename) = @_;
 
   my $label = query_label();
+  my @cert_contents = openssl_parse_pem($filename, 0);
+  @cert_contents = grep { $_->{type} eq "C" } @cert_contents;
 
-  my $cert_hash = openssl_hash($filename);
-  cm_add_certificate($filename, \$cert_hash, 1, $label, '?');
+  my @cert_chains = create_cert_chains(@cert_contents);
+  print "Found " . scalar(@cert_chains) . " certificate chains\n";
 
-  # TODO:
-  # Below is the method from http://kb.wisc.edu/middleware/page.php?id=4091
-  # Investigate threading the chain and separating out issuer as an alternative.
+  foreach my $chain (@cert_chains) {
+    my $leaf = shift(@$chain);
+    my $issuer_chain_hash = "?";
 
-  # my @cert_contents = openssl_parse_pem($filename, 0);
-  # foreach my $cert (@cert_contents) {
-  #   if ($cert->{type} eq "C") {
-  #     my $cert_hash = openssl_hash($cert->{datafile});
-  #     cm_add_certificate($cert->{datafile}, \$cert_hash, 1, $label, '?');
-  #   } else {
-  #     print "Ignoring private key\n";
-  #   }
-  # }
+    print "Processing chain:\n";
+    if ($leaf->{subject}) {
+      print "subject=" . $leaf->{subject} . "\n";
+    }
+
+    if (scalar(@$chain) > 0) {
+      my ($issuer_chain_fh, $issuer_chain_file) = create_tempfile();
+
+      foreach my $issuer (@$chain) {
+        my $issuer_datafile = $issuer->{datafile};
+        open(my $issuer_fh, "< $issuer_datafile") or
+            die "can't open $issuer_datafile: $?";
+        print $issuer_chain_fh $_ while (<$issuer_fh>);
+        close($issuer_fh);
+      }
+
+      close($issuer_chain_fh);
+      $issuer_chain_hash = openssl_hash($issuer_chain_file);
+      cm_add_certificate($issuer_chain_file, \$issuer_chain_hash, 0, $label);
+    }
+
+    my $leaf_hash = openssl_hash($leaf->{datafile});
+    cm_add_certificate($leaf->{datafile}, \$leaf_hash, 1, $label, $issuer_chain_hash);
+  }
 }
 
 sub handle_add_pem ($) {
