@@ -61,6 +61,7 @@ sub cm_add_indexed_cert ($$$);
 sub cm_add_key ($$$$$$);
 sub cm_modify_entry ($$$;$);
 sub cm_find_entry ($$);
+sub cm_refresh_index ();
 
 # op handlers
 sub handle_init_paths ();
@@ -106,6 +107,9 @@ if ( -d $root_certs_path) {
 
 if (@ARGV == 1 and $ARGV[0] eq "init") {
   handle_init_paths();
+}
+elsif (@ARGV == 1 and $ARGV[0] eq "refresh") {
+  cm_refresh_index();
 }
 elsif (@ARGV == 1 and $ARGV[0] eq "list") {
   cm_list_certs();
@@ -163,6 +167,9 @@ Usage: smime_keys <operation>  [file(s) | keyID [file(s)]]
         with operation being one of:
 
         init      : no files needed, inits directory structure.
+        refresh   : refreshes certificate and key index files.
+                    Updates trust flag (expiration).
+                    Adds purpose flag if missing.
 
         list      : lists the certificates stored in database.
         label     : keyID required. changes/removes/adds label.
@@ -899,6 +906,58 @@ sub cm_find_entry ($$) {
 
   close($index_fh);
   return;
+}
+
+# Refreshes trust flags, and adds purpose if missing
+# (e.g. from an older index format)
+sub cm_refresh_index () {
+  my $index_fh;
+
+  my ($last_hash, $last_trust, $last_purpose) = ("", "", "");
+
+  open($index_fh, "<$certificates_path/.index") or
+    die "Couldn't open $certificates_path/.index: $!";
+  my ($newindex_fh, $newindex) = create_tempfile();
+
+  while (<$index_fh>) {
+    chomp;
+
+    # fields: mailbox hash label issuer_hash trust purpose
+    my @fields = split;
+
+    if ($fields[1] eq $last_hash) {
+      $fields[4] = $last_trust;
+      $fields[5] = $last_purpose;
+    }
+    else {
+      # Don't overwrite a revoked flag, because we don't have the CRL
+      if ($fields[4] ne "r") {
+        $fields[4] = openssl_trust_flag($fields[1], $fields[3]);
+      }
+
+      if ($#fields < 5) {
+        $fields[5] = openssl_purpose_flag("$certificates_path/$fields[1]");
+      }
+
+      # To update an old private keys index format, always push the trust
+      # and purpose out.
+      if (-e "$private_keys_path/$fields[1]") {
+        cm_modify_entry ("T", $fields[1], 0, $fields[4]);
+        cm_modify_entry ("P", $fields[1], 0, $fields[5]);
+      }
+
+      $last_hash = $fields[1];
+      $last_trust = $fields[4];
+      $last_purpose = $fields[5];
+    }
+
+    print $newindex_fh join(" ", @fields), "\n";
+  }
+  close($index_fh);
+  close($newindex_fh);
+
+  move $newindex, "$certificates_path/.index"
+      or die "Couldn't move $newindex to $certificates_path/.index: $!\n";
 }
 
 
