@@ -48,16 +48,19 @@ sub openssl_emails ($);
 sub openssl_p12_to_pem ($$);
 sub openssl_verify ($$);
 sub openssl_crl_text($);
-sub openssl_cert_flag ($$$);
+sub openssl_trust_flag ($$;$);
 sub openssl_parse_pem ($$);
 sub openssl_dump_cert ($);
+sub openssl_purpose_flag ($);
 
 # key/certificate management methods
 sub cm_list_certs ();
-sub cm_add_entry ($$$$$);
-sub cm_add_certificate ($$$$;$);
-sub cm_add_key ($$$$);
+sub cm_add_entry ($$$$$$;$);
+sub cm_add_cert ($);
+sub cm_add_indexed_cert ($$$);
+sub cm_add_key ($$$$$$);
 sub cm_modify_entry ($$$;$);
+sub cm_find_entry ($$);
 
 # op handlers
 sub handle_init_paths ();
@@ -101,39 +104,39 @@ if ( -d $root_certs_path) {
 # OPS
 ######
 
-if(@ARGV == 1 and $ARGV[0] eq "init") {
+if (@ARGV == 1 and $ARGV[0] eq "init") {
   handle_init_paths();
 }
-elsif(@ARGV == 1 and $ARGV[0] eq "list") {
+elsif (@ARGV == 1 and $ARGV[0] eq "list") {
   cm_list_certs();
 }
-elsif(@ARGV == 2 and $ARGV[0] eq "label") {
+elsif (@ARGV == 2 and $ARGV[0] eq "label") {
   handle_change_label($ARGV[1]);
 }
-elsif(@ARGV == 2 and $ARGV[0] eq "add_cert") {
+elsif (@ARGV == 2 and $ARGV[0] eq "add_cert") {
   verify_files_exist($ARGV[1]);
   handle_add_cert($ARGV[1]);
 }
-elsif(@ARGV == 2 and $ARGV[0] eq "add_pem") {
+elsif (@ARGV == 2 and $ARGV[0] eq "add_pem") {
   verify_files_exist($ARGV[1]);
   handle_add_pem($ARGV[1]);
 }
-elsif( @ARGV == 2 and $ARGV[0] eq "add_p12") {
+elsif ( @ARGV == 2 and $ARGV[0] eq "add_p12") {
   verify_files_exist($ARGV[1]);
   handle_add_p12($ARGV[1]);
 }
-elsif(@ARGV == 4 and $ARGV[0] eq "add_chain") {
+elsif (@ARGV == 4 and $ARGV[0] eq "add_chain") {
   verify_files_exist($ARGV[1], $ARGV[2], $ARGV[3]);
   handle_add_chain($ARGV[1], $ARGV[2], $ARGV[3]);
 }
-elsif((@ARGV == 2 or @ARGV == 3) and $ARGV[0] eq "verify") {
+elsif ((@ARGV == 2 or @ARGV == 3) and $ARGV[0] eq "verify") {
   verify_files_exist($ARGV[2]) if (@ARGV == 3);
   handle_verify_cert($ARGV[1], $ARGV[2]);
 }
-elsif(@ARGV == 2 and $ARGV[0] eq "remove") {
+elsif (@ARGV == 2 and $ARGV[0] eq "remove") {
   handle_remove_pair($ARGV[1]);
 }
-elsif(@ARGV == 2 and $ARGV[0] eq "add_root") {
+elsif (@ARGV == 2 and $ARGV[0] eq "add_root") {
   verify_files_exist($ARGV[1]);
   handle_add_root_cert($ARGV[1]);
 }
@@ -432,14 +435,16 @@ sub openssl_crl_text($) {
   return @output;
 }
 
-sub openssl_cert_flag ($$$) {
+sub openssl_trust_flag ($$;$) {
   my ($cert, $issuerid, $crl) = @_;
+
+  print "==> about to verify certificate of $cert\n";
 
   my $result = 't';
   my $issuer_path;
   my $cert_path = "$certificates_path/$cert";
 
-  if($issuerid eq '?') {
+  if ($issuerid eq '?') {
     $issuer_path = "$certificates_path/$cert";
   } else {
     $issuer_path = "$certificates_path/$issuerid";
@@ -533,8 +538,8 @@ sub openssl_parse_pem ($$) {
   ($cert_tmp_fh, $cert_data->{datafile}) = create_tempfile();
 
   open(PEM_FILE, "<$filename") or die("Can't open $filename: $!");
-  while(<PEM_FILE>) {
-    if(/^Bag Attributes/) {
+  while (<PEM_FILE>) {
+    if (/^Bag Attributes/) {
       $bag_count++;
       $state == 0 or  die("PEM-parse error at: $.");
       $state = 1;
@@ -556,22 +561,22 @@ sub openssl_parse_pem ($$) {
     }
 
 
-    if(/^-----/) {
-      if(/BEGIN/) {
+    if (/^-----/) {
+      if (/BEGIN/) {
         print $cert_tmp_fh $_;
         $state = 2;
 
-        if(/PRIVATE/) {
+        if (/PRIVATE/) {
             $cert_data->{type} = "K";
             next;
         }
-        if(/CERTIFICATE/) {
+        if (/CERTIFICATE/) {
             $cert_data->{type} = "C";
             next;
         }
         die("What's this: $_");
       }
-      if(/END/) {
+      if (/END/) {
         $state = 0;
         print $cert_tmp_fh $_;
         close($cert_tmp_fh);
@@ -607,6 +612,30 @@ sub openssl_dump_cert ($) {
   return $output;
 }
 
+sub openssl_purpose_flag ($) {
+  my ($filename) = @_;
+
+  my $purpose = "";
+
+  my @output = openssl_x509_query($filename, "-purpose");
+  $? and die "openssl -purpose '$filename' returned $?";
+
+  foreach my $line (@output) {
+    if ($line =~ /^S\/MIME signing\s*:\s*Yes/) {
+      $purpose .= "s";
+    }
+    elsif ($line =~ /^S\/MIME encryption\s*:\s*Yes/) {
+      $purpose .= "e";
+    }
+  }
+
+  if (! $purpose) {
+    $purpose = "-";
+  }
+
+  return $purpose;
+}
+
 
 #################################
 # certificate management methods
@@ -620,13 +649,13 @@ sub cm_list_certs () {
     die "Couldn't open $certificates_path/.index: $!";
 
   print "\n";
-  while(<INDEX>) {
+  while (<INDEX>) {
     my $tmp;
     my @tmp;
     my $tab = "            ";
     my @fields = split;
 
-    if($fields[2] eq '-') {
+    if ($fields[2] eq '-') {
       print "$fields[1]: Issued for: $fields[0] $keyflags{$fields[4]}\n";
     } else {
       print "$fields[1]: Issued for: $fields[0] \"$fields[2]\" $keyflags{$fields[4]}\n";
@@ -648,7 +677,7 @@ sub cm_list_certs () {
 
 
     my @subject = split(/\//, $subject_in);
-    while(@subject) {
+    while (@subject) {
       $tmp = shift @subject;
       ($tmp =~ /^CN\=/) and last;
       undef $tmp;
@@ -657,7 +686,7 @@ sub cm_list_certs () {
       print $tab."Subject: $tmp[1]\n";
 
     my @issuer = split(/\//, $issuer_in);
-    while(@issuer) {
+    while (@issuer) {
       $tmp = shift @issuer;
       ($tmp =~ /^CN\=/) and last;
       undef $tmp;
@@ -681,7 +710,7 @@ sub cm_list_certs () {
     chomp(@purpose);
 
     print "$tab$purpose[0] (displays S/MIME options only)\n";
-    while(@purpose) {
+    while (@purpose) {
       $tmp = shift @purpose;
       ($tmp =~ /^S\/MIME/ and $tmp =~ /Yes/) or next;
       my @tmptmp = split (/:/, $tmp);
@@ -694,10 +723,12 @@ sub cm_list_certs () {
   close(INDEX);
 }
 
-sub cm_add_entry ($$$$$) {
-  my ($mailbox, $hashvalue, $use_cert, $label, $issuer_hash) = @_;
+sub cm_add_entry ($$$$$$;$) {
+  my ($mailbox, $hashvalue, $use_cert, $label, $trust, $purpose, $issuer_hash) = @_;
 
-  my @fields;
+  if (! defined($issuer_hash) ) {
+    $issuer_hash = "?";
+  }
 
   if ($use_cert) {
     open(INDEX, "+<$certificates_path/.index") or
@@ -708,67 +739,74 @@ sub cm_add_entry ($$$$$) {
         die "Couldn't open $private_keys_path/.index: $!";
   }
 
-  while(<INDEX>) {
-    @fields = split;
-    return if ($fields[0] eq $mailbox && $fields[1] eq $hashvalue);
+  while (<INDEX>) {
+    my @fields = split;
+    if (($fields[0] eq $mailbox) && ($fields[1] eq $hashvalue)) {
+      close(INDEX);
+      return;
+    }
   }
 
-  if ($use_cert) {
-    print INDEX "$mailbox $hashvalue $label $issuer_hash u\n";
-  }
-  else {
-    print INDEX "$mailbox $hashvalue $label \n";
-  }
+  print INDEX "$mailbox $hashvalue $label $issuer_hash $trust $purpose\n";
 
   close(INDEX);
 }
 
-sub cm_add_certificate ($$$$;$) {
-  my ($filename, $hashvalue, $add_to_index, $label, $issuer_hash) = @_;
+# Returns the hashvalue.index of the stored cert
+sub cm_add_cert ($) {
+  my ($filename) = @_;
 
   my $iter = 0;
-  my @mailboxes;
-
+  my $hashvalue = openssl_hash($filename);
   my $fp1 = openssl_fingerprint($filename);
 
-  while (-e "$certificates_path/$$hashvalue.$iter") {
-    my $fp2 = openssl_fingerprint("$certificates_path/$$hashvalue.$iter");
+  while (-e "$certificates_path/$hashvalue.$iter") {
+    my $fp2 = openssl_fingerprint("$certificates_path/$hashvalue.$iter");
 
     last if $fp1 eq $fp2;
     $iter++;
   }
-  $$hashvalue .= ".$iter";
+  $hashvalue .= ".$iter";
 
-  if (-e "$certificates_path/$$hashvalue") {
-    print "\nCertificate: $certificates_path/$$hashvalue already installed.\n";
+  if (-e "$certificates_path/$hashvalue") {
+    print "\nCertificate: $certificates_path/$hashvalue already installed.\n";
   }
   else {
-    mycopy $filename, "$certificates_path/$$hashvalue";
-
-    if ($add_to_index) {
-      @mailboxes = openssl_emails($filename);
-      foreach my $mailbox (@mailboxes) {
-        cm_add_entry($mailbox, $$hashvalue, 1, $label, $issuer_hash);
-        print "\ncertificate $$hashvalue ($label) for $mailbox added.\n";
-      }
-      cm_modify_entry('V', $$hashvalue, 1);
-    }
-    else {
-      print "added certificate: $certificates_path/$$hashvalue.\n";
-    }
+    mycopy $filename, "$certificates_path/$hashvalue";
   }
 
-  return @mailboxes;
+  return $hashvalue;
 }
 
-sub cm_add_key ($$$$) {
-    my ($file, $hashvalue, $mailbox, $label) = @_;
+# Returns a reference containing the hashvalue, mailboxes, trust flag, and purpose
+# flag of the stored cert.
+sub cm_add_indexed_cert ($$$) {
+  my ($filename, $label, $issuer_hash) = @_;
+
+  my $cert_data = {};
+
+  $cert_data->{hashvalue} = cm_add_cert($filename);
+  $cert_data->{mailboxes} = [ openssl_emails($filename) ];
+  $cert_data->{trust} = openssl_trust_flag($cert_data->{hashvalue}, $issuer_hash);
+  $cert_data->{purpose} = openssl_purpose_flag($filename);
+
+  foreach my $mailbox (@{$cert_data->{mailboxes}}) {
+    cm_add_entry($mailbox, $cert_data->{hashvalue}, 1, $label,
+                 $cert_data->{trust}, $cert_data->{purpose}, $issuer_hash);
+    print "\ncertificate ", $cert_data->{hashvalue}, " ($label) for $mailbox added.\n";
+  }
+
+  return $cert_data;
+}
+
+sub cm_add_key ($$$$$$) {
+    my ($file, $hashvalue, $mailbox, $label, $trust, $purpose) = @_;
 
     unless (-e "$private_keys_path/$hashvalue") {
         mycopy $file, "$private_keys_path/$hashvalue";
     }
 
-    cm_add_entry($mailbox, $hashvalue, 0, $label, "");
+    cm_add_entry($mailbox, $hashvalue, 0, $label, $trust, $purpose);
     print "added private key: " .
       "$private_keys_path/$hashvalue for $mailbox\n";
 }
@@ -776,60 +814,91 @@ sub cm_add_key ($$$$) {
 sub cm_modify_entry ($$$;$) {
   my ($op, $hashvalue, $use_cert, $opt_param) = @_;
 
-  my $crl;
   my $label;
+  my $trust;
+  my $purpose;
   my $path;
   my @fields;
 
   $op eq 'L' and ($label = $opt_param);
-  $op eq 'V' and ($crl = $opt_param);
-
+  $op eq 'T' and ($trust = $opt_param);
+  $op eq 'P' and ($purpose = $opt_param);
 
   if ($use_cert) {
-      $path = $certificates_path;
+    $path = $certificates_path;
   }
   else {
-      $path = $private_keys_path;
+    $path = $private_keys_path;
   }
 
   open(INDEX, "<$path/.index") or
     die "Couldn't open $path/.index: $!";
   my ($newindex_fh, $newindex) = create_tempfile();
 
-  while(<INDEX>) {
+  while (<INDEX>) {
+    chomp;
+
+    # fields: mailbox hash label issuer_hash trust purpose
     @fields = split;
-    if($fields[1] eq $hashvalue or $hashvalue eq 'all') {
+
+    if ($fields[1] eq $hashvalue or $hashvalue eq 'all') {
       $op eq 'R' and next;
 
-      print $newindex_fh "$fields[0] $fields[1]";
-
-      if($op eq 'L') {
-        if($use_cert) {
-          print $newindex_fh " $label $fields[3] $fields[4]";
-        }
-        else {
-          print $newindex_fh " $label";
-        }
+      if ($op eq 'L') {
+        $fields[2] = $label;
       }
 
-      if ($op eq 'V') {
-        print "\n==> about to verify certificate of $fields[0]\n";
-        my $flag = openssl_cert_flag($fields[1], $fields[3], $crl);
-        print $newindex_fh " $fields[2] $fields[3] $flag";
+      if ($op eq 'T') {
+        $fields[3] = "?" if ($#fields < 3);
+        $fields[4] = $trust;
       }
 
-      print $newindex_fh "\n";
-      next;
+      if ($op eq 'P') {
+        $fields[3] = "?" if ($#fields < 3);
+        $fields[4] = "u" if ($#fields < 4);
+        $fields[5] = $purpose;
+      }
+
+      print $newindex_fh join(" ", @fields), "\n";
     }
-    print $newindex_fh $_;
+    else {
+      print $newindex_fh $_, "\n";
+    }
   }
   close(INDEX);
   close($newindex_fh);
 
   move $newindex, "$path/.index"
       or die "Couldn't move $newindex to $path/.index: $!\n";
+}
 
-  print "\n";
+# This returns the first matching entry.
+sub cm_find_entry ($$) {
+  my ($hashvalue, $use_cert) = @_;
+
+  my ($path, $index_fh);
+
+  if ($use_cert) {
+    $path = $certificates_path;
+  }
+  else {
+    $path = $private_keys_path;
+  }
+
+  open($index_fh, "<$path/.index") or
+    die "Couldn't open $path/.index: $!";
+
+  while (<$index_fh>) {
+    chomp;
+    my @fields = split;
+    if ($fields[1] eq $hashvalue) {
+      close($index_fh);
+      return @fields;
+    }
+  }
+
+  close($index_fh);
+  return;
 }
 
 
@@ -902,12 +971,10 @@ sub handle_add_cert($) {
       }
 
       close($issuer_chain_fh);
-      $issuer_chain_hash = openssl_hash($issuer_chain_file);
-      cm_add_certificate($issuer_chain_file, \$issuer_chain_hash, 0, $label);
+      $issuer_chain_hash = cm_add_cert($issuer_chain_file);
     }
 
-    my $leaf_hash = openssl_hash($leaf->{datafile});
-    cm_add_certificate($leaf->{datafile}, \$leaf_hash, 1, $label, $issuer_chain_hash);
+    cm_add_indexed_cert($leaf->{datafile}, $label, $issuer_chain_hash);
   }
 }
 
@@ -925,7 +992,7 @@ sub handle_add_pem ($) {
 
   # look for key
   $iter = 0;
-  while($iter <= $#pem_contents) {
+  while ($iter <= $#pem_contents) {
     if ($pem_contents[$iter]->{type} eq "K") {
       $key = $pem_contents[$iter];
       splice(@pem_contents, $iter, 1);
@@ -938,7 +1005,7 @@ sub handle_add_pem ($) {
 
   # private key and certificate use the same 'localKeyID'
   $iter = 0;
-  while($iter <= $#pem_contents) {
+  while ($iter <= $#pem_contents) {
     if (($pem_contents[$iter]->{type} eq "C") &&
         ($pem_contents[$iter]->{localKeyID} eq $key->{localKeyID})) {
       $certificate = $pem_contents[$iter];
@@ -955,7 +1022,7 @@ sub handle_add_pem ($) {
 
   # Look for a self signed root certificate
   $iter = 0;
-  while($iter <= $#pem_contents) {
+  while ($iter <= $#pem_contents) {
     if ($pem_contents[$iter]->{subject} eq $pem_contents[$iter]->{issuer}) {
       $root_cert = $pem_contents[$iter];
       splice(@pem_contents, $iter, 1);
@@ -975,7 +1042,7 @@ sub handle_add_pem ($) {
     $issuer_cert_file = $tmp_issuer_cert;
 
     $iter = 0;
-    while($iter <= $#pem_contents) {
+    while ($iter <= $#pem_contents) {
       my $cert_datafile = $pem_contents[$iter]->{datafile};
       open (CERT, "< $cert_datafile") or die "can't open $cert_datafile: $?";
       print $tmp_issuer_cert_fh $_ while (<CERT>);
@@ -1008,16 +1075,14 @@ sub handle_add_p12 ($) {
 sub handle_add_chain ($$$) {
   my ($key_file, $cert_file, $issuer_file) = @_;
 
-  my $cert_hash = openssl_hash($cert_file);
-  my $issuer_hash = openssl_hash($issuer_file);
-
   my $label = query_label();
 
-  cm_add_certificate($issuer_file, \$issuer_hash, 0, $label);
-  my @mailbox = cm_add_certificate($cert_file, \$cert_hash, 1, $label, $issuer_hash);
+  my $issuer_hash = cm_add_cert($issuer_file);
+  my $cert_data = cm_add_indexed_cert($cert_file, $label, $issuer_hash);
 
-  foreach my $mailbox (@mailbox) {
-    cm_add_key($key_file, $cert_hash, $mailbox, $label);
+  foreach my $mailbox (@{$cert_data->{mailboxes}}) {
+    cm_add_key($key_file, $cert_data->{hashvalue}, $mailbox, $label,
+               $cert_data->{trust}, $cert_data->{purpose});
   }
 }
 
@@ -1026,7 +1091,15 @@ sub handle_verify_cert ($$) {
 
   -e "$certificates_path/$keyid" or $keyid eq 'all'
     or die "No such certificate: $keyid";
-  cm_modify_entry('V', $keyid, 1, $crl);
+
+  my @fields = cm_find_entry($keyid, 1);
+  if (scalar(@fields)) {
+    my $issuer_hash = $fields[3];
+    my $trust = openssl_trust_flag($keyid, $issuer_hash, $crl);
+
+    cm_modify_entry('T', $keyid, 0, $trust);
+    cm_modify_entry('T', $keyid, 1, $trust);
+  }
 }
 
 sub handle_remove_pair ($) {
