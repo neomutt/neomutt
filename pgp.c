@@ -1751,7 +1751,7 @@ int pgp_send_menu (HEADER *msg, int *redraw)
       msg->security |= (ENCRYPT | SIGN);
       break;
 
-    case 'f': /* (f)orget it */
+    case 'f': /* (f)orget it: kept for backward compatibility. */
     case 'c': /* (c)lear     */
       msg->security &= ~(ENCRYPT | SIGN);
       break;
