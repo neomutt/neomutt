@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-17 13:26+0200\n"
-"PO-Revision-Date: 2015-05-18 02:54+0200\n"
+"POT-Creation-Date: 2015-06-26 11:37+0200\n"
+"PO-Revision-Date: 2015-06-26 11:43+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -1332,11 +1332,11 @@ msgstr "%s \"%s\"."
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Cette clé ne peut pas être utilisée : expirée/désactivée/annulée."
 
-#: crypt-gpgme.c:4019 pgpkey.c:613
+#: crypt-gpgme.c:4019 pgpkey.c:613 smime.c:452
 msgid "ID is expired/disabled/revoked."
 msgstr "L'ID est expiré/désactivé/annulé."
 
-#: crypt-gpgme.c:4027 pgpkey.c:617
+#: crypt-gpgme.c:4027 pgpkey.c:617 smime.c:455
 msgid "ID has undefined validity."
 msgstr "L'ID a une validité indéfinie."
 
@@ -1349,7 +1349,7 @@ msgid "ID is only marginally valid."
 msgstr "L'ID n'est que peu valide."
 
 # , c-format
-#: crypt-gpgme.c:4042 pgpkey.c:627
+#: crypt-gpgme.c:4042 pgpkey.c:627 smime.c:462
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Voulez-vous vraiment utiliser la clé ?"
@@ -1366,7 +1366,7 @@ msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
-#: crypt-gpgme.c:4450 pgp.c:1275 smime.c:650 smime.c:753
+#: crypt-gpgme.c:4450 pgp.c:1275 smime.c:776 smime.c:882
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
@@ -1414,7 +1414,8 @@ msgstr "semrro"
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
-msgstr "Chiffrer s/mime, Signer, En tant que, les Deux, Pgp, Rien, ou mode Oppenc ? "
+msgstr ""
+"Chiffrer s/mime, Signer, En tant que, les Deux, Pgp, Rien, ou mode Oppenc ? "
 
 #: crypt-gpgme.c:4667
 msgid "esabpfco"
@@ -1424,7 +1425,8 @@ msgstr "csedprro"
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, Rien, ou mode Oppenc ? "
+msgstr ""
+"Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, Rien, ou mode Oppenc ? "
 
 #: crypt-gpgme.c:4673
 msgid "esabmfco"
@@ -1447,7 +1449,7 @@ msgid "esabmfc"
 msgstr "csedmrr"
 
 #. sign (a)s
-#: crypt-gpgme.c:4716 pgp.c:1736 smime.c:2034 smime.c:2046
+#: crypt-gpgme.c:4716 pgp.c:1736 smime.c:2162 smime.c:2177
 msgid "Sign as: "
 msgstr "Signer en tant que : "
 
@@ -3305,7 +3307,8 @@ msgstr ""
 
 #: mutt_ssl_gnutls.c:357
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr "Sélection de suite cryptographique explicite via $ssl_ciphers non supportée"
+msgstr ""
+"Sélection de suite cryptographique explicite via $ssl_ciphers non supportée"
 
 # , c-format
 #: mutt_ssl_gnutls.c:465
@@ -3770,7 +3773,8 @@ msgstr "serro"
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
 "mode? "
-msgstr "Chiffrer pgp, Signer, En tant que, les Deux, format %s, Rien, ou Oppenc ? "
+msgstr ""
+"Chiffrer pgp, Signer, En tant que, les Deux, format %s, Rien, ou Oppenc ? "
 
 #: pgp.c:1681
 msgid "esabfcoi"
@@ -4084,7 +4088,8 @@ msgstr "L'effacement d'attachements de messages chiffrés n'est pas supporté."
 #: recvattach.c:1131
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "L'effacement d'attachements de messages signés peut invalider la signature."
+msgstr ""
+"L'effacement d'attachements de messages signés peut invalider la signature."
 
 #: recvattach.c:1148 recvattach.c:1165
 msgid "Only deletion of multipart attachments is supported."
@@ -4410,112 +4415,89 @@ msgstr "Erreur %s... On quitte.\n"
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signal %d... On quitte.\n"
 
-#: smime.c:111
+#: smime.c:140
 msgid "Enter S/MIME passphrase:"
 msgstr "Entrez la phrase de passe S/MIME :"
 
-#: smime.c:322
+#: smime.c:365
 msgid "Trusted   "
 msgstr "De confiance"
 
-#: smime.c:325
+#: smime.c:368
 msgid "Verified  "
 msgstr "Vérifiée    "
 
-#: smime.c:328
+#: smime.c:371
 msgid "Unverified"
 msgstr "Non vérifiée"
 
-#: smime.c:331
+#: smime.c:374
 msgid "Expired   "
 msgstr "Expirée     "
 
-#: smime.c:334
+#: smime.c:377
 msgid "Revoked   "
 msgstr "Révoquée    "
 
 # , c-format
-#: smime.c:337
+#: smime.c:380
 msgid "Invalid   "
 msgstr "Invalide    "
 
-#: smime.c:340
+#: smime.c:383
 msgid "Unknown   "
 msgstr "Inconnue    "
 
-# , c-format
-#: smime.c:368
-msgid "Enter keyID: "
-msgstr "Entrez keyID : "
-
-#: smime.c:378
+#: smime.c:415
 #, c-format
 msgid "S/MIME certificates matching \"%s\"."
 msgstr "Certificats S/MIME correspondant à \"%s\"."
 
-#: smime.c:526 smime.c:596 smime.c:614
-#, c-format
-msgid "ID %s is unverified. Do you want to use it for %s ?"
-msgstr "L'ID %s n'est pas vérifié. Voulez-vous l'utiliser pour %s ?"
+#: smime.c:458
+msgid "ID is not trusted."
+msgstr "L'ID n'est pas de confiance."
 
 # , c-format
-#: smime.c:530 smime.c:600
-#, c-format
-msgid "Use (untrusted!) ID %s for %s ?"
-msgstr "Utiliser l'ID %s (pas de confiance !) pour %s ?"
+#: smime.c:742
+msgid "Enter keyID: "
+msgstr "Entrez keyID : "
 
-# , c-format
-#: smime.c:533 smime.c:603
-#, c-format
-msgid "Use ID %s for %s ?"
-msgstr "Utiliser l'ID %s pour %s ?"
-
-#: smime.c:622
-#, c-format
-msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-msgstr ""
-"Att.: vous n'avez pas encore décidé de faire confiance à l'ID %s. (touche)"
-
-#: smime.c:760
+#: smime.c:889
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Pas de certificat (valide) trouvé pour %s."
 
-#: smime.c:810 smime.c:838 smime.c:903 smime.c:947 smime.c:1012 smime.c:1087
+#: smime.c:941 smime.c:969 smime.c:1034 smime.c:1078 smime.c:1143 smime.c:1218
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Erreur : impossible de créer le sous-processus OpenSSL !"
 
-#: smime.c:1165
+#: smime.c:1296
 msgid "no certfile"
 msgstr "pas de certfile"
 
-#: smime.c:1168
+#: smime.c:1299
 msgid "no mbox"
 msgstr "pas de BAL"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1311
+#: smime.c:1442
 msgid "No output from OpenSSL.."
 msgstr "Pas de sortie pour OpenSSL.."
 
-#: smime.c:1349
+#: smime.c:1481
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 "Impossible de signer : pas de clé spécifiée. Utilisez « Signer en tant que »."
 
-#: smime.c:1356
-msgid "Warning: Intermediate certificate not found."
-msgstr "Attention : le certificat intermédiaire n'a pas été trouvé."
-
-#: smime.c:1403
+#: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus OpenSSL !"
 
-#: smime.c:1443
+#: smime.c:1571
 msgid "No output from OpenSSL..."
 msgstr "Pas de sortie pour OpenSSL..."
 
-#: smime.c:1608 smime.c:1731
+#: smime.c:1736 smime.c:1859
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4523,19 +4505,19 @@ msgstr ""
 "[-- Fin de sortie OpenSSL --]\n"
 "\n"
 
-#: smime.c:1690 smime.c:1701
+#: smime.c:1818 smime.c:1829
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Erreur : impossible de créer le sous-processus OpenSSL ! --]\n"
 
-#: smime.c:1735
+#: smime.c:1863
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
 
-#: smime.c:1738
+#: smime.c:1866
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
 
-#: smime.c:1802
+#: smime.c:1930
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4543,7 +4525,7 @@ msgstr ""
 "\n"
 "[-- Fin des données chiffrées avec S/MIME. --]\n"
 
-#: smime.c:1804
+#: smime.c:1932
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4551,64 +4533,69 @@ msgstr ""
 "\n"
 "[-- Fin des données signées avec S/MIME. --]\n"
 
-#: smime.c:1926
+#: smime.c:2054
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "Signer s/mime, chiffer Avec, signer En tant que, Rien, ou Oppenc inactif ? "
+msgstr ""
+"Signer s/mime, chiffer Avec, signer En tant que, Rien, ou Oppenc inactif ? "
 
-#: smime.c:1927
+#: smime.c:2055
 msgid "swafco"
 msgstr "saerro"
 
-#: smime.c:1936
+#: smime.c:2064
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
-msgstr "Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou Oppenc ? "
+msgstr ""
+"Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou "
+"Oppenc ? "
 
-#: smime.c:1937
+#: smime.c:2065
 msgid "eswabfco"
 msgstr "csaedrro"
 
-#: smime.c:1945
+#: smime.c:2073
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien ? "
+msgstr ""
+"Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien ? "
 
-#: smime.c:1946
+#: smime.c:2074
 msgid "eswabfc"
 msgstr "csaedrr"
 
 #. I use "dra" because "123" is recognized anyway
-#: smime.c:1967
+#: smime.c:2095
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
-msgstr "Choisissez une famille d'algo : 1: DES, 2: RC2, 3: AES, ou (e)ffacer ? "
+msgstr ""
+"Choisissez une famille d'algo : 1: DES, 2: RC2, 3: AES, ou (e)ffacer ? "
 
-#: smime.c:1970
+#: smime.c:2098
 msgid "drac"
 msgstr "drae"
 
-#: smime.c:1973
+#: smime.c:2101
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:1974
+#: smime.c:2102
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:1986
+#: smime.c:2114
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:1987
+#: smime.c:2115
 msgid "468"
 msgstr "468"
 
-#: smime.c:2002
+#: smime.c:2130
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2003
+#: smime.c:2131
 msgid "895"
 msgstr "895"
 
@@ -5480,3 +5467,22 @@ msgstr "extraire les clés publiques supportées"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "afficher les options S/MIME"
+
+#~ msgid "ID %s is unverified. Do you want to use it for %s ?"
+#~ msgstr "L'ID %s n'est pas vérifié. Voulez-vous l'utiliser pour %s ?"
+
+# , c-format
+#~ msgid "Use (untrusted!) ID %s for %s ?"
+#~ msgstr "Utiliser l'ID %s (pas de confiance !) pour %s ?"
+
+# , c-format
+#~ msgid "Use ID %s for %s ?"
+#~ msgstr "Utiliser l'ID %s pour %s ?"
+
+#~ msgid ""
+#~ "Warning: You have not yet decided to trust ID %s. (any key to continue)"
+#~ msgstr ""
+#~ "Att.: vous n'avez pas encore décidé de faire confiance à l'ID %s. (touche)"
+
+#~ msgid "Warning: Intermediate certificate not found."
+#~ msgstr "Attention : le certificat intermédiaire n'a pas été trouvé."
