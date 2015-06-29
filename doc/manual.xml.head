@@ -2453,6 +2453,15 @@ in the configuration file.
 </para>
 </note>
 
+<note>
+<para>
+The keyboard buffer will not be processed until after all hooks
+are run; multiple <link linkend="push">push</link> or <link
+linkend="exec">exec</link> commands will end up being processed in
+reverse order.
+</para>
+</note>
+
 <para>
 The following example will set the <link linkend="sort">sort</link>
 variable to <literal>date-sent</literal> for all folders but to
@@ -3663,7 +3672,7 @@ e-mail address, or even just a real name.
 </cmdsynopsis>
 
 <para>
-This command adds the named string to the keyboard buffer. The string
+This command adds the named string to the beginning of the keyboard buffer. The string
 may contain control characters, key names and function names like the
 sequence string in the <link linkend="macro">macro</link> command. You
 may use it to automatically run a sequence of commands at startup, or
