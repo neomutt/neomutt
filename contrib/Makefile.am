@@ -14,7 +14,7 @@ EXTRA_DIST = language.txt language50.txt  \
 	iconv/make.sh
 
 install-data-local:
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
+	$(MKDIR_P) $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
 	for f in $(SAMPLES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir)/samples ;	\
 	done

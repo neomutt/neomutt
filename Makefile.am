@@ -162,7 +162,7 @@ install-exec-hook:
 	fi
 
 install-data-local:
-	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
 	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \
