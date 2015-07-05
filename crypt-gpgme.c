@@ -4596,8 +4596,6 @@ static void init_pgp (void)
   if (gpgme_engine_check_version (GPGME_PROTOCOL_OpenPGP) != GPG_ERR_NO_ERROR)
   {
     mutt_error (_("GPGME: OpenPGP protocol not available"));
-    if (mutt_any_key_to_continue (NULL) == -1)
-      mutt_exit(1);
   }
 }
 
@@ -4606,8 +4604,6 @@ static void init_smime (void)
   if (gpgme_engine_check_version (GPGME_PROTOCOL_CMS) != GPG_ERR_NO_ERROR)
   {
     mutt_error (_("GPGME: CMS protocol not available"));
-    if (mutt_any_key_to_continue (NULL) == -1)
-      mutt_exit(1);
   }
 }
 
