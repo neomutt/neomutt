@@ -2,8 +2,6 @@ include $(top_srcdir)/flymake.am
 
 subdir = doc
 
-DSLROOT = @DSLROOT@
-
 DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 AM_CPPFLAGS = -I. -I.. -I$(includedir) -I$(top_srcdir)
 
@@ -62,7 +60,7 @@ install-data-local: makedoc-all instdoc
 	./instdoc pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
-	test x@DOTLOCK_TARGET@ = x || ./instdoc $(srcdir)/dotlock.man \
+	test x$(DOTLOCK_TARGET) = x || ./instdoc $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5

@@ -1,8 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 include $(top_srcdir)/flymake.am
 
-AR=@AR@
-
 AUTOMAKE_OPTIONS = 1.6 foreign
 
 if USE_GSS
