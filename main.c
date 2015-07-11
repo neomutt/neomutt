@@ -766,10 +766,12 @@ int main (int argc, char **argv)
   /* This must come before mutt_init() because curses needs to be started
      before calling the init_pair() function to set the color scheme.  */
   if (!option (OPTNOCURSES))
+  {
     start_curses ();
 
-  /* check whether terminal status is supported (must follow curses init) */
-  TSSupported = mutt_ts_capability();
+    /* check whether terminal status is supported (must follow curses init) */
+    TSSupported = mutt_ts_capability();
+  }
 
   /* set defaults and read init files */
   mutt_init (flags & M_NOSYSRC, commands);
