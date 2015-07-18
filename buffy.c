@@ -285,8 +285,8 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   return 0;
 }
 
-/* returns 1 if maildir has new mail */
-static int buffy_maildir_hasnew (BUFFY* mailbox)
+/* returns 1 if the specified dir (cur or new) has new mail */
+static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
 {
   char path[_POSIX_PATH_MAX];
   DIR *dirp;
@@ -295,7 +295,7 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
   int rc = 0;
   struct stat sb;
 
-  snprintf (path, sizeof (path), "%s/new", mailbox->path);
+  snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir_name);
 
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the mailbox, then we know there is no recent mail.
@@ -317,7 +317,7 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
     if (*de->d_name == '.')
       continue;
 
-    if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T'))
+    if (!(p = strstr (de->d_name, ":2,")) || !(strchr (p + 3, 'T') || strchr(p + 3, 'S')))
     {
       if (option(OPTMAILCHECKRECENT))
       {
@@ -340,6 +340,23 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
   return rc;
 }
 
+/* returns 1 if maildir has new mail */
+static int buffy_maildir_hasnew (BUFFY* mailbox)
+{
+  if (buffy_maildir_dir_hasnew(mailbox, "new")) {
+      return 1;
+  }
+
+  if (!option(OPTMAILDIRCHECKCUR)) {
+      return 0;
+  }
+
+  if (buffy_maildir_dir_hasnew(mailbox, "cur")) {
+      return 1;
+  }
+
+  return 0;
+}
 /* returns 1 if mailbox has new mail */ 
 static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
 {

@@ -1420,6 +1420,16 @@ struct option_t MuttVars[] = {
   ** to maildir-style mailboxes.  Setting it will have no effect on other
   ** mailbox types.
   */
+  { "maildir_check_cur", DT_BOOL, R_NONE, OPTMAILDIRCHECKCUR, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, mutt will poll both the new and cur directories of
+  ** a maildir folder for new messages.  This might be useful if other
+  ** programs interacting with the folder (e.g. dovecot) are moving new
+  ** messages to the cur directory.  Note that setting this option may
+  ** slow down polling for new messages in large folders, since mutt has
+  ** to scan all cur messages.
+  */
   { "mark_old",		DT_BOOL, R_BOTH, OPTMARKOLD, 1 },
   /*
   ** .pp
