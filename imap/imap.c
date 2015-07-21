@@ -1280,8 +1280,18 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     goto out;
   }
 
+  /* Update local record of server state to reflect the synchronization just
+   * completed.  imap_read_headers always overwrites hcache-origin flags, so
+   * there is no need to mutate the hcache after flag-only changes. */
   for (n = 0; n < ctx->msgcount; n++)
+  {
+    HEADER_DATA(ctx->hdrs[n])->deleted = ctx->hdrs[n]->deleted;
+    HEADER_DATA(ctx->hdrs[n])->flagged = ctx->hdrs[n]->flagged;
+    HEADER_DATA(ctx->hdrs[n])->old = ctx->hdrs[n]->old;
+    HEADER_DATA(ctx->hdrs[n])->read = ctx->hdrs[n]->read;
+    HEADER_DATA(ctx->hdrs[n])->replied = ctx->hdrs[n]->replied;
     ctx->hdrs[n]->changed = 0;
+  }
   ctx->changed = 0;
 
   /* We must send an EXPUNGE command if we're not closing. */
