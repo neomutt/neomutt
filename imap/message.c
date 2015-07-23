@@ -60,7 +60,6 @@ static char* msg_parse_flags (IMAP_HEADER* h, char* s);
 int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 {
   CONTEXT* ctx;
-  char buf[LONG_STRING];
   char *hdrreq = NULL;
   FILE *fp;
   char tempfile[_POSIX_PATH_MAX];
@@ -75,6 +74,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   int retval = -1;
 
 #if USE_HCACHE
+  char buf[LONG_STRING];
   unsigned int *uid_validity = NULL;
   unsigned int *puidnext = NULL;
   unsigned int uidnext = 0;

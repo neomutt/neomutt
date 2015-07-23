@@ -33,6 +33,7 @@
 #include <ctype.h>
 #include <netdb.h>
 #include <errno.h>
+#include <netinet/in.h>
 
 /* given an POP mailbox name, return host, port, username and password */
 int pop_parse_path (const char* path, ACCOUNT* acct)
