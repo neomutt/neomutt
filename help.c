@@ -54,7 +54,7 @@ static const struct binding_t *help_lookupFunction (int op, int menu)
   return (NULL);
 }
 
-void mutt_make_help (char *d, size_t dlen, char *txt, int menu, int op)
+void mutt_make_help (char *d, size_t dlen, const char *txt, int menu, int op)
 {
   char buf[SHORT_STRING];
 

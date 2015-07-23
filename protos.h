@@ -213,7 +213,7 @@ void mutt_draw_tree (CONTEXT *);
 void mutt_check_lookup_list (BODY *, char *, int);
 void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
-void mutt_make_help (char *, size_t, char *, int, int);
+void mutt_make_help (char *, size_t, const char *, int, int);
 void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv);
 void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra);

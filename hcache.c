@@ -550,21 +550,33 @@ mutt_hcache_per_folder(const char *path, const char *folder,
   {
     md5_buffer (folder, strlen (folder), &md5sum);
 
+    /* On some systems (e.g. OS X), snprintf is defined as a macro.
+     * Embedding directives inside macros is undefined, so we have to duplicate
+     * the whole call:
+     */
+#ifndef HAVE_ICONV
     ret = snprintf(hcpath, _POSIX_PATH_MAX,
                    "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
                    "%02x%02x%02x%02x%02x%02x%02x%02x"
-#ifndef HAVE_ICONV
 		   "-%s"
-#endif
 		   ,
 		   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
                    md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
                    md5sum[9], md5sum[10], md5sum[11], md5sum[12],
                    md5sum[13], md5sum[14], md5sum[15]
-#ifndef HAVE_ICONV
 		   ,chs
-#endif
 		   );
+#else
+    ret = snprintf(hcpath, _POSIX_PATH_MAX,
+                   "%s/%02x%02x%02x%02x%02x%02x%02x%02x"
+                   "%02x%02x%02x%02x%02x%02x%02x%02x"
+		   ,
+		   path, md5sum[0], md5sum[1], md5sum[2], md5sum[3],
+                   md5sum[4], md5sum[5], md5sum[6], md5sum[7], md5sum[8],
+                   md5sum[9], md5sum[10], md5sum[11], md5sum[12],
+                   md5sum[13], md5sum[14], md5sum[15]
+		   );
+#endif
   }
   
   if (ret <= 0)
