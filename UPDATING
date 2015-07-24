@@ -4,13 +4,43 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.5.24 (unreleased):
+
+  + terminal status-line (TS) support, a.k.a. xterm title. see the
+    following variables: $ts_enabled, $ts_icon_format, $ts_status_format
+  ! $ssl_use_sslv3 is disabled by default.
+  ! command-line arguments: -H now combines template and command-line
+    address arguments.
+  ! GnuPG signature name is set to signature.asc
+  + New color object "prompt" added.
+  + Ability to encrypt postponed messages.  See $postpone_encrypt and
+    $postpone_encrypt_as.
+  ! History ring now has a scratch buffer.
+  ! mail-key is implemented for GPGME.  (Requires a recent GPGME).
+  ! Removed GPG_AGENT_INFO check for GnuPG 2.1 compatibility.  Please
+    set pgp_use_gpg_agent if using GnuPG 2.1 or later.
+  ! $smime_encrypt_with now defaults to aes256.
+  ! GnuPG fingerprints are used internally when possible.
+    "--with-fingerprint" should be added to $pgp_list_pubring_command and
+    $pgp_list_secring_command to enable this.  Please see contrib/gpg.rc.
+    Fingerprints may also be used at the prompts for key selection.
+  + $crypt_opportunistic_encrypt automatically enables/disables encryption
+    based on message recipients.
+  ! Attachments for unencrypted emails may be deleted.
+  ! Multiple crypt-hooks may be defined for the same regexp.
+    This means multiple keys may be used for a recipient.
+  + $crypt_confirmhook allows the confirmation prompt for crypt-hooks to
+    be disabled.
+  + $ssl_ciphers allows the SSL ciphers to be directly set.
+  ! sime_keys better handles importing certificate chains.
+  ! sime_keys now records certificate purposes (sign/encrypt).  Run
+    "sime_keys refresh" to update smime index files.
+
 1.5.23 (2014-03-11):
 
   ! FCC is now preserved when postponing a message.
   ! Mail-Followup-To is now preserved when recalling a postponed message.
   ! Allow filename prompt when saving multiple attachments to a directory.
-  + terminal status-line (TS) support, a.k.a. xterm title. see the
-    following variables: $ts_enabled, $ts_icon_format, $ts_status_format
 
 1.5.22 (2013-10-18):
 
