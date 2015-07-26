@@ -314,10 +314,71 @@ int mutt_is_multipart_encrypted (BODY *b)
         ascii_strcasecmp (p, "application/pgp-encrypted"))
       return 0;
   
-     return PGPENCRYPT;
+    return PGPENCRYPT;
   }
 
   return 0;
+}
+
+
+int mutt_is_valid_multipart_pgp_encrypted (BODY *b)
+{
+  if (! mutt_is_multipart_encrypted (b))
+    return 0;
+
+  b = b->parts;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "pgp-encrypted"))
+    return 0;
+
+  b = b->next;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "octet-stream"))
+    return 0;
+
+  return PGPENCRYPT;
+}
+
+
+/*
+ * This checks for the malformed layout caused by MS Exchange in
+ * some cases:
+ *  <multipart/mixed>
+ *     <text/plain>
+ *     <application/pgp-encrypted> [BASE64-encoded]
+ *     <application/octet-stream> [BASE64-encoded]
+ * See ticket #3742
+ */
+int mutt_is_malformed_multipart_pgp_encrypted (BODY *b)
+{
+  if (!(WithCrypto & APPLICATION_PGP))
+    return 0;
+
+  if (!b || b->type != TYPEMULTIPART ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "mixed"))
+    return 0;
+
+  b = b->parts;
+  if (!b || b->type != TYPETEXT ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "plain") ||
+       b->length != 0)
+    return 0;
+
+  b = b->next;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "pgp-encrypted"))
+    return 0;
+
+  b = b->next;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "octet-stream"))
+    return 0;
+
+  b = b->next;
+  if (b)
+    return 0;
+
+  return PGPENCRYPT;
 }
 
 
@@ -469,6 +530,7 @@ int crypt_query (BODY *m)
   {
     t |= mutt_is_multipart_encrypted(m);
     t |= mutt_is_multipart_signed (m);
+    t |= mutt_is_malformed_multipart_pgp_encrypted (m);
 
     if (t && m->goodsig) 
       t |= GOODSIGN;

@@ -996,7 +996,8 @@ void mutt_view_attachments (HEADER *hdr)
     }
     if ((WithCrypto & APPLICATION_PGP) && (hdr->security & APPLICATION_PGP))
     {
-      if (mutt_is_multipart_encrypted(hdr->content))
+      if (mutt_is_multipart_encrypted(hdr->content) ||
+          mutt_is_malformed_multipart_pgp_encrypted(hdr->content))
 	secured = !crypt_pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
       else
 	need_secured = 0;

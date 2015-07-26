@@ -112,6 +112,10 @@ int mutt_protect (HEADER *, char *);
 
 int mutt_is_multipart_encrypted (BODY *);
 
+int mutt_is_valid_multipart_pgp_encrypted (BODY *b);
+
+int mutt_is_malformed_multipart_pgp_encrypted (BODY *b);
+
 int mutt_is_multipart_signed (BODY *);
 
 int mutt_is_application_pgp (BODY *);
