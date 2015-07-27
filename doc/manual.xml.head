@@ -2423,6 +2423,12 @@ mailbox matches multiple <command>folder-hook</command>s, they are
 executed in the order given in the <literal>.muttrc</literal>.
 </para>
 
+<para>
+The regexp parameter has <link linkend="shortcuts">mailbox
+shortcut</link> expansion performed on the first character.
+See  <xref linkend="mailbox-hook"/> for more details.
+</para>
+
 <note>
 <para>
 If you use the <quote>!</quote> shortcut for <link
@@ -3200,6 +3206,12 @@ different mailbox automatically when you quit or change folders.
 mailbox to treat as a <quote>spool</quote> mailbox and
 <emphasis>mailbox</emphasis> specifies where mail should be saved when
 read.
+</para>
+
+<para>
+The regexp parameter has <link linkend="shortcuts">mailbox
+shortcut</link> expansion performed on the first character.
+See  <xref linkend="mailbox-hook"/> for more details.
 </para>
 
 <para>
@@ -5571,6 +5583,43 @@ linkend="default-hook">$default_hook</link> variable.  The pattern is
 translated at the time the hook is declared, so the value of <link
 linkend="default-hook">$default_hook</link> that is in effect at that
 time will be used.
+</para>
+
+</sect2>
+
+<sect2 id="mailbox-hook" xreflabel="Mailbox Matching in Hooks">
+<title>Mailbox Matching in Hooks</title>
+
+<para>
+Hooks that match against mailboxes (<command>folder-hook</command>,
+<command>mbox-hook</command>) apply both <link linkend="regexp">regular
+expression</link> syntax as well as <link linkend="shortcuts">mailbox
+shortcut</link> expansion on the regexp parameter.  There is some
+overlap between these, so special attention should be paid to the first
+character of the regexp.
+</para>
+
+<screen>
+# Here, ^ will expand to "the current mailbox" not "beginning of string":
+folder-hook ^/home/user/Mail/bar "set sort=threads"
+
+# If you want ^ to be interpreted as "beginning of string", one workaround
+# is to enclose the regexp in parenthesis:
+folder-hook (^/home/user/Mail/bar) "set sort=threads"
+
+# This will expand to the default save folder for the alias "imap.example.com", which
+# is probably not what you want:
+folder-hook @imap.example.com "set sort=threads"
+
+# A workaround is to use parenthesis or a backslash:
+folder-hook (@imap.example.com) "set sort=threads"
+folder-hook \@imap.example.com "set sort=threads"
+</screen>
+
+<para>
+Keep in mind that mailbox shortcut expansion on the regexp parameter
+takes place when the hook is initially parsed, not when the hook is
+matching against a mailbox.
 </para>
 
 </sect2>
