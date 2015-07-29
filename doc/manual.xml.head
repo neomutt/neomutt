@@ -5613,13 +5613,17 @@ folder-hook @imap.example.com "set sort=threads"
 
 # A workaround is to use parenthesis or a backslash:
 folder-hook (@imap.example.com) "set sort=threads"
-folder-hook \@imap.example.com "set sort=threads"
+folder-hook '\@imap.example.com' "set sort=threads"
 </screen>
 
 <para>
 Keep in mind that mailbox shortcut expansion on the regexp parameter
 takes place when the hook is initially parsed, not when the hook is
-matching against a mailbox.
+matching against a mailbox.  When Mutt starts up and is reading the
+.muttrc, some mailbox shortcuts may not be usable.  For example, the
+"current mailbox" shortcut, ^, will expand to an empty string because no
+mailbox has been opened yet.  Mutt will issue an error for this case or
+if the mailbox shortcut results in an empty regexp.
 </para>
 
 </sect2>

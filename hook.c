@@ -86,8 +86,25 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 
   if (data & (M_FOLDERHOOK | M_MBOXHOOK))
   {
+    /* Accidentally using the ^ mailbox shortcut in the .muttrc is a
+     * common mistake */
+    if ((*pattern.data == '^') && (! CurrentFolder))
+    {
+      strfcpy (err->data, _("current mailbox shortcut '^' is unset"), err->dsize);
+      goto error;
+    }
+
     strfcpy (path, pattern.data, sizeof (path));
     _mutt_expand_path (path, sizeof (path), 1);
+
+    /* Check for other mailbox shortcuts that expand to the empty string.
+     * This is likely a mistake too */
+    if (!*path && *pattern.data)
+    {
+      strfcpy (err->data, _("mailbox shortcut expanded to empty regexp"), err->dsize);
+      goto error;
+    }
+
     FREE (&pattern.data);
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
