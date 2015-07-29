@@ -8467,7 +8467,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="alternative-order">alternative-order</link></command>
+<command><link linkend="alternative-order">alternative_order</link></command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -8475,7 +8475,7 @@ The following are the commands understood by Mutt:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command><link linkend="alternative-order">unalternative-order</link></command>
+<command><link linkend="alternative-order">unalternative_order</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
