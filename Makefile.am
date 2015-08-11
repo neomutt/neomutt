@@ -89,14 +89,13 @@ mutt_md5_SOURCES = md5.c
 mutt_md5_CFLAGS = -DMD5UTIL
 mutt_md5_LDADD =
 
-noinst_PROGRAMS = $(MUTT_MD5)
+txt2c_SOURCES = txt2c.c
+txt2c_LDADD =
+
+noinst_PROGRAMS = $(MUTT_MD5) txt2c
 
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
-
-# If this fails, we will fall back to the implementation in txt2c.sh
-txt2c: txt2c.c
-	-$${NATIVECC-$(CC)} -o $@ $<
 
 conststrings.c: txt2c config.status
 	( \
