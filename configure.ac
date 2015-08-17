@@ -1191,13 +1191,21 @@ if test "x$with_idn" != "xno"; then
 		      have_idna_h=yes
 		      break])
 
+    mutt_save_LIBS="$LIBS"
+    LIBS=
+
     AC_SEARCH_LIBS([stringprep_check_version], [idn], [
       AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+      MUTTLIBS="$MUTTLIBS $LIBS"
+
+      LIBS="$LIBS $LIBICONV"
       AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
       AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
       AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
     ])
+
+    LIBS="$mutt_save_LIBS"
 
     if test "$with_idn" != auto; then
       if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then
