@@ -1439,7 +1439,7 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
   if (empty)
   {
     /* fatal error while trying to encrypt message */
-    if (!err) mutt_any_key_to_continue _("No output from OpenSSL..");
+    if (!err) mutt_any_key_to_continue _("No output from OpenSSL...");
     mutt_unlink (tempfile);
     return (NULL);
   }
