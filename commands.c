@@ -253,7 +253,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
   {
     if (!h->env->from)
     {
-      mutt_error _("Warning: message has no From: header");
+      mutt_error _("Warning: message contains no From: header");
       mutt_sleep (2);
     }
   }
@@ -263,7 +263,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
     {
       if (Context->hdrs[rc]->tagged && !Context->hdrs[rc]->env->from)
       {
-	mutt_error ("Warning: message has no From: header");
+	mutt_error _("Warning: message contains no From: header");
 	mutt_sleep (2);
 	break;
       }
