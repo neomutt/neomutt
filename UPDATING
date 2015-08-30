@@ -4,7 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-1.5.24 (unreleased):
+1.5.24 (2015-08-31):
 
   + terminal status-line (TS) support, a.k.a. xterm title. see the
     following variables: $ts_enabled, $ts_icon_format, $ts_status_format
@@ -26,7 +26,7 @@ The keys used are:
     Fingerprints may also be used at the prompts for key selection.
   + $crypt_opportunistic_encrypt automatically enables/disables encryption
     based on message recipients.
-  ! Attachments for unencrypted emails may be deleted.
+  ! Attachments for signed, unencrypted emails may be deleted.
   ! Multiple crypt-hooks may be defined for the same regexp.
     This means multiple keys may be used for a recipient.
   + $crypt_confirmhook allows the confirmation prompt for crypt-hooks to
@@ -35,7 +35,7 @@ The keys used are:
   ! sime_keys better handles importing certificate chains.
   ! sime_keys now records certificate purposes (sign/encrypt).  Run
     "sime_keys refresh" to update smime index files.
-  + $maildir_check_cur to poll maildir "cur" directory for new mail.
+  + $maildir_check_cur polls the maildir "cur" directory for new mail.
 
 1.5.23 (2014-03-11):
 
