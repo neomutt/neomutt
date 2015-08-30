@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-07 03:20+0200\n"
+"POT-Creation-Date: 2015-08-30 10:25-0700\n"
 "PO-Revision-Date: 2015-08-07 03:26+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
@@ -428,9 +428,9 @@ msgstr "La signature PGP n'a PAS pu être vérifiée."
 msgid "Command: "
 msgstr "Commande : "
 
-#: commands.c:256
-msgid "Warning: message has no From: header"
-msgstr "Attention : le message n'a pas d'en-tête From:"
+#: commands.c:256 commands.c:266 recvcmd.c:148 recvcmd.c:161
+msgid "Warning: message contains no From: header"
+msgstr "Attention : le message ne contient pas d'en-tête From:"
 
 #: commands.c:274 recvcmd.c:171
 msgid "Bounce message to: "
@@ -2318,7 +2318,7 @@ msgid "Error opening mailbox"
 msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:805 imap/message.c:859 muttlib.c:1540
+#: imap/imap.c:805 imap/message.c:859 muttlib.c:1535
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -3382,43 +3382,43 @@ msgstr "Le tunnel vers %s a renvoyé l'erreur %d (%s)"
 msgid "Tunnel error talking to %s: %s"
 msgstr "Erreur de tunnel en parlant à %s : %s"
 
-#: muttlib.c:976
+#: muttlib.c:971
 msgid "File is a directory, save under it? [(y)es, (n)o, (a)ll]"
 msgstr ""
 "Le fichier est un répertoire, sauver dans celui-ci ? [(o)ui, (n)on, (t)ous]"
 
-#: muttlib.c:976
+#: muttlib.c:971
 msgid "yna"
 msgstr "ont"
 
-#: muttlib.c:992
+#: muttlib.c:987
 msgid "File is a directory, save under it?"
 msgstr "Le fichier est un répertoire, sauver dans celui-ci ?"
 
-#: muttlib.c:996
+#: muttlib.c:991
 msgid "File under directory: "
 msgstr "Fichier dans le répertoire : "
 
-#: muttlib.c:1005
+#: muttlib.c:1000
 msgid "File exists, (o)verwrite, (a)ppend, or (c)ancel?"
 msgstr "Le fichier existe, écras(e)r, (c)oncaténer ou (a)nnuler ?"
 
-#: muttlib.c:1005
+#: muttlib.c:1000
 msgid "oac"
 msgstr "eca"
 
-#: muttlib.c:1506
+#: muttlib.c:1501
 msgid "Can't save message to POP mailbox."
 msgstr "Impossible de sauver le message dans la boîte aux lettres POP."
 
 # , c-format
-#: muttlib.c:1515
+#: muttlib.c:1510
 #, c-format
 msgid "Append messages to %s?"
 msgstr "Ajouter les messages à %s ?"
 
 # , c-format
-#: muttlib.c:1527
+#: muttlib.c:1522
 #, c-format
 msgid "%s is not a mailbox!"
 msgstr "%s n'est pas une boîte aux lettres !"
@@ -4096,10 +4096,6 @@ msgstr "Seul l'effacement d'attachements multipart est supporté."
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Vous ne pouvez renvoyer que des parties message/rfc822."
 
-#: recvcmd.c:148 recvcmd.c:161
-msgid "Warning: message contains no From: header"
-msgstr "Attention : le message ne contient pas d'en-tête From:"
-
 #: recvcmd.c:241
 msgid "Error bouncing message!"
 msgstr "Erreur en renvoyant le message !"
@@ -4477,9 +4473,9 @@ msgid "no mbox"
 msgstr "pas de BAL"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1442
-msgid "No output from OpenSSL.."
-msgstr "Pas de sortie pour OpenSSL.."
+#: smime.c:1442 smime.c:1571
+msgid "No output from OpenSSL..."
+msgstr "Pas de sortie pour OpenSSL..."
 
 #: smime.c:1481
 msgid "Can't sign: No key specified. Use Sign As."
@@ -4489,10 +4485,6 @@ msgstr ""
 #: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus OpenSSL !"
-
-#: smime.c:1571
-msgid "No output from OpenSSL..."
-msgstr "Pas de sortie pour OpenSSL..."
 
 #: smime.c:1736 smime.c:1859
 msgid ""
@@ -5464,6 +5456,12 @@ msgstr "extraire les clés publiques supportées"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "afficher les options S/MIME"
+
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "Attention : le message n'a pas d'en-tête From:"
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "Pas de sortie pour OpenSSL.."
 
 #~ msgid ""
 #~ "[-- Error: malformed PGP/MIME message! --]\n"

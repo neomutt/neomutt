@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-24 17:32+0900\n"
+"POT-Creation-Date: 2015-08-30 10:25-0700\n"
 "PO-Revision-Date: 2015-08-25 12:20+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
@@ -401,8 +401,8 @@ msgstr "PGP 署名は検証できなかった。"
 msgid "Command: "
 msgstr "コマンド: "
 
-#: commands.c:256
-msgid "Warning: message has no From: header"
+#: commands.c:256 commands.c:266 recvcmd.c:148 recvcmd.c:161
+msgid "Warning: message contains no From: header"
 msgstr "警告: メッセージに From: ヘッダがない"
 
 #: commands.c:274 recvcmd.c:171
@@ -1342,7 +1342,8 @@ msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗号 "
+"S/MIME e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, p:PGP, c:なし, o:日和見暗"
+"号 "
 
 #: crypt-gpgme.c:4698
 msgid "esabpfco"
@@ -1353,7 +1354,8 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗号 "
+"PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, m:S/MIME, c:なし, o:日和見暗"
+"号 "
 
 #: crypt-gpgme.c:4704
 msgid "esabmfco"
@@ -3595,7 +3597,8 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗号 "
+"PGP e:暗号化, s:署名, a:署名鍵選択, b:暗号+署名, %s形式, c:なし, o:日和見暗"
+"号 "
 
 #: pgp.c:1711
 msgid "esabfcoi"
@@ -3907,10 +3910,6 @@ msgstr "マルチパート添付ファイルの削除のみサポートされている。"
 #: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "message/rfc822 パートのみ再送してもよい。"
-
-#: recvcmd.c:148 recvcmd.c:161
-msgid "Warning: message contains no From: header"
-msgstr "警告: メッセージに From: ヘッダがない"
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -4271,9 +4270,9 @@ msgid "no mbox"
 msgstr "メールボックスがない"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1442
-msgid "No output from OpenSSL.."
-msgstr "OpenSSL から出力がない.."
+#: smime.c:1442 smime.c:1571
+msgid "No output from OpenSSL..."
+msgstr "OpenSSL から出力がない..."
 
 #: smime.c:1481
 msgid "Can't sign: No key specified. Use Sign As."
@@ -4282,10 +4281,6 @@ msgstr "鍵が未指定のため署名不能: 「署名鍵選択」をせよ。"
 #: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "OpenSSL 子プロセスオープン不能!"
-
-#: smime.c:1571
-msgid "No output from OpenSSL..."
-msgstr "OpenSSL から出力がない..."
 
 #: smime.c:1736 smime.c:1859
 msgid ""
@@ -4326,8 +4321,7 @@ msgstr ""
 #: smime.c:2054
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr ""
-"S/MIME s:署名, w:暗号選択, a:署名鍵選択, c:なし, o:日和見暗号オフ "
+msgstr "S/MIME s:署名, w:暗号選択, a:署名鍵選択, c:なし, o:日和見暗号オフ "
 
 #: smime.c:2055
 msgid "swafco"
@@ -4339,7 +4333,8 @@ msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
 msgstr ""
-"S/MIME e:暗号化,s:署名,w:暗号選択,a:署名鍵選択,b:暗号+署名,c:なし,o:日和見暗号 "
+"S/MIME e:暗号化,s:署名,w:暗号選択,a:署名鍵選択,b:暗号+署名,c:なし,o:日和見暗"
+"号 "
 
 #: smime.c:2065
 msgid "eswabfco"
@@ -5254,6 +5249,12 @@ msgstr "サポートされている公開鍵を抽出"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "S/MIME オプションを表示"
+
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "警告: メッセージに From: ヘッダがない"
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "OpenSSL から出力がない.."
 
 #~ msgid ""
 #~ "[-- Error: malformed PGP/MIME message! --]\n"

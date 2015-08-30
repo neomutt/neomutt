@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-20 19:46+0300\n"
+"POT-Creation-Date: 2015-08-30 10:25-0700\n"
 "PO-Revision-Date: 2014-08-20 20:06+0300\n"
 "Last-Translator: mutt-ru@woe.spb.ru\n"
 "Language-Team: mutt-ru@woe.spb.ru\n"
@@ -406,8 +406,8 @@ msgstr "PGP-подпись проверить НЕ удалось."
 msgid "Command: "
 msgstr "Команда: "
 
-#: commands.c:256
-msgid "Warning: message has no From: header"
+#: commands.c:256 commands.c:266 recvcmd.c:148 recvcmd.c:161
+msgid "Warning: message contains no From: header"
 msgstr "Предупреждение: сообщение не содержит заголовка From:"
 
 #: commands.c:274 recvcmd.c:171
@@ -3931,10 +3931,6 @@ msgstr "Для составных вложений поддерживается 
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Вы можете перенаправлять только части типа message/rfc822."
 
-#: recvcmd.c:148 recvcmd.c:161
-msgid "Warning: message contains no From: header"
-msgstr "Предупреждение: сообщение не содержит заголовка From:"
-
 #: recvcmd.c:241
 msgid "Error bouncing message!"
 msgstr "Ошибка перенаправления сообщения!"
@@ -4294,9 +4290,9 @@ msgid "no mbox"
 msgstr "нет почтового ящика"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1442
-msgid "No output from OpenSSL.."
-msgstr "Нет вывода от программы OpenSSL.."
+#: smime.c:1442 smime.c:1571
+msgid "No output from OpenSSL..."
+msgstr "Нет вывода от программы OpenSSL..."
 
 #: smime.c:1481
 msgid "Can't sign: No key specified. Use Sign As."
@@ -4305,10 +4301,6 @@ msgstr "Не удалось подписать: не указан ключ. Ис
 #: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Не удалось открыть OpenSSL-подпроцесс!"
-
-#: smime.c:1571
-msgid "No output from OpenSSL..."
-msgstr "Нет вывода от программы OpenSSL..."
 
 #: smime.c:1736 smime.c:1859
 msgid ""
@@ -5280,3 +5272,9 @@ msgstr "извлечь поддерживаемые открытые ключи"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "вывести параметры S/MIME"
+
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "Предупреждение: сообщение не содержит заголовка From:"
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "Нет вывода от программы OpenSSL.."

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-28 07:49-0700\n"
+"POT-Creation-Date: 2015-08-30 10:25-0700\n"
 "PO-Revision-Date: 2015-08-29 21:08+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -404,9 +404,9 @@ msgstr "PGP-handtekening kon NIET worden geverifieerd."
 msgid "Command: "
 msgstr "Commando: "
 
-#: commands.c:256
-msgid "Warning: message has no From: header"
-msgstr "Waarschuwing: bericht heeft geen 'From:'-kopregel"
+#: commands.c:256 commands.c:266 recvcmd.c:148 recvcmd.c:161
+msgid "Warning: message contains no From: header"
+msgstr "Waarschuwing: bericht bevat geen 'From:'-kopregel"
 
 #: commands.c:274 recvcmd.c:171
 msgid "Bounce message to: "
@@ -489,19 +489,19 @@ msgstr "Berichten konden niet worden afgedrukt"
 
 #: commands.c:536
 msgid ""
-"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s"
-"(p)am?: "
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
+"s(p)am?: "
 msgstr ""
-"Omgekeerd (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/s"
-"(p)am?: "
+"Omgekeerd (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/"
+"s(p)am?: "
 
 #: commands.c:537
 msgid ""
-"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)"
-"am?: "
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
+"s(p)am?: "
 msgstr ""
-"Sorteren (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/s(p)"
-"am?: "
+"Sorteren (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/"
+"s(p)am?: "
 
 #: commands.c:538
 msgid "dfrsotuzcp"
@@ -2670,8 +2670,8 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
-"1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 msgstr ""
 "    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen moeten\n"
 "    hebben samen met dit programma; indien dit niet zo is, schrijf naar de\n"
@@ -3604,8 +3604,8 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, %s, (g)een, "
-"opp(e)nc-modus? "
+"PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, %s, (g)een, opp(e)nc-"
+"modus? "
 
 #: pgp.c:1711
 msgid "esabfcoi"
@@ -3614,8 +3614,8 @@ msgstr "voabngei"
 #: pgp.c:1716
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr ""
-"PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (g)een, "
-"opp(e)nc-modus? "
+"PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-"
+"modus? "
 
 #: pgp.c:1717
 msgid "esabfco"
@@ -3922,10 +3922,6 @@ msgstr "Kan alleen multipart-bijlagen wissen."
 #: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "U kunt alleen message/rfc882-gedeelten doorsturen!"
-
-#: recvcmd.c:148 recvcmd.c:161
-msgid "Warning: message contains no From: header"
-msgstr "Waarschuwing: bericht bevat geen 'From:'-kopregel"
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -4283,11 +4279,10 @@ msgstr "geen certfile"
 msgid "no mbox"
 msgstr "geen mbox"
 
-# XXX FIXME: why a double period?
 #. fatal error while trying to encrypt message
-#: smime.c:1442
-msgid "No output from OpenSSL.."
-msgstr "Geen uitvoer van OpenSSL.."
+#: smime.c:1442 smime.c:1571
+msgid "No output from OpenSSL..."
+msgstr "Geen uitvoer van OpenSSL..."
 
 #: smime.c:1481
 msgid "Can't sign: No key specified. Use Sign As."
@@ -4296,10 +4291,6 @@ msgstr "Kan niet ondertekenen: Geen sleutel. Gebruik Ondertekenen Als."
 #: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Kan OpenSSL subproces niet starten!"
-
-#: smime.c:1571
-msgid "No output from OpenSSL..."
-msgstr "Geen uitvoer van OpenSSL..."
 
 #: smime.c:1736 smime.c:1859
 msgid ""
@@ -4353,8 +4344,8 @@ msgstr "omabnge"
 
 #: smime.c:2064
 msgid ""
-"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)"
-"ppenc mode? "
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
+"(o)ppenc mode? "
 msgstr ""
 "S/MIME (v)ersl, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, "
 "opp(e)nc? "
@@ -5271,6 +5262,13 @@ msgstr "extraheer ondersteunde publieke sleutels"
 msgid "show S/MIME options"
 msgstr "geef S/MIME-opties weer"
 
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "Waarschuwing: bericht heeft geen 'From:'-kopregel"
+
+# XXX FIXME: why a double period?
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "Geen uitvoer van OpenSSL.."
+
 #~ msgid ""
 #~ "[-- Error: malformed PGP/MIME message! --]\n"
 #~ "\n"
@@ -5356,8 +5354,8 @@ msgstr "geef S/MIME-opties weer"
 #~ "\n"
 #~ "    You should have received a copy of the GNU General Public License\n"
 #~ "    along with this program; if not, write to the Free Software\n"
-#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-"
-#~ "1301, USA.\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+#~ "02110-1301, USA.\n"
 #~ msgstr ""
 #~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 #~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"

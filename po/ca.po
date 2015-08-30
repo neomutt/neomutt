@@ -49,7 +49,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-28 07:49-0700\n"
+"POT-Creation-Date: 2015-08-30 10:25-0700\n"
 "PO-Revision-Date: 2015-08-29 21:40+0200\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -460,8 +460,8 @@ msgstr "NO s’ha pogut verificar la signatura PGP."
 msgid "Command: "
 msgstr "Ordre: "
 
-#: commands.c:256
-msgid "Warning: message has no From: header"
+#: commands.c:256 commands.c:266 recvcmd.c:148 recvcmd.c:161
+msgid "Warning: message contains no From: header"
 msgstr "Avís: El missatge no té capçalera «From:»."
 
 #: commands.c:274 recvcmd.c:171
@@ -1481,7 +1481,9 @@ msgstr "sgmcco"
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
-msgstr "S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista? "
+msgstr ""
+"S/MIME: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, "
+"(o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (p)gp, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -1493,7 +1495,9 @@ msgstr "xsgapcco"
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista? "
+msgstr ""
+"PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, "
+"(o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, s/(m)ime, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -3119,8 +3123,8 @@ msgstr "Salta a: "
 msgid "Invalid index number."
 msgstr "El número d’índex no és vàlid."
 
-#: menu.c:433 menu.c:454 menu.c:519 menu.c:562 menu.c:578 menu.c:589 menu.c:600
-#: menu.c:611 menu.c:624 menu.c:637 menu.c:1048
+#: menu.c:433 menu.c:454 menu.c:519 menu.c:562 menu.c:578 menu.c:589
+#: menu.c:600 menu.c:611 menu.c:624 menu.c:637 menu.c:1048
 msgid "No entries."
 msgstr "No hi ha cap entrada."
 
@@ -3408,7 +3412,8 @@ msgstr "Tots els protocols de connexió TLS/SSL disponibles estan inhabilitats."
 
 #: mutt_ssl_gnutls.c:357
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr "No es permet la selecció explícita de la suite de xifrat amb $ssl_ciphers."
+msgstr ""
+"No es permet la selecció explícita de la suite de xifrat amb $ssl_ciphers."
 
 #: mutt_ssl_gnutls.c:465
 #, c-format
@@ -3878,7 +3883,8 @@ msgstr "sgcco"
 msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
 "mode? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista? "
+msgstr ""
+"PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, %s, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -3888,7 +3894,8 @@ msgstr "xsgaccoi"
 
 #: pgp.c:1716
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
+msgstr ""
+"PGP: (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
 
 # (x)ifra, (s)igna, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4204,7 +4211,8 @@ msgstr "No es poden esborrar les adjuncions d’un missatge xifrat."
 #: recvattach.c:1132
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "Esborrar les adjuncions d’un missatge xifrat pot invalidar‐ne la signatura."
+msgstr ""
+"Esborrar les adjuncions d’un missatge xifrat pot invalidar‐ne la signatura."
 
 #: recvattach.c:1149 recvattach.c:1166
 msgid "Only deletion of multipart attachments is supported."
@@ -4213,10 +4221,6 @@ msgstr "Només es poden esborrar les adjuncions dels missatges «multipart»."
 #: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Només es poden redirigir parts de tipus «message/rfc822»."
-
-#: recvcmd.c:148 recvcmd.c:161
-msgid "Warning: message contains no From: header"
-msgstr "Avís: El missatge no té capçalera «From:»."
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -4603,9 +4607,9 @@ msgid "no mbox"
 msgstr "No hi ha bústia."
 
 #. fatal error while trying to encrypt message
-#: smime.c:1442
-msgid "No output from OpenSSL.."
-msgstr "OpenSSL no ha produït cap eixida…"
+#: smime.c:1442 smime.c:1571
+msgid "No output from OpenSSL..."
+msgstr "OpenSSL no ha produit cap eixida…"
 
 # Encara no s’ha signat.  ivb
 #: smime.c:1481
@@ -4615,10 +4619,6 @@ msgstr "No es pot signar: no s’ha indicat cap clau.  Useu «signa com a»."
 #: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "No s’ha pogut obrir el subprocés OpenSSL."
-
-#: smime.c:1571
-msgid "No output from OpenSSL..."
-msgstr "OpenSSL no ha produit cap eixida…"
 
 #: smime.c:1736 smime.c:1859
 msgid ""
@@ -4659,7 +4659,8 @@ msgstr ""
 #: smime.c:2054
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
+msgstr ""
+"S/MIME: (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista? "
 
 # (s)igna, xi(f)ra amb, si(g)na com a, (c)lar, no (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4671,7 +4672,9 @@ msgstr "sfgcco"
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
-msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista? "
+msgstr ""
+"S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, "
+"(o)portunista? "
 
 # (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar, (o)portunista
 # La «f» i la «c» originals s’agafen en el mateix cas en el codi.  ivb
@@ -4682,7 +4685,8 @@ msgstr "xsfgacco"
 #: smime.c:2073
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar? "
+msgstr ""
+"S/MIME: (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar? "
 
 # ivb (2003/03/26)
 # ivb  (x)ifra, (s)igna, xi(f)ra amb, si(g)na com a, (a)mbdós, (c)lar
@@ -5608,3 +5612,9 @@ msgstr "Extreu totes les claus públiques possibles."
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "Mostra les opcions de S/MIME."
+
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "Avís: El missatge no té capçalera «From:»."
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "OpenSSL no ha produït cap eixida…"

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt c0180991c352\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-19 16:34+0200\n"
+"POT-Creation-Date: 2015-08-30 10:25-0700\n"
 "PO-Revision-Date: 2015-08-19 17:44+0200\n"
 "Last-Translator: Petr Písař <petr.pisar@atlas.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
@@ -401,9 +401,9 @@ msgstr "PGP podpis NELZE ověřit."
 msgid "Command: "
 msgstr "Příkaz: "
 
-#: commands.c:256
-msgid "Warning: message has no From: header"
-msgstr "Pozor: zpráva nemá hlavičku From:"
+#: commands.c:256 commands.c:266 recvcmd.c:148 recvcmd.c:161
+msgid "Warning: message contains no From: header"
+msgstr "Pozor: zpráva neobsahuje hlavičku From:"
 
 #: commands.c:274 recvcmd.c:171
 msgid "Bounce message to: "
@@ -1342,7 +1342,8 @@ msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l).šifr.? "
+"S/MIME šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, p(g)p, (n)ic, pří(l)."
+"šifr.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -1355,7 +1356,8 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l).šifr.? "
+"PGP šif(r)ovat, (p)odepsat, pod.(j)ako, (o)bojí, s/(m)ime, (n)ic, pří(l)."
+"šifr.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -3168,7 +3170,8 @@ msgstr "Všechny dostupné protokoly pro TLS/SSL byly zakázány"
 
 #: mutt_ssl_gnutls.c:357
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr "Explicitní výběr šifrovacích algoritmů pomoc $ssl_ciphers není podporován"
+msgstr ""
+"Explicitní výběr šifrovacích algoritmů pomoc $ssl_ciphers není podporován"
 
 #: mutt_ssl_gnutls.c:465
 #, c-format
@@ -3921,8 +3924,7 @@ msgstr "Mazání příloh ze zašifrovaných zpráv není podporováno."
 #: recvattach.c:1132
 msgid ""
 "Deletion of attachments from signed messages may invalidate the signature."
-msgstr ""
-"Mazání příloh z podepsaných zpráv může zneplatnit podpis."
+msgstr "Mazání příloh z podepsaných zpráv může zneplatnit podpis."
 
 #: recvattach.c:1149 recvattach.c:1166
 msgid "Only deletion of multipart attachments is supported."
@@ -3931,10 +3933,6 @@ msgstr "Podporováno je pouze mazání příloh o více částech."
 #: recvcmd.c:43
 msgid "You may only bounce message/rfc822 parts."
 msgstr "Přeposílat v nezměněné podobě lze pouze části typu „message/rfc822“."
-
-#: recvcmd.c:148 recvcmd.c:161
-msgid "Warning: message contains no From: header"
-msgstr "Pozor: zpráva neobsahuje hlavičku From:"
 
 #: recvcmd.c:241
 msgid "Error bouncing message!"
@@ -4295,8 +4293,8 @@ msgid "no mbox"
 msgstr "žádná schránka"
 
 #. fatal error while trying to encrypt message
-#: smime.c:1442
-msgid "No output from OpenSSL.."
+#: smime.c:1442 smime.c:1571
+msgid "No output from OpenSSL..."
 msgstr "OpenSSL nevygenerovalo žádný výstup…"
 
 #: smime.c:1481
@@ -4306,10 +4304,6 @@ msgstr "Nemohu najít klíč odesílatele, použijte funkci podepsat jako."
 #: smime.c:1533
 msgid "Can't open OpenSSL subprocess!"
 msgstr "OpenSSL podproces nelze spustit!"
-
-#: smime.c:1571
-msgid "No output from OpenSSL..."
-msgstr "OpenSSL nevygenerovalo žádný výstup…"
 
 #: smime.c:1736 smime.c:1859
 msgid ""
@@ -4351,7 +4345,8 @@ msgstr ""
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr ""
-"S/MIME (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (n)ic, vypnout pří(l). šifr.? "
+"S/MIME (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (n)ic, vypnout pří(l). "
+"šifr.? "
 
 #: smime.c:2055
 msgid "swafco"
@@ -4362,7 +4357,8 @@ msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
 msgstr ""
-"S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l).šif.? "
+"S/MIME šif(r)., (p)ode., šif.po(m)ocí, pod.(j)ako, (o)bojí, (n)ic, pří(l)."
+"šif.? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -4374,7 +4370,8 @@ msgstr "rpmjofnl"
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
-"S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či (n)ic? "
+"S/MIME šif(r)ovat, (p)odepsat, šifr. po(m)ocí, podep. (j)ako, (o)bojí či "
+"(n)ic? "
 
 # `f` means forget it. The absolute order must be preserved. Therefore `f'
 # has to be injected on 6th position.
@@ -5278,6 +5275,12 @@ msgstr "extrahovat všechny podporované veřejné klíče"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "zobrazit menu S/MIME"
+
+#~ msgid "Warning: message has no From: header"
+#~ msgstr "Pozor: zpráva nemá hlavičku From:"
+
+#~ msgid "No output from OpenSSL.."
+#~ msgstr "OpenSSL nevygenerovalo žádný výstup…"
 
 #~ msgid ""
 #~ "[-- Error: malformed PGP/MIME message! --]\n"
