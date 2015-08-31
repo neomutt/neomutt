@@ -53,6 +53,13 @@ Dump signatures.
 .B \-f
 Dump fingerprints.
 
+.SH ENVIRONMENT
+.PP
+.IP "HOME"
+Full path of the user's home directory.
+.IP "PGPPATH"
+Directory in which the user's PGP public keyring can be found.
+
 .SH AUTHORS
 Thomas Roessler <roessler@does\-not\-exist.org>
 

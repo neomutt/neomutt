@@ -39,11 +39,12 @@
 #define SIGNOPAQUE (1 << 5)
 #define KEYBLOCK   (1 << 6) /* KEY too generic? */
 #define INLINE     (1 << 7)
+#define OPPENCRYPT (1 << 8) /* Opportunistic encrypt mode */
 
-#define APPLICATION_PGP    (1 << 8) 
-#define APPLICATION_SMIME  (1 << 9)
+#define APPLICATION_PGP    (1 << 9)
+#define APPLICATION_SMIME  (1 << 10)
 
-#define PGP_TRADITIONAL_CHECKED (1 << 10)
+#define PGP_TRADITIONAL_CHECKED (1 << 11)
 
 #define PGPENCRYPT  (APPLICATION_PGP | ENCRYPT)
 #define PGPSIGN     (APPLICATION_PGP | SIGN)
@@ -111,6 +112,10 @@ int mutt_protect (HEADER *, char *);
 
 int mutt_is_multipart_encrypted (BODY *);
 
+int mutt_is_valid_multipart_pgp_encrypted (BODY *b);
+
+int mutt_is_malformed_multipart_pgp_encrypted (BODY *b);
+
 int mutt_is_multipart_signed (BODY *);
 
 int mutt_is_application_pgp (BODY *);
@@ -140,8 +145,14 @@ void crypt_extract_keys_from_messages (HEADER *h);
 
 /* Do a quick check to make sure that we can find all of the
    encryption keys if the user has requested this service. 
-   Return the list of keys in KEYLIST. */
-int crypt_get_keys (HEADER *msg, char **keylist);
+   Return the list of keys in KEYLIST.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode);
+
+/* Check if all recipients keys can be automatically determined.
+ * Enable encryption if they can, otherwise disable encryption.  */
+void crypt_opportunistic_encrypt(HEADER *msg);
 
 /* Forget a passphrase and display a message. */
 void crypt_forget_passphrase (void);
@@ -152,6 +163,23 @@ int crypt_valid_passphrase (int);
 /* Write the message body/part A described by state S to a the given
    TEMPFILE.  */
 int crypt_write_signed(BODY *a, STATE *s, const char *tempf);
+
+/* Obtain pointers to fingerprint or short or long key ID, if any.
+ 
+   Upon return, at most one of return, *ppl and *pps pointers is non-NULL,
+   indicating the longest fingerprint or ID found, if any.
+
+   Return:  Copy of fingerprint, if any, stripped of all spaces, else NULL.
+            Must be FREE'd by caller.
+   *pphint  Start of string to be passed to pgp_add_string_to_hints() or 
+            crypt_add_string_to_hints().
+   *ppl     Start of long key ID if detected, else NULL.
+   *pps     Start of short key ID if detected, else NULL. */
+const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
+    const char **ppl, const char **pps);
+
+/* Check if a string contains a numerical key */
+short crypt_is_numerical_keyid (const char *s);
 
 
 
@@ -196,8 +224,10 @@ void crypt_pgp_free_key (pgp_key_t *kpp);
 BODY *crypt_pgp_make_key_attachment (char *tempf);
 
 /* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+   message.  It returns NULL if any of the keys can not be found.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+char *crypt_pgp_findkeys (ADDRESS *adrlist, int oppenc_mode);
 
 /* Create a new body with a PGP signed message from A. */
 BODY *crypt_pgp_sign_message (BODY *a);
@@ -245,8 +275,10 @@ int crypt_smime_verify_sender(HEADER *h);
 char *crypt_smime_ask_for_key (char *prompt, char *mailbox, short public);
 
 /* This routine attempts to find the keyids of the recipients of a
-   message.  It returns NULL if any of the keys can not be found.  */
-char *crypt_smime_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+   message.  It returns NULL if any of the keys can not be found.
+   If oppenc_mode is true, only keys that can be determined without
+   prompting will be used.  */
+char *crypt_smime_findkeys (ADDRESS *adrlist, int oppenc_mode);
 
 /* fixme: Needs documentation. */
 BODY *crypt_smime_sign_message (BODY *a);

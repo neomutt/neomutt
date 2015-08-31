@@ -766,7 +766,12 @@ int main (int argc, char **argv)
   /* This must come before mutt_init() because curses needs to be started
      before calling the init_pair() function to set the color scheme.  */
   if (!option (OPTNOCURSES))
+  {
     start_curses ();
+
+    /* check whether terminal status is supported (must follow curses init) */
+    TSSupported = mutt_ts_capability();
+  }
 
   /* set defaults and read init files */
   mutt_init (flags & M_NOSYSRC, commands);
@@ -863,44 +868,40 @@ int main (int argc, char **argv)
 
     if (!msg)
       msg = mutt_new_header ();
+    if (!msg->env)
+      msg->env = mutt_new_envelope ();
+
+    for (i = optind; i < argc; i++)
+    {
+      if (url_check_scheme (argv[i]) == U_MAILTO)
+      {
+        if (url_parse_mailto (msg->env, &bodytext, argv[i]) < 0)
+        {
+          if (!option (OPTNOCURSES))
+            mutt_endwin (NULL);
+          fputs (_("Failed to parse mailto: link\n"), stderr);
+          exit (1);
+        }
+      }
+      else
+        msg->env->to = rfc822_parse_adrlist (msg->env->to, argv[i]);
+    }
+
+    if (!draftFile && option (OPTAUTOEDIT) && !msg->env->to && !msg->env->cc)
+    {
+      if (!option (OPTNOCURSES))
+        mutt_endwin (NULL);
+      fputs (_("No recipients specified.\n"), stderr);
+      exit (1);
+    }
+
+    if (subject)
+      msg->env->subject = safe_strdup (subject);
 
     if (draftFile)
       infile = draftFile;
-    else
-    {
-      if (!msg->env)
-	msg->env = mutt_new_envelope ();
-
-      for (i = optind; i < argc; i++)
-      {
-	if (url_check_scheme (argv[i]) == U_MAILTO)
-	{
-	  if (url_parse_mailto (msg->env, &bodytext, argv[i]) < 0)
-	  {
-	    if (!option (OPTNOCURSES))
-	      mutt_endwin (NULL);
-	    fputs (_("Failed to parse mailto: link\n"), stderr);
-	    exit (1);
-	  }
-	}
-	else
-	  msg->env->to = rfc822_parse_adrlist (msg->env->to, argv[i]);
-      }
-
-      if (option (OPTAUTOEDIT) && !msg->env->to && !msg->env->cc)
-      {
-	if (!option (OPTNOCURSES))
-	  mutt_endwin (NULL);
-	fputs (_("No recipients specified.\n"), stderr);
-	exit (1);
-      }
-
-      if (subject)
-	msg->env->subject = safe_strdup (subject);
-
-      if (includeFile)
-	infile = includeFile;
-    }
+    else if (includeFile)
+      infile = includeFile;
 
     if (infile || bodytext)
     {
@@ -922,15 +923,24 @@ int main (int argc, char **argv)
 	    exit (1);
 	  }
 	}
+
+        if (draftFile)
+        {
+          ENVELOPE *opts_env = msg->env;
+          msg->env = mutt_read_rfc822_header (fin, NULL, 1, 0);
+
+          rfc822_append (&msg->env->to, opts_env->to, 0);
+          rfc822_append (&msg->env->cc, opts_env->cc, 0);
+          rfc822_append (&msg->env->bcc, opts_env->bcc, 0);
+          if (opts_env->subject)
+            mutt_str_replace (&msg->env->subject, opts_env->subject);
+
+          mutt_free_envelope (&opts_env);
+        }
       }
-      else
-	fin = NULL;
 
       mutt_mktemp (buf, sizeof (buf));
       tempfile = safe_strdup (buf);
-
-      if (draftFile)
-	msg->env = mutt_read_rfc822_header (fin, NULL, 1, 0);
 
       /* is the following if still needed? */
       
@@ -952,9 +962,10 @@ int main (int argc, char **argv)
 	else if (bodytext)
 	  fputs (bodytext, fout);
 	safe_fclose (&fout);
-	if (fin && fin != stdin)
-	  safe_fclose (&fin);
       }
+
+      if (fin && fin != stdin)
+        safe_fclose (&fin);
     }
 
     FREE (&bodytext);

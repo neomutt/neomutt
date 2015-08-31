@@ -996,7 +996,8 @@ void mutt_view_attachments (HEADER *hdr)
     }
     if ((WithCrypto & APPLICATION_PGP) && (hdr->security & APPLICATION_PGP))
     {
-      if (mutt_is_multipart_encrypted(hdr->content))
+      if (mutt_is_multipart_encrypted(hdr->content) ||
+          mutt_is_malformed_multipart_pgp_encrypted(hdr->content))
 	secured = !crypt_pgp_decrypt_mime (msg->fp, &fp, hdr->content, &cur);
       else
 	need_secured = 0;
@@ -1119,50 +1120,53 @@ void mutt_view_attachments (HEADER *hdr)
 	}
 #endif
 
-        if (WithCrypto && hdr->security & ~PGP_TRADITIONAL_CHECKED)
+        if (WithCrypto && (hdr->security & ENCRYPT))
         {
-	  mutt_message _(
-	    "Deletion of attachments from encrypted messages is unsupported.");
-	}
+          mutt_message _(
+            "Deletion of attachments from encrypted messages is unsupported.");
+          break;
+        }
+        if (WithCrypto && (hdr->security & (SIGN | PARTSIGN)))
+        {
+          mutt_message _(
+            "Deletion of attachments from signed messages may invalidate the signature.");
+        }
+        if (!menu->tagprefix)
+        {
+          if (idx[menu->current]->parent_type == TYPEMULTIPART)
+          {
+            idx[menu->current]->content->deleted = 1;
+            if (option (OPTRESOLVE) && menu->current < menu->max - 1)
+            {
+              menu->current++;
+              menu->redraw = REDRAW_MOTION_RESYNCH;
+            }
+            else
+              menu->redraw = REDRAW_CURRENT;
+          }
+          else
+            mutt_message _(
+              "Only deletion of multipart attachments is supported.");
+        }
         else
         {
-	  if (!menu->tagprefix)
-	  {
-	    if (idx[menu->current]->parent_type == TYPEMULTIPART)
-	    {
-	      idx[menu->current]->content->deleted = 1;
-	      if (option (OPTRESOLVE) && menu->current < menu->max - 1)
-	      {
-		menu->current++;
-		menu->redraw = REDRAW_MOTION_RESYNCH;
-	      }
-	      else
-		menu->redraw = REDRAW_CURRENT;
-	    }
-	    else
-	      mutt_message _(
-	        "Only deletion of multipart attachments is supported.");
-	  }
-	  else
-	  {
-	    int x;
+          int x;
 
-	    for (x = 0; x < menu->max; x++)
-	    {
-	      if (idx[x]->content->tagged)
-	      {
-		if (idx[x]->parent_type == TYPEMULTIPART)
-		{
-		  idx[x]->content->deleted = 1;
-		  menu->redraw = REDRAW_INDEX;
-		}
-		else
-		  mutt_message _(
-		    "Only deletion of multipart attachments is supported.");
-	      }
-	    }
-	  }
-	}
+          for (x = 0; x < menu->max; x++)
+          {
+            if (idx[x]->content->tagged)
+            {
+              if (idx[x]->parent_type == TYPEMULTIPART)
+              {
+                idx[x]->content->deleted = 1;
+                menu->redraw = REDRAW_INDEX;
+              }
+              else
+                mutt_message _(
+                  "Only deletion of multipart attachments is supported.");
+            }
+          }
+        }
         break;
 
       case OP_UNDELETE:

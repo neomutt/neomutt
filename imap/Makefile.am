@@ -1,6 +1,5 @@
 ## Process this file with automake to produce Makefile.in
-
-AR=@AR@
+include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
 

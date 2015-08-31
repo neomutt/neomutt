@@ -1583,7 +1583,7 @@ static int mh_rewrite_message (CONTEXT * ctx, int msgno)
      * number.  Mutt does _not_ behave like this.
      * 
      * Anyway, if this fails, the message is in the folder, so
-     * all what happens is that a concurrently runnung mutt will
+     * all what happens is that a concurrently running mutt will
      * lose flag modifications.
      */
 

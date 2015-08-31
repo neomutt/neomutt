@@ -28,6 +28,7 @@ fi
 AC_MSG_RESULT($mutt_cv_prefix)
 
 AC_PROG_CC
+AC_PROG_CC_C99
 AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
   AC_MSG_ERROR(Compiler not ANSI compliant)
@@ -35,6 +36,7 @@ fi
 AC_PROG_CPP
 AC_PROG_MAKE_SET
 AC_PROG_INSTALL
+AC_PROG_MKDIR_P
 AC_PROG_RANLIB
 AC_CHECK_TOOL(AR, ar, ar)
 
@@ -138,6 +140,11 @@ if test x"$enable_gpgme" = xyes; then
       #needed to get GPGME_LIBS and al correctly
       AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
                     [Define if you use GPGME to support OpenPGP]))
+      dnl AC_CHECK_FUNCS([gpgme_op_export_keys])
+      saved_LIBS="$LIBS"
+      LIBS="$LIBS $GPGME_LIBS"
+      AC_CHECK_FUNCS([gpgme_op_export_keys])
+      LIBS="$saved_LIBS"
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
    fi
 else
@@ -163,7 +170,7 @@ AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]),
 ])
  
 if test x$have_smime != xno ; then
-	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want clasic S/MIME support.])
+	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
 	SMIMEAUX_TARGET="smime_keys"
 fi
@@ -295,6 +302,7 @@ main ()
         if test "$ac_cv_func_decl_resizeterm" = yes; then
                 MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS resize.o"
         fi
+        AC_CHECK_FUNCS([use_extended_names])
         LIBS="$old_LIBS"
         ])
 
@@ -705,6 +713,16 @@ then
       [dnl GNUTLS found
       AC_CHECK_DECLS([GNUTLS_VERIFY_DISABLE_TIME_CHECKS], [], [],
                     [[#include <gnutls/x509.h>]])
+
+      LIBS="$LIBS -lgnutls"
+      AC_CHECK_FUNCS(gnutls_priority_set_direct)
+      AC_CHECK_TYPES([gnutls_certificate_credentials_t,
+                      gnutls_certificate_status_t,
+                      gnutls_datum_t,
+                      gnutls_digest_algorithm_t,
+                      gnutls_session_t,
+                      gnutls_transport_ptr_t,
+                      gnutls_x509_crt_t], [], [], [[#include <gnutls/gnutls.h>]])
 
       LIBS="$saved_LIBS"
       MUTTLIBS="$MUTTLIBS -lgnutls"
@@ -1173,13 +1191,21 @@ if test "x$with_idn" != "xno"; then
 		      have_idna_h=yes
 		      break])
 
+    mutt_save_LIBS="$LIBS"
+    LIBS=
+
     AC_SEARCH_LIBS([stringprep_check_version], [idn], [
       AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+      MUTTLIBS="$MUTTLIBS $LIBS"
+
+      LIBS="$LIBS $LIBICONV"
       AC_CHECK_FUNCS(idna_to_unicode_utf8_from_utf8 idna_to_unicode_8z8z)
       AC_CHECK_FUNCS(idna_to_ascii_from_utf8 idna_to_ascii_8z)
       AC_CHECK_FUNCS(idna_to_ascii_lz idna_to_ascii_from_locale)
     ])
+
+    LIBS="$mutt_save_LIBS"
 
     if test "$with_idn" != auto; then
       if test $have_stringprep_h = no || test $have_idna_h = no || test $ac_cv_search_stringprep_check_version = no; then

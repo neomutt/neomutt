@@ -302,12 +302,22 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
       {
 	case OP_EDITOR_HISTORY_UP:
 	  state->curpos = state->lastchar;
+	  if (mutt_history_at_scratch (hclass))
+	  {
+	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
+	    mutt_history_save_scratch (hclass, buf);
+	  }
 	  replace_part (state, 0, mutt_history_prev (hclass));
 	  redraw = M_REDRAW_INIT;
 	  break;
 
 	case OP_EDITOR_HISTORY_DOWN:
 	  state->curpos = state->lastchar;
+	  if (mutt_history_at_scratch (hclass))
+	  {
+	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
+	    mutt_history_save_scratch (hclass, buf);
+	  }
 	  replace_part (state, 0, mutt_history_next (hclass));
 	  redraw = M_REDRAW_INIT;
 	  break;
@@ -732,6 +742,7 @@ self_insert:
   
   bye:
   
+  mutt_reset_history_state (hclass);
   FREE (&tempbuf);
   return rv;
 }

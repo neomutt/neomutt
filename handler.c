@@ -955,36 +955,38 @@ static int is_mmnoask (const char *buf)
 static int mutt_is_autoview (BODY *b)
 {
   char type[SHORT_STRING];
+  int is_autoview = 0;
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (b), b->subtype);
 
+  if (option(OPTIMPLICITAUTOVIEW))
+  {
+    /* $implicit_autoview is essentially the same as "auto_view *" */
+    is_autoview = 1;
+  }
+  else
+  {
+    /* determine if this type is on the user's auto_view list */
+    LIST *t = AutoViewList;
+
+    mutt_check_lookup_list (b, type, sizeof (type));
+    for (; t; t = t->next) {
+      int i = mutt_strlen (t->data) - 1;
+      if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
+            ascii_strncasecmp (type, t->data, i) == 0) ||
+          ascii_strcasecmp (type, t->data) == 0)
+        is_autoview = 1;
+    }
+
+    if (is_mmnoask (type))
+      is_autoview = 1;
+  }
+
   /* determine if there is a mailcap entry suitable for auto_view
    *
-   * WARNING: _type is altered by this call as a result of `mime_lookup' support */
-  if (rfc1524_mailcap_lookup(b, type, NULL, M_AUTOVIEW))
-  {
-    if (option(OPTIMPLICITAUTOVIEW))
-    {
-      /* $implicit_autoview is essentially the same as "auto_view *" */
-      return 1;
-    }
-    else
-    {
-      /* determine if this type is on the user's auto_view list */
-      LIST *t = AutoViewList;
-
-      for (; t; t = t->next) {
-	int i = mutt_strlen (t->data) - 1;
-	if ((i > 0 && t->data[i-1] == '/' && t->data[i] == '*' && 
-	      ascii_strncasecmp (type, t->data, i) == 0) ||
-	    ascii_strcasecmp (type, t->data) == 0)
-	  return 1;
-      }
-
-      if (is_mmnoask (type))
-	return 1;
-    }
-  }
+   * WARNING: type is altered by this call as a result of `mime_lookup' support */
+  if (is_autoview)
+    return rfc1524_mailcap_lookup(b, type, NULL, M_AUTOVIEW);
 
   return 0;
 }
@@ -1588,15 +1590,133 @@ static int text_plain_handler (BODY *b, STATE *s)
   return 0;
 }
 
-int mutt_body_handler (BODY *b, STATE *s)
+static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int plaintext)
 {
-  int decode = 0;
-  int plaintext = 0;
+  int origType;
+  char *savePrefix = NULL;
   FILE *fp = NULL;
   char tempfile[_POSIX_PATH_MAX];
-  handler_t handler = NULL;
-  LOFF_T tmpoffset = 0;
   size_t tmplength = 0;
+  LOFF_T tmpoffset = 0;
+  int decode = 0;
+  int rc = 0;
+
+  fseeko (s->fpin, b->offset, 0);
+
+  /* see if we need to decode this part before processing it */
+  if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
+      b->encoding == ENCUUENCODED || plaintext ||
+      mutt_is_text_part (b))				/* text subtypes may
+                                                        * require character
+                                                        * set conversion even
+                                                        * with 8bit encoding.
+                                                        */
+  {
+    origType = b->type;
+
+    if (!plaintext)
+    {
+      /* decode to a tempfile, saving the original destination */
+      fp = s->fpout;
+      mutt_mktemp (tempfile, sizeof (tempfile));
+      if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
+      {
+        mutt_error _("Unable to open temporary file!");
+        dprint (1, (debugfile, "Can't open %s.\n", tempfile));
+        return -1;
+      }
+      /* decoding the attachment changes the size and offset, so save a copy
+        * of the "real" values now, and restore them after processing
+        */
+      tmplength = b->length;
+      tmpoffset = b->offset;
+
+      /* if we are decoding binary bodies, we don't want to prefix each
+        * line with the prefix or else the data will get corrupted.
+        */
+      savePrefix = s->prefix;
+      s->prefix = NULL;
+
+      decode = 1;
+    }
+    else
+      b->type = TYPETEXT;
+
+    mutt_decode_attachment (b, s);
+
+    if (decode)
+    {
+      b->length = ftello (s->fpout);
+      b->offset = 0;
+      safe_fclose (&s->fpout);
+
+      /* restore final destination and substitute the tempfile for input */
+      s->fpout = fp;
+      fp = s->fpin;
+      s->fpin = fopen (tempfile, "r");
+      unlink (tempfile);
+
+      /* restore the prefix */
+      s->prefix = savePrefix;
+    }
+
+    b->type = origType;
+  }
+
+  /* process the (decoded) body part */
+  if (handler)
+  {
+    rc = handler (b, s);
+
+    if (rc)
+    {
+      dprint (1, (debugfile, "Failed on attachment of type %s/%s.\n", TYPE(b), NONULL (b->subtype)));
+    }
+
+    if (decode)
+    {
+      b->length = tmplength;
+      b->offset = tmpoffset;
+
+      /* restore the original source stream */
+      safe_fclose (&s->fpin);
+      s->fpin = fp;
+    }
+  }
+  s->flags |= M_FIRSTDONE;
+
+  return rc;
+}
+
+static int valid_pgp_encrypted_handler (BODY *b, STATE *s)
+{
+  int rc;
+  BODY *octetstream;
+
+  octetstream = b->parts->next;
+  rc = crypt_pgp_encrypted_handler (octetstream, s);
+  b->goodsig |= octetstream->goodsig;
+
+  return rc;
+}
+
+static int malformed_pgp_encrypted_handler (BODY *b, STATE *s)
+{
+  int rc;
+  BODY *octetstream;
+
+  octetstream = b->parts->next->next;
+  /* exchange encodes the octet-stream, so re-run it through the decoder */
+  rc = run_decode_and_handler (octetstream, s, crypt_pgp_encrypted_handler, 0);
+  b->goodsig |= octetstream->goodsig;
+
+  return rc;
+}
+
+int mutt_body_handler (BODY *b, STATE *s)
+{
+  int plaintext = 0;
+  handler_t handler = NULL;
   int rc = 0;
 
   int oflags = s->flags;
@@ -1651,20 +1771,14 @@ int mutt_body_handler (BODY *b, STATE *s)
       else if (s->flags & M_VERIFY)
 	handler = mutt_signed_handler;
     }
-    else if ((WithCrypto & APPLICATION_PGP)
-             && ascii_strcasecmp ("encrypted", b->subtype) == 0)
-    {
-      p = mutt_get_parameter ("protocol", b->parameter);
-
-      if (!p)
-        mutt_error _("Error: multipart/encrypted has no protocol parameter!");
-      else if (ascii_strcasecmp ("application/pgp-encrypted", p) == 0)
-        handler = crypt_pgp_encrypted_handler;
-    }
+    else if (mutt_is_valid_multipart_pgp_encrypted (b))
+      handler = valid_pgp_encrypted_handler;
+    else if (mutt_is_malformed_multipart_pgp_encrypted (b))
+      handler = malformed_pgp_encrypted_handler;
 
     if (!handler)
       handler = multipart_handler;
-    
+
     if (b->encoding != ENC7BIT && b->encoding != ENC8BIT
         && b->encoding != ENCBINARY)
     {
@@ -1693,90 +1807,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 				  option(OPTVIEWATTACH))) &&
        (plaintext || handler))
   {
-    fseeko (s->fpin, b->offset, 0);
-
-    /* see if we need to decode this part before processing it */
-    if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
-	b->encoding == ENCUUENCODED || plaintext || 
-	mutt_is_text_part (b))				/* text subtypes may
-							 * require character
-							 * set conversion even
-							 * with 8bit encoding.
-							 */
-    {
-      int origType = b->type;
-      char *savePrefix = NULL;
-
-      if (!plaintext)
-      {
-	/* decode to a tempfile, saving the original destination */
-	fp = s->fpout;
-	mutt_mktemp (tempfile, sizeof (tempfile));
-	if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
-	{
-	  mutt_error _("Unable to open temporary file!");
-	  dprint (1, (debugfile, "Can't open %s.\n", tempfile));
-	  goto bail;
-	}
-	/* decoding the attachment changes the size and offset, so save a copy
-	 * of the "real" values now, and restore them after processing
-	 */
-	tmplength = b->length;
-	tmpoffset = b->offset;
-
-	/* if we are decoding binary bodies, we don't want to prefix each
-	 * line with the prefix or else the data will get corrupted.
-	 */
-	savePrefix = s->prefix;
-	s->prefix = NULL;
-
-	decode = 1;
-      }
-      else
-	b->type = TYPETEXT;
-
-      mutt_decode_attachment (b, s);
-
-      if (decode)
-      {
-	b->length = ftello (s->fpout);
-	b->offset = 0;
-	safe_fclose (&s->fpout);
-
-	/* restore final destination and substitute the tempfile for input */
-	s->fpout = fp;
-	fp = s->fpin;
-	s->fpin = fopen (tempfile, "r");
-	unlink (tempfile);
-
-	/* restore the prefix */
-	s->prefix = savePrefix;
-      }
-
-      b->type = origType;
-    }
-
-    /* process the (decoded) body part */
-    if (handler)
-    {
-      rc = handler (b, s);
-
-      if (rc)
-      {
-	dprint (1, (debugfile, "Failed on attachment of type %s/%s.\n", TYPE(b), NONULL (b->subtype)));
-      }
-      
-      if (decode)
-      {
-	b->length = tmplength;
-	b->offset = tmpoffset;
-
-	/* restore the original source stream */
-	safe_fclose (&s->fpin);
-	s->fpin = fp;
-      }
-    }
-    s->flags |= M_FIRSTDONE;
+    rc = run_decode_and_handler (b, s, handler, plaintext);
   }
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
@@ -1803,7 +1834,6 @@ int mutt_body_handler (BODY *b, STATE *s)
     fputs (" --]\n", s->fpout);
   }
 
-  bail:
   s->flags = oflags | (s->flags & M_FIRSTDONE);
   if (rc)
   {

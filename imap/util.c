@@ -591,7 +591,7 @@ void imap_make_date (char *buf, time_t timestamp)
   snprintf (buf, IMAP_DATELEN, "%02d-%s-%d %02d:%02d:%02d %+03d%02d",
       tm->tm_mday, Months[tm->tm_mon], tm->tm_year + 1900,
       tm->tm_hour, tm->tm_min, tm->tm_sec,
-      (int) tz / 60, (int) abs (tz) % 60);
+      (int) tz / 60, (int) abs ((int) tz) % 60);
 }
 
 /* imap_qualify_path: make an absolute IMAP folder target, given IMAP_MBOX

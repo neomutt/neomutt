@@ -29,7 +29,8 @@
 				*/
 
 /* mx_open_new_message() */
-#define M_ADD_FROM	1	/* add a From_ line */
+#define M_ADD_FROM	(1<<0)	/* add a From_ line */
+#define M_SET_DRAFT	(1<<1)	/* set the message draft flag */
 
 /* return values from mx_check_mailbox() */
 enum
@@ -50,6 +51,7 @@ typedef struct
     unsigned read : 1;
     unsigned flagged : 1;
     unsigned replied : 1;
+    unsigned draft : 1;
   } flags;
   time_t received;	/* the time at which this message was received */
 } MESSAGE;

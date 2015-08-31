@@ -1,3 +1,1387 @@
+2015-08-30 10:21 -0700  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (d9b1c4b6662f)
+
+	* po/eo.po: Partially updated Esperanto translation.
+
+2015-08-30 10:18 -0700  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (b9864644b6a2)
+
+	* commands.c: Minor translation fixes.
+
+	This makes two equivalent translation messages the exact same so
+	they only need to be translated once.
+
+	It also adds a missing translation marker (for the same string).
+
+	This same string is used in recvcmd.c so does not generate a new
+	translation string.
+
+2015-08-30 10:08 -0700  Kevin McCarthy  <kevin@8t8.us>  (934fbd272ce6)
+
+	* UPDATING: Set release date. Minor fixes to release notes.
+
+2015-08-29 12:51 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (faa85ed8a7c9)
+
+	* po/ca.po: Updated Catalan translation.
+
+2015-08-29 12:40 -0700  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (14a2ad40e954)
+
+	* po/nl.po: Updated Dutch translation.
+
+2015-08-29 07:40 -0700  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (0d346dc8dccb)
+
+	* smime.c: Minor translation fix.
+
+	This makes two equivalent translation messages the exact same so
+	they only need to be translated once.
+
+2015-08-28 07:35 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (e33ba8f72a40)
+
+	* po/ja.po: Updated Japanese translation.
+
+2015-08-20 11:18 -0700  Vsevolod Volkov  <vvv@mutt.org.ua>  (b3c095648df6)
+
+	* po/ru.po: Updated Russian translation.
+
+2015-08-19 09:41 -0700  Petr Pisar  <petr.pisar@atlas.cz>  (83760f05bb46)
+
+	* po/cs.po: Updated Czech translation
+
+2015-08-17 14:51 -0700  Kevin McCarthy  <kevin@8t8.us>  (c0180991c352)
+
+	* configure.ac: Add idn to MUTTLIBS instead of LIBS (see #3638)
+
+	Currently, -lidn is included while linking all the mutt binaries.
+	Add it to MUTTLIBS instead so it's only used for the mutt linking.
+
+	Also, add $LIBICONV to $LIBS before checking for some of the idna
+	functions. On some sytems, there are apparently issues when using
+	static linking. (Thanks to grarpamp for reporting).
+
+2015-08-17 12:31 -0700  Kevin McCarthy  <kevin@8t8.us>  (356443232291)
+
+	* muttlib.c, protos.h: Change mutt_adv_mktemp to call mutt_mktemp
+	instead of mktemp. (see #3638).
+
+	mutt_mktemp is currently called in 95% of the cases in mutt, and is
+	already our "own rolled" version of mktemp. The "insecure mktemp
+	warning" discussion keeps coming up, so instead add prefix and
+	suffix functionality to mutt_mktemp() and call that.
+
+	All other uses of Tempdir in the mutt source did not call
+	mutt_expand_path() first, so remove that from mutt_adv_mktemp().
+
+2015-08-17 12:26 -0700  Kevin McCarthy  <kevin@8t8.us>  (8b2fe6a4db79)
+
+	* configure.ac: Enable C99 mode for compiler. (See #3638).
+
+	This is already the default for clang (FreeBSD) so shouldn't cause
+	any issues.
+
+	Enabling this will increase the allowed static string length and
+	remove the Copyright length warning.
+
+2015-08-11 11:20 -0700  Kevin McCarthy  <kevin@8t8.us>  (55ea6e829b46)
+
+	* Makefile.am: Compile txt2c using automake rules.
+
+	The compilation rule used $< which isn't portable for ordinary make
+	rules.
+
+2015-08-11 11:20 -0700  David Champion  <dgc@bikeshed.us>  (eb4aaf4581ac)
+
+	* txt2c.sh: Fix txt2c.sh sed invocations to use posix syntax.
+
+2015-08-07 03:38 +0200  Vincent Lefevre  <vincent@vinc17.net>  (711708700602)
+
+	* po/fr.po: Updated French translation.
+
+2015-07-29 09:26 -0700  Kevin McCarthy  <kevin@8t8.us>  (34ca1c5fdd45)
+
+	* doc/manual.xml.head: Minor documentation fix.
+
+	In one place, the documentation mentioned 'alternative-order'
+	instead of 'alternative_order'.
+
+2015-07-29 09:07 -0700  Kevin McCarthy  <kevin@8t8.us>  (75e398daa94c)
+
+	* doc/manual.xml.head, hook.c: Add error handling for ^ and other
+	empty mailbox shortcuts.
+
+	(closes #2402) (closes #3735)
+
+	Explicitly mention the ^ example in the documentation added in
+	6d733cab6b45.
+
+	Add an error message for ^ when CurrentFolder is not set. Add checks
+	for other mailbox shortcuts that expand to the empty string. This
+	could happen if the @alias shortcut was accidentally used, or the
+	value referenced by a shortcut isn't set yet.
+
+2015-07-27 14:09 -0700  Kevin McCarthy  <kevin@8t8.us>  (6d733cab6b45)
+
+	* doc/manual.xml.head: Add "Mailbox Matching in Hooks" section to
+	manual.
+
+	Folder-hook and mbox-hook perform mailbox shortcut expansion on the
+	regexp parameter. Add a section to the manual to give examples and
+	make the behavior clearer.
+
+2015-07-26 14:48 -0700  Kevin McCarthy  <kevin@8t8.us>  (21a08f9abc80)
+
+	* crypt-gpgme.c, crypt.c, handler.c, mutt_crypt.h, pgp.c,
+	recvattach.c: Handle malformed ms-exchange pgp-encrypted block.
+	(closes #3742)
+
+	In certain circumstances, Exchange corrupts a multipart/encrypted
+	block into: <multipart/mixed> <text/plain> <application /pgp-
+	encrypted> [BASE64-encoded] <application/octet-stream>
+	[BASE64-encoded]
+
+	This patch pulls the full detection of valid/invalid multiparts into
+	mutt_body_handler(). It extracts a run_decode_and_handler()
+	function, which is reused by new intermediate handlers to decode the
+	application/octet-stream part before passing it directly to
+	crypt_pgp_encrypted_handler. These intermediate handlers then check
+	and set any GOODSIG flags back into the parent part.
+
+	This change may result in less error messages for invalid
+	multipart/encrypted parts. Instead, mutt will default to the
+	multipart_handler if it isn't fully "correct".
+
+	Viewing attachments uses crypt_pgp_decrypt_mime() which bypasses the
+	handler mechanism. Add decoding to the decrypt_mime() functions for
+	pgp and gpgme.
+
+	Thanks to Vincent Brillault for his analysis and initial patch.
+
+2015-07-18 18:40 +0200  Martin Sandsmark  <martin@sandsmark.ninja>  (e40e3e0391ea)
+
+	* UPDATING, buffy.c, init.h, mutt.h: Add support for checking cur/ in
+	Maildir for unread mails in buffy.
+
+	Also skip messages with the S flag when checking for unread mails.
+
+2015-07-24 13:36 -0700  Kevin McCarthy  <kevin@8t8.us>  (fdafc56a854f)
+
+	* doc/Makefile.am: Set AUTOMAKE_OPTIONS in doc/Makefile.am. (closes
+	#3766)
+
+	Add the "foreign" option to silence warnings generated by
+	flymake.am.
+
+2015-07-24 13:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (cbae8642cb3d)
+
+	* UPDATING: Update the UPDATING file with changes since 1.5.23.
+
+2015-07-23 14:57 -0700  Kevin McCarthy  <kevin@8t8.us>  (8c16206f50a1)
+
+	* hcache.c, help.c, imap/util.c, protos.h, sendlib.c: Fix compiler
+	type warnings. (closes #3765)
+
+	The output of mutt_local_tz() was being passed to abs(). Technically
+	the return type is time_t, but it represents a small value: the
+	timezone offset in seconds. Add a safe explicit cast to int.
+
+	Change the txt parameter of mutt_make_help() to type const char *.
+	Typically all calls run the txt parameter through _(), which accepts
+	const char * and returns a char *. However, if NLS is not enabled,
+	_() is a noop, simply returning the parameter itself. In
+	mutt_compile_help(), items[i].name is const char *, so it will
+	generate a warning when passed as the txt parameter of
+	mutt_make_help().
+
+	On some systems, e.g. OS X, snprintf is defined as a macro. One call
+	in hcache.c was embedding directives inside the snprintf call. This
+	is apparently undefined behavior, so duplicate the call instead.
+
+2015-07-22 19:23 -0700  Kevin McCarthy  <kevin@8t8.us>  (c60fed102d79)
+
+	* imap/message.c, keymap.c, pop_lib.c: Fix a few small compiler
+	warnings. (See #3638)
+
+	In certain configurations, unused variables and labels were causing
+	warnings.
+
+	Add a missing "#include <netinet/in.h>" to pop_lib.c.
+
+2015-07-21 12:41 -0700  Kevin McCarthy  <kevin@8t8.us>  (704e0622cc67)
+
+	* imap/imap.c: merge stable
+
+2015-07-21 12:34 -0700  Kevin McCarthy  <kevin@8t8.us>  (e5fe2f80e797)
+
+	* imap/imap.c: Imap: Fix flag caching after sync.
+
+	The flags cached in IMAP_HEADER_DATA were not updated to match the
+	HEADER flags after a sync. This means if a flag were toggled and
+	synced twice, the second sync was not sending the flag update.
+
+	Thanks to Noah Misch for the patch.
+
+2015-07-19 15:55 -0700  Kevin McCarthy  <kevin@8t8.us>  (100835c4a8ac)
+
+	* init.h: Add note about gpg fixed-list-mode. (closes #3763).
+
+	Thanks to Gregor Zattler for the original patch.
+
+2015-07-11 14:36 -0700  Kevin McCarthy  <kevin@8t8.us>  (2ca89bed6448)
+
+	* main.c: Fix batch mode lockup. (closes #3761) (closes #3760)
+
+	The new TS capability check was also running when curses wasn't
+	initialized. Move check inside the !OPTNOCURSES block.
+
+2015-07-09 14:50 -0700  Kevin McCarthy  <kevin@8t8.us>  (7e91a8855dc3)
+
+	* Makefile.am, doc/Makefile.am, imap/Makefile.am: Use $(VAR) instead
+	of @VAR@ in Makefile.am files. (closes #3664)
+
+	The @VAR@ form is not overridable, such as the case for #3664 where
+	the reporter wanted to override DOTLOCK_GROUP.
+
+	It's doubtful targets need to be overriden, but it makes sense to be
+	consistent in the usage of automake substituted variables unless
+	there is a particular reason/bug to work around.
+
+2015-07-05 13:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (79cd2f34961d)
+
+	* crypt-gpgme.c: Remove 'hit enter' prompt for GPGME initialization
+	errors.
+
+	Older GPGMEs are missing CMS (S/MIME) support. Don't force the poor
+	users to hit enter every time they start mutt.
+
+2015-07-02 11:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (39422ec14f60)
+
+	* .hgignore, mkinstalldirs: Remove the automake mkinstalldirs script.
+
+	Add to .hgignore so it doesn't accidentally get added again.
+
+2015-07-02 11:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (97ef326274e7)
+
+	* Makefile.am, configure.ac, contrib/Makefile.am, doc/Makefile.am,
+	intl/Makefile.in, m4/gettext.m4, po/Makefile.in.in: Convert from
+	using mkinstalldirs to $(MKDIR_P).
+
+	The automake mkinstalldirs script is now deprecated. "install-sh -d"
+	can be used in place. Configure.ac already includes AC_PROG_INSTALL,
+	which will ensure install-sh is bundled. Add AC_PROG_MKDIR_P, which
+	will set $(MKDIR_P) to either a thread-safe "mkdir -p" or will fall
+	back to using install-sh.
+
+2015-07-02 11:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (67d945e38074)
+
+	* build-release: Fix build-release to always update automake tools.
+	(closes #3671)
+
+	1.5.22 and 1.5.23 include a version of "missing" older than the
+	version of automake/aclocal used to generate configure.
+
+	Fix the build-release script to always copy and force update of the
+	automake tools.
+
+2015-06-29 14:35 -0700  Kevin McCarthy  <kevin@8t8.us>  (9802a6172edf)
+
+	* doc/manual.xml.head: Add note to manual clarifying push/exec and
+	folder-hook order.
+
+	Folder-hooks are executed in the order declared. However, push/exec
+	commands will simply prepend to the keyboard buffer. If there are
+	multiple push/exec commands, each will prepend to the earlier one.
+	The result is that they will end up being "run" in reverse order
+	once keyboard buffer processing starts.
+
+2015-06-26 12:23 -0700  Kevin McCarthy  <kevin@8t8.us>  (3bbb1f569eb1)
+
+	* imap/auth_sasl.c, imap/imap.c: Fix IMAP segfault due to NULL capstr.
+
+	After a failed login, the connection is left open but capstr is
+	freed. If a second login attempt is made, imap_auth_sasl was trying
+	to strstr using the NULL capstr.
+
+	Add a NONULL around the capstr parameter to strstr. Change
+	imap_conn_find() to keep the capstr around until a successful
+	authentication occurs.
+
+2015-06-26 11:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (b4be5796a458)
+
+	* crypt-gpgme.c, pgp.c, smime.c: Add comment about "(f)orget it"
+	choice in pgp/smime send menus.
+
+2015-06-26 12:28 +0200  Vincent Lefevre  <vincent@vinc17.net>  (b640b23e64a8)
+
+	* po/fr.po: Updated French translation.
+
+2015-06-07 13:59 -0700  Kevin McCarthy  <kevin@8t8.us>  (17a4f92e4a95)
+
+	* smime.c, smime.h: Rewrite S/MIME key searching. Add purpose
+	checking.
+
+	Model the smime.c searching off of classic pgp searching. Create
+	smime_get_key_by_hash()/addr()/str() functions that use a single
+	smime_get_candidates() function to search the index.
+
+	Use the new smime_keys generated purpose flag in the index to filter
+	by KEYFLAG_CANENCRYPT and KEYFLAG_CANSIGN. Old style indices fall
+	back to all-inclusive behavior.
+
+2015-06-07 13:59 -0700  Kevin McCarthy  <kevin@8t8.us>  (106914bc9406)
+
+	* smime_keys.pl: smime_keys: Add refresh command.
+
+	Refresh verifies the trust of each certificate and adds the purpose
+	flag if it is missing. It pushes those values to the private keys'
+	index file too.
+
+2015-06-07 13:59 -0700  Kevin McCarthy  <kevin@8t8.us>  (aabd030b25cb)
+
+	* smime_keys.pl: smime_keys: Add purpose flag to index.
+
+	A subsequent patch will change smime.c to use the purpose to filter
+	certs and keys that can't be used for signing or encryption.
+
+	Issuer, trust, and purpose flags were also added to the keys index
+	file, to keep parsing simpler in smime_keys as well as smime.c. The
+	trust and purpose are derived from the cert. Issuer is set to '?' as
+	this should never be needed for keys.
+
+2015-05-25 10:59 -0700  Kevin McCarthy  <kevin@8t8.us>  (0255b37be491)
+
+	* smime_keys.pl: smime_keys: Handle certificate chains in add_cert.
+	(closes #3339) (closes #3559)
+
+	Find all chains in the certificate provided. For each chain create a
+	separate leaf and intermediate certificate file. Because Mutt
+	controls the label prompt, use a single label for all chains.
+
+	Also, loosen up cert file parsing to allow attributes even if they
+	aren't delimited by a "Bag Attributes" header.
+
+	Thanks to David J. Weller-Fahy for his testing and feedback!
+
+2015-05-18 13:27 -0700  Kevin McCarthy  <kevin@8t8.us>  (577987ca2d02)
+
+	* smime_keys.pl: smime_keys: Convert openssl execution to use
+	open("-|",...). (see #3575) (see #2456)
+
+	This does a fork/exec, bypassing the shell, and so handles spaces,
+	quotes, and other shell-characters problems better than the simple
+	fix in changeset:c66a6bd5d0d5
+
+	This also fixes the "verify with crl" bug in #2456: the grep is now
+	done in perl.
+
+	Thank you Vincent Lefevre for your review and feedback!
+
+2015-05-18 03:25 +0200  Vincent Lefevre  <vincent@vinc17.net>  (82d43abf2a37)
+
+	* po/fr.po: Updated French translation (related to PGP & S/MIME, with
+	corrections).
+
+2015-05-15 14:09 -0700  Kevin McCarthy  <kevin@8t8.us>  (c66a6bd5d0d5)
+
+	* smime_keys.pl: smime_keys: quote filenames. (closes #3575) (see
+	#2456)
+
+	Wrap the various filename parameters in single quotes in case there
+	are spaces in the filename.
+
+2015-05-15 10:47 -0700  Kevin McCarthy  <kevin@8t8.us>  (babc30377614)
+
+	* smime_keys.pl: Start cleaning up and fixing smime_keys.pl (closes
+	#3324) (see #2456)
+
+	* Convert to using File::Temp (#3324). This was also suggested at
+	https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=775199
+
+	* Use File::Temp for add_p12 temp file. (#2456)
+
+	* Make the query_label() method a bit more robust with empty
+	strings, ctrl-d, and leading spaces.
+
+	* Clean up openssl_do_verify() logic. Mark cert as invalid rather
+	that die'ing if an openssl verify command fails.
+
+	* General cleanup:
+	  - Clearly separate op handler, certificate management, and helper
+	functions by section and using prefixes.
+	  - Create openssl helper functions to reduce copy/paste invocations and
+	make the code clearer.
+	  - Make indentation consistent at 2 spaces.
+	  - Change handle_add_pem() to re-use handle_add_chain() once the
+	correct files are identified.
+	  - Change openssl_parse_pem() to return a single array of data
+	structures representing the parsed certs/keys.
+
+2015-05-03 16:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (c46dfbdb5eff)
+
+	* globals.h, init.h, mutt_ssl.c, mutt_ssl_gnutls.c: Provide SSL cipher
+	selection option. (closes #3167)
+
+	Creates a $ssl_ciphers option that allows direct selection of the
+	ciphers for OpenSSL (via SSL_CTX_set_cipher_list) and GnuTLS (via
+	gnutls_priority_set_direct).
+
+	Thank you Sergio Gelato for the patch.
+
+2015-04-25 19:00 -0700  Seth Forshee  <seth@forshee.me>  (755a18da99bc)
+
+	* handler.c: Fix performance regression for ~b/~B searching. (closes
+	#3743)
+
+	In mutt_is_autoview(), changeset b58cdfacfb89 introduced a call to
+	rfc1524_mailcap_lookup() before checking if the MIME type should be
+	autoviewed based on the user's preferences. This caused a major
+	performance regression for ~b/~B searching.
+
+	Rearrange mutt_is_autoview() to check the user preferences first,
+	then search for a mailcap entry only if the MIME type should be
+	autoviewed.
+
+	In order to preserve correct mime_lookup behavior, re-add a call to
+	mutt_check_lookup_list() before scanning the AutoViewList.
+
+2015-04-19 13:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (067a3ac42c3b)
+
+	* crypt-gpgme.c, doc/manual.xml.head, init.h, mutt.h, pgp.c: Add
+	$crypt_confirmhook option. (see #3727)
+
+	Allow the confirmation prompt for crypt-hooks to be disabled. This
+	is useful for multiple crypt-hook users (e.g. encrypted mailing
+	lists), or just for people who are certain of their crypt-hooks and
+	don't want to be prompted every time.
+
+	Thanks to Dale Woolridge for the original patch.
+
+2015-04-19 13:15 -0700  Kevin McCarthy  <kevin@8t8.us>  (b4c57d3fd7e8)
+
+	* crypt-gpgme.c, doc/manual.xml.head, doc/muttrc.man.head, hook.c,
+	pgp.c, protos.h: Allow multiple crypt-hooks with the same regexp.
+	(closes #3727).
+
+	Changes the crypt-hook to accumulate a LIST of hooks with the same
+	regexp, as opposed to replacing the hook data. This is useful for
+	the case of encrypted mailing lists.
+
+	Update pgp classic and gpgme to process a LIST of crypt-hook values
+	instead of just one.
+
+	This version of the patch creates a new _mutt_list_hook() function
+	that (in theory) other hooks could use if they were changed to
+	return a list. It also changes the behavior when a crypt-hook is
+	declined: previously it would immediately use the original recipient
+	for key selection. Now it will only do that if all crypt-hooks for a
+	recipient are declined. This allows all, a subset, or none of the
+	hooks to be used.
+
+	Thanks to Rejo Zenger, Remco Rijnders, and Dale Woolridge for their
+	work on various versions of this patch.
+
+2015-04-15 19:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (1e26a962ab7a)
+
+	* doc/manual.xml.head: Fix a few more incorrect documentation lines
+	for hooks.
+
+	Hopefully this finishes up aac979f8b529 and ca5aff2a4b6e.
+
+2015-04-15 18:57 -0700  Kevin McCarthy  <kevin@8t8.us>  (d12cb775b779)
+
+	* crypt-gpgme.c, doc/manual.xml.head, init.h, pgp.c, pgp.h, pgpkey.c:
+	Use fingerprints instead of keyIDs internally. (see #3695)
+
+	Add a helper function, pgp_fpr_or_lkeyid(), that returns the
+	fingerprint if available, otherwise falls back to the long key id.
+	Convert Mutt to use that value for pgp command invocation.
+
+	Change gpgme to use an equivalent crypt_fpr_or_lkeyid() function in
+	a couple places too (for keylist generation and sign-as key
+	selection).
+
+	Update documentation to mention fingerprints and the --with-
+	fingerprint option for gpg invocation.
+
+	Change pgp_long_ids to default: yes, but add a note mentioning it's
+	only used for the display of key IDs in a few places.
+
+2015-03-12 14:48 -0700  Kevin McCarthy  <kevin@8t8.us>  (bd21cff208c4)
+
+	* recvattach.c: Allow attachments from unencrypted emails to be
+	deleted.
+
+	Print a warning if the message is signed or partly signed.
+
+	Thanks to David Haguenauer for the original patch!
+
+2015-04-06 18:39 -0700  Kevin McCarthy  <kevin@8t8.us>  (ca5aff2a4b6e)
+
+	* doc/muttrc.man.head: Clarify hook pattern vs regexp in muttrc.man
+	page.
+
+	Updates to the muttrc.man page were inadvertently not included in
+	changeset:aac979f8b529. Fix mbox-hook and crypt-hook to show they
+	accept a regexp, not a pattern.
+
+2015-04-05 13:52 -0700  Kevin McCarthy  <kevin@8t8.us>  (e3e6febd8240)
+
+	* contrib/smime.rc: Fix smime.rc typos and spacing issues. (closes
+	#3745)
+
+	Thanks to David J. Weller-Fahy for that patch.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (1bd26d871d76)
+
+	* crypt-gpgme.c: Fix const errors caused by find_keys() changes.
+
+	Part 4 of the oppenc series changed the keyID type to const as part
+	of some cleanup changes. At the time, that only propagated to
+	crypt_getkeybystr(), but with the fingerprint changes, this is
+	starting to propagate too far.
+
+	Create a separate non-const variable to deal with the crypt hook
+	value and revert crypt_getkeybystr()'s parameter to non-const.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (b8ead28d8e84)
+
+	* compose.c, crypt-gpgme.c, pgp.c, smime.c: Add ui elements for oppenc
+	mode.
+
+	Add a status message to the Security line when oppenc is enabled.
+
+	For each send menu, add the ability to toggle it on or off. When
+	enabled, the menus won't show the (e)ncrypt or (b)oth options, and
+	the (c)lear function only clears the SIGN bit when it is active.
+
+	Change the gpgme_send_menu() to directly use the ENCRYPT and SIGN
+	flags instead of the PGPENCRYPT/SIGN and SMIMEENCRYPT/SMIME flags.
+	Using the latter sometimes resulted in the APPLICATION bit unset,
+	which made oppenc unhappy.
+
+	The send_menus previously used a switch statement using choice
+	numbers. Since the menus now vary based on the oppenc option and
+	message bit being set, these were all changed to convert the numbers
+	back to a choice letter.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (2ec6a8d91de4)
+
+	* crypt.c, mutt.h, mutt_crypt.h, postpone.c, send.c, sendlib.c: Add a
+	security bit to the message for oppenc mode.
+
+	This allows oppenc to be enabled/disabled on a message level. If
+	something initially enables encryption, such as crypt_autoencrypt or
+	crypt_replyencrypt, oppenc is turned off for the message.
+
+	Change the postpone/resume code to persist the oppenc bit.
+
+	Also change resend message to enable and invoke oppenc if the option
+	is set.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (b38c4838976f)
+
+	* compose.c, crypt.c, init.h, mutt.h, send.c: Add the
+	crypt_opportunistic_encrypt option and calls.
+
+	This patch creates the OPTCRYPTOPPORTUNISTICENCRYPT option and
+	documentation.
+
+	It also adds calls to crypt_opportunistic_encrypt() during initial
+	message composition, after updating to, cc, or bcc, and after
+	editing the message (if edit_headers is enabled).
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (b10d0a945623)
+
+	* crypt.c, mutt_crypt.h, send.c: Implement
+	crypt_opportunistic_encrypt().
+
+	This function will be called to flip encryption on and off based on
+	message recipients.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (db2abe57adb5)
+
+	* crypt-gpgme.c, pgp.c, pgp.h, pgpkey.c, smime.c: Implement
+	oppenc_mode in the find_keys methods.
+
+	oppenc_mode is used by crypt_opportunistic_encrypt to determine
+	whether there are valid keys for all recipients of a message,
+	without prompting the user.
+
+	The patch wraps around prompts, and makes getkeybyaddr methods
+	return a valid address-matching key without prompting.
+
+	The patch also fixes a small problem with gpgme's getkeybyaddr. When
+	determining if there were multiple strong matches, it was comparing
+	the crypt_key_t instead of its kobj member (gpgme_key_t).
+
+	The patch also enables a call to crypt_is_numerical_keyid() in
+	find_keys(), so that crypt-hooks can actually be checked without
+	prompting when gpgme is enabled. (The addition was patterned off of
+	the pgp_findKeys() function).
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (80b963ff82d3)
+
+	* crypt.c, mutt_crypt.h, pgp.c: Pull is_numerical_keyid() into
+	crypt.c.
+
+	A subsequent patch (re?)-introduces a call to is_numerical_keyid
+	inside find_keys(). Rather than duplicate the function, this patch
+	pulls it into crypt.c, where find_keys() and pgp_findKeys() can both
+	call it.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (04eb395d80a7)
+
+	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c, crypt-mod-
+	pgp-gpgme.c, crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c,
+	crypt-mod.h, crypt.c, cryptglue.c, mutt_crypt.h, pgp.c, pgp.h,
+	smime.c, smime.h: Introduce an oppenc_mode parameter
+
+	It's added to the parameter lists through the call stack down to the
+	find_keys calls.
+
+	No functionality is implemented yet. This patch is separated just to
+	keep other patches more readable.
+
+2015-03-30 15:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (5b443e7da81b)
+
+	* crypt-gpgme.c, crypt-gpgme.h, crypt-mod-pgp-classic.c, crypt-mod-
+	pgp-gpgme.c, crypt-mod-smime-classic.c, crypt-mod-smime-gpgme.c,
+	crypt-mod.h, crypt.c, cryptglue.c, mutt_crypt.h, pgp.c, pgp.h,
+	smime.c, smime.h: Refactor the address list generation out of the
+	find_keys routines.
+
+	All four find_keys routines have a similar set up code for
+	generating a single address list out of the to, cc, bcc lists. This
+	patch pulls all the code into crypt_get_keys.
+
+	This is done to simplify the functions before later patches make
+	them more complicated (with the oppenc_mode parameter).
+
+2015-03-17 16:28 -0700  Kevin McCarthy  <kevin@8t8.us>  (59bd9030e898)
+
+	* doc/manual.xml.head: Document limitation of color index and server-
+	side searches. (see #3723)
+
+2015-03-17 16:28 -0700  Kevin McCarthy  <kevin@8t8.us>  (ab101844dc07)
+
+	* doc/manual.xml.head: Add entries for =B and =h in pattern modifier
+	table.
+
+	Since these operate differently for IMAP, it's worth adding explicit
+	entries to the table for these two.
+
+2015-03-17 16:28 -0700  Kevin McCarthy  <kevin@8t8.us>  (aac979f8b529)
+
+	* doc/manual.xml.head: Clarify hook documentation to specify regexp
+	instead of pattern.
+
+	Account-hook, crypt-hook, and mbox-hook accept a regexp parameter,
+	not a pattern.
+
+2015-03-04 19:24 -0800  Kevin McCarthy  <kevin@8t8.us>  (09be71b645a7)
+
+	* pgp.c: Fix pgp_application_pgp_handler to remove all tempfiles.
+
+	If multiple PGP blocks are present in an email, Mutt only cleans up
+	the tempfiles for the last block. Thanks to Dennis Preiser for the
+	patch and sample mbox file demonstrating the problem.
+
+	This patch also fixes the argument to mutt_perror for the pgpout
+	tempfile.
+
+2015-02-19 11:00 -0800  Kevin McCarthy  <kevin@8t8.us>  (71f12fef8c6f)
+
+	* sendlib.c: merge stable
+
+2015-02-10 18:29 +0100  Peter Wu  <peter@lekensteyn.nl>  (70b85d8b232b)
+
+	* sendlib.c: Fix buffer underread for empty header values. (closes
+	#3736)
+
+	When a header has no value (*p == '\0' so l == 0), do not read
+	outside the buffer but print the newline anyway when a tag is
+	already printed (col != 0).
+
+	Caught by ASAN while opening a draft with no Subject.
+
+2015-02-11 21:38 +0100  Eike Rathke  <erack@erack.de>  (f5b1b75c5958)
+
+	* crypt-gpgme.c, crypt.c, mutt_crypt.h, pgpkey.c: Allow fingerprint
+	user input for key selection. (see #3695)
+
+	Accept and check input of a fingerprint and find the matching key.
+
+	Note that for both to work, match against and display of
+	fingerprint, the pgp_list_pubring_command and
+	pgp_list_secring_command need to contain the
+	--with-fingerprint option, or have with-fingerprint in
+	~/.gnupg/gpg.conf.
+
+2015-02-15 10:09 -0800  Kevin McCarthy  <kevin@8t8.us>  (af5951f5d81c)
+
+	* contrib/gpg.rc, gnupgparse.c: Add fingerprint record parsing for pgp
+	list keys. (see #3695)
+
+	Modify parse_pub_line to parse fpr records and add the fingerprint
+	to the pgp_key_t's fingerprint field.
+
+	Add "--with-fingerprint --with-fingerprint" to the
+	pgp_list_pubring_command and pgp_list_secring_command commands in
+	contrib/gpg.rc. The second invocation generates fpr records for
+	subkeys too.
+
+2015-02-15 10:08 -0800  Kevin McCarthy  <kevin@8t8.us>  (47b4e57b2f1c)
+
+	* pgplib.c, pgplib.h, pgppubring.c: Convert pgp_key_t fingerprint to a
+	char* (see #3695)
+
+	Currently only pgppubring.c is using the fingerprint field, and is
+	using it to store a binary version of the fingerprint.
+
+	Convert the field to store a null-terminated string. Modify
+	pgppubring.c to use to use the new field.
+
+2015-02-10 12:14 -0800  Kevin McCarthy  <kevin@8t8.us>  (385d7434c9d6)
+
+	* pgpkey.c: Protect addr with NONULL in pgp_getkeybyaddr.
+
+	This was introduced by bb3b01f41ed2, but wasn't included in the
+	NONULL checks added in 9a75aa4bd69e.
+
+2015-02-08 14:19 -0800  Kevin McCarthy  <kevin@8t8.us>  (addd7cea01d4)
+
+	* crypt-gpgme.c: Cache uid validity in crypt_key_t.
+
+	In order to find the validity for a crypt_key_t, the code has to
+	loop through the key->kobj->uids list up to the correct index. This
+	is a bit silly since the uid is available when the crypt_key_t is
+	created in get_candidates().
+
+	This patch adds a validity field, and changes the various places to
+	use that instead of looping.
+
+	Also fix a bug in _crypt_compare_trust(): it was using the validity
+	of the first uid instead of the corresponding uid's validity.
+
+2015-02-08 13:44 -0800  Kevin McCarthy  <kevin@8t8.us>  (7162033d1fb8)
+
+	* crypt-gpgme.c: Fix pgp-gpgme to set revoke/expired/disabled flags.
+
+	The code wasn't settings those flags in get_candidates(). This patch
+	adds it to the pgp path. I don't know if these flags apply to SMIME
+	so am leaving them out for the smime branch.
+
+	Fix up crypt_select_key() to follow the same logic as
+	pgp_select_key().
+
+2015-02-03 15:39 -0800  Kevin McCarthy  <kevin@8t8.us>  (2fd1b9f17b80)
+
+	* contrib/smime.rc, init.h: Change the smime_encrypt_with default to
+	aes256.
+
+	Openssl supports -aes256 at least since 2004, and it's a stronger
+	algorithm than des3.
+
+	Also:
+	- Remove the incorrect documentation comment about defaulting to 3des
+	if unset.
+	- Change the default set in contrib/smime.rc.
+
+2015-02-04 11:04 -0800  Kevin McCarthy  <kevin@8t8.us>  (d2f5832a9e68)
+
+	* send.c: Protect SmimeDefaultKey for postpone/resume.
+
+	PgpSignAs is saved and restored in ci_send_message(), but
+	SmimeDefaultKey was not.
+
+	Also, fix a bug where an empty PgpSignAs was not restored back to
+	empty if the postponed email contained a SignAs value.
+
+2015-02-02 13:25 -0800  Kevin McCarthy  <kevin@8t8.us>  (3f4dc0ce66ae)
+
+	* postpone.c: Fix mutt_parse_crypt_hdr() sign_as behavior.
+
+	Currently, if a message is postponed with only the E encryption
+	flag, when it is resumed, pgp_sign_as will be overwritten (with an
+	empty string).
+
+	This intention of the behavior was probably to restore the exact
+	state of pgp_sign_as upon resuming. However, if the message wasn't
+	marked for signing, the state of pgp_sign_as is not known. This
+	patch changes the mutt_parse_crypt_hdr() to only set an empty
+	pgp_sign_as if there is an S flag (and if set_empty_signas is true).
+
+	mutt_edit_headers() also uses the function, but it doesn't want to
+	overwrite pgp_sign_as with just an S flag. The set_signas parameter
+	is renamed to (a hopefully clearer) "set_empty_signas".
+
+2015-01-31 20:05 -0800  Kevin McCarthy  <kevin@8t8.us>  (1235dd48ef3f)
+
+	* contrib/smime.rc, init.h: Update smime_encrypt_with documentation to
+	list all algorithms.
+
+	Thanks to Michael Schwipps for the patch!
+
+2015-01-15 14:18 -0800  Kevin McCarthy  <kevin@8t8.us>  (688d66ae6014)
+
+	* imap/message.c, mailbox.h, mx.c, sendlib.c: Send the IMAP \Draft
+	flag when postponing a message.
+
+	This patch adds a mx_open_new_message() flag, M_SET_DRAFT. It also
+	adds a MESSAGE->flags.draft flag.
+
+	mutt_write_fcc() passes the M_SET_DRAFT flag to
+	mx_open_new_message(), which then sets MESSAGE->flags.draft. Then,
+	imap_append_message() is able to see this flag and so adds the
+	\Draft flag.
+
+	The imap_append_message() function started to have a bit too many
+	flags, so this version of the patch separates out the flag
+	generating code into a simpler version.
+
+2015-01-31 11:53 -0800  Brendan Cully  <brendan@kublai.com>  (200185ed86bc)
+
+	* crypt-mod-pgp-gpgme.c: gpgme: typo in previous commit
+
+2015-01-31 11:21 -0800  Brendan Cully  <brendan@kublai.com>  (20e46d7bc453)
+
+	* configure.ac, crypt-gpgme.c, crypt-mod-pgp-gpgme.c: gpgme: guard
+	mail-key on presence of gpgme_op_export_keys
+
+	This function is too new to be assumed present.
+
+2015-01-30 14:17 +0100  Vincent Lefevre  <vincent@vinc17.net>  (b804f2daca31)
+
+	* po/fr.po: Updated French translation.
+
+2015-01-29 15:40 -0800  Kevin McCarthy  <kevin@8t8.us>  (282832c0329a)
+
+	* mutt_sasl.c: Clean up sasl warnings.
+
+	These were caused by assigning callback functions to the
+	sasl_callback_t.proc member. The callback type doesn't list any
+	parameters, because parameters vary by callback. The fix was simply
+	assigning a cast.
+
+	Cyrus-sasl2 has a sasl_callback_ft typedef that their sample code
+	uses for this purpose, but it is in a different header, saslplug.h,
+	and isn't in their 1.5 tree. Since this is probably not portable to
+	other implementations, I just added an equivalent cast.
+
+2015-01-27 16:15 -0800  Kevin McCarthy  <kevin@8t8.us>  (73b97b986e0d)
+
+	* configure.ac, mutt_ssl_gnutls.c: Clean up gnutls warnings.
+
+	Most of the warning were caused by deprecated types:
+	gnutls_certificate_credentials gnutls_certificate_status
+	gnutls_datum gnutls_digest_algorithm gnutls_session
+	gnutls_transport_ptr gnutls_x509_crt Even though I believe the
+	replacements have been around for a while, the patch adds autoconf
+	checks and fallback typedefs.
+
+	One warning was caused by casting an int to a pointer for the second
+	parameter to gnutls_transport_set_ptr(). Recent gnutls has a
+	replacement gnutls_transport_set_int() macro, but this macro simply
+	(eventually) casts the parameter using
+	"(gnutls_transport_ptr_t)(long)". So this patch just does the same.
+
+2015-01-25 18:09 -0800  Kevin McCarthy  <kevin@8t8.us>  (df55f14f4585)
+
+	* crypt-gpgme.c, init.h, pgp.c: Remove GPG_AGENT_INFO check for GnuPG
+	2.1 compatibility. (closes #3715)
+
+	GnuPG version 2.1 stops exporting the GPG_AGENT_INFO environment
+	variable, so mutt can't check for the presence of that to ensure the
+	agent is running.
+
+	For GPGME, we can check for the OpenPGP protocol being present. For
+	classic pgp, we have to trust the user setting.
+
+	This patch is based on the patches sent by CustaiCo and muffins.
+	Thank you both for reporting the problem and creating a patch.
+
+2015-01-27 00:52 +0100  Vincent Lefevre  <vincent@vinc17.net>  (a0a5e505463e)
+
+	* po/fr.po: Updated French translation.
+
+2015-01-26 13:07 +0100  Vincent Lefevre  <vincent@vinc17.net>  (aa67709a73ce)
+
+	* INSTALL, README.SECURITY, README.SSL, TODO, configure.ac,
+	curs_lib.c, help.c, imap/message.c, lib.c, mh.c: Corrected various
+	spelling mistakes (most of them reported by codespell).
+
+2015-01-23 10:33 -0800  Kevin McCarthy  <kevin@8t8.us>  (ec93761e3e12)
+
+	* crypt-gpgme.c, crypt-mod-pgp-gpgme.c: Implement mail-key, Esc-K, for
+	gpgme. (closes #3488)
+
+	This patch implements the make-key-attachment function for gpgme,
+	modeled after the pgp version.
+
+	It also adds an optional tempf parameter to
+	data_object_to_tempfile() so the function can be reused for make-
+	key-attachment.
+
+2015-01-19 15:58 -0800  Kevin McCarthy  <kevin@8t8.us>  (b39219ffe75b)
+
+	* pgpkey.c: pgp_getkeybystr: Pull key matching out of the address
+	match loop.
+
+	Since the key is invariant inside the address loop, there is no need
+	to match against it with each address.
+
+	All the keys should have at least one address record (see
+	bb3b01f41ed2), but in case a record was malformed, add a check for
+	that to keep the same logic.
+
+2015-01-21 10:14 +0100  Eike Rathke  <erack@erack.de>  (5d7345b4c516)
+
+	* doc/devel-notes.txt: HEAD is dead, remove wrong instruction from doc
+	/devel-notes.txt
+
+	Branch HEAD was closed over a year ago. If one was following the
+	instruction to update -C HEAD you'd end up with an empty source tree
+	and had to checkout the default branch again.
+
+2015-01-18 17:50 +0100  Eike Rathke  <erack@erack.de>  (6e5a62946141)
+
+	* crypt-gpgme.c: Allow short and long key ID user input in
+	crypt_getkeybystr()
+
+	The following did not work, e.g. when leaving a key list, and at the
+	"Sign as" or "Encrypt to" prompt attempting to enter a key ID:
+	* set pgp_long_ids=no
+	  * enter a long key ID, with or without leading 0x
+	* set pgp_long_ids=yes
+	  * enter a short key ID without leading 0x
+
+	Specifically entering a long key ID should always be possible as
+	evil32.com has shown.
+
+	This also cleans up the logic used to determine the matching
+	condition, which was quite convoluted.. it even slightly speeds up
+	the loop as less string operations are involved in the inner
+	condition.
+
+	This only changes how the result obtained from the crypt_* gpgme
+	interface is filtered.
+
+2015-01-18 17:45 +0100  Eike Rathke  <erack@erack.de>  (63ad7cf0d0de)
+
+	* pgp.c, pgp.h, pgpkey.c: Allow short and long key ID user input in
+	pgp_getkeybystr()
+
+	The following did not work, e.g. when leaving a key list, and at the
+	"Sign as" or "Encrypt to" prompt attempting to enter a key ID:
+	* set pgp_long_ids=no
+	  * enter a long key ID, with or without leading 0x
+	* set pgp_long_ids=yes
+	  * enter a short key ID without leading 0x
+
+	Specifically entering a long key ID should always be possible as
+	evil32.com has shown.
+
+	This also cleans up the logic used to determine the matching
+	condition, which was quite convoluted.. it even slightly speeds up
+	the loop as less string operations are involved in the inner
+	condition.
+
+	This only changes how the result obtained from the pgp_* command
+	line interface is filtered.
+
+2015-01-17 14:34 -0800  Kevin McCarthy  <kevin@8t8.us>  (58a9dbfd0d25)
+
+	* crypt-gpgme.c: Fix some context, data, and key memory leaks in
+	gpgme.
+
+	The context and data cleanup just involved adding missing
+	gpgme_release() and gpgme_data_release() calls in a few places.
+
+	The key usage was a little more involved:
+	  * Fix crypt_free_key(). It wasn't freeing the key passed in, and
+	didn't work properly if multiple keys were passed in. It also was
+	missing a call to gpgme_key_unref().
+
+	 * Add free_recipient_set() to properly unref all the keys before
+	freeing the array.
+
+	 * Fix get_candidates() to ref keys added to the crypt_key_t list,
+	and unref the keys returned by gpgme_op_keylist_next().
+
+	 * Change usages of gpgme_key_release() to gpgme_key_unref(). The
+	former was deprecated in gpgme version 0.4.1 (2003-06-06).
+
+2015-01-17 14:42 -0800  Kevin McCarthy  <kevin@8t8.us>  (cc7903944687)
+
+	* hcache.c: Fix the hcache type punning warning.
+
+	This patch fixes the type punning warning by switching from (safe
+	but perhaps not elegant) casting to using a union.
+
+	Thanks to Vincent Lefevre for his input and suggestion to use the
+	union as a better solution to the problem!
+
+2015-01-15 13:19 +0100  Vincent Lefevre  <vincent@vinc17.net>  (d732298789f2)
+
+	* curs_lib.c: Also colorize the initial mutt_enter_fname prompt.
+
+	Note: the new prompt obtained after a key is typed was already
+	colorized.
+
+2014-08-12 14:04 -0700  Kevin McCarthy  <kevin@8t8.us>  (4ba366bc7c45)
+
+	* doc/manual.xml.head, enter.c, history.c, history.h: Add a scratch
+	buffer to the history ring. (closes #3082)
+
+	This patch creates an extra slot in the history ring for a scratch
+	buffer (at h->last). If you are editing inside that buffer, it is
+	preserved when you scroll up/down through the history. Editing while
+	in other places in history are *not* preserved with this patch.
+
+	Another behavior change worth noting with this patch: the position
+	in history is now reset to the scratch buffer after each input
+	entry. Before, the position would be stay wherever it was - you
+	didn't restart at the "bottom" each time.
+
+2013-11-06 13:07 -0800  Kevin McCarthy  <kevin@8t8.us>  (8a2d9d352e2c)
+
+	* globals.h, init.h, mutt.h, send.c: Add option to encrypt postponed
+	messages. (closes #3665)
+
+	This patch is based on Christian Brabandt's patch sent to mutt-
+	users.
+
+	Add two new configuration variables: $postpone_encrypt and
+	$postpone_encrypt_as. When $postpone_encrypt is set and a message is
+	marked for encryption, the message will be encrypted using the key
+	specified in $postpone_encrypt_as before saving the message.
+
+	In this patch, $postpone_encrypt_as must be specified. I
+	experimented with passing safe_strdup( NONULL (PostponeEncryptAs))
+	when unspecified, but although gpg.conf has a default-key setting, I
+	could not get it to work properly. (pgpclassic gave an error message
+	and gpgme sefaulted.)
+
+	Although not necessary, this patch turns off signing during
+	encryption of the postponed message (and turns it back on before
+	saving), since there is no need to sign the message yet.
+
+2015-01-09 14:22 -0800  Kevin McCarthy  <kevin@8t8.us>  (25430a489665)
+
+	* color.c, contrib/colors.default, contrib/colors.linux, curs_lib.c,
+	doc/manual.xml.head, doc/muttrc.man.head, mutt_curses.h: Add color
+	type for prompts.
+
+	This adds a new color type, MT_COLOR_PROMPT, that can be used to
+	colorize prompts (fields, yes/no, multi_choice).
+
+	Thanks to Ben Boeckel for the patch!
+
+2013-10-29 18:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (789501922727)
+
+	* crypt-gpgme.c, pgp.c: Add gpg signature name. (closes #3478)
+
+	Some mail clients display "noname" for the gpg signature attachment.
+	This patch sets the mime name to "signature.asc".
+
+	The patch is based on http://dev.mutt.org/trac/attachment/ticket/347
+	8/gpg_signature_name.patch with the changes:
+	  - removes the configuration options
+	  - removes mime description
+
+2015-01-06 14:38 -0800  Kevin McCarthy  <kevin@8t8.us>  (cd57f8893b43)
+
+	* configure.ac, globals.h: merge stable
+
+2014-12-31 20:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (31ce789af3df)
+
+	* crypt-gpgme.c: Fix segfault of extract-keys (^K) under gpgme.
+	(closes #3698)
+
+	This patch is based on the patch by Ben Price, which relocated the
+	safe_fclose (&in) after its use by keydata in
+	pgp_gpgme_extract_keys. Thank you for the patch!
+
+	In addition, this patch:
+	  * removes spurious (debug?) output when the extract keys is finished.
+	  * adds a gpgme_data_release() call to free the keydata.
+
+2014-10-10 14:17 +0800  Kevin McCarthy  <kevin@8t8.us>  (e7a77a6bfb84)
+
+	* query.c: Fix a memory leak in mutt_query_complete.
+
+	When a single result was returned, it was written to the buffer and
+	returned, but the query result was never freed.
+
+	This patch creates a free_query function and changes the code to use
+	that everywhere.
+
+2014-08-14 20:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (c7f116b6dc20)
+
+	* configure.ac: Fix variable name in configure.ac.
+
+	$ac_cv_search_STRINGPREP_CHECK_VERSION should be
+	$ac_cv_search_stringprep_check_version, to match the first parameter
+	of the AC_SEARCH_LIBS([stringprep_check_version] above.
+
+	Running configure was giving a "test: =: unary operator expected"
+	error.
+
+2014-12-28 09:41 -0800  Kevin McCarthy  <kevin@8t8.us>  (8a981dce369e)
+
+	* globals.h: Remove duplicate SmimeCryptAlg declaration in globals.h
+
+	Thank you Elias Diem for the patch.
+
+2015-01-06 14:31 -0800  Kevin McCarthy  <kevin@8t8.us>  (59c2c4be08a7)
+
+	* pgpkey.c: merge stable
+
+2014-12-01 14:19 -0800  Kevin McCarthy  <kevin@8t8.us>  (0aebf1df4359)
+
+	* sendlib.c: Revert write_one_header() to skip space and tab. (closes
+	#3716)
+
+	This patch fixes CVE-2014-9116 in the stable branch. It reverts
+	write_one_header() to the pre [f251d523ca5a] code for skipping
+	whitespace.
+
+	Thanks to Antonio Radici and Tomas Hoger for their analysis and
+	patches to mutt, which this patch is based off of.
+
+2015-01-05 18:28 -0800  Kevin McCarthy  <kevin@8t8.us>  (5a86319adad0)
+
+	* pgpkey.c: Fix segv in pgp_getkeybystr(). (closes #3725)
+
+	When searching for keys, and the user supplies "" to match against,
+	pgp_getkeybystr will have values: p = ""; l = 0; After returning
+	from pgp_select_key(), it will try to assign to p[l-1].
+
+	(As a note, the function is chopping off and restoring the trailing
+	"!" character because of ticket #1928.)
+
+2015-01-03 11:33 -0800  Kevin McCarthy  <kevin@8t8.us>  (79ea10b2d81c)
+
+	* commands.c: Change bounce to use mutt_parse_adrlist() for address
+	parsing.
+
+	When prompting for recipients, forwarding, replying, and mailing all
+	use mutt_parse_adrlist() to parse the addresses. This allows for
+	addresses to be separated by spaces.
+
+	Bounce message currently uses rfc822_parse_adrlist(), which doesn't
+	allow the spaces. This one-line patch simply changes bounce to
+	behave the same as mail, reply, and forwarding for the address
+	prompt.
+
+	Thanks to Roger Cornelius for the patch!
+
+2014-12-31 20:35 -0800  Kevin McCarthy  <kevin@8t8.us>  (5530e9fb17d9)
+
+	* crypt-gpgme.c: Fix segfault of extract-keys (^K) under gpgme.
+	(closes #3698)
+
+	This patch is based on the patch by Ben Price, which relocated the
+	safe_fclose (&in) after its use by keydata in
+	pgp_gpgme_extract_keys. Thank you for the patch!
+
+	In addition, this patch:
+	  * removes spurious (debug?) output when the extract keys is finished.
+	  * adds a gpgme_data_release() call to free the keydata.
+
+2014-08-12 14:33 -0700  Kevin McCarthy  <kevin@8t8.us>  (9a75aa4bd69e)
+
+	* gnupgparse.c, pgpkey.c: Wrap pgp_uid_t->addr in NONULL(). (closes
+	#3564)
+
+	The previous patch introduced the possibility for addr to be null.
+	Mutt is surprisingly robust against null strings, but there are a
+	few places that should be wrapped in NONULL().
+
+2014-08-12 14:33 -0700  Kevin McCarthy  <kevin@8t8.us>  (bb3b01f41ed2)
+
+	* gnupgparse.c: Fix parse_pub_line to allow an empty User-ID field for
+	a pub record. (see #3564)
+
+	A key whose primary uid record has an empty User-ID will result in
+	the user being unable to use the key to encrypt an email in mutt.
+	This is because the mutt functions for key selection iterate through
+	the address fields of a key for matching against and for displaying
+	to the user.
+
+	This change allows a pgp_uid_t record to be created for a pub record
+	whose User-ID field is blank. So the key will have one address
+	record, albeit with a null addr field.
+
+2013-11-02 20:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (4909bd9c9149)
+
+	* main.c: Override draft headers with arguments. (closes #3580)
+
+	Currently, if the -H option is used, it is not possible to redefine
+	the recipient addresses with positional argument. This patch fixes
+	it as well as CC, Bcc, and Subject headers.
+
+	This patch is based on the patch by Petr Písař at http://dev.mutt.or
+	g/trac/attachment/ticket/3580/override_draft_headers_with_arguments.
+	patch
+
+	This version of the patch merges the To, Cc, and Bcc commandline
+	arguments into the template, and fixes a few small problems with the
+	previous patch.
+
+	This patch also moves the fin close outside the "if (tempfile)"
+	block, since it is opened outside that block.
+
+2014-06-21 13:51 -0700  Kevin McCarthy  <kevin@8t8.us>  (daf61444d454)
+
+	* pgpinvoke.c: Enable %a format string for all pgp command configs.
+	(closes #3699)
+
+	Currently, the documentation states that, with the exception of
+	pgp_getkeys_command, all the PGP format commands should be available
+	to the pgp_*_command configuration variables.
+
+	However, the %a format is actually only enabled for
+	pgp_clearsign_command, pgp_encrypt_sign_command, and
+	pgp_sign_command.
+
+	Philip Rinn discovered this problem when he was trying to add a
+	"--encrypt-to %a" to pgp_encrypt_only_command. Rather than just fix
+	the one configuration he was having the problem with, this patch
+	enables %a usage for all of them. (With the exception of the
+	documented pgp_getkeys_command.)
+
+2013-12-18 19:19 -0800  Kevin McCarthy  <kevin@8t8.us>  (630bbc147022)
+
+	* doc/manual.xml.head: Note correct usage of $edit_headers. (closes
+	#3673)
+
+	Ticket 3673 shows that it isn't necessarily obvious a blank line is
+	needed between the headers and body of a message when using
+	$edit_headers. This patch adds a small note to the documentation,
+	indicating the blank line should be preserved between the headers
+	and body.
+
+	Thank you Sinan Kaan Yerli for the patch.
+
+2014-08-13 13:46 -0700  Kevin McCarthy  <kevin@8t8.us>  (89b17d3cd510)
+
+	* doc/mutt.man, doc/pgpring.man: Clarify PGPPATH usage in manpages.
+
+	Make more clear that, when used with the original PGP program, mutt
+	and pgpring rely on this being set.
+
+2014-10-10 14:17 +0800  Kevin McCarthy  <kevin@8t8.us>  (45fbc40193aa)
+
+	* query.c: Fix a memory leak in mutt_query_complete.
+
+	When a single result was returned, it was written to the buffer and
+	returned, but the query result was never freed.
+
+	This patch creates a free_query function and changes the code to use
+	that everywhere.
+
+2014-08-21 18:41 -0700  Kevin McCarthy  <kevin@8t8.us>  (b1ef16f25425)
+
+	* init.c: Remove unused variable t in start_debug().
+
+	t was set but never used. This was generating a compiler warning.
+
+2014-08-14 20:12 -0700  Kevin McCarthy  <kevin@8t8.us>  (80186ee6eb57)
+
+	* configure.ac: Fix variable name in configure.ac.
+
+	$ac_cv_search_STRINGPREP_CHECK_VERSION should be
+	$ac_cv_search_stringprep_check_version, to match the first parameter
+	of the AC_SEARCH_LIBS([stringprep_check_version] above.
+
+	Running configure was giving a "test: =: unary operator expected"
+	error.
+
+2014-12-28 09:41 -0800  Kevin McCarthy  <kevin@8t8.us>  (1630cee66057)
+
+	* globals.h: Remove duplicate SmimeCryptAlg declaration in globals.h
+
+	Thank you Elias Diem for the patch.
+
+2014-11-04 23:40 -0600  David Champion  <dgc@uchicago.edu>  (39d3ddb56d34)
+
+	* init.h: Disable SSLv3 by default.
+
+	Since Oct. 14 2014 SSLv3 is no longer considered safe. See POODLE:
+	https://en.wikipedia.org/wiki/Transport_Layer_Security#POODLE_attack
+
+2014-10-11 13:20 -0700  Brendan Cully  <brendan@kublai.com>  (3a46874d5845)
+
+	* hcache.c: hcache tcdb debug logging
+
+2014-10-11 11:05 -0700  Brendan Cully  <brendan@kublai.com>  (85393e522337)
+
+	* Makefile.am, doc/Makefile.am, flymake.am, imap/Makefile.am: add
+	check-syntax target for flymake
+
+2014-10-11 10:59 -0700  Brendan Cully  <brendan@kublai.com>  (bb7f59864d47)
+
+	* .hgignore: ignore generated pgpewrap/pgpring man pages
+
+2014-10-11 10:58 -0700  Brendan Cully  <brendan@kublai.com>  (0dc2dafab53a)
+
+	* .hgignore: ignore gnu global tags
+
+2014-09-07 12:00 -0700  Brendan Cully  <brendan@kublai.com>  (4a814b05874f)
+
+	* merge stable
+
+2014-09-07 11:04 -0700  Brendan Cully  <brendan@kublai.com>  (1b583341d5ad)
+
+	* mutt_sasl.c: mutt_sasl: fix double negative in iptostring result
+	check (fixes #3705)
+
+2014-09-07 10:52 -0700  Brendan Cully  <brendan@kublai.com>  (769905e66205)
+
+	* mutt_sasl.c: mutt_sasl: whitespace only
+
+2014-09-07 10:36 -0700  Brendan Cully  <brendan@kublai.com>  (c81c93e64af8)
+
+	* UPDATING, po/nl.po: merge stable
+
+2014-07-25 20:43 +0200  Vincent Lefevre  <vincent@vinc17.net>  (b8bebc2f9a55)
+
+	* po/fr.po: Updated French translation.
+
+2014-03-13 23:37 +0000  Ivan Vilata i Balaguer  <ivan@selidor.net>  (375ba5ce358c)
+
+	* po/ca.po: Updated Catalan translation.
+
+2014-03-13 17:41 +0000  Vsevolod Volkov  <vvv@mutt.org.ua>  (99dda89b7685)
+
+	* po/uk.po: Updated Ukrainian translation.
+
+2014-03-13 17:41 +0000  Vsevolod Volkov  <vvv@mutt.org.ua>  (061217dd31ef)
+
+	* po/ru.po: Updated Russian translation.
+
+2014-03-13 17:36 +0000  Jonathan Wakely  <bugs@kayari.org>  (fd531fc9188c)
+
+	* doc/mutt.man: fix typo in man page.
+
+2014-03-13 03:56 +0000  Petr Pisar  <petr.pisar@atlas.cz>  (67673770fb96)
+
+	* po/cs.po: Updated Czech translation
+
+2014-03-12 09:44 -0700  Brendan Cully  <brendan@kublai.com>  (d9f45fa9458c)
+
+	* .hgsigs: mutt-1.5.23 signed
+
+2014-03-12 09:28 -0700  Brendan Cully  <brendan@kublai.com>  (4790aa52f0f2)
+
+	* .hgtags: Added tag mutt-1-5-23-rel for changeset b8a63730c848
+
+2014-03-12 09:28 -0700  Brendan Cully  <brendan@kublai.com>  (b8a63730c848)
+
+	* ChangeLog, VERSION, po/bg.po, po/ca.po, po/cs.po, po/da.po,
+	po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po, po/eu.po,
+	po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po, po/it.po,
+	po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po, po/pt_BR.po,
+	po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po, po/zh_CN.po,
+	po/zh_TW.po: automatic post-release commit for mutt-1.5.23
+
 2014-03-12 09:25 -0700  Brendan Cully  <brendan@kublai.com>  (07556816c588)
 
 	* build-release: build-release: make sure version is picked up by

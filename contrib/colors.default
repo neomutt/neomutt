@@ -6,6 +6,7 @@ color hdrdefault blue white
 color quoted blue white
 color signature red white
 color attachment red white
+color prompt brightmagenta white
 color message brightred white
 color error brightred white
 color indicator brightyellow red

@@ -53,7 +53,7 @@ TAG="mutt-`echo $VERSION | tr . -`-rel"
 
 # now, prepare the distribution tar balls
 
-automake
+automake --add-missing --copy --force-missing
 touch configure.ac
 make config.status
 ./config.status

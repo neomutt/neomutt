@@ -1,5 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 ## Use aclocal -I m4; automake --foreign
+include $(top_srcdir)/flymake.am
 
 AUTOMAKE_OPTIONS = 1.6 foreign
 EXTRA_PROGRAMS = mutt_dotlock pgpring pgpewrap mutt_md5
@@ -11,7 +12,7 @@ endif
 
 SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
 
-bin_SCRIPTS = muttbug flea @SMIMEAUX_TARGET@
+bin_SCRIPTS = muttbug flea $(SMIMEAUX_TARGET)
 
 if BUILD_HCACHE
 HCVERSION = hcversion.h
@@ -19,7 +20,7 @@ endif
 
 BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c $(HCVERSION)
 
-bin_PROGRAMS = mutt @DOTLOCK_TARGET@ @PGPAUX_TARGET@
+bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
 	crypt.c cryptglue.c \
@@ -37,10 +38,10 @@ mutt_SOURCES = \
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
-mutt_LDADD = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAP) $(MUTTLIBS) \
+mutt_LDADD = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAP) $(MUTTLIBS) \
 	$(INTLLIBS) $(LIBICONV)  $(GPGME_LIBS)
 
-mutt_DEPENDENCIES = @MUTT_LIB_OBJECTS@ @LIBOBJS@ $(LIBIMAPDEPS) \
+mutt_DEPENDENCIES = $(MUTT_LIB_OBJECTS) $(LIBOBJS) $(LIBIMAPDEPS) \
 	$(INTLDEPS)
 
 DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
@@ -48,8 +49,6 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 	-DHAVE_CONFIG_H=1
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
-
-CPPFLAGS=@CPPFLAGS@
 
 EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
@@ -79,25 +78,24 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 EXTRA_SCRIPTS = smime_keys
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
-mutt_dotlock_LDADD = @LIBOBJS@
-mutt_dotlock_DEPENDENCIES = @LIBOBJS@
+mutt_dotlock_LDADD = $(LIBOBJS)
+mutt_dotlock_DEPENDENCIES = $(LIBOBJS)
 
 pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5.c pgppacket.c ascii.c
-pgpring_LDADD = @LIBOBJS@ $(INTLLIBS) 
-pgpring_DEPENDENCIES = @LIBOBJS@ $(INTLDEPS)
+pgpring_LDADD = $(LIBOBJS) $(INTLLIBS)
+pgpring_DEPENDENCIES = $(LIBOBJS) $(INTLDEPS)
 
 mutt_md5_SOURCES = md5.c
 mutt_md5_CFLAGS = -DMD5UTIL
 mutt_md5_LDADD =
 
-noinst_PROGRAMS = $(MUTT_MD5)
+txt2c_SOURCES = txt2c.c
+txt2c_LDADD =
+
+noinst_PROGRAMS = $(MUTT_MD5) txt2c
 
 mutt_dotlock.c: dotlock.c
 	cp $(srcdir)/dotlock.c mutt_dotlock.c
-
-# If this fails, we will fall back to the implementation in txt2c.sh
-txt2c: txt2c.c
-	-$${NATIVECC-$(CC)} -o $@ $<
 
 conststrings.c: txt2c config.status
 	( \
@@ -118,7 +116,7 @@ DISTCLEANFILES= flea smime_keys txt2c po/mutt.pot
 
 ACLOCAL_AMFLAGS = -I m4
 
-LDADD = @LIBOBJS@ @INTLLIBS@
+LDADD = $(LIBOBJS) $(INTLLIBS)
 
 flea:	muttbug.sh
 	cp muttbug.sh flea
@@ -154,14 +152,14 @@ install-exec-hook:
 		rm -f $(DESTDIR)$(bindir)/mutt.dotlock ;		\
 		ln -sf $(DESTDIR)$(bindir)/mutt_dotlock $(DESTDIR)$(bindir)/mutt.dotlock ; \
 	fi
-	if test -f $(DESTDIR)$(bindir)/mutt_dotlock && test x@DOTLOCK_GROUP@ != x ; then \
-		chgrp @DOTLOCK_GROUP@ $(DESTDIR)$(bindir)/mutt_dotlock && \
-		chmod @DOTLOCK_PERMISSION@ $(DESTDIR)$(bindir)/mutt_dotlock || \
+	if test -f $(DESTDIR)$(bindir)/mutt_dotlock && test x$(DOTLOCK_GROUP) != x ; then \
+		chgrp $(DOTLOCK_GROUP) $(DESTDIR)$(bindir)/mutt_dotlock && \
+		chmod $(DOTLOCK_PERMISSION) $(DESTDIR)$(bindir)/mutt_dotlock || \
 		{ echo "Can't fix mutt_dotlock's permissions!  This is required to lock mailboxes in the mail spool directory." >&2 ; exit 1 ; } \
 	fi
 
 install-data-local:
-	$(srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir)/mime.types.dist
 	-if [ ! -f $(DESTDIR)$(sysconfdir)/mime.types ]; then \
 		$(INSTALL) -m 644 $(srcdir)/mime.types $(DESTDIR)$(sysconfdir); \

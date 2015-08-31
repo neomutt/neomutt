@@ -120,6 +120,8 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 {
   pgp_uid_t *uid = NULL;
   int field = 0, is_uid = 0;
+  int is_pub = 0;
+  int is_fpr = 0;
   char *pend, *p;
   int trust = 0;
   int flags = 0;
@@ -144,7 +146,10 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
     if ((pend = strchr (p, ':')))
       *pend++ = 0;
     field++;
-    if (field > 1 && !*p)
+    if (!*p && (field != 1) && (field != 10))
+      continue;
+
+    if (is_fpr && (field != 10))
       continue;
 
     switch (field)
@@ -154,7 +159,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	dprint (2, (debugfile, "record type: %s\n", p));
 
 	if (!mutt_strcmp (p, "pub"))
-	  ;
+	  is_pub = 1;
 	else if (!mutt_strcmp (p, "sub"))
 	  *is_subkey = 1;
 	else if (!mutt_strcmp (p, "sec"))
@@ -163,10 +168,12 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
 	  *is_subkey = 1;
 	else if (!mutt_strcmp (p, "uid"))
 	  is_uid = 1;
+	else if (!mutt_strcmp (p, "fpr"))
+	  is_fpr = 1;
 	else
 	  return NULL;
 
-	if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
+	if (!(is_uid || is_fpr || (*is_subkey && option (OPTPGPIGNORESUB))))
 	  memset (&tmp, 0, sizeof (tmp));
 
 	break;
@@ -280,14 +287,28 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
         break;
       case 10:			/* name             */
       {
-	if (!pend || !*p)
-	  break;			/* empty field or no trailing colon */
+        /* Empty field or no trailing colon.
+         * We allow an empty field for a pub record type because it is
+         * possible for a primary uid record to have an empty User-ID
+         * field.  Without any address records, it is not possible to
+         * use the key in mutt.
+         */
+        if (!(pend && (*p || is_pub)))
+	  break;
+
+        if (is_fpr)
+        {
+          /* don't let a subkey fpr overwrite an existing primary key fpr */
+          if (!tmp.fingerprint)
+            tmp.fingerprint = safe_strdup (p);
+          break;
+        }
 
 	/* ignore user IDs on subkeys */
 	if (!is_uid && (*is_subkey && option (OPTPGPIGNORESUB)))
 	  break;
 
-	dprint (2, (debugfile, "user ID: %s\n", p));
+	dprint (2, (debugfile, "user ID: %s\n", NONULL (p)));
 
 	uid = safe_calloc (sizeof (pgp_uid_t), 1);
 	fix_uid (p);
@@ -342,7 +363,7 @@ static pgp_key_t parse_pub_line (char *buf, int *is_subkey, pgp_key_t k)
   }
 
   /* merge temp key back into real key */
-  if (!(is_uid || (*is_subkey && option (OPTPGPIGNORESUB))))
+  if (!(is_uid || is_fpr || (*is_subkey && option (OPTPGPIGNORESUB))))
     k = safe_malloc (sizeof (*k));
   memcpy (k, &tmp, sizeof (*k));
   /* fixup parentship of uids after mering the temp key into

@@ -93,6 +93,7 @@ static const struct mapping_t Fields[] =
   { "bold",		MT_COLOR_BOLD },
   { "underline",	MT_COLOR_UNDERLINE },
   { "index",		MT_COLOR_INDEX },
+  { "prompt",		MT_COLOR_PROMPT },
   { NULL,		0 }
 };
 

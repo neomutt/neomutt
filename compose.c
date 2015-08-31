@@ -141,6 +141,9 @@ static void redraw_crypt_lines (HEADER *msg)
       addstr (_(" (S/MIME)"));
   }
 
+  if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
+      addstr (_(" (OppEnc mode)"));
+
   clrtoeol ();
   move (HDR_CRYPTINFO, 0);
   clrtoeol ();
@@ -526,14 +529,29 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	break;
       case OP_COMPOSE_EDIT_TO:
 	menu->redraw = edit_address_list (HDR_TO, &msg->env->to);
+	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	{
+	  crypt_opportunistic_encrypt (msg);
+	  redraw_crypt_lines (msg);
+	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_BCC:
 	menu->redraw = edit_address_list (HDR_BCC, &msg->env->bcc);
+	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	{
+	  crypt_opportunistic_encrypt (msg);
+	  redraw_crypt_lines (msg);
+	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_CC:
 	menu->redraw = edit_address_list (HDR_CC, &msg->env->cc);
+	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	{
+	  crypt_opportunistic_encrypt (msg);
+	  redraw_crypt_lines (msg);
+	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);	
         break;
       case OP_COMPOSE_EDIT_SUBJECT:
@@ -593,6 +611,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
 	    FREE (&err);
 	  }
+	  if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+	    crypt_opportunistic_encrypt (msg);
 	}
 	else
 	{
@@ -1220,7 +1240,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    mutt_clear_error ();
 	    break;
 	  }
-	  msg->security = 0;
+	  msg->security &= ~APPLICATION_SMIME;
+	  msg->security |= APPLICATION_PGP;
 	}
 	msg->security = crypt_pgp_send_menu (msg, &menu->redraw);
 	redraw_crypt_lines (msg);
@@ -1246,7 +1267,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	     mutt_clear_error ();
 	     break;
 	  }
-	  msg->security = 0;
+	  msg->security &= ~APPLICATION_PGP;
+	  msg->security |= APPLICATION_SMIME;
 	}
 	msg->security = crypt_smime_send_menu(msg, &menu->redraw);
 	redraw_crypt_lines (msg);

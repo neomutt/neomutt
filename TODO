@@ -50,7 +50,7 @@ Problems are listed in approximate order of priority.
   Note: This still requires some thought, since we'd have to store
   per-entry data in the menu structure.  As an alternative, we could
   extend the tag method to do something to more general flags. The
-  latter approach would make the implementation of propper
+  latter approach would make the implementation of proper
   tag-prefix behaviour more simple: Functions should only be applied
   when a message is tagged and visible.  Additionally, we must not
   access a menu's max field directly any more: Adding an entry to a

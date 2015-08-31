@@ -1,6 +1,9 @@
-subdir = doc
+## Process this file with automake to produce Makefile.in
+include $(top_srcdir)/flymake.am
 
-DSLROOT = @DSLROOT@
+AUTOMAKE_OPTIONS = 1.6 foreign
+
+subdir = doc
 
 DEFS = -DSYSCONFDIR=\"$(sysconfdir)\" -DBINDIR=\"$(bindir)\" -DHAVE_CONFIG_H=1
 AM_CPPFLAGS = -I. -I.. -I$(includedir) -I$(top_srcdir)
@@ -51,21 +54,21 @@ all: makedoc-all
 makedoc-all: mutt.1 smime_keys.1 muttrc.man manual.html stamp-doc-rc stamp-doc-chunked manual.txt pgpewrap.1 pgpring.1
 
 install-data-local: makedoc-all instdoc
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man1
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/man5
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(sysconfdir)
+	$(MKDIR_P) $(DESTDIR)$(mandir)/man1
+	$(MKDIR_P) $(DESTDIR)$(mandir)/man5
+	$(MKDIR_P) $(DESTDIR)$(sysconfdir)
 	./instdoc mutt.1 $(DESTDIR)$(mandir)/man1/mutt.1
 	./instdoc smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
 	./instdoc pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
 	./instdoc pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
 	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
-	test x@DOTLOCK_TARGET@ = x || ./instdoc $(srcdir)/dotlock.man \
+	test x$(DOTLOCK_TARGET) = x || ./instdoc $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
-	$(top_srcdir)/mkinstalldirs $(DESTDIR)$(docdir)
+	$(MKDIR_P) $(DESTDIR)$(docdir)
 	for f in $(topsrcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done

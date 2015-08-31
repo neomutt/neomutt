@@ -35,6 +35,10 @@ const char *pgp_micalg (const char *fname);
 
 char *_pgp_keyid (pgp_key_t);
 char *pgp_keyid (pgp_key_t);
+char *pgp_short_keyid (pgp_key_t);
+char *pgp_long_keyid (pgp_key_t);
+char *pgp_fingerprint (pgp_key_t k);
+char *pgp_fpr_or_lkeyid (pgp_key_t k);
 
 
 int mutt_check_pgp (HEADER * h);
@@ -46,10 +50,10 @@ int pgp_decrypt_mime (FILE *, FILE **, BODY *, BODY **);
 /* pgp_key_t gpg_get_candidates (struct pgp_vinfo *, pgp_ring_t, LIST *); */
 pgp_key_t pgp_ask_for_key (char *, char *, short, pgp_ring_t);
 pgp_key_t pgp_get_candidates (pgp_ring_t, LIST *);
-pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t);
+pgp_key_t pgp_getkeybyaddr (ADDRESS *, short, pgp_ring_t, int);
 pgp_key_t pgp_getkeybystr (char *, short, pgp_ring_t);
 
-char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc);
+char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode);
 
 void pgp_forget_passphrase (void);
 int pgp_application_pgp_handler (BODY *, STATE *);

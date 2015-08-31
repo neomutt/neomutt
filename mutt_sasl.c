@@ -142,7 +142,7 @@ int mutt_sasl_start (void)
 
   /* set up default logging callback */
   callbacks[0].id = SASL_CB_LOG;
-  callbacks[0].proc = mutt_sasl_cb_log;
+  callbacks[0].proc = (int (*)(void))mutt_sasl_cb_log;
   callbacks[0].context = NULL;
 
   callbacks[1].id = SASL_CB_LIST_END;
@@ -270,17 +270,17 @@ sasl_callback_t* mutt_sasl_get_callbacks (ACCOUNT* account)
   callback = mutt_sasl_callbacks;
 
   callback->id = SASL_CB_USER;
-  callback->proc = mutt_sasl_cb_authname;
+  callback->proc = (int (*)(void))mutt_sasl_cb_authname;
   callback->context = account;
   callback++;
 
   callback->id = SASL_CB_AUTHNAME;
-  callback->proc = mutt_sasl_cb_authname;
+  callback->proc = (int (*)(void))mutt_sasl_cb_authname;
   callback->context = account;
   callback++;
 
   callback->id = SASL_CB_PASS;
-  callback->proc = mutt_sasl_cb_pass;
+  callback->proc = (int (*)(void))mutt_sasl_cb_pass;
   callback->context = account;
   callback++;
 

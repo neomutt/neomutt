@@ -146,7 +146,7 @@ char *mutt_gen_msgid (void);
 char *mutt_get_body_charset (char *, size_t, BODY *);
 const char *mutt_get_name (ADDRESS *);
 char *mutt_get_parameter (const char *, PARAMETER *);
-char *mutt_crypt_hook (ADDRESS *);
+LIST *mutt_crypt_hook (ADDRESS *);
 char *mutt_make_date (char *, size_t);
 
 const char *mutt_make_version (void);
@@ -213,13 +213,14 @@ void mutt_draw_tree (CONTEXT *);
 void mutt_check_lookup_list (BODY *, char *, int);
 void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_make_forward_subject (ENVELOPE *env, CONTEXT *ctx, HEADER *cur);
-void mutt_make_help (char *, size_t, char *, int, int);
+void mutt_make_help (char *, size_t, const char *, int, int);
 void mutt_make_misc_reply_headers (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, ENVELOPE *curenv);
 void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out);
 void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra);
 void mutt_message_to_7bit (BODY *, FILE *);
-#define mutt_mktemp(a,b) _mutt_mktemp (a, b, __FILE__, __LINE__)
-void _mutt_mktemp (char *, size_t, const char *, int);
+#define mutt_mktemp(a,b) mutt_mktemp_pfx_sfx (a, b, "mutt", NULL)
+#define mutt_mktemp_pfx_sfx(a,b,c,d)  _mutt_mktemp (a, b, c, d, __FILE__, __LINE__)
+void _mutt_mktemp (char *, size_t, const char *, const char *, const char *, int);
 void mutt_normalize_time (struct tm *);
 void mutt_paddstr (int, const char *);
 void mutt_parse_mime_message (CONTEXT *ctx, HEADER *);
@@ -250,6 +251,7 @@ void mutt_signal_init (void);
 void mutt_stamp_attachment (BODY *a);
 void mutt_tabs_to_spaces (char *);
 void mutt_tag_set_flag (int, int);
+short mutt_ts_capability (void);
 void mutt_unblock_signals (void);
 void mutt_unblock_signals_system (int);
 void mutt_update_encoding (BODY *a);
@@ -507,7 +509,6 @@ extern void srand48 ();
 extern time_t mktime ();
 extern int vsprintf ();
 extern int ungetc ();
-extern char *mktemp ();
 extern int ftruncate ();
 extern void *memset ();
 extern int pclose ();

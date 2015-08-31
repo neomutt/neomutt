@@ -17,6 +17,7 @@
 ^depcomp$
 ^install-sh$
 ^missing$
+^mkinstalldirs$
 
 # built objects
 ^flea$
@@ -37,6 +38,8 @@
 ^doc/manual\.(txt|xml|aux|log|out|tex|pdf)$
 ^doc/mutt\.1$
 ^doc/muttrc\.man$
+^doc/pgpewrap\.1$
+^doc/pgpring\.1$
 ^doc/.*\.html$
 ^doc/stamp-
 ^doc/smime_keys\.1$
@@ -53,6 +56,9 @@
 syntax: glob
 .deps
 Makefile
+GPATH
+GRTAGS
+GTAGS
 TAGS
 cscope.*
 *.swp

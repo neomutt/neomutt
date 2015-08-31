@@ -140,6 +140,13 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   ssl_get_client_cert(ssldata, conn);
 
+  if (SslCiphers) {
+    if (!SSL_CTX_set_cipher_list (ssldata->ctx, SslCiphers)) {
+      dprint (1, (debugfile, "mutt_ssl_starttls: Could not select prefered ciphers\n"));
+      goto bail_ctx;
+    }
+  }
+
   if (! (ssldata->ssl = SSL_new (ssldata->ctx)))
   {
     dprint (1, (debugfile, "mutt_ssl_starttls: Error allocating SSL\n"));
@@ -359,6 +366,10 @@ static int ssl_socket_open (CONNECTION * conn)
   }
 
   ssl_get_client_cert(data, conn);
+
+  if (SslCiphers) {
+    SSL_CTX_set_cipher_list (data->ctx, SslCiphers);
+  }
 
   data->ssl = SSL_new (data->ctx);
   SSL_set_fd (data->ssl, conn->fd);

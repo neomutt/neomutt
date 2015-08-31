@@ -64,36 +64,28 @@ BODY *mutt_new_body (void)
  */
 void mutt_adv_mktemp (char *s, size_t l)
 {
-  char buf[_POSIX_PATH_MAX];
-  char tmp[_POSIX_PATH_MAX];
-  char *period;
-  size_t sl;
+  char prefix[_POSIX_PATH_MAX];
+  char *suffix;
   struct stat sb;
-  
-  strfcpy (buf, NONULL (Tempdir), sizeof (buf));
-  mutt_expand_path (buf, sizeof (buf));
+
   if (s[0] == '\0')
   {
-    snprintf (s, l, "%s/muttXXXXXX", buf);
-    mktemp (s);
+    mutt_mktemp (s, l);
   }
   else
   {
-    strfcpy (tmp, s, sizeof (tmp));
-    mutt_sanitize_filename (tmp, 1);
-    snprintf (s, l, "%s/%s", buf, tmp);
+    strfcpy (prefix, s, sizeof (prefix));
+    mutt_sanitize_filename (prefix, 1);
+    snprintf (s, l, "%s/%s", NONULL (Tempdir), prefix);
     if (lstat (s, &sb) == -1 && errno == ENOENT)
       return;
-    if ((period = strrchr (tmp, '.')) != NULL)
-      *period = 0;
-    snprintf (s, l, "%s/%s.XXXXXX", buf, tmp);
-    mktemp (s);
-    if (period != NULL)
+
+    if ((suffix = strrchr (prefix, '.')) != NULL)
     {
-      *period = '.';
-      sl = mutt_strlen(s);
-      strfcpy(s + sl, period, l - sl);
+      *suffix = 0;
+      ++suffix;
     }
+    mutt_mktemp_pfx_sfx (s, l, prefix, suffix);
   }
 }
 
@@ -779,10 +771,13 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   mutt_free_envelope(extra);
 }
 
-void _mutt_mktemp (char *s, size_t slen, const char *src, int line)
+void _mutt_mktemp (char *s, size_t slen, const char *prefix, const char *suffix,
+                   const char *src, int line)
 {
-  size_t n = snprintf (s, slen, "%s/mutt-%s-%d-%d-%ld%ld", NONULL (Tempdir), NONULL (Hostname),
-      (int) getuid (), (int) getpid (), random (), random ());
+  size_t n = snprintf (s, slen, "%s/%s-%s-%d-%d-%ld%ld%s%s",
+      NONULL (Tempdir), NONULL (prefix), NONULL (Hostname),
+      (int) getuid (), (int) getpid (), random (), random (),
+      suffix ? "." : "", NONULL (suffix));
   if (n >= slen)
     dprint (1, (debugfile, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! slen=%zu but need %zu\n",
 	    src, line, slen, n));

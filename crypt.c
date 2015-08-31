@@ -314,10 +314,71 @@ int mutt_is_multipart_encrypted (BODY *b)
         ascii_strcasecmp (p, "application/pgp-encrypted"))
       return 0;
   
-     return PGPENCRYPT;
+    return PGPENCRYPT;
   }
 
   return 0;
+}
+
+
+int mutt_is_valid_multipart_pgp_encrypted (BODY *b)
+{
+  if (! mutt_is_multipart_encrypted (b))
+    return 0;
+
+  b = b->parts;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "pgp-encrypted"))
+    return 0;
+
+  b = b->next;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "octet-stream"))
+    return 0;
+
+  return PGPENCRYPT;
+}
+
+
+/*
+ * This checks for the malformed layout caused by MS Exchange in
+ * some cases:
+ *  <multipart/mixed>
+ *     <text/plain>
+ *     <application/pgp-encrypted> [BASE64-encoded]
+ *     <application/octet-stream> [BASE64-encoded]
+ * See ticket #3742
+ */
+int mutt_is_malformed_multipart_pgp_encrypted (BODY *b)
+{
+  if (!(WithCrypto & APPLICATION_PGP))
+    return 0;
+
+  if (!b || b->type != TYPEMULTIPART ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "mixed"))
+    return 0;
+
+  b = b->parts;
+  if (!b || b->type != TYPETEXT ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "plain") ||
+       b->length != 0)
+    return 0;
+
+  b = b->next;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "pgp-encrypted"))
+    return 0;
+
+  b = b->next;
+  if (!b || b->type != TYPEAPPLICATION ||
+      !b->subtype || ascii_strcasecmp (b->subtype, "octet-stream"))
+    return 0;
+
+  b = b->next;
+  if (b)
+    return 0;
+
+  return PGPENCRYPT;
 }
 
 
@@ -469,6 +530,7 @@ int crypt_query (BODY *m)
   {
     t |= mutt_is_multipart_encrypted(m);
     t |= mutt_is_multipart_signed (m);
+    t |= mutt_is_malformed_multipart_pgp_encrypted (m);
 
     if (t && m->goodsig) 
       t |= GOODSIGN;
@@ -707,8 +769,11 @@ void crypt_extract_keys_from_messages (HEADER * h)
 
 
 
-int crypt_get_keys (HEADER *msg, char **keylist)
+int crypt_get_keys (HEADER *msg, char **keylist, int oppenc_mode)
 {
+  ADDRESS *adrlist = NULL, *last = NULL;
+  const char *fqdn = mutt_fqdn (1);
+
   /* Do a quick check to make sure that we can find all of the encryption
    * keys if the user has requested this service.
    */
@@ -719,28 +784,70 @@ int crypt_get_keys (HEADER *msg, char **keylist)
   if ((WithCrypto & APPLICATION_PGP))
     set_option (OPTPGPCHECKTRUST);
 
+  last = rfc822_append (&adrlist, msg->env->to, 0);
+  last = rfc822_append (last ? &last : &adrlist, msg->env->cc, 0);
+  rfc822_append (last ? &last : &adrlist, msg->env->bcc, 0);
+
+  if (fqdn)
+    rfc822_qualify (adrlist, fqdn);
+  adrlist = mutt_remove_duplicates (adrlist);
+
   *keylist = NULL;
 
-  if (msg->security & ENCRYPT)
+  if (oppenc_mode || (msg->security & ENCRYPT))
   {
      if ((WithCrypto & APPLICATION_PGP)
          && (msg->security & APPLICATION_PGP))
      {
-       if ((*keylist = crypt_pgp_findkeys (msg->env->to, msg->env->cc,
-      			       msg->env->bcc)) == NULL)
+       if ((*keylist = crypt_pgp_findkeys (adrlist, oppenc_mode)) == NULL)
+       {
+           rfc822_free_address (&adrlist);
            return (-1);
+       }
        unset_option (OPTPGPCHECKTRUST);
      }
      if ((WithCrypto & APPLICATION_SMIME)
          && (msg->security & APPLICATION_SMIME))
      {
-       if ((*keylist = crypt_smime_findkeys (msg->env->to, msg->env->cc,
-      				             msg->env->bcc)) == NULL)
+       if ((*keylist = crypt_smime_findkeys (adrlist, oppenc_mode)) == NULL)
+       {
+           rfc822_free_address (&adrlist);
            return (-1);
+       }
      }
   }
+
+  rfc822_free_address (&adrlist);
     
   return (0);
+}
+
+
+/*
+ * Check if all recipients keys can be automatically determined.
+ * Enable encryption if they can, otherwise disable encryption.
+ */
+
+void crypt_opportunistic_encrypt(HEADER *msg)
+{
+  char *pgpkeylist = NULL;
+
+  if (!WithCrypto)
+    return;
+
+  if (! (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT)) )
+    return;
+
+  crypt_get_keys (msg, &pgpkeylist, 1);
+  if (pgpkeylist != NULL )
+  {
+    msg->security |= ENCRYPT;
+    FREE (&pgpkeylist);
+  }
+  else
+  {
+    msg->security &= ~ENCRYPT;
+  }
 }
 
 
@@ -897,6 +1004,108 @@ int mutt_signed_handler (BODY *a, STATE *s)
     state_attach_puts (_("\n[-- End of signed data --]\n"), s);
   
   return rc;
+}
+
+
+/* Obtain pointers to fingerprint or short or long key ID, if any.
+ * See mutt_crypt.h for details.
+ */
+const char* crypt_get_fingerprint_or_id (char *p, const char **pphint,
+    const char **ppl, const char **pps)
+{
+  const char *ps, *pl, *phint;
+  char *pfcopy, *pf, *s1, *s2;
+  char c;
+  int isid;
+  size_t hexdigits;
+
+  /* User input may be partial name, fingerprint or short or long key ID,
+   * independent of OPTPGPLONGIDS.
+   * Fingerprint without spaces is 40 hex digits (SHA-1) or 32 hex digits (MD5).
+   * Strip leading "0x" for key ID detection and prepare pl and ps to indicate
+   * if an ID was found and to simplify logic in the key loop's inner
+   * condition of the caller. */
+
+  pf = mutt_skip_whitespace (p);
+  if (!mutt_strncasecmp (pf, "0x", 2))
+    pf += 2;
+
+  /* Check if a fingerprint is given, must be hex digits only, blanks
+   * separating groups of 4 hex digits are allowed. Also pre-check for ID. */
+  isid = 2;             /* unknown */
+  hexdigits = 0;
+  s1 = pf;
+  do
+  {
+    c = *(s1++);
+    if (('0' <= c && c <= '9') || ('A' <= c && c <= 'F') || ('a' <= c && c <= 'f'))
+    {
+      ++hexdigits;
+      if (isid == 2)
+        isid = 1;       /* it is an ID so far */
+    }
+    else if (c)
+    {
+      isid = 0;         /* not an ID */
+      if (c == ' ' && ((hexdigits % 4) == 0))
+        ;               /* skip blank before or after 4 hex digits */
+      else
+        break;          /* any other character or position */
+    }
+  } while (c);
+
+  /* If at end of input, check for correct fingerprint length and copy if. */
+  pfcopy = (!c && ((hexdigits == 40) || (hexdigits == 32)) ? safe_strdup (pf) : NULL);
+
+  if (pfcopy)
+  {
+    /* Use pfcopy to strip all spaces from fingerprint and as hint. */
+    s1 = s2 = pfcopy;
+    do
+    {
+      *(s1++) = *(s2 = mutt_skip_whitespace (s2));
+    } while (*(s2++));
+
+    phint = pfcopy;
+    ps = pl = NULL;
+  }
+  else
+  {
+    phint = p;
+    ps = pl = NULL;
+    if (isid == 1)
+    {
+      if (mutt_strlen (pf) == 16)
+        pl = pf;        /* long key ID */
+      else if (mutt_strlen (pf) == 8)
+        ps = pf;        /* short key ID */
+    }
+  }
+
+  *pphint = phint;
+  *ppl = pl;
+  *pps = ps;
+  return pfcopy;
+}
+
+
+/*
+ * Used by pgp_findKeys and find_keys to check if a crypt-hook
+ * value is a key id.
+ */
+
+short crypt_is_numerical_keyid (const char *s)
+{
+  /* or should we require the "0x"? */
+  if (strncmp (s, "0x", 2) == 0)
+    s += 2;
+  if (strlen (s) % 8)
+    return 0;
+  while (*s)
+    if (strchr ("0123456789ABCDEFabcdef", *s++) == NULL)
+      return 0;
+
+  return 1;
 }
 
 

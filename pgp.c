@@ -31,6 +31,7 @@
 #endif
 
 #include "mutt.h"
+#include "mutt_crypt.h"
 #include "mutt_curses.h"
 #include "pgp.h"
 #include "mime.h"
@@ -108,7 +109,8 @@ int pgp_use_gpg_agent (void)
 {
   char *tty;
 
-  if (!option (OPTUSEGPGAGENT) || !getenv ("GPG_AGENT_INFO"))
+  /* GnuPG 2.1 no longer exports GPG_AGENT_INFO */
+  if (!option (OPTUSEGPGAGENT))
     return 0;
 
   if ((tty = ttyname(0)))
@@ -117,10 +119,31 @@ int pgp_use_gpg_agent (void)
   return 1;
 }
 
-char *pgp_keyid(pgp_key_t k)
+static pgp_key_t _pgp_parent(pgp_key_t k)
 {
   if((k->flags & KEYFLAG_SUBKEY) && k->parent && option(OPTPGPIGNORESUB))
     k = k->parent;
+
+  return k;
+}
+
+char *pgp_long_keyid(pgp_key_t k)
+{
+  k = _pgp_parent(k);
+
+  return k->keyid;
+}
+
+char *pgp_short_keyid(pgp_key_t k)
+{
+  k = _pgp_parent(k);
+
+  return k->keyid + 8;
+}
+
+char *pgp_keyid(pgp_key_t k)
+{
+  k = _pgp_parent(k);
 
   return _pgp_keyid(k);
 }
@@ -131,6 +154,27 @@ char *_pgp_keyid(pgp_key_t k)
     return k->keyid;
   else
     return (k->keyid + 8);
+}
+
+char *pgp_fingerprint(pgp_key_t k)
+{
+  k = _pgp_parent(k);
+
+  return k->fingerprint;
+}
+
+/* Grab the longest key identifier available: fingerprint or else
+ * the long keyid.
+ *
+ * The longest available should be used for internally identifying
+ * the key and for invoking pgp commands.
+ */
+char *pgp_fpr_or_lkeyid(pgp_key_t k)
+{
+  char *fingerprint;
+
+  fingerprint = pgp_fingerprint (k);
+  return fingerprint ? fingerprint : pgp_long_keyid (k);
 }
 
 /* ----------------------------------------------------------------------------
@@ -351,7 +395,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	mutt_mktemp (outfile, sizeof (outfile));
 	if ((pgpout = safe_fopen (outfile, "w+")) == NULL)
 	{
-	  mutt_perror (tmpfname);
+	  mutt_perror (outfile);
 	  return -1;
 	}
 	
@@ -461,6 +505,18 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	while ((c = fgetconv (fc)) != EOF)
 	  state_prefix_putc (c, s);
 	fgetconv_close (&fc);
+      }
+
+      /*
+       * Multiple PGP blocks can exist, so these need to be closed and
+       * unlinked inside the loop.
+       */
+      safe_fclose (&tmpfp);
+      mutt_unlink (tmpfname);
+      if (pgpout)
+      {
+	safe_fclose (&pgpout);
+	mutt_unlink (outfile);
       }
 
       if (s->flags & M_DISPLAY)
@@ -898,58 +954,88 @@ int pgp_decrypt_mime (FILE *fpin, FILE **fpout, BODY *b, BODY **cur)
   char tempfile[_POSIX_PATH_MAX];
   STATE s;
   BODY *p = b;
-  
-  if(!mutt_is_multipart_encrypted(b))
+  int need_decode = 0;
+  int saved_type;
+  LOFF_T saved_offset;
+  size_t saved_length;
+  FILE *decoded_fp = NULL;
+  int rv = 0;
+
+  if (mutt_is_valid_multipart_pgp_encrypted (b))
+    b = b->parts->next;
+  else if (mutt_is_malformed_multipart_pgp_encrypted (b))
+  {
+    b = b->parts->next->next;
+    need_decode = 1;
+  }
+  else
     return -1;
 
-  if(!b->parts || !b->parts->next)
-    return -1;
-  
-  b = b->parts->next;
-  
   memset (&s, 0, sizeof (s));
   s.fpin = fpin;
+
+  if (need_decode)
+  {
+    saved_type = b->type;
+    saved_offset = b->offset;
+    saved_length = b->length;
+
+    mutt_mktemp (tempfile, sizeof (tempfile));
+    if ((decoded_fp = safe_fopen (tempfile, "w+")) == NULL)
+    {
+      mutt_perror (tempfile);
+      return (-1);
+    }
+    unlink (tempfile);
+
+    fseeko (s.fpin, b->offset, 0);
+    s.fpout = decoded_fp;
+
+    mutt_decode_attachment (b, &s);
+
+    fflush (decoded_fp);
+    b->length = ftello (decoded_fp);
+    b->offset = 0;
+    rewind (decoded_fp);
+    s.fpin = decoded_fp;
+    s.fpout = 0;
+  }
+
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((*fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
     mutt_perror (tempfile);
-    return (-1);
+    rv = -1;
+    goto bail;
   }
   unlink (tempfile);
 
-  *cur = pgp_decrypt_part (b, &s, *fpout, p);
-
+  if ((*cur = pgp_decrypt_part (b, &s, *fpout, p)) == NULL)
+    rv = -1;
   rewind (*fpout);
-  
-  if (!*cur)
-    return -1;
-  
-  return (0);
+
+bail:
+  if (need_decode)
+  {
+    b->type = saved_type;
+    b->length = saved_length;
+    b->offset = saved_offset;
+    safe_fclose (&decoded_fp);
+  }
+
+  return rv;
 }
 
+/*
+ * This handler is passed the application/octet-stream directly.
+ * The caller must propagate a->goodsig to its parent.
+ */
 int pgp_encrypted_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
   FILE *fpout, *fpin;
   BODY *tattach;
-  BODY *p = a;
   int rc = 0;
-  
-  a = a->parts;
-  if (!a || a->type != TYPEAPPLICATION || !a->subtype || 
-      ascii_strcasecmp ("pgp-encrypted", a->subtype) != 0 ||
-      !a->next || a->next->type != TYPEAPPLICATION || !a->next->subtype ||
-      ascii_strcasecmp ("octet-stream", a->next->subtype) != 0)
-  {
-    if (s->flags & M_DISPLAY)
-      state_attach_puts (_("[-- Error: malformed PGP/MIME message! --]\n\n"), s);
-    return -1;
-  }
-
-  /*
-   * Move forward to the application/pgp-encrypted body.
-   */
-  a = a->next;
 
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
@@ -961,7 +1047,7 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
 
   if (s->flags & M_DISPLAY) crypt_current_time (s, "PGP");
 
-  if ((tattach = pgp_decrypt_part (a, s, fpout, p)) != NULL)
+  if ((tattach = pgp_decrypt_part (a, s, fpout, a)) != NULL)
   {
     if (s->flags & M_DISPLAY)
       state_attach_puts (_("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
@@ -979,7 +1065,7 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
      */
     
     if (mutt_is_multipart_signed (tattach) && !tattach->next)
-      p->goodsig |= tattach->goodsig;
+      a->goodsig |= tattach->goodsig;
     
     if (s->flags & M_DISPLAY)
     {
@@ -1127,132 +1213,129 @@ BODY *pgp_sign_message (BODY *a)
   t->disposition = DISPNONE;
   t->encoding = ENC7BIT;
   t->unlink = 1; /* ok to remove this file after sending. */
+  mutt_set_parameter ("name", "signature.asc", &t->parameter);
 
   return (a);
 }
 
-static short is_numerical_keyid (const char *s)
-{
-  /* or should we require the "0x"? */
-  if (strncmp (s, "0x", 2) == 0)
-    s += 2;
-  if (strlen (s) % 8)
-    return 0;
-  while (*s)
-    if (strchr ("0123456789ABCDEFabcdef", *s++) == NULL)
-      return 0;
-  
-  return 1;
-}
-
 /* This routine attempts to find the keyids of the recipients of a message.
  * It returns NULL if any of the keys can not be found.
+ * If oppenc_mode is true, only keys that can be determined without
+ * prompting will be used.
  */
-char *pgp_findKeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
 {
+  LIST *crypt_hook_list, *crypt_hook = NULL;
   char *keyID, *keylist = NULL;
   size_t keylist_size = 0;
   size_t keylist_used = 0;
-  ADDRESS *tmp = NULL, *addr = NULL;
-  ADDRESS **last = &tmp;
+  ADDRESS *addr = NULL;
   ADDRESS *p, *q;
-  int i;
-  pgp_key_t k_info = NULL, key = NULL;
+  pgp_key_t k_info = NULL;
+  char buf[LONG_STRING];
+  int r;
+  int key_selected;
 
   const char *fqdn = mutt_fqdn (1);
 
-  for (i = 0; i < 3; i++) 
+  for (p = adrlist; p ; p = p->next)
   {
-    switch (i)
+    key_selected = 0;
+    crypt_hook_list = crypt_hook = mutt_crypt_hook (p);
+    do
     {
-      case 0: p = to; break;
-      case 1: p = cc; break;
-      case 2: p = bcc; break;
-      default: abort ();
-    }
-    
-    *last = rfc822_cpy_adr (p, 0);
-    while (*last)
-      last = &((*last)->next);
+      q = p;
+      k_info = NULL;
+
+      if (crypt_hook != NULL)
+      {
+        keyID = crypt_hook->data;
+        r = M_YES;
+        if (! oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
+        {
+          snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
+          r = mutt_yesorno (buf, M_YES);
+        }
+        if (r == M_YES)
+        {
+          if (crypt_is_numerical_keyid (keyID))
+          {
+            if (strncmp (keyID, "0x", 2) == 0)
+              keyID += 2;
+            goto bypass_selection;		/* you don't see this. */
+          }
+
+          /* check for e-mail address */
+          if (strchr (keyID, '@') &&
+              (addr = rfc822_parse_adrlist (NULL, keyID)))
+          {
+            if (fqdn) rfc822_qualify (addr, fqdn);
+            q = addr;
+          }
+          else if (! oppenc_mode)
+          {
+            k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
+          }
+        }
+        else if (r == M_NO)
+        {
+          if (key_selected || (crypt_hook->next != NULL))
+          {
+            crypt_hook = crypt_hook->next;
+            continue;
+          }
+        }
+        else if (r == -1)
+        {
+          FREE (&keylist);
+          rfc822_free_address (&addr);
+          mutt_free_list (&crypt_hook_list);
+          return NULL;
+        }
+      }
+
+      if (k_info == NULL)
+      {
+        pgp_invoke_getkeys (q);
+        k_info = pgp_getkeybyaddr (q, KEYFLAG_CANENCRYPT, PGP_PUBRING, oppenc_mode);
+      }
+
+      if ((k_info == NULL) && (! oppenc_mode))
+      {
+        snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), q->mailbox);
+        k_info = pgp_ask_for_key (buf, q->mailbox,
+                              KEYFLAG_CANENCRYPT, PGP_PUBRING);
+      }
+
+      if (k_info == NULL)
+      {
+        FREE (&keylist);
+        rfc822_free_address (&addr);
+        mutt_free_list (&crypt_hook_list);
+        return NULL;
+      }
+
+      keyID = pgp_fpr_or_lkeyid (k_info);
+
+    bypass_selection:
+      keylist_size += mutt_strlen (keyID) + 4;
+      safe_realloc (&keylist, keylist_size);
+      sprintf (keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",	/* __SPRINTF_CHECKED__ */
+              keyID);
+      keylist_used = mutt_strlen (keylist);
+
+      key_selected = 1;
+
+      pgp_free_key (&k_info);
+      rfc822_free_address (&addr);
+
+      if (crypt_hook != NULL)
+        crypt_hook = crypt_hook->next;
+
+    } while (crypt_hook != NULL);
+
+    mutt_free_list (&crypt_hook_list);
   }
-
-  if (fqdn)
-    rfc822_qualify (tmp, fqdn);
-
-  tmp = mutt_remove_duplicates (tmp);
-  
-  for (p = tmp; p ; p = p->next)
-  {
-    char buf[LONG_STRING];
-
-    q = p;
-    k_info = NULL;
-
-    if ((keyID = mutt_crypt_hook (p)) != NULL)
-    {
-      int r;
-      snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
-      if ((r = mutt_yesorno (buf, M_YES)) == M_YES)
-      {
-	if (is_numerical_keyid (keyID))
-	{
-	  if (strncmp (keyID, "0x", 2) == 0)
-	    keyID += 2;
-	  goto bypass_selection;		/* you don't see this. */
-	}
-	
-	/* check for e-mail address */
-	if (strchr (keyID, '@') && 
-	    (addr = rfc822_parse_adrlist (NULL, keyID)))
-	{
-	  if (fqdn) rfc822_qualify (addr, fqdn);
-	  q = addr;
-	}
-	else
-	  k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
-      }
-      else if (r == -1)
-      {
-	FREE (&keylist);
-	rfc822_free_address (&tmp);
-	rfc822_free_address (&addr);
-	return NULL;
-      }
-    }
-
-    if (k_info == NULL)
-      pgp_invoke_getkeys (q);
-
-    if (k_info == NULL && (k_info = pgp_getkeybyaddr (q, KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
-    {
-      snprintf (buf, sizeof (buf), _("Enter keyID for %s: "), q->mailbox);
-
-      if ((key = pgp_ask_for_key (buf, q->mailbox,
-				  KEYFLAG_CANENCRYPT, PGP_PUBRING)) == NULL)
-      {
-	FREE (&keylist);
-	rfc822_free_address (&tmp);
-	rfc822_free_address (&addr);
-	return NULL;
-      }
-    }
-    else
-      key = k_info;
-
-    keyID = pgp_keyid (key);
-    
-  bypass_selection:
-    keylist_size += mutt_strlen (keyID) + 4;
-    safe_realloc (&keylist, keylist_size);
-    sprintf (keylist + keylist_used, "%s0x%s", keylist_used ? " " : "",	/* __SPRINTF_CHECKED__ */
-	     keyID);
-    keylist_used = mutt_strlen (keylist);
-
-    pgp_free_key (&key);
-    rfc822_free_address (&addr);
-
-  }
-  rfc822_free_address (&tmp);
   return (keylist);
 }
 
@@ -1569,8 +1652,12 @@ BODY *pgp_traditional_encryptsign (BODY *a, int flags, char *keylist)
 
 int pgp_send_menu (HEADER *msg, int *redraw)
 {
+  pgp_key_t p;
+  char input_signas[SHORT_STRING];
+  char *prompt, *letters, *choices;
+  char promptbuf[LONG_STRING];
   int choice;
-  
+
   if (!(WithCrypto & APPLICATION_PGP))
     return msg->security;
 
@@ -1578,93 +1665,145 @@ int pgp_send_menu (HEADER *msg, int *redraw)
   if (option (OPTPGPAUTOINLINE) && 
       !((msg->security & APPLICATION_PGP) && (msg->security & (SIGN|ENCRYPT))))
     msg->security |= INLINE;
-  
-  /* When the message is not selected for signing or encryption, the toggle
-   * between PGP/MIME and Traditional doesn't make sense.
+
+  msg->security |= APPLICATION_PGP;
+
+  /*
+   * Opportunistic encrypt is controlling encryption.  Allow to toggle
+   * between inline and mime, but not turn encryption on or off.
+   * NOTE: "Signing" and "Clearing" only adjust the sign bit, so we have different
+   *       letter choices for those.
    */
-  if (msg->security & (ENCRYPT | SIGN))
+  if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
   {
-    char prompt[LONG_STRING];
-
-    snprintf (prompt, sizeof (prompt), 
-	_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "),
-	(msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
-
-    /* The keys accepted for this prompt *must* match the order in the second
-     * version in the else clause since the switch statement below depends on
-     * it.  The 'i' key is appended in this version.
-     */
-    choice = mutt_multi_choice (prompt, _("esabfci"));
+    if (msg->security & (ENCRYPT | SIGN))
+    {
+      snprintf (promptbuf, sizeof (promptbuf),
+          _("PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "),
+          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+      prompt = promptbuf;
+      letters = _("safcoi");
+      choices = "SaFCoi";
+    }
+    else
+    {
+      prompt = _("PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? ");
+      letters = _("safco");
+      choices = "SaFCo";
+    }
   }
+  /*
+   * Opportunistic encryption option is set, but is toggled off
+   * for this message.
+   */
+  else if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
+  {
+    /* When the message is not selected for signing or encryption, the toggle
+    * between PGP/MIME and Traditional doesn't make sense.
+    */
+    if (msg->security & (ENCRYPT | SIGN))
+    {
+
+      snprintf (promptbuf, sizeof (promptbuf), 
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "),
+          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+      prompt = promptbuf;
+      letters = _("esabfcoi");
+      choices = "esabfcOi";
+    }
+    else
+    {
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? ");
+      letters = _("esabfco");
+      choices = "esabfcO";
+    }
+  }
+  /*
+   * Opportunistic encryption is unset
+   */
   else
   {
-    /* The keys accepted *must* be a prefix of the accepted keys in the "if"
-     * clause above since the switch statement below depends on it.
-     */
-    choice = mutt_multi_choice(_("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? "),
-	_("esabfc"));
+    if (msg->security & (ENCRYPT | SIGN))
+    {
+
+      snprintf (promptbuf, sizeof (promptbuf), 
+          _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "),
+          (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
+      prompt = promptbuf;
+      letters = _("esabfci");
+      choices = "esabfci";
+    }
+    else
+    {
+      prompt = _("PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, or (c)lear? ");
+      letters = _("esabfc");
+      choices = "esabfc";
+    }
   }
 
-  switch (choice)
+  choice = mutt_multi_choice (prompt, letters);
+  if (choice > 0)
   {
-    case 1: /* (e)ncrypt */
+    switch (choices[choice - 1])
+    {
+    case 'e': /* (e)ncrypt */
       msg->security |= ENCRYPT;
       msg->security &= ~SIGN;
       break;
 
-  case 2: /* (s)ign */
-    msg->security |= SIGN;
-    msg->security &= ~ENCRYPT;
-    break;
+    case 's': /* (s)ign */
+      msg->security &= ~ENCRYPT;
+      msg->security |= SIGN;
+      break;
 
-  case 3: /* sign (a)s */
-    {
-      pgp_key_t p;
-      char input_signas[SHORT_STRING];
+    case 'S': /* (s)ign in oppenc mode */
+      msg->security |= SIGN;
+      break;
 
+    case 'a': /* sign (a)s */
       unset_option(OPTPGPCHECKTRUST);
 
       if ((p = pgp_ask_for_key (_("Sign as: "), NULL, 0, PGP_SECRING)))
       {
-	snprintf (input_signas, sizeof (input_signas), "0x%s",
-	    pgp_keyid (p));
-	mutt_str_replace (&PgpSignAs, input_signas);
-	pgp_free_key (&p);
+        snprintf (input_signas, sizeof (input_signas), "0x%s",
+            pgp_fpr_or_lkeyid (p));
+        mutt_str_replace (&PgpSignAs, input_signas);
+        pgp_free_key (&p);
 
-	msg->security |= SIGN;
+        msg->security |= SIGN;
 
-	crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
+        crypt_pgp_void_passphrase ();  /* probably need a different passphrase */
       }
-#if 0
-      else
-      {
-	msg->security &= ~SIGN;
-      }
-#endif
-
       *redraw = REDRAW_FULL;
-    } break;
+      break;
 
-  case 4: /* (b)oth */
-    msg->security |= (ENCRYPT | SIGN);
-    break;
+    case 'b': /* (b)oth */
+      msg->security |= (ENCRYPT | SIGN);
+      break;
 
-  case 5: /* (f)orget it */
-  case 6: /* (c)lear     */
-    msg->security = 0;
-    break;
+    case 'f': /* (f)orget it: kept for backward compatibility. */
+    case 'c': /* (c)lear     */
+      msg->security &= ~(ENCRYPT | SIGN);
+      break;
 
-  case 7: /* toggle (i)nline */
-    msg->security ^= INLINE;
-    break;
-  }
+    case 'F': /* (f)orget it or (c)lear in oppenc mode */
+    case 'C':
+      msg->security &= ~SIGN;
+      break;
 
-  if (msg->security)
-  {
-    if (! (msg->security & (ENCRYPT | SIGN)))
-      msg->security = 0;
-    else
-      msg->security |= APPLICATION_PGP;
+    case 'O': /* oppenc mode on */
+      msg->security |= OPPENCRYPT;
+      crypt_opportunistic_encrypt (msg);
+      break;
+
+    case 'o': /* oppenc mode off */
+      msg->security &= ~OPPENCRYPT;
+      break;
+
+    case 'i': /* toggle (i)nline */
+      msg->security ^= INLINE;
+      break;
+    }
   }
 
   return (msg->security);

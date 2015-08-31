@@ -1486,7 +1486,7 @@ char *mutt_make_date (char *s, size_t len)
   snprintf (s, len,  "Date: %s, %d %s %d %02d:%02d:%02d %+03d%02d\n",
 	    Weekdays[l->tm_wday], l->tm_mday, Months[l->tm_mon],
 	    l->tm_year + 1900, l->tm_hour, l->tm_min, l->tm_sec,
-	    (int) tz / 60, (int) abs (tz) % 60);
+	    (int) tz / 60, (int) abs ((int) tz) % 60);
   return (s);
 }
 
@@ -2696,6 +2696,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   int r, need_buffy_cleanup = 0;
   struct stat st;
   char buf[SHORT_STRING];
+  int onm_flags;
 
   if (post)
     set_noconv_flags (hdr->content, 1);
@@ -2725,7 +2726,10 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   }
 
   hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
-  if ((msg = mx_open_new_message (&f, hdr, M_ADD_FROM)) == NULL)
+  onm_flags = M_ADD_FROM;
+  if (post)
+    onm_flags |= M_SET_DRAFT;
+  if ((msg = mx_open_new_message (&f, hdr, onm_flags)) == NULL)
   {
     mx_close_mailbox (&f, NULL);
     return (-1);
@@ -2766,6 +2770,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
     fputs ("X-Mutt-PGP: ", msg->fp);
     if (hdr->security & ENCRYPT)
       fputc ('E', msg->fp);
+    if (hdr->security & OPPENCRYPT)
+      fputc ('O', msg->fp);
     if (hdr->security & SIGN)
     {
       fputc ('S', msg->fp);
@@ -2787,6 +2793,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 	if (SmimeCryptAlg && *SmimeCryptAlg)
 	    fprintf (msg->fp, "C<%s>", SmimeCryptAlg);
     }
+    if (hdr->security & OPPENCRYPT)
+      fputc ('O', msg->fp);
     if (hdr->security & SIGN) {
 	fputc ('S', msg->fp);
 	if (SmimeDefaultKey && *SmimeDefaultKey)

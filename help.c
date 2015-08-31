@@ -54,7 +54,7 @@ static const struct binding_t *help_lookupFunction (int op, int menu)
   return (NULL);
 }
 
-void mutt_make_help (char *d, size_t dlen, char *txt, int menu, int op)
+void mutt_make_help (char *d, size_t dlen, const char *txt, int menu, int op)
 {
   char buf[SHORT_STRING];
 
@@ -204,7 +204,7 @@ static void format_line (FILE *f, int ismacro,
   fputs (t1, f);
 
   /* don't try to press string into one line with less than 40 characters.
-     The double paranthesis avoid a gcc warning, sigh ... */
+     The double parenthesis avoids a gcc warning, sigh ... */
   if ((split = COLS < 40))
   {
     col_a = col = 0;

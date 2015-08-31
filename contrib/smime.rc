@@ -6,7 +6,7 @@
 # will be the default method unless the following option is set
 set smime_is_default
 
-# Uncoment this if you don't want to set labels for certificates you add.
+# Uncomment this if you don't want to set labels for certificates you add.
 # unset smime_ask_cert_label
 
 # Passphrase expiration
@@ -25,7 +25,7 @@ set crypt_verify_sig = yes
 # line and replace the keyid with your own.
 set smime_default_key="12345678.0"
 
-# Uncommen to make mutt ask what key to use when trying to decrypt a message.
+# Uncomment to make mutt ask what key to use when trying to decrypt a message.
 # It will use the default key above (if that was set) else.
 # unset smime_decrypt_use_default_key
 
@@ -49,7 +49,7 @@ set smime_get_cert_command="openssl pkcs7 -print_certs -in %f"
 set smime_get_signer_cert_command="openssl smime -verify -in %f -noverify -signer %c -out /dev/null"
 
 # This is used to get the email address the certificate was issued to.
-set smime_get_cert_email_command="openssl x509 -in  %f -noout -email"
+set smime_get_cert_email_command="openssl x509 -in %f -noout -email"
 
 # Add a certificate to the database using smime_keys.
 set smime_import_cert_command="smime_keys add_cert %f"
@@ -59,10 +59,10 @@ set smime_import_cert_command="smime_keys add_cert %f"
 # Sction B: Outgoing messages
 
 # Algorithm to use for encryption.
-# valid choices are rc2-40, rc2-64, rc2-128, des, des3
-set smime_encrypt_with="des3"
+# valid choices are aes128, aes192, aes256, rc2-40, rc2-64, rc2-128, des, des3
+set smime_encrypt_with="aes256"
 
-# Encrypt a message. Input file is a MIME entity.
+# Encrypt a message.  Input file is a MIME entity.
 set smime_encrypt_command="openssl smime -encrypt -%a -outform DER -in %f %c"
 
 # Sign.
@@ -72,8 +72,8 @@ set smime_sign_command="openssl smime -sign -signer %c -inkey %k -passin stdin -
 
 #Section C: Incoming messages
 
-# Decrypt a message. Output is a MIME entity.
-set smime_decrypt_command="openssl smime -decrypt  -passin stdin -inform DER -in %f -inkey %k -recip %c"
+# Decrypt a message.  Output is a MIME entity.
+set smime_decrypt_command="openssl smime -decrypt -passin stdin -inform DER -in %f -inkey %k -recip %c"
 
 # Verify a signature of type multipart/signed
 set smime_verify_command="openssl smime -verify -inform DER -in %s %C -content %f"
@@ -91,7 +91,7 @@ openssl smime -verify -inform DER -in %s -noverify 2>/dev/null"
 # your public key, use this command instead.
 # set smime_sign_command="openssl smime -sign -signer %c -inkey %k -passin stdin -in %f -outform DER"
 #
-# In order to verify the signature only and skip checking the certificate  chain:
+# In order to verify the signature only and skip checking the certificate chain:
 #
 # set smime_verify_command="openssl smime -verify -inform DER -in %s -content %f -noverify"
 # set smime_verify_opaque_command="openssl smime -verify -inform DER -in %s -noverify"

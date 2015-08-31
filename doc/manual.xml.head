@@ -580,9 +580,9 @@ is controlled by the <link linkend="history">$history</link> variable
 and can be made persistent using an external file specified using <link
 linkend="history-file">$history_file</link>.  You may cycle through them
 at an editor prompt by using the <literal>&lt;history-up&gt;</literal>
-and/or <literal>&lt;history-down&gt;</literal> commands. But notice that
-Mutt does not remember the currently entered text, it only cycles
-through history and wraps around at the end or beginning.
+and/or <literal>&lt;history-down&gt;</literal> commands.  Mutt will
+remember the currently entered text as you cycle through history, and
+will wrap around to the initial entry line.
 </para>
 
 <para>
@@ -1270,8 +1270,10 @@ After getting recipients for new messages, forwards or replies, Mutt
 will then automatically start your <link linkend="editor">$editor</link>
 on the message body. If the <link
 linkend="edit-headers">$edit_headers</link> variable is set, the headers
-will be at the top of the message in your editor.  Any messages you are
-replying to will be added in sort order to the message, with appropriate
+will be at the top of the message in your editor; the message body
+should start on a new line after the existing blank line at the end of
+headers.  Any messages you are replying to will be added in sort order
+to the message, with appropriate
 <link linkend="attribution">$attribution</link>, <link
 linkend="indent-string">$indent_string</link> and <link
 linkend="post-indent-string">$post_indent_string</link>.  When
@@ -2421,6 +2423,12 @@ mailbox matches multiple <command>folder-hook</command>s, they are
 executed in the order given in the <literal>.muttrc</literal>.
 </para>
 
+<para>
+The regexp parameter has <link linkend="shortcuts">mailbox
+shortcut</link> expansion performed on the first character.
+See  <xref linkend="mailbox-hook"/> for more details.
+</para>
+
 <note>
 <para>
 If you use the <quote>!</quote> shortcut for <link
@@ -2448,6 +2456,15 @@ command, use the pattern <quote>.</quote> before other
 <command>folder-hook</command>s adjusting a value on a per-folder basis
 because <command>folder-hook</command>s are evaluated in the order given
 in the configuration file.
+</para>
+</note>
+
+<note>
+<para>
+The keyboard buffer will not be processed until after all hooks
+are run; multiple <link linkend="push">push</link> or <link
+linkend="exec">exec</link> commands will end up being processed in
+reverse order.
 </para>
 </note>
 
@@ -2626,7 +2643,9 @@ specify one or the other).
 <emphasis>header</emphasis> and <emphasis>body</emphasis> match
 <emphasis>regexp</emphasis> in the header/body of a message,
 <emphasis>index</emphasis> matches <emphasis>pattern</emphasis> (see
-<xref linkend="patterns"/>) in the message index.
+<xref linkend="patterns"/>) in the message index.  Note that IMAP
+server-side searches (=b, =B, =h) are not supported for color index
+patterns.
 </para>
 
 <para>
@@ -2642,6 +2661,7 @@ specify one or the other).
 <listitem><para>markers (the <quote>+</quote> markers at the beginning of wrapped lines in the pager)</para></listitem>
 <listitem><para>message (informational messages)</para></listitem>
 <listitem><para>normal</para></listitem>
+<listitem><para>prompt</para></listitem>
 <listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
 <listitem><para>search (highlighting of words in the pager)</para></listitem>
@@ -3172,7 +3192,7 @@ keep it on the list of known mailing lists, use
 <cmdsynopsis>
 <command>mbox-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">[!]pattern</replaceable>
+<replaceable class="parameter">[!]regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>
@@ -3182,15 +3202,21 @@ keep it on the list of known mailing lists, use
 <para>
 This command is used to move read messages from a specified mailbox to a
 different mailbox automatically when you quit or change folders.
-<emphasis>pattern</emphasis> is a regular expression specifying the
+<emphasis>regexp</emphasis> is a regular expression specifying the
 mailbox to treat as a <quote>spool</quote> mailbox and
 <emphasis>mailbox</emphasis> specifies where mail should be saved when
 read.
 </para>
 
 <para>
+The regexp parameter has <link linkend="shortcuts">mailbox
+shortcut</link> expansion performed on the first character.
+See  <xref linkend="mailbox-hook"/> for more details.
+</para>
+
+<para>
 Unlike some of the other <emphasis>hook</emphasis> commands, only the
-<emphasis>first</emphasis> matching pattern is used (it is not possible
+<emphasis>first</emphasis> matching regexp is used (it is not possible
 to save read mail in more than a single mailbox).
 </para>
 
@@ -3406,7 +3432,7 @@ linkend="fcc-save-hook"><command>fcc-save-hook</command></link> command.
 <para>
 This command is used to save outgoing mail in a mailbox other than <link
 linkend="record">$record</link>.  Mutt searches the initial list of
-message recipients for the first matching <emphasis>regexp</emphasis>
+message recipients for the first matching <emphasis>pattern</emphasis>
 and uses <emphasis>mailbox</emphasis> as the default Fcc: mailbox.  If
 no match is found the message will be saved to <link
 linkend="record">$record</link> mailbox.
@@ -3613,7 +3639,7 @@ message-hook '~f freshmeat-news' 'set pager="less \"+/^  subject: .*\""'
 <cmdsynopsis>
 <command>crypt-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">pattern</replaceable>
+<replaceable class="parameter">regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">keyid</replaceable>
@@ -3628,12 +3654,19 @@ destination address, or because, for some reasons, you need to override
 the key Mutt would normally use.  The <command>crypt-hook</command>
 command provides a method by which you can specify the ID of the public
 key to be used when encrypting messages to a certain recipient.
+You may use multiple crypt-hooks with the same regexp; multiple
+matching crypt-hooks result in the use of multiple keyids for
+a recipient.  During key selection, Mutt will confirm whether each
+crypt-hook is to be used (unless the <link
+linkend="crypt-confirmhook">$crypt_confirmhook</link> option is unset).
+If all crypt-hooks for a recipient are declined, Mutt will use the
+original recipient address for key selection instead.
 </para>
 
 <para>
 The meaning of <emphasis>keyid</emphasis> is to be taken broadly in this
-context: You can either put a numerical key ID here, an e-mail address,
-or even just a real name.
+context: You can either put a numerical key ID or fingerprint here, an
+e-mail address, or even just a real name.
 </para>
 
 </sect1>
@@ -3651,7 +3684,7 @@ or even just a real name.
 </cmdsynopsis>
 
 <para>
-This command adds the named string to the keyboard buffer. The string
+This command adds the named string to the beginning of the keyboard buffer. The string
 may contain control characters, key names and function names like the
 sequence string in the <link linkend="macro">macro</link> command. You
 may use it to automatically run a sequence of commands at startup, or
@@ -4965,6 +4998,7 @@ shows several ways to select messages.
 <row><entry>~b <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message body</entry></row>
 <row><entry>=b <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the message body. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally.</entry></row>
 <row><entry>~B <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the whole message</entry></row>
+<row><entry>=B <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the whole message. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally.</entry></row>
 <row><entry>~c <emphasis>EXPR</emphasis></entry><entry>messages carbon-copied to <emphasis>EXPR</emphasis></entry></row>
 <row><entry>%c <emphasis>GROUP</emphasis></entry><entry>messages carbon-copied to any member of <emphasis>GROUP</emphasis></entry></row>
 <row><entry>~C <emphasis>EXPR</emphasis></entry><entry>messages either to: or cc: <emphasis>EXPR</emphasis></entry></row>
@@ -4980,6 +5014,7 @@ shows several ways to select messages.
 <row><entry>~g</entry><entry>cryptographically signed messages</entry></row>
 <row><entry>~G</entry><entry>cryptographically encrypted messages</entry></row>
 <row><entry>~h <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the message header</entry></row>
+<row><entry>=h <emphasis>STRING</emphasis></entry><entry>messages which contain <emphasis>STRING</emphasis> in the message header. If IMAP is enabled, searches for <emphasis>STRING</emphasis> on the server, rather than downloading each message and searching it locally; <emphasis>STRING</emphasis> must be of the form <quote>header: substring</quote> (see below).</entry></row>
 <row><entry>~H <emphasis>EXPR</emphasis></entry><entry>messages with a spam attribute matching <emphasis>EXPR</emphasis></entry></row>
 <row><entry>~i <emphasis>EXPR</emphasis></entry><entry>messages which match <emphasis>EXPR</emphasis> in the <quote>Message-ID</quote> field</entry></row>
 <row><entry>~k</entry><entry>messages which contain PGP key material</entry></row>
@@ -5548,6 +5583,47 @@ linkend="default-hook">$default_hook</link> variable.  The pattern is
 translated at the time the hook is declared, so the value of <link
 linkend="default-hook">$default_hook</link> that is in effect at that
 time will be used.
+</para>
+
+</sect2>
+
+<sect2 id="mailbox-hook" xreflabel="Mailbox Matching in Hooks">
+<title>Mailbox Matching in Hooks</title>
+
+<para>
+Hooks that match against mailboxes (<command>folder-hook</command>,
+<command>mbox-hook</command>) apply both <link linkend="regexp">regular
+expression</link> syntax as well as <link linkend="shortcuts">mailbox
+shortcut</link> expansion on the regexp parameter.  There is some
+overlap between these, so special attention should be paid to the first
+character of the regexp.
+</para>
+
+<screen>
+# Here, ^ will expand to "the current mailbox" not "beginning of string":
+folder-hook ^/home/user/Mail/bar "set sort=threads"
+
+# If you want ^ to be interpreted as "beginning of string", one workaround
+# is to enclose the regexp in parenthesis:
+folder-hook (^/home/user/Mail/bar) "set sort=threads"
+
+# This will expand to the default save folder for the alias "imap.example.com", which
+# is probably not what you want:
+folder-hook @imap.example.com "set sort=threads"
+
+# A workaround is to use parenthesis or a backslash:
+folder-hook (@imap.example.com) "set sort=threads"
+folder-hook '\@imap.example.com' "set sort=threads"
+</screen>
+
+<para>
+Keep in mind that mailbox shortcut expansion on the regexp parameter
+takes place when the hook is initially parsed, not when the hook is
+matching against a mailbox.  When Mutt starts up and is reading the
+.muttrc, some mailbox shortcuts may not be usable.  For example, the
+"current mailbox" shortcut, ^, will expand to an empty string because no
+mailbox has been opened yet.  Mutt will issue an error for this case or
+if the mailbox shortcut results in an empty regexp.
 </para>
 
 </sect2>
@@ -7653,7 +7729,7 @@ Usage:
 <cmdsynopsis>
 <command>account-hook</command>
 <arg choice="plain">
-<replaceable class="parameter">pattern</replaceable>
+<replaceable class="parameter">regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">command</replaceable>
@@ -8320,7 +8396,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="account-hook">account-hook</link></command>
 <arg choice="plain">
-<replaceable>pattern</replaceable>
+<replaceable>regexp</replaceable>
 <replaceable>command</replaceable>
 </arg>
 </cmdsynopsis>
@@ -8391,7 +8467,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="alternative-order">alternative-order</link></command>
+<command><link linkend="alternative-order">alternative_order</link></command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -8399,7 +8475,7 @@ The following are the commands understood by Mutt:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command><link linkend="alternative-order">unalternative-order</link></command>
+<command><link linkend="alternative-order">unalternative_order</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -8565,7 +8641,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="crypt-hook">crypt-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">pattern</replaceable>
+<replaceable class="parameter">regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">keyid</replaceable>
@@ -8778,7 +8854,7 @@ The following are the commands understood by Mutt:
 <cmdsynopsis>
 <command><link linkend="mbox-hook">mbox-hook</link></command>
 <arg choice="plain">
-<replaceable class="parameter">[!]pattern</replaceable>
+<replaceable class="parameter">[!]regexp</replaceable>
 </arg>
 <arg choice="plain">
 <replaceable class="parameter">mailbox</replaceable>

@@ -70,9 +70,9 @@ static void crypt_mod_pgp_invoke_import (const char *fname)
   pgp_gpgme_invoke_import (fname);
 }
 
-static char *crypt_mod_pgp_findkeys (ADDRESS *to, ADDRESS *cc, ADDRESS *bcc)
+static char *crypt_mod_pgp_findkeys (ADDRESS *adrlist, int oppenc_mode)
 {
-  return pgp_gpgme_findkeys (to, cc, bcc);
+  return pgp_gpgme_findkeys (adrlist, oppenc_mode);
 }
 
 static BODY *crypt_mod_pgp_sign_message (BODY *a)
@@ -94,6 +94,13 @@ static BODY *crypt_mod_pgp_encrypt_message (BODY *a, char *keylist, int sign)
 {
   return pgp_gpgme_encrypt_message (a, keylist, sign);
 }
+
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
+static BODY *crypt_mod_pgp_make_key_attachment (char *tempf)
+{
+  return pgp_gpgme_make_key_attachment (tempf);
+}
+#endif
 
 static void crypt_mod_pgp_set_sender (const char *sender)
 {
@@ -118,7 +125,11 @@ struct crypt_module_specs crypt_mod_pgp_gpgme =
 
       /* PGP specific.  */
       crypt_mod_pgp_encrypt_message,
-      NULL,			/* pgp_make_key_attachment, */
+#ifdef HAVE_GPGME_OP_EXPORT_KEYS
+      crypt_mod_pgp_make_key_attachment,
+#else
+      NULL,
+#endif
       crypt_mod_pgp_check_traditional,
       NULL, 			/* pgp_traditional_encryptsign  */
       NULL, /* pgp_invoke_getkeys  */

@@ -160,7 +160,10 @@ Path to search for mailcap files.
 .IP "MM_NOASK"
 If this variable is set, mailcap are always used without prompting first.
 .IP "PGPPATH"
-Directory in which the user's PGP public keyring can be found.
+Directory in which the user's PGP public keyring can be found.  When used with
+the original PGP program, mutt and
+.B pgpring (1)
+rely on this being set.
 .IP "TMPDIR"
 Directory in which temporary files are created.
 .IP "REPLYTO"

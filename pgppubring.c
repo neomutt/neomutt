@@ -156,6 +156,23 @@ int main (int argc, char * const argv[])
   return 0;
 }
 
+static char *binary_fingerprint_to_string (unsigned char *buff, size_t length)
+{
+  int i;
+  char *fingerprint, *pf;
+
+  pf = fingerprint = (char *)safe_malloc ((length * 2) + 1);
+
+  for (i = 0; i < length; i++)
+  {
+    sprintf (pf, "%02X", buff[i]);
+    pf += 2;
+  }
+  *pf = 0;
+
+  return fingerprint;
+}
+
 
 /* The actual key ring parser */
 static void pgp_make_pgp2_fingerprint (unsigned char *buff,
@@ -221,12 +238,9 @@ static pgp_key_t pgp_parse_pgp2_key (unsigned char *buff, size_t l)
   if (dump_fingerprints)
   {
     /* j now points to the key material, which we need for the fingerprint */
-    p->fp_len = MD5_DIGEST_LENGTH;
     pgp_make_pgp2_fingerprint (&buff[j], digest);
-    memcpy (p->fingerprint, digest, MD5_DIGEST_LENGTH);
+    p->fingerprint = binary_fingerprint_to_string (digest, MD5_DIGEST_LENGTH);
   }
-  else	/* just to be usre */
-    memset (p->fingerprint, 0, MD5_DIGEST_LENGTH);
     
   expl = 0;
   for (i = 0; i < 2; i++)
@@ -342,7 +356,10 @@ static pgp_key_t pgp_parse_pgp3_key (unsigned char *buff, size_t l)
     skip_bignum (buff, l, j, &j, 1);
 
   pgp_make_pgp3_fingerprint (buff, j, digest);
-  p->fp_len = SHA_DIGEST_LENGTH;
+  if (dump_fingerprints)
+  {
+    p->fingerprint = binary_fingerprint_to_string (digest, SHA_DIGEST_LENGTH);
+  }
   
   for (k = 0; k < 2; k++)
   {
@@ -829,13 +846,10 @@ static void print_userid (const char *id)
 
 static void print_fingerprint (pgp_key_t p) 
 {
-  int i = 0;
+  if (!p->fingerprint)
+    return;
 
-  printf ("fpr:::::::::");
-  for (i = 0; i < p->fp_len; i++)
-    printf ("%02X", p->fingerprint[i]);
-  printf (":\n");
-
+  printf ("fpr:::::::::%s:\n", p->fingerprint);
 } /* print_fingerprint() */
 
 
