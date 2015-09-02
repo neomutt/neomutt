@@ -91,11 +91,11 @@ $(top_builddir)/keymap_alldefs.h:
 $(PACKAGE).pot: $(POTFILES) $(BUILT_POTFILES) $(srcdir)/POTFILES.in
 	rm -f $(PACKAGE).pot $(PACKAGE).po
 	$(XGETTEXT) --default-domain=$(PACKAGE) --directory=$(top_srcdir) \
-	  --add-comments --keyword=_ --keyword=N_ \
+	  --add-comments=L10N --keyword=_ --keyword=N_ \
 	  --files-from=$(srcdir)/POTFILES.in \
 	&& \
 	$(XGETTEXT) --default-domain=$(PACKAGE) \
-	  --add-comments --keyword=_ --keyword=N_ \
+	  --add-comments=L10N --keyword=_ --keyword=N_ \
 	  --join $(BUILT_POTFILES) \
 	&& test ! -f $(PACKAGE).po \
 	   || ( rm -f $(PACKAGE).pot \

@@ -256,7 +256,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   mutt_check_alias_name (tmp, buf, sizeof (buf));
   
 retry_name:
-  /* add a new alias */
+  /* L10N: prompt to add a new alias */
   if (mutt_get_field (_("Alias as: "), buf, sizeof (buf), 0) != 0 || !buf[0])
     return;
 

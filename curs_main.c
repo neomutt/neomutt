@@ -903,7 +903,7 @@ int mutt_index_menu (void)
 	else
 	{
 	   char buf[STRING];
-	   /* i18n: ask for a limit to apply */
+	   /* L10N: ask for a limit to apply */
 	   snprintf (buf, sizeof(buf), _("Limit: %s"),Context->pattern);
            mutt_message ("%s", buf);
 	}
