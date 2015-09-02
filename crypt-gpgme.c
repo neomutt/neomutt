@@ -4676,6 +4676,10 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     if (is_smime)
     {
       prompt = _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? ");
+      /* L10N: The 'f' is from "forget it", an old undocumented synonym of
+       * 'clear'.  Please use a corresponding letter in your language.
+       * Alternatively, you may duplicate the letter 'c' is translated to.
+       * This comment also applies to the five following letter sequences. */
       letters = _("sapfco");
       choices = "SapFCo";
     }

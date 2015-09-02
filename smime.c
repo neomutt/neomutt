@@ -2052,6 +2052,10 @@ int smime_send_menu (HEADER *msg, int *redraw)
   if (option (OPTCRYPTOPPORTUNISTICENCRYPT) && (msg->security & OPPENCRYPT))
   {
     prompt = _("S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? ");
+    /* L10N: The 'f' is from "forget it", an old undocumented synonym of
+     * 'clear'.  Please use a corresponding letter in your language.
+     * Alternatively, you may duplicate the letter 'c' is translated to.
+     * This comment also applies to the two following letter sequences. */
     letters = _("swafco");
     choices = "SwaFCo";
   }
