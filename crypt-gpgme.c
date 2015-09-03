@@ -2018,6 +2018,7 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
   char date[STRING];
   int more;
   int rc = -1;
+  time_t tt;
 
   if ((err = gpgme_new (&tmpctx)) != GPG_ERR_NO_ERROR)
   {
@@ -2081,7 +2082,8 @@ static int pgp_gpgme_extract_keys (gpgme_data_t keydata, FILE** fp, int dryrun)
       len = mutt_strlen (subkey->keyid);
       if (len > 8)
         shortid += len - 8;
-      strftime (date, sizeof (date), "%Y-%m-%d", localtime (&subkey->timestamp));
+      tt = subkey->timestamp;
+      strftime (date, sizeof (date), "%Y-%m-%d", localtime (&tt));
 
       if (!more)
         fprintf (*fp, "%s %5.5s %d/%8s %s %s\n", more ? "sub" : "pub",
