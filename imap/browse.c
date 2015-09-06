@@ -43,8 +43,8 @@ int imap_browse (char* path, struct browser_state* state)
   IMAP_DATA* idata;
   IMAP_LIST list;
   char buf[LONG_STRING];
-  char buf2[LONG_STRING];
   char mbox[LONG_STRING];
+  char munged_mbox[LONG_STRING];
   char list_cmd[5];
   int n;
   int nsup;
@@ -72,13 +72,7 @@ int imap_browse (char* path, struct browser_state* state)
   if (mx.mbox && mx.mbox[0] != '\0')
   {
     int rc;
-    char *ptr;
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
-    ptr = safe_strdup (mbox);
-    imap_utf_encode (idata, &ptr);
-    mbox[sizeof (mbox) - 1] = '\0';
-    strncpy (mbox, ptr, sizeof (mbox) - 1);
-    FREE (&ptr);
     n = mutt_strlen (mbox);
 
     dprint (3, (debugfile, "imap_browse: mbox: %s\n", mbox));
@@ -87,7 +81,8 @@ int imap_browse (char* path, struct browser_state* state)
      * aren't already going to */
     if (mbox[n-1] != idata->delim)
     {
-      snprintf (buf, sizeof (buf), "%s \"\" \"%s\"", list_cmd, mbox);
+      imap_munge_mbox_name (idata, munged_mbox, sizeof (munged_mbox), mbox);
+      snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, munged_mbox);
       imap_cmd_start (idata, buf);
       idata->cmdtype = IMAP_CT_LIST;
       idata->cmddata = &list;
@@ -180,9 +175,9 @@ int imap_browse (char* path, struct browser_state* state)
 
   dprint (3, (debugfile, "imap_browse: Quoting mailbox scan: %s -> ", mbox));
   snprintf (buf, sizeof (buf), "%s%%", mbox);
-  imap_quote_string (buf2, sizeof (buf2), buf);
-  dprint (3, (debugfile, "%s\n", buf2));
-  snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, buf2);
+  imap_munge_mbox_name (idata, munged_mbox, sizeof (munged_mbox), buf);
+  dprint (3, (debugfile, "%s\n", munged_mbox));
+  snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, munged_mbox);
   if (browse_add_list_result (idata, buf, state, 0))
     goto fail;
 
@@ -392,22 +387,21 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   return rc == IMAP_CMD_OK ? 0 : -1;
 }
 
-/* imap_add_folder: add a folder name to the browser list, formatting it as
- *   necessary. */
+/* imap_add_folder:
+ * add a folder name to the browser list, formatting it as necessary.
+ *
+ * The folder parameter should already be 'unmunged' via
+ * imap_unmunge_mbox_name().
+ */
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent)
 {
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
   IMAP_MBOX mx;
-  IMAP_DATA* idata;
 
   if (imap_parse_path (state->folder, &mx))
     return;
-  if (!(idata = imap_conn_find (&(mx.account), 0)))
-    return;
-
-  imap_unmunge_mbox_name (idata, folder);
 
   if (state->entrylen + 1 == state->entrymax)
   {
