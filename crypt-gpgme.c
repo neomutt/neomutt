@@ -1362,6 +1362,8 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
 	continue;
       if (aka)
       {
+        /* TODO: need to account for msg wide characters
+         * and "aka" translation length */
 	msglen = mutt_strlen (msg) - 4;
 	for (i = 0; i < msglen; i++)
 	  state_attach_puts(" ", s);
@@ -1381,6 +1383,8 @@ static void print_smime_keyinfo (const char* msg, gpgme_signature_t sig,
   }
 
   msglen = mutt_strlen (msg) - 8;
+  /* TODO: need to account for msg wide characters
+   * and "created" translation length */
   for (i = 0; i < msglen; i++)
     state_attach_puts(" ", s);
   state_attach_puts (_("created: "), s);
@@ -1404,6 +1408,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
   gpgme_verify_result_t result;
   gpgme_signature_t sig;
   gpgme_error_t err = GPG_ERR_NO_ERROR;
+  char buf[LONG_STRING];
 
   result = gpgme_op_verify_result (ctx);
   if (result)
@@ -1453,11 +1458,10 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	; /* No state information so no way to print anything. */
       else if (err)
 	{
-          state_attach_puts (_("Error getting key information for KeyID "), s);
-	  state_attach_puts ( fpr, s );
-          state_attach_puts (_(": "), s);
-          state_attach_puts ( gpgme_strerror (err), s );
-          state_attach_puts ("\n", s);
+          snprintf (buf, sizeof (buf),
+              _("Error getting key information for KeyID %s: %s\n"),
+              fpr, gpgme_strerror (err));
+          state_attach_puts (buf, s);
           anybad = 1;
 	}
       else if ((sum & GPGME_SIGSUM_GREEN))
@@ -1489,6 +1493,9 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	/* 0 indicates no expiration */
 	if (sig->exp_timestamp)
 	{
+          /* L10N: This is trying to match the width of the
+           * "Problem signature from:" translation just above.
+           */
 	  state_attach_puts (_("               expires: "), s);
 	  print_time (sig->exp_timestamp, s);
 	  state_attach_puts ("\n", s);
