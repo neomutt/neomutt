@@ -1683,9 +1683,9 @@ int pgp_send_menu (HEADER *msg, int *redraw)
           (msg->security & INLINE) ? _("PGP/M(i)ME") : _("(i)nline"));
       prompt = promptbuf;
       /* L10N: The 'f' is from "forget it", an old undocumented synonym of
-       * 'clear'.  Please use a corresponding letter in your language.
-       * Alternatively, you may duplicate the letter 'c' is translated to.
-       * This comment also applies to the five following letter sequences. */
+         'clear'.  Please use a corresponding letter in your language.
+         Alternatively, you may duplicate the letter 'c' is translated to.
+         This comment also applies to the five following letter sequences. */
       letters = _("safcoi");
       choices = "SaFCoi";
     }

@@ -1023,6 +1023,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  if (stat(idx[menu->current]->content->filename, &st) == -1)
 	  {
+            /* L10N:
+               "stat" is a system call. Do "man 2 stat" for more information. */
 	    mutt_error (_("Can't stat %s: %s"), fname, strerror (errno));
 	    break;
 	  }

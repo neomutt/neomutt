@@ -968,6 +968,9 @@ int mutt_check_overwrite (const char *attname, const char *path,
     if (directory)
     {
       switch (mutt_multi_choice
+      /* L10N:
+         Means "The path you specified as the destination file is a directory."
+         See the msgid "Save to file: " (alias.c, recvattach.c) */
 	      (_("File is a directory, save under it? [(y)es, (n)o, (a)ll]"), _("yna")))
       {
 	case 3:		/* all */
@@ -984,6 +987,9 @@ int mutt_check_overwrite (const char *attname, const char *path,
 	  return 1;
       }
     }
+    /* L10N:
+       Means "The path you specified as the destination file is a directory."
+       See the msgid "Save to file: " (alias.c, recvattach.c) */
     else if ((rc = mutt_yesorno (_("File is a directory, save under it?"), M_YES)) != M_YES)
       return (rc == M_NO) ? 1 : -1;
 

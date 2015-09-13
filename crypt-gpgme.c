@@ -1493,9 +1493,9 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	/* 0 indicates no expiration */
 	if (sig->exp_timestamp)
 	{
-          /* L10N: This is trying to match the width of the
-           * "Problem signature from:" translation just above.
-           */
+          /* L10N:
+             This is trying to match the width of the
+             "Problem signature from:" translation just above. */
 	  state_attach_puts (_("               expires: "), s);
 	  print_time (sig->exp_timestamp, s);
 	  state_attach_puts ("\n", s);
@@ -3373,6 +3373,10 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
         continue;
 
       s = uid->uid;
+      /* L10N:
+         Fill dots to make the DOTFILL entries the same length.
+         In English, msgid "Fingerprint: " is the longest entry for this menu.
+         Your language may vary. */
       fputs (idx ? _(" aka ......: ") :_("Name ......: "), fp);
       if (uid->invalid)
         {
@@ -3396,6 +3400,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 #else
       strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
+      /* L10N: DOTFILL */
       fprintf (fp, _("Valid From : %s\n"), shortbuf);
     }
   
@@ -3409,6 +3414,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 #else
       strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
+      /* L10N: DOTFILL */
       fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
     }
 
@@ -3422,8 +3428,10 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
   if (key->subkeys)
     aval = key->subkeys->length;
 
+  /* L10N: DOTFILL */
   fprintf (fp, _("Key Type ..: %s, %lu bit %s\n"), s2, aval, s);
 
+  /* L10N: DOTFILL */
   fprintf (fp, _("Key Usage .: "));
   delim = "";
 
@@ -3447,6 +3455,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
   if (key->subkeys)
     {
       s = key->subkeys->fpr;
+      /* L10N: DOTFILL */
       fputs (_("Fingerprint: "), fp);
       if (is_pgp && strlen (s) == 40)
         {
@@ -3479,6 +3488,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
     {
       s = key->issuer_serial;
       if (s)
+        /* L10N: DOTFILL */
 	fprintf (fp, _("Serial-No .: 0x%s\n"), s);
     }
 
@@ -3487,6 +3497,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
       s = key->issuer_name;
       if (s)
 	{
+          /* L10N: DOTFILL */
 	  fprintf (fp, _("Issued By .: "));
 	  parse_and_print_user_id (fp, s);
 	  putc ('\n', fp);
@@ -3506,6 +3517,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
           putc ('\n', fp);
           if ( strlen (s) == 16)
             s += 8; /* display only the short keyID */
+          /* L10N: DOTFILL */
           fprintf (fp, _("Subkey ....: 0x%s"), s);
 	  if (subkey->revoked)
             {
@@ -3539,6 +3551,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 #else
               strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
+              /* L10N: DOTFILL */
               fprintf (fp, _("Valid From : %s\n"), shortbuf);
             }
 
@@ -3552,6 +3565,7 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 #else
               strftime (shortbuf, sizeof shortbuf, "%c", tm);
 #endif
+              /* L10N: DOTFILL */
               fprintf (fp, _("Valid To ..: %s\n"), shortbuf);
             }
 
@@ -3565,8 +3579,10 @@ static void print_key_info (gpgme_key_t key, FILE *fp)
 	  else
 	    aval = 0;
 
+          /* L10N: DOTFILL */
           fprintf (fp, _("Key Type ..: %s, %lu bit %s\n"), "PGP", aval, s);
 
+          /* L10N: DOTFILL */
           fprintf (fp, _("Key Usage .: "));
           delim = "";
 
@@ -4017,8 +4033,14 @@ static crypt_key_t *crypt_select_key (crypt_key_t *keys,
       ts = _("keys matching");
 
     if (p)
+      /* L10N:
+         %1$s is one of the previous four entries.
+         %2$s is an address.
+         e.g. "S/MIME keys matching <me@mutt.org>." */
       snprintf (buf, sizeof (buf), _("%s <%s>."), ts, p->mailbox);
     else
+      /* L10N:
+         e.g. 'S/MIME keys matching "Michael Elkins".' */
       snprintf (buf, sizeof (buf), _("%s \"%s\"."), ts, s);
     menu->title = buf; 
   }
@@ -4597,6 +4619,10 @@ BODY *pgp_gpgme_make_key_attachment (char *tempf)
   att->use_disp = 0;
   att->type = TYPEAPPLICATION;
   att->subtype = safe_strdup ("pgp-keys");
+  /* L10N:
+     MIME description for exported (attached) keys.
+     You can translate this entry to a non-ASCII string (it will be encoded),
+     but it may be safer to keep it untranslated. */
   snprintf (buff, sizeof (buff), _("PGP Key 0x%s."), crypt_keyid (key));
   att->description = safe_strdup (buff);
   mutt_update_encoding (att);
@@ -4686,9 +4712,9 @@ static int gpgme_send_menu (HEADER *msg, int *redraw, int is_smime)
     {
       prompt = _("S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? ");
       /* L10N: The 'f' is from "forget it", an old undocumented synonym of
-       * 'clear'.  Please use a corresponding letter in your language.
-       * Alternatively, you may duplicate the letter 'c' is translated to.
-       * This comment also applies to the five following letter sequences. */
+         'clear'.  Please use a corresponding letter in your language.
+         Alternatively, you may duplicate the letter 'c' is translated to.
+         This comment also applies to the five following letter sequences. */
       letters = _("sapfco");
       choices = "SapFCo";
     }

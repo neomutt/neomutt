@@ -393,6 +393,11 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  be_print_header (msg->env);
 	  for (i = 0; i < buflen; i++)
 	    addstr (buf[i]);
+          /* L10N:
+             This entry is shown AFTER the message content,
+             not IN the middle of the content.
+             So it doesn't mean "(message will continue)"
+             but means "(press any key to continue using mutt)". */
 	  addstr (_("(continue)\n"));
 	  break;
 	case 'q':

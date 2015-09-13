@@ -137,6 +137,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
   if (evalhc)
   {
+    /* L10N:
+       Comparing the cached data with the IMAP server's data */
     mutt_progress_init (&progress, _("Evaluating cache..."),
 			M_PROGRESS_MSG, ReadInc, msgend + 1);
 

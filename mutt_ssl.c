@@ -432,6 +432,10 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   if (!ssl_check_certificate (conn, ssldata))
     return -1;
 
+  /* L10N:
+     %1$s is version (e.g. "TLSv1.2")
+     %2$s is cipher_version (e.g. "TLSv1/SSLv3")
+     %3$s is cipher_name (e.g. "ECDHE-RSA-AES128-GCM-SHA256") */
   mutt_message (_("%s connection using %s (%s)"),
     SSL_get_version(ssldata->ssl), SSL_get_cipher_version (ssldata->ssl), SSL_get_cipher_name (ssldata->ssl));
   mutt_sleep (0);
