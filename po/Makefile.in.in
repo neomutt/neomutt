@@ -73,7 +73,7 @@ CATALOGS = @CATALOGS@
 
 .po.gmo:
 	file=`echo $* | sed 's,.*/,,'`.gmo \
-	  && rm -f $$file && $(GMSGFMT) --statistics -o $$file $<
+	  && rm -f $$file && $(GMSGFMT) --statistics -c -o $$file $<
 
 
 all: all-@USE_NLS@

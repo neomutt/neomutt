@@ -314,7 +314,7 @@ msgstr "%s: a terminál által nem támogatott szín"
 #: color.c:333
 #, c-format
 msgid "%s: no such color"
-msgstr "%%s: nincs ilyen szín"
+msgstr "%s: nincs ilyen szín"
 
 #: color.c:379 color.c:585 color.c:596
 #, c-format
@@ -1941,7 +1941,7 @@ msgstr "Hibás IDN a következõben: %s '%s'\n"
 #: edit.c:464
 #, c-format
 msgid "%s: unknown editor command (~? for help)\n"
-msgstr "s%: ismeretlen editor parancs (~? súgó)\n"
+msgstr "%s: ismeretlen editor parancs (~? súgó)\n"
 
 #: editmsg.c:78
 #, c-format
@@ -3120,7 +3120,7 @@ msgstr "Kapcsolódás %s-hez..."
 #: mutt_socket.c:576
 #, c-format
 msgid "Could not connect to %s (%s)."
-msgstr "%s-hoz nem lehet kapcsolódni %s (%s)."
+msgstr "%s-hoz nem lehet kapcsolódni (%s)."
 
 #: mutt_ssl.c:225
 msgid "Failed to find enough entropy on your system"

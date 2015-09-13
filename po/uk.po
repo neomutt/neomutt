@@ -2354,7 +2354,7 @@ msgstr "%sgroup: відсутні -rx чи -addr."
 #: init.c:879
 #, c-format
 msgid "%sgroup: warning: bad IDN '%s'.\n"
-msgstr "%group: попередження: погане IDN: '%s'.\n"
+msgstr "%sgroup: попередження: погане IDN: '%s'.\n"
 
 #: init.c:1094
 msgid "attachments: no disposition"
@@ -4177,7 +4177,7 @@ msgstr "Вивід процесу доставки"
 #: sendlib.c:2608
 #, c-format
 msgid "Bad IDN %s while preparing resent-from."
-msgstr "Погане IDN при підготовці resent-from."
+msgstr "Погане IDN %s при підготовці resent-from."
 
 #: signal.c:43
 #, c-format

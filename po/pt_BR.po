@@ -4370,7 +4370,7 @@ msgstr ""
 #: sendlib.c:2428
 #, c-format
 msgid "Error sending message, child exited %d (%s)."
-msgstr "Erro ao enviar a mensagem, processo filho saiu com código %d"
+msgstr "Erro ao enviar a mensagem, processo filho saiu com código %d (%s)."
 
 #: sendlib.c:2434
 msgid "Output of the delivery process"

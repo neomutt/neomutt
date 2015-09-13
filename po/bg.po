@@ -1442,7 +1442,7 @@ msgstr " (текущо време: %c)"
 #: crypt.c:74
 #, c-format
 msgid "[-- %s output follows%s --]\n"
-msgstr "[-- следва резултатът%s) --]\n"
+msgstr "[-- %s следва резултатът%s) --]\n"
 
 #: crypt.c:89
 msgid "Passphrase(s) forgotten."
