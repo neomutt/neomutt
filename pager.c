@@ -79,7 +79,8 @@ static HEADER *OldHdr = NULL;
 #define CHECK_ACL(aclbit,action) \
 		if (!mutt_bit_isset(Context->rights,aclbit)) { \
 			mutt_flushinp(); \
-			mutt_error (_("Cannot %s: Operation not permitted by ACL"), action); \
+        /* L10N: %s is one of the CHECK_ACL entries below. */ \
+			mutt_error (_("%s: Operation not permitted by ACL"), action); \
 			break; \
 		}
 
@@ -2353,7 +2354,8 @@ search_next:
       case OP_DELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("delete message"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot delete message"));
 
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 1);
         if (option (OPTDELETEUNTAG))
@@ -2384,7 +2386,8 @@ search_next:
       case OP_DELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("delete message(s)"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot delete message(s)"));
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 1,
 				  ch == OP_DELETE_THREAD ? 0 : 1);
@@ -2504,7 +2507,8 @@ search_next:
       case OP_FLAG_MESSAGE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_WRITE, "flag message");
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_WRITE, "Cannot flag message");
 
 	mutt_set_flag (Context, extra->hdr, M_FLAG, !extra->hdr->flagged);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
@@ -2660,7 +2664,8 @@ search_next:
       case OP_TOGGLE_NEW:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_SEEN, _("toggle new"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_SEEN, _("Cannot toggle new"));
 
 	if (extra->hdr->read || extra->hdr->old)
 	  mutt_set_flag (Context, extra->hdr, M_NEW, 1);
@@ -2679,7 +2684,8 @@ search_next:
       case OP_UNDELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("undelete message"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message"));
 
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
@@ -2694,7 +2700,8 @@ search_next:
       case OP_UNDELETE_SUBTHREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("undelete message(s)"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message(s)"));
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 0,
 				  ch == OP_UNDELETE_THREAD ? 0 : 1);
