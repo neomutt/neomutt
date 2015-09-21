@@ -1311,6 +1311,8 @@ struct option_t MuttVars[] = {
   **            stashed the message: list name or recipient name
   **            if not sent to a list
   ** .dt %P .dd progress indicator for the built-in pager (how much of the file has been displayed)
+  ** .dt %r .dd comma separated list of ``To:'' recipients
+  ** .dt %R .dd comma separated list of ``Cc:'' recipients
   ** .dt %s .dd subject of the message
   ** .dt %S .dd status of the message (``N''/``D''/``d''/``!''/``r''/\(as)
   ** .dt %t .dd ``To:'' field (recipients)

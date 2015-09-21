@@ -4,6 +4,10 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+default (unreleased):
+  + New expandos %r and %R for comma separated list of To: and Cc:
+    recipients respectively
+
 1.5.24 (2015-08-31):
 
   + terminal status-line (TS) support, a.k.a. xterm title. see the
