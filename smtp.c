@@ -200,9 +200,8 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   while (fgets (buf, sizeof (buf) - 1, fp))
   {
     buflen = mutt_strlen (buf);
-    term = buf[buflen-1] == '\n';
-    if (buflen && buf[buflen-1] == '\n'
-	&& (buflen == 1 || buf[buflen - 2] != '\r'))
+    term = buflen && buf[buflen-1] == '\n';
+    if (term && (buflen == 1 || buf[buflen - 2] != '\r'))
       snprintf (buf + buflen - 1, sizeof (buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
