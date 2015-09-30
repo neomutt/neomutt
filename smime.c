@@ -915,6 +915,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
   char email[STRING];
   int ret = -1, count = 0;
   pid_t thepid;
+  size_t len = 0;
 
   mutt_mktemp (tmpfname, sizeof (tmpfname));
   if ((fperr = safe_fopen (tmpfname, "w+")) == NULL)
@@ -954,7 +955,9 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
 
   while ((fgets (email, sizeof (email), fpout)))
   {
-    *(email + mutt_strlen (email)-1) = '\0';
+    len = mutt_strlen (email);
+    if (len)
+      *(email + len - 1) = '\0';
     if(mutt_strncasecmp (email, mailbox, mutt_strlen (mailbox)) == 0)
       ret=1;
 
@@ -982,7 +985,9 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
     rewind (fpout);
     while ((fgets (email, sizeof (email), fpout)))
     {
-      *(email + mutt_strlen (email) - 1) = '\0';
+      len = mutt_strlen (email);
+      if (len)
+        *(email + len - 1) = '\0';
       (*buffer)[count] = safe_calloc(1, mutt_strlen (email) + 1);
       strncpy((*buffer)[count], email, mutt_strlen (email));
       count++;

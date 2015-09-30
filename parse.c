@@ -43,6 +43,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
   char *buf = line;
   int ch;
   size_t offset = 0;
+  size_t len = 0;
 
   FOREVER
   {
@@ -53,7 +54,11 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
       return (line);
     }
 
-    buf += strlen (buf) - 1;
+    len = mutt_strlen (buf);
+    if (! len)
+      return (line);
+
+    buf += len - 1;
     if (*buf == '\n')
     {
       /* we did get a full line. remove trailing space */
