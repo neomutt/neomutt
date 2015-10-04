@@ -977,7 +977,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   char helpstr[LONG_STRING];
   char buf[STRING];
   char title[STRING];
-  MUTTMENU *menu = mutt_new_menu (-1);
+  MUTTMENU *menu = mutt_new_menu (MENU_GENERIC);
   int done, row, i;
   FILE *fp;
   char *name = NULL, *c;

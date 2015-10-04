@@ -850,7 +850,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     return 0;
   }
 
-  menu = mutt_new_menu (-1);
+  menu = mutt_new_menu (MENU_GENERIC);
   menu->max = 25;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
