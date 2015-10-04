@@ -48,9 +48,20 @@
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
  */
-size_t UngetCount = 0;
-static size_t UngetBufLen = 0;
-static event_t *KeyEvent;
+
+/* These are used for macros and exec/push commands.
+ * They can be temporarily ignored by setting OPTIGNOREMACROEVENTS
+ */
+static size_t MacroBufferCount = 0;
+static size_t MacroBufferLen = 0;
+static event_t *MacroEvents;
+
+/* These are used in all other "normal" situations, and are not
+ * ignored when setting OPTIGNOREMACROEVENTS
+ */
+static size_t UngetCount = 0;
+static size_t UngetLen = 0;
+static event_t *UngetKeyEvents;
 
 void mutt_refresh (void)
 {
@@ -83,8 +94,11 @@ event_t mutt_getch (void)
   event_t err = {-1, OP_NULL }, ret;
   event_t timeout = {-2, OP_NULL};
 
-  if (!option(OPTUNBUFFEREDINPUT) && UngetCount)
-    return (KeyEvent[--UngetCount]);
+  if (UngetCount)
+    return (UngetKeyEvents[--UngetCount]);
+
+  if (!option(OPTIGNOREMACROEVENTS) && MacroBufferCount)
+    return (MacroEvents[--MacroBufferCount]);
 
   SigInt = 0;
 
@@ -118,7 +132,7 @@ event_t mutt_getch (void)
   {
     /* send ALT-x as ESC-x */
     ch &= ~0x80;
-    mutt_ungetch (ch, 0);
+    mutt_unget_event (ch, 0);
     ret.ch = '\033';
     ret.op = 0;
     return ret;
@@ -157,9 +171,9 @@ int mutt_get_field_unbuffered (char *msg, char *buf, size_t buflen, int flags)
 {
   int rc;
 
-  set_option (OPTUNBUFFEREDINPUT);
+  set_option (OPTIGNOREMACROEVENTS);
   rc = mutt_get_field (msg, buf, buflen, flags);
-  unset_option (OPTUNBUFFEREDINPUT);
+  unset_option (OPTIGNOREMACROEVENTS);
 
   return (rc);
 }
@@ -595,7 +609,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
     char *pc = safe_malloc (mutt_strlen (prompt) + 3);
 
     sprintf (pc, "%s: ", prompt);	/* __SPRINTF_CHECKED__ */
-    mutt_ungetch (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    mutt_unget_event (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     if (_mutt_get_field (pc, buf, blen, (buffy ? M_EFILE : M_FILE) | M_CLEAR, multiple, files, numfiles)
 	!= 0)
       buf[0] = 0;
@@ -606,22 +620,60 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   return 0;
 }
 
-void mutt_ungetch (int ch, int op)
+void mutt_unget_event (int ch, int op)
 {
   event_t tmp;
 
   tmp.ch = ch;
   tmp.op = op;
 
-  if (UngetCount >= UngetBufLen)
-    safe_realloc (&KeyEvent, (UngetBufLen += 128) * sizeof(event_t));
+  if (UngetCount >= UngetLen)
+    safe_realloc (&UngetKeyEvents, (UngetLen += 16) * sizeof(event_t));
 
-  KeyEvent[UngetCount++] = tmp;
+  UngetKeyEvents[UngetCount++] = tmp;
+}
+
+void mutt_unget_string (char *s)
+{
+  char *p = s + mutt_strlen (s) - 1;
+
+  while (p >= s)
+  {
+    mutt_unget_event ((unsigned char)*p--, 0);
+  }
+}
+
+/*
+ * Adds the ch/op to the macro buffer.
+ * This should be used for macros, push, and exec commands only.
+ */
+void mutt_push_macro_event (int ch, int op)
+{
+  event_t tmp;
+
+  tmp.ch = ch;
+  tmp.op = op;
+
+  if (MacroBufferCount >= MacroBufferLen)
+    safe_realloc (&MacroEvents, (MacroBufferLen += 128) * sizeof(event_t));
+
+  MacroEvents[MacroBufferCount++] = tmp;
+}
+
+void mutt_flush_macro_to_endcond (void)
+{
+  UngetCount = 0;
+  while (MacroBufferCount > 0)
+  {
+    if (MacroEvents[--MacroBufferCount].op == OP_END_COND)
+      return;
+  }
 }
 
 void mutt_flushinp (void)
 {
   UngetCount = 0;
+  MacroBufferCount = 0;
   flushinp ();
 }
 

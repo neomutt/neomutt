@@ -1051,7 +1051,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   menu->help = helpstr;
 
   done = 0;
-  set_option(OPTUNBUFFEREDINPUT);
+  set_option(OPTIGNOREMACROEVENTS);
   while (!done)
   {
     switch (mutt_menuLoop (menu))
@@ -1086,7 +1086,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
         break;
     }
   }
-  unset_option(OPTUNBUFFEREDINPUT);
+  unset_option(OPTIGNOREMACROEVENTS);
   mutt_menuDestroy (&menu);
   dprint (2, (debugfile, "ssl interactive_check_cert: done=%d\n", done));
   return (done == 2);

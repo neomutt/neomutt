@@ -93,7 +93,10 @@ void mutt_endwin (const char *);
 void mutt_flushinp (void);
 void mutt_refresh (void);
 void mutt_resize_screen (void);
-void mutt_ungetch (int, int);
+void mutt_unget_event (int, int);
+void mutt_unget_string (char *);
+void mutt_push_macro_event (int, int);
+void mutt_flush_macro_to_endcond (void);
 void mutt_need_hard_redraw (void);
 
 /* ----------------------------------------------------------------------------

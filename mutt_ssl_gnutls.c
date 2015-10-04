@@ -1005,7 +1005,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   menu->help = helpstr;
 
   done = 0;
-  set_option (OPTUNBUFFEREDINPUT);
+  set_option (OPTIGNOREMACROEVENTS);
   while (!done)
   {
     switch (mutt_menuLoop (menu))
@@ -1057,7 +1057,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
         break;
     }
   }
-  unset_option (OPTUNBUFFEREDINPUT);
+  unset_option (OPTIGNOREMACROEVENTS);
   mutt_menuDestroy (&menu);
   gnutls_x509_crt_deinit (cert);
 

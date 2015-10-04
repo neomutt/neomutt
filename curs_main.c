@@ -109,8 +109,6 @@ static const char *No_visible = N_("No visible messages.");
 #define OLDHDR Context->hdrs[Context->v2r[menu->oldcurrent]]
 #define UNREAD(h) mutt_thread_contains_unread (Context, h)
 
-extern size_t UngetCount;
-
 /* de facto standard escapes for tsl/fsl */
 static char *tsl = "\033]0;";
 static char *fsl = "\007";
@@ -729,12 +727,7 @@ int mutt_index_menu (void)
 
 	if (!Context->tagged)
 	{
-	  event_t tmp;
-	  while(UngetCount>0)
-	  {
-	    tmp=mutt_getch();
-	    if(tmp.op==OP_END_COND)break;
-	  }
+	  mutt_flush_macro_to_endcond ();
 	  mutt_message  _("Nothing to do.");
 	  continue;
 	}
@@ -819,7 +812,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (isdigit (LastKey)) mutt_ungetch (LastKey, 0);
+        if (isdigit (LastKey)) mutt_unget_event (LastKey, 0);
 	buf[0] = 0;
 	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
 	    || !buf[0])

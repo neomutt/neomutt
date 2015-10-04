@@ -228,7 +228,7 @@ int mutt_display_message (HEADER *cur)
       mutt_set_flag (Context, cur, M_READ, 1);
     if (r != -1 && option (OPTPROMPTAFTER))
     {
-      mutt_ungetch (mutt_any_key_to_continue _("Command: "), 0);
+      mutt_unget_event (mutt_any_key_to_continue _("Command: "), 0);
       rc = km_dokey (MENU_PAGER);
     }
     else

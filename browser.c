@@ -896,7 +896,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	else
 	  set_option (OPTIMAPLSUB);
 
-	mutt_ungetch (0, OP_CHECK_NEW);
+	mutt_unget_event (0, OP_CHECK_NEW);
 	break;
 
       case OP_CREATE_MAILBOX:

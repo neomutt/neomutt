@@ -325,7 +325,12 @@ static char *get_func (const struct binding_t *bindings, int op)
   return NULL;
 }
 
-static void push_string (char *s)
+/* Parses s for <function> syntax and adds the whole sequence to
+ * the macro buffer.
+ *
+ * This should be used for macros, push, and exec commands only.
+ */
+static void tokenize_push_macro_string (char *s)
 {
   char *pp, *p = s + mutt_strlen (s) - 1;
   size_t l;
@@ -343,7 +348,7 @@ static void push_string (char *s)
       {
 	if ((i = parse_fkey (pp)) > 0)
 	{
-	  mutt_ungetch (KEY_F (i), 0);
+	  mutt_push_macro_event (KEY_F (i), 0);
 	  p = pp - 1;
 	  continue;
 	}
@@ -357,7 +362,7 @@ static void push_string (char *s)
 	if (KeyNames[i].name)
 	{
 	  /* found a match */
-	  mutt_ungetch (KeyNames[i].value, 0);
+	  mutt_push_macro_event (KeyNames[i].value, 0);
 	  p = pp - 1;
 	  continue;
 	}
@@ -377,13 +382,13 @@ static void push_string (char *s)
 
 	if (op != OP_NULL)
 	{
-	  mutt_ungetch (0, op);
+	  mutt_push_macro_event (0, op);
 	  p = pp - 1;
 	  continue;
 	}
       }
     }
-    mutt_ungetch ((unsigned char)*p--, 0);	/* independent 8 bits chars */
+    mutt_push_macro_event ((unsigned char)*p--, 0);	/* independent 8 bits chars */
   }
 }
 
@@ -392,9 +397,9 @@ static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
   if (menu != MENU_EDITOR && menu != MENU_GENERIC && menu != MENU_PAGER)
   {
     if (lastkey)
-      mutt_ungetch (lastkey, 0);
+      mutt_unget_event (lastkey, 0);
     for (; keyslen; keyslen--)
-      mutt_ungetch (keys[keyslen - 1], 0);
+      mutt_unget_event (keys[keyslen - 1], 0);
     return (km_dokey (MENU_GENERIC));
   }
   if (menu != MENU_EDITOR)
@@ -495,11 +500,9 @@ int km_dokey (int menu)
 	  func = get_func (bindings, tmp.op);
 	  if (func)
 	  {
-	    /* careful not to feed the <..> as one token. otherwise 
-	    * push_string() will push the bogus op right back! */
-	    mutt_ungetch ('>', 0);
-	    push_string (func);
-	    mutt_ungetch ('<', 0);
+	    mutt_unget_event ('>', 0);
+	    mutt_unget_string (func);
+	    mutt_unget_event ('<', 0);
 	    break;
 	  }
 	}
@@ -526,6 +529,12 @@ int km_dokey (int menu)
       if (map->op != OP_MACRO)
 	return map->op;
 
+      if (option (OPTIGNOREMACROEVENTS))
+      {
+	mutt_error _("Macros are currently disabled.");
+	return -1;
+      }
+
       if (n++ == 10)
       {
 	mutt_flushinp ();
@@ -533,7 +542,7 @@ int km_dokey (int menu)
 	return -1;
       }
 
-      push_string (map->macro);
+      tokenize_push_macro_string (map->macro);
       map = Keymaps[menu];
       pos = 0;
     }
@@ -835,7 +844,7 @@ void km_error_key (int menu)
   }
 
   /* make sure the key is really the help key in this menu */
-  push_string (buf);
+  mutt_unget_string (buf);
   if (km_dokey (menu) != OP_HELP)
   {
     mutt_error _("Key is not bound.");
@@ -857,7 +866,7 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     r = -1;
   }
   else
-    push_string (buf->data);
+    tokenize_push_macro_string (buf->data);
   return (r);
 }
 
@@ -1107,7 +1116,7 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   while(MoreArgs(s) && nops < sizeof(ops)/sizeof(ops[0]));
 
   while(nops)
-    mutt_ungetch(0, ops[--nops]);
+    mutt_push_macro_event (0, ops[--nops]);
 
   return 0;
 }

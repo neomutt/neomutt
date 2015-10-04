@@ -98,9 +98,6 @@
 #define M_TOKEN_COMMENT		(1<<5)	/* don't reap comments */
 #define M_TOKEN_SEMICOLON	(1<<6)	/* don't treat ; as special */
 
-/* flags for km_dokey() */
-#define M_KM_UNBUFFERED 1 /* don't read from the key buffer */
-
 typedef struct
 {
   char *data;	/* pointer to data */
@@ -513,7 +510,7 @@ enum
   OPTREDRAWTREE,	/* (pseudo) redraw the thread tree */
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
-  OPTUNBUFFEREDINPUT,   /* (pseudo) don't use key buffer */
+  OPTIGNOREMACROEVENTS, /* (pseudo) don't process macro/push/exec events while set */
 
   OPTMAX
 };
