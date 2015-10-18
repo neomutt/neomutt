@@ -202,7 +202,7 @@ next_token (const char *s, char *token, size_t *tokenlen, size_t tokenmax)
     return (parse_comment (s + 1, token, tokenlen, tokenmax));
   if (*s == '"')
     return (parse_quote (s + 1, token, tokenlen, tokenmax));
-  if (is_special (*s))
+  if (*s && is_special (*s))
   {
     if (*tokenlen < tokenmax)
       token[(*tokenlen)++] = *s;
