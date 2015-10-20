@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-08 12:33+0200\n"
-"PO-Revision-Date: 2015-10-08 13:05+0200\n"
+"POT-Creation-Date: 2015-10-20 17:52+0200\n"
+"PO-Revision-Date: 2015-10-20 17:57+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -712,7 +712,12 @@ msgstr "Impossible d'attacher %s !"
 
 #: compose.c:727
 msgid "Open mailbox to attach message from"
-msgstr "Ouvrir une boîte aux lettres d'où attacher un message"
+msgstr "Ouvrir une BAL d'où attacher un message"
+
+#: compose.c:757
+#, c-format
+msgid "Unable to open mailbox %s"
+msgstr "Impossible d'ouvrir la BAL %s"
 
 #: compose.c:765
 msgid "No messages in that folder."
