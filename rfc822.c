@@ -229,6 +229,9 @@ parse_mailboxdomain (const char *s, const char *nonspecial,
   while (*s)
   {
     s = skip_email_wsp(s);
+    if (! *s)
+      return s;
+
     if (strchr (nonspecial, *s) == NULL && is_special (*s))
       return s;
 

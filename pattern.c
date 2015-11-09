@@ -582,6 +582,11 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
     strfcpy (err->data, _("error in expression"), err->dsize);
     return (-1);
   }
+  if (!*buffer.data)
+  {
+    snprintf (err->data, err->dsize, _("Empty expression"));
+    return (-1);
+  }
 
   memset (&min, 0, sizeof (min));
   /* the `0' time is Jan 1, 1970 UTC, so in order to prevent a negative time

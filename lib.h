@@ -112,7 +112,7 @@ static inline char *skip_email_wsp(const char *s)
 
 static inline int is_email_wsp(char c)
 {
-  return strchr(EMAIL_WSP, c) != NULL;
+  return c && (strchr(EMAIL_WSP, c) != NULL);
 }
 
 

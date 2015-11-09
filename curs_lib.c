@@ -713,7 +713,8 @@ int mutt_multi_choice (char *prompt, char *letters)
   {
     mutt_refresh ();
     ch  = mutt_getch ();
-    if (ch.ch < 0 || CI_is_return (ch.ch))
+    /* (ch.ch == 0) is technically possible.  Treat the same as < 0 (abort) */
+    if (ch.ch <= 0 || CI_is_return (ch.ch))
     {
       choice = -1;
       break;
