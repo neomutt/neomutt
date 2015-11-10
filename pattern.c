@@ -256,12 +256,14 @@ static int eat_regexp (pattern_t *pat, BUFFER *s, BUFFER *err)
   BUFFER buf;
   char errmsg[STRING];
   int r;
+  char *pexpr;
 
   mutt_buffer_init (&buf);
+  pexpr = s->dptr;
   if (mutt_extract_token (&buf, s, M_TOKEN_PATTERN | M_TOKEN_COMMENT) != 0 ||
       !buf.data)
   {
-    snprintf (err->data, err->dsize, _("Error in expression: %s"), s->dptr);
+    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
     return (-1);
   }
   if (!*buf.data)
@@ -574,12 +576,14 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 {
   BUFFER buffer;
   struct tm min, max;
+  char *pexpr;
 
   mutt_buffer_init (&buffer);
+  pexpr = s->dptr;
   if (mutt_extract_token (&buffer, s, M_TOKEN_COMMENT | M_TOKEN_PATTERN) != 0
       || !buffer.data)
   {
-    strfcpy (err->data, _("error in expression"), err->dsize);
+    snprintf (err->data, err->dsize, _("Error in expression: %s"), pexpr);
     return (-1);
   }
   if (!*buffer.data)
