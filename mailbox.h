@@ -27,6 +27,7 @@
 #define M_NEWFOLDER	(1<<4) /* create a new folder - same as M_APPEND, but uses
 				* safe_fopen() for mbox-style folders.
 				*/
+#define M_PEEK		(1<<5) /* revert atime back after taking a look (if applicable) */
 
 /* mx_open_new_message() */
 #define M_ADD_FROM	(1<<0)	/* add a From_ line */

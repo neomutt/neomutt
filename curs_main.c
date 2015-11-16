@@ -26,7 +26,9 @@
 #include "mailbox.h"
 #include "mapping.h"
 #include "sort.h"
+#include "buffy.h"
 #include "mx.h"
+#include "sidebar.h"
 
 #ifdef USE_POP
 #include "pop.h"
@@ -595,12 +597,19 @@ int mutt_index_menu (void)
        menu->redraw |= REDRAW_STATUS;
      if (do_buffy_notify)
      {
-       if (mutt_buffy_notify () && option (OPTBEEPNEW))
- 	beep ();
+       if (mutt_buffy_notify())
+       {
+         menu->redraw |= REDRAW_STATUS;
+         if (option (OPTBEEPNEW))
+           beep();
+       }
      }
      else
        do_buffy_notify = 1;
     }
+
+    if(option(OPTSIDEBAR))
+        menu->redraw |= REDRAW_SIDEBAR;
 
     if (op != -1)
       mutt_curs_set (0);
@@ -608,7 +617,11 @@ int mutt_index_menu (void)
     if (menu->redraw & REDRAW_FULL)
     {
       menu_redraw_full (menu);
+      draw_sidebar(menu->menu);
       mutt_show_error ();
+    } else if(menu->redraw & REDRAW_SIDEBAR) {
+        draw_sidebar(menu->menu);
+        menu->redraw &= ~REDRAW_SIDEBAR;
     }
 
     if (menu->menu == MENU_MAIN)
@@ -630,9 +643,12 @@ int mutt_index_menu (void)
 
       if (menu->redraw & REDRAW_STATUS)
       {
+        DrawFullLine = 1;
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
+        DrawFullLine = 0;
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
+        set_buffystats(Context);
 	mutt_paddstr (COLS, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
@@ -652,7 +668,7 @@ int mutt_index_menu (void)
 	menu->oldcurrent = -1;
 
       if (option (OPTARROWCURSOR))
-	move (menu->current - menu->top + menu->offset, 2);
+	move (menu->current - menu->top + menu->offset, SidebarWidth + 2);
       else if (option (OPTBRAILLEFRIENDLY))
 	move (menu->current - menu->top + menu->offset, 0);
       else
@@ -1091,6 +1107,7 @@ int mutt_index_menu (void)
 	  break;
 
 	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
@@ -1150,6 +1167,7 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_FULL;
 	break;
 
+      case OP_SIDEBAR_OPEN:
       case OP_MAIN_CHANGE_FOLDER:
       case OP_MAIN_NEXT_UNREAD_MAILBOX:
 
@@ -1181,7 +1199,11 @@ int mutt_index_menu (void)
 	{
 	  mutt_buffy (buf, sizeof (buf));
 
-	  if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+          if ( op == OP_SIDEBAR_OPEN ) {
+              if(!CurBuffy)
+                break;
+            strncpy( buf, CurBuffy->path, sizeof(buf) );  
+	    } else if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
 	  {
 	    if (menu->menu == MENU_PAGER)
 	    {
@@ -1199,6 +1221,7 @@ int mutt_index_menu (void)
 	}
 
 	mutt_expand_path (buf, sizeof (buf));
+        set_curbuffy(buf);
 	if (mx_get_magic (buf) <= 0)
 	{
 	  mutt_error (_("%s is not a mailbox."), buf);
@@ -2310,6 +2333,12 @@ int mutt_index_menu (void)
 	mutt_what_key();
 	break;
 
+      case OP_SIDEBAR_SCROLL_UP:
+      case OP_SIDEBAR_SCROLL_DOWN:
+      case OP_SIDEBAR_NEXT:
+      case OP_SIDEBAR_PREV:
+        scroll_sidebar(op, menu->menu);
+        break;
       default:
 	if (menu->menu == MENU_MAIN)
 	  km_error_key (MENU_MAIN);

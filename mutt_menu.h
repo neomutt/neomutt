@@ -34,6 +34,7 @@
 #define REDRAW_FULL		(1<<5)
 #define REDRAW_BODY		(1<<6)
 #define REDRAW_SIGWINCH		(1<<7)
+#define REDRAW_SIDEBAR		(1<<8)
 
 #define M_MODEFMT "-- Mutt: %s"
 

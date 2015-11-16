@@ -100,6 +100,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     mutt_perror (ctx->path);
     return (-1);
   }
+  ctx->atime = sb.st_atime;
   ctx->mtime = sb.st_mtime;
   ctx->size = sb.st_size;
 
@@ -251,6 +252,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
   ctx->size = sb.st_size;
   ctx->mtime = sb.st_mtime;
+  ctx->atime = sb.st_atime;
 
 #ifdef NFS_ATTRIBUTE_HACK
   if (sb.st_mtime > sb.st_atime)
