@@ -33,6 +33,7 @@ mutt_SOURCES = \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
+	sidebar.c \
 	muttlib.c editmsg.c mbyte.c \
 	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c
 

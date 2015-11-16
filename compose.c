@@ -72,7 +72,7 @@ enum
 
 #define HDR_XOFFSET 10
 #define TITLE_FMT "%10s" /* Used for Prompts, which are ASCII */
-#define W (COLS - HDR_XOFFSET)
+#define W (COLS - HDR_XOFFSET - SidebarWidth)
 
 static const char * const Prompts[] =
 {
@@ -110,7 +110,7 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static void redraw_crypt_lines (HEADER *msg)
 {
-  mvaddstr (HDR_CRYPT, 0, "Security: ");
+  mvaddstr (HDR_CRYPT, SidebarWidth, "Security: ");
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
   {
@@ -145,7 +145,7 @@ static void redraw_crypt_lines (HEADER *msg)
       addstr (_(" (OppEnc mode)"));
 
   clrtoeol ();
-  move (HDR_CRYPTINFO, 0);
+  move (HDR_CRYPTINFO, SidebarWidth);
   clrtoeol ();
 
   if ((WithCrypto & APPLICATION_PGP)
@@ -162,7 +162,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & ENCRYPT)
       && SmimeCryptAlg
       && *SmimeCryptAlg) {
-      mvprintw (HDR_CRYPTINFO, 40, "%s%s", _("Encrypt with: "),
+      mvprintw (HDR_CRYPTINFO, SidebarWidth + 40, "%s%s", _("Encrypt with: "),
 		NONULL(SmimeCryptAlg));
   }
 }
@@ -175,7 +175,7 @@ static void redraw_mix_line (LIST *chain)
   int c;
   char *t;
 
-  mvaddstr (HDR_MIX, 0,     "     Mix: ");
+  mvaddstr (HDR_MIX, SidebarWidth,     "     Mix: ");
 
   if (!chain)
   {
@@ -190,7 +190,7 @@ static void redraw_mix_line (LIST *chain)
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
     
-    if (c + mutt_strlen (t) + 2 >= COLS)
+    if (c + mutt_strlen (t) + 2 >= COLS - SidebarWidth)
       break;
 
     addstr (NONULL(t));
@@ -242,7 +242,7 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
 
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), addr, 1);
-  mvprintw (line, 0, TITLE_FMT, Prompts[line - 1]);
+  mvprintw (line, SidebarWidth, TITLE_FMT, Prompts[line - 1]);
   mutt_paddstr (W, buf);
 }
 
@@ -252,10 +252,10 @@ static void draw_envelope (HEADER *msg, char *fcc)
   draw_envelope_addr (HDR_TO, msg->env->to);
   draw_envelope_addr (HDR_CC, msg->env->cc);
   draw_envelope_addr (HDR_BCC, msg->env->bcc);
-  mvprintw (HDR_SUBJECT, 0, TITLE_FMT, Prompts[HDR_SUBJECT - 1]);
+  mvprintw (HDR_SUBJECT, SidebarWidth, TITLE_FMT, Prompts[HDR_SUBJECT - 1]);
   mutt_paddstr (W, NONULL (msg->env->subject));
   draw_envelope_addr (HDR_REPLYTO, msg->env->reply_to);
-  mvprintw (HDR_FCC, 0, TITLE_FMT, Prompts[HDR_FCC - 1]);
+  mvprintw (HDR_FCC, SidebarWidth, TITLE_FMT, Prompts[HDR_FCC - 1]);
   mutt_paddstr (W, fcc);
 
   if (WithCrypto)
@@ -266,7 +266,7 @@ static void draw_envelope (HEADER *msg, char *fcc)
 #endif
 
   SETCOLOR (MT_COLOR_STATUS);
-  mvaddstr (HDR_ATTACH - 1, 0, _("-- Attachments"));
+  mvaddstr (HDR_ATTACH - 1, SidebarWidth, _("-- Attachments"));
   clrtoeol ();
 
   NORMAL_COLOR;
@@ -302,7 +302,7 @@ static int edit_address_list (int line, ADDRESS **addr)
   /* redraw the expanded list so the user can see the result */
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), *addr, 1);
-  move (line, HDR_XOFFSET);
+  move (line, HDR_XOFFSET+SidebarWidth);
   mutt_paddstr (W, buf);
   
   return 0;
@@ -562,7 +562,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) == 0)
 	{
 	  mutt_str_replace (&msg->env->subject, buf);
-	  move (HDR_SUBJECT, HDR_XOFFSET);
+	  move (HDR_SUBJECT, HDR_XOFFSET + SidebarWidth);
 	  if (msg->env->subject)
 	    mutt_paddstr (W, msg->env->subject);
 	  else
@@ -580,7 +580,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	{
 	  strfcpy (fcc, buf, fcclen);
 	  mutt_pretty_mailbox (fcc, fcclen);
-	  move (HDR_FCC, HDR_XOFFSET);
+	  move (HDR_FCC, HDR_XOFFSET + SidebarWidth);
 	  mutt_paddstr (W, fcc);
 	  fccSet = 1;
 	}

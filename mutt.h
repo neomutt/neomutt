@@ -423,6 +423,10 @@ enum
   OPTSAVEEMPTY,
   OPTSAVENAME,
   OPTSCORE,
+  OPTSIDEBAR,
+  OPTSIDEBARFOLDERINDENT,
+  OPTSIDEBARSHORTPATH,
+  OPTSIDEBARSORT,
   OPTSIGDASHES,
   OPTSIGONTOP,
   OPTSORTRE,
@@ -866,6 +870,7 @@ typedef struct _context
 {
   char *path;
   FILE *fp;
+  time_t atime;
   time_t mtime;
   off_t size;
   off_t vsize;
@@ -900,6 +905,7 @@ typedef struct _context
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */
   unsigned int closing : 1;	/* mailbox is being closed */
+  unsigned int peekonly : 1;	/* just taking a glance, revert atime */
 
   /* driver hooks */
   void *data;			/* driver specific data */

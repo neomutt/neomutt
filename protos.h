@@ -36,6 +36,13 @@ struct hdr_format_info
   const char *pager_progress;
 };
 
+struct sidebar_entry {
+    char                box[SHORT_STRING];
+    unsigned int        size;
+    unsigned int        new;
+    unsigned int        flagged;
+};
+
 void mutt_make_string_info (char *, size_t, const char *, struct hdr_format_info *, format_flag);
 
 int mutt_extract_token (BUFFER *, BUFFER *, int);
