@@ -34,28 +34,46 @@ static BUFFY *TopBuffy;
 static BUFFY *BottomBuffy;
 static int known_lines;
 
-BUFFY * exist_next_new()
+static BUFFY *
+find_next_new (int wrap)
 {
-       BUFFY *tmp = CurBuffy;
-       if(tmp == NULL) return NULL;
-       while (tmp->next != NULL)
-       {
-              tmp = tmp->next;
-               if(tmp->msg_unread) return tmp;
-       }
-       return NULL;
+	BUFFY *b = CurBuffy;
+
+	do {
+		b = b->next;
+		if (!b && wrap) {
+			b = TopBuffy;
+		}
+		if (!b || (b == CurBuffy)) {
+			break;
+		}
+		if (b->msg_unread || b->msg_flagged) {
+			return b;
+		}
+	} while (b);
+
+	return NULL;
 }
 
-BUFFY * exist_prev_new()
+static BUFFY *
+find_prev_new (int wrap)
 {
-       BUFFY *tmp = CurBuffy;
-       if(tmp == NULL) return NULL;
-       while (tmp->prev != NULL)
-       {
-               tmp = tmp->prev;
-               if(tmp->msg_unread) return tmp;
-       }
-       return NULL;
+	BUFFY *b = CurBuffy;
+
+	do {
+		b = b->prev;
+		if (!b && wrap) {
+			b = BottomBuffy;
+		}
+		if (!b || (b == CurBuffy)) {
+			break;
+		}
+		if (b->msg_unread || b->msg_flagged) {
+			return b;
+		}
+	} while (b);
+
+	return NULL;
 }
 
 void calc_boundaries() {
@@ -386,7 +404,7 @@ void scroll_sidebar(int op, int menu)
 			break;
                 }
                 case OP_SIDEBAR_NEXT_NEW:
-                        if ( (tmp = exist_next_new()) == NULL)
+                        if ((tmp = find_next_new(option (OPTSIDEBARNEXTNEWWRAP))) == NULL)
                                 return;
                         else CurBuffy = tmp;
                         break;
@@ -397,7 +415,7 @@ void scroll_sidebar(int op, int menu)
 			break;
                 }
                 case OP_SIDEBAR_PREV_NEW:
-                       if ( (tmp = exist_prev_new()) == NULL)
+                       if ((tmp = find_prev_new(option (OPTSIDEBARNEXTNEWWRAP))) == NULL)
                                return;
                        else CurBuffy = tmp;
                        break;

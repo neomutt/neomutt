@@ -2623,6 +2623,17 @@ struct option_t MuttVars[] = {
   ** This specifies the string that is used to indent items
   ** with sidebar_folderindent= yes
   */
+  {"sidebar_newmail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
+  /*
+  ** .pp
+  ** Show only new mail in the sidebar.
+  */
+  { "sidebar_next_new_wrap", DT_BOOL, R_BOTH, UL OPTSIDEBARNEXTNEWWRAP, 0 },
+  /*
+  ** .pp
+  ** Setting sidebar_next_new_wrap=yes causes mutt to wrap around the list
+  ** of mailboxes when using Next/Previous New Mailbox commands.
+  */
   { "sidebar_shortpath", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
   /*
   ** .pp
