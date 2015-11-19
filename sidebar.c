@@ -171,7 +171,7 @@ int draw_sidebar(int menu) {
 #ifndef USE_SLANG_CURSES
         attr_t attrs;
 #endif
-        short delim_len = strlen(SidebarDelim);
+        short delim_len = mbstowcs(NULL, NONULL(SidebarDelim), 0);
         short color_pair;
 
         static bool initialized = false;
