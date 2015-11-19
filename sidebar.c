@@ -47,7 +47,7 @@ find_next_new (int wrap)
 		if (!b || (b == CurBuffy)) {
 			break;
 		}
-		if (b->msg_unread || b->msg_flagged) {
+		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
 			return b;
 		}
 	} while (b);
@@ -68,7 +68,7 @@ find_prev_new (int wrap)
 		if (!b || (b == CurBuffy)) {
 			break;
 		}
-		if (b->msg_unread || b->msg_flagged) {
+		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
 			return b;
 		}
 	} while (b);
@@ -310,27 +310,28 @@ int draw_sidebar(int menu) {
 	SETCOLOR(MT_COLOR_NORMAL);
 
 	for ( ; tmp && lines < SidebarHeight; tmp = tmp->next ) {
+		/* make sure the path is either:
+		   1.  Containing new mail.
+		   2.  The inbox.
+		   3.  The current box.
+		   4.  Any mailboxes listed in SidebarWhitelist
+		*/
 		if ( tmp == CurBuffy )
 			SETCOLOR(MT_COLOR_INDICATOR);
 		else if ( tmp->msg_unread > 0 )
 			SETCOLOR(MT_COLOR_NEW);
 		else if ( tmp->msg_flagged > 0 )
 		        SETCOLOR(MT_COLOR_FLAGGED);
-		else {
-                  /* make sure the path is either:
-                     1.  Containing new mail.
-                     2.  The inbox.
-                     3.  The current box.
-                   */
-                  if ((option (OPTSIDEBARNEWMAILONLY)) &&
-                      ( (tmp->msg_unread <= 0)  &&
-                        ( tmp != Incoming ) &&
-                        Context &&
-                        ( strcmp( tmp->path, Context->path ) != 0 ) ) )
-                    continue;
-                  else
-                    SETCOLOR(MT_COLOR_NORMAL);
-                }
+		else if ( option(OPTSIDEBARNEWMAILONLY) ) {
+			if	( tmp == Incoming ||
+					( Context && ( strcmp(tmp->path, Context->path) == 0 ) ) ||
+					mutt_find_list(SidebarWhitelist, tmp->path) )
+				SETCOLOR(MT_COLOR_NORMAL);
+			else
+				continue;
+		}
+		else
+			SETCOLOR(MT_COLOR_NORMAL);
 
 		move( lines, 0 );
 		if ( Context && Context->path &&

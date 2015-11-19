@@ -2626,7 +2626,7 @@ struct option_t MuttVars[] = {
   {"sidebar_newmail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
   /*
   ** .pp
-  ** Show only new mail in the sidebar.
+  ** Show only new and flagged mail in the sidebar.
   */
   { "sidebar_next_new_wrap", DT_BOOL, R_BOTH, UL OPTSIDEBARNEXTNEWWRAP, 0 },
   /*
@@ -3730,6 +3730,7 @@ const struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
   { "send2-hook",	mutt_parse_hook,	M_SEND2HOOK },
   { "set",		parse_set,		0 },
+  { "sidebar_whitelist",parse_list,		UL &SidebarWhitelist },
   { "source",		parse_source,		0 },
   { "spam",		parse_spam_list,	M_SPAM },
   { "nospam",		parse_spam_list,	M_NOSPAM },
