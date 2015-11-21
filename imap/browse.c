@@ -71,39 +71,44 @@ int imap_browse (char* path, struct browser_state* state)
   /* skip check for parents when at the root */
   if (mx.mbox && mx.mbox[0] != '\0')
   {
-    int rc;
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
     n = mutt_strlen (mbox);
+  }
+  else
+  {
+    mbox[0] = '\0';
+    n = 0;
+  }
 
+  if (n)
+  {
+    int rc;
     dprint (3, (debugfile, "imap_browse: mbox: %s\n", mbox));
 
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
-    if (mbox[n-1] != idata->delim)
+    imap_munge_mbox_name (idata, munged_mbox, sizeof (munged_mbox), mbox);
+    snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, munged_mbox);
+    imap_cmd_start (idata, buf);
+    idata->cmdtype = IMAP_CT_LIST;
+    idata->cmddata = &list;
+    do
     {
-      imap_munge_mbox_name (idata, munged_mbox, sizeof (munged_mbox), mbox);
-      snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, munged_mbox);
-      imap_cmd_start (idata, buf);
-      idata->cmdtype = IMAP_CT_LIST;
-      idata->cmddata = &list;
-      do
+      list.name = 0;
+      rc = imap_cmd_step (idata);
+      if (rc == IMAP_CMD_CONTINUE && list.name)
       {
-	list.name = 0;
-        rc = imap_cmd_step (idata);
-        if (rc == IMAP_CMD_CONTINUE && list.name)
+        if (!list.noinferiors && list.name[0] &&
+            !imap_mxcmp (list.name, mbox) &&
+            n < sizeof (mbox) - 1)
         {
-          if (!list.noinferiors && list.name[0] &&
-              !imap_mxcmp (list.name, mbox) &&
-            (n = strlen (mbox)) < sizeof (mbox) - 1)
-          {
-            mbox[n++] = list.delim;
-            mbox[n] = '\0';
-          }
+          mbox[n++] = list.delim;
+          mbox[n] = '\0';
         }
       }
-      while (rc == IMAP_CMD_CONTINUE);
-      idata->cmddata = NULL;
     }
+    while (rc == IMAP_CMD_CONTINUE);
+    idata->cmddata = NULL;
 
     /* if we're descending a folder, mark it as current in browser_state */
     if (mbox[n-1] == list.delim)
@@ -161,8 +166,6 @@ int imap_browse (char* path, struct browser_state* state)
       }
     }
   }
-  else
-    mbox[0] = '\0';
 
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
