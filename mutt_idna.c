@@ -92,6 +92,7 @@ static void set_intl_mailbox (ADDRESS *a, char *intl_mailbox)
 static char *intl_to_local (ADDRESS *a, int flags)
 {
   char *user = NULL, *domain = NULL, *mailbox = NULL;
+  char *orig_user = NULL, *reversed_user = NULL;
   char *orig_domain = NULL, *reversed_domain = NULL;
   char *tmp = NULL;
 #ifdef HAVE_LIBIDN
@@ -100,6 +101,7 @@ static char *intl_to_local (ADDRESS *a, int flags)
 
   if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
     goto cleanup;
+  orig_user = safe_strdup (user);
   orig_domain = safe_strdup (domain);
 
 #ifdef HAVE_LIBIDN
@@ -122,10 +124,27 @@ static char *intl_to_local (ADDRESS *a, int flags)
 
   /*
    * make sure that we can convert back and come out with the same
-   * domain name.
+   * user and domain name.
    */
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
+    reversed_user = safe_strdup (user);
+
+    if (mutt_convert_string (&reversed_user, Charset, "utf-8", 0) == -1)
+    {
+      dprint (1, (debugfile,
+                  "intl_to_local: Not reversible. Charset conv to utf-8 failed for user = '%s'.\n",
+                  reversed_user));
+      goto cleanup;
+    }
+
+    if (ascii_strcasecmp (orig_user, reversed_user))
+    {
+      dprint (1, (debugfile, "intl_to_local: Not reversible. orig = '%s', reversed = '%s'.\n",
+                  orig_user, reversed_user));
+      goto cleanup;
+    }
+
     reversed_domain = safe_strdup (domain);
 
     if (mutt_convert_string (&reversed_domain, Charset, "utf-8", 0) == -1)
@@ -171,6 +190,8 @@ cleanup:
   FREE (&tmp);
   FREE (&orig_domain);
   FREE (&reversed_domain);
+  FREE (&orig_user);
+  FREE (&reversed_user);
 
   return mailbox;
 }
