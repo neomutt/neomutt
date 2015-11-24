@@ -61,6 +61,7 @@ enum {
   AUTH,
   DSN,
   EIGHTBITMIME,
+  SMTPUTF8,
 
   CAPMAX
 };
@@ -122,6 +123,8 @@ smtp_get_resp (CONNECTION * conn)
       mutt_bit_set (Capabilities, DSN);
     else if (!ascii_strncasecmp ("STARTTLS", buf + 4, 8))
       mutt_bit_set (Capabilities, STARTTLS);
+    else if (!ascii_strncasecmp ("SMTPUTF8", buf + 4, 8))
+      mutt_bit_set (Capabilities, SMTPUTF8);
 
     if (smtp_code (buf, n, &n) < 0)
       return smtp_err_code;
@@ -236,6 +239,34 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   return 0;
 }
 
+
+/* Returns 1 if a contains at least one 8-bit character, 0 if none do.
+ */
+static int
+address_uses_unicode(const char * a) {
+  while(a && *a > 0 && *a < 128)
+    a++;
+  if(a && *a)
+    return 1;
+  return 0;
+}
+
+
+/* Returns 1 if any address in a contains at least one 8-bit
+ * character, 0 if none do.
+ */
+static int
+addresses_use_unicode(const ADDRESS* a) {
+  while (a)
+  {
+    if(a->mailbox && !a->group && address_uses_unicode(a->mailbox))
+      return 1;
+    a = a->next;
+  }
+  return 0;
+}
+
+
 int
 mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
                 const ADDRESS* bcc, const char *msgfile, int eightbit)
@@ -282,6 +313,12 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
     }
     if (DsnReturn && mutt_bit_isset (Capabilities, DSN))
       ret += snprintf (buf + ret, sizeof (buf) - ret, " RET=%s", DsnReturn);
+    if (mutt_bit_isset (Capabilities, SMTPUTF8) &&
+	(address_uses_unicode(envfrom) ||
+	 addresses_use_unicode(to) ||
+	 addresses_use_unicode(cc) ||
+	 addresses_use_unicode(bcc)))
+      ret += snprintf (buf + ret, sizeof (buf) - ret, " SMTPUTF8");
     safe_strncat (buf, sizeof (buf), "\r\n", 3);
     if (mutt_socket_write (conn, buf) == -1)
     {
