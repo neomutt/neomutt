@@ -104,7 +104,7 @@ static char *intl_to_local (ADDRESS *a, int flags)
 
 #ifdef HAVE_LIBIDN
   is_idn_encoded = check_idn (domain);
-  if (is_idn_encoded && option (OPTUSEIDN))
+  if (is_idn_encoded && option (OPTIDNDECODE))
   {
     if (idna_to_unicode_8z8z (domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       goto cleanup;
@@ -141,7 +141,7 @@ static char *intl_to_local (ADDRESS *a, int flags)
      * produce a non-matching domain!  Thus we only want to do the
      * idna_to_ascii_8z() if the original domain was IDNA encoded.
      */
-    if (is_idn_encoded && option (OPTUSEIDN))
+    if (is_idn_encoded && option (OPTIDNDECODE))
     {
       if (idna_to_ascii_8z (reversed_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       {
@@ -191,9 +191,12 @@ static char *local_to_intl (ADDRESS *a)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN
-  if (idna_to_ascii_8z (domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
-    goto cleanup;
-  mutt_str_replace (&domain, tmp);
+  if (option (OPTIDNENCODE))
+  {
+    if (idna_to_ascii_8z (domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
+      goto cleanup;
+    mutt_str_replace (&domain, tmp);
+  }
 #endif /* HAVE_LIBIDN */
 
   mailbox = safe_malloc (mutt_strlen (user) + mutt_strlen (domain) + 2);

@@ -1074,6 +1074,22 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see $$use_domain and $$hidden_host.
   */
+#ifdef HAVE_LIBIDN
+  { "idn_decode",	DT_BOOL, R_BOTH, OPTIDNDECODE, 1},
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will show you international domain names decoded.
+  ** Note: You can use IDNs for addresses even if this is \fIunset\fP.
+  ** This variable only affects decoding. (IDN only)
+  */
+  { "idn_encode",	DT_BOOL, R_BOTH, OPTIDNENCODE, 1},
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will encode international domain names using
+  ** IDN.  Unset this if your SMTP server can handle newer (RFC 6531)
+  ** UTF-8 encoded domains. (IDN only)
+  */
+#endif /* HAVE_LIBIDN */
   { "ignore_linear_white_space",    DT_BOOL, R_NONE, OPTIGNORELWS, 0 },
   /*
   ** .pp
@@ -3409,15 +3425,6 @@ struct option_t MuttVars[] = {
   ** generated unless the user explicitly sets one using the ``$my_hdr''
   ** command.
   */
-#ifdef HAVE_LIBIDN
-  { "use_idn",		DT_BOOL, R_BOTH, OPTUSEIDN, 1},
-  /*
-  ** .pp
-  ** When \fIset\fP, Mutt will show you international domain names decoded.
-  ** Note: You can use IDNs for addresses even if this is \fIunset\fP.
-  ** This variable only affects decoding.
-  */
-#endif /* HAVE_LIBIDN */
 #ifdef HAVE_GETADDRINFO
   { "use_ipv6",		DT_BOOL, R_NONE, OPTUSEIPV6, 1},
   /*
