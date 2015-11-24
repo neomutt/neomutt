@@ -185,26 +185,37 @@ switch(op) {
 	return (src);
 }
 
-char *make_sidebar_entry(char *box, unsigned int size, unsigned int new, unsigned int flagged) {
-    static char *entry = 0;
+static void make_sidebar_entry(char *buf, unsigned int buflen, int width, char *box,
+	unsigned int size, unsigned int new, unsigned int flagged)
+{
     struct sidebar_entry sbe;
-    int SBvisual;
-
-    SBvisual = SidebarWidth - strlen(SidebarDelim);
-    if (SBvisual < 1)
-        return NULL;
 
     sbe.new = new;
     sbe.flagged = flagged;
     sbe.size = size;
-    strncpy(sbe.box, box, 31);
+    strncpy(sbe.box, box, sizeof (sbe.box)-1);
 
-    safe_realloc(&entry, SBvisual + 2);
-    entry[SBvisual + 1] = '\0';
+    int box_len = strlen (box);
+    sbe.box[box_len] = '\0';
 
-    mutt_FormatString (entry, SBvisual+1, 0, SidebarFormat, sidebar_format_str, (unsigned long) &sbe, 0);
+    /* Temporarily lie about the screen width */
+    int oc = COLS;
+    COLS = width + SidebarWidth;
+    mutt_FormatString (buf, buflen, 0, SidebarFormat, sidebar_format_str, (unsigned long) &sbe, 0);
+    COLS = oc;
 
-    return entry;
+    /* Force string to be exactly the right width */
+    int w = mutt_strwidth (buf);
+    int s = strlen (buf);
+    if (w < width) {
+        /* Pad with spaces */
+        memset (buf+s, ' ', width - w);
+        buf[s + width - w] = 0;
+    } else if (w > width) {
+        /* Truncate to fit */
+        int len = mutt_wstr_trunc (buf, buflen, width, NULL);
+        buf[len] = 0;
+    }
 }
 
 int draw_sidebar(int menu) {
@@ -213,8 +224,12 @@ int draw_sidebar(int menu) {
 #ifndef USE_SLANG_CURSES
         attr_t attrs;
 #endif
-        short delim_len = mbstowcs(NULL, NONULL(SidebarDelim), 0);
         short color_pair;
+
+	/* Calculate the width of the delimiter in screen characters */
+	wchar_t sd[4];
+	mbstowcs(sd, NONULL(SidebarDelim), 4);
+	int delim_len = wcwidth (sd[0]);
 
         static bool initialized = false;
         static int prev_show_value;
@@ -349,9 +364,9 @@ int draw_sidebar(int menu) {
 		/* calculate depth of current folder and generate its display name with indented spaces */
 		int sidebar_folder_depth = 0;
 		char *sidebar_folder_name;
-		sidebar_folder_name = option(OPTSIDEBARSHORTPATH) ? mutt_basename(tmp->path) : tmp->path + maildir_is_prefix*(strlen(Maildir) + 1);
+		sidebar_folder_name = option(OPTSIDEBARSHORTPATH) ? (char*) mutt_basename(tmp->path) : tmp->path + maildir_is_prefix*(strlen(Maildir) + 1);
 		if ( maildir_is_prefix && option(OPTSIDEBARFOLDERINDENT) ) {
-			char *tmp_folder_name;
+			const char *tmp_folder_name;
 			int i;
 			tmp_folder_name = tmp->path + strlen(Maildir) + 1;
 			for (i = 0; i < strlen(tmp->path) - strlen(Maildir); i++) {
@@ -374,9 +389,11 @@ int draw_sidebar(int menu) {
 				strncat(sidebar_folder_name, tmp_folder_name, strlen(tmp_folder_name));
 			}
 		}
-		printw( "%.*s", SidebarWidth - delim_len + 1,
-			make_sidebar_entry(sidebar_folder_name, tmp->msgcount,
-			tmp->msg_unread, tmp->msg_flagged));
+		char str[SHORT_STRING];
+		make_sidebar_entry(str, sizeof (str), SidebarWidth - delim_len,
+			sidebar_folder_name, tmp->msgcount,
+			tmp->msg_unread, tmp->msg_flagged);
+		printw ("%s", str);
 		if (sidebar_folder_depth > 0)
 		        free(sidebar_folder_name);
 		lines++;
