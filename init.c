@@ -874,7 +874,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	case ADDR:
 	  if ((addr = mutt_parse_adrlist (NULL, buf->data)) == NULL)
 	    goto bail;
-	  if (mutt_addrlist_to_idna (addr, &estr))
+	  if (mutt_addrlist_to_intl (addr, &estr))
 	  { 
 	    snprintf (err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
 		      data == 1 ? "un" : "", estr);
@@ -1339,7 +1339,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     last->next = tmp;
   else
     Aliases = tmp;
-  if (mutt_addrlist_to_idna (tmp->addr, &estr))
+  if (mutt_addrlist_to_intl (tmp->addr, &estr))
   {
     snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s' in alias '%s'.\n"),
 	      estr, tmp->name);

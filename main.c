@@ -803,7 +803,7 @@ int main (int argc, char **argv)
       if ((a = mutt_lookup_alias (alias_queries->data)))
       {	
 	/* output in machine-readable form */
-	mutt_addrlist_to_idna (a, NULL);
+	mutt_addrlist_to_intl (a, NULL);
 	mutt_write_address_list (a, stdout, 0, 0);
       }
       else

@@ -294,7 +294,7 @@ void ci_bounce_message (HEADER *h, int *redraw)
 
   adr = mutt_expand_aliases (adr);
 
-  if (mutt_addrlist_to_idna (adr, &err) < 0)
+  if (mutt_addrlist_to_intl (adr, &err) < 0)
   {
     mutt_error (_("Bad IDN: '%s'"), err);
     FREE (&err);

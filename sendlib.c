@@ -2603,7 +2603,7 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
     rfc822_qualify (from, fqdn);
 
   rfc2047_encode_adrlist (from, "Resent-From");
-  if (mutt_addrlist_to_idna (from, &err))
+  if (mutt_addrlist_to_intl (from, &err))
   {
     mutt_error (_("Bad IDN %s while preparing resent-from."),
 		err);

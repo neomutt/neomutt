@@ -24,9 +24,7 @@
 #include "charset.h"
 #include "mutt_idna.h"
 
-/* The low-level interface we use. */
 
-#ifdef HAVE_LIBIDN
 
 /* check whether an address is an IDN */
 
@@ -37,21 +35,21 @@ static int check_idn (ADDRESS *ap)
   if (!ap || !ap->mailbox)
     return 0;
 
-  if (!ap->idn_checked)
+  if (!ap->intl_checked)
   {
-    ap->idn_checked = 1;
+    ap->intl_checked = 1;
     for (p = strchr (ap->mailbox, '@'); p && *p; p = strchr (p, '.')) 
       if (ascii_strncasecmp (++p, "xn--", 4) == 0)
       {
-	ap->is_idn = 1;
+	ap->is_intl = 1;
 	break;
       }
   }
   
-  return ap->is_idn;
+  return ap->is_intl;
 }
 
-static int mutt_idna_to_local (const char *in, char **out, int flags)
+static int intl_to_local (const char *in, char **out, int flags)
 {
   *out = NULL;
 
@@ -62,8 +60,10 @@ static int mutt_idna_to_local (const char *in, char **out, int flags)
     goto notrans;
 
   /* Is this the right function?  Interesting effects with some bad identifiers! */
+#ifdef HAVE_LIBIDN
   if (idna_to_unicode_8z8z (in, out, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
     goto notrans;
+#endif /* HAVE_LIBIDN */
 
   /* we don't want charset-hook effects, so we set flags to 0 */
   if (mutt_convert_string (out, "utf-8", Charset, 0) == -1)
@@ -83,11 +83,13 @@ static int mutt_idna_to_local (const char *in, char **out, int flags)
     /* we don't want charset-hook effects, so we set flags to 0 */
     if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
       irrev = 1;
+#ifdef HAVE_LIBIDN
     if (!irrev && idna_to_ascii_8z (tmp, &t2, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       irrev = 1;
+#endif /* HAVE_LIBIDN */
     if (!irrev && ascii_strcasecmp (t2, in))
     {
-      dprint (1, (debugfile, "mutt_idna_to_local: Not reversible. in = '%s', t2 = '%s'.\n",
+      dprint (1, (debugfile, "intl_to_local: Not reversible. in = '%s', t2 = '%s'.\n",
 		  in, t2));
       irrev = 1;
     }
@@ -107,7 +109,7 @@ static int mutt_idna_to_local (const char *in, char **out, int flags)
   return 1;
 }
 
-static int mutt_local_to_idna (const char *in, char **out)
+static int local_to_intl (const char *in, char **out)
 {
   int rv = 0;
   char *tmp = safe_strdup (in);
@@ -122,8 +124,11 @@ static int mutt_local_to_idna (const char *in, char **out)
   /* we don't want charset-hook effects, so we set flags to 0 */
   if (mutt_convert_string (&tmp, Charset, "utf-8", 0) == -1)
     rv = -1;
+
+#ifdef HAVE_LIBIDN
   if (!rv && idna_to_ascii_8z (tmp, out, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
     rv = -2;
+#endif /* HAVE_LIBIDN */
   
   FREE (&tmp);
   if (rv < 0)
@@ -152,7 +157,7 @@ static int mbox_to_udomain (const char *mbx, char **user, char **domain)
   return 0;
 }
 
-int mutt_addrlist_to_idna (ADDRESS *a, char **err)
+int mutt_addrlist_to_intl (ADDRESS *a, char **err)
 {
   char *user = NULL, *domain = NULL;
   char *tmp = NULL;
@@ -168,7 +173,7 @@ int mutt_addrlist_to_idna (ADDRESS *a, char **err)
     if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
       continue;
     
-    if (mutt_local_to_idna (domain, &tmp) < 0)
+    if (local_to_intl (domain, &tmp) < 0)
     {
       e = 1;
       if (err)
@@ -178,7 +183,7 @@ int mutt_addrlist_to_idna (ADDRESS *a, char **err)
     {
       safe_realloc (&a->mailbox, mutt_strlen (user) + mutt_strlen (tmp) + 2);
       sprintf (a->mailbox, "%s@%s", NONULL(user), NONULL(tmp)); /* __SPRINTF_CHECKED__ */
-      a->idn_checked = 0;
+      a->intl_checked = 0;
     }
     
     FREE (&tmp);
@@ -203,11 +208,11 @@ int mutt_addrlist_to_local (ADDRESS *a)
       continue;
     if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
       continue;
-    if (mutt_idna_to_local (domain, &tmp, 0) == 0)
+    if (intl_to_local (domain, &tmp, 0) == 0)
     {
       safe_realloc (&a->mailbox, mutt_strlen (user) + mutt_strlen (tmp) + 2);
       sprintf (a->mailbox, "%s@%s", NONULL (user), NONULL (tmp)); /* __SPRINTF_CHECKED__ */
-      a->idn_checked = 0;
+      a->intl_checked = 0;
     }
     
     FREE (&tmp);
@@ -232,7 +237,7 @@ const char *mutt_addr_for_display (ADDRESS *a)
     return a->mailbox;
   if (mbox_to_udomain (a->mailbox, &user, &domain) != 0)
     return a->mailbox;
-  if (mutt_idna_to_local (domain, &tmp, MI_MAY_BE_IRREVERSIBLE) != 0)
+  if (intl_to_local (domain, &tmp, MI_MAY_BE_IRREVERSIBLE) != 0)
   {
     FREE (&tmp);
     return a->mailbox;
@@ -261,25 +266,23 @@ void mutt_env_to_local (ENVELOPE *e)
  * "real" name of an `env' compound member.  Real name will be substituted
  * by preprocessor at the macro-expansion time.
  */
-#define H_TO_IDNA(a)	\
-  if (mutt_addrlist_to_idna (env->a, err) && !e) \
+#define H_TO_INTL(a)	\
+  if (mutt_addrlist_to_intl (env->a, err) && !e) \
   { \
      if (tag) *tag = #a; e = 1; err = NULL; \
   }
 
-int mutt_env_to_idna (ENVELOPE *env, char **tag, char **err)
+int mutt_env_to_intl (ENVELOPE *env, char **tag, char **err)
 {
   int e = 0;
-  H_TO_IDNA(return_path);
-  H_TO_IDNA(from);
-  H_TO_IDNA(to);
-  H_TO_IDNA(cc);
-  H_TO_IDNA(bcc);
-  H_TO_IDNA(reply_to);
-  H_TO_IDNA(mail_followup_to);
+  H_TO_INTL(return_path);
+  H_TO_INTL(from);
+  H_TO_INTL(to);
+  H_TO_INTL(cc);
+  H_TO_INTL(bcc);
+  H_TO_INTL(reply_to);
+  H_TO_INTL(mail_followup_to);
   return e;
 }
 
-#undef H_TO_IDNA
-
-#endif /* HAVE_LIBIDN */
+#undef H_TO_INTL

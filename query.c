@@ -66,7 +66,7 @@ static ADDRESS *result_to_addr (QUERY *r)
   if(!tmp->next && !tmp->personal)
     tmp->personal = safe_strdup (r->name);
   
-  mutt_addrlist_to_idna (tmp, NULL);
+  mutt_addrlist_to_intl (tmp, NULL);
   return tmp;
 }
 

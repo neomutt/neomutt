@@ -1196,7 +1196,6 @@ if test "x$with_idn" != "xno"; then
 
     AC_SEARCH_LIBS([stringprep_check_version], [idn], [
       AC_DEFINE([HAVE_LIBIDN], 1, [Define to 1 if you have the GNU idn library])
-      MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
       MUTTLIBS="$MUTTLIBS $LIBS"
 
       LIBS="$LIBS $LIBICONV"

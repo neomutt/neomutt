@@ -292,7 +292,7 @@ static int edit_address_list (int line, ADDRESS **addr)
     return (REDRAW_FULL);
   }
 
-  if (mutt_addrlist_to_idna (*addr, &err) != 0)
+  if (mutt_addrlist_to_intl (*addr, &err) != 0)
   {
     mutt_error (_("Warning: '%s' is a bad IDN."), err);
     mutt_refresh();
@@ -606,7 +606,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  mutt_env_to_local (msg->env);
 	  mutt_edit_headers (NONULL (Editor), msg->content->filename, msg,
 			     fcc, fcclen);
-	  if (mutt_env_to_idna (msg->env, &tag, &err))
+	  if (mutt_env_to_intl (msg->env, &tag, &err))
 	  {
 	    mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
 	    FREE (&err);
