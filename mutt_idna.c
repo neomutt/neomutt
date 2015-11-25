@@ -45,21 +45,17 @@ static int check_idn (char *domain)
 
 static int mbox_to_udomain (const char *mbx, char **user, char **domain)
 {
-  char *buff = NULL;
+  static char *buff = NULL;
   char *p;
 
-  buff = safe_strdup (mbx);
+  mutt_str_replace (&buff, mbx);
+
   p = strchr (buff, '@');
   if (!p || !p[1])
-  {
-    FREE (&buff);
     return -1;
-  }
-
   *p = '\0';
-  *user = safe_strdup (buff);
-  *domain  = safe_strdup (p + 1);
-  FREE (&buff);
+  *user = buff;
+  *domain  = p + 1;
   return 0;
 }
 
@@ -89,37 +85,34 @@ static void set_intl_mailbox (ADDRESS *a, char *intl_mailbox)
   a->is_intl = 1;
 }
 
-static char *intl_to_local (ADDRESS *a, int flags)
+static char *intl_to_local (char *orig_user, char *orig_domain, int flags)
 {
-  char *user = NULL, *domain = NULL, *mailbox = NULL;
-  char *orig_user = NULL, *reversed_user = NULL;
-  char *orig_domain = NULL, *reversed_domain = NULL;
+  char *local_user = NULL, *local_domain = NULL, *mailbox = NULL;
+  char *reversed_user = NULL, *reversed_domain = NULL;
   char *tmp = NULL;
 #ifdef HAVE_LIBIDN
   int is_idn_encoded = 0;
 #endif /* HAVE_LIBIDN */
 
-  if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
-    goto cleanup;
-  orig_user = safe_strdup (user);
-  orig_domain = safe_strdup (domain);
+  local_user = safe_strdup (orig_user);
+  local_domain = safe_strdup (orig_domain);
 
 #ifdef HAVE_LIBIDN
-  is_idn_encoded = check_idn (domain);
+  is_idn_encoded = check_idn (local_domain);
   if (is_idn_encoded && option (OPTIDNDECODE))
   {
-    if (idna_to_unicode_8z8z (domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
+    if (idna_to_unicode_8z8z (local_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       goto cleanup;
-    mutt_str_replace (&domain, tmp);
+    mutt_str_replace (&local_domain, tmp);
     FREE (&tmp);
   }
 #endif /* HAVE_LIBIDN */
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_convert_string (&user, "utf-8", Charset, 0) == -1)
+  if (mutt_convert_string (&local_user, "utf-8", Charset, 0) == -1)
     goto cleanup;
 
-  if (mutt_convert_string (&domain, "utf-8", Charset, 0) == -1)
+  if (mutt_convert_string (&local_domain, "utf-8", Charset, 0) == -1)
     goto cleanup;
 
   /*
@@ -128,7 +121,7 @@ static char *intl_to_local (ADDRESS *a, int flags)
    */
   if ((flags & MI_MAY_BE_IRREVERSIBLE) == 0)
   {
-    reversed_user = safe_strdup (user);
+    reversed_user = safe_strdup (local_user);
 
     if (mutt_convert_string (&reversed_user, Charset, "utf-8", 0) == -1)
     {
@@ -145,7 +138,7 @@ static char *intl_to_local (ADDRESS *a, int flags)
       goto cleanup;
     }
 
-    reversed_domain = safe_strdup (domain);
+    reversed_domain = safe_strdup (local_domain);
 
     if (mutt_convert_string (&reversed_domain, Charset, "utf-8", 0) == -1)
     {
@@ -181,51 +174,50 @@ static char *intl_to_local (ADDRESS *a, int flags)
     }
   }
 
-  mailbox = safe_malloc (mutt_strlen (user) + mutt_strlen (domain) + 2);
-  sprintf (mailbox, "%s@%s", NONULL(user), NONULL(domain)); /* __SPRINTF_CHECKED__ */
+  mailbox = safe_malloc (mutt_strlen (local_user) + mutt_strlen (local_domain) + 2);
+  sprintf (mailbox, "%s@%s", NONULL(local_user), NONULL(local_domain)); /* __SPRINTF_CHECKED__ */
 
 cleanup:
-  FREE (&user);
-  FREE (&domain);
+  FREE (&local_user);
+  FREE (&local_domain);
   FREE (&tmp);
-  FREE (&orig_domain);
   FREE (&reversed_domain);
-  FREE (&orig_user);
   FREE (&reversed_user);
 
   return mailbox;
 }
 
-static char *local_to_intl (ADDRESS *a)
+static char *local_to_intl (char *user, char *domain)
 {
-  char *user = NULL, *domain = NULL, *mailbox = NULL;
+  char *intl_user = NULL, *intl_domain = NULL;
+  char *mailbox = NULL;
   char *tmp = NULL;
 
-  if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
-    goto cleanup;
+  intl_user = safe_strdup (user);
+  intl_domain = safe_strdup (domain);
 
   /* we don't want charset-hook effects, so we set flags to 0 */
-  if (mutt_convert_string (&user, Charset, "utf-8", 0) == -1)
+  if (mutt_convert_string (&intl_user, Charset, "utf-8", 0) == -1)
     goto cleanup;
 
-  if (mutt_convert_string (&domain, Charset, "utf-8", 0) == -1)
+  if (mutt_convert_string (&intl_domain, Charset, "utf-8", 0) == -1)
     goto cleanup;
 
 #ifdef HAVE_LIBIDN
   if (option (OPTIDNENCODE))
   {
-    if (idna_to_ascii_8z (domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
+    if (idna_to_ascii_8z (intl_domain, &tmp, IDNA_ALLOW_UNASSIGNED) != IDNA_SUCCESS)
       goto cleanup;
-    mutt_str_replace (&domain, tmp);
+    mutt_str_replace (&intl_domain, tmp);
   }
 #endif /* HAVE_LIBIDN */
 
-  mailbox = safe_malloc (mutt_strlen (user) + mutt_strlen (domain) + 2);
-  sprintf (mailbox, "%s@%s", NONULL(user), NONULL(domain)); /* __SPRINTF_CHECKED__ */
+  mailbox = safe_malloc (mutt_strlen (intl_user) + mutt_strlen (intl_domain) + 2);
+  sprintf (mailbox, "%s@%s", NONULL(intl_user), NONULL(intl_domain)); /* __SPRINTF_CHECKED__ */
 
 cleanup:
-  FREE (&user);
-  FREE (&domain);
+  FREE (&intl_user);
+  FREE (&intl_domain);
   FREE (&tmp);
 
   return mailbox;
@@ -235,6 +227,7 @@ cleanup:
 
 int mutt_addrlist_to_intl (ADDRESS *a, char **err)
 {
+  char *user = NULL, *domain = NULL;
   char *intl_mailbox = NULL;
   int rv = 0;
 
@@ -246,7 +239,10 @@ int mutt_addrlist_to_intl (ADDRESS *a, char **err)
     if (!a->mailbox || addr_is_intl (a))
       continue;
 
-    intl_mailbox = local_to_intl (a);
+    if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
+      continue;
+
+    intl_mailbox = local_to_intl (user, domain);
     if (! intl_mailbox)
     {
       rv = -1;
@@ -263,6 +259,7 @@ int mutt_addrlist_to_intl (ADDRESS *a, char **err)
 
 int mutt_addrlist_to_local (ADDRESS *a)
 {
+  char *user = NULL, *domain = NULL;
   char *local_mailbox = NULL;
 
   for (; a; a = a->next)
@@ -270,7 +267,10 @@ int mutt_addrlist_to_local (ADDRESS *a)
     if (!a->mailbox || addr_is_local (a))
       continue;
 
-    local_mailbox = intl_to_local (a, 0);
+    if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
+      continue;
+
+    local_mailbox = intl_to_local (user, domain, 0);
     if (local_mailbox)
       set_local_mailbox (a, local_mailbox);
   }
@@ -281,6 +281,7 @@ int mutt_addrlist_to_local (ADDRESS *a)
 /* convert just for displaying purposes */
 const char *mutt_addr_for_display (ADDRESS *a)
 {
+  char *user = NULL, *domain = NULL;
   static char *buff = NULL;
   char *local_mailbox = NULL;
 
@@ -289,7 +290,10 @@ const char *mutt_addr_for_display (ADDRESS *a)
   if (!a->mailbox || addr_is_local (a))
     return a->mailbox;
 
-  local_mailbox = intl_to_local (a, MI_MAY_BE_IRREVERSIBLE);
+  if (mbox_to_udomain (a->mailbox, &user, &domain) == -1)
+    return a->mailbox;
+
+  local_mailbox = intl_to_local (user, domain, MI_MAY_BE_IRREVERSIBLE);
   if (! local_mailbox)
     return a->mailbox;
 
