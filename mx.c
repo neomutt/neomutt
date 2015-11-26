@@ -29,6 +29,7 @@
 #include "copy.h"
 #include "keymap.h"
 #include "url.h"
+#include "sidebar.h"
 
 #ifdef USE_IMAP
 #include "imap.h"
