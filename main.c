@@ -31,6 +31,7 @@
 #include "url.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#include "sidebar.h"
 
 #ifdef USE_SASL
 #include "mutt_sasl.h"
