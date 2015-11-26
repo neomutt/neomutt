@@ -242,12 +242,18 @@ smtp_data (CONNECTION * conn, const char *msgfile)
 
 /* Returns 1 if a contains at least one 8-bit character, 0 if none do.
  */
-static int
-address_uses_unicode(const char * a) {
-  while(a && *a > 0 && *a < 128)
+static int address_uses_unicode(const char *a)
+{
+  if (!a)
+    return 0;
+
+  while (*a)
+  {
+    if ((unsigned char) *a & (1<<7))
+      return 1;
     a++;
-  if(a && *a)
-    return 1;
+  }
+
   return 0;
 }
 
@@ -255,8 +261,8 @@ address_uses_unicode(const char * a) {
 /* Returns 1 if any address in a contains at least one 8-bit
  * character, 0 if none do.
  */
-static int
-addresses_use_unicode(const ADDRESS* a) {
+static int addresses_use_unicode(const ADDRESS* a)
+{
   while (a)
   {
     if(a->mailbox && !a->group && address_uses_unicode(a->mailbox))
