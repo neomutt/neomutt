@@ -2672,6 +2672,14 @@ struct option_t MuttVars[] = {
   ** This specifies the delimiter between the sidebar (if visible) and 
   ** other screens.
   */
+  { "sidebar_delim_chars",             DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
+  /*
+  ** .pp
+  ** This contains the list of characters which you would like to treat
+  ** as folder separators for displaying paths in the sidebar.  If
+  ** you're not using IMAP folders, you probably prefer setting this to "/"
+  ** alone.
+  */
   { "sidebar_folderindent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
   /*
   ** .pp

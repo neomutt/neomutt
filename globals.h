@@ -119,6 +119,7 @@ WHERE char *SendCharset;
 WHERE char *Sendmail;
 WHERE char *Shell;
 WHERE char *SidebarDelim;
+WHERE char *SidebarDelimChars;
 WHERE char *SidebarFormat;
 WHERE char *SidebarIndentStr;
 WHERE char *Signature;

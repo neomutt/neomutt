@@ -356,33 +356,53 @@ int draw_sidebar(int menu) {
 			tmp->msgcount = Context->msgcount;
 			tmp->msg_flagged = Context->flagged;
 		}
+
+		/* compute length of Maildir without trailing separator */
+		size_t maildirlen = strlen (Maildir);
+		if (SidebarDelimChars && strchr (SidebarDelimChars, Maildir[maildirlen - 1])) {
+			maildirlen--;
+		}
+
 		/* check whether Maildir is a prefix of the current folder's path */
 		short maildir_is_prefix = 0;
-		if ( (strlen(tmp->path) > strlen(Maildir)) &&
-			(strncmp(Maildir, tmp->path, strlen(Maildir)) == 0) )
+		if ( (strlen(tmp->path) > maildirlen) &&
+			(strncmp(Maildir, tmp->path, maildirlen) == 0) )
         		maildir_is_prefix = 1;
 		/* calculate depth of current folder and generate its display name with indented spaces */
 		int sidebar_folder_depth = 0;
 		char *sidebar_folder_name;
-		sidebar_folder_name = option(OPTSIDEBARSHORTPATH) ? (char*) mutt_basename(tmp->path) : tmp->path + maildir_is_prefix*(strlen(Maildir) + 1);
-		if ( maildir_is_prefix && option(OPTSIDEBARFOLDERINDENT) ) {
+		int i;
+		if (option (OPTSIDEBARSHORTPATH)) {
+			/* disregard a trailing separator, so strlen() - 2 */
+			sidebar_folder_name = tmp->path;
+			for (i = strlen (sidebar_folder_name) - 2; i >= 0; i--) {
+				if (SidebarDelimChars &&
+						strchr (SidebarDelimChars, sidebar_folder_name[i]))
+				{
+					sidebar_folder_name += i + 1;
+					break;
+				}
+			}
+		} else {
+			sidebar_folder_name = tmp->path + maildir_is_prefix * (maildirlen + 1);
+		}
+		if (maildir_is_prefix && option (OPTSIDEBARFOLDERINDENT)) {
 			const char *tmp_folder_name;
-			int i;
-			tmp_folder_name = tmp->path + strlen(Maildir) + 1;
-			for (i = 0; i < strlen(tmp->path) - strlen(Maildir); i++) {
- 				if (tmp_folder_name[i] == '/'  || tmp_folder_name[i] == '.') sidebar_folder_depth++;
-			}   
+			int lastsep = 0;
+			tmp_folder_name = tmp->path + maildirlen + 1;
+			for (i = 0; i < strlen(tmp_folder_name) - 1; i++) {
+				if (SidebarDelimChars &&
+						strchr (SidebarDelimChars, tmp_folder_name[i]))
+				{
+					sidebar_folder_depth++;
+					lastsep = i + 1;
+				}
+			}
 			if (sidebar_folder_depth > 0) {
  				if (option(OPTSIDEBARSHORTPATH)) {
- 					tmp_folder_name = strrchr(tmp->path, '.');
- 					if (tmp_folder_name == NULL)
- 						tmp_folder_name = mutt_basename(tmp->path);
- 					else
-						tmp_folder_name++;
+ 					tmp_folder_name += lastsep;  /* basename */
  				}
- 				else
- 					tmp_folder_name = tmp->path + strlen(Maildir) + 1;
- 				sidebar_folder_name = malloc(strlen(tmp_folder_name) + sidebar_folder_depth*strlen(NONULL(SidebarIndentStr)) + 1);
+ 				sidebar_folder_name = malloc(strlen(tmp_folder_name) + sidebar_folder_depth*strlen (NONULL (SidebarIndentStr)) + 1);
 				sidebar_folder_name[0]=0;
 				for (i=0; i < sidebar_folder_depth; i++)
 					strncat(sidebar_folder_name, NONULL(SidebarIndentStr), strlen(NONULL(SidebarIndentStr)));
