@@ -29,6 +29,7 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 #include "mutt_curses.h"
+#include "sidebar.h"
 
 #include <string.h>
 #include <stdlib.h>
@@ -288,7 +289,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       if (flags & (CH_DECODE|CH_PREFIX))
       {
 	if (mutt_write_one_header (out, 0, headers[x], 
-				   flags & CH_PREFIX ? prefix : 0, mutt_term_width (Wrap), flags) == -1)
+				   flags & CH_PREFIX ? prefix : 0, mutt_term_width (Wrap)-SidebarWidth, flags) == -1)
 	{
 	  error = TRUE;
 	  break;
