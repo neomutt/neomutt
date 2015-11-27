@@ -31,6 +31,7 @@ struct MBOX_LIST {
 int draw_sidebar(int);
 void scroll_sidebar(int, int);
 void set_buffystats(CONTEXT*);
-void set_curbuffy(char*);
+int sidebar_should_refresh();
+void sidebar_updated();
 
 #endif /* SIDEBAR_H */

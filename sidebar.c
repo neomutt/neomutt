@@ -245,6 +245,7 @@ int draw_sidebar(int menu) {
                 prev_show_value = option(OPTSIDEBAR);
                 saveSidebarWidth = SidebarWidth;
                 if(!option(OPTSIDEBAR)) SidebarWidth = 0;
+                SidebarLastRefresh = time(NULL);
                 initialized = true;
         }
 
@@ -428,6 +429,15 @@ int draw_sidebar(int menu) {
 	return 0;
 }
 
+int sidebar_should_refresh()
+{
+	if (option(OPTSIDEBAR) && SidebarRefresh > 0) {
+		if (time(NULL) - SidebarLastRefresh >= SidebarRefresh)
+			return 1;
+	}
+	return 0;
+}
+
 void scroll_sidebar(int op, int menu)
 {
         BUFFY *tmp;
@@ -513,3 +523,7 @@ void set_curbuffy(char buf[LONG_STRING])
   }
 }
 
+void sidebar_updated()
+{
+	SidebarLastRefresh = time(NULL);
+}
