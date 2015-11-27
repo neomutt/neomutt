@@ -2712,6 +2712,12 @@ struct option_t MuttVars[] = {
   ** Setting sidebar_next_new_wrap=yes causes mutt to wrap around the list
   ** of mailboxes when using Next/Previous New Mailbox commands.
   */
+  { "sidebar_refresh", DT_NUM, R_BOTH, UL &SidebarRefresh, 60 },
+  /*
+  ** .pp
+  ** Do not refresh sidebar in less than $sidebar_refresh seconds,
+  ** (0 disables refreshing).
+  */
   { "sidebar_shortpath", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
   /*
   ** .pp
