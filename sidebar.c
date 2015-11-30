@@ -236,6 +236,7 @@ make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 	}
 }
 
+
 void
 draw_sidebar (void)
 {
@@ -538,17 +539,12 @@ set_curbuffy (char *path)
 	if (!path || !b)
 		return;
 
-	while (1) {
+	for (; b; b = b->next) {
 		if (!strcmp (b->path,     path) ||
 		    !strcmp (b->realpath, path)) {
 			CurBuffy = b;
 			break;
 		}
-
-		if (b->next)
-			b = b->next;
-		else
-			break;
 	}
 }
 
