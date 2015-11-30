@@ -644,9 +644,11 @@ int mutt_index_menu (void)
 
       if (menu->redraw & REDRAW_STATUS)
       {
-        DrawFullLine = 1;
+        /* Temporarily lie about the sidebar width */
+	short sw = SidebarWidth;
+	SidebarWidth = 0;
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
-        DrawFullLine = 0;
+        SidebarWidth = sw; /* Restore the sidebar width */
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
 	set_buffystats (Context);

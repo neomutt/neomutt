@@ -1574,7 +1574,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
   int bodyoffset = 1;			/* offset of first line of real text */
   int statusoffset = 0; 		/* offset for the status bar */
-  int statuswidth;
+  int statuswidth = COLS;
   int helpoffset = LINES - 2;		/* offset for the help bar. */
   int bodylen = LINES - 2 - bodyoffset; /* length of displayable area */
 
@@ -1803,11 +1803,13 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* print out the pager status bar */
       move (statusoffset, SidebarWidth);
       SETCOLOR (MT_COLOR_STATUS);
+      short sw = SidebarWidth;
       if (option (OPTSTATUSONTOP) && PagerIndexLines > 0) {
         CLEARLINE_WIN (statusoffset);
       } else {
         CLEARLINE (statusoffset);
-        DrawFullLine = 1; /* for mutt_make_string_info */
+        /* Temporarily lie about the sidebar width */
+        SidebarWidth = 0;
       }
 
       if (IsHeader (extra) || IsMsgAttach (extra))
@@ -1825,7 +1827,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	mutt_paddstr (statuswidth, bn);
       }
       if (!option (OPTSTATUSONTOP) || PagerIndexLines == 0)
-          DrawFullLine = 0; /* reset */
+        SidebarWidth = sw; /* Restore the sidebar width */
+
       NORMAL_COLOR;
       if (option(OPTTSENABLED) && TSSupported)
       {
