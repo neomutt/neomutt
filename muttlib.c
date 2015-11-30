@@ -1282,56 +1282,8 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-        if ( DrawFullLine )
-        {
-	if ((col < COLS && wlen < destlen) || soft)
+	if ((col < COLS-SidebarWidth && wlen < destlen) || soft)
 	{
-	  int pad;
-
-	  /* get contents after padding */
-	  mutt_FormatString (buf, sizeof (buf), 0, src + pl, callback, data, flags);
-	  len = mutt_strlen (buf);
-	  wid = mutt_strwidth (buf);
-
-	  /* try to consume as many columns as we can, if we don't have
-	   * memory for that, use as much memory as possible */
-	  pad = (COLS - col - wid) / pw;
-	  if (pad > 0 && wlen + (pad * pl) + len > destlen)
-	    pad = ((signed)(destlen - wlen - len)) / pl;
-	  if (pad > 0)
-	  {
-	    while (pad--)
-	    {
-	      memcpy (wptr, src, pl);
-	      wptr += pl;
-	      wlen += pl;
-	      col += pw;
-	    }
-	  }
-	  else if (soft && pad < 0)
-	  {
-	    int offset = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
-	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
-	    *wptr = 0;
-	    /* make sure right part is at most as wide as display */
-	    len = mutt_wstr_trunc (buf, destlen, COLS-offset, &wid);
-	    /* truncate left so that right part fits completely in */
-	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad*pw -offset, &col);
-	    wptr = dest + wlen;
-	  }
-	  if (len + wlen > destlen)
-	    len = mutt_wstr_trunc (buf, destlen - wlen, COLS - col, NULL);
-	  memcpy (wptr, buf, len);
-	  wptr += len;
-	  wlen += len;
-	  col += wid;
-	  src += pl;
-	}
-        }
-        else
-        {
-	if ((col < (COLS-SidebarWidth) && wlen < destlen) || soft)
-        {
 	  int pad;
 
 	  /* get contents after padding */
@@ -1356,13 +1308,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  }
 	  else if (soft && pad < 0)
 	  {
-		int offset = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
+	    int offset = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
 	    /* make sure right part is at most as wide as display */
-	    len = mutt_wstr_trunc (buf, destlen, COLS - SidebarWidth, &wid);
+	    len = mutt_wstr_trunc (buf, destlen, COLS-offset-SidebarWidth, &wid);
 	    /* truncate left so that right part fits completely in */
-	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad*pw - offset, &col);
+	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad*pw -offset, &col);
 	    wptr = dest + wlen;
 	  }
 	  if (len + wlen > destlen)
@@ -1373,7 +1325,6 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  col += wid;
 	  src += pl;
 	}
-        }
 	break; /* skip rest of input */
       }
       else if (ch == '|')
