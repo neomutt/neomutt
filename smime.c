@@ -56,6 +56,7 @@
 struct smime_command_context {
   const char *key;		    /* %k */
   const char *cryptalg;		    /* %a */
+  const char *digestalg;	    /* %d */
   const char *fname;		    /* %f */
   const char *sig_fname;	    /* %s */
   const char *certificates;	    /* %c */
@@ -266,6 +267,17 @@ static const char *_mutt_fmt_smime_command (char *dest,
       break;
     }
     
+    case 'd':
+    {           /* algorithm for the signature message digest */
+      if (!optional) {
+	snprintf (fmt, sizeof (fmt), "%%%ss", prefix);
+	snprintf (dest, destlen, fmt, NONULL (cctx->digestalg));
+      }
+      else if (!cctx->key)
+	optional = 0;
+      break;
+    }
+
     default:
       *dest = '\0';
       break;
@@ -299,6 +311,7 @@ static pid_t smime_invoke (FILE **smimein, FILE **smimeout, FILE **smimeerr,
 			   const char *fname,
 			   const char *sig_fname,
 			   const char *cryptalg,
+			   const char *digestalg,
 			   const char *key,
 			   const char *certificates,
 			   const char *intermediates,
@@ -316,6 +329,7 @@ static pid_t smime_invoke (FILE **smimein, FILE **smimeout, FILE **smimeerr,
   cctx.sig_fname       = sig_fname;
   cctx.key	       = key;
   cctx.cryptalg	       = cryptalg;
+  cctx.digestalg       = digestalg;
   cctx.certificates    = certificates;
   cctx.intermediates   = intermediates;
   
@@ -936,7 +950,7 @@ static int smime_handle_cert_email (char *certificate, char *mailbox,
 
   if ((thepid =  smime_invoke (NULL, NULL, NULL,
 			       -1, fileno (fpout), fileno (fperr),
-			       certificate, NULL, NULL, NULL, NULL, NULL,
+			       certificate, NULL, NULL, NULL, NULL, NULL, NULL,
 			       SmimeGetCertEmailCommand))== -1)
   {
     mutt_message (_("Error: unable to create OpenSSL subprocess!"));
@@ -1033,7 +1047,7 @@ static char *smime_extract_certificate (char *infile)
   */
   if ((thepid =  smime_invoke (NULL, NULL, NULL,
 			       -1, fileno (fpout), fileno (fperr),
-			       infile, NULL, NULL, NULL, NULL, NULL,
+			       infile, NULL, NULL, NULL, NULL, NULL, NULL,
 			       SmimePk7outCommand))== -1)
   {
     mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
@@ -1077,7 +1091,7 @@ static char *smime_extract_certificate (char *infile)
    */
   if ((thepid =  smime_invoke (NULL, NULL, NULL,
 			       -1, fileno (fpout), fileno (fperr),
-			       pk7out, NULL, NULL, NULL, NULL, NULL,
+			       pk7out, NULL, NULL, NULL, NULL, NULL, NULL,
 			       SmimeGetCertCommand))== -1)
   {
     mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
@@ -1142,7 +1156,7 @@ static char *smime_extract_signer_certificate (char *infile)
    */
   if ((thepid =  smime_invoke (NULL, NULL, NULL,
 			       -1, -1, fileno (fperr),
-			       infile, NULL, NULL, NULL, certfile, NULL,
+			       infile, NULL, NULL, NULL, NULL, certfile, NULL,
 			       SmimeGetSignerCertCommand))== -1)
   {
     mutt_any_key_to_continue (_("Error: unable to create OpenSSL subprocess!"));
@@ -1217,7 +1231,7 @@ void smime_invoke_import (char *infile, char *mailbox)
   
     if ((thepid =  smime_invoke (&smimein, NULL, NULL,
 				 -1, fileno(fpout), fileno(fperr),
-				 certfile, NULL, NULL, NULL, NULL, NULL,
+				 certfile, NULL, NULL, NULL, NULL, NULL, NULL,
 				 SmimeImportCertCommand))== -1)
     {
       mutt_message (_("Error: unable to create OpenSSL subprocess!"));
@@ -1329,7 +1343,7 @@ pid_t smime_invoke_encrypt (FILE **smimein, FILE **smimeout, FILE **smimeerr,
 {
   return smime_invoke (smimein, smimeout, smimeerr,
 		       smimeinfd, smimeoutfd, smimeerrfd,
-		       fname, NULL, SmimeCryptAlg, NULL, uids, NULL,
+		       fname, NULL, SmimeCryptAlg, NULL, NULL, uids, NULL,
 		       SmimeEncryptCommand);
 }
 
@@ -1340,7 +1354,7 @@ pid_t smime_invoke_sign (FILE **smimein, FILE **smimeout, FILE **smimeerr,
 			 const char *fname)
 {
   return smime_invoke (smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-		       smimeerrfd, fname, NULL, NULL, SmimeKeyToUse,
+		       smimeerrfd, fname, NULL, NULL, SmimeDigestAlg, SmimeKeyToUse,
 		       SmimeCertToUse, SmimeIntermediateToUse,
 		       SmimeSignCommand);
 }
@@ -1467,6 +1481,33 @@ BODY *smime_build_smime_entity (BODY *a, char *certlist)
 }
 
 
+/* The openssl -md doesn't want hyphens:
+ *   md5, sha1,  sha224,  sha256,  sha384,  sha512
+ * However, the micalg does:
+ *   md5, sha-1, sha-224, sha-256, sha-384, sha-512
+ */
+static char *openssl_md_to_smime_micalg(char *md)
+{
+  char *micalg;
+  size_t l;
+
+  if (!md)
+    return 0;
+
+  if (mutt_strncasecmp ("sha", md, 3) == 0)
+  {
+    l = strlen (md) + 2;
+    micalg = (char *)safe_malloc (l);
+    snprintf (micalg, l, "sha-%s", md +3);
+  }
+  else
+  {
+    micalg = safe_strdup (md);
+  }
+
+  return micalg;
+}
+
 
 
 BODY *smime_sign_message (BODY *a )
@@ -1480,6 +1521,7 @@ BODY *smime_sign_message (BODY *a )
   pid_t thepid;
   smime_key_t *default_key;
   char *intermediates;
+  char *micalg;
 
   if (!SmimeDefaultKey)
   {
@@ -1586,8 +1628,11 @@ BODY *smime_sign_message (BODY *a )
   t->disposition = DISPINLINE;
 
   mutt_generate_boundary (&t->parameter);
-  /* check if this can be extracted from private key somehow.... */
-  mutt_set_parameter ("micalg", "sha1", &t->parameter);
+
+  micalg = openssl_md_to_smime_micalg (SmimeDigestAlg);
+  mutt_set_parameter ("micalg", micalg, &t->parameter);
+  FREE (&micalg);
+
   mutt_set_parameter ("protocol", "application/x-pkcs7-signature",
 		     &t->parameter);
 
@@ -1629,7 +1674,7 @@ pid_t smime_invoke_verify (FILE **smimein, FILE **smimeout, FILE **smimeerr,
 			   const char *fname, const char *sig_fname, int opaque)
 {
   return smime_invoke (smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-		       smimeerrfd, fname, sig_fname, NULL, NULL, NULL, NULL,
+		       smimeerrfd, fname, sig_fname, NULL, NULL, NULL, NULL, NULL,
 		       (opaque ? SmimeVerifyOpaqueCommand : SmimeVerifyCommand));
 }
 
@@ -1640,7 +1685,7 @@ pid_t smime_invoke_decrypt (FILE **smimein, FILE **smimeout, FILE **smimeerr,
 			    const char *fname)
 {
   return smime_invoke (smimein, smimeout, smimeerr, smimeinfd, smimeoutfd,
-		       smimeerrfd, fname, NULL, NULL, SmimeKeyToUse,
+		       smimeerrfd, fname, NULL, NULL, NULL, SmimeKeyToUse,
 		       SmimeCertToUse, NULL, SmimeDecryptCommand);
 }
 

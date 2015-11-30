@@ -2720,6 +2720,7 @@ struct option_t MuttVars[] = {
   ** .dt %k .dd The key-pair specified with $$smime_default_key
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
+  ** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
   ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
   ** .          points to a directory or file, this expands to
   ** .          ``-CApath $$smime_ca_location'' or ``-CAfile $$smime_ca_location''.
@@ -2841,6 +2842,13 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is a format string, see the $$smime_decrypt_command command for
   ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_sign_digest_alg",	DT_STR,	 R_NONE, UL &SmimeDigestAlg, UL "sha256" },
+  /*
+  ** .pp
+  ** This sets the algorithm that should be used for the signature message digest.
+  ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
   ** (S/MIME only)
   */
   { "smime_sign_opaque_command", 	DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0},

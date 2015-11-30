@@ -65,8 +65,12 @@ set smime_encrypt_with="aes256"
 # Encrypt a message.  Input file is a MIME entity.
 set smime_encrypt_command="openssl smime -encrypt -%a -outform DER -in %f %c"
 
+# Algorithm for the signature message digest.
+# Valid choices are md5, sha1, sha224, sha256, sha384, sha512.
+set smime_sign_digest_alg="sha256"
+
 # Sign.
-set smime_sign_command="openssl smime -sign -signer %c -inkey %k -passin stdin -in %f -certfile %i -outform DER"
+set smime_sign_command="openssl smime -sign -md %d -signer %c -inkey %k -passin stdin -in %f -certfile %i -outform DER"
 
 
 
@@ -89,7 +93,7 @@ openssl smime -verify -inform DER -in %s -noverify 2>/dev/null"
 
 # Sign.  If you wish to NOT include the certificate your CA used in signing
 # your public key, use this command instead.
-# set smime_sign_command="openssl smime -sign -signer %c -inkey %k -passin stdin -in %f -outform DER"
+# set smime_sign_command="openssl smime -sign -md %d -signer %c -inkey %k -passin stdin -in %f -outform DER"
 #
 # In order to verify the signature only and skip checking the certificate chain:
 #
