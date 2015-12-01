@@ -617,10 +617,10 @@ int mutt_index_menu (void)
     if (menu->redraw & REDRAW_FULL)
     {
       menu_redraw_full (menu);
-      draw_sidebar (menu->menu);
+      draw_sidebar();
       mutt_show_error ();
     } else if (menu->redraw & REDRAW_SIDEBAR) {
-      draw_sidebar (menu->menu);
+      draw_sidebar();
       menu->redraw &= ~REDRAW_SIDEBAR;
     }
 
@@ -2340,7 +2340,7 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_NEXT_NEW:
       case OP_SIDEBAR_PREV_NEW:
-        scroll_sidebar(op, menu->menu);
+        scroll_sidebar (op);
         break;
       default:
 	if (menu->menu == MENU_MAIN)

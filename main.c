@@ -51,7 +51,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <limits.h>
 #include <sys/utsname.h>
 
 #ifdef HAVE_GETOPT_H

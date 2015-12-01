@@ -705,21 +705,17 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 void mx_fastclose_mailbox (CONTEXT *ctx)
 {
   int i;
-#ifndef BUFFY_SIZE
-  struct utimbuf ut;
-#endif
 
   if(!ctx) 
     return;
-#ifndef BUFFY_SIZE
+
   /* fix up the times so buffy won't get confused */
-  if (ctx->peekonly && ctx->path && ctx->mtime > ctx->atime)
-  {
-    ut.actime = ctx->atime;
+  struct utimbuf ut;
+  if (ctx->peekonly && ctx->path && ctx->mtime > ctx->atime) {
+    ut.actime  = ctx->atime;
     ut.modtime = ctx->mtime;
     utime (ctx->path, &ut);
   }
-#endif
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */

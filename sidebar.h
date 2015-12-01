@@ -20,16 +20,10 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
-struct MBOX_LIST {
-	char *path;
-	int msgcount;
-	int new;
-} MBLIST;
-
 /* parameter is whether or not to go to the status line */
 /* used for omitting the last | that covers up the status bar in the index */
-int draw_sidebar (int);
-void scroll_sidebar (int, int);
+void draw_sidebar (void);
+void scroll_sidebar (int);
 void set_buffystats (CONTEXT*);
 void set_curbuffy (char*);
 int sidebar_should_refresh();

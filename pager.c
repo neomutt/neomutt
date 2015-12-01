@@ -1842,7 +1842,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* redraw the pager_index indicator, because the
        * flags for this message might have changed. */
       menu_redraw_current (index);
-      draw_sidebar (MENU_PAGER);
+      draw_sidebar();
 
       /* print out the index status bar */
       menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
@@ -1856,7 +1856,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
     /* if we're not using the index, update every time */
     if (index == 0)
-      draw_sidebar (MENU_PAGER);
+      draw_sidebar();
 
     redraw = 0;
 
@@ -2804,7 +2804,7 @@ search_next:
       case OP_SIDEBAR_PREV_NEW:
       case OP_SIDEBAR_SCROLL_DOWN:
       case OP_SIDEBAR_SCROLL_UP:
-	scroll_sidebar(ch, MENU_PAGER);
+	scroll_sidebar (ch);
 	break;
 
       default:
