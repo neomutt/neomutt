@@ -29,7 +29,6 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 #include "mutt_curses.h"
-#include "sidebar.h"
 
 #include <string.h>
 #include <stdlib.h>

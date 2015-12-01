@@ -28,7 +28,6 @@
 #include "mutt_menu.h"
 #include "sidebar.h"
 
-/*BUFFY *CurBuffy = 0;*/
 static BUFFY *TopBuffy;
 static BUFFY *BottomBuffy;
 static int known_lines;
@@ -76,7 +75,7 @@ find_prev_new (int wrap)
 }
 
 void
-calc_boundaries()
+calc_boundaries (void)
 {
 	BUFFY *tmp = Incoming;
 
@@ -117,7 +116,6 @@ sidebar_format_str (char *dest, size_t destlen, size_t col, char op, const char 
 	const char *prefix, const char *ifstring, const char *elsestring,
 	unsigned long data, format_flag flags)
 {
-	/* casting from unsigned long - srsly?! */
 	struct sidebar_entry *sbe = (struct sidebar_entry *) data;
 	unsigned int optional;
 	char fmt[SHORT_STRING], buf[SHORT_STRING];
@@ -212,8 +210,8 @@ make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 	}
 }
 
-int
-draw_sidebar (int menu)
+void
+draw_sidebar (void)
 {
 	BUFFY *tmp;
 #ifndef USE_SLANG_CURSES
@@ -258,10 +256,8 @@ draw_sidebar (int menu)
 	}
 
 
-/*	if (SidebarWidth == 0) return 0; */
 	if (SidebarWidth > 0 && option (OPTSIDEBAR) && delim_len >= SidebarWidth) {
 		unset_option (OPTSIDEBAR);
-		/* saveSidebarWidth = SidebarWidth; */
 		if (saveSidebarWidth > delim_len) {
 			SidebarWidth = saveSidebarWidth;
 			mutt_error (_("Value for sidebar_delim is too long. Disabling sidebar."));
@@ -272,7 +268,7 @@ draw_sidebar (int menu)
 			sleep (4); /* the advise to set a sane value should be seen long enough */
 		}
 		saveSidebarWidth = 0;
-		return (0);
+		return;
 	}
 
 	if (SidebarWidth == 0 || !option (OPTSIDEBAR)) {
@@ -281,7 +277,7 @@ draw_sidebar (int menu)
 			SidebarWidth = 0;
 		}
 		unset_option (OPTSIDEBAR);
-		return 0;
+		return;
 	}
 
 	/* get attributes for divider */
@@ -308,13 +304,13 @@ draw_sidebar (int menu)
 	}
 
 	if (Incoming == 0)
-		return 0;
+		return;
 	lines = 0;
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
 		lines++; /* either one will occupy the first line */
 
 	if (known_lines != LINES || TopBuffy == 0 || BottomBuffy == 0)
-		calc_boundaries (menu);
+		calc_boundaries();
 	if (CurBuffy == 0)
 		CurBuffy = Incoming;
 
@@ -422,7 +418,6 @@ draw_sidebar (int menu)
 		for (; i < SidebarWidth - delim_len; i++)
 			addch (' ');
 	}
-	return 0;
 }
 
 int
@@ -436,7 +431,7 @@ sidebar_should_refresh()
 }
 
 void
-scroll_sidebar (int op, int menu)
+scroll_sidebar (int op)
 {
 	BUFFY *tmp;
 	if (!SidebarWidth)
@@ -474,22 +469,22 @@ scroll_sidebar (int op, int menu)
 		case OP_SIDEBAR_SCROLL_UP:
 			CurBuffy = TopBuffy;
 			if (CurBuffy != Incoming) {
-				calc_boundaries (menu);
+				calc_boundaries();
 				CurBuffy = CurBuffy->prev;
 			}
 			break;
 		case OP_SIDEBAR_SCROLL_DOWN:
 			CurBuffy = BottomBuffy;
 			if (CurBuffy->next) {
-				calc_boundaries (menu);
+				calc_boundaries();
 				CurBuffy = CurBuffy->next;
 			}
 			break;
 		default:
 			return;
 	}
-	calc_boundaries (menu);
-	draw_sidebar (menu);
+	calc_boundaries();
+	draw_sidebar();
 }
 
 void
