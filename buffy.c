@@ -248,7 +248,7 @@ static BUFFY *buffy_new (const char *path)
 
   buffy = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
   strfcpy (buffy->path, path, sizeof (buffy->path));
-  r = realpath(path, rp);
+  r = realpath (path, rp);
   strfcpy (buffy->realpath, r ? rp : path, sizeof (buffy->realpath));
   buffy->next = NULL;
   buffy->magic = 0;
@@ -333,7 +333,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     else
       (*tmp)->size = 0;
   }
-  Incoming = buffy_sort(Incoming);
+  Incoming = buffy_sort (Incoming);
   return 0;
 }
 
@@ -358,9 +358,9 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
       return 0;
   }
 
-  if (option(OPTSIDEBAR) && mailbox->msg_unread > 0) {
-      mailbox->new = 1;
-      return 1;
+  if (option (OPTSIDEBAR) && mailbox->msg_unread > 0) {
+    mailbox->new = 1;
+    return 1;
   }
 
   if ((dirp = opendir (path)) == NULL)
@@ -489,7 +489,7 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
   else
     statcheck = sb->st_mtime > sb->st_atime
       || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
-  if ((!option(OPTSIDEBAR) && statcheck) || (option(OPTSIDEBAR) && mailbox->msg_unread > 0))
+  if ((!option (OPTSIDEBAR) && statcheck) || (option (OPTSIDEBAR) && mailbox->msg_unread > 0))
   {
     if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
     {
@@ -604,8 +604,8 @@ int mutt_buffy_check (int force)
       case M_MBOX:
       case M_MMDF:
 	if (sidebar_should_refresh()) {
-		buffy_mbox_update (tmp, &sb);
-		sidebar_updated();
+	  buffy_mbox_update (tmp, &sb);
+	  sidebar_updated();
 	}
 	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
@@ -613,8 +613,8 @@ int mutt_buffy_check (int force)
 
       case M_MAILDIR:
 	if (sidebar_should_refresh()) {
-		buffy_maildir_update (tmp);
-		sidebar_updated();
+	  buffy_maildir_update (tmp);
+	  sidebar_updated();
 	}
 	if (buffy_maildir_hasnew (tmp) > 0)
 	  BuffyCount++;
@@ -622,10 +622,10 @@ int mutt_buffy_check (int force)
 
       case M_MH:
 	if (sidebar_should_refresh()) {
-		mh_buffy_update (tmp->path, &tmp->msgcount, &tmp->msg_unread, &tmp->msg_flagged, &tmp->sb_last_checked);
-		sidebar_updated();
+	  mh_buffy_update (tmp->path, &tmp->msgcount, &tmp->msg_unread, &tmp->msg_flagged, &tmp->sb_last_checked);
+	  sidebar_updated();
 	}
-        mh_buffy(tmp);
+	mh_buffy(tmp);
 	if (tmp->new)
 	  BuffyCount++;
 	break;

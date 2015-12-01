@@ -1763,7 +1763,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 			    &QuoteList, &q_level, &force_redraw, &SearchRE) > 0)
 	    lines++;
 	  curline++;
-  	  move(lines + bodyoffset, SidebarWidth);
+	  move (lines + bodyoffset, SidebarWidth);
 	}
 	last_offset = lineInfo[curline].offset;
       } while (force_redraw);
@@ -1776,7 +1776,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  addch ('~');
 	addch ('\n');
 	lines++;
-  	move(lines + bodyoffset, SidebarWidth);
+	move (lines + bodyoffset, SidebarWidth);
       }
       NORMAL_COLOR;
 
@@ -1794,7 +1794,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       hfi.ctx = Context;
       hfi.pager_progress = pager_progress_str;
 
-      statuswidth = COLS - (option(OPTSTATUSONTOP) && PagerIndexLines > 0 ? SidebarWidth : 0);
+      statuswidth = COLS - (option (OPTSTATUSONTOP) && PagerIndexLines > 0 ? SidebarWidth : 0);
 
       if (last_pos < sb.st_size - 1)
 	snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%", (100 * last_offset / sb.st_size));
@@ -1804,11 +1804,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* print out the pager status bar */
       move (statusoffset, SidebarWidth);
       SETCOLOR (MT_COLOR_STATUS);
-      if(option(OPTSTATUSONTOP) && PagerIndexLines > 0) {
-          CLEARLINE_WIN (statusoffset);
+      if (option (OPTSTATUSONTOP) && PagerIndexLines > 0) {
+        CLEARLINE_WIN (statusoffset);
       } else {
-          CLEARLINE (statusoffset);
-          DrawFullLine = 1; /* for mutt_make_string_info */
+        CLEARLINE (statusoffset);
+        DrawFullLine = 1; /* for mutt_make_string_info */
       }
 
       if (IsHeader (extra) || IsMsgAttach (extra))
@@ -1825,7 +1825,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	snprintf (bn, sizeof (bn), "%s (%s)", banner, pager_progress_str);
 	mutt_paddstr (statuswidth, bn);
       }
-      if(!option(OPTSTATUSONTOP) || PagerIndexLines == 0)
+      if (!option (OPTSTATUSONTOP) || PagerIndexLines == 0)
           DrawFullLine = 0; /* reset */
       NORMAL_COLOR;
       if (option(OPTTSENABLED) && TSSupported)
@@ -1842,7 +1842,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* redraw the pager_index indicator, because the
        * flags for this message might have changed. */
       menu_redraw_current (index);
-      draw_sidebar(MENU_PAGER);
+      draw_sidebar (MENU_PAGER);
 
       /* print out the index status bar */
       menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
@@ -1855,8 +1855,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     }
 
     /* if we're not using the index, update every time */
-    if ( index == 0 )
-      draw_sidebar(MENU_PAGER);
+    if (index == 0)
+      draw_sidebar (MENU_PAGER);
 
     redraw = 0;
 
@@ -2805,7 +2805,7 @@ search_next:
       case OP_SIDEBAR_SCROLL_DOWN:
       case OP_SIDEBAR_SCROLL_UP:
 	scroll_sidebar(ch, MENU_PAGER);
- 	break;
+	break;
 
       default:
 	ch = -1;

@@ -1189,8 +1189,8 @@ int main (int argc, char **argv)
     {
       char tmpfolder[PATH_MAX];
       strfcpy (tmpfolder, folder, sizeof (tmpfolder));
-      if(!realpath(tmpfolder, folder))
-          strfcpy (folder, tmpfolder, sizeof (tmpfolder));
+      if (!realpath (tmpfolder, folder))
+        strfcpy (folder, tmpfolder, sizeof (tmpfolder));
     }
 
     mutt_str_replace (&CurrentFolder, folder);
@@ -1215,7 +1215,7 @@ int main (int argc, char **argv)
     if((Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL))
        || !explicit_folder)
     {
-      set_curbuffy(folder);
+      set_curbuffy (folder);
       mutt_index_menu ();
       if (Context)
 	FREE (&Context);

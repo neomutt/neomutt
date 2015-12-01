@@ -717,14 +717,14 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   {
     ut.actime = ctx->atime;
     ut.modtime = ctx->mtime;
-    utime (ctx->path, &ut); 
+    utime (ctx->path, &ut);
   }
 #endif
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
-  if(!ctx->peekonly)
-    mutt_buffy_setnotified(ctx->path);
+  if (!ctx->peekonly)
+  mutt_buffy_setnotified(ctx->path);
 
   if (ctx->mx_close)
     ctx->mx_close (ctx);
@@ -737,7 +737,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
   ctx->msgcount -= ctx->deleted;
-  set_buffystats(ctx);
+  set_buffystats (ctx);
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);
   FREE (&ctx->path);
