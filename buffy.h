@@ -35,7 +35,7 @@ typedef struct buffy_t
   short magic;			/* mailbox type */
   short newly_created;		/* mbox or mmdf just popped into existence */
   time_t last_visited;		/* time of last exit from this mailbox */
-  time_t sb_last_checked;      /* time of last buffy check from sidebar */
+  time_t sb_last_checked;	/* time of last buffy check from sidebar */
 }
 BUFFY;
 

@@ -609,7 +609,7 @@ int mutt_index_menu (void)
        do_buffy_notify = 1;
     }
 
-    if(option(OPTSIDEBAR))
+    if (option (OPTSIDEBAR))
         menu->redraw |= REDRAW_SIDEBAR;
 
     if (op != -1)
@@ -618,11 +618,11 @@ int mutt_index_menu (void)
     if (menu->redraw & REDRAW_FULL)
     {
       menu_redraw_full (menu);
-      draw_sidebar(menu->menu);
+      draw_sidebar (menu->menu);
       mutt_show_error ();
-    } else if(menu->redraw & REDRAW_SIDEBAR) {
-        draw_sidebar(menu->menu);
-        menu->redraw &= ~REDRAW_SIDEBAR;
+    } else if (menu->redraw & REDRAW_SIDEBAR) {
+      draw_sidebar (menu->menu);
+      menu->redraw &= ~REDRAW_SIDEBAR;
     }
 
     if (menu->menu == MENU_MAIN)
@@ -649,7 +649,7 @@ int mutt_index_menu (void)
         DrawFullLine = 0;
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-        set_buffystats(Context);
+	set_buffystats (Context);
 	mutt_paddstr (COLS, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
@@ -1111,7 +1111,7 @@ int mutt_index_menu (void)
 	  break;
 
 	CHECK_MSGCOUNT;
-        CHECK_VISIBLE;
+	CHECK_VISIBLE;
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
@@ -1203,11 +1203,12 @@ int mutt_index_menu (void)
 	{
 	  mutt_buffy (buf, sizeof (buf));
 
-          if ( op == OP_SIDEBAR_OPEN ) {
-              if(!CurBuffy)
-                break;
-            strncpy( buf, CurBuffy->path, sizeof(buf) );  
-	    } else if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+	  if (op == OP_SIDEBAR_OPEN) {
+	    if (!CurBuffy)
+	      break;
+	    strncpy (buf, CurBuffy->path, sizeof (buf));
+	  } else
+	  if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
 	  {
 	    if (menu->menu == MENU_PAGER)
 	    {
@@ -1225,7 +1226,7 @@ int mutt_index_menu (void)
 	}
 
 	mutt_expand_path (buf, sizeof (buf));
-        set_curbuffy(buf);
+	set_curbuffy (buf);
 	if (mx_get_magic (buf) <= 0)
 	{
 	  mutt_error (_("%s is not a mailbox."), buf);

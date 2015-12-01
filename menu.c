@@ -240,7 +240,7 @@ void menu_redraw_index (MUTTMENU *menu)
   int do_color;
   int attr;
 
-  draw_sidebar(1);
+  draw_sidebar (1);
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
   {
     if (i < menu->max)
@@ -274,7 +274,7 @@ void menu_redraw_index (MUTTMENU *menu)
     else
     {
       NORMAL_COLOR;
-      CLEARLINE_WIN (i - menu->top + menu->offset);
+      CLEARLINE_WIN(i - menu->top + menu->offset);
     }
   }
   NORMAL_COLOR;
