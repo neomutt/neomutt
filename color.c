@@ -94,8 +94,10 @@ static const struct mapping_t Fields[] =
   { "underline",	MT_COLOR_UNDERLINE },
   { "index",		MT_COLOR_INDEX },
   { "prompt",		MT_COLOR_PROMPT },
+#ifdef USE_SIDEBAR
   { "sidebar_flagged",	MT_COLOR_FLAGGED },
   { "sidebar_new",	MT_COLOR_NEW },
+#endif
   { NULL,		0 }
 };
 

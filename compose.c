@@ -32,7 +32,9 @@
 #include "mailbox.h"
 #include "sort.h"
 #include "charset.h"
+#ifdef USE_SIDEBAR
 #include "sidebar.h"
+#endif
 
 #ifdef MIXMASTER
 #include "remailer.h"
@@ -249,7 +251,9 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
 
 static void draw_envelope (HEADER *msg, char *fcc)
 {
+#ifdef USE_SIDEBAR
   sb_draw();
+#endif
   draw_envelope_addr (HDR_FROM, msg->env->from);
   draw_envelope_addr (HDR_TO, msg->env->to);
   draw_envelope_addr (HDR_CC, msg->env->cc);

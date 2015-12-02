@@ -175,6 +175,15 @@ if test x$have_smime != xno ; then
 	SMIMEAUX_TARGET="smime_keys"
 fi
 
+AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
+[       if test x$enableval = xyes ; then
+		AC_DEFINE(USE_SIDEBAR,1,[ Define if you want support for the sidebar. ])
+		OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
+		need_sidebar="yes"
+        fi
+])
+AM_CONDITIONAL(BUILD_SIDEBAR, test x$need_sidebar = xyes)
+
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
    then
