@@ -1282,7 +1282,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-	if ((col < COLS-SidebarWidth && wlen < destlen) || soft)
+	if ((col < (COLS - SidebarWidth) && (wlen < destlen)) || soft)
 	{
 	  int pad;
 
@@ -1312,7 +1312,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
 	    /* make sure right part is at most as wide as display */
-	    len = mutt_wstr_trunc (buf, destlen, COLS-offset-SidebarWidth, &wid);
+	    len = mutt_wstr_trunc (buf, destlen, COLS - offset - SidebarWidth, &wid);
 	    /* truncate left so that right part fits completely in */
 	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad*pw -offset, &col);
 	    wptr = dest + wlen;

@@ -243,8 +243,8 @@ void mutt_update_mailbox (BUFFY * b)
 static BUFFY *buffy_new (const char *path)
 {
   BUFFY* buffy;
-  char rp[PATH_MAX];
-  char *r;
+  char rp[PATH_MAX] = "";
+  char *r = NULL;
 
   buffy = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
   strfcpy (buffy->path, path, sizeof (buffy->path));
@@ -266,7 +266,8 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   BUFFY **tmp,*tmp1;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
-  char f1[PATH_MAX], f2[PATH_MAX];
+  char f1[PATH_MAX];
+  char f2[PATH_MAX];
   char *p, *q;
 
   while (MoreArgs (s))

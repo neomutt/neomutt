@@ -1794,7 +1794,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       hfi.ctx = Context;
       hfi.pager_progress = pager_progress_str;
 
-      statuswidth = COLS - (option (OPTSTATUSONTOP) && PagerIndexLines > 0 ? SidebarWidth : 0);
+      statuswidth = COLS;
+      if (option (OPTSTATUSONTOP) && (PagerIndexLines > 0))
+        statuswidth -= SidebarWidth;
 
       if (last_pos < sb.st_size - 1)
 	snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%", (100 * last_offset / sb.st_size));
