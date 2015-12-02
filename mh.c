@@ -295,6 +295,17 @@ void mh_buffy(BUFFY *b)
   mhs_free_sequences (&mhs);
 }
 
+/**
+ * mh_buffy_update - Update messages counts for an mh mailbox
+ * @path:            Pathname of the mailbox
+ * @msg_count:       Out: total number of messages
+ * @msg_unread:      Out: number of unread messages
+ * @msg_flagged:     Out: number of flagged messages
+ * @sb_last_checked: Out: timestamp the mailbox was last checked (NOW)
+ *
+ * Read through an mh mailbox and count messages.  Save the number of new,
+ * flagged messages and a timestamp for now.
+ */
 void
 mh_buffy_update (const char *path, int *msgcount, int *msg_unread, int *msg_flagged, time_t *sb_last_checked)
 {

@@ -2595,80 +2595,124 @@ struct option_t MuttVars[] = {
   ** Command to use when spawning a subshell.  By default, the user's login
   ** shell from \fC/etc/passwd\fP is used.
   */
-
-  {"sidebar_delim", DT_STR, R_BOTH, UL &SidebarDelim, UL "|"},
+  { "sidebar_delim", DT_STR, R_BOTH, UL &SidebarDelim, UL "|" },
   /*
   ** .pp
-  ** This specifies the delimiter between the sidebar (if visible) and 
-  ** other screens.
+  ** This specifies the character to be drawn between the sidebar (when
+  ** visible) and the other Mutt panels. ASCII and Unicode line-drawing
+  ** characters are supported.
+  ** .pp
+  ** \fBNote:\fP Only the first character of sidebar_delim is used.
   */
-  { "sidebar_delim_chars",             DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
+  { "sidebar_delim_chars", DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
   /*
   ** .pp
   ** This contains the list of characters which you would like to treat
-  ** as folder separators for displaying paths in the sidebar.  If
-  ** you're not using IMAP folders, you probably prefer setting this to "/"
-  ** alone.
+  ** as folder separators for displaying paths in the sidebar.
+  ** .pp
+  ** Local mail is often arranged in directories: `dir1/dir2/mailbox'.
+  ** .ts
+  ** set sidebar_delim_chars='/'
+  ** .te
+  ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
+  ** .ts
+  ** set sidebar_delim_chars='.'
+  ** .te
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_shortpath, $$sidebar_folderindent, $$sidebar_indentstr.
   */
   { "sidebar_folderindent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
   /*
   ** .pp
-  ** Should folders be indented in the sidebar.
+  ** Set this to indent mailboxes in the sidebar.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_shortpath, $$sidebar_indentstr, $$sidebar_delim_chars.
   */
-  {"sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S"},
+  { "sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S" },
   /*
   ** .pp
-  ** Format string for the sidebar. The sequences `%N', `%F' and `%S'
-  ** will be replaced by the number of new or flagged messages or the total
-  ** size of them mailbox. `%B' will be replaced with the name of the mailbox.
-  ** The `%!' sequence will be expanded to `!' if there is one flagged message;
-  ** to `!!' if there are two flagged messages; and to `n!' for n flagged
-  ** messages, n>2.
+  ** This variable allows you to customize the sidebar display. This string is
+  ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
+  ** sequences:
+  ** .dl
+  ** .dt %B  .dd Name of the mailbox
+  ** .dt %S  .dd Size of mailbox (total number of messages)
+  ** .dt %N  .dd Number of New messages in the mailbox
+  ** .dt %F  .dd Number of Flagged messages in the mailbox
+  ** .dt %!  .dd `!' : one flagged message; `!!' : two flagged messages; `n!' :
+  **             n flagged messages (for n > 2).
+  ** .de
   */
-  {"sidebar_indentstr", DT_STR, R_BOTH, UL &SidebarIndentStr, UL " "},
+  { "sidebar_indentstr", DT_STR, R_BOTH, UL &SidebarIndentStr, UL "  " },
   /*
   ** .pp
-  ** This specifies the string that is used to indent items
-  ** with sidebar_folderindent= yes
+  ** This specifies the string that is used to indent mailboxes in the sidebar.
+  ** It defaults to two spaces.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_shortpath, $$sidebar_folderindent, $$sidebar_delim_chars.
   */
-  {"sidebar_newmail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
+  { "sidebar_newmail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
   /*
   ** .pp
-  ** Show only new and flagged mail in the sidebar.
+  ** When set, the sidebar will only display mailboxes containing new, or
+  ** flagged, mail.
+  ** .pp
+  ** \fBSee also:\fP $sidebar_whitelist.
   */
   { "sidebar_next_new_wrap", DT_BOOL, R_BOTH, UL OPTSIDEBARNEXTNEWWRAP, 0 },
   /*
   ** .pp
-  ** Setting sidebar_next_new_wrap=yes causes mutt to wrap around the list
-  ** of mailboxes when using Next/Previous New Mailbox commands.
+  ** When set, the \fC<sidebar-next-new>\fP command will not stop and the end of
+  ** the list of mailboxes, but wrap around to the beginning. The
+  ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
+  ** the end of the list.
   */
   { "sidebar_refresh", DT_NUM, R_BOTH, UL &SidebarRefresh, 60 },
   /*
   ** .pp
-  ** Do not refresh sidebar in less than $sidebar_refresh seconds,
-  ** (0 disables refreshing).
+  ** Set sidebar_refresh to the minimum number of seconds between refreshes.
+  ** This will reduced network traffic.
+  ** .pp
+  ** \fBNote:\fP Set to 0 to disable refreshing.
   */
   { "sidebar_shortpath", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
   /*
   ** .pp
-  ** Should the sidebar shorten the path showed.
+  ** By default the sidebar will show the mailbox's path, relative to the
+  ** $$folder variable. Setting \fCsidebar_shortpath=yes\fP will shorten the
+  ** names relative to the previous name. Here's an example:
+  ** .dl
+  ** .dt \fBshortpath=no\fP .dd \fBshortpath=yes\fP .dd \fBshortpath=yes, folderindent=yes, indentstr=".."\fP
+  ** .dt \fCfruit\fP        .dd \fCfruit\fP         .dd \fCfruit\fP
+  ** .dt \fCfruit.apple\fP  .dd \fCapple\fP         .dd \fC..apple\fP
+  ** .dt \fCfruit.banana\fP .dd \fCbanana\fP        .dd \fC..banana\fP
+  ** .dt \fCfruit.cherry\fP .dd \fCcherry\fP        .dd \fC..cherry\fP
+  ** .de
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folderindent, $$sidebar_indentstr.
   */
   { "sidebar_sort", DT_BOOL, R_BOTH, OPTSIDEBARSORT, 0 },
   /*
   ** .pp
-  ** This specifies whether or not to sort the sidebar alphabetically.
+  ** This specifies whether or not to sort the sidebar mailboxes alphabetically.
+  ** .pp
+  ** \fBNote:\fP This config option must come before the mailboxes config.
   */
   { "sidebar_visible", DT_BOOL, R_BOTH, OPTSIDEBAR, 0 },
   /*
   ** .pp
-  ** This specifies whether or not to show sidebar (left-side list of folders).
+  ** This specifies whether or not to show sidebar. The sidebar shows a list of
+  ** all your mailboxes.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_format, $$sidebar_width
   */
   { "sidebar_width", DT_NUM, R_BOTH, UL &SidebarWidth, 0 },
   /*
   ** .pp
-  ** The width of the sidebar.
+  ** This controls the width of the sidebar.  It is measured in screen columns.
+  ** For example: sidebar_width=20 could display 20 ASCII characters, or 10
+  ** Chinese characters.
   */
-
   { "sig_dashes",	DT_BOOL, R_NONE, OPTSIGDASHES, 1 },
   /*
   ** .pp

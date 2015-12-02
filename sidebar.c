@@ -31,6 +31,11 @@ static BUFFY *TopBuffy;
 static BUFFY *BottomBuffy;
 static int    known_lines;
 
+/**
+ * struct sidebar_entry - Info about folders in the sidebar
+ *
+ * Used in the mutt_FormatString callback
+ */
 struct sidebar_entry {
 	char         box[SHORT_STRING];
 	unsigned int size;
@@ -38,6 +43,18 @@ struct sidebar_entry {
 	unsigned int flagged;
 };
 
+
+/**
+ * find_next_new - Find the next folder that contains new mail
+ * @wrap: Wrap around to the beginning if the end is reached
+ *
+ * Search down the list of mail folders for one containing new, or flagged,
+ * mail, or a folder that is in the SidebarWhitelist.
+ *
+ * Returns:
+ *	BUFFY*: Success
+ *	NULL:   Failure
+ */
 static BUFFY *
 find_next_new (int wrap)
 {
@@ -61,6 +78,17 @@ find_next_new (int wrap)
 	return NULL;
 }
 
+/**
+ * find_prev_new - Find the previous folder that contains new mail
+ * @wrap: Wrap around to the beginning if the end is reached
+ *
+ * Search up the list of mail folders for one containing new, or flagged, mail,
+ * or a folder that is in the SidebarWhitelist.
+ *
+ * Returns:
+ *	BUFFY*: Success
+ *	NULL:   Failure
+ */
 static BUFFY *
 find_prev_new (int wrap)
 {
@@ -84,7 +112,15 @@ find_prev_new (int wrap)
 	return NULL;
 }
 
-
+/**
+ * calc_boundaries - Keep our TopBuffy/BottomBuffy up-to-date
+ *
+ * Whenever the sidebar's view of the BUFFYs changes, or the screen changes
+ * size, we should check TopBuffy and BottomBuffy still have the correct
+ * values.
+ *
+ * Ideally, this should happen in the core of mutt.
+ */
 static void
 calc_boundaries (void)
 {
@@ -128,6 +164,26 @@ calc_boundaries (void)
 	}
 }
 
+/**
+ * cb_format_str - Create the string to show in the sidebar
+ * @dest:        Buffer in which to save string
+ * @destlen:     Buffer length
+ * @col:         Starting column, UNUSED
+ * @op:          printf-like operator, e.g. 'B'
+ * @src:         printf-like format string
+ * @prefix:      Field formatting string, UNUSED
+ * @ifstring:    If condition is met, display this string
+ * @elsestring:  Otherwise, display this string
+ * @data:        Pointer to our sidebar_entry
+ * @flags:       Format flags, e.g. M_FORMAT_OPTIONAL
+ *
+ * cb_format_str is a callback function for mutt_FormatString.  It understands
+ * five operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
+ * '%N' : Number of new messages, '%S' : Size (total number of messages),
+ * '%!' : Icon denoting number of flagged messages.
+ *
+ * Returns: src (unchanged)
+ */
 static const char *
 cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 	const char *prefix, const char *ifstring, const char *elsestring,
@@ -199,6 +255,20 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 	return src;
 }
 
+/**
+ * make_sidebar_entry - Turn mailbox data into a sidebar string
+ * @buf:     Buffer in which to save string
+ * @buflen:  Buffer length
+ * @width:   Desired width in screen cells
+ * @box:     Mailbox name
+ * @size:    Size (total number of messages)
+ * @new:     Number of new messages
+ * @flagged: Number of flagged messages
+ *
+ * Take all the relevant mailbox data and the desired screen width and then get
+ * mutt_FormatString to do the actual work. mutt_FormatString will callback to
+ * us using cb_format_str() for the sidebar specific formatting characters.
+ */
 static void
 make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 	unsigned int size, unsigned int new, unsigned int flagged)
@@ -237,6 +307,12 @@ make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 }
 
 
+/**
+ * sb_draw - Completely redraw the sidebar
+ *
+ * Completely refresh the sidebar region.  First draw the divider; then, for
+ * each BUFFY, call make_sidebar_entry; finally blank out any remaining space.
+ */
 void
 sb_draw (void)
 {
@@ -441,6 +517,16 @@ sb_draw (void)
 	}
 }
 
+/**
+ * sb_should_refresh - Check if the sidebar is due to be refreshed
+ *
+ * The "sidebar_refresh" config option allows the user to limit the frequency
+ * with which the sidebar is refreshed.
+ *
+ * Returns:
+ *	1  Yes, refresh is due
+ *	0  No,  refresh happened recently
+ */
 int
 sb_should_refresh (void)
 {
@@ -452,6 +538,20 @@ sb_should_refresh (void)
 	return 0;
 }
 
+/**
+ * sb_change_mailbox - Change the selected mailbox
+ * @op: Operation code
+ *
+ * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
+ * with new mail". The operations are listed OPS.SIDEBAR which is built
+ * into an enum in keymap_defs.h.
+ *
+ * If the operation is successful, CurBuffy will be set to the new mailbox.
+ * This function only *selects* the mailbox, doesn't *open* it.
+ *
+ * Allowed values are: OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW, OP_SIDEBAR_PREV,
+ * OP_SIDEBAR_PREV_NEW, OP_SIDEBAR_SCROLL_DOWN, OP_SIDEBAR_SCROLL_UP.
+ */
 void
 sb_change_mailbox (int op)
 {
@@ -467,6 +567,7 @@ sb_change_mailbox (int op)
 				CurBuffy = CurBuffy->next;
 				break;
 			}
+			/* drop through */
 		case OP_SIDEBAR_NEXT_NEW:
 			b = find_next_new (option (OPTSIDEBARNEXTNEWWRAP));
 			if (!b) {
@@ -482,6 +583,7 @@ sb_change_mailbox (int op)
 				CurBuffy = CurBuffy->prev;
 				break;
 			}
+			/* drop through */
 		case OP_SIDEBAR_PREV_NEW:
 			b = find_prev_new (option (OPTSIDEBARNEXTNEWWRAP));
 			if (!b) {
@@ -511,6 +613,13 @@ sb_change_mailbox (int op)
 	sb_draw();
 }
 
+/**
+ * sb_set_buffystats - Update the BUFFY's message counts from the CONTEXT
+ * @ctx:  A mailbox CONTEXT
+ *
+ * Given a mailbox CONTEXT, find a matching mailbox BUFFY and copy the message
+ * counts into it.
+ */
 void
 sb_set_buffystats (const CONTEXT *ctx)
 {
@@ -531,9 +640,18 @@ sb_set_buffystats (const CONTEXT *ctx)
 	}
 }
 
+/**
+ * sb_set_open_buffy - Set the CurBuffy based on a mailbox path
+ * @path: Mailbox path
+ *
+ * Search through the list of mailboxes.  If a BUFFY has a matching path, set
+ * CurBuffy to it.
+ */
 void
 sb_set_open_buffy (char *path)
 {
+	/* Even if the sidebar is hidden */
+
 	BUFFY *b = CurBuffy = Incoming;
 
 	if (!path || !b)
@@ -548,9 +666,17 @@ sb_set_open_buffy (char *path)
 	}
 }
 
+/**
+ * sb_set_update_time - Note the time that the sidebar was updated
+ *
+ * Update the timestamp representing the last sidebar update.  If the user
+ * configures "sidebar_refresh", this will help to reduce traffic.
+ */
 void
 sb_set_update_time (void)
 {
+	/* XXX - should this be public? */
+
 	SidebarLastRefresh = time (NULL);
 }
 

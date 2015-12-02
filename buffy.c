@@ -162,6 +162,18 @@ void mutt_buffy_cleanup (const char *buf, struct stat *st)
   }
 }
 
+/**
+ * buffy_compare_name - qsort callback to sort BUFFYs
+ * @a: First  BUFFY to compare
+ * @b: Second BUFFY to compare
+ *
+ * Compare the paths of two BUFFYs taking the locale into account.
+ *
+ * Returns:
+ *	-1: a precedes b
+ *	 0: a and b are identical
+ *	 1: b precedes a
+ */
 static int
 buffy_compare_name (const void *a, const void *b)
 {
@@ -171,6 +183,19 @@ buffy_compare_name (const void *a, const void *b)
 	return mutt_strcoll (b1->path, b2->path);
 }
 
+/**
+ * buffy_sort - Sort a linked list of BUFFYs
+ * @b: BUFFY at the head of the list to be sorted
+ *
+ * Take a linked list of BUFFYs and sort them by their paths according to the
+ * locale.  Once sorted, the prev/next links are restored.
+ *
+ * If the config option "sidebar_sort" isn't set, then the BUFFY is returned
+ * unchanged.
+ *
+ * Returns:
+ *	BUFFY at the head of the sorted list
+ */
 static BUFFY *
 buffy_sort (BUFFY *b)
 {
@@ -416,7 +441,13 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
   return 0;
 }
 
-/* update message counts for the sidebar */
+/**
+ * buffy_maildir_update - Update messages counts for a maildir mailbox
+ * @mailbox: BUFFY representing a maildir mailbox
+ *
+ * Open a mailbox directories and update our record of how many new, or
+ * flagged, messages there are.
+ */
 void
 buffy_maildir_update (BUFFY *mailbox)
 {
@@ -512,7 +543,15 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
   return rc;
 }
 
-/* update message counts for the sidebar */
+/**
+ * buffy_mbox_update - Update messages counts for an mbox mailbox
+ * @mailbox: BUFFY representing an mbox mailbox
+ * @sb:      stat(2) infomation about the mailbox file
+ *
+ * Open a mbox file and update our record of how many new, or flagged,
+ * messages there are. If the mailbox hasn't changed since the last call,
+ * the function does nothing.
+ */
 void
 buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 {
