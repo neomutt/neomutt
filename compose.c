@@ -304,7 +304,7 @@ static int edit_address_list (int line, ADDRESS **addr)
   /* redraw the expanded list so the user can see the result */
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), *addr, 1);
-  move (line, HDR_XOFFSET+SidebarWidth);
+  move (line, HDR_XOFFSET + SidebarWidth);
   mutt_paddstr (W, buf);
   
   return 0;

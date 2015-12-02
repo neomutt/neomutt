@@ -1038,7 +1038,7 @@ int main (int argc, char **argv)
     mutt_expand_path (folder, sizeof (folder));
 
     {
-      char tmpfolder[PATH_MAX];
+      char tmpfolder[PATH_MAX] = "";
       strfcpy (tmpfolder, folder, sizeof (tmpfolder));
       if (!realpath (tmpfolder, folder))
         strfcpy (folder, tmpfolder, sizeof (tmpfolder));

@@ -711,7 +711,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
 
   /* fix up the times so buffy won't get confused */
   struct utimbuf ut;
-  if (ctx->peekonly && ctx->path && ctx->mtime > ctx->atime) {
+  if (ctx->peekonly && ctx->path && (ctx->mtime > ctx->atime)) {
     ut.actime  = ctx->atime;
     ut.modtime = ctx->mtime;
     utime (ctx->path, &ut);
