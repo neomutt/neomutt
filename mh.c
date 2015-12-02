@@ -318,8 +318,9 @@ mh_buffy_update (const char *path, int *msgcount, int *msg_unread, int *msg_flag
 	if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN) {
 		msg_unread++;
 	}
-	if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED)
+	if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED) {
 		msg_flagged++;
+	}
 	mhs_free_sequences (&mhs);
 	*sb_last_checked = time (NULL);
 }

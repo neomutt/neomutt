@@ -174,7 +174,7 @@ buffy_compare_name (const void *a, const void *b)
 static BUFFY *
 buffy_sort (BUFFY *b)
 {
-	BUFFY *tmp = b;
+	BUFFY *tmp;
 	int buffycount = 0;
 	BUFFY **ary;
 	int i;
@@ -182,24 +182,24 @@ buffy_sort (BUFFY *b)
 	if (!option (OPTSIDEBARSORT))
 		return b;
 
-	for (; tmp != NULL; tmp = tmp->next)
+	for (tmp = b; tmp; tmp = tmp->next)
 		buffycount++;
 
 	ary = (BUFFY **) safe_calloc (buffycount, sizeof (*ary));
 
-	tmp = b;
-	for (i = 0; tmp != NULL; tmp = tmp->next, i++) {
+	for (tmp = b, i = 0; tmp; tmp = tmp->next, i++) {
 		ary[i] = tmp;
 	}
 
 	qsort (ary, buffycount, sizeof (*ary), buffy_compare_name);
 
 	for (i = 0; i < buffycount - 1; i++) {
-		ary[i]->next = ary[i+1];
+		ary[i]->next = ary[i + 1];
 	}
 	ary[buffycount - 1]->next = NULL;
+
 	for (i = 1; i < buffycount; i++) {
-		ary[i]->prev = ary[i-1];
+		ary[i]->prev = ary[i - 1];
 	}
 	ary[0]->prev = NULL;
 
@@ -419,12 +419,12 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
 void
 buffy_maildir_update (BUFFY *mailbox)
 {
-	char path[_POSIX_PATH_MAX];
-	DIR *dirp;
-	struct dirent *de;
-	char *p;
+	char path[_POSIX_PATH_MAX] = "";
+	DIR *dirp = NULL;
+	struct dirent *de = NULL;
+	char *p = NULL;
 
-	if (!option (OPTSIDEBAR))
+	if (!option (OPTSIDEBAR) || !mailbox)
 		return;
 
 	mailbox->msgcount    = 0;
@@ -433,7 +433,8 @@ buffy_maildir_update (BUFFY *mailbox)
 
 	snprintf (path, sizeof (path), "%s/new", mailbox->path);
 
-	if ((dirp = opendir (path)) == NULL) {
+	dirp = opendir (path);
+	if (!dirp) {
 		mailbox->magic = 0;
 		return;
 	}
@@ -452,7 +453,8 @@ buffy_maildir_update (BUFFY *mailbox)
 	closedir (dirp);
 	snprintf (path, sizeof (path), "%s/cur", mailbox->path);
 
-	if ((dirp = opendir (path)) == NULL) {
+	dirp = opendir (path);
+	if (!dirp) {
 		mailbox->magic = 0;
 		return;
 	}
@@ -517,7 +519,7 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 
 	if (!option (OPTSIDEBAR))
 		return;
-	if (mailbox->sb_last_checked > sb->st_mtime && mailbox->msgcount != 0)
+	if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msgcount != 0))
 		return; /* no check necessary */
 
 	ctx = mx_open_mailbox (mailbox->path, M_READONLY | M_QUIET | M_NOSORT | M_PEEK, NULL);
