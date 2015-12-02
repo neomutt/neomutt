@@ -298,44 +298,44 @@ void mh_buffy(BUFFY *b)
 #ifdef USE_SIDEBAR
 /**
  * mh_buffy_update - Update messages counts for an mh mailbox
- * @path:            Pathname of the mailbox
- * @msg_count:       Out: total number of messages
- * @msg_unread:      Out: number of unread messages
- * @msg_flagged:     Out: number of flagged messages
- * @sb_last_checked: Out: timestamp the mailbox was last checked (NOW)
+ * @mailbox: BUFFY representing a maildir mailbox
  *
  * Read through an mh mailbox and count messages.  Save the number of new,
  * flagged messages and a timestamp for now.
  */
 void
-mh_buffy_update (const char *path, int *msgcount, int *msg_unread, int *msg_flagged, time_t *sb_last_checked)
+mh_buffy_update (BUFFY *mailbox)
 {
-	int i;
-	struct mh_sequences mhs;
-	memset (&mhs, 0, sizeof (mhs));
+	if (!mailbox)
+		return;
 
 	if (!option (OPTSIDEBAR))
 		return;
 
-	if (mh_read_sequences (&mhs, path) < 0)
+	struct mh_sequences mhs;
+	memset (&mhs, 0, sizeof (mhs));
+
+	if (mh_read_sequences (&mhs, mailbox->path) < 0)
 		return;
 
-	msgcount    = 0;
-	msg_unread  = 0;
-	msg_flagged = 0;
+	mailbox->msgcount    = 0;
+	mailbox->msg_unread  = 0;
+	mailbox->msg_flagged = 0;
 
-	for (i = 0; i <= mhs.max; i++)
-		msgcount++;
-
+	int i;
+	for (i = 0; i <= mhs.max; i++) {
+		mailbox->msgcount++;
+	}
 	if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN) {
-		msg_unread++;
+		mailbox->msg_unread++;
 	}
 	if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED) {
-		msg_flagged++;
+		mailbox->msg_flagged++;
 	}
 	mhs_free_sequences (&mhs);
-	*sb_last_checked = time (NULL);
+	mailbox->sb_last_checked = time (NULL);
 }
+
 #endif
 
 static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)

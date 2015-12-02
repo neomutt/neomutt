@@ -697,7 +697,7 @@ int mutt_buffy_check (int force)
       case M_MH:
 #ifdef USE_SIDEBAR
 	if (sb_should_refresh()) {
-	  mh_buffy_update (tmp->path, &tmp->msgcount, &tmp->msg_unread, &tmp->msg_flagged, &tmp->sb_last_checked);
+	  mh_buffy_update (tmp);
 	  sb_set_update_time();
 	}
 #endif
