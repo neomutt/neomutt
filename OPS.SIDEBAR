@@ -1,0 +1,7 @@
+OP_SIDEBAR_NEXT "Move the highlight to next mailbox"
+OP_SIDEBAR_NEXT_NEW "Move the highlight to next mailbox with new mail"
+OP_SIDEBAR_OPEN "Open highlighted mailbox"
+OP_SIDEBAR_PREV "Move the highlight to previous mailbox"
+OP_SIDEBAR_PREV_NEW "Move the highlight to previous mailbox with new mail"
+OP_SIDEBAR_SCROLL_DOWN "Scroll the Sidebar down 1 page"
+OP_SIDEBAR_SCROLL_UP "Scroll the Sidebar up 1 page"

@@ -295,6 +295,7 @@ void mh_buffy(BUFFY *b)
   mhs_free_sequences (&mhs);
 }
 
+#ifdef USE_SIDEBAR
 /**
  * mh_buffy_update - Update messages counts for an mh mailbox
  * @path:            Pathname of the mailbox
@@ -335,6 +336,7 @@ mh_buffy_update (const char *path, int *msgcount, int *msg_unread, int *msg_flag
 	mhs_free_sequences (&mhs);
 	*sb_last_checked = time (NULL);
 }
+#endif
 
 static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
 {

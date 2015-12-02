@@ -31,7 +31,9 @@
 #include "url.h"
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
+#ifdef USE_SIDEBAR
 #include "sidebar.h"
+#endif
 
 #ifdef USE_SASL
 #include "mutt_sasl.h"
@@ -486,6 +488,12 @@ static void show_version (void)
 	"-USE_HCACHE  "
 #endif
 
+#ifdef USE_SIDEBAR
+	"+USE_SIDEBAR  "
+#else
+	"-USE_SIDEBAR  "
+#endif
+
 	);
 
 #ifdef ISPELL
@@ -558,7 +566,11 @@ init_extended_keys();
 
 int main (int argc, char **argv)
 {
+#ifdef USE_SIDEBAR
   char folder[PATH_MAX] = "";
+#else
+  char folder[_POSIX_PATH_MAX] = "";
+#endif
   char *subject = NULL;
   char *includeFile = NULL;
   char *draftFile = NULL;
@@ -1185,12 +1197,14 @@ int main (int argc, char **argv)
       strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
     mutt_expand_path (folder, sizeof (folder));
 
+#ifdef USE_SIDEBAR
     {
       char tmpfolder[PATH_MAX] = "";
       strfcpy (tmpfolder, folder, sizeof (tmpfolder));
       if (!realpath (tmpfolder, folder))
         strfcpy (folder, tmpfolder, sizeof (tmpfolder));
     }
+#endif
 
     mutt_str_replace (&CurrentFolder, folder);
     mutt_str_replace (&LastFolder, folder);
@@ -1214,7 +1228,9 @@ int main (int argc, char **argv)
     if((Context = mx_open_mailbox (folder, ((flags & M_RO) || option (OPTREADONLY)) ? M_READONLY : 0, NULL))
        || !explicit_folder)
     {
+#ifdef USE_SIDEBAR
       sb_set_open_buffy (folder);
+#endif
       mutt_index_menu ();
       if (Context)
 	FREE (&Context);

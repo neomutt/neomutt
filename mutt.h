@@ -428,12 +428,14 @@ enum
   OPTSAVEEMPTY,
   OPTSAVENAME,
   OPTSCORE,
+#ifdef USE_SIDEBAR
   OPTSIDEBAR,
   OPTSIDEBARFOLDERINDENT,
   OPTSIDEBARNEWMAILONLY,
   OPTSIDEBARNEXTNEWWRAP,
   OPTSIDEBARSHORTPATH,
   OPTSIDEBARSORT,
+#endif
   OPTSIGDASHES,
   OPTSIGONTOP,
   OPTSORTRE,
@@ -878,7 +880,9 @@ typedef struct _context
 {
   char *path;
   FILE *fp;
+#ifdef USE_SIDEBAR
   time_t atime;
+#endif
   time_t mtime;
   off_t size;
   off_t vsize;
@@ -913,7 +917,9 @@ typedef struct _context
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */
   unsigned int closing : 1;	/* mailbox is being closed */
+#ifdef USE_SIDEBAR
   unsigned int peekonly : 1;	/* just taking a glance, revert atime */
+#endif
 
   /* driver hooks */
   void *data;			/* driver specific data */

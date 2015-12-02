@@ -29,7 +29,9 @@
 #include "pager.h"
 #include "attach.h"
 #include "mbyte.h"
+#ifdef USE_SIDEBAR
 #include "sidebar.h"
+#endif
 
 #include "mutt_crypt.h"
 
@@ -1097,7 +1099,9 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
   int wrap_cols = mutt_term_width ((flags & M_PAGER_NOWRAP) ? 0 : Wrap);
+#ifdef USE_SIDEBAR
   wrap_cols -= SidebarWidth;
+#endif
 
   if (check_attachment_marker ((char *)buf) == 0)
     wrap_cols = COLS;
@@ -1763,7 +1767,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 			    &QuoteList, &q_level, &force_redraw, &SearchRE) > 0)
 	    lines++;
 	  curline++;
+#ifdef USE_SIDEBAR
 	  move (lines + bodyoffset, SidebarWidth);
+#endif
 	}
 	last_offset = lineInfo[curline].offset;
       } while (force_redraw);
@@ -1776,7 +1782,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  addch ('~');
 	addch ('\n');
 	lines++;
+#ifdef USE_SIDEBAR
 	move (lines + bodyoffset, SidebarWidth);
+#endif
       }
       NORMAL_COLOR;
 
@@ -1794,9 +1802,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       hfi.ctx = Context;
       hfi.pager_progress = pager_progress_str;
 
+#ifdef USE_SIDEBAR
       statuswidth = COLS;
       if (option (OPTSTATUSONTOP) && (PagerIndexLines > 0))
         statuswidth -= SidebarWidth;
+#endif
 
       if (last_pos < sb.st_size - 1)
 	snprintf(pager_progress_str, sizeof(pager_progress_str), OFF_T_FMT "%%", (100 * last_offset / sb.st_size));
@@ -1806,6 +1816,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* print out the pager status bar */
       move (statusoffset, SidebarWidth);
       SETCOLOR (MT_COLOR_STATUS);
+#ifdef USE_SIDEBAR
       short sw = SidebarWidth;
       if (option (OPTSTATUSONTOP) && PagerIndexLines > 0) {
         CLEARLINE_WIN (statusoffset);
@@ -1814,6 +1825,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
         /* Temporarily lie about the sidebar width */
         SidebarWidth = 0;
       }
+#endif
 
       if (IsHeader (extra) || IsMsgAttach (extra))
       {
@@ -1829,9 +1841,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	snprintf (bn, sizeof (bn), "%s (%s)", banner, pager_progress_str);
 	mutt_paddstr (statuswidth, bn);
       }
+#ifdef USE_SIDEBAR
       if (!option (OPTSTATUSONTOP) || PagerIndexLines == 0)
         SidebarWidth = sw; /* Restore the sidebar width */
-
+#endif
       NORMAL_COLOR;
       if (option(OPTTSENABLED) && TSSupported)
       {
@@ -1847,7 +1860,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* redraw the pager_index indicator, because the
        * flags for this message might have changed. */
       menu_redraw_current (index);
+#ifdef USE_SIDEBAR
       sb_draw();
+#endif
 
       /* print out the index status bar */
       menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
@@ -1859,9 +1874,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       NORMAL_COLOR;
     }
 
+#ifdef USE_SIDEBAR
     /* if we're not using the index, update every time */
     if (index == 0)
       sb_draw();
+#endif
 
     redraw = 0;
 
@@ -2803,6 +2820,7 @@ search_next:
 	mutt_what_key ();
 	break;
 
+#ifdef USE_SIDEBAR
       case OP_SIDEBAR_NEXT:
       case OP_SIDEBAR_NEXT_NEW:
       case OP_SIDEBAR_PREV:
@@ -2811,6 +2829,7 @@ search_next:
       case OP_SIDEBAR_SCROLL_UP:
 	sb_change_mailbox (ch);
 	break;
+#endif
 
       default:
 	ch = -1;

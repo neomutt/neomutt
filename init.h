@@ -2665,6 +2665,7 @@ struct option_t MuttVars[] = {
   ** Command to use when spawning a subshell.  By default, the user's login
   ** shell from \fC/etc/passwd\fP is used.
   */
+#ifdef USE_SIDEBAR
   { "sidebar_delim", DT_STR, R_BOTH, UL &SidebarDelim, UL "|" },
   /*
   ** .pp
@@ -2783,6 +2784,7 @@ struct option_t MuttVars[] = {
   ** For example: sidebar_width=20 could display 20 ASCII characters, or 10
   ** Chinese characters.
   */
+#endif
   { "sig_dashes",	DT_BOOL, R_NONE, OPTSIGDASHES, 1 },
   /*
   ** .pp
@@ -3859,7 +3861,9 @@ const struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
   { "send2-hook",	mutt_parse_hook,	M_SEND2HOOK },
   { "set",		parse_set,		0 },
+#ifdef USE_SIDEBAR
   { "sidebar_whitelist",parse_list,		UL &SidebarWhitelist },
+#endif
   { "source",		parse_source,		0 },
   { "spam",		parse_spam_list,	M_SPAM },
   { "nospam",		parse_spam_list,	M_NOSPAM },

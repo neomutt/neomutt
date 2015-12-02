@@ -1535,7 +1535,11 @@ int imap_buffy_check (int force)
 
     imap_munge_mbox_name (idata, munged, sizeof (munged), name);
     snprintf (command, sizeof (command),
+#ifdef USE_SIDEBAR
 	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
+#else
+	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
+#endif
 
     if (imap_exec (idata, command, IMAP_CMD_QUEUE) < 0)
     {

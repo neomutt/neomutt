@@ -26,7 +26,10 @@
 #include "mx.h"
 
 #include "mutt_curses.h"
+
+#ifdef USE_SIDEBAR
 #include "sidebar.h"
+#endif
 
 #ifdef USE_IMAP
 #include "imap.h"
@@ -162,6 +165,7 @@ void mutt_buffy_cleanup (const char *buf, struct stat *st)
   }
 }
 
+#ifdef USE_SIDEBAR
 /**
  * buffy_compare_name - qsort callback to sort BUFFYs
  * @a: First  BUFFY to compare
@@ -232,6 +236,7 @@ buffy_sort (BUFFY *b)
 	free (ary);
 	return tmp;
 }
+#endif
 
 BUFFY *mutt_find_mailbox (const char *path)
 {
@@ -268,13 +273,17 @@ void mutt_update_mailbox (BUFFY * b)
 static BUFFY *buffy_new (const char *path)
 {
   BUFFY* buffy;
+#ifdef USE_SIDEBAR
   char rp[PATH_MAX] = "";
   char *r = NULL;
+#endif
 
   buffy = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
   strfcpy (buffy->path, path, sizeof (buffy->path));
+#ifdef USE_SIDEBAR
   r = realpath (path, rp);
   strfcpy (buffy->realpath, r ? rp : path, sizeof (buffy->realpath));
+#endif
   buffy->next = NULL;
   buffy->magic = 0;
 
@@ -292,7 +301,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
+#ifndef USE_SIDEBAR
   char f2[PATH_MAX];
+#endif
   char *p, *q;
 
   while (MoreArgs (s))
@@ -320,8 +331,13 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     p = realpath (buf, f1);
     for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
     {
+#ifdef USE_SIDEBAR
       q = (*tmp)->realpath;
       if (mutt_strcmp (p ? p : buf, q) == 0)
+#else
+      q = realpath ((*tmp)->path, f2);
+      if (mutt_strcmp (p ? p : buf, q ? q : (*tmp)->path) == 0)
+#endif
       {
 	dprint(3,(debugfile,"mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
 	break;
@@ -359,7 +375,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     else
       (*tmp)->size = 0;
   }
+#ifdef USE_SIDEBAR
   Incoming = buffy_sort (Incoming);
+#endif
   return 0;
 }
 
@@ -384,10 +402,12 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
       return 0;
   }
 
+#ifdef USE_SIDEBAR
   if (option (OPTSIDEBAR) && mailbox->msg_unread > 0) {
     mailbox->new = 1;
     return 1;
   }
+#endif
 
   if ((dirp = opendir (path)) == NULL)
   {
@@ -441,6 +461,7 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
   return 0;
 }
 
+#ifdef USE_SIDEBAR
 /**
  * buffy_maildir_update - Update messages counts for a maildir mailbox
  * @mailbox: BUFFY representing a maildir mailbox
@@ -511,6 +532,7 @@ buffy_maildir_update (BUFFY *mailbox)
 	mailbox->sb_last_checked = time (NULL);
 	closedir (dirp);
 }
+#endif
 
 /* returns 1 if mailbox has new mail */ 
 static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
@@ -523,7 +545,11 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
   else
     statcheck = sb->st_mtime > sb->st_atime
       || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
+#ifdef USE_SIDEBAR
   if ((!option (OPTSIDEBAR) && statcheck) || (option (OPTSIDEBAR) && mailbox->msg_unread > 0))
+#else
+  if (statcheck)
+#endif
   {
     if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
     {
@@ -543,6 +569,7 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
   return rc;
 }
 
+#ifdef USE_SIDEBAR
 /**
  * buffy_mbox_update - Update messages counts for an mbox mailbox
  * @mailbox: BUFFY representing an mbox mailbox
@@ -571,6 +598,7 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 		mx_close_mailbox (ctx, 0);
 	}
 }
+#endif
 
 int mutt_buffy_check (int force)
 {
@@ -645,28 +673,34 @@ int mutt_buffy_check (int force)
       {
       case M_MBOX:
       case M_MMDF:
+#ifdef USE_SIDEBAR
 	if (sb_should_refresh()) {
 	  buffy_mbox_update (tmp, &sb);
 	  sb_set_update_time();
 	}
+#endif
 	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
 	break;
 
       case M_MAILDIR:
+#ifdef USE_SIDEBAR
 	if (sb_should_refresh()) {
 	  buffy_maildir_update (tmp);
 	  sb_set_update_time();
 	}
+#endif
 	if (buffy_maildir_hasnew (tmp) > 0)
 	  BuffyCount++;
 	break;
 
       case M_MH:
+#ifdef USE_SIDEBAR
 	if (sb_should_refresh()) {
 	  mh_buffy_update (tmp->path, &tmp->msgcount, &tmp->msg_unread, &tmp->msg_flagged, &tmp->sb_last_checked);
 	  sb_set_update_time();
 	}
+#endif
 	mh_buffy(tmp);
 	if (tmp->new)
 	  BuffyCount++;

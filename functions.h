@@ -168,6 +168,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
   { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
 
+#ifdef USE_SIDEBAR
   { "sidebar-next",		OP_SIDEBAR_NEXT,		NULL },
   { "sidebar-next-new",		OP_SIDEBAR_NEXT_NEW,		NULL },
   { "sidebar-open",		OP_SIDEBAR_OPEN,		NULL },
@@ -175,6 +176,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
   { "sidebar-scroll-down",	OP_SIDEBAR_SCROLL_DOWN,		NULL },
   { "sidebar-scroll-up",	OP_SIDEBAR_SCROLL_UP,		NULL },
+#endif
 
   { NULL,			0,				NULL }
 };
@@ -279,6 +281,7 @@ const struct binding_t OpPager[] = { /* map: pager */
 
   { "what-key",		OP_WHAT_KEY,		NULL },
 
+#ifdef USE_SIDEBAR
   { "sidebar-next",		OP_SIDEBAR_NEXT,		NULL },
   { "sidebar-next-new",		OP_SIDEBAR_NEXT_NEW,		NULL },
   { "sidebar-open",		OP_SIDEBAR_OPEN,		NULL },
@@ -286,6 +289,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
   { "sidebar-scroll-down",	OP_SIDEBAR_SCROLL_DOWN,		NULL },
   { "sidebar-scroll-up",	OP_SIDEBAR_SCROLL_UP,		NULL },
+#endif
 
   { NULL,		0,				NULL }
 };
