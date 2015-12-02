@@ -1,6 +1,6 @@
-/*
- * Copyright (C) ????-2004 Justin Hibbits <jrh29@po.cwru.edu>
+/* Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
  * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
+ * Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -20,13 +20,13 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
-/* parameter is whether or not to go to the status line */
-/* used for omitting the last | that covers up the status bar in the index */
+typedef struct _context CONTEXT;
+
 void draw_sidebar (void);
-void scroll_sidebar (int);
-void set_buffystats (CONTEXT*);
-void set_curbuffy (char*);
-int sidebar_should_refresh();
-void sidebar_updated();
+void scroll_sidebar (int op);
+void set_buffystats (const CONTEXT *ctx);
+void set_curbuffy (char *path);
+int  sidebar_should_refresh (void);
+void sidebar_updated (void);
 
 #endif /* SIDEBAR_H */
