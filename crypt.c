@@ -142,21 +142,34 @@ int mutt_protect (HEADER *msg, char *keylist)
 
   if ((WithCrypto & APPLICATION_PGP) && ((msg->security & PGPINLINE) == PGPINLINE))
   {
-    /* they really want to send it inline... go for it */
-    if (!isendwin ()) mutt_endwin _("Invoking PGP...");
-    pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
-    if (pbody)
+    if ((msg->content->type != TYPETEXT) ||
+        ascii_strcasecmp (msg->content->subtype, "plain"))
     {
-      msg->content = pbody;
-      return 0;
-    }
-
-    /* otherwise inline won't work...ask for revert */
-    if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      if ((i = query_quadoption (OPT_PGPMIMEAUTO,
+              _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?"))) != M_YES)
       {
-	mutt_error _("Mail not sent.");
-	return -1;
+        mutt_error _("Mail not sent: inline PGP can't be used with attachments.");
+        return -1;
       }
+    }
+    else
+    {
+      /* they really want to send it inline... go for it */
+      if (!isendwin ()) mutt_endwin _("Invoking PGP...");
+      pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
+      if (pbody)
+      {
+        msg->content = pbody;
+        return 0;
+      }
+
+      /* otherwise inline won't work...ask for revert */
+      if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      {
+        mutt_error _("Mail not sent.");
+        return -1;
+      }
+    }
 
     /* go ahead with PGP/MIME */
   }
