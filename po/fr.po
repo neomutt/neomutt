@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-20 17:52+0200\n"
-"PO-Revision-Date: 2015-10-20 17:57+0200\n"
+"POT-Creation-Date: 2015-12-07 12:16+0100\n"
+"PO-Revision-Date: 2015-12-07 12:20+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -60,7 +60,7 @@ msgstr "Sélectionner"
 
 #: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:4014 curs_main.c:488
 #: mutt_ssl.c:1049 mutt_ssl_gnutls.c:1003 pager.c:1631 pgpkey.c:522
-#: postpone.c:44 query.c:53 recvattach.c:57 smime.c:425
+#: postpone.c:44 query.c:53 recvattach.c:57 smime.c:439
 msgid "Help"
 msgstr "Aide"
 
@@ -1287,11 +1287,11 @@ msgid "All matching keys are marked expired/revoked."
 msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées."
 
 #: crypt-gpgme.c:4006 mutt_ssl.c:1047 mutt_ssl_gnutls.c:1001 pgpkey.c:515
-#: smime.c:420
+#: smime.c:434
 msgid "Exit  "
 msgstr "Quitter  "
 
-#: crypt-gpgme.c:4008 pgpkey.c:517 smime.c:422
+#: crypt-gpgme.c:4008 pgpkey.c:517 smime.c:436
 msgid "Select  "
 msgstr "Sélectionner  "
 
@@ -1335,11 +1335,11 @@ msgstr "%s \"%s\"."
 msgid "This key can't be used: expired/disabled/revoked."
 msgstr "Cette clé ne peut pas être utilisée : expirée/désactivée/révoquée."
 
-#: crypt-gpgme.c:4085 pgpkey.c:613 smime.c:452
+#: crypt-gpgme.c:4085 pgpkey.c:613 smime.c:466
 msgid "ID is expired/disabled/revoked."
 msgstr "L'ID est expiré/désactivé/révoqué."
 
-#: crypt-gpgme.c:4093 pgpkey.c:617 smime.c:455
+#: crypt-gpgme.c:4093 pgpkey.c:617 smime.c:469
 msgid "ID has undefined validity."
 msgstr "L'ID a une validité indéfinie."
 
@@ -1352,7 +1352,7 @@ msgid "ID is only marginally valid."
 msgstr "L'ID n'est que peu valide."
 
 # , c-format
-#: crypt-gpgme.c:4108 pgpkey.c:627 smime.c:462
+#: crypt-gpgme.c:4108 pgpkey.c:627 smime.c:476
 #, c-format
 msgid "%s Do you really want to use the key?"
 msgstr "%s Voulez-vous vraiment utiliser la clé ?"
@@ -1369,7 +1369,7 @@ msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
-#: crypt-gpgme.c:4516 pgp.c:1305 smime.c:776 smime.c:882
+#: crypt-gpgme.c:4516 pgp.c:1305 smime.c:790 smime.c:896
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
@@ -1459,7 +1459,7 @@ msgstr "Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, ou Rien ? "
 msgid "esabmfc"
 msgstr "csedmrr"
 
-#: crypt-gpgme.c:4786 pgp.c:1770 smime.c:2171 smime.c:2186
+#: crypt-gpgme.c:4786 pgp.c:1770 smime.c:2216 smime.c:2231
 msgid "Sign as: "
 msgstr "Signer en tant que : "
 
@@ -1485,40 +1485,40 @@ msgstr "[-- La sortie %s suit%s --]\n"
 msgid "Passphrase(s) forgotten."
 msgstr "Phrase(s) de passe oubliée(s)."
 
-#: crypt.c:146 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
+#: crypt.c:149
+msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
+msgstr "PGP en ligne est impossible avec des attachements. Utiliser PGP/MIME ?"
+
+#: crypt.c:151
+msgid "Mail not sent: inline PGP can't be used with attachments."
+msgstr "Message non envoyé : PGP en ligne est impossible avec des attachements."
+
+#: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
 msgstr "Appel de PGP..."
 
-#: crypt.c:155
+#: crypt.c:167
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME ?"
 
-#: crypt.c:157 send.c:1593
+#: crypt.c:169 send.c:1593
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
-#: crypt.c:469
+#: crypt.c:482
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 "Les messages S/MIME sans indication sur le contenu ne sont pas supportés."
 
-#: crypt.c:689 crypt.c:733
+#: crypt.c:702 crypt.c:746
 msgid "Trying to extract PGP keys...\n"
 msgstr "Tentative d'extraction de clés PGP...\n"
 
-#: crypt.c:713 crypt.c:753
+#: crypt.c:726 crypt.c:766
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Tentative d'extraction de certificats S/MIME...\n"
 
-#: crypt.c:920
-msgid ""
-"[-- Error: Inconsistent multipart/signed structure! --]\n"
-"\n"
-msgstr ""
-"[-- Erreur : Structure multipart/signed incohérente ! --]\n"
-"\n"
-
-#: crypt.c:941
+#: crypt.c:913
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1527,7 +1527,15 @@ msgstr ""
 "[-- Erreur : Protocole multipart/signed %s inconnu ! --]\n"
 "\n"
 
-#: crypt.c:980
+#: crypt.c:947
+msgid ""
+"[-- Error: Inconsistent multipart/signed structure! --]\n"
+"\n"
+msgstr ""
+"[-- Erreur : Structure multipart/signed incohérente ! --]\n"
+"\n"
+
+#: crypt.c:986
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1536,7 +1544,7 @@ msgstr ""
 "[-- Attention : les signatures %s/%s ne peuvent pas être vérifiées. --]\n"
 "\n"
 
-#: crypt.c:992
+#: crypt.c:998
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1544,7 +1552,7 @@ msgstr ""
 "[-- Les données suivantes sont signées --]\n"
 "\n"
 
-#: crypt.c:998
+#: crypt.c:1004
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1552,7 +1560,7 @@ msgstr ""
 "[-- Attention : Impossible de trouver des signatures. --]\n"
 "\n"
 
-#: crypt.c:1004
+#: crypt.c:1010
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -1813,11 +1821,11 @@ msgstr "Pas de message non effacé."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1555 menu.c:757 pager.c:2057 pattern.c:1480
+#: curs_main.c:1555 menu.c:757 pager.c:2057 pattern.c:1489
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1564 pager.c:2079 pattern.c:1491
+#: curs_main.c:1564 pager.c:2079 pattern.c:1500
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
@@ -2216,7 +2224,7 @@ msgstr "unhook : type hook inconnu : %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
-#: imap/auth.c:108 pop_auth.c:398 smtp.c:514
+#: imap/auth.c:108 pop_auth.c:398 smtp.c:557
 msgid "No authenticators available"
 msgstr "Pas d'authentificateurs disponibles"
 
@@ -2256,7 +2264,7 @@ msgstr "Connexion..."
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: imap/auth_sasl.c:100 smtp.c:550
+#: imap/auth_sasl.c:100 smtp.c:593
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authentification (%s)..."
@@ -2275,33 +2283,33 @@ msgid "Getting folder list..."
 msgstr "Récupération de la liste des dossiers..."
 
 # , c-format
-#: imap/browse.c:186
+#: imap/browse.c:189
 msgid "No such folder"
 msgstr "Ce dossier n'existe pas"
 
-#: imap/browse.c:275
+#: imap/browse.c:278
 msgid "Create mailbox: "
 msgstr "Créer la boîte aux lettres : "
 
-#: imap/browse.c:280 imap/browse.c:326
+#: imap/browse.c:283 imap/browse.c:329
 msgid "Mailbox must have a name."
 msgstr "La boîte aux lettres doit avoir un nom."
 
-#: imap/browse.c:288
+#: imap/browse.c:291
 msgid "Mailbox created."
 msgstr "Boîte aux lettres créée."
 
-#: imap/browse.c:319
+#: imap/browse.c:322
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Renommer la boîte aux lettres %s en : "
 
-#: imap/browse.c:334
+#: imap/browse.c:337
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Le renommage a échoué : %s"
 
-#: imap/browse.c:339
+#: imap/browse.c:342
 msgid "Mailbox renamed."
 msgstr "Boîte aux lettres renommée."
 
@@ -2323,11 +2331,11 @@ msgstr "Fermeture de la connexion à %s..."
 msgid "This IMAP server is ancient. Mutt does not work with it."
 msgstr "Ce serveur IMAP est trop ancien. Mutt ne marche pas avec."
 
-#: imap/imap.c:434 pop_lib.c:295 smtp.c:423
+#: imap/imap.c:434 pop_lib.c:295 smtp.c:466
 msgid "Secure connection with TLS?"
 msgstr "Connexion sécurisée avec TLS ?"
 
-#: imap/imap.c:443 pop_lib.c:315 smtp.c:435
+#: imap/imap.c:443 pop_lib.c:315 smtp.c:478
 msgid "Could not negotiate TLS connection"
 msgstr "Impossible de négocier la connexion TLS"
 
@@ -3073,15 +3081,15 @@ msgstr "Vous êtes sur la dernière entrée."
 msgid "You are on the first entry."
 msgstr "Vous êtes sur la première entrée."
 
-#: menu.c:731 pager.c:2101 pattern.c:1419
+#: menu.c:731 pager.c:2101 pattern.c:1428
 msgid "Search for: "
 msgstr "Rechercher : "
 
-#: menu.c:731 pager.c:2101 pattern.c:1419
+#: menu.c:731 pager.c:2101 pattern.c:1428
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
-#: menu.c:775 pager.c:2054 pager.c:2076 pager.c:2196 pattern.c:1534
+#: menu.c:775 pager.c:2054 pager.c:2076 pager.c:2196 pattern.c:1543
 msgid "Not found."
 msgstr "Non trouvé."
 
@@ -3613,113 +3621,109 @@ msgid "multipart message has no boundary parameter!"
 msgstr "le message multipart n'a pas de paramètre boundary !"
 
 # , c-format
-#: pattern.c:264
+#: pattern.c:266 pattern.c:586
 #, c-format
 msgid "Error in expression: %s"
 msgstr "Erreur dans l'expression : %s"
 
-#: pattern.c:269
+#: pattern.c:271 pattern.c:591
 #, c-format
 msgid "Empty expression"
 msgstr "Expression vide"
 
 # , c-format
-#: pattern.c:402
+#: pattern.c:404
 #, c-format
 msgid "Invalid day of month: %s"
 msgstr "Quantième invalide : %s"
 
 # , c-format
-#: pattern.c:416
+#: pattern.c:418
 #, c-format
 msgid "Invalid month: %s"
 msgstr "Mois invalide : %s"
 
 # , c-format
-#: pattern.c:568
+#: pattern.c:570
 #, c-format
 msgid "Invalid relative date: %s"
 msgstr "Date relative invalide : %s"
 
-#: pattern.c:582
-msgid "error in expression"
-msgstr "erreur dans l'expression"
-
 # , c-format
-#: pattern.c:804 pattern.c:956
+#: pattern.c:813 pattern.c:965
 #, c-format
 msgid "error in pattern at: %s"
 msgstr "erreur dans le motif à : %s"
 
-#: pattern.c:830
+#: pattern.c:839
 #, c-format
 msgid "missing pattern: %s"
 msgstr "motif manquant : %s"
 
 # , c-format
-#: pattern.c:840
+#: pattern.c:849
 #, c-format
 msgid "mismatched brackets: %s"
 msgstr "parenthésage incorrect : %s"
 
 # , c-format
-#: pattern.c:896
+#: pattern.c:905
 #, c-format
 msgid "%c: invalid pattern modifier"
 msgstr "%c : modificateur de motif invalide"
 
 # , c-format
-#: pattern.c:902
+#: pattern.c:911
 #, c-format
 msgid "%c: not supported in this mode"
 msgstr "%c : non supporté dans ce mode"
 
-#: pattern.c:915
+#: pattern.c:924
 #, c-format
 msgid "missing parameter"
 msgstr "paramètre manquant"
 
 # , c-format
-#: pattern.c:931
+#: pattern.c:940
 #, c-format
 msgid "mismatched parenthesis: %s"
 msgstr "parenthésage incorrect : %s"
 
-#: pattern.c:963
+#: pattern.c:972
 msgid "empty pattern"
 msgstr "motif vide"
 
 # , c-format
-#: pattern.c:1217
+#: pattern.c:1226
 #, c-format
 msgid "error: unknown op %d (report this error)."
 msgstr "erreur : opération inconnue %d (signalez cette erreur)."
 
-#: pattern.c:1300 pattern.c:1440
+#: pattern.c:1309 pattern.c:1449
 msgid "Compiling search pattern..."
 msgstr "Compilation du motif de recherche..."
 
-#: pattern.c:1321
+#: pattern.c:1330
 msgid "Executing command on matching messages..."
 msgstr "Exécution de la commande sur les messages correspondants..."
 
-#: pattern.c:1388
+#: pattern.c:1397
 msgid "No messages matched criteria."
 msgstr "Aucun message ne correspond au critère."
 
-#: pattern.c:1470
+#: pattern.c:1479
 msgid "Searching..."
 msgstr "Recherche..."
 
-#: pattern.c:1483
+#: pattern.c:1492
 msgid "Search hit bottom without finding match"
 msgstr "Fin atteinte sans rien avoir trouvé"
 
-#: pattern.c:1494
+#: pattern.c:1503
 msgid "Search hit top without finding match"
 msgstr "Début atteint sans rien avoir trouvé"
 
-#: pattern.c:1526
+#: pattern.c:1535
 msgid "Search interrupted."
 msgstr "Recherche interrompue."
 
@@ -4358,7 +4362,7 @@ msgstr "Pas d'objet (Subject), abandonner l'envoi ?"
 msgid "No subject specified."
 msgstr "Pas d'objet (Subject) spécifié."
 
-#: send.c:1739 smtp.c:185
+#: send.c:1739 smtp.c:188
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
@@ -4437,84 +4441,84 @@ msgstr "Erreur %s... On quitte.\n"
 msgid "Caught signal %d...  Exiting.\n"
 msgstr "Signal %d... On quitte.\n"
 
-#: smime.c:140
+#: smime.c:141
 msgid "Enter S/MIME passphrase:"
 msgstr "Entrez la phrase de passe S/MIME :"
 
-#: smime.c:365
+#: smime.c:379
 msgid "Trusted   "
 msgstr "De confiance"
 
-#: smime.c:368
+#: smime.c:382
 msgid "Verified  "
 msgstr "Vérifiée    "
 
-#: smime.c:371
+#: smime.c:385
 msgid "Unverified"
 msgstr "Non vérifiée"
 
-#: smime.c:374
+#: smime.c:388
 msgid "Expired   "
 msgstr "Expirée     "
 
-#: smime.c:377
+#: smime.c:391
 msgid "Revoked   "
 msgstr "Révoquée    "
 
 # , c-format
-#: smime.c:380
+#: smime.c:394
 msgid "Invalid   "
 msgstr "Invalide    "
 
-#: smime.c:383
+#: smime.c:397
 msgid "Unknown   "
 msgstr "Inconnue    "
 
-#: smime.c:415
+#: smime.c:429
 #, c-format
 msgid "S/MIME certificates matching \"%s\"."
 msgstr "Certificats S/MIME correspondant à \"%s\"."
 
-#: smime.c:458
+#: smime.c:472
 msgid "ID is not trusted."
 msgstr "L'ID n'est pas de confiance."
 
 # , c-format
-#: smime.c:742
+#: smime.c:756
 msgid "Enter keyID: "
 msgstr "Entrez keyID : "
 
-#: smime.c:889
+#: smime.c:903
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Pas de certificat (valide) trouvé pour %s."
 
-#: smime.c:942 smime.c:972 smime.c:1039 smime.c:1083 smime.c:1148 smime.c:1223
+#: smime.c:956 smime.c:986 smime.c:1053 smime.c:1097 smime.c:1162 smime.c:1237
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Erreur : impossible de créer le sous-processus OpenSSL !"
 
-#: smime.c:1301
+#: smime.c:1315
 msgid "no certfile"
 msgstr "pas de certfile"
 
-#: smime.c:1304
+#: smime.c:1318
 msgid "no mbox"
 msgstr "pas de BAL"
 
-#: smime.c:1447 smime.c:1576
+#: smime.c:1461 smime.c:1618
 msgid "No output from OpenSSL..."
 msgstr "Pas de sortie pour OpenSSL..."
 
-#: smime.c:1486
+#: smime.c:1528
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 "Impossible de signer : pas de clé spécifiée. Utilisez « Signer en tant que »."
 
-#: smime.c:1538
+#: smime.c:1580
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus OpenSSL !"
 
-#: smime.c:1741 smime.c:1864
+#: smime.c:1786 smime.c:1909
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4522,19 +4526,19 @@ msgstr ""
 "[-- Fin de sortie OpenSSL --]\n"
 "\n"
 
-#: smime.c:1823 smime.c:1834
+#: smime.c:1868 smime.c:1879
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Erreur : impossible de créer le sous-processus OpenSSL ! --]\n"
 
-#: smime.c:1868
+#: smime.c:1913
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
 
-#: smime.c:1871
+#: smime.c:1916
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
 
-#: smime.c:1935
+#: smime.c:1980
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4542,7 +4546,7 @@ msgstr ""
 "\n"
 "[-- Fin des données chiffrées avec S/MIME. --]\n"
 
-#: smime.c:1937
+#: smime.c:1982
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4550,7 +4554,7 @@ msgstr ""
 "\n"
 "[-- Fin des données signées avec S/MIME. --]\n"
 
-#: smime.c:2059
+#: smime.c:2104
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -4560,11 +4564,11 @@ msgstr ""
 #. 'clear'.  Please use a corresponding letter in your language.
 #. Alternatively, you may duplicate the letter 'c' is translated to.
 #. This comment also applies to the two following letter sequences.
-#: smime.c:2064
+#: smime.c:2109
 msgid "swafco"
 msgstr "saerro"
 
-#: smime.c:2073
+#: smime.c:2118
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
@@ -4572,99 +4576,99 @@ msgstr ""
 "Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou "
 "Oppenc ? "
 
-#: smime.c:2074
+#: smime.c:2119
 msgid "eswabfco"
 msgstr "csaedrro"
 
-#: smime.c:2082
+#: smime.c:2127
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 "Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien ? "
 
-#: smime.c:2083
+#: smime.c:2128
 msgid "eswabfc"
 msgstr "csaedrr"
 
-#: smime.c:2104
+#: smime.c:2149
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr ""
 "Choisissez une famille d'algo : 1: DES, 2: RC2, 3: AES, ou (e)ffacer ? "
 
-#: smime.c:2107
+#: smime.c:2152
 msgid "drac"
 msgstr "drae"
 
-#: smime.c:2110
+#: smime.c:2155
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:2111
+#: smime.c:2156
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:2123
+#: smime.c:2168
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:2124
+#: smime.c:2169
 msgid "468"
 msgstr "468"
 
-#: smime.c:2139
+#: smime.c:2184
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2140
+#: smime.c:2185
 msgid "895"
 msgstr "895"
 
-#: smtp.c:134
+#: smtp.c:137
 #, c-format
 msgid "SMTP session failed: %s"
 msgstr "La session SMTP a échoué : %s"
 
-#: smtp.c:180
+#: smtp.c:183
 #, c-format
 msgid "SMTP session failed: unable to open %s"
 msgstr "La session SMTP a échoué : impossible d'ouvrir %s"
 
-#: smtp.c:257
+#: smtp.c:294
 msgid "No from address given"
 msgstr "Pas d'adresse from donnée"
 
-#: smtp.c:313
+#: smtp.c:356
 msgid "SMTP session failed: read error"
 msgstr "La session SMTP a échoué : erreur de lecture"
 
-#: smtp.c:315
+#: smtp.c:358
 msgid "SMTP session failed: write error"
 msgstr "La session SMTP a échoué : erreur d'écriture"
 
-#: smtp.c:317
+#: smtp.c:360
 msgid "Invalid server response"
 msgstr "Réponse du serveur invalide"
 
 # , c-format
-#: smtp.c:340
+#: smtp.c:383
 #, c-format
 msgid "Invalid SMTP URL: %s"
 msgstr "URL SMTP invalide : %s"
 
-#: smtp.c:450
+#: smtp.c:493
 msgid "SMTP server does not support authentication"
 msgstr "Le serveur SMTP ne supporte pas l'authentification"
 
-#: smtp.c:458
+#: smtp.c:501
 msgid "SMTP authentication requires SASL"
 msgstr "L'authentification SMTP nécessite SASL"
 
-#: smtp.c:492
+#: smtp.c:535
 #, c-format
 msgid "%s authentication failed, trying next method"
 msgstr "L'authentification %s a échoué, essayons la méthode suivante"
 
-#: smtp.c:509
+#: smtp.c:552
 msgid "SASL authentication failed"
 msgstr "L'authentification SASL a échoué"
 
@@ -5487,3 +5491,6 @@ msgstr "extraire les clés publiques supportées"
 #: ../keymap_alldefs.h:203
 msgid "show S/MIME options"
 msgstr "afficher les options S/MIME"
+
+#~ msgid "error in expression"
+#~ msgstr "erreur dans l'expression"
