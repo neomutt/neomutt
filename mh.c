@@ -2106,7 +2106,11 @@ int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
   fnames = hash_create (1031, 0);
 
   for (p = md; p; p = p->next)
-    hash_insert (fnames, p->h->path, p, 0);
+  {
+    /* the hash key must survive past the header, which is freed below. */
+    p->canon_fname = safe_strdup (p->h->path);
+    hash_insert (fnames, p->canon_fname, p, 0);
+  }
 
   for (i = 0; i < ctx->msgcount; i++)
   {
