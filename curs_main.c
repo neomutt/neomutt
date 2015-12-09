@@ -2352,6 +2352,11 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_PREV_NEW:
         sb_change_mailbox (op);
         break;
+
+      case OP_SIDEBAR_TOGGLE_VISIBLE:
+	toggle_option (OPTSIDEBAR);
+	menu->redraw = REDRAW_FULL;
+	break;
 #endif
       default:
 	if (menu->menu == MENU_MAIN)

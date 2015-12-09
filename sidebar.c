@@ -560,7 +560,7 @@ void
 sb_change_mailbox (int op)
 {
 	BUFFY *b;
-	if ((SidebarWidth == 0) || !CurBuffy)
+	if (!CurBuffy)
 		return;
 
 	switch (op) {
