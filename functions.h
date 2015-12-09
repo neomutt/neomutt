@@ -176,6 +176,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
   { "sidebar-scroll-down",	OP_SIDEBAR_SCROLL_DOWN,		NULL },
   { "sidebar-scroll-up",	OP_SIDEBAR_SCROLL_UP,		NULL },
+  { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
 #endif
 
   { NULL,			0,				NULL }
@@ -289,6 +290,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
   { "sidebar-scroll-down",	OP_SIDEBAR_SCROLL_DOWN,		NULL },
   { "sidebar-scroll-up",	OP_SIDEBAR_SCROLL_UP,		NULL },
+  { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
 #endif
 
   { NULL,		0,				NULL }

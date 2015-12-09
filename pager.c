@@ -2829,6 +2829,11 @@ search_next:
       case OP_SIDEBAR_SCROLL_UP:
 	sb_change_mailbox (ch);
 	break;
+
+      case OP_SIDEBAR_TOGGLE_VISIBLE:
+	toggle_option (OPTSIDEBAR);
+	redraw = REDRAW_FULL;
+	break;
 #endif
 
       default:
