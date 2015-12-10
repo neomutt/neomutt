@@ -225,7 +225,6 @@ WHERE short ScoreThresholdFlag;
 WHERE short SidebarWidth;
 #ifdef USE_SIDEBAR
 WHERE struct buffy_t *CurBuffy INITVAL(0);
-WHERE short SidebarLastRefresh;
 WHERE short SidebarRefresh;
 WHERE LIST *SidebarWhitelist INITVAL(0);
 #endif

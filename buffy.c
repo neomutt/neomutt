@@ -640,6 +640,9 @@ int mutt_buffy_check (int force)
     contex_sb.st_ino=0;
   }
   
+#ifdef USE_SIDEBAR
+  int should_refresh = sb_should_refresh();
+#endif
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
     if (tmp->magic != M_IMAP)
@@ -674,10 +677,8 @@ int mutt_buffy_check (int force)
       case M_MBOX:
       case M_MMDF:
 #ifdef USE_SIDEBAR
-	if (sb_should_refresh()) {
+	if (should_refresh)
 	  buffy_mbox_update (tmp, &sb);
-	  sb_set_update_time();
-	}
 #endif
 	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
@@ -685,10 +686,8 @@ int mutt_buffy_check (int force)
 
       case M_MAILDIR:
 #ifdef USE_SIDEBAR
-	if (sb_should_refresh()) {
+	if (should_refresh)
 	  buffy_maildir_update (tmp);
-	  sb_set_update_time();
-	}
 #endif
 	if (buffy_maildir_hasnew (tmp) > 0)
 	  BuffyCount++;
@@ -715,6 +714,10 @@ int mutt_buffy_check (int force)
     else if (!tmp->notified)
       BuffyNotify++;
   }
+#ifdef USE_SIDEBAR
+  if (should_refresh)
+	  sb_set_update_time();
+#endif
 
   BuffyDoneTime = BuffyTime;
   return (BuffyCount);
