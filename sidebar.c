@@ -29,6 +29,7 @@
 
 static BUFFY *TopBuffy;
 static BUFFY *BottomBuffy;
+static time_t LastRefresh;
 static int    known_lines;
 
 /**
@@ -341,7 +342,7 @@ sb_draw (void)
 		saveSidebarWidth = SidebarWidth;
 		if (!option (OPTSIDEBAR))
 			SidebarWidth = 0;
-		SidebarLastRefresh = time (NULL);
+		LastRefresh = time (NULL);
 		initialized = true;
 	}
 
@@ -530,12 +531,15 @@ sb_draw (void)
 int
 sb_should_refresh (void)
 {
-	if (option (OPTSIDEBAR) && (SidebarRefresh > 0)) {
-		if ((time (NULL) - SidebarLastRefresh) >= SidebarRefresh) {
-			return 1;
-		}
-	}
-	return 0;
+	if (!option (OPTSIDEBAR))
+		return 0;
+
+	if (SidebarRefresh == 0)
+		return 0;
+
+	time_t diff = (time (NULL) - LastRefresh);
+
+	return (diff >= SidebarRefresh);
 }
 
 /**
@@ -677,6 +681,6 @@ sb_set_update_time (void)
 {
 	/* XXX - should this be public? */
 
-	SidebarLastRefresh = time (NULL);
+	LastRefresh = time (NULL);
 }
 
