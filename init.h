@@ -2380,6 +2380,17 @@ struct option_t MuttVars[] = {
   ** The value of \fI$$record\fP is overridden by the $$force_name and
   ** $$save_name variables, and the ``$fcc-hook'' command.
   */
+  { "reflow_space_quotes",	DT_BOOL, R_NONE, OPTREFLOWSPACEQUOTES, 1 },
+  /*
+  ** .pp
+  ** This option controls how quotes from format=flowed messages are displayed
+  ** in the pager and when replying (with $$text_flowed \fIunset\fP).
+  ** When set, this option adds spaces after each level of quote marks, turning
+  ** ">>>foo" into "> > > foo".
+  ** .pp
+  ** \fBNote:\fP If $$reflow_text is \fIunset\fP, this option has no effect.
+  ** Also, this option does not affect replies when $$text_flowed is \fIset\fP.
+  */
   { "reflow_text",	DT_BOOL, R_NONE, OPTREFLOWTEXT, 1 },
   /*
   ** .pp

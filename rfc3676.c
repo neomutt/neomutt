@@ -61,7 +61,46 @@ static int get_quote_level (const char *line)
   return quoted;
 }
 
-static size_t print_indent (int ql, STATE *s, int sp)
+/* Determines whether to add spacing between/after each quote level:
+ *    >>>foo
+ * becomes
+ *    > > > foo
+ */
+static int space_quotes (STATE *s)
+{
+  /* Allow quote spacing in the pager even for OPTTEXTFLOWED,
+   * but obviously not when replying.
+   */
+  if (option (OPTTEXTFLOWED) && (s->flags & M_REPLYING))
+    return 0;
+
+  return option (OPTREFLOWSPACEQUOTES);
+}
+
+/* Determines whether to add a trailing space to quotes:
+ *    >>> foo
+ * as opposed to
+ *    >>>foo
+ */
+static int add_quote_suffix (STATE *s, int ql)
+{
+  if (s->flags & M_REPLYING)
+    return 0;
+
+  if (space_quotes (s))
+    return 0;
+
+  if (!ql && !s->prefix)
+    return 0;
+
+  /* The prefix will add its own space */
+  if (!option (OPTTEXTFLOWED) && !ql && s->prefix)
+    return 0;
+
+  return 1;
+}
+
+static size_t print_indent (int ql, STATE *s, int add_suffix)
 {
   int i;
   size_t wid = 0;
@@ -77,14 +116,21 @@ static size_t print_indent (int ql, STATE *s, int sp)
     {
       state_puts (s->prefix, s);
       wid = mutt_strwidth (s->prefix);
-      sp = 0;
     }
   }
   for (i = 0; i < ql; i++)
+  {
     state_putc ('>', s);
-  if (sp)
+    if (space_quotes (s) )
+      state_putc (' ', s);
+  }
+  if (add_suffix)
     state_putc (' ', s);
-  return ql + sp + wid;
+
+  if (space_quotes (s))
+    ql *= 2;
+
+  return ql + add_suffix + wid;
 }
 
 static void flush_par (STATE *s, flowed_state_t *fst)
@@ -112,10 +158,10 @@ static int quote_width (STATE *s, int ql)
     ++ql; /* When replying, we will add an additional quote level */
   }
   /* adjust the paragraph width subtracting the number of prefix chars */
-  width -= ql;
-  /* When displaying (not replying), there will be a space between the prefix
+  width -= space_quotes (s) ? ql*2 : ql;
+  /* When displaying (not replying), there may be a space between the prefix
    * string and the paragraph */
-  if ((s->flags & M_REPLYING) == 0 && ql > 0)
+  if (add_quote_suffix (s, ql))
     --width;
   /* failsafe for really long quotes */
   if (width <= 0)
@@ -183,8 +229,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
     }
 
     if (!words && !fst->width)
-      fst->width = print_indent (ql, s, !(s->flags & M_REPLYING) &&
-				 (ql > 0 || s->prefix));
+      fst->width = print_indent (ql, s, add_quote_suffix (s, ql));
     fst->width += w + fst->spaces;
     for ( ; fst->spaces; fst->spaces--)
       state_putc (' ', s);
@@ -199,7 +244,7 @@ static void print_flowed_line (char *line, STATE *s, int ql,
 static void print_fixed_line (const char *line, STATE *s, int ql,
 			      flowed_state_t *fst)
 {
-  print_indent (ql, s, !(s->flags & M_REPLYING) && (ql > 0 || s->prefix));
+  print_indent (ql, s, add_quote_suffix (s, ql));
   if (line && *line)
     state_puts (line, s);
   state_putc ('\n', s);
