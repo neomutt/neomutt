@@ -2364,8 +2364,9 @@ struct option_t MuttVars[] = {
   ** Controls whether or not Mutt recalls postponed messages
   ** when composing a new message.
   ** .pp
-  ** \fISetting\fP this variable to is not generally useful, and thus not
-  ** recommended.
+  ** Setting this variable to \fIyes\fP is not generally useful, and thus not
+  ** recommended.  Note that the \fC<recall-message>\fP function can be used
+  ** to manually recall postponed messages.
   ** .pp
   ** Also see $$postponed variable.
   */
