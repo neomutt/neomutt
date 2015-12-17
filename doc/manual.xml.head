@@ -1613,10 +1613,10 @@ fo-table</literal> for details.
 </sect3>
 
 <sect3 id="ff-pager">
-<title>Support for viewing and non-flowed replies</title>
+<title>Reformatting</title>
 
 <para>
-  Mutt has some support for viewing and replying to
+  Mutt has some support for reformatting when viewing and replying to
   <literal>format=flowed</literal> messages.  In order to take advantage of these,
   <link linkend="reflow-text">$reflow_text</link> must be set.
 </para>
@@ -1630,7 +1630,7 @@ fo-table</literal> for details.
   </listitem>
   <listitem>
   <para>
-    By default, the quoting style of <literal>format=flowed</literal>
+    In its original format, the quoting style of <literal>format=flowed</literal>
     messages can be difficult to read, and doesn't intermix well with
     non-flowed replies.
     Setting <link linkend="reflow-space-quotes">$reflow_space_quotes</link>
