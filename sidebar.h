@@ -25,6 +25,7 @@ typedef struct buffy_t  BUFFY;
 
 void         sb_change_mailbox (int op);
 void         sb_draw (void);
+const char * sb_get_highlight (void);
 void         sb_init (void);
 void         sb_notify_mailbox (BUFFY *b, int created);
 void         sb_set_buffystats (const CONTEXT *ctx);

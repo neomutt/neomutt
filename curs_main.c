@@ -1223,9 +1223,10 @@ int mutt_index_menu (void)
 
 #ifdef USE_SIDEBAR
 	  if (op == OP_SIDEBAR_OPEN) {
-	    if (!CurBuffy)
+	    const char *path = sb_get_highlight();
+	    if (!path)
 	      break;
-	    strncpy (buf, CurBuffy->path, sizeof (buf));
+	    strncpy (buf, path, sizeof (buf));
 	  } else
 #endif
 	  if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
