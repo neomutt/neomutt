@@ -418,6 +418,53 @@ sort_buffy_array (BUFFY **arr, int arr_len)
 }
 
 /**
+ * visible - Should we display the sidebar?
+ *
+ * After validating the config options "sidebar_visible" and "sidebar_width",
+ * determine whether we should should display the sidebar.
+ *
+ * When not visible, set the global SidebarSort to 0.
+ *
+ * Returns:
+ *	Boolean
+ */
+static short
+visible (void)
+{
+	short new_visible = option (OPTSIDEBAR);
+	short new_width   = SidebarWidth;
+
+	if (OldWidth != new_width) {
+		if (new_width > 0) {
+			OldWidth = new_width;
+		}
+	}
+
+	if (OldVisible != new_visible) {
+		if (new_visible) {
+			set_option (OPTSIDEBAR);
+		} else {
+			unset_option (OPTSIDEBAR);
+		}
+		OldVisible = new_visible;
+	} else if (new_width == 0) {
+		unset_option (OPTSIDEBAR);
+		OldVisible = 0;
+	}
+
+	if (!option (OPTSIDEBAR)) {
+		SidebarWidth = 0;
+	} else if (new_width == 0) {
+		SidebarWidth = OldWidth;
+	} else {
+		SidebarWidth = new_width;
+	}
+
+	return new_visible;
+}
+
+
+/**
  * sb_init - Set some default values for the sidebar.
  */
 void
@@ -443,6 +490,12 @@ sb_init (void)
 void
 sb_draw (void)
 {
+	if (!visible())
+		return;
+
+	if (!Incoming)
+		return;
+
 #ifndef USE_SLANG_CURSES
 	attr_t attrs;
 #endif
@@ -458,18 +511,6 @@ sb_draw (void)
 
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
 		row++; /* either one will occupy the first line */
-
-	/* save or restore the value SidebarWidth */
-	if (OldVisible != option (OPTSIDEBAR)) {
-		if (OldVisible && !option (OPTSIDEBAR)) {
-			OldWidth = SidebarWidth;
-			SidebarWidth = 0;
-		} else if (!OldVisible && option (OPTSIDEBAR)) {
-			mutt_buffy_check (1); /* we probably have bad or no numbers */
-			SidebarWidth = OldWidth;
-		}
-		OldVisible = option (OPTSIDEBAR);
-	}
 
 	if ((SidebarWidth > 0) && option (OPTSIDEBAR) && (delim_len >= SidebarWidth)) {
 		unset_option (OPTSIDEBAR);
@@ -516,9 +557,6 @@ sb_draw (void)
 		mvchgat (row, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
 #endif
 	}
-
-	if (!Incoming)
-		return;
 
 	row = 0;
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
