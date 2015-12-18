@@ -318,13 +318,13 @@ mh_buffy_update (BUFFY *mailbox)
 	if (mh_read_sequences (&mhs, mailbox->path) < 0)
 		return;
 
-	mailbox->msgcount    = 0;
+	mailbox->msg_count   = 0;
 	mailbox->msg_unread  = 0;
 	mailbox->msg_flagged = 0;
 
 	int i;
 	for (i = 0; i <= mhs.max; i++) {
-		mailbox->msgcount++;
+		mailbox->msg_count++;
 	}
 	if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN) {
 		mailbox->msg_unread++;

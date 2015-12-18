@@ -33,7 +33,7 @@ typedef struct buffy_t
 #endif
   short new;			/* mailbox has new mail */
 #ifdef USE_SIDEBAR
-  int msgcount;			/* total number of messages */
+  int msg_count;		/* total number of messages */
   int msg_unread;		/* number of unread messages */
   int msg_flagged;		/* number of flagged messages */
 #endif

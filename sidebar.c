@@ -444,8 +444,8 @@ sb_draw (void)
 		if (Context && Context->path &&
 			(!strcmp (b->path, Context->path)||
 			 !strcmp (b->realpath, Context->path))) {
-			b->msg_unread = Context->unread;
-			b->msgcount = Context->msgcount;
+			b->msg_unread  = Context->unread;
+			b->msg_count   = Context->msgcount;
 			b->msg_flagged = Context->flagged;
 		}
 
@@ -501,7 +501,7 @@ sb_draw (void)
 		}
 		char str[SHORT_STRING];
 		make_sidebar_entry (str, sizeof (str), SidebarWidth - delim_len,
-			sidebar_folder_name, b->msgcount,
+			sidebar_folder_name, b->msg_count,
 			b->msg_unread, b->msg_flagged);
 		printw ("%s", str);
 		if (sidebar_folder_depth > 0)
@@ -637,7 +637,7 @@ sb_set_buffystats (const CONTEXT *ctx)
 		if (!strcmp (b->path,     ctx->path) ||
 		    !strcmp (b->realpath, ctx->path)) {
 			b->msg_unread  = ctx->unread;
-			b->msgcount    = ctx->msgcount;
+			b->msg_count   = ctx->msgcount;
 			b->msg_flagged = ctx->flagged;
 			break;
 		}

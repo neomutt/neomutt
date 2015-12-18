@@ -404,7 +404,7 @@ buffy_maildir_update (BUFFY *mailbox)
 	if (!option (OPTSIDEBAR) || !mailbox)
 		return;
 
-	mailbox->msgcount    = 0;
+	mailbox->msg_count   = 0;
 	mailbox->msg_unread  = 0;
 	mailbox->msg_flagged = 0;
 
@@ -422,7 +422,7 @@ buffy_maildir_update (BUFFY *mailbox)
 
 		if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')) {
 			mailbox->new = 1;
-			mailbox->msgcount++;
+			mailbox->msg_count++;
 			mailbox->msg_unread++;
 		}
 	}
@@ -441,7 +441,7 @@ buffy_maildir_update (BUFFY *mailbox)
 			continue;
 
 		if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')) {
-			mailbox->msgcount++;
+			mailbox->msg_count++;
 			if ((p = strstr (de->d_name, ":2,"))) {
 				if (!strchr (p + 3, 'T')) {
 					if (!strchr (p + 3, 'S'))
@@ -510,12 +510,12 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 
 	if (!option (OPTSIDEBAR))
 		return;
-	if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msgcount != 0))
+	if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
 		return; /* no check necessary */
 
 	ctx = mx_open_mailbox (mailbox->path, M_READONLY | M_QUIET | M_NOSORT | M_PEEK, NULL);
 	if (ctx) {
-		mailbox->msgcount        = ctx->msgcount;
+		mailbox->msg_count       = ctx->msgcount;
 		mailbox->msg_unread      = ctx->unread;
 		mailbox->msg_flagged     = ctx->flagged;
 		mailbox->sb_last_checked = time (NULL);
