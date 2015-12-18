@@ -276,14 +276,21 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       if(*tmp)
       {
         tmp1=(*tmp)->next;
+#ifdef USE_SIDEBAR
+	sb_notify_mailbox (*tmp, 0);
+#endif
         buffy_free (tmp);
         *tmp=tmp1;
       }
       continue;
     }
 
-    if (!*tmp)
+    if (!*tmp) {
       *tmp = buffy_new (buf);
+#ifdef USE_SIDEBAR
+      sb_notify_mailbox (*tmp, 1);
+#endif
+    }
 
     (*tmp)->new = 0;
     (*tmp)->notified = 1;

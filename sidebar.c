@@ -362,6 +362,31 @@ cb_qsort_buffy (const void *a, const void *b)
 }
 
 /**
+ * buffy_going - Prevent our pointers becoming invalid
+ * @b: BUFFY about to be deleted
+ *
+ * If we receive a delete-notification for a BUFFY, we need to change any
+ * pointers we have to reference a different BUFFY, or set them to NULL.
+ *
+ * We don't update the prev/next pointers, they'll be fixed on the next
+ * call to prepare_sidebar().
+ *
+ * Returns:
+ *	A valid alternative BUFFY, or NULL
+ */
+static BUFFY *
+buffy_going (const BUFFY *b)
+{
+	if (!b)
+		return NULL;
+
+	if (b->next)
+		return b->next;
+
+	return b->prev;
+}
+
+/**
  * sort_buffy_array - Sort an array of BUFFY pointers
  * @arr:     array of BUFFYs
  * @arr_len: number of BUFFYs in array
@@ -772,3 +797,29 @@ sb_set_update_time (void)
 	LastRefresh = time (NULL);
 }
 
+/**
+ * sb_notify_mailbox - The state of a BUFFY is about to change
+ *
+ * We receive a notification:
+ *	After a new BUFFY has been created
+ *	Before a BUFFY is deleted
+ *
+ * Before a deletion, check that our pointers won't be invalidated.
+ */
+void
+sb_notify_mailbox (BUFFY *b, int created)
+{
+	if (!b)
+		return;
+
+	/* Any new/deleted mailboxes will cause a refresh.  As long as
+	 * they're valid, our pointers will be updated in prepare_sidebar() */
+
+	if (created) {
+	} else {
+		if (TopBuffy == b)
+			TopBuffy = buffy_going (TopBuffy);
+		if (BotBuffy == b)
+			BotBuffy = buffy_going (BotBuffy);
+	}
+}
