@@ -33,8 +33,13 @@ static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
 static time_t LastRefresh;	/* Time of last refresh */
 
-static BUFFY *TopBuffy;
-static BUFFY *BotBuffy;
+/* Keep track of various BUFFYs */
+static BUFFY *TopBuffy;		/* First mailbox visible in sidebar */
+static BUFFY *OpnBuffy;		/* Current (open) mailbox */
+static BUFFY *HilBuffy;		/* Highlighted mailbox */
+static BUFFY *BotBuffy;		/* Last mailbox visible in sidebar */
+static BUFFY *Outgoing;		/* Last mailbox in the linked list */
+
 static int    known_lines;
 
 /**
@@ -64,16 +69,16 @@ struct sidebar_entry {
 static BUFFY *
 find_next_new (int wrap)
 {
-	BUFFY *b = CurBuffy;
+	BUFFY *b = HilBuffy;
 	if (!b)
 		return NULL;
 
 	do {
 		b = b->next;
 		if (!b && wrap) {
-			b = TopBuffy;
+			b = Incoming;
 		}
-		if (!b || (b == CurBuffy)) {
+		if (!b || (b == HilBuffy)) {
 			break;
 		}
 		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
@@ -98,16 +103,16 @@ find_next_new (int wrap)
 static BUFFY *
 find_prev_new (int wrap)
 {
-	BUFFY *b = CurBuffy;
+	BUFFY *b = HilBuffy;
 	if (!b)
 		return NULL;
 
 	do {
 		b = b->prev;
 		if (!b && wrap) {
-			b = BotBuffy;
+			b = Outgoing;
 		}
-		if (!b || (b == CurBuffy)) {
+		if (!b || (b == HilBuffy)) {
 			break;
 		}
 		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
@@ -496,22 +501,12 @@ sb_draw (void)
 	if (!Incoming)
 		return;
 
-#ifndef USE_SLANG_CURSES
-	attr_t attrs;
-#endif
-	short color_pair;
-
 	/* Calculate the width of the delimiter in screen cells */
 	wchar_t sd[4];
 	mbstowcs (sd, NONULL(SidebarDelim), 4);
 	int delim_len = wcwidth (sd[0]);
 
-	int row = 0;
-	int SidebarHeight;
-
-	if (option (OPTSTATUSONTOP) || option (OPTHELP))
-		row++; /* either one will occupy the first line */
-
+#if 0
 	if ((SidebarWidth > 0) && option (OPTSIDEBAR) && (delim_len >= SidebarWidth)) {
 		unset_option (OPTSIDEBAR);
 		if (OldWidth > delim_len) {
@@ -526,6 +521,13 @@ sb_draw (void)
 		OldWidth = 0;
 		return;
 	}
+#endif
+
+	int row = 0;
+	int SidebarHeight;
+
+	if (option (OPTSTATUSONTOP) || option (OPTHELP))
+		row++; /* either one will occupy the first line */
 
 	if ((SidebarWidth == 0) || !option (OPTSIDEBAR)) {
 		if (SidebarWidth > 0) {
@@ -536,25 +538,26 @@ sb_draw (void)
 		return;
 	}
 
-	/* get attributes for divider */
-	SETCOLOR(MT_COLOR_DIVIDER);
-#ifndef USE_SLANG_CURSES
-	attr_get (&attrs, &color_pair, 0);
-#else
-	color_pair = attr_get();
-#endif
-	SETCOLOR(MT_COLOR_NORMAL);
-
 	/* draw the divider */
 	SidebarHeight = LINES - 1;
 	if (option (OPTHELP) || !option (OPTSTATUSONTOP))
 		SidebarHeight--;
 
-	for (; row < SidebarHeight; row++) {
-		move (row, SidebarWidth - delim_len);
+	SETCOLOR(MT_COLOR_DIVIDER);
+
+	short color_pair;
+#ifndef USE_SLANG_CURSES
+	attr_t attrs;
+	attr_get (&attrs, &color_pair, 0);
+#else
+	color_pair = attr_get();
+#endif
+	int i;
+	for (i = row; i < SidebarHeight; i++) {
+		move (i, SidebarWidth - delim_len);
 		addstr (NONULL(SidebarDelim));
 #ifndef USE_SLANG_CURSES
-		mvchgat (row, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
+		mvchgat (i, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
 #endif
 	}
 
@@ -571,8 +574,10 @@ sb_draw (void)
 
 	BUFFY *b;
 	for (b = TopBuffy; b && (row < SidebarHeight); b = b->next) {
-		if (b == CurBuffy) {
+		if (b == OpnBuffy) {
 			SETCOLOR(MT_COLOR_INDICATOR);
+		} else if (b == HilBuffy) {
+			SETCOLOR(MT_COLOR_HIGHLIGHT);
 		} else if (b->msg_unread > 0) {
 			SETCOLOR(MT_COLOR_NEW);
 		} else if (b->msg_flagged > 0) {
@@ -701,7 +706,7 @@ sb_should_refresh (void)
  * with new mail". The operations are listed OPS.SIDEBAR which is built
  * into an enum in keymap_defs.h.
  *
- * If the operation is successful, CurBuffy will be set to the new mailbox.
+ * If the operation is successful, HilBuffy will be set to the new mailbox.
  * This function only *selects* the mailbox, doesn't *open* it.
  *
  * Allowed values are: OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW, OP_SIDEBAR_PREV,
@@ -710,55 +715,54 @@ sb_should_refresh (void)
 void
 sb_change_mailbox (int op)
 {
+	if (!option (OPTSIDEBAR))
+		return;
+
 	BUFFY *b;
-	if (!CurBuffy)
+	if (!HilBuffy)	/* It'll get reset on the next draw */
 		return;
 
 	switch (op) {
 		case OP_SIDEBAR_NEXT:
-			if (!option (OPTSIDEBARNEWMAILONLY)) {
-				if (!CurBuffy->next)
-					return;
-				CurBuffy = CurBuffy->next;
-				break;
-			}
-			/* drop through */
+			if (!HilBuffy->next)
+				return;
+			if (HilBuffy->next->is_hidden)
+				return;
+			HilBuffy = HilBuffy->next;
+			break;
 		case OP_SIDEBAR_NEXT_NEW:
 			b = find_next_new (option (OPTSIDEBARNEXTNEWWRAP));
 			if (!b) {
 				return;
 			} else {
-				CurBuffy = b;
+				HilBuffy = b;
 			}
 			break;
 		case OP_SIDEBAR_PREV:
-			if (!option (OPTSIDEBARNEWMAILONLY)) {
-				if (!CurBuffy->prev)
-					return;
-				CurBuffy = CurBuffy->prev;
-				break;
-			}
-			/* drop through */
+			if (!HilBuffy->prev)
+				return;
+			if (HilBuffy->prev->is_hidden)	/* Can't happen, we've sorted the hidden to the end */
+				return;
+			HilBuffy = HilBuffy->prev;
+			break;
 		case OP_SIDEBAR_PREV_NEW:
 			b = find_prev_new (option (OPTSIDEBARNEXTNEWWRAP));
 			if (!b) {
 				return;
 			} else {
-				CurBuffy = b;
+				HilBuffy = b;
 			}
 			break;
 		case OP_SIDEBAR_SCROLL_UP:
-			CurBuffy = TopBuffy;
-			if (CurBuffy != Incoming) {
-				calc_boundaries();
-				CurBuffy = CurBuffy->prev;
+			HilBuffy = TopBuffy;
+			if (HilBuffy != Incoming) {
+				HilBuffy = HilBuffy->prev;
 			}
 			break;
 		case OP_SIDEBAR_SCROLL_DOWN:
-			CurBuffy = BotBuffy;
-			if (CurBuffy->next) {
-				calc_boundaries();
-				CurBuffy = CurBuffy->next;
+			HilBuffy = BotBuffy;
+			if (HilBuffy->next) {
+				HilBuffy = HilBuffy->next;
 			}
 			break;
 		default:
@@ -796,26 +800,49 @@ sb_set_buffystats (const CONTEXT *ctx)
 }
 
 /**
- * sb_set_open_buffy - Set the CurBuffy based on a mailbox path
+ * sb_get_highlight - Get the BUFFY that's highlighted in the sidebar
+ *
+ * Get the path of the mailbox that's highlighted in the sidebar.
+ *
+ * Returns:
+ *	Mailbox path
+ */
+const char *
+sb_get_highlight (void)
+{
+	if (!option (OPTSIDEBAR))
+		return NULL;
+
+	if (!HilBuffy)
+		return NULL;
+
+	return HilBuffy->path;
+}
+
+/**
+ * sb_set_open_buffy - Set the OpnBuffy based on a mailbox path
  * @path: Mailbox path
  *
  * Search through the list of mailboxes.  If a BUFFY has a matching path, set
- * CurBuffy to it.
+ * OpnBuffy to it.
  */
 void
 sb_set_open_buffy (char *path)
 {
 	/* Even if the sidebar is hidden */
 
-	BUFFY *b = CurBuffy = Incoming;
+	BUFFY *b = Incoming;
 
 	if (!path || !b)
 		return;
 
+	OpnBuffy = NULL;
+
 	for (; b; b = b->next) {
 		if (!strcmp (b->path,     path) ||
 		    !strcmp (b->realpath, path)) {
-			CurBuffy = b;
+			OpnBuffy = b;
+			HilBuffy = b;
 			break;
 		}
 	}
@@ -857,6 +884,10 @@ sb_notify_mailbox (BUFFY *b, int created)
 	} else {
 		if (TopBuffy == b)
 			TopBuffy = buffy_going (TopBuffy);
+		if (OpnBuffy == b)
+			OpnBuffy = buffy_going (OpnBuffy);
+		if (HilBuffy == b)
+			HilBuffy = buffy_going (HilBuffy);
 		if (BotBuffy == b)
 			BotBuffy = buffy_going (BotBuffy);
 	}
