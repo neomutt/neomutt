@@ -466,7 +466,7 @@ sb_draw (void)
 	}
 
 	/* get attributes for divider */
-	SETCOLOR(MT_COLOR_STATUS);
+	SETCOLOR(MT_COLOR_DIVIDER);
 #ifndef USE_SLANG_CURSES
 	attr_get (&attrs, &color_pair, 0);
 #else
