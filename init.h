@@ -2667,14 +2667,14 @@ struct option_t MuttVars[] = {
   ** shell from \fC/etc/passwd\fP is used.
   */
 #ifdef USE_SIDEBAR
-  { "sidebar_delim", DT_STR, R_BOTH, UL &SidebarDelim, UL "|" },
+  { "sidebar_divider_char", DT_STR, R_BOTH, UL &SidebarDividerChar, UL "|" },
   /*
   ** .pp
   ** This specifies the character to be drawn between the sidebar (when
   ** visible) and the other Mutt panels. ASCII and Unicode line-drawing
   ** characters are supported.
   ** .pp
-  ** \fBNote:\fP Only the first character of sidebar_delim is used.
+  ** \fBNote:\fP Only the first character of sidebar_divider_char is used.
   */
   { "sidebar_delim_chars", DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
   /*
@@ -2691,14 +2691,14 @@ struct option_t MuttVars[] = {
   ** set sidebar_delim_chars='.'
   ** .te
   ** .pp
-  ** \fBSee also:\fP $$sidebar_shortpath, $$sidebar_folderindent, $$sidebar_indentstr.
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_indent_string.
   */
-  { "sidebar_folderindent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
+  { "sidebar_folder_indent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
   /*
   ** .pp
   ** Set this to indent mailboxes in the sidebar.
   ** .pp
-  ** \fBSee also:\fP $$sidebar_shortpath, $$sidebar_indentstr, $$sidebar_delim_chars.
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
   */
   { "sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S" },
   /*
@@ -2726,15 +2726,15 @@ struct option_t MuttVars[] = {
   ** * = Can be optionally printed if nonzero
   ** @ = Only applicable to the current folder
   */
-  { "sidebar_indentstr", DT_STR, R_BOTH, UL &SidebarIndentStr, UL "  " },
+  { "sidebar_indent_string", DT_STR, R_BOTH, UL &SidebarIndentString, UL "  " },
   /*
   ** .pp
   ** This specifies the string that is used to indent mailboxes in the sidebar.
   ** It defaults to two spaces.
   ** .pp
-  ** \fBSee also:\fP $$sidebar_shortpath, $$sidebar_folderindent, $$sidebar_delim_chars.
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_delim_chars.
   */
-  { "sidebar_newmail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
+  { "sidebar_new_mail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
   /*
   ** .pp
   ** When set, the sidebar will only display mailboxes containing new, or
@@ -2750,15 +2750,15 @@ struct option_t MuttVars[] = {
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
   */
-  { "sidebar_refresh", DT_NUM, R_BOTH, UL &SidebarRefresh, 60 },
+  { "sidebar_refresh_time", DT_NUM, R_BOTH, UL &SidebarRefreshTime, 60 },
   /*
   ** .pp
-  ** Set sidebar_refresh to the minimum number of seconds between refreshes.
+  ** Set sidebar_refresh_time to the minimum number of seconds between refreshes.
   ** This will reduced network traffic.
   ** .pp
   ** \fBNote:\fP Set to 0 to disable refreshing.
   */
-  { "sidebar_shortpath", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
+  { "sidebar_short_path", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
   /*
   ** .pp
   ** By default the sidebar will show the mailbox's path, relative to the
@@ -2772,9 +2772,9 @@ struct option_t MuttVars[] = {
   ** .dt \fCfruit.cherry\fP .dd \fCcherry\fP        .dd \fC..cherry\fP
   ** .de
   ** .pp
-  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folderindent, $$sidebar_indentstr.
+  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folder_indent, $$sidebar_indent_string.
   */
-  { "sidebar_sort", DT_SORT|DT_SORT_SIDEBAR, R_NONE, UL &SidebarSort, SORT_ORDER },
+  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR, R_NONE, UL &SidebarSortMethod, SORT_ORDER },
   /*
   ** .pp
   ** Specifies how to sort entries in the file browser.  By default, the

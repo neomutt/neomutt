@@ -119,10 +119,10 @@ WHERE char *SendCharset;
 WHERE char *Sendmail;
 WHERE char *Shell;
 #ifdef USE_SIDEBAR
-WHERE char *SidebarDelim;
 WHERE char *SidebarDelimChars;
+WHERE char *SidebarDividerChar;
 WHERE char *SidebarFormat;
-WHERE char *SidebarIndentStr;
+WHERE char *SidebarIndentString;
 #endif
 WHERE char *Signature;
 WHERE char *SimpleSearch;
@@ -224,8 +224,7 @@ WHERE short ScoreThresholdFlag;
  * For now. */
 WHERE short SidebarWidth;
 #ifdef USE_SIDEBAR
-WHERE struct buffy_t *CurBuffy INITVAL(0);
-WHERE short SidebarRefresh;
+WHERE short SidebarRefreshTime;
 WHERE LIST *SidebarWhitelist INITVAL(0);
 #endif
 

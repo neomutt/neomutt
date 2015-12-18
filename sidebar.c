@@ -31,7 +31,7 @@
 /* Previous values for some sidebar config */
 static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
-static short  PreviousSort;	/* sidebar_sort */
+static short  PreviousSort;	/* sidebar_sort_method */
 static time_t LastRefresh;	/* Time of last refresh */
 
 /* Keep track of various BUFFYs */
@@ -323,7 +323,7 @@ cb_qsort_buffy (const void *a, const void *b)
 
 	int result = 0;
 
-	switch ((SidebarSort & SORT_MASK)) {
+	switch ((SidebarSortMethod & SORT_MASK)) {
 		case SORT_COUNT:
 			result = (b2->msg_count - b1->msg_count);
 			break;
@@ -338,7 +338,7 @@ cb_qsort_buffy (const void *a, const void *b)
 			break;
 	}
 
-	if (SidebarSort & SORT_REVERSE)
+	if (SidebarSortMethod & SORT_REVERSE)
 		result = -result;
 
 	return result;
@@ -425,7 +425,7 @@ update_buffy_visibility (BUFFY **arr, int arr_len)
  * @arr_len: number of BUFFYs in array
  *
  * Sort an array of BUFFY pointers according to the current sort config
- * option "sidebar_sort". This calls qsort to do the work which calls our
+ * option "sidebar_sort_method". This calls qsort to do the work which calls our
  * callback function "cb_qsort_buffy".
  *
  * Once sorted, the prev/next links will be reconstructed.
@@ -508,7 +508,7 @@ prepare_sidebar (int page_size)
 			bot_index = i;
 	}
 
-	if (!HilBuffy || (SidebarSort != PreviousSort)) {
+	if (!HilBuffy || (SidebarSortMethod != PreviousSort)) {
 		if (OpnBuffy) {
 			HilBuffy  = OpnBuffy;
 			hil_index = opn_index;
@@ -532,7 +532,7 @@ prepare_sidebar (int page_size)
 
 	Outgoing = arr[count - 1];
 
-	PreviousSort = SidebarSort;
+	PreviousSort = SidebarSortMethod;
 	free (arr);
 	return 1;
 }
@@ -543,7 +543,7 @@ prepare_sidebar (int page_size)
  * After validating the config options "sidebar_visible" and "sidebar_width",
  * determine whether we should should display the sidebar.
  *
- * When not visible, set the global SidebarSort to 0.
+ * When not visible, set the global SidebarSortMethod to 0.
  *
  * Returns:
  *	Boolean
@@ -588,7 +588,7 @@ visible (void)
  * @first_row:  Screen line to start (0-based)
  * @num_rows:   Number of rows to fill
  *
- * Draw a divider using a character from the config option "sidebar_delim".
+ * Draw a divider using a character from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.  First we calculate this
  * character's width in screen columns, then subtract that from the config
  * option "sidebar_width".
@@ -603,7 +603,7 @@ draw_divider (int first_row, int num_rows)
 {
 	/* Calculate the width of the delimiter in screen cells */
 	wchar_t sd[4];
-	mbstowcs (sd, NONULL(SidebarDelim), 4);
+	mbstowcs (sd, NONULL(SidebarDividerChar), 4);
 	/* We only consider the first character */
 	int delim_len = wcwidth (sd[0]);
 
@@ -628,7 +628,7 @@ draw_divider (int first_row, int num_rows)
 	int i;
 	for (i = 0; i < num_rows; i++) {
 		move (first_row + i, SidebarWidth - delim_len);
-		addstr (NONULL(SidebarDelim));
+		addstr (NONULL(SidebarDividerChar));
 #ifndef USE_SLANG_CURSES
 		mvchgat (first_row + i, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
 #endif
@@ -654,8 +654,9 @@ draw_divider (int first_row, int num_rows)
  * HilBuffy - Unselected mailbox (the paging follows this)
  *
  * The entries are formatted using "sidebar_format" and may be abbreviated:
- * "sidebar_shortpath", indented: "sidebar_folderindent", "sidebar_indentstr" and
- * sorted: "sidebar_sort".  Finally, they're trimmed to fit the available space.
+ * "sidebar_short_path", indented: "sidebar_folder_indent",
+ * "sidebar_indent_string" and sorted: "sidebar_sort_method".  Finally, they're
+ * trimmed to fit the available space.
  */
 static void
 draw_sidebar (int first_row, int num_rows, int div_width)
@@ -741,10 +742,10 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 				if (option (OPTSIDEBARSHORTPATH)) {
 					tmp_folder_name += lastsep;  /* basename */
 				}
-				sidebar_folder_name = malloc (strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentStr)) + 1);
+				sidebar_folder_name = malloc (strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1);
 				sidebar_folder_name[0]=0;
 				for (i=0; i < sidebar_folder_depth; i++)
-					strncat (sidebar_folder_name, NONULL(SidebarIndentStr), strlen (NONULL(SidebarIndentStr)));
+					strncat (sidebar_folder_name, NONULL(SidebarIndentString), strlen (NONULL(SidebarIndentString)));
 				strncat (sidebar_folder_name, tmp_folder_name, strlen (tmp_folder_name));
 			}
 		}
@@ -826,7 +827,7 @@ sb_draw (void)
 /**
  * sb_should_refresh - Check if the sidebar is due to be refreshed
  *
- * The "sidebar_refresh" config option allows the user to limit the frequency
+ * The "sidebar_refresh_time" config option allows the user to limit the frequency
  * with which the sidebar is refreshed.
  *
  * Returns:
@@ -839,12 +840,12 @@ sb_should_refresh (void)
 	if (!option (OPTSIDEBAR))
 		return 0;
 
-	if (SidebarRefresh == 0)
+	if (SidebarRefreshTime == 0)
 		return 0;
 
 	time_t diff = (time (NULL) - LastRefresh);
 
-	return (diff >= SidebarRefresh);
+	return (diff >= SidebarRefreshTime);
 }
 
 /**
@@ -858,8 +859,9 @@ sb_should_refresh (void)
  * If the operation is successful, HilBuffy will be set to the new mailbox.
  * This function only *selects* the mailbox, doesn't *open* it.
  *
- * Allowed values are: OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW, OP_SIDEBAR_PREV,
- * OP_SIDEBAR_PREV_NEW, OP_SIDEBAR_SCROLL_DOWN, OP_SIDEBAR_SCROLL_UP.
+ * Allowed values are: OP_SIDEBAR_NEXT, OP_SIDEBAR_NEXT_NEW,
+ * OP_SIDEBAR_PAGE_DOWN, OP_SIDEBAR_PAGE_UP, OP_SIDEBAR_PREV,
+ * OP_SIDEBAR_PREV_NEW.
  */
 void
 sb_change_mailbox (int op)
@@ -887,6 +889,18 @@ sb_change_mailbox (int op)
 				HilBuffy = b;
 			}
 			break;
+		case OP_SIDEBAR_PAGE_DOWN:
+			HilBuffy = BotBuffy;
+			if (HilBuffy->next) {
+				HilBuffy = HilBuffy->next;
+			}
+			break;
+		case OP_SIDEBAR_PAGE_UP:
+			HilBuffy = TopBuffy;
+			if (HilBuffy != Incoming) {
+				HilBuffy = HilBuffy->prev;
+			}
+			break;
 		case OP_SIDEBAR_PREV:
 			if (!HilBuffy->prev)
 				return;
@@ -900,18 +914,6 @@ sb_change_mailbox (int op)
 				return;
 			} else {
 				HilBuffy = b;
-			}
-			break;
-		case OP_SIDEBAR_SCROLL_UP:
-			HilBuffy = TopBuffy;
-			if (HilBuffy != Incoming) {
-				HilBuffy = HilBuffy->prev;
-			}
-			break;
-		case OP_SIDEBAR_SCROLL_DOWN:
-			HilBuffy = BotBuffy;
-			if (HilBuffy->next) {
-				HilBuffy = HilBuffy->next;
 			}
 			break;
 		default:
@@ -1000,7 +1002,7 @@ sb_set_open_buffy (char *path)
  * sb_set_update_time - Note the time that the sidebar was updated
  *
  * Update the timestamp representing the last sidebar update.  If the user
- * configures "sidebar_refresh", this will help to reduce traffic.
+ * configures "sidebar_refresh_time", this will help to reduce traffic.
  */
 void
 sb_set_update_time (void)
