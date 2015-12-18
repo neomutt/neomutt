@@ -26,6 +26,7 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "sort.h"
 
 /* Previous values for some sidebar config */
 static short  OldVisible;	/* sidebar_visible */
@@ -309,6 +310,86 @@ make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 		int len = mutt_wstr_trunc (buf, buflen, width, NULL);
 		buf[len] = 0;
 	}
+}
+
+/**
+ * cb_qsort_buffy - qsort callback to sort BUFFYs
+ * @a: First  BUFFY to compare
+ * @b: Second BUFFY to compare
+ *
+ * Compare the paths of two BUFFYs taking the locale into account.
+ *
+ * Returns:
+ *	-1: a precedes b
+ *	 0: a and b are identical
+ *	 1: b precedes a
+ */
+static int
+cb_qsort_buffy (const void *a, const void *b)
+{
+	const BUFFY *b1 = *(const BUFFY **) a;
+	const BUFFY *b2 = *(const BUFFY **) b;
+
+	/* Special case -- move hidden BUFFYs to the end */
+	if (b1->is_hidden != b2->is_hidden) {
+		if (b1->is_hidden)
+			return 1;
+		else
+			return -1;
+	}
+
+	int result = 0;
+
+	switch ((SidebarSort & SORT_MASK)) {
+		case SORT_COUNT:
+			result = (b2->msg_count - b1->msg_count);
+			break;
+		case SORT_COUNT_NEW:
+			result = (b2->msg_unread - b1->msg_unread);
+			break;
+		case SORT_FLAGGED:
+			result = (b2->msg_flagged - b1->msg_flagged);
+			break;
+		case SORT_PATH:
+			result = mutt_strcmp (b1->path, b2->path);
+			break;
+	}
+
+	if (SidebarSort & SORT_REVERSE)
+		result = -result;
+
+	return result;
+}
+
+/**
+ * sort_buffy_array - Sort an array of BUFFY pointers
+ * @arr:     array of BUFFYs
+ * @arr_len: number of BUFFYs in array
+ *
+ * Sort an array of BUFFY pointers according to the current sort config
+ * option "sidebar_sort". This calls qsort to do the work which calls our
+ * callback function "cb_qsort_buffy".
+ *
+ * Once sorted, the prev/next links will be reconstructed.
+ */
+static void
+sort_buffy_array (BUFFY **arr, int arr_len)
+{
+	if (!arr)
+		return;
+
+	qsort (arr, arr_len, sizeof (*arr), cb_qsort_buffy);
+
+	int i;
+	for (i = 0; i < (arr_len - 1); i++) {
+		arr[i]->next = arr[i + 1];
+	}
+	arr[arr_len - 1]->next = NULL;
+
+	for (i = 1; i < arr_len; i++) {
+		arr[i]->prev = arr[i - 1];
+	}
+	arr[0]->prev = NULL;
 }
 
 

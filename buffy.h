@@ -36,6 +36,7 @@ typedef struct buffy_t
   int msg_count;		/* total number of messages */
   int msg_unread;		/* number of unread messages */
   int msg_flagged;		/* number of flagged messages */
+  short is_hidden;		/* is hidden from the sidebar */
 #endif
   short notified;		/* user has been notified */
   short magic;			/* mailbox type */
