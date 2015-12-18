@@ -95,7 +95,9 @@ static const struct mapping_t Fields[] =
   { "index",		MT_COLOR_INDEX },
   { "prompt",		MT_COLOR_PROMPT },
 #ifdef USE_SIDEBAR
+  { "sidebar_divider",	MT_COLOR_DIVIDER },
   { "sidebar_flagged",	MT_COLOR_FLAGGED },
+  { "sidebar_highlight",MT_COLOR_HIGHLIGHT },
   { "sidebar_new",	MT_COLOR_NEW },
 #endif
   { NULL,		0 }
@@ -150,6 +152,9 @@ void ci_start_color (void)
   ColorDefs[MT_COLOR_INDICATOR] = A_REVERSE;
   ColorDefs[MT_COLOR_SEARCH] = A_REVERSE;
   ColorDefs[MT_COLOR_MARKERS] = A_REVERSE;
+#ifdef USE_SIDEBAR
+  ColorDefs[MT_COLOR_HIGHLIGHT] = A_UNDERLINE;
+#endif
   /* special meaning: toggle the relevant attribute */
   ColorDefs[MT_COLOR_BOLD] = 0;
   ColorDefs[MT_COLOR_UNDERLINE] = 0;
