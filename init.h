@@ -2762,13 +2762,6 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folderindent, $$sidebar_indentstr.
   */
-  { "sidebar_sort", DT_BOOL, R_BOTH, OPTSIDEBARSORT, 0 },
-  /*
-  ** .pp
-  ** This specifies whether or not to sort the sidebar mailboxes alphabetically.
-  ** .pp
-  ** \fBNote:\fP This config option must come before the mailboxes config.
-  */
   { "sidebar_visible", DT_BOOL, R_BOTH, OPTSIDEBAR, 0 },
   /*
   ** .pp

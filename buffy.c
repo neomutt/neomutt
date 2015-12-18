@@ -165,79 +165,6 @@ void mutt_buffy_cleanup (const char *buf, struct stat *st)
   }
 }
 
-#ifdef USE_SIDEBAR
-/**
- * buffy_compare_name - qsort callback to sort BUFFYs
- * @a: First  BUFFY to compare
- * @b: Second BUFFY to compare
- *
- * Compare the paths of two BUFFYs taking the locale into account.
- *
- * Returns:
- *	-1: a precedes b
- *	 0: a and b are identical
- *	 1: b precedes a
- */
-static int
-buffy_compare_name (const void *a, const void *b)
-{
-	const BUFFY *b1 = *(BUFFY * const *) a;
-	const BUFFY *b2 = *(BUFFY * const *) b;
-
-	return mutt_strcoll (b1->path, b2->path);
-}
-
-/**
- * buffy_sort - Sort a linked list of BUFFYs
- * @b: BUFFY at the head of the list to be sorted
- *
- * Take a linked list of BUFFYs and sort them by their paths according to the
- * locale.  Once sorted, the prev/next links are restored.
- *
- * If the config option "sidebar_sort" isn't set, then the BUFFY is returned
- * unchanged.
- *
- * Returns:
- *	BUFFY at the head of the sorted list
- */
-static BUFFY *
-buffy_sort (BUFFY *b)
-{
-	BUFFY *tmp;
-	int buffycount = 0;
-	BUFFY **ary;
-	int i;
-
-	if (!option (OPTSIDEBARSORT))
-		return b;
-
-	for (tmp = b; tmp; tmp = tmp->next)
-		buffycount++;
-
-	ary = (BUFFY **) safe_calloc (buffycount, sizeof (*ary));
-
-	for (tmp = b, i = 0; tmp; tmp = tmp->next, i++) {
-		ary[i] = tmp;
-	}
-
-	qsort (ary, buffycount, sizeof (*ary), buffy_compare_name);
-
-	for (i = 0; i < buffycount - 1; i++) {
-		ary[i]->next = ary[i + 1];
-	}
-	ary[buffycount - 1]->next = NULL;
-
-	for (i = 1; i < buffycount; i++) {
-		ary[i]->prev = ary[i - 1];
-	}
-	ary[0]->prev = NULL;
-
-	tmp = ary[0];
-	free (ary);
-	return tmp;
-}
-#endif
-
 BUFFY *mutt_find_mailbox (const char *path)
 {
   BUFFY *tmp = NULL;
@@ -375,9 +302,6 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     else
       (*tmp)->size = 0;
   }
-#ifdef USE_SIDEBAR
-  Incoming = buffy_sort (Incoming);
-#endif
   return 0;
 }
 
