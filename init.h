@@ -42,11 +42,12 @@
 #define DTYPE(x) ((x) & DT_MASK)
 
 /* subtypes */
-#define DT_SUBTYPE_MASK	0xf0
+#define DT_SUBTYPE_MASK	0xff0
 #define DT_SORT_ALIAS	0x10
 #define DT_SORT_BROWSER 0x20
 #define DT_SORT_KEYS	0x40
 #define DT_SORT_AUX	0x80
+#define DT_SORT_SIDEBAR	0x100
 
 /* flags to parse_set() */
 #define M_SET_INV	(1<<0)	/* default is to invert all vars */
@@ -2692,6 +2693,24 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folderindent, $$sidebar_indentstr.
   */
+  { "sidebar_sort", DT_SORT|DT_SORT_SIDEBAR, R_NONE, UL &SidebarSort, SORT_ORDER },
+  /*
+  ** .pp
+  ** Specifies how to sort entries in the file browser.  By default, the
+  ** entries are sorted alphabetically.  Valid values:
+  ** .il
+  ** .dd alpha (alphabetically)
+  ** .dd count (all message count)
+  ** .dd date
+  ** .dd desc (description)
+  ** .dd new (new message count)
+  ** .dd size
+  ** .dd unsorted
+  ** .ie
+  ** .pp
+  ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
+  ** order (example: ``\fCset sort_browser=reverse-date\fP'').
+  */
   { "sidebar_visible", DT_BOOL, R_BOTH, OPTSIDEBAR, 0 },
   /*
   ** .pp
@@ -3693,6 +3712,17 @@ const struct mapping_t SortKeyMethods[] = {
   { "date",	SORT_DATE },
   { "keyid",	SORT_KEYID },
   { "trust",	SORT_TRUST },
+  { NULL,       0 }
+};
+
+const struct mapping_t SortSidebarMethods[] = {
+  { "count",	SORT_COUNT },
+  { "flagged",	SORT_FLAGGED },
+  { "new",	SORT_COUNT_NEW },
+  { "path",	SORT_PATH },
+  { "alpha",	SORT_PATH },
+  { "name",	SORT_PATH },
+  { "unsorted",	SORT_ORDER },
   { NULL,       0 }
 };
 
