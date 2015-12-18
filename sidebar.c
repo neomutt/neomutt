@@ -31,10 +31,10 @@
 /* Previous values for some sidebar config */
 static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
+static time_t LastRefresh;	/* Time of last refresh */
 
 static BUFFY *TopBuffy;
 static BUFFY *BotBuffy;
-static time_t LastRefresh;
 static int    known_lines;
 
 /**
@@ -392,6 +392,22 @@ sort_buffy_array (BUFFY **arr, int arr_len)
 	arr[0]->prev = NULL;
 }
 
+/**
+ * sb_init - Set some default values for the sidebar.
+ */
+void
+sb_init (void)
+{
+	OldVisible = option (OPTSIDEBAR);
+	if (SidebarWidth > 0) {
+		OldWidth = SidebarWidth;
+	} else {
+		OldWidth = 20;
+		if (OldVisible) {
+			SidebarWidth = OldWidth;
+		}
+	}
+}
 
 /**
  * sb_draw - Completely redraw the sidebar
@@ -412,22 +428,11 @@ sb_draw (void)
 	mbstowcs (sd, NONULL(SidebarDelim), 4);
 	int delim_len = wcwidth (sd[0]);
 
-	static bool initialized = false;
 	int row = 0;
 	int SidebarHeight;
 
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
 		row++; /* either one will occupy the first line */
-
-	/* initialize first time */
-	if (!initialized) {
-		OldVisible = option (OPTSIDEBAR);
-		OldWidth = SidebarWidth;
-		if (!option (OPTSIDEBAR))
-			SidebarWidth = 0;
-		LastRefresh = time (NULL);
-		initialized = true;
-	}
 
 	/* save or restore the value SidebarWidth */
 	if (OldVisible != option (OPTSIDEBAR)) {
