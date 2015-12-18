@@ -56,7 +56,7 @@ WHERE short BrowserSort INITVAL (SORT_SUBJECT);
 WHERE short Sort INITVAL (SORT_DATE);
 WHERE short SortAux INITVAL (SORT_DATE); /* auxiliary sorting method */
 WHERE short SortAlias INITVAL (SORT_ALIAS);
-WHERE short SidebarSort INITVAL (SORT_ORDER);
+WHERE short SidebarSortMethod INITVAL (SORT_ORDER);
 
 /* FIXME: This one does not belong to here */
 WHERE short PgpSortKeys INITVAL (SORT_ADDRESS);

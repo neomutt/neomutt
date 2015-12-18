@@ -2345,11 +2345,11 @@ int mutt_index_menu (void)
 	break;
 
 #ifdef USE_SIDEBAR
-      case OP_SIDEBAR_SCROLL_UP:
-      case OP_SIDEBAR_SCROLL_DOWN:
       case OP_SIDEBAR_NEXT:
-      case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_NEXT_NEW:
+      case OP_SIDEBAR_PAGE_DOWN:
+      case OP_SIDEBAR_PAGE_UP:
+      case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
         sb_change_mailbox (op);
         break;
