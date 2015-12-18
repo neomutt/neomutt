@@ -31,6 +31,7 @@
 /* Previous values for some sidebar config */
 static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
+static short  PreviousSort;	/* sidebar_sort */
 static time_t LastRefresh;	/* Time of last refresh */
 
 /* Keep track of various BUFFYs */
@@ -39,8 +40,6 @@ static BUFFY *OpnBuffy;		/* Current (open) mailbox */
 static BUFFY *HilBuffy;		/* Highlighted mailbox */
 static BUFFY *BotBuffy;		/* Last mailbox visible in sidebar */
 static BUFFY *Outgoing;		/* Last mailbox in the linked list */
-
-static int    known_lines;
 
 /**
  * struct sidebar_entry - Info about folders in the sidebar
@@ -121,58 +120,6 @@ find_prev_new (int wrap)
 	} while (b);
 
 	return NULL;
-}
-
-/**
- * calc_boundaries - Keep our TopBuffy/BotBuffy up-to-date
- *
- * Whenever the sidebar's view of the BUFFYs changes, or the screen changes
- * size, we should check TopBuffy and BotBuffy still have the correct
- * values.
- *
- * Ideally, this should happen in the core of mutt.
- */
-static void
-calc_boundaries (void)
-{
-	BUFFY *b = Incoming;
-	if (!b)
-		return;
-
-	int count = LINES - 2;
-	if (option (OPTHELP))
-		count--;
-
-	if (known_lines != LINES) {
-		TopBuffy = BotBuffy = NULL;
-		known_lines = LINES;
-	}
-	for (; b->next; b = b->next)
-		b->next->prev = b;
-
-	if (!TopBuffy && !BotBuffy)
-		TopBuffy = Incoming;
-
-	if (!BotBuffy) {
-		BotBuffy = TopBuffy;
-		while (--count && BotBuffy->next) {
-			BotBuffy = BotBuffy->next;
-		}
-	} else if (TopBuffy == CurBuffy->next) {
-		BotBuffy = CurBuffy;
-		b = BotBuffy;
-		while (--count && b->prev) {
-			b = b->prev;
-		}
-		TopBuffy = b;
-	} else if (BotBuffy == CurBuffy->prev) {
-		TopBuffy = CurBuffy;
-		b = TopBuffy;
-		while (--count && b->next) {
-			b = b->next;
-		}
-		BotBuffy = b;
-	}
 }
 
 /**
@@ -392,6 +339,56 @@ buffy_going (const BUFFY *b)
 }
 
 /**
+ * update_buffy_visibility - Should a BUFFY be displayed in the sidebar
+ * @arr:     array of BUFFYs
+ * @arr_len: number of BUFFYs in array
+ *
+ * For each BUFFY in the array, check whether we should display it.
+ * This is determined by several criteria.  If the BUFFY:
+ *	is the currently open mailbox
+ *	is the currently highlighted mailbox
+ *	has unread messages
+ *	has flagged messages
+ *	is whitelisted
+ */
+static void
+update_buffy_visibility (BUFFY **arr, int arr_len)
+{
+	if (!arr)
+		return;
+
+	short new_only = option (OPTSIDEBARNEWMAILONLY);
+
+	BUFFY *b;
+	int i;
+	for (i = 0; i < arr_len; i++) {
+		b = arr[i];
+
+		b->is_hidden = 0;
+
+		if (!new_only)
+			continue;
+
+		if ((b == OpnBuffy) || (b->msg_unread  > 0) ||
+		    (b == HilBuffy) || (b->msg_flagged > 0)) {
+			continue;
+		}
+
+		if (Context && (strcmp (b->path, Context->path) == 0)) {
+			/* Spool directory */
+			continue;
+		}
+
+		if (mutt_find_list (SidebarWhitelist, b->path)) {
+			/* Explicitly asked to be visible */
+			continue;
+		}
+
+		b->is_hidden = 1;
+	}
+}
+
+/**
  * sort_buffy_array - Sort an array of BUFFY pointers
  * @arr:     array of BUFFYs
  * @arr_len: number of BUFFYs in array
@@ -420,6 +417,93 @@ sort_buffy_array (BUFFY **arr, int arr_len)
 		arr[i]->prev = arr[i - 1];
 	}
 	arr[0]->prev = NULL;
+}
+
+/**
+ * prepare_sidebar - Prepare the list of BUFFYs for the sidebar display
+ * @page_size:  The number of lines on a page
+ *
+ * Before painting the sidebar, we count the BUFFYs, determine which are
+ * visible, sort them and set up our page pointers.
+ *
+ * This is a lot of work to do each refresh, but there are many things that
+ * can change outside of the sidebar that we don't hear about.
+ *
+ * Returns:
+ *	0:  No, don't draw the sidebar
+ *	1: Yes, draw the sidebar
+ */
+static int
+prepare_sidebar (int page_size)
+{
+	BUFFY *b = Incoming;
+	if (!b)
+		return 0;
+
+	int count = 0;
+	for (; b; b = b->next)
+		count++;
+
+	if (count == 0)
+		return 0;
+
+	BUFFY **arr = safe_malloc (count * sizeof (*arr));
+	if (!arr)
+		return 0;
+
+	int i = 0;
+	for (b = Incoming; b; b = b->next, i++) {
+		arr[i] = b;
+	}
+
+	update_buffy_visibility (arr, count);
+	sort_buffy_array        (arr, count);
+
+	Incoming = arr[0];
+
+	int top_index =  0;
+	int opn_index = -1;
+	int hil_index = -1;
+	int bot_index = -1;
+
+	for (i = 0; i < count; i++) {
+		if (TopBuffy == arr[i])
+			top_index = i;
+		if (OpnBuffy == arr[i])
+			opn_index = i;
+		if (HilBuffy == arr[i])
+			hil_index = i;
+		if (BotBuffy == arr[i])
+			bot_index = i;
+	}
+
+	if (!HilBuffy || (SidebarSort != PreviousSort)) {
+		if (OpnBuffy) {
+			HilBuffy  = OpnBuffy;
+			hil_index = opn_index;
+		} else {
+			HilBuffy  = arr[0];
+			hil_index = 0;
+		}
+	}
+	if (TopBuffy) {
+		top_index = (hil_index / page_size) * page_size;
+	} else {
+		top_index = hil_index;
+	}
+	TopBuffy = arr[top_index];
+
+	bot_index = top_index + page_size - 1;
+	if (bot_index > (count - 1)) {
+		bot_index = count - 1;
+	}
+	BotBuffy  = arr[bot_index];
+
+	Outgoing = arr[count - 1];
+
+	PreviousSort = SidebarSort;
+	free (arr);
+	return 1;
 }
 
 /**
@@ -529,15 +613,6 @@ sb_draw (void)
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
 		row++; /* either one will occupy the first line */
 
-	if ((SidebarWidth == 0) || !option (OPTSIDEBAR)) {
-		if (SidebarWidth > 0) {
-			OldWidth = SidebarWidth;
-			SidebarWidth = 0;
-		}
-		unset_option (OPTSIDEBAR);
-		return;
-	}
-
 	/* draw the divider */
 	SidebarHeight = LINES - 1;
 	if (option (OPTHELP) || !option (OPTSTATUSONTOP))
@@ -561,19 +636,12 @@ sb_draw (void)
 #endif
 	}
 
-	row = 0;
-	if (option (OPTSTATUSONTOP) || option (OPTHELP))
-		row++; /* either one will occupy the first line */
-
-	if ((known_lines != LINES) || !TopBuffy || !BotBuffy)
-		calc_boundaries();
-	if (!CurBuffy)
-		CurBuffy = Incoming;
-
-	SETCOLOR(MT_COLOR_NORMAL);
-
 	BUFFY *b;
 	for (b = TopBuffy; b && (row < SidebarHeight); b = b->next) {
+		if (b->is_hidden) {
+			continue;
+		}
+
 		if (b == OpnBuffy) {
 			SETCOLOR(MT_COLOR_INDICATOR);
 		} else if (b == HilBuffy) {
@@ -582,16 +650,6 @@ sb_draw (void)
 			SETCOLOR(MT_COLOR_NEW);
 		} else if (b->msg_flagged > 0) {
 			SETCOLOR(MT_COLOR_FLAGGED);
-		} else if (option (OPTSIDEBARNEWMAILONLY)) {
-			/* sidebar_newmail_only is enabled... */
-			if (b == Incoming ||
-					(Context && (strcmp (b->path, Context->path) == 0)) ||
-					mutt_find_list (SidebarWhitelist, b->path)) {
-				SETCOLOR(MT_COLOR_NORMAL);
-			} else {
-				/* but mailbox isn't whitelisted */
-				continue;
-			}
 		} else {
 			SETCOLOR(MT_COLOR_NORMAL);
 		}
@@ -768,7 +826,6 @@ sb_change_mailbox (int op)
 		default:
 			return;
 	}
-	calc_boundaries();
 	sb_draw();
 }
 
