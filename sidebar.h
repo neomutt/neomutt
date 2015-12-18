@@ -24,6 +24,7 @@ typedef struct _context CONTEXT;
 
 void         sb_change_mailbox (int op);
 void         sb_draw (void);
+void         sb_init (void);
 void         sb_set_buffystats (const CONTEXT *ctx);
 void         sb_set_open_buffy (char *path);
 void         sb_set_update_time (void);

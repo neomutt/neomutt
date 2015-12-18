@@ -841,6 +841,9 @@ int main (int argc, char **argv)
     clear ();
     mutt_error = mutt_curses_error;
     mutt_message = mutt_curses_message;
+#ifdef USE_SIDEBAR
+    sb_init();
+#endif
   }
 
   /* Create the Maildir directory if it doesn't exist. */
