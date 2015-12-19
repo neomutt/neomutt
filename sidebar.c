@@ -552,71 +552,38 @@ visible (void)
 	return new_visible;
 }
 
-
 /**
- * sb_init - Set some default values for the sidebar.
- */
-void
-sb_init (void)
-{
-	OldVisible = option (OPTSIDEBAR);
-	if (SidebarWidth > 0) {
-		OldWidth = SidebarWidth;
-	} else {
-		OldWidth = 20;
-		if (OldVisible) {
-			SidebarWidth = OldWidth;
-		}
-	}
-}
-
-/**
- * sb_draw - Completely redraw the sidebar
+ * draw_divider - Draw a line between the sidebar and the rest of mutt
+ * @first_row:  Screen line to start (0-based)
+ * @num_rows:   Number of rows to fill
  *
- * Completely refresh the sidebar region.  First draw the divider; then, for
- * each BUFFY, call make_sidebar_entry; finally blank out any remaining space.
+ * Draw a divider using a character from the config option "sidebar_delim".
+ * This can be an ASCII or Unicode character.  First we calculate this
+ * character's width in screen columns, then subtract that from the config
+ * option "sidebar_width".
+ *
+ * Returns:
+ *	-1: Error: bad character, etc
+ *	0:  Error: 0 width character
+ *	n:  Success: character occupies n screen columns
  */
-void
-sb_draw (void)
+static int
+draw_divider (int first_row, int num_rows)
 {
-	if (!visible())
-		return;
-
-	if (!Incoming)
-		return;
-
 	/* Calculate the width of the delimiter in screen cells */
 	wchar_t sd[4];
 	mbstowcs (sd, NONULL(SidebarDelim), 4);
+	/* We only consider the first character */
 	int delim_len = wcwidth (sd[0]);
 
-#if 0
-	if ((SidebarWidth > 0) && option (OPTSIDEBAR) && (delim_len >= SidebarWidth)) {
-		unset_option (OPTSIDEBAR);
-		if (OldWidth > delim_len) {
-			SidebarWidth = OldWidth;
-			mutt_error (_("Value for sidebar_delim is too long. Disabling sidebar."));
-			sleep (2);
-		} else {
-			SidebarWidth = 0;
-			mutt_error (_("Value for sidebar_delim is too long. Disabling sidebar. Please set your sidebar_width to a sane value."));
-			sleep (4); /* the advise to set a sane value should be seen long enough */
-		}
-		OldWidth = 0;
-		return;
-	}
-#endif
+	if (delim_len < 1)
+		return delim_len;
 
-	int row = 0;
-	int SidebarHeight;
+	if ((SidebarWidth + delim_len) > (COLS + 1))
+		return 0;
 
-	if (option (OPTSTATUSONTOP) || option (OPTHELP))
-		row++; /* either one will occupy the first line */
-
-	/* draw the divider */
-	SidebarHeight = LINES - 1;
-	if (option (OPTHELP) || !option (OPTSTATUSONTOP))
-		SidebarHeight--;
+	if (delim_len > SidebarWidth)
+		return -1;
 
 	SETCOLOR(MT_COLOR_DIVIDER);
 
@@ -628,16 +595,46 @@ sb_draw (void)
 	color_pair = attr_get();
 #endif
 	int i;
-	for (i = row; i < SidebarHeight; i++) {
-		move (i, SidebarWidth - delim_len);
+	for (i = 0; i < num_rows; i++) {
+		move (first_row + i, SidebarWidth - delim_len);
 		addstr (NONULL(SidebarDelim));
 #ifndef USE_SLANG_CURSES
-		mvchgat (i, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
+		mvchgat (first_row + i, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
 #endif
 	}
 
-	BUFFY *b;
-	for (b = TopBuffy; b && (row < SidebarHeight); b = b->next) {
+	return delim_len;
+}
+
+/**
+ * draw_sidebar - Write out a list of mailboxes, on the left
+ * @first_row:  Screen line to start (0-based)
+ * @num_rows:   Number of rows to fill
+ * @div_width:  Width in screen characters taken by the divider
+ *
+ * Display a list of mailboxes in a panel on the left.  What's displayed will
+ * depend on our index markers: TopBuffy, OpnBuffy, HilBuffy, BotBuffy.
+ * On the first run they'll be NULL, so we display the top of Mutt's list
+ * (Incoming).
+ *
+ * TopBuffy - first visible mailbox
+ * BotBuffy - last  visible mailbox
+ * OpnBuffy - mailbox shown in Mutt's Index Panel
+ * HilBuffy - Unselected mailbox (the paging follows this)
+ *
+ * The entries are formatted using "sidebar_format" and may be abbreviated:
+ * "sidebar_shortpath", indented: "sidebar_folderindent", "sidebar_indentstr" and
+ * sorted: "sidebar_sort".  Finally, they're trimmed to fit the available space.
+ */
+static void
+draw_sidebar (int first_row, int num_rows, int div_width)
+{
+	BUFFY *b = TopBuffy;
+	if (!b)
+		return;
+
+	int row = 0;
+	for (b = TopBuffy; b && (row < num_rows); b = b->next) {
 		if (b->is_hidden) {
 			continue;
 		}
@@ -654,7 +651,7 @@ sb_draw (void)
 			SETCOLOR(MT_COLOR_NORMAL);
 		}
 
-		move (row, 0);
+		move (first_row + row, 0);
 		if (Context && Context->path &&
 			(!strcmp (b->path, Context->path)||
 			 !strcmp (b->realpath, Context->path))) {
@@ -714,7 +711,8 @@ sb_draw (void)
 			}
 		}
 		char str[SHORT_STRING];
-		make_sidebar_entry (str, sizeof (str), SidebarWidth - delim_len,
+		int w = MIN(COLS, (SidebarWidth - div_width));
+		make_sidebar_entry (str, sizeof (str), w,
 			sidebar_folder_name, b->msg_count,
 			b->msg_unread, b->msg_flagged);
 		printw ("%s", str);
@@ -723,13 +721,70 @@ sb_draw (void)
 		row++;
 	}
 
+	/* Fill the remaining rows with blank space */
 	SETCOLOR(MT_COLOR_NORMAL);
-	for (; row < SidebarHeight; row++) {
+	for (; row < num_rows; row++) {
 		int i = 0;
-		move (row, 0);
-		for (; i < (SidebarWidth - delim_len); i++)
+		move (first_row + row, 0);
+		for (; i < (SidebarWidth - div_width); i++)
 			addch (' ');
 	}
+}
+
+
+/**
+ * sb_init - Set some default values for the sidebar.
+ */
+void
+sb_init (void)
+{
+	OldVisible = option (OPTSIDEBAR);
+	if (SidebarWidth > 0) {
+		OldWidth = SidebarWidth;
+	} else {
+		OldWidth = 20;
+		if (OldVisible) {
+			SidebarWidth = OldWidth;
+		}
+	}
+}
+
+/**
+ * sb_draw - Completely redraw the sidebar
+ *
+ * Completely refresh the sidebar region.  First draw the divider; then, for
+ * each BUFFY, call make_sidebar_entry; finally blank out any remaining space.
+ */
+void
+sb_draw (void)
+{
+	if (!visible())
+		return;
+
+	if (!Incoming)
+		return;
+
+	/* XXX - if transitioning from invisible to visible */
+	/* if (OldVisible == 0) */
+	/* 	mutt_buffy_check (1); we probably have bad or no numbers */
+
+	int first_row = 0;
+	int num_rows  = LINES - 2;
+
+	if (option (OPTHELP) || option (OPTSTATUSONTOP))
+		first_row++;
+
+	if (option (OPTHELP))
+		num_rows--;
+
+	if (!prepare_sidebar (num_rows))
+		return;
+
+	int div_width = draw_divider (first_row, num_rows);
+	if (div_width < 0)
+		return;
+
+	draw_sidebar (first_row, num_rows, div_width);
 }
 
 /**
