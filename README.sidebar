@@ -1,0 +1,133 @@
+Sidebar Patch
+=============
+
+    Overview of mailboxes
+
+Patch
+-----
+
+    To check if Mutt supports "Sidebar", look for "+USE_SIDEBAR" in the mutt
+    version.
+
+    Dependencies
+    * mutt-1.5.24
+
+Introduction
+------------
+
+    The Sidebar shows a list of all your mailboxes. The list can be turned on
+    and off, it can be themed and the list style can be configured.
+
+    This part of the manual is a reference guide. If you want a simple
+    introduction with examples see the Sidebar Howto. If you just want to get
+    started, you could use the sample Sidebar muttrc.
+
+    This version of Sidebar is based on Terry Chan's [2015-11-11
+    release](http://www.lunar-linux.org/mutt-sidebar/). It contains many new
+    features, lots of bugfixes.
+
+Variables
+---------
+
+    Sidebar Variables
+
+    | Name                    | Type    | Default                     |
+    |-------------------------|---------|-----------------------------|
+    | 'sidebar_delim_chars'   | string  | '/.'                        |
+    | 'sidebar_divider_char'  | string  | '|'                         |
+    | 'sidebar_folder_indent' | boolean | 'no'                        |
+    | 'sidebar_format'        | string  | '%B%?F? [%F]?%* %?N?%N/?%S' |
+    | 'sidebar_indent_string' | string  | '  ' (two spaces)           |
+    | 'sidebar_new_mail_only' | boolean | 'no'                        |
+    | 'sidebar_next_new_wrap' | boolean | 'no'                        |
+    | 'sidebar_refresh_time'  | number  | '60'                        |
+    | 'sidebar_short_path'    | boolean | 'no'                        |
+    | 'sidebar_sort_method'   | enum    | 'SORT_ORDER'                |
+    | 'sidebar_visible'       | boolean | 'no'                        |
+    | 'sidebar_whitelist'     | list    | (empty)                     |
+    | 'sidebar_width'         | number  | '20'                        |
+
+Functions
+---------
+
+    Sidebar Functions
+
+    Sidebar adds the following functions to Mutt. By default, none of them are
+    bound to keys.
+
+    | Menus       | Function                   | Description                                          |
+    |-------------|----------------------------|------------------------------------------------------|
+    | index,pager | '<sidebar-next>'           | Move the highlight to next mailbox                   |
+    | index,pager | '<sidebar-next-new>'       | Move the highlight to next mailbox with new mail     |
+    | index,pager | '<sidebar-open>'           | Open highlighted mailbox                             |
+    | index,pager | '<sidebar-page-down>'      | Scroll the Sidebar down 1 page                       |
+    | index,pager | '<sidebar-page-up>'        | Scroll the Sidebar up 1 page                         |
+    | index,pager | '<sidebar-prev>'           | Move the highlight to previous mailbox               |
+    | index,pager | '<sidebar-prev-new>'       | Move the highlight to previous mailbox with new mail |
+    | index,pager | '<sidebar-toggle-visible>' | Make the Sidebar (in)visible                         |
+
+Commands
+--------
+
+        sidebar_whitelist mailbox [ mailbox... ]
+
+Colors
+------
+
+    Sidebar Colors
+
+    | Name                | Default Color    | Description                                                      |
+    |---------------------|------------------|------------------------------------------------------------------|
+    | 'sidebar_divider'   | default          | The dividing line between the Sidebar and the Index/Pager panels |
+    | 'sidebar_flagged'   | default          | Mailboxes containing flagged mail                                |
+    | 'sidebar_highlight' | underline        | Cursor to select a mailbox                                       |
+    | 'sidebar_indicator' | mutt 'indicator' | The mailbox open in the Index panel                              |
+    | 'sidebar_new'       | default          | Mailboxes containing new mail                                    |
+    | 'sidebar_spoolfile' | default          | Mailbox that receives incoming mail                              |
+
+    If the sidebar_indicator color isn't set, then the default Mutt indicator
+    color will be used (the color used in the index panel).
+
+Sort
+----
+
+    Sidebar Sort
+
+    | Sort       | Description                |
+    |------------|----------------------------|
+    | 'alpha'    | Alphabetically by path     |
+    | 'count'    | Total number of messages   |
+    | 'flagged'  | Number of flagged messages |
+    | 'name'     | Alphabetically by path     |
+    | 'new'      | Number of new messages     |
+    | 'path'     | Alphabetically by path     |
+    | 'unsorted' | Do not resort the paths    |
+
+See Also
+--------
+
+    * Regular Expressions
+    * Patterns
+    * Color command
+    * notmuch patch
+
+Known Bugs
+----------
+
+    Unsorted isn't
+
+Credits
+-------
+
+    * Justin Hibbits <jrh29@po.cwru.edu>
+    * Thomer M. Gil <mutt@thomer.com>
+    * David Sterba <dsterba@suse.cz>
+    * Evgeni Golov <evgeni@debian.org>
+    * Fabian Groffen <grobian@gentoo.org>
+    * Jason DeTiberus <jdetiber@redhat.com>
+    * Stefan Assmann <sassmann@kpanic.de>
+    * Steve Kemp <steve@steve.org.uk>
+    * Terry Chan <tchan@lunar-linux.org>
+    * Tyler Earnest <tylere@rne.st>
+    * Richard Russon <rich@flatcap.org>
+
