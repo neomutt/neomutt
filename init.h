@@ -2708,12 +2708,23 @@ struct option_t MuttVars[] = {
   ** sequences:
   ** .dl
   ** .dt %B  .dd Name of the mailbox
-  ** .dt %S  .dd Size of mailbox (total number of messages)
-  ** .dt %N  .dd Number of New messages in the mailbox
-  ** .dt %F  .dd Number of Flagged messages in the mailbox
-  ** .dt %!  .dd `!' : one flagged message; `!!' : two flagged messages; `n!' :
-  **             n flagged messages (for n > 2).
+  ** .dt %S  .dd * Size of mailbox (total number of messages)
+  ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %F  .dd * Number of Flagged messages in the mailbox
+  ** .dt %!  .dd ``!'' : one flagged message;
+  **             ``!!'' : two flagged messages;
+  **             ``n!'' : n flagged messages (for n > 2).
+  **             Otherwise prints nothing.
+  ** .dt %d  .dd * @ Number of deleted messages
+  ** .dt %L  .dd * @ Number of messages after limiting
+  ** .dt %t  .dd * @ Number of tagged messages
+  ** .dt %>X .dd right justify the rest of the string and pad with ``X''
+  ** .dt %|X .dd pad to the end of the line with ``X''
+  ** .dt %*X .dd soft-fill with character ``X'' as pad
   ** .de
+  ** .pp
+  ** * = Can be optionally printed if nonzero
+  ** @ = Only applicable to the current folder
   */
   { "sidebar_indentstr", DT_STR, R_BOTH, UL &SidebarIndentStr, UL "  " },
   /*

@@ -48,9 +48,7 @@ static BUFFY *Outgoing;		/* Last mailbox in the linked list */
  */
 struct sidebar_entry {
 	char         box[SHORT_STRING];
-	unsigned int size;
-	unsigned int new;
-	unsigned int flagged;
+	BUFFY       *buffy;
 };
 
 
@@ -156,6 +154,14 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 
 	dest[0] = 0;	/* Just in case there's nothing to do */
 
+	BUFFY *b = sbe->buffy;
+	if (!b)
+		return src;
+
+#if 1
+	int c = Context && (mutt_strcmp (Context->path, b->path) == 0);
+#endif
+
 	optional = flags & M_FORMAT_OPTIONAL;
 
 	switch (op) {
@@ -163,11 +169,29 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 			mutt_format_s (dest, destlen, prefix, sbe->box);
 			break;
 
+		case 'd':
+			if (!optional) {
+				snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+				snprintf (dest, destlen, fmt, c ? Context->deleted : 0);
+			} else if ((c && Context->deleted == 0) || !c) {
+				optional = 0;
+			}
+			break;
+
 		case 'F':
 			if (!optional) {
 				snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-				snprintf (dest, destlen, fmt, sbe->flagged);
-			} else if (sbe->flagged == 0) {
+				snprintf (dest, destlen, fmt, b->msg_flagged);
+			} else if (b->msg_flagged == 0) {
+				optional = 0;
+			}
+			break;
+
+		case 'L':
+			if (!optional) {
+				snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+				snprintf (dest, destlen, fmt, c ? Context->vcount : b->msg_count);
+			} else if ((c && Context->vcount == b->msg_count) || !c) {
 				optional = 0;
 			}
 			break;
@@ -175,8 +199,8 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 		case 'N':
 			if (!optional) {
 				snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-				snprintf (dest, destlen, fmt, sbe->new);
-			} else if (sbe->new == 0) {
+				snprintf (dest, destlen, fmt, b->msg_unread);
+			} else if (b->msg_unread == 0) {
 				optional = 0;
 			}
 			break;
@@ -184,21 +208,30 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 		case 'S':
 			if (!optional) {
 				snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-				snprintf (dest, destlen, fmt, sbe->size);
-			} else if (sbe->size == 0) {
+				snprintf (dest, destlen, fmt, b->msg_count);
+			} else if (b->msg_count == 0) {
+				optional = 0;
+			}
+			break;
+
+		case 't':
+			if (!optional) {
+				snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+				snprintf (dest, destlen, fmt, c ? Context->tagged : 0);
+			} else if ((c && Context->tagged == 0) || !c) {
 				optional = 0;
 			}
 			break;
 
 		case '!':
-			if (sbe->flagged == 0) {
+			if (b->msg_flagged == 0) {
 				mutt_format_s (dest, destlen, prefix, "");
-			} else if (sbe->flagged == 1) {
+			} else if (b->msg_flagged == 1) {
 				mutt_format_s (dest, destlen, prefix, "!");
-			} else if (sbe->flagged == 2) {
+			} else if (b->msg_flagged == 2) {
 				mutt_format_s (dest, destlen, prefix, "!!");
 			} else {
-				snprintf (buf, sizeof (buf), "%d!", sbe->flagged);
+				snprintf (buf, sizeof (buf), "%d!", b->msg_flagged);
 				mutt_format_s (dest, destlen, prefix, buf);
 			}
 			break;
@@ -229,17 +262,15 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
  */
 static void
 make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
-	unsigned int size, unsigned int new, unsigned int flagged)
+	BUFFY *b)
 {
 	struct sidebar_entry sbe;
 
-	if (!buf || !box)
+	if (!buf || !box || !b)
 		return;
 
-	sbe.new = new;
-	sbe.flagged = flagged;
-	sbe.size = size;
-	strncpy (sbe.box, box, sizeof (sbe.box)-1);
+	sbe.buffy = b;
+	strncpy (sbe.box, box, sizeof (sbe.box) - 1);
 
 	int box_len = strlen (box);
 	sbe.box[box_len] = '\0';
@@ -712,9 +743,7 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 		}
 		char str[SHORT_STRING];
 		int w = MIN(COLS, (SidebarWidth - div_width));
-		make_sidebar_entry (str, sizeof (str), w,
-			sidebar_folder_name, b->msg_count,
-			b->msg_unread, b->msg_flagged);
+		make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
 		printw ("%s", str);
 		if (sidebar_folder_depth > 0)
 			free (sidebar_folder_name);
