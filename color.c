@@ -98,6 +98,7 @@ static const struct mapping_t Fields[] =
   { "sidebar_divider",	MT_COLOR_DIVIDER },
   { "sidebar_flagged",	MT_COLOR_FLAGGED },
   { "sidebar_highlight",MT_COLOR_HIGHLIGHT },
+  { "sidebar_indicator",MT_COLOR_SB_INDICATOR },
   { "sidebar_new",	MT_COLOR_NEW },
 #endif
   { NULL,		0 }
