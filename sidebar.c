@@ -671,7 +671,11 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 		}
 
 		if (b == OpnBuffy) {
-			SETCOLOR(MT_COLOR_INDICATOR);
+			if ((ColorDefs[MT_COLOR_SB_INDICATOR] != 0)) {
+				SETCOLOR(MT_COLOR_SB_INDICATOR);
+			} else {
+				SETCOLOR(MT_COLOR_INDICATOR);
+			}
 		} else if (b == HilBuffy) {
 			SETCOLOR(MT_COLOR_HIGHLIGHT);
 		} else if (b->msg_unread > 0) {
