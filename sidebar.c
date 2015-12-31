@@ -678,6 +678,9 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 			}
 		} else if (b == HilBuffy) {
 			SETCOLOR(MT_COLOR_HIGHLIGHT);
+		} else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
+			(mutt_strcmp (b->path, Spoolfile) == 0)) {
+			SETCOLOR(MT_COLOR_SB_SPOOLFILE);
 		} else if (b->msg_unread > 0) {
 			SETCOLOR(MT_COLOR_NEW);
 		} else if (b->msg_flagged > 0) {
