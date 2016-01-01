@@ -1180,7 +1180,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     {
       if (hdr && !hdr->received)
       {
-	char *d = strchr (p, ';');
+	char *d = strrchr (p, ';');
 	
 	if (d)
 	  hdr->received = mutt_parse_date (d + 1, NULL);
