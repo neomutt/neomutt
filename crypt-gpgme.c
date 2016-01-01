@@ -4,7 +4,7 @@
  * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2002, 2003, 2004 g10 Code GmbH
- * Copyright (C) 2012 Michael R. Elkins <me@sigpipe.org>
+ * Copyright (C) 2010,2012-3 Michael R. Elkins <me@sigpipe.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by

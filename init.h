@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2007,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2007,2010,2012-3 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
