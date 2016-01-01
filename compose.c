@@ -338,6 +338,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
   FREE (&idx[x]);
   for (; x < *idxlen - 1; x++)
     idx[x] = idx[x+1];
+  idx[*idxlen - 1] = NULL;
   menu->max = --(*idxlen);
   
   return (0);
