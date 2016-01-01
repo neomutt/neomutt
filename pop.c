@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2000-2002 Vsevolod Volkov <vvv@mutt.org.ua>
- * Copyright (C) 2006-7,2009 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2006-2007,2009 Rocco Rutte <pdmef@gmx.net>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by

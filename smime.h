@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
+ * Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify

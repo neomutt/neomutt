@@ -1,10 +1,10 @@
 /* crypt-gpgme.c - GPGME based crypto operations
- * Copyright (C) 1996-7,2007 Michael R. Elkins <me@cs.hmc.edu>
- * Copyright (C) 1998,1999,2000 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@cs.hmc.edu>
+ * Copyright (C) 1998-2000 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2002, 2003, 2004 g10 Code GmbH
- * Copyright (C) 2010,2012-3 Michael R. Elkins <me@sigpipe.org>
+ * Copyright (C) 2002-2004 g10 Code GmbH
+ * Copyright (C) 2010,2012-2013 Michael R. Elkins <me@sigpipe.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by

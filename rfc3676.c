@@ -1,7 +1,7 @@
 /*
  * Copyright (C) 2005 Andreas Krennmair <ak@synflood.at>
  * Copyright (C) 2005 Peter J. Holzer <hjp@hjp.net>
- * Copyright (C) 2005-9 Rocco Rutte <pdmef@gmx.net>
+ * Copyright (C) 2005-2009 Rocco Rutte <pdmef@gmx.net>
  * Copyright (C) 2010 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
+ * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify

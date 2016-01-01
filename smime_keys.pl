@@ -1,6 +1,6 @@
 #! /usr/bin/perl -w
 
-# Copyright (C) 2001,2002 Oliver Ehli <elmy@acm.org>
+# Copyright (C) 2001-2002 Oliver Ehli <elmy@acm.org>
 # Copyright (C) 2001 Mike Schiraldi <raldi@research.netsol.com>
 # Copyright (C) 2003 Bjoern Jacke <bjoern@j3e.de>
 # Copyright (C) 2015 Kevin J. McCarthy <kevin@8t8.us>
