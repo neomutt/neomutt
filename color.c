@@ -306,13 +306,14 @@ void mutt_free_color (int fg, int bg)
 #ifdef HAVE_COLOR
 
 static int
-parse_color_name (const char *s, int *col, int *attr, int brite, BUFFER *err)
+parse_color_name (const char *s, int *col, int *attr, int is_fg, BUFFER *err)
 {
   char *eptr;
+  int is_bright = 0;
 
   if (ascii_strncasecmp (s, "bright", 6) == 0)
   {
-    *attr |= brite;
+    is_bright = 1;
     s += 6;
   }
 
@@ -332,6 +333,24 @@ parse_color_name (const char *s, int *col, int *attr, int brite, BUFFER *err)
   {
     snprintf (err->data, err->dsize, _("%s: no such color"), s);
     return (-1);
+  }
+
+  if (is_bright)
+  {
+    if (is_fg)
+    {
+      *attr |= A_BOLD;
+    }
+    else if (COLORS < 16)
+    {
+      /* A_BLINK turns the background color brite on some terms */
+      *attr |= A_BLINK;
+    }
+    else
+    {
+      /* Advance the color by 8 to get the bright version */
+      *col += 8;
+    }
   }
 
   return 0;
@@ -615,7 +634,7 @@ parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *er
 
   mutt_extract_token (buf, s, 0);
 
-  if (parse_color_name (buf->data, fg, attr, A_BOLD, err) != 0)
+  if (parse_color_name (buf->data, fg, attr, 1, err) != 0)
     return (-1);
 
   if (! MoreArgs (s))
@@ -626,7 +645,7 @@ parse_color_pair(BUFFER *buf, BUFFER *s, int *fg, int *bg, int *attr, BUFFER *er
   
   mutt_extract_token (buf, s, 0);
 
-  if (parse_color_name (buf->data, bg, attr, A_BLINK, err) != 0)
+  if (parse_color_name (buf->data, bg, attr, 0, err) != 0)
     return (-1);
   
   return 0;
