@@ -629,7 +629,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	if (idxlen && idx[idxlen - 1]->content->next)
 	{
 	  for (i = 0; i < idxlen; i++)
+          {
+            FREE (&idx[i]->tree);
 	    FREE (&idx[i]);
+          }
 	  idxlen = 0;
 	  idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
 	  menu->data = idx;
@@ -1321,6 +1324,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     for (i = 0; i < idxlen; i++)
     {
       idx[i]->content->aptr = NULL;
+      FREE (&idx[i]->tree);
       FREE (&idx[i]);
     }
   }
