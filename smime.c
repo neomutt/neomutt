@@ -509,7 +509,12 @@ static smime_key_t *smime_parse_key(char *buf)
 
   for (p = buf; p; p = pend)
   {
-    if ((pend = strchr (p, ' ')) || (pend = strchr (p, '\n')))
+    /* Some users manually maintain their .index file, and use a tab
+     * as a delimiter, which the old parsing code (using fscanf)
+     * happened to allow.  smime_keys.pl uses a space, so search for both.
+     */
+    if ((pend = strchr (p, ' ')) || (pend = strchr (p, '\t')) ||
+        (pend = strchr (p, '\n')))
       *pend++ = 0;
 
     /* For backward compatibility, don't count consecutive delimiters
