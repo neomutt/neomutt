@@ -42,7 +42,8 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   sasl_conn_t *saslconn;
   sasl_interact_t *interaction = NULL;
   int rc;
-  char buf[LONG_STRING];
+  char *buf = NULL;
+  size_t bufsize = 0;
   char inbuf[LONG_STRING];
   const char* mech;
   const char *pc = NULL;
@@ -77,18 +78,22 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
 
   mutt_message _("Authenticating (SASL)...");
 
-  snprintf (buf, sizeof (buf), "AUTH %s", mech);
+  bufsize = ((olen * 2) > LONG_STRING) ? (olen * 2) : LONG_STRING;
+  buf = safe_malloc (bufsize);
+
+  snprintf (buf, bufsize, "AUTH %s", mech);
   olen = strlen (buf);
 
   /* looping protocol */
   FOREVER
   {
-    strfcpy (buf + olen, "\r\n", sizeof (buf) - olen);
+    strfcpy (buf + olen, "\r\n", bufsize - olen);
     mutt_socket_write (pop_data->conn, buf);
     if (mutt_socket_readln (inbuf, sizeof (inbuf), pop_data->conn) < 0)
     {
       sasl_dispose (&saslconn);
       pop_data->status = POP_DISCONNECTED;
+      FREE (&buf);
       return POP_A_SOCKET;
     }
 
@@ -96,7 +101,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
       break;
 
     if (!mutt_strncmp (inbuf, "+ ", 2)
-        && sasl_decode64 (inbuf+2, strlen (inbuf+2), buf, LONG_STRING-1, &len) != SASL_OK)
+        && sasl_decode64 (inbuf+2, strlen (inbuf+2), buf, bufsize - 1, &len) != SASL_OK)
     {
       dprint (1, (debugfile, "pop_auth_sasl: error base64-decoding server response.\n"));
       goto bail;
@@ -122,7 +127,12 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
     /* send out response, or line break if none needed */
     if (pc)
     {
-      if (sasl_encode64 (pc, olen, buf, sizeof (buf), &olen) != SASL_OK)
+      if ((olen * 2) > bufsize)
+      {
+        bufsize = olen * 2;
+        safe_realloc (&buf, bufsize);
+      }
+      if (sasl_encode64 (pc, olen, buf, bufsize, &olen) != SASL_OK)
       {
 	dprint (1, (debugfile, "pop_auth_sasl: error base64-encoding client response.\n"));
 	goto bail;
@@ -136,6 +146,7 @@ static pop_auth_res_t pop_auth_sasl (POP_DATA *pop_data, const char *method)
   if (!mutt_strncmp (inbuf, "+OK", 3))
   {
     mutt_sasl_setup_conn (pop_data->conn, saslconn);
+    FREE (&buf);
     return POP_A_SUCCESS;
   }
 
@@ -145,11 +156,15 @@ bail:
   /* terminate SASL session if the last response is not +OK nor -ERR */
   if (!mutt_strncmp (inbuf, "+ ", 2))
   {
-    snprintf (buf, sizeof (buf), "*\r\n");
+    snprintf (buf, bufsize, "*\r\n");
     if (pop_query (pop_data, buf, sizeof (buf)) == -1)
+    {
+      FREE (&buf);
       return POP_A_SOCKET;
+    }
   }
 
+  FREE (&buf);
   mutt_error _("SASL authentication failed.");
   mutt_sleep (2);
 
