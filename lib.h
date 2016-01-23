@@ -57,7 +57,7 @@
 # define TRUE 1
 # define FALSE 0
 
-# define HUGE_STRING	5120
+# define HUGE_STRING     8192
 # define LONG_STRING     1024
 # define STRING          256
 # define SHORT_STRING    128
