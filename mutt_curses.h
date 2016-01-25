@@ -122,8 +122,18 @@ enum
   MT_COLOR_SEARCH,
   MT_COLOR_BOLD,
   MT_COLOR_UNDERLINE,
-  MT_COLOR_INDEX,
   MT_COLOR_PROMPT,
+  /* please no non-MT_COLOR_INDEX objects after this point */
+  MT_COLOR_INDEX,
+  MT_COLOR_INDEX_AUTHOR,
+  MT_COLOR_INDEX_SUBJECT,
+  /* below only index coloring stuff that doesn't have a colorline! */
+  MT_COLOR_INDEX_COLLAPSED,
+  MT_COLOR_INDEX_DATE,
+  MT_COLOR_INDEX_FLAGS,
+  MT_COLOR_INDEX_LABEL,
+  MT_COLOR_INDEX_NUMBER,
+  MT_COLOR_INDEX_SIZE,
   MT_COLOR_MAX
 };
 
@@ -177,6 +187,8 @@ extern int ColorDefs[];
 extern COLOR_LINE *ColorHdrList;
 extern COLOR_LINE *ColorBodyList;
 extern COLOR_LINE *ColorIndexList;
+extern COLOR_LINE *ColorIndexSubjectList;
+extern COLOR_LINE *ColorIndexAuthorList;
 
 void ci_init_color (void);
 void ci_start_color (void);
