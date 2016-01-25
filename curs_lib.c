@@ -933,6 +933,7 @@ void mutt_format_string (char *dest, size_t destlen,
   size_t k, k2;
   char scratch[MB_LEN_MAX];
   mbstate_t mbstate1, mbstate2;
+  int escaped = 0;
 
   memset(&mbstate1, 0, sizeof (mbstate1));
   memset(&mbstate2, 0, sizeof (mbstate2));
@@ -948,8 +949,15 @@ void mutt_format_string (char *dest, size_t destlen,
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    if (arboreal && wc < MUTT_TREE_MAX)
+    if (escaped) {
+      escaped = 0;
+      w = 0;
+    } else if (arboreal && wc == MUTT_SPECIAL_INDEX) {
+      escaped = 1;
+      w = 0;
+    } else if (arboreal && wc < MUTT_TREE_MAX) {
       w = 1; /* hack */
+    }
     else
     {
 #ifdef HAVE_ISWBLANK
@@ -1128,7 +1136,12 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
     cw = wcwidth (wc);
     /* hack because MUTT_TREE symbols aren't turned into characters
      * until rendered by print_enriched_string (#3364) */
-    if (cw < 0 && cl == 1 && src[0] && src[0] < MUTT_TREE_MAX)
+    if ((cw < 0) && (src[0] == MUTT_SPECIAL_INDEX))
+    {
+      cl = 2; /* skip the index coloring sequence */
+      cw = 0;
+    }
+    else if (cw < 0 && cl == 1 && src[0] && src[0] < MUTT_TREE_MAX)
       cw = 1;
     else if (cw < 0)
       cw = 0;			/* unprintable wchar */
@@ -1186,6 +1199,12 @@ int mutt_strwidth (const char *s)
   memset (&mbstate, 0, sizeof (mbstate));
   for (w=0; n && (k = mbrtowc (&wc, s, n, &mbstate)); s += k, n -= k)
   {
+    if (*s == MUTT_SPECIAL_INDEX) {
+      s += 2; /* skip the index coloring sequence */
+      k = 0;
+      continue;
+    }
+
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
       if (k == (size_t)(-1))

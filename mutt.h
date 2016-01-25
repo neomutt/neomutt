@@ -158,6 +158,8 @@ typedef enum
 #define MUTT_TREE_MISSING       13
 #define MUTT_TREE_MAX           14
 
+#define MUTT_SPECIAL_INDEX		MUTT_TREE_MAX
+
 #define MUTT_THREAD_COLLAPSE    (1<<0)
 #define MUTT_THREAD_UNCOLLAPSE  (1<<1)
 #define MUTT_THREAD_GET_HIDDEN  (1<<2)
