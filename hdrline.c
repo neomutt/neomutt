@@ -103,6 +103,34 @@ static int first_mailing_list (char *buf, size_t buflen, ADDRESS *a)
   return 0;
 }
 
+/* Takes the color to embed, the buffer to manipulate and the buffer length as
+ * arguments.
+ * Returns the number of chars written. */
+static size_t add_index_color(char *buf, size_t buflen,
+                              format_flag flags, char color)
+{
+  int len;
+
+  /* only add color markers if we are operating on main index entries. */
+  if (!(flags & M_FORMAT_INDEX))
+    return 0;
+
+  if (color == MT_COLOR_INDEX) { /* buf might be uninitialized other cases */
+    len = mutt_strlen(buf);
+    buf += len;
+    buflen -= len;
+  }
+
+  if (buflen < 2)
+    return 0;
+
+  buf[0] = M_SPECIAL_INDEX;
+  buf[1] = color;
+  buf[2] = '\0';
+
+  return 2;
+}
+
 static void make_from (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
 {
   int me;
@@ -253,6 +281,7 @@ hdr_format_str (char *dest,
 #define THREAD_NEW (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 1)
 #define THREAD_OLD (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 2)
   size_t len;
+  size_t colorlen;
 
   hdr = hfi->hdr;
   ctx = hfi->ctx;
@@ -304,12 +333,16 @@ hdr_format_str (char *dest,
       break;
     
     case 'c':
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SIZE);
       mutt_pretty_size (buf2, sizeof (buf2), (long) hdr->content->length);
-      mutt_format_s (dest, destlen, prefix, buf2);
+      mutt_format_s (dest+colorlen, destlen-colorlen, prefix, buf2);
+      add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'C':
-      snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
+      colorlen = add_index_color(fmt, sizeof(fmt), flags, MT_COLOR_INDEX_NUMBER);
+      snprintf (fmt+colorlen, sizeof(fmt)-colorlen, "%%%sd", prefix);
+      add_index_color(fmt+colorlen, sizeof(fmt)-colorlen, flags, MT_COLOR_INDEX);
       snprintf (dest, destlen, fmt, hdr->msgno + 1);
       break;
 
@@ -408,7 +441,10 @@ hdr_format_str (char *dest,
 	if (do_locales)
 	  setlocale (LC_TIME, "C");
 
-	mutt_format_s (dest, destlen, prefix, buf2);
+	colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_DATE);
+	mutt_format_s (dest+colorlen, destlen-colorlen, prefix, buf2);
+	add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
+
 	if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
 	  src = cp + 1;
       }
@@ -438,8 +474,10 @@ hdr_format_str (char *dest,
     case 'F':
       if (!optional)
       {
+        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
         make_from (hdr->env, buf2, sizeof (buf2), 0);
-	mutt_format_s (dest, destlen, prefix, buf2);
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, buf2);
+        add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       }
       else if (mutt_addr_is_user (hdr->env->from))
         optional = 0;
@@ -465,7 +503,9 @@ hdr_format_str (char *dest,
       if (!optional)
       {
 	snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
-	snprintf (dest, destlen, fmt, (int) hdr->lines);
+	colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SIZE);
+	snprintf (dest+colorlen, destlen-colorlen, fmt, (int) hdr->lines);
+	add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       }
       else if (hdr->lines <= 0)
         optional = 0;
@@ -474,8 +514,10 @@ hdr_format_str (char *dest,
     case 'L':
       if (!optional)
       {
+	colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
 	make_from (hdr->env, buf2, sizeof (buf2), 1);
-	mutt_format_s (dest, destlen, prefix, buf2);
+	mutt_format_s (dest+colorlen, destlen-colorlen, prefix, buf2);
+	add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       }
       else if (!check_for_mailing_list (hdr->env->to, NULL, NULL, 0) &&
 	       !check_for_mailing_list (hdr->env->cc, NULL, NULL, 0))
@@ -530,10 +572,16 @@ hdr_format_str (char *dest,
       snprintf (fmt, sizeof (fmt), "%%%sd", prefix);
       if (!optional)
       {
-	if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
-	  snprintf (dest, destlen, fmt, hdr->num_hidden);
-	else if (is_index && threads)
-	  mutt_format_s (dest, destlen, prefix, " ");
+	colorlen = add_index_color(dest, destlen, flags,
+				   MT_COLOR_INDEX_COLLAPSED);
+	if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1) {
+	  snprintf (dest+colorlen, destlen-colorlen, fmt, hdr->num_hidden);
+	  add_index_color(dest, destlen-colorlen, flags, MT_COLOR_INDEX);
+	}
+	else if (is_index && threads) {
+	  mutt_format_s (dest+colorlen, destlen-colorlen, prefix, " ");
+	  add_index_color(dest, destlen-colorlen, flags, MT_COLOR_INDEX);
+	}
 	else
 	  *dest = '\0';
       }
@@ -554,15 +602,20 @@ hdr_format_str (char *dest,
       {
 	if (flags & M_FORMAT_FORCESUBJ)
 	{
-	  mutt_format_s (dest, destlen, "", NONULL (hdr->env->subject));
+	  colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
+	  mutt_format_s (dest+colorlen, destlen-colorlen, "", NONULL (hdr->env->subject));
+	  add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
 	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
 	  mutt_format_s_tree (dest, destlen, prefix, buf2);
 	}
 	else
 	  mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
       }
-      else
-	mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->subject));
+      else {
+	colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
+	mutt_format_s (dest+colorlen, destlen-colorlen, prefix, NONULL (hdr->env->subject));
+	add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
+      }
       break;
 
     case 'S':
@@ -658,7 +711,9 @@ hdr_format_str (char *dest,
 		hdr->tagged ? '*' :
 		(hdr->flagged ? '!' :
 		 (Tochars && ((i = mutt_user_is_recipient (hdr)) < mutt_strlen (Tochars)) ? Tochars[i] : ' ')));
-      mutt_format_s (dest, destlen, prefix, buf2);
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
+      mutt_format_s (dest+colorlen, destlen-colorlen, prefix, buf2);
+      add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'X':
@@ -678,7 +733,9 @@ hdr_format_str (char *dest,
        if (optional)
 	 optional = hdr->env->x_label ? 1 : 0;
 
-       mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->x_label));
+       colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
+       mutt_format_s (dest+colorlen, destlen-colorlen, prefix, NONULL (hdr->env->x_label));
+       add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
        break;
  
     case 'Y':
@@ -704,10 +761,12 @@ hdr_format_str (char *dest,
       if (optional)
 	optional = i;
 
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_LABEL);
       if (i)
-        mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->x_label));
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, NONULL (hdr->env->x_label));
       else
-        mutt_format_s (dest, destlen, prefix, "");
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, "");
+      add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
 
       break;
 

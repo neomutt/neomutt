@@ -161,6 +161,8 @@ typedef enum
 #define M_TREE_MISSING		13
 #define M_TREE_MAX		14
 
+#define M_SPECIAL_INDEX		M_TREE_MAX
+
 #define M_THREAD_COLLAPSE	(1<<0)
 #define M_THREAD_UNCOLLAPSE	(1<<1)
 #define M_THREAD_GET_HIDDEN	(1<<2)
