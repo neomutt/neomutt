@@ -36,6 +36,9 @@ enum
   M_MAILDIR,
   M_IMAP,
   M_POP
+#ifdef USE_COMPRESSED
+  , M_COMPRESSED
+#endif
 };
 
 WHERE short DefaultMagic INITVAL (M_MBOX);

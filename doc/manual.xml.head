@@ -6261,6 +6261,205 @@ selection. Highest priority has the mailbox given with the
 
 </chapter>
 
+<sect1 id="compressedfolders">
+<title>Compressed folders Support (OPTIONAL)</title>
+
+<para>
+If Mutt was compiled with compressed folders support (by running the
+<emphasis>configure</emphasis> script with the
+<emphasis>--enable-compressed</emphasis> flag), Mutt can open folders
+stored in an arbitrary format, provided that the user has a script to
+convert from/to this format to one of the accepted.
+
+The most common use is to open compressed archived folders e.g. with
+gzip.
+
+In addition, the user can provide a script that gets a folder in an
+accepted format and appends its context to the folder in the
+user-defined format, which may be faster than converting the entire
+folder to the accepted format, appending to it and converting back to
+the user-defined format.
+
+There are three hooks defined (<link
+linkend="open-hook">open-hook</link>, <link
+linkend="close-hook">close-hook</link> and <link
+linkend="append-hook">append-hook</link>) which define commands to
+uncompress and compress a folder and to append messages to an existing
+compressed folder respectively.
+
+For example:
+
+<screen>
+open-hook \\.gz$ "gzip -cd %f &gt; %t" 
+close-hook \\.gz$ "gzip -c %t &gt; %f"
+append-hook \\.gz$ "gzip -c %t &gt;&gt; %f" 
+</screen>
+
+You do not have to specify all of the commands. If you omit <link
+linkend="append-hook">append-hook</link>, the folder will be open and
+closed again each time you will add to it. If you omit <link
+linkend="close-hook">close-hook</link> (or give empty command) , the
+folder will be open in the mode. If you specify <link
+linkend="append-hook">append-hook</link> though you'll be able to
+append to the folder.
+
+Note that Mutt will only try to use hooks if the file is not in one of
+the accepted formats. In particular, if the file is empty, mutt
+supposes it is not compressed. This is important because it allows the
+use of programs that do not have well defined extensions. Just use
+&quot;.&quot; as a regexp. But this may be surprising if your
+compressing script produces empty files. In this situation, unset
+<link linkend="save-empty">&dollar;save&lowbar;empty</link>, so that
+the compressed file will be removed if you delete all of the messages.
+</para>
+
+<sect2 id="open-hook">
+<title>Open a compressed mailbox for reading</title>
+
+<para>
+Usage: <literal>open-hook</literal> <emphasis>regexp</emphasis> &quot;<emphasis>command</emphasis>&quot;
+
+The <emphasis>command</emphasis> is the command that can be used for
+opening the folders whose names match <emphasis>regexp</emphasis>.
+
+The <emphasis>command</emphasis> string is the printf-like format
+string, and it should accept two parameters: &percnt;f, which is
+replaced with the (compressed) folder name, and &percnt;t which is
+replaced with the name of the temporary folder to which to write.
+
+&percnt;f and &percnt;t can be repeated any number of times in the
+command string, and all of the entries are replaced with the
+appropriate folder name. In addition, &percnt;&percnt; is replaced by
+&percnt;, as in printf, and any other &percnt;anything is left as is.
+
+The <emphasis>command</emphasis> should <emphasis
+role="bold">not</emphasis> remove the original compressed file.  The
+<emphasis>command</emphasis> should return non-zero exit status if it
+fails, so mutt knows something's wrong.
+
+Example:
+
+<screen>
+open-hook \\.gz$ "gzip -cd %f &gt; %t" 
+</screen>
+
+If the <emphasis>command</emphasis> is empty, this operation is
+disabled for this file type.
+</para>
+</sect2>
+
+<sect2 id="close-hook">
+<title>Write a compressed mailbox</title>
+
+<para>
+Usage: <literal>close-hook</literal> <emphasis>regexp</emphasis> &quot;<emphasis>command</emphasis>&quot;
+
+This is used to close the folder that was open with the <link
+linkend="open-hook">open-hook</link> command after some changes were
+made to it.
+
+The <emphasis>command</emphasis> string is the command that can be
+used for closing the folders whose names match
+<emphasis>regexp</emphasis>. It has the same format as in the <link
+linkend="open-hook">open-hook</link> command. Temporary folder in this
+case is the folder previously produced by the <link
+linkend="open-hook">open-hook</link> command.
+
+The <emphasis>command</emphasis> should <emphasis
+role="bold">not</emphasis> remove the decompressed file. The
+<emphasis>command</emphasis> should return non-zero exit status if it
+fails, so mutt knows something's wrong.
+
+Example:
+
+<screen>
+close-hook \\.gz$ "gzip -c %t &gt; %f"
+</screen>
+
+If the <emphasis>command</emphasis> is empty, this operation is
+disabled for this file type, and the file can only be open in the
+read-only mode.
+
+<link linkend="close-hook">close-hook</link> is not called when you
+exit from the folder if the folder was not changed.
+</para>
+</sect2>
+
+<sect2 id="append-hook">
+<title>Append a message to a compressed mailbox</title>
+
+<para>
+Usage: <literal>append-hook</literal> <emphasis>regexp</emphasis> &quot;<emphasis>command</emphasis>&quot;
+
+This command is used for saving to an existing compressed folder.  The
+<emphasis>command</emphasis> is the command that can be used for
+appending to the folders whose names match
+<emphasis>regexp</emphasis>. It has the same format as in the <link
+linkend="open-hook">open-hook</link> command.  The temporary folder in
+this case contains the messages that are being appended.
+
+The <emphasis>command</emphasis> should <emphasis
+role="bold">not</emphasis> remove the decompressed file. The
+<emphasis>command</emphasis> should return non-zero exit status if it
+fails, so mutt knows something's wrong.
+
+Example:
+
+<screen>
+append-hook \\.gz$ "gzip -c %t &gt;&gt; %f" 
+</screen>
+
+When <link linkend="append-hook">append-hook</link> is used, the folder
+is not opened, which saves time, but this means that we can not find
+out what the folder type is. Thus the default (<link
+linkend="mbox-type">&dollar;mbox&lowbar;type</link>) type is always
+supposed (i.e.  this is the format used for the temporary folder).
+
+If the file does not exist when you save to it, <link
+linkend="close-hook">close-hook</link> is called, and not <link
+linkend="append-hook">append-hook</link>. <link
+linkend="append-hook">append-hook</link> is only for appending to
+existing folders.
+
+If the <emphasis>command</emphasis> is empty, this operation is
+disabled for this file type. In this case, the folder will be open and
+closed again (using <link linkend="open-hook">open-hook</link> and
+<link linkend="close-hook">close-hook</link>respectively) each time you
+will add to it.
+</para>
+</sect2>
+
+<sect2>
+<title>Encrypted folders</title>
+
+<para>
+The compressed folders support can also be used to handle encrypted
+folders. If you want to encrypt a folder with PGP, you may want to use
+the following hooks:
+
+<screen>
+open-hook  \\.pgp$ "pgp -f &lt; %f &gt; %t"
+close-hook \\.pgp$ "pgp -fe YourPgpUserIdOrKeyId &lt; %t &gt; %f"
+</screen>
+
+Please note, that PGP does not support appending to an encrypted
+folder, so there is no append-hook defined.
+
+If you are using GnuPG instead of PGP, you may use the following hooks
+instead:
+
+<screen>
+open-hook  \\.gpg$ "gpg --decrypt &lt; %f &gt; %t"
+close-hook \\.gpg$ "gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; %t &gt; %f"
+</screen>
+
+<emphasis role="bold">Note:</emphasis> the folder is temporary stored
+decrypted in the /tmp directory, where it can be read by your system
+administrator. So think about the security aspects of this.
+</para>
+</sect2>
+</sect1>
+
 <chapter id="mimesupport">
 <title>Mutt's MIME Support</title>
 

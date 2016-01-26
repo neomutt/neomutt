@@ -24,6 +24,10 @@
 #include "mailbox.h"
 #include "mutt_crypt.h"
 
+#ifdef USE_COMPRESSED
+#include "compress.h"
+#endif
+
 #include <limits.h>
 #include <string.h>
 #include <stdlib.h>
@@ -109,6 +113,16 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     memset (&pattern, 0, sizeof (pattern));
     pattern.data = safe_strdup (path);
   }
+#ifdef USE_COMPRESSED
+  else if (data & (M_APPENDHOOK | M_OPENHOOK | M_CLOSEHOOK))
+  {
+    if (mutt_test_compress_command (command.data))
+    {
+      strfcpy (err->data, _("badly formatted command string"), err->dsize);
+      return (-1);
+    }
+  }
+#endif
   else if (DefaultHook && !(data & (M_CHARSETHOOK | M_ICONVHOOK | M_ACCOUNTHOOK))
            && (!WithCrypto || !(data & M_CRYPTHOOK))
       )

@@ -433,6 +433,12 @@ static void show_version (void)
 #else
 	"-LOCALES_HACK  "
 #endif
+
+#ifdef USE_COMPRESSED
+	"+COMPRESSED  "
+#else
+	"-COMPRESSED  "
+#endif
 	      
 #ifdef HAVE_WC_FUNCS
 	"+HAVE_WC_FUNCS  "

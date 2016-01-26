@@ -1214,6 +1214,11 @@ int mutt_index_menu (void)
         {
 	  int check;
 
+#ifdef USE_COMPRESSED
+	  if (Context->compressinfo && Context->realpath)
+	    mutt_str_replace (&LastFolder, Context->realpath);
+	  else
+#endif
 	  mutt_str_replace (&LastFolder, Context->path);
 	  oldcount = Context ? Context->msgcount : 0;
 

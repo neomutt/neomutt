@@ -23,7 +23,7 @@ BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c $(HCVERSION)
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
 	addrbook.c alias.c attach.c base64.c browser.c buffy.c color.c \
-	crypt.c cryptglue.c \
+	crypt.c cryptglue.c compress.c \
 	commands.c complete.c compose.c copy.c curs_lib.c curs_main.c date.c \
 	edit.c enter.c flags.c init.c filter.c from.c \
 	getdomain.c group.c \
@@ -60,7 +60,7 @@ EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	bcache.h browser.h hcache.h mbyte.h mutt_idna.h remailer.h url.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
-	configure account.h \
+	configure account.h compress.h \
 	attach.h buffy.h charset.h copy.h crypthash.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h mutt_crypt.h \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
