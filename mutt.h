@@ -183,6 +183,7 @@ enum
   M_UNDELETE,
   M_DELETED,
   M_APPENDED,
+  M_PURGED,
   M_FLAG,
   M_TAG,
   M_UNTAG,
@@ -721,6 +722,7 @@ typedef struct header
   unsigned int flagged : 1; 		/* marked important? */
   unsigned int tagged : 1;
   unsigned int appended : 1;		/* has been saved */
+  unsigned int purged : 1;   /* bypassing the trash folder */
   unsigned int deleted : 1;
   unsigned int changed : 1;
   unsigned int attach_del : 1; 		/* has an attachment marked for deletion */

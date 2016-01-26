@@ -806,6 +806,7 @@ static int trash_append (CONTEXT *ctx)
     {
       for (i = 0 ; i < ctx->msgcount ; i++)
         if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->appended
+            && !ctx->hdrs[i]->purged
             && mutt_append_message (ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
           {
             mx_close_mailbox (ctx_trash, NULL);
