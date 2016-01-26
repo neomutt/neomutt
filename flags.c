@@ -65,7 +65,13 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	h->deleted = 0;
         update = 1;
-	if (upd_ctx) ctx->deleted--;
+        if (upd_ctx)
+        {
+          ctx->deleted--;
+          if (h->appended)
+            ctx->appended--;
+        }
+        h->appended = 0; /* when undeleting, also reset the appended flag */
 #ifdef USE_IMAP
         /* see my comment above */
 	if (ctx->magic == M_IMAP) 
@@ -84,6 +90,17 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	 */
 	if (ctx->magic == M_MAILDIR && upd_ctx && h->trash)
 	  ctx->changed = 1;
+      }
+      break;
+
+    case M_APPENDED:
+      if (bf)
+      {
+        if (!h->appended)
+        {
+          h->appended = 1;
+          if (upd_ctx) ctx->appended++;
+        }
       }
       break;
 

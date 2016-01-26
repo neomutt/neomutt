@@ -884,6 +884,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
         if (ctx->hdrs[n]->tagged)
         {
           mutt_set_flag (ctx, ctx->hdrs[n], M_DELETE, 1);
+          mutt_set_flag (ctx, ctx->hdrs[n], M_APPENDED, 1);
           if (option (OPTDELETEUNTAG))
             mutt_set_flag (ctx, ctx->hdrs[n], M_TAG, 0);
         }
@@ -891,6 +892,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
     else
     {
       mutt_set_flag (ctx, h, M_DELETE, 1);
+      mutt_set_flag (ctx, h, M_APPENDED, 1);
       if (option (OPTDELETEUNTAG))
         mutt_set_flag (ctx, h, M_TAG, 0);
     }

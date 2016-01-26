@@ -141,6 +141,7 @@ WHERE char *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
 WHERE char *Tochars;
+WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
 WHERE short TSSupported;
