@@ -104,6 +104,16 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
+    case M_PURGED:
+      if (bf)
+      {
+	if (!h->purged)
+	  h->purged = 1;
+      }
+      else if (h->purged)
+	h->purged = 0;
+      break;
+
     case M_NEW:
 
       if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
