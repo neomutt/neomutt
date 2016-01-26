@@ -1511,7 +1511,9 @@ int mutt_save_confirm (const char *s, struct stat *st)
 
   if (magic > 0 && !mx_access (s, W_OK))
   {
-    if (option (OPTCONFIRMAPPEND))
+    if (option (OPTCONFIRMAPPEND) &&
+       (!TrashPath || (mutt_strcmp (s, TrashPath) != 0)))
+      /* if we're appending to the trash, there's no point in asking */
     {
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
       if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
