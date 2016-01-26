@@ -2378,6 +2378,13 @@ addition, <emphasis>key</emphasis> may be a symbolic name as shown in
 </table>
 
 <para>
+The <literal>&lt;what-key&gt;</literal> function can be used to
+explore keycode and symbolic names for other keys on your keyboard.
+Executing this function will display information about each key
+pressed, until terminated by <literal>^G</literal>.
+</para>
+
+<para>
 <emphasis>key</emphasis> does not need to be enclosed in quotes unless
 it contains a space (<quote>&nbsp;</quote>) or semi-colon
 (<quote>;</quote>).
