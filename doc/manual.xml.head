@@ -4456,6 +4456,30 @@ from which to read input (e.g.  <literal><command>source</command>
 
 </sect1>
 
+<sect1 id="ifdef">
+<title>Configuring features conditionnaly</title>
+
+<cmdsynopsis>
+<command>ifdef</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">item</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<para>
+This command allows to test if a feature has been compiled in, before
+actually executing the command. Item can be either the name of a
+function or a variable.
+
+Example: <literal><command>ifdef</command> imap_keepalive 'source &tilde;/.mutt/imap_setup'</literal>
+</para>
+</sect1>
+
 <sect1 id="unhook">
 <title>Removing Hooks</title>
 
