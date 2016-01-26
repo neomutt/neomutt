@@ -72,4 +72,7 @@ void imap_keepalive (void);
 
 int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2);
 
+/* trash */
+int imap_fast_trash();
+
 #endif

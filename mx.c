@@ -802,6 +802,11 @@ static int trash_append (CONTEXT *ctx)
         && stc.st_dev == st.st_dev && stc.st_rdev == st.st_rdev)
       return 0;  /* we are in the trash folder: simple sync */
 
+    #ifdef USE_IMAP
+    if( !imap_fast_trash() )
+        return 0;
+    #endif
+
     if ((ctx_trash = mx_open_mailbox (TrashPath, M_APPEND, NULL)) != NULL)
     {
       for (i = 0 ; i < ctx->msgcount ; i++)
