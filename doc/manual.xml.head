@@ -4411,28 +4411,6 @@ from which to read input (e.g.  <literal><command>source</command>
 
 </sect1>
 
-<sect1 id="ifdef">
-
-<title>Configuring features conditionally</title>
-
-<para>
-Usage: <literal>ifdef</literal> <emphasis>item</emphasis> <emphasis>command</emphasis>
-</para>
-
-<para>
-This command allows to test if a feature has been compiled in, before
-actually executing the command. Item can be either the name of a
-function, variable, or command. Example:
-</para>
-
-<para>
-<screen>
-ifdef imap_keepalive 'source ~/.mutt/imap_setup'
-</screen>
-</para>
-
-</sect1>
-
 <sect1 id="unhook">
 <title>Removing Hooks</title>
 
@@ -8017,6 +7995,144 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="ifdef">
+	<title>Ifdef Patch</title>
+	<subtitle>Conditional config options</subtitle>
+
+	<sect2 id="ifdef-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>ifdef</quote>, look for
+			<quote>patch-ifdef</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="ifdef-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>ifdef</quote> command tests whether Mutt understands the
+		name of a variable, function of command.  If it does, then it executes
+		a config command.
+        </para>
+
+        <para>
+		This useful command allows you to share one config file between
+		versions of Mutt that may have different features compiled in.
+        </para>
+
+		<para>The command is of the form:</para>
+
+<screen>
+ifdef &lt;item&gt; &lt;config-command&gt;
+</screen>
+
+		<para>
+			where <quote>item</quote> can be the name of a
+			<link linkend="variables">$variable</link>,
+			<link linkend="functions">&lt;function&gt;</link> or
+			<link linkend="commands">command</link>.
+		</para>
+	</sect2>
+
+<!--
+	<sect2 id="ifdef-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="ifdef-commands">
+		<title>Commands</title>
+		<cmdsynopsis>
+			<command>ifdef</command>
+			<arg choice="plain">
+				<replaceable class="parameter">item</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">"config-command [args]"</replaceable>
+			</arg>
+		</cmdsynopsis>
+	</sect2>
+
+<!--
+	<sect2 id="ifdef-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="ifdef-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
+ 
+# The 'ifdef' command tests whether Mutt understands the name of
+# a variable, function of command.  If it does, then it executes a
+# config command.
+ 
+# This useful command allows you to share one config file between
+# versions of Mutt that may have different features compiled in.
+ 
+# The command is of the form:
+#       ifdef item 'config-command params'
+# where item is a Mutt variable, function or command
+#
+# If the 'trash' variable exists, set it.</emphasis>
+ifdef trash 'set trash=~/Mail/trash'
+ 
+<emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
+ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
+ 
+<emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
+ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="ifdef-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="ifdef-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
+		<listitem><para>Matteo F. Vescovi <email>mfvescovi@gmail.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
@@ -8777,6 +8893,18 @@ The following are the commands understood by Mutt:
 <replaceable>header</replaceable>
 </arg>
 </group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command>ifdef</command>
+<arg choice="plain">
+<replaceable class="parameter">item</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">"config-command [args]"</replaceable>
+</arg>
 </cmdsynopsis>
 </listitem>
 
