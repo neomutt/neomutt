@@ -609,8 +609,11 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   memset (&token, 0, sizeof (token));
   mutt_extract_token (tmp, s, 0);
 
-  /* is the item defined as a variable or a function? */
-  if (!(res = (mutt_option_index (tmp->data) != -1)))
+  /* is the item defined as a variable? */
+  res = (mutt_option_index (tmp->data) != -1);
+
+  /* a function? */
+  if (!res)
     for (i = 0; !res && i < MENU_MAX; i++)
     {
       struct binding_t *b = km_get_table (Menus[i].value);
@@ -619,12 +622,22 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	continue;
 
       for (j = 0; b[j].name; j++)
-	if (!ascii_strncasecmp (tmp->data, b[j].name, mutt_strlen (tmp->data))
-	      && (mutt_strlen (b[j].name) == mutt_strlen (tmp->data)))
+	if (!mutt_strcmp (tmp->data, b[j].name))
 	{
 	  res = 1;
 	  break;
 	}
+    }
+
+  /* a command? */
+  if (!res)
+    for (i = 0; Commands[i].name; i++)
+    {
+      if (!mutt_strcmp (tmp->data, Commands[i].name))
+      {
+	res = 1;
+	break;
+      }
     }
 
   if (!MoreArgs (s))
