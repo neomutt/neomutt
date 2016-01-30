@@ -401,6 +401,18 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
 #endif
 
+#if OPENSSL_VERSION_NUMBER >= 0x0090806fL && !defined(OPENSSL_NO_TLSEXT)
+  /* TLS Virtual-hosting requires that the server present the correct
+   * certificate; to do this, the ServerNameIndication TLS extension is used.
+   * If TLS is negotiated, and OpenSSL is recent enough that it might have
+   * support, and support was enabled when OpenSSL was built, mutt supports
+   * sending the hostname we think we're connecting to, so a server can send
+   * back the correct certificate.
+   * This has been tested over SMTP against Exim 4.80.
+   * Not yet found an IMAP server which supports this. */
+  SSL_set_tlsext_host_name (ssldata->ssl, conn->account.host);
+#endif
+
   if ((err = SSL_connect (ssldata->ssl)) != 1)
   {
     switch (SSL_get_error (ssldata->ssl, err))
