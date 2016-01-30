@@ -167,6 +167,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "mail-key",			OP_MAIL_KEY,			"\033k" },
   { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
   { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
+  { "quasi-delete",		OP_MAIN_QUASI_DELETE,		NULL },
 
 
   { NULL,			0,				NULL }
@@ -271,6 +272,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "decrypt-save",    	OP_DECRYPT_SAVE,		NULL },
 
   { "what-key",		OP_WHAT_KEY,		NULL },
+  { "quasi-delete",	OP_MAIN_QUASI_DELETE,		NULL },
 
   { NULL,		0,				NULL }
 };
