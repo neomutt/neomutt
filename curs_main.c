@@ -1165,6 +1165,20 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_FULL;
 	break;
 
+      case OP_MAIN_QUASI_DELETE:
+	if (tag) {
+	  for (j = 0; j < Context->vcount; j++) {
+	    if (Context->hdrs[Context->v2r[j]]->tagged) {
+	      Context->hdrs[Context->v2r[j]]->quasi_deleted = TRUE;
+	      Context->changed = TRUE;
+	    }
+	  }
+	} else {
+	  CURHDR->quasi_deleted = TRUE;
+	  Context->changed = 1;
+	}
+	break;
+
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
 #endif
