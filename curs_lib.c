@@ -984,6 +984,13 @@ int mutt_strwidth (const char *s)
   memset (&mbstate, 0, sizeof (mbstate));
   for (w=0; n && (k = mbrtowc (&wc, s, n, &mbstate)); s += k, n -= k)
   {
+    if (*s == M_SPECIAL_INDEX)
+    {
+      s += 2; /* skip the index coloring sequence */
+      k = 0;
+      continue;
+    }
+
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
       k = (k == (size_t)(-1)) ? 1 : n;
