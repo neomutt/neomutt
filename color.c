@@ -37,6 +37,7 @@ COLOR_LINE *ColorBodyList = NULL;
 COLOR_LINE *ColorIndexList = NULL;
 COLOR_LINE *ColorIndexSubjectList = NULL;
 COLOR_LINE *ColorIndexAuthorList = NULL;
+COLOR_LINE *ColorIndexFlagsList = NULL;
 
 /* local to this file */
 static int ColorQuoteSize;
@@ -484,6 +485,8 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
     mutt_do_uncolor(buf, s, &ColorIndexSubjectList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
     mutt_do_uncolor(buf, s, &ColorIndexAuthorList, &do_cache, parse_uncolor);
+  else if (object == MT_COLOR_INDEX_FLAGS)
+    mutt_do_uncolor(buf, s, &ColorIndexFlagsList, &do_cache, parse_uncolor);
 
   if (do_cache && !option (OPTNOCURSES))
   {
@@ -727,7 +730,8 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
       object == MT_COLOR_BODY ||
       object == MT_COLOR_INDEX ||
       object == MT_COLOR_INDEX_SUBJECT ||
-      object == MT_COLOR_INDEX_AUTHOR)
+      object == MT_COLOR_INDEX_AUTHOR ||
+      object == MT_COLOR_INDEX_FLAGS)
   {
     if (!MoreArgs (s))
     {
@@ -780,6 +784,12 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   else if (object == MT_COLOR_INDEX_AUTHOR)
   {
     r = add_pattern (&ColorIndexAuthorList, buf->data,
+                     1, fg, bg, attr, err, 1);
+    set_option (OPTFORCEREDRAWINDEX);
+  }
+  else if (object == MT_COLOR_INDEX_FLAGS)
+  {
+    r = add_pattern (&ColorIndexFlagsList, buf->data,
                      1, fg, bg, attr, err, 1);
     set_option (OPTFORCEREDRAWINDEX);
   }

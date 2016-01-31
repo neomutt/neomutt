@@ -292,7 +292,9 @@ hdr_format_str (char *dest,
     case 'A':
       if(hdr->env->reply_to && hdr->env->reply_to->mailbox)
       {
-	mutt_format_s (dest, destlen, prefix, mutt_addr_for_display (hdr->env->reply_to));
+        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, mutt_addr_for_display (hdr->env->reply_to));
+        add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
 	break;
       }
       /* fall through if 'A' returns nothing */
@@ -300,7 +302,9 @@ hdr_format_str (char *dest,
     case 'a':
       if(hdr->env->from && hdr->env->from->mailbox)
       {
-	mutt_format_s (dest, destlen, prefix, mutt_addr_for_display (hdr->env->from));
+        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, mutt_addr_for_display (hdr->env->from));
+        add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       }
       else
         dest[0] = '\0';
@@ -537,7 +541,9 @@ hdr_format_str (char *dest,
       break;
 
     case 'n':
-      mutt_format_s (dest, destlen, prefix, mutt_get_name (hdr->env->from));
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
+      mutt_format_s (dest+colorlen, destlen-colorlen, prefix, mutt_get_name (hdr->env->from));
+      add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'N':
@@ -638,8 +644,11 @@ hdr_format_str (char *dest,
 
       /* FOO - this is probably unsafe, but we are not likely to have such
 	 a short string passed into this routine */
-      *dest = ch;
-      *(dest + 1) = 0;
+      buf2[0] = ch;
+      buf2[1] = 0;
+      colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_FLAGS);
+      mutt_format_s (dest+colorlen, destlen-colorlen, prefix, buf2);
+      add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 't':

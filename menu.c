@@ -29,9 +29,10 @@ extern size_t UngetCount;
 
 char* SearchBuffers[MENU_MAX];
 
-static int get_color(int index, int type) {
+static int get_color(int index, unsigned char *s) {
   COLOR_LINE *color;
-  HEADER *hdr = Context->hdrs[index];
+  HEADER *hdr = Context->hdrs[Context->v2r[index]];
+  int type = *s;
 
   switch (type) {
     case MT_COLOR_INDEX_SUBJECT:
@@ -39,6 +40,9 @@ static int get_color(int index, int type) {
       break;
     case MT_COLOR_INDEX_AUTHOR:
       color = ColorIndexAuthorList;
+      break;
+    case MT_COLOR_INDEX_FLAGS:
+      color = ColorIndexFlagsList;
       break;
     default:
       return ColorDefs[type];
@@ -191,7 +195,12 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
         if (*s == MT_COLOR_INDEX)
           attrset(attr);
         else
-          attron(get_color(index, *s));
+        {
+          if (get_color(index, s) == 0)
+            attron(attr);
+          else
+            attron(get_color(index, s));
+        }
       }
       s++; 
       n -= 2;
