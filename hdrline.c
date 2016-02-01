@@ -329,10 +329,8 @@ hdr_format_str (char *dest,
 
 	if (optional && (op == '[' || op == '(')) {
 	  char *is;
-          int d;
 	  T = time(NULL);
 	  tm = localtime(&T);
-	  d = (T + tm->tm_gmtoff) % 86400;
 	  T -= (op == '(') ? hdr->received : hdr->date_sent;
 
 	  is = (char *)prefix;
@@ -343,34 +341,76 @@ hdr_format_str (char *dest,
 
 	  while( *is && *is != '?' ) {
 	    int t = strtol (is, &is, 10);
+	    /* semi-broken (assuming 30 days in all months) */
 	    switch (*(is++)) {
-	      case '?':
+	      default:
 		break;
+
 	      case 'y':
-		t *= 365 * 24 * 60 * 60;
-		break;
-	      case 'M':
-		t *= 30 * 24 * 60 * 60;
-		break;
-	      case 'w':
-		t *= 7 * 24 * 60 * 60;
-		break;
-	      case 'd':
-		t *= 24 * 60 * 60;
-		break;
-	      case 't':
-		if (t > 1) {
-		  t = (t-1) * 24 * 60 * 60;
-		} else {
-		  t = 0;
+		if (t > 1)
+		{
+		  t--;
+		  t *= 365 * 24 * 60 * 60;
 		}
-		t += d;
+		t += ((tm->tm_mon * 30 * 24 * 60 * 60) +
+		      (tm->tm_mday * 24 * 60 * 60) +
+		      (tm->tm_hour * 60 * 60) +
+		      (tm->tm_min * 60) +
+		      tm->tm_sec);
 		break;
-	      case 'h':
-		t *= 60 * 60;
-		break;
+
 	      case 'm':
-		t *= 60;
+		if (t > 1)
+		{
+		  t--;
+		  t *= 30 * 24 * 60 * 60;
+		}
+		t += ((tm->tm_mday * 24 * 60 * 60) +
+		      (tm->tm_hour * 60 * 60) +
+		      (tm->tm_min * 60) +
+		      tm->tm_sec);
+		break;
+
+	      case 'w':
+		if (t > 1)
+		{
+		    t--;
+		    t *= 7 * 24 * 60 * 60;
+		}
+		t += ((tm->tm_wday * 24 * 60 * 60) +
+		      (tm->tm_hour * 60 * 60) +
+		      (tm->tm_min * 60) +
+		      tm->tm_sec);
+		break;
+
+	      case 'd':
+		if (t > 1)
+		{
+		  t--;
+		  t *= (24 * 60 * 60);
+		}
+		t += ((tm->tm_hour * 60 * 60) +
+		      (tm->tm_min * 60) +
+		      tm->tm_sec);
+		break;
+
+	      case 'H':
+		if (t > 1)
+		{
+		  t--;
+		  t *= (60 * 60);
+		}
+		t += ((tm->tm_min * 60) +
+		      tm->tm_sec);
+		break;
+
+	      case 'M':
+		if (t > 1)
+		{
+		  t--;
+		  t *= (60);
+		}
+		t += (tm->tm_sec);
 		break;
 	    }
 	    i += t;
