@@ -7995,6 +7995,175 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="trash-folder">
+	<title>Trash Folder Patch</title>
+	<subtitle>Automatically move "deleted" emails to a trash bin</subtitle>
+
+	<sect2 id="trash-folder-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Trash Folder</quote>, look for
+			<quote>patch-trash</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		If IMAP is enabled, this patch will use it
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>IMAP support</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="trash-folder-intro">
+		<title>Introduction</title>
+
+		<para>
+		In Mutt, when you <quote>delete</quote> an email it is first marked
+		deleted.  The email isn't really gone until
+		<link linkend="index-map">&lt;sync-mailbox&gt;</link> is called.
+		This happens when the user leaves the folder, or the function is called
+		manually.
+		</para>
+
+		<para>
+		After <literal>&lt;sync-mailbox&gt;</literal> has been called the email is gone forever.
+		</para>
+
+		<para>
+		The <link linkend="trash">$trash</link> variable defines a folder in
+		which to keep old emails.  As before, first you mark emails for
+		deletion.  When &lt;sync-mailbox&gt; is called the emails are moved to
+		the trash folder.
+		</para>
+
+		<para>
+		The <literal>$trash</literal> path can be either a full directory,
+		or be relative to the <link linkend="folder">$folder</link>
+		variable, like the <literal>mailboxes</literal> command.
+		</para>
+
+		<note>
+		Emails deleted from the trash folder are gone forever.
+		</note>
+	</sect2>
+
+	<sect2 id="trash-folder-variables">
+		<title>Variables</title>
+		<table id="table-trash-variables">
+			<title>Trash Variables</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Type</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>trash</entry>
+						<entry>string</entry>
+						<entry>(none)</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="trash-folder-functions">
+		<title>Functions</title>
+		<table id="table-trash-functions">
+			<title>Trash Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index,pager</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;purge-message&gt;</literal></entry>
+						<entry>really delete the current entry, bypassing the trash folder</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="trash-folder-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="trash-folder-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="trash-folder-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="trash-folder-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'trash' feature.
+ 
+# This feature defines a new 'trash' folder.
+# When mail is deleted it will be moved to this folder.
+ 
+# Folder in which to put deleted emails</emphasis>
+set trash='+Trash'
+set trash='/home/flatcap/Mail/Trash'
+ 
+<emphasis role="comment"># The default delete key 'd' will move an email to the 'trash' folder
+# Bind 'D' to REALLY delete an email</emphasis>
+bind index D purge-message
+ 
+<emphasis role="comment"># Note: Deleting emails from the 'trash' folder will REALLY delete them.
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="trash-folder-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="trash-folder-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="trash-folder-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
+		<listitem><para>Benjamin Kuperman <email>kuperman@acm.org</email></para></listitem>
+		<listitem><para>Paul Miller <email>paul@voltar.org</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
