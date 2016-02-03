@@ -8021,6 +8021,232 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="index-color">
+	<title>Index Color Patch</title>
+	<subtitle>Custom rules for theming the email index</subtitle>
+
+	<sect2 id="index-color-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Index Color</quote>, look for
+			<quote>patch-index-color</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="index-color-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>index-color</quote> patch allows you to specify colors for
+		individual parts of the email index. e.g. Subject, Author, Flags.
+        </para>
+
+        <para>
+		First choose which part of the index you'd like to color.
+		Then, if needed, pick a pattern to match.
+        </para>
+
+		<para>
+		Note: The pattern does not have to refer to the object you wish to
+		color.  e.g.
+		</para>
+
+<screen>
+color index_author red default &quot;~smutt&quot;
+</screen>
+
+        <para>
+		The author appears red when the subject (~s) contains <quote>mutt</quote>.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="index-color-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="index-color-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="index-color-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="index-color-colors">
+		<title>Colors</title>
+
+        <para>
+		All the colors default to <literal>default</literal>, i.e. unset.
+        </para>
+
+        <para>
+		The index objects can be themed using the <literal>color</literal> command.
+		Some objects require a pattern.
+        </para>
+
+<screen>
+color index-object foreground background
+color index-object foreground background pattern
+</screen>
+
+		<table id="table-index-color-colors">
+			<title>Index Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Object</entry>
+						<entry>Pattern</entry>
+						<entry>Highlights</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>index</literal></entry>
+						<entry>yes</entry>
+						<entry>Entire index line</entry>
+					</row>
+					<row>
+						<entry><literal>index_author</literal></entry>
+						<entry>yes</entry>
+						<entry>Author name, %A %a %F %L %n</entry>
+					</row>
+					<row>
+						<entry><literal>index_collapsed</literal></entry>
+						<entry>no</entry>
+						<entry>Number of messages in a collapsed thread, %M</entry>
+					</row>
+					<row>
+						<entry><literal>index_date</literal></entry>
+						<entry>no</entry>
+						<entry>Date field</entry>
+					</row>
+					<row>
+						<entry><literal>index_flags</literal></entry>
+						<entry>yes</entry>
+						<entry>Message flags, %S %Z</entry>
+					</row>
+					<row>
+						<entry><literal>index_label</literal></entry>
+						<entry>no</entry>
+						<entry>Message label, %y %Y</entry>
+					</row>
+					<row>
+						<entry><literal>index_number</literal></entry>
+						<entry>no</entry>
+						<entry>Message number, %C</entry>
+					</row>
+					<row>
+						<entry><literal>index_size</literal></entry>
+						<entry>no</entry>
+						<entry>Message size, %c %l</entry>
+					</row>
+					<row>
+						<entry><literal>index_subject</literal></entry>
+						<entry>yes</entry>
+						<entry>Subject, %s</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="index-color-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="index-color-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'index-color' feature.
+ 
+# Entire index line</emphasis>
+color index white black '.*'
+ 
+<emphasis role="comment"># Author name, %A %a %F %L %n
+ 
+# Give the author column a dark grey background</emphasis>
+color index_author default color234 '.*'
+ 
+<emphasis role="comment"># Highlight a particular from (~f)</emphasis>
+color index_author brightyellow color234 '~fRay Charles'
+ 
+<emphasis role="comment"># Message flags, %S %Z
+# Highlight the flags for flagged (~F) emails</emphasis>
+color index_flags default red '~F'
+ 
+<emphasis role="comment"># Subject, %s
+# Look for a particular subject (~s)</emphasis>
+color index_subject brightcyan default '~s\(closes #[0-9]+\)'
+ 
+<emphasis role="comment"># Number of messages in a collapsed thread, %M</emphasis>
+color index_collapsed default brightblue
+ 
+<emphasis role="comment"># Date field</emphasis>
+color index_date green default
+ 
+<emphasis role="comment"># Message label, %y %Y</emphasis>
+color index_label default brightgreen
+ 
+<emphasis role="comment"># Message number, %C</emphasis>
+color index_number red default
+ 
+<emphasis role="comment"># Message size, %c %l</emphasis>
+color index_size cyan default
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="index-color-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="color">Color command</link></para></listitem>
+			<listitem><para><link linkend="status-color">Status-Color patch</link></para></listitem>
+			<listitem><para><link linkend="keywords">Keywords patch</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="index-color-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="index-color-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Christian Aichinger <email>Greek0@gmx.net</email></para></listitem>
+		<listitem><para>Christoph <quote>Myon</quote> Berg <email>myon@debian.org</email></para></listitem>
+		<listitem><para>Elimar Riesebieter <email>riesebie@lxtec.de</email></para></listitem>
+		<listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
+		<listitem><para>Vladimir Marek <email>Vladimir.Marek@oracle.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">

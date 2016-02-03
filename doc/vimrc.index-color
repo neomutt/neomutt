@@ -1,0 +1,13 @@
+" Vim syntax file for the mutt index-color patch
+
+syntax keyword muttrcColorField contained index
+syntax keyword muttrcColorField contained index_author
+syntax keyword muttrcColorField contained index_collapsed
+syntax keyword muttrcColorField contained index_date
+syntax keyword muttrcColorField contained index_flags
+syntax keyword muttrcColorField contained index_label
+syntax keyword muttrcColorField contained index_number
+syntax keyword muttrcColorField contained index_size
+syntax keyword muttrcColorField contained index_subject
+
+" vim: syntax=vim
