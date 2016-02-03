@@ -1,0 +1,16 @@
+# Example Mutt config file for the 'trash' feature.
+
+# This feature defines a new 'trash' folder.
+# When mail is deleted it will be moved to this folder.
+
+# Folder in which to put deleted emails
+set trash='+Trash'
+set trash='/home/flatcap/Mail/Trash'
+
+# The default delete key 'd' will move an email to the 'trash' folder
+# Bind 'D' to REALLY delete an email
+bind index D purge-message
+
+# Note: Deleting emails from the 'trash' folder will REALLY delete them.
+
+# vim: syntax=muttrc
