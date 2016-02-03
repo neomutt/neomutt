@@ -8081,6 +8081,209 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="status-color">
+	<title>Status Color Patch</title>
+	<subtitle>Custom rules for theming the status bar</subtitle>
+
+	<sect2 id="status-color-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Status Color</quote>, look for
+			<quote>patch-status-color</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="status-color-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>status-color</quote> patch allows you to theme different
+		parts of the status bar (also when it's used by the index).
+        </para>
+
+        <para>
+		Unlike normal color commands, <literal>color status</literal> can now
+		take up to 2 extra parameters (regex, num).
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="status-color-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="status-color-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="status-color-commands">
+		<title>Commands</title>
+		<cmdsynopsis>
+			<command>color</command>
+			<arg choice="plain">
+				<option>status</option>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">foreground</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">background</replaceable>
+			</arg>
+			<group choice="opt">
+				<arg choice="plain">
+					<replaceable class="parameter">regex</replaceable>
+				</arg>
+				<group choice="opt">
+					<arg choice="plain">
+						<replaceable class="parameter">num</replaceable>
+					</arg>
+				</group>
+			</group>
+		</cmdsynopsis>
+
+		<para>
+			With zero parameters, Mutt will set the default color for the entire
+			status bar.
+		</para>
+
+		<para>
+			With one parameter, Mutt will only color the parts matching the
+			regex.
+		</para>
+
+		<para>
+			With two parameters, Mutt will only color the num'th sub-match of
+			the regex.
+		</para>
+	</sect2>
+
+	<sect2 id="status-color-colors">
+		<title>Colors</title>
+
+		<table id="table-status-color-colors">
+			<title>Status Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Default Color</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>status</entry>
+						<entry><literal>reverse</literal></entry>
+						<entry>Status bar</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="status-color-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="status-color-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'status-color' patch.
+ 
+# The 'status-color' patch allows you to theme different parts of
+# the status bar (also when it's used by the index).
+ 
+# For the examples below, set some defaults</emphasis>
+set status_format='-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
+set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
+set sort=threads
+set sort_aux=last-date-received
+ 
+<emphasis role="comment"># 'status color' can take up to 2 extra parameters
+ 
+# color status foreground background [ regex [ num ]]
+ 
+# 0 extra parameters
+# Set the default color for the entire status line</emphasis>
+color status blue white
+ 
+<emphasis role="comment"># 1 extra parameter
+# Set the color for a matching pattern
+# color status foreground background regexp
+ 
+# Highlight New, Deleted, or Flagged emails</emphasis>
+color status brightred white '(New|Del|Flag):[0-9]+'
+ 
+<emphasis role="comment"># Highlight mailbox ordering if it's different from the default
+# First, highlight anything (*/*)</emphasis>
+color status brightred default '\([^)]+/[^)]+\)'
+ 
+<emphasis role="comment"># Then override the color for one specfic case</emphasis>
+color status default   default '\(threads/last-date-received\)'
+ 
+<emphasis role="comment"># 2 extra parameters
+# Set the color for the nth submatch of a pattern
+# color status foreground background regexp num
+ 
+# Highlight the contents of the []s but not the [] themselves</emphasis>
+color status red default '\[([^]]+)\]' 1
+ 
+<emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner
+# part in ()s
+ 
+# Highlight the mailbox</emphasis>
+color status brightwhite default 'Mutt: ([^ ]+)' 1
+ 
+<emphasis role="comment"># Search for 'Mutt: ' but only highlight what comes after it
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="status-color-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+			<listitem><para><link linkend="color">Color command</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="status-color-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="status-color-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+		<listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
+		<listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
