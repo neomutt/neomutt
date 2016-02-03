@@ -1,0 +1,47 @@
+Progress Bar Patch
+==================
+
+    Show a visual progress bar on slow operations
+
+Patch
+-----
+
+    To check if Mutt supports "Progress Bar", look for "patch-progress" in the
+    mutt version.
+
+    Dependencies
+    * mutt-1.5.24
+
+Introduction
+------------
+
+    The "progress" patch shows a visual progress bar on slow tasks, such as
+    indexing a large folder over the net.
+
+Colors
+------
+
+    Progress Colors
+
+    | Name       | Default Color | Description         |
+    |------------|---------------|---------------------|
+    | 'progress' | default       | Visual progress bar |
+
+See Also
+--------
+
+    * NeoMutt project
+    * Color command
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * Stefan Kuhn <wuodan@hispeed.ch>
+    * Karel Zak <kzak@redhat.com>
+    * Richard Russon <rich@flatcap.org>
+

@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt progress patch
+
+syntax keyword muttrcColorField contained progress
+
+" vim: syntax=vim
