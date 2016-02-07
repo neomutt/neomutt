@@ -1042,7 +1042,7 @@ static int send_message (HEADER *msg)
 }
 
 /* rfc2047 encode the content-descriptions */
-static void encode_descriptions (BODY *b, short recurse)
+void mutt_encode_descriptions (BODY *b, short recurse)
 {
   BODY *t;
 
@@ -1053,7 +1053,7 @@ static void encode_descriptions (BODY *b, short recurse)
       rfc2047_encode_string (&t->description);
     }
     if (recurse && t->parts)
-      encode_descriptions (t->parts, recurse);
+      mutt_encode_descriptions (t->parts, recurse);
   }
 }
 
@@ -1136,6 +1136,11 @@ static int has_recips (ADDRESS *a)
   return c;
 }
 
+/*
+ * Returns 0 if the message was successfully sent
+ *        -1 if the message was aborted or an error occurred
+ *         1 if the message was postponed
+ */
 int
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
@@ -1224,29 +1229,37 @@ ci_send_message (int flags,		/* send mode */
   
   if (! (flags & (SENDKEY | SENDPOSTPONED | SENDRESEND)))
   {
-    pbody = mutt_new_body ();
-    pbody->next = msg->content; /* don't kill command-line attachments */
-    msg->content = pbody;
-
-    if (!(ctype = safe_strdup (ContentType)))
-      ctype = safe_strdup ("text/plain");
-    mutt_parse_content_type (ctype, msg->content);
-    FREE (&ctype);
-    msg->content->unlink = 1;
-    msg->content->use_disp = 0;
-    msg->content->disposition = DISPINLINE;
-    
-    if (!tempfile)
+    /* When SENDUSEHDRBODY is set, the caller has already
+     * created the "parent" body structure.
+     */
+    if (! (flags & SENDUSEHDRBODY))
     {
-      mutt_mktemp (buffer, sizeof (buffer));
-      tempfp = safe_fopen (buffer, "w+");
-      msg->content->filename = safe_strdup (buffer);
+      pbody = mutt_new_body ();
+      pbody->next = msg->content; /* don't kill command-line attachments */
+      msg->content = pbody;
+
+      if (!(ctype = safe_strdup (ContentType)))
+        ctype = safe_strdup ("text/plain");
+      mutt_parse_content_type (ctype, msg->content);
+      FREE (&ctype);
+      msg->content->unlink = 1;
+      msg->content->use_disp = 0;
+      msg->content->disposition = DISPINLINE;
+
+      if (!tempfile)
+      {
+        mutt_mktemp (buffer, sizeof (buffer));
+        tempfp = safe_fopen (buffer, "w+");
+        msg->content->filename = safe_strdup (buffer);
+      }
+      else
+      {
+        tempfp = safe_fopen (tempfile, "a+");
+        msg->content->filename = safe_strdup (tempfile);
+      }
     }
     else
-    {
-      tempfp = safe_fopen (tempfile, "a+");
-      msg->content->filename = safe_strdup (tempfile);
-    }
+      tempfp = safe_fopen (msg->content->filename, "a+");
 
     if (!tempfp)
     {
@@ -1586,7 +1599,8 @@ main_loop:
 
     fcc_error = 0; /* reset value since we may have failed before */
     mutt_pretty_mailbox (fcc, sizeof (fcc));
-    i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur);
+    i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur,
+                           (flags & SENDNOFREEHEADER ? M_COMPOSE_NOFREEHEADER : 0));
     if (i == -1)
     {
       /* abort */
@@ -1627,7 +1641,7 @@ main_loop:
        */
       msg->read = 0; msg->old = 0;
 
-      encode_descriptions (msg->content, 1);
+      mutt_encode_descriptions (msg->content, 1);
       mutt_prepare_envelope (msg->env, 0);
       mutt_env_to_intl (msg->env, NULL, NULL);	/* Handle bad IDNAs the next time. */
 
@@ -1640,6 +1654,7 @@ main_loop:
       }
       mutt_update_num_postponed ();
       mutt_message _("Message postponed.");
+      rv = 1;
       goto cleanup;
     }
   }
@@ -1687,7 +1702,7 @@ main_loop:
    * in case of error.  Ugh.
    */
 
-  encode_descriptions (msg->content, 1);
+  mutt_encode_descriptions (msg->content, 1);
   
   /*
    * Make sure that clear_content and free_clear_content are
@@ -1716,7 +1731,7 @@ main_loop:
         decode_descriptions (msg->content);
         goto main_loop;
       }
-      encode_descriptions (msg->content, 0);
+      mutt_encode_descriptions (msg->content, 0);
     }
   
     /* 
@@ -1926,7 +1941,8 @@ cleanup:
   }
    
   safe_fclose (&tempfp);
-  mutt_free_header (&msg);
+  if (! (flags & SENDNOFREEHEADER))
+    mutt_free_header (&msg);
   
   return rv;
 }

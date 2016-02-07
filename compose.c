@@ -483,9 +483,10 @@ static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU 
  * -1	abort message
  */
 int mutt_compose_menu (HEADER *msg,   /* structure for new message */
-		    char *fcc,     /* where to save a copy of the message */
-		    size_t fcclen,
-		    HEADER *cur)   /* current message */
+                       char *fcc,     /* where to save a copy of the message */
+                       size_t fcclen,
+                       HEADER *cur,   /* current message */
+                       int flags)
 {
   char helpstr[LONG_STRING];
   char buf[LONG_STRING];
@@ -1159,20 +1160,25 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
       case OP_EXIT:
 	if ((i = query_quadoption (OPT_POSTPONE, _("Postpone this message?"))) == M_NO)
 	{
-	  while (idxlen-- > 0)
-	  {
-	    /* avoid freeing other attachments */
-	    idx[idxlen]->content->next = NULL;
-	    idx[idxlen]->content->parts = NULL;
-            if (idx[idxlen]->unowned)
-              idx[idxlen]->content->unlink = 0;
-	    mutt_free_body (&idx[idxlen]->content);
-	    FREE (&idx[idxlen]->tree);
-	    FREE (&idx[idxlen]);
-	  }
-	  FREE (&idx);
-	  idxlen = 0;
-	  idxmax = 0;
+          for (i = 0; i < idxlen; i++)
+            if (idx[i]->unowned)
+              idx[i]->content->unlink = 0;
+
+          if (!(flags & M_COMPOSE_NOFREEHEADER))
+          {
+            while (idxlen-- > 0)
+            {
+              /* avoid freeing other attachments */
+              idx[idxlen]->content->next = NULL;
+              idx[idxlen]->content->parts = NULL;
+              mutt_free_body (&idx[idxlen]->content);
+              FREE (&idx[idxlen]->tree);
+              FREE (&idx[idxlen]);
+            }
+            FREE (&idx);
+            idxlen = 0;
+            idxmax = 0;
+          }
 	  r = -1;
 	  loop = 0;
 	  break;

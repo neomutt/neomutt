@@ -8304,6 +8304,7 @@ mailboxes and to send messages from the command line as well.
 <row><entry>-b</entry><entry>specify a blind carbon-copy (BCC) address</entry></row>
 <row><entry>-c</entry><entry>specify a carbon-copy (Cc) address</entry></row>
 <row><entry>-D</entry><entry>print the value of all Mutt variables to stdout</entry></row>
+<row><entry>-E</entry><entry>edit the draft (-H) or include (-i) file</entry></row>
 <row><entry>-e</entry><entry>specify a config command to be run after initialization files are read</entry></row>
 <row><entry>-f</entry><entry>specify a mailbox to load</entry></row>
 <row><entry>-F</entry><entry>specify an alternate file to read initialization commands</entry></row>
@@ -8349,14 +8350,14 @@ To compose a new message
 
 <cmdsynopsis>
 <command>mutt</command>
-<arg choice="opt"><option>-n</option></arg>
+<arg choice="opt"><option>-En</option></arg>
 <arg choice="opt"><option>-F</option>
 <replaceable>muttrc</replaceable>
 </arg>
 <arg choice="opt"><option>-c</option>
 <replaceable>address</replaceable>
 </arg>
-<arg choice="opt"><option>-i</option>
+<arg choice="opt"><option>-Hi</option>
 <replaceable>filename</replaceable>
 </arg>
 <arg choice="opt"><option>-s</option>
@@ -8392,6 +8393,24 @@ will send a message to
 <literal>&lt;professor@bigschool.edu&gt;</literal> with a subject of
 <quote>data set for run #2</quote>.  In the body of the message will be
 the contents of the file <quote>~/run2.dat</quote>.
+</para>
+
+<para>
+An include file passed with <literal>-i</literal> will be used as the
+body of the message.  When combined with <literal>-E</literal>, the
+include file will be directly edited during message composition.  The
+file will be modified regardless of whether the message is sent or
+aborted.
+</para>
+
+<para>
+A draft file passed with <literal>-H</literal> will be used as the
+initial header and body for the message.  Multipart messages can be
+used as a draft file.  When combined with <literal>-E</literal>, the
+draft file will be updated to the final state of the message after
+composition, regardless of whether the message is sent, aborted, or
+even postponed.  Note that if the message is sent encrypted or signed,
+the draft file will be saved that way too.
 </para>
 
 <para>
