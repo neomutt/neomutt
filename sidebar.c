@@ -363,7 +363,12 @@ buffy_going (const BUFFY *b)
 	if (!b)
 		return NULL;
 
+	if (b->prev) {
+		b->prev->next = NULL;
+	}
+
 	if (b->next)
+		b->next->prev = NULL;
 		return b->next;
 
 	return b->prev;
@@ -798,9 +803,6 @@ sb_draw (void)
 	if (!visible())
 		return;
 
-	if (!Incoming)
-		return;
-
 	/* XXX - if transitioning from invisible to visible */
 	/* if (OldVisible == 0) */
 	/* 	mutt_buffy_check (1); we probably have bad or no numbers */
@@ -814,11 +816,14 @@ sb_draw (void)
 	if (option (OPTHELP))
 		num_rows--;
 
-	if (!prepare_sidebar (num_rows))
-		return;
-
 	int div_width = draw_divider (first_row, num_rows);
 	if (div_width < 0)
+		return;
+
+	if (!Incoming)
+		return;
+
+	if (!prepare_sidebar (num_rows))
 		return;
 
 	draw_sidebar (first_row, num_rows, div_width);
@@ -976,15 +981,15 @@ sb_get_highlight (void)
  * Search through the list of mailboxes.  If a BUFFY has a matching path, set
  * OpnBuffy to it.
  */
-void
-sb_set_open_buffy (char *path)
+BUFFY *
+sb_set_open_buffy (const char *path)
 {
 	/* Even if the sidebar is hidden */
 
 	BUFFY *b = Incoming;
 
 	if (!path || !b)
-		return;
+		return NULL;
 
 	OpnBuffy = NULL;
 
@@ -996,6 +1001,8 @@ sb_set_open_buffy (char *path)
 			break;
 		}
 	}
+
+	return OpnBuffy;
 }
 
 /**
@@ -1031,6 +1038,14 @@ sb_notify_mailbox (BUFFY *b, int created)
 	 * they're valid, our pointers will be updated in prepare_sidebar() */
 
 	if (created) {
+		if (!TopBuffy)
+			TopBuffy = b;
+		if (!HilBuffy)
+			HilBuffy = b;
+		if (!BotBuffy)
+			BotBuffy = b;
+		if (!Outgoing)
+			Outgoing = b;
 	} else {
 		if (TopBuffy == b)
 			TopBuffy = buffy_going (TopBuffy);
@@ -1040,5 +1055,7 @@ sb_notify_mailbox (BUFFY *b, int created)
 			HilBuffy = buffy_going (HilBuffy);
 		if (BotBuffy == b)
 			BotBuffy = buffy_going (BotBuffy);
+		if (Outgoing == b)
+			Outgoing = buffy_going (Outgoing);
 	}
 }

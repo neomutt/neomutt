@@ -29,7 +29,7 @@ const char * sb_get_highlight (void);
 void         sb_init (void);
 void         sb_notify_mailbox (BUFFY *b, int created);
 void         sb_set_buffystats (const CONTEXT *ctx);
-void         sb_set_open_buffy (char *path);
+BUFFY *      sb_set_open_buffy (const char *path);
 void         sb_set_update_time (void);
 int          sb_should_refresh (void);
 
