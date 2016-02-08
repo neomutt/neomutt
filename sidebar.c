@@ -643,6 +643,29 @@ draw_divider (int first_row, int num_rows)
 }
 
 /**
+ * fill_empty_space - Wipe the remaining sidebar space
+ * @first_row:  Screen line to start (0-based)
+ * @num_rows:   Number of rows to fill
+ * @width:      Width of the sidebar (minus the divider)
+ *
+ * Write spaces over the area the sidebar isn't using.
+ */
+static void
+fill_empty_space (int first_row, int num_rows, int width)
+{
+	/* Fill the remaining rows with blank space */
+	SETCOLOR(MT_COLOR_NORMAL);
+
+	int r;
+	for (r = 0; r < num_rows; r++) {
+		int i = 0;
+		move (first_row + r, 0);
+		for (; i < width; i++)
+			addch (' ');
+	}
+}
+
+/**
  * draw_sidebar - Write out a list of mailboxes, on the left
  * @first_row:  Screen line to start (0-based)
  * @num_rows:   Number of rows to fill
@@ -670,6 +693,7 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 	if (!b)
 		return;
 
+	int w = MIN(COLS, (SidebarWidth - div_width));
 	int row = 0;
 	for (b = TopBuffy; b && (row < num_rows); b = b->next) {
 		if (b->is_hidden) {
@@ -755,7 +779,6 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 			}
 		}
 		char str[SHORT_STRING];
-		int w = MIN(COLS, (SidebarWidth - div_width));
 		make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
 		printw ("%s", str);
 		if (sidebar_folder_depth > 0)
@@ -763,14 +786,7 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 		row++;
 	}
 
-	/* Fill the remaining rows with blank space */
-	SETCOLOR(MT_COLOR_NORMAL);
-	for (; row < num_rows; row++) {
-		int i = 0;
-		move (first_row + row, 0);
-		for (; i < (SidebarWidth - div_width); i++)
-			addch (' ');
-	}
+	fill_empty_space (first_row + row, num_rows - row, w);
 }
 
 
@@ -820,8 +836,11 @@ sb_draw (void)
 	if (div_width < 0)
 		return;
 
-	if (!Incoming)
+	if (!Incoming) {
+		int w = MIN(COLS, (SidebarWidth - div_width));
+		fill_empty_space (first_row, num_rows, w);
 		return;
+	}
 
 	if (!prepare_sidebar (num_rows))
 		return;
