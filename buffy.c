@@ -243,6 +243,9 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       for (tmp = &Incoming; *tmp;)
       {
         tmp1=(*tmp)->next;
+#ifdef USE_SIDEBAR
+	sb_notify_mailbox (*tmp, 0);
+#endif
         buffy_free (tmp);
         *tmp=tmp1;
       }

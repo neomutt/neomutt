@@ -1248,7 +1248,8 @@ int mutt_index_menu (void)
 
 	mutt_expand_path (buf, sizeof (buf));
 #ifdef USE_SIDEBAR
-	sb_set_open_buffy (buf);
+	if (sb_set_open_buffy (buf) == NULL)
+		break;
 #endif
 	if (mx_get_magic (buf) <= 0)
 	{
