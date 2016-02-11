@@ -1,6 +1,6 @@
 # French messages for Mutt.
-# Copyright (C) 1998-2015 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.net>
-# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.net>, 1998-2015
+# Copyright (C) 1998-2016 Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.net>
+# Marc Baudoin <babafou@babafou.eu.org>, Vincent Lefevre <vincent@vinc17.net>, 1998-2016
 #
 # Note [VL]. In case you need it, you may find the latest temporary version
 #            at this URL:   https://www.vinc17.net/mutt/fr.po
@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-07 12:16+0100\n"
-"PO-Revision-Date: 2015-12-07 12:20+0100\n"
+"POT-Creation-Date: 2016-02-11 02:04+0100\n"
+"PO-Revision-Date: 2016-02-11 02:11+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -130,7 +130,7 @@ msgstr "Ne correspond pas au nametemplate, continuer ?"
 msgid "Mailcap compose entry requires %%s"
 msgstr "L'entrée compose du fichier mailcap nécessite %%s"
 
-#: attach.c:134 attach.c:266 commands.c:223 compose.c:1197 curs_lib.c:196
+#: attach.c:134 attach.c:266 commands.c:223 compose.c:1207 curs_lib.c:196
 #: curs_lib.c:569
 #, c-format
 msgid "Error running \"%s\"!"
@@ -321,62 +321,62 @@ msgid "New mail in "
 msgstr "Nouveau(x) message(s) dans "
 
 # , c-format
-#: color.c:327
+#: color.c:328
 #, c-format
 msgid "%s: color not supported by term"
 msgstr "%s : couleur non disponible sur ce terminal"
 
 # , c-format
-#: color.c:333
+#: color.c:334
 #, c-format
 msgid "%s: no such color"
 msgstr "%s : cette couleur n'existe pas"
 
 # , c-format
-#: color.c:379 color.c:585 color.c:596
+#: color.c:398 color.c:604 color.c:615
 #, c-format
 msgid "%s: no such object"
 msgstr "%s : cet objet n'existe pas"
 
 # , c-format
-#: color.c:392
+#: color.c:411
 #, c-format
 msgid "%s: command valid only for index, body, header objects"
 msgstr "%s : commande valide uniquement pour les objets index, body et header"
 
 # , c-format
-#: color.c:400
+#: color.c:419
 #, c-format
 msgid "%s: too few arguments"
 msgstr "%s : pas assez d'arguments"
 
-#: color.c:573
+#: color.c:592
 msgid "Missing arguments."
 msgstr "Arguments manquants."
 
-#: color.c:612 color.c:623
+#: color.c:631 color.c:642
 msgid "color: too few arguments"
 msgstr "color : pas assez d'arguments"
 
-#: color.c:646
+#: color.c:665
 msgid "mono: too few arguments"
 msgstr "mono : pas assez d'arguments"
 
 # , c-format
-#: color.c:666
+#: color.c:685
 #, c-format
 msgid "%s: no such attribute"
 msgstr "%s : cet attribut n'existe pas"
 
-#: color.c:706 hook.c:69 hook.c:77 keymap.c:917
+#: color.c:725 hook.c:69 hook.c:77 keymap.c:917
 msgid "too few arguments"
 msgstr "pas assez d'arguments"
 
-#: color.c:715 hook.c:83
+#: color.c:734 hook.c:83
 msgid "too many arguments"
 msgstr "trop d'arguments"
 
-#: color.c:731
+#: color.c:750
 msgid "default colors not supported"
 msgstr "La couleur default n'est pas disponible"
 
@@ -615,7 +615,7 @@ msgstr "Envoyer"
 msgid "Abort"
 msgstr "Abandonner"
 
-#: compose.c:94 compose.c:680
+#: compose.c:94 compose.c:685
 msgid "Attach file"
 msgstr "Attacher fichier"
 
@@ -696,120 +696,120 @@ msgstr "Attention : '%s' est un mauvais IDN."
 msgid "You may not delete the only attachment."
 msgstr "Vous ne pouvez pas supprimer l'unique attachement."
 
-#: compose.c:611 send.c:1664
+#: compose.c:613 send.c:1679
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
 
-#: compose.c:696
+#: compose.c:701
 msgid "Attaching selected files..."
 msgstr "J'attache les fichiers sélectionnés..."
 
-#: compose.c:708
+#: compose.c:713
 #, c-format
 msgid "Unable to attach %s!"
 msgstr "Impossible d'attacher %s !"
 
-#: compose.c:727
+#: compose.c:732
 msgid "Open mailbox to attach message from"
 msgstr "Ouvrir une BAL d'où attacher un message"
 
-#: compose.c:757
+#: compose.c:762
 #, c-format
 msgid "Unable to open mailbox %s"
 msgstr "Impossible d'ouvrir la BAL %s"
 
-#: compose.c:765
+#: compose.c:770
 msgid "No messages in that folder."
 msgstr "Aucun message dans ce dossier."
 
-#: compose.c:774
+#: compose.c:779
 msgid "Tag the messages you want to attach!"
 msgstr "Marquez les messages que vous voulez attacher !"
 
-#: compose.c:806
+#: compose.c:811
 msgid "Unable to attach!"
 msgstr "Impossible d'attacher !"
 
-#: compose.c:857
+#: compose.c:862
 msgid "Recoding only affects text attachments."
 msgstr "Le recodage affecte uniquement les attachements textuels."
 
-#: compose.c:862
+#: compose.c:867
 msgid "The current attachment won't be converted."
 msgstr "L'attachement courant ne sera pas converti."
 
-#: compose.c:864
+#: compose.c:869
 msgid "The current attachment will be converted."
 msgstr "L'attachement courant sera converti."
 
-#: compose.c:939
+#: compose.c:944
 msgid "Invalid encoding."
 msgstr "Codage invalide."
 
-#: compose.c:965
+#: compose.c:970
 msgid "Save a copy of this message?"
 msgstr "Sauver une copie de ce message ?"
 
-#: compose.c:1021
+#: compose.c:1026
 msgid "Rename to: "
 msgstr "Renommer en : "
 
 # , c-format
 #. L10N:
 #. "stat" is a system call. Do "man 2 stat" for more information.
-#: compose.c:1028 editmsg.c:96 editmsg.c:121 sendlib.c:872
+#: compose.c:1033 editmsg.c:96 editmsg.c:121 sendlib.c:872
 #, c-format
 msgid "Can't stat %s: %s"
 msgstr "Impossible d'obtenir le statut de %s : %s"
 
-#: compose.c:1055
+#: compose.c:1060
 msgid "New file: "
 msgstr "Nouveau fichier : "
 
-#: compose.c:1068
+#: compose.c:1073
 msgid "Content-Type is of the form base/sub"
 msgstr "Content-Type est de la forme base/sous"
 
 # , c-format
-#: compose.c:1074
+#: compose.c:1079
 #, c-format
 msgid "Unknown Content-Type %s"
 msgstr "Content-Type %s inconnu"
 
 # , c-format
-#: compose.c:1087
+#: compose.c:1092
 #, c-format
 msgid "Can't create file %s"
 msgstr "Impossible de créer le fichier %s"
 
-#: compose.c:1095
+#: compose.c:1100
 msgid "What we have here is a failure to make an attachment"
 msgstr "Nous sommes en présence d'un échec de fabrication d'un attachement"
 
-#: compose.c:1156
+#: compose.c:1161
 msgid "Postpone this message?"
 msgstr "Ajourner ce message ?"
 
-#: compose.c:1215
+#: compose.c:1225
 msgid "Write message to mailbox"
 msgstr "Écrire le message dans la boîte aux lettres"
 
 # , c-format
-#: compose.c:1218
+#: compose.c:1228
 #, c-format
 msgid "Writing message to %s ..."
 msgstr "Écriture du message dans %s ..."
 
-#: compose.c:1227
+#: compose.c:1237
 msgid "Message written."
 msgstr "Message écrit."
 
-#: compose.c:1241
+#: compose.c:1251
 msgid "S/MIME already selected. Clear & continue ? "
 msgstr "S/MIME déjà sélectionné. Effacer & continuer ? "
 
-#: compose.c:1274
+#: compose.c:1284
 msgid "PGP already selected. Clear & continue ? "
 msgstr "PGP déjà sélectionné. Effacer & continuer ? "
 
@@ -1369,7 +1369,7 @@ msgid "Use keyID = \"%s\" for %s?"
 msgstr "Utiliser keyID = \"%s\" pour %s ?"
 
 # , c-format
-#: crypt-gpgme.c:4516 pgp.c:1305 smime.c:790 smime.c:896
+#: crypt-gpgme.c:4516 pgp.c:1305 smime.c:795 smime.c:901
 #, c-format
 msgid "Enter keyID for %s: "
 msgstr "Entrez keyID pour %s : "
@@ -1459,7 +1459,7 @@ msgstr "Chiffrer pgp, Signer, En tant que, les Deux, s/Mime, ou Rien ? "
 msgid "esabmfc"
 msgstr "csedmrr"
 
-#: crypt-gpgme.c:4786 pgp.c:1770 smime.c:2216 smime.c:2231
+#: crypt-gpgme.c:4786 pgp.c:1770 smime.c:2221 smime.c:2236
 msgid "Sign as: "
 msgstr "Signer en tant que : "
 
@@ -1491,7 +1491,8 @@ msgstr "PGP en ligne est impossible avec des attachements. Utiliser PGP/MIME ?"
 
 #: crypt.c:151
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "Message non envoyé : PGP en ligne est impossible avec des attachements."
+msgstr ""
+"Message non envoyé : PGP en ligne est impossible avec des attachements."
 
 #: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -1501,7 +1502,7 @@ msgstr "Appel de PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME ?"
 
-#: crypt.c:169 send.c:1593
+#: crypt.c:169 send.c:1607
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
@@ -2224,7 +2225,7 @@ msgstr "unhook : type hook inconnu : %s"
 msgid "unhook: Can't delete a %s from within a %s."
 msgstr "unhook : impossible de supprimer un %s à l'intérieur d'un %s."
 
-#: imap/auth.c:108 pop_auth.c:398 smtp.c:557
+#: imap/auth.c:108 pop_auth.c:413 smtp.c:557
 msgid "No authenticators available"
 msgstr "Pas d'authentificateurs disponibles"
 
@@ -2256,20 +2257,20 @@ msgstr "L'authentification GSSAPI a échoué."
 msgid "LOGIN disabled on this server."
 msgstr "LOGIN désactivée sur ce serveur."
 
-#: imap/auth_login.c:47 pop_auth.c:231
+#: imap/auth_login.c:47 pop_auth.c:246
 msgid "Logging in..."
 msgstr "Connexion..."
 
-#: imap/auth_login.c:70 pop_auth.c:274
+#: imap/auth_login.c:70 pop_auth.c:289
 msgid "Login failed."
 msgstr "La connexion a échoué."
 
-#: imap/auth_sasl.c:100 smtp.c:593
+#: imap/auth_sasl.c:101 smtp.c:594
 #, c-format
 msgid "Authenticating (%s)..."
 msgstr "Authentification (%s)..."
 
-#: imap/auth_sasl.c:207 pop_auth.c:153
+#: imap/auth_sasl.c:228 pop_auth.c:168
 msgid "SASL authentication failed."
 msgstr "L'authentification SASL a échoué."
 
@@ -2771,12 +2772,12 @@ msgstr ""
 
 #: main.c:69
 msgid ""
-"Copyright (C) 1996-2009 Michael R. Elkins and others.\n"
+"Copyright (C) 1996-2016 Michael R. Elkins and others.\n"
 "Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n"
 "Mutt is free software, and you are welcome to redistribute it\n"
 "under certain conditions; type `mutt -vv' for details.\n"
 msgstr ""
-"Copyright (C) 1996-2009 Michael R. Elkins et autres.\n"
+"Copyright (C) 1996-2016 Michael R. Elkins et autres.\n"
 "Mutt ne fournit ABSOLUMENT AUCUNE GARANTIE ; pour les détails tapez `mutt -"
 "vv'.\n"
 "Mutt est un logiciel libre, et vous êtes libre de le redistribuer\n"
@@ -2784,31 +2785,33 @@ msgstr ""
 
 #: main.c:75
 msgid ""
-"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2014 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2009 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2014 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
+"Copyright (C) 2014-2015 Kevin J. McCarthy <kevin@8t8.us>\n"
 "\n"
 "Many others not mentioned here contributed code, fixes,\n"
 "and suggestions.\n"
 msgstr ""
-"Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n"
+"Copyright (C) 1996-2014 Michael R. Elkins <me@mutt.org>\n"
 "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
-"Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n"
+"Copyright (C) 1997-2009 Thomas Roessler <roessler@does-not-exist.org>\n"
 "Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n"
-"Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n"
+"Copyright (C) 1999-2014 Brendan Cully <brendan@kublai.com>\n"
 "Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n"
-"Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n"
+"Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n"
 "Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n"
+"Copyright (C) 2014-2015 Kevin J. McCarthy <kevin@8t8.us>\n"
 "\n"
 "De nombreuses autres personnes non mentionnées ici ont fourni\n"
 "du code, des corrections et des suggestions.\n"
 
-#: main.c:88
+#: main.c:89
 msgid ""
 "    This program is free software; you can redistribute it and/or modify\n"
 "    it under the terms of the GNU General Public License as published by\n"
@@ -2830,7 +2833,7 @@ msgstr ""
 "    QUALITÉ MARCHANDE ou d'ADÉQUATION À UN BESOIN PARTICULIER. Référez-vous\n"
 "    à la GNU General Public License pour plus de détails.\n"
 
-#: main.c:98
+#: main.c:99
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
@@ -2842,10 +2845,10 @@ msgstr ""
 "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
 "02110-1301, USA.\n"
 
-#: main.c:115
+#: main.c:116
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
 "<file> [...] --] <addr> [...]\n"
 "       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
 "<addr> [...] < message\n"
@@ -2856,8 +2859,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "usage : mutt [<options>] [-z] [-f <fichier> | -yZ]\n"
-"        mutt [<options>] [-x] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] [-"
-"a <fichier> [...] --] <adresse> [...]\n"
+"        mutt [<options>] [-Ex] [-Hi <fichier>] [-s <objet>] [-bc <adresse>] "
+"[-a <fichier> [...] --] <adresse> [...]\n"
 "        mutt [<options>] [-x] [-s <objet>] [-bc <adresse>] [-a <fichier> "
 "[...] --] <adresse> [...] < message\n"
 "        mutt [<options>] -p\n"
@@ -2866,7 +2869,7 @@ msgstr ""
 "        mutt [<options>] -D\n"
 "        mutt -v[v]\n"
 
-#: main.c:124
+#: main.c:125
 msgid ""
 "options:\n"
 "  -A <alias>\texpand the given alias\n"
@@ -2884,12 +2887,13 @@ msgstr ""
 "  -c <adresse>\tspécifie une adresse à mettre en copie (CC)\n"
 "  -D\t\técrit la valeur de toutes les variables sur stdout"
 
-#: main.c:133
+#: main.c:134
 msgid "  -d <level>\tlog debugging output to ~/.muttdebug0"
 msgstr "  -d <niveau>\técrit les infos de débuggage dans ~/.muttdebug0"
 
-#: main.c:136
+#: main.c:137
 msgid ""
+"  -E\t\tedit the draft (-H) or include (-i) file\n"
 "  -e <command>\tspecify a command to be executed after initialization\n"
 "  -f <file>\tspecify which mailbox to read\n"
 "  -F <file>\tspecify an alternate muttrc file\n"
@@ -2899,16 +2903,17 @@ msgid ""
 "  -n\t\tcauses Mutt not to read the system Muttrc\n"
 "  -p\t\trecall a postponed message"
 msgstr ""
-"  -e <commande>\tspécifie une commande à exécuter après l'initialisation\n"
-"  -f <fich>\tspécifie quelle boîte aux lettres lire\n"
-"  -F <fich>\tspécifie un fichier muttrc alternatif\n"
-"  -H <fich>\tspécifie un fichier de brouillon d'où lire en-têtes et corps\n"
-"  -i <fich>\tspécifie un fichier que Mutt doit inclure dans le corps\n"
-"  -m <type>\tspécifie un type de boîte aux lettres par défaut\n"
+"  -E\t\téditer le fichier brouillon (-H) ou d'inclusion (-i)\n"
+"  -e <commande>\tspécifier une commande à exécuter après l'initialisation\n"
+"  -f <fich>\tspécifier quelle boîte aux lettres lire\n"
+"  -F <fich>\tspécifier un fichier muttrc alternatif\n"
+"  -H <fich>\tspécifier un fichier de brouillon d'où lire en-têtes et corps\n"
+"  -i <fich>\tspécifier un fichier que Mutt doit inclure dans le corps\n"
+"  -m <type>\tspécifier un type de boîte aux lettres par défaut\n"
 "  -n\t\tfait que Mutt ne lit pas le fichier Muttrc système\n"
-"  -p\t\trappelle un message ajourné"
+"  -p\t\trappeler un message ajourné"
 
-#: main.c:145
+#: main.c:147
 msgid ""
 "  -Q <variable>\tquery a configuration variable\n"
 "  -R\t\topen mailbox in read-only mode\n"
@@ -2930,7 +2935,7 @@ msgstr ""
 "  -Z\t\touvre le premier dossier ayant un nouveau message, quitte sinon\n"
 "  -h\t\tce message d'aide"
 
-#: main.c:226
+#: main.c:228
 msgid ""
 "\n"
 "Compile options:"
@@ -2938,59 +2943,63 @@ msgstr ""
 "\n"
 "Options de compilation :"
 
-#: main.c:530
+#: main.c:532
 msgid "Error initializing terminal."
 msgstr "Erreur d'initialisation du terminal."
 
-#: main.c:666
+#: main.c:669
 #, c-format
 msgid "Error: value '%s' is invalid for -d.\n"
 msgstr "Erreur : la valeur '%s' est invalide pour -d.\n"
 
 # , c-format
-#: main.c:669
+#: main.c:672
 #, c-format
 msgid "Debugging at level %d.\n"
 msgstr "Débuggage au niveau %d.\n"
 
-#: main.c:671
+#: main.c:674
 msgid "DEBUG was not defined during compilation.  Ignored.\n"
 msgstr "DEBUG n'a pas été défini à la compilation. Ignoré.\n"
 
-#: main.c:841
+#: main.c:848
 #, c-format
 msgid "%s does not exist. Create it?"
 msgstr "%s n'existe pas. Le créer ?"
 
 # , c-format
-#: main.c:845
+#: main.c:852
 #, c-format
 msgid "Can't create %s: %s."
 msgstr "Impossible de créer %s : %s."
 
-#: main.c:882
+#: main.c:891
 msgid "Failed to parse mailto: link\n"
 msgstr "Impossible d'analyser le lien mailto:\n"
 
-#: main.c:894
+#: main.c:903
 msgid "No recipients specified.\n"
 msgstr "Pas de destinataire spécifié.\n"
 
+#: main.c:929
+msgid "Cannot use -E flag with stdin\n"
+msgstr "Impossible d'utiliser l'option -E avec stdin\n"
+
 # , c-format
-#: main.c:991
+#: main.c:1060
 #, c-format
 msgid "%s: unable to attach file.\n"
 msgstr "%s : impossible d'attacher le fichier.\n"
 
-#: main.c:1014
+#: main.c:1138
 msgid "No mailbox with new mail."
 msgstr "Pas de boîte aux lettres avec des nouveaux messages."
 
-#: main.c:1023
+#: main.c:1147
 msgid "No incoming mailboxes defined."
 msgstr "Pas de boîtes aux lettres recevant du courrier définies."
 
-#: main.c:1051
+#: main.c:1175
 msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
@@ -3947,23 +3956,23 @@ msgstr "%s [%d messages lus sur %d]"
 msgid "Server closed connection!"
 msgstr "Le serveur a fermé la connexion !"
 
-#: pop_auth.c:78
+#: pop_auth.c:79
 msgid "Authenticating (SASL)..."
 msgstr "Authentification (SASL)..."
 
-#: pop_auth.c:188
+#: pop_auth.c:203
 msgid "POP timestamp is invalid!"
 msgstr "L'horodatage POP est invalide !"
 
-#: pop_auth.c:193
+#: pop_auth.c:208
 msgid "Authenticating (APOP)..."
 msgstr "Authentification (APOP)..."
 
-#: pop_auth.c:216
+#: pop_auth.c:231
 msgid "APOP authentication failed."
 msgstr "L'authentification APOP a échoué."
 
-#: pop_auth.c:251
+#: pop_auth.c:266
 #, c-format
 msgid "Command USER is not supported by server."
 msgstr "La commande USER n'est pas supportée par le serveur."
@@ -4013,11 +4022,11 @@ msgstr "En-tête crypto illégal"
 msgid "Illegal S/MIME header"
 msgstr "En-tête S/MIME illégal"
 
-#: postpone.c:585
+#: postpone.c:584
 msgid "Decrypting message..."
 msgstr "Déchiffrage du message..."
 
-#: postpone.c:594
+#: postpone.c:592
 msgid "Decryption failed."
 msgstr "Le déchiffrage a échoué."
 
@@ -4326,59 +4335,59 @@ msgstr "Faire suivre sous forme d'attachement ?"
 msgid "Preparing forwarded message..."
 msgstr "Préparation du message à faire suivre..."
 
-#: send.c:1171
+#: send.c:1176
 msgid "Recall postponed message?"
 msgstr "Rappeler un message ajourné ?"
 
-#: send.c:1412
+#: send.c:1425
 msgid "Edit forwarded message?"
 msgstr "Éditer le message à faire suivre ?"
 
-#: send.c:1461
+#: send.c:1474
 msgid "Abort unmodified message?"
 msgstr "Message non modifié. Abandonner ?"
 
-#: send.c:1463
+#: send.c:1476
 msgid "Aborted unmodified message."
 msgstr "Message non modifié. Abandon."
 
-#: send.c:1642
+#: send.c:1656
 msgid "Message postponed."
 msgstr "Message ajourné."
 
-#: send.c:1652
+#: send.c:1667
 msgid "No recipients are specified!"
 msgstr "Aucun destinataire spécifié !"
 
-#: send.c:1657
+#: send.c:1672
 msgid "No recipients were specified."
 msgstr "Aucun destinataire spécifié."
 
-#: send.c:1673
+#: send.c:1688
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet (Subject), abandonner l'envoi ?"
 
-#: send.c:1677
+#: send.c:1692
 msgid "No subject specified."
 msgstr "Pas d'objet (Subject) spécifié."
 
-#: send.c:1739 smtp.c:188
+#: send.c:1754 smtp.c:188
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send.c:1772
+#: send.c:1787
 msgid "Save attachments in Fcc?"
 msgstr "Sauver les attachements dans Fcc ?"
 
-#: send.c:1881
+#: send.c:1896
 msgid "Could not send the message."
 msgstr "Impossible d'envoyer le message."
 
-#: send.c:1886
+#: send.c:1901
 msgid "Mail sent."
 msgstr "Message envoyé."
 
-#: send.c:1886
+#: send.c:1901
 msgid "Sending in background."
 msgstr "Envoi en tâche de fond."
 
@@ -4484,41 +4493,41 @@ msgid "ID is not trusted."
 msgstr "L'ID n'est pas de confiance."
 
 # , c-format
-#: smime.c:756
+#: smime.c:761
 msgid "Enter keyID: "
 msgstr "Entrez keyID : "
 
-#: smime.c:903
+#: smime.c:908
 #, c-format
 msgid "No (valid) certificate found for %s."
 msgstr "Pas de certificat (valide) trouvé pour %s."
 
-#: smime.c:956 smime.c:986 smime.c:1053 smime.c:1097 smime.c:1162 smime.c:1237
+#: smime.c:961 smime.c:991 smime.c:1058 smime.c:1102 smime.c:1167 smime.c:1242
 msgid "Error: unable to create OpenSSL subprocess!"
 msgstr "Erreur : impossible de créer le sous-processus OpenSSL !"
 
-#: smime.c:1315
+#: smime.c:1320
 msgid "no certfile"
 msgstr "pas de certfile"
 
-#: smime.c:1318
+#: smime.c:1323
 msgid "no mbox"
 msgstr "pas de BAL"
 
-#: smime.c:1461 smime.c:1618
+#: smime.c:1466 smime.c:1623
 msgid "No output from OpenSSL..."
 msgstr "Pas de sortie pour OpenSSL..."
 
-#: smime.c:1528
+#: smime.c:1533
 msgid "Can't sign: No key specified. Use Sign As."
 msgstr ""
 "Impossible de signer : pas de clé spécifiée. Utilisez « Signer en tant que »."
 
-#: smime.c:1580
+#: smime.c:1585
 msgid "Can't open OpenSSL subprocess!"
 msgstr "Impossible d'ouvrir le sous-processus OpenSSL !"
 
-#: smime.c:1786 smime.c:1909
+#: smime.c:1791 smime.c:1914
 msgid ""
 "[-- End of OpenSSL output --]\n"
 "\n"
@@ -4526,19 +4535,19 @@ msgstr ""
 "[-- Fin de sortie OpenSSL --]\n"
 "\n"
 
-#: smime.c:1868 smime.c:1879
+#: smime.c:1873 smime.c:1884
 msgid "[-- Error: unable to create OpenSSL subprocess! --]\n"
 msgstr "[-- Erreur : impossible de créer le sous-processus OpenSSL ! --]\n"
 
-#: smime.c:1913
+#: smime.c:1918
 msgid "[-- The following data is S/MIME encrypted --]\n"
 msgstr "[-- Les données suivantes sont chiffrées avec S/MIME --]\n"
 
-#: smime.c:1916
+#: smime.c:1921
 msgid "[-- The following data is S/MIME signed --]\n"
 msgstr "[-- Les données suivantes sont signées avec S/MIME --]\n"
 
-#: smime.c:1980
+#: smime.c:1985
 msgid ""
 "\n"
 "[-- End of S/MIME encrypted data. --]\n"
@@ -4546,7 +4555,7 @@ msgstr ""
 "\n"
 "[-- Fin des données chiffrées avec S/MIME. --]\n"
 
-#: smime.c:1982
+#: smime.c:1987
 msgid ""
 "\n"
 "[-- End of S/MIME signed data. --]\n"
@@ -4554,7 +4563,7 @@ msgstr ""
 "\n"
 "[-- Fin des données signées avec S/MIME. --]\n"
 
-#: smime.c:2104
+#: smime.c:2109
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr ""
@@ -4564,11 +4573,11 @@ msgstr ""
 #. 'clear'.  Please use a corresponding letter in your language.
 #. Alternatively, you may duplicate the letter 'c' is translated to.
 #. This comment also applies to the two following letter sequences.
-#: smime.c:2109
+#: smime.c:2114
 msgid "swafco"
 msgstr "saerro"
 
-#: smime.c:2118
+#: smime.c:2123
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
 "(o)ppenc mode? "
@@ -4576,50 +4585,50 @@ msgstr ""
 "Ch. s/mime, Signer, ch. Avec, signer En tant que, les Deux, Rien, ou "
 "Oppenc ? "
 
-#: smime.c:2119
+#: smime.c:2124
 msgid "eswabfco"
 msgstr "csaedrro"
 
-#: smime.c:2127
+#: smime.c:2132
 msgid ""
 "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
 msgstr ""
 "Chiffrer s/mime, Signer, ch. Avec, signer En tant que, les Deux, ou Rien ? "
 
-#: smime.c:2128
+#: smime.c:2133
 msgid "eswabfc"
 msgstr "csaedrr"
 
-#: smime.c:2149
+#: smime.c:2154
 msgid "Choose algorithm family: 1: DES, 2: RC2, 3: AES, or (c)lear? "
 msgstr ""
 "Choisissez une famille d'algo : 1: DES, 2: RC2, 3: AES, ou (e)ffacer ? "
 
-#: smime.c:2152
+#: smime.c:2157
 msgid "drac"
 msgstr "drae"
 
-#: smime.c:2155
+#: smime.c:2160
 msgid "1: DES, 2: Triple-DES "
 msgstr "1: DES, 2: Triple-DES "
 
-#: smime.c:2156
+#: smime.c:2161
 msgid "dt"
 msgstr "dt"
 
-#: smime.c:2168
+#: smime.c:2173
 msgid "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 msgstr "1: RC2-40, 2: RC2-64, 3: RC2-128 "
 
-#: smime.c:2169
+#: smime.c:2174
 msgid "468"
 msgstr "468"
 
-#: smime.c:2184
+#: smime.c:2189
 msgid "1: AES128, 2: AES192, 3: AES256 "
 msgstr "1: AES128, 2: AES192, 3: AES256 "
 
-#: smime.c:2185
+#: smime.c:2190
 msgid "895"
 msgstr "895"
 
