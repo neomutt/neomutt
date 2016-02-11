@@ -2634,8 +2634,14 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
         }
 
       mutt_free_body (&tattach);
+      mutt_message _("PGP message successfully decrypted.");
     }
-  
+  else
+    {
+      mutt_error _("Could not decrypt PGP message");
+      rc = -1;
+    }
+
   safe_fclose (&fpout);
   mutt_unlink(tempfile);
   dprint (2, (debugfile, "Leaving pgp_encrypted handler\n"));
