@@ -2639,6 +2639,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
   else
     {
       mutt_error _("Could not decrypt PGP message");
+      mutt_sleep (2);
       rc = -1;
     }
 

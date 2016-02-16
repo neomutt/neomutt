@@ -1796,6 +1796,17 @@ struct option_t MuttVars[] = {
   ** possible \fCprintf(3)\fP-like sequences.
   ** (PGP only)
   */
+  { "pgp_decryption_okay",	DT_RX,  R_NONE, UL &PgpDecryptionOkay, 0 },
+  /*
+  ** .pp
+  ** If you assign text to this variable, then an encrypted PGP
+  ** message is only considered successfully decrypted if the output
+  ** from $$pgp_decrypt_command contains the text.  This is used to
+  ** protect against a spoofed encrypted message, with multipart/encrypted
+  ** headers but containing a block that is not actually encrypted.
+  ** (e.g. simply signed and ascii armored text).
+  ** (PGP only)
+  */
   { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
   /*
   ** .pp

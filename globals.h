@@ -230,6 +230,7 @@ WHERE LIST *UserHeader INITVAL (0);
 
 /*-- formerly in pgp.h --*/
 WHERE REGEXP PgpGoodSign;
+WHERE REGEXP PgpDecryptionOkay;
 WHERE char *PgpSignAs;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;

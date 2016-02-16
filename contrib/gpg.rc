@@ -83,3 +83,6 @@ set pgp_list_secring_command="gpg --no-verbose --batch --quiet --with-colons --w
 # This version uses --status-fd messages
 set pgp_good_sign="^\\[GNUPG:\\] GOODSIG"
 
+# pattern to verify a decryption occurred
+set pgp_decryption_okay="^\\[GNUPG:\\] DECRYPTION_OKAY"
+

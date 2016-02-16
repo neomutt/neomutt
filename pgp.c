@@ -224,6 +224,45 @@ static int pgp_copy_checksig (FILE *fpin, FILE *fpout)
   return rv;
 }
 
+/* Checks PGP output messages to look for the $pgp_decryption_okay message.
+ * This protects against messages with multipart/encrypted headers
+ * but which aren't actually encrypted.  See ticket #3770
+ */
+static int pgp_check_decryption_okay (FILE *fpin)
+{
+  int rv = -1;
+
+  if (PgpDecryptionOkay.pattern)
+  {
+    char *line = NULL;
+    int lineno = 0;
+    size_t linelen;
+
+    while ((line = mutt_read_line (line, &linelen, fpin, &lineno, 0)) != NULL)
+    {
+      if (regexec (PgpDecryptionOkay.rx, line, 0, NULL, 0) == 0)
+      {
+        dprint (2, (debugfile, "pgp_check_decryption_okay: \"%s\" matches regexp.\n",
+                    line));
+        rv = 0;
+        break;
+      }
+      else
+        dprint (2, (debugfile, "pgp_check_decryption_okay: \"%s\" doesn't match regexp.\n",
+                    line));
+    }
+    FREE (&line);
+  }
+  else
+  {
+    dprint (2, (debugfile, "pgp_check_decryption_okay: No pattern.\n"));
+    rv = 1;
+  }
+
+  return rv;
+}
+
+
 /* 
  * Copy a clearsigned message, and strip the signature and PGP's
  * dash-escaping.
@@ -905,10 +944,18 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   safe_fclose (&pgpout);
   rv = mutt_wait_filter (thepid);
   mutt_unlink(pgptmpfile);
-  
+
+  fflush (pgperr);
+  rewind (pgperr);
+  if (pgp_check_decryption_okay (pgperr) < 0)
+  {
+    mutt_error _("Decryption failed");
+    pgp_void_passphrase ();
+    return NULL;
+  }
+
   if (s->flags & M_DISPLAY)
   {
-    fflush (pgperr);
     rewind (pgperr);
     if (pgp_copy_checksig (pgperr, s->fpout) == 0 && !rv && p)
       p->goodsig = 1;
@@ -1080,6 +1127,7 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
   else
   {
     mutt_error _("Could not decrypt PGP message");
+    mutt_sleep (2);
     /* void the passphrase, even if it's not necessarily the problem */
     pgp_void_passphrase ();
     rc = -1;
