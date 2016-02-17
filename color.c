@@ -729,7 +729,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     mutt_extract_token (buf, s, 0);
   }
    
-  if (MoreArgs (s) && object != MT_COLOR_STATUS)
+  if (MoreArgs (s) && (object != MT_COLOR_STATUS))
   {
     strfcpy (err->data, _("too many arguments"), err->dsize);
     return (-1);
@@ -757,8 +757,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     r = add_pattern (&ColorHdrList, buf->data, 0, fg, bg, attr, err, 0, match);
   else if (object == MT_COLOR_BODY)
     r = add_pattern (&ColorBodyList, buf->data, 1, fg, bg, attr, err, 0, match);
-  else if (object == MT_COLOR_STATUS && MoreArgs(s))
-  {
+  else if ((object == MT_COLOR_STATUS) && MoreArgs (s)) {
     /* 'color status fg bg' can have upto 2 arguments:
      * 0 arguments: sets the default status color (handled below by else part)
      * 1 argument : colorize pattern on match
@@ -766,20 +765,19 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
      */
     mutt_extract_token (buf, s, 0);
 
-    if (MoreArgs(s)) {
+    if (MoreArgs (s)) {
       BUFFER temporary;
-      memset(&temporary, 0, sizeof(BUFFER));
-      mutt_extract_token(&temporary, s, 0);
-      match = atoi(temporary.data);
+      memset (&temporary, 0, sizeof (BUFFER));
+      mutt_extract_token (&temporary, s, 0);
+      match = atoi (temporary.data);
       FREE(&temporary.data);
     }
 
-    if (MoreArgs(s))
-    {
+    if (MoreArgs (s)) {
       strfcpy (err->data, _("too many arguments"), err->dsize);
-      return (-1);
+      return -1;
     }
-  
+
     r = add_pattern (&ColorStatusList, buf->data, 1,
 		    fg, bg, attr, err, 0, match);
   }
