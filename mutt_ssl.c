@@ -401,7 +401,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
 #endif
 
-#if OPENSSL_VERSION_NUMBER >= 0x0090806fL && !defined(OPENSSL_NO_TLSEXT)
+#if (OPENSSL_VERSION_NUMBER >= 0x0090806fL) && !defined(OPENSSL_NO_TLSEXT)
   /* TLS Virtual-hosting requires that the server present the correct
    * certificate; to do this, the ServerNameIndication TLS extension is used.
    * If TLS is negotiated, and OpenSSL is recent enough that it might have
