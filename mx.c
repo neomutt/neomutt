@@ -1006,7 +1006,7 @@ void mx_update_tables(CONTEXT *ctx, int committing)
   for (i = 0, j = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->quasi_deleted &&
-	((committing && (!ctx->hdrs[i]->deleted || 
+	((committing && (!ctx->hdrs[i]->deleted ||
 			(ctx->magic == M_MAILDIR && option (OPTMAILDIRTRASH)))) ||
 	(!committing && ctx->hdrs[i]->active)))
     {
