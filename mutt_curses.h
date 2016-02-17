@@ -184,9 +184,9 @@ extern int ColorDefs[];
 extern COLOR_LINE *ColorHdrList;
 extern COLOR_LINE *ColorBodyList;
 extern COLOR_LINE *ColorIndexList;
-extern COLOR_LINE *ColorIndexSubjectList;
 extern COLOR_LINE *ColorIndexAuthorList;
 extern COLOR_LINE *ColorIndexFlagsList;
+extern COLOR_LINE *ColorIndexSubjectList;
 
 void ci_init_color (void);
 void ci_start_color (void);
