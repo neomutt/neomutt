@@ -470,18 +470,15 @@ hdr_format_str (char *dest,
 	int j = 0;
 
 	for (i = 0; hdr->env->from && hdr->env->from->personal &&
-		    hdr->env->from->personal[i] && j < SHORT_STRING - 1; i++)
-	{
-	  if (isalpha ((int)hdr->env->from->personal[i]))
-	  {
-	    if (!iflag)
-	    {
+		    hdr->env->from->personal[i] && (j < (SHORT_STRING - 1)); i++) {
+	  if (isalpha ((int) hdr->env->from->personal[i])) {
+	    if (!iflag) {
 	      buf2[j++] = hdr->env->from->personal[i];
 	      iflag = TRUE;
 	    }
-	  }
-	  else
+	  } else {
 	    iflag = FALSE;
+	  }
 	}
 
 	buf2[j] = '\0';
