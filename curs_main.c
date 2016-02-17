@@ -2276,7 +2276,7 @@ int mutt_index_menu (void)
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 0,
 				   op == OP_UNDELETE_THREAD ? 0 : 1)
 	  + mutt_thread_set_flag (CURHDR, M_PURGED, 0,
-				  op == OP_UNDELETE_THREAD ? 0 : 1);
+				  (op == OP_UNDELETE_THREAD) ? 0 : 1);
 
 	if (rc > -1)
 	{

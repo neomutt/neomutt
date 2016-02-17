@@ -1368,8 +1368,7 @@ int mutt_pattern_func (int op, char *prompt)
 	switch (op)
 	{
 	  case M_UNDELETE:
-	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_PURGED,
-			   0);
+	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_PURGED, 0);
 	  case M_DELETE:
 	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_DELETE, 
 			  (op == M_DELETE));
