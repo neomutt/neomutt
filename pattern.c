@@ -169,10 +169,10 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       s.fpin = msg->fp;
       s.flags = M_CHARCONV;
 #ifdef HAVE_FMEMOPEN
-      if((s.fpout = open_memstream(&temp, &tempsize)) == NULL)
-      {
+      s.fpout = open_memstream (&temp, &tempsize);
+      if (!s.fpout) {
 	mutt_perror ("Error opening memstream");
-	return (0);
+	return 0;
       }
 #else
       mutt_mktemp (tempfile, sizeof (tempfile));
@@ -211,19 +211,21 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       }
 
 #ifdef HAVE_FMEMOPEN
-      fclose(s.fpout);
+      fclose (s.fpout);
       lng = tempsize;
 
-      if(tempsize) {
-          if ((fp = fmemopen(temp, tempsize, "r")) == NULL) {
-            mutt_perror ("Error re-opening memstream");
-            return (0);
-          }
+      if (tempsize) {
+        fp = fmemopen (temp, tempsize, "r");
+        if (!fp) {
+          mutt_perror ("Error re-opening memstream");
+          return 0;
+        }
       } else { /* fmemopen cannot handle empty buffers */
-          if ((fp = safe_fopen ("/dev/null", "r")) == NULL) {
-            mutt_perror ("Error opening /dev/null");
-            return (0);
-          }
+        fp = safe_fopen ("/dev/null", "r");
+        if (!fp) {
+          mutt_perror ("Error opening /dev/null");
+          return 0;
+        }
       }
 #else
       fp = s.fpout;
@@ -279,8 +281,8 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
     {
       safe_fclose (&fp);
 #ifdef HAVE_FMEMOPEN
-      if(tempsize)
-          FREE (&temp);
+      if (tempsize)
+        FREE(&temp);
 #else
       unlink (tempfile);
 #endif
