@@ -91,7 +91,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   gss_qop_t quality;
   int cflags;
   OM_uint32 maj_stat, min_stat;
-  char buf1[GSS_BUFSIZE], buf2[GSS_BUFSIZE], server_conf_flags;
+  char buf1[GSS_BUFSIZE], buf2[GSS_BUFSIZE];
   unsigned long buf_size;
   int rc;
 
@@ -230,7 +230,9 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
   dprint (2, (debugfile, "Credential exchange complete\n"));
 
   /* first octet is security levels supported. We want NONE */
-  server_conf_flags = ((char*) send_token.value)[0];
+#ifdef DEBUG
+  char server_conf_flags = ((char*) send_token.value)[0];
+#endif
   if ( !(((char*) send_token.value)[0] & GSS_AUTH_P_NONE) )
   {
     dprint (2, (debugfile, "Server requires integrity or privacy\n"));
