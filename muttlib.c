@@ -1212,8 +1212,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	src++;
 	cp = prefix;
 	count = 0;
-	while (count < sizeof (prefix) && *src != '?')
-	{
+	while ((count < sizeof (prefix)) && (*src != '?')) {
 	  *cp++ = *src++;
 	  count++;
 	}

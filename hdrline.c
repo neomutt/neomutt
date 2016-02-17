@@ -327,90 +327,84 @@ hdr_format_str (char *dest,
 	time_t T;
 	int i = 0, invert = 0;
 
-	if (optional && (op == '[' || op == '(')) {
+	if (optional && ((op == '[') || (op == '('))) {
 	  char *is;
-	  T = time(NULL);
-	  tm = localtime(&T);
+	  T = time (NULL);
+	  tm = localtime (&T);
 	  T -= (op == '(') ? hdr->received : hdr->date_sent;
 
-	  is = (char *)prefix;
-	  if( *is == '>' ) {
+	  is = (char *) prefix;
+	  if (*is == '>') {
 	    invert = 1;
-	    ++is;
+	    is++;
 	  }
 
-	  while( *is && *is != '?' ) {
+	  while (*is && (*is != '?')) {
 	    int t = strtol (is, &is, 10);
 	    /* semi-broken (assuming 30 days in all months) */
 	    switch (*(is++)) {
-	      default:
-		break;
-
 	      case 'y':
-		if (t > 1)
-		{
+		if (t > 1) {
 		  t--;
-		  t *= 365 * 24 * 60 * 60;
+		  t *= (60 * 60 * 24 * 365);
 		}
-		t += ((tm->tm_mon * 30 * 24 * 60 * 60) +
-		      (tm->tm_mday * 24 * 60 * 60) +
+		t += ((tm->tm_mon  * 60 * 60 * 24 * 30) +
+		      (tm->tm_mday * 60 * 60 * 24) +
 		      (tm->tm_hour * 60 * 60) +
-		      (tm->tm_min * 60) +
-		      tm->tm_sec);
+		      (tm->tm_min  * 60) +
+		       tm->tm_sec);
 		break;
 
 	      case 'm':
-		if (t > 1)
-		{
+		if (t > 1) {
 		  t--;
-		  t *= 30 * 24 * 60 * 60;
+		  t *= (60 * 60 * 24 * 30);
 		}
-		t += ((tm->tm_mday * 24 * 60 * 60) +
+		t += ((tm->tm_mday * 60 * 60 * 24) +
 		      (tm->tm_hour * 60 * 60) +
-		      (tm->tm_min * 60) +
+		      (tm->tm_min  * 60) +
 		      tm->tm_sec);
 		break;
 
 	      case 'w':
-		if (t > 1)
-		{
-		    t--;
-		    t *= 7 * 24 * 60 * 60;
+		if (t > 1) {
+		  t--;
+		  t *= (60 * 60 * 24 * 7);
 		}
-		t += ((tm->tm_wday * 24 * 60 * 60) +
+		t += ((tm->tm_wday * 60 * 60 * 24) +
 		      (tm->tm_hour * 60 * 60) +
-		      (tm->tm_min * 60) +
-		      tm->tm_sec);
+		      (tm->tm_min  * 60) +
+		       tm->tm_sec);
 		break;
 
 	      case 'd':
-		if (t > 1)
-		{
+		if (t > 1) {
 		  t--;
-		  t *= (24 * 60 * 60);
+		  t *= (60 * 60 * 24);
 		}
 		t += ((tm->tm_hour * 60 * 60) +
-		      (tm->tm_min * 60) +
-		      tm->tm_sec);
+		      (tm->tm_min  * 60) +
+		       tm->tm_sec);
 		break;
 
 	      case 'H':
-		if (t > 1)
-		{
+		if (t > 1) {
 		  t--;
 		  t *= (60 * 60);
 		}
 		t += ((tm->tm_min * 60) +
-		      tm->tm_sec);
+		       tm->tm_sec);
 		break;
 
 	      case 'M':
-		if (t > 1)
-		{
+		if (t > 1) {
 		  t--;
 		  t *= (60);
 		}
 		t += (tm->tm_sec);
+		break;
+
+	      default:
 		break;
 	    }
 	    i += t;
@@ -419,7 +413,7 @@ hdr_format_str (char *dest,
 	  if (i < 0)
 	    i *= -1;
 
-	  if( (T > i || T < -1*i) ^ invert )
+	  if (((T > i) || (T < (-1*i))) ^ invert)
 	    optional = 0;
 	  break;
 	}
