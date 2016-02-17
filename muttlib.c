@@ -1209,14 +1209,18 @@ void mutt_FormatString (char *dest,		/* output buffer */
       {
 	/* change original %? to new %< notation */
 	/* %?x?y&z? to %<x?y&z> where y and z are nestable */
-	char *p = (char *)src;
+	char *p = (char *) src;
 	*p = '<';
 	for ( ; *p && *p != '?'; p++);
-	if (*p == '?')
+	  /* nothing */
+	if (*p == '?') {
 	  p++;
+	}
 	for ( ; *p && *p != '?'; p++);
-	if (*p == '?')
+	  /* nothing */
+	if (*p == '?') {
 	  *p = '>';
+	}
       }
 
       if (*src == '<')
@@ -1257,20 +1261,18 @@ void mutt_FormatString (char *dest,		/* output buffer */
         cp = ifstring;
 	count = 0;
 	lrbalance = 1;
-        while (lrbalance > 0 && count < sizeof (ifstring) && *src)
-	{
-	  if (*src == '\\')
-	  {
+        while ((lrbalance > 0) && (count < sizeof (ifstring)) && *src) {
+	  if (*src == '\\') {
 	    src++;
 	    *cp++ = *src++;
-	  }
-	  else if (src[0] == '%' && src[1] == '<')
+	  } else if ((src[0] == '%') && (src[1] == '<')) {
 	    lrbalance++;
-	  else if (src[0] == '>')
+	  } else if (src[0] == '>') {
 	    lrbalance--;
+	  }
 	  if (lrbalance == 0)
 	    break;
-	  if (lrbalance == 1 && src[0] == '&')
+	  if ((lrbalance == 1) && (src[0] == '&'))
 	    break;
           *cp++ = *src++;
 	  count++;
@@ -1282,20 +1284,18 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  src++; /* skip the & */
 	cp = elsestring;
 	count = 0;
-	while (lrbalance > 0 && count < sizeof (elsestring) && *src)
-	{
-	  if (*src == '\\')
-	  {
+	while ((lrbalance > 0) && (count < sizeof (elsestring)) && *src) {
+	  if (*src == '\\') {
 	    src++;
 	    *cp++ = *src++;
-	  }
-	  else if (src[0] == '%' && src[1] == '<')
+	  } else if ((src[0] == '%') && (src[1] == '<')) {
 	    lrbalance++;
-	  else if (src[0] == '>')
+	  } else if (src[0] == '>') {
 	    lrbalance--;
+	  }
 	  if (lrbalance == 0)
 	    break;
-	  if (lrbalance == 1 && src[0] == '&')
+	  if ((lrbalance == 1) && (src[0] == '&'))
 	    break;
           *cp++ = *src++;
 	  count++;
