@@ -831,8 +831,8 @@ AC_ARG_ENABLE(locales-fix, AS_HELP_STRING([--enable-locales-fix],[The result of 
         fi])
 
 AC_ARG_ENABLE(compressed, AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-	[if test x$enableval = xyes; then
-                AC_DEFINE(USE_COMPRESSED,1, [ Define to support compressed folders. ])
+        [if test x$enableval = xyes; then
+                AC_DEFINE(USE_COMPRESSED,1, [ Define to enable compressed folders support. ])
         fi])
 
 AC_ARG_WITH(exec-shell, AS_HELP_STRING([--with-exec-shell=SHELL],[Specify alternate shell (ONLY if /bin/sh is broken)]),

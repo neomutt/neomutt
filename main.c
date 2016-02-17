@@ -439,7 +439,7 @@ static void show_version (void)
 #else
 	"-COMPRESSED  "
 #endif
-	      
+
 #ifdef HAVE_WC_FUNCS
 	"+HAVE_WC_FUNCS  "
 #else

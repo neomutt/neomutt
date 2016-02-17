@@ -100,7 +100,7 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
       if (Context && Context->compressinfo && Context->realpath)
       {
 	 strfcpy (tmp, Context->realpath, sizeof (tmp));
-	 mutt_pretty_mailbox (tmp, sizeof(tmp));
+	 mutt_pretty_mailbox (tmp, sizeof (tmp));
       }
       else
 #endif
