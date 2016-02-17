@@ -1,0 +1,7 @@
+" Vim syntax file for the mutt compress patch
+
+syntax keyword muttrcCommand    append-hook
+syntax keyword muttrcCommand    close-hook
+syntax keyword muttrcCommand    open-hook
+
+" vim: syntax=vim
