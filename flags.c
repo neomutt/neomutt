@@ -65,11 +65,11 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       {
 	h->deleted = 0;
         update = 1;
-        if (upd_ctx)
-        {
+        if (upd_ctx) {
           ctx->deleted--;
-          if (h->appended)
+          if (h->appended) {
             ctx->appended--;
+	  }
         }
         h->appended = 0; /* when undeleting, also reset the appended flag */
 #ifdef USE_IMAP
@@ -94,24 +94,24 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       break;
 
     case M_APPENDED:
-      if (bf)
-      {
-        if (!h->appended)
-        {
+      if (bf) {
+        if (!h->appended) {
           h->appended = 1;
-          if (upd_ctx) ctx->appended++;
+          if (upd_ctx) {
+            ctx->appended++;
+          }
         }
       }
       break;
 
     case M_PURGED:
-      if (bf)
-      {
-	if (!h->purged)
-	  h->purged = 1;
+      if (bf) {
+        if (!h->purged) {
+          h->purged = 1;
+        }
+      } else if (h->purged) {
+        h->purged = 0;
       }
-      else if (h->purged)
-	h->purged = 0;
       break;
 
     case M_NEW:

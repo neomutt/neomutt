@@ -2033,53 +2033,52 @@ int imap_complete(char* dest, size_t dlen, char* path) {
   return -1;
 }
 
-int imap_fast_trash() {
+/**
+ * imap_fast_trash - XXX
+ */
+int
+imap_fast_trash (void)
+{
+	if ((Context->magic == M_IMAP) && mx_is_imap (TrashPath)) {
+		IMAP_MBOX mx;
+		IMAP_DATA *idata = (IMAP_DATA *) Context->data;
+		char mbox[LONG_STRING];
+		char mmbox[LONG_STRING];
+		int rc;
+		dprint (1, (debugfile, "[itf] trashcan seems to be on imap.\n"));
 
-    if( Context->magic == M_IMAP && mx_is_imap(TrashPath) ) {
-        IMAP_MBOX mx;
-        IMAP_DATA *idata = (IMAP_DATA *) Context->data;
-        char mbox[LONG_STRING];
-        char mmbox[LONG_STRING];
-        int rc;
-        dprint(1, (debugfile, "[itf] trashcan seems to be on imap.\n"));
+		if (imap_parse_path (TrashPath, &mx) == 0) {
+			if (mutt_account_match (&(idata->conn->account), &(mx.account))) {
+				dprint (1, (debugfile, "[itf] trashcan seems to be on the same account.\n"));
 
-        if ( imap_parse_path(TrashPath, &mx) == 0 ) {
-            if( mutt_account_match(&(idata->conn->account), &(mx.account)) ) {
-                dprint(1, (debugfile, "[itf] trashcan seems to be on the same account.\n"));
+				imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
+				if (!*mbox)
+					strfcpy (mbox, "INBOX", sizeof (mbox));
+				imap_munge_mbox_name (mmbox, sizeof (mmbox), mbox);
 
-                imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
-                if (!*mbox)
-                    strfcpy (mbox, "INBOX", sizeof (mbox));
-                imap_munge_mbox_name (mmbox, sizeof (mmbox), mbox);
+				rc = imap_exec_msgset (idata, "UID COPY", mmbox, M_EXPIRED, 0, 0);
+				if (rc == 0) {
+					dprint (1, (debugfile, "imap_copy_messages: No messages del-tagged\n"));
+					rc = -1;
+					goto old_way;
+				} else if (rc < 0) {
+					dprint (1, (debugfile, "could not queue copy\n"));
+					goto old_way;
+				} else {
+					mutt_message (_("Copying %d messages to %s..."), rc, mbox);
+					return 0;
+				}
+			} else {
+				dprint (1, (debugfile, "[itf] trashcan seems to be on a different account.\n"));
+			}
+old_way:
+			FREE(&mx.mbox); /* we probably only need to free this when the parse works */
+		} else {
+			dprint (1, (debugfile, "[itf] failed to parse TrashPath.\n"));
+		}
 
-                rc = imap_exec_msgset (idata, "UID COPY", mmbox, M_EXPIRED, 0, 0);
-                if (!rc) {
-                    dprint (1, (debugfile, "imap_copy_messages: No messages del-tagged\n"));
-                    rc = -1;
-                    goto old_way;
+		dprint (1, (debugfile, "[itf] giving up and trying old fasioned way.\n"));
+	}
 
-                } else if (rc < 0) {
-                    dprint (1, (debugfile, "could not queue copy\n"));
-                    goto old_way;
-
-                } else {
-                    mutt_message (_("Copying %d messages to %s..."), rc, mbox);
-                    return 0;
-                }
-
-            } else {
-                dprint(1, (debugfile, "[itf] trashcan seems to be on a different account.\n"));
-            }
-
-            old_way:
-            FREE (&mx.mbox); /* we probably only need to free this when the parse works */
-
-        } else {
-            dprint(1, (debugfile, "[itf] failed to parse TrashPath.\n" ));
-        }
-
-        dprint(1, (debugfile, "[itf] giving up and trying old fasioned way.\n" ));
-    }
-
-    return 1;
+	return 1;
 }
