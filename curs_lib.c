@@ -798,13 +798,12 @@ void mutt_format_string (char *dest, size_t destlen,
     if (escaped) {
       escaped = 0;
       w = 0;
-    }
-    else if (arboreal && wc == M_SPECIAL_INDEX) {
+    } else if (arboreal && wc == M_SPECIAL_INDEX) {
       escaped = 1;
       w = 0;
-    }
-    else if (arboreal && wc < M_TREE_MAX)
+    } else if (arboreal && wc < M_TREE_MAX) {
       w = 1; /* hack */
+    }
     else
     {
 #ifdef HAVE_ISWBLANK
@@ -1041,8 +1040,7 @@ int mutt_strwidth (const char *s)
   memset (&mbstate, 0, sizeof (mbstate));
   for (w=0; n && (k = mbrtowc (&wc, s, n, &mbstate)); s += k, n -= k)
   {
-    if (*s == M_SPECIAL_INDEX)
-    {
+    if (*s == M_SPECIAL_INDEX) {
       s += 2; /* skip the index coloring sequence */
       k = 0;
       continue;
