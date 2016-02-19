@@ -27,8 +27,12 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 
+/* Previous values for some sidebar config */
+static short  OldVisible;	/* sidebar_visible */
+static short  OldWidth;		/* sidebar_width */
+
 static BUFFY *TopBuffy;
-static BUFFY *BottomBuffy;
+static BUFFY *BotBuffy;
 static time_t LastRefresh;
 static int    known_lines;
 
@@ -100,7 +104,7 @@ find_prev_new (int wrap)
 	do {
 		b = b->prev;
 		if (!b && wrap) {
-			b = BottomBuffy;
+			b = BotBuffy;
 		}
 		if (!b || (b == CurBuffy)) {
 			break;
@@ -114,10 +118,10 @@ find_prev_new (int wrap)
 }
 
 /**
- * calc_boundaries - Keep our TopBuffy/BottomBuffy up-to-date
+ * calc_boundaries - Keep our TopBuffy/BotBuffy up-to-date
  *
  * Whenever the sidebar's view of the BUFFYs changes, or the screen changes
- * size, we should check TopBuffy and BottomBuffy still have the correct
+ * size, we should check TopBuffy and BotBuffy still have the correct
  * values.
  *
  * Ideally, this should happen in the core of mutt.
@@ -134,34 +138,34 @@ calc_boundaries (void)
 		count--;
 
 	if (known_lines != LINES) {
-		TopBuffy = BottomBuffy = NULL;
+		TopBuffy = BotBuffy = NULL;
 		known_lines = LINES;
 	}
 	for (; b->next; b = b->next)
 		b->next->prev = b;
 
-	if (!TopBuffy && !BottomBuffy)
+	if (!TopBuffy && !BotBuffy)
 		TopBuffy = Incoming;
 
-	if (!BottomBuffy) {
-		BottomBuffy = TopBuffy;
-		while (--count && BottomBuffy->next) {
-			BottomBuffy = BottomBuffy->next;
+	if (!BotBuffy) {
+		BotBuffy = TopBuffy;
+		while (--count && BotBuffy->next) {
+			BotBuffy = BotBuffy->next;
 		}
 	} else if (TopBuffy == CurBuffy->next) {
-		BottomBuffy = CurBuffy;
-		b = BottomBuffy;
+		BotBuffy = CurBuffy;
+		b = BotBuffy;
 		while (--count && b->prev) {
 			b = b->prev;
 		}
 		TopBuffy = b;
-	} else if (BottomBuffy == CurBuffy->prev) {
+	} else if (BotBuffy == CurBuffy->prev) {
 		TopBuffy = CurBuffy;
 		b = TopBuffy;
 		while (--count && b->next) {
 			b = b->next;
 		}
-		BottomBuffy = b;
+		BotBuffy = b;
 	}
 }
 
@@ -328,18 +332,16 @@ sb_draw (void)
 	int delim_len = wcwidth (sd[0]);
 
 	static bool initialized = false;
-	static int prev_show_value;
-	static short saveSidebarWidth;
-	int lines = 0;
+	int row = 0;
 	int SidebarHeight;
 
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
-		lines++; /* either one will occupy the first line */
+		row++; /* either one will occupy the first line */
 
 	/* initialize first time */
 	if (!initialized) {
-		prev_show_value = option (OPTSIDEBAR);
-		saveSidebarWidth = SidebarWidth;
+		OldVisible = option (OPTSIDEBAR);
+		OldWidth = SidebarWidth;
 		if (!option (OPTSIDEBAR))
 			SidebarWidth = 0;
 		LastRefresh = time (NULL);
@@ -347,21 +349,21 @@ sb_draw (void)
 	}
 
 	/* save or restore the value SidebarWidth */
-	if (prev_show_value != option (OPTSIDEBAR)) {
-		if (prev_show_value && !option (OPTSIDEBAR)) {
-			saveSidebarWidth = SidebarWidth;
+	if (OldVisible != option (OPTSIDEBAR)) {
+		if (OldVisible && !option (OPTSIDEBAR)) {
+			OldWidth = SidebarWidth;
 			SidebarWidth = 0;
-		} else if (!prev_show_value && option (OPTSIDEBAR)) {
+		} else if (!OldVisible && option (OPTSIDEBAR)) {
 			mutt_buffy_check (1); /* we probably have bad or no numbers */
-			SidebarWidth = saveSidebarWidth;
+			SidebarWidth = OldWidth;
 		}
-		prev_show_value = option (OPTSIDEBAR);
+		OldVisible = option (OPTSIDEBAR);
 	}
 
 	if ((SidebarWidth > 0) && option (OPTSIDEBAR) && (delim_len >= SidebarWidth)) {
 		unset_option (OPTSIDEBAR);
-		if (saveSidebarWidth > delim_len) {
-			SidebarWidth = saveSidebarWidth;
+		if (OldWidth > delim_len) {
+			SidebarWidth = OldWidth;
 			mutt_error (_("Value for sidebar_delim is too long. Disabling sidebar."));
 			sleep (2);
 		} else {
@@ -369,13 +371,13 @@ sb_draw (void)
 			mutt_error (_("Value for sidebar_delim is too long. Disabling sidebar. Please set your sidebar_width to a sane value."));
 			sleep (4); /* the advise to set a sane value should be seen long enough */
 		}
-		saveSidebarWidth = 0;
+		OldWidth = 0;
 		return;
 	}
 
 	if ((SidebarWidth == 0) || !option (OPTSIDEBAR)) {
 		if (SidebarWidth > 0) {
-			saveSidebarWidth = SidebarWidth;
+			OldWidth = SidebarWidth;
 			SidebarWidth = 0;
 		}
 		unset_option (OPTSIDEBAR);
@@ -396,22 +398,22 @@ sb_draw (void)
 	if (option (OPTHELP) || !option (OPTSTATUSONTOP))
 		SidebarHeight--;
 
-	for (; lines < SidebarHeight; lines++) {
-		move (lines, SidebarWidth - delim_len);
+	for (; row < SidebarHeight; row++) {
+		move (row, SidebarWidth - delim_len);
 		addstr (NONULL(SidebarDelim));
 #ifndef USE_SLANG_CURSES
-		mvchgat (lines, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
+		mvchgat (row, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
 #endif
 	}
 
 	if (!Incoming)
 		return;
 
-	lines = 0;
+	row = 0;
 	if (option (OPTSTATUSONTOP) || option (OPTHELP))
-		lines++; /* either one will occupy the first line */
+		row++; /* either one will occupy the first line */
 
-	if ((known_lines != LINES) || !TopBuffy || !BottomBuffy)
+	if ((known_lines != LINES) || !TopBuffy || !BotBuffy)
 		calc_boundaries();
 	if (!CurBuffy)
 		CurBuffy = Incoming;
@@ -419,7 +421,7 @@ sb_draw (void)
 	SETCOLOR(MT_COLOR_NORMAL);
 
 	BUFFY *b;
-	for (b = TopBuffy; b && (lines < SidebarHeight); b = b->next) {
+	for (b = TopBuffy; b && (row < SidebarHeight); b = b->next) {
 		if (b == CurBuffy) {
 			SETCOLOR(MT_COLOR_INDICATOR);
 		} else if (b->msg_unread > 0) {
@@ -440,7 +442,7 @@ sb_draw (void)
 			SETCOLOR(MT_COLOR_NORMAL);
 		}
 
-		move (lines, 0);
+		move (row, 0);
 		if (Context && Context->path &&
 			(!strcmp (b->path, Context->path)||
 			 !strcmp (b->realpath, Context->path))) {
@@ -506,13 +508,13 @@ sb_draw (void)
 		printw ("%s", str);
 		if (sidebar_folder_depth > 0)
 			free (sidebar_folder_name);
-		lines++;
+		row++;
 	}
 
 	SETCOLOR(MT_COLOR_NORMAL);
-	for (; lines < SidebarHeight; lines++) {
+	for (; row < SidebarHeight; row++) {
 		int i = 0;
-		move (lines, 0);
+		move (row, 0);
 		for (; i < (SidebarWidth - delim_len); i++)
 			addch (' ');
 	}
@@ -604,7 +606,7 @@ sb_change_mailbox (int op)
 			}
 			break;
 		case OP_SIDEBAR_SCROLL_DOWN:
-			CurBuffy = BottomBuffy;
+			CurBuffy = BotBuffy;
 			if (CurBuffy->next) {
 				calc_boundaries();
 				CurBuffy = CurBuffy->next;
