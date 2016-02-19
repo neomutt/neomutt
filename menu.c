@@ -240,7 +240,7 @@ void menu_redraw_index (MUTTMENU *menu)
   int do_color;
   int attr;
 
-  draw_sidebar();
+  sb_draw();
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
   {
     if (i < menu->max)

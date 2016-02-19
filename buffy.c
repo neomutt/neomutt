@@ -606,27 +606,27 @@ int mutt_buffy_check (int force)
       {
       case M_MBOX:
       case M_MMDF:
-	if (sidebar_should_refresh()) {
+	if (sb_should_refresh()) {
 	  buffy_mbox_update (tmp, &sb);
-	  sidebar_updated();
+	  sb_set_update_time();
 	}
 	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
 	break;
 
       case M_MAILDIR:
-	if (sidebar_should_refresh()) {
+	if (sb_should_refresh()) {
 	  buffy_maildir_update (tmp);
-	  sidebar_updated();
+	  sb_set_update_time();
 	}
 	if (buffy_maildir_hasnew (tmp) > 0)
 	  BuffyCount++;
 	break;
 
       case M_MH:
-	if (sidebar_should_refresh()) {
+	if (sb_should_refresh()) {
 	  mh_buffy_update (tmp->path, &tmp->msgcount, &tmp->msg_unread, &tmp->msg_flagged, &tmp->sb_last_checked);
-	  sidebar_updated();
+	  sb_set_update_time();
 	}
 	mh_buffy(tmp);
 	if (tmp->new)
