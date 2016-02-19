@@ -264,7 +264,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
    */
   if (h->searched && (changed != h->changed || deleted != ctx->deleted || tagged != ctx->tagged || flagged != ctx->flagged))
     h->searched = 0;
-  draw_sidebar();
+  sb_draw();
 }
 
 void mutt_tag_set_flag (int flag, int bf)

@@ -22,11 +22,11 @@
 
 typedef struct _context CONTEXT;
 
-void draw_sidebar (void);
-void scroll_sidebar (int op);
-void set_buffystats (const CONTEXT *ctx);
-void set_curbuffy (char *path);
-int  sidebar_should_refresh (void);
-void sidebar_updated (void);
+void         sb_change_mailbox (int op);
+void         sb_draw (void);
+void         sb_set_buffystats (const CONTEXT *ctx);
+void         sb_set_open_buffy (char *path);
+void         sb_set_update_time (void);
+int          sb_should_refresh (void);
 
 #endif /* SIDEBAR_H */

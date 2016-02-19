@@ -617,10 +617,10 @@ int mutt_index_menu (void)
     if (menu->redraw & REDRAW_FULL)
     {
       menu_redraw_full (menu);
-      draw_sidebar();
+      sb_draw();
       mutt_show_error ();
     } else if (menu->redraw & REDRAW_SIDEBAR) {
-      draw_sidebar();
+      sb_draw();
       menu->redraw &= ~REDRAW_SIDEBAR;
     }
 
@@ -650,7 +650,7 @@ int mutt_index_menu (void)
         SidebarWidth = sw; /* Restore the sidebar width */
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-	set_buffystats (Context);
+	sb_set_buffystats (Context);
 	mutt_paddstr (COLS, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
@@ -1224,7 +1224,7 @@ int mutt_index_menu (void)
 	}
 
 	mutt_expand_path (buf, sizeof (buf));
-	set_curbuffy (buf);
+	sb_set_open_buffy (buf);
 	if (mx_get_magic (buf) <= 0)
 	{
 	  mutt_error (_("%s is not a mailbox."), buf);
@@ -2342,7 +2342,7 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_NEXT_NEW:
       case OP_SIDEBAR_PREV_NEW:
-        scroll_sidebar (op);
+        sb_change_mailbox (op);
         break;
       default:
 	if (menu->menu == MENU_MAIN)

@@ -129,7 +129,7 @@ calc_boundaries (void)
 }
 
 static const char *
-sidebar_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 	const char *prefix, const char *ifstring, const char *elsestring,
 	unsigned long data, format_flag flags)
 {
@@ -191,9 +191,9 @@ sidebar_format_str (char *dest, size_t destlen, size_t col, char op, const char 
 	}
 
 	if (optional)
-		mutt_FormatString (dest, destlen, col, ifstring,   sidebar_format_str, (unsigned long) sbe, flags);
+		mutt_FormatString (dest, destlen, col, ifstring,   cb_format_str, (unsigned long) sbe, flags);
 	else if (flags & M_FORMAT_OPTIONAL)
-		mutt_FormatString (dest, destlen, col, elsestring, sidebar_format_str, (unsigned long) sbe, flags);
+		mutt_FormatString (dest, destlen, col, elsestring, cb_format_str, (unsigned long) sbe, flags);
 
 	/* We return the format string, unchanged */
 	return src;
@@ -219,7 +219,7 @@ make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 	/* Temporarily lie about the screen width */
 	int oc = COLS;
 	COLS = width + SidebarWidth;
-	mutt_FormatString (buf, buflen, 0, NONULL(SidebarFormat), sidebar_format_str, (unsigned long) &sbe, 0);
+	mutt_FormatString (buf, buflen, 0, NONULL(SidebarFormat), cb_format_str, (unsigned long) &sbe, 0);
 	COLS = oc;
 
 	/* Force string to be exactly the right width */
@@ -238,7 +238,7 @@ make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
 
 
 void
-draw_sidebar (void)
+sb_draw (void)
 {
 #ifndef USE_SLANG_CURSES
 	attr_t attrs;
@@ -442,7 +442,7 @@ draw_sidebar (void)
 }
 
 int
-sidebar_should_refresh (void)
+sb_should_refresh (void)
 {
 	if (option (OPTSIDEBAR) && (SidebarRefresh > 0)) {
 		if ((time (NULL) - SidebarLastRefresh) >= SidebarRefresh) {
@@ -453,7 +453,7 @@ sidebar_should_refresh (void)
 }
 
 void
-scroll_sidebar (int op)
+sb_change_mailbox (int op)
 {
 	BUFFY *b;
 	if ((SidebarWidth == 0) || !CurBuffy)
@@ -508,11 +508,11 @@ scroll_sidebar (int op)
 			return;
 	}
 	calc_boundaries();
-	draw_sidebar();
+	sb_draw();
 }
 
 void
-set_buffystats (const CONTEXT *ctx)
+sb_set_buffystats (const CONTEXT *ctx)
 {
 	/* Even if the sidebar's hidden,
 	 * we should take note of the new data. */
@@ -532,7 +532,7 @@ set_buffystats (const CONTEXT *ctx)
 }
 
 void
-set_curbuffy (char *path)
+sb_set_open_buffy (char *path)
 {
 	BUFFY *b = CurBuffy = Incoming;
 
@@ -549,7 +549,7 @@ set_curbuffy (char *path)
 }
 
 void
-sidebar_updated (void)
+sb_set_update_time (void)
 {
 	SidebarLastRefresh = time (NULL);
 }
