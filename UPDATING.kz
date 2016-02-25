@@ -1,0 +1,39 @@
+
+Extension to the mutt upstream.
+
+1.5.22-rc1:
+
++ use git and github rather than hg to maintain source code
+
++ virtual folders based on notmuch queries
++ merge sidebar patch
++ merge index-color patch
+
++ <change-vfolder> command
++ <vfolder-from-query> command
++ <modify-labels> command to set/unset notmuch tags
++ <modify-labels-then-hide> command to set/unset notmuch tags and hide email
+  from the current view
++ <quasi-delete> command to delete message from mutt, but don't touch message
+  on the disk
++ <entire-thread> command to add to the current list of the messages all
+  messages that belongs to the same thread as the current message
++ ~Y EXPR  pattern modifier for notmuch labels for limit, tag-pattern,
+  delete-pattern, color etc.
++ virtual-mailboxes <desc> <uri> [...]  to specify list of the virtual mailboxes
++ virtual_spoolfile = <boolean> to use the first virtual mailbox as a spoolfile
++ tag-transforms <tag> <transform> to transform tag name to another name
++ tag-formats <tag> <format sequence> [ ...] to define tag specific formatting
+  sequence for $index_format
++ nm_record = <boolean> to add sent emails (mutt record) to notmuch DB
++ nm_record_tags = <comma delimited list> to specify tags for nm_record
++ nm_open_timeout = <seconds> to specify timeout for notmuch database
++ nm_default_uri = <uri>  the default URI to connect notmuch
++ nm_hidden_tags = <comma delimited list> to make some tags invisible for mutt user
++ nm_exclude_tags = <comma delimited list> - messages tagged with these tags
+  are excluded and not loaded from notmuch DB to mutt unless specified explicitly
++ nm_unread_tag = <name> to specify unread messages
++ nm_db_limit = <num> to specify notmuch query limit
++ nm_query_type = <threads|messages> to specify what to load from DB
++ vfolder_format = <string> to specify vfolders brower entry format
++ %g and %Gx index_format and pager_format formatting sequences

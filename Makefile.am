@@ -89,7 +89,7 @@ mutt_LDADD += $(NOTMUCH_LIBS)
 endif
 
 # kz
-EXTRA_DIST += README.notmuch OPS.NOTMUCH
+EXTRA_DIST += UPDATING.kz README.notmuch OPS.NOTMUCH
 
 
 
