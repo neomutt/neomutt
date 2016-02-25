@@ -180,6 +180,10 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
 #endif
 
+#ifdef USE_NOTMUCH
+  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,         "X" },
+  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,     "\033X" },
+#endif
   { NULL,			0,				NULL }
 };
 
@@ -293,6 +297,11 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sidebar-prev",		OP_SIDEBAR_PREV,		NULL },
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
   { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
+#endif
+
+#ifdef USE_NOTMUCH
+  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,		"X" },
+  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,	"\033X" },
 #endif
 
   { NULL,		0,				NULL }
