@@ -1,6 +1,4 @@
 
-Extension to the mutt upstream.
-
 1.5.23.1:
 
 + integrated color status patch (original from Thomas Glanzmann)
@@ -12,6 +10,10 @@ Extension to the mutt upstream.
 + fix notmuch DB usage
 + use unlocked libc IO in improve performance
 + security bug fix from original mutt
+
++ sync with the original mutt upstream
++ add sidebar_whitelist option
++ oppenc & pgp upstream sync and improvements
 
 
 1.5.22.1:
