@@ -1,7 +1,20 @@
 
 Extension to the mutt upstream.
 
-1.5.22-rc1:
+1.5.23.1:
+
++ integrated color status patch (original from Thomas Glanzmann)
+  https://thomas.glanzmann.de//mutt/#cstatus
++ integrated TLS Server Name Indication support patch (original from Phil Pennock)
++ improved sidebar functionality to optinaly show only folders with new emails
+  (sidebar-new, sitebar-next, ...)
+
++ fix notmuch DB usage
++ use unlocked libc IO in improve performance
++ security bug fix from original mutt
+
+
+1.5.22.1:
 
 + use git and github rather than hg to maintain source code
 
