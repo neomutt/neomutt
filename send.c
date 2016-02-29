@@ -1229,10 +1229,10 @@ ci_send_message (int flags,		/* send mode */
   
   if (! (flags & (SENDKEY | SENDPOSTPONED | SENDRESEND)))
   {
-    /* When SENDUSEHDRBODY is set, the caller has already
+    /* When SENDDRAFTFILE is set, the caller has already
      * created the "parent" body structure.
      */
-    if (! (flags & SENDUSEHDRBODY))
+    if (! (flags & SENDDRAFTFILE))
     {
       pbody = mutt_new_body ();
       pbody->next = msg->content; /* don't kill command-line attachments */
@@ -1465,7 +1465,7 @@ ci_send_message (int flags,		/* send mode */
       mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
 
-    if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND)))
+    if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND | SENDDRAFTFILE)))
     {
       if (stat (msg->content->filename, &st) == 0)
       {

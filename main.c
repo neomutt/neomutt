@@ -989,7 +989,7 @@ int main (int argc, char **argv)
         sendflags |= SENDNOFREEHEADER;
 
       /* Parse the draftFile into the full HEADER/BODY structure.
-       * Set SENDUSEHDRBODY so ci_send_message doesn't overwrite
+       * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
        * our msg->content.
        */
       if (draftFile)
@@ -998,7 +998,7 @@ int main (int argc, char **argv)
         ENVELOPE *opts_env = msg->env;
         struct stat st;
 
-        sendflags |= SENDUSEHDRBODY;
+        sendflags |= SENDDRAFTFILE;
 
         /* Set up a "context" header with just enough information so that
          * mutt_prepare_template() can parse the message in fin.

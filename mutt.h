@@ -297,7 +297,7 @@ enum
 #define SENDRESEND	(1<<8)
 #define SENDPOSTPONEDFCC	(1<<9) /* used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
 #define SENDNOFREEHEADER	(1<<10)   /* Used by the -E flag */
-#define SENDUSEHDRBODY		(1<<11)   /* Used by the -H flag */
+#define SENDDRAFTFILE		(1<<11)   /* Used by the -H flag */
 
 /* flags for mutt_compose_menu() */
 #define M_COMPOSE_NOFREEHEADER (1<<0)
