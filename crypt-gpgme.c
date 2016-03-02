@@ -2431,6 +2431,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
                                              NULL, plaintext);
                     }
                 }
+              mutt_need_hard_redraw ();
 
               if (err)
                 {
