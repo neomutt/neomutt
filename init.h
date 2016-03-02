@@ -568,6 +568,9 @@ struct option_t MuttVars[] = {
   ** S/MIME and PGP will be used instead of the classic code.  Note that
   ** you need to set this option in .muttrc; it won't have any effect when
   ** used interactively.
+  ** .pp
+  ** Note that the GPGME backend does not support creating old-style inline
+  ** (traditional) PGP encrypted or signed messages (see $$pgp_autoinline).
   */
   { "crypt_use_pka", DT_BOOL, R_NONE, OPTCRYPTUSEPKA, 0 },
   /*
@@ -1732,7 +1735,8 @@ struct option_t MuttVars[] = {
   ** This option controls whether Mutt generates old-style inline
   ** (traditional) PGP encrypted or signed messages under certain
   ** circumstances.  This can be overridden by use of the pgp menu,
-  ** when inline is not required.
+  ** when inline is not required.  The GPGME backend does not support
+  ** this option.
   ** .pp
   ** Note that Mutt might automatically use PGP/MIME for messages
   ** which consist of more than a single MIME part.  Mutt can be
