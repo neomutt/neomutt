@@ -3891,7 +3891,7 @@ msgstr "Skicka genom rör till: "
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Jag vet inte hur %s bilagor ska skrivas ut!"
 
 #: recvattach.c:775

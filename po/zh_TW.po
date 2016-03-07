@@ -4001,7 +4001,7 @@ msgstr "導引至："
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "我不知道要怎麼列印 %s 附件!"
 
 #: recvattach.c:775

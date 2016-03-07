@@ -2968,7 +2968,10 @@ struct option_t MuttVars[] = {
   ** entries are sorted alphabetically.  Valid values:
   ** .il
   ** .dd alpha (alphabetically)
+  ** .dd count (all message count)
   ** .dd date
+  ** .dd desc (description)
+  ** .dd new (new message count)
   ** .dd size
   ** .dd unsorted
   ** .ie
@@ -3562,7 +3565,10 @@ const struct mapping_t SortAuxMethods[] = {
 
 const struct mapping_t SortBrowserMethods[] = {
   { "alpha",	SORT_SUBJECT },
+  { "count",	SORT_COUNT },
   { "date",	SORT_DATE },
+  { "desc",	SORT_DESC },
+  { "new",	SORT_COUNT_NEW },
   { "size",	SORT_SIZE },
   { "unsorted",	SORT_ORDER },
   { NULL,       0 }

@@ -3870,7 +3870,7 @@ msgstr "通过管道传给："
 
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "我不知道要怎么打印附件 %s！"
 
 #: recvattach.c:775
