@@ -5,7 +5,7 @@ Compilation
 -----------
 If you want to have SSL support in mutt, you need to install OpenSSL
 (http://www.openssl.org) libraries and headers before compiling.
-OpenSSL versions 0.9.3 through 0.9.6a have been tested.
+OpenSSL versions 0.9.3 through 1.0.1c have been tested.
 
 For SSL support to be enabled, you need to run the ``configure''
 script with ``--enable-imap --with-ssl[=PFX]'' parameters.  If the
@@ -65,6 +65,12 @@ certificate, the connection will be established. Accepted certificates
 can also be saved so that further connections to the server are
 automatically accepted. 
 
+If OpenSSL was built with support for ServerNameIndication (SNI) and TLS
+is used in the negotiation, mutt will send its idea of the server-name
+as part of the TLS negotiation.  This allows the server to select an
+appropriate certificate, in the event that one server handles multiple
+hostnames with different certificates.
+
 If your organization has several equivalent IMAP-servers, each of them
 should have a unique certificate which is signed with a common
 certificate.  If you want to use all of those servers, you don't need to
@@ -102,9 +108,15 @@ you know which options do not work, you can set the variables for non-working
 protocols to know.  The variables for the protocols are ssl_use_tlsv1, 
 ssl_use_sslv2, and ssl_use_sslv3.
 
+To verify TLS SNI support by a server, you can use:
+    openssl s_client -host <imap server> -port <port> \
+        -tls1 -servername <imap server>
+
+
 -- 
 Tommi Komulainen
 Tommi.Komulainen@iki.fi
 
-Updated by Jeremy Katz
-katzj@linuxpower.org
+Updated by:
+  Jeremy Katz <katzj@linuxpower.org>
+  Phil Pennock <mutt-dev@spodhuis.org>
