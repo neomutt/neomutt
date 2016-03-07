@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt ifdef patch
+
+syntax keyword muttrcCommand    ifdef
+
+" vim: syntax=vim
