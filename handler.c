@@ -1595,13 +1595,20 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   int origType;
   char *savePrefix = NULL;
   FILE *fp = NULL;
+#ifndef HAVE_FMEMOPEN
   char tempfile[_POSIX_PATH_MAX];
+#endif
   size_t tmplength = 0;
   LOFF_T tmpoffset = 0;
   int decode = 0;
   int rc = 0;
 
   fseeko (s->fpin, b->offset, 0);
+
+#ifdef HAVE_FMEMOPEN
+  char *temp;
+  size_t tempsize;
+#endif
 
   /* see if we need to decode this part before processing it */
   if (b->encoding == ENCBASE64 || b->encoding == ENCQUOTEDPRINTABLE ||
@@ -1618,6 +1625,14 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
     {
       /* decode to a tempfile, saving the original destination */
       fp = s->fpout;
+#ifdef HAVE_FMEMOPEN
+     s->fpout = open_memstream (&temp, &tempsize);
+     if (!s->fpout) {
+       mutt_error _("Unable to open memory stream!");
+       dprint (1, (debugfile, "Can't open memory stream.\n"));
+       return -1;
+     }
+#else
       mutt_mktemp (tempfile, sizeof (tempfile));
       if ((s->fpout = safe_fopen (tempfile, "w")) == NULL)
       {
@@ -1625,6 +1640,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
         dprint (1, (debugfile, "Can't open %s.\n", tempfile));
         return -1;
       }
+#endif
       /* decoding the attachment changes the size and offset, so save a copy
         * of the "real" values now, and restore them after processing
         */
@@ -1653,9 +1669,20 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       /* restore final destination and substitute the tempfile for input */
       s->fpout = fp;
       fp = s->fpin;
+#ifdef HAVE_FMEMOPEN
+      if (tempsize) {
+        s->fpin = fmemopen (temp, tempsize, "r");
+      } else { /* fmemopen cannot handle zero-length buffers */
+        s->fpin = safe_fopen ("/dev/null", "r");
+      }
+      if (!s->fpin) {
+        mutt_perror ("failed to re-open memstream!");
+        return -1;
+      }
+#else
       s->fpin = fopen (tempfile, "r");
       unlink (tempfile);
-
+#endif
       /* restore the prefix */
       s->prefix = savePrefix;
     }
@@ -1680,6 +1707,10 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 
       /* restore the original source stream */
       safe_fclose (&s->fpin);
+#ifdef HAVE_FMEMOPEN
+      if (tempsize)
+        FREE(&temp);
+#endif
       s->fpin = fp;
     }
   }
