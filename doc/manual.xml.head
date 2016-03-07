@@ -10772,6 +10772,132 @@ ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
 	</sect2>
 </sect1>
 
+<sect1 id="initials">
+	<title>Initials Expando Patch</title>
+	<subtitle>Expando for author's initials</subtitle>
+
+	<sect2 id="initials-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Initials</quote>, look for
+			<quote>patch-initials</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="initials-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>initials</quote> patch adds an expando (%I) for an author's
+		initials.
+        </para>
+
+		<para>
+		The index panel displays a list of emails.  Its layout is controlled by
+		the <link linkend="index-format">$index_format</link> variable.  Using
+		this expando saves space in the index panel.  This can be useful if you
+		are regularly working with a small set of people.
+		</para>
+	</sect2>
+
+	<sect2 id="initials-variables">
+		<title>Variables</title>
+
+        <para>
+        This patch has no config of its own.  It adds an expando which can be
+		used in the <link linkend="index-format">$index_format</link> variable.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="initials-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="initials-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'initials' patch.
+ 
+# The 'initials' patch has no config of its own.
+# It adds an expando for an author's initials,
+# which can be used in the 'index_format' variable.
+ 
+# The default 'index_format' is:</emphasis>
+set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
+ 
+<emphasis role="comment"># Where %L represents the author/recipient
+ 
+# This might look like:
+#       1   + Nov 17 David Bowie   Changesbowie    ( 689)
+#       2   ! Nov 17 Stevie Nicks  Rumours         ( 555)
+#       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)
+#       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)
+ 
+# Using the %I expando:</emphasis>
+set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
+ 
+<emphasis role="comment"># This might look like:
+#       1   + Nov 17 DB Changesbowie    ( 689)
+#       2   ! Nov 17 SN Rumours         ( 555)
+#       3   + Nov 16 JH Voodoo Child    ( 263)
+#       4   + Nov 16 DH Parallel Lines  ( 540)
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="initials-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="initials-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">

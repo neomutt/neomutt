@@ -1,0 +1,48 @@
+Initials Expando Patch
+======================
+
+    Expando for author's initials
+
+Patch
+-----
+
+    To check if Mutt supports "Initials", look for "patch-initials" in the mutt
+    version.
+
+    Dependencies
+    * mutt-1.5.24
+
+Introduction
+------------
+
+    The "initials" patch adds an expando (%I) for an author's initials.
+
+    The index panel displays a list of emails. Its layout is controlled by the
+    $index_format variable. Using this expando saves space in the index panel.
+    This can be useful if you are regularly working with a small set of people.
+
+Variables
+---------
+
+    This patch has no config of its own. It adds an expando which can be used
+    in the $index_format variable.
+
+See Also
+--------
+
+    * NeoMutt project
+    * $index_format
+    * index-color patch
+    * folder-hook
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * Vsevolod Volkov <vvv@mutt.org.ua>
+    * Richard Russon <rich@flatcap.org>
+
