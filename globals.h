@@ -118,6 +118,12 @@ WHERE short SearchContext;
 WHERE char *SendCharset;
 WHERE char *Sendmail;
 WHERE char *Shell;
+#ifdef USE_SIDEBAR
+WHERE char *SidebarDelimChars;
+WHERE char *SidebarDividerChar;
+WHERE char *SidebarFormat;
+WHERE char *SidebarIndentString;
+#endif
 WHERE char *Signature;
 WHERE char *SimpleSearch;
 #if USE_SMTP
@@ -210,6 +216,14 @@ WHERE short WriteInc;
 WHERE short ScoreThresholdDelete;
 WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
+
+/* This isn't excluded from the build because it's too entwined in the code.
+ * For now. */
+WHERE short SidebarWidth;
+#ifdef USE_SIDEBAR
+WHERE short SidebarRefreshTime;
+WHERE LIST *SidebarWhitelist INITVAL(0);
+#endif
 
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;
