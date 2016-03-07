@@ -1,0 +1,67 @@
+Status Color Patch
+==================
+
+    Custom rules for theming the status bar
+
+Patch
+-----
+
+    To check if Mutt supports "Status Color", look for "patch-status-color" in
+    the mutt version.
+
+    Dependencies
+    * mutt-1.5.24
+
+Introduction
+------------
+
+    The "status-color" patch allows you to theme different parts of the status
+    bar (also when it's used by the index).
+
+    Unlike normal color commands, 'color status' can now take up to 2 extra
+    parameters (regex, num).
+
+Commands
+--------
+
+        color status foreground background [ regex [ num ]]
+
+    With zero parameters, Mutt will set the default color for the entire status
+    bar.
+
+    With one parameter, Mutt will only color the parts matching the regex.
+
+    With two parameters, Mutt will only color the num'th sub-match of the regex.
+
+Colors
+------
+
+    Status Colors
+
+    | Name   | Default Color | Description |
+    |--------|---------------|-------------|
+    | status | 'reverse'     | Status bar  |
+
+See Also
+--------
+
+    * NeoMutt project
+    * Compile-Time Features
+    * Regular Expressions
+    * Patterns
+    * index-color patch
+    * Color command
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * David Sterba <dsterba@suse.cz>
+    * Thomas Glanzmann <thomas@glanzmann.de>
+    * Kirill A. Shutemov <kirill@shutemov.name>
+    * Richard Russon <rich@flatcap.org>
+

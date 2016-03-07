@@ -478,6 +478,112 @@ static void resort_index (MUTTMENU *menu)
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 }
 
+/**
+ * mutt_draw_statusline - XXX
+ */
+void
+mutt_draw_statusline (int cols, char *inbuf)
+{
+	int i          = 0;
+	int cnt        = 0;
+	int last_color = 0;
+	int color      = 0;
+	int offset     = 0;
+	int found      = 0;
+	int null_rx    = 0;
+	char buf[2048];
+
+	struct line_t {
+		short chunks;
+		struct syntax_t {
+			int color;
+			int first;
+			int last;
+		} *syntax;
+	} lineInfo = { 0, NULL };
+
+	mutt_format_string (buf, sizeof (buf), cols, cols, 0, ' ', inbuf, mutt_strlen (inbuf), 0);
+
+	lineInfo.syntax = safe_malloc (sizeof (struct syntax_t));
+	lineInfo.syntax[0].first = -1;
+	lineInfo.syntax[0].last  = -1;
+	lineInfo.syntax[0].color = ColorDefs[MT_COLOR_STATUS];
+	lineInfo.chunks = 1;
+
+	do {
+		found = 0;
+		null_rx = 0;
+		COLOR_LINE *color_line = ColorStatusList;
+
+		if (!buf[offset])
+			break;
+
+		while (color_line) {
+			regmatch_t pmatch[color_line->match + 1];
+
+			if (regexec (&color_line->rx, buf + offset, color_line->match + 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0) {
+				if (pmatch[color_line->match].rm_eo != pmatch[color_line->match].rm_so) {
+					if (!found) {
+						if (++(lineInfo.chunks) > 1) {
+							safe_realloc (&(lineInfo.syntax), (lineInfo.chunks) * sizeof (struct syntax_t));
+						}
+					}
+					i = lineInfo.chunks - 1;
+					pmatch[color_line->match].rm_so += offset;
+					pmatch[color_line->match].rm_eo += offset;
+					if (!found ||
+						(pmatch[color_line->match].rm_so < (lineInfo.syntax)[i].first) ||
+						((pmatch[color_line->match].rm_so == (lineInfo.syntax)[i].first) &&
+						(pmatch[color_line->match].rm_eo > (lineInfo.syntax)[i].last))) {
+						(lineInfo.syntax)[i].color = color_line->pair;
+						(lineInfo.syntax)[i].first = pmatch[color_line->match].rm_so;
+						(lineInfo.syntax)[i].last = pmatch[color_line->match].rm_eo;
+					}
+					found = 1;
+					null_rx = 0;
+				} else {
+					null_rx = 1; /* empty regexp; don't add it, but keep looking */
+				}
+			}
+			color_line = color_line->next;
+		}
+
+		if (null_rx)
+			offset++; /* avoid degenerate cases */
+		else
+			offset = (lineInfo.syntax)[i].last;
+	} while (found || null_rx);
+
+	for (cnt = 0; cnt < mutt_strlen (buf); cnt++) {
+		color = lineInfo.syntax[0].color;
+		for (i = 0; i < lineInfo.chunks; i++) {
+			/* we assume the chunks are sorted */
+			if (cnt > (lineInfo.syntax)[i].last)
+				continue;
+			if (cnt < (lineInfo.syntax)[i].first)
+				break;
+			if (cnt != (lineInfo.syntax)[i].last) {
+				color = (lineInfo.syntax)[i].color;
+				break;
+			}
+			/* don't break here, as cnt might be in the next chunk as well */
+		}
+		if (color != last_color) {
+			attrset (color);
+			last_color = color;
+		}
+		/* XXX more than one char at a time? */
+		addch ((unsigned char)buf[cnt]);
+#if 0
+		waddnstr (stdscr, tgbuf, 10);
+		SETCOLOR (MT_COLOR_NORMAL);
+		waddnstr (stdscr, tgbuf + 10, -1);
+#endif
+	}
+
+	safe_free (&lineInfo.syntax);
+}
+
 static const struct mapping_t IndexHelp[] = {
   { N_("Quit"),  OP_QUIT },
   { N_("Del"),   OP_DELETE },
@@ -634,7 +740,7 @@ int mutt_index_menu (void)
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-	mutt_paddstr (COLS, buf);
+	mutt_draw_statusline (COLS, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
 	if (option(OPTTSENABLED) && TSSupported)
