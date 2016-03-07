@@ -1,0 +1,7 @@
+" Vim syntax file for the mutt trash patch
+
+syntax keyword muttrcVarStr     contained skipwhite trash                 nextgroup=muttrcVarEqualsIdxFmt
+
+syntax match muttrcFunction     contained "\<purge-message\>"
+
+" vim: syntax=vim

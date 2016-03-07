@@ -720,6 +720,7 @@ int _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int dec
     if (option (OPTDELETEUNTAG))
       mutt_set_flag (Context, h, M_TAG, 0);
   }
+  mutt_set_flag (Context, h, M_APPENDED, 1);
   
   return 0;
 }

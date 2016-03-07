@@ -3491,6 +3491,16 @@ struct option_t MuttVars[] = {
   ** provided that ``$$ts_enabled'' has been set. This string is identical in
   ** formatting to the one used by ``$$status_format''.
   */
+  { "trash",            DT_PATH, R_NONE, UL &TrashPath, 0 },
+  /*
+  ** .pp
+  ** If set, this variable specifies the path of the trash folder where the
+  ** mails marked for deletion will be moved, instead of being irremediably
+  ** purged.
+  ** .pp
+  ** NOTE: When you delete a message in the trash folder, it is really
+  ** deleted, so that you have a way to clean the trash.
+  */
 #ifdef USE_SOCKET
   { "tunnel",            DT_STR, R_NONE, UL &Tunnel, UL 0 },
   /*
