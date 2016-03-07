@@ -773,6 +773,7 @@ void mutt_format_string (char *dest, size_t destlen,
   size_t k, k2;
   char scratch[MB_LEN_MAX];
   mbstate_t mbstate1, mbstate2;
+  int escaped = 0;
 
   memset(&mbstate1, 0, sizeof (mbstate1));
   memset(&mbstate2, 0, sizeof (mbstate2));
@@ -788,8 +789,15 @@ void mutt_format_string (char *dest, size_t destlen,
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    if (arboreal && wc < M_TREE_MAX)
+    if (escaped) {
+      escaped = 0;
+      w = 0;
+    } else if (arboreal && wc == M_SPECIAL_INDEX) {
+      escaped = 1;
+      w = 0;
+    } else if (arboreal && wc < M_TREE_MAX) {
       w = 1; /* hack */
+    }
     else
     {
 #ifdef HAVE_ISWBLANK
@@ -1026,6 +1034,12 @@ int mutt_strwidth (const char *s)
   memset (&mbstate, 0, sizeof (mbstate));
   for (w=0; n && (k = mbrtowc (&wc, s, n, &mbstate)); s += k, n -= k)
   {
+    if (*s == M_SPECIAL_INDEX) {
+      s += 2; /* skip the index coloring sequence */
+      k = 0;
+      continue;
+    }
+
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
       k = (k == (size_t)(-1)) ? 1 : n;
