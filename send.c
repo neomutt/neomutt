@@ -1287,7 +1287,8 @@ ci_send_message (int flags,		/* send mode */
     msg->env->from = set_reverse_name (cur->env);
   }
 
-  if (! (flags & (SENDPOSTPONED|SENDRESEND)))
+  if (! (flags & (SENDPOSTPONED|SENDRESEND)) &&
+      ! ((flags & SENDDRAFTFILE) && option (OPTRESUMEDRAFTFILES)))
   {
     if ((flags & (SENDREPLY | SENDFORWARD)) && ctx &&
 	envelope_defaults (msg->env, ctx, cur, flags) == -1)

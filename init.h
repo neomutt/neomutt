@@ -2461,6 +2461,15 @@ struct option_t MuttVars[] = {
   ** (possibly undeleted) message whenever a command that modifies the
   ** current message is executed.
   */
+  { "resume_draft_files", DT_BOOL, R_NONE, OPTRESUMEDRAFTFILES, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, draft files (specified by \fC-H\fP on the command
+  ** line) are processed similarly to when resuming a postponed
+  ** message.  Recipients are not prompted for; send-hooks are not
+  ** evaluated; no alias expansion takes place; user-defined headers
+  ** and signatures are not added to the message.
+  */
   { "reverse_alias",	DT_BOOL, R_BOTH, OPTREVALIAS, 0 },
   /*
   ** .pp
