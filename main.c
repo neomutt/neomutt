@@ -997,6 +997,7 @@ int main (int argc, char **argv)
         HEADER *context_hdr = NULL;
         ENVELOPE *opts_env = msg->env;
         struct stat st;
+        LIST *uh, **last_uhp;
 
         sendflags |= SENDDRAFTFILE;
 
@@ -1006,10 +1007,31 @@ int main (int argc, char **argv)
         context_hdr = mutt_new_header ();
         context_hdr->offset = 0;
         context_hdr->content = mutt_new_body ();
-        fstat (fileno (fin), &st);
+        if (fstat (fileno (fin), &st))
+        {
+          perror (draftFile);
+          exit (1);
+        }
         context_hdr->content->length = st.st_size;
 
         mutt_prepare_template (fin, NULL, msg, context_hdr, 0);
+
+        /* Scan for mutt header to set OPTRESUMEDRAFTFILES */
+        for (last_uhp = &msg->env->userhdrs, uh = *last_uhp;
+             uh; uh = *last_uhp)
+        {
+          if (ascii_strncasecmp ("X-Mutt-Resume-Draft:", uh->data, 20) == 0)
+          {
+            if (option (OPTRESUMEEDITEDDRAFTFILES))
+              set_option (OPTRESUMEDRAFTFILES);
+
+            *last_uhp = uh->next;
+            uh->next = NULL;
+            mutt_free_list (&uh);
+          }
+          else
+            last_uhp = &uh->next;
+        }
 
         rfc822_append (&msg->env->to, opts_env->to, 0);
         rfc822_append (&msg->env->cc, opts_env->cc, 0);
@@ -1102,6 +1124,8 @@ int main (int argc, char **argv)
         }
 
         mutt_write_rfc822_header (fout, msg->env, msg->content, -1, 0);
+        if (option (OPTRESUMEEDITEDDRAFTFILES))
+          fprintf (fout, "X-Mutt-Resume-Draft: 1\n");
         fputc ('\n', fout);
         if ((mutt_write_mime_body (msg->content, fout) == -1))
         {

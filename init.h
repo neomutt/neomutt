@@ -2470,6 +2470,22 @@ struct option_t MuttVars[] = {
   ** evaluated; no alias expansion takes place; user-defined headers
   ** and signatures are not added to the message.
   */
+  { "resume_edited_draft_files", DT_BOOL, R_NONE, OPTRESUMEEDITEDDRAFTFILES, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, draft files previously edited (via \fC-E -H\fP on
+  ** the command line) will have $$resume_draft_files automatically
+  ** set when they are used as a draft file again.
+  ** .pp
+  ** The first time a draft file is saved, mutt will add a header,
+  ** X-Mutt-Resume-Draft to the saved file.  The next time the draft
+  ** file is read in, if mutt sees the header, it will set
+  ** $$resume_draft_files.
+  ** .pp
+  ** This option is designed to prevent multiple signatures,
+  ** user-defined headers, and other processing effects from being
+  ** made multiple times to the draft file.
+  */
   { "reverse_alias",	DT_BOOL, R_BOTH, OPTREVALIAS, 0 },
   /*
   ** .pp
