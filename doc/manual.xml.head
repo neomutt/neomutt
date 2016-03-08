@@ -8106,6 +8106,8 @@ color progress white red
 	<sect2 id="progress-credits">
 		<title>Credits</title>
 		<itemizedlist>
+		<listitem><para>Rocco Rutte <email>pdmef@gmx.net</email></para></listitem>
+		<listitem><para>Vincent Lefevre <email>vincent@vinc17.org</email></para></listitem>
 		<listitem><para>Stefan Kuhn <email>wuodan@hispeed.ch</email></para></listitem>
 		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
