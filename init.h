@@ -3648,6 +3648,7 @@ const struct command_t Commands[] = {
   { "ungroup",		parse_group,		M_UNGROUP },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
   { "ifdef",		parse_ifdef,		0 },
+  { "ifndef",		parse_ifdef,		1 },
 #ifdef HAVE_ICONV
   { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK },
 #endif

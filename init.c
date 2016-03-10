@@ -602,7 +602,23 @@ static void remove_from_list (LIST **l, const char *str)
 }
 
 /**
- * parse_ifdef - XXX
+ * parse_ifdef - 'ifdef' command: conditional config
+ * @tmp:  Temporary space shared by all command handlers
+ * @s:    Current line of the config file
+ * @data: data field from init.h:struct command_t
+ * @err:  Buffer for any error message
+ *
+ * The 'ifdef' command allows conditional elements in the config file.
+ * If a given variable, function or command exists, then read the rest of the
+ * line of config commands. e.g.
+ *
+ *	ifdef sidebar_visible source ~/.mutt/sidebar.rc
+ *
+ * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
+ *
+ * Returns:
+ *	 0 Success
+ *	-1 Failed
  */
 static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 {
@@ -642,12 +658,14 @@ static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	}
 
 	if (!MoreArgs (s)) {
-		snprintf (err->data, err->dsize, _("ifdef: too few arguments"));
+		snprintf (err->data, err->dsize, _("%s: too few arguments"),
+			(data ? "ifndef" : "ifdef"));
 		return -1;
 	}
 	mutt_extract_token (tmp, s, M_TOKEN_SPACE);
 
-	if (res) {
+        /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
+	if ((res && (data == 0)) || (!res && (data == 1))) {
 		if (mutt_parse_rc_line (tmp->data, &token, err) == -1) {
 			mutt_error ("Error: %s", err->data);
 			FREE(&token.data);
