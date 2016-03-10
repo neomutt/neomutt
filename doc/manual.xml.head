@@ -4718,6 +4718,16 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
 <replaceable class="parameter">header-field</replaceable>
 </arg>
 </group>
+
+<command>unmailto_allow</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
 </cmdsynopsis>
 
 <para>
@@ -4729,7 +4739,7 @@ commands allow the user to modify the list of approved headers.
 </para>
 <para>
 Mutt initializes the default list to contain only the <literal>Subject</literal>
-and <literal>body</literal> header fields, which are the only requirement specified
+and <literal>Body</literal> header fields, which are the only requirement specified
 by the <literal>mailto:</literal> specification in RFC2368.
 </para>
 </sect1>
@@ -8165,6 +8175,14 @@ will send out the user's private gnupg keyring to
 on screen carefully enough.
 </para>
 
+<para>
+To prevent these issues, Mutt by default only accepts the
+<literal>Subject</literal> and <literal>Body</literal> headers.
+Allowed headers can be adjusted with the
+<link linkend="mailto-allow"><command>mailto_allow</command></link> and
+<link linkend="mailto-allow"><command>unmailto_allow</command></link> commands.
+</para>
+
 </sect2>
 
 </sect1>
@@ -8940,6 +8958,30 @@ The following are the commands understood by Mutt:
 </arg>
 <arg choice="plain" rep="repeat">
 <replaceable class="parameter">mailbox</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command><link linkend="mailto-allow">mailto_allow</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
+
+<command><link linkend="mailto-allow">unmailto_allow</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
 </arg>
 </group>
 </cmdsynopsis>
