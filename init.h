@@ -3596,6 +3596,7 @@ static int parse_lists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unlists (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_alias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalias (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int finish_source (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_ifdef (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_ignore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unignore (BUFFER *, BUFFER *, unsigned long, BUFFER *);
@@ -3649,6 +3650,7 @@ const struct command_t Commands[] = {
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
   { "ifdef",		parse_ifdef,		0 },
   { "ifndef",		parse_ifdef,		1 },
+  { "finish",		finish_source,		0 },
 #ifdef HAVE_ICONV
   { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK },
 #endif
