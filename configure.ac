@@ -495,7 +495,7 @@ int main (int argc, char **argv)
 {
         struct stat s;
 
-        stat ("$mutt_cv_mailpath", &s);
+        if (stat ("$mutt_cv_mailpath", &s)) exit (1);
         if (s.st_mode & S_IWOTH) exit (0);
         exit (1);
 }]])],[mutt_cv_worldwrite=yes],[mutt_cv_worldwrite=no],[mutt_cv_worldwrite=no])])
@@ -513,7 +513,7 @@ int main (int argc, char **argv)
 {
         struct stat s;
 
-        stat ("$mutt_cv_mailpath", &s);
+        if (stat ("$mutt_cv_mailpath", &s)) exit (1);
         if (s.st_mode & S_IWGRP) exit (0);
         exit (1);
 }]])],[mutt_cv_groupwrite=yes],[mutt_cv_groupwrite=no],[mutt_cv_groupwrite=no])])
