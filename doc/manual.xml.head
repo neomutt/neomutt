@@ -8019,29 +8019,35 @@ please have a look at the mixmaster documentation.
 	<sect2 id="ifdef-intro">
 		<title>Introduction</title>
 
-        <para>
-		The <quote>ifdef</quote> command tests whether Mutt understands the
-		name of a variable, function of command.  If it does, then it executes
-		a config command.
-        </para>
-
-        <para>
-		This useful command allows you to share one config file between
-		versions of Mutt that may have different features compiled in.
-        </para>
-
-		<para>The command is of the form:</para>
+		<para>
+			The <quote>ifdef</quote> patch introduces three new commands to
+			Mutt and allow you to share one config file between versions of Mutt
+			that may have different features compiled in.
+		</para>
 
 <screen>
-ifdef &lt;item&gt; &lt;config-command&gt;
+ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
+ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
+finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
 </screen>
 
 		<para>
-			where <quote>item</quote> can be the name of a
-			<link linkend="variables">$variable</link>,
-			<link linkend="functions">&lt;function&gt;</link> or
-			<link linkend="commands">command</link>.
+			Here a symbol can be a <link linkend="variables">$variable</link>,
+			<link linkend="functions">&lt;function&gt;</link>,
+			<link linkend="commands">command</link> or compile-time symbol, such
+			as <quote>USE_IMAP</quote>.
 		</para>
+
+        <para>
+            <literal>finish</literal> is particularly useful when combined with
+            <literal>ifndef</literal>. e.g.
+        </para>
+
+<screen>
+<emphasis role="comment"># Sidebar config file</emphasis>
+ifndef USE_SIDEBAR finish
+</screen>
+
 	</sect2>
 
 <!--
@@ -8061,11 +8067,19 @@ ifdef &lt;item&gt; &lt;config-command&gt;
 		<cmdsynopsis>
 			<command>ifdef</command>
 			<arg choice="plain">
-				<replaceable class="parameter">item</replaceable>
+				<replaceable class="parameter">symbol</replaceable>
 			</arg>
 			<arg choice="plain">
 				<replaceable class="parameter">"config-command [args]"</replaceable>
 			</arg>
+			<command>ifndef</command>
+			<arg choice="plain">
+				<replaceable class="parameter">symbol</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">"config-command [args]"</replaceable>
+			</arg>
+			<command>finish</command>
 		</cmdsynopsis>
 	</sect2>
 
@@ -8086,17 +8100,22 @@ ifdef &lt;item&gt; &lt;config-command&gt;
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
  
+# This feature introduces three useful commands which allow you to share
+# one config file between versions of Mutt that may have different
+# features compiled in.
+ 
+#	ifdef  symbol config-command [args...]
+#	ifndef symbol config-command [args...]
+#	finish                                
+ 
 # The 'ifdef' command tests whether Mutt understands the name of
-# a variable, function of command.  If it does, then it executes a
-# config command.
+# a variable, function, command or compile-time symbol.
+# If it does, then it executes a config command.
  
-# This useful command allows you to share one config file between
-# versions of Mutt that may have different features compiled in.
+# The 'ifndef' command tests whether a symbol does NOT exist.
  
-# The command is of the form:
-#       ifdef item 'config-command params'
-# where item is a Mutt variable, function or command
-#
+# The 'finish' command tells Mutt to stop reading current config file.
+ 
 # If the 'trash' variable exists, set it.</emphasis>
 ifdef trash 'set trash=~/Mail/trash'
  
@@ -8105,6 +8124,10 @@ ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
  
 <emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
 ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
+ 
+<emphasis role="comment"># If the compile-time symbol 'USE_SIDEBAR' does not exist, then
+# stop reading the current config file.</emphasis>
+ifndef USE_SIDEBAR finish
  
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
