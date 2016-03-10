@@ -4703,6 +4703,37 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
 
 </sect1>
 
+<sect1 id="mailto-allow">
+<title>Control allowed header fields in a mailto: URL</title>
+
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>mailto_allow</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<para>
+As a security measure, Mutt will only add user-approved header fields from a
+<literal>mailto:</literal> URL.  This is necessary since Mutt will handle
+certain header fields, such as <literal>Attach:</literal>, in a special way.
+The <literal>mailto_allow</literal> and <literal>unmailto_allow</literal>
+commands allow the user to modify the list of approved headers.
+</para>
+<para>
+Mutt initializes the default list to contain only the <literal>Subject</literal>
+and <literal>body</literal> header fields, which are the only requirement specified
+by the <literal>mailto:</literal> specification in RFC2368.
+</para>
+</sect1>
+
 </chapter>
 
 <chapter id="advancedusage">

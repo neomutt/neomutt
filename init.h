@@ -3723,6 +3723,8 @@ const struct command_t Commands[] = {
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
+  { "mailto_allow",	parse_list,		UL &MailtoAllow },
+  { "unmailto_allow",	parse_unlist,		UL &MailtoAllow },
   { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
   { "mime_lookup",	parse_list,	UL &MimeLookupList },

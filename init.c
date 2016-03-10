@@ -3085,6 +3085,15 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   mutt_init_history ();
 
+  /* RFC2368, "4. Unsafe headers"
+   * The creator of a mailto URL cannot expect the resolver of a URL to
+   * understand more than the "subject" and "body" headers. Clients that
+   * resolve mailto URLs into mail messages should be able to correctly
+   * create RFC 822-compliant mail messages using the "subject" and "body"
+   * headers.
+   */
+  add_to_list(&MailtoAllow, "body");
+  add_to_list(&MailtoAllow, "subject");
   
   
   

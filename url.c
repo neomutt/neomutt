@@ -283,21 +283,35 @@ int url_parse_mailto (ENVELOPE *e, char **body, const char *src)
     if (url_pct_decode (value) < 0)
       goto out;
 
-    if (!ascii_strcasecmp (tag, "body"))
+    /* Determine if this header field is on the allowed list.  Since Mutt
+     * interprets some header fields specially (such as
+     * "Attach: ~/.gnupg/secring.gpg"), care must be taken to ensure that
+     * only safe fields are allowed.
+     *
+     * RFC2368, "4. Unsafe headers"
+     * The user agent interpreting a mailto URL SHOULD choose not to create
+     * a message if any of the headers are considered dangerous; it may also
+     * choose to create a message with only a subset of the headers given in
+     * the URL.
+     */
+    if (mutt_matches_ignore(tag, MailtoAllow))
     {
-      if (body)
-	mutt_str_replace (body, value);
-    }
-    else
-    {
-      char *scratch;
-      size_t taglen = mutt_strlen (tag);
-     
-      safe_asprintf (&scratch, "%s: %s", tag, value);
-      scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
-      value = skip_email_wsp(&scratch[taglen + 1]);
-      mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
-      FREE (&scratch);
+      if (!ascii_strcasecmp (tag, "body"))
+      {
+	if (body)
+	  mutt_str_replace (body, value);
+      }
+      else
+      {
+	char *scratch;
+	size_t taglen = mutt_strlen (tag);
+
+	safe_asprintf (&scratch, "%s: %s", tag, value);
+	scratch[taglen] = 0; /* overwrite the colon as mutt_parse_rfc822_line expects */
+	value = skip_email_wsp(&scratch[taglen + 1]);
+	mutt_parse_rfc822_line (e, NULL, scratch, value, 1, 0, 0, &last);
+	FREE (&scratch);
+      }
     }
   }
 
