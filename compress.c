@@ -21,22 +21,21 @@
 # include "config.h"
 #endif
 
-#include "mutt.h"
-
-#include "mx.h"
-#include "mailbox.h"
-#include "mutt_curses.h"
-
 #include <errno.h>
 #include <string.h>
-#include <unistd.h>
 #include <sys/stat.h>
+#include <unistd.h>
+
+#include "mutt.h"
+#include "mailbox.h"
+#include "mutt_curses.h"
+#include "mx.h"
 
 typedef struct
 {
+  const char *append;	/* append-hook command */
   const char *close;	/* close-hook  command */
   const char *open;	/* open-hook   command */
-  const char *append;	/* append-hook command */
   off_t size;		/* size of real folder */
 } COMPRESS_INFO;
 
@@ -47,7 +46,7 @@ char echo_cmd[HUGE_STRING];
  * excl - exclusive lock?
  * retry - should retry if unable to lock?
  */
-int mbox_lock_compressed (CONTEXT *ctx, FILE *fp, int excl, int retry)
+static int mbox_lock_compressed (CONTEXT *ctx, FILE *fp, int excl, int retry)
 {
   int r;
 
@@ -62,20 +61,20 @@ int mbox_lock_compressed (CONTEXT *ctx, FILE *fp, int excl, int retry)
   return (r);
 }
 
-void restore_path (CONTEXT* ctx)
+static void restore_path (CONTEXT* ctx)
 {
   FREE (&ctx->path);
   ctx->path = ctx->realpath;
 }
 
 /* remove the temporary mailbox */
-void remove_file (CONTEXT* ctx)
+static void remove_file (CONTEXT* ctx)
 {
   if (ctx->magic == M_MBOX || ctx->magic == M_MMDF)
     remove (ctx->path);
 }
 
-void mbox_unlock_compressed (CONTEXT *ctx, FILE *fp)
+static void mbox_unlock_compressed (CONTEXT *ctx, FILE *fp)
 {
   if (ctx->locked)
   {
@@ -97,11 +96,6 @@ static const char* find_compress_hook (int type, const char *path)
   return (!c || !*c) ? NULL : c;
 }
 
-int mutt_can_read_compressed (const char *path)
-{
-  return find_compress_hook (M_OPENHOOK, path) ? 1 : 0;
-}
-
 /* if the file is new, we really do not append, but create, and so use
  * close-hook, and not append-hook
  */
@@ -109,35 +103,6 @@ static const char* get_append_command (const char *path, const CONTEXT* ctx)
 {
   COMPRESS_INFO *ci = (COMPRESS_INFO *) ctx->compressinfo;
   return (is_new (path)) ? ci->close : ci->append;
-}
-
-int mutt_can_append_compressed (const char *path)
-{
-  int magic;
-
-  if (is_new (path))
-  {
-    char *dir_path = safe_strdup(path);
-    char *aux = strrchr(dir_path, '/');
-    int dir_valid = 1;
-    if (aux)
-    {
-      *aux='\0';
-      if (access(dir_path, W_OK|X_OK))
-        dir_valid = 0;
-    }
-    FREE(&dir_path);
-    return dir_valid && (find_compress_hook (M_CLOSEHOOK, path) ? 1 : 0);
-  }
-
-  magic = mx_get_magic (path);
-
-  if (magic != 0 && magic != M_COMPRESSED)
-    return 0;
-
-  return (find_compress_hook (M_APPENDHOOK, path)
-	  || (find_compress_hook (M_OPENHOOK, path)
-	      && find_compress_hook (M_CLOSEHOOK, path))) ? 1 : 0;
 }
 
 /* open a compressed mailbox */
@@ -203,19 +168,54 @@ compresshook_format_str (char *dest, size_t destlen, size_t col, char op,
   return (src);
 }
 
-/* check that the command has both %f and %t
- * 0 means OK, -1 means error */
-int mutt_test_compress_command (const char* cmd)
-{
-  return (strstr (cmd, "%f") && strstr (cmd, "%t")) ? 0 : -1;
-}
-
 static char *get_compression_cmd (const char* cmd, const CONTEXT* ctx)
 {
   char expanded[_POSIX_PATH_MAX];
   mutt_FormatString (expanded, sizeof (expanded), 0, cmd, compresshook_format_str,
 		     (unsigned long) ctx, 0);
   return safe_strdup (expanded);
+}
+
+
+int mutt_can_read_compressed (const char *path)
+{
+  return find_compress_hook (M_OPENHOOK, path) ? 1 : 0;
+}
+
+int mutt_can_append_compressed (const char *path)
+{
+  int magic;
+
+  if (is_new (path))
+  {
+    char *dir_path = safe_strdup(path);
+    char *aux = strrchr(dir_path, '/');
+    int dir_valid = 1;
+    if (aux)
+    {
+      *aux='\0';
+      if (access(dir_path, W_OK|X_OK))
+        dir_valid = 0;
+    }
+    FREE(&dir_path);
+    return dir_valid && (find_compress_hook (M_CLOSEHOOK, path) ? 1 : 0);
+  }
+
+  magic = mx_get_magic (path);
+
+  if (magic != 0 && magic != M_COMPRESSED)
+    return 0;
+
+  return (find_compress_hook (M_APPENDHOOK, path)
+	  || (find_compress_hook (M_OPENHOOK, path)
+	      && find_compress_hook (M_CLOSEHOOK, path))) ? 1 : 0;
+}
+
+/* check that the command has both %f and %t
+ * 0 means OK, -1 means error */
+int mutt_test_compress_command (const char* cmd)
+{
+  return (strstr (cmd, "%f") && strstr (cmd, "%t")) ? 0 : -1;
 }
 
 int mutt_check_mailbox_compressed (CONTEXT* ctx)
@@ -332,30 +332,6 @@ int mutt_open_append_compressed (CONTEXT *ctx)
   return (0);
 }
 
-/* close a compressed mailbox */
-void mutt_fast_close_compressed (CONTEXT *ctx)
-{
-  dprint (2, (debugfile, "mutt_fast_close_compressed called on '%s'\n",
-	      ctx->path));
-
-  if (ctx->compressinfo)
-  {
-    if (ctx->fp)
-      fclose (ctx->fp);
-    ctx->fp = NULL;
-    /* if the folder was removed, remove the gzipped folder too */
-    if ((ctx->magic > 0)
-	&& (access (ctx->path, F_OK) != 0)
-	&& ! option (OPTSAVEEMPTY))
-      remove (ctx->realpath);
-    else
-      remove_file (ctx);
-
-    restore_path (ctx);
-    FREE (&ctx->compressinfo);
-  }
-}
-
 /* return 0 on success, -1 on failure */
 int mutt_sync_compressed (CONTEXT* ctx)
 {
@@ -410,6 +386,30 @@ int mutt_sync_compressed (CONTEXT* ctx)
   store_size (ctx);
 
   return (rc);
+}
+
+/* close a compressed mailbox */
+void mutt_fast_close_compressed (CONTEXT *ctx)
+{
+  dprint (2, (debugfile, "mutt_fast_close_compressed called on '%s'\n",
+	      ctx->path));
+
+  if (ctx->compressinfo)
+  {
+    if (ctx->fp)
+      fclose (ctx->fp);
+    ctx->fp = NULL;
+    /* if the folder was removed, remove the gzipped folder too */
+    if ((ctx->magic > 0)
+	&& (access (ctx->path, F_OK) != 0)
+	&& ! option (OPTSAVEEMPTY))
+      remove (ctx->realpath);
+    else
+      remove_file (ctx);
+
+    restore_path (ctx);
+    FREE (&ctx->compressinfo);
+  }
 }
 
 int mutt_slow_close_compressed (CONTEXT *ctx)

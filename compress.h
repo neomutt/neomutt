@@ -20,14 +20,14 @@
 #ifndef _COMPRESS_H_
 #define _COMPRESS_H_
 
-int mutt_can_read_compressed (const char *);
 int mutt_can_append_compressed (const char *);
-int mutt_open_read_compressed (CONTEXT *);
+int mutt_can_read_compressed (const char *);
+int mutt_check_mailbox_compressed (CONTEXT *);
+void mutt_fast_close_compressed (CONTEXT *);
 int mutt_open_append_compressed (CONTEXT *);
+int mutt_open_read_compressed (CONTEXT *);
 int mutt_slow_close_compressed (CONTEXT *);
 int mutt_sync_compressed (CONTEXT *);
 int mutt_test_compress_command (const char *);
-int mutt_check_mailbox_compressed (CONTEXT *);
-void mutt_fast_close_compressed (CONTEXT *);
 
 #endif /* _COMPRESS_H_ */
