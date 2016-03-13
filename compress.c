@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
+ * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -21,8 +22,6 @@
 #endif
 
 #include "mutt.h"
-
-#ifdef USE_COMPRESSED
 
 #include "mx.h"
 #include "mailbox.h"
@@ -499,4 +498,3 @@ int mutt_slow_close_compressed (CONTEXT *ctx)
   return (0);
 }
 
-#endif /* USE_COMPRESSED */

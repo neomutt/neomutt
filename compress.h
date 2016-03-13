@@ -1,5 +1,6 @@
 /*
  * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
+ * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -16,6 +17,9 @@
  *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  */
 
+#ifndef _COMPRESS_H_
+#define _COMPRESS_H_
+
 int mutt_can_read_compressed (const char *);
 int mutt_can_append_compressed (const char *);
 int mutt_open_read_compressed (CONTEXT *);
@@ -25,3 +29,5 @@ int mutt_sync_compressed (CONTEXT *);
 int mutt_test_compress_command (const char *);
 int mutt_check_mailbox_compressed (CONTEXT *);
 void mutt_fast_close_compressed (CONTEXT *);
+
+#endif /* _COMPRESS_H_ */
