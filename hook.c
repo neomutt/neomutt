@@ -114,10 +114,8 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     pattern.data = safe_strdup (path);
   }
 #ifdef USE_COMPRESSED
-  else if (data & (M_APPENDHOOK | M_OPENHOOK | M_CLOSEHOOK))
-  {
-    if (comp_valid_command (command.data))
-    {
+  else if (data & (M_APPENDHOOK | M_OPENHOOK | M_CLOSEHOOK)) {
+    if (comp_valid_command (command.data)) {
       strfcpy (err->data, _("badly formatted command string"), err->dsize);
       return (-1);
     }

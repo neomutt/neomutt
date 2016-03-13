@@ -20,14 +20,14 @@
 #ifndef _COMPRESS_H_
 #define _COMPRESS_H_
 
-int comp_can_append (const char *);
-int comp_can_read (const char *);
-int comp_check_mailbox (CONTEXT *);
-void comp_fast_close (CONTEXT *);
-int comp_open_append (CONTEXT *);
-int comp_open_read (CONTEXT *);
-int comp_slow_close (CONTEXT *);
-int comp_sync (CONTEXT *);
-int comp_valid_command (const char *);
+int  comp_can_append    (const char *);
+int  comp_can_read      (const char *);
+int  comp_check_mailbox (CONTEXT *);
+void comp_fast_close    (CONTEXT *);
+int  comp_open_append   (CONTEXT *);
+int  comp_open_read     (CONTEXT *);
+int  comp_slow_close    (CONTEXT *);
+int  comp_sync          (CONTEXT *);
+int  comp_valid_command (const char *);
 
 #endif /* _COMPRESS_H_ */
