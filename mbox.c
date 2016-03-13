@@ -1079,8 +1079,8 @@ int mbox_close_mailbox (CONTEXT *ctx)
   mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
 
 #ifdef USE_COMPRESSED
-  if (ctx->compressinfo)
-    mutt_slow_close_compressed (ctx);
+  if (ctx->compress_info)
+    comp_slow_close (ctx);
 #endif
 
   mutt_unblock_signals ();

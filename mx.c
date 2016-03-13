@@ -419,7 +419,7 @@ int mx_get_magic (const char *path)
   }
 
 #ifdef USE_COMPRESSED
-  if (magic == 0 && mutt_can_read_compressed (path))
+  if (magic == 0 && comp_can_read (path))
     return M_COMPRESSED;
 #endif
   return (magic);
@@ -464,8 +464,8 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
 #ifdef USE_COMPRESSED
   /* special case for appending to compressed folders -
    * even if we can not open them for reading */
-  if (mutt_can_append_compressed (ctx->path))
-    mutt_open_append_compressed (ctx);
+  if (comp_can_append (ctx->path))
+    comp_open_append (ctx);
 #endif
 
   ctx->append = 1;
@@ -634,7 +634,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 
 #ifdef USE_COMPRESSED
   if (ctx->magic == M_COMPRESSED)
-    mutt_open_read_compressed (ctx);
+    comp_open_read (ctx);
 #endif
 
   if(ctx->magic == 0)
@@ -742,8 +742,8 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);
 #ifdef USE_COMPRESSED
-  if (ctx->compressinfo)
-    mutt_fast_close_compressed (ctx);
+  if (ctx->compress_info)
+    comp_fast_close (ctx);
 #endif
   FREE (&ctx->path);
   FREE (&ctx->pattern);
@@ -799,8 +799,8 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
     mutt_update_mailbox (tmp);
 
 #ifdef USE_COMPRESSED
-  if (rc == 0 && ctx->compressinfo)
-    return mutt_sync_compressed (ctx);
+  if (rc == 0 && ctx->compress_info)
+    return comp_sync (ctx);
 #endif
 
   return rc;
@@ -1012,7 +1012,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     mx_unlink_empty (ctx->path);
 
 #ifdef USE_COMPRESSED
-  if (ctx->compressinfo && mutt_slow_close_compressed (ctx))
+  if (ctx->compress_info && comp_slow_close (ctx))
     return (-1);
 #endif
 
@@ -1337,8 +1337,8 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
   int rc;
 
 #ifdef USE_COMPRESSED
-  if (ctx->compressinfo)
-    return mutt_check_mailbox_compressed (ctx);
+  if (ctx->compress_info)
+    return comp_check_mailbox (ctx);
 #endif
 
   if (ctx)

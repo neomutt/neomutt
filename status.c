@@ -97,7 +97,7 @@ status_format_str (char *buf, size_t buflen, size_t col, char op, const char *sr
     case 'f':
       snprintf (fmt, sizeof(fmt), "%%%ss", prefix);
 #ifdef USE_COMPRESSED
-      if (Context && Context->compressinfo && Context->realpath)
+      if (Context && Context->compress_info && Context->realpath)
       {
 	 strfcpy (tmp, Context->realpath, sizeof (tmp));
 	 mutt_pretty_mailbox (tmp, sizeof (tmp));

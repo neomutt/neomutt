@@ -900,7 +900,7 @@ typedef struct _context
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
 
 #ifdef USE_COMPRESSED
-  void *compressinfo;		/* compressed mbox module private data */
+  void *compress_info;		/* compressed mbox module private data */
   char *realpath;		/* path to compressed mailbox */
 #endif /* USE_COMPRESSED */
 
