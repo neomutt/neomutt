@@ -1,5 +1,4 @@
-/*
- * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
+/* Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -14,7 +13,7 @@
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #if HAVE_CONFIG_H
@@ -31,20 +30,40 @@
 #include "mutt_curses.h"
 #include "mx.h"
 
+/* Notes:
+ * Any references to compressed files also apply to encrypted files.
+ * ctx->path     == plaintext file
+ * ctx->realpath == compressed file
+ */
+
+/**
+ * struct COMPRESS_INFO - Private data for compress
+ *
+ * This object gets attached to the mailbox's CONTEXT.
+ */
 typedef struct
 {
 	const char *append;   /* append-hook command */
 	const char *close;    /* close-hook  command */
 	const char *open;     /* open-hook   command */
-	off_t size;           /* size of real folder */
+	off_t size;           /* size of the compressed file */
 } COMPRESS_INFO;
 
 char echo_cmd[HUGE_STRING];
 
-/* parameters:
- * ctx - context to lock
- * excl - exclusive lock?
- * retry - should retry if unable to lock?
+/**
+ * lock_mailbox - Try to lock a mailbox (exclusively)
+ * @ctx:  Mailbox to lock
+ * @fp:   File pointer to the mailbox file
+ * @excl: Lock exclusively?
+ *
+ * Try to (exclusively) lock the mailbox.  If we succeed, then we mark the
+ * mailbox as locked.  If we fail, but we didn't want exclusive rights, then
+ * the mailbox will be marked readonly.
+ *
+ * Returns:
+ *	 0: Success (locked or readonly)
+ *	-1: Error (can't lock the file)
  */
 static int
 lock_mailbox (CONTEXT *ctx, FILE *fp, int excl)
@@ -64,6 +83,20 @@ lock_mailbox (CONTEXT *ctx, FILE *fp, int excl)
 	return r;
 }
 
+/**
+ * restore_path - Put back the original mailbox name
+ * @ctx: Mailbox to modify
+ *
+ * When we use a compressed mailbox, we change the CONTEXT to refer to the
+ * uncompressed file.  We store the original name in ctx->realpath.
+ *	ctx->path     = "/tmp/mailbox"
+ *	ctx->realpath = "mailbox.gz"
+ *
+ * When we have finished with a compressed mailbox, we put back the original
+ * name.
+ *	ctx->path     = "mailbox.gz"
+ *	ctx->realpath = NULL
+ */
 static void
 restore_path (CONTEXT *ctx)
 {
@@ -74,7 +107,13 @@ restore_path (CONTEXT *ctx)
 	ctx->path = ctx->realpath;
 }
 
-/* remove the temporary mailbox */
+/**
+ * remove_file - Delete the plaintext file
+ * @ctx: Mailbox
+ *
+ * Delete the uncompressed file of a mailbox.
+ * This only works for mbox or mmdf mailbox files.
+ */
 static void
 remove_file (const CONTEXT *ctx)
 {
@@ -86,6 +125,13 @@ remove_file (const CONTEXT *ctx)
 	}
 }
 
+/**
+ * unlock_mailbox - Unlock a mailbox
+ * @ctx: Mailbox to unlock
+ * @fp:  File pointer to mailbox file
+ *
+ * Unlock a mailbox previously locked by lock_mailbox().
+ */
 static void
 unlock_mailbox (CONTEXT *ctx, FILE *fp)
 {
@@ -100,6 +146,14 @@ unlock_mailbox (CONTEXT *ctx, FILE *fp)
 	}
 }
 
+/**
+ * file_exists - Does the file exist?
+ * @path: Pathname to check
+ *
+ * Returns:
+ *	1: File exists
+ *	0: Non-existant file
+ */
 static int
 file_exists (const char *path)
 {
@@ -109,6 +163,24 @@ file_exists (const char *path)
 	return (access (path, W_OK) != 0 && errno == ENOENT) ? 1 : 0;
 }
 
+/**
+ * find_hook - Find a hook to match a path
+ * @type: Type of hook, e.g. M_CLOSEHOOK
+ * @path: Filename to test
+ *
+ * Each hook has a type and a pattern.  Find a command that matches the type
+ * and path supplied. e.g.
+ *
+ * User config:
+ *	open-hook '\.gz$' "gzip -cd '%f' > '%t'"
+ *
+ * Call:
+ *	find_hook (M_OPENHOOK, "myfile.gz");
+ *
+ * Returns:
+ *	string: Matching hook command
+ *	NULL:   No matches
+ */
 static const char *
 find_hook (int type, const char *path)
 {
@@ -119,8 +191,17 @@ find_hook (int type, const char *path)
 	return (!c || !*c) ? NULL : c;
 }
 
-/* if the file is new, we really do not append, but create, and so use
- * close-hook, and not append-hook
+/**
+ * get_append_command - Get the command for appending to a file
+ * @ctx:  Mailbox to append to
+ * @path: Compressed file
+ *
+ * If the file exists, we can use the 'append-hook' command.
+ * Otherwise, use the 'close-hook' command.
+ *
+ * Returns:
+ *	string: Append command or Close command
+ *	NULL:   On error
  */
 static const char *
 get_append_command (const CONTEXT *ctx, const char *path)
@@ -133,7 +214,18 @@ get_append_command (const CONTEXT *ctx, const char *path)
 	return (file_exists (path)) ? ci->append : ci->close;
 }
 
-/* open a compressed mailbox */
+/**
+ * set_compress_info - Find the compress hooks for a mailbox
+ * @ctx: Mailbox to examine
+ *
+ * When a mailbox is opened, we check if there are any matching hooks.
+ *
+ * Note: Caller must free the COMPRESS_INFO when done.
+ *
+ * Returns:
+ *	COMPRESS_INFO: Hook info for the mailbox's path
+ *	NULL:          On error
+ */
 static COMPRESS_INFO *
 set_compress_info (CONTEXT *ctx)
 {
@@ -151,6 +243,15 @@ set_compress_info (CONTEXT *ctx)
 	return ci;
 }
 
+/**
+ * setup_paths - Set the mailbox paths
+ * @ctx: Mailbox to modify
+ *
+ * Save the compressed filename in ctx->realpath.
+ * Create a temporary file and put its name in ctx->path.
+ *
+ * Note: ctx->path will be freed by restore_path()
+ */
 static void
 setup_paths (CONTEXT *ctx)
 {
@@ -167,6 +268,14 @@ setup_paths (CONTEXT *ctx)
 	ctx->path = safe_strdup (tmppath);
 }
 
+/**
+ * get_size - Get the size of a file
+ * @path: File to measure
+ *
+ * Returns:
+ *	number: Size in bytes
+ *	0: XXX -1 on error?
+ */
 static int
 get_size (const char *path)
 {
@@ -180,6 +289,12 @@ get_size (const char *path)
 	return sb.st_size;
 }
 
+/**
+ * store_size - Save the size of the compressed file
+ * @ctx: Mailbox
+ *
+ * Save the compressed file size in the compress_info struct.
+ */
 static void
 store_size (const CONTEXT *ctx)
 {
@@ -190,6 +305,24 @@ store_size (const CONTEXT *ctx)
 	ci->size = get_size (ctx->realpath);
 }
 
+/**
+ * cb_format_str - Expand the filenames in the command string
+ * @dest:        Buffer in which to save string
+ * @destlen:     Buffer length
+ * @col:         Starting column, UNUSED
+ * @op:          printf-like operator, e.g. 't'
+ * @src:         printf-like format string
+ * @prefix:      Field formatting string, UNUSED
+ * @ifstring:    If condition is met, display this string, UNUSED
+ * @elsestring:  Otherwise, display this string, UNUSED
+ * @data:        Pointer to our sidebar_entry
+ * @flags:       Format flags, UNUSED
+ *
+ * cb_format_str is a callback function for mutt_FormatString.  It understands
+ * two operators. '%f' : 'from' filename, '%t' : 'to' filename.
+ *
+ * Returns: src (unchanged)
+ */
 static const char *
 cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 	const char *fmt, const char *ifstring, const char *elsestring,
@@ -204,10 +337,12 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 
 	switch (op) {
 		case 'f':
+			/* Compressed file */
 			snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
 			snprintf (dest, destlen, tmp, ctx->realpath);
 			break;
 		case 't':
+			/* Plaintext, temporary file */
 			snprintf (tmp, sizeof (tmp), "%%%ss", fmt);
 			snprintf (dest, destlen, tmp, ctx->path);
 			break;
@@ -215,6 +350,27 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 	return src;
 }
 
+/**
+ * get_compression_cmd - Expand placeholders in command string
+ * @ctx: Mailbox for paths
+ * @cmd: Command string from config file
+ *
+ * This function takes a hook command and expands the filename placeholders
+ * within it.  The function calls mutt_FormatString() to do the replacement
+ * which calls our callback function cb_format_str(). e.g.
+ *
+ * Template command:
+ *	gzip -cd '%f' > '%t'
+ *
+ * Result:
+ *	gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
+ *
+ * Note: Caller must free the returned string.
+ *
+ * Returns:
+ *	string: Expanded command string
+ *	NULL:   Error occurred
+ */
 static char *
 get_compression_cmd (const CONTEXT *ctx, const char *cmd)
 {
@@ -228,6 +384,18 @@ get_compression_cmd (const CONTEXT *ctx, const char *cmd)
 }
 
 
+/**
+ * comp_can_read - Can we read from this file?
+ * @path: Pathname of file to be tested
+ *
+ * Search for an 'open-hook' with a regex that matches the path.
+ *
+ * A match means it's our responsibility to open the file.
+ *
+ * Returns:
+ *	1: Yes, we can read the file
+ *	0: No, we cannot read the file
+ */
 int
 comp_can_read (const char *path)
 {
@@ -237,6 +405,19 @@ comp_can_read (const char *path)
 	return find_hook (M_OPENHOOK, path) ? 1 : 0;
 }
 
+/**
+ * comp_can_append - Can we append to this path?
+ * @path: pathname of file to be tested
+ *
+ * To append to a file we can either use an 'append-hook' or a combination of
+ * 'open-hook' and 'close-hook'.
+ *
+ * A match means it's our responsibility to append to the file.
+ *
+ * Returns:
+ *	1: Yes, we can append to the file
+ *	0: No, appending isn't possible
+ */
 int
 comp_can_append (const char *path)
 {
@@ -268,8 +449,17 @@ comp_can_append (const char *path)
 			&& find_hook (M_CLOSEHOOK, path))) ? 1 : 0;
 }
 
-/* check that the command has both %f and %t
- * 0 means OK, -1 means error */
+/**
+ * comp_valid_command - Is this command string allowed?
+ * @cmd:  Command string
+ *
+ * A valid command string must have both "%f" (from file) and "%t" (to file).
+ * We don't check if we can actually run the command.
+ *
+ * Returns:
+ *	1: Valid command
+ *	0: "%f" and/or "%t" is missing
+ */
 int
 comp_valid_command (const char *cmd)
 {
@@ -279,7 +469,21 @@ comp_valid_command (const char *cmd)
 	return (strstr (cmd, "%f") && strstr (cmd, "%t")) ? 0 : -1;
 }
 
-int comp_check_mailbox (CONTEXT *ctx)
+/**
+ * comp_check_mailbox - Perform quick sanity check
+ * @ctx: Mailbox
+ *
+ * Compare the stored size (in the CONTEXT) against the size in our
+ * COMPRESS_INFO.
+ *
+ * The return codes are picked to match mx_check_mailbox().
+ *
+ * Returns:
+ *	 0: Mailbox OK
+ *	-1: Mailbox bad
+ */
+int
+comp_check_mailbox (CONTEXT *ctx)
 {
 	if (!ctx)
 		return -1;
@@ -295,6 +499,14 @@ int comp_check_mailbox (CONTEXT *ctx)
 	return 0;
 }
 
+/**
+ * comp_open_read - XXX
+ * @ctx: Mailbox to open
+ *
+ * Returns:
+ *	 0: Success
+ *	-1: Failure
+ */
 int
 comp_open_read (CONTEXT *ctx)
 {
@@ -373,6 +585,14 @@ comp_open_read (CONTEXT *ctx)
 	return 0;
 }
 
+/**
+ * comp_open_append - XXX
+ * @ctx: Mailbox to append to
+ *
+ * Returns:
+ *	 0: Success
+ *	-1: Failure
+ */
 int
 comp_open_append (CONTEXT *ctx)
 {
@@ -408,7 +628,14 @@ comp_open_append (CONTEXT *ctx)
 	return 0;
 }
 
-/* return 0 on success, -1 on failure */
+/**
+ * comp_sync - XXX
+ * @ctx: Mailbox to sync
+ *
+ * Returns:
+ *	 0: Success
+ *	-1: Failure
+ */
 int
 comp_sync (CONTEXT *ctx)
 {
@@ -467,7 +694,12 @@ comp_sync (CONTEXT *ctx)
 	return rc;
 }
 
-/* close a compressed mailbox */
+/**
+ * comp_fast_close - XXX
+ * @ctx: Mailbox to close
+ *
+ * close a compressed mailbox
+ */
 void
 comp_fast_close (CONTEXT *ctx)
 {
@@ -495,6 +727,14 @@ comp_fast_close (CONTEXT *ctx)
 	}
 }
 
+/**
+ * comp_slow_close - XXX
+ * @ctx: Mailbox to close (slowly)
+ *
+ * Returns:
+ *	 0: Success
+ *	-1: Failure
+ */
 int
 comp_slow_close (CONTEXT *ctx)
 {

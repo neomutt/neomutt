@@ -1,5 +1,4 @@
-/*
- * Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
+/* Copyright (C) 1997 Alain Penders <Alain@Finale-Dev.com>
  * Copyright (C) 2016 Richard Russon <rich@flatcap.org>
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -14,20 +13,20 @@
  *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
- *     Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 #ifndef _COMPRESS_H_
 #define _COMPRESS_H_
 
-int  comp_can_append    (const char *);
-int  comp_can_read      (const char *);
-int  comp_check_mailbox (CONTEXT *);
-void comp_fast_close    (CONTEXT *);
-int  comp_open_append   (CONTEXT *);
-int  comp_open_read     (CONTEXT *);
-int  comp_slow_close    (CONTEXT *);
-int  comp_sync          (CONTEXT *);
-int  comp_valid_command (const char *);
+int  comp_can_append    (const char *path);
+int  comp_can_read      (const char *path);
+int  comp_check_mailbox (CONTEXT *ctx);
+void comp_fast_close    (CONTEXT *ctx);
+int  comp_open_append   (CONTEXT *ctx);
+int  comp_open_read     (CONTEXT *ctx);
+int  comp_slow_close    (CONTEXT *ctx);
+int  comp_sync          (CONTEXT *ctx);
+int  comp_valid_command (const char *cmd);
 
 #endif /* _COMPRESS_H_ */
