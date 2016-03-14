@@ -1067,13 +1067,13 @@ struct option_t MuttVars[] = {
   ** as the domain part (after ``@'') for local email addresses as well as
   ** Message-Id headers.
   ** .pp
-  ** Its value is determined at startup as follows: If the node's name
-  ** as returned by the \fCuname(3)\fP function contains the hostname and the
-  ** domain, these are used to construct $$hostname. If there is no
-  ** domain part returned, Mutt will look for a ``domain'' or ``search''
-  ** line in \fC/etc/resolv.conf\fP to determine the domain. Optionally, Mutt
-  ** can be compiled with a fixed domain name in which case a detected
-  ** one is not used.
+  ** Its value is determined at startup as follows: the node's
+  ** hostname is first determined by the \fCuname(3)\fP function.  The
+  ** domain is then looked up using the \fCgethostname(2)\fP and
+  ** \fCgetaddrinfo(3)\fP functions.  If those calls are unable to
+  ** determine the domain, the full value returned by uname is used.
+  ** Optionally, Mutt can be compiled with a fixed domain name in
+  ** which case a detected one is not used.
   ** .pp
   ** Also see $$use_domain and $$hidden_host.
   */
