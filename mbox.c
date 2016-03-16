@@ -980,7 +980,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   fp = NULL;
   mbox_unlock_mailbox (ctx);
 
-  if (fclose (ctx->fp) != 0 || i == -1)
+  if (safe_fclose (&ctx->fp) != 0 || i == -1)
   {
     /* error occurred while writing the mailbox back, so keep the temp copy
      * around
