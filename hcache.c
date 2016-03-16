@@ -931,7 +931,8 @@ hcache_open_tc (struct header_cache* h, const char* path)
     return 0;
   else
   {
-    dprint(2, (debugfile, "tcbdbopen failed for %s: %s (errno %d)\n", path, strerror (errno), errno));
+    int ecode = tcbdbecode (h->db);
+    dprint (2, (debugfile, "tcbdbopen failed for %s: %s (ecode %d)\n", path, tcbdberrmsg (ecode), ecode));
     tcbdbdel(h->db);
     return -1;
   }
@@ -944,7 +945,10 @@ mutt_hcache_close(header_cache_t *h)
     return;
 
   if (!tcbdbclose(h->db))
-    dprint (2, (debugfile, "tcbdbclose failed for %s: %s (errno %d)\n", h->folder, strerror (errno), errno));
+  {
+    int ecode = tcbdbecode (h->db);
+    dprint (2, (debugfile, "tcbdbclose failed for %s: %s (ecode %d)\n", h->folder, tcbdberrmsg (ecode), ecode));
+  }
   tcbdbdel(h->db);
   FREE(&h->folder);
   FREE(&h);
