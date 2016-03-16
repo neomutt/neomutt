@@ -492,6 +492,12 @@ static void show_version (void)
 	"-USE_SIDEBAR  "
 #endif
 
+#if USE_NOTMUCH
+	"+NOTMUCH     "
+#else
+	"-NOTMUCH     "
+#endif
+
 	);
 
 #ifdef ISPELL

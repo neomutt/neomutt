@@ -96,6 +96,10 @@
 #define  M_CLEAR   (1<<5) /* clear input if printable character is pressed */
 #define  M_COMMAND (1<<6) /* do command completion */
 #define  M_PATTERN (1<<7) /* pattern mode - only used for history classes */
+#if USE_NOTMUCH
+#define  M_NM_QUERY (1<<8) /* Notmuch query mode. */
+#define  M_NM_TAG   (1<<9) /* Notmuch tag +/- mode. */
+#endif
 
 /* flags for mutt_get_token() */
 #define M_TOKEN_EQUAL		1	/* treat '=' as a special */
@@ -236,6 +240,9 @@ enum
   M_CRYPT_ENCRYPT,
   M_PGP_KEY,
   M_XLABEL,
+#ifdef USE_NOTMUCH
+  M_NOTMUCH_LABEL,
+#endif
   M_MIMEATTACH,
   
   /* Options for Mailcap lookup */
@@ -314,6 +321,7 @@ enum
 #define M_SEL_BUFFY	(1<<0)
 #define M_SEL_MULTI	(1<<1)
 #define M_SEL_FOLDER	(1<<2)
+#define M_SEL_VFOLDER	(1<<3)
 
 /* flags for parse_spam_list */
 #define M_SPAM          1
@@ -531,6 +539,11 @@ enum
   OPTPGPCHECKTRUST,	/* (pseudo) used by pgp_select_key () */
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
   OPTUNBUFFEREDINPUT,   /* (pseudo) don't use key buffer */
+
+#ifdef USE_NOTMUCH
+  OPTVIRTSPOOLFILE,
+  OPTNOTMUCHRECORD,
+#endif
 
   OPTMAX
 };
@@ -796,8 +809,9 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP
+#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
   void *data;            	/* driver-specific data */
+  void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif
   
   char *maildir_flags;		/* unknown maildir flags */

@@ -41,6 +41,10 @@
 #include "pop.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include "buffy.h"
 
 #ifdef USE_DOTLOCK
@@ -59,6 +63,10 @@
 #include <string.h>
 #include <ctype.h>
 #include <utime.h>
+
+#if USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
 
 
 #define mutt_is_spool(s)  (mutt_strcmp (Spoolfile, s) == 0)
@@ -346,6 +354,24 @@ int mx_is_pop (const char *p)
 }
 #endif
 
+#ifdef USE_NOTMUCH
+
+int mx_is_notmuch(const char *p)
+{
+  url_scheme_t scheme;
+
+  if (!p)
+    return 0;
+
+  scheme = url_check_scheme (p);
+  if (scheme == U_NOTMUCH)
+    return 1;
+
+  return 0;
+}
+
+#endif
+
 int mx_get_magic (const char *path)
 {
   struct stat st;
@@ -362,6 +388,11 @@ int mx_get_magic (const char *path)
   if (mx_is_pop (path))
     return M_POP;
 #endif /* USE_POP */
+
+#ifdef USE_NOTMUCH
+  if (mx_is_notmuch(path))
+    return M_NOTMUCH;
+#endif
 
   if (stat (path, &st) == -1)
   {
@@ -676,6 +707,12 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       break;
 #endif /* USE_POP */
 
+#ifdef USE_NOTMUCH
+    case M_NOTMUCH:
+      rc = nm_read_query (ctx);
+      break;
+#endif /* USE_IMAP */
+
     default:
       rc = -1;
       break;
@@ -789,6 +826,13 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
       rc = pop_sync_mailbox (ctx, index_hint);
       break;
 #endif /* USE_POP */
+
+#ifdef USE_NOTMUCH
+    case M_NOTMUCH:
+      rc = nm_sync (ctx, index_hint);
+      break;
+#endif /* USE_NOTMUCH */
+
   }
 
 #if 0
@@ -1374,6 +1418,11 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
       case M_POP:
 	return (pop_check_mailbox (ctx, index_hint));
 #endif /* USE_POP */
+
+#ifdef USE_NOTMUCH
+      case M_NOTMUCH:
+	return nm_check_database(ctx, index_hint);
+#endif
     }
   }
 
@@ -1385,7 +1434,7 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
 MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 {
   MESSAGE *msg;
-  
+
   msg = safe_calloc (1, sizeof (MESSAGE));
   switch (msg->magic = ctx->magic)
   {
@@ -1396,15 +1445,24 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 
     case M_MH:
     case M_MAILDIR:
+#ifdef USE_NOTMUCH
+    case M_NOTMUCH:
+#endif
     {
       HEADER *cur = ctx->hdrs[msgno];
       char path[_POSIX_PATH_MAX];
-      
-      snprintf (path, sizeof (path), "%s/%s", ctx->path, cur->path);
-      
+      char *folder = ctx->path;
+#ifdef USE_NOTMUCH
+      if (ctx->magic == M_NOTMUCH) {
+	msg->magic = nm_header_get_magic(cur);
+	folder = nm_header_get_folder(cur);
+      }
+#endif
+      snprintf (path, sizeof (path), "%s/%s", folder, cur->path);
+
       if ((msg->fp = fopen (path, "r")) == NULL && errno == ENOENT &&
-	  ctx->magic == M_MAILDIR)
-	msg->fp = maildir_open_find_message (ctx->path, cur->path);
+	  (ctx->magic == M_MAILDIR || ctx->magic == M_NOTMUCH))
+	msg->fp = maildir_open_find_message (folder, cur->path, NULL);
       
       if (msg->fp == NULL)
       {
@@ -1479,13 +1537,17 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
       break;
     }
 #endif
-    
+
     case M_MAILDIR:
     {
       r = maildir_commit_message (ctx, msg, NULL);
       break;
     }
-    
+
+    case M_NOTMUCH:
+      mutt_perror _("Can't write to virtual folder.");
+      break;
+
     case M_MH:
     {
       r = mh_commit_message (ctx, msg, NULL);
@@ -1499,7 +1561,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     mutt_perror _("Can't write message");
     r = -1;
   }
- 
+
   return r;
 }
 
@@ -1509,14 +1571,18 @@ int mx_close_message (MESSAGE **msg)
   int r = 0;
 
   if ((*msg)->magic == M_MH || (*msg)->magic == M_MAILDIR
-      || (*msg)->magic == M_IMAP || (*msg)->magic == M_POP)
+      || (*msg)->magic == M_IMAP || (*msg)->magic == M_POP
+      || (*msg)->magic == M_NOTMUCH)
   {
     r = safe_fclose (&(*msg)->fp);
   }
   else
     (*msg)->fp = NULL;
 
-  if ((*msg)->path)
+  dprint (2, (debugfile, "mx_close_message (): close: path=%s, commited=%s\n",
+	(*msg)->path, (*msg)->commited_path));
+
+  if ((*msg)->path && (*msg)->magic != M_NOTMUCH)
   {
     dprint (1, (debugfile, "mx_close_message (): unlinking %s\n",
 		(*msg)->path));
@@ -1524,6 +1590,7 @@ int mx_close_message (MESSAGE **msg)
     FREE (&(*msg)->path);
   }
 
+  FREE (&(*msg)->commited_path);
   FREE (msg);		/* __FREE_CHECKED__ */
   return (r);
 }

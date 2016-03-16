@@ -2684,7 +2684,8 @@ static void set_noconv_flags (BODY *b, short flag)
   }
 }
 
-int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, char *fcc)
+int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid,
+		    int post, char *fcc, char **finalpath)
 {
   CONTEXT f;
   MESSAGE *msg;
@@ -2873,6 +2874,8 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 
   if (mx_commit_message (msg, &f) != 0)
     r = -1;
+  else if (finalpath)
+    *finalpath = safe_strdup(msg->commited_path);
   mx_close_message (&msg);
   mx_close_mailbox (&f, NULL);
 

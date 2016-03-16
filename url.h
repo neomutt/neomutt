@@ -11,6 +11,9 @@ typedef enum url_scheme
   U_SMTP,
   U_SMTPS,
   U_MAILTO,
+#ifdef USE_NOTMUCH
+  U_NOTMUCH,
+#endif
   U_UNKNOWN
 }
 url_scheme_t;
@@ -34,5 +37,6 @@ int url_parse_file (char *d, const char *src, size_t dl);
 int url_parse_ciss (ciss_url_t *ciss, char *src);
 int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags);
 int url_parse_mailto (ENVELOPE *e, char **body, const char *src);
+int url_pct_decode (char *s);
 
 #endif

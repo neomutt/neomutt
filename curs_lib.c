@@ -44,6 +44,10 @@
 #include <langinfo.h>
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 /* not possible to unget more than one char under some curses libs, and it
  * is impossible to unget function keys in SLang, so roll our own input
  * buffering routines.
@@ -610,7 +614,9 @@ int mutt_do_pager (const char *banner,
   return rc;
 }
 
-int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, int buffy, int multiple, char ***files, int *numfiles)
+int _mutt_enter_fname (const char *prompt, char *buf, size_t blen,
+		int *redraw, int buffy, int multiple,
+		char ***files, int *numfiles, int flags)
 {
   event_t ch;
 
@@ -633,8 +639,10 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   {
     mutt_refresh ();
     buf[0] = 0;
-    _mutt_select_file (buf, blen, M_SEL_FOLDER | (multiple ? M_SEL_MULTI : 0), 
-		       files, numfiles);
+    if (!flags)
+      flags = M_SEL_FOLDER | (multiple ? M_SEL_MULTI : 0);
+
+    _mutt_select_file (buf, blen, flags, files, numfiles);
     *redraw = REDRAW_FULL;
   }
   else
@@ -648,6 +656,10 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
       buf[0] = 0;
     MAYBE_REDRAW (*redraw);
     FREE (&pc);
+#ifdef USE_NOTMUCH
+    if ((flags & M_SEL_VFOLDER) && buf[0] && strncmp(buf, "notmuch://", 10) != 0)
+      nm_description_to_path(buf, buf, blen);
+#endif
   }
 
   return 0;

@@ -1297,6 +1297,7 @@ struct option_t MuttVars[] = {
   ** .dt %E .dd number of messages in current thread
   ** .dt %f .dd sender (address + real name), either From: or Return-Path:
   ** .dt %F .dd author name, or recipient name if the message is from you
+  ** .dt %g .dd message labels (e.g. notmuch tags)
   ** .dt %H .dd spam attribute(s) of this message
   ** .dt %i .dd message-id of the current message
   ** .dt %l .dd number of lines in the message (does not work with maildir,
@@ -1645,6 +1646,60 @@ struct option_t MuttVars[] = {
    ** If set to 0, no progress messages will be displayed.
    ** .pp
    ** See also $$read_inc, $$write_inc and $$net_inc.
+   */
+#endif
+#ifdef USE_NOTMUCH
+  { "nm_open_timeout", DT_NUM, R_NONE, UL &NotmuchOpenTimeout, 5 },
+  /*
+   ** .pp
+   ** This variable specifies the timeout for database open in seconds.
+   */
+
+  { "nm_default_uri", DT_STR, R_NONE, UL &NotmuchDefaultUri, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default Notmuch database in format
+   ** notmuch://<absolute path>.
+   */
+
+  { "nm_hidden_tags", DT_STR, R_NONE, UL &NotmuchHiddenTags, UL "unread,draft,flagged,passed,replied,attachment,signed,encrypted" },
+  /*
+   ** .pp
+   ** This variable specifies private notmuch tags which should not be printed
+   ** on screen.
+   */
+  { "nm_exclude_tags", DT_STR,  R_NONE, UL &NotmuchExcludeTags, 0 },
+  /*
+   ** .pp
+   ** The messages tagged with these tags are excluded and not loaded
+   ** from notmuch DB to mutt unless specified explicitly.
+   */
+  { "nm_unread_tag", DT_STR, R_NONE, UL &NotmuchUnreadTag, UL "unread" },
+  /*
+   ** .pp
+   ** This variable specifies notmuch tag which is used for unread messages. The
+   ** variable is used to count unread messages in DB only. All other mutt commands
+   ** use standard (e.g. maildir) flags.
+   */
+  { "nm_db_limit", DT_NUM, R_NONE, UL &NotmuchDBLimit, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default limit used in notmuch queries.
+   */
+  { "nm_query_type", DT_STR, R_NONE, UL &NotmuchQueryType, UL "messages" },
+  /*
+   ** .pp
+   ** This variable specifies the default query type (threads or messages) used in notmuch queries.
+   */
+  { "nm_record", DT_BOOL, R_NONE, OPTNOTMUCHRECORD, 0 },
+  /*
+   ** .pp
+   ** This variable specifies if the mutt record should indexed by notmuch.
+   */
+  { "nm_record_tags", DT_STR, R_NONE, UL &NotmuchRecordTags, 0 },
+  /*
+   ** .pp
+   ** This variable specifies the default tags applied to messages stored to the mutt record.
    */
 #endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
@@ -3129,14 +3184,15 @@ struct option_t MuttVars[] = {
   { "sort_re",		DT_BOOL, R_INDEX|R_RESORT|R_RESORT_INIT, OPTSORTRE, 1 },
   /*
   ** .pp
-  ** This variable is only useful when sorting by threads with
-  ** $$strict_threads \fIunset\fP.  In that case, it changes the heuristic
-  ** mutt uses to thread messages by subject.  With $$sort_re \fIset\fP, mutt will
-  ** only attach a message as the child of another message by subject if
-  ** the subject of the child message starts with a substring matching the
-  ** setting of $$reply_regexp.  With $$sort_re \fIunset\fP, mutt will attach
-  ** the message whether or not this is the case, as long as the
-  ** non-$$reply_regexp parts of both messages are identical.
+  ** This variable is only useful when sorting by mailboxes in sidebar. By default,
+  ** entries are unsorted.  Valid values:
+  ** .il
+  ** .dd count (all message count)
+  ** .dd desc  (virtual mailbox description)
+  ** .dd new (new message count)
+  ** .dd path
+  ** .dd unsorted
+  ** .ie
   */
   { "spam_separator",   DT_STR, R_NONE, UL &SpamSep, UL "," },
   /*
@@ -3588,6 +3644,31 @@ struct option_t MuttVars[] = {
   ** Specifies the visual editor to invoke when the ``\fC~v\fP'' command is
   ** given in the built-in editor.
   */
+#ifdef USE_NOTMUCH
+  { "vfolder_format",	DT_STR,	 R_INDEX, UL &VirtFolderFormat, UL " %6n(%6N) %f " },
+  /*
+  ** .pp
+  ** This variable allows you to customize the file browser display for virtual
+  ** folders to your ** personal taste.  This string is similar to $$index_format,
+  ** but has its own set of \fCprintf(3)\fP-like sequences:
+  ** .dl
+  ** .dt %f  .dd folder name (description)
+  ** .dt %n  .dd number of all messages
+  ** .dt %N  .dd number of new messages
+  ** .dt %>X .dd right justify the rest of the string and pad with character ``X''
+  ** .dt %|X .dd pad to the end of the line with character ``X''
+  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .de
+  ** .pp
+  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  */
+  { "virtual_spoolfile", DT_BOOL, R_NONE, OPTVIRTSPOOLFILE, 0 },
+  /*
+  ** .pp
+  ** When \fset\fP, mutt will use the first defined virtual mailbox (see
+  ** virtual-mailboxes) as a spool file.
+  */
+#endif
   { "wait_key",		DT_BOOL, R_NONE, OPTWAITKEY, 1 },
   /*
   ** .pp
@@ -3738,6 +3819,7 @@ const struct mapping_t SortKeyMethods[] = {
 
 const struct mapping_t SortSidebarMethods[] = {
   { "count",	SORT_COUNT },
+  { "desc",	SORT_DESC },
   { "flagged",	SORT_FLAGGED },
   { "new",	SORT_COUNT_NEW },
   { "path",	SORT_PATH },
@@ -3771,13 +3853,16 @@ static int parse_unsubscribe (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_attachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unattachments (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
-
 static int parse_alternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 static int parse_unalternates (BUFFER *, BUFFER *, unsigned long, BUFFER *);
 
 /* Parse -group arguments */
 static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err);
 
+#ifdef USE_NOTMUCH
+static int parse_tag_transforms (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+static int parse_tag_formats (BUFFER *, BUFFER *, unsigned long, BUFFER *);
+#endif
 
 struct command_t
 {
@@ -3818,6 +3903,11 @@ const struct command_t Commands[] = {
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
+#ifdef USE_NOTMUCH
+  { "virtual-mailboxes",mutt_parse_virtual_mailboxes, 0 },
+  { "tag-transforms",	parse_tag_transforms,	0 },
+  { "tag-formats",	parse_tag_formats,	0 },
+#endif
   { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
   { "mime_lookup",	parse_list,	UL &MimeLookupList },

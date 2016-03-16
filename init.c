@@ -37,7 +37,9 @@
 #include "mutt_ssl.h"
 #endif
 
-
+#if USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
 
 #include "mx.h"
 #include "init.h"
@@ -75,6 +77,12 @@ static int var_to_string (int idx, char* val, size_t len);
 static void myvar_set (const char* var, const char* val);
 static const char* myvar_get (const char* var);
 static void myvar_del (const char* var);
+
+#if USE_NOTMUCH
+/* List of tags found in last call to mutt_nm_query_complete(). */
+static char **nm_tags;
+#endif
+
 
 static void toggle_quadoption (int opt)
 {
@@ -2636,6 +2644,182 @@ int mutt_var_value_complete (char *buffer, size_t len, int pos)
   return 0;
 }
 
+#if USE_NOTMUCH
+
+/* Fetch a list of all notmuch tags and insert them into the completion
+ * machinery.
+ */
+static int complete_all_nm_tags (const char *pt)
+{
+  int num;
+  int tag_count_1 = 0;
+  int tag_count_2 = 0;
+
+  Num_matched = 0;
+  strfcpy (User_typed, pt, sizeof (User_typed));
+  memset (Matches, 0, Matches_listsize);
+  memset (Completed, 0, sizeof (Completed));
+
+  nm_longrun_init(Context, FALSE);
+
+  /* Work out how many tags there are. */
+  if (nm_get_all_tags(Context, NULL, &tag_count_1) || tag_count_1 == 0)
+    goto done;
+
+  /* Free the old list, if any. */
+  if (nm_tags != NULL) {
+    int i;
+    for (i = 0; nm_tags[i] != NULL; i++)
+      FREE (&nm_tags[i]);
+    FREE (&nm_tags);
+  }
+  /* Allocate a new list, with sentinel. */
+  nm_tags = safe_malloc((tag_count_1 + 1) * sizeof (char *));
+  nm_tags[tag_count_1] = NULL;
+
+  /* Get all the tags. */
+  if (nm_get_all_tags(Context, nm_tags, &tag_count_2) ||
+      tag_count_1 != tag_count_2) {
+    FREE (&nm_tags);
+    nm_tags = NULL;
+    nm_longrun_done(Context);
+    return -1;
+  }
+
+  /* Put them into the completion machinery. */
+  for (num = 0; num < tag_count_1; num++) {
+    candidate (Completed, User_typed, nm_tags[num], sizeof (Completed));
+  }
+
+  matches_ensure_morespace (Num_matched);
+  Matches[Num_matched++] = User_typed;
+
+done:
+  nm_longrun_done(Context);
+  return 0;
+}
+
+/* Return the last instance of needle in the haystack, or NULL.
+ * Like strstr(), only backwards, and for a limited haystack length.
+ */
+static const char* rstrnstr(const char* haystack,
+                            size_t haystack_length,
+                            const char* needle)
+{
+  int needle_length = strlen(needle);
+  const char* haystack_end = haystack + haystack_length - needle_length;
+  const char* p;
+
+  for (p = haystack_end; p >= haystack; --p)
+  {
+    size_t i;
+    for (i = 0; i < needle_length; ++i) {
+      if (p[i] != needle[i])
+        goto next;
+    }
+    return p;
+
+    next:;
+  }
+  return NULL;
+}
+
+/* Complete the nearest "tag:"-prefixed string previous to pos. */
+int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs)
+{
+  char *pt = buffer;
+  int spaces;
+
+  SKIPWS (buffer);
+  spaces = buffer - pt;
+
+  pt = (char *)rstrnstr((char *)buffer, pos, "tag:");
+  if (pt != NULL) {
+    pt += 4;
+    if (numtabs == 1) {
+      /* First TAB. Collect all the matches */
+      complete_all_nm_tags(pt);
+
+      /* All matches are stored. Longest non-ambiguous string is ""
+       * i.e. don't change 'buffer'. Fake successful return this time.
+       */
+      if (User_typed[0] == 0)
+	return 1;
+    }
+
+    if (Completed[0] == 0 && User_typed[0])
+      return 0;
+
+    /* Num_matched will _always_ be atleast 1 since the initial
+     * user-typed string is always stored */
+    if (numtabs == 1 && Num_matched == 2)
+      snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
+    else if (numtabs > 1 && Num_matched > 2)
+      /* cycle thru all the matches */
+      snprintf(Completed, sizeof(Completed), "%s",
+	       Matches[(numtabs - 2) % Num_matched]);
+
+    /* return the completed query */
+    strncpy (pt, Completed, buffer + len - pt - spaces);
+  }
+  else
+    return 0;
+
+  return 1;
+}
+
+/* Complete the nearest "+" or "-" -prefixed string previous to pos. */
+int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs)
+{
+  char *pt = buffer;
+  int spaces;
+  const char *first_plus = NULL;
+  const char *first_minus = NULL;
+
+  SKIPWS (buffer);
+  spaces = buffer - pt;
+
+  first_plus = rstrnstr((char *)buffer, pos, "+");
+  first_minus = rstrnstr((char *)buffer, pos, "-");
+  pt = (char *)MAX(first_plus, first_minus);
+
+  if (pt != NULL) {
+    pt++;
+
+    if (numtabs == 1)
+    {
+      /* First TAB. Collect all the matches */
+      complete_all_nm_tags(pt);
+
+      /* All matches are stored. Longest non-ambiguous string is ""
+       * i.e. don't change 'buffer'. Fake successful return this time.
+       */
+      if (User_typed[0] == 0)
+	return 1;
+    }
+
+    if (Completed[0] == 0 && User_typed[0])
+      return 0;
+
+    /* Num_matched will _always_ be atleast 1 since the initial
+     * user-typed string is always stored */
+    if (numtabs == 1 && Num_matched == 2)
+      snprintf(Completed, sizeof(Completed),"%s", Matches[0]);
+    else if (numtabs > 1 && Num_matched > 2)
+      /* cycle thru all the matches */
+      snprintf(Completed, sizeof(Completed), "%s",
+	       Matches[(numtabs - 2) % Num_matched]);
+
+    /* return the completed query */
+    strncpy (pt, Completed, buffer + len - pt - spaces);
+  }
+  else
+    return 0;
+
+  return 1;
+}
+#endif
+
 static int var_to_string (int idx, char* val, size_t len)
 {
   char tmp[LONG_STRING];
@@ -2885,7 +3069,11 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   Groups = hash_create (1031, 0);
   ReverseAlias = hash_create (1031, 1);
-  
+#ifdef USE_NOTMUCH
+  TagTransforms = hash_create (64, 1);
+  TagFormats = hash_create (64, 0);
+#endif
+
   mutt_menu_init ();
 
   snprintf (AttachmentMarker, sizeof (AttachmentMarker),
@@ -3137,6 +3325,11 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   mutt_read_histfile ();
 
+#ifdef USE_NOTMUCH
+  if (option (OPTVIRTSPOOLFILE) && VirtIncoming)
+    mutt_str_replace(&Spoolfile, VirtIncoming->path);
+#endif
+
 #if 0
   set_option (OPTWEED); /* turn weeding on by default */
 #endif
@@ -3183,6 +3376,70 @@ static int parse_group_context (group_context_t **ctx, BUFFER *buf, BUFFER *s, u
   mutt_group_context_destroy (ctx);
   return -1;
 }
+
+#ifdef USE_NOTMUCH
+int parse_tag_transforms (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  char *tmp;
+
+  while (MoreArgs (s))
+  {
+    char *tag, *transform;
+
+    mutt_extract_token (b, s, 0);
+    if (b->data && *b->data)
+      tag = safe_strdup (b->data);
+    else
+      continue;
+
+    mutt_extract_token (b, s, 0);
+    transform = safe_strdup (b->data);
+
+    /* avoid duplicates */
+    tmp = hash_find(TagTransforms, tag);
+    if (tmp) {
+      dprint(3,(debugfile,"tag transform '%s' already registered as '%s'\n", tag, tmp));
+      FREE(&tag);
+      FREE(&transform);
+      continue;
+    }
+
+    hash_insert(TagTransforms, tag, transform, 0);
+  }
+  return 0;
+}
+
+int parse_tag_formats (BUFFER *b, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  char *tmp;
+
+  while (MoreArgs (s))
+  {
+    char *tag, *format;
+
+    mutt_extract_token (b, s, 0);
+    if (b->data && *b->data)
+      tag = safe_strdup (b->data);
+    else
+      continue;
+
+    mutt_extract_token (b, s, 0);
+    format = safe_strdup (b->data);
+
+    /* avoid duplicates */
+    tmp = hash_find(TagFormats, format);
+    if (tmp) {
+      dprint(3,(debugfile,"tag format '%s' already registered as '%s'\n", format, tmp));
+      FREE(&tag);
+      FREE(&format);
+      continue;
+    }
+
+    hash_insert(TagFormats, format, tag, 0);
+  }
+  return 0;
+}
+#endif
 
 static void myvar_set (const char* var, const char* val)
 {
