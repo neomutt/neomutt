@@ -707,7 +707,7 @@ static int can_print (BODY *top, int tag)
 	{
 	  if (!mutt_can_decode (top))
 	  {
-	    mutt_error (_("I dont know how to print %s attachments!"), type);
+	    mutt_error (_("I don't know how to print %s attachments!"), type);
 	    return (0);
 	  }
 	}
