@@ -142,7 +142,7 @@ int mutt_ssl_starttls (CONNECTION* conn)
 
   if (SslCiphers) {
     if (!SSL_CTX_set_cipher_list (ssldata->ctx, SslCiphers)) {
-      dprint (1, (debugfile, "mutt_ssl_starttls: Could not select prefered ciphers\n"));
+      dprint (1, (debugfile, "mutt_ssl_starttls: Could not select preferred ciphers\n"));
       goto bail_ctx;
     }
   }
