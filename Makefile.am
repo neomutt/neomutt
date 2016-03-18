@@ -112,7 +112,7 @@ conststrings.c: txt2c config.status
 
 CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
-DISTCLEANFILES= flea smime_keys txt2c po/mutt.pot
+DISTCLEANFILES= flea smime_keys txt2c po/$(PACKAGE).pot
 
 ACLOCAL_AMFLAGS = -I m4
 
