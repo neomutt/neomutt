@@ -162,9 +162,21 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "HAVE_CURS_SET", 0 },
 #endif
-	{ "HAVE_GETADDRINFO", HAVE_GETADDRINFO },
-	{ "HAVE_GETSID",      HAVE_GETSID      },
-	{ "HAVE_ICONV",       HAVE_ICONV       },
+#ifdef HAVE_GETADDRINFO
+	{ "HAVE_GETADDRINFO", 1 },
+#else
+	{ "HAVE_GETADDRINFO", 0 },
+#endif
+#ifdef HAVE_GETSID
+	{ "HAVE_GETSID", 1 },
+#else
+	{ "HAVE_GETSID", 0 },
+#endif
+#ifdef HAVE_ICONV
+	{ "HAVE_ICONV", 1 },
+#else
+	{ "HAVE_ICONV", 0 },
+#endif
 #ifdef HAVE_LANGINFO_CODESET
 	{ "HAVE_LANGINFO_CODESET", 1 },
 #else
@@ -175,7 +187,11 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "HAVE_LANGINFO_YESEXPR", 0 },
 #endif
-	{ "HAVE_LIBIDN", HAVE_LIBIDN },
+#ifdef HAVE_LIBIDN
+	{ "HAVE_LIBIDN", 1 },
+#else
+	{ "HAVE_LIBIDN", 0 },
+#endif
 #ifdef HAVE_META
 	{ "HAVE_META", 1 },
 #else
@@ -206,7 +222,11 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "HAVE_WC_FUNCS", 0 },
 #endif
-	{ "ICONV_NONTRANS", ICONV_NONTRANS },
+#ifdef ICONV_NONTRANS
+	{ "ICONV_NONTRANS", 1 },
+#else
+	{ "ICONV_NONTRANS", 0 },
+#endif
 #ifdef USE_DOTLOCK
 	{ "USE_DOTLOCK", 1 },
 #else
@@ -232,7 +252,11 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "USE_GSS", 0 },
 #endif
-	{ "USE_HCACHE", USE_HCACHE },
+#ifdef USE_HCACHE
+	{ "USE_HCACHE", 1 },
+#else
+	{ "USE_HCACHE", 0 },
+#endif
 #ifdef USE_IMAP
 	{ "USE_IMAP", 1 },
 #else
