@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-11 13:41+0100\n"
-"PO-Revision-Date: 2016-03-11 13:44+0100\n"
+"POT-Creation-Date: 2016-03-18 12:10+0100\n"
+"PO-Revision-Date: 2016-03-18 12:10+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -2253,11 +2253,11 @@ msgstr "Authentification (CRAM-MD5)..."
 msgid "CRAM-MD5 authentication failed."
 msgstr "L'authentification CRAM-MD5 a échoué."
 
-#: imap/auth_gss.c:144
+#: imap/auth_gss.c:145
 msgid "Authenticating (GSSAPI)..."
 msgstr "Authentification (GSSAPI)..."
 
-#: imap/auth_gss.c:309
+#: imap/auth_gss.c:312
 msgid "GSSAPI authentication failed."
 msgstr "L'authentification GSSAPI a échoué."
 
@@ -3029,7 +3029,7 @@ msgstr "La boîte aux lettres est altérée !"
 msgid "Mailbox was corrupted!"
 msgstr "La boîte aux lettres a été altérée !"
 
-#: mbox.c:751 mbox.c:1007
+#: mbox.c:751 mbox.c:1011
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Erreur fatale ! La boîte aux lettres n'a pas pu être réouverte !"
 
@@ -3052,16 +3052,16 @@ msgid "Committing changes..."
 msgstr "Écriture des changements..."
 
 # , c-format
-#: mbox.c:993
+#: mbox.c:997
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Erreur d'écriture ! Boîte aux lettres partielle sauvée dans %s"
 
-#: mbox.c:1055
+#: mbox.c:1059
 msgid "Could not reopen mailbox!"
 msgstr "La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox.c:1091
+#: mbox.c:1095
 msgid "Reopening mailbox..."
 msgstr "Réouverture de la boîte aux lettres..."
 
@@ -4106,7 +4106,7 @@ msgstr "Passer à la commande : "
 # , c-format
 #: recvattach.c:710
 #, c-format
-msgid "I dont know how to print %s attachments!"
+msgid "I don't know how to print %s attachments!"
 msgstr "Je ne sais pas comment imprimer %s attachements !"
 
 #: recvattach.c:775
