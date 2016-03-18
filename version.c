@@ -162,7 +162,9 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "HAVE_CURS_SET", 0 },
 #endif
+#ifdef HAVE_GETADDRINFO
 	{ "HAVE_GETADDRINFO", HAVE_GETADDRINFO },
+#endif
 	{ "HAVE_GETSID",      HAVE_GETSID      },
 	{ "HAVE_ICONV",       HAVE_ICONV       },
 #ifdef HAVE_LANGINFO_CODESET
