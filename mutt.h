@@ -52,6 +52,11 @@
 #include <limits.h>
 #endif
 
+/* PATH_MAX is undefined on the hurd */
+#ifndef PATH_MAX
+#define PATH_MAX _POSIX_PATH_MAX
+#endif
+
 #include <pwd.h>
 #include <grp.h>
 
