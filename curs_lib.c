@@ -823,8 +823,13 @@ void mutt_format_string (char *dest, size_t destlen,
     }
     if (w >= 0)
     {
-      if (w > max_width || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen)
+      if (w > max_width || (k2 = wcrtomb (scratch, wc, &mbstate2)) > destlen) {
+        if (max_width > 0) {
+          *p = ' ';
+          p++;
+        }
 	break;
+      }
       min_width -= w;
       max_width -= w;
       strncpy (p, scratch, k2);
