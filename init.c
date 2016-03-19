@@ -2293,7 +2293,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
   {
     /* the muttrc source keyword */
     snprintf (err->data, err->dsize, rc >= -MAXERRS ? _("source: errors in %s")
-      : _("source: reading aborted due too many errors in %s"), rcfile);
+      : _("source: reading aborted due to too many errors in %s"), rcfile);
     rc = -1;
   }
   return (rc);

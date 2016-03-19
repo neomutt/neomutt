@@ -857,7 +857,7 @@ void pgp_extract_keys_from_attachment_list (FILE *fp, int tag, BODY *top)
 {
   if(!fp)
   {
-    mutt_error _("Internal error. Inform <roessler@does-not-exist.org>.");
+    mutt_error _("Internal error.  Please submit a bug report.");
     return;
   }
 
