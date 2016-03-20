@@ -265,7 +265,7 @@ static struct compile_options comp_opts[] = {
 #ifdef USE_NOTMUCH
 	{ "USE_NOTMUCH", 1 },
 #else
-	"{ USE_NOTMUCH", 0 },
+	{ "USE_NOTMUCH", 0 },
 #endif
 #ifdef USE_POP
 	{ "USE_POP", 1 },
