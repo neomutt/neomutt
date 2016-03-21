@@ -298,11 +298,14 @@ notmuch support for mutt
 	set folder="~/Mail/Maildir"
 	mailboxes =rh =fedora =misc
 
-	# sidebar
-	set sidebar_width	= 35
-	set sidebar_visible	= yes
-	set sort_sidebar        = unsorted
+	set sidebar_width	 = 35
+	set sidebar_visible	 = yes
+	set sidebar_sort_method  = unsorted
+	set sidebar_divider_char = │
+
 	color sidebar_new yellow default
+	color progress default magenta
+
 	bind index <left> sidebar-prev
 	bind index <right> sidebar-next
 	bind index <space> sidebar-open
