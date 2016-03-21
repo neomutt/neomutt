@@ -600,8 +600,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 {
   mutt_expand_path (buf, bufsz);
 #ifdef USE_SIDEBAR
-  if (sb_set_open_buffy (buf) == NULL)
-    return -1;
+  sb_set_open_buffy (buf);
 #endif
   if (mx_get_magic (buf) <= 0)
   {
