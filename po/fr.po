@@ -19,10 +19,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.5.24\n"
+"Project-Id-Version: Mutt 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-18 12:10+0100\n"
-"PO-Revision-Date: 2016-03-18 12:10+0100\n"
+"POT-Creation-Date: 2016-03-21 01:25+0100\n"
+"PO-Revision-Date: 2016-03-21 01:29+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -1266,7 +1266,7 @@ msgid "Error finding issuer key: %s\n"
 msgstr "Erreur en cherchant la clé de l'émetteur : %s\n"
 
 #: crypt-gpgme.c:3675
-msgid "Error: certification chain to long - stopping here\n"
+msgid "Error: certification chain too long - stopping here\n"
 msgstr "Erreur : chaîne de certification trop longue - on arrête ici\n"
 
 # , c-format
@@ -2650,7 +2650,7 @@ msgstr "source : erreurs dans %s"
 
 #: init.c:2296
 #, c-format
-msgid "source: reading aborted due too many errors in %s"
+msgid "source: reading aborted due to too many errors in %s"
 msgstr "source : lecture interrompue car trop d'erreurs dans %s"
 
 # , c-format
@@ -3229,7 +3229,7 @@ msgid "%s has insecure permissions!"
 msgstr "%s a des droits d'accès peu sûrs !"
 
 #: mutt_ssl.c:276
-msgid "SSL disabled due the lack of entropy"
+msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL désactivé par manque d'entropie"
 
 #: mutt_ssl.c:409
@@ -3769,8 +3769,8 @@ msgstr ""
 "\n"
 
 #: pgp.c:860
-msgid "Internal error. Inform <roessler@does-not-exist.org>."
-msgstr "Erreur interne. Veuillez avertir <roessler@does-not-exist.org>."
+msgid "Internal error.  Please submit a bug report."
+msgstr "Erreur interne. Veuillez soumettre un rapport de bug."
 
 #: pgp.c:921
 msgid ""
