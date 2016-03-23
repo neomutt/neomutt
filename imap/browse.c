@@ -319,8 +319,16 @@ int imap_mailbox_rename(const char* mailbox)
     goto fail;
   }
 
+  /* TODO: add mutt_error call, such as
+   * "Cannot rename root folder"
+   */
+  if (!mx.mbox)
+  {
+    goto fail;
+  }
+
   snprintf(buf, sizeof (buf), _("Rename mailbox %s to: "), mx.mbox);
-  strfcpy (newname, NONULL (mx.mbox), sizeof (newname));
+  strfcpy (newname, mx.mbox, sizeof (newname));
   
  if (mutt_get_field (buf, newname, sizeof (newname), M_FILE) < 0)
     goto fail;
