@@ -320,6 +320,7 @@ int imap_mailbox_rename(const char* mailbox)
   }
 
   snprintf(buf, sizeof (buf), _("Rename mailbox %s to: "), mx.mbox);
+  strfcpy (newname, NONULL (mx.mbox), sizeof (newname));
   
  if (mutt_get_field (buf, newname, sizeof (newname), M_FILE) < 0)
     goto fail;
