@@ -1,0 +1,28 @@
+README for mutt-1.5
+===================
+
+When updating mutt from an earlier release or from Mercurial, please
+make sure to read the compatibility notes in ``UPDATING''. Older changes
+between mutt-1.2 and mutt-1.4 are listed in NEWS.
+
+If you got the mutt source code from the public Mercurial repository
+(http://dev.mutt.org/hg/mutt/), please read doc/devel-notes.txt to make
+sure that you have a complete development environment.
+
+Installation instructions are detailed in ``INSTALL''. The user manual
+is in doc/manual.txt. PGP users should read doc/PGP-Notes.txt.
+
+Before you start hacking on mutt, read doc/devel-notes.txt.  Before
+applying patches to mutt, read doc/applying-patches.txt.  Please,
+read these files, as they will save you from asking FAQs.
+
+For more information, see the Mutt home page:
+
+ http://www.mutt.org/
+
+The primary distribution points for Mutt is:
+
+ ftp://ftp.mutt.org/pub/mutt
+
+A list of mirror sites can be found under
+<http://www.mutt.org/download.html>.
