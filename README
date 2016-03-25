@@ -1,28 +1,48 @@
-README for mutt-1.5
-===================
+# This is the NeoMutt Project
 
-When updating mutt from an earlier release or from Mercurial, please
-make sure to read the compatibility notes in ``UPDATING''. Older changes
-between mutt-1.2 and mutt-1.4 are listed in NEWS.
+## What is NeoMutt?
 
-If you got the mutt source code from the public Mercurial repository
-(http://dev.mutt.org/hg/mutt/), please read doc/devel-notes.txt to make
-sure that you have a complete development environment.
+NeoMutt is a project of projects.
 
-Installation instructions are detailed in ``INSTALL''. The user manual
-is in doc/manual.txt. PGP users should read doc/PGP-Notes.txt.
+A place to gather all the patches against Mutt.
 
-Before you start hacking on mutt, read doc/devel-notes.txt.  Before
-applying patches to mutt, read doc/applying-patches.txt.  Please,
-read these files, as they will save you from asking FAQs.
+A place for all the developers to gather.  Especially those who have made
+changes to Mutt, but haven't had those changes accepted.
 
-For more information, see the Mutt home page:
+Hopefully this will build the community and reduce duplicated effort.
 
- http://www.mutt.org/
+## Where is NeoMutt?
 
-The primary distribution points for Mutt is:
+  Source Code:     https://github.com/neomutt/neomutt
+  Releases:        https://github.com/neomutt/neomutt/releases/latest
+  Wiki:            https://github.com/neomutt/neomutt/wiki
+  Questions/Bugs:  https://github.com/neomutt/neomutt/issues
+  Development:     https://github.com/neomutt/neomutt/wiki/Development
 
- ftp://ftp.mutt.org/pub/mutt
+## Credits
 
-A list of mirror sites can be found under
-<http://www.mutt.org/download.html>.
+Richard Russon put a lot of work into creating NeoMutt: bringing together,
+tidying up and fixing bugs.  However, without the original patch authors, there
+would be nothing.
+
+So, a BIG thanks to...
+
+  Aaron Schrab        Jan Synacek           Rocco Rutte
+  Alain Penders       Jason DeTiberus       Roland Rosenfeld
+  Benjamin Kuperman   Jeremiah Foster       Sami Farin
+  Cedric Duval        Jeremy Katz           Stefan Assmann
+  Chris Mason         Josh Poimboeuf        Stefan Kuhn
+  Christian Aichinge  Julius Plenz          Stefan Kuhn
+  Christoph Berg      Justin Hibbits        Steve Kemp
+  Christoph Rissner   Karel Zak             Terry Chan
+  David Champion      Kirill Shutemov       Thomas Glanzmann
+  David Riebenbauer   Luke Macken           Thomer Gil
+  David Sterba        Mantas Mikulėnas      Tim Stoakes
+  David Wilson        Matteo Vescovi        Tyler Earnest
+  Don Zickus          Patrick Brisbin       Víctor Manuel Jáquez Leal
+  Elimar Riesebieter  Paul Miller           Vincent Lefevre
+  Eric Davis          Philippe Le Brouster  Vladimir Marek
+  Evgeni Golov        Phil Pennock          Vsevolod Volkov
+  Fabian Groffen      Raghavendra Prabhu
+  Felix von Leitner   Richard Russon
+
