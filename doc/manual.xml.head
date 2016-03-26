@@ -7995,6 +7995,125 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="limit-current-thread">
+	<title>Limit-Current-Thread Patch</title>
+	<subtitle>Focus on one Email Thread</subtitle>
+
+	<sect2 id="limit-current-thread-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>limit-current-thread</quote>, look for
+			<quote>patch-limit-current-thread</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-intro">
+		<title>Introduction</title>
+
+		<para>
+			This patch adds a new way of using the
+			<link linkend="tuning-search">Limit Command</link>.
+                        The <literal>&lt;limit-current-thread&gt;</literal>
+                        function restricts the view to just the current thread.
+                        Setting the limit (the <literal>l</literal> key) to
+                        <quote>all</quote> will restore the full email list.
+		</para>
+
+	</sect2>
+
+<!--
+	<sect2 id="limit-current-thread-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+-->
+	<sect2 id="limit-current-thread-functions">
+		<title>Functions</title>
+
+		<table id="table-limit-current-thread-functions">
+			<title>Limit-Current-Thread Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index</entry>
+                                                <entry><literal>&lt;Esc&gt; L</literal></entry>
+						<entry><literal>&lt;limit-current-thread&gt;</literal></entry>
+						<entry>Limit view to current thread</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+
+	</sect2>
+<!--
+	<sect2 id="limit-current-thread-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="limit-current-thread-muttrc">
+		<title>Muttrc</title>
+
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'limit-current-thread' patch.
+ 
+# Limit view to current thread</emphasis>
+bind index &lt;esc&gt;L limit-current-thread
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="limit-current-thread-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="limit-current-thread-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
