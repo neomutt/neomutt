@@ -1120,8 +1120,10 @@ static int sync_helper (IMAP_DATA* idata, int right, int flag, const char* name)
 {
   int count = 0;
   int rc;
-
   char buf[LONG_STRING];
+
+  if (!idata->ctx)
+    return -1;
 
   if (!mutt_bit_isset (idata->ctx->rights, right))
     return 0;
@@ -1238,9 +1240,6 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
   imap_hcache_close (idata);
 #endif
 
-  /* sync +/- flags for the five flags mutt cares about */
-  rc = 0;
-
   /* presort here to avoid doing 10 resorts in imap_exec_msgset */
   oldsort = Sort;
   if (Sort != SORT_ORDER)
@@ -1254,11 +1253,15 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
            mutt_get_sort_func (SORT_ORDER));
   }
 
-  rc += sync_helper (idata, M_ACL_DELETE, M_DELETED, "\\Deleted");
-  rc += sync_helper (idata, M_ACL_WRITE, M_FLAG, "\\Flagged");
-  rc += sync_helper (idata, M_ACL_WRITE, M_OLD, "Old");
-  rc += sync_helper (idata, M_ACL_SEEN, M_READ, "\\Seen");
-  rc += sync_helper (idata, M_ACL_WRITE, M_REPLIED, "\\Answered");
+  rc = sync_helper (idata, M_ACL_DELETE, M_DELETED, "\\Deleted");
+  if (rc >= 0)
+    rc |= sync_helper (idata, M_ACL_WRITE, M_FLAG, "\\Flagged");
+  if (rc >= 0)
+    rc |= sync_helper (idata, M_ACL_WRITE, M_OLD, "Old");
+  if (rc >= 0)
+    rc |= sync_helper (idata, M_ACL_SEEN, M_READ, "\\Seen");
+  if (rc >= 0)
+    rc |= sync_helper (idata, M_ACL_WRITE, M_REPLIED, "\\Answered");
 
   if (oldsort != Sort)
   {
@@ -1267,7 +1270,12 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     ctx->hdrs = hdrs;
   }
 
-  if (rc && (imap_exec (idata, NULL, 0) != IMAP_CMD_OK))
+  /* Flush the queued flags if any were changed in sync_helper. */
+  if (rc > 0)
+    if (imap_exec (idata, NULL, 0) != IMAP_CMD_OK)
+      rc = -1;
+
+  if (rc < 0)
   {
     if (ctx->closing)
     {
@@ -1280,6 +1288,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
     }
     else
       mutt_error _("Error saving flags");
+    rc = -1;
     goto out;
   }
 
