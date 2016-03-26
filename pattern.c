@@ -1294,49 +1294,72 @@ void mutt_check_simple (char *s, size_t len, const char *simple)
   }
 }
 
-static THREAD* top_of_thread(HEADER *h)
+/**
+ * top_of_thread - Find the first email in the current thread
+ * @h: Header of current email
+ *
+ * Returns:
+ *	THREAD*: success, email found
+ *	NULL:    on error
+ */
+static THREAD *
+top_of_thread (HEADER *h)
 {
-  THREAD *t = h->thread;
+	THREAD *t;
 
-  while (t && t->parent) t = t->parent;
-  return t;
+	if (!h)
+		return NULL;
+
+	t = h->thread;
+
+	while (t && t->parent)
+		t = t->parent;
+
+	return t;
 }
 
-int mutt_limit_current_thread (HEADER *h)
+/**
+ * mutt_limit_current_thread - Limit the email view to the current thread
+ * @h: Header of current email
+ *
+ * Returns:
+ *	1: Success
+ *	0: Failure
+ */
+int
+mutt_limit_current_thread (HEADER *h)
 {
-  int i;
-  THREAD *me;
+	int i;
+	THREAD *me;
 
-  me = top_of_thread(h);
+	if (!h)
+		return 0;
 
-  if (!me) {
-    /* NOP */
-    return 0;
-  }
+	me = top_of_thread (h);
+	if (!me)
+		return 0;
 
-  Context->vcount    = 0;
-  Context->vsize     = 0;
-  Context->collapsed = 0;
+	Context->vcount    = 0;
+	Context->vsize     = 0;
+	Context->collapsed = 0;
 
-  for (i = 0; i < Context->msgcount; i++)
-  {
-    Context->hdrs[i]->virtual = -1;
-    Context->hdrs[i]->limited = 0;
-    Context->hdrs[i]->collapsed = 0;
-    Context->hdrs[i]->num_hidden = 0;
-    if (top_of_thread(Context->hdrs[i]) == me)
-    {
-      BODY *body = Context->hdrs[i]->content;
+	for (i = 0; i < Context->msgcount; i++) {
+		Context->hdrs[i]->virtual    = -1;
+		Context->hdrs[i]->limited    = 0;
+		Context->hdrs[i]->collapsed  = 0;
+		Context->hdrs[i]->num_hidden = 0;
 
-      Context->hdrs[i]->virtual = Context->vcount;
-      Context->hdrs[i]->limited = 1;
-      Context->v2r[Context->vcount] = i;
-      Context->vcount++;
-      Context->vsize += body->length + body->offset -
-	body->hdr_offset;
-    }
-  }
-  return 1;
+		if (top_of_thread (Context->hdrs[i]) == me) {
+			BODY *body = Context->hdrs[i]->content;
+
+			Context->hdrs[i]->virtual = Context->vcount;
+			Context->hdrs[i]->limited = 1;
+			Context->v2r[Context->vcount] = i;
+			Context->vcount++;
+			Context->vsize += (body->length + body->offset - body->hdr_offset);
+		}
+	}
+	return 1;
 }
 
 int mutt_pattern_func (int op, char *prompt)
