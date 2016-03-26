@@ -2249,7 +2249,7 @@ search_next:
 	  int dretval = 0;
 	  int new_topline = topline;
 
-	  while ((new_topline + SkipQuotedOffset < lastLine ||
+	  while (((new_topline + SkipQuotedOffset) < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
 			 new_topline, &lastLine, &maxLine, M_TYPES | (flags & M_PAGER_NOWRAP),
 			 &QuoteList, &q_level, &force_redraw, &SearchRE))))
@@ -2262,7 +2262,7 @@ search_next:
 	    break;
 	  }
 
-	  while ((new_topline + SkipQuotedOffset < lastLine ||
+	  while (((new_topline + SkipQuotedOffset) < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
 			 new_topline, &lastLine, &maxLine, M_TYPES | (flags & M_PAGER_NOWRAP),
 			 &QuoteList, &q_level, &force_redraw, &SearchRE))))
