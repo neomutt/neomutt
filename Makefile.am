@@ -71,7 +71,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
 	README.SSL smime.h group.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
-	ChangeLog mkchangelog.sh mutt_idna.h \
+	mutt_idna.h \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
 	txt2c.c txt2c.sh version.sh check_sec.sh version.h
 
@@ -151,8 +151,8 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 		$(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> keymap_alldefs.h
 
-reldate.h: $(srcdir)/ChangeLog
-	echo 'const char *ReleaseDate = "'`head -n 1 $(srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1`'";' > reldate.h.tmp; \
+reldate.h:
+	echo 'const char *ReleaseDate = "'`git log -n1 --format="%cd" --date=short`'";' > reldate.h.tmp; \
 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
 	rm reldate.h.tmp
 
@@ -194,17 +194,6 @@ pclean:
 
 check-security:
 	(cd $(top_srcdir) && ./check_sec.sh)
-
-commit:
-	@echo "make commit is obsolete; use hg-commit"; false
-
-update-changelog:
-	(cd $(top_srcdir); \
-	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
-	$${VISUAL:-vi} ChangeLog)
-
-mutt-dist:
-	(cd $(srcdir) && ./build-release )
 
 update-doc:
 	(cd doc && $(MAKE) update-doc)
