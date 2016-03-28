@@ -6,5 +6,5 @@ compiler: gcc
 before_script: autoreconf --install
 
 # Default is "./configure && make && make test", but no tests yet
-script: "./configure && make"
+script: "./configure --enable-notmuch --enable-sidebar && make"
 
