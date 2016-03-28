@@ -1,10 +1,27 @@
-# use c and gcc
 language: c
 compiler: gcc
 
-# before build script, run autoreconf
-before_script: autoreconf --install
+cache: ccache
 
-# Default is "./configure && make && make test", but no tests yet
-script: "./configure --enable-notmuch --enable-sidebar && make"
+env:
+  # Default build
+  - OPTS=""
+  # All enabled components disabled
+  - OPTS="--disable-fcntl --disable-iconv --disable-nls --with-included-gettext --without-idn --without-wc-funcs --disable-pgp --disable-smime"
+  # All disabled components enabled
+  - OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-gpgme --with-mixmaster"
+  # Alternate curses
+  - OPTS="--with-slang"
+
+before_script:
+  - ccache -z
+  - autoreconf --install
+
+script:
+  - ./configure $OPTS
+  - make
+  - ./mutt -v
+
+after_script:
+  - ccache -s
 
