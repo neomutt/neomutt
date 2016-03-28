@@ -196,17 +196,6 @@ pclean:
 check-security:
 	(cd $(top_srcdir) && ./check_sec.sh)
 
-commit:
-	@echo "make commit is obsolete; use hg-commit"; false
-
-update-changelog:
-	(cd $(top_srcdir); \
-	sh ./mkchangelog.sh | cat  - ChangeLog > ChangeLog.$$$$ && mv ChangeLog.$$$$ ChangeLog; \
-	$${VISUAL:-vi} ChangeLog)
-
-mutt-dist:
-	(cd $(srcdir) && ./build-release )
-
 update-doc:
 	(cd doc && $(MAKE) update-doc)
 
