@@ -212,6 +212,7 @@ WHERE short ReflowWrap;
 WHERE short SaveHist;
 WHERE short SendmailWait;
 WHERE short SleepTime INITVAL (1);
+WHERE short SkipQuotedOffset;
 WHERE short TimeInc;
 WHERE short Timeout;
 WHERE short Wrap;
