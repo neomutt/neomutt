@@ -9,9 +9,9 @@ env:
   # All enabled components disabled
   - OPTS="--disable-fcntl --disable-iconv --disable-nls --with-included-gettext --without-idn --without-wc-funcs --disable-pgp --disable-smime"
   # All disabled components enabled
-  - OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-gpgme --with-mixmaster"
+  # - OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-gpgme --with-mixmaster"
   # Alternate curses
-  - OPTS="--with-slang"
+  # - OPTS="--with-slang"
 
 before_script:
   - ccache -z
