@@ -7389,7 +7389,7 @@ Usage:
 </para>
 
 <cmdsynopsis>
-<command>mime-lookup</command>
+<command>mime_lookup</command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -7397,7 +7397,7 @@ Usage:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command>unmime-lookup</command>
+<command>unmime_lookup</command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -9014,7 +9014,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="mime-lookup">mime-lookup</link></command>
+<command><link linkend="mime-lookup">mime_lookup</link></command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -9022,7 +9022,7 @@ The following are the commands understood by Mutt:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command><link linkend="mime-lookup">unmime-lookup</link></command>
+<command><link linkend="mime-lookup">unmime_lookup</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
