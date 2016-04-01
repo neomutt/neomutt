@@ -140,8 +140,13 @@ reldate.h: $(srcdir)/ChangeLog
 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
 	rm reldate.h.tmp
 
+# The '#undef ENABLE_NLS' is to work around an automake ordering issue:
+# BUILT_SOURCES are processed before SUBDIRS.
+# If configured with --with-included-gettext this means that intl will
+# not have generated libintl.h yet, and mutt.h -> lib.h will generate
+# an error.
 hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh $(MUTT_MD5)
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
+	( echo '#include "config.h"'; echo '#undef ENABLE_NLS'; echo '#include "mutt.h"'; ) \
 	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
