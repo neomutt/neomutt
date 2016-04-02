@@ -49,7 +49,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-19 10:32-0700\n"
+"POT-Creation-Date: 2016-04-02 11:15-0700\n"
 "PO-Revision-Date: 2016-03-23 20:29+0100\n"
 "Last-Translator: Ivan Vilata i Balaguer <ivan@selidor.net>\n"
 "Language-Team: Catalan <ca@dodds.net>\n"
@@ -1591,7 +1591,8 @@ msgstr "No es pot emprar PGP en línia amb adjuncions.  Emprar PGP/MIME?"
 
 #: crypt.c:151
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjuncions."
+msgstr ""
+"No s’ha enviat el missatge: no es pot emprar PGP en línia amb adjuncions."
 
 #: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -2403,7 +2404,7 @@ msgstr "La carpeta no existeix."
 msgid "Create mailbox: "
 msgstr "Crea la bústia: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:283 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "La bústia ha de tenir un nom."
 
@@ -2411,17 +2412,17 @@ msgstr "La bústia ha de tenir un nom."
 msgid "Mailbox created."
 msgstr "S’ha creat la bústia."
 
-#: imap/browse.c:322
+#: imap/browse.c:330
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Reanomena la bústia «%s» a: "
 
-#: imap/browse.c:337
+#: imap/browse.c:346
 #, c-format
 msgid "Rename failed: %s"
 msgstr "El reanomenament ha fallat: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:351
 msgid "Mailbox renamed."
 msgstr "S’ha reanomenat la bústia."
 
@@ -2469,62 +2470,62 @@ msgstr "Error en obrir la bústia."
 msgid "Create %s?"
 msgstr "Voleu crear «%s»?"
 
-#: imap/imap.c:1181
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "No s’han pogut eliminar els missatges."
 
-#: imap/imap.c:1193
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "S’estan marcant %d missatges com a esborrats…"
 
-#: imap/imap.c:1225
+#: imap/imap.c:1227
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "S’estan desant els missatges canviats… [%d/%d]"
 
-#: imap/imap.c:1274
+#: imap/imap.c:1282
 msgid "Error saving flags. Close anyway?"
 msgstr "Error en desar els senyaladors.  Voleu tancar igualment?"
 
-#: imap/imap.c:1282
+#: imap/imap.c:1290
 msgid "Error saving flags"
 msgstr "Error en desar els senyaladors."
 
-#: imap/imap.c:1304
+#: imap/imap.c:1313
 msgid "Expunging messages from server..."
 msgstr "S’estan eliminant missatges del servidor…"
 
-#: imap/imap.c:1309
+#: imap/imap.c:1318
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: Ha fallat «EXPUNGE»."
 
 # És un missatge d’error.  ivb
-#: imap/imap.c:1759
+#: imap/imap.c:1768
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Cal un nom de capçalera per a cercar les capçaleres: %s"
 
-#: imap/imap.c:1830
+#: imap/imap.c:1839
 msgid "Bad mailbox name"
 msgstr "El nom de la bústia no és vàlid."
 
-#: imap/imap.c:1854
+#: imap/imap.c:1863
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "S’està subscrivint a «%s»…"
 
-#: imap/imap.c:1856
+#: imap/imap.c:1865
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "S’està dessubscrivint de «%s»…"
 
-#: imap/imap.c:1866
+#: imap/imap.c:1875
 #, c-format
 msgid "Subscribed to %s"
 msgstr "S’ha subscrit a «%s»."
 
-#: imap/imap.c:1868
+#: imap/imap.c:1877
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "S’ha dessubscrit de «%s»."
@@ -2880,7 +2881,8 @@ msgid ""
 msgstr ""
 "Copyright © 1996‐2016 Michael R. Elkins i d’altres.\n"
 "Mutt s’ofereix SENSE CAP GARANTIA; useu «mutt -vv» per a obtenir‐ne més\n"
-"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo sota\n"
+"detalls.  Mutt és programari lliure, i podeu, si voleu, redistribuir‐lo "
+"sota\n"
 "certes condicions; useu «mutt -vv» per a obtenir‐ne més detalls.\n"
 
 #: main.c:75
@@ -3010,10 +3012,12 @@ msgid ""
 msgstr ""
 "  -E                   Edita el fitxer esborrany (vegeu l’opció «-H») o el\n"
 "                       fitxer a incloure (opció «-i»).\n"
-"  -e ORDRE             Indica una ORDRE a executar abans de la inicialització.\n"
+"  -e ORDRE             Indica una ORDRE a executar abans de la "
+"inicialització.\n"
 "  -f FITXER            Indica quina bústia llegir.\n"
 "  -F FITXER            Indica un FITXER «muttrc» alternatiu.\n"
-"  -H FITXER            Indica un FITXER esborrany d’on llegir la capçalera i el\n"
+"  -H FITXER            Indica un FITXER esborrany d’on llegir la capçalera i "
+"el\n"
 "                       cos.\n"
 "  -i FITXER            Indica un FITXER que Mutt inclourà al cos.\n"
 "  -m TIPUS             Indica un TIPUS de bústia per defecte.\n"

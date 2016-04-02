@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-19 10:32-0700\n"
+"POT-Creation-Date: 2016-04-02 11:15-0700\n"
 "PO-Revision-Date: 2016-03-24 15:09+0100\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Esperanto <translation-team-eo@lists.sourceforge.net>\n"
@@ -137,7 +137,9 @@ msgstr "Malsukcesis renomi dosieron."
 #: attach.c:197
 #, c-format
 msgid "No mailcap compose entry for %s, creating empty file."
-msgstr "En la Mailcap-dosiero mankas \"compose\" por %s; malplena dosiero estas kreita."
+msgstr ""
+"En la Mailcap-dosiero mankas \"compose\" por %s; malplena dosiero estas "
+"kreita."
 
 #: attach.c:258
 #, c-format
@@ -481,12 +483,20 @@ msgid "Messages could not be printed"
 msgstr "Ne eblis presi mesaĝojn"
 
 #: commands.c:536
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "
-msgstr "Inverse laŭ (d)ato/d(e)/(r)icevo/(t)emo/(a)l/(f)adeno/(n)eorde/(g)rando/(p)oentoj?: "
+msgid ""
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
+"s(p)am?: "
+msgstr ""
+"Inverse laŭ (d)ato/d(e)/(r)icevo/(t)emo/(a)l/(f)adeno/(n)eorde/(g)rando/"
+"(p)oentoj?: "
 
 #: commands.c:537
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "
-msgstr "Ordigo laŭ (d)ato/d(e)/(r)icevo/(t)emo/(a)l/(f)adeno/(n)eorde/(g)rando/(p)oentoj?: "
+msgid ""
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
+"s(p)am?: "
+msgstr ""
+"Ordigo laŭ (d)ato/d(e)/(r)icevo/(t)emo/(a)l/(f)adeno/(n)eorde/(g)rando/"
+"(p)oentoj?: "
 
 #: commands.c:538
 msgid "dfrsotuzcp"
@@ -833,7 +843,9 @@ msgstr "eraro en subskribado de datenoj: %s\n"
 
 #: crypt-gpgme.c:948
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr "$pgp_sign_as estas malŝaltita kaj neniu defaŭlta ŝlosilo indikatas en ~/.gnupg/gpg.conf"
+msgstr ""
+"$pgp_sign_as estas malŝaltita kaj neniu defaŭlta ŝlosilo indikatas en ~/."
+"gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1144
 msgid "Warning: One of the keys has been revoked\n"
@@ -885,16 +897,23 @@ msgid "Fingerprint: "
 msgstr "Fingrospuro: "
 
 #: crypt-gpgme.c:1324
-msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
-msgstr "AVERTO: Ni havas NENIAN indikon, ĉu la ŝlosilo apartenas al la persono nomita supre\n"
+msgid ""
+"WARNING: We have NO indication whether the key belongs to the person named "
+"as shown above\n"
+msgstr ""
+"AVERTO: Ni havas NENIAN indikon, ĉu la ŝlosilo apartenas al la persono "
+"nomita supre\n"
 
 #: crypt-gpgme.c:1331
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "AVERTO: La ŝlosilo NE APARTENAS al la persono nomita supre\n"
 
 #: crypt-gpgme.c:1335
-msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
-msgstr "AVERTO: NE estas certe ke la ŝlosilo apartenas al la persono nomita supre\n"
+msgid ""
+"WARNING: It is NOT certain that the key belongs to the person named as shown "
+"above\n"
+msgstr ""
+"AVERTO: NE estas certe ke la ŝlosilo apartenas al la persono nomita supre\n"
 
 #: crypt-gpgme.c:1370
 msgid "aka: "
@@ -1325,7 +1344,9 @@ msgstr "GPGME: CMS-protokolo ne disponeblas"
 
 #: crypt-gpgme.c:4721
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (s)ubskribi, subskribi (k)iel, (p)gp, (f)orgesi, aŭ ne (o)ppenc-moduso? "
+msgstr ""
+"S/MIME (s)ubskribi, subskribi (k)iel, (p)gp, (f)orgesi, aŭ ne (o)ppenc-"
+"moduso? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1337,23 +1358,33 @@ msgstr "skpffo"
 
 #: crypt-gpgme.c:4731
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (s)ubskribi, subskribi (k)iel, s/(m)ime, (f)orgesi, aŭ ne (o)ppenc-moduso? "
+msgstr ""
+"PGP (s)ubskribi, subskribi (k)iel, s/(m)ime, (f)orgesi, aŭ ne (o)ppenc-"
+"moduso? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
 msgstr "skmffo"
 
 #: crypt-gpgme.c:4744
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, (p)gp, (f)or, aŭ (o)ppenc-moduso? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
+"mode? "
+msgstr ""
+"S/MIME ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, (p)gp, (f)or, aŭ (o)ppenc-"
+"moduso? "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
 msgstr "iskapffo"
 
 #: crypt-gpgme.c:4750
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, s/(m)ime, (f)or, aŭ (o)ppenc-moduso? "
+msgid ""
+"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
+"mode? "
+msgstr ""
+"PGP ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, s/(m)ime, (f)or, aŭ (o)ppenc-"
+"moduso? "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1361,7 +1392,9 @@ msgstr "iskamffo"
 
 #: crypt-gpgme.c:4762
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"(p)gp\", aŭ (f)orgesi? "
+msgstr ""
+"S/MIME ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"(p)gp\", aŭ "
+"(f)orgesi? "
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1369,7 +1402,9 @@ msgstr "iskapff"
 
 #: crypt-gpgme.c:4768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"s/(m)ime\", aŭ (f)orgesi? "
+msgstr ""
+"PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, \"s/(m)ime\", aŭ "
+"(f)orgesi? "
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -2169,7 +2204,7 @@ msgstr "Poŝtfako ne ekzistas"
 msgid "Create mailbox: "
 msgstr "Krei poŝtfakon: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:283 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Poŝtfako devas havi nomon."
 
@@ -2177,17 +2212,17 @@ msgstr "Poŝtfako devas havi nomon."
 msgid "Mailbox created."
 msgstr "Poŝtfako kreita."
 
-#: imap/browse.c:322
+#: imap/browse.c:330
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Renomi poŝtfakon %s al: "
 
-#: imap/browse.c:337
+#: imap/browse.c:346
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Renomado malsukcesis: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:351
 msgid "Mailbox renamed."
 msgstr "Poŝtfako renomita."
 
@@ -2235,61 +2270,61 @@ msgstr "Eraro dum malfermado de poŝtfako"
 msgid "Create %s?"
 msgstr "Ĉu krei %s?"
 
-#: imap/imap.c:1181
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "Forviŝo malsukcesis"
 
-#: imap/imap.c:1193
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Markas %d mesaĝojn kiel forviŝitajn..."
 
-#: imap/imap.c:1225
+#: imap/imap.c:1227
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Skribas ŝanĝitajn mesaĝojn... [%d/%d]"
 
-#: imap/imap.c:1274
+#: imap/imap.c:1282
 msgid "Error saving flags. Close anyway?"
 msgstr "Eraro dum skribado de flagoj.  Ĉu tamen fermi?"
 
-#: imap/imap.c:1282
+#: imap/imap.c:1290
 msgid "Error saving flags"
 msgstr "Eraro dum skribado de flagoj"
 
-#: imap/imap.c:1304
+#: imap/imap.c:1313
 msgid "Expunging messages from server..."
 msgstr "Forviŝas mesaĝojn de la servilo..."
 
-#: imap/imap.c:1309
+#: imap/imap.c:1318
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE malsukcesis"
 
-#: imap/imap.c:1759
+#: imap/imap.c:1768
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Ĉaposerĉo sen ĉaponomo: %s"
 
-#: imap/imap.c:1830
+#: imap/imap.c:1839
 msgid "Bad mailbox name"
 msgstr "Malbona nomo por poŝtfako"
 
-#: imap/imap.c:1854
+#: imap/imap.c:1863
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonas %s..."
 
-#: imap/imap.c:1856
+#: imap/imap.c:1865
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Malabonas %s..."
 
-#: imap/imap.c:1866
+#: imap/imap.c:1875
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonas %s"
 
-#: imap/imap.c:1868
+#: imap/imap.c:1877
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Malabonis %s"
@@ -2680,7 +2715,8 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 msgstr ""
 "    Vi devus esti ricevinta kopion de la Ĝenerala Publika Rajtigilo de\n"
 "    GNU kun ĉi tiu programo; se ne, skribu al Free Software Foundation,\n"
@@ -2689,8 +2725,10 @@ msgstr ""
 #: main.c:116
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"<file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
+"<addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2698,7 +2736,8 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "Uzmanieroj: mutt [<opcioj>] [-z] [-f <dosiero> | -yZ]\n"
-"            mutt [<opcioj>] [-Ex] [-Hi <dosiero>] [-s <temo>] [-bc <adreso>]\n"
+"            mutt [<opcioj>] [-Ex] [-Hi <dosiero>] [-s <temo>] [-bc "
+"<adreso>]\n"
 "                 [-a <dosiero> [...] --] <adreso> [...]\n"
 "            mutt [<opcioj>] [-x] [-s <temo>] [-bc <adreso>]\n"
 "                 [-a <dosiero> [...] --] <adreso> [...] < mesaĝo\n"
@@ -2771,7 +2810,8 @@ msgstr ""
 "  -x             imiti la sendreĝimon de mailx\n"
 "  -y             elekti poŝtfakon specifitan en via listo 'mailboxes'\n"
 "  -z             eliri tuj, se ne estas mesaĝoj en la poŝtfako\n"
-"  -Z             malfermi la unuan poŝtfakon kun nova mesaĝo; eliri tuj, se mankas\n"
+"  -Z             malfermi la unuan poŝtfakon kun nova mesaĝo; eliri tuj, se "
+"mankas\n"
 "  -h             doni ĉi tiun helpmesaĝon"
 
 #: main.c:228
@@ -2862,7 +2902,8 @@ msgstr "Ne eblis ŝlosi poŝtfakon!"
 
 #: mbox.c:803
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
-msgstr "sync: mbox modifita, sed mankas modifitaj mesaĝoj! (Raportu ĉi tiun cimon.)"
+msgstr ""
+"sync: mbox modifita, sed mankas modifitaj mesaĝoj! (Raportu ĉi tiun cimon.)"
 
 #: mbox.c:827 mh.c:1711 mx.c:739
 #, c-format
@@ -2894,8 +2935,8 @@ msgstr "Salti al: "
 msgid "Invalid index number."
 msgstr "Nevalida indeksnumero."
 
-#: menu.c:431 menu.c:452 menu.c:517 menu.c:560 menu.c:576 menu.c:587
-#: menu.c:598 menu.c:609 menu.c:622 menu.c:635 menu.c:1044
+#: menu.c:431 menu.c:452 menu.c:517 menu.c:560 menu.c:576 menu.c:587 menu.c:598
+#: menu.c:609 menu.c:622 menu.c:635 menu.c:1044
 msgid "No entries."
 msgstr "Neniaj registroj."
 
@@ -3573,7 +3614,8 @@ msgstr "Ne eblas alvoki PGP"
 #: pgp.c:1730
 #, c-format
 msgid "PGP (s)ign, sign (a)s, %s format, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (s)ubskribi, subskribi (k)iel, %s, (f)orgesi, aŭ ne (o)ppenc-moduso? "
+msgstr ""
+"PGP (s)ubskribi, subskribi (k)iel, %s, (f)orgesi, aŭ ne (o)ppenc-moduso? "
 
 #: pgp.c:1731 pgp.c:1761 pgp.c:1783
 msgid "PGP/M(i)ME"
@@ -3601,8 +3643,11 @@ msgstr "skffo"
 
 #: pgp.c:1760
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, %s, (f)or, aŭ (o)ppenc-moduso? "
+msgid ""
+"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
+"mode? "
+msgstr ""
+"PGP ĉ(i)fri, (s)ubskribi, (k)iel, (a)mbaŭ, %s, (f)or, aŭ (o)ppenc-moduso? "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -3610,7 +3655,9 @@ msgstr "iskaffoe"
 
 #: pgp.c:1768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, (f)or, aŭ (o)ppenc-moduso? "
+msgstr ""
+"PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, (f)or, aŭ (o)ppenc-"
+"moduso? "
 
 #: pgp.c:1769
 msgid "esabfco"
@@ -3619,7 +3666,8 @@ msgstr "iskaffo"
 #: pgp.c:1782
 #, c-format
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, or (c)lear? "
-msgstr "PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, %s, aŭ (f)orgesi? "
+msgstr ""
+"PGP ĉ(i)fri, (s)ubskribi, subskribi (k)iel, (a)mbaŭ, %s, aŭ (f)orgesi? "
 
 #: pgp.c:1785
 msgid "esabfci"
@@ -3639,7 +3687,8 @@ msgstr "Prenas PGP-ŝlosilon..."
 
 #: pgpkey.c:491
 msgid "All matching keys are expired, revoked, or disabled."
-msgstr "Ĉiuj kongruaj ŝlosiloj estas eksvalidiĝintaj, revokitaj, aŭ malŝaltitaj."
+msgstr ""
+"Ĉiuj kongruaj ŝlosiloj estas eksvalidiĝintaj, revokitaj, aŭ malŝaltitaj."
 
 #: pgpkey.c:532
 #, c-format
@@ -3902,7 +3951,8 @@ msgid "Deletion of attachments from encrypted messages is unsupported."
 msgstr "Mutt ne kapablas forviŝi partojn el ĉifrita mesaĝo."
 
 #: recvattach.c:1132
-msgid "Deletion of attachments from signed messages may invalidate the signature."
+msgid ""
+"Deletion of attachments from signed messages may invalidate the signature."
 msgstr "Forviŝi partojn el ĉifrita mesaĝo eble malvalidigas la subskribon."
 
 #: recvattach.c:1149 recvattach.c:1166
@@ -4006,7 +4056,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster ne akceptas la kampon Cc aŭ Bcc en la ĉapo."
 
 #: remailer.c:731
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgid ""
+"Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "Bonvolu doni ĝustan valoron al \"hostname\" kiam vi uzas mixmaster!"
 
 #: remailer.c:765
@@ -4309,8 +4360,10 @@ msgstr ""
 
 # Atentu -- mi ŝanĝis la ordon, sed la literoj devas sekvi la originalan.
 #: smime.c:2109
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (s)ubskribi, (k)iel, ĉifri (p)er, (f)orgesi, aŭ ne (o)ppenc-moduso? "
+msgid ""
+"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr ""
+"S/MIME (s)ubskribi, (k)iel, ĉifri (p)er, (f)orgesi, aŭ ne (o)ppenc-moduso? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4322,16 +4375,23 @@ msgstr "spkffo"
 
 # Atentu -- mi ŝanĝis la ordon, sed la literoj devas sekvi la originalan.
 #: smime.c:2123
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME ĉ(i)fri, (p)er, (s)ubskribi, (k)iel, (a)mbaŭ, (f)or, aŭ (o)ppenc-moduso? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
+"(o)ppenc mode? "
+msgstr ""
+"S/MIME ĉ(i)fri, (p)er, (s)ubskribi, (k)iel, (a)mbaŭ, (f)or, aŭ (o)ppenc-"
+"moduso? "
 
 #: smime.c:2124
 msgid "eswabfco"
 msgstr "ispkaffo"
 
 #: smime.c:2132
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME ĉ(i)fri, (s)ubskribi, ĉifri (p)er, subskribi (k)iel, (a)mbaŭ, aŭ (f)orgesi? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr ""
+"S/MIME ĉ(i)fri, (s)ubskribi, ĉifri (p)er, subskribi (k)iel, (a)mbaŭ, aŭ "
+"(f)orgesi? "
 
 #: smime.c:2133
 msgid "eswabfc"
@@ -5280,8 +5340,11 @@ msgstr "montri S/MIME-funkciojn"
 #~ msgid "Use ID %s for %s ?"
 #~ msgstr "Ĉu uzi identigilon %s por %s?"
 
-#~ msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-#~ msgstr "Averto: Vi ankoraŭ ne decidis fidi identigilon %s. (ajna klavo por daŭrigi)"
+#~ msgid ""
+#~ "Warning: You have not yet decided to trust ID %s. (any key to continue)"
+#~ msgstr ""
+#~ "Averto: Vi ankoraŭ ne decidis fidi identigilon %s. (ajna klavo por "
+#~ "daŭrigi)"
 
 #~ msgid "Warning: Intermediate certificate not found."
 #~ msgstr "Averto: intera atestilo ne trovita."
@@ -5293,7 +5356,8 @@ msgstr "montri S/MIME-funkciojn"
 #~ "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 #~ "\t\twhen using -a with multiple filenames using -- is mandatory"
 #~ msgstr ""
-#~ " --\t\ttrakti restantajn argumentojn kiel adresojn, eĉ komenciĝantajn per streko\n"
+#~ " --\t\ttrakti restantajn argumentojn kiel adresojn, eĉ komenciĝantajn per "
+#~ "streko\n"
 #~ "\t\tse -a estas uzata kun pluraj dosiernomoj, -- estas deviga"
 
 #~ msgid "No search pattern."

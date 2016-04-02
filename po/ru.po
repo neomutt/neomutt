@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.6\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-20 19:48+0200\n"
+"POT-Creation-Date: 2016-04-02 11:15-0700\n"
 "PO-Revision-Date: 2016-03-20 20:52+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: mutt-ru@woe.spb.ru\n"
@@ -2218,7 +2218,7 @@ msgstr "Нет такого почтового ящика"
 msgid "Create mailbox: "
 msgstr "Создать почтовый ящик: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:283 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Почтовый ящик должен иметь имя."
 
@@ -2226,17 +2226,17 @@ msgstr "Почтовый ящик должен иметь имя."
 msgid "Mailbox created."
 msgstr "Почтовый ящик создан."
 
-#: imap/browse.c:322
+#: imap/browse.c:330
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Переименовать почтовый ящик %s в: "
 
-#: imap/browse.c:337
+#: imap/browse.c:346
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Не удалось переименовать: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:351
 msgid "Mailbox renamed."
 msgstr "Почтовый ящик переименован."
 
@@ -2287,61 +2287,61 @@ msgstr "Ошибка открытия почтового ящика"
 msgid "Create %s?"
 msgstr "Создать %s?"
 
-#: imap/imap.c:1181
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "Не удалось очистить почтовый ящик"
 
-#: imap/imap.c:1193
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d сообщений помечаются как удаленные..."
 
-#: imap/imap.c:1225
+#: imap/imap.c:1227
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Сохранение изменённых сообщений... [%d/%d]"
 
-#: imap/imap.c:1274
+#: imap/imap.c:1282
 msgid "Error saving flags. Close anyway?"
 msgstr "Ошибка сохранения флагов. Закрыть почтовый ящик?"
 
-#: imap/imap.c:1282
+#: imap/imap.c:1290
 msgid "Error saving flags"
 msgstr "Ошибка сохранения флагов"
 
-#: imap/imap.c:1304
+#: imap/imap.c:1313
 msgid "Expunging messages from server..."
 msgstr "Удаление сообщений с сервера..."
 
-#: imap/imap.c:1309
+#: imap/imap.c:1318
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: ошибка выполнения команды EXPUNGE"
 
-#: imap/imap.c:1759
+#: imap/imap.c:1768
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Не указано имя заголовка при поиске заголовка: %s"
 
-#: imap/imap.c:1830
+#: imap/imap.c:1839
 msgid "Bad mailbox name"
 msgstr "Недопустимое имя почтового ящика"
 
-#: imap/imap.c:1854
+#: imap/imap.c:1863
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Подключение к %s..."
 
-#: imap/imap.c:1856
+#: imap/imap.c:1865
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Отключение от %s..."
 
-#: imap/imap.c:1866
+#: imap/imap.c:1875
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Подключено к %s"
 
-#: imap/imap.c:1868
+#: imap/imap.c:1877
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Отключено от %s"

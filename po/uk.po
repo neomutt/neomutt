@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt-1.5.23\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-20 19:48+0200\n"
+"POT-Creation-Date: 2016-04-02 11:15-0700\n"
 "PO-Revision-Date: 2016-03-20 22:35+0200\n"
 "Last-Translator: Vsevolod Volkov <vvv@mutt.org.ua>\n"
 "Language-Team: \n"
@@ -2197,7 +2197,7 @@ msgstr "Такої скриньки немає"
 msgid "Create mailbox: "
 msgstr "Створити скриньку: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:283 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Поштова скринька мусить мати ім'я."
 
@@ -2205,17 +2205,17 @@ msgstr "Поштова скринька мусить мати ім'я."
 msgid "Mailbox created."
 msgstr "Поштову скриньку створено."
 
-#: imap/browse.c:322
+#: imap/browse.c:330
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Перейменувати скриньку %s на: "
 
-#: imap/browse.c:337
+#: imap/browse.c:346
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Помилка переіменування: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:351
 msgid "Mailbox renamed."
 msgstr "Поштову скриньку переіменовано."
 
@@ -2263,61 +2263,61 @@ msgstr "Помилка відкриття поштової скриньки"
 msgid "Create %s?"
 msgstr "Створити %s?"
 
-#: imap/imap.c:1181
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "Помилка видалення"
 
-#: imap/imap.c:1193
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Маркування %d повідомлень видаленими..."
 
-#: imap/imap.c:1225
+#: imap/imap.c:1227
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Збереження змінених листів... [%d/%d]"
 
-#: imap/imap.c:1274
+#: imap/imap.c:1282
 msgid "Error saving flags. Close anyway?"
 msgstr "Помилка збереження атрибутів. Закрити все одно?"
 
-#: imap/imap.c:1282
+#: imap/imap.c:1290
 msgid "Error saving flags"
 msgstr "Помилка збереження атрибутів"
 
-#: imap/imap.c:1304
+#: imap/imap.c:1313
 msgid "Expunging messages from server..."
 msgstr "Видалення повідомлень з серверу..."
 
-#: imap/imap.c:1309
+#: imap/imap.c:1318
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: помилка EXPUNGE"
 
-#: imap/imap.c:1759
+#: imap/imap.c:1768
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Пошук заголовка без вказання його імені: %s"
 
-#: imap/imap.c:1830
+#: imap/imap.c:1839
 msgid "Bad mailbox name"
 msgstr "Погане ім'я скриньки"
 
-#: imap/imap.c:1854
+#: imap/imap.c:1863
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Підписування на %s..."
 
-#: imap/imap.c:1856
+#: imap/imap.c:1865
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Відписування від %s..."
 
-#: imap/imap.c:1866
+#: imap/imap.c:1875
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Підписано на %s..."
 
-#: imap/imap.c:1868
+#: imap/imap.c:1877
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Відписано від %s..."

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-19 10:32-0700\n"
+"POT-Creation-Date: 2016-04-02 11:15-0700\n"
 "PO-Revision-Date: 2016-03-20 20:39+0100\n"
 "Last-Translator: Morten Bo Johansen <mbj@spamcop.net>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
@@ -491,7 +491,8 @@ msgid ""
 "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
 "s(p)am?: "
 msgstr ""
-"Sortér (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/s(p)am?: "
+"Sortér (d)ato/(f)ra/(a)nk./(e)mne/t(i)l/(t)råd/(u)sort/(s)tr./s(c)ore/"
+"s(p)am?: "
 
 #: commands.c:538
 msgid "dfrsotuzcp"
@@ -1336,7 +1337,8 @@ msgstr "GPGME: CMS-protokol utilgængelig"
 #: crypt-gpgme.c:4721
 msgid "S/MIME (s)ign, sign (a)s, (p)gp, (c)lear, or (o)ppenc mode off? "
 msgstr ""
-"S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand fra? "
+"S/MIME (u)nderskriv, underskriv (s)om, (p)gp, r(y)d eller (o)ppenc-tilstand "
+"fra? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -1349,7 +1351,8 @@ msgstr "uspgyo"
 #: crypt-gpgme.c:4731
 msgid "PGP (s)ign, sign (a)s, s/(m)ime, (c)lear, or (o)ppenc mode off? "
 msgstr ""
-"PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand fra? "
+"PGP (u)nderskriv, underskriv (s)om, s/(m)ime, r(y)d eller (o)ppenc-tilstand "
+"fra? "
 
 #: crypt-gpgme.c:4732
 msgid "samfco"
@@ -1360,8 +1363,8 @@ msgid ""
 "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d eller "
-"(o)ppenc-tilstand fra? "
+"S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, r(y)d "
+"eller (o)ppenc-tilstand fra? "
 
 #: crypt-gpgme.c:4745
 msgid "esabpfco"
@@ -1372,8 +1375,8 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d eller "
-"(o)ppenc-tilstand? "
+"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, r(y)d "
+"eller (o)ppenc-tilstand? "
 
 #: crypt-gpgme.c:4751
 msgid "esabmfco"
@@ -1382,7 +1385,8 @@ msgstr "kusbmgyo"
 #: crypt-gpgme.c:4762
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
 msgstr ""
-"S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller r(y)d? "
+"S/MIME (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, (p)gp, eller "
+"r(y)d? "
 
 #: crypt-gpgme.c:4763
 msgid "esabpfc"
@@ -1391,7 +1395,8 @@ msgstr "kusbpgy"
 #: crypt-gpgme.c:4768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
 msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller r(y)d? "
+"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, s/(m)ime, eller "
+"r(y)d? "
 
 #: crypt-gpgme.c:4769
 msgid "esabmfc"
@@ -2190,7 +2195,7 @@ msgstr "Brevbakken findes ikke"
 msgid "Create mailbox: "
 msgstr "Opret brevbakke: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:283 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "Brevbakken skal have et navn."
 
@@ -2198,17 +2203,17 @@ msgstr "Brevbakken skal have et navn."
 msgid "Mailbox created."
 msgstr "Brevbakke oprettet."
 
-#: imap/browse.c:322
+#: imap/browse.c:330
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "Omdøb brevbakke %s to: "
 
-#: imap/browse.c:337
+#: imap/browse.c:346
 #, c-format
 msgid "Rename failed: %s"
 msgstr "Omdøbning slog fejl: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:351
 msgid "Mailbox renamed."
 msgstr "Brevbakke omdøbt."
 
@@ -2256,61 +2261,61 @@ msgstr "Fejl ved åbning af brevbakke"
 msgid "Create %s?"
 msgstr "Opret %s?"
 
-#: imap/imap.c:1181
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "Sletning slog fejl"
 
-#: imap/imap.c:1193
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "Markerer %d breve slettet ..."
 
-#: imap/imap.c:1225
+#: imap/imap.c:1227
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "Gemmer ændrede breve ... [%d/%d]"
 
-#: imap/imap.c:1274
+#: imap/imap.c:1282
 msgid "Error saving flags. Close anyway?"
 msgstr "Fejl ved gemning af statusindikatorer. Luk alligevel?"
 
-#: imap/imap.c:1282
+#: imap/imap.c:1290
 msgid "Error saving flags"
 msgstr "Fejl ved gemning af statusindikatorer"
 
-#: imap/imap.c:1304
+#: imap/imap.c:1313
 msgid "Expunging messages from server..."
 msgstr "Sletter breve på server ..."
 
-#: imap/imap.c:1309
+#: imap/imap.c:1318
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: EXPUNGE slog fejl"
 
-#: imap/imap.c:1759
+#: imap/imap.c:1768
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Headersøgning uden et headernavn: %s"
 
-#: imap/imap.c:1830
+#: imap/imap.c:1839
 msgid "Bad mailbox name"
 msgstr "Ugyldigt navn på brevbakke"
 
-#: imap/imap.c:1854
+#: imap/imap.c:1863
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonnerer på %s ..."
 
-#: imap/imap.c:1856
+#: imap/imap.c:1865
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Afmelder %s ..."
 
-#: imap/imap.c:1866
+#: imap/imap.c:1875
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonnerer på %s"
 
-#: imap/imap.c:1868
+#: imap/imap.c:1877
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Afmeldt fra %s"
@@ -2724,10 +2729,10 @@ msgid ""
 "       mutt -v[v]\n"
 msgstr ""
 "brug: mutt [<tilvalg>] [-z] [-f <fil> | -yZ]\n"
-"      mutt [<tilvalg>] [-Ex] [-Hi <fil>] [-s <emne>] [-bc <adr>] [-a <fil> [...] "
-"--] <adr> [...]\n"
-"      mutt [<tilvalg>] [-x] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] <adr> "
-"[...] < brev\n"
+"      mutt [<tilvalg>] [-Ex] [-Hi <fil>] [-s <emne>] [-bc <adr>] [-a <fil> "
+"[...] --] <adr> [...]\n"
+"      mutt [<tilvalg>] [-x] [-s <emne>] [-bc <adr>] [-a <fil> [...] --] "
+"<adr> [...] < brev\n"
 "      mutt [<tilvalg>] -p\n"
 "      mutt [<tilvalg>] -A <alias> [...]\n"
 "      mutt [<tilvalg>] -Q <forespørgsel> [...]\n"
@@ -3622,7 +3627,8 @@ msgstr "usgyoi"
 
 #: pgp.c:1742
 msgid "PGP (s)ign, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
+msgstr ""
+"PGP (u)nderskriv, underskriv (s)om, r(y)d eller (o)ppenc-tilstand fra? "
 
 #: pgp.c:1743
 msgid "safco"
@@ -3634,8 +3640,8 @@ msgid ""
 "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
 "mode? "
 msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d eller "
-"(o)ppenc-tilstand? "
+"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, %s-format, r(y)d "
+"eller (o)ppenc-tilstand? "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -3644,8 +3650,8 @@ msgstr "kusbgyoi"
 #: pgp.c:1768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
 msgstr ""
-"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller "
-"(o)ppenc-tilstand? "
+"PGP (k)ryptér, (u)nderskriv, underskriv (s)om, (b)egge, r(y)d eller (o)ppenc-"
+"tilstand? "
 
 #: pgp.c:1769
 msgid "esabfco"
@@ -4350,8 +4356,8 @@ msgstr ""
 msgid ""
 "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
 msgstr ""
-"S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-tilstand "
-"fra? "
+"S/MIME (u).skriv, kryptér (m)ed, u.skriv (s)om, r(y)d eller (o)ppenc-"
+"tilstand fra? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.

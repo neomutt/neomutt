@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.24\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-20 15:04+0900\n"
+"POT-Creation-Date: 2016-04-02 11:15-0700\n"
 "PO-Revision-Date: 2016-03-20 15:22+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
@@ -1436,7 +1436,8 @@ msgstr "添付ファイルがあるとインライン PGP にできない。PGP/MIME を使う?"
 
 #: crypt.c:151
 msgid "Mail not sent: inline PGP can't be used with attachments."
-msgstr "メールは送信されなかった: 添付ファイルがあるとインライン PGP にできない。"
+msgstr ""
+"メールは送信されなかった: 添付ファイルがあるとインライン PGP にできない。"
 
 #: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
@@ -2210,7 +2211,7 @@ msgstr "そのようなフォルダはない"
 msgid "Create mailbox: "
 msgstr "メールボックスを作成: "
 
-#: imap/browse.c:283 imap/browse.c:329
+#: imap/browse.c:283 imap/browse.c:338
 msgid "Mailbox must have a name."
 msgstr "メールボックスには名前が必要。"
 
@@ -2219,17 +2220,17 @@ msgid "Mailbox created."
 msgstr "メールボックスが作成された。"
 
 # 長いから「メールボックス」を削ってもいいかも
-#: imap/browse.c:322
+#: imap/browse.c:330
 #, c-format
 msgid "Rename mailbox %s to: "
 msgstr "メールボックス %s のリネーム(移動)先: "
 
-#: imap/browse.c:337
+#: imap/browse.c:346
 #, c-format
 msgid "Rename failed: %s"
 msgstr "リネーム (移動) 失敗: %s"
 
-#: imap/browse.c:342
+#: imap/browse.c:351
 msgid "Mailbox renamed."
 msgstr "メールボックスがリネーム (移動) された。"
 
@@ -2277,61 +2278,61 @@ msgstr "メールボックスオープン時エラー"
 msgid "Create %s?"
 msgstr "%s を作成?"
 
-#: imap/imap.c:1181
+#: imap/imap.c:1183
 msgid "Expunge failed"
 msgstr "削除に失敗した"
 
-#: imap/imap.c:1193
+#: imap/imap.c:1195
 #, c-format
 msgid "Marking %d messages deleted..."
 msgstr "%d 個のメッセージに削除をマーク中..."
 
-#: imap/imap.c:1225
+#: imap/imap.c:1227
 #, c-format
 msgid "Saving changed messages... [%d/%d]"
 msgstr "メッセージ変更を保存中... [%d/%d]"
 
-#: imap/imap.c:1274
+#: imap/imap.c:1282
 msgid "Error saving flags. Close anyway?"
 msgstr "フラグ保存エラー。それでも閉じる?"
 
-#: imap/imap.c:1282
+#: imap/imap.c:1290
 msgid "Error saving flags"
 msgstr "フラグ保存エラー"
 
-#: imap/imap.c:1304
+#: imap/imap.c:1313
 msgid "Expunging messages from server..."
 msgstr "サーバからメッセージを削除中..."
 
-#: imap/imap.c:1309
+#: imap/imap.c:1318
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox: 削除に失敗した"
 
-#: imap/imap.c:1759
+#: imap/imap.c:1768
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "検索するヘッダ名の指定がない: %s"
 
-#: imap/imap.c:1830
+#: imap/imap.c:1839
 msgid "Bad mailbox name"
 msgstr "不正なメールボックス名"
 
-#: imap/imap.c:1854
+#: imap/imap.c:1863
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "%s の購読を開始中..."
 
-#: imap/imap.c:1856
+#: imap/imap.c:1865
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "%s の購読を取り消し中..."
 
-#: imap/imap.c:1866
+#: imap/imap.c:1875
 #, c-format
 msgid "Subscribed to %s"
 msgstr "%s を購読を開始した"
 
-#: imap/imap.c:1868
+#: imap/imap.c:1877
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "%s の購読を取り消した"
@@ -2927,8 +2928,8 @@ msgstr "移動先インデックス番号を指定: "
 msgid "Invalid index number."
 msgstr "不正なインデックス番号。"
 
-#: menu.c:431 menu.c:452 menu.c:517 menu.c:560 menu.c:576 menu.c:587
-#: menu.c:598 menu.c:609 menu.c:622 menu.c:635 menu.c:1044
+#: menu.c:431 menu.c:452 menu.c:517 menu.c:560 menu.c:576 menu.c:587 menu.c:598
+#: menu.c:609 menu.c:622 menu.c:635 menu.c:1044
 msgid "No entries."
 msgstr "エントリがない。"
 

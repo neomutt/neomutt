@@ -4,7 +4,7 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
-1.6.0 (unreleased):
+1.6.0 (2016-04-04):
 
   + Enabled utf-8 mailbox support for IMAP.
   + New expandos %r and %R for comma separated list of To: and Cc:
