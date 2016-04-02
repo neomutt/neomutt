@@ -220,7 +220,7 @@ denote that the argument may be repeated arbitrary times.
 <title>Copyright</title>
 
 <para>
-Mutt is Copyright &copy; 1996-2009 Michael R. Elkins
+Mutt is Copyright &copy; 1996-2016 Michael R. Elkins
 <email>me@mutt.org</email> and others.
 </para>
 
@@ -1612,6 +1612,44 @@ fo-table</literal> for details.
 
 </sect3>
 
+<sect3 id="ff-pager">
+<title>Reformatting</title>
+
+<para>
+  Mutt has some support for reformatting when viewing and replying to
+  <literal>format=flowed</literal> messages.  In order to take advantage of these,
+  <link linkend="reflow-text">$reflow_text</link> must be set.
+</para>
+
+<itemizedlist>
+  <listitem>
+  <para>
+    Paragraphs are automatically reflowed and wrapped at a width specified
+    by <link linkend="reflow-wrap">$reflow_wrap</link>.
+  </para>
+  </listitem>
+  <listitem>
+  <para>
+    In its original format, the quoting style of <literal>format=flowed</literal>
+    messages can be difficult to read, and doesn't intermix well with
+    non-flowed replies.
+    Setting <link linkend="reflow-space-quotes">$reflow_space_quotes</link>
+    adds spaces after each level of quoting when in the pager and
+    replying in a non-flowed format
+    (i.e. with <link linkend="text-flowed">$text_flowed</link> unset).
+  </para>
+  </listitem>
+  <listitem>
+  <para>
+    If <link linkend="reflow-space-quotes">$reflow_space_quotes</link>
+    is unset, mutt will still add one trailing space after all the
+    quotes in the pager (but not when replying).
+  </para>
+  </listitem>
+</itemizedlist>
+
+</sect3>
+
 </sect2>
 
 </sect1>
@@ -2338,6 +2376,13 @@ addition, <emphasis>key</emphasis> may be a symbolic name as shown in
 </tbody>
 </tgroup>
 </table>
+
+<para>
+The <literal>&lt;what-key&gt;</literal> function can be used to
+explore keycode and symbolic names for other keys on your keyboard.
+Executing this function will display information about each key
+pressed, until terminated by <literal>^G</literal>.
+</para>
 
 <para>
 <emphasis>key</emphasis> does not need to be enclosed in quotes unless
@@ -4656,6 +4701,47 @@ set index_format="%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?)%*  %s"</screen>
 
 </sect2>
 
+</sect1>
+
+<sect1 id="mailto-allow">
+<title>Control allowed header fields in a mailto: URL</title>
+
+<para>Usage:</para>
+
+<cmdsynopsis>
+<command>mailto_allow</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
+
+<command>unmailto_allow</command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+
+<para>
+As a security measure, Mutt will only add user-approved header fields from a
+<literal>mailto:</literal> URL.  This is necessary since Mutt will handle
+certain header fields, such as <literal>Attach:</literal>, in a special way.
+The <literal>mailto_allow</literal> and <literal>unmailto_allow</literal>
+commands allow the user to modify the list of approved headers.
+</para>
+<para>
+Mutt initializes the default list to contain only the <literal>Subject</literal>
+and <literal>Body</literal> header fields, which are the only requirement specified
+by the <literal>mailto:</literal> specification in RFC2368.
+</para>
 </sect1>
 
 </chapter>
@@ -7303,7 +7389,7 @@ Usage:
 </para>
 
 <cmdsynopsis>
-<command>mime-lookup</command>
+<command>mime_lookup</command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -7311,7 +7397,7 @@ Usage:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command>unmime-lookup</command>
+<command>unmime_lookup</command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>
@@ -8089,6 +8175,14 @@ will send out the user's private gnupg keyring to
 on screen carefully enough.
 </para>
 
+<para>
+To prevent these issues, Mutt by default only accepts the
+<literal>Subject</literal> and <literal>Body</literal> headers.
+Allowed headers can be adjusted with the
+<link linkend="mailto-allow"><command>mailto_allow</command></link> and
+<link linkend="mailto-allow"><command>unmailto_allow</command></link> commands.
+</para>
+
 </sect2>
 
 </sect1>
@@ -8258,7 +8352,9 @@ mailboxes and to send messages from the command line as well.
 <row><entry>-a</entry><entry>attach a file to a message</entry></row>
 <row><entry>-b</entry><entry>specify a blind carbon-copy (BCC) address</entry></row>
 <row><entry>-c</entry><entry>specify a carbon-copy (Cc) address</entry></row>
+<row><entry>-d</entry><entry>log debugging output to ~/.muttdebug0 if mutt was compiled with +DEBUG; it can range from 1-5 and affects verbosity (a value of 2 is recommended)</entry></row>
 <row><entry>-D</entry><entry>print the value of all Mutt variables to stdout</entry></row>
+<row><entry>-E</entry><entry>edit the draft (-H) or include (-i) file</entry></row>
 <row><entry>-e</entry><entry>specify a config command to be run after initialization files are read</entry></row>
 <row><entry>-f</entry><entry>specify a mailbox to load</entry></row>
 <row><entry>-F</entry><entry>specify an alternate file to read initialization commands</entry></row>
@@ -8304,14 +8400,14 @@ To compose a new message
 
 <cmdsynopsis>
 <command>mutt</command>
-<arg choice="opt"><option>-n</option></arg>
+<arg choice="opt"><option>-En</option></arg>
 <arg choice="opt"><option>-F</option>
 <replaceable>muttrc</replaceable>
 </arg>
 <arg choice="opt"><option>-c</option>
 <replaceable>address</replaceable>
 </arg>
-<arg choice="opt"><option>-i</option>
+<arg choice="opt"><option>-Hi</option>
 <replaceable>filename</replaceable>
 </arg>
 <arg choice="opt"><option>-s</option>
@@ -8347,6 +8443,24 @@ will send a message to
 <literal>&lt;professor@bigschool.edu&gt;</literal> with a subject of
 <quote>data set for run #2</quote>.  In the body of the message will be
 the contents of the file <quote>~/run2.dat</quote>.
+</para>
+
+<para>
+An include file passed with <literal>-i</literal> will be used as the
+body of the message.  When combined with <literal>-E</literal>, the
+include file will be directly edited during message composition.  The
+file will be modified regardless of whether the message is sent or
+aborted.
+</para>
+
+<para>
+A draft file passed with <literal>-H</literal> will be used as the
+initial header and body for the message.  Multipart messages can be
+used as a draft file.  When combined with <literal>-E</literal>, the
+draft file will be updated to the final state of the message after
+composition, regardless of whether the message is sent, aborted, or
+even postponed.  Note that if the message is sent encrypted or signed,
+the draft file will be saved that way too.
 </para>
 
 <para>
@@ -8852,6 +8966,30 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
+<command><link linkend="mailto-allow">mailto_allow</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
+
+<command><link linkend="mailto-allow">unmailto_allow</link></command>
+<group choice="req">
+<arg choice="plain">
+<replaceable class="parameter">*</replaceable>
+</arg>
+<arg choice="plain" rep="repeat">
+<replaceable class="parameter">header-field</replaceable>
+</arg>
+</group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
 <command><link linkend="mbox-hook">mbox-hook</link></command>
 <arg choice="plain">
 <replaceable class="parameter">[!]regexp</replaceable>
@@ -8876,7 +9014,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command><link linkend="mime-lookup">mime-lookup</link></command>
+<command><link linkend="mime-lookup">mime_lookup</link></command>
 <arg choice="plain">
 <replaceable>mimetype</replaceable>
 </arg>
@@ -8884,7 +9022,7 @@ The following are the commands understood by Mutt:
 <replaceable>mimetype</replaceable>
 </arg>
 
-<command><link linkend="mime-lookup">unmime-lookup</link></command>
+<command><link linkend="mime-lookup">unmime_lookup</link></command>
 <group choice="req">
 <arg choice="plain">
 <replaceable>*</replaceable>

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002, 2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2010 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -164,6 +164,7 @@ WHERE LIST *InlineAllow INITVAL(0);
 WHERE LIST *InlineExclude INITVAL(0);
 WHERE LIST *HeaderOrderList INITVAL(0);
 WHERE LIST *Ignore INITVAL(0);
+WHERE LIST *MailtoAllow INITVAL(0);
 WHERE LIST *MimeLookupList INITVAL(0);
 WHERE LIST *UnIgnore INITVAL(0);
 
@@ -230,6 +231,7 @@ WHERE LIST *UserHeader INITVAL (0);
 
 /*-- formerly in pgp.h --*/
 WHERE REGEXP PgpGoodSign;
+WHERE REGEXP PgpDecryptionOkay;
 WHERE char *PgpSignAs;
 WHERE short PgpTimeout;
 WHERE char *PgpEntryFormat;
@@ -258,6 +260,7 @@ WHERE char *SmimeVerifyCommand;
 WHERE char *SmimeVerifyOpaqueCommand;
 WHERE char *SmimeDecryptCommand;
 WHERE char *SmimeSignCommand;
+WHERE char *SmimeDigestAlg;
 WHERE char *SmimeSignOpaqueCommand;
 WHERE char *SmimeEncryptCommand;
 WHERE char *SmimeGetSignerCertCommand;

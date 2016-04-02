@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2002,2007,2010 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2006 Thomas Roessler <roessler@does-not-exist.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -707,7 +707,7 @@ static int can_print (BODY *top, int tag)
 	{
 	  if (!mutt_can_decode (top))
 	  {
-	    mutt_error (_("I dont know how to print %s attachments!"), type);
+	    mutt_error (_("I don't know how to print %s attachments!"), type);
 	    return (0);
 	  }
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2007,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2005,2007 Thomas Roessler <roessler@does-not-exist.org>
  * 
  *     This program is free software; you can redistribute it
@@ -57,7 +57,7 @@
 # define TRUE 1
 # define FALSE 0
 
-# define HUGE_STRING	5120
+# define HUGE_STRING     8192
 # define LONG_STRING     1024
 # define STRING          256
 # define SHORT_STRING    128
@@ -112,7 +112,7 @@ static inline char *skip_email_wsp(const char *s)
 
 static inline int is_email_wsp(char c)
 {
-  return strchr(EMAIL_WSP, c) != NULL;
+  return c && (strchr(EMAIL_WSP, c) != NULL);
 }
 
 

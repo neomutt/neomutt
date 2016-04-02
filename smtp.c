@@ -1,6 +1,6 @@
 /* mutt - text oriented MIME mail user agent
  * Copyright (C) 2002 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 2005-9 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2005-2009 Brendan Cully <brendan@kublai.com>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -61,6 +61,7 @@ enum {
   AUTH,
   DSN,
   EIGHTBITMIME,
+  SMTPUTF8,
 
   CAPMAX
 };
@@ -122,6 +123,8 @@ smtp_get_resp (CONNECTION * conn)
       mutt_bit_set (Capabilities, DSN);
     else if (!ascii_strncasecmp ("STARTTLS", buf + 4, 8))
       mutt_bit_set (Capabilities, STARTTLS);
+    else if (!ascii_strncasecmp ("SMTPUTF8", buf + 4, 8))
+      mutt_bit_set (Capabilities, SMTPUTF8);
 
     if (smtp_code (buf, n, &n) < 0)
       return smtp_err_code;
@@ -236,6 +239,40 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   return 0;
 }
 
+
+/* Returns 1 if a contains at least one 8-bit character, 0 if none do.
+ */
+static int address_uses_unicode(const char *a)
+{
+  if (!a)
+    return 0;
+
+  while (*a)
+  {
+    if ((unsigned char) *a & (1<<7))
+      return 1;
+    a++;
+  }
+
+  return 0;
+}
+
+
+/* Returns 1 if any address in a contains at least one 8-bit
+ * character, 0 if none do.
+ */
+static int addresses_use_unicode(const ADDRESS* a)
+{
+  while (a)
+  {
+    if(a->mailbox && !a->group && address_uses_unicode(a->mailbox))
+      return 1;
+    a = a->next;
+  }
+  return 0;
+}
+
+
 int
 mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
                 const ADDRESS* bcc, const char *msgfile, int eightbit)
@@ -282,6 +319,12 @@ mutt_smtp_send (const ADDRESS* from, const ADDRESS* to, const ADDRESS* cc,
     }
     if (DsnReturn && mutt_bit_isset (Capabilities, DSN))
       ret += snprintf (buf + ret, sizeof (buf) - ret, " RET=%s", DsnReturn);
+    if (mutt_bit_isset (Capabilities, SMTPUTF8) &&
+	(address_uses_unicode(envfrom) ||
+	 addresses_use_unicode(to) ||
+	 addresses_use_unicode(cc) ||
+	 addresses_use_unicode(bcc)))
+      ret += snprintf (buf + ret, sizeof (buf) - ret, " SMTPUTF8");
     safe_strncat (buf, sizeof (buf), "\r\n", 3);
     if (mutt_socket_write (conn, buf) == -1)
     {
@@ -525,7 +568,8 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   const char* mech;
   const char* data = NULL;
   unsigned int len;
-  char buf[HUGE_STRING];
+  char *buf = NULL;
+  size_t bufsize = 0;
   int rc, saslrc;
 
   if (mutt_sasl_client_new (conn, &saslconn) < 0)
@@ -549,23 +593,26 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
   if (!option(OPTNOCURSES))
     mutt_message (_("Authenticating (%s)..."), mech);
 
-  snprintf (buf, sizeof (buf), "AUTH %s", mech);
+  bufsize = ((len * 2) > LONG_STRING) ? (len * 2) : LONG_STRING;
+  buf = safe_malloc (bufsize);
+
+  snprintf (buf, bufsize, "AUTH %s", mech);
   if (len)
   {
-    safe_strcat (buf, sizeof (buf), " ");
+    safe_strcat (buf, bufsize, " ");
     if (sasl_encode64 (data, len, buf + mutt_strlen (buf),
-                       sizeof (buf) - mutt_strlen (buf), &len) != SASL_OK)
+                       bufsize - mutt_strlen (buf), &len) != SASL_OK)
     {
       dprint (1, (debugfile, "smtp_auth_sasl: error base64-encoding client response.\n"));
       goto fail;
     }
   }
-  safe_strcat (buf, sizeof (buf), "\r\n");
+  safe_strcat (buf, bufsize, "\r\n");
 
   do {
     if (mutt_socket_write (conn, buf) < 0)
       goto fail;
-    if ((rc = mutt_socket_readln (buf, sizeof (buf), conn)) < 0)
+    if ((rc = mutt_socket_readln (buf, bufsize, conn)) < 0)
       goto fail;
     if (smtp_code (buf, rc, &rc) < 0)
       goto fail;
@@ -573,7 +620,7 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
     if (rc != smtp_ready)
       break;
 
-    if (sasl_decode64 (buf+4, strlen (buf+4), buf, sizeof (buf), &len) != SASL_OK)
+    if (sasl_decode64 (buf+4, strlen (buf+4), buf, bufsize - 1, &len) != SASL_OK)
     {
       dprint (1, (debugfile, "smtp_auth_sasl: error base64-decoding server response.\n"));
       goto fail;
@@ -589,23 +636,30 @@ static int smtp_auth_sasl (CONNECTION* conn, const char* mechlist)
 
     if (len)
     {
-      if (sasl_encode64 (data, len, buf, sizeof (buf), &len) != SASL_OK)
+      if ((len * 2) > bufsize)
+      {
+        bufsize = len * 2;
+        safe_realloc (&buf, bufsize);
+      }
+      if (sasl_encode64 (data, len, buf, bufsize, &len) != SASL_OK)
       {
         dprint (1, (debugfile, "smtp_auth_sasl: error base64-encoding client response.\n"));
         goto fail;
       }
     }
-    strfcpy (buf + len, "\r\n", sizeof (buf) - len);
+    strfcpy (buf + len, "\r\n", bufsize - len);
   } while (rc == smtp_ready && saslrc != SASL_FAIL);
 
   if (smtp_success (rc))
   {
     mutt_sasl_setup_conn (conn, saslconn);
+    FREE (&buf);
     return SMTP_AUTH_SUCCESS;
   }
 
 fail:
   sasl_dispose (&saslconn);
+  FREE (&buf);
   return SMTP_AUTH_FAIL;
 }
 #endif /* USE_SASL */

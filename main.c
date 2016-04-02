@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
  * 
@@ -67,20 +67,21 @@ To contact the developers, please mail to <mutt-dev@mutt.org>.\n\
 To report a bug, please visit http://bugs.mutt.org/.\n");
 
 static const char *Notice = N_("\
-Copyright (C) 1996-2009 Michael R. Elkins and others.\n\
+Copyright (C) 1996-2016 Michael R. Elkins and others.\n\
 Mutt comes with ABSOLUTELY NO WARRANTY; for details type `mutt -vv'.\n\
 Mutt is free software, and you are welcome to redistribute it\n\
 under certain conditions; type `mutt -vv' for details.\n");
 
 static const char *Copyright = N_("\
-Copyright (C) 1996-2007 Michael R. Elkins <me@mutt.org>\n\
+Copyright (C) 1996-2014 Michael R. Elkins <me@mutt.org>\n\
 Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n\
-Copyright (C) 1997-2008 Thomas Roessler <roessler@does-not-exist.org>\n\
+Copyright (C) 1997-2009 Thomas Roessler <roessler@does-not-exist.org>\n\
 Copyright (C) 1998-2005 Werner Koch <wk@isil.d.shuttle.de>\n\
-Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>\n\
+Copyright (C) 1999-2014 Brendan Cully <brendan@kublai.com>\n\
 Copyright (C) 1999-2002 Tommi Komulainen <Tommi.Komulainen@iki.fi>\n\
-Copyright (C) 2000-2002 Edmund Grimley Evans <edmundo@rano.org>\n\
+Copyright (C) 2000-2004 Edmund Grimley Evans <edmundo@rano.org>\n\
 Copyright (C) 2006-2009 Rocco Rutte <pdmef@gmx.net>\n\
+Copyright (C) 2014-2015 Kevin J. McCarthy <kevin@8t8.us>\n\
 \n\
 Many others not mentioned here contributed code, fixes,\n\
 and suggestions.\n");
@@ -113,7 +114,7 @@ static void mutt_usage (void)
 
   puts _(
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n\
-       mutt [<options>] [-x] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n\
+       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n\
        mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n\
        mutt [<options>] -p\n\
        mutt [<options>] -A <alias> [...]\n\
@@ -133,7 +134,8 @@ options:\n\
   puts _("  -d <level>\tlog debugging output to ~/.muttdebug0");
 #endif
   puts _(
-"  -e <command>\tspecify a command to be executed after initialization\n\
+"  -E\t\tedit the draft (-H) or include (-i) file\n\
+  -e <command>\tspecify a command to be executed after initialization\n\
   -f <file>\tspecify which mailbox to read\n\
   -F <file>\tspecify an alternate muttrc file\n\
   -H <file>\tspecify a draft file to read header and body from\n\
@@ -571,6 +573,7 @@ int main (int argc, char **argv)
   int i;
   int explicit_folder = 0;
   int dump_variables = 0;
+  int edit_infile = 0;
   extern char *optarg;
   extern int optind;
   int double_dash = argc, nargc = 1;
@@ -624,7 +627,7 @@ int main (int argc, char **argv)
         argv[nargc++] = argv[optind];
     }
 
-    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:e:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:s:i:hm:npQ:RvxyzZ")) != EOF)
       switch (i)
       {
       case 'A':
@@ -671,6 +674,10 @@ int main (int argc, char **argv)
 	printf _("DEBUG was not defined during compilation.  Ignored.\n");
 #endif
 	break;
+
+      case 'E':
+        edit_infile = 1;
+        break;
 
       case 'e':
 	commands = mutt_add_list (commands, optarg);
@@ -803,7 +810,7 @@ int main (int argc, char **argv)
       if ((a = mutt_lookup_alias (alias_queries->data)))
       {	
 	/* output in machine-readable form */
-	mutt_addrlist_to_idna (a, NULL);
+	mutt_addrlist_to_intl (a, NULL);
 	mutt_write_address_list (a, stdout, 0, 0);
       }
       else
@@ -858,10 +865,12 @@ int main (int argc, char **argv)
 	   optind < argc)
   {
     FILE *fin = NULL;
+    FILE *fout = NULL;
     char buf[LONG_STRING];
     char *tempfile = NULL, *infile = NULL;
-    char *bodytext = NULL;
+    char *bodytext = NULL, *bodyfile = NULL;
     int rv = 0;
+    char expanded_infile[_POSIX_PATH_MAX];
     
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
@@ -899,81 +908,163 @@ int main (int argc, char **argv)
       msg->env->subject = safe_strdup (subject);
 
     if (draftFile)
+    {
       infile = draftFile;
+      includeFile = NULL;
+    }
     else if (includeFile)
       infile = includeFile;
+    else
+      edit_infile = 0;
 
     if (infile || bodytext)
     {
+      /* Prepare fin and expanded_infile. */
       if (infile)
       {
 	if (mutt_strcmp ("-", infile) == 0)
+        {
+          if (edit_infile)
+          {
+            fputs (_("Cannot use -E flag with stdin\n"), stderr);
+            exit (1);
+          }
 	  fin = stdin;
-	else 
+        }
+	else
 	{
-	  char path[_POSIX_PATH_MAX];
-	  
-	  strfcpy (path, infile, sizeof (path));
-	  mutt_expand_path (path, sizeof (path));
-	  if ((fin = fopen (path, "r")) == NULL)
+	  strfcpy (expanded_infile, infile, sizeof (expanded_infile));
+	  mutt_expand_path (expanded_infile, sizeof (expanded_infile));
+	  if ((fin = fopen (expanded_infile, "r")) == NULL)
 	  {
 	    if (!option (OPTNOCURSES))
 	      mutt_endwin (NULL);
-	    perror (path);
+	    perror (expanded_infile);
 	    exit (1);
 	  }
 	}
+      }
 
-        if (draftFile)
+      /* Copy input to a tempfile, and re-point fin to the tempfile.
+       * Note: stdin is always copied to a tempfile, ensuring draftFile
+       * can stat and get the correct st_size below.
+       */
+      if (!edit_infile)
+      {
+        mutt_mktemp (buf, sizeof (buf));
+        tempfile = safe_strdup (buf);
+
+        if ((fout = safe_fopen (tempfile, "w")) == NULL)
         {
-          ENVELOPE *opts_env = msg->env;
-          msg->env = mutt_read_rfc822_header (fin, NULL, 1, 0);
+          if (!option (OPTNOCURSES))
+            mutt_endwin (NULL);
+          perror (tempfile);
+          safe_fclose (&fin);
+          FREE (&tempfile);
+          exit (1);
+        }
+        if (fin)
+        {
+          mutt_copy_stream (fin, fout);
+          if (fin != stdin)
+            safe_fclose (&fin);
+        }
+        else if (bodytext)
+          fputs (bodytext, fout);
+        safe_fclose (&fout);
 
-          rfc822_append (&msg->env->to, opts_env->to, 0);
-          rfc822_append (&msg->env->cc, opts_env->cc, 0);
-          rfc822_append (&msg->env->bcc, opts_env->bcc, 0);
-          if (opts_env->subject)
-            mutt_str_replace (&msg->env->subject, opts_env->subject);
-
-          mutt_free_envelope (&opts_env);
+        if ((fin = fopen (tempfile, "r")) == NULL)
+        {
+          if (!option (OPTNOCURSES))
+            mutt_endwin (NULL);
+          perror (tempfile);
+          FREE (&tempfile);
+          exit (1);
         }
       }
+      /* If editing the infile, keep it around afterwards so
+       * it doesn't get unlinked, and we can rebuild the draftFile
+       */
+      else
+        sendflags |= SENDNOFREEHEADER;
 
-      mutt_mktemp (buf, sizeof (buf));
-      tempfile = safe_strdup (buf);
-
-      /* is the following if still needed? */
-      
-      if (tempfile)
+      /* Parse the draftFile into the full HEADER/BODY structure.
+       * Set SENDDRAFTFILE so ci_send_message doesn't overwrite
+       * our msg->content.
+       */
+      if (draftFile)
       {
-	FILE *fout;
+        HEADER *context_hdr = NULL;
+        ENVELOPE *opts_env = msg->env;
+        struct stat st;
+        LIST *uh, **last_uhp;
 
-	if ((fout = safe_fopen (tempfile, "w")) == NULL)
-	{
-	  if (!option (OPTNOCURSES))
-	    mutt_endwin (NULL);
-	  perror (tempfile);
-	  safe_fclose (&fin);
-	  FREE (&tempfile);
-	  exit (1);
-	}
-	if (fin)
-	  mutt_copy_stream (fin, fout);
-	else if (bodytext)
-	  fputs (bodytext, fout);
-	safe_fclose (&fout);
+        sendflags |= SENDDRAFTFILE;
+
+        /* Set up a "context" header with just enough information so that
+         * mutt_prepare_template() can parse the message in fin.
+         */
+        context_hdr = mutt_new_header ();
+        context_hdr->offset = 0;
+        context_hdr->content = mutt_new_body ();
+        if (fstat (fileno (fin), &st))
+        {
+          perror (draftFile);
+          exit (1);
+        }
+        context_hdr->content->length = st.st_size;
+
+        mutt_prepare_template (fin, NULL, msg, context_hdr, 0);
+
+        /* Scan for mutt header to set OPTRESUMEDRAFTFILES */
+        for (last_uhp = &msg->env->userhdrs, uh = *last_uhp;
+             uh; uh = *last_uhp)
+        {
+          if (ascii_strncasecmp ("X-Mutt-Resume-Draft:", uh->data, 20) == 0)
+          {
+            if (option (OPTRESUMEEDITEDDRAFTFILES))
+              set_option (OPTRESUMEDRAFTFILES);
+
+            *last_uhp = uh->next;
+            uh->next = NULL;
+            mutt_free_list (&uh);
+          }
+          else
+            last_uhp = &uh->next;
+        }
+
+        rfc822_append (&msg->env->to, opts_env->to, 0);
+        rfc822_append (&msg->env->cc, opts_env->cc, 0);
+        rfc822_append (&msg->env->bcc, opts_env->bcc, 0);
+        if (opts_env->subject)
+          mutt_str_replace (&msg->env->subject, opts_env->subject);
+
+        mutt_free_envelope (&opts_env);
+        mutt_free_header (&context_hdr);
       }
+      /* Editing the includeFile: pass it directly in.
+       * Note that SENDNOFREEHEADER is set above so it isn't unlinked.
+       */
+      else if (edit_infile)
+        bodyfile = expanded_infile;
+      /* For bodytext and unedited includeFile: use the tempfile.
+       */
+      else
+        bodyfile = tempfile;
 
-      if (fin && fin != stdin)
+      if (fin)
         safe_fclose (&fin);
     }
 
     FREE (&bodytext);
-    
+
     if (attach)
     {
       LIST *t = attach;
-      BODY *a = NULL;
+      BODY *a = msg->content;
+
+      while (a && a->next)
+        a = a->next;
 
       while (t)
       {
@@ -997,7 +1088,64 @@ int main (int argc, char **argv)
       mutt_free_list (&attach);
     }
 
-    rv = ci_send_message (sendflags, msg, tempfile, NULL, NULL);
+    rv = ci_send_message (sendflags, msg, bodyfile, NULL, NULL);
+
+    if (edit_infile)
+    {
+      if (includeFile)
+        msg->content->unlink = 0;
+      else if (draftFile)
+      {
+        if (truncate (expanded_infile, 0) == -1)
+        {
+          if (!option (OPTNOCURSES))
+            mutt_endwin (NULL);
+          perror (expanded_infile);
+          exit (1);
+        }
+        if ((fout = safe_fopen (expanded_infile, "a")) == NULL)
+        {
+          if (!option (OPTNOCURSES))
+            mutt_endwin (NULL);
+          perror (expanded_infile);
+          exit (1);
+        }
+
+        /* If the message was sent or postponed, these will already
+         * have been done.
+         */
+        if (rv < 0)
+        {
+          if (msg->content->next)
+            msg->content = mutt_make_multipart (msg->content);
+          mutt_encode_descriptions (msg->content, 1);
+          mutt_prepare_envelope (msg->env, 0);
+          mutt_env_to_intl (msg->env, NULL, NULL);
+        }
+
+        mutt_write_rfc822_header (fout, msg->env, msg->content, -1, 0);
+        if (option (OPTRESUMEEDITEDDRAFTFILES))
+          fprintf (fout, "X-Mutt-Resume-Draft: 1\n");
+        fputc ('\n', fout);
+        if ((mutt_write_mime_body (msg->content, fout) == -1))
+        {
+          if (!option (OPTNOCURSES))
+            mutt_endwin (NULL);
+          safe_fclose (&fout);
+          exit (1);
+        }
+        safe_fclose (&fout);
+      }
+
+      mutt_free_header (&msg);
+    }
+
+    /* !edit_infile && draftFile will leave the tempfile around */
+    if (tempfile)
+    {
+      unlink (tempfile);
+      FREE (&tempfile);
+    }
 
     if (!option (OPTNOCURSES))
       mutt_endwin (NULL);

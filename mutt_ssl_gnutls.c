@@ -850,7 +850,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
     return 0;
   }
 
-  menu = mutt_new_menu (-1);
+  menu = mutt_new_menu (MENU_GENERIC);
   menu->max = 25;
   menu->dialog = (char **) safe_calloc (1, menu->max * sizeof (char *));
   for (i = 0; i < menu->max; i++)
@@ -1005,7 +1005,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
   menu->help = helpstr;
 
   done = 0;
-  set_option (OPTUNBUFFEREDINPUT);
+  set_option (OPTIGNOREMACROEVENTS);
   while (!done)
   {
     switch (mutt_menuLoop (menu))
@@ -1057,7 +1057,7 @@ static int tls_check_one_certificate (const gnutls_datum_t *certdata,
         break;
     }
   }
-  unset_option (OPTUNBUFFEREDINPUT);
+  unset_option (OPTIGNOREMACROEVENTS);
   mutt_menuDestroy (&menu);
   gnutls_x509_crt_deinit (cert);
 

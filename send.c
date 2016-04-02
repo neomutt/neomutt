@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2004 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2004,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -201,7 +201,7 @@ static int edit_address (ADDRESS **a, /* const */ char *field)
       return (-1);
     rfc822_free_address (a);
     *a = mutt_expand_aliases (mutt_parse_adrlist (NULL, buf));
-    if ((idna_ok = mutt_addrlist_to_idna (*a, &err)) != 0)
+    if ((idna_ok = mutt_addrlist_to_intl (*a, &err)) != 0)
     {
       mutt_error (_("Error: '%s' is a bad IDN."), err);
       mutt_refresh ();
@@ -398,7 +398,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 
 void mutt_make_attribution (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
-  char buffer[STRING];
+  char buffer[LONG_STRING];
   if (Attribution)
   {
     mutt_make_string (buffer, sizeof (buffer), Attribution, ctx, cur);
@@ -497,6 +497,9 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
        * to send a message to only the sender of the message.  This
        * provides a way to do that.
        */
+      /* L10N:
+         Asks whether the user respects the reply-to header.
+         If she says no, mutt will reply to the from header's address instead. */
       snprintf (prompt, sizeof (prompt), _("Reply to %s%s?"),
 		env->reply_to->mailbox, 
 		env->reply_to->next?",...":"");
@@ -1039,7 +1042,7 @@ static int send_message (HEADER *msg)
 }
 
 /* rfc2047 encode the content-descriptions */
-static void encode_descriptions (BODY *b, short recurse)
+void mutt_encode_descriptions (BODY *b, short recurse)
 {
   BODY *t;
 
@@ -1050,7 +1053,7 @@ static void encode_descriptions (BODY *b, short recurse)
       rfc2047_encode_string (&t->description);
     }
     if (recurse && t->parts)
-      encode_descriptions (t->parts, recurse);
+      mutt_encode_descriptions (t->parts, recurse);
   }
 }
 
@@ -1133,6 +1136,11 @@ static int has_recips (ADDRESS *a)
   return c;
 }
 
+/*
+ * Returns 0 if the message was successfully sent
+ *        -1 if the message was aborted or an error occurred
+ *         1 if the message was postponed
+ */
 int
 ci_send_message (int flags,		/* send mode */
 		 HEADER *msg,		/* template to use for new message */
@@ -1221,29 +1229,37 @@ ci_send_message (int flags,		/* send mode */
   
   if (! (flags & (SENDKEY | SENDPOSTPONED | SENDRESEND)))
   {
-    pbody = mutt_new_body ();
-    pbody->next = msg->content; /* don't kill command-line attachments */
-    msg->content = pbody;
-
-    if (!(ctype = safe_strdup (ContentType)))
-      ctype = safe_strdup ("text/plain");
-    mutt_parse_content_type (ctype, msg->content);
-    FREE (&ctype);
-    msg->content->unlink = 1;
-    msg->content->use_disp = 0;
-    msg->content->disposition = DISPINLINE;
-    
-    if (!tempfile)
+    /* When SENDDRAFTFILE is set, the caller has already
+     * created the "parent" body structure.
+     */
+    if (! (flags & SENDDRAFTFILE))
     {
-      mutt_mktemp (buffer, sizeof (buffer));
-      tempfp = safe_fopen (buffer, "w+");
-      msg->content->filename = safe_strdup (buffer);
+      pbody = mutt_new_body ();
+      pbody->next = msg->content; /* don't kill command-line attachments */
+      msg->content = pbody;
+
+      if (!(ctype = safe_strdup (ContentType)))
+        ctype = safe_strdup ("text/plain");
+      mutt_parse_content_type (ctype, msg->content);
+      FREE (&ctype);
+      msg->content->unlink = 1;
+      msg->content->use_disp = 0;
+      msg->content->disposition = DISPINLINE;
+
+      if (!tempfile)
+      {
+        mutt_mktemp (buffer, sizeof (buffer));
+        tempfp = safe_fopen (buffer, "w+");
+        msg->content->filename = safe_strdup (buffer);
+      }
+      else
+      {
+        tempfp = safe_fopen (tempfile, "a+");
+        msg->content->filename = safe_strdup (tempfile);
+      }
     }
     else
-    {
-      tempfp = safe_fopen (tempfile, "a+");
-      msg->content->filename = safe_strdup (tempfile);
-    }
+      tempfp = safe_fopen (msg->content->filename, "a+");
 
     if (!tempfp)
     {
@@ -1271,7 +1287,8 @@ ci_send_message (int flags,		/* send mode */
     msg->env->from = set_reverse_name (cur->env);
   }
 
-  if (! (flags & (SENDPOSTPONED|SENDRESEND)))
+  if (! (flags & (SENDPOSTPONED|SENDRESEND)) &&
+      ! ((flags & SENDDRAFTFILE) && option (OPTRESUMEDRAFTFILES)))
   {
     if ((flags & (SENDREPLY | SENDFORWARD)) && ctx &&
 	envelope_defaults (msg->env, ctx, cur, flags) == -1)
@@ -1420,7 +1437,7 @@ ci_send_message (int flags,		/* send mode */
       {
 	mutt_env_to_local (msg->env);
 	mutt_edit_headers (Editor, msg->content->filename, msg, fcc, sizeof (fcc));
-	mutt_env_to_idna (msg->env, NULL, NULL);
+	mutt_env_to_intl (msg->env, NULL, NULL);
       }
       else
       {
@@ -1449,7 +1466,7 @@ ci_send_message (int flags,		/* send mode */
       mutt_message_hook (NULL, msg, M_SEND2HOOK);
     }
 
-    if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND)))
+    if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND | SENDDRAFTFILE)))
     {
       if (stat (msg->content->filename, &st) == 0)
       {
@@ -1583,7 +1600,8 @@ main_loop:
 
     fcc_error = 0; /* reset value since we may have failed before */
     mutt_pretty_mailbox (fcc, sizeof (fcc));
-    i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur);
+    i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur,
+                           (flags & SENDNOFREEHEADER ? M_COMPOSE_NOFREEHEADER : 0));
     if (i == -1)
     {
       /* abort */
@@ -1624,9 +1642,9 @@ main_loop:
        */
       msg->read = 0; msg->old = 0;
 
-      encode_descriptions (msg->content, 1);
+      mutt_encode_descriptions (msg->content, 1);
       mutt_prepare_envelope (msg->env, 0);
-      mutt_env_to_idna (msg->env, NULL, NULL);	/* Handle bad IDNAs the next time. */
+      mutt_env_to_intl (msg->env, NULL, NULL);	/* Handle bad IDNAs the next time. */
 
       if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1, fcc) < 0)
       {
@@ -1637,6 +1655,7 @@ main_loop:
       }
       mutt_update_num_postponed ();
       mutt_message _("Message postponed.");
+      rv = 1;
       goto cleanup;
     }
   }
@@ -1656,7 +1675,7 @@ main_loop:
     }
   }
 
-  if (mutt_env_to_idna (msg->env, &tag, &err))
+  if (mutt_env_to_intl (msg->env, &tag, &err))
   {
     mutt_error (_("Bad IDN in \"%s\": '%s'"), tag, err);
     FREE (&err);
@@ -1684,7 +1703,7 @@ main_loop:
    * in case of error.  Ugh.
    */
 
-  encode_descriptions (msg->content, 1);
+  mutt_encode_descriptions (msg->content, 1);
   
   /*
    * Make sure that clear_content and free_clear_content are
@@ -1713,7 +1732,7 @@ main_loop:
         decode_descriptions (msg->content);
         goto main_loop;
       }
-      encode_descriptions (msg->content, 0);
+      mutt_encode_descriptions (msg->content, 0);
     }
   
     /* 
@@ -1923,7 +1942,8 @@ cleanup:
   }
    
   safe_fclose (&tempfp);
-  mutt_free_header (&msg);
+  if (! (flags & SENDNOFREEHEADER))
+    mutt_free_header (&msg);
   
   return rv;
 }

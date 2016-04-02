@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2007,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -568,6 +568,9 @@ struct option_t MuttVars[] = {
   ** S/MIME and PGP will be used instead of the classic code.  Note that
   ** you need to set this option in .muttrc; it won't have any effect when
   ** used interactively.
+  ** .pp
+  ** Note that the GPGME backend does not support creating old-style inline
+  ** (traditional) PGP encrypted or signed messages (see $$pgp_autoinline).
   */
   { "crypt_use_pka", DT_BOOL, R_NONE, OPTCRYPTUSEPKA, 0 },
   /*
@@ -1064,16 +1067,32 @@ struct option_t MuttVars[] = {
   ** as the domain part (after ``@'') for local email addresses as well as
   ** Message-Id headers.
   ** .pp
-  ** Its value is determined at startup as follows: If the node's name
-  ** as returned by the \fCuname(3)\fP function contains the hostname and the
-  ** domain, these are used to construct $$hostname. If there is no
-  ** domain part returned, Mutt will look for a ``domain'' or ``search''
-  ** line in \fC/etc/resolv.conf\fP to determine the domain. Optionally, Mutt
-  ** can be compiled with a fixed domain name in which case a detected
-  ** one is not used.
+  ** Its value is determined at startup as follows: the node's
+  ** hostname is first determined by the \fCuname(3)\fP function.  The
+  ** domain is then looked up using the \fCgethostname(2)\fP and
+  ** \fCgetaddrinfo(3)\fP functions.  If those calls are unable to
+  ** determine the domain, the full value returned by uname is used.
+  ** Optionally, Mutt can be compiled with a fixed domain name in
+  ** which case a detected one is not used.
   ** .pp
   ** Also see $$use_domain and $$hidden_host.
   */
+#ifdef HAVE_LIBIDN
+  { "idn_decode",	DT_BOOL, R_BOTH, OPTIDNDECODE, 1},
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will show you international domain names decoded.
+  ** Note: You can use IDNs for addresses even if this is \fIunset\fP.
+  ** This variable only affects decoding. (IDN only)
+  */
+  { "idn_encode",	DT_BOOL, R_BOTH, OPTIDNENCODE, 1},
+  /*
+  ** .pp
+  ** When \fIset\fP, Mutt will encode international domain names using
+  ** IDN.  Unset this if your SMTP server can handle newer (RFC 6531)
+  ** UTF-8 encoded domains. (IDN only)
+  */
+#endif /* HAVE_LIBIDN */
   { "ignore_linear_white_space",    DT_BOOL, R_NONE, OPTIGNORELWS, 0 },
   /*
   ** .pp
@@ -1311,6 +1330,8 @@ struct option_t MuttVars[] = {
   **            stashed the message: list name or recipient name
   **            if not sent to a list
   ** .dt %P .dd progress indicator for the built-in pager (how much of the file has been displayed)
+  ** .dt %r .dd comma separated list of ``To:'' recipients
+  ** .dt %R .dd comma separated list of ``Cc:'' recipients
   ** .dt %s .dd subject of the message
   ** .dt %S .dd status of the message (``N''/``D''/``d''/``!''/``r''/\(as)
   ** .dt %t .dd ``To:'' field (recipients)
@@ -1714,7 +1735,8 @@ struct option_t MuttVars[] = {
   ** This option controls whether Mutt generates old-style inline
   ** (traditional) PGP encrypted or signed messages under certain
   ** circumstances.  This can be overridden by use of the pgp menu,
-  ** when inline is not required.
+  ** when inline is not required.  The GPGME backend does not support
+  ** this option.
   ** .pp
   ** Note that Mutt might automatically use PGP/MIME for messages
   ** which consist of more than a single MIME part.  Mutt can be
@@ -1776,6 +1798,17 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is a format string, see the $$pgp_decode_command command for
   ** possible \fCprintf(3)\fP-like sequences.
+  ** (PGP only)
+  */
+  { "pgp_decryption_okay",	DT_RX,  R_NONE, UL &PgpDecryptionOkay, 0 },
+  /*
+  ** .pp
+  ** If you assign text to this variable, then an encrypted PGP
+  ** message is only considered successfully decrypted if the output
+  ** from $$pgp_decrypt_command contains the text.  This is used to
+  ** protect against a spoofed encrypted message, with multipart/encrypted
+  ** headers but containing a block that is not actually encrypted.
+  ** (e.g. simply signed and ascii armored text).
   ** (PGP only)
   */
   { "pgp_encrypt_only_command", DT_STR, R_NONE, UL &PgpEncryptOnlyCommand, 0},
@@ -2346,8 +2379,9 @@ struct option_t MuttVars[] = {
   ** Controls whether or not Mutt recalls postponed messages
   ** when composing a new message.
   ** .pp
-  ** \fISetting\fP this variable to is not generally useful, and thus not
-  ** recommended.
+  ** Setting this variable to \fIyes\fP is not generally useful, and thus not
+  ** recommended.  Note that the \fC<recall-message>\fP function can be used
+  ** to manually recall postponed messages.
   ** .pp
   ** Also see $$postponed variable.
   */
@@ -2361,6 +2395,17 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The value of \fI$$record\fP is overridden by the $$force_name and
   ** $$save_name variables, and the ``$fcc-hook'' command.
+  */
+  { "reflow_space_quotes",	DT_BOOL, R_NONE, OPTREFLOWSPACEQUOTES, 1 },
+  /*
+  ** .pp
+  ** This option controls how quotes from format=flowed messages are displayed
+  ** in the pager and when replying (with $$text_flowed \fIunset\fP).
+  ** When set, this option adds spaces after each level of quote marks, turning
+  ** ">>>foo" into "> > > foo".
+  ** .pp
+  ** \fBNote:\fP If $$reflow_text is \fIunset\fP, this option has no effect.
+  ** Also, this option does not affect replies when $$text_flowed is \fIset\fP.
   */
   { "reflow_text",	DT_BOOL, R_NONE, OPTREFLOWTEXT, 1 },
   /*
@@ -2415,6 +2460,31 @@ struct option_t MuttVars[] = {
   ** When \fIset\fP, the cursor will be automatically advanced to the next
   ** (possibly undeleted) message whenever a command that modifies the
   ** current message is executed.
+  */
+  { "resume_draft_files", DT_BOOL, R_NONE, OPTRESUMEDRAFTFILES, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, draft files (specified by \fC-H\fP on the command
+  ** line) are processed similarly to when resuming a postponed
+  ** message.  Recipients are not prompted for; send-hooks are not
+  ** evaluated; no alias expansion takes place; user-defined headers
+  ** and signatures are not added to the message.
+  */
+  { "resume_edited_draft_files", DT_BOOL, R_NONE, OPTRESUMEEDITEDDRAFTFILES, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, draft files previously edited (via \fC-E -H\fP on
+  ** the command line) will have $$resume_draft_files automatically
+  ** set when they are used as a draft file again.
+  ** .pp
+  ** The first time a draft file is saved, mutt will add a header,
+  ** X-Mutt-Resume-Draft to the saved file.  The next time the draft
+  ** file is read in, if mutt sees the header, it will set
+  ** $$resume_draft_files.
+  ** .pp
+  ** This option is designed to prevent multiple signatures,
+  ** user-defined headers, and other processing effects from being
+  ** made multiple times to the draft file.
   */
   { "reverse_alias",	DT_BOOL, R_BOTH, OPTREVALIAS, 0 },
   /*
@@ -2702,6 +2772,7 @@ struct option_t MuttVars[] = {
   ** .dt %k .dd The key-pair specified with $$smime_default_key
   ** .dt %c .dd One or more certificate IDs.
   ** .dt %a .dd The algorithm used for encryption.
+  ** .dt %d .dd The message digest algorithm specified with $$smime_sign_digest_alg.
   ** .dt %C .dd CA location:  Depending on whether $$smime_ca_location
   ** .          points to a directory or file, this expands to
   ** .          ``-CApath $$smime_ca_location'' or ``-CAfile $$smime_ca_location''.
@@ -2823,6 +2894,13 @@ struct option_t MuttVars[] = {
   ** .pp
   ** This is a format string, see the $$smime_decrypt_command command for
   ** possible \fCprintf(3)\fP-like sequences.
+  ** (S/MIME only)
+  */
+  { "smime_sign_digest_alg",	DT_STR,	 R_NONE, UL &SmimeDigestAlg, UL "sha256" },
+  /*
+  ** .pp
+  ** This sets the algorithm that should be used for the signature message digest.
+  ** Valid choices are ``md5'', ``sha1'', ``sha224'', ``sha256'', ``sha384'', ``sha512''.
   ** (S/MIME only)
   */
   { "smime_sign_opaque_command", 	DT_STR, R_NONE, UL &SmimeSignOpaqueCommand, 0},
@@ -3407,15 +3485,6 @@ struct option_t MuttVars[] = {
   ** generated unless the user explicitly sets one using the ``$my_hdr''
   ** command.
   */
-#ifdef HAVE_LIBIDN
-  { "use_idn",		DT_BOOL, R_BOTH, OPTUSEIDN, 1},
-  /*
-  ** .pp
-  ** When \fIset\fP, Mutt will show you international domain names decoded.
-  ** Note: You can use IDNs for addresses even if this is \fIunset\fP.
-  ** This variable only affects decoding.
-  */
-#endif /* HAVE_LIBIDN */
 #ifdef HAVE_GETADDRINFO
   { "use_ipv6",		DT_BOOL, R_NONE, OPTUSEIPV6, 1},
   /*
@@ -3654,6 +3723,8 @@ const struct command_t Commands[] = {
   { "macro",		mutt_parse_macro,	0 },
   { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
   { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
+  { "mailto_allow",	parse_list,		UL &MailtoAllow },
+  { "unmailto_allow",	parse_unlist,		UL &MailtoAllow },
   { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
   { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
   { "mime_lookup",	parse_list,	UL &MimeLookupList },

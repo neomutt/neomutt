@@ -25,8 +25,6 @@
 #include "mutt_menu.h"
 #include "mbyte.h"
 
-extern size_t UngetCount;
-
 char* SearchBuffers[MENU_MAX];
 
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
@@ -415,7 +413,7 @@ void menu_jump (MUTTMENU *menu)
 
   if (menu->max)
   {
-    mutt_ungetch (LastKey, 0);
+    mutt_unget_event (LastKey, 0);
     buf[0] = 0;
     if (mutt_get_field (_("Jump to: "), buf, sizeof (buf), 0) == 0 && buf[0])
     {
@@ -684,6 +682,9 @@ MUTTMENU *mutt_new_menu (int menu)
 {
   MUTTMENU *p = (MUTTMENU *) safe_calloc (1, sizeof (MUTTMENU));
 
+  if ((menu < 0) || (menu >= MENU_MAX))
+    menu = MENU_GENERIC;
+
   p->menu = menu;
   p->current = 0;
   p->top = 0;
@@ -814,7 +815,7 @@ static int menu_dialog_dokey (MUTTMENU *menu, int *ip)
   }
   else
   {
-    mutt_ungetch (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
+    mutt_unget_event (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
     return -1;
   }
 }
@@ -902,12 +903,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       }
       else /* None tagged, OP_TAG_PREFIX_COND */
       {
-	event_t tmp;
-	while(UngetCount>0)
-	{
-	  tmp=mutt_getch();
-	  if(tmp.op==OP_END_COND)break;
-	}
+	mutt_flush_macro_to_endcond ();
 	mutt_message _("Nothing to do.");
 	i = -1;
       }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -186,6 +186,7 @@ void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 int mutt_filter_unprintable (char **);
 void mutt_curses_error (const char *, ...);
 void mutt_curses_message (const char *, ...);
+void mutt_encode_descriptions (BODY *, short);
 void mutt_encode_path (char *, size_t, const char *);
 void mutt_enter_command (void);
 void mutt_expand_aliases_env (ENVELOPE *);
@@ -355,10 +356,10 @@ int mutt_search_command (int, int);
 int mutt_smtp_send (const ADDRESS *, const ADDRESS *, const ADDRESS *,
                     const ADDRESS *, const char *, int);
 #endif
-int mutt_wstr_trunc (const char *, size_t, size_t, size_t *);
+size_t mutt_wstr_trunc (const char *, size_t, size_t, size_t *);
 int mutt_charlen (const char *s, int *);
 int mutt_strwidth (const char *);
-int mutt_compose_menu (HEADER *, char *, size_t, HEADER *);
+int mutt_compose_menu (HEADER *, char *, size_t, HEADER *, int);
 int mutt_thread_set_flag (HEADER *, int, int, int);
 int mutt_user_is_recipient (HEADER *);
 void mutt_update_num_postponed (void);

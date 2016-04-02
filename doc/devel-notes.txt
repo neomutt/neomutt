@@ -196,6 +196,10 @@ Style Guide
   from the times when this was an iso-8859-1 source code tree,
   please feel free to fix them.
 
+- prefix translator comments with L10N:
+  /* L10N: this is a translator comment */
+  puts(_("String to translate));
+
 Documentation
 -------------
 

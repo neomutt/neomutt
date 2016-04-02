@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2000-8 Brendan Cully <brendan@kublai.com>
+ * Copyright (C) 2000-2008,2012,2014 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by

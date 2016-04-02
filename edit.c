@@ -247,7 +247,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       rfc822_free_address (&e->to);
       e->to = mutt_parse_adrlist (e->to, tmp);
       e->to = mutt_expand_aliases (e->to);
-      mutt_addrlist_to_idna (e->to, NULL);	/* XXX - IDNA error reporting? */
+      mutt_addrlist_to_intl (e->to, NULL);	/* XXX - IDNA error reporting? */
       tmp[0] = 0;
       rfc822_write_address (tmp, sizeof (tmp), e->to, 1);
       mvaddstr (LINES - 1, 4, tmp);
@@ -255,7 +255,7 @@ static void be_edit_header (ENVELOPE *e, int force)
   }
   else
   {
-    mutt_addrlist_to_idna (e->to, NULL);	/* XXX - IDNA error reporting? */
+    mutt_addrlist_to_intl (e->to, NULL);	/* XXX - IDNA error reporting? */
     addstr (tmp);
   }
   addch ('\n');
@@ -281,12 +281,12 @@ static void be_edit_header (ENVELOPE *e, int force)
       e->cc = mutt_parse_adrlist (e->cc, tmp);
       e->cc = mutt_expand_aliases (e->cc);
       tmp[0] = 0;
-      mutt_addrlist_to_idna (e->cc, NULL);
+      mutt_addrlist_to_intl (e->cc, NULL);
       rfc822_write_address (tmp, sizeof (tmp), e->cc, 1);
       mvaddstr (LINES - 1, 4, tmp);
     }
     else
-      mutt_addrlist_to_idna (e->cc, NULL);
+      mutt_addrlist_to_intl (e->cc, NULL);
     addch ('\n');
   }
 
@@ -301,13 +301,13 @@ static void be_edit_header (ENVELOPE *e, int force)
       rfc822_free_address (&e->bcc);
       e->bcc = mutt_parse_adrlist (e->bcc, tmp);
       e->bcc = mutt_expand_aliases (e->bcc);
-      mutt_addrlist_to_idna (e->bcc, NULL);
+      mutt_addrlist_to_intl (e->bcc, NULL);
       tmp[0] = 0;
       rfc822_write_address (tmp, sizeof (tmp), e->bcc, 1);
       mvaddstr (LINES - 1, 5, tmp);
     }
     else
-      mutt_addrlist_to_idna (e->bcc, NULL);
+      mutt_addrlist_to_intl (e->bcc, NULL);
     addch ('\n');
   }
 }
@@ -393,6 +393,11 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	  be_print_header (msg->env);
 	  for (i = 0; i < buflen; i++)
 	    addstr (buf[i]);
+          /* L10N:
+             This entry is shown AFTER the message content,
+             not IN the middle of the content.
+             So it doesn't mean "(message will continue)"
+             but means "(press any key to continue using mutt)". */
 	  addstr (_("(continue)\n"));
 	  break;
 	case 'q':
@@ -442,7 +447,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
 	    {
 	      mutt_env_to_local (msg->env);
 	      mutt_edit_headers (NONULL(Visual), path, msg, NULL, 0);
-	      if (mutt_env_to_idna (msg->env, &tag, &err))
+	      if (mutt_env_to_intl (msg->env, &tag, &err))
 		printw (_("Bad IDN in %s: '%s'\n"), tag, err);
 	    }
 	    else

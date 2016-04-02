@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2012-2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2002,2004 Thomas Roessler <roessler@does-not-exist.org>
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -541,9 +541,9 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
   char file[_POSIX_PATH_MAX];
   BODY *b;
   FILE *bfp;
-
   int rv = -1;
   STATE s;
+  int sec_type;
 
   memset (&s, 0, sizeof (s));
 
@@ -574,17 +574,15 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   /* decrypt pgp/mime encoded messages */
 
-  if ((WithCrypto & (APPLICATION_PGP|APPLICATION_SMIME) & hdr->security)
-      && mutt_is_multipart_encrypted (newhdr->content))
+  if ((WithCrypto & APPLICATION_PGP) &&
+      (sec_type = mutt_is_multipart_encrypted (newhdr->content)))
   {
-    int ccap = WithCrypto & (APPLICATION_PGP|APPLICATION_SMIME) & hdr->security;
-    newhdr->security |= ENCRYPT | ccap;
-    if (!crypt_valid_passphrase (ccap))
+    newhdr->security |= sec_type;
+    if (!crypt_valid_passphrase (sec_type))
       goto err;
 
     mutt_message _("Decrypting message...");
-    if (((ccap & APPLICATION_PGP) && crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
-	|| ((ccap & APPLICATION_SMIME) && crypt_smime_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
+    if ((crypt_pgp_decrypt_mime (fp, &bfp, newhdr->content, &b) == -1)
 	|| b == NULL)
     {
  err:
@@ -678,17 +676,25 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
       goto bail;
 
 
-    if ((WithCrypto & APPLICATION_PGP)
-	&& (mutt_is_application_pgp (b) & (ENCRYPT|SIGN)))
+    if ((WithCrypto & APPLICATION_PGP) &&
+	((sec_type = mutt_is_application_pgp (b)) & (ENCRYPT|SIGN)))
     {
-
       mutt_body_handler (b, &s);
 
-      newhdr->security |= mutt_is_application_pgp (newhdr->content);
+      newhdr->security |= sec_type;
 
       b->type = TYPETEXT;
       mutt_str_replace (&b->subtype, "plain");
       mutt_delete_parameter ("x-action", &b->parameter);
+    }
+    else if ((WithCrypto & APPLICATION_SMIME) &&
+             ((sec_type = mutt_is_application_smime (b)) & (ENCRYPT|SIGN)))
+    {
+      mutt_body_handler (b, &s);
+
+      newhdr->security |= sec_type;
+      b->type = TYPETEXT;
+      mutt_str_replace (&b->subtype, "plain");
     }
     else
       mutt_decode_attachment (b, &s);

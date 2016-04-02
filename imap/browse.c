@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
+ * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2008 Brendan Cully <brendan@kublai.com>
  * 
  *     This program is free software; you can redistribute it and/or modify
@@ -43,8 +43,8 @@ int imap_browse (char* path, struct browser_state* state)
   IMAP_DATA* idata;
   IMAP_LIST list;
   char buf[LONG_STRING];
-  char buf2[LONG_STRING];
   char mbox[LONG_STRING];
+  char munged_mbox[LONG_STRING];
   char list_cmd[5];
   int n;
   int nsup;
@@ -71,44 +71,44 @@ int imap_browse (char* path, struct browser_state* state)
   /* skip check for parents when at the root */
   if (mx.mbox && mx.mbox[0] != '\0')
   {
-    int rc;
-    char *ptr;
     imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
-    ptr = safe_strdup (mbox);
-    imap_utf7_encode (&ptr);
-    mbox[sizeof (mbox) - 1] = '\0';
-    strncpy (mbox, ptr, sizeof (mbox) - 1);
-    FREE (&ptr);
     n = mutt_strlen (mbox);
+  }
+  else
+  {
+    mbox[0] = '\0';
+    n = 0;
+  }
 
+  if (n)
+  {
+    int rc;
     dprint (3, (debugfile, "imap_browse: mbox: %s\n", mbox));
 
     /* if our target exists and has inferiors, enter it if we
      * aren't already going to */
-    if (mbox[n-1] != idata->delim)
+    imap_munge_mbox_name (idata, munged_mbox, sizeof (munged_mbox), mbox);
+    snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, munged_mbox);
+    imap_cmd_start (idata, buf);
+    idata->cmdtype = IMAP_CT_LIST;
+    idata->cmddata = &list;
+    do
     {
-      snprintf (buf, sizeof (buf), "%s \"\" \"%s\"", list_cmd, mbox);
-      imap_cmd_start (idata, buf);
-      idata->cmdtype = IMAP_CT_LIST;
-      idata->cmddata = &list;
-      do
+      list.name = 0;
+      rc = imap_cmd_step (idata);
+      if (rc == IMAP_CMD_CONTINUE && list.name)
       {
-	list.name = 0;
-        rc = imap_cmd_step (idata);
-        if (rc == IMAP_CMD_CONTINUE && list.name)
+        if (!list.noinferiors && list.name[0] &&
+            !imap_mxcmp (list.name, mbox) &&
+            n < sizeof (mbox) - 1)
         {
-          if (!list.noinferiors && list.name[0] &&
-              !imap_mxcmp (list.name, mbox) &&
-            (n = strlen (mbox)) < sizeof (mbox) - 1)
-          {
-            mbox[n++] = list.delim;
-            mbox[n] = '\0';
-          }
+          mbox[n++] = list.delim;
+          mbox[n] = '\0';
         }
       }
-      while (rc == IMAP_CMD_CONTINUE);
-      idata->cmddata = NULL;
     }
+    while (rc == IMAP_CMD_CONTINUE);
+    idata->cmddata = NULL;
 
     /* if we're descending a folder, mark it as current in browser_state */
     if (mbox[n-1] == list.delim)
@@ -166,8 +166,6 @@ int imap_browse (char* path, struct browser_state* state)
       }
     }
   }
-  else
-    mbox[0] = '\0';
 
   /* no namespace, no folder: set folder to host only */
   if (!state->folder)
@@ -180,9 +178,9 @@ int imap_browse (char* path, struct browser_state* state)
 
   dprint (3, (debugfile, "imap_browse: Quoting mailbox scan: %s -> ", mbox));
   snprintf (buf, sizeof (buf), "%s%%", mbox);
-  imap_quote_string (buf2, sizeof (buf2), buf);
-  dprint (3, (debugfile, "%s\n", buf2));
-  snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, buf2);
+  imap_munge_mbox_name (idata, munged_mbox, sizeof (munged_mbox), buf);
+  dprint (3, (debugfile, "%s\n", munged_mbox));
+  snprintf (buf, sizeof (buf), "%s \"\" %s", list_cmd, munged_mbox);
   if (browse_add_list_result (idata, buf, state, 0))
     goto fail;
 
@@ -321,7 +319,16 @@ int imap_mailbox_rename(const char* mailbox)
     goto fail;
   }
 
+  /* TODO: add mutt_error call, such as
+   * "Cannot rename root folder"
+   */
+  if (!mx.mbox)
+  {
+    goto fail;
+  }
+
   snprintf(buf, sizeof (buf), _("Rename mailbox %s to: "), mx.mbox);
+  strfcpy (newname, mx.mbox, sizeof (newname));
   
  if (mutt_get_field (buf, newname, sizeof (newname), M_FILE) < 0)
     goto fail;
@@ -392,8 +399,12 @@ static int browse_add_list_result (IMAP_DATA* idata, const char* cmd,
   return rc == IMAP_CMD_OK ? 0 : -1;
 }
 
-/* imap_add_folder: add a folder name to the browser list, formatting it as
- *   necessary. */
+/* imap_add_folder:
+ * add a folder name to the browser list, formatting it as necessary.
+ *
+ * The folder parameter should already be 'unmunged' via
+ * imap_unmunge_mbox_name().
+ */
 static void imap_add_folder (char delim, char *folder, int noselect,
   int noinferiors, struct browser_state *state, short isparent)
 {
@@ -403,8 +414,6 @@ static void imap_add_folder (char delim, char *folder, int noselect,
 
   if (imap_parse_path (state->folder, &mx))
     return;
-
-  imap_unmunge_mbox_name (folder);
 
   if (state->entrylen + 1 == state->entrymax)
   {

@@ -413,6 +413,16 @@ in the index. See the Mutt manual for details.
 This command will remove all hooks of a given type, or all hooks
 when \(lq\fB*\fP\(rq is used as an argument.  \fIhook-type\fP
 can be any of the \fB-hook\fP commands documented above.
+.PP
+.nf
+\fBmailto_allow\fP \fIheader-field\fP [ ... ]
+\fBunmailto_allow\fP [ \fB*\fP | \fIheader-field\fP ... ]
+.fi
+.IP
+These commands allow the user to modify the list of allowed header
+fields in a \fImailto:\fP URL that Mutt will include in the
+the generated message.  By default the list contains only
+\fBsubject\fP and \fBbody\fP, as specified by RFC2368.
 .SH PATTERNS
 .PP
 In various places with mutt, including some of the above mentioned

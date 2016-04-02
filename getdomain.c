@@ -1,68 +1,69 @@
+/*
+ * Copyright (C) 2009,2013 Derek Martin <code@pizzashack.org>
+ *
+ *     This program is free software; you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation; either version 2 of the License, or
+ *     (at your option) any later version.
+ *
+ *     This program is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with this program; if not, write to the Free Software
+ *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
-#include <stdio.h>
-#include <ctype.h>
 #include <string.h>
+#include <unistd.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 #include "mutt.h"
 
-#ifndef STDC_HEADERS
-int fclose ();
-#endif
 
-/* poor man's version of getdomainname() for systems where it does not return
- * return the DNS domain, but the NIS domain.
- */
-
-static void strip_trailing_dot (char *q)
+int getdnsdomainname (char *d, size_t len)
 {
-  char *p = q;
-  
-  for (; *q; q++)
-    p = q;
-  
-  if (*p == '.')
-    *p = '\0';
-}
+  /* A DNS name can actually be only 253 octets, string is 256 */
+  char *node;
+  long node_len;
+  struct addrinfo hints;
+  struct addrinfo *h;
+  char *p;
+  int ret;
 
-int getdnsdomainname (char *s, size_t l)
-{
-  FILE *f;
-  char tmp[1024];
-  char *p = NULL;
-  char *q;
+  *d = '\0';
+  memset(&hints, 0, sizeof (struct addrinfo));
+  hints.ai_flags = AI_CANONNAME;
+  hints.ai_family = AF_UNSPEC;
 
-  if ((f = fopen ("/etc/resolv.conf", "r")) == NULL) return (-1);
-
-  tmp[sizeof (tmp) - 1] = 0;
-
-  l--; /* save room for the terminal \0 */
-
-  while (fgets (tmp, sizeof (tmp) - 1, f) != NULL)
+  if ((node_len = sysconf(_SC_HOST_NAME_MAX)) == -1)
+    node_len = STRING;
+  node = safe_malloc(node_len + 1);
+  if (gethostname(node, node_len))
+    ret = -1;
+  else if (getaddrinfo(node, NULL, &hints, &h))
+    ret = -1;
+  else
   {
-    p = tmp;
-    while (ISSPACE (*p)) p++;
-    if (mutt_strncmp ("domain", p, 6) == 0 || mutt_strncmp ("search", p, 6) == 0)
+    if (!(p = strchr(h->ai_canonname, '.')))
+      ret = -1;
+    else
     {
-      p += 6;
-      
-      for (q = strtok (p, " \t\n"); q; q = strtok (NULL, " \t\n"))
-	if (strcmp (q, "."))
-	  break;
-
-      if (q)
-      {
-	strip_trailing_dot (q);
-	strfcpy (s, q, l);
-	safe_fclose (&f);
-	return 0;
-      }
-      
+      strfcpy(d, ++p, len);
+      ret = 0;
+      dprint(1, (debugfile, "getdnsdomainname(): %s\n", d));
     }
+    freeaddrinfo(h);
   }
-
-  safe_fclose (&f);
-  return (-1);
+  FREE (&node);
+  return ret;
 }
+

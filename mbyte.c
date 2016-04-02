@@ -548,6 +548,14 @@ int mutt_filter_unprintable (char **s)
     }
     if (!IsWPrint (wc))
       wc = '?';
+    /* HACK:
+     * Work around a gnu screen bug. See ticket #3827.
+     * Filter out the RIGHT-TO-LEFT and LEFT-TO-RIGHT bidi marks because
+     * they result in screen corruption.
+     */
+    else if (Charset_is_utf8 &&
+             ((wc == (wchar_t)0x200f) || (wc == (wchar_t)0x200e)))
+      wc = '?';
     k2 = wcrtomb (scratch, wc, &mbstate2);
     scratch[k2] = '\0';
     mutt_buffer_addstr (b, scratch);

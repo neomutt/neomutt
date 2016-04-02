@@ -256,7 +256,7 @@ void mutt_create_alias (ENVELOPE *cur, ADDRESS *iadr)
   mutt_check_alias_name (tmp, buf, sizeof (buf));
   
 retry_name:
-  /* add a new alias */
+  /* L10N: prompt to add a new alias */
   if (mutt_get_field (_("Alias as: "), buf, sizeof (buf), 0) != 0 || !buf[0])
     return;
 
@@ -290,7 +290,7 @@ retry_name:
   else
     buf[0] = 0;
 
-  mutt_addrlist_to_idna (adr, NULL);
+  mutt_addrlist_to_intl (adr, NULL);
   
   do
   {
@@ -302,7 +302,7 @@ retry_name:
     
     if((new->addr = rfc822_parse_adrlist (new->addr, buf)) == NULL)
       BEEP ();
-    if (mutt_addrlist_to_idna (new->addr, &err))
+    if (mutt_addrlist_to_intl (new->addr, &err))
     {
       mutt_error (_("Error: '%s' is a bad IDN."), err);
       mutt_sleep (2);

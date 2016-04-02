@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 1996,1997 Michael R. Elkins <me@mutt.org>
- * Copyright (C) 1999-2000,2002-4,2006 Thomas Roessler <roessler@does-not-exist.org>
- * Copyright (C) 2001  Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 1996-1997 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1999-2000,2002-2004,2006 Thomas Roessler <roessler@does-not-exist.org>
+ * Copyright (C) 2001 Thomas Roessler <roessler@does-not-exist.org>
  *                     Oliver Ehli <elmy@acm.org>
- * Copyright (C) 2003  Werner Koch <wk@gnupg.org>
+ * Copyright (C) 2003 Werner Koch <wk@gnupg.org>
  * Copyright (C) 2004 g10code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -142,21 +142,34 @@ int mutt_protect (HEADER *msg, char *keylist)
 
   if ((WithCrypto & APPLICATION_PGP) && ((msg->security & PGPINLINE) == PGPINLINE))
   {
-    /* they really want to send it inline... go for it */
-    if (!isendwin ()) mutt_endwin _("Invoking PGP...");
-    pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
-    if (pbody)
+    if ((msg->content->type != TYPETEXT) ||
+        ascii_strcasecmp (msg->content->subtype, "plain"))
     {
-      msg->content = pbody;
-      return 0;
-    }
-
-    /* otherwise inline won't work...ask for revert */
-    if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      if ((i = query_quadoption (OPT_PGPMIMEAUTO,
+              _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?"))) != M_YES)
       {
-	mutt_error _("Mail not sent.");
-	return -1;
+        mutt_error _("Mail not sent: inline PGP can't be used with attachments.");
+        return -1;
       }
+    }
+    else
+    {
+      /* they really want to send it inline... go for it */
+      if (!isendwin ()) mutt_endwin _("Invoking PGP...");
+      pbody = crypt_pgp_traditional_encryptsign (msg->content, flags, keylist);
+      if (pbody)
+      {
+        msg->content = pbody;
+        return 0;
+      }
+
+      /* otherwise inline won't work...ask for revert */
+      if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      {
+        mutt_error _("Mail not sent.");
+        return -1;
+      }
+    }
 
     /* go ahead with PGP/MIME */
   }
@@ -879,9 +892,8 @@ static void crypt_fetch_signatures (BODY ***signatures, BODY *a, int *n)
 int mutt_signed_handler (BODY *a, STATE *s)
 {
   char tempfile[_POSIX_PATH_MAX];
-  char *protocol;
-  int protocol_major = TYPEOTHER;
-  char *protocol_minor = NULL;
+  int signed_type;
+  int inconsistent = 0;
   
   BODY *b = a;
   BODY **signatures = NULL;
@@ -893,29 +905,44 @@ int mutt_signed_handler (BODY *a, STATE *s)
   if (!WithCrypto)
     return -1;
 
-  protocol = mutt_get_parameter ("protocol", a->parameter);
   a = a->parts;
-
-  /* extract the protocol information */
-  
-  if (protocol)
+  signed_type = mutt_is_multipart_signed (b);
+  if (!signed_type)
   {
-    char major[STRING];
-    char *t;
-
-    if ((protocol_minor = strchr (protocol, '/'))) protocol_minor++;
-    
-    strfcpy (major, protocol, sizeof(major));
-    if((t = strchr(major, '/')))
-      *t = '\0';
-    
-    protocol_major = mutt_check_mime_type (major);
+    /* A null protocol value is already checked for in mutt_body_handler() */
+    state_printf (s, _("[-- Error: "
+                       "Unknown multipart/signed protocol %s! --]\n\n"),
+                  mutt_get_parameter ("protocol", b->parameter));
+    return mutt_body_handler (a, s);
   }
 
-  /* consistency check */
-
-  if (!(a && a->next && a->next->type == protocol_major && 
-      !mutt_strcasecmp (a->next->subtype, protocol_minor)))
+  if (!(a && a->next))
+    inconsistent = 1;
+  else
+  {
+    switch (signed_type)
+    {
+      case SIGN:
+        if (a->next->type != TYPEMULTIPART ||
+            ascii_strcasecmp (a->next->subtype, "mixed"))
+          inconsistent = 1;
+        break;
+      case PGPSIGN:
+        if (a->next->type != TYPEAPPLICATION ||
+            ascii_strcasecmp (a->next->subtype, "pgp-signature"))
+          inconsistent = 1;
+        break;
+      case SMIMESIGN:
+        if (a->next->type != TYPEAPPLICATION ||
+            (ascii_strcasecmp (a->next->subtype, "x-pkcs7-signature") &&
+             ascii_strcasecmp (a->next->subtype, "pkcs7-signature")))
+          inconsistent = 1;
+        break;
+      default:
+        inconsistent = 1;
+    }
+  }
+  if (inconsistent)
   {
     state_attach_puts (_("[-- Error: "
                          "Inconsistent multipart/signed structure! --]\n\n"),
@@ -923,27 +950,6 @@ int mutt_signed_handler (BODY *a, STATE *s)
     return mutt_body_handler (a, s);
   }
 
-  
-  if ((WithCrypto & APPLICATION_PGP)
-      && protocol_major == TYPEAPPLICATION
-      && !ascii_strcasecmp (protocol_minor, "pgp-signature"))
-    ;
-  else if ((WithCrypto & APPLICATION_SMIME)
-           && protocol_major == TYPEAPPLICATION
-	   && !(ascii_strcasecmp (protocol_minor, "x-pkcs7-signature")
-	       && ascii_strcasecmp (protocol_minor, "pkcs7-signature")))
-    ;
-  else if (protocol_major == TYPEMULTIPART
-	   && !ascii_strcasecmp (protocol_minor, "mixed"))
-    ;
-  else
-  {
-    state_printf (s, _("[-- Error: "
-                       "Unknown multipart/signed protocol %s! --]\n\n"),
-                  protocol);
-    return mutt_body_handler (a, s);
-  }
-  
   if (s->flags & M_DISPLAY)
   {
     

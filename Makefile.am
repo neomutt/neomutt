@@ -33,7 +33,7 @@ mutt_SOURCES = \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c editmsg.c mbyte.c \
+	muttlib.c editmsg.c mbyte.c mutt_idna.c \
 	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
@@ -53,7 +53,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
 EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
 	crypt-mod-smime-gpgme.c dotlock.c gnupgparse.c hcache.c md5.c \
-	mutt_idna.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
+	mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
 	mutt_tunnel.c pgp.c pgpinvoke.c pgpkey.c pgplib.c pgpmicalg.c \
 	pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c resize.c sha1.c \
 	smime.c smtp.c utf8.c wcwidth.c \
@@ -112,7 +112,7 @@ conststrings.c: txt2c config.status
 
 CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
-DISTCLEANFILES= flea smime_keys txt2c po/mutt.pot
+DISTCLEANFILES= flea smime_keys txt2c po/$(PACKAGE).pot
 
 ACLOCAL_AMFLAGS = -I m4
 
@@ -140,8 +140,13 @@ reldate.h: $(srcdir)/ChangeLog
 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
 	rm reldate.h.tmp
 
+# The '#undef ENABLE_NLS' is to work around an automake ordering issue:
+# BUILT_SOURCES are processed before SUBDIRS.
+# If configured with --with-included-gettext this means that intl will
+# not have generated libintl.h yet, and mutt.h -> lib.h will generate
+# an error.
 hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh $(MUTT_MD5)
-	( echo '#include "config.h"'; echo '#include "mutt.h"'; ) \
+	( echo '#include "config.h"'; echo '#undef ENABLE_NLS'; echo '#include "mutt.h"'; ) \
 	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
 
 patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh

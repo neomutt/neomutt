@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2009-2012 Michael R. Elkins <me@mutt.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@
 #endif
 
 /* If you are debugging this file, comment out the following line. */
-/*#define NDEBUG*/
+#define NDEBUG
 
 #ifdef NDEBUG
 #define assert(x)
@@ -2603,7 +2603,7 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
     rfc822_qualify (from, fqdn);
 
   rfc2047_encode_adrlist (from, "Resent-From");
-  if (mutt_addrlist_to_idna (from, &err))
+  if (mutt_addrlist_to_intl (from, &err))
   {
     mutt_error (_("Bad IDN %s while preparing resent-from."),
 		err);

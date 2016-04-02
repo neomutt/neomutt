@@ -4,6 +4,38 @@ mutt. Please read this file carefully when upgrading your installation.
 The keys used are:
   !: modified feature, -: deleted feature, +: new feature
 
+1.6.0 (2016-04-04):
+
+  + Enabled utf-8 mailbox support for IMAP.
+  + New expandos %r and %R for comma separated list of To: and Cc:
+    recipients respectively.
+  + Improved support for internationalized email and SMTPUTF8 (RFC653[0-3]).
+  ! $use_idn has been renamed to $idn_decode.
+  + $idn_encode controls whether outgoing email address domains will
+    be IDNA encoded.  If your MTA supports it, unset to use utf-8
+    email address domains.
+  + The S/MIME message digest algorithm is now specified using the
+    option $smime_sign_digest_alg.  Note that $smime_sign_command
+    should be modified to include "-md %d".  Please see
+    contrib/smime.rc.
+  + $reflow_space_quotes allows format=flowed email quotes to be
+    displayed with spacing between them.
+  ! multipart draft files are now supported.
+  + The "-E" command line argument causes mutt to edit draft or include files.
+    All changes made in mutt will be saved back out to those files.
+  + $resume_draft_files and $resume_edited_draft_files control how
+    mutt processes draft files.
+  + For classic gpg mode, $pgp_decryption_okay should be set to verify
+    multipart/encrypted are actually encrypted.  Please see
+    contrib/gpg.rc for the suggested value.
+  ! mailto URL header parameters by default are now restricted to
+    'body' and 'subject'.
+  + mailto_allow and unmailto_allow can be used to add or remove
+    allowed mailto header parameters.
+  ! The method of setting $hostname has been changed.  Rather than
+    scanning /etc/resolv.conf, the domain will now be determined using
+    DNS calls.
+
 1.5.24 (2015-08-31):
 
   + terminal status-line (TS) support, a.k.a. xterm title. see the

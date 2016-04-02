@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-9 Brandon Long <blong@fiction.net>
+ * Copyright (C) 1996-1999 Brandon Long <blong@fiction.net>
  * Copyright (C) 1999-2009 Brendan Cully <brendan@kublai.com>
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -137,6 +137,8 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
   }
   if (evalhc)
   {
+    /* L10N:
+       Comparing the cached data with the IMAP server's data */
     mutt_progress_init (&progress, _("Evaluating cache..."),
 			M_PROGRESS_MSG, ReadInc, msgend + 1);
 
@@ -642,7 +644,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   mutt_progress_init (&progressbar, _("Uploading message..."),
 		      M_PROGRESS_SIZE, NetInc, len);
 
-  imap_munge_mbox_name (mbox, sizeof (mbox), mailbox);
+  imap_munge_mbox_name (idata, mbox, sizeof (mbox), mailbox);
   imap_make_date (internaldate, msg->received);
 
   imap_flags[0] = imap_flags[1] = 0;
@@ -773,7 +775,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
   if (!*mbox)
     strfcpy (mbox, "INBOX", sizeof (mbox));
-  imap_munge_mbox_name (mmbox, sizeof (mmbox), mbox);
+  imap_munge_mbox_name (idata, mmbox, sizeof (mmbox), mbox);
 
   /* loop in case of TRYCREATE */
   do

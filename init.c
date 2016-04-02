@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -874,7 +874,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	case ADDR:
 	  if ((addr = mutt_parse_adrlist (NULL, buf->data)) == NULL)
 	    goto bail;
-	  if (mutt_addrlist_to_idna (addr, &estr))
+	  if (mutt_addrlist_to_intl (addr, &estr))
 	  { 
 	    snprintf (err->data, err->dsize, _("%sgroup: warning: bad IDN '%s'.\n"),
 		      data == 1 ? "un" : "", estr);
@@ -1339,7 +1339,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     last->next = tmp;
   else
     Aliases = tmp;
-  if (mutt_addrlist_to_idna (tmp->addr, &estr))
+  if (mutt_addrlist_to_intl (tmp->addr, &estr))
   {
     snprintf (err->data, err->dsize, _("Warning: Bad IDN '%s' in alias '%s'.\n"),
 	      estr, tmp->name);
@@ -2293,7 +2293,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
   {
     /* the muttrc source keyword */
     snprintf (err->data, err->dsize, rc >= -MAXERRS ? _("source: errors in %s")
-      : _("source: reading aborted due too many errors in %s"), rcfile);
+      : _("source: reading aborted due to too many errors in %s"), rcfile);
     rc = -1;
   }
   return (rc);
@@ -2889,6 +2889,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   struct passwd *pw;
   struct utsname utsname;
   char *p, buffer[STRING];
+  char *domain = NULL;
   int i, default_rc = 0, need_pause = 0;
   BUFFER err;
 
@@ -2953,30 +2954,53 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 #endif
 
   /* And about the host... */
-  uname (&utsname);
+
+#ifdef DOMAIN
+  domain = safe_strdup (DOMAIN);
+#endif /* DOMAIN */
+
+  /*
+   * The call to uname() shouldn't fail, but if it does, the system is horribly
+   * broken, and the system's networking configuration is in an unreliable
+   * state.  We should bail.
+   */
+  if ((uname (&utsname)) == -1)
+  {
+    mutt_endwin (NULL);
+    perror (_("unable to determine nodename via uname()"));
+    exit (1);
+  }
+
   /* some systems report the FQDN instead of just the hostname */
   if ((p = strchr (utsname.nodename, '.')))
-  {
     Hostname = mutt_substrdup (utsname.nodename, p);
-    p++;
-    strfcpy (buffer, p, sizeof (buffer)); /* save the domain for below */
-  }
   else
     Hostname = safe_strdup (utsname.nodename);
 
-#ifndef DOMAIN
-#define DOMAIN buffer
-  if (!p && getdnsdomainname (buffer, sizeof (buffer)) == -1)
-    Fqdn = safe_strdup ("@");
-  else
-#endif /* DOMAIN */
-    if (*DOMAIN != '@')
+  /* now get FQDN.  Use configured domain first, DNS next, then uname */
+  if (domain)
   {
-    Fqdn = safe_malloc (mutt_strlen (DOMAIN) + mutt_strlen (Hostname) + 2);
-    sprintf (Fqdn, "%s.%s", NONULL(Hostname), DOMAIN);	/* __SPRINTF_CHECKED__ */
+    /* we have a compile-time domain name, use that for Fqdn */
+    Fqdn = safe_malloc (mutt_strlen (domain) + mutt_strlen (Hostname) + 2);
+    sprintf (Fqdn, "%s.%s", NONULL(Hostname), domain);	/* __SPRINTF_CHECKED__ */
+  }
+  else if (!(getdnsdomainname (buffer, sizeof buffer)))
+  {
+    Fqdn = safe_malloc (mutt_strlen (buffer) + mutt_strlen (Hostname) + 2);
+    sprintf (Fqdn, "%s.%s", NONULL(Hostname), buffer);	/* __SPRINTF_CHECKED__ */
   }
   else
-    Fqdn = safe_strdup(NONULL(Hostname));
+    /*
+     * DNS failed, use the nodename.  Whether or not the nodename had a '.' in
+     * it, we can use the nodename as the FQDN.  On hosts where DNS is not
+     * being used, e.g. small network that relies on hosts files, a short host
+     * name is all that is required for SMTP to work correctly.  It could be
+     * wrong, but we've done the best we can, at this point the onus is on the
+     * user to provide the correct hostname if the nodename won't work in their
+     * network.
+     */
+    Fqdn = safe_strdup(utsname.nodename);
+
 
   if ((p = getenv ("MAIL")))
     Spoolfile = safe_strdup (p);
@@ -3061,6 +3085,15 @@ void mutt_init (int skip_sys_rc, LIST *commands)
 
   mutt_init_history ();
 
+  /* RFC2368, "4. Unsafe headers"
+   * The creator of a mailto URL cannot expect the resolver of a URL to
+   * understand more than the "subject" and "body" headers. Clients that
+   * resolve mailto URLs into mail messages should be able to correctly
+   * create RFC 822-compliant mail messages using the "subject" and "body"
+   * headers.
+   */
+  add_to_list(&MailtoAllow, "body");
+  add_to_list(&MailtoAllow, "subject");
   
   
   

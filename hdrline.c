@@ -219,6 +219,8 @@ int mutt_user_is_recipient (HEADER *h)
  * %N = score
  * %O = like %L, except using address instead of name
  * %P = progress indicator for builtin pager
+ * %r = comma separated list of To: recipients
+ * %R = comma separated list of Cc: recipients
  * %s = subject
  * %S = short message status (e.g., N/O/D/!/r/-)
  * %t = `to:' field (recipients)
@@ -546,6 +548,22 @@ hdr_format_str (char *dest,
 
     case 'P':
       strfcpy(dest, NONULL(hfi->pager_progress), destlen);
+      break;
+
+    case 'r':
+      buf2[0] = 0;
+      rfc822_write_address(buf2, sizeof(buf2), hdr->env->to, 1);
+      if (optional && buf2[0] == '\0')
+        optional = 0;
+      mutt_format_s (dest, destlen, prefix, buf2);
+      break;
+
+    case 'R':
+      buf2[0] = 0;
+      rfc822_write_address(buf2, sizeof(buf2), hdr->env->cc, 1);
+      if (optional && buf2[0] == '\0')
+        optional = 0;
+      mutt_format_s (dest, destlen, prefix, buf2);
       break;
 
     case 's':

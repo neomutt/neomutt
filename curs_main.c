@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2002,2010,2012-2013 Michael R. Elkins <me@mutt.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -93,7 +93,8 @@ static const char *No_visible = N_("No visible messages.");
 #define CHECK_ACL(aclbit,action) \
 		if (!mutt_bit_isset(Context->rights,aclbit)) { \
 			mutt_flushinp(); \
-			mutt_error (_("Cannot %s: Operation not permitted by ACL"), action); \
+        /* L10N: %s is one of the CHECK_ACL entries below. */ \
+			mutt_error (_("%s: Operation not permitted by ACL"), action); \
 			break; \
 		}
 
@@ -107,8 +108,6 @@ static const char *No_visible = N_("No visible messages.");
 #define CURHDR Context->hdrs[Context->v2r[menu->current]]
 #define OLDHDR Context->hdrs[Context->v2r[menu->oldcurrent]]
 #define UNREAD(h) mutt_thread_contains_unread (Context, h)
-
-extern size_t UngetCount;
 
 /* de facto standard escapes for tsl/fsl */
 static char *tsl = "\033]0;";
@@ -728,12 +727,7 @@ int mutt_index_menu (void)
 
 	if (!Context->tagged)
 	{
-	  event_t tmp;
-	  while(UngetCount>0)
-	  {
-	    tmp=mutt_getch();
-	    if(tmp.op==OP_END_COND)break;
-	  }
+	  mutt_flush_macro_to_endcond ();
 	  mutt_message  _("Nothing to do.");
 	  continue;
 	}
@@ -818,7 +812,7 @@ int mutt_index_menu (void)
 
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
-        if (isdigit (LastKey)) mutt_ungetch (LastKey, 0);
+        if (isdigit (LastKey)) mutt_unget_event (LastKey, 0);
 	buf[0] = 0;
 	if (mutt_get_field (_("Jump to message: "), buf, sizeof (buf), 0) != 0
 	    || !buf[0])
@@ -874,7 +868,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("delete message(s)"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot delete message(s)"));
 
 	CHECK_ATTACH;
 	mutt_pattern_func (M_DELETE, _("Delete messages matching: "));
@@ -903,7 +898,7 @@ int mutt_index_menu (void)
 	else
 	{
 	   char buf[STRING];
-	   /* i18n: ask for a limit to apply */
+	   /* L10N: ask for a limit to apply */
 	   snprintf (buf, sizeof(buf), _("Limit: %s"),Context->pattern);
            mutt_message ("%s", buf);
 	}
@@ -1047,7 +1042,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("undelete message(s)"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message(s)"));
 
 	if (mutt_pattern_func (M_UNDELETE, _("Undelete messages matching: ")) == 0)
 	  menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
@@ -1354,7 +1350,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("link threads"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot link threads"));
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
 	  mutt_error _("Threading is not enabled.");
@@ -1605,8 +1602,20 @@ int mutt_index_menu (void)
 	if (menu->current == -1)
 	{
 	  menu->current = menu->oldcurrent;
-	  mutt_error ("%s%s.", (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW) ? _("No new messages") : _("No unread messages"),
-		      Context->pattern ? _(" in this limited view") : "");
+	  if (op == OP_MAIN_NEXT_NEW || op == OP_MAIN_PREV_NEW)
+          {
+            if (Context->pattern)
+              mutt_error (_("No new messages in this limited view."));
+            else
+              mutt_error (_("No new messages."));
+          }
+          else
+          {
+            if (Context->pattern)
+              mutt_error (_("No unread messages in this limited view."));
+            else
+              mutt_error (_("No unread messages."));
+          }
 	}
 	else if (menu->menu == MENU_PAGER)
 	{
@@ -1622,7 +1631,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_WRITE, _("flag message"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_WRITE, _("Cannot flag message"));
 
         if (tag)
         {
@@ -1659,7 +1669,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_SEEN, _("toggle new"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_SEEN, _("Cannot toggle new"));
 
 	if (tag)
 	{
@@ -1913,7 +1924,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("delete message"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot delete message"));
 
 	if (tag)
 	{
@@ -1954,7 +1966,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("delete message(s)"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot delete message(s)"));
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 1,
 				   op == OP_DELETE_THREAD ? 0 : 1);
@@ -1995,7 +2008,8 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	CHECK_READONLY;
 	CHECK_ATTACH;
-	CHECK_ACL(M_ACL_INSERT, _("edit message"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_INSERT, _("Cannot edit message"));
 
 	if (option (OPTPGPAUTODEC) && (tag || !(CURHDR->security & PGP_TRADITIONAL_CHECKED)))
 	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
@@ -2126,7 +2140,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
 	CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_SEEN, _("mark message(s) as read"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_SEEN, _("Cannot mark message(s) as read"));
 
 	rc = mutt_thread_set_flag (CURHDR, M_READ, 1,
 				   op == OP_MAIN_READ_THREAD ? 0 : 1);
@@ -2221,7 +2236,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("undelete message"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message"));
 
 	if (tag)
 	{
@@ -2248,7 +2264,8 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
-	CHECK_ACL(M_ACL_DELETE, _("undelete message(s)"));
+        /* L10N: CHECK_ACL */
+	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message(s)"));
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 0,
 				   op == OP_UNDELETE_THREAD ? 0 : 1);

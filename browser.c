@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2000,2007 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2000,2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -896,7 +896,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	else
 	  set_option (OPTIMAPLSUB);
 
-	mutt_ungetch (0, OP_CHECK_NEW);
+	mutt_unget_event (0, OP_CHECK_NEW);
 	break;
 
       case OP_CREATE_MAILBOX:
