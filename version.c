@@ -31,6 +31,9 @@
 #elif defined (HAVE_IDN_STRINGPREP_H)
 #include <idn/stringprep.h>
 #endif
+#ifdef USE_SLANG_CURSES
+#include "slang.h"
+#endif
 
 #include "lib.h"
 
