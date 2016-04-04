@@ -2706,6 +2706,7 @@ patterns.
 <listitem><para>markers (the <quote>+</quote> markers at the beginning of wrapped lines in the pager)</para></listitem>
 <listitem><para>message (informational messages)</para></listitem>
 <listitem><para>normal</para></listitem>
+<listitem><para><link linkend="progress">progress</link> (visual progress bar)</para></listitem>
 <listitem><para>prompt</para></listitem>
 <listitem><para>quoted (text matching <link linkend="quote-regexp">$quote_regexp</link> in the body of a message)</para></listitem>
 <listitem><para>quoted1, quoted2, ..., quoted<emphasis>N</emphasis> (higher levels of quoting)</para></listitem>
@@ -8195,6 +8196,125 @@ bind index,pager Q quasi-delete
 	<sect2 id="quasi-delete-credits">
 		<title>Credits</title>
 		<itemizedlist>
+		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="progress">
+	<title>Progress Bar Patch</title>
+	<subtitle>Show a visual progress bar on slow operations</subtitle>
+
+	<sect2 id="progress-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Progress Bar</quote>, look for
+			<quote>patch-progress</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="progress-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>progress</quote> patch shows a visual progress bar on slow
+		tasks, such as indexing a large folder over the net.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="progress-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="progress-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="progress-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="progress-colors">
+		<title>Colors</title>
+		<table id="table-progress-colors">
+			<title>Progress Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Default Color</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>progress</literal></entry>
+						<entry>default</entry>
+						<entry>Visual progress bar</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="progress-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="progress-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'progress' patch.
+ 
+# The 'progress' patch provides clear visual feedback for
+# slow tasks, such as indexing a large folder over the net.
+ 
+# Set the color of the progress bar
+# White text on a red background</emphasis>
+color progress white red
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="progress-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="color">Color command</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="progress-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="progress-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Rocco Rutte <email>pdmef@gmx.net</email></para></listitem>
+		<listitem><para>Vincent Lefevre <email>vincent@vinc17.org</email></para></listitem>
+		<listitem><para>Stefan Kuhn <email>wuodan@hispeed.ch</email></para></listitem>
 		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
 		</itemizedlist>
