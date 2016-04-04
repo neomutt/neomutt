@@ -32,6 +32,10 @@
 #include "imap.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include "mutt_crypt.h"
 
 #include <string.h>
@@ -330,7 +334,9 @@ void mutt_free_header (HEADER **h)
 #ifdef MIXMASTER
   mutt_free_list (&(*h)->chain);
 #endif
-#if defined USE_POP || defined USE_IMAP
+#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
+  if ((*h)->free_cb)
+    (*h)->free_cb(*h);
   FREE (&(*h)->data);
 #endif
   FREE (h);		/* __FREE_CHECKED__ */
@@ -438,6 +444,11 @@ char *_mutt_expand_path (char *s, size_t slen, int rx)
 	if (mx_is_imap (NONULL (Maildir)) &&
 	    (Maildir[strlen (Maildir) - 1] == '}' ||
 	     Maildir[strlen (Maildir) - 1] == '/'))
+	  strfcpy (p, NONULL (Maildir), sizeof (p));
+	else
+#endif
+#ifdef USE_NOTMUCH
+	if (mx_is_notmuch (NONULL (Maildir)))
 	  strfcpy (p, NONULL (Maildir), sizeof (p));
 	else
 #endif
@@ -885,6 +896,11 @@ void mutt_pretty_mailbox (char *s, size_t buflen)
     imap_pretty_mailbox (s);
     return;
   }
+#endif
+
+#ifdef USE_NOTMUCH
+  if (scheme == U_NOTMUCH)
+    return;
 #endif
 
   /* if s is an url, only collapse path component */

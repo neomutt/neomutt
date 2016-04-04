@@ -30,6 +30,10 @@
 #include "mutt_idna.h"
 #include "mutt_curses.h"
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -334,6 +338,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
 	CH_NOQFROM      ignore ">From " line
 	CH_UPDATE_IRT	update the In-Reply-To: header
 	CH_UPDATE_REFS	update the References: header
+	CH_VIRTUAL      write virtual header lines too
 
    prefix
    	string to use if CH_PREFIX is set
@@ -347,7 +352,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
   if (h->env)
     flags |= (h->env->irt_changed ? CH_UPDATE_IRT : 0)
       | (h->env->refs_changed ? CH_UPDATE_REFS : 0);
-  
+
   if (mutt_copy_hdr (in, out, h->offset, h->content->offset, flags, prefix) == -1)
     return -1;
 
@@ -412,6 +417,15 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
     if (h->lines != 0 || h->content->length == 0)
       fprintf (out, "Lines: %d\n", h->lines);
   }
+
+#ifdef USE_NOTMUCH
+  if ((flags & CH_VIRTUAL) && nm_header_get_tags(h))
+  {
+    fputs ("Tags: ", out);
+    fputs (nm_header_get_tags(h), out);
+    fputc ('\n', out);
+  }
+#endif
 
   if ((flags & CH_NONEWLINE) == 0)
   {
@@ -682,7 +696,7 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
 {
   MESSAGE *msg;
   int r;
-  
+
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
     return -1;
   if ((r = _mutt_copy_message (fpout, msg->fp, hdr, hdr->content, flags, chflags)) == 0 
@@ -717,7 +731,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   fseeko (fpin, hdr->offset, 0);
   if (fgets (buf, sizeof (buf), fpin) == NULL)
     return -1;
-  
+
   if ((msg = mx_open_new_message (dest, hdr, is_from (buf, NULL, 0, NULL) ? 0 : M_ADD_FROM)) == NULL)
     return -1;
   if (dest->magic == M_MBOX || dest->magic == M_MMDF)
@@ -726,6 +740,11 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);
   if (mx_commit_message (msg, dest) != 0)
     r = -1;
+
+#ifdef USE_NOTMUCH
+  if (hdr && msg->commited_path && dest->magic == M_MAILDIR && src->magic == M_NOTMUCH)
+	  nm_update_filename(src, NULL, msg->commited_path, hdr);
+#endif
 
   mx_close_message (&msg);
   return r;

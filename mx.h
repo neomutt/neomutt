@@ -35,6 +35,7 @@ enum
   M_MH,
   M_MAILDIR,
   M_IMAP,
+  M_NOTMUCH,
   M_POP
 };
 
@@ -67,13 +68,30 @@ int maildir_read_dir (CONTEXT *);
 int maildir_check_mailbox (CONTEXT *, int *);
 int maildir_check_empty (const char *);
 
+HEADER *maildir_parse_message (int magic, const char *fname, int is_old, HEADER * _h);
+HEADER *maildir_parse_stream (int magic, FILE *f, const char *fname, int is_old, HEADER * _h);
+void maildir_parse_flags (HEADER * h, const char *path);
+void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n);
+void maildir_flags(char *dest, size_t destlen, HEADER * hdr);
+
+#if USE_HCACHE
+#include <hcache.h>
+int mh_sync_mailbox_message (CONTEXT * ctx, int msgno, header_cache_t *hc);
+#else
+int mh_sync_mailbox_message (CONTEXT * ctx, int msgno);
+#endif
+
+#ifdef USE_NOTMUCH
+int mx_is_notmuch(const char *p);
+#endif
+
 int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);
 
 int maildir_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
 int mh_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
 
-FILE *maildir_open_find_message (const char *, const char *);
+FILE *maildir_open_find_message (const char *, const char *, char **);
 
 int mbox_strict_cmp_headers (const HEADER *, const HEADER *);
 int mutt_reopen_mailbox (CONTEXT *, int *);

@@ -26,6 +26,7 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mx.h"
 #include "sort.h"
 
 /* Previous values for some sidebar config */
@@ -51,6 +52,38 @@ struct sidebar_entry {
 	BUFFY       *buffy;
 };
 
+enum {
+	SB_SRC_NONE = 0,
+	SB_SRC_VIRT,
+	SB_SRC_INCOMING
+};
+static int sidebar_source = SB_SRC_NONE;
+
+static BUFFY *
+get_incoming (void)
+{
+	switch (sidebar_source) {
+	case SB_SRC_NONE:
+		sidebar_source = SB_SRC_INCOMING;
+
+#ifdef USE_NOTMUCH
+		if (option (OPTVIRTSPOOLFILE) && VirtIncoming) {
+			sidebar_source = SB_SRC_VIRT;
+			return VirtIncoming;
+		}
+		break;
+	case SB_SRC_VIRT:
+		if (VirtIncoming) {
+			return VirtIncoming;
+		}
+		break;
+#endif
+	case SB_SRC_INCOMING:
+		break;
+	}
+
+	return Incoming;	/* default */
+}
 
 /**
  * find_next_new - Find the next folder that contains new mail
@@ -73,7 +106,7 @@ find_next_new (int wrap)
 	do {
 		b = b->next;
 		if (!b && wrap) {
-			b = Incoming;
+			b = get_incoming();
 		}
 		if (!b || (b == HilBuffy)) {
 			break;
@@ -330,6 +363,9 @@ cb_qsort_buffy (const void *a, const void *b)
 		case SORT_COUNT_NEW:
 			result = (b2->msg_unread - b1->msg_unread);
 			break;
+		case SORT_DESC:
+			result = mutt_strcmp (b1->desc, b2->desc);
+			break;
 		case SORT_FLAGGED:
 			result = (b2->msg_flagged - b1->msg_flagged);
 			break;
@@ -472,7 +508,7 @@ sort_buffy_array (BUFFY **arr, int arr_len)
 static int
 prepare_sidebar (int page_size)
 {
-	BUFFY *b = Incoming;
+	BUFFY *b = get_incoming();
 	if (!b)
 		return 0;
 
@@ -488,14 +524,15 @@ prepare_sidebar (int page_size)
 		return 0;
 
 	int i = 0;
-	for (b = Incoming; b; b = b->next, i++) {
+	for (b = get_incoming(); b; b = b->next, i++) {
 		arr[i] = b;
 	}
 
 	update_buffy_visibility (arr, count);
 	sort_buffy_array        (arr, count);
 
-	Incoming = arr[0];
+	if (sidebar_source == SB_SRC_INCOMING)
+		Incoming = arr[0];
 
 	int top_index =  0;
 	int opn_index = -1;
@@ -778,6 +815,10 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 				strncat (sidebar_folder_name, tmp_folder_name, strlen (tmp_folder_name));
 			}
 		}
+#ifdef USE_NOTMUCH
+		else if (b->magic == M_NOTMUCH)
+			sidebar_folder_name = b->desc;
+#endif
 		char str[SHORT_STRING];
 		make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
 		printw ("%s", str);
@@ -836,7 +877,7 @@ sb_draw (void)
 	if (div_width < 0)
 		return;
 
-	if (!Incoming) {
+	if (!get_incoming()) {
 		int w = MIN(COLS, (SidebarWidth - div_width));
 		fill_empty_space (first_row, num_rows, w);
 		return;
@@ -921,7 +962,7 @@ sb_change_mailbox (int op)
 			break;
 		case OP_SIDEBAR_PAGE_UP:
 			HilBuffy = TopBuffy;
-			if (HilBuffy != Incoming) {
+			if (HilBuffy != get_incoming()) {
 				HilBuffy = HilBuffy->prev;
 			}
 			break;
@@ -958,7 +999,7 @@ sb_set_buffystats (const CONTEXT *ctx)
 {
 	/* Even if the sidebar's hidden,
 	 * we should take note of the new data. */
-	BUFFY *b = Incoming;
+	BUFFY *b = get_incoming();
 	if (!ctx || !b)
 		return;
 
@@ -1005,7 +1046,7 @@ sb_set_open_buffy (const char *path)
 {
 	/* Even if the sidebar is hidden */
 
-	BUFFY *b = Incoming;
+	BUFFY *b = get_incoming();
 
 	if (!path || !b)
 		return NULL;
@@ -1078,3 +1119,26 @@ sb_notify_mailbox (BUFFY *b, int created)
 			Outgoing = buffy_going (Outgoing);
 	}
 }
+
+/* switch between regualar and virtual folders */
+void toggle_sidebar(int menu)
+{
+	if (sidebar_source == -1)
+		get_incoming();
+
+#ifdef USE_NOTMUCH
+	if (sidebar_source == SB_SRC_INCOMING && VirtIncoming)
+		sidebar_source = SB_SRC_VIRT;
+	else
+#endif
+		sidebar_source = SB_SRC_INCOMING;
+
+	TopBuffy = NULL;
+	OpnBuffy = NULL;
+	HilBuffy = NULL;
+	BotBuffy = NULL;
+	Outgoing = NULL;
+
+	sb_draw();
+}
+

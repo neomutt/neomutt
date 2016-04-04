@@ -177,9 +177,17 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sidebar-page-up",		OP_SIDEBAR_PAGE_UP,		NULL },
   { "sidebar-prev",		OP_SIDEBAR_PREV,		NULL },
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
+  { "sidebar-toggle",		OP_SIDEBAR_TOGGLE,		NULL },
   { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
 #endif
 
+#ifdef USE_NOTMUCH
+  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,         "X" },
+  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,     "\033X" },
+  { "modify-labels",		OP_MAIN_MODIFY_LABELS,		"`" },
+  { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
+  { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          "+" },
+#endif
   { NULL,			0,				NULL }
 };
 
@@ -292,7 +300,16 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sidebar-page-up",		OP_SIDEBAR_PAGE_UP,		NULL },
   { "sidebar-prev",		OP_SIDEBAR_PREV,		NULL },
   { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
+  { "sidebar-toggle",		OP_SIDEBAR_TOGGLE,		NULL },
   { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
+#endif
+
+#ifdef USE_NOTMUCH
+  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,		"X" },
+  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,	"\033X" },
+  { "modify-labels",		OP_MAIN_MODIFY_LABELS,		"`" },
+  { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
+  { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          "+" },
 #endif
 
   { NULL,		0,				NULL }
