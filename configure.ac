@@ -175,15 +175,6 @@ if test x$have_smime != xno ; then
 	SMIMEAUX_TARGET="smime_keys"
 fi
 
-AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
-[       if test x$enableval = xyes ; then
-		AC_DEFINE(USE_SIDEBAR,1,[ Define if you want support for the sidebar. ])
-		OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
-		need_sidebar="yes"
-        fi
-])
-AM_CONDITIONAL(BUILD_SIDEBAR, test x$need_sidebar = xyes)
-
 AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
 [       if test x$enableval = xyes ; then
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
@@ -192,6 +183,7 @@ AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH suppor
 		NOTMUCH_LIBS="-lnotmuch"
 		OPS="$OPS \$(srcdir)/OPS.NOTMUCH"
 		need_notmuch="yes"
+		need_sidebar="yes"
 
 		AC_MSG_CHECKING([for notmuch api version 3])
 		AC_COMPILE_IFELSE( [AC_LANG_PROGRAM(
@@ -208,6 +200,16 @@ AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH suppor
 ])
 AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
+AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
+[       if test x$enableval = xyes ; then
+		need_sidebar="yes"
+        fi
+])
+AS_IF([test "x$need_sidebar" = "xyes"], [
+	AC_DEFINE(USE_SIDEBAR,1,[ Define if you want support for the sidebar. ])
+	OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
+])
+AM_CONDITIONAL(BUILD_SIDEBAR, test x$need_sidebar = xyes)
 
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
