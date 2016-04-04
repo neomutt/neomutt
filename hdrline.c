@@ -368,6 +368,98 @@ hdr_format_str (char *dest,
 	const char *cp;
 	struct tm *tm; 
 	time_t T;
+	int i = 0, invert = 0;
+
+	if (optional && ((op == '[') || (op == '('))) {
+	  char *is;
+	  T = time (NULL);
+	  tm = localtime (&T);
+	  T -= (op == '(') ? hdr->received : hdr->date_sent;
+
+	  is = (char *) prefix;
+	  if (*is == '>') {
+	    invert = 1;
+	    is++;
+	  }
+
+	  while (*is && (*is != '?')) {
+	    int t = strtol (is, &is, 10);
+	    /* semi-broken (assuming 30 days in all months) */
+	    switch (*(is++)) {
+	      case 'y':
+		if (t > 1) {
+		  t--;
+		  t *= (60 * 60 * 24 * 365);
+		}
+		t += ((tm->tm_mon  * 60 * 60 * 24 * 30) +
+		      (tm->tm_mday * 60 * 60 * 24) +
+		      (tm->tm_hour * 60 * 60) +
+		      (tm->tm_min  * 60) +
+		       tm->tm_sec);
+		break;
+
+	      case 'm':
+		if (t > 1) {
+		  t--;
+		  t *= (60 * 60 * 24 * 30);
+		}
+		t += ((tm->tm_mday * 60 * 60 * 24) +
+		      (tm->tm_hour * 60 * 60) +
+		      (tm->tm_min  * 60) +
+		      tm->tm_sec);
+		break;
+
+	      case 'w':
+		if (t > 1) {
+		  t--;
+		  t *= (60 * 60 * 24 * 7);
+		}
+		t += ((tm->tm_wday * 60 * 60 * 24) +
+		      (tm->tm_hour * 60 * 60) +
+		      (tm->tm_min  * 60) +
+		       tm->tm_sec);
+		break;
+
+	      case 'd':
+		if (t > 1) {
+		  t--;
+		  t *= (60 * 60 * 24);
+		}
+		t += ((tm->tm_hour * 60 * 60) +
+		      (tm->tm_min  * 60) +
+		       tm->tm_sec);
+		break;
+
+	      case 'H':
+		if (t > 1) {
+		  t--;
+		  t *= (60 * 60);
+		}
+		t += ((tm->tm_min * 60) +
+		       tm->tm_sec);
+		break;
+
+	      case 'M':
+		if (t > 1) {
+		  t--;
+		  t *= (60);
+		}
+		t += (tm->tm_sec);
+		break;
+
+	      default:
+		break;
+	    }
+	    i += t;
+	  }
+
+	  if (i < 0)
+	    i *= -1;
+
+	  if (((T > i) || (T < (-1*i))) ^ invert)
+	    optional = 0;
+	  break;
+	}
 
 	p = dest;
 
