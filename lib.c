@@ -219,8 +219,10 @@ int safe_fsync_close (FILE **f)
   {
     if (fflush (*f) || fsync (fileno (*f)))
     {
+      int save_errno = errno;
       r = -1;
       safe_fclose (f);
+      errno = save_errno;
     }
     else
       r = safe_fclose (f);
@@ -367,6 +369,7 @@ int mutt_copy_bytes (FILE *in, FILE *out, size_t size)
     size -= chunk;
   }
 
+  if (fflush(out) != 0) return -1;
   return 0;
 }
 
@@ -381,6 +384,7 @@ int mutt_copy_stream (FILE *fin, FILE *fout)
       return (-1);
   }
 
+  if (fflush(fout) != 0) return -1;
   return 0;
 }
 

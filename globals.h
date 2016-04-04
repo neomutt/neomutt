@@ -192,8 +192,6 @@ unsigned char QuadOptions[(OPT_MAX*2 + 7) / 8];
 extern unsigned char QuadOptions[];
 #endif
 
-WHERE unsigned short Counter INITVAL (0);
-
 WHERE short ConnectTimeout;
 WHERE short HistSize;
 WHERE short MenuContext;
