@@ -249,6 +249,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %F = like %n, unless from self
  * %g = message labes (e.g. notmuch tags)
  * %i = message-id
+ * %I = initials of author
  * %l = number of lines in the message
  * %L = like %F, except `lists' are displayed first
  * %m = number of messages in the mailbox
@@ -617,6 +618,28 @@ hdr_format_str (char *dest,
 
     case 'i':
       mutt_format_s (dest, destlen, prefix, hdr->env->message_id ? hdr->env->message_id : "<no.id>");
+      break;
+
+    case 'I':
+      {
+	int iflag = FALSE;
+	int j = 0;
+
+	for (i = 0; hdr->env->from && hdr->env->from->personal &&
+		    hdr->env->from->personal[i] && (j < (SHORT_STRING - 1)); i++) {
+	  if (isalpha ((int) hdr->env->from->personal[i])) {
+	    if (!iflag) {
+	      buf2[j++] = hdr->env->from->personal[i];
+	      iflag = TRUE;
+	    }
+	  } else {
+	    iflag = FALSE;
+	  }
+	}
+
+	buf2[j] = '\0';
+      }
+      mutt_format_s (dest, destlen, prefix, buf2);
       break;
 
     case 'l':
