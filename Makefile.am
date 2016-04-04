@@ -34,7 +34,7 @@ mutt_SOURCES = \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
 	muttlib.c editmsg.c mbyte.c mutt_idna.c \
-	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c
+	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c version.c
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
 
@@ -73,7 +73,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog mkchangelog.sh mutt_idna.h \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
-	txt2c.c txt2c.sh version.sh check_sec.sh
+	txt2c.c txt2c.sh version.sh check_sec.sh version.h
 
 EXTRA_SCRIPTS = smime_keys
 

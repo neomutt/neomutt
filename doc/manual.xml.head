@@ -10619,6 +10619,167 @@ color sidebar_new green black
 	</sect2>
 </sect1>
 
+<sect1 id="ifdef">
+	<title>Ifdef Patch</title>
+	<subtitle>Conditional config options</subtitle>
+
+	<sect2 id="ifdef-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>ifdef</quote>, look for
+			<quote>patch-ifdef</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.5.24</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="ifdef-intro">
+		<title>Introduction</title>
+
+		<para>
+			The <quote>ifdef</quote> patch introduces three new commands to
+			Mutt and allow you to share one config file between versions of Mutt
+			that may have different features compiled in.
+		</para>
+
+<screen>
+ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
+ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
+finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
+</screen>
+
+		<para>
+			Here a symbol can be a <link linkend="variables">$variable</link>,
+			<link linkend="functions">&lt;function&gt;</link>,
+			<link linkend="commands">command</link> or compile-time symbol, such
+			as <quote>USE_IMAP</quote>.
+		</para>
+
+        <para>
+            <literal>finish</literal> is particularly useful when combined with
+            <literal>ifndef</literal>. e.g.
+        </para>
+
+<screen>
+<emphasis role="comment"># Sidebar config file</emphasis>
+ifndef USE_SIDEBAR finish
+</screen>
+
+	</sect2>
+
+<!--
+	<sect2 id="ifdef-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="ifdef-commands">
+		<title>Commands</title>
+		<cmdsynopsis>
+			<command>ifdef</command>
+			<arg choice="plain">
+				<replaceable class="parameter">symbol</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">"config-command [args]"</replaceable>
+			</arg>
+			<command>ifndef</command>
+			<arg choice="plain">
+				<replaceable class="parameter">symbol</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">"config-command [args]"</replaceable>
+			</arg>
+			<command>finish</command>
+		</cmdsynopsis>
+	</sect2>
+
+<!--
+	<sect2 id="ifdef-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="ifdef-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
+ 
+# This feature introduces three useful commands which allow you to share
+# one config file between versions of Mutt that may have different
+# features compiled in.
+ 
+#	ifdef  symbol config-command [args...]
+#	ifndef symbol config-command [args...]
+#	finish                                
+ 
+# The 'ifdef' command tests whether Mutt understands the name of
+# a variable, function, command or compile-time symbol.
+# If it does, then it executes a config command.
+ 
+# The 'ifndef' command tests whether a symbol does NOT exist.
+ 
+# The 'finish' command tells Mutt to stop reading current config file.
+ 
+# If the 'trash' variable exists, set it.</emphasis>
+ifdef trash 'set trash=~/Mail/trash'
+ 
+<emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
+ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
+ 
+<emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
+ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
+ 
+<emphasis role="comment"># If the compile-time symbol 'USE_SIDEBAR' does not exist, then
+# stop reading the current config file.</emphasis>
+ifndef USE_SIDEBAR finish
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="ifdef-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="ifdef-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
+		<listitem><para>Matteo F. Vescovi <email>mfvescovi@gmail.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
@@ -11407,6 +11568,18 @@ The following are the commands understood by Mutt:
 <replaceable>header</replaceable>
 </arg>
 </group>
+</cmdsynopsis>
+</listitem>
+
+<listitem>
+<cmdsynopsis>
+<command>ifdef</command>
+<arg choice="plain">
+<replaceable class="parameter">item</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">"config-command [args]"</replaceable>
+</arg>
 </cmdsynopsis>
 </listitem>
 

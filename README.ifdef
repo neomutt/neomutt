@@ -1,0 +1,57 @@
+Ifdef Patch
+===========
+
+    Conditional config options
+
+Patch
+-----
+
+    To check if Mutt supports "ifdef", look for "patch-ifdef" in the mutt
+    version.
+
+    Dependencies
+    * mutt-1.5.24
+
+Introduction
+------------
+
+    The "ifdef" patch introduces three new commands to Mutt and allow you to
+    share one config file between versions of Mutt that may have different
+    features compiled in.
+
+        ifdef  symbol config-command [args...]  # If a symbol is defined
+        ifndef symbol config-command [args...]  # If a symbol is not defined
+        finish                                  # Finish reading the current file
+
+    Here a symbol can be a $variable, <function>, command or compile-time
+    symbol, such as "USE_IMAP".
+
+    'finish' is particularly useful when combined with 'ifndef'. e.g.
+
+        # Sidebar config file
+        ifndef USE_SIDEBAR finish
+
+Commands
+--------
+
+        ifdef  symbol "config-command [args]"
+        ifndef symbol "config-command [args]"
+        finish
+
+See Also
+--------
+
+    * NeoMutt project
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * Cedric Duval <cedricduval@free.fr>
+    * Matteo F. Vescovi <mfvescovi@gmail.com>
+    * Richard Russon <rich@flatcap.org>
+
