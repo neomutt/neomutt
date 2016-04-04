@@ -277,6 +277,9 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   /* finished with this message, so delete it. */
   mutt_set_flag (PostContext, h, M_DELETE, 1);
 
+  /* and consider it saved, so that it won't be moved to the trash folder */
+  mutt_set_flag (PostContext, h, M_APPENDED, 1);
+
   /* update the count for the status display */
   PostCount = PostContext->msgcount - PostContext->deleted;
 

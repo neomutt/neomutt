@@ -845,6 +845,62 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
   return rc;
 }
 
+/**
+ * trash_append - XXX
+ *
+ * move deleted mails to the trash folder
+ */
+static int trash_append (CONTEXT *ctx)
+{
+	CONTEXT *ctx_trash;
+	int i = 0;
+	struct stat st, stc;
+
+	if (!TrashPath || !ctx->deleted ||
+	   ((ctx->magic == M_MAILDIR) && option (OPTMAILDIRTRASH))) {
+		return 0;
+	}
+
+	for (; i < ctx->msgcount && (!ctx->hdrs[i]->deleted || ctx->hdrs[i]->appended); i++);
+		/* nothing */
+
+	if (i == ctx->msgcount)
+		return 0; /* nothing to be done */
+
+	if (mutt_save_confirm (TrashPath, &st) != 0) {
+		mutt_error _("message(s) not deleted");
+		return -1;
+	}
+
+	if (lstat (ctx->path, &stc) == 0 && stc.st_ino == st.st_ino
+	    && stc.st_dev == st.st_dev && stc.st_rdev == st.st_rdev) {
+		return 0;  /* we are in the trash folder: simple sync */
+	}
+
+#ifdef USE_IMAP
+	if (!imap_fast_trash())
+		return 0;
+#endif
+
+	if ((ctx_trash = mx_open_mailbox (TrashPath, M_APPEND, NULL)) != NULL) {
+		for (i = 0 ; i < ctx->msgcount ; i++) {
+			if (ctx->hdrs[i]->deleted && !ctx->hdrs[i]->appended
+			    && !ctx->hdrs[i]->purged
+			    && mutt_append_message (ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1) {
+				mx_close_mailbox (ctx_trash, NULL);
+				return -1;
+			}
+		}
+
+		mx_close_mailbox (ctx_trash, NULL);
+	} else {
+		mutt_error _("Can't open trash folder");
+		return -1;
+	}
+
+	return 0;
+}
+
 /* save changes and close mailbox */
 int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 {
@@ -987,6 +1043,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 	  if (mutt_append_message (&f, ctx, ctx->hdrs[i], 0, CH_UPDATE_LEN) == 0)
 	  {
 	    mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, 1);
+	    mutt_set_flag (ctx, ctx->hdrs[i], M_APPENDED, 1);
 	  }
 	  else
 	  {
@@ -1011,6 +1068,14 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     return 0;
   }
   
+  /* copy mails to the trash before expunging */
+  if (purge && ctx->deleted && mutt_strcmp (ctx->path, TrashPath)) {
+    if (trash_append (ctx) != 0) {
+      ctx->closing = 0;
+      return -1;
+    }
+  }
+
 #ifdef USE_IMAP
   /* allow IMAP to preserve the deleted flag across sessions */
   if (ctx->magic == M_IMAP)
@@ -1215,6 +1280,12 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
    * mx_update_tables, so ctx->deleted is 0 when it comes back */
   msgcount = ctx->msgcount;
   deleted = ctx->deleted;
+
+  if (purge && ctx->deleted && mutt_strcmp (ctx->path, TrashPath)) {
+    if (trash_append (ctx) == -1) {
+      return -1;
+    }
+  }
 
 #ifdef USE_IMAP
   if (ctx->magic == M_IMAP)

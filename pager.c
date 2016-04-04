@@ -2394,6 +2394,7 @@ search_next:
 	MAYBE_REDRAW (redraw);
 	break;
 
+      case OP_PURGE_MESSAGE:
       case OP_DELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
@@ -2401,6 +2402,8 @@ search_next:
 	CHECK_ACL(M_ACL_DELETE, _("Cannot delete message"));
 
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 1);
+	mutt_set_flag (Context, extra->hdr, M_PURGED,
+		       ch != OP_PURGE_MESSAGE ? 0 : 1);
         if (option (OPTDELETEUNTAG))
 	  mutt_set_flag (Context, extra->hdr, M_TAG, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
@@ -2731,6 +2734,7 @@ search_next:
 	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message"));
 
 	mutt_set_flag (Context, extra->hdr, M_DELETE, 0);
+	mutt_set_flag (Context, extra->hdr, M_PURGED, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
@@ -2747,9 +2751,11 @@ search_next:
 	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message(s)"));
 
 	r = mutt_thread_set_flag (extra->hdr, M_DELETE, 0,
+				  ch == OP_UNDELETE_THREAD ? 0 : 1)
+	  + mutt_thread_set_flag (extra->hdr, M_PURGED, 0,
 				  ch == OP_UNDELETE_THREAD ? 0 : 1);
 
-	if (r != -1)
+	if (r > -1)
 	{
 	  if (option (OPTRESOLVE))
 	  {

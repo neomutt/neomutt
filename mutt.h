@@ -201,6 +201,8 @@ enum
   M_DELETE,
   M_UNDELETE,
   M_DELETED,
+  M_APPENDED,
+  M_PURGED,
   M_FLAG,
   M_TAG,
   M_UNTAG,
@@ -754,6 +756,8 @@ typedef struct header
   unsigned int mime : 1;    		/* has a MIME-Version header? */
   unsigned int flagged : 1; 		/* marked important? */
   unsigned int tagged : 1;
+  unsigned int appended : 1;		/* has been saved */
+  unsigned int purged : 1;   /* bypassing the trash folder */
   unsigned int deleted : 1;
   unsigned int quasi_deleted : 1;	/* deleted from mutt, but not modified on disk */
   unsigned int changed : 1;
@@ -931,6 +935,7 @@ typedef struct _context
   int new;			/* how many new messages? */
   int unread;			/* how many unread messages? */
   int deleted;			/* how many deleted messages */
+  int appended;                 /* how many saved messages? */
   int flagged;			/* how many flagged messages */
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
 

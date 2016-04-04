@@ -2251,6 +2251,7 @@ int mutt_index_menu (void)
 	MAYBE_REDRAW (menu->redraw);
 	break;
 
+      case OP_PURGE_MESSAGE:
       case OP_DELETE:
 
 	CHECK_MSGCOUNT;
@@ -2262,6 +2263,7 @@ int mutt_index_menu (void)
 	if (tag)
 	{
 	  mutt_tag_set_flag (M_DELETE, 1);
+	  mutt_tag_set_flag (M_PURGED, (op != OP_PURGE_MESSAGE) ? 0 : 1);
 	  if (option (OPTDELETEUNTAG))
 	    mutt_tag_set_flag (M_TAG, 0);
 	  menu->redraw = REDRAW_INDEX;
@@ -2269,6 +2271,8 @@ int mutt_index_menu (void)
 	else
 	{
 	  mutt_set_flag (Context, CURHDR, M_DELETE, 1);
+	  mutt_set_flag (Context, CURHDR, M_PURGED,
+			 (op != OP_PURGE_MESSAGE) ? 0 : 1);
 	  if (option (OPTDELETEUNTAG))
 	    mutt_set_flag (Context, CURHDR, M_TAG, 0);
 	  if (option (OPTRESOLVE))
@@ -2574,11 +2578,13 @@ int mutt_index_menu (void)
 	if (tag)
 	{
 	  mutt_tag_set_flag (M_DELETE, 0);
+	  mutt_tag_set_flag (M_PURGED, 0);
 	  menu->redraw = REDRAW_INDEX;
 	}
 	else
 	{
 	  mutt_set_flag (Context, CURHDR, M_DELETE, 0);
+	  mutt_set_flag (Context, CURHDR, M_PURGED, 0);
 	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
 	  {
 	    menu->current++;
@@ -2600,9 +2606,11 @@ int mutt_index_menu (void)
 	CHECK_ACL(M_ACL_DELETE, _("Cannot undelete message(s)"));
 
 	rc = mutt_thread_set_flag (CURHDR, M_DELETE, 0,
-				   op == OP_UNDELETE_THREAD ? 0 : 1);
+				   op == OP_UNDELETE_THREAD ? 0 : 1)
+	  + mutt_thread_set_flag (CURHDR, M_PURGED, 0,
+				  (op == OP_UNDELETE_THREAD) ? 0 : 1);
 
-	if (rc != -1)
+	if (rc > -1)
 	{
 	  if (option (OPTRESOLVE))
 	  {
