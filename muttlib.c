@@ -1401,7 +1401,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-	if ((col < COLS && wlen < destlen) || soft)
+	if ((col < (COLS - SidebarWidth) && (wlen < destlen)) || soft)
 	{
 	  int pad;
 
@@ -1412,7 +1412,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
 	  /* try to consume as many columns as we can, if we don't have
 	   * memory for that, use as much memory as possible */
-	  pad = (COLS - col - wid) / pw;
+	  pad = (COLS - SidebarWidth - col - wid) / pw;
 	  if (pad > 0 && wlen + (pad * pl) + len > destlen)
 	    pad = ((signed)(destlen - wlen - len)) / pl;
 	  if (pad > 0)
@@ -1431,13 +1431,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
 	    /* make sure right part is at most as wide as display */
-	    len = mutt_wstr_trunc (buf, destlen, COLS-offset, &wid);
+	    len = mutt_wstr_trunc (buf, destlen, COLS - offset - SidebarWidth, &wid);
 	    /* truncate left so that right part fits completely in */
 	    wlen = mutt_wstr_trunc (dest, destlen - len, col + pad*pw -offset, &col);
 	    wptr = dest + wlen;
 	  }
 	  if (len + wlen > destlen)
-	    len = mutt_wstr_trunc (buf, destlen - wlen, COLS - col, NULL);
+	    len = mutt_wstr_trunc (buf, destlen - wlen, COLS - SidebarWidth - col, NULL);
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;

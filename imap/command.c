@@ -1016,6 +1016,14 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 	     opened */
 	  status->uidnext = oldun;
 
+#ifdef USE_SIDEBAR
+	/* Make the sidebar show the correct numbers */
+	if (status->messages) {
+	  inc->msg_count  = status->messages;
+	  inc->msg_unread = status->unseen;
+	}
+#endif
+
         FREE (&value);
         return;
       }

@@ -23,13 +23,28 @@
 typedef struct buffy_t
 {
   char path[_POSIX_PATH_MAX];
+#ifdef USE_SIDEBAR
+  char realpath[_POSIX_PATH_MAX];
+#endif
   off_t size;
   struct buffy_t *next;
+#ifdef USE_SIDEBAR
+  struct buffy_t *prev;
+#endif
   short new;			/* mailbox has new mail */
+#ifdef USE_SIDEBAR
+  int msg_count;		/* total number of messages */
+  int msg_unread;		/* number of unread messages */
+  int msg_flagged;		/* number of flagged messages */
+  short is_hidden;		/* is hidden from the sidebar */
+#endif
   short notified;		/* user has been notified */
   short magic;			/* mailbox type */
   short newly_created;		/* mbox or mmdf just popped into existence */
   time_t last_visited;		/* time of last exit from this mailbox */
+#ifdef USE_SIDEBAR
+  time_t sb_last_checked;	/* time of last buffy check from sidebar */
+#endif
 }
 BUFFY;
 

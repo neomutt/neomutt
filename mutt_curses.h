@@ -64,6 +64,9 @@
 #undef lines
 #endif /* lines */
 
+#ifdef USE_SIDEBAR
+#define CLEARLINE_WIN(x) move (x,SidebarWidth), clrtoeol()
+#endif
 #define CLEARLINE(x) move(x,0), clrtoeol()
 #define CENTERLINE(x,y) move(y, (COLS-strlen(x))/2), addstr(x)
 #define BEEP() do { if (option (OPTBEEP)) beep(); } while (0)
@@ -124,6 +127,14 @@ enum
   MT_COLOR_UNDERLINE,
   MT_COLOR_PROMPT,
   MT_COLOR_PROGRESS,
+#ifdef USE_SIDEBAR
+  MT_COLOR_DIVIDER,
+  MT_COLOR_FLAGGED,
+  MT_COLOR_HIGHLIGHT,
+  MT_COLOR_NEW,
+  MT_COLOR_SB_INDICATOR,
+  MT_COLOR_SB_SPOOLFILE,
+#endif
   /* please no non-MT_COLOR_INDEX objects after this point */
   MT_COLOR_INDEX,
   MT_COLOR_INDEX_AUTHOR,
