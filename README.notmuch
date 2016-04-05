@@ -4,9 +4,12 @@ notmuch support for mutt
  * notmuch is e-mail fulltext indexing and tagging engine; see
    http://notmuchmail.org/ for more information.
 
- * home page (wiki)
+ * home page (wiki) and git:
 
    https://github.com/karelzak/mutt-kz
+
+   Note that the master branch is rebased to be up to date with mutt upstream. Use
+   stable/v<version> branches for downstream packaging.
 
  * mailing list:
 
@@ -23,7 +26,6 @@ notmuch support for mutt
   $ ./prepare
   $ ./configure --enable-notmuch [--enable-debug]
   $ make
-
 
  * Folders URI
 

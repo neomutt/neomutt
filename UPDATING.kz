@@ -1,3 +1,17 @@
+1.6.0.1:
+
++ rebase to mutt upstream 1.6.0
++ update to the new sidebar implementation. Note that all .muttrc options 
+  are prefixed by "sidebar_" now.
+
++ rebase is based on neomutt project (see https://github.com/neomutt) where are
+  maintained all non-upstream mutt changes, so it's easy to merge another
+  features like "trash", "ifdef", ... to mutt-kz.
+
++ the stable mutt-kz releases and tags are maintained in stable/v<version> branches, 
+  the master branch is going to be *rebased*. This development model help us to be 
+  up to date with mutt upstream.
+
 
 1.5.23.1:
 
