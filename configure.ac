@@ -1200,6 +1200,13 @@ fi # libiconv
 
 dnl -- IDN depends on iconv
 
+dnl mutt_idna.c will perform charset transformations (for smtputf8
+dnl support) as long as at least iconv is installed.  If there is no
+dnl iconv, then it doesn't need to be included in the build.
+if test "$am_cv_func_iconv" = yes; then
+  MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt_idna.o"
+fi
+
 AC_ARG_WITH(idn, AS_HELP_STRING([--with-idn=@<:@PFX@:>@],[Use GNU libidn for internationalized domain names]),
 		 [
 		  if test "$with_idn" != "no" ; then
