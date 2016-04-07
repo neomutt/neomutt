@@ -3903,15 +3903,16 @@ const struct mapping_t SortKeyMethods[] = {
 };
 
 const struct mapping_t SortSidebarMethods[] = {
-  { "count",	SORT_COUNT },
-  { "desc",	SORT_DESC },
-  { "flagged",	SORT_FLAGGED },
-  { "new",	SORT_COUNT_NEW },
-  { "path",	SORT_PATH },
-  { "alpha",	SORT_PATH },
-  { "name",	SORT_PATH },
-  { "unsorted",	SORT_ORDER },
-  { NULL,       0 }
+  { "alpha",		SORT_PATH },
+  { "count",		SORT_COUNT },
+  { "desc",		SORT_DESC },
+  { "flagged",		SORT_FLAGGED },
+  { "mailbox-order",	SORT_ORDER },
+  { "name",		SORT_PATH },
+  { "new",		SORT_COUNT_NEW },
+  { "path",		SORT_PATH },
+  { "unsorted",		SORT_ORDER },
+  { NULL,		0 }
 };
 
 

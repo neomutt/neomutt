@@ -477,7 +477,15 @@ sort_buffy_array (BUFFY **arr, int arr_len)
 	if (!arr)
 		return;
 
-	qsort (arr, arr_len, sizeof (*arr), cb_qsort_buffy);
+	/* These are the only sort methods we understand */
+	short ssm = (SidebarSortMethod & SORT_MASK);
+	if ((ssm == SORT_COUNT)     ||
+	    (ssm == SORT_COUNT_NEW) ||
+	    (ssm == SORT_DESC)      ||
+	    (ssm == SORT_FLAGGED)   ||
+	    (ssm == SORT_PATH)) {
+		qsort (arr, arr_len, sizeof (*arr), cb_qsort_buffy);
+	}
 
 	int i;
 	for (i = 0; i < (arr_len - 1); i++) {
