@@ -39,6 +39,8 @@ static const struct mapping_t UrlMap[] =
   { "imaps", 	U_IMAPS },
   { "pop",  	U_POP },
   { "pops", 	U_POPS },
+  { "news",	U_NNTP },
+  { "snews",	U_NNTPS },
   { "mailto",	U_MAILTO },
   { "smtp",     U_SMTP },
   { "smtps",    U_SMTPS },
@@ -214,7 +216,7 @@ int url_ciss_tostring (ciss_url_t* ciss, char* dest, size_t len, int flags)
       safe_strcat (dest, len, "//");
     len -= (l = strlen (dest)); dest += l;
 
-    if (ciss->user)
+    if (ciss->user && (ciss->user[0] || !(flags & U_PATH)))
     {
       char u[STRING];
       url_pct_encode (u, sizeof (u), ciss->user);

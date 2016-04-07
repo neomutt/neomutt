@@ -88,6 +88,10 @@ const struct binding_t OpMain[] = { /* map: index */
   { "break-thread",		OP_MAIN_BREAK_THREAD,		"#" },
   { "change-folder",		OP_MAIN_CHANGE_FOLDER,		"c" },
   { "change-folder-readonly",	OP_MAIN_CHANGE_FOLDER_READONLY,	"\033c" },
+#ifdef USE_NNTP
+  { "change-newsgroup",		OP_MAIN_CHANGE_GROUP,		"i" },
+  { "change-newsgroup-readonly",OP_MAIN_CHANGE_GROUP_READONLY,	"\033i" },
+#endif
   { "next-unread-mailbox",	OP_MAIN_NEXT_UNREAD_MAILBOX,    NULL },
   { "collapse-thread",		OP_MAIN_COLLAPSE_THREAD,	"\033v" },
   { "collapse-all",		OP_MAIN_COLLAPSE_ALL,		"\033V" },
@@ -101,7 +105,15 @@ const struct binding_t OpMain[] = { /* map: index */
   { "edit",			OP_EDIT_MESSAGE,		"e" },
   { "edit-type",		OP_EDIT_TYPE,			"\005" },
   { "forward-message",		OP_FORWARD_MESSAGE,		"f" },
-  { "flag-message",		OP_FLAG_MESSAGE,		"F" },
+#ifdef USE_NNTP
+  { "forward-to-group",		OP_FORWARD_TO_GROUP,		"\033F" },
+  { "followup-message",		OP_FOLLOWUP,			"F" },
+  { "get-children",		OP_GET_CHILDREN,		NULL },
+  { "get-message",		OP_GET_MESSAGE,			"\007" },
+  { "get-parent",		OP_GET_PARENT,			"\033G" },
+  { "reconstruct-thread",	OP_RECONSTRUCT_THREAD,		NULL },
+#endif
+  { "flag-message",		OP_FLAG_MESSAGE,		"\033f" },
   { "group-reply",		OP_GROUP_REPLY,			"g" },
 #ifdef USE_POP
   { "fetch-mail",		OP_MAIN_FETCH_MAIL,		"G" },
@@ -128,6 +140,9 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sort-mailbox",		OP_SORT,			"o" },
   { "sort-reverse",		OP_SORT_REVERSE,		"O" },
   { "print-message",		OP_PRINT,			"p" },
+#ifdef USE_NNTP
+  { "post-message",		OP_POST,			"P" },
+#endif
   { "previous-thread",		OP_MAIN_PREV_THREAD,		"\020" },
   { "previous-subthread",	OP_MAIN_PREV_SUBTHREAD,		"\033p" },
   { "recall-message",		OP_RECALL_MESSAGE,		"R" },
@@ -147,6 +162,10 @@ const struct binding_t OpMain[] = { /* map: index */
   { "show-version",		OP_VERSION,			"V" },
   { "set-flag",			OP_MAIN_SET_FLAG,		"w" },
   { "clear-flag",		OP_MAIN_CLEAR_FLAG,		"W" },
+  { "toggle-read",		OP_TOGGLE_READ,			"X" },
+#ifdef USE_NNTP
+  { "catchup",			OP_CATCHUP,			"y" },
+#endif
   { "display-message",		OP_DISPLAY_MESSAGE,		M_ENTER_S },
   { "buffy-list",		OP_BUFFY_LIST,			"." },
   { "sync-mailbox",		OP_MAIN_SYNC_FOLDER,		"$" },
@@ -158,7 +177,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "previous-new-then-unread",	OP_MAIN_PREV_NEW_THEN_UNREAD,	"\033\t" },
   { "next-unread",		OP_MAIN_NEXT_UNREAD,		NULL },
   { "previous-unread",		OP_MAIN_PREV_UNREAD,		NULL },
-  { "parent-message",		OP_MAIN_PARENT_MESSAGE,		"P" },
+  { "parent-message",		OP_MAIN_PARENT_MESSAGE,		NULL },
 
 
   { "extract-keys",		OP_EXTRACT_KEYS,		"\013" },
@@ -178,6 +197,10 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "change-folder",	OP_MAIN_CHANGE_FOLDER,		"c" },
   { "change-folder-readonly",	OP_MAIN_CHANGE_FOLDER_READONLY,	"\033c" },
+#ifdef USE_NNTP
+  { "change-newsgroup",		OP_MAIN_CHANGE_GROUP,		"i" },
+  { "change-newsgroup-readonly",OP_MAIN_CHANGE_GROUP_READONLY,	"\033i" },
+#endif
   { "next-unread-mailbox",	OP_MAIN_NEXT_UNREAD_MAILBOX, NULL },
   { "copy-message",	OP_COPY_MESSAGE,		"C" },
   { "decode-copy",	OP_DECODE_COPY,			"\033C" },
@@ -188,8 +211,12 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "clear-flag",       OP_MAIN_CLEAR_FLAG,		"W" },
   { "edit",		OP_EDIT_MESSAGE,		"e" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
+#ifdef USE_NNTP
+  { "followup-message",	OP_FOLLOWUP,			"F" },
+  { "forward-to-group",	OP_FORWARD_TO_GROUP,		"\033F" },
+#endif
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },
-  { "flag-message",	OP_FLAG_MESSAGE,		"F" },
+  { "flag-message",	OP_FLAG_MESSAGE,		"\033f" },
   { "group-reply",	OP_GROUP_REPLY,			"g" },
 #ifdef USE_IMAP
   { "imap-fetch-mail",  OP_MAIN_IMAP_FETCH,		NULL },
@@ -211,6 +238,9 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sort-mailbox",	OP_SORT,			"o" },
   { "sort-reverse",	OP_SORT_REVERSE,		"O" },
   { "print-message",	OP_PRINT,			"p" },
+#ifdef USE_NNTP
+  { "post-message",	OP_POST,			"P" },
+#endif
   { "previous-thread",	OP_MAIN_PREV_THREAD,		"\020" },
   { "previous-subthread",OP_MAIN_PREV_SUBTHREAD,	"\033p" },
   { "quit",		OP_QUIT,			"Q" },
@@ -258,7 +288,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "half-down",	OP_HALF_DOWN,			NULL },
   { "previous-line",	OP_PREV_LINE,			NULL },
   { "bottom",		OP_PAGER_BOTTOM,		NULL },
-  { "parent-message",	OP_MAIN_PARENT_MESSAGE,		"P" },
+  { "parent-message",	OP_MAIN_PARENT_MESSAGE,		NULL },
 
 
 
@@ -279,6 +309,10 @@ const struct binding_t OpAttach[] = { /* map: attachment */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
+#ifdef USE_NNTP
+  { "followup-message",	OP_FOLLOWUP,			"F" },
+  { "forward-to-group",	OP_FORWARD_TO_GROUP,		"\033F" },
+#endif
   { "print-entry",	OP_PRINT,			"p" },
   { "save-entry",	OP_SAVE,			"s" },
   { "pipe-entry",	OP_PIPE,			"|" },
@@ -304,6 +338,7 @@ const struct binding_t OpAttach[] = { /* map: attachment */
 const struct binding_t OpCompose[] = { /* map: compose */
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
+  { "attach-news-message",OP_COMPOSE_ATTACH_NEWS_MESSAGE,"\033a" },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
   { "edit-cc",		OP_COMPOSE_EDIT_CC,		"c" },
   { "copy-file",	OP_SAVE,			"C" },
@@ -323,6 +358,11 @@ const struct binding_t OpCompose[] = { /* map: compose */
   { "print-entry",	OP_PRINT,			"l" },
   { "edit-mime",	OP_COMPOSE_EDIT_MIME,		"m" },
   { "new-mime",		OP_COMPOSE_NEW_MIME,		"n" },
+#ifdef USE_NNTP
+  { "edit-newsgroups",	OP_COMPOSE_EDIT_NEWSGROUPS,	"N" },
+  { "edit-followup-to",	OP_COMPOSE_EDIT_FOLLOWUP_TO,	"o" },
+  { "edit-x-comment-to",OP_COMPOSE_EDIT_X_COMMENT_TO,	"x" },
+#endif
   { "postpone-message",	OP_COMPOSE_POSTPONE_MESSAGE,	"P" },
   { "edit-reply-to",	OP_COMPOSE_EDIT_REPLY_TO,	"r" },
   { "rename-file",	OP_COMPOSE_RENAME_FILE,		"R" },
@@ -374,14 +414,25 @@ const struct binding_t OpBrowser[] = { /* map: browser */
   { "select-new",	OP_BROWSER_NEW_FILE,	"N" },
   { "check-new",	OP_CHECK_NEW,		NULL },
   { "toggle-mailboxes", OP_TOGGLE_MAILBOXES, 	"\t" },
+#ifdef USE_NNTP
+  { "reload-active",	OP_LOAD_ACTIVE,		"g" },
+  { "subscribe-pattern", OP_SUBSCRIBE_PATTERN,	"S" },
+  { "unsubscribe-pattern", OP_UNSUBSCRIBE_PATTERN, "U" },
+  { "catchup",		OP_CATCHUP,		"y" },
+  { "uncatchup",	OP_UNCATCHUP,		"Y" },
+#endif
   { "view-file",	OP_BROWSER_VIEW_FILE,	" " },
   { "buffy-list",	OP_BUFFY_LIST,		"." },
 #ifdef USE_IMAP
   { "create-mailbox",   OP_CREATE_MAILBOX,      "C" },
   { "delete-mailbox",   OP_DELETE_MAILBOX,      "d" },
   { "rename-mailbox",   OP_RENAME_MAILBOX,      "r" },
+#endif
+#if defined USE_IMAP || defined USE_NNTP
   { "subscribe",	OP_BROWSER_SUBSCRIBE,	"s" },
   { "unsubscribe",	OP_BROWSER_UNSUBSCRIBE,	"u" },
+#endif
+#ifdef USE_IMAP
   { "toggle-subscribed", OP_BROWSER_TOGGLE_LSUB, "T" },
 #endif
   { NULL,		0,			NULL }

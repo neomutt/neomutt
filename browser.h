@@ -19,6 +19,10 @@
 #ifndef _BROWSER_H
 #define _BROWSER_H 1
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
+
 struct folder_file
 {
   mode_t mode;
@@ -36,6 +40,9 @@ struct folder_file
   unsigned imap : 1;
   unsigned selectable : 1;
   unsigned inferiors : 1;
+#endif
+#ifdef USE_NNTP
+  NNTP_DATA *nd;
 #endif
   unsigned tagged : 1;
 };

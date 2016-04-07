@@ -24,6 +24,11 @@
 #include "sort.h"
 #include "mutt_idna.h"
 
+#ifdef USE_NNTP
+#include "mx.h"
+#include "nntp.h"
+#endif
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -151,6 +156,17 @@ static int compare_order (const void *a, const void *b)
   HEADER **ha = (HEADER **) a;
   HEADER **hb = (HEADER **) b;
 
+#ifdef USE_NNTP
+  if (Context && Context->magic == M_NNTP)
+  {
+    anum_t na = NHDR (*ha)->article_num;
+    anum_t nb = NHDR (*hb)->article_num;
+    int result = na == nb ? 0 : na > nb ? 1 : -1;
+    AUXSORT (result, a, b);
+    return (SORTCODE (result));
+  }
+  else
+#endif
   /* no need to auxsort because you will never have equality here */
   return (SORTCODE ((*ha)->index - (*hb)->index));
 }

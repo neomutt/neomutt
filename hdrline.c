@@ -211,6 +211,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %E = number of messages in current thread
  * %f = entire from line
  * %F = like %n, unless from self
+ * %g = newsgroup name (if compiled with NNTP support)
  * %i = message-id
  * %l = number of lines in the message
  * %L = like %F, except `lists' are displayed first
@@ -227,6 +228,8 @@ int mutt_user_is_recipient (HEADER *h)
  * %T = $to_chars
  * %u = user (login) name of author
  * %v = first name of author, unless from self
+ * %W = where user is (organization)
+ * %x = `x-comment-to:' field (if present and compiled with NNTP support)
  * %X = number of MIME attachments
  * %y = `x-label:' field (if present)
  * %Y = `x-label:' field (if present, tree unfolded, and != parent's x-label)
@@ -459,6 +462,12 @@ hdr_format_str (char *dest,
 
       break;
 
+#ifdef USE_NNTP
+    case 'g':
+      mutt_format_s (dest, destlen, prefix, hdr->env->newsgroups ? hdr->env->newsgroups : "");
+      break;
+#endif
+
     case 'i':
       mutt_format_s (dest, destlen, prefix, hdr->env->message_id ? hdr->env->message_id : "<no.id>");
       break;
@@ -654,6 +663,22 @@ hdr_format_str (char *dest,
 	*p = 0;
       mutt_format_s (dest, destlen, prefix, buf2);
       break;
+
+    case 'W':
+      if (!optional)
+	mutt_format_s (dest, destlen, prefix, hdr->env->organization ? hdr->env->organization : "");
+      else if (!hdr->env->organization)
+	optional = 0;
+      break;
+
+#ifdef USE_NNTP
+    case 'x':
+      if (!optional)
+	mutt_format_s (dest, destlen, prefix, hdr->env->x_comment_to ? hdr->env->x_comment_to : "");
+      else if (!hdr->env->x_comment_to)
+	optional = 0;
+      break;
+#endif
 
     case 'Z':
     

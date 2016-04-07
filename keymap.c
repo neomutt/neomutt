@@ -795,7 +795,6 @@ void km_init (void)
   km_bindkey ("<enter>", MENU_MAIN, OP_DISPLAY_MESSAGE);
 
   km_bindkey ("x", MENU_PAGER, OP_EXIT);
-  km_bindkey ("i", MENU_PAGER, OP_EXIT);
   km_bindkey ("<backspace>", MENU_PAGER, OP_PREV_LINE);
   km_bindkey ("<pagedown>", MENU_PAGER, OP_NEXT_PAGE);
   km_bindkey ("<pageup>", MENU_PAGER, OP_PREV_PAGE);

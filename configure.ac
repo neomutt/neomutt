@@ -600,6 +600,15 @@ AC_ARG_ENABLE(imap, AS_HELP_STRING([--enable-imap],[Enable IMAP support]),
 ])
 AM_CONDITIONAL(BUILD_IMAP, test x$need_imap = xyes)
 
+AC_ARG_ENABLE(nntp, AC_HELP_STRING([--enable-nntp],[Enable NNTP support]),
+[	if test x$enableval = xyes ; then
+		AC_DEFINE(USE_NNTP,1,[ Define if you want support for the NNTP protocol. ])
+		MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS nntp.o newsrc.o"
+		need_nntp="yes"
+		need_socket="yes"
+	fi
+])
+
 AC_ARG_ENABLE(smtp, AS_HELP_STRING([--enable-smtp],[include internal SMTP relay support]),
 	[if test $enableval = yes; then
 		AC_DEFINE(USE_SMTP, 1, [Include internal SMTP relay support])
@@ -607,7 +616,7 @@ AC_ARG_ENABLE(smtp, AS_HELP_STRING([--enable-smtp],[include internal SMTP relay 
 		need_socket="yes"
 	fi])
 
-if test x"$need_imap" = xyes -o x"$need_pop" = xyes ; then
+if test x"$need_imap" = xyes -o x"$need_pop" = xyes -o x"$need_nntp" = xyes ; then
   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS bcache.o"
 fi
 
