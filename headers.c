@@ -211,3 +211,197 @@ void mutt_edit_headers (const char *editor,
     }
   }
 }
+
+void mutt_label_ref_dec(ENVELOPE *env)
+{
+  uintptr_t count;
+  LIST *label;
+
+  if (!env || !env->labels || !Labels)
+    return;
+
+  for (label = env->labels; label; label = label->next)
+  {
+    if (label->data == NULL)
+      continue;
+    count = (uintptr_t)hash_find(Labels, label->data);
+    if (count)
+    {
+      hash_delete(Labels, label->data, NULL, NULL);
+      count--;
+      if (count > 0)
+        hash_insert(Labels, label->data, (void *)count, 0);
+    }
+    dprint(1, (debugfile, "--label %s: %d\n", label->data, count));
+  }
+}
+
+void mutt_label_ref_inc(ENVELOPE *env)
+{
+  uintptr_t count;
+  LIST *label;
+
+  if (!env || !env->labels || !Labels)
+    return;
+
+  for (label = env->labels; label; label = label->next)
+  {
+    if (label->data == NULL)
+      continue;
+    count = (uintptr_t)hash_find(Labels, label->data);
+    if (count)
+      hash_delete(Labels, label->data, NULL, NULL);
+    count++;  /* was zero if not found */
+    hash_insert(Labels, label->data, (void *)count, 0);
+    dprint(1, (debugfile, "++label %s: %d\n", label->data, count));
+  }
+}
+
+/*
+ * set labels on a message
+ */
+static int label_message(HEADER *hdr, char *new)
+{
+  if (hdr == NULL)
+    return 0;
+  if (hdr->env->labels == NULL && new == NULL)
+    return 0;
+  if (hdr->env->labels != NULL && new != NULL)
+  {
+    char old[HUGE_STRING];
+    mutt_labels(old, sizeof(old), hdr->env, NULL);
+    if (!strcmp(old, new))
+      return 0;
+  }
+
+  if (hdr->env->labels != NULL)
+  {
+    mutt_label_ref_dec(hdr->env);
+    mutt_free_list(&hdr->env->labels);
+  }
+
+  if (new == NULL)
+    hdr->env->labels = NULL;
+  else
+  {
+    char *last, *label;
+
+    for (label = strtok_r(new, ",", &last); label;
+         label = strtok_r(NULL, ",", &last)) 
+    {
+      SKIPWS(label);
+      if (mutt_find_list(hdr->env->labels, label))
+        continue;
+      if (hdr->env->labels == NULL)
+      {
+        hdr->env->labels = mutt_new_list();
+        hdr->env->labels->data = safe_strdup(label);
+      }
+      else
+        mutt_add_list(hdr->env->labels, label);
+    }
+    mutt_label_ref_inc(hdr->env);
+  }
+  return hdr->changed = hdr->label_changed = 1;
+}
+
+int mutt_label_message(HEADER *hdr)
+{
+  char buf[LONG_STRING], *new;
+  int i;
+  int changed;
+
+  *buf = '\0';
+  if (hdr != NULL && hdr->env->labels != NULL)
+    mutt_labels(buf, sizeof(buf)-2, hdr->env, NULL);
+
+  /* add a comma-space so that new typing is a new keyword */
+  if (buf[0])
+    strcat(buf, ", ");    /* __STRCAT_CHECKED__ */
+
+  if (mutt_get_field("Label: ", buf, sizeof(buf), MUTT_LABEL /* | MUTT_CLEAR */) != 0)
+    return 0;
+
+  new = buf;
+  SKIPWS(new);
+  if (new && *new)
+  {
+    char *p;
+    int len = strlen(new);
+    p = &new[len]; /* '\0' */
+    while (p > new)
+    {
+      if (!isspace((unsigned char)*(p-1)) && *(p-1) != ',')
+        break;
+      p--;
+    }
+    *p = '\0';
+  }
+  if (*new == '\0')
+    new = NULL;
+
+  changed = 0;
+  if (hdr != NULL) {
+    changed += label_message(hdr, new);
+  } else {
+#define HDR_OF(index) Context->hdrs[Context->v2r[(index)]]
+    for (i = 0; i < Context->vcount; ++i) {
+      if (HDR_OF(i)->tagged)
+        if (label_message(HDR_OF(i), new)) {
+          ++changed;
+        }
+    }
+  }
+
+  return changed;
+}
+
+/* scan a context (mailbox) and hash all labels we find */
+void mutt_scan_labels(CONTEXT *ctx)
+{
+  int i;
+
+  if (!ctx)
+    return;
+
+  for (i = 0; i < ctx->msgcount; i++)
+    if (ctx->hdrs[i]->env->labels)
+      mutt_label_ref_inc(ctx->hdrs[i]->env);
+}
+
+
+char *mutt_labels(char *dst, int sz, ENVELOPE *env, char *sep)
+{
+  static char sbuf[HUGE_STRING];
+  int off = 0;
+  int len;
+  LIST *label;
+
+  if (sep == NULL)
+    sep = ", ";
+
+  if (dst == NULL)
+  {
+    dst = sbuf;
+    sz = sizeof(sbuf);
+  }
+
+  *dst = '\0';
+
+  for (label = env->labels; label; label = label->next)
+  {
+    if (label->data == NULL)
+      continue;
+    len = MIN(mutt_strlen(label->data), sz-off);
+    strfcpy(&dst[off], label->data, len+1);
+    off += len;
+    if (label->next)
+    {
+      len = MIN(mutt_strlen(sep), sz-off);
+      strfcpy(&dst[off], sep, len+1);
+      off += len;
+    }
+  }
+
+  return dst;
+}

@@ -88,6 +88,7 @@
 #define  MUTT_CLEAR   (1<<5) /* clear input if printable character is pressed */
 #define  MUTT_COMMAND (1<<6) /* do command completion */
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
+#define  MUTT_LABEL   (1<<8) /* do label completion */
 
 /* flags for mutt_get_token() */
 #define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
@@ -313,6 +314,12 @@ enum
 #define MUTT_SPAM          1
 #define MUTT_NOSPAM        2
 
+/* flags for keywords headers */
+#define MUTT_X_LABEL         (1<<0)  /* introduced to mutt in 2000 */
+#define MUTT_X_KEYWORDS      (1<<1)  /* used in c-client, dovecot */
+#define MUTT_X_MOZILLA_KEYS  (1<<2)  /* tbird */
+#define MUTT_KEYWORDS        (1<<3)  /* rfc2822 */
+
 /* boolean vars */
 enum
 {
@@ -388,6 +395,8 @@ enum
   OPTIMPLICITAUTOVIEW,
   OPTINCLUDEONLYFIRST,
   OPTKEEPFLAGGED,
+  OPTKEYWORDSLEGACY,
+  OPTKEYWORDSSTANDARD,
   OPTMAILCAPSANITIZE,
   OPTMAILCHECKRECENT,
   OPTMAILCHECKSTATS,
@@ -609,11 +618,12 @@ typedef struct envelope
   char *message_id;
   char *supersedes;
   char *date;
-  char *x_label;
   BUFFER *spam;
   LIST *references;		/* message references (in reverse order) */
   LIST *in_reply_to;		/* in-reply-to header content */
   LIST *userhdrs;		/* user defined headers */
+  LIST *labels;
+  int kwtypes;
 
   unsigned int irt_changed : 1; /* In-Reply-To changed to link/break threads */
   unsigned int refs_changed : 1; /* References changed to break thread */
@@ -747,6 +757,7 @@ typedef struct header
 					 * This flag is used by the maildir_trash
 					 * option.
 					 */
+  unsigned int label_changed : 1;	/* editable - used for syncing */
   
   /* timezone of the sender of this message */
   unsigned int zhours : 5;

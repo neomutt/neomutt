@@ -66,6 +66,7 @@ WHERE char *ImapUser INITVAL (NULL);
 #endif
 WHERE char *Inbox;
 WHERE char *Ispell;
+WHERE char *KeywordsSave;
 WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
@@ -153,6 +154,7 @@ WHERE char *TSIconFormat;
 WHERE short TSSupported;
 WHERE char *Username;
 WHERE char *Visual;
+WHERE char *XlabelDelim;
 
 WHERE char *CurrentFolder;
 WHERE char *LastFolder;
@@ -161,6 +163,7 @@ WHERE char *LastFolder;
 WHERE const char *ReleaseDate;
 
 WHERE HASH *Groups;
+WHERE HASH *Labels;
 WHERE HASH *ReverseAlias;
 
 WHERE LIST *AutoViewList INITVAL(0);

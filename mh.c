@@ -1790,7 +1790,7 @@ static int mh_sync_message (CONTEXT * ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
 
-  if (h->attach_del || 
+  if (h->attach_del || h->label_changed ||
       (h->env && (h->env->refs_changed || h->env->irt_changed)))
     if (mh_rewrite_message (ctx, msgno) != 0)
       return -1;
@@ -1802,7 +1802,7 @@ static int maildir_sync_message (CONTEXT * ctx, int msgno)
 {
   HEADER *h = ctx->hdrs[msgno];
 
-  if (h->attach_del || 
+  if (h->attach_del || h->label_changed ||
       (h->env && (h->env->refs_changed || h->env->irt_changed)))
   {
     /* when doing attachment deletion/rethreading, fall back to the MH case. */
@@ -1924,6 +1924,7 @@ int mh_sync_mailbox (CONTEXT * ctx, int *index_hint)
       }
     }
     else if (ctx->hdrs[i]->changed || ctx->hdrs[i]->attach_del ||
+	     ctx->hdrs[i]->label_changed ||
 	     (ctx->magic == MUTT_MAILDIR
 	      && (option (OPTMAILDIRTRASH) || ctx->hdrs[i]->trash)
 	      && (ctx->hdrs[i]->deleted != ctx->hdrs[i]->trash)))

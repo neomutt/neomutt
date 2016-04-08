@@ -566,6 +566,49 @@ int _mutt_enter_string (char *buf, size_t buflen, int col,
 	    }
 	    break;
 	  }
+	  else if (flags & MUTT_LABEL && ch == OP_EDITOR_COMPLETE)
+	  {
+	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
+		 state->wbuf[i-1] != ':'; i--)
+	      ;
+	    for (; i < state->lastchar && state->wbuf[i] == ' '; i++)
+	      ;
+	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
+	    r = mutt_label_complete (buf, buflen, i, state->tabs);
+	    replace_part (state, i, buf);
+	    if (!r)
+	    {
+	      rv = 1;
+	      goto bye;
+	    }
+	    break;
+	  }
+	  else if (flags & MUTT_PATTERN && ch == OP_EDITOR_COMPLETE)
+	  {
+        char *p;
+	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
+		 state->wbuf[i-1] != ':'; i--)
+	      ;
+	    for (; i < state->lastchar && state->wbuf[i] == ' '; i++)
+	      ;
+	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
+        p = &buf[i];
+        while (p > buf && *(p-1) != '~')
+          p--;
+        if (*p == '~' && *(p+1) == 'y')
+        {
+	      r = mutt_label_complete (buf, buflen, i, state->tabs);
+	      replace_part (state, i, buf);
+	      if (!r)
+	      {
+	        rv = 1;
+	        goto bye;
+	      }
+        }
+        else
+          goto self_insert;
+	    break;
+	  }
 	  else if (flags & MUTT_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
 	  {
 	    /* invoke the query-menu to get more addresses */
