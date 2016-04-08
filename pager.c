@@ -1096,7 +1096,8 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 {
   int space = -1; /* index of the last space or TAB */
   int col = option (OPTMARKERS) ? (*lineInfo)[n].continuation : 0;
-  int ch, vch, k, last_special = -1, special = 0, t;
+  size_t k;
+  int ch, vch, last_special = -1, special = 0, t;
   wchar_t wc;
   mbstate_t mbstate;
   int wrap_cols = mutt_term_width ((flags & M_PAGER_NOWRAP) ? 0 : Wrap);
@@ -1127,9 +1128,9 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
       break;
     
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
-    if (k == -2 || k == -1)
+    if (k == (size_t)(-2) || k == (size_t)(-1))
     {
-      if (k == -1)
+      if (k == (size_t)(-1))
         memset(&mbstate, 0, sizeof(mbstate));
       dprint (1, (debugfile, "%s:%d: mbrtowc returned %d; errno = %d.\n",
 		  __FILE__, __LINE__, k, errno));
@@ -1156,15 +1157,18 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     {
       wchar_t wc1;
       mbstate_t mbstate1;
-      int k1, k2;
+      size_t k1, k2;
 
-      while ((wc1 = 0, mbstate1 = mbstate,
-	      k1 = k + mbrtowc (&wc1, (char *)buf+ch+k, cnt-ch-k, &mbstate1),
-	      k1 - k > 0 && wc1 == '\b') &&
-	     (wc1 = 0,
-	      k2 = mbrtowc (&wc1, (char *)buf+ch+k1, cnt-ch-k1, &mbstate1),
-	      k2 > 0 && IsWPrint (wc1)))
+      mbstate1 = mbstate;
+      k1 = mbrtowc (&wc1, (char *)buf+ch+k, cnt-ch-k, &mbstate1);
+      while ((k1 != (size_t)(-2)) && (k1 != (size_t)(-1)) &&
+             (k1 > 0) && (wc1 == '\b'))
       {
+        k2 = mbrtowc (&wc1, (char *)buf+ch+k+k1, cnt-ch-k-k1, &mbstate1);
+        if ((k2 == (size_t)(-2)) || (k2 == (size_t)(-1)) ||
+            (k2 == 0) || (!IsWPrint (wc1)))
+          break;
+
 	if (wc == wc1)
 	{
 	  special |= (wc == '_' && special & A_UNDERLINE)
@@ -1180,9 +1184,11 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 	  /* special = 0; / * overstrike: nothing to do! */
 	  wc = wc1;
 	}
-	ch += k1;
+
+	ch += k + k1;
 	k = k2;
 	mbstate = mbstate1;
+        k1 = mbrtowc (&wc1, (char *)buf+ch+k, cnt-ch-k, &mbstate1);
       }
     }
 
