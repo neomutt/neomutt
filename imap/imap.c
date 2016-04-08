@@ -1222,7 +1222,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
        * we delete the message and reupload it.
        * This works better if we're expunging, of course. */
       if ((h->env && (h->env->refs_changed || h->env->irt_changed)) ||
-	  h->attach_del)
+	  h->attach_del || h->xlabel_changed)
       {
         mutt_message (_("Saving changed messages... [%d/%d]"), n+1,
                       ctx->msgcount);
@@ -1232,6 +1232,7 @@ int imap_sync_mailbox (CONTEXT* ctx, int expunge, int* index_hint)
 	  dprint (1, (debugfile, "imap_sync_mailbox: Error opening mailbox in append mode\n"));
 	else
 	  _mutt_save_message (h, appendctx, 1, 0, 0);
+	h->xlabel_changed = 0;
       }
     }
   }

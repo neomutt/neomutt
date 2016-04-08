@@ -2045,6 +2045,21 @@ int mutt_index_menu (void)
 	menu->redraw = REDRAW_FULL;
 	break;
 
+      case OP_EDIT_LABEL:
+
+	CHECK_MSGCOUNT;
+	CHECK_READONLY;
+	rc = mutt_label_message(tag ? NULL : CURHDR);
+	if (rc > 0) {
+	  Context->changed = 1;
+	  menu->redraw = REDRAW_FULL;
+	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+	}
+	else {
+	  mutt_message _("No labels changed.");
+	}
+	break;
+
       case OP_LIST_REPLY:
 
 	CHECK_ATTACH;

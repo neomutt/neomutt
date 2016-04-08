@@ -406,6 +406,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   IMAP_CACHE *cache;
   int read;
   int rc;
+  char *x_label = NULL;
   /* Sam's weird courier server returns an OK response even when FETCH
    * fails. Thanks Sam. */
   short fetched = 0;
