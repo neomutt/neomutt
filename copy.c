@@ -431,7 +431,8 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
       char *tmp = NULL;
       int fail = 0;
 
-      if (fail == 0 && (h->env->kwtypes & M_X_LABEL) &&
+      if (fail == 0 &&
+          ((h->env->kwtypes & M_X_LABEL) || (h->env->kwtypes == 0)) &&
           (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
       {
         mutt_labels(buf, sizeof(buf), h->env, XlabelDelim);

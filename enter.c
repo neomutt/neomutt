@@ -567,7 +567,6 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  }
 	  else if (flags & M_LABEL && ch == OP_EDITOR_COMPLETE)
 	  {
-	    /* invoke the alias-menu to get more addresses */
 	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
 		 state->wbuf[i-1] != ':'; i--)
 	      ;
@@ -581,6 +580,32 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      rv = 1;
 	      goto bye;
 	    }
+	    break;
+	  }
+	  else if (flags & M_PATTERN && ch == OP_EDITOR_COMPLETE)
+	  {
+        char *p;
+	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
+		 state->wbuf[i-1] != ':'; i--)
+	      ;
+	    for (; i < state->lastchar && state->wbuf[i] == ' '; i++)
+	      ;
+	    my_wcstombs (buf, buflen, state->wbuf + i, state->curpos - i);
+        p = &buf[i];
+        while (p > buf && *(p-1) != '~')
+          p--;
+        if (*p == '~' && *(p+1) == 'y')
+        {
+	      r = mutt_label_complete (buf, buflen, i, state->tabs);
+	      replace_part (state, i, buf);
+	      if (!r)
+	      {
+	        rv = 1;
+	        goto bye;
+	      }
+        }
+        else
+          goto self_insert;
 	    break;
 	  }
 	  else if (flags & M_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
