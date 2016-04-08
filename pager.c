@@ -1011,10 +1011,14 @@ trim_incomplete_mbyte(unsigned char *buf, size_t len)
   for (; len > 0; buf += k, len -= k)
   {
     k = mbrtowc (NULL, (char *) buf, len, &mbstate);
-    if (k == -2) 
+    if (k == (size_t)(-2)) 
       break; 
-    else if (k == -1 || k == 0) 
+    else if (k == (size_t)(-1) || k == 0)
+    {
+      if (k == (size_t)(-1))
+        memset (&mbstate, 0, sizeof (mbstate));
       k = 1;
+    }
   }
   *buf = '\0';
 
@@ -1125,6 +1129,8 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     k = mbrtowc (&wc, (char *)buf+ch, cnt-ch, &mbstate);
     if (k == -2 || k == -1)
     {
+      if (k == -1)
+        memset(&mbstate, 0, sizeof(mbstate));
       dprint (1, (debugfile, "%s:%d: mbrtowc returned %d; errno = %d.\n",
 		  __FILE__, __LINE__, k, errno));
       if (col + 4 > wrap_cols)

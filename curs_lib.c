@@ -1034,6 +1034,8 @@ int mutt_strwidth (const char *s)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1))
+        memset (&mbstate, 0, sizeof (mbstate));
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }

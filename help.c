@@ -103,6 +103,8 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1))
+        memset (&mbstate1, 0, sizeof (mbstate1));
       k = (k == (size_t)(-1)) ? 1 : len;
       wc = replacement_char ();
     }
@@ -165,6 +167,8 @@ static int get_wrapped_width (const char *t, size_t wid)
       m = n;
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1))
+        memset (&mbstate, 0, sizeof (mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
       wc = replacement_char ();
     }

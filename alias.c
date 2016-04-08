@@ -423,6 +423,8 @@ int mutt_check_alias_name (const char *s, char *dest, size_t destlen)
     {
       if (dry)
 	return -1;
+      if (l == (size_t)(-1))
+        memset (&mb, 0, sizeof (mbstate_t));
       *dest++ = '_';
       rv = -1;
     }
