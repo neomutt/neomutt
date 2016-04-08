@@ -46,4 +46,11 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
 		       void (*destroy) (void *));
 void hash_destroy (HASH ** hash, void (*destroy) (void *));
 
+struct hash_walk_state {
+  int index;
+  struct hash_elem *last;
+};
+
+struct hash_elem *hash_walk(const HASH *table, struct hash_walk_state *state);
+
 #endif
