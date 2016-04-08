@@ -185,6 +185,8 @@ void mutt_edit_file (const char *, const char *);
 void mutt_edit_headers (const char *, const char *, HEADER *, char *, size_t);
 int mutt_filter_unprintable (char **);
 int mutt_label_message (HEADER *);
+void mutt_scan_labels (CONTEXT *);
+int mutt_label_complete (char *, size_t, int, int);
 void mutt_curses_error (const char *, ...);
 void mutt_curses_message (const char *, ...);
 void mutt_encode_descriptions (BODY *, short);
