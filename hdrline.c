@@ -694,38 +694,54 @@ hdr_format_str (char *dest,
 
      case 'y':
        if (optional)
-	 optional = hdr->env->x_label ? 1 : 0;
+	 optional = hdr->env->labels ? 1 : 0;
 
-       mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->x_label));
+       mutt_format_s (dest, destlen, prefix,
+                      mutt_labels(NULL, 0, hdr->env, NULL));
        break;
  
     case 'Y':
-      if (hdr->env->x_label)
+      if (hdr->env->labels == NULL)
       {
-	i = 1;	/* reduce reuse recycle */
-	htmp = NULL;
-	if (flags & M_FORMAT_TREE
-	    && (hdr->thread->prev && hdr->thread->prev->message
-		&& hdr->thread->prev->message->env->x_label))
-	  htmp = hdr->thread->prev->message;
-	else if (flags & M_FORMAT_TREE
-		 && (hdr->thread->parent && hdr->thread->parent->message
-		     && hdr->thread->parent->message->env->x_label))
-	  htmp = hdr->thread->parent->message;
-	if (htmp && mutt_strcasecmp (hdr->env->x_label,
-				     htmp->env->x_label) == 0)
-	  i = 0;
+        if (optional)
+          optional = 0;
+        mutt_format_s(dest, destlen, prefix, "");
+        break;
       }
       else
-	i = 0;
+      {
+        char labels[HUGE_STRING];
+        char labelstmp[HUGE_STRING];
 
-      if (optional)
-	optional = i;
+        i = 1;  /* reduce reuse recycle */
+        htmp = NULL;
+        if ((flags & M_FORMAT_TREE) &&
+            hdr->thread->prev &&
+            hdr->thread->prev->message &&
+            hdr->thread->prev->message->env->labels)
+          htmp = hdr->thread->prev->message;
+        else if ((flags & M_FORMAT_TREE) &&
+                 hdr->thread->parent &&
+                 hdr->thread->parent->message &&
+                 hdr->thread->parent->message->env->labels)
+          htmp = hdr->thread->parent->message;
 
-      if (i)
-        mutt_format_s (dest, destlen, prefix, NONULL (hdr->env->x_label));
-      else
-        mutt_format_s (dest, destlen, prefix, "");
+        mutt_labels(labels, sizeof(labels), hdr->env, NULL);
+        if (htmp)
+        {
+          mutt_labels(labelstmp, sizeof(labelstmp), htmp->env, NULL);
+          if (htmp && mutt_strcasecmp (labels, labelstmp) == 0)
+            i = 0;
+        }
+
+        if (optional)
+	  optional = i;
+
+        if (i)
+          mutt_format_s (dest, destlen, prefix, labels);
+        else
+          mutt_format_s (dest, destlen, prefix, "");
+      }
 
       break;
 

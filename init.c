@@ -3287,13 +3287,14 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
 {
   char *pt = buffer;
   int spaces; /* keep track of the number of leading spaces on the line */
+  int prefix;
 
   SKIPWS (buffer);
   spaces = buffer - pt;
 
-  pt = buffer + pos - spaces;
-  while ((pt > buffer) && !isspace ((unsigned char) *pt))
-    pt--;
+  for (pt = buffer; pt && *pt && *(pt+1); pt++);
+  for (; pt > buffer && !isspace(*(pt-1)); pt--);
+  prefix = pt - buffer;
 
   /* first TAB. Collect all the matches */
   if (numtabs == 1)
@@ -3331,7 +3332,7 @@ int mutt_label_complete (char *buffer, size_t len, int pos, int numtabs)
              Matches[(numtabs - 2) % Num_matched]);
 
   /* return the completed label */
-  strncpy (buffer, Completed, len - spaces);
+  strncpy (&buffer[prefix], Completed, len - spaces);
 
   return 1;
 }
