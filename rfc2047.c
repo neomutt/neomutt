@@ -410,7 +410,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   int ret = 0;
   char *buf;
   size_t bufpos, buflen;
-  char *u, *t0, *t1, *t;
+  char *u = NULL, *t0, *t1, *t;
   char *s0, *s1;
   size_t ulen, r, n, wlen;
   encoder_t encoder;
@@ -423,7 +423,7 @@ static int rfc2047_encode (ICONV_CONST char *d, size_t dlen, int col,
   {
     ret = 1; 
     icode = 0;
-    u = safe_malloc ((ulen = dlen) + 1);
+    safe_realloc (&u, (ulen = dlen) + 1);
     memcpy (u, d, dlen);
     u[ulen] = 0;
   }
