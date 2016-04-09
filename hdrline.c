@@ -247,7 +247,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %E = number of messages in current thread
  * %f = entire from line
  * %F = like %n, unless from self
- * %g = message labes (e.g. notmuch tags)
+ * %g = message labels (e.g. notmuch tags)
  * %i = message-id
  * %l = number of lines in the message
  * %L = like %F, except `lists' are displayed first
