@@ -2657,8 +2657,8 @@ int mutt_index_menu (void)
 	menu->redraw = REDRAW_FULL;
 	break;
 
-      case OP_SIDEBAR_TOGGLE:
-	toggle_sidebar(menu->menu);
+      case OP_SIDEBAR_TOGGLE_VIRTUAL:
+	sb_toggle_virtual();
 	break;
 #endif
       default:
