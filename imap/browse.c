@@ -319,11 +319,9 @@ int imap_mailbox_rename(const char* mailbox)
     goto fail;
   }
 
-  /* TODO: add mutt_error call, such as
-   * "Cannot rename root folder"
-   */
   if (!mx.mbox)
   {
+    mutt_error _("Cannot rename root folder");
     goto fail;
   }
 
