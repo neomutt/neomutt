@@ -673,7 +673,9 @@ static void buffy_check(BUFFY *tmp, struct stat *contex_sb)
 	  BuffyCount++;
 	  tmp->new = 1;
 	}
+#ifdef USE_SIDEBAR
 	sb_set_update_time();
+#endif
 	break;
 #endif
       }
