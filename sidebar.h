@@ -20,8 +20,8 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
-typedef struct _context CONTEXT;
-typedef struct buffy_t  BUFFY;
+#include "mutt.h"
+#include "buffy.h"
 
 void         sb_change_mailbox (int op);
 void         sb_draw (void);
