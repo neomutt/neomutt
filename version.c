@@ -84,8 +84,10 @@ static const char *Obtaining = N_(
 );
 
 static const char *ReachingUs = N_(
-	"To contact the developers, please mail to <mutt-dev@mutt.org>.\n"
-	"To report a bug, please visit http://bugs.mutt.org/.\n"
+	"To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
+	"If you find a bug in NeoMutt, please raise an issue at:\n"
+	"    https://github.com/neomutt/neomutt/issues\n"
+	"or contact the lead developer: Richard Russon <rich@flatcap.org>\n"
 );
 
 static const char *Notice = N_(
@@ -447,9 +449,11 @@ print_version (void)
 	printf ("SYSCONFDIR=\"%s\"\n", SYSCONFDIR);
 	printf ("EXECSHELL=\"%s\"\n", EXECSHELL);
 
-	puts (_(ReachingUs));
-
+	puts ("");
 	mutt_print_patchlist();
+
+	puts ("");
+	puts (_(ReachingUs));
 }
 
 /**
