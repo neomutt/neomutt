@@ -8100,7 +8100,7 @@ please have a look at the mixmaster documentation.
 			<listitem><para>OpenSSL</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="tls-sni-intro">
@@ -8169,7 +8169,7 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 		</itemizedlist>
 	</sect2>
 
