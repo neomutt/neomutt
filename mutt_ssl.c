@@ -334,7 +334,11 @@ static int ssl_socket_open (CONNECTION * conn)
   data = (sslsockdata *) safe_calloc (1, sizeof (sslsockdata));
   conn->sockdata = data;
 
-  data->ctx = SSL_CTX_new (SSLv23_client_method ());
+  if (! (data->ctx = SSL_CTX_new (SSLv23_client_method ())))
+  {
+    mutt_socket_close (conn);
+    return -1;
+  }
 
   /* disable SSL protocols as needed */
   if (!option(OPTTLSV1))
