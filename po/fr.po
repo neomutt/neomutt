@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-11 11:26+0200\n"
-"PO-Revision-Date: 2016-04-11 11:27+0200\n"
+"POT-Creation-Date: 2016-04-11 21:15+0200\n"
+"PO-Revision-Date: 2016-04-11 21:17+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -59,7 +59,7 @@ msgid "Select"
 msgstr "Sélectionner"
 
 #: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:4022 curs_main.c:488
-#: mutt_ssl.c:1053 mutt_ssl_gnutls.c:1003 pager.c:1643 pgpkey.c:522
+#: mutt_ssl.c:1076 mutt_ssl_gnutls.c:1003 pager.c:1643 pgpkey.c:522
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:439
 msgid "Help"
 msgstr "Aide"
@@ -1294,7 +1294,7 @@ msgstr "gpgme_op_keylist_next a échoué : %s"
 msgid "All matching keys are marked expired/revoked."
 msgstr "Toutes les clés correspondantes sont marquées expirées/révoquées."
 
-#: crypt-gpgme.c:4014 mutt_ssl.c:1051 mutt_ssl_gnutls.c:1001 pgpkey.c:515
+#: crypt-gpgme.c:4014 mutt_ssl.c:1074 mutt_ssl_gnutls.c:1001 pgpkey.c:515
 #: smime.c:434
 msgid "Exit  "
 msgstr "Quitter  "
@@ -1597,7 +1597,7 @@ msgstr "non"
 msgid "Exit Mutt?"
 msgstr "Quitter Mutt ?"
 
-#: curs_lib.c:521 mutt_socket.c:577 mutt_ssl.c:419
+#: curs_lib.c:521 mutt_socket.c:577 mutt_ssl.c:426
 msgid "unknown error"
 msgstr "erreur inconnue"
 
@@ -3218,34 +3218,42 @@ msgstr "Connexion à %s..."
 msgid "Could not connect to %s (%s)."
 msgstr "Impossible de se connecter à %s (%s)."
 
-#: mutt_ssl.c:225
+#: mutt_ssl.c:226
 msgid "Failed to find enough entropy on your system"
 msgstr "Impossible de trouver assez d'entropie sur votre système"
 
-#: mutt_ssl.c:249
+#: mutt_ssl.c:250
 #, c-format
 msgid "Filling entropy pool: %s...\n"
 msgstr "Remplissage du tas d'entropie : %s...\n"
 
-#: mutt_ssl.c:257
+#: mutt_ssl.c:258
 #, c-format
 msgid "%s has insecure permissions!"
 msgstr "%s a des droits d'accès peu sûrs !"
 
-#: mutt_ssl.c:276
+#: mutt_ssl.c:277
 msgid "SSL disabled due to the lack of entropy"
 msgstr "SSL désactivé par manque d'entropie"
 
-#: mutt_ssl.c:413
+#. L10N: an SSL context is a data structure returned by the OpenSSL
+#. *       function SSL_CTX_new().  In this case it returned NULL: an
+#. *       error condition.
+#.
+#: mutt_ssl.c:344
+msgid "Unable to create SSL context"
+msgstr "Impossible de créer le contexte SSL"
+
+#: mutt_ssl.c:420
 msgid "I/O error"
 msgstr "erreur d'E/S"
 
-#: mutt_ssl.c:422
+#: mutt_ssl.c:429
 #, c-format
 msgid "SSL failed: %s"
 msgstr "SSL a échoué : %s"
 
-#: mutt_ssl.c:431 mutt_ssl_gnutls.c:1079 mutt_ssl_gnutls.c:1114
+#: mutt_ssl.c:438 mutt_ssl_gnutls.c:1079 mutt_ssl_gnutls.c:1114
 #: mutt_ssl_gnutls.c:1124
 msgid "Unable to get certificate from peer"
 msgstr "Impossible d'obtenir le certificat de la machine distante"
@@ -3255,106 +3263,106 @@ msgstr "Impossible d'obtenir le certificat de la machine distante"
 #. %1$s is version (e.g. "TLSv1.2")
 #. %2$s is cipher_version (e.g. "TLSv1/SSLv3")
 #. %3$s is cipher_name (e.g. "ECDHE-RSA-AES128-GCM-SHA256")
-#: mutt_ssl.c:443
+#: mutt_ssl.c:450
 #, c-format
 msgid "%s connection using %s (%s)"
 msgstr "Connexion %s utilisant %s (%s)"
 
-#: mutt_ssl.c:545
+#: mutt_ssl.c:568
 msgid "Unknown"
 msgstr "Inconnu"
 
 # , c-format
-#: mutt_ssl.c:570 mutt_ssl_gnutls.c:598
+#: mutt_ssl.c:593 mutt_ssl_gnutls.c:598
 #, c-format
 msgid "[unable to calculate]"
 msgstr "[impossible de calculer]"
 
 # , c-format
-#: mutt_ssl.c:588 mutt_ssl_gnutls.c:621
+#: mutt_ssl.c:611 mutt_ssl_gnutls.c:621
 msgid "[invalid date]"
 msgstr "[date invalide]"
 
-#: mutt_ssl.c:716
+#: mutt_ssl.c:739
 msgid "Server certificate is not yet valid"
 msgstr "Le certificat du serveur n'est pas encore valide"
 
-#: mutt_ssl.c:723
+#: mutt_ssl.c:746
 msgid "Server certificate has expired"
 msgstr "Le certificat du serveur a expiré"
 
-#: mutt_ssl.c:845
+#: mutt_ssl.c:868
 msgid "cannot get certificate subject"
 msgstr "impossible d'obtenir le détenteur du certificat (subject)"
 
-#: mutt_ssl.c:855 mutt_ssl.c:864
+#: mutt_ssl.c:878 mutt_ssl.c:887
 msgid "cannot get certificate common name"
 msgstr "impossible d'obtenir le nom du détenteur du certificat (CN)"
 
-#: mutt_ssl.c:878
+#: mutt_ssl.c:901
 #, c-format
 msgid "certificate owner does not match hostname %s"
 msgstr "le propriétaire du certificat ne correspond pas au nom %s"
 
-#: mutt_ssl.c:919
+#: mutt_ssl.c:942
 #, c-format
 msgid "Certificate host check failed: %s"
 msgstr "Échec de vérification de machine : %s"
 
-#: mutt_ssl.c:997 mutt_ssl_gnutls.c:860
+#: mutt_ssl.c:1020 mutt_ssl_gnutls.c:860
 msgid "This certificate belongs to:"
 msgstr "Ce certificat appartient à :"
 
-#: mutt_ssl.c:1010 mutt_ssl_gnutls.c:899
+#: mutt_ssl.c:1033 mutt_ssl_gnutls.c:899
 msgid "This certificate was issued by:"
 msgstr "Ce certificat a été émis par :"
 
-#: mutt_ssl.c:1021 mutt_ssl_gnutls.c:938
+#: mutt_ssl.c:1044 mutt_ssl_gnutls.c:938
 #, c-format
 msgid "This certificate is valid"
 msgstr "Ce certificat est valide"
 
-#: mutt_ssl.c:1022 mutt_ssl_gnutls.c:941
+#: mutt_ssl.c:1045 mutt_ssl_gnutls.c:941
 #, c-format
 msgid "   from %s"
 msgstr "     de %s"
 
-#: mutt_ssl.c:1024 mutt_ssl_gnutls.c:945
+#: mutt_ssl.c:1047 mutt_ssl_gnutls.c:945
 #, c-format
 msgid "     to %s"
 msgstr "      à %s"
 
-#: mutt_ssl.c:1030
+#: mutt_ssl.c:1053
 #, c-format
 msgid "Fingerprint: %s"
 msgstr "Empreinte : %s"
 
-#: mutt_ssl.c:1033 mutt_ssl_gnutls.c:982
+#: mutt_ssl.c:1056 mutt_ssl_gnutls.c:982
 #, c-format
 msgid "SSL Certificate check (certificate %d of %d in chain)"
 msgstr "Vérification du certificat SSL (certificat %d sur %d dans la chaîne)"
 
-#: mutt_ssl.c:1041 mutt_ssl_gnutls.c:991
+#: mutt_ssl.c:1064 mutt_ssl_gnutls.c:991
 msgid "(r)eject, accept (o)nce, (a)ccept always"
 msgstr "(r)ejeter, accepter (u)ne fois, (a)ccepter toujours"
 
-#: mutt_ssl.c:1042 mutt_ssl_gnutls.c:992
+#: mutt_ssl.c:1065 mutt_ssl_gnutls.c:992
 msgid "roa"
 msgstr "rua"
 
-#: mutt_ssl.c:1046 mutt_ssl_gnutls.c:996
+#: mutt_ssl.c:1069 mutt_ssl_gnutls.c:996
 msgid "(r)eject, accept (o)nce"
 msgstr "(r)ejeter, accepter (u)ne fois"
 
-#: mutt_ssl.c:1047 mutt_ssl_gnutls.c:997
+#: mutt_ssl.c:1070 mutt_ssl_gnutls.c:997
 msgid "ro"
 msgstr "ru"
 
-#: mutt_ssl.c:1078 mutt_ssl_gnutls.c:1046
+#: mutt_ssl.c:1101 mutt_ssl_gnutls.c:1046
 msgid "Warning: Couldn't save certificate"
 msgstr "Attention : le certificat n'a pas pu être sauvé"
 
-#: mutt_ssl.c:1083 mutt_ssl_gnutls.c:1051
+#: mutt_ssl.c:1106 mutt_ssl_gnutls.c:1051
 msgid "Certificate saved"
 msgstr "Certificat sauvé"
 
