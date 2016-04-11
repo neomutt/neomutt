@@ -8122,7 +8122,7 @@ please have a look at the mixmaster documentation.
 		</itemizedlist>
 
 		<para>
-			This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.
+			This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
 		</para>
 	</sect2>
 
@@ -8479,7 +8479,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
 			<listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
 			<listitem><para><literal>strftime(3)</literal></para></listitem>
