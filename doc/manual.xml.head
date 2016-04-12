@@ -8776,7 +8776,7 @@ please have a look at the mixmaster documentation.
 			<listitem><para>mutt-1.5.24</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="quasi-delete-intro">
@@ -8859,7 +8859,7 @@ bind index,pager Q quasi-delete
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
 		</itemizedlist>
 	</sect2>
@@ -8896,7 +8896,7 @@ bind index,pager Q quasi-delete
 			<listitem><para>mutt-1.5.24</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="progress-intro">
@@ -8975,7 +8975,7 @@ color progress white red
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="color">Color command</link></para></listitem>
 		</itemizedlist>
 	</sect2>
@@ -9015,7 +9015,7 @@ color progress white red
 			<listitem><para>mutt-1.5.24</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="status-color-intro">
@@ -9175,7 +9175,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
 			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
 			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
@@ -9219,7 +9219,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 			<listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="index-color-intro">
@@ -9398,7 +9398,7 @@ color index_size cyan default
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
 			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
 			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
@@ -9444,7 +9444,7 @@ color index_size cyan default
 			<listitem><para>mutt-1.5.24</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="nested-if-intro">
@@ -9621,7 +9621,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="cond-date">cond-date patch</link></para></listitem>
 			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
 			<listitem><para><link linkend="status-format">$status_format</link></para></listitem>
@@ -9662,7 +9662,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 		</itemizedlist>
 
 		<para>
-			This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.
+			This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
 		</para>
 	</sect2>
 
@@ -10019,7 +10019,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
 			<listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
 			<listitem><para><literal>strftime(3)</literal></para></listitem>
@@ -10068,7 +10068,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 			<listitem><para>OpenSSL</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="tls-sni-intro">
@@ -10137,7 +10137,7 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 		</itemizedlist>
 	</sect2>
 
@@ -10174,7 +10174,7 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
 			<listitem><para>mutt-1.5.24</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="sidebar-intro">
