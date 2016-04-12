@@ -451,6 +451,56 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
 
 #ifdef USE_SIDEBAR
 /**
+ * buffy_maildir_update_dir - Update counts for one directory
+ * @mailbox: BUFFY representing a maildir mailbox
+ * @dir:     Which directory to search
+ *
+ * Look through one directory of a maildir mailbox.  The directory could
+ * be either "new" or "cur".
+ *
+ * Count how many new, or flagged, messages there are.
+ */
+static void
+buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
+{
+	char path[_POSIX_PATH_MAX] = "";
+	DIR *dirp = NULL;
+	struct dirent *de = NULL;
+	char *p = NULL;
+	int read;
+
+	snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
+
+	dirp = opendir (path);
+	if (!dirp) {
+		mailbox->magic = 0;
+		return;
+	}
+
+	while ((de = readdir (dirp)) != NULL) {
+		if (*de->d_name == '.')
+			continue;
+
+		/* Matches maildir_parse_flags logic */
+		read = 0;
+		mailbox->msg_count++;
+		p = strstr (de->d_name, ":2,");
+		if (p) {
+			p += 3;
+			if (strchr (p, 'S'))
+				read = 1;
+			if (strchr (p, 'F'))
+				mailbox->msg_flagged++;
+		}
+		if (!read) {
+			mailbox->msg_unread++;
+		}
+	}
+
+	closedir (dirp);
+}
+
+/**
  * buffy_maildir_update - Update messages counts for a maildir mailbox
  * @mailbox: BUFFY representing a maildir mailbox
  *
@@ -460,69 +510,25 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
 void
 buffy_maildir_update (BUFFY *mailbox)
 {
-	char path[_POSIX_PATH_MAX] = "";
-	DIR *dirp = NULL;
-	struct dirent *de = NULL;
-	char *p = NULL;
-
-	if (!option (OPTSIDEBAR) || !mailbox)
+	if (!option (OPTSIDEBAR))
 		return;
 
 	mailbox->msg_count   = 0;
 	mailbox->msg_unread  = 0;
 	mailbox->msg_flagged = 0;
 
-	snprintf (path, sizeof (path), "%s/new", mailbox->path);
-
-	dirp = opendir (path);
-	if (!dirp) {
-		mailbox->magic = 0;
-		return;
+	buffy_maildir_update_dir (mailbox, "new");
+	if (mailbox->msg_count) {
+		mailbox->new = 1;
 	}
-
-	while ((de = readdir (dirp)) != NULL) {
-		if (*de->d_name == '.')
-			continue;
-
-		if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')) {
-			mailbox->new = 1;
-			mailbox->msg_count++;
-			mailbox->msg_unread++;
-		}
-	}
-
-	closedir (dirp);
-	snprintf (path, sizeof (path), "%s/cur", mailbox->path);
-
-	dirp = opendir (path);
-	if (!dirp) {
-		mailbox->magic = 0;
-		return;
-	}
-
-	while ((de = readdir (dirp)) != NULL) {
-		if (*de->d_name == '.')
-			continue;
-
-		if (!(p = strstr (de->d_name, ":2,")) || !strchr (p + 3, 'T')) {
-			mailbox->msg_count++;
-			if ((p = strstr (de->d_name, ":2,"))) {
-				if (!strchr (p + 3, 'T')) {
-					if (!strchr (p + 3, 'S'))
-						mailbox->msg_unread++;
-					if (strchr (p + 3, 'F'))
-						mailbox->msg_flagged++;
-				}
-			}
-		}
-	}
+	buffy_maildir_update_dir (mailbox, "cur");
 
 	mailbox->sb_last_checked = time (NULL);
-	closedir (dirp);
 
 	/* make sure the updates are actually put on screen */
 	sb_draw();
 }
+
 #endif
 
 /* returns 1 if mailbox has new mail */ 
