@@ -11040,7 +11040,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
 			<listitem><para>IMAP support</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="trash-folder-intro">
@@ -11167,7 +11167,7 @@ bind index D purge-message
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
 		</itemizedlist>
 	</sect2>
