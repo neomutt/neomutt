@@ -16,6 +16,9 @@
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+#ifndef _BUFFY_H
+#define _BUFFY_H
+
 /*parameter to mutt_parse_mailboxes*/
 #define M_MAILBOXES   1
 #define M_UNMAILBOXES 2 
@@ -70,3 +73,5 @@ void mutt_buffy_cleanup (const char *buf, struct stat *st);
 void mutt_buffy_setnotified (const char *path);
 
 void mh_buffy (BUFFY *);
+
+#endif /* _BUFFY_H */

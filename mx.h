@@ -26,6 +26,7 @@
 #define _MX_H
 
 #include "mailbox.h"
+#include "buffy.h"
 
 /* supported mailbox formats */
 enum
@@ -59,7 +60,6 @@ int mh_read_dir (CONTEXT *, const char *);
 int mh_sync_mailbox (CONTEXT *, int *);
 int mh_check_mailbox (CONTEXT *, int *);
 #ifdef USE_SIDEBAR
-typedef struct buffy_t BUFFY;
 void mh_buffy_update (BUFFY *mailbox);
 #endif
 int mh_check_empty (const char *);
