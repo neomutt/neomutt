@@ -9229,7 +9229,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 			<listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="index-color-intro">
@@ -9408,7 +9408,7 @@ color index_size cyan default
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
 			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
 			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
