@@ -191,9 +191,7 @@ cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
 	if (!b)
 		return src;
 
-#if 1
 	int c = Context && (mutt_strcmp (Context->path, b->path) == 0);
-#endif
 
 	optional = flags & M_FORMAT_OPTIONAL;
 
@@ -370,7 +368,7 @@ cb_qsort_buffy (const void *a, const void *b)
 			result = (b2->msg_flagged - b1->msg_flagged);
 			break;
 		case SORT_PATH:
-			result = mutt_strcmp (b1->path, b2->path);
+			result = mutt_strcasecmp (b1->path, b2->path);
 			break;
 	}
 
