@@ -10809,7 +10809,7 @@ ifndef USE_SIDEBAR finish
 			<listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="fmemopen-intro">
@@ -10873,7 +10873,7 @@ ifndef USE_SIDEBAR finish
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
 			<listitem><para><literal>fmemopen(3)</literal></para></listitem>
 		</itemizedlist>
