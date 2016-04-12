@@ -9454,7 +9454,7 @@ color index_size cyan default
 			<listitem><para>mutt-1.5.24</para></listitem>
 		</itemizedlist>
 
-		<para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
 	<sect2 id="nested-if-intro">
@@ -9631,7 +9631,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="cond-date">cond-date patch</link></para></listitem>
 			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
 			<listitem><para><link linkend="status-format">$status_format</link></para></listitem>
