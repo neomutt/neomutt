@@ -3,6 +3,18 @@ Sidebar Patch
 
     Overview of mailboxes
 
+    NOTES:
+
+    If you haven't used the sidebar before, you might like to read the
+    Sidebar Introduction:
+
+        http://www.neomutt.org/sidebar-intro.html
+
+    If you have used an older version of the Sidebar, please note that some
+    of the configuration has changed.
+
+        http://www.neomutt.org/sidebar-intro.html#intro-sidebar-config-changes
+
 Patch
 -----
 
