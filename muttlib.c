@@ -1291,14 +1291,26 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  len = mutt_strlen (buf);
 	  wid = mutt_strwidth (buf);
 
-	  /* try to consume as many columns as we can, if we don't have
-	   * memory for that, use as much memory as possible */
 	  pad = (COLS - col - wid) / pw;
-	  if (pad > 0 && wlen + (pad * pl) + len > destlen)
-	    pad = ((signed)(destlen - wlen - len)) / pl;
-	  if (pad > 0)
+	  if (pad >= 0)
 	  {
-	    while (pad--)
+            /* try to consume as many columns as we can, if we don't have
+             * memory for that, use as much memory as possible */
+            if (wlen + (pad * pl) + len > destlen)
+              pad = ((signed)(destlen - wlen - len)) / pl;
+            else
+            {
+              /* Add pre-spacing to make multi-column pad characters and
+               * the contents after padding line up */
+              while ((col + (pad * pw) + wid < COLS) &&
+                     (wlen + (pad * pl) + len < destlen))
+              {
+                *wptr++ = ' ';
+                wlen++;
+                col++;
+              }
+            }
+	    while (pad-- > 0)
 	    {
 	      memcpy (wptr, src, pl);
 	      wptr += pl;
