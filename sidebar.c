@@ -1071,6 +1071,13 @@ sb_notify_mailbox (BUFFY *b, int created)
 			BotBuffy = b;
 		if (!Outgoing)
 			Outgoing = b;
+		if (!OpnBuffy && Context) {
+			/* This might happen if the user "unmailboxes *", then
+			 * "mailboxes" our current mailbox back again */
+			if (mutt_strcmp (b->path, Context->path) == 0) {
+				OpnBuffy = b;
+			}
+		}
 	} else {
 		if (TopBuffy == b)
 			TopBuffy = buffy_going (TopBuffy);
