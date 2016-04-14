@@ -1297,7 +1297,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
             /* try to consume as many columns as we can, if we don't have
              * memory for that, use as much memory as possible */
             if (wlen + (pad * pl) + len > destlen)
-              pad = ((signed)(destlen - wlen - len)) / pl;
+              pad = (destlen > wlen + len) ? ((destlen - wlen - len) / pl) : 0;
             else
             {
               /* Add pre-spacing to make multi-column pad characters and
