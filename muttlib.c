@@ -1321,16 +1321,17 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  else if (soft && pad < 0)
 	  {
 	    int offset = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
+            int avail_cols = (COLS > offset) ? (COLS - offset) : 0;
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
 	    /* make sure right part is at most as wide as display */
-	    len = mutt_wstr_trunc (buf, destlen, COLS-offset, &wid);
+	    len = mutt_wstr_trunc (buf, destlen, avail_cols, &wid);
 	    /* truncate left so that right part fits completely in */
-	    wlen = mutt_wstr_trunc (dest, destlen - len, COLS - wid - offset, &col);
+	    wlen = mutt_wstr_trunc (dest, destlen - len, avail_cols - wid, &col);
 	    wptr = dest + wlen;
             /* Multi-column characters may be truncated in the middle.
              * Add spacing so the right hand side lines up. */
-            while ((col + wid < COLS - offset) && (wlen + len < destlen))
+            while ((col + wid < avail_cols) && (wlen + len < destlen))
             {
               *wptr++ = ' ';
               wlen++;
