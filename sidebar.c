@@ -813,8 +813,9 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 			}
 		}
 #ifdef USE_NOTMUCH
-		else if (b->magic == M_NOTMUCH)
+		else if (b->magic == M_NOTMUCH) {
 			sidebar_folder_name = b->desc;
+		}
 #endif
 		char str[SHORT_STRING];
 		make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
@@ -1124,14 +1125,17 @@ sb_notify_mailbox (BUFFY *b, int created)
 	}
 }
 
-/* switch between regualar and virtual folders */
-void toggle_sidebar(int menu)
+/**
+ * sb_toggle_virtual - Switch between regular and virtual folders
+ */
+void
+sb_toggle_virtual (void)
 {
 	if (sidebar_source == -1)
 		get_incoming();
 
 #ifdef USE_NOTMUCH
-	if (sidebar_source == SB_SRC_INCOMING && VirtIncoming)
+	if ((sidebar_source == SB_SRC_INCOMING) && VirtIncoming)
 		sidebar_source = SB_SRC_VIRT;
 	else
 #endif

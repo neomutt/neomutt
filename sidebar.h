@@ -32,6 +32,6 @@ void         sb_set_buffystats (const CONTEXT *ctx);
 BUFFY *      sb_set_open_buffy (const char *path);
 void         sb_set_update_time (void);
 int          sb_should_refresh (void);
-void toggle_sidebar(int menu);
+void         sb_toggle_virtual (void);
 
 #endif /* SIDEBAR_H */
