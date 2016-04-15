@@ -365,9 +365,10 @@ buffy_going (const BUFFY *b)
 		b->prev->next = NULL;
 	}
 
-	if (b->next)
+	if (b->next) {
 		b->next->prev = NULL;
 		return b->next;
+	}
 
 	return b->prev;
 }
@@ -486,9 +487,6 @@ prepare_sidebar (int page_size)
 	for (; b; b = b->next)
 		count++;
 
-	if (count == 0)
-		return 0;
-
 	BUFFY **arr = safe_malloc (count * sizeof (*arr));
 	if (!arr)
 		return 0;
@@ -509,14 +507,10 @@ prepare_sidebar (int page_size)
 	int bot_index = -1;
 
 	for (i = 0; i < count; i++) {
-		if (TopBuffy == arr[i])
-			top_index = i;
 		if (OpnBuffy == arr[i])
 			opn_index = i;
 		if (HilBuffy == arr[i])
 			hil_index = i;
-		if (BotBuffy == arr[i])
-			bot_index = i;
 	}
 
 	if (!HilBuffy || (SidebarSortMethod != PreviousSort)) {
