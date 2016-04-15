@@ -401,9 +401,10 @@ buffy_going (const BUFFY *b)
 		b->prev->next = NULL;
 	}
 
-	if (b->next)
+	if (b->next) {
 		b->next->prev = NULL;
 		return b->next;
+	}
 
 	return b->prev;
 }
@@ -522,9 +523,6 @@ prepare_sidebar (int page_size)
 	for (; b; b = b->next)
 		count++;
 
-	if (count == 0)
-		return 0;
-
 	BUFFY **arr = safe_malloc (count * sizeof (*arr));
 	if (!arr)
 		return 0;
@@ -546,14 +544,10 @@ prepare_sidebar (int page_size)
 	int bot_index = -1;
 
 	for (i = 0; i < count; i++) {
-		if (TopBuffy == arr[i])
-			top_index = i;
 		if (OpnBuffy == arr[i])
 			opn_index = i;
 		if (HilBuffy == arr[i])
 			hil_index = i;
-		if (BotBuffy == arr[i])
-			bot_index = i;
 	}
 
 	if (!HilBuffy || (SidebarSortMethod != PreviousSort)) {
@@ -636,9 +630,9 @@ visible (void)
  * @first_row:  Screen line to start (0-based)
  * @num_rows:   Number of rows to fill
  *
- * Draw a divider using a character from the config option "sidebar_divider_char".
+ * Draw a divider using characters from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.  First we calculate this
- * character's width in screen columns, then subtract that from the config
+ * characters' width in screen columns, then subtract that from the config
  * option "sidebar_width".
  *
  * Returns:
@@ -650,10 +644,7 @@ static int
 draw_divider (int first_row, int num_rows)
 {
 	/* Calculate the width of the delimiter in screen cells */
-	wchar_t sd[4];
-	mbstowcs (sd, NONULL(SidebarDividerChar), 4);
-	/* We only consider the first character */
-	int delim_len = wcwidth (sd[0]);
+	int delim_len = mutt_strwidth (SidebarDividerChar);
 
 	if (delim_len < 1)
 		return delim_len;
@@ -803,9 +794,9 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 			const char *tmp_folder_name;
 			int lastsep = 0;
 			tmp_folder_name = b->path + maildirlen + 1;
-			for (i = 0; i < strlen (tmp_folder_name) - 1; i++) {
-				if (SidebarDelimChars &&
-						strchr (SidebarDelimChars, tmp_folder_name[i])) {
+			int tmplen = (int) strlen (tmp_folder_name) - 1;
+			for (i = 0; i < tmplen; i++) {
+				if (SidebarDelimChars && strchr (SidebarDelimChars, tmp_folder_name[i])) {
 					sidebar_folder_depth++;
 					lastsep = i + 1;
 				}
@@ -1112,6 +1103,13 @@ sb_notify_mailbox (BUFFY *b, int created)
 			BotBuffy = b;
 		if (!Outgoing)
 			Outgoing = b;
+		if (!OpnBuffy && Context) {
+			/* This might happen if the user "unmailboxes *", then
+			 * "mailboxes" our current mailbox back again */
+			if (mutt_strcmp (b->path, Context->path) == 0) {
+				OpnBuffy = b;
+			}
+		}
 	} else {
 		if (TopBuffy == b)
 			TopBuffy = buffy_going (TopBuffy);

@@ -2729,11 +2729,9 @@ struct option_t MuttVars[] = {
   { "sidebar_divider_char", DT_STR, R_BOTH, UL &SidebarDividerChar, UL "|" },
   /*
   ** .pp
-  ** This specifies the character to be drawn between the sidebar (when
+  ** This specifies the characters to be drawn between the sidebar (when
   ** visible) and the other Mutt panels. ASCII and Unicode line-drawing
   ** characters are supported.
-  ** .pp
-  ** \fBNote:\fP Only the first character of sidebar_divider_char is used.
   */
   { "sidebar_delim_chars", DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
   /*
