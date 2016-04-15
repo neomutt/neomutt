@@ -41,7 +41,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#ifdef HAVE_SYS_SYSCALL_H
 #include <sys/syscall.h>
+#endif
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <errno.h>
