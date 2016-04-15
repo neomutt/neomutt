@@ -766,9 +766,9 @@ draw_sidebar (int first_row, int num_rows, int div_width)
 			const char *tmp_folder_name;
 			int lastsep = 0;
 			tmp_folder_name = b->path + maildirlen + 1;
-			for (i = 0; i < strlen (tmp_folder_name) - 1; i++) {
-				if (SidebarDelimChars &&
-						strchr (SidebarDelimChars, tmp_folder_name[i])) {
+			int tmplen = (int) strlen (tmp_folder_name) - 1;
+			for (i = 0; i < tmplen; i++) {
+				if (SidebarDelimChars && strchr (SidebarDelimChars, tmp_folder_name[i])) {
 					sidebar_folder_depth++;
 					lastsep = i + 1;
 				}
