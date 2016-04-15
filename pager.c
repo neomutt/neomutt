@@ -2543,7 +2543,9 @@ search_next:
 
 	if (option (OPTFORCEREDRAWPAGER)) {
 	  redraw = REDRAW_FULL;
+#ifdef USE_SIDEBAR
 	  sb_draw();
+#endif
 	}
 	unset_option (OPTFORCEREDRAWINDEX);
 	unset_option (OPTFORCEREDRAWPAGER);
