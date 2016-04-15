@@ -593,9 +593,9 @@ visible (void)
  * @first_row:  Screen line to start (0-based)
  * @num_rows:   Number of rows to fill
  *
- * Draw a divider using a character from the config option "sidebar_divider_char".
+ * Draw a divider using characters from the config option "sidebar_divider_char".
  * This can be an ASCII or Unicode character.  First we calculate this
- * character's width in screen columns, then subtract that from the config
+ * characters' width in screen columns, then subtract that from the config
  * option "sidebar_width".
  *
  * Returns:
@@ -607,10 +607,7 @@ static int
 draw_divider (int first_row, int num_rows)
 {
 	/* Calculate the width of the delimiter in screen cells */
-	wchar_t sd[4];
-	mbstowcs (sd, NONULL(SidebarDividerChar), 4);
-	/* We only consider the first character */
-	int delim_len = wcwidth (sd[0]);
+	int delim_len = mutt_strwidth (SidebarDividerChar);
 
 	if (delim_len < 1)
 		return delim_len;
