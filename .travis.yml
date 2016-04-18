@@ -1,0 +1,26 @@
+notifications:
+  email:
+    recipients:
+      - rich@flatcap.org
+    on_success: change
+    on_failure: always
+
+sudo: required
+dist: trusty
+
+language: c
+compiler: gcc
+cache: ccache
+
+before_script:
+  - ccache -z
+  - autoreconf -i
+
+script:
+  # Clumsy way to forcibly disable FMEMOPEN
+  - ./configure && grep -v FMEMOPEN config.h > config.h.tmp && mv config.h.tmp config.h && make && ./mutt -v
+  - ./configure && make && ./mutt -v
+
+after_script:
+  - ccache -s
+
