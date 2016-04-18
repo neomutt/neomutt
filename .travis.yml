@@ -1,0 +1,32 @@
+notifications:
+  email:
+    recipients:
+      - rich@flatcap.org
+    on_success: change
+    on_failure: always
+
+sudo: required
+dist: trusty
+
+language: c
+compiler: gcc
+cache: ccache
+
+env:
+    # Default config
+  - OPTS=""
+    # Enable components that default to 'off'
+  - OPTS="--enable-nntp"
+
+before_script:
+  - ccache -z
+  - autoreconf -i
+
+script:
+  - ./configure $OPTS
+  - make
+  - ./mutt -v
+
+after_script:
+  - ccache -s
+
