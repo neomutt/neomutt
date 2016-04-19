@@ -56,8 +56,7 @@ struct sidebar_entry {
  * find_next_new - Find the next folder that contains new mail
  * @wrap: Wrap around to the beginning if the end is reached
  *
- * Search down the list of mail folders for one containing new, or flagged,
- * mail, or a folder that is in the SidebarWhitelist.
+ * Search down the list of mail folders for one containing new mail.
  *
  * Returns:
  *	BUFFY*: Success
@@ -78,7 +77,7 @@ find_next_new (int wrap)
 		if (!b || (b == HilBuffy)) {
 			break;
 		}
-		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
+		if (b->msg_unread > 0) {
 			return b;
 		}
 	} while (b);
@@ -90,8 +89,7 @@ find_next_new (int wrap)
  * find_prev_new - Find the previous folder that contains new mail
  * @wrap: Wrap around to the beginning if the end is reached
  *
- * Search up the list of mail folders for one containing new, or flagged, mail,
- * or a folder that is in the SidebarWhitelist.
+ * Search up the list of mail folders for one containing new mail.
  *
  * Returns:
  *	BUFFY*: Success
@@ -112,7 +110,7 @@ find_prev_new (int wrap)
 		if (!b || (b == HilBuffy)) {
 			break;
 		}
-		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
+		if (b->msg_unread > 0) {
 			return b;
 		}
 	} while (b);
