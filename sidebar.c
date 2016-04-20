@@ -618,20 +618,10 @@ draw_divider (int first_row, int num_rows)
 
 	SETCOLOR(MT_COLOR_DIVIDER);
 
-	short color_pair;
-#ifndef USE_SLANG_CURSES
-	attr_t attrs;
-	attr_get (&attrs, &color_pair, 0);
-#else
-	color_pair = attr_get();
-#endif
 	int i;
 	for (i = 0; i < num_rows; i++) {
 		move (first_row + i, SidebarWidth - delim_len);
 		addstr (NONULL(SidebarDividerChar));
-#ifndef USE_SLANG_CURSES
-		mvchgat (first_row + i, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
-#endif
 	}
 
 	return delim_len;
