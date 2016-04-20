@@ -546,7 +546,7 @@ prepare_sidebar (int page_size)
  * After validating the config options "sidebar_visible" and "sidebar_width",
  * determine whether we should should display the sidebar.
  *
- * When not visible, set the global SidebarSortMethod to 0.
+ * When not visible, set the global SidebarWidth to 0.
  *
  * Returns:
  *	Boolean
