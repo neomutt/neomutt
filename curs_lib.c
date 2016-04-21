@@ -541,9 +541,13 @@ void mutt_reflow_windows (void)
   {
     memcpy (MuttSidebarWindow, MuttIndexWindow, sizeof (mutt_window_t));
     MuttSidebarWindow->cols = SidebarWidth;
-
     MuttIndexWindow->cols -= SidebarWidth;
-    MuttIndexWindow->col_offset += SidebarWidth;
+
+    if (option (OPTSIDEBARONRIGHT)) {
+      MuttSidebarWindow->col_offset = COLS - SidebarWidth;
+    } else {
+      MuttIndexWindow->col_offset += SidebarWidth;
+    }
   }
 #endif
 }
