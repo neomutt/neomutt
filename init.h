@@ -291,6 +291,13 @@ struct option_t MuttVars[] = {
   { "beep",		DT_BOOL, R_NONE, OPTBEEP, 1 },
   /*
   ** .pp
+  ** If \fIset\fP, Mutt will call this command after a new message is received.
+  ** See the $$status_format documentation for the values that can be formatted
+  ** into this command.
+  */
+  { "new_mail_command",	DT_PATH, R_NONE, UL &NewMailCmd, UL NULL },
+  /*
+  ** .pp
   ** When this variable is \fIset\fP, mutt will beep when an error occurs.
   */
   { "beep_new",		DT_BOOL, R_NONE, OPTBEEPNEW, 0 },

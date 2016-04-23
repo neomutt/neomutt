@@ -6724,7 +6724,10 @@ New mail for Maildir is assumed if there is one message in the
 <link linkend="maildir-trash">$maildir_trash</link>). For MH folders, a
 mailbox is considered having new mail if there's at least one message in
 the <quote>unseen</quote> sequence as specified by <link
-linkend="mh-seq-unseen">$mh_seq_unseen</link>.
++linkend="mh-seq-unseen">$mh_seq_unseen</link>. Optionally, <link
++linkend="new_mail_command">$new_mail_command</link> can be configured to
++execute an external program every time new mail is detected in the current
++inbox.
 </para>
 
 <para>
