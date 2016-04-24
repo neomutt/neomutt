@@ -1,0 +1,42 @@
+notifications:
+  email:
+    recipients:
+      - rich@flatcap.org
+    on_success: change
+    on_failure: always
+
+sudo: required
+dist: trusty
+
+language: c
+compiler: gcc
+cache: ccache
+
+addons:
+  apt:
+    packages:
+      - libgpgme11-dev
+      - libnotmuch-dev
+      - libtokyocabinet-dev
+      - libgdbm-dev
+      - libdb-dev
+      # - libqdbm-dev
+      # - libslang2-dev
+      # libcaca includes slang for us
+      - libcaca-dev
+
+git:
+  depth: 3
+
+install:
+  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
+
+before_script:
+  - ccache --zero-stats
+
+script:
+  - ~/config/build
+
+after_script:
+  - ccache --show-stats
+
