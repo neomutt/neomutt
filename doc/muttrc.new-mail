@@ -1,0 +1,35 @@
+# This is a complete list of FEATURE-NAME configuration.
+
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+
+# DESCRIPTION
+set VARIABLE = "DEFAULT_VALUE"
+
+# --------------------------------------------------------------------------
+# COMMANDS - shown with an example arguments
+# --------------------------------------------------------------------------
+
+# DESCRIPTION
+COMMAND_NAME 'ARGUMENTS'
+
+# --------------------------------------------------------------------------
+# FUNCTIONS - shown with an example mapping
+# --------------------------------------------------------------------------
+
+# DESCRIPTON
+bind index,pager KEY FUNCTION-NAME
+
+# --------------------------------------------------------------------------
+# COLORS - some unpleasant examples are given
+# --------------------------------------------------------------------------
+# Note: All color operations are of the form:
+#       color OBJECT FOREGROUND BACKGROUND
+
+# DESCRIPTON
+color COLOR_NAME cyan black
+
+# --------------------------------------------------------------------------
+
+# vim: syntax=muttrc

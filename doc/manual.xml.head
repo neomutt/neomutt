@@ -6047,10 +6047,10 @@ New mail for Maildir is assumed if there is one message in the
 <link linkend="maildir-trash">$maildir_trash</link>). For MH folders, a
 mailbox is considered having new mail if there's at least one message in
 the <quote>unseen</quote> sequence as specified by <link
-+linkend="mh-seq-unseen">$mh_seq_unseen</link>. Optionally, <link
-+linkend="new_mail_command">$new_mail_command</link> can be configured to
-+execute an external program every time new mail is detected in the current
-+inbox.
+linkend="mh-seq-unseen">$mh_seq_unseen</link>. Optionally, <link
+linkend="new_mail_command">$new_mail_command</link> can be configured to
+execute an external program every time new mail is detected in the current
+inbox.
 </para>
 
 <para>
@@ -8082,6 +8082,186 @@ other mixmaster remailers.  For details on the other capabilities,
 please have a look at the mixmaster documentation.
 </para>
 
+</sect1>
+
+<sect1 id="FEATURE-NAME">
+	<title>FEATURE-NAME Patch</title>
+	<subtitle>DESCRIPTION</subtitle>
+
+	<sect2 id="FEATURE-NAME-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>FEATURE-NAME</quote>, look for
+			<quote>patch-FEATURE-NAME</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.0</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-intro">
+		<title>Introduction</title>
+
+		<para>
+			SIMPLE DESCRIPTION OF FEATURE
+		</para>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-variables">
+		<title>Variables</title>
+
+		<table id="table-FEATURE-NAME-variables">
+			<title>FEATURE-NAME Variables</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Type</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>VARIABLE-NAME</literal></entry>
+						<entry>TYPE</entry>
+						<entry><literal>DEFAULT-VALUE</literal></entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-functions">
+		<title>Functions</title>
+
+		<para>
+			FEATURE-NAME adds the following functions to Mutt.
+			By default, none of them are bound to keys.
+		</para>
+
+		<table id="table-FEATURE-NAME-functions">
+			<title>FEATURE-NAME Functions</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index,pager</entry>
+						<entry><literal>&lt;FUNCTION-NAME&gt;</literal></entry>
+						<entry>DESCRIPTION</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-commands">
+		<title>Commands</title>
+		<cmdsynopsis>
+			<command>COMMAND-NAME</command>
+			<arg choice="plain">
+				<replaceable class="parameter">PARAM1</replaceable>
+			</arg>
+			<arg choice="opt" rep="repeat">
+				<replaceable class="parameter">PARAM2</replaceable>
+			</arg>
+		</cmdsynopsis>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-colors">
+		<title>Colors</title>
+
+		<table id="table-FEATURE-NAME-colors">
+			<title>FEATURE-NAME Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Default Color</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>COLOR-NAME</literal></entry>
+						<entry>default</entry>
+						<entry>DESCRIPTION</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-sort">
+		<title>Sort</title>
+
+		<table id="table-FEATURE-NAME-sort">
+			<title>FEATURE-NAME Sort</title>
+			<tgroup cols="2">
+				<thead>
+					<row>
+						<entry>Sort</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>SORT-NAME</literal></entry>
+						<entry>DESCRIPTION</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># This is a complete list of FEATURE-NAME-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# DESCRIPTION</emphasis>
+set VARIABLE_NAME = "DEFAULT-VALUE"
+
+INSERT YOUR MUTTRC HERE
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><link linkend="regexp">LINK-DESCRIPTION</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="FEATURE-NAME-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>FIRST LAST <email>EMAIL_ADDRESS</email></para></listitem>
+		</itemizedlist>
+	</sect2>
 </sect1>
 
 </chapter>
