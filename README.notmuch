@@ -311,7 +311,7 @@ notmuch support for mutt
 	bind index <left> sidebar-prev
 	bind index <right> sidebar-next
 	bind index <space> sidebar-open
-	bind index <Esc>S sidebar-toggle
+	bind index <Esc>S sidebar-toggle-virtual
 
 	set index_format="%4C %Z %?GI?%GI& ? %[%d/%b]  %-16.15F %?M?(%3M)&     ? %s %> %?g?%g?"
 
