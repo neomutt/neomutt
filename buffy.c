@@ -387,7 +387,7 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
 int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
 {
   BUFFY **tmp;
-  char buf[_POSIX_PATH_MAX];
+  char buf[_POSIX_PATH_MAX + LONG_STRING + 32];   /* path to DB + query + URI "decoration" */
 
   while (MoreArgs (s))
   {
