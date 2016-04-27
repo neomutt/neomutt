@@ -30,7 +30,7 @@
 #include <errno.h>
 #include <netdb.h>
 #include <sasl/sasl.h>
-#include <sys/socket.h>
+#include "sys_socket.h"
 #include <netinet/in.h>
 
 static int getnameinfo_err(int ret)
