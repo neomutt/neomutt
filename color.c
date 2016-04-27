@@ -818,7 +818,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   else if (object == MT_COLOR_BODY)
     r = add_pattern (&ColorBodyList, buf->data, 1, fg, bg, attr, err, 0, match);
   else if ((object == MT_COLOR_STATUS) && MoreArgs (s)) {
-    /* 'color status fg bg' can have upto 2 arguments:
+    /* 'color status fg bg' can have up to 2 arguments:
      * 0 arguments: sets the default status color (handled below by else part)
      * 1 argument : colorize pattern on match
      * 2 arguments: colorize nth submatch of pattern

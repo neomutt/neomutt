@@ -1425,7 +1425,7 @@ static int remove_filename(struct nm_ctxdata *data, const char *path)
 		unlink(path);
 		break;
 	case NOTMUCH_STATUS_DUPLICATE_MESSAGE_ID:
-		dprint(2, (debugfile, "nm: remove succes (duplicate), call unlink\n"));
+		dprint(2, (debugfile, "nm: remove success (duplicate), call unlink\n"));
 		unlink(path);
 		for (ls = notmuch_message_get_filenames(msg);
 		     ls && notmuch_filenames_valid(ls);

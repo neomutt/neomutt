@@ -9159,7 +9159,7 @@ color status brightred white '(New|Del|Flag):[0-9]+'
 # First, highlight anything (*/*)</emphasis>
 color status brightred default '\([^)]+/[^)]+\)'
  
-<emphasis role="comment"># Then override the color for one specfic case</emphasis>
+<emphasis role="comment"># Then override the color for one specific case</emphasis>
 color status default   default '\(threads/last-date-received\)'
  
 <emphasis role="comment"># 2 extra parameters
