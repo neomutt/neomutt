@@ -875,9 +875,6 @@ sb_should_refresh (void)
 void
 sb_change_mailbox (int op)
 {
-	if (!option (OPTSIDEBAR))
-		return;
-
 	BUFFY *b;
 	if (!HilBuffy)	/* It'll get reset on the next draw */
 		return;
@@ -928,7 +925,10 @@ sb_change_mailbox (int op)
 		default:
 			return;
 	}
-	sb_draw();
+
+	/* We can change folder even if the sidebar is hidden */
+	if (option (OPTSIDEBAR))
+		sb_draw();
 }
 
 /**
@@ -969,9 +969,6 @@ sb_set_buffystats (const CONTEXT *ctx)
 const char *
 sb_get_highlight (void)
 {
-	if (!option (OPTSIDEBAR))
-		return NULL;
-
 	if (!HilBuffy)
 		return NULL;
 
