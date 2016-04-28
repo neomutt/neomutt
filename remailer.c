@@ -221,8 +221,8 @@ static void mix_free_type2_list (REMAILER ***ttlp)
 
 
 #define MIX_HOFFSET 2
-#define MIX_VOFFSET (LINES - 6)
-#define MIX_MAXROW  (LINES - 3)
+#define MIX_VOFFSET (MuttIndexWindow->rows - 4)
+#define MIX_MAXROW  (MuttIndexWindow->rows - 1)
 
 
 static void mix_screen_coordinates (REMAILER **type2_list,
@@ -257,7 +257,7 @@ static void mix_screen_coordinates (REMAILER **type2_list,
     oc = c;
     c += strlen (type2_list[chain->ch[i]]->shortname) + 2;
 
-    if (c  >= COLS)
+    if (c  >= MuttIndexWindow->cols)
     {
       oc = c = MIX_HOFFSET;
       r++;
@@ -287,7 +287,8 @@ static void mix_redraw_ce (REMAILER **type2_list,
     else
       NORMAL_COLOR;
     
-    mvaddstr (coords[i].r, coords[i].c, type2_list[chain->ch[i]]->shortname);
+    mutt_window_mvaddstr (MuttIndexWindow, coords[i].r, coords[i].c,
+                          type2_list[chain->ch[i]]->shortname);
     NORMAL_COLOR;
 
     if (i + 1 < chain->cl)
@@ -304,8 +305,8 @@ static void mix_redraw_chain (REMAILER **type2_list,
   
   for (i = MIX_VOFFSET; i < MIX_MAXROW; i++)
   {
-    move (i, 0);
-    clrtoeol ();
+    mutt_window_move (MuttIndexWindow, i, 0);
+    mutt_window_clrtoeol (MuttIndexWindow);
   }
 
   for (i = 0; i < chain->cl; i++)
@@ -315,8 +316,9 @@ static void mix_redraw_chain (REMAILER **type2_list,
 static void mix_redraw_head (MIXCHAIN *chain)
 {
   SETCOLOR (MT_COLOR_STATUS);
-  mvprintw (MIX_VOFFSET - 1, 0, "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
-  clrtoeol ();
+  mutt_window_mvprintw (MuttIndexWindow, MIX_VOFFSET - 1, 0,
+                        "-- Remailer chain [Length: %d]", chain ? chain->cl : 0);
+  mutt_window_clrtoeol (MuttIndexWindow);
   NORMAL_COLOR;
 }
 
@@ -489,7 +491,6 @@ void mix_make_chain (LIST **chainp, int *redraw)
   LIST *p;
   MIXCHAIN *chain;
   int c_cur = 0, c_old = 0;
-  int m_len;
   short c_redraw = 1;
   
   REMAILER **type2_list = NULL;
@@ -535,14 +536,13 @@ void mix_make_chain (LIST **chainp, int *redraw)
   menu->title = _("Select a remailer chain.");
   menu->data = type2_list;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MIX, RemailerHelp);
-
-  m_len = menu->pagelen = MIX_VOFFSET - menu->offset - 1;
+  menu->pagelen = MIX_VOFFSET - 1;
   
   while (loop) 
   {
-    if (menu->pagelen != m_len)
+    if (menu->pagelen != MIX_VOFFSET - 1)
     {
-      menu->pagelen = m_len;
+      menu->pagelen = MIX_VOFFSET - 1;
       menu->redraw = REDRAW_FULL;
     }
     
@@ -568,7 +568,7 @@ void mix_make_chain (LIST **chainp, int *redraw)
 	mix_redraw_head (chain);
 	mix_screen_coordinates (type2_list, &coords, chain, 0);
 	mix_redraw_chain (type2_list, coords, chain, c_cur);
-	menu->pagelen = m_len = MIX_VOFFSET - menu->offset - 1;
+	menu->pagelen = MIX_VOFFSET - 1;
 	break;
       }
       
