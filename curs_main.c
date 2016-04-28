@@ -510,8 +510,6 @@ int mutt_index_menu (void)
   int attach_msg = option(OPTATTACHMSG);
 
   menu = mutt_new_menu (MENU_MAIN);
-  menu->offset = 1;
-  menu->pagelen = LINES - 3;
   menu->make_entry = index_make_entry;
   menu->color = index_color;
   menu->current = ci_first_message ();
@@ -631,9 +629,9 @@ int mutt_index_menu (void)
       if (menu->redraw & REDRAW_STATUS)
       {
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
-	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
+        mutt_window_move (MuttStatusWindow, 0, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-	mutt_paddstr (COLS, buf);
+	mutt_paddstr (MuttStatusWindow->cols, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
 	if (option(OPTTSENABLED) && TSSupported)
@@ -652,11 +650,12 @@ int mutt_index_menu (void)
 	menu->oldcurrent = -1;
 
       if (option (OPTARROWCURSOR))
-	move (menu->current - menu->top + menu->offset, 2);
+	mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset, 2);
       else if (option (OPTBRAILLEFRIENDLY))
-	move (menu->current - menu->top + menu->offset, 0);
+	mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset, 0);
       else
-	move (menu->current - menu->top + menu->offset, COLS - 1);
+	mutt_window_move (MuttIndexWindow, menu->current - menu->top + menu->offset,
+                          MuttIndexWindow->cols - 1);
       mutt_refresh ();
 
 #if defined (USE_SLANG_CURSES) || defined (HAVE_RESIZETERM)
@@ -703,14 +702,14 @@ int mutt_index_menu (void)
 	tag = 1;
 
 	/* give visual indication that the next command is a tag- command */
-	mvaddstr (LINES - 1, 0, "tag-");
-	clrtoeol ();
+	mutt_window_mvaddstr (MuttMessageWindow, 0, 0, "tag-");
+	mutt_window_clrtoeol (MuttMessageWindow);
 
 	/* get the real command */
 	if ((op = km_dokey (MENU_MAIN)) == OP_TAG_PREFIX)
 	{
 	  /* abort tag sequence */
-	  CLEARLINE (LINES-1);
+          mutt_window_clearline (MuttMessageWindow, 0);
 	  continue;
 	}
       }
@@ -734,14 +733,14 @@ int mutt_index_menu (void)
 	tag = 1;
 
 	/* give visual indication that the next command is a tag- command */
-	mvaddstr (LINES - 1, 0, "tag-");
-	clrtoeol ();
+	mutt_window_mvaddstr (MuttMessageWindow, 0, 0, "tag-");
+	mutt_window_clrtoeol (MuttMessageWindow);
 
 	/* get the real command */
 	if ((op = km_dokey (MENU_MAIN)) == OP_TAG_PREFIX)
 	{
 	  /* abort tag sequence */
-	  CLEARLINE (LINES-1);
+	  mutt_window_clearline (MuttMessageWindow, 0);
 	  continue;
 	}
       }
@@ -1193,7 +1192,7 @@ int mutt_index_menu (void)
 	  }
 	  if (!buf[0])
 	  {
-	    CLEARLINE (LINES-1);
+            mutt_window_clearline (MuttMessageWindow, 0);
 	    break;
 	  }
 	}
