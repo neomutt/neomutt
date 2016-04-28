@@ -301,8 +301,8 @@ int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
 int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
-int  mutt_enter_string (char *buf, size_t buflen, int y, int x, int flags);
-int _mutt_enter_string (char *, size_t, int, int, int, int, char ***, int *, ENTER_STATE *);
+int  mutt_enter_string (char *buf, size_t buflen, int col, int flags);
+int _mutt_enter_string (char *, size_t, int, int, int, char ***, int *, ENTER_STATE *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
 int _mutt_get_field (const char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_hook_type (const char *);

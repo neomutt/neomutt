@@ -210,20 +210,20 @@ static inline int is_shell_char(wchar_t ch)
  * 	-1 if abort.
  */
 
-int  mutt_enter_string(char *buf, size_t buflen, int y, int x, int flags)
+int  mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
   int rv;
   ENTER_STATE *es = mutt_new_enter_state ();
-  rv = _mutt_enter_string (buf, buflen, y, x, flags, 0, NULL, NULL, es);
+  rv = _mutt_enter_string (buf, buflen, col, flags, 0, NULL, NULL, es);
   mutt_free_enter_state (&es);
   return rv;
 }
 
-int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
+int _mutt_enter_string (char *buf, size_t buflen, int col,
 			int flags, int multiple, char ***files, int *numfiles,
 			ENTER_STATE *state)
 {
-  int width = COLS - x - 1;
+  int width = MuttMessageWindow->cols - col - 1;
   int redraw;
   int pass = (flags & M_PASS);
   int first = 1;
@@ -280,7 +280,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
       if (state->curpos < state->begin ||
 	  my_wcswidth (state->wbuf + state->begin, state->curpos - state->begin) >= width)
 	state->begin = width_ceiling (state->wbuf, state->lastchar, my_wcswidth (state->wbuf, state->curpos) - width / 2);
-      move (y, x);
+      mutt_window_move (MuttMessageWindow, 0, col);
       w = 0;
       for (i = state->begin; i < state->lastchar; i++)
       {
@@ -289,8 +289,9 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  break;
 	my_addwch (state->wbuf[i]);
       }
-      clrtoeol ();
-      move (y, x + my_wcswidth (state->wbuf + state->begin, state->curpos - state->begin));
+      mutt_window_clrtoeol (MuttMessageWindow);
+      mutt_window_move (MuttMessageWindow, 0,
+          col + my_wcswidth (state->wbuf + state->begin, state->curpos - state->begin));
     }
     mutt_refresh ();
 
