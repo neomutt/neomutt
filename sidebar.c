@@ -73,7 +73,7 @@ static int BotIndex = -1;    /* Last mailbox visible in sidebar */
  *
  * Returns: src (unchanged)
  */
-static const char *cb_format_str(char *dest, size_t destlen, size_t col, char op,
+static const char *cb_format_str(char *dest, size_t destlen, size_t col, int cols, char op,
                                  const char *src, const char *prefix, const char *ifstring,
                                  const char *elsestring, unsigned long data, format_flag flags)
 {
@@ -186,9 +186,9 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, char op
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring,   cb_format_str, (unsigned long) sbe, flags);
+    mutt_FormatString (dest, destlen, col, cols, ifstring,   cb_format_str, (unsigned long) sbe, flags);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, cb_format_str, (unsigned long) sbe, flags);
+    mutt_FormatString (dest, destlen, col, cols, elsestring, cb_format_str, (unsigned long) sbe, flags);
 
   /* We return the format string, unchanged */
   return src;
@@ -216,11 +216,7 @@ static void make_sidebar_entry (char *buf, unsigned int buflen, int width, char 
 
   strfcpy (sbe->box, box, sizeof (sbe->box));
 
-  /* Temporarily lie about the screen width */
-  int oc = COLS;
-  COLS = width + SidebarWidth;
-  mutt_FormatString (buf, buflen, 0, NONULL(SidebarFormat), cb_format_str, (unsigned long) sbe, 0);
-  COLS = oc;
+  mutt_FormatString (buf, buflen, 0, width + SidebarWidth, NONULL(SidebarFormat), cb_format_str, (unsigned long) sbe, 0);
 
   /* Force string to be exactly the right width */
   int w = mutt_strwidth (buf);

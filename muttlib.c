@@ -1053,6 +1053,7 @@ void mutt_safe_path (char *s, size_t l, ADDRESS *a)
 void mutt_FormatString (char *dest,		/* output buffer */
 			size_t destlen,		/* output buffer len */
 			size_t col,		/* starting column (nonzero when called recursively) */
+                        int cols,               /* maximum columns */
 			const char *src,	/* template string */
 			format_t *callback,	/* callback for processing */
 			unsigned long data,	/* callback data */
@@ -1117,7 +1118,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
         mutt_extract_token(word, srcbuf, 0);
         dprint(3, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
         mutt_buffer_addch(command, '\'');
-        mutt_FormatString(buf, sizeof(buf), 0, word->data, callback, data,
+        mutt_FormatString(buf, sizeof(buf), 0, cols, word->data, callback, data,
                           flags | M_FORMAT_NOFILTER);
         for (p = buf; p && *p; p++)
         {
@@ -1172,7 +1173,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 		 * it back for the recursive call since the expansion of
 		 * format pipes does not try to append a nul itself.
 		 */
-		mutt_FormatString(dest, destlen+1, col, recycler, callback, data, flags);
+		mutt_FormatString(dest, destlen+1, col, cols, recycler, callback, data, flags);
 		FREE(&recycler);
 	      }
 	    }
@@ -1282,23 +1283,35 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-	if ((col < (COLS - SidebarWidth) && (wlen < destlen)) || soft)
+	if ((col < cols && wlen < destlen) || soft)
 	{
 	  int pad;
 
 	  /* get contents after padding */
-	  mutt_FormatString (buf, sizeof (buf), 0, src + pl, callback, data, flags);
+	  mutt_FormatString (buf, sizeof (buf), 0, cols, src + pl, callback, data, flags);
 	  len = mutt_strlen (buf);
 	  wid = mutt_strwidth (buf);
 
-	  /* try to consume as many columns as we can, if we don't have
-	   * memory for that, use as much memory as possible */
-	  pad = (COLS - SidebarWidth - col - wid) / pw;
-	  if (pad > 0 && wlen + (pad * pl) + len > destlen)
-	    pad = ((signed)(destlen - wlen - len)) / pl;
-	  if (pad > 0)
+	  pad = (cols - col - wid) / pw;
+	  if (pad >= 0)
 	  {
-	    while (pad--)
+            /* try to consume as many columns as we can, if we don't have
+             * memory for that, use as much memory as possible */
+            if (wlen + (pad * pl) + len > destlen)
+              pad = (destlen > wlen + len) ? ((destlen - wlen - len) / pl) : 0;
+            else
+            {
+              /* Add pre-spacing to make multi-column pad characters and
+               * the contents after padding line up */
+              while ((col + (pad * pw) + wid < cols) &&
+                     (wlen + (pad * pl) + len < destlen))
+              {
+                *wptr++ = ' ';
+                wlen++;
+                col++;
+              }
+            }
+	    while (pad-- > 0)
 	    {
 	      memcpy (wptr, src, pl);
 	      wptr += pl;
@@ -1318,7 +1331,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	    wptr = dest + wlen;
 	  }
 	  if (len + wlen > destlen)
-	    len = mutt_wstr_trunc (buf, destlen - wlen, COLS - SidebarWidth - col, NULL);
+	    len = mutt_wstr_trunc (buf, destlen - wlen, cols - col, NULL);
 	  memcpy (wptr, buf, len);
 	  wptr += len;
 	  wlen += len;
@@ -1335,9 +1348,9 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  pl = pw = 1;
 
 	/* see if there's room to add content, else ignore */
-	if (col < COLS && wlen < destlen)
+	if (col < cols && wlen < destlen)
 	{
-	  c = (COLS - col) / pw;
+	  c = (cols - col) / pw;
 	  if (c > 0 && wlen + (c * pl) > destlen)
 	    c = ((signed)(destlen - wlen)) / pl;
 	  while (c > 0)
@@ -1368,7 +1381,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	}
 	
 	/* use callback function to handle this case */
-	src = callback (buf, sizeof (buf), col, ch, src, prefix, ifstring, elsestring, data, flags);
+	src = callback (buf, sizeof (buf), col, cols, ch, src, prefix, ifstring, elsestring, data, flags);
 
 	if (tolower)
 	  mutt_strlower (buf);
@@ -1381,7 +1394,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	}
 	
 	if ((len = mutt_strlen (buf)) + wlen > destlen)
-	  len = mutt_wstr_trunc (buf, destlen - wlen, COLS - col, NULL);
+	  len = mutt_wstr_trunc (buf, destlen - wlen, cols - col, NULL);
 
 	memcpy (wptr, buf, len);
 	wptr += len;
