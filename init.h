@@ -61,6 +61,7 @@
 #define R_RESORT_SUB	(1<<3)	/* resort subthreads */
 #define R_RESORT_INIT	(1<<4)  /* resort from scratch */
 #define R_TREE		(1<<5)  /* redraw the thread tree */
+#define R_REFLOW        (1<<6)  /* reflow window layout */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
 
@@ -977,7 +978,7 @@ struct option_t MuttVars[] = {
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #endif /* USE_HCACHE */
-  { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
+  { "help",		DT_BOOL, R_BOTH|R_REFLOW, OPTHELP, 1 },
   /*
   ** .pp
   ** When \fIset\fP, help lines describing the bindings for the major functions
@@ -3287,7 +3288,7 @@ struct option_t MuttVars[] = {
   ** will replace any dots in the expansion by underscores. This might be helpful
   ** with IMAP folders that don't like dots in folder names.
   */
-  { "status_on_top",	DT_BOOL, R_BOTH, OPTSTATUSONTOP, 0 },
+  { "status_on_top",	DT_BOOL, R_BOTH|R_REFLOW, OPTSTATUSONTOP, 0 },
   /*
   ** .pp
   ** Setting this variable causes the ``status bar'' to be displayed on

@@ -76,4 +76,5 @@ void mutt_resize_screen (void)
 #else
   resizeterm (SLtt_Screen_Rows, SLtt_Screen_Cols);
 #endif
+  mutt_reflow_windows ();
 }

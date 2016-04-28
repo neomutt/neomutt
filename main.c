@@ -547,6 +547,7 @@ static void start_curses (void)
   meta (stdscr, TRUE);
 #endif
 init_extended_keys();
+  mutt_init_windows ();
 }
 
 #define M_IGNORE  (1<<0)	/* -z */
@@ -859,6 +860,7 @@ int main (int argc, char **argv)
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
     ci_send_message (SENDPOSTPONED, NULL, NULL, NULL, NULL);
+    mutt_free_windows ();
     mutt_endwin (NULL);
   }
   else if (subject || msg || sendflags || draftFile || includeFile || attach ||
@@ -1148,7 +1150,10 @@ int main (int argc, char **argv)
     }
 
     if (!option (OPTNOCURSES))
+    {
+      mutt_free_windows ();
       mutt_endwin (NULL);
+    }
 
     if (rv)
       exit(1);
@@ -1217,6 +1222,7 @@ int main (int argc, char **argv)
     mutt_sasl_done ();
 #endif
     mutt_free_opts ();
+    mutt_free_windows ();
     mutt_endwin (Errorbuf);
   }
 
