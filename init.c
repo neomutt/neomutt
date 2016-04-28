@@ -113,7 +113,7 @@ int query_quadoption (int opt, const char *prompt)
 
     default:
       v = mutt_yesorno (prompt, (v == M_ASKYES));
-      CLEARLINE (LINES - 1);
+      mutt_window_clearline (MuttMessageWindow, 0);
       return (v);
   }
 

@@ -203,10 +203,10 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   snprintf (prompt, sizeof (prompt) - 4, 
    (p ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
   
-  if (mutt_strwidth (prompt) > COLS - extra_space)
+  if (mutt_strwidth (prompt) > MuttMessageWindow->cols - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt) - 4,
-			0, COLS-extra_space, FMT_LEFT, 0,
+			0, MuttMessageWindow->cols-extra_space, FMT_LEFT, 0,
 			prompt, sizeof (prompt), 0);
     safe_strcat (prompt, sizeof (prompt), "...?");
   }
@@ -216,12 +216,12 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {
     rfc822_free_address (&adr);
-    CLEARLINE (LINES - 1);
+    mutt_window_clearline (MuttMessageWindow, 0);
     mutt_message (p ? _("Message not bounced.") : _("Messages not bounced."));
     return;
   }
   
-  CLEARLINE (LINES - 1);
+  mutt_window_clearline (MuttMessageWindow, 0);
   
   if (cur)
     ret = mutt_bounce_message (fp, cur->hdr, adr);

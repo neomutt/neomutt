@@ -309,10 +309,10 @@ void ci_bounce_message (HEADER *h, int *redraw)
   snprintf (scratch, sizeof (scratch),
            (h ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
 
-  if (mutt_strwidth (prompt) > COLS - extra_space)
+  if (mutt_strwidth (prompt) > MuttMessageWindow->cols - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt),
-			0, COLS-extra_space, FMT_LEFT, 0,
+			0, MuttMessageWindow->cols-extra_space, FMT_LEFT, 0,
 			scratch, sizeof (scratch), 0);
     safe_strcat (prompt, sizeof (prompt), "...?");
   }
@@ -322,12 +322,12 @@ void ci_bounce_message (HEADER *h, int *redraw)
   if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
   {
     rfc822_free_address (&adr);
-    CLEARLINE (LINES - 1);
+    mutt_window_clearline (MuttMessageWindow, 0);
     mutt_message (h ? _("Message not bounced.") : _("Messages not bounced."));
     return;
   }
 
-  CLEARLINE (LINES - 1);
+  mutt_window_clearline (MuttMessageWindow, 0);
   
   rc = mutt_bounce_message (NULL, h, adr);
   rfc822_free_address (&adr);
@@ -598,7 +598,7 @@ void mutt_shell_escape (void)
       strfcpy (buf, Shell, sizeof (buf));
     if(buf[0])
     {
-      CLEARLINE (LINES-1);
+      mutt_window_clearline (MuttMessageWindow, 0);
       mutt_endwin (NULL);
       fflush (stdout);
       if (mutt_system (buf) != 0 || option (OPTWAITKEY))

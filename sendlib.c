@@ -1856,8 +1856,8 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
     else
       wraplen = WrapHeaders;
   }
-  else if (wraplen <= 0 || wraplen > COLS)
-    wraplen = COLS;
+  else if (wraplen <= 0 || wraplen > MuttIndexWindow->cols)
+    wraplen = MuttIndexWindow->cols;
 
   if (tag)
   {

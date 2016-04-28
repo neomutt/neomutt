@@ -511,7 +511,8 @@ int mutt_buffy_list (void)
     strfcpy (path, tmp->path, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
     
-    if (!first && (COLS - 7 >= 0) && (pos + strlen (path) >= (size_t)COLS - 7))
+    if (!first && (MuttMessageWindow->cols >= 7) &&
+        (pos + strlen (path) >= (size_t)MuttMessageWindow->cols - 7))
       break;
     
     if (!first)

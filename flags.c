@@ -322,18 +322,19 @@ int mutt_change_flag (HEADER *h, int bf)
   int i, flag;
   event_t event;
 
-  mvprintw (LINES - 1, 0, "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
-  clrtoeol ();
+  mutt_window_mvprintw (MuttMessageWindow, 0, 0,
+                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
+  mutt_window_clrtoeol (MuttMessageWindow);
 
   event = mutt_getch();
   i = event.ch;
   if (i < 0)
   {
-    CLEARLINE (LINES-1);
+    mutt_window_clearline (MuttMessageWindow, 0);
     return (-1);
   }
 
-  CLEARLINE (LINES-1);
+  mutt_window_clearline (MuttMessageWindow, 0);
 
   switch (i)
   {

@@ -791,7 +791,8 @@ static int text_enriched_handler (BODY *a, STATE *s)
 
   memset (&stte, 0, sizeof (stte));
   stte.s = s;
-  stte.WrapMargin = ((s->flags & M_DISPLAY) ? (COLS-4) : ((COLS-4)<72)?(COLS-4):72);
+  stte.WrapMargin = ((s->flags & M_DISPLAY) ? (MuttIndexWindow->cols-4) :
+                     ((MuttIndexWindow->cols-4)<72)?(MuttIndexWindow->cols-4):72);
   stte.line_max = stte.WrapMargin * 4;
   stte.line = (wchar_t *) safe_calloc (1, (stte.line_max + 1) * sizeof (wchar_t));
   stte.param = (wchar_t *) safe_calloc (1, (STRING) * sizeof (wchar_t));

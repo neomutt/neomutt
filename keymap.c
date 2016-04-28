@@ -1129,7 +1129,7 @@ void mutt_what_key (void)
 {
   int ch;
 
-  mvprintw(LINES-1,0, _("Enter keys (^G to abort): "));
+  mutt_window_mvprintw (MuttMessageWindow, 0, 0, _("Enter keys (^G to abort): "));
   do {
     ch = getch();
     if (ch != ERR && ch != ctrl ('G'))

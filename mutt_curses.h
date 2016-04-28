@@ -64,8 +64,8 @@
 #undef lines
 #endif /* lines */
 
-#define CLEARLINE(x) move(x,0), clrtoeol()
-#define CENTERLINE(x,y) move(y, (COLS-strlen(x))/2), addstr(x)
+#define CLEARLINE(win,x) mutt_window_clearline(win, x)
+#define CENTERLINE(win,x,y) mutt_window_move(win, y, (win->cols-strlen(x))/2), addstr(x)
 #define BEEP() do { if (option (OPTBEEP)) beep(); } while (0)
 
 #if ! (defined(USE_SLANG_CURSES) || defined(HAVE_CURS_SET))
