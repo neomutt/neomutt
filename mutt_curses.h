@@ -77,7 +77,6 @@ void mutt_curs_set (int);
 #else
 #define mutt_curs_set(x)
 #endif
-#define PAGELEN (LINES-3)
 
 #define ctrl(c) ((c)-'@')
 
