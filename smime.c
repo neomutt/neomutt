@@ -159,6 +159,7 @@ int smime_valid_passphrase (void)
 static const char *_mutt_fmt_smime_command (char *dest,
 					    size_t destlen,
 					    size_t col,
+                                            int cols,
 					    char op,
 					    const char *src,
 					    const char *prefix,
@@ -284,10 +285,10 @@ static const char *_mutt_fmt_smime_command (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, _mutt_fmt_smime_command,
+    mutt_FormatString (dest, destlen, col, cols, ifstring, _mutt_fmt_smime_command,
 		       data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, _mutt_fmt_smime_command,
+    mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_smime_command,
 		       data, 0);
 
   return (src);
@@ -298,7 +299,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 static void mutt_smime_command (char *d, size_t dlen,
 				struct smime_command_context *cctx, const char *fmt)
 {
-  mutt_FormatString (d, dlen, 0, NONULL(fmt), _mutt_fmt_smime_command,
+  mutt_FormatString (d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt), _mutt_fmt_smime_command,
 		    (unsigned long) cctx, 0);
   dprint (2,(debugfile, "mutt_smime_command: %s\n", d));
 }

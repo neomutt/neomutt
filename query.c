@@ -183,7 +183,7 @@ static int query_search (MUTTMENU *m, regex_t *re, int n)
   return REG_NOMATCH;
 }
 
-static const char * query_format_str (char *dest, size_t destlen, size_t col,
+static const char * query_format_str (char *dest, size_t destlen, size_t col, int cols,
 				      char op, const char *src,
 				      const char *fmt, const char *ifstring,
 				      const char *elsestring,
@@ -230,9 +230,9 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, query_format_str, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, ifstring, query_format_str, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, query_format_str, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, elsestring, query_format_str, data, 0);
 
   return src;
 }
@@ -242,7 +242,7 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
   ENTRY *entry = &((ENTRY *) m->data)[num];
 
   entry->data->num = num;
-  mutt_FormatString (s, slen, 0, NONULL (QueryFormat), query_format_str,
+  mutt_FormatString (s, slen, 0, MuttIndexWindow->cols, NONULL (QueryFormat), query_format_str,
 		     (unsigned long) entry, M_FORMAT_ARROWCURSOR);
 }
 
