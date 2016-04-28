@@ -234,7 +234,7 @@ static void be_edit_header (ENVELOPE *e, int force)
 {
   char tmp[HUGE_STRING];
 
-  move (LINES-1, 0);
+  mutt_window_move (MuttMessageWindow, 0, 0);
 
   addstr ("To: ");
   tmp[0] = 0;
@@ -250,7 +250,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       mutt_addrlist_to_intl (e->to, NULL);	/* XXX - IDNA error reporting? */
       tmp[0] = 0;
       rfc822_write_address (tmp, sizeof (tmp), e->to, 1);
-      mvaddstr (LINES - 1, 4, tmp);
+      mutt_window_mvaddstr (MuttMessageWindow, 0, 4, tmp);
     }
   }
   else
@@ -283,7 +283,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       tmp[0] = 0;
       mutt_addrlist_to_intl (e->cc, NULL);
       rfc822_write_address (tmp, sizeof (tmp), e->cc, 1);
-      mvaddstr (LINES - 1, 4, tmp);
+      mutt_window_mvaddstr (MuttMessageWindow, 0, 4, tmp);
     }
     else
       mutt_addrlist_to_intl (e->cc, NULL);
@@ -304,7 +304,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       mutt_addrlist_to_intl (e->bcc, NULL);
       tmp[0] = 0;
       rfc822_write_address (tmp, sizeof (tmp), e->bcc, 1);
-      mvaddstr (LINES - 1, 5, tmp);
+      mutt_window_mvaddstr (MuttMessageWindow, 0, 5, tmp);
     }
     else
       mutt_addrlist_to_intl (e->bcc, NULL);
