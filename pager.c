@@ -1502,18 +1502,12 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
     ATTRSET(def_color);
   }
 
-  /* ncurses always wraps lines when you get to the right side of the
-   * screen, but S-Lang seems to only wrap if the next character is *not*
-   * a newline (grr!).
-   */
-#ifndef USE_SLANG_CURSES
-    if (col < pager_window->cols)
-#endif
-      addch ('\n');
+  if (col < pager_window->cols)
+    mutt_window_clrtoeol (pager_window);
 
   /*
    * reset the color back to normal.  This *must* come after the
-   * addch('\n'), otherwise the color for this line will not be
+   * clrtoeol, otherwise the color for this line will not be
    * filled to the right margin.
    */
   if (flags & M_SHOWCOLOR)
@@ -1814,7 +1808,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	mutt_window_clrtoeol (pager_window);
 	if (option (OPTTILDE))
 	  addch ('~');
-	addch ('\n');
 	lines++;
         mutt_window_move (pager_window, lines, 0);
       }
