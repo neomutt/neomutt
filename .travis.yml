@@ -1,0 +1,88 @@
+notifications:
+  email:
+    recipients:
+      - rich@flatcap.org
+    on_success: change
+    on_failure: always
+
+sudo: required
+dist: trusty
+
+language: c
+compiler: gcc
+cache: ccache
+
+addons:
+  apt:
+    packages:
+      - libgpgme11-dev
+      - libtokyocabinet-dev
+      - libgdbm-dev
+      - libdb-dev
+#     - libslang2-dev
+#     - libqdbm-dev
+
+env:
+    # Default config
+  - OPTS=""
+    # Disable components that default to 'on'
+  - OPTS="--disable-fcntl"
+  - OPTS="--disable-iconv"
+  - OPTS="--disable-nls"
+  - OPTS="--with-included-gettext"
+  - OPTS="--without-idn"
+  - OPTS="--without-wc-funcs"
+  - OPTS="--disable-pgp"
+  - OPTS="--disable-smime"
+    # Disable ALL optional components
+  - OPTS="--disable-fcntl --disable-iconv --disable-nls --with-included-gettext --without-idn --without-wc-funcs --disable-pgp --disable-smime"
+    # Enable components that default to 'off'
+  - OPTS="--enable-pop"
+  - OPTS="--enable-imap"
+  - OPTS="--enable-smtp"
+  - OPTS="--enable-debug"
+  - OPTS="--enable-flock"
+  - OPTS="--enable-nfs-fix"
+  - OPTS="--enable-mailtool"
+  - OPTS="--enable-locales-fix"
+  - OPTS="--enable-exact-address"
+  - OPTS="--with-homespool"
+  - OPTS="--with-domain"
+  - OPTS="--with-regex"
+  - OPTS="--enable-gpgme"
+  - OPTS="--with-mixmaster"
+    # Enable ALL optional components
+  - OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-gpgme --with-mixmaster"
+    # Test all the backend caching options
+  - OPTS="--enable-hcache                        --without-qdbm --without-gdbm --without-bdb"
+# - OPTS="--enable-hcache --without-tokyocabinet                --without-gdbm --without-bdb"
+  - OPTS="--enable-hcache --without-tokyocabinet --without-qdbm                --without-bdb"
+  - OPTS="--enable-hcache --without-tokyocabinet --without-qdbm --without-gdbm"
+    # Test the components that have dependencies on others
+  - OPTS="--with-gss --enable-imap"
+  - OPTS="--with-ssl --enable-pop"
+  - OPTS="--with-ssl --enable-imap"
+  - OPTS="--with-ssl --enable-smtp"
+  - OPTS="--with-gnutls --enable-pop"
+  - OPTS="--with-gnutls --enable-imap"
+  - OPTS="--with-gnutls --enable-smtp"
+  - OPTS="--with-sasl --enable-pop"
+  - OPTS="--with-sasl --enable-imap"
+    # Test SLANG (not default Curses)
+# - OPTS="--with-slang"
+    # Miscellaneous options
+  - OPTS="--with-mailpath=/home/mutt/mail"
+  - OPTS="--with-exec-shell=/bin/bash"
+
+before_script:
+  - ccache -z
+  - autoreconf -i
+
+script:
+  - ./configure $OPTS
+  - make
+  - ./mutt -v
+
+after_script:
+  - ccache -s
+
