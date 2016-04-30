@@ -1854,7 +1854,8 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     {
       /* redraw the pager_index indicator, because the
        * flags for this message might have changed. */
-      menu_redraw_current (index);
+      if (index_window->rows > 0)
+        menu_redraw_current (index);
 
       /* print out the index status bar */
       menu_status_line (buffer, sizeof (buffer), index, NONULL(Status));
