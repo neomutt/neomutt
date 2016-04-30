@@ -1667,45 +1667,35 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 
       indicator = indexlen / 3;
 
+      memcpy (pager_window, MuttIndexWindow, sizeof(mutt_window_t));
+      memcpy (pager_status_window, MuttStatusWindow, sizeof(mutt_window_t));
+      index_status_window->rows = index_window->rows = 0;
+
       if (IsHeader (extra) && PagerIndexLines)
       {
         memcpy (index_window, MuttIndexWindow, sizeof(mutt_window_t));
         index_window->rows = indexlen > 0 ? indexlen - 1 : 0;
-      }
-      else
-        index_status_window->rows = index_window->rows = 0;
 
-      if (option (OPTSTATUSONTOP))
-      {
-        if (IsHeader (extra) && PagerIndexLines)
+        if (option (OPTSTATUSONTOP))
         {
           memcpy (index_status_window, MuttStatusWindow, sizeof(mutt_window_t));
 
           memcpy (pager_status_window, MuttIndexWindow, sizeof(mutt_window_t));
           pager_status_window->rows = 1;
           pager_status_window->row_offset += index_window->rows;
+
+          pager_window->rows -= index_window->rows + pager_status_window->rows;
+          pager_window->row_offset += index_window->rows + pager_status_window->rows;
         }
         else
-          memcpy (pager_status_window, MuttStatusWindow, sizeof(mutt_window_t));
-
-        memcpy (pager_window, MuttIndexWindow, sizeof(mutt_window_t));
-        pager_window->rows -= index_window->rows + pager_status_window->rows;
-        pager_window->row_offset += index_window->rows + pager_status_window->rows;
-      }
-      else
-      {
-        if (IsHeader (extra) && PagerIndexLines)
         {
           memcpy (index_status_window, MuttIndexWindow, sizeof(mutt_window_t));
           index_status_window->rows = 1;
           index_status_window->row_offset += index_window->rows;
+
+          pager_window->rows -= index_window->rows + index_status_window->rows;
+          pager_window->row_offset += index_window->rows + index_status_window->rows;
         }
-
-        memcpy (pager_status_window, MuttStatusWindow, sizeof(mutt_window_t));
-
-        memcpy (pager_window, MuttIndexWindow, sizeof(mutt_window_t));
-        pager_window->rows -= index_window->rows + index_status_window->rows;
-        pager_window->row_offset += index_window->rows + index_status_window->rows;
       }
 
       if (option (OPTHELP))
