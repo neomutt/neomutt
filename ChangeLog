@@ -1,3 +1,75 @@
+2016-04-27 13:08 -0700  Kevin McCarthy  <kevin@8t8.us>  (23334e967dd7)
+
+	* Makefile.am, getdomain.c, mutt_sasl.c, mutt_socket.c, mutt_tunnel.c,
+	sys_socket.h: Create a wrapper sys_socket.h to work around Solaris
+	namespace issues. (closes #3833)
+
+	Solaris includes "sys/stream.h" inside their "sys/socket.h". This
+	include file adds many non-reserved macros to Mutt's namespace, two
+	of which conflict with existing Mutt macros.
+
+	The simplest fix would be to rename those macros in Mutt, however
+	this will cause difficulty with out-of-tree patches. This fix
+	creates a wrapper include file that preserves those existing macros
+	and prevents the Solaris values from entering Mutt's namespace.
+
+2016-04-10 16:02 -0700  Kevin McCarthy  <kevin@8t8.us>  (a6a4d6ed0f19)
+
+	* crypt.c, send.c: Fix mutt_protect() when INLINE is set. (closes
+	#3828)
+
+	The oppenc changes allow security bits to be set even when not
+	encrypting or signing (for instance, OPPENCRYPT and INLINE).
+
+	mutt_protect() assumed that if INLINE is set, then either ENCRYPT or
+	SIGN must also be set. Specifically, it would end up inline-signing
+	the message even though neither was set.
+
+	Ensure mutt_protect() is a noop if neither SIGN or ENCRYPT are set.
+
+	In ci_send_message(), check for sign or encrypt before calling the
+	crypt_get_keys() / mutt_protect() block, and also in the fcc section
+	(since clear_content would be NULL if not).
+
+	The second change to the fcc part is somewhat redundant, but better
+	to be explicit and avoid the case where the subtype is somehow
+	"encrypted" or "signed" even though msg->security wasn't set thus.
+
+2016-04-05 14:31 -0700  Kevin McCarthy  <kevin@8t8.us>  (f7db9cefd3b0)
+
+	* Makefile.am, configure.ac, mutt_idna.h: Fix IDNA functions for
+	systems without iconv.
+
+	The IDNA changes for SMTPUTF8 support introduced a bug for systems
+	without iconv. For those systems, the local<->intl functions would
+	return an error due to the charset conversion failing.
+
+	Change mutt_idna.c back to being conditionally compiled, but this
+	time based on HAVE_ICONV. If there is no iconv, stub out the
+	functions in mutt_idna.h.
+
+2016-04-02 13:04 -0700  Kevin McCarthy  <kevin@8t8.us>  (b983eb6c1a04)
+
+	* merge default into stable
+
+2016-04-02 11:55 -0700  Kevin McCarthy  <kevin@8t8.us>  (b81408b02cbb)
+
+	* .hgsigs: mutt-1.6.0 signed
+
+2016-04-02 11:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (349f9cb71427)
+
+	* .hgtags: Added tag mutt-1-6-rel for changeset be82a2fde82f
+
+2016-04-02 11:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (be82a2fde82f)
+
+	* ChangeLog, UPDATING, VERSION, po/bg.po, po/ca.po, po/cs.po,
+	po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po,
+	po/eu.po, po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po,
+	po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po,
+	po/zh_CN.po, po/zh_TW.po: automatic post-release commit for
+	mutt-1.6.0
+
 2016-04-01 09:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (503bd3a3c818)
 
 	* Makefile.am: Fix hcversion.h generation error when using included
