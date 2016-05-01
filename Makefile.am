@@ -33,7 +33,7 @@ mutt_SOURCES = \
 	rfc822.c rfc1524.c rfc2047.c rfc2231.c rfc3676.c \
 	score.c send.c sendlib.c signal.c sort.c \
 	status.c system.c thread.c charset.c history.c lib.c \
-	muttlib.c editmsg.c mbyte.c mutt_idna.c \
+	muttlib.c editmsg.c mbyte.c \
 	url.c ascii.c crypt-mod.c crypt-mod.h safe_asprintf.c version.c
 
 nodist_mutt_SOURCES = $(BUILT_SOURCES)
@@ -53,7 +53,7 @@ AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
 EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
 	crypt-mod-smime-gpgme.c dotlock.c gnupgparse.c hcache.c md5.c \
-	mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
+	mutt_idna.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
 	mutt_tunnel.c pgp.c pgpinvoke.c pgpkey.c pgplib.c pgpmicalg.c \
 	pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c resize.c sha1.c \
 	smime.c smtp.c utf8.c wcwidth.c \
@@ -72,7 +72,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	README.SSL smime.h group.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
 	ChangeLog mkchangelog.sh mutt_idna.h \
-	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
+	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
 	txt2c.c txt2c.sh version.sh check_sec.sh version.h
 
 EXTRA_SCRIPTS = smime_keys

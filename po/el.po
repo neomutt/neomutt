@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.5.7i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-02 11:15-0700\n"
+"POT-Creation-Date: 2016-04-30 14:19-0700\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -1731,49 +1731,49 @@ msgstr "[-- %s ακολουθεί έξοδος%s --]\n"
 msgid "Passphrase(s) forgotten."
 msgstr "Η φράση(-εις)-κλειδί έχει ξεχαστεί."
 
-#: crypt.c:149
+#: crypt.c:152
 #, fuzzy
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr ""
 "Το μήνυμα δεν μπορεί να σταλεί ως εσωτερικό κείμενο. Να χρησιμοποιηθεί PGP/"
 "MIME;"
 
-#: crypt.c:151
+#: crypt.c:154
 msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr ""
 
 #
 # commands.c:87 commands.c:95 pgp.c:1373 pgpkey.c:220
-#: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
+#: crypt.c:161 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
 msgstr "Κλήση του PGP..."
 
-#: crypt.c:167
+#: crypt.c:170
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 "Το μήνυμα δεν μπορεί να σταλεί ως εσωτερικό κείμενο. Να χρησιμοποιηθεί PGP/"
 "MIME;"
 
 #
-#: crypt.c:169 send.c:1608
+#: crypt.c:172 send.c:1608
 msgid "Mail not sent."
 msgstr "Το γράμμα δεν εστάλη."
 
-#: crypt.c:482
+#: crypt.c:485
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr "Δεν υποστηρίζονται μηνύματα S/MIME χωρίς πληροφορίες στην επικεφαλίδα."
 
-#: crypt.c:702 crypt.c:746
+#: crypt.c:705 crypt.c:749
 msgid "Trying to extract PGP keys...\n"
 msgstr "Προσπάθεια εξαγωγής κλειδιών PGP...\n"
 
-#: crypt.c:726 crypt.c:766
+#: crypt.c:729 crypt.c:769
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Προσπάθεια εξαγωγής πιστοποιητικών S/MIME...\n"
 
 #
 # handler.c:1378
-#: crypt.c:913
+#: crypt.c:916
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1782,7 +1782,7 @@ msgstr ""
 "[-- Σφάλμα: ¶γνωστο πολυμερές/υπογεγραμμένο πρωτόκολλο %s! --]\n"
 "\n"
 
-#: crypt.c:947
+#: crypt.c:950
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -1790,7 +1790,7 @@ msgstr ""
 "[-- Σφάλμα: Ασυνεπής πολυμερής/υπογεγραμμένη δομή! --]\n"
 "\n"
 
-#: crypt.c:986
+#: crypt.c:989
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1801,7 +1801,7 @@ msgstr ""
 
 #
 # pgp.c:676
-#: crypt.c:998
+#: crypt.c:1001
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1809,7 +1809,7 @@ msgstr ""
 "[-- Τα επόμενα δεδομένα είναι υπογεγραμμένα --]\n"
 "\n"
 
-#: crypt.c:1004
+#: crypt.c:1007
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1819,7 +1819,7 @@ msgstr ""
 
 #
 # pgp.c:682
-#: crypt.c:1010
+#: crypt.c:1013
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -5043,17 +5043,17 @@ msgid "Save attachments in Fcc?"
 msgstr "παρουσίαση της προσάρτησης ως κείμενο"
 
 #
-#: send.c:1897
+#: send.c:1898
 msgid "Could not send the message."
 msgstr "Αδυναμία αποστολής του μηνύματος."
 
 #
-#: send.c:1902
+#: send.c:1903
 msgid "Mail sent."
 msgstr "Το γράμμα εστάλη."
 
 #
-#: send.c:1902
+#: send.c:1903
 msgid "Sending in background."
 msgstr "Αποστολή στο παρασκήνιο."
 
