@@ -1717,7 +1717,7 @@ main_loop:
   
   if (WithCrypto)
   {
-    if (msg->security)  
+    if (msg->security & (ENCRYPT | SIGN))
     {
       /* save the decrypted attachments */
       clear_content = msg->content;
@@ -1781,7 +1781,7 @@ main_loop:
     BODY *save_sig = NULL;
     BODY *save_parts = NULL;
 
-    if (WithCrypto && msg->security && option (OPTFCCCLEAR))
+    if (WithCrypto && (msg->security & (ENCRYPT | SIGN)) && option (OPTFCCCLEAR))
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
@@ -1789,6 +1789,7 @@ main_loop:
 	msg->content->type == TYPEMULTIPART)
     {
       if (WithCrypto
+          && (msg->security & (ENCRYPT | SIGN))
           && (mutt_strcmp (msg->content->subtype, "encrypted") == 0 ||
               mutt_strcmp (msg->content->subtype, "signed") == 0))
       {
