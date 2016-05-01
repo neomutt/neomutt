@@ -71,8 +71,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
 	README.SSL smime.h group.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
-	mutt_idna.h \
-	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
+	ChangeLog mkchangelog.sh mutt_idna.h \
+	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
 	txt2c.c txt2c.sh version.sh check_sec.sh version.h
 
 EXTRA_SCRIPTS = smime_keys

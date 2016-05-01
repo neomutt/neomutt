@@ -576,6 +576,6 @@ char *mkdtemp (char *tmpl);
 size_t strnlen(const char *s, size_t maxlen);
 #endif
 
-#ifndef HAVE_STRNDUP
+#ifndef strndup
 char *strndup(const char *s, size_t n);
 #endif
