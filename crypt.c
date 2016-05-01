@@ -137,6 +137,9 @@ int mutt_protect (HEADER *msg, char *keylist)
   if (!WithCrypto)
     return -1;
 
+  if (!(msg->security & (ENCRYPT | SIGN)))
+    return 0;
+
   if ((msg->security & SIGN) && !crypt_valid_passphrase (msg->security))
     return (-1);
 

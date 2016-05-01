@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <netdb.h>
 #include <sys/types.h>
-#include <sys/socket.h>
+#include "sys_socket.h"
 
 #include "mutt.h"
 
