@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-02 11:15-0700\n"
+"POT-Creation-Date: 2016-04-30 14:19-0700\n"
 "PO-Revision-Date: 2001-04-22 22:05+0200\n"
 "Last-Translator: Roberto Suarez Soto <ask4it@bigfoot.com>\n"
 "Language-Team: Galician <trasno@ceu.fi.udc.es>\n"
@@ -1496,52 +1496,52 @@ msgstr "[-- Saída PGP a continuación (hora actual: %c) --]\n"
 msgid "Passphrase(s) forgotten."
 msgstr "Contrasinal PGP esquecido."
 
-#: crypt.c:149
+#: crypt.c:152
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr ""
 
-#: crypt.c:151
+#: crypt.c:154
 msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr ""
 
-#: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
+#: crypt.c:161 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
 msgstr "Chamando ó PGP..."
 
-#: crypt.c:167
+#: crypt.c:170
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: crypt.c:169 send.c:1608
+#: crypt.c:172 send.c:1608
 msgid "Mail not sent."
 msgstr "Mensaxe non enviada."
 
-#: crypt.c:482
+#: crypt.c:485
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 
-#: crypt.c:702 crypt.c:746
+#: crypt.c:705 crypt.c:749
 msgid "Trying to extract PGP keys...\n"
 msgstr ""
 
-#: crypt.c:726 crypt.c:766
+#: crypt.c:729 crypt.c:769
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr ""
 
-#: crypt.c:913
+#: crypt.c:916
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
 "\n"
 msgstr "[-- Erro: protocolo multiparte/asinado %s descoñecido --]\n"
 
-#: crypt.c:947
+#: crypt.c:950
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
 msgstr "[-- Erro: estructura multiparte/asinada inconsistente --]\n"
 
-#: crypt.c:986
+#: crypt.c:989
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1550,7 +1550,7 @@ msgstr ""
 "[-- Atención: non é posible verificar sinaturas %s/%s --]\n"
 "\n"
 
-#: crypt.c:998
+#: crypt.c:1001
 #, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
@@ -1559,7 +1559,7 @@ msgstr ""
 "[-- Os datos a continuación están asinados --]\n"
 "\n"
 
-#: crypt.c:1004
+#: crypt.c:1007
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1567,7 +1567,7 @@ msgstr ""
 "[-- Atención: non se atoparon sinaturas. --]\n"
 "\n"
 
-#: crypt.c:1010
+#: crypt.c:1013
 #, fuzzy
 msgid ""
 "\n"
@@ -4358,15 +4358,15 @@ msgstr "Enviando mensaxe..."
 msgid "Save attachments in Fcc?"
 msgstr "ver adxunto como texto"
 
-#: send.c:1897
+#: send.c:1898
 msgid "Could not send the message."
 msgstr "Non foi posible envia-la mensaxe."
 
-#: send.c:1902
+#: send.c:1903
 msgid "Mail sent."
 msgstr "Mensaxe enviada."
 
-#: send.c:1902
+#: send.c:1903
 msgid "Sending in background."
 msgstr "Mandando en segundo plano."
 
