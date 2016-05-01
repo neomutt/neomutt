@@ -89,8 +89,7 @@ get_incoming (void)
  * find_next_new - Find the next folder that contains new mail
  * @wrap: Wrap around to the beginning if the end is reached
  *
- * Search down the list of mail folders for one containing new, or flagged,
- * mail, or a folder that is in the SidebarWhitelist.
+ * Search down the list of mail folders for one containing new mail.
  *
  * Returns:
  *	BUFFY*: Success
@@ -111,7 +110,7 @@ find_next_new (int wrap)
 		if (!b || (b == HilBuffy)) {
 			break;
 		}
-		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
+		if (b->msg_unread > 0) {
 			return b;
 		}
 	} while (b);
@@ -123,8 +122,7 @@ find_next_new (int wrap)
  * find_prev_new - Find the previous folder that contains new mail
  * @wrap: Wrap around to the beginning if the end is reached
  *
- * Search up the list of mail folders for one containing new, or flagged, mail,
- * or a folder that is in the SidebarWhitelist.
+ * Search up the list of mail folders for one containing new mail.
  *
  * Returns:
  *	BUFFY*: Success
@@ -145,7 +143,7 @@ find_prev_new (int wrap)
 		if (!b || (b == HilBuffy)) {
 			break;
 		}
-		if (b->msg_unread || b->msg_flagged || mutt_find_list (SidebarWhitelist, b->path)) {
+		if (b->msg_unread > 0) {
 			return b;
 		}
 	} while (b);
@@ -585,7 +583,7 @@ prepare_sidebar (int page_size)
  * After validating the config options "sidebar_visible" and "sidebar_width",
  * determine whether we should should display the sidebar.
  *
- * When not visible, set the global SidebarSortMethod to 0.
+ * When not visible, set the global SidebarWidth to 0.
  *
  * Returns:
  *	Boolean
@@ -657,20 +655,10 @@ draw_divider (int first_row, int num_rows)
 
 	SETCOLOR(MT_COLOR_DIVIDER);
 
-	short color_pair;
-#ifndef USE_SLANG_CURSES
-	attr_t attrs;
-	attr_get (&attrs, &color_pair, 0);
-#else
-	color_pair = attr_get();
-#endif
 	int i;
 	for (i = 0; i < num_rows; i++) {
 		move (first_row + i, SidebarWidth - delim_len);
 		addstr (NONULL(SidebarDividerChar));
-#ifndef USE_SLANG_CURSES
-		mvchgat (first_row + i, SidebarWidth - delim_len, delim_len, 0, color_pair, NULL);
-#endif
 	}
 
 	return delim_len;
@@ -929,9 +917,6 @@ sb_should_refresh (void)
 void
 sb_change_mailbox (int op)
 {
-	if (!option (OPTSIDEBAR))
-		return;
-
 	BUFFY *b;
 	if (!HilBuffy)	/* It'll get reset on the next draw */
 		return;
@@ -982,7 +967,10 @@ sb_change_mailbox (int op)
 		default:
 			return;
 	}
-	sb_draw();
+
+	/* We can change folder even if the sidebar is hidden */
+	if (option (OPTSIDEBAR))
+		sb_draw();
 }
 
 /**
@@ -1023,9 +1011,6 @@ sb_set_buffystats (const CONTEXT *ctx)
 const char *
 sb_get_highlight (void)
 {
-	if (!option (OPTSIDEBAR))
-		return NULL;
-
 	if (!HilBuffy)
 		return NULL;
 
