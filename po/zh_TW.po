@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.3.22.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-02 11:15-0700\n"
+"POT-Creation-Date: 2016-04-30 14:19-0700\n"
 "PO-Revision-Date: 2001-09-06 18:25+0800\n"
 "Last-Translator: Anthony Wong <ypwong@debian.org>\n"
 "Language-Team: Chinese <zh@li.org>\n"
@@ -1487,39 +1487,39 @@ msgstr "[-- 以下為 PGP 輸出的資料（現在時間：%c) --]\n"
 msgid "Passphrase(s) forgotten."
 msgstr "已忘記 PGP 通行密碼。"
 
-#: crypt.c:149
+#: crypt.c:152
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr ""
 
-#: crypt.c:151
+#: crypt.c:154
 msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr ""
 
-#: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
+#: crypt.c:161 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
 msgstr "啟動 PGP…"
 
-#: crypt.c:167
+#: crypt.c:170
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr ""
 
-#: crypt.c:169 send.c:1608
+#: crypt.c:172 send.c:1608
 msgid "Mail not sent."
 msgstr "信件沒有寄出。"
 
-#: crypt.c:482
+#: crypt.c:485
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 
-#: crypt.c:702 crypt.c:746
+#: crypt.c:705 crypt.c:749
 msgid "Trying to extract PGP keys...\n"
 msgstr ""
 
-#: crypt.c:726 crypt.c:766
+#: crypt.c:729 crypt.c:769
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr ""
 
-#: crypt.c:913
+#: crypt.c:916
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1528,7 +1528,7 @@ msgstr ""
 "[-- 錯誤：不明的 multipart/signed 協定 %s！ --]\n"
 "\n"
 
-#: crypt.c:947
+#: crypt.c:950
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -1536,7 +1536,7 @@ msgstr ""
 "[-- 錯誤：不一致的 multipart/signed 結構！ --]\n"
 "\n"
 
-#: crypt.c:986
+#: crypt.c:989
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1545,7 +1545,7 @@ msgstr ""
 "[-- 警告：我們不能證實 %s/%s 簽名。 --]\n"
 "\n"
 
-#: crypt.c:998
+#: crypt.c:1001
 #, fuzzy
 msgid ""
 "[-- The following data is signed --]\n"
@@ -1554,7 +1554,7 @@ msgstr ""
 "[-- 以下的資料已被簽署 --]\n"
 "\n"
 
-#: crypt.c:1004
+#: crypt.c:1007
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1562,7 +1562,7 @@ msgstr ""
 "[-- 警告：找不到任何的簽名。 --]\n"
 "\n"
 
-#: crypt.c:1010
+#: crypt.c:1013
 #, fuzzy
 msgid ""
 "\n"
@@ -4330,15 +4330,15 @@ msgstr "正在寄出信件…"
 msgid "Save attachments in Fcc?"
 msgstr "用文字方式顯示附件內容"
 
-#: send.c:1897
+#: send.c:1898
 msgid "Could not send the message."
 msgstr "無法寄出信件。"
 
-#: send.c:1902
+#: send.c:1903
 msgid "Mail sent."
 msgstr "信件已經寄出。"
 
-#: send.c:1902
+#: send.c:1903
 msgid "Sending in background."
 msgstr "正在背景作業中傳送。"
 
