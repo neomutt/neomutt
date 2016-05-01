@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mutt 1.5.12\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-02 11:15-0700\n"
+"POT-Creation-Date: 2016-04-30 14:19-0700\n"
 "PO-Revision-Date: 2006-10-16 14:22-0500\n"
 "Last-Translator: Kevin Patrick Scannell <scannell@SLU.EDU>\n"
 "Language-Team: Irish <ga@li.org>\n"
@@ -1447,41 +1447,41 @@ msgstr "[-- an t-aschur %s:%s --]\n"
 msgid "Passphrase(s) forgotten."
 msgstr "Rinneadh dearmad ar an bhfrása faire."
 
-#: crypt.c:149
+#: crypt.c:152
 #, fuzzy
 msgid "Inline PGP can't be used with attachments.  Revert to PGP/MIME?"
 msgstr "Ní féidir an teachtaireacht a sheoladh inlíne.  Úsáid PGP/MIME?"
 
-#: crypt.c:151
+#: crypt.c:154
 msgid "Mail not sent: inline PGP can't be used with attachments."
 msgstr ""
 
-#: crypt.c:158 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
+#: crypt.c:161 cryptglue.c:110 pgpkey.c:563 pgpkey.c:753
 msgid "Invoking PGP..."
 msgstr "PGP á thosú..."
 
-#: crypt.c:167
+#: crypt.c:170
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Ní féidir an teachtaireacht a sheoladh inlíne.  Úsáid PGP/MIME?"
 
-#: crypt.c:169 send.c:1608
+#: crypt.c:172 send.c:1608
 msgid "Mail not sent."
 msgstr "Níor seoladh an post."
 
-#: crypt.c:482
+#: crypt.c:485
 msgid "S/MIME messages with no hints on content are unsupported."
 msgstr ""
 "Ní ghlacann le teachtaireachtaí S/MIME gan leideanna maidir lena n-inneachar."
 
-#: crypt.c:702 crypt.c:746
+#: crypt.c:705 crypt.c:749
 msgid "Trying to extract PGP keys...\n"
 msgstr "Ag baint triail as eochracha PGP a bhaint amach...\n"
 
-#: crypt.c:726 crypt.c:766
+#: crypt.c:729 crypt.c:769
 msgid "Trying to extract S/MIME certificates...\n"
 msgstr "Ag baint triail as teastais S/MIME a bhaint amach...\n"
 
-#: crypt.c:913
+#: crypt.c:916
 #, c-format
 msgid ""
 "[-- Error: Unknown multipart/signed protocol %s! --]\n"
@@ -1490,7 +1490,7 @@ msgstr ""
 "[-- Earráid: Prótacal anaithnid multipart/signed %s! --]\n"
 "\n"
 
-#: crypt.c:947
+#: crypt.c:950
 msgid ""
 "[-- Error: Inconsistent multipart/signed structure! --]\n"
 "\n"
@@ -1498,7 +1498,7 @@ msgstr ""
 "[-- Earráid: Struchtúr neamhréireach multipart/signed! --]\n"
 "\n"
 
-#: crypt.c:986
+#: crypt.c:989
 #, c-format
 msgid ""
 "[-- Warning: We can't verify %s/%s signatures. --]\n"
@@ -1507,7 +1507,7 @@ msgstr ""
 "[-- Rabhadh: Ní féidir %s/%s síniú a fhíorú. --]\n"
 "\n"
 
-#: crypt.c:998
+#: crypt.c:1001
 msgid ""
 "[-- The following data is signed --]\n"
 "\n"
@@ -1515,7 +1515,7 @@ msgstr ""
 "[-- Is sínithe iad na sonraí seo a leanas --]\n"
 "\n"
 
-#: crypt.c:1004
+#: crypt.c:1007
 msgid ""
 "[-- Warning: Can't find any signatures. --]\n"
 "\n"
@@ -1523,7 +1523,7 @@ msgstr ""
 "[-- Rabhadh: Ní féidir aon síniú a aimsiú. --]\n"
 "\n"
 
-#: crypt.c:1010
+#: crypt.c:1013
 msgid ""
 "\n"
 "[-- End of signed data --]\n"
@@ -4243,15 +4243,15 @@ msgstr "Teachtaireacht á seoladh..."
 msgid "Save attachments in Fcc?"
 msgstr "féach ar an iatán mar théacs"
 
-#: send.c:1897
+#: send.c:1898
 msgid "Could not send the message."
 msgstr "Níorbh fhéidir an teachtaireacht a sheoladh."
 
-#: send.c:1902
+#: send.c:1903
 msgid "Mail sent."
 msgstr "Seoladh an teachtaireacht."
 
-#: send.c:1902
+#: send.c:1903
 msgid "Sending in background."
 msgstr "Á seoladh sa chúlra."
 
