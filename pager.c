@@ -1146,10 +1146,19 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
     if (k == 0)
       k = 1;
 
-    if (Charset_is_utf8 && (wc == 0x200B || wc == 0xFEFF))
+    if (Charset_is_utf8)
     {
+      if (wc == 0x200B || wc == 0xFEFF)
+      {
 	dprint (3, (debugfile, "skip zero-width character U+%04X\n", (unsigned short)wc));
 	continue;
+      }
+      /* Filter bidi markers, see ticket #3827 */
+      if (wc == (wchar_t)0x200f || wc == (wchar_t)0x200e)
+      {
+	dprint (3, (debugfile, "skip bidi marker U+%04X\n", (unsigned short)wc));
+	continue;
+      }
     }
 
     /* Handle backspace */
