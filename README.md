@@ -13,11 +13,11 @@ Hopefully this will build the community and reduce duplicated effort.
 
 ## Where is NeoMutt?
 
-  Source Code:     https://github.com/neomutt/neomutt
-  Releases:        https://github.com/neomutt/neomutt/releases/latest
-  Questions/Bugs:  https://github.com/neomutt/neomutt/issues
-  Website:         http://www.neomutt.org/
-  Development:     http://www.neomutt.org/devel/
+- Source Code:     https://github.com/neomutt/neomutt
+- Releases:        https://github.com/neomutt/neomutt/releases/latest
+- Questions/Bugs:  https://github.com/neomutt/neomutt/issues
+- Website:         http://www.neomutt.org/
+- Development:     http://www.neomutt.org/devel/
 
 ## Credits
 
