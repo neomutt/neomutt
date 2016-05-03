@@ -165,7 +165,7 @@ int _mutt_get_field (const char *field, char *buf, size_t buflen, int complete, 
     addstr ((char *)field); /* cast to get around bad prototypes */
     NORMAL_COLOR;
     mutt_refresh ();
-    mutt_window_getyx (MuttMessageWindow, &ret, &x);  /* don't care about y: avoiding unused var warning */
+    mutt_window_getyx (MuttMessageWindow, NULL, &x);
     ret = _mutt_enter_string (buf, buflen, x, complete, multiple, files, numfiles, es);
   }
   while (ret == 1);
@@ -628,8 +628,10 @@ void mutt_window_getyx (mutt_window_t *win, int *y, int *x)
   int row, col;
 
   getyx (stdscr, row, col);
-  *y = row - win->row_offset;
-  *x = col - win->col_offset;
+  if (y)
+    *y = row - win->row_offset;
+  if (x)
+    *x = col - win->col_offset;
 }
 
 
