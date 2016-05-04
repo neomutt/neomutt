@@ -10,7 +10,11 @@ IMAP_SUBDIR = imap
 IMAP_INCLUDES = -I$(top_srcdir)/imap
 endif
 
+if QUICK_BUILD
+SUBDIRS = $(IMAP_SUBDIR)
+else
 SUBDIRS = m4 po intl doc contrib $(IMAP_SUBDIR)
+endif
 
 bin_SCRIPTS = muttbug flea $(SMIMEAUX_TARGET)
 
