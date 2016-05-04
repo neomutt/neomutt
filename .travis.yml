@@ -24,68 +24,71 @@ addons:
 #     - libqdbm-dev
 
 env:
-    # Default config
-  - OPTS=""
-    # Disable components that default to 'on'
-  - OPTS="--disable-fcntl"
-  - OPTS="--disable-iconv"
-  - OPTS="--disable-nls"
-  - OPTS="--with-included-gettext"
-  - OPTS="--without-idn"
-  - OPTS="--without-wc-funcs"
-  - OPTS="--disable-pgp"
-  - OPTS="--disable-smime"
-    # Disable ALL optional components
-  - OPTS="--disable-fcntl --disable-iconv --disable-nls --with-included-gettext --without-idn --without-wc-funcs --disable-pgp --disable-smime"
-    # Enable components that default to 'off'
-  - OPTS="--enable-pop"
-  - OPTS="--enable-imap"
-  - OPTS="--enable-smtp"
-  - OPTS="--enable-debug"
-  - OPTS="--enable-flock"
-  - OPTS="--enable-nfs-fix"
-  - OPTS="--enable-mailtool"
-  - OPTS="--enable-locales-fix"
-  - OPTS="--enable-exact-address"
-  - OPTS="--with-homespool"
-  - OPTS="--with-domain"
-  - OPTS="--with-regex"
-  - OPTS="--enable-sidebar"
-  - OPTS="--enable-notmuch"
-  - OPTS="--enable-gpgme"
-  - OPTS="--with-mixmaster"
-    # Enable ALL optional components
-  - OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-gpgme --with-mixmaster"
-    # Test all the backend caching options
-  - OPTS="--enable-hcache                        --without-qdbm --without-gdbm --without-bdb"
-# - OPTS="--enable-hcache --without-tokyocabinet                --without-gdbm --without-bdb"
-  - OPTS="--enable-hcache --without-tokyocabinet --without-qdbm                --without-bdb"
-  - OPTS="--enable-hcache --without-tokyocabinet --without-qdbm --without-gdbm"
-    # Test the components that have dependencies on others
-  - OPTS="--with-gss --enable-imap"
-  - OPTS="--with-ssl --enable-pop"
-  - OPTS="--with-ssl --enable-imap"
-  - OPTS="--with-ssl --enable-smtp"
-  - OPTS="--with-gnutls --enable-pop"
-  - OPTS="--with-gnutls --enable-imap"
-  - OPTS="--with-gnutls --enable-smtp"
-  - OPTS="--with-sasl --enable-pop"
-  - OPTS="--with-sasl --enable-imap"
-    # Test SLANG (not default Curses)
-# - OPTS="--with-slang"
-    # Miscellaneous options
-  - OPTS="--with-mailpath=/home/mutt/mail"
-  - OPTS="--with-exec-shell=/bin/bash"
-  - OPTS="--enable-sidebar --enable-notmuch"
+  global:
+    - ALL_OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-gpgme --with-mixmaster --enable-hcache --with-gss --with-ssl --with-gnutls --with-sasl"
+  matrix:
+      # Default config
+    - OPTS=""
+      # Disable components that default to 'on'
+    - OPTS="--disable-fcntl"
+    - OPTS="--disable-iconv"
+    - OPTS="--disable-nls"
+    - OPTS="--with-included-gettext"
+    - OPTS="--without-idn"
+    - OPTS="--without-wc-funcs"
+    - OPTS="--disable-pgp"
+    - OPTS="--disable-smime"
+      # Disable ALL optional components
+    - OPTS="--disable-fcntl --disable-iconv --disable-nls --with-included-gettext --without-idn --without-wc-funcs --disable-pgp --disable-smime"
+      # Enable components that default to 'off'
+    - OPTS="--enable-pop"
+    - OPTS="--enable-imap"
+    - OPTS="--enable-smtp"
+    - OPTS="--enable-debug"
+    - OPTS="--enable-flock"
+    - OPTS="--enable-nfs-fix"
+    - OPTS="--enable-mailtool"
+    - OPTS="--enable-locales-fix"
+    - OPTS="--enable-exact-address"
+    - OPTS="--with-homespool"
+    - OPTS="--with-domain"
+    - OPTS="--with-regex"
+    - OPTS="--enable-sidebar"
+    - OPTS="--enable-notmuch"
+    - OPTS="--enable-gpgme"
+    - OPTS="--with-mixmaster"
+      # Enable ALL optional components
+    - OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-gpgme --with-mixmaster"
+      # Test all the backend caching options
+    - OPTS="--enable-hcache                        --without-qdbm --without-gdbm --without-bdb"
+#   - OPTS="--enable-hcache --without-tokyocabinet                --without-gdbm --without-bdb"
+    - OPTS="--enable-hcache --without-tokyocabinet --without-qdbm                --without-bdb"
+    - OPTS="--enable-hcache --without-tokyocabinet --without-qdbm --without-gdbm"
+      # Test the components that have dependencies on others
+    - OPTS="--with-gss --enable-imap"
+    - OPTS="--with-ssl --enable-pop"
+    - OPTS="--with-ssl --enable-imap"
+    - OPTS="--with-ssl --enable-smtp"
+    - OPTS="--with-gnutls --enable-pop"
+    - OPTS="--with-gnutls --enable-imap"
+    - OPTS="--with-gnutls --enable-smtp"
+    - OPTS="--with-sasl --enable-pop"
+    - OPTS="--with-sasl --enable-imap"
+      # Test SLANG (not default Curses)
+#   - OPTS="--with-slang"
+      # Miscellaneous options
+    - OPTS="--with-mailpath=/home/mutt/mail"
+    - OPTS="--with-exec-shell=/bin/bash"
+    - OPTS="--enable-sidebar --enable-notmuch"
 
 before_script:
   - ccache -z
   - autoreconf -i
 
 script:
-  - ./configure $OPTS
-  - make
-  - ./mutt -v
+  # If this is a pull request, then do one FULL build (see ALL_OPTS above), for job 1, and NOTHING for other jobs.
+  # For push commits, do LOTS of individual builds (see OPTS above).
+  - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then ./configure $OPTS; make; ./mutt -v; else if [[ $TRAVIS_JOB_NUMBER =~ \.1$ ]]; then ./configure $ALL_OPTS; make; ./mutt -v; else true; fi fi
 
 after_script:
   - ccache -s
