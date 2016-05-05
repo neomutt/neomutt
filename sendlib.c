@@ -2690,6 +2690,42 @@ static void set_noconv_flags (BODY *b, short flag)
   }
 }
 
+/* Handle a Fcc with multiple, comma separated entries. */
+int mutt_write_multiple_fcc (const char *path, HEADER *hdr, const char *msgid,
+        int post, char *fcc)
+{
+  char fcc_tok[_POSIX_PATH_MAX];
+  char fcc_expanded[_POSIX_PATH_MAX];
+  char *tok = NULL;
+  int status;
+
+  strfcpy(fcc_tok, path, sizeof (fcc_tok));
+
+  tok = strtok(fcc_tok, ",");
+  dprint(1, (debugfile, "Fcc: initial mailbox = '%s'\n", tok));
+  /* mutt_expand_path already called above for the first token */
+  status = mutt_write_fcc (tok, hdr, msgid, post, fcc);
+  if (status != 0)
+    return status;
+
+  while ((tok = strtok (NULL, ",")) != NULL)
+  {
+    if (!*tok)
+      continue;
+
+    /* Only call mutt_expand_path iff tok has some data */
+    dprint (1, (debugfile, "Fcc: additional mailbox token = '%s'\n", tok));
+    strfcpy (fcc_expanded, tok, sizeof (fcc_expanded));
+    mutt_expand_path (fcc_expanded, sizeof (fcc_expanded));
+    dprint (1, (debugfile, "     Additional mailbox expanded = '%s'\n", fcc_expanded));
+    status = mutt_write_fcc (fcc_expanded, hdr, msgid, post, fcc);
+    if (status != 0)
+      return status;
+  }
+
+  return 0;
+}
+
 int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, char *fcc)
 {
   CONTEXT f;
