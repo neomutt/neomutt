@@ -141,6 +141,7 @@ typedef enum
 #define M_ACCOUNTHOOK	(1<<9)
 #define M_REPLYHOOK	(1<<10)
 #define M_SEND2HOOK     (1<<11)
+#define M_TIMEOUTHOOK	(1<<12)
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define M_TREE_LLCORNER		1

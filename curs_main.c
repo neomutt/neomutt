@@ -681,8 +681,10 @@ int mutt_index_menu (void)
 
       dprint(4, (debugfile, "mutt_index_menu[%d]: Got op %d\n", __LINE__, op));
 
-      if (op == -1)
+      if (op == -1) {
+        mutt_timeout_hook();
 	continue; /* either user abort or timeout */
+      }
 
       mutt_curs_set (1);
 
