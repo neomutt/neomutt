@@ -3933,6 +3933,7 @@ const struct command_t Commands[] = {
   { "spam",		parse_spam_list,	MUTT_SPAM },
   { "nospam",		parse_spam_list,	MUTT_NOSPAM },
   { "subscribe",	parse_subscribe,	0 },
+  { "timeout-hook",	mutt_parse_hook,	MUTT_TIMEOUTHOOK },
   { "toggle",		parse_set,		MUTT_SET_INV },
   { "unalias",		parse_unalias,		0 },
   { "unalternative_order",parse_unlist,		UL &AlternativeOrderList },

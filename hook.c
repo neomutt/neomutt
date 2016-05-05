@@ -142,7 +142,7 @@ int mutt_parse_hook (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 	ptr->rx.not == not &&
 	!mutt_strcmp (pattern.data, ptr->rx.pattern))
     {
-      if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK))
+      if (data & (MUTT_FOLDERHOOK | MUTT_SENDHOOK | MUTT_SEND2HOOK | MUTT_MESSAGEHOOK | MUTT_ACCOUNTHOOK | MUTT_REPLYHOOK | MUTT_CRYPTHOOK | MUTT_TIMEOUTHOOK))
       {
 	/* these hooks allow multiple commands with the same
 	 * pattern, so if we've already seen this pattern/command pair, just
@@ -542,3 +542,32 @@ void mutt_account_hook (const char* url)
   FREE (&err.data);
 }
 #endif
+
+void mutt_timeout_hook (void)
+{
+  HOOK *hook;
+  BUFFER token;
+  BUFFER err;
+  char buf[STRING];
+
+  err.data = buf;
+  err.dsize = sizeof (buf);
+  memset (&token, 0, sizeof (token));
+
+  for (hook = Hooks; hook; hook = hook->next)
+  {
+    if (!(hook->command && (hook->type & MUTT_TIMEOUTHOOK)))
+      continue;
+
+    if (mutt_parse_rc_line (hook->command, &token, &err) == -1)
+    {
+      FREE (&token.data);
+      mutt_error ("%s", err.data);
+      mutt_sleep (1);
+
+      /* The hooks should be independent of each other, so even though this on
+       * failed, we'll carry on with the others. */
+    }
+  }
+}
+

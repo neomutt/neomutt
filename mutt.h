@@ -141,6 +141,7 @@ typedef enum
 #define MUTT_ACCOUNTHOOK (1<<9)
 #define MUTT_REPLYHOOK   (1<<10)
 #define MUTT_SEND2HOOK   (1<<11)
+#define MUTT_TIMEOUTHOOK (1<<12)
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER      1
