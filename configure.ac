@@ -184,13 +184,6 @@ AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar suppor
 ])
 AM_CONDITIONAL(BUILD_SIDEBAR, test x$need_sidebar = xyes)
 
-AC_ARG_ENABLE(quick_build, AC_HELP_STRING([--enable-quick-build], [Speed up the build (skip non-code)]),
-[       if test x$enableval = xyes ; then
-		need_quick_build="yes"
-        fi
-])
-AM_CONDITIONAL(QUICK_BUILD, test x$need_quick_build = xyes)
-
 AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
 [       if test x$enableval = xyes ; then
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
@@ -1118,6 +1111,13 @@ AC_ARG_ENABLE(iconv, AS_HELP_STRING([--disable-iconv],[Disable iconv support]),
 ])
 
 MUTT_AM_GNU_GETTEXT
+
+AC_ARG_ENABLE(quick_build, AC_HELP_STRING([--enable-quick-build], [Speed up the build (skip non-code)]),
+[       if test x$enableval = xyes && test "$BUILD_INCLUDED_LIBINTL" = "no"; then
+		need_quick_build="yes"
+        fi
+])
+AM_CONDITIONAL(QUICK_BUILD, test x$need_quick_build = xyes)
 
 if test "$am_cv_func_iconv" != "yes"
 then
