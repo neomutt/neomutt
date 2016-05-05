@@ -1831,7 +1831,7 @@ full_fcc:
        * message was first postponed.
        */
       msg->received = time (NULL);
-      if (mutt_write_fcc (fcc, msg, NULL, 0, NULL) == -1)
+      if (mutt_write_multiple_fcc (fcc, msg, NULL, 0, NULL) == -1)
       {
 	/*
 	 * Error writing FCC, we should abort sending.
