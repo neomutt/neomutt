@@ -8773,7 +8773,7 @@ please have a look at the mixmaster documentation.
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 		</itemizedlist>
 
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -8893,7 +8893,7 @@ bind index,pager Q quasi-delete
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 		</itemizedlist>
 
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -9012,7 +9012,7 @@ color progress white red
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 		</itemizedlist>
 
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -9215,7 +9215,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 			<listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
 		</itemizedlist>
 
@@ -9441,7 +9441,7 @@ color index_size cyan default
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 		</itemizedlist>
 
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -9657,7 +9657,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 			<listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
 		</itemizedlist>
 
@@ -10064,7 +10064,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 			<listitem><para>OpenSSL</para></listitem>
 		</itemizedlist>
 
@@ -10171,7 +10171,7 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 		</itemizedlist>
 
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
