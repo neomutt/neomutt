@@ -8098,7 +8098,7 @@ please have a look at the mixmaster documentation.
 
 		<itemizedlist>
 			<title>Dependencies:</title>
-			<listitem><para>mutt-1.5.24</para></listitem>
+			<listitem><para>mutt-1.6.1</para></listitem>
 			<listitem><para>IMAP support</para></listitem>
 		</itemizedlist>
 
