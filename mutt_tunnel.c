@@ -27,7 +27,7 @@
 
 #include <netinet/in.h>
 #include <sys/types.h>
-#include "sys_socket.h"
+#include <sys/socket.h>
 #include <sys/wait.h>
 #include <fcntl.h>
 #include <errno.h>
