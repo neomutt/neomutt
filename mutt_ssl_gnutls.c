@@ -698,7 +698,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
     return -1;
   }
 
-  if (option (OPTSSLVERIFYDATES) != M_NO)
+  if (option (OPTSSLVERIFYDATES) != MUTT_NO)
   {
     if (gnutls_x509_crt_get_expiration_time (cert) < time(NULL))
       *certerr |= CERTERR_EXPIRED;
@@ -706,7 +706,7 @@ static int tls_check_preauth (const gnutls_datum_t *certdata,
       *certerr |= CERTERR_NOTYETVALID;
   }
 
-  if (chainidx == 0 && option (OPTSSLVERIFYHOST) != M_NO
+  if (chainidx == 0 && option (OPTSSLVERIFYHOST) != MUTT_NO
       && !gnutls_x509_crt_check_hostname (cert, hostname)
       && !tls_check_stored_hostname (certdata, hostname))
     *certerr |= CERTERR_HOSTNAME;

@@ -646,7 +646,7 @@ static void enriched_putwc (wchar_t c, struct enriched_state *stte)
   }
   else
   {
-    if (stte->s->flags & M_DISPLAY)
+    if (stte->s->flags & MUTT_DISPLAY)
     {
       if (stte->tag_level[RICH_BOLD])
       {
@@ -721,7 +721,7 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
     {
       if (stte->tag_level[j]) /* make sure not to go negative */
 	stte->tag_level[j]--;
-      if ((stte->s->flags & M_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
+      if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_PARAM && stte->tag_level[RICH_COLOR])
       {
 	stte->param[stte->param_used] = (wchar_t) '\0';
 	if (!wcscasecmp(L"black", stte->param))
@@ -757,7 +757,7 @@ static void enriched_set_flags (const wchar_t *tag, struct enriched_state *stte)
 	  enriched_puts("\033[37m", stte);
 	}
       }
-      if ((stte->s->flags & M_DISPLAY) && j == RICH_COLOR)
+      if ((stte->s->flags & MUTT_DISPLAY) && j == RICH_COLOR)
       {
 	enriched_puts("\033[0m", stte);
       }
@@ -791,7 +791,7 @@ static int text_enriched_handler (BODY *a, STATE *s)
 
   memset (&stte, 0, sizeof (stte));
   stte.s = s;
-  stte.WrapMargin = ((s->flags & M_DISPLAY) ? (MuttIndexWindow->cols-4) :
+  stte.WrapMargin = ((s->flags & MUTT_DISPLAY) ? (MuttIndexWindow->cols-4) :
                      ((MuttIndexWindow->cols-4)<72)?(MuttIndexWindow->cols-4):72);
   stte.line_max = stte.WrapMargin * 4;
   stte.line = (wchar_t *) safe_calloc (1, (stte.line_max + 1) * sizeof (wchar_t));
@@ -987,7 +987,7 @@ static int mutt_is_autoview (BODY *b)
    *
    * WARNING: type is altered by this call as a result of `mime_lookup' support */
   if (is_autoview)
-    return rfc1524_mailcap_lookup(b, type, NULL, M_AUTOVIEW);
+    return rfc1524_mailcap_lookup(b, type, NULL, MUTT_AUTOVIEW);
 
   return 0;
 }
@@ -1125,14 +1125,14 @@ static int alternative_handler (BODY *a, STATE *s)
 
   if (choice)
   {
-    if (s->flags & M_DISPLAY && !option (OPTWEED))
+    if (s->flags & MUTT_DISPLAY && !option (OPTWEED))
     {
       fseeko (s->fpin, choice->hdr_offset, 0);
       mutt_copy_bytes(s->fpin, s->fpout, choice->offset-choice->hdr_offset);
     }
     mutt_body_handler (choice, s);
   }
-  else if (s->flags & M_DISPLAY)
+  else if (s->flags & MUTT_DISPLAY)
   {
     /* didn't find anything that we could display! */
     state_mark_attach (s);
@@ -1169,9 +1169,9 @@ static int message_handler (BODY *a, STATE *s)
   if (b->parts)
   {
     mutt_copy_hdr (s->fpin, s->fpout, off_start, b->parts->offset,
-	(((s->flags & M_WEED) || ((s->flags & (M_DISPLAY|M_PRINTING)) && option (OPTWEED))) ? (CH_WEED | CH_REORDER) : 0) |
+	(((s->flags & MUTT_WEED) || ((s->flags & (MUTT_DISPLAY|MUTT_PRINTING)) && option (OPTWEED))) ? (CH_WEED | CH_REORDER) : 0) |
 	(s->prefix ? CH_PREFIX : 0) | CH_DECODE | CH_FROM |
-	((s->flags & M_DISPLAY) ? CH_DISPLAY : 0), s->prefix);
+	((s->flags & MUTT_DISPLAY) ? CH_DISPLAY : 0), s->prefix);
 
     if (s->prefix)
       state_puts (s->prefix, s);
@@ -1248,7 +1248,7 @@ static int multipart_handler (BODY *a, STATE *s)
 
   for (p = b->parts, count = 1; p; p = p->next, count++)
   {
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
       state_printf (s, _("[-- Attachment #%d"), count);
@@ -1283,8 +1283,8 @@ static int multipart_handler (BODY *a, STATE *s)
       dprint (1, (debugfile, "Failed on attachment #%d, type %s/%s.\n", count, TYPE(p), NONULL (p->subtype)));
     }
     
-    if ((s->flags & M_REPLYING)
-        && (option (OPTINCLUDEONLYFIRST)) && (s->flags & M_FIRSTDONE))
+    if ((s->flags & MUTT_REPLYING)
+        && (option (OPTINCLUDEONLYFIRST)) && (s->flags & MUTT_FIRSTDONE))
       break;
   }
 
@@ -1314,7 +1314,7 @@ static int autoview_handler (BODY *a, STATE *s)
   int rc = 0;
 
   snprintf (type, sizeof (type), "%s/%s", TYPE (a), a->subtype);
-  rfc1524_mailcap_lookup (a, type, entry, M_AUTOVIEW);
+  rfc1524_mailcap_lookup (a, type, entry, MUTT_AUTOVIEW);
 
   fname = safe_strdup (a->filename);
   mutt_sanitize_filename (fname, 1);
@@ -1328,7 +1328,7 @@ static int autoview_handler (BODY *a, STATE *s)
     /* rfc1524_expand_command returns 0 if the file is required */
     piped = rfc1524_expand_command (a, tempfile, type, command, sizeof (command));
 
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
       state_printf (s, _("[-- Autoview using %s --]\n"), command);
@@ -1361,7 +1361,7 @@ static int autoview_handler (BODY *a, STATE *s)
     if (thepid < 0)
     {
       mutt_perror _("Can't create filter");
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
       {
 	state_mark_attach (s);
 	state_printf (s, _("[-- Can't run %s. --]\n"), command);
@@ -1380,7 +1380,7 @@ static int autoview_handler (BODY *a, STATE *s)
       /* check for data on stderr */
       if (fgets (buffer, sizeof(buffer), fperr)) 
       {
-	if (s->flags & M_DISPLAY)
+	if (s->flags & MUTT_DISPLAY)
 	{
 	  state_mark_attach (s);
 	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), command);
@@ -1401,7 +1401,7 @@ static int autoview_handler (BODY *a, STATE *s)
       /* Check for stderr messages */
       if (fgets (buffer, sizeof(buffer), fperr))
       {
-	if (s->flags & M_DISPLAY)
+	if (s->flags & MUTT_DISPLAY)
 	{
 	  state_mark_attach (s);
 	  state_printf (s, _("[-- Autoview stderr of %s --]\n"), 
@@ -1423,7 +1423,7 @@ static int autoview_handler (BODY *a, STATE *s)
     else
       mutt_unlink (tempfile);
 
-    if (s->flags & M_DISPLAY) 
+    if (s->flags & MUTT_DISPLAY) 
       mutt_clear_error ();
   }
   rfc1524_free_entry (&entry);
@@ -1440,7 +1440,7 @@ static int external_body_handler (BODY *b, STATE *s)
   access_type = mutt_get_parameter ("access-type", b->parameter);
   if (!access_type)
   {
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
       state_puts (_("[-- Error: message/external-body has no access-type parameter --]\n"), s);
@@ -1458,7 +1458,7 @@ static int external_body_handler (BODY *b, STATE *s)
 
   if (!ascii_strcasecmp (access_type, "x-mutt-deleted"))
   {
-    if (s->flags & (M_DISPLAY|M_PRINTING))
+    if (s->flags & (MUTT_DISPLAY|MUTT_PRINTING))
     {
       char *length;
       char pretty_size[10];
@@ -1493,7 +1493,7 @@ static int external_body_handler (BODY *b, STATE *s)
   }
   else if(expiration && expire < time(NULL))
   {
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
       state_printf (s, _("[-- This %s/%s attachment is not included, --]\n"),
@@ -1508,7 +1508,7 @@ static int external_body_handler (BODY *b, STATE *s)
   }
   else
   {
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
     {
       state_mark_attach (s);
       state_printf (s,
@@ -1532,16 +1532,16 @@ void mutt_decode_attachment (BODY *b, STATE *s)
   int istext = mutt_is_text_part (b);
   iconv_t cd = (iconv_t)(-1);
 
-  if (istext && s->flags & M_CHARCONV)
+  if (istext && s->flags & MUTT_CHARCONV)
   {
     char *charset = mutt_get_parameter ("charset", b->parameter);
     if (!charset && AssumedCharset && *AssumedCharset)
       charset = mutt_get_default_charset ();
     if (charset && Charset)
-      cd = mutt_iconv_open (Charset, charset, M_ICONV_HOOK_FROM);
+      cd = mutt_iconv_open (Charset, charset, MUTT_ICONV_HOOK_FROM);
   }
   else if (istext && b->charset)
-    cd = mutt_iconv_open (Charset, b->charset, M_ICONV_HOOK_FROM);
+    cd = mutt_iconv_open (Charset, b->charset, MUTT_ICONV_HOOK_FROM);
 
   fseeko (s->fpin, b->offset, 0);
   switch (b->encoding)
@@ -1684,7 +1684,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       s->fpin = fp;
     }
   }
-  s->flags |= M_FIRSTDONE;
+  s->flags |= MUTT_FIRSTDONE;
 
   return rc;
 }
@@ -1727,7 +1727,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   if (mutt_is_autoview (b))
   {
     handler = autoview_handler;
-    s->flags &= ~M_CHARCONV;
+    s->flags &= ~MUTT_CHARCONV;
   }
   else if (b->type == TYPETEXT)
   {
@@ -1769,7 +1769,7 @@ int mutt_body_handler (BODY *b, STATE *s)
 
       if (!p)
         mutt_error _("Error: multipart/signed has no protocol.");
-      else if (s->flags & M_VERIFY)
+      else if (s->flags & MUTT_VERIFY)
 	handler = mutt_signed_handler;
     }
     else if (mutt_is_valid_multipart_pgp_encrypted (b))
@@ -1812,7 +1812,7 @@ int mutt_body_handler (BODY *b, STATE *s)
   }
   /* print hint to use attachment menu for disposition == attachment
      if we're not already being called from there */
-  else if ((s->flags & M_DISPLAY) || (b->disposition == DISPATTACH &&
+  else if ((s->flags & MUTT_DISPLAY) || (b->disposition == DISPATTACH &&
 				      !option (OPTVIEWATTACH) &&
 				      option (OPTHONORDISP) &&
 				      (plaintext || handler)))
@@ -1835,7 +1835,7 @@ int mutt_body_handler (BODY *b, STATE *s)
     fputs (" --]\n", s->fpout);
   }
 
-  s->flags = oflags | (s->flags & M_FIRSTDONE);
+  s->flags = oflags | (s->flags & MUTT_FIRSTDONE);
   if (rc)
   {
     dprint (1, (debugfile, "Bailing on attachment of type %s/%s.\n", TYPE(b), NONULL (b->subtype)));

@@ -990,12 +990,12 @@ int mutt_check_overwrite (const char *attname, const char *path,
     /* L10N:
        Means "The path you specified as the destination file is a directory."
        See the msgid "Save to file: " (alias.c, recvattach.c) */
-    else if ((rc = mutt_yesorno (_("File is a directory, save under it?"), M_YES)) != M_YES)
-      return (rc == M_NO) ? 1 : -1;
+    else if ((rc = mutt_yesorno (_("File is a directory, save under it?"), MUTT_YES)) != MUTT_YES)
+      return (rc == MUTT_NO) ? 1 : -1;
 
     strfcpy (tmp, mutt_basename (NONULL (attname)), sizeof (tmp));
     if (mutt_get_field (_("File under directory: "), tmp, sizeof (tmp),
-                                    M_FILE | M_CLEAR) != 0 || !tmp[0])
+                                    MUTT_FILE | MUTT_CLEAR) != 0 || !tmp[0])
       return (-1);
     mutt_concat_path (fname, path, tmp, flen);
   }
@@ -1011,10 +1011,10 @@ int mutt_check_overwrite (const char *attname, const char *path,
 	return 1;
 
       case 2: /* append */
-        *append = M_SAVE_APPEND;
+        *append = MUTT_SAVE_APPEND;
         break;
       case 1: /* overwrite */
-        *append = M_SAVE_OVERWRITE;
+        *append = MUTT_SAVE_OVERWRITE;
         break;
     }
   }
@@ -1069,10 +1069,10 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
   prefix[0] = '\0';
   destlen--; /* save room for the terminal \0 */
-  wlen = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
+  wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
   col += wlen;
 
-  if ((flags & M_FORMAT_NOFILTER) == 0)
+  if ((flags & MUTT_FORMAT_NOFILTER) == 0)
   {
     int off = -1;
 
@@ -1119,7 +1119,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
         dprint(3, (debugfile, "fmtpipe %2d: %s\n", i++, word->data));
         mutt_buffer_addch(command, '\'');
         mutt_FormatString(buf, sizeof(buf), 0, cols, word->data, callback, data,
-                          flags | M_FORMAT_NOFILTER);
+                          flags | MUTT_FORMAT_NOFILTER);
         for (p = buf; p && *p; p++)
         {
           if (*p == '\'')
@@ -1139,7 +1139,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       col -= wlen;	/* reset to passed in value */
       wptr = dest;      /* reset write ptr */
-      wlen = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
+      wlen = ((flags & MUTT_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
       if ((pid = mutt_create_filter(command->data, NULL, &filter, NULL)) != -1)
       {
 	int rc;
@@ -1214,12 +1214,12 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       if (*src == '?')
       {
-	flags |= M_FORMAT_OPTIONAL;
+	flags |= MUTT_FORMAT_OPTIONAL;
 	src++;
       }
       else
       {
-	flags &= ~M_FORMAT_OPTIONAL;
+	flags &= ~MUTT_FORMAT_OPTIONAL;
 
 	/* eat the format string */
 	cp = prefix;
@@ -1238,7 +1238,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       ch = *src++; /* save the character to switch on */
 
-      if (flags & M_FORMAT_OPTIONAL)
+      if (flags & MUTT_FORMAT_OPTIONAL)
       {
         if (*src != '?')
           break; /* bad format */
@@ -1321,7 +1321,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  }
 	  else if (soft && pad < 0)
 	  {
-	    int offset = ((flags & M_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
+	    int offset = ((flags & MUTT_FORMAT_ARROWCURSOR) && option (OPTARROWCURSOR)) ? 3 : 0;
             int avail_cols = (cols > offset) ? (cols - offset) : 0;
 	    /* \0-terminate dest for length computation in mutt_wstr_trunc() */
 	    *wptr = 0;
@@ -1465,13 +1465,13 @@ void mutt_FormatString (char *dest,		/* output buffer */
   *wptr = 0;
 
 #if 0
-  if (flags & M_FORMAT_MAKEPRINT)
+  if (flags & MUTT_FORMAT_MAKEPRINT)
   {
     /* Make sure that the string is printable by changing all non-printable
        chars to dots, or spaces for non-printable whitespace */
     for (cp = dest ; *cp ; cp++)
       if (!IsPrint (*cp) &&
-	  !((flags & M_FORMAT_TREE) && (*cp <= M_TREE_MAX)))
+	  !((flags & MUTT_FORMAT_TREE) && (*cp <= MUTT_TREE_MAX)))
 	*cp = isspace ((unsigned char) *cp) ? ' ' : '.';
   }
 #endif
@@ -1524,7 +1524,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
   magic = mx_get_magic (s);
 
 #ifdef USE_POP
-  if (magic == M_POP)
+  if (magic == MUTT_POP)
   {
     mutt_error _("Can't save message to POP mailbox.");
     return 1;
@@ -1536,7 +1536,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
     if (option (OPTCONFIRMAPPEND))
     {
       snprintf (tmp, sizeof (tmp), _("Append messages to %s?"), s);
-      if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
+      if ((rc = mutt_yesorno (tmp, MUTT_YES)) == MUTT_NO)
 	ret = 1;
       else if (rc == -1)
 	ret = -1;
@@ -1551,7 +1551,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
       return 1;
     }
   }
-  else if (magic != M_IMAP)
+  else if (magic != MUTT_IMAP)
   {
     st->st_mtime = 0;
     st->st_atime = 0;
@@ -1561,7 +1561,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
       if (option (OPTCONFIRMCREATE))
       {
 	snprintf (tmp, sizeof (tmp), _("Create %s?"), s);
-	if ((rc = mutt_yesorno (tmp, M_YES)) == M_NO)
+	if ((rc = mutt_yesorno (tmp, MUTT_YES)) == MUTT_NO)
 	  ret = 1;
 	else if (rc == -1)
 	  ret = -1;
@@ -1580,7 +1580,7 @@ int mutt_save_confirm (const char *s, struct stat *st)
 
 void state_prefix_putc (char c, STATE *s)
 {
-  if (s->flags & M_PENDINGPREFIX)
+  if (s->flags & MUTT_PENDINGPREFIX)
   {
     state_reset_prefix (s);
     if (s->prefix)
@@ -1607,7 +1607,7 @@ int state_printf (STATE *s, const char *fmt, ...)
 
 void state_mark_attach (STATE *s)
 {
-  if ((s->flags & M_DISPLAY) && !mutt_strcmp (Pager, "builtin"))
+  if ((s->flags & MUTT_DISPLAY) && !mutt_strcmp (Pager, "builtin"))
     state_puts (AttachmentMarker, s);
 }
 

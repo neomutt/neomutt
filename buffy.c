@@ -124,7 +124,7 @@ static int test_new_folder (const char *path)
 
   typ = mx_get_magic (path);
 
-  if (typ != M_MBOX && typ != M_MMDF)
+  if (typ != MUTT_MBOX && typ != MUTT_MMDF)
     return 0;
 
   if ((f = fopen (path, "rb")))
@@ -223,7 +223,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
 
-    if(data == M_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
+    if(data == MUTT_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
     {
       for (tmp = &Incoming; *tmp;)
       {
@@ -251,7 +251,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       }
     }
 
-    if(data == M_UNMAILBOXES)
+    if(data == MUTT_UNMAILBOXES)
     {
       if(*tmp)
       {
@@ -421,7 +421,7 @@ int mutt_buffy_check (int force)
 #endif
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || Context->magic == M_IMAP || Context->magic == M_POP
+  if (!Context || Context->magic == MUTT_IMAP || Context->magic == MUTT_POP
       || stat (Context->path, &contex_sb) != 0)
   {
     contex_sb.st_dev=0;
@@ -430,12 +430,12 @@ int mutt_buffy_check (int force)
   
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
-    if (tmp->magic != M_IMAP)
+    if (tmp->magic != MUTT_IMAP)
     {
       tmp->new = 0;
 #ifdef USE_POP
       if (mx_is_pop (tmp->path))
-	tmp->magic = M_POP;
+	tmp->magic = MUTT_POP;
       else
 #endif
       if (stat (tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
@@ -453,24 +453,24 @@ int mutt_buffy_check (int force)
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
-	(( tmp->magic == M_IMAP || tmp->magic == M_POP )
+	(( tmp->magic == MUTT_IMAP || tmp->magic == MUTT_POP )
 	    ? mutt_strcmp (tmp->path, Context->path) :
 	      (sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)))
     {
       switch (tmp->magic)
       {
-      case M_MBOX:
-      case M_MMDF:
+      case MUTT_MBOX:
+      case MUTT_MMDF:
 	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
 	break;
 
-      case M_MAILDIR:
+      case MUTT_MAILDIR:
 	if (buffy_maildir_hasnew (tmp) > 0)
 	  BuffyCount++;
 	break;
 
-      case M_MH:
+      case MUTT_MH:
 	mh_buffy(tmp);
 	if (tmp->new)
 	  BuffyCount++;

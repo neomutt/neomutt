@@ -140,7 +140,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
     /* L10N:
        Comparing the cached data with the IMAP server's data */
     mutt_progress_init (&progress, _("Evaluating cache..."),
-			M_PROGRESS_MSG, ReadInc, msgend + 1);
+			MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
 
     snprintf (buf, sizeof (buf),
       "UID FETCH 1:%u (UID FLAGS)", uidnext - 1);
@@ -230,7 +230,7 @@ int imap_read_headers (IMAP_DATA* idata, int msgbegin, int msgend)
 #endif /* USE_HCACHE */
 
   mutt_progress_init (&progress, _("Fetching message headers..."),
-		      M_PROGRESS_MSG, ReadInc, msgend + 1);
+		      MUTT_PROGRESS_MSG, ReadInc, msgend + 1);
 
   for (msgno = msgbegin; msgno <= msgend ; msgno++)
   {
@@ -498,7 +498,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
 	    goto bail;
 	  }
 	  mutt_progress_init (&progressbar, _("Fetching message..."),
-			      M_PROGRESS_SIZE, NetInc, bytes);
+			      MUTT_PROGRESS_SIZE, NetInc, bytes);
 	  if (imap_read_literal (msg->fp, idata, bytes, &progressbar) < 0)
 	    goto bail;
 	  /* pick up trailing line */
@@ -559,7 +559,7 @@ int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
   if (read != h->read)
   {
     h->read = read;
-    mutt_set_flag (ctx, h, M_NEW, read);
+    mutt_set_flag (ctx, h, MUTT_NEW, read);
   }
 
   h->lines = 0;
@@ -642,7 +642,7 @@ int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
   rewind (fp);
 
   mutt_progress_init (&progressbar, _("Uploading message..."),
-		      M_PROGRESS_SIZE, NetInc, len);
+		      MUTT_PROGRESS_SIZE, NetInc, len);
 
   imap_munge_mbox_name (idata, mbox, sizeof (mbox), mailbox);
   imap_make_date (internaldate, msg->received);
@@ -747,7 +747,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
   int rc;
   int n;
   IMAP_MBOX mx;
-  int err_continue = M_NO;
+  int err_continue = MUTT_NO;
   int triedcreate = 0;
 
   idata = (IMAP_DATA*) ctx->data;
@@ -809,7 +809,7 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
         }
       }
 
-      rc = imap_exec_msgset (idata, "UID COPY", mmbox, M_TAG, 0, 0);
+      rc = imap_exec_msgset (idata, "UID COPY", mmbox, MUTT_TAG, 0, 0);
       if (!rc)
       {
         dprint (1, (debugfile, "imap_copy_messages: No messages tagged\n"));
@@ -885,16 +885,16 @@ int imap_copy_messages (CONTEXT* ctx, HEADER* h, char* dest, int delete)
       {
         if (ctx->hdrs[n]->tagged)
         {
-          mutt_set_flag (ctx, ctx->hdrs[n], M_DELETE, 1);
+          mutt_set_flag (ctx, ctx->hdrs[n], MUTT_DELETE, 1);
           if (option (OPTDELETEUNTAG))
-            mutt_set_flag (ctx, ctx->hdrs[n], M_TAG, 0);
+            mutt_set_flag (ctx, ctx->hdrs[n], MUTT_TAG, 0);
         }
       }
     else
     {
-      mutt_set_flag (ctx, h, M_DELETE, 1);
+      mutt_set_flag (ctx, h, MUTT_DELETE, 1);
       if (option (OPTDELETEUNTAG))
-        mutt_set_flag (ctx, h, M_TAG, 0);
+        mutt_set_flag (ctx, h, MUTT_TAG, 0);
     }
   }
 
@@ -1059,12 +1059,12 @@ char* imap_set_flags (IMAP_DATA* idata, HEADER* h, char* s)
   readonly = ctx->readonly;
   ctx->readonly = 0;
 
-  mutt_set_flag (ctx, h, M_NEW, !(hd->read || hd->old));
-  mutt_set_flag (ctx, h, M_OLD, hd->old);
-  mutt_set_flag (ctx, h, M_READ, hd->read);
-  mutt_set_flag (ctx, h, M_DELETE, hd->deleted);
-  mutt_set_flag (ctx, h, M_FLAG, hd->flagged);
-  mutt_set_flag (ctx, h, M_REPLIED, hd->replied);
+  mutt_set_flag (ctx, h, MUTT_NEW, !(hd->read || hd->old));
+  mutt_set_flag (ctx, h, MUTT_OLD, hd->old);
+  mutt_set_flag (ctx, h, MUTT_READ, hd->read);
+  mutt_set_flag (ctx, h, MUTT_DELETE, hd->deleted);
+  mutt_set_flag (ctx, h, MUTT_FLAG, hd->flagged);
+  mutt_set_flag (ctx, h, MUTT_REPLIED, hd->replied);
 
   /* this message is now definitively *not* changed (mutt_set_flag
    * marks things changed as a side-effect) */

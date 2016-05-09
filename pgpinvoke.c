@@ -70,7 +70,7 @@ const char *_mutt_fmt_pgp_command (char *dest,
 {
   char fmt[16];
   struct pgp_command_context *cctx = (struct pgp_command_context *) data;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
   
   switch (op)
   {
@@ -142,7 +142,7 @@ const char *_mutt_fmt_pgp_command (char *dest,
 
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, _mutt_fmt_pgp_command, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_pgp_command, data, 0);
 
   return (src);

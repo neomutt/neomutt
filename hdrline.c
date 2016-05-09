@@ -250,9 +250,9 @@ hdr_format_str (char *dest,
   CONTEXT *ctx;
   char fmt[SHORT_STRING], buf2[LONG_STRING], ch, *p;
   int do_locales, i;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
   int threads = ((Sort & SORT_MASK) == SORT_THREADS);
-  int is_index = (flags & M_FORMAT_INDEX);
+  int is_index = (flags & MUTT_FORMAT_INDEX);
 #define THREAD_NEW (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 1)
 #define THREAD_OLD (threads && hdr->collapsed && hdr->num_hidden > 1 && mutt_thread_contains_unread (ctx, hdr) == 2)
   size_t len;
@@ -569,9 +569,9 @@ hdr_format_str (char *dest,
 
     case 's':
       
-      if (flags & M_FORMAT_TREE && !hdr->collapsed)
+      if (flags & MUTT_FORMAT_TREE && !hdr->collapsed)
       {
-	if (flags & M_FORMAT_FORCESUBJ)
+	if (flags & MUTT_FORMAT_FORCESUBJ)
 	{
 	  mutt_format_s (dest, destlen, "", NONULL (hdr->env->subject));
 	  snprintf (buf2, sizeof (buf2), "%s%s", hdr->tree, dest);
@@ -705,11 +705,11 @@ hdr_format_str (char *dest,
       {
 	i = 1;	/* reduce reuse recycle */
 	htmp = NULL;
-	if (flags & M_FORMAT_TREE
+	if (flags & MUTT_FORMAT_TREE
 	    && (hdr->thread->prev && hdr->thread->prev->message
 		&& hdr->thread->prev->message->env->x_label))
 	  htmp = hdr->thread->prev->message;
-	else if (flags & M_FORMAT_TREE
+	else if (flags & MUTT_FORMAT_TREE
 		 && (hdr->thread->parent && hdr->thread->parent->message
 		     && hdr->thread->parent->message->env->x_label))
 	  htmp = hdr->thread->parent->message;
@@ -737,7 +737,7 @@ hdr_format_str (char *dest,
 
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, hdr_format_str, (unsigned long) hfi, flags);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
   return (src);

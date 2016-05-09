@@ -79,7 +79,7 @@ static struct mapping_t KeyNames[] = {
 #ifdef KEY_ENTER
   { "<Enter>",	KEY_ENTER },
 #endif
-  { "<Return>",	M_ENTER_C },
+  { "<Return>",	MUTT_ENTER_C },
   { "<Esc>",	'\033' },
   { "<Tab>",	'\t' },
   { "<Space>",	' ' },
@@ -859,7 +859,7 @@ int mutt_parse_push (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
   int r = 0;
 
-  mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
+  mutt_extract_token (buf, s, MUTT_TOKEN_CONDENSE);
   if (MoreArgs (s))
   {
     strfcpy (err->data, _("push: too many arguments"), err->dsize);
@@ -1037,7 +1037,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
   if ((key = parse_keymap (menu, s, sizeof (menu) / sizeof (menu[0]), &nummenus, err)) == NULL)
     return (-1);
 
-  mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
+  mutt_extract_token (buf, s, MUTT_TOKEN_CONDENSE);
   /* make sure the macro sequence is not an empty string */
   if (!*buf->data)
   {
@@ -1048,7 +1048,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if (MoreArgs (s))
     {
       seq = safe_strdup (buf->data);
-      mutt_extract_token (buf, s, M_TOKEN_CONDENSE);
+      mutt_extract_token (buf, s, MUTT_TOKEN_CONDENSE);
 
       if (MoreArgs (s))
       {

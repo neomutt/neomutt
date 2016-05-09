@@ -388,7 +388,7 @@ static const char *mix_entry_fmt (char *dest,
 {
   char fmt[16];
   REMAILER *remailer = (REMAILER *) data;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -431,7 +431,7 @@ static const char *mix_entry_fmt (char *dest,
 
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
@@ -442,7 +442,7 @@ static void mix_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
   REMAILER **type2_list = (REMAILER **) menu->data;
   mutt_FormatString (b, blen, 0, MuttIndexWindow->cols, NONULL (MixEntryFormat), mix_entry_fmt,
-		     (unsigned long) type2_list[num], M_FORMAT_ARROWCURSOR);
+		     (unsigned long) type2_list[num], MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int mix_chain_add (MIXCHAIN *chain, const char *s, 

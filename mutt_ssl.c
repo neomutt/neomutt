@@ -739,7 +739,7 @@ static int check_certificate_by_digest (X509 *peercert)
   FILE *fp;
 
   /* expiration check */
-  if (option (OPTSSLVERIFYDATES) != M_NO)
+  if (option (OPTSSLVERIFYDATES) != MUTT_NO)
   {
     if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
     {
@@ -943,7 +943,7 @@ static int ssl_check_preauth (X509 *cert, const char* host)
   }
 
   buf[0] = 0;
-  if (host && option (OPTSSLVERIFYHOST) != M_NO)
+  if (host && option (OPTSSLVERIFYHOST) != MUTT_NO)
   {
     if (!check_host (cert, host, buf, sizeof (buf)))
     {
@@ -1065,7 +1065,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 	    len - idx, len);
   menu->title = title;
   if (SslCertFile
-      && (option (OPTSSLVERIFYDATES) == M_NO
+      && (option (OPTSSLVERIFYDATES) == MUTT_NO
 	  || (X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
 	      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)))
   {

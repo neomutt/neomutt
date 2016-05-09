@@ -269,9 +269,9 @@ retry_name:
   
   if (mutt_check_alias_name (buf, fixed, sizeof (fixed)))
   {
-    switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), M_YES))
+    switch (mutt_yesorno (_("Warning: This alias name may not work.  Fix it?"), MUTT_YES))
     {
-      case M_YES:
+      case MUTT_YES:
       	strfcpy (buf, fixed, sizeof (buf));
 	goto retry_name;
       case -1: 
@@ -326,7 +326,7 @@ retry_name:
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), new->addr, 1);
   snprintf (prompt, sizeof (prompt), _("[%s = %s] Accept?"), new->name, buf);
-  if (mutt_yesorno (prompt, M_YES) != M_YES)
+  if (mutt_yesorno (prompt, MUTT_YES) != MUTT_YES)
   {
     mutt_free_alias (&new);
     return;
@@ -344,7 +344,7 @@ retry_name:
     Aliases = new;
 
   strfcpy (buf, NONULL (AliasFile), sizeof (buf));
-  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), M_FILE) != 0)
+  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf), MUTT_FILE) != 0)
     return;
   mutt_expand_path (buf, sizeof (buf));
   if ((rc = fopen (buf, "a+")))

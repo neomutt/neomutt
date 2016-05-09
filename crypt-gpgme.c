@@ -1454,7 +1454,7 @@ static int show_one_sig_status (gpgme_ctx_t ctx, int idx, STATE *s)
 	/* pubkey not present */
       }
 
-      if (!s || !s->fpout || !(s->flags & M_DISPLAY))
+      if (!s || !s->fpout || !(s->flags & MUTT_DISPLAY))
 	; /* No state information so no way to print anything. */
       else if (err)
 	{
@@ -1724,7 +1724,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
             }
         }
       mutt_need_hard_redraw ();
-      if ((s->flags & M_DISPLAY))
+      if ((s->flags & MUTT_DISPLAY))
         {
           char buf[200];
           
@@ -1760,7 +1760,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
       if(r_is_signed)
         *r_is_signed = -1; /* A signature exists. */
 
-      if ((s->flags & M_DISPLAY))
+      if ((s->flags & MUTT_DISPLAY))
         state_attach_puts (_("[-- Begin signature "
                              "information --]\n"), s);
       for(idx = 0; (res = show_one_sig_status (ctx, idx, s)) != -1; idx++)
@@ -1773,7 +1773,7 @@ static BODY *decrypt_part (BODY *a, STATE *s, FILE *fpout, int is_smime,
       if (!anybad && idx && r_is_signed && *r_is_signed)
         *r_is_signed = anywarn? 2:1; /* Good signature. */
       
-      if ((s->flags & M_DISPLAY))
+      if ((s->flags & MUTT_DISPLAY))
         state_attach_puts (_("[-- End signature "
                              "information --]\n\n"), s);
     }
@@ -2293,9 +2293,9 @@ static void copy_clearsigned (gpgme_data_t data, STATE *s, char *charset)
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
-   * charset-hooks. Therefore we set flags to M_ICONV_HOOK_FROM.
+   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
    */
-  fc = fgetconv_open (fp, charset, Charset, M_ICONV_HOOK_FROM);
+  fc = fgetconv_open (fp, charset, Charset, MUTT_ICONV_HOOK_FROM);
   
   for (complete = 1, armor_header = 1;
        fgetconvs (buf, sizeof (buf), fc) != NULL;
@@ -2395,7 +2395,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
             }
           
           have_any_sigs = (have_any_sigs
-                           || (clearsign && (s->flags & M_VERIFY)));
+                           || (clearsign && (s->flags & MUTT_VERIFY)));
           
           /* Copy PGP material to an data container */
 	  armored_data = file_to_data_object (s->fpin, m->offset, m->length);
@@ -2404,7 +2404,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
           {
             pgp_gpgme_extract_keys (armored_data, &pgpout, 1);
           }
-          else if (!clearsign || (s->flags & M_VERIFY))
+          else if (!clearsign || (s->flags & MUTT_VERIFY))
             {
               unsigned int sig_stat = 0;
               gpgme_data_t plaintext;
@@ -2457,7 +2457,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
 
                   have_any_sigs = 0;
                   maybe_goodsig = 0;
-                  if ((s->flags & M_DISPLAY) && sig_stat)
+                  if ((s->flags & MUTT_DISPLAY) && sig_stat)
                     {
                       int res, idx;
                       int anybad = 0;
@@ -2501,7 +2501,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
            * seems to be a reasonable guess.
            */
           
-          if(s->flags & M_DISPLAY)
+          if(s->flags & MUTT_DISPLAY)
             {
               if (needpass)
             state_attach_puts (_("[-- BEGIN PGP MESSAGE --]\n\n"), s);
@@ -2532,7 +2532,7 @@ int pgp_gpgme_application_handler (BODY *m, STATE *s)
               fgetconv_close (&fc);
             }
           
-          if (s->flags & M_DISPLAY)
+          if (s->flags & MUTT_DISPLAY)
             {
               state_putc ('\n', s);
               if (needpass)
@@ -2593,7 +2593,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fpout = safe_fopen (tempfile, "w+")))
     {
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
         state_attach_puts (_("[-- Error: could not create temporary file! "
                              "--]\n"), s);
       return -1;
@@ -2604,7 +2604,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
     {
       tattach->goodsig = is_signed > 0;
 
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
         state_attach_puts (is_signed?
           _("[-- The following data is PGP/MIME signed and encrypted --]\n\n"):
           _("[-- The following data is PGP/MIME encrypted --]\n\n"),
@@ -2625,7 +2625,7 @@ int pgp_gpgme_encrypted_handler (BODY *a, STATE *s)
       if (mutt_is_multipart_signed (tattach) && !tattach->next)
         a->goodsig |= tattach->goodsig;
     
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
         {
           state_puts ("\n", s);
           state_attach_puts (is_signed?
@@ -2666,7 +2666,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if (!(fpout = safe_fopen (tempfile, "w+")))
     {
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
         state_attach_puts (_("[-- Error: could not create temporary file! "
                              "--]\n"), s);
       return -1;
@@ -2677,7 +2677,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
     {
       tattach->goodsig = is_signed > 0;
 
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
         state_attach_puts (is_signed?
           _("[-- The following data is S/MIME signed --]\n\n"):
           _("[-- The following data is S/MIME encrypted --]\n\n"),
@@ -2706,7 +2706,7 @@ int smime_gpgme_application_handler (BODY *a, STATE *s)
           a->warnsig = tattach->warnsig;
         }
 
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
         {
           state_puts ("\n", s);
           state_attach_puts (is_signed?
@@ -2757,7 +2757,7 @@ static const char *crypt_entry_fmt (char *dest,
   crypt_entry_t *entry;
   crypt_key_t *key;
   int kflags = 0;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
   const char *s = NULL;
   unsigned long val;
 
@@ -2943,7 +2943,7 @@ static const char *crypt_entry_fmt (char *dest,
 
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
@@ -2958,7 +2958,7 @@ static void crypt_entry (char *s, size_t l, MUTTMENU * menu, int num)
   entry.num = num + 1;
 
   mutt_FormatString (s, l, 0, MuttIndexWindow->cols, NONULL (PgpEntryFormat), crypt_entry_fmt, 
-		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
+		     (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 /* Compare two addresses and the keyid to be used for sorting. */
@@ -4398,7 +4398,7 @@ static crypt_key_t *crypt_ask_for_key (char *tag,
   for (;;)
     {
       resp[0] = 0;
-      if (mutt_get_field (tag, resp, sizeof (resp), M_CLEAR) != 0)
+      if (mutt_get_field (tag, resp, sizeof (resp), MUTT_CLEAR) != 0)
         return NULL;
       
       if (whatfor)
@@ -4461,14 +4461,14 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
         if (crypt_hook != NULL)
           {
             crypt_hook_val = crypt_hook->data;
-            r = M_YES;
+            r = MUTT_YES;
             if (! oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
               {
                 snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"),
                           crypt_hook_val, p->mailbox);
-                r = mutt_yesorno (buf, M_YES);
+                r = mutt_yesorno (buf, MUTT_YES);
               }
-            if (r == M_YES)
+            if (r == MUTT_YES)
               {
                 if (crypt_is_numerical_keyid (crypt_hook_val))
                   {
@@ -4497,7 +4497,7 @@ static char *find_keys (ADDRESS *adrlist, unsigned int app, int oppenc_mode)
 #endif
                   }
               }
-            else if (r == M_NO)
+            else if (r == MUTT_NO)
               {
                 if (key_selected || (crypt_hook->next != NULL))
                   {

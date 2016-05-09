@@ -349,15 +349,15 @@ int iconv_close (iconv_t cd)
 /*
  * Like iconv_open, but canonicalises the charsets, applies
  * charset-hooks, recanonicalises, and finally applies iconv-hooks.
- * Parameter flags=0 skips charset-hooks, while M_ICONV_HOOK_FROM
+ * Parameter flags=0 skips charset-hooks, while MUTT_ICONV_HOOK_FROM
  * applies them to fromcode. Callers should use flags=0 when fromcode
  * can safely be considered true, either some constant, or some value
- * provided by the user; M_ICONV_HOOK_FROM should be used only when
+ * provided by the user; MUTT_ICONV_HOOK_FROM should be used only when
  * fromcode is unsure, taken from a possibly wrong incoming MIME label,
- * or such. Misusing M_ICONV_HOOK_FROM leads to unwanted interactions
+ * or such. Misusing MUTT_ICONV_HOOK_FROM leads to unwanted interactions
  * in some setups. Note: By design charset-hooks should never be, and
  * are never, applied to tocode. Highlight note: The top-well-named
- * M_ICONV_HOOK_FROM acts on charset-hooks, not at all on iconv-hooks.
+ * MUTT_ICONV_HOOK_FROM acts on charset-hooks, not at all on iconv-hooks.
  */
 
 iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
@@ -376,7 +376,7 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   /* maybe apply charset-hooks and recanonicalise fromcode,
    * but only when caller asked us to sanitize a potentialy wrong
    * charset name incoming from the wild exterior. */
-  if ((flags & M_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))
+  if ((flags & MUTT_ICONV_HOOK_FROM) && (tmp = mutt_charset_hook (fromcode1)))
     mutt_canonical_charset (fromcode1, sizeof (fromcode1), tmp);
 
   /* always apply iconv-hooks to suit system's iconv tastes */

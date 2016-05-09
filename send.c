@@ -197,7 +197,7 @@ static int edit_address (ADDRESS **a, /* const */ char *field)
     buf[0] = 0;
     mutt_addrlist_to_local (*a);
     rfc822_write_address (buf, sizeof (buf), *a, 0);
-    if (mutt_get_field (field, buf, sizeof (buf), M_ALIAS) != 0)
+    if (mutt_get_field (field, buf, sizeof (buf), MUTT_ALIAS) != 0)
       return (-1);
     rfc822_free_address (a);
     *a = mutt_expand_aliases (mutt_parse_adrlist (NULL, buf));
@@ -248,7 +248,7 @@ static int edit_envelope (ENVELOPE *en)
   }
   
   if (mutt_get_field ("Subject: ", buf, sizeof (buf), 0) != 0 ||
-      (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != M_NO))
+      (!buf[0] && query_quadoption (OPT_SUBJECT, _("No subject, abort?")) != MUTT_NO))
   {
     mutt_message _("No subject, aborting.");
     return (-1);
@@ -365,7 +365,7 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
   int chflags = CH_DECODE, cmflags = 0;
   
   mutt_parse_mime_message (ctx, cur);
-  mutt_message_hook (ctx, cur, M_MESSAGEHOOK);
+  mutt_message_hook (ctx, cur, MUTT_MESSAGEHOOK);
 
   if (WithCrypto && (cur->security & ENCRYPT) && option (OPTFORWDECODE))
   {
@@ -377,15 +377,15 @@ static int include_forward (CONTEXT *ctx, HEADER *cur, FILE *out)
 
   if (option (OPTFORWDECODE))
   {
-    cmflags |= M_CM_DECODE | M_CM_CHARCONV;
+    cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     if (option (OPTWEED))
     {
       chflags |= CH_WEED | CH_REORDER;
-      cmflags |= M_CM_WEED;
+      cmflags |= MUTT_CM_WEED;
     }
   }
   if (option (OPTFORWQUOTE))
-    cmflags |= M_CM_PREFIX;
+    cmflags |= MUTT_CM_PREFIX;
 
   /* wrapping headers for forwarding is considered a display
    * rather than send action */
@@ -420,7 +420,7 @@ void mutt_make_post_indent (CONTEXT *ctx, HEADER *cur, FILE *out)
 
 static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
 {
-  int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV | M_CM_REPLYING;
+  int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV | MUTT_CM_REPLYING;
   int chflags = CH_DECODE;
 
   if (WithCrypto && (cur->security & ENCRYPT))
@@ -430,16 +430,16 @@ static int include_reply (CONTEXT *ctx, HEADER *cur, FILE *out)
   }
 
   mutt_parse_mime_message (ctx, cur);
-  mutt_message_hook (ctx, cur, M_MESSAGEHOOK);
+  mutt_message_hook (ctx, cur, MUTT_MESSAGEHOOK);
   
   mutt_make_attribution (ctx, cur, out);
   
   if (!option (OPTHEADER))
-    cmflags |= M_CM_NOHEADER;
+    cmflags |= MUTT_CM_NOHEADER;
   if (option (OPTWEED))
   {
     chflags |= CH_WEED | CH_REORDER;
-    cmflags |= M_CM_WEED;
+    cmflags |= MUTT_CM_WEED;
   }
 
   mutt_copy_message (out, ctx, cur, cmflags, chflags);
@@ -453,7 +453,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 {
   char prompt[STRING];
 
-  if (flags && env->mail_followup_to && hmfupto == M_YES) 
+  if (flags && env->mail_followup_to && hmfupto == MUTT_YES) 
   {
     rfc822_append (to, env->mail_followup_to, 1);
     return 0;
@@ -490,7 +490,7 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
     }
     else if (!(mutt_addrcmp (env->from, env->reply_to) && 
 	       !env->reply_to->next) &&
-	     quadoption (OPT_REPLYTO) != M_YES)
+	     quadoption (OPT_REPLYTO) != MUTT_YES)
     {
       /* There are quite a few mailing lists which set the Reply-To:
        * header field to the list address, which makes it quite impossible
@@ -505,11 +505,11 @@ static int default_to (ADDRESS **to, ENVELOPE *env, int flags, int hmfupto)
 		env->reply_to->next?",...":"");
       switch (query_quadoption (OPT_REPLYTO, prompt))
       {
-      case M_YES:
+      case MUTT_YES:
 	rfc822_append (to, env->reply_to, 0);
 	break;
 
-      case M_NO:
+      case MUTT_NO:
 	rfc822_append (to, env->from, 0);
 	break;
 
@@ -548,7 +548,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     rfc822_append (&out->to, tmp, 0);
     rfc822_free_address (&tmp);
 
-    if (in->mail_followup_to && hmfupto == M_YES &&
+    if (in->mail_followup_to && hmfupto == MUTT_YES &&
         default_to (&out->cc, in, flags & SENDLISTREPLY, hmfupto) == -1)
       return (-1); /* abort */
   }
@@ -557,7 +557,7 @@ int mutt_fetch_recips (ENVELOPE *out, ENVELOPE *in, int flags)
     if (default_to (&out->to, in, flags & SENDGROUPREPLY, hmfupto) == -1)
       return (-1); /* abort */
 
-    if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != M_YES))
+    if ((flags & SENDGROUPREPLY) && (!in->mail_followup_to || hmfupto != MUTT_YES))
     {
       /* if(!mutt_addr_is_user(in->to)) */
       rfc822_append (&out->cc, in->to, 1);
@@ -766,7 +766,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
     if ((i = query_quadoption (OPT_INCLUDE, _("Include message in reply?"))) == -1)
       return (-1);
 
-    if (i == M_YES)
+    if (i == MUTT_YES)
     {
       mutt_message _("Including quoted message...");
       if (!cur)
@@ -792,7 +792,7 @@ generate_body (FILE *tempfp,	/* stream for outgoing message */
   }
   else if (flags & SENDFORWARD)
   {
-    if ((i = query_quadoption (OPT_MIMEFWD, _("Forward as attachment?"))) == M_YES)
+    if ((i = query_quadoption (OPT_MIMEFWD, _("Forward as attachment?"))) == MUTT_YES)
     {
       BODY *last = msg->content;
 
@@ -1167,7 +1167,7 @@ ci_send_message (int flags,		/* send mode */
 
   int rv = -1;
   
-  if (!flags && !msg && quadoption (OPT_RECALL) != M_NO &&
+  if (!flags && !msg && quadoption (OPT_RECALL) != MUTT_NO &&
       mutt_num_postponed (1))
   {
     /* If the user is composing a new message, check to see if there
@@ -1176,7 +1176,7 @@ ci_send_message (int flags,		/* send mode */
     if ((i = query_quadoption (OPT_RECALL, _("Recall postponed message?"))) == -1)
       return rv;
 
-    if(i == M_YES)
+    if(i == MUTT_YES)
       flags |= SENDPOSTPONED;
   }
   
@@ -1325,7 +1325,7 @@ ci_send_message (int flags,		/* send mode */
     if ((flags & SENDREPLY) && cur)
     {
       /* change setting based upon message we are replying to */
-      mutt_message_hook (ctx, cur, M_REPLYHOOK);
+      mutt_message_hook (ctx, cur, MUTT_REPLYHOOK);
 
       /*
        * set the replied flag for the message we are generating so that the
@@ -1337,7 +1337,7 @@ ci_send_message (int flags,		/* send mode */
 
     /* change settings based upon recipients */
     
-    mutt_message_hook (NULL, msg, M_SENDHOOK);
+    mutt_message_hook (NULL, msg, MUTT_SENDHOOK);
 
     /*
      * Unset the replied flag from the message we are composing since it is
@@ -1387,7 +1387,7 @@ ci_send_message (int flags,		/* send mode */
    * used for setting the editor, the sendmail path, or the
    * envelope sender.
    */
-  mutt_message_hook (NULL, msg, M_SEND2HOOK);
+  mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
 
   /* wait until now to set the real name portion of our return address so
      that $realname can be set in a send-hook */
@@ -1423,7 +1423,7 @@ ci_send_message (int flags,		/* send mode */
     if (! (flags & SENDKEY) &&
 	((flags & SENDFORWARD) == 0 ||
 	 (option (OPTEDITHDRS) && option (OPTAUTOEDIT)) ||
-	 query_quadoption (OPT_FORWEDIT, _("Edit forwarded message?")) == M_YES))
+	 query_quadoption (OPT_FORWEDIT, _("Edit forwarded message?")) == MUTT_YES))
     {
       /* If the this isn't a text message, look for a mailcap edit command */
       if (mutt_needs_mailcap (msg->content))
@@ -1463,7 +1463,7 @@ ci_send_message (int flags,		/* send mode */
 	  rfc3676_space_stuff (msg);
       }
 
-      mutt_message_hook (NULL, msg, M_SEND2HOOK);
+      mutt_message_hook (NULL, msg, MUTT_SEND2HOOK);
     }
 
     if (! (flags & (SENDPOSTPONED | SENDFORWARD | SENDKEY | SENDRESEND | SENDDRAFTFILE)))
@@ -1472,7 +1472,7 @@ ci_send_message (int flags,		/* send mode */
       {
 	/* if the file was not modified, bail out now */
 	if (mtime == st.st_mtime && !msg->content->next &&
-	    query_quadoption (OPT_ABORT, _("Abort unmodified message?")) == M_YES)
+	    query_quadoption (OPT_ABORT, _("Abort unmodified message?")) == MUTT_YES)
 	{
 	  mutt_message _("Aborted unmodified message.");
 	  goto cleanup;
@@ -1601,7 +1601,7 @@ main_loop:
     fcc_error = 0; /* reset value since we may have failed before */
     mutt_pretty_mailbox (fcc, sizeof (fcc));
     i = mutt_compose_menu (msg, fcc, sizeof (fcc), cur,
-                           (flags & SENDNOFREEHEADER ? M_COMPOSE_NOFREEHEADER : 0));
+                           (flags & SENDNOFREEHEADER ? MUTT_COMPOSE_NOFREEHEADER : 0));
     if (i == -1)
     {
       /* abort */
@@ -1686,10 +1686,10 @@ main_loop:
   }
   
   if (!msg->env->subject && ! (flags & SENDBATCH) &&
-      (i = query_quadoption (OPT_SUBJECT, _("No subject, abort sending?"))) != M_NO)
+      (i = query_quadoption (OPT_SUBJECT, _("No subject, abort sending?"))) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
-    if (quadoption (OPT_SUBJECT) == M_YES)
+    if (quadoption (OPT_SUBJECT) == MUTT_YES)
       mutt_error _("No subject specified.");
     goto main_loop;
   }
@@ -1785,7 +1785,7 @@ main_loop:
       msg->content = clear_content;
 
     /* check to see if the user wants copies of all attachments */
-    if (query_quadoption (OPT_FCCATTACH, _("Save attachments in Fcc?")) != M_YES &&
+    if (query_quadoption (OPT_FCCATTACH, _("Save attachments in Fcc?")) != MUTT_YES &&
 	msg->content->type == TYPEMULTIPART)
     {
       if (WithCrypto
@@ -1913,12 +1913,12 @@ full_fcc:
   if (flags & SENDREPLY)
   {
     if (cur && ctx)
-      mutt_set_flag (ctx, cur, M_REPLIED, is_reply (cur, msg));
+      mutt_set_flag (ctx, cur, MUTT_REPLIED, is_reply (cur, msg));
     else if (!(flags & SENDPOSTPONED) && ctx && ctx->tagged)
     {
       for (i = 0; i < ctx->vcount; i++)
 	if (ctx->hdrs[ctx->v2r[i]]->tagged)
-	  mutt_set_flag (ctx, ctx->hdrs[ctx->v2r[i]], M_REPLIED,
+	  mutt_set_flag (ctx, ctx->hdrs[ctx->v2r[i]], MUTT_REPLIED,
 			 is_reply (ctx->hdrs[ctx->v2r[i]], msg));
     }
   }

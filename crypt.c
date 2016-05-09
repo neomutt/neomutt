@@ -149,7 +149,7 @@ int mutt_protect (HEADER *msg, char *keylist)
         ascii_strcasecmp (msg->content->subtype, "plain"))
     {
       if ((i = query_quadoption (OPT_PGPMIMEAUTO,
-              _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?"))) != M_YES)
+              _("Inline PGP can't be used with attachments.  Revert to PGP/MIME?"))) != MUTT_YES)
       {
         mutt_error _("Mail not sent: inline PGP can't be used with attachments.");
         return -1;
@@ -167,7 +167,7 @@ int mutt_protect (HEADER *msg, char *keylist)
       }
 
       /* otherwise inline won't work...ask for revert */
-      if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != M_YES)
+      if ((i = query_quadoption (OPT_PGPMIMEAUTO, _("Message can't be sent inline.  Revert to using PGP/MIME?"))) != MUTT_YES)
       {
         mutt_error _("Mail not sent.");
         return -1;
@@ -699,7 +699,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
             && (Context->hdrs[Context->v2r[i]]->security & APPLICATION_PGP))
 	{
 	  mutt_copy_message (fpout, Context, Context->hdrs[Context->v2r[i]], 
-			     M_CM_DECODE|M_CM_CHARCONV, 0);
+			     MUTT_CM_DECODE|MUTT_CM_CHARCONV, 0);
 	  fflush(fpout);
 	  
 	  mutt_endwin (_("Trying to extract PGP keys...\n"));
@@ -711,8 +711,8 @@ void crypt_extract_keys_from_messages (HEADER * h)
 	{
 	  if (Context->hdrs[Context->v2r[i]]->security & ENCRYPT)
 	    mutt_copy_message (fpout, Context, Context->hdrs[Context->v2r[i]],
-			       M_CM_NOHEADER|M_CM_DECODE_CRYPT
-                               |M_CM_DECODE_SMIME, 0);
+			       MUTT_CM_NOHEADER|MUTT_CM_DECODE_CRYPT
+                               |MUTT_CM_DECODE_SMIME, 0);
 	  else
 	    mutt_copy_message (fpout, Context,
 			       Context->hdrs[Context->v2r[i]], 0, 0);
@@ -744,7 +744,7 @@ void crypt_extract_keys_from_messages (HEADER * h)
       if ((WithCrypto & APPLICATION_PGP)
           && (h->security & APPLICATION_PGP))
       {
-	mutt_copy_message (fpout, Context, h, M_CM_DECODE|M_CM_CHARCONV, 0);
+	mutt_copy_message (fpout, Context, h, MUTT_CM_DECODE|MUTT_CM_CHARCONV, 0);
 	fflush(fpout);
 	mutt_endwin (_("Trying to extract PGP keys...\n"));
 	crypt_pgp_invoke_import (tempfname);
@@ -754,9 +754,9 @@ void crypt_extract_keys_from_messages (HEADER * h)
           && (h->security & APPLICATION_SMIME))
       {
 	if (h->security & ENCRYPT)
-	  mutt_copy_message (fpout, Context, h, M_CM_NOHEADER
-                                                |M_CM_DECODE_CRYPT
-                                                |M_CM_DECODE_SMIME, 0);
+	  mutt_copy_message (fpout, Context, h, MUTT_CM_NOHEADER
+                                                |MUTT_CM_DECODE_CRYPT
+                                                |MUTT_CM_DECODE_SMIME, 0);
 	else
 	  mutt_copy_message (fpout, Context, h, 0, 0);
 
@@ -953,7 +953,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
     return mutt_body_handler (a, s);
   }
 
-  if (s->flags & M_DISPLAY)
+  if (s->flags & MUTT_DISPLAY)
   {
     
     crypt_fetch_signatures (&signatures, a->next, &sigcnt);
@@ -1009,7 +1009,7 @@ int mutt_signed_handler (BODY *a, STATE *s)
   
   rc = mutt_body_handler (a, s);
   
-  if (s->flags & M_DISPLAY && sigcnt)
+  if (s->flags & MUTT_DISPLAY && sigcnt)
     state_attach_puts (_("\n[-- End of signed data --]\n"), s);
   
   return rc;

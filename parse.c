@@ -1557,7 +1557,7 @@ static int count_body_parts (BODY *body, int flags)
 	shallrecurse = 0;
 
       /* Don't count containers if they're top-level. */
-      if (flags & M_PARTS_TOPLEVEL)
+      if (flags & MUTT_PARTS_TOPLEVEL)
 	AT_NOCOUNT("top-level message/*");
     }
     else if (bp->type == TYPEMULTIPART)
@@ -1568,7 +1568,7 @@ static int count_body_parts (BODY *body, int flags)
         shallrecurse = 0;
 
       /* Don't count containers if they're top-level. */
-      if (flags & M_PARTS_TOPLEVEL)
+      if (flags & MUTT_PARTS_TOPLEVEL)
 	AT_NOCOUNT("top-level multipart");
     }
 
@@ -1611,7 +1611,7 @@ static int count_body_parts (BODY *body, int flags)
     if (shallrecurse)
     {
       dprint(5, (debugfile, "cbp: %p pre count = %d\n", (void *)bp, count));
-      bp->attach_count = count_body_parts(bp->parts, flags & ~M_PARTS_TOPLEVEL);
+      bp->attach_count = count_body_parts(bp->parts, flags & ~MUTT_PARTS_TOPLEVEL);
       count += bp->attach_count;
       dprint(5, (debugfile, "cbp: %p post count = %d\n", (void *)bp, count));
     }
@@ -1634,7 +1634,7 @@ int mutt_count_body_parts (CONTEXT *ctx, HEADER *hdr)
     mutt_parse_mime_message (ctx, hdr);
   
   if (AttachAllow || AttachExclude || InlineAllow || InlineExclude)
-    hdr->attach_total = count_body_parts(hdr->content, M_PARTS_TOPLEVEL);
+    hdr->attach_total = count_body_parts(hdr->content, MUTT_PARTS_TOPLEVEL);
   else
     hdr->attach_total = 0;
 

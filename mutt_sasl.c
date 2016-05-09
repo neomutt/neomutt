@@ -78,7 +78,7 @@ static int getnameinfo_err(int ret)
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated
  * a protection buffer. */ 
-#define M_SASL_MAXBUF 65536
+#define MUTT_SASL_MAXBUF 65536
 
 #define IP_PORT_BUFLEN 1024
 
@@ -181,13 +181,13 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
 
   switch (conn->account.type)
   {
-    case M_ACCT_TYPE_IMAP:
+    case MUTT_ACCT_TYPE_IMAP:
       service = "imap";
       break;
-    case M_ACCT_TYPE_POP:
+    case MUTT_ACCT_TYPE_POP:
       service = "pop";
       break;
-    case M_ACCT_TYPE_SMTP:
+    case MUTT_ACCT_TYPE_SMTP:
       service = "smtp";
       break;
     default:
@@ -233,7 +233,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   memset (&secprops, 0, sizeof (secprops));
   /* Work around a casting bug in the SASL krb4 module */
   secprops.max_ssf = 0x7fff;
-  secprops.maxbufsize = M_SASL_MAXBUF;
+  secprops.maxbufsize = MUTT_SASL_MAXBUF;
   if (sasl_setprop (*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)
   {
     mutt_error (_("Error setting SASL security properties"));

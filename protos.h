@@ -58,11 +58,11 @@ int _mutt_system (const char *, int);
 #define mutt_previous_subthread(x) _mutt_aside_thread(x,0,1)
 int _mutt_aside_thread (HEADER *, short, short);
 
-#define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_COLLAPSE)
-#define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNCOLLAPSE)
-#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,M_THREAD_GET_HIDDEN) 
-#define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNREAD)
-#define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,M_THREAD_NEXT_UNREAD)
+#define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_COLLAPSE)
+#define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNCOLLAPSE)
+#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,MUTT_THREAD_GET_HIDDEN) 
+#define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNREAD)
+#define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,MUTT_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 
 
@@ -308,7 +308,7 @@ int _mutt_enter_string (char *, size_t, int, int, int, char ***, int *, ENTER_ST
 int _mutt_get_field (const char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_hook_type (const char *);
 int mutt_get_field_unbuffered (char *, char *, size_t, int);
-#define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,M_PASS)
+#define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,MUTT_PASS)
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);
 int mutt_index_menu (void);
@@ -441,7 +441,7 @@ void mutt_pattern_free (pattern_t **pat);
 int getdnsdomainname (char *, size_t);
 
 /* According to SCO support, this is how to detect SCO */
-#if defined (_M_UNIX) || defined (M_OS)
+#if defined (_M_UNIX) || defined (MUTT_OS)
 #define SCO
 #endif
 

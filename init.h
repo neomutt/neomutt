@@ -49,9 +49,9 @@
 #define DT_SORT_AUX	0x80
 
 /* flags to parse_set() */
-#define M_SET_INV	(1<<0)	/* default is to invert all vars */
-#define M_SET_UNSET	(1<<1)	/* default is to unset all vars */
-#define M_SET_RESET	(1<<2)	/* default is to reset all vars to default */
+#define MUTT_SET_INV	(1<<0)	/* default is to invert all vars */
+#define MUTT_SET_UNSET	(1<<1)	/* default is to unset all vars */
+#define MUTT_SET_RESET	(1<<2)	/* default is to reset all vars to default */
 
 /* forced redraw/resort types */
 #define R_NONE		0
@@ -84,7 +84,7 @@ struct option_t
 
 struct option_t MuttVars[] = {
   /*++*/
-  { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, M_ASKYES },
+  { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, MUTT_ASKYES },
   /*
   ** .pp
   ** If set to \fIyes\fP, when composing messages and no subject is given
@@ -92,7 +92,7 @@ struct option_t MuttVars[] = {
   ** \fIno\fP, composing messages with no subject given at the subject
   ** prompt will never be aborted.
   */
-  { "abort_unmodified",	DT_QUAD, R_NONE, OPT_ABORT, M_YES },
+  { "abort_unmodified",	DT_QUAD, R_NONE, OPT_ABORT, MUTT_YES },
   /*
   ** .pp
   ** If set to \fIyes\fP, composition will automatically abort after
@@ -300,7 +300,7 @@ struct option_t MuttVars[] = {
   ** notifying you of new mail.  This is independent of the setting of the
   ** $$beep variable.
   */
-  { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, M_ASKYES },
+  { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether you will be asked to confirm bouncing messages.
@@ -444,7 +444,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Sets the default Content-Type for the body of newly composed messages.
   */
-  { "copy",		DT_QUAD, R_NONE, OPT_COPY, M_YES },
+  { "copy",		DT_QUAD, R_NONE, OPT_COPY, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not copies of your outgoing messages
@@ -581,7 +581,7 @@ struct option_t MuttVars[] = {
   ** verification (only supported by the GPGME backend).
   */
   { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
-  { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
+  { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, MUTT_YES },
   /*
   ** .pp
   ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
@@ -619,7 +619,7 @@ struct option_t MuttVars[] = {
   ** ``$alternates'') and is to or cc'ed to a user matching the given
   ** regular expression.
   */
-  { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
+  { "delete",		DT_QUAD, R_NONE, OPT_DELETE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not messages are really deleted when closing or
@@ -770,7 +770,7 @@ struct option_t MuttVars[] = {
   ** \fBNote:\fP this variable has no effect when the $$autoedit
   ** variable is \fIset\fP.
   */
-  { "fcc_attach",	DT_QUAD, R_NONE, OPT_FCCATTACH, M_YES },
+  { "fcc_attach",	DT_QUAD, R_NONE, OPT_FCCATTACH, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not attachments on outgoing messages
@@ -874,7 +874,7 @@ struct option_t MuttVars[] = {
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
   */
-  { "forward_edit",	DT_QUAD, R_NONE, OPT_FORWEDIT, M_YES },
+  { "forward_edit",	DT_QUAD, R_NONE, OPT_FORWEDIT, MUTT_YES },
   /*
   ** .pp
   ** This quadoption controls whether or not the user is automatically
@@ -1054,7 +1054,7 @@ struct option_t MuttVars[] = {
   ** If \fIunset\fP, Mutt will render all MIME parts it can
   ** properly transform to plain text.
   */
-  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, M_YES },
+  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not a Mail-Followup-To header is
@@ -1264,7 +1264,7 @@ struct option_t MuttVars[] = {
   ** use the viewer defined in that entry to convert the body part to text
   ** form.
   */
-  { "include",		DT_QUAD, R_NONE, OPT_INCLUDE, M_ASKYES },
+  { "include",		DT_QUAD, R_NONE, OPT_INCLUDE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not a copy of the message(s) you are replying to
@@ -1484,7 +1484,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$move variable.
   */
-  { "mbox_type",	DT_MAGIC,R_NONE, UL &DefaultMagic, M_MBOX },
+  { "mbox_type",	DT_MAGIC,R_NONE, UL &DefaultMagic, MUTT_MBOX },
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
@@ -1588,7 +1588,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The name of the MH sequence used for unseen messages.
   */
-  { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, M_NO },
+  { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, MUTT_NO },
   /*
   ** .pp
   ** When \fIset\fP, the message you are forwarding will be attached as a
@@ -1610,7 +1610,7 @@ struct option_t MuttVars[] = {
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },
   /*
   */
-  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, M_YES },
+  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, MUTT_YES },
   /*
   ** .pp
   ** When forwarding multiple attachments of a MIME message from the attachment
@@ -1640,7 +1640,7 @@ struct option_t MuttVars[] = {
   ** mixmaster chain.
   */
 #endif
-  { "move",		DT_QUAD, R_NONE, OPT_MOVE, M_NO },
+  { "move",		DT_QUAD, R_NONE, OPT_MOVE, MUTT_NO },
   /*
   ** .pp
   ** Controls whether or not Mutt will move read messages
@@ -1946,7 +1946,7 @@ struct option_t MuttVars[] = {
   ** in the key selection menu and a few other places.
   ** (PGP only)
   */
-  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, M_ASKYES },
+  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, MUTT_ASKYES },
   /*
   ** .pp
   ** This option controls whether Mutt will prompt you for
@@ -2132,7 +2132,7 @@ struct option_t MuttVars[] = {
   ** This variable configures how often (in seconds) mutt should look for
   ** new mail in the currently selected mailbox if it is a POP mailbox.
   */
-  { "pop_delete",	DT_QUAD, R_NONE, OPT_POPDELETE, M_ASKNO },
+  { "pop_delete",	DT_QUAD, R_NONE, OPT_POPDELETE, MUTT_ASKNO },
   /*
   ** .pp
   ** If \fIset\fP, Mutt will delete successfully downloaded messages from the POP
@@ -2167,7 +2167,7 @@ struct option_t MuttVars[] = {
   ** fairly secure machine, because the superuser can read your muttrc
   ** even if you are the only one who can read the file.
   */
-  { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
+  { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not Mutt will try to reconnect to the POP server if
@@ -2190,7 +2190,7 @@ struct option_t MuttVars[] = {
   { "post_indent_str",  DT_SYN,  R_NONE, UL "post_indent_string", 0 },
   /*
   */
-  { "postpone",		DT_QUAD, R_NONE, OPT_POSTPONE, M_ASKYES },
+  { "postpone",		DT_QUAD, R_NONE, OPT_POSTPONE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not messages are saved in the $$postponed
@@ -2242,7 +2242,7 @@ struct option_t MuttVars[] = {
   ** remote machine without having to enter a password.
   */
 #endif /* USE_SOCKET */
-  { "print",		DT_QUAD, R_NONE, OPT_PRINT, M_ASKNO },
+  { "print",		DT_QUAD, R_NONE, OPT_PRINT, MUTT_ASKNO },
   /*
   ** .pp
   ** Controls whether or not Mutt really prints messages.
@@ -2320,7 +2320,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** * = can be optionally printed if nonzero, see the $$status_format documentation.
   */
-  { "quit",		DT_QUAD, R_NONE, OPT_QUIT, M_YES },
+  { "quit",		DT_QUAD, R_NONE, OPT_QUIT, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether ``quit'' and ``exit'' actually quit
@@ -2374,7 +2374,7 @@ struct option_t MuttVars[] = {
   ** variable will \fInot\fP be used when the user has set a real name
   ** in the $$from variable.
   */
-  { "recall",		DT_QUAD, R_NONE, OPT_RECALL, M_ASKYES },
+  { "recall",		DT_QUAD, R_NONE, OPT_RECALL, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not Mutt recalls postponed messages
@@ -2445,7 +2445,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the ``$alternates'' command.
   */
-  { "reply_to",		DT_QUAD, R_NONE, OPT_REPLYTO, M_ASKYES },
+  { "reply_to",		DT_QUAD, R_NONE, OPT_REPLYTO, MUTT_ASKYES },
   /*
   ** .pp
   ** If \fIset\fP, when replying to a message, Mutt will use the address listed
@@ -3123,7 +3123,7 @@ struct option_t MuttVars[] = {
   ** the default from the GNUTLS library.
   */
 # endif /* USE_SSL_GNUTLS */
-  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
+  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, MUTT_YES },
   /*
   ** .pp
   ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
@@ -3696,7 +3696,7 @@ const struct command_t Commands[] = {
   { "alternates",	parse_alternates,	0 },
   { "unalternates",	parse_unalternates,	0 },
 #ifdef USE_SOCKET
-  { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
+  { "account-hook",     mutt_parse_hook,        MUTT_ACCOUNTHOOK },
 #endif
   { "alias",		parse_alias,		0 },
   { "attachments",	parse_attachments,	0 },
@@ -3704,49 +3704,49 @@ const struct command_t Commands[] = {
   { "auto_view",	parse_list,		UL &AutoViewList },
   { "alternative_order",	parse_list,	UL &AlternativeOrderList},
   { "bind",		mutt_parse_bind,	0 },
-  { "charset-hook",	mutt_parse_hook,	M_CHARSETHOOK },
+  { "charset-hook",	mutt_parse_hook,	MUTT_CHARSETHOOK },
 #ifdef HAVE_COLOR
   { "color",		mutt_parse_color,	0 },
   { "uncolor",		mutt_parse_uncolor,	0 },
 #endif
   { "exec",		mutt_parse_exec,	0 },
-  { "fcc-hook",		mutt_parse_hook,	M_FCCHOOK },
-  { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
-  { "folder-hook",	mutt_parse_hook,	M_FOLDERHOOK },
-  { "group",		parse_group,		M_GROUP },
-  { "ungroup",		parse_group,		M_UNGROUP },
+  { "fcc-hook",		mutt_parse_hook,	MUTT_FCCHOOK },
+  { "fcc-save-hook",	mutt_parse_hook,	MUTT_FCCHOOK | MUTT_SAVEHOOK },
+  { "folder-hook",	mutt_parse_hook,	MUTT_FOLDERHOOK },
+  { "group",		parse_group,		MUTT_GROUP },
+  { "ungroup",		parse_group,		MUTT_UNGROUP },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
 #ifdef HAVE_ICONV
-  { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK },
+  { "iconv-hook",	mutt_parse_hook,	MUTT_ICONVHOOK },
 #endif
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_lists,		0 },
   { "macro",		mutt_parse_macro,	0 },
-  { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
-  { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
+  { "mailboxes",	mutt_parse_mailboxes,	MUTT_MAILBOXES },
+  { "unmailboxes",	mutt_parse_mailboxes,	MUTT_UNMAILBOXES },
   { "mailto_allow",	parse_list,		UL &MailtoAllow },
   { "unmailto_allow",	parse_unlist,		UL &MailtoAllow },
-  { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
-  { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
+  { "message-hook",	mutt_parse_hook,	MUTT_MESSAGEHOOK },
+  { "mbox-hook",	mutt_parse_hook,	MUTT_MBOXHOOK },
   { "mime_lookup",	parse_list,	UL &MimeLookupList },
   { "unmime_lookup",	parse_unlist,	UL &MimeLookupList },
   { "mono",		mutt_parse_mono,	0 },
   { "my_hdr",		parse_my_hdr,		0 },
-  { "pgp-hook",		mutt_parse_hook,	M_CRYPTHOOK },
-  { "crypt-hook",	mutt_parse_hook,	M_CRYPTHOOK },
+  { "pgp-hook",		mutt_parse_hook,	MUTT_CRYPTHOOK },
+  { "crypt-hook",	mutt_parse_hook,	MUTT_CRYPTHOOK },
   { "push",		mutt_parse_push,	0 },
-  { "reply-hook",	mutt_parse_hook,	M_REPLYHOOK },
-  { "reset",		parse_set,		M_SET_RESET },
-  { "save-hook",	mutt_parse_hook,	M_SAVEHOOK },
+  { "reply-hook",	mutt_parse_hook,	MUTT_REPLYHOOK },
+  { "reset",		parse_set,		MUTT_SET_RESET },
+  { "save-hook",	mutt_parse_hook,	MUTT_SAVEHOOK },
   { "score",		mutt_parse_score,	0 },
-  { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
-  { "send2-hook",	mutt_parse_hook,	M_SEND2HOOK },
+  { "send-hook",	mutt_parse_hook,	MUTT_SENDHOOK },
+  { "send2-hook",	mutt_parse_hook,	MUTT_SEND2HOOK },
   { "set",		parse_set,		0 },
   { "source",		parse_source,		0 },
-  { "spam",		parse_spam_list,	M_SPAM },
-  { "nospam",		parse_spam_list,	M_NOSPAM },
+  { "spam",		parse_spam_list,	MUTT_SPAM },
+  { "nospam",		parse_spam_list,	MUTT_NOSPAM },
   { "subscribe",	parse_subscribe,	0 },
-  { "toggle",		parse_set,		M_SET_INV },
+  { "toggle",		parse_set,		MUTT_SET_INV },
   { "unalias",		parse_unalias,		0 },
   { "unalternative_order",parse_unlist,		UL &AlternativeOrderList },
   { "unauto_view",	parse_unlist,		UL &AutoViewList },
@@ -3757,7 +3757,7 @@ const struct command_t Commands[] = {
   { "unmono",		mutt_parse_unmono,	0 },
   { "unmy_hdr",		parse_unmy_hdr,		0 },
   { "unscore",		mutt_parse_unscore,	0 },
-  { "unset",		parse_set,		M_SET_UNSET },
+  { "unset",		parse_set,		MUTT_SET_UNSET },
   { "unsubscribe",	parse_unsubscribe,	0 },
   { NULL,		NULL,			0 }
 };

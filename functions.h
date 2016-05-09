@@ -22,7 +22,7 @@
  *
  * Notes:
  *
- * - If you want to bind \n or \r, use M_ENTER_S so that it will work
+ * - If you want to bind \n or \r, use MUTT_ENTER_S so that it will work
  * correctly under both ncurses and S-Lang
  *
  * - If you need to bind a control char, use the octal value because the \cX
@@ -70,7 +70,7 @@ const struct binding_t OpGeneric[] = { /* map: generic */
   { "tag-prefix-cond",	OP_TAG_PREFIX_COND,	NULL },
   { "end-cond",		OP_END_COND,		NULL },
   { "shell-escape",	OP_SHELL_ESCAPE,	"!" },
-  { "select-entry",	OP_GENERIC_SELECT_ENTRY,M_ENTER_S },
+  { "select-entry",	OP_GENERIC_SELECT_ENTRY,MUTT_ENTER_S },
   { "search",		OP_SEARCH,		"/" },
   { "search-reverse",	OP_SEARCH_REVERSE,	"\033/" },
   { "search-opposite",	OP_SEARCH_OPPOSITE,	NULL },
@@ -147,7 +147,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "show-version",		OP_VERSION,			"V" },
   { "set-flag",			OP_MAIN_SET_FLAG,		"w" },
   { "clear-flag",		OP_MAIN_CLEAR_FLAG,		"W" },
-  { "display-message",		OP_DISPLAY_MESSAGE,		M_ENTER_S },
+  { "display-message",		OP_DISPLAY_MESSAGE,		MUTT_ENTER_S },
   { "buffy-list",		OP_BUFFY_LIST,			"." },
   { "sync-mailbox",		OP_MAIN_SYNC_FOLDER,		"$" },
   { "display-address",		OP_DISPLAY_ADDRESS,		"@" },
@@ -247,7 +247,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "search",		OP_SEARCH,			"/" },
   { "search-reverse",	OP_SEARCH_REVERSE,		"\033/" },
   { "search-opposite",	OP_SEARCH_OPPOSITE,		NULL },
-  { "next-line",	OP_NEXT_LINE,			M_ENTER_S },
+  { "next-line",	OP_NEXT_LINE,			MUTT_ENTER_S },
   { "jump",		OP_JUMP,			NULL },
   { "next-unread",	OP_MAIN_NEXT_UNREAD,		NULL },
   { "previous-new",	OP_MAIN_PREV_NEW,		NULL },
@@ -289,7 +289,7 @@ const struct binding_t OpAttach[] = { /* map: attachment */
   { "list-reply",	OP_LIST_REPLY,			"L" },
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },
   { "view-text",	OP_ATTACH_VIEW_TEXT,		"T" },
-  { "view-attach",	OP_VIEW_ATTACH,			M_ENTER_S },
+  { "view-attach",	OP_VIEW_ATTACH,			MUTT_ENTER_S },
   { "delete-entry",	OP_DELETE,			"d" },
   { "undelete-entry",	OP_UNDELETE,			"u" },
   { "collapse-parts",	OP_ATTACH_COLLAPSE,		"v" },
@@ -333,7 +333,7 @@ const struct binding_t OpCompose[] = { /* map: compose */
   { "toggle-unlink",	OP_COMPOSE_TOGGLE_UNLINK,	"u" },
   { "toggle-recode",    OP_COMPOSE_TOGGLE_RECODE,	NULL },
   { "update-encoding",	OP_COMPOSE_UPDATE_ENCODING,	"U" },
-  { "view-attach",	OP_VIEW_ATTACH,			M_ENTER_S },
+  { "view-attach",	OP_VIEW_ATTACH,			MUTT_ENTER_S },
   { "send-message",	OP_COMPOSE_SEND_MESSAGE,	"y" },
   { "pipe-entry",	OP_PIPE,			"|" },
 
@@ -446,7 +446,7 @@ const struct binding_t OpSmime[] = { /* map: smime */
 
 #ifdef MIXMASTER
 const struct binding_t OpMix[] = { /* map: mixmaster */
-  { "accept",		OP_MIX_USE,	M_ENTER_S },
+  { "accept",		OP_MIX_USE,	MUTT_ENTER_S },
   { "append",		OP_MIX_APPEND,	"a"       },
   { "insert",		OP_MIX_INSERT,	"i"       },
   { "delete",		OP_MIX_DELETE,  "d"	  },

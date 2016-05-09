@@ -120,7 +120,7 @@ int convert_nonmime_string (char **ps)
   }
   mutt_convert_string (ps,
       (const char *)mutt_get_default_charset (),
-      Charset, M_ICONV_HOOK_FROM);
+      Charset, MUTT_ICONV_HOOK_FROM);
   return -1;
 }
 
@@ -713,7 +713,7 @@ static int rfc2047_decode_word (char *d, const char *s, size_t len)
   }
   
   if (charset)
-    mutt_convert_string (&d0, charset, Charset, M_ICONV_HOOK_FROM);
+    mutt_convert_string (&d0, charset, Charset, MUTT_ICONV_HOOK_FROM);
   mutt_filter_unprintable (&d0);
   strfcpy (d, d0, len);
   rv = 0;

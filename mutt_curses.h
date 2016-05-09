@@ -37,8 +37,8 @@
  * ncurses and SLang seem to send different characters when the Enter key is
  * pressed, so define some macros to properly detect the Enter key.
  */
-#define M_ENTER_C '\r'
-#define M_ENTER_S "\r"
+#define MUTT_ENTER_C '\r'
+#define MUTT_ENTER_S "\r"
 
 #else /* USE_SLANG_CURSES */
 
@@ -52,8 +52,8 @@
 # include <curses.h>
 #endif
 
-#define M_ENTER_C '\n'
-#define M_ENTER_S "\n"
+#define MUTT_ENTER_C '\n'
+#define MUTT_ENTER_S "\n"
 
 #endif /* USE_SLANG_CURSES */
 
@@ -138,8 +138,8 @@ typedef struct color_line
   struct color_line *next;
 } COLOR_LINE;
 
-#define M_PROGRESS_SIZE		(1<<0)	/* traffic-based progress */
-#define M_PROGRESS_MSG		(1<<1)	/* message-based progress */
+#define MUTT_PROGRESS_SIZE		(1<<0)	/* traffic-based progress */
+#define MUTT_PROGRESS_MSG		(1<<1)	/* message-based progress */
 
 typedef struct
 {

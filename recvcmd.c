@@ -173,7 +173,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     strfcpy (prompt, _("Bounce tagged messages to: "), sizeof (prompt));
 
   buf[0] = '\0';
-  if (mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS) 
+  if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_ALIAS) 
       || buf[0] == '\0')
     return;
 
@@ -213,7 +213,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   else
     safe_strcat (prompt, sizeof (prompt), "?");
 
-  if (query_quadoption (OPT_BOUNCE, prompt) != M_YES)
+  if (query_quadoption (OPT_BOUNCE, prompt) != MUTT_YES)
   {
     rfc822_free_address (&adr);
     mutt_window_clearline (MuttMessageWindow, 0);
@@ -469,7 +469,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 
   if ((!cur || mutt_can_decode (cur)) &&
       (rc = query_quadoption (OPT_MIMEFWD, 
-			      _("Forward as attachments?"))) == M_YES)
+			      _("Forward as attachments?"))) == MUTT_YES)
     mime_fwd_all = 1;
   else if (rc == -1)
     goto bail;
@@ -485,7 +485,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
 _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
       goto bail;
-    else if (rc == M_NO)
+    else if (rc == MUTT_NO)
       mime_fwd_any = 0;
   }
 
@@ -495,9 +495,9 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
   
   if (option (OPTFORWQUOTE))
     st.prefix = prefix;
-  st.flags = M_CHARCONV;
+  st.flags = MUTT_CHARCONV;
   if (option (OPTWEED))
-    st.flags |= M_WEED;
+    st.flags |= MUTT_WEED;
   st.fpin = fp;
   st.fpout = tmpfp;
 
@@ -608,7 +608,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
   tmpbody[0] = '\0';
 
   if ((rc = query_quadoption (OPT_MIMEFWD, 
-		 _("Forward MIME encapsulated?"))) == M_NO)
+		 _("Forward MIME encapsulated?"))) == MUTT_NO)
   {
     
     /* no MIME encapsulation */
@@ -624,23 +624,23 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
     if (option (OPTFORWQUOTE))
     {
       chflags |= CH_PREFIX;
-      cmflags |= M_CM_PREFIX;
+      cmflags |= MUTT_CM_PREFIX;
     }
 
     if (option (OPTFORWDECODE))
     {
-      cmflags |= M_CM_DECODE | M_CM_CHARCONV;
+      cmflags |= MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       if (option (OPTWEED))
       {
 	chflags |= CH_WEED | CH_REORDER;
-	cmflags |= M_CM_WEED;
+	cmflags |= MUTT_CM_WEED;
       }
     }
     
     
     if (cur)
     {
-      /* mutt_message_hook (cur->hdr, M_MESSAGEHOOK); */ 
+      /* mutt_message_hook (cur->hdr, MUTT_MESSAGEHOOK); */ 
       mutt_forward_intro (tmpfp, cur->hdr);
       _mutt_copy_message (tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
       mutt_forward_trailer (tmpfp);
@@ -651,7 +651,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
       {
 	if (idx[i]->content->tagged)
 	{
-	  /* mutt_message_hook (idx[i]->content->hdr, M_MESSAGEHOOK); */ 
+	  /* mutt_message_hook (idx[i]->content->hdr, MUTT_MESSAGEHOOK); */ 
 	  mutt_forward_intro (tmpfp, idx[i]->content->hdr);
 	  _mutt_copy_message (tmpfp, fp, idx[i]->content->hdr,
 			      idx[i]->content->hdr->content, cmflags, chflags);
@@ -661,7 +661,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
     }
     safe_fclose (&tmpfp);
   }
-  else if (rc == M_YES)	/* do MIME encapsulation - we don't need to do much here */
+  else if (rc == MUTT_YES)	/* do MIME encapsulation - we don't need to do much here */
   {
     last = &tmphdr->content;
     if (cur)
@@ -798,19 +798,19 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 
 static void attach_include_reply (FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
 {
-  int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
+  int cmflags = MUTT_CM_PREFIX | MUTT_CM_DECODE | MUTT_CM_CHARCONV;
   int chflags = CH_DECODE;
 
-  /* mutt_message_hook (cur, M_MESSAGEHOOK); */ 
+  /* mutt_message_hook (cur, MUTT_MESSAGEHOOK); */ 
   
   mutt_make_attribution (Context, cur, tmpfp);
   
   if (!option (OPTHEADER))
-    cmflags |= M_CM_NOHEADER;
+    cmflags |= MUTT_CM_NOHEADER;
   if (option (OPTWEED))
   {
     chflags |= CH_WEED;
-    cmflags |= M_CM_WEED;
+    cmflags |= MUTT_CM_WEED;
   }
 
   _mutt_copy_message (tmpfp, fp, cur, cur->content, cmflags, chflags);
@@ -847,7 +847,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
       _("Can't decode all tagged attachments.  MIME-encapsulate the others?"))) == -1)
       return;
-    else if (rc == M_YES)
+    else if (rc == MUTT_YES)
       mime_reply_any = 1;
   }
   else if (nattach == 1)
@@ -899,10 +899,10 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
       strfcpy (prefix, ">", sizeof (prefix));
 
     st.prefix = prefix;
-    st.flags  = M_CHARCONV;
+    st.flags  = MUTT_CHARCONV;
     
     if (option (OPTWEED)) 
-      st.flags |= M_WEED;
+      st.flags |= MUTT_WEED;
 
     if (option (OPTHEADER))
       include_header (1, fp, parent, tmpfp, prefix);
@@ -944,6 +944,6 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   
   if (ci_send_message (flags, tmphdr, tmpbody, NULL,
 			  parent ? parent : (cur ? cur->hdr : NULL)) == 0)
-    mutt_set_flag (Context, hdr, M_REPLIED, 1);
+    mutt_set_flag (Context, hdr, MUTT_REPLIED, 1);
 }
 

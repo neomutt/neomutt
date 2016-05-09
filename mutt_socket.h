@@ -24,9 +24,9 @@
 #include "lib.h"
 
 /* logging levels */
-#define M_SOCK_LOG_CMD  2
-#define M_SOCK_LOG_HDR  3
-#define M_SOCK_LOG_FULL 4
+#define MUTT_SOCK_LOG_CMD  2
+#define MUTT_SOCK_LOG_HDR  3
+#define MUTT_SOCK_LOG_FULL 4
 
 typedef struct _connection
 {
@@ -56,10 +56,10 @@ int mutt_socket_close (CONNECTION* conn);
 int mutt_socket_read (CONNECTION* conn, char* buf, size_t len);
 int mutt_socket_poll (CONNECTION* conn);
 int mutt_socket_readchar (CONNECTION *conn, char *c);
-#define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,M_SOCK_LOG_CMD)
+#define mutt_socket_readln(A,B,C) mutt_socket_readln_d(A,B,C,MUTT_SOCK_LOG_CMD)
 int mutt_socket_readln_d (char *buf, size_t buflen, CONNECTION *conn, int dbg);
-#define mutt_socket_write(A,B) mutt_socket_write_d(A,B,-1,M_SOCK_LOG_CMD)
-#define mutt_socket_write_n(A,B,C) mutt_socket_write_d(A,B,C,M_SOCK_LOG_CMD)
+#define mutt_socket_write(A,B) mutt_socket_write_d(A,B,-1,MUTT_SOCK_LOG_CMD)
+#define mutt_socket_write_n(A,B,C) mutt_socket_write_d(A,B,C,MUTT_SOCK_LOG_CMD)
 int mutt_socket_write_d (CONNECTION *conn, const char *buf, int len, int dbg);
 
 /* stupid hack for imap_logout_all */

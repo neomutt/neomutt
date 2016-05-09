@@ -68,7 +68,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 		   unsigned long data, format_flag flags)
 {
   char fmt[SHORT_STRING], tmp[SHORT_STRING], *cp;
-  int count, optional = (flags & M_FORMAT_OPTIONAL);
+  int count, optional = (flags & MUTT_FORMAT_OPTIONAL);
   MUTTMENU *menu = (MUTTMENU *) data;
 
   *buf = 0;
@@ -218,7 +218,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 	i = option(OPTATTACHMSG) ? 3 : ((Context->readonly ||
           Context->dontwrite) ? 2 : (Context->changed ||
           /* deleted doesn't necessarily mean changed in IMAP */
-          (Context->magic != M_IMAP &&
+          (Context->magic != MUTT_IMAP &&
            Context->deleted)) ? 1 : 0);
       }
       
@@ -291,7 +291,7 @@ status_format_str (char *buf, size_t buflen, size_t col, int cols, char op, cons
 
   if (optional)
     _menu_status_line (buf, buflen, col, cols, menu, ifstring);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     _menu_status_line (buf, buflen, col, cols, menu, elsestring);
 
   return (src);

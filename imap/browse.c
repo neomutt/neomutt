@@ -220,7 +220,7 @@ int imap_mailbox_state (const char* path, struct mailbox_state* state)
     dprint (1, (debugfile, "imap_mailbox_state: bad path %s\n", path));
     return -1;
   }
-  if (!(idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW)))
+  if (!(idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW)))
   {
     dprint (2, (debugfile, "imap_mailbox_state: no open connection for %s\n",
 		path));
@@ -259,7 +259,7 @@ int imap_mailbox_create (const char* folder)
     return -1;
   }
 
-  if (!(idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW)))
+  if (!(idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW)))
   {
     dprint (1, (debugfile, "imap_mailbox_create: Couldn't find open connection to %s", mx.account.host));
     goto fail;
@@ -275,7 +275,7 @@ int imap_mailbox_create (const char* folder)
     buf[n] = '\0';
   }
   
-  if (mutt_get_field (_("Create mailbox: "), buf, sizeof (buf), M_FILE) < 0)
+  if (mutt_get_field (_("Create mailbox: "), buf, sizeof (buf), MUTT_FILE) < 0)
     goto fail;
 
   if (!mutt_strlen (buf))
@@ -313,7 +313,7 @@ int imap_mailbox_rename(const char* mailbox)
     return -1;
   }
 
-  if (!(idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW)))
+  if (!(idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW)))
   {
     dprint (1, (debugfile, "imap_mailbox_rename: Couldn't find open connection to %s", mx.account.host));
     goto fail;
@@ -328,7 +328,7 @@ int imap_mailbox_rename(const char* mailbox)
   snprintf(buf, sizeof (buf), _("Rename mailbox %s to: "), mx.mbox);
   strfcpy (newname, mx.mbox, sizeof (newname));
   
- if (mutt_get_field (buf, newname, sizeof (newname), M_FILE) < 0)
+ if (mutt_get_field (buf, newname, sizeof (newname), MUTT_FILE) < 0)
     goto fail;
 
   if (!mutt_strlen (newname))

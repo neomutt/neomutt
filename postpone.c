@@ -129,7 +129,7 @@ int mutt_num_postponed (int force)
 
     if (access (Postponed, R_OK | F_OK) != 0)
       return (PostCount = 0);
-    if (mx_open_mailbox (Postponed, M_NOSORT | M_QUIET, &ctx) == NULL)
+    if (mx_open_mailbox (Postponed, MUTT_NOSORT | MUTT_QUIET, &ctx) == NULL)
       PostCount = 0;
     else
       PostCount = ctx.msgcount;
@@ -149,7 +149,7 @@ static void post_entry (char *s, size_t slen, MUTTMENU *menu, int entry)
   CONTEXT *ctx = (CONTEXT *) menu->data;
 
   _mutt_make_string (s, slen, NONULL (HdrFmt), ctx, ctx->hdrs[entry],
-		     M_FORMAT_ARROWCURSOR);
+		     MUTT_FORMAT_ARROWCURSOR);
 }
 
 static HEADER *select_msg (void)
@@ -178,7 +178,7 @@ static HEADER *select_msg (void)
     {
       case OP_DELETE:
       case OP_UNDELETE:
-	mutt_set_flag (PostContext, PostContext->hdrs[menu->current], M_DELETE, (i == OP_DELETE) ? 1 : 0);
+	mutt_set_flag (PostContext, PostContext->hdrs[menu->current], MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
 	PostCount = PostContext->msgcount - PostContext->deleted;
 	if (option (OPTRESOLVE) && menu->current < menu->max - 1)
 	{
@@ -239,7 +239,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   if (!Postponed)
     return (-1);
 
-  if ((PostContext = mx_open_mailbox (Postponed, M_NOSORT, NULL)) == NULL)
+  if ((PostContext = mx_open_mailbox (Postponed, MUTT_NOSORT, NULL)) == NULL)
   {
     PostCount = 0;
     mutt_error _("No postponed messages.");
@@ -275,14 +275,14 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
   }
 
   /* finished with this message, so delete it. */
-  mutt_set_flag (PostContext, h, M_DELETE, 1);
+  mutt_set_flag (PostContext, h, MUTT_DELETE, 1);
 
   /* update the count for the status display */
   PostCount = PostContext->msgcount - PostContext->deleted;
 
   /* avoid the "purge deleted messages" prompt */
   opt_delete = quadoption (OPT_DELETE);
-  set_quadoption (OPT_DELETE, M_YES);
+  set_quadoption (OPT_DELETE, MUTT_YES);
   mx_close_mailbox (PostContext, NULL);
   set_quadoption (OPT_DELETE, opt_delete);
 
@@ -664,7 +664,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 	b->noconv = 1;
       else
       {
-	s.flags |= M_CHARCONV;
+	s.flags |= MUTT_CHARCONV;
 	b->noconv = 0;
       }
 

@@ -30,15 +30,15 @@
 /* supported mailbox formats */
 enum
 {
-  M_MBOX = 1,
-  M_MMDF,
-  M_MH,
-  M_MAILDIR,
-  M_IMAP,
-  M_POP
+  MUTT_MBOX = 1,
+  MUTT_MMDF,
+  MUTT_MH,
+  MUTT_MAILDIR,
+  MUTT_IMAP,
+  MUTT_POP
 };
 
-WHERE short DefaultMagic INITVAL (M_MBOX);
+WHERE short DefaultMagic INITVAL (MUTT_MBOX);
 
 #define MMDF_SEP "\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5

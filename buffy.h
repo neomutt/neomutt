@@ -17,8 +17,8 @@
  */
 
 /*parameter to mutt_parse_mailboxes*/
-#define M_MAILBOXES   1
-#define M_UNMAILBOXES 2 
+#define MUTT_MAILBOXES   1
+#define MUTT_UNMAILBOXES 2 
 
 typedef struct buffy_t
 {

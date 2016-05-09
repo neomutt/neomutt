@@ -287,9 +287,9 @@ static void pgp_copy_clearsigned (FILE *fpin, STATE *s, char *charset)
 
   /* fromcode comes from the MIME Content-Type charset label. It might
    * be a wrong label, so we want the ability to do corrections via
-   * charset-hooks. Therefore we set flags to M_ICONV_HOOK_FROM.
+   * charset-hooks. Therefore we set flags to MUTT_ICONV_HOOK_FROM.
    */
-  fc = fgetconv_open (fpin, charset, Charset, M_ICONV_HOOK_FROM);
+  fc = fgetconv_open (fpin, charset, Charset, MUTT_ICONV_HOOK_FROM);
   
   for (complete = 1, armor_header = 1;
        fgetconvs (buf, sizeof (buf), fc) != NULL;
@@ -350,7 +350,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
   char body_charset[STRING];
   mutt_get_body_charset (body_charset, sizeof (body_charset), m);
 
-  rc = 0;	/* silence false compiler warning if (s->flags & M_DISPLAY) */
+  rc = 0;	/* silence false compiler warning if (s->flags & MUTT_DISPLAY) */
 
   fseeko (s->fpin, m->offset, 0);
   last_pos = m->offset;
@@ -389,7 +389,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	continue;
       }
 
-      have_any_sigs = have_any_sigs || (clearsign && (s->flags & M_VERIFY));
+      have_any_sigs = have_any_sigs || (clearsign && (s->flags & MUTT_VERIFY));
 
       /* Copy PGP material to temporary file */
       mutt_mktemp (tmpfname, sizeof (tmpfname));
@@ -429,7 +429,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
       fflush (tmpfp);
 
       /* Invoke PGP if needed */
-      if (!clearsign || (s->flags & M_VERIFY))
+      if (!clearsign || (s->flags & MUTT_VERIFY))
       {
 	mutt_mktemp (outfile, sizeof (outfile));
 	if ((pgpout = safe_fopen (outfile, "w+")) == NULL)
@@ -460,7 +460,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  
 	  safe_fclose (&pgpin);
 
-	  if (s->flags & M_DISPLAY)
+	  if (s->flags & MUTT_DISPLAY)
 	  {
 	    crypt_current_time (s, "PGP");
 	    rc = pgp_copy_checksig (pgperr, s->fpout);
@@ -469,7 +469,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  safe_fclose (&pgperr);
 	  rv = mutt_wait_filter (thepid);
 	  
-	  if (s->flags & M_DISPLAY)
+	  if (s->flags & MUTT_DISPLAY)
 	  {
 	    if (rc == 0) have_any_sigs = 1;
 	    /*
@@ -500,7 +500,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	  pgp_void_passphrase ();
 	}
 	
-	if (could_not_decrypt && !(s->flags & M_DISPLAY))
+	if (could_not_decrypt && !(s->flags & MUTT_DISPLAY))
 	{
           mutt_error _("Could not decrypt PGP message");
 	  mutt_sleep (1);
@@ -513,7 +513,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
        * Now, copy cleartext to the screen.
        */
 
-      if(s->flags & M_DISPLAY)
+      if(s->flags & MUTT_DISPLAY)
       {
 	if (needpass)
 	  state_attach_puts (_("[-- BEGIN PGP MESSAGE --]\n\n"), s);
@@ -540,7 +540,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 
 	rewind (pgpout);
 	state_set_prefix (s);
-	fc = fgetconv_open (pgpout, expected_charset, Charset, M_ICONV_HOOK_FROM);
+	fc = fgetconv_open (pgpout, expected_charset, Charset, MUTT_ICONV_HOOK_FROM);
 	while ((c = fgetconv (fc)) != EOF)
 	  state_prefix_putc (c, s);
 	fgetconv_close (&fc);
@@ -558,7 +558,7 @@ int pgp_application_pgp_handler (BODY *m, STATE *s)
 	mutt_unlink (outfile);
       }
 
-      if (s->flags & M_DISPLAY)
+      if (s->flags & MUTT_DISPLAY)
       {
 	state_putc ('\n', s);
 	if (needpass)
@@ -798,7 +798,7 @@ void pgp_extract_keys_from_messages (HEADER *h)
 	  goto bailout;
 	}
 	mutt_copy_message (fpout, Context, Context->hdrs[Context->v2r[i]], 
-			   M_CM_DECODE|M_CM_CHARCONV, 0);
+			   MUTT_CM_DECODE|MUTT_CM_CHARCONV, 0);
       }
     }
   } 
@@ -810,7 +810,7 @@ void pgp_extract_keys_from_messages (HEADER *h)
       safe_fclose (&fpout);
       goto bailout;
     }
-    mutt_copy_message (fpout, Context, h, M_CM_DECODE|M_CM_CHARCONV, 0);
+    mutt_copy_message (fpout, Context, h, MUTT_CM_DECODE|MUTT_CM_CHARCONV, 0);
   }
       
   safe_fclose (&fpout);
@@ -917,7 +917,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
   {
     safe_fclose (&pgperr);
     unlink (pgptmpfile);
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: could not create a PGP subprocess! --]\n\n"), s);
     return (NULL);
   }
@@ -954,7 +954,7 @@ BODY *pgp_decrypt_part (BODY *a, STATE *s, FILE *fpout, BODY *p)
     return NULL;
   }
 
-  if (s->flags & M_DISPLAY)
+  if (s->flags & MUTT_DISPLAY)
   {
     rewind (pgperr);
     if (pgp_copy_checksig (pgperr, s->fpout) == 0 && !rv && p)
@@ -1087,16 +1087,16 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
   mutt_mktemp (tempfile, sizeof (tempfile));
   if ((fpout = safe_fopen (tempfile, "w+")) == NULL)
   {
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: could not create temporary file! --]\n"), s);
     return -1;
   }
 
-  if (s->flags & M_DISPLAY) crypt_current_time (s, "PGP");
+  if (s->flags & MUTT_DISPLAY) crypt_current_time (s, "PGP");
 
   if ((tattach = pgp_decrypt_part (a, s, fpout, a)) != NULL)
   {
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- The following data is PGP/MIME encrypted --]\n\n"), s);
 
     fpin = s->fpin;
@@ -1114,7 +1114,7 @@ int pgp_encrypted_handler (BODY *a, STATE *s)
     if (mutt_is_multipart_signed (tattach) && !tattach->next)
       a->goodsig |= tattach->goodsig;
     
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
     {
       state_puts ("\n", s);
       state_attach_puts (_("[-- End of PGP/MIME encrypted data --]\n"), s);
@@ -1298,13 +1298,13 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
       if (crypt_hook != NULL)
       {
         keyID = crypt_hook->data;
-        r = M_YES;
+        r = MUTT_YES;
         if (! oppenc_mode && option(OPTCRYPTCONFIRMHOOK))
         {
           snprintf (buf, sizeof (buf), _("Use keyID = \"%s\" for %s?"), keyID, p->mailbox);
-          r = mutt_yesorno (buf, M_YES);
+          r = mutt_yesorno (buf, MUTT_YES);
         }
-        if (r == M_YES)
+        if (r == MUTT_YES)
         {
           if (crypt_is_numerical_keyid (keyID))
           {
@@ -1325,7 +1325,7 @@ char *pgp_findKeys (ADDRESS *adrlist, int oppenc_mode)
             k_info = pgp_getkeybystr (keyID, KEYFLAG_CANENCRYPT, PGP_PUBRING);
           }
         }
-        else if (r == M_NO)
+        else if (r == MUTT_NO)
         {
           if (key_selected || (crypt_hook->next != NULL))
           {

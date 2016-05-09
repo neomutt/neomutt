@@ -121,8 +121,8 @@ enum
 };
 
 /* imap_conn_find flags */
-#define M_IMAP_CONN_NONEW    (1<<0)
-#define M_IMAP_CONN_NOSELECT (1<<1)
+#define MUTT_IMAP_CONN_NONEW    (1<<0)
+#define MUTT_IMAP_CONN_NOSELECT (1<<1)
 
 /* -- data structures -- */
 typedef struct

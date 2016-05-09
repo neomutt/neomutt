@@ -185,7 +185,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
   }
   stat (msgfile, &st);
   unlink (msgfile);
-  mutt_progress_init (&progress, _("Sending message..."), M_PROGRESS_SIZE,
+  mutt_progress_init (&progress, _("Sending message..."), MUTT_PROGRESS_SIZE,
                       NetInc, st.st_size);
 
   snprintf (buf, sizeof (buf), "DATA\r\n");
@@ -208,13 +208,13 @@ smtp_data (CONNECTION * conn, const char *msgfile)
       snprintf (buf + buflen - 1, sizeof (buf) - buflen + 1, "\r\n");
     if (buf[0] == '.')
     {
-      if (mutt_socket_write_d (conn, ".", -1, M_SOCK_LOG_FULL) == -1)
+      if (mutt_socket_write_d (conn, ".", -1, MUTT_SOCK_LOG_FULL) == -1)
       {
         safe_fclose (&fp);
         return smtp_err_write;
       }
     }
-    if (mutt_socket_write_d (conn, buf, -1, M_SOCK_LOG_FULL) == -1)
+    if (mutt_socket_write_d (conn, buf, -1, MUTT_SOCK_LOG_FULL) == -1)
     {
       safe_fclose (&fp);
       return smtp_err_write;
@@ -222,7 +222,7 @@ smtp_data (CONNECTION * conn, const char *msgfile)
     mutt_progress_update (&progress, ftell (fp), -1);
   }
   if (!term && buflen &&
-      mutt_socket_write_d (conn, "\r\n", -1, M_SOCK_LOG_FULL) == -1)
+      mutt_socket_write_d (conn, "\r\n", -1, MUTT_SOCK_LOG_FULL) == -1)
   {
     safe_fclose (&fp);
     return smtp_err_write;
@@ -372,7 +372,7 @@ static int smtp_fill_account (ACCOUNT* account)
 
   account->flags = 0;
   account->port = 0;
-  account->type = M_ACCT_TYPE_SMTP;
+  account->type = MUTT_ACCT_TYPE_SMTP;
 
   urlstr = safe_strdup (SmtpUrl);
   url_parse_ciss (&url, urlstr);
@@ -387,11 +387,11 @@ static int smtp_fill_account (ACCOUNT* account)
   FREE (&urlstr);
 
   if (url.scheme == U_SMTPS)
-    account->flags |= M_ACCT_SSL;
+    account->flags |= MUTT_ACCT_SSL;
 
   if (!account->port)
   {
-    if (account->flags & M_ACCT_SSL)
+    if (account->flags & MUTT_ACCT_SSL)
       account->port = SMTPS_PORT;
     else
     {
@@ -421,10 +421,10 @@ static int smtp_helo (CONNECTION* conn)
   if (!Esmtp)
   {
     /* if TLS or AUTH are requested, use EHLO */
-    if (conn->account.flags & M_ACCT_USER)
+    if (conn->account.flags & MUTT_ACCT_USER)
       Esmtp = 1;
 #ifdef USE_SSL
-    if (option (OPTSSLFORCETLS) || quadoption (OPT_SSLSTARTTLS) != M_NO)
+    if (option (OPTSSLFORCETLS) || quadoption (OPT_SSLSTARTTLS) != MUTT_NO)
       Esmtp = 1;
 #endif
   }
@@ -458,15 +458,15 @@ static int smtp_open (CONNECTION* conn)
 
 #ifdef USE_SSL
   if (conn->ssf)
-    rc = M_NO;
+    rc = MUTT_NO;
   else if (option (OPTSSLFORCETLS))
-    rc = M_YES;
+    rc = MUTT_YES;
   else if (mutt_bit_isset (Capabilities, STARTTLS) &&
            (rc = query_quadoption (OPT_SSLSTARTTLS,
                                    _("Secure connection with TLS?"))) == -1)
     return rc;
 
-  if (rc == M_YES)
+  if (rc == MUTT_YES)
   {
     if (mutt_socket_write (conn, "STARTTLS\r\n") < 0)
       return smtp_err_write;
@@ -486,7 +486,7 @@ static int smtp_open (CONNECTION* conn)
   }
 #endif
 
-  if (conn->account.flags & M_ACCT_USER)
+  if (conn->account.flags & MUTT_ACCT_USER)
   {
     if (!mutt_bit_isset (Capabilities, AUTH))
     {

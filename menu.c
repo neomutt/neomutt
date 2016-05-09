@@ -37,15 +37,15 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
   memset (&mbstate, 0, sizeof (mbstate));
   while (*s)
   {
-    if (*s < M_TREE_MAX)
+    if (*s < MUTT_TREE_MAX)
     {
       if (do_color)
 	SETCOLOR (MT_COLOR_TREE);
-      while (*s && *s < M_TREE_MAX)
+      while (*s && *s < MUTT_TREE_MAX)
       {
 	switch (*s)
 	{
-	  case M_TREE_LLCORNER:
+	  case MUTT_TREE_LLCORNER:
 	    if (option (OPTASCIICHARS))
 	      addch ('`');
 #ifdef WACS_LLCORNER
@@ -58,7 +58,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_LLCORNER);
 #endif
 	    break;
-	  case M_TREE_ULCORNER:
+	  case MUTT_TREE_ULCORNER:
 	    if (option (OPTASCIICHARS))
 	      addch (',');
 #ifdef WACS_ULCORNER
@@ -71,7 +71,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_ULCORNER);
 #endif
 	    break;
-	  case M_TREE_LTEE:
+	  case MUTT_TREE_LTEE:
 	    if (option (OPTASCIICHARS))
 	      addch ('|');
 #ifdef WACS_LTEE
@@ -84,7 +84,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_LTEE);
 #endif
 	    break;
-	  case M_TREE_HLINE:
+	  case MUTT_TREE_HLINE:
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
 #ifdef WACS_HLINE
@@ -97,7 +97,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_HLINE);
 #endif
 	    break;
-	  case M_TREE_VLINE:
+	  case MUTT_TREE_VLINE:
 	    if (option (OPTASCIICHARS))
 	      addch ('|');
 #ifdef WACS_VLINE
@@ -110,7 +110,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_VLINE);
 #endif
 	    break;
-	  case M_TREE_TTEE:
+	  case MUTT_TREE_TTEE:
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
 #ifdef WACS_TTEE
@@ -123,7 +123,7 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_TTEE);
 #endif
 	    break;
-	  case M_TREE_BTEE:
+	  case MUTT_TREE_BTEE:
 	    if (option (OPTASCIICHARS))
 	      addch ('-');
 #ifdef WACS_BTEE
@@ -136,22 +136,22 @@ static void print_enriched_string (int attr, unsigned char *s, int do_color)
 	      addch (ACS_BTEE);
 #endif
 	    break;
-	  case M_TREE_SPACE:
+	  case MUTT_TREE_SPACE:
 	    addch (' ');
 	    break;
-	  case M_TREE_RARROW:
+	  case MUTT_TREE_RARROW:
 	    addch ('>');
 	    break;
-	  case M_TREE_STAR:
+	  case MUTT_TREE_STAR:
 	    addch ('*'); /* fake thread indicator */
 	    break;
-	  case M_TREE_HIDDEN:
+	  case MUTT_TREE_HIDDEN:
 	    addch ('&');
 	    break;
-	  case M_TREE_EQUALS:
+	  case MUTT_TREE_EQUALS:
 	    addch ('=');
 	    break;
-	  case M_TREE_MISSING:
+	  case MUTT_TREE_MISSING:
 	    addch ('?');
 	    break;
 	}
@@ -220,7 +220,7 @@ void menu_redraw_status (MUTTMENU *menu)
 {
   char buf[STRING];
 
-  snprintf (buf, sizeof (buf), M_MODEFMT, menu->title);
+  snprintf (buf, sizeof (buf), MUTT_MODEFMT, menu->title);
   SETCOLOR (MT_COLOR_STATUS);
   mutt_window_move (menu->statuswin, 0, 0);
   mutt_paddstr (menu->statuswin->cols, buf);
@@ -713,8 +713,8 @@ void mutt_menuDestroy (MUTTMENU **p)
   FREE (p);		/* __FREE_CHECKED__ */
 }
 
-#define M_SEARCH_UP   1
-#define M_SEARCH_DOWN 2
+#define MUTT_SEARCH_UP   1
+#define MUTT_SEARCH_DOWN 2
 
 static int menu_search (MUTTMENU *menu, int op)
 {
@@ -731,7 +731,7 @@ static int menu_search (MUTTMENU *menu, int op)
     strfcpy (buf, searchBuf && *searchBuf ? searchBuf : "", sizeof (buf));
     if (mutt_get_field ((op == OP_SEARCH || op == OP_SEARCH_NEXT)
 			? _("Search for: ") : _("Reverse search for: "),
-			buf, sizeof (buf), M_CLEAR) != 0 || !buf[0])
+			buf, sizeof (buf), MUTT_CLEAR) != 0 || !buf[0])
       return (-1);
     if (menu->menu >= 0 && menu->menu < MENU_MAX)
     {
@@ -739,10 +739,10 @@ static int menu_search (MUTTMENU *menu, int op)
       searchBuf = SearchBuffers[menu->menu];
     }
     menu->searchDir = (op == OP_SEARCH || op == OP_SEARCH_NEXT) ?
-		       M_SEARCH_DOWN : M_SEARCH_UP;
+		       MUTT_SEARCH_DOWN : MUTT_SEARCH_UP;
   }
 
-  searchDir = (menu->searchDir == M_SEARCH_UP) ? -1 : 1;
+  searchDir = (menu->searchDir == MUTT_SEARCH_UP) ? -1 : 1;
   if (op == OP_SEARCH_OPPOSITE)
     searchDir = -searchDir;
 

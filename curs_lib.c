@@ -245,7 +245,7 @@ int mutt_yesorno (const char *msg, int def)
    * ensure there is enough room for the answer and truncate the question
    * to fit.
    */
-  safe_asprintf (&answer_string, " ([%s]/%s): ", def == M_YES ? yes : no, def == M_YES ? no : yes);
+  safe_asprintf (&answer_string, " ([%s]/%s): ", def == MUTT_YES ? yes : no, def == MUTT_YES ? no : yes);
   answer_string_len = mutt_strwidth (answer_string);
   /* maxlen here is sort of arbitrary, so pick a reasonable upper bound */
   msglen = mutt_wstr_trunc (msg, 4*MuttMessageWindow->cols, MuttMessageWindow->cols - answer_string_len, NULL);
@@ -276,7 +276,7 @@ int mutt_yesorno (const char *msg, int def)
 #endif
 	(tolower (ch.ch) == 'y'))
     {
-      def = M_YES;
+      def = MUTT_YES;
       break;
     }
     else if (
@@ -286,7 +286,7 @@ int mutt_yesorno (const char *msg, int def)
 #endif
 	     (tolower (ch.ch) == 'n'))
     {
-      def = M_NO;
+      def = MUTT_NO;
       break;
     }
     else
@@ -304,7 +304,7 @@ int mutt_yesorno (const char *msg, int def)
 
   if (def != -1)
   {
-    addstr ((char *) (def == M_YES ? yes : no));
+    addstr ((char *) (def == MUTT_YES ? yes : no));
     mutt_refresh ();
   }
   else
@@ -323,7 +323,7 @@ void mutt_query_exit (void)
   curs_set (1);
   if (Timeout)
     timeout (-1); /* restore blocking operation */
-  if (mutt_yesorno (_("Exit Mutt?"), M_YES) == M_YES)
+  if (mutt_yesorno (_("Exit Mutt?"), MUTT_YES) == MUTT_YES)
   {
     endwin ();
     exit (1);
@@ -395,7 +395,7 @@ void mutt_progress_init (progress_t* progress, const char *msg,
   progress->msg = msg;
   progress->size = size;
   if (progress->size) {
-    if (progress->flags & M_PROGRESS_SIZE)
+    if (progress->flags & MUTT_PROGRESS_SIZE)
       mutt_pretty_size (progress->sizestr, sizeof (progress->sizestr),
 			progress->size);
     else
@@ -433,7 +433,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
     goto out;
 
   /* refresh if size > inc */
-  if (progress->flags & M_PROGRESS_SIZE &&
+  if (progress->flags & MUTT_PROGRESS_SIZE &&
       (pos >= progress->pos + (progress->inc << 10)))
     update = 1;
   else if (pos >= progress->pos + progress->inc)
@@ -453,7 +453,7 @@ void mutt_progress_update (progress_t* progress, long pos, int percent)
 
   if (update)
   {
-    if (progress->flags & M_PROGRESS_SIZE)
+    if (progress->flags & MUTT_PROGRESS_SIZE)
     {
       pos = pos / (progress->inc << 10) * (progress->inc << 10);
       mutt_pretty_size (posstr, sizeof (posstr), pos);
@@ -756,7 +756,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
   {
     mutt_refresh ();
     buf[0] = 0;
-    _mutt_select_file (buf, blen, M_SEL_FOLDER | (multiple ? M_SEL_MULTI : 0), 
+    _mutt_select_file (buf, blen, MUTT_SEL_FOLDER | (multiple ? MUTT_SEL_MULTI : 0), 
 		       files, numfiles);
     *redraw = REDRAW_FULL;
   }
@@ -766,7 +766,7 @@ int _mutt_enter_fname (const char *prompt, char *buf, size_t blen, int *redraw, 
 
     sprintf (pc, "%s: ", prompt);	/* __SPRINTF_CHECKED__ */
     mutt_unget_event (ch.op ? 0 : ch.ch, ch.op ? ch.op : 0);
-    if (_mutt_get_field (pc, buf, blen, (buffy ? M_EFILE : M_FILE) | M_CLEAR, multiple, files, numfiles)
+    if (_mutt_get_field (pc, buf, blen, (buffy ? MUTT_EFILE : MUTT_FILE) | MUTT_CLEAR, multiple, files, numfiles)
 	!= 0)
       buf[0] = 0;
     MAYBE_REDRAW (*redraw);
@@ -950,7 +950,7 @@ void mutt_format_string (char *dest, size_t destlen,
       k = (k == (size_t)(-1)) ? 1 : n;
       wc = replacement_char ();
     }
-    if (arboreal && wc < M_TREE_MAX)
+    if (arboreal && wc < MUTT_TREE_MAX)
       w = 1; /* hack */
     else
     {
@@ -1128,9 +1128,9 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
       wc = replacement_char ();
     }
     cw = wcwidth (wc);
-    /* hack because M_TREE symbols aren't turned into characters
+    /* hack because MUTT_TREE symbols aren't turned into characters
      * until rendered by print_enriched_string (#3364) */
-    if (cw < 0 && cl == 1 && src[0] && src[0] < M_TREE_MAX)
+    if (cw < 0 && cl == 1 && src[0] && src[0] < MUTT_TREE_MAX)
       cw = 1;
     else if (cw < 0)
       cw = 0;			/* unprintable wchar */

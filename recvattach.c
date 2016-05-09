@@ -72,9 +72,9 @@ void mutt_update_tree (ATTACHPTR **idx, short idxlen)
       if (idx[x]->level)
       {
 	s = buf + 2 * (idx[x]->level - 1);
-	*s++ = (idx[x]->content->next) ? M_TREE_LTEE : M_TREE_LLCORNER;
-	*s++ = M_TREE_HLINE;
-	*s++ = M_TREE_RARROW;
+	*s++ = (idx[x]->content->next) ? MUTT_TREE_LTEE : MUTT_TREE_LLCORNER;
+	*s++ = MUTT_TREE_HLINE;
+	*s++ = MUTT_TREE_RARROW;
       }
       else
 	s = buf;
@@ -186,7 +186,7 @@ const char *mutt_attach_fmt (char *dest,
   char tmp[SHORT_STRING];
   char charset[SHORT_STRING];
   ATTACHPTR *aptr = (ATTACHPTR *) data;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
   size_t l;
   
   switch (op)
@@ -228,7 +228,7 @@ const char *mutt_attach_fmt (char *dest,
 	{
 	  char s[SHORT_STRING];
 	  _mutt_make_string (s, sizeof (s), MsgFmt, NULL, aptr->content->hdr,
-			     M_FORMAT_FORCESUBJ | M_FORMAT_MAKEPRINT | M_FORMAT_ARROWCURSOR);
+			     MUTT_FORMAT_FORCESUBJ | MUTT_FORMAT_MAKEPRINT | MUTT_FORMAT_ARROWCURSOR);
 	  if (*s)
 	  {
 	    mutt_format_s (dest, destlen, prefix, s);
@@ -316,7 +316,7 @@ const char *mutt_attach_fmt (char *dest,
       }
       break;
     case 's':
-      if (flags & M_FORMAT_STAT_FILE)
+      if (flags & MUTT_FORMAT_STAT_FILE)
       {
 	struct stat st;
 	stat (aptr->content->filename, &st);
@@ -367,14 +367,14 @@ const char *mutt_attach_fmt (char *dest,
   
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
 
 static void attach_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
-  mutt_FormatString (b, blen, 0, MuttIndexWindow->cols, NONULL (AttachFormat), mutt_attach_fmt, (unsigned long) (((ATTACHPTR **)menu->data)[num]), M_FORMAT_ARROWCURSOR);
+  mutt_FormatString (b, blen, 0, MuttIndexWindow->cols, NONULL (AttachFormat), mutt_attach_fmt, (unsigned long) (((ATTACHPTR **)menu->data)[num]), MUTT_FORMAT_ARROWCURSOR);
 }
 
 int mutt_tag_attach (MUTTMENU *menu, int n, int m)
@@ -441,7 +441,7 @@ static int mutt_query_save_attachment (FILE *fp, BODY *body, HEADER *hdr, char *
   prompt = _("Save to file: ");
   while (prompt)
   {
-    if (mutt_get_field (prompt, buf, sizeof (buf), M_FILE | M_CLEAR) != 0
+    if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_FILE | MUTT_CLEAR) != 0
 	|| !buf[0])
     {
       mutt_clear_error ();
@@ -521,7 +521,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	  prepend_curdir (buf, sizeof (buf));
 
 	  if (mutt_get_field (_("Save to file: "), buf, sizeof (buf),
-				    M_FILE | M_CLEAR) != 0 || !buf[0])
+				    MUTT_FILE | MUTT_CLEAR) != 0 || !buf[0])
 	    return;
 	  mutt_expand_path (buf, sizeof (buf));
 	  if (mutt_check_overwrite (top->filename, buf, tfile,
@@ -536,7 +536,7 @@ void mutt_save_attachment_list (FILE *fp, int tag, BODY *top, HEADER *hdr, MUTTM
 	}
 	else
 	{
-	  rc = mutt_save_attachment (fp, top, tfile, M_SAVE_APPEND, hdr);
+	  rc = mutt_save_attachment (fp, top, tfile, MUTT_SAVE_APPEND, hdr);
 	  if (rc == 0 && AttachSep && (fpout = fopen (tfile,"a")) != NULL)
 	  {
 	    fprintf(fpout, "%s", AttachSep);
@@ -590,7 +590,7 @@ mutt_query_pipe_attachment (char *command, FILE *fp, BODY *body, int filter)
     snprintf (warning, sizeof (warning),
 	      _("WARNING!  You are about to overwrite %s, continue?"),
 	      body->filename);
-    if (mutt_yesorno (warning, M_NO) != M_YES) {
+    if (mutt_yesorno (warning, MUTT_NO) != MUTT_YES) {
       mutt_window_clearline (MuttMessageWindow, 0);
       return;
     }
@@ -674,7 +674,7 @@ void mutt_pipe_attachment_list (FILE *fp, int tag, BODY *top, int filter)
   memset (&state, 0, sizeof (STATE));
 
   if (mutt_get_field ((filter ? _("Filter through: ") : _("Pipe to: ")),
-				  buf, sizeof (buf), M_CMD) != 0 || !buf[0])
+				  buf, sizeof (buf), MUTT_CMD) != 0 || !buf[0])
     return;
 
   mutt_expand_path (buf, sizeof (buf));
@@ -701,7 +701,7 @@ static int can_print (BODY *top, int tag)
     snprintf (type, sizeof (type), "%s/%s", TYPE (top), top->subtype);
     if (!tag || top->tagged)
     {
-      if (!rfc1524_mailcap_lookup (top, type, NULL, M_PRINT))
+      if (!rfc1524_mailcap_lookup (top, type, NULL, MUTT_PRINT))
       {
 	if (ascii_strcasecmp ("text/plain", top->subtype) &&
 	    ascii_strcasecmp ("application/postscript", top->subtype))
@@ -732,7 +732,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
     if (!tag || top->tagged)
     {
       snprintf (type, sizeof (type), "%s/%s", TYPE (top), top->subtype);
-      if (!option (OPTATTACHSPLIT) && !rfc1524_mailcap_lookup (top, type, NULL, M_PRINT))
+      if (!option (OPTATTACHSPLIT) && !rfc1524_mailcap_lookup (top, type, NULL, MUTT_PRINT))
       {
 	if (!ascii_strcasecmp ("text/plain", top->subtype) ||
 	    !ascii_strcasecmp ("application/postscript", top->subtype))
@@ -745,7 +745,7 @@ static void print_attachment_list (FILE *fp, int tag, BODY *top, STATE *state)
 	  FILE *ifp;
 
 	  mutt_mktemp (newfile, sizeof (newfile));
-	  if (mutt_decode_save_attachment (fp, top, newfile, M_PRINTING, 0) == 0)
+	  if (mutt_decode_save_attachment (fp, top, newfile, MUTT_PRINTING, 0) == 0)
 	  {
 	    if ((ifp = fopen (newfile, "r")) != NULL)
 	    {
@@ -773,7 +773,7 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top)
   STATE state;
   
   pid_t thepid;
-  if (query_quadoption (OPT_PRINT, tag ? _("Print tagged attachment(s)?") : _("Print attachment?")) != M_YES)
+  if (query_quadoption (OPT_PRINT, tag ? _("Print tagged attachment(s)?") : _("Print attachment?")) != MUTT_YES)
     return;
 
   if (!option (OPTATTACHSPLIT))
@@ -835,7 +835,7 @@ mutt_attach_display_loop (MUTTMENU *menu, int op, FILE *fp, HEADER *hdr,
 	/* fall through */
 
       case OP_VIEW_ATTACH:
-	op = mutt_view_attachment (fp, idx[menu->current]->content, M_REGULAR,
+	op = mutt_view_attachment (fp, idx[menu->current]->content, MUTT_REGULAR,
 				   hdr, idx, *idxlen);
 	break;
 
@@ -953,7 +953,7 @@ void mutt_view_attachments (HEADER *hdr)
   /* make sure we have parsed this message */
   mutt_parse_mime_message (Context, hdr);
 
-  mutt_message_hook (Context, hdr, M_MESSAGEHOOK);
+  mutt_message_hook (Context, hdr, MUTT_MESSAGEHOOK);
   
   if ((msg = mx_open_message (Context, hdr->msgno)) == NULL)
     return;
@@ -1035,13 +1035,13 @@ void mutt_view_attachments (HEADER *hdr)
     switch (op)
     {
       case OP_ATTACH_VIEW_MAILCAP:
-	mutt_view_attachment (fp, idx[menu->current]->content, M_MAILCAP,
+	mutt_view_attachment (fp, idx[menu->current]->content, MUTT_MAILCAP,
 			      hdr, idx, idxlen);
 	menu->redraw = REDRAW_FULL;
 	break;
 
       case OP_ATTACH_VIEW_TEXT:
-	mutt_view_attachment (fp, idx[menu->current]->content, M_AS_TEXT,
+	mutt_view_attachment (fp, idx[menu->current]->content, MUTT_AS_TEXT,
 			      hdr, idx, idxlen);
 	menu->redraw = REDRAW_FULL;
 	break;
@@ -1113,7 +1113,7 @@ void mutt_view_attachments (HEADER *hdr)
 	CHECK_READONLY;
 
 #ifdef USE_POP
-	if (Context->magic == M_POP)
+	if (Context->magic == MUTT_POP)
 	{
 	  mutt_flushinp ();
 	  mutt_error _("Can't delete attachment from POP server.");

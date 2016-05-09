@@ -482,10 +482,10 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
   {
     case DT_QUAD:
     {    
-      if (!strcasecmp (s, "M_YES")) strncpy (t, "yes", l);
-      else if (!strcasecmp (s, "M_NO")) strncpy (t, "no", l);
-      else if (!strcasecmp (s, "M_ASKYES")) strncpy (t, "ask-yes", l);
-      else if (!strcasecmp (s, "M_ASKNO")) strncpy (t, "ask-no", l);
+      if (!strcasecmp (s, "MUTT_YES")) strncpy (t, "yes", l);
+      else if (!strcasecmp (s, "MUTT_NO")) strncpy (t, "no", l);
+      else if (!strcasecmp (s, "MUTT_ASKYES")) strncpy (t, "ask-yes", l);
+      else if (!strcasecmp (s, "MUTT_ASKNO")) strncpy (t, "ask-no", l);
       break;
     }
     case DT_BOOL:

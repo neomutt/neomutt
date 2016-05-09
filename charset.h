@@ -51,10 +51,10 @@ char *mutt_get_default_charset (void);
 
 /* flags for charset.c:mutt_convert_string(), fgetconv_open(), and
  * mutt_iconv_open(). Note that applying charset-hooks to tocode is
- * never needed, and sometimes hurts: Hence there is no M_ICONV_HOOK_TO
+ * never needed, and sometimes hurts: Hence there is no MUTT_ICONV_HOOK_TO
  * flag.
  */
-#define M_ICONV_HOOK_FROM 1	/* apply charset-hooks to fromcode */
+#define MUTT_ICONV_HOOK_FROM 1	/* apply charset-hooks to fromcode */
 
 /* Check if given character set is valid (either officially assigned or
  * known to local iconv implementation). If strict is non-zero, check

@@ -23,7 +23,7 @@
 #include "config.h"
 
 #include "mutt.h"
-#include "mx.h"	/* for M_IMAP */
+#include "mx.h"	/* for MUTT_IMAP */
 #include "url.h"
 #include "imap_private.h"
 #ifdef USE_HCACHE
@@ -61,7 +61,7 @@ int imap_expand_path (char* path, size_t len)
   if (imap_parse_path (path, &mx) < 0)
     return -1;
 
-  idata = imap_conn_find (&mx.account, M_IMAP_CONN_NONEW);
+  idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
   mutt_account_tourl (&mx.account, &url);
   imap_fix_path (idata, mx.mbox, fixedpath, sizeof (fixedpath));
   url.path = fixedpath;
@@ -195,7 +195,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
   /* Defaults */
   memset(&mx->account, 0, sizeof(mx->account));
   mx->account.port = ImapPort;
-  mx->account.type = M_ACCT_TYPE_IMAP;
+  mx->account.type = MUTT_ACCT_TYPE_IMAP;
 
   c = safe_strdup (path);
   url_parse_ciss (&url, c);
@@ -210,7 +210,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     mx->mbox = safe_strdup (url.path);
 
     if (url.scheme == U_IMAPS)
-      mx->account.flags |= M_ACCT_SSL;
+      mx->account.flags |= MUTT_ACCT_SSL;
 
     FREE (&c);
   }
@@ -233,7 +233,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
       *c = '\0';
       strfcpy (mx->account.user, tmp, sizeof (mx->account.user));
       strfcpy (tmp, c+1, sizeof (tmp));
-      mx->account.flags |= M_ACCT_USER;
+      mx->account.flags |= MUTT_ACCT_USER;
     }
 
     if ((n = sscanf (tmp, "%127[^:/]%127s", mx->account.host, tmp)) < 1)
@@ -245,11 +245,11 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
 
     if (n > 1) {
       if (sscanf (tmp, ":%hu%127s", &(mx->account.port), tmp) >= 1)
-	mx->account.flags |= M_ACCT_PORT;
+	mx->account.flags |= MUTT_ACCT_PORT;
       if (sscanf (tmp, "/%s", tmp) == 1)
       {
 	if (!ascii_strncmp (tmp, "ssl", 3))
-	  mx->account.flags |= M_ACCT_SSL;
+	  mx->account.flags |= MUTT_ACCT_SSL;
 	else
 	{
 	  dprint (1, (debugfile, "imap_parse_path: Unknown connection type in %s\n", path));
@@ -260,7 +260,7 @@ int imap_parse_path (const char* path, IMAP_MBOX* mx)
     }
   }
 
-  if ((mx->account.flags & M_ACCT_SSL) && !(mx->account.flags & M_ACCT_PORT))
+  if ((mx->account.flags & MUTT_ACCT_SSL) && !(mx->account.flags & MUTT_ACCT_PORT))
     mx->account.port = ImapsPort;
 
   return 0;
@@ -748,7 +748,7 @@ void imap_keepalive (void)
   conn = mutt_socket_head ();
   while (conn)
   {
-    if (conn->account.type == M_ACCT_TYPE_IMAP)
+    if (conn->account.type == MUTT_ACCT_TYPE_IMAP)
     {
       int need_free = 0;
 
@@ -830,20 +830,20 @@ int imap_wait_keepalive (pid_t pid)
 
 void imap_allow_reopen (CONTEXT *ctx)
 {
-  if (ctx && ctx->magic == M_IMAP && CTX_DATA->ctx == ctx)
+  if (ctx && ctx->magic == MUTT_IMAP && CTX_DATA->ctx == ctx)
     CTX_DATA->reopen |= IMAP_REOPEN_ALLOW;
 }
 
 void imap_disallow_reopen (CONTEXT *ctx)
 {
-  if (ctx && ctx->magic == M_IMAP && CTX_DATA->ctx == ctx)
+  if (ctx && ctx->magic == MUTT_IMAP && CTX_DATA->ctx == ctx)
     CTX_DATA->reopen &= ~IMAP_REOPEN_ALLOW;
 }
 
 int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 {
-  IMAP_DATA* a1_idata = imap_conn_find (a1, M_IMAP_CONN_NONEW);
-  IMAP_DATA* a2_idata = imap_conn_find (a2, M_IMAP_CONN_NONEW);
+  IMAP_DATA* a1_idata = imap_conn_find (a1, MUTT_IMAP_CONN_NONEW);
+  IMAP_DATA* a2_idata = imap_conn_find (a2, MUTT_IMAP_CONN_NONEW);
   const ACCOUNT* a1_canon = a1_idata == NULL ? a1 : &a1_idata->conn->account;
   const ACCOUNT* a2_canon = a2_idata == NULL ? a2 : &a2_idata->conn->account;
 

@@ -39,7 +39,7 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
     return 0;
 
 #ifdef USE_IMAP
-  if (a1->type == M_ACCT_TYPE_IMAP)
+  if (a1->type == MUTT_ACCT_TYPE_IMAP)
   {
     if (ImapUser)
       user = ImapUser;
@@ -47,15 +47,15 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
 #endif
 
 #ifdef USE_POP
-  if (a1->type == M_ACCT_TYPE_POP && PopUser)
+  if (a1->type == MUTT_ACCT_TYPE_POP && PopUser)
     user = PopUser;
 #endif
   
-  if (a1->flags & a2->flags & M_ACCT_USER)
+  if (a1->flags & a2->flags & MUTT_ACCT_USER)
     return (!strcmp (a1->user, a2->user));
-  if (a1->flags & M_ACCT_USER)
+  if (a1->flags & MUTT_ACCT_USER)
     return (!strcmp (a1->user, user));
-  if (a2->flags & M_ACCT_USER)
+  if (a2->flags & MUTT_ACCT_USER)
     return (!strcmp (a2->user, user));
 
   return 1;
@@ -73,17 +73,17 @@ int mutt_account_fromurl (ACCOUNT* account, ciss_url_t* url)
   if (url->user)
   {
     strfcpy (account->user, url->user, sizeof (account->user));
-    account->flags |= M_ACCT_USER;
+    account->flags |= MUTT_ACCT_USER;
   }
   if (url->pass)
   {
     strfcpy (account->pass, url->pass, sizeof (account->pass));
-    account->flags |= M_ACCT_PASS;
+    account->flags |= MUTT_ACCT_PASS;
   }
   if (url->port)
   {
     account->port = url->port;
-    account->flags |= M_ACCT_PORT;
+    account->flags |= MUTT_ACCT_PORT;
   }
 
   return 0;
@@ -101,9 +101,9 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
   url->port = 0;
 
 #ifdef USE_IMAP
-  if (account->type == M_ACCT_TYPE_IMAP)
+  if (account->type == MUTT_ACCT_TYPE_IMAP)
   {
-    if (account->flags & M_ACCT_SSL)
+    if (account->flags & MUTT_ACCT_SSL)
       url->scheme = U_IMAPS;
     else
       url->scheme = U_IMAP;
@@ -111,9 +111,9 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
 #endif
 
 #ifdef USE_POP
-  if (account->type == M_ACCT_TYPE_POP)
+  if (account->type == MUTT_ACCT_TYPE_POP)
   {
-    if (account->flags & M_ACCT_SSL)
+    if (account->flags & MUTT_ACCT_SSL)
       url->scheme = U_POPS;
     else
       url->scheme = U_POP;
@@ -121,9 +121,9 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
 #endif
 
 #ifdef USE_SMTP
-  if (account->type == M_ACCT_TYPE_SMTP)
+  if (account->type == MUTT_ACCT_TYPE_SMTP)
   {
-    if (account->flags & M_ACCT_SSL)
+    if (account->flags & MUTT_ACCT_SSL)
       url->scheme = U_SMTPS;
     else
       url->scheme = U_SMTP;
@@ -131,11 +131,11 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
 #endif
 
   url->host = account->host;
-  if (account->flags & M_ACCT_PORT)
+  if (account->flags & MUTT_ACCT_PORT)
     url->port = account->port;
-  if (account->flags & M_ACCT_USER)
+  if (account->flags & MUTT_ACCT_USER)
     url->user = account->user;
-  if (account->flags & M_ACCT_PASS)
+  if (account->flags & MUTT_ACCT_PASS)
     url->pass = account->pass;
 }
 
@@ -145,14 +145,14 @@ int mutt_account_getuser (ACCOUNT* account)
   char prompt[SHORT_STRING];
 
   /* already set */
-  if (account->flags & M_ACCT_USER)
+  if (account->flags & MUTT_ACCT_USER)
     return 0;
 #ifdef USE_IMAP
-  else if ((account->type == M_ACCT_TYPE_IMAP) && ImapUser)
+  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapUser)
     strfcpy (account->user, ImapUser, sizeof (account->user));
 #endif
 #ifdef USE_POP
-  else if ((account->type == M_ACCT_TYPE_POP) && PopUser)
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopUser)
     strfcpy (account->user, PopUser, sizeof (account->user));
 #endif
   else if (option (OPTNOCURSES))
@@ -166,7 +166,7 @@ int mutt_account_getuser (ACCOUNT* account)
       return -1;
   }
 
-  account->flags |= M_ACCT_USER;
+  account->flags |= MUTT_ACCT_USER;
 
   return 0;
 }
@@ -174,26 +174,26 @@ int mutt_account_getuser (ACCOUNT* account)
 int mutt_account_getlogin (ACCOUNT* account)
 {
   /* already set */
-  if (account->flags & M_ACCT_LOGIN)
+  if (account->flags & MUTT_ACCT_LOGIN)
     return 0;
 #ifdef USE_IMAP
-  else if (account->type == M_ACCT_TYPE_IMAP)
+  else if (account->type == MUTT_ACCT_TYPE_IMAP)
   {
     if (ImapLogin)
     {
       strfcpy (account->login, ImapLogin, sizeof (account->login));
-      account->flags |= M_ACCT_LOGIN;
+      account->flags |= MUTT_ACCT_LOGIN;
     }
   }
 #endif
 
-  if (!(account->flags & M_ACCT_LOGIN))
+  if (!(account->flags & MUTT_ACCT_LOGIN))
   {
     mutt_account_getuser (account);
     strfcpy (account->login, account->user, sizeof (account->login));
   }
 
-  account->flags |= M_ACCT_LOGIN;
+  account->flags |= MUTT_ACCT_LOGIN;
 
   return 0;
 }
@@ -203,18 +203,18 @@ int mutt_account_getpass (ACCOUNT* account)
 {
   char prompt[SHORT_STRING];
 
-  if (account->flags & M_ACCT_PASS)
+  if (account->flags & MUTT_ACCT_PASS)
     return 0;
 #ifdef USE_IMAP
-  else if ((account->type == M_ACCT_TYPE_IMAP) && ImapPass)
+  else if ((account->type == MUTT_ACCT_TYPE_IMAP) && ImapPass)
     strfcpy (account->pass, ImapPass, sizeof (account->pass));
 #endif
 #ifdef USE_POP
-  else if ((account->type == M_ACCT_TYPE_POP) && PopPass)
+  else if ((account->type == MUTT_ACCT_TYPE_POP) && PopPass)
     strfcpy (account->pass, PopPass, sizeof (account->pass));
 #endif
 #ifdef USE_SMTP
-  else if ((account->type == M_ACCT_TYPE_SMTP) && SmtpPass)
+  else if ((account->type == MUTT_ACCT_TYPE_SMTP) && SmtpPass)
     strfcpy (account->pass, SmtpPass, sizeof (account->pass));
 #endif
   else if (option (OPTNOCURSES))
@@ -222,19 +222,19 @@ int mutt_account_getpass (ACCOUNT* account)
   else
   {
     snprintf (prompt, sizeof (prompt), _("Password for %s@%s: "),
-              account->flags & M_ACCT_LOGIN ? account->login : account->user,
+              account->flags & MUTT_ACCT_LOGIN ? account->login : account->user,
               account->host);
     account->pass[0] = '\0';
     if (mutt_get_password (prompt, account->pass, sizeof (account->pass)))
       return -1;
   }
 
-  account->flags |= M_ACCT_PASS;
+  account->flags |= MUTT_ACCT_PASS;
 
   return 0;
 }
 
 void mutt_account_unsetpass (ACCOUNT* account)
 {
-  account->flags &= ~M_ACCT_PASS;
+  account->flags &= ~MUTT_ACCT_PASS;
 }

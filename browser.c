@@ -152,7 +152,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
   FOLDER *folder = (FOLDER *) data;
   struct passwd *pw;
   struct group *gr;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -318,7 +318,7 @@ folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, co
 
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
 
   return (src);
@@ -516,7 +516,7 @@ static void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
   folder.num = num;
   
   mutt_FormatString (s, slen, 0, MuttIndexWindow->cols, NONULL(FolderFormat), folder_format_str, 
-      (unsigned long) &folder, M_FORMAT_ARROWCURSOR);
+      (unsigned long) &folder, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
@@ -579,9 +579,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   MUTTMENU *menu;
   struct stat st;
   int i, killPrefix = 0;
-  int multiple = (flags & M_SEL_MULTI)  ? 1 : 0;
-  int folder   = (flags & M_SEL_FOLDER) ? 1 : 0;
-  int buffy    = (flags & M_SEL_BUFFY)  ? 1 : 0;
+  int multiple = (flags & MUTT_SEL_MULTI)  ? 1 : 0;
+  int folder   = (flags & MUTT_SEL_FOLDER) ? 1 : 0;
+  int buffy    = (flags & MUTT_SEL_BUFFY)  ? 1 : 0;
 
   buffy = buffy && folder;
   
@@ -964,7 +964,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  }
 	  snprintf (msg, sizeof (msg), _("Really delete mailbox \"%s\"?"),
             mx.mbox);
-	  if (mutt_yesorno (msg, M_NO) == M_YES)
+	  if (mutt_yesorno (msg, MUTT_NO) == MUTT_YES)
           {
 	    if (!imap_delete_mailbox (Context, mx))
             {
@@ -1001,7 +1001,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	    buf[len]='/';
 	}
 
-	if (mutt_get_field (_("Chdir to: "), buf, sizeof (buf), M_FILE) == 0 &&
+	if (mutt_get_field (_("Chdir to: "), buf, sizeof (buf), MUTT_FILE) == 0 &&
 	    buf[0])
 	{
 	  buffy = 0;	  
@@ -1205,7 +1205,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       case OP_BROWSER_NEW_FILE:
 
 	snprintf (buf, sizeof (buf), "%s/", LastDir);
-	if (mutt_get_field (_("New file name: "), buf, sizeof (buf), M_FILE) == 0)
+	if (mutt_get_field (_("New file name: "), buf, sizeof (buf), MUTT_FILE) == 0)
 	{
 	  strfcpy (f, buf, flen);
 	  destroy_state (&state);
@@ -1248,7 +1248,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  b = mutt_make_file_attach (buf);
 	  if (b != NULL)
 	  {
-	    mutt_view_attachment (NULL, b, M_REGULAR, NULL, NULL, 0);
+	    mutt_view_attachment (NULL, b, MUTT_REGULAR, NULL, NULL, 0);
 	    mutt_free_body (&b);
 	    menu->redraw = REDRAW_FULL;
 	  }

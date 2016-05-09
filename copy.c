@@ -466,14 +466,14 @@ static int count_delete_lines (FILE *fp, BODY *b, LOFF_T *length, size_t datelen
  * hdr		header of message being copied
  * body		structure of message being copied
  * flags
- * 	M_CM_NOHEADER	don't copy header
- * 	M_CM_PREFIX	quote header and body
- *	M_CM_DECODE	decode message body to text/plain
- *	M_CM_DISPLAY	displaying output to the user
- *      M_CM_PRINTING   printing the message
- *	M_CM_UPDATE	update structures in memory after syncing
- *	M_CM_DECODE_PGP	used for decoding PGP messages
- *	M_CM_CHARCONV	perform character set conversion 
+ * 	MUTT_CM_NOHEADER	don't copy header
+ * 	MUTT_CM_PREFIX	quote header and body
+ *	MUTT_CM_DECODE	decode message body to text/plain
+ *	MUTT_CM_DISPLAY	displaying output to the user
+ *      MUTT_CM_PRINTING   printing the message
+ *	MUTT_CM_UPDATE	update structures in memory after syncing
+ *	MUTT_CM_DECODE_PGP	used for decoding PGP messages
+ *	MUTT_CM_CHARCONV	perform character set conversion 
  * chflags	flags to mutt_copy_header()
  */
 
@@ -486,7 +486,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   LOFF_T new_offset = -1;
   int rc = 0;
 
-  if (flags & M_CM_PREFIX)
+  if (flags & MUTT_CM_PREFIX)
   {
     if (option (OPTTEXTFLOWED))
       strfcpy (prefix, ">", sizeof (prefix));
@@ -494,9 +494,9 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), Context, hdr, 0);
   }
 
-  if ((flags & M_CM_NOHEADER) == 0)
+  if ((flags & MUTT_CM_NOHEADER) == 0)
   {
-    if (flags & M_CM_PREFIX)
+    if (flags & MUTT_CM_PREFIX)
       chflags |= CH_PREFIX;
 
     else if (hdr->attach_del && (chflags & CH_UPDATE_LEN))
@@ -547,7 +547,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
 #endif
 
       /* Update original message if we are sync'ing a mailfolder */ 
-      if (flags & M_CM_UPDATE)
+      if (flags & MUTT_CM_UPDATE)
       {
 	hdr->attach_del = 0;
 	hdr->lines = new_lines;
@@ -576,38 +576,38 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     new_offset = ftello (fpout);
   }
 
-  if (flags & M_CM_DECODE)
+  if (flags & MUTT_CM_DECODE)
   {
     /* now make a text/plain version of the message */
     memset (&s, 0, sizeof (STATE));
     s.fpin = fpin;
     s.fpout = fpout;
-    if (flags & M_CM_PREFIX)
+    if (flags & MUTT_CM_PREFIX)
       s.prefix = prefix;
-    if (flags & M_CM_DISPLAY)
-      s.flags |= M_DISPLAY;
-    if (flags & M_CM_PRINTING)
-      s.flags |= M_PRINTING;
-    if (flags & M_CM_WEED)
-      s.flags |= M_WEED;
-    if (flags & M_CM_CHARCONV)
-      s.flags |= M_CHARCONV;
-    if (flags & M_CM_REPLYING)
-      s.flags |= M_REPLYING;
+    if (flags & MUTT_CM_DISPLAY)
+      s.flags |= MUTT_DISPLAY;
+    if (flags & MUTT_CM_PRINTING)
+      s.flags |= MUTT_PRINTING;
+    if (flags & MUTT_CM_WEED)
+      s.flags |= MUTT_WEED;
+    if (flags & MUTT_CM_CHARCONV)
+      s.flags |= MUTT_CHARCONV;
+    if (flags & MUTT_CM_REPLYING)
+      s.flags |= MUTT_REPLYING;
     
-    if (WithCrypto && flags & M_CM_VERIFY)
-      s.flags |= M_VERIFY;
+    if (WithCrypto && flags & MUTT_CM_VERIFY)
+      s.flags |= MUTT_VERIFY;
 
     rc = mutt_body_handler (body, &s);
   }
   else if (WithCrypto
-           && (flags & M_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
+           && (flags & MUTT_CM_DECODE_CRYPT) && (hdr->security & ENCRYPT))
   {
     BODY *cur = NULL;
     FILE *fp;
 
     if ((WithCrypto & APPLICATION_PGP)
-        && (flags & M_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
+        && (flags & MUTT_CM_DECODE_PGP) && (hdr->security & APPLICATION_PGP) &&
 	hdr->content->type == TYPEMULTIPART)
     {
       if (crypt_pgp_decrypt_mime (fpin, &fp, hdr->content, &cur))
@@ -616,7 +616,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
     }
 
     if ((WithCrypto & APPLICATION_SMIME)
-        && (flags & M_CM_DECODE_SMIME) && (hdr->security & APPLICATION_SMIME)
+        && (flags & MUTT_CM_DECODE_SMIME) && (hdr->security & APPLICATION_SMIME)
 	     && hdr->content->type == TYPEAPPLICATION)
     {
       if (crypt_smime_decrypt_mime (fpin, &fp, hdr->content, &cur))
@@ -645,7 +645,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
   else
   {
     fseeko (fpin, body->offset, 0);
-    if (flags & M_CM_PREFIX)
+    if (flags & MUTT_CM_PREFIX)
     {
       int c;
       size_t bytes = body->length;
@@ -665,7 +665,7 @@ _mutt_copy_message (FILE *fpout, FILE *fpin, HEADER *hdr, BODY *body,
       return -1;
   }
 
-  if ((flags & M_CM_UPDATE) && (flags & M_CM_NOHEADER) == 0 
+  if ((flags & MUTT_CM_UPDATE) && (flags & MUTT_CM_NOHEADER) == 0 
       && new_offset != -1)
   {
     body->offset = new_offset;
@@ -719,11 +719,11 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   if (fgets (buf, sizeof (buf), fpin) == NULL)
     return -1;
   
-  if ((msg = mx_open_new_message (dest, hdr, is_from (buf, NULL, 0, NULL) ? 0 : M_ADD_FROM)) == NULL)
+  if ((msg = mx_open_new_message (dest, hdr, is_from (buf, NULL, 0, NULL) ? 0 : MUTT_ADD_FROM)) == NULL)
     return -1;
-  if (dest->magic == M_MBOX || dest->magic == M_MMDF)
+  if (dest->magic == MUTT_MBOX || dest->magic == MUTT_MMDF)
     chflags |= CH_FROM | CH_FORCE_FROM;
-  chflags |= (dest->magic == M_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
+  chflags |= (dest->magic == MUTT_MAILDIR ? CH_NOSTATUS : CH_UPDATE);
   r = _mutt_copy_message (msg->fp, fpin, hdr, body, flags, chflags);
   if (mx_commit_message (msg, dest) != 0)
     r = -1;

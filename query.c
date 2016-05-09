@@ -193,7 +193,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col, in
   QUERY *query = entry->data;
   char tmp[SHORT_STRING];
   char buf2[STRING] = "";
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   switch (op)
   {
@@ -231,7 +231,7 @@ static const char * query_format_str (char *dest, size_t destlen, size_t col, in
 
   if (optional)
     mutt_FormatString (dest, destlen, col, cols, ifstring, query_format_str, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
+  else if (flags & MUTT_FORMAT_OPTIONAL)
     mutt_FormatString (dest, destlen, col, cols, elsestring, query_format_str, data, 0);
 
   return src;
@@ -243,7 +243,7 @@ static void query_entry (char *s, size_t slen, MUTTMENU *m, int num)
 
   entry->data->num = num;
   mutt_FormatString (s, slen, 0, MuttIndexWindow->cols, NONULL (QueryFormat), query_format_str,
-		     (unsigned long) entry, M_FORMAT_ARROWCURSOR);
+		     (unsigned long) entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int query_tag (MUTTMENU *menu, int n, int m)
