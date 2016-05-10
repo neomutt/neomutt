@@ -6773,6 +6773,17 @@ to display the results.
 </para>
 
 <para>
+Mutt will set the <literal>COLUMNS</literal> environment variable to
+the width of the pager.  Some programs make use of this environment
+variable automatically.  Others provide a command line argument that
+can use this to set the output width:
+</para>
+
+<screen>
+text/html; lynx -dump -width ${COLUMNS:-80} %s; copiousoutput
+</screen>
+
+<para>
 Note that when using the built-in pager, <emphasis>only</emphasis>
 entries with this flag will be considered a handler for a MIME type
 &mdash; all other entries will be ignored.
