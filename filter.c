@@ -21,6 +21,7 @@
 #endif
 
 #include "mutt.h"
+#include "mutt_curses.h"
 
 #include <unistd.h>
 #include <stdlib.h>
@@ -34,6 +35,7 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
 		       int fdin, int fdout, int fderr)
 {
   int pin[2], pout[2], perr[2], thepid;
+  char columns[11];
 
   if (in)
   {
@@ -116,6 +118,9 @@ mutt_create_filter_fd (const char *cmd, FILE **in, FILE **out, FILE **err,
       dup2 (fderr, 2);
       close (fderr);
     }
+
+    snprintf (columns, sizeof (columns), "%d", COLS - SidebarWidth);
+    setenv ("COLUMNS", columns, 1);
 
     execl (EXECSHELL, "sh", "-c", cmd, NULL);
     _exit (127);
