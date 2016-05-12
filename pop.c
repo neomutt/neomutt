@@ -397,7 +397,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 }
 
 /* open POP mailbox - fetch only headers */
-int pop_open_mailbox (CONTEXT *ctx)
+static int pop_open_mailbox (CONTEXT *ctx)
 {
   int ret;
   char buf[LONG_STRING];
@@ -426,7 +426,6 @@ int pop_open_mailbox (CONTEXT *ctx)
   pop_data = safe_calloc (1, sizeof (POP_DATA));
   pop_data->conn = conn;
   ctx->data = pop_data;
-  ctx->mx_close = pop_close_mailbox;
 
   if (pop_open_connection (pop_data) < 0)
     return -1;
@@ -928,3 +927,8 @@ fail:
   mutt_socket_close (conn);
   FREE (&pop_data);
 }
+
+struct mx_ops mx_pop_ops = {
+  .open = pop_open_mailbox,
+  .close = pop_close_mailbox,
+};

@@ -554,7 +554,7 @@ static char* imap_get_flags (LIST** hflags, char* s)
   return s;
 }
 
-int imap_open_mailbox (CONTEXT* ctx)
+static int imap_open_mailbox (CONTEXT* ctx)
 {
   IMAP_DATA *idata;
   IMAP_STATUS* status;
@@ -578,7 +578,6 @@ int imap_open_mailbox (CONTEXT* ctx)
 
   /* once again the context is new */
   ctx->data = idata;
-  ctx->mx_close = imap_close_mailbox;
 
   /* Clean up path and replace the one in the ctx */
   imap_fix_path (idata, mx.mbox, buf, sizeof (buf));
@@ -2038,3 +2037,8 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 
   return -1;
 }
+
+struct mx_ops mx_imap_ops = {
+  .open = imap_open_mailbox,
+  .close = imap_close_mailbox,
+};

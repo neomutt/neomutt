@@ -868,6 +868,14 @@ enum
   RIGHTSMAX
 };
 
+struct _context;
+
+struct mx_ops
+{
+  int (*open)(struct _context *);
+  int (*close)(struct _context *);
+};
+
 typedef struct _context
 {
   char *path;
@@ -909,7 +917,7 @@ typedef struct _context
 
   /* driver hooks */
   void *data;			/* driver specific data */
-  int (*mx_close)(struct _context *);
+  struct mx_ops *mx_ops;
 } CONTEXT;
 
 typedef struct

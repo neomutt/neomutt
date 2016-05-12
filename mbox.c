@@ -412,7 +412,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 #undef PREV
 
 /* open a mbox or mmdf style mailbox */
-int mbox_open_mailbox (CONTEXT *ctx)
+static int mbox_open_mailbox (CONTEXT *ctx)
 {
   int rc;
 
@@ -438,6 +438,11 @@ int mbox_open_mailbox (CONTEXT *ctx)
   mbox_unlock_mailbox (ctx);
   mutt_unblock_signals ();
   return (rc);
+}
+
+static int mbox_close_mailbox (CONTEXT *ctx)
+{
+  return 0;
 }
 
 /* return 1 if address lists are strictly identical */
@@ -1257,3 +1262,13 @@ int mbox_check_empty (const char *path)
 
   return ((st.st_size == 0));
 }
+
+struct mx_ops mx_mbox_ops = {
+  .open = mbox_open_mailbox,
+  .close = mbox_close_mailbox,
+};
+
+struct mx_ops mx_mmdf_ops = {
+  .open = mbox_open_mailbox,
+  .close = mbox_close_mailbox,
+};

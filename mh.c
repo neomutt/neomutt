@@ -1168,7 +1168,7 @@ static int mh_close_mailbox (CONTEXT *ctx)
  *	subdir [IN]	NULL for MH mailboxes, otherwise the subdir of the
  *			maildir mailbox to read from
  */
-int mh_read_dir (CONTEXT * ctx, const char *subdir)
+static int mh_read_dir (CONTEXT * ctx, const char *subdir)
 {
   struct maildir *md;
   struct mh_sequences mhs;
@@ -1188,7 +1188,6 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (!ctx->data)
   {
     ctx->data = safe_calloc(sizeof (struct mh_data), 1);
-    ctx->mx_close = mh_close_mailbox;
   }
   data = mh_data (ctx);
 
@@ -1224,7 +1223,7 @@ int mh_read_dir (CONTEXT * ctx, const char *subdir)
 }
 
 /* read a maildir style mailbox */
-int maildir_read_dir (CONTEXT * ctx)
+static int maildir_read_dir (CONTEXT * ctx)
 {
   /* maildir looks sort of like MH, except that there are two subdirectories
    * of the main folder path from which to read messages
@@ -1233,6 +1232,16 @@ int maildir_read_dir (CONTEXT * ctx)
     return (-1);
 
   return 0;
+}
+
+static int maildir_open_mailbox (CONTEXT *ctx)
+{
+  return maildir_read_dir (ctx);
+}
+
+static int mh_open_mailbox (CONTEXT *ctx)
+{
+  return mh_read_dir (ctx, NULL);
 }
 
 /*
@@ -2348,3 +2357,13 @@ int mx_is_mh (const char *path)
 
   return 0;
 }
+
+struct mx_ops mx_maildir_ops = {
+  .open = maildir_open_mailbox,
+  .close = mh_close_mailbox,
+};
+
+struct mx_ops mx_mh_ops = {
+  .open = mh_open_mailbox,
+  .close = mh_close_mailbox,
+};

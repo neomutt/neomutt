@@ -57,6 +57,30 @@
 #include <ctype.h>
 #include <utime.h>
 
+static struct mx_ops* mx_get_ops (int magic)
+{
+  switch (magic)
+  {
+#ifdef USE_IMAP
+    case MUTT_IMAP:
+      return &mx_imap_ops;
+#endif
+    case MUTT_MAILDIR:
+      return &mx_maildir_ops;
+    case MUTT_MBOX:
+      return &mx_mbox_ops;
+    case MUTT_MH:
+      return &mx_mh_ops;
+    case MUTT_MMDF:
+      return &mx_mmdf_ops;
+#ifdef USE_POP
+    case MUTT_POP:
+      return &mx_pop_ops;
+#endif
+    default:
+      return NULL;
+  }
+}
 
 #define mutt_is_spool(s)  (mutt_strcmp (Spoolfile, s) == 0)
 
@@ -625,15 +649,15 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   }
 
   ctx->magic = mx_get_magic (path);
-  
-  if(ctx->magic == 0)
-    mutt_error (_("%s is not a mailbox."), path);
+  ctx->mx_ops = mx_get_ops (ctx->magic);
 
-  if(ctx->magic == -1)
-    mutt_perror(path);
-  
-  if(ctx->magic <= 0)
+  if (ctx->magic <= 0 || !ctx->mx_ops)
   {
+    if (ctx->magic == 0 || !ctx->mx_ops)
+      mutt_error (_("%s is not a mailbox."), path);
+    else if (ctx->magic == -1)
+      mutt_perror(path);
+
     mx_fastclose_mailbox (ctx);
     if (!pctx)
       FREE (&ctx);
@@ -650,37 +674,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
   if (!ctx->quiet)
     mutt_message (_("Reading %s..."), ctx->path);
 
-  switch (ctx->magic)
-  {
-    case MUTT_MH:
-      rc = mh_read_dir (ctx, NULL);
-      break;
-
-    case MUTT_MAILDIR:
-      rc = maildir_read_dir (ctx);
-      break;
-
-    case MUTT_MMDF:
-    case MUTT_MBOX:
-      rc = mbox_open_mailbox (ctx);
-      break;
-
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-      rc = imap_open_mailbox (ctx);
-      break;
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-    case MUTT_POP:
-      rc = pop_open_mailbox (ctx);
-      break;
-#endif /* USE_POP */
-
-    default:
-      rc = -1;
-      break;
-  }
+  rc = ctx->mx_ops->open(ctx);
 
   if (rc == 0)
   {
@@ -718,8 +712,8 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
   mutt_buffy_setnotified(ctx->path);
 
-  if (ctx->mx_close)
-    ctx->mx_close (ctx);
+  if (ctx->mx_ops)
+    ctx->mx_ops->close (ctx);
 
   if (ctx->subj_hash)
     hash_destroy (&ctx->subj_hash, NULL);
