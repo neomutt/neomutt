@@ -572,6 +572,15 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
   return 0;
 }
 
+/* close a mailbox opened in write-mode */
+static int mx_close_mailbox_append (CONTEXT *ctx)
+{
+  mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
+  mutt_unblock_signals ();
+  mx_fastclose_mailbox (ctx);
+  return 0;
+}
+
 /*
  * open a mailbox and parse it
  *
@@ -801,7 +810,7 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   {
     /* mailbox was opened in write-mode */
     if (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
-      mbox_close_mailbox (ctx);
+      mx_close_mailbox_append (ctx);
     else
       mx_fastclose_mailbox (ctx);
     return 0;

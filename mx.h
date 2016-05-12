@@ -46,7 +46,6 @@ WHERE short DefaultMagic INITVAL (MUTT_MBOX);
 int mbox_sync_mailbox (CONTEXT *, int *);
 int mbox_open_mailbox (CONTEXT *);
 int mbox_check_mailbox (CONTEXT *, int *);
-int mbox_close_mailbox (CONTEXT *);
 int mbox_lock_mailbox (CONTEXT *, int, int);
 int mbox_parse_mailbox (CONTEXT *);
 int mmdf_parse_mailbox (CONTEXT *);

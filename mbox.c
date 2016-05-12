@@ -1069,15 +1069,6 @@ bail:  /* Come here in case of disaster */
   return rc;
 }
 
-/* close a mailbox opened in write-mode */
-int mbox_close_mailbox (CONTEXT *ctx)
-{
-  mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
-  mutt_unblock_signals ();
-  mx_fastclose_mailbox (ctx);
-  return 0;
-}
-
 int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int (*cmp_headers) (const HEADER *, const HEADER *) = NULL;
