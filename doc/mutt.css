@@ -9,17 +9,24 @@ div.table-contents table td, div.informaltable td, div.table-contents table th, 
 div.table-contents table th, div.informaltable table th {
     font-family:sans-serif;
     background:#d0d0d0;
-    font-weight:normal;
+    font-weight:bold;
     vertical-align:top;
 }
-div.cmdsynopsis { border-left:1px solid #707070; padding-left:5px; }
+div.cmdsynopsis { border-left:1px solid #707070; padding-left: 1em; }
 li div.cmdsynopsis { border-left:none; padding-left:0px; }
-pre.screen, div.note { background:#f0f0f0; border:1px solid #c0c0c0; padding:5px; margin-left:2%; margin-right:2%; }
+li p { margin: 0; }
+pre.screen, div.note { border:1px solid #c0c0c0; margin-left:2%; margin-right:2%; }
+pre.screen { color: #ffffff; background:#000000; padding: 0.5em; }
+div.note { background:#ffff80; padding: 0.5em; }
 div.example p.title { margin-left:2%; }
 div.note h3 { font-size:small; font-style:italic; font-variant: small-caps; }
 div.note h3:after { content: ":" }
 div.note { margin-bottom: 5px; }
-.command { font-family: monospace; font-weight: normal; }
+div.literallayout, .command { font-family: monospace; font-weight: normal; }
 .command strong { font-weight: normal; }
 tr { vertical-align: top; }
-.comment { color:#707070; }
+.comment { color:#00c000; }
+code.literal { background: #f0f0f0; color: #000000; }
+span.indicator { background: #000060; color: #ffffff; }
+span.highlight { background: #404040; color: #ffffff; }
+span.reverse { background: #ffffff; color: #000000; }
