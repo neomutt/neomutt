@@ -8144,6 +8144,16 @@ would contain:
 
 </sect2>
 
+<sect2 id="mutt-patches">
+<title>Mutt Patches</title>
+<para>
+Mutt may also be <quote>patched</quote> to support smaller features.
+These patches should add a free-form string to the end Mutt's version string.
+Running <literal>mutt -v</literal> might show:
+<screen>patch-1.6.1.sidebar.20160502</screen>
+</para>
+</sect2>
+
 <sect2 id="url-syntax">
 <title>URL Syntax</title>
 
