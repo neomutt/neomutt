@@ -2,14 +2,37 @@
 
 ## What is NeoMutt?
 
-NeoMutt is a project of projects.
-
-A place to gather all the patches against Mutt.
-
-A place for all the developers to gather.  Especially those who have made
-changes to Mutt, but haven't had those changes accepted.
+* NeoMutt is a project of projects.
+* A place to gather all the patches against Mutt.
+* A place for all the developers to gather.
 
 Hopefully this will build the community and reduce duplicated effort.
+
+NeoMutt was created when Richard Russon (FlatCap) took all the old Mutt patches,
+sorted through them, fixed them up and documented them.
+
+## What Features does NeoMutt have?
+
+| Name                 	| Description
+|-----------------------|-------------------------------------------------------
+| Compressed Folders   	| Read from/write to compressed mailboxes
+| Conditional Dates    	| Conditional Date Formatting
+| Fmemopen             	| Use fmemopen(3) for speedier temporary files
+| Ifdef                	| Conditional config options
+| Index Color          	| Theming of the Index List
+| Initials Expando     	| Expando for Author's Initials
+| Keywords             	| Labels/Tagging for emails
+| Limit-Current-Thread 	| Limit Index View to Current Thread
+| Nested If            	| Allow deeply nested conditionals in format strings
+| NNTP                 	| Talk to a Usenet news server
+| Notmuch              	| Powerful email search engine
+| Progress Bar         	| Colourful Progress Bar
+| Quasi-Delete         	| Hide emails from view, but don't delete them
+| Sidebar              	| Panel containing list of Mailboxes
+| Skip-Quoted          	| Skip Quoted Text
+| Status Color         	| Theming of the Status Bar
+| TLS-SNI              	| Negotiate with a Server for a Certificate
+| Trash Folder         	| Move 'deleted' emails to a trash folder
 
 ## Where is NeoMutt?
 
@@ -19,59 +42,38 @@ Hopefully this will build the community and reduce duplicated effort.
 - Website:         http://www.neomutt.org/
 - Development:     http://www.neomutt.org/devel/
 
-## Credits
+## NeoMutt Developers
 
-Richard Russon put a lot of work into creating NeoMutt: bringing together,
-tidying up and fixing bugs.  However, without the original patch authors, there
-would be nothing.
+Here's a list of everyone who's helped NeoMutt:
 
-Many people have written or worked on patches for Mutt.
-But despite their hard work, few users have benefited.
-NeoMutt is a project of projects.
-Which builds on all the work that came before.
-
-## FlatCap
-
-So far, NeoMutt is a project of one person: Richard Russon (FlatCap).
-He took all the old patches and painstakingly sorted through them, fixed them
-up and documented them.
-
-## Friends of NeoMutt
-
-The NeoMutt project is starting to gather developers.
-These people have directly helped NeoMutt.  Thank you.
-
-GitHub users: 4nd3r and 257 and Mutt Developers:
-David Sterba, Fabian Groffen and Karel Zak.
+Alex Pearce, Antonio Radici, Christoph Berg, Chris Salzberg, David Sterba,
+Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati, Faidon Liambotis,
+Karel Zak, Kurt Jaeger, Matteo Vescovi, Richard Hartmann, Richard Russon,
+Udo Schweigert, Werner Fink.
 
 ## Original Patch Authors
 
 Without the original patch authors, there would be nothing.
 So, a Big Thank You to:
 
-Aaron Schrab, Alain Penders, Benjamin Kuperman,
-Cedric Duval, Chris Mason, Christian Aichinger,
-Christoph Berg, Christoph Rissner, David Champion,
-David Riebenbauer, David Sterba, David Wilson, Don Zickus,
-Elimar Riesebieter, Eric Davis, Evgeni Golov,
-Fabian Groffen, Felix von Leitner, Jan Synacek,
-Jason DeTiberus, Jeremiah Foster, Jeremy Katz,
-Josh Poimboeuf, Julius Plenz, Justin Hibbits, Karel Zak,
-Kirill Shutemov, Luke Macken, Mantas Mikulenas,
-Matteo Vescovi, Patrick Brisbin, Paul Miller,
-Phil Pennock, Philippe Le Brouster, Richard Russon,
-Rocco Rutte, Roland Rosenfeld, Sami Farin, Stefan Assmann,
-Stefan Kuhn, Steve Kemp, Terry Chan, Thomas Glanzmann,
-Thomer Gil, Tim Stoakes, Tyler Earnest,
-Victor Manuel Jaquez Leal, Vincent Lefevre,
-Vladimir Marek, Vsevolod Volkov.
+Aaron Schrab, Alain Penders, Benjamin Kuperman, Cedric Duval, Chris Mason,
+Christian Aichinger, Christoph Berg, Christoph Rissner, David Champion,
+David Riebenbauer, David Sterba, David Wilson, Don Zickus, Elimar Riesebieter,
+Eric Davis, Evgeni Golov, Fabian Groffen, Felix von Leitner, Jan Synacek,
+Jason DeTiberus, Jeremiah Foster, Jeremy Katz, Josh Poimboeuf, Julius Plenz,
+Justin Hibbits, Karel Zak, Kirill Shutemov, Luke Macken, Mantas Mikulenas,
+Matteo Vescovi, Patrick Brisbin, Paul Miller, Phil Pennock,
+Philippe Le Brouster, Richard Russon, Rocco Rutte, Roland Rosenfeld, Sami Farin,
+Stefan Assmann, Stefan Kuhn, Steve Kemp, Terry Chan, Thomas Glanzmann,
+Thomer Gil, Tim Stoakes, Tyler Earnest, Victor Manuel Jaquez Leal,
+Vincent Lefevre, Vladimir Marek, Vsevolod Volkov.
 
 ## Original Mutt Authors
 
-And of course, we should thank the original Mutt authors,
-including the original author Michael Elkins and all the
-people that have contributed to Mutt during its long history,
-see the Acknowledgements section of the user manual for a detailed list.
+And of course, we should thank the original Mutt authors, including the original
+author Michael Elkins and all the people that have contributed to Mutt during
+its long history, see the Acknowledgements section of the user manual for a
+detailed list.
 
 http://www.neomutt.org/manual/miscellany.html#acknowledgements
 
