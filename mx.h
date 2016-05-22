@@ -38,6 +38,9 @@ enum
   M_IMAP,
   M_NOTMUCH,
   M_POP
+#ifdef USE_COMPRESSED
+  , M_COMPRESSED
+#endif
 };
 
 WHERE short DefaultMagic INITVAL (M_MBOX);

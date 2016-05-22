@@ -158,6 +158,11 @@ typedef enum
 #define M_ACCOUNTHOOK	(1<<9)
 #define M_REPLYHOOK	(1<<10)
 #define M_SEND2HOOK     (1<<11)
+#ifdef USE_COMPRESSED
+#define M_OPENHOOK	(1<<12)
+#define M_APPENDHOOK	(1<<13)
+#define M_CLOSEHOOK	(1<<14)
+#endif
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define M_TREE_LLCORNER		1
@@ -938,6 +943,11 @@ typedef struct _context
   int appended;                 /* how many saved messages? */
   int flagged;			/* how many flagged messages */
   int msgnotreadyet;		/* which msg "new" in pager, -1 if none */
+
+#ifdef USE_COMPRESSED
+  void *compress_info;		/* compressed mbox module private data */
+  char *realpath;		/* path to compressed mailbox */
+#endif /* USE_COMPRESSED */
 
   short magic;			/* mailbox type */
 

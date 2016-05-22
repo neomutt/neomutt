@@ -2141,6 +2141,10 @@ msgstr "Hilfe für %s"
 msgid "Bad history file format (line %d)"
 msgstr "Falsches Format der Datei früherer Eingaben (Zeile %d)"
 
+#: hook.c:96
+msgid "badly formatted command string"
+msgstr "Hook enthält nicht die Muster %f und %t"
+
 #: hook.c:93
 msgid "current mailbox shortcut '^' is unset"
 msgstr ""
@@ -2922,7 +2926,7 @@ msgstr "Lese %s..."
 msgid "Mailbox is corrupt!"
 msgstr "Mailbox fehlerhaft!"
 
-#: mbox.c:670
+#: compress.c:203 mbox.c:661
 msgid "Mailbox was corrupted!"
 msgstr "Mailbox wurde zerstört!"
 
@@ -2930,7 +2934,7 @@ msgstr "Mailbox wurde zerstört!"
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Fataler Fehler, konnte Mailbox nicht erneut öffnen!"
 
-#: mbox.c:760
+#: compress.c:246 compress.c:367 compress.c:443 mbox.c:706
 msgid "Unable to lock mailbox!"
 msgstr "Kann Mailbox nicht für exklusiven Zugriff sperren!"
 
@@ -5393,6 +5397,40 @@ msgstr "Zeige S/MIME Optionen"
 
 #~ msgid "Warning: Intermediate certificate not found."
 #~ msgstr "Warnung: Zwischenzertifikat nicht gefunden."
+
+#: compress.c:228 compress.c:253
+#, c-format
+msgid "Decompressing %s...\n"
+msgstr "Entpacke %s...\n"
+
+#: compress.c:264
+#, c-format
+msgid "Error executing: %s : unable to open the mailbox!\n"
+msgstr "Fehler beim Ausführen von %s : Kann die Mailbox nicht öffnen!\n"
+
+#: compress.c:350 compress.c:377 compress.c:423 compress.c:454
+#, c-format
+msgid "Compressing %s...\n"
+msgstr "Komprimiere %s...\n"
+
+#: compress.c:381
+#, c-format
+msgid ""
+"%s: Error compressing mailbox! Original mailbox deleted, uncompressed one "
+"kept!\n"
+msgstr ""
+"%s: Fehler beim Komprimieren der Mailbox! Ursprüngliche Mailbox gelöscht, "
+"entpackte gespeichert!\n"
+
+#: compress.c:425 compress.c:456
+#, c-format
+msgid "Compressed-appending to %s...\n"
+msgstr "Hänge komprimiert an %s... an\n"
+
+#: compress.c:461
+#, c-format
+msgid " %s: Error compressing mailbox!  Uncompressed one kept!\n"
+msgstr " %s: Fehler beim packen der Mailbox! Entpackte Mailbox gespeichert!\n"
 
 #~ msgid "Clear"
 #~ msgstr "Klartext"

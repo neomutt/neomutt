@@ -29,6 +29,11 @@ macro generic,pager <F1> "<shell-escape> less @docdir@/manual.txt<Enter>" "show 
 macro index,pager y "<change-folder>?<toggle-mailboxes>" "show incoming mailboxes list"
 bind browser y exit
 
+# Use folders which match on \\.gz$ as gzipped folders:
+# open-hook \\.gz$ "gzip -cd %f > %t"
+# close-hook \\.gz$ "gzip -c %t > %f"
+# append-hook \\.gz$ "gzip -c %t >> %f"
+
 # If Mutt is unable to determine your site's domain name correctly, you can
 # set the default here.
 #

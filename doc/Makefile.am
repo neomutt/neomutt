@@ -37,7 +37,8 @@ EXTRA_DIST = dotlock.man		\
 
 CHUNKED_DOCFILES = index.html intro.html gettingstarted.html \
 	configuration.html mimesupport.html advancedusage.html \
-	optionalfeatures.html security.html tuning.html reference.html miscellany.html
+	optionalfeatures.html security.html tuning.html reference.html miscellany.html \
+	compressed-folders.html
 
 HTML_DOCFILES = manual.html $(CHUNKED_DOCFILES)
 

@@ -3978,6 +3978,11 @@ const struct command_t Commands[] = {
   { "fcc-hook",		mutt_parse_hook,	M_FCCHOOK },
   { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
   { "folder-hook",	mutt_parse_hook,	M_FOLDERHOOK },
+#ifdef USE_COMPRESSED
+  { "open-hook",	mutt_parse_hook,	M_OPENHOOK },
+  { "close-hook",	mutt_parse_hook,	M_CLOSEHOOK },
+  { "append-hook",	mutt_parse_hook,	M_APPENDHOOK },
+#endif
   { "group",		parse_group,		M_GROUP },
   { "ungroup",		parse_group,		M_UNGROUP },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },

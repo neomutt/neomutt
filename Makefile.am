@@ -96,6 +96,10 @@ endif
 EXTRA_DIST += UPDATING.kz README.notmuch OPS.NOTMUCH
 
 
+if BUILD_COMPRESS
+mutt_SOURCES += compress.c compress.h
+endif
+
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = $(LIBOBJS)

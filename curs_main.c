@@ -616,6 +616,11 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
   {
     int check;
 
+#ifdef USE_COMPRESSED
+	  if (Context->compress_info && Context->realpath)
+	    mutt_str_replace (&LastFolder, Context->realpath);
+	  else
+#endif
     mutt_str_replace (&LastFolder, Context->path);
     *oldcount = Context ? Context->msgcount : 0;
 
