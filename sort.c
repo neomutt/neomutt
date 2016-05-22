@@ -214,7 +214,7 @@ int compare_label (const void *a, const void *b)
 {
   HEADER **ppa = (HEADER **) a;
   HEADER **ppb = (HEADER **) b;
-  int     ahas, bhas, result;
+  int     ahas, bhas, result = 0;
   LIST *la, *lb;
 
   /* As with compare_spam, not all messages will have the x-label
