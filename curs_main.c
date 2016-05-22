@@ -636,6 +636,9 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
     FREE (&Context);
   }
 
+  if (Labels)
+    hash_destroy(&Labels, NULL);
+
   mutt_sleep (0);
 
   /* Set CurrentMenu to MENU_MAIN before executing any folder
@@ -650,6 +653,8 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 		(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
 		M_READONLY : 0, NULL)) != NULL)
   {
+    Labels = hash_create(131, 0);
+    mutt_scan_labels(Context);
     menu->current = ci_first_message ();
   }
   else
@@ -2386,6 +2391,21 @@ int mutt_index_menu (void)
 	  mutt_check_traditional_pgp (tag ? NULL : CURHDR, &menu->redraw);
 	ci_send_message (SENDREPLY|SENDGROUPREPLY, NULL, NULL, Context, tag ? NULL : CURHDR);
 	menu->redraw = REDRAW_FULL;
+	break;
+
+      case OP_EDIT_LABEL:
+
+	CHECK_MSGCOUNT;
+	CHECK_READONLY;
+	rc = mutt_label_message(tag ? NULL : CURHDR);
+	if (rc > 0) {
+	  Context->changed = 1;
+	  menu->redraw = REDRAW_FULL;
+	  mutt_message ("%d label%s changed.", rc, rc == 1 ? "" : "s");
+	}
+	else {
+	  mutt_message _("No labels changed.");
+	}
 	break;
 
       case OP_LIST_REPLY:

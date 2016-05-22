@@ -2483,7 +2483,6 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
   rfc2047_encode_adrlist (env->from, "From");
   rfc2047_encode_adrlist (env->mail_followup_to, "Mail-Followup-To");
   rfc2047_encode_adrlist (env->reply_to, "Reply-To");
-  rfc2047_encode_string (&env->x_label);
 
   if (env->subject)
   {
@@ -2508,7 +2507,6 @@ void mutt_unprepare_envelope (ENVELOPE *env)
   rfc2047_decode_adrlist (env->from);
   rfc2047_decode_adrlist (env->reply_to);
   rfc2047_decode (&env->subject);
-  rfc2047_decode (&env->x_label);
 }
 
 static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *resent_from,

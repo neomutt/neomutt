@@ -981,6 +981,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 {
   int matched = 0;
   LIST *last = NULL;
+  int kwtype = 0;
   
   if (lastp)
     last = *lastp;
@@ -1087,7 +1088,14 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       matched = 1;
     }
     break;
-    
+
+    case 'k':
+    if (!ascii_strcasecmp (line+1, "eywords"))
+    {
+      kwtype = M_KEYWORDS;
+    }
+    break;
+
     case 'l':
     if (!ascii_strcasecmp (line + 1, "ines"))
     {
@@ -1267,15 +1275,21 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     }
     else if (ascii_strcasecmp (line+1, "-label") == 0)
     {
-      FREE(&e->x_label);
-      e->x_label = safe_strdup(p);
-      matched = 1;
+      kwtype = M_X_LABEL;
     }
-    
+    else if (!ascii_strcasecmp (line+1, "-keywords"))
+    {
+      kwtype = M_X_KEYWORDS;
+    }
+    else if (!ascii_strcasecmp (line+1, "-mozilla-keys"))
+    {
+      kwtype = M_X_MOZILLA_KEYS;
+    }
+
     default:
     break;
   }
-  
+
   /* Keep track of the user-defined headers */
   if (!matched && user_hdrs)
   {
@@ -1298,12 +1312,59 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       rfc2047_decode (&last->data);
   }
 
+  if (kwtype)
+  {
+    char *last, *label;
+    char *text = strdup(p);
+    char *sep;
+
+    if (kwtype == M_KEYWORDS)
+      sep = ",";
+    else if (kwtype == M_X_LABEL)
+      sep = XlabelDelim;
+    else
+      sep = " ";
+
+    rfc2047_decode(&text);
+    if (sep == NULL || *sep == '\0')
+    {
+      SKIPWS(text);
+      if (!mutt_find_list(e->labels, text))
+      {
+        if (e->labels)
+          mutt_add_list(e->labels, text);
+        else
+        {
+          e->labels = mutt_new_list();
+          e->labels->data = safe_strdup(text);
+        }
+      }
+    }
+    else for (label = strtok_r(text, sep, &last); label;
+              label = strtok_r(NULL, sep, &last))
+    {
+      SKIPWS(label);
+      if (mutt_find_list(e->labels, label))
+        continue;
+      if (e->labels)
+        mutt_add_list(e->labels, label);
+      else
+      {
+        e->labels = mutt_new_list();
+        e->labels->data = safe_strdup(label);
+      }
+    }
+    e->kwtypes |= kwtype;
+    kwtype = 0;
+    matched = 1;
+  }
+
   done:
   
   *lastp = last;
   return matched;
 }
-  
+
   
 /* mutt_read_rfc822_header() -- parses a RFC822 header
  *
@@ -1441,7 +1502,6 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     rfc2047_decode_adrlist (e->mail_followup_to);
     rfc2047_decode_adrlist (e->return_path);
     rfc2047_decode_adrlist (e->sender);
-    rfc2047_decode (&e->x_label);
 
     if (e->subject)
     {

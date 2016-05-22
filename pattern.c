@@ -1257,7 +1257,19 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
        break;
      return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
     case M_XLABEL:
-      return (pat->not ^ (h->env->x_label && patmatch (pat, h->env->x_label) == 0));
+      {
+        LIST *label;
+        int result = 0;
+        for (label = h->env->labels; label; label = label->next)
+        {
+          if (label->data == NULL)
+            continue;
+          result = patmatch (pat, label->data) == 0;
+          if (result)
+            break;
+        }
+        return pat->not ^ result;
+      }
 #ifdef USE_NOTMUCH
     case M_NOTMUCH_LABEL:
       {

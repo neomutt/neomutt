@@ -833,9 +833,13 @@ int main (int argc, char **argv)
 #ifdef USE_SIDEBAR
       sb_set_open_buffy (folder);
 #endif
+      Labels = hash_create (131, 0);
+      mutt_scan_labels(Context);
       mutt_index_menu ();
       if (Context)
 	FREE (&Context);
+      if (Labels)
+        hash_destroy(&Labels, NULL);
     }
 #ifdef USE_IMAP
     imap_logout_all ();
