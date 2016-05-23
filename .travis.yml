@@ -20,12 +20,14 @@ addons:
       - libtokyocabinet-dev
       - libgdbm-dev
       - libdb-dev
-#     - libslang2-dev
 #     - libqdbm-dev
+      # - libslang2-dev
+      # libcaca depends on (and includes for us) the forbidden slang package
+      - libcaca-dev
 
 env:
   global:
-    - ALL_OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-gpgme --with-mixmaster --enable-hcache --with-gss --with-ssl --with-gnutls --with-sasl"
+    - ALL_OPTS="--enable-pop --enable-imap --enable-smtp --enable-debug --enable-flock --enable-nfs-fix --enable-mailtool --enable-locales-fix --enable-exact-address --with-homespool --with-domain --with-regex --enable-sidebar --enable-notmuch --enable-compressed --enable-nntp --enable-gpgme --with-mixmaster --enable-hcache --with-gss --with-ssl --with-gnutls --with-sasl"
   matrix:
       # Default config
     - OPTS=""
@@ -55,6 +57,8 @@ env:
     - OPTS="--with-regex"
     - OPTS="--enable-sidebar"
     - OPTS="--enable-notmuch"
+    - OPTS="--enable-compressed"
+    - OPTS="--enable-nntp"
     - OPTS="--enable-gpgme"
     - OPTS="--with-mixmaster"
       # Enable ALL optional components
@@ -75,15 +79,15 @@ env:
     - OPTS="--with-sasl --enable-pop"
     - OPTS="--with-sasl --enable-imap"
       # Test SLANG (not default Curses)
-#   - OPTS="--with-slang"
+    - OPTS="--with-slang"
       # Miscellaneous options
     - OPTS="--with-mailpath=/home/mutt/mail"
     - OPTS="--with-exec-shell=/bin/bash"
     - OPTS="--enable-sidebar --enable-notmuch"
 
 before_script:
-  - ccache -z
-  - autoreconf -i
+  - ccache --zero-stats
+  - autoreconf --install
 
 script:
   # If this is a pull request, then do one FULL build (see ALL_OPTS above), for job 1, and NOTHING for other jobs.
@@ -91,5 +95,5 @@ script:
   - if [[ $TRAVIS_PULL_REQUEST == 'false' ]]; then ./configure --enable-quick-build $OPTS; make -j2; ./mutt -v; else if [[ $TRAVIS_JOB_NUMBER =~ \.1$ ]]; then ./configure --enable-quick-build $ALL_OPTS; make -j2; ./mutt -v; else true; fi fi
 
 after_script:
-  - ccache -s
+  - ccache --show-stats
 
