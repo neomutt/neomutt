@@ -114,6 +114,9 @@ void mutt_edit_headers (const char *editor,
      $edit_headers set, we remove References: as they're likely invalid;
      we can simply compare strings as we don't generate References for
      multiple Message-Ids in IRT anyways */
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+#endif
   if (msg->env->in_reply_to &&
       (!n->in_reply_to || mutt_strcmp (n->in_reply_to->data,
 				       msg->env->in_reply_to->data) != 0))

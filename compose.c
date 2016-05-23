@@ -35,9 +35,14 @@
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
+#include "mx.h"
 
 #ifdef MIXMASTER
 #include "remailer.h"
+#endif
+
+#ifdef USE_NNTP
+#include "nntp.h"
 #endif
 
 #include <errno.h>
@@ -70,11 +75,17 @@ enum
   HDR_CRYPT,
   HDR_CRYPTINFO,
 
+#ifdef USE_NNTP
+  HDR_NEWSGROUPS,
+  HDR_FOLLOWUPTO,
+  HDR_XCOMMENTTO,
+#endif
+
   HDR_ATTACH  = (HDR_FCC + 5) /* where to start printing the attachments */
 };
 
-#define HDR_XOFFSET 10
-#define TITLE_FMT "%10s" /* Used for Prompts, which are ASCII */
+#define HDR_XOFFSET 14
+#define TITLE_FMT "%14s" /* Used for Prompts, which are ASCII */
 #define W (COLS - HDR_XOFFSET - SidebarWidth)
 
 static const char * const Prompts[] =
@@ -86,6 +97,16 @@ static const char * const Prompts[] =
   "Subject: ",
   "Reply-To: ",
   "Fcc: "
+#ifdef USE_NNTP
+#ifdef MIXMASTER
+  ,""
+#endif
+  ,""
+  ,""
+  ,"Newsgroups: "
+  ,"Followup-To: "
+  ,"X-Comment-To: "
+#endif
 };
 
 static const struct mapping_t ComposeHelp[] = {
@@ -99,6 +120,19 @@ static const struct mapping_t ComposeHelp[] = {
   { N_("Help"),    OP_HELP },
   { NULL,	0 }
 };
+
+#ifdef USE_NNTP
+static struct mapping_t ComposeNewsHelp[] = {
+  { N_("Send"),		OP_COMPOSE_SEND_MESSAGE },
+  { N_("Abort"),	OP_EXIT },
+  { "Newsgroups",	OP_COMPOSE_EDIT_NEWSGROUPS },
+  { "Subj",		OP_COMPOSE_EDIT_SUBJECT },
+  { N_("Attach file"),	OP_COMPOSE_ATTACH_FILE },
+  { N_("Descrip"),	OP_COMPOSE_EDIT_DESCRIPTION },
+  { N_("Help"),		OP_HELP },
+  { NULL,		0 }
+};
+#endif
 
 static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
@@ -153,11 +187,19 @@ static void redraw_crypt_lines (HEADER *msg)
 
   if ((WithCrypto & APPLICATION_PGP)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
-    printw (TITLE_FMT "%s", _("sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+  {
+    char *s = _(" sign as: ");
+    int offset = HDR_XOFFSET - mbstowcs (NULL, s, 0);
+    mvprintw (HDR_CRYPTINFO, offset < 0 ? 0 : offset, "%s%s", s,
+	      PgpSignAs ? PgpSignAs : _("<default>"));
+  }
 
   if ((WithCrypto & APPLICATION_SMIME)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
-      printw (TITLE_FMT "%s", _("sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
+    char *s = _(" sign as: ");
+    int offset = HDR_XOFFSET - mbstowcs (NULL, s, 0);
+    mvprintw (HDR_CRYPTINFO, offset < 0 ? 0 : offset, "%s%s", s,
+	      SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
 
   if ((WithCrypto & APPLICATION_SMIME)
@@ -255,9 +297,28 @@ static void draw_envelope (HEADER *msg, char *fcc)
   sb_draw();
 #endif
   draw_envelope_addr (HDR_FROM, msg->env->from);
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+  {
+#endif
   draw_envelope_addr (HDR_TO, msg->env->to);
   draw_envelope_addr (HDR_CC, msg->env->cc);
   draw_envelope_addr (HDR_BCC, msg->env->bcc);
+#ifdef USE_NNTP
+  }
+  else
+  {
+    mvprintw (HDR_TO, 0, TITLE_FMT , Prompts[HDR_NEWSGROUPS - 1]);
+    mutt_paddstr (W, NONULL (msg->env->newsgroups));
+    mvprintw (HDR_CC, 0, TITLE_FMT , Prompts[HDR_FOLLOWUPTO - 1]);
+    mutt_paddstr (W, NONULL (msg->env->followup_to));
+    if (option (OPTXCOMMENTTO))
+    {
+      mvprintw (HDR_BCC, 0, TITLE_FMT , Prompts[HDR_XCOMMENTTO - 1]);
+      mutt_paddstr (W, NONULL (msg->env->x_comment_to));
+    }
+  }
+#endif
   mvprintw (HDR_SUBJECT, SidebarWidth, TITLE_FMT, Prompts[HDR_SUBJECT - 1]);
   mutt_paddstr (W, NONULL (msg->env->subject));
   draw_envelope_addr (HDR_REPLYTO, msg->env->reply_to);
@@ -510,6 +571,12 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   /* Sort, SortAux could be changed in mutt_index_menu() */
   int oldSort, oldSortAux;
   struct stat st;
+#ifdef USE_NNTP
+  int news = 0;		/* is it a news article ? */
+
+  if (option (OPTNEWSSEND))
+    news++;
+#endif
 
   mutt_attach_init (msg->content);
   idx = mutt_gen_attach_list (msg->content, -1, idx, &idxlen, &idxmax, 0, 1);
@@ -520,10 +587,18 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   menu->make_entry = snd_entry;
   menu->tag = mutt_tag_attach;
   menu->data = idx;
+#ifdef USE_NNTP
+  if (news)
+    menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeNewsHelp);
+  else
+#endif
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
   
   while (loop)
   {
+#ifdef USE_NNTP
+    unset_option (OPTNEWS);	/* for any case */
+#endif
     switch (op = mutt_menuLoop (menu))
     {
       case OP_REDRAW:
@@ -536,6 +611,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_TO:
+#ifdef USE_NNTP
+	if (news)
+	  break;
+#endif
 	menu->redraw = edit_address_list (HDR_TO, &msg->env->to);
 	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
 	{
@@ -545,6 +624,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
       case OP_COMPOSE_EDIT_BCC:
+#ifdef USE_NNTP
+	if (news)
+	  break;
+#endif
 	menu->redraw = edit_address_list (HDR_BCC, &msg->env->bcc);
 	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
 	{
@@ -554,6 +637,10 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
 	break;
       case OP_COMPOSE_EDIT_CC:
+#ifdef USE_NNTP
+	if (news)
+	  break;
+#endif
 	menu->redraw = edit_address_list (HDR_CC, &msg->env->cc);
 	if (option (OPTCRYPTOPPORTUNISTICENCRYPT))
 	{
@@ -562,6 +649,62 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);	
         break;
+#ifdef USE_NNTP
+      case OP_COMPOSE_EDIT_NEWSGROUPS:
+	if (news)
+	{
+	  if (msg->env->newsgroups)
+	    strfcpy (buf, msg->env->newsgroups, sizeof (buf));
+	  else
+	    buf[0] = 0;
+	  if (mutt_get_field ("Newsgroups: ", buf, sizeof (buf), 0) == 0)
+	  {
+	    mutt_str_replace (&msg->env->newsgroups, buf);
+	    move (HDR_TO, HDR_XOFFSET);
+	    if (msg->env->newsgroups)
+	      mutt_paddstr (W, msg->env->newsgroups);
+	    else
+	      clrtoeol ();
+	  }
+	}
+	break;
+      case OP_COMPOSE_EDIT_FOLLOWUP_TO:
+	if (news)
+	{
+	  if (msg->env->followup_to)
+	    strfcpy (buf, msg->env->followup_to, sizeof (buf));
+	  else
+	    buf[0] = 0;
+	  if (mutt_get_field ("Followup-To: ", buf, sizeof (buf), 0) == 0)
+	  {
+	    mutt_str_replace (&msg->env->followup_to, buf);
+	    move (HDR_CC, HDR_XOFFSET);
+	    if (msg->env->followup_to)
+	      mutt_paddstr (W, msg->env->followup_to);
+	    else
+	      clrtoeol ();
+	  }
+	}
+	break;
+      case OP_COMPOSE_EDIT_X_COMMENT_TO:
+	if (news && option (OPTXCOMMENTTO))
+	{
+	  if (msg->env->x_comment_to)
+	    strfcpy (buf, msg->env->x_comment_to, sizeof (buf));
+	  else
+	    buf[0] = 0;
+	  if (mutt_get_field ("X-Comment-To: ", buf, sizeof (buf), 0) == 0)
+	  {
+	    mutt_str_replace (&msg->env->x_comment_to, buf);
+	    move (HDR_BCC, HDR_XOFFSET);
+	    if (msg->env->x_comment_to)
+	      mutt_paddstr (W, msg->env->x_comment_to);
+	    else
+	      clrtoeol ();
+	  }
+	}
+	break;
+#endif
       case OP_COMPOSE_EDIT_SUBJECT:
 	if (msg->env->subject)
 	  strfcpy (buf, msg->env->subject, sizeof (buf));
@@ -731,6 +874,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         break;
 
       case OP_COMPOSE_ATTACH_MESSAGE:
+#ifdef USE_NNTP
+      case OP_COMPOSE_ATTACH_NEWS_MESSAGE:
+#endif
 	{
 	  char *prompt;
 	  HEADER *h;
@@ -738,7 +884,22 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  fname[0] = 0;
 	  prompt = _("Open mailbox to attach message from");
 
+#ifdef USE_NNTP
+	  unset_option (OPTNEWS);
+	  if (op == OP_COMPOSE_ATTACH_NEWS_MESSAGE)
+	  {
+	    if (!(CurrentNewsSrv = nntp_select_server (NewsServer, 0)))
+	      break;
+
+	    prompt = _("Open newsgroup to attach message from");
+	    set_option (OPTNEWS);
+	  }
+#endif
+
 	  if (Context)
+#ifdef USE_NNTP
+	  if ((op == OP_COMPOSE_ATTACH_MESSAGE) ^ (Context->magic == M_NNTP))
+#endif
 	  {
 	    strfcpy (fname, NONULL (Context->path), sizeof (fname));
 	    mutt_pretty_mailbox (fname, sizeof (fname));
@@ -747,12 +908,20 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  if (mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 1) == -1 || !fname[0])
 	    break;
 
+#ifdef USE_NNTP
+	  if (option (OPTNEWS))
+	    nntp_expand_path (fname, sizeof (fname), &CurrentNewsSrv->conn->account);
+	  else
+#endif
 	  mutt_expand_path (fname, sizeof (fname));
 #ifdef USE_IMAP
           if (!mx_is_imap (fname))
 #endif
 #ifdef USE_POP
           if (!mx_is_pop (fname))
+#endif
+#ifdef USE_NNTP
+	  if (!mx_is_nntp (fname) && !option (OPTNEWS))
 #endif
 	  /* check to make sure the file exists and is readable */
 	  if (access (fname, R_OK) == -1)

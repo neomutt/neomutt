@@ -51,8 +51,17 @@ int mutt_account_match (const ACCOUNT* a1, const ACCOUNT* a2)
     user = PopUser;
 #endif
   
+#ifdef USE_NNTP
+  if (a1->type == M_ACCT_TYPE_NNTP && NntpUser)
+    user = NntpUser;
+#endif
+
   if (a1->flags & a2->flags & M_ACCT_USER)
     return (!strcmp (a1->user, a2->user));
+#ifdef USE_NNTP
+  if (a1->type == M_ACCT_TYPE_NNTP)
+    return a1->flags & M_ACCT_USER && a1->user[0] ? 0 : 1;
+#endif
   if (a1->flags & M_ACCT_USER)
     return (!strcmp (a1->user, user));
   if (a2->flags & M_ACCT_USER)
@@ -130,6 +139,16 @@ void mutt_account_tourl (ACCOUNT* account, ciss_url_t* url)
   }
 #endif
 
+#ifdef USE_NNTP
+  if (account->type == M_ACCT_TYPE_NNTP)
+  {
+    if (account->flags & M_ACCT_SSL)
+      url->scheme = U_NNTPS;
+    else
+      url->scheme = U_NNTP;
+  }
+#endif
+
   url->host = account->host;
   if (account->flags & M_ACCT_PORT)
     url->port = account->port;
@@ -154,6 +173,10 @@ int mutt_account_getuser (ACCOUNT* account)
 #ifdef USE_POP
   else if ((account->type == M_ACCT_TYPE_POP) && PopUser)
     strfcpy (account->user, PopUser, sizeof (account->user));
+#endif
+#ifdef USE_NNTP
+  else if ((account->type == M_ACCT_TYPE_NNTP) && NntpUser)
+    strfcpy (account->user, NntpUser, sizeof (account->user));
 #endif
   else if (option (OPTNOCURSES))
     return -1;
@@ -216,6 +239,10 @@ int mutt_account_getpass (ACCOUNT* account)
 #ifdef USE_SMTP
   else if ((account->type == M_ACCT_TYPE_SMTP) && SmtpPass)
     strfcpy (account->pass, SmtpPass, sizeof (account->pass));
+#endif
+#ifdef USE_NNTP
+  else if ((account->type == M_ACCT_TYPE_NNTP) && NntpPass)
+    strfcpy (account->pass, NntpPass, sizeof (account->pass));
 #endif
   else if (option (OPTNOCURSES))
     return -1;

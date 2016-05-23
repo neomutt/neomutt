@@ -80,6 +80,9 @@ int mx_is_imap (const char *);
 #ifdef USE_POP
 int mx_is_pop (const char *);
 #endif
+#ifdef USE_NNTP
+int mx_is_nntp (const char *);
+#endif
 
 int mx_access (const char*, int);
 int mx_check_empty (const char *);

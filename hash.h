@@ -28,7 +28,7 @@ struct hash_elem
 
 typedef struct
 {
-  int nelem;
+  int nelem, curnelem;
   struct hash_elem **table;
   unsigned int (*hash_string)(const unsigned char *, unsigned int);
   int (*cmp_string)(const char *, const char *);
@@ -41,6 +41,7 @@ HASH;
 
 HASH *hash_create (int nelem, int lower);
 int hash_insert (HASH * table, const char *key, void *data, int allow_dup);
+HASH *hash_resize (HASH * table, int nelem, int lower);
 void *hash_find_hash (const HASH * table, int hash, const char *key);
 void hash_delete_hash (HASH * table, int hash, const char *key, const void *data,
 		       void (*destroy) (void *));

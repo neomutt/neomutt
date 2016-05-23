@@ -254,6 +254,9 @@ enum
   M_NOTMUCH_LABEL,
 #endif
   M_MIMEATTACH,
+#ifdef USE_NNTP
+  M_NEWSGROUPS,
+#endif
   
   /* Options for Mailcap lookup */
   M_EDIT,
@@ -310,6 +313,11 @@ enum
 #endif
   OPT_SUBJECT,
   OPT_VERIFYSIG,      /* verify PGP signatures */
+#ifdef USE_NNTP
+  OPT_TOMODERATED,
+  OPT_CATCHUP,
+  OPT_FOLLOWUPTOPOSTER,
+#endif
     
   /* THIS MUST BE THE LAST VALUE. */
   OPT_MAX
@@ -328,6 +336,7 @@ enum
 #define SENDPOSTPONEDFCC	(1<<9) /* used by mutt_get_postponed() to signal that the x-mutt-fcc header field was present */
 #define SENDNOFREEHEADER	(1<<10)   /* Used by the -E flag */
 #define SENDDRAFTFILE		(1<<11)   /* Used by the -H flag */
+#define SENDNEWS	(1<<12)
 
 /* flags for mutt_compose_menu() */
 #define M_COMPOSE_NOFREEHEADER (1<<0)
@@ -357,6 +366,8 @@ enum
   OPTASCIICHARS,
   OPTASKBCC,
   OPTASKCC,
+  OPTASKFOLLOWUP,
+  OPTASKXCOMMENTTO,
   OPTATTACHSPLIT,
   OPTAUTOEDIT,
   OPTAUTOTAG,
@@ -440,6 +451,9 @@ enum
   OPTMETOO,
   OPTMHPURGE,
   OPTMIMEFORWDECODE,
+#ifdef USE_NNTP
+  OPTMIMESUBJECT,	/* encode subject line with RFC2047 */
+#endif
   OPTNARROWTREE,
   OPTPAGERSTOP,
   OPTPIPEDECODE,
@@ -537,6 +551,17 @@ enum
   OPTPGPAUTOINLINE,
   OPTPGPREPLYINLINE,
 
+  /* news options */
+
+#ifdef USE_NNTP
+  OPTSHOWNEWNEWS,
+  OPTSHOWONLYUNREAD,
+  OPTSAVEUNSUB,
+  OPTLISTGROUP,
+  OPTLOADDESC,
+  OPTXCOMMENTTO,
+#endif
+
   /* pseudo options */
 
   OPTAUXSORT,		/* (pseudo) using auxiliary sort function */
@@ -557,6 +582,7 @@ enum
   OPTSORTSUBTHREADS,	/* (pseudo) used when $sort_aux changes */
   OPTNEEDRESCORE,	/* (pseudo) set when the `score' command is used */
   OPTATTACHMSG,		/* (pseudo) used by attach-message */
+  OPTHIDEREAD,		/* (pseudo) whether or not hide read messages */
   OPTKEEPQUIET,		/* (pseudo) shut up the message and refresh
 			 * 	    functions while we are executing an
 			 * 	    external program.
@@ -570,6 +596,10 @@ enum
 #ifdef USE_NOTMUCH
   OPTVIRTSPOOLFILE,
   OPTNOTMUCHRECORD,
+#endif
+#ifdef USE_NNTP
+  OPTNEWS,		/* (pseudo) used to change reader mode */
+  OPTNEWSSEND,		/* (pseudo) used to change behavior when posting */
 #endif
 
   OPTMAX
@@ -650,6 +680,14 @@ typedef struct envelope
   char *message_id;
   char *supersedes;
   char *date;
+  char *x_label;
+  char *organization;
+#ifdef USE_NNTP
+  char *newsgroups;
+  char *xref;
+  char *followup_to;
+  char *x_comment_to;
+#endif
   BUFFER *spam;
   LIST *references;		/* message references (in reverse order) */
   LIST *in_reply_to;		/* in-reply-to header content */
@@ -840,7 +878,7 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
+#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH || defined USE_NNTP
   void *data;            	/* driver-specific data */
   void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif

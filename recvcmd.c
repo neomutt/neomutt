@@ -401,7 +401,7 @@ static BODY ** copy_problematic_attachments (FILE *fp,
 static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 				   ATTACHPTR ** idx, short idxlen,
 				   BODY * cur,
-				   short nattach)
+				   short nattach, int flags)
 {
   short i;
   short mime_fwd_all = 0;
@@ -547,7 +547,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
   tmpfp = NULL;
 
   /* now that we have the template, send it. */
-  ci_send_message (0, tmphdr, tmpbody, NULL, parent);
+  ci_send_message (flags, tmphdr, tmpbody, NULL, parent);
   return;
   
   bail:
@@ -574,7 +574,7 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
  */
 
 static void attach_forward_msgs (FILE * fp, HEADER * hdr, 
-	       ATTACHPTR ** idx, short idxlen, BODY * cur)
+	       ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
   HEADER *curhdr = NULL;
   HEADER *tmphdr;
@@ -679,23 +679,23 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
   else
     mutt_free_header (&tmphdr);
 
-  ci_send_message (0, tmphdr, *tmpbody ? tmpbody : NULL, 
+  ci_send_message (flags, tmphdr, *tmpbody ? tmpbody : NULL, 
 		   NULL, curhdr);
 
 }
 
 void mutt_attach_forward (FILE * fp, HEADER * hdr, 
-			  ATTACHPTR ** idx, short idxlen, BODY * cur)
+			  ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
   short nattach;
   
 
   if (check_all_msg (idx, idxlen, cur, 0) == 0)
-    attach_forward_msgs (fp, hdr, idx, idxlen, cur);
+    attach_forward_msgs (fp, hdr, idx, idxlen, cur, flags);
   else
   {
     nattach = count_tagged (idx, idxlen);
-    attach_forward_bodies (fp, hdr, idx, idxlen, cur, nattach);
+    attach_forward_bodies (fp, hdr, idx, idxlen, cur, nattach, flags);
   }
 }
 
@@ -753,28 +753,40 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
     return -1;
   }
 
-  if (parent)
+#ifdef USE_NNTP
+  if ((flags & SENDNEWS))
   {
-    if (mutt_fetch_recips (env, curenv, flags) == -1)
-      return -1;
+    /* in case followup set Newsgroups: with Followup-To: if it present */
+    if (!env->newsgroups && curenv &&
+	mutt_strcasecmp (curenv->followup_to, "poster"))
+      env->newsgroups = safe_strdup (curenv->followup_to);
   }
   else
+#endif
   {
-    for (i = 0; i < idxlen; i++)
+    if (parent)
     {
-      if (idx[i]->content->tagged
-	  && mutt_fetch_recips (env, idx[i]->content->hdr->env, flags) == -1)
+      if (mutt_fetch_recips (env, curenv, flags) == -1)
 	return -1;
     }
+    else
+    {
+      for (i = 0; i < idxlen; i++)
+      {
+	if (idx[i]->content->tagged
+	    && mutt_fetch_recips (env, idx[i]->content->hdr->env, flags) == -1)
+	  return -1;
+      }
+    }
+
+    if ((flags & SENDLISTREPLY) && !env->to)
+    {
+      mutt_error _("No mailing lists found!");
+      return (-1);
+    }
+
+    mutt_fix_reply_recipients (env);
   }
-  
-  if ((flags & SENDLISTREPLY) && !env->to)
-  {
-    mutt_error _("No mailing lists found!");
-    return (-1);
-  }
-  
-  mutt_fix_reply_recipients (env);
   mutt_make_misc_reply_headers (env, Context, curhdr, curenv);
 
   if (parent)
@@ -835,6 +847,13 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   char prefix[SHORT_STRING];
   int rc;
   
+#ifdef USE_NNTP
+  if (flags & SENDNEWS)
+    set_option (OPTNEWSSEND);
+  else
+    unset_option (OPTNEWSSEND);
+#endif
+
   if (check_all_msg (idx, idxlen, cur, 0) == -1)
   {
     nattach = count_tagged (idx, idxlen);

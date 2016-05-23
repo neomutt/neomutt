@@ -278,6 +278,11 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "USE_NOTMUCH", 0 },
 #endif
+#ifdef USE_NNTP
+	{ "USE_NNTP", 1 },
+#else
+	{ "USE_NNTP", 0 },
+#endif
 #ifdef USE_POP
 	{ "USE_POP", 1 },
 #else

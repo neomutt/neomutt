@@ -49,6 +49,10 @@
 #include "mutt_notmuch.h"
 #endif
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
+
 #include "buffy.h"
 
 #ifdef USE_DOTLOCK
@@ -358,6 +362,22 @@ int mx_is_pop (const char *p)
 }
 #endif
 
+#ifdef USE_NNTP
+int mx_is_nntp (const char *p)
+{
+  url_scheme_t scheme;
+
+  if (!p)
+    return 0;
+
+  scheme = url_check_scheme (p);
+  if (scheme == U_NNTP || scheme == U_NNTPS)
+    return 1;
+
+  return 0;
+}
+#endif
+
 #ifdef USE_NOTMUCH
 
 int mx_is_notmuch(const char *p)
@@ -397,6 +417,11 @@ int mx_get_magic (const char *path)
   if (mx_is_notmuch(path))
     return M_NOTMUCH;
 #endif
+
+#ifdef USE_NNTP
+  if (mx_is_nntp (path))
+    return M_NNTP;
+#endif /* USE_NNTP */
 
   if (stat (path, &st) == -1)
   {
@@ -733,6 +758,12 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
       break;
 #endif /* USE_IMAP */
 
+#ifdef USE_NNTP
+    case M_NNTP:
+      rc = nntp_open_mailbox (ctx);
+      break;
+#endif /* USE_NNTP */
+
     default:
       rc = -1;
       break;
@@ -857,6 +888,11 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
       break;
 #endif /* USE_NOTMUCH */
 
+#ifdef USE_NNTP
+    case M_NNTP:
+      rc = nntp_sync_mailbox (ctx);
+      break;
+#endif /* USE_NNTP */
   }
 
 #if 0
@@ -962,6 +998,25 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     return 0;
   }
 
+#ifdef USE_NNTP
+  if (ctx->unread && ctx->magic == M_NNTP)
+  {
+    NNTP_DATA *nntp_data = ctx->data;
+
+    if (nntp_data && nntp_data->nserv && nntp_data->group)
+    {
+      int rc = query_quadoption (OPT_CATCHUP, _("Mark all articles read?"));
+      if (rc < 0)
+      {
+	ctx->closing = 0;
+	return -1;
+      }
+      else if (rc == M_YES)
+	mutt_newsgroup_catchup (nntp_data->nserv, nntp_data->group);
+    }
+  }
+#endif
+
   for (i = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read 
@@ -974,6 +1029,12 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       ctx->flagged--;
 #endif
   }
+
+#ifdef USE_NNTP
+  /* don't need to move articles from newsgroup */
+  if (ctx->magic == M_NNTP)
+    read_msgs = 0;
+#endif
 
   if (read_msgs && quadoption (OPT_MOVE) != M_NO)
   {
@@ -1541,6 +1602,11 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
       case M_NOTMUCH:
 	return nm_check_database(ctx, index_hint);
 #endif
+
+#ifdef USE_NNTP
+      case M_NNTP:
+	return (nntp_check_mailbox (ctx, 0));
+#endif /* USE_NNTP */
     }
   }
 
@@ -1609,6 +1675,15 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
       break;
     }
 #endif /* USE_POP */
+
+#ifdef USE_NNTP
+    case M_NNTP:
+    {
+      if (nntp_fetch_message (msg, ctx, msgno) != 0)
+	FREE (&msg);
+      break;
+    }
+#endif /* USE_NNTP */
 
     default:
       dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
@@ -1689,8 +1764,11 @@ int mx_close_message (MESSAGE **msg)
   int r = 0;
 
   if ((*msg)->magic == M_MH || (*msg)->magic == M_MAILDIR
-      || (*msg)->magic == M_IMAP || (*msg)->magic == M_POP
-      || (*msg)->magic == M_NOTMUCH)
+#ifdef USE_NNTP
+      || (*msg)->magic == M_NNTP
+#endif
+      || (*msg)->magic == M_NOTMUCH
+      || (*msg)->magic == M_IMAP || (*msg)->magic == M_POP)
   {
     r = safe_fclose (&(*msg)->fp);
   }
