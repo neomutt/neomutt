@@ -1204,6 +1204,9 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
  */
 MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 {
+  /* TODO: Convert this to use dest->mx_ops after
+   * mx_open_mailbox_append() is changed to set mx_ops.
+   */
   struct mx_ops *ops = mx_get_ops (dest->magic);
   ADDRESS *p = NULL;
   MESSAGE *msg;
