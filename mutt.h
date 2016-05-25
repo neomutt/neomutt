@@ -869,11 +869,22 @@ enum
 };
 
 struct _context;
+struct _message;
 
+/*
+ * struct mx_ops - a structure to store operations on a mailbox
+ * The following operations are mandatory:
+ *  - open
+ *  - close
+ *
+ * Optional operations
+ *  - open_new_msg
+ */
 struct mx_ops
 {
   int (*open)(struct _context *);
   int (*close)(struct _context *);
+  int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
 };
 
 typedef struct _context

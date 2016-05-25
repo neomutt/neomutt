@@ -1248,7 +1248,7 @@ static int mh_open_mailbox (CONTEXT *ctx)
  * Open a new (temporary) message in an MH folder.
  */
 
-int mh_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
+static int mh_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
 {
   return mh_mkstemp (dest, &msg->fp, &msg->path);
 }
@@ -1294,7 +1294,7 @@ static void maildir_flags (char *dest, size_t destlen, HEADER * hdr)
  *
  */
 
-int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
+static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr)
 {
   int fd;
   char path[_POSIX_PATH_MAX];
@@ -2361,9 +2361,11 @@ int mx_is_mh (const char *path)
 struct mx_ops mx_maildir_ops = {
   .open = maildir_open_mailbox,
   .close = mh_close_mailbox,
+  .open_new_msg = maildir_open_new_message,
 };
 
 struct mx_ops mx_mh_ops = {
   .open = mh_open_mailbox,
   .close = mh_close_mailbox,
+  .open_new_msg = mh_open_new_message,
 };

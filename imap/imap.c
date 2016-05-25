@@ -828,6 +828,20 @@ void imap_logout (IMAP_DATA** idata)
   imap_free_idata (idata);
 }
 
+static int imap_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+{
+  char tmp[_POSIX_PATH_MAX];
+
+  mutt_mktemp (tmp, sizeof (tmp));
+  if ((msg->fp = safe_fopen (tmp, "w")) == NULL)
+  {
+    mutt_perror (tmp);
+    return (-1);
+  }
+  msg->path = safe_strdup(tmp);
+  return 0;
+}
+
 /* imap_set_flag: append str to flags if we currently have permission
  *   according to aclbit */
 static void imap_set_flag (IMAP_DATA* idata, int aclbit, int flag,
@@ -2041,4 +2055,5 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 struct mx_ops mx_imap_ops = {
   .open = imap_open_mailbox,
   .close = imap_close_mailbox,
+  .open_new_msg = imap_open_new_message,
 };

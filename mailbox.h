@@ -41,7 +41,7 @@ enum
   MUTT_FLAGS               /* nondestructive flags change (IMAP) */
 };
 
-typedef struct
+typedef struct _message
 {
   FILE *fp;	/* pointer to the message data */
   char *path;	/* path to temp file */

@@ -445,6 +445,12 @@ static int mbox_close_mailbox (CONTEXT *ctx)
   return 0;
 }
 
+static int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+{
+  msg->fp = dest->fp;
+  return 0;
+}
+
 /* return 1 if address lists are strictly identical */
 static int strict_addrcmp (const ADDRESS *a, const ADDRESS *b)
 {
@@ -1266,9 +1272,11 @@ int mbox_check_empty (const char *path)
 struct mx_ops mx_mbox_ops = {
   .open = mbox_open_mailbox,
   .close = mbox_close_mailbox,
+  .open_new_msg = mbox_open_new_message,
 };
 
 struct mx_ops mx_mmdf_ops = {
   .open = mbox_open_mailbox,
   .close = mbox_close_mailbox,
+  .open_new_msg = mbox_open_new_message,
 };
