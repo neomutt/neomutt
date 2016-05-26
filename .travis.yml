@@ -19,8 +19,10 @@ addons:
       - libtokyocabinet-dev
       - libgdbm-dev
       - libdb-dev
-#     - libslang2-dev
 #     - libqdbm-dev
+      # - libslang2-dev
+      # libcaca depends on (and includes for us) the forbidden slang package
+      - libcaca-dev
 
 env:
     # Default config
@@ -69,14 +71,14 @@ env:
   - OPTS="--with-sasl --enable-pop"
   - OPTS="--with-sasl --enable-imap"
     # Test SLANG (not default Curses)
-# - OPTS="--with-slang"
+  - OPTS="--with-slang"
     # Miscellaneous options
   - OPTS="--with-mailpath=/home/mutt/mail"
   - OPTS="--with-exec-shell=/bin/bash"
 
 before_script:
-  - ccache -z
-  - autoreconf -i
+  - ccache --zero-stats
+  - autoreconf --install
 
 script:
   - ./configure $OPTS
@@ -84,5 +86,5 @@ script:
   - ./mutt -v
 
 after_script:
-  - ccache -s
+  - ccache --show-stats
 
