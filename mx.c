@@ -1303,11 +1303,7 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint, int lock)
 
 #ifdef USE_IMAP
       case MUTT_IMAP:
-	/* caller expects that mailbox may change */
-        imap_allow_reopen (ctx);
-	rc = imap_check_mailbox (ctx, index_hint, 0);
-        imap_disallow_reopen (ctx);
-	return rc;
+        return imap_check_mailbox_reopen (ctx, index_hint);
 #endif /* USE_IMAP */
 
 #ifdef USE_POP

@@ -1464,6 +1464,17 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
   return result;
 }
 
+int imap_check_mailbox_reopen (CONTEXT *ctx, int *index_hint)
+{
+  int rc;
+
+  imap_allow_reopen (ctx);
+  rc = imap_check_mailbox (ctx, index_hint, 0);
+  imap_disallow_reopen (ctx);
+
+  return rc;
+}
+
 /* split path into (idata,mailbox name) */
 static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, size_t blen)
 {
