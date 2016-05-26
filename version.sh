@@ -1,4 +1,4 @@
 #!/bin/sh
 
-exec cat VERSION
+cat VERSION* | tr -d \\n
 

@@ -161,8 +161,10 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 		$(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> keymap_alldefs.h
 
-reldate.h:
-	echo 'const char *ReleaseDate = "'`git log -n1 --format="%cd" --date=short`'";' > reldate.h.tmp; \
+reldate.h: ChangeLog.neomutt
+	date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -d ' ' -f 3-5` && \
+	date=`date -d "$$date" "+%Y-%m-%d"` && \
+	echo 'const char *ReleaseDate = "'$$date'";' > reldate.h.tmp; \
 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
 	rm reldate.h.tmp
 
