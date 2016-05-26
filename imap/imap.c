@@ -1464,7 +1464,7 @@ int imap_check_mailbox (CONTEXT *ctx, int *index_hint, int force)
   return result;
 }
 
-int imap_check_mailbox_reopen (CONTEXT *ctx, int *index_hint)
+static int imap_check_mailbox_reopen (CONTEXT *ctx, int *index_hint)
 {
   int rc;
 
@@ -2067,4 +2067,5 @@ struct mx_ops mx_imap_ops = {
   .open = imap_open_mailbox,
   .close = imap_close_mailbox,
   .open_new_msg = imap_open_new_message,
+  .check = imap_check_mailbox_reopen,
 };

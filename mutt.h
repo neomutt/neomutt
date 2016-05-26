@@ -876,6 +876,7 @@ struct _message;
  * The following operations are mandatory:
  *  - open
  *  - close
+ *  - check
  *
  * Optional operations
  *  - open_new_msg
@@ -884,6 +885,7 @@ struct mx_ops
 {
   int (*open)(struct _context *);
   int (*close)(struct _context *);
+  int (*check) (struct _context *ctx, int *index_hint);
   int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
 };
 

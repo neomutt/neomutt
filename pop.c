@@ -735,7 +735,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 }
 
 /* Check for new messages and fetch headers */
-int pop_check_mailbox (CONTEXT *ctx, int *index_hint)
+static int pop_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
@@ -931,4 +931,5 @@ fail:
 struct mx_ops mx_pop_ops = {
   .open = pop_open_mailbox,
   .close = pop_close_mailbox,
+  .check = pop_check_mailbox,
 };

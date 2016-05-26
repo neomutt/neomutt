@@ -1264,32 +1264,19 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 /* check for new mail */
 int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  if (ctx)
+  struct mx_ops *ops;
+
+  if (!ctx)
   {
-    switch (ctx->magic)
-    {
-      case MUTT_MBOX:
-      case MUTT_MMDF:
-        return mbox_check_mailbox (ctx, index_hint);
-      case MUTT_MH:
-	return (mh_check_mailbox (ctx, index_hint));
-      case MUTT_MAILDIR:
-	return (maildir_check_mailbox (ctx, index_hint));
-
-#ifdef USE_IMAP
-      case MUTT_IMAP:
-        return imap_check_mailbox_reopen (ctx, index_hint);
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-      case MUTT_POP:
-	return (pop_check_mailbox (ctx, index_hint));
-#endif /* USE_POP */
-    }
+    dprint (1, (debugfile, "mx_check_mailbox: null or invalid context.\n"));
+    return -1;
   }
 
-  dprint (1, (debugfile, "mx_check_mailbox: null or invalid context.\n"));
-  return (-1);
+  ops = mx_get_ops (ctx->magic);
+  if (!ops)
+    return -1;
+
+  return ops->check (ctx, index_hint);
 }
 
 /* return a stream pointer for a message */

@@ -58,6 +58,9 @@
 
 #define		INS_SORT_THRESHOLD		6
 
+static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint);
+static int mh_check_mailbox (CONTEXT * ctx, int *index_hint);
+
 struct maildir
 {
   HEADER *h;
@@ -1905,7 +1908,7 @@ static void maildir_update_flags (CONTEXT *ctx, HEADER *o, HEADER *n)
  * either subdirectory differently, as mail could be copied directly into
  * the cur directory from another agent.
  */
-int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
+static int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
 {
   struct stat st_new;		/* status of the "new" subdirectory */
   struct stat st_cur;		/* status of the "cur" subdirectory */
@@ -2051,7 +2054,7 @@ int maildir_check_mailbox (CONTEXT * ctx, int *index_hint)
  *
  */
 
-int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
+static int mh_check_mailbox (CONTEXT * ctx, int *index_hint)
 {
   char buf[_POSIX_PATH_MAX];
   struct stat st, st_cur;
@@ -2362,10 +2365,12 @@ struct mx_ops mx_maildir_ops = {
   .open = maildir_open_mailbox,
   .close = mh_close_mailbox,
   .open_new_msg = maildir_open_new_message,
+  .check = maildir_check_mailbox,
 };
 
 struct mx_ops mx_mh_ops = {
   .open = mh_open_mailbox,
   .close = mh_close_mailbox,
   .open_new_msg = mh_open_new_message,
+  .check = mh_check_mailbox,
 };

@@ -44,7 +44,6 @@ WHERE short DefaultMagic INITVAL (MUTT_MBOX);
 #define MAXLOCKATTEMPT 5
 
 int mbox_sync_mailbox (CONTEXT *, int *);
-int mbox_check_mailbox (CONTEXT *, int *);
 int mbox_lock_mailbox (CONTEXT *, int, int);
 int mbox_parse_mailbox (CONTEXT *);
 int mmdf_parse_mailbox (CONTEXT *);
@@ -53,10 +52,8 @@ int mbox_check_empty (const char *);
 void mbox_reset_atime (CONTEXT *, struct stat *);
 
 int mh_sync_mailbox (CONTEXT *, int *);
-int mh_check_mailbox (CONTEXT *, int *);
 int mh_check_empty (const char *);
 
-int maildir_check_mailbox (CONTEXT *, int *);
 int maildir_check_empty (const char *);
 
 int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);

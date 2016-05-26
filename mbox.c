@@ -577,7 +577,7 @@ int mbox_strict_cmp_headers (const HEADER *h1, const HEADER *h2)
  *	0		no change
  *	-1		error
  */
-int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
+static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   struct stat st;
   char buffer[LONG_STRING];
@@ -1273,10 +1273,12 @@ struct mx_ops mx_mbox_ops = {
   .open = mbox_open_mailbox,
   .close = mbox_close_mailbox,
   .open_new_msg = mbox_open_new_message,
+  .check = mbox_check_mailbox,
 };
 
 struct mx_ops mx_mmdf_ops = {
   .open = mbox_open_mailbox,
   .close = mbox_close_mailbox,
   .open_new_msg = mbox_open_new_message,
+  .check = mbox_check_mailbox,
 };
