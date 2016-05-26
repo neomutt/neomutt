@@ -319,7 +319,9 @@ enum
   OPT_CATCHUP,
   OPT_FOLLOWUPTOPOSTER,
 #endif
-    
+
+OPT_ATTACH, /* forgotten attachment detector */
+
   /* THIS MUST BE THE LAST VALUE. */
   OPT_MAX
 };
