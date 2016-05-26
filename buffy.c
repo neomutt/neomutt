@@ -1,16 +1,16 @@
-/* 
+/*
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -55,7 +55,7 @@ static short BuffyNotify = 0;	/* # of unnotified new boxes */
 
 static BUFFY* buffy_get (const char *path);
 
-/* Find the last message in the file. 
+/* Find the last message in the file.
  * upon success return 0. If no message found - return -1 */
 
 static int fseek_last_message (FILE * f)
@@ -162,7 +162,7 @@ void mutt_buffy_cleanup (const char *buf, struct stat *st)
     {
       ut.actime = st->st_atime;
       ut.modtime = time (NULL);
-      utime (buf, &ut); 
+      utime (buf, &ut);
     }
     else
       utime (buf, NULL);
@@ -174,13 +174,13 @@ BUFFY *mutt_find_mailbox (const char *path)
   BUFFY *tmp = NULL;
   struct stat sb;
   struct stat tmp_sb;
-  
+
   if (stat (path,&sb) != 0)
     return NULL;
 
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
-    if (stat (tmp->path,&tmp_sb) ==0 && 
+    if (stat (tmp->path,&tmp_sb) ==0 &&
 	sb.st_dev == tmp_sb.st_dev && sb.st_ino == tmp_sb.st_ino)
       break;
   }
@@ -531,7 +531,7 @@ buffy_maildir_update (BUFFY *mailbox)
 
 #endif
 
-/* returns 1 if mailbox has new mail */ 
+/* returns 1 if mailbox has new mail */
 static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
 {
   int rc = 0;
@@ -779,7 +779,7 @@ int mutt_buffy_list (void)
   int first = 1;
 
   int have_unnotified = BuffyNotify;
-  
+
   buffylist[0] = 0;
   pos += strlen (strncat (buffylist, _("New mail in "), sizeof (buffylist) - 1 - pos)); /* __STRNCAT_CHECKED__ */
   for (tmp = Incoming; tmp; tmp = tmp->next)
@@ -790,10 +790,10 @@ int mutt_buffy_list (void)
 
     strfcpy (path, tmp->path, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
-    
+
     if (!first && (COLS - 7 >= 0) && (pos + strlen (path) >= (size_t)COLS - 7))
       break;
-    
+
     if (!first)
       pos += strlen (strncat(buffylist + pos, ", ", sizeof(buffylist)-1-pos)); /* __STRNCAT_CHECKED__ */
 
@@ -816,7 +816,7 @@ int mutt_buffy_list (void)
     mutt_message ("%s", buffylist);
     return (1);
   }
-  /* there were no mailboxes needing to be notified, so clean up since 
+  /* there were no mailboxes needing to be notified, so clean up since
    * BuffyNotify has somehow gotten out of sync
    */
   BuffyNotify = 0;
@@ -844,7 +844,7 @@ int mutt_buffy_notify (void)
   return (0);
 }
 
-/* 
+/*
  * mutt_buffy() -- incoming folders completion routine
  *
  * given a folder name, this routine gives the next incoming folder with new
@@ -857,13 +857,13 @@ void mutt_buffy (char *s, size_t slen)
 
   mutt_expand_path (s, slen);
 
-  if (mutt_buffy_check (0)) 
+  if (mutt_buffy_check (0))
   {
     for (pass = 0; pass < 2; pass++)
-      for (tmp = Incoming; tmp; tmp = tmp->next) 
+      for (tmp = Incoming; tmp; tmp = tmp->next)
       {
 	mutt_expand_path (tmp->path, sizeof (tmp->path));
-	if ((found || pass) && tmp->new) 
+	if ((found || pass) && tmp->new)
 	{
 	  strfcpy (s, tmp->path, slen);
 	  mutt_pretty_mailbox (s, slen);

@@ -1,23 +1,23 @@
 /*
  * Copyright (C) 1999-2002 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  *     This program is free software; you can redistribute it
  *     and/or modify it under the terms of the GNU General Public
  *     License as published by the Free Software Foundation; either
  *     version 2 of the License, or (at your option) any later
  *     version.
- * 
+ *
  *     This program is distributed in the hope that it will be
  *     useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *     PURPOSE.  See the GNU General Public License for more
  *     details.
- * 
+ *
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
  *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
  *     Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* simple, editor-based message editing */
 
@@ -37,7 +37,7 @@
 
 /*
  * return value:
- * 
+ *
  * 1	message not modified
  * 0	message edited successfully
  * -1   error
@@ -55,7 +55,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   unsigned short o_old;
 
   int of, cf;
-  
+
   CONTEXT tmpctx;
   MESSAGE *msg;
 
@@ -63,7 +63,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   struct stat sb;
   time_t mtime = 0;
-  
+
   mutt_mktemp (tmp, sizeof (tmp));
 
   omagic = DefaultMagic;
@@ -121,7 +121,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
     mutt_error (_("Can't stat %s: %s"), tmp, strerror (errno));
     goto bail;
   }
-  
+
   if (sb.st_size == 0)
   {
     mutt_message (_("Message file is empty!"));
@@ -153,7 +153,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   of = 0;
   cf = ((tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF) ? 0 : CH_NOSTATUS);
-  
+
   if (fgets (buff, sizeof (buff), fp) && is_from (buff, NULL, 0, NULL))
   {
     if (tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF)
@@ -162,7 +162,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   else
     of = M_ADD_FROM;
 
-  /* 
+  /*
    * XXX - we have to play games with the message flags to avoid
    * problematic behavior with maildir folders.
    *
@@ -188,9 +188,9 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   rc = mx_commit_message (msg, &tmpctx);
   mx_close_message (&msg);
-  
+
   mx_close_mailbox (&tmpctx, NULL);
-  
+
   bail:
   if (fp) safe_fclose (&fp);
 
@@ -208,7 +208,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   else if (rc == -1)
     mutt_message (_("Error. Preserving temporary file: %s"), tmp);
 
-    
+
   return rc;
 }
 
@@ -219,7 +219,7 @@ int mutt_edit_message (CONTEXT *ctx, HEADER *hdr)
   if (hdr)
     return edit_one_message (ctx, hdr);
 
-  
+
   for (i = 0; i < ctx->vcount; i++)
   {
     j = ctx->v2r[i];

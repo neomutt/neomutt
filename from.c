@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2013 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -88,7 +88,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
     {
       if (*p == '\\')
       {
-	if (*++p == '\0') 
+	if (*++p == '\0')
 	  return 0;
       }
       else if (*p == '"')
@@ -109,7 +109,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
 	return 0;
       }
     }
-    
+
     if (path)
     {
       len = (size_t) (p - s);
@@ -119,7 +119,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
       path[len] = 0;
       dprint (3, (debugfile, "is_from(): got return path: %s\n", path));
     }
-    
+
     s = p + 1;
     SKIPWS (s);
     if (!*s)
@@ -187,7 +187,7 @@ int is_from (const char *s, char *path, size_t pathlen, time_t *tp)
   /* year */
   if (sscanf (s, "%d", &yr) != 1) return 0;
   tm.tm_year = yr > 1900 ? yr - 1900 : (yr < 70 ? yr + 100 : yr);
-  
+
   dprint (3,(debugfile, "is_from(): month=%d, day=%d, hr=%d, min=%d, sec=%d, yr=%d.\n",
 	     tm.tm_mon, tm.tm_mday, tm.tm_hour, tm.tm_min, tm.tm_sec, tm.tm_year));
 

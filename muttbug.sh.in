@@ -4,7 +4,7 @@
 #     File a bug against the Mutt mail user agent.
 #
 
-# 
+#
 #     $Id$
 #
 
@@ -16,12 +16,12 @@
 #     it under the terms of the GNU General Public License as published by
 #     the Free Software Foundation; either version 2 of the License, or
 #     (at your option) any later version.
-# 
+#
 #     This program is distributed in the hope that it will be useful,
 #     but WITHOUT ANY WARRANTY; without even the implied warranty of
 #     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #     GNU General Public License for more details.
-# 
+#
 #     You should have received a copy of the GNU General Public License
 #     along with this program; if not, write to the Free Software
 #     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
@@ -80,7 +80,7 @@ case `echo -n` in
 "") n=-n; c=   ;;
  *) n=; c='\c' ;;
 esac
- 
+
 
 exec > /dev/tty
 exec < /dev/tty
@@ -88,9 +88,9 @@ exec < /dev/tty
 SCRATCH=${TMPDIR-/tmp}/`basename $0`.`hostname`.$$
 
 mkdir ${SCRATCH} || \
-{ 
-	echo "`basename $0`: Can't create temporary directory." >& 2 ; 
-	exit 1 ; 
+{
+	echo "`basename $0`: Can't create temporary directory." >& 2 ;
+	exit 1 ;
 }
 
 trap "rm -r -f ${SCRATCH} ; trap '' 0 ; exit" 0 1 2
@@ -124,7 +124,7 @@ echo "Please enter a one-line description of the problem you experience:"
 echo $n "> $c"
 read SUBJECT
 
-cat <<EOF  
+cat <<EOF
 What should the severity for this bug report be?
 
        0) Feature request, or maybe a bug which is very difficult to
@@ -228,7 +228,7 @@ echo
 echo "Package: mutt"
 echo "Version: ${DEBIANVERSION-${RPMVERSION-$MUTTVERSION}}"
 echo "Severity: $severity"
-echo 
+echo
 echo "-- Please type your report below this line"
 echo
 echo
@@ -254,7 +254,7 @@ echo
 LC_ALL=C mutt -v
 
 if test "$CORE" && test -f "$CORE" ; then
-	echo 
+	echo
 	echo "-- Core Dump Analysis Output"
 	echo
 
@@ -263,7 +263,7 @@ if test "$CORE" && test -f "$CORE" ; then
 		*dbx) debug_dbx $CORE ;;
 		*gdb) debug_gdb $CORE ;;
 	esac
-	
+
 	echo
 fi
 
@@ -276,7 +276,7 @@ if test "$personal" = "yes" ; then
 			break
 	        fi
 	done
-	
+
 	if test "$MATCHED" = "none" ; then
 		echo "Warning: Can't find your personal .muttrc." >&2
 	else
@@ -298,7 +298,7 @@ if test "$global" = "yes" ; then
 		done
 		test "$MATCHED" = "none" || break
 	done
-	
+
 	if test "$MATCHED" = "none" ; then
 		echo "Warning: Can't find global Muttrc." >&2
 	else
@@ -318,7 +318,7 @@ while : ; do
 			echo "Warning: Bug report was not modified!"
 		fi
 	fi
-	
+
 	echo $n "Submit, Edit, View, Quit? [S|e|v|q] $c"
 	read _input
 	input="`echo $_input | tr EVSQ evsq`"

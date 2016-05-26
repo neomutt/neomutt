@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2002,2010-2011 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -55,7 +55,7 @@ const struct mapping_t Menus[] = {
 #ifdef MIXMASTER
   { "mix", 	MENU_MIX },
 #endif
-  
+
 
  { "query",	MENU_QUERY },
  { "generic",	MENU_GENERIC },
@@ -86,7 +86,7 @@ static struct mapping_t KeyNames[] = {
 #endif
 #ifdef KEY_NEXT
   { "<Next>",    KEY_NEXT },
-#endif  
+#endif
 #ifdef NCURSES_VERSION
   /* extensions supported by ncurses.  values are filled in during initialization */
 
@@ -187,14 +187,14 @@ static int parsekeys (const char *str, keycode_t *d, int max)
 
   strfcpy(buff, str, sizeof(buff));
   s = buff;
-  
+
   while (*s && len)
   {
     *d = '\0';
     if(*s == '<' && (t = strchr(s, '>')))
     {
       t++; c = *t; *t = '\0';
-      
+
       if ((n = mutt_getvaluebyname (s, KeyNames)) != -1)
       {
 	s = t;
@@ -210,7 +210,7 @@ static int parsekeys (const char *str, keycode_t *d, int max)
 	s = t;
 	*d = n;
       }
-      
+
       *t = c;
     }
 
@@ -302,7 +302,7 @@ static int get_op (const struct binding_t *bindings, const char *start, size_t l
 
   for (i = 0; bindings[i].name; i++)
   {
-    if (!ascii_strncasecmp (start, bindings[i].name, len) &&   
+    if (!ascii_strncasecmp (start, bindings[i].name, len) &&
 	mutt_strlen (bindings[i].name) == len)
       return bindings[i].op;
   }
@@ -486,7 +486,7 @@ int km_dokey (int menu)
       if (menu != MENU_EDITOR && menu != MENU_PAGER)
       {
 	/* check generic menu */
-	bindings = OpGeneric; 
+	bindings = OpGeneric;
 	if ((func = get_func (bindings, tmp.op)))
 	  return tmp.op;
       }
@@ -742,15 +742,15 @@ void km_init (void)
 
 #ifdef MIXMASTER
   create_bindings (OpMix, MENU_MIX);
-  
+
   km_bindkey ("<space>", MENU_MIX, OP_GENERIC_SELECT_ENTRY);
   km_bindkey ("h", MENU_MIX, OP_MIX_CHAIN_PREV);
   km_bindkey ("l", MENU_MIX, OP_MIX_CHAIN_NEXT);
 #endif
-  
+
   /* bindings for the line editor */
   create_bindings (OpEditor, MENU_EDITOR);
-  
+
   km_bindkey ("<up>", MENU_EDITOR, OP_EDITOR_HISTORY_UP);
   km_bindkey ("<down>", MENU_EDITOR, OP_EDITOR_HISTORY_DOWN);
   km_bindkey ("<left>", MENU_EDITOR, OP_EDITOR_BACKWARD_CHAR);
@@ -760,10 +760,10 @@ void km_init (void)
   km_bindkey ("<backspace>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
   km_bindkey ("<delete>", MENU_EDITOR, OP_EDITOR_BACKSPACE);
   km_bindkey ("\177", MENU_EDITOR, OP_EDITOR_BACKSPACE);
-  
+
   /* generic menu keymap */
   create_bindings (OpGeneric, MENU_GENERIC);
-  
+
   km_bindkey ("<home>", MENU_GENERIC, OP_FIRST_ENTRY);
   km_bindkey ("<end>", MENU_GENERIC, OP_LAST_ENTRY);
   km_bindkey ("<pagedown>", MENU_GENERIC, OP_NEXT_PAGE);
@@ -786,7 +786,7 @@ void km_init (void)
   km_bindkey ("<enter>", MENU_GENERIC, OP_GENERIC_SELECT_ENTRY);
 
   /* Miscellaneous extra bindings */
-  
+
   km_bindkey (" ", MENU_MAIN, OP_DISPLAY_MESSAGE);
   km_bindkey ("<up>", MENU_MAIN, OP_MAIN_PREV_UNDELETED);
   km_bindkey ("<down>", MENU_MAIN, OP_MAIN_NEXT_UNDELETED);
@@ -819,7 +819,7 @@ void km_init (void)
 
   km_bindkey ("<return>", MENU_PAGER, OP_NEXT_LINE);
   km_bindkey ("<enter>", MENU_PAGER, OP_NEXT_LINE);
-  
+
   km_bindkey ("<return>", MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
   km_bindkey ("<enter>",  MENU_ALIAS, OP_GENERIC_SELECT_ENTRY);
   km_bindkey ("<space>", MENU_ALIAS, OP_TAG);
@@ -841,7 +841,7 @@ void km_error_key (int menu)
 
   if(!(key = km_find_func(menu, OP_HELP)))
     key = km_find_func(MENU_GENERIC, OP_HELP);
-  
+
   if(!(km_expand_key(buf, sizeof(buf), key)))
   {
     mutt_error _("Key is not bound.");
@@ -930,7 +930,7 @@ static int
 try_bind (char *key, int menu, char *func, const struct binding_t *bindings)
 {
   int i;
-  
+
   for (i = 0; bindings[i].name; i++)
     if (mutt_strcmp (func, bindings[i].name) == 0)
     {
@@ -1086,7 +1086,7 @@ int mutt_parse_macro (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 /* exec function-name */
 int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 {
-  int ops[128]; 
+  int ops[128];
   int nops = 0;
   const struct binding_t *bindings = NULL;
   char *function;
@@ -1102,7 +1102,7 @@ int mutt_parse_exec (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     mutt_extract_token (buf, s, 0);
     function = buf->data;
 
-    if ((bindings = km_get_table (CurrentMenu)) == NULL 
+    if ((bindings = km_get_table (CurrentMenu)) == NULL
 	&& CurrentMenu != MENU_PAGER)
       bindings = OpGeneric;
 

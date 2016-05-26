@@ -1,22 +1,22 @@
 /*
  * Copyright (C) 1999-2004 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  *     This program is free software; you can redistribute it
  *     and/or modify it under the terms of the GNU General Public
  *     License as published by the Free Software Foundation; either
  *     version 2 of the License, or (at your option) any later
  *     version.
- * 
+ *
  *     This program is distributed in the hope that it will be
  *     useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *     PURPOSE.  See the GNU General Public License for more
  *     details.
- * 
+ *
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
  *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
- *     Boston, MA  02110-1301, USA. 
+ *     Boston, MA  02110-1301, USA.
  */
 
 #if HAVE_CONFIG_H
@@ -70,7 +70,7 @@ static short check_all_msg (ATTACHPTR ** idx, short idxlen,
 
 /* can we decode all tagged attachments? */
 
-static short check_can_decode (ATTACHPTR ** idx, short idxlen, 
+static short check_can_decode (ATTACHPTR ** idx, short idxlen,
 			      BODY * cur)
 {
   short i;
@@ -89,11 +89,11 @@ static short count_tagged (ATTACHPTR **idx, short idxlen)
 {
   short count = 0;
   short i;
-  
+
   for (i = 0; i < idxlen; i++)
     if (idx[i]->content->tagged)
       count++;
-  
+
   return count;
 }
 
@@ -101,7 +101,7 @@ static short count_tagged (ATTACHPTR **idx, short idxlen)
  * attachment.
  */
 
-static short count_tagged_children (ATTACHPTR ** idx, 
+static short count_tagged_children (ATTACHPTR ** idx,
 				    short idxlen, short i)
 {
   short level = idx[i]->level;
@@ -122,7 +122,7 @@ static short count_tagged_children (ATTACHPTR ** idx,
  **
  **/
 
-void mutt_attach_bounce (FILE * fp, HEADER * hdr, 
+void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 	   ATTACHPTR ** idx, short idxlen, BODY * cur)
 {
   short i;
@@ -173,7 +173,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     strfcpy (prompt, _("Bounce tagged messages to: "), sizeof (prompt));
 
   buf[0] = '\0';
-  if (mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS) 
+  if (mutt_get_field (prompt, buf, sizeof (buf), M_ALIAS)
       || buf[0] == '\0')
     return;
 
@@ -184,7 +184,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   }
 
   adr = mutt_expand_aliases (adr);
-  
+
   if (mutt_addrlist_to_intl (adr, &err) < 0)
   {
     mutt_error (_("Bad IDN: '%s'"), err);
@@ -192,7 +192,7 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     rfc822_free_address (&adr);
     return;
   }
-  
+
   buf[0] = 0;
   rfc822_write_address (buf, sizeof (buf), adr, 1);
 
@@ -200,9 +200,9 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
   /*
    * See commands.c.
    */
-  snprintf (prompt, sizeof (prompt) - 4, 
+  snprintf (prompt, sizeof (prompt) - 4,
    (p ? _("Bounce message to %s") : _("Bounce messages to %s")), buf);
-  
+
   if (mutt_strwidth (prompt) > COLS - extra_space)
   {
     mutt_format_string (prompt, sizeof (prompt) - 4,
@@ -220,9 +220,9 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
     mutt_message (p ? _("Message not bounced.") : _("Messages not bounced."));
     return;
   }
-  
+
   CLEARLINE (LINES - 1);
-  
+
   if (cur)
     ret = mutt_bounce_message (fp, cur->hdr, adr);
   else
@@ -245,12 +245,12 @@ void mutt_attach_bounce (FILE * fp, HEADER * hdr,
 
 /**
  **
- ** resend-message, from the attachment menu 
+ ** resend-message, from the attachment menu
  **
  **
  **/
 
-void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx, 
+void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
 			 short idxlen, BODY * cur)
 {
   short i;
@@ -271,10 +271,10 @@ void mutt_attach_resend (FILE * fp, HEADER * hdr, ATTACHPTR ** idx,
 
 /**
  **
- ** forward-message, from the attachment menu 
+ ** forward-message, from the attachment menu
  **
  **/
-  
+
 /* try to find a common parent message for the tagged attachments. */
 
 static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
@@ -286,7 +286,7 @@ static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
   for (i = 0; i < idxlen; i++)
     if (idx[i]->content->tagged)
       break;
-  
+
   while (--i >= 0)
   {
     if (mutt_is_message_type (idx[i]->content->type, idx[i]->content->subtype))
@@ -300,11 +300,11 @@ static HEADER *find_common_parent (ATTACHPTR ** idx, short idxlen,
   return NULL;
 }
 
-/* 
+/*
  * check whether attachment #i is a parent of the attachment
  * pointed to by cur
- * 
- * Note: This and the calling procedure could be optimized quite a 
+ *
+ * Note: This and the calling procedure could be optimized quite a
  * bit.  For now, it's not worth the effort.
  */
 
@@ -325,12 +325,12 @@ static HEADER *find_parent (ATTACHPTR **idx, short idxlen, BODY *cur, short natt
 {
   short i;
   HEADER *parent = NULL;
-  
+
   if (cur)
   {
     for (i = 0; i < idxlen; i++)
     {
-      if (mutt_is_message_type (idx[i]->content->type, idx[i]->content->subtype) 
+      if (mutt_is_message_type (idx[i]->content->type, idx[i]->content->subtype)
 	  && is_parent (i, idx, idxlen, cur))
 	parent = idx[i]->content->hdr;
       if (idx[i]->content == cur)
@@ -339,7 +339,7 @@ static HEADER *find_parent (ATTACHPTR **idx, short idxlen, BODY *cur, short natt
   }
   else if (nattach)
     parent = find_common_parent (idx, idxlen, nattach);
-  
+
   return parent;
 }
 
@@ -349,7 +349,7 @@ static void include_header (int quote, FILE * ifp,
 {
   int chflags = CH_DECODE;
   char prefix[SHORT_STRING];
-  
+
   if (option (OPTWEED))
     chflags |= CH_WEED | CH_REORDER;
 
@@ -358,31 +358,31 @@ static void include_header (int quote, FILE * ifp,
     if (_prefix)
       strfcpy (prefix, _prefix, sizeof (prefix));
     else if (!option (OPTTEXTFLOWED))
-      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), 
+      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix),
 			 Context, hdr, 0);
     else
       strfcpy (prefix, ">", sizeof (prefix));
 
     chflags |= CH_PREFIX;
   }
-  
+
   mutt_copy_header (ifp, hdr, ofp, chflags, quote ? prefix : NULL);
 }
 
-/* Attach all the body parts which can't be decoded. 
+/* Attach all the body parts which can't be decoded.
  * This code is shared by forwarding and replying. */
 
 static BODY ** copy_problematic_attachments (FILE *fp,
-					     BODY **last, 
-					     ATTACHPTR **idx, 
+					     BODY **last,
+					     ATTACHPTR **idx,
 					     short idxlen,
 					     short force)
 {
   short i;
-  
+
   for (i = 0; i < idxlen; i++)
   {
-    if (idx[i]->content->tagged && 
+    if (idx[i]->content->tagged &&
 	(force || !mutt_can_decode (idx[i]->content)))
     {
       if (mutt_copy_body (fp, last, idx[i]->content) == -1)
@@ -393,8 +393,8 @@ static BODY ** copy_problematic_attachments (FILE *fp,
   return last;
 }
 
-/* 
- * forward one or several MIME bodies 
+/*
+ * forward one or several MIME bodies
  * (non-message types)
  */
 
@@ -418,7 +418,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 
   STATE st;
 
-  /* 
+  /*
    * First, find the parent message.
    * Note: This could be made an option by just
    * putting the following lines into an if block.
@@ -426,7 +426,7 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
 
 
   parent = find_parent (idx, idxlen, cur, nattach);
-  
+
   if (parent == NULL)
     parent = hdr;
 
@@ -454,32 +454,32 @@ static void attach_forward_bodies (FILE * fp, HEADER * hdr,
     else
       strfcpy (prefix, ">", sizeof (prefix));
   }
-    
+
   include_header (option (OPTFORWQUOTE), fp, parent,
 		  tmpfp, prefix);
 
 
-  /* 
+  /*
    * Now, we have prepared the first part of the message body: The
-   * original message's header. 
+   * original message's header.
    *
    * The next part is more interesting: either include the message bodies,
    * or attach them.
    */
 
   if ((!cur || mutt_can_decode (cur)) &&
-      (rc = query_quadoption (OPT_MIMEFWD, 
+      (rc = query_quadoption (OPT_MIMEFWD,
 			      _("Forward as attachments?"))) == M_YES)
     mime_fwd_all = 1;
   else if (rc == -1)
     goto bail;
 
-  /* 
-   * shortcut MIMEFWDREST when there is only one attachment.  Is 
+  /*
+   * shortcut MIMEFWDREST when there is only one attachment.  Is
    * this intuitive?
    */
 
-  if (!mime_fwd_all && !cur && (nattach > 1) 
+  if (!mime_fwd_all && !cur && (nattach > 1)
       && !check_can_decode (idx, idxlen, cur))
   {
     if ((rc = query_quadoption (OPT_MIMEFWDREST,
@@ -490,9 +490,9 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
   }
 
   /* initialize a state structure */
-  
+
   memset (&st, 0, sizeof (st));
-  
+
   if (option (OPTFORWQUOTE))
     st.prefix = prefix;
   st.flags = M_CHARCONV;
@@ -536,22 +536,22 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
       }
     }
 
-    if (mime_fwd_any && 
+    if (mime_fwd_any &&
 	copy_problematic_attachments (fp, last, idx, idxlen, mime_fwd_all) == NULL)
       goto bail;
   }
-  
+
   mutt_forward_trailer (tmpfp);
-  
+
   safe_fclose (&tmpfp);
   tmpfp = NULL;
 
   /* now that we have the template, send it. */
   ci_send_message (flags, tmphdr, tmpbody, NULL, parent);
   return;
-  
+
   bail:
-  
+
   if (tmpfp)
   {
     safe_fclose (&tmpfp);
@@ -562,18 +562,18 @@ _("Can't decode all tagged attachments.  MIME-forward the others?"))) == -1)
 }
 
 
-/* 
- * Forward one or several message-type attachments. This 
+/*
+ * Forward one or several message-type attachments. This
  * is different from the previous function
  * since we want to mimic the index menu's behavior.
  *
  * Code reuse from ci_send_message is not possible here -
  * ci_send_message relies on a context structure to find messages,
  * while, on the attachment menu, messages are referenced through
- * the attachment index. 
+ * the attachment index.
  */
 
-static void attach_forward_msgs (FILE * fp, HEADER * hdr, 
+static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	       ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
   HEADER *curhdr = NULL;
@@ -587,7 +587,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 
   int cmflags = 0;
   int chflags = CH_XMIT;
-  
+
   if (cur)
     curhdr = cur->hdr;
   else
@@ -607,12 +607,12 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 
   tmpbody[0] = '\0';
 
-  if ((rc = query_quadoption (OPT_MIMEFWD, 
+  if ((rc = query_quadoption (OPT_MIMEFWD,
 		 _("Forward MIME encapsulated?"))) == M_NO)
   {
-    
+
     /* no MIME encapsulation */
-    
+
     mutt_mktemp (tmpbody, sizeof (tmpbody));
     if (!(tmpfp = safe_fopen (tmpbody, "w")))
     {
@@ -636,11 +636,11 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
 	cmflags |= M_CM_WEED;
       }
     }
-    
-    
+
+
     if (cur)
     {
-      /* mutt_message_hook (cur->hdr, M_MESSAGEHOOK); */ 
+      /* mutt_message_hook (cur->hdr, M_MESSAGEHOOK); */
       mutt_forward_intro (tmpfp, cur->hdr);
       _mutt_copy_message (tmpfp, fp, cur->hdr, cur->hdr->content, cmflags, chflags);
       mutt_forward_trailer (tmpfp);
@@ -651,7 +651,7 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
       {
 	if (idx[i]->content->tagged)
 	{
-	  /* mutt_message_hook (idx[i]->content->hdr, M_MESSAGEHOOK); */ 
+	  /* mutt_message_hook (idx[i]->content->hdr, M_MESSAGEHOOK); */
 	  mutt_forward_intro (tmpfp, idx[i]->content->hdr);
 	  _mutt_copy_message (tmpfp, fp, idx[i]->content->hdr,
 			      idx[i]->content->hdr->content, cmflags, chflags);
@@ -679,16 +679,16 @@ static void attach_forward_msgs (FILE * fp, HEADER * hdr,
   else
     mutt_free_header (&tmphdr);
 
-  ci_send_message (flags, tmphdr, *tmpbody ? tmpbody : NULL, 
+  ci_send_message (flags, tmphdr, *tmpbody ? tmpbody : NULL,
 		   NULL, curhdr);
 
 }
 
-void mutt_attach_forward (FILE * fp, HEADER * hdr, 
+void mutt_attach_forward (FILE * fp, HEADER * hdr,
 			  ATTACHPTR ** idx, short idxlen, BODY * cur, int flags)
 {
   short nattach;
-  
+
 
   if (check_all_msg (idx, idxlen, cur, 0) == 0)
     attach_forward_msgs (fp, hdr, idx, idxlen, cur, flags);
@@ -702,7 +702,7 @@ void mutt_attach_forward (FILE * fp, HEADER * hdr,
 
 
 /**
- ** 
+ **
  ** the various reply functions, from the attachment menu
  **
  **
@@ -711,16 +711,16 @@ void mutt_attach_forward (FILE * fp, HEADER * hdr,
 /* Create the envelope defaults for a reply.
  *
  * This function can be invoked in two ways.
- * 
+ *
  * Either, parent is NULL.  In this case, all tagged bodies are of a message type,
  * and the header information is fetched from them.
- * 
+ *
  * Or, parent is non-NULL.  In this case, cur is the common parent of all the
  * tagged attachments.
- * 
+ *
  * Note that this code is horribly similar to envelope_defaults () from send.c.
  */
-  
+
 static int
 attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
 				HEADER *parent, int flags)
@@ -728,7 +728,7 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   ENVELOPE *curenv = NULL;
   HEADER *curhdr = NULL;
   short i;
-  
+
   if (!parent)
   {
     for (i = 0; i < idxlen; i++)
@@ -794,14 +794,14 @@ attach_reply_envelope_defaults (ENVELOPE *env, ATTACHPTR **idx, short idxlen,
   else
   {
     LIST **p = NULL, **q = NULL;
-    
+
     for (i = 0; i < idxlen; i++)
     {
       if (idx[i]->content->tagged)
 	mutt_add_to_reference_headers (env, idx[i]->content->hdr->env, &p, &q);
     }
   }
-  
+
   return 0;
 }
 
@@ -813,10 +813,10 @@ static void attach_include_reply (FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
   int cmflags = M_CM_PREFIX | M_CM_DECODE | M_CM_CHARCONV;
   int chflags = CH_DECODE;
 
-  /* mutt_message_hook (cur, M_MESSAGEHOOK); */ 
-  
+  /* mutt_message_hook (cur, M_MESSAGEHOOK); */
+
   mutt_make_attribution (Context, cur, tmpfp);
-  
+
   if (!option (OPTHEADER))
     cmflags |= M_CM_NOHEADER;
   if (option (OPTWEED))
@@ -828,13 +828,13 @@ static void attach_include_reply (FILE *fp, FILE *tmpfp, HEADER *cur, int flags)
   _mutt_copy_message (tmpfp, fp, cur, cur->content, cmflags, chflags);
   mutt_make_post_indent (Context, cur, tmpfp);
 }
-  
-void mutt_attach_reply (FILE * fp, HEADER * hdr, 
-			ATTACHPTR ** idx, short idxlen, BODY * cur, 
+
+void mutt_attach_reply (FILE * fp, HEADER * hdr,
+			ATTACHPTR ** idx, short idxlen, BODY * cur,
 			int flags)
 {
   short mime_reply_any = 0;
-  
+
   short nattach = 0;
   HEADER *parent = NULL;
   HEADER *tmphdr = NULL;
@@ -843,10 +843,10 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   STATE st;
   char tmpbody[_POSIX_PATH_MAX];
   FILE *tmpfp;
-  
+
   char prefix[SHORT_STRING];
   int rc;
-  
+
 #ifdef USE_NNTP
   if (flags & SENDNEWS)
     set_option (OPTNEWSSEND);
@@ -875,13 +875,13 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   tmphdr = mutt_new_header ();
   tmphdr->env = mutt_new_envelope ();
 
-  if (attach_reply_envelope_defaults (tmphdr->env, idx, idxlen, 
+  if (attach_reply_envelope_defaults (tmphdr->env, idx, idxlen,
 				      parent ? parent : (cur ? cur->hdr : NULL), flags) == -1)
   {
     mutt_free_header (&tmphdr);
     return;
   }
-  
+
   mutt_mktemp (tmpbody, sizeof (tmpbody));
   if ((tmpfp = safe_fopen (tmpbody, "w")) == NULL)
   {
@@ -906,21 +906,21 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   else
   {
     mutt_make_attribution (Context, parent, tmpfp);
-    
+
     memset (&st, 0, sizeof (STATE));
     st.fpin = fp;
     st.fpout = tmpfp;
 
     if (!option (OPTTEXTFLOWED))
-      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix), 
+      _mutt_make_string (prefix, sizeof (prefix), NONULL (Prefix),
 			 Context, parent, 0);
     else
       strfcpy (prefix, ">", sizeof (prefix));
 
     st.prefix = prefix;
     st.flags  = M_CHARCONV;
-    
-    if (option (OPTWEED)) 
+
+    if (option (OPTWEED))
       st.flags |= M_WEED;
 
     if (option (OPTHEADER))
@@ -950,7 +950,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
 
     mutt_make_post_indent (Context, parent, tmpfp);
 
-    if (mime_reply_any && !cur && 
+    if (mime_reply_any && !cur &&
 	copy_problematic_attachments (fp, &tmphdr->content, idx, idxlen, 0) == NULL)
     {
       mutt_free_header (&tmphdr);
@@ -960,7 +960,7 @@ void mutt_attach_reply (FILE * fp, HEADER * hdr,
   }
 
   safe_fclose (&tmpfp);
-  
+
   if (ci_send_message (flags, tmphdr, tmpbody, NULL,
 			  parent ? parent : (cur ? cur->hdr : NULL)) == 0)
     mutt_set_flag (Context, hdr, M_REPLIED, 1);

@@ -1,21 +1,21 @@
 /*
  * Copyright (C) 1996-2000,2002,2007,2010,2012 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -228,13 +228,13 @@ static void redraw_mix_line (LIST *chain)
     clrtoeol ();
     return;
   }
-  
+
   for (c = 12; chain; chain = chain->next)
   {
     t = chain->data;
     if (t && t[0] == '0' && t[1] == '\0')
       t = "<random>";
-    
+
     if (c + mutt_strlen (t) + 2 >= COLS - SidebarWidth)
       break;
 
@@ -264,13 +264,13 @@ check_attachments(ATTACHPTR **idx, short idxlen)
 		 pretty, i+1);
       return -1;
     }
-    
+
     if(idx[i]->content->stamp < st.st_mtime)
     {
       mutt_pretty_mailbox(pretty, sizeof (pretty));
       snprintf(msg, sizeof(msg), _("%s [#%d] modified. Update encoding?"),
 	       pretty, i+1);
-      
+
       if((r = mutt_yesorno(msg, M_YES)) == M_YES)
 	mutt_update_encoding(idx[i]->content);
       else if(r == -1)
@@ -343,7 +343,7 @@ static int edit_address_list (int line, ADDRESS **addr)
 {
   char buf[HUGE_STRING] = ""; /* needs to be large for alias expansion */
   char *err = NULL;
-  
+
   mutt_addrlist_to_local (*addr);
   rfc822_write_address (buf, sizeof (buf), *addr, 0);
   if (mutt_get_field (Prompts[line - 1], buf, sizeof (buf), M_ALIAS) == 0)
@@ -371,7 +371,7 @@ static int edit_address_list (int line, ADDRESS **addr)
   rfc822_write_address (buf, sizeof (buf), *addr, 1);
   move (line, HDR_XOFFSET + SidebarWidth);
   mutt_paddstr (W, buf);
-  
+
   return 0;
 }
 
@@ -407,7 +407,7 @@ static int delete_attachment (MUTTMENU *menu, short *idxlen, int x)
     idx[x] = idx[x+1];
   idx[*idxlen - 1] = NULL;
   menu->max = --(*idxlen);
-  
+
   return (0);
 }
 
@@ -424,13 +424,13 @@ static void update_idx (MUTTMENU *menu, ATTACHPTR **idx, short idxlen)
 }
 
 
-/* 
+/*
  * cum_attachs_size: Cumulative Attachments Size
  *
  * Returns the total number of bytes used by the attachments in the
  * attachment list _after_ content-transfer-encodings have been
  * applied.
- * 
+ *
  */
 
 static unsigned long cum_attachs_size (MUTTMENU *menu)
@@ -440,7 +440,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
   ATTACHPTR **idx = menu->data;
   CONTENT *info;
   BODY *b;
-  
+
   for (i = 0, s = 0; i < menu->max; i++)
   {
     b = idx[i]->content;
@@ -469,16 +469,16 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
 }
 
 /* prototype for use below */
-static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu,
       const char *p);
 
 /*
  * compose_format_str()
  *
- * %a = total number of attachments 
+ * %a = total number of attachments
  * %h = hostname  [option]
- * %l = approx. length of current message (in bytes) 
- * %v = Mutt version 
+ * %l = approx. length of current message (in bytes)
+ * %v = Mutt version
  *
  * This function is similar to status_format_str().  Look at that function for
  * help when modifying this function.
@@ -535,10 +535,10 @@ compose_format_str (char *buf, size_t buflen, size_t col, char op, const char *s
   return (src);
 }
 
-static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu,
       const char *p)
 {
-  mutt_FormatString (buf, buflen, col, p, compose_format_str, 
+  mutt_FormatString (buf, buflen, col, p, compose_format_str,
         (unsigned long) menu, 0);
 }
 
@@ -593,7 +593,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   else
 #endif
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
-  
+
   while (loop)
   {
 #ifdef USE_NNTP
@@ -647,7 +647,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  crypt_opportunistic_encrypt (msg);
 	  redraw_crypt_lines (msg);
 	}
-        mutt_message_hook (NULL, msg, M_SEND2HOOK);	
+        mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
 #ifdef USE_NNTP
       case OP_COMPOSE_EDIT_NEWSGROUPS:
@@ -797,13 +797,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
       case OP_COMPOSE_ATTACH_KEY:
         if (!(WithCrypto & APPLICATION_PGP))
-          break;       
+          break;
 	if (idxlen == idxmax)
         {
 	  safe_realloc (&idx, sizeof (ATTACHPTR *) * (idxmax += 5));
 	  menu->data = idx;
 	}
-	
+
 	idx[idxlen] = (ATTACHPTR *) safe_calloc (1, sizeof (ATTACHPTR));
 	if ((idx[idxlen]->content = crypt_pgp_make_key_attachment(NULL)) != NULL)
 	{
@@ -820,7 +820,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->redraw = REDRAW_FULL;
 	  unset_option(OPTNEEDREDRAW);
 	}
-	
+
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
 
@@ -864,7 +864,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	      FREE (&idx[idxlen]);
 	    }
 	  }
-	  
+
 	  FREE (&files);
 	  if (!error) mutt_clear_error ();
 
@@ -949,7 +949,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  this = Context; /* remember current folder and sort methods*/
 	  oldSort = Sort; oldSortAux = SortAux;
-	  
+
 	  Context = ctx;
 	  set_option(OPTATTACHMSG);
 	  mutt_message _("Tag the messages you want to attach!");
@@ -991,7 +991,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  }
 	  menu->redraw |= REDRAW_FULL;
 
-	  if (close == OP_QUIT) 
+	  if (close == OP_QUIT)
 	    mx_close_mailbox (Context, NULL);
 	  else
 	    mx_fastclose_mailbox (Context);
@@ -1029,9 +1029,9 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         break;
 
 #define CURRENT idx[menu->current]->content
-      
+
       case OP_COMPOSE_TOGGLE_RECODE:
-      {      
+      {
         CHECK_COUNT;
         if (!mutt_is_text_part (CURRENT))
         {
@@ -1083,7 +1083,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
-      
+
       case OP_COMPOSE_TOGGLE_DISPOSITION:
 	/* toggle the content-disposition between inline/attachment */
 	idx[menu->current]->content->disposition = (idx[menu->current]->content->disposition == DISPINLINE) ? DISPATTACH : DISPINLINE;
@@ -1127,19 +1127,19 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
         /* Note: We don't invoke send2-hook here, since we want to leave
 	 * users an opportunity to change settings from the ":" prompt.
 	 */
-      
+
         if(check_attachments(idx, idxlen) != 0)
         {
 	  menu->redraw = REDRAW_FULL;
 	  break;
 	}
 
-      
+
 #ifdef MIXMASTER
         if (msg->chain && mix_check_message (msg) != 0)
 	  break;
 #endif
-      
+
 	if (!fccSet && *fcc)
 	{
 	  if ((i = query_quadoption (OPT_COPY,
@@ -1194,7 +1194,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
         /* No send2hook since this doesn't change the message. */
         break;
-      
+
       case OP_COMPOSE_RENAME_FILE:
 	CHECK_COUNT;
 	strfcpy (fname, idx[menu->current]->content->filename, sizeof (fname));
@@ -1213,13 +1213,13 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  mutt_expand_path (fname, sizeof (fname));
 	  if(mutt_rename_file (idx[menu->current]->content->filename, fname))
 	    break;
-	  
+
 	  mutt_str_replace (&idx[menu->current]->content->filename, fname);
 	  menu->redraw = REDRAW_CURRENT;
 
 	  if(idx[menu->current]->content->stamp >= st.st_mtime)
 	    mutt_stamp_attachment(idx[menu->current]->content);
-	  
+
 	}
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
@@ -1240,7 +1240,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 	  /* Call to lookup_mime_type () ?  maybe later */
 	  type[0] = 0;
-	  if (mutt_get_field ("Content-Type: ", type, sizeof (type), 0) != 0 
+	  if (mutt_get_field ("Content-Type: ", type, sizeof (type), 0) != 0
 	      || !type[0])
 	    continue;
 
@@ -1289,7 +1289,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	    menu->redraw = REDRAW_FULL;
 	  }
 	}
-        mutt_message_hook (NULL, msg, M_SEND2HOOK);    
+        mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
 
       case OP_COMPOSE_EDIT_MIME:
@@ -1371,7 +1371,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  menu->redraw = REDRAW_FULL;
 	  break;
 	}
-      
+
 	loop = 0;
 	r = 1;
 	break;
@@ -1478,7 +1478,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 
 #ifdef MIXMASTER
       case OP_COMPOSE_MIX:
-      
+
       	mix_make_chain (&msg->chain, &menu->redraw);
         mutt_message_hook (NULL, msg, M_SEND2HOOK);
         break;
@@ -1487,7 +1487,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     }
 
     /* Draw formatted compose status line */
-    if (menu->redraw & REDRAW_STATUS) 
+    if (menu->redraw & REDRAW_STATUS)
     {
 	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));
 	move(option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);

@@ -529,7 +529,7 @@ static int smtp_auth (CONNECTION* conn)
       dprint (2, (debugfile, "smtp_authenticate: Trying method %s\n", method));
 
       r = smtp_auth_sasl (conn, method);
-      
+
       if (r == SMTP_AUTH_FAIL && delim)
       {
         mutt_error (_("%s authentication failed, trying next method"), method);

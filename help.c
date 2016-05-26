@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2009 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #define HELP_C
 
@@ -41,7 +41,7 @@ static const struct binding_t *help_lookupFunction (int op, int menu)
     /* first look in the generic map for the function */
     for (i = 0; OpGeneric[i].name; i++)
       if (OpGeneric[i].op == op)
-	return (&OpGeneric[i]);    
+	return (&OpGeneric[i]);
   }
 
   if ((map = km_get_table(menu)))
@@ -50,7 +50,7 @@ static const struct binding_t *help_lookupFunction (int op, int menu)
       if (map[i].op == op)
 	return (&map[i]);
   }
-  
+
   return (NULL);
 }
 
@@ -71,7 +71,7 @@ mutt_compile_help (char *buf, size_t buflen, int menu, const struct mapping_t *i
   int i;
   size_t len;
   char *pbuf = buf;
-  
+
   for (i = 0; items[i].name && buflen > 2; i++)
   {
     if (i)
@@ -346,29 +346,29 @@ void mutt_help (int menu)
   desc = mutt_getnamebyvalue (menu, Menus);
   if (!desc)
     desc = _("<UNKNOWN>");
-  
+
   do {
     if ((f = safe_fopen (t, "w")) == NULL)
     {
       mutt_perror (t);
       return;
     }
-  
+
     dump_menu (f, menu);
     if (menu != MENU_EDITOR && menu != MENU_PAGER)
     {
       fputs (_("\nGeneric bindings:\n\n"), f);
       dump_menu (f, MENU_GENERIC);
     }
-  
+
     fputs (_("\nUnbound functions:\n\n"), f);
     if (funcs)
       dump_unbound (f, funcs, Keymaps[menu], NULL);
     if (menu != MENU_PAGER)
       dump_unbound (f, OpGeneric, Keymaps[MENU_GENERIC], Keymaps[menu]);
-  
+
     safe_fclose (&f);
-  
+
     snprintf (buf, sizeof (buf), _("Help for %s"), desc);
   }
   while

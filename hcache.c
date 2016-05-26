@@ -522,7 +522,7 @@ mutt_hcache_per_folder(const char *path, const char *folder,
   char* s;
   int ret, plen;
 #ifndef HAVE_ICONV
-  const char *chs = Charset && *Charset ? Charset : 
+  const char *chs = Charset && *Charset ? Charset :
 		    mutt_get_default_charset ();
 #endif
 
@@ -590,7 +590,7 @@ mutt_hcache_per_folder(const char *path, const char *folder,
 		   );
 #endif
   }
-  
+
   if (ret <= 0)
     return path;
 
@@ -721,7 +721,7 @@ mutt_hcache_fetch(header_cache_t *h, const char *filename,
     FREE(&data);
     return NULL;
   }
-  
+
   return data;
 }
 
@@ -745,10 +745,10 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   DBT key;
   DBT data;
 #endif
-  
+
   if (!h)
     return NULL;
-  
+
 #ifdef HAVE_DB4
   if (filename[0] == '/')
     filename++;
@@ -756,19 +756,19 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   mutt_hcache_dbt_empty_init(&data);
   data.flags = DB_DBT_MALLOC;
-  
+
   h->db->get(h->db, NULL, &key, &data, 0);
-  
+
   return data.data;
 #else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
 
-  ksize = strlen (h->folder) + keylen (path + strlen (h->folder));  
+  ksize = strlen (h->folder) + keylen (path + strlen (h->folder));
 #endif
 #ifdef HAVE_QDBM
   data = vlget(h->db, path, ksize, NULL);
-  
+
   return data;
 #elif HAVE_TC
   data = tcbdbget(h->db, path, ksize, &sp);
@@ -777,9 +777,9 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
-  
+
   data = gdbm_fetch(h->db, key);
-  
+
   return data.dptr;
 #endif
 }
@@ -799,15 +799,15 @@ mutt_hcache_store(header_cache_t *h, const char *filename, HEADER * header,
   char* data;
   int dlen;
   int ret;
-  
+
   if (!h)
     return -1;
-  
+
   data = mutt_hcache_dump(h, header, &dlen, uidvalidity, flags);
   ret = mutt_hcache_store_raw (h, filename, data, dlen, keylen);
-  
+
   FREE(&data);
-  
+
   return ret;
 }
 
@@ -826,22 +826,22 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
   DBT key;
   DBT databuf;
 #endif
-  
+
   if (!h)
     return -1;
 
 #if HAVE_DB4
   if (filename[0] == '/')
     filename++;
-  
+
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
-  
+
   mutt_hcache_dbt_empty_init(&databuf);
   databuf.flags = DB_DBT_USERMEM;
   databuf.data = data;
   databuf.size = dlen;
   databuf.ulen = dlen;
-  
+
   return h->db->put(h->db, NULL, &key, &databuf, 0);
 #else
   strncpy(path, h->folder, sizeof (path));
@@ -856,10 +856,10 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #elif HAVE_GDBM
   key.dptr = path;
   key.dsize = ksize;
-  
+
   databuf.dsize = dlen;
   databuf.dptr = data;
-  
+
   return gdbm_store(h->db, key, databuf, GDBM_REPLACE);
 #endif
 }

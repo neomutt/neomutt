@@ -41,7 +41,7 @@
 # define EILSEQ EINVAL
 #endif
 
-/* 
+/*
  * The following list has been created manually from the data under:
  * http://www.isi.edu/in-notes/iana/assignments/character-sets
  * Last update: 2000-09-07
@@ -50,12 +50,12 @@
  * a preferred MIME name is given.
  */
 
-static const struct 
+static const struct
 {
   const char *key;
   const char *pref;
 }
-PreferredMIMENames[] = 
+PreferredMIMENames[] =
 {
   { "ansi_x3.4-1968", 	"us-ascii"     	},
   { "iso-ir-6",		"us-ascii" 	},
@@ -66,7 +66,7 @@ PreferredMIMENames[] =
   { "ibm367",		"us-ascii" 	},
   { "cp367",		"us-ascii" 	},
   { "csASCII",		"us-ascii" 	},
-  
+
   { "csISO2022KR",	"iso-2022-kr" 	},
   { "csEUCKR",		"euc-kr"      	},
   { "csISO2022JP",	"iso-2022-jp"	},
@@ -80,14 +80,14 @@ PreferredMIMENames[] =
   { "IBM819",		"iso-8859-1"	},
   { "CP819",		"iso-8859-1"	},
   { "csISOLatin1",	"iso-8859-1"	},
-  
+
   { "ISO_8859-2:1987",	"iso-8859-2"	},
   { "iso-ir-101",	"iso-8859-2"	},
   { "iso_8859-2",	"iso-8859-2"	},
   { "latin2",		"iso-8859-2"	},
   { "l2",		"iso-8859-2"	},
   { "csISOLatin2",	"iso-8859-2"	},
-  
+
   { "ISO_8859-3:1988",	"iso-8859-3"	},
   { "iso-ir-109",	"iso-8859-3"	},
   { "ISO_8859-3",	"iso-8859-3"	},
@@ -109,7 +109,7 @@ PreferredMIMENames[] =
   { "ASMO-708",		"iso-8859-6"	},
   { "arabic",		"iso-8859-6"	},
   { "csISOLatinArabic",	"iso-8859-6"	},
-  
+
   { "ISO_8859-7:1987",	"iso-8859-7"	},
   { "iso-ir-126",	"iso-8859-7"	},
   { "ISO_8859-7",	"iso-8859-7"	},
@@ -118,7 +118,7 @@ PreferredMIMENames[] =
   { "greek",		"iso-8859-7"	},
   { "greek8",		"iso-8859-7"	},
   { "csISOLatinGreek",	"iso-8859-7"	},
-  
+
   { "ISO_8859-8:1988",	"iso-8859-8"	},
   { "iso-ir-138",	"iso-8859-8"	},
   { "ISO_8859-8",	"iso-8859-8"	},
@@ -137,36 +137,36 @@ PreferredMIMENames[] =
   { "latin5",		"iso-8859-9"	}, /* this is not a bug */
   { "l5",		"iso-8859-9"	},
   { "csISOLatin5",	"iso-8859-9"	},
-  
+
   { "ISO_8859-10:1992",	"iso-8859-10"	},
   { "iso-ir-157",	"iso-8859-10"	},
   { "latin6",		"iso-8859-10"	}, /* this is not a bug */
   { "l6",		"iso-8859-10"	},
-  { "csISOLatin6",	"iso-8859-10"	}, 
-  
+  { "csISOLatin6",	"iso-8859-10"	},
+
   { "csKOI8r",		"koi8-r"	},
-  
+
   { "MS_Kanji",		"Shift_JIS"	}, /* Note the underscore! */
   { "csShiftJis",	"Shift_JIS"	},
-  
+
   { "Extended_UNIX_Code_Packed_Format_for_Japanese",
       			"euc-jp"	},
-  { "csEUCPkdFmtJapanese", 
+  { "csEUCPkdFmtJapanese",
       			"euc-jp"	},
-  
+
   { "csGB2312",		"gb2312"	},
   { "csbig5",		"big5"		},
 
-  /* 
+  /*
    * End of official brain damage.  What follows has been taken
-   * from glibc's localedata files. 
+   * from glibc's localedata files.
    */
 
   { "iso_8859-13",	"iso-8859-13"	},
   { "iso-ir-179",	"iso-8859-13"	},
   { "latin7",		"iso-8859-13"	}, /* this is not a bug */
   { "l7",		"iso-8859-13"	},
-  
+
   { "iso_8859-14",	"iso-8859-14"	},
   { "latin8",		"iso-8859-14"	}, /* this is not a bug */
   { "l8",		"iso-8859-14"	},
@@ -176,18 +176,18 @@ PreferredMIMENames[] =
 
   /* Suggested by Ionel Mugurel Ciobica <tgakic@sg10.chem.tue.nl> */
   { "latin0",           "iso-8859-15"   }, /* this is not a bug */
-  
+
   { "iso_8859-16",      "iso-8859-16"   },
   { "latin10",          "iso-8859-16"   }, /* this is not a bug */
-  
-  /* 
+
+  /*
    * David Champion <dgc@uchicago.edu> has observed this with
-   * nl_langinfo under SunOS 5.8. 
+   * nl_langinfo under SunOS 5.8.
    */
-  
+
   { "646",		"us-ascii"	},
-  
-  /* 
+
+  /*
    * http://www.sun.com/software/white-papers/wp-unicode/
    */
 
@@ -205,11 +205,11 @@ PreferredMIMENames[] =
   /*
    * If you happen to encounter system-specific brain-damage with
    * respect to character set naming, please add it above this
-   * comment, and submit a patch to <mutt-dev@mutt.org>. 
+   * comment, and submit a patch to <mutt-dev@mutt.org>.
    */
-  
+
   /* End of aliases.  Please keep this line last. */
-  
+
   { NULL, 		NULL		}
 };
 
@@ -221,10 +221,10 @@ void mutt_set_langinfo_charset (void)
 {
   char buff[LONG_STRING];
   char buff2[LONG_STRING];
-  
+
   strfcpy (buff, nl_langinfo (CODESET), sizeof (buff));
   mutt_canonical_charset (buff2, sizeof (buff2), buff);
-  
+
   /* finally, set $charset */
   if (!(Charset = safe_strdup (buff2)))
     Charset = safe_strdup ("iso-8859-1");
@@ -388,7 +388,7 @@ iconv_t mutt_iconv_open (const char *tocode, const char *fromcode, int flags)
   /* call system iconv with names it appreciates */
   if ((cd = iconv_open (tocode2, fromcode2)) != (iconv_t) -1)
     return cd;
-  
+
   return (iconv_t) -1;
 }
 
@@ -496,12 +496,12 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
       inrepls = repls;
     else
       outrepl = "?";
-      
+
     len = strlen (s);
     ib = s, ibl = len + 1;
     obl = MB_LEN_MAX * ibl;
     ob = buf = safe_malloc (obl + 1);
-    
+
     mutt_iconv (cd, &ib, &ibl, &ob, &obl, inrepls, outrepl);
     iconv_close (cd);
 
@@ -509,7 +509,7 @@ int mutt_convert_string (char **ps, const char *from, const char *to, int flags)
 
     FREE (ps);		/* __FREE_CHECKED__ */
     *ps = buf;
-    
+
     mutt_str_adjust (ps);
     return 0;
   }
@@ -574,20 +574,20 @@ char *fgetconvs (char *buf, size_t l, FGETCONV *_fc)
 {
   int c;
   size_t r;
-  
+
   for (r = 0; r + 1 < l;)
   {
     if ((c = fgetconv (_fc)) == EOF)
       break;
     buf[r++] = (char) c;
-    if (c == '\n') 
+    if (c == '\n')
       break;
   }
   buf[r] = '\0';
-  
-  if (r) 
+
+  if (r)
     return buf;
-  else 
+  else
     return NULL;
 }
 

@@ -1,28 +1,28 @@
 /*
  * Copyright (C) 1996-2000,2003,2012 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
-/* 
+/*
  * rfc1524 defines a format for the Multimedia Mail Configuration, which
- * is the standard mailcap file format under Unix which specifies what 
+ * is the standard mailcap file format under Unix which specifies what
  * external programs should be used to view/compose/edit multimedia files
  * based on content type.
  *
- * This file contains various functions for implementing a fair subset of 
+ * This file contains various functions for implementing a fair subset of
  * rfc1524.
  */
 
@@ -62,9 +62,9 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
   int needspipe = TRUE;
   char buf[LONG_STRING];
   char type[LONG_STRING];
-  
+
   strfcpy (type, _type, sizeof (type));
-  
+
   if (option (OPTMAILCAPSANITIZE))
     mutt_sanitize_filename (type, 0);
 
@@ -75,10 +75,10 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
       x++;
       buf[y++] = command[x++];
     }
-    else if (command[x] == '%') 
+    else if (command[x] == '%')
     {
       x++;
-      if (command[x] == '{') 
+      if (command[x] == '{')
       {
 	char param[STRING];
 	char pvalue[STRING];
@@ -89,12 +89,12 @@ int rfc1524_expand_command (BODY *a, char *filename, char *_type,
 	while (command[x] && command[x] != '}' && z < sizeof (param) - 1)
 	  param[z++] = command[x++];
 	param[z] = '\0';
-	
+
 	_pvalue = mutt_get_parameter (param, a->parameter);
 	strfcpy (pvalue, NONULL(_pvalue), sizeof (pvalue));
 	if (option (OPTMAILCAPSANITIZE))
 	  mutt_sanitize_filename (pvalue, 0);
-	
+
 	y += mutt_quote_filename (buf + y, sizeof (buf) - y, pvalue);
       }
       else if (command[x] == 's' && filename != NULL)
@@ -159,7 +159,7 @@ static int get_field_text (char *field, char **entry,
     }
     return 1;
   }
-  else 
+  else
   {
     mutt_error (_("Improperly formatted entry for type %s in \"%s\" line %d"),
 		type, filename, line);
@@ -169,7 +169,7 @@ static int get_field_text (char *field, char **entry,
 
 static int rfc1524_mailcap_parse (BODY *a,
 				  char *filename,
-				  char *type, 
+				  char *type,
 				  rfc1524_entry *entry,
 				  int opt)
 {
@@ -286,7 +286,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 	}
 	else if (!ascii_strncasecmp (field, "test", 4))
 	{
-	  /* 
+	  /*
 	   * This routine executes the given test command to determine
 	   * if this is the right entry.
 	   */
@@ -329,7 +329,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 	if (!printcommand)
 	  found = FALSE;
       }
-      
+
       if (!found)
       {
 	/* reset */
@@ -386,7 +386,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
   char *curr = MailcapPath;
 
   /* rfc1524 specifies that a path of mailcap files should be searched.
-   * joy.  They say 
+   * joy.  They say
    * $HOME/.mailcap:/etc/mailcap:/usr/etc/mailcap:/usr/local/etc/mailcap, etc
    * and overridden by the MAILCAPS environment variable, and, just to be nice,
    * we'll make it specifiable in .muttrc
@@ -412,7 +412,7 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
 
     if (!x)
       continue;
-    
+
     path[x] = '\0';
     mutt_expand_path (path, sizeof (path));
 
@@ -429,11 +429,11 @@ int rfc1524_mailcap_lookup (BODY *a, char *type, rfc1524_entry *entry, int opt)
 
 /* This routine will create a _temporary_ filename matching the
  * name template given if this needs to be done.
- * 
+ *
  * Please note that only the last path element of the
  * template and/or the old file name will be used for the
  * comparison and the temporary file name.
- * 
+ *
  * Returns 0 if oldfile is fine as is.
  * Returns 1 if newfile specified
  */
@@ -446,27 +446,27 @@ static void strnfcpy(char *d, char *s, size_t siz, size_t len)
 }
 
 int rfc1524_expand_filename (char *nametemplate,
-			     char *oldfile, 
+			     char *oldfile,
 			     char *newfile,
 			     size_t nflen)
 {
   int i, j, k, ps;
   char *s;
-  short lmatch = 0, rmatch = 0; 
+  short lmatch = 0, rmatch = 0;
   char left[_POSIX_PATH_MAX];
   char right[_POSIX_PATH_MAX];
-  
+
   newfile[0] = 0;
 
   /* first, ignore leading path components.
    */
-  
+
   if (nametemplate && (s = strrchr (nametemplate, '/')))
     nametemplate = s + 1;
 
   if (oldfile && (s = strrchr (oldfile, '/')))
     oldfile = s + 1;
-    
+
   if (!nametemplate)
   {
     if (oldfile)
@@ -479,15 +479,15 @@ int rfc1524_expand_filename (char *nametemplate,
   else /* oldfile && nametemplate */
   {
 
-    /* first, compare everything left from the "%s" 
+    /* first, compare everything left from the "%s"
      * (if there is one).
      */
-    
+
     lmatch = 1; ps = 0;
     for(i = 0; nametemplate[i]; i++)
     {
       if(nametemplate[i] == '%' && nametemplate[i+1] == 's')
-      { 
+      {
 	ps = 1;
 	break;
       }
@@ -500,22 +500,22 @@ int rfc1524_expand_filename (char *nametemplate,
 
     if(ps)
     {
-      
+
       /* If we had a "%s", check the rest. */
-      
-      /* now, for the right part: compare everything right from 
+
+      /* now, for the right part: compare everything right from
        * the "%s" to the final part of oldfile.
-       * 
+       *
        * The logic here is as follows:
-       * 
+       *
        * - We start reading from the end.
        * - There must be a match _right_ from the "%s",
-       *   thus the i + 2.  
+       *   thus the i + 2.
        * - If there was a left hand match, this stuff
        *   must not be counted again.  That's done by the
        *   condition (j >= (lmatch ? i : 0)).
        */
-      
+
       rmatch = 1;
 
       for(j = mutt_strlen(oldfile) - 1, k = mutt_strlen(nametemplate) - 1 ;
@@ -528,18 +528,18 @@ int rfc1524_expand_filename (char *nametemplate,
 	  break;
 	}
       }
-      
+
       /* Now, check if we had a full match. */
-      
+
       if(k >= i + 2)
 	rmatch = 0;
-      
+
       if(lmatch) *left = 0;
       else strnfcpy(left, nametemplate, sizeof(left), i);
-      
+
       if(rmatch) *right = 0;
       else strfcpy(right, nametemplate + i + 2, sizeof(right));
-      
+
       snprintf(newfile, nflen, "%s%s%s", left, oldfile, right);
     }
     else
@@ -548,14 +548,14 @@ int rfc1524_expand_filename (char *nametemplate,
       strfcpy(newfile, nametemplate, nflen);
     }
   }
-  
+
   mutt_adv_mktemp(newfile, nflen);
 
   if(rmatch && lmatch)
     return 0;
-  else 
+  else
     return 1;
-  
+
 }
 
 /* If rfc1524_expand_command() is used on a recv'd message, then
