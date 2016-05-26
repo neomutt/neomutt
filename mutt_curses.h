@@ -138,8 +138,8 @@ typedef struct color_line
   struct color_line *next;
 } COLOR_LINE;
 
-#define MUTT_PROGRESS_SIZE		(1<<0)	/* traffic-based progress */
-#define MUTT_PROGRESS_MSG		(1<<1)	/* message-based progress */
+#define MUTT_PROGRESS_SIZE      (1<<0)  /* traffic-based progress */
+#define MUTT_PROGRESS_MSG       (1<<1)  /* message-based progress */
 
 typedef struct
 {

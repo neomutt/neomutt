@@ -90,13 +90,13 @@
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
 
 /* flags for mutt_get_token() */
-#define MUTT_TOKEN_EQUAL		1	/* treat '=' as a special */
-#define MUTT_TOKEN_CONDENSE	(1<<1)	/* ^(char) to control chars (macros) */
-#define MUTT_TOKEN_SPACE		(1<<2)  /* don't treat whitespace as a term */
-#define MUTT_TOKEN_QUOTE		(1<<3)	/* don't interpret quotes */
-#define MUTT_TOKEN_PATTERN		(1<<4)	/* !)|~ are terms (for patterns) */
-#define MUTT_TOKEN_COMMENT		(1<<5)	/* don't reap comments */
-#define MUTT_TOKEN_SEMICOLON	(1<<6)	/* don't treat ; as special */
+#define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
+#define MUTT_TOKEN_CONDENSE   (1<<1)  /* ^(char) to control chars (macros) */
+#define MUTT_TOKEN_SPACE      (1<<2)  /* don't treat whitespace as a term */
+#define MUTT_TOKEN_QUOTE      (1<<3)  /* don't interpret quotes */
+#define MUTT_TOKEN_PATTERN    (1<<4)  /* !)|~ are terms (for patterns) */
+#define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
+#define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
 
 typedef struct
 {
@@ -118,51 +118,51 @@ typedef struct
 /* flags for mutt_FormatString() */
 typedef enum
 {
-  MUTT_FORMAT_FORCESUBJ	= (1<<0), /* print the subject even if unchanged */
-  MUTT_FORMAT_TREE		= (1<<1), /* draw the thread tree */
-  MUTT_FORMAT_MAKEPRINT	= (1<<2), /* make sure that all chars are printable */
-  MUTT_FORMAT_OPTIONAL	= (1<<3),
-  MUTT_FORMAT_STAT_FILE	= (1<<4), /* used by mutt_attach_fmt */
-  MUTT_FORMAT_ARROWCURSOR	= (1<<5), /* reserve space for arrow_cursor */
-  MUTT_FORMAT_INDEX	= (1<<6), /* this is a main index entry */
-  MUTT_FORMAT_NOFILTER	= (1<<7)  /* do not allow filtering on this pass */
+  MUTT_FORMAT_FORCESUBJ   = (1<<0), /* print the subject even if unchanged */
+  MUTT_FORMAT_TREE        = (1<<1), /* draw the thread tree */
+  MUTT_FORMAT_MAKEPRINT   = (1<<2), /* make sure that all chars are printable */
+  MUTT_FORMAT_OPTIONAL    = (1<<3),
+  MUTT_FORMAT_STAT_FILE   = (1<<4), /* used by mutt_attach_fmt */
+  MUTT_FORMAT_ARROWCURSOR = (1<<5), /* reserve space for arrow_cursor */
+  MUTT_FORMAT_INDEX       = (1<<6), /* this is a main index entry */
+  MUTT_FORMAT_NOFILTER    = (1<<7)  /* do not allow filtering on this pass */
 } format_flag;
 
 /* types for mutt_add_hook() */
-#define MUTT_FOLDERHOOK	1
-#define MUTT_MBOXHOOK	(1<<1)
-#define MUTT_SENDHOOK	(1<<2)
-#define MUTT_FCCHOOK	(1<<3)
-#define MUTT_SAVEHOOK	(1<<4)
-#define MUTT_CHARSETHOOK	(1<<5)
-#define MUTT_ICONVHOOK 	(1<<6)
-#define MUTT_MESSAGEHOOK	(1<<7)
-#define MUTT_CRYPTHOOK	(1<<8)
-#define MUTT_ACCOUNTHOOK	(1<<9)
-#define MUTT_REPLYHOOK	(1<<10)
-#define MUTT_SEND2HOOK     (1<<11)
+#define MUTT_FOLDERHOOK  1
+#define MUTT_MBOXHOOK    (1<<1)
+#define MUTT_SENDHOOK    (1<<2)
+#define MUTT_FCCHOOK     (1<<3)
+#define MUTT_SAVEHOOK    (1<<4)
+#define MUTT_CHARSETHOOK (1<<5)
+#define MUTT_ICONVHOOK   (1<<6)
+#define MUTT_MESSAGEHOOK (1<<7)
+#define MUTT_CRYPTHOOK   (1<<8)
+#define MUTT_ACCOUNTHOOK (1<<9)
+#define MUTT_REPLYHOOK   (1<<10)
+#define MUTT_SEND2HOOK   (1<<11)
 
 /* tree characters for linearize_tree and print_enriched_string */
-#define MUTT_TREE_LLCORNER		1
-#define MUTT_TREE_ULCORNER		2
-#define MUTT_TREE_LTEE		3
-#define MUTT_TREE_HLINE		4
-#define MUTT_TREE_VLINE		5
-#define MUTT_TREE_SPACE		6
-#define MUTT_TREE_RARROW		7
-#define MUTT_TREE_STAR		8
-#define MUTT_TREE_HIDDEN		9
-#define MUTT_TREE_EQUALS		10
-#define MUTT_TREE_TTEE		11
-#define MUTT_TREE_BTEE		12
-#define MUTT_TREE_MISSING		13
-#define MUTT_TREE_MAX		14
+#define MUTT_TREE_LLCORNER      1
+#define MUTT_TREE_ULCORNER      2
+#define MUTT_TREE_LTEE          3
+#define MUTT_TREE_HLINE         4
+#define MUTT_TREE_VLINE         5
+#define MUTT_TREE_SPACE         6
+#define MUTT_TREE_RARROW        7
+#define MUTT_TREE_STAR          8
+#define MUTT_TREE_HIDDEN        9
+#define MUTT_TREE_EQUALS        10
+#define MUTT_TREE_TTEE          11
+#define MUTT_TREE_BTEE          12
+#define MUTT_TREE_MISSING       13
+#define MUTT_TREE_MAX           14
 
-#define MUTT_THREAD_COLLAPSE	(1<<0)
-#define MUTT_THREAD_UNCOLLAPSE	(1<<1)
-#define MUTT_THREAD_GET_HIDDEN	(1<<2)
-#define MUTT_THREAD_UNREAD		(1<<3)
-#define MUTT_THREAD_NEXT_UNREAD	(1<<4)
+#define MUTT_THREAD_COLLAPSE    (1<<0)
+#define MUTT_THREAD_UNCOLLAPSE  (1<<1)
+#define MUTT_THREAD_GET_HIDDEN  (1<<2)
+#define MUTT_THREAD_UNREAD      (1<<3)
+#define MUTT_THREAD_NEXT_UNREAD (1<<4)
 
 enum
 {
@@ -303,9 +303,9 @@ enum
 #define MUTT_COMPOSE_NOFREEHEADER (1<<0)
 
 /* flags to _mutt_select_file() */
-#define MUTT_SEL_BUFFY	(1<<0)
-#define MUTT_SEL_MULTI	(1<<1)
-#define MUTT_SEL_FOLDER	(1<<2)
+#define MUTT_SEL_BUFFY  (1<<0)
+#define MUTT_SEL_MULTI  (1<<1)
+#define MUTT_SEL_FOLDER (1<<2)
 
 /* flags for parse_spam_list */
 #define MUTT_SPAM          1
@@ -954,14 +954,14 @@ typedef struct
 } ENTER_STATE;
 
 /* flags for the STATE struct */
-#define MUTT_DISPLAY	(1<<0) /* output is displayed to the user */
-#define MUTT_VERIFY	(1<<1) /* perform signature verification */
+#define MUTT_DISPLAY       (1<<0) /* output is displayed to the user */
+#define MUTT_VERIFY        (1<<1) /* perform signature verification */
 #define MUTT_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
 #define MUTT_WEED          (1<<3) /* weed headers even when not in display mode */
-#define MUTT_CHARCONV	(1<<4) /* Do character set conversions */
-#define MUTT_PRINTING	(1<<5) /* are we printing? - MUTT_DISPLAY "light" */
-#define MUTT_REPLYING	(1<<6) /* are we replying? */
-#define MUTT_FIRSTDONE	(1<<7) /* the first attachment has been done */
+#define MUTT_CHARCONV      (1<<4) /* Do character set conversions */
+#define MUTT_PRINTING      (1<<5) /* are we printing? - MUTT_DISPLAY "light" */
+#define MUTT_REPLYING      (1<<6) /* are we replying? */
+#define MUTT_FIRSTDONE     (1<<7) /* the first attachment has been done */
 
 #define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
 #define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)

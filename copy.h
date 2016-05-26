@@ -17,21 +17,21 @@
  */ 
 
 /* flags to _mutt_copy_message */
-#define MUTT_CM_NOHEADER	1	/* don't copy the message header */
-#define MUTT_CM_PREFIX	(1<<1)	/* quote the message */
-#define MUTT_CM_DECODE	(1<<2)	/* decode the message body into text/plain */
-#define MUTT_CM_DISPLAY	(1<<3)	/* output is displayed to the user */
-#define MUTT_CM_UPDATE	(1<<4)  /* update structs on sync */
-#define MUTT_CM_WEED	(1<<5)  /* weed message/rfc822 attachment headers */
-#define MUTT_CM_CHARCONV	(1<<6)  /* perform character set conversions */
-#define MUTT_CM_PRINTING	(1<<7)	/* printing the message - display light */
-#define MUTT_CM_REPLYING	(1<<8)	/* replying the message */
+#define MUTT_CM_NOHEADER        1       /* don't copy the message header */
+#define MUTT_CM_PREFIX          (1<<1)  /* quote the message */
+#define MUTT_CM_DECODE          (1<<2)  /* decode the message body into text/plain */
+#define MUTT_CM_DISPLAY         (1<<3)  /* output is displayed to the user */
+#define MUTT_CM_UPDATE          (1<<4)  /* update structs on sync */
+#define MUTT_CM_WEED            (1<<5)  /* weed message/rfc822 attachment headers */
+#define MUTT_CM_CHARCONV        (1<<6)  /* perform character set conversions */
+#define MUTT_CM_PRINTING        (1<<7)  /* printing the message - display light */
+#define MUTT_CM_REPLYING        (1<<8)  /* replying the message */
 
-#define MUTT_CM_DECODE_PGP	  (1<<9) /* used for decoding PGP messages */
-#define MUTT_CM_DECODE_SMIME (1<<10) /* used for decoding S/MIME messages */
-#define MUTT_CM_DECODE_CRYPT  (MUTT_CM_DECODE_PGP | MUTT_CM_DECODE_SMIME)
+#define MUTT_CM_DECODE_PGP      (1<<9)  /* used for decoding PGP messages */
+#define MUTT_CM_DECODE_SMIME    (1<<10) /* used for decoding S/MIME messages */
+#define MUTT_CM_DECODE_CRYPT    (MUTT_CM_DECODE_PGP | MUTT_CM_DECODE_SMIME)
 
-#define MUTT_CM_VERIFY	(1<<11)	/* do signature verification */
+#define MUTT_CM_VERIFY          (1<<11) /* do signature verification */
 
 /* flags for mutt_copy_header() */
 #define CH_UPDATE         1       /* update the status and x-status fields? */

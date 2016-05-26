@@ -20,8 +20,8 @@
 #ifndef _MUTT_GROUP_H_
 #define _MUTT_GROUP_H_ 1
 
-#define MUTT_GROUP		0
-#define MUTT_UNGROUP	1
+#define MUTT_GROUP   0
+#define MUTT_UNGROUP 1
 
 void mutt_group_add_adrlist (group_t *g, ADDRESS *a);
 
