@@ -549,7 +549,7 @@ int mutt_index_menu (void)
 
       index_hint = (Context->vcount && menu->current >= 0 && menu->current < Context->vcount) ? CURHDR->index : 0;
 
-      if ((check = mx_check_mailbox (Context, &index_hint, 0)) < 0)
+      if ((check = mx_check_mailbox (Context, &index_hint)) < 0)
       {
 	if (!Context->path)
 	{
