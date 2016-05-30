@@ -3,6 +3,9 @@
   - Keywords: Email Label/Keywords/Tagging
   - Compress: Compressed mailboxes support
   - NNTP: Talk to a usenet news server
+  - Separate mappings for <enter> and <return>
+  - New configure option: --enable-quick-build
+  - Various build fixes
 
 * Mon May 02 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160502
 - Update for Mutt-1.6.0
