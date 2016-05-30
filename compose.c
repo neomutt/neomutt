@@ -189,7 +189,7 @@ static void redraw_crypt_lines (HEADER *msg)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
   {
     char *s = _(" sign as: ");
-    int offset = HDR_XOFFSET - mbstowcs (NULL, s, 0);
+    int offset = HDR_XOFFSET + SidebarWidth - mbstowcs (NULL, s, 0);
     mvprintw (HDR_CRYPTINFO, offset < 0 ? 0 : offset, "%s%s", s,
 	      PgpSignAs ? PgpSignAs : _("<default>"));
   }
@@ -197,7 +197,7 @@ static void redraw_crypt_lines (HEADER *msg)
   if ((WithCrypto & APPLICATION_SMIME)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
     char *s = _(" sign as: ");
-    int offset = HDR_XOFFSET - mbstowcs (NULL, s, 0);
+    int offset = HDR_XOFFSET + SidebarWidth - mbstowcs (NULL, s, 0);
     mvprintw (HDR_CRYPTINFO, offset < 0 ? 0 : offset, "%s%s", s,
 	      SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
