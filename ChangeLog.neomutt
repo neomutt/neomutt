@@ -1,5 +1,5 @@
-* Mon May 23 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160523
-- New Features:
+2016-05-23  Richard Russon  <rich@flatcap.org>
+* New Features:
   - Keywords: Email Label/Keywords/Tagging
   - Compress: Compressed mailboxes support
   - NNTP: Talk to a usenet news server
@@ -7,17 +7,17 @@
   - New configure option: --enable-quick-build
   - Various build fixes
 
-* Mon May 02 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160502
-- Update for Mutt-1.6.0
-- Bug Fixes:
+2016-05-02  Richard Russon  <rich@flatcap.org>
+* Update for Mutt-1.6.0
+* Bug Fixes:
   - Build for Notmuch works if Sidebar is disabled
   - Sidebar functions work even if the Sidebar is hidden
   - sidebar-next-new, etc, only find *new* mail, as documented
   - Notmuch supports *very* long queries
 
-* Sat Apr 16 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160416
-- Big Bugfix Release
-- Bug Fixes:
+2016-04-16  Richard Russon  <rich@flatcap.org>
+* Big Bugfix Release
+* Bug Fixes:
   - Fix crash caused by sidebar_folder_indent
   - Allow the user to change mailboxes again
   - Correct sidebar's messages counts
@@ -27,39 +27,39 @@
   - Conditional include if sys/syscall.h
   - Build fix for old compilers
   - Try harder to keep track of the open mailbox
-- Changes to Features
+* Changes to Features
   - Allow sidebar_divider_char to be longer
     (it was limited to one character)
   - Ignore case when sorting the sidebar alphabetically
-- Other Changes
+* Other Changes
   - Numerous small tweaks to the docs
   - Lots of minor code tidy-ups
   - Enabling NotMuch now forcibly enables Sidebar
     (it is dependent on it, for now)
   - A couple of bug fixes from mutt/stable
 
-* Mon Apr 04 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160404
-- Update for Mutt-1.6.0
-- No other changes in this release
+2016-04-04  Richard Russon  <rich@flatcap.org>
+* Update for Mutt-1.6.0
+* No other changes in this release
 
-* Mon Mar 28 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160328
-- New Features
+2016-03-28  Richard Russon  <rich@flatcap.org>
+* New Features
   - skip-quoted          - skip quoted text
   - limit-current-thread - limit index view to current thread
-- Sidebar Intro - A Gentle Introduction to the Sidebar (with pictures).
+* Sidebar Intro - A Gentle Introduction to the Sidebar (with pictures).
 
-* Sun Mar 20 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160320
-- Numerous small bugfixes
-- TravisCI integration
+2016-03-20  Richard Russon  <rich@flatcap.org>
+* Numerous small bugfixes
+* TravisCI integration
 
-* Thu Mar 17 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160317
-- New Features
+2016-03-17  Richard Russon  <rich@flatcap.org>
+* New Features
   - notmuch - email search support
   - ifdef   - improvements
 
-* Mon Mar 07 2016 Richard Russon <rich@flatcap.org> - NeoMutt-20160307
-- First NeoMutt release
-- List of Features:
+2016-03-07  Richard Russon  <rich@flatcap.org>
+* First NeoMutt release
+* List of Features:
   - bug-fixes    - various bug fixes
   - cond-date    - use rules to choose date format
   - fmemopen     - use memory buffers instead of files
