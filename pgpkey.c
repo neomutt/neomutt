@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 1996-1997,2007 Michael R. Elkins <me@mutt.org>
  * Copyright (c) 1998-2003 Thomas Roessler <roessler@does-not-exist.org>
- * 
+ *
  *     This program is free software; you can redistribute it
  *     and/or modify it under the terms of the GNU General Public
  *     License as published by the Free Software Foundation; either
  *     version 2 of the License, or (at your option) any later
  *     version.
- * 
+ *
  *     This program is distributed in the hope that it will be
  *     useful, but WITHOUT ANY WARRANTY; without even the implied
  *     warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
  *     PURPOSE.  See the GNU General Public License for more
  *     details.
- * 
+ *
  *     You should have received a copy of the GNU General Public
  *     License along with this program; if not, write to the Free
  *     Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
@@ -87,7 +87,7 @@ static char pgp_flags (int flags)
     return 'd';
   else if (flags & KEYFLAG_CRITICAL)
     return 'c';
-  else 
+  else
     return ' ';
 }
 
@@ -101,7 +101,7 @@ static pgp_key_t pgp_principal_key (pgp_key_t key)
 
 /*
  * Format an entry on the PGP key selection menu.
- * 
+ *
  * %n	number
  * %k	key id		%K 	key id of the principal key
  * %u	user id
@@ -292,7 +292,7 @@ static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
   entry.uid = KeyTable[num];
   entry.num = num + 1;
 
-  mutt_FormatString (s, l, 0, NONULL (PgpEntryFormat), pgp_entry_fmt, 
+  mutt_FormatString (s, l, 0, NONULL (PgpEntryFormat), pgp_entry_fmt,
 		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
 }
 
@@ -325,7 +325,7 @@ static int _pgp_compare_keyid (const void *a, const void *b)
   pgp_uid_t **s = (pgp_uid_t **) a;
   pgp_uid_t **t = (pgp_uid_t **) b;
 
-  if ((r = mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent), 
+  if ((r = mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent),
 			    pgp_fpr_or_lkeyid ((*t)->parent))))
     return r > 0;
   else
@@ -373,7 +373,7 @@ static int _pgp_compare_trust (const void *a, const void *b)
     return r < 0;
   if ((r = mutt_strcasecmp ((*s)->addr, (*t)->addr)))
     return r > 0;
-  return (mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent), 
+  return (mutt_strcasecmp (pgp_fpr_or_lkeyid ((*s)->parent),
 			   pgp_fpr_or_lkeyid ((*t)->parent))) > 0;
 }
 
@@ -578,7 +578,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       safe_fclose (&fp);
       safe_fclose (&devnull);
       mutt_clear_error ();
-      snprintf (cmd, sizeof (cmd), _("Key ID: 0x%s"), 
+      snprintf (cmd, sizeof (cmd), _("Key ID: 0x%s"),
 		pgp_keyid (pgp_principal_key (KeyTable[menu->current]->parent)));
       mutt_do_pager (cmd, tempfile, 0, NULL);
       menu->redraw = REDRAW_FULL;
@@ -608,7 +608,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
       {
 	char *s = "";
 	char buff[LONG_STRING];
-	
+
 	if (KeyTable[menu->current]->flags & KEYFLAG_CANTUSE)
 	  s = N_("ID is expired/disabled/revoked.");
 	else switch (KeyTable[menu->current]->trust & 0x03)
@@ -753,7 +753,7 @@ BODY *pgp_make_key_attachment (char *tempf)
   mutt_message _("Invoking PGP...");
 
 
-  if ((thepid = 
+  if ((thepid =
        pgp_invoke_export (NULL, NULL, NULL, -1,
 			   fileno (tempfp), fileno (devnull), tmp)) == -1)
   {
@@ -924,15 +924,15 @@ pgp_key_t pgp_getkeybyaddr (ADDRESS * a, short abilities, pgp_ring_t keyring,
     {
       /*
        * There was precisely one strong match on a valid ID.
-       * 
+       *
        * Proceed without asking the user.
        */
       pgp_remove_key (&matches, the_strong_valid_key);
       k = the_strong_valid_key;
     }
-    else 
+    else
     {
-      /* 
+      /*
        * Else: Ask the user.
        */
       if ((k = pgp_select_key (matches, a, NULL)))

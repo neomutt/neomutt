@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1999-2001,2005,2009 Brendan Cully <brendan@kublai.com>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /* GSS login/authentication code */
 
@@ -43,12 +43,12 @@
 #define GSS_AUTH_P_PRIVACY   4
 static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 {
-	OM_uint32 maj_stat, min_stat; 
+	OM_uint32 maj_stat, min_stat;
 	OM_uint32 msg_ctx = 0;
 	gss_buffer_desc status_string;
 	char buf_maj[512];
 	char buf_min[512];
-	
+
 	do
 	{
 		maj_stat = gss_display_status (&min_stat,
@@ -61,7 +61,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 			break;
 		strncpy(buf_maj, (char*) status_string.value, sizeof(buf_maj));
 		gss_release_buffer(&min_stat, &status_string);
-		
+
 		maj_stat = gss_display_status (&min_stat,
 					       err_min,
 					       GSS_C_MECH_CODE,
@@ -74,7 +74,7 @@ static void print_gss_error(OM_uint32 err_maj, OM_uint32 err_min)
 			gss_release_buffer(&min_stat, &status_string);
 		}
 	} while (!GSS_ERROR(maj_stat) && msg_ctx != 0);
-	
+
 	dprint (2, (debugfile, "((%s:%d )(%s:%d))", buf_maj, err_maj, buf_min, err_min));
 }
 
@@ -101,7 +101,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
 
   if (mutt_account_getuser (&idata->conn->account))
     return IMAP_AUTH_FAILURE;
-  
+
   /* get an IMAP service ticket for the server */
   snprintf (buf1, sizeof (buf1), "imap@%s", idata->conn->account.host);
   request_buf.value = buf1;
@@ -113,7 +113,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
     dprint (2, (debugfile, "Couldn't get service name for [%s]\n", buf1));
     return IMAP_AUTH_UNAVAIL;
   }
-#ifdef DEBUG	
+#ifdef DEBUG
   else if (debuglevel >= 2)
   {
     maj_stat = gss_display_name (&min_stat, target_name, &request_buf,
@@ -129,7 +129,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
 
   /* build token */
   maj_stat = gss_init_sec_context (&min_stat, GSS_C_NO_CREDENTIAL, &context,
-    target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0, 
+    target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0,
     GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL, &send_token,
     (unsigned int*) &cflags, NULL);
   if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)
@@ -186,7 +186,7 @@ imap_auth_res_t imap_auth_gss (IMAP_DATA* idata, const char* method)
 
     /* Write client data */
     maj_stat = gss_init_sec_context (&min_stat, GSS_C_NO_CREDENTIAL, &context,
-      target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0, 
+      target_name, GSS_C_NO_OID, GSS_C_MUTUAL_FLAG | GSS_C_SEQUENCE_FLAG, 0,
       GSS_C_NO_CHANNEL_BINDINGS, sec_token, NULL, &send_token,
       (unsigned int*) &cflags, NULL);
     if (maj_stat != GSS_S_COMPLETE && maj_stat != GSS_S_CONTINUE_NEEDED)

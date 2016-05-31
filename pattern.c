@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2006-2007,2010 Michael R. Elkins <me@mutt.org>, and others
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -135,9 +135,9 @@ int mutt_which_case (const char *s)
   wchar_t w;
   mbstate_t mb;
   size_t l;
-  
+
   memset (&mb, 0, sizeof (mb));
-  
+
   for (; (l = mbrtowc (&w, s, MB_CUR_MAX, &mb)) != 0; s += l)
   {
     if (l == (size_t) -2)
@@ -284,7 +284,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
     }
 
     FREE (&buf);
-    
+
     mx_close_message (&msg);
 
     if (option (OPTTHOROUGHSRC))
@@ -363,9 +363,9 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
   char *tmp;
   int do_exclusive = 0;
   int skip_quote = 0;
-  
+
   /*
-   * If simple_search is set to "~m %s", the range will have double quotes 
+   * If simple_search is set to "~m %s", the range will have double quotes
    * around it...
    */
   if (*s->dptr == '"')
@@ -414,7 +414,7 @@ int eat_range (pattern_t *pat, BUFFER *s, BUFFER *err)
     s->dptr++;
     tmp = s->dptr;
   }
-  
+
   if (isdigit ((unsigned char) *tmp))
   {
     /* range maximum */
@@ -523,19 +523,19 @@ static void adjust_date_range (struct tm *min, struct tm *max)
 	&& min->tm_mday > max->tm_mday))
   {
     int tmp;
-    
+
     tmp = min->tm_year;
     min->tm_year = max->tm_year;
     max->tm_year = tmp;
-      
+
     tmp = min->tm_mon;
     min->tm_mon = max->tm_mon;
     max->tm_mon = tmp;
-      
+
     tmp = min->tm_mday;
     min->tm_mday = max->tm_mday;
     max->tm_mday = tmp;
-    
+
     min->tm_hour = min->tm_min = min->tm_sec = 0;
     max->tm_hour = 23;
     max->tm_min = max->tm_sec = 59;
@@ -545,7 +545,7 @@ static void adjust_date_range (struct tm *min, struct tm *max)
 static const char * parse_date_range (const char* pc, struct tm *min,
     struct tm *max, int haveMin, struct tm *baseMin, BUFFER *err)
 {
-  int flag = M_PDR_NONE;	
+  int flag = M_PDR_NONE;
   while (*pc && ((flag & M_PDR_DONE) == 0))
   {
     const char *pt;
@@ -735,7 +735,7 @@ static int eat_date (pattern_t *pat, BUFFER *s, BUFFER *err)
 	memcpy (&min, tm, sizeof (min));
 	min.tm_hour = min.tm_sec = min.tm_min = 0;
       }
-      
+
       /* preset max date for relative offsets,
 	 if nothing follows we search for messages on a specific day */
       max.tm_year = min.tm_year;
@@ -1304,7 +1304,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
 static void quote_simple(char *tmp, size_t len, const char *p)
 {
   int i = 0;
-  
+
   tmp[i++] = '"';
   while (*p && i < len - 3)
   {
@@ -1315,7 +1315,7 @@ static void quote_simple(char *tmp, size_t len, const char *p)
   tmp[i++] = '"';
   tmp[i] = 0;
 }
-  
+
 /* convert a simple search into a real request */
 void mutt_check_simple (char *s, size_t len, const char *simple)
 {
@@ -1450,7 +1450,7 @@ int mutt_pattern_func (int op, char *prompt)
     return (-1);
 
   mutt_message _("Compiling search pattern...");
-  
+
   simple = safe_strdup (buf);
   mutt_check_simple (buf, sizeof (buf), NONULL (SimpleSearch));
 
@@ -1513,12 +1513,12 @@ int mutt_pattern_func (int op, char *prompt)
 	  case M_UNDELETE:
 	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_PURGED, 0);
 	  case M_DELETE:
-	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_DELETE, 
+	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_DELETE,
 			  (op == M_DELETE));
 	    break;
 	  case M_TAG:
 	  case M_UNTAG:
-	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_TAG, 
+	    mutt_set_flag (Context, Context->hdrs[Context->v2r[i]], M_TAG,
 			   (op == M_TAG));
 	    break;
 	}
@@ -1579,7 +1579,7 @@ int mutt_search_command (int cur, int op)
     else
       set_option (OPTSEARCHREVERSE);
 
-    /* compare the *expanded* version of the search pattern in case 
+    /* compare the *expanded* version of the search pattern in case
        $simple_search has changed while we were searching */
     strfcpy (temp, buf, sizeof (temp));
     mutt_check_simple (temp, sizeof (temp), NONULL (SimpleSearch));
@@ -1631,7 +1631,7 @@ int mutt_search_command (int cur, int op)
       i = 0;
       if (option (OPTWRAPSEARCH))
         msg = _("Search wrapped to top.");
-      else 
+      else
       {
         mutt_message _("Search hit bottom without finding match");
 	return (-1);
@@ -1642,7 +1642,7 @@ int mutt_search_command (int cur, int op)
       i = Context->vcount - 1;
       if (option (OPTWRAPSEARCH))
         msg = _("Search wrapped to bottom.");
-      else 
+      else
       {
         mutt_message _("Search hit top without finding match");
 	return (-1);

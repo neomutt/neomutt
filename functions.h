@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2002 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 /*
  * This file contains the structures needed to parse ``bind'' commands, as
@@ -287,7 +287,7 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "search-toggle",	OP_SEARCH_TOGGLE,		"\\" },
   { "display-address",	OP_DISPLAY_ADDRESS,		"@" },
   { "next-new",		OP_MAIN_NEXT_NEW,		NULL },
-  { "next-new-then-unread", 
+  { "next-new-then-unread",
                         OP_MAIN_NEXT_NEW_THEN_UNREAD,   "\t" },
   { "pipe-message",	OP_PIPE,			"|" },
   { "help",		OP_HELP,			"?" },
@@ -432,7 +432,7 @@ const struct binding_t OpCompose[] = { /* map: compose */
 #ifdef MIXMASTER
   { "mix",		OP_COMPOSE_MIX,			"M" },
 #endif
-  
+
   { NULL,		0,				NULL }
 };
 
@@ -447,7 +447,7 @@ const struct binding_t OpAlias[] = { /* map: alias */
   { "undelete-entry",	OP_UNDELETE,	"u" },
   { NULL,		0,		NULL }
 };
-  
+
 
 /* The file browser */
 const struct binding_t OpBrowser[] = { /* map: browser */

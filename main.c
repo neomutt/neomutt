@@ -2,21 +2,21 @@
  * Copyright (C) 1996-2007,2010,2013 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 1999-2007 Thomas Roessler <roessler@does-not-exist.org>
  * Copyright (C) 2004 g10 Code GmbH
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #define MAIN_C 1
 
@@ -113,7 +113,7 @@ options:\n\
   -m <type>\tspecify a default mailbox type\n\
   -n\t\tcauses Mutt not to read the system Muttrc\n\
   -p\t\trecall a postponed message");
-  
+
   puts _("\
   -Q <variable>\tquery a configuration variable\n\
   -R\t\topen mailbox in read-only mode\n\
@@ -204,7 +204,7 @@ int main (int argc, char **argv)
   int double_dash = argc, nargc = 1;
 
   /* sanity check against stupid administrators */
-  
+
   if(getegid() != getgid())
   {
     fprintf(stderr, "%s: I don't want to run with privileges!\n",
@@ -232,7 +232,7 @@ int main (int argc, char **argv)
   for (optind = 1; optind < double_dash; )
   {
     /* We're getopt'ing POSIXLY, so we'll be here every time getopt()
-     * encounters a non-option.  That could be a file to attach 
+     * encounters a non-option.  That could be a file to attach
      * (all non-options between -a and --) or it could be an address
      * (which gets collapsed to the front of argv).
      */
@@ -322,7 +322,7 @@ int main (int argc, char **argv)
 
       case 'm':
 	/* should take precedence over .muttrc setting, so save it for later */
-	newMagic = optarg; 
+	newMagic = optarg;
 	break;
 
       case 'n':
@@ -336,7 +336,7 @@ int main (int argc, char **argv)
       case 'Q':
         queries = mutt_add_list (queries, optarg);
         break;
-      
+
       case 'R':
 	flags |= M_RO; /* read-only mode */
 	break;
@@ -447,7 +447,7 @@ int main (int argc, char **argv)
     for (; alias_queries; alias_queries = alias_queries->next)
     {
       if ((a = mutt_lookup_alias (alias_queries->data)))
-      {	
+      {
 	/* output in machine-readable form */
 	mutt_addrlist_to_intl (a, NULL);
 	mutt_write_address_list (a, stdout, 0, 0);
@@ -513,7 +513,7 @@ int main (int argc, char **argv)
     char *bodytext = NULL, *bodyfile = NULL;
     int rv = 0;
     char expanded_infile[_POSIX_PATH_MAX];
-    
+
     if (!option (OPTNOCURSES))
       mutt_flushinp ();
 

@@ -231,9 +231,9 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
   }
 }
 
-static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i) 
+static void menu_make_entry (char *s, int l, MUTTMENU *menu, int i)
 {
-  if (menu->dialog) 
+  if (menu->dialog)
   {
     strncpy (s, menu->dialog[i], l);
     menu->current = -1; /* hide menubar */
@@ -350,12 +350,12 @@ void menu_redraw_motion (MUTTMENU *menu)
 {
   char buf[LONG_STRING];
 
-  if (menu->dialog) 
+  if (menu->dialog)
   {
     menu->redraw &= ~REDRAW_MOTION;
     return;
   }
-  
+
   move (menu->oldcurrent + menu->offset - menu->top, SidebarWidth);
   ATTRSET(menu->color (menu->oldcurrent));
 
@@ -398,7 +398,7 @@ void menu_redraw_current (MUTTMENU *menu)
 {
   char buf[LONG_STRING];
   int attr = menu->color (menu->current);
-  
+
   move (menu->current + menu->offset - menu->top, SidebarWidth);
   menu_make_entry (buf, sizeof (buf), menu, menu->current);
   menu_pad_string (buf, sizeof (buf));
@@ -420,9 +420,9 @@ void menu_redraw_current (MUTTMENU *menu)
 
 static void menu_redraw_prompt (MUTTMENU *menu)
 {
-  if (menu->dialog) 
+  if (menu->dialog)
   {
-    if (option (OPTMSGERR)) 
+    if (option (OPTMSGERR))
     {
       mutt_sleep (1);
       unset_option (OPTMSGERR);
@@ -443,13 +443,13 @@ void menu_check_recenter (MUTTMENU *menu)
 
   if (!option (OPTMENUMOVEOFF) && menu->max <= menu->pagelen) /* less entries than lines */
   {
-    if (menu->top != 0) 
+    if (menu->top != 0)
     {
       menu->top = 0;
       set_option (OPTNEEDREDRAW);
     }
   }
-  else 
+  else
   {
     if (option (OPTMENUSCROLL) || (menu->pagelen <= 0) || (c < MenuContext))
     {
@@ -463,7 +463,7 @@ void menu_check_recenter (MUTTMENU *menu)
       if (menu->current < menu->top + c)
 	menu->top -= (menu->pagelen - c) * ((menu->top + menu->pagelen - 1 - menu->current) / (menu->pagelen - c)) - c;
       else if ((menu->current >= menu->top + menu->pagelen - c))
-	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;	
+	menu->top += (menu->pagelen - c) * ((menu->current - menu->top) / (menu->pagelen - c)) - c;
     }
   }
 
@@ -536,7 +536,7 @@ void menu_prev_line (MUTTMENU *menu)
     mutt_error _("You cannot scroll up farther.");
 }
 
-/* 
+/*
  * pageup:   jumplen == -pagelen
  * pagedown: jumplen == pagelen
  * halfup:   jumplen == -pagelen/2
@@ -849,18 +849,18 @@ static int menu_dialog_translate_op (int i)
 {
   switch (i)
   {
-    case OP_NEXT_ENTRY:   
+    case OP_NEXT_ENTRY:
       return OP_NEXT_LINE;
-    case OP_PREV_ENTRY:	  
+    case OP_PREV_ENTRY:
       return OP_PREV_LINE;
-    case OP_CURRENT_TOP:   case OP_FIRST_ENTRY:  
+    case OP_CURRENT_TOP:   case OP_FIRST_ENTRY:
       return OP_TOP_PAGE;
-    case OP_CURRENT_BOTTOM:    case OP_LAST_ENTRY:	  
+    case OP_CURRENT_BOTTOM:    case OP_LAST_ENTRY:
       return OP_BOTTOM_PAGE;
-    case OP_CURRENT_MIDDLE: 
-      return OP_MIDDLE_PAGE; 
+    case OP_CURRENT_MIDDLE:
+      return OP_MIDDLE_PAGE;
   }
-  
+
   return i;
 }
 
@@ -898,10 +898,10 @@ int menu_redraw (MUTTMENU *menu)
     /* allow the caller to do any local configuration */
     return (OP_REDRAW);
   }
-  
+
   if (!menu->dialog)
     menu_check_recenter (menu);
-  
+
   if (menu->redraw & REDRAW_STATUS)
     menu_redraw_status (menu);
   if (menu->redraw & REDRAW_INDEX)
@@ -910,10 +910,10 @@ int menu_redraw (MUTTMENU *menu)
     menu_redraw_motion (menu);
   else if (menu->redraw == REDRAW_CURRENT)
     menu_redraw_current (menu);
-  
+
   if (menu->dialog)
     menu_redraw_prompt (menu);
-  
+
   return OP_NULL;
 }
 
@@ -928,19 +928,19 @@ int mutt_menuLoop (MUTTMENU *menu)
       unset_option (OPTMENUCALLER);
       return OP_NULL;
     }
-    
-    
+
+
     mutt_curs_set (0);
 
     if (menu_redraw (menu) == OP_REDRAW)
       return OP_REDRAW;
-    
+
     menu->oldcurrent = menu->current;
 
 
     /* move the cursor out of the way */
-    
-    
+
+
     if (option (OPTARROWCURSOR))
       move (menu->current - menu->top + menu->offset, SidebarWidth + 2);
     else if (option (OPTBRAILLEFRIENDLY))
@@ -949,11 +949,11 @@ int mutt_menuLoop (MUTTMENU *menu)
       move (menu->current - menu->top + menu->offset, COLS - 1);
 
     mutt_refresh ();
-    
+
     /* try to catch dialog keys before ops */
     if (menu->dialog && menu_dialog_dokey (menu, &i) == 0)
       return i;
-		    
+
     i = km_dokey (menu->menu);
     if (i == OP_TAG_PREFIX || i == OP_TAG_PREFIX_COND)
     {
@@ -1001,7 +1001,7 @@ int mutt_menuLoop (MUTTMENU *menu)
       mutt_clear_error ();
 
     /* Convert menubar movement to scrolling */
-    if (menu->dialog) 
+    if (menu->dialog)
       i = menu_dialog_translate_op (i);
 
     switch (i)

@@ -6,7 +6,7 @@
 int strncasecmp (char *s1, char *s2, size_t n)
 {
   register int c1, c2, l = 0;
-  
+
   while (*s1 && *s2 && l < n)
   {
     c1 = tolower ((unsigned char) *s1);
@@ -26,7 +26,7 @@ int strncasecmp (char *s1, char *s2, size_t n)
 int strcasecmp (char *s1, char *s2)
 {
   register int c1, c2;
-  
+
   while (*s1 && *s2)
   {
     c1 = tolower ((unsigned char) *s1);
@@ -35,6 +35,6 @@ int strcasecmp (char *s1, char *s2)
       return (c1 - c2);
     s1++;
     s2++;
-  }                                                                           
+  }
   return (int) (*s1 - *s2);
 }

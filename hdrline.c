@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 1996-2000,2002,2007 Michael R. Elkins <me@mutt.org>
- * 
+ *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
  *     the Free Software Foundation; either version 2 of the License, or
  *     (at your option) any later version.
- * 
+ *
  *     This program is distributed in the hope that it will be useful,
  *     but WITHOUT ANY WARRANTY; without even the implied warranty of
  *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *     GNU General Public License for more details.
- * 
+ *
  *     You should have received a copy of the GNU General Public License
  *     along with this program; if not, write to the Free Software
  *     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */ 
+ */
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -212,7 +212,7 @@ int mutt_user_is_recipient (HEADER *h)
   if(!h->recip_valid)
   {
     h->recip_valid = 1;
-    
+
     if (mutt_addr_is_user (env->from))
       h->recipient = 4;
     else if (user_in_addr (env->to))
@@ -231,7 +231,7 @@ int mutt_user_is_recipient (HEADER *h)
     else
       h->recipient = 0;
   }
-  
+
   return h->recipient;
 }
 
@@ -345,12 +345,12 @@ hdr_format_str (char *dest,
 	else
 	  strfcpy (dest, ctx->path, destlen);
       }
-      else 
+      else
 	strfcpy(dest, "(null)", destlen);
       strfcpy (buf2, dest, sizeof(buf2));
       mutt_format_s (dest, destlen, prefix, buf2);
       break;
-    
+
     case 'c':
       colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SIZE);
       mutt_pretty_size (buf2, sizeof (buf2), (long) hdr->content->length);
@@ -375,7 +375,7 @@ hdr_format_str (char *dest,
       /* preprocess $date_format to handle %Z */
       {
 	const char *cp;
-	struct tm *tm; 
+	struct tm *tm;
 	time_t T;
 	int i = 0, invert = 0;
 
@@ -483,7 +483,7 @@ hdr_format_str (char *dest,
 
 	len = destlen - 1;
 	while (len > 0 && (((op == 'd' || op == 'D') && *cp) ||
-			   (op == '{' && *cp != '}') || 
+			   (op == '{' && *cp != '}') ||
 			   (op == '[' && *cp != ']') ||
 			   (op == '(' && *cp != ')') ||
 			   (op == '<' && *cp != '>')))
@@ -766,7 +766,7 @@ hdr_format_str (char *dest,
       break;
 
     case 's':
-      
+
       if (flags & M_FORMAT_TREE && !hdr->collapsed)
       {
 	if (flags & M_FORMAT_FORCESUBJ)
@@ -846,7 +846,7 @@ hdr_format_str (char *dest,
       break;
 
     case 'v':
-      if (mutt_addr_is_user (hdr->env->from)) 
+      if (mutt_addr_is_user (hdr->env->from))
       {
 	if (hdr->env->to)
 	  mutt_format_s (buf2, sizeof (buf2), prefix, mutt_get_name (hdr->env->to));
@@ -879,7 +879,7 @@ hdr_format_str (char *dest,
 #endif
 
     case 'Z':
-    
+
       ch = ' ';
 
       if (WithCrypto && hdr->security & GOODSIGN)
@@ -892,7 +892,7 @@ hdr_format_str (char *dest,
         ch = 'K';
 
       snprintf (buf2, sizeof (buf2),
-		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' : 
+		"%c%c%c", (THREAD_NEW ? 'n' : (THREAD_OLD ? 'o' :
 		((hdr->read && (ctx && ctx->msgnotreadyet != hdr->msgno))
 		? (hdr->replied ? 'r' : ' ') : (hdr->old ? 'O' : 'N')))),
 		hdr->deleted ? 'D' : (hdr->attach_del ? 'd' : ch),

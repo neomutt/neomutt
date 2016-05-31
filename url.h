@@ -31,7 +31,7 @@ typedef struct ciss_url
   char *host;
   unsigned short port;
   char *path;
-} 
+}
 ciss_url_t;
 
 url_scheme_t url_check_scheme (const char *s);
