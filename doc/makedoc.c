@@ -506,7 +506,7 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     case DT_MAGIC:
     {
       /* heuristic! */
-      strncpy (t, s + 2, l);
+      strncpy (t, s + 5, l);
       for (; *t; t++) *t = tolower ((unsigned char) *t);
       break;
     }
