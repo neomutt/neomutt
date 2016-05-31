@@ -33,13 +33,6 @@
 #define KEY_DC SL_KEY_DELETE
 #define KEY_IC SL_KEY_IC
 
-/*
- * ncurses and SLang seem to send different characters when the Enter key is
- * pressed, so define some macros to properly detect the Enter key.
- */
-#define MUTT_ENTER_C '\r'
-#define MUTT_ENTER_S "\r"
-
 #else /* USE_SLANG_CURSES */
 
 #if HAVE_NCURSESW_NCURSES_H
@@ -51,9 +44,6 @@
 #else
 # include <curses.h>
 #endif
-
-#define MUTT_ENTER_C '\n'
-#define MUTT_ENTER_S "\n"
 
 #endif /* USE_SLANG_CURSES */
 

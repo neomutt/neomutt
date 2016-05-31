@@ -549,6 +549,7 @@ static void start_curses (void)
   keypad (stdscr, TRUE);
   cbreak ();
   noecho ();
+  nonl ();
 #if HAVE_TYPEAHEAD
   typeahead (-1);       /* simulate smooth scrolling */
 #endif
