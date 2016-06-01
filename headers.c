@@ -357,6 +357,9 @@ void mutt_scan_labels(CONTEXT *ctx)
 {
   int i;
 
+  if (!ctx)
+    return;
+
   for (i = 0; i < ctx->msgcount; i++)
     if (ctx->hdrs[i]->env->labels)
       mutt_label_ref_inc(ctx->hdrs[i]->env);
