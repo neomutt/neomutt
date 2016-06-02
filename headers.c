@@ -217,6 +217,9 @@ void mutt_label_ref_dec(ENVELOPE *env)
   uintptr_t count;
   LIST *label;
 
+  if (!env || !env->labels || !Labels)
+    return;
+
   for (label = env->labels; label; label = label->next)
   {
     if (label->data == NULL)
@@ -237,6 +240,9 @@ void mutt_label_ref_inc(ENVELOPE *env)
 {
   uintptr_t count;
   LIST *label;
+
+  if (!env || !env->labels || !Labels)
+    return;
 
   for (label = env->labels; label; label = label->next)
   {
