@@ -865,6 +865,7 @@ AC_ARG_WITH(tokyocabinet, AS_HELP_STRING([--without-tokyocabinet],[Don't use tok
 AC_ARG_WITH(qdbm, AS_HELP_STRING([--without-qdbm],[Don't use qdbm even if it is available]))
 AC_ARG_WITH(gdbm, AS_HELP_STRING([--without-gdbm],[Don't use gdbm even if it is available]))
 AC_ARG_WITH(bdb, AS_HELP_STRING([--with-bdb@<:@=DIR@:>@],[Use BerkeleyDB4 if gdbm is not available]))
+AC_ARG_WITH(lmdb, AS_HELP_STRING([--with-lmdb@<:@=DIR@:>@],[Use LMDB if gdbm is not available]))
 
 db_found=no
 if test x$enable_hcache = xyes
@@ -907,6 +908,15 @@ then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
         db_requested=bdb
+      fi
+    fi
+    if test -n "$with_lmdb" && test "$with_lmdb" != "no"
+    then
+      if test "$db_requested" != "auto"
+      then
+        AC_MSG_ERROR([more than one header cache engine requested.])
+      else
+        db_requested=lmdb
       fi
     fi
     
@@ -996,7 +1006,8 @@ then
 
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
-    if test x$ac_bdb_prefix != xno && test $db_found = no
+    if test x$with_bdb != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = bdb
     then
         if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
         then
@@ -1049,6 +1060,34 @@ then
             db_found=bdb
         else
             AC_MSG_RESULT(no)
+        fi
+    fi
+
+    dnl -- LMDB --
+    if test x$with_lmdb != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = lmdb
+    then
+        if test "$with_lmdb" != "yes"
+        then
+          CPPFLAGS="$CPPFLAGS -I$with_lmdb/include"
+          LDFLAGS="$LDFLAGS -L$with_lmdb/lib"
+        fi
+        saved_LIBS="$LIBS"
+        LIBS="$LIBS -llmdb"
+        AC_CACHE_CHECK(for mdb_env_create, ac_cv_mdbenvcreate,[
+            ac_cv_mdbenvcreate=no
+            AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <lmdb.h>]], [[mdb_env_create(0);]])],[ac_cv_mdbenvcreate=yes],[])
+        ])
+        LIBS="$saved_LIBS"
+        if test "$ac_cv_mdbenvcreate" = yes
+        then
+          AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
+          MUTTLIBS="$MUTTLIBS -llmdb"
+          db_found=lmdb
+        fi
+        if test "$db_requested" != auto && test "$db_found" != "$db_requested"
+        then
+          AC_MSG_ERROR([LMDB could not be used. Check config.log for details.])
         fi
     fi
 
