@@ -7467,6 +7467,16 @@ would contain:
 
 </sect2>
 
+<sect2 id="mutt-patches">
+<title>Mutt Patches</title>
+<para>
+Mutt may also be <quote>patched</quote> to support smaller features.
+These patches should add a free-form string to the end Mutt's version string.
+Running <literal>mutt -v</literal> might show:
+<screen>patch-1.6.1.sidebar.20160502</screen>
+</para>
+</sect2>
+
 <sect2 id="url-syntax">
 <title>URL Syntax</title>
 
@@ -8083,7 +8093,7 @@ please have a look at the mixmaster documentation.
 
 <sect1 id="lmdb">
 	<title>LMDB Patch</title>
-	<subtitle>DESCRIPTION</subtitle>
+	<subtitle>LMDB backend for the header cache</subtitle>
 
 	<sect2 id="lmdb-patch">
 		<title>Patch</title>
@@ -8106,7 +8116,9 @@ please have a look at the mixmaster documentation.
 		<title>Introduction</title>
 
 		<para>
-			SIMPLE DESCRIPTION OF FEATURE
+			This patch adds support for using LMDB as a storage backend for
+			Mutt's header cache (hcache). It is enabled at configure time with
+			the <emphasis>--with-lmdb=&lt;path&gt;</emphasis> switch.
 		</para>
 	</sect2>
 
@@ -8114,7 +8126,8 @@ please have a look at the mixmaster documentation.
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><link linkend="regexp">LINK-DESCRIPTION</link></para></listitem>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="caching">Local Caching</link></para></listitem>
 		</itemizedlist>
 	</sect2>
 
@@ -8126,7 +8139,8 @@ please have a look at the mixmaster documentation.
 	<sect2 id="lmdb-credits">
 		<title>Credits</title>
 		<itemizedlist>
-		<listitem><para>FIRST LAST <email>EMAIL_ADDRESS</email></para></listitem>
+		<listitem><para>Pietro Cerutti <email>gahr@gahr.ch</email></para></listitem>
+		<listitem><para>Jan-Piet Mens <email>jp@mens.de</email></para></listitem>
 		</itemizedlist>
 	</sect2>
 </sect1>
