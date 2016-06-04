@@ -220,12 +220,11 @@ WHERE short ScoreThresholdDelete;
 WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
 
-/* This isn't excluded from the build because it's too entwined in the code.
- * For now. */
-WHERE short SidebarWidth;
+WHERE short SidebarWidth INITVAL(0);
 #ifdef USE_SIDEBAR
 WHERE short SidebarRefreshTime;
 WHERE LIST *SidebarWhitelist INITVAL(0);
+WHERE int SidebarNeedsRedraw INITVAL (0);
 #endif
 
 #ifdef USE_IMAP

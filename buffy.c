@@ -413,7 +413,6 @@ buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
   DIR *dirp = NULL;
   struct dirent *de = NULL;
   char *p = NULL;
-  int read;
 
   snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
 
@@ -430,19 +429,17 @@ buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
       continue;
 
     /* Matches maildir_parse_flags logic */
-    read = 0;
     mailbox->msg_count++;
     p = strstr (de->d_name, ":2,");
     if (p)
     {
       p += 3;
-      if (strchr (p, 'S'))
-        read = 1;
+      if (strchr (p, 'T'))
+        continue;
+      if (!strchr (p, 'S'))
+        mailbox->msg_unread++;
       if (strchr (p, 'F'))
         mailbox->msg_flagged++;
-    }
-    if (!read) {
-      mailbox->msg_unread++;
     }
   }
 
@@ -473,10 +470,6 @@ buffy_maildir_update (BUFFY *mailbox)
 	buffy_maildir_update_dir (mailbox, "cur");
 
 	mailbox->sb_last_checked = time (NULL);
-
-	/* make sure the updates are actually put on screen */
-	if (SidebarWidth)
-		mutt_sb_draw();
 }
 
 #endif
@@ -545,10 +538,6 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
     mailbox->sb_last_checked = time (NULL);
     mx_close_mailbox (ctx, 0);
   }
-
-  /* make sure the updates are actually put on screen */
-  if (SidebarWidth)
-    mutt_sb_draw();
 }
 #endif
 

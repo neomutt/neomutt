@@ -912,6 +912,9 @@ int mutt_sb_should_refresh (void)
  */
 void mutt_sb_change_mailbox (int op)
 {
+  if (!option (OPTSIDEBAR))
+    return;
+
   BUFFY *b;
   if (!HilBuffy)	/* It'll get reset on the next draw */
     return;
@@ -959,10 +962,7 @@ void mutt_sb_change_mailbox (int op)
     default:
       return;
   }
-
-  /* We can change folder even if the sidebar is hidden */
-  if (option (OPTSIDEBAR))
-    mutt_sb_draw();
+  SidebarNeedsRedraw = 1;
 }
 
 /**
