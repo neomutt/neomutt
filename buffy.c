@@ -336,13 +336,6 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
       return 0;
   }
 
-#ifdef USE_SIDEBAR
-  if (option (OPTSIDEBAR) && mailbox->msg_unread > 0) {
-    mailbox->new = 1;
-    return 1;
-  }
-#endif
-
   if ((dirp = opendir (path)) == NULL)
   {
     mailbox->magic = 0;
@@ -441,6 +434,8 @@ buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
       if (strchr (p, 'F'))
         mailbox->msg_flagged++;
     }
+    else
+      mailbox->msg_unread++;
   }
 
   closedir (dirp);
@@ -485,11 +480,7 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
   else
     statcheck = sb->st_mtime > sb->st_atime
       || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
-#ifdef USE_SIDEBAR
-  if ((!option (OPTSIDEBAR) && statcheck) || (option (OPTSIDEBAR) && mailbox->msg_unread > 0))
-#else
   if (statcheck)
-#endif
   {
     if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
     {
