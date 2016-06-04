@@ -309,36 +309,35 @@ void mh_buffy(BUFFY *b)
 void
 mh_buffy_update (BUFFY *mailbox)
 {
-	if (!mailbox)
-		return;
+  int i;
+  struct mh_sequences mhs;
 
-	if (!option (OPTSIDEBAR))
-		return;
+  if (!mailbox)
+    return;
 
-	struct mh_sequences mhs;
-	memset (&mhs, 0, sizeof (mhs));
+  if (!option (OPTSIDEBAR))
+    return;
 
-	if (mh_read_sequences (&mhs, mailbox->path) < 0)
-		return;
+  memset (&mhs, 0, sizeof (mhs));
 
-	mailbox->msg_count   = 0;
-	mailbox->msg_unread  = 0;
-	mailbox->msg_flagged = 0;
+  if (mh_read_sequences (&mhs, mailbox->path) < 0)
+    return;
 
-	int i;
-	for (i = 0; i <= mhs.max; i++) {
-		mailbox->msg_count++;
-	}
-	if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN) {
-		mailbox->msg_unread++;
-	}
-	if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED) {
-		mailbox->msg_flagged++;
-	}
-	mhs_free_sequences (&mhs);
-	mailbox->sb_last_checked = time (NULL);
+  mailbox->msg_count   = 0;
+  mailbox->msg_unread  = 0;
+  mailbox->msg_flagged = 0;
+
+  for (i = 0; i <= mhs.max; i++)
+  {
+    mailbox->msg_count++;
+    if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
+      mailbox->msg_unread++;
+    if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED)
+      mailbox->msg_flagged++;
+  }
+  mhs_free_sequences (&mhs);
+  mailbox->sb_last_checked = time (NULL);
 }
-
 #endif
 
 static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
