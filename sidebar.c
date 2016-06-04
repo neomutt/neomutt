@@ -783,10 +783,12 @@ static void draw_sidebar (int first_row, int num_rows, int div_width)
         if (option (OPTSIDEBARSHORTPATH))
           tmp_folder_name += lastsep;  /* basename */
         sidebar_folder_name = malloc (strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1);
+                                 int sfn_len = strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1;
+        sidebar_folder_name = safe_malloc (sfn_len);
         sidebar_folder_name[0]=0;
         for (i=0; i < sidebar_folder_depth; i++)
-          strncat (sidebar_folder_name, NONULL(SidebarIndentString), strlen (NONULL(SidebarIndentString)));
-        strncat (sidebar_folder_name, tmp_folder_name, strlen (tmp_folder_name));
+          safe_strcat (sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
+        safe_strcat (sidebar_folder_name, sfn_len, tmp_folder_name);
       }
     }
     char str[STRING];
