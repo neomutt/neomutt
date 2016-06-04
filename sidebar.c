@@ -372,11 +372,6 @@ static BUFFY *buffy_going (const BUFFY *b)
   if (!b)
     return NULL;
 
-  if (b->prev)
-  {
-    b->prev->next = NULL;
-  }
-
   if (b->next)
   {
     b->next->prev = NULL;
@@ -1105,4 +1100,6 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
     if (Outgoing == b)
       Outgoing = replacement;
   }
+
+  SidebarNeedsRedraw = 1;
 }
