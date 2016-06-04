@@ -406,45 +406,45 @@ attach to a message, select multiple files to attach and many more.
 </sect2>
 
 <sect2 id="intro-sidebar">
-	<title>Sidebar</title>
-	<para>
-		The Sidebar shows a list of all your mailboxes.  The list can be
-		turned on and off, it can be themed and the list style can be
-		configured.
-	</para>
-	<para>
-		This part of the manual is suitable for beginners.
-		If you already know Mutt you could skip ahead to the main
-		<link linkend="sidebar">Sidebar guide</link>.
-		If you just want to get started, you could use the sample
-		<link linkend="sidebar-muttrc">Sidebar muttrc</link>.
-	</para>
-	<para>
-		This version of Sidebar is based on Terry Chan's
-		<ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
-		It contains many
-		<emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
-		lots of
-		<emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>
-		and a generous helping of
-		<emphasis role="bold">new documentation</emphasis> which you are already reading.
-	</para>
-	<para>
-		To check if Mutt supports <quote>Sidebar</quote>, look for the string
-		<literal>+USE_SIDEBAR</literal> in the mutt version.
-	</para>
+  <title>Sidebar</title>
+  <para>
+    The Sidebar shows a list of all your mailboxes.  The list can be
+    turned on and off, it can be themed and the list style can be
+    configured.
+  </para>
+  <para>
+    This part of the manual is suitable for beginners.
+    If you already know Mutt you could skip ahead to the main
+    <link linkend="sidebar">Sidebar guide</link>.
+    If you just want to get started, you could use the sample
+    <link linkend="sidebar-muttrc">Sidebar muttrc</link>.
+  </para>
+  <para>
+    This version of Sidebar is based on Terry Chan's
+    <ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
+    It contains many
+    <emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
+    lots of
+    <emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>
+    and a generous helping of
+    <emphasis role="bold">new documentation</emphasis> which you are already reading.
+  </para>
+  <para>
+    To check if Mutt supports <quote>Sidebar</quote>, look for the string
+    <literal>+USE_SIDEBAR</literal> in the mutt version.
+  </para>
 <screen>
 mutt -v
 </screen>
-	<para>
-		<emphasis role="bold">Let's turn on the Sidebar:</emphasis>
-	</para>
-	<screen>set sidebar_visible</screen>
-	<para>
-		You will see something like this.
-		A list of mailboxes on the left.
-		A list of emails, from the selected mailbox, on the right.
-	</para>
+  <para>
+    <emphasis role="bold">Let's turn on the Sidebar:</emphasis>
+  </para>
+  <screen>set sidebar_visible</screen>
+  <para>
+    You will see something like this.
+    A list of mailboxes on the left.
+    A list of emails, from the selected mailbox, on the right.
+  </para>
 <screen>
 <emphasis role="indicator">Fruit [1]     3/8</emphasis>|  1    + Jan 24  Rhys Lee         (192)  Yew
 Animals [1]   2/6|  2    + Feb 11  Grace Hall       (167)  Ilama
@@ -458,28 +458,28 @@ Seas          1/7|  4    ! Feb 28  Summer Jackson   (264)  Lemon
                  |
 </screen>
 <para>
-	This user has four mailboxes: <quote>Fruit</quote>,
-	<quote>Cars</quote>, <quote>Animals</quote> and
-	<quote>Seas</quote>.
+  This user has four mailboxes: <quote>Fruit</quote>,
+  <quote>Cars</quote>, <quote>Animals</quote> and
+  <quote>Seas</quote>.
 </para>
 <para>
-	The current, open, mailbox is <quote>Fruit</quote>.  We can
-	also see information about the other mailboxes.  For example:
-	The <quote>Animals</quote> mailbox contains, 1 flagged email, 2
-	new emails out of a total of 6 emails.
+  The current, open, mailbox is <quote>Fruit</quote>.  We can
+  also see information about the other mailboxes.  For example:
+  The <quote>Animals</quote> mailbox contains, 1 flagged email, 2
+  new emails out of a total of 6 emails.
 </para>
-	<sect3 id="intro-sidebar-navigation">
-		<title>Navigation</title>
-		<para>
-			The Sidebar adds some new <link linkend="sidebar-functions">functions</link>
-			to Mutt.
-		</para>
-		<para>
-			The user pressed the <quote>c</quote> key to
-			<literal>&lt;change-folder&gt;</literal> to the
-			<quote>Animals</quote> mailbox.  The Sidebar automatically
-			updated the indicator to match.
-		</para>
+  <sect3 id="intro-sidebar-navigation">
+    <title>Navigation</title>
+    <para>
+      The Sidebar adds some new <link linkend="sidebar-functions">functions</link>
+      to Mutt.
+    </para>
+    <para>
+      The user pressed the <quote>c</quote> key to
+      <literal>&lt;change-folder&gt;</literal> to the
+      <quote>Animals</quote> mailbox.  The Sidebar automatically
+      updated the indicator to match.
+    </para>
 <screen>
 Fruit [1]     3/8|  1      Jan 03  Tia Gibson       (362)  Caiman
 <emphasis role="indicator">Animals [1]   2/6</emphasis>|  2    + Jan 22  Rhys Lee         ( 48)  Dolphin
@@ -492,19 +492,19 @@ Seas          1/7|  4      Sep 25  Grace Hall       ( 27)  Capybara
                  |
                  |
 </screen>
-		<para>
-			Let's map some functions:
-		</para>
+    <para>
+      Let's map some functions:
+    </para>
 <screen>
 bind index,pager \CP sidebar-prev       <emphasis role="comment"># Ctrl-Shift-P - Previous Mailbox</emphasis>
 bind index,pager \CN sidebar-next       <emphasis role="comment"># Ctrl-Shift-N - Next Mailbox</emphasis>
 bind index,pager \CO sidebar-open       <emphasis role="comment"># Ctrl-Shift-O - Open Highlighted Mailbox</emphasis>
 </screen>
-		<para>
-			Press <quote>Ctrl-Shift-N</quote> (Next mailbox) twice will
-			move the Sidebar <emphasis role="bold">highlight</emphasis> to
-			down to the <quote>Seas</quote> mailbox.
-		</para>
+    <para>
+      Press <quote>Ctrl-Shift-N</quote> (Next mailbox) twice will
+      move the Sidebar <emphasis role="bold">highlight</emphasis> to
+      down to the <quote>Seas</quote> mailbox.
+    </para>
 <screen>
 Fruit [1]     3/8|  1      Jan 03  Tia Gibson       (362)  Caiman
 <emphasis role="indicator">Animals [1]   2/6</emphasis>|  2    + Jan 22  Rhys Lee         ( 48)  Dolphin
@@ -517,18 +517,18 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
                  |
                  |
 </screen>
-		<note>
-			Functions <literal>&lt;sidebar-next&gt;</literal> and
-			<literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
-			<emphasis role="bold">highlight</emphasis>.
-			They <emphasis role="bold">do not</emphasis> change the open
-			mailbox.
-		</note>
-		<para>
-			Press <quote>Ctrl-Shift-O</quote>
-			(<literal>&lt;sidebar-open&gt;</literal>)
-			to open the highlighted mailbox.
-		</para>
+    <note>
+      Functions <literal>&lt;sidebar-next&gt;</literal> and
+      <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
+      <emphasis role="bold">highlight</emphasis>.
+      They <emphasis role="bold">do not</emphasis> change the open
+      mailbox.
+    </note>
+    <para>
+      Press <quote>Ctrl-Shift-O</quote>
+      (<literal>&lt;sidebar-open&gt;</literal>)
+      to open the highlighted mailbox.
+    </para>
 <screen>
 Fruit [1]     3/8|  1    ! Mar 07  Finley Jones     (139)  Molucca Sea
 Animals [1]   2/6|  2    + Mar 24  Summer Jackson   ( 25)  Arafura Sea
@@ -541,257 +541,257 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
                  |
                  |
 </screen>
-	</sect3>
-	<sect3 id="intro-sidebar-features">
-		<title>Features</title>
-		<para>
-			The Sidebar shows a list of mailboxes in a panel.
-		<para>
-		</para>
-			Everything about the Sidebar can be configured.
-		</para>
-		<itemizedlist>
-		<title><link linkend="intro-sidebar-basics">State of the Sidebar</link></title>
-			<listitem><para>Visibility</para></listitem>
-			<listitem><para>Width</para></listitem>
-		</itemizedlist>
-		<itemizedlist>
-		<title><link linkend="intro-sidebar-limit">Which mailboxes are displayed</link></title>
-			<listitem><para>Display all</para></listitem>
-			<listitem><para>Limit to mailboxes with new mail</para></listitem>
-			<listitem><para>Whitelist mailboxes to display always</para></listitem>
-		</itemizedlist>
-		<itemizedlist>
-		<title><link linkend="sidebar-sort">The order in which mailboxes are displayed</link></title>
-		<title></title>
-			<listitem><para>Unsorted (order of mailboxes commands)</para></listitem>
-			<listitem><para>Sorted alphabetically</para></listitem>
-			<listitem><para>Sorted by number of new mails</para></listitem>
-		</itemizedlist>
-		<itemizedlist>
-		<title><link linkend="intro-sidebar-colors">Color</link></title>
-			<listitem><para>Sidebar indicators and divider</para></listitem>
-			<listitem><para>Mailboxes depending on their type</para></listitem>
-			<listitem><para>Mailboxes depending on their contents</para></listitem>
-		</itemizedlist>
-		<itemizedlist>
-		<title><link linkend="sidebar-functions">Key bindings</link></title>
-			<listitem><para>Hide/Unhide the Sidebar</para></listitem>
-			<listitem><para>Select previous/next mailbox</para></listitem>
-			<listitem><para>Select previous/next mailbox with new mail</para></listitem>
-			<listitem><para>Page up/down through a list of mailboxes</para></listitem>
-		</itemizedlist>
-		<itemizedlist>
-		<title>Misc</title>
-			<listitem><para><link linkend="intro-sidebar-format">Formatting string for mailbox</link></para></listitem>
-			<listitem><para><link linkend="sidebar-next-new-wrap">Wraparound searching</link></para></listitem>
-			<listitem><para><link linkend="intro-sidebar-abbrev">Flexible mailbox abbreviations</link></para></listitem>
-			<listitem><para>Support for Unicode mailbox names (utf-8)</para></listitem>
-		</itemizedlist>
-	</sect3>
-	<sect3 id="intro-sidebar-display">
-		<title>Display</title>
-		<para>
-			Everything about the Sidebar can be configured.
-		</para>
-		<itemizedlist>
-			<title>For a quick reference:</title>
-			<listitem><para><link linkend="sidebar-variables">Sidebar variables to set</link> </para></listitem>
-			<listitem><para><link linkend="sidebar-colors">Sidebar colors to apply</link></para></listitem>
-			<listitem><para><link linkend="sidebar-sort">Sidebar sort methods</link></para></listitem>
-		</itemizedlist>
-		<sect4 id="intro-sidebar-basics">
-			<title>Sidebar Basics</title>
-			<para>
-				The most important variable is <literal>$sidebar_visible</literal>.
-				You can set this in your <quote>muttrc</quote>, or bind a key to the
-				function <literal>&lt;sidebar-toggle-visible&gt;</literal>.
-			</para>
+  </sect3>
+  <sect3 id="intro-sidebar-features">
+    <title>Features</title>
+    <para>
+      The Sidebar shows a list of mailboxes in a panel.
+    <para>
+    </para>
+      Everything about the Sidebar can be configured.
+    </para>
+    <itemizedlist>
+    <title><link linkend="intro-sidebar-basics">State of the Sidebar</link></title>
+      <listitem><para>Visibility</para></listitem>
+      <listitem><para>Width</para></listitem>
+    </itemizedlist>
+    <itemizedlist>
+    <title><link linkend="intro-sidebar-limit">Which mailboxes are displayed</link></title>
+      <listitem><para>Display all</para></listitem>
+      <listitem><para>Limit to mailboxes with new mail</para></listitem>
+      <listitem><para>Whitelist mailboxes to display always</para></listitem>
+    </itemizedlist>
+    <itemizedlist>
+    <title><link linkend="sidebar-sort">The order in which mailboxes are displayed</link></title>
+    <title></title>
+      <listitem><para>Unsorted (order of mailboxes commands)</para></listitem>
+      <listitem><para>Sorted alphabetically</para></listitem>
+      <listitem><para>Sorted by number of new mails</para></listitem>
+    </itemizedlist>
+    <itemizedlist>
+    <title><link linkend="intro-sidebar-colors">Color</link></title>
+      <listitem><para>Sidebar indicators and divider</para></listitem>
+      <listitem><para>Mailboxes depending on their type</para></listitem>
+      <listitem><para>Mailboxes depending on their contents</para></listitem>
+    </itemizedlist>
+    <itemizedlist>
+    <title><link linkend="sidebar-functions">Key bindings</link></title>
+      <listitem><para>Hide/Unhide the Sidebar</para></listitem>
+      <listitem><para>Select previous/next mailbox</para></listitem>
+      <listitem><para>Select previous/next mailbox with new mail</para></listitem>
+      <listitem><para>Page up/down through a list of mailboxes</para></listitem>
+    </itemizedlist>
+    <itemizedlist>
+    <title>Misc</title>
+      <listitem><para><link linkend="intro-sidebar-format">Formatting string for mailbox</link></para></listitem>
+      <listitem><para><link linkend="sidebar-next-new-wrap">Wraparound searching</link></para></listitem>
+      <listitem><para><link linkend="intro-sidebar-abbrev">Flexible mailbox abbreviations</link></para></listitem>
+      <listitem><para>Support for Unicode mailbox names (utf-8)</para></listitem>
+    </itemizedlist>
+  </sect3>
+  <sect3 id="intro-sidebar-display">
+    <title>Display</title>
+    <para>
+      Everything about the Sidebar can be configured.
+    </para>
+    <itemizedlist>
+      <title>For a quick reference:</title>
+      <listitem><para><link linkend="sidebar-variables">Sidebar variables to set</link> </para></listitem>
+      <listitem><para><link linkend="sidebar-colors">Sidebar colors to apply</link></para></listitem>
+      <listitem><para><link linkend="sidebar-sort">Sidebar sort methods</link></para></listitem>
+    </itemizedlist>
+    <sect4 id="intro-sidebar-basics">
+      <title>Sidebar Basics</title>
+      <para>
+        The most important variable is <literal>$sidebar_visible</literal>.
+        You can set this in your <quote>muttrc</quote>, or bind a key to the
+        function <literal>&lt;sidebar-toggle-visible&gt;</literal>.
+      </para>
 <screen>
 set sidebar_visible                         <emphasis role="comment"># Make the Sidebar visible by default</emphasis>
 bind index,pager B sidebar-toggle-visible   <emphasis role="comment"># Use 'B' to switch the Sidebar on and off</emphasis>
 </screen>
-			<para>
-				Next, decide how wide you want the Sidebar to be.  25
-				characters might be enough for the mailbox name and some numbers.
-		Remember, you can hide/show the Sidebar at the press of button.
-		</para>
-		<para>
-		Finally, you might want to change the divider character.
-		By default, Sidebar draws an ASCII line between it and the Index panel
-				If your terminal supports it, you can use a Unicode line-drawing character.
-			</para>
+      <para>
+        Next, decide how wide you want the Sidebar to be.  25
+        characters might be enough for the mailbox name and some numbers.
+    Remember, you can hide/show the Sidebar at the press of button.
+    </para>
+    <para>
+    Finally, you might want to change the divider character.
+    By default, Sidebar draws an ASCII line between it and the Index panel
+        If your terminal supports it, you can use a Unicode line-drawing character.
+      </para>
 <screen>
 set sidebar_width = 25                  <emphasis role="comment"># Plenty of space</emphasis>
 set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line-drawing character</emphasis>
 </screen>
-		</sect4>
-		<sect4 id="intro-sidebar-format">
-			<title>Sidebar Format String</title>
-			<para>
-				<literal>$sidebar_format</literal> allows you to customize the Sidebar display.
-				For an introduction, read <link linkend="index-format">format strings</link>
-				including the section about <link linkend="formatstrings-conditionals">conditionals</link>.
-			</para>
-			<para>
-				The default value is <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
-			</para>
-			<itemizedlist>
-				<title>Which breaks down as:</title>
-				<listitem><para><literal>%B</literal> - Mailbox name</para></listitem>
-				<listitem><para><literal>%?F? [%F]?</literal> - If flagged emails <literal>[%F]</literal>, otherwise nothing</para></listitem>
-				<listitem><para><literal>%* </literal> - Pad with spaces</para></listitem>
-				<listitem><para><literal>%?N?%N/?</literal> - If new emails <literal>%N/</literal>, otherwise nothing</para></listitem>
-				<listitem><para><literal>%S</literal> - Total number of emails</para></listitem>
-			</itemizedlist>
-			<table>
-				<title>sidebar_format</title>
-				<tgroup cols="3">
-					<thead>
-						<row>
-							<entry>Format</entry>
-							<entry>Notes</entry>
-							<entry>Description</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry>%B</entry>
-							<entry></entry>
-							<entry>Name of the mailbox</entry>
-						</row>
-						<row>
-							<entry>%S</entry>
-							<entry>*</entry>
-							<entry>Size of mailbox (total number of messages)</entry>
-						</row>
-						<row>
-							<entry>%N</entry>
-							<entry>*</entry>
-							<entry>Number of New messages in the mailbox</entry>
-						</row>
-						<row>
-							<entry>%F</entry>
-							<entry>*</entry>
-							<entry>Number of Flagged messages in the mailbox</entry>
-						</row>
-						<row>
-							<entry>%!</entry>
-							<entry></entry>
-							<entry>
-								<quote>!</quote>: one flagged message;
-								<quote>!!</quote>: two flagged messages;
-								<quote>n!</quote>: n flagged messages (for n &gt; 2).
-								Otherwise prints nothing.
-							</entry>
-						</row>
-						<row>
-							<entry>%d</entry>
-							<entry>* ‡</entry>
-							<entry>Number of deleted messages</entry>
-						</row>
-						<row>
-							<entry>%L</entry>
-							<entry>* ‡</entry>
-							<entry>Number of messages after limiting</entry>
-						</row>
-						<row>
-							<entry>%t</entry>
-							<entry>* ‡</entry>
-							<entry>Number of tagged messages</entry>
-						</row>
-						<row>
-							<entry>%&gt;X</entry>
-							<entry></entry>
-							<entry>Right justify the rest of the string and pad with <quote>X</quote></entry>
-						</row>
-						<row>
-							<entry>%|X</entry>
-							<entry></entry>
-							<entry>Pad to the end of the line with
-							<quote>X</quote></entry>
-						</row>
-						<row>
-							<entry>%*X</entry>
-							<entry></entry>
-							<entry>Soft-fill with character <quote>X</quote>as pad</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-			<para>
-			* = Can be optionally printed if nonzero
-			</para>
-			<para>
-			‡ = Only applicable to the current folder
-			</para>
-			<para>
-				Here are some examples.
-				They show the number of (F)lagged, (N)ew and (S)ize.
-			</para>
-			<table>
-				<title>sidebar_format</title>
-				<tgroup cols="2">
-					<thead>
-						<row>
-							<entry>Format</entry>
-							<entry>Example</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
-							<entry><screen>mailbox [F]            N/S</screen></entry>
-						</row>
-						<row>
-							<entry><literal>%B%* %F:%N:%S</literal></entry>
-							<entry><screen>mailbox              F:N:S</screen></entry>
-						</row>
-						<row>
-							<entry><literal>%B %?N?(%N)?%* %S</literal></entry>
-							<entry><screen>mailbox (N)              S</screen></entry>
-						</row>
-						<row>
-							<entry><literal>%B%* ?F?%F/?%N</literal></entry>
-							<entry><screen>mailbox                F/S</screen></entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
-		</sect4>
-		<sect4 id="intro-sidebar-abbrev">
-			<title>Abbreviating Mailbox Names</title>
-			<para>
-				<literal>$sidebar_delim_chars</literal> tells Sidebar
-				how to split up mailbox paths.  For local directories
-				use <quote>/</quote>; for IMAP folders use <quote>.</quote>
-			</para>
-			<sect5 id="intro-sidebar-abbrev-ex1">
-				<title>Example 1</title>
-				<para>
-					This example works well if your mailboxes have unique names
-					after the last separator.
-				</para>
-				<para>
-					Add some mailboxes of diffent depths.
-				</para>
+    </sect4>
+    <sect4 id="intro-sidebar-format">
+      <title>Sidebar Format String</title>
+      <para>
+        <literal>$sidebar_format</literal> allows you to customize the Sidebar display.
+        For an introduction, read <link linkend="index-format">format strings</link>
+        including the section about <link linkend="formatstrings-conditionals">conditionals</link>.
+      </para>
+      <para>
+        The default value is <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
+      </para>
+      <itemizedlist>
+        <title>Which breaks down as:</title>
+        <listitem><para><literal>%B</literal> - Mailbox name</para></listitem>
+        <listitem><para><literal>%?F? [%F]?</literal> - If flagged emails <literal>[%F]</literal>, otherwise nothing</para></listitem>
+        <listitem><para><literal>%* </literal> - Pad with spaces</para></listitem>
+        <listitem><para><literal>%?N?%N/?</literal> - If new emails <literal>%N/</literal>, otherwise nothing</para></listitem>
+        <listitem><para><literal>%S</literal> - Total number of emails</para></listitem>
+      </itemizedlist>
+      <table>
+        <title>sidebar_format</title>
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>Format</entry>
+              <entry>Notes</entry>
+              <entry>Description</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry>%B</entry>
+              <entry></entry>
+              <entry>Name of the mailbox</entry>
+            </row>
+            <row>
+              <entry>%S</entry>
+              <entry>*</entry>
+              <entry>Size of mailbox (total number of messages)</entry>
+            </row>
+            <row>
+              <entry>%N</entry>
+              <entry>*</entry>
+              <entry>Number of New messages in the mailbox</entry>
+            </row>
+            <row>
+              <entry>%F</entry>
+              <entry>*</entry>
+              <entry>Number of Flagged messages in the mailbox</entry>
+            </row>
+            <row>
+              <entry>%!</entry>
+              <entry></entry>
+              <entry>
+                <quote>!</quote>: one flagged message;
+                <quote>!!</quote>: two flagged messages;
+                <quote>n!</quote>: n flagged messages (for n &gt; 2).
+                Otherwise prints nothing.
+              </entry>
+            </row>
+            <row>
+              <entry>%d</entry>
+              <entry>* ‡</entry>
+              <entry>Number of deleted messages</entry>
+            </row>
+            <row>
+              <entry>%L</entry>
+              <entry>* ‡</entry>
+              <entry>Number of messages after limiting</entry>
+            </row>
+            <row>
+              <entry>%t</entry>
+              <entry>* ‡</entry>
+              <entry>Number of tagged messages</entry>
+            </row>
+            <row>
+              <entry>%&gt;X</entry>
+              <entry></entry>
+              <entry>Right justify the rest of the string and pad with <quote>X</quote></entry>
+            </row>
+            <row>
+              <entry>%|X</entry>
+              <entry></entry>
+              <entry>Pad to the end of the line with
+              <quote>X</quote></entry>
+            </row>
+            <row>
+              <entry>%*X</entry>
+              <entry></entry>
+              <entry>Soft-fill with character <quote>X</quote>as pad</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+      <para>
+      * = Can be optionally printed if nonzero
+      </para>
+      <para>
+      ‡ = Only applicable to the current folder
+      </para>
+      <para>
+        Here are some examples.
+        They show the number of (F)lagged, (N)ew and (S)ize.
+      </para>
+      <table>
+        <title>sidebar_format</title>
+        <tgroup cols="2">
+          <thead>
+            <row>
+              <entry>Format</entry>
+              <entry>Example</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
+              <entry><screen>mailbox [F]            N/S</screen></entry>
+            </row>
+            <row>
+              <entry><literal>%B%* %F:%N:%S</literal></entry>
+              <entry><screen>mailbox              F:N:S</screen></entry>
+            </row>
+            <row>
+              <entry><literal>%B %?N?(%N)?%* %S</literal></entry>
+              <entry><screen>mailbox (N)              S</screen></entry>
+            </row>
+            <row>
+              <entry><literal>%B%* ?F?%F/?%N</literal></entry>
+              <entry><screen>mailbox                F/S</screen></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect4>
+    <sect4 id="intro-sidebar-abbrev">
+      <title>Abbreviating Mailbox Names</title>
+      <para>
+        <literal>$sidebar_delim_chars</literal> tells Sidebar
+        how to split up mailbox paths.  For local directories
+        use <quote>/</quote>; for IMAP folders use <quote>.</quote>
+      </para>
+      <sect5 id="intro-sidebar-abbrev-ex1">
+        <title>Example 1</title>
+        <para>
+          This example works well if your mailboxes have unique names
+          after the last separator.
+        </para>
+        <para>
+          Add some mailboxes of diffent depths.
+        </para>
 <screen>
 set folder="~/mail"
 mailboxes =fruit/apple          =fruit/banana          =fruit/cherry
 mailboxes =water/sea/sicily     =water/sea/archipelago =water/sea/sibuyan
 mailboxes =water/ocean/atlantic =water/ocean/pacific   =water/ocean/arctic
 </screen>
-				<para>
-					Shorten the names:
-				</para>
+        <para>
+          Shorten the names:
+        </para>
 <screen>
 set sidebar_short_path                  <emphasis role="comment"># Shorten mailbox names</emphasis>
 set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everything up to the last / character</emphasis>
 </screen>
-				<para>
-					The screenshot below shows what the Sidebar would look like
-					before and after shortening.
-				</para>
+        <para>
+          The screenshot below shows what the Sidebar would look like
+          before and after shortening.
+        </para>
 <screen>
 |fruit/apple                            |apple
 |fruit/banana                           |banana
@@ -803,16 +803,16 @@ set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everyt
 |water/ocean/pacific                    |pacific
 |water/ocean/arctic                     |arctic
 </screen>
-			</sect5>
-			<sect5 id="intro-sidebar-abbrev-ex2">
-				<title>Example 2</title>
-				<para>
-					This example works well if you have lots of mailboxes which are arranged
-					in a tree.
-				</para>
-				<para>
-					Add some mailboxes of diffent depths.
-				</para>
+      </sect5>
+      <sect5 id="intro-sidebar-abbrev-ex2">
+        <title>Example 2</title>
+        <para>
+          This example works well if you have lots of mailboxes which are arranged
+          in a tree.
+        </para>
+        <para>
+          Add some mailboxes of diffent depths.
+        </para>
 <screen>
 set folder="~/mail"
 mailboxes =fruit
@@ -823,19 +823,19 @@ mailboxes =water/sea/sicily =water/sea/archipelago =water/sea/sibuyan
 mailboxes =water/ocean
 mailboxes =water/ocean/atlantic =water/ocean/pacific =water/ocean/arctic
 </screen>
-				<para>
-					Shorten the names:
-				</para>
+        <para>
+          Shorten the names:
+        </para>
 <screen>
 set sidebar_short_path                  <emphasis role="comment"># Shorten mailbox names</emphasis>
 set sidebar_delim_chars="/"             <emphasis role="comment"># Delete everything up to the last / character</emphasis>
 set sidebar_folder_indent               <emphasis role="comment"># Indent folders whose names we've shortened</emphasis>
 set sidebar_indent_string="  "          <emphasis role="comment"># Indent with two spaces</emphasis>
 </screen>
-				<para>
-					The screenshot below shows what the Sidebar would look like
-					before and after shortening.
-				</para>
+        <para>
+          The screenshot below shows what the Sidebar would look like
+          before and after shortening.
+        </para>
 <screen>
 |fruit                                  |fruit
 |fruit/apple                            |  apple
@@ -851,36 +851,36 @@ set sidebar_indent_string="  "          <emphasis role="comment"># Indent with t
 |water/ocean/pacific                    |    pacific
 |water/ocean/arctic                     |    arctic
 </screen>
-				<para>
-					Sometimes, it will be necessary to add mailboxes, that you
-					don't use, to fill in part of the tree.	 This will trade
-					vertical space for horizonal space (but it looks good).
-				</para>
-			</sect5>
-		</sect4>
-		<sect4 id="intro-sidebar-limit">
-			<title>Limiting the Number of Mailboxes</title>
-			<para>
-				If you have a lot of mailboxes, sometimes it can be useful to hide
-				the ones you aren't using.	<literal>$sidebar_new_mail_only</literal>
-				tells Sidebar to only show mailboxes that contain new, or flagged, email.
-			</para>
-			<para>
-				If you want some mailboxes to be always visible, then use the
-				<literal>sidebar_whitelist</literal> command.  It takes a list of
-				mailboxes as parameters.
-			</para>
+        <para>
+          Sometimes, it will be necessary to add mailboxes, that you
+          don't use, to fill in part of the tree.  This will trade
+          vertical space for horizonal space (but it looks good).
+        </para>
+      </sect5>
+    </sect4>
+    <sect4 id="intro-sidebar-limit">
+      <title>Limiting the Number of Mailboxes</title>
+      <para>
+        If you have a lot of mailboxes, sometimes it can be useful to hide
+        the ones you aren't using.  <literal>$sidebar_new_mail_only</literal>
+        tells Sidebar to only show mailboxes that contain new, or flagged, email.
+      </para>
+      <para>
+        If you want some mailboxes to be always visible, then use the
+        <literal>sidebar_whitelist</literal> command.  It takes a list of
+        mailboxes as parameters.
+      </para>
 <screen>
 set sidebar_new_mail_only               <emphasis role="comment"># Only mailboxes with new/flagged email</emphasis>
 sidebar_whitelist fruit fruit/apple     <emphasis role="comment"># Always display these two mailboxes</emphasis>
 </screen>
-		</sect4>
-	</sect3>
-	<sect3 id="intro-sidebar-colors">
-		<title>Colors</title>
-		<para>
-			Here is a sample color scheme:
-		</para>
+    </sect4>
+  </sect3>
+  <sect3 id="intro-sidebar-colors">
+    <title>Colors</title>
+    <para>
+      Here is a sample color scheme:
+    </para>
 <screen>
 color sidebar_indicator default color17         <emphasis role="comment"># Dark blue background</emphasis>
 color sidebar_highlight white   color238        <emphasis role="comment"># Grey background</emphasis>
@@ -889,137 +889,137 @@ color sidebar_new       green   default         <emphasis role="comment"># Green
 color sidebar_flagged   red     default         <emphasis role="comment"># Red</emphasis>
 color sidebar_divider   color8  default         <emphasis role="comment"># Dark grey</emphasis>
 </screen>
-		<para>
-			There is a priority order when coloring Sidebar mailboxes.
-			e.g.  If a mailbox has new mail it will have the
-			<literal>sidebar_new</literal> color, even if it also contains
-			flagged mails.
-		</para>
-		<table id="table-intro-sidebar-colors">
-			<title>Sidebar Color Priority</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Priority</entry>
-						<entry>Color</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Highest</entry>
-						<entry><literal>sidebar_indicator</literal></entry>
-						<entry>Mailbox is open</entry>
-					</row>
-					<row>
-						<entry></entry>
-						<entry><literal>sidebar_highlight</literal></entry>
-						<entry>Mailbox is highlighed</entry>
-					</row>
-					<row>
-						<entry></entry>
-						<entry><literal>sidebar_spoolfile</literal></entry>
-						<entry>Mailbox is the spoolfile (receives incoming mail)</entry>
-					</row>
-					<row>
-						<entry></entry>
-						<entry><literal>sidebar_new</literal></entry>
-						<entry>Mailbox contains new mail</entry>
-					</row>
-					<row>
-						<entry></entry>
-						<entry><literal>sidebar_flagged</literal></entry>
-						<entry>Mailbox contains flagged mail</entry>
-					</row>
-					<row>
-						<entry>Lowest</entry>
-						<entry>(None)</entry>
-						<entry>Mailbox does not match above</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect3>
-	<sect3 id="intro-sidebar-bugfixes">
-		<title>Bug-fixes</title>
-		<para>
-			If you haven't used Sidebar before, you can ignore this section.
-		</para>
-		<para>
-			These bugs have been fixed since the previous Sidebar release: 2015-11-11.
-		</para>
-		<itemizedlist>
-			<listitem><para>Fix bug when starting in compose mode</para></listitem>
-			<listitem><para>Fix bug with empty sidebar_divider_char string</para></listitem>
-			<listitem><para>Fix bug with header wrapping</para></listitem>
-			<listitem><para>Correctly handle utf8 character sequences</para></listitem>
-			<listitem><para>Fix a bug in mh_buffy_update</para></listitem>
-			<listitem><para>Fix refresh -- time overflowed short</para></listitem>
-			<listitem><para>Protect against empty format strings</para></listitem>
-			<listitem><para>Limit Sidebar width to COLS</para></listitem>
-			<listitem><para>Handle unmailboxes * safely</para></listitem>
-			<listitem><para>Refresh Sidebar after timeout</para></listitem>
-		</itemizedlist>
-	</sect3>
-	<sect3 id="intro-sidebar-config-changes">
-		<title>Config Changes</title>
-		<para>
-			If you haven't used Sidebar before, you can ignore this section.
-		</para>
-		<para>
-			Some of the Sidebar config has been changed to make its meaning clearer.
-			These changes have been made since the previous Sidebar release: 2015-11-11.
-		</para>
-		<table id="table-intro-sidebar-config-changes">
-			<title>Config Changes</title>
-			<tgroup cols="2">
-				<thead>
-					<row>
-						<entry>Old Name</entry>
-						<entry>New Name</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>$sidebar_delim</literal></entry>
-						<entry><literal>$sidebar_divider_char</literal></entry>
-					</row>
-					<row>
-						<entry><literal>$sidebar_folderindent</literal></entry>
-						<entry><literal>$sidebar_folder_indent</literal></entry>
-					</row>
-					<row>
-						<entry><literal>$sidebar_indentstr</literal></entry>
-						<entry><literal>$sidebar_indent_string</literal></entry>
-					</row>
-					<row>
-						<entry><literal>$sidebar_newmail_only</literal></entry>
-						<entry><literal>$sidebar_new_mail_only</literal></entry>
-					</row>
-					<row>
-						<entry><literal>$sidebar_refresh</literal></entry>
-						<entry><literal>$sidebar_refresh_time</literal></entry>
-					</row>
-					<row>
-						<entry><literal>$sidebar_shortpath</literal></entry>
-						<entry><literal>$sidebar_short_path</literal></entry>
-					</row>
-					<row>
-						<entry><literal>$sidebar_sort</literal></entry>
-						<entry><literal>$sidebar_sort_method</literal></entry>
-					</row>
-					<row>
-						<entry><literal>&lt;sidebar-scroll-down&gt;</literal></entry>
-						<entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
-					</row>
-					<row>
-						<entry><literal>&lt;sidebar-scroll-up&gt;</literal></entry>
-						<entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect3>
+    <para>
+      There is a priority order when coloring Sidebar mailboxes.
+      e.g.  If a mailbox has new mail it will have the
+      <literal>sidebar_new</literal> color, even if it also contains
+      flagged mails.
+    </para>
+    <table id="table-intro-sidebar-colors">
+      <title>Sidebar Color Priority</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Priority</entry>
+            <entry>Color</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Highest</entry>
+            <entry><literal>sidebar_indicator</literal></entry>
+            <entry>Mailbox is open</entry>
+          </row>
+          <row>
+            <entry></entry>
+            <entry><literal>sidebar_highlight</literal></entry>
+            <entry>Mailbox is highlighed</entry>
+          </row>
+          <row>
+            <entry></entry>
+            <entry><literal>sidebar_spoolfile</literal></entry>
+            <entry>Mailbox is the spoolfile (receives incoming mail)</entry>
+          </row>
+          <row>
+            <entry></entry>
+            <entry><literal>sidebar_new</literal></entry>
+            <entry>Mailbox contains new mail</entry>
+          </row>
+          <row>
+            <entry></entry>
+            <entry><literal>sidebar_flagged</literal></entry>
+            <entry>Mailbox contains flagged mail</entry>
+          </row>
+          <row>
+            <entry>Lowest</entry>
+            <entry>(None)</entry>
+            <entry>Mailbox does not match above</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect3>
+  <sect3 id="intro-sidebar-bugfixes">
+    <title>Bug-fixes</title>
+    <para>
+      If you haven't used Sidebar before, you can ignore this section.
+    </para>
+    <para>
+      These bugs have been fixed since the previous Sidebar release: 2015-11-11.
+    </para>
+    <itemizedlist>
+      <listitem><para>Fix bug when starting in compose mode</para></listitem>
+      <listitem><para>Fix bug with empty sidebar_divider_char string</para></listitem>
+      <listitem><para>Fix bug with header wrapping</para></listitem>
+      <listitem><para>Correctly handle utf8 character sequences</para></listitem>
+      <listitem><para>Fix a bug in mh_buffy_update</para></listitem>
+      <listitem><para>Fix refresh -- time overflowed short</para></listitem>
+      <listitem><para>Protect against empty format strings</para></listitem>
+      <listitem><para>Limit Sidebar width to COLS</para></listitem>
+      <listitem><para>Handle unmailboxes * safely</para></listitem>
+      <listitem><para>Refresh Sidebar after timeout</para></listitem>
+    </itemizedlist>
+  </sect3>
+  <sect3 id="intro-sidebar-config-changes">
+    <title>Config Changes</title>
+    <para>
+      If you haven't used Sidebar before, you can ignore this section.
+    </para>
+    <para>
+      Some of the Sidebar config has been changed to make its meaning clearer.
+      These changes have been made since the previous Sidebar release: 2015-11-11.
+    </para>
+    <table id="table-intro-sidebar-config-changes">
+      <title>Config Changes</title>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Old Name</entry>
+            <entry>New Name</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>$sidebar_delim</literal></entry>
+            <entry><literal>$sidebar_divider_char</literal></entry>
+          </row>
+          <row>
+            <entry><literal>$sidebar_folderindent</literal></entry>
+            <entry><literal>$sidebar_folder_indent</literal></entry>
+          </row>
+          <row>
+            <entry><literal>$sidebar_indentstr</literal></entry>
+            <entry><literal>$sidebar_indent_string</literal></entry>
+          </row>
+          <row>
+            <entry><literal>$sidebar_newmail_only</literal></entry>
+            <entry><literal>$sidebar_new_mail_only</literal></entry>
+          </row>
+          <row>
+            <entry><literal>$sidebar_refresh</literal></entry>
+            <entry><literal>$sidebar_refresh_time</literal></entry>
+          </row>
+          <row>
+            <entry><literal>$sidebar_shortpath</literal></entry>
+            <entry><literal>$sidebar_short_path</literal></entry>
+          </row>
+          <row>
+            <entry><literal>$sidebar_sort</literal></entry>
+            <entry><literal>$sidebar_sort_method</literal></entry>
+          </row>
+          <row>
+            <entry><literal>&lt;sidebar-scroll-down&gt;</literal></entry>
+            <entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
+          </row>
+          <row>
+            <entry><literal>&lt;sidebar-scroll-up&gt;</literal></entry>
+            <entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect3>
 </sect2>
 
 <sect2 id="intro-help">
@@ -8720,314 +8720,316 @@ please have a look at the mixmaster documentation.
 </sect1>
 
 <sect1 id="sidebar">
-	<title>Sidebar Patch</title>
-	<subtitle>Overview of mailboxes</subtitle>
+  <title>Sidebar Patch</title>
+  <subtitle>Overview of mailboxes</subtitle>
 
-	<sect2 id="sidebar-patch">
-		<title>Patch</title>
+  <sect2 id="sidebar-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>Sidebar</quote>, look for
-			<quote>+USE_SIDEBAR</quote> in the mutt version.
-			See: <xref linkend="compile-time-features"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>Sidebar</quote>, look for
+      <quote>+USE_SIDEBAR</quote> in the mutt version.
+      See: <xref linkend="compile-time-features"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.1</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="sidebar-intro">
-		<title>Introduction</title>
+  <sect2 id="sidebar-intro">
+    <title>Introduction</title>
 
-		<para>
-			The Sidebar shows a list of all your mailboxes.  The list can be
-			turned on and off, it can be themed and the list style can be
-			configured.
-		</para>
+    <para>
+      The Sidebar shows a list of all your mailboxes.  The list can be
+      turned on and off, it can be themed and the list style can be
+      configured.
+    </para>
 
-		<para>
-			This part of the manual is a reference guide.
-			If you want a simple introduction with examples see the
-			<link linkend="intro-sidebar">Sidebar Howto</link>.
-			If you just want to get started, you could use the sample
-			<link linkend="sidebar-muttrc">Sidebar muttrc</link>.
-		</para>
+    <para>
+      This part of the manual is a reference guide.
+      If you want a simple introduction with examples see the
+      <link linkend="intro-sidebar">Sidebar Howto</link>.
+      If you just want to get started, you could use the sample
+      <link linkend="sidebar-muttrc">Sidebar muttrc</link>.
+    </para>
 
-		<para>
-			This version of Sidebar is based on Terry Chan's
-			<ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
-			It contains many
-			<emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
-			lots of
-			<emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>.
-		</para>
-	</sect2>
+    <para>
+      This version of Sidebar is based on Terry Chan's
+      <ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
+      It contains many
+      <emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
+      lots of
+      <emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>.
+    </para>
+  </sect2>
 
-	<sect2 id="sidebar-variables">
-		<title>Variables</title>
+  <sect2 id="sidebar-variables">
+    <title>Variables</title>
 
-		<table id="table-sidebar-variables">
-			<title>Sidebar Variables</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Type</entry>
-						<entry>Default</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>sidebar_delim_chars</literal></entry>
-						<entry>string</entry>
-						<entry><literal>/.</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_divider_char</literal></entry>
-						<entry>string</entry>
-						<entry><literal>|</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_folder_indent</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_format</literal></entry>
-						<entry>string</entry>
-						<entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_indent_string</literal></entry>
-						<entry>string</entry>
-						<entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_new_mail_only</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_next_new_wrap</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_refresh_time</literal></entry>
-						<entry>number</entry>
-						<entry><literal>60</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_short_path</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_sort_method</literal></entry>
-						<entry>enum</entry>
-						<entry><literal>SORT_ORDER</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_visible</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_whitelist</literal></entry>
-						<entry>list</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_width</literal></entry>
-						<entry>number</entry>
-						<entry><literal>20</literal></entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-sidebar-variables">
+      <title>Sidebar Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>sidebar_delim_chars</literal></entry>
+            <entry>string</entry>
+            <entry><literal>/.</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_divider_char</literal></entry>
+            <entry>string</entry>
+            <entry><literal>|</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_folder_indent</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_format</literal></entry>
+            <entry>string</entry>
+            <entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_indent_string</literal></entry>
+            <entry>string</entry>
+            <entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_new_mail_only</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_next_new_wrap</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_refresh_time</literal></entry>
+            <entry>number</entry>
+            <entry><literal>60</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_short_path</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_sort_method</literal></entry>
+            <entry>enum</entry>
+            <entry><literal>SORT_ORDER</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_visible</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_whitelist</literal></entry>
+            <entry>list</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_width</literal></entry>
+            <entry>number</entry>
+            <entry><literal>20</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
-	<sect2 id="sidebar-functions">
-		<title>Functions</title>
+  <sect2 id="sidebar-functions">
+    <title>Functions</title>
 
-		<para>
-			Sidebar adds the following functions to Mutt.
-			By default, none of them are bound to keys.
-		</para>
+    <para>
+      Sidebar adds the following functions to Mutt.
+      By default, none of them are bound to keys.
+    </para>
 
-		<table id="table-sidebar-functions">
-			<title>Sidebar Functions</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-next&gt;</literal></entry>
-						<entry>Move the highlight to next mailbox</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-next-new&gt;</literal></entry>
-						<entry>Move the highlight to next mailbox with new mail</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-open&gt;</literal></entry>
-						<entry>Open highlighted mailbox</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
-						<entry>Scroll the Sidebar down 1 page</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
-						<entry>Scroll the Sidebar up 1 page</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-prev&gt;</literal></entry>
-						<entry>Move the highlight to previous mailbox</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-prev-new&gt;</literal></entry>
-						<entry>Move the highlight to previous mailbox with new mail</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry><literal>&lt;sidebar-toggle-visible&gt;</literal></entry>
-						<entry>Make the Sidebar (in)visible</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-sidebar-functions">
+      <title>Sidebar Functions</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-next&gt;</literal></entry>
+            <entry>Move the highlight to next mailbox</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-next-new&gt;</literal></entry>
+            <entry>Move the highlight to next mailbox with new mail</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-open&gt;</literal></entry>
+            <entry>Open highlighted mailbox</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
+            <entry>Scroll the Sidebar down 1 page</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
+            <entry>Scroll the Sidebar up 1 page</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-prev&gt;</literal></entry>
+            <entry>Move the highlight to previous mailbox</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-prev-new&gt;</literal></entry>
+            <entry>Move the highlight to previous mailbox with new mail</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-toggle-visible&gt;</literal></entry>
+            <entry>Make the Sidebar (in)visible</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
-	<sect2 id="sidebar-commands">
-		<title>Commands</title>
-		<cmdsynopsis>
-			<command>sidebar_whitelist</command>
-			<arg choice="plain">
-				<replaceable class="parameter">mailbox</replaceable>
-			</arg>
-			<arg choice="opt" rep="repeat">
-				<replaceable class="parameter">mailbox</replaceable>
-			</arg>
-		</cmdsynopsis>
-	</sect2>
+  <sect2 id="sidebar-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>sidebar_whitelist<anchor id="sidebar-whitelist"/></command>
+      <arg choice="plain">
+        <replaceable class="parameter">mailbox</replaceable>
+      </arg>
+      <arg choice="opt" rep="repeat">
+        <replaceable class="parameter">mailbox</replaceable>
+      </arg>
+    </cmdsynopsis>
+  </sect2>
 
-	<sect2 id="sidebar-colors">
-		<title>Colors</title>
+  <sect2 id="sidebar-colors">
+    <title>Colors</title>
 
-		<table id="table-sidebar-colors">
-			<title>Sidebar Colors</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Default Color</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>sidebar_divider</literal></entry>
-						<entry>default</entry>
-						<entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_flagged</literal></entry>
-						<entry>default</entry>
-						<entry>Mailboxes containing flagged mail</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_highlight</literal></entry>
-						<entry>underline</entry>
-						<entry>Cursor to select a mailbox</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_indicator</literal></entry>
-						<entry>mutt <literal>indicator</literal></entry>
-						<entry>The mailbox open in the Index panel</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_new</literal></entry>
-						<entry>default</entry>
-						<entry>Mailboxes containing new mail</entry>
-					</row>
-					<row>
-						<entry><literal>sidebar_spoolfile</literal></entry>
-						<entry>default</entry>
-						<entry>Mailbox that receives incoming mail</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
+    <table id="table-sidebar-colors">
+      <title>Sidebar Colors</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Default Color</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>sidebar_divider</literal></entry>
+            <entry>default</entry>
+            <entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_flagged</literal></entry>
+            <entry>default</entry>
+            <entry>Mailboxes containing flagged mail</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_highlight</literal></entry>
+            <entry>underline</entry>
+            <entry>Cursor to select a mailbox</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_indicator</literal></entry>
+            <entry>mutt <literal>indicator</literal></entry>
+            <entry>The mailbox open in the Index panel</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_new</literal></entry>
+            <entry>default</entry>
+            <entry>Mailboxes containing new mail</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_spoolfile</literal></entry>
+            <entry>default</entry>
+            <entry>Mailbox that receives incoming mail</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
-		If the <literal>sidebar_indicator</literal> color isn't set, then the default Mutt
-		indicator color will be used (the color used in the index panel).
-	</sect2>
+    <para>
+    If the <literal>sidebar_indicator</literal> color isn't set, then the default Mutt
+    indicator color will be used (the color used in the index panel).
+    </para>
+  </sect2>
 
-	<sect2 id="sidebar-sort">
-		<title>Sort</title>
+  <sect2 id="sidebar-sort">
+    <title>Sort</title>
 
-		<table id="table-sidebar-sort">
-			<title>Sidebar Sort</title>
-			<tgroup cols="2">
-				<thead>
-					<row>
-						<entry>Sort</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>alpha</literal></entry>
-						<entry>Alphabetically by path</entry>
-					</row>
-					<row>
-						<entry><literal>count</literal></entry>
-						<entry>Total number of messages</entry>
-					</row>
-					<row>
-						<entry><literal>flagged</literal></entry>
-						<entry>Number of flagged messages</entry>
-					</row>
-					<row>
-						<entry><literal>name</literal></entry>
-						<entry>Alphabetically by path</entry>
-					</row>
-					<row>
-						<entry><literal>new</literal></entry>
-						<entry>Number of new messages</entry>
-					</row>
-					<row>
-						<entry><literal>path</literal></entry>
-						<entry>Alphabetically by path</entry>
-					</row>
-					<row>
-						<entry><literal>unsorted</literal></entry>
-						<entry>Do not resort the paths</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-sidebar-sort">
+      <title>Sidebar Sort</title>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Sort</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>alpha</literal></entry>
+            <entry>Alphabetically by path</entry>
+          </row>
+          <row>
+            <entry><literal>count</literal></entry>
+            <entry>Total number of messages</entry>
+          </row>
+          <row>
+            <entry><literal>flagged</literal></entry>
+            <entry>Number of flagged messages</entry>
+          </row>
+          <row>
+            <entry><literal>name</literal></entry>
+            <entry>Alphabetically by path</entry>
+          </row>
+          <row>
+            <entry><literal>new</literal></entry>
+            <entry>Number of new messages</entry>
+          </row>
+          <row>
+            <entry><literal>path</literal></entry>
+            <entry>Alphabetically by path</entry>
+          </row>
+          <row>
+            <entry><literal>unsorted</literal></entry>
+            <entry>Do not resort the paths</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
-	<sect2 id="sidebar-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="sidebar-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># This is a complete list of sidebar-related configuration.
  
@@ -9146,40 +9148,40 @@ color sidebar_new green black
  
 # vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="sidebar-see-also">
-		<title>See Also</title>
+  <sect2 id="sidebar-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
-			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
-			<listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+      <listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+      <listitem><para><link linkend="color">Color command</link></para></listitem>
+      <listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="sidebar-known-bugs">
-		<title>Known Bugs</title>
-		Unsorted isn't
-	</sect2>
+  <sect2 id="sidebar-known-bugs">
+    <title>Known Bugs</title>
+    Unsorted isn't
+  </sect2>
 
-	<sect2 id="sidebar-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Justin Hibbits <email>jrh29@po.cwru.edu</email></para></listitem>
-		<listitem><para>Thomer M. Gil <email>mutt@thomer.com</email></para></listitem>
-		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-		<listitem><para>Evgeni Golov <email>evgeni@debian.org</email></para></listitem>
-		<listitem><para>Fabian Groffen <email>grobian@gentoo.org</email></para></listitem>
-		<listitem><para>Jason DeTiberus <email>jdetiber@redhat.com</email></para></listitem>
-		<listitem><para>Stefan Assmann <email>sassmann@kpanic.de</email></para></listitem>
-		<listitem><para>Steve Kemp <email>steve@steve.org.uk</email></para></listitem>
-		<listitem><para>Terry Chan <email>tchan@lunar-linux.org</email></para></listitem>
-		<listitem><para>Tyler Earnest <email>tylere@rne.st</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="sidebar-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Justin Hibbits <email>jrh29@po.cwru.edu</email></para></listitem>
+    <listitem><para>Thomer M. Gil <email>mutt@thomer.com</email></para></listitem>
+    <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+    <listitem><para>Evgeni Golov <email>evgeni@debian.org</email></para></listitem>
+    <listitem><para>Fabian Groffen <email>grobian@gentoo.org</email></para></listitem>
+    <listitem><para>Jason DeTiberus <email>jdetiber@redhat.com</email></para></listitem>
+    <listitem><para>Stefan Assmann <email>sassmann@kpanic.de</email></para></listitem>
+    <listitem><para>Steve Kemp <email>steve@steve.org.uk</email></para></listitem>
+    <listitem><para>Terry Chan <email>tchan@lunar-linux.org</email></para></listitem>
+    <listitem><para>Tyler Earnest <email>tylere@rne.st</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 </chapter>
