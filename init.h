@@ -2685,6 +2685,7 @@ struct option_t MuttVars[] = {
   ** .ts
   ** set sidebar_delim_chars='/'
   ** .te
+  ** .pp
   ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
   ** .ts
   ** set sidebar_delim_chars='.'
