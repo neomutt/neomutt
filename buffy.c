@@ -409,41 +409,41 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
 static void
 buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
 {
-	char path[_POSIX_PATH_MAX] = "";
-	DIR *dirp = NULL;
-	struct dirent *de = NULL;
-	char *p = NULL;
-	int read;
+  char path[_POSIX_PATH_MAX] = "";
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
+  char *p = NULL;
 
-	snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
+  snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
 
-	dirp = opendir (path);
-	if (!dirp) {
-		mailbox->magic = 0;
-		return;
-	}
+  dirp = opendir (path);
+  if (!dirp)
+  {
+    mailbox->magic = 0;
+    return;
+  }
 
-	while ((de = readdir (dirp)) != NULL) {
-		if (*de->d_name == '.')
-			continue;
+  while ((de = readdir (dirp)) != NULL)
+  {
+    if (*de->d_name == '.')
+      continue;
 
-		/* Matches maildir_parse_flags logic */
-		read = 0;
-		mailbox->msg_count++;
-		p = strstr (de->d_name, ":2,");
-		if (p) {
-			p += 3;
-			if (strchr (p, 'S'))
-				read = 1;
-			if (strchr (p, 'F'))
-				mailbox->msg_flagged++;
-		}
-		if (!read) {
-			mailbox->msg_unread++;
-		}
-	}
+    /* Matches maildir_parse_flags logic */
+    mailbox->msg_count++;
+    p = strstr (de->d_name, ":2,");
+    if (p)
+    {
+      p += 3;
+      if (strchr (p, 'T'))
+        continue;
+      if (!strchr (p, 'S'))
+        mailbox->msg_unread++;
+      if (strchr (p, 'F'))
+        mailbox->msg_flagged++;
+    }
+  }
 
-	closedir (dirp);
+  closedir (dirp);
 }
 
 /**
@@ -470,9 +470,6 @@ buffy_maildir_update (BUFFY *mailbox)
 	buffy_maildir_update_dir (mailbox, "cur");
 
 	mailbox->sb_last_checked = time (NULL);
-
-	/* make sure the updates are actually put on screen */
-	sb_draw();
 }
 
 #endif
@@ -525,24 +522,22 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
 void
 buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 {
-	CONTEXT *ctx = NULL;
+  CONTEXT *ctx = NULL;
 
-	if (!option (OPTSIDEBAR))
-		return;
-	if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
-		return; /* no check necessary */
+  if (!option (OPTSIDEBAR))
+    return;
+  if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
+    return; /* no check necessary */
 
-	ctx = mx_open_mailbox (mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK, NULL);
-	if (ctx) {
-		mailbox->msg_count       = ctx->msgcount;
-		mailbox->msg_unread      = ctx->unread;
-		mailbox->msg_flagged     = ctx->flagged;
-		mailbox->sb_last_checked = time (NULL);
-		mx_close_mailbox (ctx, 0);
-	}
-
-	/* make sure the updates are actually put on screen */
-	sb_draw();
+  ctx = mx_open_mailbox (mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK, NULL);
+  if (ctx)
+  {
+    mailbox->msg_count       = ctx->msgcount;
+    mailbox->msg_unread      = ctx->unread;
+    mailbox->msg_flagged     = ctx->flagged;
+    mailbox->sb_last_checked = time (NULL);
+    mx_close_mailbox (ctx, 0);
+  }
 }
 #endif
 
@@ -641,10 +636,8 @@ int mutt_buffy_check (int force)
 
       case MUTT_MH:
 #ifdef USE_SIDEBAR
-	if (sb_should_refresh()) {
+	if (should_refresh)
 	  mh_buffy_update (tmp);
-	  sb_set_update_time();
-	}
 #endif
 	mh_buffy(tmp);
 	if (tmp->new)
@@ -662,7 +655,10 @@ int mutt_buffy_check (int force)
   }
 #ifdef USE_SIDEBAR
   if (should_refresh)
-	  sb_set_update_time();
+  {
+    SidebarNeedsRedraw = 1;
+    sb_set_update_time();
+  }
 #endif
 
   BuffyDoneTime = BuffyTime;

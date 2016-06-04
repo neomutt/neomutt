@@ -843,7 +843,7 @@ sb_change_mailbox (int op)
 		default:
 			return;
 	}
-	sb_draw();
+	SidebarNeedsRedraw = 1;
 }
 
 /**

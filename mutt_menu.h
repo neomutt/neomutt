@@ -90,6 +90,9 @@ typedef struct menu_t
 void mutt_menu_init (void);
 void menu_jump (MUTTMENU *);
 void menu_redraw_full (MUTTMENU *);
+#ifdef USE_SIDEBAR
+void menu_redraw_sidebar (MUTTMENU *);
+#endif
 void menu_redraw_index (MUTTMENU *);
 void menu_redraw_status (MUTTMENU *);
 void menu_redraw_motion (MUTTMENU *);

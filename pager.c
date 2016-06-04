@@ -1671,9 +1671,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       /* clear() doesn't optimize screen redraws */
       move (0, 0);
       clrtobot ();
-#ifdef USE_SIDEBAR
-      sb_draw();
-#endif
 
       if (IsHeader (extra) && Context->vcount + 1 < PagerIndexLines)
 	indexlen = Context->vcount + 1;
@@ -1767,6 +1764,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
 
       redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
+#ifdef USE_SIDEBAR
+      redraw |= REDRAW_SIDEBAR;
+#endif
       mutt_show_error ();
     }
 
@@ -1784,6 +1784,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	    break;
 	}
     }
+
+#ifdef USE_SIDEBAR
+    if ((redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
+    {
+      SidebarNeedsRedraw = 0;
+      sb_draw ();
+    }
+#endif
 
     if ((redraw & REDRAW_BODY) || topline != oldtopline)
     {
@@ -2543,12 +2551,8 @@ search_next:
 	  ch = 0;
 	}
 
-	if (option (OPTFORCEREDRAWPAGER)) {
+	if (option (OPTFORCEREDRAWPAGER))
 	  redraw = REDRAW_FULL;
-#ifdef USE_SIDEBAR
-	  sb_draw();
-#endif
-	}
 	unset_option (OPTFORCEREDRAWINDEX);
 	unset_option (OPTFORCEREDRAWPAGER);
 	break;

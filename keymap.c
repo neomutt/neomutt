@@ -457,9 +457,6 @@ int km_dokey (int menu)
     }
 #endif
 
-    /* update sidebar stats */
-    mutt_buffy_check(0);
-
     timeout (i * 1000);
     tmp = mutt_getch();
     timeout (-1);

@@ -609,31 +609,24 @@ int mutt_index_menu (void)
        do_buffy_notify = 1;
     }
 
-#ifdef USE_SIDEBAR
-    if (option (OPTSIDEBAR))
-        menu->redraw |= REDRAW_SIDEBAR;
-#endif
-
     if (op != -1)
       mutt_curs_set (0);
 
     if (menu->redraw & REDRAW_FULL)
     {
       menu_redraw_full (menu);
-#ifdef USE_SIDEBAR
-      sb_draw();
-#endif
       mutt_show_error ();
     }
-#ifdef USE_SIDEBAR
-    else if (menu->redraw & REDRAW_SIDEBAR) {
-      sb_draw();
-      menu->redraw &= ~REDRAW_SIDEBAR;
-    }
-#endif
 
     if (menu->menu == MENU_MAIN)
     {
+#ifdef USE_SIDEBAR
+      if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
+      {
+        sb_set_buffystats (Context);
+        menu_redraw_sidebar (menu);
+      }
+#endif
       if (Context && Context->hdrs && !(menu->current >= Context->vcount))
       {
 	menu_check_recenter (menu);
@@ -654,9 +647,6 @@ int mutt_index_menu (void)
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
         mutt_window_move (MuttStatusWindow, 0, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-#ifdef USE_SIDEBAR
-	sb_set_buffystats (Context);
-#endif
 	mutt_paddstr (MuttStatusWindow->cols, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
@@ -1116,9 +1106,6 @@ int mutt_index_menu (void)
 	  break;
 
 	CHECK_MSGCOUNT;
-#ifdef USE_SIDEBAR
-	CHECK_VISIBLE;
-#endif
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
@@ -1208,28 +1195,29 @@ int mutt_index_menu (void)
 	    break;
 	  }
 	}
+#ifdef USE_SIDEBAR
+        else if (op == OP_SIDEBAR_OPEN)
+        {
+          const char *path = sb_get_highlight();
+          if (!path || !*path)
+            break;
+          strncpy (buf, path, sizeof (buf));
+        }
+#endif
 	else
 	{
 	  mutt_buffy (buf, sizeof (buf));
 
-#ifdef USE_SIDEBAR
-	  if (op == OP_SIDEBAR_OPEN) {
-	    const char *path = sb_get_highlight();
-	    if (!path)
-	      break;
-	    strncpy (buf, path, sizeof (buf));
-	  } else
-#endif
-	  if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
-	  {
-	    if (menu->menu == MENU_PAGER)
-	    {
-	      op = OP_DISPLAY_MESSAGE;
-	      continue;
-	    }
-	    else
-	      break;
-	  }
+          if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
+          {
+            if (menu->menu == MENU_PAGER)
+            {
+              op = OP_DISPLAY_MESSAGE;
+              continue;
+            }
+            else
+              break;
+          }
 	  if (!buf[0])
 	  {
             mutt_window_clearline (MuttMessageWindow, 0);
