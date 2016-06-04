@@ -1789,7 +1789,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     if ((redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
     {
       SidebarNeedsRedraw = 0;
-      sb_draw ();
+      mutt_sb_draw ();
     }
 #endif
 
@@ -2837,7 +2837,7 @@ search_next:
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-	sb_change_mailbox (ch);
+	mutt_sb_change_mailbox (ch);
 	break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:

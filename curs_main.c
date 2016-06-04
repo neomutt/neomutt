@@ -623,7 +623,7 @@ int mutt_index_menu (void)
 #ifdef USE_SIDEBAR
       if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
       {
-        sb_set_buffystats (Context);
+        mutt_sb_set_buffystats (Context);
         menu_redraw_sidebar (menu);
       }
 #endif
@@ -1198,7 +1198,7 @@ int mutt_index_menu (void)
 #ifdef USE_SIDEBAR
         else if (op == OP_SIDEBAR_OPEN)
         {
-          const char *path = sb_get_highlight();
+          const char *path = mutt_sb_get_highlight();
           if (!path || !*path)
             break;
           strncpy (buf, path, sizeof (buf));
@@ -1227,7 +1227,7 @@ int mutt_index_menu (void)
 
 	mutt_expand_path (buf, sizeof (buf));
 #ifdef USE_SIDEBAR
-	sb_set_open_buffy (buf);
+	mutt_sb_set_open_buffy (buf);
 #endif
 	if (mx_get_magic (buf) <= 0)
 	{
@@ -2347,7 +2347,7 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        sb_change_mailbox (op);
+        mutt_sb_change_mailbox (op);
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:

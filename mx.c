@@ -745,7 +745,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
     mutt_free_header (&ctx->hdrs[i]);
 #ifdef USE_SIDEBAR
   ctx->msgcount -= ctx->deleted;
-  sb_set_buffystats (ctx);
+  mutt_sb_set_buffystats (ctx);
 #endif
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);

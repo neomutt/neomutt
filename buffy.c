@@ -244,7 +244,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       {
         tmp1=(*tmp)->next;
 #ifdef USE_SIDEBAR
-	sb_notify_mailbox (*tmp, 0);
+	mutt_sb_notify_mailbox (*tmp, 0);
 #endif
         buffy_free (tmp);
         *tmp=tmp1;
@@ -280,7 +280,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       {
         tmp1=(*tmp)->next;
 #ifdef USE_SIDEBAR
-	sb_notify_mailbox (*tmp, 0);
+	mutt_sb_notify_mailbox (*tmp, 0);
 #endif
         buffy_free (tmp);
         *tmp=tmp1;
@@ -291,7 +291,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     if (!*tmp) {
       *tmp = buffy_new (buf);
 #ifdef USE_SIDEBAR
-      sb_notify_mailbox (*tmp, 1);
+      mutt_sb_notify_mailbox (*tmp, 1);
 #endif
     }
 
@@ -582,7 +582,7 @@ int mutt_buffy_check (int force)
   }
   
 #ifdef USE_SIDEBAR
-  int should_refresh = sb_should_refresh();
+  int should_refresh = mutt_sb_should_refresh();
 #endif
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
@@ -657,7 +657,7 @@ int mutt_buffy_check (int force)
   if (should_refresh)
   {
     SidebarNeedsRedraw = 1;
-    sb_set_update_time();
+    mutt_sb_set_update_time();
   }
 #endif
 

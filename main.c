@@ -1234,7 +1234,7 @@ int main (int argc, char **argv)
        || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      sb_set_open_buffy (folder);
+      mutt_sb_set_open_buffy (folder);
 #endif
       mutt_index_menu ();
       if (Context)

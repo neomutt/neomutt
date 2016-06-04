@@ -238,7 +238,7 @@ void menu_redraw_status (MUTTMENU *menu)
 void menu_redraw_sidebar (MUTTMENU *menu)
 {
   SidebarNeedsRedraw = 0;
-  sb_draw ();
+  mutt_sb_draw ();
 }
 #endif
 
