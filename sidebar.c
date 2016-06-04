@@ -478,8 +478,6 @@ prepare_sidebar (int page_size)
 		count++;
 
 	BUFFY **arr = safe_malloc (count * sizeof (*arr));
-	if (!arr)
-		return 0;
 
 	int i = 0;
 	for (b = Incoming; b; b = b->next, i++) {
@@ -528,7 +526,7 @@ prepare_sidebar (int page_size)
 	Outgoing = arr[count - 1];
 
 	PreviousSort = SidebarSortMethod;
-	free (arr);
+	FREE (&arr);
 	return 1;
 }
 
@@ -699,18 +697,19 @@ draw_sidebar (int num_rows, int num_cols, int div_width)
 				if (option (OPTSIDEBARSHORTPATH)) {
 					tmp_folder_name += lastsep;  /* basename */
 				}
-				sidebar_folder_name = malloc (strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1);
+                                int sfn_len = strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1;
+				sidebar_folder_name = safe_malloc (sfn_len);
 				sidebar_folder_name[0]=0;
 				for (i=0; i < sidebar_folder_depth; i++)
-					strncat (sidebar_folder_name, NONULL(SidebarIndentString), strlen (NONULL(SidebarIndentString)));
-				strncat (sidebar_folder_name, tmp_folder_name, strlen (tmp_folder_name));
+                                  safe_strcat (sidebar_folder_name, sfn_len, NONULL(SidebarIndentString));
+				safe_strcat (sidebar_folder_name, sfn_len, tmp_folder_name);
 			}
 		}
 		char str[SHORT_STRING];
 		make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
 		printw ("%s", str);
 		if (sidebar_folder_depth > 0)
-			free (sidebar_folder_name);
+			FREE (&sidebar_folder_name);
 		row++;
 	}
 
