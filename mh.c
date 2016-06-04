@@ -298,6 +298,49 @@ void mh_buffy(BUFFY *b)
   mhs_free_sequences (&mhs);
 }
 
+#ifdef USE_SIDEBAR
+/**
+ * mh_buffy_update - Update messages counts for an mh mailbox
+ * @mailbox: BUFFY representing a maildir mailbox
+ *
+ * Read through an mh mailbox and count messages.  Save the number of new,
+ * flagged messages and a timestamp for now.
+ */
+void
+mh_buffy_update (BUFFY *mailbox)
+{
+	if (!mailbox)
+		return;
+
+	if (!option (OPTSIDEBAR))
+		return;
+
+	struct mh_sequences mhs;
+	memset (&mhs, 0, sizeof (mhs));
+
+	if (mh_read_sequences (&mhs, mailbox->path) < 0)
+		return;
+
+	mailbox->msg_count   = 0;
+	mailbox->msg_unread  = 0;
+	mailbox->msg_flagged = 0;
+
+	int i;
+	for (i = 0; i <= mhs.max; i++) {
+		mailbox->msg_count++;
+	}
+	if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN) {
+		mailbox->msg_unread++;
+	}
+	if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED) {
+		mailbox->msg_flagged++;
+	}
+	mhs_free_sequences (&mhs);
+	mailbox->sb_last_checked = time (NULL);
+}
+
+#endif
+
 static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
 {
   int fd;

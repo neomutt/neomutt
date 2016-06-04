@@ -42,11 +42,12 @@
 #define DTYPE(x) ((x) & DT_MASK)
 
 /* subtypes */
-#define DT_SUBTYPE_MASK	0xf0
+#define DT_SUBTYPE_MASK	0xff0
 #define DT_SORT_ALIAS	0x10
 #define DT_SORT_BROWSER 0x20
 #define DT_SORT_KEYS	0x40
 #define DT_SORT_AUX	0x80
+#define DT_SORT_SIDEBAR	0x100
 
 /* flags to parse_set() */
 #define MUTT_SET_INV	(1<<0)	/* default is to invert all vars */
@@ -2666,6 +2667,146 @@ struct option_t MuttVars[] = {
   ** Command to use when spawning a subshell.  By default, the user's login
   ** shell from \fC/etc/passwd\fP is used.
   */
+#ifdef USE_SIDEBAR
+  { "sidebar_divider_char", DT_STR, R_BOTH, UL &SidebarDividerChar, UL "|" },
+  /*
+  ** .pp
+  ** This specifies the characters to be drawn between the sidebar (when
+  ** visible) and the other Mutt panels. ASCII and Unicode line-drawing
+  ** characters are supported.
+  */
+  { "sidebar_delim_chars", DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
+  /*
+  ** .pp
+  ** This contains the list of characters which you would like to treat
+  ** as folder separators for displaying paths in the sidebar.
+  ** .pp
+  ** Local mail is often arranged in directories: `dir1/dir2/mailbox'.
+  ** .ts
+  ** set sidebar_delim_chars='/'
+  ** .te
+  ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
+  ** .ts
+  ** set sidebar_delim_chars='.'
+  ** .te
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_indent_string.
+  */
+  { "sidebar_folder_indent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
+  /*
+  ** .pp
+  ** Set this to indent mailboxes in the sidebar.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
+  */
+  { "sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S" },
+  /*
+  ** .pp
+  ** This variable allows you to customize the sidebar display. This string is
+  ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
+  ** sequences:
+  ** .dl
+  ** .dt %B  .dd Name of the mailbox
+  ** .dt %S  .dd * Size of mailbox (total number of messages)
+  ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %F  .dd * Number of Flagged messages in the mailbox
+  ** .dt %!  .dd ``!'' : one flagged message;
+  **             ``!!'' : two flagged messages;
+  **             ``n!'' : n flagged messages (for n > 2).
+  **             Otherwise prints nothing.
+  ** .dt %d  .dd * @ Number of deleted messages
+  ** .dt %L  .dd * @ Number of messages after limiting
+  ** .dt %t  .dd * @ Number of tagged messages
+  ** .dt %>X .dd right justify the rest of the string and pad with ``X''
+  ** .dt %|X .dd pad to the end of the line with ``X''
+  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .de
+  ** .pp
+  ** * = Can be optionally printed if nonzero
+  ** @ = Only applicable to the current folder
+  */
+  { "sidebar_indent_string", DT_STR, R_BOTH, UL &SidebarIndentString, UL "  " },
+  /*
+  ** .pp
+  ** This specifies the string that is used to indent mailboxes in the sidebar.
+  ** It defaults to two spaces.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_delim_chars.
+  */
+  { "sidebar_new_mail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
+  /*
+  ** .pp
+  ** When set, the sidebar will only display mailboxes containing new, or
+  ** flagged, mail.
+  ** .pp
+  ** \fBSee also:\fP $sidebar_whitelist.
+  */
+  { "sidebar_next_new_wrap", DT_BOOL, R_BOTH, UL OPTSIDEBARNEXTNEWWRAP, 0 },
+  /*
+  ** .pp
+  ** When set, the \fC<sidebar-next-new>\fP command will not stop and the end of
+  ** the list of mailboxes, but wrap around to the beginning. The
+  ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
+  ** the end of the list.
+  */
+  { "sidebar_refresh_time", DT_NUM, R_BOTH, UL &SidebarRefreshTime, 60 },
+  /*
+  ** .pp
+  ** Set sidebar_refresh_time to the minimum number of seconds between refreshes.
+  ** This will reduced network traffic.
+  ** .pp
+  ** \fBNote:\fP Set to 0 to disable refreshing.
+  */
+  { "sidebar_short_path", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
+  /*
+  ** .pp
+  ** By default the sidebar will show the mailbox's path, relative to the
+  ** $$folder variable. Setting \fCsidebar_shortpath=yes\fP will shorten the
+  ** names relative to the previous name. Here's an example:
+  ** .dl
+  ** .dt \fBshortpath=no\fP .dd \fBshortpath=yes\fP .dd \fBshortpath=yes, folderindent=yes, indentstr=".."\fP
+  ** .dt \fCfruit\fP        .dd \fCfruit\fP         .dd \fCfruit\fP
+  ** .dt \fCfruit.apple\fP  .dd \fCapple\fP         .dd \fC..apple\fP
+  ** .dt \fCfruit.banana\fP .dd \fCbanana\fP        .dd \fC..banana\fP
+  ** .dt \fCfruit.cherry\fP .dd \fCcherry\fP        .dd \fC..cherry\fP
+  ** .de
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folder_indent, $$sidebar_indent_string.
+  */
+  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR, R_NONE, UL &SidebarSortMethod, SORT_ORDER },
+  /*
+  ** .pp
+  ** Specifies how to sort entries in the file browser.  By default, the
+  ** entries are sorted alphabetically.  Valid values:
+  ** .il
+  ** .dd alpha (alphabetically)
+  ** .dd count (all message count)
+  ** .dd date
+  ** .dd desc (description)
+  ** .dd new (new message count)
+  ** .dd size
+  ** .dd unsorted
+  ** .ie
+  ** .pp
+  ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
+  ** order (example: ``\fCset sort_browser=reverse-date\fP'').
+  */
+  { "sidebar_visible", DT_BOOL, R_BOTH|R_REFLOW, OPTSIDEBAR, 0 },
+  /*
+  ** .pp
+  ** This specifies whether or not to show sidebar. The sidebar shows a list of
+  ** all your mailboxes.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_format, $$sidebar_width
+  */
+  { "sidebar_width", DT_NUM, R_BOTH|R_REFLOW, UL &SidebarWidth, 30 },
+  /*
+  ** .pp
+  ** This controls the width of the sidebar.  It is measured in screen columns.
+  ** For example: sidebar_width=20 could display 20 ASCII characters, or 10
+  ** Chinese characters.
+  */
+#endif
   { "sig_dashes",	DT_BOOL, R_NONE, OPTSIGDASHES, 1 },
   /*
   ** .pp
@@ -3653,6 +3794,19 @@ const struct mapping_t SortKeyMethods[] = {
   { NULL,       0 }
 };
 
+const struct mapping_t SortSidebarMethods[] = {
+  { "alpha",		SORT_PATH },
+  { "count",		SORT_COUNT },
+  { "desc",		SORT_DESC },
+  { "flagged",		SORT_FLAGGED },
+  { "mailbox-order",	SORT_ORDER },
+  { "name",		SORT_PATH },
+  { "new",		SORT_COUNT_NEW },
+  { "path",		SORT_PATH },
+  { "unsorted",		SORT_ORDER },
+  { NULL,		0 }
+};
+
 
 /* functions used to parse commands in a rc file */
 
@@ -3742,6 +3896,9 @@ const struct command_t Commands[] = {
   { "send-hook",	mutt_parse_hook,	MUTT_SENDHOOK },
   { "send2-hook",	mutt_parse_hook,	MUTT_SEND2HOOK },
   { "set",		parse_set,		0 },
+#ifdef USE_SIDEBAR
+  { "sidebar_whitelist",parse_list,		UL &SidebarWhitelist },
+#endif
   { "source",		parse_source,		0 },
   { "spam",		parse_spam_list,	MUTT_SPAM },
   { "nospam",		parse_spam_list,	MUTT_NOSPAM },

@@ -24,6 +24,9 @@
 #include "mutt_curses.h"
 #include "mutt_menu.h"
 #include "mbyte.h"
+#ifdef USE_SIDEBAR
+#include "sidebar.h"
+#endif
 
 char* SearchBuffers[MENU_MAX];
 
@@ -235,6 +238,9 @@ void menu_redraw_index (MUTTMENU *menu)
   int do_color;
   int attr;
 
+#ifdef USE_SIDEBAR
+  sb_draw();
+#endif
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
   {
     if (i < menu->max)

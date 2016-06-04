@@ -168,6 +168,16 @@ const struct binding_t OpMain[] = { /* map: index */
   { "decrypt-copy",		OP_DECRYPT_COPY,		NULL },
   { "decrypt-save",		OP_DECRYPT_SAVE,		NULL },
 
+#ifdef USE_SIDEBAR
+  { "sidebar-next",		OP_SIDEBAR_NEXT,		NULL },
+  { "sidebar-next-new",		OP_SIDEBAR_NEXT_NEW,		NULL },
+  { "sidebar-open",		OP_SIDEBAR_OPEN,		NULL },
+  { "sidebar-page-down",	OP_SIDEBAR_PAGE_DOWN,		NULL },
+  { "sidebar-page-up",		OP_SIDEBAR_PAGE_UP,		NULL },
+  { "sidebar-prev",		OP_SIDEBAR_PREV,		NULL },
+  { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
+  { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
+#endif
 
   { NULL,			0,				NULL }
 };
@@ -271,6 +281,17 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "decrypt-save",    	OP_DECRYPT_SAVE,		NULL },
 
   { "what-key",		OP_WHAT_KEY,		NULL },
+
+#ifdef USE_SIDEBAR
+  { "sidebar-next",		OP_SIDEBAR_NEXT,		NULL },
+  { "sidebar-next-new",		OP_SIDEBAR_NEXT_NEW,		NULL },
+  { "sidebar-open",		OP_SIDEBAR_OPEN,		NULL },
+  { "sidebar-page-down",	OP_SIDEBAR_PAGE_DOWN,		NULL },
+  { "sidebar-page-up",		OP_SIDEBAR_PAGE_UP,		NULL },
+  { "sidebar-prev",		OP_SIDEBAR_PREV,		NULL },
+  { "sidebar-prev-new",		OP_SIDEBAR_PREV_NEW,		NULL },
+  { "sidebar-toggle-visible",	OP_SIDEBAR_TOGGLE_VISIBLE,	NULL },
+#endif
 
   { NULL,		0,				NULL }
 };

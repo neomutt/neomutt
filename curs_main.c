@@ -26,7 +26,12 @@
 #include "mailbox.h"
 #include "mapping.h"
 #include "sort.h"
+#include "buffy.h"
 #include "mx.h"
+
+#ifdef USE_SIDEBAR
+#include "sidebar.h"
+#endif
 
 #ifdef USE_POP
 #include "pop.h"
@@ -593,12 +598,21 @@ int mutt_index_menu (void)
        menu->redraw |= REDRAW_STATUS;
      if (do_buffy_notify)
      {
-       if (mutt_buffy_notify () && option (OPTBEEPNEW))
- 	beep ();
+       if (mutt_buffy_notify())
+       {
+         menu->redraw |= REDRAW_STATUS;
+         if (option (OPTBEEPNEW))
+           beep();
+       }
      }
      else
        do_buffy_notify = 1;
     }
+
+#ifdef USE_SIDEBAR
+    if (option (OPTSIDEBAR))
+        menu->redraw |= REDRAW_SIDEBAR;
+#endif
 
     if (op != -1)
       mutt_curs_set (0);
@@ -606,8 +620,17 @@ int mutt_index_menu (void)
     if (menu->redraw & REDRAW_FULL)
     {
       menu_redraw_full (menu);
+#ifdef USE_SIDEBAR
+      sb_draw();
+#endif
       mutt_show_error ();
     }
+#ifdef USE_SIDEBAR
+    else if (menu->redraw & REDRAW_SIDEBAR) {
+      sb_draw();
+      menu->redraw &= ~REDRAW_SIDEBAR;
+    }
+#endif
 
     if (menu->menu == MENU_MAIN)
     {
@@ -631,6 +654,9 @@ int mutt_index_menu (void)
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
         mutt_window_move (MuttStatusWindow, 0, 0);
 	SETCOLOR (MT_COLOR_STATUS);
+#ifdef USE_SIDEBAR
+	sb_set_buffystats (Context);
+#endif
 	mutt_paddstr (MuttStatusWindow->cols, buf);
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
@@ -1090,6 +1116,9 @@ int mutt_index_menu (void)
 	  break;
 
 	CHECK_MSGCOUNT;
+#ifdef USE_SIDEBAR
+	CHECK_VISIBLE;
+#endif
 	CHECK_READONLY;
 	{
 	  int oldvcount = Context->vcount;
@@ -1149,6 +1178,9 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_FULL;
 	break;
 
+#ifdef USE_SIDEBAR
+      case OP_SIDEBAR_OPEN:
+#endif
       case OP_MAIN_CHANGE_FOLDER:
       case OP_MAIN_NEXT_UNREAD_MAILBOX:
 
@@ -1180,6 +1212,14 @@ int mutt_index_menu (void)
 	{
 	  mutt_buffy (buf, sizeof (buf));
 
+#ifdef USE_SIDEBAR
+	  if (op == OP_SIDEBAR_OPEN) {
+	    const char *path = sb_get_highlight();
+	    if (!path)
+	      break;
+	    strncpy (buf, path, sizeof (buf));
+	  } else
+#endif
 	  if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
 	  {
 	    if (menu->menu == MENU_PAGER)
@@ -1198,6 +1238,9 @@ int mutt_index_menu (void)
 	}
 
 	mutt_expand_path (buf, sizeof (buf));
+#ifdef USE_SIDEBAR
+	sb_set_open_buffy (buf);
+#endif
 	if (mx_get_magic (buf) <= 0)
 	{
 	  mutt_error (_("%s is not a mailbox."), buf);
@@ -2309,6 +2352,22 @@ int mutt_index_menu (void)
 	mutt_what_key();
 	break;
 
+#ifdef USE_SIDEBAR
+      case OP_SIDEBAR_NEXT:
+      case OP_SIDEBAR_NEXT_NEW:
+      case OP_SIDEBAR_PAGE_DOWN:
+      case OP_SIDEBAR_PAGE_UP:
+      case OP_SIDEBAR_PREV:
+      case OP_SIDEBAR_PREV_NEW:
+        sb_change_mailbox (op);
+        break;
+
+      case OP_SIDEBAR_TOGGLE_VISIBLE:
+	toggle_option (OPTSIDEBAR);
+        mutt_reflow_windows();
+	menu->redraw = REDRAW_FULL;
+	break;
+#endif
       default:
 	if (menu->menu == MENU_MAIN)
 	  km_error_key (MENU_MAIN);
