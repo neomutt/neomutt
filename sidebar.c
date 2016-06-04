@@ -263,10 +263,7 @@ static void make_sidebar_entry (char *buf, unsigned int buflen, int width, char 
     return;
 
   sbe.buffy = b;
-  strncpy (sbe.box, box, sizeof (sbe.box) - 1);
-
-  int box_len = strlen (box);
-  sbe.box[box_len] = '\0';
+  strfcpy (sbe.box, box, sizeof (sbe.box));
 
   mutt_FormatString (buf, buflen, 0, width, NONULL(SidebarFormat), cb_format_str, (unsigned long) &sbe, 0);
 
@@ -355,12 +352,9 @@ static BUFFY *buffy_going (const BUFFY *b)
   if (!b)
     return NULL;
 
-  if (b->prev)
-    b->prev->next = NULL;
-
   if (b->next)
   {
-    b->next->prev = NULL;
+    b->next->prev = b->prev;
     return b->next;
   }
 
@@ -974,15 +968,18 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
   }
   else
   {
+    BUFFY *replacement = buffy_going (b);
     if (TopBuffy == b)
-      TopBuffy = buffy_going (TopBuffy);
+      TopBuffy = replacement;
     if (OpnBuffy == b)
-      OpnBuffy = buffy_going (OpnBuffy);
+      OpnBuffy = NULL;
     if (HilBuffy == b)
-      HilBuffy = buffy_going (HilBuffy);
+      HilBuffy = replacement;
     if (BotBuffy == b)
-      BotBuffy = buffy_going (BotBuffy);
+      BotBuffy = replacement;
     if (Outgoing == b)
-      Outgoing = buffy_going (Outgoing);
+      Outgoing = replacement;
   }
+
+  SidebarNeedsRedraw = 1;
 }
