@@ -623,13 +623,13 @@ int mutt_index_menu (void)
     {
       menu_redraw_full (menu);
 #ifdef USE_SIDEBAR
-      sb_draw();
+      mutt_sb_draw();
 #endif
       mutt_show_error ();
     }
 #ifdef USE_SIDEBAR
     else if (menu->redraw & REDRAW_SIDEBAR) {
-      sb_draw();
+      mutt_sb_draw();
       menu->redraw &= ~REDRAW_SIDEBAR;
     }
 #endif
@@ -665,7 +665,7 @@ int mutt_index_menu (void)
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
 #ifdef USE_SIDEBAR
-	sb_set_buffystats (Context);
+	mutt_sb_set_buffystats (Context);
 #endif
 	mutt_paddstr (COLS, buf);
 	NORMAL_COLOR;
@@ -1223,7 +1223,7 @@ int mutt_index_menu (void)
 
 #ifdef USE_SIDEBAR
 	  if (op == OP_SIDEBAR_OPEN) {
-	    const char *path = sb_get_highlight();
+	    const char *path = mutt_sb_get_highlight();
 	    if (!path)
 	      break;
 	    strncpy (buf, path, sizeof (buf));
@@ -1248,7 +1248,7 @@ int mutt_index_menu (void)
 
 	mutt_expand_path (buf, sizeof (buf));
 #ifdef USE_SIDEBAR
-	sb_set_open_buffy (buf);
+	mutt_sb_set_open_buffy (buf);
 #endif
 	if (mx_get_magic (buf) <= 0)
 	{
@@ -2368,7 +2368,7 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        sb_change_mailbox (op);
+        mutt_sb_change_mailbox (op);
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:

@@ -795,10 +795,10 @@ static void draw_sidebar (int first_row, int num_rows, int div_width)
 
 
 /**
- * sb_init - Set some default values for the sidebar.
+ * mutt_sb_init - Set some default values for the sidebar.
  */
 void
-sb_init (void)
+mutt_sb_init (void)
 {
   OldVisible = option (OPTSIDEBAR);
   if (SidebarWidth > 0)
@@ -816,12 +816,12 @@ sb_init (void)
 }
 
 /**
- * sb_draw - Completely redraw the sidebar
+ * mutt_sb_draw - Completely redraw the sidebar
  *
  * Completely refresh the sidebar region.  First draw the divider; then, for
  * each BUFFY, call make_sidebar_entry; finally blank out any remaining space.
  */
-void sb_draw (void)
+void mutt_sb_draw (void)
 {
   if (!visible())
     return;
@@ -857,7 +857,7 @@ void sb_draw (void)
 }
 
 /**
- * sb_should_refresh - Check if the sidebar is due to be refreshed
+ * mutt_sb_should_refresh - Check if the sidebar is due to be refreshed
  *
  * The "sidebar_refresh_time" config option allows the user to limit the frequency
  * with which the sidebar is refreshed.
@@ -866,7 +866,7 @@ void sb_draw (void)
  *	1  Yes, refresh is due
  *	0  No,  refresh happened recently
  */
-int sb_should_refresh (void)
+int mutt_sb_should_refresh (void)
 {
   if (!option (OPTSIDEBAR))
     return 0;
@@ -880,7 +880,7 @@ int sb_should_refresh (void)
 }
 
 /**
- * sb_change_mailbox - Change the selected mailbox
+ * mutt_sb_change_mailbox - Change the selected mailbox
  * @op: Operation code
  *
  * Change the selected mailbox, e.g. "Next mailbox", "Previous Mailbox
@@ -894,7 +894,7 @@ int sb_should_refresh (void)
  * OP_SIDEBAR_PAGE_DOWN, OP_SIDEBAR_PAGE_UP, OP_SIDEBAR_PREV,
  * OP_SIDEBAR_PREV_NEW.
  */
-void sb_change_mailbox (int op)
+void mutt_sb_change_mailbox (int op)
 {
   BUFFY *b;
   if (!HilBuffy)	/* It'll get reset on the next draw */
@@ -946,17 +946,17 @@ void sb_change_mailbox (int op)
 
   /* We can change folder even if the sidebar is hidden */
   if (option (OPTSIDEBAR))
-    sb_draw();
+    mutt_sb_draw();
 }
 
 /**
- * sb_set_buffystats - Update the BUFFY's message counts from the CONTEXT
+ * mutt_sb_set_buffystats - Update the BUFFY's message counts from the CONTEXT
  * @ctx:  A mailbox CONTEXT
  *
  * Given a mailbox CONTEXT, find a matching mailbox BUFFY and copy the message
  * counts into it.
  */
-void sb_set_buffystats (const CONTEXT *ctx)
+void mutt_sb_set_buffystats (const CONTEXT *ctx)
 {
   /* Even if the sidebar's hidden,
    * we should take note of the new data. */
@@ -978,14 +978,14 @@ void sb_set_buffystats (const CONTEXT *ctx)
 }
 
 /**
- * sb_get_highlight - Get the BUFFY that's highlighted in the sidebar
+ * mutt_sb_get_highlight - Get the BUFFY that's highlighted in the sidebar
  *
  * Get the path of the mailbox that's highlighted in the sidebar.
  *
  * Returns:
  *	Mailbox path
  */
-const char *sb_get_highlight (void)
+const char *mutt_sb_get_highlight (void)
 {
   if (!HilBuffy)
     return NULL;
@@ -994,13 +994,13 @@ const char *sb_get_highlight (void)
 }
 
 /**
- * sb_set_open_buffy - Set the OpnBuffy based on a mailbox path
+ * mutt_sb_set_open_buffy - Set the OpnBuffy based on a mailbox path
  * @path: Mailbox path
  *
  * Search through the list of mailboxes.  If a BUFFY has a matching path, set
  * OpnBuffy to it.
  */
-BUFFY *sb_set_open_buffy (const char *path)
+BUFFY *mutt_sb_set_open_buffy (const char *path)
 {
   /* Even if the sidebar is hidden */
 
@@ -1026,12 +1026,12 @@ BUFFY *sb_set_open_buffy (const char *path)
 }
 
 /**
- * sb_set_update_time - Note the time that the sidebar was updated
+ * mutt_sb_set_update_time - Note the time that the sidebar was updated
  *
  * Update the timestamp representing the last sidebar update.  If the user
  * configures "sidebar_refresh_time", this will help to reduce traffic.
  */
-void sb_set_update_time (void)
+void mutt_sb_set_update_time (void)
 {
   /* XXX - should this be public? */
 
@@ -1039,7 +1039,7 @@ void sb_set_update_time (void)
 }
 
 /**
- * sb_notify_mailbox - The state of a BUFFY is about to change
+ * mutt_sb_notify_mailbox - The state of a BUFFY is about to change
  *
  * We receive a notification:
  *	After a new BUFFY has been created
@@ -1047,7 +1047,7 @@ void sb_set_update_time (void)
  *
  * Before a deletion, check that our pointers won't be invalidated.
  */
-void sb_notify_mailbox (BUFFY *b, int created)
+void mutt_sb_notify_mailbox (BUFFY *b, int created)
 {
   if (!b)
     return;

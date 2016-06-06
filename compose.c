@@ -252,7 +252,7 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
 static void draw_envelope (HEADER *msg, char *fcc)
 {
 #ifdef USE_SIDEBAR
-  sb_draw();
+  mutt_sb_draw();
 #endif
   draw_envelope_addr (HDR_FROM, msg->env->from);
   draw_envelope_addr (HDR_TO, msg->env->to);
