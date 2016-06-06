@@ -306,13 +306,15 @@ void mh_buffy(BUFFY *b)
 void
 mh_buffy_update (BUFFY *mailbox)
 {
+  int i;
+  struct mh_sequences mhs;
+
   if (!mailbox)
     return;
 
   if (!option (OPTSIDEBAR))
     return;
 
-  struct mh_sequences mhs;
   memset (&mhs, 0, sizeof (mhs));
 
   if (mh_read_sequences (&mhs, mailbox->path) < 0)
@@ -322,15 +324,13 @@ mh_buffy_update (BUFFY *mailbox)
   mailbox->msg_unread  = 0;
   mailbox->msg_flagged = 0;
 
-  int i;
-  for (i = 0; i <= mhs.max; i++) {
+  for (i = 0; i <= mhs.max; i++)
+  {
     mailbox->msg_count++;
-  }
-  if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN) {
-    mailbox->msg_unread++;
-  }
-  if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED) {
-    mailbox->msg_flagged++;
+    if (mhs_check (&mhs, i) & MH_SEQ_UNSEEN)
+      mailbox->msg_unread++;
+    if (mhs_check (&mhs, i) & MH_SEQ_FLAGGED)
+      mailbox->msg_flagged++;
   }
   mhs_free_sequences (&mhs);
   mailbox->sb_last_checked = time (NULL);

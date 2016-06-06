@@ -267,10 +267,7 @@ static void make_sidebar_entry (char *buf, unsigned int buflen, int width, char 
     return;
 
   sbe.buffy = b;
-  strncpy (sbe.box, box, sizeof (sbe.box) - 1);
-
-  int box_len = strlen (box);
-  sbe.box[box_len] = '\0';
+  strfcpy (sbe.box, box, sizeof (sbe.box));
 
   /* Temporarily lie about the screen width */
   int oc = COLS;
@@ -484,8 +481,6 @@ static int prepare_sidebar (int page_size)
     count++;
 
   BUFFY **arr = safe_malloc (count * sizeof (*arr));
-  if (!arr)
-    return 0;
 
   int i = 0;
   for (b = Incoming; b; b = b->next, i++)
@@ -536,7 +531,7 @@ static int prepare_sidebar (int page_size)
   Outgoing = arr[count - 1];
 
   PreviousSort = SidebarSortMethod;
-  free (arr);
+  FREE (&arr);
   return 1;
 }
 
@@ -641,10 +636,10 @@ static int draw_divider (int first_row, int num_rows)
 }
 
 /**
- * fill_empty_space - Wipe the remaining sidebar space
+ * fill_empty_space - Wipe the remaining Sidebar space
  * @first_row:  Screen line to start (0-based)
  * @num_rows:   Number of rows to fill
- * @width:      Width of the sidebar (minus the divider)
+ * @width:      Width of the Sidebar (minus the divider)
  *
  * Write spaces over the area the sidebar isn't using.
  */
@@ -786,7 +781,7 @@ static void draw_sidebar (int first_row, int num_rows, int div_width)
     make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
     printw ("%s", str);
     if (sidebar_folder_depth > 0)
-      free (sidebar_folder_name);
+      FREE (&sidebar_folder_name);
     row++;
   }
 
@@ -1075,15 +1070,16 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
   }
   else
   {
+    BUFFY *replacement = buffy_going (b);
     if (TopBuffy == b)
-      TopBuffy = buffy_going (TopBuffy);
+      TopBuffy = replacement;
     if (OpnBuffy == b)
-      OpnBuffy = buffy_going (OpnBuffy);
+      OpnBuffy = NULL;
     if (HilBuffy == b)
-      HilBuffy = buffy_going (HilBuffy);
+      HilBuffy = replacement;
     if (BotBuffy == b)
-      BotBuffy = buffy_going (BotBuffy);
+      BotBuffy = replacement;
     if (Outgoing == b)
-      Outgoing = buffy_going (Outgoing);
+      Outgoing = replacement;
   }
 }

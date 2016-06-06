@@ -10338,7 +10338,7 @@ The following are the commands understood by Mutt:
 
 <listitem>
 <cmdsynopsis>
-<command>sidebar_whitelist</command>
+<command><link linkend="sidebar-whitelist">sidebar_whitelist</link></command>
 <arg choice="plain">
 <replaceable class="parameter">item</replaceable>
 </arg>

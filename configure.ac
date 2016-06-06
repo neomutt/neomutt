@@ -177,12 +177,11 @@ fi
 
 AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
 [       if test x$enableval = xyes ; then
-		AC_DEFINE(USE_SIDEBAR,1,[ Define if you want support for the sidebar. ])
+		AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
 		OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
-		need_sidebar="yes"
+                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
         fi
 ])
-AM_CONDITIONAL(BUILD_SIDEBAR, test x$need_sidebar = xyes)
 
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
