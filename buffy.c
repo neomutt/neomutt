@@ -409,41 +409,44 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
 static void
 buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
 {
-	char path[_POSIX_PATH_MAX] = "";
-	DIR *dirp = NULL;
-	struct dirent *de = NULL;
-	char *p = NULL;
-	int read;
+  char path[_POSIX_PATH_MAX] = "";
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
+  char *p = NULL;
+  int read;
 
-	snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
+  snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
 
-	dirp = opendir (path);
-	if (!dirp) {
-		mailbox->magic = 0;
-		return;
-	}
+  dirp = opendir (path);
+  if (!dirp)
+  {
+    mailbox->magic = 0;
+    return;
+  }
 
-	while ((de = readdir (dirp)) != NULL) {
-		if (*de->d_name == '.')
-			continue;
+  while ((de = readdir (dirp)) != NULL)
+  {
+    if (*de->d_name == '.')
+      continue;
 
-		/* Matches maildir_parse_flags logic */
-		read = 0;
-		mailbox->msg_count++;
-		p = strstr (de->d_name, ":2,");
-		if (p) {
-			p += 3;
-			if (strchr (p, 'S'))
-				read = 1;
-			if (strchr (p, 'F'))
-				mailbox->msg_flagged++;
-		}
-		if (!read) {
-			mailbox->msg_unread++;
-		}
-	}
+    /* Matches maildir_parse_flags logic */
+    read = 0;
+    mailbox->msg_count++;
+    p = strstr (de->d_name, ":2,");
+    if (p)
+    {
+      p += 3;
+      if (strchr (p, 'S'))
+        read = 1;
+      if (strchr (p, 'F'))
+        mailbox->msg_flagged++;
+    }
+    if (!read) {
+      mailbox->msg_unread++;
+    }
+  }
 
-	closedir (dirp);
+  closedir (dirp);
 }
 
 /**
@@ -525,24 +528,25 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
 void
 buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 {
-	CONTEXT *ctx = NULL;
+  CONTEXT *ctx = NULL;
 
-	if (!option (OPTSIDEBAR))
-		return;
-	if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
-		return; /* no check necessary */
+  if (!option (OPTSIDEBAR))
+    return;
+  if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
+    return; /* no check necessary */
 
-	ctx = mx_open_mailbox (mailbox->path, M_READONLY | M_QUIET | M_NOSORT | M_PEEK, NULL);
-	if (ctx) {
-		mailbox->msg_count       = ctx->msgcount;
-		mailbox->msg_unread      = ctx->unread;
-		mailbox->msg_flagged     = ctx->flagged;
-		mailbox->sb_last_checked = time (NULL);
-		mx_close_mailbox (ctx, 0);
-	}
+  ctx = mx_open_mailbox (mailbox->path, M_READONLY | M_QUIET | M_NOSORT | M_PEEK, NULL);
+  if (ctx)
+  {
+    mailbox->msg_count       = ctx->msgcount;
+    mailbox->msg_unread      = ctx->unread;
+    mailbox->msg_flagged     = ctx->flagged;
+    mailbox->sb_last_checked = time (NULL);
+    mx_close_mailbox (ctx, 0);
+  }
 
-	/* make sure the updates are actually put on screen */
-	sb_draw();
+  /* make sure the updates are actually put on screen */
+  sb_draw();
 }
 #endif
 
