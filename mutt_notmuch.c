@@ -45,6 +45,18 @@
 #include "mutt_notmuch.h"
 #include "mutt_curses.h"
 
+#ifdef LIBNOTMUCH_CHECK_VERSION
+#undef LIBNOTMUCH_CHECK_VERSION
+#endif
+
+/* The definition in <notmuch.h> is broken */
+#define LIBNOTMUCH_CHECK_VERSION(major, minor, micro)                               \
+    (LIBNOTMUCH_MAJOR_VERSION > (major) ||                                          \
+     (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION > (minor)) || \
+     (LIBNOTMUCH_MAJOR_VERSION == (major) && LIBNOTMUCH_MINOR_VERSION == (minor) && \
+      LIBNOTMUCH_MICRO_VERSION >= (micro)))
+
+
 /* read whole-thread or matching messages only? */
 enum {
 	NM_QUERY_TYPE_MESGS = 1,	/* default */
@@ -929,11 +941,18 @@ static void nm_progress_update(CONTEXT *ctx, notmuch_query_t *q)
 		return;
 
 	if (!data->progress_ready && q) {
+		unsigned count;
 		static char msg[STRING];
 		snprintf(msg, sizeof(msg), _("Reading messages..."));
 
+#if LIBNOTMUCH_CHECK_VERSION(4,3,0)
+		if (notmuch_query_count_messages_st (q, &count) != NOTMUCH_STATUS_SUCCESS)
+			count = 0;	/* may not be defined on error */
+#else
+		count = notmuch_query_count_messages(q);
+#endif
 		mutt_progress_init(&data->progress, msg, M_PROGRESS_MSG,
-			ReadInc, notmuch_query_count_messages(q));
+			ReadInc, count);
 		data->progress_ready = 1;
 	}
 
@@ -1082,8 +1101,14 @@ static void read_mesgs_query(CONTEXT *ctx, notmuch_query_t *q, int dedup)
 
 	limit = get_limit(data);
 
-	for (msgs = notmuch_query_search_messages(q);
-	     notmuch_messages_valid(msgs) &&
+#if LIBNOTMUCH_CHECK_VERSION(4,3,0)
+	if (notmuch_query_search_messages_st (q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+		return;
+#else
+	msgs = notmuch_query_search_messages(q);
+#endif
+
+	for (; notmuch_messages_valid(msgs) &&
 		(limit == 0 || ctx->msgcount < limit);
 	     notmuch_messages_move_to_next(msgs)) {
 
@@ -1101,8 +1126,14 @@ static void read_threads_query(CONTEXT *ctx, notmuch_query_t *q, int dedup, int 
 	if (!data)
 		return;
 
-	for (threads = notmuch_query_search_threads(q);
-	     notmuch_threads_valid(threads) &&
+#if LIBNOTMUCH_CHECK_VERSION(4,3,0)
+	if (notmuch_query_search_threads_st (q, &threads) != NOTMUCH_STATUS_SUCCESS)
+		return;
+#else
+	threads = notmuch_query_search_threads(q);
+#endif
+
+	for (; notmuch_threads_valid(threads) &&
 		(limit == 0 || ctx->msgcount < limit);
 	     notmuch_threads_move_to_next(threads)) {
 
@@ -1605,7 +1636,12 @@ static unsigned count_query(notmuch_database_t *db, const char *qstr)
 
 	if (q) {
 		apply_exclude_tags(q);
+#if LIBNOTMUCH_CHECK_VERSION(4,3,0)
+		if (notmuch_query_count_messages_st (q, &res) != NOTMUCH_STATUS_SUCCESS)
+			res = 0;	/* may not be defined on error */
+#else
 		res = notmuch_query_count_messages(q);
+#endif
 		notmuch_query_destroy(q);
 		dprint(1, (debugfile, "nm: count '%s', result=%d\n", qstr, res));
 	}
@@ -1779,7 +1815,14 @@ int nm_check_database(CONTEXT *ctx, int *index_hint)
 
 	limit = get_limit(data);
 
-	for (i = 0, msgs = notmuch_query_search_messages(q);
+#if LIBNOTMUCH_CHECK_VERSION(4,3,0)
+	if (notmuch_query_search_messages_st (q, &msgs) != NOTMUCH_STATUS_SUCCESS)
+		goto done;
+#else
+	msgs = notmuch_query_search_messages(q);
+#endif
+
+	for (i = 0;
 	     notmuch_messages_valid(msgs) && (limit == 0 || i < limit);
 	     notmuch_messages_move_to_next(msgs), i++) {
 
