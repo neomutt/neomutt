@@ -50,7 +50,7 @@ DEFS=-DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
 
 AM_CPPFLAGS=-I. -I$(top_srcdir) $(IMAP_INCLUDES) $(GPGME_CFLAGS) -Iintl
 
-EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
+EXTRA_mutt_SOURCES = account.c bcache.c compress.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	crypt-mod-pgp-gpgme.c crypt-mod-smime-classic.c \
 	crypt-mod-smime-gpgme.c dotlock.c gnupgparse.c hcache.c md5.c \
 	mutt_idna.c mutt_sasl.c mutt_socket.c mutt_ssl.c mutt_ssl_gnutls.c \
@@ -61,7 +61,7 @@ EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	configure account.h \
-	attach.h buffy.h charset.h copy.h crypthash.h dotlock.h functions.h gen_defs \
+	attach.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h mutt_crypt.h \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
 	mutt_regex.h mutt_sasl.h mutt_socket.h mutt_ssl.h mutt_tunnel.h \
@@ -76,11 +76,6 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	txt2c.c txt2c.sh version.sh check_sec.sh
 
 EXTRA_SCRIPTS = smime_keys
-
-if BUILD_COMPRESS
-mutt_SOURCES += compress.c compress.h
-endif
-
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
 mutt_dotlock_LDADD = $(LIBOBJS)
