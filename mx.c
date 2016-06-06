@@ -740,10 +740,6 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
-#ifdef USE_SIDEBAR
-  ctx->msgcount -= ctx->deleted;
-  mutt_sb_set_buffystats (ctx);
-#endif
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);
   FREE (&ctx->path);
@@ -1011,6 +1007,11 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
       !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
     mx_unlink_empty (ctx->path);
+
+#ifdef USE_SIDEBAR
+  ctx->msgcount -= ctx->deleted;
+  mutt_sb_set_buffystats (ctx);
+#endif
 
   mx_fastclose_mailbox (ctx);
 
