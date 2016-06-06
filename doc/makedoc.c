@@ -499,6 +499,9 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     case DT_SORT:
     {
       /* heuristic! */
+      if (strncmp (s, "SORT_", 5))
+        fprintf (stderr,
+                 "WARNING: expected prefix of SORT_ for type DT_SORT instead of %s\n", s);
       strncpy (t, s + 5, l);
       for (; *t; t++) *t = tolower ((unsigned char) *t);
       break;
@@ -506,6 +509,9 @@ static void pretty_default (char *t, size_t l, const char *s, int type)
     case DT_MAGIC:
     {
       /* heuristic! */
+      if (strncmp (s, "MUTT_", 5))
+        fprintf (stderr,
+                 "WARNING: expected prefix of MUTT_ for type DT_MAGIC instead of %s\n", s);
       strncpy (t, s + 5, l);
       for (; *t; t++) *t = tolower ((unsigned char) *t);
       break;
