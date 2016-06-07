@@ -140,7 +140,7 @@ int mutt_display_message (HEADER *cur)
     hfi.ctx = Context;
     hfi.pager_progress = ExtPagerProgress;
     hfi.hdr = cur;
-    mutt_make_string_info (buf, sizeof (buf), NONULL(PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
+    mutt_make_string_info (buf, sizeof (buf), MuttIndexWindow->cols, NONULL(PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
     fputs (buf, fpout);
     fputs ("\n\n", fpout);
   }

@@ -1747,6 +1747,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	  index->max = Context->vcount;
 	  index->current = extra->hdr->virtual;
           index->indexwin = index_window;
+          index->statuswin = index_status_window;
 	}
 
 	NORMAL_COLOR;
@@ -1854,7 +1855,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	size_t l1 = pager_status_window->cols * MB_LEN_MAX;
 	size_t l2 = sizeof (buffer);
 	hfi.hdr = (IsHeader (extra)) ? extra->hdr : extra->bdy->hdr;
-	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
+	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, pager_status_window->cols, NONULL (PagerFmt), &hfi, MUTT_FORMAT_MAKEPRINT);
 	mutt_paddstr (pager_status_window->cols, buffer);
       }
       else
