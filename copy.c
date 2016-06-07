@@ -289,7 +289,7 @@ mutt_copy_hdr (FILE *in, FILE *out, LOFF_T off_start, LOFF_T off_end, int flags,
       {
 	if (mutt_write_one_header (out, 0, headers[x], 
 				   flags & CH_PREFIX ? prefix : 0,
-                                   mutt_term_width (Wrap) - SidebarWidth, flags) == -1)
+                                   mutt_term_width (Wrap), flags) == -1)
 	{
 	  error = TRUE;
 	  break;

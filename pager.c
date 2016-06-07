@@ -1099,9 +1099,6 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
   int wrap_cols = mutt_term_width ((flags & M_PAGER_NOWRAP) ? 0 : Wrap);
-#ifdef USE_SIDEBAR
-  wrap_cols -= SidebarWidth;
-#endif
 
   if (check_attachment_marker ((char *)buf) == 0)
     wrap_cols = COLS;

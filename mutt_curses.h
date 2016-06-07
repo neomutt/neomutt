@@ -174,12 +174,16 @@ void mutt_progress_update (progress_t* progress, long pos, int percent);
 
 static inline int mutt_term_width(short wrap)
 {
+  int cols = COLS;
+#ifdef USE_SIDEBAR
+  cols -= SidebarWidth;
+#endif
   if (wrap < 0)
-    return COLS > -wrap ? COLS + wrap : COLS;
+    return cols > -wrap ? cols + wrap : cols;
   else if (wrap)
-    return wrap < COLS ? wrap : COLS;
+    return wrap < cols ? wrap : cols;
   else
-    return COLS;
+    return cols;
 }
 
 extern int *ColorQuote;
