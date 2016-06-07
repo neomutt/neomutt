@@ -295,7 +295,6 @@ void mh_buffy(BUFFY *b)
   mhs_free_sequences (&mhs);
 }
 
-#ifdef USE_SIDEBAR
 /**
  * mh_buffy_update - Update messages counts for an mh mailbox
  * @mailbox: BUFFY representing a maildir mailbox
@@ -310,9 +309,6 @@ mh_buffy_update (BUFFY *mailbox)
   struct mh_sequences mhs;
 
   if (!mailbox)
-    return;
-
-  if (!option (OPTSIDEBAR))
     return;
 
   memset (&mhs, 0, sizeof (mhs));
@@ -333,9 +329,7 @@ mh_buffy_update (BUFFY *mailbox)
       mailbox->msg_flagged++;
   }
   mhs_free_sequences (&mhs);
-  mailbox->sb_last_checked = time (NULL);
 }
-#endif
 
 static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
 {

@@ -8817,11 +8817,6 @@ please have a look at the mixmaster documentation.
 	    <entry><literal>no</literal></entry>
 	  </row>
 	  <row>
-	    <entry><literal>sidebar_refresh_time</literal></entry>
-	    <entry>number</entry>
-	    <entry><literal>60</literal></entry>
-	  </row>
-	  <row>
 	    <entry><literal>sidebar_short_path</literal></entry>
 	    <entry>boolean</entry>
 	    <entry><literal>no</literal></entry>

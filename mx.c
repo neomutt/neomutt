@@ -606,10 +606,8 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     ctx->quiet = 1;
   if (flags & M_READONLY)
     ctx->readonly = 1;
-#ifdef USE_SIDEBAR
   if (flags & M_PEEK)
     ctx->peekonly = 1;
-#endif
 
   if (flags & (M_APPEND|M_NEWFOLDER))
   {
@@ -709,26 +707,22 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 void mx_fastclose_mailbox (CONTEXT *ctx)
 {
   int i;
+  struct utimbuf ut;
 
   if(!ctx) 
     return;
 
-#ifdef USE_SIDEBAR
   /* fix up the times so buffy won't get confused */
-  struct utimbuf ut;
   if (ctx->peekonly && ctx->path && (ctx->mtime > ctx->atime)) {
     ut.actime  = ctx->atime;
     ut.modtime = ctx->mtime;
     utime (ctx->path, &ut);
   }
-#endif
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
-#ifdef USE_SIDEBAR
   if (!ctx->peekonly)
-#endif
-  mutt_buffy_setnotified(ctx->path);
+    mutt_buffy_setnotified(ctx->path);
 
   if (ctx->mx_close)
     ctx->mx_close (ctx);

@@ -222,7 +222,6 @@ WHERE short ScoreThresholdFlag;
 
 WHERE short SidebarWidth INITVAL(0);
 #ifdef USE_SIDEBAR
-WHERE short SidebarRefreshTime;
 WHERE LIST *SidebarWhitelist INITVAL(0);
 WHERE int SidebarNeedsRedraw INITVAL (0);
 #endif
