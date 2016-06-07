@@ -900,6 +900,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   IMAP_STATUS *status;
   unsigned int olduv, oldun;
   long litlen;
+  short new = 0;
 
   mailbox = imap_next_word (s);
 
@@ -1000,29 +1001,31 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 	  if (olduv && olduv == status->uidvalidity)
 	  {
 	    if (oldun < status->uidnext)
-	      inc->new = status->unseen;
+	      new = (status->unseen > 0);
 	  }
 	  else if (!olduv && !oldun)
 	    /* first check per session, use recent. might need a flag for this. */
-	    inc->new = status->recent;
+	    new = (status->recent > 0);
 	  else
-	    inc->new = status->unseen;
+	    new = (status->unseen > 0);
 	}
 	else
-          inc->new = status->unseen;
+          new = (status->unseen > 0);
+
+#ifdef USE_SIDEBAR
+        if ((inc->new != new) ||
+            (inc->msg_count != status->messages) ||
+            (inc->msg_unread != status->unseen))
+          SidebarNeedsRedraw = 1;
+#endif
+        inc->new = new;
+        inc->msg_count  = status->messages;
+        inc->msg_unread = status->unseen;
 
 	if (inc->new)
 	  /* force back to keep detecting new mail until the mailbox is
 	     opened */
 	  status->uidnext = oldun;
-
-#ifdef USE_SIDEBAR
-	/* Make the sidebar show the correct numbers */
-	if (status->messages) {
-	  inc->msg_count  = status->messages;
-	  inc->msg_unread = status->unseen;
-	}
-#endif
 
         FREE (&value);
         return;

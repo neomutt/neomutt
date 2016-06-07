@@ -1503,7 +1503,7 @@ static int imap_get_mailbox (const char* path, IMAP_DATA** hidata, char* buf, si
 /* check for new mail in any subscribed mailboxes. Given a list of mailboxes
  * rather than called once for each so that it can batch the commands and
  * save on round trips. Returns number of mailboxes with new mail. */
-int imap_buffy_check (int force)
+int imap_buffy_check (int force, int check_stats)
 {
   IMAP_DATA* idata;
   IMAP_DATA* lastdata = NULL;
@@ -1524,8 +1524,6 @@ int imap_buffy_check (int force)
 
     if (mailbox->magic != MUTT_IMAP)
       continue;
-
-    mailbox->new = 0;
 
     if (imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)) < 0)
       continue;
@@ -1558,12 +1556,12 @@ int imap_buffy_check (int force)
       lastdata = idata;
 
     imap_munge_mbox_name (idata, munged, sizeof (munged), name);
-    snprintf (command, sizeof (command),
-#ifdef USE_SIDEBAR
+    if (check_stats)
+      snprintf (command, sizeof (command),
 	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT MESSAGES)", munged);
-#else
+    else
+      snprintf (command, sizeof (command),
 	      "STATUS %s (UIDNEXT UIDVALIDITY UNSEEN RECENT)", munged);
-#endif
 
     if (imap_exec (idata, command, IMAP_CMD_QUEUE) < 0)
     {

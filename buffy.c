@@ -45,6 +45,7 @@
 #include <stdio.h>
 
 static time_t BuffyTime = 0;	/* last time we started checking for mail */
+static time_t BuffyStatsTime = 0; /* last time we check performed mail_check_stats */
 time_t BuffyDoneTime = 0;	/* last time we knew for sure how much mail there was. */
 static short BuffyCount = 0;	/* how many boxes with new mail */
 static short BuffyNotify = 0;	/* # of unnotified new boxes */
@@ -388,7 +389,6 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
   return 0;
 }
 
-#ifdef USE_SIDEBAR
 /**
  * buffy_maildir_update_dir - Update counts for one directory
  * @mailbox: BUFFY representing a maildir mailbox
@@ -451,9 +451,6 @@ buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
 void
 buffy_maildir_update (BUFFY *mailbox)
 {
-	if (!option (OPTSIDEBAR))
-		return;
-
 	mailbox->msg_count   = 0;
 	mailbox->msg_unread  = 0;
 	mailbox->msg_flagged = 0;
@@ -463,11 +460,7 @@ buffy_maildir_update (BUFFY *mailbox)
 		mailbox->new = 1;
 	}
 	buffy_maildir_update_dir (mailbox, "cur");
-
-	mailbox->sb_last_checked = time (NULL);
 }
-
-#endif
 
 /* returns 1 if mailbox has new mail */ 
 static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
@@ -500,7 +493,6 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
   return rc;
 }
 
-#ifdef USE_SIDEBAR
 /**
  * buffy_mbox_update - Update messages counts for an mbox mailbox
  * @mailbox: BUFFY representing an mbox mailbox
@@ -515,9 +507,7 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 {
   CONTEXT *ctx = NULL;
 
-  if (!option (OPTSIDEBAR))
-    return;
-  if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
+  if ((mailbox->stats_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
     return; /* no check necessary */
 
   ctx = mx_open_mailbox (mailbox->path, MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK, NULL);
@@ -526,11 +516,10 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
     mailbox->msg_count       = ctx->msgcount;
     mailbox->msg_unread      = ctx->unread;
     mailbox->msg_flagged     = ctx->flagged;
-    mailbox->sb_last_checked = time (NULL);
+    mailbox->stats_last_checked = time (NULL);
     mx_close_mailbox (ctx, 0);
   }
 }
-#endif
 
 int mutt_buffy_check (int force)
 {
@@ -538,6 +527,11 @@ int mutt_buffy_check (int force)
   struct stat sb;
   struct stat contex_sb;
   time_t t;
+  int check_stats = 0;
+#ifdef USE_SIDEBAR
+  short orig_new;
+  int orig_count, orig_unread, orig_flagged;
+#endif
 
   sb.st_size=0;
   contex_sb.st_dev=0;
@@ -555,13 +549,20 @@ int mutt_buffy_check (int force)
   t = time (NULL);
   if (!force && (t - BuffyTime < BuffyTimeout))
     return BuffyCount;
- 
+
+  if (option (OPTMAILCHECKSTATS) &&
+      (t - BuffyStatsTime >= BuffyCheckStatsInterval))
+  {
+    check_stats = 1;
+    BuffyStatsTime = t;
+  }
+
   BuffyTime = t;
   BuffyCount = 0;
   BuffyNotify = 0;
 
 #ifdef USE_IMAP
-  BuffyCount += imap_buffy_check (force);
+  BuffyCount += imap_buffy_check (force, check_stats);
 #endif
 
   /* check device ID and serial number instead of comparing paths */
@@ -572,9 +573,6 @@ int mutt_buffy_check (int force)
     contex_sb.st_ino=0;
   }
   
-#ifdef USE_SIDEBAR
-  int should_refresh = mutt_sb_should_refresh();
-#endif
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
     if (tmp->magic != MUTT_IMAP)
@@ -597,6 +595,13 @@ int mutt_buffy_check (int force)
       }
     }
 
+#ifdef USE_SIDEBAR
+    orig_new = tmp->new;
+    orig_count = tmp->msg_count;
+    orig_unread = tmp->msg_unread;
+    orig_flagged = tmp->msg_flagged;
+#endif
+
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
@@ -608,28 +613,22 @@ int mutt_buffy_check (int force)
       {
       case MUTT_MBOX:
       case MUTT_MMDF:
-#ifdef USE_SIDEBAR
-	if (should_refresh)
+	if (check_stats)
 	  buffy_mbox_update (tmp, &sb);
-#endif
 	if (buffy_mbox_hasnew (tmp, &sb) > 0)
 	  BuffyCount++;
 	break;
 
       case MUTT_MAILDIR:
-#ifdef USE_SIDEBAR
-	if (should_refresh)
+	if (check_stats)
 	  buffy_maildir_update (tmp);
-#endif
 	if (buffy_maildir_hasnew (tmp) > 0)
 	  BuffyCount++;
 	break;
 
       case MUTT_MH:
-#ifdef USE_SIDEBAR
-	if (should_refresh)
+	if (check_stats)
 	  mh_buffy_update (tmp);
-#endif
 	mh_buffy(tmp);
 	if (tmp->new)
 	  BuffyCount++;
@@ -639,18 +638,19 @@ int mutt_buffy_check (int force)
     else if (option(OPTCHECKMBOXSIZE) && Context && Context->path)
       tmp->size = (off_t) sb.st_size;	/* update the size of current folder */
 
+#ifdef USE_SIDEBAR
+    if ((orig_new != tmp->new) ||
+        (orig_count != tmp->msg_count) ||
+        (orig_unread != tmp->msg_unread) ||
+        (orig_flagged != tmp->msg_flagged))
+      SidebarNeedsRedraw = 1;
+#endif
+
     if (!tmp->new)
       tmp->notified = 0;
     else if (!tmp->notified)
       BuffyNotify++;
   }
-#ifdef USE_SIDEBAR
-  if (should_refresh)
-  {
-    SidebarNeedsRedraw = 1;
-    mutt_sb_set_update_time();
-  }
-#endif
 
   BuffyDoneTime = BuffyTime;
   return (BuffyCount);

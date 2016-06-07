@@ -53,9 +53,7 @@ int mbox_check_empty (const char *);
 void mbox_reset_atime (CONTEXT *, struct stat *);
 
 int mh_sync_mailbox (CONTEXT *, int *);
-#ifdef USE_SIDEBAR
 void mh_buffy_update (BUFFY *mailbox);
-#endif
 int mh_check_empty (const char *);
 
 int maildir_check_empty (const char *);

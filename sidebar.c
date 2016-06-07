@@ -30,7 +30,6 @@
 
 /* Previous values for some sidebar config */
 static short  PreviousSort;	/* sidebar_sort_method */
-static time_t LastRefresh;	/* Time of last refresh */
 
 /* Keep track of various BUFFYs */
 static BUFFY *TopBuffy;		/* First mailbox visible in sidebar */
@@ -759,29 +758,6 @@ void mutt_sb_draw (void)
 }
 
 /**
- * mutt_sb_should_refresh - Check if the sidebar is due to be refreshed
- *
- * The "sidebar_refresh_time" config option allows the user to limit the frequency
- * with which the sidebar is refreshed.
- *
- * Returns:
- *	1  Yes, refresh is due
- *	0  No,  refresh happened recently
- */
-int mutt_sb_should_refresh (void)
-{
-  if (!option (OPTSIDEBAR))
-    return 0;
-
-  if (SidebarRefreshTime == 0)
-    return 0;
-
-  time_t diff = (time (NULL) - LastRefresh);
-
-  return (diff >= SidebarRefreshTime);
-}
-
-/**
  * mutt_sb_change_mailbox - Change the selected mailbox
  * @op: Operation code
  *
@@ -928,19 +904,6 @@ BUFFY *mutt_sb_set_open_buffy (const char *path)
   }
 
   return OpnBuffy;
-}
-
-/**
- * mutt_sb_set_update_time - Note the time that the sidebar was updated
- *
- * Update the timestamp representing the last sidebar update.  If the user
- * configures "sidebar_refresh_time", this will help to reduce traffic.
- */
-void mutt_sb_set_update_time (void)
-{
-  /* XXX - should this be public? */
-
-  LastRefresh = time (NULL);
 }
 
 /**

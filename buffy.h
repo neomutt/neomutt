@@ -35,24 +35,26 @@ typedef struct buffy_t
   struct buffy_t *prev;
 #endif
   short new;			/* mailbox has new mail */
-#ifdef USE_SIDEBAR
+
+  /* These next three are only set when OPTMAILCHECKSTATS is set */
   int msg_count;		/* total number of messages */
   int msg_unread;		/* number of unread messages */
   int msg_flagged;		/* number of flagged messages */
+
+#ifdef USE_SIDEBAR
   short is_hidden;		/* is hidden from the sidebar */
 #endif
   short notified;		/* user has been notified */
   short magic;			/* mailbox type */
   short newly_created;		/* mbox or mmdf just popped into existence */
   time_t last_visited;		/* time of last exit from this mailbox */
-#ifdef USE_SIDEBAR
-  time_t sb_last_checked;	/* time of last buffy check from sidebar */
-#endif
+  time_t stats_last_checked;	/* time of last mail_check_stats calculation */
 }
 BUFFY;
 
 WHERE BUFFY *Incoming INITVAL (0);
 WHERE short BuffyTimeout INITVAL (3);
+WHERE short BuffyCheckStatsInterval INITVAL (60);
 
 extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
 
