@@ -1829,7 +1829,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Your login name on the NNTP server.  If \fIunset\fP and NNTP server requires
-  ** authentification, Mutt will prompt you for your account name when you
+  ** authentication, Mutt will prompt you for your account name when you
   ** connect to news server.
   */
   { "nntp_pass",	DT_STR, R_NONE, UL &NntpPass, UL "" },
