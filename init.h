@@ -2699,7 +2699,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
   */
-  { "sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S" },
+  { "sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%*  %n" },
   /*
   ** .pp
   ** This variable allows you to customize the sidebar display. This string is
@@ -2725,6 +2725,8 @@ struct option_t MuttVars[] = {
   ** .pp
   ** * = Can be optionally printed if nonzero
   ** @ = Only applicable to the current folder
+  ** .pp
+  ** A useful value for this is "%B%?F? [%F]?%* %?N?%N/?%S".
   */
   { "sidebar_indent_string", DT_STR, R_BOTH, UL &SidebarIndentString, UL "  " },
   /*
