@@ -8147,7 +8147,7 @@ please have a look at the mixmaster documentation.
 	  <row>
 	    <entry><literal>sidebar_format</literal></entry>
 	    <entry>string</entry>
-	    <entry><literal>%B%?F? [%F]?%* %?N?%N/?%S</literal></entry>
+	    <entry><literal>%B%*  %n</literal></entry>
 	  </row>
 	  <row>
 	    <entry><literal>sidebar_indent_string</literal></entry>
