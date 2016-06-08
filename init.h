@@ -2710,6 +2710,7 @@ struct option_t MuttVars[] = {
   ** .dt %B  .dd Name of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
   ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %n  .dd N if mailbox has new mail, blank otherwise
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
   ** .dt %!  .dd ``!'' : one flagged message;
   **             ``!!'' : two flagged messages;

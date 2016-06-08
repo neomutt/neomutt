@@ -125,9 +125,10 @@ static BUFFY *find_prev_new (int wrap)
  * @flags:       Format flags, e.g. MUTT_FORMAT_OPTIONAL
  *
  * cb_format_str is a callback function for mutt_FormatString.  It understands
- * five operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
+ * six operators. '%B' : Mailbox name, '%F' : Number of flagged messages,
  * '%N' : Number of new messages, '%S' : Size (total number of messages),
  * '%!' : Icon denoting number of flagged messages.
+ * '%n' : N if folder has new mail, blank otherwise.
  *
  * Returns: src (unchanged)
  */
@@ -195,6 +196,16 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
         snprintf (dest, destlen, fmt, b->msg_unread);
       }
       else if (b->msg_unread == 0)
+        optional = 0;
+      break;
+
+    case 'n':
+      if (!optional)
+      {
+        snprintf (fmt, sizeof (fmt), "%%%sc", prefix);
+        snprintf (dest, destlen, fmt, b->new ? 'N' : ' ');
+      }
+      else if (b->new == 0)
         optional = 0;
       break;
 
@@ -630,7 +641,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
                (mutt_strcmp (b->path, Spoolfile) == 0))
       SETCOLOR(MT_COLOR_SB_SPOOLFILE);
-    else if (b->msg_unread > 0)
+    else if ((b->msg_unread > 0) || (b->new))
       SETCOLOR(MT_COLOR_NEW);
     else if (b->msg_flagged > 0)
       SETCOLOR(MT_COLOR_FLAGGED);
