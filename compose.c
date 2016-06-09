@@ -110,7 +110,7 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static void redraw_crypt_lines (HEADER *msg)
 {
-  mutt_window_mvaddstr (MuttIndexWindow, HDR_CRYPT, 0, "Security: ");
+  mutt_window_mvprintw (MuttIndexWindow, HDR_CRYPT, 0, TITLE_FMT, "Security: ");
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
   {
@@ -150,11 +150,11 @@ static void redraw_crypt_lines (HEADER *msg)
 
   if ((WithCrypto & APPLICATION_PGP)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
-    printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+    printw (TITLE_FMT "%s", _("sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
 
   if ((WithCrypto & APPLICATION_SMIME)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
-      printw ("%s%s", _(" sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
+      printw (TITLE_FMT "%s", _("sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
 
   if ((WithCrypto & APPLICATION_SMIME)
@@ -175,7 +175,8 @@ static void redraw_mix_line (LIST *chain)
   int c;
   char *t;
 
-  mutt_window_mvaddstr (MuttIndexWindow, HDR_MIX, 0,     "     Mix: ");
+  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+  mutt_window_mvprintw (MuttIndexWindow, HDR_MIX, 0, TITLE_FMT, _("Mix: "));
 
   if (!chain)
   {
