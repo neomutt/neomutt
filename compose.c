@@ -178,7 +178,8 @@ static void redraw_mix_line (LIST *chain)
   int c;
   char *t;
 
-  mvprintw (HDR_MIX, SidebarWidth, TITLE_FMT, "Mix: ");
+  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+  mvprintw (HDR_MIX, SidebarWidth, TITLE_FMT, _("Mix: "));
 
   if (!chain)
   {
