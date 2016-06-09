@@ -2753,7 +2753,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Set sidebar_refresh_time to the minimum number of seconds between refreshes.
-  ** This will reduced network traffic.
+  ** This will reduce network traffic.
   ** .pp
   ** \fBNote:\fP Set to 0 to disable refreshing.
   */
