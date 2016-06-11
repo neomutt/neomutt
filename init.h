@@ -3145,7 +3145,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Lines of quoted text that are displayed before the unquoted text after
-  ** 'skip to quoted' command (S)
+  ** "skip to quoted" command (S)
   */
   { "sleep_time",	DT_NUM, R_NONE, UL &SleepTime, 1 },
   /*
