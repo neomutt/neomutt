@@ -577,7 +577,7 @@ static int prepare_sidebar (int page_size)
  * visible - Should we display the sidebar?
  *
  * After validating the config options "sidebar_visible" and "sidebar_width",
- * determine whether we should should display the sidebar.
+ * determine whether we should display the sidebar.
  *
  * When not visible, set the global SidebarWidth to 0.
  *

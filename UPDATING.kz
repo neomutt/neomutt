@@ -64,5 +64,5 @@
 + nm_unread_tag = <name> to specify unread messages
 + nm_db_limit = <num> to specify notmuch query limit
 + nm_query_type = <threads|messages> to specify what to load from DB
-+ vfolder_format = <string> to specify vfolders brower entry format
++ vfolder_format = <string> to specify vfolders browser entry format
 + %g and %Gx index_format and pager_format formatting sequences
