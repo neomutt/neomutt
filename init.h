@@ -2980,6 +2980,7 @@ struct option_t MuttVars[] = {
   ** .ts
   ** set sidebar_delim_chars='/'
   ** .te
+  ** .pp
   ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
   ** .ts
   ** set sidebar_delim_chars='.'
@@ -3048,7 +3049,7 @@ struct option_t MuttVars[] = {
   /*
   ** .pp
   ** Set sidebar_refresh_time to the minimum number of seconds between refreshes.
-  ** This will reduced network traffic.
+  ** This will reduce network traffic.
   ** .pp
   ** \fBNote:\fP Set to 0 to disable refreshing.
   */

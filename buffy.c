@@ -250,7 +250,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       {
         tmp1=(*tmp)->next;
 #ifdef USE_SIDEBAR
-	sb_notify_mailbox (*tmp, 0);
+	mutt_sb_notify_mailbox (*tmp, 0);
 #endif
         buffy_free (tmp);
         *tmp=tmp1;
@@ -286,7 +286,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
       {
         tmp1=(*tmp)->next;
 #ifdef USE_SIDEBAR
-	sb_notify_mailbox (*tmp, 0);
+	mutt_sb_notify_mailbox (*tmp, 0);
 #endif
         buffy_free (tmp);
         *tmp=tmp1;
@@ -297,7 +297,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     if (!*tmp) {
       *tmp = buffy_new (buf);
 #ifdef USE_SIDEBAR
-      sb_notify_mailbox (*tmp, 1);
+      mutt_sb_notify_mailbox (*tmp, 1);
 #endif
     }
 
@@ -463,41 +463,44 @@ static int buffy_maildir_hasnew (BUFFY* mailbox)
 static void
 buffy_maildir_update_dir (BUFFY *mailbox, const char *dir)
 {
-	char path[_POSIX_PATH_MAX] = "";
-	DIR *dirp = NULL;
-	struct dirent *de = NULL;
-	char *p = NULL;
-	int read;
+  char path[_POSIX_PATH_MAX] = "";
+  DIR *dirp = NULL;
+  struct dirent *de = NULL;
+  char *p = NULL;
+  int read;
 
-	snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
+  snprintf (path, sizeof (path), "%s/%s", mailbox->path, dir);
 
-	dirp = opendir (path);
-	if (!dirp) {
-		mailbox->magic = 0;
-		return;
-	}
+  dirp = opendir (path);
+  if (!dirp)
+  {
+    mailbox->magic = 0;
+    return;
+  }
 
-	while ((de = readdir (dirp)) != NULL) {
-		if (*de->d_name == '.')
-			continue;
+  while ((de = readdir (dirp)) != NULL)
+  {
+    if (*de->d_name == '.')
+      continue;
 
-		/* Matches maildir_parse_flags logic */
-		read = 0;
-		mailbox->msg_count++;
-		p = strstr (de->d_name, ":2,");
-		if (p) {
-			p += 3;
-			if (strchr (p, 'S'))
-				read = 1;
-			if (strchr (p, 'F'))
-				mailbox->msg_flagged++;
-		}
-		if (!read) {
-			mailbox->msg_unread++;
-		}
-	}
+    /* Matches maildir_parse_flags logic */
+    read = 0;
+    mailbox->msg_count++;
+    p = strstr (de->d_name, ":2,");
+    if (p)
+    {
+      p += 3;
+      if (strchr (p, 'S'))
+        read = 1;
+      if (strchr (p, 'F'))
+        mailbox->msg_flagged++;
+    }
+    if (!read) {
+      mailbox->msg_unread++;
+    }
+  }
 
-	closedir (dirp);
+  closedir (dirp);
 }
 
 /**
@@ -526,7 +529,7 @@ buffy_maildir_update (BUFFY *mailbox)
 	mailbox->sb_last_checked = time (NULL);
 
 	/* make sure the updates are actually put on screen */
-	sb_draw();
+	mutt_sb_draw();
 }
 
 #endif
@@ -579,24 +582,25 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
 void
 buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
 {
-	CONTEXT *ctx = NULL;
+  CONTEXT *ctx = NULL;
 
-	if (!option (OPTSIDEBAR))
-		return;
-	if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
-		return; /* no check necessary */
+  if (!option (OPTSIDEBAR))
+    return;
+  if ((mailbox->sb_last_checked > sb->st_mtime) && (mailbox->msg_count != 0))
+    return; /* no check necessary */
 
-	ctx = mx_open_mailbox (mailbox->path, M_READONLY | M_QUIET | M_NOSORT | M_PEEK, NULL);
-	if (ctx) {
-		mailbox->msg_count       = ctx->msgcount;
-		mailbox->msg_unread      = ctx->unread;
-		mailbox->msg_flagged     = ctx->flagged;
-		mailbox->sb_last_checked = time (NULL);
-		mx_close_mailbox (ctx, 0);
-	}
+  ctx = mx_open_mailbox (mailbox->path, M_READONLY | M_QUIET | M_NOSORT | M_PEEK, NULL);
+  if (ctx)
+  {
+    mailbox->msg_count       = ctx->msgcount;
+    mailbox->msg_unread      = ctx->unread;
+    mailbox->msg_flagged     = ctx->flagged;
+    mailbox->sb_last_checked = time (NULL);
+    mx_close_mailbox (ctx, 0);
+  }
 
-	/* make sure the updates are actually put on screen */
-	sb_draw();
+  /* make sure the updates are actually put on screen */
+  mutt_sb_draw();
 }
 #endif
 
@@ -689,7 +693,7 @@ static void buffy_check(BUFFY *tmp, struct stat *contex_sb)
 	  tmp->new = 1;
 	}
 #ifdef USE_SIDEBAR
-	sb_set_update_time();
+	mutt_sb_set_update_time();
 #endif
 	break;
 #endif
@@ -750,16 +754,8 @@ int mutt_buffy_check (int force)
     contex_sb.st_ino=0;
   }
 
-#ifdef USE_SIDEBAR
-  if (sb_should_refresh()) {
-    for (tmp = Incoming; tmp; tmp = tmp->next)
-      buffy_check(tmp, &contex_sb);
-    sb_set_update_time();
-  }
-#else
   for (tmp = Incoming; tmp; tmp = tmp->next)
     buffy_check(tmp, &contex_sb);
-#endif
 
 #ifdef USE_NOTMUCH
   for (tmp = VirtIncoming; tmp; tmp = tmp->next)

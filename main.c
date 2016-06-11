@@ -468,7 +468,7 @@ int main (int argc, char **argv)
     mutt_error = mutt_curses_error;
     mutt_message = mutt_curses_message;
 #ifdef USE_SIDEBAR
-    sb_init();
+    mutt_sb_init();
 #endif
   }
 
@@ -879,7 +879,7 @@ int main (int argc, char **argv)
        || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      sb_set_open_buffy (folder);
+      mutt_sb_set_open_buffy (folder);
 #endif
       Labels = hash_create (131, 0);
       mutt_scan_labels(Context);

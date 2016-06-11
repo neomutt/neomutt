@@ -149,9 +149,6 @@ static void flush_par (STATE *s, flowed_state_t *fst)
 static int quote_width (STATE *s, int ql)
 {
   int width = mutt_term_width (ReflowWrap);
-#ifdef USE_SIDEBAR
-  width -= SidebarWidth;
-#endif
   if (option(OPTTEXTFLOWED) && (s->flags & M_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676

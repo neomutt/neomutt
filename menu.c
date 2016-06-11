@@ -300,7 +300,7 @@ void menu_redraw_index (MUTTMENU *menu)
   int attr;
 
 #ifdef USE_SIDEBAR
-  sb_draw();
+  mutt_sb_draw();
 #endif
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
   {

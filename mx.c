@@ -828,10 +828,6 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
-#ifdef USE_SIDEBAR
-  ctx->msgcount -= ctx->deleted;
-  sb_set_buffystats (ctx);
-#endif
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);
 #ifdef USE_COMPRESSED
@@ -1215,6 +1211,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
 #ifdef USE_COMPRESSED
   if (ctx->compress_info && comp_slow_close (ctx))
     return (-1);
+#endif
+#ifdef USE_SIDEBAR
+  ctx->msgcount -= ctx->deleted;
+  mutt_sb_set_buffystats (ctx);
 #endif
 
   mx_fastclose_mailbox (ctx);

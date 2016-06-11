@@ -61,7 +61,7 @@ EXTRA_mutt_SOURCES = account.c bcache.c crypt-gpgme.c crypt-mod-pgp-classic.c \
 	mutt_tunnel.c pgp.c pgpinvoke.c pgpkey.c pgplib.c pgpmicalg.c \
 	pgppacket.c pop.c pop_auth.c pop_lib.c remailer.c resize.c sha1.c \
 	nntp.c newsrc.c \
-	smime.c smtp.c utf8.c wcwidth.c \
+	sidebar.c smime.c smtp.c utf8.c wcwidth.c \
 	bcache.h browser.h hcache.h mbyte.h mutt_idna.h remailer.h url.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
@@ -77,17 +77,11 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
 	README.SSL smime.h group.h \
 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
-	ChangeLog mkchangelog.sh mutt_idna.h \
+	ChangeLog mkchangelog.sh mutt_idna.h sidebar.h OPS.sidebar \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
 	txt2c.c txt2c.sh version.sh check_sec.sh version.h
 
 EXTRA_SCRIPTS = smime_keys
-
-if BUILD_SIDEBAR
-mutt_SOURCES += sidebar.c sidebar.h
-endif
-
-EXTRA_DIST += OPS.SIDEBAR
 
 if BUILD_NOTMUCH
 mutt_SOURCES += mutt_notmuch.c mutt_notmuch.h
@@ -157,8 +151,8 @@ keymap_defs.h: $(OPS) $(srcdir)/gen_defs
 
 keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.PGP $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME $(srcdir)/gen_defs
 	rm -f $@
-	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.PGP \
-		$(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
+	$(srcdir)/gen_defs $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(srcdir)/OPS.PGP \
+		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> keymap_alldefs.h
 
 reldate.h: $(top_srcdir)/ChangeLog.neomutt

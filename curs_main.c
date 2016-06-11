@@ -612,7 +612,7 @@ static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
 #endif
   mutt_expand_path (buf, bufsz);
 #ifdef USE_SIDEBAR
-  sb_set_open_buffy (buf);
+  mutt_sb_set_open_buffy (buf);
 #endif
   if (mx_get_magic (buf) <= 0)
   {
@@ -839,13 +839,13 @@ int mutt_index_menu (void)
     {
       menu_redraw_full (menu);
 #ifdef USE_SIDEBAR
-      sb_draw();
+      mutt_sb_draw();
 #endif
       mutt_show_error ();
     }
 #ifdef USE_SIDEBAR
     else if (menu->redraw & REDRAW_SIDEBAR) {
-      sb_draw();
+      mutt_sb_draw();
       menu->redraw &= ~REDRAW_SIDEBAR;
     }
 #endif
@@ -881,7 +881,7 @@ int mutt_index_menu (void)
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
 #ifdef USE_SIDEBAR
-	sb_set_buffystats (Context);
+	mutt_sb_set_buffystats (Context);
 #endif
 	mutt_draw_statusline (COLS, buf);
 	NORMAL_COLOR;
@@ -1805,7 +1805,7 @@ int mutt_index_menu (void)
 
 #ifdef USE_SIDEBAR
 	  if (op == OP_SIDEBAR_OPEN) {
-	    const char *path = sb_get_highlight();
+	    const char *path = mutt_sb_get_highlight();
 	    if (!path)
 	      break;
 	    strncpy (buf, path, sizeof (buf));
@@ -1833,6 +1833,10 @@ int mutt_index_menu (void)
 	/* mutt_buffy_check() must be done with mail-reader mode! */
 	menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MAIN,
 	  (Context && (Context->magic == M_NNTP)) ? IndexNewsHelp : IndexHelp);
+#endif
+	mutt_expand_path (buf, sizeof (buf));
+#ifdef USE_SIDEBAR
+	mutt_sb_set_open_buffy (buf);
 #endif
 	break;
 
@@ -2969,7 +2973,7 @@ int mutt_index_menu (void)
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-        sb_change_mailbox (op);
+        mutt_sb_change_mailbox (op);
         break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:
@@ -2978,7 +2982,7 @@ int mutt_index_menu (void)
 	break;
 
       case OP_SIDEBAR_TOGGLE_VIRTUAL:
-	sb_toggle_virtual();
+	mutt_sb_toggle_virtual();
 	break;
 #endif
       default:

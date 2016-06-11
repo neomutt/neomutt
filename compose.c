@@ -220,7 +220,8 @@ static void redraw_mix_line (LIST *chain)
   int c;
   char *t;
 
-  mvprintw (HDR_MIX, SidebarWidth, TITLE_FMT, "Mix: ");
+  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+  mvprintw (HDR_MIX, SidebarWidth, TITLE_FMT, _("Mix: "));
 
   if (!chain)
   {
@@ -294,7 +295,7 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
 static void draw_envelope (HEADER *msg, char *fcc)
 {
 #ifdef USE_SIDEBAR
-  sb_draw();
+  mutt_sb_draw();
 #endif
   draw_envelope_addr (HDR_FROM, msg->env->from);
 #ifdef USE_NNTP
@@ -593,7 +594,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   else
 #endif
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
-  
+
   while (loop)
   {
 #ifdef USE_NNTP
