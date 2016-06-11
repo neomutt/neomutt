@@ -1,3 +1,24 @@
+2016-06-11  Richard Russon  <rich@flatcap.org>
+* Change in behaviour
+  - Temporarily disable $sidebar_refresh_time
+    Unfortunately, this was causing too many problems.
+    It will be fixed and re-enabled as soon as possible.
+* Bug Fixes
+  - Fix several crashes, on startup, in Keywords
+  - Reflow text now works as it should
+  - Lots of typos fixed
+  - Compress config bug prevented it working
+  - Some minor bug-fixes from mutt/default
+  - Single quote at line beginning misinterpreted by groff
+  - Setting $sidebar_width to more than 128 would cause bad things to happen.
+  - Fix alignment in the compose menu.
+  - Fix sidebar buffy stats updating on mailbox close.
+* Build Changes
+  - Sync whitespace to mutt/default
+  - Alter ChangeLog date format to simplify Makefiles
+  - Use the new notmuch functions that return a status
+  - Rename sidebar functions sb_* -> mutt_sb_*
+
 2016-05-23  Richard Russon  <rich@flatcap.org>
 * New Features:
   - Keywords: Email Label/Keywords/Tagging
