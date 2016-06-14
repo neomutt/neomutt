@@ -733,10 +733,9 @@ int mutt_buffy_check (int force)
   }
 
 #ifdef USE_SIDEBAR
-  if (sb_should_refresh()) {
+  if (force) {
     for (tmp = Incoming; tmp; tmp = tmp->next)
       buffy_check(tmp, &contex_sb);
-    sb_set_update_time();
   }
 #else
   for (tmp = Incoming; tmp; tmp = tmp->next)
