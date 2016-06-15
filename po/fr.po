@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-11 17:37+0200\n"
-"PO-Revision-Date: 2016-06-11 17:56+0200\n"
+"POT-Creation-Date: 2016-06-15 11:06+0200\n"
+"PO-Revision-Date: 2016-06-15 11:08+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -384,7 +384,7 @@ msgstr "La couleur default n'est pas disponible"
 msgid "Verify PGP signature?"
 msgstr "Vérifier la signature PGP ?"
 
-#: commands.c:115 mbox.c:803
+#: commands.c:115 mbox.c:799
 msgid "Could not create temporary file!"
 msgstr "Impossible de créer le fichier temporaire !"
 
@@ -1622,7 +1622,7 @@ msgstr "Aucune boîte aux lettres n'est ouverte."
 msgid "There are no messages."
 msgstr "Il n'y a pas de messages."
 
-#: curs_main.c:59 mx.c:1137 pager.c:54 recvattach.c:43
+#: curs_main.c:59 mx.c:1131 pager.c:54 recvattach.c:43
 msgid "Mailbox is read-only."
 msgstr "La boîte aux lettres est en lecture seule."
 
@@ -1778,7 +1778,7 @@ msgid "No mailboxes have new mail"
 msgstr "Pas de boîte aux lettres avec des nouveaux messages"
 
 # , c-format
-#: curs_main.c:1234 mx.c:499 mx.c:665
+#: curs_main.c:1234 mx.c:499 mx.c:663
 #, c-format
 msgid "%s is not a mailbox."
 msgstr "%s n'est pas une boîte aux lettres."
@@ -2409,35 +2409,35 @@ msgstr "Effacement des messages sur le serveur..."
 msgid "imap_sync_mailbox: EXPUNGE failed"
 msgstr "imap_sync_mailbox : EXPUNGE a échoué"
 
-#: imap/imap.c:1796
+#: imap/imap.c:1800
 #, c-format
 msgid "Header search without header name: %s"
 msgstr "Recherche d'en-tête sans nom d'en-tête : %s"
 
-#: imap/imap.c:1867
+#: imap/imap.c:1871
 msgid "Bad mailbox name"
 msgstr "Mauvaise boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:1891
+#: imap/imap.c:1895
 #, c-format
 msgid "Subscribing to %s..."
 msgstr "Abonnement à %s..."
 
 # , c-format
-#: imap/imap.c:1893
+#: imap/imap.c:1897
 #, c-format
 msgid "Unsubscribing from %s..."
 msgstr "Désabonnement de %s..."
 
 # , c-format
-#: imap/imap.c:1903
+#: imap/imap.c:1907
 #, c-format
 msgid "Subscribed to %s"
 msgstr "Abonné à %s"
 
 # , c-format
-#: imap/imap.c:1905
+#: imap/imap.c:1909
 #, c-format
 msgid "Unsubscribed from %s"
 msgstr "Désabonné de %s"
@@ -3025,52 +3025,52 @@ msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
 # , c-format
-#: mbox.c:122 mbox.c:275 mh.c:1249 mx.c:683
+#: mbox.c:120 mbox.c:271 mh.c:1243 mx.c:681
 #, c-format
 msgid "Reading %s..."
 msgstr "Lecture de %s..."
 
-#: mbox.c:160 mbox.c:217
+#: mbox.c:158 mbox.c:215
 msgid "Mailbox is corrupt!"
 msgstr "La boîte aux lettres est altérée !"
 
-#: mbox.c:687
+#: mbox.c:683
 msgid "Mailbox was corrupted!"
 msgstr "La boîte aux lettres a été altérée !"
 
-#: mbox.c:768 mbox.c:1028
+#: mbox.c:764 mbox.c:1024
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Erreur fatale ! La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox.c:777
+#: mbox.c:773
 msgid "Unable to lock mailbox!"
 msgstr "Impossible de verrouiller la boîte aux lettres !"
 
-#: mbox.c:820
+#: mbox.c:816
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync : BAL modifiée, mais pas de message modifié ! (signalez ce bug)"
 
 # , c-format
-#: mbox.c:844 mh.c:1765 mx.c:763
+#: mbox.c:840 mh.c:1759 mx.c:757
 #, c-format
 msgid "Writing %s..."
 msgstr "Écriture de %s..."
 
-#: mbox.c:979
+#: mbox.c:975
 msgid "Committing changes..."
 msgstr "Écriture des changements..."
 
 # , c-format
-#: mbox.c:1014
+#: mbox.c:1010
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Erreur d'écriture ! Boîte aux lettres partielle sauvée dans %s"
 
-#: mbox.c:1076
+#: mbox.c:1072
 msgid "Could not reopen mailbox!"
 msgstr "La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox.c:1103
+#: mbox.c:1099
 msgid "Reopening mailbox..."
 msgstr "Réouverture de la boîte aux lettres..."
 
@@ -3140,16 +3140,16 @@ msgid "Tagging is not supported."
 msgstr "Le marquage n'est pas supporté."
 
 # , c-format
-#: mh.c:1229
+#: mh.c:1223
 #, c-format
 msgid "Scanning %s..."
 msgstr "Lecture de %s..."
 
-#: mh.c:1439 mh.c:1517
+#: mh.c:1433 mh.c:1511
 msgid "Could not flush message to disk"
 msgstr "Impossible de recopier le message physiquement sur le disque (flush)"
 
-#: mh.c:1484
+#: mh.c:1478
 msgid "maildir_commit_message(): unable to set time on file"
 msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
 
@@ -3545,76 +3545,76 @@ msgstr "Attente de la tentative de flock... %d"
 msgid "Couldn't lock %s\n"
 msgstr "Impossible de verrouiller %s\n"
 
-#: mx.c:795
+#: mx.c:789
 #, c-format
 msgid "Could not synchronize mailbox %s!"
 msgstr "Impossible de synchroniser la boîte aux lettres %s !"
 
 # , c-format
-#: mx.c:865
+#: mx.c:859
 #, c-format
 msgid "Move read messages to %s?"
 msgstr "Déplacer les messages lus dans %s ?"
 
 # , c-format
-#: mx.c:881 mx.c:1153
+#: mx.c:875 mx.c:1147
 #, c-format
 msgid "Purge %d deleted message?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
-#: mx.c:881 mx.c:1153
+#: mx.c:875 mx.c:1147
 #, c-format
 msgid "Purge %d deleted messages?"
 msgstr "Effacer %d message(s) marqué(s) à effacer ?"
 
 # , c-format
-#: mx.c:902
+#: mx.c:896
 #, c-format
 msgid "Moving read messages to %s..."
 msgstr "Déplacement des messages lus dans %s..."
 
-#: mx.c:962 mx.c:1144
+#: mx.c:956 mx.c:1138
 msgid "Mailbox is unchanged."
 msgstr "La boîte aux lettres est inchangée."
 
 # , c-format
-#: mx.c:1002
+#: mx.c:996
 #, c-format
 msgid "%d kept, %d moved, %d deleted."
 msgstr "%d gardé(s), %d déplacé(s), %d effacé(s)."
 
 # , c-format
-#: mx.c:1005 mx.c:1196
+#: mx.c:999 mx.c:1190
 #, c-format
 msgid "%d kept, %d deleted."
 msgstr "%d gardé(s), %d effacé(s)."
 
 # , c-format
-#: mx.c:1128
+#: mx.c:1122
 #, c-format
 msgid " Press '%s' to toggle write"
 msgstr " Appuyez sur '%s' pour inverser l'écriture autorisée"
 
-#: mx.c:1130
+#: mx.c:1124
 msgid "Use 'toggle-write' to re-enable write!"
 msgstr "Utilisez 'toggle-write' pour réautoriser l'écriture !"
 
 # , c-format
-#: mx.c:1132
+#: mx.c:1126
 #, c-format
 msgid "Mailbox is marked unwritable. %s"
 msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 
-#: mx.c:1190
+#: mx.c:1184
 msgid "Mailbox checkpointed."
 msgstr "Boîte aux lettres vérifiée."
 
-#: mx.c:1429
+#: mx.c:1423
 msgid "Can't write message"
 msgstr "Impossible d'écrire le message"
 
-#: mx.c:1468
+#: mx.c:1462
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Dépassement de capacité sur entier -- impossible d'allouer la mémoire."
 
@@ -5450,36 +5450,36 @@ msgid "collapse/uncollapse all threads"
 msgstr "comprimer/décomprimer toutes les discussions"
 
 #: ../keymap_alldefs.h:186
-msgid "Move the highlight to next mailbox"
-msgstr "Déplacer la marque vers la boîte aux lettres suivante"
+msgid "move the highlight to next mailbox"
+msgstr "déplacer la marque vers la boîte aux lettres suivante"
 
 #: ../keymap_alldefs.h:187
-msgid "Move the highlight to next mailbox with new mail"
-msgstr "Déplacer la marque vers la BAL avec de nouveaux messages suivante"
+msgid "move the highlight to next mailbox with new mail"
+msgstr "déplacer la marque vers la BAL avec de nouveaux messages suivante"
 
 #: ../keymap_alldefs.h:188
-msgid "Open highlighted mailbox"
-msgstr "Ouvrir la boîte aux lettres marquée"
+msgid "open highlighted mailbox"
+msgstr "ouvrir la boîte aux lettres marquée"
 
 #: ../keymap_alldefs.h:189
-msgid "Scroll the Sidebar down 1 page"
-msgstr "Descendre la Barre latérale d'une page"
+msgid "scroll the sidebar down 1 page"
+msgstr "descendre la barre latérale d'une page"
 
 #: ../keymap_alldefs.h:190
-msgid "Scroll the Sidebar up 1 page"
-msgstr "Remonter la Barre latérale d'une page"
+msgid "scroll the sidebar up 1 page"
+msgstr "remonter la barre latérale d'une page"
 
 #: ../keymap_alldefs.h:191
-msgid "Move the highlight to previous mailbox"
-msgstr "Déplacer la marque vers la boîte aux lettres précédente"
+msgid "move the highlight to previous mailbox"
+msgstr "déplacer la marque vers la boîte aux lettres précédente"
 
 #: ../keymap_alldefs.h:192
-msgid "Move the highlight to previous mailbox with new mail"
-msgstr "Déplacer la marque vers la BAL avec de nouveaux messages précédente"
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "déplacer la marque vers la BAL avec de nouveaux messages précédente"
 
 #: ../keymap_alldefs.h:193
-msgid "Make the Sidebar (in)visible"
-msgstr "Rendre la Barre latérale (in)visible"
+msgid "make the sidebar (in)visible"
+msgstr "rendre la barre latérale (in)visible"
 
 #: ../keymap_alldefs.h:194
 msgid "attach a PGP public key"
@@ -5506,28 +5506,28 @@ msgid "check for classic PGP"
 msgstr "reconnaissance PGP classique"
 
 #: ../keymap_alldefs.h:200
-msgid "Accept the chain constructed"
-msgstr "Accepter la chaîne construite"
+msgid "accept the chain constructed"
+msgstr "accepter la chaîne construite"
 
 #: ../keymap_alldefs.h:201
-msgid "Append a remailer to the chain"
-msgstr "Ajouter un redistributeur de courrier à la fin de la chaîne"
+msgid "append a remailer to the chain"
+msgstr "ajouter un redistributeur de courrier à la fin de la chaîne"
 
 #: ../keymap_alldefs.h:202
-msgid "Insert a remailer into the chain"
-msgstr "Insérer un redistributeur de courrier dans la chaîne"
+msgid "insert a remailer into the chain"
+msgstr "insérer un redistributeur de courrier dans la chaîne"
 
 #: ../keymap_alldefs.h:203
-msgid "Delete a remailer from the chain"
-msgstr "Retirer un redistributeur de courrier de la chaîne"
+msgid "delete a remailer from the chain"
+msgstr "retirer un redistributeur de courrier de la chaîne"
 
 #: ../keymap_alldefs.h:204
-msgid "Select the previous element of the chain"
-msgstr "Sélectionner l'élément précédent de la chaîne"
+msgid "select the previous element of the chain"
+msgstr "sélectionner l'élément précédent de la chaîne"
 
 #: ../keymap_alldefs.h:205
-msgid "Select the next element of the chain"
-msgstr "Sélectionner l'élément suivant de la chaîne"
+msgid "select the next element of the chain"
+msgstr "sélectionner l'élément suivant de la chaîne"
 
 #: ../keymap_alldefs.h:206
 msgid "send the message through a mixmaster remailer chain"
