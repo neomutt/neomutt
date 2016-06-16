@@ -231,8 +231,21 @@ int mutt_protect (HEADER *msg, char *keylist)
     if ((WithCrypto & APPLICATION_SMIME)
         && (msg->security & APPLICATION_SMIME))
     {
-      if (!(tmp_pbody = crypt_smime_build_smime_entity (tmp_smime_pbody,
-                                                        keylist)))
+			  char *new_keylist = keylist;
+ 
+			  if (SmimeDefaultKey && query_quadoption(OPT_SMIMEENCRYPTSELF, _("Encrypt message to S/MIME Default Key also?")) == M_YES)
+				  {
+					  /* +1 for NULL, +1 for \n */
+					  int size = mutt_strlen(keylist) + mutt_strlen(SmimeDefaultKey) + 2;
+					  new_keylist = safe_malloc(size);
+					  snprintf(new_keylist, size, "%s%s\n", keylist, SmimeDefaultKey);
+				  }
+ 		 
+			  tmp_pbody = crypt_smime_build_smime_entity (tmp_smime_pbody, new_keylist);
+			  if (new_keylist != keylist)
+				  safe_free((void **)&new_keylist);
+			  
+			  if (!tmp_pbody)
       {
 	/* signed ? free it! */
 	return (-1);
