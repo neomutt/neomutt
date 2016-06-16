@@ -1041,7 +1041,12 @@ size_t mutt_wstr_trunc (const char *src, size_t maxlen, size_t maxwid, size_t *w
     cw = wcwidth (wc);
     /* hack because M_TREE symbols aren't turned into characters
      * until rendered by print_enriched_string (#3364) */
-    if (cw < 0 && cl == 1 && src[0] && src[0] < M_TREE_MAX)
+    if ((cw < 0) && (src[0] == M_SPECIAL_INDEX))
+    {
+      cl = 2; /* skip the index coloring sequence */
+      cw = 0;
+    }
+    else if (cw < 0 && cl == 1 && src[0] && src[0] < M_TREE_MAX)
       cw = 1;
     else if (cw < 0)
       cw = 0;			/* unprintable wchar */
