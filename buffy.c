@@ -754,8 +754,15 @@ int mutt_buffy_check (int force)
     contex_sb.st_ino=0;
   }
 
+#ifdef USE_SIDEBAR
+  if (force) {
+    for (tmp = Incoming; tmp; tmp = tmp->next)
+      buffy_check(tmp, &contex_sb);
+  }
+#else
   for (tmp = Incoming; tmp; tmp = tmp->next)
     buffy_check(tmp, &contex_sb);
+#endif
 
 #ifdef USE_NOTMUCH
   for (tmp = VirtIncoming; tmp; tmp = tmp->next)
