@@ -58,7 +58,6 @@ void mbox_reset_atime (CONTEXT *, struct stat *);
 int mh_read_dir (CONTEXT *, const char *);
 int mh_sync_mailbox (CONTEXT *, int *);
 int mh_check_mailbox (CONTEXT *, int *);
-void mh_buffy_update (BUFFY *mailbox);
 int mh_check_empty (const char *);
 
 int maildir_read_dir (CONTEXT *);
