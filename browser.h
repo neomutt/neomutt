@@ -24,7 +24,9 @@ struct folder_file
   mode_t mode;
   off_t size;
   time_t mtime;
-  struct stat *st;
+  uid_t uid;
+  gid_t gid;
+  nlink_t nlink;
 
   char *name;
   char *desc;
@@ -37,6 +39,7 @@ struct folder_file
   unsigned selectable : 1;
   unsigned inferiors : 1;
 #endif
+  unsigned local : 1; /* folder is on local filesystem */
   unsigned tagged : 1;
 };
 
