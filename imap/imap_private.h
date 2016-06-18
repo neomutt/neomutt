@@ -269,6 +269,7 @@ int imap_cache_del (IMAP_DATA* idata, HEADER* h);
 int imap_cache_clean (IMAP_DATA* idata);
 
 int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno);
+int imap_close_message (CONTEXT *ctx, MESSAGE *msg);
 
 /* util.c */
 #ifdef USE_HCACHE

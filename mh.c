@@ -1369,6 +1369,11 @@ static int mh_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
   return maildir_mh_open_message (ctx, msg, msgno, 0);
 }
 
+static int mh_close_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  return safe_fclose (&msg->fp);
+}
+
 /*
  * Open a new (temporary) message in a maildir folder.
  * 
@@ -2445,6 +2450,7 @@ struct mx_ops mx_maildir_ops = {
   .open = maildir_open_mailbox,
   .close = mh_close_mailbox,
   .open_msg = maildir_open_message,
+  .close_msg = mh_close_message,
   .open_new_msg = maildir_open_new_message,
   .check = maildir_check_mailbox,
 };
@@ -2453,6 +2459,7 @@ struct mx_ops mx_mh_ops = {
   .open = mh_open_mailbox,
   .close = mh_close_mailbox,
   .open_msg = mh_open_message,
+  .close_msg = mh_close_message,
   .open_new_msg = mh_open_new_message,
   .check = mh_check_mailbox,
 };

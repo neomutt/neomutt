@@ -1389,20 +1389,16 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 /* close a pointer to a message */
 int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 {
+  struct mx_ops *ops = mx_get_ops (ctx->magic);
   int r = 0;
 
-  if (ctx->magic == MUTT_MH || ctx->magic == MUTT_MAILDIR
-      || ctx->magic == MUTT_IMAP || ctx->magic == MUTT_POP)
-  {
-    r = safe_fclose (&(*msg)->fp);
-  }
-  else
-    (*msg)->fp = NULL;
+  if (ops && ops->close_msg)
+    r = ops->close_msg (ctx, *msg);
 
   if ((*msg)->path)
   {
     dprint (1, (debugfile, "mx_close_message (): unlinking %s\n",
-		(*msg)->path));
+            (*msg)->path));
     unlink ((*msg)->path);
     FREE (&(*msg)->path);
   }

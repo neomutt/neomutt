@@ -656,6 +656,11 @@ static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
   return 0;
 }
 
+static int pop_close_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  return safe_fclose (&msg->fp);
+}
+
 /* update POP mailbox - delete messages from server */
 int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
@@ -932,5 +937,6 @@ struct mx_ops mx_pop_ops = {
   .open = pop_open_mailbox,
   .close = pop_close_mailbox,
   .open_msg = pop_fetch_message,
+  .close_msg = pop_close_message,
   .check = pop_check_mailbox,
 };

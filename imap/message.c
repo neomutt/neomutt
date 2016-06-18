@@ -595,6 +595,11 @@ bail:
   return -1;
 }
 
+int imap_close_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  return safe_fclose (&msg->fp);
+}
+
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 {
   IMAP_DATA* idata;
