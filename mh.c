@@ -1469,7 +1469,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
  * 
  */
 
-int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
+int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 {
   char subdir[4];
   char suffix[16];
@@ -1501,7 +1501,7 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 	      NONULL (Hostname), suffix);
     snprintf (full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
-    dprint (2, (debugfile, "maildir_commit_message (): renaming %s to %s.\n",
+    dprint (2, (debugfile, "_maildir_commit_message (): renaming %s to %s.\n",
 		msg->path, full));
 
     if (safe_rename (msg->path, full) == 0)
@@ -1524,7 +1524,7 @@ int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 	ut.modtime = msg->received;
 	if (utime (full, &ut))
 	{
-	  mutt_perror (_("maildir_commit_message(): unable to set time on file"));
+	  mutt_perror (_("_maildir_commit_message(): unable to set time on file"));
 	  return -1;
 	}
       }
@@ -1657,7 +1657,7 @@ static int mh_rewrite_message (CONTEXT * ctx, int msgno)
     strfcpy (partpath, h->path, _POSIX_PATH_MAX);
 
     if (ctx->magic == MUTT_MAILDIR)
-      rc = maildir_commit_message (ctx, dest, h);
+      rc = _maildir_commit_message (ctx, dest, h);
     else
       rc = _mh_commit_message (ctx, dest, h, 0);
 

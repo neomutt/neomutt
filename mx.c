@@ -1365,7 +1365,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     
     case MUTT_MAILDIR:
     {
-      r = maildir_commit_message (ctx, msg, NULL);
+      r = _maildir_commit_message (ctx, msg, NULL);
       break;
     }
     
