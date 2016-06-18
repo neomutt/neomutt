@@ -1245,7 +1245,6 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   }
 
   msg = safe_calloc (1, sizeof (MESSAGE));
-  msg->magic = dest->magic;
   msg->write = 1;
 
   if (hdr)
@@ -1265,7 +1264,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
     if (dest->magic == MUTT_MMDF)
       fputs (MMDF_SEP, msg->fp);
 
-    if ((msg->magic == MUTT_MBOX || msg->magic ==  MUTT_MMDF) &&
+    if ((dest->magic == MUTT_MBOX || dest->magic ==  MUTT_MMDF) &&
 	flags & MUTT_ADD_FROM)
     {
       if (hdr)
@@ -1319,7 +1318,6 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
   }
 
   msg = safe_calloc (1, sizeof (MESSAGE));
-  msg->magic = ctx->magic;
   ret = ops->open_msg (ctx, msg, msgno);
   if (ret)
     FREE (&msg);
@@ -1340,7 +1338,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     return -1;
   }
 
-  switch (msg->magic)
+  switch (ctx->magic)
   {
     case MUTT_MMDF:
     {
@@ -1393,8 +1391,8 @@ int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 {
   int r = 0;
 
-  if ((*msg)->magic == MUTT_MH || (*msg)->magic == MUTT_MAILDIR
-      || (*msg)->magic == MUTT_IMAP || (*msg)->magic == MUTT_POP)
+  if (ctx->magic == MUTT_MH || ctx->magic == MUTT_MAILDIR
+      || ctx->magic == MUTT_IMAP || ctx->magic == MUTT_POP)
   {
     r = safe_fclose (&(*msg)->fp);
   }

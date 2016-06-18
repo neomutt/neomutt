@@ -45,7 +45,6 @@ typedef struct _message
 {
   FILE *fp;	/* pointer to the message data */
   char *path;	/* path to temp file */
-  short magic;	/* type of mailbox this message belongs to */
   short write;	/* nonzero if message is open for writing */
   struct {
     unsigned read : 1;
