@@ -1469,7 +1469,7 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
  * 
  */
 
-int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
+static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
 {
   char subdir[4];
   char suffix[16];
@@ -1537,6 +1537,11 @@ int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
       return -1;
     }
   }
+}
+
+int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg)
+{
+  return _maildir_commit_message (ctx, msg, NULL);
 }
 
 /* 

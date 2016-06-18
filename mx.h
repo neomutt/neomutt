@@ -57,7 +57,7 @@ int mh_check_empty (const char *);
 
 int maildir_check_empty (const char *);
 
-int _maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
+int maildir_commit_message (CONTEXT *, MESSAGE *);
 int mh_commit_message (CONTEXT *, MESSAGE *);
 
 FILE *maildir_open_find_message (const char *, const char *);
