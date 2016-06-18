@@ -1349,8 +1349,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     
     case MUTT_MBOX:
     {
-      if (fputc ('\n', msg->fp) == EOF)
-	r = -1;
+      r = mbox_commit_message (ctx, msg);
       break;
     }
 

@@ -461,6 +461,16 @@ static int mbox_close_message (CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
+int mbox_commit_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  int r = fputc ('\n', msg->fp);
+
+  if (r == EOF)
+    return -1;
+
+  return 0;
+}
+
 static int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
   msg->fp = dest->fp;
