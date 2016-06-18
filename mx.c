@@ -1329,7 +1329,11 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 
 int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 {
+  struct mx_ops *ops = mx_get_ops (ctx->magic);
   int r = 0;
+
+  if (!ops || !ops->commit_msg)
+    return -1;
 
   if (!(msg->write && ctx->append))
   {
@@ -1338,40 +1342,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     return -1;
   }
 
-  switch (ctx->magic)
-  {
-    case MUTT_MMDF:
-    {
-      r = mmdf_commit_message (ctx, msg);
-      break;
-    }
-    
-    case MUTT_MBOX:
-    {
-      r = mbox_commit_message (ctx, msg);
-      break;
-    }
-
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-    {
-      r = imap_commit_message (ctx, msg);
-      break;
-    }
-#endif
-    
-    case MUTT_MAILDIR:
-    {
-      r = maildir_commit_message (ctx, msg);
-      break;
-    }
-    
-    case MUTT_MH:
-    {
-      r = mh_commit_message (ctx, msg);
-      break;
-    }
-  }
+  r = ops->commit_msg (ctx, msg);
   
   if (r == 0 && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
       && (fflush (msg->fp) == EOF || fsync (fileno (msg->fp)) == -1))

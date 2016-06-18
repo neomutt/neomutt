@@ -2076,6 +2076,7 @@ struct mx_ops mx_imap_ops = {
   .close = imap_close_mailbox,
   .open_msg = imap_fetch_message,
   .close_msg = imap_close_message,
+  .commit_msg = imap_commit_message,
   .open_new_msg = imap_open_new_message,
   .check = imap_check_mailbox_reopen,
 };

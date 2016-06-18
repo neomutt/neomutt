@@ -1539,7 +1539,7 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
   }
 }
 
-int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg)
+static int maildir_commit_message (CONTEXT * ctx, MESSAGE * msg)
 {
   return _maildir_commit_message (ctx, msg, NULL);
 }
@@ -1625,7 +1625,7 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
   return 0;
 }
 
-int mh_commit_message (CONTEXT * ctx, MESSAGE * msg)
+static int mh_commit_message (CONTEXT * ctx, MESSAGE * msg)
 {
   return _mh_commit_message (ctx, msg, NULL, 1);
 }
@@ -2456,6 +2456,7 @@ struct mx_ops mx_maildir_ops = {
   .close = mh_close_mailbox,
   .open_msg = maildir_open_message,
   .close_msg = mh_close_message,
+  .commit_msg = maildir_commit_message,
   .open_new_msg = maildir_open_new_message,
   .check = maildir_check_mailbox,
 };
@@ -2465,6 +2466,7 @@ struct mx_ops mx_mh_ops = {
   .close = mh_close_mailbox,
   .open_msg = mh_open_message,
   .close_msg = mh_close_message,
+  .commit_msg = mh_commit_message,
   .open_new_msg = mh_open_new_message,
   .check = mh_check_mailbox,
 };
