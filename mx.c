@@ -1357,8 +1357,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 #ifdef USE_IMAP
     case MUTT_IMAP:
     {
-      if ((r = safe_fclose (&msg->fp)) == 0)
-	r = imap_append_message (ctx, msg);
+      r = imap_commit_message (ctx, msg);
       break;
     }
 #endif

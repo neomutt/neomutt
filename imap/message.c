@@ -600,6 +600,16 @@ int imap_close_message (CONTEXT *ctx, MESSAGE *msg)
   return safe_fclose (&msg->fp);
 }
 
+int imap_commit_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  int r = safe_fclose (&msg->fp);
+
+  if (r)
+    return r;
+
+  return imap_append_message (ctx, msg);
+}
+
 int imap_append_message (CONTEXT *ctx, MESSAGE *msg)
 {
   IMAP_DATA* idata;
