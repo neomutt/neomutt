@@ -1371,7 +1371,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     
     case MUTT_MH:
     {
-      r = mh_commit_message (ctx, msg, NULL);
+      r = mh_commit_message (ctx, msg);
       break;
     }
   }

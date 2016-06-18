@@ -1620,9 +1620,9 @@ static int _mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr,
   return 0;
 }
 
-int mh_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
+int mh_commit_message (CONTEXT * ctx, MESSAGE * msg)
 {
-  return _mh_commit_message (ctx, msg, hdr, 1);
+  return _mh_commit_message (ctx, msg, NULL, 1);
 }
 
 
