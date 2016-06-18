@@ -9,7 +9,7 @@ Patch
     To check if Mutt supports "NNTP", look for "+USE_NNTP" in the mutt version.
 
     Dependencies
-    * mutt-1.5.24
+    * mutt-1.6.1
 
 Introduction
 ------------
