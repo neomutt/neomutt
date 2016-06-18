@@ -52,6 +52,7 @@ void mbox_unlock_mailbox (CONTEXT *);
 int mbox_check_empty (const char *);
 void mbox_reset_atime (CONTEXT *, struct stat *);
 int mbox_commit_message (CONTEXT *ctx, MESSAGE *msg);
+int mmdf_commit_message (CONTEXT *ctx, MESSAGE *msg);
 
 int mh_sync_mailbox (CONTEXT *, int *);
 int mh_check_empty (const char *);

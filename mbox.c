@@ -471,6 +471,16 @@ int mbox_commit_message (CONTEXT *ctx, MESSAGE *msg)
   return 0;
 }
 
+int mmdf_commit_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  int r = fputs (MMDF_SEP, msg->fp);
+
+  if (r == EOF)
+    return -1;
+
+  return 0;
+}
+
 static int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
 {
   msg->fp = dest->fp;

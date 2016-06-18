@@ -1342,8 +1342,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
   {
     case MUTT_MMDF:
     {
-      if (fputs (MMDF_SEP, msg->fp) == EOF)
-	r = -1;
+      r = mmdf_commit_message (ctx, msg);
       break;
     }
     
