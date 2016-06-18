@@ -2573,7 +2573,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
   }
 
   if (msg)
-    mx_close_message (&msg);
+    mx_close_message (Context, &msg);
 
   return ret;
 }
@@ -2847,7 +2847,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       safe_fclose (&tempfp);
       unlink (tempfile);
       mx_commit_message (msg, &f);	/* XXX - really? */
-      mx_close_message (&msg);
+      mx_close_message (&f, &msg);
       mx_close_mailbox (&f, NULL);
       return -1;
     }
@@ -2876,7 +2876,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 
   if (mx_commit_message (msg, &f) != 0)
     r = -1;
-  mx_close_message (&msg);
+  mx_close_message (&f, &msg);
   mx_close_mailbox (&f, NULL);
 
   if (!post && need_buffy_cleanup)

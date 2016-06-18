@@ -874,7 +874,7 @@ void pop_fetch_mail (void)
 	ret = -3;
       }
 
-      mx_close_message (&msg);
+      mx_close_message (&ctx, &msg);
     }
 
     if (ret == 0 && delanswer == MUTT_YES)

@@ -966,7 +966,7 @@ void mutt_view_attachments (HEADER *hdr)
 
     if ((hdr->security & ENCRYPT) && !crypt_valid_passphrase(hdr->security))
     {
-      mx_close_message (&msg);
+      mx_close_message (Context, &msg);
       return;
     }
     if ((WithCrypto & APPLICATION_SMIME) && (hdr->security & APPLICATION_SMIME))
@@ -1006,7 +1006,7 @@ void mutt_view_attachments (HEADER *hdr)
 
     if (need_secured && !secured)
     {
-      mx_close_message (&msg);
+      mx_close_message (Context, &msg);
       mutt_error _("Can't decrypt encrypted message!");
       return;
     }
@@ -1239,7 +1239,7 @@ void mutt_view_attachments (HEADER *hdr)
 	break;
 
       case OP_EXIT:
-	mx_close_message (&msg);
+	mx_close_message (Context, &msg);
 	hdr->attach_del = 0;
 	while (idxmax-- > 0)
 	{

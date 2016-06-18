@@ -187,7 +187,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   rc = mx_commit_message (msg, &tmpctx);
-  mx_close_message (&msg);
+  mx_close_message (&tmpctx, &msg);
   
   mx_close_mailbox (&tmpctx, NULL);
   

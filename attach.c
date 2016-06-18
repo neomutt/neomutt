@@ -745,7 +745,7 @@ int mutt_save_attachment (FILE *fp, BODY *m, char *path, int flags, HEADER *hdr)
       else
 	r = -1;
 
-      mx_close_message (&msg);
+      mx_close_message (&ctx, &msg);
       mx_close_mailbox (&ctx, NULL);
       return r;
     }

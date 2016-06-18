@@ -66,7 +66,7 @@ void mx_fastclose_mailbox (CONTEXT *);
 int mx_close_mailbox (CONTEXT *, int *);
 int mx_sync_mailbox (CONTEXT *, int *);
 int mx_commit_message (MESSAGE *, CONTEXT *);
-int mx_close_message (MESSAGE **);
+int mx_close_message (CONTEXT *, MESSAGE **);
 int mx_get_magic (const char *);
 int mx_set_magic (const char *);
 int mx_check_mailbox (CONTEXT *, int *);

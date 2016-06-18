@@ -180,7 +180,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	if (WithCrypto && (h->security & ENCRYPT)
             && !crypt_valid_passphrase(h->security))
 	{
-	  mx_close_message (&msg);
+	  mx_close_message (ctx, &msg);
 	  if (s.fpout)
 	  {
 	    safe_fclose (&s.fpout);
@@ -239,7 +239,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 
     FREE (&buf);
     
-    mx_close_message (&msg);
+    mx_close_message (ctx, &msg);
 
     if (option (OPTTHOROUGHSRC))
     {

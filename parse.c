@@ -969,7 +969,7 @@ void mutt_parse_mime_message (CONTEXT *ctx, HEADER *cur)
       if (WithCrypto)
         cur->security = crypt_query (cur->content);
 
-      mx_close_message (&msg);
+      mx_close_message (ctx, &msg);
     }
   } while (0);
 

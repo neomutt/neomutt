@@ -1656,7 +1656,7 @@ static int mh_rewrite_message (CONTEXT * ctx, int msgno)
     else
       rc = _mh_commit_message (ctx, dest, h, 0);
 
-    mx_close_message (&dest);
+    mx_close_message (ctx, &dest);
 
     if (rc == 0)
     {
@@ -1687,7 +1687,7 @@ static int mh_rewrite_message (CONTEXT * ctx, int msgno)
     }
   }
   else
-    mx_close_message (&dest);
+    mx_close_message (ctx, &dest);
 
   if (rc == -1 && restore)
   {

@@ -1389,7 +1389,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 }
 
 /* close a pointer to a message */
-int mx_close_message (MESSAGE **msg)
+int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 {
   int r = 0;
 

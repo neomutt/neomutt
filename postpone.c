@@ -586,7 +586,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 	|| b == NULL)
     {
  err:
-      mx_close_message (&msg);
+      mx_close_message (ctx, &msg);
       mutt_free_envelope (&newhdr->env);
       mutt_free_body (&newhdr->content);
       mutt_error _("Decryption failed.");
@@ -735,7 +735,7 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   /* that's it. */
   if (bfp != fp) safe_fclose (&bfp);
-  if (msg) mx_close_message (&msg);
+  if (msg) mx_close_message (ctx, &msg);
 
   if (rv == -1)
   {

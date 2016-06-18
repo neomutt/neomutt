@@ -692,7 +692,7 @@ mutt_copy_message (FILE *fpout, CONTEXT *src, HEADER *hdr, int flags,
     dprint (1, (debugfile, "_mutt_copy_message failed to detect EOF!\n"));
     r = -1;
   }
-  mx_close_message (&msg);
+  mx_close_message (src, &msg);
   return r;
 }
 
@@ -728,7 +728,7 @@ _mutt_append_message (CONTEXT *dest, FILE *fpin, CONTEXT *src, HEADER *hdr,
   if (mx_commit_message (msg, dest) != 0)
     r = -1;
 
-  mx_close_message (&msg);
+  mx_close_message (dest, &msg);
   return r;
 }
 
@@ -742,7 +742,7 @@ mutt_append_message (CONTEXT *dest, CONTEXT *src, HEADER *hdr, int cmflags,
   if ((msg = mx_open_message (src, hdr->msgno)) == NULL)
     return -1;
   r = _mutt_append_message (dest, msg->fp, src, hdr, hdr->content, cmflags, chflags);
-  mx_close_message (&msg);
+  mx_close_message (src, &msg);
   return r;
 }
 
