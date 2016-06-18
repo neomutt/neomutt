@@ -880,8 +880,13 @@ void mutt_sb_draw (void)
   /* if (OldVisible == 0) */
   /* 	mutt_buffy_check (1); we probably have bad or no numbers */
 
+#ifdef USE_SLANG_CURSES
+  int x = SLsmg_get_column();
+  int y = SLsmg_get_row();
+#else
   int x = getcurx (stdscr);
   int y = getcury (stdscr);
+#endif
 
   int first_row = 0;
   int num_rows  = LINES - 2;
