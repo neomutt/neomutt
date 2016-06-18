@@ -512,7 +512,7 @@ int pop_close_mailbox (CONTEXT *ctx)
 }
 
 /* fetch message from POP server */
-int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
+static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
 {
   int ret;
   void *uidl;
@@ -931,5 +931,6 @@ fail:
 struct mx_ops mx_pop_ops = {
   .open = pop_open_mailbox,
   .close = pop_close_mailbox,
+  .open_msg = pop_fetch_message,
   .check = pop_check_mailbox,
 };

@@ -894,6 +894,7 @@ struct mx_ops
   int (*open)(struct _context *);
   int (*close)(struct _context *);
   int (*check) (struct _context *ctx, int *index_hint);
+  int (*open_msg) (struct _context *, struct _message *, int msgno);
   int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
 };
 

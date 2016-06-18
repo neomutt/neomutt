@@ -391,7 +391,7 @@ error_out_0:
   return retval;
 }
 
-int imap_fetch_message (MESSAGE *msg, CONTEXT *ctx, int msgno)
+int imap_fetch_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
 {
   IMAP_DATA* idata;
   HEADER* h;

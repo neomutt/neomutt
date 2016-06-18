@@ -2074,6 +2074,7 @@ int imap_complete(char* dest, size_t dlen, char* path) {
 struct mx_ops mx_imap_ops = {
   .open = imap_open_mailbox,
   .close = imap_close_mailbox,
+  .open_msg = imap_fetch_message,
   .open_new_msg = imap_open_new_message,
   .check = imap_check_mailbox_reopen,
 };

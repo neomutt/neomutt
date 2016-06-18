@@ -1336,6 +1336,38 @@ static void maildir_flags (char *dest, size_t destlen, HEADER * hdr)
   }
 }
 
+static int maildir_mh_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno,
+                                    int is_maildir)
+{
+  HEADER *cur = ctx->hdrs[msgno];
+  char path[_POSIX_PATH_MAX];
+
+  snprintf (path, sizeof (path), "%s/%s", ctx->path, cur->path);
+
+  msg->fp = fopen (path, "r");
+  if (msg->fp == NULL && errno == ENOENT && is_maildir)
+    msg->fp = maildir_open_find_message (ctx->path, cur->path);
+
+  if (!msg->fp)
+  {
+    mutt_perror (path);
+    dprint (1, (debugfile, "maildir_mh_open_message: fopen: %s: %s (errno %d).\n",
+            path, strerror (errno), errno));
+    return -1;
+  }
+
+  return 0;
+}
+
+static int maildir_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
+{
+  return maildir_mh_open_message (ctx, msg, msgno, 1);
+}
+
+static int mh_open_message (CONTEXT *ctx, MESSAGE *msg, int msgno)
+{
+  return maildir_mh_open_message (ctx, msg, msgno, 0);
+}
 
 /*
  * Open a new (temporary) message in a maildir folder.
@@ -2412,6 +2444,7 @@ int mx_is_mh (const char *path)
 struct mx_ops mx_maildir_ops = {
   .open = maildir_open_mailbox,
   .close = mh_close_mailbox,
+  .open_msg = maildir_open_message,
   .open_new_msg = maildir_open_new_message,
   .check = maildir_check_mailbox,
 };
@@ -2419,6 +2452,7 @@ struct mx_ops mx_maildir_ops = {
 struct mx_ops mx_mh_ops = {
   .open = mh_open_mailbox,
   .close = mh_close_mailbox,
+  .open_msg = mh_open_message,
   .open_new_msg = mh_open_new_message,
   .check = mh_check_mailbox,
 };

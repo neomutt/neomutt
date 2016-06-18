@@ -1308,62 +1308,23 @@ int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 /* return a stream pointer for a message */
 MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 {
+  struct mx_ops *ops = mx_get_ops (ctx->magic);
   MESSAGE *msg;
-  
-  msg = safe_calloc (1, sizeof (MESSAGE));
-  switch (msg->magic = ctx->magic)
+  int ret;
+
+  if (!ops || !ops->open_msg)
   {
-    case MUTT_MBOX:
-    case MUTT_MMDF:
-      msg->fp = ctx->fp;
-      break;
-
-    case MUTT_MH:
-    case MUTT_MAILDIR:
-    {
-      HEADER *cur = ctx->hdrs[msgno];
-      char path[_POSIX_PATH_MAX];
-      
-      snprintf (path, sizeof (path), "%s/%s", ctx->path, cur->path);
-      
-      if ((msg->fp = fopen (path, "r")) == NULL && errno == ENOENT &&
-	  ctx->magic == MUTT_MAILDIR)
-	msg->fp = maildir_open_find_message (ctx->path, cur->path);
-      
-      if (msg->fp == NULL)
-      {
-	mutt_perror (path);
-	dprint (1, (debugfile, "mx_open_message: fopen: %s: %s (errno %d).\n",
-		    path, strerror (errno), errno));
-	FREE (&msg);
-      }
-    }
-    break;
-    
-#ifdef USE_IMAP
-    case MUTT_IMAP:
-    {
-      if (imap_fetch_message (msg, ctx, msgno) != 0)
-	FREE (&msg);
-      break;
-    }
-#endif /* USE_IMAP */
-
-#ifdef USE_POP
-    case MUTT_POP:
-    {
-      if (pop_fetch_message (msg, ctx, msgno) != 0)
-	FREE (&msg);
-      break;
-    }
-#endif /* USE_POP */
-
-    default:
-      dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
-      FREE (&msg);
-      break;
+    dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
+    return NULL;
   }
-  return (msg);
+
+  msg = safe_calloc (1, sizeof (MESSAGE));
+  msg->magic = ctx->magic;
+  ret = ops->open_msg (ctx, msg, msgno);
+  if (ret)
+    FREE (&msg);
+
+  return msg;
 }
 
 /* commit a message to a folder */
