@@ -1,0 +1,31 @@
+#------------------------------------------------------------
+# Vi Key Bindings
+#------------------------------------------------------------
+
+# Moving around
+bind browser,index       gg  first-entry
+bind browser,index       G   last-entry
+bind pager               gg  top
+bind pager               G   bottom
+bind pager               k   previous-line
+bind pager               j   next-line
+bind browser,pager,index \CF next-page
+bind browser,pager,index \CB previous-page
+bind browser,pager       \Ce next-line
+bind browser,pager       \Cy previous-line
+bind index               \Ce next-line
+bind index               \Cy previous-line
+
+bind pager,index         dd  delete-message
+
+# Mail & Reply
+bind index               \Cm list-reply # Does not work ???
+
+# Threads
+bind browser,pager,index N   search-opposite
+bind pager,index         dT  delete-thread
+bind pager,index         dt  delete-subthread
+bind pager,index         gt  next-thread
+bind pager,index         gT  previous-thread
+bind index               za  collapse-thread
+bind index               zA  collapse-all # Missing :folddisable/foldenable
