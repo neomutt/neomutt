@@ -11,8 +11,8 @@ def helpfunc():
     print("This program will not be able to decrypt or verify messages. I've created separate scripts for that.")
     print('Type "quit" to quit.')
 
-def encrypt(parameters):
-    os.system('pwd > .file')
+def encryptSign(parameters):
+    os.system('echo $HOME > .file')
     directory = open('.file', 'r')
     pwd = directory.read().strip('\n')
     directory.close()
@@ -22,31 +22,34 @@ def encrypt(parameters):
     os.system('%s -i %s -o %s' % (parameters, tmp, tmp))
     print("Done!")
 
-def sign(parameters):
-    os.system('pwd > .file')
-    directory = open('.file', 'r')
-    pwd = directory.read().strip('\n')
-    directory.close()
-    tmp = open('%s/.mutt/keybaseMutt/.tmp' % pwd, 'r')
-    tmp = tmp.read().strip('\n')
-    print("Working...")
-    os.system('%s -i %s -o /tmp/signature.asc && cat /tmp/signature.asc > %s && rm /tmp/signature.asc' % (parameters, tmp, tmp))
-    print("Done!")
+#def sign(parameters):
+#    os.system('pwd > .file')
+#    directory = open('.file', 'r')
+#    pwd = directory.read().strip('\n')
+#    directory.close()
+#    tmp = open('%s/.mutt/keybaseMutt/.tmp' % pwd, 'r')
+#    tmp = tmp.read().strip('\n')
+#    print("Working...")
+#    os.system('%s -i %s -o %s' % (parameters, tmp, tmp))
+#    print("Done!")
 
 exitVar = ''
 
 print("Type help to learn how to use me.")
 
 while exitVar.lower() != 'quit':
-    inputStuffs = input()
+    inputStuffs = input('mutt#: ')
     if (inputStuffs.lower() == 'help'):
         helpfunc()
 
     elif ('encrypt' in inputStuffs):
-        encrypt(inputStuffs)
+        encryptSign(inputStuffs)
 
-    elif ('decrypt' in inputStuffs):
-        decrypt(inputStuffs)
+    #elif ('decrypt' in inputStuffs):
+    #    decrypt(inputStuffs)
+
+    elif ('sign' in inputStuffs):
+        encryptSign(inputStuffs)
 
     elif ('quit' in inputStuffs):
         exitVar = 'quit'
