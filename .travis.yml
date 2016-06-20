@@ -15,25 +15,28 @@ cache: ccache
 addons:
   apt:
     packages:
-#     - libslang2-dev
+      - libgpgme11-dev
+      - libnotmuch-dev
+      - libtokyocabinet-dev
+      - libgdbm-dev
+      - libdb-dev
+      # - libqdbm-dev
+      # - libslang2-dev
+      # libcaca includes slang for us
+      - libcaca-dev
 
-env:
-    # Default config
-  - OPTS=""
-    # Enable components that default to 'off'
-  - OPTS="--enable-sidebar"
-    # Test SLANG (not default Curses)
-# - OPTS="--with-slang --enable-sidebar"
+git:
+  depth: 3
+
+install:
+  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
 
 before_script:
-  - ccache -z
-  - autoreconf -i
+  - ccache --zero-stats
 
 script:
-  - ./configure $OPTS
-  - make
-  - ./mutt -v
+  - ~/config/build
 
 after_script:
-  - ccache -s
+  - ccache --show-stats
 
