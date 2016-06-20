@@ -12,15 +12,34 @@ language: c
 compiler: gcc
 cache: ccache
 
+addons:
+  apt:
+    packages:
+      - libgpgme11-dev
+      - libnotmuch-dev
+      - libtokyocabinet-dev
+      - libgdbm-dev
+      - libdb-dev
+      # - libqdbm-dev
+      # - libslang2-dev
+      # libcaca includes slang for us
+      - libcaca-dev
+
+git:
+  depth: 3
+
 before_script:
-  - ccache -z
-  - autoreconf -i
+  - ccache --zero-stats
+  - autoreconf --install
 
 script:
   # Clumsy way to forcibly disable FMEMOPEN
-  - ./configure && grep -v FMEMOPEN config.h > config.h.tmp && mv config.h.tmp config.h && make && ./mutt -v
-  - ./configure && make && ./mutt -v
+  - ./configure --quiet && sed -i '/FMEMOPEN/d' config.h && make -s -j2
+  - ./configure --quiet && make -s -j2
+
+after_success:
+  - ./mutt -v
 
 after_script:
-  - ccache -s
+  - ccache --show-stats
 
