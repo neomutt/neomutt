@@ -12,18 +12,37 @@ language: c
 compiler: gcc
 cache: ccache
 
+addons:
+  apt:
+    packages:
+      - libgpgme11-dev
+      - libnotmuch-dev
+      - libtokyocabinet-dev
+      - libgdbm-dev
+      - libdb-dev
+      # - libqdbm-dev
+      # - libslang2-dev
+      # libcaca includes slang for us
+      - libcaca-dev
+
+git:
+  depth: 3
+
 before_script:
-  - ccache -z
-  - autoreconf -i
+  - ccache --zero-stats
+  - autoreconf --install
 
 script:
   # Clumsy way to forcibly disable options
-  - ./configure && grep -v HAVE_FGETC_UNLOCKED     config.h > config.h.tmp && mv config.h.tmp config.h && make && ./mutt -v
-  - ./configure && grep -v HAVE_USE_EXTENDED_NAMES config.h > config.h.tmp && mv config.h.tmp config.h && make && ./mutt -v
-  - ./configure && grep -v HAVE_STRNDUP            config.h > config.h.tmp && mv config.h.tmp config.h && make && ./mutt -v
-  - ./configure && grep -v HAVE_STRNLEN            config.h > config.h.tmp && mv config.h.tmp config.h && make && ./mutt -v
-  - ./configure && make && ./mutt -v
+  - ./configure --quiet && sed -i '/HAVE_FGETC_UNLOCKED/d'     config.h && make -s -j2
+  - ./configure --quiet && sed -i '/HAVE_USE_EXTENDED_NAMES/d' config.h && make -s -j2
+  - ./configure --quiet && sed -i '/HAVE_STRNDUP/d'            config.h && make -s -j2
+  - ./configure --quiet && sed -i '/HAVE_STRNLEN/d'            config.h && make -s -j2
+  - ./configure --quiet && make -s -j2
+
+after_success:
+  - ./mutt -v
 
 after_script:
-  - ccache -s
+  - ccache --show-stats
 
