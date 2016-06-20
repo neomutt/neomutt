@@ -15,29 +15,28 @@ cache: ccache
 addons:
   apt:
     packages:
+      - libgpgme11-dev
       - libnotmuch-dev
       - libtokyocabinet-dev
+      - libgdbm-dev
+      - libdb-dev
+      # - libqdbm-dev
+      # - libslang2-dev
+      # libcaca includes slang for us
+      - libcaca-dev
 
-env:
-    # Default config
-  - OPTS=""
-    # Enable components that default to 'off'
-  - OPTS="--enable-notmuch"
-  - OPTS="--enable-sidebar"
-  - OPTS="--enable-sidebar --enable-notmuch"
-    # Test all the backend caching options
-  - OPTS="--enable-sidebar --enable-notmuch --enable-hcache --without-qdbm --without-gdbm --without-bdb"
-  - OPTS="--enable-sidebar --enable-notmuch --enable-imap"
+git:
+  depth: 3
+
+install:
+  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
 
 before_script:
-  - ccache -z
-  - autoreconf -i
+  - ccache --zero-stats
 
 script:
-  - ./configure $OPTS
-  - make
-  - ./mutt -v
+  - ~/config/build
 
 after_script:
-  - ccache -s
+  - ccache --show-stats
 
