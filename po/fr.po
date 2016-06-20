@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-15 11:06+0200\n"
-"PO-Revision-Date: 2016-06-15 11:08+0200\n"
+"POT-Creation-Date: 2016-06-20 10:10+0200\n"
+"PO-Revision-Date: 2016-06-20 10:10+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -219,104 +219,104 @@ msgid "Mask"
 msgstr "Masque"
 
 # , c-format
-#: browser.c:400 browser.c:1055
+#: browser.c:403 browser.c:1058
 #, c-format
 msgid "%s is not a directory."
 msgstr "%s n'est pas un répertoire."
 
 # , c-format
-#: browser.c:539
+#: browser.c:542
 #, c-format
 msgid "Mailboxes [%d]"
 msgstr "Boîtes aux lettres [%d]"
 
 # , c-format
-#: browser.c:546
+#: browser.c:549
 #, c-format
 msgid "Subscribed [%s], File mask: %s"
 msgstr "Abonné [%s], masque de fichier : %s"
 
 # , c-format
-#: browser.c:550
+#: browser.c:553
 #, c-format
 msgid "Directory [%s], File mask: %s"
 msgstr "Répertoire [%s], masque de fichier : %s"
 
-#: browser.c:562
+#: browser.c:565
 msgid "Can't attach a directory!"
 msgstr "Impossible d'attacher un répertoire !"
 
-#: browser.c:701 browser.c:1123 browser.c:1221
+#: browser.c:704 browser.c:1126 browser.c:1224
 msgid "No files match the file mask"
 msgstr "Aucun fichier ne correspond au masque"
 
-#: browser.c:905
+#: browser.c:908
 msgid "Create is only supported for IMAP mailboxes"
 msgstr "La création n'est supportée que pour les boîtes aux lettres IMAP"
 
-#: browser.c:929
+#: browser.c:932
 msgid "Rename is only supported for IMAP mailboxes"
 msgstr "Le renommage n'est supporté que pour les boîtes aux lettres IMAP"
 
-#: browser.c:952
+#: browser.c:955
 msgid "Delete is only supported for IMAP mailboxes"
 msgstr "La suppression n'est supportée que pour les boîtes aux lettres IMAP"
 
-#: browser.c:962
+#: browser.c:965
 msgid "Cannot delete root folder"
 msgstr "Impossible de supprimer le dossier racine"
 
-#: browser.c:965
+#: browser.c:968
 #, c-format
 msgid "Really delete mailbox \"%s\"?"
 msgstr "Voulez-vous vraiment supprimer la boîte aux lettres \"%s\" ?"
 
-#: browser.c:979
+#: browser.c:982
 msgid "Mailbox deleted."
 msgstr "Boîte aux lettres supprimée."
 
-#: browser.c:985
+#: browser.c:988
 msgid "Mailbox not deleted."
 msgstr "Boîte aux lettres non supprimée."
 
-#: browser.c:1004
+#: browser.c:1007
 msgid "Chdir to: "
 msgstr "Changement de répertoire vers : "
 
-#: browser.c:1043 browser.c:1116
+#: browser.c:1046 browser.c:1119
 msgid "Error scanning directory."
 msgstr "Erreur de lecture du répertoire."
 
-#: browser.c:1067
+#: browser.c:1070
 msgid "File Mask: "
 msgstr "Masque de fichier : "
 
-#: browser.c:1139
+#: browser.c:1142
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri inverse par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:1140
+#: browser.c:1143
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
 msgstr "Tri par (d)ate, (a)lphabétique, (t)aille ou (n)e pas trier ? "
 
-#: browser.c:1141
+#: browser.c:1144
 msgid "dazn"
 msgstr "datn"
 
-#: browser.c:1208
+#: browser.c:1211
 msgid "New file name: "
 msgstr "Nouveau nom de fichier : "
 
-#: browser.c:1239
+#: browser.c:1242
 msgid "Can't view a directory"
 msgstr "Impossible de visualiser un répertoire"
 
-#: browser.c:1256
+#: browser.c:1259
 msgid "Error trying to view file"
 msgstr "Erreur en essayant de visualiser le fichier"
 
 # , c-format
-#: buffy.c:670
+#: buffy.c:619
 msgid "New mail in "
 msgstr "Nouveau(x) message(s) dans "
 
@@ -384,7 +384,7 @@ msgstr "La couleur default n'est pas disponible"
 msgid "Verify PGP signature?"
 msgstr "Vérifier la signature PGP ?"
 
-#: commands.c:115 mbox.c:799
+#: commands.c:115 mbox.c:833
 msgid "Could not create temporary file!"
 msgstr "Impossible de créer le fichier temporaire !"
 
@@ -2372,7 +2372,7 @@ msgid "Error opening mailbox"
 msgstr "Erreur à l'ouverture de la boîte aux lettres"
 
 # , c-format
-#: imap/imap.c:807 imap/message.c:861 muttlib.c:1563
+#: imap/imap.c:807 imap/message.c:876 muttlib.c:1563
 #, c-format
 msgid "Create %s?"
 msgstr "Créer %s ?"
@@ -2474,18 +2474,18 @@ msgid "The message index is incorrect. Try reopening the mailbox."
 msgstr ""
 "L'index du message est incorrect. Essayez de rouvrir la boîte aux lettres."
 
-#: imap/message.c:644
+#: imap/message.c:659
 msgid "Uploading message..."
 msgstr "Chargement du message..."
 
 # , c-format
-#: imap/message.c:825
+#: imap/message.c:840
 #, c-format
 msgid "Copying %d messages to %s..."
 msgstr "Copie de %d messages dans %s..."
 
 # , c-format
-#: imap/message.c:829
+#: imap/message.c:844
 #, c-format
 msgid "Copying message %d to %s..."
 msgstr "Copie du message %d dans %s..."
@@ -3025,7 +3025,7 @@ msgid "Mailbox is empty."
 msgstr "La boîte aux lettres est vide."
 
 # , c-format
-#: mbox.c:120 mbox.c:271 mh.c:1243 mx.c:681
+#: mbox.c:120 mbox.c:271 mh.c:1255 mx.c:681
 #, c-format
 msgid "Reading %s..."
 msgstr "Lecture de %s..."
@@ -3034,43 +3034,43 @@ msgstr "Lecture de %s..."
 msgid "Mailbox is corrupt!"
 msgstr "La boîte aux lettres est altérée !"
 
-#: mbox.c:683
+#: mbox.c:717
 msgid "Mailbox was corrupted!"
 msgstr "La boîte aux lettres a été altérée !"
 
-#: mbox.c:764 mbox.c:1024
+#: mbox.c:798 mbox.c:1058
 msgid "Fatal error!  Could not reopen mailbox!"
 msgstr "Erreur fatale ! La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox.c:773
+#: mbox.c:807
 msgid "Unable to lock mailbox!"
 msgstr "Impossible de verrouiller la boîte aux lettres !"
 
-#: mbox.c:816
+#: mbox.c:850
 msgid "sync: mbox modified, but no modified messages! (report this bug)"
 msgstr "sync : BAL modifiée, mais pas de message modifié ! (signalez ce bug)"
 
 # , c-format
-#: mbox.c:840 mh.c:1759 mx.c:757
+#: mbox.c:874 mh.c:1813 mx.c:757
 #, c-format
 msgid "Writing %s..."
 msgstr "Écriture de %s..."
 
-#: mbox.c:975
+#: mbox.c:1009
 msgid "Committing changes..."
 msgstr "Écriture des changements..."
 
 # , c-format
-#: mbox.c:1010
+#: mbox.c:1044
 #, c-format
 msgid "Write failed!  Saved partial mailbox to %s"
 msgstr "Erreur d'écriture ! Boîte aux lettres partielle sauvée dans %s"
 
-#: mbox.c:1072
+#: mbox.c:1106
 msgid "Could not reopen mailbox!"
 msgstr "La boîte aux lettres n'a pas pu être réouverte !"
 
-#: mbox.c:1099
+#: mbox.c:1133
 msgid "Reopening mailbox..."
 msgstr "Réouverture de la boîte aux lettres..."
 
@@ -3140,18 +3140,18 @@ msgid "Tagging is not supported."
 msgstr "Le marquage n'est pas supporté."
 
 # , c-format
-#: mh.c:1223
+#: mh.c:1235
 #, c-format
 msgid "Scanning %s..."
 msgstr "Lecture de %s..."
 
-#: mh.c:1433 mh.c:1511
+#: mh.c:1482 mh.c:1565
 msgid "Could not flush message to disk"
 msgstr "Impossible de recopier le message physiquement sur le disque (flush)"
 
-#: mh.c:1478
-msgid "maildir_commit_message(): unable to set time on file"
-msgstr "maildir_commit_message() : impossible de fixer l'heure du fichier"
+#: mh.c:1527
+msgid "_maildir_commit_message(): unable to set time on file"
+msgstr "_maildir_commit_message() : impossible de fixer l'heure du fichier"
 
 #: mutt_sasl.c:194
 msgid "Unknown SASL profile"
@@ -3610,11 +3610,11 @@ msgstr "La boîte aux lettres est protégée contre l'écriture. %s"
 msgid "Mailbox checkpointed."
 msgstr "Boîte aux lettres vérifiée."
 
-#: mx.c:1423
+#: mx.c:1350
 msgid "Can't write message"
 msgstr "Impossible d'écrire le message"
 
-#: mx.c:1462
+#: mx.c:1385
 msgid "Integer overflow -- can't allocate memory."
 msgstr "Dépassement de capacité sur entier -- impossible d'allouer la mémoire."
 
@@ -3923,7 +3923,7 @@ msgstr "La commande UIDL n'est pas supportée par le serveur."
 msgid "%d messages have been lost. Try reopening the mailbox."
 msgstr "%d messages ont été perdus. Essayez de rouvrir la boîte aux lettres."
 
-#: pop.c:411 pop.c:800
+#: pop.c:411 pop.c:805
 #, c-format
 msgid "%s is an invalid POP path"
 msgstr "%s est un chemin POP invalide"
@@ -3937,43 +3937,43 @@ msgid "Can't write message to temporary file!"
 msgstr "Impossible d'écrire le message dans le fichier temporaire !"
 
 # , c-format
-#: pop.c:677
+#: pop.c:682
 msgid "Marking messages deleted..."
 msgstr "Marquage des messages à effacer..."
 
-#: pop.c:755 pop.c:820
+#: pop.c:760 pop.c:825
 msgid "Checking for new messages..."
 msgstr "Recherche de nouveaux messages..."
 
-#: pop.c:784
+#: pop.c:789
 msgid "POP host is not defined."
 msgstr "Le serveur POP n'est pas défini."
 
-#: pop.c:848
+#: pop.c:853
 msgid "No new mail in POP mailbox."
 msgstr "Aucun nouveau message dans la boîte aux lettres POP."
 
-#: pop.c:855
+#: pop.c:860
 msgid "Delete messages from server?"
 msgstr "Effacer les messages sur le serveur ?"
 
 # , c-format
-#: pop.c:857
+#: pop.c:862
 #, c-format
 msgid "Reading new messages (%d bytes)..."
 msgstr "Lecture de nouveaux messages (%d octets)..."
 
-#: pop.c:899
+#: pop.c:904
 msgid "Error while writing mailbox!"
 msgstr "Erreur à l'écriture de la boîte aux lettres !"
 
 # , c-format
-#: pop.c:903
+#: pop.c:908
 #, c-format
 msgid "%s [%d of %d messages read]"
 msgstr "%s [%d messages lus sur %d]"
 
-#: pop.c:926 pop_lib.c:378
+#: pop.c:931 pop_lib.c:378
 msgid "Server closed connection!"
 msgstr "Le serveur a fermé la connexion !"
 
