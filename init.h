@@ -2743,7 +2743,7 @@ struct option_t MuttVars[] = {
   ** @ = Only applicable to the current folder
   ** .pp
   ** In order to use %S, %N, %F, and %!, $$mail_check_stats must
-  ** be \fIset\fP.  When set, a useful value for this setting is
+  ** be \fIset\fP.  When thus set, a suggested value for this option is
   ** "%B%?F? [%F]?%* %?N?%N/?%S".
   */
   { "sidebar_indent_string", DT_STR, R_BOTH, UL &SidebarIndentString, UL "  " },
