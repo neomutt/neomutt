@@ -6071,6 +6071,14 @@ linkend="imap-idle">$imap_idle</link> option is set, it'll use the IMAP
 IDLE extension if advertised by the server.
 </para>
 
+<para>
+The <link linkend="mail-check-recent">$mail_check_recent</link>
+option changes whether Mutt will notify you of new mail in an
+already visited mailbox.  When set (the default) it will only notify
+you of new mail received since the last time you opened the mailbox.
+When unset, Mutt will notify you of any new mail in the mailbox.
+</para>
+
 </sect2>
 
 <sect2 id="new-mail-polling">
@@ -6115,6 +6123,26 @@ the mailboxes list containing new mail (if any), pressing
 mail.  The (by default unbound) function
 <literal>&lt;next-unread-mailbox&gt;</literal> in the index can be used
 to immediately open the next folder with unread mail (if any).
+</para>
+
+</sect2>
+
+<sect2 id="calc-mailbox-counts">
+<title>Calculating Mailbox Message Counts</title>
+
+<para>
+If <link linkend="mail-check-stats">$mail_check_stats</link> is set,
+Mutt will periodically calculate the unread, flagged, and total
+message counts for each mailbox watched by the
+<command>mailboxes</command> command.  This calculation takes place at
+the same time as new mail polling, but is controlled by a separate
+timer: <link
+linkend="mail-check-stats-interval">$mail_check_stats_interval</link>.
+</para>
+
+<para>
+The sidebar can display these message counts.  See <link
+linkend="sidebar-format">$sidebar_format</link>.
 </para>
 
 </sect2>
