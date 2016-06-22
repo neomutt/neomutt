@@ -75,7 +75,7 @@ static BUFFY *find_next_new (int wrap)
       b = Incoming;
     if (!b || (b == HilBuffy))
       break;
-    if (b->msg_unread > 0)
+    if (b->new || b->msg_unread > 0)
       return b;
   } while (b);
 
@@ -105,7 +105,7 @@ static BUFFY *find_prev_new (int wrap)
       b = Outgoing;
     if (!b || (b == HilBuffy))
       break;
-    if (b->msg_unread > 0)
+    if (b->new || b->msg_unread > 0)
       return b;
   } while (b);
 
@@ -411,7 +411,7 @@ static void update_buffy_visibility (BUFFY **arr, int arr_len)
     if (!new_only)
       continue;
 
-    if ((b == OpnBuffy) || (b->msg_unread  > 0) ||
+    if ((b == OpnBuffy) || (b->msg_unread  > 0) || b->new ||
         (b == HilBuffy) || (b->msg_flagged > 0))
       continue;
 
