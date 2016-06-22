@@ -3,6 +3,9 @@ dnl Process this file with autoconf to produce a configure script.
 dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
 dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 
+CFLAGS=$CFLAGS
+LDFLAGS=$LDFLAGS
+
 AC_INIT([mutt],[m4_esyscmd(tr -d \\n <VERSION)])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
@@ -1446,3 +1449,14 @@ AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
         intl/Makefile m4/Makefile po/Makefile.in
         hcachever.sh muttbug.sh doc/instdoc.sh)
 AC_OUTPUT
+
+AC_MSG_NOTICE([Summary of build options:
+
+  Version:           ${PACKAGE_VERSION}
+  Host OS:           ${host_os}
+  Install prefix:    ${prefix}
+  Compiler:          ${CC}
+  CFlags:            ${CFLAGS} ${CPPFLAGS}
+  LDFlags:           ${LDFLAGS}
+  Libs:              ${LIBS}
+])
