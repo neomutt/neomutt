@@ -152,17 +152,12 @@ else
    AC_MSG_RESULT([no])
 fi
 
-AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]),
-[       if test x$enableval = xno ; then
-                have_pgp=no
-        fi
+AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]))
+AS_IF([test x$enable_pgp != "xno"], [
+	   AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
+	   PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
 ])
-
-if test x$have_pgp != xno ; then
-        AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP,1, [Define if you want classic PGP support.])
-        PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
-        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
-fi
 
 AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]),
 [	if test x$enableval = xno ; then
@@ -1459,4 +1454,5 @@ AC_MSG_NOTICE([Summary of build options:
   Libs:              ${LIBS}
 
   GPGME:             $enable_gpgme
+  PGP:               $enable_pgp
 ])
