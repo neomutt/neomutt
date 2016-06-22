@@ -171,6 +171,7 @@ AS_IF([test x$enable_sidebar = "xyes"], [
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
+dnl Clean up this code. Maybe also use pkg_config
 AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
 AS_IF([test x$enable_notmuch = "xyes"], [
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
@@ -196,12 +197,13 @@ AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
 
 AC_ARG_ENABLE(compressed, AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-[       if test x$enableval = xyes ; then
-                AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
-        fi
+              enable_compressed=$enableval, enable_compressed=no
+)
+AS_IF([test x$enable_compressed = "xyes"], [
+	   AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
 ])
-AM_CONDITIONAL(BUILD_COMPRESS, test x$need_compress = xyes)
+AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
@@ -1449,4 +1451,5 @@ AC_MSG_NOTICE([Summary of build options:
   SMIME:             $enable_smime
   Sidebar:           $enable_sidebar
   Notmuch:           $enable_notmuch
+  Compressed Folder: $enable_compressed
 ])
