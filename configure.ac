@@ -171,6 +171,7 @@ AS_IF([test x$enable_sidebar = "xyes"], [
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
+dnl Clean up this code. Maybe also use pkg_config
 AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
 AS_IF([test x$enable_notmuch = "xyes"], [
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
@@ -1450,4 +1451,5 @@ AC_MSG_NOTICE([Summary of build options:
   SMIME:             $enable_smime
   Sidebar:           $enable_sidebar
   Notmuch:           $enable_notmuch
+  Compressed Folder: $enable_compressed
 ])
