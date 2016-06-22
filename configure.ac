@@ -125,10 +125,8 @@ OPS='$(srcdir)/OPS'
 
 AC_MSG_CHECKING([whether to build with GPGME support])
 AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]),
-[       if test x$enableval = xyes; then
-		enable_gpgme=yes
-	fi
-])
+              [enable_gpgme=$enableval], [enable_gpgme=no]
+)
 
 if test x"$enable_gpgme" = xyes; then
    AC_MSG_RESULT(yes)
@@ -1459,4 +1457,6 @@ AC_MSG_NOTICE([Summary of build options:
   CFlags:            ${CFLAGS} ${CPPFLAGS}
   LDFlags:           ${LDFLAGS}
   Libs:              ${LIBS}
+
+  GPGME:             $enable_gpgme
 ])
