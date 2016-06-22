@@ -3,7 +3,10 @@ dnl Process this file with autoconf to produce a configure script.
 dnl !!! WHEN ADDING NEW CONFIGURE TESTS, PLEASE ADD CODE TO MAIN.C !!!
 dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 
-AC_INIT([mutt],[m4_esyscmd(tr -d \\n <VERSION)])
+CFLAGS=$CFLAGS
+LDFLAGS=$LDFLAGS
+
+AC_INIT([NeoMutt], [m4_esyscmd(tr -d \\n <VERSION)], [https://github.com/neomutt/neomutt/issues], [mutt], [http://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -29,6 +32,10 @@ AC_MSG_RESULT($mutt_cv_prefix)
 
 AC_PROG_CC
 AC_PROG_CC_C99
+if test "$ac_cv_prog_cc_c99" = "no"; then
+  AC_ERROR([Compiler does not support C99. Aborting.])
+fi
+
 AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
   AC_MSG_ERROR(Compiler not ANSI compliant)
@@ -121,20 +128,16 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 OPS='$(srcdir)/OPS'
 
 AC_MSG_CHECKING([whether to build with GPGME support])
-AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]),
-[       if test x$enableval = xyes; then
-		enable_gpgme=yes
-	fi
-])
+AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]), enable_gpgme=$enableval, enable_gpgme=no)
 
-if test x"$enable_gpgme" = xyes; then
-   AC_MSG_RESULT(yes)
+AS_IF([test x$enable_gpgme = "xyes"], [
+   AC_MSG_RESULT([yes])
    AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
 		 [Defined, if GPGME support is enabled]),
 		 [gpgme_found=no])
-   if test x"$gpgme_found" = xno; then
+   AS_IF([test x$gpgme_found = "xno"], [
       AC_MSG_ERROR([*** GPGME not found ***])
-   else
+   ], [
       AM_PATH_GPGME(1.1.1, AC_DEFINE(HAVE_GPGME_PKA_TRUST, 1,
 				  [Define if GPGME supports PKA]))
       #needed to get GPGME_LIBS and al correctly
@@ -146,34 +149,24 @@ if test x"$enable_gpgme" = xyes; then
       AC_CHECK_FUNCS([gpgme_op_export_keys])
       LIBS="$saved_LIBS"
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
-   fi
-else
+   ])
+], [
    AC_MSG_RESULT([no])
-fi
-
-AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]),
-[       if test x$enableval = xno ; then
-                have_pgp=no
-        fi
 ])
 
-if test x$have_pgp != xno ; then
-        AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP,1, [Define if you want classic PGP support.])
-        PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
-        MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
-fi
-
-AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]),
-[	if test x$enableval = xno ; then
-		have_smime=no
-	fi
+AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]), enable_pgp=$enableval, enable_pgp=yes)
+AS_IF([test x$enable_pgp != "xno"], [
+	   AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
+	   PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
 ])
- 
-if test x$have_smime != xno ; then
-	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
-	SMIMEAUX_TARGET="smime_keys"
-fi
+
+AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]), enable_smime=$enableval, enable_smime=yes)
+AS_IF([test x$enable_smime != "xno"], [
+       AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
+       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
+       SMIMEAUX_TARGET="smime_keys"
+])
 
 AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]), enable_sidebar=$enableval, enable_sidebar=no)
 AS_IF([test x$enable_sidebar = "xyes"], [
@@ -191,6 +184,7 @@ AS_IF([test x$enable_compressed = "xyes"], [
 ])
 AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
+dnl Clean up this code. Maybe also use pkg_config
 AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
 AS_IF([test x$enable_notmuch = "xyes"], [
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
@@ -215,6 +209,7 @@ AS_IF([test x$enable_notmuch = "xyes"], [
 AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
 
+dnl TODO: Clean this up. Needs some work understanding and fixing the AC_ARG_WITH
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
    then
@@ -902,6 +897,7 @@ AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable reg
 dnl -- start cache --
 db_found=no
 db_requested=auto
+hcache_db_used=no
 AC_ARG_ENABLE(hcache, AS_HELP_STRING([--enable-hcache],[Enable header caching]))
 AC_ARG_WITH(tokyocabinet, AS_HELP_STRING([--without-tokyocabinet],[Don't use tokyocabinet even if it is available]))
 AC_ARG_WITH(qdbm, AS_HELP_STRING([--without-qdbm],[Don't use qdbm even if it is available]))
@@ -923,7 +919,7 @@ then
 
     if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "no"
     then
-      db_requested=tc
+      db_requested=TokyoCabinet
     fi
     if test -n "$with_qdbm" && test "$with_qdbm" != "no"
     then
@@ -931,7 +927,7 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=qdbm
+        db_requested=QDBM
       fi
     fi
     if test -n "$with_gdbm" && test "$with_gdbm" != "no"
@@ -940,7 +936,7 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=gdbm
+        db_requested=GDBM
       fi
     fi
     if test -n "$with_bdb" && test "$with_bdb" != "no"
@@ -949,7 +945,7 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=bdb
+        db_requested=BDB
       fi
     fi
     if test -n "$with_lmdb" && test "$with_lmdb" != "no"
@@ -958,13 +954,13 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=lmdb
+        db_requested=LMDB
       fi
     fi
     
     dnl -- Tokyo Cabinet --
     if test "$with_tokyocabinet" != "no" \
-	    && test "$db_requested" = auto -o "$db_requested" = tc
+	    && test "$db_requested" = auto -o "$db_requested" = TokyoCabinet
     then
       if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "yes"
       then
@@ -976,7 +972,7 @@ then
       AC_CHECK_LIB(tokyocabinet, tcbdbopen,
         [MUTTLIBS="$MUTTLIBS -ltokyocabinet"
          AC_DEFINE(HAVE_TC, 1, [Tokyo Cabinet Support])
-         db_found=tc],
+         db_found=TokyoCabinet],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"]))
       if test "$db_requested" != auto && test "$db_found" != "$db_requested"
@@ -987,7 +983,7 @@ then
 
     dnl -- QDBM --
     if test "$with_qdbm" != "no" && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = qdbm
+	    && test "$db_requested" = auto -o "$db_requested" = QDBM
     then
       if test -n "$with_qdbm" && test "$with_qdbm" != "yes"
       then
@@ -1008,7 +1004,7 @@ then
       AC_CHECK_LIB(qdbm, vlopen,
         [MUTTLIBS="$MUTTLIBS -lqdbm"
          AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
-         db_found=qdbm],
+         db_found=QDBM],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"])
       LIBS="$saved_LIBS"
@@ -1020,7 +1016,7 @@ then
 
     dnl -- GDBM --
     if test x$with_gdbm != xno && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = gdbm
+	    && test "$db_requested" = auto -o "$db_requested" = GDBM
     then
         if test "$with_gdbm" != "yes"
         then
@@ -1038,7 +1034,7 @@ then
         then
           AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
           MUTTLIBS="$MUTTLIBS -lgdbm"
-          db_found=gdbm
+          db_found=GDBM
         fi
         if test "$db_requested" != auto && test "$db_found" != "$db_requested"
         then
@@ -1049,7 +1045,7 @@ then
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
     if test x$with_bdb != xno && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = bdb
+	    && test "$db_requested" = auto -o "$db_requested" = BDB
     then
         if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
         then
@@ -1099,7 +1095,7 @@ then
             CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
             LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
             AC_DEFINE(HAVE_DB4, 1, [Berkeley DB4 Support])
-            db_found=bdb
+            db_found=BDB
         else
             AC_MSG_RESULT(no)
         fi
@@ -1107,7 +1103,7 @@ then
 
     dnl -- LMDB --
     if test x$with_lmdb != xno && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = lmdb
+	    && test "$db_requested" = auto -o "$db_requested" = LMDB
     then
         if test "$with_lmdb" != "yes"
         then
@@ -1125,7 +1121,7 @@ then
         then
           AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
           MUTTLIBS="$MUTTLIBS -llmdb"
-          db_found=lmdb
+          db_found=LMDB
         fi
         if test "$db_requested" != auto && test "$db_found" != "$db_requested"
         then
@@ -1135,9 +1131,10 @@ then
 
     if test $db_found = no
     then
-        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM or Berkeley DB4 for hcache])
+        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM, Berkeley DB4 or LMDB for hcache])
     fi
 fi
+hcache_db_used=$db_found
 dnl -- end cache --
 
 AM_CONDITIONAL(BUILD_HCACHE, test x$db_found != xno)
@@ -1443,3 +1440,22 @@ AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
         intl/Makefile m4/Makefile po/Makefile.in
         hcachever.sh muttbug.sh doc/instdoc.sh)
 AC_OUTPUT
+
+AC_MSG_NOTICE([Summary of build options:
+
+  Version:           ${PACKAGE_VERSION}
+  Host OS:           ${host_os}
+  Install prefix:    ${prefix}
+  Compiler:          ${CC}
+  CFlags:            ${CFLAGS} ${CPPFLAGS}
+  LDFlags:           ${LDFLAGS}
+  Libs:              ${LIBS}
+
+  GPGME:             $enable_gpgme
+  PGP:               $enable_pgp
+  SMIME:             $enable_smime
+  Sidebar:           $enable_sidebar
+  Notmuch:           $enable_notmuch
+  Compressed Folder: $enable_compressed
+  Header Cache:      $hcache_db_used
+])
