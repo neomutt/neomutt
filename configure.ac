@@ -1449,4 +1449,5 @@ AC_MSG_NOTICE([Summary of build options:
   PGP:               $enable_pgp
   SMIME:             $enable_smime
   Sidebar:           $enable_sidebar
+  Notmuch:           $enable_notmuch
 ])
