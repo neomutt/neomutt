@@ -126,14 +126,14 @@ OPS='$(srcdir)/OPS'
 AC_MSG_CHECKING([whether to build with GPGME support])
 AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]), enable_gpgme=$enableval, enable_gpgme=no)
 
-if test x"$enable_gpgme" = xyes; then
-   AC_MSG_RESULT(yes)
+AS_IF([test x$enable_gpgme = "xyes"], [
+   AC_MSG_RESULT([yes])
    AM_PATH_GPGME(1.0.0, AC_DEFINE(CRYPT_BACKEND_GPGME, 1,
 		 [Defined, if GPGME support is enabled]),
 		 [gpgme_found=no])
-   if test x"$gpgme_found" = xno; then
+   AS_IF([test x$gpgme_found = "xno"], [
       AC_MSG_ERROR([*** GPGME not found ***])
-   else
+   ], [
       AM_PATH_GPGME(1.1.1, AC_DEFINE(HAVE_GPGME_PKA_TRUST, 1,
 				  [Define if GPGME supports PKA]))
       #needed to get GPGME_LIBS and al correctly
@@ -145,10 +145,10 @@ if test x"$enable_gpgme" = xyes; then
       AC_CHECK_FUNCS([gpgme_op_export_keys])
       LIBS="$saved_LIBS"
       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS crypt-gpgme.o crypt-mod-pgp-gpgme.o crypt-mod-smime-gpgme.o"
-   fi
-else
+   ])
+], [
    AC_MSG_RESULT([no])
-fi
+])
 
 AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]), enable_pgp=$enableval, enable_pgp=yes)
 AS_IF([test x$enable_pgp != "xno"], [
