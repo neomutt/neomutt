@@ -164,12 +164,11 @@ AS_IF([test x$enable_smime != "xno"], [
        SMIMEAUX_TARGET="smime_keys"
 ])
 
-AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
-[       if test x$enableval = xyes ; then
-		AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
-		OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
-        fi
+AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]), enable_sidebar=$enableval, enable_sidebar=no)
+AS_IF([test x$enable_sidebar = "xyes"], [
+	   AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
+	   OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
 AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
@@ -1449,4 +1448,5 @@ AC_MSG_NOTICE([Summary of build options:
   GPGME:             $enable_gpgme
   PGP:               $enable_pgp
   SMIME:             $enable_smime
+  Sidebar:           $enable_sidebar
 ])
