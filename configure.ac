@@ -124,9 +124,7 @@ AC_DEFINE_UNQUOTED(SENDMAIL,"$ac_cv_path_SENDMAIL", [Where to find sendmail on y
 OPS='$(srcdir)/OPS'
 
 AC_MSG_CHECKING([whether to build with GPGME support])
-AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]),
-              [enable_gpgme=$enableval], [enable_gpgme=no]
-)
+AC_ARG_ENABLE(gpgme, AS_HELP_STRING([--enable-gpgme],[Enable GPGME support]))
 
 if test x"$enable_gpgme" = xyes; then
    AC_MSG_RESULT(yes)
