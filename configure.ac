@@ -150,7 +150,7 @@ else
    AC_MSG_RESULT([no])
 fi
 
-AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]))
+AC_ARG_ENABLE(pgp, AS_HELP_STRING([--disable-pgp],[Disable PGP support]), enable_pgp=$enableval, enable_pgp=yes)
 AS_IF([test x$enable_pgp != "xno"], [
 	   AC_DEFINE(CRYPT_BACKEND_CLASSIC_PGP, 1, [Define if you want classic PGP Support.])
 	   PGPAUX_TARGET="pgpring\$(EXEEXT) pgpewrap\$(EXEEXT)"
