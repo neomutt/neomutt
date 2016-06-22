@@ -6,7 +6,7 @@ dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([mutt],[m4_esyscmd(tr -d \\n <VERSION)])
+AC_INIT([NeoMutt], [m4_esyscmd(tr -d \\n <VERSION)], [https://github.com/neomutt/neomutt/issues], [mutt], [http://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
@@ -205,6 +205,7 @@ AS_IF([test x$enable_compressed = "xyes"], [
 ])
 AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
+dnl TODO: Clean this up. Needs some work understanding and fixing the AC_ARG_WITH
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
    then
