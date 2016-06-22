@@ -32,6 +32,10 @@ AC_MSG_RESULT($mutt_cv_prefix)
 
 AC_PROG_CC
 AC_PROG_CC_C99
+if test "$ac_cv_prog_cc_c99" = "no"; then
+  AC_ERROR([Compiler does not support C99. Aborting.])
+fi
+
 AC_SEARCH_LIBS([strerror],[cposix])
 if test "x$U" != "x"; then
   AC_MSG_ERROR(Compiler not ANSI compliant)
