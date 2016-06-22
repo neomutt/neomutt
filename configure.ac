@@ -157,17 +157,12 @@ AS_IF([test x$enable_pgp != "xno"], [
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS pgp.o pgpinvoke.o pgpkey.o pgplib.o gnupgparse.o pgpmicalg.o pgppacket.o crypt-mod-pgp-classic.o"
 ])
 
-AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]),
-[	if test x$enableval = xno ; then
-		have_smime=no
-	fi
+AC_ARG_ENABLE(smime, AS_HELP_STRING([--disable-smime],[Disable SMIME support]), enable_smime=$enableval, enable_smime=yes)
+AS_IF([test x$enable_smime != "xno"], [
+       AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
+       MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
+       SMIMEAUX_TARGET="smime_keys"
 ])
- 
-if test x$have_smime != xno ; then
-	AC_DEFINE(CRYPT_BACKEND_CLASSIC_SMIME, 1, [Define if you want classic S/MIME support.])
-	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS smime.o crypt-mod-smime-classic.o"
-	SMIMEAUX_TARGET="smime_keys"
-fi
 
 AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
 [       if test x$enableval = xyes ; then
@@ -1453,4 +1448,5 @@ AC_MSG_NOTICE([Summary of build options:
 
   GPGME:             $enable_gpgme
   PGP:               $enable_pgp
+  SMIME:             $enable_smime
 ])
