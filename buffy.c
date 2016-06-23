@@ -475,7 +475,8 @@ buffy_maildir_update (BUFFY *mailbox)
 	mailbox->sb_last_checked = time (NULL);
 
 	/* make sure the updates are actually put on screen */
-	mutt_sb_draw();
+	if (SidebarWidth)
+		mutt_sb_draw();
 }
 
 #endif
@@ -546,7 +547,8 @@ buffy_mbox_update (BUFFY *mailbox, struct stat *sb)
   }
 
   /* make sure the updates are actually put on screen */
-  mutt_sb_draw();
+  if (SidebarWidth)
+    mutt_sb_draw();
 }
 #endif
 
