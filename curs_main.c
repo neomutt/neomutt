@@ -1235,9 +1235,6 @@ int mutt_index_menu (void)
 	}
 
 	mutt_expand_path (buf, sizeof (buf));
-#ifdef USE_SIDEBAR
-	mutt_sb_set_open_buffy (buf);
-#endif
 	if (mx_get_magic (buf) <= 0)
 	{
 	  mutt_error (_("%s is not a mailbox."), buf);
@@ -1286,6 +1283,10 @@ int mutt_index_menu (void)
 	}
 	else
 	  menu->current = 0;
+
+#ifdef USE_SIDEBAR
+        mutt_sb_set_open_buffy ();
+#endif
 
 	mutt_clear_error ();
 	mutt_buffy_check(1); /* force the buffy check after we have changed

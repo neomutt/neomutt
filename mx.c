@@ -595,6 +595,8 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     ctx = safe_malloc (sizeof (CONTEXT));
   memset (ctx, 0, sizeof (CONTEXT));
   ctx->path = safe_strdup (path);
+  if (! (ctx->realpath = realpath (ctx->path, NULL)) )
+    ctx->realpath = safe_strdup (ctx->path);
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = 0;
@@ -737,6 +739,7 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);
   FREE (&ctx->path);
+  FREE (&ctx->realpath);
   FREE (&ctx->pattern);
   if (ctx->limit_pattern) 
     mutt_pattern_free (&ctx->limit_pattern);
