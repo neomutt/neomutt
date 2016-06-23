@@ -588,7 +588,9 @@ static int imap_open_mailbox (CONTEXT* ctx)
   imap_qualify_path (buf, sizeof (buf), &mx, idata->mailbox);
 
   FREE (&(ctx->path));
+  FREE (&(ctx->realpath));
   ctx->path = safe_strdup (buf);
+  ctx->realpath = safe_strdup (ctx->path);
 
   idata->ctx = ctx;
 

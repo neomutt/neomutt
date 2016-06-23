@@ -201,17 +201,13 @@ void mutt_update_mailbox (BUFFY * b)
 static BUFFY *buffy_new (const char *path)
 {
   BUFFY* buffy;
-#ifdef USE_SIDEBAR
   char rp[PATH_MAX] = "";
   char *r = NULL;
-#endif
 
   buffy = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
   strfcpy (buffy->path, path, sizeof (buffy->path));
-#ifdef USE_SIDEBAR
   r = realpath (path, rp);
   strfcpy (buffy->realpath, r ? rp : path, sizeof (buffy->realpath));
-#endif
   buffy->next = NULL;
   buffy->magic = 0;
 
@@ -229,10 +225,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
   char f1[PATH_MAX];
-#ifndef USE_SIDEBAR
-  char f2[PATH_MAX];
-#endif
-  char *p, *q;
+  char *p;
 
   while (MoreArgs (s))
   {
@@ -262,13 +255,7 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     p = realpath (buf, f1);
     for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
     {
-#ifdef USE_SIDEBAR
-      q = (*tmp)->realpath;
-      if (mutt_strcmp (p ? p : buf, q) == 0)
-#else
-      q = realpath ((*tmp)->path, f2);
-      if (mutt_strcmp (p ? p : buf, q ? q : (*tmp)->path) == 0)
-#endif
+      if (mutt_strcmp (p ? p : buf, (*tmp)->realpath) == 0)
       {
 	dprint(3,(debugfile,"mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
 	break;

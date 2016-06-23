@@ -148,7 +148,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
   if (!b)
     return src;
 
-  int c = Context && (mutt_strcmp (Context->path, b->path) == 0);
+  int c = Context && (mutt_strcmp (Context->realpath, b->realpath) == 0);
 
   optional = flags & MUTT_FORMAT_OPTIONAL;
 
@@ -407,7 +407,7 @@ static void update_buffy_visibility (BUFFY **arr, int arr_len)
         (b == HilBuffy) || (b->msg_flagged > 0))
       continue;
 
-    if (Context && (strcmp (b->path, Context->path) == 0))
+    if (Context && (mutt_strcmp (b->realpath, Context->realpath) == 0))
       /* Spool directory */
       continue;
 
@@ -648,9 +648,8 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
       SETCOLOR(MT_COLOR_NORMAL);
 
     mutt_window_move (MuttSidebarWindow, row, 0);
-    if (Context && Context->path &&
-        (!strcmp (b->path, Context->path)||
-         !strcmp (b->realpath, Context->path)))
+    if (Context && Context->realpath &&
+        !mutt_strcmp (b->realpath, Context->realpath))
     {
       b->msg_unread  = Context->unread;
       b->msg_count   = Context->msgcount;
@@ -844,8 +843,7 @@ void mutt_sb_set_buffystats (const CONTEXT *ctx)
 
   for (; b; b = b->next)
   {
-    if (!strcmp (b->path,     ctx->path) ||
-        !strcmp (b->realpath, ctx->path))
+    if (!mutt_strcmp (b->realpath, ctx->realpath))
     {
       b->msg_unread  = ctx->unread;
       b->msg_count   = ctx->msgcount;
@@ -875,27 +873,25 @@ const char *mutt_sb_get_highlight (void)
 }
 
 /**
- * mutt_sb_set_open_buffy - Set the OpnBuffy based on a mailbox path
- * @path: Mailbox path
+ * mutt_sb_set_open_buffy - Set the OpnBuffy based on a the global Context
  *
  * Search through the list of mailboxes.  If a BUFFY has a matching path, set
  * OpnBuffy to it.
  */
-BUFFY *mutt_sb_set_open_buffy (const char *path)
+BUFFY *mutt_sb_set_open_buffy (void)
 {
   /* Even if the sidebar is hidden */
 
   BUFFY *b = Incoming;
 
-  if (!path || !b)
-    return NULL;
-
   OpnBuffy = NULL;
+
+  if (!Context || !b)
+    return NULL;
 
   for (; b; b = b->next)
   {
-    if (!strcmp (b->path,     path) ||
-        !strcmp (b->realpath, path))
+    if (!mutt_strcmp (b->realpath, Context->realpath))
     {
       OpnBuffy = b;
       HilBuffy = b;
@@ -937,7 +933,7 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
     {
       /* This might happen if the user "unmailboxes *", then
        * "mailboxes" our current mailbox back again */
-      if (mutt_strcmp (b->path, Context->path) == 0)
+      if (mutt_strcmp (b->realpath, Context->realpath) == 0)
         OpnBuffy = b;
     }
   }

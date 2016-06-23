@@ -26,9 +26,8 @@
 typedef struct buffy_t
 {
   char path[_POSIX_PATH_MAX];
-#ifdef USE_SIDEBAR
-  char realpath[_POSIX_PATH_MAX];
-#endif
+  char realpath[_POSIX_PATH_MAX]; /* used for duplicate detection, context comparison,
+                                     and the sidebar */
   off_t size;
   struct buffy_t *next;
 #ifdef USE_SIDEBAR

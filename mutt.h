@@ -903,6 +903,7 @@ struct mx_ops
 typedef struct _context
 {
   char *path;
+  char *realpath;               /* used for buffy comparison and the sidebar */
   FILE *fp;
   time_t atime;
   time_t mtime;
