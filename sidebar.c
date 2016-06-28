@@ -439,7 +439,6 @@ static void sort_buffy_array (BUFFY **arr, int arr_len)
   short ssm = (SidebarSortMethod & SORT_MASK);
   if ((ssm == SORT_COUNT)     ||
       (ssm == SORT_COUNT_NEW) ||
-      (ssm == SORT_DESC)      ||
       (ssm == SORT_FLAGGED)   ||
       (ssm == SORT_PATH))
     qsort (arr, arr_len, sizeof (*arr), cb_qsort_buffy);
@@ -873,7 +872,7 @@ const char *mutt_sb_get_highlight (void)
 }
 
 /**
- * mutt_sb_set_open_buffy - Set the OpnBuffy based on a the global Context
+ * mutt_sb_set_open_buffy - Set the OpnBuffy based on the global Context
  *
  * Search through the list of mailboxes.  If a BUFFY has a matching path, set
  * OpnBuffy to it.
