@@ -33,9 +33,8 @@
 #define SORT_SPAM	14
 #define SORT_COUNT	15
 #define SORT_COUNT_NEW	16
-#define SORT_DESC	17
-#define SORT_FLAGGED	18
-#define SORT_PATH	19
+#define SORT_FLAGGED	17
+#define SORT_PATH	18
 
 /* dgc: Sort & SortAux are shorts, so I'm bumping these bitflags up from
  * bits 4 & 5 to bits 8 & 9 to make room for more sort keys in the future. */

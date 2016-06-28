@@ -2795,7 +2795,6 @@ struct option_t MuttVars[] = {
   ** .dd alpha (alphabetically)
   ** .dd count (all message count)
   ** .dd date
-  ** .dd desc (description)
   ** .dd new (new message count)
   ** .dd size
   ** .dd unsorted
@@ -3810,7 +3809,6 @@ const struct mapping_t SortKeyMethods[] = {
 const struct mapping_t SortSidebarMethods[] = {
   { "alpha",		SORT_PATH },
   { "count",		SORT_COUNT },
-  { "desc",		SORT_DESC },
   { "flagged",		SORT_FLAGGED },
   { "mailbox-order",	SORT_ORDER },
   { "name",		SORT_PATH },
