@@ -55,4 +55,7 @@
 # ifndef USE_SASL
 #  define USE_SASL
 # endif
+# ifndef USE_SIDEBAR
+#  define USE_SIDEBAR
+# endif
 #endif
