@@ -31,86 +31,26 @@
 /* Previous values for some sidebar config */
 static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
-static short  PreviousSort;	/* sidebar_sort_method */
-
-/* Keep track of various BUFFYs */
-static BUFFY *TopBuffy;		/* First mailbox visible in sidebar */
-static BUFFY *OpnBuffy;		/* Current (open) mailbox */
-static BUFFY *HilBuffy;		/* Highlighted mailbox */
-static BUFFY *BotBuffy;		/* Last mailbox visible in sidebar */
-static BUFFY *Outgoing;		/* Last mailbox in the linked list */
+static short PreviousSort = -1;  /* sidebar_sort_method */
 
 /**
  * struct sidebar_entry - Info about folders in the sidebar
- *
- * Used in the mutt_FormatString callback
  */
-struct sidebar_entry
+typedef struct sidebar_entry
 {
-  char         box[STRING];
+  char         box[STRING];     /* formatted mailbox name */
   BUFFY       *buffy;
-};
+  short        is_hidden;
+} SBENTRY;
 
+static int EntryCount = 0;
+static int EntryLen   = 0;
+static SBENTRY **Entries = NULL;
 
-/**
- * find_next_new - Find the next folder that contains new mail
- * @wrap: Wrap around to the beginning if the end is reached
- *
- * Search down the list of mail folders for one containing new mail.
- *
- * Returns:
- *	BUFFY*: Success
- *	NULL:   Failure
- */
-static BUFFY *find_next_new (int wrap)
-{
-  BUFFY *b = HilBuffy;
-  if (!b)
-    return NULL;
-
-  do
-  {
-    b = b->next;
-    if (!b && wrap)
-      b = Incoming;
-    if (!b || (b == HilBuffy))
-      break;
-    if (b->new || b->msg_unread > 0)
-      return b;
-  } while (b);
-
-  return NULL;
-}
-
-/**
- * find_prev_new - Find the previous folder that contains new mail
- * @wrap: Wrap around to the beginning if the end is reached
- *
- * Search up the list of mail folders for one containing new mail.
- *
- * Returns:
- *	BUFFY*: Success
- *	NULL:   Failure
- */
-static BUFFY *find_prev_new (int wrap)
-{
-  BUFFY *b = HilBuffy;
-  if (!b)
-    return NULL;
-
-  do
-  {
-    b = b->prev;
-    if (!b && wrap)
-      b = Outgoing;
-    if (!b || (b == HilBuffy))
-      break;
-    if (b->new || b->msg_unread > 0)
-      return b;
-  } while (b);
-
-  return NULL;
-}
+static int TopIndex = -1;    /* First mailbox visible in sidebar */
+static int OpnIndex = -1;    /* Current (open) mailbox */
+static int HilIndex = -1;    /* Highlighted mailbox */
+static int BotIndex = -1;    /* Last mailbox visible in sidebar */
 
 /**
  * cb_format_str - Create the string to show in the sidebar
@@ -137,7 +77,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, char op
                                  const char *src, const char *prefix, const char *ifstring,
                                  const char *elsestring, unsigned long data, format_flag flags)
 {
-  struct sidebar_entry *sbe = (struct sidebar_entry *) data;
+  SBENTRY *sbe = (SBENTRY *) data;
   unsigned int optional;
   char fmt[STRING];
 
@@ -269,20 +209,17 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, char op
  * us using cb_format_str() for the sidebar specific formatting characters.
  */
 static void make_sidebar_entry (char *buf, unsigned int buflen, int width, char *box,
-                                BUFFY *b)
+                                SBENTRY *sbe)
 {
-  struct sidebar_entry sbe;
-
-  if (!buf || !box || !b)
+  if (!buf || !box || !sbe)
     return;
 
-  sbe.buffy = b;
-  strfcpy (sbe.box, box, sizeof (sbe.box));
+  strfcpy (sbe->box, box, sizeof (sbe->box));
 
   /* Temporarily lie about the screen width */
   int oc = COLS;
   COLS = width + SidebarWidth;
-  mutt_FormatString (buf, buflen, 0, NONULL(SidebarFormat), cb_format_str, (unsigned long) &sbe, 0);
+  mutt_FormatString (buf, buflen, 0, NONULL(SidebarFormat), cb_format_str, (unsigned long) sbe, 0);
   COLS = oc;
 
   /* Force string to be exactly the right width */
@@ -304,30 +241,21 @@ static void make_sidebar_entry (char *buf, unsigned int buflen, int width, char 
 }
 
 /**
- * cb_qsort_buffy - qsort callback to sort BUFFYs
- * @a: First  BUFFY to compare
- * @b: Second BUFFY to compare
- *
- * Compare the paths of two BUFFYs taking the locale into account.
+ * cb_qsort_sbe - qsort callback to sort SBENTRYs
+ * @a: First  SBENTRY to compare
+ * @b: Second SBENTRY to compare
  *
  * Returns:
  *	-1: a precedes b
  *	 0: a and b are identical
  *	 1: b precedes a
  */
-static int cb_qsort_buffy (const void *a, const void *b)
+static int cb_qsort_sbe (const void *a, const void *b)
 {
-  const BUFFY *b1 = *(const BUFFY **) a;
-  const BUFFY *b2 = *(const BUFFY **) b;
-
-  /* Special case -- move hidden BUFFYs to the end */
-  if (b1->is_hidden != b2->is_hidden)
-  {
-    if (b1->is_hidden)
-      return 1;
-    else
-      return -1;
-  }
+  const SBENTRY *sbe1 = *(const SBENTRY **) a;
+  const SBENTRY *sbe2 = *(const SBENTRY **) b;
+  BUFFY *b1 = sbe1->buffy;
+  BUFFY *b2 = sbe2->buffy;
 
   int result = 0;
 
@@ -354,38 +282,9 @@ static int cb_qsort_buffy (const void *a, const void *b)
 }
 
 /**
- * buffy_going - Prevent our pointers becoming invalid
- * @b: BUFFY about to be deleted
+ * update_entries_visibility - Should a sidebar_entry be displayed in the sidebar
  *
- * If we receive a delete-notification for a BUFFY, we need to change any
- * pointers we have to reference a different BUFFY, or set them to NULL.
- *
- * We don't update the prev/next pointers, they'll be fixed on the next
- * call to prepare_sidebar().
- *
- * Returns:
- *	A valid alternative BUFFY, or NULL
- */
-static BUFFY *buffy_going (const BUFFY *b)
-{
-  if (!b)
-    return NULL;
-
-  if (b->next)
-  {
-    b->next->prev = NULL;
-    return b->next;
-  }
-
-  return b->prev;
-}
-
-/**
- * update_buffy_visibility - Should a BUFFY be displayed in the sidebar
- * @arr:     array of BUFFYs
- * @arr_len: number of BUFFYs in array
- *
- * For each BUFFY in the array, check whether we should display it.
+ * For each SBENTRY in the Entries array, check whether we should display it.
  * This is determined by several criteria.  If the BUFFY:
  *	is the currently open mailbox
  *	is the currently highlighted mailbox
@@ -393,80 +292,64 @@ static BUFFY *buffy_going (const BUFFY *b)
  *	has flagged messages
  *	is whitelisted
  */
-static void update_buffy_visibility (BUFFY **arr, int arr_len)
+static void update_entries_visibility (void)
 {
-  if (!arr)
-    return;
-
   short new_only = option (OPTSIDEBARNEWMAILONLY);
-
-  BUFFY *b;
+  SBENTRY *sbe;
   int i;
-  for (i = 0; i < arr_len; i++)
-  {
-    b = arr[i];
 
-    b->is_hidden = 0;
+  for (i = 0; i < EntryCount; i++)
+  {
+    sbe = Entries[i];
+
+    sbe->is_hidden = 0;
 
     if (!new_only)
       continue;
 
-    if ((b == OpnBuffy) || (b->msg_unread  > 0) || b->new ||
-        (b == HilBuffy) || (b->msg_flagged > 0))
+    if ((i == OpnIndex) || (sbe->buffy->msg_unread  > 0) || sbe->buffy->new ||
+        (i == HilIndex) || (sbe->buffy->msg_flagged > 0))
       continue;
 
-    if (Context && (mutt_strcmp (b->realpath, Context->realpath) == 0))
+    if (Context && (mutt_strcmp (sbe->buffy->realpath, Context->realpath) == 0))
       /* Spool directory */
       continue;
 
-    if (mutt_find_list (SidebarWhitelist, b->path))
+    if (mutt_find_list (SidebarWhitelist, sbe->buffy->path))
       /* Explicitly asked to be visible */
       continue;
 
-    b->is_hidden = 1;
+    sbe->is_hidden = 1;
   }
 }
 
 /**
- * sort_buffy_array - Sort an array of BUFFY pointers
- * @arr:     array of BUFFYs
- * @arr_len: number of BUFFYs in array
+ * sort_entries - Sort an array of BUFFY pointers
  *
- * Sort an array of BUFFY pointers according to the current sort config
+ * Sort the Entries array according to the current sort config
  * option "sidebar_sort_method". This calls qsort to do the work which calls our
- * callback function "cb_qsort_buffy".
+ * callback function "cb_qsort_sbe".
  *
  * Once sorted, the prev/next links will be reconstructed.
  */
-static void sort_buffy_array (BUFFY **arr, int arr_len)
+static void sort_entries (void)
 {
-  if (!arr)
-    return;
+  short ssm = (SidebarSortMethod & SORT_MASK);
 
   /* These are the only sort methods we understand */
-  short ssm = (SidebarSortMethod & SORT_MASK);
   if ((ssm == SORT_COUNT)     ||
       (ssm == SORT_COUNT_NEW) ||
       (ssm == SORT_FLAGGED)   ||
       (ssm == SORT_PATH))
-    qsort (arr, arr_len, sizeof (*arr), cb_qsort_buffy);
-
-  int i;
-  for (i = 0; i < (arr_len - 1); i++)
-    arr[i]->next = arr[i + 1];
-  arr[arr_len - 1]->next = NULL;
-
-  for (i = 1; i < arr_len; i++)
-    arr[i]->prev = arr[i - 1];
-  arr[0]->prev = NULL;
+    qsort (Entries, EntryCount, sizeof (*Entries), cb_qsort_sbe);
 }
 
 /**
- * prepare_sidebar - Prepare the list of BUFFYs for the sidebar display
+ * prepare_sidebar - Prepare the list of SBENTRYs for the sidebar display
  * @page_size:  The number of lines on a page
  *
- * Before painting the sidebar, we count the BUFFYs, determine which are
- * visible, sort them and set up our page pointers.
+ * Before painting the sidebar, we determine which are visible, sort
+ * them and set up our page pointers.
  *
  * This is a lot of work to do each refresh, but there are many things that
  * can change outside of the sidebar that we don't hear about.
@@ -477,66 +360,45 @@ static void sort_buffy_array (BUFFY **arr, int arr_len)
  */
 static int prepare_sidebar (int page_size)
 {
-  BUFFY *b = Incoming;
-  if (!b)
+  int i;
+  SBENTRY *opn_entry = NULL, *hil_entry = NULL;
+
+  if (!EntryCount)
     return 0;
 
-  int count = 0;
-  for (; b; b = b->next)
-    count++;
+  if (OpnIndex >= 0)
+    opn_entry = Entries[OpnIndex];
+  if (HilIndex >= 0)
+    hil_entry = Entries[HilIndex];
 
-  BUFFY **arr = safe_malloc (count * sizeof (*arr));
+  update_entries_visibility ();
+  sort_entries ();
 
-  int i = 0;
-  for (b = Incoming; b; b = b->next, i++)
-    arr[i] = b;
-
-  update_buffy_visibility (arr, count);
-  sort_buffy_array        (arr, count);
-
-  Incoming = arr[0];
-
-  int top_index =  0;
-  int opn_index = -1;
-  int hil_index = -1;
-  int bot_index = -1;
-
-  for (i = 0; i < count; i++)
+  for (i = 0; i < EntryCount; i++)
   {
-    if (OpnBuffy == arr[i])
-      opn_index = i;
-    if (HilBuffy == arr[i])
-      hil_index = i;
+    if (opn_entry == Entries[i])
+      OpnIndex = i;
+    if (hil_entry == Entries[i])
+      HilIndex = i;
   }
 
-  if (!HilBuffy || (SidebarSortMethod != PreviousSort))
+  if ((HilIndex < 0) || (SidebarSortMethod != PreviousSort))
   {
-    if (OpnBuffy)
-    {
-      HilBuffy  = OpnBuffy;
-      hil_index = opn_index;
-    }
+    if (OpnIndex >= 0)
+      HilIndex  = OpnIndex;
     else
-    {
-      HilBuffy  = arr[0];
-      hil_index = 0;
-    }
+      HilIndex  = 0;
   }
-  if (TopBuffy)
-    top_index = (hil_index / page_size) * page_size;
+  if (TopIndex >= 0)
+    TopIndex = (HilIndex / page_size) * page_size;
   else
-    top_index = hil_index;
-  TopBuffy = arr[top_index];
+    TopIndex = HilIndex;
 
-  bot_index = top_index + page_size - 1;
-  if (bot_index > (count - 1))
-    bot_index = count - 1;
-  BotBuffy  = arr[bot_index];
-
-  Outgoing = arr[count - 1];
+  BotIndex = TopIndex + page_size - 1;
+  if (BotIndex > (EntryCount - 1))
+    BotIndex = EntryCount - 1;
 
   PreviousSort = SidebarSortMethod;
-  FREE (&arr);
   return 1;
 }
 
@@ -686,25 +548,29 @@ static void fill_empty_space (int first_row, int num_rows, int width)
  */
 static void draw_sidebar (int first_row, int num_rows, int div_width)
 {
-  BUFFY *b = TopBuffy;
-  if (!b)
+  int entryidx;
+  SBENTRY *entry;
+  BUFFY *b;
+  if (TopIndex < 0)
     return;
 
   int w = MIN(COLS, (SidebarWidth - div_width));
   int row = 0;
-  for (b = TopBuffy; b && (row < num_rows); b = b->next)
+  for (entryidx = TopIndex; (entryidx < EntryCount) && (row < num_rows); entryidx++)
   {
-    if (b->is_hidden)
+    entry = Entries[entryidx];
+    if (entry->is_hidden)
       continue;
+    b = entry->buffy;
 
-    if (b == OpnBuffy)
+    if (entryidx == OpnIndex)
     {
       if ((ColorDefs[MT_COLOR_SB_INDICATOR] != 0))
         SETCOLOR(MT_COLOR_SB_INDICATOR);
       else
         SETCOLOR(MT_COLOR_INDICATOR);
     }
-    else if (b == HilBuffy)
+    else if (entryidx == HilIndex)
       SETCOLOR(MT_COLOR_HIGHLIGHT);
     else if ((ColorDefs[MT_COLOR_SB_SPOOLFILE] != 0) &&
                (mutt_strcmp (b->path, Spoolfile) == 0))
@@ -784,7 +650,7 @@ static void draw_sidebar (int first_row, int num_rows, int div_width)
       }
     }
     char str[STRING];
-    make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, b);
+    make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, entry);
     printw ("%s", str);
     if (sidebar_folder_depth > 0)
       FREE (&sidebar_folder_name);
@@ -867,6 +733,126 @@ void mutt_sb_draw (void)
 }
 
 /**
+ * select_next - Selects the next unhidden mailbox
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_next (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry++;
+    if (entry == EntryCount)
+      return 0;
+  } while (Entries[entry]->is_hidden);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_next_new - Selects the next new mailbox
+ *
+ * Search down the list of mail folders for one containing new mail.
+ *
+ * Returns:
+ *	1: Success
+ *	0: Failure
+ */
+static int select_next_new (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry++;
+    if (entry == EntryCount)
+    {
+      if (option (OPTSIDEBARNEXTNEWWRAP))
+        entry = 0;
+      else
+        return 0;
+    }
+    if (entry == HilIndex)
+      return 0;
+  } while (!Entries[entry]->buffy->new &&
+           !Entries[entry]->buffy->msg_unread);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_prev - Selects the previous unhidden mailbox
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_prev (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry--;
+    if (entry < 0)
+      return 0;
+  } while (Entries[entry]->is_hidden);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
+ * select_prev_new - Selects the previous new mailbox
+ *
+ * Search up the list of mail folders for one containing new mail.
+ *
+ * Returns:
+ *	1: Success
+ *	0: Failure
+ */
+static int select_prev_new (void)
+{
+  int entry = HilIndex;
+
+  if (!EntryCount || HilIndex < 0)
+    return 0;
+
+  do
+  {
+    entry--;
+    if (entry < 0)
+    {
+      if (option (OPTSIDEBARNEXTNEWWRAP))
+        entry = EntryCount - 1;
+      else
+        return 0;
+    }
+    if (entry == HilIndex)
+      return 0;
+  } while (!Entries[entry]->buffy->new &&
+           !Entries[entry]->buffy->msg_unread);
+
+  HilIndex = entry;
+  return 1;
+}
+
+/**
  * mutt_sb_change_mailbox - Change the selected mailbox
  * @op: Operation code
  *
@@ -886,49 +872,34 @@ void mutt_sb_change_mailbox (int op)
   if (!option (OPTSIDEBAR))
     return;
 
-  BUFFY *b;
-  if (!HilBuffy)	/* It'll get reset on the next draw */
+  if (HilIndex < 0)	/* It'll get reset on the next draw */
     return;
 
   switch (op)
   {
     case OP_SIDEBAR_NEXT:
-      if (!HilBuffy->next)
+      if (! select_next ())
         return;
-      if (HilBuffy->next->is_hidden)
-        return;
-      HilBuffy = HilBuffy->next;
       break;
     case OP_SIDEBAR_NEXT_NEW:
-      b = find_next_new (option (OPTSIDEBARNEXTNEWWRAP));
-      if (!b)
+      if (! select_next_new ())
         return;
-      else
-        HilBuffy = b;
       break;
     case OP_SIDEBAR_PAGE_DOWN:
-      HilBuffy = BotBuffy;
-      if (HilBuffy->next)
-        HilBuffy = HilBuffy->next;
+      HilIndex = BotIndex;
+      select_next ();
       break;
     case OP_SIDEBAR_PAGE_UP:
-      HilBuffy = TopBuffy;
-      if (HilBuffy != Incoming)
-        HilBuffy = HilBuffy->prev;
+      HilIndex = TopIndex;
+      select_prev ();
       break;
     case OP_SIDEBAR_PREV:
-      if (!HilBuffy->prev)
+      if (! select_prev ())
         return;
-      if (HilBuffy->prev->is_hidden)	/* Can't happen, we've sorted the hidden to the end */
-        return;
-      HilBuffy = HilBuffy->prev;
       break;
     case OP_SIDEBAR_PREV_NEW:
-      b = find_prev_new (option (OPTSIDEBARNEXTNEWWRAP));
-      if (!b)
+      if (! select_prev_new ())
         return;
-      else
-        HilBuffy = b;
       break;
     default:
       return;
@@ -973,10 +944,13 @@ void mutt_sb_set_buffystats (const CONTEXT *ctx)
  */
 const char *mutt_sb_get_highlight (void)
 {
-  if (!HilBuffy)
+  if (!option (OPTSIDEBAR))
     return NULL;
 
-  return HilBuffy->path;
+  if (!EntryCount || HilIndex < 0)
+    return NULL;
+
+  return Entries[HilIndex]->buffy->path;
 }
 
 /**
@@ -985,28 +959,21 @@ const char *mutt_sb_get_highlight (void)
  * Search through the list of mailboxes.  If a BUFFY has a matching path, set
  * OpnBuffy to it.
  */
-BUFFY *mutt_sb_set_open_buffy (void)
+void mutt_sb_set_open_buffy (void)
 {
-  /* Even if the sidebar is hidden */
+  int entry;
 
-  BUFFY *b = Incoming;
+  OpnIndex = -1;
 
-  OpnBuffy = NULL;
-
-  if (!Context || !b)
-    return NULL;
-
-  for (; b; b = b->next)
+  for (entry = 0; entry < EntryCount; entry++)
   {
-    if (!mutt_strcmp (b->realpath, Context->realpath))
+    if (!mutt_strcmp (Entries[entry]->buffy->realpath, Context->realpath))
     {
-      OpnBuffy = b;
-      HilBuffy = b;
+      OpnIndex = entry;
+      HilIndex = entry;
       break;
     }
   }
-
-  return OpnBuffy;
 }
 
 /**
@@ -1020,6 +987,8 @@ BUFFY *mutt_sb_set_open_buffy (void)
  */
 void mutt_sb_notify_mailbox (BUFFY *b, int created)
 {
+  int del_index;
+
   if (!b)
     return;
 
@@ -1028,35 +997,49 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
 
   if (created)
   {
-    if (!TopBuffy)
-      TopBuffy = b;
-    if (!HilBuffy)
-      HilBuffy = b;
-    if (!BotBuffy)
-      BotBuffy = b;
-    if (!Outgoing)
-      Outgoing = b;
-    if (!OpnBuffy && Context)
+    if (EntryCount >= EntryLen)
     {
-      /* This might happen if the user "unmailboxes *", then
-       * "mailboxes" our current mailbox back again */
-      if (mutt_strcmp (b->realpath, Context->realpath) == 0)
-        OpnBuffy = b;
+      EntryLen += 10;
+      safe_realloc (&Entries, EntryLen * sizeof (SBENTRY *));
     }
+    Entries[EntryCount] = safe_calloc (1, sizeof(SBENTRY));
+    Entries[EntryCount]->buffy = b;
+
+    if (TopIndex < 0)
+      TopIndex = EntryCount;
+    if (HilIndex < 0)
+      HilIndex = EntryCount;
+    if (BotIndex < 0)
+      BotIndex = EntryCount;
+    if ((OpnIndex < 0) && Context &&
+        (mutt_strcmp (b->realpath, Context->realpath) == 0))
+      OpnIndex = EntryCount;
+
+    EntryCount++;
   }
   else
   {
-    BUFFY *replacement = buffy_going (b);
-    if (TopBuffy == b)
-      TopBuffy = replacement;
-    if (OpnBuffy == b)
-      OpnBuffy = NULL;
-    if (HilBuffy == b)
-      HilBuffy = replacement;
-    if (BotBuffy == b)
-      BotBuffy = replacement;
-    if (Outgoing == b)
-      Outgoing = replacement;
+    for (del_index = 0; del_index < EntryCount; del_index++)
+      if (Entries[del_index]->buffy == b)
+        break;
+    if (del_index == EntryCount)
+      return;
+    FREE (&Entries[del_index]);
+    EntryCount--;
+
+    if (TopIndex > del_index || TopIndex == EntryCount)
+      TopIndex--;
+    if (OpnIndex == del_index)
+      OpnIndex = -1;
+    else if (OpnIndex > del_index)
+      OpnIndex--;
+    if (HilIndex > del_index || HilIndex == EntryCount)
+      HilIndex--;
+    if (BotIndex > del_index || BotIndex == EntryCount)
+      BotIndex--;
+
+    for (; del_index < EntryCount; del_index++)
+      Entries[del_index] = Entries[del_index + 1];
   }
 
   SidebarNeedsRedraw = 1;
