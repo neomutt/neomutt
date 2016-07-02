@@ -29,7 +29,7 @@
 #include "sort.h"
 
 /* Previous values for some sidebar config */
-static short PreviousSort = -1;  /* sidebar_sort_method */
+static short PreviousSort = SORT_ORDER;  /* sidebar_sort_method */
 
 /**
  * struct sidebar_entry - Info about folders in the sidebar
@@ -316,7 +316,36 @@ static void update_entries_visibility (void)
 }
 
 /**
- * sort_entries - Sort an array of BUFFY pointers
+ * unsort_entries - Restore Entries array order to match Buffy list order
+ */
+static void unsort_entries (void)
+{
+  BUFFY *cur = Incoming;
+  int i = 0, j;
+  SBENTRY *tmp;
+
+  while (cur && (i < EntryCount))
+  {
+    j = i;
+    while ((j < EntryCount) &&
+           (Entries[j]->buffy != cur))
+      j++;
+    if (j < EntryCount)
+    {
+      if (j != i)
+      {
+        tmp = Entries[i];
+        Entries[i] = Entries[j];
+        Entries[j] = tmp;
+      }
+      i++;
+    }
+    cur = cur->next;
+  }
+}
+
+/**
+ * sort_entries - Sort Entries array.
  *
  * Sort the Entries array according to the current sort config
  * option "sidebar_sort_method". This calls qsort to do the work which calls our
@@ -334,6 +363,9 @@ static void sort_entries (void)
       (ssm == SORT_FLAGGED)   ||
       (ssm == SORT_PATH))
     qsort (Entries, EntryCount, sizeof (*Entries), cb_qsort_sbe);
+  else if ((ssm == SORT_ORDER) &&
+           (SidebarSortMethod != PreviousSort))
+    unsort_entries ();
 }
 
 /**
