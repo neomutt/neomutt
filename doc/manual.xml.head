@@ -8200,7 +8200,7 @@ please have a look at the mixmaster documentation.
 	  <row>
 	    <entry><literal>sidebar_sort_method</literal></entry>
 	    <entry>enum</entry>
-	    <entry><literal>SORT_ORDER</literal></entry>
+	    <entry><literal>unsorted</literal></entry>
 	  </row>
 	  <row>
 	    <entry><literal>sidebar_visible</literal></entry>

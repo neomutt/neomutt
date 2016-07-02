@@ -2796,9 +2796,8 @@ struct option_t MuttVars[] = {
   ** .il
   ** .dd alpha (alphabetically)
   ** .dd count (all message count)
-  ** .dd date
+  ** .dd flagged (flagged message count)
   ** .dd new (new message count)
-  ** .dd size
   ** .dd unsorted
   ** .ie
   ** .pp
