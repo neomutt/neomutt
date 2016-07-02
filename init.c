@@ -1613,6 +1613,10 @@ static void mutt_restore_default (struct option_t *p)
     set_option (OPTREDRAWTREE);
   if (p->flags & R_REFLOW)
     mutt_reflow_windows ();
+#ifdef USE_SIDEBAR
+  if (p->flags & R_SIDEBAR)
+    SidebarNeedsRedraw = 1;
+#endif
 }
 
 static size_t escape_string (char *dst, size_t len, const char* src)
@@ -2233,6 +2237,10 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         set_option (OPTREDRAWTREE);
       if (MuttVars[idx].flags & R_REFLOW)
         mutt_reflow_windows ();
+#ifdef USE_SIDEBAR
+      if (MuttVars[idx].flags & R_SIDEBAR)
+        SidebarNeedsRedraw = 1;
+#endif
     }
   }
   return (r);
