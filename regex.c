@@ -381,7 +381,9 @@ typedef char boolean;
 #define false 0
 #define true 1
 
-static int re_match_2_internal ();
+static int re_match_2_internal (struct re_pattern_buffer *bufp,
+	const char *string1, int size1, const char *string2, int size2, int pos,
+	struct re_registers *regs, int stop);
 
 /* These are the command codes that appear in compiled regular
    expressions.  Some opcodes are followed by argument bytes.  A

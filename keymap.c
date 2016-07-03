@@ -324,11 +324,10 @@ static char *get_func (const struct binding_t *bindings, int op)
 }
 
 /* Parses s for <function> syntax and adds the whole sequence to
- * the macro buffer.
- *
- * This should be used for macros, push, and exec commands only.
+ * either the macro or unget buffer.  This function is invoked by the next
+ * two defines below.
  */
-static void tokenize_push_macro_string (char *s)
+static void generic_tokenize_push_string (char *s, void (*generic_push) (int, int))
 {
   char *pp, *p = s + mutt_strlen (s) - 1;
   size_t l;
@@ -346,7 +345,7 @@ static void tokenize_push_macro_string (char *s)
       {
 	if ((i = parse_fkey (pp)) > 0)
 	{
-	  mutt_push_macro_event (KEY_F (i), 0);
+	  generic_push (KEY_F (i), 0);
 	  p = pp - 1;
 	  continue;
 	}
@@ -360,7 +359,7 @@ static void tokenize_push_macro_string (char *s)
 	if (KeyNames[i].name)
 	{
 	  /* found a match */
-	  mutt_push_macro_event (KeyNames[i].value, 0);
+	  generic_push (KeyNames[i].value, 0);
 	  p = pp - 1;
 	  continue;
 	}
@@ -380,15 +379,20 @@ static void tokenize_push_macro_string (char *s)
 
 	if (op != OP_NULL)
 	{
-	  mutt_push_macro_event (0, op);
+	  generic_push (0, op);
 	  p = pp - 1;
 	  continue;
 	}
       }
     }
-    mutt_push_macro_event ((unsigned char)*p--, 0);	/* independent 8 bits chars */
+    generic_push ((unsigned char)*p--, 0);	/* independent 8 bits chars */
   }
 }
+
+/* This should be used for macros, push, and exec commands only. */
+#define tokenize_push_macro_string(s) generic_tokenize_push_string (s, mutt_push_macro_event)
+/* This should be used for other unget operations. */
+#define tokenize_unget_string(s) generic_tokenize_push_string (s, mutt_unget_event)
 
 static int retry_generic (int menu, keycode_t *keys, int keyslen, int lastkey)
 {
@@ -849,7 +853,7 @@ void km_error_key (int menu)
   }
 
   /* make sure the key is really the help key in this menu */
-  mutt_unget_string (buf);
+  tokenize_unget_string (buf);
   if (km_dokey (menu) != OP_HELP)
   {
     mutt_error _("Key is not bound.");

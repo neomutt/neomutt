@@ -23,8 +23,8 @@ AC_DEFUN([MUTT_AM_PATH_GSSAPI],
   AC_PATH_PROG(KRB5CFGPATH, krb5-config, none, $krb5_path)
   if test "$KRB5CFGPATH" != "none"
   then
-    GSSAPI_CFLAGS="$CPPFLAGS `$KRB5CFGPATH --cflags gssapi`"
-    GSSAPI_LIBS="$MUTTLIBS `$KRB5CFGPATH --libs gssapi`"
+    GSSAPI_CFLAGS="`$KRB5CFGPATH --cflags gssapi`"
+    GSSAPI_LIBS="`$KRB5CFGPATH --libs gssapi`"
     case "`$KRB5CFGPATH --version`" in
       "Kerberos 5 "*)	GSSAPI_IMPL="MIT";;
       ?eimdal*)		GSSAPI_IMPL="Heimdal";;
