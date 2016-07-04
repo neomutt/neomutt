@@ -324,7 +324,7 @@ store_size (const CONTEXT *ctx)
  * Returns: src (unchanged)
  */
 static const char *
-cb_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+cb_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
 	const char *fmt, const char *ifstring, const char *elsestring,
 	unsigned long data, format_flag flags)
 {
@@ -379,7 +379,7 @@ get_compression_cmd (const CONTEXT *ctx, const char *cmd)
 
 	char expanded[_POSIX_PATH_MAX];
 
-	mutt_FormatString (expanded, sizeof (expanded), 0, cmd, cb_format_str, (unsigned long) ctx, 0);
+	mutt_FormatString (expanded, sizeof (expanded), 0, COLS - SidebarWidth, cmd, cb_format_str, (unsigned long) ctx, 0);
 	return safe_strdup (expanded);
 }
 

@@ -2393,7 +2393,7 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   {
     char cmd[LONG_STRING];
 
-    mutt_FormatString (cmd, sizeof (cmd), 0, NONULL (Inews), nntp_format_str, 0, 0);
+    mutt_FormatString (cmd, sizeof (cmd), 0, COLS - SidebarWidth, NONULL (Inews), nntp_format_str, 0, 0);
     if (!*cmd)
     {
       i = nntp_post (msg);

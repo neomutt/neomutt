@@ -154,7 +154,7 @@ void nntp_newsrc_close (NNTP_SERVER *);
 void nntp_buffy (char *, size_t);
 void nntp_expand_path (char *, size_t, ACCOUNT *);
 void nntp_clear_cache (NNTP_SERVER *);
-const char *nntp_format_str (char *, size_t, size_t, char, const char *,
+const char *nntp_format_str (char *, size_t, size_t, int, char, const char *,
 			     const char *, const char *, const char *,
 			     unsigned long, format_flag);
 

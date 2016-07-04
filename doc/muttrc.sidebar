@@ -43,12 +43,12 @@ set sidebar_next_new_wrap = no
 # Note: Only the first character of this string is used.
 set sidebar_divider_char = '|'
 
+# Enable extended buffy mode to calculate total, new, and flagged
+# message counts for each mailbox.
+set mail_check_stats
+
 # Display the Sidebar mailboxes using this format string.
 set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
-
-# Sidebar will not refresh its list of mailboxes any more frequently than
-# this number of seconds.  This will help reduce disk/network traffic.
-set sidebar_refresh_time = 60
 
 # Sort the mailboxes in the Sidebar using this method:
 #       count    - total number of messages

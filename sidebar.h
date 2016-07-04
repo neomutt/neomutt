@@ -29,9 +29,7 @@ const char * mutt_sb_get_highlight (void);
 void         mutt_sb_init (void);
 void         mutt_sb_notify_mailbox (BUFFY *b, int created);
 void         mutt_sb_set_buffystats (const CONTEXT *ctx);
-BUFFY *      mutt_sb_set_open_buffy (const char *path);
-void         mutt_sb_set_update_time (void);
-int          mutt_sb_should_refresh (void);
+void         mutt_sb_set_open_buffy (void);
 void         mutt_sb_toggle_virtual (void);
 
 #endif /* SIDEBAR_H */

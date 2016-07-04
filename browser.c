@@ -209,7 +209,7 @@ static int link_is_dir (const char *folder, const char *path)
 }
 
 static const char *
-folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
 		   const char *fmt, const char *ifstring, const char *elsestring,
 		   unsigned long data, format_flag flags)
 {
@@ -411,16 +411,16 @@ folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, folder_format_str, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, folder_format_str, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
 
   return (src);
 }
 
 #ifdef USE_NNTP
 static const char *
-newsgroup_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+newsgroup_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
 		      const char *fmt, const char *ifstring, const char *elsestring,
 		      unsigned long data, format_flag flags)
 {
@@ -460,10 +460,10 @@ newsgroup_format_str (char *dest, size_t destlen, size_t col, char op, const cha
       if (flags & M_FORMAT_OPTIONAL)
       {
 	if (folder->ff->nd->unread != 0)
-	  mutt_FormatString (dest, destlen, col, ifstring, newsgroup_format_str,
+	  mutt_FormatString (dest, destlen, col, cols, ifstring, newsgroup_format_str,
 		data, flags);
 	else
-	  mutt_FormatString (dest, destlen, col, elsestring, newsgroup_format_str,
+	  mutt_FormatString (dest, destlen, col, cols, elsestring, newsgroup_format_str,
 		data, flags);
       }
       else if (Context && Context->data == folder->ff->nd)
@@ -814,11 +814,11 @@ static void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
   
 #ifdef USE_NNTP
   if (option (OPTNEWS))
-    mutt_FormatString (s, slen, 0, NONULL(GroupFormat), newsgroup_format_str, 
+    mutt_FormatString (s, slen, 0, COLS - SidebarWidth, NONULL(GroupFormat), newsgroup_format_str, 
       (unsigned long) &folder, M_FORMAT_ARROWCURSOR);
   else
 #endif
-  mutt_FormatString (s, slen, 0, NONULL(FolderFormat), folder_format_str, 
+  mutt_FormatString (s, slen, 0, COLS - SidebarWidth, NONULL(FolderFormat), folder_format_str, 
       (unsigned long) &folder, M_FORMAT_ARROWCURSOR);
 }
 
@@ -830,7 +830,7 @@ static void vfolder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
 
-  mutt_FormatString (s, slen, 0, NONULL(VirtFolderFormat), folder_format_str,
+  mutt_FormatString (s, slen, 0, COLS - SidebarWidth, NONULL(VirtFolderFormat), folder_format_str,
       (unsigned long) &folder, M_FORMAT_ARROWCURSOR);
 }
 #endif

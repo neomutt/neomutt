@@ -24,6 +24,7 @@
 #include "mutt_menu.h"
 #include "mapping.h"
 #include "sort.h"
+#include "mutt_curses.h"
 
 #include "mutt_idna.h"
 
@@ -43,7 +44,7 @@ static const struct mapping_t AliasHelp[] = {
 };
 
 static const char *
-alias_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+alias_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
 		  const char *fmt, const char *ifstring, const char *elsestring,
 		  unsigned long data, format_flag flags)
 {
@@ -80,7 +81,7 @@ alias_format_str (char *dest, size_t destlen, size_t col, char op, const char *s
 
 static void alias_entry (char *s, size_t slen, MUTTMENU *m, int num)
 {
-  mutt_FormatString (s, slen, 0, NONULL (AliasFmt), alias_format_str, (unsigned long) ((ALIAS **) m->data)[num], M_FORMAT_ARROWCURSOR);
+  mutt_FormatString (s, slen, 0, COLS - SidebarWidth, NONULL (AliasFmt), alias_format_str, (unsigned long) ((ALIAS **) m->data)[num], M_FORMAT_ARROWCURSOR);
 }
 
 static int alias_tag (MUTTMENU *menu, int n, int m)

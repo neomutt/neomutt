@@ -800,7 +800,7 @@ void nntp_clear_cache (NNTP_SERVER *nserv)
  * %S = url schema
  * %u = username */
 const char *
-nntp_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+nntp_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
 		const char *fmt, const char *ifstring, const char *elsestring,
 		unsigned long data, format_flag flags)
 {
@@ -973,7 +973,7 @@ NNTP_SERVER *nntp_select_server (char *server, int leave_lock)
   /* load .newsrc */
   if (rc >= 0)
   {
-    mutt_FormatString (file, sizeof (file), 0, NONULL (NewsRc),
+    mutt_FormatString (file, sizeof (file), 0, COLS - SidebarWidth, NONULL (NewsRc),
 		       nntp_format_str, (unsigned long)nserv, 0);
     mutt_expand_path (file, sizeof (file));
     nserv->newsrc_file = safe_strdup (file);

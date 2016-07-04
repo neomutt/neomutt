@@ -20,16 +20,13 @@
 #define _MAILBOX_H
 
 /* flags for mutt_open_mailbox() */
-#define M_NOSORT	(1<<0) /* do not sort the mailbox after opening it */
-#define M_APPEND	(1<<1) /* open mailbox for appending messages */
-#define M_READONLY	(1<<2) /* open in read-only mode */
-#define M_QUIET		(1<<3) /* do not print any messages */
-#define M_NEWFOLDER	(1<<4) /* create a new folder - same as M_APPEND, but uses
-				* safe_fopen() for mbox-style folders.
-				*/
-#ifdef USE_SIDEBAR
-#define M_PEEK		(1<<5) /* revert atime back after taking a look (if applicable) */
-#endif
+#define M_NOSORT     (1<<0) /* do not sort the mailbox after opening it */
+#define M_APPEND     (1<<1) /* open mailbox for appending messages */
+#define M_READONLY   (1<<2) /* open in read-only mode */
+#define M_QUIET      (1<<3) /* do not print any messages */
+#define M_NEWFOLDER  (1<<4) /* create a new folder - same as M_APPEND, but uses
+                                * safe_fopen() for mbox-style folders. */
+#define M_PEEK       (1<<5) /* revert atime back after taking a look (if applicable) */
 
 /* mx_open_new_message() */
 #define M_ADD_FROM	(1<<0)	/* add a From_ line */

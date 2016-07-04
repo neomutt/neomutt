@@ -278,6 +278,9 @@ void menu_redraw_full (MUTTMENU *menu)
   mutt_show_error ();
 
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+#ifdef USE_SIDEBAR
+  menu->redraw |= REDRAW_SIDEBAR;
+#endif
 }
 
 void menu_redraw_status (MUTTMENU *menu)
@@ -292,6 +295,14 @@ void menu_redraw_status (MUTTMENU *menu)
   menu->redraw &= ~REDRAW_STATUS;
 }
 
+#ifdef USE_SIDEBAR
+void menu_redraw_sidebar (MUTTMENU *menu)
+{
+  SidebarNeedsRedraw = 0;
+  mutt_sb_draw ();
+}
+#endif
+
 void menu_redraw_index (MUTTMENU *menu)
 {
   char buf[LONG_STRING];
@@ -299,9 +310,6 @@ void menu_redraw_index (MUTTMENU *menu)
   int do_color;
   int attr;
 
-#ifdef USE_SIDEBAR
-  mutt_sb_draw();
-#endif
   for (i = menu->top; i < menu->top + menu->pagelen; i++)
   {
     if (i < menu->max)
@@ -904,6 +912,10 @@ int menu_redraw (MUTTMENU *menu)
   
   if (menu->redraw & REDRAW_STATUS)
     menu_redraw_status (menu);
+#ifdef USE_SIDEBAR
+  if (menu->redraw & REDRAW_SIDEBAR || SidebarNeedsRedraw)
+    menu_redraw_sidebar (menu);
+#endif
   if (menu->redraw & REDRAW_INDEX)
     menu_redraw_index (menu);
   else if (menu->redraw & (REDRAW_MOTION | REDRAW_MOTION_RESYNCH))
