@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt-1.5.7i\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-30 14:19-0700\n"
+"POT-Creation-Date: 2016-07-06 10:39-0700\n"
 "PO-Revision-Date: 2005-02-01 00:01GMT+2\n"
 "Last-Translator: Dokianakis Fanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -422,7 +422,7 @@ msgid "%s: no such attribute"
 msgstr "%s: δεν υπάρχει τέτοια ιδιότητα"
 
 #
-#: color.c:725 hook.c:69 hook.c:77 keymap.c:917
+#: color.c:725 hook.c:69 hook.c:77 keymap.c:921
 msgid "too few arguments"
 msgstr "πολύ λίγα ορίσματα"
 
@@ -802,7 +802,7 @@ msgstr "Προειδοποίηση: '%s' είναι λανθασμένη διεθνής διεύθυνση IDN."
 msgid "You may not delete the only attachment."
 msgstr "Δεν μπορείτε να διαγράψετε τη μοναδική προσάρτηση."
 
-#: compose.c:613 send.c:1680
+#: compose.c:613 send.c:1681
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Λανθασμένη διεθνής διεύθυνση IDN στο \"%s\": '%s'"
@@ -1755,7 +1755,7 @@ msgstr ""
 "MIME;"
 
 #
-#: crypt.c:172 send.c:1608
+#: crypt.c:172 send.c:1609
 msgid "Mail not sent."
 msgstr "Το γράμμα δεν εστάλη."
 
@@ -3115,81 +3115,81 @@ msgstr ""
 msgid "out of arguments"
 msgstr "πολύ λίγα ορίσματα"
 
-#: keymap.c:534
+#: keymap.c:538
 msgid "Macros are currently disabled."
 msgstr ""
 
 #
-#: keymap.c:541
+#: keymap.c:545
 msgid "Macro loop detected."
 msgstr "Εντοπίστηκε βρόγχος μακροεντολής."
 
 #
-#: keymap.c:842 keymap.c:850
+#: keymap.c:846 keymap.c:854
 msgid "Key is not bound."
 msgstr "Το πλήκτρο δεν είναι συνδεδεμένο."
 
 #
-#: keymap.c:854
+#: keymap.c:858
 #, c-format
 msgid "Key is not bound.  Press '%s' for help."
 msgstr "Το πλήκτρο δεν είναι συνδεδεμένο. Πατήστε '%s' για βοήθεια."
 
 #
-#: keymap.c:865
+#: keymap.c:869
 msgid "push: too many arguments"
 msgstr "push: πάρα πολλά ορίσματα"
 
 #
-#: keymap.c:895
+#: keymap.c:899
 #, c-format
 msgid "%s: no such menu"
 msgstr "%s: δεν υπάρχει τέτοιο μενού"
 
 #
-#: keymap.c:910
+#: keymap.c:914
 msgid "null key sequence"
 msgstr "κενή ακολουθία πλήκτρων"
 
 #
-#: keymap.c:997
+#: keymap.c:1001
 msgid "bind: too many arguments"
 msgstr "bind: πάρα πολλά ορίσματα"
 
 #
-#: keymap.c:1020
+#: keymap.c:1024
 #, c-format
 msgid "%s: no such function in map"
 msgstr "%s: δεν έχει καθοριστεί τέτοια λειτουργία"
 
 #
-#: keymap.c:1044
+#: keymap.c:1048
 msgid "macro: empty key sequence"
 msgstr "macro: άδεια ακολουθία πλήκτρων"
 
 #
-#: keymap.c:1055
+#: keymap.c:1059
 msgid "macro: too many arguments"
 msgstr "macro: πάρα πολλές παράμετροι"
 
 #
-#: keymap.c:1091
+#: keymap.c:1095
 msgid "exec: no arguments"
 msgstr "exec: καθόλου ορίσματα"
 
 #
-#: keymap.c:1111
+#: keymap.c:1115
 #, c-format
 msgid "%s: no such function"
 msgstr "%s: δεν υπάρχει τέτοια λειτουργία"
 
 #
 # pgp.c:1200
-#: keymap.c:1132
+#: keymap.c:1136
 msgid "Enter keys (^G to abort): "
 msgstr "Εισάγετε κλειδιά (^G για απόρριψη): "
 
-#: keymap.c:1137
+#: keymap.c:1141
 #, c-format
 msgid "Char = %s, Octal = %o, Decimal = %d"
 msgstr "Χαρακτ = %s, Οκταδικός = %o, Δεκαδικός = %d"
@@ -5007,53 +5007,53 @@ msgid "Aborted unmodified message."
 msgstr "Ματαίωση αποστολής μη τροποποιημένου μηνύματος."
 
 #
-#: send.c:1657
+#: send.c:1658
 msgid "Message postponed."
 msgstr "Το μήνυμα ανεβλήθη."
 
 #
-#: send.c:1668
+#: send.c:1669
 msgid "No recipients are specified!"
 msgstr "Δεν έχουν καθοριστεί παραλήπτες!"
 
 #
-#: send.c:1673
+#: send.c:1674
 msgid "No recipients were specified."
 msgstr "Δεν καθορίστηκαν παραλήπτες."
 
 #
-#: send.c:1689
+#: send.c:1690
 msgid "No subject, abort sending?"
 msgstr "Δεν υπάρχει θέμα, ακύρωση αποστολής;"
 
 #
-#: send.c:1693
+#: send.c:1694
 msgid "No subject specified."
 msgstr "Δεν καθορίστηκε θέμα."
 
 #
-#: send.c:1755 smtp.c:188
+#: send.c:1756 smtp.c:188
 msgid "Sending message..."
 msgstr "Αποστολή μηνύματος..."
 
 #
-#: send.c:1788
+#: send.c:1789
 #, fuzzy
 msgid "Save attachments in Fcc?"
 msgstr "παρουσίαση της προσάρτησης ως κείμενο"
 
 #
-#: send.c:1898
+#: send.c:1899
 msgid "Could not send the message."
 msgstr "Αδυναμία αποστολής του μηνύματος."
 
 #
-#: send.c:1903
+#: send.c:1904
 msgid "Mail sent."
 msgstr "Το γράμμα εστάλη."
 
 #
-#: send.c:1903
+#: send.c:1904
 msgid "Sending in background."
 msgstr "Αποστολή στο παρασκήνιο."
 
