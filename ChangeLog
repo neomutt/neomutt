@@ -1,3 +1,56 @@
+2016-07-01 13:33 -0700  Kevin McCarthy  <kevin@8t8.us>  (7e817890913c)
+
+	* send.c: Check $pgp_autoinline and $pgp_replyinline if oppenc is set.
+	(closes #3846)
+
+	The first oppenc call takes place after the initial checks of
+	$pgp_autoline and $pgp_replyinline, and doesn't go through the pgp
+	menu.
+
+	Therefore, check for $pgp_autoline and $pgp_replyinline if oppenc is
+	set too, to avoid oppenc enabling encryption without INLINE being
+	set in those cases.
+
+	a6a4d6ed0f19 previously cleaned things up so that it is safe to set
+	INLINE even if encryption isn't enabled.
+
+2016-05-24 12:08 -0700  Kevin McCarthy  <kevin@8t8.us>  (f1f1af650910)
+
+	* keymap.c: Fix infinite loop when help is bound to a named key
+	combination.
+
+	Commit a07e8215a0ef introduced a bug in km_error_key, which is
+	called when an unbound key is pressed.
+
+	If help is bound to a sequence containing named keys (e.g. <esc>),
+	the raw (untokenized) string would be pushed back into the unget
+	buffer. This could lead to an infinite loop of unbound key presses
+	triggering more unbound keys being put into the unget buffer.
+
+	Change km_error_key to tokenize the string before putting it in the
+	unget buffer.
+
+	Much thanks to Jiri Bohac for his bug report, analysis, and initial
+	patch!
+
+2016-04-30 14:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (1ef1e39a7218)
+
+	* ChangeLog, UPDATING, VERSION, po/bg.po, po/ca.po, po/cs.po,
+	po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po,
+	po/eu.po, po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po,
+	po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po,
+	po/zh_CN.po, po/zh_TW.po: automatic post-release commit for
+	mutt-1.6.1
+
+2016-04-30 14:23 -0700  Kevin McCarthy  <kevin@8t8.us>  (2822cefa33d6)
+
+	* .hgtags: Added tag mutt-1-6-1-rel for changeset 1ef1e39a7218
+
+2016-04-30 14:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (e3bc23cbe3d1)
+
+	* .hgsigs: mutt-1.6.1 signed
+
 2016-04-27 13:08 -0700  Kevin McCarthy  <kevin@8t8.us>  (23334e967dd7)
 
 	* Makefile.am, getdomain.c, mutt_sasl.c, mutt_socket.c, mutt_tunnel.c,
