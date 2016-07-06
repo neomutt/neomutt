@@ -1511,7 +1511,7 @@ struct option_t MuttVars[] = {
   ** When \fI$$mark_old\fP is set, Mutt does not consider the mailbox to contain new
   ** mail if only old messages exist.
   */
-  { "mail_check_stats", DT_BOOL, R_NONE, OPTMAILCHECKSTATS, 0 },
+  { "mail_check_stats", DT_BOOL, R_NONE, OPTMAILCHECKSTATS, 1 },
   /*
   ** .pp
   ** When \fIset\fP, mutt will periodically calculate message
@@ -3013,7 +3013,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
   */
-  { "sidebar_format", DT_STR, R_SIDEBAR, UL &SidebarFormat, UL "%B%*  %n" },
+  { "sidebar_format", DT_STR, R_SIDEBAR, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S" },
   /*
   ** .pp
   ** This variable allows you to customize the sidebar display. This string is
@@ -3067,6 +3067,11 @@ struct option_t MuttVars[] = {
   ** the list of mailboxes, but wrap around to the beginning. The
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
+  */
+  { "sidebar_refresh_time", DT_NUM, R_BOTH, UL &SidebarRefreshTime, 60 },
+  /*
+  ** .pp
+  ** This option is obsolete and will be removed in the next release.
   */
   { "sidebar_short_path", DT_BOOL, R_SIDEBAR, OPTSIDEBARSHORTPATH, 0 },
   /*
