@@ -8928,17 +8928,17 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
-<sect1 id="quasi-delete">
-	<title>Quasi-Delete Patch</title>
-	<subtitle>Mark emails that should be hidden, but not deleted</subtitle>
+<sect1 id="compress">
+	<title>Compressed Folders Patch</title>
+	<subtitle>Read from/write to compressed mailboxes</subtitle>
 
-	<sect2 id="quasi-delete-patch">
+	<sect2 id="compress-patch">
 		<title>Patch</title>
 
 		<para>
-			To check if Mutt supports <quote>Quasi-Delete</quote>, look for
-			<quote>patch-quasi-delete</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
+			To check if Mutt supports <quote>Compress Folders</quote>, look for
+			<quote>+USE_COMPRESSED</quote> in the mutt version.
+			See: <xref linkend="compile-time-features"/>.
 		</para>
 
 		<itemizedlist>
@@ -8949,864 +8949,357 @@ please have a look at the mixmaster documentation.
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
-	<sect2 id="quasi-delete-intro">
+	<sect2 id="compress-intro">
 		<title>Introduction</title>
-
-        <para>
-		The <quote>quasi-delete</quote> function marks an email that should be
-		hidden from the index, but NOT deleted.
-        </para>
-
-        <para>
-		On its own, this patch isn't very useful.  It forms a useful part of
-		the notmuch plugin.
-        </para>
-	</sect2>
-
-<!--
-	<sect2 id="quasi-delete-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="quasi-delete-functions">
-		<title>Functions</title>
-		<table id="table-quasi-delete-functions">
-			<title>Quasi-Delete Functions</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Default Key</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>index,pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;quasi-delete&gt;</literal></entry>
-						<entry>delete from mutt, don't touch on disk</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-<!--
-	<sect2 id="quasi-delete-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="quasi-delete-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="quasi-delete-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="quasi-delete-muttrc">
-		<title>Muttrc</title>
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'quasi-delete' feature.
- 
-# The 'quasi-delete' function marks an email that should be hidden
-# from the index, but NOT deleted.</emphasis>
-bind index,pager Q quasi-delete
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="quasi-delete-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="quasi-delete-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="quasi-delete-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="progress">
-	<title>Progress Bar Patch</title>
-	<subtitle>Show a visual progress bar on slow operations</subtitle>
-
-	<sect2 id="progress-patch">
-		<title>Patch</title>
 
 		<para>
-			To check if Mutt supports <quote>Progress Bar</quote>, look for
-			<quote>patch-progress</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
+			The Compressed Folder patch allows Mutt to read mailbox files that are
+			compressed.  But it isn't limited to compressed files.  It works well
+			with encrypted files, too.  In fact, if you can create a program/script
+			to convert to and from your format, then Mutt can read it.
 		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="progress-intro">
-		<title>Introduction</title>
-
-        <para>
-		The <quote>progress</quote> patch shows a visual progress bar on slow
-		tasks, such as indexing a large folder over the net.
-        </para>
-	</sect2>
-
-<!--
-	<sect2 id="progress-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="progress-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="progress-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="progress-colors">
-		<title>Colors</title>
-		<table id="table-progress-colors">
-			<title>Progress Colors</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Default Color</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>progress</literal></entry>
-						<entry>default</entry>
-						<entry>Visual progress bar</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-<!--
-	<sect2 id="progress-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="progress-muttrc">
-		<title>Muttrc</title>
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'progress' patch.
- 
-# The 'progress' patch provides clear visual feedback for
-# slow tasks, such as indexing a large folder over the net.
- 
-# Set the color of the progress bar
-# White text on a red background</emphasis>
-color progress white red
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="progress-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="progress-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="progress-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Rocco Rutte <email>pdmef@gmx.net</email></para></listitem>
-		<listitem><para>Vincent Lefevre <email>vincent@vinc17.org</email></para></listitem>
-		<listitem><para>Stefan Kuhn <email>wuodan@hispeed.ch</email></para></listitem>
-		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="status-color">
-	<title>Status Color Patch</title>
-	<subtitle>Custom rules for theming the status bar</subtitle>
-
-	<sect2 id="status-color-patch">
-		<title>Patch</title>
 
 		<para>
-			To check if Mutt supports <quote>Status Color</quote>, look for
-			<quote>patch-status-color</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
+			The patch adds three hooks to Mutt: <literal>open-hook</literal>,
+			<literal>close-hook</literal> and <literal>append-hook</literal>.  They
+			define commands to: uncompress a file; compress a file; append
+			messages to an already compressed file.
 		</para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+		<para>
+			There are some examples of both compressed and encrypted files,
+			later.  For now, the documentation will just concentrate on
+			compressed files.
+		</para>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="status-color-intro">
-		<title>Introduction</title>
-
-        <para>
-		The <quote>status-color</quote> patch allows you to theme different
-		parts of the status bar (also when it's used by the index).
-        </para>
-
-        <para>
-		Unlike normal color commands, <literal>color status</literal> can now
-		take up to 2 extra parameters (regex, num).
-        </para>
 	</sect2>
 
 <!--
-	<sect2 id="status-color-variables">
+	<sect2 id="compress-variables">
 		<title>Variables</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="status-color-functions">
+	<sect2 id="compress-functions">
 		<title>Functions</title>
 		<para>None</para>
 	</sect2>
 -->
 
-	<sect2 id="status-color-commands">
+	<sect2 id="compress-commands">
 		<title>Commands</title>
 		<cmdsynopsis>
-			<command>color</command>
+			<command>open-hook</command>
 			<arg choice="plain">
-				<option>status</option>
+				<replaceable class="parameter">pattern</replaceable>
 			</arg>
 			<arg choice="plain">
-				<replaceable class="parameter">foreground</replaceable>
+				<replaceable class="parameter">shell-command</replaceable>
+			</arg>
+			<command>close-hook</command>
+			<arg choice="plain">
+				<replaceable class="parameter">pattern</replaceable>
 			</arg>
 			<arg choice="plain">
-				<replaceable class="parameter">background</replaceable>
+				<replaceable class="parameter">shell-command</replaceable>
 			</arg>
-			<group choice="opt">
-				<arg choice="plain">
-					<replaceable class="parameter">regex</replaceable>
-				</arg>
-				<group choice="opt">
-					<arg choice="plain">
-						<replaceable class="parameter">num</replaceable>
-					</arg>
-				</group>
-			</group>
+			<command>append-hook</command>
+			<arg choice="plain">
+				<replaceable class="parameter">pattern</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">shell-command</replaceable>
+			</arg>
 		</cmdsynopsis>
 
 		<para>
-			With zero parameters, Mutt will set the default color for the entire
-			status bar.
+			The shell-command must contain two placeholders for filenames:
+			<literal>%f</literal> and <literal>%t</literal>.  These represent
+			<quote>from</quote> and <quote>to</quote> filenames.  It's a good idea to
+			put quotes around these placeholders.
 		</para>
 
 		<para>
-			With one parameter, Mutt will only color the parts matching the
-			regex.
+			If you need the exact string <quote>%f</quote> or <quote>%t</quote> in your
+			command, simply double up the <quote>%</quote> character, e.g.
+			<quote>%%f</quote> or <quote>%%t</quote>.
 		</para>
 
-		<para>
-			With two parameters, Mutt will only color the num'th sub-match of
-			the regex.
-		</para>
-	</sect2>
-
-	<sect2 id="status-color-colors">
-		<title>Colors</title>
-
-		<table id="table-status-color-colors">
-			<title>Status Colors</title>
-			<tgroup cols="3">
+		<table id="table-compress-optional">
+			<title>Not all Hooks are Required</title>
+			<tgroup cols="5">
 				<thead>
 					<row>
-						<entry>Name</entry>
-						<entry>Default Color</entry>
-						<entry>Description</entry>
+						<entry>Open</entry>
+						<entry>Close</entry>
+						<entry>Append</entry>
+						<entry>Effect</entry>
+						<entry>Useful if</entry>
 					</row>
 				</thead>
 				<tbody>
 					<row>
-						<entry>status</entry>
-						<entry><literal>reverse</literal></entry>
-						<entry>Status bar</entry>
+						<entry>Open</entry>
+						<entry>-</entry>
+						<entry>-</entry>
+						<entry>Folder is readonly</entry>
+						<entry>The folder is just a backup</entry>
+					</row>
+					<row>
+						<entry>Open</entry>
+						<entry>Close</entry>
+						<entry>-</entry>
+						<entry>Folder is read/write, but the entire folder must be
+							written if anything is changed</entry>
+						<entry>Your compression format doesn't support appending</entry>
+					</row>
+					<row>
+						<entry>Open</entry>
+						<entry>Close</entry>
+						<entry>Append</entry>
+						<entry>Folder is read/write and emails can be efficiently added
+							to the end</entry>
+						<entry>Your compression format supports appending</entry>
+					</row>
+					<row>
+						<entry>Open</entry>
+						<entry>-</entry>
+						<entry>Append</entry>
+						<entry>Folder is readonly, but can be appended to</entry>
+						<entry>You want to store emails, but never change them</entry>
 					</row>
 				</tbody>
 			</tgroup>
 		</table>
+
+		<note>
+			The command:
+			<itemizedlist>
+				<listitem><para>should return a non-zero exit status on failure</para></listitem>
+				<listitem><para>should not delete any files</para></listitem>
+			</itemizedlist>
+		</note>
+
+		<sect3 id="open-hook">
+			<title>Read from compressed mailbox</title>
+
+			<screen>open-hook regexp shell-command</screen>
+
+			<para>
+				If Mutt is unable to open a file, it then looks for
+				<literal>open-hook</literal> that matches the filename.
+			</para>
+
+			<para>
+				If your compression program doesn't have a well-defined extension,
+				then you can use <literal>.</literal> as the regexp.
+			</para>
+
+			<sect4 id="compress-open-hook-example">
+				<title>Example of open-hook</title>
+
+				<screen>open-hook '\.gz$' &quot;gzip -cd '%f' &gt; '%t'&quot;</screen>
+
+				<itemizedlist>
+					<listitem><para>Mutt finds a file, <quote>example.gz</quote>,
+							that it can't read</para></listitem>
+					<listitem><para>Mutt has an <literal>open-hook</literal>
+							whose regexp matches the filename:
+							<literal>\.gz$</literal></para></listitem>
+					<listitem><para>Mutt uses the command <literal>gzip -cd</literal>
+							to create a temporary file that it <emphasis>can</emphasis>
+							read</para></listitem>
+				</itemizedlist>
+			</sect4>
+		</sect3>
+
+		<sect3 id="close-hook">
+			<title>Write to a compressed mailbox</title>
+
+			<screen>close-hook regexp shell-command</screen>
+
+			<para>
+				When Mutt has finished with a compressed mail folder, it will look
+				for a matching <literal>close-hook</literal> to recompress the file.
+				This hook is <link linkend="table-compress-optional">optional</link>.
+			</para>
+
+			<note>
+				If the folder has not been modifed, the
+				<literal>close-hook</literal> will not be called.
+			</note>
+
+			<sect4 id="compress-close-hook-example">
+				<title>Example of close-hook</title>
+
+				<screen>close-hook '\.gz$' &quot;gzip -c '%t' &gt; '%f'&quot;</screen>
+
+				<itemizedlist>
+					<listitem><para>Mutt has finished with a folder, <quote>example.gz</quote>,
+							that it opened with <literal>open-hook</literal></para></listitem>
+					<listitem><para>The folder has been modified</para></listitem>
+					<listitem><para>Mutt has a <literal>close-hook</literal> whose regexp
+							matches the filename: <literal>\.gz$</literal></para></listitem>
+					<listitem><para>Mutt uses the command <literal>gzip -c</literal>
+							to create a new compressed file</para></listitem>
+				</itemizedlist>
+			</sect4>
+		</sect3>
+
+		<sect3 id="append-hook">
+			<title>Append to a compressed mailbox</title>
+
+			<screen>append-hook regexp shell-command</screen>
+
+			<para>
+				When Mutt wants to append an email to a compressed mail folder, it
+				will look for a matching <literal>append-hook</literal>.
+				This hook is <link linkend="table-compress-optional">optional</link>.
+			</para>
+
+			<para>
+				Using the <literal>append-hook</literal> will save time, but
+				Mutt won't be able to determine the type of the mail folder
+				inside the compressed file.
+			</para>
+
+			<para>
+				Mutt will <emphasis>assume</emphasis> the type to be that of
+				the <literal>$mbox_type</literal> variable.  Mutt also uses
+				this type for temporary files.
+			</para>
+
+			<para>
+				Mutt will only use the <literal>append-hook</literal> for existing files.
+				The <literal>close-hook</literal> will be used for empty, or missing files.
+			</para>
+
+			<sect4 id="compress-append-hook-example">
+				<title>Example of append-hook</title>
+
+				<screen>append-hook '\.gz$' &quot;gzip -c '%t' &gt;&gt; '%f'&quot;</screen>
+
+				<itemizedlist>
+					<listitem><para>Mutt wants to append an email to a folder, <quote>example.gz</quote>,
+							that it opened with <literal>open-hook</literal></para></listitem>
+					<listitem><para>Mutt has an <literal>append-hook</literal> whose regexp matches
+							the filename: <literal>\.gz$</literal></para></listitem>
+					<listitem><para>Mutt knows the mailbox type from the <literal>$mbox</literal>
+							variable</para></listitem>
+					<listitem><para>Mutt uses the command <literal>gzip -c</literal>
+							to append to an existing compressed file</para></listitem>
+				</itemizedlist>
+			</sect4>
+
+		</sect3>
+
+		<sect3 id="compress-empty">
+			<title>Empty Files</title>
+
+			<para>
+				Mutt assumes that an empty file is not compressed.  In this
+				situation, unset <link linkend="save-empty">$save_empty</link>, so
+				that the compressed file will be removed if you delete all of the
+				messages.
+			</para>
+		</sect3>
+
+		<sect3 id="compress-security">
+			<title>Security</title>
+
+			<para>
+				Encrypted files are decrypted into temporary files which are
+				stored in the <link linkend="tmpdir">$tmpdir</link> directory.
+				This could be a security risk.
+			</para>
+		</sect3>
 	</sect2>
 
 <!--
-	<sect2 id="status-color-sort">
+	<sect2 id="compress-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="compress-sort">
 		<title>Sort</title>
 		<para>None</para>
 	</sect2>
 -->
 
-	<sect2 id="status-color-muttrc">
+	<sect2 id="compress-muttrc">
 		<title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'status-color' patch.
+<emphasis role="comment"># Example Mutt config file for the 'compressed folders' feature.
  
-# The 'status-color' patch allows you to theme different parts of
-# the status bar (also when it's used by the index).
+# This feature adds three hooks to Mutt which allow it to
+# work with compressed, or encrypted, mailboxes.
  
-# For the examples below, set some defaults</emphasis>
-set status_format='-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
-set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
-set sort=threads
-set sort_aux=last-date-received
+# The hooks are of the form:
+#       open-hook   regexp &quot;shell-command&quot;
+#       close-hook  regexp &quot;shell-command&quot;
+#       append-hook regexp &quot;shell-command&quot;
  
-<emphasis role="comment"># 'status color' can take up to 2 extra parameters
+# The 'append-hook' is optional.
  
-# color status foreground background [ regex [ num ]]
+# Hander for gzip compressed mailboxes</emphasis>
+open-hook   '\.gz$'  &quot;gzip -cd  '%f' &gt;  '%t'&quot;
+close-hook  '\.gz$'  &quot;gzip -c   '%t' &gt;  '%f'&quot;
+append-hook '\.gz$'  &quot;gzip -c   '%t' &gt;&gt; '%f'&quot;
  
-# 0 extra parameters
-# Set the default color for the entire status line</emphasis>
-color status blue white
+<emphasis role="comment"># Hander for bzip2 compressed mailboxes</emphasis>
+open-hook   '\.bz2$' &quot;bzip2 -cd '%f' &gt;  '%t'&quot;
+close-hook  '\.bz2$' &quot;bzip2 -c  '%t' &gt;  '%f'&quot;
+append-hook '\.bz2$' &quot;bzip2 -c  '%t' &gt;&gt; '%f'&quot;
  
-<emphasis role="comment"># 1 extra parameter
-# Set the color for a matching pattern
-# color status foreground background regexp
+<emphasis role="comment"># Hander for xz compressed mailboxes</emphasis>
+open-hook   '\.xz$'  &quot;xz    -cd '%f' &gt;  '%t'&quot;
+close-hook  '\.xz$'  &quot;xz    -c  '%t' &gt;  '%f'&quot;
+append-hook '\.xz$'  &quot;xz    -c  '%t' &gt;&gt; '%f'&quot;
  
-# Highlight New, Deleted, or Flagged emails</emphasis>
-color status brightred white '(New|Del|Flag):[0-9]+'
+<emphasis role="comment"># Hander for pgp encrypted mailboxes
+# PGP does not support appending to an encrypted file</emphasis>
+open-hook   '\.pgp$' &quot;pgp -f &lt; '%f' &gt; '%t'&quot;
+close-hook  '\.pgp$' &quot;pgp -fe YourPgpUserIdOrKeyId &lt; '%t' &gt; '%f'&quot;
  
-<emphasis role="comment"># Highlight mailbox ordering if it's different from the default
-# First, highlight anything (*/*)</emphasis>
-color status brightred default '\([^)]+/[^)]+\)'
+<emphasis role="comment"># Hander for gpg encrypted mailboxes
+# gpg does not support appending to an encrypted file</emphasis>
+open-hook   '\.gpg$' &quot;gpg --decrypt &lt; '%f' &gt; '%t'&quot;
+close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &gt; '%f'&quot;
  
-<emphasis role="comment"># Then override the color for one specific case</emphasis>
-color status default   default '\(threads/last-date-received\)'
- 
-<emphasis role="comment"># 2 extra parameters
-# Set the color for the nth submatch of a pattern
-# color status foreground background regexp num
- 
-# Highlight the contents of the []s but not the [] themselves</emphasis>
-color status red default '\[([^]]+)\]' 1
- 
-<emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner
-# part in ()s
- 
-# Highlight the mailbox</emphasis>
-color status brightwhite default 'Mutt: ([^ ]+)' 1
- 
-<emphasis role="comment"># Search for 'Mutt: ' but only highlight what comes after it
- 
-# vim: syntax=muttrc</emphasis>
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
 	</sect2>
 
-	<sect2 id="status-color-see-also">
+	<sect2 id="compress-see-also">
 		<title>See Also</title>
 
 		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
 			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
 			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
-			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
-			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
+			<listitem><para><link linkend="tmpdir">$tmpdir</link></para></listitem>
+			<listitem><para><link linkend="mbox-type">$mbox_type</link></para></listitem>
+			<listitem><para><link linkend="save-empty">$save_empty</link></para></listitem>
+			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
 		</itemizedlist>
 	</sect2>
 
-	<sect2 id="status-color-known-bugs">
+	<sect2 id="compress-known-bugs">
 		<title>Known Bugs</title>
-		<para>None</para>
+
+		<itemizedlist>
+			<listitem><para>The Compressed Folder hooks cannot deal with filenames that contains quotes/apostrophes.</para></listitem>
+		</itemizedlist>
 	</sect2>
 
-	<sect2 id="status-color-credits">
+	<sect2 id="compress-credits">
 		<title>Credits</title>
 		<itemizedlist>
-		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-		<listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
-		<listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="index-color">
-	<title>Index Color Patch</title>
-	<subtitle>Custom rules for theming the email index</subtitle>
-
-	<sect2 id="index-color-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>Index Color</quote>, look for
-			<quote>patch-index-color</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-			<listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="index-color-intro">
-		<title>Introduction</title>
-
-        <para>
-		The <quote>index-color</quote> patch allows you to specify colors for
-		individual parts of the email index. e.g. Subject, Author, Flags.
-        </para>
-
-        <para>
-		First choose which part of the index you'd like to color.
-		Then, if needed, pick a pattern to match.
-        </para>
-
-		<para>
-		Note: The pattern does not have to refer to the object you wish to
-		color.  e.g.
-		</para>
-
-<screen>
-color index_author red default &quot;~smutt&quot;
-</screen>
-
-        <para>
-		The author appears red when the subject (~s) contains <quote>mutt</quote>.
-        </para>
-	</sect2>
-
-<!--
-	<sect2 id="index-color-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="index-color-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="index-color-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="index-color-colors">
-		<title>Colors</title>
-
-        <para>
-		All the colors default to <literal>default</literal>, i.e. unset.
-        </para>
-
-        <para>
-		The index objects can be themed using the <literal>color</literal> command.
-		Some objects require a pattern.
-        </para>
-
-<screen>
-color index-object foreground background
-color index-object foreground background pattern
-</screen>
-
-		<table id="table-index-color-colors">
-			<title>Index Colors</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Object</entry>
-						<entry>Pattern</entry>
-						<entry>Highlights</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>index</literal></entry>
-						<entry>yes</entry>
-						<entry>Entire index line</entry>
-					</row>
-					<row>
-						<entry><literal>index_author</literal></entry>
-						<entry>yes</entry>
-						<entry>Author name, %A %a %F %L %n</entry>
-					</row>
-					<row>
-						<entry><literal>index_collapsed</literal></entry>
-						<entry>no</entry>
-						<entry>Number of messages in a collapsed thread, %M</entry>
-					</row>
-					<row>
-						<entry><literal>index_date</literal></entry>
-						<entry>no</entry>
-						<entry>Date field</entry>
-					</row>
-					<row>
-						<entry><literal>index_flags</literal></entry>
-						<entry>yes</entry>
-						<entry>Message flags, %S %Z</entry>
-					</row>
-					<row>
-						<entry><literal>index_label</literal></entry>
-						<entry>no</entry>
-						<entry>Message label, %y %Y</entry>
-					</row>
-					<row>
-						<entry><literal>index_number</literal></entry>
-						<entry>no</entry>
-						<entry>Message number, %C</entry>
-					</row>
-					<row>
-						<entry><literal>index_size</literal></entry>
-						<entry>no</entry>
-						<entry>Message size, %c %l</entry>
-					</row>
-					<row>
-						<entry><literal>index_subject</literal></entry>
-						<entry>yes</entry>
-						<entry>Subject, %s</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-<!--
-	<sect2 id="index-color-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="index-color-muttrc">
-		<title>Muttrc</title>
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'index-color' feature.
- 
-# Entire index line</emphasis>
-color index white black '.*'
- 
-<emphasis role="comment"># Author name, %A %a %F %L %n
- 
-# Give the author column a dark grey background</emphasis>
-color index_author default color234 '.*'
- 
-<emphasis role="comment"># Highlight a particular from (~f)</emphasis>
-color index_author brightyellow color234 '~fRay Charles'
- 
-<emphasis role="comment"># Message flags, %S %Z
-# Highlight the flags for flagged (~F) emails</emphasis>
-color index_flags default red '~F'
- 
-<emphasis role="comment"># Subject, %s
-# Look for a particular subject (~s)</emphasis>
-color index_subject brightcyan default '~s\(closes #[0-9]+\)'
- 
-<emphasis role="comment"># Number of messages in a collapsed thread, %M</emphasis>
-color index_collapsed default brightblue
- 
-<emphasis role="comment"># Date field</emphasis>
-color index_date green default
- 
-<emphasis role="comment"># Message label, %y %Y</emphasis>
-color index_label default brightgreen
- 
-<emphasis role="comment"># Message number, %C</emphasis>
-color index_number red default
- 
-<emphasis role="comment"># Message size, %c %l</emphasis>
-color index_size cyan default
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="index-color-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
-			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
-			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
-			<listitem><para><link linkend="status-color">Status-Color patch</link></para></listitem>
-			<listitem><para><link linkend="keywords">Keywords patch</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="index-color-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="index-color-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Christian Aichinger <email>Greek0@gmx.net</email></para></listitem>
+		<listitem><para>Roland Rosenfeld <email>roland@spinnaker.de</email></para></listitem>
+		<listitem><para>Alain Penders <email>Alain@Finale-Dev.com</email></para></listitem>
 		<listitem><para>Christoph <quote>Myon</quote> Berg <email>myon@debian.org</email></para></listitem>
-		<listitem><para>Elimar Riesebieter <email>riesebie@lxtec.de</email></para></listitem>
-		<listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
-		<listitem><para>Vladimir Marek <email>Vladimir.Marek@oracle.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="nested-if">
-	<title>Nested If Patch</title>
-	<subtitle>Allow complex nested conditions in format strings</subtitle>
-
-	<sect2 id="nested-if-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>Nested If</quote>, look for
-			<quote>patch-nested-if</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="nested-if-intro">
-		<title>Introduction</title>
-
-		<para>
-			Mutt's format strings can contain embedded if-then-else conditions.
-			They are of the form:
-		</para>
-
-<screen>
-%?VAR?TRUE&amp;FALSE?
-</screen>
-
-		<para>
-			If the variable <quote>VAR</quote> has a value greater than zero,
-			print the <quote>TRUE</quote> string, otherwise print the
-			<quote>FALSE</quote> string.
-		</para>
-
-		<para>
-			e.g.  <literal>%?S?Size: %S&amp;Empty?</literal>
-		</para>
-
-		<para>Which can be read as:</para>
-
-		<literallayout>
-		    if (%S &gt; 0) {
-		        print &quot;Size: %S&quot;
-		    } else {
-		        print &quot;Empty&quot;
-		    }
-		</literallayout>
-
-		<para>
-			These conditions are useful, but in Mutt they cannot be nested
-			within one another.  This patch uses the notation
-			<literal>%&lt;VAR?TRUE&amp;FALSE&gt;</literal> and allows them to be nested.
-		</para>
-
-		<para>
-			The <literal>%&lt;...&gt;</literal> notation was used to format the
-			current local time.  but that's not really very useful since mutt
-			has no means of refreshing the screen periodically.
-		</para>
-
-		<para>
-			A simple nested condition might be:
-			(Some whitespace has been introduced for clarity)
-		</para>
-
-		<literallayout>
-		    %&lt;x? %&lt;y? XY &amp; X &gt; &amp; %&lt;y? Y &amp; NONE &gt; &gt;  Conditions
-		         %&lt;y? XY &amp; X &gt;                      x&gt;0
-		              XY                            x&gt;0,y&gt;0
-		                   X                        x&gt;0,y=0
-		</literallayout>
-
-		<literallayout>
-		    %&lt;x? %&lt;y? XY &amp; X &gt; &amp; %&lt;y? Y &amp; NONE &gt; &gt;  Conditions
-		                         %&lt;y? Y &amp; NONE &gt;    x=0
-		                              Y             x=0,y&gt;0
-		                                  NONE      x=0,y=0
-		</literallayout>
-
-		<para>Equivalent to:</para>
-
-		<literallayout>
-		    if (x &gt; 0) {
-		        if (y &gt; 0) {
-		            print 'XY'
-		        } else {
-		            print 'X'
-		        }
-		    } else {
-		        if (y &gt; 0) {
-		            print 'Y'
-		        } else {
-		            print 'NONE'
-		        }
-		    }
-		</literallayout>
-
-		<para>Examples:</para>
-
-<screen>
-set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
-</screen>
-
-		<literallayout>
-		    if a thread is folded
-		        display the number of messages (%M)
-		    else if we know how many lines in the message
-		        display lines in message (%l)
-		    else
-		        display the size of the message in bytes (%c)
-		</literallayout>
-
-<screen>
-set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
-</screen>
-
-		<literallayout>
-		    if a thread is folded
-		        display the number of messages (%M)
-		        display the subject (%s)
-		    else if we know how many lines in the message
-		        display lines in message (%l)
-		    else
-		        display the size of the message in bytes (%c)
-		</literallayout>
-
-	</sect2>
-
-	<sect2 id="nested-if-variables">
-		<title>Variables</title>
-		The <quote>nested-if</quote> patch doesn't have any config of its own.
-		It modifies the behavior of the format strings.
-	</sect2>
-
-<!--
-	<sect2 id="nested-if-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="nested-if-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="nested-if-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="nested-if-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="nested-if-muttrc">
-		<title>Muttrc</title>
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'nested-if' feature.
- 
-# This patch uses the format: '%&lt;VAR?TRUE&amp;FALSE&gt;' for conditional
-# format strings that can be nested.
- 
-# Example 1
-# if a thread is folded
-#       display the number of messages (%M)
-# else if we know how many lines in the message
-#       display lines in message (%l)
-# else display the size of the message in bytes (%c)</emphasis>
-set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
- 
-<emphasis role="comment"># Example 2
-# if a thread is folded
-#       display the number of messages (%M)
-#       display the subject (%s)
-# else if we know how many lines in the message
-#       display lines in message (%l)
-# else
-#       display the size of the message in bytes (%c)</emphasis>
-set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="nested-if-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="cond-date">cond-date patch</link></para></listitem>
-			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
-			<listitem><para><link linkend="status-format">$status_format</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="nested-if-known-bugs">
-		<title>Known Bugs</title>
-		Patch overwrites $&lt;fmt&gt; handler in <literal>$index_format</literal>
-	</sect2>
-
-	<sect2 id="nested-if-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
+		<listitem><para>Evgeni Golov <email>evgeni@debian.org</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
 		</itemizedlist>
 	</sect2>
@@ -10219,91 +9712,248 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 	</sect2>
 </sect1>
 
-<sect1 id="tls-sni">
-	<title>TLS-SNI Patch</title>
-	<subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
+<sect1 id="fmemopen">
+	<title>Fmemopen Patch</title>
+	<subtitle>Replace some temporary files with memory buffers</subtitle>
 
-	<sect2 id="tls-sni-patch">
+	<sect2 id="fmemopen-patch">
 		<title>Patch</title>
 
 		<para>
-			To check if Mutt supports <quote>TLS-SNI</quote>, look for
-			<quote>patch-tls-sni</quote> in the mutt version.
+			To check if Mutt supports <quote>fmemopen</quote>, look for
+			<quote>patch-fmemopen</quote> in the mutt version.
 			See: <xref linkend="mutt-patches"/>.
 		</para>
 
 		<itemizedlist>
 			<title>Dependencies:</title>
 			<listitem><para>mutt-1.6.1</para></listitem>
-			<listitem><para>OpenSSL</para></listitem>
+			<listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
 		</itemizedlist>
 
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
-	<sect2 id="tls-sni-intro">
+	<sect2 id="fmemopen-intro">
 		<title>Introduction</title>
 
-		<para>
-		The <quote>TLS-SNI</quote> patch adds support for TLS virtual hosting.
-		If your mail server doesn't support this everything will still work
-		normally.
-		</para>
-
-		<para>
-		TLS supports sending the expected server hostname during the
-		handshake, via the SNI extension.  This can be used to select a
-		server certificate to issue to the client, permitting
-		virtual-hosting without requiring multiple IP addresses.
-		</para>
-
-		<para>
-		This has been tested against Exim 4.80, which optionally logs SNI
-		and can perform vhosting.
-		</para>
-
         <para>
-		To verify TLS SNI support by a server, you can use:
+		The <quote>fmemopen</quote> patch speeds up some searches.
         </para>
 
-<screen>
-openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
-</screen>
+        <para>
+		This patch changes a few places where Mutt creates temporary files.
+		It replaces them with in-memory buffers.  This should improve the
+		performance when searching the header or body using the
+		<link linkend="thorough-search">$thorough_search</link> option.
+        </para>
+
+        <para>
+		There are no user-configurable parts.
+        </para>
+
+        <para>
+		This patch depends on <literal>open_memstream()</literal> and
+		<literal>fmemopen()</literal>.  They are provided by glibc.  Without
+		them, Mutt will simply create temporary files.
+        </para>
 	</sect2>
 
 <!--
-	<sect2 id="tls-sni-variables">
+	<sect2 id="fmemopen-variables">
 		<title>Variables</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="tls-sni-functions">
+	<sect2 id="fmemopen-functions">
 		<title>Functions</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="tls-sni-commands">
+	<sect2 id="fmemopen-commands">
 		<title>Commands</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="tls-sni-colors">
+	<sect2 id="fmemopen-colors">
 		<title>Colors</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="tls-sni-sort">
+	<sect2 id="fmemopen-sort">
 		<title>Sort</title>
 		<para>None</para>
 	</sect2>
 -->
 
-	<sect2 id="tls-sni-muttrc">
+	<sect2 id="fmemopen-muttrc">
 		<title>Muttrc</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="tls-sni-see-also">
+	<sect2 id="fmemopen-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+			<listitem><para><literal>fmemopen(3)</literal></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="fmemopen-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="fmemopen-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Julius Plenz <email>plenz@cis.fu-berlin.de</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="ifdef">
+	<title>Ifdef Patch</title>
+	<subtitle>Conditional config options</subtitle>
+
+	<sect2 id="ifdef-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>ifdef</quote>, look for
+			<quote>patch-ifdef</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="ifdef-intro">
+		<title>Introduction</title>
+
+		<para>
+			The <quote>ifdef</quote> patch introduces three new commands to
+			Mutt and allow you to share one config file between versions of Mutt
+			that may have different features compiled in.
+		</para>
+
+<screen>
+ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
+ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
+finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
+</screen>
+
+		<para>
+			Here a symbol can be a <link linkend="variables">$variable</link>,
+			<link linkend="functions">&lt;function&gt;</link>,
+			<link linkend="commands">command</link> or compile-time symbol, such
+			as <quote>USE_IMAP</quote>.
+		</para>
+
+        <para>
+            <literal>finish</literal> is particularly useful when combined with
+            <literal>ifndef</literal>. e.g.
+        </para>
+
+<screen>
+<emphasis role="comment"># Sidebar config file</emphasis>
+ifndef USE_SIDEBAR finish
+</screen>
+
+	</sect2>
+
+<!--
+	<sect2 id="ifdef-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="ifdef-commands">
+		<title>Commands</title>
+		<cmdsynopsis>
+			<command>ifdef</command>
+			<arg choice="plain">
+				<replaceable class="parameter">symbol</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">"config-command [args]"</replaceable>
+			</arg>
+			<command>ifndef</command>
+			<arg choice="plain">
+				<replaceable class="parameter">symbol</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">"config-command [args]"</replaceable>
+			</arg>
+			<command>finish</command>
+		</cmdsynopsis>
+	</sect2>
+
+<!--
+	<sect2 id="ifdef-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="ifdef-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="ifdef-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
+ 
+# This feature introduces three useful commands which allow you to share
+# one config file between versions of Mutt that may have different
+# features compiled in.
+ 
+#	ifdef  symbol config-command [args...]
+#	ifndef symbol config-command [args...]
+#	finish                                
+ 
+# The 'ifdef' command tests whether Mutt understands the name of
+# a variable, function, command or compile-time symbol.
+# If it does, then it executes a config command.
+ 
+# The 'ifndef' command tests whether a symbol does NOT exist.
+ 
+# The 'finish' command tells Mutt to stop reading current config file.
+ 
+# If the 'trash' variable exists, set it.</emphasis>
+ifdef trash 'set trash=~/Mail/trash'
+ 
+<emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
+ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
+ 
+<emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
+ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
+ 
+<emphasis role="comment"># If the compile-time symbol 'USE_SIDEBAR' does not exist, then
+# stop reading the current config file.</emphasis>
+ifndef USE_SIDEBAR finish
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="ifdef-see-also">
 		<title>See Also</title>
 
 		<itemizedlist>
@@ -10311,16 +9961,1593 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
 		</itemizedlist>
 	</sect2>
 
-	<sect2 id="tls-sni-known-bugs">
+	<sect2 id="ifdef-known-bugs">
 		<title>Known Bugs</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="tls-sni-credits">
+	<sect2 id="ifdef-credits">
 		<title>Credits</title>
 		<itemizedlist>
-		<listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
-		<listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
+		<listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
+		<listitem><para>Matteo F. Vescovi <email>mfvescovi@gmail.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="index-color">
+	<title>Index Color Patch</title>
+	<subtitle>Custom rules for theming the email index</subtitle>
+
+	<sect2 id="index-color-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Index Color</quote>, look for
+			<quote>patch-index-color</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+			<listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="index-color-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>index-color</quote> patch allows you to specify colors for
+		individual parts of the email index. e.g. Subject, Author, Flags.
+        </para>
+
+        <para>
+		First choose which part of the index you'd like to color.
+		Then, if needed, pick a pattern to match.
+        </para>
+
+		<para>
+		Note: The pattern does not have to refer to the object you wish to
+		color.  e.g.
+		</para>
+
+<screen>
+color index_author red default &quot;~smutt&quot;
+</screen>
+
+        <para>
+		The author appears red when the subject (~s) contains <quote>mutt</quote>.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="index-color-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="index-color-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="index-color-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="index-color-colors">
+		<title>Colors</title>
+
+        <para>
+		All the colors default to <literal>default</literal>, i.e. unset.
+        </para>
+
+        <para>
+		The index objects can be themed using the <literal>color</literal> command.
+		Some objects require a pattern.
+        </para>
+
+<screen>
+color index-object foreground background
+color index-object foreground background pattern
+</screen>
+
+		<table id="table-index-color-colors">
+			<title>Index Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Object</entry>
+						<entry>Pattern</entry>
+						<entry>Highlights</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>index</literal></entry>
+						<entry>yes</entry>
+						<entry>Entire index line</entry>
+					</row>
+					<row>
+						<entry><literal>index_author</literal></entry>
+						<entry>yes</entry>
+						<entry>Author name, %A %a %F %L %n</entry>
+					</row>
+					<row>
+						<entry><literal>index_collapsed</literal></entry>
+						<entry>no</entry>
+						<entry>Number of messages in a collapsed thread, %M</entry>
+					</row>
+					<row>
+						<entry><literal>index_date</literal></entry>
+						<entry>no</entry>
+						<entry>Date field</entry>
+					</row>
+					<row>
+						<entry><literal>index_flags</literal></entry>
+						<entry>yes</entry>
+						<entry>Message flags, %S %Z</entry>
+					</row>
+					<row>
+						<entry><literal>index_label</literal></entry>
+						<entry>no</entry>
+						<entry>Message label, %y %Y</entry>
+					</row>
+					<row>
+						<entry><literal>index_number</literal></entry>
+						<entry>no</entry>
+						<entry>Message number, %C</entry>
+					</row>
+					<row>
+						<entry><literal>index_size</literal></entry>
+						<entry>no</entry>
+						<entry>Message size, %c %l</entry>
+					</row>
+					<row>
+						<entry><literal>index_subject</literal></entry>
+						<entry>yes</entry>
+						<entry>Subject, %s</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="index-color-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="index-color-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'index-color' feature.
+ 
+# Entire index line</emphasis>
+color index white black '.*'
+ 
+<emphasis role="comment"># Author name, %A %a %F %L %n
+ 
+# Give the author column a dark grey background</emphasis>
+color index_author default color234 '.*'
+ 
+<emphasis role="comment"># Highlight a particular from (~f)</emphasis>
+color index_author brightyellow color234 '~fRay Charles'
+ 
+<emphasis role="comment"># Message flags, %S %Z
+# Highlight the flags for flagged (~F) emails</emphasis>
+color index_flags default red '~F'
+ 
+<emphasis role="comment"># Subject, %s
+# Look for a particular subject (~s)</emphasis>
+color index_subject brightcyan default '~s\(closes #[0-9]+\)'
+ 
+<emphasis role="comment"># Number of messages in a collapsed thread, %M</emphasis>
+color index_collapsed default brightblue
+ 
+<emphasis role="comment"># Date field</emphasis>
+color index_date green default
+ 
+<emphasis role="comment"># Message label, %y %Y</emphasis>
+color index_label default brightgreen
+ 
+<emphasis role="comment"># Message number, %C</emphasis>
+color index_number red default
+ 
+<emphasis role="comment"># Message size, %c %l</emphasis>
+color index_size cyan default
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="index-color-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="color">Color command</link></para></listitem>
+			<listitem><para><link linkend="status-color">Status-Color patch</link></para></listitem>
+			<listitem><para><link linkend="keywords">Keywords patch</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="index-color-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="index-color-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Christian Aichinger <email>Greek0@gmx.net</email></para></listitem>
+		<listitem><para>Christoph <quote>Myon</quote> Berg <email>myon@debian.org</email></para></listitem>
+		<listitem><para>Elimar Riesebieter <email>riesebie@lxtec.de</email></para></listitem>
+		<listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
+		<listitem><para>Vladimir Marek <email>Vladimir.Marek@oracle.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="initials">
+	<title>Initials Expando Patch</title>
+	<subtitle>Expando for author's initials</subtitle>
+
+	<sect2 id="initials-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Initials</quote>, look for
+			<quote>patch-initials</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="initials-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>initials</quote> patch adds an expando (%I) for an author's
+		initials.
+        </para>
+
+		<para>
+		The index panel displays a list of emails.  Its layout is controlled by
+		the <link linkend="index-format">$index_format</link> variable.  Using
+		this expando saves space in the index panel.  This can be useful if you
+		are regularly working with a small set of people.
+		</para>
+	</sect2>
+
+	<sect2 id="initials-variables">
+		<title>Variables</title>
+
+        <para>
+        This patch has no config of its own.  It adds an expando which can be
+		used in the <link linkend="index-format">$index_format</link> variable.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="initials-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="initials-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'initials' patch.
+ 
+# The 'initials' patch has no config of its own.
+# It adds an expando for an author's initials,
+# which can be used in the 'index_format' variable.
+ 
+# The default 'index_format' is:</emphasis>
+set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
+ 
+<emphasis role="comment"># Where %L represents the author/recipient
+ 
+# This might look like:
+#       1   + Nov 17 David Bowie   Changesbowie    ( 689)
+#       2   ! Nov 17 Stevie Nicks  Rumours         ( 555)
+#       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)
+#       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)
+ 
+# Using the %I expando:</emphasis>
+set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
+ 
+<emphasis role="comment"># This might look like:
+#       1   + Nov 17 DB Changesbowie    ( 689)
+#       2   ! Nov 17 SN Rumours         ( 555)
+#       3   + Nov 16 JH Voodoo Child    ( 263)
+#       4   + Nov 16 DH Parallel Lines  ( 540)
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="initials-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="initials-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="initials-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="keywords">
+	<title>Keywords Patch</title>
+	<subtitle>Labels/Tagging for emails</subtitle>
+
+	<sect2 id="keywords-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Keywords</quote>, look for
+			<quote>patch-keywords</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="keywords-intro">
+		<title>Introduction</title>
+
+		<para>
+		Unify label/keyword handling.
+		</para>
+
+		<para>
+		Since x-labels were added to mutt in 2000, a number of other approaches
+		to what we now call <quote>tagging</quote> have also emerged.
+		One of them was even made standard in RFC 2822.
+		This update unifies the handling of all these strategies.
+		</para>
+
+		<para>
+		We start by changing mutt's internal keyword storage from a single
+		string which may contain whitespace to a list of discrete keywords.
+		This has advantages for keyword completion as well as for portabilty
+		among varying "standards" for keyword storage.  This may represent
+		a significant change for existing mutt users who have set x-labels
+		containing spaces, and should be regarded with suspicion.  The
+		advantages are significant, though.
+		</para>
+
+		<para>
+		Next we allow mutt to parse keywords into this internal list from
+		any of the following headers: X-Label (freeform), X-Keywords
+		(space-delimited), X-Mozilla-Keys (space-delimited), and Keywords (RFC
+		2822, comma-space-delimited).  Mutt remembers which headers it sourced
+		keywords from, and can rewrite those headers when saving messages for
+		compatibility with the mailer of origin.
+		</para>
+
+		<para>
+		(X-Label was specified as freeform text by mutt, its only known
+		implementation.  X-Labels have been used both as a
+		<quote>tagging</quote> device, probably with space delimiting, and as a
+		<quote>memo</quote> field, where space-delimited parsing would ruin the
+		semantics of the memo.  By default mutt will not split X-Labels at all.
+		Set $xlabel_delimiter if your needs vary.)
+		</para>
+
+		<para>
+		Finally we add two booleans: $keywords_legacy=true and
+		$keywords_standard=FALSE.  When $keywords_legacy is true, mutt will
+		always save keyword to whatever original header it came from.  When
+		$keywords_standard=true, mutt will save to the Keywords: header.  If
+		both are true mutt saves to both; if neither is true, mutt saves only
+		to legacy headers to avoid complete loss of keywords.
+		</para>
+
+		<para>
+		Overall this represents convergence path for all competing
+		labelling/tagging/keywording systems toward one that is specified by
+		RFC.
+		</para>
+
+		<para>
+		You can change or delete the X-Label: field within
+		Mutt using the edit-label command, bound to the
+		y key by default.  This works for tagged messages, too.
+		</para>
+	</sect2>
+
+	<sect2 id="keywords-variables">
+		<title>Variables</title>
+
+		<table id="table-keywords-variables">
+			<title>Keywords Variables</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Type</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>keywords_legacy</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>keywords_standard</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+					<row>
+						<entry><literal>xlabel_delimiter</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="keywords-functions">
+		<title>Functions</title>
+
+		<table id="table-keywords-funcions">
+			<title>Keyword Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index,pager</entry>
+						<entry>y</entry>
+						<entry><literal>&lt;edit-label&gt;</literal></entry>
+						<entry>add, change, or delete a message's label</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="keywords-commands">
+		<title>Commands</title>
+	</sect2>
+
+	<sect2 id="keywords-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="keywords-sort">
+		<title>Sort</title>
+		<table id="table-keywords-sort">
+			<title>Keywords Sort</title>
+			<tgroup cols="2">
+				<thead>
+					<row>
+						<entry>Sort</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>label</literal></entry>
+						<entry>Sort by label</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="keywords-muttrc">
+		<title>Muttrc</title>
+	</sect2>
+
+	<sect2 id="keywords-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="keywords-known-bugs">
+		<title>Known Bugs</title>
+	</sect2>
+
+	<sect2 id="keywords-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="limit-current-thread">
+	<title>Limit-Current-Thread Patch</title>
+	<subtitle>Focus on one Email Thread</subtitle>
+
+	<sect2 id="limit-current-thread-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>limit-current-thread</quote>, look for
+			<quote>patch-limit-current-thread</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-intro">
+		<title>Introduction</title>
+
+		<para>
+			This patch adds a new way of using the
+			<link linkend="tuning-search">Limit Command</link>.
+                        The <literal>&lt;limit-current-thread&gt;</literal>
+                        function restricts the view to just the current thread.
+                        Setting the limit (the <literal>l</literal> key) to
+                        <quote>all</quote> will restore the full email list.
+		</para>
+
+	</sect2>
+
+<!--
+	<sect2 id="limit-current-thread-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+-->
+	<sect2 id="limit-current-thread-functions">
+		<title>Functions</title>
+
+		<table id="table-limit-current-thread-functions">
+			<title>Limit-Current-Thread Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index</entry>
+                                                <entry><literal>&lt;Esc&gt; L</literal></entry>
+						<entry><literal>&lt;limit-current-thread&gt;</literal></entry>
+						<entry>Limit view to current thread</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+
+	</sect2>
+<!--
+	<sect2 id="limit-current-thread-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="limit-current-thread-muttrc">
+		<title>Muttrc</title>
+
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'limit-current-thread' patch.
+ 
+# Limit view to current thread</emphasis>
+bind index &lt;esc&gt;L limit-current-thread
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="limit-current-thread-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="limit-current-thread-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="limit-current-thread-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="lmdb">
+	<title>LMDB Patch</title>
+	<subtitle>LMDB backend for the header cache</subtitle>
+
+	<sect2 id="lmdb-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>lmdb</quote>, look for
+			<quote>patch-lmdb</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="lmdb-intro">
+		<title>Introduction</title>
+
+		<para>
+			This patch adds support for using LMDB as a storage backend for
+			Mutt's header cache (hcache). It is enabled at configure time with
+			the <emphasis>--with-lmdb=&lt;path&gt;</emphasis> switch.
+		</para>
+	</sect2>
+
+	<sect2 id="lmdb-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="caching">Local Caching</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="lmdb-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="lmdb-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Pietro Cerutti <email>gahr@gahr.ch</email></para></listitem>
+		<listitem><para>Jan-Piet Mens <email>jp@mens.de</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="nested-if">
+	<title>Nested If Patch</title>
+	<subtitle>Allow complex nested conditions in format strings</subtitle>
+
+	<sect2 id="nested-if-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Nested If</quote>, look for
+			<quote>patch-nested-if</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="nested-if-intro">
+		<title>Introduction</title>
+
+		<para>
+			Mutt's format strings can contain embedded if-then-else conditions.
+			They are of the form:
+		</para>
+
+<screen>
+%?VAR?TRUE&amp;FALSE?
+</screen>
+
+		<para>
+			If the variable <quote>VAR</quote> has a value greater than zero,
+			print the <quote>TRUE</quote> string, otherwise print the
+			<quote>FALSE</quote> string.
+		</para>
+
+		<para>
+			e.g.  <literal>%?S?Size: %S&amp;Empty?</literal>
+		</para>
+
+		<para>Which can be read as:</para>
+
+		<literallayout>
+		    if (%S &gt; 0) {
+		        print &quot;Size: %S&quot;
+		    } else {
+		        print &quot;Empty&quot;
+		    }
+		</literallayout>
+
+		<para>
+			These conditions are useful, but in Mutt they cannot be nested
+			within one another.  This patch uses the notation
+			<literal>%&lt;VAR?TRUE&amp;FALSE&gt;</literal> and allows them to be nested.
+		</para>
+
+		<para>
+			The <literal>%&lt;...&gt;</literal> notation was used to format the
+			current local time.  but that's not really very useful since mutt
+			has no means of refreshing the screen periodically.
+		</para>
+
+		<para>
+			A simple nested condition might be:
+			(Some whitespace has been introduced for clarity)
+		</para>
+
+		<literallayout>
+		    %&lt;x? %&lt;y? XY &amp; X &gt; &amp; %&lt;y? Y &amp; NONE &gt; &gt;  Conditions
+		         %&lt;y? XY &amp; X &gt;                      x&gt;0
+		              XY                            x&gt;0,y&gt;0
+		                   X                        x&gt;0,y=0
+		</literallayout>
+
+		<literallayout>
+		    %&lt;x? %&lt;y? XY &amp; X &gt; &amp; %&lt;y? Y &amp; NONE &gt; &gt;  Conditions
+		                         %&lt;y? Y &amp; NONE &gt;    x=0
+		                              Y             x=0,y&gt;0
+		                                  NONE      x=0,y=0
+		</literallayout>
+
+		<para>Equivalent to:</para>
+
+		<literallayout>
+		    if (x &gt; 0) {
+		        if (y &gt; 0) {
+		            print 'XY'
+		        } else {
+		            print 'X'
+		        }
+		    } else {
+		        if (y &gt; 0) {
+		            print 'Y'
+		        } else {
+		            print 'NONE'
+		        }
+		    }
+		</literallayout>
+
+		<para>Examples:</para>
+
+<screen>
+set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
+</screen>
+
+		<literallayout>
+		    if a thread is folded
+		        display the number of messages (%M)
+		    else if we know how many lines in the message
+		        display lines in message (%l)
+		    else
+		        display the size of the message in bytes (%c)
+		</literallayout>
+
+<screen>
+set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
+</screen>
+
+		<literallayout>
+		    if a thread is folded
+		        display the number of messages (%M)
+		        display the subject (%s)
+		    else if we know how many lines in the message
+		        display lines in message (%l)
+		    else
+		        display the size of the message in bytes (%c)
+		</literallayout>
+
+	</sect2>
+
+	<sect2 id="nested-if-variables">
+		<title>Variables</title>
+		The <quote>nested-if</quote> patch doesn't have any config of its own.
+		It modifies the behavior of the format strings.
+	</sect2>
+
+<!--
+	<sect2 id="nested-if-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="nested-if-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="nested-if-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="nested-if-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="nested-if-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'nested-if' feature.
+ 
+# This patch uses the format: '%&lt;VAR?TRUE&amp;FALSE&gt;' for conditional
+# format strings that can be nested.
+ 
+# Example 1
+# if a thread is folded
+#       display the number of messages (%M)
+# else if we know how many lines in the message
+#       display lines in message (%l)
+# else display the size of the message in bytes (%c)</emphasis>
+set index_format='%4C %Z %{%b %d} %-25.25n %s%&gt; %&lt;M?%M Msgs &amp;%&lt;l?%l Lines&amp;%c Bytes&gt;&gt;'
+ 
+<emphasis role="comment"># Example 2
+# if a thread is folded
+#       display the number of messages (%M)
+#       display the subject (%s)
+# else if we know how many lines in the message
+#       display lines in message (%l)
+# else
+#       display the size of the message in bytes (%c)</emphasis>
+set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp;%c&gt;&gt;'
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="nested-if-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="cond-date">cond-date patch</link></para></listitem>
+			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="status-format">$status_format</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="nested-if-known-bugs">
+		<title>Known Bugs</title>
+		Patch overwrites $&lt;fmt&gt; handler in <literal>$index_format</literal>
+	</sect2>
+
+	<sect2 id="nested-if-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="nntp">
+	<title>NNTP Patch</title>
+	<subtitle>Talk to a Usenet news server</subtitle>
+
+	<sect2 id="nntp-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>NNTP</quote>, look for
+			<quote>+USE_NNTP</quote> in the mutt version.
+			See: <xref linkend="compile-time-features"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="nntp-intro">
+		<title>Introduction</title>
+
+		<para>Reading news via NNTP</para>
+		<para>
+		If compiled with <emphasis>--enable-nntp</emphasis> option, Mutt can
+		read news from news server via NNTP.  You can open a newsgroup with
+		function ``change-newsgroup'' (default: ``i'').  Default news server
+		can be obtained from <literal>$NNTPSERVER</literal> environment
+		variable or from <literal>/etc/nntpserver</literal> file.  Like other
+		news readers, info about subscribed newsgroups is saved in file by
+		<link linkend="newsrc">$newsrc</link> variable.  The variable <link
+		linkend="news-cache-dir">$news_cache_dir</link> can be used to point
+		to a directory.  Mutt will create a hierarchy of subdirectories named
+		like the account and newsgroup the cache is for.  Also the hierarchy
+		is used to store header cache if Mutt was compiled with <link
+		linkend="header-caching">header cache</link> support.
+		</para>
+	</sect2>
+
+	<sect2 id="nntp-variables">
+		<title>Variables</title>
+
+		<table id="table-nntp-variables">
+			<title>NNTP Variables</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Type</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>ask_follow_up</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+					<row>
+						<entry><literal>ask_x_comment_to</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+					<row>
+						<entry><literal>catchup_newsgroup</literal></entry>
+						<entry>quad</entry>
+						<entry><literal>ask-yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>followup_to_poster</literal></entry>
+						<entry>quad</entry>
+						<entry><literal>ask-yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>group_index_format</literal></entry>
+						<entry>string</entry>
+						<entry><literal>%4C %M%N %5s  %-45.45f %d</literal></entry>
+					</row>
+					<row>
+						<entry><literal>inews</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+					<row>
+						<entry><literal>mime_subject</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>newsgroups_charset</literal></entry>
+						<entry>string</entry>
+						<entry><literal>utf-8</literal></entry>
+					</row>
+					<row>
+						<entry><literal>newsrc</literal></entry>
+						<entry>string</entry>
+						<entry><literal>~/.newsrc</literal></entry>
+					</row>
+					<row>
+						<entry><literal>news_cache_dir</literal></entry>
+						<entry>string</entry>
+						<entry><literal>~/.mutt</literal></entry>
+					</row>
+					<row>
+						<entry><literal>news_server</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+					<row>
+						<entry><literal>nntp_authenticators</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+					<row>
+						<entry><literal>nntp_context</literal></entry>
+						<entry>number</entry>
+						<entry><literal>1000</literal></entry>
+					</row>
+					<row>
+						<entry><literal>nntp_listgroup</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>nntp_load_description</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>nntp_pass</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+					<row>
+						<entry><literal>nntp_poll</literal></entry>
+						<entry>number</entry>
+						<entry><literal>60</literal></entry>
+					</row>
+					<row>
+						<entry><literal>nntp_user</literal></entry>
+						<entry>string</entry>
+						<entry>(empty)</entry>
+					</row>
+					<row>
+						<entry><literal>post_moderated</literal></entry>
+						<entry>quad</entry>
+						<entry><literal>ask-yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>save_unsubscribed</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+					<row>
+						<entry><literal>show_new_news</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>yes</literal></entry>
+					</row>
+					<row>
+						<entry><literal>show_only_unread</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+					<row>
+						<entry><literal>x_comment_to</literal></entry>
+						<entry>boolean</entry>
+						<entry><literal>no</literal></entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="nntp-functions">
+		<title>Functions</title>
+
+		<table id="table-nntp-functions">
+			<title>NNTP Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>browser,index</entry>
+						<entry>y</entry>
+						<entry><literal>&lt;catchup&gt;</literal></entry>
+						<entry>mark all articles in newsgroup as read</entry>
+					</row>
+					<row>
+						<entry>index,pager</entry>
+						<entry>i</entry>
+						<entry><literal>&lt;change-newsgroup&gt;</literal></entry>
+						<entry>open a different newsgroup</entry>
+					</row>
+					<row>
+						<entry>pager</entry>
+						<entry>X</entry>
+						<entry><literal>&lt;change-vfolder&gt;</literal></entry>
+						<entry>open a different virtual folder</entry>
+					</row>
+					<row>
+						<entry>compose</entry>
+						<entry>o</entry>
+						<entry><literal>&lt;edit-followup-to&gt;</literal></entry>
+						<entry>edit the Followup-To field</entry>
+					</row>
+					<row>
+						<entry>compose</entry>
+						<entry>N</entry>
+						<entry><literal>&lt;edit-newsgroups&gt;</literal></entry>
+						<entry>edit the newsgroups list</entry>
+					</row>
+					<row>
+						<entry>compose</entry>
+						<entry>x</entry>
+						<entry><literal>&lt;edit-x-comment-to&gt;</literal></entry>
+						<entry>edit the X-Comment-To field</entry>
+					</row>
+					<row>
+						<entry>pager</entry>
+						<entry>+</entry>
+						<entry><literal>&lt;entire-thread&gt;</literal></entry>
+						<entry>read entire thread of the current message</entry>
+					</row>
+					<row>
+						<entry>attachment,index,pager</entry>
+						<entry>F</entry>
+						<entry><literal>&lt;followup-message&gt;</literal></entry>
+						<entry>followup to newsgroup</entry>
+					</row>
+					<row>
+						<entry>pager</entry>
+						<entry>`</entry>
+						<entry><literal>&lt;modify-labels&gt;</literal></entry>
+						<entry>modify (notmuch) tags</entry>
+					</row>
+					<row>
+						<entry>index,pager</entry>
+						<entry>P</entry>
+						<entry><literal>&lt;post-message&gt;</literal></entry>
+						<entry>post message to newsgroup</entry>
+					</row>
+					<row>
+						<entry>browser</entry>
+						<entry>g</entry>
+						<entry><literal>&lt;reload-active&gt;</literal></entry>
+						<entry>load list of all newsgroups from NNTP server</entry>
+					</row>
+					<row>
+						<entry>browser</entry>
+						<entry>s</entry>
+						<entry><literal>&lt;subscribe&gt;</literal></entry>
+						<entry>subscribe to current mbox (IMAP/NNTP only)</entry>
+					</row>
+					<row>
+						<entry>browser</entry>
+						<entry>S</entry>
+						<entry><literal>&lt;subscribe-pattern&gt;</literal></entry>
+						<entry>subscribe to newsgroups matching a pattern</entry>
+					</row>
+					<row>
+						<entry>browser</entry>
+						<entry>Y</entry>
+						<entry><literal>&lt;uncatchup&gt;</literal></entry>
+						<entry>mark all articles in newsgroup as unread</entry>
+					</row>
+					<row>
+						<entry>browser</entry>
+						<entry>u</entry>
+						<entry><literal>&lt;unsubscribe&gt;</literal></entry>
+						<entry>unsubscribe from current mbox (IMAP/NNTP only)</entry>
+					</row>
+					<row>
+						<entry>browser</entry>
+						<entry>U</entry>
+						<entry><literal>&lt;unsubscribe-pattern&gt;</literal></entry>
+						<entry>unsubscribe from newsgroups matching a pattern</entry>
+					</row>
+					<row>
+						<entry>index,pager</entry>
+						<entry>Alt-i</entry>
+						<entry><literal>&lt;change-newsgroup-readonly&gt;</literal></entry>
+						<entry>open a different newsgroup in read only mode</entry>
+					</row>
+					<row>
+						<entry>attachment,index,pager</entry>
+						<entry>Alt-F</entry>
+						<entry><literal>&lt;forward-to-group&gt;</literal></entry>
+						<entry>forward to newsgroup</entry>
+					</row>
+					<row>
+						<entry>index</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;get-children&gt;</literal></entry>
+						<entry>get all children of the current message</entry>
+					</row>
+					<row>
+						<entry>index</entry>
+						<entry>Alt-G</entry>
+						<entry><literal>&lt;get-parent&gt;</literal></entry>
+						<entry>get parent of the current message</entry>
+					</row>
+					<row>
+						<entry>index,pager</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;imap-fetch-mail&gt;</literal></entry>
+						<entry>force retrieval of mail from IMAP server</entry>
+					</row>
+					<row>
+						<entry>index,pager</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;imap-logout-all&gt;</literal></entry>
+						<entry>logout from all IMAP servers</entry>
+					</row>
+					<row>
+						<entry>pager</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
+						<entry>modify labeld and then hide message</entry>
+					</row>
+					<row>
+						<entry>index</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;reconstruct-thread&gt;</literal></entry>
+						<entry>reconstruct thread containing current message</entry>
+					</row>
+					<row>
+						<entry>pager</entry>
+						<entry>Alt-X</entry>
+						<entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
+						<entry>generate virtual folder from query</entry>
+					</row>
+					<row>
+						<entry>index</entry>
+						<entry>Ctrl-G</entry>
+						<entry><literal>&lt;get-message&gt;</literal></entry>
+						<entry>get message with Message-Id</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+	<sect2 id="nntp-commands">
+		<title>Commands</title>
+	</sect2>
+
+	<sect2 id="nntp-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="nntp-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="nntp-muttrc">
+		<title>Muttrc</title>
+	</sect2>
+
+	<sect2 id="nntp-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="nntp-known-bugs">
+		<title>Known Bugs</title>
+	</sect2>
+
+	<sect2 id="nntp-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
+		<listitem><para>Felix von Leitner <email>leitner@fefe.de</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="progress">
+	<title>Progress Bar Patch</title>
+	<subtitle>Show a visual progress bar on slow operations</subtitle>
+
+	<sect2 id="progress-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Progress Bar</quote>, look for
+			<quote>patch-progress</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="progress-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>progress</quote> patch shows a visual progress bar on slow
+		tasks, such as indexing a large folder over the net.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="progress-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="progress-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="progress-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="progress-colors">
+		<title>Colors</title>
+		<table id="table-progress-colors">
+			<title>Progress Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Default Color</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>progress</literal></entry>
+						<entry>default</entry>
+						<entry>Visual progress bar</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="progress-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="progress-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'progress' patch.
+ 
+# The 'progress' patch provides clear visual feedback for
+# slow tasks, such as indexing a large folder over the net.
+ 
+# Set the color of the progress bar
+# White text on a red background</emphasis>
+color progress white red
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="progress-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="color">Color command</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="progress-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="progress-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Rocco Rutte <email>pdmef@gmx.net</email></para></listitem>
+		<listitem><para>Vincent Lefevre <email>vincent@vinc17.org</email></para></listitem>
+		<listitem><para>Stefan Kuhn <email>wuodan@hispeed.ch</email></para></listitem>
+		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="quasi-delete">
+	<title>Quasi-Delete Patch</title>
+	<subtitle>Mark emails that should be hidden, but not deleted</subtitle>
+
+	<sect2 id="quasi-delete-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>Quasi-Delete</quote>, look for
+			<quote>patch-quasi-delete</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="quasi-delete-intro">
+		<title>Introduction</title>
+
+        <para>
+		The <quote>quasi-delete</quote> function marks an email that should be
+		hidden from the index, but NOT deleted.
+        </para>
+
+        <para>
+		On its own, this patch isn't very useful.  It forms a useful part of
+		the notmuch plugin.
+        </para>
+	</sect2>
+
+<!--
+	<sect2 id="quasi-delete-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="quasi-delete-functions">
+		<title>Functions</title>
+		<table id="table-quasi-delete-functions">
+			<title>Quasi-Delete Functions</title>
+			<tgroup cols="4">
+				<thead>
+					<row>
+						<entry>Menus</entry>
+						<entry>Default Key</entry>
+						<entry>Function</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>index,pager</entry>
+						<entry>(none)</entry>
+						<entry><literal>&lt;quasi-delete&gt;</literal></entry>
+						<entry>delete from mutt, don't touch on disk</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
+	</sect2>
+
+<!--
+	<sect2 id="quasi-delete-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="quasi-delete-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="quasi-delete-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="quasi-delete-muttrc">
+		<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'quasi-delete' feature.
+ 
+# The 'quasi-delete' function marks an email that should be hidden
+# from the index, but NOT deleted.</emphasis>
+bind index,pager Q quasi-delete
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+	</sect2>
+
+	<sect2 id="quasi-delete-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+			<listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="quasi-delete-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="quasi-delete-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
 		</itemizedlist>
 	</sect2>
@@ -10786,16 +12013,16 @@ color sidebar_new green black
   </sect2>
 </sect1>
 
-<sect1 id="ifdef">
-	<title>Ifdef Patch</title>
-	<subtitle>Conditional config options</subtitle>
+<sect1 id="skip-quoted-patch">
+	<title>Skip-Quoted Patch</title>
+	<subtitle>Leave some context visible</subtitle>
 
-	<sect2 id="ifdef-patch">
+	<sect2 id="skip-quoted-patch2">
 		<title>Patch</title>
 
 		<para>
-			To check if Mutt supports <quote>ifdef</quote>, look for
-			<quote>patch-ifdef</quote> in the mutt version.
+			To check if Mutt supports <quote>skip-quoted</quote>, look for
+			<quote>patch-skip-quoted</quote> in the mutt version.
 			See: <xref linkend="mutt-patches"/>.
 		</para>
 
@@ -10807,124 +12034,85 @@ color sidebar_new green black
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
-	<sect2 id="ifdef-intro">
+	<sect2 id="skip-quoted-intro">
 		<title>Introduction</title>
 
 		<para>
-			The <quote>ifdef</quote> patch introduces three new commands to
-			Mutt and allow you to share one config file between versions of Mutt
-			that may have different features compiled in.
+			When viewing an email, the
+			<literal>&lt;skip-to-quoted&gt;</literal> function (by default the
+			<literal>S</literal> key) will scroll past any quoted text.
+			Sometimes, a little context is useful.
 		</para>
-
-<screen>
-ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
-ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol is not defined</emphasis>
-finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
-</screen>
 
 		<para>
-			Here a symbol can be a <link linkend="variables">$variable</link>,
-			<link linkend="functions">&lt;function&gt;</link>,
-			<link linkend="commands">command</link> or compile-time symbol, such
-			as <quote>USE_IMAP</quote>.
+			By setting the <literal>$skip_quoted_offset</literal> variable, you
+			can select how much of the quoted text is left visible.
 		</para>
+	</sect2>
 
-        <para>
-            <literal>finish</literal> is particularly useful when combined with
-            <literal>ifndef</literal>. e.g.
-        </para>
-
-<screen>
-<emphasis role="comment"># Sidebar config file</emphasis>
-ifndef USE_SIDEBAR finish
-</screen>
-
+	<sect2 id="skip-quoted-variables">
+		<title>Variables</title>
+		<table id="table-skip-quoted-variables">
+			<title>Skip-Quoted Variables</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Type</entry>
+						<entry>Default</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry><literal>skip_quoted_offset</literal></entry>
+						<entry>number</entry>
+						<entry>0</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
 	</sect2>
 
 <!--
-	<sect2 id="ifdef-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="ifdef-functions">
+	<sect2 id="skip-quoted-functions">
 		<title>Functions</title>
 		<para>None</para>
 	</sect2>
--->
 
-	<sect2 id="ifdef-commands">
+	<sect2 id="skip-quoted-commands">
 		<title>Commands</title>
-		<cmdsynopsis>
-			<command>ifdef</command>
-			<arg choice="plain">
-				<replaceable class="parameter">symbol</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">"config-command [args]"</replaceable>
-			</arg>
-			<command>ifndef</command>
-			<arg choice="plain">
-				<replaceable class="parameter">symbol</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">"config-command [args]"</replaceable>
-			</arg>
-			<command>finish</command>
-		</cmdsynopsis>
+		<para>None</para>
 	</sect2>
 
-<!--
-	<sect2 id="ifdef-colors">
+	<sect2 id="skip-quoted-colors">
 		<title>Colors</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="ifdef-sort">
+	<sect2 id="skip-quoted-sort">
 		<title>Sort</title>
 		<para>None</para>
 	</sect2>
 -->
 
-	<sect2 id="ifdef-muttrc">
+	<sect2 id="skip-quoted-muttrc">
 		<title>Muttrc</title>
+
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
+<emphasis role="comment"># Example Mutt config file for the 'skip-quoted' patch.
  
-# This feature introduces three useful commands which allow you to share
-# one config file between versions of Mutt that may have different
-# features compiled in.
+# The 'S' (skip-quoted) command scrolls the pager past the quoted text (usually
+# indented with '&gt; '.  Setting 'skip_quoted_offset' leaves some lines of quoted
+# text on screen for context.
  
-#	ifdef  symbol config-command [args...]
-#	ifndef symbol config-command [args...]
-#	finish                                
- 
-# The 'ifdef' command tests whether Mutt understands the name of
-# a variable, function, command or compile-time symbol.
-# If it does, then it executes a config command.
- 
-# The 'ifndef' command tests whether a symbol does NOT exist.
- 
-# The 'finish' command tells Mutt to stop reading current config file.
- 
-# If the 'trash' variable exists, set it.</emphasis>
-ifdef trash 'set trash=~/Mail/trash'
- 
-<emphasis role="comment"># If the 'tag-pattern' function exists, bind a key to it.</emphasis>
-ifdef tag-pattern 'bind index &lt;F6&gt; tag-pattern'
- 
-<emphasis role="comment"># If the 'imap-fetch-mail' command exists, read my IMAP config.</emphasis>
-ifdef imap-fetch-mail 'source ~/.mutt/imap.rc'
- 
-<emphasis role="comment"># If the compile-time symbol 'USE_SIDEBAR' does not exist, then
-# stop reading the current config file.</emphasis>
-ifndef USE_SIDEBAR finish
+# Show three quoted lines before the reply</emphasis>
+set skip_quoted_offset = 3
  
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
 	</sect2>
 
-	<sect2 id="ifdef-see-also">
+	<sect2 id="skip-quoted-see-also">
 		<title>See Also</title>
 
 		<itemizedlist>
@@ -10932,134 +12120,30 @@ ifndef USE_SIDEBAR finish
 		</itemizedlist>
 	</sect2>
 
-	<sect2 id="ifdef-known-bugs">
+	<sect2 id="skip-quoted-known-bugs">
 		<title>Known Bugs</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="ifdef-credits">
+	<sect2 id="skip-quoted-credits">
 		<title>Credits</title>
 		<itemizedlist>
-		<listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
-		<listitem><para>Matteo F. Vescovi <email>mfvescovi@gmail.com</email></para></listitem>
+		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
 		</itemizedlist>
 	</sect2>
 </sect1>
 
-<sect1 id="fmemopen">
-	<title>Fmemopen Patch</title>
-	<subtitle>Replace some temporary files with memory buffers</subtitle>
+<sect1 id="status-color">
+	<title>Status Color Patch</title>
+	<subtitle>Custom rules for theming the status bar</subtitle>
 
-	<sect2 id="fmemopen-patch">
+	<sect2 id="status-color-patch">
 		<title>Patch</title>
 
 		<para>
-			To check if Mutt supports <quote>fmemopen</quote>, look for
-			<quote>patch-fmemopen</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-			<listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="fmemopen-intro">
-		<title>Introduction</title>
-
-        <para>
-		The <quote>fmemopen</quote> patch speeds up some searches.
-        </para>
-
-        <para>
-		This patch changes a few places where Mutt creates temporary files.
-		It replaces them with in-memory buffers.  This should improve the
-		performance when searching the header or body using the
-		<link linkend="thorough-search">$thorough_search</link> option.
-        </para>
-
-        <para>
-		There are no user-configurable parts.
-        </para>
-
-        <para>
-		This patch depends on <literal>open_memstream()</literal> and
-		<literal>fmemopen()</literal>.  They are provided by glibc.  Without
-		them, Mutt will simply create temporary files.
-        </para>
-	</sect2>
-
-<!--
-	<sect2 id="fmemopen-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="fmemopen-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="fmemopen-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="fmemopen-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="fmemopen-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="fmemopen-muttrc">
-		<title>Muttrc</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="fmemopen-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-			<listitem><para><literal>fmemopen(3)</literal></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="fmemopen-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="fmemopen-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Julius Plenz <email>plenz@cis.fu-berlin.de</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="initials">
-	<title>Initials Expando Patch</title>
-	<subtitle>Expando for author's initials</subtitle>
-
-	<sect2 id="initials-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>Initials</quote>, look for
-			<quote>patch-initials</quote> in the mutt version.
+			To check if Mutt supports <quote>Status Color</quote>, look for
+			<quote>patch-status-color</quote> in the mutt version.
 			See: <xref linkend="mutt-patches"/>.
 		</para>
 
@@ -11071,106 +12155,290 @@ ifndef USE_SIDEBAR finish
 		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
 	</sect2>
 
-	<sect2 id="initials-intro">
+	<sect2 id="status-color-intro">
 		<title>Introduction</title>
 
         <para>
-		The <quote>initials</quote> patch adds an expando (%I) for an author's
-		initials.
+		The <quote>status-color</quote> patch allows you to theme different
+		parts of the status bar (also when it's used by the index).
         </para>
 
-		<para>
-		The index panel displays a list of emails.  Its layout is controlled by
-		the <link linkend="index-format">$index_format</link> variable.  Using
-		this expando saves space in the index panel.  This can be useful if you
-		are regularly working with a small set of people.
-		</para>
-	</sect2>
-
-	<sect2 id="initials-variables">
-		<title>Variables</title>
-
         <para>
-        This patch has no config of its own.  It adds an expando which can be
-		used in the <link linkend="index-format">$index_format</link> variable.
+		Unlike normal color commands, <literal>color status</literal> can now
+		take up to 2 extra parameters (regex, num).
         </para>
 	</sect2>
 
 <!--
-	<sect2 id="initials-functions">
+	<sect2 id="status-color-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="status-color-functions">
 		<title>Functions</title>
 		<para>None</para>
 	</sect2>
+-->
 
-	<sect2 id="initials-commands">
+	<sect2 id="status-color-commands">
 		<title>Commands</title>
-		<para>None</para>
+		<cmdsynopsis>
+			<command>color</command>
+			<arg choice="plain">
+				<option>status</option>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">foreground</replaceable>
+			</arg>
+			<arg choice="plain">
+				<replaceable class="parameter">background</replaceable>
+			</arg>
+			<group choice="opt">
+				<arg choice="plain">
+					<replaceable class="parameter">regex</replaceable>
+				</arg>
+				<group choice="opt">
+					<arg choice="plain">
+						<replaceable class="parameter">num</replaceable>
+					</arg>
+				</group>
+			</group>
+		</cmdsynopsis>
+
+		<para>
+			With zero parameters, Mutt will set the default color for the entire
+			status bar.
+		</para>
+
+		<para>
+			With one parameter, Mutt will only color the parts matching the
+			regex.
+		</para>
+
+		<para>
+			With two parameters, Mutt will only color the num'th sub-match of
+			the regex.
+		</para>
 	</sect2>
 
-	<sect2 id="initials-colors">
+	<sect2 id="status-color-colors">
 		<title>Colors</title>
-		<para>None</para>
+
+		<table id="table-status-color-colors">
+			<title>Status Colors</title>
+			<tgroup cols="3">
+				<thead>
+					<row>
+						<entry>Name</entry>
+						<entry>Default Color</entry>
+						<entry>Description</entry>
+					</row>
+				</thead>
+				<tbody>
+					<row>
+						<entry>status</entry>
+						<entry><literal>reverse</literal></entry>
+						<entry>Status bar</entry>
+					</row>
+				</tbody>
+			</tgroup>
+		</table>
 	</sect2>
 
-	<sect2 id="initials-sort">
+<!--
+	<sect2 id="status-color-sort">
 		<title>Sort</title>
 		<para>None</para>
 	</sect2>
 -->
 
-	<sect2 id="initials-muttrc">
+	<sect2 id="status-color-muttrc">
 		<title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'initials' patch.
+<emphasis role="comment"># Example Mutt config file for the 'status-color' patch.
  
-# The 'initials' patch has no config of its own.
-# It adds an expando for an author's initials,
-# which can be used in the 'index_format' variable.
+# The 'status-color' patch allows you to theme different parts of
+# the status bar (also when it's used by the index).
  
-# The default 'index_format' is:</emphasis>
+# For the examples below, set some defaults</emphasis>
+set status_format='-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%&gt;-(%P)---'
 set index_format='%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'
+set sort=threads
+set sort_aux=last-date-received
  
-<emphasis role="comment"># Where %L represents the author/recipient
+<emphasis role="comment"># 'status color' can take up to 2 extra parameters
  
-# This might look like:
-#       1   + Nov 17 David Bowie   Changesbowie    ( 689)
-#       2   ! Nov 17 Stevie Nicks  Rumours         ( 555)
-#       3   + Nov 16 Jimi Hendrix  Voodoo Child    ( 263)
-#       4   + Nov 16 Debbie Harry  Parallel Lines  ( 540)
+# color status foreground background [ regex [ num ]]
  
-# Using the %I expando:</emphasis>
-set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
+# 0 extra parameters
+# Set the default color for the entire status line</emphasis>
+color status blue white
  
-<emphasis role="comment"># This might look like:
-#       1   + Nov 17 DB Changesbowie    ( 689)
-#       2   ! Nov 17 SN Rumours         ( 555)
-#       3   + Nov 16 JH Voodoo Child    ( 263)
-#       4   + Nov 16 DH Parallel Lines  ( 540)
+<emphasis role="comment"># 1 extra parameter
+# Set the color for a matching pattern
+# color status foreground background regexp
+ 
+# Highlight New, Deleted, or Flagged emails</emphasis>
+color status brightred white '(New|Del|Flag):[0-9]+'
+ 
+<emphasis role="comment"># Highlight mailbox ordering if it's different from the default
+# First, highlight anything (*/*)</emphasis>
+color status brightred default '\([^)]+/[^)]+\)'
+ 
+<emphasis role="comment"># Then override the color for one specific case</emphasis>
+color status default   default '\(threads/last-date-received\)'
+ 
+<emphasis role="comment"># 2 extra parameters
+# Set the color for the nth submatch of a pattern
+# color status foreground background regexp num
+ 
+# Highlight the contents of the []s but not the [] themselves</emphasis>
+color status red default '\[([^]]+)\]' 1
+ 
+<emphasis role="comment"># The '1' refers to the first regex submatch, which is the inner
+# part in ()s
+ 
+# Highlight the mailbox</emphasis>
+color status brightwhite default 'Mutt: ([^ ]+)' 1
+ 
+<emphasis role="comment"># Search for 'Mutt: ' but only highlight what comes after it
  
 # vim: syntax=muttrc</emphasis>
 </screen>
 	</sect2>
 
-	<sect2 id="initials-see-also">
+	<sect2 id="status-color-see-also">
 		<title>See Also</title>
 
 		<itemizedlist>
 			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
 			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
-			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+			<listitem><para><link linkend="color">Color command</link></para></listitem>
 		</itemizedlist>
 	</sect2>
 
-	<sect2 id="initials-known-bugs">
+	<sect2 id="status-color-known-bugs">
 		<title>Known Bugs</title>
 		<para>None</para>
 	</sect2>
 
-	<sect2 id="initials-credits">
+	<sect2 id="status-color-credits">
 		<title>Credits</title>
 		<itemizedlist>
-		<listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
+		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+		<listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
+		<listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
+		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+		</itemizedlist>
+	</sect2>
+</sect1>
+
+<sect1 id="tls-sni">
+	<title>TLS-SNI Patch</title>
+	<subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
+
+	<sect2 id="tls-sni-patch">
+		<title>Patch</title>
+
+		<para>
+			To check if Mutt supports <quote>TLS-SNI</quote>, look for
+			<quote>patch-tls-sni</quote> in the mutt version.
+			See: <xref linkend="mutt-patches"/>.
+		</para>
+
+		<itemizedlist>
+			<title>Dependencies:</title>
+			<listitem><para>mutt-1.6.1</para></listitem>
+			<listitem><para>OpenSSL</para></listitem>
+		</itemizedlist>
+
+		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+	</sect2>
+
+	<sect2 id="tls-sni-intro">
+		<title>Introduction</title>
+
+		<para>
+		The <quote>TLS-SNI</quote> patch adds support for TLS virtual hosting.
+		If your mail server doesn't support this everything will still work
+		normally.
+		</para>
+
+		<para>
+		TLS supports sending the expected server hostname during the
+		handshake, via the SNI extension.  This can be used to select a
+		server certificate to issue to the client, permitting
+		virtual-hosting without requiring multiple IP addresses.
+		</para>
+
+		<para>
+		This has been tested against Exim 4.80, which optionally logs SNI
+		and can perform vhosting.
+		</para>
+
+        <para>
+		To verify TLS SNI support by a server, you can use:
+        </para>
+
+<screen>
+openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
+</screen>
+	</sect2>
+
+<!--
+	<sect2 id="tls-sni-variables">
+		<title>Variables</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="tls-sni-functions">
+		<title>Functions</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="tls-sni-commands">
+		<title>Commands</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="tls-sni-colors">
+		<title>Colors</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="tls-sni-sort">
+		<title>Sort</title>
+		<para>None</para>
+	</sect2>
+-->
+
+	<sect2 id="tls-sni-muttrc">
+		<title>Muttrc</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="tls-sni-see-also">
+		<title>See Also</title>
+
+		<itemizedlist>
+			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+		</itemizedlist>
+	</sect2>
+
+	<sect2 id="tls-sni-known-bugs">
+		<title>Known Bugs</title>
+		<para>None</para>
+	</sect2>
+
+	<sect2 id="tls-sni-credits">
+		<title>Credits</title>
+		<itemizedlist>
+		<listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
+		<listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
 		</itemizedlist>
 	</sect2>
@@ -11341,1274 +12609,6 @@ bind index D purge-message
 		<listitem><para>Benjamin Kuperman <email>kuperman@acm.org</email></para></listitem>
 		<listitem><para>Paul Miller <email>paul@voltar.org</email></para></listitem>
 		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="limit-current-thread">
-	<title>Limit-Current-Thread Patch</title>
-	<subtitle>Focus on one Email Thread</subtitle>
-
-	<sect2 id="limit-current-thread-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>limit-current-thread</quote>, look for
-			<quote>patch-limit-current-thread</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="limit-current-thread-intro">
-		<title>Introduction</title>
-
-		<para>
-			This patch adds a new way of using the
-			<link linkend="tuning-search">Limit Command</link>.
-                        The <literal>&lt;limit-current-thread&gt;</literal>
-                        function restricts the view to just the current thread.
-                        Setting the limit (the <literal>l</literal> key) to
-                        <quote>all</quote> will restore the full email list.
-		</para>
-
-	</sect2>
-
-<!--
-	<sect2 id="limit-current-thread-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
--->
-	<sect2 id="limit-current-thread-functions">
-		<title>Functions</title>
-
-		<table id="table-limit-current-thread-functions">
-			<title>Limit-Current-Thread Functions</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Default Key</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>index</entry>
-                                                <entry><literal>&lt;Esc&gt; L</literal></entry>
-						<entry><literal>&lt;limit-current-thread&gt;</literal></entry>
-						<entry>Limit view to current thread</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-
-	</sect2>
-<!--
-	<sect2 id="limit-current-thread-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="limit-current-thread-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="limit-current-thread-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="limit-current-thread-muttrc">
-		<title>Muttrc</title>
-
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'limit-current-thread' patch.
- 
-# Limit view to current thread</emphasis>
-bind index &lt;esc&gt;L limit-current-thread
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="limit-current-thread-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="limit-current-thread-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="limit-current-thread-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="skip-quoted-patch">
-	<title>Skip-Quoted Patch</title>
-	<subtitle>Leave some context visible</subtitle>
-
-	<sect2 id="skip-quoted-patch2">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>skip-quoted</quote>, look for
-			<quote>patch-skip-quoted</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="skip-quoted-intro">
-		<title>Introduction</title>
-
-		<para>
-			When viewing an email, the
-			<literal>&lt;skip-to-quoted&gt;</literal> function (by default the
-			<literal>S</literal> key) will scroll past any quoted text.
-			Sometimes, a little context is useful.
-		</para>
-
-		<para>
-			By setting the <literal>$skip_quoted_offset</literal> variable, you
-			can select how much of the quoted text is left visible.
-		</para>
-	</sect2>
-
-	<sect2 id="skip-quoted-variables">
-		<title>Variables</title>
-		<table id="table-skip-quoted-variables">
-			<title>Skip-Quoted Variables</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Type</entry>
-						<entry>Default</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>skip_quoted_offset</literal></entry>
-						<entry>number</entry>
-						<entry>0</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-<!--
-	<sect2 id="skip-quoted-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="skip-quoted-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="skip-quoted-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="skip-quoted-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="skip-quoted-muttrc">
-		<title>Muttrc</title>
-
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'skip-quoted' patch.
- 
-# The 'S' (skip-quoted) command scrolls the pager past the quoted text (usually
-# indented with '&gt; '.  Setting 'skip_quoted_offset' leaves some lines of quoted
-# text on screen for context.
- 
-# Show three quoted lines before the reply</emphasis>
-set skip_quoted_offset = 3
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="skip-quoted-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="skip-quoted-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="skip-quoted-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="compress">
-	<title>Compressed Folders Patch</title>
-	<subtitle>Read from/write to compressed mailboxes</subtitle>
-
-	<sect2 id="compress-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>Compress Folders</quote>, look for
-			<quote>+USE_COMPRESSED</quote> in the mutt version.
-			See: <xref linkend="compile-time-features"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="compress-intro">
-		<title>Introduction</title>
-
-		<para>
-			The Compressed Folder patch allows Mutt to read mailbox files that are
-			compressed.  But it isn't limited to compressed files.  It works well
-			with encrypted files, too.  In fact, if you can create a program/script
-			to convert to and from your format, then Mutt can read it.
-		</para>
-
-		<para>
-			The patch adds three hooks to Mutt: <literal>open-hook</literal>,
-			<literal>close-hook</literal> and <literal>append-hook</literal>.  They
-			define commands to: uncompress a file; compress a file; append
-			messages to an already compressed file.
-		</para>
-
-		<para>
-			There are some examples of both compressed and encrypted files,
-			later.  For now, the documentation will just concentrate on
-			compressed files.
-		</para>
-
-	</sect2>
-
-<!--
-	<sect2 id="compress-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="compress-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="compress-commands">
-		<title>Commands</title>
-		<cmdsynopsis>
-			<command>open-hook</command>
-			<arg choice="plain">
-				<replaceable class="parameter">pattern</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">shell-command</replaceable>
-			</arg>
-			<command>close-hook</command>
-			<arg choice="plain">
-				<replaceable class="parameter">pattern</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">shell-command</replaceable>
-			</arg>
-			<command>append-hook</command>
-			<arg choice="plain">
-				<replaceable class="parameter">pattern</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">shell-command</replaceable>
-			</arg>
-		</cmdsynopsis>
-
-		<para>
-			The shell-command must contain two placeholders for filenames:
-			<literal>%f</literal> and <literal>%t</literal>.  These represent
-			<quote>from</quote> and <quote>to</quote> filenames.  It's a good idea to
-			put quotes around these placeholders.
-		</para>
-
-		<para>
-			If you need the exact string <quote>%f</quote> or <quote>%t</quote> in your
-			command, simply double up the <quote>%</quote> character, e.g.
-			<quote>%%f</quote> or <quote>%%t</quote>.
-		</para>
-
-		<table id="table-compress-optional">
-			<title>Not all Hooks are Required</title>
-			<tgroup cols="5">
-				<thead>
-					<row>
-						<entry>Open</entry>
-						<entry>Close</entry>
-						<entry>Append</entry>
-						<entry>Effect</entry>
-						<entry>Useful if</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Open</entry>
-						<entry>-</entry>
-						<entry>-</entry>
-						<entry>Folder is readonly</entry>
-						<entry>The folder is just a backup</entry>
-					</row>
-					<row>
-						<entry>Open</entry>
-						<entry>Close</entry>
-						<entry>-</entry>
-						<entry>Folder is read/write, but the entire folder must be
-							written if anything is changed</entry>
-						<entry>Your compression format doesn't support appending</entry>
-					</row>
-					<row>
-						<entry>Open</entry>
-						<entry>Close</entry>
-						<entry>Append</entry>
-						<entry>Folder is read/write and emails can be efficiently added
-							to the end</entry>
-						<entry>Your compression format supports appending</entry>
-					</row>
-					<row>
-						<entry>Open</entry>
-						<entry>-</entry>
-						<entry>Append</entry>
-						<entry>Folder is readonly, but can be appended to</entry>
-						<entry>You want to store emails, but never change them</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-
-		<note>
-			The command:
-			<itemizedlist>
-				<listitem><para>should return a non-zero exit status on failure</para></listitem>
-				<listitem><para>should not delete any files</para></listitem>
-			</itemizedlist>
-		</note>
-
-		<sect3 id="open-hook">
-			<title>Read from compressed mailbox</title>
-
-			<screen>open-hook regexp shell-command</screen>
-
-			<para>
-				If Mutt is unable to open a file, it then looks for
-				<literal>open-hook</literal> that matches the filename.
-			</para>
-
-			<para>
-				If your compression program doesn't have a well-defined extension,
-				then you can use <literal>.</literal> as the regexp.
-			</para>
-
-			<sect4 id="compress-open-hook-example">
-				<title>Example of open-hook</title>
-
-				<screen>open-hook '\.gz$' &quot;gzip -cd '%f' &gt; '%t'&quot;</screen>
-
-				<itemizedlist>
-					<listitem><para>Mutt finds a file, <quote>example.gz</quote>,
-							that it can't read</para></listitem>
-					<listitem><para>Mutt has an <literal>open-hook</literal>
-							whose regexp matches the filename:
-							<literal>\.gz$</literal></para></listitem>
-					<listitem><para>Mutt uses the command <literal>gzip -cd</literal>
-							to create a temporary file that it <emphasis>can</emphasis>
-							read</para></listitem>
-				</itemizedlist>
-			</sect4>
-		</sect3>
-
-		<sect3 id="close-hook">
-			<title>Write to a compressed mailbox</title>
-
-			<screen>close-hook regexp shell-command</screen>
-
-			<para>
-				When Mutt has finished with a compressed mail folder, it will look
-				for a matching <literal>close-hook</literal> to recompress the file.
-				This hook is <link linkend="table-compress-optional">optional</link>.
-			</para>
-
-			<note>
-				If the folder has not been modifed, the
-				<literal>close-hook</literal> will not be called.
-			</note>
-
-			<sect4 id="compress-close-hook-example">
-				<title>Example of close-hook</title>
-
-				<screen>close-hook '\.gz$' &quot;gzip -c '%t' &gt; '%f'&quot;</screen>
-
-				<itemizedlist>
-					<listitem><para>Mutt has finished with a folder, <quote>example.gz</quote>,
-							that it opened with <literal>open-hook</literal></para></listitem>
-					<listitem><para>The folder has been modified</para></listitem>
-					<listitem><para>Mutt has a <literal>close-hook</literal> whose regexp
-							matches the filename: <literal>\.gz$</literal></para></listitem>
-					<listitem><para>Mutt uses the command <literal>gzip -c</literal>
-							to create a new compressed file</para></listitem>
-				</itemizedlist>
-			</sect4>
-		</sect3>
-
-		<sect3 id="append-hook">
-			<title>Append to a compressed mailbox</title>
-
-			<screen>append-hook regexp shell-command</screen>
-
-			<para>
-				When Mutt wants to append an email to a compressed mail folder, it
-				will look for a matching <literal>append-hook</literal>.
-				This hook is <link linkend="table-compress-optional">optional</link>.
-			</para>
-
-			<para>
-				Using the <literal>append-hook</literal> will save time, but
-				Mutt won't be able to determine the type of the mail folder
-				inside the compressed file.
-			</para>
-
-			<para>
-				Mutt will <emphasis>assume</emphasis> the type to be that of
-				the <literal>$mbox_type</literal> variable.  Mutt also uses
-				this type for temporary files.
-			</para>
-
-			<para>
-				Mutt will only use the <literal>append-hook</literal> for existing files.
-				The <literal>close-hook</literal> will be used for empty, or missing files.
-			</para>
-
-			<sect4 id="compress-append-hook-example">
-				<title>Example of append-hook</title>
-
-				<screen>append-hook '\.gz$' &quot;gzip -c '%t' &gt;&gt; '%f'&quot;</screen>
-
-				<itemizedlist>
-					<listitem><para>Mutt wants to append an email to a folder, <quote>example.gz</quote>,
-							that it opened with <literal>open-hook</literal></para></listitem>
-					<listitem><para>Mutt has an <literal>append-hook</literal> whose regexp matches
-							the filename: <literal>\.gz$</literal></para></listitem>
-					<listitem><para>Mutt knows the mailbox type from the <literal>$mbox</literal>
-							variable</para></listitem>
-					<listitem><para>Mutt uses the command <literal>gzip -c</literal>
-							to append to an existing compressed file</para></listitem>
-				</itemizedlist>
-			</sect4>
-
-		</sect3>
-
-		<sect3 id="compress-empty">
-			<title>Empty Files</title>
-
-			<para>
-				Mutt assumes that an empty file is not compressed.  In this
-				situation, unset <link linkend="save-empty">$save_empty</link>, so
-				that the compressed file will be removed if you delete all of the
-				messages.
-			</para>
-		</sect3>
-
-		<sect3 id="compress-security">
-			<title>Security</title>
-
-			<para>
-				Encrypted files are decrypted into temporary files which are
-				stored in the <link linkend="tmpdir">$tmpdir</link> directory.
-				This could be a security risk.
-			</para>
-		</sect3>
-	</sect2>
-
-<!--
-	<sect2 id="compress-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="compress-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="compress-muttrc">
-		<title>Muttrc</title>
-<screen>
-<emphasis role="comment"># Example Mutt config file for the 'compressed folders' feature.
- 
-# This feature adds three hooks to Mutt which allow it to
-# work with compressed, or encrypted, mailboxes.
- 
-# The hooks are of the form:
-#       open-hook   regexp &quot;shell-command&quot;
-#       close-hook  regexp &quot;shell-command&quot;
-#       append-hook regexp &quot;shell-command&quot;
- 
-# The 'append-hook' is optional.
- 
-# Hander for gzip compressed mailboxes</emphasis>
-open-hook   '\.gz$'  &quot;gzip -cd  '%f' &gt;  '%t'&quot;
-close-hook  '\.gz$'  &quot;gzip -c   '%t' &gt;  '%f'&quot;
-append-hook '\.gz$'  &quot;gzip -c   '%t' &gt;&gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for bzip2 compressed mailboxes</emphasis>
-open-hook   '\.bz2$' &quot;bzip2 -cd '%f' &gt;  '%t'&quot;
-close-hook  '\.bz2$' &quot;bzip2 -c  '%t' &gt;  '%f'&quot;
-append-hook '\.bz2$' &quot;bzip2 -c  '%t' &gt;&gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for xz compressed mailboxes</emphasis>
-open-hook   '\.xz$'  &quot;xz    -cd '%f' &gt;  '%t'&quot;
-close-hook  '\.xz$'  &quot;xz    -c  '%t' &gt;  '%f'&quot;
-append-hook '\.xz$'  &quot;xz    -c  '%t' &gt;&gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for pgp encrypted mailboxes
-# PGP does not support appending to an encrypted file</emphasis>
-open-hook   '\.pgp$' &quot;pgp -f &lt; '%f' &gt; '%t'&quot;
-close-hook  '\.pgp$' &quot;pgp -fe YourPgpUserIdOrKeyId &lt; '%t' &gt; '%f'&quot;
- 
-<emphasis role="comment"># Hander for gpg encrypted mailboxes
-# gpg does not support appending to an encrypted file</emphasis>
-open-hook   '\.gpg$' &quot;gpg --decrypt &lt; '%f' &gt; '%t'&quot;
-close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '%t' &gt; '%f'&quot;
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-	</sect2>
-
-	<sect2 id="compress-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
-			<listitem><para><link linkend="tmpdir">$tmpdir</link></para></listitem>
-			<listitem><para><link linkend="mbox-type">$mbox_type</link></para></listitem>
-			<listitem><para><link linkend="save-empty">$save_empty</link></para></listitem>
-			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="compress-known-bugs">
-		<title>Known Bugs</title>
-
-		<itemizedlist>
-			<listitem><para>The Compressed Folder hooks cannot deal with filenames that contains quotes/apostrophes.</para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="compress-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Roland Rosenfeld <email>roland@spinnaker.de</email></para></listitem>
-		<listitem><para>Alain Penders <email>Alain@Finale-Dev.com</email></para></listitem>
-		<listitem><para>Christoph <quote>Myon</quote> Berg <email>myon@debian.org</email></para></listitem>
-		<listitem><para>Evgeni Golov <email>evgeni@debian.org</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="keywords">
-	<title>Keywords Patch</title>
-	<subtitle>Labels/Tagging for emails</subtitle>
-
-	<sect2 id="keywords-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>Keywords</quote>, look for
-			<quote>patch-keywords</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="keywords-intro">
-		<title>Introduction</title>
-
-		<para>
-		Unify label/keyword handling.
-		</para>
-
-		<para>
-		Since x-labels were added to mutt in 2000, a number of other approaches
-		to what we now call <quote>tagging</quote> have also emerged.
-		One of them was even made standard in RFC 2822.
-		This update unifies the handling of all these strategies.
-		</para>
-
-		<para>
-		We start by changing mutt's internal keyword storage from a single
-		string which may contain whitespace to a list of discrete keywords.
-		This has advantages for keyword completion as well as for portabilty
-		among varying "standards" for keyword storage.  This may represent
-		a significant change for existing mutt users who have set x-labels
-		containing spaces, and should be regarded with suspicion.  The
-		advantages are significant, though.
-		</para>
-
-		<para>
-		Next we allow mutt to parse keywords into this internal list from
-		any of the following headers: X-Label (freeform), X-Keywords
-		(space-delimited), X-Mozilla-Keys (space-delimited), and Keywords (RFC
-		2822, comma-space-delimited).  Mutt remembers which headers it sourced
-		keywords from, and can rewrite those headers when saving messages for
-		compatibility with the mailer of origin.
-		</para>
-
-		<para>
-		(X-Label was specified as freeform text by mutt, its only known
-		implementation.  X-Labels have been used both as a
-		<quote>tagging</quote> device, probably with space delimiting, and as a
-		<quote>memo</quote> field, where space-delimited parsing would ruin the
-		semantics of the memo.  By default mutt will not split X-Labels at all.
-		Set $xlabel_delimiter if your needs vary.)
-		</para>
-
-		<para>
-		Finally we add two booleans: $keywords_legacy=true and
-		$keywords_standard=FALSE.  When $keywords_legacy is true, mutt will
-		always save keyword to whatever original header it came from.  When
-		$keywords_standard=true, mutt will save to the Keywords: header.  If
-		both are true mutt saves to both; if neither is true, mutt saves only
-		to legacy headers to avoid complete loss of keywords.
-		</para>
-
-		<para>
-		Overall this represents convergence path for all competing
-		labelling/tagging/keywording systems toward one that is specified by
-		RFC.
-		</para>
-
-		<para>
-		You can change or delete the X-Label: field within
-		Mutt using the edit-label command, bound to the
-		y key by default.  This works for tagged messages, too.
-		</para>
-	</sect2>
-
-	<sect2 id="keywords-variables">
-		<title>Variables</title>
-
-		<table id="table-keywords-variables">
-			<title>Keywords Variables</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Type</entry>
-						<entry>Default</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>keywords_legacy</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>keywords_standard</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>xlabel_delimiter</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-	<sect2 id="keywords-functions">
-		<title>Functions</title>
-
-		<table id="table-keywords-funcions">
-			<title>Keyword Functions</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Default Key</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>index,pager</entry>
-						<entry>y</entry>
-						<entry><literal>&lt;edit-label&gt;</literal></entry>
-						<entry>add, change, or delete a message's label</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-<!--
-	<sect2 id="keywords-commands">
-		<title>Commands</title>
-	</sect2>
-
-	<sect2 id="keywords-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
--->
-
-	<sect2 id="keywords-sort">
-		<title>Sort</title>
-		<table id="table-keywords-sort">
-			<title>Keywords Sort</title>
-			<tgroup cols="2">
-				<thead>
-					<row>
-						<entry>Sort</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>label</literal></entry>
-						<entry>Sort by label</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-	<sect2 id="keywords-muttrc">
-		<title>Muttrc</title>
-	</sect2>
-
-	<sect2 id="keywords-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
-			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
-			<listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="keywords-known-bugs">
-		<title>Known Bugs</title>
-	</sect2>
-
-	<sect2 id="keywords-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="nntp">
-	<title>NNTP Patch</title>
-	<subtitle>Talk to a Usenet news server</subtitle>
-
-	<sect2 id="nntp-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>NNTP</quote>, look for
-			<quote>+USE_NNTP</quote> in the mutt version.
-			See: <xref linkend="compile-time-features"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="nntp-intro">
-		<title>Introduction</title>
-
-		<para>Reading news via NNTP</para>
-		<para>
-		If compiled with <emphasis>--enable-nntp</emphasis> option, Mutt can
-		read news from news server via NNTP.  You can open a newsgroup with
-		function ``change-newsgroup'' (default: ``i'').  Default news server
-		can be obtained from <literal>$NNTPSERVER</literal> environment
-		variable or from <literal>/etc/nntpserver</literal> file.  Like other
-		news readers, info about subscribed newsgroups is saved in file by
-		<link linkend="newsrc">$newsrc</link> variable.  The variable <link
-		linkend="news-cache-dir">$news_cache_dir</link> can be used to point
-		to a directory.  Mutt will create a hierarchy of subdirectories named
-		like the account and newsgroup the cache is for.  Also the hierarchy
-		is used to store header cache if Mutt was compiled with <link
-		linkend="header-caching">header cache</link> support.
-		</para>
-	</sect2>
-
-	<sect2 id="nntp-variables">
-		<title>Variables</title>
-
-		<table id="table-nntp-variables">
-			<title>NNTP Variables</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Type</entry>
-						<entry>Default</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>ask_follow_up</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>ask_x_comment_to</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>catchup_newsgroup</literal></entry>
-						<entry>quad</entry>
-						<entry><literal>ask-yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>followup_to_poster</literal></entry>
-						<entry>quad</entry>
-						<entry><literal>ask-yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>group_index_format</literal></entry>
-						<entry>string</entry>
-						<entry><literal>%4C %M%N %5s  %-45.45f %d</literal></entry>
-					</row>
-					<row>
-						<entry><literal>inews</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>mime_subject</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>newsgroups_charset</literal></entry>
-						<entry>string</entry>
-						<entry><literal>utf-8</literal></entry>
-					</row>
-					<row>
-						<entry><literal>newsrc</literal></entry>
-						<entry>string</entry>
-						<entry><literal>~/.newsrc</literal></entry>
-					</row>
-					<row>
-						<entry><literal>news_cache_dir</literal></entry>
-						<entry>string</entry>
-						<entry><literal>~/.mutt</literal></entry>
-					</row>
-					<row>
-						<entry><literal>news_server</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>nntp_authenticators</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>nntp_context</literal></entry>
-						<entry>number</entry>
-						<entry><literal>1000</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_listgroup</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_load_description</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_pass</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>nntp_poll</literal></entry>
-						<entry>number</entry>
-						<entry><literal>60</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_user</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>post_moderated</literal></entry>
-						<entry>quad</entry>
-						<entry><literal>ask-yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>save_unsubscribed</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>show_new_news</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>show_only_unread</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>x_comment_to</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-	<sect2 id="nntp-functions">
-		<title>Functions</title>
-
-		<table id="table-nntp-functions">
-			<title>NNTP Functions</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Default Key</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>browser,index</entry>
-						<entry>y</entry>
-						<entry><literal>&lt;catchup&gt;</literal></entry>
-						<entry>mark all articles in newsgroup as read</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>i</entry>
-						<entry><literal>&lt;change-newsgroup&gt;</literal></entry>
-						<entry>open a different newsgroup</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>X</entry>
-						<entry><literal>&lt;change-vfolder&gt;</literal></entry>
-						<entry>open a different virtual folder</entry>
-					</row>
-					<row>
-						<entry>compose</entry>
-						<entry>o</entry>
-						<entry><literal>&lt;edit-followup-to&gt;</literal></entry>
-						<entry>edit the Followup-To field</entry>
-					</row>
-					<row>
-						<entry>compose</entry>
-						<entry>N</entry>
-						<entry><literal>&lt;edit-newsgroups&gt;</literal></entry>
-						<entry>edit the newsgroups list</entry>
-					</row>
-					<row>
-						<entry>compose</entry>
-						<entry>x</entry>
-						<entry><literal>&lt;edit-x-comment-to&gt;</literal></entry>
-						<entry>edit the X-Comment-To field</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>+</entry>
-						<entry><literal>&lt;entire-thread&gt;</literal></entry>
-						<entry>read entire thread of the current message</entry>
-					</row>
-					<row>
-						<entry>attachment,index,pager</entry>
-						<entry>F</entry>
-						<entry><literal>&lt;followup-message&gt;</literal></entry>
-						<entry>followup to newsgroup</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>`</entry>
-						<entry><literal>&lt;modify-labels&gt;</literal></entry>
-						<entry>modify (notmuch) tags</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>P</entry>
-						<entry><literal>&lt;post-message&gt;</literal></entry>
-						<entry>post message to newsgroup</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>g</entry>
-						<entry><literal>&lt;reload-active&gt;</literal></entry>
-						<entry>load list of all newsgroups from NNTP server</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>s</entry>
-						<entry><literal>&lt;subscribe&gt;</literal></entry>
-						<entry>subscribe to current mbox (IMAP/NNTP only)</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>S</entry>
-						<entry><literal>&lt;subscribe-pattern&gt;</literal></entry>
-						<entry>subscribe to newsgroups matching a pattern</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>Y</entry>
-						<entry><literal>&lt;uncatchup&gt;</literal></entry>
-						<entry>mark all articles in newsgroup as unread</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>u</entry>
-						<entry><literal>&lt;unsubscribe&gt;</literal></entry>
-						<entry>unsubscribe from current mbox (IMAP/NNTP only)</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>U</entry>
-						<entry><literal>&lt;unsubscribe-pattern&gt;</literal></entry>
-						<entry>unsubscribe from newsgroups matching a pattern</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>Alt-i</entry>
-						<entry><literal>&lt;change-newsgroup-readonly&gt;</literal></entry>
-						<entry>open a different newsgroup in read only mode</entry>
-					</row>
-					<row>
-						<entry>attachment,index,pager</entry>
-						<entry>Alt-F</entry>
-						<entry><literal>&lt;forward-to-group&gt;</literal></entry>
-						<entry>forward to newsgroup</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;get-children&gt;</literal></entry>
-						<entry>get all children of the current message</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>Alt-G</entry>
-						<entry><literal>&lt;get-parent&gt;</literal></entry>
-						<entry>get parent of the current message</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;imap-fetch-mail&gt;</literal></entry>
-						<entry>force retrieval of mail from IMAP server</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;imap-logout-all&gt;</literal></entry>
-						<entry>logout from all IMAP servers</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
-						<entry>modify labeld and then hide message</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;reconstruct-thread&gt;</literal></entry>
-						<entry>reconstruct thread containing current message</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>Alt-X</entry>
-						<entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
-						<entry>generate virtual folder from query</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>Ctrl-G</entry>
-						<entry><literal>&lt;get-message&gt;</literal></entry>
-						<entry>get message with Message-Id</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
-
-	<sect2 id="nntp-commands">
-		<title>Commands</title>
-	</sect2>
-
-	<sect2 id="nntp-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="nntp-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="nntp-muttrc">
-		<title>Muttrc</title>
-	</sect2>
-
-	<sect2 id="nntp-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="nntp-known-bugs">
-		<title>Known Bugs</title>
-	</sect2>
-
-	<sect2 id="nntp-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
-		<listitem><para>Felix von Leitner <email>leitner@fefe.de</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
-</sect1>
-
-<sect1 id="lmdb">
-	<title>LMDB Patch</title>
-	<subtitle>LMDB backend for the header cache</subtitle>
-
-	<sect2 id="lmdb-patch">
-		<title>Patch</title>
-
-		<para>
-			To check if Mutt supports <quote>lmdb</quote>, look for
-			<quote>patch-lmdb</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
-
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
-
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
-
-	<sect2 id="lmdb-intro">
-		<title>Introduction</title>
-
-		<para>
-			This patch adds support for using LMDB as a storage backend for
-			Mutt's header cache (hcache). It is enabled at configure time with
-			the <emphasis>--with-lmdb=&lt;path&gt;</emphasis> switch.
-		</para>
-	</sect2>
-
-	<sect2 id="lmdb-see-also">
-		<title>See Also</title>
-
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="caching">Local Caching</link></para></listitem>
-		</itemizedlist>
-	</sect2>
-
-	<sect2 id="lmdb-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
-
-	<sect2 id="lmdb-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Pietro Cerutti <email>gahr@gahr.ch</email></para></listitem>
-		<listitem><para>Jan-Piet Mens <email>jp@mens.de</email></para></listitem>
 		</itemizedlist>
 	</sect2>
 </sect1>
