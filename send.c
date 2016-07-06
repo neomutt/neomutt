@@ -1624,7 +1624,8 @@ ci_send_message (int flags,		/* send mode */
       msg->security |= SIGN;
     if (option (OPTCRYPTREPLYSIGNENCRYPTED) && cur && (cur->security & ENCRYPT))
       msg->security |= SIGN;
-    if (WithCrypto & APPLICATION_PGP && (msg->security & (ENCRYPT | SIGN)))
+    if ((WithCrypto & APPLICATION_PGP) &&
+        ((msg->security & (ENCRYPT | SIGN)) || option (OPTCRYPTOPPORTUNISTICENCRYPT)))
     {
       if (option (OPTPGPAUTOINLINE))
 	msg->security |= INLINE;
