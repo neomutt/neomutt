@@ -123,6 +123,7 @@ WHERE char *Postponed;
 WHERE char *PostponeEncryptAs;
 WHERE char *Prefix;
 WHERE char *PrintCmd;
+WHERE char *NewMailCmd;
 WHERE char *QueryCmd;
 WHERE char *QueryFormat;
 WHERE char *Realname;
