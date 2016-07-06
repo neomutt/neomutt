@@ -21,8 +21,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.6.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-06-20 10:10+0200\n"
-"PO-Revision-Date: 2016-06-20 10:10+0200\n"
+"POT-Creation-Date: 2016-07-06 10:39-0700\n"
+"PO-Revision-Date: 2016-03-21 01:29+0100\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -368,7 +368,7 @@ msgstr "mono : pas assez d'arguments"
 msgid "%s: no such attribute"
 msgstr "%s : cet attribut n'existe pas"
 
-#: color.c:736 hook.c:69 hook.c:77 keymap.c:921
+#: color.c:725 hook.c:69 hook.c:77 keymap.c:921
 msgid "too few arguments"
 msgstr "pas assez d'arguments"
 
@@ -701,7 +701,7 @@ msgstr "Attention : '%s' est un mauvais IDN."
 msgid "You may not delete the only attachment."
 msgstr "Vous ne pouvez pas supprimer l'unique attachement."
 
-#: compose.c:614 send.c:1680
+#: compose.c:613 send.c:1681
 #, c-format
 msgid "Bad IDN in \"%s\": '%s'"
 msgstr "Mauvais IDN dans « %s » : '%s'"
@@ -1515,7 +1515,7 @@ msgstr "Appel de PGP..."
 msgid "Message can't be sent inline.  Revert to using PGP/MIME?"
 msgstr "Le message ne peut pas être envoyé en ligne. Utiliser PGP/MIME ?"
 
-#: crypt.c:172 send.c:1608
+#: crypt.c:172 send.c:1609
 msgid "Mail not sent."
 msgstr "Message non envoyé."
 
@@ -4372,43 +4372,43 @@ msgstr "Message non modifié. Abandonner ?"
 msgid "Aborted unmodified message."
 msgstr "Message non modifié. Abandon."
 
-#: send.c:1657
+#: send.c:1658
 msgid "Message postponed."
 msgstr "Message ajourné."
 
-#: send.c:1668
+#: send.c:1669
 msgid "No recipients are specified!"
 msgstr "Aucun destinataire spécifié !"
 
-#: send.c:1673
+#: send.c:1674
 msgid "No recipients were specified."
 msgstr "Aucun destinataire spécifié."
 
-#: send.c:1689
+#: send.c:1690
 msgid "No subject, abort sending?"
 msgstr "Pas d'objet (Subject), abandonner l'envoi ?"
 
-#: send.c:1693
+#: send.c:1694
 msgid "No subject specified."
 msgstr "Pas d'objet (Subject) spécifié."
 
-#: send.c:1755 smtp.c:188
+#: send.c:1756 smtp.c:188
 msgid "Sending message..."
 msgstr "Envoi du message..."
 
-#: send.c:1788
+#: send.c:1789
 msgid "Save attachments in Fcc?"
 msgstr "Sauver les attachements dans Fcc ?"
 
-#: send.c:1898
+#: send.c:1899
 msgid "Could not send the message."
 msgstr "Impossible d'envoyer le message."
 
-#: send.c:1903
+#: send.c:1904
 msgid "Mail sent."
 msgstr "Message envoyé."
 
-#: send.c:1903
+#: send.c:1904
 msgid "Sending in background."
 msgstr "Envoi en tâche de fond."
 
