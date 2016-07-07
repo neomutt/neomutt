@@ -1156,10 +1156,11 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 	dprint (3, (debugfile, "skip zero-width character U+%04X\n", (unsigned short)wc));
 	continue;
       }
-      /* Filter bidi markers, see ticket #3827 */
-      if (wc == (wchar_t)0x200f || wc == (wchar_t)0x200e)
+      /* Filter bidi markers, see ticket #3827
+         Filter soft hyphen, see ticket #3848 */
+      if (wc == (wchar_t)0x200f || wc == (wchar_t)0x200e || wc == (wchar_t)0x00ad)
       {
-	dprint (3, (debugfile, "skip bidi marker U+%04X\n", (unsigned short)wc));
+	dprint (3, (debugfile, "filtered U+%04X\n", (unsigned short)wc));
 	continue;
       }
     }

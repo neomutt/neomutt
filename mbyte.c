@@ -550,9 +550,11 @@ int mutt_filter_unprintable (char **s)
       wc = '?';
     /* Filter out the RIGHT-TO-LEFT and LEFT-TO-RIGHT bidi markers because
      * they result in screen corruption.   See ticket #3827.
+     * Filter soft-hypen.  See ticket #3848.
      */
     else if (Charset_is_utf8 &&
-             ((wc == (wchar_t)0x200f) || (wc == (wchar_t)0x200e)))
+             ((wc == (wchar_t)0x200f) || (wc == (wchar_t)0x200e) ||
+              (wc == (wchar_t)0x00ad)))
       continue;
     k2 = wcrtomb (scratch, wc, &mbstate2);
     scratch[k2] = '\0';
