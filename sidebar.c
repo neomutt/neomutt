@@ -50,6 +50,9 @@ static int OpnIndex = -1;    /* Current (open) mailbox */
 static int HilIndex = -1;    /* Highlighted mailbox */
 static int BotIndex = -1;    /* Last mailbox visible in sidebar */
 
+static int select_next (void);
+
+
 /**
  * cb_format_str - Create the string to show in the sidebar
  * @dest:        Buffer in which to save string
@@ -386,8 +389,9 @@ static int prepare_sidebar (int page_size)
 {
   int i;
   SBENTRY *opn_entry = NULL, *hil_entry = NULL;
+  int page_entries;
 
-  if (!EntryCount)
+  if (!EntryCount || (page_size <= 0))
     return 0;
 
   if (OpnIndex >= 0)
@@ -409,16 +413,43 @@ static int prepare_sidebar (int page_size)
   if ((HilIndex < 0) || (SidebarSortMethod != PreviousSort))
   {
     if (OpnIndex >= 0)
-      HilIndex  = OpnIndex;
+      HilIndex = OpnIndex;
     else
-      HilIndex  = 0;
+    {
+      HilIndex = 0;
+      if (Entries[HilIndex]->is_hidden)
+        select_next ();
+    }
   }
-  if (TopIndex >= 0)
-    TopIndex = (HilIndex / page_size) * page_size;
-  else
-    TopIndex = HilIndex;
 
-  BotIndex = TopIndex + page_size - 1;
+  /* Set the Top and Bottom to frame the HilIndex in groups of page_size */
+
+  /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
+   * need to scan for the framing interval */
+  if (option (OPTSIDEBARNEWMAILONLY))
+  {
+    TopIndex = BotIndex = -1;
+    while (BotIndex < HilIndex)
+    {
+      TopIndex = BotIndex + 1;
+      page_entries = 0;
+      while (page_entries < page_size)
+      {
+        BotIndex++;
+        if (BotIndex >= EntryCount)
+          break;
+        if (! Entries[BotIndex]->is_hidden)
+          page_entries++;
+      }
+    }
+  }
+  /* Otherwise we can just calculate the interval */
+  else
+  {
+    TopIndex = (HilIndex / page_size) * page_size;
+    BotIndex = TopIndex + page_size - 1;
+  }
+
   if (BotIndex > (EntryCount - 1))
     BotIndex = EntryCount - 1;
 
