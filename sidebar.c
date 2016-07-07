@@ -33,6 +33,9 @@ static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
 static short PreviousSort = SORT_ORDER;  /* sidebar_sort_method */
 
+static int select_next (void);
+
+
 /**
  * struct sidebar_entry - Info about folders in the sidebar
  */
@@ -390,8 +393,9 @@ static int prepare_sidebar (int page_size)
 {
   int i;
   SBENTRY *opn_entry = NULL, *hil_entry = NULL;
+  int page_entries;
 
-  if (!EntryCount)
+  if (!EntryCount || (page_size <= 0))
     return 0;
 
   if (OpnIndex >= 0)
@@ -413,16 +417,43 @@ static int prepare_sidebar (int page_size)
   if ((HilIndex < 0) || (SidebarSortMethod != PreviousSort))
   {
     if (OpnIndex >= 0)
-      HilIndex  = OpnIndex;
+      HilIndex = OpnIndex;
     else
-      HilIndex  = 0;
+    {
+      HilIndex = 0;
+      if (Entries[HilIndex]->is_hidden)
+        select_next ();
+    }
   }
-  if (TopIndex >= 0)
-    TopIndex = (HilIndex / page_size) * page_size;
-  else
-    TopIndex = HilIndex;
 
-  BotIndex = TopIndex + page_size - 1;
+  /* Set the Top and Bottom to frame the HilIndex in groups of page_size */
+
+  /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
+   * need to scan for the framing interval */
+  if (option (OPTSIDEBARNEWMAILONLY))
+  {
+    TopIndex = BotIndex = -1;
+    while (BotIndex < HilIndex)
+    {
+      TopIndex = BotIndex + 1;
+      page_entries = 0;
+      while (page_entries < page_size)
+      {
+        BotIndex++;
+        if (BotIndex >= EntryCount)
+          break;
+        if (! Entries[BotIndex]->is_hidden)
+          page_entries++;
+      }
+    }
+  }
+  /* Otherwise we can just calculate the interval */
+  else
+  {
+    TopIndex = (HilIndex / page_size) * page_size;
+    BotIndex = TopIndex + page_size - 1;
+  }
+
   if (BotIndex > (EntryCount - 1))
     BotIndex = EntryCount - 1;
 
