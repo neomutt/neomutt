@@ -1511,14 +1511,20 @@ int imap_buffy_check (int force, int check_stats)
       continue;
 
     if (imap_get_mailbox (mailbox->path, &idata, name, sizeof (name)) < 0)
+    {
+      mailbox->new = 0;
       continue;
+    }
 
     /* Don't issue STATUS on the selected mailbox, it will be NOOPed or
      * IDLEd elsewhere.
      * idata->mailbox may be NULL for connections other than the current
      * mailbox's, and shouldn't expand to INBOX in that case. #3216. */
     if (idata->mailbox && !imap_mxcmp (name, idata->mailbox))
+    {
+      mailbox->new = 0;
       continue;
+    }
 
     if (!mutt_bit_isset (idata->capabilities, IMAP4REV1) &&
         !mutt_bit_isset (idata->capabilities, STATUS))
