@@ -7473,7 +7473,7 @@ would contain:
 Mutt may also be <quote>patched</quote> to support smaller features.
 These patches should add a free-form string to the end Mutt's version string.
 Running <literal>mutt -v</literal> might show:
-<screen>patch-1.6.1.sidebar.20160502</screen>
+<screen>patch-1.6.2.sidebar.20160709</screen>
 </para>
 </sect2>
 
@@ -8092,34 +8092,34 @@ please have a look at the mixmaster documentation.
 </sect1>
 
 <sect1 id="ifdef">
-	<title>Ifdef Patch</title>
-	<subtitle>Conditional config options</subtitle>
+  <title>Ifdef Patch</title>
+  <subtitle>Conditional config options</subtitle>
 
-	<sect2 id="ifdef-patch">
-		<title>Patch</title>
+  <sect2 id="ifdef-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>ifdef</quote>, look for
-			<quote>patch-ifdef</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>ifdef</quote>, look for
+      <quote>patch-ifdef</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="ifdef-intro">
-		<title>Introduction</title>
+  <sect2 id="ifdef-intro">
+    <title>Introduction</title>
 
-		<para>
-			The <quote>ifdef</quote> patch introduces three new commands to
-			Mutt and allow you to share one config file between versions of Mutt
-			that may have different features compiled in.
-		</para>
+    <para>
+      The <quote>ifdef</quote> patch introduces three new commands to
+      Mutt and allow you to share one config file between versions of Mutt
+      that may have different features compiled in.
+    </para>
 
 <screen>
 ifdef  symbol config-command [args...]  <emphasis role="comment"># If a symbol is defined</emphasis>
@@ -8127,12 +8127,12 @@ ifndef symbol config-command [args...]  <emphasis role="comment"># If a symbol i
 finish                                  <emphasis role="comment"># Finish reading the current file</emphasis>
 </screen>
 
-		<para>
-			Here a symbol can be a <link linkend="variables">$variable</link>,
-			<link linkend="functions">&lt;function&gt;</link>,
-			<link linkend="commands">command</link> or compile-time symbol, such
-			as <quote>USE_IMAP</quote>.
-		</para>
+    <para>
+      Here a symbol can be a <link linkend="variables">$variable</link>,
+      <link linkend="functions">&lt;function&gt;</link>,
+      <link linkend="commands">command</link> or compile-time symbol, such
+      as <quote>USE_IMAP</quote>.
+    </para>
 
         <para>
             <literal>finish</literal> is particularly useful when combined with
@@ -8144,55 +8144,55 @@ finish                                  <emphasis role="comment"># Finish readin
 ifndef USE_SIDEBAR finish
 </screen>
 
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="ifdef-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="ifdef-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="ifdef-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="ifdef-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="ifdef-commands">
-		<title>Commands</title>
-		<cmdsynopsis>
-			<command>ifdef</command>
-			<arg choice="plain">
-				<replaceable class="parameter">symbol</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">"config-command [args]"</replaceable>
-			</arg>
-			<command>ifndef</command>
-			<arg choice="plain">
-				<replaceable class="parameter">symbol</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">"config-command [args]"</replaceable>
-			</arg>
-			<command>finish</command>
-		</cmdsynopsis>
-	</sect2>
+  <sect2 id="ifdef-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>ifdef</command>
+      <arg choice="plain">
+        <replaceable class="parameter">symbol</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">"config-command [args]"</replaceable>
+      </arg>
+      <command>ifndef</command>
+      <arg choice="plain">
+        <replaceable class="parameter">symbol</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">"config-command [args]"</replaceable>
+      </arg>
+      <command>finish</command>
+    </cmdsynopsis>
+  </sect2>
 
 <!--
-	<sect2 id="ifdef-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="ifdef-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="ifdef-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="ifdef-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="ifdef-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="ifdef-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'ifdef' feature.
  
@@ -8200,9 +8200,9 @@ ifndef USE_SIDEBAR finish
 # one config file between versions of Mutt that may have different
 # features compiled in.
  
-#	ifdef  symbol config-command [args...]
-#	ifndef symbol config-command [args...]
-#	finish                                
+#     ifdef  symbol config-command [args...]
+#     ifndef symbol config-command [args...]
+#     finish
  
 # The 'ifdef' command tests whether Mutt understands the name of
 # a variable, function, command or compile-time symbol.
@@ -8227,29 +8227,29 @@ ifndef USE_SIDEBAR finish
  
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="ifdef-see-also">
-		<title>See Also</title>
+  <sect2 id="ifdef-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="ifdef-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="ifdef-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="ifdef-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
-		<listitem><para>Matteo F. Vescovi <email>mfvescovi@gmail.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="ifdef-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Cedric Duval <email>cedricduval@free.fr</email></para></listitem>
+    <listitem><para>Matteo F. Vescovi <email>mfvescovi@gmail.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 </chapter>
