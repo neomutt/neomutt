@@ -10,7 +10,7 @@ Patch
     in the mutt version.
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
     * nested-if patch
 
 Introduction
