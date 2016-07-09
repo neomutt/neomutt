@@ -12,7 +12,7 @@ Patch
     If IMAP is enabled, this patch will use it
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
     * IMAP support
 
 Introduction
