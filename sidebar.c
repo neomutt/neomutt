@@ -912,6 +912,52 @@ static int select_prev_new (void)
 }
 
 /**
+ * select_page_down - Selects the first entry in the next page of mailboxes
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_page_down (void)
+{
+  int orig_hil_index = HilIndex;
+
+  if (!EntryCount || BotIndex < 0)
+    return 0;
+
+  HilIndex = BotIndex;
+  select_next ();
+  /* If the rest of the entries are hidden, go up to the last unhidden one */
+  if (Entries[HilIndex]->is_hidden)
+    select_prev ();
+
+  return (orig_hil_index != HilIndex);
+}
+
+/**
+ * select_page_up - Selects the last entry in the previous page of mailboxes
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_page_up (void)
+{
+  int orig_hil_index = HilIndex;
+
+  if (!EntryCount || TopIndex < 0)
+    return 0;
+
+  HilIndex = TopIndex;
+  select_prev ();
+  /* If the rest of the entries are hidden, go down to the last unhidden one */
+  if (Entries[HilIndex]->is_hidden)
+    select_next ();
+
+  return (orig_hil_index != HilIndex);
+}
+
+/**
  * mutt_sb_change_mailbox - Change the selected mailbox
  * @op: Operation code
  *
@@ -945,12 +991,12 @@ void mutt_sb_change_mailbox (int op)
         return;
       break;
     case OP_SIDEBAR_PAGE_DOWN:
-      HilIndex = BotIndex;
-      select_next ();
+      if (! select_page_down ())
+        return;
       break;
     case OP_SIDEBAR_PAGE_UP:
-      HilIndex = TopIndex;
-      select_prev ();
+      if (! select_page_up ())
+        return;
       break;
     case OP_SIDEBAR_PREV:
       if (! select_prev ())
