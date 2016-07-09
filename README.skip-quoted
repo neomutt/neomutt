@@ -6,11 +6,11 @@ Skip-Quoted Patch
 Patch
 -----
 
-    To check if Mutt supports "Skip-Quoted", look for "patch-skip-quoted" in
+    To check if Mutt supports "skip-quoted", look for "patch-skip-quoted" in
     the mutt version.
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
 
 Introduction
 ------------
