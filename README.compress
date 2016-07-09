@@ -10,7 +10,7 @@ Patch
     the mutt version.
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
 
 Introduction
 ------------
@@ -86,9 +86,7 @@ Commands
 
     > Note
     >
-    > If the folder has not been modifed, the
-    > close-hook
-    > will not be called.
+    > If the folder has not been modifed, the 'close-hook' will not be called.
 
 #### Example of close-hook
 
