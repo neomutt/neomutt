@@ -303,7 +303,7 @@ static void update_entries_visibility (void)
       continue;
 
     if ((i == OpnIndex) || (sbe->buffy->msg_unread  > 0) || sbe->buffy->new ||
-        (i == HilIndex) || (sbe->buffy->msg_flagged > 0))
+        (sbe->buffy->msg_flagged > 0))
       continue;
 
     if (Context && (mutt_strcmp (sbe->buffy->realpath, Context->realpath) == 0))
@@ -410,7 +410,8 @@ static int prepare_sidebar (int page_size)
       HilIndex = i;
   }
 
-  if ((HilIndex < 0) || (SidebarSortMethod != PreviousSort))
+  if ((HilIndex < 0) || Entries[HilIndex]->is_hidden ||
+      (SidebarSortMethod != PreviousSort))
   {
     if (OpnIndex >= 0)
       HilIndex = OpnIndex;
@@ -1008,8 +1009,6 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
 
     if (TopIndex < 0)
       TopIndex = EntryCount;
-    if (HilIndex < 0)
-      HilIndex = EntryCount;
     if (BotIndex < 0)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
