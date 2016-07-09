@@ -22,7 +22,7 @@ Patch
     version.
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
 
 Introduction
 ------------
@@ -34,30 +34,28 @@ Introduction
     introduction with examples see the Sidebar Howto. If you just want to get
     started, you could use the sample Sidebar muttrc.
 
-    This version of Sidebar is based on Terry Chan's [2015-11-11
-    release](http://www.lunar-linux.org/mutt-sidebar/). It contains many new
-    features, lots of bugfixes.
-
 Variables
 ---------
 
     Sidebar Variables
 
-    | Name                    | Type    | Default                     |
-    |-------------------------|---------|-----------------------------|
-    | 'sidebar_delim_chars'   | string  | '/.'                        |
-    | 'sidebar_divider_char'  | string  | '|'                         |
-    | 'sidebar_folder_indent' | boolean | 'no'                        |
-    | 'sidebar_format'        | string  | '%B%?F? [%F]?%* %?N?%N/?%S' |
-    | 'sidebar_indent_string' | string  | '  ' (two spaces)           |
-    | 'sidebar_new_mail_only' | boolean | 'no'                        |
-    | 'sidebar_next_new_wrap' | boolean | 'no'                        |
-    | 'sidebar_refresh_time'  | number  | '60'                        |
-    | 'sidebar_short_path'    | boolean | 'no'                        |
-    | 'sidebar_sort_method'   | enum    | 'SORT_ORDER'                |
-    | 'sidebar_visible'       | boolean | 'no'                        |
-    | 'sidebar_whitelist'     | list    | (empty)                     |
-    | 'sidebar_width'         | number  | '20'                        |
+    | Name                    | Type    | Default           |
+    |-------------------------|---------|-------------------|
+    | 'sidebar_delim_chars'   | string  | '/.'              |
+    | 'sidebar_divider_char'  | string  | '|'               |
+    | 'sidebar_folder_indent' | boolean | 'no'              |
+    | 'sidebar_format'        | string  | '%B%*  %n'        |
+    | 'sidebar_indent_string' | string  | '  ' (two spaces) |
+    | 'sidebar_new_mail_only' | boolean | 'no'              |
+    | 'sidebar_next_new_wrap' | boolean | 'no'              |
+    | 'sidebar_short_path'    | boolean | 'no'              |
+    | 'sidebar_sort_method'   | enum    | 'unsorted'        |
+    | 'sidebar_visible'       | boolean | 'no'              |
+    | 'sidebar_whitelist'     | list    | (empty)           |
+    | 'sidebar_width'         | number  | '20'              |
+
+    For more details, and examples, about the '$sidebar_format', see the
+    Sidebar Intro.
 
 Functions
 ---------
@@ -97,7 +95,7 @@ Colors
     | 'sidebar_new'       | default          | Mailboxes containing new mail                                    |
     | 'sidebar_spoolfile' | default          | Mailbox that receives incoming mail                              |
 
-    If the sidebar_indicator color isn't set, then the default Mutt indicator
+    If the 'sidebar_indicator' color isn't set, then the default Mutt indicator
     color will be used (the color used in the index panel).
 
 Sort
@@ -105,15 +103,15 @@ Sort
 
     Sidebar Sort
 
-    | Sort       | Description                |
-    |------------|----------------------------|
-    | 'alpha'    | Alphabetically by path     |
-    | 'count'    | Total number of messages   |
-    | 'flagged'  | Number of flagged messages |
-    | 'name'     | Alphabetically by path     |
-    | 'new'      | Number of new messages     |
-    | 'path'     | Alphabetically by path     |
-    | 'unsorted' | Do not resort the paths    |
+    | Sort       | Description                      |
+    |------------|----------------------------------|
+    | 'alpha'    | Alphabetically by path           |
+    | 'count'    | Total number of messages         |
+    | 'flagged'  | Number of flagged messages       |
+    | 'name'     | Alphabetically by path           |
+    | 'new'      | Number of new messages           |
+    | 'path'     | Alphabetically by path           |
+    | 'unsorted' | Order of the 'mailboxes' command |
 
 See Also
 --------
@@ -126,7 +124,7 @@ See Also
 Known Bugs
 ----------
 
-    Unsorted isn't
+    None
 
 Credits
 -------

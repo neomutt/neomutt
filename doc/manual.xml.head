@@ -420,16 +420,6 @@ attach to a message, select multiple files to attach and many more.
     <link linkend="sidebar-muttrc">Sidebar muttrc</link>.
   </para>
   <para>
-    This version of Sidebar is based on Terry Chan's
-    <ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
-    It contains many
-    <emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
-    lots of
-    <emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>
-    and a generous helping of
-    <emphasis role="bold">new documentation</emphasis> which you are already reading.
-  </para>
-  <para>
     To check if Mutt supports <quote>Sidebar</quote>, look for the string
     <literal>+USE_SIDEBAR</literal> in the mutt version.
   </para>
@@ -439,7 +429,11 @@ mutt -v
   <para>
     <emphasis role="bold">Let's turn on the Sidebar:</emphasis>
   </para>
-  <screen>set sidebar_visible</screen>
+<screen>
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+</screen>
   <para>
     You will see something like this.
     A list of mailboxes on the left.
@@ -518,11 +512,13 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
                  |
 </screen>
     <note>
-      Functions <literal>&lt;sidebar-next&gt;</literal> and
-      <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
-      <emphasis role="bold">highlight</emphasis>.
-      They <emphasis role="bold">do not</emphasis> change the open
-      mailbox.
+      <para>
+        Functions <literal>&lt;sidebar-next&gt;</literal> and
+        <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
+        <emphasis role="bold">highlight</emphasis>.
+        They <emphasis role="bold">do not</emphasis> change the open
+        mailbox.
+      </para>
     </note>
     <para>
       Press <quote>Ctrl-Shift-O</quote>
@@ -546,8 +542,8 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
     <title>Features</title>
     <para>
       The Sidebar shows a list of mailboxes in a panel.
-    <para>
     </para>
+    <para>
       Everything about the Sidebar can be configured.
     </para>
     <itemizedlist>
@@ -563,7 +559,6 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
     </itemizedlist>
     <itemizedlist>
     <title><link linkend="sidebar-sort">The order in which mailboxes are displayed</link></title>
-    <title></title>
       <listitem><para>Unsorted (order of mailboxes commands)</para></listitem>
       <listitem><para>Sorted alphabetically</para></listitem>
       <listitem><para>Sorted by number of new mails</para></listitem>
@@ -634,6 +629,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
         including the section about <link linkend="formatstrings-conditionals">conditionals</link>.
       </para>
       <para>
+        The default value is <literal>%B%*  %n</literal>
         The default value is <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
       </para>
       <itemizedlist>
@@ -662,18 +658,23 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
             </row>
             <row>
               <entry>%S</entry>
-              <entry>*</entry>
+              <entry>* †</entry>
               <entry>Size of mailbox (total number of messages)</entry>
             </row>
             <row>
+              <entry>%F</entry>
+              <entry>* †</entry>
+              <entry>Number of Flagged messages in the mailbox</entry>
+            </row>
+            <row>
               <entry>%N</entry>
-              <entry>*</entry>
+              <entry>* †</entry>
               <entry>Number of New messages in the mailbox</entry>
             </row>
             <row>
-              <entry>%F</entry>
+              <entry>%n</entry>
               <entry>*</entry>
-              <entry>Number of Flagged messages in the mailbox</entry>
+              <entry>If there's new mail, display <quote>N</quote>, otherwise nothing</entry>
             </row>
             <row>
               <entry>%!</entry>
@@ -721,6 +722,9 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
       </table>
       <para>
       * = Can be optionally printed if nonzero
+      </para>
+      <para>
+      † = To use this expandos, you must first: <screen>set mail_check_stats</screen>
       </para>
       <para>
       ‡ = Only applicable to the current folder
@@ -940,27 +944,6 @@ color sidebar_divider   color8  default         <emphasis role="comment"># Dark 
       </tgroup>
     </table>
   </sect3>
-  <sect3 id="intro-sidebar-bugfixes">
-    <title>Bug-fixes</title>
-    <para>
-      If you haven't used Sidebar before, you can ignore this section.
-    </para>
-    <para>
-      These bugs have been fixed since the previous Sidebar release: 2015-11-11.
-    </para>
-    <itemizedlist>
-      <listitem><para>Fix bug when starting in compose mode</para></listitem>
-      <listitem><para>Fix bug with empty sidebar_divider_char string</para></listitem>
-      <listitem><para>Fix bug with header wrapping</para></listitem>
-      <listitem><para>Correctly handle utf8 character sequences</para></listitem>
-      <listitem><para>Fix a bug in mh_buffy_update</para></listitem>
-      <listitem><para>Fix refresh -- time overflowed short</para></listitem>
-      <listitem><para>Protect against empty format strings</para></listitem>
-      <listitem><para>Limit Sidebar width to COLS</para></listitem>
-      <listitem><para>Handle unmailboxes * safely</para></listitem>
-      <listitem><para>Refresh Sidebar after timeout</para></listitem>
-    </itemizedlist>
-  </sect3>
   <sect3 id="intro-sidebar-config-changes">
     <title>Config Changes</title>
     <para>
@@ -995,10 +978,6 @@ color sidebar_divider   color8  default         <emphasis role="comment"># Dark 
           <row>
             <entry><literal>$sidebar_newmail_only</literal></entry>
             <entry><literal>$sidebar_new_mail_only</literal></entry>
-          </row>
-          <row>
-            <entry><literal>$sidebar_refresh</literal></entry>
-            <entry><literal>$sidebar_refresh_time</literal></entry>
           </row>
           <row>
             <entry><literal>$sidebar_shortpath</literal></entry>
@@ -8129,7 +8108,7 @@ would contain:
 Mutt may also be <quote>patched</quote> to support smaller features.
 These patches should add a free-form string to the end Mutt's version string.
 Running <literal>mutt -v</literal> might show:
-<screen>patch-1.6.1.sidebar.20160502</screen>
+<screen>patch-1.6.2.sidebar.20160709</screen>
 </para>
 </sect2>
 
@@ -8762,7 +8741,7 @@ please have a look at the mixmaster documentation.
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.1</para></listitem>
+      <listitem><para>mutt-1.6.2</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -8784,15 +8763,6 @@ please have a look at the mixmaster documentation.
       If you just want to get started, you could use the sample
       <link linkend="sidebar-muttrc">Sidebar muttrc</link>.
     </para>
-
-    <para>
-      This version of Sidebar is based on Terry Chan's
-      <ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
-      It contains many
-      <emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
-      lots of
-      <emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>.
-    </para>
   </sect2>
 
   <sect2 id="sidebar-variables">
@@ -8801,77 +8771,82 @@ please have a look at the mixmaster documentation.
     <table id="table-sidebar-variables">
       <title>Sidebar Variables</title>
       <tgroup cols="3">
-	<thead>
-	  <row>
-	    <entry>Name</entry>
-	    <entry>Type</entry>
-	    <entry>Default</entry>
-	  </row>
-	</thead>
-	<tbody>
-	  <row>
-	    <entry><literal>sidebar_delim_chars</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>/.</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_divider_char</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>|</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_folder_indent</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_format</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>%B%*  %n</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_indent_string</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_new_mail_only</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_next_new_wrap</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_short_path</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_sort_method</literal></entry>
-	    <entry>enum</entry>
-	    <entry><literal>unsorted</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_visible</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_whitelist</literal></entry>
-	    <entry>list</entry>
-	    <entry>(empty)</entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_width</literal></entry>
-	    <entry>number</entry>
-	    <entry><literal>20</literal></entry>
-	  </row>
-	</tbody>
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>sidebar_delim_chars</literal></entry>
+            <entry>string</entry>
+            <entry><literal>/.</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_divider_char</literal></entry>
+            <entry>string</entry>
+            <entry><literal>|</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_folder_indent</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_format</literal></entry>
+            <entry>string</entry>
+            <entry><literal>%B%*  %n</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_indent_string</literal></entry>
+            <entry>string</entry>
+            <entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_new_mail_only</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_next_new_wrap</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_short_path</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_sort_method</literal></entry>
+            <entry>enum</entry>
+            <entry><literal>unsorted</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_visible</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_whitelist</literal></entry>
+            <entry>list</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_width</literal></entry>
+            <entry>number</entry>
+            <entry><literal>20</literal></entry>
+          </row>
+        </tbody>
       </tgroup>
     </table>
+  <para>
+    For more details, and examples, about the <literal>$sidebar_format</literal>,
+    see the <link linkend="intro-sidebar-format">Sidebar Intro</link>.
+  </para>
+
   </sect2>
 
   <sect2 id="sidebar-functions">
@@ -9044,7 +9019,7 @@ please have a look at the mixmaster documentation.
           </row>
           <row>
             <entry><literal>unsorted</literal></entry>
-            <entry>Do not resort the paths</entry>
+            <entry>Order of the <literal>mailboxes</literal> command</entry>
           </row>
         </tbody>
       </tgroup>
@@ -9100,18 +9075,18 @@ set sidebar_next_new_wrap = no
 set sidebar_divider_char = '|'
  
 <emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
+set sidebar_format = '%B%*  %n'
  
-<emphasis role="comment"># Sidebar will not refresh its list of mailboxes any more frequently than
-# this number of seconds.  This will help reduce disk/network traffic.</emphasis>
-set sidebar_refresh_time = 60
+<emphasis role="comment"># If you want to display more information, this is a useful format:</emphasis>
+set mail_check_stats
+set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
  
 <emphasis role="comment"># Sort the mailboxes in the Sidebar using this method:
 #       count    - total number of messages
 #       flagged  - number of flagged messages
 #       new      - number of new messages
 #       path     - mailbox path
-#       unsorted - do not sort the mailboxes</emphasis>
+#       unsorted - order of the mailboxes command</emphasis>
 set sidebar_sort_method = 'unsorted'
  
 <emphasis role="comment"># --------------------------------------------------------------------------
@@ -9186,7 +9161,9 @@ color sidebar_new green black
 
   <sect2 id="sidebar-known-bugs">
     <title>Known Bugs</title>
-    Unsorted isn't
+    <para>
+      None
+    </para>
   </sect2>
 
   <sect2 id="sidebar-credits">
