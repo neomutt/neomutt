@@ -7473,7 +7473,7 @@ would contain:
 Mutt may also be <quote>patched</quote> to support smaller features.
 These patches should add a free-form string to the end Mutt's version string.
 Running <literal>mutt -v</literal> might show:
-<screen>patch-1.6.1.sidebar.20160502</screen>
+<screen>patch-1.6.2.sidebar.20160709</screen>
 </para>
 </sect2>
 
@@ -8092,395 +8092,516 @@ please have a look at the mixmaster documentation.
 </sect1>
 
 <sect1 id="nntp">
-	<title>NNTP Patch</title>
-	<subtitle>Talk to a Usenet news server</subtitle>
+  <title>NNTP Patch</title>
+  <subtitle>Talk to a Usenet news server</subtitle>
 
-	<sect2 id="nntp-patch">
-		<title>Patch</title>
+  <sect2 id="nntp-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>NNTP</quote>, look for
-			<quote>+USE_NNTP</quote> in the mutt version.
-			See: <xref linkend="compile-time-features"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>NNTP</quote>, look for
+      <quote>+USE_NNTP</quote> in the mutt version.
+      See: <xref linkend="compile-time-features"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="nntp-intro">
-		<title>Introduction</title>
+  <sect2 id="nntp-intro">
+    <title>Introduction</title>
 
-		<para>Reading news via NNTP</para>
-		<para>
-		If compiled with <emphasis>--enable-nntp</emphasis> option, Mutt can
-		read news from news server via NNTP.  You can open a newsgroup with
-		function ``change-newsgroup'' (default: ``i'').  Default news server
-		can be obtained from <literal>$NNTPSERVER</literal> environment
-		variable or from <literal>/etc/nntpserver</literal> file.  Like other
-		news readers, info about subscribed newsgroups is saved in file by
-		<link linkend="newsrc">$newsrc</link> variable.  The variable <link
-		linkend="news-cache-dir">$news_cache_dir</link> can be used to point
-		to a directory.  Mutt will create a hierarchy of subdirectories named
-		like the account and newsgroup the cache is for.  Also the hierarchy
-		is used to store header cache if Mutt was compiled with <link
-		linkend="header-caching">header cache</link> support.
-		</para>
-	</sect2>
+    <para>Reading news via NNTP</para>
+    <para>
+    If compiled with <emphasis>--enable-nntp</emphasis> option, Mutt can
+    read news from news server via NNTP.  You can open a newsgroup with
+    function ``change-newsgroup'' (default: ``i'').  Default news server
+    can be obtained from <literal>$NNTPSERVER</literal> environment
+    variable or from <literal>/etc/nntpserver</literal> file.  Like other
+    news readers, info about subscribed newsgroups is saved in file by
+    <link linkend="newsrc">$newsrc</link> variable.  The variable <link
+    linkend="news-cache-dir">$news_cache_dir</link> can be used to point
+    to a directory.  Mutt will create a hierarchy of subdirectories named
+    like the account and newsgroup the cache is for.  Also the hierarchy
+    is used to store header cache if Mutt was compiled with <link
+    linkend="header-caching">header cache</link> support.
+    </para>
+  </sect2>
 
-	<sect2 id="nntp-variables">
-		<title>Variables</title>
+  <sect2 id="nntp-variables">
+    <title>Variables</title>
 
-		<table id="table-nntp-variables">
-			<title>NNTP Variables</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Type</entry>
-						<entry>Default</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>ask_follow_up</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>ask_x_comment_to</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>catchup_newsgroup</literal></entry>
-						<entry>quad</entry>
-						<entry><literal>ask-yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>followup_to_poster</literal></entry>
-						<entry>quad</entry>
-						<entry><literal>ask-yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>group_index_format</literal></entry>
-						<entry>string</entry>
-						<entry><literal>%4C %M%N %5s  %-45.45f %d</literal></entry>
-					</row>
-					<row>
-						<entry><literal>inews</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>mime_subject</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>newsgroups_charset</literal></entry>
-						<entry>string</entry>
-						<entry><literal>utf-8</literal></entry>
-					</row>
-					<row>
-						<entry><literal>newsrc</literal></entry>
-						<entry>string</entry>
-						<entry><literal>~/.newsrc</literal></entry>
-					</row>
-					<row>
-						<entry><literal>news_cache_dir</literal></entry>
-						<entry>string</entry>
-						<entry><literal>~/.mutt</literal></entry>
-					</row>
-					<row>
-						<entry><literal>news_server</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>nntp_authenticators</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>nntp_context</literal></entry>
-						<entry>number</entry>
-						<entry><literal>1000</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_listgroup</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_load_description</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_pass</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>nntp_poll</literal></entry>
-						<entry>number</entry>
-						<entry><literal>60</literal></entry>
-					</row>
-					<row>
-						<entry><literal>nntp_user</literal></entry>
-						<entry>string</entry>
-						<entry>(empty)</entry>
-					</row>
-					<row>
-						<entry><literal>post_moderated</literal></entry>
-						<entry>quad</entry>
-						<entry><literal>ask-yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>save_unsubscribed</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>show_new_news</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>yes</literal></entry>
-					</row>
-					<row>
-						<entry><literal>show_only_unread</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-					<row>
-						<entry><literal>x_comment_to</literal></entry>
-						<entry>boolean</entry>
-						<entry><literal>no</literal></entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-nntp-variables">
+      <title>NNTP Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>ask_follow_up</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>ask_x_comment_to</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>catchup_newsgroup</literal></entry>
+            <entry>quad</entry>
+            <entry><literal>ask-yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>followup_to_poster</literal></entry>
+            <entry>quad</entry>
+            <entry><literal>ask-yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>group_index_format</literal></entry>
+            <entry>string</entry>
+            <entry><literal>%4C %M%N %5s  %-45.45f %d</literal></entry>
+          </row>
+          <row>
+            <entry><literal>inews</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>mime_subject</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>newsgroups_charset</literal></entry>
+            <entry>string</entry>
+            <entry><literal>utf-8</literal></entry>
+          </row>
+          <row>
+            <entry><literal>newsrc</literal></entry>
+            <entry>string</entry>
+            <entry><literal>~/.newsrc</literal></entry>
+          </row>
+          <row>
+            <entry><literal>news_cache_dir</literal></entry>
+            <entry>string</entry>
+            <entry><literal>~/.mutt</literal></entry>
+          </row>
+          <row>
+            <entry><literal>news_server</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nntp_authenticators</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nntp_context</literal></entry>
+            <entry>number</entry>
+            <entry><literal>1000</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nntp_listgroup</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nntp_load_description</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nntp_pass</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nntp_poll</literal></entry>
+            <entry>number</entry>
+            <entry><literal>60</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nntp_user</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>post_moderated</literal></entry>
+            <entry>quad</entry>
+            <entry><literal>ask-yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>save_unsubscribed</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>show_new_news</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>show_only_unread</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>x_comment_to</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
-	<sect2 id="nntp-functions">
-		<title>Functions</title>
+  <sect2 id="nntp-functions">
+    <title>Functions</title>
 
-		<table id="table-nntp-functions">
-			<title>NNTP Functions</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Default Key</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>browser,index</entry>
-						<entry>y</entry>
-						<entry><literal>&lt;catchup&gt;</literal></entry>
-						<entry>mark all articles in newsgroup as read</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>i</entry>
-						<entry><literal>&lt;change-newsgroup&gt;</literal></entry>
-						<entry>open a different newsgroup</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>X</entry>
-						<entry><literal>&lt;change-vfolder&gt;</literal></entry>
-						<entry>open a different virtual folder</entry>
-					</row>
-					<row>
-						<entry>compose</entry>
-						<entry>o</entry>
-						<entry><literal>&lt;edit-followup-to&gt;</literal></entry>
-						<entry>edit the Followup-To field</entry>
-					</row>
-					<row>
-						<entry>compose</entry>
-						<entry>N</entry>
-						<entry><literal>&lt;edit-newsgroups&gt;</literal></entry>
-						<entry>edit the newsgroups list</entry>
-					</row>
-					<row>
-						<entry>compose</entry>
-						<entry>x</entry>
-						<entry><literal>&lt;edit-x-comment-to&gt;</literal></entry>
-						<entry>edit the X-Comment-To field</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>+</entry>
-						<entry><literal>&lt;entire-thread&gt;</literal></entry>
-						<entry>read entire thread of the current message</entry>
-					</row>
-					<row>
-						<entry>attachment,index,pager</entry>
-						<entry>F</entry>
-						<entry><literal>&lt;followup-message&gt;</literal></entry>
-						<entry>followup to newsgroup</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>`</entry>
-						<entry><literal>&lt;modify-labels&gt;</literal></entry>
-						<entry>modify (notmuch) tags</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>P</entry>
-						<entry><literal>&lt;post-message&gt;</literal></entry>
-						<entry>post message to newsgroup</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>g</entry>
-						<entry><literal>&lt;reload-active&gt;</literal></entry>
-						<entry>load list of all newsgroups from NNTP server</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>s</entry>
-						<entry><literal>&lt;subscribe&gt;</literal></entry>
-						<entry>subscribe to current mbox (IMAP/NNTP only)</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>S</entry>
-						<entry><literal>&lt;subscribe-pattern&gt;</literal></entry>
-						<entry>subscribe to newsgroups matching a pattern</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>Y</entry>
-						<entry><literal>&lt;uncatchup&gt;</literal></entry>
-						<entry>mark all articles in newsgroup as unread</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>u</entry>
-						<entry><literal>&lt;unsubscribe&gt;</literal></entry>
-						<entry>unsubscribe from current mbox (IMAP/NNTP only)</entry>
-					</row>
-					<row>
-						<entry>browser</entry>
-						<entry>U</entry>
-						<entry><literal>&lt;unsubscribe-pattern&gt;</literal></entry>
-						<entry>unsubscribe from newsgroups matching a pattern</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>Alt-i</entry>
-						<entry><literal>&lt;change-newsgroup-readonly&gt;</literal></entry>
-						<entry>open a different newsgroup in read only mode</entry>
-					</row>
-					<row>
-						<entry>attachment,index,pager</entry>
-						<entry>Alt-F</entry>
-						<entry><literal>&lt;forward-to-group&gt;</literal></entry>
-						<entry>forward to newsgroup</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;get-children&gt;</literal></entry>
-						<entry>get all children of the current message</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>Alt-G</entry>
-						<entry><literal>&lt;get-parent&gt;</literal></entry>
-						<entry>get parent of the current message</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;imap-fetch-mail&gt;</literal></entry>
-						<entry>force retrieval of mail from IMAP server</entry>
-					</row>
-					<row>
-						<entry>index,pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;imap-logout-all&gt;</literal></entry>
-						<entry>logout from all IMAP servers</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
-						<entry>modify labeld and then hide message</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;reconstruct-thread&gt;</literal></entry>
-						<entry>reconstruct thread containing current message</entry>
-					</row>
-					<row>
-						<entry>pager</entry>
-						<entry>Alt-X</entry>
-						<entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
-						<entry>generate virtual folder from query</entry>
-					</row>
-					<row>
-						<entry>index</entry>
-						<entry>Ctrl-G</entry>
-						<entry><literal>&lt;get-message&gt;</literal></entry>
-						<entry>get message with Message-Id</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-nntp-functions">
+      <title>NNTP Functions</title>
+      <tgroup cols="4">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Default Key</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>browser,index</entry>
+            <entry>y</entry>
+            <entry><literal>&lt;catchup&gt;</literal></entry>
+            <entry>mark all articles in newsgroup as read</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>i</entry>
+            <entry><literal>&lt;change-newsgroup&gt;</literal></entry>
+            <entry>open a different newsgroup</entry>
+          </row>
+          <row>
+            <entry>pager</entry>
+            <entry>X</entry>
+            <entry><literal>&lt;change-vfolder&gt;</literal></entry>
+            <entry>open a different virtual folder</entry>
+          </row>
+          <row>
+            <entry>compose</entry>
+            <entry>o</entry>
+            <entry><literal>&lt;edit-followup-to&gt;</literal></entry>
+            <entry>edit the Followup-To field</entry>
+          </row>
+          <row>
+            <entry>compose</entry>
+            <entry>N</entry>
+            <entry><literal>&lt;edit-newsgroups&gt;</literal></entry>
+            <entry>edit the newsgroups list</entry>
+          </row>
+          <row>
+            <entry>compose</entry>
+            <entry>x</entry>
+            <entry><literal>&lt;edit-x-comment-to&gt;</literal></entry>
+            <entry>edit the X-Comment-To field</entry>
+          </row>
+          <row>
+            <entry>pager</entry>
+            <entry>+</entry>
+            <entry><literal>&lt;entire-thread&gt;</literal></entry>
+            <entry>read entire thread of the current message</entry>
+          </row>
+          <row>
+            <entry>attachment,index,pager</entry>
+            <entry>F</entry>
+            <entry><literal>&lt;followup-message&gt;</literal></entry>
+            <entry>followup to newsgroup</entry>
+          </row>
+          <row>
+            <entry>pager</entry>
+            <entry>`</entry>
+            <entry><literal>&lt;modify-labels&gt;</literal></entry>
+            <entry>modify (notmuch) tags</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>P</entry>
+            <entry><literal>&lt;post-message&gt;</literal></entry>
+            <entry>post message to newsgroup</entry>
+          </row>
+          <row>
+            <entry>browser</entry>
+            <entry>g</entry>
+            <entry><literal>&lt;reload-active&gt;</literal></entry>
+            <entry>load list of all newsgroups from NNTP server</entry>
+          </row>
+          <row>
+            <entry>browser</entry>
+            <entry>s</entry>
+            <entry><literal>&lt;subscribe&gt;</literal></entry>
+            <entry>subscribe to current mbox (IMAP/NNTP only)</entry>
+          </row>
+          <row>
+            <entry>browser</entry>
+            <entry>S</entry>
+            <entry><literal>&lt;subscribe-pattern&gt;</literal></entry>
+            <entry>subscribe to newsgroups matching a pattern</entry>
+          </row>
+          <row>
+            <entry>browser</entry>
+            <entry>Y</entry>
+            <entry><literal>&lt;uncatchup&gt;</literal></entry>
+            <entry>mark all articles in newsgroup as unread</entry>
+          </row>
+          <row>
+            <entry>browser</entry>
+            <entry>u</entry>
+            <entry><literal>&lt;unsubscribe&gt;</literal></entry>
+            <entry>unsubscribe from current mbox (IMAP/NNTP only)</entry>
+          </row>
+          <row>
+            <entry>browser</entry>
+            <entry>U</entry>
+            <entry><literal>&lt;unsubscribe-pattern&gt;</literal></entry>
+            <entry>unsubscribe from newsgroups matching a pattern</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>Alt-i</entry>
+            <entry><literal>&lt;change-newsgroup-readonly&gt;</literal></entry>
+            <entry>open a different newsgroup in read only mode</entry>
+          </row>
+          <row>
+            <entry>attachment,index,pager</entry>
+            <entry>Alt-F</entry>
+            <entry><literal>&lt;forward-to-group&gt;</literal></entry>
+            <entry>forward to newsgroup</entry>
+          </row>
+          <row>
+            <entry>index</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;get-children&gt;</literal></entry>
+            <entry>get all children of the current message</entry>
+          </row>
+          <row>
+            <entry>index</entry>
+            <entry>Alt-G</entry>
+            <entry><literal>&lt;get-parent&gt;</literal></entry>
+            <entry>get parent of the current message</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;imap-fetch-mail&gt;</literal></entry>
+            <entry>force retrieval of mail from IMAP server</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;imap-logout-all&gt;</literal></entry>
+            <entry>logout from all IMAP servers</entry>
+          </row>
+          <row>
+            <entry>pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
+            <entry>modify labeld and then hide message</entry>
+          </row>
+          <row>
+            <entry>index</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;reconstruct-thread&gt;</literal></entry>
+            <entry>reconstruct thread containing current message</entry>
+          </row>
+          <row>
+            <entry>pager</entry>
+            <entry>Alt-X</entry>
+            <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
+            <entry>generate virtual folder from query</entry>
+          </row>
+          <row>
+            <entry>index</entry>
+            <entry>Ctrl-G</entry>
+            <entry><literal>&lt;get-message&gt;</literal></entry>
+            <entry>get message with Message-Id</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
-	<sect2 id="nntp-commands">
-		<title>Commands</title>
-	</sect2>
+<!--
+  <sect2 id="nntp-commands">
+    <title>Commands</title>
+  </sect2>
 
-	<sect2 id="nntp-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="nntp-colors">
+    <title>Colors</title>
+  </sect2>
 
-	<sect2 id="nntp-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="nntp-sort">
+    <title>Sort</title>
+  </sect2>
+-->
 
-	<sect2 id="nntp-muttrc">
-		<title>Muttrc</title>
-	</sect2>
+  <sect2 id="nntp-muttrc">
+    <title>Muttrc</title>
 
-	<sect2 id="nntp-see-also">
-		<title>See Also</title>
+<screen>
+<emphasis role="comment"># This is a complete list of nntp configuration.
 
-		<itemizedlist>
-			<listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-		</itemizedlist>
-	</sect2>
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------</emphasis>
 
-	<sect2 id="nntp-known-bugs">
-		<title>Known Bugs</title>
-	</sect2>
+set ask_follow_up = no
+set ask_x_comment_to = no
+set catchup_newsgroup = ask-yes
+set followup_to_poster = ask-yes
+set group_index_format = '%4C %M%N %5s  %-45.45f %d'
+set inews = ''
+set mime_subject = yes
+set newsgroups_charset = utf-8
+set newsrc = '~/.newsrc'
+set news_cache_dir = '~/.mutt'
+set news_server = ''
+set nntp_authenticators = ''
+set nntp_context = 1000
+set nntp_listgroup = yes
+set nntp_load_description = yes
+set nntp_pass = ''
+set nntp_poll = 60
+set nntp_user = ''
+set post_moderated = ask-yes
+set save_unsubscribed = no
+set show_new_news = yes
+set show_only_unread = no
+set x_comment_to = no
 
-	<sect2 id="nntp-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
-		<listitem><para>Felix von Leitner <email>leitner@fefe.de</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+<emphasis role="comment"># --------------------------------------------------------------------------
+# FUNCTIONS - shown with an example mapping
+# --------------------------------------------------------------------------
+
+# mark all articles in newsgroup as read</emphasis>
+bind browser,index y catchup 
+
+<emphasis role="comment"># open a different newsgroup</emphasis>
+bind index,pager i change-newsgroup 
+
+<emphasis role="comment"># open a different virtual folder</emphasis>
+bind pager X change-vfolder 
+
+<emphasis role="comment"># edit the Followup-To field</emphasis>
+bind compose o edit-followup-to 
+
+<emphasis role="comment"># edit the newsgroups list</emphasis>
+bind compose N edit-newsgroups 
+
+<emphasis role="comment"># edit the X-Comment-To field</emphasis>
+bind compose x edit-x-comment-to 
+
+<emphasis role="comment"># read entire thread of the current message</emphasis>
+bind pager + entire-thread 
+
+<emphasis role="comment"># followup to newsgroup</emphasis>
+bind attachment,index,pager F followup-message 
+
+<emphasis role="comment"># modify (notmuch) tags</emphasis>
+bind pager ` modify-labels 
+
+<emphasis role="comment"># post message to newsgroup</emphasis>
+bind index,pager P post-message 
+
+<emphasis role="comment"># load list of all newsgroups from NNTP server</emphasis>
+bind browser g reload-active 
+
+<emphasis role="comment"># subscribe to current mbox (IMAP/NNTP only)</emphasis>
+bind browser s subscribe 
+
+<emphasis role="comment"># subscribe to newsgroups matching a pattern</emphasis>
+bind browser S subscribe-pattern 
+
+<emphasis role="comment"># mark all articles in newsgroup as unread</emphasis>
+bind browser Y uncatchup 
+
+<emphasis role="comment"># unsubscribe from current mbox (IMAP/NNTP only)</emphasis>
+bind browser u unsubscribe 
+
+<emphasis role="comment"># unsubscribe from newsgroups matching a pattern</emphasis>
+bind browser U unsubscribe-pattern 
+
+<emphasis role="comment"># open a different newsgroup in read only mode</emphasis>
+bind index,pager \ei change-newsgroup-readonly 
+
+<emphasis role="comment"># forward to newsgroup</emphasis>
+bind attachment,index,pager \eF forward-to-group 
+
+<emphasis role="comment"># get all children of the current message</emphasis>
+# bind index ??? get-children 
+
+<emphasis role="comment"># get parent of the current message</emphasis>
+bind index \eG get-parent 
+
+<emphasis role="comment"># force retrieval of mail from IMAP server
+# bind index,pager ??? imap-fetch-mail 
+
+# logout from all IMAP servers
+# bind index,pager ??? imap-logout-all 
+
+# modify labeld and then hide message
+# bind pager ??? modify-labels-then-hide 
+
+# reconstruct thread containing current message
+# bind index ??? reconstruct-thread 
+
+# generate virtual folder from query</emphasis>
+bind pager \eX vfolder-from-query 
+
+<emphasis role="comment"># get message with Message-Id</emphasis>
+bind index \CG get-message 
+
+<emphasis role="comment"># --------------------------------------------------------------------------
+
+# vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="nntp-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="nntp-known-bugs">
+    <title>Known Bugs</title>
+    <para>
+      None
+    </para>
+  </sect2>
+
+  <sect2 id="nntp-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
+    <listitem><para>Felix von Leitner <email>leitner@fefe.de</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 </chapter>

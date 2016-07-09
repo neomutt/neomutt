@@ -9,7 +9,7 @@ Patch
     To check if Mutt supports "NNTP", look for "+USE_NNTP" in the mutt version.
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
 
 Introduction
 ------------
@@ -91,19 +91,6 @@ Functions
     | pager                  | Alt-X       | '<vfolder-from-query>'        | generate virtual folder from query             |
     | index                  | Ctrl-G      | '<get-message>'               | get message with Message-Id                    |
 
-Commands
---------
-
-Colors
-------
-
-    None
-
-Sort
-----
-
-    None
-
 See Also
 --------
 
@@ -112,6 +99,8 @@ See Also
 
 Known Bugs
 ----------
+
+    None
 
 Credits
 -------
