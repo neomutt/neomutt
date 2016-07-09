@@ -99,9 +99,9 @@ mutt_dotlock.c: dotlock.c
 
 conststrings.c: txt2c config.status
 	( \
-		$(CC) -v || \
-		$(CC) --version || \
-		$(CC) -V || \
+		($(CC) -v >/dev/null 2>&1 && $(CC) -v) || \
+		($(CC) --version >/dev/null 2>&1 && $(CC) --version) || \
+		($(CC) -V >/dev/null 2>&1 && $(CC) -V) || \
 		echo "unknown compiler"; \
 	) 2>&1 | ${srcdir}/txt2c.sh cc_version >conststrings_c
 	echo "$(CFLAGS)" | ${srcdir}/txt2c.sh cc_cflags >>conststrings_c
