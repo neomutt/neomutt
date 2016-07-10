@@ -65,6 +65,7 @@ int mutt_display_message (HEADER *cur)
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
   int rc = 0, builtin = 0;
   int cmflags = M_CM_DECODE | M_CM_DISPLAY | M_CM_CHARCONV;
+  int chflags;
   FILE *fpout = NULL;
   FILE *fpfilterout = NULL;
   pid_t filterpid = -1;
@@ -149,9 +150,13 @@ int mutt_display_message (HEADER *cur)
     fputs ("\n\n", fpout);
   }
 
-  res = mutt_copy_message (fpout, Context, cur, cmflags,
-		(option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0)
-		| CH_DECODE | CH_FROM | CH_DISPLAY | CH_VIRTUAL);
+  chflags = (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0)
+           | CH_DECODE | CH_FROM | CH_DISPLAY;
+#ifdef USE_NOTMUCH
+  if (Context->magic == M_NOTMUCH)
+    chflags |= CH_VIRTUAL;
+#endif
+  res = mutt_copy_message (fpout, Context, cur, cmflags, chflags);
 
   if ((safe_fclose (&fpout) != 0 && errno != EPIPE) || res < 0)
   {
