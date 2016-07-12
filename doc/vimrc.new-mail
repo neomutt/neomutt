@@ -1,15 +1,5 @@
-" Vim syntax file for the mutt FEATURE-NAME patch
+" Vim syntax file for the mutt new_mail_command patch
 
-syntax keyword muttrcVarBool    skipwhite contained VARIABLE_NAME         nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-
-syntax keyword muttrcVarNum     skipwhite contained VARIABLE_NAME         nextgroup=muttrcSetNumAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-
-syntax keyword muttrcVarStr     contained skipwhite VARIABLE_NAME         nextgroup=muttrcVarEqualsIdxFmt
-
-syntax keyword muttrcCommand    COMMAND_NAME
-
-syntax match muttrcFunction     contained "\<FUNCTION-NAME\>"
-
-syntax keyword muttrcColorField contained COLOR_NAME
+syntax keyword muttrcVarStr     contained skipwhite new_mail_command         nextgroup=muttrcVarEqualsIdxFmt
 
 " vim: syntax=vim
