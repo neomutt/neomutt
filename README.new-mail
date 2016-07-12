@@ -1,0 +1,48 @@
+new-mail-command Patch
+======================
+
+    Configure a custom command to be executed when a new email is received.
+
+Patch
+-----
+
+    To check if Mutt supports "new-mail-command", look for
+    "new-mail" in the mutt version.
+
+    Dependencies
+    * mutt-1.6.1
+
+Introduction
+------------
+
+    This patch enables the new_mail_command setting, which can be used to execute a custom script (e.g., a notification handler) upon receiving a new mail. 
+
+    For example in Linux you can use (most distributions already provide notify-send):
+
+```
+    set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &" 
+```
+
+    And in OS X you will need to install a command line interface for Notification Center, for example [terminal-notifier](https://github.com/julienXX/terminal-notifier):
+
+```
+    set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+```
+    
+See Also
+--------
+
+    * NeoMutt project
+
+Known Bugs
+----------
+
+    * Notifies about spurious *new* e-mail when an email is saved, see [#20](https://github.com/neomutt/neomutt/issues/20).
+    * Will not notify about new e-mail if the pager is open, see [#19](https://github.com/neomutt/neomutt/issues/19)
+
+Credits
+-------
+
+    * Santiago Torres-Arias <santiago@nyu.edu>
+    * Yoshiki Vazquez-Baeza <yoshiki@ucsd.edu>
+    * Richard Russon <rich@flatcap.org> 
