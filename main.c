@@ -556,7 +556,7 @@ static void start_curses (void)
   meta (stdscr, TRUE);
 #endif
 init_extended_keys();
-  mutt_init_windows ();
+  mutt_reflow_windows ();
 }
 
 #define MUTT_IGNORE  (1<<0)	/* -z */
@@ -779,6 +779,10 @@ int main (int argc, char **argv)
     set_option (OPTNOCURSES);
     sendflags = SENDBATCH;
   }
+
+  /* Always create the mutt_windows because batch mode has some shared code
+   * paths that end up referencing them. */
+  mutt_init_windows ();
 
   /* This must come before mutt_init() because curses needs to be started
      before calling the init_pair() function to set the color scheme.  */
@@ -1158,11 +1162,9 @@ int main (int argc, char **argv)
       FREE (&tempfile);
     }
 
+    mutt_free_windows ();
     if (!option (OPTNOCURSES))
-    {
-      mutt_free_windows ();
       mutt_endwin (NULL);
-    }
 
     if (rv)
       exit(1);

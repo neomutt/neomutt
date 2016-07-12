@@ -496,8 +496,6 @@ void mutt_init_windows ()
 #ifdef USE_SIDEBAR
   MuttSidebarWindow = safe_calloc (sizeof (mutt_window_t), 1);
 #endif
-
-  mutt_reflow_windows ();
 }
 
 void mutt_free_windows ()
