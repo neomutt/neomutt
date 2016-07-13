@@ -903,6 +903,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
 	mutt_set_parameter ("charset", chsbuf, &b->parameter);
       }
+      FREE (&b->charset);
       b->charset = fromcode;
       FREE (&tocode);
       safe_fclose (&fp);
