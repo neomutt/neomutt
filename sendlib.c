@@ -1093,6 +1093,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     return;
 
   a->encoding = ENC7BIT;
+  FREE (&a->d_filename);
   a->d_filename = a->filename;
   if (a->filename && a->unlink)
     unlink (a->filename);
@@ -1142,6 +1143,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       s.fpin = fpin;
       mutt_decode_attachment (a, &s);
       safe_fclose (&s.fpout);
+      FREE (&a->d_filename);
       a->d_filename = a->filename;
       a->filename = safe_strdup (buff);
       a->unlink = 1;

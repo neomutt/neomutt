@@ -178,6 +178,7 @@ void mutt_free_body (BODY **p)
     }
 
     FREE (&b->filename);
+    FREE (&b->d_filename);
     FREE (&b->charset);
     FREE (&b->content);
     FREE (&b->xtype);
