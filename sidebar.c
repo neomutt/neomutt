@@ -202,7 +202,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  * @buflen:  Buffer length
  * @width:   Desired width in screen cells
  * @box:     Mailbox name
- * @b:       Mailbox object
+ * @sbe:     Mailbox object
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_FormatString to do the actual work. mutt_FormatString will callback to
@@ -490,7 +490,7 @@ static int draw_divider (int num_rows, int num_cols)
   int i;
   for (i = 0; i < num_rows; i++)
   {
-    mutt_window_move (MuttSidebarWindow, i, SidebarWidth - delim_len);	//RAR 0 for rhs
+    mutt_window_move (MuttSidebarWindow, i, SidebarWidth - delim_len);
     addstr (NONULL(SidebarDividerChar));
   }
 
@@ -513,7 +513,7 @@ static void fill_empty_space (int first_row, int num_rows, int width)
   int r;
   for (r = 0; r < num_rows; r++)
   {
-    mutt_window_move (MuttSidebarWindow, first_row + r, 0);	//RAR rhs
+    mutt_window_move (MuttSidebarWindow, first_row + r, 0);
     int i;
     for (i = 0; i < width; i++)
       addch (' ');
@@ -667,6 +667,14 @@ void mutt_sb_draw (void)
   if (!option (OPTSIDEBAR))
     return;
 
+#ifdef USE_SLANG_CURSES
+  int x = SLsmg_get_column();
+  int y = SLsmg_get_row();
+#else
+  int x = getcurx (stdscr);
+  int y = getcury (stdscr);
+#endif
+
   int num_rows  = MuttSidebarWindow->rows;
   int num_cols  = MuttSidebarWindow->cols;
 
@@ -684,6 +692,7 @@ void mutt_sb_draw (void)
     return;
 
   draw_sidebar (num_rows, num_cols, div_width);
+  move (y, x);
 }
 
 /**

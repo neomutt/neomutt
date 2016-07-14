@@ -175,12 +175,11 @@ if test x$have_smime != xno ; then
 	SMIMEAUX_TARGET="smime_keys"
 fi
 
-AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
-[       if test x$enableval = xyes ; then
-		AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
-		OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
-        fi
+AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]), enable_sidebar=$enableval, enable_sidebar=no)
+AS_IF([test x$enable_sidebar = "xyes"], [
+	   AC_DEFINE(USE_SIDEBAR, 1, [Define if you want support for the sidebar.])
+	   OPS="$OPS \$(srcdir)/OPS.SIDEBAR"
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
