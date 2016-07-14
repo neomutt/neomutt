@@ -94,7 +94,7 @@ char *mutt_read_rfc822_line (FILE *f, char *line, size_t *linelen)
   /* not reached */
 }
 
-static LIST *mutt_parse_references (char *s, int in_reply_to)
+LIST *mutt_parse_references (char *s, int in_reply_to)
 {
   LIST *t, *lst = NULL;
   char *m;
@@ -1077,6 +1077,17 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       e->from = rfc822_parse_adrlist (e->from, p);
       matched = 1;
     }
+#ifdef USE_NNTP
+    else if (!mutt_strcasecmp (line+1, "ollowup-to"))
+    {
+      if (!e->followup_to)
+      {
+	mutt_remove_trailing_ws (p);
+	e->followup_to = safe_strdup (mutt_skip_whitespace (p));
+      }
+      matched = 1;
+    }
+#endif
     break;
     
     case 'i':
@@ -1159,6 +1170,27 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     }
     break;
     
+#ifdef USE_NNTP
+    case 'n':
+    if (!mutt_strcasecmp (line + 1, "ewsgroups"))
+    {
+      FREE (&e->newsgroups);
+      mutt_remove_trailing_ws (p);
+      e->newsgroups = safe_strdup (mutt_skip_whitespace (p));
+      matched = 1;
+    }
+    break;
+#endif
+
+    case 'o':
+    /* field `Organization:' saves only for pager! */
+    if (!mutt_strcasecmp (line + 1, "rganization"))
+    {
+      if (!e->organization && mutt_strcasecmp (p, "unknown"))
+	e->organization = safe_strdup (p);
+    }
+    break;
+
     case 'r':
     if (!ascii_strcasecmp (line + 1, "eferences"))
     {
@@ -1271,6 +1303,20 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       e->x_label = safe_strdup(p);
       matched = 1;
     }
+#ifdef USE_NNTP
+    else if (!mutt_strcasecmp (line + 1, "-comment-to"))
+    {
+      if (!e->x_comment_to)
+	e->x_comment_to = safe_strdup (p);
+      matched = 1;
+    }
+    else if (!mutt_strcasecmp (line + 1, "ref"))
+    {
+      if (!e->xref)
+	e->xref = safe_strdup (p);
+      matched = 1;
+    }
+#endif
     
     default:
     break;

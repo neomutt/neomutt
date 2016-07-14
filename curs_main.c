@@ -22,6 +22,7 @@
 
 #include "mutt.h"
 #include "mutt_curses.h"
+#include "mx.h"
 #include "mutt_menu.h"
 #include "mailbox.h"
 #include "mapping.h"
@@ -42,6 +43,10 @@
 #endif
 
 #include "mutt_crypt.h"
+
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
 
 
 #include <ctype.h>
@@ -494,12 +499,27 @@ static const struct mapping_t IndexHelp[] = {
   { NULL,	 0 }
 };
 
+#ifdef USE_NNTP
+struct mapping_t IndexNewsHelp[] = {
+  { N_("Quit"),     OP_QUIT },
+  { N_("Del"),      OP_DELETE },
+  { N_("Undel"),    OP_UNDELETE },
+  { N_("Save"),     OP_SAVE },
+  { N_("Post"),     OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Catchup"),  OP_CATCHUP },
+  { N_("Help"),     OP_HELP },
+  { NULL,           0 }
+};
+#endif
+
 /* This function handles the message index window as well as commands returned
  * from the pager (MENU_PAGER).
  */
 int mutt_index_menu (void)
 {
   char buf[LONG_STRING], helpstr[LONG_STRING];
+  int flags;
   int op = OP_NULL;
   int done = 0;                /* controls when to exit the "event" loop */
   int i = 0, j;
@@ -518,7 +538,11 @@ int mutt_index_menu (void)
   menu->make_entry = index_make_entry;
   menu->color = index_color;
   menu->current = ci_first_message ();
-  menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MAIN, IndexHelp);
+  menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MAIN,
+#ifdef USE_NNTP
+	(Context && (Context->magic == MUTT_NNTP)) ? IndexNewsHelp :
+#endif
+	IndexHelp);
 
   if (!attach_msg)
     mutt_buffy_check(1); /* force the buffy check after we enter the folder */
@@ -773,6 +797,9 @@ int mutt_index_menu (void)
       mutt_curs_set (1);	/* fallback from the pager */
     }
 
+#ifdef USE_NNTP
+    unset_option (OPTNEWS);	/* for any case */
+#endif
     switch (op)
     {
 
@@ -822,6 +849,161 @@ int mutt_index_menu (void)
       case OP_CURRENT_BOTTOM:
 	menu_current_bottom (menu);
 	break;
+
+#ifdef USE_NNTP
+      case OP_GET_PARENT:
+	CHECK_MSGCOUNT;
+	CHECK_VISIBLE;
+
+      case OP_GET_MESSAGE:
+	CHECK_IN_MAILBOX;
+	CHECK_READONLY;
+	CHECK_ATTACH;
+	if (Context->magic == MUTT_NNTP)
+	{
+	  HEADER *hdr;
+
+	  if (op == OP_GET_MESSAGE)
+	  {
+	    buf[0] = 0;
+	    if (mutt_get_field (_("Enter Message-Id: "),
+		buf, sizeof (buf), 0) != 0 || !buf[0])
+	      break;
+	  }
+	  else
+	  {
+	    LIST *ref = CURHDR->env->references;
+	    if (!ref)
+	    {
+	      mutt_error _("Article has no parent reference.");
+	      break;
+	    }
+	    strfcpy (buf, ref->data, sizeof (buf));
+	  }
+	  if (!Context->id_hash)
+	    Context->id_hash = mutt_make_id_hash (Context);
+	  hdr = hash_find (Context->id_hash, buf);
+	  if (hdr)
+	  {
+	    if (hdr->virtual != -1)
+	    {
+	      menu->current = hdr->virtual;
+	      menu->redraw = REDRAW_MOTION_RESYNCH;
+	    }
+	    else if (hdr->collapsed)
+	    {
+	      mutt_uncollapse_thread (Context, hdr);
+	      mutt_set_virtual (Context);
+	      menu->current = hdr->virtual;
+	      menu->redraw = REDRAW_MOTION_RESYNCH;
+	    }
+	    else
+	      mutt_error _("Message is not visible in limited view.");
+	  }
+	  else
+	  {
+	    int rc;
+
+	    mutt_message (_("Fetching %s from server..."), buf);
+	    rc = nntp_check_msgid (Context, buf);
+	    if (rc == 0)
+	    {
+	      hdr = Context->hdrs[Context->msgcount - 1];
+	      mutt_sort_headers (Context, 0);
+	      menu->current = hdr->virtual;
+	      menu->redraw = REDRAW_FULL;
+	    }
+	    else if (rc > 0)
+	      mutt_error (_("Article %s not found on the server."), buf);
+	  }
+	}
+	break;
+
+      case OP_GET_CHILDREN:
+      case OP_RECONSTRUCT_THREAD:
+	CHECK_MSGCOUNT;
+	CHECK_VISIBLE;
+	CHECK_READONLY;
+	CHECK_ATTACH;
+	if (Context->magic == MUTT_NNTP)
+	{
+	  int oldmsgcount = Context->msgcount;
+	  int oldindex = CURHDR->index;
+	  int rc = 0;
+
+	  if (!CURHDR->env->message_id)
+	  {
+	    mutt_error _("No Message-Id. Unable to perform operation.");
+	    break;
+	  }
+
+	  mutt_message _("Fetching message headers...");
+	  if (!Context->id_hash)
+	    Context->id_hash = mutt_make_id_hash (Context);
+	  strfcpy (buf, CURHDR->env->message_id, sizeof (buf));
+
+	  /* trying to find msgid of the root message */
+	  if (op == OP_RECONSTRUCT_THREAD)
+	  {
+	    LIST *ref = CURHDR->env->references;
+	    while (ref)
+	    {
+	      if (hash_find (Context->id_hash, ref->data) == NULL)
+	      {
+		rc = nntp_check_msgid (Context, ref->data);
+		if (rc < 0)
+		  break;
+	      }
+
+	      /* the last msgid in References is the root message */
+	      if (!ref->next)
+		strfcpy (buf, ref->data, sizeof (buf));
+	      ref = ref->next;
+	    }
+	  }
+
+	  /* fetching all child messages */
+	  if (rc >= 0)
+	    rc = nntp_check_children (Context, buf);
+
+	  /* at least one message has been loaded */
+	  if (Context->msgcount > oldmsgcount)
+	  {
+	    HEADER *hdr;
+	    int i, quiet = Context->quiet;
+
+	    if (rc < 0)
+	      Context->quiet = 1;
+	    mutt_sort_headers (Context, (op == OP_RECONSTRUCT_THREAD));
+	    Context->quiet = quiet;
+
+	    /* if the root message was retrieved, move to it */
+	    hdr = hash_find (Context->id_hash, buf);
+	    if (hdr)
+	      menu->current = hdr->virtual;
+
+	    /* try to restore old position */
+	    else
+	    {
+	      for (i = 0; i < Context->msgcount; i++)
+	      {
+		if (Context->hdrs[i]->index == oldindex)
+		{
+		  menu->current = Context->hdrs[i]->virtual;
+		  /* as an added courtesy, recenter the menu
+		   * with the current entry at the middle of the screen */
+		  menu_check_recenter (menu);
+		  menu_current_middle (menu);
+		}
+	      }
+	    }
+	    menu->redraw = REDRAW_FULL;
+	  }
+	  else if (rc >= 0)
+	    mutt_error _("No deleted messages found in the thread.");
+	}
+	break;
+#endif
 
       case OP_JUMP:
 
@@ -920,11 +1102,33 @@ int mutt_index_menu (void)
         break;
 
       case OP_MAIN_LIMIT:
+      case OP_TOGGLE_READ:
 
 	CHECK_IN_MAILBOX;
 	menu->oldcurrent = (Context->vcount && menu->current >= 0 && menu->current < Context->vcount) ?
 		CURHDR->index : -1;
-	if (mutt_pattern_func (MUTT_LIMIT, _("Limit to messages matching: ")) == 0)
+	if (op == OP_TOGGLE_READ)
+	{
+	  char buf[LONG_STRING];
+
+	  if (!Context->pattern || strncmp (Context->pattern, "!~R!~D~s", 8) != 0)
+	  {
+	    snprintf (buf, sizeof (buf), "!~R!~D~s%s",
+		      Context->pattern ? Context->pattern : ".*");
+	    set_option (OPTHIDEREAD);
+	  }
+	  else
+	  {
+	    strfcpy (buf, Context->pattern + 8, sizeof(buf));
+	    if (!*buf || strncmp (buf, ".*", 2) == 0)
+	      snprintf (buf, sizeof(buf), "~A");
+	    unset_option (OPTHIDEREAD);
+	  }
+	  FREE (&Context->pattern);
+	  Context->pattern = safe_strdup (buf);
+	}
+	if ((op == OP_TOGGLE_READ && mutt_pattern_func (MUTT_LIMIT, NULL) == 0) ||
+	    mutt_pattern_func (MUTT_LIMIT, _("Limit to messages matching: ")) == 0)
 	{
 	  if (menu->oldcurrent >= 0)
 	  {
@@ -1170,15 +1374,22 @@ int mutt_index_menu (void)
 #endif
       case OP_MAIN_CHANGE_FOLDER:
       case OP_MAIN_NEXT_UNREAD_MAILBOX:
-
-	if (attach_msg)
-	  op = OP_MAIN_CHANGE_FOLDER_READONLY;
-
-	/* fallback to the readonly case */
-
       case OP_MAIN_CHANGE_FOLDER_READONLY:
+#ifdef USE_NNTP
+      case OP_MAIN_CHANGE_GROUP:
+      case OP_MAIN_CHANGE_GROUP_READONLY:
+	unset_option (OPTNEWS);
+#endif
+	if (attach_msg || option (OPTREADONLY) ||
+#ifdef USE_NNTP
+	    op == OP_MAIN_CHANGE_GROUP_READONLY ||
+#endif
+	    op == OP_MAIN_CHANGE_FOLDER_READONLY)
+	  flags = MUTT_READONLY;
+	else
+	  flags = 0;
 
-        if ((op == OP_MAIN_CHANGE_FOLDER_READONLY) || option (OPTREADONLY))
+	if (flags)
           cp = _("Open mailbox in read-only mode");
         else
           cp = _("Open mailbox");
@@ -1206,6 +1417,22 @@ int mutt_index_menu (void)
 #endif
 	else
 	{
+#ifdef USE_NNTP
+	  if (op == OP_MAIN_CHANGE_GROUP ||
+	      op == OP_MAIN_CHANGE_GROUP_READONLY)
+	  {
+	    set_option (OPTNEWS);
+	    CurrentNewsSrv = nntp_select_server (NewsServer, 0);
+	    if (!CurrentNewsSrv)
+	      break;
+	    if (flags)
+	      cp = _("Open newsgroup in read-only mode");
+	    else
+	      cp = _("Open newsgroup");
+	    nntp_buffy (buf, sizeof (buf));
+	  }
+	  else
+#endif
 	  mutt_buffy (buf, sizeof (buf));
 
           if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
@@ -1225,6 +1452,14 @@ int mutt_index_menu (void)
 	  }
 	}
 
+#ifdef USE_NNTP
+	if (option (OPTNEWS))
+	{
+	  unset_option (OPTNEWS);
+	  nntp_expand_path (buf, sizeof (buf), &CurrentNewsSrv->conn->account);
+	}
+	else
+#endif
 	mutt_expand_path (buf, sizeof (buf));
 	if (mx_get_magic (buf) <= 0)
 	{
@@ -1266,9 +1501,7 @@ int mutt_index_menu (void)
 	CurrentMenu = MENU_MAIN;
 	mutt_folder_hook (buf);
 
-	if ((Context = mx_open_mailbox (buf,
-					(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
-					MUTT_READONLY : 0, NULL)) != NULL)
+	if ((Context = mx_open_mailbox (buf, flags, NULL)) != NULL)
 	{
 	  menu->current = ci_first_message ();
 	}
@@ -1279,6 +1512,11 @@ int mutt_index_menu (void)
         mutt_sb_set_open_buffy ();
 #endif
 
+#ifdef USE_NNTP
+	/* mutt_buffy_check() must be done with mail-reader mode! */
+	menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_MAIN,
+	  (Context && (Context->magic == MUTT_NNTP)) ? IndexNewsHelp : IndexHelp);
+#endif
 	mutt_clear_error ();
 	mutt_buffy_check(1); /* force the buffy check after we have changed
 			      the folder */
@@ -1347,6 +1585,7 @@ int mutt_index_menu (void)
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
 	CHECK_READONLY;
+	CHECK_ACL(MUTT_ACL_WRITE, _("Cannot break thread"));
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
 	  mutt_error _("Threading is not enabled.");
@@ -1382,7 +1621,7 @@ int mutt_index_menu (void)
         CHECK_VISIBLE;
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
-	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot link threads"));
+	CHECK_ACL(MUTT_ACL_WRITE, _("Cannot link threads"));
 
         if ((Sort & SORT_MASK) != SORT_THREADS)
 	  mutt_error _("Threading is not enabled.");
@@ -2018,6 +2257,20 @@ int mutt_index_menu (void)
 	}
 	break;
 
+#ifdef USE_NNTP
+      case OP_CATCHUP:
+	CHECK_MSGCOUNT;
+	CHECK_READONLY;
+	CHECK_ATTACH
+	if (Context && Context->magic == MUTT_NNTP)
+	{
+	  NNTP_DATA *nntp_data = Context->data;
+	  if (mutt_newsgroup_catchup (nntp_data->nserv, nntp_data->group))
+	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+	}
+	break;
+#endif
+
       case OP_DISPLAY_ADDRESS:
 
 	CHECK_MSGCOUNT;
@@ -2223,6 +2476,39 @@ int mutt_index_menu (void)
 
         menu->redraw = REDRAW_FULL;
         break;
+
+#ifdef USE_NNTP
+      case OP_FOLLOWUP:
+      case OP_FORWARD_TO_GROUP:
+
+	CHECK_MSGCOUNT;
+	CHECK_VISIBLE;
+
+      case OP_POST:
+
+	CHECK_ATTACH;
+	if (op != OP_FOLLOWUP || !CURHDR->env->followup_to ||
+	    mutt_strcasecmp (CURHDR->env->followup_to, "poster") ||
+	    query_quadoption (OPT_FOLLOWUPTOPOSTER,
+	    _("Reply by mail as poster prefers?")) != MUTT_YES)
+	{
+	  if (Context && Context->magic == MUTT_NNTP &&
+	      !((NNTP_DATA *)Context->data)->allowed &&
+	      query_quadoption (OPT_TOMODERATED,
+	      _("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+	    break;
+	  if (op == OP_POST)
+	    ci_send_message (SENDNEWS, NULL, NULL, Context, NULL);
+	  else
+	  {
+	    CHECK_MSGCOUNT;
+	    ci_send_message ((op == OP_FOLLOWUP ? SENDREPLY : SENDFORWARD) |
+			SENDNEWS, NULL, NULL, Context, tag ? NULL : CURHDR);
+	  }
+	  menu->redraw = REDRAW_FULL;
+	  break;
+	}
+#endif
 
       case OP_REPLY:
 

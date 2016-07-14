@@ -179,6 +179,20 @@ struct option_t MuttVars[] = {
   ** If \fIset\fP, Mutt will prompt you for carbon-copy (Cc) recipients before
   ** editing the body of an outgoing message.
   */
+#ifdef USE_NNTP
+  { "ask_follow_up",	DT_BOOL, R_NONE, OPTASKFOLLOWUP, 0 },
+  /*
+  ** .pp
+  ** If set, Mutt will prompt you for follow-up groups before editing
+  ** the body of an outgoing message.
+  */
+  { "ask_x_comment_to",	DT_BOOL, R_NONE, OPTASKXCOMMENTTO, 0 },
+  /*
+  ** .pp
+  ** If set, Mutt will prompt you for x-comment-to field before editing
+  ** the body of an outgoing message.
+  */
+#endif
   { "assumed_charset", DT_STR, R_NONE, UL &AssumedCharset, UL 0},
   /*
   ** .pp
@@ -325,6 +339,14 @@ struct option_t MuttVars[] = {
   ** follow these menus.  The option is \fIunset\fP by default because many
   ** visual terminals don't permit making the cursor invisible.
   */
+#ifdef USE_NNTP
+  { "catchup_newsgroup", DT_QUAD, R_NONE, OPT_CATCHUP, MUTT_ASKYES },
+  /*
+  ** .pp
+  ** If this variable is \fIset\fP, Mutt will mark all articles in newsgroup
+  ** as read when you quit the newsgroup (catchup newsgroup).
+  */
+#endif
 #if defined(USE_SSL)
   { "certificate_file",	DT_PATH, R_NONE, UL &SslCertFile, UL "~/.mutt_certificates" },
   /*
@@ -852,6 +874,16 @@ struct option_t MuttVars[] = {
   ** sent to both the list and your address, resulting in two copies
   ** of the same email for you.
   */
+#ifdef USE_NNTP
+  { "followup_to_poster", DT_QUAD, R_NONE, OPT_FOLLOWUPTOPOSTER, MUTT_ASKYES },
+  /*
+  ** .pp
+  ** If this variable is \fIset\fP and the keyword "poster" is present in
+  ** \fIFollowup-To\fP header, follow-up to newsgroup function is not
+  ** permitted.  The message will be mailed to the submitter of the
+  ** message via mail.
+  */
+#endif
   { "force_name",	DT_BOOL, R_NONE, OPTFORCENAME, 0 },
   /*
   ** .pp
@@ -934,6 +966,26 @@ struct option_t MuttVars[] = {
   ** a regular expression that will match the whole name so mutt will expand
   ** ``Franklin'' to ``Franklin, Steve''.
   */
+#ifdef USE_NNTP
+  { "group_index_format", DT_STR, R_BOTH, UL &GroupFormat, UL "%4C %M%N %5s  %-45.45f %d" },
+  /*
+  ** .pp
+  ** This variable allows you to customize the newsgroup browser display to
+  ** your personal taste.  This string is similar to ``$index_format'', but
+  ** has its own set of printf()-like sequences:
+  ** .dl
+  ** .dt %C  .dd current newsgroup number
+  ** .dt %d  .dd description of newsgroup (becomes from server)
+  ** .dt %f  .dd newsgroup name
+  ** .dt %M  .dd - if newsgroup not allowed for direct post (moderated for example)
+  ** .dt %N  .dd N if newsgroup is new, u if unsubscribed, blank otherwise
+  ** .dt %n  .dd number of new articles in newsgroup
+  ** .dt %s  .dd number of unread articles in newsgroup
+  ** .dt %>X .dd right justify the rest of the string and pad with character "X"
+  ** .dt %|X .dd pad to the end of the line with character "X"
+  ** .de
+  */
+#endif
   { "hdr_format",	DT_SYN,  R_NONE, UL "index_format", 0 },
   /*
   */
@@ -1326,6 +1378,7 @@ struct option_t MuttVars[] = {
   ** .dt %E .dd number of messages in current thread
   ** .dt %f .dd sender (address + real name), either From: or Return-Path:
   ** .dt %F .dd author name, or recipient name if the message is from you
+  ** .dt %g .dd newsgroup name (if compiled with NNTP support)
   ** .dt %H .dd spam attribute(s) of this message
   ** .dt %i .dd message-id of the current message
   ** .dt %l .dd number of lines in the message (does not work with maildir,
@@ -1349,6 +1402,8 @@ struct option_t MuttVars[] = {
   ** .dt %T .dd the appropriate character from the $$to_chars string
   ** .dt %u .dd user (login) name of the author
   ** .dt %v .dd first name of the author, or the recipient if the message is from you
+  ** .dt %W .dd name of organization of author (``Organization:'' field)
+  ** .dt %x .dd ``X-Comment-To:'' field (if present and compiled with NNTP support)
   ** .dt %X .dd number of attachments
   **            (please see the ``$attachments'' section for possible speed effects)
   ** .dt %y .dd ``X-Label:'' field, if present
@@ -1383,6 +1438,25 @@ struct option_t MuttVars[] = {
   ** Note that these expandos are supported in
   ** ``$save-hook'', ``$fcc-hook'' and ``$fcc-save-hook'', too.
   */
+#ifdef USE_NNTP
+  { "inews",		DT_PATH, R_NONE, UL &Inews, UL "" },
+  /*
+  ** .pp
+  ** If set, specifies the program and arguments used to deliver news posted
+  ** by Mutt.  Otherwise, mutt posts article using current connection to
+  ** news server.  The following printf-style sequence is understood:
+  ** .dl
+  ** .dt %a .dd account url
+  ** .dt %p .dd port
+  ** .dt %P .dd port if specified
+  ** .dt %s .dd news server name
+  ** .dt %S .dd url schema
+  ** .dt %u .dd username
+  ** .de
+  ** .pp
+  ** Example: set inews="/usr/local/bin/inews -hS"
+  */
+#endif
   { "ispell",		DT_PATH, R_NONE, UL &Ispell, UL ISPELL },
   /*
   ** .pp
@@ -1643,6 +1717,15 @@ struct option_t MuttVars[] = {
   ** menu, attachments which cannot be decoded in a reasonable manner will
   ** be attached to the newly composed message if this option is \fIset\fP.
   */
+#ifdef USE_NNTP
+  { "mime_subject",	DT_BOOL, R_NONE, OPTMIMESUBJECT, 1 },
+  /*
+  ** .pp
+  ** If \fIunset\fP, 8-bit ``subject:'' line in article header will not be
+  ** encoded according to RFC2047 to base64.  This is useful when message
+  ** is Usenet article, because MIME for news is nonstandard feature.
+  */
+#endif
 #ifdef MIXMASTER
   { "mix_entry_format", DT_STR,  R_NONE, UL &MixEntryFormat, UL "%4n %c %-16s %a" },
   /*
@@ -1689,6 +1772,106 @@ struct option_t MuttVars[] = {
    ** .pp
    ** See also $$read_inc, $$write_inc and $$net_inc.
    */
+#endif
+#ifdef USE_NNTP
+  { "news_cache_dir",	DT_PATH, R_NONE, UL &NewsCacheDir, UL "~/.mutt" },
+  /*
+  ** .pp
+  ** This variable pointing to directory where Mutt will save cached news
+  ** articles and headers in. If \fIunset\fP, articles and headers will not be
+  ** saved at all and will be reloaded from the server each time.
+  */
+  { "news_server",	DT_STR, R_NONE, UL &NewsServer, 0 },
+  /*
+  ** .pp
+  ** This variable specifies domain name or address of NNTP server. It
+  ** defaults to the news server specified in the environment variable
+  ** $$$NNTPSERVER or contained in the file /etc/nntpserver.  You can also
+  ** specify username and an alternative port for each news server, ie:
+  ** .pp
+  ** [[s]news://][username[:password]@]server[:port]
+  */
+  { "newsgroups_charset", DT_STR, R_NONE, UL &NewsgroupsCharset, UL "utf-8" },
+  /*
+  ** .pp
+  ** Character set of newsgroups descriptions.
+  */
+  { "newsrc",		DT_PATH, R_NONE, UL &NewsRc, UL "~/.newsrc" },
+  /*
+  ** .pp
+  ** The file, containing info about subscribed newsgroups - names and
+  ** indexes of read articles.  The following printf-style sequence
+  ** is understood:
+  ** .dl
+  ** .dt %a .dd account url
+  ** .dt %p .dd port
+  ** .dt %P .dd port if specified
+  ** .dt %s .dd news server name
+  ** .dt %S .dd url schema
+  ** .dt %u .dd username
+  ** .de
+  */
+  { "nntp_authenticators", DT_STR, R_NONE, UL &NntpAuthenticators, UL 0 },
+  /*
+  ** .pp
+  ** This is a colon-delimited list of authentication methods mutt may
+  ** attempt to use to log in to a news server, in the order mutt should
+  ** try them.  Authentication methods are either ``user'' or any
+  ** SASL mechanism, e.g. ``digest-md5'', ``gssapi'' or ``cram-md5''.
+  ** This option is case-insensitive.  If it's \fIunset\fP (the default)
+  ** mutt will try all available methods, in order from most-secure to
+  ** least-secure.
+  ** .pp
+  ** Example:
+  ** .ts
+  ** set nntp_authenticators="digest-md5:user"
+  ** .te
+  ** .pp
+  ** \fBNote:\fP Mutt will only fall back to other authentication methods if
+  ** the previous methods are unavailable. If a method is available but
+  ** authentication fails, mutt will not connect to the IMAP server.
+  */
+  { "nntp_context",	DT_NUM, R_NONE, UL &NntpContext, 1000 },
+  /*
+  ** .pp
+  ** This variable defines number of articles which will be in index when
+  ** newsgroup entered.  If active newsgroup have more articles than this
+  ** number, oldest articles will be ignored.  Also controls how many
+  ** articles headers will be saved in cache when you quit newsgroup.
+  */
+  { "nntp_listgroup",	DT_BOOL, R_NONE, OPTLISTGROUP, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether or not existence of each article is
+  ** checked when newsgroup is entered.
+  */
+  { "nntp_load_description", DT_BOOL, R_NONE, OPTLOADDESC, 1 },
+  /*
+  ** .pp
+  ** This variable controls whether or not descriptions for each newsgroup
+  ** must be loaded when newsgroup is added to list (first time list
+  ** loading or new newsgroup adding).
+  */
+  { "nntp_user",	DT_STR, R_NONE, UL &NntpUser, UL "" },
+  /*
+  ** .pp
+  ** Your login name on the NNTP server.  If \fIunset\fP and NNTP server requires
+  ** authentication, Mutt will prompt you for your account name when you
+  ** connect to news server.
+  */
+  { "nntp_pass",	DT_STR, R_NONE, UL &NntpPass, UL "" },
+  /*
+  ** .pp
+  ** Your password for NNTP account.
+  */
+  { "nntp_poll",	DT_NUM, R_NONE, UL &NewsPollTimeout, 60 },
+  /*
+  ** .pp
+  ** The time in seconds until any operations on newsgroup except post new
+  ** article will cause recheck for new news.  If set to 0, Mutt will
+  ** recheck newsgroup on each operation in index (stepping, read article,
+  ** etc.).
+  */
 #endif
   { "pager",		DT_PATH, R_NONE, UL &Pager, UL "builtin" },
   /*
@@ -2216,6 +2399,16 @@ struct option_t MuttVars[] = {
   { "post_indent_str",  DT_SYN,  R_NONE, UL "post_indent_string", 0 },
   /*
   */
+#ifdef USE_NNTP
+  { "post_moderated",	DT_QUAD, R_NONE, OPT_TOMODERATED, MUTT_ASKYES },
+  /*
+  ** .pp
+  ** If set to \fIyes\fP, Mutt will post article to newsgroup that have
+  ** not permissions to posting (e.g. moderated).  \fBNote:\fP if news server
+  ** does not support posting to that newsgroup or totally read-only, that
+  ** posting will not have an effect.
+  */
+#endif
   { "postpone",		DT_QUAD, R_NONE, OPT_POSTPONE, MUTT_ASKYES },
   /*
   ** .pp
@@ -2692,6 +2885,28 @@ struct option_t MuttVars[] = {
   ** Command to use when spawning a subshell.  By default, the user's login
   ** shell from \fC/etc/passwd\fP is used.
   */
+#ifdef USE_NNTP
+  { "save_unsubscribed", DT_BOOL, R_NONE, OPTSAVEUNSUB, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, info about unsubscribed newsgroups will be saved into
+  ** ``newsrc'' file and into cache.
+  */
+  { "show_new_news",	DT_BOOL, R_NONE, OPTSHOWNEWNEWS, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, news server will be asked for new newsgroups on entering
+  ** the browser.  Otherwise, it will be done only once for a news server.
+  ** Also controls whether or not number of new articles of subscribed
+  ** newsgroups will be then checked.
+  */
+  { "show_only_unread",	DT_BOOL, R_NONE, OPTSHOWONLYUNREAD, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, only subscribed newsgroups that contain unread articles
+  ** will be displayed in browser.
+  */
+#endif
 #ifdef USE_SIDEBAR
   { "sidebar_divider_char", DT_STR, R_SIDEBAR, UL &SidebarDividerChar, UL "|" },
   /*
@@ -3763,6 +3978,14 @@ struct option_t MuttVars[] = {
   {"xterm_set_titles",	DT_SYN,  R_NONE, UL "ts_enabled", 0 },
   /*
   */
+#ifdef USE_NNTP
+  { "x_comment_to",	DT_BOOL, R_NONE, OPTXCOMMENTTO, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, Mutt will add ``X-Comment-To:'' field (that contains full
+  ** name of original article author) to article that followuped to newsgroup.
+  */
+#endif
   /*--*/
   { NULL, 0, 0, 0, 0 }
 };

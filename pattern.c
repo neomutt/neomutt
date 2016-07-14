@@ -92,6 +92,9 @@ Flags[] =
   { 'U', MUTT_UNREAD,		0,		NULL },
   { 'v', MUTT_COLLAPSED,		0,		NULL },
   { 'V', MUTT_CRYPT_VERIFIED,	0,		NULL },
+#ifdef USE_NNTP
+  { 'w', MUTT_NEWSGROUPS,		0,		eat_regexp },
+#endif
   { 'x', MUTT_REFERENCE,		0,		eat_regexp },
   { 'X', MUTT_MIMEATTACH,		0,		eat_range },
   { 'y', MUTT_XLABEL,		0,		eat_regexp },
@@ -1222,6 +1225,10 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       }
     case MUTT_UNREFERENCED:
       return (pat->not ^ (h->thread && !h->thread->child));
+#ifdef USE_NNTP
+    case MUTT_NEWSGROUPS:
+      return (pat->not ^ (h->env->newsgroups && patmatch (pat, h->env->newsgroups) == 0));
+#endif
   }
   mutt_error (_("error: unknown op %d (report this error)."), pat->op);
   return (-1);
@@ -1303,6 +1310,7 @@ int mutt_pattern_func (int op, char *prompt)
   progress_t progress;
 
   strfcpy (buf, NONULL (Context->pattern), sizeof (buf));
+  if (prompt || op != MUTT_LIMIT)
   if (mutt_get_field (prompt, buf, sizeof (buf), MUTT_PATTERN | MUTT_CLEAR) != 0 || !buf[0])
     return (-1);
 

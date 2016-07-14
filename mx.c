@@ -41,6 +41,10 @@
 #include "pop.h"
 #endif
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
+
 #include "buffy.h"
 
 #ifdef USE_DOTLOCK
@@ -79,6 +83,10 @@ static struct mx_ops* mx_get_ops (int magic)
 #ifdef USE_POP
     case MUTT_POP:
       return &mx_pop_ops;
+#endif
+#ifdef USE_NNTP
+    case MUTT_NNTP:
+      return &mx_nntp_ops;
 #endif
     default:
       return NULL;
@@ -370,6 +378,22 @@ int mx_is_pop (const char *p)
 }
 #endif
 
+#ifdef USE_NNTP
+int mx_is_nntp (const char *p)
+{
+  url_scheme_t scheme;
+
+  if (!p)
+    return 0;
+
+  scheme = url_check_scheme (p);
+  if (scheme == U_NNTP || scheme == U_NNTPS)
+    return 1;
+
+  return 0;
+}
+#endif
+
 int mx_get_magic (const char *path)
 {
   struct stat st;
@@ -386,6 +410,11 @@ int mx_get_magic (const char *path)
   if (mx_is_pop (path))
     return MUTT_POP;
 #endif /* USE_POP */
+
+#ifdef USE_NNTP
+  if (mx_is_nntp (path))
+    return MUTT_NNTP;
+#endif /* USE_NNTP */
 
   if (stat (path, &st) == -1)
   {
@@ -700,6 +729,12 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
       rc = pop_sync_mailbox (ctx, index_hint);
       break;
 #endif /* USE_POP */
+
+#ifdef USE_NNTP
+    case MUTT_NNTP:
+      rc = nntp_sync_mailbox (ctx);
+      break;
+#endif /* USE_NNTP */
   }
 
 #if 0
@@ -810,6 +845,25 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
     return 0;
   }
 
+#ifdef USE_NNTP
+  if (ctx->unread && ctx->magic == MUTT_NNTP)
+  {
+    NNTP_DATA *nntp_data = ctx->data;
+
+    if (nntp_data && nntp_data->nserv && nntp_data->group)
+    {
+      int rc = query_quadoption (OPT_CATCHUP, _("Mark all articles read?"));
+      if (rc < 0)
+      {
+	ctx->closing = 0;
+	return -1;
+      }
+      else if (rc == MUTT_YES)
+	mutt_newsgroup_catchup (nntp_data->nserv, nntp_data->group);
+    }
+  }
+#endif
+
   for (i = 0; i < ctx->msgcount; i++)
   {
     if (!ctx->hdrs[i]->deleted && ctx->hdrs[i]->read 
@@ -822,6 +876,12 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       ctx->flagged--;
 #endif
   }
+
+#ifdef USE_NNTP
+  /* don't need to move articles from newsgroup */
+  if (ctx->magic == MUTT_NNTP)
+    read_msgs = 0;
+#endif
 
   if (read_msgs && quadoption (OPT_MOVE) != MUTT_NO)
   {

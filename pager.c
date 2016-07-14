@@ -1092,6 +1092,11 @@ fill_buffer (FILE *f, LOFF_T *last_pos, LOFF_T offset, unsigned char **buf,
   return b_read;
 }
 
+#ifdef USE_NNTP
+#include "mx.h"
+#include "nntp.h"
+#endif
+
 
 static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
 			int flags, ansi_attr *pa, int cnt,
@@ -1563,6 +1568,16 @@ static const struct mapping_t PagerHelpExtra[] = {
   { NULL,	0 }
 };
 
+#ifdef USE_NNTP
+static struct mapping_t PagerNewsHelpExtra[] = {
+  { N_("Post"),     OP_POST },
+  { N_("Followup"), OP_FOLLOWUP },
+  { N_("Del"),      OP_DELETE },
+  { N_("Next"),     OP_MAIN_NEXT_UNDELETED },
+  { NULL,           0 }
+};
+#endif
+
 void mutt_clear_pager_position (void)
 {
   TopLine = 0;
@@ -1608,6 +1623,10 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int old_PagerIndexLines;		/* some people want to resize it
   					 * while inside the pager... */
 
+#ifdef USE_NNTP
+  char *followup_to;
+#endif
+
   if (!(flags & MUTT_SHOWCOLOR))
     flags |= MUTT_SHOWFLAT;
 
@@ -1647,7 +1666,11 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   if (IsHeader (extra))
   {
     strfcpy (tmphelp, helpstr, sizeof (tmphelp));
-    mutt_compile_help (buffer, sizeof (buffer), MENU_PAGER, PagerHelpExtra);
+    mutt_compile_help (buffer, sizeof (buffer), MENU_PAGER,
+#ifdef USE_NNTP
+	(Context && (Context->magic == MUTT_NNTP)) ? PagerNewsHelpExtra :
+#endif
+	PagerHelpExtra);
     snprintf (helpstr, sizeof (helpstr), "%s %s", tmphelp, buffer);
   }
   if (!InHelp)
@@ -2603,6 +2626,60 @@ search_next:
 	redraw = REDRAW_FULL;
 	break;
 
+#ifdef USE_NNTP
+      case OP_POST:
+	CHECK_MODE(IsHeader (extra) && !IsAttach (extra));
+	CHECK_ATTACH;
+	if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+	    !((NNTP_DATA *)extra->ctx->data)->allowed &&
+	    query_quadoption (OPT_TOMODERATED,_("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+	  break;
+	ci_send_message (SENDNEWS, NULL, NULL, extra->ctx, NULL);
+	redraw = REDRAW_FULL;
+	break;
+
+      case OP_FORWARD_TO_GROUP:
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+	CHECK_ATTACH;
+	if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+	    !((NNTP_DATA *)extra->ctx->data)->allowed &&
+	    query_quadoption (OPT_TOMODERATED,_("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+	  break;
+	if (IsMsgAttach (extra))
+	  mutt_attach_forward (extra->fp, extra->hdr, extra->idx,
+			       extra->idxlen, extra->bdy, SENDNEWS);
+	else
+	  ci_send_message (SENDNEWS|SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
+	redraw = REDRAW_FULL;
+	break;
+
+      case OP_FOLLOWUP:
+	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
+	CHECK_ATTACH;
+
+	if (IsMsgAttach (extra))
+	  followup_to = extra->bdy->hdr->env->followup_to;
+	else
+	  followup_to = extra->hdr->env->followup_to;
+
+	if (!followup_to || mutt_strcasecmp (followup_to, "poster") ||
+	    query_quadoption (OPT_FOLLOWUPTOPOSTER,_("Reply by mail as poster prefers?")) != MUTT_YES)
+	{
+	  if (extra->ctx && extra->ctx->magic == MUTT_NNTP &&
+	      !((NNTP_DATA *)extra->ctx->data)->allowed &&
+	      query_quadoption (OPT_TOMODERATED,_("Posting to this group not allowed, may be moderated. Continue?")) != MUTT_YES)
+	    break;
+	  if (IsMsgAttach (extra))
+	    mutt_attach_reply (extra->fp, extra->hdr, extra->idx,
+			       extra->idxlen, extra->bdy, SENDNEWS|SENDREPLY);
+	  else
+	    ci_send_message (SENDNEWS|SENDREPLY, NULL, NULL,
+			     extra->ctx, extra->hdr);
+	  redraw = REDRAW_FULL;
+	  break;
+	}
+#endif
+
       case OP_REPLY:
 	CHECK_MODE(IsHeader (extra) || IsMsgAttach (extra));
         CHECK_ATTACH;      
@@ -2649,7 +2726,7 @@ search_next:
         CHECK_ATTACH;
         if (IsMsgAttach (extra))
 	  mutt_attach_forward (extra->fp, extra->hdr, extra->idx,
-			       extra->idxlen, extra->bdy);
+			       extra->idxlen, extra->bdy, 0);
         else
 	  ci_send_message (SENDFORWARD, NULL, NULL, extra->ctx, extra->hdr);
 	redraw = REDRAW_FULL;
