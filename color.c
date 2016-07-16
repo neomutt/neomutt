@@ -35,6 +35,9 @@ int ColorDefs[MT_COLOR_MAX];
 COLOR_LINE *ColorHdrList = NULL;
 COLOR_LINE *ColorBodyList = NULL;
 COLOR_LINE *ColorIndexList = NULL;
+#ifdef USE_NOTMUCH
+COLOR_LINE *ColorIndexTagList = NULL;
+#endif
 
 /* local to this file */
 static int ColorQuoteSize;
@@ -93,6 +96,10 @@ static const struct mapping_t Fields[] =
   { "bold",		MT_COLOR_BOLD },
   { "underline",	MT_COLOR_UNDERLINE },
   { "index",		MT_COLOR_INDEX },
+#ifdef USE_NOTMUCH
+  { "index_tag",	MT_COLOR_INDEX_TAG },
+  { "index_tags",	MT_COLOR_INDEX_TAGS },
+#endif
   { "prompt",		MT_COLOR_PROMPT },
 #ifdef USE_SIDEBAR
   { "sidebar_divider",	MT_COLOR_DIVIDER },
@@ -453,6 +460,12 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
     return 0;
   }
 
+#if 0 /* MERGE with "index-color" patch */
+#ifdef USE_NOTMUCH
+  else if (object == MT_COLOR_INDEX_TAG)
+    mutt_do_uncolor(buf, s, &ColorIndexTagList, &do_cache, parse_uncolor);
+#endif
+#endif
   do
   {
     mutt_extract_token (buf, s, 0);
@@ -501,7 +514,6 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
   }
   return (0);
 }
-
 
 static int 
 add_pattern (COLOR_LINE **top, const char *s, int sensitive,
@@ -729,6 +741,11 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
 
   /* extract a regular expression if needed */
   
+#if 0 /* MERGE with "index-color" patch */
+#ifdef USE_NOTMUCH
+      || (object == MT_COLOR_INDEX_TAG)
+#endif
+#endif
   if (object == MT_COLOR_HEADER || object == MT_COLOR_BODY || object == MT_COLOR_INDEX)
   {
     if (!MoreArgs (s))
@@ -773,6 +790,14 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     r = add_pattern (&ColorIndexList, buf->data, 1, fg, bg, attr, err, 1);
     set_option (OPTFORCEREDRAWINDEX);
   }
+#ifdef USE_NOTMUCH
+  else if (object == MT_COLOR_INDEX_TAG)
+  {
+    r = add_pattern (&ColorIndexTagList, buf->data, 1,
+		    fg, bg, attr, err, 1);
+    set_option (OPTFORCEREDRAWINDEX);
+  }
+#endif
   else if (object == MT_COLOR_QUOTED)
   {
     if (q_level >= ColorQuoteSize)

@@ -40,6 +40,10 @@
 #include "imap.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include "buffy.h"
 
 #include <errno.h>
@@ -61,6 +65,7 @@ int mutt_display_message (HEADER *cur)
   char tempfile[_POSIX_PATH_MAX], buf[LONG_STRING];
   int rc = 0, builtin = 0;
   int cmflags = MUTT_CM_DECODE | MUTT_CM_DISPLAY | MUTT_CM_CHARCONV;
+  int chflags;
   FILE *fpout = NULL;
   FILE *fpfilterout = NULL;
   pid_t filterpid = -1;
@@ -145,8 +150,14 @@ int mutt_display_message (HEADER *cur)
     fputs ("\n\n", fpout);
   }
 
-  res = mutt_copy_message (fpout, Context, cur, cmflags,
-       	(option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0) | CH_DECODE | CH_FROM | CH_DISPLAY);
+  chflags = (option (OPTWEED) ? (CH_WEED | CH_REORDER) : 0)
+           | CH_DECODE | CH_FROM | CH_DISPLAY;
+#ifdef USE_NOTMUCH
+  if (Context->magic == MUTT_NOTMUCH)
+    chflags |= CH_VIRTUAL;
+#endif
+  res = mutt_copy_message (fpout, Context, cur, cmflags, chflags);
+
   if ((safe_fclose (&fpout) != 0 && errno != EPIPE) || res < 0)
   {
     mutt_error (_("Could not copy message"));
@@ -847,18 +858,29 @@ int mutt_save_message (HEADER *h, int delete,
     }
     else
     {
+      int rc = 0;
+
+#ifdef USE_NOTMUCH
+      if (Context->magic == MUTT_NOTMUCH)
+        nm_longrun_init(Context, TRUE);
+#endif
       for (i = 0; i < Context->vcount; i++)
       {
 	if (Context->hdrs[Context->v2r[i]]->tagged)
 	{
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
-	  if (_mutt_save_message(Context->hdrs[Context->v2r[i]],
-			     &ctx, delete, decode, decrypt) != 0)
-          {
-            mx_close_mailbox (&ctx, NULL);
-            return -1;
-          }
+	  if ((rc = _mutt_save_message(Context->hdrs[Context->v2r[i]],
+			     &ctx, delete, decode, decrypt) != 0))
+	    break;
 	}
+      }
+#ifdef USE_NOTMUCH
+      if (Context->magic == MUTT_NOTMUCH)
+        nm_longrun_done(Context);
+#endif
+      if (rc != 0) {
+	mx_close_mailbox (&ctx, NULL);
+	return -1;
       }
     }
 

@@ -41,6 +41,10 @@
 #include "imap_private.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include "mutt_crypt.h"
 
 
@@ -482,6 +486,71 @@ static void resort_index (MUTTMENU *menu)
   menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
 }
 
+static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,
+			  int *oldcount, int *index_hint)
+{
+  mutt_expand_path (buf, bufsz);
+  if (mx_get_magic (buf) <= 0)
+  {
+    mutt_error (_("%s is not a mailbox."), buf);
+    return -1;
+  }
+  mutt_str_replace (&CurrentFolder, buf);
+
+  /* keepalive failure in mutt_enter_fname may kill connection. #3028 */
+  if (Context && !Context->path)
+    FREE (&Context);
+
+  if (Context)
+  {
+    int check;
+
+    mutt_str_replace (&LastFolder, Context->path);
+    *oldcount = Context ? Context->msgcount : 0;
+
+    if ((check = mx_close_mailbox (Context, index_hint)) != 0)
+    {
+      if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
+        update_index (menu, Context, check, *oldcount, *index_hint);
+
+      set_option (OPTSEARCHINVALID);
+      menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
+      return 0;
+    }
+    FREE (&Context);
+  }
+
+  mutt_sleep (0);
+
+  /* Set CurrentMenu to MENU_MAIN before executing any folder
+   * hooks so that all the index menu functions are available to
+   * the exec command.
+   */
+
+  CurrentMenu = MENU_MAIN;
+  mutt_folder_hook (buf);
+
+  if ((Context = mx_open_mailbox (buf,
+		(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
+		MUTT_READONLY : 0, NULL)) != NULL)
+  {
+    menu->current = ci_first_message ();
+  }
+  else
+    menu->current = 0;
+
+#ifdef USE_SIDEBAR
+        mutt_sb_set_open_buffy ();
+#endif
+
+  mutt_clear_error ();
+  mutt_buffy_check(1); /* force the buffy check after we have changed the folder */
+  menu->redraw = REDRAW_FULL;
+  set_option (OPTSEARCHINVALID);
+
+  return 0;
+}
+
 static const struct mapping_t IndexHelp[] = {
   { N_("Quit"),  OP_QUIT },
   { N_("Del"),   OP_DELETE },
@@ -772,6 +841,11 @@ int mutt_index_menu (void)
 
       mutt_curs_set (1);	/* fallback from the pager */
     }
+
+#ifdef USE_NOTMUCH
+    if (Context)
+      nm_debug_check(Context);
+#endif
 
     switch (op)
     {
@@ -1165,6 +1239,131 @@ int mutt_index_menu (void)
 	  menu->redraw = REDRAW_FULL;
 	break;
 
+#ifdef USE_NOTMUCH
+      case OP_MAIN_ENTIRE_THREAD:
+      {
+	int oldcount  = Context->msgcount;
+	if (Context->magic != MUTT_NOTMUCH) {
+	  mutt_message _("No virtual folder, aborting.");
+	  break;
+	}
+	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
+	if (nm_read_entire_thread(Context, CURHDR) < 0) {
+	   mutt_message _("Failed to read thread, aborting.");
+	   break;
+	}
+	if (oldcount < Context->msgcount) {
+		HEADER *oldcur = CURHDR;
+
+		if ((Sort & SORT_MASK) == SORT_THREADS)
+			mutt_sort_headers (Context, 0);
+		menu->current = oldcur->virtual;
+		menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+
+		if (oldcur->collapsed || Context->collapsed) {
+			menu->current = mutt_uncollapse_thread(Context, CURHDR);
+			mutt_set_virtual(Context);
+		}
+	}
+	if (menu->menu == MENU_PAGER)
+	{
+	  op = OP_DISPLAY_MESSAGE;
+	  continue;
+	}
+	break;
+      }
+
+      case OP_MAIN_MODIFY_LABELS:
+      case OP_MAIN_MODIFY_LABELS_THEN_HIDE:
+      {
+	if (Context->magic != MUTT_NOTMUCH) {
+	  mutt_message _("No virtual folder, aborting.");
+	  break;
+	}
+	CHECK_MSGCOUNT;
+        CHECK_VISIBLE;
+	*buf = '\0';
+	if (mutt_get_field ("Add/remove labels: ", buf, sizeof (buf), MUTT_NM_TAG) || !*buf)
+	{
+          mutt_message _("No label specified, aborting.");
+          break;
+        }
+	if (tag)
+	{
+	  char msgbuf[STRING];
+	  progress_t progress;
+	  int px;
+
+	  if (!Context->quiet) {
+	    snprintf(msgbuf, sizeof (msgbuf), _("Update labels..."));
+	    mutt_progress_init(&progress, msgbuf, MUTT_PROGRESS_MSG,
+				   1, Context->tagged);
+	  }
+	  nm_longrun_init(Context, TRUE);
+	  for (px = 0, j = 0; j < Context->vcount; j++) {
+	    if (Context->hdrs[Context->v2r[j]]->tagged) {
+	      if (!Context->quiet)
+		mutt_progress_update(&progress, ++px, -1);
+	      nm_modify_message_tags(Context, Context->hdrs[Context->v2r[j]], buf);
+	      if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
+	      {
+		Context->hdrs[Context->v2r[j]]->quasi_deleted = TRUE;
+	        Context->changed = TRUE;
+	      }
+	    }
+	  }
+	  nm_longrun_done(Context);
+	  menu->redraw = REDRAW_STATUS | REDRAW_INDEX;
+	}
+	else
+	{
+	  if (nm_modify_message_tags(Context, CURHDR, buf)) {
+	    mutt_message _("Failed to modify labels, aborting.");
+	    break;
+	  }
+	  if (op == OP_MAIN_MODIFY_LABELS_THEN_HIDE)
+	  {
+	    CURHDR->quasi_deleted = TRUE;
+	    Context->changed = TRUE;
+	  }
+	  if (menu->menu == MENU_PAGER)
+	  {
+	    op = OP_DISPLAY_MESSAGE;
+	    continue;
+	  }
+	  if (option (OPTRESOLVE))
+	  {
+	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
+	    {
+	      menu->current = menu->oldcurrent;
+	      menu->redraw = REDRAW_CURRENT;
+	    }
+	    else
+	      menu->redraw = REDRAW_MOTION_RESYNCH;
+	  }
+	  else
+	    menu->redraw = REDRAW_CURRENT;
+	}
+	menu->redraw |= REDRAW_STATUS;
+	break;
+      }
+
+      case OP_MAIN_VFOLDER_FROM_QUERY:
+	buf[0] = '\0';
+        if (mutt_get_field ("Query: ", buf, sizeof (buf), MUTT_NM_QUERY) != 0 || !buf[0])
+        {
+          mutt_message _("No query, aborting.");
+          break;
+        }
+	if (!nm_uri_from_query(Context, buf, sizeof (buf)))
+	  mutt_message _("Failed to create query, aborting.");
+	else
+	  main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint);
+	break;
+
+      case OP_MAIN_CHANGE_VFOLDER:
+#endif
 #ifdef USE_SIDEBAR
       case OP_SIDEBAR_OPEN:
 #endif
@@ -1180,7 +1379,11 @@ int mutt_index_menu (void)
 
         if ((op == OP_MAIN_CHANGE_FOLDER_READONLY) || option (OPTREADONLY))
           cp = _("Open mailbox in read-only mode");
-        else
+#ifdef USE_NOTMUCH
+        else if (op == OP_MAIN_CHANGE_VFOLDER)
+	  cp = _("Open virtual folder");
+#endif
+	else
           cp = _("Open mailbox");
 
 	buf[0] = '\0';
@@ -1204,6 +1407,20 @@ int mutt_index_menu (void)
           strncpy (buf, path, sizeof (buf));
         }
 #endif
+#ifdef USE_NOTMUCH
+	else if (op == OP_MAIN_CHANGE_VFOLDER) {
+	  if (Context->magic == MUTT_NOTMUCH) {
+		  strfcpy(buf, Context->path, sizeof (buf));
+		  mutt_buffy_vfolder (buf, sizeof (buf));
+	  }
+	  mutt_enter_vfolder (cp, buf, sizeof (buf), &menu->redraw, 1);
+	  if (!buf[0])
+	  {
+            mutt_window_clearline (MuttMessageWindow, 0);
+	    break;
+	  }
+	}
+#endif
 	else
 	{
 	  mutt_buffy (buf, sizeof (buf));
@@ -1225,65 +1442,7 @@ int mutt_index_menu (void)
 	  }
 	}
 
-	mutt_expand_path (buf, sizeof (buf));
-	if (mx_get_magic (buf) <= 0)
-	{
-	  mutt_error (_("%s is not a mailbox."), buf);
-	  break;
-	}
-	mutt_str_replace (&CurrentFolder, buf);
-
-	/* keepalive failure in mutt_enter_fname may kill connection. #3028 */
-	if (Context && !Context->path)
-	  FREE (&Context);
-
-        if (Context)
-        {
-	  int check;
-
-	  mutt_str_replace (&LastFolder, Context->path);
-	  oldcount = Context ? Context->msgcount : 0;
-
-	  if ((check = mx_close_mailbox (Context, &index_hint)) != 0)
-	  {
-	    if (check == MUTT_NEW_MAIL || check == MUTT_REOPENED)
-	      update_index (menu, Context, check, oldcount, index_hint);
-
-	    set_option (OPTSEARCHINVALID);
-	    menu->redraw = REDRAW_INDEX | REDRAW_STATUS;
-	    break;
-	  }
-	  FREE (&Context);
-	}
-
-        mutt_sleep (0);
-
-	/* Set CurrentMenu to MENU_MAIN before executing any folder
-	 * hooks so that all the index menu functions are available to
-	 * the exec command.
-	 */
-
-	CurrentMenu = MENU_MAIN;
-	mutt_folder_hook (buf);
-
-	if ((Context = mx_open_mailbox (buf,
-					(option (OPTREADONLY) || op == OP_MAIN_CHANGE_FOLDER_READONLY) ?
-					MUTT_READONLY : 0, NULL)) != NULL)
-	{
-	  menu->current = ci_first_message ();
-	}
-	else
-	  menu->current = 0;
-
-#ifdef USE_SIDEBAR
-        mutt_sb_set_open_buffy ();
-#endif
-
-	mutt_clear_error ();
-	mutt_buffy_check(1); /* force the buffy check after we have changed
-			      the folder */
-	menu->redraw = REDRAW_FULL;
-	set_option (OPTSEARCHINVALID);
+	main_change_folder(menu, op, buf, sizeof (buf), &oldcount, &index_hint);
 	break;
 
       case OP_DISPLAY_MESSAGE:
@@ -2363,11 +2522,20 @@ int mutt_index_menu (void)
         mutt_reflow_windows();
 	menu->redraw = REDRAW_FULL;
 	break;
+
+      case OP_SIDEBAR_TOGGLE_VIRTUAL:
+	mutt_sb_toggle_virtual();
+	break;
 #endif
       default:
 	if (menu->menu == MENU_MAIN)
 	  km_error_key (MENU_MAIN);
     }
+
+#ifdef USE_NOTMUCH
+    if (Context)
+      nm_debug_check(Context);
+#endif
 
     if (menu->menu == MENU_PAGER)
     {

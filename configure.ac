@@ -183,6 +183,30 @@ AC_ARG_ENABLE(sidebar, AC_HELP_STRING([--enable-sidebar], [Enable Sidebar suppor
         fi
 ])
 
+AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
+AS_IF([test x$enable_notmuch = "xyes"], [
+		AC_CHECK_LIB(notmuch, notmuch_database_open,,
+			AC_MSG_ERROR([Unable to find Notmuch library]))
+		AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
+		NOTMUCH_LIBS="-lnotmuch"
+		OPS="$OPS \$(srcdir)/OPS.NOTMUCH"
+		need_notmuch="yes"
+
+		AC_MSG_CHECKING([for notmuch api version 3])
+		AC_COMPILE_IFELSE( [AC_LANG_PROGRAM(
+					[[#include <notmuch.h>]],
+					[[notmuch_database_open("/path", NOTMUCH_DATABASE_MODE_READ_ONLY, (notmuch_database_t**)NULL);]]
+					)],
+		[notmuch_api_3=yes
+			AC_DEFINE([NOTMUCH_API_3], 1, [Define to 1 if you have the notmuch api version 3.])
+			],
+		[notmuch_api_3=no]
+		)
+		AC_MSG_RESULT([$notmuch_api_3])
+])
+AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
+
+
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
    then
@@ -319,7 +343,7 @@ main ()
 AC_HEADER_STDC
 
 AC_CHECK_HEADERS(stdarg.h sys/ioctl.h ioctl.h sysexits.h)
-AC_CHECK_HEADERS(sys/time.h sys/resource.h)
+AC_CHECK_HEADERS(sys/time.h sys/resource.h sys/syscall.h)
 AC_CHECK_HEADERS(unix.h)
 
 AC_CHECK_FUNCS(setrlimit getsid)
@@ -1075,6 +1099,7 @@ AC_SUBST(MUTTLIBS)
 AC_SUBST(MUTT_LIB_OBJECTS)
 AC_SUBST(LIBIMAP)
 AC_SUBST(LIBIMAPDEPS)
+AC_SUBST(NOTMUCH_LIBS)
 
 dnl -- iconv/gettext --
 

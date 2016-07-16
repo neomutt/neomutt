@@ -48,6 +48,9 @@
 #include "remailer.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
 
 static void append_signature (FILE *f)
 {
@@ -1164,6 +1167,7 @@ ci_send_message (int flags,		/* send mode */
   char *smime_default_key = NULL;
   char *tag = NULL, *err = NULL;
   char *ctype;
+  char *finalpath = NULL;
 
   int rv = -1;
   
@@ -1647,7 +1651,9 @@ main_loop:
       mutt_prepare_envelope (msg->env, 0);
       mutt_env_to_intl (msg->env, NULL, NULL);	/* Handle bad IDNAs the next time. */
 
-      if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg, (cur && (flags & SENDREPLY)) ? cur->env->message_id : NULL, 1, fcc) < 0)
+      if (!Postponed || mutt_write_fcc (NONULL (Postponed), msg,
+	                    (cur && (flags & SENDREPLY)) ?
+			             cur->env->message_id : NULL, 1, fcc, NULL) < 0)
       {
 	msg->content = mutt_remove_multipart (msg->content);
 	decode_descriptions (msg->content);
@@ -1831,7 +1837,7 @@ full_fcc:
        * message was first postponed.
        */
       msg->received = time (NULL);
-      if (mutt_write_fcc (fcc, msg, NULL, 0, NULL) == -1)
+      if (mutt_write_fcc (fcc, msg, NULL, 0, NULL, &finalpath) == -1)
       {
 	/*
 	 * Error writing FCC, we should abort sending.
@@ -1892,6 +1898,7 @@ full_fcc:
       msg->content = mutt_remove_multipart (msg->content);
       decode_descriptions (msg->content);
       mutt_unprepare_envelope (msg->env);
+      FREE(&finalpath);
       goto main_loop;
     }
     else
@@ -1900,8 +1907,13 @@ full_fcc:
       goto cleanup;
     }
   }
-  else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
+  else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX)) {
     mutt_message (i == 0 ? _("Mail sent.") : _("Sending in background."));
+#ifdef USE_NOTMUCH
+    if (option(OPTNOTMUCHRECORD))
+      nm_record_message(ctx, finalpath, cur);
+#endif
+  }
 
   if (WithCrypto && (msg->security & ENCRYPT))
     FREE (&pgpkeylist);
@@ -1946,7 +1958,8 @@ cleanup:
   safe_fclose (&tempfp);
   if (! (flags & SENDNOFREEHEADER))
     mutt_free_header (&msg);
-  
+
+  FREE(&finalpath);
   return rv;
 }
 

@@ -79,6 +79,9 @@ void mutt_generate_boundary (PARAMETER **);
 void mutt_delete_parameter (const char *attribute, PARAMETER **p);
 void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
+#ifdef USE_NOTMUCH
+int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+#endif
 
 FILE *mutt_open_read (const char *, pid_t *);
 
@@ -286,6 +289,10 @@ int mutt_check_overwrite (const char *, const char *, char *, size_t, int *, cha
 int mutt_check_traditional_pgp (HEADER *, int *);
 int mutt_command_complete (char *, size_t, int, int);
 int mutt_var_value_complete (char *, size_t, int);
+#if USE_NOTMUCH
+int mutt_nm_query_complete (char *buffer, size_t len, int pos, int numtabs);
+int mutt_nm_tag_complete (char *buffer, size_t len, int pos, int numtabs);
+#endif
 int mutt_complete (char *, size_t);
 int mutt_compose_attachment (BODY *a);
 int mutt_copy_body (FILE *, BODY **, BODY *);
@@ -301,8 +308,10 @@ int mutt_chscmp (const char *s, const char *chs);
 int mutt_parent_message (CONTEXT *, HEADER *);
 int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
-#define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
-int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
+#define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,0)
+#define mutt_enter_vfolder(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL,MUTT_SEL_VFOLDER)
+
+int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *, int);
 int  mutt_enter_string (char *buf, size_t buflen, int col, int flags);
 int _mutt_enter_string (char *, size_t, int, int, int, char ***, int *, ENTER_STATE *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
@@ -367,7 +376,7 @@ int mutt_user_is_recipient (HEADER *);
 void mutt_update_num_postponed (void);
 int mutt_wait_filter (pid_t);
 int mutt_which_case (const char *);
-int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *);
+int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int, char *, char **);
 int mutt_write_mime_body (BODY *, FILE *);
 int mutt_write_mime_header (BODY *, FILE *);
 int mutt_write_one_header (FILE *fp, const char *tag, const char *value, const char *pfx, int wraplen, int flags);

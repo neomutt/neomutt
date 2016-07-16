@@ -42,6 +42,10 @@
 #include "imap/imap.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 static int eat_regexp (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_date (pattern_t *pat, BUFFER *, BUFFER *);
 static int eat_range (pattern_t *pat, BUFFER *, BUFFER *);
@@ -95,6 +99,9 @@ Flags[] =
   { 'x', MUTT_REFERENCE,		0,		eat_regexp },
   { 'X', MUTT_MIMEATTACH,		0,		eat_range },
   { 'y', MUTT_XLABEL,		0,		eat_regexp },
+#ifdef USE_NOTMUCH
+  { 'Y', MUTT_NOTMUCH_LABEL,	0,		eat_regexp },
+#endif
   { 'z', MUTT_SIZE,		0,		eat_range },
   { '=', MUTT_DUPLICATED,		0,		NULL },
   { '$', MUTT_UNREFERENCED,	0,		NULL },
@@ -1210,6 +1217,13 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
      return (pat->not ^ ((h->security & APPLICATION_PGP) && (h->security & PGPKEY)));
     case MUTT_XLABEL:
       return (pat->not ^ (h->env->x_label && patmatch (pat, h->env->x_label) == 0));
+#ifdef USE_NOTMUCH
+    case MUTT_NOTMUCH_LABEL:
+      {
+      char *tags = nm_header_get_tags(h);
+      return (pat->not ^ (tags && patmatch (pat, tags) == 0));
+      }
+#endif
     case MUTT_HORMEL:
       return (pat->not ^ (h->env->spam && h->env->spam->data && patmatch (pat, h->env->spam->data) == 0));
     case MUTT_DUPLICATED:

@@ -30,6 +30,24 @@
 
 char* SearchBuffers[MENU_MAX];
 
+#if 0 /* MERGE with "index-color" patch */
+static int
+get_color (int index, unsigned char *s)
+{
+#ifdef USE_NOTMUCH
+                case MT_COLOR_INDEX_TAG:
+                        for (color = ColorIndexTagList; color; color = color->next)
+                        {
+				const char * transform = hash_find(TagTransforms, color->pattern);
+				if (transform && (strncmp((const char *)(s+1),
+				    transform, strlen(transform)) == 0))
+					return color->pair;
+                        }
+                        return 0;
+#endif
+}
+#endif
+
 static void print_enriched_string (int attr, unsigned char *s, int do_color)
 {
   wchar_t wc;

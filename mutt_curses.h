@@ -131,6 +131,10 @@ enum
   MT_COLOR_SB_INDICATOR,
   MT_COLOR_SB_SPOOLFILE,
 #endif
+#ifdef USE_NOTMUCH
+  MT_COLOR_INDEX_TAG,
+  MT_COLOR_INDEX_TAGS,
+#endif
   MT_COLOR_MAX
 };
 
@@ -213,6 +217,10 @@ extern int ColorDefs[];
 extern COLOR_LINE *ColorHdrList;
 extern COLOR_LINE *ColorBodyList;
 extern COLOR_LINE *ColorIndexList;
+
+#ifdef USE_NOTMUCH
+extern COLOR_LINE *ColorIndexTagList;
+#endif
 
 void ci_init_color (void);
 void ci_start_color (void);

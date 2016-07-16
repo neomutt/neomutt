@@ -88,6 +88,10 @@
 #define  MUTT_CLEAR   (1<<5) /* clear input if printable character is pressed */
 #define  MUTT_COMMAND (1<<6) /* do command completion */
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
+#if USE_NOTMUCH
+#define  MUTT_NM_QUERY (1<<8) /* Notmuch query mode. */
+#define  MUTT_NM_TAG   (1<<9) /* Notmuch tag +/- mode. */
+#endif
 
 /* flags for mutt_get_token() */
 #define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
@@ -225,6 +229,9 @@ enum
   MUTT_CRYPT_ENCRYPT,
   MUTT_PGP_KEY,
   MUTT_XLABEL,
+#ifdef USE_NOTMUCH
+  MUTT_NOTMUCH_LABEL,
+#endif
   MUTT_MIMEATTACH,
   
   /* Options for Mailcap lookup */
@@ -308,6 +315,7 @@ enum
 #define MUTT_SEL_BUFFY  (1<<0)
 #define MUTT_SEL_MULTI  (1<<1)
 #define MUTT_SEL_FOLDER (1<<2)
+#define MUTT_SEL_VFOLDER	(1<<3)
 
 /* flags for parse_spam_list */
 #define MUTT_SPAM          1
@@ -531,6 +539,11 @@ enum
   OPTDONTHANDLEPGPKEYS,	/* (pseudo) used to extract PGP keys */
   OPTIGNOREMACROEVENTS, /* (pseudo) don't process macro/push/exec events while set */
 
+#ifdef USE_NOTMUCH
+  OPTVIRTSPOOLFILE,
+  OPTNOTMUCHRECORD,
+#endif
+
   OPTMAX
 };
 
@@ -731,6 +744,7 @@ typedef struct header
   unsigned int tagged : 1;
   unsigned int deleted : 1;
   unsigned int purge : 1;               /* skip trash folder when deleting */
+  unsigned int quasi_deleted : 1;	/* deleted from mutt, but not modified on disk */
   unsigned int changed : 1;
   unsigned int attach_del : 1; 		/* has an attachment marked for deletion */
   unsigned int old : 1;
@@ -795,8 +809,9 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP
+#if defined USE_POP || defined USE_IMAP || defined USE_NOTMUCH
   void *data;            	/* driver-specific data */
+  void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif
   
   char *maildir_flags;		/* unknown maildir flags */

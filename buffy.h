@@ -28,6 +28,7 @@ typedef struct buffy_t
   char path[_POSIX_PATH_MAX];
   char realpath[_POSIX_PATH_MAX]; /* used for duplicate detection, context comparison,
                                      and the sidebar */
+  char *desc;
   off_t size;
   struct buffy_t *next;
   short new;			/* mailbox has new mail */
@@ -48,6 +49,11 @@ BUFFY;
 WHERE BUFFY *Incoming INITVAL (0);
 WHERE short BuffyTimeout INITVAL (3);
 WHERE short BuffyCheckStatsInterval INITVAL (60);
+
+#ifdef USE_NOTMUCH
+WHERE BUFFY *VirtIncoming INITVAL (0);
+void mutt_buffy_vfolder (char *s, size_t slen);
+#endif
 
 extern time_t BuffyDoneTime;	/* last time we knew for sure how much mail there was */
 

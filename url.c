@@ -40,12 +40,15 @@ static const struct mapping_t UrlMap[] =
   { "pop",  	U_POP },
   { "pops", 	U_POPS },
   { "mailto",	U_MAILTO },
+#ifdef USE_NOTMUCH
+  { "notmuch",  U_NOTMUCH },
+#endif
   { "smtp",     U_SMTP },
   { "smtps",    U_SMTPS },
   { NULL,	U_UNKNOWN }
 };
 
-static int url_pct_decode (char *s)
+int url_pct_decode (char *s)
 {
   char *d;
 
