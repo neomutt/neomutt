@@ -84,6 +84,8 @@ static int getnameinfo_err(int ret)
 
 static sasl_callback_t mutt_sasl_callbacks[5];
 
+static sasl_secret_t *secret_ptr = NULL;
+
 static int mutt_sasl_start (void);
 
 /* callbacks */
@@ -445,9 +447,10 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
 
   len = strlen (account->pass);
 
-  *psecret = (sasl_secret_t*) safe_malloc (sizeof (sasl_secret_t) + len);
-  (*psecret)->len = len;
-  strcpy ((char*)(*psecret)->data, account->pass);	/* __STRCPY_CHECKED__ */
+  safe_realloc (&secret_ptr, sizeof (sasl_secret_t) + len);
+  memcpy ((char *) secret_ptr->data, account->pass, (size_t) len);
+  secret_ptr->len = len;
+  *psecret = secret_ptr;
 
   return SASL_OK;
 }
