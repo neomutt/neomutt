@@ -574,12 +574,12 @@ int mutt_index_menu (void)
 	  mutt_message _("New mail in this mailbox.");
 	  if (option (OPTBEEPNEW))
 	    beep ();
-    if (NewMailCmd)
-    {
-      char cmd[LONG_STRING];
-      menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
-      mutt_system(cmd);
-    }
+	  if (NewMailCmd)
+	  {
+	    char cmd[LONG_STRING];
+	    menu_status_line(cmd, sizeof(cmd), menu, NONULL(NewMailCmd));
+	    mutt_system(cmd);
+	  }
 	} else if (check == M_FLAGS)
 	  mutt_message _("Mailbox was externally modified.");
 
