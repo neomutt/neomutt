@@ -1,13 +1,13 @@
-new-mail-command Patch
-======================
+new-mail Patch
+==============
 
-    Configure a custom command to be executed when a new email is received.
+    Execute a command upon the receipt of new mail.
 
 Patch
 -----
 
-    To check if Mutt supports "new-mail-command", look for
-    "new-mail" in the mutt version.
+    To check if Mutt supports "new-mail", look for "patch-new-mail" in the mutt
+    version.
 
     Dependencies
     * mutt-1.6.2
@@ -15,34 +15,48 @@ Patch
 Introduction
 ------------
 
-    This patch enables the new_mail_command setting, which can be used to execute a custom script (e.g., a notification handler) upon receiving a new mail. 
+    This patch enables the new_mail_command setting, which can be used to
+    execute a custom script (e.g., a notification handler) upon receiving a new
+    mail.
 
-    For example in Linux you can use (most distributions already provide notify-send):
+    The command string can contain expandos, such as '%f' for the folder name.
+    For a complete list, see: $status_format.
 
-```
-    set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &" 
-```
+    For example in Linux you can use (most distributions already provide
+    notify-send):
 
-    And in OS X you will need to install a command line interface for Notification Center, for example [terminal-notifier](https://github.com/julienXX/terminal-notifier):
+        set new_mail_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &"
 
-```
-    set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
-```
-    
+    And in OS X you will need to install a command line interface for
+    Notification Center, for example: terminal-notifier https://github.com/julienXX/terminal-notifier
+
+        set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+
+Variables
+---------
+
+    | Name               | Type   | Default |
+    |--------------------|--------|---------|
+    | 'new_mail_command' | string | (empty) |
+
 See Also
 --------
 
     * NeoMutt project
+    * folder-hook
 
 Known Bugs
 ----------
 
-    * Notifies about spurious *new* e-mail when an email is saved, see [#20](https://github.com/neomutt/neomutt/issues/20).
-    * Will not notify about new e-mail if the pager is open, see [#19](https://github.com/neomutt/neomutt/issues/19)
+    * Notifies about spurious new email when an email is saved, see Issue #20
+          https://github.com/neomutt/neomutt/issues/20
+    * Will not notify about new e-mail if the pager is open, see Issue #19
+          https://github.com/neomutt/neomutt/issues/19
 
 Credits
 -------
 
-    * Santiago Torres-Arias <santiago@nyu.edu>
     * Yoshiki Vazquez-Baeza <yoshiki@ucsd.edu>
-    * Richard Russon <rich@flatcap.org> 
+    * Santiago Torres-Arias <santiago@nyu.edu>
+    * Richard Russon <rich@flatcap.org>
+

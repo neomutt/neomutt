@@ -6048,7 +6048,7 @@ New mail for Maildir is assumed if there is one message in the
 mailbox is considered having new mail if there's at least one message in
 the <quote>unseen</quote> sequence as specified by <link
 linkend="mh-seq-unseen">$mh_seq_unseen</link>. Optionally, <link
-linkend="new_mail_command">$new_mail_command</link> can be configured to
+linkend="new-mail-command">$new_mail_command</link> can be configured to
 execute an external program every time new mail is detected in the current
 inbox.
 </para>
@@ -7470,6 +7470,16 @@ would contain:
 
 </sect2>
 
+<sect2 id="mutt-patches">
+<title>Mutt Patches</title>
+<para>
+Mutt may also be <quote>patched</quote> to support smaller features.
+These patches should add a free-form string to the end Mutt's version string.
+Running <literal>mutt -v</literal> might show:
+<screen>patch-1.6.2.sidebar.20160709</screen>
+</para>
+</sect2>
+
 <sect2 id="url-syntax">
 <title>URL Syntax</title>
 
@@ -8084,132 +8094,146 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
-<sect1 id="new-mail-command-patch">
-        <title>New Mail Command Patch</title>
-        <subtitle>Execute a command upon the reception of a new e-mail.</subtitle>
+<sect1 id="new-mail-hook">
+  <title>new-mail Patch</title>
+  <subtitle>Execute a command upon the receipt of new mail.</subtitle>
 
-        <sect2 id="new-mail-command-patch2">
-                <title>Patch</title>
+  <sect2 id="new-mail-patch">
+    <title>Patch</title>
 
-                <para>
-                    To check if Mutt supports <quote>new_mail_command</quote>, look for
-                    <quote>patch-new-mail</quote> in the mutt version.
-                    See: <xref linkend="mutt-patches"/>.
-                </para>
+    <para>
+      To check if Mutt supports <quote>new-mail</quote>, look for
+      <quote>patch-new-mail</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-                <itemizedlist>
-                        <title>Dependencies:</title>
-                        <listitem><para>mutt-1.6.1</para></listitem>
-                </itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-                <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-        </sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-        <sect2 id="new-mail-command-intro">
-                <title>Introduction</title>
+  <sect2 id="new-mail-intro">
+    <title>Introduction</title>
 
-                <para>
-                    When running mutt, you may want to receive an alert
-                    whenever there's new e-mail present in your mailbox,
-                    <literal>&lt;new-mail-command&gt;</literal> let's you
-                    specify what command you want to execute when this happens.
-                    By default no command is executed.
-                </para>
-        </sect2>
+    <para>
+      This patch enables the new_mail_command setting, which can be used to
+      execute a custom script (e.g., a notification handler) upon receiving a
+      new mail.
+    </para>
 
-        <sect2 id="new-mail-command-variables">
-                <title>Variables</title>
-                <table id="table-new-mail-command-variables">
-                        <title>New Mail Command Variables</title>
-                        <tgroup cols="3">
-                                <thead>
-                                        <row>
-                                            <entry>Name</entry>
-                                            <entry>Type</entry>
-                                            <entry>Default</entry>
-                                        </row>
-                                </thead>
-                                <tbody>
-                                        <row>
-                                            <entry><literal>new_mail_command</literal></entry>
-                                            <entry>string</entry>
-                                            <entry>''</entry>
-                                        </row>
-                                </tbody>
-                        </tgroup>
-                </table>
-        </sect2>
+    <para>
+      The command string can contain expandos, such as <literal>%f</literal>
+      for the folder name.  For a complete list, see:
+      <link linkend="status-format">$status_format</link>.
+    </para>
 
-<!--
-        <sect2 id="skip-quoted-functions">
-                <title>Functions</title>
-                <para>None</para>
-        </sect2>
+    <para>
+      For example in Linux you can use (most distributions already provide notify-send):
+    </para>
 
-        <sect2 id="skip-quoted-commands">
-                <title>Commands</title>
-                <para>None</para>
-        </sect2>
+<screen>
+set new_mail_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"
+</screen>
 
-        <sect2 id="skip-quoted-colors">
-                <title>Colors</title>
-                <para>None</para>
-        </sect2>
+    <para>
+      And in OS X you will need to install a command line interface for
+      Notification Center, for example
+      <ulink url="https://github.com/julienXX/terminal-notifier">terminal-notifier</ulink>:
+    </para>
 
-        <sect2 id="skip-quoted-sort">
-                <title>Sort</title>
-                <para>None</para>
-        </sect2>
--->
+<screen>
+set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+</screen>
 
-        <sect2 id="skip-quoted-muttrc">
-            <title>Muttrc</title>
+  </sect2>
 
-        </sect2>
+  <sect2 id="new-mail-variables">
+    <title>Variables</title>
 
+    <table id="table-new-mail-variables">
+      <title>New Mail Command Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>new_mail_command</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="new-mail-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'new-mail-command' patch.
  
-# In most Linux distributions, you can already find the notify-send command so
-# you can set the following</emphasis>
-set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &"
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
  
-<emphasis role="comment"># Alternatively in OS X you will need to install a command line interface for Notification Center, for example
-# <ulink url="https://github.com/julienXX/terminal-notifier">terminal-notifier</ulink>
-set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
-</emphasis>
+# Set the command you want mutt to execute upon the receipt of a new email</emphasis>
+set new_mail_command = ""
+ 
+<emphasis role="comment"># Linux example:
+# set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"
+ 
+# OS X example:
+# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+# --------------------------------------------------------------------------
+
+# vim: syntax=muttrc</emphasis>
 </screen>
+  </sect2>
 
-        <sect2 id="skip-quoted-see-also">
-                <title>See Also</title>
+  <sect2 id="new-mail-see-also">
+    <title>See Also</title>
 
-                <itemizedlist>
-                        <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-                </itemizedlist>
-        </sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-        <sect2 id="skip-quoted-known-bugs">
-                <title>Known Bugs</title>
+  <sect2 id="new-mail-known-bugs">
+    <title>Known Bugs</title>
+    <itemizedlist>
+      <listitem>
+        <para>
+          Notifies about spurious <emphasis role="bold">new email</emphasis>
+          when an email is saved, see
+          <ulink url="https://github.com/neomutt/neomutt/issues/20">Issue #20</ulink>
+        </para>
+    </listitem>
+    <listitem>
+      <para>
+        Will not notify about new e-mail if the pager is open, see
+        <ulink url="https://github.com/neomutt/neomutt/issues/19">Issue #19</ulink>
+      </para>
+    </listitem>
+    </itemizedlist>
+  </sect2>
 
-            <itemizedlist>
-
-           <listitem><para>Notifies about spurious *new* e-mail when an email is saved, see <ulink url="https://github.com/neomutt/neomutt/issues/20">#20</ulink></para></listitem>
-           <listitem><para>Will not notify about new e-mail if the pager is open, see  <ulink url="https://github.com/neomutt/neomutt/issues/19">#19</ulink></para></listitem>
-
-           </itemizedlist>
-
-        </sect2>
-
-        <sect2 id="skip-quoted-credits">
-                <title>Credits</title>
-                <itemizedlist>
-                <listitem><para>Yoshiki Vazquez-Baeza <email>yoshiki@ucsd.edu</email></para></listitem>
-                <listitem><para>Santiago Torres-Arias <email>santiago@nyu.edu</email></para></listitem>
-                <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-                </itemizedlist>
-        </sect2>
+  <sect2 id="new-mail-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Yoshiki Vazquez-Baeza <email>yoshiki@ucsd.edu</email></para></listitem>
+    <listitem><para>Santiago Torres-Arias <email>santiago@nyu.edu</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 </chapter>
