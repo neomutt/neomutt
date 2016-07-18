@@ -178,6 +178,7 @@ static HEADER *select_msg (void)
     {
       case OP_DELETE:
       case OP_UNDELETE:
+        /* should deleted draft messages be saved in the trash folder? */
 	mutt_set_flag (PostContext, PostContext->hdrs[menu->current], MUTT_DELETE, (i == OP_DELETE) ? 1 : 0);
 	PostCount = PostContext->msgcount - PostContext->deleted;
 	if (option (OPTRESOLVE) && menu->current < menu->max - 1)
@@ -276,6 +277,7 @@ int mutt_get_postponed (CONTEXT *ctx, HEADER *hdr, HEADER **cur, char *fcc, size
 
   /* finished with this message, so delete it. */
   mutt_set_flag (PostContext, h, MUTT_DELETE, 1);
+  mutt_set_flag (PostContext, h, MUTT_PURGE, 1);
 
   /* update the count for the status display */
   PostCount = PostContext->msgcount - PostContext->deleted;

@@ -2743,6 +2743,7 @@ search_next:
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot undelete message"));
 
 	mutt_set_flag (Context, extra->hdr, MUTT_DELETE, 0);
+	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;
 	if (option (OPTRESOLVE))
 	{
@@ -2760,7 +2761,9 @@ search_next:
 
 	r = mutt_thread_set_flag (extra->hdr, MUTT_DELETE, 0,
 				  ch == OP_UNDELETE_THREAD ? 0 : 1);
-
+	if (r != -1)
+          r = mutt_thread_set_flag (extra->hdr, MUTT_PURGE, 0,
+                                    ch == OP_UNDELETE_THREAD ? 0 : 1);
 	if (r != -1)
 	{
 	  if (option (OPTRESOLVE))

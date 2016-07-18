@@ -3553,6 +3553,16 @@ struct option_t MuttVars[] = {
   ** by \fIyou\fP.  The sixth character is used to indicate when a mail
   ** was sent to a mailing-list you subscribe to.
   */
+  { "trash",		DT_PATH, R_NONE, UL &TrashPath, 0 },
+  /*
+  ** .pp
+  ** If set, this variable specifies the path of the trash folder where the
+  ** mails marked for deletion will be moved, instead of being irremediably
+  ** purged.
+  ** .pp
+  ** NOTE: When you delete a message in the trash folder, it is really
+  ** deleted, so that you have a way to clean the trash.
+  */
   {"ts_icon_format",	DT_STR,  R_BOTH, UL &TSIconFormat, UL "M%?n?AIL&ail?"},
   /*
   ** .pp

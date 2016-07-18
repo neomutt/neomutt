@@ -2273,11 +2273,13 @@ int mutt_index_menu (void)
 	if (tag)
 	{
 	  mutt_tag_set_flag (MUTT_DELETE, 0);
+	  mutt_tag_set_flag (MUTT_PURGE, 0);
 	  menu->redraw = REDRAW_INDEX;
 	}
 	else
 	{
 	  mutt_set_flag (Context, CURHDR, MUTT_DELETE, 0);
+	  mutt_set_flag (Context, CURHDR, MUTT_PURGE, 0);
 	  if (option (OPTRESOLVE) && menu->current < Context->vcount - 1)
 	  {
 	    menu->current++;
@@ -2300,7 +2302,9 @@ int mutt_index_menu (void)
 
 	rc = mutt_thread_set_flag (CURHDR, MUTT_DELETE, 0,
 				   op == OP_UNDELETE_THREAD ? 0 : 1);
-
+        if (rc != -1)
+          rc = mutt_thread_set_flag (CURHDR, MUTT_PURGE, 0,
+                                     op == OP_UNDELETE_THREAD ? 0 : 1);
 	if (rc != -1)
 	{
 	  if (option (OPTRESOLVE))

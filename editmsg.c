@@ -200,6 +200,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   if (rc == 0)
   {
     mutt_set_flag (Context, cur, MUTT_DELETE, 1);
+    mutt_set_flag (Context, cur, MUTT_PURGE, 1);
     mutt_set_flag (Context, cur, MUTT_READ, 1);
 
     if (option (OPTDELETEUNTAG))

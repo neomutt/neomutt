@@ -1265,6 +1265,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	  mutt_set_flag (ctx, ctx->hdrs[i], MUTT_READ, old_hdrs[j]->read);
 	}
 	mutt_set_flag (ctx, ctx->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
+	mutt_set_flag (ctx, ctx->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
 	mutt_set_flag (ctx, ctx->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
 
 	/* we don't need this header any more */

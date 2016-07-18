@@ -717,6 +717,7 @@ int _mutt_save_message (HEADER *h, CONTEXT *ctx, int delete, int decode, int dec
   if (delete)
   {
     mutt_set_flag (Context, h, MUTT_DELETE, 1);
+    mutt_set_flag (Context, h, MUTT_PURGE, 1);
     if (option (OPTDELETEUNTAG))
       mutt_set_flag (Context, h, MUTT_TAG, 0);
   }

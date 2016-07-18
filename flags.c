@@ -87,6 +87,20 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
+    case MUTT_PURGE:
+
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_DELETE))
+        return;
+
+      if (bf)
+      {
+        if (!h->purge && !ctx->readonly)
+          h->purge = 1;
+      }
+      else if (h->purge)
+        h->purge = 0;
+      break;
+
     case MUTT_NEW:
 
       if (!mutt_bit_isset(ctx->rights,MUTT_ACL_SEEN))
@@ -345,6 +359,13 @@ int mutt_change_flag (HEADER *h, int bf)
   {
     case 'd':
     case 'D':
+      if (!bf)
+      {
+        if (h)
+          mutt_set_flag (Context, h, MUTT_PURGE, bf);
+        else
+          mutt_tag_set_flag (MUTT_PURGE, bf);
+      }
       flag = MUTT_DELETE;
       break;
 
