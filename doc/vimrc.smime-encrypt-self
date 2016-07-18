@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt smime-encrypt-self patch
+
+syntax keyword muttrcVarQuad    contained skipwhite muttrcVarQuad
+
+" vim: syntax=vim
