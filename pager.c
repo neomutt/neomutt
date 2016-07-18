@@ -2406,6 +2406,7 @@ search_next:
 	MAYBE_REDRAW (redraw);
 	break;
 
+      case OP_PURGE_MESSAGE:
       case OP_DELETE:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
@@ -2413,6 +2414,7 @@ search_next:
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message"));
 
 	mutt_set_flag (Context, extra->hdr, MUTT_DELETE, 1);
+	mutt_set_flag (Context, extra->hdr, MUTT_PURGE, (ch == OP_PURGE_MESSAGE));
         if (option (OPTDELETEUNTAG))
 	  mutt_set_flag (Context, extra->hdr, MUTT_TAG, 0);
 	redraw = REDRAW_STATUS | REDRAW_INDEX;

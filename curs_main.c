@@ -1950,6 +1950,7 @@ int mutt_index_menu (void)
 	MAYBE_REDRAW (menu->redraw);
 	break;
 
+      case OP_PURGE_MESSAGE:
       case OP_DELETE:
 
 	CHECK_MSGCOUNT;
@@ -1961,6 +1962,7 @@ int mutt_index_menu (void)
 	if (tag)
 	{
 	  mutt_tag_set_flag (MUTT_DELETE, 1);
+          mutt_tag_set_flag (MUTT_PURGE, (op == OP_PURGE_MESSAGE));
 	  if (option (OPTDELETEUNTAG))
 	    mutt_tag_set_flag (MUTT_TAG, 0);
 	  menu->redraw = REDRAW_INDEX;
@@ -1968,6 +1970,7 @@ int mutt_index_menu (void)
 	else
 	{
 	  mutt_set_flag (Context, CURHDR, MUTT_DELETE, 1);
+	  mutt_set_flag (Context, CURHDR, MUTT_PURGE, (op == OP_PURGE_MESSAGE));
 	  if (option (OPTDELETEUNTAG))
 	    mutt_set_flag (Context, CURHDR, MUTT_TAG, 0);
 	  if (option (OPTRESOLVE))
