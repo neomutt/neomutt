@@ -832,6 +832,14 @@ static int trash_append (CONTEXT *ctx)
       && stc.st_dev == st.st_dev && stc.st_rdev == st.st_rdev)
     return 0;  /* we are in the trash folder: simple sync */
 
+#ifdef USE_IMAP
+  if (Context->magic == MUTT_IMAP && mx_is_imap (TrashPath))
+  {
+    if (!imap_fast_trash (Context, TrashPath))
+      return 0;
+  }
+#endif
+
   if ((ctx_trash = mx_open_mailbox (TrashPath, MUTT_APPEND, NULL)) != NULL)
   {
     /* continue from initial scan above */

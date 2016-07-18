@@ -189,6 +189,7 @@ enum
   MUTT_LIMIT,
   MUTT_EXPIRED,
   MUTT_SUPERSEDED,
+  MUTT_TRASH,
 
   /* actions for mutt_pattern_comp/mutt_pattern_exec */
   MUTT_AND,
