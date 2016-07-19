@@ -273,6 +273,7 @@ static const char *
 hdr_format_str (char *dest,
 		size_t destlen,
 		size_t col,
+                int cols,
 		char op,
 		const char *src,
 		const char *prefix,
@@ -958,9 +959,9 @@ hdr_format_str (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, hdr_format_str, (unsigned long) hfi, flags);
+    mutt_FormatString (dest, destlen, col, cols, ifstring, hdr_format_str, (unsigned long) hfi, flags);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, hdr_format_str, (unsigned long) hfi, flags);
+    mutt_FormatString (dest, destlen, col, cols, elsestring, hdr_format_str, (unsigned long) hfi, flags);
 
   return (src);
 #undef THREAD_NEW
@@ -976,11 +977,11 @@ _mutt_make_string (char *dest, size_t destlen, const char *s, CONTEXT *ctx, HEAD
   hfi.ctx = ctx;
   hfi.pager_progress = 0;
 
-  mutt_FormatString (dest, destlen, 0, s, hdr_format_str, (unsigned long) &hfi, flags);
+  mutt_FormatString (dest, destlen, 0, COLS - SidebarWidth, s, hdr_format_str, (unsigned long) &hfi, flags);
 }
 
 void
 mutt_make_string_info (char *dst, size_t dstlen, const char *s, struct hdr_format_info *hfi, format_flag flags)
 {
-  mutt_FormatString (dst, dstlen, 0, s, hdr_format_str, (unsigned long) hfi, flags);
+  mutt_FormatString (dst, dstlen, 0, COLS - SidebarWidth, s, hdr_format_str, (unsigned long) hfi, flags);
 }

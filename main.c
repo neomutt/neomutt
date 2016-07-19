@@ -572,11 +572,7 @@ init_extended_keys();
 
 int main (int argc, char **argv)
 {
-#ifdef USE_SIDEBAR
-  char folder[PATH_MAX] = "";
-#else
   char folder[_POSIX_PATH_MAX] = "";
-#endif
   char *subject = NULL;
   char *includeFile = NULL;
   char *draftFile = NULL;
@@ -848,7 +844,7 @@ int main (int argc, char **argv)
     mutt_error = mutt_curses_error;
     mutt_message = mutt_curses_message;
 #ifdef USE_SIDEBAR
-    sb_init();
+    mutt_sb_init();
 #endif
   }
 
@@ -1206,15 +1202,6 @@ int main (int argc, char **argv)
       strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
     mutt_expand_path (folder, sizeof (folder));
 
-#ifdef USE_SIDEBAR
-    {
-      char tmpfolder[PATH_MAX] = "";
-      strfcpy (tmpfolder, folder, sizeof (tmpfolder));
-      if (!realpath (tmpfolder, folder))
-        strfcpy (folder, tmpfolder, sizeof (tmpfolder));
-    }
-#endif
-
     mutt_str_replace (&CurrentFolder, folder);
     mutt_str_replace (&LastFolder, folder);
 
@@ -1238,7 +1225,7 @@ int main (int argc, char **argv)
        || !explicit_folder)
     {
 #ifdef USE_SIDEBAR
-      sb_set_open_buffy (folder);
+      mutt_sb_set_open_buffy ();
 #endif
       mutt_index_menu ();
       if (Context)

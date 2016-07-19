@@ -1099,9 +1099,6 @@ static int format_line (struct line_t **lineInfo, int n, unsigned char *buf,
   wchar_t wc;
   mbstate_t mbstate;
   int wrap_cols = mutt_term_width ((flags & M_PAGER_NOWRAP) ? 0 : Wrap);
-#ifdef USE_SIDEBAR
-  wrap_cols -= SidebarWidth;
-#endif
 
   if (check_attachment_marker ((char *)buf) == 0)
     wrap_cols = COLS;
@@ -1497,7 +1494,7 @@ display_line (FILE *f, LOFF_T *last_pos, struct line_t **lineInfo, int n,
    * a newline (grr!).
    */
 #ifndef USE_SLANG_CURSES
-    if (col < COLS)
+    if (col < (COLS - SidebarWidth))
 #endif
       addch ('\n');
 
@@ -1733,6 +1730,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
 
       redraw |= REDRAW_BODY | REDRAW_INDEX | REDRAW_STATUS;
+#ifdef USE_SIDEBAR
+      redraw |= REDRAW_SIDEBAR;
+#endif
       mutt_show_error ();
     }
 
@@ -1750,6 +1750,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	    break;
 	}
     }
+
+#ifdef USE_SIDEBAR
+    if ((redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
+    {
+      SidebarNeedsRedraw = 0;
+      mutt_sb_draw ();
+    }
+#endif
 
     if ((redraw & REDRAW_BODY) || topline != oldtopline)
     {
@@ -1861,7 +1869,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
        * flags for this message might have changed. */
       menu_redraw_current (index);
 #ifdef USE_SIDEBAR
-      sb_draw();
+      mutt_sb_draw();
 #endif
 
       /* print out the index status bar */
@@ -1877,7 +1885,7 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 #ifdef USE_SIDEBAR
     /* if we're not using the index, update every time */
     if (index == 0)
-      sb_draw();
+      mutt_sb_draw();
 #endif
 
     redraw = 0;
@@ -2827,7 +2835,7 @@ search_next:
       case OP_SIDEBAR_PAGE_UP:
       case OP_SIDEBAR_PREV:
       case OP_SIDEBAR_PREV_NEW:
-	sb_change_mailbox (ch);
+	mutt_sb_change_mailbox (ch);
 	break;
 
       case OP_SIDEBAR_TOGGLE_VISIBLE:

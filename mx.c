@@ -626,6 +626,8 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     ctx = safe_malloc (sizeof (CONTEXT));
   memset (ctx, 0, sizeof (CONTEXT));
   ctx->path = safe_strdup (path);
+  if (! (ctx->realpath = realpath (ctx->path, NULL)) )
+    ctx->realpath = safe_strdup (ctx->path);
 
   ctx->msgnotreadyet = -1;
   ctx->collapsed = 0;
@@ -637,10 +639,8 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     ctx->quiet = 1;
   if (flags & M_READONLY)
     ctx->readonly = 1;
-#ifdef USE_SIDEBAR
   if (flags & M_PEEK)
     ctx->peekonly = 1;
-#endif
 
   if (flags & (M_APPEND|M_NEWFOLDER))
   {
@@ -746,26 +746,22 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
 void mx_fastclose_mailbox (CONTEXT *ctx)
 {
   int i;
+  struct utimbuf ut;
 
   if(!ctx) 
     return;
 
-#ifdef USE_SIDEBAR
   /* fix up the times so buffy won't get confused */
-  struct utimbuf ut;
   if (ctx->peekonly && ctx->path && (ctx->mtime > ctx->atime)) {
     ut.actime  = ctx->atime;
     ut.modtime = ctx->mtime;
     utime (ctx->path, &ut);
   }
-#endif
 
   /* never announce that a mailbox we've just left has new mail. #3290
    * XXX: really belongs in mx_close_mailbox, but this is a nice hook point */
-#ifdef USE_SIDEBAR
   if (!ctx->peekonly)
-#endif
-  mutt_buffy_setnotified(ctx->path);
+    mutt_buffy_setnotified(ctx->path);
 
   if (ctx->mx_close)
     ctx->mx_close (ctx);
@@ -777,13 +773,10 @@ void mx_fastclose_mailbox (CONTEXT *ctx)
   mutt_clear_threads (ctx);
   for (i = 0; i < ctx->msgcount; i++)
     mutt_free_header (&ctx->hdrs[i]);
-#ifdef USE_SIDEBAR
-  ctx->msgcount -= ctx->deleted;
-  sb_set_buffystats (ctx);
-#endif
   FREE (&ctx->hdrs);
   FREE (&ctx->v2r);
   FREE (&ctx->path);
+  FREE (&ctx->realpath);
   FREE (&ctx->pattern);
   if (ctx->limit_pattern) 
     mutt_pattern_free (&ctx->limit_pattern);
@@ -1055,6 +1048,11 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
       (ctx->magic == M_MMDF || ctx->magic == M_MBOX) &&
       !mutt_is_spool(ctx->path) && !option (OPTSAVEEMPTY))
     mx_unlink_empty (ctx->path);
+
+#ifdef USE_SIDEBAR
+  ctx->msgcount -= ctx->deleted;
+  mutt_sb_set_buffystats (ctx);
+#endif
 
   mx_fastclose_mailbox (ctx);
 

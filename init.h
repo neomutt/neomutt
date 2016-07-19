@@ -62,6 +62,8 @@
 #define R_RESORT_SUB	(1<<3)	/* resort subthreads */
 #define R_RESORT_INIT	(1<<4)  /* resort from scratch */
 #define R_TREE		(1<<5)  /* redraw the thread tree */
+#define R_REFLOW        (1<<6)  /* reflow window layout */
+#define R_SIDEBAR       (1<<7)  /* redraw the sidebar */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
 
@@ -1413,6 +1415,22 @@ struct option_t MuttVars[] = {
   ** When \fI$$mark_old\fP is set, Mutt does not consider the mailbox to contain new
   ** mail if only old messages exist.
   */
+  { "mail_check_stats", DT_BOOL, R_NONE, OPTMAILCHECKSTATS, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt will periodically calculate message
+  ** statistics of a mailbox while polling for new mail.  It will
+  ** check for unread, flagged, and total message counts.  Because
+  ** this operation is more performance intensive, it defaults to
+  ** \fIunset\fP, and has a separate option, $$mail_check_stats_interval, to
+  ** control how often to update these counts.
+  */
+  { "mail_check_stats_interval", DT_NUM, R_NONE, UL &BuffyCheckStatsInterval, 60 },
+  /*
+  ** .pp
+  ** When $$mail_check_stats is \fIset\fP, this variable configures
+  ** how often (in seconds) mutt will update message counts.
+  */
   { "mailcap_path",	DT_STR,	 R_NONE, UL &MailcapPath, 0 },
   /*
   ** .pp
@@ -2726,16 +2744,14 @@ struct option_t MuttVars[] = {
   ** shell from \fC/etc/passwd\fP is used.
   */
 #ifdef USE_SIDEBAR
-  { "sidebar_divider_char", DT_STR, R_BOTH, UL &SidebarDividerChar, UL "|" },
+  { "sidebar_divider_char", DT_STR, R_SIDEBAR, UL &SidebarDividerChar, UL "|" },
   /*
   ** .pp
-  ** This specifies the character to be drawn between the sidebar (when
+  ** This specifies the characters to be drawn between the sidebar (when
   ** visible) and the other Mutt panels. ASCII and Unicode line-drawing
   ** characters are supported.
-  ** .pp
-  ** \fBNote:\fP Only the first character of sidebar_divider_char is used.
   */
-  { "sidebar_delim_chars", DT_STR, R_NONE, UL &SidebarDelimChars, UL "/." },
+  { "sidebar_delim_chars", DT_STR, R_SIDEBAR, UL &SidebarDelimChars, UL "/." },
   /*
   ** .pp
   ** This contains the list of characters which you would like to treat
@@ -2745,6 +2761,7 @@ struct option_t MuttVars[] = {
   ** .ts
   ** set sidebar_delim_chars='/'
   ** .te
+  ** .pp
   ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
   ** .ts
   ** set sidebar_delim_chars='.'
@@ -2752,14 +2769,14 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_indent_string.
   */
-  { "sidebar_folder_indent", DT_BOOL, R_BOTH, OPTSIDEBARFOLDERINDENT, 0 },
+  { "sidebar_folder_indent", DT_BOOL, R_SIDEBAR, OPTSIDEBARFOLDERINDENT, 0 },
   /*
   ** .pp
   ** Set this to indent mailboxes in the sidebar.
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
   */
-  { "sidebar_format", DT_STR, R_NONE, UL &SidebarFormat, UL "%B%?F? [%F]?%* %?N?%N/?%S" },
+  { "sidebar_format", DT_STR, R_SIDEBAR, UL &SidebarFormat, UL "%B%*  %n" },
   /*
   ** .pp
   ** This variable allows you to customize the sidebar display. This string is
@@ -2769,6 +2786,7 @@ struct option_t MuttVars[] = {
   ** .dt %B  .dd Name of the mailbox
   ** .dt %S  .dd * Size of mailbox (total number of messages)
   ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %n  .dd N if mailbox has new mail, blank otherwise
   ** .dt %F  .dd * Number of Flagged messages in the mailbox
   ** .dt %!  .dd ``!'' : one flagged message;
   **             ``!!'' : two flagged messages;
@@ -2784,8 +2802,12 @@ struct option_t MuttVars[] = {
   ** .pp
   ** * = Can be optionally printed if nonzero
   ** @ = Only applicable to the current folder
+  ** .pp
+  ** In order to use %S, %N, %F, and %!, $$mail_check_stats must
+  ** be \fIset\fP.  When thus set, a suggested value for this option is
+  ** "%B%?F? [%F]?%* %?N?%N/?%S".
   */
-  { "sidebar_indent_string", DT_STR, R_BOTH, UL &SidebarIndentString, UL "  " },
+  { "sidebar_indent_string", DT_STR, R_SIDEBAR, UL &SidebarIndentString, UL "  " },
   /*
   ** .pp
   ** This specifies the string that is used to indent mailboxes in the sidebar.
@@ -2793,7 +2815,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_delim_chars.
   */
-  { "sidebar_new_mail_only", DT_BOOL, R_BOTH, OPTSIDEBARNEWMAILONLY, 0 },
+  { "sidebar_new_mail_only", DT_BOOL, R_SIDEBAR, OPTSIDEBARNEWMAILONLY, 0 },
   /*
   ** .pp
   ** When set, the sidebar will only display mailboxes containing new, or
@@ -2801,7 +2823,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $sidebar_whitelist.
   */
-  { "sidebar_next_new_wrap", DT_BOOL, R_BOTH, UL OPTSIDEBARNEXTNEWWRAP, 0 },
+  { "sidebar_next_new_wrap", DT_BOOL, R_NONE, UL OPTSIDEBARNEXTNEWWRAP, 0 },
   /*
   ** .pp
   ** When set, the \fC<sidebar-next-new>\fP command will not stop and the end of
@@ -2809,15 +2831,7 @@ struct option_t MuttVars[] = {
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
   */
-  { "sidebar_refresh_time", DT_NUM, R_BOTH, UL &SidebarRefreshTime, 60 },
-  /*
-  ** .pp
-  ** Set sidebar_refresh_time to the minimum number of seconds between refreshes.
-  ** This will reduced network traffic.
-  ** .pp
-  ** \fBNote:\fP Set to 0 to disable refreshing.
-  */
-  { "sidebar_short_path", DT_BOOL, R_BOTH, OPTSIDEBARSHORTPATH, 0 },
+  { "sidebar_short_path", DT_BOOL, R_SIDEBAR, OPTSIDEBARSHORTPATH, 0 },
   /*
   ** .pp
   ** By default the sidebar will show the mailbox's path, relative to the
@@ -2833,7 +2847,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folder_indent, $$sidebar_indent_string.
   */
-  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR, R_NONE, UL &SidebarSortMethod, SORT_ORDER },
+  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR, R_SIDEBAR, UL &SidebarSortMethod, SORT_ORDER },
   /*
   ** .pp
   ** Specifies how to sort entries in the file browser.  By default, the
@@ -2841,10 +2855,8 @@ struct option_t MuttVars[] = {
   ** .il
   ** .dd alpha (alphabetically)
   ** .dd count (all message count)
-  ** .dd date
-  ** .dd desc (description)
+  ** .dd flagged (flagged message count)
   ** .dd new (new message count)
-  ** .dd size
   ** .dd unsorted
   ** .ie
   ** .pp
@@ -3887,15 +3899,16 @@ const struct mapping_t SortKeyMethods[] = {
 };
 
 const struct mapping_t SortSidebarMethods[] = {
-  { "count",	SORT_COUNT },
-  { "desc",	SORT_DESC },
-  { "flagged",	SORT_FLAGGED },
-  { "new",	SORT_COUNT_NEW },
-  { "path",	SORT_PATH },
-  { "alpha",	SORT_PATH },
-  { "name",	SORT_PATH },
-  { "unsorted",	SORT_ORDER },
-  { NULL,       0 }
+  { "alpha",		SORT_PATH },
+  { "count",		SORT_COUNT },
+  { "desc",		SORT_DESC },
+  { "flagged",		SORT_FLAGGED },
+  { "mailbox-order",	SORT_ORDER },
+  { "name",		SORT_PATH },
+  { "new",		SORT_COUNT_NEW },
+  { "path",		SORT_PATH },
+  { "unsorted",		SORT_ORDER },
+  { NULL,		0 }
 };
 
 

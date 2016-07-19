@@ -20,18 +20,16 @@
 #ifndef SIDEBAR_H
 #define SIDEBAR_H
 
-typedef struct _context CONTEXT;
-typedef struct buffy_t  BUFFY;
+#include "mutt.h"
+#include "buffy.h"
 
-void         sb_change_mailbox (int op);
-void         sb_draw (void);
-const char * sb_get_highlight (void);
-void         sb_init (void);
-void         sb_notify_mailbox (BUFFY *b, int created);
-void         sb_set_buffystats (const CONTEXT *ctx);
-BUFFY *      sb_set_open_buffy (const char *path);
-void         sb_set_update_time (void);
-int          sb_should_refresh (void);
-void         sb_toggle_virtual (void);
+void         mutt_sb_change_mailbox (int op);
+void         mutt_sb_draw (void);
+const char * mutt_sb_get_highlight (void);
+void         mutt_sb_init (void);
+void         mutt_sb_notify_mailbox (BUFFY *b, int created);
+void         mutt_sb_set_buffystats (const CONTEXT *ctx);
+void         mutt_sb_set_open_buffy (void);
+void         mutt_sb_toggle_virtual (void);
 
 #endif /* SIDEBAR_H */

@@ -1,13 +1,12 @@
 " Vim syntax file for the mutt sidebar patch
 
-syntax keyword muttrcVarBool    skipwhite contained sidebar_folder_indent nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarBool    skipwhite contained sidebar_new_mail_only nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarBool    skipwhite contained sidebar_next_new_wrap nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarBool    skipwhite contained sidebar_short_path    nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarBool    skipwhite contained sidebar_visible       nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarBool    contained skipwhite sidebar_folder_indent nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarBool    contained skipwhite sidebar_new_mail_only nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarBool    contained skipwhite sidebar_next_new_wrap nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarBool    contained skipwhite sidebar_short_path    nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarBool    contained skipwhite sidebar_visible       nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
-syntax keyword muttrcVarNum     skipwhite contained sidebar_refresh_time  nextgroup=muttrcSetNumAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
-syntax keyword muttrcVarNum     skipwhite contained sidebar_width         nextgroup=muttrcSetNumAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+syntax keyword muttrcVarNum     contained skipwhite sidebar_width         nextgroup=muttrcSetNumAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
 
 syntax keyword muttrcVarStr     contained skipwhite sidebar_divider_char  nextgroup=muttrcVarEqualsIdxFmt
 syntax keyword muttrcVarStr     contained skipwhite sidebar_delim_chars   nextgroup=muttrcVarEqualsIdxFmt

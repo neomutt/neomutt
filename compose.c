@@ -102,7 +102,7 @@ static const struct mapping_t ComposeHelp[] = {
 
 static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 {
-    mutt_FormatString (b, blen, 0, NONULL (AttachFormat), mutt_attach_fmt,
+  mutt_FormatString (b, blen, 0, COLS - SidebarWidth, NONULL (AttachFormat), mutt_attach_fmt,
 	    (unsigned long)(((ATTACHPTR **) menu->data)[num]),
 	    M_FORMAT_STAT_FILE | M_FORMAT_ARROWCURSOR);
 }
@@ -113,7 +113,7 @@ static void snd_entry (char *b, size_t blen, MUTTMENU *menu, int num)
 
 static void redraw_crypt_lines (HEADER *msg)
 {
-  mvaddstr (HDR_CRYPT, SidebarWidth, "Security: ");
+  mvprintw (HDR_CRYPT, SidebarWidth, TITLE_FMT, "Security: ");
 
   if ((WithCrypto & (APPLICATION_PGP | APPLICATION_SMIME)) == 0)
   {
@@ -153,11 +153,11 @@ static void redraw_crypt_lines (HEADER *msg)
 
   if ((WithCrypto & APPLICATION_PGP)
       && (msg->security & APPLICATION_PGP) && (msg->security & SIGN))
-    printw ("%s%s", _(" sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
+    printw (TITLE_FMT "%s", _("sign as: "), PgpSignAs ? PgpSignAs : _("<default>"));
 
   if ((WithCrypto & APPLICATION_SMIME)
       && (msg->security & APPLICATION_SMIME) && (msg->security & SIGN)) {
-      printw ("%s%s", _(" sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
+      printw (TITLE_FMT "%s", _("sign as: "), SmimeDefaultKey ? SmimeDefaultKey : _("<default>"));
   }
 
   if ((WithCrypto & APPLICATION_SMIME)
@@ -178,7 +178,8 @@ static void redraw_mix_line (LIST *chain)
   int c;
   char *t;
 
-  mvaddstr (HDR_MIX, SidebarWidth,     "     Mix: ");
+  /* L10N: "Mix" refers to the MixMaster chain for anonymous email */
+  mvprintw (HDR_MIX, SidebarWidth, TITLE_FMT, _("Mix: "));
 
   if (!chain)
   {
@@ -252,7 +253,7 @@ static void draw_envelope_addr (int line, ADDRESS *addr)
 static void draw_envelope (HEADER *msg, char *fcc)
 {
 #ifdef USE_SIDEBAR
-  sb_draw();
+  mutt_sb_draw();
 #endif
   draw_envelope_addr (HDR_FROM, msg->env->from);
   draw_envelope_addr (HDR_TO, msg->env->to);
@@ -408,7 +409,7 @@ static unsigned long cum_attachs_size (MUTTMENU *menu)
 }
 
 /* prototype for use below */
-static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, 
+static void compose_status_line (char *buf, size_t buflen, size_t col, int cols, MUTTMENU *menu, 
       const char *p);
 
 /*
@@ -424,7 +425,7 @@ static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU 
  */
 
 static const char *
-compose_format_str (char *buf, size_t buflen, size_t col, char op, const char *src,
+compose_format_str (char *buf, size_t buflen, size_t col, int cols, char op, const char *src,
 		   const char *prefix, const char *ifstring,
 		   const char *elsestring,
 		   unsigned long data, format_flag flags)
@@ -467,17 +468,17 @@ compose_format_str (char *buf, size_t buflen, size_t col, char op, const char *s
   }
 
   if (optional)
-    compose_status_line (buf, buflen, col, menu, ifstring);
+    compose_status_line (buf, buflen, col, cols, menu, ifstring);
   else if (flags & M_FORMAT_OPTIONAL)
-    compose_status_line (buf, buflen, col, menu, elsestring);
+    compose_status_line (buf, buflen, col, cols, menu, elsestring);
 
   return (src);
 }
 
-static void compose_status_line (char *buf, size_t buflen, size_t col, MUTTMENU *menu, 
-      const char *p)
+static void compose_status_line (char *buf, size_t buflen, size_t col, int cols,
+                                 MUTTMENU *menu, const char *p)
 {
-  mutt_FormatString (buf, buflen, col, p, compose_format_str, 
+  mutt_FormatString (buf, buflen, col, cols, p, compose_format_str, 
         (unsigned long) menu, 0);
 }
 
@@ -521,7 +522,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
   menu->tag = mutt_tag_attach;
   menu->data = idx;
   menu->help = mutt_compile_help (helpstr, sizeof (helpstr), MENU_COMPOSE, ComposeHelp);
-  
+
   while (loop)
   {
     switch (op = mutt_menuLoop (menu))
@@ -1320,7 +1321,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
     /* Draw formatted compose status line */
     if (menu->redraw & REDRAW_STATUS) 
     {
-	compose_status_line (buf, sizeof (buf), 0, menu, NONULL(ComposeFormat));
+	compose_status_line (buf, sizeof (buf), 0, COLS - SidebarWidth, menu, NONULL(ComposeFormat));
 	move(option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
 	mutt_paddstr (COLS, buf);

@@ -421,7 +421,9 @@ int pop_open_mailbox (CONTEXT *ctx)
     return -1;
 
   FREE (&ctx->path);
+  FREE (&ctx->realpath);
   ctx->path = safe_strdup (buf);
+  ctx->realpath = safe_strdup (ctx->path);
 
   pop_data = safe_calloc (1, sizeof (POP_DATA));
   pop_data->conn = conn;

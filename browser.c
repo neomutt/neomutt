@@ -185,7 +185,7 @@ static int link_is_dir (const char *folder, const char *path)
 }
 
 static const char *
-folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *src,
+folder_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
 		   const char *fmt, const char *ifstring, const char *elsestring,
 		   unsigned long data, format_flag flags)
 {
@@ -387,9 +387,9 @@ folder_format_str (char *dest, size_t destlen, size_t col, char op, const char *
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, folder_format_str, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, ifstring, folder_format_str, data, 0);
   else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, folder_format_str, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, elsestring, folder_format_str, data, 0);
 
   return (src);
 }
@@ -621,7 +621,7 @@ static void folder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
   
-  mutt_FormatString (s, slen, 0, NONULL(FolderFormat), folder_format_str, 
+  mutt_FormatString (s, slen, 0, COLS - SidebarWidth, NONULL(FolderFormat), folder_format_str, 
       (unsigned long) &folder, M_FORMAT_ARROWCURSOR);
 }
 
@@ -633,7 +633,7 @@ static void vfolder_entry (char *s, size_t slen, MUTTMENU *menu, int num)
   folder.ff = &((struct folder_file *) menu->data)[num];
   folder.num = num;
 
-  mutt_FormatString (s, slen, 0, NONULL(VirtFolderFormat), folder_format_str,
+  mutt_FormatString (s, slen, 0, COLS - SidebarWidth, NONULL(VirtFolderFormat), folder_format_str,
       (unsigned long) &folder, M_FORMAT_ARROWCURSOR);
 }
 #endif
