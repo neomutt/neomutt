@@ -420,16 +420,6 @@ attach to a message, select multiple files to attach and many more.
     <link linkend="sidebar-muttrc">Sidebar muttrc</link>.
   </para>
   <para>
-    This version of Sidebar is based on Terry Chan's
-    <ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
-    It contains many
-    <emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
-    lots of
-    <emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>
-    and a generous helping of
-    <emphasis role="bold">new documentation</emphasis> which you are already reading.
-  </para>
-  <para>
     To check if Mutt supports <quote>Sidebar</quote>, look for the string
     <literal>+USE_SIDEBAR</literal> in the mutt version.
   </para>
@@ -439,7 +429,11 @@ mutt -v
   <para>
     <emphasis role="bold">Let's turn on the Sidebar:</emphasis>
   </para>
-  <screen>set sidebar_visible</screen>
+<screen>
+set sidebar_visible
+set sidebar_format = "%B%?F? [%F]?%* %?N?%N/?%S"
+set mail_check_stats
+</screen>
   <para>
     You will see something like this.
     A list of mailboxes on the left.
@@ -518,11 +512,13 @@ Cars            4|  3    ! Aug 16  Ewan Brown       (333)  Hummingbird
                  |
 </screen>
     <note>
-      Functions <literal>&lt;sidebar-next&gt;</literal> and
-      <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
-      <emphasis role="bold">highlight</emphasis>.
-      They <emphasis role="bold">do not</emphasis> change the open
-      mailbox.
+      <para>
+        Functions <literal>&lt;sidebar-next&gt;</literal> and
+        <literal>&lt;sidebar-prev&gt;</literal> move the Sidebar
+        <emphasis role="bold">highlight</emphasis>.
+        They <emphasis role="bold">do not</emphasis> change the open
+        mailbox.
+      </para>
     </note>
     <para>
       Press <quote>Ctrl-Shift-O</quote>
@@ -546,8 +542,8 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
     <title>Features</title>
     <para>
       The Sidebar shows a list of mailboxes in a panel.
-    <para>
     </para>
+    <para>
       Everything about the Sidebar can be configured.
     </para>
     <itemizedlist>
@@ -563,7 +559,6 @@ Cars            4|  3    + Feb 28  Imogen Baker     (193)  Pechora Sea
     </itemizedlist>
     <itemizedlist>
     <title><link linkend="sidebar-sort">The order in which mailboxes are displayed</link></title>
-    <title></title>
       <listitem><para>Unsorted (order of mailboxes commands)</para></listitem>
       <listitem><para>Sorted alphabetically</para></listitem>
       <listitem><para>Sorted by number of new mails</para></listitem>
@@ -634,6 +629,7 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
         including the section about <link linkend="formatstrings-conditionals">conditionals</link>.
       </para>
       <para>
+        The default value is <literal>%B%*  %n</literal>
         The default value is <literal>%B%?F? [%F]?%* %?N?%N/?%S</literal>
       </para>
       <itemizedlist>
@@ -662,18 +658,23 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
             </row>
             <row>
               <entry>%S</entry>
-              <entry>*</entry>
+              <entry>* †</entry>
               <entry>Size of mailbox (total number of messages)</entry>
             </row>
             <row>
+              <entry>%F</entry>
+              <entry>* †</entry>
+              <entry>Number of Flagged messages in the mailbox</entry>
+            </row>
+            <row>
               <entry>%N</entry>
-              <entry>*</entry>
+              <entry>* †</entry>
               <entry>Number of New messages in the mailbox</entry>
             </row>
             <row>
-              <entry>%F</entry>
+              <entry>%n</entry>
               <entry>*</entry>
-              <entry>Number of Flagged messages in the mailbox</entry>
+              <entry>If there's new mail, display <quote>N</quote>, otherwise nothing</entry>
             </row>
             <row>
               <entry>%!</entry>
@@ -721,6 +722,9 @@ set sidebar_divider_char = '│'          <emphasis role="comment"># Pretty line
       </table>
       <para>
       * = Can be optionally printed if nonzero
+      </para>
+      <para>
+      † = To use this expandos, you must first: <screen>set mail_check_stats</screen>
       </para>
       <para>
       ‡ = Only applicable to the current folder
@@ -940,27 +944,6 @@ color sidebar_divider   color8  default         <emphasis role="comment"># Dark 
       </tgroup>
     </table>
   </sect3>
-  <sect3 id="intro-sidebar-bugfixes">
-    <title>Bug-fixes</title>
-    <para>
-      If you haven't used Sidebar before, you can ignore this section.
-    </para>
-    <para>
-      These bugs have been fixed since the previous Sidebar release: 2015-11-11.
-    </para>
-    <itemizedlist>
-      <listitem><para>Fix bug when starting in compose mode</para></listitem>
-      <listitem><para>Fix bug with empty sidebar_divider_char string</para></listitem>
-      <listitem><para>Fix bug with header wrapping</para></listitem>
-      <listitem><para>Correctly handle utf8 character sequences</para></listitem>
-      <listitem><para>Fix a bug in mh_buffy_update</para></listitem>
-      <listitem><para>Fix refresh -- time overflowed short</para></listitem>
-      <listitem><para>Protect against empty format strings</para></listitem>
-      <listitem><para>Limit Sidebar width to COLS</para></listitem>
-      <listitem><para>Handle unmailboxes * safely</para></listitem>
-      <listitem><para>Refresh Sidebar after timeout</para></listitem>
-    </itemizedlist>
-  </sect3>
   <sect3 id="intro-sidebar-config-changes">
     <title>Config Changes</title>
     <para>
@@ -995,10 +978,6 @@ color sidebar_divider   color8  default         <emphasis role="comment"># Dark 
           <row>
             <entry><literal>$sidebar_newmail_only</literal></entry>
             <entry><literal>$sidebar_new_mail_only</literal></entry>
-          </row>
-          <row>
-            <entry><literal>$sidebar_refresh</literal></entry>
-            <entry><literal>$sidebar_refresh_time</literal></entry>
           </row>
           <row>
             <entry><literal>$sidebar_shortpath</literal></entry>
@@ -10687,6 +10666,7 @@ bind index &lt;esc&gt;L limit-current-thread
     </itemizedlist>
   </sect2>
 </sect1>
+
 <sect1 id="lmdb">
   <title>LMDB Patch</title>
   <subtitle>LMDB backend for the header cache</subtitle>
@@ -11616,85 +11596,504 @@ bind index \CG get-message
   </sect2>
 </sect1>
 
+<sect1 id="notmuch">
+  <title>Notmuch Patch</title>
+  <subtitle>Email search engine</subtitle>
+
+  <sect2 id="notmuch-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>Notmuch</quote>, look for
+      <quote>+USE_NOTMUCH</quote> in the mutt version.
+      See: <xref linkend="compile-time-features"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para><link linkend="sidebar">sidebar patch</link></para></listitem>
+      <listitem><para><link linkend="quasi-delete">quasi-delete patch</link></para></listitem>
+      <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+      <listitem><para>Notmuch libraries</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+<!--
+  <sect2 id="notmuch-intro">
+    <title>Introduction</title>
+  </sect2>
+-->
+
+  <sect2 id="notmuch-variables">
+    <title>Variables</title>
+
+    <table id="table-notmuch-variables">
+      <title>Notmuch Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>nm_db_limit</literal></entry>
+            <entry>number</entry>
+            <entry><literal>0</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_default_uri</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nm_exclude_tags</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nm_hidden_tags</literal></entry>
+            <entry>string</entry>
+            <entry><literal>unread,draft,flagged,passed,replied,attachment,signed,encrypted</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_open_timeout</literal></entry>
+            <entry>number</entry>
+            <entry><literal>5</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_query_type</literal></entry>
+            <entry>string</entry>
+            <entry><literal>messages</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_record</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_record_tags</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nm_unread_tag</literal></entry>
+            <entry>string</entry>
+            <entry><literal>unread</literal></entry>
+          </row>
+          <row>
+            <entry><literal>vfolder_format</literal></entry>
+            <entry>string</entry>
+            <entry><literal>%6n(%6N) %f</literal></entry>
+          </row>
+          <row>
+            <entry><literal>virtual_spoolfile</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="notmuch-functions">
+    <title>Functions</title>
+
+    <table id="table-notmuch-functions">
+      <title>Notmuch Functions</title>
+      <tgroup cols="4">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Default Key</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>index,pager</entry>
+            <entry>X</entry>
+            <entry><literal>&lt;change-vfolder&gt;</literal></entry>
+            <entry>open a different virtual folder</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>+</entry>
+            <entry><literal>&lt;entire-thread&gt;</literal></entry>
+            <entry>read entire thread of the current message</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>`</entry>
+            <entry><literal>&lt;modify-labels&gt;</literal></entry>
+            <entry>modify (notmuch) tags</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
+            <entry>modify labels and then hide message</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;sidebar-toggle-virtual&gt;</literal></entry>
+            <entry>toggle between mailboxes and virtual mailboxes</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry>Alt-X</entry>
+            <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
+            <entry>generate virtual folder from query</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="notmuch-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+
+      <command>virtual-mailboxes</command>
+      <arg choice="plain">
+        <replaceable class="parameter">description</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">notmuch-URI</replaceable>
+        </arg>
+      </arg>
+      <group choice="req" rep="repeat">
+        <arg choice="plain">
+          <replaceable class="parameter">description</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">notmuch-URI</replaceable>
+          </arg>
+        </arg>
+      </group>
+
+      <command>tag-transforms</command>
+      <arg choice="plain">
+        <replaceable class="parameter">tag</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">transformed-string</replaceable>
+        </arg>
+      </arg>
+      <group choice="req" rep="repeat">
+        <arg choice="plain">
+          <replaceable class="parameter">tag</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">transformed-string</replaceable>
+          </arg>
+        </arg>
+      </group>
+
+      <command>tag-formats</command>
+      <arg choice="plain">
+        <replaceable class="parameter">tag</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">format-string</replaceable>
+        </arg>
+      </arg>
+      <group choice="req" rep="repeat">
+        <arg choice="plain">
+          <replaceable class="parameter">tag</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">format-string</replaceable>
+          </arg>
+        </arg>
+      </group>
+
+    </cmdsynopsis>
+  </sect2>
+
+  <sect2 id="notmuch-colors">
+    <title>Colors</title>
+
+    <para>Adds these to index-color patch:</para>
+
+    <table id="table-notmuch-colors">
+      <title>Index Colors</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Object</entry>
+            <entry>Pattern</entry>
+            <entry>Highlights</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>index_tag</literal></entry>
+            <entry>yes</entry>
+            <entry>an individual message tag, %G, uses tag name</entry>
+          </row>
+          <row>
+            <entry><literal>index_tags</literal></entry>
+            <entry>no</entry>
+            <entry>the transformed message tags, %g</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+<!--
+  <sect2 id="notmuch-sort">
+    <title>Sort</title>
+  </sect2>
+-->
+
+  <sect2 id="notmuch-muttrc">
+    <title>Muttrc</title>
+
+<screen>
+<emphasis role="comment"># This is a complete list of notmuch-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# This variable specifies notmuch query limit.</emphasis>
+set nm_db_limit = 0
+ 
+<emphasis role="comment"># This variable specifies the default Notmuch database in format:
+# notmuch://&lt;absolute path&gt;</emphasis>
+set nm_default_uri = ""
+ 
+<emphasis role="comment"># The messages tagged with these tags are excluded and not loaded
+# from notmuch DB to mutt unless specified explicitly.</emphasis>
+set nm_exclude_tags = ""
+ 
+<emphasis role="comment"># This variable specifies private notmuch tags which should not be printed
+# on screen (index, pager).</emphasis>
+set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+ 
+<emphasis role="comment"># This option specifies timeout for Notmuch database. Default is 5 seconds.</emphasis>
+set nm_open_timeout = 5
+ 
+<emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and</emphasis>
+# 'messages'.
+set nm_query_type = messages
+ 
+<emphasis role="comment"># Add messages stored to the mutt record (see $record in the mutt docs)
+# also to notmuch DB.</emphasis>
+set nm_record = no
+ 
+<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the mutt record.</emphasis>
+set nm_record_tags = ""
+ 
+<emphasis role="comment"># This variable specifies notmuch tag which is used for unread messages.</emphasis>
+set nm_unread_tag = unread
+ 
+<emphasis role="comment"># This variable allows you to customize the file browser display for virtual
+# folders to your personal taste.</emphasis>
+set vfolder_format = "%6n(%6N) %f"
+ 
+<emphasis role="comment"># When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
+# as a spoolfile.</emphasis>
+set virtual_spoolfile = no
+ 
+<emphasis role="comment"># --------------------------------------------------------------------------
+# FUNCTIONS - shown with an example mapping
+# --------------------------------------------------------------------------
+ 
+# open a different virtual folder</emphasis>
+bind index,pager X change-vfolder 
+ 
+<emphasis role="comment"># read entire thread of the current message</emphasis>
+bind index,pager + entire-thread 
+ 
+<emphasis role="comment"># modify (notmuch) tags</emphasis>
+bind index,pager ` modify-labels 
+ 
+<emphasis role="comment"># generate virtual folder from query</emphasis>
+bind index,pager \eX vfolder-from-query 
+ 
+<emphasis role="comment"># modify labels and then hide message
+# bind index,pager ??? modify-labels-then-hide 
+ 
+# toggle between mailboxes and virtual mailboxes
+# bind index,pager ??? sidebar-toggle-virtual 
+ 
+# --------------------------------------------------------------------------
+# COMMANDS - shown with an example
+# --------------------------------------------------------------------------
+ 
+# virtual-mailboxes description notmuch-URI { description notmuch-URI ...}
+# virtual-mailboxes "Climbing" "notmuch://?query=climbing"
+ 
+# Replace some tags with icons
+# tag-transforms tag transformed-string { tag transformed-string ...}
+# tag-transforms "inbox"   "i"   \
+#                "unread"  "u"   \
+#                "replied" "↻ "  \
+#                "sent"    "➥ "  \
+#                "todo"    "T"   \
+#                "deleted" "DEL" \
+#                "invites" "CAL"
+ 
+# See README.notmuch for an explanation
+# tag-formats tag format-string { tag format-string ...}
+# tag-formats "inbox"   "GI" \
+#              "unread"  "GU" \
+#              "replied" "GR" \
+#              "sent"    "GS" \
+#              "todo"    "Gt" \
+#              "deleted" "GD" \
+#              "invites" "Gi"
+ 
+# set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'
+ 
+# --------------------------------------------------------------------------
+# COLORS - some unpleasant examples are given
+# --------------------------------------------------------------------------
+ 
+# These symbols are added to the index-color patch:
+ 
+# an individual message tag, %G, uses tag name
+# this symbol uses a pattern</emphasis>
+color index_tag red white "inbox"
+ 
+<emphasis role="comment"># the transformed message tags, %g
+# this symbol does not use a pattern</emphasis>
+color index_tags green default
+ 
+<emphasis role="comment"># --------------------------------------------------------------------------
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="notmuch-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="notmuch-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="notmuch-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
+    <listitem><para>Chris Mason <email>clm@fb.com</email></para></listitem>
+    <listitem><para>Christoph Rissner <email>cri@visotech.at</email></para></listitem>
+    <listitem><para>David Riebenbauer <email>davrieb@liegesta.at</email></para></listitem>
+    <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+    <listitem><para>David Wilson <email>dw@botanicus.net</email></para></listitem>
+    <listitem><para>Don Zickus <email>dzickus@redhat.com</email></para></listitem>
+    <listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
+    <listitem><para>Jan Synacek <email>jsynacek@redhat.com</email></para></listitem>
+    <listitem><para>Jeremiah C. Foster <email>jeremiah@jeremiahfoster.com</email></para></listitem>
+    <listitem><para>Josh Poimboeuf <email>jpoimboe@redhat.com</email></para></listitem>
+    <listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
+    <listitem><para>Luke Macken <email>lmacken@redhat.com</email></para></listitem>
+    <listitem><para>Mantas Mikulėnas <email>grawity@gmail.com</email></para></listitem>
+    <listitem><para>Patrick Brisbin <email>pbrisbin@gmail.com</email></para></listitem>
+    <listitem><para>Philippe Le Brouster <email>plb@nebkha.net</email></para></listitem>
+    <listitem><para>Raghavendra D Prabhu <email>rprabhu@wnohang.net</email></para></listitem>
+    <listitem><para>Sami Farin <email>hvtaifwkbgefbaei@gmail.com</email></para></listitem>
+    <listitem><para>Stefan Assmann <email>sassmann@kpanic.de</email></para></listitem>
+    <listitem><para>Stefan Kuhn <email>p_regius@gmx.ch</email></para></listitem>
+    <listitem><para>Tim Stoakes <email>tim@stoakes.net</email></para></listitem>
+    <listitem><para>Vladimir Marek <email>Vladimir.Marek@oracle.com</email></para></listitem>
+    <listitem><para>Víctor Manuel Jáquez Leal <email>vjaquez@igalia.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="progress">
-	<title>Progress Bar Patch</title>
-	<subtitle>Show a visual progress bar on slow operations</subtitle>
+  <title>Progress Bar Patch</title>
+  <subtitle>Show a visual progress bar on slow operations</subtitle>
 
-	<sect2 id="progress-patch">
-		<title>Patch</title>
+  <sect2 id="progress-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>Progress Bar</quote>, look for
-			<quote>patch-progress</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>Progress Bar</quote>, look for
+      <quote>patch-progress</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="progress-intro">
-		<title>Introduction</title>
+  <sect2 id="progress-intro">
+    <title>Introduction</title>
 
         <para>
-		The <quote>progress</quote> patch shows a visual progress bar on slow
-		tasks, such as indexing a large folder over the net.
+    The <quote>progress</quote> patch shows a visual progress bar on slow
+    tasks, such as indexing a large folder over the net.
         </para>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="progress-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="progress-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="progress-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="progress-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="progress-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="progress-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="progress-colors">
-		<title>Colors</title>
-		<table id="table-progress-colors">
-			<title>Progress Colors</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Default Color</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>progress</literal></entry>
-						<entry>default</entry>
-						<entry>Visual progress bar</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+  <sect2 id="progress-colors">
+    <title>Colors</title>
+    <table id="table-progress-colors">
+      <title>Progress Colors</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Default Color</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>progress</literal></entry>
+            <entry>default</entry>
+            <entry>Visual progress bar</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
 <!--
-	<sect2 id="progress-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="progress-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="progress-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="progress-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'progress' patch.
  
@@ -11707,120 +12106,120 @@ color progress white red
  
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="progress-see-also">
-		<title>See Also</title>
+  <sect2 id="progress-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="color">Color command</link></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="progress-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="progress-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="progress-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Rocco Rutte <email>pdmef@gmx.net</email></para></listitem>
-		<listitem><para>Vincent Lefevre <email>vincent@vinc17.org</email></para></listitem>
-		<listitem><para>Stefan Kuhn <email>wuodan@hispeed.ch</email></para></listitem>
-		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="progress-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Rocco Rutte <email>pdmef@gmx.net</email></para></listitem>
+    <listitem><para>Vincent Lefevre <email>vincent@vinc17.org</email></para></listitem>
+    <listitem><para>Stefan Kuhn <email>wuodan@hispeed.ch</email></para></listitem>
+    <listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="quasi-delete">
-	<title>Quasi-Delete Patch</title>
-	<subtitle>Mark emails that should be hidden, but not deleted</subtitle>
+  <title>Quasi-Delete Patch</title>
+  <subtitle>Mark emails that should be hidden, but not deleted</subtitle>
 
-	<sect2 id="quasi-delete-patch">
-		<title>Patch</title>
+  <sect2 id="quasi-delete-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>Quasi-Delete</quote>, look for
-			<quote>patch-quasi-delete</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>Quasi-Delete</quote>, look for
+      <quote>patch-quasi-delete</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="quasi-delete-intro">
-		<title>Introduction</title>
+  <sect2 id="quasi-delete-intro">
+    <title>Introduction</title>
 
         <para>
-		The <quote>quasi-delete</quote> function marks an email that should be
-		hidden from the index, but NOT deleted.
+    The <quote>quasi-delete</quote> function marks an email that should be
+    hidden from the index, but NOT deleted.
         </para>
 
         <para>
-		On its own, this patch isn't very useful.  It forms a useful part of
-		the notmuch plugin.
+    On its own, this patch isn't very useful.  It forms a useful part of
+    the notmuch plugin.
         </para>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="quasi-delete-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="quasi-delete-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="quasi-delete-functions">
-		<title>Functions</title>
-		<table id="table-quasi-delete-functions">
-			<title>Quasi-Delete Functions</title>
-			<tgroup cols="4">
-				<thead>
-					<row>
-						<entry>Menus</entry>
-						<entry>Default Key</entry>
-						<entry>Function</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>index,pager</entry>
-						<entry>(none)</entry>
-						<entry><literal>&lt;quasi-delete&gt;</literal></entry>
-						<entry>delete from mutt, don't touch on disk</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+  <sect2 id="quasi-delete-functions">
+    <title>Functions</title>
+    <table id="table-quasi-delete-functions">
+      <title>Quasi-Delete Functions</title>
+      <tgroup cols="4">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Default Key</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>index,pager</entry>
+            <entry>(none)</entry>
+            <entry><literal>&lt;quasi-delete&gt;</literal></entry>
+            <entry>delete from mutt, don't touch on disk</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
 <!--
-	<sect2 id="quasi-delete-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="quasi-delete-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="quasi-delete-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="quasi-delete-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="quasi-delete-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="quasi-delete-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="quasi-delete-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="quasi-delete-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'quasi-delete' feature.
  
@@ -11830,29 +12229,29 @@ bind index,pager Q quasi-delete
  
 <emphasis role="comment"># vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="quasi-delete-see-also">
-		<title>See Also</title>
+  <sect2 id="quasi-delete-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="notmuch">notmuch patch</link></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="quasi-delete-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="quasi-delete-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="quasi-delete-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="quasi-delete-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="sidebar">
@@ -11870,7 +12269,7 @@ bind index,pager Q quasi-delete
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.1</para></listitem>
+      <listitem><para>mutt-1.6.2</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -11892,15 +12291,6 @@ bind index,pager Q quasi-delete
       If you just want to get started, you could use the sample
       <link linkend="sidebar-muttrc">Sidebar muttrc</link>.
     </para>
-
-    <para>
-      This version of Sidebar is based on Terry Chan's
-      <ulink url="http://www.lunar-linux.org/mutt-sidebar/">2015-11-11 release</ulink>.
-      It contains many
-      <emphasis role="bold"><link linkend="intro-sidebar-features">new features</link></emphasis>,
-      lots of
-      <emphasis role="bold"><link linkend="intro-sidebar-bugfixes">bugfixes</link></emphasis>.
-    </para>
   </sect2>
 
   <sect2 id="sidebar-variables">
@@ -11909,77 +12299,82 @@ bind index,pager Q quasi-delete
     <table id="table-sidebar-variables">
       <title>Sidebar Variables</title>
       <tgroup cols="3">
-	<thead>
-	  <row>
-	    <entry>Name</entry>
-	    <entry>Type</entry>
-	    <entry>Default</entry>
-	  </row>
-	</thead>
-	<tbody>
-	  <row>
-	    <entry><literal>sidebar_delim_chars</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>/.</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_divider_char</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>|</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_folder_indent</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_format</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>%B%*  %n</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_indent_string</literal></entry>
-	    <entry>string</entry>
-	    <entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_new_mail_only</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_next_new_wrap</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_short_path</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_sort_method</literal></entry>
-	    <entry>enum</entry>
-	    <entry><literal>unsorted</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_visible</literal></entry>
-	    <entry>boolean</entry>
-	    <entry><literal>no</literal></entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_whitelist</literal></entry>
-	    <entry>list</entry>
-	    <entry>(empty)</entry>
-	  </row>
-	  <row>
-	    <entry><literal>sidebar_width</literal></entry>
-	    <entry>number</entry>
-	    <entry><literal>20</literal></entry>
-	  </row>
-	</tbody>
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>sidebar_delim_chars</literal></entry>
+            <entry>string</entry>
+            <entry><literal>/.</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_divider_char</literal></entry>
+            <entry>string</entry>
+            <entry><literal>|</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_folder_indent</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_format</literal></entry>
+            <entry>string</entry>
+            <entry><literal>%B%*  %n</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_indent_string</literal></entry>
+            <entry>string</entry>
+            <entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_new_mail_only</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_next_new_wrap</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_short_path</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_sort_method</literal></entry>
+            <entry>enum</entry>
+            <entry><literal>unsorted</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_visible</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_whitelist</literal></entry>
+            <entry>list</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_width</literal></entry>
+            <entry>number</entry>
+            <entry><literal>20</literal></entry>
+          </row>
+        </tbody>
       </tgroup>
     </table>
+  <para>
+    For more details, and examples, about the <literal>$sidebar_format</literal>,
+    see the <link linkend="intro-sidebar-format">Sidebar Intro</link>.
+  </para>
+
   </sect2>
 
   <sect2 id="sidebar-functions">
@@ -12152,7 +12547,7 @@ bind index,pager Q quasi-delete
           </row>
           <row>
             <entry><literal>unsorted</literal></entry>
-            <entry>Do not resort the paths</entry>
+            <entry>Order of the <literal>mailboxes</literal> command</entry>
           </row>
         </tbody>
       </tgroup>
@@ -12208,18 +12603,18 @@ set sidebar_next_new_wrap = no
 set sidebar_divider_char = '|'
  
 <emphasis role="comment"># Display the Sidebar mailboxes using this format string.</emphasis>
-set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
+set sidebar_format = '%B%*  %n'
  
-<emphasis role="comment"># Sidebar will not refresh its list of mailboxes any more frequently than
-# this number of seconds.  This will help reduce disk/network traffic.</emphasis>
-set sidebar_refresh_time = 60
+<emphasis role="comment"># If you want to display more information, this is a useful format:</emphasis>
+set mail_check_stats
+set sidebar_format = '%B%?F? [%F]?%* %?N?%N/?%S'
  
 <emphasis role="comment"># Sort the mailboxes in the Sidebar using this method:
 #       count    - total number of messages
 #       flagged  - number of flagged messages
 #       new      - number of new messages
 #       path     - mailbox path
-#       unsorted - do not sort the mailboxes</emphasis>
+#       unsorted - order of the mailboxes command</emphasis>
 set sidebar_sort_method = 'unsorted'
  
 <emphasis role="comment"># --------------------------------------------------------------------------
@@ -12294,7 +12689,9 @@ color sidebar_new green black
 
   <sect2 id="sidebar-known-bugs">
     <title>Known Bugs</title>
-    Unsorted isn't
+    <para>
+      None
+    </para>
   </sect2>
 
   <sect2 id="sidebar-credits">
@@ -12437,126 +12834,126 @@ set skip_quoted_offset = 3
 </sect1>
 
 <sect1 id="status-color">
-	<title>Status Color Patch</title>
-	<subtitle>Custom rules for theming the status bar</subtitle>
+  <title>Status Color Patch</title>
+  <subtitle>Custom rules for theming the status bar</subtitle>
 
-	<sect2 id="status-color-patch">
-		<title>Patch</title>
+  <sect2 id="status-color-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>Status Color</quote>, look for
-			<quote>patch-status-color</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>Status Color</quote>, look for
+      <quote>patch-status-color</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="status-color-intro">
-		<title>Introduction</title>
+  <sect2 id="status-color-intro">
+    <title>Introduction</title>
 
         <para>
-		The <quote>status-color</quote> patch allows you to theme different
-		parts of the status bar (also when it's used by the index).
+    The <quote>status-color</quote> patch allows you to theme different
+    parts of the status bar (also when it's used by the index).
         </para>
 
         <para>
-		Unlike normal color commands, <literal>color status</literal> can now
-		take up to 2 extra parameters (regex, num).
+    Unlike normal color commands, <literal>color status</literal> can now
+    take up to 2 extra parameters (regex, num).
         </para>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="status-color-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="status-color-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="status-color-commands">
-		<title>Commands</title>
-		<cmdsynopsis>
-			<command>color</command>
-			<arg choice="plain">
-				<option>status</option>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">foreground</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">background</replaceable>
-			</arg>
-			<group choice="opt">
-				<arg choice="plain">
-					<replaceable class="parameter">regex</replaceable>
-				</arg>
-				<group choice="opt">
-					<arg choice="plain">
-						<replaceable class="parameter">num</replaceable>
-					</arg>
-				</group>
-			</group>
-		</cmdsynopsis>
+  <sect2 id="status-color-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>color</command>
+      <arg choice="plain">
+        <option>status</option>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">foreground</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">background</replaceable>
+      </arg>
+      <group choice="opt">
+        <arg choice="plain">
+          <replaceable class="parameter">regex</replaceable>
+        </arg>
+        <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter">num</replaceable>
+          </arg>
+        </group>
+      </group>
+    </cmdsynopsis>
 
-		<para>
-			With zero parameters, Mutt will set the default color for the entire
-			status bar.
-		</para>
+    <para>
+      With zero parameters, Mutt will set the default color for the entire
+      status bar.
+    </para>
 
-		<para>
-			With one parameter, Mutt will only color the parts matching the
-			regex.
-		</para>
+    <para>
+      With one parameter, Mutt will only color the parts matching the
+      regex.
+    </para>
 
-		<para>
-			With two parameters, Mutt will only color the num'th sub-match of
-			the regex.
-		</para>
-	</sect2>
+    <para>
+      With two parameters, Mutt will only color the num'th sub-match of
+      the regex.
+    </para>
+  </sect2>
 
-	<sect2 id="status-color-colors">
-		<title>Colors</title>
+  <sect2 id="status-color-colors">
+    <title>Colors</title>
 
-		<table id="table-status-color-colors">
-			<title>Status Colors</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Default Color</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>status</entry>
-						<entry><literal>reverse</literal></entry>
-						<entry>Status bar</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-status-color-colors">
+      <title>Status Colors</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Default Color</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>status</entry>
+            <entry><literal>reverse</literal></entry>
+            <entry>Status bar</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
 <!--
-	<sect2 id="status-color-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="status-color-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="status-color-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'status-color' patch.
  
@@ -12588,7 +12985,7 @@ color status brightred white '(New|Del|Flag):[0-9]+'
 # First, highlight anything (*/*)</emphasis>
 color status brightred default '\([^)]+/[^)]+\)'
  
-<emphasis role="comment"># Then override the color for one specific case</emphasis>
+<emphasis role="comment"># Then override the color for one specfic case</emphasis>
 color status default   default '\(threads/last-date-received\)'
  
 <emphasis role="comment"># 2 extra parameters
@@ -12608,142 +13005,142 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
  
 # vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="status-color-see-also">
-		<title>See Also</title>
+  <sect2 id="status-color-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
-			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
-			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+      <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+      <listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+      <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+      <listitem><para><link linkend="color">Color command</link></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="status-color-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="status-color-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-		<listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
-		<listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="status-color-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+    <listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
+    <listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="tls-sni">
-	<title>TLS-SNI Patch</title>
-	<subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
+  <title>TLS-SNI Patch</title>
+  <subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
 
-	<sect2 id="tls-sni-patch">
-		<title>Patch</title>
+  <sect2 id="tls-sni-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>TLS-SNI</quote>, look for
-			<quote>patch-tls-sni</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>TLS-SNI</quote>, look for
+      <quote>patch-tls-sni</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-			<listitem><para>OpenSSL</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>OpenSSL</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="tls-sni-intro">
-		<title>Introduction</title>
+  <sect2 id="tls-sni-intro">
+    <title>Introduction</title>
 
-		<para>
-		The <quote>TLS-SNI</quote> patch adds support for TLS virtual hosting.
-		If your mail server doesn't support this everything will still work
-		normally.
-		</para>
+    <para>
+    The <quote>TLS-SNI</quote> patch adds support for TLS virtual hosting.
+    If your mail server doesn't support this everything will still work
+    normally.
+    </para>
 
-		<para>
-		TLS supports sending the expected server hostname during the
-		handshake, via the SNI extension.  This can be used to select a
-		server certificate to issue to the client, permitting
-		virtual-hosting without requiring multiple IP addresses.
-		</para>
+    <para>
+    TLS supports sending the expected server hostname during the
+    handshake, via the SNI extension.  This can be used to select a
+    server certificate to issue to the client, permitting
+    virtual-hosting without requiring multiple IP addresses.
+    </para>
 
-		<para>
-		This has been tested against Exim 4.80, which optionally logs SNI
-		and can perform vhosting.
-		</para>
+    <para>
+    This has been tested against Exim 4.80, which optionally logs SNI
+    and can perform vhosting.
+    </para>
 
         <para>
-		To verify TLS SNI support by a server, you can use:
+    To verify TLS SNI support by a server, you can use:
         </para>
 
 <screen>
 openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
 </screen>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="tls-sni-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="tls-sni-muttrc">
-		<title>Muttrc</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-muttrc">
+    <title>Muttrc</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-see-also">
-		<title>See Also</title>
+  <sect2 id="tls-sni-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="tls-sni-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
-		<listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="tls-sni-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
+    <listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="trash-folder">

@@ -1076,8 +1076,6 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
   if (sidebar_source == SB_SRC_NONE)
     return;
 
-  dprint(1,(debugfile,"Mailbox: %s (%d)\n", b->path, created));
-
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
