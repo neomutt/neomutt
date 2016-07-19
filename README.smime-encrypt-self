@@ -1,0 +1,50 @@
+smime-encrypt-self Patch
+========================
+
+    Save an self-encrypted copy of emails
+
+Patch
+-----
+
+    To check if Mutt supports "smime-encrypt-self", look for
+    "patch-smime-encrypt-self" in the mutt version.
+
+    Dependencies
+    * mutt-1.6.2
+
+Introduction
+------------
+
+    Once you encrypt an email to someone you cannot read it. This is good for
+    security, but bad for record-keeping. If you wanted to keep a copy of an
+    encrypted email you could set $fcc_clear.
+
+    A better option is to enable $smime_encrypt_self, then set
+    $smime_default_key to your personal S/MIME key id.
+
+        set smime_encrypt_self = yes
+        set smime_default_key  = bb345e23.0
+
+Variables
+---------
+
+    | Name                 | Type | Default |
+    |----------------------|------|---------|
+    | 'smime_encrypt_self' | quad | No      |
+
+See Also
+--------
+
+    * NeoMutt Project
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * Omen Wild <omen@mandarb.com>
+    * Richard Russon <rich@flatcap.org>
+
