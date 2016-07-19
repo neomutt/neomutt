@@ -1,34 +1,17 @@
-# This is a complete list of FEATURE-NAME configuration.
+# Example Mutt config file for the 'new-mail-command' patch.
 
 # --------------------------------------------------------------------------
 # VARIABLES - shown with their default values
 # --------------------------------------------------------------------------
 
-# DESCRIPTION
-set VARIABLE = "DEFAULT_VALUE"
+# Set the command you want mutt to execute upon the receipt of a new email
+set new_mail_command = ""
 
-# --------------------------------------------------------------------------
-# COMMANDS - shown with an example arguments
-# --------------------------------------------------------------------------
+# Linux example:
+# set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &"
 
-# DESCRIPTION
-COMMAND_NAME 'ARGUMENTS'
-
-# --------------------------------------------------------------------------
-# FUNCTIONS - shown with an example mapping
-# --------------------------------------------------------------------------
-
-# DESCRIPTON
-bind index,pager KEY FUNCTION-NAME
-
-# --------------------------------------------------------------------------
-# COLORS - some unpleasant examples are given
-# --------------------------------------------------------------------------
-# Note: All color operations are of the form:
-#       color OBJECT FOREGROUND BACKGROUND
-
-# DESCRIPTON
-color COLOR_NAME cyan black
+# OS X example:
+# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
 
 # --------------------------------------------------------------------------
 
