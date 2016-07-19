@@ -10946,110 +10946,110 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 </sect1>
 
 <sect1 id="tls-sni">
-	<title>TLS-SNI Patch</title>
-	<subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
+  <title>TLS-SNI Patch</title>
+  <subtitle>Negotiate with a server for a TSL/SSL certificate</subtitle>
 
-	<sect2 id="tls-sni-patch">
-		<title>Patch</title>
+  <sect2 id="tls-sni-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>TLS-SNI</quote>, look for
-			<quote>patch-tls-sni</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>TLS-SNI</quote>, look for
+      <quote>patch-tls-sni</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.2</para></listitem>
-			<listitem><para>OpenSSL</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>OpenSSL</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="tls-sni-intro">
-		<title>Introduction</title>
+  <sect2 id="tls-sni-intro">
+    <title>Introduction</title>
 
-		<para>
-		The <quote>TLS-SNI</quote> patch adds support for TLS virtual hosting.
-		If your mail server doesn't support this everything will still work
-		normally.
-		</para>
+    <para>
+    The <quote>TLS-SNI</quote> patch adds support for TLS virtual hosting.
+    If your mail server doesn't support this everything will still work
+    normally.
+    </para>
 
-		<para>
-		TLS supports sending the expected server hostname during the
-		handshake, via the SNI extension.  This can be used to select a
-		server certificate to issue to the client, permitting
-		virtual-hosting without requiring multiple IP addresses.
-		</para>
+    <para>
+    TLS supports sending the expected server hostname during the
+    handshake, via the SNI extension.  This can be used to select a
+    server certificate to issue to the client, permitting
+    virtual-hosting without requiring multiple IP addresses.
+    </para>
 
-		<para>
-		This has been tested against Exim 4.80, which optionally logs SNI
-		and can perform vhosting.
-		</para>
+    <para>
+    This has been tested against Exim 4.80, which optionally logs SNI
+    and can perform vhosting.
+    </para>
 
         <para>
-		To verify TLS SNI support by a server, you can use:
+    To verify TLS SNI support by a server, you can use:
         </para>
 
 <screen>
 openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
 </screen>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="tls-sni-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="tls-sni-muttrc">
-		<title>Muttrc</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-muttrc">
+    <title>Muttrc</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-see-also">
-		<title>See Also</title>
+  <sect2 id="tls-sni-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="tls-sni-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="tls-sni-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="tls-sni-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
-		<listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="tls-sni-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Jeremy Katz <email>katzj@linuxpower.org</email></para></listitem>
+    <listitem><para>Phil Pennock <email>mutt-dev@spodhuis.demon.nl</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 </chapter>
