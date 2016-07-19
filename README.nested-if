@@ -50,12 +50,10 @@ Introduction
                   XY                            x>0,y>0
                        X                        x>0,y=0
 
-
         %<x? %<y? XY & X > & %<y? Y & NONE > >  Conditions
                              %<y? Y & NONE >    x=0
                                   Y             x=0,y>0
                                       NONE      x=0,y=0
-
 
     Equivalent to:
 
@@ -100,8 +98,8 @@ Introduction
 Variables
 ---------
 
-    The nested-if patch doesn't have any config of its own. It modifies the behavior of the
-    format strings.
+    The "nested-if" patch doesn't have any config of its own. It modifies the
+    behavior of the format strings.
 
 See Also
 --------
@@ -114,8 +112,7 @@ See Also
 Known Bugs
 ----------
 
-    Patch overwrites $<fmt> handler in
-    $index_format
+    Patch overwrites $<fmt> handler in $index_format
 
 Credits
 -------
