@@ -1,0 +1,38 @@
+LMDB Patch
+==========
+
+    LMDB backend for the header cache
+
+Patch
+-----
+
+    To check if Mutt supports "lmdb", look for "patch-lmdb" in the mutt
+    version.
+
+    Dependencies
+    * mutt-1.6.2
+
+Introduction
+------------
+
+    This patch adds support for using LMDB as a storage backend for Mutt's
+    header cache (hcache). It is enabled at configure time with the
+    "--with-lmdb=<path>" switch.
+
+See Also
+--------
+
+    * NeoMutt project
+    * Local Caching
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * Pietro Cerutti <gahr@gahr.ch>
+    * Jan-Piet Mens <jp@mens.de>
+
