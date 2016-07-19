@@ -10,15 +10,15 @@ Patch
     "patch-limit-current-thread" in the mutt version.
 
     Dependencies
-    * mutt-1.6.1
+    * mutt-1.6.2
 
 Introduction
 ------------
 
     This patch adds a new way of using the Limit Command. The
     '<limit-current-thread>' function restricts the view to just the current
-    thread.
-    Setting the limit (the 'l' key) to "all" will restore the full email list.
+    thread. Setting the limit (the 'l' key) to "all" will restore the full
+    email list.
 
 Functions
 ---------
