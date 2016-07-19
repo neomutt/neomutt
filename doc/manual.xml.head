@@ -9718,106 +9718,106 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 </sect1>
 
 <sect1 id="fmemopen">
-	<title>Fmemopen Patch</title>
-	<subtitle>Replace some temporary files with memory buffers</subtitle>
+  <title>Fmemopen Patch</title>
+  <subtitle>Replace some temporary files with memory buffers</subtitle>
 
-	<sect2 id="fmemopen-patch">
-		<title>Patch</title>
+  <sect2 id="fmemopen-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>fmemopen</quote>, look for
-			<quote>patch-fmemopen</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>fmemopen</quote>, look for
+      <quote>patch-fmemopen</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-			<listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="fmemopen-intro">
-		<title>Introduction</title>
+  <sect2 id="fmemopen-intro">
+    <title>Introduction</title>
 
         <para>
-		The <quote>fmemopen</quote> patch speeds up some searches.
+    The <quote>fmemopen</quote> patch speeds up some searches.
         </para>
 
         <para>
-		This patch changes a few places where Mutt creates temporary files.
-		It replaces them with in-memory buffers.  This should improve the
-		performance when searching the header or body using the
-		<link linkend="thorough-search">$thorough_search</link> option.
+    This patch changes a few places where Mutt creates temporary files.
+    It replaces them with in-memory buffers.  This should improve the
+    performance when searching the header or body using the
+    <link linkend="thorough-search">$thorough_search</link> option.
         </para>
 
         <para>
-		There are no user-configurable parts.
+    There are no user-configurable parts.
         </para>
 
         <para>
-		This patch depends on <literal>open_memstream()</literal> and
-		<literal>fmemopen()</literal>.  They are provided by glibc.  Without
-		them, Mutt will simply create temporary files.
+    This patch depends on <literal>open_memstream()</literal> and
+    <literal>fmemopen()</literal>.  They are provided by glibc.  Without
+    them, Mutt will simply create temporary files.
         </para>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="fmemopen-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="fmemopen-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="fmemopen-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="fmemopen-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="fmemopen-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="fmemopen-muttrc">
-		<title>Muttrc</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-muttrc">
+    <title>Muttrc</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="fmemopen-see-also">
-		<title>See Also</title>
+  <sect2 id="fmemopen-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-			<listitem><para><literal>fmemopen(3)</literal></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+      <listitem><para><literal>fmemopen(3)</literal></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="fmemopen-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="fmemopen-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="fmemopen-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Julius Plenz <email>plenz@cis.fu-berlin.de</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="fmemopen-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Julius Plenz <email>plenz@cis.fu-berlin.de</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="ifdef">
