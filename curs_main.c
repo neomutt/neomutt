@@ -489,109 +489,108 @@ static void resort_index (MUTTMENU *menu)
 }
 
 /**
- * mutt_draw_statusline - XXX
+ * mutt_draw_statusline - Draw a highlighted status bar
+ * @cols:  Maximum number of screen columns
+ * @buf:   Message to be displayed
+ *
+ * Users configure the highlighting of the status bar, e.g.
+ *     color status red default "[0-9][0-9]:[0-9][0-9]"
+ *
+ * Where regexes overlap, the one nearest the start will be used.
+ * If two regexes start at the same place, the longer match will be used.
  */
 void
-mutt_draw_statusline (int cols, char *inbuf)
+mutt_draw_statusline (int cols, const char *buf)
 {
-	int i          = 0;
-	int cnt        = 0;
-	int last_color = 0;
-	int color      = 0;
-	int offset     = 0;
-	int found      = 0;
-	int null_rx    = 0;
-	char buf[2048];
+	int i      = 0;
+	int offset = 0;
+	int found  = 0;
+	int chunks = 0;
 
-	struct line_t {
-		short chunks;
-		struct syntax_t {
-			int color;
-			int first;
-			int last;
-		} *syntax;
-	} lineInfo = { 0, NULL };
-
-	mutt_format_string (buf, sizeof (buf), cols, cols, 0, ' ', inbuf, mutt_strlen (inbuf), 0);
-
-	lineInfo.syntax = safe_malloc (sizeof (struct syntax_t));
-	lineInfo.syntax[0].first = -1;
-	lineInfo.syntax[0].last  = -1;
-	lineInfo.syntax[0].color = ColorDefs[MT_COLOR_STATUS];
-	lineInfo.chunks = 1;
+	struct syntax_t {
+		int color;
+		int first;
+		int last;
+	} *syntax = NULL;
 
 	do {
+		COLOR_LINE *cl;
 		found = 0;
-		null_rx = 0;
-		COLOR_LINE *color_line = ColorStatusList;
 
 		if (!buf[offset])
 			break;
 
-		while (color_line) {
-			regmatch_t pmatch[color_line->match + 1];
+		/* loop through each "color status regex" */
+		for (cl = ColorStatusList; cl; cl = cl->next) {
+			regmatch_t pmatch[cl->match + 1];
 
-			if (regexec (&color_line->rx, buf + offset, color_line->match + 1, pmatch, (offset ? REG_NOTBOL : 0)) == 0) {
-				if (pmatch[color_line->match].rm_eo != pmatch[color_line->match].rm_so) {
-					if (!found) {
-						if (++(lineInfo.chunks) > 1) {
-							safe_realloc (&(lineInfo.syntax), (lineInfo.chunks) * sizeof (struct syntax_t));
-						}
-					}
-					i = lineInfo.chunks - 1;
-					pmatch[color_line->match].rm_so += offset;
-					pmatch[color_line->match].rm_eo += offset;
-					if (!found ||
-						(pmatch[color_line->match].rm_so < (lineInfo.syntax)[i].first) ||
-						((pmatch[color_line->match].rm_so == (lineInfo.syntax)[i].first) &&
-						(pmatch[color_line->match].rm_eo > (lineInfo.syntax)[i].last))) {
-						(lineInfo.syntax)[i].color = color_line->pair;
-						(lineInfo.syntax)[i].first = pmatch[color_line->match].rm_so;
-						(lineInfo.syntax)[i].last = pmatch[color_line->match].rm_eo;
-					}
-					found = 1;
-					null_rx = 0;
-				} else {
-					null_rx = 1; /* empty regexp; don't add it, but keep looking */
-				}
+			if (regexec (&cl->rx, buf + offset, cl->match + 1, pmatch, 0) != 0)
+				continue;	/* regex doesn't match the status bar */
+
+			int first = pmatch[cl->match].rm_so + offset;
+			int last  = pmatch[cl->match].rm_eo + offset;
+
+			if (first == last)
+				continue;	/* ignore an empty regex */
+
+			if (!found) {
+				chunks++;
+				safe_realloc (&syntax, chunks * sizeof (struct syntax_t));
 			}
-			color_line = color_line->next;
-		}
 
-		if (null_rx)
-			offset++; /* avoid degenerate cases */
-		else
-			offset = (lineInfo.syntax)[i].last;
-	} while (found || null_rx);
-
-	for (cnt = 0; cnt < mutt_strlen (buf); cnt++) {
-		color = lineInfo.syntax[0].color;
-		for (i = 0; i < lineInfo.chunks; i++) {
-			/* we assume the chunks are sorted */
-			if (cnt > (lineInfo.syntax)[i].last)
-				continue;
-			if (cnt < (lineInfo.syntax)[i].first)
-				break;
-			if (cnt != (lineInfo.syntax)[i].last) {
-				color = (lineInfo.syntax)[i].color;
-				break;
+			i = chunks - 1;
+			if (!found || (first < syntax[i].first) || ((first == syntax[i].first) && (last > syntax[i].last))) {
+				syntax[i].color = cl->pair;
+				syntax[i].first = first;
+				syntax[i].last  = last;
 			}
-			/* don't break here, as cnt might be in the next chunk as well */
+			found = 1;
 		}
-		if (color != last_color) {
-			attrset (color);
-			last_color = color;
+
+		if (syntax) {
+			offset = syntax[i].last;
 		}
-		/* XXX more than one char at a time? */
-		addch ((unsigned char)buf[cnt]);
-#if 0
-		waddnstr (stdscr, tgbuf, 10);
-		SETCOLOR (MT_COLOR_NORMAL);
-		waddnstr (stdscr, tgbuf + 10, -1);
-#endif
+	} while (found);
+
+	int len = mutt_strlen (buf);
+	int base = 0;
+
+	if ((chunks > 0) && (syntax[0].first > 0)) {
+		/* Text before the first highlight */
+		addnstr (buf, syntax[0].first);
+		attrset (ColorDefs[MT_COLOR_STATUS]);
+		base = syntax[0].first;
 	}
 
-	safe_free (&lineInfo.syntax);
+	for (i = 0; i < chunks; i++) {
+		/* Highlighted text */
+		attrset (syntax[i].color);
+		addnstr (buf + base, syntax[i].last - base);
+		if ((i + 1) == chunks) {
+			base = len;
+		} else {
+			base = syntax[i+1].first;
+		}
+		if (syntax[i].last < base) {
+			/* Normal (un-highlighted) text */
+			attrset (ColorDefs[MT_COLOR_STATUS]);
+			addnstr (buf + syntax[i].last, base - syntax[i].last);
+		}
+	}
+
+	attrset (ColorDefs[MT_COLOR_STATUS]);
+	if (base < len) {
+		/* Text after the last highlight */
+		addnstr (buf + base, len - base);
+	}
+
+	int width = mutt_strwidth (buf);
+	if (width < cols) {
+		/* Pad the rest of the line with whitespace */
+		mutt_paddstr (cols - width, "");
+	}
+
+	safe_free (&syntax);
 }
 
 static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,

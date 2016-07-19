@@ -10743,126 +10743,126 @@ color sidebar_new green black
 </sect1>
 
 <sect1 id="status-color">
-	<title>Status Color Patch</title>
-	<subtitle>Custom rules for theming the status bar</subtitle>
+  <title>Status Color Patch</title>
+  <subtitle>Custom rules for theming the status bar</subtitle>
 
-	<sect2 id="status-color-patch">
-		<title>Patch</title>
+  <sect2 id="status-color-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>Status Color</quote>, look for
-			<quote>patch-status-color</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>Status Color</quote>, look for
+      <quote>patch-status-color</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.2</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
 
-		<para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-	</sect2>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
 
-	<sect2 id="status-color-intro">
-		<title>Introduction</title>
+  <sect2 id="status-color-intro">
+    <title>Introduction</title>
 
         <para>
-		The <quote>status-color</quote> patch allows you to theme different
-		parts of the status bar (also when it's used by the index).
+    The <quote>status-color</quote> patch allows you to theme different
+    parts of the status bar (also when it's used by the index).
         </para>
 
         <para>
-		Unlike normal color commands, <literal>color status</literal> can now
-		take up to 2 extra parameters (regex, num).
+    Unlike normal color commands, <literal>color status</literal> can now
+    take up to 2 extra parameters (regex, num).
         </para>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="status-color-variables">
-		<title>Variables</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="status-color-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="status-color-commands">
-		<title>Commands</title>
-		<cmdsynopsis>
-			<command>color</command>
-			<arg choice="plain">
-				<option>status</option>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">foreground</replaceable>
-			</arg>
-			<arg choice="plain">
-				<replaceable class="parameter">background</replaceable>
-			</arg>
-			<group choice="opt">
-				<arg choice="plain">
-					<replaceable class="parameter">regex</replaceable>
-				</arg>
-				<group choice="opt">
-					<arg choice="plain">
-						<replaceable class="parameter">num</replaceable>
-					</arg>
-				</group>
-			</group>
-		</cmdsynopsis>
+  <sect2 id="status-color-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>color</command>
+      <arg choice="plain">
+        <option>status</option>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">foreground</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">background</replaceable>
+      </arg>
+      <group choice="opt">
+        <arg choice="plain">
+          <replaceable class="parameter">regex</replaceable>
+        </arg>
+        <group choice="opt">
+          <arg choice="plain">
+            <replaceable class="parameter">num</replaceable>
+          </arg>
+        </group>
+      </group>
+    </cmdsynopsis>
 
-		<para>
-			With zero parameters, Mutt will set the default color for the entire
-			status bar.
-		</para>
+    <para>
+      With zero parameters, Mutt will set the default color for the entire
+      status bar.
+    </para>
 
-		<para>
-			With one parameter, Mutt will only color the parts matching the
-			regex.
-		</para>
+    <para>
+      With one parameter, Mutt will only color the parts matching the
+      regex.
+    </para>
 
-		<para>
-			With two parameters, Mutt will only color the num'th sub-match of
-			the regex.
-		</para>
-	</sect2>
+    <para>
+      With two parameters, Mutt will only color the num'th sub-match of
+      the regex.
+    </para>
+  </sect2>
 
-	<sect2 id="status-color-colors">
-		<title>Colors</title>
+  <sect2 id="status-color-colors">
+    <title>Colors</title>
 
-		<table id="table-status-color-colors">
-			<title>Status Colors</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Name</entry>
-						<entry>Default Color</entry>
-						<entry>Description</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>status</entry>
-						<entry><literal>reverse</literal></entry>
-						<entry>Status bar</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
-	</sect2>
+    <table id="table-status-color-colors">
+      <title>Status Colors</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Default Color</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>status</entry>
+            <entry><literal>reverse</literal></entry>
+            <entry>Status bar</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
 
 <!--
-	<sect2 id="status-color-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="status-color-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="status-color-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'status-color' patch.
  
@@ -10894,7 +10894,7 @@ color status brightred white '(New|Del|Flag):[0-9]+'
 # First, highlight anything (*/*)</emphasis>
 color status brightred default '\([^)]+/[^)]+\)'
  
-<emphasis role="comment"># Then override the color for one specific case</emphasis>
+<emphasis role="comment"># Then override the color for one specfic case</emphasis>
 color status default   default '\(threads/last-date-received\)'
  
 <emphasis role="comment"># 2 extra parameters
@@ -10914,35 +10914,35 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
  
 # vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="status-color-see-also">
-		<title>See Also</title>
+  <sect2 id="status-color-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
-			<listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
-			<listitem><para><link linkend="patterns">Patterns</link></para></listitem>
-			<listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
-			<listitem><para><link linkend="color">Color command</link></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+      <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+      <listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+      <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+      <listitem><para><link linkend="color">Color command</link></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="status-color-known-bugs">
-		<title>Known Bugs</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="status-color-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="status-color-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-		<listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
-		<listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="status-color-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+    <listitem><para>Thomas Glanzmann <email>thomas@glanzmann.de</email></para></listitem>
+    <listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="tls-sni">
