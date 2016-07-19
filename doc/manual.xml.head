@@ -9311,299 +9311,299 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
 </sect1>
 
 <sect1 id="cond-date">
-	<title>Conditional Dates Patch</title>
-	<subtitle>Use rules to choose date format</subtitle>
+  <title>Conditional Dates Patch</title>
+  <subtitle>Use rules to choose date format</subtitle>
 
-	<sect2 id="cond-date-patch">
-		<title>Patch</title>
+  <sect2 id="cond-date-patch">
+    <title>Patch</title>
 
-		<para>
-			To check if Mutt supports <quote>Conditional Dates</quote>, look for
-			<quote>patch-cond-date</quote> in the mutt version.
-			See: <xref linkend="mutt-patches"/>.
-		</para>
+    <para>
+      To check if Mutt supports <quote>Conditional Dates</quote>, look for
+      <quote>patch-cond-date</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
 
-		<itemizedlist>
-			<title>Dependencies:</title>
-			<listitem><para>mutt-1.6.1</para></listitem>
-			<listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
+    </itemizedlist>
 
-		<para>
-			This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
-		</para>
-	</sect2>
+    <para>
+      This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.
+    </para>
+  </sect2>
 
-	<sect2 id="cond-date-intro">
-		<title>Introduction</title>
+  <sect2 id="cond-date-intro">
+    <title>Introduction</title>
 
-		<para>
-		The <quote>cond-date</quote> patch allows you to construct
-		<link linkend="index-format">$index_format</link> expressions based on the age of the email.
-		</para>
+    <para>
+    The <quote>cond-date</quote> patch allows you to construct
+    <link linkend="index-format">$index_format</link> expressions based on the age of the email.
+    </para>
 
-		<para>
-		Mutt's default <literal>$index_format</literal> displays email dates in the
-		form: abbreviated-month day-of-month &mdash; <quote>Jan 14</quote>.
-		</para>
+    <para>
+    Mutt's default <literal>$index_format</literal> displays email dates in the
+    form: abbreviated-month day-of-month &mdash; <quote>Jan 14</quote>.
+    </para>
 
-		<para>
-		The format is configurable but only per-mailbox.  This patch allows you
-		to configure the display depending on the age of the email.
-		</para>
+    <para>
+    The format is configurable but only per-mailbox.  This patch allows you
+    to configure the display depending on the age of the email.
+    </para>
 
-		<table id="table-cond-date-scheme">
-			<title>Potential Formatting Scheme</title>
-			<tgroup cols="3">
-				<thead>
-					<row>
-						<entry>Email Sent</entry>
-						<entry>Format</entry>
-						<entry>Example</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>Today</entry>
-						<entry><literal>%H:%M</literal></entry>
-						<entry>13:23</entry>
-					</row>
-					<row>
-						<entry>This Month</entry>
-						<entry><literal>%a %d</literal></entry>
-						<entry>Thu 17</entry>
-					</row>
-					<row>
-						<entry>This Year</entry>
-						<entry><literal>%b %d</literal></entry>
-						<entry>Dec 10</entry>
-					</row>
-					<row>
-						<entry>Older than 1 Year</entry>
-						<entry><literal>%m/%y</literal></entry>
-						<entry>06/14</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
+    <table id="table-cond-date-scheme">
+      <title>Potential Formatting Scheme</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Email Sent</entry>
+            <entry>Format</entry>
+            <entry>Example</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>Today</entry>
+            <entry><literal>%H:%M</literal></entry>
+            <entry>13:23</entry>
+          </row>
+          <row>
+            <entry>This Month</entry>
+            <entry><literal>%a %d</literal></entry>
+            <entry>Thu 17</entry>
+          </row>
+          <row>
+            <entry>This Year</entry>
+            <entry><literal>%b %d</literal></entry>
+            <entry>Dec 10</entry>
+          </row>
+          <row>
+            <entry>Older than 1 Year</entry>
+            <entry><literal>%m/%y</literal></entry>
+            <entry>06/14</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
-		<para>
+    <para>
         For an explanation of the date formatting strings, see
         <literal>strftime(3).</literal>
-		</para>
+    </para>
 
-		<para>
+    <para>
         By carefully picking your formats, the dates can remain
         unambiguous and compact.
-		</para>
+    </para>
 
-		<para>
-		Mutt's conditional format strings have the form:
-		(whitespace introduced for clarity)
-		</para>
+    <para>
+    Mutt's conditional format strings have the form:
+    (whitespace introduced for clarity)
+    </para>
 
-		<screen>%? TEST ? TRUE &amp; FALSE ?</screen>
+    <screen>%? TEST ? TRUE &amp; FALSE ?</screen>
 
-		<para>
-		The examples below use the test <quote>%[</quote> &mdash; the date
-		of the message in the local timezone.  They will also work with
-		<quote>%(</quote> &mdash; the local time that the message arrived.
-		</para>
+    <para>
+    The examples below use the test <quote>%[</quote> &mdash; the date
+    of the message in the local timezone.  They will also work with
+    <quote>%(</quote> &mdash; the local time that the message arrived.
+    </para>
 
-		<para>
-		The date tests are of the form:
-		</para>
+    <para>
+    The date tests are of the form:
+    </para>
 
-		<screen>%[nX? TRUE &amp; FALSE ?</screen>
+    <screen>%[nX? TRUE &amp; FALSE ?</screen>
 
-		<itemizedlist>
-		<listitem><para><quote>n</quote> is an optional count (defaults to 1 if missing)</para></listitem>
-		<listitem><para><quote>X</quote> is the time period</para></listitem>
-		</itemizedlist>
+    <itemizedlist>
+    <listitem><para><quote>n</quote> is an optional count (defaults to 1 if missing)</para></listitem>
+    <listitem><para><quote>X</quote> is the time period</para></listitem>
+    </itemizedlist>
 
-		<table id="table-cond-date-format-codes">
-			<title>Date Formatting Codes</title>
-			<tgroup cols="2">
-				<thead>
-					<row>
-						<entry>Letter</entry>
-						<entry>Time Period</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry>y</entry>
-						<entry>Years</entry>
-					</row>
-					<row>
-						<entry>m</entry>
-						<entry>Months</entry>
-					</row>
-					<row>
-						<entry>w</entry>
-						<entry>Weeks</entry>
-					</row>
-					<row>
-						<entry>d</entry>
-						<entry>Days</entry>
-					</row>
-					<row>
-						<entry>H</entry>
-						<entry>Hours</entry>
-					</row>
-					<row>
-						<entry>M</entry>
-						<entry>Minutes</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
+    <table id="table-cond-date-format-codes">
+      <title>Date Formatting Codes</title>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Letter</entry>
+            <entry>Time Period</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>y</entry>
+            <entry>Years</entry>
+          </row>
+          <row>
+            <entry>m</entry>
+            <entry>Months</entry>
+          </row>
+          <row>
+            <entry>w</entry>
+            <entry>Weeks</entry>
+          </row>
+          <row>
+            <entry>d</entry>
+            <entry>Days</entry>
+          </row>
+          <row>
+            <entry>H</entry>
+            <entry>Hours</entry>
+          </row>
+          <row>
+            <entry>M</entry>
+            <entry>Minutes</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
-		<table id="table-cond-date-example-tests">
-			<title>Example Date Tests</title>
-			<tgroup cols="2">
-				<thead>
-					<row>
-						<entry>Test</entry>
-						<entry>Meaning</entry>
-					</row>
-				</thead>
-				<tbody>
-					<row>
-						<entry><literal>%[y</literal></entry>
-						<entry>This year</entry>
-					</row>
-					<row>
-						<entry><literal>%[1y</literal></entry>
-						<entry>This year</entry>
-					</row>
-					<row>
-						<entry><literal>%[6m</literal></entry>
-						<entry>In the last 6 months</entry>
-					</row>
-					<row>
-						<entry><literal>%[w</literal></entry>
-						<entry>This week</entry>
-					</row>
-					<row>
-						<entry><literal>%[d</literal></entry>
-						<entry>Today</entry>
-					</row>
-					<row>
-						<entry><literal>%[4H</literal></entry>
-						<entry>In the last 4 hours</entry>
-					</row>
-				</tbody>
-			</tgroup>
-		</table>
+    <table id="table-cond-date-example-tests">
+      <title>Example Date Tests</title>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Test</entry>
+            <entry>Meaning</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>%[y</literal></entry>
+            <entry>This year</entry>
+          </row>
+          <row>
+            <entry><literal>%[1y</literal></entry>
+            <entry>This year</entry>
+          </row>
+          <row>
+            <entry><literal>%[6m</literal></entry>
+            <entry>In the last 6 months</entry>
+          </row>
+          <row>
+            <entry><literal>%[w</literal></entry>
+            <entry>This week</entry>
+          </row>
+          <row>
+            <entry><literal>%[d</literal></entry>
+            <entry>Today</entry>
+          </row>
+          <row>
+            <entry><literal>%[4H</literal></entry>
+            <entry>In the last 4 hours</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
 
-		<sect3 id="cond-date-example1">
-			<title>Example 1</title>
+    <sect3 id="cond-date-example1">
+      <title>Example 1</title>
 
-			<para>We start with a one-condition test.</para>
+      <para>We start with a one-condition test.</para>
 
-			<table id="table-cond-date-example1">
-				<title>Example 1</title>
-				<tgroup cols="4">
-					<thead>
-						<row>
-							<entry>Test</entry>
-							<entry>Date Range</entry>
-							<entry>Format String</entry>
-							<entry>Example</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry><literal>%[1m</literal></entry>
-							<entry>This month</entry>
-							<entry><literal>%[%b %d]</literal></entry>
-							<entry>Dec 10</entry>
-						</row>
-						<row>
-							<entry></entry>
-							<entry>Older</entry>
-							<entry><literal>%[%Y-%m-%d]</literal></entry>
-							<entry>2015-04-23</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
+      <table id="table-cond-date-example1">
+        <title>Example 1</title>
+        <tgroup cols="4">
+          <thead>
+            <row>
+              <entry>Test</entry>
+              <entry>Date Range</entry>
+              <entry>Format String</entry>
+              <entry>Example</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><literal>%[1m</literal></entry>
+              <entry>This month</entry>
+              <entry><literal>%[%b %d]</literal></entry>
+              <entry>Dec 10</entry>
+            </row>
+            <row>
+              <entry></entry>
+              <entry>Older</entry>
+              <entry><literal>%[%Y-%m-%d]</literal></entry>
+              <entry>2015-04-23</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
 
-			<para>The $index_format string would contain:</para>
+      <para>The $index_format string would contain:</para>
 <screen>
 %?[1m?%[%b %d]&amp;%[%Y-%m-%d]?
 </screen>
  
-			<para>
-				Reparsed a little, for clarity, you can see the
-				test condition and the two format strings.
-			</para>
+      <para>
+        Reparsed a little, for clarity, you can see the
+        test condition and the two format strings.
+      </para>
 
 <screen>
 %?[1m?        &amp;           ?
       %[%b %d] %[%Y-%m-%d]
 </screen>
 
-		</sect3>
+    </sect3>
 
-		<sect3 id="cond-date-example2">
-			<title>Example 2</title>
+    <sect3 id="cond-date-example2">
+      <title>Example 2</title>
 
-			<para>
-			This example contains three test conditions and four date formats.
-			</para>
+      <para>
+      This example contains three test conditions and four date formats.
+      </para>
 
-			<table id="table-cond-date-example2">
-				<title>Example 2</title>
-				<tgroup cols="4">
-					<thead>
-						<row>
-							<entry>Test</entry>
-							<entry>Date Range</entry>
-							<entry>Format String</entry>
-							<entry>Example</entry>
-						</row>
-					</thead>
-					<tbody>
-						<row>
-							<entry><literal>%[d</literal></entry>
-							<entry>Today</entry>
-							<entry><literal>%[%H:%M ] </literal></entry>
-							<entry>12:34</entry>
-						</row>
-						<row>
-							<entry><literal>%[m</literal></entry>
-							<entry>This month</entry>
-							<entry><literal>%[%a %d]</literal></entry>
-							<entry>Thu 12</entry>
-						</row>
-						<row>
-							<entry><literal>%[y</literal></entry>
-							<entry>This year</entry>
-							<entry><literal>%[%b %d]</literal></entry>
-							<entry>Dec 10</entry>
-						</row>
-						<row>
-							<entry></entry>
-							<entry>Older</entry>
-							<entry><literal>%[%m/%y ]</literal></entry>
-							<entry>06/15</entry>
-						</row>
-					</tbody>
-				</tgroup>
-			</table>
+      <table id="table-cond-date-example2">
+        <title>Example 2</title>
+        <tgroup cols="4">
+          <thead>
+            <row>
+              <entry>Test</entry>
+              <entry>Date Range</entry>
+              <entry>Format String</entry>
+              <entry>Example</entry>
+            </row>
+          </thead>
+          <tbody>
+            <row>
+              <entry><literal>%[d</literal></entry>
+              <entry>Today</entry>
+              <entry><literal>%[%H:%M ] </literal></entry>
+              <entry>12:34</entry>
+            </row>
+            <row>
+              <entry><literal>%[m</literal></entry>
+              <entry>This month</entry>
+              <entry><literal>%[%a %d]</literal></entry>
+              <entry>Thu 12</entry>
+            </row>
+            <row>
+              <entry><literal>%[y</literal></entry>
+              <entry>This year</entry>
+              <entry><literal>%[%b %d]</literal></entry>
+              <entry>Dec 10</entry>
+            </row>
+            <row>
+              <entry></entry>
+              <entry>Older</entry>
+              <entry><literal>%[%m/%y ]</literal></entry>
+              <entry>06/15</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
 
-			<para>The $index_format string would contain:</para>
+      <para>The $index_format string would contain:</para>
  
 <screen>
 %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;%[%b %d]&gt;&amp;%[%m/%y ]&gt;
 </screen>
 
-			<para>
-				Reparsed a little, for clarity, you can see the
-				test conditions and the four format strings.
-			</para>
+      <para>
+        Reparsed a little, for clarity, you can see the
+        test conditions and the four format strings.
+      </para>
 
 <screen>
 %&lt;[y?                                       &amp;%[%m/%y ]&gt;  Older
@@ -9612,57 +9612,57 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
                %[%H:%M ]                                 Today
 </screen>
 
-			<para>
-			This a another view of the same example, with some whitespace
-			for clarity.
-			</para>
+      <para>
+      This a another view of the same example, with some whitespace
+      for clarity.
+      </para>
 
 <screen>
 %&lt;[y? %&lt;[m? %&lt;[d? AAA &amp; BBB &gt; &amp; CCC &gt; &amp; DDD &gt;
 </screen>
 
-			<literallayout>
+      <literallayout>
 AAA = %[%H:%M ]
 BBB = %[%a %d]
 CCC = %[%b %d]
 DDD = %[%m/%y ]
-			</literallayout>
-		</sect3>
-	</sect2>
+      </literallayout>
+    </sect3>
+  </sect2>
 
-	<sect2 id="cond-date-variables">
-		<title>Variables</title>
+  <sect2 id="cond-date-variables">
+    <title>Variables</title>
 
         <para>
-		The <quote>cond-date</quote> patch doesn't have any config of its own.
-		It modifies the behavior of the format strings.
+    The <quote>cond-date</quote> patch doesn't have any config of its own.
+    It modifies the behavior of the format strings.
         </para>
-	</sect2>
+  </sect2>
 
 <!--
-	<sect2 id="cond-date-functions">
-		<title>Functions</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="cond-date-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="cond-date-commands">
-		<title>Commands</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="cond-date-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="cond-date-colors">
-		<title>Colors</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="cond-date-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
 
-	<sect2 id="cond-date-sort">
-		<title>Sort</title>
-		<para>None</para>
-	</sect2>
+  <sect2 id="cond-date-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
 -->
 
-	<sect2 id="cond-date-muttrc">
-		<title>Muttrc</title>
+  <sect2 id="cond-date-muttrc">
+    <title>Muttrc</title>
 <screen>
 <emphasis role="comment"># Example Mutt config file for the 'index-color' feature.
 #
@@ -9681,40 +9681,40 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
  
 # vim: syntax=muttrc</emphasis>
 </screen>
-	</sect2>
+  </sect2>
 
-	<sect2 id="cond-date-see-also">
-		<title>See Also</title>
+  <sect2 id="cond-date-see-also">
+    <title>See Also</title>
 
-		<itemizedlist>
-			<listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-			<listitem><para><link linkend="index-format">$index_format</link></para></listitem>
-			<listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
-			<listitem><para><literal>strftime(3)</literal></para></listitem>
-		</itemizedlist>
-	</sect2>
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+      <listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
+      <listitem><para><literal>strftime(3)</literal></para></listitem>
+    </itemizedlist>
+  </sect2>
 
-	<sect2 id="cond-date-known-bugs">
-		<title>Known Bugs</title>
+  <sect2 id="cond-date-known-bugs">
+    <title>Known Bugs</title>
 
-		<para>
-			Date parsing doesn't quite do what you expect.
-			<quote>1w</quote> doesn't mean the <quote>in the last 7 days</quote>, but
-			<quote><emphasis>this</emphasis> week</quote>.  This doesn't match
-			the normal Mutt behaviour: for example <literal>~d>1w</literal>
-			means emails dated in the last 7 days.
-		</para>
+    <para>
+      Date parsing doesn't quite do what you expect.
+      <quote>1w</quote> doesn't mean the <quote>in the last 7 days</quote>, but
+      <quote><emphasis>this</emphasis> week</quote>.  This doesn't match
+      the normal Mutt behaviour: for example <literal>~d>1w</literal>
+      means emails dated in the last 7 days.
+    </para>
 
-	</sect2>
+  </sect2>
 
-	<sect2 id="cond-date-credits">
-		<title>Credits</title>
-		<itemizedlist>
-		<listitem><para>Aaron Schrab <email>aaron@schrab.com</email></para></listitem>
-		<listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
-		<listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-		</itemizedlist>
-	</sect2>
+  <sect2 id="cond-date-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Aaron Schrab <email>aaron@schrab.com</email></para></listitem>
+    <listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
 </sect1>
 
 <sect1 id="fmemopen">
