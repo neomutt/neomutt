@@ -8466,7 +8466,7 @@ DDD = %[%m/%y ]
   <sect2 id="cond-date-muttrc">
     <title>Muttrc</title>
 <screen>
-<emphasis role="comment"># Example Mutt config file for the 'index-color' feature.
+<emphasis role="comment"># Example Mutt config file for the 'cond-date' feature.
 #
 # The default index_format is:
 #       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&amp;%4c?) %s'

@@ -1,4 +1,4 @@
-# Example Mutt config file for the 'index-color' feature.
+# Example Mutt config file for the 'cond-date' feature.
 #
 # The default index_format is:
 #       '%4C %Z %{%b %d} %-15.15L (%?l?%4l&%4c?) %s'
