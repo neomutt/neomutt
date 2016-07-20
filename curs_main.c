@@ -489,18 +489,22 @@ static void resort_index (MUTTMENU *menu)
  * If two regexes start at the same place, the longer match will be used.
  */
 void
-mutt_draw_statusline (int cols, const char *buf)
+mutt_draw_statusline (int cols, const char *buf, int buflen)
 {
 	int i      = 0;
 	int offset = 0;
 	int found  = 0;
 	int chunks = 0;
+	int len    = 0;
 
 	struct syntax_t {
 		int color;
 		int first;
 		int last;
 	} *syntax = NULL;
+
+	if (!buf)
+		return;
 
 	do {
 		COLOR_LINE *cl;
@@ -541,36 +545,48 @@ mutt_draw_statusline (int cols, const char *buf)
 		}
 	} while (found);
 
-	int len = mutt_strlen (buf);
-	int base = 0;
+	/* Only 'len' bytes will fit into 'cols' screen columns */
+	len = mutt_wstr_trunc (buf, buflen, cols, NULL);
+
+	offset = 0;
 
 	if ((chunks > 0) && (syntax[0].first > 0)) {
 		/* Text before the first highlight */
-		addnstr (buf, syntax[0].first);
+		addnstr (buf, MIN(len, syntax[0].first));
 		attrset (ColorDefs[MT_COLOR_STATUS]);
-		base = syntax[0].first;
+		if (len <= syntax[0].first)
+			goto dsl_finish;	/* no more room */
+
+		offset = syntax[0].first;
 	}
 
 	for (i = 0; i < chunks; i++) {
 		/* Highlighted text */
 		attrset (syntax[i].color);
-		addnstr (buf + base, syntax[i].last - base);
+		addnstr (buf + offset, MIN(len, syntax[i].last) - offset);
+		if (len <= syntax[i].last)
+			goto dsl_finish;	/* no more room */
+
+		int next;
 		if ((i + 1) == chunks) {
-			base = len;
+			next = len;
 		} else {
-			base = syntax[i+1].first;
+			next = MIN (len, syntax[i+1].first);
 		}
-		if (syntax[i].last < base) {
-			/* Normal (un-highlighted) text */
-			attrset (ColorDefs[MT_COLOR_STATUS]);
-			addnstr (buf + syntax[i].last, base - syntax[i].last);
-		}
+
+		attrset (ColorDefs[MT_COLOR_STATUS]);
+		offset = syntax[i].last;
+		addnstr (buf + offset, next - offset);
+
+		offset = next;
+		if (offset >= len)
+			goto dsl_finish;	/* no more room */
 	}
 
 	attrset (ColorDefs[MT_COLOR_STATUS]);
-	if (base < len) {
+	if (offset < len) {
 		/* Text after the last highlight */
-		addnstr (buf + base, len - base);
+		addnstr (buf + offset, len - offset);
 	}
 
 	int width = mutt_strwidth (buf);
@@ -578,7 +594,7 @@ mutt_draw_statusline (int cols, const char *buf)
 		/* Pad the rest of the line with whitespace */
 		mutt_paddstr (cols - width, "");
 	}
-
+dsl_finish:
 	safe_free (&syntax);
 }
 
@@ -738,7 +754,7 @@ int mutt_index_menu (void)
 	menu_status_line (buf, sizeof (buf), menu, NONULL (Status));
 	move (option (OPTSTATUSONTOP) ? 0 : LINES-2, 0);
 	SETCOLOR (MT_COLOR_STATUS);
-	mutt_draw_statusline (COLS, buf);
+	mutt_draw_statusline (COLS, buf, sizeof (buf));
 	NORMAL_COLOR;
 	menu->redraw &= ~REDRAW_STATUS;
 	if (option(OPTTSENABLED) && TSSupported)

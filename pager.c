@@ -1804,13 +1804,13 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	size_t l2 = sizeof (buffer);
 	hfi.hdr = (IsHeader (extra)) ? extra->hdr : extra->bdy->hdr;
 	mutt_make_string_info (buffer, l1 < l2 ? l1 : l2, NONULL (PagerFmt), &hfi, M_FORMAT_MAKEPRINT);
-	mutt_draw_statusline (COLS, buffer);
+	mutt_draw_statusline (COLS, buffer, l2);
       }
       else
       {
 	char bn[STRING];
 	snprintf (bn, sizeof (bn), "%s (%s)", banner, pager_progress_str);
-	mutt_draw_statusline (COLS, bn);
+	mutt_draw_statusline (COLS, bn, sizeof (bn));
       }
       NORMAL_COLOR;
       if (option(OPTTSENABLED) && TSSupported)
