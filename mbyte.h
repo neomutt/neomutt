@@ -49,5 +49,6 @@ void mutt_set_charset (char *charset);
 extern int Charset_is_utf8;
 size_t utf8rtowc (wchar_t *pwc, const char *s, size_t n, mbstate_t *_ps);
 wchar_t replacement_char (void);
+int is_display_corrupting_utf8 (wchar_t wc);
 
 #endif /* _MBYTE_H */
