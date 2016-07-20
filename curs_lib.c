@@ -531,8 +531,8 @@ void mutt_reflow_windows (void)
   MuttMessageWindow->row_offset = LINES - 1;
 
   memcpy (MuttIndexWindow, MuttStatusWindow, sizeof (mutt_window_t));
-  MuttIndexWindow->rows = LINES - MuttStatusWindow->rows - MuttHelpWindow->rows -
-                          MuttMessageWindow->rows;
+  MuttIndexWindow->rows = MAX(LINES - MuttStatusWindow->rows -
+			      MuttHelpWindow->rows - MuttMessageWindow->rows, 0);
   MuttIndexWindow->row_offset = option (OPTSTATUSONTOP) ? MuttStatusWindow->rows :
                                                           MuttHelpWindow->rows;
 
