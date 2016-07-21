@@ -849,11 +849,13 @@ static int trash_append (CONTEXT *ctx)
         if (mutt_append_message (ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
           mx_close_mailbox (ctx_trash, NULL);
+          FREE (&ctx_trash);
           return -1;
         }
       }
 
     mx_close_mailbox (ctx_trash, NULL);
+    FREE (&ctx_trash);
   }
   else
   {
