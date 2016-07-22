@@ -1,0 +1,56 @@
+# Wildcard ignores
+*.o
+*.a
+*.in
+
+# Ignore these files in all subdirectories
+**/Makefile
+
+# Ignore directories
+**/.deps/
+autom4te.cache/
+
+# Wildcard ignored within subdirectories
+po/*.gmo
+doc/*.html
+doc/*.1
+
+
+doc/instdoc.sh
+doc/Muttrc
+doc/makedoc
+doc/manual.txt
+doc/manual.xml
+doc/muttrc.man
+doc/stamp-doc-chunked
+doc/stamp-doc-rc
+doc/stamp-doc-xml
+
+po/POTFILES
+
+aclocal.m4
+compile
+config.guess
+config.h
+config.log
+config.status
+config.sub
+configure
+conststrings.c
+depcomp
+flea
+hcachever.sh
+hcversion.h
+install-sh
+keymap_defs.h
+missing
+mutt
+mutt_md5
+muttbug.sh
+patchlist.c
+pgpewrap
+pgpring
+reldate.h
+smime_keys
+stamp-h1
+txt2c
