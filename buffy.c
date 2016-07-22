@@ -417,7 +417,7 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
 {
   int rc = 0;
   int new_or_changed;
-  CONTEXT *ctx = NULL;
+  CONTEXT ctx;
 
   if (option (OPTCHECKMBOXSIZE))
     new_or_changed = sb->st_size > mailbox->size;
@@ -446,15 +446,15 @@ static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
   if (check_stats &&
       (mailbox->stats_last_checked < sb->st_mtime))
   {
-    if ((ctx = mx_open_mailbox (mailbox->path,
-                                MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
-                                NULL)) != NULL)
+    if (mx_open_mailbox (mailbox->path,
+                         MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
+                         &ctx) != NULL)
     {
-      mailbox->msg_count       = ctx->msgcount;
-      mailbox->msg_unread      = ctx->unread;
-      mailbox->msg_flagged     = ctx->flagged;
-      mailbox->stats_last_checked = ctx->mtime;
-      mx_close_mailbox (ctx, 0);
+      mailbox->msg_count       = ctx.msgcount;
+      mailbox->msg_unread      = ctx.unread;
+      mailbox->msg_flagged     = ctx.flagged;
+      mailbox->stats_last_checked = ctx.mtime;
+      mx_close_mailbox (&ctx, 0);
     }
   }
 

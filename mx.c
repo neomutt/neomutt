@@ -800,7 +800,7 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
 /* move deleted mails to the trash folder */
 static int trash_append (CONTEXT *ctx)
 {
-  CONTEXT *ctx_trash;
+  CONTEXT ctx_trash;
   int i;
   struct stat st, stc;
   int opt_confappend, rc;
@@ -840,22 +840,20 @@ static int trash_append (CONTEXT *ctx)
   }
 #endif
 
-  if ((ctx_trash = mx_open_mailbox (TrashPath, MUTT_APPEND, NULL)) != NULL)
+  if (mx_open_mailbox (TrashPath, MUTT_APPEND, &ctx_trash) != NULL)
   {
     /* continue from initial scan above */
     for (; i < ctx->msgcount ; i++)
       if (ctx->hdrs[i]->deleted  && (!ctx->hdrs[i]->purge))
       {
-        if (mutt_append_message (ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
+        if (mutt_append_message (&ctx_trash, ctx, ctx->hdrs[i], 0, 0) == -1)
         {
-          mx_close_mailbox (ctx_trash, NULL);
-          FREE (&ctx_trash);
+          mx_close_mailbox (&ctx_trash, NULL);
           return -1;
         }
       }
 
-    mx_close_mailbox (ctx_trash, NULL);
-    FREE (&ctx_trash);
+    mx_close_mailbox (&ctx_trash, NULL);
   }
   else
   {
