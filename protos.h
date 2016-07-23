@@ -87,6 +87,7 @@ void mutt_set_parameter (const char *, const char *, PARAMETER **);
 
 #ifdef USE_NOTMUCH
 int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
+int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err);
 #endif
 
 FILE *mutt_open_read (const char *, pid_t *);

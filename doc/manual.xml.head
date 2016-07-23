@@ -12247,6 +12247,16 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
         </arg>
       </group>
 
+      <command>unvirtual-mailboxes</command>
+      <group choice="req">
+        <arg choice="plain">
+          <replaceable class="parameter">*</replaceable>
+        </arg>
+        <arg choice="plain" rep="repeat">
+          <replaceable class="parameter">mailbox</replaceable>
+        </arg>
+      </group>
+
       <command>tag-transforms</command>
       <arg choice="plain">
         <replaceable class="parameter">tag</replaceable>
@@ -12391,6 +12401,8 @@ bind index,pager \eX vfolder-from-query
 
 # virtual-mailboxes description notmuch-URI { description notmuch-URI ...}
 # virtual-mailboxes &quot;Climbing&quot; &quot;notmuch://?query=climbing&quot;
+
+# unvirtual-mailboxes { * | mailbox ...}
 
 # Replace some tags with icons
 # tag-transforms tag transformed-string { tag transformed-string ...}

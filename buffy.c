@@ -506,12 +506,66 @@ int mutt_parse_virtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, B
     if (!*tmp)
       *tmp = buffy_new (buf);
 
+    (*tmp)->magic = MUTT_NOTMUCH;
     (*tmp)->new = 0;
     (*tmp)->notified = 1;
     (*tmp)->newly_created = 0;
     (*tmp)->size = 0;
     (*tmp)->desc = desc;
+#ifdef USE_SIDEBAR
+    mutt_sb_notify_mailbox (*tmp, 1);
+#endif
   }
+#ifdef USE_SIDEBAR
+  mutt_sb_draw();
+#endif
+  return 0;
+}
+
+int mutt_parse_unvirtual_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  BUFFY **tmp, *tmp1;
+
+  while (MoreArgs (s))
+  {
+    mutt_extract_token (path, s, 0);
+
+    if (mutt_strcmp (path->data, "*") == 0)
+    {
+      for (tmp = &VirtIncoming; *tmp;)
+      {
+        tmp1 = (*tmp)->next;
+#ifdef USE_SIDEBAR
+        mutt_sb_notify_mailbox (*tmp, 0);
+#endif
+        buffy_free (tmp);
+        *tmp = tmp1;
+      }
+#ifdef USE_SIDEBAR
+      mutt_sb_draw();
+#endif
+      return 0;
+    }
+
+    for (tmp = &VirtIncoming; *tmp; tmp = &((*tmp)->next))
+    {
+      if ((mutt_strcasecmp (path->data, (*tmp)->path) == 0) ||
+          (mutt_strcasecmp (path->data, (*tmp)->desc) == 0))
+      {
+        tmp1 = (*tmp)->next;
+#ifdef USE_SIDEBAR
+        mutt_sb_notify_mailbox (*tmp, 0);
+#endif
+        buffy_free (tmp);
+        *tmp = tmp1;
+        break;
+      }
+    }
+  }
+
+#ifdef USE_SIDEBAR
+  mutt_sb_draw();
+#endif
   return 0;
 }
 #endif

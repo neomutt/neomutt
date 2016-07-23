@@ -4401,6 +4401,7 @@ const struct command_t Commands[] = {
   { "unmailboxes",	mutt_parse_mailboxes,	MUTT_UNMAILBOXES },
 #ifdef USE_NOTMUCH
   { "virtual-mailboxes",mutt_parse_virtual_mailboxes, 0 },
+  { "unvirtual-mailboxes",mutt_parse_unvirtual_mailboxes, 0 },
   { "tag-transforms",	parse_tag_transforms,	0 },
   { "tag-formats",	parse_tag_formats,	0 },
 #endif
