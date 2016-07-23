@@ -996,7 +996,8 @@ then
 
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
-    if test x$ac_bdb_prefix != xno && test $db_found = no
+    if test x$with_bdb != xno && test $db_found = no \
+	    && test "$db_requested" = auto -o "$db_requested" = bdb
     then
         if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
         then
