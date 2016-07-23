@@ -1,3 +1,41 @@
+2016-07-23  Richard Russon  <rich@flatcap.org>
+* New Motto: "Teaching an Old Dog New Tricks"
+  - Thanks to Alok Singh
+* New Features
+  - New Mail Command - Execute a command on receipt of new mail
+  - vim-keybindings - Mutt config for vim users
+  - LMDB: In-memory header caching database
+  - SMIME Encrypt to Self - Secure storage of sensitive email
+* Bug Fixes
+  - rework mutt_draw_statusline()
+  - fix cursor position after sidebar redraw
+  - Add sidebar_format flag '%n' to display 'N' on new mail.
+  - fix index_format truncation problem
+  - Fix compiler warnings due to always true condition
+  - Change sidebar next/prev-new to look at buffy->new too.
+  - Change the default for sidebar_format to use %n.
+  - sidebar "unsorted" order to match Buffy list order.
+  - Include ncurses tinfo library if found.
+  - Sidebar width problem
+  - sidebar crash for non-existent mailbox
+  - Temporary compatibility workaround
+  - Reset buffy->new for the current mailbox in IMAP.
+  - version.sh regression
+  - crash when notmuch tries to read a message
+  - status line wrapping
+* Docs
+  - Mass tidy up of the docs
+  - Fix xml validation
+  - Add missing docs for new features
+* Travis
+  - New build system:
+    https://github.com/neomutt/travis-build
+    Now we have central control over what gets built
+
+2016-07-09  Richard Russon  <rich@flatcap.org>
+* Bug-fixes
+  - This release was a temporary measure
+
 2016-06-11  Richard Russon  <rich@flatcap.org>
 * Change in behaviour
   - Temporarily disable $sidebar_refresh_time

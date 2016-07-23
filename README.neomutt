@@ -23,13 +23,16 @@ sorted through them, fixed them up and documented them.
 | Initials Expando     | Expando for Author's Initials
 | Keywords             | Labels/Tagging for emails
 | Limit-Current-Thread | Limit Index View to Current Thread
+| LMDB                 | LMDB backend for the header cache
 | Nested If            | Allow deeply nested conditionals in format strings
+| New Mail Command     | Run a command when new mail arrives
 | NNTP                 | Talk to a Usenet news server
 | Notmuch              | Powerful email search engine
 | Progress Bar         | Colourful Progress Bar
 | Quasi-Delete         | Hide emails from view, but don't delete them
 | Sidebar              | Panel containing list of Mailboxes
 | Skip-Quoted          | Skip Quoted Text
+| SMIME Encrypt to Self| Save an self-encrypted copy of emails
 | Status Color         | Theming of the Status Bar
 | TLS-SNI              | Negotiate with a Server for a Certificate
 | Trash Folder         | Move 'deleted' emails to a trash folder
@@ -40,6 +43,7 @@ sorted through them, fixed them up and documented them.
 - Releases:        https://github.com/neomutt/neomutt/releases/latest
 - Questions/Bugs:  https://github.com/neomutt/neomutt/issues
 - Website:         http://www.neomutt.org/
+- IRC              irc://irc.freenode.net/neomutt
 - Development:     http://www.neomutt.org/devel/
 
 ## NeoMutt Developers
