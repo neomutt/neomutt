@@ -8407,7 +8407,7 @@ bind index,pager y edit-label
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
       <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
       <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
