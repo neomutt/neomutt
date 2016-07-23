@@ -8458,7 +8458,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
     <title>See Also</title>
 
     <itemizedlist>
-      <listitem><para><ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
       <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
       <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
       <listitem><para><link linkend="tmpdir">$tmpdir</link></para></listitem>
