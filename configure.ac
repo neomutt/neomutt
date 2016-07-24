@@ -919,7 +919,7 @@ then
 
     if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "no"
     then
-      db_requested=tc
+      db_requested=TokyoCabinet
     fi
     if test -n "$with_qdbm" && test "$with_qdbm" != "no"
     then
@@ -927,7 +927,7 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=qdbm
+        db_requested=QDBM
       fi
     fi
     if test -n "$with_gdbm" && test "$with_gdbm" != "no"
@@ -936,7 +936,7 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=gdbm
+        db_requested=GDBM
       fi
     fi
     if test -n "$with_bdb" && test "$with_bdb" != "no"
@@ -945,7 +945,7 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=bdb
+        db_requested=BDB
       fi
     fi
     if test -n "$with_lmdb" && test "$with_lmdb" != "no"
@@ -954,13 +954,13 @@ then
       then
         AC_MSG_ERROR([more than one header cache engine requested.])
       else
-        db_requested=lmdb
+        db_requested=LMDB
       fi
     fi
     
     dnl -- Tokyo Cabinet --
     if test "$with_tokyocabinet" != "no" \
-	    && test "$db_requested" = auto -o "$db_requested" = tc
+	    && test "$db_requested" = auto -o "$db_requested" = TokyoCabinet
     then
       if test -n "$with_tokyocabinet" && test "$with_tokyocabinet" != "yes"
       then
@@ -972,7 +972,7 @@ then
       AC_CHECK_LIB(tokyocabinet, tcbdbopen,
         [MUTTLIBS="$MUTTLIBS -ltokyocabinet"
          AC_DEFINE(HAVE_TC, 1, [Tokyo Cabinet Support])
-         db_found=tc],
+         db_found=TokyoCabinet],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"]))
       if test "$db_requested" != auto && test "$db_found" != "$db_requested"
@@ -983,7 +983,7 @@ then
 
     dnl -- QDBM --
     if test "$with_qdbm" != "no" && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = qdbm
+	    && test "$db_requested" = auto -o "$db_requested" = QDBM
     then
       if test -n "$with_qdbm" && test "$with_qdbm" != "yes"
       then
@@ -1004,7 +1004,7 @@ then
       AC_CHECK_LIB(qdbm, vlopen,
         [MUTTLIBS="$MUTTLIBS -lqdbm"
          AC_DEFINE(HAVE_QDBM, 1, [QDBM Support])
-         db_found=qdbm],
+         db_found=QDBM],
         [CPPFLAGS="$OLDCPPFLAGS"
          LDFLAGS="$OLDLDFLAGS"])
       LIBS="$saved_LIBS"
@@ -1016,7 +1016,7 @@ then
 
     dnl -- GDBM --
     if test x$with_gdbm != xno && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = gdbm
+	    && test "$db_requested" = auto -o "$db_requested" = GDBM
     then
         if test "$with_gdbm" != "yes"
         then
@@ -1034,7 +1034,7 @@ then
         then
           AC_DEFINE(HAVE_GDBM, 1, [GDBM Support])
           MUTTLIBS="$MUTTLIBS -lgdbm"
-          db_found=gdbm
+          db_found=GDBM
         fi
         if test "$db_requested" != auto && test "$db_found" != "$db_requested"
         then
@@ -1045,7 +1045,7 @@ then
     dnl -- BDB --
     ac_bdb_prefix="$with_bdb"
     if test x$with_bdb != xno && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = bdb
+	    && test "$db_requested" = auto -o "$db_requested" = BDB
     then
         if test x$ac_bdb_prefix = xyes || test x$ac_bdb_prefix = x
         then
@@ -1095,7 +1095,7 @@ then
             CPPFLAGS="$OLDCPPFLAGS -I$BDB_INCLUDE_DIR"
             LIBS="$OLDLIBS -L$BDB_LIB_DIR -l$BDB_LIB"
             AC_DEFINE(HAVE_DB4, 1, [Berkeley DB4 Support])
-            db_found=bdb
+            db_found=BDB
         else
             AC_MSG_RESULT(no)
         fi
@@ -1103,7 +1103,7 @@ then
 
     dnl -- LMDB --
     if test x$with_lmdb != xno && test $db_found = no \
-	    && test "$db_requested" = auto -o "$db_requested" = lmdb
+	    && test "$db_requested" = auto -o "$db_requested" = LMDB
     then
         if test "$with_lmdb" != "yes"
         then
@@ -1121,7 +1121,7 @@ then
         then
           AC_DEFINE(HAVE_LMDB, 1, [LMDB Support])
           MUTTLIBS="$MUTTLIBS -llmdb"
-          db_found=lmdb
+          db_found=LMDB
         fi
         if test "$db_requested" != auto && test "$db_found" != "$db_requested"
         then
@@ -1131,7 +1131,7 @@ then
 
     if test $db_found = no
     then
-        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM or Berkeley DB4 for hcache])
+        AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM, Berkeley DB4 or LMDB for hcache])
     fi
 fi
 hcache_db_used=$db_found
