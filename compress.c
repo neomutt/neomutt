@@ -105,6 +105,7 @@ restore_path (CONTEXT *ctx)
 
 	FREE(&ctx->path);
 	ctx->path = ctx->realpath;
+	ctx->realpath = NULL;
 }
 
 /**
@@ -492,7 +493,6 @@ comp_check_mailbox (CONTEXT *ctx)
 
 	if (get_size (ctx->realpath) != ci->size) {
 		FREE(&ctx->compress_info);
-		FREE(&ctx->realpath);
 		mutt_error _("Mailbox was corrupted!");
 		return -1;
 	}
