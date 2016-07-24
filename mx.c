@@ -756,7 +756,7 @@ CONTEXT *mx_open_mailbox (const char *path, int flags, CONTEXT *pctx)
     case M_NOTMUCH:
       rc = nm_read_query (ctx);
       break;
-#endif /* USE_IMAP */
+#endif /* USE_NOTMUCH */
 
 #ifdef USE_NNTP
     case M_NNTP:

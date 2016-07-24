@@ -171,8 +171,8 @@ AS_IF([test x$enable_sidebar = "xyes"], [
 	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS sidebar.o"
 ])
 
-AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]),
-[       if test x$enableval = xyes ; then
+AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH support]), enable_notmuch=$enableval, enable_notmuch=no)
+AS_IF([test x$enable_notmuch = "xyes"], [
 		AC_CHECK_LIB(notmuch, notmuch_database_open,,
 			AC_MSG_ERROR([Unable to find Notmuch library]))
 		AC_DEFINE(USE_NOTMUCH,1,[ Define if you want support for the notmuch. ])
@@ -191,7 +191,6 @@ AC_ARG_ENABLE(notmuch, AC_HELP_STRING([--enable-notmuch], [Enable NOTMUCH suppor
 		[notmuch_api_3=no]
 		)
 		AC_MSG_RESULT([$notmuch_api_3])
-        fi
 ])
 AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
