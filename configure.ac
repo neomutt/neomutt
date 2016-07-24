@@ -897,6 +897,7 @@ AC_ARG_ENABLE(exact-address, AS_HELP_STRING([--enable-exact-address],[Enable reg
 dnl -- start cache --
 db_found=no
 db_requested=auto
+hcache_db_used=no
 AC_ARG_ENABLE(hcache, AS_HELP_STRING([--enable-hcache],[Enable header caching]))
 AC_ARG_WITH(tokyocabinet, AS_HELP_STRING([--without-tokyocabinet],[Don't use tokyocabinet even if it is available]))
 AC_ARG_WITH(qdbm, AS_HELP_STRING([--without-qdbm],[Don't use qdbm even if it is available]))
@@ -1133,6 +1134,7 @@ then
         AC_MSG_ERROR([You need Tokyo Cabinet, QDBM, GDBM or Berkeley DB4 for hcache])
     fi
 fi
+hcache_db_used=$db_found
 dnl -- end cache --
 
 AM_CONDITIONAL(BUILD_HCACHE, test x$db_found != xno)
@@ -1458,4 +1460,5 @@ AC_MSG_NOTICE([Summary of build options:
   Sidebar:           $enable_sidebar
   Notmuch:           $enable_notmuch
   Compressed Folder: $enable_compressed
+  Header Cache:      $hcache_db_used
 ])
