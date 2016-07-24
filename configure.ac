@@ -196,12 +196,13 @@ AM_CONDITIONAL(BUILD_NOTMUCH, test x$need_notmuch = xyes)
 
 
 AC_ARG_ENABLE(compressed, AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
-[       if test x$enableval = xyes ; then
-                AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
-                MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
-        fi
+              enable_compressed=$enableval, enable_compressed=no
+)
+AS_IF([test x$enable_compressed = "xyes"], [
+	   AC_DEFINE(USE_COMPRESSED, 1, [Define to enable compressed folders support.])
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
 ])
-AM_CONDITIONAL(BUILD_COMPRESS, test x$need_compress = xyes)
+AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
 
 AC_ARG_WITH(mixmaster, AS_HELP_STRING([--with-mixmaster@<:@=PATH@:>@],[Include Mixmaster support]),
   [if test "$withval" != no
