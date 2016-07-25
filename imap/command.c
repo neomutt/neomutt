@@ -901,6 +901,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   unsigned int olduv, oldun;
   long litlen;
   short new = 0;
+  short new_msg_count = 0;
 
   mailbox = imap_next_word (s);
 
@@ -940,7 +941,10 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     count = strtol (value, &value, 10);
 
     if (!ascii_strncmp ("MESSAGES", s, 8))
+    {
       status->messages = count;
+      new_msg_count = 1;
+    }
     else if (!ascii_strncmp ("RECENT", s, 6))
       status->recent = count;
     else if (!ascii_strncmp ("UIDNEXT", s, 7))
@@ -1019,7 +1023,8 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
           SidebarNeedsRedraw = 1;
 #endif
         inc->new = new;
-        inc->msg_count  = status->messages;
+	if (new_msg_count)
+		inc->msg_count = status->messages;
         inc->msg_unread = status->unseen;
 
 	if (inc->new)
