@@ -27,6 +27,7 @@
 #include <ctype.h>
 
 #include "mutt.h"
+#include "buffy.h"
 #include "imap_private.h"
 
 /* -- forward declarations -- */
@@ -208,42 +209,6 @@ int imap_browse (char* path, struct browser_state* state)
   return -1;
 }
 
-int imap_mailbox_state (const char* path, struct mailbox_state* state)
-{
-  IMAP_DATA* idata;
-  IMAP_MBOX mx;
-  IMAP_STATUS* status;
-
-  memset (state, 0, sizeof (*state));
-  if (imap_parse_path (path, &mx) < 0)
-  {
-    dprint (1, (debugfile, "imap_mailbox_state: bad path %s\n", path));
-    return -1;
-  }
-  if (!(idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW)))
-  {
-    dprint (2, (debugfile, "imap_mailbox_state: no open connection for %s\n",
-		path));
-    FREE (&mx.mbox);
-    return -1;
-  }
-
-  if (idata->ctx && !imap_mxcmp(mx.mbox, idata->mailbox))
-  {
-    state->new = idata->ctx->new;
-    state->messages = idata->ctx->msgcount;
-  }
-  else if ((status = imap_mboxcache_get (idata, mx.mbox, 0)))
-  {
-    state->new = status->unseen;
-    state->messages = status->messages;
-  }
-
-  FREE (&mx.mbox);
-
-  return 0;
-}
-
 /* imap_mailbox_create: Prompt for a new mailbox name, and try to create it */
 int imap_mailbox_create (const char* folder)
 {
@@ -409,6 +374,7 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   char tmp[LONG_STRING];
   char relpath[LONG_STRING];
   IMAP_MBOX mx;
+  BUFFY *b;
 
   if (imap_parse_path (state->folder, &mx))
     return;
@@ -458,6 +424,24 @@ static void imap_add_folder (char delim, char *folder, int noselect,
   (state->entry)[state->entrylen].delim = delim;
   (state->entry)[state->entrylen].selectable = !noselect;
   (state->entry)[state->entrylen].inferiors = !noinferiors;
+
+  b = Incoming;
+  while (b && mutt_strcmp (tmp, b->path))
+    b = b->next;
+  if (b)
+  {
+    if (Context &&
+        !mutt_strcmp (b->realpath, Context->realpath))
+    {
+      b->msg_count = Context->msgcount;
+      b->msg_unread = Context->unread;
+    }
+    (state->entry)[state->entrylen].has_buffy = 1;
+    (state->entry)[state->entrylen].new = b->new;
+    (state->entry)[state->entrylen].msg_count = b->msg_count;
+    (state->entry)[state->entrylen].msg_unread = b->msg_unread;
+  }
+
   (state->entrylen)++;
 
   FREE (&mx.mbox);

@@ -812,7 +812,9 @@ struct option_t MuttVars[] = {
   ** .dt %F  .dd file permissions
   ** .dt %g  .dd group name (or numeric gid, if missing)
   ** .dt %l  .dd number of hard links
-  ** .dt %N  .dd N if folder has new mail, blank otherwise
+  ** .dt %m  .dd number of messages in the mailbox *
+  ** .dt %n  .dd number of unread messages in the mailbox *
+  ** .dt %N  .dd N if mailbox has new mail, blank otherwise
   ** .dt %s  .dd size in bytes
   ** .dt %t  .dd ``*'' if the file is tagged, blank otherwise
   ** .dt %u  .dd owner name (or numeric uid, if missing)
@@ -822,6 +824,12 @@ struct option_t MuttVars[] = {
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** .pp
+  ** * = can be optionally printed if nonzero
+  ** .pp
+  ** %m, %n, and %N only work for monitored mailboxes.
+  ** %m requires $$mail_check_stats to be set.
+  ** %n requires $$mail_check_stats to be set (except for IMAP mailboxes).
   */
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
   /*

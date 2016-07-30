@@ -31,14 +31,18 @@ struct folder_file
   char *name;
   char *desc;
 
-  unsigned int new;
+  short new;               /* true if mailbox has "new mail" */
+  int msg_count;           /* total number of messages */
+  int msg_unread;          /* number of unread messages */
+
 #ifdef USE_IMAP
   char delim;
-  
+
   unsigned imap : 1;
   unsigned selectable : 1;
   unsigned inferiors : 1;
 #endif
+  unsigned has_buffy : 1;
   unsigned local : 1; /* folder is on local filesystem */
   unsigned tagged : 1;
 };
@@ -55,12 +59,5 @@ struct browser_state
   unsigned marked : 1;
   unsigned unmarked : 1;
 #endif
-};
-
-struct mailbox_state
-{
-  unsigned int new;
-  unsigned int old;
-  unsigned int messages;
 };
 #endif /* _BROWSER_H */

@@ -52,7 +52,6 @@ extern struct mx_ops mx_imap_ops;
 
 /* browse.c */
 int imap_browse (char* path, struct browser_state* state);
-int imap_mailbox_state (const char* path, struct mailbox_state* state);
 int imap_mailbox_create (const char* folder);
 int imap_mailbox_rename (const char* mailbox);
 
