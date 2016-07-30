@@ -13,6 +13,8 @@ EXTRA_DIST = language.txt language50.txt  \
 	iconv/README \
 	iconv/make.sh
 
+CONTRIB_DIRS = vim-keybindings
+
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
 	for f in $(SAMPLES) ; do \
@@ -21,10 +23,16 @@ install-data-local:
 	for f in $(srcdir)/iconv/*.rc ; do					\
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/samples/iconv	  ;	\
 	done
+	for d in $(CONTRIB_DIRS); do						\
+		cp -r $(srcdir)/$$d $(DESTDIR)$(docdir);			\
+	done
 
 uninstall-local:
 	for f in $(SAMPLES) ; do \
 		rm -f $(DESTDIR)$(docdir)/samples/$$f ; \
+	done
+	for d in $(CONTRIB_DIRS); do						\
+		rm -fr $(DESTDIR)$(docdir)/$$d;	                		\
 	done
 	-rm -rf $(DESTDIR)$(docdir)/samples/iconv
 	-rmdir $(DESTDIR)$(docdir)/samples
