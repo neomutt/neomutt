@@ -463,20 +463,30 @@ static int mbox_close_message (CONTEXT *ctx, MESSAGE *msg)
 
 static int mbox_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
-  int r = fputc ('\n', msg->fp);
-
-  if (r == EOF)
+  if (fputc ('\n', msg->fp) == EOF)
     return -1;
+
+  if ((fflush (msg->fp) == EOF) ||
+      (fsync (fileno (msg->fp)) == -1))
+  {
+    mutt_perror _("Can't write message");
+    return -1;
+  }
 
   return 0;
 }
 
 static int mmdf_commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
-  int r = fputs (MMDF_SEP, msg->fp);
-
-  if (r == EOF)
+  if (fputs (MMDF_SEP, msg->fp) == EOF)
     return -1;
+
+  if ((fflush (msg->fp) == EOF) ||
+      (fsync (fileno (msg->fp)) == -1))
+  {
+    mutt_perror _("Can't write message");
+    return -1;
+  }
 
   return 0;
 }

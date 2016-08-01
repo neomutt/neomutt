@@ -1423,7 +1423,6 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 {
   struct mx_ops *ops = mx_get_ops (ctx->magic);
-  int r = 0;
 
   if (!ops || !ops->commit_msg)
     return -1;
@@ -1435,16 +1434,7 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     return -1;
   }
 
-  r = ops->commit_msg (ctx, msg);
-  
-  if (r == 0 && (ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF)
-      && (fflush (msg->fp) == EOF || fsync (fileno (msg->fp)) == -1))
-  {
-    mutt_perror _("Can't write message");
-    r = -1;
-  }
- 
-  return r;
+  return ops->commit_msg (ctx, msg);
 }
 
 /* close a pointer to a message */
