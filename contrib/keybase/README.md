@@ -17,7 +17,7 @@ Done!
 
 Write an email. In the screen right before you send your email (called the pager mode), press "K".
 
-![](/pagerMode.png)
+![](pagerMode.png)
 (Press 'K' when you're here)
 
 You can now use four Keybase commands in this "shell". (I thought it best to limit the user to four commands for security reasons. Running unusual commands would overwrite the email, forcing the user to rewrite the email again.)
