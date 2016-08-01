@@ -13,7 +13,7 @@ EXTRA_DIST = language.txt language50.txt  \
 	iconv/README \
 	iconv/make.sh
 
-CONTRIB_DIRS = vim-keybindings
+CONTRIB_DIRS = vim-keybindings keybase
 
 install-data-local:
 	$(MKDIR_P) $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
