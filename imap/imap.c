@@ -771,7 +771,7 @@ static int imap_open_mailbox (CONTEXT* ctx)
   return -1;
 }
 
-int imap_open_mailbox_append (CONTEXT *ctx)
+static int imap_open_mailbox_append (CONTEXT *ctx, int flags)
 {
   IMAP_DATA *idata;
   char buf[LONG_STRING];
@@ -791,7 +791,6 @@ int imap_open_mailbox_append (CONTEXT *ctx)
     return -1;
   }
 
-  ctx->magic = MUTT_IMAP;
   ctx->data = idata;
 
   imap_fix_path (idata, mx.mbox, mailbox, sizeof (mailbox));
@@ -2174,6 +2173,7 @@ int imap_fast_trash (CONTEXT* ctx, char* dest)
 
 struct mx_ops mx_imap_ops = {
   .open = imap_open_mailbox,
+  .open_append = imap_open_mailbox_append,
   .close = imap_close_mailbox,
   .open_msg = imap_fetch_message,
   .close_msg = imap_close_message,

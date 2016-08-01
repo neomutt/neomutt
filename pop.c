@@ -937,6 +937,7 @@ fail:
 
 struct mx_ops mx_pop_ops = {
   .open = pop_open_mailbox,
+  .open_append = NULL,
   .close = pop_close_mailbox,
   .open_msg = pop_fetch_message,
   .close_msg = pop_close_message,

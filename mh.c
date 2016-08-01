@@ -1290,10 +1290,83 @@ static int maildir_open_mailbox (CONTEXT *ctx)
   return maildir_read_dir (ctx);
 }
 
+static int maildir_open_mailbox_append (CONTEXT *ctx, int flags)
+{
+  char tmp[_POSIX_PATH_MAX];
+
+  if (flags & MUTT_NEWFOLDER)
+  {
+    if (mkdir (ctx->path, S_IRWXU))
+    {
+      mutt_perror (ctx->path);
+      return (-1);
+    }
+
+    snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
+    if (mkdir (tmp, S_IRWXU))
+    {
+      mutt_perror (tmp);
+      rmdir (ctx->path);
+      return (-1);
+    }
+
+    snprintf (tmp, sizeof (tmp), "%s/new", ctx->path);
+    if (mkdir (tmp, S_IRWXU))
+    {
+      mutt_perror (tmp);
+      snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
+      rmdir (tmp);
+      rmdir (ctx->path);
+      return (-1);
+    }
+
+    snprintf (tmp, sizeof (tmp), "%s/tmp", ctx->path);
+    if (mkdir (tmp, S_IRWXU))
+    {
+      mutt_perror (tmp);
+      snprintf (tmp, sizeof (tmp), "%s/cur", ctx->path);
+      rmdir (tmp);
+      snprintf (tmp, sizeof (tmp), "%s/new", ctx->path);
+      rmdir (tmp);
+      rmdir (ctx->path);
+      return (-1);
+    }
+  }
+
+  return 0;
+}
+
 static int mh_open_mailbox (CONTEXT *ctx)
 {
   return mh_read_dir (ctx, NULL);
 }
+
+static int mh_open_mailbox_append (CONTEXT *ctx, int flags)
+{
+  char tmp[_POSIX_PATH_MAX];
+  int i;
+
+  if (flags & MUTT_NEWFOLDER)
+  {
+    if (mkdir (ctx->path, S_IRWXU))
+    {
+      mutt_perror (ctx->path);
+      return (-1);
+    }
+
+    snprintf (tmp, sizeof (tmp), "%s/.mh_sequences", ctx->path);
+    if ((i = creat (tmp, S_IRWXU)) == -1)
+    {
+      mutt_perror (tmp);
+      rmdir (ctx->path);
+      return (-1);
+    }
+    close (i);
+  }
+
+  return 0;
+}
+
 
 /*
  * Open a new (temporary) message in an MH folder.
@@ -2453,6 +2526,7 @@ int mx_is_mh (const char *path)
 
 struct mx_ops mx_maildir_ops = {
   .open = maildir_open_mailbox,
+  .open_append = maildir_open_mailbox_append,
   .close = mh_close_mailbox,
   .open_msg = maildir_open_message,
   .close_msg = mh_close_message,
@@ -2463,6 +2537,7 @@ struct mx_ops mx_maildir_ops = {
 
 struct mx_ops mx_mh_ops = {
   .open = mh_open_mailbox,
+  .open_append = mh_open_mailbox_append,
   .close = mh_close_mailbox,
   .open_msg = mh_open_message,
   .close_msg = mh_close_message,
