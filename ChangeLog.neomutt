@@ -1,0 +1,135 @@
+2016-07-23  Richard Russon  <rich@flatcap.org>
+* New Motto: "Teaching an Old Dog New Tricks"
+  - Thanks to Alok Singh
+* New Features
+  - New Mail Command - Execute a command on receipt of new mail
+  - vim-keybindings - Mutt config for vim users
+  - LMDB: In-memory header caching database
+  - SMIME Encrypt to Self - Secure storage of sensitive email
+* Bug Fixes
+  - rework mutt_draw_statusline()
+  - fix cursor position after sidebar redraw
+  - Add sidebar_format flag '%n' to display 'N' on new mail.
+  - fix index_format truncation problem
+  - Fix compiler warnings due to always true condition
+  - Change sidebar next/prev-new to look at buffy->new too.
+  - Change the default for sidebar_format to use %n.
+  - sidebar "unsorted" order to match Buffy list order.
+  - Include ncurses tinfo library if found.
+  - Sidebar width problem
+  - sidebar crash for non-existent mailbox
+  - Temporary compatibility workaround
+  - Reset buffy->new for the current mailbox in IMAP.
+  - version.sh regression
+  - crash when notmuch tries to read a message
+  - status line wrapping
+* Docs
+  - Mass tidy up of the docs
+  - Fix xml validation
+  - Add missing docs for new features
+* Travis
+  - New build system:
+    https://github.com/neomutt/travis-build
+    Now we have central control over what gets built
+
+2016-07-09  Richard Russon  <rich@flatcap.org>
+* Bug-fixes
+  - This release was a temporary measure
+
+2016-06-11  Richard Russon  <rich@flatcap.org>
+* Change in behaviour
+  - Temporarily disable $sidebar_refresh_time
+    Unfortunately, this was causing too many problems.
+    It will be fixed and re-enabled as soon as possible.
+* Bug Fixes
+  - Fix several crashes, on startup, in Keywords
+  - Reflow text now works as it should
+  - Lots of typos fixed
+  - Compress config bug prevented it working
+  - Some minor bug-fixes from mutt/default
+  - Single quote at line beginning misinterpreted by groff
+  - Setting $sidebar_width to more than 128 would cause bad things to happen.
+  - Fix alignment in the compose menu.
+  - Fix sidebar buffy stats updating on mailbox close.
+* Build Changes
+  - Sync whitespace to mutt/default
+  - Alter ChangeLog date format to simplify Makefiles
+  - Use the new notmuch functions that return a status
+  - Rename sidebar functions sb_* -> mutt_sb_*
+
+2016-05-23  Richard Russon  <rich@flatcap.org>
+* New Features:
+  - Keywords: Email Label/Keywords/Tagging
+  - Compress: Compressed mailboxes support
+  - NNTP: Talk to a usenet news server
+  - Separate mappings for <enter> and <return>
+  - New configure option: --enable-quick-build
+  - Various build fixes
+
+2016-05-02  Richard Russon  <rich@flatcap.org>
+* Update for Mutt-1.6.0
+* Bug Fixes:
+  - Build for Notmuch works if Sidebar is disabled
+  - Sidebar functions work even if the Sidebar is hidden
+  - sidebar-next-new, etc, only find *new* mail, as documented
+  - Notmuch supports *very* long queries
+
+2016-04-16  Richard Russon  <rich@flatcap.org>
+* Big Bugfix Release
+* Bug Fixes:
+  - Fix crash caused by sidebar_folder_indent
+  - Allow the user to change mailboxes again
+  - Correct sidebar's messages counts
+  - Only sort the sidebar if we're asked to
+  - Fix refresh of pager when toggling the sidebar
+  - Compose mode: make messages respect the TITLE_FMT
+  - Conditional include if sys/syscall.h
+  - Build fix for old compilers
+  - Try harder to keep track of the open mailbox
+* Changes to Features
+  - Allow sidebar_divider_char to be longer
+    (it was limited to one character)
+  - Ignore case when sorting the sidebar alphabetically
+* Other Changes
+  - Numerous small tweaks to the docs
+  - Lots of minor code tidy-ups
+  - Enabling NotMuch now forcibly enables Sidebar
+    (it is dependent on it, for now)
+  - A couple of bug fixes from mutt/stable
+
+2016-04-04  Richard Russon  <rich@flatcap.org>
+* Update for Mutt-1.6.0
+* No other changes in this release
+
+2016-03-28  Richard Russon  <rich@flatcap.org>
+* New Features
+  - skip-quoted          - skip quoted text
+  - limit-current-thread - limit index view to current thread
+* Sidebar Intro - A Gentle Introduction to the Sidebar (with pictures).
+
+2016-03-20  Richard Russon  <rich@flatcap.org>
+* Numerous small bugfixes
+* TravisCI integration
+
+2016-03-17  Richard Russon  <rich@flatcap.org>
+* New Features
+  - notmuch - email search support
+  - ifdef   - improvements
+
+2016-03-07  Richard Russon  <rich@flatcap.org>
+* First NeoMutt release
+* List of Features:
+  - bug-fixes    - various bug fixes
+  - cond-date    - use rules to choose date format
+  - fmemopen     - use memory buffers instead of files
+  - ifdef        - conditional config options
+  - index-color  - theme the email index
+  - initials     - expando for author's initials
+  - nested-if    - allow deeply nested conditions
+  - progress     - show a visual progress bar
+  - quasi-delete - mark emails to be hidden
+  - sidebar      - overview of mailboxes
+  - status-color - theming the status bar
+  - tls-sni      - negotiate for a certificate
+  - trash        - move 'deleted' emails to a trash bin
+

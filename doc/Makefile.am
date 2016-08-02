@@ -46,8 +46,15 @@ BUILT_DISTFILES = stamp-doc-xml stamp-doc-chunked manual.txt $(HTML_DOCFILES)
 srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
 
-topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog	\
-	README NEWS TODO README.SECURITY README.SSL 
+topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog ChangeLog.neomutt	\
+	README NEWS TODO README.SECURITY README.SSL \
+	README.compress README.cond-date README.fmemopen README.ifdef \
+	README.index-color README.initials README.keywords \
+	README.limit-current-thread README.lmdb README.neomutt \
+	README.nested-if README.new-mail README.nntp README.notmuch \
+	README.progress README.quasi-delete README.sidebar README.skip-quoted \
+	README.smime-encrypt-self README.status-color README.tls-sni \
+	README.trash
 
 all: makedoc-all
 
@@ -189,9 +196,9 @@ smime_keys.1: $(srcdir)/smime_keys.man
 
 stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
-               $(srcdir)/gen-map-doc $(top_srcdir)/VERSION $(top_srcdir)/ChangeLog
-	( date=`head -n 1 $(top_srcdir)/ChangeLog | LC_ALL=C cut -d ' ' -f 1` && \
-	  sed -e "s/@VERSION\@/`cat $(top_srcdir)/VERSION` ($$date)/" $(srcdir)/manual.xml.head && \
+               $(srcdir)/gen-map-doc $(top_srcdir)/VERSION $(top_srcdir)/ChangeLog.neomutt
+	( date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -b 1-10` && \
+	  sed -e "s/@VERSION\@/`$(top_srcdir)/version.sh` ($$date)/" $(srcdir)/manual.xml.head && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/functions.h | \
 	    perl $(srcdir)/gen-map-doc $(srcdir)/manual.xml.tail $(top_srcdir)/OPS* \
