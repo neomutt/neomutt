@@ -1,0 +1,6 @@
+# Example Mutt config file for the 'limit-current-thread' patch.
+ 
+# Limit view to current thread
+bind index <esc>L limit-current-thread
+ 
+# vim: syntax=muttrc
