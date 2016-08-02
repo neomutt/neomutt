@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt new-mail patch
+
+syntax keyword muttrcVarStr     contained skipwhite new_mail_command         nextgroup=muttrcVarEqualsIdxFmt
+
+" vim: syntax=vim

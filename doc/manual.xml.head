@@ -6236,7 +6236,10 @@ New mail for Maildir is assumed if there is one message in the
 <link linkend="maildir-trash">$maildir_trash</link>). For MH folders, a
 mailbox is considered having new mail if there's at least one message in
 the <quote>unseen</quote> sequence as specified by <link
-linkend="mh-seq-unseen">$mh_seq_unseen</link>.
+linkend="mh-seq-unseen">$mh_seq_unseen</link>. Optionally, <link
+linkend="new-mail-command">$new_mail_command</link> can be configured to
+execute an external program every time new mail is detected in the current
+inbox.
 </para>
 
 <para>
@@ -10351,6 +10354,148 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
     <title>Credits</title>
     <itemizedlist>
     <listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
+<sect1 id="new-mail-hook">
+  <title>new-mail Patch</title>
+  <subtitle>Execute a command upon the receipt of new mail.</subtitle>
+
+  <sect2 id="new-mail-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>new-mail</quote>, look for
+      <quote>patch-new-mail</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="new-mail-intro">
+    <title>Introduction</title>
+
+    <para>
+      This patch enables the new_mail_command setting, which can be used to
+      execute a custom script (e.g., a notification handler) upon receiving a
+      new mail.
+    </para>
+
+    <para>
+      The command string can contain expandos, such as <literal>%f</literal>
+      for the folder name.  For a complete list, see:
+      <link linkend="status-format">$status_format</link>.
+    </para>
+
+    <para>
+      For example in Linux you can use (most distributions already provide notify-send):
+    </para>
+
+<screen>
+set new_mail_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"
+</screen>
+
+    <para>
+      And in OS X you will need to install a command line interface for
+      Notification Center, for example
+      <ulink url="https://github.com/julienXX/terminal-notifier">terminal-notifier</ulink>:
+    </para>
+
+<screen>
+set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+</screen>
+
+  </sect2>
+
+  <sect2 id="new-mail-variables">
+    <title>Variables</title>
+
+    <table id="table-new-mail-variables">
+      <title>New Mail Command Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>new_mail_command</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="new-mail-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Example Mutt config file for the 'new-mail-command' patch.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# Set the command you want mutt to execute upon the receipt of a new email</emphasis>
+set new_mail_command = ""
+ 
+<emphasis role="comment"># Linux example:
+# set new_command="notify-send --icon='/home/santiago/Pictures/mutt.png' 'New Email in %f' '%n new messages, %u unread.' &amp;"
+ 
+# OS X example:
+# set new_mail_command="terminal-notifier -title '%v' -subtitle 'New Mail in %f' -message '%n new messages, %u unread.' -activate 'com.apple.Terminal'"
+
+# --------------------------------------------------------------------------
+
+# vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="new-mail-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="new-mail-known-bugs">
+    <title>Known Bugs</title>
+    <itemizedlist>
+      <listitem>
+        <para>
+          Notifies about spurious <emphasis role="bold">new email</emphasis>
+          when an email is saved, see
+          <ulink url="https://github.com/neomutt/neomutt/issues/20">Issue #20</ulink>
+        </para>
+    </listitem>
+    <listitem>
+      <para>
+        Will not notify about new e-mail if the pager is open, see
+        <ulink url="https://github.com/neomutt/neomutt/issues/19">Issue #19</ulink>
+      </para>
+    </listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="new-mail-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Yoshiki Vazquez-Baeza <email>yoshiki@ucsd.edu</email></para></listitem>
+    <listitem><para>Santiago Torres-Arias <email>santiago@nyu.edu</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
     </itemizedlist>
   </sect2>
