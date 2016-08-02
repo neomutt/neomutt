@@ -548,7 +548,7 @@ descriptions.
 <row><entry>^E or &lt;End&gt;</entry><entry><literal>&lt;eol&gt;</literal></entry><entry>move to the end of the line</entry></row>
 <row><entry>^F or &lt;Right&gt;</entry><entry><literal>&lt;forward-char&gt;</literal></entry><entry>move forward one char</entry></row>
 <row><entry>Esc F</entry><entry><literal>&lt;forward-word&gt;</literal></entry><entry>move forward one word</entry></row>
-<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename or alias</entry></row>
+<row><entry>&lt;Tab&gt;</entry><entry><literal>&lt;complete&gt;</literal></entry><entry>complete filename, alias, or label</entry></row>
 <row><entry>^T</entry><entry><literal>&lt;complete-query&gt;</literal></entry><entry>complete address with query</entry></row>
 <row><entry>^K</entry><entry><literal>&lt;kill-eol&gt;</literal></entry><entry>delete to the end of the line</entry></row>
 <row><entry>Esc d</entry><entry><literal>&lt;kill-eow&gt;</literal></entry><entry>delete to the end of the word</entry></row>
@@ -4567,8 +4567,8 @@ Mutt adds some other modifiers to format strings. If you use an equals
 symbol (<literal>=</literal>) as a numeric prefix (like the minus
 above), it will force the string to be centered within its minimum space
 range. For example, <literal>%=14y</literal> will reserve 14 characters
-for the %y expansion &mdash; that's the X-Label: header, in <link
-linkend="index-format">$index_format</link>. If the expansion results in
+for the %y expansion &mdash; that's the set of message keywords (formerly
+X-Label).  If the expansion results in
 a string less than 14 characters, it will be centered in a 14-character
 space.  If the X-Label for a message were <quote>test</quote>, that
 expansion would look like
@@ -5182,7 +5182,7 @@ shows several ways to select messages.
 <row><entry>~V</entry><entry>cryptographically verified messages</entry></row>
 <row><entry>~x <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the <quote>References</quote> or <quote>In-Reply-To</quote> field</entry></row>
 <row><entry>~X [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> attachments *)</entry></row>
-<row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in the <quote>X-Label</quote> field</entry></row>
+<row><entry>~y <emphasis>EXPR</emphasis></entry><entry>messages which contain <emphasis>EXPR</emphasis> in their keywords</entry></row>
 <row><entry>~z [<emphasis>MIN</emphasis>]-[<emphasis>MAX</emphasis>]</entry><entry>messages with a size in the range <emphasis>MIN</emphasis> to <emphasis>MAX</emphasis> *) **)</entry></row>
 <row><entry>~=</entry><entry>duplicated messages (see <link linkend="duplicate-threads">$duplicate_threads</link>)</entry></row>
 <row><entry>~$</entry><entry>unreferenced messages (requires threaded view)</entry></row>
@@ -6052,18 +6052,6 @@ field.  When set to <emphasis>yes</emphasis>, the
 </para>
 
 <para>
-The <quote>X-Label:</quote> header field can be used to further identify
-mailing lists or list subject matter (or just to annotate messages
-individually).  The <link linkend="index-format">$index_format</link>
-variable's <quote>%y</quote> and <quote>%Y</quote> expandos can be used
-to expand <quote>X-Label:</quote> fields in the index, and Mutt's
-pattern-matcher can match regular expressions to <quote>X-Label:</quote>
-fields with the <quote>~y</quote> selector.  <quote>X-Label:</quote> is
-not a standard message header field, but it can easily be inserted by
-procmail and other mail filtering agents.
-</para>
-
-<para>
 Lastly, Mutt has the ability to <link linkend="sort">sort</link> the
 mailbox into <link linkend="threads">threads</link>.  A thread is a
 group of messages which all relate to the same subject.  This is usually
@@ -6072,6 +6060,121 @@ replies are represented graphically.  If you've ever used a threaded
 news client, this is the same concept.  It makes dealing with large
 volume mailing lists easier because you can easily delete uninteresting
 threads and quickly find topics of value.
+</para>
+
+</sect1>
+
+<sect1 id="using-keywords">
+<title>Keyword Management</title>
+
+<para>
+Mutt has supported textual labels (usually known as X-Labels after
+the header that we use to store them) for many years.  Since we
+initially added support for X-Lanels, however, the larger community
+has evolved more common ways of using and managing such labels, often
+known as <quote>keywords</quote> or <quote>tags</quote>.
+</para>
+
+<para>
+If you are new to Mutt or to using keywords in Mutt, you only need
+to know that the &lt;edit-label&gt; binding (<literal>y</literal> by
+default) will edit keywords, and that you can search for keywords
+using the <literal>~y</literal> pattern, and use the <literal>%y</literal>
+expando to display it in your <literal>$index_format</literal>.  You also
+can sort by keyword.  Keywords that you set will be stored to the
+<literal>X-Label:</literal> header by default.
+</para>
+
+<para>
+If you've been using X-Labels for a while, things have grown slightly.
+Mutt still supports X-Labels much as it has since 2000, but the scope
+of this support has expanded to support three additional header-based
+techniques for storing keyword metadata on messages:
+</para>
+
+<variablelist>
+
+<varlistentry>
+<term>X-Keywords</term>
+<listitem>
+<para>
+Informal design; space-delimited keywords
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>X-Mozilla-Keys</term>
+<listitem>
+<para>
+Informal design used by Mozilla-based agents; space-delimited keywords
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>Keywords</term>
+<listitem>
+<para>
+Standardized in RFC2822 (2001); comma-space-delimited keywords
+</para>
+</listitem>
+</varlistentry>
+
+<varlistentry>
+<term>X-Label</term>
+<listitem>
+<para>
+Mutt-specific design; freeform text (but see <link linkend="xlabel-delimiter">$xlabel_delimiter</link>)
+</para>
+</listitem>
+</varlistentry>
+
+</variablelist>
+
+<para>
+With X-Label, mutt's only notion of a message keyword was the literal
+string value of the X-Label header.  Under the new, integrated support,
+each message may have a list of distinct message keywords.  When reading
+keywords from one of the headers in the list above, the header value is
+split on the indicated delimiter (space or comma-space) for X-Keywords:,
+X-Mozilla-Keys:, and Keywords:.  By default, X-Label: is parsed as a
+single keyword.  By setting $xlabel_delimiter, you can force splitting
+of X-Label: as well.
+</para>
+
+<para>
+Two boolean variables control how keywords are saved when writing
+messages to a mailbox.  The default settings preserve backward
+compatibility within mutt completely, but by changing these
+values you can transition to more standard keyword storage. <link
+linkend="keywords-legacy">$keywords_legacy</link>, if set, will tell
+mutt to use only "legacy" headers -- i.e., <literal>X-Keywords:</literal>,
+<literal>X-Mozilla-Keys</literal>, <literal>Keywords</literal>, or
+<literal>X-Label:</literal>.  Keywords will be saved to whichever
+header was in use by the message the keyword was read from.  If
+<link linkend="keywords-standard">$keywords_standard</link> is
+set, keywords will be saved without exception to the standard
+<literal>Keywords:</literal> header.  (If both are set, both will be used;
+if both are unset, legacy headers are used.)  Additionally, <link
+linkend="xlabel-delimiter">$xlabel_delimiter</link> is used to format
+the X-Label: header on saves.
+</para>
+
+<para>
+To migrate completely to the new standard,
+unset <literal>$keywords_legacy</literal> and set
+<literal>$keywords_standard</literal>, and set
+<literal>$xlabel_delimiter</literal> either to what you currently use to
+delimit keywords in X-Labels, or to <quote>,&nbsp;</quote> (comma
+space).
+</para>
+
+<para>
+Note that it is common practice to insert <literal>X-Label:</literal> or
+other keyword headers from proxmail or other mail filters.  This is
+a useful trick for categorizing messages en masse as they are delivered
+to your inbox, and it is fully compatible with the new keywords code.
 </para>
 
 </sect1>
@@ -9601,6 +9704,245 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
     <title>Credits</title>
     <itemizedlist>
     <listitem><para>Vsevolod Volkov <email>vvv@mutt.org.ua</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
+<sect1 id="keywords">
+  <title>Keywords Patch</title>
+  <subtitle>Labels/Tagging for emails</subtitle>
+
+  <sect2 id="keywords-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>Keywords</quote>, look for
+      <quote>patch-keywords</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="keywords-intro">
+    <title>Introduction</title>
+
+    <para>
+    Unify label/keyword handling.
+    </para>
+
+    <para>
+    Since x-labels were added to mutt in 2000, a number of other approaches
+    to what we now call <quote>tagging</quote> have also emerged.
+    One of them was even made standard in RFC 2822.
+    This update unifies the handling of all these strategies.
+    </para>
+
+    <para>
+    We start by changing mutt's internal keyword storage from a single
+    string which may contain whitespace to a list of discrete keywords.
+    This has advantages for keyword completion as well as for portabilty
+    among varying "standards" for keyword storage.  This may represent
+    a significant change for existing mutt users who have set x-labels
+    containing spaces, and should be regarded with suspicion.  The
+    advantages are significant, though.
+    </para>
+
+    <para>
+    Next we allow mutt to parse keywords into this internal list from
+    any of the following headers: X-Label (freeform), X-Keywords
+    (space-delimited), X-Mozilla-Keys (space-delimited), and Keywords (RFC
+    2822, comma-space-delimited).  Mutt remembers which headers it sourced
+    keywords from, and can rewrite those headers when saving messages for
+    compatibility with the mailer of origin.
+    </para>
+
+    <para>
+    (X-Label was specified as freeform text by mutt, its only known
+    implementation.  X-Labels have been used both as a
+    <quote>tagging</quote> device, probably with space delimiting, and as a
+    <quote>memo</quote> field, where space-delimited parsing would ruin the
+    semantics of the memo.  By default mutt will not split X-Labels at all.
+    Set $xlabel_delimiter if your needs vary.)
+    </para>
+
+    <para>
+    Finally we add two booleans: $keywords_legacy=true and
+    $keywords_standard=FALSE.  When $keywords_legacy is true, mutt will
+    always save keyword to whatever original header it came from.  When
+    $keywords_standard=true, mutt will save to the Keywords: header.  If
+    both are true mutt saves to both; if neither is true, mutt saves only
+    to legacy headers to avoid complete loss of keywords.
+    </para>
+
+    <para>
+    Overall this represents convergence path for all competing
+    labelling/tagging/keywording systems toward one that is specified by
+    RFC.
+    </para>
+
+    <para>
+    You can change or delete the X-Label: field within
+    Mutt using the edit-label command.
+    This works for tagged messages, too.
+    </para>
+  </sect2>
+
+  <sect2 id="keywords-variables">
+    <title>Variables</title>
+
+    <table id="table-keywords-variables">
+      <title>Keywords Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>keywords_legacy</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>yes</literal></entry>
+          </row>
+          <row>
+            <entry><literal>keywords_standard</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>xlabel_delimiter</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="keywords-functions">
+    <title>Functions</title>
+
+    <para>
+      Keywords adds the following function to Mutt.
+      By default, it is not bound to a key.
+    </para>
+
+    <table id="table-keywords-funcions">
+      <title>Keyword Functions</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;edit-label&gt;</literal></entry>
+            <entry>add, change, or delete a message's label</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+<!--
+  <sect2 id="keywords-commands">
+    <title>Commands</title>
+  </sect2>
+
+  <sect2 id="keywords-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
+-->
+
+  <sect2 id="keywords-sort">
+    <title>Sort</title>
+    <table id="table-keywords-sort">
+      <title>Keywords Sort</title>
+      <tgroup cols="2">
+        <thead>
+          <row>
+            <entry>Sort</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>label</literal></entry>
+            <entry>Sort by label</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="keywords-muttrc">
+    <title>Muttrc</title>
+
+<screen>
+<emphasis role="comment"># This is a complete list of keywords-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# Should Mutt save the keywords to whatever keyword it came from?</emphasis>
+set keywords_legacy = yes
+ 
+<emphasis role="comment"># Should Mutt use the "Keywords:" header?</emphasis>
+set keywords_standard = no
+ 
+<emphasis role="comment"># How should the keywords be separated?</emphasis>
+set xlabel_delimiter = ""
+ 
+<emphasis role="comment"># --------------------------------------------------------------------------
+# FUNCTIONS - shown with an example mapping
+# --------------------------------------------------------------------------
+ 
+# Bind 'y' to edit labels/keywords</emphasis>
+bind index,pager y edit-label
+ 
+<emphasis role="comment"># --------------------------------------------------------------------------
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="keywords-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="index-format">$index_format</link></para></listitem>
+      <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+      <listitem><para><link linkend="folder-hook">folder-hook</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="keywords-known-bugs">
+    <title>Known Bugs</title>
+    <para>
+      None
+    </para>
+  </sect2>
+
+  <sect2 id="keywords-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>David Champion <email>dgc@uchicago.edu</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
     </itemizedlist>
   </sect2>
