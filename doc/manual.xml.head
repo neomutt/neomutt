@@ -10936,6 +10936,530 @@ bind index \CG get-message
   </sect2>
 </sect1>
 
+<sect1 id="notmuch">
+  <title>Notmuch Patch</title>
+  <subtitle>Email search engine</subtitle>
+
+  <sect2 id="notmuch-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>Notmuch</quote>, look for
+      <quote>+USE_NOTMUCH</quote> in the mutt version.
+      See: <xref linkend="compile-time-features"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para><link linkend="sidebar">sidebar patch</link></para></listitem>
+      <listitem><para><link linkend="quasi-delete">quasi-delete patch</link></para></listitem>
+      <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
+      <listitem><para>Notmuch libraries</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="notmuch-intro">
+    <title>Introduction</title>
+
+    <para>
+      Notmuch is an email fulltext indexing and tagging engine.
+    </para>
+
+    <itemizedlist>
+      <listitem><para>For more information, see: 
+      <ulink url="http://notmuchmail.org/">http://notmuchmail.org/</ulink>
+      </para></listitem>
+      <listitem><para>Home page (wiki) and git:
+      <ulink url="https://github.com/karelzak/mutt-kz">https://github.com/karelzak/mutt-kz</ulink>
+      </para></listitem>
+      <listitem><para>Mailing list:
+      <ulink url="https://admin.fedoraproject.org/mailman/listinfo/mutt-kz">https://admin.fedoraproject.org/mailman/listinfo/mutt-kz</ulink>
+      </para></listitem>
+
+      <listitem><para>More examples:
+      <ulink url="http://notmuchmail.org/mutttips/">http://notmuchmail.org/mutttips/</ulink>
+      </para></listitem>
+    </itemizedlist>
+
+  </sect2>
+
+  <sect2 id="notmuch-using">
+    <title>Using NotMuch</title>
+
+    <sect3 id="notmuch-folder-uri">
+      <title>Folders URI</title>
+
+      <para>
+        <emphasis role="bold">notmuch://[&lt;path&gt;][?&lt;item&gt;=&lt;name&gt;[&amp; ...]]</emphasis>
+      </para>
+
+      <para>
+        The &lt;path&gt; is an absolute path to the directory where the notmuch database
+        is found as returned by <quote>notmuch config get database.path</quote> command. Note that
+        the &lt;path&gt; should NOT include <literal>.notmuch</literal> directory name.
+      </para>
+
+      <para>
+        If the &quot;&lt;path&gt;&quot; is not defined then
+        <literal>$nm_default_uri</literal> or <literal>$folder</literal> is
+        used, for example:
+      </para>
+
+<screen>
+set nm_default_uri = "notmuch:///home/foo/maildir"
+virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
+</screen>
+    </sect3>
+
+    <sect3 id="notmuch-items">
+      <title>Items</title>
+
+      <para>
+        <emphasis role="bold">query=&lt;string&gt;</emphasis>
+      </para>
+
+      <para>
+        See SEARCH SYNTAX in notmuch man page. Don't forget to use
+        <quote>and</quote> and <quote>or</quote> operators in your queries.
+      </para>
+
+      <para>
+        Note that proper URI should not contain blank space and all
+        <quote>bad</quote> chars should be encoded, for example
+      </para>
+
+      <para>
+        <literal>tag:AAA and tag:BBB</literal> --encoding-&gt; <literal>tag:AAA%20and%20tag:BBB</literal>
+      </para>
+
+      <para>
+        but mutt config file parser is smart enough to accept space in quoted
+        strings. It means that you can use
+      </para>
+
+      <para>
+        <literal>notmuch:///foo?query=tag:AAA and tag:BBB</literal>
+      </para>
+
+      <para>
+        in your config files to keep things readable.
+      </para>
+
+      <para>
+        For more details about Xapian queries, see:
+        <ulink url="http://xapian.org/docs/queryparser.html">http://xapian.org/docs/queryparser.html</ulink>
+      </para>
+
+      <para>
+        <emphasis role="bold">limit=&lt;number&gt;</emphasis>
+      </para>
+
+      <para>
+         Restricts number of messages/threads in the result. The default limit
+         is nm_db_limit.
+      </para>
+
+      <para>
+        <emphasis role="bold">type=&lt;threads|messages&gt;</emphasis>
+      </para>
+
+      <para>
+         Reads all matching messages or whole-threads. The default is 'messages'
+         or nm_query_type.
+      </para>
+    </sect3>
+
+  </sect2>
+
+  <sect2 id="notmuch-variables">
+    <title>Variables</title>
+
+    <table id="table-notmuch-variables">
+      <title>Notmuch Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>nm_db_limit</literal></entry>
+            <entry>number</entry>
+            <entry><literal>0</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_default_uri</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nm_exclude_tags</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nm_hidden_tags</literal></entry>
+            <entry>string</entry>
+            <entry><literal>unread,draft,flagged,passed,replied,attachment,signed,encrypted</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_open_timeout</literal></entry>
+            <entry>number</entry>
+            <entry><literal>5</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_query_type</literal></entry>
+            <entry>string</entry>
+            <entry><literal>messages</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_record</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>nm_record_tags</literal></entry>
+            <entry>string</entry>
+            <entry>(empty)</entry>
+          </row>
+          <row>
+            <entry><literal>nm_unread_tag</literal></entry>
+            <entry>string</entry>
+            <entry><literal>unread</literal></entry>
+          </row>
+          <row>
+            <entry><literal>vfolder_format</literal></entry>
+            <entry>string</entry>
+            <entry><literal>%6n(%6N) %f</literal></entry>
+          </row>
+          <row>
+            <entry><literal>virtual_spoolfile</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="notmuch-functions">
+    <title>Functions</title>
+
+    <para>
+      Notmuch adds the following functions to Mutt.
+      By default, none of them are bound to keys.
+    </para>
+
+    <table id="table-notmuch-functions">
+      <title>Notmuch Functions</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Menus</entry>
+            <entry>Function</entry>
+            <entry>Description</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;change-vfolder&gt;</literal></entry>
+            <entry>open a different virtual folder</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;entire-thread&gt;</literal></entry>
+            <entry>read entire thread of the current message</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;modify-labels&gt;</literal></entry>
+            <entry>modify (notmuch) tags</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
+            <entry>modify labels and then hide message</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;sidebar-toggle-virtual&gt;</literal></entry>
+            <entry>toggle between mailboxes and virtual mailboxes</entry>
+          </row>
+          <row>
+            <entry>index,pager</entry>
+            <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
+            <entry>generate virtual folder from query</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="notmuch-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+
+      <command>virtual-mailboxes</command>
+      <arg choice="plain">
+        <replaceable class="parameter">description</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">notmuch-URI</replaceable>
+        </arg>
+      </arg>
+      <group choice="req" rep="repeat">
+        <arg choice="plain">
+          <replaceable class="parameter">description</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">notmuch-URI</replaceable>
+          </arg>
+        </arg>
+      </group>
+
+      <command>tag-transforms</command>
+      <arg choice="plain">
+        <replaceable class="parameter">tag</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">transformed-string</replaceable>
+        </arg>
+      </arg>
+      <group choice="req" rep="repeat">
+        <arg choice="plain">
+          <replaceable class="parameter">tag</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">transformed-string</replaceable>
+          </arg>
+        </arg>
+      </group>
+
+      <command>tag-formats</command>
+      <arg choice="plain">
+        <replaceable class="parameter">tag</replaceable>
+        <arg choice="plain">
+          <replaceable class="parameter">format-string</replaceable>
+        </arg>
+      </arg>
+      <group choice="req" rep="repeat">
+        <arg choice="plain">
+          <replaceable class="parameter">tag</replaceable>
+          <arg choice="plain">
+            <replaceable class="parameter">format-string</replaceable>
+          </arg>
+        </arg>
+      </group>
+
+    </cmdsynopsis>
+  </sect2>
+
+  <sect2 id="notmuch-colors">
+    <title>Colors</title>
+
+    <para>Adds these to index-color patch:</para>
+
+    <table id="table-notmuch-colors">
+      <title>Index Colors</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Object</entry>
+            <entry>Pattern</entry>
+            <entry>Highlights</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>index_tag</literal></entry>
+            <entry>yes</entry>
+            <entry>an individual message tag, %G, uses tag name</entry>
+          </row>
+          <row>
+            <entry><literal>index_tags</literal></entry>
+            <entry>no</entry>
+            <entry>the transformed message tags, %g</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+<!--
+  <sect2 id="notmuch-sort">
+    <title>Sort</title>
+  </sect2>
+-->
+
+  <sect2 id="notmuch-muttrc">
+    <title>Muttrc</title>
+
+<screen>
+<emphasis role="comment"># This is a complete list of notmuch-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# This variable specifies notmuch query limit.</emphasis>
+set nm_db_limit = 0
+ 
+<emphasis role="comment"># This variable specifies the default Notmuch database in format:
+# notmuch://&lt;absolute path&gt;</emphasis>
+set nm_default_uri = ""
+ 
+<emphasis role="comment"># The messages tagged with these tags are excluded and not loaded
+# from notmuch DB to mutt unless specified explicitly.</emphasis>
+set nm_exclude_tags = ""
+ 
+<emphasis role="comment"># This variable specifies private notmuch tags which should not be printed
+# on screen (index, pager).</emphasis>
+set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+ 
+<emphasis role="comment"># This option specifies timeout for Notmuch database. Default is 5 seconds.</emphasis>
+set nm_open_timeout = 5
+ 
+<emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and</emphasis>
+# 'messages'.
+set nm_query_type = messages
+ 
+<emphasis role="comment"># Add messages stored to the mutt record (see $record in the mutt docs)
+# also to notmuch DB.</emphasis>
+set nm_record = no
+ 
+<emphasis role="comment"># Tags that should be removed or added to the to the messages stored in the mutt record.</emphasis>
+set nm_record_tags = ""
+ 
+<emphasis role="comment"># This variable specifies notmuch tag which is used for unread messages.</emphasis>
+set nm_unread_tag = unread
+ 
+<emphasis role="comment"># This variable allows you to customize the file browser display for virtual
+# folders to your personal taste.</emphasis>
+set vfolder_format = "%6n(%6N) %f"
+ 
+<emphasis role="comment"># When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
+# as a spoolfile.</emphasis>
+set virtual_spoolfile = no
+ 
+<emphasis role="comment"># --------------------------------------------------------------------------
+# FUNCTIONS - shown with an example mapping
+# --------------------------------------------------------------------------
+ 
+# open a different virtual folder</emphasis>
+bind index,pager X change-vfolder 
+ 
+<emphasis role="comment"># read entire thread of the current message</emphasis>
+bind index,pager + entire-thread 
+ 
+<emphasis role="comment"># modify (notmuch) tags</emphasis>
+bind index,pager ` modify-labels 
+ 
+<emphasis role="comment"># generate virtual folder from query</emphasis>
+bind index,pager \eX vfolder-from-query 
+ 
+<emphasis role="comment"># modify labels and then hide message
+# bind index,pager ??? modify-labels-then-hide 
+ 
+# toggle between mailboxes and virtual mailboxes
+# bind index,pager ??? sidebar-toggle-virtual 
+ 
+# --------------------------------------------------------------------------
+# COMMANDS - shown with an example
+# --------------------------------------------------------------------------
+ 
+# virtual-mailboxes description notmuch-URI { description notmuch-URI ...}
+# virtual-mailboxes "Climbing" "notmuch://?query=climbing"
+ 
+# Replace some tags with icons
+# tag-transforms tag transformed-string { tag transformed-string ...}
+# tag-transforms "inbox"   "i"   \
+#                "unread"  "u"   \
+#                "replied" "↻ "  \
+#                "sent"    "➥ "  \
+#                "todo"    "T"   \
+#                "deleted" "DEL" \
+#                "invites" "CAL"
+ 
+# See README.notmuch for an explanation
+# tag-formats tag format-string { tag format-string ...}
+# tag-formats "inbox"   "GI" \
+#              "unread"  "GU" \
+#              "replied" "GR" \
+#              "sent"    "GS" \
+#              "todo"    "Gt" \
+#              "deleted" "GD" \
+#              "invites" "Gi"
+ 
+# set index_format='4C %S %[%y.%m.%d] %-18.18n %?GU?%GU&amp; ? %?GR?%GR&amp; ? %?GI?%GI&amp; ? %s'
+ 
+# --------------------------------------------------------------------------
+# COLORS - some unpleasant examples are given
+# --------------------------------------------------------------------------
+ 
+# These symbols are added to the index-color patch:
+ 
+# an individual message tag, %G, uses tag name
+# this symbol uses a pattern</emphasis>
+color index_tag red white "inbox"
+ 
+<emphasis role="comment"># the transformed message tags, %g
+# this symbol does not use a pattern</emphasis>
+color index_tags green default
+ 
+<emphasis role="comment"># --------------------------------------------------------------------------
+ 
+# vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="notmuch-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="compile-time-features">Compile-Time Features</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="notmuch-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="notmuch-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Karel Zak <email>kzak@redhat.com</email></para></listitem>
+    <listitem><para>Chris Mason <email>clm@fb.com</email></para></listitem>
+    <listitem><para>Christoph Rissner <email>cri@visotech.at</email></para></listitem>
+    <listitem><para>David Riebenbauer <email>davrieb@liegesta.at</email></para></listitem>
+    <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
+    <listitem><para>David Wilson <email>dw@botanicus.net</email></para></listitem>
+    <listitem><para>Don Zickus <email>dzickus@redhat.com</email></para></listitem>
+    <listitem><para>Eric Davis <email>edavis@insanum.com</email></para></listitem>
+    <listitem><para>Jan Synacek <email>jsynacek@redhat.com</email></para></listitem>
+    <listitem><para>Jeremiah C. Foster <email>jeremiah@jeremiahfoster.com</email></para></listitem>
+    <listitem><para>Josh Poimboeuf <email>jpoimboe@redhat.com</email></para></listitem>
+    <listitem><para>Kirill A. Shutemov <email>kirill@shutemov.name</email></para></listitem>
+    <listitem><para>Luke Macken <email>lmacken@redhat.com</email></para></listitem>
+    <listitem><para>Mantas Mikulėnas <email>grawity@gmail.com</email></para></listitem>
+    <listitem><para>Patrick Brisbin <email>pbrisbin@gmail.com</email></para></listitem>
+    <listitem><para>Philippe Le Brouster <email>plb@nebkha.net</email></para></listitem>
+    <listitem><para>Raghavendra D Prabhu <email>rprabhu@wnohang.net</email></para></listitem>
+    <listitem><para>Sami Farin <email>hvtaifwkbgefbaei@gmail.com</email></para></listitem>
+    <listitem><para>Stefan Assmann <email>sassmann@kpanic.de</email></para></listitem>
+    <listitem><para>Stefan Kuhn <email>p_regius@gmx.ch</email></para></listitem>
+    <listitem><para>Tim Stoakes <email>tim@stoakes.net</email></para></listitem>
+    <listitem><para>Vladimir Marek <email>Vladimir.Marek@oracle.com</email></para></listitem>
+    <listitem><para>Víctor Manuel Jáquez Leal <email>vjaquez@igalia.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="sidebar">
   <title>Sidebar</title>
   <subtitle>Overview of mailboxes</subtitle>
