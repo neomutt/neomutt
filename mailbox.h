@@ -25,8 +25,11 @@
 #define MUTT_READONLY   (1<<2) /* open in read-only mode */
 #define MUTT_QUIET      (1<<3) /* do not print any messages */
 #define MUTT_NEWFOLDER  (1<<4) /* create a new folder - same as MUTT_APPEND, but uses
-                                * safe_fopen() for mbox-style folders. */
+                                * safe_fopen() with mode "w" for mbox-style folders.
+                                * This will truncate an existing file. */
 #define MUTT_PEEK       (1<<5) /* revert atime back after taking a look (if applicable) */
+#define MUTT_APPENDNEW  (1<<6) /* set in mx_open_mailbox_append if the mailbox doesn't
+                                * exist. used by maildir/mh to create the mailbox. */
 
 /* mx_open_new_message() */
 #define MUTT_ADD_FROM   (1<<0)  /* add a From_ line */

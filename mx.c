@@ -495,7 +495,7 @@ static int mx_open_mailbox_append (CONTEXT *ctx, int flags)
       if (errno == ENOENT)
       {
         ctx->magic = DefaultMagic;
-        flags |= MUTT_NEWFOLDER;
+        flags |= MUTT_APPENDNEW;
       }
       else
       {

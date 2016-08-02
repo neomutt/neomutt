@@ -1294,7 +1294,7 @@ static int maildir_open_mailbox_append (CONTEXT *ctx, int flags)
 {
   char tmp[_POSIX_PATH_MAX];
 
-  if (flags & MUTT_NEWFOLDER)
+  if (flags & MUTT_APPENDNEW)
   {
     if (mkdir (ctx->path, S_IRWXU))
     {
@@ -1346,7 +1346,7 @@ static int mh_open_mailbox_append (CONTEXT *ctx, int flags)
   char tmp[_POSIX_PATH_MAX];
   int i;
 
-  if (flags & MUTT_NEWFOLDER)
+  if (flags & MUTT_APPENDNEW)
   {
     if (mkdir (ctx->path, S_IRWXU))
     {
