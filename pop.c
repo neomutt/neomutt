@@ -942,4 +942,6 @@ struct mx_ops mx_pop_ops = {
   .open_msg = pop_fetch_message,
   .close_msg = pop_close_message,
   .check = pop_check_mailbox,
+  .commit_msg = NULL,
+  .open_new_msg = NULL,
 };
