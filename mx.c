@@ -1238,14 +1238,10 @@ int mx_sync_mailbox (CONTEXT *ctx, int *index_hint)
  */
 MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 {
-  /* TODO: Convert this to use dest->mx_ops after
-   * mx_open_mailbox_append() is changed to set mx_ops.
-   */
-  struct mx_ops *ops = mx_get_ops (dest->magic);
   ADDRESS *p = NULL;
   MESSAGE *msg;
 
-  if (!ops || !ops->open_new_msg)
+  if (!dest->mx_ops->open_new_msg)
   {
       dprint (1, (debugfile, "mx_open_new_message(): function unimplemented for mailbox type %d.\n",
               dest->magic));
@@ -1267,7 +1263,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
   if(msg->received == 0)
     time(&msg->received);
 
-  if (ops->open_new_msg (msg, dest, hdr) == 0)
+  if (dest->mx_ops->open_new_msg (msg, dest, hdr) == 0)
   {
     if (dest->magic == MUTT_MMDF)
       fputs (MMDF_SEP, msg->fp);
@@ -1297,37 +1293,28 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 /* check for new mail */
 int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  struct mx_ops *ops;
-
   if (!ctx)
   {
     dprint (1, (debugfile, "mx_check_mailbox: null or invalid context.\n"));
     return -1;
   }
 
-  ops = mx_get_ops (ctx->magic);
-  if (!ops)
-    return -1;
-
-  return ops->check (ctx, index_hint);
+  return ctx->mx_ops->check (ctx, index_hint);
 }
 
 /* return a stream pointer for a message */
 MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 {
-  struct mx_ops *ops = mx_get_ops (ctx->magic);
   MESSAGE *msg;
-  int ret;
 
-  if (!ops || !ops->open_msg)
+  if (!ctx->mx_ops->open_msg)
   {
     dprint (1, (debugfile, "mx_open_message(): function not implemented for mailbox type %d.\n", ctx->magic));
     return NULL;
   }
 
   msg = safe_calloc (1, sizeof (MESSAGE));
-  ret = ops->open_msg (ctx, msg, msgno);
-  if (ret)
+  if (ctx->mx_ops->open_msg (ctx, msg, msgno))
     FREE (&msg);
 
   return msg;
@@ -1337,9 +1324,7 @@ MESSAGE *mx_open_message (CONTEXT *ctx, int msgno)
 
 int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
 {
-  struct mx_ops *ops = mx_get_ops (ctx->magic);
-
-  if (!ops || !ops->commit_msg)
+  if (!ctx->mx_ops->commit_msg)
     return -1;
 
   if (!(msg->write && ctx->append))
@@ -1349,17 +1334,16 @@ int mx_commit_message (MESSAGE *msg, CONTEXT *ctx)
     return -1;
   }
 
-  return ops->commit_msg (ctx, msg);
+  return ctx->mx_ops->commit_msg (ctx, msg);
 }
 
 /* close a pointer to a message */
 int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
 {
-  struct mx_ops *ops = mx_get_ops (ctx->magic);
   int r = 0;
 
-  if (ops && ops->close_msg)
-    r = ops->close_msg (ctx, *msg);
+  if (ctx->mx_ops->close_msg)
+    r = ctx->mx_ops->close_msg (ctx, *msg);
 
   if ((*msg)->path)
   {
