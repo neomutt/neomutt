@@ -1260,7 +1260,10 @@ static int mh_read_dir (CONTEXT * ctx, const char *subdir)
   if (ctx->magic == MUTT_MH)
   {
     if (mh_read_sequences (&mhs, ctx->path) < 0)
+    {
+      maildir_free_maildir (&md);
       return -1;
+    }
     mh_update_maildir (md, &mhs);
     mhs_free_sequences (&mhs);
   }
