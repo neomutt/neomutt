@@ -51,7 +51,7 @@ while exitVar.lower() != 'quit':
     elif ('sign' in inputStuffs):
         encryptSign(inputStuffs)
 
-    elif ('quit' in inputStuffs):
+    elif ('quit' in inputStuffs or 'exit' in inputStuffs):
         exitVar = 'quit'
 
     else:
