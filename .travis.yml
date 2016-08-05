@@ -28,20 +28,14 @@ addons:
 git:
   depth: 3
 
+install:
+  - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
+
 before_script:
   - ccache --zero-stats
-  - autoreconf --install
 
 script:
-  # Clumsy way to forcibly disable options
-  - ./configure --quiet && sed -i '/HAVE_FGETC_UNLOCKED/d'     config.h && make -s -j2
-  - ./configure --quiet && sed -i '/HAVE_USE_EXTENDED_NAMES/d' config.h && make -s -j2
-  - ./configure --quiet && sed -i '/HAVE_STRNDUP/d'            config.h && make -s -j2
-  - ./configure --quiet && sed -i '/HAVE_STRNLEN/d'            config.h && make -s -j2
-  - ./configure --quiet && make -s -j2
-
-after_success:
-  - ./mutt -v
+  - ~/config/build
 
 after_script:
   - ccache --show-stats
