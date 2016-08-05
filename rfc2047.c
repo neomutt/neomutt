@@ -140,11 +140,7 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
     q = strchr (p, ':');
 
     n = q ? q - p : strlen (p);
-
-    if (!n ||
-	/* Assume that we never need more than 12 characters of
-	   encoded-text to encode a single character. */
-	n > (ENCWORD_LEN_MAX - ENCWORD_LEN_MIN + 2 - 12))
+    if (!n)
       continue;
 
     t = safe_malloc (n + 1);
