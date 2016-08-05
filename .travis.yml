@@ -25,9 +25,6 @@ addons:
       # libcaca includes slang for us
       - libcaca-dev
 
-git:
-  depth: 3
-
 install:
   - git clone --depth 1 https://github.com/neomutt/travis-build.git ~/config
 
