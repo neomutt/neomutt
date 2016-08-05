@@ -153,7 +153,10 @@ char *mutt_choose_charset (const char *fromcode, const char *charsets,
 
     n = convert_string (u, ulen, fromcode, t, &s, &slen);
     if (n == (size_t)(-1))
+    {
+      FREE (&t);
       continue;
+    }
 
     if (!tocode || n < bestn)
     {
