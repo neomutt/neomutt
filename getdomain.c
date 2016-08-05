@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2009,2013 Derek Martin <code@pizzashack.org>
+ * Copyright (C) 2009,2013,2016 Derek Martin <code@pizzashack.org>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
