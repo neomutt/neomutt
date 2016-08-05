@@ -9,6 +9,7 @@ Run the install script. It will set up the directory's and paths for you. Do wha
 Then just throw these into your .muttrc
 
 `set editor = 'echo %s > ~/.mutt/keybaseMutt/.tmp; vim %s'`
+
 `macro compose K "<enter-command>unset wait_key<enter><shell-escape>python ~/.mutt/keybaseMutt/keybase.py<enter><enter-command>set wait_key<enter>`
 
 Done!
