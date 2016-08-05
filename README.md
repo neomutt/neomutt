@@ -27,3 +27,12 @@ The commands are:
 - `keybase pgp encrypt [user]`
 - `keybase sign`
 - `keybase pgp sign`
+
+
+## Decrypting and verifying messages
+
+Unfortunately, there isn't an easy way to decrypt or verify messages through a macro. Instead, you'll need to use the pipe feature of mutt.
+
+Opening the email, you'll need to navigate to the actual attachment. (Press "V" when you're reading the email.)
+
+![](/)
