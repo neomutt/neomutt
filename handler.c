@@ -1595,7 +1595,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
   int origType;
   char *savePrefix = NULL;
   FILE *fp = NULL;
-#ifndef HAVE_FMEMOPEN
+#ifndef USE_FMEMOPEN
   char tempfile[_POSIX_PATH_MAX];
 #endif
   size_t tmplength = 0;
@@ -1605,7 +1605,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 
   fseeko (s->fpin, b->offset, 0);
 
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
   char *temp;
   size_t tempsize;
 #endif
@@ -1625,7 +1625,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
     {
       /* decode to a tempfile, saving the original destination */
       fp = s->fpout;
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
      s->fpout = open_memstream (&temp, &tempsize);
      if (!s->fpout) {
        mutt_error _("Unable to open memory stream!");
@@ -1669,7 +1669,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
       /* restore final destination and substitute the tempfile for input */
       s->fpout = fp;
       fp = s->fpin;
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
       if (tempsize) {
         s->fpin = fmemopen (temp, tempsize, "r");
       } else { /* fmemopen cannot handle zero-length buffers */
@@ -1707,7 +1707,7 @@ static int run_decode_and_handler (BODY *b, STATE *s, handler_t handler, int pla
 
       /* restore the original source stream */
       safe_fclose (&s->fpin);
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
       if (tempsize)
         FREE(&temp);
 #endif

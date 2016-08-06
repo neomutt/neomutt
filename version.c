@@ -253,6 +253,11 @@ static struct compile_options comp_opts[] = {
 #else
 	{ "USE_FLOCK", 0 },
 #endif
+#ifdef USE_FMEMOPEN
+	{ "USE_FMEMOPEN", 1 },
+#else
+	{ "USE_FMEMOPEN", 0 },
+#endif
 #ifdef USE_GNU_REGEX
 	{ "USE_GNU_REGEX", 1 },
 #else
