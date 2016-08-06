@@ -14,7 +14,6 @@ noinst_PROGRAMS = makedoc
 
 EXTRA_DIST = dotlock.man		\
         smime_keys.man                  \
-	muttbug.man			\
 	mutt.man			\
 	pgpewrap.man			\
 	pgpring.man			\
@@ -69,8 +68,6 @@ install-data-local: makedoc-all instdoc
 	./instdoc smime_keys.1 $(DESTDIR)$(mandir)/man1/smime_keys.1
 	./instdoc pgpewrap.1 $(DESTDIR)$(mandir)/man1/pgpewrap.1
 	./instdoc pgpring.1 $(DESTDIR)$(mandir)/man1/pgpring.1
-	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/flea.1
-	./instdoc $(srcdir)/muttbug.man $(DESTDIR)$(mandir)/man1/muttbug.1
 	test x$(DOTLOCK_TARGET) = x || ./instdoc $(srcdir)/dotlock.man \
 		$(DESTDIR)$(mandir)/man1/mutt_dotlock.1
 	./instdoc muttrc.man $(DESTDIR)$(mandir)/man5/muttrc.5
@@ -97,7 +94,7 @@ install-data-local: makedoc-all instdoc
 	fi
 
 uninstall-local:
-	for f in mutt.1 mutt_dotlock.1 flea.1 muttbug.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
+	for f in mutt.1 mutt_dotlock.1 smime_keys.1 pgpewrap.1 pgpring.1; do \
 		rm -f $(DESTDIR)$(mandir)/man1/$$f ; \
 	done
 	for f in muttrc.5 mbox.5 mmdf.5 ; do \

@@ -3407,19 +3407,6 @@ void mutt_init (int skip_sys_rc, LIST *commands)
   
   
   
-  /*
-   * 
-   *			   BIG FAT WARNING
-   * 
-   * When changing the code which looks for a configuration file,
-   * please also change the corresponding code in muttbug.sh.in.
-   * 
-   * 
-   */
-  
-  
-  
-  
   if (!Muttrc)
   {
     snprintf (buffer, sizeof(buffer), "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
