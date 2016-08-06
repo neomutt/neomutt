@@ -10751,6 +10751,72 @@ bind index &lt;esc&gt;L limit-current-thread
   </sect2>
 </sect1>
 
+<sect1 id="multiple-fcc">
+  <title>multiple-fcc Patch</title>
+  <subtitle>Save multiple copies of outgoing mail</subtitle>
+
+  <sect2 id="multiple-fcc-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>multiple-fcc</quote>, look for
+      <quote>patch-multiple-fcc</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="multiple-fcc-intro">
+    <title>Introduction</title>
+
+    <para>
+      This patch allows the user to save outgoing emails in multiple folders.
+    </para>
+
+    <para>
+      Folders should be listed separated by commas, <emphasis role="bold">but no spaces</emphasis>.
+    </para>
+
+    <para>
+      The <quote>fcc</quote> field of an email can be set in two ways:
+    </para>
+
+    <itemizedlist>
+      <listitem><para>The &lt;edit-fcc&gt; command in the compose menu (default key: <quote>f</quote>)</para></listitem>
+      <listitem><para>Creating a <literal>fcc-hook</literal> in your <literal>.muttrc</literal></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="multiple-fcc-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="record">$record</link></para></listitem>
+      <listitem><para><link linkend="fcc-hook">fcc-hook</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="multiple-fcc-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="multiple-fcc-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Omen Wild <email>omen@mandarb.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="nested-if">
   <title>Nested If Patch</title>
   <subtitle>Allow complex nested conditions in format strings</subtitle>
