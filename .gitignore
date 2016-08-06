@@ -37,14 +37,12 @@ config.sub
 configure
 conststrings.c
 depcomp
-flea
 hcachever.sh
 hcversion.h
 install-sh
 keymap_defs.h
 missing
 mutt
-muttbug.sh
 mutt_dotlock
 mutt_dotlock.c
 mutt_md5

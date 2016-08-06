@@ -1438,7 +1438,7 @@ fi
 
 AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
         intl/Makefile m4/Makefile po/Makefile.in
-        hcachever.sh muttbug.sh doc/instdoc.sh)
+        hcachever.sh doc/instdoc.sh)
 AC_OUTPUT
 
 AC_MSG_NOTICE([Summary of build options:
