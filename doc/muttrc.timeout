@@ -1,0 +1,10 @@
+# This is a complete list of timeout configuration.
+
+# --------------------------------------------------------------------------
+# COMMANDS - shown with an example arguments
+# --------------------------------------------------------------------------
+
+# After $timeout seconds of inactivity, run this mutt command
+timeout-hook . 'exec sync-mailbox'
+
+# vim: syntax=muttrc
