@@ -8110,6 +8110,11 @@ please have a look at the mixmaster documentation.
       <listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
     </itemizedlist>
 
+    <para>
+      This patch can be disabled by running <literal>configure</literal> with
+      the option <literal>--disable-fmemopen</literal>
+    </para>
+
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 

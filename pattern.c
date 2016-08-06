@@ -152,7 +152,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
   HEADER *h = ctx->hdrs[msgno];
   char *buf;
   size_t blen;
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
   char *temp;
   size_t tempsize;
 #else
@@ -168,7 +168,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
       memset (&s, 0, sizeof (s));
       s.fpin = msg->fp;
       s.flags = M_CHARCONV;
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
       s.fpout = open_memstream (&temp, &tempsize);
       if (!s.fpout) {
 	mutt_perror ("Error opening memstream");
@@ -197,7 +197,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	  if (s.fpout)
 	  {
 	    safe_fclose (&s.fpout);
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
             FREE(&temp);
 #else
 	    unlink (tempfile);
@@ -210,7 +210,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
 	mutt_body_handler (h->content, &s);
       }
 
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
       fclose (s.fpout);
       lng = tempsize;
 
@@ -280,7 +280,7 @@ msg_search (CONTEXT *ctx, pattern_t* pat, int msgno)
     if (option (OPTTHOROUGHSRC))
     {
       safe_fclose (&fp);
-#ifdef HAVE_FMEMOPEN
+#ifdef USE_FMEMOPEN
       if (tempsize)
         FREE(&temp);
 #else

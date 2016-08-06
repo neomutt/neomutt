@@ -485,6 +485,12 @@ static void show_version (void)
 	"-USE_HCACHE  "
 #endif
 
+#if USE_FMEMOPEN
+	"+USE_FMEMOPEN  "
+#else
+	"-USE_FMEMOPEN  "
+#endif
+
 	);
 
 #ifdef ISPELL
