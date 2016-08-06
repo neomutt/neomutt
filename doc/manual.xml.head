@@ -8081,6 +8081,88 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="timeout-hook">
+  <title>Timeout Patch</title>
+  <subtitle>Run a command periodically</subtitle>
+
+  <sect2 id="timeout-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>timeout</quote>, look for
+      <quote>patch-timeout</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.6.2</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="timeout-intro">
+    <title>Introduction</title>
+
+    <para>
+      This patch implements a new hook that is called periodically when Mutt
+      checks for new mail. This hook is called every <literal>$timeout</literal> seconds.
+    </para>
+  </sect2>
+
+  <sect2 id="timeout-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>timeout-hook</command>
+      <arg choice="plain">
+        <replaceable class="parameter">.</replaceable>
+      </arg>
+      <arg choice="plain">
+        <replaceable class="parameter">MUTT-COMMAND</replaceable>
+      </arg>
+    </cmdsynopsis>
+  </sect2>
+
+  <sect2 id="timeout-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># This is a complete list of timeout configuration.
+
+# --------------------------------------------------------------------------
+# COMMANDS - shown with an example arguments
+# --------------------------------------------------------------------------
+
+# After $timeout seconds of inactivity, run this mutt command</emphasis>
+timeout-hook . 'exec sync-mailbox'
+
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="timeout-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="timeout">$timeout</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="timeout-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="timeout-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Armin Wolfermann <email>armin@wolfermann.org</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
