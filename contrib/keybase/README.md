@@ -9,6 +9,7 @@ Run the install script. It will set up the directory's and paths for you. Do wha
 Then just throw these into your .muttrc
 
 `set editor = 'echo %s > ~/.mutt/keybaseMutt/.tmp; vim %s'`
+
 `macro compose K "<enter-command>unset wait_key<enter><shell-escape>python ~/.mutt/keybaseMutt/keybase.py<enter><enter-command>set wait_key<enter>`
 
 Done!
@@ -27,3 +28,12 @@ The commands are:
 - `keybase pgp encrypt [user]`
 - `keybase sign`
 - `keybase pgp sign`
+
+
+## Decrypting and verifying messages
+
+Unfortunately, there isn't an easy way to decrypt or verify messages through a macro. Instead, you'll need to use the pipe feature of mutt.
+
+Opening the email, you'll need to navigate to the actual attachment. (Press "V" when you're reading the email.)
+
+![](/)
