@@ -494,6 +494,12 @@ static void show_version (void)
 	"-USE_SIDEBAR  "
 #endif
 
+#if USE_FMEMOPEN
+	"+USE_FMEMOPEN  "
+#else
+	"-USE_FMEMOPEN  "
+#endif
+
 	);
 
 #ifdef ISPELL
