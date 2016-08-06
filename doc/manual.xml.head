@@ -2339,39 +2339,64 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
 <title>Location of Initialization Files</title>
 
 <para>
-While the default configuration (or <quote>preferences</quote>) make
-Mutt usable right out of the box, it is often desirable to tailor Mutt
-to suit your own tastes. When Mutt is first invoked, it will attempt to
-read the <quote>system</quote> configuration file (defaults set by your
-local system administrator), unless the <quote>-n</quote> <link
-linkend="commandline">command line</link> option is specified.  This
-file is typically <literal>/usr/local/share/mutt/Muttrc</literal> or
-<literal>/etc/Muttrc</literal>. Mutt will next look for a file named
-<literal>.muttrc</literal> in your home directory.  If this file does
-not exist and your home directory has a subdirectory named
-<literal>.mutt</literal>, Mutt tries to load a file named
-<literal>.mutt/muttrc</literal>.
+  When Mutt starts up it looks for two configuration files -- a
+  <quote>system</quote> file and a <quote>user</quote> file.
 </para>
 
 <para>
-<literal>.muttrc</literal> is the file where you will usually place your
-<link linkend="commands">commands</link> to configure Mutt.
+  Mutt will search for a system config file in several places.  The filenames
+  may depend on the version number of Mutt.  Mutt will read just one file, the
+  first file it finds, from the list below.
 </para>
 
 <para>
-In addition, Mutt supports version specific configuration files that are
-parsed instead of the default files as explained above.  For instance,
-if your system has a <literal>Muttrc-0.88</literal> file in the system
-configuration directory, and you are running version 0.88 of Mutt, this
-file will be sourced instead of the <literal>Muttrc</literal> file.  The
-same is true of the user configuration file, if you have a file
-<literal>.muttrc-0.88.6</literal> in your home directory, when you run
-Mutt version 0.88.6, it will source this file instead of the default
-<literal>.muttrc</literal> file.  The version number is the same which
-is visible using the <quote>-v</quote> <link
-linkend="commandline">command line</link> switch or using the
-<literal>show-version</literal> key (default: V) from the index menu.
+  The system config file will not be read if the <quote>-n</quote>
+  option is used on the <link linkend="commandline">command line</link>.
 </para>
+
+<table id="system-muttrc">
+  <title>Mutt system config file locations</title>
+  <tgroup cols="1">
+    <thead>
+      <row><entry>File Location</entry></row>
+    </thead>
+    <tbody>
+      <row><entry>/etc/NeoMuttrc</entry></row>
+      <row><entry>/etc/Muttrc-1.6.2-neo</entry></row>
+      <row><entry>/etc/Muttrc</entry></row>
+      <row><entry>/share/mutt/Muttrc-1.6.2-neo</entry></row>
+      <row><entry>/share/mutt/Muttrc</entry></row>
+    </tbody>
+  </tgroup>
+</table>
+
+<para>
+  Mutt will search for a user config file in several places in your home
+  directory.  The filenames may depend on the version number of Mutt.  Mutt
+  will read just one file, the first file it finds, from the list below.
+</para>
+
+<para>
+  You may specify your own location for the user config file using the 
+  <quote>-F</quote> option on the <link linkend="commandline">command line</link>.
+</para>
+
+<table id="user-muttrc">
+  <title>Mutt user config file locations</title>
+  <tgroup cols="1">
+    <thead>
+      <row><entry>File Location</entry></row>
+    </thead>
+    <tbody>
+      <row><entry>~/.neomuttrc</entry></row>
+      <row><entry>~/.mutt/neomuttrc</entry></row>
+      <row><entry>~/.muttrc-1.6.2-neo</entry></row>
+      <row><entry>~/.muttrc</entry></row>
+      <row><entry>~/.mutt/muttrc-1.6.2-neo</entry></row>
+      <row><entry>~/.mutt/muttrc</entry></row>
+    </tbody>
+  </tgroup>
+</table>
 
 </sect1>
 
