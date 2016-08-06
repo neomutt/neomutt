@@ -164,6 +164,7 @@ typedef enum
 #define M_APPENDHOOK	(1<<13)
 #define M_CLOSEHOOK	(1<<14)
 #endif
+#define M_TIMEOUTHOOK	(1<<15)
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define M_TREE_LLCORNER		1

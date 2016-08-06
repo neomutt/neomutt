@@ -17,5 +17,6 @@ patch-sidebar-neo-git
 patch-skip-quoted-neo-git
 patch-smime-encrypt-to-self-neo-git
 patch-status-color-neo-git
+patch-timeout-neo-git
 patch-tls-sni-neo-git
 patch-trash-neo-git

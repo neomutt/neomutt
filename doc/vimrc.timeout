@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt timeout patch
+
+syntax keyword muttrcCommand    timeout-hook
+
+" vim: syntax=vim
