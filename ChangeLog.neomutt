@@ -1,3 +1,30 @@
+2016-08-08  Richard Russon  <rich@flatcap.org>
+* New Features
+  - Timeout Hook - Run a command periodically
+  - Multiple fcc - Save multiple copies of outgoing mail
+* Contrib
+  - Keybase Integration
+    Joshua Jordi (JakkinStewart)
+* Devel
+  - Attached - Prevent missing attachments
+    Darshit Shah (darnir)
+  - Virtual Unmailboxes - Remove unwanted virtual mailboxes
+    Richard Russon (flatcap)
+* Bug Fixes
+  - Sidebar's inbox occasionally shows zero/wrong value
+  - Fix crash opening a second compressed mailbox
+* Config
+  - Look for /etc/NeoMuttrc and ~/.neomuttrc
+* Docs
+  - Fix broken links, typos
+  - Update project link
+  - Fix version string in the manual
+* Build
+  - Add option to disable fmemopen
+  - Install all the READMEs and contribs
+  - Big overhaul of the build
+    Darshit Shah (darnir)
+
 2016-07-23  Richard Russon  <rich@flatcap.org>
 * New Motto: "Teaching an Old Dog New Tricks"
   - Thanks to Alok Singh
