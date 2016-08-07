@@ -24,6 +24,7 @@ sorted through them, fixed them up and documented them.
 | Keywords             | Labels/Tagging for emails
 | Limit-Current-Thread | Limit Index View to Current Thread
 | LMDB                 | LMDB backend for the header cache
+| Multiple fcc         | Save multiple copies of outgoing mail
 | Nested If            | Allow deeply nested conditionals in format strings
 | New Mail Command     | Run a command when new mail arrives
 | NNTP                 | Talk to a Usenet news server
@@ -32,10 +33,18 @@ sorted through them, fixed them up and documented them.
 | Quasi-Delete         | Hide emails from view, but don't delete them
 | Sidebar              | Panel containing list of Mailboxes
 | Skip-Quoted          | Skip Quoted Text
-| SMIME Encrypt to Self| Save an self-encrypted copy of emails
+| SMIME Encrypt Self   | Save an self-encrypted copy of emails
 | Status Color         | Theming of the Status Bar
+| Timeout Hook         | Run a command periodically
 | TLS-SNI              | Negotiate with a Server for a Certificate
 | Trash Folder         | Move 'deleted' emails to a trash folder
+
+## Contributed Scripts and Config
+
+- Keybase Integration
+  Joshua Jordi (JakkinStewart)
+- vim-keybindings - Mutt config for vim users
+  Ivan Tham (pickfire)
 
 ## Where is NeoMutt?
 
@@ -50,10 +59,12 @@ sorted through them, fixed them up and documented them.
 
 Here's a list of everyone who's helped NeoMutt:
 
-Alex Pearce, Antonio Radici, Christoph Berg, Chris Salzberg, David Sterba,
-Evgeni Golov, Fabian Groffen, Fabio Alessandro Locati, Faidon Liambotis,
-Karel Zak, Kurt Jaeger, Matteo Vescovi, Richard Hartmann, Richard Russon,
-Udo Schweigert, Werner Fink.
+Alex Pearce, Ander Punnar, Antonio Radici, Chris Salzberg, Christoph Berg,
+Darshit Shah, David Sterba, Elimar Riesebieter, Evgeni Golov, Fabian Groffen,
+Fabio Alessandro Locati, Faidon Liambotis, Ivan Tham, Johannes Frankenau,
+Joshua Jordi, Karel Zak, Kurt Jaeger, Matteo Vescovi, Richard Hartmann,
+Richard Russon, Santiago Torres, Udo Schweigert, Werner Fink,
+Yoshiki Vázquez Baeza.
 
 ## Original Patch Authors
 
