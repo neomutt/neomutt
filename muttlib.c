@@ -782,19 +782,13 @@ void mutt_randbuf(void *out, size_t len)
   }
   /* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
 #if defined(SYS_getrandom) && defined(__linux__)
-  static int whined;
   long ret;
   do {
     ret = syscall(SYS_getrandom, out, len, 0, 0, 0, 0);
   } while ((ret == -1) && (errno == EINTR));
   if (ret == len) return;
-  if (!whined) {
-    mutt_error (_("getrandom failed: %s"), strerror(errno));
-    mutt_sleep (1);
-    whined = 1;
-  }
-  /* let's try urandom in case user has configured selinux or something
-   * to not allow getrandom */
+  /* let's try urandom in case we're on an old kernel, or the user has
+   * configured selinux, seccomp or something to not allow getrandom */
 #endif
   if (frandom == NULL) {
     frandom = fopen("/dev/urandom", "rb");
