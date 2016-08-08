@@ -18,7 +18,7 @@ Done!
 
 Write an email. In the screen right before you send your email (called the pager mode), press "K".
 
-![](/pagerMode.png)
+![](/images/pagerMode.png)
 (Press 'K' when you're here)
 
 You can now use four Keybase commands in this "shell". (I thought it best to limit the user to four commands for security reasons. Running unusual commands would overwrite the email, forcing the user to rewrite the email again.)
@@ -36,4 +36,10 @@ Unfortunately, there isn't an easy way to decrypt or verify messages through a m
 
 Opening the email, you'll need to navigate to the actual attachment. (Press "V" when you're reading the email.)
 
-![](/)
+![](/images/attachmentView.png)
+
+Then pipe ("|") it through the one of the scripts. (like "pgpverify.sh" or "decrypt.sh")
+
+Please note, using an attachment is very important when decrypting emails that include html. The scripts are unable to seperate html and text.
+
+Make sure that the attachment is "text/plain" rather than "text/html".
