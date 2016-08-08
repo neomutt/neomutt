@@ -37,6 +37,11 @@ struct hdr_format_info
   const char *pager_progress;
 };
 
+typedef enum {
+  kXDGConfigHome,  /* $XDG_CONFIG_HOME */
+  kXDGConfigDirs,  /* $XDG_CONFIG_DIRS */
+} XDGType;
+
 void mutt_make_string_info (char *, size_t, const char *, struct hdr_format_info *, format_flag);
 
 int mutt_extract_token (BUFFER *, BUFFER *, int);
@@ -155,6 +160,7 @@ char *mutt_get_parameter (const char *, PARAMETER *);
 LIST *mutt_crypt_hook (ADDRESS *);
 char *mutt_make_date (char *, size_t);
 void mutt_timeout_hook (void);
+int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize);
 
 const char *mutt_make_version (void);
 

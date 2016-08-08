@@ -53,6 +53,18 @@
 #include <sys/types.h>
 #include <utime.h>
 
+static const char *xdg_env_vars[] =
+{
+  [kXDGConfigHome] = "XDG_CONFIG_HOME",
+  [kXDGConfigDirs] = "XDG_CONFIG_DIRS",
+};
+
+static const char *xdg_defaults[] =
+{
+  [kXDGConfigHome] = "~/.config",
+  [kXDGConfigDirs] = "/etc/xdg",
+};
+
 BODY *mutt_new_body (void)
 {
   BODY *p = (BODY *) safe_calloc (1, sizeof (BODY));
@@ -2117,4 +2129,32 @@ void mutt_encode_path (char *dest, size_t dlen, const char *src)
   /* `src' may be NULL, such as when called from the pop3 driver. */
   strfcpy (dest, (rc == 0) ? NONULL(p) : NONULL(src), dlen);
   FREE (&p);
+}
+
+/*
+ * Process an XDG environment variable or its fallback.
+ *
+ * Return 1 if an entry was found that actually exists on disk and 0 otherwise.
+ */
+int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize)
+{
+  char *xdg_env = getenv (xdg_env_vars[type]);
+  char *xdg     = (xdg_env && *xdg_env) ? safe_strdup (xdg_env) : safe_strdup (xdg_defaults[type]);
+  char *x       = xdg;  /* strsep() changes xdg, so free x instead later */
+  char *token   = NULL;
+
+  while ((token = strsep (&xdg, ":")))
+  {
+    if (snprintf (buf, bufsize, "%s/neomutt/config", token) < 0)
+      continue;
+    mutt_expand_path (buf, bufsize);
+    if (access (buf, F_OK) == 0)
+    {
+      FREE (&x);
+      return 1;
+    }
+  }
+
+  FREE (&x);
+  return 0;
 }

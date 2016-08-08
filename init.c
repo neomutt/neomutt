@@ -3404,24 +3404,42 @@ void mutt_init (int skip_sys_rc, LIST *commands)
    */
   add_to_list(&MailtoAllow, "body");
   add_to_list(&MailtoAllow, "subject");
-  
-  
-  
+
   if (!Muttrc)
   {
-    snprintf (buffer, sizeof(buffer), "%s/.neomuttrc", NONULL(Homedir));
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/.mutt/neomuttrc", NONULL(Homedir));
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof(buffer), "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof(buffer), "%s/.muttrc", NONULL(Homedir));
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
-    if (access(buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/.mutt/muttrc", NONULL(Homedir));
-    if (access(buffer, F_OK) == -1) /* default to .muttrc for alias_file */
-      snprintf (buffer, sizeof(buffer), "%s/.muttrc", NONULL(Homedir));
+    do
+    {
+      if (mutt_set_xdg_path (kXDGConfigHome, buffer, sizeof buffer))
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/.neomuttrc", NONULL(Homedir));
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/.mutt/neomuttrc", NONULL(Homedir));
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/.muttrc", NONULL(Homedir));
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/.mutt/muttrc", NONULL(Homedir));
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      /* default to .muttrc for alias_file */
+      snprintf (buffer, sizeof buffer, "%s/.muttrc", NONULL(Homedir));
+    }
+    while (0);
 
     default_rc = 1;
     Muttrc = safe_strdup (buffer);
@@ -3440,24 +3458,38 @@ void mutt_init (int skip_sys_rc, LIST *commands)
      requested not to via "-n".  */
   if (!skip_sys_rc)
   {
-    snprintf (buffer, sizeof(buffer), "%s/NeoMuttrc", SYSCONFDIR);
-    if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof(buffer), "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
-    if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof(buffer), "%s/Muttrc", SYSCONFDIR);
-    if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
-    if (access (buffer, F_OK) == -1)
-      snprintf (buffer, sizeof (buffer), "%s/Muttrc", PKGDATADIR);
-    if (access (buffer, F_OK) != -1)
+    do
     {
-      if (source_rc (buffer, &err) != 0)
+      if (mutt_set_xdg_path (kXDGConfigDirs, buffer, sizeof buffer))
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/NeoMuttrc", SYSCONFDIR);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/Muttrc", SYSCONFDIR);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
+      if (access (buffer, F_OK) == 0)
+        break;
+
+      snprintf (buffer, sizeof buffer, "%s/Muttrc", PKGDATADIR);
+      if (access (buffer, F_OK) == 0)
       {
-	fputs (err.data, stderr);
-	fputc ('\n', stderr);
-	need_pause = 1;
+        if (source_rc (buffer, &err) != 0)
+        {
+          fputs (err.data, stderr);
+          fputc ('\n', stderr);
+          need_pause = 1;
+        }
       }
-    }
+    } while (0);
   }
 
   /* Read the user's initialization file.  */

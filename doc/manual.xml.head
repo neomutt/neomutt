@@ -2361,6 +2361,7 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
       <row><entry>File Location</entry></row>
     </thead>
     <tbody>
+      <row><entry>$XDG_CONFIG_DIRS/neomutt/config</entry></row>
       <row><entry>/etc/NeoMuttrc</entry></row>
       <row><entry>/etc/Muttrc-1.6.2-neo</entry></row>
       <row><entry>/etc/Muttrc</entry></row>
@@ -2369,6 +2370,8 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
     </tbody>
   </tgroup>
 </table>
+
+<emphasis>($XDG_CONFIG_DIRS defaults to "/etc/xdg".)</emphasis>
 
 <para>
   Mutt will search for a user config file in several places in your home
@@ -2388,6 +2391,7 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
       <row><entry>File Location</entry></row>
     </thead>
     <tbody>
+      <row><entry>$XDG_CONFIG_HOME/neomutt/config</entry></row>
       <row><entry>~/.neomuttrc</entry></row>
       <row><entry>~/.mutt/neomuttrc</entry></row>
       <row><entry>~/.muttrc-1.6.2-neo</entry></row>
@@ -2397,6 +2401,8 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
     </tbody>
   </tgroup>
 </table>
+
+<emphasis>($XDG_CONFIG_HOME defaults to "$HOME/.config".)</emphasis>
 
 </sect1>
 
