@@ -2371,6 +2371,7 @@ int mutt_index_menu (void)
 
     if (menu->menu == MENU_PAGER)
     {
+      mutt_clear_pager_position ();
       menu->menu = MENU_MAIN;
       menu->redraw = REDRAW_FULL;
 #if 0

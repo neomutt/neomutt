@@ -1563,6 +1563,11 @@ static const struct mapping_t PagerHelpExtra[] = {
   { NULL,	0 }
 };
 
+void mutt_clear_pager_position (void)
+{
+  TopLine = 0;
+  OldHdr = NULL;
+}
 
 
 /* This pager is actually not so simple as it once was.  It now operates in
