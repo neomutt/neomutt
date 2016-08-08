@@ -316,14 +316,12 @@ hdr_format_str (char *dest,
       /* fall through if 'A' returns nothing */
 
     case 'a':
+      colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
       if(hdr->env->from && hdr->env->from->mailbox)
-      {
-        colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_AUTHOR);
         mutt_format_s (dest + colorlen, destlen - colorlen, prefix, mutt_addr_for_display (hdr->env->from));
-        add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
-      }
       else
-        dest[0] = '\0';
+        mutt_format_s (dest + colorlen, destlen - colorlen, prefix, "");
+      add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
       break;
 
     case 'B':
