@@ -48,3 +48,4 @@ typedef struct
 
 int mutt_do_pager (const char *, const char *, int, pager_t *);
 int mutt_pager (const char *, const char *, int, pager_t *);
+void update_index (MUTTMENU *menu, CONTEXT *ctx, int check, int oldcount, int index_hint);

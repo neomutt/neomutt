@@ -358,7 +358,7 @@ static int mx_toggle_write (CONTEXT *ctx)
   return 0;
 }
 
-static void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
+void update_index (MUTTMENU *menu, CONTEXT *ctx, int check,
 			  int oldcount, int index_hint)
 {
   /* store pointers to the newly added messages */

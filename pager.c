@@ -29,6 +29,7 @@
 #include "pager.h"
 #include "attach.h"
 #include "mbyte.h"
+#include "mailbox.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
@@ -1622,6 +1623,9 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
   int indicator = indexlen / 3; 	/* the indicator line of the PI */
   int old_PagerIndexLines;		/* some people want to resize it
   					 * while inside the pager... */
+  int index_hint = 0;			/* used to restore cursor position */
+  int oldcount = -1;
+  int check;
 
 #ifdef USE_NNTP
   char *followup_to;
@@ -1944,6 +1948,40 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
     if (ch != -1)
       mutt_clear_error ();
     mutt_curs_set (1);
+
+    if (Context && !option (OPTATTACHMSG))
+    {
+      /* check for new mail */
+      check = mx_check_mailbox (Context, &index_hint);
+      if (check < 0)
+      {
+        if (!Context->path)
+        {
+          /* fatal error occurred */
+          FREE (&Context);
+          redraw = REDRAW_FULL;
+          ch = -1;
+        }
+      }
+      else if ((check == MUTT_NEW_MAIL) || (check == MUTT_REOPENED) || (check == MUTT_FLAGS))
+      {
+        oldcount = Context ? Context->msgcount : 0;
+        update_index (index, Context, check, oldcount, index_hint);
+      }
+      /* notify user of newly arrived mail */
+      if (mutt_buffy_notify())
+      {
+        redraw |= REDRAW_STATUS;
+        if (option (OPTBEEPNEW))
+          beep();
+        if (NewMailCmd)
+        {
+          char cmd[LONG_STRING];
+          menu_status_line (cmd, sizeof (cmd), index, NONULL (NewMailCmd));
+          mutt_system (cmd);
+        }
+      }
+    }
 
     if (SigInt)
     {
