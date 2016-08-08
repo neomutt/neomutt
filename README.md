@@ -36,4 +36,10 @@ Unfortunately, there isn't an easy way to decrypt or verify messages through a m
 
 Opening the email, you'll need to navigate to the actual attachment. (Press "V" when you're reading the email.)
 
-![](/)
+![](/attachmentView.png)
+
+Then pipe ("|") it through the one of the scripts.
+
+Please note, using an attachment is very important when decrypting emails that include html. The scripts are unable to seperate html and text.
+
+Make sure that the attachment is "text/plain" rather than "text/html".
