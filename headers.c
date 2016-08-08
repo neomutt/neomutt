@@ -349,8 +349,6 @@ int mutt_label_message(HEADER *hdr)
       if (HDR_OF(i)->tagged)
         if (label_message(HDR_OF(i), new)) {
           ++changed;
-          mutt_set_flag(Context, HDR_OF(i),
-            M_TAG, 0);
         }
     }
   }
