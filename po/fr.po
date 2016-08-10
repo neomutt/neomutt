@@ -19,10 +19,10 @@
 # , fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Mutt 1.6.2\n"
+"Project-Id-Version: Mutt 1.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-06 23:30+0200\n"
-"PO-Revision-Date: 2016-08-06 23:33+0200\n"
+"POT-Creation-Date: 2016-08-10 02:16+0200\n"
+"PO-Revision-Date: 2016-08-10 02:17+0200\n"
 "Last-Translator: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language-Team: Vincent Lefevre <vincent@vinc17.net>\n"
 "Language: fr\n"
@@ -59,7 +59,7 @@ msgid "Select"
 msgstr "Sélectionner"
 
 #: addrbook.c:41 browser.c:49 compose.c:96 crypt-gpgme.c:4023 curs_main.c:493
-#: mutt_ssl.c:1084 mutt_ssl_gnutls.c:1003 pager.c:1651 pgpkey.c:523
+#: mutt_ssl.c:1084 mutt_ssl_gnutls.c:1003 pager.c:1656 pgpkey.c:523
 #: postpone.c:44 query.c:53 recvattach.c:57 smime.c:440
 msgid "Help"
 msgstr "Aide"
@@ -1713,7 +1713,7 @@ msgid "Invalid message number."
 msgstr "Numéro de message invalide."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:887 curs_main.c:2004 pager.c:2445
+#: curs_main.c:887 curs_main.c:2004 pager.c:2450
 msgid "Cannot delete message(s)"
 msgstr "Impossible d'effacer le(s) message(s)"
 
@@ -1740,7 +1740,7 @@ msgstr "Limiter aux messages correspondant à : "
 msgid "To view all messages, limit to \"all\"."
 msgstr "Pour voir tous les messages, limiter à \"all\"."
 
-#: curs_main.c:961 pager.c:1992
+#: curs_main.c:961 pager.c:1997
 msgid "Quit Mutt?"
 msgstr "Quitter Mutt ?"
 
@@ -1749,7 +1749,7 @@ msgid "Tag messages matching: "
 msgstr "Marquer les messages correspondant à : "
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1061 curs_main.c:2304 pager.c:2760
+#: curs_main.c:1061 curs_main.c:2304 pager.c:2765
 msgid "Cannot undelete message(s)"
 msgstr "Impossible de récupérer le(s) message(s)"
 
@@ -1835,11 +1835,11 @@ msgstr "Pas de message non effacé."
 msgid "You are on the first message."
 msgstr "Vous êtes sur le premier message."
 
-#: curs_main.c:1586 menu.c:773 pager.c:2110 pattern.c:1491
+#: curs_main.c:1586 menu.c:773 pager.c:2115 pattern.c:1491
 msgid "Search wrapped to top."
 msgstr "La recherche est repartie du début."
 
-#: curs_main.c:1595 pager.c:2132 pattern.c:1502
+#: curs_main.c:1595 pager.c:2137 pattern.c:1502
 msgid "Search wrapped to bottom."
 msgstr "La recherche est repartie de la fin."
 
@@ -1865,7 +1865,7 @@ msgid "Cannot flag message"
 msgstr "Impossible de marquer le message"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1704 pager.c:2723
+#: curs_main.c:1704 pager.c:2728
 msgid "Cannot toggle new"
 msgstr "Impossible d'inverser l'indic. 'nouveau'"
 
@@ -1882,7 +1882,7 @@ msgid "Thread contains unread messages."
 msgstr "Cette discussion contient des messages non-lus."
 
 #. L10N: CHECK_ACL
-#: curs_main.c:1960 pager.c:2412
+#: curs_main.c:1960 pager.c:2417
 msgid "Cannot delete message"
 msgstr "Impossible d'effacer le message"
 
@@ -1897,7 +1897,7 @@ msgid "Cannot mark message(s) as read"
 msgstr "Impossible de marquer le(s) message(s) comme lu(s)"
 
 #. L10N: CHECK_ACL
-#: curs_main.c:2274 pager.c:2743
+#: curs_main.c:2274 pager.c:2748
 msgid "Cannot undelete message"
 msgstr "Impossible de récupérer le message"
 
@@ -3121,15 +3121,15 @@ msgstr "Vous êtes sur la dernière entrée."
 msgid "You are on the first entry."
 msgstr "Vous êtes sur la première entrée."
 
-#: menu.c:747 pager.c:2154 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1430
 msgid "Search for: "
 msgstr "Rechercher : "
 
-#: menu.c:747 pager.c:2154 pattern.c:1430
+#: menu.c:747 pager.c:2159 pattern.c:1430
 msgid "Reverse search for: "
 msgstr "Rechercher en arrière : "
 
-#: menu.c:791 pager.c:2107 pager.c:2129 pager.c:2249 pattern.c:1545
+#: menu.c:791 pager.c:2112 pager.c:2134 pager.c:2254 pattern.c:1545
 msgid "Not found."
 msgstr "Non trouvé."
 
@@ -3644,23 +3644,23 @@ msgstr "Voir attach."
 msgid "Next"
 msgstr "Suivant"
 
-#: pager.c:2008 pager.c:2039 pager.c:2071 pager.c:2347
+#: pager.c:2013 pager.c:2044 pager.c:2076 pager.c:2352
 msgid "Bottom of message is shown."
 msgstr "La fin du message est affichée."
 
-#: pager.c:2024 pager.c:2046 pager.c:2053 pager.c:2060
+#: pager.c:2029 pager.c:2051 pager.c:2058 pager.c:2065
 msgid "Top of message is shown."
 msgstr "Le début du message est affiché."
 
-#: pager.c:2285
+#: pager.c:2290
 msgid "Help is currently being shown."
 msgstr "L'aide est actuellement affichée."
 
-#: pager.c:2314
+#: pager.c:2319
 msgid "No more quoted text."
 msgstr "Il n'y a plus de texte cité."
 
-#: pager.c:2327
+#: pager.c:2332
 msgid "No more unquoted text after quoted text."
 msgstr "Il n'y a plus de texte non cité après le texte cité."
 
