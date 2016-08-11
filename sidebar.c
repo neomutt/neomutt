@@ -35,6 +35,9 @@ static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
 static short PreviousSort = SORT_ORDER;  /* sidebar_sort_method */
 
+static int select_next (void);
+
+
 /**
  * struct sidebar_entry - Info about folders in the sidebar
  */
@@ -342,7 +345,7 @@ static void update_entries_visibility (void)
       continue;
 
     if ((i == OpnIndex) || (sbe->buffy->msg_unread  > 0) || sbe->buffy->new ||
-        (i == HilIndex) || (sbe->buffy->msg_flagged > 0))
+        (sbe->buffy->msg_flagged > 0))
       continue;
 
     if (Context && (mutt_strcmp (sbe->buffy->realpath, Context->realpath) == 0))
@@ -428,8 +431,9 @@ static int prepare_sidebar (int page_size)
 {
   int i;
   SBENTRY *opn_entry = NULL, *hil_entry = NULL;
+  int page_entries;
 
-  if (!EntryCount)
+  if (!EntryCount || (page_size <= 0))
     return 0;
 
   if (OpnIndex >= 0)
@@ -448,19 +452,47 @@ static int prepare_sidebar (int page_size)
       HilIndex = i;
   }
 
-  if ((HilIndex < 0) || (SidebarSortMethod != PreviousSort))
+  if ((HilIndex < 0) || Entries[HilIndex]->is_hidden ||
+      (SidebarSortMethod != PreviousSort))
   {
     if (OpnIndex >= 0)
-      HilIndex  = OpnIndex;
+      HilIndex = OpnIndex;
     else
-      HilIndex  = 0;
+    {
+      HilIndex = 0;
+      if (Entries[HilIndex]->is_hidden)
+        select_next ();
+    }
   }
-  if (TopIndex >= 0)
-    TopIndex = (HilIndex / page_size) * page_size;
-  else
-    TopIndex = HilIndex;
 
-  BotIndex = TopIndex + page_size - 1;
+  /* Set the Top and Bottom to frame the HilIndex in groups of page_size */
+
+  /* If OPTSIDEBARNEMAILONLY is set, some entries may be hidden so we
+   * need to scan for the framing interval */
+  if (option (OPTSIDEBARNEWMAILONLY))
+  {
+    TopIndex = BotIndex = -1;
+    while (BotIndex < HilIndex)
+    {
+      TopIndex = BotIndex + 1;
+      page_entries = 0;
+      while (page_entries < page_size)
+      {
+        BotIndex++;
+        if (BotIndex >= EntryCount)
+          break;
+        if (! Entries[BotIndex]->is_hidden)
+          page_entries++;
+      }
+    }
+  }
+  /* Otherwise we can just calculate the interval */
+  else
+  {
+    TopIndex = (HilIndex / page_size) * page_size;
+    BotIndex = TopIndex + page_size - 1;
+  }
+
   if (BotIndex > (EntryCount - 1))
     BotIndex = EntryCount - 1;
 
@@ -931,6 +963,52 @@ static int select_prev_new (void)
 }
 
 /**
+ * select_page_down - Selects the first entry in the next page of mailboxes
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_page_down (void)
+{
+  int orig_hil_index = HilIndex;
+
+  if (!EntryCount || BotIndex < 0)
+    return 0;
+
+  HilIndex = BotIndex;
+  select_next ();
+  /* If the rest of the entries are hidden, go up to the last unhidden one */
+  if (Entries[HilIndex]->is_hidden)
+    select_prev ();
+
+  return (orig_hil_index != HilIndex);
+}
+
+/**
+ * select_page_up - Selects the last entry in the previous page of mailboxes
+ *
+ * Returns:
+ *      1: Success
+ *      0: Failure
+ */
+static int select_page_up (void)
+{
+  int orig_hil_index = HilIndex;
+
+  if (!EntryCount || TopIndex < 0)
+    return 0;
+
+  HilIndex = TopIndex;
+  select_prev ();
+  /* If the rest of the entries are hidden, go down to the last unhidden one */
+  if (Entries[HilIndex]->is_hidden)
+    select_next ();
+
+  return (orig_hil_index != HilIndex);
+}
+
+/**
  * mutt_sb_change_mailbox - Change the selected mailbox
  * @op: Operation code
  *
@@ -964,12 +1042,12 @@ void mutt_sb_change_mailbox (int op)
         return;
       break;
     case OP_SIDEBAR_PAGE_DOWN:
-      HilIndex = BotIndex;
-      select_next ();
+      if (! select_page_down ())
+        return;
       break;
     case OP_SIDEBAR_PAGE_UP:
-      HilIndex = TopIndex;
-      select_prev ();
+      if (! select_page_up ())
+        return;
       break;
     case OP_SIDEBAR_PREV:
       if (! select_prev ())
@@ -1091,8 +1169,6 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
 
     if (TopIndex < 0)
       TopIndex = EntryCount;
-    if (HilIndex < 0)
-      HilIndex = EntryCount;
     if (BotIndex < 0)
       BotIndex = EntryCount;
     if ((OpnIndex < 0) && Context &&
