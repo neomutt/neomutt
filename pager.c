@@ -29,6 +29,7 @@
 #include "pager.h"
 #include "attach.h"
 #include "mbyte.h"
+#include "mailbox.h"
 #ifdef USE_SIDEBAR
 #include "sidebar.h"
 #endif
