@@ -1,6 +1,7 @@
 /* Copyright (C) 2004 Justin Hibbits <jrh29@po.cwru.edu>
  * Copyright (C) 2004 Thomer M. Gil <mutt@thomer.com>
  * Copyright (C) 2015-2016 Richard Russon <rich@flatcap.org>
+ * Copyright (C) 2016 Kevin J. McCarthy <kevin@8t8.us>
  *
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -34,9 +35,6 @@
 static short  OldVisible;	/* sidebar_visible */
 static short  OldWidth;		/* sidebar_width */
 static short PreviousSort = SORT_ORDER;  /* sidebar_sort_method */
-
-static int select_next (void);
-
 
 /**
  * struct sidebar_entry - Info about folders in the sidebar
@@ -89,6 +87,9 @@ get_incoming (void)
 
 	return Incoming;	/* default */
 }
+
+static int select_next (void);
+
 
 /**
  * cb_format_str - Create the string to show in the sidebar
@@ -739,8 +740,8 @@ static void draw_sidebar (int first_row, int num_rows, int div_width)
       {
         if (option (OPTSIDEBARSHORTPATH))
           tmp_folder_name += lastsep;  /* basename */
-        sidebar_folder_name = malloc (strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1);
-        int sfn_len = strlen (tmp_folder_name) + sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1;
+        int sfn_len = strlen (tmp_folder_name) +
+                      sidebar_folder_depth*strlen (NONULL(SidebarIndentString)) + 1;
         sidebar_folder_name = safe_malloc (sfn_len);
         sidebar_folder_name[0]=0;
         for (i=0; i < sidebar_folder_depth; i++)
