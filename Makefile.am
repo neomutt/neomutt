@@ -22,7 +22,7 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
-BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c hcachever.sh $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
@@ -79,7 +79,8 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
 	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
-	txt2c.c txt2c.sh version.sh version.h
+	txt2c.c txt2c.sh version.sh version.h \
+	$(top_srcdir)/.version
 
 EXTRA_SCRIPTS = smime_keys
 
@@ -132,6 +133,12 @@ DISTCLEANFILES= smime_keys txt2c po/$(PACKAGE).pot
 ACLOCAL_AMFLAGS = -I m4
 
 LDADD = $(LIBOBJS) $(INTLLIBS)
+
+$(top_srcdir)/.version:
+	echo $(VERSION) > $@-t && mv $@-t $@
+
+dist-hook:
+	echo $(VERSION) > $(distdir)/.tarball-version
 
 smime_keys: $(srcdir)/smime_keys.pl
 	cp $(srcdir)/smime_keys.pl smime_keys
