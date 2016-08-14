@@ -73,9 +73,6 @@ install-data-local: makedoc-all instdoc
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
 	$(MKDIR_P) $(DESTDIR)$(docdir)
-	for f in $(topsrcdir_DOCFILES) ; do \
-		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
-	done
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done
@@ -193,7 +190,7 @@ smime_keys.1: $(srcdir)/smime_keys.man
 
 stamp-doc-xml: makedoc$(EXEEXT) $(top_srcdir)/init.h \
                manual.xml.head $(top_srcdir)/functions.h $(top_srcdir)/OPS* manual.xml.tail \
-               $(srcdir)/gen-map-doc $(top_srcdir)/VERSION $(top_srcdir)/ChangeLog.neomutt
+               $(srcdir)/gen-map-doc $(top_srcdir)/VERSION
 	( date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -b 1-10` && \
 	  sed -e "s/@VERSION\@/`$(top_srcdir)/version.sh` ($$date)/" $(srcdir)/manual.xml.head && \
 	  $(MAKEDOC_CPP) $(top_srcdir)/init.h | ./makedoc$(EXEEXT) -s && \

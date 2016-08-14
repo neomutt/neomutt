@@ -27,6 +27,7 @@ doc/stamp-doc-xml
 
 po/POTFILES
 
+.version
 aclocal.m4
 compile
 config.guess
