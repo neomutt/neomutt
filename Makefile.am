@@ -75,9 +75,9 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	nntp.h ChangeLog.nntp \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
-	README.SSL smime.h group.h \
+	README.SSL README.md README.neomutt smime.h group.h \
 	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
-	ChangeLog mutt_idna.h sidebar.h OPS.SIDEBAR \
+	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
 	txt2c.c txt2c.sh version.sh version.h
 
@@ -89,7 +89,7 @@ mutt_LDADD += $(NOTMUCH_LIBS)
 endif
 
 # kz
-EXTRA_DIST += UPDATING.kz README.notmuch OPS.NOTMUCH
+EXTRA_DIST += UPDATING.kz OPS.NOTMUCH
 
 
 mutt_dotlock_SOURCES = mutt_dotlock.c
