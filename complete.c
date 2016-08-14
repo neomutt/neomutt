@@ -109,7 +109,7 @@ int mutt_complete (char *s, size_t slen)
       }
     }
 
-    strcpy (s, filepart);
+    strfcpy (s, filepart, slen);
     return (init ? 0 : -1);
   }
 #endif
