@@ -289,8 +289,9 @@ static int nntp_attempt_features (NNTP_SERVER *nserv)
 	    off = colon + 1 - nserv->overview_fmt;
 	  if (!strcasecmp (nserv->overview_fmt + b, "Bytes:"))
 	  {
-	    strcpy (nserv->overview_fmt + b, "Content-Length:");
-	    off = b + strlen (nserv->overview_fmt + b);
+            int len = strlen (nserv->overview_fmt + b);
+	    strfcpy (nserv->overview_fmt + b, "Content-Length:", len + 1);
+	    off = b + len;
 	  }
 	  nserv->overview_fmt[off++] = '\0';
 	  b = off;

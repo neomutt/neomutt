@@ -611,7 +611,7 @@ mutt_draw_statusline (int cols, const char *buf, int buflen)
 		mutt_paddstr (cols - width, "");
 	}
 dsl_finish:
-	safe_free (&syntax);
+	FREE(&syntax);
 }
 
 static int main_change_folder(MUTTMENU *menu, int op, char *buf, size_t bufsz,

@@ -6,7 +6,7 @@ dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], [m4_esyscmd(tr -d \\n <VERSION)], [https://github.com/neomutt/neomutt/issues], [mutt], [http://www.neomutt.org])
+AC_INIT([NeoMutt], m4_esyscmd(./git-version-gen --prefix "neomutt-" .tarball-version), [https://github.com/neomutt/neomutt/issues], [neomutt], [http://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
