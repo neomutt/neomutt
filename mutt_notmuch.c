@@ -1320,6 +1320,57 @@ static int update_tags(notmuch_message_t *msg, const char *tags)
 	return 0;
 }
 
+/* TODO: extract parsing of string to separate function, join
+ * update_header_tags and update_header_flags, which are given an array of
+ * tags. */
+static int update_header_flags(CONTEXT *ctx, HEADER *hdr, const char *tags)
+{
+	char *tag = NULL, *end = NULL, *p;
+	char *buf = safe_strdup(tags);
+
+	if (!buf)
+		return -1;
+
+	for (p = buf; p && *p; p++) {
+		if (!tag && isspace(*p))
+			continue;
+		if (!tag)
+			tag = p;		/* begin of the tag */
+		if (*p == ',' || *p == ' ')
+			end = p;		/* terminate the tag */
+		else if (*(p + 1) == '\0')
+			end = p + 1;		/* end of optstr */
+		if (!tag || !end)
+			continue;
+		if (tag >= end)
+			break;
+
+		*end = '\0';
+
+		if (*tag == '-') {
+			tag = tag + 1;
+			if (strcmp(tag, "unread") == 0)
+				mutt_set_flag (ctx, hdr, MUTT_READ, 1);
+			else if (strcmp(tag, "replied") == 0)
+				mutt_set_flag (ctx, hdr, MUTT_REPLIED, 0);
+			else if (strcmp(tag, "flagged") == 0)
+				mutt_set_flag (ctx, hdr, MUTT_FLAG, 0);
+		} else {
+			tag = *tag == '+' ? tag + 1 : tag;
+			if (strcmp(tag, "unread") == 0)
+				mutt_set_flag (ctx, hdr, MUTT_READ, 0);
+			else if (strcmp(tag, "replied") == 0)
+				mutt_set_flag (ctx, hdr, MUTT_REPLIED, 1);
+			else if (strcmp(tag, "flagged") == 0)
+				mutt_set_flag (ctx, hdr, MUTT_FLAG, 1);
+		}
+		end = tag = NULL;
+	}
+
+	FREE(&buf);
+	return 0;
+}
+
 int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
 {
 	struct nm_ctxdata *data = get_ctxdata(ctx);
@@ -1336,6 +1387,7 @@ int nm_modify_message_tags(CONTEXT *ctx, HEADER *hdr, char *buf)
 	dprint(1, (debugfile, "nm: tags modify: '%s'\n", buf));
 
 	update_tags(msg, buf);
+	update_header_flags(ctx, hdr, buf);
 	update_header_tags(hdr, msg);
 	mutt_set_header_color(ctx, hdr);
 
