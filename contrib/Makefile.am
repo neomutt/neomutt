@@ -11,12 +11,14 @@ EXTRA_DIST = language.txt language50.txt  \
 	patch.slang-1.2.2.keypad.1	\
 	$(SAMPLES) \
 	iconv/README \
-	iconv/make.sh
+	iconv/make.sh \
+	vim-keybindings \
+	keybase
 
 CONTRIB_DIRS = vim-keybindings keybase
 
 install-data-local:
-	$(MKDIR_P) $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
+	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
 	for f in $(SAMPLES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir)/samples ;	\
 	done
@@ -24,7 +26,12 @@ install-data-local:
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/samples/iconv	  ;	\
 	done
 	for d in $(CONTRIB_DIRS); do						\
-		cp -r $(srcdir)/$$d $(DESTDIR)$(docdir);			\
+		echo "Installing $$d" ;	\
+		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d ;\
+		for f in $(srcdir)/$$d/*; do	\
+			echo "Installing $$f" ;	\
+			$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/$$d ; \
+		done \
 	done
 
 uninstall-local:
