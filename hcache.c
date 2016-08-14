@@ -793,10 +793,8 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   }
   /* Caller frees the data we return, so I MUST make a copy of it */
 
-  char *d = malloc(data.mv_size);
-  if (d) {
-    memcpy(d, data.mv_data, data.mv_size);
-  }
+  char *d = safe_malloc(data.mv_size);
+  memcpy(d, data.mv_data, data.mv_size);
   mdb_txn_reset(h->txn);
 
   return d;
