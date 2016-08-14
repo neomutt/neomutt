@@ -22,7 +22,7 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
-BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c $(HCVERSION)
+BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c hcachever.sh $(HCVERSION)
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
@@ -65,21 +65,21 @@ EXTRA_mutt_SOURCES = account.c bcache.c compress.c crypt-gpgme.c crypt-mod-pgp-c
 	bcache.h browser.h hcache.h mbyte.h mutt_idna.h remailer.h url.h
 
 EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
-	configure account.h \
+	account.h \
 	attach.h buffy.h charset.h compress.h copy.h crypthash.h dotlock.h functions.h gen_defs \
 	globals.h hash.h history.h init.h keymap.h mutt_crypt.h \
 	mailbox.h mapping.h md5.h mime.h mutt.h mutt_curses.h mutt_menu.h \
 	mutt_regex.h mutt_sasl.h mutt_socket.h mutt_ssl.h mutt_tunnel.h \
 	mx.h pager.h pgp.h pop.h protos.h rfc1524.h rfc2047.h \
-	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types VERSION prepare \
+	rfc2231.h rfc822.h rfc3676.h sha1.h sort.h mime.types VERSION \
 	nntp.h ChangeLog.nntp \
 	_regex.h OPS.MIX README.SECURITY remailer.c remailer.h browser.h \
 	mbyte.h lib.h extlib.c pgpewrap.c smime_keys.pl pgplib.h \
 	README.SSL smime.h group.h \
-	pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
+	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
 	ChangeLog mutt_idna.h sidebar.h OPS.SIDEBAR \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
-	txt2c.c txt2c.sh version.sh check_sec.sh version.h
+	txt2c.c txt2c.sh version.sh version.h
 
 EXTRA_SCRIPTS = smime_keys
 
