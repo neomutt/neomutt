@@ -243,7 +243,7 @@ int mutt_protect (HEADER *msg, char *keylist)
  		 
 			  tmp_pbody = crypt_smime_build_smime_entity (tmp_smime_pbody, new_keylist);
 			  if (new_keylist != keylist)
-				  safe_free((void **)&new_keylist);
+				  FREE(&new_keylist);
 			  
 			  if (!tmp_pbody)
       {
