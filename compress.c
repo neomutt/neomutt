@@ -557,7 +557,7 @@ comp_open_read (CONTEXT *ctx)
 
 	endwin();
 	fflush (stdout);
-	sprintf(echo_cmd,_("echo Decompressing %s..."),ctx->realpath);
+	sprintf(echo_cmd,_("echo Decompressing %s..."),ctx->realpath); /* __SPRINTF_CHECKED__ */
 	mutt_system(echo_cmd);
 	rc = mutt_system (cmd);
 	unlock_mailbox (ctx, fp);
@@ -675,7 +675,7 @@ comp_sync (CONTEXT *ctx)
 
 	endwin();
 	fflush (stdout);
-	sprintf(echo_cmd,_("echo Compressing %s..."), ctx->realpath);
+	sprintf(echo_cmd,_("echo Compressing %s..."), ctx->realpath); /* __SPRINTF_CHECKED__ */
 	mutt_system(echo_cmd);
 	if (mutt_system (cmd) != 0) {
 		mutt_any_key_to_continue (NULL);
@@ -796,9 +796,9 @@ comp_slow_close (CONTEXT *ctx)
 	fflush (stdout);
 
 	if (append == ci->close) {
-		sprintf(echo_cmd,_("echo Compressing %s..."), ctx->realpath);
+		sprintf(echo_cmd,_("echo Compressing %s..."), ctx->realpath); /* __SPRINTF_CHECKED__ */
 	} else {
-		sprintf(echo_cmd,_("echo Compressed-appending to %s..."), ctx->realpath);
+		sprintf(echo_cmd,_("echo Compressed-appending to %s..."), ctx->realpath); /* __SPRINTF_CHECKED__ */
 	}
 	mutt_system(echo_cmd);
 
