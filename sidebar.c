@@ -1230,7 +1230,7 @@ mutt_sb_toggle_virtual (void)
 	BUFFY *b;
 
 	EntryCount = 0;
-	FREE(Entries);
+	FREE(&Entries);
 	for (b = get_incoming(); b; b = b->next)
 		mutt_sb_notify_mailbox (b, 1);
 

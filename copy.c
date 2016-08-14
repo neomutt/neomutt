@@ -451,7 +451,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
           (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
       {
         mutt_labels(buf, sizeof(buf), h->env, XlabelDelim);
-        tmp = strdup(buf);
+        tmp = safe_strdup(buf);
         rfc2047_encode_string(&tmp);
         fail = fprintf(out, "X-Label: %s\n", tmp) != 10 + strlen(tmp);
         FREE(&tmp);
@@ -461,7 +461,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
           (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
       {
         mutt_labels(buf, sizeof(buf), h->env, " ");
-        tmp = strdup(buf);
+        tmp = safe_strdup(buf);
         rfc2047_encode_string(&tmp);
         fail = fprintf(out, "X-Keywords: %s\n", tmp) != 13 + strlen(tmp);
         FREE(&tmp);
@@ -471,7 +471,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
           (option(OPTKEYWORDSLEGACY) || option(OPTKEYWORDSSTANDARD) == 0))
       {
         mutt_labels(buf, sizeof(buf), h->env, " ");
-        tmp = strdup(buf);
+        tmp = safe_strdup(buf);
         rfc2047_encode_string(&tmp);
         fail = fprintf(out, "X-Mozilla-Keys: %s\n", tmp) != 17 + strlen(tmp);
         FREE(&tmp);
@@ -481,7 +481,7 @@ mutt_copy_header (FILE *in, HEADER *h, FILE *out, int flags, const char *prefix)
                         option(OPTKEYWORDSSTANDARD)))
       {
         mutt_labels(buf, sizeof(buf), h->env, NULL);
-        tmp = strdup(buf);
+        tmp = safe_strdup(buf);
         rfc2047_encode_string(&tmp);
         fail = fprintf(out, "Keywords: %s\n", tmp) != 11 + strlen(tmp);
         FREE(&tmp);

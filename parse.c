@@ -1361,7 +1361,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
   if (kwtype)
   {
     char *last, *label;
-    char *text = strdup(p);
+    char *text = safe_strdup(p);
     char *sep;
 
     if (kwtype == M_KEYWORDS)

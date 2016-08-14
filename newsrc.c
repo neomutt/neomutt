@@ -54,10 +54,11 @@ static NNTP_DATA *nntp_data_find (NNTP_SERVER *nserv, const char *group)
 
   if (!nntp_data)
   {
+    int len = strlen (group) + 1;
     /* create NNTP_DATA structure and add it to hash */
-    nntp_data = safe_calloc (1, sizeof (NNTP_DATA) + strlen (group) + 1);
+    nntp_data = safe_calloc (1, sizeof (NNTP_DATA) + len);
     nntp_data->group = (char *)nntp_data + sizeof (NNTP_DATA);
-    strcpy (nntp_data->group, group);
+    strfcpy (nntp_data->group, group, len);
     nntp_data->nserv = nserv;
     nntp_data->deleted = 1;
     if (nserv->groups_hash->nelem < nserv->groups_hash->curnelem * 2)
@@ -338,7 +339,7 @@ static int update_file (char *filename, char *buf)
   while (1)
   {
     snprintf (tmpfile, sizeof (tmpfile), "%s.tmp", filename);
-    fp = fopen (tmpfile, "w");
+    fp = safe_fopen (tmpfile, "w");
     if (!fp)
     {
       mutt_perror (tmpfile);
