@@ -125,7 +125,7 @@ const struct binding_t OpMain[] = { /* map: index */
   { "next-undeleted",		OP_MAIN_NEXT_UNDELETED,		"j" },
   { "previous-undeleted",	OP_MAIN_PREV_UNDELETED,		"k" },
   { "limit",			OP_MAIN_LIMIT,			"l" },
-  { "limit-current-thread",	OP_LIMIT_CURRENT_THREAD,	"\033L" },
+  { "limit-current-thread",	OP_LIMIT_CURRENT_THREAD,	NULL },
   { "link-threads",		OP_MAIN_LINK_THREADS,		"&" },
   { "list-reply",		OP_LIST_REPLY,			"L" },
   { "mail",			OP_MAIL,			"m" },
