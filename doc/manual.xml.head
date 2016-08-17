@@ -8118,10 +8118,10 @@ please have a look at the mixmaster documentation.
     <para>
       This patch adds a new way of using the
       <link linkend="tuning-search">Limit Command</link>.
-                        The <literal>&lt;limit-current-thread&gt;</literal>
-                        function restricts the view to just the current thread.
-                        Setting the limit (the <literal>l</literal> key) to
-                        <quote>all</quote> will restore the full email list.
+      The <literal>&lt;limit-current-thread&gt;</literal>
+      function restricts the view to just the current thread.
+      Setting the limit (the <literal>l</literal> key) to
+      <quote>all</quote> will restore the full email list.
     </para>
 
   </sect2>
@@ -8135,13 +8135,17 @@ please have a look at the mixmaster documentation.
   <sect2 id="limit-current-thread-functions">
     <title>Functions</title>
 
+    <para>
+      Limit-current-thread adds the following function to Mutt.
+      By default, it is not bound to a key.
+    </para>
+
     <table id="table-limit-current-thread-functions">
       <title>Limit-Current-Thread Functions</title>
-      <tgroup cols="4">
+      <tgroup cols="3">
         <thead>
           <row>
             <entry>Menus</entry>
-            <entry>Default Key</entry>
             <entry>Function</entry>
             <entry>Description</entry>
           </row>
@@ -8149,7 +8153,6 @@ please have a look at the mixmaster documentation.
         <tbody>
           <row>
             <entry>index</entry>
-            <entry><literal>&lt;Esc&gt;L</literal></entry>
             <entry><literal>&lt;limit-current-thread&gt;</literal></entry>
             <entry>Limit view to current thread</entry>
           </row>
