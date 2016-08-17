@@ -2371,7 +2371,9 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
   </tgroup>
 </table>
 
-<emphasis>($XDG_CONFIG_DIRS defaults to "/etc/xdg".)</emphasis>
+<para>
+  <emphasis>($XDG_CONFIG_DIRS defaults to "/etc/xdg".)</emphasis>
+</para>
 
 <para>
   Mutt will search for a user config file in several places in your home
@@ -2402,7 +2404,9 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
   </tgroup>
 </table>
 
-<emphasis>($XDG_CONFIG_HOME defaults to "$HOME/.config".)</emphasis>
+<para>
+  <emphasis>($XDG_CONFIG_HOME defaults to "$HOME/.config".)</emphasis>
+</para>
 
 </sect1>
 
