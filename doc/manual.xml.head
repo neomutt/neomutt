@@ -9664,11 +9664,118 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
-<!--
   <sect2 id="notmuch-intro">
     <title>Introduction</title>
+
+    <para>
+      Notmuch is an email fulltext indexing and tagging engine.
+    </para>
+
+    <itemizedlist>
+      <listitem><para>For more information, see: 
+      <ulink url="http://notmuchmail.org/">http://notmuchmail.org/</ulink>
+      </para></listitem>
+      <listitem><para>Home page (wiki) and git:
+      <ulink url="https://github.com/karelzak/mutt-kz">https://github.com/karelzak/mutt-kz</ulink>
+      </para></listitem>
+      <listitem><para>Mailing list:
+      <ulink url="https://admin.fedoraproject.org/mailman/listinfo/mutt-kz">https://admin.fedoraproject.org/mailman/listinfo/mutt-kz</ulink>
+      </para></listitem>
+
+      <listitem><para>More examples:
+      <ulink url="http://notmuchmail.org/mutttips/">http://notmuchmail.org/mutttips/</ulink>
+      </para></listitem>
+    </itemizedlist>
+
   </sect2>
--->
+
+  <sect2 id="notmuch-using">
+    <title>Using NotMuch</title>
+
+    <sect3 id="notmuch-folder-uri">
+      <title>Folders URI</title>
+
+      <para>
+        <emphasis role="bold">notmuch://[&lt;path&gt;][?&lt;item&gt;=&lt;name&gt;[&amp; ...]]</emphasis>
+      </para>
+
+      <para>
+        The &lt;path&gt; is an absolute path to the directory where the notmuch database
+        is found as returned by <quote>notmuch config get database.path</quote> command. Note that
+        the &lt;path&gt; should NOT include <literal>.notmuch</literal> directory name.
+      </para>
+
+      <para>
+        If the &quot;&lt;path&gt;&quot; is not defined then
+        <literal>$nm_default_uri</literal> or <literal>$folder</literal> is
+        used, for example:
+      </para>
+
+<screen>
+set nm_default_uri = "notmuch:///home/foo/maildir"
+virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
+</screen>
+    </sect3>
+
+    <sect3 id="notmuch-items">
+      <title>Items</title>
+
+      <para>
+        <emphasis role="bold">query=&lt;string&gt;</emphasis>
+      </para>
+
+      <para>
+        See SEARCH SYNTAX in notmuch man page. Don't forget to use
+        <quote>and</quote> and <quote>or</quote> operators in your queries.
+      </para>
+
+      <para>
+        Note that proper URI should not contain blank space and all
+        <quote>bad</quote> chars should be encoded, for example
+      </para>
+
+      <para>
+        <literal>tag:AAA and tag:BBB</literal> --encoding-&gt; <literal>tag:AAA%20and%20tag:BBB</literal>
+      </para>
+
+      <para>
+        but mutt config file parser is smart enough to accept space in quoted
+        strings. It means that you can use
+      </para>
+
+      <para>
+        <literal>notmuch:///foo?query=tag:AAA and tag:BBB</literal>
+      </para>
+
+      <para>
+        in your config files to keep things readable.
+      </para>
+
+      <para>
+        For more details about Xapian queries, see:
+        <ulink url="http://xapian.org/docs/queryparser.html">http://xapian.org/docs/queryparser.html</ulink>
+      </para>
+
+      <para>
+        <emphasis role="bold">limit=&lt;number&gt;</emphasis>
+      </para>
+
+      <para>
+         Restricts number of messages/threads in the result. The default limit
+         is nm_db_limit.
+      </para>
+
+      <para>
+        <emphasis role="bold">type=&lt;threads|messages&gt;</emphasis>
+      </para>
+
+      <para>
+         Reads all matching messages or whole-threads. The default is 'messages'
+         or nm_query_type.
+      </para>
+    </sect3>
+
+  </sect2>
 
   <sect2 id="notmuch-variables">
     <title>Variables</title>
