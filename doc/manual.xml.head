@@ -9747,13 +9747,17 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
   <sect2 id="notmuch-functions">
     <title>Functions</title>
 
+    <para>
+      Notmuch adds the following functions to Mutt.
+      By default, none of them are bound to keys.
+    </para>
+
     <table id="table-notmuch-functions">
       <title>Notmuch Functions</title>
-      <tgroup cols="4">
+      <tgroup cols="3">
         <thead>
           <row>
             <entry>Menus</entry>
-            <entry>Default Key</entry>
             <entry>Function</entry>
             <entry>Description</entry>
           </row>
@@ -9761,37 +9765,31 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
         <tbody>
           <row>
             <entry>index,pager</entry>
-            <entry>X</entry>
             <entry><literal>&lt;change-vfolder&gt;</literal></entry>
             <entry>open a different virtual folder</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>+</entry>
             <entry><literal>&lt;entire-thread&gt;</literal></entry>
             <entry>read entire thread of the current message</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>`</entry>
             <entry><literal>&lt;modify-labels&gt;</literal></entry>
             <entry>modify (notmuch) tags</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
             <entry>modify labels and then hide message</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;sidebar-toggle-virtual&gt;</literal></entry>
             <entry>toggle between mailboxes and virtual mailboxes</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>Alt-X</entry>
             <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
             <entry>generate virtual folder from query</entry>
           </row>
