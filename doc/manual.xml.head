@@ -8274,8 +8274,8 @@ please have a look at the mixmaster documentation.
 
     <para>
     You can change or delete the X-Label: field within
-    Mutt using the edit-label command, bound to the
-    y key by default.  This works for tagged messages, too.
+    Mutt using the edit-label command.
+    This works for tagged messages, too.
     </para>
   </sect2>
 
@@ -8316,13 +8316,17 @@ please have a look at the mixmaster documentation.
   <sect2 id="keywords-functions">
     <title>Functions</title>
 
+    <para>
+      Keywords adds the following function to Mutt.
+      By default, it is not bound to a key.
+    </para>
+
     <table id="table-keywords-funcions">
       <title>Keyword Functions</title>
-      <tgroup cols="4">
+      <tgroup cols="3">
         <thead>
           <row>
             <entry>Menus</entry>
-            <entry>Default Key</entry>
             <entry>Function</entry>
             <entry>Description</entry>
           </row>
@@ -8330,7 +8334,6 @@ please have a look at the mixmaster documentation.
         <tbody>
           <row>
             <entry>index,pager</entry>
-            <entry>y</entry>
             <entry><literal>&lt;edit-label&gt;</literal></entry>
             <entry>add, change, or delete a message's label</entry>
           </row>
