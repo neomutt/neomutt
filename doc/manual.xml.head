@@ -8269,13 +8269,17 @@ please have a look at the mixmaster documentation.
   <sect2 id="nntp-functions">
     <title>Functions</title>
 
+    <para>
+      NNTP adds the following functions to Mutt.
+      By default, none of them are bound to keys.
+    </para>
+
     <table id="table-nntp-functions">
       <title>NNTP Functions</title>
-      <tgroup cols="4">
+      <tgroup cols="3">
         <thead>
           <row>
             <entry>Menus</entry>
-            <entry>Default Key</entry>
             <entry>Function</entry>
             <entry>Description</entry>
           </row>
@@ -8283,157 +8287,131 @@ please have a look at the mixmaster documentation.
         <tbody>
           <row>
             <entry>browser,index</entry>
-            <entry>y</entry>
             <entry><literal>&lt;catchup&gt;</literal></entry>
             <entry>mark all articles in newsgroup as read</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>i</entry>
             <entry><literal>&lt;change-newsgroup&gt;</literal></entry>
             <entry>open a different newsgroup</entry>
           </row>
           <row>
             <entry>pager</entry>
-            <entry>X</entry>
             <entry><literal>&lt;change-vfolder&gt;</literal></entry>
             <entry>open a different virtual folder</entry>
           </row>
           <row>
             <entry>compose</entry>
-            <entry>o</entry>
             <entry><literal>&lt;edit-followup-to&gt;</literal></entry>
             <entry>edit the Followup-To field</entry>
           </row>
           <row>
             <entry>compose</entry>
-            <entry>N</entry>
             <entry><literal>&lt;edit-newsgroups&gt;</literal></entry>
             <entry>edit the newsgroups list</entry>
           </row>
           <row>
             <entry>compose</entry>
-            <entry>x</entry>
             <entry><literal>&lt;edit-x-comment-to&gt;</literal></entry>
             <entry>edit the X-Comment-To field</entry>
           </row>
           <row>
             <entry>pager</entry>
-            <entry>+</entry>
             <entry><literal>&lt;entire-thread&gt;</literal></entry>
             <entry>read entire thread of the current message</entry>
           </row>
           <row>
             <entry>attachment,index,pager</entry>
-            <entry>F</entry>
             <entry><literal>&lt;followup-message&gt;</literal></entry>
             <entry>followup to newsgroup</entry>
           </row>
           <row>
             <entry>pager</entry>
-            <entry>`</entry>
             <entry><literal>&lt;modify-labels&gt;</literal></entry>
             <entry>modify (notmuch) tags</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>P</entry>
             <entry><literal>&lt;post-message&gt;</literal></entry>
             <entry>post message to newsgroup</entry>
           </row>
           <row>
             <entry>browser</entry>
-            <entry>g</entry>
             <entry><literal>&lt;reload-active&gt;</literal></entry>
             <entry>load list of all newsgroups from NNTP server</entry>
           </row>
           <row>
             <entry>browser</entry>
-            <entry>s</entry>
             <entry><literal>&lt;subscribe&gt;</literal></entry>
             <entry>subscribe to current mbox (IMAP/NNTP only)</entry>
           </row>
           <row>
             <entry>browser</entry>
-            <entry>S</entry>
             <entry><literal>&lt;subscribe-pattern&gt;</literal></entry>
             <entry>subscribe to newsgroups matching a pattern</entry>
           </row>
           <row>
             <entry>browser</entry>
-            <entry>Y</entry>
             <entry><literal>&lt;uncatchup&gt;</literal></entry>
             <entry>mark all articles in newsgroup as unread</entry>
           </row>
           <row>
             <entry>browser</entry>
-            <entry>u</entry>
             <entry><literal>&lt;unsubscribe&gt;</literal></entry>
             <entry>unsubscribe from current mbox (IMAP/NNTP only)</entry>
           </row>
           <row>
             <entry>browser</entry>
-            <entry>U</entry>
             <entry><literal>&lt;unsubscribe-pattern&gt;</literal></entry>
             <entry>unsubscribe from newsgroups matching a pattern</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>Alt-i</entry>
             <entry><literal>&lt;change-newsgroup-readonly&gt;</literal></entry>
             <entry>open a different newsgroup in read only mode</entry>
           </row>
           <row>
             <entry>attachment,index,pager</entry>
-            <entry>Alt-F</entry>
             <entry><literal>&lt;forward-to-group&gt;</literal></entry>
             <entry>forward to newsgroup</entry>
           </row>
           <row>
             <entry>index</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;get-children&gt;</literal></entry>
             <entry>get all children of the current message</entry>
           </row>
           <row>
             <entry>index</entry>
-            <entry>Alt-G</entry>
             <entry><literal>&lt;get-parent&gt;</literal></entry>
             <entry>get parent of the current message</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;imap-fetch-mail&gt;</literal></entry>
             <entry>force retrieval of mail from IMAP server</entry>
           </row>
           <row>
             <entry>index,pager</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;imap-logout-all&gt;</literal></entry>
             <entry>logout from all IMAP servers</entry>
           </row>
           <row>
             <entry>pager</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;modify-labels-then-hide&gt;</literal></entry>
             <entry>modify labeld and then hide message</entry>
           </row>
           <row>
             <entry>index</entry>
-            <entry>(none)</entry>
             <entry><literal>&lt;reconstruct-thread&gt;</literal></entry>
             <entry>reconstruct thread containing current message</entry>
           </row>
           <row>
             <entry>pager</entry>
-            <entry>Alt-X</entry>
             <entry><literal>&lt;vfolder-from-query&gt;</literal></entry>
             <entry>generate virtual folder from query</entry>
           </row>
           <row>
             <entry>index</entry>
-            <entry>Ctrl-G</entry>
             <entry><literal>&lt;get-message&gt;</literal></entry>
             <entry>get message with Message-Id</entry>
           </row>
