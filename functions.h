@@ -203,11 +203,11 @@ const struct binding_t OpMain[] = { /* map: index */
 #endif
 
 #ifdef USE_NOTMUCH
-  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,         "X" },
-  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,     "\033X" },
-  { "modify-labels",		OP_MAIN_MODIFY_LABELS,		"`" },
+  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,         NULL },
+  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,     NULL },
+  { "modify-labels",		OP_MAIN_MODIFY_LABELS,		NULL },
   { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
-  { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          "+" },
+  { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          NULL },
 #endif
   { NULL,			0,				NULL }
 };
@@ -340,11 +340,11 @@ const struct binding_t OpPager[] = { /* map: pager */
 #endif
 
 #ifdef USE_NOTMUCH
-  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,		"X" },
-  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,	"\033X" },
-  { "modify-labels",		OP_MAIN_MODIFY_LABELS,		"`" },
+  { "change-vfolder",		OP_MAIN_CHANGE_VFOLDER,		NULL },
+  { "vfolder-from-query",	OP_MAIN_VFOLDER_FROM_QUERY,	NULL },
+  { "modify-labels",		OP_MAIN_MODIFY_LABELS,		NULL },
   { "modify-labels-then-hide",	OP_MAIN_MODIFY_LABELS_THEN_HIDE, NULL },
-  { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          "+" },
+  { "entire-thread",		OP_MAIN_ENTIRE_THREAD,          NULL },
 #endif
 
   { NULL,		0,				NULL }
