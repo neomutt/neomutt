@@ -7,6 +7,7 @@ patch-initials-neomutt
 patch-keywords-neomutt
 patch-limit-current-thread-neomutt
 patch-lmdb-neomutt
+patch-multiple-fcc-neomutt
 patch-nested-if-neomutt
 patch-new-mail-neomutt
 patch-nntp-neomutt
