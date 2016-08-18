@@ -49,6 +49,10 @@
 #include "nntp.h"
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 #include "buffy.h"
 
 #ifdef USE_DOTLOCK
@@ -95,6 +99,10 @@ struct mx_ops* mx_get_ops (int magic)
 #ifdef USE_NNTP
     case MUTT_NNTP:
       return &mx_nntp_ops;
+#endif
+#ifdef USE_NOTMUCH
+    case MUTT_NOTMUCH:
+      return &mx_notmuch_ops;
 #endif
     default:
       return NULL;
@@ -402,6 +410,24 @@ int mx_is_nntp (const char *p)
 }
 #endif
 
+#ifdef USE_NOTMUCH
+
+int mx_is_notmuch(const char *p)
+{
+  url_scheme_t scheme;
+
+  if (!p)
+    return 0;
+
+  scheme = url_check_scheme (p);
+  if (scheme == U_NOTMUCH)
+    return 1;
+
+  return 0;
+}
+
+#endif
+
 int mx_get_magic (const char *path)
 {
   struct stat st;
@@ -423,6 +449,11 @@ int mx_get_magic (const char *path)
   if (mx_is_nntp (path))
     return MUTT_NNTP;
 #endif /* USE_NNTP */
+
+#ifdef USE_NOTMUCH
+  if (mx_is_notmuch(path))
+    return MUTT_NOTMUCH;
+#endif
 
   if (stat (path, &st) == -1)
   {
@@ -754,6 +785,13 @@ static int sync_mailbox (CONTEXT *ctx, int *index_hint)
       rc = nntp_sync_mailbox (ctx);
       break;
 #endif /* USE_NNTP */
+
+#ifdef USE_NOTMUCH
+    case MUTT_NOTMUCH:
+      rc = nm_sync (ctx, index_hint);
+      break;
+#endif /* USE_NOTMUCH */
+
   }
 
 #if 0
@@ -1101,6 +1139,10 @@ int mx_close_mailbox (CONTEXT *ctx, int *index_hint)
   return 0;
 }
 
+#if USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 
 /* update a Context structure's internal tables. */
 
@@ -1441,6 +1483,7 @@ int mx_close_message (CONTEXT *ctx, MESSAGE **msg)
     FREE (&(*msg)->path);
   }
 
+  FREE (&(*msg)->commited_path);
   FREE (msg);		/* __FREE_CHECKED__ */
   return (r);
 }

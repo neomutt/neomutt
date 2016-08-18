@@ -54,6 +54,7 @@
 #define CH_UPDATE_REFS    (1<<17) /* update References: */
 #define CH_DISPLAY        (1<<18) /* display result to user */
 #define CH_UPDATE_LABEL   (1<<19) /* update X-Label: from hdr->env->x_label? */
+#define CH_VIRTUAL	  (1<<20) /* write virtual header lines too */
 
 
 int mutt_copy_hdr (FILE *, FILE *, LOFF_T, LOFF_T, int, const char *);

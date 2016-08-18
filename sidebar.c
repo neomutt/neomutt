@@ -27,7 +27,9 @@
 #include "keymap.h"
 #include "mutt_curses.h"
 #include "mutt_menu.h"
+#include "mx.h"
 #include "sort.h"
+#include "sidebar.h"
 
 /* Previous values for some sidebar config */
 static short PreviousSort = SORT_ORDER;  /* sidebar_sort_method */
@@ -53,6 +55,39 @@ static int BotIndex = -1;    /* Last mailbox visible in sidebar */
 
 static int select_next (void);
 
+
+enum {
+	SB_SRC_NONE = 0,
+	SB_SRC_VIRT,
+	SB_SRC_INCOMING
+};
+static int sidebar_source = SB_SRC_NONE;
+
+static BUFFY *
+get_incoming (void)
+{
+	switch (sidebar_source) {
+	case SB_SRC_NONE:
+		sidebar_source = SB_SRC_INCOMING;
+
+#ifdef USE_NOTMUCH
+		if (option (OPTVIRTSPOOLFILE) && VirtIncoming) {
+			sidebar_source = SB_SRC_VIRT;
+			return VirtIncoming;
+		}
+		break;
+	case SB_SRC_VIRT:
+		if (VirtIncoming) {
+			return VirtIncoming;
+		}
+		break;
+#endif
+	case SB_SRC_INCOMING:
+		break;
+	}
+
+	return Incoming;	/* default */
+}
 
 /**
  * cb_format_str - Create the string to show in the sidebar
@@ -263,6 +298,9 @@ static int cb_qsort_sbe (const void *a, const void *b)
     case SORT_COUNT_NEW:
       result = (b2->msg_unread - b1->msg_unread);
       break;
+    case SORT_DESC:
+      result = mutt_strcmp (b1->desc, b2->desc);
+      break;
     case SORT_FLAGGED:
       result = (b2->msg_flagged - b1->msg_flagged);
       break;
@@ -324,7 +362,7 @@ static void update_entries_visibility (void)
  */
 static void unsort_entries (void)
 {
-  BUFFY *cur = Incoming;
+  BUFFY *cur = get_incoming();
   int i = 0, j;
   SBENTRY *tmp;
 
@@ -661,6 +699,12 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
         safe_strcat (sidebar_folder_name, sfn_len, tmp_folder_name);
       }
     }
+#ifdef USE_NOTMUCH
+    else if (b->magic == MUTT_NOTMUCH)
+    {
+      sidebar_folder_name = b->desc;
+    }
+#endif
     char str[STRING];
     make_sidebar_entry (str, sizeof (str), w, sidebar_folder_name, entry);
     printw ("%s", str);
@@ -699,7 +743,12 @@ void mutt_sb_draw (void)
   if (div_width < 0)
     return;
 
-  if (!Incoming)
+  BUFFY *b;
+  if (Entries == NULL)
+    for (b = get_incoming(); b; b = b->next)
+      mutt_sb_notify_mailbox (b, 1);
+
+  if (!get_incoming())
   {
     fill_empty_space (0, num_rows, div_width, num_cols - div_width);
     return;
@@ -944,7 +993,7 @@ void mutt_sb_set_buffystats (const CONTEXT *ctx)
 {
   /* Even if the sidebar's hidden,
    * we should take note of the new data. */
-  BUFFY *b = Incoming;
+  BUFFY *b = get_incoming();
   if (!ctx || !b)
     return;
 
@@ -1021,6 +1070,9 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
   if (!b)
     return;
 
+  if (sidebar_source == SB_SRC_NONE)
+    return;
+
   /* Any new/deleted mailboxes will cause a refresh.  As long as
    * they're valid, our pointers will be updated in prepare_sidebar() */
 
@@ -1071,3 +1123,35 @@ void mutt_sb_notify_mailbox (BUFFY *b, int created)
 
   SidebarNeedsRedraw = 1;
 }
+
+/**
+ * mutt_sb_toggle_virtual - Switch between regular and virtual folders
+ */
+void
+mutt_sb_toggle_virtual (void)
+{
+	if (sidebar_source == -1)
+		get_incoming();
+
+#ifdef USE_NOTMUCH
+	if ((sidebar_source == SB_SRC_INCOMING) && VirtIncoming)
+		sidebar_source = SB_SRC_VIRT;
+	else
+#endif
+		sidebar_source = SB_SRC_INCOMING;
+
+	TopIndex = -1;
+	OpnIndex = -1;
+	HilIndex = -1;
+	BotIndex = -1;
+
+	BUFFY *b;
+
+	EntryCount = 0;
+	FREE(&Entries);
+	for (b = get_incoming(); b; b = b->next)
+		mutt_sb_notify_mailbox (b, 1);
+
+	SidebarNeedsRedraw = 1;
+}
+

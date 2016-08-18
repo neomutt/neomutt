@@ -102,6 +102,10 @@
 #define  MUTT_COMMAND (1<<6) /* do command completion */
 #define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
 #define  MUTT_LABEL   (1<<8) /* do label completion */
+#if USE_NOTMUCH
+#define  MUTT_NM_QUERY (1<<9) /* Notmuch query mode. */
+#define  MUTT_NM_TAG   (1<<10) /* Notmuch tag +/- mode. */
+#endif
 
 /* flags for mutt_get_token() */
 #define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
@@ -246,6 +250,9 @@ enum
   MUTT_CRYPT_ENCRYPT,
   MUTT_PGP_KEY,
   MUTT_XLABEL,
+#ifdef USE_NOTMUCH
+  MUTT_NOTMUCH_LABEL,
+#endif
   MUTT_MIMEATTACH,
 #ifdef USE_NNTP
   MUTT_NEWSGROUPS,
@@ -339,6 +346,7 @@ enum
 #define MUTT_SEL_BUFFY  (1<<0)
 #define MUTT_SEL_MULTI  (1<<1)
 #define MUTT_SEL_FOLDER (1<<2)
+#define MUTT_SEL_VFOLDER	(1<<3)
 
 /* flags for parse_spam_list */
 #define MUTT_SPAM          1
@@ -591,6 +599,10 @@ enum
 #ifdef USE_NNTP
   OPTNEWS,		/* (pseudo) used to change reader mode */
   OPTNEWSSEND,		/* (pseudo) used to change behavior when posting */
+#endif
+#ifdef USE_NOTMUCH
+  OPTVIRTSPOOLFILE,
+  OPTNOTMUCHRECORD,
 #endif
 
   OPTMAX
@@ -868,8 +880,9 @@ typedef struct header
   int refno;			/* message number on server */
 #endif
 
-#if defined USE_POP || defined USE_IMAP || defined USE_NNTP
+#if defined USE_POP || defined USE_IMAP || defined USE_NNTP || defined USE_NOTMUCH
   void *data;            	/* driver-specific data */
+  void (*free_cb)(struct header *); /* driver-specific data free function */
 #endif
   
   char *maildir_flags;		/* unknown maildir flags */

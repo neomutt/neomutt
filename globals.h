@@ -177,6 +177,10 @@ WHERE const char *ReleaseDate;
 WHERE HASH *Groups;
 WHERE HASH *Labels;
 WHERE HASH *ReverseAlias;
+#ifdef USE_NOTMUCH
+WHERE HASH *TagTransforms;
+WHERE HASH *TagFormats;
+#endif
 
 WHERE LIST *AutoViewList INITVAL(0);
 WHERE LIST *AlternativeOrderList INITVAL(0);
@@ -303,6 +307,17 @@ WHERE char *SmimeGetCertCommand;
 WHERE char *SmimeImportCertCommand;
 WHERE char *SmimeGetCertEmailCommand;
 
+#ifdef USE_NOTMUCH
+WHERE int NotmuchOpenTimeout;
+WHERE char *NotmuchDefaultUri;
+WHERE char *NotmuchExcludeTags;
+WHERE char *NotmuchUnreadTag;
+WHERE char *NotmuchHiddenTags;
+WHERE char *VirtFolderFormat;
+WHERE int NotmuchDBLimit;
+WHERE char *NotmuchQueryType;
+WHERE char *NotmuchRecordTags;
+#endif
 
 
 

@@ -821,7 +821,8 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
 	  numfiles = 0;
 	  files = NULL;
 
-	  if (_mutt_enter_fname (prompt, fname, sizeof (fname), &menu->redraw, 0, 1, &files, &numfiles) == -1 ||
+	  if (_mutt_enter_fname (prompt, fname, sizeof (fname),
+			&menu->redraw, 0, 1, &files, &numfiles, 0) == -1 ||
 	      *fname == '\0')
 	    break;
 
@@ -1392,7 +1393,7 @@ int mutt_compose_menu (HEADER *msg,   /* structure for new message */
          if (msg->content->next)
            msg->content = mutt_make_multipart (msg->content);
 
-         if (mutt_write_fcc (fname, msg, NULL, 0, NULL) < 0)
+         if (mutt_write_fcc (fname, msg, NULL, 0, NULL, NULL) < 0)
            msg->content = mutt_remove_multipart (msg->content);
          else
            mutt_message _("Message written.");

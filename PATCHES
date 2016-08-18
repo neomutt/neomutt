@@ -10,6 +10,7 @@ patch-lmdb-neomutt
 patch-nested-if-neomutt
 patch-new-mail-neomutt
 patch-nntp-neomutt
+patch-notmuch-neomutt
 patch-progress-neomutt
 patch-quasi-delete-neomutt
 patch-sidebar-neomutt

@@ -36,6 +36,10 @@
 #include <alloca.h>
 #endif
 
+#ifdef USE_NOTMUCH
+#include "mutt_notmuch.h"
+#endif
+
 int mutt_is_mail_list (ADDRESS *addr)
 {
   if (!mutt_match_rx_list (addr->mailbox, UnMailLists))
@@ -244,6 +248,7 @@ int mutt_user_is_recipient (HEADER *h)
  * %f = entire from line
  * %F = like %n, unless from self
  * %g = newsgroup name (if compiled with NNTP support)
+ * %g = message labels (e.g. notmuch tags)
  * %i = message-id
  * %I = initials of author
  * %l = number of lines in the message
@@ -590,6 +595,19 @@ hdr_format_str (char *dest,
         optional = 0;
       break;
 
+#ifdef USE_NOTMUCH
+    case 'g':
+      if (!optional)
+      {
+        colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAGS);
+        mutt_format_s (dest+colorlen, destlen-colorlen, prefix, nm_header_get_tags_transformed(hdr));
+        add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
+      }
+      else if (!nm_header_get_tags_transformed(hdr))
+        optional = 0;
+      break;
+#endif
+
     case 'H':
       /* (Hormel) spam score */
       if (optional)
@@ -603,7 +621,7 @@ hdr_format_str (char *dest,
       break;
 
 #ifdef USE_NNTP
-    case 'g':
+    case 'q':
       mutt_format_s (dest, destlen, prefix, hdr->env->newsgroups ? hdr->env->newsgroups : "");
       break;
 #endif
@@ -960,6 +978,47 @@ hdr_format_str (char *dest,
 
       break;
 
+#ifdef USE_NOTMUCH
+    case 'G':
+    {
+      char *tag_transformed;
+      char format[3];
+      char *tag;
+
+      if (!optional)
+      {
+        format[0] = op;
+        format[1] = *src;
+        format[2] = 0;
+
+        tag = hash_find(TagFormats, format);
+        if (tag != NULL)
+        {
+            tag_transformed = nm_header_get_tag_transformed(tag, hdr);
+
+            colorlen = add_index_color(dest, destlen, flags, MT_COLOR_INDEX_TAG);
+            mutt_format_s (dest+colorlen, destlen-colorlen, prefix,
+                           (tag_transformed) ? tag_transformed : "");
+            add_index_color(dest+colorlen, destlen-colorlen, flags, MT_COLOR_INDEX);
+        }
+
+        src++;
+      }
+      else
+      {
+        format[0] = op;
+        format[1] = *prefix;
+        format[2] = 0;
+
+        tag = hash_find(TagFormats, format);
+        if (tag != NULL)
+          if (nm_header_get_tag_transformed(tag, hdr) == NULL)
+            optional = 0;
+      }
+
+      break;
+    }
+#endif
 
     default:
       snprintf (dest, destlen, "%%%s%c", prefix, op);

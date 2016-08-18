@@ -51,6 +51,17 @@ get_color (int index, unsigned char *s)
     case MT_COLOR_INDEX_SUBJECT:
       color = ColorIndexSubjectList;
       break;
+#ifdef USE_NOTMUCH
+    case MT_COLOR_INDEX_TAG:
+      for (color = ColorIndexTagList; color; color = color->next)
+      {
+        const char * transform = hash_find(TagTransforms, color->pattern);
+        if (transform && (strncmp((const char *)(s+1),
+            transform, strlen(transform)) == 0))
+          return color->pair;
+      }
+      return 0;
+#endif
     default:
       return ColorDefs[type];
   }
