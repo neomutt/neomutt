@@ -1319,6 +1319,12 @@ if test $mutt_cv_langinfo_yesexpr = yes; then
   AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
 fi
 
+AC_CHECK_FUNCS(fmemopen open_memstream, [
+	AC_ARG_ENABLE(fmemopen, AS_HELP_STRING([--disable-fmemopen],[Do NOT use fmemopen]),
+	[],
+	[AC_DEFINE(USE_FMEMOPEN, 1, [Use fmemopen])])
+])
+
 dnl Documentation tools
 have_openjade="no"
 AC_PATH_PROG([OSPCAT], [ospcat], [none])
