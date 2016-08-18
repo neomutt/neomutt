@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-18 09:17+0900\n"
+"POT-Creation-Date: 2016-08-17 20:11-0700\n"
 "PO-Revision-Date: 2016-08-18 09:40+0900\n"
 "Last-Translator: TAKAHASHI Tamotsu <ttakah@lapis.plala.or.jp>\n"
 "Language-Team: mutt-j <mutt-j-users@lists.osdn.me>\n"
@@ -2946,8 +2946,8 @@ msgstr "移動先インデックス番号を指定: "
 msgid "Invalid index number."
 msgstr "不正なインデックス番号。"
 
-#: menu.c:443 menu.c:464 menu.c:529 menu.c:572 menu.c:588 menu.c:599
-#: menu.c:610 menu.c:621 menu.c:634 menu.c:647 menu.c:1065
+#: menu.c:443 menu.c:464 menu.c:529 menu.c:572 menu.c:588 menu.c:599 menu.c:610
+#: menu.c:621 menu.c:634 menu.c:647 menu.c:1065
 msgid "No entries."
 msgstr "エントリがない。"
 
@@ -5091,224 +5091,272 @@ msgid "print the current entry"
 msgstr "現在のエントリを印刷"
 
 #: ../keymap_alldefs.h:149
+msgid "really delete the current entry, bypassing the trash folder"
+msgstr ""
+
+#: ../keymap_alldefs.h:150
 msgid "query external program for addresses"
 msgstr "外部プログラムにアドレスを問い合わせ"
 
-#: ../keymap_alldefs.h:150
+#: ../keymap_alldefs.h:151
 msgid "append new query results to current results"
 msgstr "新たな問い合わせ結果を現在の結果に追加"
 
-#: ../keymap_alldefs.h:151
+#: ../keymap_alldefs.h:152
 msgid "save changes to mailbox and quit"
 msgstr "変更をメールボックスに保存後終了"
 
-#: ../keymap_alldefs.h:152
+#: ../keymap_alldefs.h:153
 msgid "recall a postponed message"
 msgstr "書きかけのメッセージを呼び出す"
 
-#: ../keymap_alldefs.h:153
+#: ../keymap_alldefs.h:154
 msgid "clear and redraw the screen"
 msgstr "画面をクリアし再描画"
 
-#: ../keymap_alldefs.h:154
+#: ../keymap_alldefs.h:155
 msgid "{internal}"
 msgstr "{内部}"
 
-#: ../keymap_alldefs.h:155
+#: ../keymap_alldefs.h:156
 msgid "rename the current mailbox (IMAP only)"
 msgstr "現在のメールボックスをリネーム(IMAPのみ)"
 
-#: ../keymap_alldefs.h:156
+#: ../keymap_alldefs.h:157
 msgid "reply to a message"
 msgstr "メッセージに返信"
 
 # これでギリギリ一行におさまるハズ
-#: ../keymap_alldefs.h:157
+#: ../keymap_alldefs.h:158
 msgid "use the current message as a template for a new one"
 msgstr "現在のメッセージを新しいものの原形として利用"
 
-#: ../keymap_alldefs.h:158
+#: ../keymap_alldefs.h:159
 msgid "save message/attachment to a mailbox/file"
 msgstr "メール/添付ファイルをボックス/ファイルに保存"
 
-#: ../keymap_alldefs.h:159
+#: ../keymap_alldefs.h:160
 msgid "search for a regular expression"
 msgstr "正規表現検索"
 
-#: ../keymap_alldefs.h:160
+#: ../keymap_alldefs.h:161
 msgid "search backwards for a regular expression"
 msgstr "逆順の正規表現検索"
 
-#: ../keymap_alldefs.h:161
+#: ../keymap_alldefs.h:162
 msgid "search for next match"
 msgstr "次に一致するものを検索"
 
-#: ../keymap_alldefs.h:162
+#: ../keymap_alldefs.h:163
 msgid "search for next match in opposite direction"
 msgstr "逆順で一致するものを検索"
 
-#: ../keymap_alldefs.h:163
+#: ../keymap_alldefs.h:164
 msgid "toggle search pattern coloring"
 msgstr "検索パターンを着色するかどうか切替"
 
-#: ../keymap_alldefs.h:164
+#: ../keymap_alldefs.h:165
 msgid "invoke a command in a subshell"
 msgstr "サブシェルでコマンドを起動"
 
-#: ../keymap_alldefs.h:165
+#: ../keymap_alldefs.h:166
 msgid "sort messages"
 msgstr "メッセージを整列"
 
-#: ../keymap_alldefs.h:166
+#: ../keymap_alldefs.h:167
 msgid "sort messages in reverse order"
 msgstr "メッセージを逆順で整列"
 
-#: ../keymap_alldefs.h:167
+#: ../keymap_alldefs.h:168
 msgid "tag the current entry"
 msgstr "メッセージにタグ付け"
 
-#: ../keymap_alldefs.h:168
+#: ../keymap_alldefs.h:169
 msgid "apply next function to tagged messages"
 msgstr "次に入力する機能をタグ付きメッセージに適用"
 
-#: ../keymap_alldefs.h:169
+#: ../keymap_alldefs.h:170
 msgid "apply next function ONLY to tagged messages"
 msgstr "次に入力する機能をタグ付きメッセージにのみ適用"
 
-#: ../keymap_alldefs.h:170
+#: ../keymap_alldefs.h:171
 msgid "tag the current subthread"
 msgstr "現在のサブスレッドにタグを付ける"
 
-#: ../keymap_alldefs.h:171
+#: ../keymap_alldefs.h:172
 msgid "tag the current thread"
 msgstr "現在のスレッドにタグを付ける"
 
-#: ../keymap_alldefs.h:172
+#: ../keymap_alldefs.h:173
 msgid "toggle a message's 'new' flag"
 msgstr "メッセージの「新着」フラグを切替"
 
-#: ../keymap_alldefs.h:173
+#: ../keymap_alldefs.h:174
 msgid "toggle whether the mailbox will be rewritten"
 msgstr "メールボックスに変更を書き込むかどうかを切替"
 
-#: ../keymap_alldefs.h:174
+#: ../keymap_alldefs.h:175
 msgid "toggle whether to browse mailboxes or all files"
 msgstr "閲覧法を「メールボックス/全ファイル」間で切替"
 
-#: ../keymap_alldefs.h:175
+#: ../keymap_alldefs.h:176
 msgid "move to the top of the page"
 msgstr "ページの一番上に移動"
 
-#: ../keymap_alldefs.h:176
+#: ../keymap_alldefs.h:177
 msgid "undelete the current entry"
 msgstr "エントリの削除状態を解除"
 
-#: ../keymap_alldefs.h:177
+#: ../keymap_alldefs.h:178
 msgid "undelete all messages in thread"
 msgstr "スレッドのすべてのメッセージの削除状態を解除"
 
-#: ../keymap_alldefs.h:178
+#: ../keymap_alldefs.h:179
 msgid "undelete all messages in subthread"
 msgstr "サブスレッドのすべてのメッセージの削除を解除"
 
-#: ../keymap_alldefs.h:179
+#: ../keymap_alldefs.h:180
 msgid "show the Mutt version number and date"
 msgstr "Mutt のバージョンの番号と日付を表示"
 
-#: ../keymap_alldefs.h:180
+#: ../keymap_alldefs.h:181
 msgid "view attachment using mailcap entry if necessary"
 msgstr "添付ファイル閲覧(必要ならmailcapエントリ使用)"
 
-#: ../keymap_alldefs.h:181
+#: ../keymap_alldefs.h:182
 msgid "show MIME attachments"
 msgstr "MIME 添付ファイルを表示"
 
-#: ../keymap_alldefs.h:182
+#: ../keymap_alldefs.h:183
 msgid "display the keycode for a key press"
 msgstr "次に押すキーのコードを表示"
 
-#: ../keymap_alldefs.h:183
+#: ../keymap_alldefs.h:184
 msgid "show currently active limit pattern"
 msgstr "現在有効な制限パターンの値を表示"
 
-#: ../keymap_alldefs.h:184
+#: ../keymap_alldefs.h:185
 msgid "collapse/uncollapse current thread"
 msgstr "現在のスレッドを展開/非展開"
 
-#: ../keymap_alldefs.h:185
+#: ../keymap_alldefs.h:186
 msgid "collapse/uncollapse all threads"
 msgstr "すべてのスレッドを展開/非展開"
 
-#: ../keymap_alldefs.h:186
+#: ../keymap_alldefs.h:187
+msgid "move the highlight to next mailbox"
+msgstr ""
+
+#: ../keymap_alldefs.h:188
+#, fuzzy
+msgid "move the highlight to next mailbox with new mail"
+msgstr "新着のある次のメールボックスを開く"
+
+#: ../keymap_alldefs.h:189
+#, fuzzy
+msgid "open highlighted mailbox"
+msgstr "メールボックス再オープン中..."
+
+#: ../keymap_alldefs.h:190
+#, fuzzy
+msgid "scroll the sidebar down 1 page"
+msgstr "半ページ下にスクロール"
+
+#: ../keymap_alldefs.h:191
+#, fuzzy
+msgid "scroll the sidebar up 1 page"
+msgstr "半ページ上にスクロール"
+
+#: ../keymap_alldefs.h:192
+#, fuzzy
+msgid "move the highlight to previous mailbox"
+msgstr "前のページに移動"
+
+#: ../keymap_alldefs.h:193
+#, fuzzy
+msgid "move the highlight to previous mailbox with new mail"
+msgstr "新着のある次のメールボックスを開く"
+
+#: ../keymap_alldefs.h:194
+msgid "make the sidebar (in)visible"
+msgstr ""
+
+#: ../keymap_alldefs.h:195
 msgid "attach a PGP public key"
 msgstr "PGP 公開鍵を添付"
 
-#: ../keymap_alldefs.h:187
+#: ../keymap_alldefs.h:196
 msgid "show PGP options"
 msgstr "PGP オプションを表示"
 
-#: ../keymap_alldefs.h:188
+#: ../keymap_alldefs.h:197
 msgid "mail a PGP public key"
 msgstr "PGP 公開鍵をメール送信"
 
-#: ../keymap_alldefs.h:189
+#: ../keymap_alldefs.h:198
 msgid "verify a PGP public key"
 msgstr "PGP 公開鍵を検証"
 
-#: ../keymap_alldefs.h:190
+#: ../keymap_alldefs.h:199
 msgid "view the key's user id"
 msgstr "鍵のユーザ ID を表示"
 
-#: ../keymap_alldefs.h:191
+#: ../keymap_alldefs.h:200
 msgid "check for classic PGP"
 msgstr "旧形式の PGP をチェック"
 
 # 「すべての」って必要？
-#: ../keymap_alldefs.h:192
-msgid "Accept the chain constructed"
+#: ../keymap_alldefs.h:201
+#, fuzzy
+msgid "accept the chain constructed"
 msgstr "構築された全てのチェーンを受容"
 
-#: ../keymap_alldefs.h:193
-msgid "Append a remailer to the chain"
+#: ../keymap_alldefs.h:202
+#, fuzzy
+msgid "append a remailer to the chain"
 msgstr "チェーンに remailer を追加"
 
-#: ../keymap_alldefs.h:194
-msgid "Insert a remailer into the chain"
+#: ../keymap_alldefs.h:203
+#, fuzzy
+msgid "insert a remailer into the chain"
 msgstr "チェーンに remailer を挿入"
 
-#: ../keymap_alldefs.h:195
-msgid "Delete a remailer from the chain"
+#: ../keymap_alldefs.h:204
+#, fuzzy
+msgid "delete a remailer from the chain"
 msgstr "チェーンから remailer を削除"
 
-#: ../keymap_alldefs.h:196
-msgid "Select the previous element of the chain"
+#: ../keymap_alldefs.h:205
+#, fuzzy
+msgid "select the previous element of the chain"
 msgstr "前のチェーンエレメントを選択"
 
-#: ../keymap_alldefs.h:197
-msgid "Select the next element of the chain"
+#: ../keymap_alldefs.h:206
+#, fuzzy
+msgid "select the next element of the chain"
 msgstr "次のチェーンエレメントを選択"
 
-#: ../keymap_alldefs.h:198
+#: ../keymap_alldefs.h:207
 msgid "send the message through a mixmaster remailer chain"
 msgstr "mixmaster remailer チェーンを使って送信"
 
-#: ../keymap_alldefs.h:199
+#: ../keymap_alldefs.h:208
 msgid "make decrypted copy and delete"
 msgstr "復号化したコピーを作ってから削除"
 
-#: ../keymap_alldefs.h:200
+#: ../keymap_alldefs.h:209
 msgid "make decrypted copy"
 msgstr "復号化したコピーを作成"
 
-#: ../keymap_alldefs.h:201
+#: ../keymap_alldefs.h:210
 msgid "wipe passphrase(s) from memory"
 msgstr "パスフレーズをすべてメモリから消去"
 
-#: ../keymap_alldefs.h:202
+#: ../keymap_alldefs.h:211
 msgid "extract supported public keys"
 msgstr "サポートされている公開鍵を抽出"
 
-#: ../keymap_alldefs.h:203
+#: ../keymap_alldefs.h:212
 msgid "show S/MIME options"
 msgstr "S/MIME オプションを表示"
 

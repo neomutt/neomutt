@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Mutt 1.7.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-09 09:45-0700\n"
+"POT-Creation-Date: 2016-08-17 20:11-0700\n"
 "PO-Revision-Date: 2016-08-15 10:27+0200\n"
 "Last-Translator: Benno Schulenberg <benno@vertaalt.nl>\n"
 "Language-Team: Dutch <vertaling@vrijschrift.org>\n"
@@ -275,7 +275,8 @@ msgstr "Bestandsmasker: "
 
 #: browser.c:1175
 msgid "Reverse sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
-msgstr "Achteruit sorteren op (d)atum, bestands(g)rootte, (a)lfabet of (n)iet? "
+msgstr ""
+"Achteruit sorteren op (d)atum, bestands(g)rootte, (a)lfabet of (n)iet? "
 
 #: browser.c:1176
 msgid "Sort by (d)ate, (a)lpha, si(z)e or do(n)'t sort? "
@@ -483,12 +484,20 @@ msgid "Messages could not be printed"
 msgstr "Berichten konden niet worden afgedrukt"
 
 #: commands.c:536
-msgid "Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "
-msgstr "Omgekeerd (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/s(p)am?: "
+msgid ""
+"Rev-Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
+"s(p)am?: "
+msgstr ""
+"Omgekeerd (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/"
+"s(p)am?: "
 
 #: commands.c:537
-msgid "Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/s(p)am?: "
-msgstr "Sorteren (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/s(p)am?: "
+msgid ""
+"Sort (d)ate/(f)rm/(r)ecv/(s)ubj/t(o)/(t)hread/(u)nsort/si(z)e/s(c)ore/"
+"s(p)am?: "
+msgstr ""
+"Sorteren (d)atum/(v)an/o(n)tv/(o)nd/(a)an/(t)hread/(u)nsort/(g)r/(s)core/"
+"s(p)am?: "
 
 #: commands.c:538
 msgid "dfrsotuzcp"
@@ -840,7 +849,9 @@ msgstr "fout bij het ondertekenen van gegevens: %s\n"
 
 #: crypt-gpgme.c:948
 msgid "$pgp_sign_as unset and no default key specified in ~/.gnupg/gpg.conf"
-msgstr "$pgp_sign_as is niet gezet en er is geen standaard sleutel ingesteld in ~/.gnupg/gpg.conf"
+msgstr ""
+"$pgp_sign_as is niet gezet en er is geen standaard sleutel ingesteld in ~/."
+"gnupg/gpg.conf"
 
 #: crypt-gpgme.c:1144
 msgid "Warning: One of the keys has been revoked\n"
@@ -892,16 +903,24 @@ msgid "Fingerprint: "
 msgstr "Vingerafdruk: "
 
 #: crypt-gpgme.c:1324
-msgid "WARNING: We have NO indication whether the key belongs to the person named as shown above\n"
-msgstr "WAARSCHUWING: We hebben GEEN indicatie of de sleutel toebehoort aan de persoon zoals hierboven aangegeven\n"
+msgid ""
+"WARNING: We have NO indication whether the key belongs to the person named "
+"as shown above\n"
+msgstr ""
+"WAARSCHUWING: We hebben GEEN indicatie of de sleutel toebehoort aan de "
+"persoon zoals hierboven aangegeven\n"
 
 #: crypt-gpgme.c:1331
 msgid "WARNING: The key does NOT BELONG to the person named as shown above\n"
 msgstr "WAARSCHUWING: De sleutel BEHOORT NIET TOE aan bovengenoemde persoon\n"
 
 #: crypt-gpgme.c:1335
-msgid "WARNING: It is NOT certain that the key belongs to the person named as shown above\n"
-msgstr "WAARSCHUWING: Het is NIET zeker dat de sleutel toebehoort aan de persoon zoals hierboven aangegeven\n"
+msgid ""
+"WARNING: It is NOT certain that the key belongs to the person named as shown "
+"above\n"
+msgstr ""
+"WAARSCHUWING: Het is NIET zeker dat de sleutel toebehoort aan de persoon "
+"zoals hierboven aangegeven\n"
 
 #: crypt-gpgme.c:1370
 msgid "aka: "
@@ -1355,16 +1374,24 @@ msgid "samfco"
 msgstr "oamngu"
 
 #: crypt-gpgme.c:4745
-msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, (p)gp, (g)een, opp(e)nc? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp, (c)lear, or (o)ppenc "
+"mode? "
+msgstr ""
+"S/MIME (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, (p)gp, (g)een, "
+"opp(e)nc? "
 
 #: crypt-gpgme.c:4746
 msgid "esabpfco"
 msgstr "voabpnge"
 
 #: crypt-gpgme.c:4751
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, s/(m)ime, (g)een, opp(e)nc? "
+msgid ""
+"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime, (c)lear, or (o)ppenc "
+"mode? "
+msgstr ""
+"PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, s/(m)ime, (g)een, "
+"opp(e)nc? "
 
 #: crypt-gpgme.c:4752
 msgid "esabmfco"
@@ -1372,7 +1399,8 @@ msgstr "voabmnge"
 
 #: crypt-gpgme.c:4763
 msgid "S/MIME (e)ncrypt, (s)ign, sign (a)s, (b)oth, (p)gp or (c)lear? "
-msgstr "S/MIME (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (p)gp, of (g)een? "
+msgstr ""
+"S/MIME (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (p)gp, of (g)een? "
 
 #: crypt-gpgme.c:4764
 msgid "esabpfc"
@@ -1380,7 +1408,8 @@ msgstr "voabpng"
 
 #: crypt-gpgme.c:4769
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, s/(m)ime or (c)lear? "
-msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, s/(m)ime, of (g)een? "
+msgstr ""
+"PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, s/(m)ime, of (g)een? "
 
 #: crypt-gpgme.c:4770
 msgid "esabmfc"
@@ -1434,7 +1463,8 @@ msgstr "Bericht niet verstuurd."
 
 #: crypt.c:485
 msgid "S/MIME messages with no hints on content are unsupported."
-msgstr "S/MIME-berichten zonder aanwijzingen over inhoud zijn niet ondersteund."
+msgstr ""
+"S/MIME-berichten zonder aanwijzingen over inhoud zijn niet ondersteund."
 
 #: crypt.c:705 crypt.c:749
 msgid "Trying to extract PGP keys...\n"
@@ -1558,7 +1588,8 @@ msgstr "Kan niet schrijven in een schrijfbeveiligd postvak!"
 
 #: curs_main.c:339
 msgid "Changes to folder will be written on folder exit."
-msgstr "Wijzigingen zullen worden weggeschreven bij het verlaten van het postvak."
+msgstr ""
+"Wijzigingen zullen worden weggeschreven bij het verlaten van het postvak."
 
 #: curs_main.c:344
 msgid "Changes to folder will not be written."
@@ -1944,7 +1975,8 @@ msgstr "Verwijder markering"
 
 #: handler.c:1139
 msgid "[-- Error:  Could not display any parts of Multipart/Alternative! --]\n"
-msgstr "[-- Fout: Kon geen enkel multipart/alternative-gedeelte weergeven! --]\n"
+msgstr ""
+"[-- Fout: Kon geen enkel multipart/alternative-gedeelte weergeven! --]\n"
 
 #: handler.c:1254
 #, c-format
@@ -2701,7 +2733,8 @@ msgstr ""
 msgid ""
 "    You should have received a copy of the GNU General Public License\n"
 "    along with this program; if not, write to the Free Software\n"
-"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+"    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+"02110-1301, USA.\n"
 msgstr ""
 "    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen moeten\n"
 "    hebben samen met dit programma; indien dit niet zo is, schrijf naar de\n"
@@ -2711,8 +2744,10 @@ msgstr ""
 #: main.c:119
 msgid ""
 "usage: mutt [<options>] [-z] [-f <file> | -yZ]\n"
-"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...]\n"
-"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] <addr> [...] < message\n"
+"       mutt [<options>] [-Ex] [-Hi <file>] [-s <subj>] [-bc <addr>] [-a "
+"<file> [...] --] <addr> [...]\n"
+"       mutt [<options>] [-x] [-s <subj>] [-bc <addr>] [-a <file> [...] --] "
+"<addr> [...] < message\n"
 "       mutt [<options>] -p\n"
 "       mutt [<options>] -A <alias> [...]\n"
 "       mutt [<options>] -Q <query> [...]\n"
@@ -2788,7 +2823,8 @@ msgid ""
 msgstr ""
 "  -Q <variabele>\tvraagt de waarde van een configuratievariabele op\n"
 "  -R\t\topent het postvak met alleen-lezen-rechten\n"
-"  -s <ond>\tspecificeer een onderwerp (tussen aanhalingstekens i.g.v. spaties)\n"
+"  -s <ond>\tspecificeer een onderwerp (tussen aanhalingstekens i.g.v. "
+"spaties)\n"
 "  -v\t\ttoont het versienummer en opties tijdens het compileren\n"
 "  -x\t\tsimuleert de mailx verzendmodus\n"
 "  -y\t\tselecteert een postvak gespecificeerd in de 'mailboxes'-lijst\n"
@@ -2925,8 +2961,8 @@ msgstr "Ga naar: "
 msgid "Invalid index number."
 msgstr "Ongeldig Indexnummer."
 
-#: menu.c:443 menu.c:464 menu.c:529 menu.c:572 menu.c:588 menu.c:599
-#: menu.c:610 menu.c:621 menu.c:634 menu.c:647 menu.c:1065
+#: menu.c:443 menu.c:464 menu.c:529 menu.c:572 menu.c:588 menu.c:599 menu.c:610
+#: menu.c:621 menu.c:634 menu.c:647 menu.c:1065
 msgid "No entries."
 msgstr "Geen items"
 
@@ -3213,7 +3249,9 @@ msgstr "Alle beschikbare protocollen voor TLS/SSL-verbinding uitgeschakeld"
 
 #: mutt_ssl_gnutls.c:357
 msgid "Explicit ciphersuite selection via $ssl_ciphers not supported"
-msgstr "Expliciete keuze van encryptie-algoritme via $ssl_ciphers wordt niet ondersteund"
+msgstr ""
+"Expliciete keuze van encryptie-algoritme via $ssl_ciphers wordt niet "
+"ondersteund"
 
 #: mutt_ssl_gnutls.c:465
 #, c-format
@@ -3230,7 +3268,9 @@ msgstr "Fout bij het verwerken van certificaatgegevens"
 
 #: mutt_ssl_gnutls.c:831
 msgid "Warning: Server certificate was signed using an insecure algorithm"
-msgstr "Waarschuwing: het server-certificaat werd ondertekend met een onveilig algoritme"
+msgstr ""
+"Waarschuwing: het server-certificaat werd ondertekend met een onveilig "
+"algoritme"
 
 #: mutt_ssl_gnutls.c:950
 #, c-format
@@ -3639,8 +3679,11 @@ msgstr "oangu"
 
 #: pgp.c:1760
 #, c-format
-msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, %s, (g)een, opp(e)nc? "
+msgid ""
+"PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, %s format, (c)lear, or (o)ppenc "
+"mode? "
+msgstr ""
+"PGP (v)ersleutel, (o)ndert., ond. (a)ls, (b)eiden, %s, (g)een, opp(e)nc? "
 
 #: pgp.c:1763
 msgid "esabfcoi"
@@ -3648,7 +3691,9 @@ msgstr "voabngei"
 
 #: pgp.c:1768
 msgid "PGP (e)ncrypt, (s)ign, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus? "
+msgstr ""
+"PGP (v)ersleutel, (o)nderteken, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-"
+"modus? "
 
 #: pgp.c:1769
 msgid "esabfco"
@@ -3937,11 +3982,15 @@ msgstr "Kan de bijlage niet van de POP-server verwijderen."
 
 #: recvattach.c:1127
 msgid "Deletion of attachments from encrypted messages is unsupported."
-msgstr "Het wissen van bijlagen uit versleutelde berichten wordt niet ondersteund."
+msgstr ""
+"Het wissen van bijlagen uit versleutelde berichten wordt niet ondersteund."
 
 #: recvattach.c:1133
-msgid "Deletion of attachments from signed messages may invalidate the signature."
-msgstr "Het wissen van bijlagen uit versleutelde berichten kan de ondertekening ongeldig maken."
+msgid ""
+"Deletion of attachments from signed messages may invalidate the signature."
+msgstr ""
+"Het wissen van bijlagen uit versleutelde berichten kan de ondertekening "
+"ongeldig maken."
 
 #: recvattach.c:1150 recvattach.c:1167
 msgid "Only deletion of multipart attachments is supported."
@@ -4044,7 +4093,8 @@ msgid "Mixmaster doesn't accept Cc or Bcc headers."
 msgstr "Mixmaster laat geen CC of BCC-kopregels toe."
 
 #: remailer.c:732
-msgid "Please set the hostname variable to a proper value when using mixmaster!"
+msgid ""
+"Please set the hostname variable to a proper value when using mixmaster!"
 msgstr "De hostname variable moet ingesteld zijn voor mixmaster gebruik!"
 
 #: remailer.c:766
@@ -4303,7 +4353,8 @@ msgstr "Geen uitvoer van OpenSSL..."
 
 #: smime.c:1534
 msgid "Can't sign: No key specified. Use Sign As."
-msgstr "Kan niet ondertekenen: geen sleutel gegeven.  Gebruik Ondertekenen Als."
+msgstr ""
+"Kan niet ondertekenen: geen sleutel gegeven.  Gebruik Ondertekenen Als."
 
 #: smime.c:1586
 msgid "Can't open OpenSSL subprocess!"
@@ -4350,8 +4401,10 @@ msgstr ""
 "[-- Einde van S/MIME ondertekende gegevens --]\n"
 
 #: smime.c:2110
-msgid "S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
-msgstr "S/MIME (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus? "
+msgid ""
+"S/MIME (s)ign, encrypt (w)ith, sign (a)s, (c)lear, or (o)ppenc mode off? "
+msgstr ""
+"S/MIME (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc-modus? "
 
 #. L10N: The 'f' is from "forget it", an old undocumented synonym of
 #. 'clear'.  Please use a corresponding letter in your language.
@@ -4362,16 +4415,22 @@ msgid "swafco"
 msgstr "omabnge"
 
 #: smime.c:2124
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or (o)ppenc mode? "
-msgstr "S/MIME (v)ersl, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, opp(e)nc? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, (c)lear, or "
+"(o)ppenc mode? "
+msgstr ""
+"S/MIME (v)ersl, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een, "
+"opp(e)nc? "
 
 #: smime.c:2125
 msgid "eswabfco"
 msgstr "vomabnge"
 
 #: smime.c:2133
-msgid "S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
-msgstr "S/MIME (v)ersleutel, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een? "
+msgid ""
+"S/MIME (e)ncrypt, (s)ign, encrypt (w)ith, sign (a)s, (b)oth, or (c)lear? "
+msgstr ""
+"S/MIME (v)ersleutel, (o)ndert, versl. (m)et, ond. (a)ls, (b)eiden, (g)een? "
 
 #: smime.c:2134
 msgid "eswabfc"
@@ -5364,25 +5423,38 @@ msgstr "geef S/MIME-opties weer"
 #~ msgid "Use ID %s for %s ?"
 #~ msgstr "ID %s gebruiken voor %s ?"
 
-#~ msgid "Warning: You have not yet decided to trust ID %s. (any key to continue)"
-#~ msgstr "Waarschuwing: nog niet besloten om ID %s te vertrouwen. (druk op een toets)"
+#~ msgid ""
+#~ "Warning: You have not yet decided to trust ID %s. (any key to continue)"
+#~ msgstr ""
+#~ "Waarschuwing: nog niet besloten om ID %s te vertrouwen. (druk op een "
+#~ "toets)"
 
 #~ msgid "Warning: Intermediate certificate not found."
 #~ msgstr "Waarschuwing: Tussentijds certificaat niet gevonden."
 
 #~ msgid ""
-#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
+#~ "usage: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+#~ "<file> ]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+#~ "[...]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+#~ "[...]\n"
 #~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -D\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
+#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
+#~ "[ ... ]\n"
 #~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 #~ "       mutt -v[v]\n"
 #~ msgstr ""
-#~ "gebruik: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f <file> ]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] [...]\n"
-#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] [...]\n"
-#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H <file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> [ ... ]\n"
+#~ "gebruik: mutt [ -nRyzZ ] [ -e <cmd> ] [ -F <file> ] [ -m <type> ] [ -f "
+#~ "<file> ]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -Q <query> [ -Q <query> ] "
+#~ "[...]\n"
+#~ "       mutt [ -nR ] [ -e <cmd> ] [ -F <file> ] -A <alias> [ -A <alias> ] "
+#~ "[...]\n"
+#~ "       mutt [ -nx ] [ -e <cmd> ] [ -a <file> ] [ -F <file> ] [ -H "
+#~ "<file> ] [ -i <file> ] [ -s <subj> ] [ -b <addr> ] [ -c <addr> ] <addr> "
+#~ "[ ... ]\n"
 #~ "       mutt [ -n ] [ -e <cmd> ] [ -F <file> ] -p\n"
 #~ "       mutt -v[v]\n"
 
@@ -5410,7 +5482,8 @@ msgstr "geef S/MIME-opties weer"
 #~ "\n"
 #~ "    You should have received a copy of the GNU General Public License\n"
 #~ "    along with this program; if not, write to the Free Software\n"
-#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.\n"
+#~ "    Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  "
+#~ "02110-1301, USA.\n"
 #~ msgstr ""
 #~ "Copyright (C) 1996-2004 Michael R. Elkins <me@mutt.org>\n"
 #~ "Copyright (C) 1996-2002 Brandon Long <blong@fiction.net>\n"
@@ -5423,19 +5496,24 @@ msgstr "geef S/MIME-opties weer"
 #~ "Vele anderen, hier niet genoemd, hebben veel code, verbeteringen\n"
 #~ "en suggesties aangedragen.\n"
 #~ "\n"
-#~ "    Dit Programma is vrije software; U kan het verspreiden en/of wijzigen\n"
+#~ "    Dit Programma is vrije software; U kan het verspreiden en/of "
+#~ "wijzigen\n"
 #~ "    onder de bepalingen van de GNU Algemene Publieke Licentie, zoals\n"
 #~ "    uitgegeven door de Free Software Foundation; oftewel versie 2 van\n"
 #~ "    de Licentie,of (naar vrije keuze) een latere versie.\n"
 #~ "\n"
 #~ "    Dit Programma is verspreid met de hoop dat het nuttig zal zijn maar\n"
-#~ "    ZONDER EENDER WELKE GARANTIE; zelfs zonder de impliciete garantie van\n"
+#~ "    ZONDER EENDER WELKE GARANTIE; zelfs zonder de impliciete garantie "
+#~ "van\n"
 #~ "    VERKOOPBAARHEID of GESCHIKTHEID VOOR EEN BEPAALD DOEL. Zie de GNU\n"
 #~ "    Algemene Publieke Licentie voor meer details.\n"
 #~ "\n"
-#~ "    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen moeten\n"
-#~ "    hebben samen met dit Programma; zoniet, schrijf naar de Free Software\n"
-#~ "    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02110-1301 USA.\n"
+#~ "    U zou een kopie van de GNU Algemene Publieke Licentie ontvangen "
+#~ "moeten\n"
+#~ "    hebben samen met dit Programma; zoniet, schrijf naar de Free "
+#~ "Software\n"
+#~ "    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02110-1301 "
+#~ "USA.\n"
 
 #~ msgid "Clear"
 #~ msgstr "Geen"
@@ -5444,7 +5522,8 @@ msgstr "geef S/MIME-opties weer"
 #~ "  --\t\ttreat remaining arguments as addr even if starting with a dash\n"
 #~ "\t\twhen using -a with multiple filenames using -- is mandatory"
 #~ msgstr ""
-#~ "  --\t\tzie overige argumenten als adres, ook als ze beginnen met een '-'\n"
+#~ "  --\t\tzie overige argumenten als adres, ook als ze beginnen met een "
+#~ "'-'\n"
 #~ "\t\tindien -a wordt gebruikt met meerdere bestanden is -- verplicht"
 
 #~ msgid "esabifc"
@@ -5516,8 +5595,10 @@ msgstr "geef S/MIME-opties weer"
 #~ msgid "CLOSE failed"
 #~ msgstr "CLOSE is mislukt"
 
-#~ msgid "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
-#~ msgstr "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, of (g)een? "
+#~ msgid ""
+#~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, or (f)orget it? "
+#~ msgstr ""
+#~ "1: DES, 2: Triple-DES, 3: RC2-40, 4: RC2-64, 5: RC2-128, of (g)een? "
 
 #~ msgid "12345f"
 #~ msgstr "12345g"

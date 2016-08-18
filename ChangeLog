@@ -1,3 +1,1436 @@
+2016-08-17 18:07 -0700  TAKAHASHI Tamotsu  <ttakah@lapis.plala.or.jp>  (c513c311026f)
+
+	* po/ja.po: Updated Japanese translation.
+
+2016-08-15 10:17 -0700  Morten Bo Johansen  <morten.bo.johansen@gmail.com>  (83d0f5383325)
+
+	* po/da.po: Updated Danish translation.
+
+2016-08-15 09:15 -0700  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (f02122b5eeeb)
+
+	* po/eo.po: Updated Esperanto translation.
+
+2016-08-15 09:09 -0700  Benno Schulenberg  <i18n@benno.vertaalt.nl>  (7e54c1fe55b4)
+
+	* po/nl.po: Updated Dutch translation.
+
+2016-08-10 09:29 -0700  Ivan Vilata i Balaguer  <ivan@selidor.net>  (2de6949a0f08)
+
+	* po/ca.po: Updated Catalan translation.
+
+2016-08-10 02:20 +0200  Vincent Lefevre  <vincent@vinc17.net>  (53b4b412dd79)
+
+	* po/fr.po: Updated French translation.
+
+2016-08-09 14:34 -0700  Vsevolod Volkov  <vvv@mutt.org.ua>  (8847b913432a)
+
+	* po/ru.po: Updated Russian translation.
+
+2016-08-09 14:32 -0700  Vsevolod Volkov  <vvv@mutt.org.ua>  (08251fb01f90)
+
+	* po/uk.po: Updated Ukrainian translation.
+
+2016-08-08 13:13 -0700  Kevin McCarthy  <kevin@8t8.us>  (7abc19ad2d10)
+
+	* curs_main.c, pager.c, protos.h: Clear pager position upon returning
+	to the index menu.
+
+	This fixes a bug where opening a message sometimes shows it scrolled
+	down.
+
+	The easiest way to trigger this is to open a long message in a
+	mailbox with no new messages, scroll down, hit <next-new-then-
+	unread> and then reopen the message. The pager will "remember" the
+	position and scroll down. If you simply exit the message and re-
+	enter it, the position is not saved.
+
+	More annoyingly, once in a very great while I will open a new
+	message and have the message scrolled down partway. I believe this
+	is due to OldHdr happening to point to the same address as the
+	Header of the new message.
+
+	This is somewhat easily triggered on a mailbox with one message,
+	which you open, scroll down in, hit <next-new-then-unread> to exit,
+	and then delete/sync. In another mutt instance, copy the same
+	messsage back to the mailbox, then open the message in the original
+	mutt instance. At least some of the time, the OldHdr pointer matches
+	the new message, and so it opens scrolled down.
+
+	This patch solves the problem by clearing the pager position once
+	all redirections through the index menu are done.
+
+2016-08-06 23:35 +0200  Vincent Lefevre  <vincent@vinc17.net>  (15c4c16bed07)
+
+	* po/fr.po: Updated French translation.
+
+2016-08-05 14:33 -0700  Kevin McCarthy  <kevin@8t8.us>  (108ad5dcf194)
+
+	* rfc2047.c: Remove nonsensical size check in mutt_choose_charset()
+
+	The charsets parameter is being tokenized by the : delimeter.
+
+	The checks against ENCWORD_LEN_MAX and ENCWORD_LEN_MIN make no
+	sense, and appear to be the result of a large merge a very long time
+	ago (changeset cb27682966d5).
+
+	I can only guess where this check was supposed to be, but it
+	certainly doesn't belong here.
+
+2016-08-05 13:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (a39c8bdca361)
+
+	* rfc2047.c: Fix memory leak in mutt_choose_charset().
+
+2016-08-05 13:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (1ef5734f6593)
+
+	* mh.c: Fix memleak in mh_read_dir() when sequence parsing fails.
+
+2016-08-05 11:02 -0700  Kevin McCarthy  <kevin@8t8.us>  (f6b5f533f9ce)
+
+	* COPYRIGHT, buffy.c, getdomain.c, globals.h, init.c, init.h, main.c,
+	sidebar.c: Update copyright notices.
+
+2016-08-02 19:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (f9a4023b86ad)
+
+	* pop.c: Explicitly NULL unimplemented pop mx_ops functions.
+
+	The struct initialization already does this for unlisted fields, but
+	I'd rather be explicit about unimplemented operations.
+
+2016-08-02 19:18 -0700  Kevin McCarthy  <kevin@8t8.us>  (01541185e6f4)
+
+	* mx.c: Use the ctx->mx_ops instead of calling mx_get_ops()
+
+	With mx_open_mailbox_append() setting the ctx->mx_ops, all contexts
+	should have mx_ops set.
+
+	Remove calls to mx_get_ops() and instead directly use ctx->mx_ops.
+
+2016-08-01 18:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (e778db6e693c)
+
+	* mailbox.h, mh.c, mx.c: Use a different flag in
+	mx_open_mailbox_append() when mailbox doesn't exist.
+
+	The previous commit re-used MUTT_NEWFOLDER, but the meaning of that
+	flag is slightly different: it causes mbox to use fopen with mode
+	"w", and is used only for the case of a brand-new mktemp-generated
+	mbox.
+
+	Setting it for other non-existing mbox files leads to a race
+	condition between the stat and the fopen/lock, and so could end up
+	truncating an existing mailbox created in-between!
+
+	Create a different flag, MUTT_APPENDNEW to notify the open_append()
+	functions that the mailbox doesn't exist. Change maildir and mh to
+	check for that flag to create their directory structures.
+
+2016-08-01 15:04 -0700  Kevin McCarthy  <kevin@8t8.us>  (2b9d6165b8b7)
+
+	* imap/imap.c, imap/imap.h, mbox.c, mh.c, mutt.h, mx.c, pop.c: Convert
+	mx_open_mailbox_append() to use ctx->mx_ops.
+
+	Set the flag MUTT_NEWFOLDER to signal Maildir and MH to create the
+	directory structure.
+
+	Distribute the "open append" code to mbox, mh, and imap/imap.c.
+
+	Set pop's mx_ops handler to NULL to signal it is not supported.
+
+2016-07-31 18:42 -0700  Kevin McCarthy  <kevin@8t8.us>  (3834da0c024e)
+
+	* mbox.c, mx.c: Move fflush and fsync to the mbox and mmdf commit_msg
+	functions.
+
+	The case statement in mx_commit_message() was previously distributed
+	to the various ops->commit_msg() handlers, but the fflush and fsync
+	were not.
+
+2016-07-30 11:11 -0700  Kevin McCarthy  <kevin@8t8.us>  (27b77b5c97cf)
+
+	* browser.c, browser.h, imap/browse.c, imap/imap.h, init.h: Add unread
+	and total message count format strings to $folder_format.
+
+	%n will show the unread message count in the mailbox. %m will show
+	total message count. Except for %n with IMAP, these both require
+	$mail_check_stats to be set, which puts these counts inside BUFFY.
+
+	Since the imap_mboxcache is never fresher than the value in BUFFY,
+	remove the special imap_mailbox_state() call. Instead, just update
+	from the current Context for all mailboxes.
+
+	Remove the logic that overrode the %N format string to show unread
+	count for IMAP mailboxes. If they want to see unread count, they
+	will have to change the $folder_format.
+
+	Although it doesn't look possible to reuse browser_state.entry
+	slots, change the OP_DELETE_MAILBOX to memset(0) the deleted slot.
+	Then, we can change to logic in add_folder() so it doesn't need to
+	zero-out unset values.
+
+2016-07-25 12:25 -0700  Richard Russon  <rich@flatcap.org>  (4f4c258ab95c)
+
+	* imap/command.c: Fix imap buffy msg_count overwrite issue.
+
+	The sidebar updates the buffy->msg_count with the context. This can
+	cause it to become out of sync with the imap_mboxcache.
+
+	If the imap_buffy doesn't request MESSAGES, don't overwrite the
+	buffy->msg_count with a stale value.
+
+2016-07-22 14:55 -0700  Kevin McCarthy  <kevin@8t8.us>  (7b9763564598)
+
+	* buffy.c, mx.c: Convert buffy_mbox_check() and trash_append() to use
+	local context.
+
+	buffy_mbox_check() was leaking the dynamically allocated context.
+	Rather than add a call to free, just convert it to use a local
+	variable.
+
+	Make the same change to trash_append(), which doesn't need the
+	dynamically allocated context either.
+
+2016-07-21 14:00 -0700  Kevin McCarthy  <kevin@8t8.us>  (81ecc31f8197)
+
+	* mx.c: Fix memleak in the new trash folder code.
+
+	Free the context in opened in trash_append()
+
+2016-07-21 12:49 +0200  Vincent Lefevre  <vincent@vinc17.net>  (2d1279b26e22)
+
+	* po/fr.po: Updated French translation.
+
+2016-07-20 16:29 -0700  Kevin McCarthy  <kevin@8t8.us>  (89b266256a85)
+
+	* mbyte.c, mbyte.h, pager.c: Filter directional markers that corrupt
+	the screen. (closes #3854)
+
+	Thanks to Vincent Lefèvre for working on these utf-8 screen display
+	issues.
+
+2016-07-19 18:56 -0700  Anton Lindqvist  <anton.lindqvist@gmail.com>  (69bbe4da959f)
+
+	* curs_lib.c: Fix arithmetic exception due to menu->pagelen being
+	negative.
+
+	Resizing the terminal window down to two lines when in an empty
+	mailbox causes mutt to crash due to division by zero since menu->max
+	equals 0 and menu->pagelen < 0 in status.c:205.
+
+	Fixing the problem at this specific line felt wrong since I did
+	notice menu->pagelen being negative. The pagelen is inherited from
+	the rows calculation in mutt_reflow_windows. Since the number of
+	lines can potentially be smaller than the accumulated number of rows
+	acquired by the status, help and message window, make sure the
+	calculation does not turn negative.
+
+2016-07-17 19:31 -0700  Kevin McCarthy  <kevin@8t8.us>  (f1d5a884ffed)
+
+	* imap/imap.c, imap/imap.h, mutt.h, mx.c: Add imap-fast-trash patch.
+
+	This is based on the patch by Paul Miller.
+
+	Modifications are:
+
+	* Create a new flag, MUTT_TRASH for imap_make_msg_set(), rather than
+	use MUTT_EXPIRED.
+
+	* Change imap_make_msg_set(MUTT_TRASH) to only look at
+	hdrs[n]->deleted && !hdrs[n]->purge, behaving like MUTT_TAG, rather
+	than looking at the HEADER_DATA.
+
+	* Reimplement imap_fast_trash() based on imap_copy_message(). It
+	looks the old version was too, but it lacked handling of TRYCREATE
+	and also queued the UID COPY but didn't exec it. (Presumably this
+	happened in the subsequent sync).
+
+	* Move the Context magic and mx_is_imap() checks outside of
+	imap_fast_trash()
+
+2016-07-17 19:31 -0700  Kevin McCarthy  <kevin@8t8.us>  (280f9b195192)
+
+	* OPS, curs_main.c, functions.h, pager.c: Add purge-message patch.
+
+	This is based on the patch by Cedric Duval. Modifications are:
+
+	* Use the exising M_PURGE flag from the trash folder patch, rather
+	than adding a separate flag.
+
+	* Undelete operations are already handled by the trash folder patch.
+
+2016-07-17 19:31 -0700  Kevin McCarthy  <kevin@8t8.us>  (20499921a4e5)
+
+	* commands.c, curs_main.c, editmsg.c, flags.c, globals.h,
+	imap/message.c, init.h, mbox.c, mutt.h, mx.c, pager.c, pattern.c,
+	postpone.c: Add the trash folder patch.
+
+	This is based on the trash folder patch by Cedric Duval.
+	Modifications to the original patch are:
+
+	* Use a flag called M_PURGE instead of M_APPENDED. The same flag is
+	then used in the following "purge" patch instead of adding a
+	different flag.
+
+	* Removed the counter in context. The existing context->deleted is
+	all that's needed.
+
+	* Removed the "auto unset M_PURGE" when M_DELETED is unset inside
+	_mutt_set_flag(), although this is convenient, it easily leads to
+	header->purge not being reset in a few situations.
+
+	* Reset purge flag along with the deleted flag if $delete is
+	answered no.
+
+	* Set M_PURGE on an edited message. (edit_one_message())
+
+	* Preserve purge flag in mutt_reopen_mailbox()
+
+	* Turn off OPTCONFIRMAPPEND when saving to the trash, rather than
+	hardcoding it off in mutt_save_confirm(). That way, normal save to
+	the folder will respect the option.
+
+2016-07-16 14:04 -0700  Will Fiveash  <will.fiveash@oracle.com>  (b2cb7a38c1ed)
+
+	* mutt_sasl.c: Fix memory leak in mutt_sasl_cb_pass.
+
+	SASL doesn't free the sasl_secret_t, so this was leaking. Instead,
+	keep our own pointer to it, and safe_realloc() each time.
+
+	sasl_secret_t doesn't need the data field null terminated, so memcpy
+	the password over.
+
+2016-07-12 18:04 -0700  Kevin McCarthy  <kevin@8t8.us>  (488f91a85115)
+
+	* muttlib.c, sendlib.c: Fix BODY->d_filename memory leaks.
+
+	mutt_message_to_7bit() and transform_to_7bit() were overwriting
+	d_filename without freeing the previous value.
+
+	mutt_free_body() was not freeing the d_filename pointer.
+
+2016-07-12 17:46 -0700  Kevin McCarthy  <kevin@8t8.us>  (b4de6941bbb9)
+
+	* muttlib.c, sendlib.c: Fix BODY->charset memory leaks.
+
+	mutt_get_content_info() was directly setting charset without freeing
+	the previous value.
+
+	mutt_free_body() was not freeing the charset.
+
+2016-07-11 18:36 -0700  Kevin McCarthy  <kevin@8t8.us>  (9378d21fc7fe)
+
+	* curs_lib.c, main.c: Initialize mutt windows even in batch mode.
+	(closes #3853)
+
+	mutt_select_fcc() calls mutt_addr_hook() -> mutt_make_string() which
+	refers to MuttIndexWindow->cols when calling mutt_FormatString(). In
+	batch mode, MuttIndexWindow hasn't been initialized, leading to a
+	segfault.
+
+	This might be the only overlap, but it seems wiser to just
+	initialize the mutt windows in case there are other references (now
+	or in the future) when processing format strings in batch mode.
+
+2016-07-08 19:08 -0700  rich burridge  <rich.burridge@oracle.com>  (89ae904a6b30)
+
+	* Makefile.am: Fix conststrings compiler version string generation.
+	(closes #3852)
+
+	The Makefile.am tries compiler flags -v, --version, and -V but
+	neglected to filter error messages if these flags aren't recognized.
+
+2016-07-08 18:52 -0700  Kevin McCarthy  <kevin@8t8.us>  (ec4c113a3d2b)
+
+	* sidebar.c: Change sidebar highlighted mailbox behavior.
+
+	Delay selecting the highlighted mailbox until prepare_mailbox(), to
+	avoid a hidden mailbox being selected during the Buffy list
+	population (in mutt_sb_notify_mailbox()).
+
+	Change update_entries_visibility() to not automatically make the
+	highlighted mailbox visible.
+
+	Change prepare_sidebar() to (re)set the highlighted mailbox when the
+	current highlighted mailbox is hidden.
+
+2016-07-08 18:52 -0700  Kevin McCarthy  <kevin@8t8.us>  (5fb53b95afa7)
+
+	* sidebar.c: Fix sidebar pagedown/up when mailboxes on the end are
+	hidden.
+
+	The pageup/pagedown code was setting the highlighted mailbox to the
+	top and bottom index without checking if those were hidden.
+
+2016-07-08 18:47 -0700  Kevin McCarthy  <kevin@8t8.us>  (4dc1831fd6d7)
+
+	* imap/message.c: Don't overwrite imap_status->uidnext with a lower
+	value. (closes #3771)
+
+	imap_read_headers() updates the idata and imap_status uidnext after
+	reading through all the new headers.
+
+	The idata is updated properly (only if its uidnext is below
+	maxuid+1), but the imap_status was always being set to maxuid.
+
+	This causes a problem with new mail checking if the most recent
+	messages are deleted. Then the uidnext will be greater than maxuid+1
+	in the mailbox, and if there are any other unread messages it will
+	*always* report new mail even if $mail_check_recent is set.
+
+2016-07-07 12:00 -0700  Kevin McCarthy  <kevin@8t8.us>  (6f2fe8f32dab)
+
+	* sidebar.c: Fix the sidebar TopIndex and BotIndex when
+	$sidebar_new_mail_only is set.
+
+	When set, some of the entries can be hidden, so a simple division by
+	page_size to find the correct top/bottom isn't correct.
+
+	Instead, manually partition into groups of page_size visible entries
+	and set top and bottom based on the interval around the highlighted
+	entry.
+
+2016-07-07 09:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (5229c7fbc37e)
+
+	* mbyte.c, pager.c: Filter soft hypen from pager and headers. (closes
+	#3848)
+
+	Add U+00AD SOFT HYPHEN to the filtered characters in headers and the
+	pager. In some terminals and situations it causes major display
+	problems.
+
+2016-07-06 12:31 -0700  Richard Russon  <rich@flatcap.org>  (81e9c352e5d7)
+
+	* sidebar.c: Fix sidebar crash for non-existent mailbox
+
+	If you <change-folder> to a non-existent mailbox, there will be no
+	Context.
+
+2016-07-06 10:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (88793198dfcb)
+
+	* po/fr.po: merge stable
+
+2016-07-02 12:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (bf1c73de2b7c)
+
+	* doc/manual.xml.head, init.h: Fix the documented sort methods for
+	sidebar_sort_method.
+
+	Remove references to unused "date" and "size", and add "flagged".
+
+2016-07-02 12:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (20089a780e8e)
+
+	* init.c, init.h: Add R_SIDEBAR to redraw sidebar when its settings
+	change.
+
+	Add to the sidebar settings that control formatting of the sidebar.
+
+2016-07-02 12:24 -0700  Kevin McCarthy  <kevin@8t8.us>  (d404059a7619)
+
+	* sidebar.c: Fix sidebar "unsorted" order to match Buffy list order.
+
+	Since the previous commit decoupled the sidebar from the Buffy list,
+	we can now restore the order to match the buffy list when
+	sidebar_sort_method is set (back) to "unsorted".
+
+2016-07-02 12:22 -0700  Kevin McCarthy  <kevin@8t8.us>  (b05c170b4c91)
+
+	* buffy.h, sidebar.c: Decouple the sidebar from the Buffy list.
+
+	Change the sidebar to use an array of SBENTRY* instead. Move the
+	"is_hidden" into SBENTRY. Remove the added "prev" pointer from
+	BUFFY.
+
+	This way, sorting the sidebar doesn't affect the BUFFY list order,
+	and we don't need elements inside BUFFY just for the sidebar
+	presentation.
+
+	Fix sidebar-next for the case where the mailboxes are unsorted and
+	$sidebar_new_mail_only is set. Change sorting not to clump hidden
+	mailboxes at the bottom, instead simply skip over hidden mailboxes
+	in sidebar-next/prev.
+
+2016-07-01 13:39 -0700  Kevin McCarthy  <kevin@8t8.us>  (c62f5cd3c8e4)
+
+	* send.c: merge stable
+
+2016-06-30 12:57 -0700  Kevin McCarthy  <kevin@8t8.us>  (6b147a411f68)
+
+	* doc/makedoc-defs.h: Fix missing sidebar documentation links. (closes
+	#3847)
+
+	USE_SIDEBAR needed to be set in doc/makedoc-defs.h so that the
+	sidebar option documentation is generated whether mutt is configured
+	with the sidebar or not.
+
+2016-06-29 18:58 -0700  Kevin McCarthy  <kevin@8t8.us>  (4b6829229176)
+
+	* m4/gssapi.m4: Fix cppflags and muttlibs duplication with --with-gss.
+
+	When krb5-config was found, MUTT_AM_PATH_GSSAPI included CFLAGS in
+	GSSAPI_CFLAGS and MUTTLIBS in GSSAPI_LIBS. However, configure.ac
+	afterwards sets: CPPFLAGS="$CPPFLAGS $GSSAPI_CFLAGS"
+	MUTTLIBS="$MUTTLIBS $GSSAPI_LIBS" This caused the flags and libs to
+	be duplicated.
+
+2016-06-29 18:58 -0700  Kevin McCarthy  <kevin@8t8.us>  (c84aa0d62ce3)
+
+	* configure.ac: Include ncurses tinfo library if found.
+
+	Thanks to Fabian Groffen for reporting this issue and providing a
+	couple possible patches. From Fabian's report:
+
+	 For some time now, ncurses can be built in a mode where the low
+	level terminfo functionality lives in a separate lib called
+	libtinfo. Because some people do, this means Mutt needs to include
+	this library in that case to avoid linking errors [...]
+
+2016-06-29 12:25 -0700  Kevin McCarthy  <kevin@8t8.us>  (b62483975c94)
+
+	* init.h: Clarify oppenc option documention. (closes #3846)
+
+	Rephrase the option description to try and make it clearer what the
+	option does, and how to enable/disable it within a message.
+
+2016-06-28 16:06 -0700  Kevin McCarthy  <kevin@8t8.us>  (2baed7154180)
+
+	* init.h, sidebar.c, sort.h: Remove unused SORT_DESC.
+
+	This came over with the sidebar patch, but I believe is only used by
+	the notmuch extension.
+
+2016-06-28 15:59 -0700  Fahri Cihan Demirci  <fcdemirci@fastmail.fm>  (5bac9dacae1d)
+
+	* contrib/sample.muttrc-sidebar: Remove $sidebar_refresh_time from
+	Sample Sidebar Config
+
+	The $sidebar_refresh_time option was removed with the changeset
+	1f840760e6e0. Remove it from the sample sidebar configuration as
+	well, so that anyone using that file in its entirety won't have to
+	deal with "unknown variable" errors.
+
+2016-06-23 12:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (b45c8ec1e54c)
+
+	* buffy.c, buffy.h, curs_main.c, imap/imap.c, main.c, mutt.h, mx.c,
+	pop.c, sidebar.c, sidebar.h: Change sidebar to consistently use
+	realpath for context and buffy comparison.
+
+	The original sidebar patch contained a half-implemented attempt to
+	use realpath() mailbox paths for comparison. (Presumably so the open
+	mailbox remains highlighted despite symlink issues).
+
+	Add realpath to the Context, and set it when opening a mailbox.
+	Remove sidebar ifdef for the buffy member, and always set it there
+	too.
+
+	Change the sidebar to use the realpath for comparison everywhere.
+
+	mutt_buffy_check() is using stat device and inode for comparison.
+	Perhaps this can be changed to use realpath instead, but that's
+	beyond the scope of this patch.
+
+2016-06-22 09:20 -0700  Kevin McCarthy  <kevin@8t8.us>  (c8613259dc38)
+
+	* sidebar.c: Change sidebar next/prev-new to look at buffy->new too.
+
+	Look at new in addition to msg_unread count, to account for when
+	$mail_check_stats is unset or when the sidebar only shows the %n
+	status flag.
+
+2016-06-20 20:09 -0700  Kevin McCarthy  <kevin@8t8.us>  (3d87b0521a45)
+
+	* doc/manual.xml.head, init.h: Add documentation to the "New Mail
+	Detection" section of the manual.
+
+	Mention the behavior change with $mail_check_recent.
+
+	Add a section about $mail_check_stats.
+
+2016-06-20 10:11 +0200  Vincent Lefevre  <vincent@vinc17.net>  (069c7a655ad5)
+
+	* po/fr.po: Updated French translation.
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (91af19866bbd)
+
+	* imap/imap.c, imap/imap.h, imap/imap_private.h, mbox.c, mh.c, mutt.h,
+	mx.c, mx.h: add commit_msg to struct mx_ops
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (28688fee52a5)
+
+	* mbox.c, mx.c, mx.h: add mmdf_commit_message function
+
+	Move MMDF operations that were done in mx_commit_message to a
+	dedicated mmdf_commit_message function.
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (4c6539a88f0a)
+
+	* mbox.c, mx.c, mx.h: add mbox_commit_message function
+
+	Move mbox operations that were done in mx_commit_message to a
+	dedicated mbox_commit_message function.
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (16bfe31ef8b3)
+
+	* imap/imap.h, imap/message.c, mx.c: add imap_commit_message function
+
+	Move IMAP operations that were done in mx_commit_message to a
+	dedicated imap_commit_message function.
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (37140981e746)
+
+	* mh.c, mx.c, mx.h: add maildir_commit_message function
+
+	This commit adds a maildir_commit_message with a prototype
+	consistent with other kind of mailboxes, to simplify upcoming
+	refactoring.
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (93d4169b0886)
+
+	* mh.c, mx.c, mx.h: prepend maildir_commit_message function name with
+	an underscore
+
+	Basically, rename maildir_commit_message to _maildir_commit_message.
+	This commit is preparatory to make the maildir_commit_message symbol
+	available for further use.
+
+	Symbols starting with underscore should be avoided but this one is
+	long enough to prevent collision.
+
+2016-06-18 13:36 -0700  Damien Riegel  <damien.riegel@gmail.com>  (e5d87ebe0f5b)
+
+	* mh.c, mx.c, mx.h: remove unused HEADER parameter in
+	mh_commit_message
+
+	mh_commit_message is only called in one place with the header
+	parameter set to NULL. To make the commit function consistent with
+	other mailboxes, which only takes ctx and msg as parameters, remove
+	this unused parameter.
+
+2016-06-18 12:41 -0700  Damien Riegel  <damien.riegel@gmail.com>  (ce2e5caf4339)
+
+	* imap/imap.c, imap/imap_private.h, imap/message.c, mbox.c, mh.c,
+	mutt.h, mx.c, pop.c: add close_msg to struct mx_ops
+
+2016-06-18 12:41 -0700  Damien Riegel  <damien.riegel@gmail.com>  (4bab14a24dbe)
+
+	* mailbox.h, mx.c: Remove magic member in MESSAGE structure
+
+	The "magic" was copied from the context to the message structure to
+	be able to determine which close function had to be called in
+	mx_close_message. Now that this function is context aware, there is
+	no need to store the magic in the MESSAGE structure and it can be
+	safely removed.
+
+2016-06-18 12:41 -0700  Damien Riegel  <damien.riegel@gmail.com>  (3ec6c133641c)
+
+	* attach.c, commands.c, copy.c, editmsg.c, mailbox.h, mh.c, mx.c,
+	parse.c, pattern.c, pop.c, postpone.c, recvattach.c, sendlib.c: pass
+	context in mx_close_message
+
+	The mx_close_message is one of the few mx_* functions that don't
+	have a context as parameter. To make them more consistent, pass the
+	context.
+
+2016-06-17 19:01 -0700  Damien Riegel  <damien.riegel@gmail.com>  (70eb7e0dbb58)
+
+	* imap/imap.c, imap/imap.h, imap/imap_private.h, imap/message.c,
+	mbox.c, mh.c, mutt.h, mx.c, pop.c, pop.h: Add open_msg to struct
+	mx_ops
+
+	Add the callback to open an existing message to struct mx_ops. For
+	mbox, mmdf, maildir, and mh, the code was implemented directly into
+	mx_open_message, so it is moved in their respective source files.
+	For imap and pop, there were already <mailbox>_fetch_message
+	functions, but their argument order has been changed to pass the
+	context as a first argument.
+
+2016-06-17 10:33 -0700  Olaf Hering  <olaf@aepfle.de>  (d83239fd794a)
+
+	* browser.c, browser.h: folder_file: remove struct stat
+
+	Add and use new flag to indicate the folder is on local filesystem.
+	Add and use new gid, uid and nlink member. Use existing ->mode
+	member instead of stat->st_mode. Use existing ->size member instead
+	of stat->st_size. Use existing ->mtime member instead of
+	stat->st_mtime. Remove struct stat, the used values were already
+	duplicated in the struct. This reduces memory usage.
+
+2016-06-17 10:33 -0700  Olaf Hering  <olaf@aepfle.de>  (8e671bbe094d)
+
+	* regex.c: Add real prototype for re_match_2_internal in regex.c
+
+	Fixes compilation warning with -Wunprototyped-calls
+
+2016-06-17 10:30 -0700  Kevin McCarthy  <kevin@8t8.us>  (5817d3d93b7a)
+
+	* buffy.c, buffy.h, mh.c, mx.h: Combine the basic and extended buffy
+	functions.
+
+	Add a check_stats parameter to the mbox, maildir, and mh buffy
+	functions. Use that parameter to determine whether to also count
+	total, new, and flagged messages.
+
+	This makes the functions a bit more complicated, but improves
+	efficiency (for maildir and mh).
+
+	Also includes the following cleanup/fixes:
+	* Move the orig-value counter reset to the beginnining of the loop,
+	(before tmp->new is set to 0).
+
+	* Change trashed maildir messages to not be counted in msg_count
+
+	* Remove an incorrect setting of mailbox->new based on msg_count in
+	maildir. (I missed this one for 1f840760e6e0)
+
+	* Change mbox to use the context->mtime for stats_last_checked,
+	removing a race condition.
+
+	* Fix mh to actually count the messages in order to generate
+	msg_count. mh_sequences only covers the range of messages with some
+	sort of flag.
+
+2016-06-15 11:09 +0200  Vincent Lefevre  <vincent@vinc17.net>  (c29c521eec0a)
+
+	* po/fr.po: Updated French translation.
+
+2016-06-14 13:11 -0700  Kevin McCarthy  <kevin@8t8.us>  (5ad82360c6ea)
+
+	* imap/imap.c: Reset buffy->new for the current mailbox in IMAP.
+
+	1f840760e6e0 moved the buffy->new reset inside the STATUS processor.
+	Since the current mailbox is not STATUS'ed, it needs to be reset in
+	imap_buffy_check().
+
+	Thanks to Aaron Schrab for reporting this issue (and for helping
+	test tip).
+
+2016-06-12 13:49 -0700  Kevin McCarthy  <kevin@8t8.us>  (f447c67f511b)
+
+	* OPS.MIX, OPS.SIDEBAR: Fix the case of messages in OPS.MIX and
+	OPS.SIDEBAR
+
+	Thanks to Vincent Lefèvre for spotting the discrepancy.
+
+2016-06-07 15:02 -0700  Kevin McCarthy  <kevin@8t8.us>  (1f840760e6e0)
+
+	* buffy.c, buffy.h, contrib/sample.muttrc-sidebar,
+	doc/manual.xml.head, globals.h, imap/command.c, imap/imap.c,
+	imap/imap.h, init.h, mailbox.h, mbox.c, mh.c, mutt.h, mx.c, mx.h,
+	sidebar.c, sidebar.h: Make extended buffy independent of the
+	sidebar.
+
+	Add new boolean option $mail_check_stats (default off) and
+	$mail_check_stats_interval. The first turns extended buffy on. The
+	second sets the amount of time in between extended buffy checks
+	(defaulting to 60 seconds).
+
+	Remove the option $sidebar_refresh_time.
+
+	Change mutt_buffy_check() to only notify the sidebar to redraw if a
+	mailbox buffy value changes.
+
+	Remove the #ifdefs around the extended buffy functions. The next
+	patch will merge these functions with the basic functions and pass a
+	parameter instead.
+
+	Imap is a special case, because it sends out the status in one
+	batch. Change this to perform the comparisons inside
+	cmd_parse_status() and flag the sidebar there. It was previously
+	directly assigning the status counters (unsigned int) to the
+	buffy->new (short). Change this to assign 1/0.
+
+2016-06-08 14:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (4be8b077c81f)
+
+	* doc/manual.xml.head, init.h: Change the default for sidebar_format
+	to use %n.
+
+	The next series of patches is going to create a new option,
+	$mail_check_stats defaulting off. When off, the extended buffy which
+	calculates total/new/flagged messages won't be run. To help reduce
+	"sidebar is broken" bug reports, this changes the default format to
+	something not requiring extended buffy.
+
+	The previous default is documented in the option and preserved in
+	the sample sidebar muttrc in contrib.
+
+2016-06-08 13:16 -0700  Kevin McCarthy  <kevin@8t8.us>  (594137a8ea12)
+
+	* init.h, sidebar.c: Add sidebar_format flag '%n' to display 'N' on
+	new mail.
+
+2016-06-11 17:59 +0200  Vincent Lefevre  <vincent@vinc17.net>  (123e36398eea)
+
+	* po/fr.po: Updated French translation.
+
+2016-06-09 12:06 -0700  Richard Russon  <rich@flatcap.org>  (93c4ae03689e)
+
+	* compose.c: Fix alignment in the compose menu.
+
+	Several of the compose-panel labels didn't use the TITLE_FMT to
+	align themselves. This causes formatting problems when the width is
+	changed, e.g. by the NNTP patch.
+
+2016-06-08 13:28 +0200  Vincent Lefevre  <vincent@vinc17.net>  (1fad3bfd4aab)
+
+	* Makefile.am: Corrected OPS.SIDEBAR filename in EXTRA_DIST.
+
+2016-06-07 13:40 -0700  Richard Russon  <rich@flatcap.org>  (fc33b34d637b)
+
+	* sidebar.c: Setting $sidebar_width to more than 128 would cause bad
+	things to happen.
+
+	First, give the users more than enough space. Second, don't pad out
+	short strings beyond the buffer
+
+	--- sidebar.c | 11 ++++++----- 1 file changed, 6 insertions(+), 5
+	deletions(-)
+
+2016-06-07 13:27 -0700  Kevin McCarthy  <kevin@8t8.us>  (9937540dab42)
+
+	* commands.c, hdrline.c, pager.c, protos.h, status.c: Fix columns used
+	for $status_format and $pager_format in the pager.
+
+	The code was hardcoding use of MuttIndexWindow->cols in
+	mutt_make_string_info() and MuttStatusWindow->cols in
+	menu_status_line().
+
+	Add a parameter to mutt_make_info_string(). Change
+	menu_status_line() to use menu->statuswin->cols, falling back to
+	MuttStatusWindow if no menu is passed in.
+
+	Set menu->statuswin appropriately inside pager.c.
+
+	Thanks to Richard Russon for tracking down this problem, and for the
+	initial patch.
+
+2016-06-05 18:30 -0700  Kevin McCarthy  <kevin@8t8.us>  (5270cd795043)
+
+	* doc/makedoc.c: Add warning in makedoc for unexpected prefices. (see
+	#3845)
+
+	In case other types get renamed again in the future, add a warning
+	message to makedoc.c.
+
+2016-06-05 18:05 -0700  Kevin McCarthy  <kevin@8t8.us>  (91608dca6f12)
+
+	* mx.c: Fix sidebar buffy stats updating on mailbox close.
+
+	Move the mutt_sb_set_buffystats() call from mx_fastclose_mailbox()
+	to the bottom of mx_close_mailbox(). Append-only mailboxes don't
+	have msgcount set, so fastclose was the wrong place to be doing
+	these updates.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (8e342d73159b)
+
+	* buffy.c, mh.c: Start to fix sidebar buffy modifications.
+
+	The extended buffy for mh had incorrect placement of the loop
+	brackets. The counters weren't being incremented in the loop.
+
+	Fix extended buffy for maildir to count a maildir message as new if
+	it doesn't have the info delimeter.
+
+	Remove shortcircuits added to the basic buffy stating there is new
+	mail when (msg_unread > 0). This is not necessarily true, depending
+	on $mail_check_recent.
+
+	Note: the extended buffy still needs more fixes, which will be done
+	when it is refactored into its own option.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (5d117fd810a9)
+
+	* sidebar.c: Various fixes to the sidebar logic.
+
+	Use strfcpy instead of strncpy. The current logic could write past
+	the end of the buffer.
+
+	Don't mess with BUFFY next pointers during removal. The
+	mutt_parse_mailboxes() is fine, but this is still not something that
+	should be done inside sidebar.c.
+
+	On removal, set next->prev since we can.
+
+	Fix unmailboxes logic:
+	  * only fix the prev pointers once.
+	  * if we unmailbox the open mailbox, set it to NULL.
+
+	Lastly, flag a redraw on mailboxes/unmailboxes.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (b542812c262e)
+
+	* buffy.c, curs_main.c, main.c, menu.c, mx.c, pager.c, sidebar.c,
+	sidebar.h: Add "mutt_" prefix to global sidebar functions.
+
+	Also, remove unused sb_init declaration.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (cb23ed20d035)
+
+	* doc/manual.xml.head, init.h: Clean up the sidebar manual.
+
+	Remove the introduction section. It's a nice effort, but reads more
+	like a tutorial than something that belongs in section 2. Will
+	probably put in on the website instead.
+
+	Remove references to a "patch", neomutt, and the history.
+
+	Remove the sample muttrc from the manual.
+
+	Fix validation errors for the documentation.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (517d4f0debab)
+
+	* sidebar.c: Re-indent and style sidebar.c.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (39639dc7e9e7)
+
+	* sidebar.c: Fix sidebar check_sec.sh warnings.
+
+	Use safe_malloc, FREE, and the safe_strcat functions.
+
+2016-06-04 11:32 -0700  Kevin McCarthy  <kevin@8t8.us>  (08f9ba9efab9)
+
+	* Makefile.am, buffy.c, configure.ac, curs_main.c, flags.c, globals.h,
+	keymap.c, menu.c, mutt_menu.h, pager.c, sidebar.c: Sidebar clean up:
+	building and drawing logic.
+
+	Fix the autoconf/makefile.am changes to be consistent.
+
+	Create a global SidebarNeedsRedraw to indicate a redraw is needed,
+	instead of putting sb_draw() everywhere in the code.
+
+	Create a menu_redraw_sidebar() function and use the REDRAW_SIDEBAR
+	flag instead of piggy-backing it inside the index loop.
+
+	Fix curs_main.c and pager.c to be a bit cleaner by using the global
+	and REDRAW_SIDEBAR.
+
+	Start to clean up some of the buffy code, but this needs to
+	refactored and fixed.
+
+2016-06-04 11:31 -0700  Richard Russon  <rich@flatcap.org>  (8ad6090903db)
+
+	* Makefile.am, OPS.SIDEBAR, buffy.c, buffy.h, color.c, configure.ac,
+	contrib/sample.muttrc-sidebar, contrib/sample.vimrc-sidebar,
+	curs_main.c, doc/manual.xml.head, flags.c, functions.h, globals.h,
+	imap/command.c, imap/imap.c, init.c, init.h, keymap.c, mailbox.h,
+	main.c, mbox.c, menu.c, mh.c, mutt.h, mutt_curses.h, mutt_menu.h,
+	mx.c, mx.h, pager.c, sidebar.c, sidebar.h, sort.h: Add neomutt
+	version of sidebar patch. (closes #3829)
+
+	This is the patch from neomutt; branch 'devel/win-sidebar'; commit
+	c796fa85f9cacefb69b8f7d8545fc9ba71674180 with the following changes:
+
+	 - move the sample muttrc and vimrc to contrib.
+	  - remove the README.sidebar.
+	  - empty out the PATCHES file.
+
+2016-05-31 13:20 -0700  Kevin McCarthy  <kevin@8t8.us>  (52f48b083cc0)
+
+	* doc/makedoc.c: Fix documentation for DT_MAGIC types. (closes #3845)
+
+	With the rename of M_ to MUTT_, the documentation generator in
+	makedoc.c needed to be adjusted for the new prefix size.
+
+	Thanks to Damien Riegel for the suggested fix.
+
+2016-05-26 14:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (cd316a555bd7)
+
+	* copy.h, group.h, mailbox.h, mutt.h, mutt_curses.h, pager.h: Fix
+	header file indentation after M_ prefix renaming.
+
+	The use of tabs caused misalignment of various macro definitions.
+
+2016-05-26 14:05 -0700  Damien Riegel  <damien@riegel.io>  (2821e77c1a54)
+
+	* imap/imap.c, imap/imap.h, mbox.c, mh.c, mutt.h, mx.c, mx.h, pop.c,
+	pop.h: add check operation to struct mx_ops
+
+	In mx_check_mailbox switch case, we simply call
+	<mailbox>_check_mailbox, so this operation can be move into the
+	mx_ops structure pretty easily.
+
+	This commit adds a mandatory "check" operation to struct mx_ops and
+	change all mailboxes to use it. Check functions are made static as
+	they are only used in their respective source files now.
+
+2016-05-26 14:05 -0700  Damien Riegel  <damien@riegel.io>  (a28ed1c725c6)
+
+	* curs_main.c, mailbox.h, mx.c: mx_check_mailbox: remove lock argument
+	in function call
+
+	This function is only called in one place with lock = 0. Basically,
+	all code under if (lock) is dead code, so we can remove it, making
+	the function simpler to factorize.
+
+2016-05-26 14:05 -0700  Damien Riegel  <damien@riegel.io>  (0ae29df8a81a)
+
+	* imap/imap.c, imap/imap.h, mx.c: add function
+	imap_check_mailbox_reopen
+
+	In mx_check_mailbox, imap mailbox is the only function with a
+	different prototype: it has an extra force argument.
+
+	In order to move the check operation to the mx_ops structure, we
+	need that all mailboxes have the same prototype. To do so, a new
+	function imap_check_mailbox_reopen is added.
+
+2016-05-25 15:58 -0700  Kevin McCarthy  <kevin@8t8.us>  (261939e71d80)
+
+	* mx.c: Add a TODO to mx_open_new_message() to use mx_ops in the
+	future.
+
+	We can't use it until mx_open_mailbox_append() is converted to set
+	mx_ops.
+
+2016-05-25 15:53 -0700  Damien Riegel  <damien@riegel.io>  (63cb99b46c34)
+
+	* imap/imap.c, mailbox.h, mbox.c, mh.c, mutt.h, mx.c, mx.h: add
+	open_new_msg operation to struct mx_ops
+
+	The code was already using a function pointer to do this operation.
+	This commit moves this function pointer to the mx_ops structure and
+	the open_new_message functions to their respective source files if
+	it needs to.
+
+2016-05-24 12:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (79c379cb0c21)
+
+	* keymap.c: merge stable
+
+2016-05-12 12:41 -0700  Damien Riegel  <damien.riegel@gmail.com>  (ae203b2c56a6)
+
+	* imap/imap.c, imap/imap.h, mbox.c, mh.c, mutt.h, mx.c, mx.h, pop.c,
+	pop.h: Start decoupling mailbox operations.
+
+	Introduce a dedicated structure for mailbox operations: struct
+	mx_ops. Move the open and close operations into that structure.
+
+	Assign this structure to the context in mx_open_mailbox. This is
+	currently based on the "magic" for the mailbox type, but may be
+	refactored in the future.
+
+	Add a stub mbox_close_mailbox function. This function does nothing,
+	the main purpose is to introduce a mx_ops structure for mbox, so its
+	usage is similar to mh/imap/pop. We reuse the name that was made
+	available by the previous commmit. Note that the actual closing of
+	the descriptor is done in mx.c.
+
+	To be more consistent with other mailboxes, introduce functions
+	mh_open_mailbox and maildir_open_mailbox, and create a dedicated
+	structure for mmdf.
+
+2016-05-12 12:41 -0700  Damien Riegel  <damien.riegel@gmail.com>  (6356f1068fe2)
+
+	* mbox.c, mx.c, mx.h: rename mbox_close_mailbox to
+	mx_close_mailbox_append and move it
+
+	mbox_close_mailbox was used as the counterpart of
+	mx_open_mailbox_append. To make things clearer, rename it
+	mx_close_mailbox_append.
+
+	As it is only used in mx.c, move it there and make it static.
+
+2016-05-10 09:42 -0700  Kevin McCarthy  <kevin@8t8.us>  (391492f27fef)
+
+	* doc/manual.xml.head, filter.c: Set COLUMNS to MuttIndexWindow->cols
+	in mutt_create_filter_fd. (closes #3837)
+
+	This allows filters to automatically (or via a command line
+	argument) adjust to the width of the pager/index. This is even more
+	important with the sidebar, since the width of the pager is smaller
+	than the terminal width.
+
+	Thanks to Vincent Lefèvre for his helpful information and
+	suggestions, and to Richard Russon for the initial patches.
+
+2016-05-09 14:06 -0700  Kevin McCarthy  <kevin@8t8.us>  (d18cd04e3f5a)
+
+	* Makefile.am, getdomain.c, mutt_sasl.c, mutt_socket.c, mutt_tunnel.c,
+	sys_socket.h: Back out wrapper sys_socket.h workaround
+	(23334e967dd7)
+
+	After renaming all internal macros from M_* to MUTT_*, the
+	sys_socket.h workaround is no longer necessary.
+
+2016-05-09 14:06 -0700  Derek Martin  <code@pizzashack.org>  (59b77d5c73e0)
+
+	* account.c, account.h, addrbook.c, alias.c, attach.c, browser.c,
+	buffy.c, buffy.h, charset.c, charset.h, color.c, commands.c,
+	compose.c, copy.c, copy.h, crypt-gpgme.c, crypt.c, curs_lib.c,
+	curs_main.c, doc/makedoc.c, editmsg.c, enter.c, flags.c,
+	functions.h, group.h, handler.c, hcache.c, hcache.h, hdrline.c,
+	help.c, hook.c, imap/browse.c, imap/command.c, imap/imap.c,
+	imap/imap_private.h, imap/message.c, imap/util.c, init.c, init.h,
+	keymap.c, lib.c, lib.h, mailbox.h, main.c, mbox.c, menu.c, mh.c,
+	mutt.h, mutt_curses.h, mutt_menu.h, mutt_sasl.c, mutt_socket.c,
+	mutt_socket.h, mutt_ssl.c, mutt_ssl_gnutls.c, muttlib.c, mx.c, mx.h,
+	pager.c, pager.h, parse.c, pattern.c, pgp.c, pgpinvoke.c, pgpkey.c,
+	pop.c, pop_auth.c, pop_lib.c, postpone.c, protos.h, query.c,
+	recvattach.c, recvcmd.c, remailer.c, rfc1524.c, rfc2047.c,
+	rfc2231.c, rfc3676.c, score.c, send.c, sendlib.c, smime.c, smtp.c,
+	status.c, system.c, thread.c: Change M_* symbols to MUTT_*
+
+	Changeset 23334e967dd7 created a workaround for a namespace conflict
+	with Solaris and derivatives. After some discussion, the team
+	decided it would be best to move away from using the "M_" prefix for
+	macros.
+
+	This patch was automatically generated by running: perl -wpi -e
+	's/\bM_(\w+)\b/MUTT_$1/g' `find . -name '*.[ch]' -print` with the
+	exception that sys_socket.h was exempted. (That file will be backed
+	out subsequent to this commit.)
+
+	Thanks to Andras Salamon for supplying the perl script used to make
+	this change.
+
+2016-05-03 13:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (b74dfb9fa901)
+
+	* mbyte.c, pager.c: Skip bidi markers in the pager and index. (closes
+	#3827)
+
+	Curses and slang don't support them, so there's little point in
+	showing them or attempting to somehow deal with them.
+
+	This patch adds filtering in the pager, and changes the filtering
+	added in 6e0aca94cdb0 for the index to completely skip the marker.
+
+2016-05-03 09:46 -0700  Kevin McCarthy  <kevin@8t8.us>  (9dfe211355b6)
+
+	* curs_lib.c: Change mutt_window_getyx() to accept NULL *y/*x params.
+
+	Thanks to Vincent Lefèvre for suggesting this nice cleanup.
+	Previously, _mutt_get_field() was employing an ugly hack to avoid an
+	unused var warning.
+
+2016-04-30 14:39 -0700  Kevin McCarthy  <kevin@8t8.us>  (fb68199318ae)
+
+	* po/fr.po: merge stable
+
+2016-04-30 13:05 -0700  Kevin McCarthy  <kevin@8t8.us>  (e1cec1a958e9)
+
+	* pager.c: Fix pager mini-index drawing when $pager_index_lines = 1
+	and $status_on_top.
+
+	When $pager_index_lines is 1, there is room for the index status
+	line, but not for any actual index entries. The index redraw part
+	was always calling menu_redraw_current() which doesn't actually
+	check if there is room for the current row.
+
+	This bug only shows up with $status_on_top, due to the order things
+	are redrawn.
+
+2016-04-30 10:50 -0700  Kevin McCarthy  <kevin@8t8.us>  (d0746905cb3f)
+
+	* pager.c: Fix pager layout when $status_on_top with no mini-index.
+	(closes #3836)
+
+	The pager_window->row_offset should only be adjusted when we have a
+	mini-index.
+
+	Pull common window initialization above, and adjust only when the
+	mini-index is enabled. The pager_window rows and row_offset code
+	could be further consolidated (since the status line is always a
+	height of one), but I think the code reads a bit more clearly when
+	the adjustments are explicitly stated.
+
+2016-04-29 18:00 -0700  Kevin McCarthy  <kevin@8t8.us>  (e369be9d490b)
+
+	* pager.c: Remove newline insertion from pager. (closes #3835)
+
+	The window patches commited now manually move to the next line, so
+	there is no need to insert newlines for that purpose.
+
+	The newlines also goof windows placed to the right of the pager, as
+	is the case for the (currently external) sidebar-on-the-right
+	functionality.
+
+	Thanks to Richard Russon for the original patch and help testing the
+	revised patch.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (efa6f7910c94)
+
+	* addrbook.c, browser.c, compose.c, crypt-gpgme.c, hdrline.c,
+	muttlib.c, pgpinvoke.c, pgpkey.c, protos.h, query.c, recvattach.c,
+	remailer.c, smime.c, status.c: Add cols parameter to
+	mutt_FormatString()
+
+	Continuing with the conversion to using windows for screen drawing,
+	mutt_FormatString() was directly using COLS for right justification
+	and similar formatting. Instead pass in a parameter, cols.
+
+	This change involved seeding the parameter through callback
+	functions too, as many of them call mutt_FormatString() back.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (04f1846c56c1)
+
+	* buffy.c, commands.c, flags.c, handler.c, help.c, init.c, keymap.c,
+	mutt_curses.h, muttlib.c, recvattach.c, recvcmd.c, sendlib.c: Fix
+	remaining direct usages of COLS/LINES to use mutt window functions.
+
+	Most of these were just message update/clearing.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (9f9bcde2d0ff)
+
+	* remailer.c: Change remailer to use mutt windows.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (8ad6164d9fe4)
+
+	* edit.c: Modify the built-in editor to use windows.
+
+	This only involved changing to use the MuttMessageWindow.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (0989f9d01b5c)
+
+	* compose.c: Modify the compose screen to use windows.
+
+	The header field positions enum is now started at 0: the windows
+	compute the relative positioning as needed. A small improvement from
+	this is that the headers now align with the top: there isn't a gap
+	if $help is turned off.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (fd3fe386c24a)
+
+	* copy.c, mutt_curses.h, pager.c, rfc3676.c: Modify the pager to use
+	windows.
+
+	The pager view is somewhat complex, due to the "mini-index" and the
+	positioning of the index_status vs pager_status changes depending on
+	$status_on_top as well as $pager_index_lines and $help.
+
+	To make things simpler, it creates four "pager windows":
+	index_status_window, index_window, pager_status_window,
+	pager_window.
+
+	mutt_term_width() is renamed to mutt_window_wrap_cols() and a
+	mutt_window_t parameter passed in.
+
+	Also, the pager drawing loop calling display_line() has a
+	mutt_window_move() added to move to the beginning of the next line
+	each time. This is in case the pager_window isn't flush with the
+	left side of the terminal.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (4e20ab8ebf42)
+
+	* curs_main.c: Modify the index to use windows.
+
+	Change the index screen to use MuttIndexWindow and MuttStatusWindow.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (1b8abb069c37)
+
+	* curs_lib.c, edit.c, enter.c, protos.h: Modify enter.c routines to
+	use windows.
+
+	This modifies the mutt_enter_string() functions to use
+	MuttMessageWindow.
+
+	Thanks to Richard Russon for pointing out slang doesn't support
+	getcurx.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (47e9732b3a3c)
+
+	* curs_lib.c: Modify the curs_lib.c to use windows.
+
+	This changes some of the "prompting" routines to use the
+	MuttMessageWindow.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (48676eb3e400)
+
+	* menu.c, mutt_curses.h, mutt_menu.h: Modify the menu code to use
+	windows.
+
+	Change menu.c to use the mutt_window_t structures and functions. The
+	index/stats/help/message window pointers are stored inside the
+	menu_t. This is useful for the pager, where the "index" we want to
+	use is a mini-index.
+
+2016-04-27 17:56 -0700  Kevin McCarthy  <kevin@8t8.us>  (ac4f746e614f)
+
+	* curs_lib.c, init.c, init.h, main.c, mutt_curses.h, resize.c: Add
+	window structures to use for screen layout.
+
+	This is a series of 11 patches, centralizing Mutt screen drawing
+	inside windows (mutt_window_t structures).
+
+	Currently, the screen drawing and cursor positioning logic is
+	distributed all over the code, resulting in many files having the
+	same logic of where the help, status, message windows are.
+	Additionally, the code directly uses move and mvadd*/mvprint*
+	functions, which means if the layouts are changed, the row/column
+	computation logic needs to be changed all over the place.
+
+	The patch creates a (very simple) mutt_window_t structure and
+	functions for moving, addch/str/printw, along with clearing the
+	line. The windows keep track of where they are on the screen,
+	allowing the Mutt code to simply position elements relative to the
+	window.
+
+	During curses initalization, and when the window is resized, the
+	window sizes and positions and recomputed. Also, a new option flags,
+	R_REFLOW is added for options that need to force a reflow when they
+	are changed.
+
+	Thanks to Richard Russon for pointing out the slang compilation
+	issue.
+
+2016-04-27 13:21 -0700  Kevin McCarthy  <kevin@8t8.us>  (8083387557d9)
+
+	* merge stable
+
+2016-04-14 12:35 -0700  Kevin McCarthy  <kevin@8t8.us>  (9a9c515e09d3)
+
+	* muttlib.c: Fix soft-padding available columns computation.
+
+	If arrow_cursor is set, it's possible that COLS < offset. Compute
+	avail_cols, floored at 0, and use that instead.
+
+2016-04-14 12:35 -0700  Kevin McCarthy  <kevin@8t8.us>  (ca1af57e1855)
+
+	* muttlib.c: Fix right justify buffer-truncated pad calculation in
+	mutt_FormatString()
+
+	Vincent Lefèvre noted that the computation had implementation
+	defined behavior and was potentially incorrect.
+
+	Change to make sure the subtraction won't lead to a wrap-around, and
+	set pad to 0 in that case.
+
+2016-04-14 12:35 -0700  Kevin McCarthy  <kevin@8t8.us>  (92bbc02fdf9c)
+
+	* muttlib.c: Pre-space softfill multi-column padding.
+
+	Similar to the previous patch, this deals with multi-column padding
+	characters and soft-fill. This will add spacing so the padding and
+	content after padding aligns with the right side.
+
+	You can see the effect by setting set index_format="%s %*我[ooooo]"
+	and resizing the terminal. The right hand side will be jagged
+	without the patch.
+
+2016-04-14 12:35 -0700  Kevin McCarthy  <kevin@8t8.us>  (fef5b5ed0f44)
+
+	* muttlib.c: Add spacing to truncated multi-column characters when
+	using soft-fill.
+
+	First, fix the left-hand side column truncation calculation: "col +
+	pad*pw -offset" pad = (COLS - col - wid) / pw, so this becomes "col
+	+ COLS - col - wid - offset" => "COLS - wid - offset"
+
+	The problem is that pad was calculated *before* the right side was
+	mutt_wstr_trunc() truncated, which may adjust wid! We want that
+	calculation, with correct values, so instead just use the final
+	reduction directly. (Note, the reduction ignores integer truncation,
+	but pad shouldn't be used here in any case, because it's negative:
+	there is no padding occuring).
+
+	Second, when the left-hand side is truncated, multi-column
+	characters may get chopped in the middle. Truncated characters are
+	not included in the wlen and col values returned. Add spaces until
+	the number of columns lines up (checking to make sure we don't run
+	out of space too).
+
+2016-04-11 12:45 -0700  Kevin McCarthy  <kevin@8t8.us>  (eb94f64ad81a)
+
+	* mutt_ssl.c: Add null-terminator to BIO_get_mem_data() output.
+
+	It turns out the output isn't necessarily null-terminated.
+
+2016-04-11 21:17 +0200  Vincent Lefevre  <vincent@vinc17.net>  (46f37be4afef)
+
+	* po/fr.po: Updated French translation.
+
+2016-04-11 11:55 -0700  Kevin McCarthy  <kevin@8t8.us>  (0b66f6fd3d44)
+
+	* mutt_ssl.c: Add an error message and debugging if SSL_CTX_new()
+	fails. (closes #3831)
+
+	Generate a mutt_error(). Add a debugging function
+	ssl_dprint_err_stack() to dprint the ssl error stack.
+
+2016-04-11 11:28 +0200  Vincent Lefevre  <vincent@vinc17.net>  (78aa3a1db632)
+
+	* po/fr.po: Updated French translation.
+
+2016-04-10 19:10 -0700  Kevin McCarthy  <kevin@8t8.us>  (00c0c155d992)
+
+	* mutt_ssl.c: Check for SSL_CTX_new returning NULL in ssl_sock_open().
+	(closes #3831)
+
+	Thanks to Yuan Kang and the security researchers at Columbia
+	University and the University of Virginia for reporting the bug.
+
+2016-04-10 18:30 -0700  Kevin McCarthy  <kevin@8t8.us>  (5464329344cd)
+
+	* merge stable
+
+2016-04-10 14:14 -0700  Kevin McCarthy  <kevin@8t8.us>  (685b9dfba297)
+
+	* imap/browse.c: Add error message string for imap_mailbox_rename() on
+	root folder.
+
+	This was fixed just before 1.6.0, but due to the string freeze,
+	could not add an error message.
+
+2016-04-08 18:38 -0700  Kevin McCarthy  <kevin@8t8.us>  (b8240918eded)
+
+	* rfc2047.c: Fix potential memory leak in rfc2047_encode. (closes
+	#3825)
+
+	If convert_string() has nonreversible characters, the allocated
+	output buffer would be overwritten (and not freed) in
+	rfc2047_encode().
+
+	Thanks to Richard Russon for the bug report and initial patch, and
+	to TAKAHASHI Tamotsu for the analysis and revised fix suggestion.
+
+2016-04-08 15:27 -0700  Kevin McCarthy  <kevin@8t8.us>  (180a90d05ed4)
+
+	* pager.c: Fix pager.c format_line() to use size_t for mbrtowc()
+	retvals.
+
+	While fixing up the error checking for mbrtowc(), I noticed the uses
+	in pager.c format_line() were assigning the retval to an int.
+
+	The cleanup for this was a little tricky, because it was making use
+	of possible negative values for (k1 - k). The backspace detection
+	loop condition was a bit heavy, so this patch first pulled the
+	initialization and first call above, and put the second call inside
+	the loop.
+
+	Note that k1 previously included k, but this patch changes it to be
+	just the retval of mbrtowc. This means the second mbrtowc()
+	arguments are changed to include k, as is the ch increment at the
+	bottom of the loop.
+
+2016-04-08 15:20 -0700  Kevin McCarthy  <kevin@8t8.us>  (a8bc75e7c4e1)
+
+	* alias.c, curs_lib.c, help.c, pager.c: Reset mbstate for other
+	mbrtowc() calls returning -1
+
+	Continue the cleanup started in changesets c8c76a6a1e61 and
+	a3450fd50d11. In those changesets, a bug was occurring due to the
+	mbstate not being reset when mbrtowc() returned -1.
+
+	This patch fixes other callers of mbrtowc() to reset mbstate when it
+	returns -1.
+
+
+2016-07-06 10:43 -0700  Kevin McCarthy  <kevin@8t8.us>  (88793198dfcb)
+
+	* po/fr.po: merge stable
+
+2016-07-06 10:41 -0700  Kevin McCarthy  <kevin@8t8.us>  (88030069f94d)
+
+	* .hgsigs: mutt-1.6.2 signed
+
+2016-07-06 10:40 -0700  Kevin McCarthy  <kevin@8t8.us>  (592270259a8e)
+
+	* .hgtags: Added tag mutt-1-6-2-rel for changeset 7ccd4417bd70
+
+2016-07-06 10:40 -0700  Kevin McCarthy  <kevin@8t8.us>  (7ccd4417bd70)
+
+	* ChangeLog, UPDATING, VERSION, po/bg.po, po/ca.po, po/cs.po,
+	po/da.po, po/de.po, po/el.po, po/eo.po, po/es.po, po/et.po,
+	po/eu.po, po/fr.po, po/ga.po, po/gl.po, po/hu.po, po/id.po,
+	po/it.po, po/ja.po, po/ko.po, po/lt.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/ru.po, po/sk.po, po/sv.po, po/tr.po, po/uk.po,
+	po/zh_CN.po, po/zh_TW.po: automatic post-release commit for
+	mutt-1.6.2
+
 2016-07-01 13:33 -0700  Kevin McCarthy  <kevin@8t8.us>  (7e817890913c)
 
 	* send.c: Check $pgp_autoinline and $pgp_replyinline if oppenc is set.
