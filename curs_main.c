@@ -921,12 +921,14 @@ int mutt_index_menu (void)
 	}
         break;
 
+      case OP_LIMIT_CURRENT_THREAD:
       case OP_MAIN_LIMIT:
 
 	CHECK_IN_MAILBOX;
 	menu->oldcurrent = (Context->vcount && menu->current >= 0 && menu->current < Context->vcount) ?
 		CURHDR->index : -1;
-	if (mutt_pattern_func (MUTT_LIMIT, _("Limit to messages matching: ")) == 0)
+	if (((op == OP_LIMIT_CURRENT_THREAD) && mutt_limit_current_thread(CURHDR))
+	    || ((op == OP_MAIN_LIMIT) && (mutt_pattern_func (MUTT_LIMIT, _("Limit to messages matching: ")) == 0)))
 	{
 	  if (menu->oldcurrent >= 0)
 	  {
