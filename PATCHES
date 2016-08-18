@@ -4,6 +4,7 @@ patch-fmemopen-neomutt
 patch-ifdef-neomutt
 patch-index-color-neomutt
 patch-initials-neomutt
+patch-keywords-neomutt
 patch-limit-current-thread-neomutt
 patch-lmdb-neomutt
 patch-nested-if-neomutt

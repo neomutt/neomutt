@@ -1406,6 +1406,28 @@ struct option_t MuttVars[] = {
   ** from your spool mailbox to your $$mbox mailbox, or as a result of
   ** a ``$mbox-hook'' command.
   */
+  { "keywords_legacy", DT_BOOL, R_NONE, OPTKEYWORDSLEGACY, 1 },
+  /*
+  ** .pp
+  ** If \fIset\fP, keywords/labels/tags will be written to whatever
+  ** legacy, nonstandard headers (X-Label, X-Keywords, X-Mozilla-Keys)
+  ** they were sourced from.
+  ** .pp
+  ** If both ``$$keywords_legacy'' and
+  ** ``$$keywords_standard'' are \fCfalse\fP, mutt will save keywords
+  ** to legacy headers to ensure that it does not lose your labels.
+  */
+  { "keywords_standard", DT_BOOL, R_NONE, OPTKEYWORDSSTANDARD, 0 },
+  /*
+  ** .pp
+  ** If \fIset\fP, keywords/labels/tags will be written to the
+  ** RFC2822-standard Keywords: header; this may imply a conversion from
+  ** legacy headers.
+  ** .pp
+  ** If both ``$$keywords_legacy'' and
+  ** ``$$keywords_standard'' are \fCfalse\fP, mutt will save keywords
+  ** to legacy headers to ensure that it does not lose your labels.
+  */
   { "locale",		DT_STR,  R_BOTH, UL &Locale, UL "C" },
   /*
   ** .pp
@@ -3789,6 +3811,20 @@ struct option_t MuttVars[] = {
   {"xterm_set_titles",	DT_SYN,  R_NONE, UL "ts_enabled", 0 },
   /*
   */
+  { "xlabel_delimiter", DT_STR, R_NONE, UL &XlabelDelim, UL "" },
+  /*
+  ** .pp
+  ** The character used to delimit distinct keywords in X-Label headers.
+  ** X-Label is primarily a Mutt artifact, and the semantics of the field
+  ** were never defined: it is free-form text.  However interaction with
+  ** X-Keywords:, X-Mozilla-Keys:, and Keywords: requires that we adopt
+  ** some means of identifying separate keywords within the field.  Set
+  ** this to your personal convention.
+  ** .pp
+  ** This affect both parsing existing X-Label headers and writing new
+  ** X-Label headers.  You can modify this variable in runtime to accomplish
+  ** various kinds of conversion.
+  */
   /*--*/
   { NULL, 0, 0, 0, 0 }
 };
@@ -3805,6 +3841,7 @@ const struct mapping_t SortMethods[] = {
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
+  { "label",		SORT_LABEL },
   { NULL,               0 }
 };
 
@@ -3824,6 +3861,7 @@ const struct mapping_t SortAuxMethods[] = {
   { "to",		SORT_TO },
   { "score",		SORT_SCORE },
   { "spam",		SORT_SPAM },
+  { "label",		SORT_LABEL },
   { NULL,               0 }
 };
 
