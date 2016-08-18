@@ -154,6 +154,11 @@ typedef enum
 #define MUTT_ACCOUNTHOOK (1<<9)
 #define MUTT_REPLYHOOK   (1<<10)
 #define MUTT_SEND2HOOK   (1<<11)
+#ifdef USE_COMPRESSED
+#define MUTT_OPENHOOK    (1<<12)
+#define MUTT_APPENDHOOK  (1<<13)
+#define MUTT_CLOSEHOOK   (1<<14)
+#endif
 
 /* tree characters for linearize_tree and print_enriched_string */
 #define MUTT_TREE_LLCORNER      1
@@ -962,6 +967,10 @@ typedef struct _context
   unsigned int collapsed : 1;   /* are all threads collapsed? */
   unsigned int closing : 1;	/* mailbox is being closed */
   unsigned int peekonly : 1;	/* just taking a glance, revert atime */
+
+#ifdef USE_COMPRESSED
+  void *compress_info;		/* compressed mbox module private data */
+#endif /* USE_COMPRESSED */
 
   /* driver hooks */
   void *data;			/* driver specific data */
