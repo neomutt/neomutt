@@ -7,3 +7,4 @@ patch-lmdb-neomutt
 patch-nested-if-neomutt
 patch-new-mail-neomutt
 patch-progress-neomutt
+patch-quasi-delete-neomutt
