@@ -32,6 +32,9 @@
 #include <gdbm.h>
 #elif HAVE_DB4
 #include <db.h>
+#elif HAVE_LMDB
+#define LMDB_DB_SIZE    (1024 * 1024 * 1024)
+#include <lmdb.h>
 #endif
 
 #include <errno.h>
@@ -83,6 +86,15 @@ struct header_cache
 
 static void mutt_hcache_dbt_init(DBT * dbt, void *data, size_t len);
 static void mutt_hcache_dbt_empty_init(DBT * dbt);
+#elif HAVE_LMDB
+struct header_cache
+{
+  MDB_env *env;
+  MDB_txn *txn;
+  MDB_dbi db;
+  char *folder;
+  unsigned int crc;
+};
 #endif
 
 typedef union
@@ -732,6 +744,11 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 #elif HAVE_DB4
   DBT key;
   DBT data;
+#elif HAVE_LMDB
+  MDB_val key;
+  MDB_val data;
+  size_t folderlen;
+  int rc;
 #endif
   
   if (!h)
@@ -748,6 +765,43 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
   h->db->get(h->db, NULL, &key, &data, 0);
   
   return data.data;
+#elif HAVE_LMDB
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+
+  folderlen = strlen(h->folder);
+  ksize = folderlen + keylen(path + folderlen);  
+  key.mv_data = (char *)path;
+  key.mv_size = ksize;
+  data.mv_data = NULL;
+  data.mv_size = 0;
+  rc = mdb_txn_renew(h->txn);
+  if (rc != MDB_SUCCESS)
+  {
+    h->txn = NULL;
+    fprintf(stderr, "txn_renew: %s\n", mdb_strerror(rc));
+    return NULL;
+  }
+  rc = mdb_get(h->txn, h->db, &key, &data);
+  if (rc == MDB_NOTFOUND)
+  {
+    mdb_txn_reset(h->txn);
+    return NULL;
+  }
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "mdb_get: %s\n", mdb_strerror(rc));
+    mdb_txn_reset(h->txn);
+    return NULL;
+  }
+  /* Caller frees the data we return, so I MUST make a copy of it */
+
+  char *d = safe_malloc(data.mv_size);
+  memcpy(d, data.mv_data, data.mv_size);
+  mdb_txn_reset(h->txn);
+
+  return d;
+
 #else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
@@ -813,6 +867,12 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
 #elif HAVE_DB4
   DBT key;
   DBT databuf;
+#elif HAVE_LMDB
+  MDB_val key;
+  MDB_val databuf;
+  MDB_txn *txn;
+  size_t folderlen;
+  int rc;
 #endif
   
   if (!h)
@@ -831,6 +891,31 @@ mutt_hcache_store_raw (header_cache_t* h, const char* filename, void* data,
   databuf.ulen = dlen;
   
   return h->db->put(h->db, NULL, &key, &databuf, 0);
+#elif HAVE_LMDB
+  folderlen = strlen(h->folder);
+  strncpy(path, h->folder, sizeof (path));
+  safe_strcat(path, sizeof (path), filename);
+  ksize = folderlen + keylen(path + folderlen);
+
+  key.mv_data = (char *)path;
+  key.mv_size = ksize;
+  databuf.mv_data = data;
+  databuf.mv_size = dlen;
+  rc = mdb_txn_begin(h->env, NULL, 0, &txn);
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "txn_begin: %s\n", mdb_strerror(rc));
+    return rc;
+  }
+  rc = mdb_put(txn, h->db, &key, &databuf, 0);
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "mdb_put: %s\n", mdb_strerror(rc));
+    mdb_txn_abort(txn);
+    return rc;
+  }
+  rc = mdb_txn_commit(txn);
+  return rc;
 #else
   strncpy(path, h->folder, sizeof (path));
   safe_strcat(path, sizeof (path), filename);
@@ -1134,6 +1219,104 @@ mutt_hcache_delete(header_cache_t *h, const char *filename,
   mutt_hcache_dbt_init(&key, (void *) filename, keylen(filename));
   return h->db->del(h->db, NULL, &key, 0);
 }
+#elif HAVE_LMDB
+
+static int
+hcache_open_lmdb (struct header_cache* h, const char* path)
+{
+  int rc;
+
+  h->txn = NULL;
+
+  rc = mdb_env_create(&h->env);
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "hcache_open_lmdb: mdb_env_create: %s", mdb_strerror(rc));
+    return -1;
+  }
+
+  mdb_env_set_mapsize(h->env, LMDB_DB_SIZE);
+
+  rc = mdb_env_open(h->env, path, MDB_NOSUBDIR, 0644);
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "hcache_open_lmdb: mdb_env_open: %s", mdb_strerror(rc));
+    goto fail_env;
+  }
+
+  rc = mdb_txn_begin(h->env, NULL, MDB_RDONLY, &h->txn);
+  if (rc != MDB_SUCCESS)
+  {
+      fprintf(stderr, "hcache_open_lmdb: mdb_txn_begin: %s", mdb_strerror(rc));
+      goto fail_env;
+  }
+
+  rc = mdb_dbi_open(h->txn, NULL, MDB_CREATE, &h->db);
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "hcache_open_lmdb: mdb_dbi_open: %s", mdb_strerror(rc));
+    goto fail_dbi;
+  }
+
+  mdb_txn_reset(h->txn);
+  return 0;
+
+fail_dbi:
+  mdb_txn_abort(h->txn);
+  h->txn = NULL;
+
+fail_env:
+  mdb_env_close(h->env);
+  return -1;
+}
+
+void
+mutt_hcache_close(header_cache_t *h)
+{
+  if (!h)
+    return;
+
+  mdb_env_close(h->env);
+  FREE (&h->folder);
+  FREE (&h);
+}
+
+int
+mutt_hcache_delete(header_cache_t *h, const char *filename,
+                   size_t(*keylen) (const char *fn))
+{
+  MDB_val key;
+  MDB_txn *txn;
+  int rc;
+
+  if (!h)
+    return -1;
+
+  if (filename[0] == '/')
+    filename++;
+
+  key.mv_data = (char *)filename;
+  key.mv_size = strlen(filename);
+  rc = mdb_txn_begin(h->env, NULL, 0, &txn);
+  if (rc != MDB_SUCCESS)
+  {
+    fprintf(stderr, "txn_begin: %s\n", mdb_strerror(rc));
+    return rc;
+  }
+  rc = mdb_del(txn, h->db, &key, NULL);
+  if (rc != MDB_SUCCESS)
+  {
+    if (rc != MDB_NOTFOUND)
+    {
+      fprintf(stderr, "mdb_del: %s\n", mdb_strerror(rc));
+    }
+    mdb_txn_abort(txn);
+    return rc;
+  }
+
+  mdb_txn_commit(txn);
+  return rc;
+}
 #endif
 
 header_cache_t *
@@ -1151,6 +1334,8 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
   hcache_open = hcache_open_gdbm;
 #elif HAVE_DB4
   hcache_open = hcache_open_db4;
+#elif HAVE_LMDB
+  hcache_open = hcache_open_lmdb;
 #endif
 
   /* Calculate the current hcache version from dynamic configuration */
@@ -1188,7 +1373,11 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
     hcachever = digest.intval;
   }
 
+#if HAVE_LMDB
+  h->db = 0;
+#else
   h->db = NULL;
+#endif
   h->folder = get_foldername(folder);
   h->crc = hcachever;
 
@@ -1222,6 +1411,11 @@ mutt_hcache_open(const char *path, const char *folder, hcache_namer_t namer)
 const char *mutt_hcache_backend (void)
 {
   return DB_VERSION_STRING;
+}
+#elif HAVE_LMDB
+const char *mutt_hcache_backend (void)
+{
+  return "lmdb " MDB_VERSION_STRING;
 }
 #elif HAVE_GDBM
 const char *mutt_hcache_backend (void)
