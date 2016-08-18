@@ -1,0 +1,41 @@
+Timeout Patch
+=============
+
+    Run a command periodically
+
+Patch
+-----
+
+    To check if Mutt supports "Timeout", look for "patch-timeout" in the mutt
+    version.
+
+    Dependencies
+    * mutt-1.6.2
+
+Introduction
+------------
+
+    This patch implements a new hook that is called periodically when Mutt
+    checks for new mail. This hook is called every `$timeout` seconds.
+
+Commands
+--------
+
+    timeout-hook .  MUTT-COMMAND
+
+See Also
+--------
+
+    * $timeout
+
+Known Bugs
+----------
+
+    None
+
+Credits
+-------
+
+    * Armin Wolfermann <armin@wolfermann.org>
+    * Richard Russon <rich@flatcap.org>
+
