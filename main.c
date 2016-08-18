@@ -66,6 +66,10 @@
 #include <idn/stringprep.h>
 #endif
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
+
 void mutt_exit (int code)
 {
   mutt_endwin (NULL);
@@ -102,6 +106,8 @@ options:\n\
   -e <command>\tspecify a command to be executed after initialization\n\
   -f <file>\tspecify which mailbox to read\n\
   -F <file>\tspecify an alternate muttrc file\n\
+  -g <server>\tspecify a news server (if compiled with NNTP)\n\
+  -G\t\tselect a newsgroup (if compiled with NNTP)\n\
   -H <file>\tspecify a draft file to read header and body from\n\
   -i <file>\tspecify a file which Mutt should include in the body\n\
   -m <type>\tspecify a default mailbox type\n\
@@ -167,6 +173,9 @@ init_extended_keys();
 #define MUTT_NOSYSRC (1<<2)	/* -n */
 #define MUTT_RO      (1<<3)	/* -R */
 #define MUTT_SELECT  (1<<4)	/* -y */
+#ifdef USE_NNTP
+#define MUTT_NEWS    (1<<5)	/* -g and -G */
+#endif
 
 int main (int argc, char **argv)
 {
@@ -240,7 +249,11 @@ int main (int argc, char **argv)
         argv[nargc++] = argv[optind];
     }
 
+#ifdef USE_NNTP
+    if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:g:GH:s:i:hm:npQ:RvxyzZ")) != EOF)
+#else
     if ((i = getopt (argc, argv, "+A:a:b:F:f:c:Dd:Ee:H:s:i:hm:npQ:RvxyzZ")) != EOF)
+#endif
       switch (i)
       {
       case 'A':
@@ -340,6 +353,20 @@ int main (int argc, char **argv)
       case 'y': /* My special hack mode */
 	flags |= MUTT_SELECT;
 	break;
+
+#ifdef USE_NNTP
+      case 'g': /* Specify a news server */
+	{
+	  char buf[LONG_STRING];
+
+	  snprintf (buf, sizeof (buf), "set news_server=%s", optarg);
+	  commands = mutt_add_list (commands, buf);
+	}
+
+      case 'G': /* List of newsgroups */
+	flags |= MUTT_SELECT | MUTT_NEWS;
+	break;
+#endif
 
       case 'z':
 	flags |= MUTT_IGNORE;
@@ -782,6 +809,18 @@ int main (int argc, char **argv)
     }
     else if (flags & MUTT_SELECT)
     {
+#ifdef USE_NNTP
+      if (flags & MUTT_NEWS)
+      {
+	set_option (OPTNEWS);
+	if(!(CurrentNewsSrv = nntp_select_server (NewsServer, 0)))
+	{
+	  mutt_endwin (Errorbuf);
+	  exit (1);
+	}
+      }
+      else
+#endif
       if (!Incoming) {
 	mutt_endwin _("No incoming mailboxes defined.");
 	exit (1);
@@ -797,6 +836,15 @@ int main (int argc, char **argv)
 
     if (!folder[0])
       strfcpy (folder, NONULL(Spoolfile), sizeof (folder));
+
+#ifdef USE_NNTP
+    if (option (OPTNEWS))
+    {
+      unset_option (OPTNEWS);
+      nntp_expand_path (folder, sizeof (folder), &CurrentNewsSrv->conn->account);
+    }
+    else
+#endif
     mutt_expand_path (folder, sizeof (folder));
 
     mutt_str_replace (&CurrentFolder, folder);

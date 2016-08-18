@@ -112,6 +112,7 @@ HASH *mutt_make_id_hash (CONTEXT *);
 HASH *mutt_make_subj_hash (CONTEXT *);
 
 LIST *mutt_make_references(ENVELOPE *e);
+LIST *mutt_parse_references (char *, int);
 
 char *mutt_read_rfc822_line (FILE *, char *, size_t *);
 ENVELOPE *mutt_read_rfc822_header (FILE *, HEADER *, short, short);

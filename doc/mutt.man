@@ -23,8 +23,8 @@ mutt \- The Mutt Mail User Agent
 .SH SYNOPSIS
 .PP
 .B mutt
-[\-nRyzZ]
-[\-e \fIcmd\fP] [\-F \fIfile\fP] [\-m \fItype\fP] [\-f \fIfile\fP]
+[\-GnRyzZ]
+[\-e \fIcmd\fP] [\-F \fIfile\fP] [\-g \fIserver\fP] [\-m \fItype\fP] [\-f \fIfile\fP]
 .PP
 .B mutt 
 [\-Enx] 
@@ -104,6 +104,10 @@ files.
 Specify which mailbox to load.
 .IP "-F \fImuttrc\fP"
 Specify an initialization file to read instead of ~/.muttrc
+.IP "-g \fIserver\fP"
+Start Mutt with a listing of subscribed newsgroups at specified news server.
+.IP "-G"
+Start Mutt with a listing of subscribed newsgroups.
 .IP "-h"
 Display help.
 .IP "-H \fIdraft\fP"

@@ -19,6 +19,10 @@
 #ifndef _BROWSER_H
 #define _BROWSER_H 1
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
+
 struct folder_file
 {
   mode_t mode;
@@ -43,6 +47,9 @@ struct folder_file
   unsigned inferiors : 1;
 #endif
   unsigned has_buffy : 1;
+#ifdef USE_NNTP
+  NNTP_DATA *nd;
+#endif
   unsigned local : 1; /* folder is on local filesystem */
   unsigned tagged : 1;
 };

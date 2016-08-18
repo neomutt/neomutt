@@ -86,6 +86,10 @@ const struct binding_t OpMain[] = { /* map: index */
   { "break-thread",		OP_MAIN_BREAK_THREAD,		"#" },
   { "change-folder",		OP_MAIN_CHANGE_FOLDER,		"c" },
   { "change-folder-readonly",	OP_MAIN_CHANGE_FOLDER_READONLY,	"\033c" },
+#ifdef USE_NNTP
+  { "change-newsgroup",		OP_MAIN_CHANGE_GROUP,		NULL },
+  { "change-newsgroup-readonly",OP_MAIN_CHANGE_GROUP_READONLY,	NULL },
+#endif
   { "next-unread-mailbox",	OP_MAIN_NEXT_UNREAD_MAILBOX,    NULL },
   { "collapse-thread",		OP_MAIN_COLLAPSE_THREAD,	"\033v" },
   { "collapse-all",		OP_MAIN_COLLAPSE_ALL,		"\033V" },
@@ -100,6 +104,14 @@ const struct binding_t OpMain[] = { /* map: index */
   { "edit-label",		OP_EDIT_LABEL,			NULL },
   { "edit-type",		OP_EDIT_TYPE,			"\005" },
   { "forward-message",		OP_FORWARD_MESSAGE,		"f" },
+#ifdef USE_NNTP
+  { "forward-to-group",		OP_FORWARD_TO_GROUP,		NULL },
+  { "followup-message",		OP_FOLLOWUP,			NULL },
+  { "get-children",		OP_GET_CHILDREN,		NULL },
+  { "get-message",		OP_GET_MESSAGE,			NULL },
+  { "get-parent",		OP_GET_PARENT,			NULL },
+  { "reconstruct-thread",	OP_RECONSTRUCT_THREAD,		NULL },
+#endif
   { "flag-message",		OP_FLAG_MESSAGE,		"F" },
   { "group-reply",		OP_GROUP_REPLY,			"g" },
 #ifdef USE_POP
@@ -129,6 +141,9 @@ const struct binding_t OpMain[] = { /* map: index */
   { "sort-mailbox",		OP_SORT,			"o" },
   { "sort-reverse",		OP_SORT_REVERSE,		"O" },
   { "print-message",		OP_PRINT,			"p" },
+#ifdef USE_NNTP
+  { "post-message",		OP_POST,			NULL },
+#endif
   { "previous-thread",		OP_MAIN_PREV_THREAD,		"\020" },
   { "previous-subthread",	OP_MAIN_PREV_SUBTHREAD,		"\033p" },
   { "recall-message",		OP_RECALL_MESSAGE,		"R" },
@@ -148,6 +163,10 @@ const struct binding_t OpMain[] = { /* map: index */
   { "show-version",		OP_VERSION,			"V" },
   { "set-flag",			OP_MAIN_SET_FLAG,		"w" },
   { "clear-flag",		OP_MAIN_CLEAR_FLAG,		"W" },
+  { "toggle-read",		OP_TOGGLE_READ,			NULL },
+#ifdef USE_NNTP
+  { "catchup",			OP_CATCHUP,			NULL },
+#endif
   { "display-message",		OP_DISPLAY_MESSAGE,		"\n" },
   { "display-message",		OP_DISPLAY_MESSAGE,		"\r" },
   { "buffy-list",		OP_BUFFY_LIST,			"." },
@@ -191,6 +210,10 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "change-folder",	OP_MAIN_CHANGE_FOLDER,		"c" },
   { "change-folder-readonly",	OP_MAIN_CHANGE_FOLDER_READONLY,	"\033c" },
+#ifdef USE_NNTP
+  { "change-newsgroup",		OP_MAIN_CHANGE_GROUP,		NULL },
+  { "change-newsgroup-readonly",OP_MAIN_CHANGE_GROUP_READONLY,	NULL },
+#endif
   { "next-unread-mailbox",	OP_MAIN_NEXT_UNREAD_MAILBOX, NULL },
   { "copy-message",	OP_COPY_MESSAGE,		"C" },
   { "decode-copy",	OP_DECODE_COPY,			"\033C" },
@@ -202,6 +225,10 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "edit",		OP_EDIT_MESSAGE,		"e" },
   { "edit-label",	OP_EDIT_LABEL,			NULL },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
+#ifdef USE_NNTP
+  { "followup-message",	OP_FOLLOWUP,			NULL },
+  { "forward-to-group",	OP_FORWARD_TO_GROUP,		NULL },
+#endif
   { "forward-message",	OP_FORWARD_MESSAGE,		"f" },
   { "flag-message",	OP_FLAG_MESSAGE,		"F" },
   { "group-reply",	OP_GROUP_REPLY,			"g" },
@@ -225,6 +252,9 @@ const struct binding_t OpPager[] = { /* map: pager */
   { "sort-mailbox",	OP_SORT,			"o" },
   { "sort-reverse",	OP_SORT_REVERSE,		"O" },
   { "print-message",	OP_PRINT,			"p" },
+#ifdef USE_NNTP
+  { "post-message",	OP_POST,			NULL },
+#endif
   { "previous-thread",	OP_MAIN_PREV_THREAD,		"\020" },
   { "previous-subthread",OP_MAIN_PREV_SUBTHREAD,	"\033p" },
   { "purge-message",	OP_PURGE_MESSAGE,		NULL },
@@ -307,6 +337,10 @@ const struct binding_t OpAttach[] = { /* map: attachment */
   { "bounce-message",	OP_BOUNCE_MESSAGE,		"b" },
   { "display-toggle-weed",	OP_DISPLAY_HEADERS,	"h" },
   { "edit-type",	OP_EDIT_TYPE,			"\005" },
+#ifdef USE_NNTP
+  { "followup-message",	OP_FOLLOWUP,			NULL },
+  { "forward-to-group",	OP_FORWARD_TO_GROUP,		NULL },
+#endif
   { "print-entry",	OP_PRINT,			"p" },
   { "save-entry",	OP_SAVE,			"s" },
   { "pipe-entry",	OP_PIPE,			"|" },
@@ -333,6 +367,7 @@ const struct binding_t OpAttach[] = { /* map: attachment */
 const struct binding_t OpCompose[] = { /* map: compose */
   { "attach-file",	OP_COMPOSE_ATTACH_FILE,		"a" },
   { "attach-message",	OP_COMPOSE_ATTACH_MESSAGE,	"A" },
+  { "attach-news-message",OP_COMPOSE_ATTACH_NEWS_MESSAGE,NULL },
   { "edit-bcc",		OP_COMPOSE_EDIT_BCC,		"b" },
   { "edit-cc",		OP_COMPOSE_EDIT_CC,		"c" },
   { "copy-file",	OP_SAVE,			"C" },
@@ -352,6 +387,11 @@ const struct binding_t OpCompose[] = { /* map: compose */
   { "print-entry",	OP_PRINT,			"l" },
   { "edit-mime",	OP_COMPOSE_EDIT_MIME,		"m" },
   { "new-mime",		OP_COMPOSE_NEW_MIME,		"n" },
+#ifdef USE_NNTP
+  { "edit-newsgroups",	OP_COMPOSE_EDIT_NEWSGROUPS,	NULL },
+  { "edit-followup-to",	OP_COMPOSE_EDIT_FOLLOWUP_TO,	NULL },
+  { "edit-x-comment-to",OP_COMPOSE_EDIT_X_COMMENT_TO,	NULL },
+#endif
   { "postpone-message",	OP_COMPOSE_POSTPONE_MESSAGE,	"P" },
   { "edit-reply-to",	OP_COMPOSE_EDIT_REPLY_TO,	"r" },
   { "rename-file",	OP_COMPOSE_RENAME_FILE,		"R" },
@@ -404,14 +444,25 @@ const struct binding_t OpBrowser[] = { /* map: browser */
   { "select-new",	OP_BROWSER_NEW_FILE,	"N" },
   { "check-new",	OP_CHECK_NEW,		NULL },
   { "toggle-mailboxes", OP_TOGGLE_MAILBOXES, 	"\t" },
+#ifdef USE_NNTP
+  { "reload-active",	OP_LOAD_ACTIVE,		NULL },
+  { "subscribe-pattern", OP_SUBSCRIBE_PATTERN,	NULL },
+  { "unsubscribe-pattern", OP_UNSUBSCRIBE_PATTERN, NULL },
+  { "catchup",		OP_CATCHUP,		NULL },
+  { "uncatchup",	OP_UNCATCHUP,		NULL },
+#endif
   { "view-file",	OP_BROWSER_VIEW_FILE,	" " },
   { "buffy-list",	OP_BUFFY_LIST,		"." },
 #ifdef USE_IMAP
   { "create-mailbox",   OP_CREATE_MAILBOX,      "C" },
   { "delete-mailbox",   OP_DELETE_MAILBOX,      "d" },
   { "rename-mailbox",   OP_RENAME_MAILBOX,      "r" },
+#endif
+#if defined USE_IMAP || defined USE_NNTP
   { "subscribe",	OP_BROWSER_SUBSCRIBE,	"s" },
   { "unsubscribe",	OP_BROWSER_UNSUBSCRIBE,	"u" },
+#endif
+#ifdef USE_IMAP
   { "toggle-subscribed", OP_BROWSER_TOGGLE_LSUB, "T" },
 #endif
   { NULL,		0,			NULL }

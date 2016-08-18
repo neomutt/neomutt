@@ -57,6 +57,7 @@ HASH *hash_create (int nelem, int lower)
   if (nelem == 0)
     nelem = 2;
   table->nelem = nelem;
+  table->curnelem = 0;
   table->table = safe_calloc (nelem, sizeof (struct hash_elem *));
   if (lower)
   {
@@ -68,6 +69,29 @@ HASH *hash_create (int nelem, int lower)
     table->hash_string = hash_string;
     table->cmp_string = mutt_strcmp;
   }
+  return table;
+}
+
+HASH *hash_resize (HASH *ptr, int nelem, int lower)
+{
+  HASH *table;
+  struct hash_elem *elem, *tmp;
+  int i;
+
+  table = hash_create (nelem, lower);
+
+  for (i = 0; i < ptr->nelem; i++)
+  {
+    for (elem = ptr->table[i]; elem; )
+    {
+      tmp = elem;
+      elem = elem->next;
+      hash_insert (table, tmp->key, tmp->data, 1);
+      FREE (&tmp);
+    }
+  }
+  FREE (&ptr->table);
+  FREE (&ptr);
   return table;
 }
 
@@ -90,6 +114,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
   {
     ptr->next = table->table[h];
     table->table[h] = ptr;
+    table->curnelem++;
   }
   else
   {
@@ -112,6 +137,7 @@ int hash_insert (HASH * table, const char *key, void *data, int allow_dup)
     else
       table->table[h] = ptr;
     ptr->next = tmp;
+    table->curnelem++;
   }
   return h;
 }
@@ -142,6 +168,7 @@ void hash_delete_hash (HASH * table, int hash, const char *key, const void *data
       if (destroy)
 	destroy (ptr->data);
       FREE (&ptr);
+      table->curnelem--;
       
       ptr = *last;
     }

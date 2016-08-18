@@ -192,6 +192,11 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
     case MUTT_ACCT_TYPE_SMTP:
       service = "smtp";
       break;
+#ifdef USE_NNTP
+    case MUTT_ACCT_TYPE_NNTP:
+      service = "nntp";
+      break;
+#endif
     default:
       mutt_error (_("Unknown SASL profile"));
       return -1;

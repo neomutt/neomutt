@@ -1121,6 +1121,15 @@ void mutt_view_attachments (HEADER *hdr)
 	}
 #endif
 
+#ifdef USE_NNTP
+	if (Context->magic == MUTT_NNTP)
+	{
+	  mutt_flushinp ();
+	  mutt_error _("Can't delete attachment from news server.");
+	  break;
+	}
+#endif
+
         if (WithCrypto && (hdr->security & ENCRYPT))
         {
           mutt_message _(
@@ -1215,10 +1224,33 @@ void mutt_view_attachments (HEADER *hdr)
       case OP_FORWARD_MESSAGE:
         CHECK_ATTACH;
         mutt_attach_forward (fp, hdr, idx, idxlen,
-			     menu->tagprefix ? NULL : idx[menu->current]->content);
+			     menu->tagprefix ? NULL : idx[menu->current]->content, 0);
         menu->redraw = REDRAW_FULL;
         break;
       
+#ifdef USE_NNTP
+      case OP_FORWARD_TO_GROUP:
+	CHECK_ATTACH;
+	mutt_attach_forward (fp, hdr, idx, idxlen,
+		menu->tagprefix ? NULL : idx[menu->current]->content, SENDNEWS);
+	menu->redraw = REDRAW_FULL;
+	break;
+
+      case OP_FOLLOWUP:
+	CHECK_ATTACH;
+
+	if (!idx[menu->current]->content->hdr->env->followup_to ||
+	    mutt_strcasecmp (idx[menu->current]->content->hdr->env->followup_to, "poster") ||
+	    query_quadoption (OPT_FOLLOWUPTOPOSTER,_("Reply by mail as poster prefers?")) != MUTT_YES)
+	{
+	  mutt_attach_reply (fp, hdr, idx, idxlen,
+		menu->tagprefix ? NULL : idx[menu->current]->content,
+		SENDNEWS|SENDREPLY);
+	  menu->redraw = REDRAW_FULL;
+	  break;
+	}
+#endif
+
       case OP_REPLY:
       case OP_GROUP_REPLY:
       case OP_LIST_REPLY:

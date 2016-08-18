@@ -35,6 +35,9 @@ enum
   MUTT_MMDF,
   MUTT_MH,
   MUTT_MAILDIR,
+#ifdef USE_NNTP
+  MUTT_NNTP,
+#endif
   MUTT_IMAP,
   MUTT_POP
 #ifdef USE_COMPRESSED

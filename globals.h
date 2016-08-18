@@ -70,7 +70,7 @@ WHERE char *KeywordsSave;
 WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
-#if defined(USE_IMAP) || defined(USE_POP)
+#if defined(USE_IMAP) || defined(USE_POP) || defined(USE_NNTP)
 WHERE char *MessageCachedir;
 #endif
 #if USE_HCACHE
@@ -96,6 +96,17 @@ WHERE char *MixEntryFormat;
 #endif
 
 WHERE char *Muttrc INITVAL (NULL);
+#ifdef USE_NNTP
+WHERE char *GroupFormat;
+WHERE char *Inews;
+WHERE char *NewsCacheDir;
+WHERE char *NewsServer;
+WHERE char *NewsgroupsCharset;
+WHERE char *NewsRc;
+WHERE char *NntpAuthenticators;
+WHERE char *NntpUser;
+WHERE char *NntpPass;
+#endif
 WHERE char *Outbox;
 WHERE char *Pager;
 WHERE char *PagerFmt;
@@ -201,6 +212,13 @@ extern unsigned char Options[];
 unsigned char QuadOptions[(OPT_MAX*2 + 7) / 8];
 #else
 extern unsigned char QuadOptions[];
+#endif
+
+WHERE unsigned short Counter INITVAL (0);
+
+#ifdef USE_NNTP
+WHERE short NewsPollTimeout;
+WHERE short NntpContext;
 #endif
 
 WHERE short ConnectTimeout;

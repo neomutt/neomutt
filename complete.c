@@ -25,6 +25,9 @@
 #include "mailbox.h"
 #include "imap.h"
 #endif
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
 
 #include <dirent.h>
 #include <string.h>
@@ -48,9 +51,70 @@ int mutt_complete (char *s, size_t slen)
   char filepart[_POSIX_PATH_MAX];
 #ifdef USE_IMAP
   char imap_path[LONG_STRING];
+#endif
 
   dprint (2, (debugfile, "mutt_complete: completing %s\n", s));
 
+#ifdef USE_NNTP
+  if (option (OPTNEWS))
+  {
+    NNTP_SERVER *nserv = CurrentNewsSrv;
+    unsigned int n = 0;
+
+    strfcpy (filepart, s, sizeof (filepart));
+
+    /* special case to handle when there is no filepart yet
+     * find the first subscribed newsgroup */
+    len = mutt_strlen (filepart);
+    if (len == 0)
+    {
+      for (; n < nserv->groups_num; n++)
+      {
+	NNTP_DATA *nntp_data = nserv->groups_list[n];
+
+	if (nntp_data && nntp_data->subscribed)
+	{
+	  strfcpy (filepart, nntp_data->group, sizeof (filepart));
+	  init = 1;
+	  n++;
+	  break;
+	}
+      }
+    }
+
+    for (; n < nserv->groups_num; n++)
+    {
+      NNTP_DATA *nntp_data = nserv->groups_list[n];
+
+      if (nntp_data && nntp_data->subscribed &&
+	  mutt_strncmp (nntp_data->group, filepart, len) == 0)
+      {
+	if (init)
+	{
+	  for (i = 0; filepart[i] && nntp_data->group[i]; i++)
+	  {
+	    if (filepart[i] != nntp_data->group[i])
+	    {
+	      filepart[i] = 0;
+	      break;
+	    }
+	  }
+	  filepart[i] = 0;
+	}
+	else
+	{
+	  strfcpy (filepart, nntp_data->group, sizeof (filepart));
+	  init = 1;
+	}
+      }
+    }
+
+    strfcpy (s, filepart, slen);
+    return (init ? 0 : -1);
+  }
+#endif
+
+#ifdef USE_IMAP
   /* we can use '/' as a delimiter, imap_complete rewrites it */
   if (*s == '=' || *s == '+' || *s == '!')
   {

@@ -44,6 +44,11 @@
 #include <sys/types.h>
 #include <utime.h>
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#include "mx.h"
+#endif
+
 #ifdef MIXMASTER
 #include "remailer.h"
 #endif
@@ -213,17 +218,51 @@ static int edit_address (ADDRESS **a, /* const */ char *field)
   return 0;
 }
 
-static int edit_envelope (ENVELOPE *en)
+static int edit_envelope (ENVELOPE *en, int flags)
 {
   char buf[HUGE_STRING];
   LIST *uh = UserHeader;
 
-  if (edit_address (&en->to, "To: ") == -1 || en->to == NULL)
-    return (-1);
-  if (option (OPTASKCC) && edit_address (&en->cc, "Cc: ") == -1)
-    return (-1);
-  if (option (OPTASKBCC) && edit_address (&en->bcc, "Bcc: ") == -1)
-    return (-1);
+#ifdef USE_NNTP
+  if (option (OPTNEWSSEND))
+  {
+    if (en->newsgroups)
+      strfcpy (buf, en->newsgroups, sizeof (buf));
+    else
+      buf[0] = 0;
+    if (mutt_get_field ("Newsgroups: ", buf, sizeof (buf), 0) != 0)
+      return (-1);
+    FREE (&en->newsgroups);
+    en->newsgroups = safe_strdup (buf);
+
+    if (en->followup_to)
+      strfcpy (buf, en->followup_to, sizeof (buf));
+    else
+      buf[0] = 0;
+    if (option (OPTASKFOLLOWUP) && mutt_get_field ("Followup-To: ", buf, sizeof (buf), 0) != 0)
+      return (-1);
+    FREE (&en->followup_to);
+    en->followup_to = safe_strdup (buf);
+
+    if (en->x_comment_to)
+      strfcpy (buf, en->x_comment_to, sizeof (buf));
+    else
+      buf[0] = 0;
+    if (option (OPTXCOMMENTTO) && option (OPTASKXCOMMENTTO) && mutt_get_field ("X-Comment-To: ", buf, sizeof (buf), 0) != 0)
+      return (-1);
+    FREE (&en->x_comment_to);
+    en->x_comment_to = safe_strdup (buf);
+  }
+  else
+#endif
+  {
+    if (edit_address (&en->to, "To: ") == -1 || en->to == NULL)
+      return (-1);
+    if (option (OPTASKCC) && edit_address (&en->cc, "Cc: ") == -1)
+      return (-1);
+    if (option (OPTASKBCC) && edit_address (&en->bcc, "Bcc: ") == -1)
+      return (-1);
+  }
 
   if (en->subject)
   {
@@ -258,6 +297,14 @@ static int edit_envelope (ENVELOPE *en)
   return 0;
 }
 
+#ifdef USE_NNTP
+char *nntp_get_header (const char *s)
+{
+  SKIPWS (s);
+  return safe_strdup (s);
+}
+#endif
+
 static void process_user_recips (ENVELOPE *env)
 {
   LIST *uh = UserHeader;
@@ -270,6 +317,14 @@ static void process_user_recips (ENVELOPE *env)
       env->cc = rfc822_parse_adrlist (env->cc, uh->data + 3);
     else if (ascii_strncasecmp ("bcc:", uh->data, 4) == 0)
       env->bcc = rfc822_parse_adrlist (env->bcc, uh->data + 4);
+#ifdef USE_NNTP
+    else if (ascii_strncasecmp ("newsgroups:", uh->data, 11) == 0)
+      env->newsgroups = nntp_get_header (uh->data + 11);
+    else if (ascii_strncasecmp ("followup-to:", uh->data, 12) == 0)
+      env->followup_to = nntp_get_header (uh->data + 12);
+    else if (ascii_strncasecmp ("x-comment-to:", uh->data, 13) == 0)
+      env->x_comment_to = nntp_get_header (uh->data + 13);
+#endif
   }
 }
 
@@ -308,6 +363,12 @@ static void process_user_header (ENVELOPE *env)
     else if (ascii_strncasecmp ("to:", uh->data, 3) != 0 &&
 	     ascii_strncasecmp ("cc:", uh->data, 3) != 0 &&
 	     ascii_strncasecmp ("bcc:", uh->data, 4) != 0 &&
+#ifdef USE_NNTP
+	     ascii_strncasecmp ("newsgroups:", uh->data, 11) != 0 &&
+	     ascii_strncasecmp ("followup-to:", uh->data, 12) != 0 &&
+	     ascii_strncasecmp ("x-comment-to:", uh->data, 13) != 0 &&
+#endif
+	     ascii_strncasecmp ("supersedes:", uh->data, 11) != 0 &&
 	     ascii_strncasecmp ("subject:", uh->data, 8) != 0 &&
 	     ascii_strncasecmp ("return-path:", uh->data, 12) != 0)
     {
@@ -659,6 +720,10 @@ void mutt_add_to_reference_headers (ENVELOPE *env, ENVELOPE *curenv, LIST ***pp,
   if (pp) *pp = p;
   if (qq) *qq = q;
   
+#ifdef USE_NNTP
+  if (option (OPTNEWSSEND) && option (OPTXCOMMENTTO) && curenv->from)
+    env->x_comment_to = safe_strdup (mutt_get_name (curenv->from));
+#endif
 }
 
 static void 
@@ -721,6 +786,16 @@ envelope_defaults (ENVELOPE *env, CONTEXT *ctx, HEADER *cur, int flags)
 
   if (flags & SENDREPLY)
   {
+#ifdef USE_NNTP
+    if ((flags & SENDNEWS))
+    {
+      /* in case followup set Newsgroups: with Followup-To: if it present */
+      if (!env->newsgroups && curenv &&
+	  mutt_strcasecmp (curenv->followup_to, "poster"))
+	env->newsgroups = safe_strdup (curenv->followup_to);
+    }
+    else
+#endif
     if (tag)
     {
       HEADER *h;
@@ -867,7 +942,18 @@ void mutt_set_followup_to (ENVELOPE *e)
    * it hasn't already been set
    */
 
-  if (option (OPTFOLLOWUPTO) && !e->mail_followup_to)
+  if (!option (OPTFOLLOWUPTO))
+    return;
+#ifdef USE_NNTP
+  if (option (OPTNEWSSEND))
+  {
+    if (!e->followup_to && e->newsgroups && (strrchr (e->newsgroups, ',')))
+      e->followup_to = safe_strdup (e->newsgroups);
+    return;
+  }
+#endif
+
+  if (!e->mail_followup_to)
   {
     if (mutt_is_list_cc (0, e->to, e->cc))
     {
@@ -1029,6 +1115,9 @@ static int send_message (HEADER *msg)
 #endif
 
 #if USE_SMTP
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+#endif
   if (SmtpUrl)
       return mutt_smtp_send (msg->env->from, msg->env->to, msg->env->cc,
                              msg->env->bcc, tempfile,
@@ -1167,6 +1256,13 @@ ci_send_message (int flags,		/* send mode */
 
   int rv = -1;
   
+#ifdef USE_NNTP
+  if (flags & SENDNEWS)
+    set_option (OPTNEWSSEND);
+  else
+    unset_option (OPTNEWSSEND);
+#endif
+
   if (!flags && !msg && quadoption (OPT_RECALL) != MUTT_NO &&
       mutt_num_postponed (1))
   {
@@ -1202,6 +1298,22 @@ ci_send_message (int flags,		/* send mode */
     {
       if ((flags = mutt_get_postponed (ctx, msg, &cur, fcc, sizeof (fcc))) < 0)
 	goto cleanup;
+#ifdef USE_NNTP
+      /*
+       * If postponed message is a news article, it have
+       * a "Newsgroups:" header line, then set appropriate flag.
+       */
+      if (msg->env->newsgroups)
+      {
+	flags |= SENDNEWS;
+	set_option (OPTNEWSSEND);
+      }
+      else
+      {
+	flags &= ~SENDNEWS;
+	unset_option (OPTNEWSSEND);
+      }
+#endif
     }
 
     if (flags & (SENDPOSTPONED|SENDRESEND))
@@ -1303,11 +1415,16 @@ ci_send_message (int flags,		/* send mode */
     if (flags & SENDREPLY)
       mutt_fix_reply_recipients (msg->env);
 
+#ifdef USE_NNTP
+    if ((flags & SENDNEWS) && ctx && ctx->magic == MUTT_NNTP && !msg->env->newsgroups)
+      msg->env->newsgroups = safe_strdup (((NNTP_DATA *)ctx->data)->group);
+#endif
+
     if (! (flags & (SENDMAILX|SENDBATCH)) &&
 	! (option (OPTAUTOEDIT) && option (OPTEDITHDRS)) &&
 	! ((flags & SENDREPLY) && option (OPTFASTREPLY)))
     {
-      if (edit_envelope (msg->env) == -1)
+      if (edit_envelope (msg->env, flags) == -1)
 	goto cleanup;
     }
 
@@ -1606,6 +1723,11 @@ main_loop:
     if (i == -1)
     {
       /* abort */
+#ifdef USE_NNTP
+      if (flags & SENDNEWS)
+	mutt_message _("Article not posted.");
+      else
+#endif
       mutt_message _("Mail not sent.");
       goto cleanup;
     }
@@ -1661,6 +1783,9 @@ main_loop:
     }
   }
 
+#ifdef USE_NNTP
+  if (!(flags & SENDNEWS))
+#endif
   if (!has_recips (msg->env->to) && !has_recips (msg->env->cc) &&
       !has_recips (msg->env->bcc))
   {
@@ -1694,6 +1819,19 @@ main_loop:
       mutt_error _("No subject specified.");
     goto main_loop;
   }
+#ifdef USE_NNTP
+  if ((flags & SENDNEWS) && !msg->env->subject)
+  {
+    mutt_error _("No subject specified.");
+    goto main_loop;
+  }
+
+  if ((flags & SENDNEWS) && !msg->env->newsgroups)
+  {
+    mutt_error _("No newsgroup specified.");
+    goto main_loop;
+  }
+#endif
 
   if (msg->content->next)
     msg->content = mutt_make_multipart (msg->content);
@@ -1901,7 +2039,12 @@ full_fcc:
     }
   }
   else if (!option (OPTNOCURSES) && ! (flags & SENDMAILX))
-    mutt_message (i == 0 ? _("Mail sent.") : _("Sending in background."));
+    mutt_message (i != 0 ? _("Sending in background.") :
+#ifdef USE_NNTP
+		  (flags & SENDNEWS) ? _("Article posted.") : _("Mail sent."));
+#else
+		  _("Mail sent."));
+#endif
 
   if (WithCrypto && (msg->security & ENCRYPT))
     FREE (&pgpkeylist);

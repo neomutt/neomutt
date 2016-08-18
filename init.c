@@ -3118,6 +3118,28 @@ void mutt_init (int skip_sys_rc, LIST *commands)
     Fqdn = safe_strdup(utsname.nodename);
 
 
+#ifdef USE_NNTP
+  {
+    FILE *f;
+    char *i;
+
+    if ((f = safe_fopen (SYSCONFDIR "/nntpserver", "r")))
+    {
+      buffer[0] = '\0';
+      fgets (buffer, sizeof (buffer), f);
+      p = buffer;
+      SKIPWS (p);
+      i = p;
+      while (*i && (*i != ' ') && (*i != '\t') && (*i != '\r') && (*i != '\n')) i++;
+      *i = '\0';
+      NewsServer = safe_strdup (p);
+      fclose (f);
+    }
+  }
+  if ((p = getenv ("NNTPSERVER")))
+    NewsServer = safe_strdup (p);
+#endif
+
   if ((p = getenv ("MAIL")))
     Spoolfile = safe_strdup (p);
   else if ((p = getenv ("MAILDIR")))

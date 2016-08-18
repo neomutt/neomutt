@@ -511,6 +511,9 @@ int mutt_buffy_check (int force)
 
   /* check device ID and serial number instead of comparing paths */
   if (!Context || Context->magic == MUTT_IMAP || Context->magic == MUTT_POP
+#ifdef USE_NNTP
+      || Context->magic == MUTT_NNTP
+#endif
       || stat (Context->path, &contex_sb) != 0)
   {
     contex_sb.st_dev=0;
@@ -534,6 +537,11 @@ int mutt_buffy_check (int force)
 	tmp->magic = MUTT_POP;
       else
 #endif
+#ifdef USE_NNTP
+      if ((tmp->magic == MUTT_NNTP) || mx_is_nntp (tmp->path))
+	tmp->magic = MUTT_NNTP;
+      else
+#endif
       if (stat (tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
 	  (!tmp->magic && (tmp->magic = mx_get_magic (tmp->path)) <= 0))
       {
@@ -549,7 +557,11 @@ int mutt_buffy_check (int force)
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
+#ifdef USE_NNTP
+	(( tmp->magic == MUTT_IMAP || tmp->magic == MUTT_POP || tmp->magic == MUTT_NNTP )
+#else
 	(( tmp->magic == MUTT_IMAP || tmp->magic == MUTT_POP )
+#endif
 	    ? mutt_strcmp (tmp->path, Context->path) :
 	      (sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)))
     {

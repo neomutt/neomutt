@@ -50,7 +50,7 @@ void mutt_print_attachment_list (FILE *fp, int tag, BODY *top);
 
 void mutt_attach_bounce (FILE *, HEADER *, ATTACHPTR **, short, BODY *);
 void mutt_attach_resend (FILE *, HEADER *, ATTACHPTR **, short, BODY *);
-void mutt_attach_forward (FILE *, HEADER *, ATTACHPTR **, short, BODY *);
+void mutt_attach_forward (FILE *, HEADER *, ATTACHPTR **, short, BODY *, int);
 void mutt_attach_reply (FILE *, HEADER *, ATTACHPTR **, short, BODY *, int);
 
 #endif /* _ATTACH_H_ */

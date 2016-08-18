@@ -46,6 +46,10 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+#ifdef USE_NNTP
+#include "nntp.h"
+#endif
+
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #else /* Make sure EX_OK is defined <philiph@pobox.com> */
@@ -1538,6 +1542,14 @@ void mutt_write_references (LIST *r, FILE *f, int trim)
 {
   LIST **ref = NULL;
   int refcnt = 0, refmax = 0;
+  int multiline = 1;
+  int space = 0;
+
+  if (trim < 0)
+  {
+    trim = -trim;
+    multiline = 0;
+  }
 
   for ( ; (trim == 0 || refcnt < trim) && r ; r = r->next)
   {
@@ -1548,9 +1560,11 @@ void mutt_write_references (LIST *r, FILE *f, int trim)
 
   while (refcnt-- > 0)
   {
-    fputc (' ', f);
+    if (multiline || space)
+      fputc (' ', f);
+    space = 1;
     fputs (ref[refcnt]->data, f);
-    if (refcnt >= 1)
+    if (multiline && refcnt >= 1)
       fputc ('\n', f);
   }
 
@@ -1964,6 +1978,9 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_address_list (env->to, fp, 4, 0);
   }
   else if (mode > 0)
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+#endif
     fputs ("To: \n", fp);
 
   if (env->cc)
@@ -1972,6 +1989,9 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     mutt_write_address_list (env->cc, fp, 4, 0);
   }
   else if (mode > 0)
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+#endif
     fputs ("Cc: \n", fp);
 
   if (env->bcc)
@@ -1983,7 +2003,27 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     }
   }
   else if (mode > 0)
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+#endif
     fputs ("Bcc: \n", fp);
+
+#ifdef USE_NNTP
+  if (env->newsgroups)
+    fprintf (fp, "Newsgroups: %s\n", env->newsgroups);
+  else if (mode == 1 && option (OPTNEWSSEND))
+    fputs ("Newsgroups: \n", fp);
+
+  if (env->followup_to)
+    fprintf (fp, "Followup-To: %s\n", env->followup_to);
+  else if (mode == 1 && option (OPTNEWSSEND))
+    fputs ("Followup-To: \n", fp);
+
+  if (env->x_comment_to)
+    fprintf (fp, "X-Comment-To: %s\n", env->x_comment_to);
+  else if (mode == 1 && option (OPTNEWSSEND) && option (OPTXCOMMENTTO))
+    fputs ("X-Comment-To: \n", fp);
+#endif
 
   if (env->subject)
     mutt_write_one_header (fp, "Subject", env->subject, NULL, 0, 0);
@@ -2003,6 +2043,9 @@ int mutt_write_rfc822_header (FILE *fp, ENVELOPE *env, BODY *attach,
     fputs ("Reply-To: \n", fp);
 
   if (env->mail_followup_to)
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+#endif
   {
     fputs ("Mail-Followup-To: ", fp);
     mutt_write_address_list (env->mail_followup_to, fp, 18, 0);
@@ -2348,6 +2391,23 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   size_t argslen = 0, argsmax = 0;
   int i;
 
+#ifdef USE_NNTP
+  if (option (OPTNEWSSEND))
+  {
+    char cmd[LONG_STRING];
+
+    mutt_FormatString (cmd, sizeof (cmd), 0, MuttIndexWindow->cols, NONULL (Inews), nntp_format_str, 0, 0);
+    if (!*cmd)
+    {
+      i = nntp_post (msg);
+      unlink (msg);
+      return i;
+    }
+
+    s = safe_strdup (cmd);
+  }
+#endif
+
   /* ensure that $sendmail is set to avoid a crash. http://dev.mutt.org/trac/ticket/3548 */
   if (!s)
   {
@@ -2378,6 +2438,10 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
     i++;
   }
 
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND))
+  {
+#endif
   if (eightbit && option (OPTUSE8BITMIME))
     args = add_option (args, &argslen, &argsmax, "-B8BITMIME");
 
@@ -2409,6 +2473,9 @@ mutt_invoke_sendmail (ADDRESS *from,	/* the sender */
   args = add_args (args, &argslen, &argsmax, to);
   args = add_args (args, &argslen, &argsmax, cc);
   args = add_args (args, &argslen, &argsmax, bcc);
+#ifdef USE_NNTP
+  }
+#endif
 
   if (argslen == argsmax)
     safe_realloc (&args, sizeof (char *) * (++argsmax));
@@ -2488,6 +2555,9 @@ void mutt_prepare_envelope (ENVELOPE *env, int final)
   rfc2047_encode_adrlist (env->reply_to, "Reply-To");
 
   if (env->subject)
+#ifdef USE_NNTP
+  if (!option (OPTNEWSSEND) || option (OPTMIMESUBJECT))
+#endif
   {
     rfc2047_encode_string (&env->subject);
   }
@@ -2609,6 +2679,10 @@ int mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to)
     return -1;
   }
   rfc822_write_address (resent_from, sizeof (resent_from), from, 0);
+
+#ifdef USE_NNTP
+  unset_option (OPTNEWSSEND);
+#endif
 
   /*
    * prepare recipient list. idna conversion appears to happen before this
