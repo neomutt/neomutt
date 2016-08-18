@@ -111,7 +111,6 @@ enum
   MT_COLOR_SEARCH,
   MT_COLOR_BOLD,
   MT_COLOR_UNDERLINE,
-  MT_COLOR_INDEX,
   MT_COLOR_PROMPT,
   MT_COLOR_PROGRESS,
 #ifdef USE_SIDEBAR
@@ -122,6 +121,17 @@ enum
   MT_COLOR_SB_INDICATOR,
   MT_COLOR_SB_SPOOLFILE,
 #endif
+  /* please no non-MT_COLOR_INDEX objects after this point */
+  MT_COLOR_INDEX,
+  MT_COLOR_INDEX_AUTHOR,
+  MT_COLOR_INDEX_FLAGS,
+  MT_COLOR_INDEX_SUBJECT,
+  /* below here - only index coloring stuff that doesn't have a pattern */
+  MT_COLOR_INDEX_COLLAPSED,
+  MT_COLOR_INDEX_DATE,
+  MT_COLOR_INDEX_LABEL,
+  MT_COLOR_INDEX_NUMBER,
+  MT_COLOR_INDEX_SIZE,
   MT_COLOR_MAX
 };
 
@@ -206,6 +216,9 @@ extern COLOR_LINE *ColorHdrList;
 extern COLOR_LINE *ColorBodyList;
 extern COLOR_LINE *ColorStatusList;
 extern COLOR_LINE *ColorIndexList;
+extern COLOR_LINE *ColorIndexAuthorList;
+extern COLOR_LINE *ColorIndexFlagsList;
+extern COLOR_LINE *ColorIndexSubjectList;
 
 void ci_init_color (void);
 void ci_start_color (void);
