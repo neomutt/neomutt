@@ -18,4 +18,5 @@ patch-sidebar-neomutt
 patch-skip-quoted-neomutt
 patch-smime-encrypt-self-neomutt
 patch-status-color-neomutt
+patch-timeout-neomutt
 patch-tls-sni-neomutt
