@@ -496,111 +496,124 @@ static void resort_index (MUTTMENU *menu)
 void
 mutt_draw_statusline (int cols, const char *buf, int buflen)
 {
-	int i      = 0;
-	int offset = 0;
-	int found  = 0;
-	int chunks = 0;
-	int len    = 0;
+  int i      = 0;
+  int offset = 0;
+  int found  = 0;
+  int chunks = 0;
+  int len    = 0;
 
-	struct syntax_t {
-		int color;
-		int first;
-		int last;
-	} *syntax = NULL;
+  struct syntax_t
+  {
+    int color;
+    int first;
+    int last;
+  } *syntax = NULL;
 
-	if (!buf)
-		return;
+  if (!buf)
+    return;
 
-	do {
-		COLOR_LINE *cl;
-		found = 0;
+  do
+  {
+    COLOR_LINE *cl;
+    found = 0;
 
-		if (!buf[offset])
-			break;
+    if (!buf[offset])
+      break;
 
-		/* loop through each "color status regex" */
-		for (cl = ColorStatusList; cl; cl = cl->next) {
-			regmatch_t pmatch[cl->match + 1];
+    /* loop through each "color status regex" */
+    for (cl = ColorStatusList; cl; cl = cl->next)
+    {
+      regmatch_t pmatch[cl->match + 1];
 
-			if (regexec (&cl->rx, buf + offset, cl->match + 1, pmatch, 0) != 0)
-				continue;	/* regex doesn't match the status bar */
+      if (regexec (&cl->rx, buf + offset, cl->match + 1, pmatch, 0) != 0)
+        continue; /* regex doesn't match the status bar */
 
-			int first = pmatch[cl->match].rm_so + offset;
-			int last  = pmatch[cl->match].rm_eo + offset;
+      int first = pmatch[cl->match].rm_so + offset;
+      int last  = pmatch[cl->match].rm_eo + offset;
 
-			if (first == last)
-				continue;	/* ignore an empty regex */
+      if (first == last)
+        continue; /* ignore an empty regex */
 
-			if (!found) {
-				chunks++;
-				safe_realloc (&syntax, chunks * sizeof (struct syntax_t));
-			}
+      if (!found)
+      {
+        chunks++;
+        safe_realloc (&syntax, chunks * sizeof (struct syntax_t));
+      }
 
-			i = chunks - 1;
-			if (!found || (first < syntax[i].first) || ((first == syntax[i].first) && (last > syntax[i].last))) {
-				syntax[i].color = cl->pair;
-				syntax[i].first = first;
-				syntax[i].last  = last;
-			}
-			found = 1;
-		}
+      i = chunks - 1;
+      if (!found || (first < syntax[i].first) || ((first == syntax[i].first) && (last > syntax[i].last)))
+      {
+        syntax[i].color = cl->pair;
+        syntax[i].first = first;
+        syntax[i].last  = last;
+      }
+      found = 1;
+    }
 
-		if (syntax) {
-			offset = syntax[i].last;
-		}
-	} while (found);
+    if (syntax)
+    {
+      offset = syntax[i].last;
+    }
+  } while (found);
 
-	/* Only 'len' bytes will fit into 'cols' screen columns */
-	len = mutt_wstr_trunc (buf, buflen, cols, NULL);
+  /* Only 'len' bytes will fit into 'cols' screen columns */
+  len = mutt_wstr_trunc (buf, buflen, cols, NULL);
 
-	offset = 0;
+  offset = 0;
 
-	if ((chunks > 0) && (syntax[0].first > 0)) {
-		/* Text before the first highlight */
-		addnstr (buf, MIN(len, syntax[0].first));
-		attrset (ColorDefs[MT_COLOR_STATUS]);
-		if (len <= syntax[0].first)
-			goto dsl_finish;	/* no more room */
+  if ((chunks > 0) && (syntax[0].first > 0))
+  {
+    /* Text before the first highlight */
+    addnstr (buf, MIN(len, syntax[0].first));
+    attrset (ColorDefs[MT_COLOR_STATUS]);
+    if (len <= syntax[0].first)
+      goto dsl_finish;  /* no more room */
 
-		offset = syntax[0].first;
-	}
+    offset = syntax[0].first;
+  }
 
-	for (i = 0; i < chunks; i++) {
-		/* Highlighted text */
-		attrset (syntax[i].color);
-		addnstr (buf + offset, MIN(len, syntax[i].last) - offset);
-		if (len <= syntax[i].last)
-			goto dsl_finish;	/* no more room */
+  for (i = 0; i < chunks; i++)
+  {
+    /* Highlighted text */
+    attrset (syntax[i].color);
+    addnstr (buf + offset, MIN(len, syntax[i].last) - offset);
+    if (len <= syntax[i].last)
+      goto dsl_finish;  /* no more room */
 
-		int next;
-		if ((i + 1) == chunks) {
-			next = len;
-		} else {
-			next = MIN (len, syntax[i+1].first);
-		}
+    int next;
+    if ((i + 1) == chunks)
+    {
+      next = len;
+    }
+    else
+    {
+      next = MIN (len, syntax[i+1].first);
+    }
 
-		attrset (ColorDefs[MT_COLOR_STATUS]);
-		offset = syntax[i].last;
-		addnstr (buf + offset, next - offset);
+    attrset (ColorDefs[MT_COLOR_STATUS]);
+    offset = syntax[i].last;
+    addnstr (buf + offset, next - offset);
 
-		offset = next;
-		if (offset >= len)
-			goto dsl_finish;	/* no more room */
-	}
+    offset = next;
+    if (offset >= len)
+      goto dsl_finish;  /* no more room */
+  }
 
-	attrset (ColorDefs[MT_COLOR_STATUS]);
-	if (offset < len) {
-		/* Text after the last highlight */
-		addnstr (buf + offset, len - offset);
-	}
+  attrset (ColorDefs[MT_COLOR_STATUS]);
+  if (offset < len)
+  {
+    /* Text after the last highlight */
+    addnstr (buf + offset, len - offset);
+  }
 
-	int width = mutt_strwidth (buf);
-	if (width < cols) {
-		/* Pad the rest of the line with whitespace */
-		mutt_paddstr (cols - width, "");
-	}
+  int width = mutt_strwidth (buf);
+  if (width < cols)
+  {
+    /* Pad the rest of the line with whitespace */
+    mutt_paddstr (cols - width, "");
+  }
 dsl_finish:
-	FREE(&syntax);
+  FREE(&syntax);
 }
 
 static const struct mapping_t IndexHelp[] = {
