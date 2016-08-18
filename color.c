@@ -413,39 +413,51 @@ static void
 mutt_do_uncolor (BUFFER *buf, BUFFER *s, COLOR_LINE **ColorList,
                  int *do_cache, int parse_uncolor)
 {
-	COLOR_LINE *tmp, *last = NULL;
+  COLOR_LINE *tmp, *last = NULL;
 
-	do {
-		mutt_extract_token (buf, s, 0);
-		if (mutt_strcmp ("*", buf->data) == 0) {
-			for (tmp = *ColorList; tmp; ) {
-				if (!*do_cache) {
-					*do_cache = 1;
-				}
-				last = tmp;
-				tmp = tmp->next;
-				mutt_free_color_line (&last, parse_uncolor);
-			}
-			*ColorList = NULL;
-		} else {
-			for (last = NULL, tmp = *ColorList; tmp; last = tmp, tmp = tmp->next) {
-				if (mutt_strcmp (buf->data, tmp->pattern) == 0) {
-					if (!*do_cache) {
-						*do_cache = 1;
-					}
-					dprint (1, (debugfile,"Freeing pattern \"%s\" from ColorList\n",
-															 tmp->pattern));
-					if (last) {
-						last->next = tmp->next;
-					} else {
-						*ColorList = tmp->next;
-					}
-					mutt_free_color_line (&tmp, parse_uncolor);
-					break;
-				}
-			}
-		}
-	} while (MoreArgs (s));
+  do
+  {
+    mutt_extract_token (buf, s, 0);
+    if (mutt_strcmp ("*", buf->data) == 0)
+    {
+      for (tmp = *ColorList; tmp; )
+      {
+        if (!*do_cache)
+	{
+          *do_cache = 1;
+        }
+        last = tmp;
+        tmp = tmp->next;
+        mutt_free_color_line (&last, parse_uncolor);
+      }
+      *ColorList = NULL;
+    }
+    else
+    {
+      for (last = NULL, tmp = *ColorList; tmp; last = tmp, tmp = tmp->next)
+      {
+        if (mutt_strcmp (buf->data, tmp->pattern) == 0)
+	{
+          if (!*do_cache)
+	  {
+            *do_cache = 1;
+          }
+          dprint (1, (debugfile,"Freeing pattern \"%s\" from ColorList\n",
+                               tmp->pattern));
+          if (last)
+	  {
+            last->next = tmp->next;
+          }
+	  else
+	  {
+            *ColorList = tmp->next;
+          }
+          mutt_free_color_line (&tmp, parse_uncolor);
+          break;
+        }
+      }
+    }
+  } while (MoreArgs (s));
 }
 
 static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
@@ -762,8 +774,10 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
       (object == MT_COLOR_INDEX) ||
       (object == MT_COLOR_INDEX_AUTHOR) ||
       (object == MT_COLOR_INDEX_FLAGS) ||
-      (object == MT_COLOR_INDEX_SUBJECT)) {
-    if (!MoreArgs (s)) {
+      (object == MT_COLOR_INDEX_SUBJECT))
+  {
+    if (!MoreArgs (s))
+    {
       strfcpy (err->data, _("too few arguments"), err->dsize);
       return -1;
     }
@@ -803,13 +817,19 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   {
     r = add_pattern (&ColorIndexList, buf->data, 1, fg, bg, attr, err, 1);
     set_option (OPTFORCEREDRAWINDEX);
-  } else if (object == MT_COLOR_INDEX_AUTHOR) {
+  }
+  else if (object == MT_COLOR_INDEX_AUTHOR)
+  {
     r = add_pattern (&ColorIndexAuthorList, buf->data, 1, fg, bg, attr, err, 1);
     set_option (OPTFORCEREDRAWINDEX);
-  } else if (object == MT_COLOR_INDEX_FLAGS) {
+  }
+  else if (object == MT_COLOR_INDEX_FLAGS)
+  {
     r = add_pattern (&ColorIndexFlagsList, buf->data, 1, fg, bg, attr, err, 1);
     set_option (OPTFORCEREDRAWINDEX);
-  } else if (object == MT_COLOR_INDEX_SUBJECT) {
+  }
+  else if (object == MT_COLOR_INDEX_SUBJECT)
+  {
     r = add_pattern (&ColorIndexSubjectList, buf->data, 1, fg, bg, attr, err, 1);
     set_option (OPTFORCEREDRAWINDEX);
   }

@@ -36,30 +36,31 @@ char* SearchBuffers[MENU_MAX];
 static int
 get_color (int index, unsigned char *s)
 {
-	COLOR_LINE *color;
-	HEADER *hdr = Context->hdrs[Context->v2r[index]];
-	int type = *s;
+  COLOR_LINE *color;
+  HEADER *hdr = Context->hdrs[Context->v2r[index]];
+  int type = *s;
 
-	switch (type) {
-		case MT_COLOR_INDEX_AUTHOR:
-			color = ColorIndexAuthorList;
-			break;
-		case MT_COLOR_INDEX_FLAGS:
-			color = ColorIndexFlagsList;
-			break;
-		case MT_COLOR_INDEX_SUBJECT:
-			color = ColorIndexSubjectList;
-			break;
-		default:
-			return ColorDefs[type];
-	}
+  switch (type)
+  {
+    case MT_COLOR_INDEX_AUTHOR:
+      color = ColorIndexAuthorList;
+      break;
+    case MT_COLOR_INDEX_FLAGS:
+      color = ColorIndexFlagsList;
+      break;
+    case MT_COLOR_INDEX_SUBJECT:
+      color = ColorIndexSubjectList;
+      break;
+    default:
+      return ColorDefs[type];
+  }
 
-	for (; color; color = color->next)
-		if (mutt_pattern_exec (color->color_pattern, MUTT_MATCH_FULL_ADDRESS,
-		    Context, hdr))
-			return color->pair;
+  for (; color; color = color->next)
+    if (mutt_pattern_exec (color->color_pattern, MUTT_MATCH_FULL_ADDRESS,
+        Context, hdr))
+      return color->pair;
 
-	return 0;
+  return 0;
 }
 
 static void print_enriched_string (int index, int attr, unsigned char *s, int do_color)
@@ -194,15 +195,23 @@ static void print_enriched_string (int index, int attr, unsigned char *s, int do
       }
       if (do_color) ATTRSET(attr);
     }
-    else if (*s == MUTT_SPECIAL_INDEX) {
+    else if (*s == MUTT_SPECIAL_INDEX)
+    {
       s++;
-      if (do_color) {
-        if (*s == MT_COLOR_INDEX) {
+      if (do_color)
+      {
+        if (*s == MT_COLOR_INDEX)
+	{
           attrset (attr);
-	} else {
-          if (get_color (index, s) == 0) {
+	}
+	else
+	{
+          if (get_color (index, s) == 0)
+	  {
             attron (attr);
-	  } else {
+	  }
+	  else
+	  {
             attron (get_color (index, s));
 	  }
         }

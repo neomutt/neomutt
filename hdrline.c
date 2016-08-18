@@ -113,26 +113,26 @@ static int first_mailing_list (char *buf, size_t buflen, ADDRESS *a)
 static size_t
 add_index_color (char *buf, size_t buflen, format_flag flags, char color)
 {
-	int len;
+  int len;
 
-	/* only add color markers if we are operating on main index entries. */
-	if (!(flags & MUTT_FORMAT_INDEX))
-		return 0;
+  /* only add color markers if we are operating on main index entries. */
+  if (!(flags & MUTT_FORMAT_INDEX))
+    return 0;
 
-	if (color == MT_COLOR_INDEX) { /* buf might be uninitialized other cases */
-		len = mutt_strlen (buf);
-		buf += len;
-		buflen -= len;
-	}
+  if (color == MT_COLOR_INDEX) { /* buf might be uninitialized other cases */
+    len = mutt_strlen (buf);
+    buf += len;
+    buflen -= len;
+  }
 
-	if (buflen < 2)
-		return 0;
+  if (buflen < 2)
+    return 0;
 
-	buf[0] = MUTT_SPECIAL_INDEX;
-	buf[1] = color;
-	buf[2] = '\0';
+  buf[0] = MUTT_SPECIAL_INDEX;
+  buf[1] = color;
+  buf[2] = '\0';
 
-	return 2;
+  return 2;
 }
 
 static void make_from (ENVELOPE *hdr, char *buf, size_t len, int do_lists)
@@ -587,10 +587,13 @@ hdr_format_str (char *dest,
       {
 	colorlen = add_index_color (dest, destlen, flags,
 				   MT_COLOR_INDEX_COLLAPSED);
-	if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1) {
+	if (threads && is_index && hdr->collapsed && hdr->num_hidden > 1)
+	{
 	  snprintf (dest + colorlen, destlen - colorlen, fmt, hdr->num_hidden);
 	  add_index_color (dest, destlen - colorlen, flags, MT_COLOR_INDEX);
-	} else if (is_index && threads) {
+	}
+	else if (is_index && threads)
+	{
 	  mutt_format_s (dest + colorlen, destlen - colorlen, prefix, " ");
 	  add_index_color (dest, destlen - colorlen, flags, MT_COLOR_INDEX);
 	}
@@ -639,7 +642,8 @@ hdr_format_str (char *dest,
 	else
 	  mutt_format_s_tree (dest, destlen, prefix, hdr->tree);
       }
-      else {
+      else
+      {
 	colorlen = add_index_color (dest, destlen, flags, MT_COLOR_INDEX_SUBJECT);
 	mutt_format_s (dest + colorlen, destlen - colorlen, prefix, NONULL (hdr->env->subject));
 	add_index_color (dest + colorlen, destlen - colorlen, flags, MT_COLOR_INDEX);
