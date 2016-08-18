@@ -2307,11 +2307,11 @@ search_next:
 	  int dretval = 0;
 	  int new_topline = topline;
 
-	  while ((new_topline < lastLine ||
+	  while (((new_topline + SkipQuotedOffset) < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
 			 new_topline, &lastLine, &maxLine, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                          &QuoteList, &q_level, &force_redraw, &SearchRE, pager_window))))
-		 && lineInfo[new_topline].type != MT_COLOR_QUOTED)
+		 && lineInfo[new_topline + SkipQuotedOffset].type != MT_COLOR_QUOTED)
 	    new_topline++;
 
 	  if (dretval < 0)
@@ -2320,11 +2320,11 @@ search_next:
 	    break;
 	  }
 
-	  while ((new_topline < lastLine ||
+	  while (((new_topline + SkipQuotedOffset) < lastLine ||
 		  (0 == (dretval = display_line (fp, &last_pos, &lineInfo,
 			 new_topline, &lastLine, &maxLine, MUTT_TYPES | (flags & MUTT_PAGER_NOWRAP),
                          &QuoteList, &q_level, &force_redraw, &SearchRE, pager_window))))
-		 && lineInfo[new_topline].type == MT_COLOR_QUOTED)
+		 && lineInfo[new_topline + SkipQuotedOffset].type == MT_COLOR_QUOTED)
 	    new_topline++;
 
 	  if (dretval < 0)
