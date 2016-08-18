@@ -32,6 +32,7 @@
 #include "mutt_crypt.h"
 #include "mutt_idna.h"
 #include "group.h"
+#include "version.h"
 
 #if defined(USE_SSL)
 #include "mutt_ssl.h"
@@ -599,6 +600,125 @@ static void remove_from_list (LIST **l, const char *str)
       }
     }
   }
+}
+
+/**
+ * finish_source - 'finish' command: stop processing current config file
+ * @tmp:  Temporary space shared by all command handlers
+ * @s:    Current line of the config file
+ * @data: data field from init.h:struct command_t
+ * @err:  Buffer for any error message
+ *
+ * If the 'finish' command is found, we should stop reading the current file.
+ *
+ * Returns:
+ *       1 Stop processing the current file
+ *      -1 Failed
+ */
+static int finish_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  if (MoreArgs (s))
+  {
+    snprintf (err->data, err->dsize, _("finish: too many arguments"));
+    return -1;
+  }
+
+  return 1;
+}
+
+/**
+ * parse_ifdef - 'ifdef' command: conditional config
+ * @tmp:  Temporary space shared by all command handlers
+ * @s:    Current line of the config file
+ * @data: data field from init.h:struct command_t
+ * @err:  Buffer for any error message
+ *
+ * The 'ifdef' command allows conditional elements in the config file.
+ * If a given variable, function, command or compile-time symbol exists, then
+ * read the rest of the line of config commands.
+ * e.g.
+ *      ifdef USE_SIDEBAR source ~/.mutt/sidebar.rc
+ *
+ * If (data == 1) then it means use the 'ifndef' (if-not-defined) command.
+ * e.g.
+ *      ifndef USE_IMAP finish
+ *
+ * Returns:
+ *       0 Success
+ *      -1 Failed
+ */
+static int parse_ifdef (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
+{
+  int i, j, res = 0;
+  BUFFER token;
+
+  memset (&token, 0, sizeof (token));
+  mutt_extract_token (tmp, s, 0);
+
+  /* is the item defined as a variable? */
+  res = (mutt_option_index (tmp->data) != -1);
+
+  /* is the item a compiled-in feature? */
+  if (!res)
+  {
+    res = feature_enabled (tmp->data);
+  }
+
+  /* or a function? */
+  if (!res)
+  {
+    for (i = 0; !res && (i < MENU_MAX); i++)
+    {
+      const struct binding_t *b = km_get_table (Menus[i].value);
+      if (!b)
+        continue;
+
+      for (j = 0; b[j].name; j++)
+      {
+        if (mutt_strcmp (tmp->data, b[j].name) == 0)
+        {
+          res = 1;
+          break;
+        }
+      }
+    }
+  }
+
+  /* or a command? */
+  if (!res)
+  {
+    for (i = 0; Commands[i].name; i++)
+    {
+      if (mutt_strcmp (tmp->data, Commands[i].name) == 0)
+      {
+        res = 1;
+        break;
+      }
+    }
+  }
+
+  if (!MoreArgs (s))
+  {
+    snprintf (err->data, err->dsize, _("%s: too few arguments"),
+      (data ? "ifndef" : "ifdef"));
+    return -1;
+  }
+  mutt_extract_token (tmp, s, MUTT_TOKEN_SPACE);
+
+  /* ifdef KNOWN_SYMBOL or ifndef UNKNOWN_SYMBOL */
+  if ((res && (data == 0)) || (!res && (data == 1)))
+  {
+                int rc = mutt_parse_rc_line (tmp->data, &token, err);
+    if (rc == -1)
+    {
+      mutt_error ("Error: %s", err->data);
+      FREE(&token.data);
+      return -1;
+    }
+    FREE(&token.data);
+                return rc;
+  }
+  return 0;
 }
 
 static int parse_unignore (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
@@ -2253,7 +2373,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 static int source_rc (const char *rcfile, BUFFER *err)
 {
   FILE *f;
-  int line = 0, rc = 0, conv = 0;
+  int line = 0, rc = 0, conv = 0, line_rc;
   BUFFER token;
   char *linebuf = NULL;
   char *currentline = NULL;
@@ -2282,17 +2402,17 @@ static int source_rc (const char *rcfile, BUFFER *err)
     else 
       currentline=linebuf;
 
-    if (mutt_parse_rc_line (currentline, &token, err) == -1)
-    {
+    line_rc = mutt_parse_rc_line (currentline, &token, err);
+    if (line_rc == -1) {
       mutt_error (_("Error in %s, line %d: %s"), rcfile, line, err->data);
       if (--rc < -MAXERRS) 
       {
         if (conv) FREE(&currentline);
         break;
       }
-    }
-    else
-    {
+    } else if (line_rc == 1) {
+      break;	/* Found "finish" command */
+    } else {
       if (rc < 0)
         rc = -1;
     }
@@ -2347,7 +2467,7 @@ static int parse_source (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err
    err		where to write error messages */
 int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
 {
-  int i, r = -1;
+  int i, r = 0;
   BUFFER expn;
 
   if (!line || !*line)
@@ -2374,22 +2494,24 @@ int mutt_parse_rc_line (/* const */ char *line, BUFFER *token, BUFFER *err)
     {
       if (!mutt_strcmp (token->data, Commands[i].name))
       {
-	if (Commands[i].func (token, &expn, Commands[i].data, err) != 0)
-	  goto finish;
-        break;
+        r = Commands[i].func (token, &expn, Commands[i].data, err);
+        if (r != 0) {   /* -1 Error, +1 Finish */
+          goto finish;  /* Propagate return code */
+        }
+        break;          /* Continue with next command */
       }
     }
     if (!Commands[i].name)
     {
       snprintf (err->data, err->dsize, _("%s: unknown command"), NONULL (token->data));
-      goto finish;
+      r = -1;
+      break;            /* Ignore the rest of the line */
     }
   }
-  r = 0;
 finish:
   if (expn.destroy)
     FREE (&expn.data);
-  return (r);
+  return r;
 }
 
 
@@ -2867,7 +2989,7 @@ static int mutt_execute_commands (LIST *p)
   mutt_buffer_init (&token);
   for (; p; p = p->next)
   {
-    if (mutt_parse_rc_line (p->data, &token, &err) != 0)
+    if (mutt_parse_rc_line (p->data, &token, &err) == -1)
     {
       fprintf (stderr, _("Error in command line: %s\n"), err.data);
       FREE (&token.data);
