@@ -67,9 +67,9 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   mutt_mktemp (tmp, sizeof (tmp));
 
   omagic = DefaultMagic;
-  DefaultMagic = M_MBOX;
+  DefaultMagic = MUTT_MBOX;
 
-  rc = (mx_open_mailbox (tmp, M_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
+  rc = (mx_open_mailbox (tmp, MUTT_NEWFOLDER, &tmpctx) == NULL) ? -1 : 0;
 
   DefaultMagic = omagic;
 
@@ -80,7 +80,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   rc = mutt_append_message (&tmpctx, ctx, cur, 0, CH_NOLEN |
-	((ctx->magic == M_MBOX || ctx->magic == M_MMDF) ? 0 : CH_NOSTATUS));
+	((ctx->magic == MUTT_MBOX || ctx->magic == MUTT_MMDF) ? 0 : CH_NOSTATUS));
   oerrno = errno;
 
   mx_close_mailbox (&tmpctx, NULL);
@@ -143,7 +143,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
     goto bail;
   }
 
-  if (mx_open_mailbox (ctx->path, M_APPEND, &tmpctx) == NULL)
+  if (mx_open_mailbox (ctx->path, MUTT_APPEND, &tmpctx) == NULL)
   {
     rc = -1;
     /* L10N: %s is from strerror(errno) */
@@ -152,15 +152,15 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   of = 0;
-  cf = ((tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF) ? 0 : CH_NOSTATUS);
+  cf = ((tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF) ? 0 : CH_NOSTATUS);
   
   if (fgets (buff, sizeof (buff), fp) && is_from (buff, NULL, 0, NULL))
   {
-    if (tmpctx.magic == M_MBOX || tmpctx.magic == M_MMDF)
+    if (tmpctx.magic == MUTT_MBOX || tmpctx.magic == MUTT_MMDF)
       cf = CH_FROM | CH_FORCE_FROM;
   }
   else
-    of = M_ADD_FROM;
+    of = MUTT_ADD_FROM;
 
   /* 
    * XXX - we have to play games with the message flags to avoid
@@ -187,7 +187,7 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
   }
 
   rc = mx_commit_message (msg, &tmpctx);
-  mx_close_message (&msg);
+  mx_close_message (&tmpctx, &msg);
   
   mx_close_mailbox (&tmpctx, NULL);
   
@@ -199,11 +199,12 @@ static int edit_one_message (CONTEXT *ctx, HEADER *cur)
 
   if (rc == 0)
   {
-    mutt_set_flag (Context, cur, M_DELETE, 1);
-    mutt_set_flag (Context, cur, M_READ, 1);
+    mutt_set_flag (Context, cur, MUTT_DELETE, 1);
+    mutt_set_flag (Context, cur, MUTT_PURGE, 1);
+    mutt_set_flag (Context, cur, MUTT_READ, 1);
 
     if (option (OPTDELETEUNTAG))
-      mutt_set_flag (Context, cur, M_TAG, 0);
+      mutt_set_flag (Context, cur, MUTT_TAG, 0);
   }
   else if (rc == -1)
     mutt_message (_("Error. Preserving temporary file: %s"), tmp);

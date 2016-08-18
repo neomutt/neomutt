@@ -122,6 +122,7 @@ typedef struct pgp_entry
 static const char *pgp_entry_fmt (char *dest,
 				  size_t destlen,
 				  size_t col,
+                                  int cols,
 				  char op,
 				  const char *src,
 				  const char *prefix,
@@ -135,7 +136,7 @@ static const char *pgp_entry_fmt (char *dest,
   pgp_uid_t *uid;
   pgp_key_t key, pkey;
   int kflags = 0;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
 
   entry = (pgp_entry_t *) data;
   uid   = entry->uid;
@@ -278,9 +279,9 @@ static const char *pgp_entry_fmt (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, mutt_attach_fmt, data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, mutt_attach_fmt, data, 0);
+    mutt_FormatString (dest, destlen, col, cols, ifstring, mutt_attach_fmt, data, 0);
+  else if (flags & MUTT_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, col, cols, elsestring, mutt_attach_fmt, data, 0);
   return (src);
 }
 
@@ -292,8 +293,8 @@ static void pgp_entry (char *s, size_t l, MUTTMENU * menu, int num)
   entry.uid = KeyTable[num];
   entry.num = num + 1;
 
-  mutt_FormatString (s, l, 0, NONULL (PgpEntryFormat), pgp_entry_fmt, 
-		     (unsigned long) &entry, M_FORMAT_ARROWCURSOR);
+  mutt_FormatString (s, l, 0, MuttIndexWindow->cols, NONULL (PgpEntryFormat), pgp_entry_fmt, 
+		     (unsigned long) &entry, MUTT_FORMAT_ARROWCURSOR);
 }
 
 static int _pgp_compare_address (const void *a, const void *b)
@@ -627,7 +628,7 @@ static pgp_key_t pgp_select_key (pgp_key_t keys,
 	snprintf (buff, sizeof (buff), _("%s Do you really want to use the key?"),
 		  _(s));
 
-	if (mutt_yesorno (buff, M_NO) != M_YES)
+	if (mutt_yesorno (buff, MUTT_NO) != MUTT_YES)
 	{
 	  mutt_clear_error ();
 	  break;
@@ -683,7 +684,7 @@ pgp_key_t pgp_ask_for_key (char *tag, char *whatfor,
   FOREVER
   {
     resp[0] = 0;
-    if (mutt_get_field (tag, resp, sizeof (resp), M_CLEAR) != 0)
+    if (mutt_get_field (tag, resp, sizeof (resp), MUTT_CLEAR) != 0)
       return NULL;
 
     if (whatfor)

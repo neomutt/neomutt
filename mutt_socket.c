@@ -40,7 +40,7 @@
 #ifdef HAVE_SYS_TIME_H
 #include <sys/time.h>
 #endif
-#include "sys_socket.h"
+#include <sys/socket.h>
 #ifdef HAVE_SYS_SELECT_H
 #include <sys/select.h>
 #endif
@@ -288,7 +288,7 @@ CONNECTION* mutt_conn_find (const CONNECTION* start, const ACCOUNT* account)
 
   if (Tunnel && *Tunnel)
     mutt_tunnel_socket_setup (conn);
-  else if (account->flags & M_ACCT_SSL) 
+  else if (account->flags & MUTT_ACCT_SSL) 
   {
 #if defined(USE_SSL)
     if (mutt_ssl_socket_setup (conn) < 0)

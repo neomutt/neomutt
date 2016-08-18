@@ -903,6 +903,7 @@ CONTENT *mutt_get_content_info (const char *fname, BODY *b)
 	mutt_canonical_charset (chsbuf, sizeof (chsbuf), tocode);
 	mutt_set_parameter ("charset", chsbuf, &b->parameter);
       }
+      FREE (&b->charset);
       b->charset = fromcode;
       FREE (&tocode);
       safe_fclose (&fp);
@@ -1092,6 +1093,7 @@ void mutt_message_to_7bit (BODY *a, FILE *fp)
     return;
 
   a->encoding = ENC7BIT;
+  FREE (&a->d_filename);
   a->d_filename = a->filename;
   if (a->filename && a->unlink)
     unlink (a->filename);
@@ -1141,6 +1143,7 @@ static void transform_to_7bit (BODY *a, FILE *fpin)
       s.fpin = fpin;
       mutt_decode_attachment (a, &s);
       safe_fclose (&s.fpout);
+      FREE (&a->d_filename);
       a->d_filename = a->filename;
       a->filename = safe_strdup (buff);
       a->unlink = 1;
@@ -1297,7 +1300,7 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
   if (!attach_msg && option (OPTMIMEFORWDECODE))
   {
     chflags |= CH_MIME | CH_TXTPLAIN;
-    cmflags = M_CM_DECODE | M_CM_CHARCONV;
+    cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
     if ((WithCrypto & APPLICATION_PGP))
       pgp &= ~PGPENCRYPT;
     if ((WithCrypto & APPLICATION_SMIME))
@@ -1310,21 +1313,21 @@ BODY *mutt_make_message_attach (CONTEXT *ctx, HEADER *hdr, int attach_msg)
         && mutt_is_multipart_encrypted (hdr->content))
     {
       chflags |= CH_MIME | CH_NONEWLINE;
-      cmflags = M_CM_DECODE_PGP;
+      cmflags = MUTT_CM_DECODE_PGP;
       pgp &= ~PGPENCRYPT;
     }
     else if ((WithCrypto & APPLICATION_PGP)
              && (mutt_is_application_pgp (hdr->content) & PGPENCRYPT))
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
-      cmflags = M_CM_DECODE | M_CM_CHARCONV;
+      cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       pgp &= ~PGPENCRYPT;
     }
     else if ((WithCrypto & APPLICATION_SMIME)
               && mutt_is_application_smime (hdr->content) & SMIMEENCRYPT)
     {
       chflags |= CH_MIME | CH_TXTPLAIN;
-      cmflags = M_CM_DECODE | M_CM_CHARCONV;
+      cmflags = MUTT_CM_DECODE | MUTT_CM_CHARCONV;
       pgp &= ~SMIMEENCRYPT;
     }
   }
@@ -1856,8 +1859,8 @@ int mutt_write_one_header (FILE *fp, const char *tag, const char *value,
     else
       wraplen = WrapHeaders;
   }
-  else if (wraplen <= 0 || wraplen > COLS)
-    wraplen = COLS;
+  else if (wraplen <= 0 || wraplen > MuttIndexWindow->cols)
+    wraplen = MuttIndexWindow->cols;
 
   if (tag)
   {
@@ -2573,7 +2576,7 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
   }
 
   if (msg)
-    mx_close_message (&msg);
+    mx_close_message (Context, &msg);
 
   return ret;
 }
@@ -2701,7 +2704,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   if (post)
     set_noconv_flags (hdr->content, 1);
 
-  if (mx_open_mailbox (path, M_APPEND | M_QUIET, &f) == NULL)
+  if (mx_open_mailbox (path, MUTT_APPEND | MUTT_QUIET, &f) == NULL)
   {
     dprint (1, (debugfile, "mutt_write_fcc(): unable to open mailbox %s in append-mode, aborting.\n",
 		path));
@@ -2711,7 +2714,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   /* We need to add a Content-Length field to avoid problems where a line in
    * the message body begins with "From "
    */
-  if (f.magic == M_MMDF || f.magic == M_MBOX)
+  if (f.magic == MUTT_MMDF || f.magic == MUTT_MBOX)
   {
     mutt_mktemp (tempfile, sizeof (tempfile));
     if ((tempfp = safe_fopen (tempfile, "w+")) == NULL)
@@ -2726,9 +2729,9 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   }
 
   hdr->read = !post; /* make sure to put it in the `cur' directory (maildir) */
-  onm_flags = M_ADD_FROM;
+  onm_flags = MUTT_ADD_FROM;
   if (post)
-    onm_flags |= M_SET_DRAFT;
+    onm_flags |= MUTT_SET_DRAFT;
   if ((msg = mx_open_new_message (&f, hdr, onm_flags)) == NULL)
   {
     mx_close_mailbox (&f, NULL);
@@ -2755,7 +2758,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
   if (post && fcc)
     fprintf (msg->fp, "X-Mutt-Fcc: %s\n", fcc);
 
-  if (f.magic == M_MMDF || f.magic == M_MBOX)
+  if (f.magic == MUTT_MMDF || f.magic == MUTT_MBOX)
     fprintf (msg->fp, "Status: RO\n");
 
   /* mutt_write_rfc822_header() only writes out a Date: header with
@@ -2847,7 +2850,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
       safe_fclose (&tempfp);
       unlink (tempfile);
       mx_commit_message (msg, &f);	/* XXX - really? */
-      mx_close_message (&msg);
+      mx_close_message (&f, &msg);
       mx_close_mailbox (&f, NULL);
       return -1;
     }
@@ -2876,7 +2879,7 @@ int mutt_write_fcc (const char *path, HEADER *hdr, const char *msgid, int post, 
 
   if (mx_commit_message (msg, &f) != 0)
     r = -1;
-  mx_close_message (&msg);
+  mx_close_message (&f, &msg);
   mx_close_mailbox (&f, NULL);
 
   if (!post && need_buffy_cleanup)

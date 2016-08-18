@@ -159,6 +159,7 @@ int smime_valid_passphrase (void)
 static const char *_mutt_fmt_smime_command (char *dest,
 					    size_t destlen,
 					    size_t col,
+                                            int cols,
 					    char op,
 					    const char *src,
 					    const char *prefix,
@@ -169,7 +170,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 {
   char fmt[16];
   struct smime_command_context *cctx = (struct smime_command_context *) data;
-  int optional = (flags & M_FORMAT_OPTIONAL);
+  int optional = (flags & MUTT_FORMAT_OPTIONAL);
   
   switch (op)
   {
@@ -284,10 +285,10 @@ static const char *_mutt_fmt_smime_command (char *dest,
   }
 
   if (optional)
-    mutt_FormatString (dest, destlen, col, ifstring, _mutt_fmt_smime_command,
+    mutt_FormatString (dest, destlen, col, cols, ifstring, _mutt_fmt_smime_command,
 		       data, 0);
-  else if (flags & M_FORMAT_OPTIONAL)
-    mutt_FormatString (dest, destlen, col, elsestring, _mutt_fmt_smime_command,
+  else if (flags & MUTT_FORMAT_OPTIONAL)
+    mutt_FormatString (dest, destlen, col, cols, elsestring, _mutt_fmt_smime_command,
 		       data, 0);
 
   return (src);
@@ -298,7 +299,7 @@ static const char *_mutt_fmt_smime_command (char *dest,
 static void mutt_smime_command (char *d, size_t dlen,
 				struct smime_command_context *cctx, const char *fmt)
 {
-  mutt_FormatString (d, dlen, 0, NONULL(fmt), _mutt_fmt_smime_command,
+  mutt_FormatString (d, dlen, 0, MuttIndexWindow->cols, NONULL(fmt), _mutt_fmt_smime_command,
 		    (unsigned long) cctx, 0);
   dprint (2,(debugfile, "mutt_smime_command: %s\n", d));
 }
@@ -476,7 +477,7 @@ static smime_key_t *smime_select_key (smime_key_t *keys, char *query)
           snprintf (buf, sizeof (buf), _("%s Do you really want to use the key?"),
                     _(s));
 
-          if (mutt_yesorno (buf, M_NO) != M_YES)
+          if (mutt_yesorno (buf, MUTT_NO) != MUTT_YES)
           {
             mutt_clear_error ();
             break;
@@ -765,7 +766,7 @@ smime_key_t *smime_ask_for_key(char *prompt, short abilities, short public)
   FOREVER
   {
     resp[0] = 0;
-    if (mutt_get_field (prompt, resp, sizeof (resp), M_CLEAR) != 0)
+    if (mutt_get_field (prompt, resp, sizeof (resp), MUTT_CLEAR) != 0)
       return NULL;
 
     if ((key = smime_get_key_by_str (resp, abilities, public)))
@@ -1282,7 +1283,7 @@ int smime_verify_sender(HEADER *h)
 
   if(h->security & ENCRYPT)
     mutt_copy_message (fpout, Context, h,
-		       M_CM_DECODE_CRYPT & M_CM_DECODE_SMIME,
+		       MUTT_CM_DECODE_CRYPT & MUTT_CM_DECODE_SMIME,
 		       CH_MIME|CH_WEED|CH_NONEWLINE);
   else
     mutt_copy_message (fpout, Context, h, 0, 0);
@@ -1869,7 +1870,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   {
     safe_fclose (&smimeout); smimeout = NULL;
     mutt_unlink (tmpfname);
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
     return NULL;
   }
@@ -1880,7 +1881,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   {
     safe_fclose (&smimeout); smimeout = NULL;
     mutt_unlink (tmpfname);
-    if (s->flags & M_DISPLAY)
+    if (s->flags & MUTT_DISPLAY)
       state_attach_puts (_("[-- Error: unable to create OpenSSL subprocess! --]\n"), s);
     return NULL;
   }
@@ -1900,7 +1901,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
   mutt_unlink (tmpfname);
   
 
-  if (s->flags & M_DISPLAY)
+  if (s->flags & MUTT_DISPLAY)
   {
     fflush (smimeerr);
     rewind (smimeerr);
@@ -1979,7 +1980,7 @@ static BODY *smime_handle_entity (BODY *m, STATE *s, FILE *outFile)
     fpout = NULL;
   }
 
-  if (s->flags & M_DISPLAY)
+  if (s->flags & MUTT_DISPLAY)
   {
     if (type & ENCRYPT)
       state_attach_puts (_("\n[-- End of S/MIME encrypted data. --]\n"), s);

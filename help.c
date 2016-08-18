@@ -103,6 +103,8 @@ static int print_macro (FILE *f, int maxwidth, const char **macro)
   {
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1))
+        memset (&mbstate1, 0, sizeof (mbstate1));
       k = (k == (size_t)(-1)) ? 1 : len;
       wc = replacement_char ();
     }
@@ -165,6 +167,8 @@ static int get_wrapped_width (const char *t, size_t wid)
       m = n;
     if (k == (size_t)(-1) || k == (size_t)(-2))
     {
+      if (k == (size_t)(-1))
+        memset (&mbstate, 0, sizeof (mbstate));
       k = (k == (size_t)(-1)) ? 1 : len;
       wc = replacement_char ();
     }
@@ -205,7 +209,7 @@ static void format_line (FILE *f, int ismacro,
 
   /* don't try to press string into one line with less than 40 characters.
      The double parenthesis avoids a gcc warning, sigh ... */
-  if ((split = COLS < 40))
+  if ((split = MuttIndexWindow->cols < 40))
   {
     col_a = col = 0;
     col_b = LONG_STRING;
@@ -213,8 +217,8 @@ static void format_line (FILE *f, int ismacro,
   }
   else
   {
-    col_a = COLS > 83 ? (COLS - 32) >> 2 : 12;
-    col_b = COLS > 49 ? (COLS - 10) >> 1 : 19;
+    col_a = MuttIndexWindow->cols > 83 ? (MuttIndexWindow->cols - 32) >> 2 : 12;
+    col_b = MuttIndexWindow->cols > 49 ? (MuttIndexWindow->cols - 10) >> 1 : 19;
     col = pad (f, mutt_strwidth(t1), col_a);
   }
 
@@ -248,7 +252,7 @@ static void format_line (FILE *f, int ismacro,
   {
     while (*t3)
     {
-      n = COLS - col;
+      n = MuttIndexWindow->cols - col;
 
       if (ismacro >= 0)
       {
@@ -267,7 +271,7 @@ static void format_line (FILE *f, int ismacro,
 	}
 	else
 	{
-	  n += col - COLS;
+	  n += col - MuttIndexWindow->cols;
 	  if (option (OPTMARKERS))
 	    ++n;
 	}
@@ -373,7 +377,7 @@ void mutt_help (int menu)
   }
   while
     (mutt_do_pager (buf, t,
-		    M_PAGER_RETWINCH | M_PAGER_MARKER | M_PAGER_NSKIP | M_PAGER_NOWRAP,
+		    MUTT_PAGER_RETWINCH | MUTT_PAGER_MARKER | MUTT_PAGER_NSKIP | MUTT_PAGER_NOWRAP,
 		    NULL)
      == OP_REFORMAT_WINCH);
 }

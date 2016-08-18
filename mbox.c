@@ -100,6 +100,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
     mutt_perror (ctx->path);
     return (-1);
   }
+  ctx->atime = sb.st_atime;
   ctx->mtime = sb.st_mtime;
   ctx->size = sb.st_size;
 
@@ -117,7 +118,7 @@ int mmdf_parse_mailbox (CONTEXT *ctx)
   if (!ctx->quiet)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
+    mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
   FOREVER
@@ -251,6 +252,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 
   ctx->size = sb.st_size;
   ctx->mtime = sb.st_mtime;
+  ctx->atime = sb.st_atime;
 
 #ifdef NFS_ATTRIBUTE_HACK
   if (sb.st_mtime > sb.st_atime)
@@ -267,7 +269,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
   if (!ctx->quiet)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Reading %s..."), ctx->path);
-    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, ReadInc, 0);
+    mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, ReadInc, 0);
   }
 
   loc = ftello (ctx->fp);
@@ -412,7 +414,7 @@ int mbox_parse_mailbox (CONTEXT *ctx)
 #undef PREV
 
 /* open a mbox or mmdf style mailbox */
-int mbox_open_mailbox (CONTEXT *ctx)
+static int mbox_open_mailbox (CONTEXT *ctx)
 {
   int rc;
 
@@ -428,9 +430,9 @@ int mbox_open_mailbox (CONTEXT *ctx)
     return (-1);
   }
 
-  if (ctx->magic == M_MBOX)
+  if (ctx->magic == MUTT_MBOX)
     rc = mbox_parse_mailbox (ctx);
-  else if (ctx->magic == M_MMDF)
+  else if (ctx->magic == MUTT_MMDF)
     rc = mmdf_parse_mailbox (ctx);
   else
     rc = -1;
@@ -438,6 +440,82 @@ int mbox_open_mailbox (CONTEXT *ctx)
   mbox_unlock_mailbox (ctx);
   mutt_unblock_signals ();
   return (rc);
+}
+
+static int mbox_open_mailbox_append (CONTEXT *ctx, int flags)
+{
+  ctx->fp = safe_fopen (ctx->path, flags & MUTT_NEWFOLDER ? "w" : "a");
+  if (!ctx->fp)
+  {
+    mutt_perror (ctx->path);
+    return -1;
+  }
+
+  if (mbox_lock_mailbox (ctx, 1, 1) != 0)
+  {
+    mutt_error (_("Couldn't lock %s\n"), ctx->path);
+    safe_fclose (&ctx->fp);
+    return -1;
+  }
+
+  fseek (ctx->fp, 0, 2);
+
+  return 0;
+}
+
+static int mbox_close_mailbox (CONTEXT *ctx)
+{
+  return 0;
+}
+
+static int mbox_open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
+{
+  msg->fp = ctx->fp;
+
+  return 0;
+}
+
+static int mbox_close_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  msg->fp = NULL;
+
+  return 0;
+}
+
+static int mbox_commit_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  if (fputc ('\n', msg->fp) == EOF)
+    return -1;
+
+  if ((fflush (msg->fp) == EOF) ||
+      (fsync (fileno (msg->fp)) == -1))
+  {
+    mutt_perror _("Can't write message");
+    return -1;
+  }
+
+  return 0;
+}
+
+static int mmdf_commit_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  if (fputs (MMDF_SEP, msg->fp) == EOF)
+    return -1;
+
+  if ((fflush (msg->fp) == EOF) ||
+      (fsync (fileno (msg->fp)) == -1))
+  {
+    mutt_perror _("Can't write message");
+    return -1;
+  }
+
+  return 0;
+}
+
+static int mbox_open_new_message (MESSAGE *msg, CONTEXT *dest, HEADER *hdr)
+{
+  msg->fp = dest->fp;
+  return 0;
 }
 
 /* return 1 if address lists are strictly identical */
@@ -560,13 +638,13 @@ int mbox_strict_cmp_headers (const HEADER *h1, const HEADER *h2)
 /* check to see if the mailbox has changed on disk.
  *
  * return values:
- *	M_REOPENED	mailbox has been reopened
- *	M_NEW_MAIL	new mail has arrived!
- *	M_LOCKED	couldn't lock the file
+ *	MUTT_REOPENED	mailbox has been reopened
+ *	MUTT_NEW_MAIL	new mail has arrived!
+ *	MUTT_LOCKED	couldn't lock the file
  *	0		no change
  *	-1		error
  */
-int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
+static int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   struct stat st;
   char buffer[LONG_STRING];
@@ -598,7 +676,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	   * probably the new mail arrived: no reason to wait till we can
 	   * parse it: we'll get it on the next pass
 	   */
-	  return (M_LOCKED);
+	  return (MUTT_LOCKED);
 	}
 	unlock = 1;
       }
@@ -613,12 +691,12 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
       if (fgets (buffer, sizeof (buffer), ctx->fp) != NULL)
       {
-	if ((ctx->magic == M_MBOX && mutt_strncmp ("From ", buffer, 5) == 0) ||
-	    (ctx->magic == M_MMDF && mutt_strcmp (MMDF_SEP, buffer) == 0))
+	if ((ctx->magic == MUTT_MBOX && mutt_strncmp ("From ", buffer, 5) == 0) ||
+	    (ctx->magic == MUTT_MMDF && mutt_strcmp (MMDF_SEP, buffer) == 0))
 	{
 	  if (fseeko (ctx->fp, ctx->size, SEEK_SET) != 0)
 	    dprint (1, (debugfile, "mbox_check_mailbox: fseek() failed\n"));
-	  if (ctx->magic == M_MBOX)
+	  if (ctx->magic == MUTT_MBOX)
 	    mbox_parse_mailbox (ctx);
 	  else
 	    mmdf_parse_mailbox (ctx);
@@ -634,7 +712,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	    mutt_unblock_signals ();
 	  }
 
-	  return (M_NEW_MAIL); /* signal that new mail arrived */
+	  return (MUTT_NEW_MAIL); /* signal that new mail arrived */
 	}
 	else
 	  modified = 1;
@@ -658,7 +736,7 @@ int mbox_check_mailbox (CONTEXT *ctx, int *index_hint)
 	mbox_unlock_mailbox (ctx);
 	mutt_unblock_signals ();
       }
-      return (M_REOPENED);
+      return (MUTT_REOPENED);
     }
   }
 
@@ -762,7 +840,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   }
 
   /* Check to make sure that the file hasn't changed on disk */
-  if ((i = mbox_check_mailbox (ctx, index_hint)) == M_NEW_MAIL ||  i == M_REOPENED)
+  if ((i = mbox_check_mailbox (ctx, index_hint)) == MUTT_NEW_MAIL ||  i == MUTT_REOPENED)
   {
     /* new mail arrived, or mailbox reopened */
     need_sort = i;
@@ -815,7 +893,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   /* the offset stored in the header does not include the MMDF_SEP, so make
    * sure we seek to the correct location
    */
-  if (ctx->magic == M_MMDF)
+  if (ctx->magic == MUTT_MMDF)
     offset -= (sizeof MMDF_SEP - 1);
   
   /* allocate space for the new offsets */
@@ -825,7 +903,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (!ctx->quiet)
   {
     snprintf (msgbuf, sizeof (msgbuf), _("Writing %s..."), ctx->path);
-    mutt_progress_init (&progress, msgbuf, M_PROGRESS_MSG, WriteInc, ctx->msgcount);
+    mutt_progress_init (&progress, msgbuf, MUTT_PROGRESS_MSG, WriteInc, ctx->msgcount);
   }
 
   for (i = first, j = 0; i < ctx->msgcount; i++)
@@ -847,7 +925,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
     {
       j++;
 
-      if (ctx->magic == M_MMDF)
+      if (ctx->magic == MUTT_MMDF)
       {
 	if (fputs (MMDF_SEP, fp) == EOF)
 	{
@@ -865,7 +943,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
        */
       newOffset[i - first].hdr = ftello (fp) + offset;
 
-      if (mutt_copy_message (fp, ctx, ctx->hdrs[i], M_CM_UPDATE,
+      if (mutt_copy_message (fp, ctx, ctx->hdrs[i], MUTT_CM_UPDATE,
                              CH_FROM | CH_UPDATE | CH_UPDATE_LEN) != 0)
       {
 	mutt_perror (tempfile);
@@ -885,7 +963,7 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
 
       switch(ctx->magic)
       {
-	case M_MMDF: 
+	case MUTT_MMDF: 
 	  if(fputs(MMDF_SEP, fp) == EOF) 
 	  {
 	    mutt_perror (tempfile);
@@ -939,8 +1017,8 @@ int mbox_sync_mailbox (CONTEXT *ctx, int *index_hint)
   if (fseeko (ctx->fp, offset, SEEK_SET) != 0 ||  /* seek the append location */
       /* do a sanity check to make sure the mailbox looks ok */
       fgets (buf, sizeof (buf), ctx->fp) == NULL ||
-      (ctx->magic == M_MBOX && mutt_strncmp ("From ", buf, 5) != 0) ||
-      (ctx->magic == M_MMDF && mutt_strcmp (MMDF_SEP, buf) != 0))
+      (ctx->magic == MUTT_MBOX && mutt_strncmp ("From ", buf, 5) != 0) ||
+      (ctx->magic == MUTT_MMDF && mutt_strcmp (MMDF_SEP, buf) != 0))
   {
     dprint (1, (debugfile, "mbox_sync_mailbox: message not in expected position."));
     dprint (1, (debugfile, "\tLINE: %s\n", buf));
@@ -1064,18 +1142,9 @@ bail:  /* Come here in case of disaster */
   if (need_sort)
     /* if the mailbox was reopened, the thread tree will be invalid so make
      * sure to start threading from scratch.  */
-    mutt_sort_headers (ctx, (need_sort == M_REOPENED));
+    mutt_sort_headers (ctx, (need_sort == MUTT_REOPENED));
 
   return rc;
-}
-
-/* close a mailbox opened in write-mode */
-int mbox_close_mailbox (CONTEXT *ctx)
-{
-  mx_unlock_file (ctx->path, fileno (ctx->fp), 1);
-  mutt_unblock_signals ();
-  mx_fastclose_mailbox (ctx);
-  return 0;
 }
 
 int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
@@ -1143,14 +1212,14 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   switch (ctx->magic)
   {
-    case M_MBOX:
-    case M_MMDF:
+    case MUTT_MBOX:
+    case MUTT_MMDF:
       cmp_headers = mbox_strict_cmp_headers;
       safe_fclose (&ctx->fp);
       if (!(ctx->fp = safe_fopen (ctx->path, "r")))
 	rc = -1;
       else
-	rc = ((ctx->magic == M_MBOX) ? mbox_parse_mailbox
+	rc = ((ctx->magic == MUTT_MBOX) ? mbox_parse_mailbox
 	                               : mmdf_parse_mailbox) (ctx);
       break;
 
@@ -1221,13 +1290,14 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 	   * otherwise, the header may have been modified externally,
 	   * and we don't want to lose _those_ changes
 	   */
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_FLAG, old_hdrs[j]->flagged);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_REPLIED, old_hdrs[j]->replied);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_OLD, old_hdrs[j]->old);
-	  mutt_set_flag (ctx, ctx->hdrs[i], M_READ, old_hdrs[j]->read);
+	  mutt_set_flag (ctx, ctx->hdrs[i], MUTT_FLAG, old_hdrs[j]->flagged);
+	  mutt_set_flag (ctx, ctx->hdrs[i], MUTT_REPLIED, old_hdrs[j]->replied);
+	  mutt_set_flag (ctx, ctx->hdrs[i], MUTT_OLD, old_hdrs[j]->old);
+	  mutt_set_flag (ctx, ctx->hdrs[i], MUTT_READ, old_hdrs[j]->read);
 	}
-	mutt_set_flag (ctx, ctx->hdrs[i], M_DELETE, old_hdrs[j]->deleted);
-	mutt_set_flag (ctx, ctx->hdrs[i], M_TAG, old_hdrs[j]->tagged);
+	mutt_set_flag (ctx, ctx->hdrs[i], MUTT_DELETE, old_hdrs[j]->deleted);
+	mutt_set_flag (ctx, ctx->hdrs[i], MUTT_PURGE, old_hdrs[j]->purge);
+	mutt_set_flag (ctx, ctx->hdrs[i], MUTT_TAG, old_hdrs[j]->tagged);
 
 	/* we don't need this header any more */
 	mutt_free_header (&(old_hdrs[j]));
@@ -1248,7 +1318,7 @@ int mutt_reopen_mailbox (CONTEXT *ctx, int *index_hint)
 
   ctx->quiet = 0;
 
-  return ((ctx->changed || msg_mod) ? M_REOPENED : M_NEW_MAIL);
+  return ((ctx->changed || msg_mod) ? MUTT_REOPENED : MUTT_NEW_MAIL);
 }
 
 /*
@@ -1266,3 +1336,25 @@ int mbox_check_empty (const char *path)
 
   return ((st.st_size == 0));
 }
+
+struct mx_ops mx_mbox_ops = {
+  .open = mbox_open_mailbox,
+  .open_append = mbox_open_mailbox_append,
+  .close = mbox_close_mailbox,
+  .open_msg = mbox_open_message,
+  .close_msg = mbox_close_message,
+  .commit_msg = mbox_commit_message,
+  .open_new_msg = mbox_open_new_message,
+  .check = mbox_check_mailbox,
+};
+
+struct mx_ops mx_mmdf_ops = {
+  .open = mbox_open_mailbox,
+  .open_append = mbox_open_mailbox_append,
+  .close = mbox_close_mailbox,
+  .open_msg = mbox_open_message,
+  .close_msg = mbox_close_message,
+  .commit_msg = mmdf_commit_message,
+  .open_new_msg = mbox_open_new_message,
+  .check = mbox_check_mailbox,
+};

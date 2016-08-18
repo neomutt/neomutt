@@ -26,27 +26,25 @@
 #define _MX_H
 
 #include "mailbox.h"
+#include "buffy.h"
 
 /* supported mailbox formats */
 enum
 {
-  M_MBOX = 1,
-  M_MMDF,
-  M_MH,
-  M_MAILDIR,
-  M_IMAP,
-  M_POP
+  MUTT_MBOX = 1,
+  MUTT_MMDF,
+  MUTT_MH,
+  MUTT_MAILDIR,
+  MUTT_IMAP,
+  MUTT_POP
 };
 
-WHERE short DefaultMagic INITVAL (M_MBOX);
+WHERE short DefaultMagic INITVAL (MUTT_MBOX);
 
 #define MMDF_SEP "\001\001\001\001\n"
 #define MAXLOCKATTEMPT 5
 
 int mbox_sync_mailbox (CONTEXT *, int *);
-int mbox_open_mailbox (CONTEXT *);
-int mbox_check_mailbox (CONTEXT *, int *);
-int mbox_close_mailbox (CONTEXT *);
 int mbox_lock_mailbox (CONTEXT *, int, int);
 int mbox_parse_mailbox (CONTEXT *);
 int mmdf_parse_mailbox (CONTEXT *);
@@ -54,20 +52,10 @@ void mbox_unlock_mailbox (CONTEXT *);
 int mbox_check_empty (const char *);
 void mbox_reset_atime (CONTEXT *, struct stat *);
 
-int mh_read_dir (CONTEXT *, const char *);
 int mh_sync_mailbox (CONTEXT *, int *);
-int mh_check_mailbox (CONTEXT *, int *);
 int mh_check_empty (const char *);
 
-int maildir_read_dir (CONTEXT *);
-int maildir_check_mailbox (CONTEXT *, int *);
 int maildir_check_empty (const char *);
-
-int maildir_commit_message (CONTEXT *, MESSAGE *, HEADER *);
-int mh_commit_message (CONTEXT *, MESSAGE *, HEADER *);
-
-int maildir_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
-int mh_open_new_message (MESSAGE *, CONTEXT *, HEADER *);
 
 FILE *maildir_open_find_message (const char *, const char *);
 
@@ -82,5 +70,9 @@ void mx_update_tables (CONTEXT *, int);
 int mx_lock_file (const char *, int, int, int, int);
 int mx_unlock_file (const char *path, int fd, int dot);
 
+extern struct mx_ops mx_maildir_ops;
+extern struct mx_ops mx_mbox_ops;
+extern struct mx_ops mx_mh_ops;
+extern struct mx_ops mx_mmdf_ops;
 
 #endif

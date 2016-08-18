@@ -761,12 +761,12 @@ char *mutt_read_line (char *s, size_t *size, FILE *fp, int *line, int flags)
     {
       if (line)
 	(*line)++;
-      if (flags & M_EOL)
+      if (flags & MUTT_EOL)
 	return s;
       *ch = 0;
       if (ch > s && *(ch - 1) == '\r')
 	*--ch = 0;
-      if (!(flags & M_CONT) || ch == s || *(ch - 1) != '\\')
+      if (!(flags & MUTT_CONT) || ch == s || *(ch - 1) != '\\')
 	return s;
       offset = ch - s - 1;
     }

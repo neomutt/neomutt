@@ -33,14 +33,14 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   int flagged = ctx->flagged;
   int update = 0;
 
-  if (ctx->readonly && flag != M_TAG)
+  if (ctx->readonly && flag != MUTT_TAG)
     return; /* don't modify anything if we are read-only */
 
   switch (flag)
   {
-    case M_DELETE:
+    case MUTT_DELETE:
 
-      if (!mutt_bit_isset(ctx->rights,M_ACL_DELETE))
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_DELETE))
 	return;
 
       if (bf)
@@ -53,7 +53,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 #ifdef USE_IMAP
           /* deleted messages aren't treated as changed elsewhere so that the
            * purge-on-sync option works correctly. This isn't applicable here */
-          if (ctx && ctx->magic == M_IMAP)
+          if (ctx && ctx->magic == MUTT_IMAP)
           {
             h->changed = 1;
 	    if (upd_ctx) ctx->changed = 1;
@@ -68,7 +68,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	if (upd_ctx) ctx->deleted--;
 #ifdef USE_IMAP
         /* see my comment above */
-	if (ctx->magic == M_IMAP) 
+	if (ctx->magic == MUTT_IMAP) 
 	{
 	  h->changed = 1;
 	  if (upd_ctx) ctx->changed = 1;
@@ -82,14 +82,28 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
 	 * is checked in specific code in the maildir folder
 	 * driver. 
 	 */
-	if (ctx->magic == M_MAILDIR && upd_ctx && h->trash)
+	if (ctx->magic == MUTT_MAILDIR && upd_ctx && h->trash)
 	  ctx->changed = 1;
       }
       break;
 
-    case M_NEW:
+    case MUTT_PURGE:
 
-      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_DELETE))
+        return;
+
+      if (bf)
+      {
+        if (!h->purge && !ctx->readonly)
+          h->purge = 1;
+      }
+      else if (h->purge)
+        h->purge = 0;
+      break;
+
+    case MUTT_NEW:
+
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_SEEN))
 	return;
 
       if (bf)
@@ -120,9 +134,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
-    case M_OLD:
+    case MUTT_OLD:
 
-      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_SEEN))
 	return;
 
       if (bf)
@@ -148,9 +162,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
-    case M_READ:
+    case MUTT_READ:
 
-      if (!mutt_bit_isset(ctx->rights,M_ACL_SEEN))
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_SEEN))
 	return;
 
       if (bf)
@@ -178,9 +192,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
-    case M_REPLIED:
+    case MUTT_REPLIED:
 
-      if (!mutt_bit_isset(ctx->rights,M_ACL_WRITE))
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_WRITE))
 	return;
 
       if (bf)
@@ -209,9 +223,9 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
-    case M_FLAG:
+    case MUTT_FLAG:
 
-      if (!mutt_bit_isset(ctx->rights,M_ACL_WRITE))
+      if (!mutt_bit_isset(ctx->rights,MUTT_ACL_WRITE))
 	return;
 
       if (bf)
@@ -235,7 +249,7 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
       }
       break;
 
-    case M_TAG:
+    case MUTT_TAG:
       if (bf)
       {
 	if (!h->tagged)
@@ -255,7 +269,12 @@ void _mutt_set_flag (CONTEXT *ctx, HEADER *h, int flag, int bf, int upd_ctx)
   }
 
   if (update)
+  {
     mutt_set_header_color(ctx, h);
+#ifdef USE_SIDEBAR
+    SidebarNeedsRedraw = 1;
+#endif
+  }
 
   /* if the message status has changed, we need to invalidate the cached
    * search results so that any future search will match the current status
@@ -322,51 +341,59 @@ int mutt_change_flag (HEADER *h, int bf)
   int i, flag;
   event_t event;
 
-  mvprintw (LINES - 1, 0, "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
-  clrtoeol ();
+  mutt_window_mvprintw (MuttMessageWindow, 0, 0,
+                        "%s? (D/N/O/r/*/!): ", bf ? _("Set flag") : _("Clear flag"));
+  mutt_window_clrtoeol (MuttMessageWindow);
 
   event = mutt_getch();
   i = event.ch;
   if (i < 0)
   {
-    CLEARLINE (LINES-1);
+    mutt_window_clearline (MuttMessageWindow, 0);
     return (-1);
   }
 
-  CLEARLINE (LINES-1);
+  mutt_window_clearline (MuttMessageWindow, 0);
 
   switch (i)
   {
     case 'd':
     case 'D':
-      flag = M_DELETE;
+      if (!bf)
+      {
+        if (h)
+          mutt_set_flag (Context, h, MUTT_PURGE, bf);
+        else
+          mutt_tag_set_flag (MUTT_PURGE, bf);
+      }
+      flag = MUTT_DELETE;
       break;
 
     case 'N':
     case 'n':
-      flag = M_NEW;
+      flag = MUTT_NEW;
       break;
 
     case 'o':
     case 'O':
       if (h)
-	mutt_set_flag (Context, h, M_READ, !bf);
+	mutt_set_flag (Context, h, MUTT_READ, !bf);
       else
-	mutt_tag_set_flag (M_READ, !bf);
-      flag = M_OLD;
+	mutt_tag_set_flag (MUTT_READ, !bf);
+      flag = MUTT_OLD;
       break;
 
     case 'r':
     case 'R':
-      flag = M_REPLIED;
+      flag = MUTT_REPLIED;
       break;
 
     case '*':
-      flag = M_TAG;
+      flag = MUTT_TAG;
       break;
 
     case '!':
-      flag = M_FLAG;
+      flag = MUTT_FLAG;
       break;
 
     default:

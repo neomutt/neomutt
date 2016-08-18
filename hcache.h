@@ -35,7 +35,7 @@ void *mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
                              size_t (*keylen)(const char *fn));
 
 typedef enum {
-  M_GENERATE_UIDVALIDITY = 1 /* use gettimeofday() as value */
+  MUTT_GENERATE_UIDVALIDITY = 1 /* use gettimeofday() as value */
 } mutt_hcache_store_flags_t;
 
 /* uidvalidity is an IMAP-specific unsigned 32 bit number */

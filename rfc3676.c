@@ -71,7 +71,7 @@ static int space_quotes (STATE *s)
   /* Allow quote spacing in the pager even for OPTTEXTFLOWED,
    * but obviously not when replying.
    */
-  if (option (OPTTEXTFLOWED) && (s->flags & M_REPLYING))
+  if (option (OPTTEXTFLOWED) && (s->flags & MUTT_REPLYING))
     return 0;
 
   return option (OPTREFLOWSPACEQUOTES);
@@ -84,7 +84,7 @@ static int space_quotes (STATE *s)
  */
 static int add_quote_suffix (STATE *s, int ql)
 {
-  if (s->flags & M_REPLYING)
+  if (s->flags & MUTT_REPLYING)
     return 0;
 
   if (space_quotes (s))
@@ -148,8 +148,8 @@ static void flush_par (STATE *s, flowed_state_t *fst)
  * for the prefix from the terminal width. */
 static int quote_width (STATE *s, int ql)
 {
-  int width = mutt_term_width (ReflowWrap);
-  if (option(OPTTEXTFLOWED) && (s->flags & M_REPLYING))
+  int width = mutt_window_wrap_cols (MuttIndexWindow, ReflowWrap);
+  if (option(OPTTEXTFLOWED) && (s->flags & MUTT_REPLYING))
   {
     /* When replying, force a wrap at FLOWED_MAX to comply with RFC3676
      * guidelines */

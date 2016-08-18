@@ -49,7 +49,7 @@ int _mutt_system (const char *cmd, int flags)
   mutt_block_signals_system ();
 
   /* also don't want to be stopped right now */
-  if (flags & M_DETACH_PROCESS)
+  if (flags & MUTT_DETACH_PROCESS)
   {
     sigemptyset (&set);
     sigaddset (&set, SIGTSTP);
@@ -71,7 +71,7 @@ int _mutt_system (const char *cmd, int flags)
   {
     act.sa_flags = 0;
 
-    if (flags & M_DETACH_PROCESS)
+    if (flags & MUTT_DETACH_PROCESS)
     {
       int fd;
 
@@ -132,7 +132,7 @@ int _mutt_system (const char *cmd, int flags)
 
   /* reset SIGINT, SIGQUIT and SIGCHLD */
   mutt_unblock_signals_system (1);
-  if (flags & M_DETACH_PROCESS)
+  if (flags & MUTT_DETACH_PROCESS)
     sigprocmask (SIG_UNBLOCK, &set, NULL);
 
   rc = (thepid != -1) ? (WIFEXITED (rc) ? WEXITSTATUS (rc) : -1) : -1;

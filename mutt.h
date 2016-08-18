@@ -80,23 +80,23 @@
 #include "mutt_regex.h"
 
 /* flags for mutt_enter_string() */
-#define  M_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
-#define  M_FILE    (1<<1) /* do file completion */
-#define  M_EFILE   (1<<2) /* do file completion, plus incoming folders */
-#define  M_CMD     (1<<3) /* do completion on previous word */
-#define  M_PASS    (1<<4) /* password mode (no echo) */
-#define  M_CLEAR   (1<<5) /* clear input if printable character is pressed */
-#define  M_COMMAND (1<<6) /* do command completion */
-#define  M_PATTERN (1<<7) /* pattern mode - only used for history classes */
+#define  MUTT_ALIAS   1      /* do alias "completion" by calling up the alias-menu */
+#define  MUTT_FILE    (1<<1) /* do file completion */
+#define  MUTT_EFILE   (1<<2) /* do file completion, plus incoming folders */
+#define  MUTT_CMD     (1<<3) /* do completion on previous word */
+#define  MUTT_PASS    (1<<4) /* password mode (no echo) */
+#define  MUTT_CLEAR   (1<<5) /* clear input if printable character is pressed */
+#define  MUTT_COMMAND (1<<6) /* do command completion */
+#define  MUTT_PATTERN (1<<7) /* pattern mode - only used for history classes */
 
 /* flags for mutt_get_token() */
-#define M_TOKEN_EQUAL		1	/* treat '=' as a special */
-#define M_TOKEN_CONDENSE	(1<<1)	/* ^(char) to control chars (macros) */
-#define M_TOKEN_SPACE		(1<<2)  /* don't treat whitespace as a term */
-#define M_TOKEN_QUOTE		(1<<3)	/* don't interpret quotes */
-#define M_TOKEN_PATTERN		(1<<4)	/* !)|~ are terms (for patterns) */
-#define M_TOKEN_COMMENT		(1<<5)	/* don't reap comments */
-#define M_TOKEN_SEMICOLON	(1<<6)	/* don't treat ; as special */
+#define MUTT_TOKEN_EQUAL      1       /* treat '=' as a special */
+#define MUTT_TOKEN_CONDENSE   (1<<1)  /* ^(char) to control chars (macros) */
+#define MUTT_TOKEN_SPACE      (1<<2)  /* don't treat whitespace as a term */
+#define MUTT_TOKEN_QUOTE      (1<<3)  /* don't interpret quotes */
+#define MUTT_TOKEN_PATTERN    (1<<4)  /* !)|~ are terms (for patterns) */
+#define MUTT_TOKEN_COMMENT    (1<<5)  /* don't reap comments */
+#define MUTT_TOKEN_SEMICOLON  (1<<6)  /* don't treat ; as special */
 
 typedef struct
 {
@@ -113,142 +113,144 @@ typedef struct
 } event_t;
 
 /* flags for _mutt_system() */
-#define M_DETACH_PROCESS	1	/* detach subprocess from group */
+#define MUTT_DETACH_PROCESS	1	/* detach subprocess from group */
 
 /* flags for mutt_FormatString() */
 typedef enum
 {
-  M_FORMAT_FORCESUBJ	= (1<<0), /* print the subject even if unchanged */
-  M_FORMAT_TREE		= (1<<1), /* draw the thread tree */
-  M_FORMAT_MAKEPRINT	= (1<<2), /* make sure that all chars are printable */
-  M_FORMAT_OPTIONAL	= (1<<3),
-  M_FORMAT_STAT_FILE	= (1<<4), /* used by mutt_attach_fmt */
-  M_FORMAT_ARROWCURSOR	= (1<<5), /* reserve space for arrow_cursor */
-  M_FORMAT_INDEX	= (1<<6), /* this is a main index entry */
-  M_FORMAT_NOFILTER	= (1<<7)  /* do not allow filtering on this pass */
+  MUTT_FORMAT_FORCESUBJ   = (1<<0), /* print the subject even if unchanged */
+  MUTT_FORMAT_TREE        = (1<<1), /* draw the thread tree */
+  MUTT_FORMAT_MAKEPRINT   = (1<<2), /* make sure that all chars are printable */
+  MUTT_FORMAT_OPTIONAL    = (1<<3),
+  MUTT_FORMAT_STAT_FILE   = (1<<4), /* used by mutt_attach_fmt */
+  MUTT_FORMAT_ARROWCURSOR = (1<<5), /* reserve space for arrow_cursor */
+  MUTT_FORMAT_INDEX       = (1<<6), /* this is a main index entry */
+  MUTT_FORMAT_NOFILTER    = (1<<7)  /* do not allow filtering on this pass */
 } format_flag;
 
 /* types for mutt_add_hook() */
-#define M_FOLDERHOOK	1
-#define M_MBOXHOOK	(1<<1)
-#define M_SENDHOOK	(1<<2)
-#define M_FCCHOOK	(1<<3)
-#define M_SAVEHOOK	(1<<4)
-#define M_CHARSETHOOK	(1<<5)
-#define M_ICONVHOOK 	(1<<6)
-#define M_MESSAGEHOOK	(1<<7)
-#define M_CRYPTHOOK	(1<<8)
-#define M_ACCOUNTHOOK	(1<<9)
-#define M_REPLYHOOK	(1<<10)
-#define M_SEND2HOOK     (1<<11)
+#define MUTT_FOLDERHOOK  1
+#define MUTT_MBOXHOOK    (1<<1)
+#define MUTT_SENDHOOK    (1<<2)
+#define MUTT_FCCHOOK     (1<<3)
+#define MUTT_SAVEHOOK    (1<<4)
+#define MUTT_CHARSETHOOK (1<<5)
+#define MUTT_ICONVHOOK   (1<<6)
+#define MUTT_MESSAGEHOOK (1<<7)
+#define MUTT_CRYPTHOOK   (1<<8)
+#define MUTT_ACCOUNTHOOK (1<<9)
+#define MUTT_REPLYHOOK   (1<<10)
+#define MUTT_SEND2HOOK   (1<<11)
 
 /* tree characters for linearize_tree and print_enriched_string */
-#define M_TREE_LLCORNER		1
-#define M_TREE_ULCORNER		2
-#define M_TREE_LTEE		3
-#define M_TREE_HLINE		4
-#define M_TREE_VLINE		5
-#define M_TREE_SPACE		6
-#define M_TREE_RARROW		7
-#define M_TREE_STAR		8
-#define M_TREE_HIDDEN		9
-#define M_TREE_EQUALS		10
-#define M_TREE_TTEE		11
-#define M_TREE_BTEE		12
-#define M_TREE_MISSING		13
-#define M_TREE_MAX		14
+#define MUTT_TREE_LLCORNER      1
+#define MUTT_TREE_ULCORNER      2
+#define MUTT_TREE_LTEE          3
+#define MUTT_TREE_HLINE         4
+#define MUTT_TREE_VLINE         5
+#define MUTT_TREE_SPACE         6
+#define MUTT_TREE_RARROW        7
+#define MUTT_TREE_STAR          8
+#define MUTT_TREE_HIDDEN        9
+#define MUTT_TREE_EQUALS        10
+#define MUTT_TREE_TTEE          11
+#define MUTT_TREE_BTEE          12
+#define MUTT_TREE_MISSING       13
+#define MUTT_TREE_MAX           14
 
-#define M_THREAD_COLLAPSE	(1<<0)
-#define M_THREAD_UNCOLLAPSE	(1<<1)
-#define M_THREAD_GET_HIDDEN	(1<<2)
-#define M_THREAD_UNREAD		(1<<3)
-#define M_THREAD_NEXT_UNREAD	(1<<4)
+#define MUTT_THREAD_COLLAPSE    (1<<0)
+#define MUTT_THREAD_UNCOLLAPSE  (1<<1)
+#define MUTT_THREAD_GET_HIDDEN  (1<<2)
+#define MUTT_THREAD_UNREAD      (1<<3)
+#define MUTT_THREAD_NEXT_UNREAD (1<<4)
 
 enum
 {
   /* modes for mutt_view_attachment() */
-  M_REGULAR = 1,
-  M_MAILCAP,
-  M_AS_TEXT,
+  MUTT_REGULAR = 1,
+  MUTT_MAILCAP,
+  MUTT_AS_TEXT,
 
   /* action codes used by mutt_set_flag() and mutt_pattern_function() */
-  M_ALL,
-  M_NONE,
-  M_NEW,
-  M_OLD,
-  M_REPLIED,
-  M_READ,
-  M_UNREAD,
-  M_DELETE,
-  M_UNDELETE,
-  M_DELETED,
-  M_FLAG,
-  M_TAG,
-  M_UNTAG,
-  M_LIMIT,
-  M_EXPIRED,
-  M_SUPERSEDED,
+  MUTT_ALL,
+  MUTT_NONE,
+  MUTT_NEW,
+  MUTT_OLD,
+  MUTT_REPLIED,
+  MUTT_READ,
+  MUTT_UNREAD,
+  MUTT_DELETE,
+  MUTT_UNDELETE,
+  MUTT_PURGE,
+  MUTT_DELETED,
+  MUTT_FLAG,
+  MUTT_TAG,
+  MUTT_UNTAG,
+  MUTT_LIMIT,
+  MUTT_EXPIRED,
+  MUTT_SUPERSEDED,
+  MUTT_TRASH,
 
   /* actions for mutt_pattern_comp/mutt_pattern_exec */
-  M_AND,
-  M_OR,
-  M_THREAD,
-  M_TO,
-  M_CC,
-  M_COLLAPSED,
-  M_SUBJECT,
-  M_FROM,
-  M_DATE,
-  M_DATE_RECEIVED,
-  M_DUPLICATED,
-  M_UNREFERENCED,
-  M_ID,
-  M_BODY,
-  M_HEADER,
-  M_HORMEL,
-  M_WHOLE_MSG,
-  M_SENDER,
-  M_MESSAGE,
-  M_SCORE,
-  M_SIZE,
-  M_REFERENCE,
-  M_RECIPIENT,
-  M_LIST,
-  M_SUBSCRIBED_LIST,
-  M_PERSONAL_RECIP,
-  M_PERSONAL_FROM,
-  M_ADDRESS,
-  M_CRYPT_SIGN,
-  M_CRYPT_VERIFIED,
-  M_CRYPT_ENCRYPT,
-  M_PGP_KEY,
-  M_XLABEL,
-  M_MIMEATTACH,
+  MUTT_AND,
+  MUTT_OR,
+  MUTT_THREAD,
+  MUTT_TO,
+  MUTT_CC,
+  MUTT_COLLAPSED,
+  MUTT_SUBJECT,
+  MUTT_FROM,
+  MUTT_DATE,
+  MUTT_DATE_RECEIVED,
+  MUTT_DUPLICATED,
+  MUTT_UNREFERENCED,
+  MUTT_ID,
+  MUTT_BODY,
+  MUTT_HEADER,
+  MUTT_HORMEL,
+  MUTT_WHOLE_MSG,
+  MUTT_SENDER,
+  MUTT_MESSAGE,
+  MUTT_SCORE,
+  MUTT_SIZE,
+  MUTT_REFERENCE,
+  MUTT_RECIPIENT,
+  MUTT_LIST,
+  MUTT_SUBSCRIBED_LIST,
+  MUTT_PERSONAL_RECIP,
+  MUTT_PERSONAL_FROM,
+  MUTT_ADDRESS,
+  MUTT_CRYPT_SIGN,
+  MUTT_CRYPT_VERIFIED,
+  MUTT_CRYPT_ENCRYPT,
+  MUTT_PGP_KEY,
+  MUTT_XLABEL,
+  MUTT_MIMEATTACH,
   
   /* Options for Mailcap lookup */
-  M_EDIT,
-  M_COMPOSE,
-  M_PRINT,
-  M_AUTOVIEW,
+  MUTT_EDIT,
+  MUTT_COMPOSE,
+  MUTT_PRINT,
+  MUTT_AUTOVIEW,
 
   /* options for socket code */
-  M_NEW_SOCKET,
+  MUTT_NEW_SOCKET,
 #ifdef USE_SSL_OPENSSL
-  M_NEW_SSL_SOCKET,
+  MUTT_NEW_SSL_SOCKET,
 #endif
 
   /* Options for mutt_save_attachment */
-  M_SAVE_APPEND,
-  M_SAVE_OVERWRITE
+  MUTT_SAVE_APPEND,
+  MUTT_SAVE_OVERWRITE
 };
 
 /* possible arguments to set_quadoption() */
 enum
 {
-  M_NO,
-  M_YES,
-  M_ASKNO,
-  M_ASKYES
+  MUTT_NO,
+  MUTT_YES,
+  MUTT_ASKNO,
+  MUTT_ASKYES
 };
 
 /* quad-option vars */
@@ -300,16 +302,16 @@ enum
 #define SENDDRAFTFILE		(1<<11)   /* Used by the -H flag */
 
 /* flags for mutt_compose_menu() */
-#define M_COMPOSE_NOFREEHEADER (1<<0)
+#define MUTT_COMPOSE_NOFREEHEADER (1<<0)
 
 /* flags to _mutt_select_file() */
-#define M_SEL_BUFFY	(1<<0)
-#define M_SEL_MULTI	(1<<1)
-#define M_SEL_FOLDER	(1<<2)
+#define MUTT_SEL_BUFFY  (1<<0)
+#define MUTT_SEL_MULTI  (1<<1)
+#define MUTT_SEL_FOLDER (1<<2)
 
 /* flags for parse_spam_list */
-#define M_SPAM          1
-#define M_NOSPAM        2
+#define MUTT_SPAM          1
+#define MUTT_NOSPAM        2
 
 /* boolean vars */
 enum
@@ -388,6 +390,7 @@ enum
   OPTKEEPFLAGGED,
   OPTMAILCAPSANITIZE,
   OPTMAILCHECKRECENT,
+  OPTMAILCHECKSTATS,
   OPTMAILDIRTRASH,
   OPTMAILDIRCHECKCUR,
   OPTMARKERS,
@@ -428,6 +431,13 @@ enum
   OPTSAVEEMPTY,
   OPTSAVENAME,
   OPTSCORE,
+#ifdef USE_SIDEBAR
+  OPTSIDEBAR,
+  OPTSIDEBARFOLDERINDENT,
+  OPTSIDEBARNEWMAILONLY,
+  OPTSIDEBARNEXTNEWWRAP,
+  OPTSIDEBARSHORTPATH,
+#endif
   OPTSIGDASHES,
   OPTSIGONTOP,
   OPTSORTRE,
@@ -720,6 +730,7 @@ typedef struct header
   unsigned int flagged : 1; 		/* marked important? */
   unsigned int tagged : 1;
   unsigned int deleted : 1;
+  unsigned int purge : 1;               /* skip trash folder when deleting */
   unsigned int changed : 1;
   unsigned int attach_del : 1; 		/* has an attachment marked for deletion */
   unsigned int old : 1;
@@ -811,10 +822,10 @@ struct mutt_thread
 
 
 /* flag to mutt_pattern_comp() */
-#define M_FULL_MSG	(1<<0)	/* enable body and header matching */
+#define MUTT_FULL_MSG	(1<<0)	/* enable body and header matching */
 
 typedef enum {
-  M_MATCH_FULL_ADDRESS = 1
+  MUTT_MATCH_FULL_ADDRESS = 1
 } pattern_exec_flag;
 
 typedef struct group_t
@@ -853,25 +864,52 @@ typedef struct pattern_t
 /* ACL Rights */
 enum
 {
-  M_ACL_LOOKUP = 0,
-  M_ACL_READ,
-  M_ACL_SEEN,
-  M_ACL_WRITE,
-  M_ACL_INSERT,
-  M_ACL_POST,
-  M_ACL_CREATE,
-  M_ACL_DELMX,
-  M_ACL_DELETE,
-  M_ACL_EXPUNGE,
-  M_ACL_ADMIN,
+  MUTT_ACL_LOOKUP = 0,
+  MUTT_ACL_READ,
+  MUTT_ACL_SEEN,
+  MUTT_ACL_WRITE,
+  MUTT_ACL_INSERT,
+  MUTT_ACL_POST,
+  MUTT_ACL_CREATE,
+  MUTT_ACL_DELMX,
+  MUTT_ACL_DELETE,
+  MUTT_ACL_EXPUNGE,
+  MUTT_ACL_ADMIN,
 
   RIGHTSMAX
+};
+
+struct _context;
+struct _message;
+
+/*
+ * struct mx_ops - a structure to store operations on a mailbox
+ * The following operations are mandatory:
+ *  - open
+ *  - close
+ *  - check
+ *
+ * Optional operations
+ *  - open_new_msg
+ */
+struct mx_ops
+{
+  int (*open) (struct _context *);
+  int (*open_append) (struct _context *, int flags);
+  int (*close) (struct _context *);
+  int (*check) (struct _context *ctx, int *index_hint);
+  int (*open_msg) (struct _context *, struct _message *, int msgno);
+  int (*close_msg) (struct _context *, struct _message *);
+  int (*commit_msg) (struct _context *, struct _message *);
+  int (*open_new_msg) (struct _message *, struct _context *, HEADER *);
 };
 
 typedef struct _context
 {
   char *path;
+  char *realpath;               /* used for buffy comparison and the sidebar */
   FILE *fp;
+  time_t atime;
   time_t mtime;
   off_t size;
   off_t vsize;
@@ -906,10 +944,11 @@ typedef struct _context
   unsigned int quiet : 1;	/* inhibit status messages? */
   unsigned int collapsed : 1;   /* are all threads collapsed? */
   unsigned int closing : 1;	/* mailbox is being closed */
+  unsigned int peekonly : 1;	/* just taking a glance, revert atime */
 
   /* driver hooks */
   void *data;			/* driver specific data */
-  int (*mx_close)(struct _context *);
+  struct mx_ops *mx_ops;
 } CONTEXT;
 
 typedef struct
@@ -933,17 +972,17 @@ typedef struct
 } ENTER_STATE;
 
 /* flags for the STATE struct */
-#define M_DISPLAY	(1<<0) /* output is displayed to the user */
-#define M_VERIFY	(1<<1) /* perform signature verification */
-#define M_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
-#define M_WEED          (1<<3) /* weed headers even when not in display mode */
-#define M_CHARCONV	(1<<4) /* Do character set conversions */
-#define M_PRINTING	(1<<5) /* are we printing? - M_DISPLAY "light" */
-#define M_REPLYING	(1<<6) /* are we replying? */
-#define M_FIRSTDONE	(1<<7) /* the first attachment has been done */
+#define MUTT_DISPLAY       (1<<0) /* output is displayed to the user */
+#define MUTT_VERIFY        (1<<1) /* perform signature verification */
+#define MUTT_PENDINGPREFIX (1<<2) /* prefix to write, but character must follow */
+#define MUTT_WEED          (1<<3) /* weed headers even when not in display mode */
+#define MUTT_CHARCONV      (1<<4) /* Do character set conversions */
+#define MUTT_PRINTING      (1<<5) /* are we printing? - MUTT_DISPLAY "light" */
+#define MUTT_REPLYING      (1<<6) /* are we replying? */
+#define MUTT_FIRSTDONE     (1<<7) /* the first attachment has been done */
 
-#define state_set_prefix(s) ((s)->flags |= M_PENDINGPREFIX)
-#define state_reset_prefix(s) ((s)->flags &= ~M_PENDINGPREFIX)
+#define state_set_prefix(s) ((s)->flags |= MUTT_PENDINGPREFIX)
+#define state_reset_prefix(s) ((s)->flags &= ~MUTT_PENDINGPREFIX)
 #define state_puts(x,y) fputs(x,(y)->fpout)
 #define state_putc(x,y) fputc(x,(y)->fpout)
 
@@ -963,7 +1002,7 @@ typedef struct
   regex_t minor_rx;
 } ATTACH_MATCH;
 
-#define M_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
+#define MUTT_PARTS_TOPLEVEL	(1<<0)	/* is the top-level part */
 
 #include "ascii.h"
 #include "protos.h"

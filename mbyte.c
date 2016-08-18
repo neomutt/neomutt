@@ -525,6 +525,18 @@ wchar_t replacement_char (void)
   return Charset_is_utf8 ? 0xfffd : '?';
 }
 
+int is_display_corrupting_utf8 (wchar_t wc)
+{
+  if (wc == (wchar_t)0x200f ||   /* bidi markers: #3827 */
+      wc == (wchar_t)0x200e ||
+      wc == (wchar_t)0x00ad ||   /* soft hyphen: #3848 */
+      (wc >= (wchar_t)0x202a &&  /* misc directional markers: #3854 */
+       wc <= (wchar_t)0x202e))
+    return 1;
+  else
+    return 0;
+}
+
 int mutt_filter_unprintable (char **s)
 {
   BUFFER *b = NULL;
@@ -548,14 +560,9 @@ int mutt_filter_unprintable (char **s)
     }
     if (!IsWPrint (wc))
       wc = '?';
-    /* HACK:
-     * Work around a gnu screen bug. See ticket #3827.
-     * Filter out the RIGHT-TO-LEFT and LEFT-TO-RIGHT bidi marks because
-     * they result in screen corruption.
-     */
     else if (Charset_is_utf8 &&
-             ((wc == (wchar_t)0x200f) || (wc == (wchar_t)0x200e)))
-      wc = '?';
+             is_display_corrupting_utf8 (wc))
+      continue;
     k2 = wcrtomb (scratch, wc, &mbstate2);
     scratch[k2] = '\0';
     mutt_buffer_addstr (b, scratch);

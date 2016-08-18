@@ -806,47 +806,47 @@ static void cmd_parse_myrights (IMAP_DATA* idata, const char* s)
     switch (*s) 
     {
       case 'l':
-	mutt_bit_set (idata->ctx->rights, M_ACL_LOOKUP);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_LOOKUP);
 	break;
       case 'r':
-	mutt_bit_set (idata->ctx->rights, M_ACL_READ);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_READ);
 	break;
       case 's':
-	mutt_bit_set (idata->ctx->rights, M_ACL_SEEN);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_SEEN);
 	break;
       case 'w':
-	mutt_bit_set (idata->ctx->rights, M_ACL_WRITE);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_WRITE);
 	break;
       case 'i':
-	mutt_bit_set (idata->ctx->rights, M_ACL_INSERT);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_INSERT);
 	break;
       case 'p':
-	mutt_bit_set (idata->ctx->rights, M_ACL_POST);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_POST);
 	break;
       case 'a':
-	mutt_bit_set (idata->ctx->rights, M_ACL_ADMIN);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_ADMIN);
 	break;
       case 'k':
-	mutt_bit_set (idata->ctx->rights, M_ACL_CREATE);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_CREATE);
         break;
       case 'x':
-        mutt_bit_set (idata->ctx->rights, M_ACL_DELMX);
+        mutt_bit_set (idata->ctx->rights, MUTT_ACL_DELMX);
         break;
       case 't':
-	mutt_bit_set (idata->ctx->rights, M_ACL_DELETE);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_DELETE);
         break;
       case 'e':
-        mutt_bit_set (idata->ctx->rights, M_ACL_EXPUNGE);
+        mutt_bit_set (idata->ctx->rights, MUTT_ACL_EXPUNGE);
         break;
 
         /* obsolete rights */
       case 'c':
-	mutt_bit_set (idata->ctx->rights, M_ACL_CREATE);
-        mutt_bit_set (idata->ctx->rights, M_ACL_DELMX);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_CREATE);
+        mutt_bit_set (idata->ctx->rights, MUTT_ACL_DELMX);
 	break;
       case 'd':
-	mutt_bit_set (idata->ctx->rights, M_ACL_DELETE);
-        mutt_bit_set (idata->ctx->rights, M_ACL_EXPUNGE);
+	mutt_bit_set (idata->ctx->rights, MUTT_ACL_DELETE);
+        mutt_bit_set (idata->ctx->rights, MUTT_ACL_EXPUNGE);
 	break;
       default:
         dprint(1, (debugfile, "Unknown right: %c\n", *s));
@@ -900,6 +900,8 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   IMAP_STATUS *status;
   unsigned int olduv, oldun;
   long litlen;
+  short new = 0;
+  short new_msg_count = 0;
 
   mailbox = imap_next_word (s);
 
@@ -939,7 +941,10 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
     count = strtol (value, &value, 10);
 
     if (!ascii_strncmp ("MESSAGES", s, 8))
+    {
       status->messages = count;
+      new_msg_count = 1;
+    }
     else if (!ascii_strncmp ("RECENT", s, 6))
       status->recent = count;
     else if (!ascii_strncmp ("UIDNEXT", s, 7))
@@ -969,7 +974,7 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
   /* should perhaps move this code back to imap_buffy_check */
   for (inc = Incoming; inc; inc = inc->next)
   {
-    if (inc->magic != M_IMAP)
+    if (inc->magic != MUTT_IMAP)
       continue;
     
     if (imap_parse_path (inc->path, &mx) < 0)
@@ -1000,16 +1005,27 @@ static void cmd_parse_status (IMAP_DATA* idata, char* s)
 	  if (olduv && olduv == status->uidvalidity)
 	  {
 	    if (oldun < status->uidnext)
-	      inc->new = status->unseen;
+	      new = (status->unseen > 0);
 	  }
 	  else if (!olduv && !oldun)
 	    /* first check per session, use recent. might need a flag for this. */
-	    inc->new = status->recent;
+	    new = (status->recent > 0);
 	  else
-	    inc->new = status->unseen;
+	    new = (status->unseen > 0);
 	}
 	else
-          inc->new = status->unseen;
+          new = (status->unseen > 0);
+
+#ifdef USE_SIDEBAR
+        if ((inc->new != new) ||
+            (inc->msg_count != status->messages) ||
+            (inc->msg_unread != status->unseen))
+          SidebarNeedsRedraw = 1;
+#endif
+        inc->new = new;
+        if (new_msg_count)
+          inc->msg_count = status->messages;
+        inc->msg_unread = status->unseen;
 
 	if (inc->new)
 	  /* force back to keep detecting new mail until the mailbox is

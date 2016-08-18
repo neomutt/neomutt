@@ -19,22 +19,22 @@
 #include "attach.h"
 
 /* dynamic internal flags */
-#define M_SHOWFLAT	(1<<0)
-#define M_SHOWCOLOR	(1<<1)
-#define M_HIDE		(1<<2)
-#define M_SEARCH	(1<<3)
-#define M_TYPES		(1<<4)
-#define M_SHOW		(M_SHOWCOLOR | M_SHOWFLAT)
+#define MUTT_SHOWFLAT   (1<<0)
+#define MUTT_SHOWCOLOR  (1<<1)
+#define MUTT_HIDE       (1<<2)
+#define MUTT_SEARCH     (1<<3)
+#define MUTT_TYPES      (1<<4)
+#define MUTT_SHOW       (MUTT_SHOWCOLOR | MUTT_SHOWFLAT)
 
 /* exported flags for mutt_(do_)?pager */
-#define M_PAGER_NSKIP		(1<<5)	/* preserve whitespace with smartwrap */
-#define M_PAGER_MARKER		(1<<6)	/* use markers if option is set */
-#define M_PAGER_RETWINCH	(1<<7)	/* need reformatting on SIGWINCH */
-#define M_PAGER_MESSAGE		(M_SHOWCOLOR | M_PAGER_MARKER)
-#define M_PAGER_ATTACHMENT	(1<<8)
-#define M_PAGER_NOWRAP		(1<<9)	/* format for term width, ignore $wrap */
+#define MUTT_PAGER_NSKIP       (1<<5)  /* preserve whitespace with smartwrap */
+#define MUTT_PAGER_MARKER      (1<<6)  /* use markers if option is set */
+#define MUTT_PAGER_RETWINCH    (1<<7)  /* need reformatting on SIGWINCH */
+#define MUTT_PAGER_MESSAGE     (MUTT_SHOWCOLOR | MUTT_PAGER_MARKER)
+#define MUTT_PAGER_ATTACHMENT  (1<<8)
+#define MUTT_PAGER_NOWRAP      (1<<9)  /* format for term width, ignore $wrap */
 
-#define M_DISPLAYFLAGS	(M_SHOW | M_PAGER_NSKIP | M_PAGER_MARKER)
+#define MUTT_DISPLAYFLAGS      (MUTT_SHOW | MUTT_PAGER_NSKIP | MUTT_PAGER_MARKER)
 
 typedef struct
 {

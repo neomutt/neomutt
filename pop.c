@@ -279,7 +279,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 
   if (!ctx->quiet)
     mutt_progress_init (&progress, _("Fetching message headers..."),
-                        M_PROGRESS_MSG, ReadInc, new_count - old_count);
+                        MUTT_PROGRESS_MSG, ReadInc, new_count - old_count);
 
   if (ret == 0)
   {
@@ -333,7 +333,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 #if USE_HCACHE
       else
       {
-	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, M_GENERATE_UIDVALIDITY);
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, MUTT_GENERATE_UIDVALIDITY);
       }
 
       FREE(&data);
@@ -397,7 +397,7 @@ static int pop_fetch_headers (CONTEXT *ctx)
 }
 
 /* open POP mailbox - fetch only headers */
-int pop_open_mailbox (CONTEXT *ctx)
+static int pop_open_mailbox (CONTEXT *ctx)
 {
   int ret;
   char buf[LONG_STRING];
@@ -421,12 +421,13 @@ int pop_open_mailbox (CONTEXT *ctx)
     return -1;
 
   FREE (&ctx->path);
+  FREE (&ctx->realpath);
   ctx->path = safe_strdup (buf);
+  ctx->realpath = safe_strdup (ctx->path);
 
   pop_data = safe_calloc (1, sizeof (POP_DATA));
   pop_data->conn = conn;
   ctx->data = pop_data;
-  ctx->mx_close = pop_close_mailbox;
 
   if (pop_open_connection (pop_data) < 0)
     return -1;
@@ -436,12 +437,12 @@ int pop_open_mailbox (CONTEXT *ctx)
 
   /* init (hard-coded) ACL rights */
   memset (ctx->rights, 0, sizeof (ctx->rights));
-  mutt_bit_set (ctx->rights, M_ACL_SEEN);
-  mutt_bit_set (ctx->rights, M_ACL_DELETE);
+  mutt_bit_set (ctx->rights, MUTT_ACL_SEEN);
+  mutt_bit_set (ctx->rights, MUTT_ACL_DELETE);
 #if USE_HCACHE
   /* flags are managed using header cache, so it only makes sense to
    * enable them in that case */
-  mutt_bit_set (ctx->rights, M_ACL_WRITE);
+  mutt_bit_set (ctx->rights, MUTT_ACL_WRITE);
 #endif
 
   FOREVER
@@ -513,7 +514,7 @@ int pop_close_mailbox (CONTEXT *ctx)
 }
 
 /* fetch message from POP server */
-int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
+static int pop_fetch_message (CONTEXT* ctx, MESSAGE* msg, int msgno)
 {
   int ret;
   void *uidl;
@@ -570,7 +571,7 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
     }
 
     mutt_progress_init (&progressbar, _("Fetching message..."),
-			M_PROGRESS_SIZE, NetInc, h->content->length + h->content->offset - 1);
+			MUTT_PROGRESS_SIZE, NetInc, h->content->length + h->content->offset - 1);
 
     /* see if we can put in body cache; use our cache as fallback */
     if (!(msg->fp = mutt_bcache_put (pop_data->bcache, h->data, 1)))
@@ -657,6 +658,11 @@ int pop_fetch_message (MESSAGE* msg, CONTEXT* ctx, int msgno)
   return 0;
 }
 
+static int pop_close_message (CONTEXT *ctx, MESSAGE *msg)
+{
+  return safe_fclose (&msg->fp);
+}
+
 /* update POP mailbox - delete messages from server */
 int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 {
@@ -676,7 +682,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
       return -1;
 
     mutt_progress_init (&progress, _("Marking messages deleted..."),
-			M_PROGRESS_MSG, WriteInc, ctx->deleted);
+			MUTT_PROGRESS_MSG, WriteInc, ctx->deleted);
 
 #if USE_HCACHE
     hc = pop_hcache_open (pop_data, ctx->path);
@@ -702,7 +708,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 #if USE_HCACHE
       if (ctx->hdrs[i]->changed)
       {
-	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, M_GENERATE_UIDVALIDITY);
+	mutt_hcache_store (hc, ctx->hdrs[i]->data, ctx->hdrs[i], 0, strlen, MUTT_GENERATE_UIDVALIDITY);
       }
 #endif
 
@@ -736,7 +742,7 @@ int pop_sync_mailbox (CONTEXT *ctx, int *index_hint)
 }
 
 /* Check for new messages and fetch headers */
-int pop_check_mailbox (CONTEXT *ctx, int *index_hint)
+static int pop_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
   int ret;
   POP_DATA *pop_data = (POP_DATA *)ctx->data;
@@ -762,7 +768,7 @@ int pop_check_mailbox (CONTEXT *ctx, int *index_hint)
     return -1;
 
   if (ret > 0)
-    return M_NEW_MAIL;
+    return MUTT_NEW_MAIL;
 
   return 0;
 }
@@ -850,7 +856,7 @@ void pop_fetch_mail (void)
     goto finish;
   }
 
-  if (mx_open_mailbox (NONULL (Spoolfile), M_APPEND, &ctx) == NULL)
+  if (mx_open_mailbox (NONULL (Spoolfile), MUTT_APPEND, &ctx) == NULL)
     goto finish;
 
   delanswer = query_quadoption (OPT_POPDELETE, _("Delete messages from server?"));
@@ -860,7 +866,7 @@ void pop_fetch_mail (void)
 
   for (i = last + 1 ; i <= msgs ; i++)
   {
-    if ((msg = mx_open_new_message (&ctx, NULL, M_ADD_FROM)) == NULL)
+    if ((msg = mx_open_new_message (&ctx, NULL, MUTT_ADD_FROM)) == NULL)
       ret = -3;
     else
     {
@@ -875,10 +881,10 @@ void pop_fetch_mail (void)
 	ret = -3;
       }
 
-      mx_close_message (&msg);
+      mx_close_message (&ctx, &msg);
     }
 
-    if (ret == 0 && delanswer == M_YES)
+    if (ret == 0 && delanswer == MUTT_YES)
     {
       /* delete the message on the server */
       snprintf (buffer, sizeof (buffer), "DELE %d\r\n", i);
@@ -928,3 +934,14 @@ fail:
   mutt_socket_close (conn);
   FREE (&pop_data);
 }
+
+struct mx_ops mx_pop_ops = {
+  .open = pop_open_mailbox,
+  .open_append = NULL,
+  .close = pop_close_mailbox,
+  .open_msg = pop_fetch_message,
+  .close_msg = pop_close_message,
+  .check = pop_check_mailbox,
+  .commit_msg = NULL,
+  .open_new_msg = NULL,
+};

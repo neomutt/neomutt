@@ -204,7 +204,7 @@ static int rfc1524_mailcap_parse (BODY *a,
 
   if ((fp = fopen (filename, "r")) != NULL)
   {
-    while (!found && (buf = mutt_read_line (buf, &buflen, fp, &line, M_CONT)) != NULL)
+    while (!found && (buf = mutt_read_line (buf, &buflen, fp, &line, MUTT_CONT)) != NULL)
     {
       /* ignore comments */
       if (*buf == '#')
@@ -309,22 +309,22 @@ static int rfc1524_mailcap_parse (BODY *a,
 	}
       } /* while (ch) */
 
-      if (opt == M_AUTOVIEW)
+      if (opt == MUTT_AUTOVIEW)
       {
 	if (!copiousoutput)
 	  found = FALSE;
       }
-      else if (opt == M_COMPOSE)
+      else if (opt == MUTT_COMPOSE)
       {
 	if (!composecommand)
 	  found = FALSE;
       }
-      else if (opt == M_EDIT)
+      else if (opt == MUTT_EDIT)
       {
 	if (!editcommand)
 	  found = FALSE;
       }
-      else if (opt == M_PRINT)
+      else if (opt == MUTT_PRINT)
       {
 	if (!printcommand)
 	  found = FALSE;

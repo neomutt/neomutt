@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2010 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2010,2016 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -118,6 +118,12 @@ WHERE short SearchContext;
 WHERE char *SendCharset;
 WHERE char *Sendmail;
 WHERE char *Shell;
+#ifdef USE_SIDEBAR
+WHERE char *SidebarDelimChars;
+WHERE char *SidebarDividerChar;
+WHERE char *SidebarFormat;
+WHERE char *SidebarIndentString;
+#endif
 WHERE char *Signature;
 WHERE char *SimpleSearch;
 #if USE_SMTP
@@ -141,6 +147,7 @@ WHERE char *StChars;
 WHERE char *Status;
 WHERE char *Tempdir;
 WHERE char *Tochars;
+WHERE char *TrashPath;
 WHERE char *TSStatusFormat;
 WHERE char *TSIconFormat;
 WHERE short TSSupported;
@@ -213,6 +220,12 @@ WHERE short WriteInc;
 WHERE short ScoreThresholdDelete;
 WHERE short ScoreThresholdRead;
 WHERE short ScoreThresholdFlag;
+
+#ifdef USE_SIDEBAR
+WHERE short SidebarWidth;
+WHERE LIST *SidebarWhitelist INITVAL(0);
+WHERE int SidebarNeedsRedraw INITVAL (0);
+#endif
 
 #ifdef USE_IMAP
 WHERE short ImapKeepalive;

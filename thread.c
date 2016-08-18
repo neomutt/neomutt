@@ -225,7 +225,7 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 
 /* Since the graphics characters have a value >255, I have to resort to
  * using escape sequences to pass the information to print_enriched_string().
- * These are the macros M_TREE_* defined in mutt.h.
+ * These are the macros MUTT_TREE_* defined in mutt.h.
  *
  * ncurses should automatically use the default ASCII characters instead of
  * graphics chars on terminals which don't support them (see the man page
@@ -234,8 +234,8 @@ static void calculate_visibility (CONTEXT *ctx, int *max_depth)
 void mutt_draw_tree (CONTEXT *ctx)
 {
   char *pfx = NULL, *mypfx = NULL, *arrow = NULL, *myarrow = NULL, *new_tree;
-  char corner = (Sort & SORT_REVERSE) ? M_TREE_ULCORNER : M_TREE_LLCORNER;
-  char vtee = (Sort & SORT_REVERSE) ? M_TREE_BTEE : M_TREE_TTEE;
+  char corner = (Sort & SORT_REVERSE) ? MUTT_TREE_ULCORNER : MUTT_TREE_LLCORNER;
+  char vtee = (Sort & SORT_REVERSE) ? MUTT_TREE_BTEE : MUTT_TREE_TTEE;
   int depth = 0, start_depth = 0, max_depth = 0, width = option (OPTNARROWTREE) ? 1 : 2;
   THREAD *nextdisp = NULL, *pseudo = NULL, *parent = NULL, *tree = ctx->tree;
 
@@ -251,19 +251,19 @@ void mutt_draw_tree (CONTEXT *ctx)
     {
       myarrow = arrow + (depth - start_depth - (start_depth ? 0 : 1)) * width;
       if (depth && start_depth == depth)
-	myarrow[0] = nextdisp ? M_TREE_LTEE : corner;
+	myarrow[0] = nextdisp ? MUTT_TREE_LTEE : corner;
       else if (parent->message && !option (OPTHIDELIMITED))
-	myarrow[0] = M_TREE_HIDDEN;
+	myarrow[0] = MUTT_TREE_HIDDEN;
       else if (!parent->message && !option (OPTHIDEMISSING))
-	myarrow[0] = M_TREE_MISSING;
+	myarrow[0] = MUTT_TREE_MISSING;
       else
 	myarrow[0] = vtee;
       if (width == 2)
-	myarrow[1] = pseudo ?  M_TREE_STAR
-	                     : (tree->duplicate_thread ? M_TREE_EQUALS : M_TREE_HLINE);
+	myarrow[1] = pseudo ?  MUTT_TREE_STAR
+	                     : (tree->duplicate_thread ? MUTT_TREE_EQUALS : MUTT_TREE_HLINE);
       if (tree->visible)
       {
-	myarrow[width] = M_TREE_RARROW;
+	myarrow[width] = MUTT_TREE_RARROW;
 	myarrow[width + 1] = 0;
 	new_tree = safe_malloc ((2 + depth * width));
 	if (start_depth > 1)
@@ -280,9 +280,9 @@ void mutt_draw_tree (CONTEXT *ctx)
     if (tree->child && depth)
     {
       mypfx = pfx + (depth - 1) * width;
-      mypfx[0] = nextdisp ? M_TREE_VLINE : M_TREE_SPACE;
+      mypfx[0] = nextdisp ? MUTT_TREE_VLINE : MUTT_TREE_SPACE;
       if (width == 2)
-	mypfx[1] = M_TREE_SPACE;
+	mypfx[1] = MUTT_TREE_SPACE;
     }
     parent = tree;
     nextdisp = NULL;
@@ -1133,7 +1133,7 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   int min_unread_msgno = INT_MAX, min_unread = cur->virtual;
 #define CHECK_LIMIT (!ctx->pattern || cur->limited)
 
-  if ((Sort & SORT_MASK) != SORT_THREADS && !(flag & M_THREAD_GET_HIDDEN))
+  if ((Sort & SORT_MASK) != SORT_THREADS && !(flag & MUTT_THREAD_GET_HIDDEN))
   {
     mutt_error (_("Threading is not enabled."));
     return (cur->virtual);
@@ -1165,14 +1165,14 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   if (cur->virtual == -1 && CHECK_LIMIT)
     num_hidden++;
 
-  if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+  if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
   {
     cur->pair = 0; /* force index entry's color to be re-evaluated */
-    cur->collapsed = flag & M_THREAD_COLLAPSE;
+    cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
     if (cur->virtual != -1)
     {
       roothdr = cur;
-      if (flag & M_THREAD_COLLAPSE)
+      if (flag & MUTT_THREAD_COLLAPSE)
 	final = roothdr->virtual;
     }
   }
@@ -1180,13 +1180,13 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   if (thread == top && (thread = thread->child) == NULL)
   {
     /* return value depends on action requested */
-    if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+    if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       return (final);
-    else if (flag & M_THREAD_UNREAD)
+    else if (flag & MUTT_THREAD_UNREAD)
       return ((old && new) ? new : (old ? old : new));
-    else if (flag & M_THREAD_GET_HIDDEN)
+    else if (flag & MUTT_THREAD_GET_HIDDEN)
       return (num_hidden);
-    else if (flag & M_THREAD_NEXT_UNREAD)
+    else if (flag & MUTT_THREAD_NEXT_UNREAD)
       return (min_unread);
   }
   
@@ -1196,24 +1196,24 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
 
     if (cur)
     {
-      if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+      if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
       {
 	cur->pair = 0; /* force index entry's color to be re-evaluated */
-	cur->collapsed = flag & M_THREAD_COLLAPSE;
+	cur->collapsed = flag & MUTT_THREAD_COLLAPSE;
 	if (!roothdr && CHECK_LIMIT)
 	{
 	  roothdr = cur;
-	  if (flag & M_THREAD_COLLAPSE)
+	  if (flag & MUTT_THREAD_COLLAPSE)
 	    final = roothdr->virtual;
 	}
 
-	if (reverse && (flag & M_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
+	if (reverse && (flag & MUTT_THREAD_COLLAPSE) && (cur->msgno < minmsgno) && CHECK_LIMIT)
 	{
 	  minmsgno = cur->msgno;
 	  final = cur->virtual;
 	}
 
-	if (flag & M_THREAD_COLLAPSE)
+	if (flag & MUTT_THREAD_COLLAPSE)
 	{
 	  if (cur != roothdr)
 	    cur->virtual = -1;
@@ -1266,13 +1266,13 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *cur, int flag)
   }
 
   /* return value depends on action requested */
-  if (flag & (M_THREAD_COLLAPSE | M_THREAD_UNCOLLAPSE))
+  if (flag & (MUTT_THREAD_COLLAPSE | MUTT_THREAD_UNCOLLAPSE))
     return (final);
-  else if (flag & M_THREAD_UNREAD)
+  else if (flag & MUTT_THREAD_UNREAD)
     return ((old && new) ? new : (old ? old : new));
-  else if (flag & M_THREAD_GET_HIDDEN)
+  else if (flag & MUTT_THREAD_GET_HIDDEN)
     return (num_hidden+1);
-  else if (flag & M_THREAD_NEXT_UNREAD)
+  else if (flag & MUTT_THREAD_NEXT_UNREAD)
     return (min_unread);
 
   return (0);
@@ -1407,7 +1407,7 @@ static int link_threads (HEADER *parent, HEADER *child, CONTEXT *ctx)
   child->env->in_reply_to = mutt_new_list ();
   child->env->in_reply_to->data = safe_strdup (parent->env->message_id);
   
-  mutt_set_flag (ctx, child, M_TAG, 0);
+  mutt_set_flag (ctx, child, MUTT_TAG, 0);
   
   child->env->irt_changed = child->changed = 1;
   return 1;

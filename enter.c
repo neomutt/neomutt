@@ -32,8 +32,8 @@
 /* redraw flags for mutt_enter_string() */
 enum
 {
-  M_REDRAW_INIT = 1,	/* go to end of line and redraw */
-  M_REDRAW_LINE		/* redraw entire line */
+  MUTT_REDRAW_INIT = 1,	/* go to end of line and redraw */
+  MUTT_REDRAW_LINE		/* redraw entire line */
 };
 
 static int my_wcwidth (wchar_t wc)
@@ -210,22 +210,22 @@ static inline int is_shell_char(wchar_t ch)
  * 	-1 if abort.
  */
 
-int  mutt_enter_string(char *buf, size_t buflen, int y, int x, int flags)
+int  mutt_enter_string(char *buf, size_t buflen, int col, int flags)
 {
   int rv;
   ENTER_STATE *es = mutt_new_enter_state ();
-  rv = _mutt_enter_string (buf, buflen, y, x, flags, 0, NULL, NULL, es);
+  rv = _mutt_enter_string (buf, buflen, col, flags, 0, NULL, NULL, es);
   mutt_free_enter_state (&es);
   return rv;
 }
 
-int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
+int _mutt_enter_string (char *buf, size_t buflen, int col,
 			int flags, int multiple, char ***files, int *numfiles,
 			ENTER_STATE *state)
 {
-  int width = COLS - x - 1;
+  int width = MuttMessageWindow->cols - col - 1;
   int redraw;
-  int pass = (flags & M_PASS);
+  int pass = (flags & MUTT_PASS);
   int first = 1;
   int ch, w, r;
   size_t i;
@@ -241,7 +241,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
   if (state->wbuf)
   {
     /* Coming back after return 1 */
-    redraw = M_REDRAW_LINE;
+    redraw = MUTT_REDRAW_LINE;
     first = 0;
   }
   else
@@ -249,20 +249,20 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
     /* Initialise wbuf from buf */
     state->wbuflen = 0;
     state->lastchar = my_mbstowcs (&state->wbuf, &state->wbuflen, 0, buf);
-    redraw = M_REDRAW_INIT;
+    redraw = MUTT_REDRAW_INIT;
   }
 
-  if (flags & M_FILE)
+  if (flags & MUTT_FILE)
     hclass = HC_FILE;
-  else if (flags & M_EFILE)
+  else if (flags & MUTT_EFILE)
     hclass = HC_MBOX;
-  else if (flags & M_CMD)
+  else if (flags & MUTT_CMD)
     hclass = HC_CMD;
-  else if (flags & M_ALIAS)
+  else if (flags & MUTT_ALIAS)
     hclass = HC_ALIAS;
-  else if (flags & M_COMMAND)
+  else if (flags & MUTT_COMMAND)
     hclass = HC_COMMAND;
-  else if (flags & M_PATTERN)
+  else if (flags & MUTT_PATTERN)
     hclass = HC_PATTERN;
   else 
     hclass = HC_OTHER;
@@ -271,7 +271,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
   {
     if (redraw && !pass)
     {
-      if (redraw == M_REDRAW_INIT)
+      if (redraw == MUTT_REDRAW_INIT)
       {
 	/* Go to end of line */
 	state->curpos = state->lastchar;
@@ -280,7 +280,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
       if (state->curpos < state->begin ||
 	  my_wcswidth (state->wbuf + state->begin, state->curpos - state->begin) >= width)
 	state->begin = width_ceiling (state->wbuf, state->lastchar, my_wcswidth (state->wbuf, state->curpos) - width / 2);
-      move (y, x);
+      mutt_window_move (MuttMessageWindow, 0, col);
       w = 0;
       for (i = state->begin; i < state->lastchar; i++)
       {
@@ -289,8 +289,9 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  break;
 	my_addwch (state->wbuf[i]);
       }
-      clrtoeol ();
-      move (y, x + my_wcswidth (state->wbuf + state->begin, state->curpos - state->begin));
+      mutt_window_clrtoeol (MuttMessageWindow);
+      mutt_window_move (MuttMessageWindow, 0,
+          col + my_wcswidth (state->wbuf + state->begin, state->curpos - state->begin));
     }
     mutt_refresh ();
 
@@ -305,7 +306,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
       first = 0;
       if (ch != OP_EDITOR_COMPLETE && ch != OP_EDITOR_COMPLETE_QUERY)
 	state->tabs = 0;
-      redraw = M_REDRAW_LINE;
+      redraw = MUTT_REDRAW_LINE;
       switch (ch)
       {
 	case OP_EDITOR_HISTORY_UP:
@@ -316,7 +317,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    mutt_history_save_scratch (hclass, buf);
 	  }
 	  replace_part (state, 0, mutt_history_prev (hclass));
-	  redraw = M_REDRAW_INIT;
+	  redraw = MUTT_REDRAW_INIT;
 	  break;
 
 	case OP_EDITOR_HISTORY_DOWN:
@@ -327,7 +328,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    mutt_history_save_scratch (hclass, buf);
 	  }
 	  replace_part (state, 0, mutt_history_next (hclass));
-	  redraw = M_REDRAW_INIT;
+	  redraw = MUTT_REDRAW_INIT;
 	  break;
 
 	case OP_EDITOR_BACKSPACE:
@@ -351,7 +352,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  break;
 
 	case OP_EDITOR_EOL:
-	  redraw= M_REDRAW_INIT;
+	  redraw= MUTT_REDRAW_INIT;
 	  break;
 
 	case OP_EDITOR_KILL_LINE:
@@ -507,7 +508,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	  break;
 
 	case OP_EDITOR_BUFFY_CYCLE:
-	  if (flags & M_EFILE)
+	  if (flags & MUTT_EFILE)
 	  {
 	    first = 1; /* clear input if user types a real key later */
 	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
@@ -515,14 +516,14 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    state->curpos = state->lastchar = my_mbstowcs (&state->wbuf, &state->wbuflen, 0, buf);
 	    break;
 	  }
-	  else if (!(flags & M_FILE))
+	  else if (!(flags & MUTT_FILE))
 	    goto self_insert;
-	  /* fall through to completion routine (M_FILE) */
+	  /* fall through to completion routine (MUTT_FILE) */
 
 	case OP_EDITOR_COMPLETE:
 	case OP_EDITOR_COMPLETE_QUERY:
 	  state->tabs++;
-	  if (flags & M_CMD)
+	  if (flags & MUTT_CMD)
 	  {
 	    for (i = state->curpos; i && !is_shell_char(state->wbuf[i-1]); i--)
 	      ;
@@ -530,7 +531,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    if (tempbuf && templen == state->lastchar - i &&
 		!memcmp (tempbuf, state->wbuf + i, (state->lastchar - i) * sizeof (wchar_t)))
 	    {
-	      mutt_select_file (buf, buflen, (flags & M_EFILE) ? M_SEL_FOLDER : 0);
+	      mutt_select_file (buf, buflen, (flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0);
 	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
 		replace_part (state, i, buf);
@@ -547,7 +548,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 
 	    replace_part (state, i, buf);
 	  }
-	  else if (flags & M_ALIAS && ch == OP_EDITOR_COMPLETE)
+	  else if (flags & MUTT_ALIAS && ch == OP_EDITOR_COMPLETE)
 	  {
 	    /* invoke the alias-menu to get more addresses */
 	    for (i = state->curpos; i && state->wbuf[i-1] != ',' && 
@@ -565,7 +566,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    }
 	    break;
 	  }
-	  else if (flags & M_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
+	  else if (flags & MUTT_ALIAS && ch == OP_EDITOR_COMPLETE_QUERY)
 	  {
 	    /* invoke the query-menu to get more addresses */
 	    if ((i = state->curpos))
@@ -583,7 +584,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	    rv = 1; 
 	    goto bye;
 	  }
-	  else if (flags & M_COMMAND)
+	  else if (flags & MUTT_COMMAND)
 	  {
 	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
 	    i = strlen (buf);
@@ -594,7 +595,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 	      BEEP ();
 	    replace_part (state, 0, buf);
 	  }
-	  else if (flags & (M_FILE | M_EFILE))
+	  else if (flags & (MUTT_FILE | MUTT_EFILE))
 	  {
 	    my_wcstombs (buf, buflen, state->wbuf, state->curpos);
 
@@ -603,7 +604,7 @@ int _mutt_enter_string (char *buf, size_t buflen, int y, int x,
 		!memcmp (tempbuf, state->wbuf, state->lastchar * sizeof (wchar_t))))
 	    {
 	      _mutt_select_file (buf, buflen, 
-				 ((flags & M_EFILE) ? M_SEL_FOLDER : 0) | (multiple ? M_SEL_MULTI : 0), 
+				 ((flags & MUTT_EFILE) ? MUTT_SEL_FOLDER : 0) | (multiple ? MUTT_SEL_MULTI : 0), 
 				 files, numfiles);
 	      set_option (OPTNEEDREDRAW);
 	      if (*buf)
@@ -703,7 +704,7 @@ self_insert:
 	}
       }
 
-      if (first && (flags & M_CLEAR))
+      if (first && (flags & MUTT_CLEAR))
       {
 	first = 0;
 	if (IsWPrint (wc)) /* why? */

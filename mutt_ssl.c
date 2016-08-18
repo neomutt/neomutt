@@ -82,6 +82,7 @@ static int ssl_socket_open (CONNECTION * conn);
 static int ssl_socket_close (CONNECTION * conn);
 static int tls_close (CONNECTION* conn);
 static void ssl_err (sslsockdata *data, int err);
+static void ssl_dprint_err_stack (void);
 static int ssl_cache_trusted_cert (X509 *cert);
 static int ssl_check_certificate (CONNECTION *conn, sslsockdata * data);
 static int interactive_check_cert (X509 *cert, int idx, int len);
@@ -334,7 +335,17 @@ static int ssl_socket_open (CONNECTION * conn)
   data = (sslsockdata *) safe_calloc (1, sizeof (sslsockdata));
   conn->sockdata = data;
 
-  data->ctx = SSL_CTX_new (SSLv23_client_method ());
+  if (! (data->ctx = SSL_CTX_new (SSLv23_client_method ())))
+  {
+    /* L10N: an SSL context is a data structure returned by the OpenSSL
+     *       function SSL_CTX_new().  In this case it returned NULL: an
+     *       error condition.
+     */
+    mutt_error (_("Unable to create SSL context"));
+    ssl_dprint_err_stack ();
+    mutt_socket_close (conn);
+    return -1;
+  }
 
   /* disable SSL protocols as needed */
   if (!option(OPTTLSV1))
@@ -533,6 +544,30 @@ static void ssl_err (sslsockdata *data, int err)
   dprint (1, (debugfile, "SSL error: %s\n", errmsg));
 }
 
+static void ssl_dprint_err_stack (void)
+{
+#ifdef DEBUG
+  BIO *bio;
+  char *buf = NULL;
+  long buflen;
+  char *output;
+
+  if (! (bio = BIO_new (BIO_s_mem ())))
+    return;
+  ERR_print_errors (bio);
+  if ((buflen = BIO_get_mem_data (bio, &buf)) > 0)
+  {
+    output = safe_malloc (buflen + 1);
+    memcpy (output, buf, buflen);
+    output[buflen] = '\0';
+    dprint (1, (debugfile, "SSL error stack: %s\n", output));
+    FREE (&output);
+  }
+  BIO_free (bio);
+#endif
+}
+
+
 static char *x509_get_part (char *line, const char *ndx)
 {
   static char ret[SHORT_STRING];
@@ -704,7 +739,7 @@ static int check_certificate_by_digest (X509 *peercert)
   FILE *fp;
 
   /* expiration check */
-  if (option (OPTSSLVERIFYDATES) != M_NO)
+  if (option (OPTSSLVERIFYDATES) != MUTT_NO)
   {
     if (X509_cmp_current_time (X509_get_notBefore (peercert)) >= 0)
     {
@@ -908,7 +943,7 @@ static int ssl_check_preauth (X509 *cert, const char* host)
   }
 
   buf[0] = 0;
-  if (host && option (OPTSSLVERIFYHOST) != M_NO)
+  if (host && option (OPTSSLVERIFYHOST) != MUTT_NO)
   {
     if (!check_host (cert, host, buf, sizeof (buf)))
     {
@@ -1030,7 +1065,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
 	    len - idx, len);
   menu->title = title;
   if (SslCertFile
-      && (option (OPTSSLVERIFYDATES) == M_NO
+      && (option (OPTSSLVERIFYDATES) == MUTT_NO
 	  || (X509_cmp_current_time (X509_get_notAfter (cert)) >= 0
 	      && X509_cmp_current_time (X509_get_notBefore (cert)) < 0)))
   {

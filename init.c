@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2010,2013,2016 Michael R. Elkins <me@mutt.org>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -107,13 +107,13 @@ int query_quadoption (int opt, const char *prompt)
 
   switch (v)
   {
-    case M_YES:
-    case M_NO:
+    case MUTT_YES:
+    case MUTT_NO:
       return (v);
 
     default:
-      v = mutt_yesorno (prompt, (v == M_ASKYES));
-      CLEARLINE (LINES - 1);
+      v = mutt_yesorno (prompt, (v == MUTT_ASKYES));
+      mutt_window_clearline (MuttMessageWindow, 0);
       return (v);
   }
 
@@ -146,11 +146,11 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
   {
     if (!qc)
     {
-      if ((ISSPACE (ch) && !(flags & M_TOKEN_SPACE)) ||
-	  (ch == '#' && !(flags & M_TOKEN_COMMENT)) ||
-	  (ch == '=' && (flags & M_TOKEN_EQUAL)) ||
-	  (ch == ';' && !(flags & M_TOKEN_SEMICOLON)) ||
-	  ((flags & M_TOKEN_PATTERN) && strchr ("~%=!|", ch)))
+      if ((ISSPACE (ch) && !(flags & MUTT_TOKEN_SPACE)) ||
+	  (ch == '#' && !(flags & MUTT_TOKEN_COMMENT)) ||
+	  (ch == '=' && (flags & MUTT_TOKEN_EQUAL)) ||
+	  (ch == ';' && !(flags & MUTT_TOKEN_SEMICOLON)) ||
+	  ((flags & MUTT_TOKEN_PATTERN) && strchr ("~%=!|", ch)))
 	break;
     }
 
@@ -158,7 +158,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 
     if (ch == qc)
       qc = 0; /* end of quote */
-    else if (!qc && (ch == '\'' || ch == '"') && !(flags & M_TOKEN_QUOTE))
+    else if (!qc && (ch == '\'' || ch == '"') && !(flags & MUTT_TOKEN_QUOTE))
       qc = ch;
     else if (ch == '\\' && qc != '\'')
     {
@@ -202,7 +202,7 @@ int mutt_extract_token (BUFFER *dest, BUFFER *tok, int flags)
 	    mutt_buffer_addch (dest, ch);
       }
     }
-    else if (ch == '^' && (flags & M_TOKEN_CONDENSE))
+    else if (ch == '^' && (flags & MUTT_TOKEN_CONDENSE))
     {
 	if (!*tok->dptr)
 	    return -1; /* premature end of token */
@@ -711,7 +711,7 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
   /* Insist on at least one parameter */
   if (!MoreArgs(s))
   {
-    if (data == M_SPAM)
+    if (data == MUTT_SPAM)
       strfcpy(err->data, _("spam: no matching pattern"), err->dsize);
     else
       strfcpy(err->data, _("nospam: no matching pattern"), err->dsize);
@@ -721,8 +721,8 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
   /* Extract the first token, a regexp */
   mutt_extract_token (buf, s, 0);
 
-  /* data should be either M_SPAM or M_NOSPAM. M_SPAM is for spam commands. */
-  if (data == M_SPAM)
+  /* data should be either MUTT_SPAM or MUTT_NOSPAM. MUTT_SPAM is for spam commands. */
+  if (data == MUTT_SPAM)
   {
     /* If there's a second parameter, it's a template for the spam tag. */
     if (MoreArgs(s))
@@ -746,8 +746,8 @@ static int parse_spam_list (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *
     return 0;
   }
 
-  /* M_NOSPAM is for nospam commands. */
-  else if (data == M_NOSPAM)
+  /* MUTT_NOSPAM is for nospam commands. */
+  else if (data == MUTT_NOSPAM)
   {
     /* nospam only ever has one parameter. */
 
@@ -842,7 +842,7 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
     if (parse_group_context (&gc, buf, s, data, err) == -1)
       goto bail;
 
-    if (data == M_UNGROUP && !mutt_strcasecmp (buf->data, "*"))
+    if (data == MUTT_UNGROUP && !mutt_strcasecmp (buf->data, "*"))
     {
       if (mutt_group_context_clear (&gc) < 0)
 	goto bail;
@@ -859,14 +859,14 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	case NONE:
 	  snprintf (err->data, err->dsize, _("%sgroup: missing -rx or -addr."),
-		   data == M_UNGROUP ? "un" : "");
+		   data == MUTT_UNGROUP ? "un" : "");
 	  goto bail;
 
 	case RX:
-	  if (data == M_GROUP &&
+	  if (data == MUTT_GROUP &&
 	      mutt_group_context_add_rx (gc, buf->data, REG_ICASE, err) != 0)
 	    goto bail;
-	  else if (data == M_UNGROUP &&
+	  else if (data == MUTT_UNGROUP &&
 		   mutt_group_context_remove_rx (gc, buf->data) < 0)
 	    goto bail;
 	  break;
@@ -880,9 +880,9 @@ static int parse_group (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
 		      data == 1 ? "un" : "", estr);
 	    goto bail;
 	  }
-	  if (data == M_GROUP)
+	  if (data == MUTT_GROUP)
 	    mutt_group_context_add_adrlist (gc, addr);
-	  else if (data == M_UNGROUP)
+	  else if (data == MUTT_UNGROUP)
 	    mutt_group_context_remove_adrlist (gc, addr);
 	  rfc822_free_address (&addr);
 	  break;
@@ -1329,7 +1329,7 @@ static int parse_alias (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err)
       set_option (OPTFORCEREDRAWINDEX);
   }
 
-  mutt_extract_token (buf, s, M_TOKEN_QUOTE | M_TOKEN_SPACE | M_TOKEN_SEMICOLON);
+  mutt_extract_token (buf, s, MUTT_TOKEN_QUOTE | MUTT_TOKEN_SPACE | MUTT_TOKEN_SEMICOLON);
   dprint (3, (debugfile, "parse_alias: Second token is '%s'.\n",
 	      buf->data));
 
@@ -1426,7 +1426,7 @@ static int parse_my_hdr (BUFFER *buf, BUFFER *s, unsigned long data, BUFFER *err
   size_t keylen;
   char *p;
 
-  mutt_extract_token (buf, s, M_TOKEN_SPACE | M_TOKEN_QUOTE);
+  mutt_extract_token (buf, s, MUTT_TOKEN_SPACE | MUTT_TOKEN_QUOTE);
   if ((p = strpbrk (buf->data, ": \t")) == NULL || *p != ':')
   {
     strfcpy (err->data, _("invalid header field"), err->dsize);
@@ -1611,6 +1611,12 @@ static void mutt_restore_default (struct option_t *p)
     set_option (OPTRESORTINIT);
   if (p->flags & R_TREE)
     set_option (OPTREDRAWTREE);
+  if (p->flags & R_REFLOW)
+    mutt_reflow_windows ();
+#ifdef USE_SIDEBAR
+  if (p->flags & R_SIDEBAR)
+    SidebarNeedsRedraw = 1;
+#endif
 }
 
 static size_t escape_string (char *dst, size_t len, const char* src)
@@ -1702,9 +1708,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
   {
     /* reset state variables */
     query = 0;
-    unset = data & M_SET_UNSET;
-    inv = data & M_SET_INV;
-    reset = data & M_SET_RESET;
+    unset = data & MUTT_SET_UNSET;
+    inv = data & MUTT_SET_INV;
+    reset = data & MUTT_SET_RESET;
     myvar = NULL;
 
     if (*s->dptr == '?')
@@ -1729,7 +1735,7 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
     }
 
     /* get the variable name */
-    mutt_extract_token (tmp, s, M_TOKEN_EQUAL);
+    mutt_extract_token (tmp, s, MUTT_TOKEN_EQUAL);
 
     if (!mutt_strncmp ("my_", tmp->data, 3))
       myvar = tmp->data;
@@ -2020,16 +2026,16 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
       {
 	switch (DefaultMagic)
 	{
-	  case M_MBOX:
+	  case MUTT_MBOX:
 	    p = "mbox";
 	    break;
-	  case M_MMDF:
+	  case MUTT_MMDF:
 	    p = "MMDF";
 	    break;
-	  case M_MH:
+	  case MUTT_MH:
 	    p = "MH";
 	    break;
-	  case M_MAILDIR:
+	  case MUTT_MAILDIR:
 	    p = "Maildir";
 	    break;
 	  default:
@@ -2130,13 +2136,13 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	s->dptr++;
 	mutt_extract_token (tmp, s, 0);
 	if (ascii_strcasecmp ("yes", tmp->data) == 0)
-	  set_quadoption (MuttVars[idx].data, M_YES);
+	  set_quadoption (MuttVars[idx].data, MUTT_YES);
 	else if (ascii_strcasecmp ("no", tmp->data) == 0)
-	  set_quadoption (MuttVars[idx].data, M_NO);
+	  set_quadoption (MuttVars[idx].data, MUTT_NO);
 	else if (ascii_strcasecmp ("ask-yes", tmp->data) == 0)
-	  set_quadoption (MuttVars[idx].data, M_ASKYES);
+	  set_quadoption (MuttVars[idx].data, MUTT_ASKYES);
 	else if (ascii_strcasecmp ("ask-no", tmp->data) == 0)
-	  set_quadoption (MuttVars[idx].data, M_ASKNO);
+	  set_quadoption (MuttVars[idx].data, MUTT_ASKNO);
 	else
 	{
 	  snprintf (err->data, err->dsize, _("%s: invalid value"), tmp->data);
@@ -2149,9 +2155,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	if (inv)
 	  toggle_quadoption (MuttVars[idx].data);
 	else if (unset)
-	  set_quadoption (MuttVars[idx].data, M_NO);
+	  set_quadoption (MuttVars[idx].data, MUTT_NO);
 	else
-	  set_quadoption (MuttVars[idx].data, M_YES);
+	  set_quadoption (MuttVars[idx].data, MUTT_YES);
       }
     }
     else if (DTYPE (MuttVars[idx].type) == DT_SORT)
@@ -2172,6 +2178,9 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
 	  break;
 	case DT_SORT_AUX:
 	  map = SortAuxMethods;
+	  break;
+	case DT_SORT_SIDEBAR:
+	  map = SortSidebarMethods;
 	  break;
 	default:
 	  map = SortMethods;
@@ -2226,6 +2235,12 @@ static int parse_set (BUFFER *tmp, BUFFER *s, unsigned long data, BUFFER *err)
         set_option (OPTRESORTINIT);
       if (MuttVars[idx].flags & R_TREE)
         set_option (OPTREDRAWTREE);
+      if (MuttVars[idx].flags & R_REFLOW)
+        mutt_reflow_windows ();
+#ifdef USE_SIDEBAR
+      if (MuttVars[idx].flags & R_SIDEBAR)
+        SidebarNeedsRedraw = 1;
+#endif
     }
   }
   return (r);
@@ -2255,7 +2270,7 @@ static int source_rc (const char *rcfile, BUFFER *err)
   }
 
   mutt_buffer_init (&token);
-  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, M_CONT)) != NULL)
+  while ((linebuf = mutt_read_line (linebuf, &buflen, f, &line, MUTT_CONT)) != NULL)
   {
     conv=ConfigCharset && (*ConfigCharset) && Charset;
     if (conv) 
@@ -2699,16 +2714,16 @@ static int var_to_string (int idx, char* val, size_t len)
 
     switch (DefaultMagic)
     {
-      case M_MBOX:
+      case MUTT_MBOX:
         p = "mbox";
         break;
-      case M_MMDF:
+      case MUTT_MMDF:
         p = "MMDF";
         break;
-      case M_MH:
+      case MUTT_MH:
         p = "MH";
         break;
-      case M_MAILDIR:
+      case MUTT_MAILDIR:
         p = "Maildir";
         break;
       default:

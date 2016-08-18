@@ -26,18 +26,18 @@
 /* account types */
 enum
 {
-  M_ACCT_TYPE_NONE = 0,
-  M_ACCT_TYPE_IMAP,
-  M_ACCT_TYPE_POP,
-  M_ACCT_TYPE_SMTP
+  MUTT_ACCT_TYPE_NONE = 0,
+  MUTT_ACCT_TYPE_IMAP,
+  MUTT_ACCT_TYPE_POP,
+  MUTT_ACCT_TYPE_SMTP
 };
 
 /* account flags */
-#define M_ACCT_PORT  (1<<0)
-#define M_ACCT_USER  (1<<1)
-#define M_ACCT_LOGIN (1<<2)
-#define M_ACCT_PASS  (1<<3)
-#define M_ACCT_SSL   (1<<4)
+#define MUTT_ACCT_PORT  (1<<0)
+#define MUTT_ACCT_USER  (1<<1)
+#define MUTT_ACCT_LOGIN (1<<2)
+#define MUTT_ACCT_PASS  (1<<3)
+#define MUTT_ACCT_SSL   (1<<4)
 
 typedef struct
 {

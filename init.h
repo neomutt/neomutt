@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 1996-2002,2007,2010,2012-2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 1996-2002,2007,2010,2012-2013,2016 Michael R. Elkins <me@mutt.org>
  * Copyright (C) 2004 g10 Code GmbH
  *
  *     This program is free software; you can redistribute it and/or modify
@@ -42,16 +42,17 @@
 #define DTYPE(x) ((x) & DT_MASK)
 
 /* subtypes */
-#define DT_SUBTYPE_MASK	0xf0
+#define DT_SUBTYPE_MASK	0xff0
 #define DT_SORT_ALIAS	0x10
 #define DT_SORT_BROWSER 0x20
 #define DT_SORT_KEYS	0x40
 #define DT_SORT_AUX	0x80
+#define DT_SORT_SIDEBAR	0x100
 
 /* flags to parse_set() */
-#define M_SET_INV	(1<<0)	/* default is to invert all vars */
-#define M_SET_UNSET	(1<<1)	/* default is to unset all vars */
-#define M_SET_RESET	(1<<2)	/* default is to reset all vars to default */
+#define MUTT_SET_INV	(1<<0)	/* default is to invert all vars */
+#define MUTT_SET_UNSET	(1<<1)	/* default is to unset all vars */
+#define MUTT_SET_RESET	(1<<2)	/* default is to reset all vars to default */
 
 /* forced redraw/resort types */
 #define R_NONE		0
@@ -61,6 +62,8 @@
 #define R_RESORT_SUB	(1<<3)	/* resort subthreads */
 #define R_RESORT_INIT	(1<<4)  /* resort from scratch */
 #define R_TREE		(1<<5)  /* redraw the thread tree */
+#define R_REFLOW        (1<<6)  /* reflow window layout */
+#define R_SIDEBAR       (1<<7)  /* redraw the sidebar */
 #define R_BOTH		(R_INDEX | R_PAGER)
 #define R_RESORT_BOTH	(R_RESORT | R_RESORT_SUB)
 
@@ -83,7 +86,7 @@ struct option_t
 
 struct option_t MuttVars[] = {
   /*++*/
-  { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, M_ASKYES },
+  { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, MUTT_ASKYES },
   /*
   ** .pp
   ** If set to \fIyes\fP, when composing messages and no subject is given
@@ -91,7 +94,7 @@ struct option_t MuttVars[] = {
   ** \fIno\fP, composing messages with no subject given at the subject
   ** prompt will never be aborted.
   */
-  { "abort_unmodified",	DT_QUAD, R_NONE, OPT_ABORT, M_YES },
+  { "abort_unmodified",	DT_QUAD, R_NONE, OPT_ABORT, MUTT_YES },
   /*
   ** .pp
   ** If set to \fIyes\fP, composition will automatically abort after
@@ -299,7 +302,7 @@ struct option_t MuttVars[] = {
   ** notifying you of new mail.  This is independent of the setting of the
   ** $$beep variable.
   */
-  { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, M_ASKYES },
+  { "bounce",	DT_QUAD, R_NONE, OPT_BOUNCE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether you will be asked to confirm bouncing messages.
@@ -443,7 +446,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Sets the default Content-Type for the body of newly composed messages.
   */
-  { "copy",		DT_QUAD, R_NONE, OPT_COPY, M_YES },
+  { "copy",		DT_QUAD, R_NONE, OPT_COPY, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not copies of your outgoing messages
@@ -504,19 +507,19 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Setting this variable will cause Mutt to automatically enable and
   ** disable encryption, based on whether all message recipient keys
-  ** can be located by mutt.
+  ** can be located by Mutt.
   ** .pp
-  ** When this option is enabled, mutt will determine the encryption
-  ** setting each time the TO, CC, and BCC lists are edited.  If
-  ** $$edit_headers is set, mutt will also do so each time the message
+  ** When this option is enabled, Mutt will enable/disable encryption
+  ** each time the TO, CC, and BCC lists are edited.  If
+  ** $$edit_headers is set, Mutt will also do so each time the message
   ** is edited.
   ** .pp
-  ** While this is set, encryption settings can't be manually changed.
-  ** The pgp or smime menus provide an option to disable the option for
-  ** a particular message.
+  ** While this is set, encryption can't be manually enabled/disabled.
+  ** The pgp or smime menus provide a selection to temporarily disable
+  ** this option for the current message.
   ** .pp
   ** If $$crypt_autoencrypt or $$crypt_replyencrypt enable encryption for
-  ** a message, this option will be disabled for the message.  It can
+  ** a message, this option will be disabled for that message.  It can
   ** be manually re-enabled in the pgp or smime menus.
   ** (Crypto only)
    */
@@ -580,7 +583,7 @@ struct option_t MuttVars[] = {
   ** verification (only supported by the GPGME backend).
   */
   { "pgp_verify_sig",   DT_SYN,  R_NONE, UL "crypt_verify_sig", 0},
-  { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, M_YES },
+  { "crypt_verify_sig",	DT_QUAD, R_NONE, OPT_VERIFYSIG, MUTT_YES },
   /*
   ** .pp
   ** If \fI``yes''\fP, always attempt to verify PGP or S/MIME signatures.
@@ -618,7 +621,7 @@ struct option_t MuttVars[] = {
   ** ``$alternates'') and is to or cc'ed to a user matching the given
   ** regular expression.
   */
-  { "delete",		DT_QUAD, R_NONE, OPT_DELETE, M_ASKYES },
+  { "delete",		DT_QUAD, R_NONE, OPT_DELETE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not messages are really deleted when closing or
@@ -769,7 +772,7 @@ struct option_t MuttVars[] = {
   ** \fBNote:\fP this variable has no effect when the $$autoedit
   ** variable is \fIset\fP.
   */
-  { "fcc_attach",	DT_QUAD, R_NONE, OPT_FCCATTACH, M_YES },
+  { "fcc_attach",	DT_QUAD, R_NONE, OPT_FCCATTACH, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not attachments on outgoing messages
@@ -809,7 +812,9 @@ struct option_t MuttVars[] = {
   ** .dt %F  .dd file permissions
   ** .dt %g  .dd group name (or numeric gid, if missing)
   ** .dt %l  .dd number of hard links
-  ** .dt %N  .dd N if folder has new mail, blank otherwise
+  ** .dt %m  .dd number of messages in the mailbox *
+  ** .dt %n  .dd number of unread messages in the mailbox *
+  ** .dt %N  .dd N if mailbox has new mail, blank otherwise
   ** .dt %s  .dd size in bytes
   ** .dt %t  .dd ``*'' if the file is tagged, blank otherwise
   ** .dt %u  .dd owner name (or numeric uid, if missing)
@@ -819,6 +824,12 @@ struct option_t MuttVars[] = {
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** .pp
+  ** * = can be optionally printed if nonzero
+  ** .pp
+  ** %m, %n, and %N only work for monitored mailboxes.
+  ** %m requires $$mail_check_stats to be set.
+  ** %n requires $$mail_check_stats to be set (except for IMAP mailboxes).
   */
   { "followup_to",	DT_BOOL, R_NONE, OPTFOLLOWUPTO, 1 },
   /*
@@ -873,7 +884,7 @@ struct option_t MuttVars[] = {
   { "forw_decrypt",	DT_SYN,  R_NONE, UL "forward_decrypt", 0 },
   /*
   */
-  { "forward_edit",	DT_QUAD, R_NONE, OPT_FORWEDIT, M_YES },
+  { "forward_edit",	DT_QUAD, R_NONE, OPT_FORWEDIT, MUTT_YES },
   /*
   ** .pp
   ** This quadoption controls whether or not the user is automatically
@@ -977,7 +988,7 @@ struct option_t MuttVars[] = {
   */
 #endif /* HAVE_GDBM || HAVE_DB4 */
 #endif /* USE_HCACHE */
-  { "help",		DT_BOOL, R_BOTH, OPTHELP, 1 },
+  { "help",		DT_BOOL, R_BOTH|R_REFLOW, OPTHELP, 1 },
   /*
   ** .pp
   ** When \fIset\fP, help lines describing the bindings for the major functions
@@ -1053,7 +1064,7 @@ struct option_t MuttVars[] = {
   ** If \fIunset\fP, Mutt will render all MIME parts it can
   ** properly transform to plain text.
   */
-  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, M_YES },
+  { "honor_followup_to", DT_QUAD, R_NONE, OPT_MFUPTO, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether or not a Mail-Followup-To header is
@@ -1263,7 +1274,7 @@ struct option_t MuttVars[] = {
   ** use the viewer defined in that entry to convert the body part to text
   ** form.
   */
-  { "include",		DT_QUAD, R_NONE, OPT_INCLUDE, M_ASKYES },
+  { "include",		DT_QUAD, R_NONE, OPT_INCLUDE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not a copy of the message(s) you are replying to
@@ -1407,6 +1418,22 @@ struct option_t MuttVars[] = {
   ** When \fI$$mark_old\fP is set, Mutt does not consider the mailbox to contain new
   ** mail if only old messages exist.
   */
+  { "mail_check_stats", DT_BOOL, R_NONE, OPTMAILCHECKSTATS, 0 },
+  /*
+  ** .pp
+  ** When \fIset\fP, mutt will periodically calculate message
+  ** statistics of a mailbox while polling for new mail.  It will
+  ** check for unread, flagged, and total message counts.  Because
+  ** this operation is more performance intensive, it defaults to
+  ** \fIunset\fP, and has a separate option, $$mail_check_stats_interval, to
+  ** control how often to update these counts.
+  */
+  { "mail_check_stats_interval", DT_NUM, R_NONE, UL &BuffyCheckStatsInterval, 60 },
+  /*
+  ** .pp
+  ** When $$mail_check_stats is \fIset\fP, this variable configures
+  ** how often (in seconds) mutt will update message counts.
+  */
   { "mailcap_path",	DT_STR,	 R_NONE, UL &MailcapPath, 0 },
   /*
   ** .pp
@@ -1483,7 +1510,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the $$move variable.
   */
-  { "mbox_type",	DT_MAGIC,R_NONE, UL &DefaultMagic, M_MBOX },
+  { "mbox_type",	DT_MAGIC,R_NONE, UL &DefaultMagic, MUTT_MBOX },
   /*
   ** .pp
   ** The default mailbox type used when creating new folders. May be any of
@@ -1587,7 +1614,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** The name of the MH sequence used for unseen messages.
   */
-  { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, M_NO },
+  { "mime_forward",	DT_QUAD, R_NONE, OPT_MIMEFWD, MUTT_NO },
   /*
   ** .pp
   ** When \fIset\fP, the message you are forwarding will be attached as a
@@ -1609,7 +1636,7 @@ struct option_t MuttVars[] = {
   { "mime_fwd",		DT_SYN,  R_NONE, UL "mime_forward", 0 },
   /*
   */
-  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, M_YES },
+  { "mime_forward_rest", DT_QUAD, R_NONE, OPT_MIMEFWDREST, MUTT_YES },
   /*
   ** .pp
   ** When forwarding multiple attachments of a MIME message from the attachment
@@ -1639,7 +1666,7 @@ struct option_t MuttVars[] = {
   ** mixmaster chain.
   */
 #endif
-  { "move",		DT_QUAD, R_NONE, OPT_MOVE, M_NO },
+  { "move",		DT_QUAD, R_NONE, OPT_MOVE, MUTT_NO },
   /*
   ** .pp
   ** Controls whether or not Mutt will move read messages
@@ -1945,7 +1972,7 @@ struct option_t MuttVars[] = {
   ** in the key selection menu and a few other places.
   ** (PGP only)
   */
-  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, M_ASKYES },
+  { "pgp_mime_auto", DT_QUAD, R_NONE, OPT_PGPMIMEAUTO, MUTT_ASKYES },
   /*
   ** .pp
   ** This option controls whether Mutt will prompt you for
@@ -2131,7 +2158,7 @@ struct option_t MuttVars[] = {
   ** This variable configures how often (in seconds) mutt should look for
   ** new mail in the currently selected mailbox if it is a POP mailbox.
   */
-  { "pop_delete",	DT_QUAD, R_NONE, OPT_POPDELETE, M_ASKNO },
+  { "pop_delete",	DT_QUAD, R_NONE, OPT_POPDELETE, MUTT_ASKNO },
   /*
   ** .pp
   ** If \fIset\fP, Mutt will delete successfully downloaded messages from the POP
@@ -2166,7 +2193,7 @@ struct option_t MuttVars[] = {
   ** fairly secure machine, because the superuser can read your muttrc
   ** even if you are the only one who can read the file.
   */
-  { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, M_ASKYES },
+  { "pop_reconnect",	DT_QUAD, R_NONE, OPT_POPRECONNECT, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not Mutt will try to reconnect to the POP server if
@@ -2189,7 +2216,7 @@ struct option_t MuttVars[] = {
   { "post_indent_str",  DT_SYN,  R_NONE, UL "post_indent_string", 0 },
   /*
   */
-  { "postpone",		DT_QUAD, R_NONE, OPT_POSTPONE, M_ASKYES },
+  { "postpone",		DT_QUAD, R_NONE, OPT_POSTPONE, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not messages are saved in the $$postponed
@@ -2241,7 +2268,7 @@ struct option_t MuttVars[] = {
   ** remote machine without having to enter a password.
   */
 #endif /* USE_SOCKET */
-  { "print",		DT_QUAD, R_NONE, OPT_PRINT, M_ASKNO },
+  { "print",		DT_QUAD, R_NONE, OPT_PRINT, MUTT_ASKNO },
   /*
   ** .pp
   ** Controls whether or not Mutt really prints messages.
@@ -2319,7 +2346,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** * = can be optionally printed if nonzero, see the $$status_format documentation.
   */
-  { "quit",		DT_QUAD, R_NONE, OPT_QUIT, M_YES },
+  { "quit",		DT_QUAD, R_NONE, OPT_QUIT, MUTT_YES },
   /*
   ** .pp
   ** This variable controls whether ``quit'' and ``exit'' actually quit
@@ -2373,7 +2400,7 @@ struct option_t MuttVars[] = {
   ** variable will \fInot\fP be used when the user has set a real name
   ** in the $$from variable.
   */
-  { "recall",		DT_QUAD, R_NONE, OPT_RECALL, M_ASKYES },
+  { "recall",		DT_QUAD, R_NONE, OPT_RECALL, MUTT_ASKYES },
   /*
   ** .pp
   ** Controls whether or not Mutt recalls postponed messages
@@ -2444,7 +2471,7 @@ struct option_t MuttVars[] = {
   ** .pp
   ** Also see the ``$alternates'' command.
   */
-  { "reply_to",		DT_QUAD, R_NONE, OPT_REPLYTO, M_ASKYES },
+  { "reply_to",		DT_QUAD, R_NONE, OPT_REPLYTO, MUTT_ASKYES },
   /*
   ** .pp
   ** If \fIset\fP, when replying to a message, Mutt will use the address listed
@@ -2665,6 +2692,142 @@ struct option_t MuttVars[] = {
   ** Command to use when spawning a subshell.  By default, the user's login
   ** shell from \fC/etc/passwd\fP is used.
   */
+#ifdef USE_SIDEBAR
+  { "sidebar_divider_char", DT_STR, R_SIDEBAR, UL &SidebarDividerChar, UL "|" },
+  /*
+  ** .pp
+  ** This specifies the characters to be drawn between the sidebar (when
+  ** visible) and the other Mutt panels. ASCII and Unicode line-drawing
+  ** characters are supported.
+  */
+  { "sidebar_delim_chars", DT_STR, R_SIDEBAR, UL &SidebarDelimChars, UL "/." },
+  /*
+  ** .pp
+  ** This contains the list of characters which you would like to treat
+  ** as folder separators for displaying paths in the sidebar.
+  ** .pp
+  ** Local mail is often arranged in directories: `dir1/dir2/mailbox'.
+  ** .ts
+  ** set sidebar_delim_chars='/'
+  ** .te
+  ** .pp
+  ** IMAP mailboxes are often named: `folder1.folder2.mailbox'.
+  ** .ts
+  ** set sidebar_delim_chars='.'
+  ** .te
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_indent_string.
+  */
+  { "sidebar_folder_indent", DT_BOOL, R_SIDEBAR, OPTSIDEBARFOLDERINDENT, 0 },
+  /*
+  ** .pp
+  ** Set this to indent mailboxes in the sidebar.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_indent_string, $$sidebar_delim_chars.
+  */
+  { "sidebar_format", DT_STR, R_SIDEBAR, UL &SidebarFormat, UL "%B%*  %n" },
+  /*
+  ** .pp
+  ** This variable allows you to customize the sidebar display. This string is
+  ** similar to $$index_format, but has its own set of \fCprintf(3)\fP-like
+  ** sequences:
+  ** .dl
+  ** .dt %B  .dd Name of the mailbox
+  ** .dt %S  .dd * Size of mailbox (total number of messages)
+  ** .dt %N  .dd * Number of New messages in the mailbox
+  ** .dt %n  .dd N if mailbox has new mail, blank otherwise
+  ** .dt %F  .dd * Number of Flagged messages in the mailbox
+  ** .dt %!  .dd ``!'' : one flagged message;
+  **             ``!!'' : two flagged messages;
+  **             ``n!'' : n flagged messages (for n > 2).
+  **             Otherwise prints nothing.
+  ** .dt %d  .dd * @ Number of deleted messages
+  ** .dt %L  .dd * @ Number of messages after limiting
+  ** .dt %t  .dd * @ Number of tagged messages
+  ** .dt %>X .dd right justify the rest of the string and pad with ``X''
+  ** .dt %|X .dd pad to the end of the line with ``X''
+  ** .dt %*X .dd soft-fill with character ``X'' as pad
+  ** .de
+  ** .pp
+  ** * = Can be optionally printed if nonzero
+  ** @ = Only applicable to the current folder
+  ** .pp
+  ** In order to use %S, %N, %F, and %!, $$mail_check_stats must
+  ** be \fIset\fP.  When thus set, a suggested value for this option is
+  ** "%B%?F? [%F]?%* %?N?%N/?%S".
+  */
+  { "sidebar_indent_string", DT_STR, R_SIDEBAR, UL &SidebarIndentString, UL "  " },
+  /*
+  ** .pp
+  ** This specifies the string that is used to indent mailboxes in the sidebar.
+  ** It defaults to two spaces.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_short_path, $$sidebar_folder_indent, $$sidebar_delim_chars.
+  */
+  { "sidebar_new_mail_only", DT_BOOL, R_SIDEBAR, OPTSIDEBARNEWMAILONLY, 0 },
+  /*
+  ** .pp
+  ** When set, the sidebar will only display mailboxes containing new, or
+  ** flagged, mail.
+  ** .pp
+  ** \fBSee also:\fP $sidebar_whitelist.
+  */
+  { "sidebar_next_new_wrap", DT_BOOL, R_NONE, UL OPTSIDEBARNEXTNEWWRAP, 0 },
+  /*
+  ** .pp
+  ** When set, the \fC<sidebar-next-new>\fP command will not stop and the end of
+  ** the list of mailboxes, but wrap around to the beginning. The
+  ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
+  ** the end of the list.
+  */
+  { "sidebar_short_path", DT_BOOL, R_SIDEBAR, OPTSIDEBARSHORTPATH, 0 },
+  /*
+  ** .pp
+  ** By default the sidebar will show the mailbox's path, relative to the
+  ** $$folder variable. Setting \fCsidebar_shortpath=yes\fP will shorten the
+  ** names relative to the previous name. Here's an example:
+  ** .dl
+  ** .dt \fBshortpath=no\fP .dd \fBshortpath=yes\fP .dd \fBshortpath=yes, folderindent=yes, indentstr=".."\fP
+  ** .dt \fCfruit\fP        .dd \fCfruit\fP         .dd \fCfruit\fP
+  ** .dt \fCfruit.apple\fP  .dd \fCapple\fP         .dd \fC..apple\fP
+  ** .dt \fCfruit.banana\fP .dd \fCbanana\fP        .dd \fC..banana\fP
+  ** .dt \fCfruit.cherry\fP .dd \fCcherry\fP        .dd \fC..cherry\fP
+  ** .de
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_delim_chars, $$sidebar_folder_indent, $$sidebar_indent_string.
+  */
+  { "sidebar_sort_method", DT_SORT|DT_SORT_SIDEBAR, R_SIDEBAR, UL &SidebarSortMethod, SORT_ORDER },
+  /*
+  ** .pp
+  ** Specifies how to sort entries in the file browser.  By default, the
+  ** entries are sorted alphabetically.  Valid values:
+  ** .il
+  ** .dd alpha (alphabetically)
+  ** .dd count (all message count)
+  ** .dd flagged (flagged message count)
+  ** .dd new (new message count)
+  ** .dd unsorted
+  ** .ie
+  ** .pp
+  ** You may optionally use the ``reverse-'' prefix to specify reverse sorting
+  ** order (example: ``\fCset sort_browser=reverse-date\fP'').
+  */
+  { "sidebar_visible", DT_BOOL, R_BOTH|R_REFLOW, OPTSIDEBAR, 0 },
+  /*
+  ** .pp
+  ** This specifies whether or not to show sidebar. The sidebar shows a list of
+  ** all your mailboxes.
+  ** .pp
+  ** \fBSee also:\fP $$sidebar_format, $$sidebar_width
+  */
+  { "sidebar_width", DT_NUM, R_BOTH|R_REFLOW, UL &SidebarWidth, 30 },
+  /*
+  ** .pp
+  ** This controls the width of the sidebar.  It is measured in screen columns.
+  ** For example: sidebar_width=20 could display 20 ASCII characters, or 10
+  ** Chinese characters.
+  */
+#endif
   { "sig_dashes",	DT_BOOL, R_NONE, OPTSIGDASHES, 1 },
   /*
   ** .pp
@@ -3122,7 +3285,7 @@ struct option_t MuttVars[] = {
   ** the default from the GNUTLS library.
   */
 # endif /* USE_SSL_GNUTLS */
-  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, M_YES },
+  { "ssl_starttls", DT_QUAD, R_NONE, OPT_SSLSTARTTLS, MUTT_YES },
   /*
   ** .pp
   ** If \fIset\fP (the default), mutt will attempt to use \fCSTARTTLS\fP on servers
@@ -3287,7 +3450,7 @@ struct option_t MuttVars[] = {
   ** will replace any dots in the expansion by underscores. This might be helpful
   ** with IMAP folders that don't like dots in folder names.
   */
-  { "status_on_top",	DT_BOOL, R_BOTH, OPTSTATUSONTOP, 0 },
+  { "status_on_top",	DT_BOOL, R_BOTH|R_REFLOW, OPTSTATUSONTOP, 0 },
   /*
   ** .pp
   ** Setting this variable causes the ``status bar'' to be displayed on
@@ -3397,6 +3560,16 @@ struct option_t MuttVars[] = {
   ** recipient.  The fifth character is used to indicate mail that was sent
   ** by \fIyou\fP.  The sixth character is used to indicate when a mail
   ** was sent to a mailing-list you subscribe to.
+  */
+  { "trash",		DT_PATH, R_NONE, UL &TrashPath, 0 },
+  /*
+  ** .pp
+  ** If set, this variable specifies the path of the trash folder where the
+  ** mails marked for deletion will be moved, instead of being irremediably
+  ** purged.
+  ** .pp
+  ** NOTE: When you delete a message in the trash folder, it is really
+  ** deleted, so that you have a way to clean the trash.
   */
   {"ts_icon_format",	DT_STR,  R_BOTH, UL &TSIconFormat, UL "M%?n?AIL&ail?"},
   /*
@@ -3652,6 +3825,18 @@ const struct mapping_t SortKeyMethods[] = {
   { NULL,       0 }
 };
 
+const struct mapping_t SortSidebarMethods[] = {
+  { "alpha",		SORT_PATH },
+  { "count",		SORT_COUNT },
+  { "flagged",		SORT_FLAGGED },
+  { "mailbox-order",	SORT_ORDER },
+  { "name",		SORT_PATH },
+  { "new",		SORT_COUNT_NEW },
+  { "path",		SORT_PATH },
+  { "unsorted",		SORT_ORDER },
+  { NULL,		0 }
+};
+
 
 /* functions used to parse commands in a rc file */
 
@@ -3695,7 +3880,7 @@ const struct command_t Commands[] = {
   { "alternates",	parse_alternates,	0 },
   { "unalternates",	parse_unalternates,	0 },
 #ifdef USE_SOCKET
-  { "account-hook",     mutt_parse_hook,        M_ACCOUNTHOOK },
+  { "account-hook",     mutt_parse_hook,        MUTT_ACCOUNTHOOK },
 #endif
   { "alias",		parse_alias,		0 },
   { "attachments",	parse_attachments,	0 },
@@ -3703,49 +3888,52 @@ const struct command_t Commands[] = {
   { "auto_view",	parse_list,		UL &AutoViewList },
   { "alternative_order",	parse_list,	UL &AlternativeOrderList},
   { "bind",		mutt_parse_bind,	0 },
-  { "charset-hook",	mutt_parse_hook,	M_CHARSETHOOK },
+  { "charset-hook",	mutt_parse_hook,	MUTT_CHARSETHOOK },
 #ifdef HAVE_COLOR
   { "color",		mutt_parse_color,	0 },
   { "uncolor",		mutt_parse_uncolor,	0 },
 #endif
   { "exec",		mutt_parse_exec,	0 },
-  { "fcc-hook",		mutt_parse_hook,	M_FCCHOOK },
-  { "fcc-save-hook",	mutt_parse_hook,	M_FCCHOOK | M_SAVEHOOK },
-  { "folder-hook",	mutt_parse_hook,	M_FOLDERHOOK },
-  { "group",		parse_group,		M_GROUP },
-  { "ungroup",		parse_group,		M_UNGROUP },
+  { "fcc-hook",		mutt_parse_hook,	MUTT_FCCHOOK },
+  { "fcc-save-hook",	mutt_parse_hook,	MUTT_FCCHOOK | MUTT_SAVEHOOK },
+  { "folder-hook",	mutt_parse_hook,	MUTT_FOLDERHOOK },
+  { "group",		parse_group,		MUTT_GROUP },
+  { "ungroup",		parse_group,		MUTT_UNGROUP },
   { "hdr_order",	parse_list,		UL &HeaderOrderList },
 #ifdef HAVE_ICONV
-  { "iconv-hook",	mutt_parse_hook,	M_ICONVHOOK },
+  { "iconv-hook",	mutt_parse_hook,	MUTT_ICONVHOOK },
 #endif
   { "ignore",		parse_ignore,		0 },
   { "lists",		parse_lists,		0 },
   { "macro",		mutt_parse_macro,	0 },
-  { "mailboxes",	mutt_parse_mailboxes,	M_MAILBOXES },
-  { "unmailboxes",	mutt_parse_mailboxes,	M_UNMAILBOXES },
+  { "mailboxes",	mutt_parse_mailboxes,	MUTT_MAILBOXES },
+  { "unmailboxes",	mutt_parse_mailboxes,	MUTT_UNMAILBOXES },
   { "mailto_allow",	parse_list,		UL &MailtoAllow },
   { "unmailto_allow",	parse_unlist,		UL &MailtoAllow },
-  { "message-hook",	mutt_parse_hook,	M_MESSAGEHOOK },
-  { "mbox-hook",	mutt_parse_hook,	M_MBOXHOOK },
+  { "message-hook",	mutt_parse_hook,	MUTT_MESSAGEHOOK },
+  { "mbox-hook",	mutt_parse_hook,	MUTT_MBOXHOOK },
   { "mime_lookup",	parse_list,	UL &MimeLookupList },
   { "unmime_lookup",	parse_unlist,	UL &MimeLookupList },
   { "mono",		mutt_parse_mono,	0 },
   { "my_hdr",		parse_my_hdr,		0 },
-  { "pgp-hook",		mutt_parse_hook,	M_CRYPTHOOK },
-  { "crypt-hook",	mutt_parse_hook,	M_CRYPTHOOK },
+  { "pgp-hook",		mutt_parse_hook,	MUTT_CRYPTHOOK },
+  { "crypt-hook",	mutt_parse_hook,	MUTT_CRYPTHOOK },
   { "push",		mutt_parse_push,	0 },
-  { "reply-hook",	mutt_parse_hook,	M_REPLYHOOK },
-  { "reset",		parse_set,		M_SET_RESET },
-  { "save-hook",	mutt_parse_hook,	M_SAVEHOOK },
+  { "reply-hook",	mutt_parse_hook,	MUTT_REPLYHOOK },
+  { "reset",		parse_set,		MUTT_SET_RESET },
+  { "save-hook",	mutt_parse_hook,	MUTT_SAVEHOOK },
   { "score",		mutt_parse_score,	0 },
-  { "send-hook",	mutt_parse_hook,	M_SENDHOOK },
-  { "send2-hook",	mutt_parse_hook,	M_SEND2HOOK },
+  { "send-hook",	mutt_parse_hook,	MUTT_SENDHOOK },
+  { "send2-hook",	mutt_parse_hook,	MUTT_SEND2HOOK },
   { "set",		parse_set,		0 },
+#ifdef USE_SIDEBAR
+  { "sidebar_whitelist",parse_list,		UL &SidebarWhitelist },
+#endif
   { "source",		parse_source,		0 },
-  { "spam",		parse_spam_list,	M_SPAM },
-  { "nospam",		parse_spam_list,	M_NOSPAM },
+  { "spam",		parse_spam_list,	MUTT_SPAM },
+  { "nospam",		parse_spam_list,	MUTT_NOSPAM },
   { "subscribe",	parse_subscribe,	0 },
-  { "toggle",		parse_set,		M_SET_INV },
+  { "toggle",		parse_set,		MUTT_SET_INV },
   { "unalias",		parse_unalias,		0 },
   { "unalternative_order",parse_unlist,		UL &AlternativeOrderList },
   { "unauto_view",	parse_unlist,		UL &AutoViewList },
@@ -3756,7 +3944,7 @@ const struct command_t Commands[] = {
   { "unmono",		mutt_parse_unmono,	0 },
   { "unmy_hdr",		parse_unmy_hdr,		0 },
   { "unscore",		mutt_parse_unscore,	0 },
-  { "unset",		parse_set,		M_SET_UNSET },
+  { "unset",		parse_set,		MUTT_SET_UNSET },
   { "unsubscribe",	parse_unsubscribe,	0 },
   { NULL,		NULL,			0 }
 };

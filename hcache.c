@@ -613,7 +613,7 @@ mutt_hcache_dump(header_cache_t *h, HEADER * header, int *off,
   *off = 0;
   d = lazy_malloc(sizeof (validate));
 
-  if (flags & M_GENERATE_UIDVALIDITY)
+  if (flags & MUTT_GENERATE_UIDVALIDITY)
   {
     struct timeval now;
     gettimeofday(&now, NULL);
@@ -775,7 +775,7 @@ mutt_hcache_fetch_raw (header_cache_t *h, const char *filename,
 /*
  * flags
  *
- * M_GENERATE_UIDVALIDITY
+ * MUTT_GENERATE_UIDVALIDITY
  * ignore uidvalidity param and store gettimeofday() as the value
  */
 int

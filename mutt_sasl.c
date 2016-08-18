@@ -30,7 +30,7 @@
 #include <errno.h>
 #include <netdb.h>
 #include <sasl/sasl.h>
-#include "sys_socket.h"
+#include <sys/socket.h>
 #include <netinet/in.h>
 
 static int getnameinfo_err(int ret)
@@ -78,11 +78,13 @@ static int getnameinfo_err(int ret)
 /* arbitrary. SASL will probably use a smaller buffer anyway. OTOH it's
  * been a while since I've had access to an SASL server which negotiated
  * a protection buffer. */ 
-#define M_SASL_MAXBUF 65536
+#define MUTT_SASL_MAXBUF 65536
 
 #define IP_PORT_BUFLEN 1024
 
 static sasl_callback_t mutt_sasl_callbacks[5];
+
+static sasl_secret_t *secret_ptr = NULL;
 
 static int mutt_sasl_start (void);
 
@@ -181,13 +183,13 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
 
   switch (conn->account.type)
   {
-    case M_ACCT_TYPE_IMAP:
+    case MUTT_ACCT_TYPE_IMAP:
       service = "imap";
       break;
-    case M_ACCT_TYPE_POP:
+    case MUTT_ACCT_TYPE_POP:
       service = "pop";
       break;
-    case M_ACCT_TYPE_SMTP:
+    case MUTT_ACCT_TYPE_SMTP:
       service = "smtp";
       break;
     default:
@@ -233,7 +235,7 @@ int mutt_sasl_client_new (CONNECTION* conn, sasl_conn_t** saslconn)
   memset (&secprops, 0, sizeof (secprops));
   /* Work around a casting bug in the SASL krb4 module */
   secprops.max_ssf = 0x7fff;
-  secprops.maxbufsize = M_SASL_MAXBUF;
+  secprops.maxbufsize = MUTT_SASL_MAXBUF;
   if (sasl_setprop (*saslconn, SASL_SEC_PROPS, &secprops) != SASL_OK)
   {
     mutt_error (_("Error setting SASL security properties"));
@@ -445,9 +447,10 @@ static int mutt_sasl_cb_pass (sasl_conn_t* conn, void* context, int id,
 
   len = strlen (account->pass);
 
-  *psecret = (sasl_secret_t*) safe_malloc (sizeof (sasl_secret_t) + len);
-  (*psecret)->len = len;
-  strcpy ((char*)(*psecret)->data, account->pass);	/* __STRCPY_CHECKED__ */
+  safe_realloc (&secret_ptr, sizeof (sasl_secret_t) + len);
+  memcpy ((char *) secret_ptr->data, account->pass, (size_t) len);
+  secret_ptr->len = len;
+  *psecret = secret_ptr;
 
   return SASL_OK;
 }

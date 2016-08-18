@@ -273,7 +273,7 @@ static pop_auth_res_t pop_auth_user (POP_DATA *pop_data, const char *method)
     ret = pop_query_d (pop_data, buf, sizeof (buf), 
 #ifdef DEBUG
 	/* don't print the password unless we're at the ungodly debugging level */
-	debuglevel < M_SOCK_LOG_FULL ? "PASS *\r\n" :
+	debuglevel < MUTT_SOCK_LOG_FULL ? "PASS *\r\n" :
 #endif
 	NULL);
   }

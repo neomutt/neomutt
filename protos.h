@@ -36,7 +36,7 @@ struct hdr_format_info
   const char *pager_progress;
 };
 
-void mutt_make_string_info (char *, size_t, const char *, struct hdr_format_info *, format_flag);
+void mutt_make_string_info (char *, size_t, int, const char *, struct hdr_format_info *, format_flag);
 
 int mutt_extract_token (BUFFER *, BUFFER *, int);
 BUFFER *mutt_buffer_new (void);
@@ -58,11 +58,11 @@ int _mutt_system (const char *, int);
 #define mutt_previous_subthread(x) _mutt_aside_thread(x,0,1)
 int _mutt_aside_thread (HEADER *, short, short);
 
-#define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_COLLAPSE)
-#define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNCOLLAPSE)
-#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,M_THREAD_GET_HIDDEN) 
-#define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,M_THREAD_UNREAD)
-#define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,M_THREAD_NEXT_UNREAD)
+#define mutt_collapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_COLLAPSE)
+#define mutt_uncollapse_thread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNCOLLAPSE)
+#define mutt_get_hidden(x,y)_mutt_traverse_thread (x,y,MUTT_THREAD_GET_HIDDEN) 
+#define mutt_thread_contains_unread(x,y) _mutt_traverse_thread (x,y,MUTT_THREAD_UNREAD)
+#define mutt_thread_next_unread(x,y) _mutt_traverse_thread(x,y,MUTT_THREAD_NEXT_UNREAD)
 int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 
 
@@ -71,9 +71,9 @@ int _mutt_traverse_thread (CONTEXT *ctx, HEADER *hdr, int flag);
 #define mutt_new_envelope() safe_calloc (1, sizeof (ENVELOPE))
 #define mutt_new_enter_state() safe_calloc (1, sizeof (ENTER_STATE))
 
-typedef const char * format_t (char *, size_t, size_t, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
+typedef const char * format_t (char *, size_t, size_t, int, char, const char *, const char *, const char *, const char *, unsigned long, format_flag);
 
-void mutt_FormatString (char *, size_t, size_t, const char *, format_t *, unsigned long, format_flag);
+void mutt_FormatString (char *, size_t, size_t, int, const char *, format_t *, unsigned long, format_flag);
 void mutt_parse_content_type (char *, BODY *);
 void mutt_generate_boundary (PARAMETER **);
 void mutt_delete_parameter (const char *attribute, PARAMETER **p);
@@ -127,6 +127,7 @@ const char *mutt_attach_fmt (
 	char *dest,
 	size_t destlen,
 	size_t col,
+        int cols,
 	char op,
 	const char *src,
 	const char *prefix,
@@ -174,6 +175,7 @@ void mutt_canonical_charset (char *, size_t, const char *);
 int mutt_count_body_parts (CONTEXT *, HEADER *);
 void mutt_check_rescore (CONTEXT *);
 void mutt_clear_error (void);
+void mutt_clear_pager_position (void);
 void mutt_create_alias (ENVELOPE *, ADDRESS *);
 void mutt_decode_attachment (BODY *, STATE *);
 void mutt_decode_base64 (STATE *s, long len, int istext, iconv_t cd);
@@ -301,13 +303,13 @@ int mutt_prepare_template(FILE*, CONTEXT *, HEADER *, HEADER *, short);
 int mutt_resend_message (FILE *, CONTEXT *, HEADER *);
 #define mutt_enter_fname(A,B,C,D,E) _mutt_enter_fname(A,B,C,D,E,0,NULL,NULL)
 int _mutt_enter_fname (const char *, char *, size_t, int *, int, int, char ***, int *);
-int  mutt_enter_string (char *buf, size_t buflen, int y, int x, int flags);
-int _mutt_enter_string (char *, size_t, int, int, int, int, char ***, int *, ENTER_STATE *);
+int  mutt_enter_string (char *buf, size_t buflen, int col, int flags);
+int _mutt_enter_string (char *, size_t, int, int, int, char ***, int *, ENTER_STATE *);
 #define mutt_get_field(A,B,C,D) _mutt_get_field(A,B,C,D,0,NULL,NULL)
 int _mutt_get_field (const char *, char *, size_t, int, int, char ***, int *);
 int mutt_get_hook_type (const char *);
 int mutt_get_field_unbuffered (char *, char *, size_t, int);
-#define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,M_PASS)
+#define mutt_get_password(A,B,C) mutt_get_field_unbuffered(A,B,C,MUTT_PASS)
 int mutt_get_postponed (CONTEXT *, HEADER *, HEADER **, char *, size_t);
 int mutt_get_tmp_attachment (BODY *);
 int mutt_index_menu (void);
@@ -440,7 +442,7 @@ void mutt_pattern_free (pattern_t **pat);
 int getdnsdomainname (char *, size_t);
 
 /* According to SCO support, this is how to detect SCO */
-#if defined (_M_UNIX) || defined (M_OS)
+#if defined (_M_UNIX) || defined (MUTT_OS)
 #define SCO
 #endif
 

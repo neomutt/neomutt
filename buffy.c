@@ -1,5 +1,6 @@
 /* 
  * Copyright (C) 1996-2000,2010,2013 Michael R. Elkins <me@mutt.org>
+ * Copyright (C) 2016 Kevin J. McCarthy <kevin@8t8.us>
  * 
  *     This program is free software; you can redistribute it and/or modify
  *     it under the terms of the GNU General Public License as published by
@@ -27,6 +28,10 @@
 
 #include "mutt_curses.h"
 
+#ifdef USE_SIDEBAR
+#include "sidebar.h"
+#endif
+
 #ifdef USE_IMAP
 #include "imap.h"
 #endif
@@ -41,6 +46,7 @@
 #include <stdio.h>
 
 static time_t BuffyTime = 0;	/* last time we started checking for mail */
+static time_t BuffyStatsTime = 0; /* last time we check performed mail_check_stats */
 time_t BuffyDoneTime = 0;	/* last time we knew for sure how much mail there was. */
 static short BuffyCount = 0;	/* how many boxes with new mail */
 static short BuffyNotify = 0;	/* # of unnotified new boxes */
@@ -124,7 +130,7 @@ static int test_new_folder (const char *path)
 
   typ = mx_get_magic (path);
 
-  if (typ != M_MBOX && typ != M_MMDF)
+  if (typ != MUTT_MBOX && typ != MUTT_MMDF)
     return 0;
 
   if ((f = fopen (path, "rb")))
@@ -196,9 +202,13 @@ void mutt_update_mailbox (BUFFY * b)
 static BUFFY *buffy_new (const char *path)
 {
   BUFFY* buffy;
+  char rp[PATH_MAX] = "";
+  char *r = NULL;
 
   buffy = (BUFFY *) safe_calloc (1, sizeof (BUFFY));
   strfcpy (buffy->path, path, sizeof (buffy->path));
+  r = realpath (path, rp);
+  strfcpy (buffy->realpath, r ? rp : path, sizeof (buffy->realpath));
   buffy->next = NULL;
   buffy->magic = 0;
 
@@ -215,19 +225,22 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   BUFFY **tmp,*tmp1;
   char buf[_POSIX_PATH_MAX];
   struct stat sb;
-  char f1[PATH_MAX], f2[PATH_MAX];
-  char *p, *q;
+  char f1[PATH_MAX];
+  char *p;
 
   while (MoreArgs (s))
   {
     mutt_extract_token (path, s, 0);
     strfcpy (buf, path->data, sizeof (buf));
 
-    if(data == M_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
+    if(data == MUTT_UNMAILBOXES && mutt_strcmp(buf,"*") == 0)
     {
       for (tmp = &Incoming; *tmp;)
       {
         tmp1=(*tmp)->next;
+#ifdef USE_SIDEBAR
+	mutt_sb_notify_mailbox (*tmp, 0);
+#endif
         buffy_free (tmp);
         *tmp=tmp1;
       }
@@ -243,27 +256,33 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
     p = realpath (buf, f1);
     for (tmp = &Incoming; *tmp; tmp = &((*tmp)->next))
     {
-      q = realpath ((*tmp)->path, f2);
-      if (mutt_strcmp (p ? p : buf, q ? q : (*tmp)->path) == 0)
+      if (mutt_strcmp (p ? p : buf, (*tmp)->realpath) == 0)
       {
 	dprint(3,(debugfile,"mailbox '%s' already registered as '%s'\n", buf, (*tmp)->path));
 	break;
       }
     }
 
-    if(data == M_UNMAILBOXES)
+    if(data == MUTT_UNMAILBOXES)
     {
       if(*tmp)
       {
         tmp1=(*tmp)->next;
+#ifdef USE_SIDEBAR
+	mutt_sb_notify_mailbox (*tmp, 0);
+#endif
         buffy_free (tmp);
         *tmp=tmp1;
       }
       continue;
     }
 
-    if (!*tmp)
+    if (!*tmp) {
       *tmp = buffy_new (buf);
+#ifdef USE_SIDEBAR
+      mutt_sb_notify_mailbox (*tmp, 1);
+#endif
+    }
 
     (*tmp)->new = 0;
     (*tmp)->notified = 1;
@@ -285,10 +304,16 @@ int mutt_parse_mailboxes (BUFFER *path, BUFFER *s, unsigned long data, BUFFER *e
   return 0;
 }
 
-/* returns 1 if the specified dir (cur or new) has new mail */
-static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
+/* Checks the specified maildir subdir (cur or new) for new mail or mail counts.
+ * check_new:   if true, check for new mail.
+ * check_stats: if true, count total, new, and flagged mesages.
+ * Returns 1 if the dir has new mail.
+ */
+static int buffy_maildir_check_dir (BUFFY* mailbox, const char *dir_name, int check_new,
+                                    int check_stats)
 {
   char path[_POSIX_PATH_MAX];
+  char msgpath[_POSIX_PATH_MAX];
   DIR *dirp;
   struct dirent *de;
   char *p;
@@ -300,11 +325,17 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
   /* when $mail_check_recent is set, if the new/ directory hasn't been modified since
    * the user last exited the mailbox, then we know there is no recent mail.
    */
-  if (option(OPTMAILCHECKRECENT))
+  if (check_new && option(OPTMAILCHECKRECENT))
   {
     if (stat(path, &sb) == 0 && sb.st_mtime < mailbox->last_visited)
-      return 0;
+    {
+      rc = 0;
+      check_new = 0;
+    }
   }
+
+  if (! (check_new || check_stats))
+    return rc;
 
   if ((dirp = opendir (path)) == NULL)
   {
@@ -317,21 +348,35 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
     if (*de->d_name == '.')
       continue;
 
-    if (!(p = strstr (de->d_name, ":2,")) || !(strchr (p + 3, 'T') || strchr(p + 3, 'S')))
-    {
-      if (option(OPTMAILCHECKRECENT))
-      {
-	char msgpath[_POSIX_PATH_MAX];
+    p = strstr (de->d_name, ":2,");
+    if (p && strchr (p + 3, 'T'))
+      continue;
 
-	snprintf(msgpath, sizeof(msgpath), "%s/%s", path, de->d_name);
-	/* ensure this message was received since leaving this mailbox */
-	if (stat(msgpath, &sb) == 0 && (sb.st_ctime <= mailbox->last_visited))
-	  continue;
+    if (check_stats)
+    {
+      mailbox->msg_count++;
+      if (p && strchr (p + 3, 'F'))
+        mailbox->msg_flagged++;
+    }
+    if (!p || !strchr (p + 3, 'S'))
+    {
+      if (check_stats)
+        mailbox->msg_unread++;
+      if (check_new)
+      {
+        if (option(OPTMAILCHECKRECENT))
+        {
+          snprintf(msgpath, sizeof(msgpath), "%s/%s", path, de->d_name);
+          /* ensure this message was received since leaving this mailbox */
+          if (stat(msgpath, &sb) == 0 && (sb.st_ctime <= mailbox->last_visited))
+            continue;
+        }
+        mailbox->new = 1;
+        rc = 1;
+        check_new = 0;
+        if (!check_stats)
+          break;
       }
-      /* one new and undeleted message is enough */
-      mailbox->new = 1;
-      rc = 1;
-      break;
     }
   }
 
@@ -340,35 +385,48 @@ static int buffy_maildir_dir_hasnew(BUFFY* mailbox, const char *dir_name)
   return rc;
 }
 
-/* returns 1 if maildir has new mail */
-static int buffy_maildir_hasnew (BUFFY* mailbox)
+/* Checks new mail for a maildir mailbox.
+ * check_stats: if true, also count total, new, and flagged mesages.
+ * Returns 1 if the mailbox has new mail.
+ */
+static int buffy_maildir_check (BUFFY* mailbox, int check_stats)
 {
-  if (buffy_maildir_dir_hasnew(mailbox, "new")) {
-      return 1;
+  int rc, check_new = 1;
+
+  if (check_stats)
+  {
+    mailbox->msg_count   = 0;
+    mailbox->msg_unread  = 0;
+    mailbox->msg_flagged = 0;
   }
 
-  if (!option(OPTMAILDIRCHECKCUR)) {
-      return 0;
-  }
+  rc = buffy_maildir_check_dir (mailbox, "new", check_new, check_stats);
 
-  if (buffy_maildir_dir_hasnew(mailbox, "cur")) {
-      return 1;
-  }
+  check_new = !rc && option (OPTMAILDIRCHECKCUR);
+  if (check_new || check_stats)
+    if (buffy_maildir_check_dir (mailbox, "cur", check_new, check_stats))
+      rc = 1;
 
-  return 0;
+  return rc;
 }
-/* returns 1 if mailbox has new mail */ 
-static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
+
+/* Checks new mail for an mbox mailbox
+ * check_stats: if true, also count total, new, and flagged mesages.
+ * Returns 1 if the mailbox has new mail.
+ */
+static int buffy_mbox_check (BUFFY* mailbox, struct stat *sb, int check_stats)
 {
   int rc = 0;
-  int statcheck;
+  int new_or_changed;
+  CONTEXT ctx;
 
   if (option (OPTCHECKMBOXSIZE))
-    statcheck = sb->st_size > mailbox->size;
+    new_or_changed = sb->st_size > mailbox->size;
   else
-    statcheck = sb->st_mtime > sb->st_atime
+    new_or_changed = sb->st_mtime > sb->st_atime
       || (mailbox->newly_created && sb->st_ctime == sb->st_mtime && sb->st_ctime == sb->st_atime);
-  if (statcheck)
+
+  if (new_or_changed)
   {
     if (!option(OPTMAILCHECKRECENT) || sb->st_mtime > mailbox->last_visited)
     {
@@ -381,19 +439,43 @@ static int buffy_mbox_hasnew (BUFFY* mailbox, struct stat *sb)
     /* some other program has deleted mail from the folder */
     mailbox->size = (off_t) sb->st_size;
   }
+
   if (mailbox->newly_created &&
       (sb->st_ctime != sb->st_mtime || sb->st_ctime != sb->st_atime))
     mailbox->newly_created = 0;
 
+  if (check_stats &&
+      (mailbox->stats_last_checked < sb->st_mtime))
+  {
+    if (mx_open_mailbox (mailbox->path,
+                         MUTT_READONLY | MUTT_QUIET | MUTT_NOSORT | MUTT_PEEK,
+                         &ctx) != NULL)
+    {
+      mailbox->msg_count       = ctx.msgcount;
+      mailbox->msg_unread      = ctx.unread;
+      mailbox->msg_flagged     = ctx.flagged;
+      mailbox->stats_last_checked = ctx.mtime;
+      mx_close_mailbox (&ctx, 0);
+    }
+  }
+
   return rc;
 }
 
+/* Check all Incoming for new mail and total/new/flagged messages
+ * force: if true, ignore BuffyTimeout and check for new mail anyway
+ */
 int mutt_buffy_check (int force)
 {
   BUFFY *tmp;
   struct stat sb;
   struct stat contex_sb;
   time_t t;
+  int check_stats = 0;
+#ifdef USE_SIDEBAR
+  short orig_new;
+  int orig_count, orig_unread, orig_flagged;
+#endif
 
   sb.st_size=0;
   contex_sb.st_dev=0;
@@ -411,17 +493,24 @@ int mutt_buffy_check (int force)
   t = time (NULL);
   if (!force && (t - BuffyTime < BuffyTimeout))
     return BuffyCount;
- 
+
+  if (option (OPTMAILCHECKSTATS) &&
+      (t - BuffyStatsTime >= BuffyCheckStatsInterval))
+  {
+    check_stats = 1;
+    BuffyStatsTime = t;
+  }
+
   BuffyTime = t;
   BuffyCount = 0;
   BuffyNotify = 0;
 
 #ifdef USE_IMAP
-  BuffyCount += imap_buffy_check (force);
+  BuffyCount += imap_buffy_check (force, check_stats);
 #endif
 
   /* check device ID and serial number instead of comparing paths */
-  if (!Context || Context->magic == M_IMAP || Context->magic == M_POP
+  if (!Context || Context->magic == MUTT_IMAP || Context->magic == MUTT_POP
       || stat (Context->path, &contex_sb) != 0)
   {
     contex_sb.st_dev=0;
@@ -430,12 +519,19 @@ int mutt_buffy_check (int force)
   
   for (tmp = Incoming; tmp; tmp = tmp->next)
   {
-    if (tmp->magic != M_IMAP)
+#ifdef USE_SIDEBAR
+    orig_new = tmp->new;
+    orig_count = tmp->msg_count;
+    orig_unread = tmp->msg_unread;
+    orig_flagged = tmp->msg_flagged;
+#endif
+
+    if (tmp->magic != MUTT_IMAP)
     {
       tmp->new = 0;
 #ifdef USE_POP
       if (mx_is_pop (tmp->path))
-	tmp->magic = M_POP;
+	tmp->magic = MUTT_POP;
       else
 #endif
       if (stat (tmp->path, &sb) != 0 || (S_ISREG(sb.st_mode) && sb.st_size == 0) ||
@@ -453,32 +549,39 @@ int mutt_buffy_check (int force)
     /* check to see if the folder is the currently selected folder
      * before polling */
     if (!Context || !Context->path ||
-	(( tmp->magic == M_IMAP || tmp->magic == M_POP )
+	(( tmp->magic == MUTT_IMAP || tmp->magic == MUTT_POP )
 	    ? mutt_strcmp (tmp->path, Context->path) :
 	      (sb.st_dev != contex_sb.st_dev || sb.st_ino != contex_sb.st_ino)))
     {
       switch (tmp->magic)
       {
-      case M_MBOX:
-      case M_MMDF:
-	if (buffy_mbox_hasnew (tmp, &sb) > 0)
-	  BuffyCount++;
-	break;
+        case MUTT_MBOX:
+        case MUTT_MMDF:
+          if (buffy_mbox_check (tmp, &sb, check_stats) > 0)
+            BuffyCount++;
+          break;
 
-      case M_MAILDIR:
-	if (buffy_maildir_hasnew (tmp) > 0)
-	  BuffyCount++;
-	break;
+        case MUTT_MAILDIR:
+          if (buffy_maildir_check (tmp, check_stats) > 0)
+            BuffyCount++;
+          break;
 
-      case M_MH:
-	mh_buffy(tmp);
-	if (tmp->new)
-	  BuffyCount++;
-	break;
+        case MUTT_MH:
+          if (mh_buffy (tmp, check_stats) > 0)
+            BuffyCount++;
+          break;
       }
     }
     else if (option(OPTCHECKMBOXSIZE) && Context && Context->path)
       tmp->size = (off_t) sb.st_size;	/* update the size of current folder */
+
+#ifdef USE_SIDEBAR
+    if ((orig_new != tmp->new) ||
+        (orig_count != tmp->msg_count) ||
+        (orig_unread != tmp->msg_unread) ||
+        (orig_flagged != tmp->msg_flagged))
+      SidebarNeedsRedraw = 1;
+#endif
 
     if (!tmp->new)
       tmp->notified = 0;
@@ -511,7 +614,8 @@ int mutt_buffy_list (void)
     strfcpy (path, tmp->path, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
     
-    if (!first && (COLS - 7 >= 0) && (pos + strlen (path) >= (size_t)COLS - 7))
+    if (!first && (MuttMessageWindow->cols >= 7) &&
+        (pos + strlen (path) >= (size_t)MuttMessageWindow->cols - 7))
       break;
     
     if (!first)

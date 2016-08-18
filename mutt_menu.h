@@ -25,6 +25,7 @@
 
 #include "keymap.h"
 #include "mutt_regex.h"
+#include "mutt_curses.h"
 
 #define REDRAW_INDEX		(1)
 #define REDRAW_MOTION		(1<<1)
@@ -34,8 +35,11 @@
 #define REDRAW_FULL		(1<<5)
 #define REDRAW_BODY		(1<<6)
 #define REDRAW_SIGWINCH		(1<<7)
+#ifdef USE_SIDEBAR
+#define REDRAW_SIDEBAR		(1<<8)
+#endif
 
-#define M_MODEFMT "-- Mutt: %s"
+#define MUTT_MODEFMT "-- Mutt: %s"
 
 typedef struct menu_t
 {
@@ -46,9 +50,13 @@ typedef struct menu_t
   int max;       /* the number of entries in the menu */
   int redraw;	/* when to redraw the screen */
   int menu;	/* menu definition for keymap entries. */
-  int offset;	/* which screen row to start the index */
+  int offset;  /* row offset within the window to start the index */
   int pagelen;	/* number of entries per screen */
   int tagprefix;
+  mutt_window_t *indexwin;
+  mutt_window_t *statuswin;
+  mutt_window_t *helpwin;
+  mutt_window_t *messagewin;
 
   /* Setting dialog != NULL overrides normal menu behavior. 
    * In dialog mode menubar is hidden and prompt keys are checked before
@@ -82,6 +90,9 @@ typedef struct menu_t
 void mutt_menu_init (void);
 void menu_jump (MUTTMENU *);
 void menu_redraw_full (MUTTMENU *);
+#ifdef USE_SIDEBAR
+void menu_redraw_sidebar (MUTTMENU *);
+#endif
 void menu_redraw_index (MUTTMENU *);
 void menu_redraw_status (MUTTMENU *);
 void menu_redraw_motion (MUTTMENU *);

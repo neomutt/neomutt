@@ -130,7 +130,7 @@ void rfc2231_decode_parameters (PARAMETER **headp)
       
       s = rfc2231_get_charset (p->value, charset, sizeof (charset));
       rfc2231_decode_one (p->value, s);
-      mutt_convert_string (&p->value, charset, Charset, M_ICONV_HOOK_FROM);
+      mutt_convert_string (&p->value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       mutt_filter_unprintable (&p->value);
 
       *last = p;
@@ -302,7 +302,7 @@ static void rfc2231_join_continuations (PARAMETER **head,
     if (value)
     {
       if (encoded)
-	mutt_convert_string (&value, charset, Charset, M_ICONV_HOOK_FROM);
+	mutt_convert_string (&value, charset, Charset, MUTT_ICONV_HOOK_FROM);
       *head = mutt_new_parameter ();
       (*head)->attribute = safe_strdup (attribute);
       (*head)->value = value;

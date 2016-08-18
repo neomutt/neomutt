@@ -234,7 +234,7 @@ static void be_edit_header (ENVELOPE *e, int force)
 {
   char tmp[HUGE_STRING];
 
-  move (LINES-1, 0);
+  mutt_window_move (MuttMessageWindow, 0, 0);
 
   addstr ("To: ");
   tmp[0] = 0;
@@ -242,7 +242,7 @@ static void be_edit_header (ENVELOPE *e, int force)
   rfc822_write_address (tmp, sizeof (tmp), e->to, 0);
   if (!e->to || force)
   {
-    if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 4, 0) == 0)
+    if (mutt_enter_string (tmp, sizeof (tmp), 4, 0) == 0)
     {
       rfc822_free_address (&e->to);
       e->to = mutt_parse_adrlist (e->to, tmp);
@@ -250,7 +250,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       mutt_addrlist_to_intl (e->to, NULL);	/* XXX - IDNA error reporting? */
       tmp[0] = 0;
       rfc822_write_address (tmp, sizeof (tmp), e->to, 1);
-      mvaddstr (LINES - 1, 4, tmp);
+      mutt_window_mvaddstr (MuttMessageWindow, 0, 4, tmp);
     }
   }
   else
@@ -264,7 +264,7 @@ static void be_edit_header (ENVELOPE *e, int force)
   {
     addstr ("Subject: ");
     strfcpy (tmp, e->subject ? e->subject: "", sizeof (tmp));
-    if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 9, 0) == 0)
+    if (mutt_enter_string (tmp, sizeof (tmp), 9, 0) == 0)
       mutt_str_replace (&e->subject, tmp);
     addch ('\n');
   }
@@ -275,7 +275,7 @@ static void be_edit_header (ENVELOPE *e, int force)
     tmp[0] = 0;
     mutt_addrlist_to_local (e->cc);
     rfc822_write_address (tmp, sizeof (tmp), e->cc, 0);
-    if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 4, 0) == 0)
+    if (mutt_enter_string (tmp, sizeof (tmp), 4, 0) == 0)
     {
       rfc822_free_address (&e->cc);
       e->cc = mutt_parse_adrlist (e->cc, tmp);
@@ -283,7 +283,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       tmp[0] = 0;
       mutt_addrlist_to_intl (e->cc, NULL);
       rfc822_write_address (tmp, sizeof (tmp), e->cc, 1);
-      mvaddstr (LINES - 1, 4, tmp);
+      mutt_window_mvaddstr (MuttMessageWindow, 0, 4, tmp);
     }
     else
       mutt_addrlist_to_intl (e->cc, NULL);
@@ -296,7 +296,7 @@ static void be_edit_header (ENVELOPE *e, int force)
     tmp[0] = 0;
     mutt_addrlist_to_local (e->bcc);
     rfc822_write_address (tmp, sizeof (tmp), e->bcc, 0);
-    if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 5, 0) == 0)
+    if (mutt_enter_string (tmp, sizeof (tmp), 5, 0) == 0)
     {
       rfc822_free_address (&e->bcc);
       e->bcc = mutt_parse_adrlist (e->bcc, tmp);
@@ -304,7 +304,7 @@ static void be_edit_header (ENVELOPE *e, int force)
       mutt_addrlist_to_intl (e->bcc, NULL);
       tmp[0] = 0;
       rfc822_write_address (tmp, sizeof (tmp), e->bcc, 1);
-      mvaddstr (LINES - 1, 5, tmp);
+      mutt_window_mvaddstr (MuttMessageWindow, 0, 5, tmp);
     }
     else
       mutt_addrlist_to_intl (e->bcc, NULL);
@@ -333,7 +333,7 @@ int mutt_builtin_editor (const char *path, HEADER *msg, HEADER *cur)
   tmp[0] = 0;
   while (!done)
   {
-    if (mutt_enter_string (tmp, sizeof (tmp), LINES-1, 0, 0) == -1)
+    if (mutt_enter_string (tmp, sizeof (tmp), 0, 0) == -1)
     {
       tmp[0] = 0;
       continue;

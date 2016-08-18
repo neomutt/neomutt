@@ -20,32 +20,34 @@
 #define _MAILBOX_H
 
 /* flags for mutt_open_mailbox() */
-#define M_NOSORT	(1<<0) /* do not sort the mailbox after opening it */
-#define M_APPEND	(1<<1) /* open mailbox for appending messages */
-#define M_READONLY	(1<<2) /* open in read-only mode */
-#define M_QUIET		(1<<3) /* do not print any messages */
-#define M_NEWFOLDER	(1<<4) /* create a new folder - same as M_APPEND, but uses
-				* safe_fopen() for mbox-style folders.
-				*/
+#define MUTT_NOSORT     (1<<0) /* do not sort the mailbox after opening it */
+#define MUTT_APPEND     (1<<1) /* open mailbox for appending messages */
+#define MUTT_READONLY   (1<<2) /* open in read-only mode */
+#define MUTT_QUIET      (1<<3) /* do not print any messages */
+#define MUTT_NEWFOLDER  (1<<4) /* create a new folder - same as MUTT_APPEND, but uses
+                                * safe_fopen() with mode "w" for mbox-style folders.
+                                * This will truncate an existing file. */
+#define MUTT_PEEK       (1<<5) /* revert atime back after taking a look (if applicable) */
+#define MUTT_APPENDNEW  (1<<6) /* set in mx_open_mailbox_append if the mailbox doesn't
+                                * exist. used by maildir/mh to create the mailbox. */
 
 /* mx_open_new_message() */
-#define M_ADD_FROM	(1<<0)	/* add a From_ line */
-#define M_SET_DRAFT	(1<<1)	/* set the message draft flag */
+#define MUTT_ADD_FROM   (1<<0)  /* add a From_ line */
+#define MUTT_SET_DRAFT  (1<<1)  /* set the message draft flag */
 
 /* return values from mx_check_mailbox() */
 enum
 {
-  M_NEW_MAIL = 1,	/* new mail received in mailbox */
-  M_LOCKED,		/* couldn't lock the mailbox */
-  M_REOPENED,		/* mailbox was reopened */
-  M_FLAGS               /* nondestructive flags change (IMAP) */
+  MUTT_NEW_MAIL = 1,    /* new mail received in mailbox */
+  MUTT_LOCKED,          /* couldn't lock the mailbox */
+  MUTT_REOPENED,        /* mailbox was reopened */
+  MUTT_FLAGS            /* nondestructive flags change (IMAP) */
 };
 
-typedef struct
+typedef struct _message
 {
   FILE *fp;	/* pointer to the message data */
   char *path;	/* path to temp file */
-  short magic;	/* type of mailbox this message belongs to */
   short write;	/* nonzero if message is open for writing */
   struct {
     unsigned read : 1;
@@ -66,10 +68,10 @@ void mx_fastclose_mailbox (CONTEXT *);
 int mx_close_mailbox (CONTEXT *, int *);
 int mx_sync_mailbox (CONTEXT *, int *);
 int mx_commit_message (MESSAGE *, CONTEXT *);
-int mx_close_message (MESSAGE **);
+int mx_close_message (CONTEXT *, MESSAGE **);
 int mx_get_magic (const char *);
 int mx_set_magic (const char *);
-int mx_check_mailbox (CONTEXT *, int *, int);
+int mx_check_mailbox (CONTEXT *, int *);
 #ifdef USE_IMAP
 int mx_is_imap (const char *);
 #endif

@@ -94,6 +94,14 @@ static const struct mapping_t Fields[] =
   { "underline",	MT_COLOR_UNDERLINE },
   { "index",		MT_COLOR_INDEX },
   { "prompt",		MT_COLOR_PROMPT },
+#ifdef USE_SIDEBAR
+  { "sidebar_divider",	MT_COLOR_DIVIDER },
+  { "sidebar_flagged",	MT_COLOR_FLAGGED },
+  { "sidebar_highlight",MT_COLOR_HIGHLIGHT },
+  { "sidebar_indicator",MT_COLOR_SB_INDICATOR },
+  { "sidebar_new",	MT_COLOR_NEW },
+  { "sidebar_spoolfile",MT_COLOR_SB_SPOOLFILE },
+#endif
   { NULL,		0 }
 };
 
@@ -146,6 +154,9 @@ void ci_start_color (void)
   ColorDefs[MT_COLOR_INDICATOR] = A_REVERSE;
   ColorDefs[MT_COLOR_SEARCH] = A_REVERSE;
   ColorDefs[MT_COLOR_MARKERS] = A_REVERSE;
+#ifdef USE_SIDEBAR
+  ColorDefs[MT_COLOR_HIGHLIGHT] = A_UNDERLINE;
+#endif
   /* special meaning: toggle the relevant attribute */
   ColorDefs[MT_COLOR_BOLD] = 0;
   ColorDefs[MT_COLOR_UNDERLINE] = 0;
@@ -549,7 +560,7 @@ add_pattern (COLOR_LINE **top, const char *s, int sensitive,
 
       strfcpy(buf, NONULL(s), sizeof(buf));
       mutt_check_simple (buf, sizeof (buf), NONULL(SimpleSearch));
-      if((tmp->color_pattern = mutt_pattern_comp (buf, M_FULL_MSG, err)) == NULL)
+      if((tmp->color_pattern = mutt_pattern_comp (buf, MUTT_FULL_MSG, err)) == NULL)
       {
 	mutt_free_color_line(&tmp, 1);
 	return -1;

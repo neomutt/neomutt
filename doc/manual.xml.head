@@ -405,6 +405,15 @@ attach to a message, select multiple files to attach and many more.
 
 </sect2>
 
+<sect2 id="intro-sidebar">
+  <title>Sidebar</title>
+  <para>
+    The Sidebar shows a list of all your mailboxes.  The list can be
+    turned on and off, it can be themed and the list style can be
+    configured.
+  </para>
+</sect2>
+
 <sect2 id="intro-help">
 <title>Help</title>
 
@@ -6062,6 +6071,14 @@ linkend="imap-idle">$imap_idle</link> option is set, it'll use the IMAP
 IDLE extension if advertised by the server.
 </para>
 
+<para>
+The <link linkend="mail-check-recent">$mail_check_recent</link>
+option changes whether Mutt will notify you of new mail in an
+already visited mailbox.  When set (the default) it will only notify
+you of new mail received since the last time you opened the mailbox.
+When unset, Mutt will notify you of any new mail in the mailbox.
+</para>
+
 </sect2>
 
 <sect2 id="new-mail-polling">
@@ -6106,6 +6123,26 @@ the mailboxes list containing new mail (if any), pressing
 mail.  The (by default unbound) function
 <literal>&lt;next-unread-mailbox&gt;</literal> in the index can be used
 to immediately open the next folder with unread mail (if any).
+</para>
+
+</sect2>
+
+<sect2 id="calc-mailbox-counts">
+<title>Calculating Mailbox Message Counts</title>
+
+<para>
+If <link linkend="mail-check-stats">$mail_check_stats</link> is set,
+Mutt will periodically calculate the unread, flagged, and total
+message counts for each mailbox watched by the
+<command>mailboxes</command> command.  This calculation takes place at
+the same time as new mail polling, but is controlled by a separate
+timer: <link
+linkend="mail-check-stats-interval">$mail_check_stats_interval</link>.
+</para>
+
+<para>
+The sidebar can display these message counts.  See <link
+linkend="sidebar-format">$sidebar_format</link>.
 </para>
 
 </sect2>
@@ -6771,6 +6808,17 @@ This will cause lynx to format the <literal>text/html</literal> output
 as <literal>text/plain</literal> and Mutt will use your standard pager
 to display the results.
 </para>
+
+<para>
+Mutt will set the <literal>COLUMNS</literal> environment variable to
+the width of the pager.  Some programs make use of this environment
+variable automatically.  Others provide a command line argument that
+can use this to set the output width:
+</para>
+
+<screen>
+text/html; lynx -dump -width ${COLUMNS:-80} %s; copiousoutput
+</screen>
 
 <para>
 Note that when using the built-in pager, <emphasis>only</emphasis>
@@ -8081,6 +8129,288 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="sidebar">
+  <title>Sidebar</title>
+  <subtitle>Overview of mailboxes</subtitle>
+
+  <sect2 id="sidebar-intro">
+    <title>Introduction</title>
+
+    <para>
+      The Sidebar shows a list of all your mailboxes.  The list can be
+      turned on and off, it can be themed and the list style can be
+      configured.
+    </para>
+  </sect2>
+
+  <sect2 id="sidebar-variables">
+    <title>Variables</title>
+
+    <table id="table-sidebar-variables">
+      <title>Sidebar Variables</title>
+      <tgroup cols="3">
+	<thead>
+	  <row>
+	    <entry>Name</entry>
+	    <entry>Type</entry>
+	    <entry>Default</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry><literal>sidebar_delim_chars</literal></entry>
+	    <entry>string</entry>
+	    <entry><literal>/.</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_divider_char</literal></entry>
+	    <entry>string</entry>
+	    <entry><literal>|</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_folder_indent</literal></entry>
+	    <entry>boolean</entry>
+	    <entry><literal>no</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_format</literal></entry>
+	    <entry>string</entry>
+	    <entry><literal>%B%*  %n</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_indent_string</literal></entry>
+	    <entry>string</entry>
+	    <entry><literal>&nbsp;&nbsp;</literal> (two spaces)</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_new_mail_only</literal></entry>
+	    <entry>boolean</entry>
+	    <entry><literal>no</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_next_new_wrap</literal></entry>
+	    <entry>boolean</entry>
+	    <entry><literal>no</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_short_path</literal></entry>
+	    <entry>boolean</entry>
+	    <entry><literal>no</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_sort_method</literal></entry>
+	    <entry>enum</entry>
+	    <entry><literal>unsorted</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_visible</literal></entry>
+	    <entry>boolean</entry>
+	    <entry><literal>no</literal></entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_whitelist</literal></entry>
+	    <entry>list</entry>
+	    <entry>(empty)</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_width</literal></entry>
+	    <entry>number</entry>
+	    <entry><literal>20</literal></entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="sidebar-functions">
+    <title>Functions</title>
+
+    <para>
+      Sidebar adds the following functions to Mutt.
+      By default, none of them are bound to keys.
+    </para>
+
+    <table id="table-sidebar-functions">
+      <title>Sidebar Functions</title>
+      <tgroup cols="3">
+	<thead>
+	  <row>
+	    <entry>Menus</entry>
+	    <entry>Function</entry>
+	    <entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-next&gt;</literal></entry>
+	    <entry>Move the highlight to next mailbox</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-next-new&gt;</literal></entry>
+	    <entry>Move the highlight to next mailbox with new mail</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-open&gt;</literal></entry>
+	    <entry>Open highlighted mailbox</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-page-down&gt;</literal></entry>
+	    <entry>Scroll the Sidebar down 1 page</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-page-up&gt;</literal></entry>
+	    <entry>Scroll the Sidebar up 1 page</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-prev&gt;</literal></entry>
+	    <entry>Move the highlight to previous mailbox</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-prev-new&gt;</literal></entry>
+	    <entry>Move the highlight to previous mailbox with new mail</entry>
+	  </row>
+	  <row>
+	    <entry>index,pager</entry>
+	    <entry><literal>&lt;sidebar-toggle-visible&gt;</literal></entry>
+	    <entry>Make the Sidebar (in)visible</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="sidebar-commands">
+    <title>Commands</title>
+    <cmdsynopsis>
+      <command>sidebar_whitelist<anchor id="sidebar-whitelist"/></command>
+      <arg choice="plain">
+	<replaceable class="parameter">mailbox</replaceable>
+      </arg>
+      <arg choice="opt" rep="repeat">
+	<replaceable class="parameter">mailbox</replaceable>
+      </arg>
+    </cmdsynopsis>
+  </sect2>
+
+  <sect2 id="sidebar-colors">
+    <title>Colors</title>
+
+    <table id="table-sidebar-colors">
+      <title>Sidebar Colors</title>
+      <tgroup cols="3">
+	<thead>
+	  <row>
+	    <entry>Name</entry>
+	    <entry>Default Color</entry>
+	    <entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry><literal>sidebar_divider</literal></entry>
+	    <entry>default</entry>
+	    <entry>The dividing line between the Sidebar and the Index/Pager panels</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_flagged</literal></entry>
+	    <entry>default</entry>
+	    <entry>Mailboxes containing flagged mail</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_highlight</literal></entry>
+	    <entry>underline</entry>
+	    <entry>Cursor to select a mailbox</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_indicator</literal></entry>
+	    <entry>mutt <literal>indicator</literal></entry>
+	    <entry>The mailbox open in the Index panel</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_new</literal></entry>
+	    <entry>default</entry>
+	    <entry>Mailboxes containing new mail</entry>
+	  </row>
+	  <row>
+	    <entry><literal>sidebar_spoolfile</literal></entry>
+	    <entry>default</entry>
+	    <entry>Mailbox that receives incoming mail</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+
+    <para>
+    If the <literal>sidebar_indicator</literal> color isn't set, then the default Mutt
+    indicator color will be used (the color used in the index panel).
+    </para>
+  </sect2>
+
+  <sect2 id="sidebar-sort">
+    <title>Sort</title>
+
+    <table id="table-sidebar-sort">
+      <title>Sidebar Sort</title>
+      <tgroup cols="2">
+	<thead>
+	  <row>
+	    <entry>Sort</entry>
+	    <entry>Description</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <entry><literal>alpha</literal></entry>
+	    <entry>Alphabetically by path</entry>
+	  </row>
+	  <row>
+	    <entry><literal>count</literal></entry>
+	    <entry>Total number of messages</entry>
+	  </row>
+	  <row>
+	    <entry><literal>flagged</literal></entry>
+	    <entry>Number of flagged messages</entry>
+	  </row>
+	  <row>
+	    <entry><literal>name</literal></entry>
+	    <entry>Alphabetically by path</entry>
+	  </row>
+	  <row>
+	    <entry><literal>new</literal></entry>
+	    <entry>Number of new messages</entry>
+	  </row>
+	  <row>
+	    <entry><literal>path</literal></entry>
+	    <entry>Alphabetically by path</entry>
+	  </row>
+	  <row>
+	    <entry><literal>unsorted</literal></entry>
+	    <entry>Do not resort the paths</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+
+  <sect2 id="sidebar-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+      <listitem><para><link linkend="patterns">Patterns</link></para></listitem>
+      <listitem><para><link linkend="color">Color command</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
@@ -9235,6 +9565,17 @@ The following are the commands understood by Mutt:
 </cmdsynopsis>
 </listitem>
 
+<listitem>
+<cmdsynopsis>
+<command><link linkend="sidebar-whitelist">sidebar_whitelist</link></command>
+<arg choice="plain">
+<replaceable class="parameter">item</replaceable>
+</arg>
+<arg choice="plain">
+<replaceable class="parameter">command</replaceable>
+</arg>
+</cmdsynopsis>
+</listitem>
 <listitem>
 <cmdsynopsis>
 <command><link linkend="source">source</link></command>

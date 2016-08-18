@@ -44,7 +44,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
 
   /* Defaults */
   acct->flags = 0;
-  acct->type = M_ACCT_TYPE_POP;
+  acct->type = MUTT_ACCT_TYPE_POP;
   acct->port = 0;
 
   c = safe_strdup (path);
@@ -60,7 +60,7 @@ int pop_parse_path (const char* path, ACCOUNT* acct)
   }
 
   if (url.scheme == U_POPS)
-    acct->flags |= M_ACCT_SSL;
+    acct->flags |= MUTT_ACCT_SSL;
 
   service = getservbyname (url.scheme == U_POP ? "pop3" : "pop3s", "tcp");
   if (!acct->port) {
@@ -296,7 +296,7 @@ int pop_open_connection (POP_DATA *pop_data)
       if (ret == -1)
 	return -2;
       pop_data->use_stls = 1;
-      if (ret == M_YES)
+      if (ret == MUTT_YES)
 	pop_data->use_stls = 2;
     }
     if (pop_data->use_stls == 2)
@@ -418,7 +418,7 @@ void pop_logout (CONTEXT *ctx)
 */
 int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
 {
-  int dbg = M_SOCK_LOG_CMD;
+  int dbg = MUTT_SOCK_LOG_CMD;
   char *c;
 
   if (pop_data->status != POP_CONNECTED)
@@ -428,8 +428,8 @@ int pop_query_d (POP_DATA *pop_data, char *buf, size_t buflen, char *msg)
     /* print msg instead of real command */
     if (msg)
     {
-      dbg = M_SOCK_LOG_FULL;
-      dprint (M_SOCK_LOG_CMD, (debugfile, "> %s", msg));
+      dbg = MUTT_SOCK_LOG_FULL;
+      dprint (MUTT_SOCK_LOG_CMD, (debugfile, "> %s", msg));
     }
 #endif
 
@@ -479,7 +479,7 @@ int pop_fetch_data (POP_DATA *pop_data, char *query, progress_t *progressbar,
 
   FOREVER
   {
-    chunk = mutt_socket_readln_d (buf, sizeof (buf), pop_data->conn, M_SOCK_LOG_HDR);
+    chunk = mutt_socket_readln_d (buf, sizeof (buf), pop_data->conn, MUTT_SOCK_LOG_HDR);
     if (chunk < 0)
     {
       pop_data->status = POP_DISCONNECTED;
@@ -569,7 +569,7 @@ int pop_reconnect (CONTEXT *ctx)
       int i;
 
       mutt_progress_init (&progressbar, _("Verifying message indexes..."),
-			  M_PROGRESS_SIZE, NetInc, 0);
+			  MUTT_PROGRESS_SIZE, NetInc, 0);
 
       for (i = 0; i < ctx->msgcount; i++)
 	ctx->hdrs[i]->refno = -1;
@@ -590,7 +590,7 @@ int pop_reconnect (CONTEXT *ctx)
       return -1;
 
     if (query_quadoption (OPT_POPRECONNECT,
-		_("Connection lost. Reconnect to POP server?")) != M_YES)
+		_("Connection lost. Reconnect to POP server?")) != MUTT_YES)
       return -1;
   }
 }
