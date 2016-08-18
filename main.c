@@ -549,6 +549,7 @@ static void start_curses (void)
   keypad (stdscr, TRUE);
   cbreak ();
   noecho ();
+  nonl ();
 #if HAVE_TYPEAHEAD
   typeahead (-1);       /* simulate smooth scrolling */
 #endif
@@ -608,7 +609,7 @@ int main (int argc, char **argv)
 
   mutt_error = mutt_nocurses_error;
   mutt_message = mutt_nocurses_error;
-  SRAND (time (NULL));
+  (void)mutt_rand32();
   umask (077);
 
   memset (Options, 0, sizeof (Options));

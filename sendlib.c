@@ -73,8 +73,6 @@ const char B64Chars[64] = {
   '8', '9', '+', '/'
 };
 
-static char MsgIdPfx = 'A';
-
 static void transform_to_7bit (BODY *a, FILE *fpin);
 
 static void encode_quoted (FGETCONV * fc, FILE *fout, int istext)
@@ -480,18 +478,12 @@ int mutt_write_mime_body (BODY *a, FILE *f)
 
 #undef write_as_text_part
 
-#define BOUNDARYLEN 16
 void mutt_generate_boundary (PARAMETER **parm)
 {
-  char rs[BOUNDARYLEN + 1];
-  char *p = rs;
-  int i;
+  char rs[MUTT_RANDTAG_LEN + 1];
 
-  rs[BOUNDARYLEN] = 0;
-  for (i=0;i<BOUNDARYLEN;i++)
-    *p++ = B64Chars[LRAND() % sizeof (B64Chars)];
-  *p = 0;
-
+  mutt_rand_base32(rs, sizeof(rs) - 1);
+  rs[MUTT_RANDTAG_LEN] = 0;
   mutt_set_parameter ("boundary", rs, parm);
 }
 
@@ -2136,16 +2128,18 @@ char *mutt_gen_msgid (void)
   time_t now;
   struct tm *tm;
   const char *fqdn;
+  unsigned char rndid[MUTT_RANDTAG_LEN + 1];
 
+  mutt_rand_base32(rndid, sizeof(rndid) - 1);
+  rndid[MUTT_RANDTAG_LEN] = 0;
   now = time (NULL);
   tm = gmtime (&now);
   if(!(fqdn = mutt_fqdn(0)))
     fqdn = NONULL(Hostname);
 
-  snprintf (buf, sizeof (buf), "<%d%02d%02d%02d%02d%02d.G%c%u@%s>",
+  snprintf (buf, sizeof (buf), "<%d%02d%02d%02d%02d%02d.%s@%s>",
 	    tm->tm_year + 1900, tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
-	    tm->tm_min, tm->tm_sec, MsgIdPfx, (unsigned int)getpid (), fqdn);
-  MsgIdPfx = (MsgIdPfx == 'Z') ? 'A' : MsgIdPfx + 1;
+	    tm->tm_min, tm->tm_sec, rndid, fqdn);
   return (safe_strdup (buf));
 }
 
@@ -2562,9 +2556,12 @@ static int _mutt_bounce_message (FILE *fp, HEADER *h, ADDRESS *to, const char *r
     mutt_copy_header (fp, h, f, ch_flags, NULL);
     fputc ('\n', f);
     mutt_copy_bytes (fp, f, h->content->length);
-    safe_fclose (&f);
     FREE (&msgid_str);
-
+    if (safe_fclose (&f) != 0) {
+      mutt_perror(tempfile);
+      unlink(tempfile);
+      return -1;
+    }
 #if USE_SMTP
     if (SmtpUrl)
       ret = mutt_smtp_send (env_from, to, NULL, NULL, tempfile,

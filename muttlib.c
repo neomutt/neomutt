@@ -37,6 +37,9 @@
 #include <string.h>
 #include <ctype.h>
 #include <unistd.h>
+#ifdef HAVE_SYS_SYSCALL_H
+#include <sys/syscall.h>
+#endif
 #include <stdlib.h>
 #include <sys/wait.h>
 #include <errno.h>
@@ -773,12 +776,73 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   mutt_free_envelope(extra);
 }
 
+static FILE *frandom;
+
+void mutt_randbuf(void *out, size_t len)
+{
+  if (len > 1048576) {
+    mutt_error (_("mutt_randbuf len=%zu"), len);
+    exit(1);
+  }
+  /* XXX switch to HAVE_GETRANDOM and getrandom() in about 2017 */
+#if defined(SYS_getrandom) && defined(__linux__)
+  long ret;
+  do {
+    ret = syscall(SYS_getrandom, out, len, 0, 0, 0, 0);
+  } while ((ret == -1) && (errno == EINTR));
+  if (ret == len) return;
+  /* let's try urandom in case we're on an old kernel, or the user has
+   * configured selinux, seccomp or something to not allow getrandom */
+#endif
+  if (frandom == NULL) {
+    frandom = fopen("/dev/urandom", "rb");
+    if (frandom == NULL) {
+      mutt_error (_("open /dev/urandom: %s"), strerror(errno));
+      exit(1);
+    }
+    setbuf(frandom, NULL);
+  }
+  if (fread(out, 1, len, frandom) != len) {
+    mutt_error (_("read /dev/urandom: %s"), strerror(errno));
+    exit(1);
+  }
+}
+
+static const unsigned char base32[] = "abcdefghijklmnopqrstuvwxyz234567";
+
+void mutt_rand_base32(void *out, size_t len)
+{
+  size_t pos;
+  uint8_t *p = out;
+
+  mutt_randbuf(p, len);
+  for (pos = 0; pos < len; pos++)
+    p[pos] = base32[p[pos] % 32];
+}
+
+uint32_t mutt_rand32(void)
+{
+  uint32_t ret;
+
+  mutt_randbuf(&ret, sizeof(ret));
+  return ret;
+}
+
+uint64_t mutt_rand64(void)
+{
+  uint64_t ret;
+
+  mutt_randbuf(&ret, sizeof(ret));
+  return ret;
+}
+
+
 void _mutt_mktemp (char *s, size_t slen, const char *prefix, const char *suffix,
                    const char *src, int line)
 {
-  size_t n = snprintf (s, slen, "%s/%s-%s-%d-%d-%ld%ld%s%s",
+  size_t n = snprintf (s, slen, "%s/%s-%s-%d-%d-%" PRIu64 "%s%s",
       NONULL (Tempdir), NONULL (prefix), NONULL (Hostname),
-      (int) getuid (), (int) getpid (), random (), random (),
+      (int) getuid (), (int) getpid (), mutt_rand64(),
       suffix ? "." : "", NONULL (suffix));
   if (n >= slen)
     dprint (1, (debugfile, "%s:%d: ERROR: insufficient buffer space to hold temporary filename! slen=%zu but need %zu\n",

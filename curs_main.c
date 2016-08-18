@@ -123,7 +123,9 @@ short mutt_ts_capability(void)
 {
   char *term = getenv("TERM");
   char *tcaps;
+#ifdef HAVE_USE_EXTENDED_NAMES
   int tcapi;
+#endif
   char **termp;
   char *known[] = {
     "color-xterm",

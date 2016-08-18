@@ -319,10 +319,11 @@ main ()
 AC_HEADER_STDC
 
 AC_CHECK_HEADERS(stdarg.h sys/ioctl.h ioctl.h sysexits.h)
-AC_CHECK_HEADERS(sys/time.h sys/resource.h)
+AC_CHECK_HEADERS(sys/time.h sys/resource.h sys/syscall.h)
 AC_CHECK_HEADERS(unix.h)
 
 AC_CHECK_FUNCS(setrlimit getsid)
+AC_CHECK_FUNCS(fgets_unlocked fgetc_unlocked)
 
 AC_MSG_CHECKING(for sig_atomic_t in signal.h)
 AC_EGREP_HEADER(sig_atomic_t,signal.h,
@@ -364,7 +365,7 @@ AC_CHECK_TYPE(ssize_t, int)
 
 AC_CHECK_FUNCS(fgetpos memmove setegid srand48 strerror)
 
-AC_REPLACE_FUNCS([setenv strcasecmp strdup strsep strtok_r wcscasecmp])
+AC_REPLACE_FUNCS([setenv strcasecmp strdup strndup strnlen strsep strtok_r wcscasecmp])
 AC_REPLACE_FUNCS([strcasestr mkdtemp])
 
 AC_CHECK_FUNC(getopt)

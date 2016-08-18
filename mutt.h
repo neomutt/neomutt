@@ -52,6 +52,11 @@
 #include <limits.h>
 #endif
 
+/* PATH_MAX is undefined on the hurd */
+#ifndef PATH_MAX
+#define PATH_MAX _POSIX_PATH_MAX
+#endif
+
 #include <pwd.h>
 #include <grp.h>
 
@@ -64,6 +69,14 @@
 #  undef MB_LEN_MAX
 # endif
 # define MB_LEN_MAX 16
+#endif
+
+#ifdef HAVE_FGETS_UNLOCKED
+# define fgets fgets_unlocked
+#endif
+
+#ifdef HAVE_FGETC_UNLOCKED
+# define fgetc fgetc_unlocked
 #endif
 
 /* nifty trick I stole from ELM 2.5alpha. */

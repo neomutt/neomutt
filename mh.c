@@ -355,8 +355,8 @@ static int mh_mkstemp (CONTEXT * dest, FILE ** fp, char **tgt)
   omask = umask (mh_umask (dest));
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%d",
-	      dest->path, NONULL (Hostname), (int) getpid (), Counter++);
+    snprintf (path, _POSIX_PATH_MAX, "%s/.mutt-%s-%d-%" PRIu64,
+	      dest->path, NONULL (Hostname), (int) getpid (), mutt_rand64());
     if ((fd = open (path, O_WRONLY | O_EXCL | O_CREAT, 0666)) == -1)
     {
       if (errno != EEXIST)
@@ -1486,9 +1486,9 @@ static int maildir_open_new_message (MESSAGE * msg, CONTEXT * dest, HEADER * hdr
   omask = umask (mh_umask (dest));
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.%u_%d.%s%s",
-	      dest->path, subdir, (long long)time (NULL), (unsigned int)getpid (),
-	      Counter++, NONULL (Hostname), suffix);
+    snprintf (path, _POSIX_PATH_MAX, "%s/tmp/%s.%lld.R%" PRIu64 ".%s%s",
+	      dest->path, subdir, (long long)time (NULL), mutt_rand64(),
+              NONULL (Hostname), suffix);
 
     dprint (2, (debugfile, "maildir_open_new_message (): Trying %s.\n",
 		path));
@@ -1572,8 +1572,8 @@ static int _maildir_commit_message (CONTEXT * ctx, MESSAGE * msg, HEADER * hdr)
   /* construct a new file name. */
   FOREVER
   {
-    snprintf (path, _POSIX_PATH_MAX, "%s/%lld.%u_%d.%s%s", subdir,
-	      (long long)time (NULL), (unsigned int)getpid (), Counter++,
+    snprintf (path, _POSIX_PATH_MAX, "%s/%lld.R%" PRIu64 ".%s%s", subdir,
+	      (long long)time (NULL), mutt_rand64(),
 	      NONULL (Hostname), suffix);
     snprintf (full, _POSIX_PATH_MAX, "%s/%s", ctx->path, path);
 
