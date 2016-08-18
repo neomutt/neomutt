@@ -424,54 +424,60 @@ void mutt_progress_init (progress_t* progress, const char *msg,
  * @percent: %age complete
  * @fmt:     printf(1)-like formatting string
  * @...:     Arguments to formatting string
- *
  */
 static void
 message_bar (int percent, const char *fmt, ...)
 {
-	va_list ap;
-	char buf[STRING], buf2[STRING];
-	int w = percent * COLS / 100;
-	size_t l;
+  va_list ap;
+  char buf[STRING], buf2[STRING];
+  int w = percent * COLS / 100;
+  size_t l;
 
-	va_start (ap, fmt);
-	vsnprintf (buf, sizeof (buf), fmt, ap);
-	l = mutt_strwidth (buf);
-	va_end (ap);
+  va_start (ap, fmt);
+  vsnprintf (buf, sizeof (buf), fmt, ap);
+  l = mutt_strwidth (buf);
+  va_end (ap);
 
-	mutt_format_string (buf2, sizeof (buf2), 0, COLS-2, FMT_LEFT, 0, buf, sizeof (buf), 0);
+  mutt_format_string (buf2, sizeof (buf2), 0, COLS-2, FMT_LEFT, 0, buf, sizeof (buf), 0);
 
-	move (LINES - 1, 0);
+  move (LINES - 1, 0);
 
-	if (ColorDefs[MT_COLOR_PROGRESS] == 0) {
-		addstr (buf2);
-	} else {
-		if (l < w) {
-			/* The string fits within the colour bar */
-			SETCOLOR(MT_COLOR_PROGRESS);
-			addstr (buf2);
-			w -= l;
-			while (w--) {
-				addch (' ');
-			}
-			SETCOLOR(MT_COLOR_NORMAL);
-		} else {
-			/* The string is too long for the colour bar */
-			char ch;
-			int off = mutt_wstr_trunc (buf2, sizeof (buf2), w, NULL);
+  if (ColorDefs[MT_COLOR_PROGRESS] == 0)
+  {
+    addstr (buf2);
+  }
+  else
+  {
+    if (l < w)
+    {
+      /* The string fits within the colour bar */
+      SETCOLOR(MT_COLOR_PROGRESS);
+      addstr (buf2);
+      w -= l;
+      while (w--)
+      {
+        addch (' ');
+      }
+      SETCOLOR(MT_COLOR_NORMAL);
+    }
+    else
+    {
+      /* The string is too long for the colour bar */
+      char ch;
+      int off = mutt_wstr_trunc (buf2, sizeof (buf2), w, NULL);
 
-			ch = buf2[off];
-			buf2[off] = 0;
-			SETCOLOR(MT_COLOR_PROGRESS);
-			addstr (buf2);
-			buf2[off] = ch;
-			SETCOLOR(MT_COLOR_NORMAL);
-			addstr (&buf2[off]);
-		}
-	}
+      ch = buf2[off];
+      buf2[off] = 0;
+      SETCOLOR(MT_COLOR_PROGRESS);
+      addstr (buf2);
+      buf2[off] = ch;
+      SETCOLOR(MT_COLOR_NORMAL);
+      addstr (&buf2[off]);
+    }
+  }
 
-	clrtoeol();
-	mutt_refresh();
+  clrtoeol();
+  mutt_refresh();
 }
 
 void mutt_progress_update (progress_t* progress, long pos, int percent)
