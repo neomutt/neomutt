@@ -336,7 +336,7 @@ static void mx_unlink_empty (const char *path)
 /* try to figure out what type of mailbox ``path'' is
  *
  * return values:
- *	M_*	mailbox type
+ *	MUTT_*	mailbox type
  *	0	not a mailbox
  *	-1	error
  */

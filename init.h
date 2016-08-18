@@ -2813,6 +2813,11 @@ struct option_t MuttVars[] = {
   ** \fC<sidebar-prev-new>\fP command is similarly affected, wrapping around to
   ** the end of the list.
   */
+  { "sidebar_on_right", DT_BOOL, R_BOTH|R_REFLOW, UL OPTSIDEBARONRIGHT, 0 },
+  /*
+  ** .pp
+  ** When set, the sidebar will appear on the right-hand side of the screen.
+  */
   { "sidebar_short_path", DT_BOOL, R_SIDEBAR, OPTSIDEBARSHORTPATH, 0 },
   /*
   ** .pp

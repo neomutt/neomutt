@@ -11,6 +11,7 @@ patch-nested-if-neomutt
 patch-new-mail-neomutt
 patch-progress-neomutt
 patch-quasi-delete-neomutt
+patch-sidebar-neomutt
 patch-skip-quoted-neomutt
 patch-smime-encrypt-self-neomutt
 patch-status-color-neomutt

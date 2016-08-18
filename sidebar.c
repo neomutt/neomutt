@@ -202,7 +202,7 @@ static const char *cb_format_str(char *dest, size_t destlen, size_t col, int col
  * @buflen:  Buffer length
  * @width:   Desired width in screen cells
  * @box:     Mailbox name
- * @b:       Mailbox object
+ * @sbe:     Mailbox object
  *
  * Take all the relevant mailbox data and the desired screen width and then get
  * mutt_FormatString to do the actual work. mutt_FormatString will callback to
@@ -487,10 +487,17 @@ static int draw_divider (int num_rows, int num_cols)
 
   SETCOLOR(MT_COLOR_DIVIDER);
 
+  int col;
+  if (option (OPTSIDEBARONRIGHT)) {
+    col = 0;
+  } else {
+    col = SidebarWidth - delim_len;
+  }
+
   int i;
   for (i = 0; i < num_rows; i++)
   {
-    mutt_window_move (MuttSidebarWindow, i, SidebarWidth - delim_len);	//RAR 0 for rhs
+    mutt_window_move (MuttSidebarWindow, i, col);
     addstr (NONULL(SidebarDividerChar));
   }
 
@@ -501,21 +508,26 @@ static int draw_divider (int num_rows, int num_cols)
  * fill_empty_space - Wipe the remaining Sidebar space
  * @first_row:  Window line to start (0-based)
  * @num_rows:   Number of rows to fill
- * @width:      Width of the Sidebar (minus the divider)
+ * @div_width:  Width in screen characters taken by the divider
+ * @num_cols:   Number of columns to fill
  *
  * Write spaces over the area the sidebar isn't using.
  */
-static void fill_empty_space (int first_row, int num_rows, int width)
+static void fill_empty_space (int first_row, int num_rows, int div_width, int num_cols)
 {
   /* Fill the remaining rows with blank space */
   SETCOLOR(MT_COLOR_NORMAL);
 
+  if (!option (OPTSIDEBARONRIGHT))
+    div_width = 0;
+
   int r;
   for (r = 0; r < num_rows; r++)
   {
-    mutt_window_move (MuttSidebarWindow, first_row + r, 0);	//RAR rhs
+    mutt_window_move (MuttSidebarWindow, first_row + r, div_width);
+
     int i;
-    for (i = 0; i < width; i++)
+    for (i = 0; i < num_cols; i++)
       addch (' ');
   }
 }
@@ -577,7 +589,12 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     else
       SETCOLOR(MT_COLOR_NORMAL);
 
-    mutt_window_move (MuttSidebarWindow, row, 0);
+    int col = 0;
+    if (option (OPTSIDEBARONRIGHT)) {
+      col = div_width;
+    }
+
+    mutt_window_move (MuttSidebarWindow, row, col);
     if (Context && Context->realpath &&
         !mutt_strcmp (b->realpath, Context->realpath))
     {
@@ -652,7 +669,7 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     row++;
   }
 
-  fill_empty_space (row, num_rows - row, w);
+  fill_empty_space (row, num_rows - row, div_width, w);
 }
 
 
@@ -667,6 +684,14 @@ void mutt_sb_draw (void)
   if (!option (OPTSIDEBAR))
     return;
 
+#ifdef USE_SLANG_CURSES
+  int x = SLsmg_get_column();
+  int y = SLsmg_get_row();
+#else
+  int x = getcurx (stdscr);
+  int y = getcury (stdscr);
+#endif
+
   int num_rows  = MuttSidebarWindow->rows;
   int num_cols  = MuttSidebarWindow->cols;
 
@@ -676,7 +701,7 @@ void mutt_sb_draw (void)
 
   if (!Incoming)
   {
-    fill_empty_space (0, num_rows, SidebarWidth - div_width);
+    fill_empty_space (0, num_rows, div_width, num_cols - div_width);
     return;
   }
 
@@ -684,6 +709,7 @@ void mutt_sb_draw (void)
     return;
 
   draw_sidebar (num_rows, num_cols, div_width);
+  move (y, x);
 }
 
 /**
