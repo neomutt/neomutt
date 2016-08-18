@@ -128,6 +128,7 @@ enum
 typedef struct color_line
 {
   regex_t rx;
+  int match; /* which substringmap 0 for old behaviour */
   char *pattern;
   pattern_t *color_pattern; /* compiled pattern to speed up index color
                                calculation */
@@ -203,6 +204,7 @@ extern int ColorQuoteUsed;
 extern int ColorDefs[];
 extern COLOR_LINE *ColorHdrList;
 extern COLOR_LINE *ColorBodyList;
+extern COLOR_LINE *ColorStatusList;
 extern COLOR_LINE *ColorIndexList;
 
 void ci_init_color (void);

@@ -10,3 +10,4 @@ patch-progress-neomutt
 patch-quasi-delete-neomutt
 patch-skip-quoted-neomutt
 patch-smime-encrypt-self-neomutt
+patch-status-color-neomutt
