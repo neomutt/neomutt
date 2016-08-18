@@ -43,11 +43,11 @@
  */
 typedef struct
 {
-	const char *append;             /* append-hook command */
-	const char *close;              /* close-hook  command */
-	const char *open;               /* open-hook   command */
-	off_t size;                     /* size of the compressed file */
-	struct mx_ops *child_ops;       /* callbacks of de-compressed file */
+  const char *append;             /* append-hook command */
+  const char *close;              /* close-hook  command */
+  const char *open;               /* open-hook   command */
+  off_t size;                     /* size of the compressed file */
+  struct mx_ops *child_ops;       /* callbacks of de-compressed file */
 } COMPRESS_INFO;
 
 
@@ -62,25 +62,28 @@ typedef struct
  * the mailbox will be marked readonly.
  *
  * Returns:
- *	1: Success (locked or readonly)
- *	0: Error (can't lock the file)
+ *      1: Success (locked or readonly)
+ *      0: Error (can't lock the file)
  */
 static int
 lock_mailbox (CONTEXT *ctx, FILE *fp, int excl)
 {
-	if (!ctx || !fp)
-		return 0;
+  if (!ctx || !fp)
+    return 0;
 
-	int r = mx_lock_file (ctx->realpath, fileno (fp), excl, 1, 1);
+  int r = mx_lock_file (ctx->realpath, fileno (fp), excl, 1, 1);
 
-	if (r == 0) {
-		ctx->locked = 1;
-	} else if (excl == 0) {
-		ctx->readonly = 1;
-		return 1;
-	}
+  if (r == 0)
+  {
+    ctx->locked = 1;
+  }
+  else if (excl == 0)
+  {
+    ctx->readonly = 1;
+    return 1;
+  }
 
-	return (r == 0);
+  return (r == 0);
 }
 
 /**
@@ -93,16 +96,16 @@ lock_mailbox (CONTEXT *ctx, FILE *fp, int excl)
 static void
 unlock_mailbox (CONTEXT *ctx, FILE *fp)
 {
-	if (!ctx || !fp)
-		return;
+  if (!ctx || !fp)
+    return;
 
-	if (!ctx->locked)
-		return;
+  if (!ctx->locked)
+    return;
 
-	fflush (fp);
+  fflush (fp);
 
-	mx_unlock_file (ctx->realpath, fileno (fp), 1);
-	ctx->locked = 0;
+  mx_unlock_file (ctx->realpath, fileno (fp), 1);
+  ctx->locked = 0;
 }
 
 /**
@@ -118,17 +121,17 @@ unlock_mailbox (CONTEXT *ctx, FILE *fp)
 static void
 setup_paths (CONTEXT *ctx)
 {
-	if (!ctx)
-		return;
+  if (!ctx)
+    return;
 
-	char tmppath[_POSIX_PATH_MAX];
+  char tmppath[_POSIX_PATH_MAX];
 
-	/* Setup the right paths */
-	ctx->realpath = ctx->path;
+  /* Setup the right paths */
+  ctx->realpath = ctx->path;
 
-	/* We will uncompress to /tmp */
-	mutt_mktemp (tmppath, sizeof (tmppath));
-	ctx->path = safe_strdup (tmppath);
+  /* We will uncompress to /tmp */
+  mutt_mktemp (tmppath, sizeof (tmppath));
+  ctx->path = safe_strdup (tmppath);
 }
 
 /**
@@ -137,23 +140,23 @@ setup_paths (CONTEXT *ctx)
  *
  * When we use a compressed mailbox, we change the CONTEXT to refer to the
  * uncompressed file.  We store the original name in ctx->realpath.
- *	ctx->path     = "/tmp/mailbox"
- *	ctx->realpath = "mailbox.gz"
+ *      ctx->path     = "/tmp/mailbox"
+ *      ctx->realpath = "mailbox.gz"
  *
  * When we have finished with a compressed mailbox, we put back the original
  * name.
- *	ctx->path     = "mailbox.gz"
- *	ctx->realpath = NULL
+ *      ctx->path     = "mailbox.gz"
+ *      ctx->realpath = NULL
  */
 static void
 restore_path (CONTEXT *ctx)
 {
-	if (!ctx)
-		return;
+  if (!ctx)
+    return;
 
-	FREE(&ctx->path);
-	ctx->path = ctx->realpath;
-	ctx->realpath = NULL;
+  FREE(&ctx->path);
+  ctx->path = ctx->realpath;
+  ctx->realpath = NULL;
 }
 
 /**
@@ -161,20 +164,20 @@ restore_path (CONTEXT *ctx)
  * @path: File to measure
  *
  * Returns:
- *	number: Size in bytes
- *	0:      On error
+ *      number: Size in bytes
+ *      0:      On error
  */
 static int
 get_size (const char *path)
 {
-	if (!path)
-		return 0;
+  if (!path)
+    return 0;
 
-	struct stat sb;
-	if (stat (path, &sb) != 0)
-		return 0;
+  struct stat sb;
+  if (stat (path, &sb) != 0)
+    return 0;
 
-	return sb.st_size;
+  return sb.st_size;
 }
 
 /**
@@ -186,14 +189,14 @@ get_size (const char *path)
 static void
 store_size (const CONTEXT *ctx)
 {
-	if (!ctx)
-		return;
+  if (!ctx)
+    return;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return;
 
-	ci->size = get_size (ctx->realpath);
+  ci->size = get_size (ctx->realpath);
 }
 
 /**
@@ -205,26 +208,26 @@ store_size (const CONTEXT *ctx)
  * Find a command that matches the type and path supplied. e.g.
  *
  * User config:
- *	open-hook '\.gz$' "gzip -cd '%f' > '%t'"
+ *      open-hook '\.gz$' "gzip -cd '%f' > '%t'"
  *
  * Call:
- *	find_hook (MUTT_OPENHOOK, "myfile.gz");
+ *      find_hook (MUTT_OPENHOOK, "myfile.gz");
  *
  * Returns:
- *	string: Matching hook command
- *	NULL:   No matches
+ *      string: Matching hook command
+ *      NULL:   No matches
  */
 static const char *
 find_hook (int type, const char *path)
 {
-	if (!path)
-		return NULL;
+  if (!path)
+    return NULL;
 
-	const char *c = mutt_find_hook (type, path);
-	if (!c || !*c)
-		return NULL;
+  const char *c = mutt_find_hook (type, path);
+  if (!c || !*c)
+    return NULL;
 
-	return c;
+  return c;
 }
 
 /**
@@ -236,34 +239,34 @@ find_hook (int type, const char *path)
  * Note: Caller must free the COMPRESS_INFO when done.
  *
  * Returns:
- *	COMPRESS_INFO: Hook info for the mailbox's path
- *	NULL:          On error
+ *      COMPRESS_INFO: Hook info for the mailbox's path
+ *      NULL:          On error
  */
 static COMPRESS_INFO *
 set_compress_info (CONTEXT *ctx)
 {
-	if (!ctx || !ctx->path)
-		return NULL;
+  if (!ctx || !ctx->path)
+    return NULL;
 
-	if (ctx->compress_info)
-		return ctx->compress_info;
+  if (ctx->compress_info)
+    return ctx->compress_info;
 
-	/* Open is compulsory */
-	const char *o = find_hook (MUTT_OPENHOOK,   ctx->path);
-	if (!o)
-		return NULL;
+  /* Open is compulsory */
+  const char *o = find_hook (MUTT_OPENHOOK,   ctx->path);
+  if (!o)
+    return NULL;
 
-	const char *c = find_hook (MUTT_CLOSEHOOK,  ctx->path);
-	const char *a = find_hook (MUTT_APPENDHOOK, ctx->path);
+  const char *c = find_hook (MUTT_CLOSEHOOK,  ctx->path);
+  const char *a = find_hook (MUTT_APPENDHOOK, ctx->path);
 
-	COMPRESS_INFO *ci = safe_calloc (1, sizeof (COMPRESS_INFO));
-	ctx->compress_info = ci;
+  COMPRESS_INFO *ci = safe_calloc (1, sizeof (COMPRESS_INFO));
+  ctx->compress_info = ci;
 
-	ci->open   = o;
-	ci->close  = c;
-	ci->append = a;
+  ci->open   = o;
+  ci->close  = c;
+  ci->append = a;
 
-	return ci;
+  return ci;
 }
 
 /**
@@ -287,25 +290,26 @@ set_compress_info (CONTEXT *ctx)
  */
 static const char *
 cb_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const char *src,
-	const char *fmt, const char *ifstring, const char *elsestring,
-	unsigned long data, format_flag flags)
+  const char *fmt, const char *ifstring, const char *elsestring,
+  unsigned long data, format_flag flags)
 {
-	if (!dest || (data == 0))
-		return src;
+  if (!dest || (data == 0))
+    return src;
 
-	CONTEXT *ctx = (CONTEXT *) data;
+  CONTEXT *ctx = (CONTEXT *) data;
 
-	switch (op) {
-		case 'f':
-			/* Compressed file */
-			snprintf (dest, destlen, "%s", ctx->realpath);
-			break;
-		case 't':
-			/* Plaintext, temporary file */
-			snprintf (dest, destlen, "%s", ctx->path);
-			break;
-	}
-	return src;
+  switch (op)
+  {
+    case 'f':
+      /* Compressed file */
+      snprintf (dest, destlen, "%s", ctx->realpath);
+      break;
+    case 't':
+      /* Plaintext, temporary file */
+      snprintf (dest, destlen, "%s", ctx->path);
+      break;
+  }
+  return src;
 }
 
 /**
@@ -319,18 +323,18 @@ cb_format_str (char *dest, size_t destlen, size_t col, int cols, char op, const 
  * which calls our callback function cb_format_str(). e.g.
  *
  * Template command:
- *	gzip -cd '%f' > '%t'
+ *      gzip -cd '%f' > '%t'
  *
  * Result:
- *	gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
+ *      gzip -dc '~/mail/abc.gz' > '/tmp/xyz'
  */
 static void
 expand_command_str (const CONTEXT *ctx, const char *cmd, char *buf, int buflen)
 {
-	if (!ctx || !cmd || !buf)
-		return;
+  if (!ctx || !cmd || !buf)
+    return;
 
-	mutt_FormatString (buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
+  mutt_FormatString (buf, buflen, 0, buflen, cmd, cb_format_str, (unsigned long) ctx, 0);
 }
 
 /**
@@ -344,56 +348,59 @@ expand_command_str (const CONTEXT *ctx, const char *cmd, char *buf, int buflen)
  * such as locking files and blocking signals.
  *
  * Returns:
- *	1: Success
- *	0: Failure
+ *      1: Success
+ *      0: Failure
  */
 static int
 execute_command (CONTEXT *ctx, const char *command, int create_file, const char *progress)
 {
-	if (!ctx || !command || !progress)
-		return 0;
+  if (!ctx || !command || !progress)
+    return 0;
 
-	if (!ctx->quiet)
-		mutt_message (progress, ctx->realpath);
+  if (!ctx->quiet)
+    mutt_message (progress, ctx->realpath);
 
-	FILE *fp;
-	if (create_file)
-		fp = fopen (ctx->realpath, "a");
-	else
-		fp = fopen (ctx->realpath, "r");
+  FILE *fp;
+  if (create_file)
+    fp = fopen (ctx->realpath, "a");
+  else
+    fp = fopen (ctx->realpath, "r");
 
-	if (!fp) {
-		mutt_perror (ctx->realpath);
-		return 0;
-	}
+  if (!fp)
+  {
+    mutt_perror (ctx->realpath);
+    return 0;
+  }
 
-	mutt_block_signals();
-        /* If we're creating the file, lock it exclusively */
-	if (!lock_mailbox (ctx, fp, create_file)) {
-		safe_fclose (&fp);
-		mutt_unblock_signals();
-		mutt_error (_("Unable to lock mailbox!"));
-		return 0;
-	}
+  mutt_block_signals();
+  /* If we're creating the file, lock it exclusively */
+  if (!lock_mailbox (ctx, fp, create_file))
+  {
+    safe_fclose (&fp);
+    mutt_unblock_signals();
+    mutt_error (_("Unable to lock mailbox!"));
+    return 0;
+  }
 
-	endwin();
-	fflush (stdout);
+  endwin();
+  fflush (stdout);
 
-	char sys_cmd[HUGE_STRING];
+  char sys_cmd[HUGE_STRING];
 
-	expand_command_str (ctx, command, sys_cmd, sizeof (sys_cmd));
+  expand_command_str (ctx, command, sys_cmd, sizeof (sys_cmd));
 
-	int rc = mutt_system (sys_cmd);
-	if (rc != 0) {
-		mutt_any_key_to_continue (NULL);
-		mutt_error (_("Error executing: %s\n"), sys_cmd);
-	}
+  int rc = mutt_system (sys_cmd);
+  if (rc != 0)
+  {
+    mutt_any_key_to_continue (NULL);
+    mutt_error (_("Error executing: %s\n"), sys_cmd);
+  }
 
-	unlock_mailbox (ctx, fp);
-	mutt_unblock_signals();
-	safe_fclose (&fp);
+  unlock_mailbox (ctx, fp);
+  mutt_unblock_signals();
+  safe_fclose (&fp);
 
-	return 1;
+  return 1;
 }
 
 /**
@@ -405,52 +412,56 @@ execute_command (CONTEXT *ctx, const char *command, int create_file, const char 
  * Note: The message handling will be delegated to the mbox code.
  *
  * Returns:
- *	1: Success
- *	0: Failure
+ *      1: Success
+ *      0: Failure
  */
 static int
 open_read (CONTEXT *ctx)
 {
-	if (!ctx)
-		return 0;
+  if (!ctx)
+    return 0;
 
-	COMPRESS_INFO *ci = set_compress_info (ctx);
-	if (!ci) {
-		ctx->magic = 0;
-		return 0;
-	}
+  COMPRESS_INFO *ci = set_compress_info (ctx);
+  if (!ci)
+  {
+    ctx->magic = 0;
+    return 0;
+  }
 
-	/* If there's no close-hook, or the file isn't writable */
-	if (!ci->close || (access (ctx->path, W_OK) != 0))
-		ctx->readonly = 1;
+  /* If there's no close-hook, or the file isn't writable */
+  if (!ci->close || (access (ctx->path, W_OK) != 0))
+    ctx->readonly = 1;
 
-	setup_paths (ctx);
-	store_size (ctx);
+  setup_paths (ctx);
+  store_size (ctx);
 
-	int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
-	if (rc == 0) {
-		goto or_fail;
-	}
+  int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
+  if (rc == 0)
+  {
+    goto or_fail;
+  }
 
-	ctx->magic = mx_get_magic (ctx->path);
-	if (ctx->magic == 0) {
-		mutt_error (_("Can't identify the contents of the compressed file"));
-		goto or_fail;
-	}
+  ctx->magic = mx_get_magic (ctx->path);
+  if (ctx->magic == 0)
+  {
+    mutt_error (_("Can't identify the contents of the compressed file"));
+    goto or_fail;
+  }
 
-	ci->child_ops = mx_get_ops (ctx->magic);
-	if (!ci->child_ops) {
-		mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
-		goto or_fail;
-	}
+  ci->child_ops = mx_get_ops (ctx->magic);
+  if (!ci->child_ops)
+  {
+    mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
+    goto or_fail;
+  }
 
-	return 1;
+  return 1;
 
 or_fail:
-	/* remove the partial uncompressed file */
-	remove (ctx->path);
-	restore_path (ctx);
-	return 0;
+  /* remove the partial uncompressed file */
+  remove (ctx->path);
+  restore_path (ctx);
+  return 0;
 }
 
 
@@ -468,22 +479,22 @@ struct mx_ops mx_comp_ops;
 static int
 open_mailbox (CONTEXT *ctx)
 {
-	if (!ctx || (ctx->magic != MUTT_COMPRESSED))
-		return 1;
+  if (!ctx || (ctx->magic != MUTT_COMPRESSED))
+    return 1;
 
-	if (!open_read (ctx))
-		return 1;
+  if (!open_read (ctx))
+    return 1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return 1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return 1;
 
-	struct mx_ops *ops = ci->child_ops;
-	if (!ops)
-		return 1;
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return 1;
 
-	/* Delegate */
-	return ops->open (ctx);
+  /* Delegate */
+  return ops->open (ctx);
 }
 
 /**
@@ -495,69 +506,77 @@ open_mailbox (CONTEXT *ctx)
  * close-hooks).
  *
  * Returns:
- *	 0: Success
- *	-1: Failure
+ *       0: Success
+ *      -1: Failure
  */
 static int
 open_append_mailbox (CONTEXT *ctx, int flags)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	/* If this succeeds, we know there's an open-hook */
-	COMPRESS_INFO *ci = set_compress_info (ctx);
-	if (!ci)
-		return -1;
+  /* If this succeeds, we know there's an open-hook */
+  COMPRESS_INFO *ci = set_compress_info (ctx);
+  if (!ci)
+    return -1;
 
-	/* To append we need an append-hook or a close-hook */
-	if (!ci->append && !ci->close) {
-		FREE(&ctx->compress_info);
-                mutt_error (_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
-		return -1;
-	}
+  /* To append we need an append-hook or a close-hook */
+  if (!ci->append && !ci->close)
+  {
+    FREE(&ctx->compress_info);
+    mutt_error (_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
+    return -1;
+  }
 
-	ctx->magic = DefaultMagic;
-        /* We can only deal with mbox and mmdf mailboxes */
-	if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))
-		return -1;
+  ctx->magic = DefaultMagic;
+  /* We can only deal with mbox and mmdf mailboxes */
+  if ((ctx->magic != MUTT_MBOX) && (ctx->magic != MUTT_MMDF))
+    return -1;
 
-	setup_paths (ctx);
+  setup_paths (ctx);
 
-	ctx->mx_ops = &mx_comp_ops;
-	ci->child_ops = mx_get_ops (ctx->magic);
-	if (!ci->child_ops) {
-		mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
-		return -1;
-	}
+  ctx->mx_ops = &mx_comp_ops;
+  ci->child_ops = mx_get_ops (ctx->magic);
+  if (!ci->child_ops)
+  {
+    mutt_error (_("Can't find mailbox ops for mailbox type %d"), ctx->magic);
+    return -1;
+  }
 
-        if (ci->append) {
-		/* Create an empty temporary file */
-		ctx->fp = safe_fopen (ctx->path, "w");
-		if (!ctx->fp) {
-                        mutt_perror (ctx->path);
-			goto oa_fail;
-                }
-	} else {
-		/* Open the existing mailbox */
-		int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
-		if (rc == 0) {
-                        mutt_error (_("Compress command failed: %s"), ci->open);
-			goto oa_fail;
-                }
-		ctx->fp = safe_fopen (ctx->path, "a");
-		if (!ctx->fp) {
-                        mutt_perror (ctx->path);
-			goto oa_fail;
-                }
-	}
+  if (ci->append)
+  {
+    /* Create an empty temporary file */
+    ctx->fp = safe_fopen (ctx->path, "w");
+    if (!ctx->fp)
+    {
+      mutt_perror (ctx->path);
+      goto oa_fail;
+    }
+  }
+  else
+  {
+    /* Open the existing mailbox */
+    int rc = execute_command (ctx, ci->open, 0, _("Decompressing %s"));
+    if (rc == 0)
+    {
+      mutt_error (_("Compress command failed: %s"), ci->open);
+      goto oa_fail;
+    }
+    ctx->fp = safe_fopen (ctx->path, "a");
+    if (!ctx->fp)
+    {
+      mutt_perror (ctx->path);
+      goto oa_fail;
+    }
+  }
 
-	return 0;
+  return 0;
 
 oa_fail:
-	/* remove the partial uncompressed file */
-	remove (ctx->path);
-	restore_path (ctx);
-	return -1;
+  /* remove the partial uncompressed file */
+  remove (ctx->path);
+  restore_path (ctx);
+  return -1;
 }
 
 /**
@@ -568,58 +587,66 @@ oa_fail:
  * Then delete the tmp file.
  *
  * Returns:
- *	 0: Success
- *	-1: Failure
+ *       0: Success
+ *      -1: Failure
  */
 static int
 close_mailbox (CONTEXT *ctx)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-	safe_fclose (&ctx->fp);
+  safe_fclose (&ctx->fp);
 
-	/* sync has already been called, so we only need to delete some files */
-	if (!ctx->append) {
-		/* If the file was removed, remove the compressed folder too */
-		if ((access (ctx->path, F_OK) != 0) && !option (OPTSAVEEMPTY)) {
-			remove (ctx->realpath);
-		} else {
-			remove (ctx->path);
-		}
+  /* sync has already been called, so we only need to delete some files */
+  if (!ctx->append)
+  {
+    /* If the file was removed, remove the compressed folder too */
+    if ((access (ctx->path, F_OK) != 0) && !option (OPTSAVEEMPTY))
+    {
+      remove (ctx->realpath);
+    }
+    else
+    {
+      remove (ctx->path);
+    }
 
-		restore_path (ctx);
-		FREE(&ctx->compress_info);
-		return 0;
-	}
+    restore_path (ctx);
+    FREE(&ctx->compress_info);
+    return 0;
+  }
 
-	const char *append;
-	const char *msg;
+  const char *append;
+  const char *msg;
 
-	/* The file exists and we can append */
-	if ((access (ctx->realpath, F_OK) == 0) && ci->append) {
-		append = ci->append;
-		msg = _("Compressed-appending to %s...");
-        } else {
-		append = ci->close;
-		msg = _("Compressing %s...");
-        }
+  /* The file exists and we can append */
+  if ((access (ctx->realpath, F_OK) == 0) && ci->append)
+  {
+    append = ci->append;
+    msg = _("Compressed-appending to %s...");
+  }
+  else
+  {
+    append = ci->close;
+    msg = _("Compressing %s...");
+  }
 
-	int rc = execute_command (ctx, append, 1, msg);
-	if (rc == 0) {
-		mutt_any_key_to_continue (NULL);
-		mutt_error (_(" %s: Error compressing mailbox!  Uncompressed one kept!\n"), ctx->path);
-	}
+  int rc = execute_command (ctx, append, 1, msg);
+  if (rc == 0)
+  {
+    mutt_any_key_to_continue (NULL);
+    mutt_error (_(" %s: Error compressing mailbox!  Uncompressed one kept!\n"), ctx->path);
+  }
 
-	remove (ctx->path);
-	restore_path (ctx);
-	FREE(&ctx->compress_info);
+  remove (ctx->path);
+  restore_path (ctx);
+  FREE(&ctx->compress_info);
 
-	return 0;
+  return 0;
 }
 
 /**
@@ -634,40 +661,41 @@ close_mailbox (CONTEXT *ctx)
  * The return codes are picked to match mx_check_mailbox().
  *
  * Returns:
- *	0:              Mailbox OK
- *	MUTT_REOPENED:  The mailbox was closed and reopened
- *	-1:             Mailbox bad
+ *      0:              Mailbox OK
+ *      MUTT_REOPENED:  The mailbox was closed and reopened
+ *      -1:             Mailbox bad
  */
 static int
 check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-        int size = get_size (ctx->realpath);
-        if (size == ci->size)
-		return 0;
+  int size = get_size (ctx->realpath);
+  if (size == ci->size)
+    return 0;
 
-	if (ctx->changed) {
-		FREE(&ctx->compress_info);
-		restore_path (ctx);
-		mutt_error (_("Mailbox was corrupted!"));
-		return -1;
-	}
+  if (ctx->changed)
+  {
+    FREE(&ctx->compress_info);
+    restore_path (ctx);
+    mutt_error (_("Mailbox was corrupted!"));
+    return -1;
+  }
 
-	close_mailbox (ctx);
+  close_mailbox (ctx);
 
-	const char *path = ctx->path;
-	ctx->path = NULL;
+  const char *path = ctx->path;
+  ctx->path = NULL;
 
-	mx_open_mailbox (path, 0, ctx);
-	FREE(&path);
+  mx_open_mailbox (path, 0, ctx);
+  FREE(&path);
 
-	return MUTT_REOPENED;
+  return MUTT_REOPENED;
 }
 
 
@@ -677,19 +705,19 @@ check_mailbox (CONTEXT *ctx, int *index_hint)
 static int
 open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-	struct mx_ops *ops = ci->child_ops;
-	if (!ops)
-		return -1;
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
 
-	/* Delegate */
-	return ops->open_msg (ctx, msg, msgno);
+  /* Delegate */
+  return ops->open_msg (ctx, msg, msgno);
 }
 
 /**
@@ -698,19 +726,19 @@ open_message (CONTEXT *ctx,  MESSAGE *msg, int msgno)
 static int
 close_message (CONTEXT *ctx, MESSAGE *msg)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-	struct mx_ops *ops = ci->child_ops;
-	if (!ops)
-		return -1;
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
 
-	/* Delegate */
-	return ops->close_msg (ctx, msg);
+  /* Delegate */
+  return ops->close_msg (ctx, msg);
 }
 
 /**
@@ -719,19 +747,19 @@ close_message (CONTEXT *ctx, MESSAGE *msg)
 static int
 commit_message (CONTEXT *ctx, MESSAGE *msg)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-	struct mx_ops *ops = ci->child_ops;
-	if (!ops)
-		return -1;
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
 
-	/* Delegate */
-	return ops->commit_msg (ctx, msg);
+  /* Delegate */
+  return ops->commit_msg (ctx, msg);
 }
 
 /**
@@ -740,19 +768,19 @@ commit_message (CONTEXT *ctx, MESSAGE *msg)
 static int
 open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-	struct mx_ops *ops = ci->child_ops;
-	if (!ops)
-		return -1;
+  struct mx_ops *ops = ci->child_ops;
+  if (!ops)
+    return -1;
 
-	/* Delegate */
-	return ops->open_new_msg (msg, ctx, hdr);
+  /* Delegate */
+  return ops->open_new_msg (msg, ctx, hdr);
 }
 
 
@@ -766,27 +794,27 @@ open_new_message (MESSAGE *msg, CONTEXT *ctx, HEADER *hdr)
  * A match means it's our responsibility to append to the file.
  *
  * Returns:
- *	1: Yes, we can append to the file
- *	0: No, appending isn't possible
+ *      1: Yes, we can append to the file
+ *      0: No, appending isn't possible
  */
 int
 comp_can_append (CONTEXT *ctx)
 {
-	if (!ctx)
-		return 0;
+  if (!ctx)
+    return 0;
 
-	/* If this succeeds, we know there's an open-hook */
-	COMPRESS_INFO *ci = set_compress_info (ctx);
-	if (!ci)
-		return 0;
+  /* If this succeeds, we know there's an open-hook */
+  COMPRESS_INFO *ci = set_compress_info (ctx);
+  if (!ci)
+    return 0;
 
-	/* We have an open-hook, so to append we need an append-hook,
-	 * or a close-hook. */
-	if (ci->append || ci->close)
-		return 1;
+  /* We have an open-hook, so to append we need an append-hook,
+   * or a close-hook. */
+  if (ci->append || ci->close)
+    return 1;
 
-        mutt_error (_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
-	return 0;
+  mutt_error (_("Cannot append without an append-hook or close-hook : %s"), ctx->path);
+  return 0;
 }
 
 /**
@@ -798,19 +826,19 @@ comp_can_append (CONTEXT *ctx)
  * A match means it's our responsibility to open the file.
  *
  * Returns:
- *	1: Yes, we can read the file
- *	0: No, we cannot read the file
+ *      1: Yes, we can read the file
+ *      0: No, we cannot read the file
  */
 int
 comp_can_read (const char *path)
 {
-	if (!path)
-		return 0;
+  if (!path)
+    return 0;
 
-	if (find_hook (MUTT_OPENHOOK, path))
-		return 1;
-	else
-		return 0;
+  if (find_hook (MUTT_OPENHOOK, path))
+    return 1;
+  else
+    return 0;
 }
 
 /**
@@ -821,31 +849,32 @@ comp_can_read (const char *path)
  * them to the compressed file.
  *
  * Returns:
- *	 0: Success
- *	-1: Failure
+ *       0: Success
+ *      -1: Failure
  */
 int
 comp_sync (CONTEXT *ctx)
 {
-	if (!ctx)
-		return -1;
+  if (!ctx)
+    return -1;
 
-	COMPRESS_INFO *ci = ctx->compress_info;
-	if (!ci)
-		return -1;
+  COMPRESS_INFO *ci = ctx->compress_info;
+  if (!ci)
+    return -1;
 
-	if (!ci->close) {
-		mutt_error (_("Can't sync a compressed file without a close-hook"));
-		return -1;
-	}
+  if (!ci->close)
+  {
+    mutt_error (_("Can't sync a compressed file without a close-hook"));
+    return -1;
+  }
 
-	int rc = execute_command (ctx, ci->close, 1, _("Compressing %s"));
-	if (rc == 0)
-		return -1;
+  int rc = execute_command (ctx, ci->close, 1, _("Compressing %s"));
+  if (rc == 0)
+    return -1;
 
-	store_size (ctx);
+  store_size (ctx);
 
-	return 0;
+  return 0;
 }
 
 /**
@@ -856,16 +885,16 @@ comp_sync (CONTEXT *ctx)
  * We don't check if we can actually run the command.
  *
  * Returns:
- *	1: Valid command
- *	0: "%f" and/or "%t" is missing
+ *      1: Valid command
+ *      0: "%f" and/or "%t" is missing
  */
 int
 comp_valid_command (const char *cmd)
 {
-	if (!cmd)
-		return 0;
+  if (!cmd)
+    return 0;
 
-	return (strstr (cmd, "%f") && strstr (cmd, "%t"));
+  return (strstr (cmd, "%f") && strstr (cmd, "%t"));
 }
 
 
@@ -875,14 +904,15 @@ comp_valid_command (const char *cmd)
  * Compress only uses open, close and check.
  * The message functions are delegated to mbox.
  */
-struct mx_ops mx_comp_ops = {
-	.open         = open_mailbox,
-        .open_append  = open_append_mailbox,
-	.close        = close_mailbox,
-	.check        = check_mailbox,
-	.open_msg     = open_message,
-	.close_msg    = close_message,
-	.commit_msg   = commit_message,
-	.open_new_msg = open_new_message
+struct mx_ops mx_comp_ops =
+{
+  .open         = open_mailbox,
+  .open_append  = open_append_mailbox,
+  .close        = close_mailbox,
+  .check        = check_mailbox,
+  .open_msg     = open_message,
+  .close_msg    = close_message,
+  .commit_msg   = commit_message,
+  .open_new_msg = open_new_message
 };
 
