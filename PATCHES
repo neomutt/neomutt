@@ -4,3 +4,4 @@ patch-ifdef-neomutt
 patch-initials-neomutt
 patch-limit-current-thread-neomutt
 patch-lmdb-neomutt
+patch-nested-if-neomutt

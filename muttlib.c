@@ -1280,6 +1280,24 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       if (*src == '?')
       {
+	/* change original %? to new %< notation */
+	/* %?x?y&z? to %<x?y&z> where y and z are nestable */
+	char *p = (char *) src;
+	*p = '<';
+	for ( ; *p && *p != '?'; p++);
+	  /* nothing */
+	if (*p == '?') {
+	  p++;
+	}
+	for ( ; *p && *p != '?'; p++);
+	  /* nothing */
+	if (*p == '?') {
+	  *p = '>';
+	}
+      }
+
+      if (*src == '<')
+      {
 	flags |= MUTT_FORMAT_OPTIONAL;
 	ch = *(++src); /* save the character to switch on */
 	src++;
@@ -1314,6 +1332,8 @@ void mutt_FormatString (char *dest,		/* output buffer */
 
       if (flags & MUTT_FORMAT_OPTIONAL)
       {
+	int lrbalance;
+
         if (*src != '?')
           break; /* bad format */
         src++;
@@ -1321,8 +1341,20 @@ void mutt_FormatString (char *dest,		/* output buffer */
         /* eat the `if' part of the string */
         cp = ifstring;
 	count = 0;
-        while (count < sizeof (ifstring) && *src && *src != '?' && *src != '&')
-	{
+	lrbalance = 1;
+        while ((lrbalance > 0) && (count < sizeof (ifstring)) && *src) {
+	  if (*src == '\\') {
+	    src++;
+	    *cp++ = *src++;
+	  } else if ((src[0] == '%') && (src[1] == '<')) {
+	    lrbalance++;
+	  } else if (src[0] == '>') {
+	    lrbalance--;
+	  }
+	  if (lrbalance == 0)
+	    break;
+	  if ((lrbalance == 1) && (src[0] == '&'))
+	    break;
           *cp++ = *src++;
 	  count++;
 	}
@@ -1333,9 +1365,20 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	  src++; /* skip the & */
 	cp = elsestring;
 	count = 0;
-	while (count < sizeof (elsestring) && *src && *src != '?')
-	{
-	  *cp++ = *src++;
+	while ((lrbalance > 0) && (count < sizeof (elsestring)) && *src) {
+	  if (*src == '\\') {
+	    src++;
+	    *cp++ = *src++;
+	  } else if ((src[0] == '%') && (src[1] == '<')) {
+	    lrbalance++;
+	  } else if (src[0] == '>') {
+	    lrbalance--;
+	  }
+	  if (lrbalance == 0)
+	    break;
+	  if ((lrbalance == 1) && (src[0] == '&'))
+	    break;
+          *cp++ = *src++;
 	  count++;
 	}
 	*cp = 0;
@@ -1343,7 +1386,7 @@ void mutt_FormatString (char *dest,		/* output buffer */
 	if (!*src)
 	  break; /* bad format */
 
-        src++; /* move past the trailing `?' */
+        src++; /* move past the trailing `>' (formerly '?') */
       }
 
       /* handle generic cases first */
