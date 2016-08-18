@@ -1,0 +1,10 @@
+# This is a complete list of smime-encrypt-self-related configuration.
+
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+
+# Save a copy of outgoing email, encrypted to yourself
+set smime_encrypt_self = "no"
+
+# vim: syntax=muttrc

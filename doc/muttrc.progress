@@ -1,0 +1,10 @@
+# Example Mutt config file for the 'progress' patch.
+
+# The 'progress' patch provides clear visual feedback for
+# slow tasks, such as indexing a large folder over the net.
+
+# Set the color of the progress bar
+# White text on a red background
+color progress white red
+
+# vim: syntax=muttrc
