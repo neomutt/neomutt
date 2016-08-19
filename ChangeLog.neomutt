@@ -1,8 +1,9 @@
-2016-08-18  Richard Russon  <rich@flatcap.org>
+2016-08-21  Richard Russon  <rich@flatcap.org>
 * Contrib
   - Updates to Keybase Support
     Joshua Jordi (JakkinStewart)
 * Bug Fixes
+  - Fix data-loss when appending a compressed file
   - Don't paint invisible progress bars
   - Revert to Mutt keybindings
   - Don't de-tag emails after labelling them
