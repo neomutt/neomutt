@@ -87,7 +87,7 @@ static const char *ReachingUs = N_(
 	"To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
 	"If you find a bug in NeoMutt, please raise an issue at:\n"
 	"    https://github.com/neomutt/neomutt/issues\n"
-	"or contact the lead developer: Richard Russon <rich@flatcap.org>\n"
+	"or send an email at: <neomutt-devel@neomutt.org>\n"
 );
 
 static const char *Notice = N_(

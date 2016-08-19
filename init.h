@@ -421,7 +421,7 @@ struct option_t MuttVars[] = {
   ** When \fIunset\fP, Mutt will not collapse a thread if it contains any
   ** unread messages.
   */
-  { "compose_format",	DT_STR,	 R_BOTH, UL &ComposeFormat, UL "-- Mutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
+  { "compose_format",	DT_STR,	 R_BOTH, UL &ComposeFormat, UL "-- NeoMutt: Compose  [Approx. msg size: %l   Atts: %a]%>-" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``compose''
@@ -3701,7 +3701,7 @@ struct option_t MuttVars[] = {
   ** message mode (Certain operations like composing a new mail, replying,
   ** forwarding, etc. are not permitted in this mode).
   */
-  { "status_format",	DT_STR,	 R_BOTH, UL &Status, UL "-%r-Mutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
+  { "status_format",	DT_STR,	 R_BOTH, UL &Status, UL "-%r-NeoMutt: %f [Msgs:%?M?%M/?%m%?n? New:%n?%?o? Old:%o?%?d? Del:%d?%?F? Flag:%F?%?t? Tag:%t?%?p? Post:%p?%?b? Inc:%b?%?l? %l?]---(%s/%S)-%>-(%P)---" },
   /*
   ** .pp
   ** Controls the format of the status line displayed in the ``index''
@@ -3909,7 +3909,7 @@ struct option_t MuttVars[] = {
   ** Controls whether mutt tries to set the terminal status line and icon name.
   ** Most terminal emulators emulate the status line in the window title.
   */
-  {"ts_status_format",	DT_STR,   R_BOTH, UL &TSStatusFormat, UL "Mutt with %?m?%m messages&no messages?%?n? [%n NEW]?"},
+  {"ts_status_format",	DT_STR,   R_BOTH, UL &TSStatusFormat, UL "NeoMutt with %?m?%m messages&no messages?%?n? [%n NEW]?"},
   /*
   ** .pp
   ** Controls the format of the terminal status line (or window title),

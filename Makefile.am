@@ -74,7 +74,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	README.SSL README.md README.neomutt smime.h group.h \
 	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
 	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
-	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in sys_socket.h \
+	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
 	txt2c.c txt2c.sh version.sh version.h \
 	$(top_srcdir)/.version git-version-gen
 

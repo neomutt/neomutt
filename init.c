@@ -3150,15 +3150,15 @@ static void start_debug (void)
   /* rotate the old debug logs */
   for (i=3; i>=0; i--)
   {
-    snprintf (buf, sizeof(buf), "%s/.muttdebug%d", NONULL(Homedir), i);
-    snprintf (buf2, sizeof(buf2), "%s/.muttdebug%d", NONULL(Homedir), i+1);
+    snprintf (buf, sizeof(buf), "%s/.nmuttdebug%d", NONULL(Homedir), i);
+    snprintf (buf2, sizeof(buf2), "%s/.nmuttdebug%d", NONULL(Homedir), i+1);
     rename (buf, buf2);
   }
   if ((debugfile = safe_fopen(buf, "w")) != NULL)
   {
     setbuf (debugfile, NULL); /* don't buffer the debugging output! */
     dprint(1,(debugfile,"Mutt/%s (%s) debugging at level %d\n",
-	      MUTT_VERSION, ReleaseDate, debuglevel));
+				PACKAGE_VERSION, ReleaseDate, debuglevel));
   }
 }
 #endif
@@ -3436,7 +3436,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/.muttrc-%s", NONULL(Homedir), MUTT_VERSION);
+      snprintf (buffer, sizeof buffer, "%s/.muttrc-%s", NONULL(Homedir), PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
@@ -3444,7 +3444,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/.mutt/muttrc-%s", NONULL(Homedir), MUTT_VERSION);
+      snprintf (buffer, sizeof buffer, "%s/.mutt/muttrc-%s", NONULL(Homedir), PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
@@ -3483,7 +3483,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", SYSCONFDIR, MUTT_VERSION);
+      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", SYSCONFDIR, PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
@@ -3491,7 +3491,7 @@ void mutt_init (int skip_sys_rc, LIST *commands)
       if (access (buffer, F_OK) == 0)
         break;
 
-      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", PKGDATADIR, MUTT_VERSION);
+      snprintf (buffer, sizeof buffer, "%s/Muttrc-%s", PKGDATADIR, PACKAGE_VERSION);
       if (access (buffer, F_OK) == 0)
         break;
 
