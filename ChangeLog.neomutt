@@ -1,3 +1,27 @@
+2016-08-19  Richard Russon  <rich@flatcap.org>
+* Contrib
+  - Updates to Keybase Support
+    Joshua Jordi (JakkinStewart)
+* Bug Fixes
+  - Fix data-loss when appending a compressed file
+  - Don't paint invisible progress bars
+  - Revert to Mutt keybindings
+  - Don't de-tag emails after labelling them
+  - Don't whine if getrandom() fails
+    Adam Borowski (kilobyte)
+  - Fix display when 'from' field is invalid
+* Config
+  - Support for $XDG_CONFIG_HOME and $XDG_CONFIG_DIRS
+    Marco Hinz (mhinz)
+* Docs
+  - Fix DocBook validation
+  - Document NotMuch queries
+* Build
+  - More Autoconf improvements
+    Darshit Shah (darnir)
+  - Create Distribution Tarballs with autogen sources
+    Darshit Shah (darnir)
+
 2016-08-08  Richard Russon  <rich@flatcap.org>
 * New Features
   - Timeout Hook - Run a command periodically
