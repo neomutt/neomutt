@@ -148,23 +148,6 @@ unlock_mailbox (CONTEXT *ctx, FILE *fp)
 }
 
 /**
- * file_exists - Does the file exist?
- * @path: Pathname to check
- *
- * Returns:
- *	1: File exists
- *	0: Non-existant file
- */
-static int
-file_exists (const char *path)
-{
-	if (!path)
-		return 0;
-
-	return (access (path, W_OK) != 0 && errno == ENOENT) ? 1 : 0;
-}
-
-/**
  * find_hook - Find a hook to match a path
  * @type: Type of hook, e.g. M_CLOSEHOOK
  * @path: Filename to test
@@ -212,7 +195,7 @@ get_append_command (const CONTEXT *ctx, const char *path)
 
 	COMPRESS_INFO *ci = (COMPRESS_INFO *) ctx->compress_info;
 
-	return (file_exists (path)) ? ci->append : ci->close;
+	return (access (path, W_OK) == 0) ? ci->append : ci->close;
 }
 
 /**
@@ -427,7 +410,8 @@ comp_can_append (const char *path)
 
 	int magic;
 
-	if (!file_exists (path)) {
+	/* The file doesn't exist */
+	if ((access (path, W_OK) != 0) && (errno == ENOENT)) {
 		char *dir_path = safe_strdup(path);
 		char *aux = strrchr(dir_path, '/');
 		int dir_valid = 1;
@@ -616,7 +600,8 @@ comp_open_append (CONTEXT *ctx)
 
 	ctx->magic = DefaultMagic;
 
-	if (file_exists (ctx->realpath)) {
+	/* The file doesn't exist */
+	if ((access (ctx->realpath, W_OK) != 0) && (errno == ENOENT)) {
 		if (ctx->magic == M_MBOX || ctx->magic == M_MMDF) {
 			if ((fh = safe_fopen (ctx->path, "w"))) {
 				fclose (fh);
