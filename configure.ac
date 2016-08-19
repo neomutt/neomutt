@@ -6,15 +6,12 @@ dnl !!! TO DUMP THEIR RESULTS WHEN MUTT -V IS CALLED            !!!
 CFLAGS=$CFLAGS
 LDFLAGS=$LDFLAGS
 
-AC_INIT([NeoMutt], m4_esyscmd(./git-version-gen --prefix "neomutt-" .tarball-version), [https://github.com/neomutt/neomutt/issues], [neomutt], [http://www.neomutt.org])
+AC_INIT([NeoMutt], m4_esyscmd(./git-version-gen --prefix "neomutt-dev-" .tarball-version), [neomutt-devel@neomutt.org], [neomutt], [http://www.neomutt.org])
 AC_CONFIG_SRCDIR(mutt.h)
 AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS([config.h])
 
-AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/VERSION'])
-
-MUTT_VERSION=`env sh "$srcdir/version.sh"`
-AC_DEFINE_UNQUOTED(MUTT_VERSION,"$MUTT_VERSION", [Full textual version string.])
+AC_SUBST([CONFIG_STATUS_DEPENDENCIES], ['$(top_srcdir)/.version'])
 
 AC_USE_SYSTEM_EXTENSIONS
 

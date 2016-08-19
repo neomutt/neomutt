@@ -1911,7 +1911,7 @@ int mutt_index_menu (void)
 
 	if ((menu->menu == MENU_MAIN)
 	    && (query_quadoption (OPT_QUIT,
-				  _("Exit Mutt without saving?")) == MUTT_YES))
+				  _("Exit NeoMutt without saving?")) == MUTT_YES))
 	{
 	  if (Context)
 	  {
