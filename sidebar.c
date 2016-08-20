@@ -625,7 +625,12 @@ static void draw_sidebar (int num_rows, int num_cols, int div_width)
     else if (b->msg_flagged > 0)
       SETCOLOR(MT_COLOR_FLAGGED);
     else
-      SETCOLOR(MT_COLOR_NORMAL);
+    {
+      if (ColorDefs[MT_COLOR_ORDINARY] != 0)
+        SETCOLOR(MT_COLOR_ORDINARY);
+      else
+        SETCOLOR(MT_COLOR_NORMAL);
+    }
 
     int col = 0;
     if (option (OPTSIDEBARONRIGHT)) {

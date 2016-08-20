@@ -890,6 +890,7 @@ color sidebar_indicator default color17         <emphasis role="comment"># Dark 
 color sidebar_highlight white   color238        <emphasis role="comment"># Grey background</emphasis>
 color sidebar_spoolfile yellow  default         <emphasis role="comment"># Yellow</emphasis>
 color sidebar_new       green   default         <emphasis role="comment"># Green</emphasis>
+color sidebar_ordinary  default default         <emphasis role="comment"># Default colors</emphasis>
 color sidebar_flagged   red     default         <emphasis role="comment"># Red</emphasis>
 color sidebar_divider   color8  default         <emphasis role="comment"># Dark grey</emphasis>
 </screen>
@@ -937,7 +938,7 @@ color sidebar_divider   color8  default         <emphasis role="comment"># Dark 
           </row>
           <row>
             <entry>Lowest</entry>
-            <entry>(None)</entry>
+            <entry><literal>sidebar_ordinary</literal></entry>
             <entry>Mailbox does not match above</entry>
           </row>
         </tbody>
@@ -12386,6 +12387,11 @@ bind index,pager Q quasi-delete
             <entry>Mailboxes containing new mail</entry>
           </row>
           <row>
+            <entry><literal>sidebar_ordinary</literal></entry>
+            <entry>default</entry>
+	    <entry>Mailboxes that have no new/flagged mails, etc</entry>
+          </row>
+          <row>
             <entry><literal>sidebar_spoolfile</literal></entry>
             <entry>default</entry>
             <entry>Mailbox that receives incoming mail</entry>
@@ -12564,6 +12570,9 @@ color sidebar_flagged red black
  
 <emphasis role="comment"># Color to give mailboxes containing new mail</emphasis>
 color sidebar_new green black
+ 
+<emphasis role="comment"># Color to give mailboxes containing no new/flagged mail, etc</emphasis>
+color sidebar_ordinary color245 default
  
 <emphasis role="comment"># --------------------------------------------------------------------------
  
