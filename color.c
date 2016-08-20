@@ -34,6 +34,7 @@ int ColorQuoteUsed;
 int ColorDefs[MT_COLOR_MAX];
 COLOR_LINE *ColorHdrList = NULL;
 COLOR_LINE *ColorBodyList = NULL;
+COLOR_LINE *ColorAttachList = NULL;
 COLOR_LINE *ColorStatusList = NULL;
 COLOR_LINE *ColorIndexList = NULL;
 COLOR_LINE *ColorIndexAuthorList = NULL;
@@ -96,6 +97,7 @@ static const struct mapping_t Fields[] =
   { "body",		MT_COLOR_BODY },
   { "message",		MT_COLOR_MESSAGE },
   { "attachment",	MT_COLOR_ATTACHMENT },
+  { "attach_headers",	MT_COLOR_ATTACH_HEADERS },
   { "search",		MT_COLOR_SEARCH },
   { "bold",		MT_COLOR_BOLD },
   { "underline",	MT_COLOR_UNDERLINE },
@@ -532,6 +534,8 @@ static int _mutt_parse_uncolor (BUFFER *buf, BUFFER *s, unsigned long data,
     mutt_do_uncolor (buf, s, &ColorBodyList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_HEADER)
     mutt_do_uncolor (buf, s, &ColorHdrList, &do_cache, parse_uncolor);
+  else if (object == MT_COLOR_ATTACH_HEADERS)
+    mutt_do_uncolor (buf, s, &ColorAttachList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX)
     mutt_do_uncolor (buf, s, &ColorIndexList, &do_cache, parse_uncolor);
   else if (object == MT_COLOR_INDEX_AUTHOR)
@@ -786,6 +790,7 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
   
   if ((object == MT_COLOR_BODY) ||
       (object == MT_COLOR_HEADER) ||
+      (object == MT_COLOR_ATTACH_HEADERS) ||
       (object == MT_COLOR_INDEX) ||
       (object == MT_COLOR_INDEX_AUTHOR) ||
       (object == MT_COLOR_INDEX_FLAGS) ||
@@ -830,6 +835,8 @@ _mutt_parse_color (BUFFER *buf, BUFFER *s, BUFFER *err,
     r = add_pattern (&ColorHdrList, buf->data, 0, fg, bg, attr, err, 0, match);
   else if (object == MT_COLOR_BODY)
     r = add_pattern (&ColorBodyList, buf->data, 1, fg, bg, attr, err, 0, match);
+  else if (object == MT_COLOR_ATTACH_HEADERS)
+    r = add_pattern (&ColorAttachList, buf->data, 1, fg, bg, attr, err, 0, match);
   else if ((object == MT_COLOR_STATUS) && MoreArgs (s)) {
     /* 'color status fg bg' can have up to 2 arguments:
      * 0 arguments: sets the default status color (handled below by else part)

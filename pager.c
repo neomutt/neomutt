@@ -902,6 +902,68 @@ resolve_types (char *buf, char *raw, struct line_t *lineInfo, int n, int last,
     if (nl > 0)
       buf[nl] = '\n';
   }
+
+  /* attachment patterns */
+  if (lineInfo[n].type == MT_COLOR_ATTACHMENT)
+  {
+    size_t nl;
+
+    /* don't consider line endings part of the buffer for regex matching */
+    nl = mutt_strlen (buf);
+    if ((nl > 0) && (buf[nl - 1] == '\n'))
+      buf[nl - 1] = 0;
+
+    i = 0;
+    offset = 0;
+    lineInfo[n].chunks = 0;
+    do
+    {
+      if (!buf[offset])
+	break;
+
+      found = 0;
+      null_rx = 0;
+      for (color_line = ColorAttachList; color_line; color_line = color_line->next)
+      {
+	if (regexec (&color_line->rx, buf + offset, 1, pmatch,
+		     (offset ? REG_NOTBOL : 0)) == 0)
+	{
+	  if (pmatch[0].rm_eo != pmatch[0].rm_so)
+	  {
+	    if (!found)
+	    {
+	      if (++(lineInfo[n].chunks) > 1)
+		safe_realloc (&(lineInfo[n].syntax),
+			      (lineInfo[n].chunks) * sizeof (struct syntax_t));
+	    }
+	    i = lineInfo[n].chunks - 1;
+	    pmatch[0].rm_so += offset;
+	    pmatch[0].rm_eo += offset;
+	    if (!found ||
+		 pmatch[0].rm_so <  (lineInfo[n].syntax)[i].first ||
+		(pmatch[0].rm_so == (lineInfo[n].syntax)[i].first &&
+		 pmatch[0].rm_eo >  (lineInfo[n].syntax)[i].last))
+	    {
+	      (lineInfo[n].syntax)[i].color = color_line->pair;
+	      (lineInfo[n].syntax)[i].first = pmatch[0].rm_so;
+	      (lineInfo[n].syntax)[i].last  = pmatch[0].rm_eo;
+	    }
+	    found = 1;
+	    null_rx = 0;
+	  }
+	  else
+	    null_rx = 1; /* empty regexp; don't add it, but keep looking */
+	}
+      }
+
+      if (null_rx)
+	offset++; /* avoid degenerate cases */
+      else
+	offset = (lineInfo[n].syntax)[i].last;
+    } while (found || null_rx);
+    if (nl > 0)
+      buf[nl] = '\n';
+  }
 }
 
 static int is_ansi (unsigned char *buf)

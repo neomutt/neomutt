@@ -108,6 +108,7 @@ enum
   MT_COLOR_HEADER,
   MT_COLOR_MESSAGE,
   MT_COLOR_ATTACHMENT,
+  MT_COLOR_ATTACH_HEADERS,
   MT_COLOR_SEARCH,
   MT_COLOR_BOLD,
   MT_COLOR_UNDERLINE,
@@ -219,6 +220,7 @@ extern int ColorQuoteUsed;
 extern int ColorDefs[];
 extern COLOR_LINE *ColorHdrList;
 extern COLOR_LINE *ColorBodyList;
+extern COLOR_LINE *ColorAttachList;
 extern COLOR_LINE *ColorStatusList;
 extern COLOR_LINE *ColorIndexList;
 extern COLOR_LINE *ColorIndexAuthorList;
