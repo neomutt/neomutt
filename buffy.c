@@ -565,16 +565,9 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
       }
     }
 
-    /* check to see if the folder is the currently selected folder
-     * before polling */
-    if (!Context || !Context->path ||
-#ifdef USE_NNTP
-	(( tmp->magic == M_IMAP || tmp->magic == M_POP || tmp->magic == M_NNTP )
-#else
-	(( tmp->magic == M_IMAP || tmp->magic == M_POP || tmp->magic == M_NOTMUCH)
-#endif
-	    ? mutt_strcmp (tmp->path, Context->path) :
-	      (sb.st_dev != contex_sb->st_dev || sb.st_ino != contex_sb->st_ino)))
+    if (option(OPTCHECKMBOXSIZE) && Context && Context->path)
+      tmp->size = (off_t) sb.st_size; /* update the size of current folder */
+    else
     {
       switch (tmp->magic)
       {
@@ -607,9 +600,6 @@ static void buffy_check (BUFFY *tmp, struct stat *contex_sb, int check_stats)
 #endif
       }
     }
-    else if (option(OPTCHECKMBOXSIZE) && Context && Context->path)
-      tmp->size = (off_t) sb.st_size;	/* update the size of current folder */
-
 #ifdef USE_SIDEBAR
     if ((orig_new != tmp->new) ||
         (orig_count != tmp->msg_count) ||
