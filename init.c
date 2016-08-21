@@ -3496,16 +3496,16 @@ void mutt_init (int skip_sys_rc, LIST *commands)
         break;
 
       snprintf (buffer, sizeof buffer, "%s/Muttrc", PKGDATADIR);
-      if (access (buffer, F_OK) == 0)
-      {
-        if (source_rc (buffer, &err) != 0)
-        {
-          fputs (err.data, stderr);
-          fputc ('\n', stderr);
-          need_pause = 1;
-        }
-      }
     } while (0);
+    if (access (buffer, F_OK) == 0)
+    {
+      if (source_rc (buffer, &err) != 0)
+      {
+	fputs (err.data, stderr);
+	fputc ('\n', stderr);
+	need_pause = 1;
+      }
+    }
   }
 
   /* Read the user's initialization file.  */
