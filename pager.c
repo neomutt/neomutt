@@ -1700,6 +1700,14 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
       }
 #endif
 
+#ifdef USE_SIDEBAR
+      if ((redraw & REDRAW_FULL) || SidebarNeedsRedraw)
+      {
+        SidebarNeedsRedraw = 0;
+        mutt_sb_draw ();
+      }
+#endif
+
       if (IsHeader (extra) && PagerIndexLines)
       {
 	if (index == NULL)
@@ -1750,14 +1758,6 @@ mutt_pager (const char *banner, const char *fname, int flags, pager_t *extra)
 	    break;
 	}
     }
-
-#ifdef USE_SIDEBAR
-    if ((redraw & REDRAW_SIDEBAR) || SidebarNeedsRedraw)
-    {
-      SidebarNeedsRedraw = 0;
-      mutt_sb_draw ();
-    }
-#endif
 
     if ((redraw & REDRAW_BODY) || topline != oldtopline)
     {
