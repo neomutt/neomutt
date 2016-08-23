@@ -66,7 +66,6 @@ WHERE char *ImapUser INITVAL (NULL);
 #endif
 WHERE char *Inbox;
 WHERE char *Ispell;
-WHERE char *Locale;
 WHERE char *MailcapPath;
 WHERE char *Maildir;
 #if defined(USE_IMAP) || defined(USE_POP)

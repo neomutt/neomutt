@@ -383,9 +383,6 @@ hdr_format_str (char *dest,
 	}
 	*p = 0;
 
-	if (do_locales && Locale)
-	  setlocale (LC_TIME, Locale);
-
 	if (op == '[' || op == 'D')
 	  tm = localtime (&hdr->date_sent);
 	else if (op == '(')
@@ -406,10 +403,11 @@ hdr_format_str (char *dest,
 	  tm = gmtime (&T);
 	}
 
-	strftime (buf2, sizeof (buf2), dest, tm);
-
-	if (do_locales)
-	  setlocale (LC_TIME, "C");
+        if (!do_locales)
+          setlocale (LC_TIME, "C");
+        strftime (buf2, sizeof (buf2), dest, tm);
+        if (!do_locales)
+          setlocale (LC_TIME, "");
 
 	mutt_format_s (dest, destlen, prefix, buf2);
 	if (len > 0 && op != 'd' && op != 'D') /* Skip ending op */
