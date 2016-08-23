@@ -266,6 +266,18 @@ struct option_t MuttVars[] = {
   ** in a reply.  For a full listing of defined \fCprintf(3)\fP-like sequences see
   ** the section on $$index_format.
   */
+  { "attribution_locale", DT_STR, R_NONE, UL &AttributionLocale, UL "" },
+  /*
+  ** .pp
+  ** The locale used by \fCstrftime(3)\fP to format dates in the
+  ** $attribution string.  Legal values are the strings your system
+  ** accepts for the locale environment variable \fC$$$LC_TIME\fP.
+  ** .pp
+  ** This variable is to allow the attribution date format to be
+  ** customized by recipient or folder using hooks.  By default, Mutt
+  ** will use your locale environment, so there is no need to set
+  ** this except to override that default.
+  */
   { "auto_tag",		DT_BOOL, R_NONE, OPTAUTOTAG, 0 },
   /*
   ** .pp
@@ -599,8 +611,8 @@ struct option_t MuttVars[] = {
   ** function to process the date, see the man page for the proper syntax.
   ** .pp
   ** Unless the first character in the string is a bang (``!''), the month
-  ** and week day names are expanded according to the locale specified in
-  ** the variable $$locale. If the first character in the string is a
+  ** and week day names are expanded according to the locale.
+  ** If the first character in the string is a
   ** bang, the bang is discarded, and the month and week day names in the
   ** rest of the string are expanded in the \fIC\fP locale (that is in US
   ** English).
