@@ -1525,12 +1525,6 @@ struct option_t MuttVars[] = {
   ** ``$$keywords_standard'' are \fCfalse\fP, mutt will save keywords
   ** to legacy headers to ensure that it does not lose your labels.
   */
-  { "locale",		DT_STR,  R_BOTH, UL &Locale, UL "C" },
-  /*
-  ** .pp
-  ** The locale used by \fCstrftime(3)\fP to format dates. Legal values are
-  ** the strings your system accepts for the locale environment variable \fC$$$LC_TIME\fP.
-  */
   { "mail_check",	DT_NUM,  R_NONE, UL &BuffyTimeout, 5 },
   /*
   ** .pp
