@@ -34,6 +34,7 @@
 
 #include <ctype.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
