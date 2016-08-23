@@ -36,6 +36,7 @@ WHERE char *AliasFmt;
 WHERE char *AssumedCharset;
 WHERE char *AttachSep;
 WHERE char *Attribution;
+WHERE char *AttributionLocale;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
 WHERE char *AttachKeyword;
