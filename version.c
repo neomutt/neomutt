@@ -84,10 +84,10 @@ static const char *Obtaining = N_(
 );
 
 static const char *ReachingUs = N_(
-	"To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
-	"If you find a bug in NeoMutt, please raise an issue at:\n"
-	"    https://github.com/neomutt/neomutt/issues\n"
-	"or send an email at: <neomutt-devel@neomutt.org>\n"
+  "To learn more about NeoMutt, visit: http://www.neomutt.org/\n"
+  "If you find a bug in NeoMutt, please raise an issue at:\n"
+  "    https://github.com/neomutt/neomutt/issues\n"
+  "or send an email at: <neomutt-devel@neomutt.org>\n"
 );
 
 static const char *Notice = N_(
@@ -235,6 +235,11 @@ static struct compile_options comp_opts[] =
 #else
   { "ICONV_NONTRANS", 0 },
 #endif
+#ifdef USE_COMPRESSED
+  { "USE_COMPRESSED", 1 },
+#else
+  { "USE_COMPRESSED", 0 },
+#endif
 #ifdef USE_DOTLOCK
   { "USE_DOTLOCK", 1 },
 #else
@@ -275,6 +280,16 @@ static struct compile_options comp_opts[] =
 #else
   { "USE_IMAP", 0 },
 #endif
+#ifdef USE_NOTMUCH
+  { "USE_NOTMUCH", 1 },
+#else
+  { "USE_NOTMUCH", 0 },
+#endif
+#ifdef USE_NNTP
+  { "USE_NNTP", 1 },
+#else
+  { "USE_NNTP", 0 },
+#endif
 #ifdef USE_POP
   { "USE_POP", 1 },
 #else
@@ -289,6 +304,11 @@ static struct compile_options comp_opts[] =
   { "USE_SETGID", 1 },
 #else
   { "USE_SETGID", 0 },
+#endif
+#ifdef USE_SIDEBAR
+  { "USE_SIDEBAR", 1 },
+#else
+  { "USE_SIDEBAR", 0 },
 #endif
 #ifdef USE_SMTP
   { "USE_SMTP", 1 },
