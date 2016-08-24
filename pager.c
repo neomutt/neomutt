@@ -2483,7 +2483,7 @@ search_next:
 	    mutt_thread_set_flag (extra->hdr, MUTT_TAG, 0,
 				  ch == OP_DELETE_THREAD ? 0 : 1);
 		mutt_thread_set_flag (extra->hdr, MUTT_TAG, 0,
-				  ch == OP_DELETE_THREAD ? 0 : 1);
+				  ch == OP_PURGE_THREAD ? 0 : 1);
 	  }
 	  if (option (OPTRESOLVE))
 	  {
