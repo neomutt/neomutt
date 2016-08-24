@@ -2467,19 +2467,27 @@ search_next:
 
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
+      case OP_PURGE_THREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
 
-	r = mutt_thread_set_flag (extra->hdr, MUTT_DELETE, 1,
-				  ch == OP_DELETE_THREAD ? 0 : 1);
+	{
+	  int subthread = ((ch != OP_DELETE_THREAD) && (ch != OP_PURGE_THREAD));
+	  r = mutt_thread_set_flag (extra->hdr, MUTT_DELETE, 1, subthread);
+	  if (r == -1)
+	    break;
+	  r = mutt_thread_set_flag (extra->hdr, MUTT_PURGE, (ch == OP_PURGE_THREAD), subthread);
+	}
 
 	if (r != -1)
 	{
 	  if (option (OPTDELETEUNTAG))
-	    mutt_thread_set_flag (extra->hdr, MUTT_TAG, 0,
-				  ch == OP_DELETE_THREAD ? 0 : 1);
+	  {
+		mutt_thread_set_flag (extra->hdr, MUTT_TAG, 0,
+				  (ch == OP_PURGE_THREAD) ? 0 : 1);
+	  }
 	  if (option (OPTRESOLVE))
 	  {
 	    rc = OP_MAIN_NEXT_UNDELETED;
