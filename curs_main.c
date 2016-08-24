@@ -2577,6 +2577,7 @@ int mutt_index_menu (void)
 
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
+	  case OP_PURGE_THREAD:
 
 	CHECK_MSGCOUNT;
         CHECK_VISIBLE;
@@ -2586,12 +2587,16 @@ int mutt_index_menu (void)
 
 	rc = mutt_thread_set_flag (CURHDR, MUTT_DELETE, 1,
 				   op == OP_DELETE_THREAD ? 0 : 1);
+	rc = mutt_thread_set_flag (CURHDR, MUTT_PURGE, (op == OP_PURGE_THREAD), (op == OP_PURGE_THREAD ? 0 : 1));
 
 	if (rc != -1)
 	{
-	  if (option (OPTDELETEUNTAG))
+	  if (option (OPTDELETEUNTAG)) {
 	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
 				  op == OP_DELETE_THREAD ? 0 : 1);
+		mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
+				  op == OP_PURGE_THREAD ? 0 : 1);
+	  }
 	  if (option (OPTRESOLVE))
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	      menu->current = menu->oldcurrent;
