@@ -47,10 +47,10 @@ mutt
 mutt_dotlock
 mutt_dotlock.c
 mutt_md5
+oldmutt_ver.h
 patchlist.c
 pgpewrap
 pgpring
-reldate.h
 smime_keys
 stamp-h1
 txt2c

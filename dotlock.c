@@ -53,7 +53,7 @@
 #endif
 
 #ifdef DL_STANDALONE
-# include "reldate.h"
+# include "oldmutt_ver.h"
 #endif
 
 #define MAXLINKS 1024 /* maximum link depth */
@@ -339,7 +339,7 @@ END_PRIVILEGED (void)
 static void 
 usage (const char *av0)
 {
-  fprintf (stderr, "dotlock [NeoMutt %s (%s)]\n", PACKAGE_VERSION, ReleaseDate);
+  fprintf (stderr, "dotlock [NeoMutt %s (%s)]\n", PACKAGE_VERSION, OldMuttVer);
   fprintf (stderr, "usage: %s [-t|-f|-u|-d] [-p] [-r <retries>] file\n",
 	  av0);
 
