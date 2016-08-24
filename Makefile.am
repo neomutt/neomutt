@@ -18,7 +18,7 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
-BUILT_SOURCES = keymap_defs.h patchlist.c reldate.h conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
+BUILT_SOURCES = keymap_defs.h patchlist.c oldmutt_ver.h conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
@@ -150,11 +150,16 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 		$(srcdir)/OPS.MIX $(srcdir)/OPS.CRYPT $(srcdir)/OPS.SMIME \
 			> keymap_alldefs.h
 
-reldate.h:
-	date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -b 1-10` && \
-	echo 'const char *ReleaseDate = "'$$date'";' > reldate.h.tmp; \
-	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
-	rm reldate.h.tmp
+oldmutt_ver.h:
+	version=`git tag | grep ^mutt- | sort -V | tail -1 | LC_ALL=C cut -b 6-` && \
+	echo 'const char *OldMuttVer = "'$$version'";' > oldmutt_ver.h.tmp; \
+	cmp -s oldmutt_ver.h.tmp oldmutt_ver.h || mv oldmutt_ver.h.tmp oldmutt_ver.h
+
+# reldate.h:
+# 	date=`head -n 1 $(top_srcdir)/ChangeLog.neomutt | LC_ALL=C cut -b 1-10` && \
+# 	echo 'const char *ReleaseDate = "'$$date'";' > reldate.h.tmp; \
+# 	cmp -s reldate.h.tmp reldate.h || cp reldate.h.tmp reldate.h; \
+# 	rm reldate.h.tmp
 
 # The '#undef ENABLE_NLS' is to work around an automake ordering issue:
 # BUILT_SOURCES are processed before SUBDIRS.

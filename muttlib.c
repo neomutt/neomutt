@@ -1988,7 +1988,7 @@ const char *mutt_make_version (void)
 {
   static char vstring[STRING];
   snprintf (vstring, sizeof (vstring), "NeoMutt %s (%s)",
-	    PACKAGE_VERSION, ReleaseDate);
+	    PACKAGE_VERSION, OldMuttVer);
   return vstring;
 }
 
