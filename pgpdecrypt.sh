@@ -1,2 +1,2 @@
 #!/bin/sh
-gawk '/BEGIN/{y=1}y' | keybase pgp decrypt
+sed -n '/BEGIN/,$p' | keybase pgp decrypt
