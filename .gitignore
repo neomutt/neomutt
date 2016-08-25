@@ -15,6 +15,7 @@ po/*.gmo
 doc/*.html
 doc/*.1
 
+doc/instdoc
 doc/instdoc.sh
 doc/Muttrc
 doc/makedoc
