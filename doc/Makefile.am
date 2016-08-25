@@ -46,14 +46,7 @@ srcdir_DOCFILES = PGP-Notes.txt applying-patches.txt	\
 	devel-notes.txt patch-notes.txt smime-notes.txt
 
 topsrcdir_DOCFILES = COPYRIGHT GPL INSTALL ChangeLog ChangeLog.neomutt	\
-	README NEWS TODO README.SECURITY README.SSL \
-	README.compress README.cond-date README.fmemopen README.ifdef \
-	README.index-color README.initials README.keywords \
-	README.limit-current-thread README.lmdb README.neomutt \
-	README.nested-if README.new-mail README.nntp README.notmuch \
-	README.progress README.quasi-delete README.sidebar README.skip-quoted \
-	README.smime-encrypt-self README.status-color README.tls-sni \
-	README.trash
+	README NEWS TODO README.SECURITY README.SSL README.neomutt README.notmuch
 
 all: makedoc-all
 
@@ -73,6 +66,9 @@ install-data-local: makedoc-all instdoc
 	./instdoc $(srcdir)/mbox.man $(DESTDIR)$(mandir)/man5/mbox.5
 	./instdoc $(srcdir)/mmdf.man $(DESTDIR)$(mandir)/man5/mmdf.5
 	$(MKDIR_P) $(DESTDIR)$(docdir)
+	for f in $(topsrcdir_DOCFILES) ; do \
+		$(INSTALL) -m 644 $(top_srcdir)/$$f $(DESTDIR)$(docdir) ; \
+	done
 	for f in $(srcdir_DOCFILES) ; do \
 		$(INSTALL) -m 644 $(srcdir)/$$f $(DESTDIR)$(docdir) ; \
 	done

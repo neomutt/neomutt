@@ -15,7 +15,7 @@ EXTRA_DIST = language.txt language50.txt  \
 	vim-keybindings \
 	keybase
 
-CONTRIB_DIRS = vim-keybindings
+CONTRIB_DIRS = vim-keybindings keybase
 
 install-data-local:
 	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/samples $(DESTDIR)$(docdir)/samples/iconv
@@ -24,6 +24,10 @@ install-data-local:
 	done
 	for f in $(srcdir)/iconv/*.rc ; do					\
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/samples/iconv	  ;	\
+	done
+	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/keybase $(DESTDIR)$(docdir)/keybase/images
+	for f in $(srcdir)/keybase/images/*.png ; do				\
+		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/keybase/images  ;	\
 	done
 	for d in $(CONTRIB_DIRS); do						\
 		echo "Installing $$d" ;	\
