@@ -55,7 +55,7 @@ bind index,pager X change-vfolder
 bind index,pager + entire-thread
 
 # modify (notmuch) tags
-bind index,pager ` modify-labels
+bind index,pager \` modify-labels
 
 # generate virtual folder from query
 bind index,pager \eX vfolder-from-query

@@ -2363,9 +2363,9 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
     <tbody>
       <row><entry>$XDG_CONFIG_DIRS/neomutt/config</entry></row>
       <row><entry>/etc/NeoMuttrc</entry></row>
-      <row><entry>/etc/Muttrc-1.6.2-neo</entry></row>
+      <row><entry>/etc/Muttrc-1.7.0-neo</entry></row>
       <row><entry>/etc/Muttrc</entry></row>
-      <row><entry>/share/mutt/Muttrc-1.6.2-neo</entry></row>
+      <row><entry>/share/mutt/Muttrc-1.7.0-neo</entry></row>
       <row><entry>/share/mutt/Muttrc</entry></row>
     </tbody>
   </tgroup>
@@ -2396,9 +2396,9 @@ See also the <link linkend="postpone">$postpone</link> quad-option.
       <row><entry>$XDG_CONFIG_HOME/neomutt/config</entry></row>
       <row><entry>~/.neomuttrc</entry></row>
       <row><entry>~/.mutt/neomuttrc</entry></row>
-      <row><entry>~/.muttrc-1.6.2-neo</entry></row>
+      <row><entry>~/.muttrc-1.7.0-neo</entry></row>
       <row><entry>~/.muttrc</entry></row>
-      <row><entry>~/.mutt/muttrc-1.6.2-neo</entry></row>
+      <row><entry>~/.mutt/muttrc-1.7.0-neo</entry></row>
       <row><entry>~/.mutt/muttrc</entry></row>
     </tbody>
   </tgroup>
@@ -8327,7 +8327,7 @@ would contain:
 Mutt may also be <quote>patched</quote> to support smaller features.
 These patches should add a free-form string to the end Mutt's version string.
 Running <literal>mutt -v</literal> might show:
-<screen>patch-1.6.2.sidebar.20160709</screen>
+<screen>patch-1.7.0.sidebar.20160709</screen>
 </para>
 </sect2>
 
@@ -8960,7 +8960,7 @@ please have a look at the mixmaster documentation.
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -8990,18 +8990,6 @@ please have a look at the mixmaster documentation.
     </para>
 
   </sect2>
-
-<!--
-  <sect2 id="compress-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="compress-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="compress-commands">
     <title>Commands</title>
@@ -9193,6 +9181,14 @@ please have a look at the mixmaster documentation.
         The <literal>close-hook</literal> will be used for empty, or missing files.
       </para>
 
+      <note>
+        <para>
+          If your command writes to stdout, it is vital that you use
+          <literal>&gt;&gt;</literal> in the <quote>append-hook</quote>.
+          If not, data will be lost.
+        </para>
+      </note>
+
       <sect4 id="compress-append-hook-example">
         <title>Example of append-hook</title>
 
@@ -9233,18 +9229,6 @@ please have a look at the mixmaster documentation.
       </para>
     </sect3>
   </sect2>
-
-<!--
-  <sect2 id="compress-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="compress-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="compress-muttrc">
     <title>Muttrc</title>
@@ -9339,7 +9323,7 @@ close-hook  '\.gpg$' &quot;gpg --encrypt --recipient YourGpgUserIdOrKeyId &lt; '
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
       <listitem><para><link linkend="nested-if">nested-if patch</link></para></listitem>
     </itemizedlist>
 
@@ -9653,28 +9637,6 @@ DDD = %[%m/%y ]
         </para>
   </sect2>
 
-<!--
-  <sect2 id="cond-date-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="cond-date-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="cond-date-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="cond-date-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
-
   <sect2 id="cond-date-muttrc">
     <title>Muttrc</title>
 <screen>
@@ -9746,7 +9708,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
       <listitem><para><literal>open_memstream()</literal>, <literal>fmemopen()</literal> from glibc</para></listitem>
     </itemizedlist>
 
@@ -9782,33 +9744,6 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
     them, Mutt will simply create temporary files.
         </para>
   </sect2>
-
-<!--
-  <sect2 id="fmemopen-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="fmemopen-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="fmemopen-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="fmemopen-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="fmemopen-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="fmemopen-muttrc">
     <title>Muttrc</title>
@@ -9854,7 +9789,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -9894,18 +9829,6 @@ ifndef USE_SIDEBAR finish
 
   </sect2>
 
-<!--
-  <sect2 id="ifdef-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="ifdef-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
--->
-
   <sect2 id="ifdef-commands">
     <title>Commands</title>
     <cmdsynopsis>
@@ -9926,18 +9849,6 @@ ifndef USE_SIDEBAR finish
       <command>finish</command>
     </cmdsynopsis>
   </sect2>
-
-<!--
-  <sect2 id="ifdef-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="ifdef-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="ifdef-muttrc">
     <title>Muttrc</title>
@@ -10015,7 +9926,7 @@ ifndef USE_SIDEBAR finish
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
       <listitem><para><link linkend="status-color">status-color patch</link></para></listitem>
     </itemizedlist>
 
@@ -10048,23 +9959,6 @@ color index_author red default &quot;~smutt&quot;
     The author appears red when the subject (~s) contains <quote>mutt</quote>.
         </para>
   </sect2>
-
-<!--
-  <sect2 id="index-color-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="index-color-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="index-color-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="index-color-colors">
     <title>Colors</title>
@@ -10143,13 +10037,6 @@ color index-object foreground background pattern
       </tgroup>
     </table>
   </sect2>
-
-<!--
-  <sect2 id="index-color-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="index-color-muttrc">
     <title>Muttrc</title>
@@ -10241,7 +10128,7 @@ color index_size cyan default
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -10271,28 +10158,6 @@ color index_size cyan default
     used in the <link linkend="index-format">$index_format</link> variable.
         </para>
   </sect2>
-
-<!--
-  <sect2 id="initials-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="initials-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="initials-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="initials-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="initials-muttrc">
     <title>Muttrc</title>
@@ -10367,7 +10232,7 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -10500,17 +10365,6 @@ set index_format='%4C %Z %{%b %d} %I (%?l?%4l&amp;%4c?) %s'
     </table>
   </sect2>
 
-<!--
-  <sect2 id="keywords-commands">
-    <title>Commands</title>
-  </sect2>
-
-  <sect2 id="keywords-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
--->
-
   <sect2 id="keywords-sort">
     <title>Sort</title>
     <table id="table-keywords-sort">
@@ -10606,7 +10460,7 @@ bind index,pager y edit-label
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -10626,12 +10480,6 @@ bind index,pager y edit-label
 
   </sect2>
 
-<!--
-  <sect2 id="limit-current-thread-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
--->
   <sect2 id="limit-current-thread-functions">
     <title>Functions</title>
 
@@ -10661,22 +10509,6 @@ bind index,pager y edit-label
     </table>
 
   </sect2>
-<!--
-  <sect2 id="limit-current-thread-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="limit-current-thread-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="limit-current-thread-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="limit-current-thread-muttrc">
     <title>Muttrc</title>
@@ -10728,7 +10560,7 @@ bind index &lt;esc&gt;L limit-current-thread
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -10742,6 +10574,12 @@ bind index &lt;esc&gt;L limit-current-thread
       Mutt's header cache (hcache). It is enabled at configure time with
       the <emphasis>--with-lmdb=&lt;path&gt;</emphasis> switch.
     </para>
+
+    <note>
+      <para>
+        It is not recommended to store the lmdb database on a shared drive.
+      </para>
+    </note>
   </sect2>
 
   <sect2 id="lmdb-see-also">
@@ -10782,7 +10620,7 @@ bind index &lt;esc&gt;L limit-current-thread
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -10848,7 +10686,7 @@ bind index &lt;esc&gt;L limit-current-thread
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -10974,28 +10812,6 @@ else
     </para>
   </sect2>
 
-<!--
-  <sect2 id="nested-if-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="nested-if-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="nested-if-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="nested-if-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
-
   <sect2 id="nested-if-muttrc">
     <title>Muttrc</title>
 <screen>
@@ -11068,7 +10884,7 @@ set index_format='%4C %Z %{%b %d} %-25.25n %&lt;M?[%M] %s&amp;%s%* %&lt;l?%l&amp
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -11210,7 +11026,7 @@ set new_mail_command = ""
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -11489,20 +11305,6 @@ set new_mail_command = ""
     </table>
   </sect2>
 
-<!--
-  <sect2 id="nntp-commands">
-    <title>Commands</title>
-  </sect2>
-
-  <sect2 id="nntp-colors">
-    <title>Colors</title>
-  </sect2>
-
-  <sect2 id="nntp-sort">
-    <title>Sort</title>
-  </sect2>
--->
-
   <sect2 id="nntp-muttrc">
     <title>Muttrc</title>
 
@@ -11645,7 +11447,7 @@ bind index \CG get-message
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
       <listitem><para><link linkend="sidebar">sidebar patch</link></para></listitem>
       <listitem><para><link linkend="quasi-delete">quasi-delete patch</link></para></listitem>
       <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
@@ -11982,12 +11784,6 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
     </table>
   </sect2>
 
-<!--
-  <sect2 id="notmuch-sort">
-    <title>Sort</title>
-  </sect2>
--->
-
   <sect2 id="notmuch-muttrc">
     <title>Muttrc</title>
 
@@ -12049,7 +11845,7 @@ bind index,pager X change-vfolder
 bind index,pager + entire-thread 
  
 <emphasis role="comment"># modify (notmuch) tags</emphasis>
-bind index,pager ` modify-labels 
+bind index,pager \` modify-labels 
  
 <emphasis role="comment"># generate virtual folder from query</emphasis>
 bind index,pager \eX vfolder-from-query 
@@ -12169,7 +11965,7 @@ color index_tags green default
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -12183,23 +11979,6 @@ color index_tags green default
     tasks, such as indexing a large folder over the net.
         </para>
   </sect2>
-
-<!--
-  <sect2 id="progress-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="progress-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="progress-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="progress-colors">
     <title>Colors</title>
@@ -12223,13 +12002,6 @@ color index_tags green default
       </tgroup>
     </table>
   </sect2>
-
-<!--
-  <sect2 id="progress-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="progress-muttrc">
     <title>Muttrc</title>
@@ -12288,7 +12060,7 @@ color progress white red
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -12307,13 +12079,6 @@ color progress white red
     the notmuch plugin.
         </para>
   </sect2>
-
-<!--
-  <sect2 id="quasi-delete-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="quasi-delete-functions">
     <title>Functions</title>
@@ -12339,23 +12104,6 @@ color progress white red
       </tgroup>
     </table>
   </sect2>
-
-<!--
-  <sect2 id="quasi-delete-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="quasi-delete-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="quasi-delete-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="quasi-delete-muttrc">
     <title>Muttrc</title>
@@ -12408,7 +12156,7 @@ bind index,pager Q quasi-delete
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -12478,6 +12226,11 @@ bind index,pager Q quasi-delete
           </row>
           <row>
             <entry><literal>sidebar_next_new_wrap</literal></entry>
+            <entry>boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+          <row>
+            <entry><literal>sidebar_on_right</literal></entry>
             <entry>boolean</entry>
             <entry><literal>no</literal></entry>
           </row>
@@ -12736,6 +12489,9 @@ sidebar_whitelist '/home/user/mailbox2'
 # around when it reaches the end of the list?</emphasis>
 set sidebar_next_new_wrap = no
  
+<emphasis role="comment"># Show the Sidebar on the right-hand side of the screen</emphasis>
+set sidebar_on_right = no
+ 
 <emphasis role="comment"># The character to use as the divider between the Sidebar and the other Mutt
 # panels.
 # Note: Only the first character of this string is used.</emphasis>
@@ -12866,7 +12622,7 @@ color sidebar_new green black
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -12910,28 +12666,6 @@ color sidebar_new green black
       </tgroup>
     </table>
   </sect2>
-
-<!--
-  <sect2 id="skip-quoted-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="skip-quoted-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="skip-quoted-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="skip-quoted-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="skip-quoted-muttrc">
     <title>Muttrc</title>
@@ -12987,7 +12721,7 @@ set skip_quoted_offset = 3
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -13093,7 +12827,7 @@ set smime_encrypt_self = "no"
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -13112,18 +12846,6 @@ set smime_encrypt_self = "no"
     take up to 2 extra parameters (regex, num).
         </para>
   </sect2>
-
-<!--
-  <sect2 id="status-color-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="status-color-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="status-color-commands">
     <title>Commands</title>
@@ -13189,13 +12911,6 @@ set smime_encrypt_self = "no"
       </tgroup>
     </table>
   </sect2>
-
-<!--
-  <sect2 id="status-color-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="status-color-muttrc">
     <title>Muttrc</title>
@@ -13296,7 +13011,7 @@ color status brightwhite default 'Mutt: ([^ ]+)' 1
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
     <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
@@ -13378,7 +13093,7 @@ timeout-hook . 'exec sync-mailbox'
 
     <itemizedlist>
       <title>Dependencies:</title>
-      <listitem><para>mutt-1.6.2</para></listitem>
+      <listitem><para>mutt-1.7.0</para></listitem>
       <listitem><para>OpenSSL</para></listitem>
     </itemizedlist>
 
@@ -13414,33 +13129,6 @@ timeout-hook . 'exec sync-mailbox'
 openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername &lt;imap server&gt;
 </screen>
   </sect2>
-
-<!--
-  <sect2 id="tls-sni-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="tls-sni-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="tls-sni-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="tls-sni-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="tls-sni-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
 
   <sect2 id="tls-sni-muttrc">
     <title>Muttrc</title>

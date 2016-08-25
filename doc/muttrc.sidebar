@@ -38,6 +38,9 @@ sidebar_whitelist '/home/user/mailbox2'
 # around when it reaches the end of the list?
 set sidebar_next_new_wrap = no
 
+# Show the Sidebar on the right-hand side of the screen
+set sidebar_on_right = no
+
 # The character to use as the divider between the Sidebar and the other Mutt
 # panels.
 # Note: Only the first character of this string is used.
