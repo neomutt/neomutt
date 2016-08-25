@@ -1397,7 +1397,8 @@ fi
 AC_CHECK_FUNCS(fmemopen open_memstream, [
 	AC_ARG_ENABLE(fmemopen, AS_HELP_STRING([--disable-fmemopen],[Do NOT use fmemopen]),
 	[],
-	[AC_DEFINE(USE_FMEMOPEN, 1, [Use fmemopen])])
+	# Temporarily disable fmemopen, due to a bug
+	[AC_DEFINE(USE_FMEMOPEN, 0, [Use fmemopen])])
 ])
 
 dnl Documentation tools
