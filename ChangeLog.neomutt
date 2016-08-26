@@ -1,3 +1,13 @@
+2016-08-26  Richard Russon  <rich@flatcap.org>
+* Build
+  - Disable fmemopen until bug is fixed
+* Contrib
+  - Keybase portability improvements
+    Joshua Jordi (JakkinStewart)
+* Bug Fixes
+  - Fix notmuch crash toggling virtual folders 
+  - Fix display of pager index when sidebar toggled
+
 2016-08-21  Richard Russon  <rich@flatcap.org>
 * Contrib
   - Updates to Keybase Support
