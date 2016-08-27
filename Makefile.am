@@ -18,7 +18,7 @@ if BUILD_HCACHE
 HCVERSION = hcversion.h
 endif
 
-BUILT_SOURCES = keymap_defs.h patchlist.c conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
+BUILT_SOURCES = keymap_defs.h patchlist.c oldmutt_ver.h conststrings.c hcachever.sh $(HCVERSION) $(top_srcdir)/.version
 
 bin_PROGRAMS = mutt $(DOTLOCK_TARGET) $(PGPAUX_TARGET)
 mutt_SOURCES = \
@@ -75,7 +75,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
 	pgppacket.h depcomp ascii.h PATCHES patchlist.sh \
 	ChangeLog ChangeLog.neomutt mutt_idna.h sidebar.h OPS.SIDEBAR \
 	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
-	txt2c.c txt2c.sh version.h oldmutt_ver.h \
+	txt2c.c txt2c.sh version.h \
 	$(top_srcdir)/.version git-version-gen
 
 EXTRA_SCRIPTS = smime_keys
@@ -123,7 +123,7 @@ conststrings.c: txt2c config.status
 	sed -e 's/^"//' -e 's/"$$//' | ${srcdir}/txt2c.sh configure_options >>conststrings_c
 	mv -f conststrings_c conststrings.c
 
-CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES) oldmutt_ver.h
+CLEANFILES = mutt_dotlock.c keymap_alldefs.h $(BUILT_SOURCES)
 
 DISTCLEANFILES= smime_keys txt2c po/$(PACKAGE).pot
 
