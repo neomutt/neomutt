@@ -1,3 +1,11 @@
+2016-08-27  Richard Russon  <rich@flatcap.org>
+* NeoMutt for Mutt 1.7.0
+* Build
+  - Disable fmemopen until bug is fixed
+* Contrib
+  - Keybase portability improvements
+    Joshua Jordi (JakkinStewart)
+
 2016-08-21  Richard Russon  <rich@flatcap.org>
 * Contrib
   - Updates to Keybase Support
