@@ -2677,6 +2677,7 @@ int mutt_index_menu (void)
       case OP_EDIT_LABEL:
 
 	CHECK_MSGCOUNT;
+	CHECK_VISIBLE;
 	CHECK_READONLY;
 	rc = mutt_label_message(tag ? NULL : CURHDR);
 	if (rc > 0) {
