@@ -25,10 +25,6 @@ install-data-local:
 	for f in $(srcdir)/iconv/*.rc ; do					\
 		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/samples/iconv	  ;	\
 	done
-	$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/keybase $(DESTDIR)$(docdir)/keybase/images
-	for f in $(srcdir)/keybase/images/*.png ; do				\
-		$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/keybase/images  ;	\
-	done
 	for d in $(CONTRIB_DIRS); do						\
 		echo "Installing $$d" ;	\
 		$(INSTALL) -d -m 755 $(DESTDIR)$(docdir)/$$d ;\
@@ -37,6 +33,7 @@ install-data-local:
 			$(INSTALL) -m 644 $$f $(DESTDIR)$(docdir)/$$d ; \
 		done \
 	done
+	chmod +x $(DESTDIR)$(docdir)/keybase/*.sh
 
 uninstall-local:
 	for f in $(SAMPLES) ; do \
