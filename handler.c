@@ -540,7 +540,7 @@ static int autoview_handler(struct Body *a, struct State *s)
   int rc = 0;
 
   snprintf(type, sizeof(type), "%s/%s", TYPE(a), a->subtype);
-  rfc1524_mailcap_lookup(a, type, entry, MUTT_MC_AUTOVIEW);
+  rfc1524_mailcap_lookup(a, type, entry, s->flags & MUTT_REPLYING ? MUTT_MC_COMPOSE : MUTT_MC_AUTOVIEW);
 
   fname = mutt_str_strdup(a->filename);
   mutt_file_sanitize_filename(fname, true);
@@ -549,7 +549,10 @@ static int autoview_handler(struct Body *a, struct State *s)
 
   if (entry->command)
   {
-    mutt_buffer_strcpy(cmd, entry->command);
+    if ((s->flags & MUTT_REPLYING) && entry->composecommand)
+      mutt_buffer_strcpy(cmd, entry->composecommand);
+    else
+      mutt_buffer_strcpy(cmd, entry->command);
 
     /* rfc1524_expand_command returns 0 if the file is required */
     bool piped = mutt_buffer_rfc1524_expand_command(a, mutt_b2s(tempfile), type, cmd);
