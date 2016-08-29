@@ -48,7 +48,7 @@ bind compose N edit-newsgroups
 bind compose x edit-x-comment-to
 
 # followup to newsgroup
-bind attachment,index,pager F followup-message
+bind attach,index,pager F followup-message
 
 # post message to newsgroup
 bind index,pager P post-message
@@ -75,7 +75,7 @@ bind browser U unsubscribe-pattern
 bind index,pager \ei change-newsgroup-readonly
 
 # forward to newsgroup
-bind attachment,index,pager \eF forward-to-group
+bind attach,index,pager \eF forward-to-group
 
 # get all children of the current message
 # bind index ??? get-children

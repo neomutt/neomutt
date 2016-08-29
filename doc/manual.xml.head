@@ -11231,7 +11231,7 @@ set new_mail_command = ""
             <entry>edit the X-Comment-To field</entry>
           </row>
           <row>
-            <entry>attachment,index,pager</entry>
+            <entry>attach,index,pager</entry>
             <entry><literal>&lt;followup-message&gt;</literal></entry>
             <entry>followup to newsgroup</entry>
           </row>
@@ -11276,7 +11276,7 @@ set new_mail_command = ""
             <entry>open a different newsgroup in read only mode</entry>
           </row>
           <row>
-            <entry>attachment,index,pager</entry>
+            <entry>attach,index,pager</entry>
             <entry><literal>&lt;forward-to-group&gt;</literal></entry>
             <entry>forward to newsgroup</entry>
           </row>
@@ -11359,7 +11359,7 @@ bind compose N edit-newsgroups
 bind compose x edit-x-comment-to 
 
 <emphasis role="comment"># followup to newsgroup</emphasis>
-bind attachment,index,pager F followup-message 
+bind attach,index,pager F followup-message 
 
 <emphasis role="comment"># post message to newsgroup</emphasis>
 bind index,pager P post-message 
@@ -11386,7 +11386,7 @@ bind browser U unsubscribe-pattern
 bind index,pager \ei change-newsgroup-readonly 
 
 <emphasis role="comment"># forward to newsgroup</emphasis>
-bind attachment,index,pager \eF forward-to-group 
+bind attach,index,pager \eF forward-to-group 
 
 <emphasis role="comment"># get all children of the current message</emphasis>
 # bind index ??? get-children 
