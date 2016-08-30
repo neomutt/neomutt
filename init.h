@@ -2762,6 +2762,16 @@ struct option_t MuttVars[] = {
   ** header field to the list address and you want to send a private
   ** message to the author of a message.
   */
+  { "reply_with_xorig", DT_BOOL, R_NONE, OPTREPLYWITHXORIG, 0 },
+  /*
+  ** .pp
+  ** This variable provides a toggle. When active, the From: header will be
+  ** extracted from the current mail's `X-Original-To:' header. This setting
+  ** does not have precedence over ``$reverse_realname''.
+  ** .pp
+  ** Assuming `fast_reply' is disabled, this option will prompt the user with a
+  ** prefilled From: header.
+  */
   { "resolve",		DT_BOOL, R_NONE, OPTRESOLVE, 1 },
   /*
   ** .pp

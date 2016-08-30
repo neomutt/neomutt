@@ -265,6 +265,10 @@ static int edit_envelope (ENVELOPE *en, int flags)
       return (-1);
     if (option (OPTASKBCC) && edit_address (&en->bcc, "Bcc: ") == -1)
       return (-1);
+    if (option (OPTREPLYWITHXORIG) &&
+	(flags & (SENDREPLY|SENDLISTREPLY|SENDGROUPREPLY)) &&
+	(edit_address (&en->from, "From: ") == -1))
+      return (-1);
   }
 
   if (en->subject)
@@ -1400,7 +1404,28 @@ ci_send_message (int flags,		/* send mode */
      * have their aliases expanded.
      */
 
+    if (msg->env->from)
+        dprint (5, (debugfile, "ci_send_message: msg->env->from before set_reverse_name: %s\n", msg->env->from->mailbox));
     msg->env->from = set_reverse_name (cur->env);
+  }
+  if (cur && option (OPTREPLYWITHXORIG) && !(flags & (SENDPOSTPONED|SENDRESEND|SENDFORWARD)))
+  {
+    /* We shouldn't have to worry about freeing `msg->env->from' before
+     * setting it here since this code will only execute when doing some
+     * sort of reply. The pointer will only be set when using the -H command
+     * line option.
+     *
+     * If there is already a from address recorded in `msg->env->from',
+     * then it theoretically comes from OPTREVNAME handling, and we don't use
+     * the `X-Orig-To header'.
+     */
+    if (cur->env->x_original_to && !msg->env->from)
+    {
+      msg->env->from = cur->env->x_original_to;
+      /* Not more than one from address */
+      msg->env->from->next = NULL;
+      dprint (5, (debugfile, "ci_send_message: msg->env->from extracted from X-Original-To: header: %s\n", msg->env->from->mailbox));
+    }
   }
 
   if (! (flags & (SENDPOSTPONED|SENDRESEND)) &&

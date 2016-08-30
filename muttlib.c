@@ -780,6 +780,7 @@ void mutt_merge_envelopes(ENVELOPE* base, ENVELOPE** extra)
   MOVE_ELEM(supersedes);
   MOVE_ELEM(date);
   MOVE_ELEM(labels);
+  MOVE_ELEM(x_original_to);
   if (!base->refs_changed)
   {
     MOVE_ELEM(references);

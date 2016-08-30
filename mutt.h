@@ -473,6 +473,7 @@ enum
   OPTREFLOWSPACEQUOTES,
   OPTREFLOWTEXT,
   OPTREPLYSELF,
+  OPTREPLYWITHXORIG,
   OPTRESOLVE,
   OPTRESUMEDRAFTFILES,
   OPTRESUMEEDITEDDRAFTFILES,
@@ -678,6 +679,7 @@ typedef struct envelope
   ADDRESS *sender;
   ADDRESS *reply_to;
   ADDRESS *mail_followup_to;
+  ADDRESS *x_original_to;
   char *list_post;		/* this stores a mailto URL, or nothing */
   char *subject;
   char *real_subj;		/* offset of the real subject */
