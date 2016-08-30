@@ -13,6 +13,7 @@ patch-keywords-neomutt
 patch-kyoto-neomutt
 patch-limit-current-thread-neomutt
 patch-lmdb-neomutt
+patch-lua-neomutt
 patch-multiple-fcc-neomutt
 patch-nested-if-neomutt
 patch-new-mail-neomutt

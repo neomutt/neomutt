@@ -1604,6 +1604,13 @@ struct option_t MuttVars[] = {
   ** ``$$keywords_standard'' are \fCfalse\fP, mutt will save keywords
   ** to legacy headers to ensure that it does not lose your labels.
   */
+#ifdef USE_LUA
+  { "lua_script",	DT_STR,  R_NONE, UL &LuaScript, 0 },
+  /*
+  ** .pp
+  ** External Lua script to run.
+  */
+#endif
   { "mail_check",	DT_NUM,  R_NONE, UL &BuffyTimeout, 5 },
   /*
   ** .pp

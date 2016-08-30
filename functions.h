@@ -129,6 +129,9 @@ const struct binding_t OpMain[] = { /* map: index */
   { "limit-current-thread",      OP_LIMIT_CURRENT_THREAD,           NULL },
   { "link-threads",              OP_MAIN_LINK_THREADS,              "&" },
   { "list-reply",                OP_LIST_REPLY,                     "L" },
+#ifdef USE_LUA
+  { "lua-run",                   OP_LUA_RUN,                        NULL },
+#endif
   { "mail",                      OP_MAIL,                           "m" },
   { "toggle-new",                OP_TOGGLE_NEW,                     "N" },
   { "toggle-write",              OP_TOGGLE_WRITE,                   "%" },

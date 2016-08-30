@@ -286,6 +286,11 @@ static struct compile_options comp_opts[] =
 #else
   { "USE_IMAP", 0 },
 #endif
+#ifdef USE_LUA
+  { "USE_LUA", 1 },
+#else
+  { "USE_LUA", 0 },
+#endif
 #ifdef USE_NOTMUCH
   { "USE_NOTMUCH", 1 },
 #else

@@ -155,6 +155,7 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_imap="yes"
 	use_nntp="yes"
 	use_smtp="yes"
+	use_lua="yes"
 	hcache_tokyocabinet="yes"
 	hcache_kyotocabinet="yes"
 	hcache_bdb="yes"
@@ -172,6 +173,7 @@ AS_IF([test x$enable_everything = "xyes"], [
 	use_imap="no"
 	use_nntp="no"
 	use_smtp="no"
+	use_lua="no"
 ])
 
 
@@ -209,6 +211,10 @@ AC_ARG_ENABLE(smime,
 AC_ARG_ENABLE(sidebar,
 	AC_HELP_STRING([--enable-sidebar], [Enable Sidebar support]),
 	[use_sidebar=$enableval])
+
+AC_ARG_ENABLE(lua,
+	AC_HELP_STRING([--enable-lua], [Enable lua scripting support]),
+	[use_lua=$enableval])
 
 AC_ARG_ENABLE(compressed,
 	AC_HELP_STRING([--enable-compressed], [Enable compressed folders support]),
@@ -289,6 +295,19 @@ AS_IF([test x$use_compressed = "xyes"], [
 	MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS compress.o"
 ])
 AM_CONDITIONAL(BUILD_COMPRESS, test x$enable_compressed = xyes)
+
+dnl --enable-lua
+AX_PROG_LUA([5.2],[],:,enable_lua=no)
+AX_LUA_HEADERS(:,enable_lua=no)
+AX_LUA_LIBS(:,enable_lua=no)
+
+AS_IF([test x$enable_lua = "xyes"], [
+	   AC_DEFINE(USE_LUA, 1, [Define if you want support for LUA.])
+	   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS mutt-lua.o"
+	   CPPFLAGS="$CPPFLAGS $LUA_INCLUDE"
+	   LIBS="$LIBS $LUA_LIB"
+])
+AM_CONDITIONAL(BUILD_LUA, test x$enable_lua = xyes)
 
 dnl --enable-notmuch
 AS_IF([test x$use_notmuch = "xyes"], [
@@ -1481,6 +1500,7 @@ AC_MSG_NOTICE([Summary of build options:
   Notmuch:           $use_notmuch
   Compressed Folder: $use_compressed
   Header Cache(s):   $hcache_db_used
+  Lua:               $use_lua
 
   POP3:              $use_pop
   IMAP:              $use_imap

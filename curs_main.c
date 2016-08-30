@@ -52,6 +52,9 @@
 #include "nntp.h"
 #endif
 
+#ifdef USE_LUA
+#include "mutt-lua.h"
+#endif
 
 #include <ctype.h>
 #include <stdlib.h>
@@ -3209,6 +3212,11 @@ int mutt_index_menu (void)
 
       case OP_SIDEBAR_TOGGLE_VIRTUAL:
 	mutt_sb_toggle_virtual();
+	break;
+#endif
+#ifdef USE_LUA
+      case OP_LUA_RUN:
+	lua_test();
 	break;
 #endif
       default:
