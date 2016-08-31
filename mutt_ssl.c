@@ -1123,6 +1123,7 @@ static int interactive_check_cert (X509 *cert, int idx, int len)
   }
   unset_option(OPTIGNOREMACROEVENTS);
   mutt_menuDestroy (&menu);
+  set_option (OPTNEEDREDRAW);
   dprint (2, (debugfile, "ssl interactive_check_cert: done=%d\n", done));
   return (done == 2);
 }
