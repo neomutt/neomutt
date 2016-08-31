@@ -1,0 +1,11 @@
+# This is a complete list of FEATURE-NAME configuration.
+
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+
+# Use X-Original-To header to reply when reverse is disabled or no alternate
+# is found.
+set reply_with_xorig = "yes"
+
+# vim: syntax=muttrc

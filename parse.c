@@ -1331,6 +1331,11 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       matched = 1;
     }
 #endif
+    else if (!ascii_strcasecmp (line + 1, "-original-to"))
+    {
+      e->x_original_to = rfc822_parse_adrlist (e->x_original_to, p);
+      matched = 1;
+    }
 
     default:
     break;
@@ -1548,6 +1553,7 @@ ENVELOPE *mutt_read_rfc822_header (FILE *f, HEADER *hdr, short user_hdrs,
     rfc2047_decode_adrlist (e->mail_followup_to);
     rfc2047_decode_adrlist (e->return_path);
     rfc2047_decode_adrlist (e->sender);
+    rfc2047_decode_adrlist (e->x_original_to);
 
     if (e->subject)
     {
