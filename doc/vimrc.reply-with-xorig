@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt FEATURE-NAME patch
+
+syntax keyword muttrcVarBool    skipwhite contained reply_with_xorig         nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+
+" vim: syntax=vim

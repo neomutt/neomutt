@@ -13167,6 +13167,88 @@ openssl s_client -host &lt;imap server&gt; -port &lt;port&gt; -tls1 -servername 
   </sect2>
 </sect1>
 
+<sect1 id="reply-with-xorig-patch">
+  <title>Reply With X-Original-To Patch</title>
+  <subtitle>Adds a configuration variable to allow direct reply to a mail using X-Original-To header
+      as a From: in the answer.
+  </subtitle>
+
+  <sect2 id="reply-with-xorig-patch2">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>Reply With X-Original-To</quote>, look for
+      <quote>patch-reply-with-xorig</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="reply-with-xorig-intro">
+    <title>Introduction</title>
+
+    <para>
+        Adds a reply_with_xorig for mutt configuration files. If enabled,
+        allows to reply to an email using the email address in the first X-Original-To:
+        header of a mail as the From: header of the answer.
+    </para>
+  </sect2>
+
+  <sect2 id="reply-with-xorig-variables">
+    <title>Variables</title>
+
+    <table id="table-reply-with-xorig-variables">
+      <title>Reply With X-Original-To Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>reply_with_xorig</literal></entry>
+            <entry>Boolean</entry>
+            <entry><literal>no</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="reply-with-xorig-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># This is a complete list of reply-with-xorig-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# Use X-Original-To header to reply when reverse is disabled or no alternate
+# is found.</emphasis>
+set reply_with_xorig = "yes"
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="reply-with-xorig-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Pierre-Elliott Bécue <email>becue@crans.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="security">
