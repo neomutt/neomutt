@@ -2467,7 +2467,7 @@ search_next:
 
       case OP_DELETE_THREAD:
       case OP_DELETE_SUBTHREAD:
-	  case OP_PURGE_THREAD:
+      case OP_PURGE_THREAD:
 	CHECK_MODE(IsHeader (extra));
 	CHECK_READONLY;
         /* L10N: CHECK_ACL */
@@ -2475,15 +2475,17 @@ search_next:
 
 	r = mutt_thread_set_flag (extra->hdr, MUTT_DELETE, 1,
 				  ch == OP_DELETE_THREAD ? 0 : 1);
-	r = mutt_thread_set_flag (extra->hdr, MUTT_PURGE, (ch == OP_PURGE_THREAD), (ch == OP_PURGE_THREAD ? 0 : 1));
+	r = mutt_thread_set_flag (extra->hdr, MUTT_PURGE, (ch == OP_PURGE_THREAD),
+				 ((ch == OP_PURGE_THREAD) ? 0 : 1));
 
 	if (r != -1)
 	{
-	  if (option (OPTDELETEUNTAG)) {
+	  if (option (OPTDELETEUNTAG))
+	  {
 	    mutt_thread_set_flag (extra->hdr, MUTT_TAG, 0,
 				  ch == OP_DELETE_THREAD ? 0 : 1);
 		mutt_thread_set_flag (extra->hdr, MUTT_TAG, 0,
-				  ch == OP_PURGE_THREAD ? 0 : 1);
+				  (ch == OP_PURGE_THREAD) ? 0 : 1);
 	  }
 	  if (option (OPTRESOLVE))
 	  {
