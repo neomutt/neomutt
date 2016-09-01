@@ -243,7 +243,7 @@ int mutt_protect (HEADER *msg, char *keylist)
 
       tmp_pbody = crypt_smime_build_smime_entity (tmp_smime_pbody, new_keylist);
       if (new_keylist != keylist)
-        FREE(&new_keylist);
+        FREE (&new_keylist);
 
       if (!tmp_pbody)
       {
@@ -265,10 +265,22 @@ int mutt_protect (HEADER *msg, char *keylist)
     if ((WithCrypto & APPLICATION_PGP)
         && (msg->security & APPLICATION_PGP))
     {
-      if (!(pbody = crypt_pgp_encrypt_message (tmp_pgp_pbody, keylist,
-                                               flags & SIGN)))
-      {
+      char *new_keylist = keylist;
 
+      if (PgpSignAs && query_quadoption (OPT_PGPENCRYPTSELF, _("Encrypt message to PGP Default Key also?")) == MUTT_YES)
+      {
+        /* +1 for SPACE, +1 for NULL */
+        int size = mutt_strlen (keylist) + mutt_strlen (PgpSignAs) + 2;
+        new_keylist = safe_malloc (size);
+        snprintf (new_keylist, size, "%s %s", keylist, PgpSignAs);
+      }
+
+      pbody = crypt_pgp_encrypt_message (tmp_pgp_pbody, new_keylist,
+                                               flags & SIGN);
+      if (new_keylist != keylist)
+	FREE(&new_keylist);
+      if (!pbody)
+      {
 	/* did we perform a retainable signature? */
 	if (flags != msg->security)
 	{

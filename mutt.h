@@ -301,6 +301,7 @@ enum
   OPT_MOVE,
   OPT_PGPMIMEAUTO,     /* ask to revert to PGP/MIME when inline fails */
   OPT_SMIMEENCRYPTSELF,
+  OPT_PGPENCRYPTSELF,
 #ifdef USE_POP
   OPT_POPDELETE,
   OPT_POPRECONNECT,

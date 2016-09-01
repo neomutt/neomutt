@@ -583,6 +583,12 @@ struct option_t MuttVars[] = {
   ** to find out whether an encrypted message is also signed.
   ** (Crypto only)
   */
+  { "pgp_encrypt_self",		DT_QUAD,	 R_NONE, OPT_PGPENCRYPTSELF, MUTT_NO },
+  /*
+  ** .pp
+  ** Encrypt the message to $$pgp_sign_as too.
+  ** (PGP only)
+  */
   { "crypt_timestamp", DT_BOOL, R_NONE, OPTCRYPTTIMESTAMP, 1 },
   /*
   ** .pp
