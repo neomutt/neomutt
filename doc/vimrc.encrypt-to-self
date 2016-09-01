@@ -1,0 +1,6 @@
+" Vim syntax file for the mutt encrypt-to-self patch
+
+syntax keyword muttrcVarQuad    smime_encrypt_self
+syntax keyword muttrcVarQuad    pgp_encrypt_self
+
+" vim: syntax=vim

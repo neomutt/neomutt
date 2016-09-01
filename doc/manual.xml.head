@@ -9693,6 +9693,133 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
   </sect2>
 </sect1>
 
+<sect1 id="encrypt-to-self">
+  <title>Encrypt-to-Self Patch</title>
+  <subtitle>Save an self-encrypted copy of emails</subtitle>
+
+  <sect2 id="encrypt-to-self-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>encrypt-self</quote>, look for
+      <quote>patch-encrypt-self</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="encrypt-to-self-intro">
+    <title>Introduction</title>
+
+    <para>
+      Once you encrypt an email to someone you cannot read it.  This is good
+      for security, but bad for record-keeping.  If you wanted to keep a copy
+      of an encrypted email you could set <link linkend="fcc-clear">$fcc_clear</link>.
+    </para>
+
+    <para>
+      A better option is to enable
+      <link linkend="smime-encrypt-self">$smime_encrypt_self</link>, then set
+      <link linkend="smime-default-key">$smime_default_key</link> to your
+      personal S/MIME key id.
+    </para>
+
+<screen>
+set smime_encrypt_self = yes
+set smime_default_key  = bb345e23.0
+</screen>
+
+    <para>
+      Or, if you use PGP, 
+      <link linkend="pgp-encrypt-self">$pgp_encrypt_self</link>, then set
+      <link linkend="pgp-sign-as">$pgp_sign_as</link> to your
+      personal PGP key id.
+    </para>
+
+<screen>
+set pgp_encrypt_self = yes
+set pgp_sign_as      = A4AF18C5582473BD35A1E9CE78BB3D480042198E
+</screen>
+
+  </sect2>
+
+  <sect2 id="encrypt-to-self-variables">
+    <title>Variables</title>
+
+    <table id="table-encrypt-self-variables">
+      <title>encrypt-self Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>smime_encrypt_self</literal></entry>
+            <entry>quad</entry>
+            <entry>No</entry>
+          </row>
+          <row>
+            <entry><literal>pgp_encrypt_self</literal></entry>
+            <entry>quad</entry>
+            <entry>No</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="encrypt-to-self-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># This is a complete list of encrypt-self-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# Save a copy of outgoing email, encrypted to yourself using SMIME</emphasis>
+set smime_encrypt_self = "no"
+ 
+<emphasis role="comment"># Save a copy of outgoing email, encrypted to yourself using PGP</emphasis>
+set pgp_encrypt_self = "no"
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="encrypt-to-self-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="encrypt-to-self-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="encrypt-to-self-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Omen Wild <email>omen@mandarb.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    <listitem><para>Guillaume Brogi <email>gui-gui@netcourrier.com</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="fmemopen">
   <title>Fmemopen Patch</title>
   <subtitle>Replace some temporary files with memory buffers</subtitle>
@@ -12701,112 +12828,6 @@ set skip_quoted_offset = 3
     <title>Credits</title>
     <itemizedlist>
     <listitem><para>David Sterba <email>dsterba@suse.cz</email></para></listitem>
-    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
-    </itemizedlist>
-  </sect2>
-</sect1>
-
-<sect1 id="smime-encrypt-self-patch">
-  <title>smime-encrypt-self Patch</title>
-  <subtitle>Save an self-encrypted copy of emails</subtitle>
-
-  <sect2 id="smime-encrypt-self-patch2">
-    <title>Patch</title>
-
-    <para>
-      To check if Mutt supports <quote>smime-encrypt-self</quote>, look for
-      <quote>patch-smime-encrypt-self</quote> in the mutt version.
-      See: <xref linkend="mutt-patches"/>.
-    </para>
-
-    <itemizedlist>
-      <title>Dependencies:</title>
-      <listitem><para>mutt-1.7.0</para></listitem>
-    </itemizedlist>
-
-    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
-  </sect2>
-
-  <sect2 id="smime-encrypt-self-intro">
-    <title>Introduction</title>
-
-    <para>
-      Once you encrypt an email to someone you cannot read it.  This is good
-      for security, but bad for record-keeping.  If you wanted to keep a copy
-      of an encrypted email you could set <link linkend="fcc-clear">$fcc_clear</link>.
-    </para>
-
-    <para>
-      A better option is to enable
-      <link linkend="smime-encrypt-self">$smime_encrypt_self</link>, then set
-      <link linkend="smime-default-key">$smime_default_key</link> to your
-      personal S/MIME key id.
-    </para>
-
-<screen>
-set smime_encrypt_self = yes
-set smime_default_key  = bb345e23.0
-</screen>
-
-  </sect2>
-
-  <sect2 id="smime-encrypt-self-variables">
-    <title>Variables</title>
-
-    <table id="table-smime-encrypt-self-variables">
-      <title>smime-encrypt-self Variables</title>
-      <tgroup cols="3">
-        <thead>
-          <row>
-            <entry>Name</entry>
-            <entry>Type</entry>
-            <entry>Default</entry>
-          </row>
-        </thead>
-        <tbody>
-          <row>
-            <entry><literal>smime_encrypt_self</literal></entry>
-            <entry>quad</entry>
-            <entry>No</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
-  </sect2>
-
-  <sect2 id="smime-encrypt-self-muttrc">
-    <title>Muttrc</title>
-<screen>
-<emphasis role="comment"># This is a complete list of smime-encrypt-self-related configuration.
- 
-# --------------------------------------------------------------------------
-# VARIABLES - shown with their default values
-# --------------------------------------------------------------------------
- 
-# Save a copy of outgoing email, encrypted to yourself</emphasis>
-set smime_encrypt_self = "no"
- 
-<emphasis role="comment"># vim: syntax=muttrc</emphasis>
-</screen>
-  </sect2>
-
-  <sect2 id="smime-encrypt-self-see-also">
-    <title>See Also</title>
-
-    <itemizedlist>
-      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
-    </itemizedlist>
-  </sect2>
-
-  <sect2 id="smime-encrypt-self-known-bugs">
-    <title>Known Bugs</title>
-    <para>None</para>
-  </sect2>
-
-  <sect2 id="smime-encrypt-self-credits">
-    <title>Credits</title>
-    <itemizedlist>
-    <listitem><para>Omen Wild <email>omen@mandarb.com</email></para></listitem>
     <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
     </itemizedlist>
   </sect2>

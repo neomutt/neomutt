@@ -1,5 +1,6 @@
 patch-compress-neomutt
 patch-cond-date-neomutt
+patch-encrypt-to-self-neomutt
 patch-fmemopen-neomutt
 patch-ifdef-neomutt
 patch-index-color-neomutt
@@ -16,7 +17,6 @@ patch-progress-neomutt
 patch-quasi-delete-neomutt
 patch-sidebar-neomutt
 patch-skip-quoted-neomutt
-patch-smime-encrypt-self-neomutt
 patch-status-color-neomutt
 patch-timeout-neomutt
 patch-tls-sni-neomutt
