@@ -1079,7 +1079,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       matched = 1;
     }
 #ifdef USE_NNTP
-    else if (!mutt_strcasecmp (line+1, "ollowup-to"))
+    else if (!ascii_strcasecmp (line+1, "ollowup-to"))
     {
       if (!e->followup_to)
       {
@@ -1180,7 +1180,7 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
     
 #ifdef USE_NNTP
     case 'n':
-    if (!mutt_strcasecmp (line + 1, "ewsgroups"))
+    if (!ascii_strcasecmp (line + 1, "ewsgroups"))
     {
       FREE (&e->newsgroups);
       mutt_remove_trailing_ws (p);
@@ -1192,9 +1192,9 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
 
     case 'o':
     /* field `Organization:' saves only for pager! */
-    if (!mutt_strcasecmp (line + 1, "rganization"))
+    if (!ascii_strcasecmp (line + 1, "rganization"))
     {
-      if (!e->organization && mutt_strcasecmp (p, "unknown"))
+      if (!e->organization && ascii_strcasecmp (p, "unknown"))
 	e->organization = safe_strdup (p);
     }
     break;
@@ -1318,13 +1318,13 @@ int mutt_parse_rfc822_line (ENVELOPE *e, HEADER *hdr, char *line, char *p, short
       kwtype = MUTT_X_MOZILLA_KEYS;
     }
 #ifdef USE_NNTP
-    else if (!mutt_strcasecmp (line + 1, "-comment-to"))
+    else if (!ascii_strcasecmp (line + 1, "-comment-to"))
     {
       if (!e->x_comment_to)
 	e->x_comment_to = safe_strdup (p);
       matched = 1;
     }
-    else if (!mutt_strcasecmp (line + 1, "ref"))
+    else if (!ascii_strcasecmp (line + 1, "ref"))
     {
       if (!e->xref)
 	e->xref = safe_strdup (p);
