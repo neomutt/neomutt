@@ -38,6 +38,7 @@ WHERE char *AttachSep;
 WHERE char *Attribution;
 WHERE char *AttachCharset;
 WHERE char *AttachFormat;
+WHERE char *AttachKeyword;
 WHERE char *Charset;
 WHERE char *ComposeFormat;
 WHERE char *ConfigCharset;
