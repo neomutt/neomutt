@@ -2168,3 +2168,28 @@ int mutt_set_xdg_path(const XDGType type, char *buf, size_t bufsize)
   FREE (&x);
   return 0;
 }
+
+void mutt_get_parent_path (char *output, char *path, size_t olen)
+{
+#ifdef USE_IMAP
+  if (mx_is_imap (path))
+    imap_get_parent_path (output, path, olen);
+  else
+#endif
+  {
+    strfcpy (output, path, olen);
+    int n = mutt_strlen (output);
+
+    /* Remove everything untill the next slash */
+    for (n--; ((n >= 0) && (output[n] != '/')); n--);
+
+    if (n > 0)
+      output[n] = '\0';
+    else
+    {
+      output[0] = '/';
+      output[1] = '\0';
+    }
+  }
+}
+

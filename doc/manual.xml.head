@@ -8289,6 +8289,92 @@ for example, in a global <literal>.muttrc</literal>.
 
 </sect1>
 
+<sect1 id="sensible-browser">
+  <title>Sensible-Browser Patch</title>
+  <subtitle>Make the file browser behave</subtitle>
+
+  <sect2 id="sensible-browser-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>sensible-browser</quote>, look for
+      <quote>patch-sensible-browser</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-intro">
+    <title>Introduction</title>
+
+    <para>
+      When using the file/folder browser, the selection isn't always where you would
+      expect. When you navigate to '..' (parent folder), the selection should show the
+      folder you <emphasis>used</emphasis> to be in.
+    </para>
+
+  </sect2>
+
+<!--
+  <sect2 id="sensible-browser-variables">
+    <title>Variables</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-functions">
+    <title>Functions</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-commands">
+    <title>Commands</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-colors">
+    <title>Colors</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-sort">
+    <title>Sort</title>
+    <para>None</para>
+  </sect2>
+-->
+
+  <sect2 id="sensible-browser-muttrc">
+    <title>Muttrc</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="sensible-browser-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="sensible-browser-known-bugs">
+    <title>Known Bugs</title>
+  </sect2>
+
+  <sect2 id="sensible-browser-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Pierre-Elliott Bécue <email>becue@crans.org</email></para></listitem>
+    <listitem><para>Haakon Riiser <email>haakon.riiser@fys.uio.no</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 </chapter>
 
 <chapter id="optionalfeatures">

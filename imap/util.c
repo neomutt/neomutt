@@ -72,6 +72,109 @@ int imap_expand_path (char* path, size_t len)
   return rc;
 }
 
+/* Public function
+ *
+ * Provided an imap mbox name and a delimiter, returns the mbox parent
+ * name.
+ *
+ * Could be static with a prototype in imap_private.h, but could be useful
+ * as a public function.
+ */
+void imap_get_parent (char *output, const char *mbox, size_t olen, char delim)
+{
+  int n;
+
+  /* If both pointers are on the same memory part
+   * strfcpy is useless
+   */
+  if (mbox != output)
+    strfcpy (output, mbox, olen);
+
+  n = mutt_strlen (output);
+
+  /* Let's go backwards untill the next delimiter
+   *
+   * If output[n] is a '/', the first n-- will allow
+   * to ignore it. If it isn't, then output looks like
+   * "/aaaaa/bbbb". There is at least one "b", so we can't skip
+   * the "/" after the 'a's.
+   *
+   * If output == '/', then n-- => n == 0, so the loop ends
+   * immediately
+   */
+  for (n--; n >= 0 && output[n] != delim ; n--);
+
+  /* We stopped before the begining. There is a trailing
+   * slash.
+   */
+  if (n > 0)
+  {
+    /* Strip the trailing delimiter.  */
+    output[n] = '\0';
+  }
+  else
+  {
+    output[0] = (n == 0) ? delim : '\0';
+  }
+}
+
+/* Public function
+ * Provided an imap path, returns in output the parent directory if
+ * existent. Else returns the same path.
+ */
+void imap_get_parent_path (char *output, const char *path, size_t olen)
+{
+  IMAP_MBOX mx;
+  IMAP_DATA *idata;
+  char mbox[LONG_STRING] = "";
+
+  if (imap_parse_path (path, &mx) < 0)
+  {
+    strfcpy (output, path, olen);
+    return;
+  }
+
+  idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
+  if (!idata)
+  {
+    strfcpy (output, path, olen);
+    return;
+  }
+
+  /* Stores a fixed path in mbox */
+  imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
+
+  /* Gets the parent mbox in mbox */
+  imap_get_parent (mbox, mbox, sizeof (mbox), idata->delim);
+
+  /* Returns a fully qualified IMAP url */
+  imap_qualify_path (output, olen, &mx, mbox);
+}
+
+/* Public function
+ *
+ * Cleans an IMAP path using imap_fix_path. Does it in place.
+ */
+void imap_clean_path (char *path, size_t plen)
+{
+  IMAP_MBOX mx;
+  IMAP_DATA *idata;
+  char mbox[LONG_STRING] = "";
+
+  if (imap_parse_path (path, &mx) < 0)
+    return;
+
+  idata = imap_conn_find (&mx.account, MUTT_IMAP_CONN_NONEW);
+  if (!idata)
+    return;
+
+  /* Stores a fixed path in mbox */
+  imap_fix_path (idata, mx.mbox, mbox, sizeof (mbox));
+
+  /* Returns a fully qualified IMAP url */
+  imap_qualify_path (path, plen, &mx, mbox);
+}
+
 #ifdef USE_HCACHE
 static int imap_hcache_namer (const char* path, char* dest, size_t dlen)
 {

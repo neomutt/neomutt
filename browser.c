@@ -76,6 +76,7 @@ typedef struct folder_t
   int num;
 } FOLDER;
 
+static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
 static char LastDirBackup[_POSIX_PATH_MAX] = "";
 
@@ -894,17 +895,43 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   else
 #endif
   if (buffy)
+  {
+    menu->is_mailbox_list = 1;
     snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
+  }
   else
   {
+    menu->is_mailbox_list = 0;
     strfcpy (path, LastDir, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
+
+    if (mutt_strncmp (LastDir, OldLastDir, mutt_strlen (LastDir)) == 0)
+    {
+      char TargetDir[_POSIX_PATH_MAX] = "";
 #ifdef USE_IMAP
-  if (state->imap_browse && option (OPTIMAPLSUB))
-    snprintf (title, titlelen, _("Subscribed [%s], File mask: %s"),
-	      path, NONULL (Mask.pattern));
-  else
+      if (state->imap_browse)
+      {
+        strfcpy (TargetDir, OldLastDir, sizeof (TargetDir));
+        imap_clean_path (TargetDir, sizeof (TargetDir));
+      }
+      else
 #endif
+        strfcpy (TargetDir,
+                strrchr (OldLastDir, '/') + 1,
+                sizeof (TargetDir));
+
+      /* If we get here, it means that LastDir is the parent directory of
+       * OldLastDir.  I.e., we're returning from a subdirectory, and we want
+       * to position the cursor on the directory we're returning from. */
+      int i;
+      for (i = 0; i < state->entrylen; i++)
+      {
+        if (mutt_strcmp (state->entry[i].name, TargetDir) == 0)
+        {
+          menu->current = i;
+        }
+      }
+    }
     snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
 	      path, NONULL(Mask.pattern));
   }
@@ -925,6 +952,18 @@ static int file_tag (MUTTMENU *menu, int n, int m)
   ff->tagged = (m >= 0 ? m : !ff->tagged);
   
   return ff->tagged - ot;
+}
+
+/* Public function
+ *
+ * This function helps the browser to know which directory has
+ * been selected. It should be called anywhere a confirm hit is done
+ * to open a new directory/file which is a maildir/mbox.
+ */
+void mutt_browser_select_dir (char *f)
+{
+  strfcpy (OldLastDir, f, sizeof (OldLastDir));
+  mutt_get_parent_path (LastDir, OldLastDir, sizeof (LastDir));
 }
 
 void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *numfiles)
@@ -1028,8 +1067,21 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
   {
     if (!folder)
       getcwd (LastDir, sizeof (LastDir));
-    else if (!LastDir[0])
-      strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
+    else
+    {
+      /* We use mutt_browser_select_dir to initialize the two
+       * variables (LastDir, OldLastDir) at the appropriate
+       * values.
+       */
+      if (!LastDir[0])
+      {
+        mutt_browser_select_dir (CurrentFolder);
+      }
+      else if (mutt_strcmp (CurrentFolder, OldLastDir) != 0)
+      {
+        mutt_browser_select_dir (CurrentFolder);
+      }
+    }
     
 #ifdef USE_IMAP
     if (!buffy && mx_is_imap (LastDir))
@@ -1136,8 +1188,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 #endif
 	    )
 	  {
-	    char OldLastDir[_POSIX_PATH_MAX];
-
 	    /* save the old directory */
 	    strfcpy (OldLastDir, LastDir, sizeof (OldLastDir));
 

@@ -53,6 +53,7 @@ typedef struct menu_t
   int offset;  /* row offset within the window to start the index */
   int pagelen;	/* number of entries per screen */
   int tagprefix;
+  int is_mailbox_list;
   mutt_window_t *indexwin;
   mutt_window_t *statuswin;
   mutt_window_t *helpwin;

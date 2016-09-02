@@ -1801,6 +1801,9 @@ int mutt_index_menu (void)
           if (!path || !*path)
             break;
           strncpy (buf, path, sizeof (buf));
+
+          /* Mark the selected dir for the mutt browser */
+          mutt_browser_select_dir (buf);
         }
 #endif
 #ifdef USE_NOTMUCH
@@ -1835,6 +1838,9 @@ int mutt_index_menu (void)
 	  }
 	  else
 #endif
+          /* Let's fill by default buf with the next mailbox containing
+           * unread mails
+           */
 	  mutt_buffy (buf, sizeof (buf));
 
           if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)
@@ -1847,6 +1853,10 @@ int mutt_index_menu (void)
             else
               break;
           }
+          
+          /* Selected directory is okay, let's save it.*/
+          mutt_browser_select_dir (buf);
+
 	  if (!buf[0])
 	  {
             mutt_window_clearline (MuttMessageWindow, 0);
