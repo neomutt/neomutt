@@ -2580,26 +2580,25 @@ int mutt_index_menu (void)
       case OP_PURGE_THREAD:
 
 	CHECK_MSGCOUNT;
-        CHECK_VISIBLE;
+	CHECK_VISIBLE;
 	CHECK_READONLY;
-        /* L10N: CHECK_ACL */
+	/* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
 
 	{
-	  int subthread = ((op != OP_DELETE_THREAD) && (op != OP_PURGE_THREAD));
+	  int subthread = (op == OP_DELETE_SUBTHREAD);
 	  rc = mutt_thread_set_flag (CURHDR, MUTT_DELETE, 1, subthread);
 	  if (rc == -1)
 	    break;
-	  rc = mutt_thread_set_flag (CURHDR, MUTT_PURGE, (op == OP_PURGE_THREAD), subthread);
-	}
-
-	if (rc != -1)
-	{
-	  if (option (OPTDELETEUNTAG))
+	  if (op == OP_PURGE_THREAD)
 	  {
-	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
-				  (op == OP_PURGE_THREAD) ? 0 : 1);
+	    rc = mutt_thread_set_flag (CURHDR, MUTT_PURGE, 1, subthread);
+	    if (rc == -1)
+	      break;
 	  }
+
+	  if (option (OPTDELETEUNTAG))
+	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0, subthread);
 	  if (option (OPTRESOLVE))
 	    if ((menu->current = ci_next_undeleted (menu->current)) == -1)
 	      menu->current = menu->oldcurrent;
