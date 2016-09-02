@@ -2585,10 +2585,13 @@ int mutt_index_menu (void)
         /* L10N: CHECK_ACL */
 	CHECK_ACL(MUTT_ACL_DELETE, _("Cannot delete message(s)"));
 
-	rc = mutt_thread_set_flag (CURHDR, MUTT_DELETE, 1,
-				   op == OP_DELETE_THREAD ? 0 : 1);
-	rc = mutt_thread_set_flag (CURHDR, MUTT_PURGE, (op == OP_PURGE_THREAD),
-				  ((op == OP_PURGE_THREAD) ? 0 : 1));
+	{
+	  int subthread = ((op != OP_DELETE_THREAD) && (op != OP_PURGE_THREAD));
+	  rc = mutt_thread_set_flag (CURHDR, MUTT_DELETE, 1, subthread);
+	  if (rc == -1)
+	    break;
+	  rc = mutt_thread_set_flag (CURHDR, MUTT_PURGE, (op == OP_PURGE_THREAD), subthread);
+	}
 
 	if (rc != -1)
 	{
@@ -2596,7 +2599,7 @@ int mutt_index_menu (void)
 	  {
 	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
 				  op == OP_DELETE_THREAD ? 0 : 1);
-		mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
+	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
 				  (op == OP_PURGE_THREAD) ? 0 : 1);
 	  }
 	  if (option (OPTRESOLVE))
