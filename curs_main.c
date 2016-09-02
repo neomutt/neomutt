@@ -2598,8 +2598,6 @@ int mutt_index_menu (void)
 	  if (option (OPTDELETEUNTAG))
 	  {
 	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
-				  op == OP_DELETE_THREAD ? 0 : 1);
-	    mutt_thread_set_flag (CURHDR, MUTT_TAG, 0,
 				  (op == OP_PURGE_THREAD) ? 0 : 1);
 	  }
 	  if (option (OPTRESOLVE))
