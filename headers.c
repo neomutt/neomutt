@@ -283,9 +283,7 @@ static int label_message(HEADER *hdr, char *new)
     mutt_free_list(&hdr->env->labels);
   }
 
-  if (new == NULL)
-    hdr->env->labels = NULL;
-  else
+  if ((new != NULL) && (*new != '\0'))
   {
     char *last, *label;
 
