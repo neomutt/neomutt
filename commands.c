@@ -893,12 +893,9 @@ int mutt_save_message (HEADER *h, int delete,
 	if (Context->hdrs[Context->v2r[i]]->tagged)
 	{
 	  mutt_message_hook (Context, Context->hdrs[Context->v2r[i]], MUTT_MESSAGEHOOK);
-	  if (_mutt_save_message(Context->hdrs[Context->v2r[i]],
-			     &ctx, delete, decode, decrypt) != 0)
-          {
-            mx_close_mailbox (&ctx, NULL);
-            return -1;
-          }
+	  if ((rc = _mutt_save_message(Context->hdrs[Context->v2r[i]],
+			     &ctx, delete, decode, decrypt) != 0))
+	    break;
 #ifdef USE_COMPRESSED
           if (cm)
           {
@@ -910,9 +907,6 @@ int mutt_save_message (HEADER *h, int delete,
               cm->msg_flagged++;
           }
 #endif
-	  if ((rc = _mutt_save_message(Context->hdrs[Context->v2r[i]],
-			     &ctx, delete, decode, decrypt) != 0))
-	    break;
 	}
       }
 #ifdef USE_NOTMUCH
