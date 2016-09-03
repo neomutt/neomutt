@@ -535,9 +535,17 @@ int mutt_parse_crypt_hdr (const char *p, int set_empty_signas, int crypt_app)
 }
 
 
-
+/* args:
+ *     fp      If not NULL, file containing the template
+ *     ctx     If fp is NULL, the context containing the header with the template
+ *     newhdr  The template is read into this HEADER
+ *     hdr     The message to recall/resend
+ *     resend  Set if resending (as opposed to recalling a postponed msg).
+ *             Resent messages enable header weeding, and also
+ *             discard any existing Message-ID and Mail-Followup-To.
+ */
 int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
-			       short weed)
+                           short resend)
 {
   MESSAGE *msg = NULL;
   char file[_POSIX_PATH_MAX];
@@ -560,15 +568,16 @@ int mutt_prepare_template (FILE *fp, CONTEXT *ctx, HEADER *newhdr, HEADER *hdr,
 
   fseeko (fp, hdr->offset, 0);
   newhdr->offset = hdr->offset;
-  newhdr->env = mutt_read_rfc822_header (fp, newhdr, 1, weed);
+  /* enable header weeding for resent messages */
+  newhdr->env = mutt_read_rfc822_header (fp, newhdr, 1, resend);
   newhdr->content->length = hdr->content->length;
   mutt_parse_part (fp, newhdr->content);
 
-  /* If message_id is set, then we are resending a message and don't want
-   * message_id or mail_followup_to. Otherwise, we are resuming a
-   * postponed message, and want to keep the mail_followup_to.
+  /* If resending a message, don't keep message_id or mail_followup_to.
+   * Otherwise, we are resuming a postponed message, and want to keep those
+   * headers if they exist.
    */
-  if (newhdr->env->message_id != NULL)
+  if (resend)
   {
     FREE (&newhdr->env->message_id);
     FREE (&newhdr->env->mail_followup_to);
