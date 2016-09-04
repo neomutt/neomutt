@@ -160,43 +160,59 @@ static int browser_compare_count_new (const void *a, const void *b)
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
 
+static int browser_compare (const void *a, const void *b)
+{
+  struct folder_file *pa = (struct folder_file *) a;
+  struct folder_file *pb = (struct folder_file *) b;
+
+  if ((mutt_strcoll (pa->desc, "../") == 0) ||
+       (mutt_strcoll (pa->desc, "..") == 0))
+    return -1;
+  if ((mutt_strcoll (pb->desc, "../") == 0) ||
+       (mutt_strcoll (pb->desc, "..") == 0))
+    return 1;
+
+  switch (BrowserSort & SORT_MASK)
+  {
+    case SORT_DATE:
+      return browser_compare_date(a, b);
+      break;
+    case SORT_SIZE:
+      return browser_compare_size(a, b);
+      break;
+    case SORT_DESC:
+      return browser_compare_desc(a, b);
+      break;
+    case SORT_COUNT:
+      return browser_compare_count(a, b);
+      break;
+    case SORT_COUNT_NEW:
+      return browser_compare_count_new(a, b);
+      break;
+    case SORT_SUBJECT:
+    default:
+      return browser_compare_subject(a, b);
+      break;
+  }
+}
+
 static void browser_sort (struct browser_state *state)
 {
-  int (*f) (const void *, const void *);
-
   switch (BrowserSort & SORT_MASK)
   {
     case SORT_ORDER:
       return;
-    case SORT_DATE:
 #ifdef USE_NNTP
-      if (option (OPTNEWS))
-	return;
-#endif
-      f = browser_compare_date;
-      break;
     case SORT_SIZE:
-#ifdef USE_NNTP
+    case SORT_DATE:
       if (option (OPTNEWS))
-	return;
+        return;
 #endif
-      f = browser_compare_size;
-      break;
-    case SORT_DESC:
-      f = browser_compare_desc;
-      break;
-    case SORT_COUNT:
-      f = browser_compare_count;
-      break;
-    case SORT_COUNT_NEW:
-      f = browser_compare_count_new;
-      break;
-    case SORT_SUBJECT:
     default:
-      f = browser_compare_subject;
       break;
   }
-  qsort (state->entry, state->entrylen, sizeof (struct folder_file), f);
+
+  qsort (state->entry, state->entrylen, sizeof (struct folder_file), browser_compare);
 }
 
 static int link_is_dir (const char *folder, const char *path)
