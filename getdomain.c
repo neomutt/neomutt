@@ -31,19 +31,21 @@
 
 int getdnsdomainname (char *d, size_t len)
 {
-  /* A DNS name can actually be only 253 octets, string is 256 */
+  int ret = -1;
+
+#ifdef HAVE_GETADDRINFO
   char *node;
   long node_len;
   struct addrinfo hints;
   struct addrinfo *h;
   char *p;
-  int ret;
 
   *d = '\0';
   memset(&hints, 0, sizeof (struct addrinfo));
   hints.ai_flags = AI_CANONNAME;
   hints.ai_family = AF_UNSPEC;
 
+  /* A DNS name can actually be only 253 octets, string is 256 */
   if ((node_len = sysconf(_SC_HOST_NAME_MAX)) == -1)
     node_len = STRING;
   node = safe_malloc(node_len + 1);
@@ -64,6 +66,8 @@ int getdnsdomainname (char *d, size_t len)
     freeaddrinfo(h);
   }
   FREE (&node);
+#endif
+
   return ret;
 }
 
