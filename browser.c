@@ -1655,6 +1655,12 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    BrowserSort |= reverse ? SORT_REVERSE : 0;
 	    browser_sort (&state);
+
+            /* Reset menu position to 1.
+             * We do not risk overflow as the init_menu function changes
+             * current if it is bigger than state->entrylen.
+             */
+            menu->current = 1;
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  break;
