@@ -341,19 +341,15 @@ static pgp_key_t pgp_parse_pgp3_key (unsigned char *buff, size_t l)
   p->algorithm = pgp_pkalgbytype (alg);
   p->flags |= pgp_get_abilities (alg);
 
-  if (alg == 17)
-    skip_bignum (buff, l, j, &j, 3);
-  else if (alg == 16 || alg == 20)
-    skip_bignum (buff, l, j, &j, 2);
-
   len = (buff[j] << 8) + buff[j + 1];
   p->keylen = len;
 
-
   if (alg >= 1 && alg <= 3)
     skip_bignum (buff, l, j, &j, 2);
-  else if (alg == 17 || alg == 16 || alg == 20)
-    skip_bignum (buff, l, j, &j, 1);
+  else if (alg == 16 || alg == 20)
+    skip_bignum (buff, l, j, &j, 3);
+  else if (alg == 17)
+    skip_bignum (buff, l, j, &j, 4);
 
   pgp_make_pgp3_fingerprint (buff, j, digest);
   if (dump_fingerprints)
