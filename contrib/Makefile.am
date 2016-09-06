@@ -3,8 +3,8 @@
 subdir = contrib
 
 SAMPLES = Mush.rc Pine.rc gpg.rc pgp2.rc pgp5.rc pgp6.rc Tin.rc \
-	sample.muttrc  sample.mailcap sample.muttrc-tlr \
-	colors.default colors.linux smime.rc \
+	sample.mailcap sample.muttrc sample.muttrc-sidebar sample.muttrc-tlr \
+	sample.vimrc-sidebar colors.default colors.linux smime.rc \
 	ca-bundle.crt smime_keys_test.pl mutt_xtitle
 
 EXTRA_DIST = language.txt language50.txt  \
