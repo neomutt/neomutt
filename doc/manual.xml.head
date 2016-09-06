@@ -8314,43 +8314,77 @@ for example, in a global <literal>.muttrc</literal>.
     <title>Introduction</title>
 
     <para>
-      When using the file/folder browser, the selection isn't always where you would
-      expect. When you navigate to '..' (parent folder), the selection should show the
-      folder you <emphasis>used</emphasis> to be in.
+      The <quote>sensible browser</quote> is a set of small changes to NeoMutt's
+      mailbox browser which make the browser behave in a more predictable way.
     </para>
 
-  </sect2>
+    <para>
+      The behaviour is divided into two use cases: Fixed Order; Variable Order.
+    </para>
 
-<!--
-  <sect2 id="sensible-browser-variables">
-    <title>Variables</title>
-    <para>None</para>
-  </sect2>
+    <sect3 id="sensible-browser-sort-fixed">
+      <title>A Fixed Order of Mailboxes</title>
 
-  <sect2 id="sensible-browser-functions">
-    <title>Functions</title>
-    <para>None</para>
-  </sect2>
+      <para>
+	This is for users who like their mailboxes in a fixed order, e.g.
+	alphabetical, or unsorted (in the order of the config file).
+      </para>
 
-  <sect2 id="sensible-browser-commands">
-    <title>Commands</title>
-    <para>None</para>
-  </sect2>
+<screen>
+<emphasis role="comment"># Fixed order</emphasis>
+set sort_browser="alpha"
+set sort_browser="unsorted"
+</screen>
 
-  <sect2 id="sensible-browser-colors">
-    <title>Colors</title>
-    <para>None</para>
-  </sect2>
+      <para>
+	When you first start the browser, e.g. <literal>c?</literal> your current
+	mailbox will be highlighted.
+      </para>
 
-  <sect2 id="sensible-browser-sort">
-    <title>Sort</title>
-    <para>None</para>
-  </sect2>
--->
+      <para>
+	When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
+	will be highlighted.
+      </para>
 
-  <sect2 id="sensible-browser-muttrc">
-    <title>Muttrc</title>
-    <para>None</para>
+      <para>
+	<quote>..</quote> will always be listed at the top, however the rest of
+	the list is sorted.
+      </para>
+
+    </sect3>
+
+    <sect3 id="sensible-browser-sort-variable">
+      <title>A Variable Order of Mailboxes</title>
+
+      <para>
+	This is for users who like their mailboxes sorted by a characteristic
+	that changes, e.g. count of new mail, or the size of mailbox.
+      </para>
+
+<screen>
+<emphasis role="comment"># Variable order</emphasis>
+set sort_browser="reverse-count"
+set sort_browser="reverse-size"
+</screen>
+
+      <para>
+	When you first start the browser, e.g. <literal>c?</literal> the
+	highlight will be on the first mailbox, e.g. the one with the most new
+	mail.
+      </para>
+
+      <para>
+	When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
+	will be highlighted.
+      </para>
+
+      <para>
+	<quote>..</quote> will always be listed at the top, however the rest of
+	the list is sorted.
+      </para>
+
+    </sect3>
+
   </sect2>
 
   <sect2 id="sensible-browser-see-also">
@@ -8358,11 +8392,13 @@ for example, in a global <literal>.muttrc</literal>.
 
     <itemizedlist>
       <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="folder-format">$folder_format</link></para></listitem>
     </itemizedlist>
   </sect2>
 
   <sect2 id="sensible-browser-known-bugs">
     <title>Known Bugs</title>
+    <para>None</para>
   </sect2>
 
   <sect2 id="sensible-browser-credits">
