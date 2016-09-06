@@ -2180,7 +2180,7 @@ void mutt_get_parent_path (char *output, char *path, size_t olen)
     strfcpy (output, path, olen);
     int n = mutt_strlen (output);
 
-    /* Remove everything untill the next slash */
+    /* Remove everything until the next slash */
     for (n--; ((n >= 0) && (output[n] != '/')); n--);
 
     if (n > 0)

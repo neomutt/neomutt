@@ -180,23 +180,17 @@ static int browser_compare (const void *a, const void *b)
   {
     case SORT_DATE:
       return browser_compare_date(a, b);
-      break;
     case SORT_SIZE:
       return browser_compare_size(a, b);
-      break;
     case SORT_DESC:
       return browser_compare_desc(a, b);
-      break;
     case SORT_COUNT:
       return browser_compare_count(a, b);
-      break;
     case SORT_COUNT_NEW:
       return browser_compare_count_new(a, b);
-      break;
     case SORT_SUBJECT:
     default:
       return browser_compare_subject(a, b);
-      break;
   }
 }
 
@@ -933,7 +927,8 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
      * The goal is to highlight the good directory if LastDir is the parent dir
      * of OldLastDir (this occurs mostly when one hit "../").
      */
-    if (mutt_strncmp (LastDir, OldLastDir, mutt_strlen (LastDir)) == 0)
+    int ldlen = mutt_strlen (LastDir);
+    if ((ldlen > 0) && (mutt_strncmp (LastDir, OldLastDir, ldlen) == 0))
     {
       char TargetDir[_POSIX_PATH_MAX] = "";
 #ifdef USE_IMAP
@@ -957,8 +952,15 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
         if (mutt_strcmp (state->entry[i].name, TargetDir) == 0)
         {
           menu->current = i;
+	  break;
         }
       }
+    }
+    else
+    {
+      if ((mutt_strcmp (state->entry[0].desc, "..")  == 0) ||
+          (mutt_strcmp (state->entry[0].desc, "../") == 0))
+	menu->current = 1;
     }
     snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
 	      path, NONULL(Mask.pattern));
@@ -1102,7 +1104,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       getcwd (LastDir, sizeof (LastDir));
     else
     {
-      /* Should we use the tracking feature of the browser depends
+      /* Whether we use the tracking feature of the browser depends
        * on which sort method we chose to use. This variable is defined
        * only to help readability of the code.
        */
@@ -1112,6 +1114,7 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
       {
         case SORT_DESC:
         case SORT_SUBJECT:
+        case SORT_ORDER:
           browser_track = 1;
           break;
 

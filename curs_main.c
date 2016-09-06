@@ -1838,9 +1838,8 @@ int mutt_index_menu (void)
 	  }
 	  else
 #endif
-          /* Let's fill by default buf with the next mailbox containing
-           * unread mails
-           */
+	  /* By default, fill buf with the next mailbox that contains unread
+	   * mail */
 	  mutt_buffy (buf, sizeof (buf));
 
           if (mutt_enter_fname (cp, buf, sizeof (buf), &menu->redraw, 1) == -1)

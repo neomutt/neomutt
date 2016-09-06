@@ -84,17 +84,15 @@ void imap_get_parent (char *output, const char *mbox, size_t olen, char delim)
 {
   int n;
 
-  /* If both pointers are on the same memory part
-   * strfcpy is useless
-   */
+  /* Make a copy of the mailbox name, but only if the pointers are different */
   if (mbox != output)
     strfcpy (output, mbox, olen);
 
   n = mutt_strlen (output);
 
-  /* Let's go backwards untill the next delimiter
+  /* Let's go backwards until the next delimiter
    *
-   * If output[n] is a '/', the first n-- will allow
+   * If output[n] is a '/', the first n-- will allow us
    * to ignore it. If it isn't, then output looks like
    * "/aaaaa/bbbb". There is at least one "b", so we can't skip
    * the "/" after the 'a's.
@@ -104,7 +102,7 @@ void imap_get_parent (char *output, const char *mbox, size_t olen, char delim)
    */
   for (n--; n >= 0 && output[n] != delim ; n--);
 
-  /* We stopped before the begining. There is a trailing
+  /* We stopped before the beginning. There is a trailing
    * slash.
    */
   if (n > 0)

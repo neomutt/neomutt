@@ -944,13 +944,9 @@ int mutt_menuLoop (MUTTMENU *menu)
   if (menu->max && menu->is_mailbox_list)
   {
     if (last_position > (menu->max - 1))
-    {
       last_position = -1;
-    }
     else if (last_position >= 0)
-    {
       menu->current = last_position;
-    }
   }
 
   FOREVER
