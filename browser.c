@@ -975,6 +975,8 @@ static int file_tag (MUTTMENU *menu, int n, int m)
  * This function helps the browser to know which directory has
  * been selected. It should be called anywhere a confirm hit is done
  * to open a new directory/file which is a maildir/mbox.
+ *
+ * We could check the sort method is appropriate with this feature.
  */
 void mutt_browser_select_dir (char *f)
 {
@@ -1078,27 +1080,53 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 #ifdef USE_NOTMUCH
   else if (!(flags & MUTT_SEL_VFOLDER))
 #else
-  else 
+  else
 #endif
   {
     if (!folder)
       getcwd (LastDir, sizeof (LastDir));
     else
     {
+      /* Should we use the tracking feature of the browser depends
+       * on which sort method we chose to use. This variable is defined
+       * only to help readability of the code.
+       */
+      short browser_track;
+
+      switch (BrowserSort & SORT_MASK)
+      {
+        case SORT_DESC:
+        case SORT_SUBJECT:
+          browser_track = 1;
+          break;
+
+        default:
+          browser_track = 0;
+          break;
+      }
+
       /* We use mutt_browser_select_dir to initialize the two
        * variables (LastDir, OldLastDir) at the appropriate
        * values.
+       *
+       * We do it only when LastDir is not set (first pass there)
+       * or when CurrentFolder and OldLastDir are not the same.
+       * This code is executed only when we list files, not when
+       * we press up/down keys to navigate in a displayed list.
+       *
+       * This tracker is only used when browser_track is true,
+       * meaning only with sort methods SUBJECT/DESC for now.
        */
-      if (!LastDir[0])
+      if ((!LastDir[0]) ||
+           (mutt_strcmp (CurrentFolder, OldLastDir) != 0))
       {
         mutt_browser_select_dir (CurrentFolder);
       }
-      else if (mutt_strcmp (CurrentFolder, OldLastDir) != 0)
-      {
-        mutt_browser_select_dir (CurrentFolder);
-      }
+
+      if (!browser_track)
+        OldLastDir[0] = '\0';
     }
-    
+
 #ifdef USE_IMAP
     if (!buffy && mx_is_imap (LastDir))
     {
