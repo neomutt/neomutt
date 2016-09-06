@@ -160,6 +160,10 @@ static int browser_compare_count_new (const void *a, const void *b)
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
 
+/* Wild compare function that calls the others. It's useful
+ * because it provides a way to tell "../" is always on the
+ * top of the list, independently of the sort method.
+ */
 static int browser_compare (const void *a, const void *b)
 {
   struct folder_file *pa = (struct folder_file *) a;
@@ -196,10 +200,14 @@ static int browser_compare (const void *a, const void *b)
   }
 }
 
+/* Call to qsort using browser_compare function. Some
+ * specific sort methods are not used via NNTP.
+ */
 static void browser_sort (struct browser_state *state)
 {
   switch (BrowserSort & SORT_MASK)
   {
+    /* Also called "I don't care"-sort-method. */
     case SORT_ORDER:
       return;
 #ifdef USE_NNTP
@@ -921,6 +929,10 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
     strfcpy (path, LastDir, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
 
+    /* Browser tracking feature.
+     * The goal is to highlight the good directory if LastDir is the parent dir
+     * of OldLastDir (this occurs mostly when one hit "../").
+     */
     if (mutt_strncmp (LastDir, OldLastDir, mutt_strlen (LastDir)) == 0)
     {
       char TargetDir[_POSIX_PATH_MAX] = "";
@@ -976,11 +988,14 @@ static int file_tag (MUTTMENU *menu, int n, int m)
  * been selected. It should be called anywhere a confirm hit is done
  * to open a new directory/file which is a maildir/mbox.
  *
- * We could check the sort method is appropriate with this feature.
+ * We could check if the sort method is appropriate with this feature.
  */
 void mutt_browser_select_dir (char *f)
 {
   strfcpy (OldLastDir, f, sizeof (OldLastDir));
+
+  /* Method that will fetch the parent path depending on the
+     type of the path. */
   mutt_get_parent_path (LastDir, OldLastDir, sizeof (LastDir));
 }
 
@@ -1123,6 +1138,9 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
         mutt_browser_select_dir (CurrentFolder);
       }
 
+      /* When browser tracking feature is disabled, shoot a 0
+       * on first char of OldLastDir to make it useless.
+       */
       if (!browser_track)
         OldLastDir[0] = '\0';
     }
