@@ -9068,6 +9068,103 @@ please have a look at the mixmaster documentation.
 
 </sect1>
 
+<sect1 id="attach-headers-color">
+  <title>attach-headers-color Patch</title>
+  <subtitle>Color attachment headers using regexp, just like mail bodies</subtitle>
+
+  <sect2 id="attach-headers-color-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>attach-headers-color</quote>, look for
+      <quote>patch-attach-headers-color</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="attach-headers-color-intro">
+    <title>Introduction</title>
+
+    <para>
+      This patch allows specifying regexps to color attachment headers just like the mail body would.
+      The headers are the parts colored by the <literal>attachment</literal> color. Coloring them is
+      useful to highlight the results of GPGME's signature checks or simply the mimetype or size of
+      the attachment. Only the part matched by the regexp is colored.
+    </para>
+
+  </sect2>
+
+  <sect2 id="attach-headers-color-usage">
+    <title>Usage</title>
+
+    <para>
+	The <literal>attach_headers</literal> color should be used just like the <literal>body</literal>
+	color.
+    </para>
+
+<screen>
+color attach_headers foreground background pattern
+</screen>
+  </sect2>
+
+  <sect2 id="attach-headers-color-muttrc">
+    <title>Muttrc</title>
+<screen>
+<emphasis role="comment"># Color if the attachment is autoviewed</emphasis>
+color   attach_headers     brightgreen     default        "Autoview"
+ 
+<emphasis role="comment"># Color only the brackets around the headers</emphasis>
+color   attach_headers     brightyellow    default        "^\\[--"
+color   attach_headers     brightyellow    default        "--]$"
+ 
+<emphasis role="comment"># Highlight the mime type and size</emphasis>
+color   attach_headers     green           default        "Type: [a-z]+/[a-z]"
+color   attach_headers     green           default        "Size: [0-9\.]+[KM]"
+ 
+<emphasis role="comment"># Color GPGME signature checks</emphasis>
+color   attach_headers     brightgreen     default        "Good signature from.*"
+color   attach_headers     brightred       default        "Bad signature from.*"
+color   attach_headers     brightred       default        "BAD signature from.*"
+color   attach_headers     brightred       default        "Note: This key has expired!"
+color   attach_headers     brightmagenta   default        "Problem signature from.*"
+color   attach_headers     brightmagenta   default        "WARNING: This key is not certified with a trusted signature!"
+color   attach_headers     brightmagenta   default        "         There is no indication that the signature belongs to the owner."
+color   attach_headers     brightmagenta   default        "can't handle these multiple signatures"
+color   attach_headers     brightmagenta   default        "signature verification suppressed"
+color   attach_headers     brightmagenta   default        "invalid node with packet of type"
+</screen>
+  </sect2>
+
+  <sect2 id="attach-headers-color-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="color">Color command</link></para></listitem>
+      <listitem><para><link linkend="regexp">Regular Expressions</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="attach-headers-color-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="attach-headers-color-credits">
+    <title>Credits</title>
+    <itemizedlist>
+	    <listitem><para>Guillaume Brogi <email>gui-gui@netcourrier.com</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="compress">
   <title>Compressed Folders Patch</title>
   <subtitle>Read from/write to compressed mailboxes</subtitle>

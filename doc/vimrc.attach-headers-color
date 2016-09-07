@@ -1,0 +1,5 @@
+" Vim syntax file for the mutt color-attach patch
+
+syntax keyword muttrcColorField contained attach_headers
+
+" vim: syntax=vim
