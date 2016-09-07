@@ -613,6 +613,12 @@ need_socket="no"
 
 dnl -- socket dependencies --
 
+dnl getaddrinfo is used by getdomain.c, and requires libnsl and
+dnl libsocket on some platforms
+AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
+AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
+AC_CHECK_FUNCS(getaddrinfo)
+
 AC_ARG_ENABLE(pop,  AS_HELP_STRING([--enable-pop],[Enable POP3 support]),
 [       if test x$enableval = xyes ; then
                 AC_DEFINE(USE_POP,1,[ Define if you want support for the POP3 protocol. ])
@@ -665,9 +671,6 @@ then
                 AC_MSG_RESULT([no])
                 AC_DEFINE(socklen_t,int,
                         [ Define to 'int' if <sys/socket.h> doesn't have it. ]))
-        AC_CHECK_FUNC(gethostent, , AC_CHECK_LIB(nsl, gethostent))
-        AC_CHECK_FUNC(setsockopt, , AC_CHECK_LIB(socket, setsockopt))
-        AC_CHECK_FUNCS(getaddrinfo)
         AC_DEFINE(USE_SOCKET,1,
                 [ Include code for socket support. Set automatically if you enable POP3 or IMAP ])
         MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS account.o mutt_socket.o mutt_tunnel.o"

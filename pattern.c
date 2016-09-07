@@ -1193,6 +1193,7 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
       /*
        * ctx can be NULL in certain cases, such as when replying to a message from the attachment menu and
        * the user has a reply-hook using "~h" (bug #2190).
+       * This is also the case when message scoring.
        */
       if (!ctx)
 	      return 0;
@@ -1286,6 +1287,8 @@ mutt_pattern_exec (struct pattern_t *pat, pattern_exec_flag flags, CONTEXT *ctx,
     case MUTT_DUPLICATED:
       return (pat->not ^ (h->thread && h->thread->duplicate_thread));
     case MUTT_MIMEATTACH:
+      if (!ctx)
+        return 0;
       {
       int count = mutt_count_body_parts (ctx, h);
       return (pat->not ^ (count >= pat->min && (pat->max == MUTT_MAXRANGE ||
