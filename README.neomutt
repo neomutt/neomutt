@@ -15,8 +15,10 @@ sorted through them, fixed them up and documented them.
 
 | Name                 | Description
 |----------------------|-------------------------------------------------------
+| Attach Headers Color | Color attachment headers using regexp
 | Compressed Folders   | Read from/write to compressed mailboxes
 | Conditional Dates    | Conditional Date Formatting
+| Encrypt-to-Self      | Save an self-encrypted copy of emails
 | Fmemopen             | Use fmemopen(3) for speedier temporary files
 | Ifdef                | Conditional config options
 | Index Color          | Theming of the Index List
@@ -31,12 +33,13 @@ sorted through them, fixed them up and documented them.
 | Notmuch              | Powerful email search engine
 | Progress Bar         | Colourful Progress Bar
 | Quasi-Delete         | Hide emails from view, but don't delete them
+| Sensible-Browser     | Make the file browser behave
 | Sidebar              | Panel containing list of Mailboxes
 | Skip-Quoted          | Skip Quoted Text
-| SMIME Encrypt Self   | Save an self-encrypted copy of emails
 | Status Color         | Theming of the Status Bar
 | Timeout Hook         | Run a command periodically
 | TLS-SNI              | Negotiate with a Server for a Certificate
+| Trash Folder         | Automatically move emails to a trash bin
 
 ## Contributed Scripts and Config
 
@@ -58,12 +61,13 @@ sorted through them, fixed them up and documented them.
 
 Here's a list of everyone who's helped NeoMutt:
 
-Alex Pearce, Ander Punnar, Antonio Radici, Chris Salzberg, Christoph Berg,
-Darshit Shah, David Sterba, Elimar Riesebieter, Evgeni Golov, Fabian Groffen,
-Fabio Alessandro Locati, Faidon Liambotis, Ivan Tham, Johannes Frankenau,
-Joshua Jordi, Karel Zak, Kurt Jaeger, Matteo Vescovi, Richard Hartmann,
-Richard Russon, Santiago Torres, Udo Schweigert, Werner Fink,
-Yoshiki Vázquez Baeza.
+Alex Pearce, Ander Punnar, Antonio Radici, Baptiste Daroussin, Chris Salzberg,
+Christoph Berg, Darshit Shah, David Sterba, Elimar Riesebieter, Evgeni Golov,
+Fabian Groffen, Fabio Alessandro Locati, Faidon Liambotis, Guillaume Brogi,
+Ivan Tham, Johannes Frankenau, Joshua Jordi, Karel Zak, Kurt Jaeger,
+Marco Hinz, Matteo Vescovi, Pierre-Elliott Bécue, Richard Hartmann,
+Richard Russon, Santiago Torres, Sven Guckes, Thomas Klausner, Udo Schweigert,
+Vsevolod Volkov, Werner Fink, Yoshiki Vázquez Baeza.
 
 ## Original Patch Authors
 
