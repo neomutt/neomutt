@@ -16,6 +16,7 @@ patch-notmuch-neomutt
 patch-progress-neomutt
 patch-quasi-delete-neomutt
 patch-reply-with-xorig-neomutt
+patch-sensible-browser-neomutt
 patch-sidebar-neomutt
 patch-skip-quoted-neomutt
 patch-smime-encrypt-self-neomutt
