@@ -8326,8 +8326,8 @@ for example, in a global <literal>.muttrc</literal>.
       <title>A Fixed Order of Mailboxes</title>
 
       <para>
-	This is for users who like their mailboxes in a fixed order, e.g.
-	alphabetical, or unsorted (in the order of the config file).
+        This is for users who like their mailboxes in a fixed order, e.g.
+        alphabetical, or unsorted (in the order of the config file).
       </para>
 
 <screen>
@@ -8337,18 +8337,18 @@ set sort_browser="unsorted"
 </screen>
 
       <para>
-	When you first start the browser, e.g. <literal>c?</literal> your current
-	mailbox will be highlighted.
+        When you first start the browser, e.g. <literal>c?</literal> your current
+        mailbox will be highlighted.
       </para>
 
       <para>
-	When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
-	will be highlighted.
+        When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
+        will be highlighted.
       </para>
 
       <para>
-	<quote>..</quote> will always be listed at the top, however the rest of
-	the list is sorted.
+        <quote>..</quote> will always be listed at the top, however the rest of
+        the list is sorted.
       </para>
 
     </sect3>
@@ -8357,8 +8357,8 @@ set sort_browser="unsorted"
       <title>A Variable Order of Mailboxes</title>
 
       <para>
-	This is for users who like their mailboxes sorted by a characteristic
-	that changes, e.g. count of new mail, or the size of mailbox.
+        This is for users who like their mailboxes sorted by a characteristic
+        that changes, e.g. count of new mail, or the size of mailbox.
       </para>
 
 <screen>
@@ -8368,19 +8368,19 @@ set sort_browser="reverse-size"
 </screen>
 
       <para>
-	When you first start the browser, e.g. <literal>c?</literal> the
-	highlight will be on the first mailbox, e.g. the one with the most new
-	mail.
+        When you first start the browser, e.g. <literal>c?</literal> the
+        highlight will be on the first mailbox, e.g. the one with the most new
+        mail.
       </para>
 
       <para>
-	When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
-	will be highlighted.
+        When you navigate to a parent mailbox (<quote>..</quote>) your old mailbox
+        will be highlighted.
       </para>
 
       <para>
-	<quote>..</quote> will always be listed at the top, however the rest of
-	the list is sorted.
+        <quote>..</quote> will always be listed at the top, however the rest of
+        the list is sorted.
       </para>
 
     </sect3>
@@ -9105,8 +9105,8 @@ please have a look at the mixmaster documentation.
     <title>Usage</title>
 
     <para>
-	The <literal>attach_headers</literal> color should be used just like the <literal>body</literal>
-	color.
+        The <literal>attach_headers</literal> color should be used just like the <literal>body</literal>
+        color.
     </para>
 
 <screen>
@@ -9160,7 +9160,7 @@ color   attach_headers     brightmagenta   default        "invalid node with pac
   <sect2 id="attach-headers-color-credits">
     <title>Credits</title>
     <itemizedlist>
-	    <listitem><para>Guillaume Brogi <email>gui-gui@netcourrier.com</email></para></listitem>
+      <listitem><para>Guillaume Brogi <email>gui-gui@netcourrier.com</email></para></listitem>
     </itemizedlist>
   </sect2>
 </sect1>
@@ -12879,7 +12879,7 @@ set reply_with_xorig = "yes"
           <row>
             <entry><literal>sidebar_ordinary</literal></entry>
             <entry>default</entry>
-	    <entry>Mailboxes that have no new/flagged mails, etc</entry>
+            <entry>Mailboxes that have no new/flagged mails, etc</entry>
           </row>
           <row>
             <entry><literal>sidebar_spoolfile</literal></entry>
