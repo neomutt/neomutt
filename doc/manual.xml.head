@@ -11795,7 +11795,6 @@ bind index \CG get-message
     <itemizedlist>
       <title>Dependencies:</title>
       <listitem><para>mutt-1.7.0</para></listitem>
-      <listitem><para><link linkend="sidebar">sidebar patch</link></para></listitem>
       <listitem><para><link linkend="quasi-delete">quasi-delete patch</link></para></listitem>
       <listitem><para><link linkend="index-color">index-color patch</link></para></listitem>
       <listitem><para>Notmuch libraries</para></listitem>
@@ -11915,6 +11914,69 @@ virtual-mailboxes "My INBOX" "notmuch://?query=tag:inbox"
       </para>
     </sect3>
 
+    <sect3 id="notmuch-vfolder-format">
+      <title>Format String for the NotMuch Browser</title>
+
+        <para>
+          Default: <literallayout><literal>%2C %?n?%4n/&amp;     ?%4m %f</literal></literallayout>
+        </para>
+
+        <para>
+          This variable allows you to customize the browser display to your personal taste.
+          This string is similar to <link linkend="index-format">$index_format</link>, but has
+          its own set of <literal>printf(3)</literal>-like sequences:
+        </para>
+
+        <informaltable>
+          <tgroup cols="2">
+            <tbody>
+              <row>
+                <entry>%C</entry>
+                <entry>current file number</entry>
+              </row>
+              <row>
+                <entry>%f</entry>
+                <entry>folder name (description)</entry>
+              </row>
+              <row>
+                <entry>%m</entry>
+                <entry>number of messages in the mailbox *</entry>
+              </row>
+              <row>
+                <entry>%n</entry>
+                <entry>number of unread messages in the mailbox *</entry>
+              </row>
+              <row>
+                <entry>%N</entry>
+                <entry>N if mailbox has new mail, blank otherwise</entry>
+              </row>
+              <row>
+                <entry>%&gt;X</entry>
+                <entry>right justify the rest of the string and pad with character 
+                <quote>X</quote></entry>
+              </row>
+              <row>
+                <entry>%|X</entry>
+                <entry>pad to the end of the line with character 
+                <quote>X</quote></entry>
+              </row>
+              <row>
+                <entry>%*X</entry>
+                <entry>soft-fill with character 
+                <quote>X</quote>as pad</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </informaltable>
+
+        <para>
+        For an explanation of <quote>soft-fill</quote>, see the <link linkend="index-format">$index_format</link> documentation.
+        </para>
+
+        <para>
+        * = can be optionally printed if nonzero
+        </para>
+    </sect3>
   </sect2>
 
   <sect2 id="notmuch-variables">
@@ -12159,8 +12221,8 @@ set nm_hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encr
 <emphasis role="comment"># This option specifies timeout for Notmuch database. Default is 5 seconds.</emphasis>
 set nm_open_timeout = 5
  
-<emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and</emphasis>
-# 'messages'.
+<emphasis role="comment"># This variable specifies notmuch query type, supported types: 'threads' and
+# 'messages'.</emphasis>
 set nm_query_type = messages
  
 <emphasis role="comment"># Add messages stored to the mutt record (see $record in the mutt docs)
@@ -12175,7 +12237,7 @@ set nm_unread_tag = unread
  
 <emphasis role="comment"># This variable allows you to customize the file browser display for virtual
 # folders to your personal taste.</emphasis>
-set vfolder_format = "%6n(%6N) %f"
+set vfolder_format = "%2C %?n?%4n/&amp;     ?%4m %N %f"
  
 <emphasis role="comment"># When set, mutt will use the first virtual mailbox (see virtual-mailboxes)
 # as a spoolfile.</emphasis>

@@ -4021,22 +4021,12 @@ struct option_t MuttVars[] = {
   ** given in the built-in editor.
   */
 #ifdef USE_NOTMUCH
-  { "vfolder_format",	DT_STR,	 R_INDEX, UL &VirtFolderFormat, UL " %6n(%6N) %f " },
+  { "vfolder_format",	DT_STR,	 R_INDEX, UL &VirtFolderFormat, UL "%2C %?n?%4n/&     ?%4m %f" },
   /*
   ** .pp
   ** This variable allows you to customize the file browser display for virtual
-  ** folders to your ** personal taste.  This string is similar to $$index_format,
-  ** but has its own set of \fCprintf(3)\fP-like sequences:
-  ** .dl
-  ** .dt %f  .dd folder name (description)
-  ** .dt %n  .dd number of all messages
-  ** .dt %N  .dd number of new messages
-  ** .dt %>X .dd right justify the rest of the string and pad with character ``X''
-  ** .dt %|X .dd pad to the end of the line with character ``X''
-  ** .dt %*X .dd soft-fill with character ``X'' as pad
-  ** .de
-  ** .pp
-  ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  ** folders to your personal taste.  This string uses many of the same
+  ** expandos as $$folder_format.
   */
   { "virtual_spoolfile", DT_BOOL, R_NONE, OPTVIRTSPOOLFILE, 0 },
   /*

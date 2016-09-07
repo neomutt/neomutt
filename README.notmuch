@@ -261,17 +261,18 @@ notmuch support for mutt
    vfolder_format = <string>
 
       This variable allows you to customize the file browser display for virtual
-      folders to your personal taste.  This string is similar to $index_format,
-      but has its own set of printf(3)-like sequences:
+      folders to your personal taste.  This string is similar to $folder_format,
 
+	%C   current folder number
 	%f   folder name (description)
-	%n   number of all messages
-	%N   number of new messages
+	%m   number of messages in the mailbox *
+	%n   number of unread messages in the mailbox *
+	%N   N if mailbox has new mail, blank otherwise
 	%>X  right justify the rest of the string and pad with character ``X''
 	%|X  pad to the end of the line with character ``X''
 	%*X  soft-fill with character ``X'' as pad
 
-      Default is "%6n(%6N) %f ".
+      Default is "%2C %?n?%4n/&     ?%4m %N %f"
 
    index_format and pager_format
 
