@@ -938,7 +938,16 @@ int menu_redraw (MUTTMENU *menu)
 
 int mutt_menuLoop (MUTTMENU *menu)
 {
+  static int last_position = -1;
   int i = OP_NULL;
+
+  if (menu->max && menu->is_mailbox_list)
+  {
+    if (last_position > (menu->max - 1))
+      last_position = -1;
+    else if (last_position >= 0)
+      menu->current = last_position;
+  }
 
   FOREVER
   {
@@ -1163,6 +1172,8 @@ int mutt_menuLoop (MUTTMENU *menu)
 	break;
 
       default:
+        if (menu->is_mailbox_list)
+          last_position = menu->current;
 	return (i);
     }
   }

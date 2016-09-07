@@ -70,5 +70,8 @@ int imap_wait_keepalive (pid_t pid);
 void imap_keepalive (void);
 
 int imap_account_match (const ACCOUNT* a1, const ACCOUNT* a2);
+void imap_get_parent (char *output, const char *mbox, size_t olen, char delim);
+void imap_get_parent_path (char *output, const char *path, size_t olen);
+void imap_clean_path (char *path, size_t plen);
 
 #endif

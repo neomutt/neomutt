@@ -76,6 +76,7 @@ typedef struct folder_t
   int num;
 } FOLDER;
 
+static char OldLastDir[_POSIX_PATH_MAX] = "";
 static char LastDir[_POSIX_PATH_MAX] = "";
 static char LastDirBackup[_POSIX_PATH_MAX] = "";
 
@@ -143,6 +144,10 @@ static int browser_compare_count (const void *a, const void *b)
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
     r = pa->msg_count - pb->msg_count;
+  else if (pa->has_buffy)
+    return r = -1;
+  else
+    return r = 1;
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
@@ -155,47 +160,69 @@ static int browser_compare_count_new (const void *a, const void *b)
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
     r = pa->msg_unread - pb->msg_unread;
+  else if (pa->has_buffy)
+    return r = -1;
+  else
+    return r = 1;
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
 
-static void browser_sort (struct browser_state *state)
+/* Wild compare function that calls the others. It's useful
+ * because it provides a way to tell "../" is always on the
+ * top of the list, independently of the sort method.
+ */
+static int browser_compare (const void *a, const void *b)
 {
-  int (*f) (const void *, const void *);
+  struct folder_file *pa = (struct folder_file *) a;
+  struct folder_file *pb = (struct folder_file *) b;
+
+  if ((mutt_strcoll (pa->desc, "../") == 0) ||
+       (mutt_strcoll (pa->desc, "..") == 0))
+    return -1;
+  if ((mutt_strcoll (pb->desc, "../") == 0) ||
+       (mutt_strcoll (pb->desc, "..") == 0))
+    return 1;
 
   switch (BrowserSort & SORT_MASK)
   {
-    case SORT_ORDER:
-      return;
     case SORT_DATE:
-#ifdef USE_NNTP
-      if (option (OPTNEWS))
-	return;
-#endif
-      f = browser_compare_date;
-      break;
+      return browser_compare_date(a, b);
     case SORT_SIZE:
-#ifdef USE_NNTP
-      if (option (OPTNEWS))
-	return;
-#endif
-      f = browser_compare_size;
-      break;
+      return browser_compare_size(a, b);
     case SORT_DESC:
-      f = browser_compare_desc;
-      break;
+      return browser_compare_desc(a, b);
     case SORT_COUNT:
-      f = browser_compare_count;
-      break;
+      return browser_compare_count(a, b);
     case SORT_COUNT_NEW:
-      f = browser_compare_count_new;
-      break;
+      return browser_compare_count_new(a, b);
     case SORT_SUBJECT:
     default:
-      f = browser_compare_subject;
+      return browser_compare_subject(a, b);
+  }
+}
+
+/* Call to qsort using browser_compare function. Some
+ * specific sort methods are not used via NNTP.
+ */
+static void browser_sort (struct browser_state *state)
+{
+  switch (BrowserSort & SORT_MASK)
+  {
+    /* Also called "I don't care"-sort-method. */
+    case SORT_ORDER:
+      return;
+#ifdef USE_NNTP
+    case SORT_SIZE:
+    case SORT_DATE:
+      if (option (OPTNEWS))
+        return;
+#endif
+    default:
       break;
   }
-  qsort (state->entry, state->entrylen, sizeof (struct folder_file), f);
+
+  qsort (state->entry, state->entrylen, sizeof (struct folder_file), browser_compare);
 }
 
 static int link_is_dir (const char *folder, const char *path)
@@ -894,17 +921,55 @@ static void init_menu (struct browser_state *state, MUTTMENU *menu, char *title,
   else
 #endif
   if (buffy)
+  {
+    menu->is_mailbox_list = 1;
     snprintf (title, titlelen, _("Mailboxes [%d]"), mutt_buffy_check (0));
+  }
   else
   {
+    menu->is_mailbox_list = 0;
     strfcpy (path, LastDir, sizeof (path));
     mutt_pretty_mailbox (path, sizeof (path));
+
+    /* Browser tracking feature.
+     * The goal is to highlight the good directory if LastDir is the parent dir
+     * of OldLastDir (this occurs mostly when one hit "../").
+     */
+    int ldlen = mutt_strlen (LastDir);
+    if ((ldlen > 0) && (mutt_strncmp (LastDir, OldLastDir, ldlen) == 0))
+    {
+      char TargetDir[_POSIX_PATH_MAX] = "";
 #ifdef USE_IMAP
-  if (state->imap_browse && option (OPTIMAPLSUB))
-    snprintf (title, titlelen, _("Subscribed [%s], File mask: %s"),
-	      path, NONULL (Mask.pattern));
-  else
+      if (state->imap_browse)
+      {
+        strfcpy (TargetDir, OldLastDir, sizeof (TargetDir));
+        imap_clean_path (TargetDir, sizeof (TargetDir));
+      }
+      else
 #endif
+        strfcpy (TargetDir,
+                strrchr (OldLastDir, '/') + 1,
+                sizeof (TargetDir));
+
+      /* If we get here, it means that LastDir is the parent directory of
+       * OldLastDir.  I.e., we're returning from a subdirectory, and we want
+       * to position the cursor on the directory we're returning from. */
+      int i;
+      for (i = 0; i < state->entrylen; i++)
+      {
+        if (mutt_strcmp (state->entry[i].name, TargetDir) == 0)
+        {
+          menu->current = i;
+	  break;
+        }
+      }
+    }
+    else
+    {
+      if ((mutt_strcmp (state->entry[0].desc, "..")  == 0) ||
+          (mutt_strcmp (state->entry[0].desc, "../") == 0))
+	menu->current = 1;
+    }
     snprintf (title, titlelen, _("Directory [%s], File mask: %s"),
 	      path, NONULL(Mask.pattern));
   }
@@ -925,6 +990,23 @@ static int file_tag (MUTTMENU *menu, int n, int m)
   ff->tagged = (m >= 0 ? m : !ff->tagged);
   
   return ff->tagged - ot;
+}
+
+/* Public function
+ *
+ * This function helps the browser to know which directory has
+ * been selected. It should be called anywhere a confirm hit is done
+ * to open a new directory/file which is a maildir/mbox.
+ *
+ * We could check if the sort method is appropriate with this feature.
+ */
+void mutt_browser_select_dir (char *f)
+{
+  strfcpy (OldLastDir, f, sizeof (OldLastDir));
+
+  /* Method that will fetch the parent path depending on the
+     type of the path. */
+  mutt_get_parent_path (LastDir, OldLastDir, sizeof (LastDir));
 }
 
 void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *numfiles)
@@ -1023,14 +1105,57 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 #ifdef USE_NOTMUCH
   else if (!(flags & MUTT_SEL_VFOLDER))
 #else
-  else 
+  else
 #endif
   {
     if (!folder)
       getcwd (LastDir, sizeof (LastDir));
-    else if (!LastDir[0])
-      strfcpy (LastDir, NONULL(Maildir), sizeof (LastDir));
-    
+    else
+    {
+      /* Whether we use the tracking feature of the browser depends
+       * on which sort method we chose to use. This variable is defined
+       * only to help readability of the code.
+       */
+      short browser_track;
+
+      switch (BrowserSort & SORT_MASK)
+      {
+        case SORT_DESC:
+        case SORT_SUBJECT:
+        case SORT_ORDER:
+          browser_track = 1;
+          break;
+
+        default:
+          browser_track = 0;
+          break;
+      }
+
+      /* We use mutt_browser_select_dir to initialize the two
+       * variables (LastDir, OldLastDir) at the appropriate
+       * values.
+       *
+       * We do it only when LastDir is not set (first pass there)
+       * or when CurrentFolder and OldLastDir are not the same.
+       * This code is executed only when we list files, not when
+       * we press up/down keys to navigate in a displayed list.
+       *
+       * This tracker is only used when browser_track is true,
+       * meaning only with sort methods SUBJECT/DESC for now.
+       */
+      if ((!LastDir[0]) ||
+           (mutt_strcmp (CurrentFolder, OldLastDir) != 0))
+      {
+        mutt_browser_select_dir (CurrentFolder);
+      }
+
+      /* When browser tracking feature is disabled, shoot a 0
+       * on first char of OldLastDir to make it useless.
+       */
+      if (!browser_track)
+        OldLastDir[0] = '\0';
+    }
+
 #ifdef USE_IMAP
     if (!buffy && mx_is_imap (LastDir))
     {
@@ -1136,8 +1261,6 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 #endif
 	    )
 	  {
-	    char OldLastDir[_POSIX_PATH_MAX];
-
 	    /* save the old directory */
 	    strfcpy (OldLastDir, LastDir, sizeof (OldLastDir));
 
@@ -1589,6 +1712,12 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
 	  {
 	    BrowserSort |= reverse ? SORT_REVERSE : 0;
 	    browser_sort (&state);
+
+            /* Reset menu position to 1.
+             * We do not risk overflow as the init_menu function changes
+             * current if it is bigger than state->entrylen.
+             */
+            menu->current = 1;
 	    menu->redraw = REDRAW_FULL;
 	  }
 	  break;
