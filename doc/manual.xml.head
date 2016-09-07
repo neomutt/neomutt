@@ -9818,7 +9818,7 @@ set index_format='%4C %Z %&lt;[y?%&lt;[m?%&lt;[d?%[%H:%M ]&amp;%[%a %d]&gt;&amp;
 
 <sect1 id="encrypt-to-self">
   <title>Encrypt-to-Self Patch</title>
-  <subtitle>Save an self-encrypted copy of emails</subtitle>
+  <subtitle>Save a self-encrypted copy of emails</subtitle>
 
   <sect2 id="encrypt-to-self-patch">
     <title>Patch</title>
