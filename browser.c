@@ -144,6 +144,10 @@ static int browser_compare_count (const void *a, const void *b)
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
     r = pa->msg_count - pb->msg_count;
+  else if (pa->has_buffy)
+    return r = -1;
+  else
+    return r = 1;
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
@@ -156,6 +160,10 @@ static int browser_compare_count_new (const void *a, const void *b)
   int r = 0;
   if (pa->has_buffy && pb->has_buffy)
     r = pa->msg_unread - pb->msg_unread;
+  else if (pa->has_buffy)
+    return r = -1;
+  else
+    return r = 1;
 
   return ((BrowserSort & SORT_REVERSE) ? -r : r);
 }
