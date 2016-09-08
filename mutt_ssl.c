@@ -37,12 +37,6 @@
 #include "mutt_ssl.h"
 #include "mutt_idna.h"
 
-#if OPENSSL_VERSION_NUMBER >= 0x00904000L
-#define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL, NULL)
-#else
-#define READ_X509_KEY(fp, key)	PEM_read_X509(fp, key, NULL)
-#endif
-
 /* Just in case OpenSSL doesn't define DEVRANDOM */
 #ifndef DEVRANDOM
 #define DEVRANDOM "/dev/urandom"
@@ -415,11 +409,7 @@ static int ssl_negotiate (CONNECTION *conn, sslsockdata* ssldata)
   int err;
   const char* errmsg;
 
-#if OPENSSL_VERSION_NUMBER >= 0x00906000L
-  /* This only exists in 0.9.6 and above. Without it we may get interrupted
-   *   reads or writes. Bummer. */
   SSL_set_mode (ssldata->ssl, SSL_MODE_AUTO_RETRY);
-#endif
 
 #if (OPENSSL_VERSION_NUMBER >= 0x0090806fL) && !defined(OPENSSL_NO_TLSEXT)
   /* TLS Virtual-hosting requires that the server present the correct
@@ -644,7 +634,7 @@ static char *asn1time_to_string (ASN1_UTCTIME *tm)
 
 static int check_certificate_by_signer (X509 *peercert)
 {
-  X509_STORE_CTX xsc;
+  X509_STORE_CTX *xsc;
   X509_STORE *ctx;
   int pass = 0, i;
 
@@ -674,23 +664,25 @@ static int check_certificate_by_signer (X509 *peercert)
     return 0;
   }
 
-  X509_STORE_CTX_init (&xsc, ctx, peercert, SslSessionCerts);
+  xsc = X509_STORE_CTX_new();
+  if (xsc == NULL) return 0;
+  X509_STORE_CTX_init (xsc, ctx, peercert, SslSessionCerts);
 
-  pass = (X509_verify_cert (&xsc) > 0);
+  pass = (X509_verify_cert (xsc) > 0);
 #ifdef DEBUG
   if (! pass)
   {
     char buf[SHORT_STRING];
     int err;
 
-    err = X509_STORE_CTX_get_error (&xsc);
+    err = X509_STORE_CTX_get_error (xsc);
     snprintf (buf, sizeof (buf), "%s (%d)",
 	X509_verify_cert_error_string(err), err);
     dprint (2, (debugfile, "X509_verify_cert: %s\n", buf));
     dprint (2, (debugfile, " [%s]\n", peercert->name));
   }
 #endif
-  X509_STORE_CTX_cleanup (&xsc);
+  X509_STORE_CTX_free (xsc);
   X509_STORE_free (ctx);
 
   return pass;
@@ -779,7 +771,7 @@ static int check_certificate_by_digest (X509 *peercert)
     return 0;
   }
 
-  while ((cert = READ_X509_KEY (fp, &cert)) != NULL)
+  while ((cert = PEM_read_X509 (fp, &cert, NULL, NULL)) != NULL)
   {
     pass = compare_certificates (cert, peercert, peermd, peermdlen) ? 0 : 1;
 
