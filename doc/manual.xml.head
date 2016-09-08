@@ -8208,11 +8208,6 @@ please have a look at the mixmaster documentation.
 	    <entry><literal>no</literal></entry>
 	  </row>
 	  <row>
-	    <entry><literal>sidebar_whitelist</literal></entry>
-	    <entry>list</entry>
-	    <entry>(empty)</entry>
-	  </row>
-	  <row>
 	    <entry><literal>sidebar_width</literal></entry>
 	    <entry>number</entry>
 	    <entry><literal>20</literal></entry>
@@ -8297,6 +8292,13 @@ please have a look at the mixmaster documentation.
 	<replaceable class="parameter">mailbox</replaceable>
       </arg>
     </cmdsynopsis>
+
+    <para>
+      This command specifies mailboxes that will always be displayed
+      in the sidebar, even if <link
+      linkend="sidebar-new-mail-only">$sidebar_new_mail_only</link>
+      is set and the mailbox does not contain new mail.
+    </para>
   </sect2>
 
   <sect2 id="sidebar-colors">
