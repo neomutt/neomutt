@@ -12933,6 +12933,13 @@ set sort_browser="reverse-size"
         <replaceable class="parameter">mailbox</replaceable>
       </arg>
     </cmdsynopsis>
+
+    <para>
+      This command specifies mailboxes that will always be displayed
+      in the sidebar, even if <link
+      linkend="sidebar-new-mail-only">$sidebar_new_mail_only</link>
+      is set and the mailbox does not contain new mail.
+    </para>
   </sect2>
 
   <sect2 id="sidebar-colors">
