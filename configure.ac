@@ -689,13 +689,16 @@ AC_ARG_WITH(ssl, AS_HELP_STRING([--with-ssl@<:@=PFX@:>@],[Enable TLS support usi
 
             crypto_libs=""
             AC_CHECK_LIB(z, deflate, [crypto_libs=-lz])
-            AC_CHECK_LIB(crypto, X509_new,
-              [crypto_libs="-lcrypto $crypto_libs"],, [$crypto_libs])
+            AC_CHECK_LIB(crypto, X509_STORE_CTX_new,
+              [crypto_libs="-lcrypto $crypto_libs"],
+              AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
             AC_CHECK_LIB(ssl, SSL_new,,
               AC_MSG_ERROR([Unable to find SSL library]), [$crypto_libs])
 
             LIBS="$LIBS $crypto_libs"
             AC_CHECK_FUNCS(RAND_status RAND_egd)
+            AC_CHECK_DECLS([SSL_set_mode, SSL_MODE_AUTO_RETRY],,
+              AC_MSG_ERROR([Unable to find decent SSL header]), [[#include <openssl/ssl.h>]])
 
             AC_DEFINE(USE_SSL,1,[ Define if you want support for SSL. ])
             AC_DEFINE(USE_SSL_OPENSSL,1,[ Define if you want support for SSL via OpenSSL. ])
