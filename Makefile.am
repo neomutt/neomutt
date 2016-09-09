@@ -151,7 +151,7 @@ keymap_alldefs.h: $(srcdir)/OPS $(srcdir)/OPS.SIDEBAR $(srcdir)/OPS.NOTMUCH $(sr
 			> keymap_alldefs.h
 
 oldmutt_ver.h:
-	version=`git tag | grep ^mutt- | sort -V | tail -1 | LC_ALL=C cut -b 6-` && \
+	version="1.7.0" && \
 	echo 'const char *OldMuttVer = "'$$version'";' > oldmutt_ver.h.tmp; \
 	cmp -s oldmutt_ver.h.tmp oldmutt_ver.h || mv oldmutt_ver.h.tmp oldmutt_ver.h
 
