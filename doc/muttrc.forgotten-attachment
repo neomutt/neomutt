@@ -1,0 +1,15 @@
+# Example Mutt config file for the 'forgotten attachments' patch.
+
+# The 'forgotten attachments' patch provides a new setting for Mutt that
+# alerts the user if the message body contains a certain keyword but there are
+# no attachments added. This is meant to ensure that the user does not forget
+# to attach a file after promising to do so in the mail.
+
+# Search for the following keyword in the body of the email
+set attach_keyword = "attached"
+
+# Ask if the user wishes to abort sending if $attach_keyword is found in the
+# body, but no attachments have been added
+set abort_noattach = ask-yes
+
+# vim: syntax=muttrc

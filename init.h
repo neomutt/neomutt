@@ -270,7 +270,7 @@ struct option_t MuttVars[] = {
   { "attach_keyword",  DT_STR,  R_NONE, UL &AttachKeyword, UL "attach" },
   /*
   ** .pp
-  ** If $abort_attach is not set to no, then the body of the message
+  ** If $abort_noattach is not set to no, then the body of the message
   ** will be scanned for this keyword, and if found, you will be prompted
   ** if there are no attachments. This is case insensitive.
   */
