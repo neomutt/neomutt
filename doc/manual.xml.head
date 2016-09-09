@@ -8307,7 +8307,7 @@ for example, in a global <literal>.muttrc</literal>.
       <listitem><para>mutt-1.7.0</para></listitem>
     </itemizedlist>
 
-    <para>This patch is part of the <ulink url="https://github.com/neomutt/neomutt/wiki">NeoMutt Project</ulink>.</para>
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
   </sect2>
 
   <sect2 id="sensible-browser-intro">
