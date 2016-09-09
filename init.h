@@ -86,6 +86,15 @@ struct option_t
 
 struct option_t MuttVars[] = {
   /*++*/
+
+  { "abort_noattach", DT_QUAD, R_NONE, OPT_ATTACH, MUTT_NO },
+  /*
+  ** .pp
+  ** If set to \fIyes\fP, when composing messages containing the word
+  ** specified by $attach_keyword (default is "attach") and no attachments
+  ** are given, composition will be aborted. If set to \fIno\fP, composing
+  ** messages as such will never be aborted.
+  */
   { "abort_nosubject",	DT_QUAD, R_NONE, OPT_SUBJECT, MUTT_ASKYES },
   /*
   ** .pp
@@ -257,6 +266,13 @@ struct option_t MuttVars[] = {
   ** .de
   ** .pp
   ** For an explanation of ``soft-fill'', see the $$index_format documentation.
+  */
+  { "attach_keyword",  DT_STR,  R_NONE, UL &AttachKeyword, UL "attach" },
+  /*
+  ** .pp
+  ** If $abort_noattach is not set to no, then the body of the message
+  ** will be scanned for this keyword, and if found, you will be prompted
+  ** if there are no attachments. This is case insensitive.
   */
   { "attach_sep",	DT_STR,	 R_NONE, UL &AttachSep, UL "\n" },
   /*

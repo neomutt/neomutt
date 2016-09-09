@@ -1,0 +1,7 @@
+" Vim syntax file for the mutt forgotten-attachments patch
+
+syntax keyword muttrcVarBool    skipwhite contained abort_noattach         nextgroup=muttrcSetBoolAssignment,muttrcVPrefix,muttrcVarBool,muttrcVarQuad,muttrcVarNum,muttrcVarStr
+
+syntax keyword muttrcVarStr     contained skipwhite attach_keyword         nextgroup=muttrcVarEqualsIdxFmt
+
+" vim: syntax=vim

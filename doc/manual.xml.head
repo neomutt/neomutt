@@ -10121,6 +10121,116 @@ set pgp_encrypt_self = "no"
   </sect2>
 </sect1>
 
+<sect1 id="forgotten-attachments">
+  <title>forgotten-attachments Patch</title>
+  <subtitle>Alert user when (s)he forgets to attach a file to an outgoing email.</subtitle>
+
+  <sect2 id="forgotten-attachments-patch">
+    <title>Patch</title>
+
+    <para>
+      To check if Mutt supports <quote>forgotten-attachments</quote>, look for
+      <quote>patch-forgotten-attachments</quote> in the mutt version.
+      See: <xref linkend="mutt-patches"/>.
+    </para>
+
+    <itemizedlist>
+      <title>Dependencies:</title>
+      <listitem><para>mutt-1.7.0</para></listitem>
+    </itemizedlist>
+
+    <para>This patch is part of the <ulink url="http://www.neomutt.org/">NeoMutt Project</ulink>.</para>
+  </sect2>
+
+  <sect2 id="forgotten-attachments-intro">
+    <title>Introduction</title>
+
+    <para>
+      The 'forgotten attachments' patch provides a new setting for Mutt that
+      alerts the user if the message body contains a certain keyword but there are
+      no attachments added. This is meant to ensure that the user does not forget
+      to attach a file after promising to do so in the mail.
+    </para>
+  </sect2>
+
+  <sect2 id="forgotten-attachments-variables">
+    <title>Variables</title>
+
+    <table id="table-forgotten-attachments-variables">
+      <title>forgotten-attachments Variables</title>
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry>Name</entry>
+            <entry>Type</entry>
+            <entry>Default</entry>
+          </row>
+        </thead>
+        <tbody>
+          <row>
+            <entry><literal>attach-keyword</literal></entry>
+            <entry>string</entry>
+            <entry><literal>attached</literal></entry>
+          </row>
+          <row>
+            <entry><literal>abort_noattach</literal></entry>
+            <entry>quadoption</entry>
+            <entry><literal>ask-yes</literal></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
+  <sect2 id="forgotten-attachment-muttrc">
+<title>Muttrc</title>
+<screen>
+<emphasis role="comment"># This is a complete list of forgotten-attachments-related configuration.
+ 
+# --------------------------------------------------------------------------
+# VARIABLES - shown with their default values
+# --------------------------------------------------------------------------
+ 
+# The 'forgotten attachments' patch provides a new setting for Mutt that
+# alerts the user if the message body contains a certain keyword but there are
+# no attachments added. This is meant to ensure that the user does not forget
+# to attach a file after promising to do so in the mail.
+ 
+# Search for the following keyword in the body of the email</emphasis>
+set attach_keyword = "attached"
+ 
+<emphasis role="comment"># Ask if the user wishes to abort sending if $attach_keyword is found in the
+# body, but no attachments have been added</emphasis>
+set abort_noattach = ask-yes
+ 
+<emphasis role="comment"># vim: syntax=muttrc</emphasis>
+</screen>
+  </sect2>
+
+  <sect2 id="forgotten-attachments-see-also">
+    <title>See Also</title>
+
+    <itemizedlist>
+      <listitem><para><ulink url="http://www.neomutt.org/">NeoMutt Project</ulink></para></listitem>
+      <listitem><para><link linkend="attach-menu">The Attachment Menu</link></para></listitem>
+      <listitem><para><link linkend="attachment-map">The Attachment Menu key mappings</link></para></listitem>
+    </itemizedlist>
+  </sect2>
+
+  <sect2 id="forgotten-attachments-known-bugs">
+    <title>Known Bugs</title>
+    <para>None</para>
+  </sect2>
+
+  <sect2 id="forgotten-attachments-credits">
+    <title>Credits</title>
+    <itemizedlist>
+    <listitem><para>Darshit Shah <email>darnir@gmail.com</email></para></listitem>
+    <listitem><para>Richard Russon <email>rich@flatcap.org</email></para></listitem>
+    </itemizedlist>
+  </sect2>
+</sect1>
+
 <sect1 id="ifdef">
   <title>Ifdef Patch</title>
   <subtitle>Conditional config options</subtitle>
