@@ -1233,30 +1233,40 @@ static int has_recips (ADDRESS *a)
 }
 
 int
-mutt_search_attach_keyword(char* filename)
+mutt_search_attach_keyword (char *filename)
 {
-  /* searches for the magic keyword "attach" within a file */
-  int found = 0;
-  char* inputline = malloc(1024);
-  char* lowerKeyword = malloc(strlen(AttachKeyword)+1);
-  FILE *attf = fopen(filename, "r");
+  /* Search for the keyword in AttachKeyword within a file */
+  int klen = mutt_strlen (AttachKeyword) + 1;
+  if (klen == 1)
+    return 0;
+
+  FILE *attf = safe_fopen (filename, "r");
+  if (!attf)
+    return 0;
+
+  char *lowerKeyword = safe_malloc (klen);
+  char *inputline = safe_malloc (LONG_STRING);
   int i;
-  for (i=0; i <= strlen(AttachKeyword); i++) {
-    lowerKeyword[i] = tolower(AttachKeyword[i]);
-  }
-  while (!feof(attf)) {
-    fgets(inputline, 1024, attf);
-    for (i=0; i < strlen(inputline); i++) {
-      inputline[i] = tolower(inputline[i]);
+  for (i = 0; i <= klen; i++)
+    lowerKeyword[i] = tolower (AttachKeyword[i]);
+
+  int found = 0;
+  while (!feof (attf))
+  {
+    fgets (inputline, LONG_STRING, attf);
+    int ilen = strlen (inputline);
+    for (i = 0; i < ilen; i++)
+      inputline[i] = tolower (inputline[i]);
+
+    if (strstr (inputline, lowerKeyword))
+    {
+      found = 1;
+      break;
     }
-    if (strstr(inputline, lowerKeyword)) {
-        found = 1;
-        break;
-    }
   }
-  free(inputline);
-  free(lowerKeyword);
-  fclose(attf);
+  FREE (&inputline);
+  FREE (&lowerKeyword);
+  safe_fclose (&attf);
   return found;
 }
 
@@ -1892,17 +1902,20 @@ main_loop:
   }
 #endif
 
-  if (mutt_search_attach_keyword(msg->content->filename) &&
+  if (mutt_search_attach_keyword (msg->content->filename) &&
          !msg->content->next &&
-         query_quadoption(OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
+         query_quadoption (OPT_ATTACH, _("No attachments, cancel sending?")) != MUTT_NO)
   {
     /* if the abort is automatic, print an error message */
-    if (quadoption (OPT_ATTACH) == MUTT_YES) {
-         char errorstr[512];
-         if (snprintf(errorstr, 512,
-                       "Message contains magic keyword \"%s\", but no attachments. Not sending.", AttachKeyword)==-1)
-               errorstr[511] = 0; // terminate if need be. our string shouldnt be this long.
-      mutt_error _(errorstr);
+    if (quadoption (OPT_ATTACH) == MUTT_YES)
+    {
+      char errorstr[STRING];
+      if (snprintf (errorstr, STRING,
+        _("Message contains magic keyword \"%s\", but no attachments. Not sending."), AttachKeyword) == -1)
+      {
+        errorstr[STRING] = 0; // terminate if need be. our string shouldn't be this long.
+      }
+      mutt_error (errorstr);
     }
     goto main_loop;
   }
