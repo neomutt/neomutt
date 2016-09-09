@@ -1397,12 +1397,20 @@ if test $mutt_cv_langinfo_yesexpr = yes; then
   AC_DEFINE(HAVE_LANGINFO_YESEXPR,1,[ Define if you have <langinfo.h> and nl_langinfo(YESEXPR). ])
 fi
 
-AC_CHECK_FUNCS(fmemopen open_memstream, [
-	AC_ARG_ENABLE(fmemopen, AS_HELP_STRING([--disable-fmemopen],[Do NOT use fmemopen]),
-	[],
-	# Temporarily disable fmemopen, due to a bug
-	[AC_DEFINE(USE_FMEMOPEN, 0, [Use fmemopen])])
-])
+# Only enable fmemopen if both fmemopen() and open_memstream()
+# AND --enable-fmemopen is given.
+have_fmemopen=yes
+AC_CHECK_FUNCS(fmemopen open_memstream, [], [have_fmemopen=no])
+
+AC_ARG_ENABLE(fmemopen, AS_HELP_STRING([--enable-fmemopen],[Use fmemopen]),
+	[use_fmemopen=$enableval], [use_fmemopen=no]
+)
+
+AS_IF([test $have_fmemopen = "yes" && test $use_fmemopen = "yes"],
+      # Temporarily disable fmemopen, due to a bug
+      [AC_DEFINE(USE_FMEMOPEN, 0, [Use fmemopen])],
+      [use_fmemopen=no]
+)
 
 dnl Documentation tools
 have_openjade="no"
