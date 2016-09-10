@@ -398,12 +398,19 @@ int raw_socket_read (CONNECTION* conn, char* buf, size_t len)
 {
   int rc;
 
+  mutt_allow_interrupt (1);
   if ((rc = read (conn->fd, buf, len)) == -1)
   {
     mutt_error (_("Error talking to %s (%s)"), conn->account.host,
 		strerror (errno));
     mutt_sleep (2);
-  }
+  } else if (errno == EINTR) {
+    rc = -1;
+    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
+               strerror (errno));
+    mutt_sleep (2);
+   }
+  mutt_allow_interrupt (0);
 
   return rc;
 }
@@ -412,12 +419,19 @@ int raw_socket_write (CONNECTION* conn, const char* buf, size_t count)
 {
   int rc;
 
+  mutt_allow_interrupt (1);
   if ((rc = write (conn->fd, buf, count)) == -1)
   {
     mutt_error (_("Error talking to %s (%s)"), conn->account.host,
 		strerror (errno));
     mutt_sleep (2);
+  } else if (errno == EINTR) {
+    rc = -1;
+    mutt_error (_("Error talking to %s (%s)"), conn->account.host,
+               strerror (errno));
+    mutt_sleep (2);
   }
+  mutt_allow_interrupt (0);
 
   return rc;
 }

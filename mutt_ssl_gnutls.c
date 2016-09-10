@@ -141,14 +141,16 @@ static int tls_socket_read (CONNECTION* conn, char* buf, size_t len)
 
   do {
     ret = gnutls_record_recv (data->state, buf, len);
-    if (ret < 0 && gnutls_error_is_fatal(ret) == 1)
+    if ((ret < 0 &&
+         gnutls_error_is_fatal(ret) == 1) ||
+        ret == GNUTLS_E_INTERRUPTED
+       )
     {
       mutt_error ("tls_socket_read (%s)", gnutls_strerror (ret));
-      mutt_sleep (4);
+      mutt_sleep (2);
       return -1;
     }
-  }
-  while (ret == GNUTLS_E_AGAIN || ret == GNUTLS_E_INTERRUPTED);
+  } while (ret == GNUTLS_E_AGAIN);
 
   return ret;
 }
@@ -171,7 +173,7 @@ static int tls_socket_write (CONNECTION* conn, const char* buf, size_t len)
     ret = gnutls_record_send (data->state, buf + sent, len - sent);
     if (ret < 0)
     {
-      if (gnutls_error_is_fatal(ret) == 1)
+      if (gnutls_error_is_fatal(ret) == 1 || ret == GNUTLS_E_INTERRUPTED)
       {
 	mutt_error ("tls_socket_write (%s)", gnutls_strerror (ret));
 	mutt_sleep (4);
@@ -434,7 +436,7 @@ static int tls_negotiate (CONNECTION * conn)
 
   err = gnutls_handshake(data->state);
 
-  while (err == GNUTLS_E_AGAIN || err == GNUTLS_E_INTERRUPTED)
+  while (err == GNUTLS_E_AGAIN)
   {
     err = gnutls_handshake(data->state);
   }

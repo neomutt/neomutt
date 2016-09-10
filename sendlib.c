@@ -274,6 +274,10 @@ static void encode_base64 (FGETCONV * fc, FILE *fout, int istext)
 
   while ((ch = fgetconv (fc)) != EOF)
   {
+    if (SigInt == 1) {
+      SigInt = 0;
+      return;
+    }
     if (istext && ch == '\n' && ch1 != '\r')
       b64_putc('\r', fout);
     b64_putc(ch, fout);
@@ -287,8 +291,13 @@ static void encode_8bit (FGETCONV *fc, FILE *fout, int istext)
 {
   int ch;
 
-  while ((ch = fgetconv (fc)) != EOF)
+  while ((ch = fgetconv (fc)) != EOF) {
+    if (SigInt == 1) {
+      SigInt = 0;
+      return;
+    }
     fputc (ch, fout);
+  }
 }
 
 
@@ -465,6 +474,7 @@ int mutt_write_mime_body (BODY *a, FILE *f)
   else
     fc = fgetconv_open (fpin, 0, 0, 0);
 
+  mutt_allow_interrupt (1);
   if (a->encoding == ENCQUOTEDPRINTABLE)
     encode_quoted (fc, f, write_as_text_part (a));
   else if (a->encoding == ENCBASE64)
@@ -473,10 +483,15 @@ int mutt_write_mime_body (BODY *a, FILE *f)
     encode_8bit (fc, f, write_as_text_part (a));
   else
     mutt_copy_stream (fpin, f);
+  mutt_allow_interrupt (0);
 
   fgetconv_close (&fc);
   safe_fclose (&fpin);
 
+  if (SigInt == 1) {
+    SigInt = 0;
+    return -1;
+  }
   return (ferror (f) ? -1 : 0);
 }
 

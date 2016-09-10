@@ -1423,7 +1423,7 @@ MESSAGE *mx_open_new_message (CONTEXT *dest, HEADER *hdr, int flags)
 /* check for new mail */
 int mx_check_mailbox (CONTEXT *ctx, int *index_hint)
 {
-  if (!ctx)
+  if (!ctx || ctx->magic == 0)
   {
     dprint (1, (debugfile, "mx_check_mailbox: null or invalid context.\n"));
     return -1;

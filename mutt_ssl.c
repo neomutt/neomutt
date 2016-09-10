@@ -303,8 +303,12 @@ static int ssl_socket_read (CONNECTION* conn, char* buf, size_t len)
   int rc;
 
   rc = SSL_read (data->ssl, buf, len);
-  if (rc <= 0)
+  if (rc <= 0 || errno == EINTR)
   {
+    if (errno == EINTR)
+    {
+      rc = -1;
+    }
     data->isopen = 0;
     ssl_err (data, rc);
   }
@@ -318,8 +322,13 @@ static int ssl_socket_write (CONNECTION* conn, const char* buf, size_t len)
   int rc;
 
   rc = SSL_write (data->ssl, buf, len);
-  if (rc <= 0)
+  if (rc <= 0 || errno == EINTR) {
+    if (errno == EINTR)
+    {
+      rc = -1;
+    }
     ssl_err (data, rc);
+  }
 
   return rc;
 }
