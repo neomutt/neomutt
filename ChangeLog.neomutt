@@ -1,3 +1,44 @@
+2016-09-10  Richard Russon  <rich@flatcap.org>
+* New Features
+  - Colouring Attachments with Regexp
+    Guillaume Brogi
+  - PGP Encrypt to Self
+    Guillaume Brogi
+  - Sensible Browser
+    Pierre-Elliott Bécue
+  - Reply using X-Original-To: header
+    Pierre-Elliott Bécue
+  - Purge Thread
+    Darshit Shah
+  - Forgotten attachment
+    Darshit Shah
+  - Add sidebar_ordinary color
+* Bug Fixes
+  - align the nntp code with mutt
+    Fabian Groffen
+  - check for new mail while in pager when idle
+    Stefan Assmann
+  - Allow the user to interrupt slow IO operations
+    Antonio Radici
+  - keywords: check there are emails to tag
+  - fix duplicate saved messages
+  - flatten contrib/keybase dir to fix install
+  - restore the pager keymapping 'i' to exit
+  - proposed fix for clearing labels
+  - notmuch: sync vfolder_format to folder_format
+* Docs
+  - Update List of Features and Authors
+* Build
+  - fix configure check for fmemopen
+  - use fixed version strings
+* Upstream
+  - Increase date buffer size for $folder_format.
+  - Disable ~X when message scoring.
+  - Fix pgpring reporting of DSA and Elgamal key lengths.
+  - Stub out getdnsdomainname() unless HAVE_GETADDRINFO.
+  - Autoconf: always check for getaddrinfo().
+  - Add missing sidebar contrib sample files to dist tarball.
+
 2016-08-27  Richard Russon  <rich@flatcap.org>
 * NeoMutt for Mutt 1.7.0
 * Build
