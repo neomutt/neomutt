@@ -1128,11 +1128,14 @@ void _mutt_select_file (char *f, size_t flen, int flags, char ***files, int *num
        * This code is executed only when we list files, not when
        * we press up/down keys to navigate in a displayed list.
        *
+       * We only do this when CurrentFolder has been set (ie, not
+       * when listing folders on startup with "mutt -y").
+       *
        * This tracker is only used when browser_track is true,
        * meaning only with sort methods SUBJECT/DESC for now.
        */
-      if ((!LastDir[0]) ||
-           (mutt_strcmp (CurrentFolder, OldLastDir) != 0))
+      if (CurrentFolder && ((!LastDir[0]) ||
+           (mutt_strcmp (CurrentFolder, OldLastDir) != 0)))
       {
         mutt_browser_select_dir (CurrentFolder);
       }
